@@ -371,6 +371,7 @@ const Dash = new Lang.Class({
         this._maxHeight = -1;
         this.iconSize = 64;
         this._shownInitially = false;
+        this._ignoreHeight = false;
 
         this._dragPlaceholder = null;
         this._dragPlaceholderPos = -1;
@@ -396,7 +397,10 @@ const Dash = new Lang.Class({
         this.actor = new St.Bin({ child: this._container });
         this.actor.connect('notify::height', Lang.bind(this,
             function() {
-                if (this._maxHeight != this.actor.height)
+                if (this._ignoreHeight)
+                    return;
+
+                if (this._maxHeight != this.actor.height);
                     this._queueRedisplay();
                 this._maxHeight = this.actor.height;
             }));
@@ -421,6 +425,8 @@ const Dash = new Lang.Class({
                               Lang.bind(this, this._onDragCancelled));
         Main.overview.connect('window-drag-end',
                               Lang.bind(this, this._onDragEnd));
+        Main.overview.connect('showing',
+                              Lang.bind(this, this._onOverviewShowing));
     },
 
     _onDragBegin: function() {
@@ -923,6 +929,65 @@ const Dash = new Lang.Class({
             }));
 
         return true;
+    },
+
+    _computeTranslation: function() {
+        let rtl = (this.actor.get_text_direction() == Clutter.TextDirection.RTL);
+
+        if (rtl)
+            return this.actor.width;
+        else
+            return - this.actor.width;
+    },
+
+    _onOverviewShowing: function() {
+        // reset any translation and make sure the actor is visible when
+        // entering the overview
+        this.slideX = 0;
+        this.actor.show();
+    },
+
+    get slideX() {
+        return this._slideX;
+    },
+
+    set slideX(value) {
+        this._slideX = value;
+        this.actor.translation_x = this._slideX;
+
+        if (this._slideX > 0) {
+            let rect = new Clutter.Rect();
+            rect.size.width = this.actor.width - this._slideX;
+            rect.size.height = this.actor.height;
+            this.actor.clip_rect = rect;
+        } else {
+            this.actor.clip_rect = null;
+        }
+    },
+
+    show: function() {
+        this.actor.show();
+        Tweener.addTween(this, { slideX: 0,
+                                 transition: 'easeOutQuad',
+                                 time: DASH_ANIMATION_TIME,
+                                 onComplete: Lang.bind(this,
+                                     function() {
+                                         this._ignoreHeight = false;
+                                     })
+                               });
+    },
+
+    hide: function() {
+        this._ignoreHeight = true;
+        let hiddenX = this._computeTranslation();
+        Tweener.addTween(this, { slideX: hiddenX,
+                                 transition: 'easeOutQuad',
+                                 time: DASH_ANIMATION_TIME,
+                                 onComplete: Lang.bind(this,
+                                 function() {
+                                     this.actor.hide();
+                                 })
+                               });
     }
 });
 
