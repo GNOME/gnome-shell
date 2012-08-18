@@ -7,11 +7,10 @@ const Gio = imports.gi.Gio;
 const Params = imports.misc.params;
 const Shell = imports.gi.Shell;
 
-const ConsoleKit = imports.misc.consoleKit;
 const GnomeSession = imports.misc.gnomeSession;
+const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
 const ShellMountOperation = imports.ui.shellMountOperation;
-const Systemd = imports.misc.systemd;
 
 const GNOME_SESSION_AUTOMOUNT_INHIBIT = 16;
 
@@ -34,8 +33,7 @@ const AutomountManager = new Lang.Class({
                                     Lang.bind(this, this._InhibitorsChanged));
         this._inhibited = false;
 
-        if (!Systemd.haveSystemd())
-            this.ckListener = new ConsoleKit.ConsoleKitManager();
+        this._loginManager = LoginManager.getLoginManager();
 
         Main.screenShield.connect('lock-status-changed', Lang.bind(this, this._lockStatusChanged));
 
@@ -92,21 +90,10 @@ const AutomountManager = new Lang.Class({
         return false;
     },
 
-    isSessionActive: function() {
-        // Return whether the current session is active, using the
-        // right mechanism: either systemd if available or ConsoleKit
-        // as fallback.
-
-        if (Systemd.haveSystemd())
-            return Shell.session_is_active_for_systemd();
-
-        return this.ckListener.sessionActive;
-    },
-
     _onDriveConnected: function() {
         // if we're not in the current ConsoleKit session,
         // or screensaver is active, don't play sounds
-        if (!this.isSessionActive())
+        if (!this._loginManager.sessionActive)
             return;
 
         if (Main.screenShield.locked)
@@ -118,7 +105,7 @@ const AutomountManager = new Lang.Class({
     _onDriveDisconnected: function() {
         // if we're not in the current ConsoleKit session,
         // or screensaver is active, don't play sounds
-        if (!this.isSessionActive())
+        if (!this._loginManager.sessionActive)
             return;
 
         if (Main.screenShield.locked)
@@ -130,7 +117,7 @@ const AutomountManager = new Lang.Class({
     _onDriveEjectButton: function(monitor, drive) {
         // TODO: this code path is not tested, as the GVfs volume monitor
         // doesn't emit this signal just yet.
-        if (!this.isSessionActive())
+        if (!this._loginManager.sessionActive)
             return;
 
         // we force stop/eject in this case, so we don't have to pass a
@@ -170,7 +157,7 @@ const AutomountManager = new Lang.Class({
         if (params.checkSession) {
             // if we're not in the current ConsoleKit session,
             // don't attempt automount
-            if (!this.isSessionActive())
+            if (!this._loginManager.sessionActive)
                 return;
 
             if (Main.screenShield.locked) {

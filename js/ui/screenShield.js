@@ -9,13 +9,12 @@ const Meta = imports.gi.Meta;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
-const ConsoleKit = imports.misc.consoleKit;
 const GnomeSession = imports.misc.gnomeSession;
 const Layout = imports.ui.layout;
+const LoginManager = imports.misc.loginManager;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
-const Systemd = imports.misc.systemd;
 const Tweener = imports.ui.tweener;
 
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
@@ -341,15 +340,10 @@ const ScreenShield = new Lang.Class({
             this._onStatusChanged(status);
         }));
 
-        if (Systemd.haveSystemd()) {
-            this._systemdProxy = new Systemd.SystemdLoginSession(GLib.getenv('XDG_SESSION_ID'));
-            this._systemdProxy.connectSignal('Lock', Lang.bind(this, function() { this.lock(false); }));
-            this._systemdProxy.connectSignal('Unlock', Lang.bind(this, function() { this.unlock(); }));
-        } else {
-            this._consoleKitProxy = new ConsoleKit.ConsoleKitManager();
-            this._consoleKitProxy.ckSession.connectSignal('Lock', Lang.bind(this, function() { this.lock(false); }));
-            this._consoleKitProxy.ckSession.connectSignal('Unlock', Lang.bind(this, function() { this.unlock(); }));
-        }
+        this._loginManager = LoginManager.getLoginManager();
+        this._loginSession = this._loginManager.getCurrentSessionProxy();
+        this._loginSession.connectSignal('Lock', Lang.bind(this, function() { this.lock(false); }));
+        this._loginSession.connectSignal('Unlock', Lang.bind(this, function() { this.unlock(); }));
 
         this._settings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
 

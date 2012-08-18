@@ -21,8 +21,7 @@
 const Lang = imports.lang;
 const UPowerGlib = imports.gi.UPowerGlib;
 
-const ConsoleKit = imports.misc.consoleKit;
-const Systemd = imports.misc.systemd;
+const LoginManager = imports.misc.loginManager;
 
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
@@ -35,10 +34,7 @@ const PowerMenuButton = new Lang.Class({
         this.parent('system-shutdown', null);
         this._upClient = new UPowerGlib.Client();
 
-        if (Systemd.haveSystemd())
-            this._systemdLoginManager = new Systemd.SystemdLoginManager();
-        else
-            this._consoleKitManager = new ConsoleKit.ConsoleKitManager();
+        this._loginManager = LoginManager.getLoginManager();
 
         this._createSubMenu();
 
@@ -65,57 +61,19 @@ const PowerMenuButton = new Lang.Class({
     },
 
     _updateHaveShutdown: function() {
-
-        if (Systemd.haveSystemd()) {
-            this._systemdLoginManager.CanPowerOffRemote(Lang.bind(this,
-                function(result, error) {
-                    if (!error)
-                        this._haveShutdown = result[0] != 'no';
-                    else
-                        this._haveShutdown = false;
-
-                    this._powerOffItem.actor.visible = this._haveShutdown;
-                    this._updateVisibility();
-                }));
-        } else {
-            this._consoleKitManager.CanStopRemote(Lang.bind(this,
-                function(result, error) {
-                    if (!error)
-                        this._haveShutdown = result[0];
-                    else
-                        this._haveShutdown = false;
-
-                    this._powerOffItem.actor.visible = this._haveShutdown;
-                    this._updateVisibility();
-                }));
-        }
+        this._loginManager.canPowerOff(Lang.bind(this, function(result) {
+            this._haveShutdown = result;
+            this._powerOffItem.actor.visible = this._haveShutdown;
+            this._updateVisibility();
+        }));
     },
 
     _updateHaveRestart: function() {
-
-        if (Systemd.haveSystemd()) {
-            this._systemdLoginManager.CanRebootRemote(Lang.bind(this,
-                function(result, error) {
-                    if (!error)
-                        this._haveRestart = result[0] != 'no';
-                    else
-                        this._haveRestart = false;
-
-                    this._restartItem.actor.visible = this._haveRestart;
-                    this._updateVisibility();
-                }));
-        } else {
-            this._consoleKitManager.CanRestartRemote(Lang.bind(this,
-                function(result, error) {
-                    if (!error)
-                        this._haveRestart = result[0];
-                    else
-                        this._haveRestart = false;
-
-                    this._restartItem.actor.visible = this._haveRestart;
-                    this._updateVisibility();
-                }));
-        }
+        this._loginManager.canReboot(Lang.bind(this, function(result) {
+            this._haveRestart = result;
+            this._restartItem.actor.visible = this._haveRestart;
+            this._updateVisibility();
+        }));
     },
 
     _updateHaveSuspend: function() {
@@ -152,19 +110,13 @@ const PowerMenuButton = new Lang.Class({
         if (!this._haveRestart)
             return;
 
-        if (Systemd.haveSystemd())
-            this._systemdLoginManager.RebootRemote(true);
-        else
-            this._consoleKitManager.RestartRemote();
+        this._loginManager.reboot();
     },
 
     _onActivatePowerOff: function() {
         if (!this._haveShutdown)
             return;
 
-        if (Systemd.haveSystemd())
-            this._systemdLoginManager.PowerOffRemote(true);
-        else
-            this._consoleKitManager.StopRemote();
+        this._loginManager.powerOff();
     }
 });

@@ -23,15 +23,14 @@ nobase_dist_js_DATA = 	\
 	gdm/util.js		\
 	extensionPrefs/main.js	\
 	misc/config.js		\
-	misc/consoleKit.js	\
 	misc/extensionUtils.js	\
 	misc/fileUtils.js	\
 	misc/gnomeSession.js	\
 	misc/history.js		\
 	misc/jsParse.js		\
+	misc/loginManager.js	\
 	misc/modemManager.js	\
 	misc/params.js		\
-	misc/systemd.js	 	\
 	misc/util.js		\
 	perf/core.js		\
 	ui/altTab.js		\
