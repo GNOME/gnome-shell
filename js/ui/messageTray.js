@@ -1160,6 +1160,14 @@ const SummaryItem = new Lang.Class({
         this._sourceBox.add(this._sourceIcon, { y_fill: false });
         this.actor.child = this._sourceBox;
 
+        this._closeButton = new St.Button({ style_class: 'window-close' });
+        this._closeButton.connect('clicked', Lang.bind(this, function() {
+            source.destroy();
+            this.emit('done-displaying-content');
+        }));
+
+        this.notificationStackWidget = new St.Widget();
+        this.notificationStackWidget.add_actor(this._closeButton);
         this.notificationStackView = new St.ScrollView({ style_class: source.isChat ? '' : 'summary-notification-stack-scrollview',
                                                          vscrollbar_policy: source.isChat ? Gtk.PolicyType.NEVER : Gtk.PolicyType.AUTOMATIC,
                                                          hscrollbar_policy: Gtk.PolicyType.NEVER });
@@ -1167,6 +1175,7 @@ const SummaryItem = new Lang.Class({
         this.notificationStack = new St.BoxLayout({ style_class: 'summary-notification-stack',
                                                     vertical: true });
         this.notificationStackView.add_actor(this.notificationStack);
+        this.notificationStackWidget.add_actor(this.notificationStackView);
         this._stackedNotifications = [];
 
         this._oldMaxScrollAdjustment = 0;
@@ -1219,6 +1228,13 @@ const SummaryItem = new Lang.Class({
         for (let i = 0; i < this.source.notifications.length; i++) {
             this._appendNotificationToStack(this.source.notifications[i]);
         }
+
+        let closeNode = this._closeButton.get_theme_node();
+        let overlap = closeNode.get_length('-shell-close-overlap');
+        this.notificationStackWidget.width = this.notificationStackView.width;
+        this._closeButton.x = this.notificationStackView.width - overlap;
+        this._closeButton.y = - overlap;
+        this.scrollTo(St.Side.BOTTOM);
     },
 
     doneShowingNotificationStack: function() {
@@ -1357,6 +1373,11 @@ const MessageTray = new Lang.Class({
         this._clickedSummaryItemAllocationChangedId = 0;
         this._pointerBarrier = 0;
 
+        this._closeButton = new St.Button({ style_class: 'window-close' });
+        this.actor.add_actor(this._closeButton);
+        this._closeButton.hide();
+        this._closeButton.connect('clicked', Lang.bind(this, this._onCloseClicked));
+
         this._idleMonitorWatchId = 0;
         this._userActiveWhileNotificationShown = false;
 
@@ -1406,6 +1427,7 @@ const MessageTray = new Lang.Class({
         this.actor.y = 0;
         Main.layoutManager.trackChrome(this.actor);
         Main.layoutManager.trackChrome(this._notificationBin);
+        Main.layoutManager.trackChrome(this._closeButton);
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._setSizePosition));
         Main.layoutManager.connect('primary-fullscreen-changed', Lang.bind(this, this._onFullscreenChanged));
@@ -1435,6 +1457,14 @@ const MessageTray = new Lang.Class({
 
         this._summaryItems = [];
         this._chatSummaryItemsCount = 0;
+    },
+
+    _onCloseClicked: function() {
+        if (this._notificationState == State.SHOWN) {
+            this._notification.emit('done-displaying');
+                if (!this._notification.resident)
+                    this._notification.destroy();
+        }
     },
 
     _onCornerEnter: function(actor, event) {
@@ -1853,7 +1883,7 @@ const MessageTray = new Lang.Class({
         // to show notifications for legacy tray icons, but this would be necessary if we did.
         let requestedNotificationStackIsEmpty = (this._clickedSummaryItemMouseButton == 1 && this._clickedSummaryItem.source.notifications.length == 0);
         let wrongSummaryNotificationStack = (this._clickedSummaryItemMouseButton == 1 &&
-                                             this._summaryBoxPointer.bin.child != this._clickedSummaryItem.notificationStackView);
+                                             this._summaryBoxPointer.bin.child != this._clickedSummaryItem.notificationStackWidget);
         let wrongSummaryRightClickMenu = (this._clickedSummaryItemMouseButton == 3 &&
                                           this._summaryBoxPointer.bin.child != this._clickedSummaryItem.rightClickMenu);
         let wrongSummaryBoxPointer = (haveClickedSummaryItem &&
@@ -2121,6 +2151,8 @@ const MessageTray = new Lang.Class({
             this._notificationBin.y = this.actor.height;
             this._notificationBin.opacity = 0;
             this._notificationState = State.HIDDEN;
+            this._closeButton.y = this.actor.height;
+            this._closeButton.opacity = 0;
             this._hideNotificationCompleted();
         } else {
             this._tween(this._notificationBin, '_notificationState', State.HIDDEN,
@@ -2131,12 +2163,20 @@ const MessageTray = new Lang.Class({
                           onComplete: this._hideNotificationCompleted,
                           onCompleteScope: this
                         });
+
+            Tweener.addTween(this._closeButton,
+                             { y: this.actor.height,
+                               opacity: 0,
+                               time: ANIMATION_TIME,
+                               transition: 'easeOutQuad',
+                             });
         }
     },
 
     _hideNotificationCompleted: function() {
         this._notificationRemoved = false;
         this._notificationBin.hide();
+        this._closeButton.hide();
         this._pointerInTray = false;
         this._notificationBin.child = null;
         this._notification.collapseCompleted();
@@ -2164,19 +2204,39 @@ const MessageTray = new Lang.Class({
 
     _onNotificationExpanded: function() {
         let expandedY = - this._notificationBin.height;
+        let closeNode = this._closeButton.get_theme_node();
+        let overlap = closeNode.get_length('-shell-close-overlap');
+        // In case when we expand the urgent notification right away, this._notification.actor
+        // is not allocated yet, so we need to allocate it to be able to get the right value
+        // for this._notification.actor.x
+        this._notification.actor.get_allocation_box();
+        this._closeButton.x = (this._notification.actor.x + this._notification.actor.width) - overlap;
+        this._closeButton.opacity = this._notificationBin.opacity;
+        this._closeButton.show();
 
         // Don't animate the notification to its new position if it has shrunk:
         // there will be a very visible "gap" that breaks the illusion.
 
-        if (this._notificationBin.y < expandedY)
+        if (this._notificationBin.y < expandedY) {
             this._notificationBin.y = expandedY;
-        else if (this._notification.y != expandedY)
+            this._closeButton.y = expandedY - overlap;
+        } else if (this._notification.y != expandedY) {
+            this._closeButton.y = this._notificationBin.y - overlap;
             this._tween(this._notificationBin, '_notificationState', State.SHOWN,
                         { y: expandedY,
                           time: ANIMATION_TIME,
                           transition: 'easeOutQuad'
                         });
-   },
+            Tweener.addTween(this._closeButton,
+                             { y: expandedY - overlap,
+                               opacity: 255,
+                               time: ANIMATION_TIME,
+                               transition: 'easeOutQuad'
+                             });
+        } else {
+             this._closeButton.y = expandedY - overlap;
+        }
+    },
 
     // We use this function to grab focus when the user moves the pointer
     // to a notification with CRITICAL urgency that was already auto-expanded.
@@ -2222,9 +2282,8 @@ const MessageTray = new Lang.Class({
             }
             this._notificationQueue = newQueue;
 
+            this._summaryBoxPointer.bin.child = this._summaryBoxPointerItem.notificationStackWidget;
             this._summaryBoxPointerItem.prepareNotificationStackForShowing();
-            this._summaryBoxPointer.bin.child = this._summaryBoxPointerItem.notificationStackView;
-            this._summaryBoxPointerItem.scrollTo(St.Side.BOTTOM);
         } else if (this._clickedSummaryItemMouseButton == 3) {
             this._summaryBoxPointer.bin.child = this._clickedSummaryItem.rightClickMenu;
         }
@@ -2321,7 +2380,7 @@ const MessageTray = new Lang.Class({
     },
 
     _hideSummaryBoxPointerCompleted: function() {
-        let doneShowingNotificationStack = (this._summaryBoxPointer.bin.child == this._summaryBoxPointerItem.notificationStackView);
+        let doneShowingNotificationStack = (this._summaryBoxPointer.bin.child == this._summaryBoxPointerItem.notificationStackWidget);
 
         this._summaryBoxPointerState = State.HIDDEN;
         this._summaryBoxPointer.bin.child = null;
