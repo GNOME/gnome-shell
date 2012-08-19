@@ -1285,6 +1285,8 @@ const SummaryItem = new Lang.Class({
                 notification.disconnect(stackedNotification.notificationDoneDisplayingId);
                 notification.disconnect(stackedNotification.notificationDestroyedId);
                 this._stackedNotifications.splice(i, 1);
+                if (notification.actor.get_parent() == this.notificationStack)
+                    this.notificationStack.remove_actor(notification.actor);
                 this._contentUpdated();
                 break;
             }
