@@ -717,13 +717,15 @@ const EventsList = new Lang.Class({
         let tomorrowEnd = new Date(dayEnd.getTime() + 86400 * 1000);
         this._addPeriod(_("Tomorrow"), tomorrowBegin, tomorrowEnd, false, true);
 
-        if (dayEnd.getDay() <= 4 + this._weekStart) {
+        let dayInWeek = (dayEnd.getDay() - this._weekStart + 7) % 7;
+
+        if (dayInWeek < 5) {
             /* If now is within the first 5 days we show "This week" and
              * include events up until and including Saturday/Sunday
              * (depending on whether a week starts on Sunday/Monday).
              */
             let thisWeekBegin = new Date(dayBegin.getTime() + 2 * 86400 * 1000);
-            let thisWeekEnd = new Date(dayEnd.getTime() + (6 + this._weekStart - dayEnd.getDay()) * 86400 * 1000);
+            let thisWeekEnd = new Date(dayEnd.getTime() + (6 - dayInWeek) * 86400 * 1000);
             this._addPeriod(_("This week"), thisWeekBegin, thisWeekEnd, true, false);
         } else {
             /* otherwise it's one of the two last days of the week ... show
@@ -731,7 +733,7 @@ const EventsList = new Lang.Class({
              * Saturday/Sunday
              */
             let nextWeekBegin = new Date(dayBegin.getTime() + 2 * 86400 * 1000);
-            let nextWeekEnd = new Date(dayEnd.getTime() + (13 + this._weekStart - dayEnd.getDay()) * 86400 * 1000);
+            let nextWeekEnd = new Date(dayEnd.getTime() + (13 - dayInWeek) * 86400 * 1000);
             this._addPeriod(_("Next week"), nextWeekBegin, nextWeekEnd, true, false);
         }
     },
