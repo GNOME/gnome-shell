@@ -84,14 +84,11 @@ const GrabHelper = new Lang.Class({
     },
 
     get currentGrab() {
-        if (!this._grabStack.length)
-            return {};
-
         let idx = this._grabStack.length - 1;
         while (idx >= 0 && this._grabStack[idx].untracked)
             idx--;
 
-        return this._grabStack[idx];
+        return this._grabStack[idx] || {};
     },
 
     _findStackIndex: function(actor) {
