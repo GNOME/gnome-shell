@@ -2356,9 +2356,6 @@ const MessageTray = new Lang.Class({
         this._summaryBoxPointerState = State.HIDING;
         this._unlock();
 
-        if (this._summaryBoxPointerItem == this._clickedSummaryItem)
-            this._setClickedSummaryItem(null);
-
         if (this._summaryBoxPointerItem.source.notifications.length == 0) {
             this._summaryBoxPointer.actor.hide();
             this._hideSummaryBoxPointerCompleted();
