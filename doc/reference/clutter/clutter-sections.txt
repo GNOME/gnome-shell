@@ -386,8 +386,10 @@ clutter_actor_get_rotation_angle
 clutter_actor_is_rotated
 clutter_actor_set_translation
 clutter_actor_get_translation
-clutter_actor_get_transform
 clutter_actor_set_transform
+clutter_actor_get_transform
+clutter_actor_set_child_transform
+clutter_actor_get_child_transform
 clutter_actor_apply_transform_to_point
 clutter_actor_transform_stage_point
 clutter_actor_apply_relative_transform_to_point
@@ -3278,6 +3280,7 @@ clutter_vertex_equal
 
 <SUBSECTION>
 CLUTTER_ACTOR_BOX_INIT
+CLUTTER_ACTOR_BOX_INIT_ZERO
 clutter_actor_box_new
 clutter_actor_box_alloc
 clutter_actor_box_init
