@@ -140,7 +140,7 @@ const UnlockDialog = new Lang.Class({
         this._updateOkButton(false);
         this._reset();
 
-        let otherUserLabel = new St.Label({ text: _("Login as another user"),
+        let otherUserLabel = new St.Label({ text: _("Log in as another user"),
                                             style_class: 'login-dialog-not-listed-label' });
         this._otherUserButton = new St.Button({ style_class: 'login-dialog-not-listed-button',
                                                 can_focus: true,
