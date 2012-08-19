@@ -2117,19 +2117,27 @@ const MessageTray = new Lang.Class({
             this._notificationExpandedId = 0;
         }
 
-        this._tween(this._notificationBin, '_notificationState', State.HIDDEN,
-                    { y: this.actor.height,
-                      opacity: 0,
-                      time: ANIMATION_TIME,
-                      transition: 'easeOutQuad',
-                      onComplete: this._hideNotificationCompleted,
-                      onCompleteScope: this
-                    });
+        if (this._notificationRemoved) {
+            this._notificationBin.y = this.actor.height;
+            this._notificationBin.opacity = 0;
+            this._notificationState = State.HIDDEN;
+            this._hideNotificationCompleted();
+        } else {
+            this._tween(this._notificationBin, '_notificationState', State.HIDDEN,
+                        { y: this.actor.height,
+                          opacity: 0,
+                          time: ANIMATION_TIME,
+                          transition: 'easeOutQuad',
+                          onComplete: this._hideNotificationCompleted,
+                          onCompleteScope: this
+                        });
+        }
     },
 
     _hideNotificationCompleted: function() {
         this._notificationRemoved = false;
         this._notificationBin.hide();
+        this._pointerInTray = false;
         this._notificationBin.child = null;
         this._notification.collapseCompleted();
         this._notification.disconnect(this._notificationClickedId);
