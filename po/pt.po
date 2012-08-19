@@ -5,11 +5,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 3.4\n"
+"Project-Id-Version: 3.6\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2012-03-18 13:45+0000\n"
-"PO-Revision-Date: 2012-03-18 13:55+0000\n"
+"POT-Creation-Date: 2012-08-19 22:31+0100\n"
+"PO-Revision-Date: 2012-08-19 22:35+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "Language: pt\n"
@@ -17,33 +17,29 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../cogl/cogl-debug.c:173
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
 msgstr "Valores de depuração suportados:"
 
-#: ../cogl/cogl-debug.c:178
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
 msgstr "Valores de depuração especiais:"
 
-#: ../cogl/cogl-debug.c:180 ../cogl/cogl-debug.c:182
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr "Activa todas as opções de depuração não-comportamentais"
 
-#: ../cogl/cogl-debug.c:226
-msgid "Cogl debugging flags to set"
-msgstr "Parâmetros de depuração Cogl a definir"
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "Variáveis de ambiente adicionais:"
 
-#: ../cogl/cogl-debug.c:228
-msgid "Cogl debugging flags to unset"
-msgstr "Parâmetros de depuração Cogl a desactivar"
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr "Lista separada por vírgulas de extensões GL para considerar desactivadas"
 
-#: ../cogl/cogl-debug.c:277
-msgid "Cogl Options"
-msgstr "Opções Cogl"
-
-#: ../cogl/cogl-debug.c:278
-msgid "Show Cogl options"
-msgstr "Apresentar as opções do Cogl"
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr "Redefinir a versão GL que o Cogl irá assumir que o controlador suporta"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
@@ -52,6 +48,7 @@ msgstr "Apresentar as opções do Cogl"
 #: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Acompanhamento Cogl"
 
@@ -288,7 +285,8 @@ msgstr "Desactivar corte por aplicação"
 
 #: ../cogl/cogl-debug-options.h:156
 msgid "Disables Cogl's attempts to clip some rectangles in software."
-msgstr "Desactiva a tentativa do Cogl de cortar na aplicação alguns rectângulos."
+msgstr ""
+"Desactiva a tentativa do Cogl de cortar na aplicação alguns rectângulos."
 
 #: ../cogl/cogl-debug-options.h:160
 msgid "Show source"
@@ -330,7 +328,8 @@ msgstr "Desactivar optimização de pixel lido"
 msgid ""
 "Disable optimization for reading 1px for simple scenes of opaque rectangles"
 msgstr ""
-"Desactivar a optimização para leitura de 1px de cenas simples de rectângulos opacos"
+"Desactivar a optimização para leitura de 1px de cenas simples de rectângulos "
+"opacos"
 
 #: ../cogl/cogl-debug-options.h:186
 msgid "Trace clipping"
@@ -340,3 +339,22 @@ msgstr "Acompanhar corte"
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "Regista informação sobre como o Cogl está a implementar o corte"
 
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr "Acompanhar problemas de desempenho"
+
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "Tenta realçar utilização sub-óptima do Cogl."
+
+#~ msgid "Cogl debugging flags to set"
+#~ msgstr "Parâmetros de depuração Cogl a definir"
+
+#~ msgid "Cogl debugging flags to unset"
+#~ msgstr "Parâmetros de depuração Cogl a desactivar"
+
+#~ msgid "Cogl Options"
+#~ msgstr "Opções Cogl"
+
+#~ msgid "Show Cogl options"
+#~ msgstr "Apresentar as opções do Cogl"
