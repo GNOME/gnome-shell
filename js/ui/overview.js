@@ -23,9 +23,6 @@ const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 // Time for initial animation going into Overview mode
 const ANIMATION_TIME = 0.25;
 
-// XXX -- grab this automatically. Hard to do.
-const DASH_MAX_WIDTH = 96;
-
 const DND_WINDOW_SWITCH_TIMEOUT = 1250;
 
 const SwipeScrollDirection = {
@@ -119,23 +116,15 @@ const Overview = new Lang.Class({
         this._desktopFade = new St.Bin();
         global.overlay_group.add_actor(this._desktopFade);
 
-        this._spacing = 0;
-
         /* Translators: This is the main view to select
            activities. See also note for "Activities" string. */
-        this._group = new St.Widget({ name: 'overview',
-                                      accessible_name: _("Overview"),
-                                      reactive: true });
-        this._group._delegate = this;
-        this._group.connect('style-changed',
-            Lang.bind(this, function() {
-                let node = this._group.get_theme_node();
-                let spacing = node.get_length('spacing');
-                if (spacing != this._spacing) {
-                    this._spacing = spacing;
-                    this._relayout();
-                }
-            }));
+        this._overview = new St.BoxLayout({ name: 'overview',
+                                            accessible_name: _("Overview"),
+                                            reactive: true,
+                                            vertical: true });
+        this._overview._delegate = this;
+
+        this._group = new St.BoxLayout({ name: 'overview-group' });
 
         this._scrollDirection = SwipeScrollDirection.NONE;
         this._scrollAdjustment = null;
@@ -154,12 +143,11 @@ const Overview = new Lang.Class({
         // Dash elements, or mouseover handlers in the workspaces.
         this._coverPane = new Clutter.Rectangle({ opacity: 0,
                                                   reactive: true });
-        this._group.add_actor(this._coverPane);
+        this._overview.add_actor(this._coverPane);
         this._coverPane.connect('event', Lang.bind(this, function (actor, event) { return true; }));
 
-
-        this._group.hide();
-        global.overlay_group.add_actor(this._group);
+        this._overview.hide();
+        global.overlay_group.add_actor(this._overview);
 
         this._coverPane.hide();
 
@@ -193,6 +181,13 @@ const Overview = new Lang.Class({
 
         this._shellInfo = new ShellInfo();
 
+        // Add a clone of the panel to the overview so spacing and such is
+        // automatic
+        this._panelGhost = new St.Bin({ child: new Clutter.Clone({ source: Main.panel.actor }),
+                                        reactive: false,
+                                        opacity: 0 });
+        this._overview.add_actor(this._panelGhost);
+
         this._searchEntry = new St.Entry({ name: 'searchEntry',
                                            /* Translators: this is the text displayed
                                               in the search entry when no search is
@@ -201,16 +196,13 @@ const Overview = new Lang.Class({
                                            hint_text: _("Type to search..."),
                                            track_hover: true,
                                            can_focus: true });
-        this._group.add_actor(this._searchEntry);
-
-        this._dash = new Dash.Dash();
-        this._viewSelector = new ViewSelector.ViewSelector(this._searchEntry,
-                                                           this._dash.showAppsButton);
-        this._group.add_actor(this._viewSelector.actor);
-        this._group.add_actor(this._dash.actor);
+        this._searchEntryBin = new St.Bin({ child: this._searchEntry,
+                                            x_align: St.Align.MIDDLE });
+        this._overview.add_actor(this._searchEntryBin);
 
         // TODO - recalculate everything when desktop size changes
-        this._dash.actor.add_constraint(this._viewSelector.constrainHeight);
+        this._dash = new Dash.Dash();
+        this._group.add_actor(this._dash.actor);
         this.dashIconSize = this._dash.iconSize;
         this._dash.connect('icon-size-changed',
                            Lang.bind(this, function() {
@@ -220,6 +212,19 @@ const Overview = new Lang.Class({
         // Translators: this is the name of the dock/favorites area on
         // the left of the overview
         Main.ctrlAltTabManager.addGroup(this._dash.actor, _("Dash"), 'user-bookmarks-symbolic');
+
+        this._viewSelector = new ViewSelector.ViewSelector(this._searchEntry,
+                                                           this._dash.showAppsButton);
+        this._group.add_actor(this._viewSelector.actor);
+
+        // Add our same-line elements after the search entry
+        this._overview.add_actor(this._group);
+
+        // Then account for message tray
+        this._messageTrayGhost = new St.Bin({ child: new Clutter.Clone({ source: Main.messageTray.actor }),
+                                              reactive: false,
+                                              opacity: 0 });
+        this._overview.add_actor(this._messageTrayGhost);
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
         this._relayout();
@@ -486,41 +491,15 @@ const Overview = new Lang.Class({
         this.hide();
 
         let primary = Main.layoutManager.primaryMonitor;
-        let rtl = (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL);
 
         let contentY = Main.panel.actor.height;
         let contentHeight = primary.height - contentY - Main.messageTray.actor.height;
 
-        this._group.set_position(primary.x, primary.y);
-        this._group.set_size(primary.width, primary.height);
+        this._overview.set_x(primary.x);
+        this._overview.set_size(primary.width, primary.height);
 
         this._coverPane.set_position(0, contentY);
         this._coverPane.set_size(primary.width, contentHeight);
-
-        let searchWidth = this._searchEntry.get_width();
-        let searchHeight = this._searchEntry.get_height();
-        let searchX = (primary.width - searchWidth) / 2;
-        let searchY = contentY + this._spacing;
-
-        let dashWidth = DASH_MAX_WIDTH;
-        let dashY = searchY + searchHeight + this._spacing;
-        let dashX;
-        if (rtl) {
-            this._dash.actor.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
-            dashX = primary.width;
-        } else {
-            dashX = 0;
-        }
-
-        let viewX = rtl ? 0 : dashWidth + this._spacing;
-        let viewY = searchY + searchHeight + this._spacing;
-        let viewWidth = primary.width - dashWidth - this._spacing;
-        let viewHeight = contentHeight - this._spacing - viewY;
-
-        this._searchEntry.set_position(searchX, searchY);
-        this._dash.actor.set_position(dashX, dashY);
-        this._viewSelector.actor.set_position(viewX, viewY);
-        this._viewSelector.actor.set_size(viewWidth, viewHeight);
     },
 
     //// Public methods ////
@@ -558,13 +537,13 @@ const Overview = new Lang.Class({
         if (this._shown)
             return;
         // Do this manually instead of using _syncInputMode, to handle failure
-        if (!Main.pushModal(this._group))
+        if (!Main.pushModal(this._overview))
             return;
         this._modal = true;
         this._animateVisible();
         this._shown = true;
 
-        this._buttonPressId = this._group.connect('button-press-event',
+        this._buttonPressId = this._overview.connect('button-press-event',
             Lang.bind(this, this._onButtonPress));
     },
 
@@ -608,12 +587,12 @@ const Overview = new Lang.Class({
         // Disable unredirection while in the overview
         Meta.disable_unredirect_for_screen(global.screen);
         global.window_group.hide();
-        this._group.show();
+        this._overview.show();
         this._background.show();
         this._viewSelector.show();
 
-        this._group.opacity = 0;
-        Tweener.addTween(this._group,
+        this._overview.opacity = 0;
+        Tweener.addTween(this._overview,
                          { opacity: 255,
                            transition: 'easeOutQuad',
                            time: ANIMATION_TIME,
@@ -667,7 +646,7 @@ const Overview = new Lang.Class({
         this._syncInputMode();
 
         if (this._buttonPressId > 0)
-            this._group.disconnect(this._buttonPressId);
+            this._overview.disconnect(this._buttonPressId);
         this._buttonPressId = 0;
     },
 
@@ -709,20 +688,20 @@ const Overview = new Lang.Class({
 
         if (this._shown) {
             if (!this._modal) {
-                if (Main.pushModal(this._group))
+                if (Main.pushModal(this._overview))
                     this._modal = true;
                 else
                     this.hide();
             }
         } else if (this._shownTemporarily) {
             if (this._modal) {
-                Main.popModal(this._group);
+                Main.popModal(this._overview);
                 this._modal = false;
             }
             global.stage_input_mode = Shell.StageInputMode.FULLSCREEN;
         } else {
             if (this._modal) {
-                Main.popModal(this._group);
+                Main.popModal(this._overview);
                 this._modal = false;
             }
             else if (global.stage_input_mode == Shell.StageInputMode.FULLSCREEN)
@@ -740,7 +719,7 @@ const Overview = new Lang.Class({
         this._viewSelector.zoomFromOverview();
 
         // Make other elements fade out.
-        Tweener.addTween(this._group,
+        Tweener.addTween(this._overview,
                          { opacity: 0,
                            transition: 'easeOutQuad',
                            time: ANIMATION_TIME,
@@ -782,7 +761,7 @@ const Overview = new Lang.Class({
         this._viewSelector.hide();
         this._desktopFade.hide();
         this._background.hide();
-        this._group.hide();
+        this._overview.hide();
 
         this.visible = false;
         this.animationInProgress = false;
