@@ -1183,12 +1183,15 @@ StButton.popup-menu-item:insensitive {
 }
 
 .notification {
-    font-size: 11pt;
     border-radius: 10px 10px 0px 0px;
     background: rgba(0,0,0,0.8);
     padding: 8px 8px 4px 8px;
     spacing-rows: 10px;
     spacing-columns: 10px;
+}
+
+.notification, #notification-container {
+    font-size: 11pt;
     width: 34em;
 }
 

@@ -1352,9 +1352,11 @@ const MessageTray = new Lang.Class({
         this.actor = new St.Widget({ name: 'message-tray',
                                      reactive: true,
                                      track_hover: true });
+        this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
         this.actor.connect('notify::hover', Lang.bind(this, this._onTrayHoverChanged));
 
-        this._notificationWidget = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+        this._notificationWidget = new St.Widget({ name: 'notification-container',
+                                                   layout_manager: new Clutter.BinLayout() });
         this.actor.add_actor(this._notificationWidget);
 
         this._notificationBin = new St.Bin();
@@ -1455,10 +1457,10 @@ const MessageTray = new Lang.Class({
         Main.layoutManager.trackChrome(this._notificationWidget);
         Main.layoutManager.trackChrome(this._closeButton);
 
-        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._setSizePosition));
+        Main.layoutManager.connect('monitors-changed', Lang.bind(this, function() {
+            this.actor.style_changed();
+        }));
         Main.layoutManager.connect('primary-fullscreen-changed', Lang.bind(this, this._onFullscreenChanged));
-
-        this._setSizePosition();
 
         Main.overview.connect('showing', Lang.bind(this,
             function() {
@@ -1499,10 +1501,11 @@ const MessageTray = new Lang.Class({
         this._updateState();
     },
 
-    _setSizePosition: function() {
+    _onStyleChanged: function() {
         let monitor = Main.layoutManager.bottomMonitor;
-        this._notificationWidget.x = 0;
-        this._notificationWidget.width = monitor.width;
+
+        let width = this._notificationWidget.get_width();
+        this._notificationWidget.x = Math.floor((monitor.width - width) / 2);
         this._summaryBin.x = 0;
         this._summaryBin.width = monitor.width;
 
