@@ -864,6 +864,7 @@ const WorkspacesDisplay = new Lang.Class({
         let clipY = y + (fullHeight - clipHeight) / 2;
 
         let widthAdjust = this._zoomOut ? controlsNatural : controlsVisible;
+        widthAdjust += Main.overview._spacing;
         width -= widthAdjust;
         if (rtl)
             x += widthAdjust;
