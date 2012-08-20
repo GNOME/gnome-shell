@@ -1443,6 +1443,7 @@ const MessageTray = new Lang.Class({
         Main.overview.connect('hiding', Lang.bind(this,
             function() {
                 this._overviewVisible = false;
+                this._escapeTray();
                 this.actor.remove_style_pseudo_class('overview');
                 this._updateState();
             }));
