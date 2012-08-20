@@ -72,6 +72,7 @@ nobase_dist_js_DATA = 	\
 	ui/panel.js		\
 	ui/panelMenu.js		\
 	ui/placeDisplay.js	\
+	ui/pointerWatcher.js    \
 	ui/polkitAuthenticationAgent.js \
 	ui/popupMenu.js		\
 	ui/remoteSearch.js	\
