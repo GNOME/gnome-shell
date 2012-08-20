@@ -1518,14 +1518,18 @@ const MessageTray = new Lang.Class({
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
 
-        global.display.add_keybinding('toggle-message-tray',
-                                      new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
-                                      Meta.KeyBindingFlags.NONE,
-                                      Lang.bind(this, this.toggleAndNavigate));
-        global.display.add_keybinding('focus-active-notification',
-                                      new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
-                                      Meta.KeyBindingFlags.NONE,
-                                      Lang.bind(this, this._expandActiveNotification));
+        Main.wm.addKeybinding('toggle-message-tray',
+                              new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
+                              Meta.KeyBindingFlags.NONE,
+                              Main.KeybindingMode.MESSAGE_TRAY |
+                              Main.KeybindingMode.OVERVIEW,
+                              Lang.bind(this, this.toggleAndNavigate));
+        Main.wm.addKeybinding('focus-active-notification',
+                              new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
+                              Meta.KeyBindingFlags.NONE,
+                              Main.KeybindingMode.MESSAGE_TRAY |
+                              Main.KeybindingMode.OVERVIEW,
+                              Lang.bind(this, this._expandActiveNotification));
 
         this._summaryItems = [];
         this._chatSummaryItemsCount = 0;
