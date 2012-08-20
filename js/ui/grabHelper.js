@@ -206,35 +206,34 @@ const GrabHelper = new Lang.Class({
         if (grabStackIndex < 0)
             return;
 
-        let poppedGrab = this._grabStack[grabStackIndex];
         let poppedGrabs = this._grabStack.slice(grabStackIndex);
-        // "Pop" poppedGrab and everything after off by truncating the array.
+        // "Pop" all newly ungrabbed actors off the grab stack
+        // by truncating the array.
         this._grabStack.length = grabStackIndex;
 
-        let { modal: modal, actor: actor } = poppedGrab;
+        let wasModal = this._modalCount > 0;
+        for (let i = poppedGrabs.length - 1; i >= 0; i--) {
+            let poppedGrab = poppedGrabs[i];
 
-        if (params.actor && (params.actor != actor))
-            return;
+            if (poppedGrab.onUngrab)
+                poppedGrab.onUngrab();
+
+            if (poppedGrab.modal)
+                this._modalCount--;
+        }
 
         let focus = global.stage.key_focus;
         let hadFocus = focus && this._isWithinGrabbedActor(focus);
 
-        for (let i = 0; i < poppedGrabs.length; i++) {
-            if (poppedGrabs[i].onUngrab)
-                poppedGrabs[i].onUngrab();
-        }
-
         // If we took away the last grab, ungrab ourselves.
         if (this._grabStack.length == 0)
-            this._fullUngrab();
+            this._fullUngrab(wasModal);
 
-        if (modal)
-            this._modalCount--;
-
+        let poppedGrab = poppedGrabs[0];
         _navigateActor(poppedGrab.savedFocus, hadFocus);
     },
 
-    _fullUngrab: function() {
+    _fullUngrab: function(wasModal) {
         global.stage.disconnect(this._capturedEventId);
         this._capturedEventId = 0;
         global.stage.disconnect(this._eventId);
@@ -247,7 +246,7 @@ const GrabHelper = new Lang.Class({
 
         let prePopInputMode = global.stage_input_mode;
 
-        if (this._modalCount > 0) {
+        if (wasModal) {
             Main.popModal(this._owner);
             global.sync_pointer();
         }
