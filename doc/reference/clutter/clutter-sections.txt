@@ -3424,3 +3424,26 @@ CLUTTER_SCROLL_ACTOR_GET_CLASS
 ClutterScrollActorPrivate
 clutter_scroll_actor_get_type
 </SECTION>
+
+<SECTION>
+<FILE>clutter-zoom-action</FILE>
+ClutterZoomAction
+ClutterZoomActionClass
+clutter_zoom_action_new
+ClutterZoomAxis
+clutter_zoom_action_set_zoom_axis
+clutter_zoom_action_get_zoom_axis
+<SUBSECTION>
+clutter_zoom_action_get_focal_point
+clutter_zoom_action_get_transformed_focal_point
+<SUBSECTION Standard>
+CLUTTER_IS_ZOOM_ACTION
+CLUTTER_IS_ZOOM_ACTION_CLASS
+CLUTTER_TYPE_ZOOM_ACTION
+CLUTTER_ZOOM_ACTION
+CLUTTER_ZOOM_ACTION_CLASS
+CLUTTER_ZOOM_ACTION_GET_CLASS
+<SUBSECTION Private>
+ClutterZoomActionPrivate
+clutter_zoom_action_get_type
+</SECTION>
