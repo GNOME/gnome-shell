@@ -23,6 +23,7 @@ function _navigateActor(actor) {
 
 // GrabHelper:
 // @owner: the actor that owns the GrabHelper
+// @params: optional parameters to pass to Main.pushModal()
 //
 // Creates a new GrabHelper object, for dealing with keyboard and pointer grabs
 // associated with a set of actors.
@@ -34,8 +35,9 @@ function _navigateActor(actor) {
 const GrabHelper = new Lang.Class({
     Name: 'GrabHelper',
 
-    _init: function(owner) {
+    _init: function(owner, params) {
         this._owner = owner;
+        this._modalParams = params;
 
         this._grabStack = [];
 
@@ -165,7 +167,7 @@ const GrabHelper = new Lang.Class({
     _takeModalGrab: function() {
         let firstGrab = (this._modalCount == 0);
         if (firstGrab) {
-            if (!Main.pushModal(this._owner))
+            if (!Main.pushModal(this._owner, this._modalParams))
                 return false;
 
             this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
