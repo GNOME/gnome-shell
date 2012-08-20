@@ -302,18 +302,27 @@ const Keyboard = new Lang.Class({
         let keyboard_row = new St.BoxLayout();
         for (let i = 0; i < keys.length; ++i) {
             let children = keys[i].get_children();
-            let right_box = new St.BoxLayout({ style_class: 'keyboard-row' });
             let left_box = new St.BoxLayout({ style_class: 'keyboard-row' });
+            let center_box = new St.BoxLayout({ style_class: 'keyboard-row' });
+            let right_box = new St.BoxLayout({ style_class: 'keyboard-row' });
             for (let j = 0; j < children.length; ++j) {
                 if (this._numOfHorizKeys == 0)
                     this._numOfHorizKeys = children.length;
                 let key = children[j];
                 let button = new Key(key);
 
-                if (key.align == 'right')
+                switch (key.align) {
+                case 'right':
                     right_box.add(button.actor);
-                else
+                    break;
+                case 'center':
+                    center_box.add(button.actor);
+                    break;
+                case 'left':
+                default:
                     left_box.add(button.actor);
+                    break;
+                }
                 if (key.name == 'Caribou_Prefs') {
                     key.connect('key-released', Lang.bind(this, this.hide));
                 }
@@ -332,6 +341,7 @@ const Keyboard = new Lang.Class({
                 }));
             }
             keyboard_row.add(left_box, { expand: true, x_fill: false, x_align: St.Align.START });
+            keyboard_row.add(center_box, { expand: true, x_fill: false, x_align: St.Align.MIDDLE });
             keyboard_row.add(right_box, { expand: true, x_fill: false, x_align: St.Align.END });
         }
         layout.add(keyboard_row);
