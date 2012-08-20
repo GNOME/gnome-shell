@@ -21,10 +21,11 @@
 
 #define INSTRUCTIONS \
         "Press v\t\342\236\236\tSwitch horizontal/vertical\n"           \
-        "Press h\t\342\236\236\tSwitch homogeneous\n"			\
-        "Press p\t\342\236\236\tSwitch pack start/end\n"                \
+        "Press h\t\342\236\236\tToggle homogeneous\n"			\
+        "Press p\t\342\236\236\tToggle pack start/end\n"                \
         "Press s\t\342\236\236\tIncrement spacing (up to 12px)\n"       \
         "Press +\t\342\236\236\tAdd a new actor\n"                      \
+        "Press a\t\342\236\236\tToggle animations\n"                    \
         "Press q\t\342\236\236\tQuit"
 
 
@@ -189,6 +190,27 @@ key_release_cb (ClutterActor *stage,
 
   switch (clutter_event_get_key_symbol (event))
     {
+    case CLUTTER_KEY_a:
+      {
+        ClutterActorIter iter;
+        ClutterActor *child;
+
+        clutter_actor_iter_init (&iter, box);
+        while (clutter_actor_iter_next (&iter, &child))
+          {
+            guint duration;
+
+            duration = clutter_actor_get_easing_duration (child);
+            if (duration != 0)
+              duration = 0;
+            else
+              duration = 250;
+
+            clutter_actor_set_easing_duration (child, duration);
+          }
+      }
+      break;
+
     case CLUTTER_KEY_v:
       {
         ClutterOrientation orientation;
