@@ -4,6 +4,7 @@ const Clutter = imports.gi.Clutter;
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
+const GnomeDesktop = imports.gi.GnomeDesktop;
 const Atk = imports.gi.Atk;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -1452,10 +1453,10 @@ const MessageTray = new Lang.Class({
         this._closeButton.connect('clicked', Lang.bind(this, this._onCloseClicked));
         this._notificationWidget.add_actor(this._closeButton);
 
-        this._idleMonitorWatchId = 0;
+        this._idleMonitorBecameActiveId = 0;
         this._userActiveWhileNotificationShown = false;
 
-        this.idleMonitor = Shell.IdleMonitor.get();
+        this.idleMonitor = new GnomeDesktop.IdleMonitor();
 
         this._grabHelper = new GrabHelper.GrabHelper(this.actor);
         this._grabHelper.addActor(this._summaryBoxPointer.actor);
@@ -2167,20 +2168,26 @@ const MessageTray = new Lang.Class({
                     });
     },
 
-    _onIdleMonitorWatch: function(monitor, id, userBecameIdle) {
-        this.idleMonitor.remove_watch(this._idleMonitorWatchId);
-        this._idleMonitorWatchId = 0;
-        if (!userBecameIdle)
-            this._updateNotificationTimeout(2000);
+    _onIdleMonitorBecameActive: function() {
+        this.idleMonitor.disconnect(this._idleMonitorBecameActiveId);
+        this._idleMonitorBecameActiveId = 0;
+
         this._userActiveWhileNotificationShown = true;
+        this._updateNotificationTimeout(2000);
         this._updateState();
     },
 
     _showNotification: function() {
         this._notification = this._notificationQueue.shift();
-        this._userActiveWhileNotificationShown = this.idleMonitor.get_idletime() <= IDLE_TIME;
-        this._idleMonitorWatchId = this.idleMonitor.add_watch(IDLE_TIME,
-                                                              Lang.bind(this, this._onIdleMonitorWatch));
+
+        let userIdle = this.idleMonitor.get_idletime() > IDLE_TIME;
+        if (userIdle) {
+            this._userActiveWhileNotificationShown = false;
+            this._idleMonitorBecameActiveId = this.idleMonitor.connect('became-active', Lang.bind(this, this._onIdleMonitorBecameActive));
+        } else {
+            this._userActiveWhileNotificationShown = true;
+        }
+
         this._notificationClickedId = this._notification.connect('done-displaying',
                                                                  Lang.bind(this, this._escapeTray));
         this._notification.connect('unfocused', Lang.bind(this, function() {
@@ -2292,6 +2299,11 @@ const MessageTray = new Lang.Class({
 
     _hideNotification: function() {
         this._grabHelper.ungrab({ actor: this._notification.actor });
+
+        if (this._idleMonitorBecameActiveId) {
+            this.idleMonitor.disconnect(this._idleMonitorBecameActiveId);
+            this._idleMonitorBecameActiveId = 0;
+        }
 
         if (this._notificationExpandedId) {
             this._notification.disconnect(this._notificationExpandedId);

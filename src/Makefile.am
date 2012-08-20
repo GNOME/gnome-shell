@@ -113,7 +113,6 @@ shell_public_headers_h =		\
 	shell-generic-container.h	\
 	shell-gtk-embed.h		\
 	shell-global.h			\
-	shell-idle-monitor.h		\
 	shell-invert-lightness-effect.h	\
 	shell-mobile-providers.h	\
 	shell-mount-operation.h		\
@@ -158,7 +157,6 @@ libgnome_shell_la_SOURCES =		\
 	shell-generic-container.c	\
 	shell-gtk-embed.c		\
 	shell-global.c			\
-	shell-idle-monitor.c		\
 	shell-invert-lightness-effect.c	\
 	shell-keyring-prompt.h		\
 	shell-keyring-prompt.c		\

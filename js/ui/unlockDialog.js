@@ -5,6 +5,7 @@ const Clutter = imports.gi.Clutter;
 const Gdm  = imports.gi.Gdm;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const GnomeDesktop = imports.gi.GnomeDesktop;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Signals = imports.signals;
@@ -195,9 +196,7 @@ const UnlockDialog = new Lang.Class({
             return false;
         }));
 
-        this._idleMonitor = Shell.IdleMonitor.get();
-        // this dialog is only created after user activity (curtain drag or
-        // escape key press), so the timeout will fire after IDLE_TIMEOUT seconds of inactivity
+        this._idleMonitor = new GnomeDesktop.IdleMonitor();
         this._idleWatchId = this._idleMonitor.add_watch(IDLE_TIMEOUT * 1000, Lang.bind(this, this._escape));
     },
 

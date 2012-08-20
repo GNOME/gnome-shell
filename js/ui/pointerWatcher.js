@@ -2,6 +2,7 @@
 
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const GnomeDesktop = imports.gi.GnomeDesktop;
 const Shell = imports.gi.Shell;
 
 // We stop polling if the user is idle for more than this amount of time
@@ -40,9 +41,9 @@ const PointerWatcher = new Lang.Class({
     Name: 'PointerWatcher',
 
     _init: function() {
-        let idleMonitor = Shell.IdleMonitor.get();
-        idleMonitor.add_watch(IDLE_TIME,
-                              Lang.bind(this, this._onIdleMonitorWatch));
+        let idleMonitor = new GnomeDesktop.IdleMonitor();
+        idleMonitor.connect('became-active', Lang.bind(this, this._onIdleMonitorBecameActive));
+        idleMonitor.add_watch(IDLE_TIME, Lang.bind(this, this._onIdleMonitorBecameIdle));
         this._idle = idleMonitor.get_idletime() > IDLE_TIME;
         this._watches = [];
         this.pointerX = null;
@@ -78,11 +79,14 @@ const PointerWatcher = new Lang.Class({
         }
     },
 
-    _onIdleMonitorWatch: function(monitor, id, userBecameIdle) {
-        this._idle = userBecameIdle;
-        if (!userBecameIdle)
-            this._updatePointer();
+    _onIdleMonitorBecameActive: function(monitor) {
+        this._idle = false;
+        this._updatePointer();
+        this._updateTimeout();
+    },
 
+    _onIdleMonitorBecameIdle: function(monitor) {
+        this._idle = true;
         this._updateTimeout();
     },
 
