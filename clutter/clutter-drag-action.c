@@ -306,6 +306,8 @@ emit_drag_end (ClutterDragAction *action,
       priv->last_motion_device = clutter_event_get_device (event);
     }
 
+  priv->in_drag = FALSE;
+
   /* we might not have emitted ::drag-begin yet */
   if (!priv->emit_delayed_press)
     g_signal_emit (action, drag_signals[DRAG_END], 0,
@@ -334,8 +336,6 @@ emit_drag_end (ClutterDragAction *action,
     }
 
   priv->sequence = NULL;
-
-  priv->in_drag = FALSE;
 }
 
 static gboolean
@@ -1062,12 +1062,14 @@ clutter_drag_action_get_drag_threshold (ClutterDragAction *action,
 }
 
 static void
-on_drag_handle_destroy (ClutterActor      *actor,
+on_drag_handle_destroy (ClutterActor      *handle,
                         ClutterDragAction *action)
 {
   ClutterDragActionPrivate *priv = action->priv;
+  ClutterActor *actor;
 
   /* make sure we reset the state */
+  actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
   if (priv->in_drag)
     emit_drag_end (action, actor, NULL);
 
