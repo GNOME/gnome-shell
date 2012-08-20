@@ -35,6 +35,9 @@ void _shell_wm_kill_window_effects   (ShellWM             *wm,
                                       MetaWindowActor     *actor);
 void _shell_wm_kill_switch_workspace (ShellWM             *wm);
 
+gboolean _shell_wm_filter_keybinding (ShellWM             *wm,
+                                      MetaKeyBinding      *binding);
+
 G_END_DECLS
 
 #endif /* __SHELL_WM_PRIVATE_H__ */

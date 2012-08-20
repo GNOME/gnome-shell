@@ -99,6 +99,7 @@ const WindowManager = new Lang.Class({
         this._shellwm.connect('unmaximize', Lang.bind(this, this._unmaximizeWindow));
         this._shellwm.connect('map', Lang.bind(this, this._mapWindow));
         this._shellwm.connect('destroy', Lang.bind(this, this._destroyWindow));
+        this._shellwm.connect('filter-keybinding', Lang.bind(this, this._filterKeybinding));
 
         this._workspaceSwitcherPopup = null;
         Meta.keybindings_set_custom_handler('switch-to-workspace-left',
@@ -422,6 +423,36 @@ const WindowManager = new Lang.Class({
             }
             shellwm.completed_destroy(actor);
         }
+    },
+
+    _filterKeybinding: function(shellwm, binding) {
+        if (!Main.sessionMode.allowKeybindingsWhenModal) {
+            if (Main.modalCount > (Main.overview.visible ? 1 : 0))
+                return true;
+        }
+        let action = Meta.prefs_get_keybinding_action(binding.get_name());
+        switch (action) {
+            // left/right would effectively act as synonyms for up/down if we enabled them;
+            // but that could be considered confusing; we also disable them in the main view.
+            //
+            // case Meta.KeyBindingAction.WORKSPACE_LEFT:
+            // case Meta.KeyBindingAction.WORKSPACE_RIGHT:
+            case Meta.KeyBindingAction.WORKSPACE_UP:
+            case Meta.KeyBindingAction.WORKSPACE_DOWN:
+                return !Main.sessionMode.hasWorkspaces;
+
+            case Meta.KeyBindingAction.PANEL_RUN_DIALOG:
+            case Meta.KeyBindingAction.COMMAND_2:
+            case Meta.KeyBindingAction.PANEL_MAIN_MENU:
+            case Meta.KeyBindingAction.OVERLAY_KEY:
+            case Meta.KeyBindingAction.SWITCH_PANELS:
+                return false;
+        }
+
+        if (Main.modalCount == 0 && binding.is_builtin())
+            return false;
+
+        return true;
     },
 
     _switchWorkspace : function(shellwm, from, to, direction) {

@@ -72,6 +72,9 @@ static void gnome_shell_plugin_kill_switch_workspace (MetaPlugin      *plugin);
 
 static gboolean              gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
                                                                XEvent     *event);
+
+static gboolean              gnome_shell_plugin_keybinding_filter (MetaPlugin *plugin,
+                                                                   MetaKeyBinding *binding);
 static const MetaPluginInfo *gnome_shell_plugin_plugin_info   (MetaPlugin *plugin);
 
 
@@ -126,8 +129,9 @@ gnome_shell_plugin_class_init (GnomeShellPluginClass *klass)
   plugin_class->kill_window_effects   = gnome_shell_plugin_kill_window_effects;
   plugin_class->kill_switch_workspace = gnome_shell_plugin_kill_switch_workspace;
 
-  plugin_class->xevent_filter    = gnome_shell_plugin_xevent_filter;
-  plugin_class->plugin_info      = gnome_shell_plugin_plugin_info;
+  plugin_class->xevent_filter     = gnome_shell_plugin_xevent_filter;
+  plugin_class->keybinding_filter = gnome_shell_plugin_keybinding_filter;
+  plugin_class->plugin_info       = gnome_shell_plugin_plugin_info;
 }
 
 static void
@@ -335,6 +339,13 @@ gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
     return TRUE;
 
   return clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE;
+}
+
+static gboolean
+gnome_shell_plugin_keybinding_filter (MetaPlugin     *plugin,
+                                      MetaKeyBinding *binding)
+{
+  return _shell_wm_filter_keybinding (get_shell_wm (), binding);
 }
 
 static const

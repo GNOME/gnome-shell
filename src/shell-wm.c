@@ -26,6 +26,7 @@ enum
   SWITCH_WORKSPACE,
   KILL_SWITCH_WORKSPACE,
   KILL_WINDOW_EFFECTS,
+  FILTER_KEYBINDING,
 
   LAST_SIGNAL
 };
@@ -115,6 +116,14 @@ shell_wm_class_init (ShellWMClass *klass)
           NULL, NULL, NULL,
 		  G_TYPE_NONE, 1,
 		  META_TYPE_WINDOW_ACTOR);
+  shell_wm_signals[FILTER_KEYBINDING] =
+    g_signal_new ("filter-keybinding",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  g_signal_accumulator_true_handled, NULL, NULL,
+                  G_TYPE_BOOLEAN, 1,
+                  META_TYPE_KEY_BINDING);
 }
 
 void
@@ -265,6 +274,17 @@ _shell_wm_destroy (ShellWM         *wm,
                    MetaWindowActor *actor)
 {
   g_signal_emit (wm, shell_wm_signals[DESTROY], 0, actor);
+}
+
+gboolean
+_shell_wm_filter_keybinding (ShellWM             *wm,
+                             MetaKeyBinding      *binding)
+{
+  gboolean rv;
+
+  g_signal_emit (wm, shell_wm_signals[FILTER_KEYBINDING], 0, binding, &rv);
+
+  return rv;
 }
 
 /**

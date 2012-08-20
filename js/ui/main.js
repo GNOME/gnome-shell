@@ -167,8 +167,6 @@ function start() {
 
     _startDate = new Date();
 
-    global.stage.connect('captured-event', _globalKeyPressHandler);
-
     log('GNOME Shell started at ' + _startDate);
 
     let perfModuleName = GLib.getenv("SHELL_PERF_MODULE");
@@ -463,86 +461,6 @@ function getWindowActorsForWorkspace(workspaceIndex) {
     return global.get_window_actors().filter(function (win) {
         return isWindowActorDisplayedOnWorkspace(win, workspaceIndex);
     });
-}
-
-// This function encapsulates hacks to make certain global keybindings
-// work even when we are in one of our modes where global keybindings
-// are disabled with a global grab. (When there is a global grab, then
-// all key events will be delivered to the stage, so ::captured-event
-// on the stage can be used for global keybindings.)
-function _globalKeyPressHandler(actor, event) {
-    if (modalCount == 0)
-        return false;
-    if (event.type() != Clutter.EventType.KEY_PRESS && event.type() != Clutter.EventType.KEY_RELEASE)
-        return false;
-
-    if (!sessionMode.allowKeybindingsWhenModal) {
-        if (modalCount > (overview.visible ? 1 : 0))
-            return false;
-    }
-
-    let symbol = event.get_key_symbol();
-    let keyCode = event.get_key_code();
-    let ignoredModifiers = global.display.get_ignored_modifier_mask();
-    let modifierState = event.get_state() & ~ignoredModifiers;
-
-    // This relies on the fact that Clutter.ModifierType is the same as Gdk.ModifierType
-    let action = global.display.get_keybinding_action(keyCode, modifierState);
-
-    if (event.type() == Clutter.EventType.KEY_PRESS) {
-        if (action == Meta.KeyBindingAction.SWITCH_PANELS) {
-            ctrlAltTabManager.popup(modifierState & Clutter.ModifierType.SHIFT_MASK,
-                                    modifierState);
-            return true;
-        }
-
-        switch (action) {
-            // left/right would effectively act as synonyms for up/down if we enabled them;
-            // but that could be considered confusing; we also disable them in the main view.
-            //
-            // case Meta.KeyBindingAction.WORKSPACE_LEFT:
-            //  if (!sessionMode.hasWorkspaces)
-            //      return false;
-            //
-            //     wm.actionMoveWorkspaceLeft();
-            //     return true;
-            // case Meta.KeyBindingAction.WORKSPACE_RIGHT:
-            //  if (!sessionMode.hasWorkspaces)
-            //      return false;
-            //
-            //     wm.actionMoveWorkspaceRight();
-            //     return true;
-            case Meta.KeyBindingAction.WORKSPACE_UP:
-                if (!sessionMode.hasWorkspaces)
-                    return false;
-
-                wm.actionMoveWorkspace(Meta.MotionDirection.UP);
-                return true;
-            case Meta.KeyBindingAction.WORKSPACE_DOWN:
-                if (!sessionMode.hasWorkspaces)
-                    return false;
-
-                wm.actionMoveWorkspace(Meta.MotionDirection.DOWN);
-                return true;
-            case Meta.KeyBindingAction.PANEL_RUN_DIALOG:
-            case Meta.KeyBindingAction.COMMAND_2:
-                if (!sessionMode.hasRunDialog)
-                    return false;
-
-                openRunDialog();
-                return true;
-            case Meta.KeyBindingAction.PANEL_MAIN_MENU:
-                overview.hide();
-                return true;
-        }
-    } else if (event.type() == Clutter.EventType.KEY_RELEASE) {
-        if (action == Meta.KeyBindingAction.OVERLAY_KEY) {
-            overview.hide();
-            return true;
-        }
-    }
-
-    return false;
 }
 
 function _findModal(actor) {
