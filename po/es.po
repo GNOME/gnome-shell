@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-20 01:17+0000\n"
-"PO-Revision-Date: 2012-08-20 13:30+0200\n"
+"POT-Creation-Date: 2012-08-20 12:23+0000\n"
+"PO-Revision-Date: 2012-08-20 19:32+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -498,9 +498,10 @@ msgstr "Esta semana"
 msgid "Next week"
 msgstr "La semana que viene"
 
-#: ../js/ui/dash.js:238 ../js/ui/messageTray.js:1202
-msgid "Remove"
-msgstr "Quitar"
+#: ../js/ui/dash.js:241
+#| msgid "Applications"
+msgid "Show Applications"
+msgstr "Mostrar aplicaciones"
 
 #: ../js/ui/dateMenu.js:94
 msgid "Date and Time Settings"
@@ -692,6 +693,10 @@ msgstr "Screencast desde %d %t"
 msgid "Open"
 msgstr "Abrir"
 
+#: ../js/ui/messageTray.js:1202
+msgid "Remove"
+msgstr "Quitar"
+
 #: ../js/ui/messageTray.js:1212
 msgid "Unmute"
 msgstr "Dar voz"
@@ -794,25 +799,25 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: ../js/ui/overview.js:89
+#: ../js/ui/overview.js:84
 msgid "Undo"
 msgstr "Deshacer"
 
-#: ../js/ui/overview.js:129
+#: ../js/ui/overview.js:124
 msgid "Overview"
 msgstr "Vista general"
 
-#: ../js/ui/overview.js:199
-msgid "Windows"
-msgstr "Ventanas"
-
-#: ../js/ui/overview.js:202
-msgid "Applications"
-msgstr "Aplicaciones"
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/overview.js:193
+msgid "Type to search..."
+msgstr "Teclear para buscar…"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:227
+#: ../js/ui/overview.js:214
 msgid "Dash"
 msgstr "Tablero"
 
@@ -884,8 +889,6 @@ msgstr "Introduzca un comando:"
 #. Translators: This is a time format for a date in
 #. long format
 #: ../js/ui/screenShield.js:69
-#| msgctxt "calendar heading"
-#| msgid "%A, %B %d"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
@@ -898,17 +901,16 @@ msgstr[1] "%d mensajes nuevos"
 
 #: ../js/ui/screenShield.js:136
 #, c-format
-#| msgid "Notifications"
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d notificación nueva"
 msgstr[1] "%d notificaciones nuevas"
 
-#: ../js/ui/searchDisplay.js:320
+#: ../js/ui/searchDisplay.js:274
 msgid "Searching..."
 msgstr "Buscando…"
 
-#: ../js/ui/searchDisplay.js:373
+#: ../js/ui/searchDisplay.js:325
 msgid "No matching results."
 msgstr "No se encontró ningún resultado coincidente."
 
@@ -1586,7 +1588,6 @@ msgid "Unknown reason"
 msgstr "Razón desconocida"
 
 #: ../js/ui/unlockDialog.js:143
-#| msgid "Login as another user"
 msgid "Log in as another user"
 msgstr "Iniciar sesión como otro usuario"
 
@@ -1655,15 +1656,15 @@ msgstr ""
 "chat. Su estado en línea se ha ajustado para que otros sepan que puede no "
 "leer sus mensajes."
 
-#. Translators: this is the text displayed
-#. in the search entry when no search is
-#. active; it should not exceed ~30
-#. characters.
-#: ../js/ui/viewSelector.js:113
-msgid "Type to search..."
-msgstr "Teclear para buscar…"
+#: ../js/ui/viewSelector.js:75
+msgid "Windows"
+msgstr "Ventanas"
 
-#: ../js/ui/viewSelector.js:131 ../src/shell-util.c:254
+#: ../js/ui/viewSelector.js:79
+msgid "Applications"
+msgstr "Aplicaciones"
+
+#: ../js/ui/viewSelector.js:83 ../src/shell-util.c:250
 msgid "Search"
 msgstr "Buscar"
 
@@ -1761,13 +1762,13 @@ msgstr "El usuario rechazó el diálogo de autenticación"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:98
+#: ../src/shell-util.c:94
 msgid "Home"
 msgstr "Carpeta personal"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:108
+#: ../src/shell-util.c:104
 msgid "File System"
 msgstr "Sistema de archivos"
 
@@ -1776,7 +1777,7 @@ msgstr "Sistema de archivos"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:304
+#: ../src/shell-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
