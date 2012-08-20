@@ -696,8 +696,8 @@ const LoginDialog = new Lang.Class({
         this._userVerifier.connect('verification-failed', Lang.bind(this, this._onVerificationFailed));
         this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
 
-        this._userVerifier.connect('show-fingerprint-prompt', Lang.bind(this, this._showFingerprintPrompt));
-        this._userVerifier.connect('hide-fingerprint-prompt', Lang.bind(this, this._hideFingerprintPrompt));
+        this._userVerifier.connect('show-login-hint', Lang.bind(this, this._showLoginHint));
+        this._userVerifier.connect('hide-login-hint', Lang.bind(this, this._hideLoginHint));
 
         this._settings = new Gio.Settings({ schema: GdmUtil.LOGIN_SCREEN_SCHEMA });
 
@@ -761,12 +761,9 @@ const LoginDialog = new Lang.Class({
                               x_fill: true,
                               y_fill: false,
                               x_align: St.Align.START });
-        // Translators: this message is shown below the password entry field
-        // to indicate the user can swipe their finger instead
-        this._promptFingerprintMessage = new St.Label({ text: _("(or swipe finger)"),
-                                                        style_class: 'login-dialog-prompt-fingerprint-message' });
-        this._promptFingerprintMessage.hide();
-        this._promptBox.add(this._promptFingerprintMessage);
+        this._promptLoginHint = new St.Label({ style_class: 'login-dialog-prompt-login-hint-message' });
+        this._promptLoginHint.hide();
+        this._promptBox.add(this._promptLoginHint);
 
         this._sessionList = new SessionList();
         this._sessionList.connect('session-activated',
@@ -854,7 +851,7 @@ const LoginDialog = new Lang.Class({
 
                      function() {
                          this._sessionList.close();
-                         this._promptFingerprintMessage.hide();
+                         this._promptLoginHint.hide();
                          this._userList.actor.show();
                          this._userList.actor.opacity = 255;
                          return this._userList.showItems();
@@ -875,12 +872,14 @@ const LoginDialog = new Lang.Class({
         this._sessionList.setActiveSession(sessionId);
     },
 
-    _showFingerprintPrompt: function() {
-        GdmUtil.fadeInActor(this._promptFingerprintMessage);
+    _showLoginHint: function(verifier, message) {
+        this._promptLoginHint.set_text(message)
+        GdmUtil.fadeInActor(this._promptLoginHint);
     },
 
-    _hideFingerprintPrompt: function() {
-        GdmUtil.fadeOutActor(this._promptFingerprintMessage);
+    _hideLoginHint: function() {
+        GdmUtil.fadeOutActor(this._promptLoginHint);
+        this._promptLoginHint.set_text('');
     },
 
     cancel: function() {
@@ -899,8 +898,8 @@ const LoginDialog = new Lang.Class({
                      function() {
                          // Show it with 0 opacity so we preallocate space for it
                          // in the event we need to fade in the message
-                         this._promptFingerprintMessage.opacity = 0;
-                         this._promptFingerprintMessage.show();
+                         this._promptLoginHint.opacity = 0;
+                         this._promptLoginHint.show();
                      },
 
                      function() {
@@ -972,7 +971,7 @@ const LoginDialog = new Lang.Class({
                      },
 
                      function() {
-                         this._promptFingerprintMessage.hide();
+                         this._promptLoginHint.hide();
                          this._promptEntry.reactive = true;
                          this._promptEntry.set_text('');
                      }];

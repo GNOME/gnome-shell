@@ -211,7 +211,10 @@ const ShellUserVerifier = new Lang.Class({
         // as a cue to display our own message.
         if (serviceName == FINGERPRINT_SERVICE_NAME &&
             this._haveFingerprintReader) {
-            this.emit('show-fingerprint-prompt');
+
+            // Translators: this message is shown below the password entry field
+            // to indicate the user can swipe their finger instead
+            this.emit('show-login-hint', _("(or swipe finger)"));
         } else if (serviceName == PASSWORD_SERVICE_NAME) {
             Main.notifyError(info);
         }
@@ -261,7 +264,7 @@ const ShellUserVerifier = new Lang.Class({
         if (serviceName == PASSWORD_SERVICE_NAME) {
             this.emit('verification-failed');
         } else if (serviceName == FINGERPRINT_SERVICE_NAME) {
-            this.emit('hide-fingerprint-prompt');
+            this.emit('hide-login-hint');
         }
     },
 });

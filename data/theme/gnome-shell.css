@@ -1988,7 +1988,7 @@ StButton.popup-menu-item:insensitive {
     min-width: 350px;
 }
 
-.login-dialog-prompt-fingerprint-message {
+.login-dialog-prompt-login-hint-message {
     font-size: 10.5pt;
 }
 

@@ -97,8 +97,8 @@ const UnlockDialog = new Lang.Class({
         this._userVerifier.connect('verification-complete', Lang.bind(this, this._onVerificationComplete));
         this._userVerifier.connect('verification-failed', Lang.bind(this, this._onVerificationFailed));
 
-        this._userVerifier.connect('show-fingerprint-prompt', Lang.bind(this, this._showFingerprintPrompt));
-        this._userVerifier.connect('hide-fingerprint-prompt', Lang.bind(this, this._hideFingerprintPrompt));
+        this._userVerifier.connect('show-login-hint', Lang.bind(this, this._showLoginHint));
+        this._userVerifier.connect('hide-login-hint', Lang.bind(this, this._hideLoginHint));
 
         this._userWidget = new UserWidget(this._user);
         this.contentLayout.add_actor(this._userWidget.actor);
@@ -122,12 +122,9 @@ const UnlockDialog = new Lang.Class({
 
         this.contentLayout.add_actor(this._promptLayout);
 
-        // Translators: this message is shown below the password entry field
-        // to indicate the user can swipe their finger instead
-        this._promptFingerprintMessage = new St.Label({ text: _("(or swipe finger)"),
-                                                        style_class: 'login-dialog-prompt-fingerprint-message' });
-        this._promptFingerprintMessage.hide();
-        this.contentLayout.add_actor(this._promptFingerprintMessage);
+        this._promptLoginHint = new St.Label({ style_class: 'login-dialog-prompt-login-hint' });
+        this._promptLoginHint.hide();
+        this.contentLayout.add_actor(this._promptLoginHint);
 
         let cancelButton = { label: _("Cancel"),
                              action: Lang.bind(this, this._escape),
@@ -183,12 +180,13 @@ const UnlockDialog = new Lang.Class({
         this._updateOkButton(true);
     },
 
-    _showFingerprintPrompt: function() {
-        GdmUtil.fadeInActor(this._promptFingerprintMessage);
+    _showLoginHint: function(verifier, message) {
+        this._promptLoginHint.set_text(message)
+        GdmUtil.fadeInActor(this._promptLoginHint);
     },
 
-    _hideFingerprintPrompt: function() {
-        GdmUtil.fadeOutActor(this._promptFingerprintMessage);
+    _hideLoginHint: function() {
+        GdmUtil.fadeOutActor(this._promptLoginHint);
     },
 
     _doUnlock: function() {
