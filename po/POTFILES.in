@@ -50,6 +50,7 @@ clutter/clutter-text.c
 clutter/clutter-timeline.c
 clutter/clutter-transition.c
 clutter/clutter-units.c
+clutter/clutter-zoom-action.c
 clutter/deprecated/clutter-alpha.c
 clutter/deprecated/clutter-animation.c
 clutter/deprecated/clutter-animator.c
