@@ -6,6 +6,7 @@ const Signals = imports.signals;
 
 const Batch = imports.gdm.batch;
 const Fprint = imports.gdm.fingerprint;
+const Realmd = imports.gdm.realmd;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
@@ -82,6 +83,8 @@ const ShellUserVerifier = new Lang.Class({
 
         this._fprintManager = new Fprint.FprintManager();
         this._checkForFingerprintReader();
+
+        this._realmManager = new Realmd.Manager();
     },
 
     begin: function(userName, hold) {
@@ -228,10 +231,29 @@ const ShellUserVerifier = new Lang.Class({
         Main.notifyError(problem);
     },
 
+    _showRealmLoginHint: function() {
+        if (this._realmManager.loginFormat) {
+            let hint = this._realmManager.loginFormat;
+
+            hint = hint.replace(/%U/g, 'user');
+            hint = hint.replace(/%D/g, 'DOMAIN');
+            hint = hint.replace(/%[^UD]/g, '');
+
+            // Translators: this message is shown below the username entry field
+            // to clue the user in on how to login to the local network realm
+            this.emit('show-login-hint',
+                      _("(e.g., user or %s)").format(hint));
+        }
+    },
+
     _onInfoQuery: function(client, serviceName, question) {
         // We only expect questions to come from the main auth service
         if (serviceName != PASSWORD_SERVICE_NAME)
             return;
+
+        this._showRealmLoginHint();
+        this._realmLoginHintSignalId = this._realmManager.connect('login-format-changed',
+                                                                  Lang.bind(this, this._showRealmLoginHint));
 
         this.emit('ask-question', serviceName, question, '');
     },
@@ -263,8 +285,13 @@ const ShellUserVerifier = new Lang.Class({
         // password authentication a chance to succeed
         if (serviceName == PASSWORD_SERVICE_NAME) {
             this.emit('verification-failed');
-        } else if (serviceName == FINGERPRINT_SERVICE_NAME) {
-            this.emit('hide-login-hint');
+        }
+
+        this.emit('hide-login-hint');
+
+        if (this._realmLoginHintSignalId) {
+            this._realmManager.disconnect(this._realmLoginHintSignalId);
+            this._realmLoginHintSignalId = 0;
         }
     },
 });

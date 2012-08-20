@@ -20,6 +20,7 @@ nobase_dist_js_DATA = 	\
 	gdm/fingerprint.js	\
 	gdm/loginDialog.js	\
 	gdm/powerMenu.js	\
+	gdm/realmd.js		\
 	gdm/util.js		\
 	extensionPrefs/main.js	\
 	misc/config.js		\
