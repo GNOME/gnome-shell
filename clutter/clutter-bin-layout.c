@@ -504,7 +504,11 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
       else
         {
           x_fill = (layer->x_align == CLUTTER_BIN_ALIGNMENT_FILL);
-          x_align = get_bin_alignment_factor (layer->x_align);
+
+          if (!is_fixed_position_set)
+            x_align = get_bin_alignment_factor (layer->x_align);
+          else
+            x_align = 0.0;
         }
 
       if (clutter_actor_needs_expand (child, CLUTTER_ORIENTATION_VERTICAL))
@@ -518,7 +522,11 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
       else
         {
           y_fill = (layer->y_align == CLUTTER_BIN_ALIGNMENT_FILL);
-          y_align = get_bin_alignment_factor (layer->y_align);
+
+          if (!is_fixed_position_set)
+            y_align = get_bin_alignment_factor (layer->y_align);
+          else
+            y_align = 0.0;
         }
 
       clutter_actor_allocate_align_fill (child, &child_alloc,
