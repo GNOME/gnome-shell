@@ -1,3 +1,80 @@
+Clutter 1.11.12                                                      2012-08-20
+===============================================================================
+
+  • List of changes since Clutter 1.11.10
+
+    - ClutterBinLayout honours the fixed-position of actors
+    The ClutterBinLayout now checks if the :fixed-position-set property of a
+    ClutterActor is set, and will use the fixed position when computing the
+    allocation, without requiring an explicit CLUTTER_BIN_ALIGNMENT_FIXED
+    alignment policy.
+
+    - Soft-deprecation of ClutterGeometry
+    The ClutterGeometry boxed type is a bad rectangle type, with known issues
+    when used for unioning and intersecting; Clutter uses the type in signals
+    and properties, so we cannot fully deprecate it. The documentation has
+    been amended, and API using ClutterGeometry has been deprecated where it
+    makes sense.
+
+    - Deprecate the ClutterActor::paint signal
+    The class handler for ClutterActor::paint is still available, but
+    connecting to the ::paint signal directly is strongly discouraged, and
+    will emit warnings if the CLUTTER_ENABLE_DIAGNOSTIC environment variable
+    is set. Notifications of a full paint for the Stage should happen only
+    through the repaint functions.
+
+    - Ensure we associate input devices to the stage on touch events
+    Like we do for crossing events for pointer devices, beginning and ending
+    a touch sequence should associate the input device to the stage.
+
+    - Allow constraining a DragAction to an area
+    Similarly to how we allow constraining the dragging to an axis, we can
+    also constrain the dragging to a specific area, expressed in
+    parent-relative coordinates.
+
+    - Do not handle events on ClutterText if :selectable is FALSE
+    If the ClutterText:selectable property is FALSE we should only reposition
+    the cursor, and avoid the whole drag-to-select event handling.
+
+    - Add ClutterActor:child-transform
+    The :child-transform property allows applying an initial transformation
+    to the children of an actor, but not to the actor itself.
+
+    - Fix height-for-width policy in ClutterBinLayout
+
+    - Add ClutterZoomAction
+    An action that implements the pinch gesture to scale an actor up or
+    down through two touch points.
+
+    - Documentation fixes
+
+    - Translations update
+    Assamese, Indonesian, Ukranian, Traditional Chinese translation (Hong
+    Kong and Taiwan), Spanish, Galician, Serbian.
+
+  • List of bugs fixed since Clutter 1.11.10
+
+    [bugzilla.gnome.org]
+    #681584 - clutter touch events tests slows down a lot after some use
+    #681074 - Call clutter_input_device_update_from_event from
+              clutter_x11_handle_event
+    #681168 - ClutterDragAction: allow constraining the movement of the
+              dragged actor
+    #682070 - clutter-text: Make sure to paint the background of a text actor
+    #682265 - ClutterBinLayout not honoring ClutterActor position set through
+              clutter_actor_set_position
+    #679483 - ClutterBoxLayout does not do height-for-width properly
+    #678427 - Zoom action
+    #681814 - ClutterDragAction causes crashes when drag actor is destroyed
+              at drag-end time
+
+Many thanks to:
+
+  Nilamdyuti Goswami, Daniel Mustieles, Fran Diéguez, Chao-Hsiung Liao,
+  Daniel Korostil, Dirgita, Duarte Loreto, Giovanni Campagna,
+  Jasper St. Pierre, Lionel Landwerlin, Sjoerd Simons, Tristan Van Berkom,
+  Мирослав Николић.
+
 Clutter 1.11.10                                                      2012-08-07
 ===============================================================================
 
