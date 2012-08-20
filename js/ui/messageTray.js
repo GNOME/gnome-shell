@@ -1412,7 +1412,8 @@ const MessageTray = new Lang.Class({
         this._lightbox = new Lightbox.Lightbox(global.window_group,
                                                { inhibitEvents: true,
                                                  fadeInTime: ANIMATION_TIME,
-                                                 fadeOutTime: ANIMATION_TIME
+                                                 fadeOutTime: ANIMATION_TIME,
+                                                 fadeFactor: 0.2
                                                });
 
         this._corner = new Clutter.Rectangle({ width: 1,
