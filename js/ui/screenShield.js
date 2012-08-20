@@ -1,13 +1,16 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const GnomeDesktop = imports.gi.GnomeDesktop;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Signals = imports.signals;
 const St = imports.gi.St;
+const TweenerEquations = imports.tweener.equations;
 
 const GnomeSession = imports.misc.gnomeSession;
 const Layout = imports.ui.layout;
@@ -24,6 +27,11 @@ const CURTAIN_SLIDE_TIME = 0.5;
 // fraction of screen height the arrow must reach before completing
 // the slide up automatically
 const ARROW_DRAG_TRESHOLD = 0.1;
+
+// Parameters for the arrow animation
+const N_ARROWS = 3;
+const ARROW_ANIMATION_TIME = 0.6;
+const ARROW_ANIMATION_PEAK_OPACITY = 0.4;
 
 // The distance in px that the lock screen will move to when pressing
 // a key that has no effect in the lock screen (bumping it)
@@ -300,19 +308,21 @@ const ScreenShield = new Lang.Class({
         this._lockScreenGroup.add_actor(this._background);
         this._lockScreenGroup.add_actor(this._lockScreenContents);
 
-        // FIXME: build the rest of the lock screen here
+        this._arrowContainer = new St.BoxLayout({ style_class: 'screen-shield-arrows',
+                                                  vertical: true,
+                                                  x_align: Clutter.ActorAlign.CENTER,
+                                                  y_align: Clutter.ActorAlign.END,
+                                                  // HACK: without these, ClutterBinLayout
+                                                  // ignores alignment properties on the actor
+                                                  x_expand: true,
+                                                  y_expand: true });
 
-        this._arrow = new St.DrawingArea({ style_class: 'arrow',
-                                           reactive: true,
-                                           x_align: Clutter.ActorAlign.CENTER,
-                                           y_align: Clutter.ActorAlign.END,
-                                           // HACK: without these, ClutterBinLayout
-                                           // ignores alignment properties on the actor
-                                           x_expand: true,
-                                           y_expand: true
-                                         });
-        this._arrow.connect('repaint', Lang.bind(this, this._drawArrow));
-        this._lockScreenContents.add_actor(this._arrow);
+        for (let i = 0; i < N_ARROWS; i++) {
+            let arrow = new St.DrawingArea({ opacity: 0 });
+            arrow.connect('repaint', Lang.bind(this, this._drawArrow));
+            this._arrowContainer.add_actor(arrow);
+        }
+        this._lockScreenContents.add_actor(this._arrowContainer);
 
         let dragArea = new Clutter.Rect({ origin: new Clutter.Point({ x: 0, y: -global.screen_height, }),
                                           size: new Clutter.Size({ width: global.screen_width,
@@ -374,17 +384,43 @@ const ScreenShield = new Lang.Class({
         return true;
     },
 
-    _drawArrow: function() {
-        let cr = this._arrow.get_context();
-        let [w, h] = this._arrow.get_surface_size();
-        let node = this._arrow.get_theme_node();
+    _drawArrow: function(arrow) {
+        let cr = arrow.get_context();
+        let [w, h] = arrow.get_surface_size();
+        let node = arrow.get_theme_node();
+        let thickness = node.get_length('-arrow-thickness');
 
         Clutter.cairo_set_source_color(cr, node.get_foreground_color());
 
-        cr.moveTo(0, h);
-        cr.lineTo(w/2, 0);
-        cr.lineTo(w, h);
-        cr.fill();
+        cr.setLineCap(Cairo.LineCap.ROUND);
+        cr.setLineWidth(thickness);
+
+        cr.moveTo(thickness / 2, h - thickness / 2);
+        cr.lineTo(w/2, thickness);
+        cr.lineTo(w - thickness / 2, h - thickness / 2);
+        cr.stroke();
+    },
+
+    _animateArrows: function() {
+        let arrows = this._arrowContainer.get_children();
+        let unitaryDelay = ARROW_ANIMATION_TIME / (arrows.length + 1);
+        let maxOpacity = 255 * ARROW_ANIMATION_PEAK_OPACITY;
+        for (let i = 0; i < arrows.length; i++) {
+            arrows.opacity = 0;
+            Tweener.addTween(arrows[i],
+                             { opacity: 0,
+                               delay: unitaryDelay * (N_ARROWS - (i + 1)),
+                               time: ARROW_ANIMATION_TIME,
+                               transition: function(t, b, c, d) {
+                                 if (t < d/2)
+                                     return TweenerEquations.easeOutQuad(t, 0, maxOpacity, d/2);
+                                 else
+                                     return TweenerEquations.easeInQuad(t - d/2, maxOpacity, -maxOpacity, d/2);
+                               }
+                             });
+        }
+
+        return true;
     },
 
     _onDragBegin: function() {
@@ -575,6 +611,11 @@ const ScreenShield = new Lang.Class({
     },
 
     _lockScreenShown: function() {
+        if (this._arrowAnimationId)
+            Mainloop.source_remove(this._arrowAnimationId);
+        this._arrowAnimationId = Mainloop.timeout_add(6000, Lang.bind(this, this._animateArrows));
+        this._animateArrows();
+
         this._lockScreenState = MessageTray.State.SHOWN;
         this._lockScreenGroup.fixed_position_set = false;
 
@@ -615,6 +656,11 @@ const ScreenShield = new Lang.Class({
         }
 
         this._lockScreenContentsBox.destroy();
+
+        if (this._arrowAnimationId) {
+            Mainloop.source_remove(this._arrowAnimationId);
+            this._arrowAnimationId = 0;
+        }
 
         this._hasLockScreen = false;
     },

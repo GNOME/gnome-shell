@@ -2204,10 +2204,15 @@ StButton.popup-menu-item:insensitive {
     background-repeat: repeat;
 }
 
-#lockScreenGroup .arrow {
-    color: #333333;
-    width: 100px;
-    height: 50px;
+.screen-shield-arrows {
+    padding-bottom: 3em;
+}
+
+.screen-shield-arrows > StDrawingArea {
+    color: white;
+    width: 80px;
+    height: 48px;
+    -arrow-thickness: 12px;
 }
 
 .screen-shield-clock {
