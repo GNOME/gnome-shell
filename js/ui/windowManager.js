@@ -474,10 +474,8 @@ const WindowManager = new Lang.Class({
     },
 
     _filterKeybinding: function(shellwm, binding) {
-        if (!Main.sessionMode.allowKeybindingsWhenModal) {
-            if (Main.modalCount > (Main.overview.visible ? 1 : 0))
-                return true;
-        }
+        if (Main.keybindingMode == Main.KeybindingMode.NONE)
+            return true;
 
         // There's little sense in implementing a keybinding in mutter and
         // not having it work in NORMAL mode; handle this case generically

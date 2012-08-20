@@ -14,7 +14,6 @@ const _modes = {
         showCalendarEvents: false,
         allowSettings: false,
         allowExtensions: false,
-        allowKeybindingsWhenModal: false,
         hasRunDialog: false,
         hasWorkspaces: false,
         hasWindows: false,
@@ -32,7 +31,6 @@ const _modes = {
     },
 
     'gdm': {
-        allowKeybindingsWhenModal: true,
         hasNotifications: true,
         isGreeter: true,
         isPrimary: true,
