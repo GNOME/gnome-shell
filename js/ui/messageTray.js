@@ -219,6 +219,31 @@ const URLHighlighter = new Lang.Class({
     }
 });
 
+function makeCloseButton() {
+    let closeButton = new St.Button({ style_class: 'notification-close'});
+
+    // This is a bit tricky. St.Bin has its own x-align/y-align properties
+    // that compete with Clutter's properties. This should be fixed for
+    // Clutter 2.0. Since St.Bin doesn't define its own setters, the
+    // setters are a workaround to get Clutter's version.
+    closeButton.set_x_align(Clutter.ActorAlign.END);
+    closeButton.set_y_align(Clutter.ActorAlign.START);
+
+    // XXX Clutter 2.0 workaround: ClutterBinLayout needs expand
+    // to respect the alignments.
+    closeButton.set_x_expand(true);
+    closeButton.set_y_expand(true);
+
+    closeButton.connect('style-changed', function() {
+        let themeNode = closeButton.get_theme_node();
+        let overlap = themeNode.get_length('-shell-close-overlap');
+        closeButton.translation_x = overlap;
+        closeButton.translation_y = -overlap;
+    });
+
+    return closeButton;
+}
+
 // Notification:
 // @source: the notification's Source
 // @title: the title
@@ -1160,13 +1185,14 @@ const SummaryItem = new Lang.Class({
         this._sourceBox.add(this._sourceIcon, { y_fill: false });
         this.actor.child = this._sourceBox;
 
-        this._closeButton = new St.Button({ style_class: 'window-close' });
+        this.notificationStackWidget = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+
+        this._closeButton = makeCloseButton();
         this._closeButton.connect('clicked', Lang.bind(this, function() {
             source.destroy();
             this.emit('done-displaying-content');
         }));
 
-        this.notificationStackWidget = new St.Widget();
         this.notificationStackWidget.add_actor(this._closeButton);
         this.notificationStackView = new St.ScrollView({ style_class: source.isChat ? '' : 'summary-notification-stack-scrollview',
                                                          vscrollbar_policy: source.isChat ? Gtk.PolicyType.NEVER : Gtk.PolicyType.AUTOMATIC,
@@ -1229,11 +1255,7 @@ const SummaryItem = new Lang.Class({
             this._appendNotificationToStack(this.source.notifications[i]);
         }
 
-        let closeNode = this._closeButton.get_theme_node();
-        let overlap = closeNode.get_length('-shell-close-overlap');
         this.notificationStackWidget.width = this.notificationStackView.width;
-        this._closeButton.x = this.notificationStackView.width - overlap;
-        this._closeButton.y = - overlap;
         this.scrollTo(St.Side.BOTTOM);
     },
 
@@ -1332,9 +1354,12 @@ const MessageTray = new Lang.Class({
                                      track_hover: true });
         this.actor.connect('notify::hover', Lang.bind(this, this._onTrayHoverChanged));
 
+        this._notificationWidget = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+        this.actor.add_actor(this._notificationWidget);
+
         this._notificationBin = new St.Bin();
-        this.actor.add_actor(this._notificationBin);
-        this._notificationBin.hide();
+        this._notificationWidget.add_actor(this._notificationBin);
+        this._notificationWidget.hide();
         this._notificationQueue = [];
         this._notification = null;
         this._notificationClickedId = 0;
@@ -1373,10 +1398,10 @@ const MessageTray = new Lang.Class({
         this._clickedSummaryItemAllocationChangedId = 0;
         this._pointerBarrier = 0;
 
-        this._closeButton = new St.Button({ style_class: 'window-close' });
-        this.actor.add_actor(this._closeButton);
+        this._closeButton = makeCloseButton();
         this._closeButton.hide();
         this._closeButton.connect('clicked', Lang.bind(this, this._onCloseClicked));
+        this._notificationWidget.add_actor(this._closeButton);
 
         this._idleMonitorWatchId = 0;
         this._userActiveWhileNotificationShown = false;
@@ -1427,7 +1452,7 @@ const MessageTray = new Lang.Class({
         Main.layoutManager.trayBox.add_actor(this.actor);
         this.actor.y = 0;
         Main.layoutManager.trackChrome(this.actor);
-        Main.layoutManager.trackChrome(this._notificationBin);
+        Main.layoutManager.trackChrome(this._notificationWidget);
         Main.layoutManager.trackChrome(this._closeButton);
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._setSizePosition));
@@ -1476,8 +1501,8 @@ const MessageTray = new Lang.Class({
 
     _setSizePosition: function() {
         let monitor = Main.layoutManager.bottomMonitor;
-        this._notificationBin.x = 0;
-        this._notificationBin.width = monitor.width;
+        this._notificationWidget.x = 0;
+        this._notificationWidget.width = monitor.width;
         this._summaryBin.x = 0;
         this._summaryBin.width = monitor.width;
 
@@ -2047,9 +2072,9 @@ const MessageTray = new Lang.Class({
                                                                  Lang.bind(this, this._escapeTray));
         this._notificationBin.child = this._notification.actor;
 
-        this._notificationBin.opacity = 0;
-        this._notificationBin.y = 0;
-        this._notificationBin.show();
+        this._notificationWidget.opacity = 0;
+        this._notificationWidget.y = 0;
+        this._notificationWidget.show();
 
         this._updateShowingNotification();
 
@@ -2070,7 +2095,7 @@ const MessageTray = new Lang.Class({
     _updateShowingNotification: function() {
         this._notification.acknowledged = true;
 
-        Tweener.removeTweens(this._notificationBin);
+        Tweener.removeTweens(this._notificationWidget);
 
         // We auto-expand notifications with CRITICAL urgency.
         // We use Tweener.removeTweens() to remove a tween that was hiding the notification we are
@@ -2086,7 +2111,7 @@ const MessageTray = new Lang.Class({
         // notifications that might have been in the process of hiding get full opacity.
         //
         // We tween any notification showing in the banner mode to banner height
-        // (this._notificationBin.y = -this._notificationBin.height).
+        // (this._notificationWidget.y = -this._notificationWidget.height).
         // This ensures that both new notifications and notifications in the banner mode that might
         // have been in the process of hiding are shown with the banner height.
         //
@@ -2094,7 +2119,7 @@ const MessageTray = new Lang.Class({
         // notification is being shown.
         //
         // We don't set the y parameter for the tween for expanded notifications because
-        // this._expandNotification() will result in getting this._notificationBin.y set to the appropriate
+        // this._expandNotification() will result in getting this._notificationWidget.y set to the appropriate
         // fully expanded value.
         let tweenParams = { opacity: 255,
                             time: ANIMATION_TIME,
@@ -2103,9 +2128,9 @@ const MessageTray = new Lang.Class({
                             onCompleteScope: this
                           };
         if (!this._notification.expanded)
-            tweenParams.y = -this._notificationBin.height;
+            tweenParams.y = -this._notificationWidget.height;
 
-        this._tween(this._notificationBin, '_notificationState', State.SHOWN, tweenParams);
+        this._tween(this._notificationWidget, '_notificationState', State.SHOWN, tweenParams);
    },
 
     _showNotificationCompleted: function() {
@@ -2150,14 +2175,12 @@ const MessageTray = new Lang.Class({
         }
 
         if (this._notificationRemoved) {
-            this._notificationBin.y = this.actor.height;
-            this._notificationBin.opacity = 0;
+            this._notificationWidget.y = this.actor.height;
+            this._notificationWidget.opacity = 0;
             this._notificationState = State.HIDDEN;
-            this._closeButton.y = this.actor.height;
-            this._closeButton.opacity = 0;
             this._hideNotificationCompleted();
         } else {
-            this._tween(this._notificationBin, '_notificationState', State.HIDDEN,
+            this._tween(this._notificationWidget, '_notificationState', State.HIDDEN,
                         { y: this.actor.height,
                           opacity: 0,
                           time: ANIMATION_TIME,
@@ -2166,18 +2189,12 @@ const MessageTray = new Lang.Class({
                           onCompleteScope: this
                         });
 
-            Tweener.addTween(this._closeButton,
-                             { y: this.actor.height,
-                               opacity: 0,
-                               time: ANIMATION_TIME,
-                               transition: 'easeOutQuad',
-                             });
         }
     },
 
     _hideNotificationCompleted: function() {
         this._notificationRemoved = false;
-        this._notificationBin.hide();
+        this._notificationWidget.hide();
         this._closeButton.hide();
         this._pointerInTray = false;
         this._notificationBin.child = null;
@@ -2205,38 +2222,19 @@ const MessageTray = new Lang.Class({
     },
 
     _onNotificationExpanded: function() {
-        let expandedY = - this._notificationBin.height;
-        let closeNode = this._closeButton.get_theme_node();
-        let overlap = closeNode.get_length('-shell-close-overlap');
-        // In case when we expand the urgent notification right away, this._notification.actor
-        // is not allocated yet, so we need to allocate it to be able to get the right value
-        // for this._notification.actor.x
-        this._notification.actor.get_allocation_box();
-        this._closeButton.x = (this._notification.actor.x + this._notification.actor.width) - overlap;
-        this._closeButton.opacity = this._notificationBin.opacity;
+        let expandedY = - this._notificationWidget.height;
         this._closeButton.show();
 
         // Don't animate the notification to its new position if it has shrunk:
         // there will be a very visible "gap" that breaks the illusion.
-
-        if (this._notificationBin.y < expandedY) {
-            this._notificationBin.y = expandedY;
-            this._closeButton.y = expandedY - overlap;
+        if (this._notificationWidget.y < expandedY) {
+            this._notificationWidget.y = expandedY;
         } else if (this._notification.y != expandedY) {
-            this._closeButton.y = this._notificationBin.y - overlap;
-            this._tween(this._notificationBin, '_notificationState', State.SHOWN,
+            this._tween(this._notificationWidget, '_notificationState', State.SHOWN,
                         { y: expandedY,
                           time: ANIMATION_TIME,
                           transition: 'easeOutQuad'
                         });
-            Tweener.addTween(this._closeButton,
-                             { y: expandedY - overlap,
-                               opacity: 255,
-                               time: ANIMATION_TIME,
-                               transition: 'easeOutQuad'
-                             });
-        } else {
-             this._closeButton.y = expandedY - overlap;
         }
     },
 

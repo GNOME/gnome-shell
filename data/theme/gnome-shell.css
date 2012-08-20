@@ -603,12 +603,19 @@ StButton.popup-menu-item:insensitive {
     -shell-caption-spacing: 12px;
 }
 
-.window-close {
+.window-close, .notification-close {
     background-image: url("close-window.svg");
     background-size: 34px;
     height: 34px;
     width: 34px;
+}
+
+.window-close {
     -shell-close-overlap: 20px;
+}
+
+.notification-close {
+    -shell-close-overlap: 14px;
 }
 
 .window-close:rtl {
