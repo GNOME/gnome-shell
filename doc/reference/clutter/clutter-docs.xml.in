@@ -235,6 +235,7 @@
     <xi:include href="xml/migrating-ClutterEffect.xml"/>
     <xi:include href="xml/migrating-ClutterPath.xml"/>
     <xi:include href="xml/migrating-ClutterBehaviour.xml"/>
+    <xi:include href="xml/migrating-ClutterAnimation.xml"/>
 
   </part>
 

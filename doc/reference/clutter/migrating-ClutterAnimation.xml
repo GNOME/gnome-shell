@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<!DOCTYPE chapter PUBLIC
+  "-//OASIS//DTD DocBook XML V4.3//EN"
+  "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd" [
+]>
+<chapter id="migrating-ClutterAnimation">
+
+  <chapterinfo>
+    <author>
+      <firstname>Emmanuele</firstname>
+      <surname>Bassi</surname>
+      <affiliation>
+        <address>
+          <email>ebassi@gnome.org</email>
+        </address>
+      </affiliation>
+    </author>
+  </chapterinfo>
+
+  <title>Migrating from ClutterAnimation</title>
+
+  <para>The #ClutterAnimation class, along with the #ClutterActor wrappers
+  clutter_actor_animate(), clutter_actor_animate_with_timeline() and
+  clutter_actor_animate_with_alpha(), has been deprecated in Clutter 1.12,
+  and should not be used in newly written code.</para>
+
+  <para>The direct replacement for a #ClutterAnimation is the
+  #ClutterPropertyTransition class, which allows the transition of a
+  single #GObject property from an initial value to a final value over a
+  user-defined time using a user-defined easing curve.</para>
+
+  <para>The #ClutterPropertyTransition class inherits from #ClutterTransition,
+  which allows setting the transition interval, as well as the animatable
+  instance to be transitioned; and from #ClutterTimeline, which allows setting
+  the duration and easing curve of the transition.</para>
+
+  <para>For instance, the following #ClutterAnimation set up:</para>
+
+  <informalexample><programlisting language="C"><![CDATA[
+  ClutterAnimation *animation = clutter_animation_new ();
+
+  clutter_animation_set_mode (animation, CLUTTER_EASE_OUT_CUBIC);
+  clutter_animation_set_duration (animation, 2500);
+
+  /* object_to_animate is set elsewhere */
+  clutter_animation_set_object (animation, object_to_animate);
+
+  ClutterInterval *interval = clutter_interval_new (G_TYPE_FLOAT, 0.0, 100.0);
+
+  /* property_name is set elsewhere */
+  clutter_animation_bind_interval (animation, property_name, interval);
+
+  ClutterTimeline *timeline = clutter_animation_get_timeline (animation);
+  clutter_timeline_start (timeline);
+]]></programlisting></informalexample>
+
+  <para>Can be replaced by #ClutterPropertyTransition:</para>
+
+  <informalexample><programlisting language="C"><![CDATA[
+  ClutterTransition *transition = clutter_property_transition_new (property_name);
+
+  clutter_timeline_set_progress_mode (CLUTTER_TIMELINE (transition),
+                                      CLUTTER_EASE_OUT_CUBIC);
+  clutter_timeline_set_duration (CLUTTER_TIMELINE (transition), 2000);
+
+  clutter_transition_set_animatable (transition, object_to_animate);
+
+  clutter_transition_set_from (transition, G_TYPE_FLOAT, 0.0);
+  clutter_transition_set_to (transition, G_TYPE_FLOAT, 100.0);
+
+  clutter_timeline_start (CLUTTER_TIMELINE (transition));
+]]></programlisting></informalexample>
+
+  <para>It is important to note that only #ClutterAnimatable implementations
+  can be used directly with #ClutterTransition.</para>
+
+  <para>A #ClutterPropertyTransition can only animate a single property; if
+  more than one property transition is required, you can use the
+  #ClutterTransitionGroup class to group the transitions together.</para>
+
+  <section>
+    <title>Migrating clutter_actor_animate()</title>
+
+    <para>#ClutterActor animatable properties can use implicit transitions
+    through their setter functions. The duration and easing curve of the
+    animation is controlled by clutter_actor_set_easing_duration() and by
+    clutter_actor_set_easing_mode(), respectively; for instance, the
+    equivalent of the following clutter_actor_animate() call:</para>
+
+    <informalexample><programlisting language="C"><![CDATA[
+  clutter_actor_animate (actor, CLUTTER_EASE_OUT_BOUNCE, 500,
+                         "x", new_x_position,
+                         "y", new_y_position,
+                         "opacity", 255,
+                         NULL);
+]]></programlisting></informalexample>
+
+    <para>Can be replaced by the following:</para>
+
+    <informalexample><programlisting language="C"><![CDATA[
+  clutter_actor_set_easing_mode (actor, CLUTTER_EASE_OUT_BOUNCE);
+  clutter_actor_set_easing_duration (actor, 500);
+  clutter_actor_set_position (actor, new_x_position, new_y_position);
+  clutter_actor_set_opacity (actor, 255);
+]]></programlisting></informalexample>
+
+    <para>The default easing duration for the 1.0 API series is set to 0,
+    which means no transition at all.</para>
+
+    <para>It is possible to set the easing state of a #ClutterActor to its
+    default values by using clutter_actor_save_easing_state(), and return
+    to the previous values by calling clutter_actor_restore_easing_state()
+    instead. The easing state affects all the animatable properties that
+    are modified after changing it; so, for instance:</para>
+
+    <informalexample><programlisting language="C"><![CDATA[
+  clutter_actor_save_easing_state (actor);
+  clutter_actor_set_easing_duration (actor, 500);
+  clutter_actor_set_opacity (actor, 255);
+
+  clutter_actor_save_easing_state (actor);
+  clutter_actor_set_easing_delay (actor, 500);
+  clutter_actor_set_easing_duration (actor, 500);
+  clutter_actor_set_size (actor, width, height);
+  clutter_actor_restore_easing_state (actor);
+
+  clutter_actor_restore_easing_state (actor);
+]]></programlisting></informalexample>
+
+    <para>The animation above will implicitly transition the opacity from
+    its current value to 255 in 500 milliseconds using the default easing
+    curve; at the same time, the size of the actor will be transitioned in
+    500 milliseconds after a delay of 500 milliseconds to the new size
+    stored in the variables <emphasis>width</emphasis> and
+    <emphasis>height</emphasis>.</para>
+
+  </section>
+
+</chapter>
