@@ -1166,6 +1166,7 @@ StButton.popup-menu-item:insensitive {
 #message-tray {
     background: #2e3436 url(message-tray-background.png);
     background-repeat: repeat;
+    transition-duration: 250;
     height: 72px;
 }
 
