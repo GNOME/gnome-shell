@@ -134,6 +134,7 @@ const PopupBaseMenuItem = new Lang.Class({
 
         this.sensitive = sensitive;
         this.actor.reactive = sensitive;
+        this.actor.can_focus = sensitive;
 
         this.emit('sensitive-changed', sensitive);
     },
@@ -717,7 +718,8 @@ const Switch = new Lang.Class({
 
     _init: function(state) {
         this.actor = new St.Bin({ style_class: 'toggle-switch',
-                                  accessible_role: Atk.Role.CHECK_BOX});
+                                  accessible_role: Atk.Role.CHECK_BOX,
+                                  can_focus: true });
         // Translators: this MUST be either "toggle-switch-us"
         // (for toggle switches containing the English words
         // "ON" and "OFF") or "toggle-switch-intl" (for toggle
@@ -1876,7 +1878,7 @@ const RemoteMenu = new Lang.Class({
             }));
         }
 
-        item.actor.reactive = action.enabled;
+        item.actor.reactive = item.actor.can_focus = action.enabled;
 
         destroyId = item.connect('destroy', Lang.bind(this, function() {
             item.disconnect(destroyId);
@@ -2008,7 +2010,7 @@ const RemoteMenu = new Lang.Class({
         if (action.items.length) {
             for (let i = 0; i < action.items.length; i++) {
                 let item = action.items[i];
-                item.actor.reactive = action.enabled;
+                item.actor.reactive = item.actor.can_focus = action.enabled;
             }
         }
     }
