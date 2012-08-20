@@ -76,3 +76,4 @@ clutter_texture_get_type
 clutter_timeline_get_type
 clutter_transition_get_type
 clutter_transition_group_get_type
+clutter_zoom_action_get_type

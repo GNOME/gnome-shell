@@ -98,6 +98,7 @@
       <xi:include href="xml/clutter-gesture-action.xml"/>
       <xi:include href="xml/clutter-swipe-action.xml"/>
       <xi:include href="xml/clutter-rotate-action.xml"/>
+      <xi:include href="xml/clutter-zoom-action.xml"/>
     </chapter>
 
     <chapter>
