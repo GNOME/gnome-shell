@@ -1,3 +1,48 @@
+3.5.90
+======
+* Use symbolic icons for workspace switch OSD [Jon; #680738]
+* Lock screen improvements:
+  - Hide user menu and a11y menu in the screen lock [Giovanni; #681143]
+  - Bump the lock screen slightly when pressing a key [Giovanni; #681143]
+  - Constrain vertical movement of the screen shield [Giovanni; #681143]
+  - Return to lock screen on idle [Giovanni; #682041]
+  - Unlock screen automatically after fast-user switching [Giovanni; #682096]
+  - Fix "other user" label [Ray; #681750]
+* Constrain content of system modals to primary monitor [#681743]
+* Respect automatic lock setting on suspend/user-switch [Giovanni; #680231]
+* Improve styling of keyring prompt [Jasper; #681821]
+* Do not hard-code <super> as overlay-key [Florian; #665547]
+* Update style of attached modal dialogs [Florian; #681601]
+* a11y: allow navigation on non reactive items [Alejandro; #667439, #667439]
+* Implement mode-less overview design [Joost, Florian; #682109]
+* Implement message-tray redesign:
+  - Restyle the message tray [Ana, Allan, Florian; #677213, #682342]
+  - Move the desktop upwards when showing the tray [Debarshi; #681392]
+  - Add a close button to notifications [Ana, Jasper; #682253]
+  - Add a keybinding to toggle the tray [Debarshi; #681392]
+  - Make the tray keyboard navigable [Debarshi; #681519]
+  - Add dwelling at the bottom of the screen to open the tray [Owen; #682310]
+  - Don't time out banners when the user is inactive [Marina, Jasper]
+  - Misc fixes and cleanups [Jasper, Marina]
+* Fix showing "Next Week" on Sundays [Sebastian; #682198]
+* Delay restoring IM presence until the network comes up [Florian; #677982]
+* Display enterprise login hint [Ray; #681975]
+* Ignore unrecognized/irrelevant network devices/connections [Dan; #682364]
+* Misc bug fixes and cleanups: [Dan, Florian, Jasper, Jiro, Piotr, Rico;
+  #643687, #682045, #682189]
+
+Contributors:
+  Giovanni Campagna, Allan Day, Piotr Drąg, William Jon McCann,
+  Sebastian Keller, Jiro Matsuzawa, Florian Müllner, Alejandro Piñeiro,
+  Debarshi Ray, Ana Risteska, Jasper St. Pierre, Ray Strode, Owen Taylor,
+  Rico Tzschichholz, Joost Verdoorn, Dan Winship, Marina Zhurakhinskaya
+
+Translations:
+  Nilamdyuti Goswami [as], Daniel Mustieles [es], Yaron Shahrabani [he],
+  Chao-Hsiung Liao [zh_HK, zh_TW], Tobias Endrigkeit [de], A S Alam [pa],
+  Sandeep Sheshrao Shedmake [mr], Fran Diéguez [gl],
+  Мирослав Николић [sr, sr@latin]
+
 3.5.5
 =====
 * Update style to match mockups [Allan]
