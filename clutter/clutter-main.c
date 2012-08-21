@@ -2678,10 +2678,7 @@ _clutter_process_event_details (ClutterActor        *stage,
             clutter_event_get_event_sequence (event);
 
           if (event->type == CLUTTER_TOUCH_BEGIN)
-            {
-              _clutter_input_device_set_stage (device, CLUTTER_STAGE (stage));
-              _clutter_input_device_add_sequence (device, sequence);
-            }
+            _clutter_input_device_add_event_sequence (device, event);
 
           clutter_event_get_coords (event, &x, &y);
 
@@ -2716,10 +2713,7 @@ _clutter_process_event_details (ClutterActor        *stage,
           emit_touch_event (event, device);
 
           if (event->type == CLUTTER_TOUCH_END)
-            {
-              _clutter_input_device_set_stage (device, NULL);
-              _clutter_input_device_remove_sequence (device, sequence);
-            }
+            _clutter_input_device_remove_event_sequence (device, event);
 
           break;
         }

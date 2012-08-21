@@ -1086,9 +1086,6 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                                             stage_x11,
                                             &xev->valuators);
 
-        if (source_device != NULL && device->stage != NULL)
-          _clutter_input_device_set_stage (source_device, device->stage);
-
         if (xi_event->evtype == XI_TouchBegin)
           {
             event->touch.modifier_state |= CLUTTER_BUTTON1_MASK;
@@ -1138,9 +1135,6 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                                             event->motion.y,
                                             stage_x11,
                                             &xev->valuators);
-
-        if (source_device != NULL && device->stage != NULL)
-          _clutter_input_device_set_stage (source_device, device->stage);
 
         event->touch.modifier_state =
           _clutter_input_device_xi2_translate_state (&xev->mods,

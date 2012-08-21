@@ -159,14 +159,15 @@ ClutterBackend *_clutter_device_manager_get_backend             (ClutterDeviceMa
 /* input device */
 gboolean        _clutter_input_device_has_sequence              (ClutterInputDevice   *device,
                                                                  ClutterEventSequence *sequence);
-void            _clutter_input_device_add_sequence              (ClutterInputDevice   *device,
-                                                                 ClutterEventSequence *sequence);
-void            _clutter_input_device_remove_sequence           (ClutterInputDevice   *device,
-                                                                 ClutterEventSequence *sequence);
+void            _clutter_input_device_add_event_sequence        (ClutterInputDevice   *device,
+                                                                 ClutterEvent         *event);
+void            _clutter_input_device_remove_event_sequence     (ClutterInputDevice   *device,
+                                                                 ClutterEvent         *event);
 void            _clutter_input_device_set_coords                (ClutterInputDevice   *device,
                                                                  ClutterEventSequence *sequence,
                                                                  gint                  x,
-                                                                 gint                  y);
+                                                                 gint                  y,
+                                                                 ClutterStage         *stage);
 void            _clutter_input_device_set_state                 (ClutterInputDevice   *device,
                                                                  ClutterModifierType   state);
 void            _clutter_input_device_set_time                  (ClutterInputDevice   *device,
