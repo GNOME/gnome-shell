@@ -274,6 +274,62 @@ const NotificationsBox = new Lang.Class({
     },
 });
 
+const Arrow = new Lang.Class({
+    Name: 'Arrow',
+    Extends: St.Bin,
+
+    _init: function(params) {
+        this.parent(params);
+        this.x_fill = this.y_fill = true;
+        this.set_offscreen_redirect(Clutter.OffscreenRedirect.ALWAYS);
+
+        this._drawingArea = new St.DrawingArea();
+        this._drawingArea.connect('repaint', Lang.bind(this, this._drawArrow));
+        this.child = this._drawingArea;
+
+        this._shadowHelper = null;
+        this._shadowWidth = this._shadowHeight = 0;
+    },
+
+    _drawArrow: function(arrow) {
+        let cr = arrow.get_context();
+        let [w, h] = arrow.get_surface_size();
+        let node = this.get_theme_node();
+        let thickness = node.get_length('-arrow-thickness');
+
+        Clutter.cairo_set_source_color(cr, node.get_foreground_color());
+
+        cr.setLineCap(Cairo.LineCap.ROUND);
+        cr.setLineWidth(thickness);
+
+        cr.moveTo(thickness / 2, h - thickness / 2);
+        cr.lineTo(w/2, thickness);
+        cr.lineTo(w - thickness / 2, h - thickness / 2);
+        cr.stroke();
+    },
+
+    vfunc_style_changed: function() {
+        let node = this.get_theme_node();
+        this._shadow = node.get_shadow('-arrow-shadow');
+        if (this._shadow)
+            this._shadowHelper = St.ShadowHelper.new(this._shadow);
+        else
+            this._shadowHelper = null;
+    },
+
+    vfunc_paint: function() {
+        if (this._shadowHelper) {
+            this._shadowHelper.update(this._drawingArea);
+
+            let allocation = this._drawingArea.get_allocation_box();
+            let paintOpacity = this._drawingArea.get_paint_opacity();
+            this._shadowHelper.paint(allocation, paintOpacity);
+        }
+
+        this._drawingArea.paint();
+    }
+});
+
 /**
  * To test screen shield, make sure to kill gnome-screensaver.
  *
@@ -318,8 +374,7 @@ const ScreenShield = new Lang.Class({
                                                   y_expand: true });
 
         for (let i = 0; i < N_ARROWS; i++) {
-            let arrow = new St.DrawingArea({ opacity: 0 });
-            arrow.connect('repaint', Lang.bind(this, this._drawArrow));
+            let arrow = new Arrow({ opacity: 0 });
             this._arrowContainer.add_actor(arrow);
         }
         this._lockScreenContents.add_actor(this._arrowContainer);
@@ -382,23 +437,6 @@ const ScreenShield = new Lang.Class({
         if (this._lockScreenState == MessageTray.State.SHOWN)
             this._bumpLockScreen();
         return true;
-    },
-
-    _drawArrow: function(arrow) {
-        let cr = arrow.get_context();
-        let [w, h] = arrow.get_surface_size();
-        let node = arrow.get_theme_node();
-        let thickness = node.get_length('-arrow-thickness');
-
-        Clutter.cairo_set_source_color(cr, node.get_foreground_color());
-
-        cr.setLineCap(Cairo.LineCap.ROUND);
-        cr.setLineWidth(thickness);
-
-        cr.moveTo(thickness / 2, h - thickness / 2);
-        cr.lineTo(w/2, thickness);
-        cr.lineTo(w - thickness / 2, h - thickness / 2);
-        cr.stroke();
     },
 
     _animateArrows: function() {

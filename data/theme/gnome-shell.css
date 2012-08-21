@@ -2208,11 +2208,12 @@ StButton.popup-menu-item:insensitive {
     padding-bottom: 3em;
 }
 
-.screen-shield-arrows > StDrawingArea {
+.screen-shield-arrows Gjs_Arrow {
     color: white;
     width: 80px;
     height: 48px;
     -arrow-thickness: 12px;
+    -arrow-shadow: 0 1px 1px rgba(0,0,0,0.4);
 }
 
 .screen-shield-clock {
