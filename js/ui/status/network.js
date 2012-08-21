@@ -1832,8 +1832,7 @@ const NMApplet = new Lang.Class({
             devices.push(wrapper);
 
             this._syncSectionTitle(wrapper.category);
-        } else
-            log('Invalid network device type, is ' + device.get_device_type());
+        }
     },
 
     _deviceRemoved: function(client, device) {
@@ -1852,9 +1851,32 @@ const NMApplet = new Lang.Class({
         this._syncSectionTitle(wrapper.category)
     },
 
+    _getSupportedActiveConnections: function() {
+        let activeConnections = this._client.get_active_connections() || [ ];
+        let supportedConnections = [];
+
+        for (let i = 0; i < activeConnections.length; i++) {
+            let devices = activeConnections[i].get_devices();
+            if (!devices || !devices[0])
+                continue;
+            // Ignore connections via unrecognized device types
+            if (!this._dtypes[devices[0].device_type])
+                continue;
+
+            // Ignore slave connections
+            let connectionPath = activeConnections[i].connection;
+            let connection = this._settings.get_connection_by_path(connectionPath)
+            if (this._ignoreConnection(connection))
+                continue;
+
+            supportedConnections.push(activeConnections[i]);
+        }
+        return supportedConnections;
+    },
+
     _syncActiveConnections: function() {
         let closedConnections = [ ];
-        let newActiveConnections = this._client.get_active_connections() || [ ];
+        let newActiveConnections = this._getSupportedActiveConnections();
         for (let i = 0; i < this._activeConnections.length; i++) {
             let a = this._activeConnections[i];
             if (newActiveConnections.indexOf(a) == -1) // connection is removed
@@ -1958,10 +1980,24 @@ const NMApplet = new Lang.Class({
         this._updateIcon();
     },
 
+    _ignoreConnection: function(connection) {
+        let setting = connection.get_setting_connection();
+        if (!setting)
+            return true;
+
+        // Ignore slave connections
+        if (setting.get_master())
+            return true;
+
+        return false;
+    },
+
     _readConnections: function() {
         let connections = this._settings.list_connections();
         for (let i = 0; i < connections.length; i++) {
             let connection = connections[i];
+            if (this._ignoreConnection(connection))
+                continue;
             if (connection._updatedId) {
                 // connection was already seen (for example because NetworkManager was restarted)
                 continue;
@@ -1975,6 +2011,8 @@ const NMApplet = new Lang.Class({
     },
 
     _newConnection: function(settings, connection) {
+        if (this._ignoreConnection(connection))
+            return;
         if (connection._updatedId) {
             // connection was already seen
             return;
