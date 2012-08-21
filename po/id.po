@@ -6,17 +6,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-17 12:57+0000\n"
-"PO-Revision-Date: 2012-07-13 17:39+0700\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=cogl&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-08-19 21:19+0000\n"
+"PO-Revision-Date: 2012-08-21 14:37+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
+"Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: id\n"
-"X-Poedit-Language: Indonesian\n"
-"X-Poedit-Country: INDONESIA\n"
 
 #: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
@@ -26,25 +25,29 @@ msgstr "Nilai pengawakutuan yang didukung:"
 msgid "Special debug values:"
 msgstr "Nilai pengawakutuan khusus:"
 
-#: ../cogl/cogl-debug.c:181
-#: ../cogl/cogl-debug.c:183
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr "Aktifkan semua opsi pengawakutuan non-perilaku"
 
-#: ../cogl/cogl-debug-options.h:25
-#: ../cogl/cogl-debug-options.h:30
-#: ../cogl/cogl-debug-options.h:35
-#: ../cogl/cogl-debug-options.h:40
-#: ../cogl/cogl-debug-options.h:45
-#: ../cogl/cogl-debug-options.h:50
-#: ../cogl/cogl-debug-options.h:55
-#: ../cogl/cogl-debug-options.h:61
-#: ../cogl/cogl-debug-options.h:66
-#: ../cogl/cogl-debug-options.h:71
-#: ../cogl/cogl-debug-options.h:158
-#: ../cogl/cogl-debug-options.h:163
-#: ../cogl/cogl-debug-options.h:168
-#: ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "Variabel lingkungan tambahan:"
+
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr "Daftar yang dipisah koma dari ekstensi GL yang pura-pura dinonaktifkan"
+
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr "Timpa versi GL yang akan diasumsikan oleh Cogl didukung oleh penggerak"
+
+#: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
+#: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
+#: ../cogl/cogl-debug-options.h:45 ../cogl/cogl-debug-options.h:50
+#: ../cogl/cogl-debug-options.h:55 ../cogl/cogl-debug-options.h:61
+#: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
+#: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
+#: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
 #: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Penelusuran Cogl"
@@ -129,8 +132,7 @@ msgstr "Telusuri backend CoglTexturePixmap"
 msgid "Trace the Cogl texture pixmap backend"
 msgstr "Telusuri backend pixmap tekstur Cogl"
 
-#: ../cogl/cogl-debug-options.h:76
-#: ../cogl/cogl-debug-options.h:81
+#: ../cogl/cogl-debug-options.h:76 ../cogl/cogl-debug-options.h:81
 msgid "Visualize"
 msgstr "Visualisasikan"
 
@@ -150,20 +152,13 @@ msgstr "Tunjukkan rangka kawat"
 msgid "Add wire outlines for all geometry"
 msgstr "Tambahkan outline kawat untuk semua geometri"
 
-#: ../cogl/cogl-debug-options.h:86
-#: ../cogl/cogl-debug-options.h:91
-#: ../cogl/cogl-debug-options.h:96
-#: ../cogl/cogl-debug-options.h:101
-#: ../cogl/cogl-debug-options.h:111
-#: ../cogl/cogl-debug-options.h:116
-#: ../cogl/cogl-debug-options.h:122
-#: ../cogl/cogl-debug-options.h:127
-#: ../cogl/cogl-debug-options.h:132
-#: ../cogl/cogl-debug-options.h:137
-#: ../cogl/cogl-debug-options.h:142
-#: ../cogl/cogl-debug-options.h:147
-#: ../cogl/cogl-debug-options.h:153
-#: ../cogl/cogl-debug-options.h:173
+#: ../cogl/cogl-debug-options.h:86 ../cogl/cogl-debug-options.h:91
+#: ../cogl/cogl-debug-options.h:96 ../cogl/cogl-debug-options.h:101
+#: ../cogl/cogl-debug-options.h:111 ../cogl/cogl-debug-options.h:116
+#: ../cogl/cogl-debug-options.h:122 ../cogl/cogl-debug-options.h:127
+#: ../cogl/cogl-debug-options.h:132 ../cogl/cogl-debug-options.h:137
+#: ../cogl/cogl-debug-options.h:142 ../cogl/cogl-debug-options.h:147
+#: ../cogl/cogl-debug-options.h:153 ../cogl/cogl-debug-options.h:173
 #: ../cogl/cogl-debug-options.h:178
 msgid "Root Cause"
 msgstr "Akar Masalah"
@@ -225,8 +220,12 @@ msgid "Disable sharing the texture atlas between text and images"
 msgstr "Nonaktifkan pemakaian bersama atlas tekstur antara teks dan gambar"
 
 #: ../cogl/cogl-debug-options.h:119
-msgid "When this is set the glyph cache will always use a separate texture for its atlas. Otherwise it will try to share the atlas with images."
-msgstr "Ketika ini ditata, singgahan glyph akan selalu memakai tekstur terpisah bagi atlasnya. Bila tidak, itu akan mencoba berbagai atlas dengan gambar."
+msgid ""
+"When this is set the glyph cache will always use a separate texture for its "
+"atlas. Otherwise it will try to share the atlas with images."
+msgstr ""
+"Ketika ini ditata, singgahan glyph akan selalu memakai tekstur terpisah bagi "
+"atlasnya. Bila tidak, itu akan mencoba berbagai atlas dengan gambar."
 
 #: ../cogl/cogl-debug-options.h:124
 msgid "Disable texturing"
@@ -273,8 +272,12 @@ msgid "Disable non-power-of-two textures"
 msgstr "Nonaktifkan tekstur yang bukan pangkat dari dua"
 
 #: ../cogl/cogl-debug-options.h:150
-msgid "Makes Cogl think that the GL driver doesn't support NPOT textures so that it will create sliced textures or textures with waste instead."
-msgstr "Buat Cogl mengira bahwa penggerak GL tak mendukung tekstur NPOT sehingga akan membuat tekstur diiris atau tekstur dengan limbah sebagai pengganti."
+msgid ""
+"Makes Cogl think that the GL driver doesn't support NPOT textures so that it "
+"will create sliced textures or textures with waste instead."
+msgstr ""
+"Buat Cogl mengira bahwa penggerak GL tak mendukung tekstur NPOT sehingga "
+"akan membuat tekstur diiris atau tekstur dengan limbah sebagai pengganti."
 
 #: ../cogl/cogl-debug-options.h:155
 msgid "Disable software clipping"
@@ -282,7 +285,9 @@ msgstr "Nonaktifkan pemotongan perangkat lunak"
 
 #: ../cogl/cogl-debug-options.h:156
 msgid "Disables Cogl's attempts to clip some rectangles in software."
-msgstr "Nonaktifkan percobaan Cogl untuk memotong (clip) beberapa persegi panjang dalam perangkat lunak."
+msgstr ""
+"Nonaktifkan percobaan Cogl untuk memotong (clip) beberapa persegi panjang "
+"dalam perangkat lunak."
 
 #: ../cogl/cogl-debug-options.h:160
 msgid "Show source"
@@ -321,8 +326,11 @@ msgid "Disable read pixel optimization"
 msgstr "Nonaktifkan optimasi pembacaan piksel"
 
 #: ../cogl/cogl-debug-options.h:181
-msgid "Disable optimization for reading 1px for simple scenes of opaque rectangles"
-msgstr "Nonaktifkan optimasi membaca 1px bagi skenario sederhana dari persegi panjang legap"
+msgid ""
+"Disable optimization for reading 1px for simple scenes of opaque rectangles"
+msgstr ""
+"Nonaktifkan optimasi membaca 1px bagi skenario sederhana dari persegi "
+"panjang legap"
 
 #: ../cogl/cogl-debug-options.h:186
 msgid "Trace clipping"
@@ -330,7 +338,9 @@ msgstr "Telusuri pemotongan"
 
 #: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
-msgstr "Catat log informasi tentang bagaimana Cogl mengimplementasi pemotongan (clipping)"
+msgstr ""
+"Catat log informasi tentang bagaimana Cogl mengimplementasi pemotongan "
+"(clipping)"
 
 #: ../cogl/cogl-debug-options.h:191
 msgid "Trace performance concerns"
@@ -339,4 +349,3 @@ msgstr "Telusuri masalah kinerja"
 #: ../cogl/cogl-debug-options.h:192
 msgid "Tries to highlight sub-optimal Cogl usage."
 msgstr "Mencoba menyorot penggunaan Cogl yang sub-optimal."
-
