@@ -1450,14 +1450,6 @@ const MessageTray = new Lang.Class({
                                                  fadeFactor: 0.2
                                                });
 
-        this._corner = new Clutter.Rectangle({ width: 1,
-                                               height: 1,
-                                               opacity: 0,
-                                               reactive: true });
-        this._corner.connect('enter-event', Lang.bind(this, this._onCornerEnter));
-        Main.layoutManager.trayBox.add_actor(this._corner);
-        Main.layoutManager.trackChrome(this._corner);
-
         Main.layoutManager.trayBox.add_actor(this.actor);
         this.actor.y = 0;
         Main.layoutManager.trackChrome(this.actor);
@@ -1537,11 +1529,6 @@ const MessageTray = new Lang.Class({
         }
     },
 
-    _onCornerEnter: function(actor, event) {
-        this._traySummoned = true;
-        this._updateState();
-    },
-
     _onStyleChanged: function() {
         let monitor = Main.layoutManager.bottomMonitor;
 
@@ -1549,13 +1536,6 @@ const MessageTray = new Lang.Class({
         this._notificationWidget.x = Math.floor((monitor.width - width) / 2);
         this._summaryBin.x = 0;
         this._summaryBin.width = monitor.width;
-
-        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
-            this._corner.x = 0;
-        else
-            this._corner.x = Main.layoutManager.trayBox.width - 1;
-
-        this._corner.y = Main.layoutManager.trayBox.height - 1;
     },
 
     contains: function(source) {
