@@ -1,3 +1,18 @@
+3.5.90
+======
+* Fix logic for handling translations of the windows group [Owen; #681221]
+* Handle painting inside a Clutter clone [Owen; #681953]
+* Update overlay-key on settings changes [Florian; #681906]
+* Add keybinding for overlay-key [Florian; #665547]
+* Minor fixes and improvements [Javier, Florian]
+
+Contributors:
+  Javier Jardón, Florian Müllner, Owen Taylor
+
+Translations:
+  Sweta Kothari [gu], Muhammet Kara [tr], Khaled Hosny [ar],
+  Sandeep Sheshrao Shedmake [mr]
+
 3.5.5
 =====
 * Fix flickering around windows when using window group [Tom; #681221]
