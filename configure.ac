@@ -790,7 +790,7 @@ AC_ARG_ENABLE(
   [],
   enable_gdl_egl_platform=no
 )
-AS_IF([test "x$enable_gdl_egl_platform" == "xyes"],
+AS_IF([test "x$enable_gdl_egl_platform" = "xyes"],
       [
         EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
         NEED_EGL=yes
@@ -821,7 +821,7 @@ AC_ARG_ENABLE(
   [],
   enable_wayland_egl_platform=no
 )
-AS_IF([test "x$enable_wayland_egl_platform" == "xyes"],
+AS_IF([test "x$enable_wayland_egl_platform" = "xyes"],
       [
         EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
         NEED_EGL=yes
@@ -846,7 +846,7 @@ AC_ARG_ENABLE(
   [],
   enable_kms_egl_platform=no
 )
-AS_IF([test "x$enable_kms_egl_platform" == "xyes"],
+AS_IF([test "x$enable_kms_egl_platform" = "xyes"],
       [
         EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
         NEED_EGL=yes
@@ -870,7 +870,7 @@ AC_ARG_ENABLE(
   [],
   enable_wayland_egl_server=no
 )
-AS_IF([test "x$enable_wayland_egl_server" == "xyes"],
+AS_IF([test "x$enable_wayland_egl_server" = "xyes"],
       [
         NEED_EGL=yes
         COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES wayland-server"
@@ -886,7 +886,7 @@ AC_ARG_ENABLE(
   [],
   enable_android_egl_platform=no
 )
-AS_IF([test "x$enable_android_egl_platform" == "xyes"],
+AS_IF([test "x$enable_android_egl_platform" = "xyes"],
       [
         EGL_PLATFORM_COUNT=$((EGL_PLATFORM_COUNT+1))
         NEED_EGL=yes
