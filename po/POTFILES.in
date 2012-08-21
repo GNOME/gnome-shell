@@ -4,6 +4,7 @@ data/org.gnome.shell.gschema.xml.in.in
 js/extensionPrefs/main.js
 js/gdm/loginDialog.js
 js/gdm/powerMenu.js
+js/gdm/util.js
 js/misc/util.js
 js/ui/appDisplay.js
 js/ui/appFavorites.js
