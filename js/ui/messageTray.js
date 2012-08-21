@@ -1489,19 +1489,24 @@ const MessageTray = new Lang.Class({
         let pointerWatcher = PointerWatcher.getPointerWatcher();
         pointerWatcher.addWatch(TRAY_DWELL_CHECK_INTERVAL, Lang.bind(this, this._checkTrayDwell));
         this._trayDwellTimeoutId = 0;
+        this._trayDwelling = false;
     },
 
     _checkTrayDwell: function(x, y) {
-        // We only set up dwell timeout when the user is not hovering over the tray
-        // (!this.actor.hover). This avoids bringing up the message tray after the
-        // user clicks on a notification with the pointer on the bottom pixel
-        // of the monitor.
-        if (y == global.screen_height - 1 && !this.actor.hover) {
-            if (this._trayDwellTimeoutId == 0)
+        if (y == global.screen_height - 1) {
+            // We only set up dwell timeout when the user is not hovering over the tray
+            // (!this.actor.hover). This avoids bringing up the message tray after the
+            // user clicks on a notification with the pointer on the bottom pixel
+            // of the monitor. The _trayDwelling variable is used so that we only try to
+            // fire off one tray dwell - if it fails (because, say, the user has the mouse down),
+            // we don't try again until the user moves the mouse up and down again.
+            if (!this._trayDwelling && !this.actor.hover && this._trayDwellTimeoutId == 0)
                 this._trayDwellTimeoutId = Mainloop.timeout_add(TRAY_DWELL_TIME,
-                                                               Lang.bind(this, this._trayDwellTimeout));
+                                                                Lang.bind(this, this._trayDwellTimeout));
+            this._trayDwelling = true;
         } else {
             this._cancelTrayDwell();
+            this._trayDwelling = false;
         }
     },
 
@@ -1993,18 +1998,21 @@ const MessageTray = new Lang.Class({
     },
 
     _showTray: function() {
+        // Don't actually take a modal grab in the overview.
+        // Just add something to the grab stack that we can
+        // pop later.
+        if (!this._grabHelper.grab({ actor: this.actor,
+                                     modal: !this._overviewVisible,
+                                     onUngrab: Lang.bind(this, this._escapeTray) })) {
+            this._traySummoned = false;
+            return;
+        }
+
         this._tween(this.actor, '_trayState', State.SHOWN,
                     { y: -this.actor.height,
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad'
                     });
-
-        // Don't actually take a modal grab in the overview.
-        // Just add something to the grab stack that we can
-        // pop later.
-        this._grabHelper.grab({ actor: this.actor,
-                                modal: !this._overviewVisible,
-                                onUngrab: Lang.bind(this, this._escapeTray) });
 
         // Don't move the windows up if we are in the overview,
         // but show the tray in the ctrl+alt+tab list.

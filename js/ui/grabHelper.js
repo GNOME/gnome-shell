@@ -128,7 +128,9 @@ const GrabHelper = new Lang.Class({
     // on the owner of the GrabHelper. As long as there is at least one
     // { modal: true } actor on the grab stack, the grab will be kept.
     // When the last { modal: true } actor is ungrabbed, then the modal
-    // will be dropped.
+    // will be dropped. A modal grab can fail if there is already a grab
+    // in effect from aother application; in this case the function returns
+    // false and nothing happens. Non-modal grabs can never fail.
     //
     // If @params contains { grabFocus: true }, then if you call grab()
     // while the shell is outside the overview, it will set the stage
@@ -151,10 +153,12 @@ const GrabHelper = new Lang.Class({
         let newFocus = params.actor;
 
         if (this.isActorGrabbed(params.actor))
-            return;
+            return true;
 
-        if (this._grabFocusCount == 0 && this._modalCount == 0)
-            this._fullGrab(hadFocus, params.modal, params.grabFocus);
+        if (this._grabFocusCount == 0 && this._modalCount == 0) {
+            if (!this._fullGrab(hadFocus, params.modal, params.grabFocus))
+                return false;
+        }
 
         params.savedFocus = focus;
         this._grabStack.push(params);
@@ -166,18 +170,21 @@ const GrabHelper = new Lang.Class({
             this._grabFocusCount++;
 
         _navigateActor(newFocus, hadFocus);
+
+        return true;
     },
 
     _fullGrab: function(hadFocus, modal, grabFocus) {
         let metaDisplay = global.screen.get_display();
 
+        if (modal) {
+            if (!Main.pushModal(this._owner))
+                return false;
+        }
+
         this._grabbedFromKeynav = hadFocus;
         this._preGrabInputMode = global.stage_input_mode;
         this._prevFocusedWindow = null;
-
-        if (modal) {
-            Main.pushModal(this._owner);
-        }
 
         if (grabFocus) {
             this._prevFocusedWindow = metaDisplay.focus_window;
@@ -193,6 +200,8 @@ const GrabHelper = new Lang.Class({
             this._keyFocusNotifyId = global.stage.connect('notify::key-focus', Lang.bind(this, this._onKeyFocusChanged));
             this._focusWindowChangedId = metaDisplay.connect('notify::focus-window', Lang.bind(this, this._focusWindowChanged));
         }
+
+        return true;
     },
 
     // ignoreRelease:
