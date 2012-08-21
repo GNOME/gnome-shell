@@ -100,6 +100,7 @@ const IMUserNameItem = new Lang.Class({
 
     _init: function() {
         this.parent({ reactive: false,
+                      can_focus: false,
                       style_class: 'status-chooser-user-name' });
 
         this._wrapper = new Shell.GenericContainer();
@@ -137,6 +138,7 @@ const IMStatusChooserItem = new Lang.Class({
 
     _init: function() {
         this.parent({ reactive: false,
+                      can_focus: false,
                       style_class: 'status-chooser' });
 
         this._userManager = AccountsService.UserManager.get_default();
