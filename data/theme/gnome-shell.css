@@ -1187,8 +1187,8 @@ StButton.popup-menu-item:insensitive {
 }
 
 #message-tray:overview {
-    background: rgba(0, 0, 0, 0.5);
-    border-top: 1px solid rgba(128, 128, 128, 0.4);
+    background: rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(128, 128, 128, 0.3);
 }
 
 .notification {
