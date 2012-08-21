@@ -1073,6 +1073,9 @@ const Workspace = new Lang.Class({
      *  ANIMATE - Indicates that we need animate changing position.
      */
     positionWindows: function(flags) {
+        if (this.leavingOverview)
+            return;
+
         this._positionWindowsFlags |= flags;
 
         if (this._positionWindowsId > 0)
