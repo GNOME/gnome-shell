@@ -124,15 +124,19 @@ const DashItemContainer = new Lang.Class({
     },
 
     setLabelText: function(text) {
-        if (this.label == null)
+        if (this.label == null) {
             this.label = new St.Label({ style_class: 'dash-label'});
+            Main.layoutManager.addChrome(this.label);
+            this.label.hide();
+        }
 
         this.label.set_text(text);
-        Main.layoutManager.addChrome(this.label);
-        this.label.hide();
     },
 
     hideLabel: function () {
+        if (this.label == null)
+            return;
+
         Tweener.addTween(this.label,
                          { opacity: 0,
                            time: DASH_ITEM_LABEL_HIDE_TIME,
