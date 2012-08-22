@@ -81,6 +81,9 @@ static void st_im_text_commit_cb (GtkIMContext *context,
                                   const gchar  *str,
                                   StIMText     *imtext);
 
+static void st_im_text_preedit_changed_cb (GtkIMContext *context,
+                                           StIMText     *imtext);
+
 G_DEFINE_TYPE (StIMText, st_im_text, CLUTTER_TYPE_TEXT)
 
 static void
@@ -92,6 +95,9 @@ st_im_text_dispose (GObject *object)
     {
       g_signal_handlers_disconnect_by_func (priv->im_context,
                                             (void *) st_im_text_commit_cb,
+                                            object);
+      g_signal_handlers_disconnect_by_func (priv->im_context,
+                                            (void *) st_im_text_preedit_changed_cb,
                                             object);
 
       g_object_unref (priv->im_context);
@@ -138,6 +144,29 @@ st_im_text_commit_cb (GtkIMContext *context,
       clutter_text_insert_text (clutter_text, str,
                                 clutter_text_get_cursor_position (clutter_text));
     }
+}
+
+static void
+st_im_text_preedit_changed_cb (GtkIMContext *context,
+                               StIMText     *imtext)
+{
+  ClutterText *clutter_text = CLUTTER_TEXT (imtext);
+  gchar *preedit_str = NULL;
+  PangoAttrList *preedit_attrs = NULL;
+  gint cursor_pos = 0;
+
+  gtk_im_context_get_preedit_string (context,
+                                     &preedit_str,
+                                     &preedit_attrs,
+                                     &cursor_pos);
+
+  clutter_text_set_preedit_string (clutter_text,
+                                   preedit_str,
+                                   preedit_attrs,
+                                   cursor_pos);
+
+  g_free (preedit_str);
+  pango_attr_list_unref (preedit_attrs);
 }
 
 static void
@@ -445,6 +474,8 @@ st_im_text_init (StIMText *self)
   priv->im_context = gtk_im_multicontext_new ();
   g_signal_connect (priv->im_context, "commit",
                     G_CALLBACK (st_im_text_commit_cb), self);
+  g_signal_connect (priv->im_context, "preedit-changed",
+                    G_CALLBACK (st_im_text_preedit_changed_cb), self);
 }
 
 /**
