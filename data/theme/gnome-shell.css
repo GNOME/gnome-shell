@@ -80,25 +80,25 @@ StScrollBar StBin#trough {
 }
 
 StScrollBar StButton#vhandle {
-    background-color: #959797;
+    background-color: #5d6464;
     border: 2px solid #242424;
     border-radius: 8px;
 }
 
 StScrollBar StButton#hhandle {
-    background-color: #959797;
+    background-color: #5d6464;
     border: 2px solid #242424;
     border-radius: 8px;
 }
 
 StScrollBar StButton#hhandle:hover,
 StScrollBar StButton#vhandle:hover {
-    background-color: #c2c3c3;
+    background-color: #777d7c;
 }
 
 StScrollBar StButton#hhandle:active,
 StScrollBar StButton#vhandle:active {
-    background-color: #729fcf;
+    background-color: #3465a4;
 }
 
 /* Check Boxes */
