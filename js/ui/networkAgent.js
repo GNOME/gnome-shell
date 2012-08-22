@@ -135,7 +135,10 @@ const NetworkSecretDialog = new Lang.Class({
             } else
                 secret.valid = true;
 
-            secretTable.add(label, { row: pos, col: 0, x_expand: false, x_fill: true, x_align: St.Align.START, y_align: St.Align.START });
+            secretTable.add(label, { row: pos, col: 0,
+                                     x_expand: false, x_fill: true,
+                                     x_align: St.Align.START,
+                                     y_fill: false, y_align: St.Align.MIDDLE });
             secretTable.add(secret.entry, { row: pos, col: 1, x_expand: true, x_fill: true, y_align: St.Align.END });
             pos++;
 

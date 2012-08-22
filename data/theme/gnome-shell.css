@@ -1874,6 +1874,7 @@ StButton.popup-menu-item:insensitive {
 
 .network-dialog-secret-table {
     spacing-rows: 15px;
+    spacing-columns: 1em;
 }
 
 .keyring-dialog-control-table {
