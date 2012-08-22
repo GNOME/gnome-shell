@@ -37,12 +37,13 @@ const ModalDialog = new Lang.Class({
     _init: function(params) {
         params = Params.parse(params, { shellReactive: false,
                                         styleClass: null,
-                                        parentActor: Main.uiGroup
-                                      });
+                                        parentActor: Main.uiGroup,
+                                        shouldFadeIn: true });
 
         this.state = State.CLOSED;
         this._hasModal = false;
         this._shellReactive = params.shellReactive;
+        this._shouldFadeIn = params.shouldFadeIn;
 
         this._group = new St.Widget({ visible: false,
                                       x: 0,
@@ -210,7 +211,7 @@ const ModalDialog = new Lang.Class({
         this._group.show();
         Tweener.addTween(this._group,
                          { opacity: 255,
-                           time: OPEN_AND_CLOSE_TIME,
+                           time: this._shouldFadeIn ? OPEN_AND_CLOSE_TIME : 0,
                            transition: 'easeOutQuad',
                            onComplete: Lang.bind(this,
                                function() {

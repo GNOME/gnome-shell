@@ -625,8 +625,8 @@ const LoginDialog = new Lang.Class({
     _init: function(parentActor) {
         this.parent({ shellReactive: true,
                       styleClass: 'login-dialog',
-                      parentActor: parentActor
-                    });
+                      parentActor: parentActor,
+                      shouldFade: false });
         this.connect('destroy',
                      Lang.bind(this, this._onDestroy));
         this.connect('opened',
