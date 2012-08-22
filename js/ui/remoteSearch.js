@@ -34,16 +34,17 @@ var SearchProviderProxy = Gio.DBusProxy.makeProxyWrapper(SearchProviderIface);
 
 function loadRemoteSearchProviders(addProviderCallback) {
     let dataDirs = GLib.get_system_data_dirs();
+    let loadedProviders = {};
     for (let i = 0; i < dataDirs.length; i++) {
         let path = GLib.build_filenamev([dataDirs[i], 'gnome-shell', 'search-providers']);
         let dir = Gio.file_new_for_path(path);
         if (!dir.query_exists(null))
             continue;
-        loadRemoteSearchProvidersFromDir(dir, addProviderCallback);
+        loadRemoteSearchProvidersFromDir(dir, loadedProviders, addProviderCallback);
     }
 };
 
-function loadRemoteSearchProvidersFromDir(dir, addProviderCallback) {
+function loadRemoteSearchProvidersFromDir(dir, loadedProviders, addProviderCallback) {
     let dirPath = dir.get_path();
     FileUtils.listDirAsync(dir, Lang.bind(this, function(files) {
         for (let i = 0; i < files.length; i++) {
@@ -64,6 +65,9 @@ function loadRemoteSearchProvidersFromDir(dir, addProviderCallback) {
                 let group = KEY_FILE_GROUP;
                 let busName = keyfile.get_string(group, 'BusName');
                 let objectPath = keyfile.get_string(group, 'ObjectPath');
+
+                if (loadedProviders[objectPath])
+                    continue;
 
                 let appInfo = null;
                 try {
@@ -86,6 +90,7 @@ function loadRemoteSearchProvidersFromDir(dir, addProviderCallback) {
                                                           icon,
                                                           busName,
                                                           objectPath);
+                loadedProviders[objectPath] = remoteProvider;
             } catch(e) {
                 log('Failed to add search provider "%s": %s'.format(title, e.toString()));
                 continue;
