@@ -17,6 +17,7 @@ const Tweener = imports.ui.tweener;
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 const STARTUP_ANIMATION_TIME = 0.2;
 const KEYBOARD_ANIMATION_TIME = 0.5;
+const PLYMOUTH_TRANSITION_TIME = 1;
 
 const MonitorConstraint = new Lang.Class({
     Name: 'MonitorConstraint',
@@ -100,6 +101,7 @@ const LayoutManager = new Lang.Class({
         this.primaryMonitor = null;
         this.primaryIndex = -1;
         this._hotCorners = [];
+        this._rootPixmap = null;
         this._leftPanelBarrier = 0;
         this._rightPanelBarrier = 0;
         this._trayBarrier = 0;
@@ -319,10 +321,41 @@ const LayoutManager = new Lang.Class({
     },
 
     _startupAnimation: function() {
+        this.panelBox.anchor_y = this.panelBox.height;
+
+        let plymouthTransitionRunning = false;
+
+        // If we're the greeter, put up the xrootpmap actor
+        // and fade it out to have a nice transition from plymouth
+        // to the greeter. Otherwise, we'll just animate the panel,
+        // as usual.
+        if (Main.sessionMode.isGreeter) {
+            this._rootPixmap = global.create_xrootpmap_texture();
+            if (this._rootPixmap != null) {
+                Main.uiGroup.add_actor(this._rootPixmap);
+                Tweener.addTween(this._rootPixmap,
+                                 { opacity: 0,
+                                   time: PLYMOUTH_TRANSITION_TIME,
+                                   transition: 'linear',
+                                   onComplete: this._fadeRootpmapComplete,
+                                   onCompleteScope: this });
+                plymouthTransitionRunning = true;
+            }
+        }
+
+        if (!plymouthTransitionRunning)
+            this._fadeRootpmapComplete();
+    },
+
+    _fadeRootpmapComplete: function() {
         // Don't animate the strut
         this._chrome.freezeUpdateRegions();
 
-        this.panelBox.anchor_y = this.panelBox.height;
+        if (this._rootPixmap != null) {
+            this._rootPixmap.destroy();
+            this._rootPixmap = null;
+        }
+
         Tweener.addTween(this.panelBox,
                          { anchor_y: 0,
                            time: STARTUP_ANIMATION_TIME,
