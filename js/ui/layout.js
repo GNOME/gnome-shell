@@ -314,7 +314,7 @@ const LayoutManager = new Lang.Class({
 
     get currentMonitor() {
         let index = global.screen.get_current_monitor();
-        return Main.layoutManager.monitors[index];
+        return this.monitors[index];
     },
 
     _startupAnimation: function() {
