@@ -250,6 +250,7 @@ const ShowAppsIcon = new Lang.Class({
         this.toggleButton._delegate = this;
 
         this.setChild(this.toggleButton);
+        this.setHover(false);
     },
 
     _createIcon: function(size) {
@@ -265,6 +266,11 @@ const ShowAppsIcon = new Lang.Class({
         this.toggleButton.set_hover(hovered);
         if (this._iconActor)
             this._iconActor.set_hover(hovered);
+
+        if (hovered)
+            this.setLabelText(_("Remove from Favorites"));
+        else
+            this.setLabelText(_("Show Applications"));
     },
 
     // Rely on the dragged item being a favorite
@@ -330,6 +336,7 @@ const Dash = new Lang.Class({
 
         this._showAppsIcon = new ShowAppsIcon();
         this._showAppsIcon.icon.setIconSize(this.iconSize);
+        this._hookUpLabel(this._showAppsIcon);
 
         this.showAppsButton = this._showAppsIcon.toggleButton;
 
@@ -428,6 +435,17 @@ const Dash = new Lang.Class({
         Main.queueDeferredWork(this._workId);
     },
 
+    _hookUpLabel: function(item) {
+        item.child.connect('notify::hover', Lang.bind(this, function() {
+            this._onHover(item);
+        }));
+
+        Main.overview.connect('hiding', Lang.bind(this, function() {
+            this._labelShowing = false;
+            item.hideLabel();
+        }));
+    },
+
     _createAppItem: function(app) {
         let display = new AppDisplay.AppWellIcon(app,
                                                  { setSizeManually: true,
@@ -447,25 +465,14 @@ const Dash = new Lang.Class({
         item.setLabelText(app.get_name());
         // Override default AppWellIcon label_actor
         display.actor.label_actor = item.label;
-
-
         display.icon.setIconSize(this.iconSize);
-        display.actor.connect('notify::hover',
-                               Lang.bind(this, function() {
-                                   this._onHover(item, display)
-                               }));
-
-        Main.overview.connect('hiding',
-                              Lang.bind(this, function() {
-                                  this._labelShowing = false;
-                                  item.hideLabel();
-                              }));
+        this._hookUpLabel(item);
 
         return item;
     },
 
-    _onHover: function (item, display) {
-        if (display.actor.get_hover() && !display.isMenuUp) {
+    _onHover: function (item) {
+        if (item.child.get_hover() && !item.child._delegate.isMenuUp) {
             if (this._showLabelTimeoutId == 0) {
                 let timeout = this._labelShowing ? 0 : DASH_ITEM_HOVER_TIMEOUT;
                 this._showLabelTimeoutId = Mainloop.timeout_add(timeout,
