@@ -285,7 +285,7 @@ const AppMenuButton = new Lang.Class({
     },
 
     show: function() {
-        if (this._visible)
+        if (this._visible || Main.screenShield.locked)
             return;
 
         this._visible = true;
