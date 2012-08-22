@@ -1780,8 +1780,7 @@ const NMApplet = new Lang.Class({
 
         let icon = new St.Icon({ icon_name: iconName,
                                  icon_type: St.IconType.SYMBOLIC,
-                                 icon_size: this._source.ICON_SIZE
-                               });
+                                 icon_size: MessageTray.NOTIFICATION_ICON_SIZE });
         device._notification = new MessageTray.Notification(this._source, title, text,
                                                             { icon: icon });
         device._notification.setUrgency(urgency);
