@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-08-22 04:27+0200\n"
-"PO-Revision-Date: 2012-08-22 04:28+0200\n"
+"PO-Revision-Date: 2012-08-22 04:32+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -133,7 +133,7 @@ msgstr "Wyświetlanie dnia tygodnia w kalendarzu"
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid "If true, display the ISO week date in the calendar."
 msgstr ""
-"Jeśli jest ustawione na \"true\", to wyświetla dzień tygodnia w kalendarzu w "
+"Jeśli jest ustawione na \"true\", to wyświetla w kalendarzu dzień tygodnia w "
 "formacie ISO."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
