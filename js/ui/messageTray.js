@@ -1578,9 +1578,14 @@ const MessageTray = new Lang.Class({
             }));
 
         summaryItem.actor.connect('clicked', Lang.bind(this,
-            function (actor, button) {
+            function(actor, button) {
                 actor.grab_key_focus();
                 this._onSummaryItemClicked(summaryItem, button);
+            }));
+        summaryItem.actor.connect('popup-menu', Lang.bind(this,
+            function(actor, button) {
+                actor.grab_key_focus();
+                this._onSummaryItemClicked(summaryItem, 3);
             }));
 
         source.connect('destroy', Lang.bind(this, this._onSourceDestroy));
