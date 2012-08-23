@@ -27,6 +27,8 @@
 #define __CLUTTER_BACKEND_EGL_NATIVE_H__
 
 #include <glib-object.h>
+#include <cogl/cogl.h>
+#include <cogl/cogl-egl.h>
 #include <clutter/clutter-event.h>
 #include <clutter/clutter-backend.h>
 #include <clutter/clutter-device-manager.h>
