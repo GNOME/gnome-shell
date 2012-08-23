@@ -270,14 +270,27 @@ const Overview = new Lang.Class({
 
         this._viewSelector.connect('page-changed', Lang.bind(this,
             function() {
-                this._setSideControlsVisibility();
+                this._setSideControlsVisibility(false);
+            }));
+
+        this.connect('item-drag-begin', Lang.bind(this,
+            function() {
+                this._setSideControlsVisibility(true);
+            }));
+        this.connect('item-drag-cancelled', Lang.bind(this,
+            function() {
+                this._setSideControlsVisibility(false);
+            }));
+        this.connect('item-drag-end', Lang.bind(this,
+            function() {
+                this._setSideControlsVisibility(false);
             }));
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
         this._relayout();
     },
 
-    _setSideControlsVisibility: function() {
+    _setSideControlsVisibility: function(inDrag) {
         // Ignore the case when we're leaving the overview, since
         // actors will be made visible again when entering the overview
         // next time, and animating them while doing so is just
@@ -286,8 +299,8 @@ const Overview = new Lang.Class({
             return;
 
         let searchActive = this._viewSelector.getSearchActive();
-        let dashVisible = !searchActive;
-        let thumbnailsVisible = !searchActive;
+        let dashVisible = !searchActive || inDrag;
+        let thumbnailsVisible = !searchActive || inDrag;
         let trayVisible = !searchActive;
 
         if (dashVisible)
