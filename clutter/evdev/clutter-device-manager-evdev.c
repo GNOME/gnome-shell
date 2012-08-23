@@ -109,8 +109,7 @@ struct _ClutterEventSource
 
   ClutterInputDeviceEvdev *device;    /* back pointer to the evdev device */
   GPollFD event_poll_fd;              /* file descriptor of the /dev node */
-  struct xkb_desc *xkb;               /* compiled xkb keymap */
-  uint32_t modifier_state;            /* remember the modifier state */
+  struct xkb_state *xkb;              /* XKB state object */
   gint x, y;                          /* last x, y position for pointers */
 };
 
@@ -173,12 +172,14 @@ notify_key (ClutterEventSource *source,
 
   /* if we have a mapping for that device, use it to generate the event */
   if (source->xkb)
+  {
     event =
       _clutter_key_event_new_from_evdev (input_device,
                                          stage,
                                          source->xkb,
-                                         time_, key, state,
-                                         &source->modifier_state);
+                                         time_, key, state);
+    xkb_state_update_key (source->xkb, key, state ? XKB_KEY_DOWN : XKB_KEY_UP);
+  }
 
   queue_event (event);
 }

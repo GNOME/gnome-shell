@@ -36,9 +36,8 @@
 #include "clutter-device-manager-private.h"
 #include "clutter-private.h"
 
-#include "evdev/clutter-xkb-utils.h"
-
 #include <wayland-client.h>
+#include <wayland-client-protocol.h>
 
 enum
 {
@@ -147,10 +146,6 @@ _clutter_device_manager_wayland_init (ClutterDeviceManagerWayland *self)
 {
 }
 
-static const char *option_xkb_layout = "us";
-static const char *option_xkb_variant = "";
-static const char *option_xkb_options = "";
-
 void
 _clutter_device_manager_wayland_add_input_group (ClutterDeviceManager *manager,
                                                  uint32_t id)
@@ -168,18 +163,11 @@ _clutter_device_manager_wayland_add_input_group (ClutterDeviceManager *manager,
 
   device->input_device =
     wl_display_bind (backend_wayland->wayland_display, id,
-                     &wl_input_device_interface);
-  wl_input_device_add_listener (device->input_device,
-                                &_clutter_input_device_wayland_listener,
-                                device);
-  wl_input_device_set_user_data (device->input_device, device);
-
-  device->xkb = _clutter_xkb_desc_new (NULL,
-                                       option_xkb_layout,
-                                       option_xkb_variant,
-                                       option_xkb_options);
-  if (!device->xkb)
-    CLUTTER_NOTE (BACKEND, "Failed to compile keymap");
+                     &wl_seat_interface);
+  wl_seat_add_listener (device->input_device,
+                        &_clutter_seat_wayland_listener,
+                        device);
+  wl_seat_set_user_data (device->input_device, device);
 
   _clutter_device_manager_add_device (manager, CLUTTER_INPUT_DEVICE (device));
 }

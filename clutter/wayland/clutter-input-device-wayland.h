@@ -41,16 +41,17 @@ typedef struct _ClutterInputDeviceWayland           ClutterInputDeviceWayland;
 struct _ClutterInputDeviceWayland
 {
   ClutterInputDevice      device;
-  struct wl_input_device *input_device;
+  struct wl_seat         *input_device;
   ClutterStageCogl       *pointer_focus;
   ClutterStageCogl       *keyboard_focus;
-  uint32_t                modifier_state;
-  int32_t                 x, y, surface_x, surface_y;
-  struct xkb_desc        *xkb;
+  gdouble                 x, y;
+  struct xkb_state       *xkb;
+  gint                    has_pointer;
+  gint                    has_keyboard;
 };
 
 GType clutter_input_device_wayland_get_type (void) G_GNUC_CONST;
 
-extern const struct wl_input_device_listener _clutter_input_device_wayland_listener;
+extern const struct wl_seat_listener _clutter_seat_wayland_listener;
 
 #endif /* __CLUTTER_INPUT_DEVICE_WAYLAND_H__ */

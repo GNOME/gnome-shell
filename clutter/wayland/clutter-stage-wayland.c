@@ -51,9 +51,16 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageWayland,
                                                 clutter_stage_window_iface_init));
 
 static void
+handle_ping (void *data,
+             struct wl_shell_surface *shell_surface,
+             uint32_t serial)
+{
+  wl_shell_surface_pong(shell_surface, serial);
+}
+
+static void
 handle_configure (void *data,
                   struct wl_shell_surface *shell_surface,
-                  uint32_t timestamp,
                   uint32_t edges,
                   int32_t width,
                   int32_t height)
@@ -74,8 +81,17 @@ handle_configure (void *data,
   clutter_stage_ensure_viewport (stage_cogl->wrapper);
 }
 
+static void
+handle_popup_done (void *data,
+                   struct wl_shell_surface *shell_surface)
+{
+  /* XXX: Fill me in. */
+}
+
 static const struct wl_shell_surface_listener shell_surface_listener = {
+       handle_ping,
        handle_configure,
+       handle_popup_done,
 };
 
 static void
@@ -143,7 +159,10 @@ clutter_stage_wayland_set_fullscreen (ClutterStageWindow *stage_window,
        * attached
        */
       _clutter_stage_window_redraw (stage_window);
-      wl_shell_surface_set_fullscreen (stage_wayland->wayland_shell_surface);
+      wl_shell_surface_set_fullscreen (stage_wayland->wayland_shell_surface,
+                                       WL_SHELL_SURFACE_FULLSCREEN_METHOD_DEFAULT,
+                                       0,
+                                       NULL);
     }
   else
     {

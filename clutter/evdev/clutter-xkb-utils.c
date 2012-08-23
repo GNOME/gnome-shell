@@ -27,60 +27,6 @@
 #include "clutter-xkb-utils.h"
 
 /*
- * print_key_sym: Translate a symbol to its printable form if any
- * @symbol: the symbol to translate
- * @buffer: the buffer where to put the translated string
- * @len: size of the buffer
- *
- * Translates @symbol into a printable representation in @buffer, if possible.
- *
- * Return value: The number of bytes of the translated string, 0 if the
- *               symbol can't be printed
- *
- * Note: The code is derived from libX11's src/KeyBind.c
- *       Copyright 1985, 1987, 1998  The Open Group
- *
- * Note: This code works for Latin-1 symbols. clutter_keysym_to_unicode()
- *       does the work for the other keysyms.
- */
-static int
-print_keysym (uint32_t  symbol,
-               char     *buffer,
-               int       len)
-{
-  unsigned long high_bytes;
-  unsigned char c;
-
-  high_bytes = symbol >> 8;
-  if (!(len &&
-        ((high_bytes == 0) ||
-         ((high_bytes == 0xFF) &&
-          (((symbol >= CLUTTER_KEY_BackSpace) &&
-            (symbol <= CLUTTER_KEY_Clear)) ||
-           (symbol == CLUTTER_KEY_Return) ||
-           (symbol == CLUTTER_KEY_Escape) ||
-           (symbol == CLUTTER_KEY_KP_Space) ||
-           (symbol == CLUTTER_KEY_KP_Tab) ||
-           (symbol == CLUTTER_KEY_KP_Enter) ||
-           ((symbol >= CLUTTER_KEY_KP_Multiply) &&
-            (symbol <= CLUTTER_KEY_KP_9)) ||
-           (symbol == CLUTTER_KEY_KP_Equal) ||
-           (symbol == CLUTTER_KEY_Delete))))))
-    return 0;
-
-  /* if X keysym, convert to ascii by grabbing low 7 bits */
-  if (symbol == CLUTTER_KEY_KP_Space)
-    c = CLUTTER_KEY_space & 0x7F; /* patch encoding botch */
-  else if (high_bytes == 0xFF)
-    c = symbol & 0x7F;
-  else
-    c = symbol & 0xFF;
-
-  buffer[0] = c;
-  return 1;
-}
-
-/*
  * _clutter_event_new_from_evdev: Create a new Clutter ClutterKeyEvent
  * @device: a ClutterInputDevice
  * @stage: the stage the event should be delivered to
@@ -97,15 +43,15 @@ print_keysym (uint32_t  symbol,
 ClutterEvent *
 _clutter_key_event_new_from_evdev (ClutterInputDevice *device,
                                    ClutterStage       *stage,
-                                   struct xkb_desc    *xkb,
+                                   struct xkb_state   *xkb_state,
                                    uint32_t            _time,
-                                   uint32_t            key,
-                                   uint32_t            state,
-                                   uint32_t           *modifier_state)
+                                   xkb_keycode_t       key,
+                                   uint32_t            state)
 {
   ClutterEvent *event;
-  uint32_t code, sym, level;
-  char buffer[128];
+  xkb_keysym_t sym;
+  const xkb_keysym_t *syms;
+  char buffer[8];
   int n;
 
   if (state)
@@ -113,28 +59,27 @@ _clutter_key_event_new_from_evdev (ClutterInputDevice *device,
   else
     event = clutter_event_new (CLUTTER_KEY_RELEASE);
 
-  code = key + xkb->min_key_code;
-  level = 0;
+  /* We use a fixed offset of 8 because evdev starts KEY_* numbering from
+   * 0, whereas X11's minimum keycode, for really stupid reasons, is 8.
+   * So the evdev XKB rules are based on the keycodes all being shifted
+   * upwards by 8. */
+  key += 8;
 
-  if (*modifier_state & CLUTTER_SHIFT_MASK &&
-      XkbKeyGroupWidth (xkb, code, 0) > 1)
-    level = 1;
-
-  sym = XkbKeySymEntry (xkb, code, level, 0);
-  if (state)
-    *modifier_state |= xkb->map->modmap[code];
+  n = xkb_key_get_syms (xkb_state, key, &syms);
+  if (n == 1)
+    sym = syms[0];
   else
-    *modifier_state &= ~xkb->map->modmap[code];
+    sym = XKB_KEY_NoSymbol;
 
   event->key.device = device;
   event->key.stage = stage;
   event->key.time = _time;
-  event->key.modifier_state = *modifier_state;
+  event->key.modifier_state =
+    xkb_state_serialize_mods (xkb_state, XKB_STATE_EFFECTIVE);
   event->key.hardware_keycode = key;
   event->key.keyval = sym;
 
-  /* unicode_value is the printable representation */
-  n = print_keysym (sym, buffer, sizeof (buffer));
+  n = xkb_keysym_to_utf8 (sym, buffer, sizeof (buffer));
 
   if (n == 0)
     {
@@ -152,20 +97,27 @@ _clutter_key_event_new_from_evdev (ClutterInputDevice *device,
 }
 
 /*
- * _clutter_xkb_desc_new:
+ * _clutter_xkb_state_new:
  *
- * Create a new xkbcommon keymap.
+ * Create a new xkbcommon keymap and state object.
  *
  * FIXME: We need a way to override the layout here, a fixed or runtime
- * detected layout is provided by the backend calling _clutter_xkb_desc_new();
+ * detected layout is provided by the backend calling _clutter_xkb_state_new();
  */
-struct xkb_desc *
-_clutter_xkb_desc_new (const gchar *model,
-                       const gchar *layout,
-                       const gchar *variant,
-                       const gchar *options)
+struct xkb_state *
+_clutter_xkb_state_new (const gchar *model,
+                        const gchar *layout,
+                        const gchar *variant,
+                        const gchar *options)
 {
+  struct xkb_context *ctx;
+  struct xkb_keymap *keymap;
+  struct xkb_state *state;
   struct xkb_rule_names names;
+
+  ctx = xkb_context_new(0);
+  if (!ctx)
+    return NULL;
 
   names.rules = "evdev";
   if (model)
@@ -176,5 +128,13 @@ _clutter_xkb_desc_new (const gchar *model,
   names.variant = variant;
   names.options = options;
 
-  return xkb_compile_keymap_from_rules (&names);
+  keymap = xkb_map_new_from_names(ctx, &names, 0);
+  xkb_context_unref(ctx);
+  if (!keymap)
+    return NULL;
+
+  state = xkb_state_new(keymap);
+  xkb_map_unref(keymap);
+
+  return state;
 }

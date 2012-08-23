@@ -56,6 +56,7 @@ struct _ClutterBackendWayland
   struct wl_compositor *wayland_compositor;
   struct wl_shell *wayland_shell;
   struct wl_shm *wayland_shm;
+  struct wl_surface *cursor_surface;
   struct wl_buffer *cursor_buffer;
   struct wl_output *wayland_output;
 

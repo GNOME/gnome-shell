@@ -106,7 +106,8 @@ output_handle_geometry (void             *data,
                         int               physical_height,
                         int               subpixel,
                         const char       *make,
-                        const char       *model)
+                        const char       *model,
+                        int32_t transform)
 {
 }
 
@@ -129,7 +130,7 @@ display_handle_global (struct wl_display *display,
   if (strcmp (interface, "wl_compositor") == 0)
     backend_wayland->wayland_compositor =
       wl_display_bind (display, id, &wl_compositor_interface);
-  else if (strcmp (interface, "wl_input_device") == 0)
+  else if (strcmp (interface, "wl_seat") == 0)
     {
       ClutterDeviceManager *device_manager = backend_wayland->device_manager;
       _clutter_device_manager_wayland_add_input_group (device_manager, id);
@@ -342,6 +343,7 @@ create_cursor (ClutterBackendWayland *backend_wayland,
   int stride, fd;
   char *filename;
   GError *error = NULL;
+  struct wl_shm_pool *pool;
   struct wl_buffer *buffer;
   gint width, height;
   gsize size;
@@ -381,14 +383,15 @@ create_cursor (ClutterBackendWayland *backend_wayland,
 
   set_pixbuf (pixbuf, map, width, height);
 
-  buffer = wl_shm_create_buffer (backend_wayland->wayland_shm,
-                                 fd,
-                                 width,
-                                 height,
-                                 stride,
-                                 WL_SHM_FORMAT_ARGB8888);
-
-  close(fd);
+  pool = wl_shm_create_pool (backend_wayland->wayland_shm, fd, size);
+  close (fd);
+  buffer = wl_shm_pool_create_buffer (pool,
+                                      0,
+                                      width,
+                                      height,
+                                      stride,
+                                      WL_SHM_FORMAT_ARGB8888);
+  wl_shm_pool_destroy (pool);
   munmap (map, size);
 
   return buffer;
@@ -433,9 +436,12 @@ clutter_backend_wayland_load_cursor (ClutterBackendWayland *backend_wayland)
 
   if (backend_wayland->cursor_buffer)
     {
-      backend_wayland->cursor_x = 15;
-      backend_wayland->cursor_y = 15;
+      backend_wayland->cursor_x = 0;
+      backend_wayland->cursor_y = 0;
     }
+
+  backend_wayland->cursor_surface =
+    wl_compositor_create_surface (backend_wayland->wayland_compositor);
 
   g_object_unref (pixbuf);
 }
