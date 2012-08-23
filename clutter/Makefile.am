@@ -254,79 +254,18 @@ source_c_priv = \
 
 # deprecated installed headers
 deprecated_h = \
-	$(srcdir)/deprecated/clutter-actor.h			\
-	$(srcdir)/deprecated/clutter-alpha.h 			\
-	$(srcdir)/deprecated/clutter-animatable.h		\
-	$(srcdir)/deprecated/clutter-animation.h		\
-	$(srcdir)/deprecated/clutter-animator.h			\
-	$(srcdir)/deprecated/clutter-backend.h			\
-	$(srcdir)/deprecated/clutter-behaviour.h 		\
-	$(srcdir)/deprecated/clutter-behaviour-depth.h 		\
-	$(srcdir)/deprecated/clutter-behaviour-ellipse.h	\
-	$(srcdir)/deprecated/clutter-behaviour-opacity.h 	\
-	$(srcdir)/deprecated/clutter-behaviour-path.h 		\
-	$(srcdir)/deprecated/clutter-behaviour-rotate.h 	\
-	$(srcdir)/deprecated/clutter-behaviour-scale.h 		\
-	$(srcdir)/deprecated/clutter-bin-layout.h		\
-	$(srcdir)/deprecated/clutter-box.h			\
-	$(srcdir)/deprecated/clutter-cairo-texture.h		\
-	$(srcdir)/deprecated/clutter-container.h		\
-	$(srcdir)/deprecated/clutter-fixed.h			\
-	$(srcdir)/deprecated/clutter-frame-source.h		\
-	$(srcdir)/deprecated/clutter-group.h			\
-	$(srcdir)/deprecated/clutter-input-device.h		\
-	$(srcdir)/deprecated/clutter-keysyms.h			\
-	$(srcdir)/deprecated/clutter-main.h			\
-	$(srcdir)/deprecated/clutter-media.h			\
-	$(srcdir)/deprecated/clutter-rectangle.h		\
-	$(srcdir)/deprecated/clutter-score.h 			\
-	$(srcdir)/deprecated/clutter-shader.h 			\
-	$(srcdir)/deprecated/clutter-stage-manager.h		\
-	$(srcdir)/deprecated/clutter-stage.h			\
-	$(srcdir)/deprecated/clutter-state.h			\
-	$(srcdir)/deprecated/clutter-texture.h			\
-	$(srcdir)/deprecated/clutter-timeline.h 		\
-	$(srcdir)/deprecated/clutter-timeout-pool.h 		\
-	$(srcdir)/deprecated/clutter-util.h 			\
 	$(NULL)
 
 # deprecated source code
 deprecated_c = \
-	$(srcdir)/deprecated/clutter-actor-deprecated.c		\
-	$(srcdir)/deprecated/clutter-alpha.c 			\
-	$(srcdir)/deprecated/clutter-animation.c		\
-	$(srcdir)/deprecated/clutter-animator.c			\
-	$(srcdir)/deprecated/clutter-behaviour.c 		\
-	$(srcdir)/deprecated/clutter-behaviour-depth.c		\
-	$(srcdir)/deprecated/clutter-behaviour-ellipse.c	\
-	$(srcdir)/deprecated/clutter-behaviour-opacity.c	\
-	$(srcdir)/deprecated/clutter-behaviour-path.c		\
-	$(srcdir)/deprecated/clutter-behaviour-rotate.c		\
-	$(srcdir)/deprecated/clutter-behaviour-scale.c		\
-	$(srcdir)/deprecated/clutter-box.c			\
-	$(srcdir)/deprecated/clutter-cairo-texture.c		\
-	$(srcdir)/deprecated/clutter-fixed.c			\
-	$(srcdir)/deprecated/clutter-frame-source.c		\
-	$(srcdir)/deprecated/clutter-group.c 			\
-	$(srcdir)/deprecated/clutter-input-device-deprecated.c	\
-	$(srcdir)/deprecated/clutter-layout-manager-deprecated.c \
-	$(srcdir)/deprecated/clutter-media.c			\
-	$(srcdir)/deprecated/clutter-rectangle.c 		\
-	$(srcdir)/deprecated/clutter-score.c 			\
-	$(srcdir)/deprecated/clutter-shader.c 			\
-	$(srcdir)/deprecated/clutter-state.c			\
-	$(srcdir)/deprecated/clutter-texture.c 			\
-	$(srcdir)/deprecated/clutter-timeout-pool.c		\
 	$(NULL)
 
 # deprecated private headers; these should not be installed
 deprecated_h_priv = \
-	$(srcdir)/deprecated/clutter-timeout-interval.h	\
 	$(NULL)
 
 # deprecated private source code; these should not be introspected
 deprecated_c_priv = \
-	$(srcdir)/deprecated/clutter-timeout-interval.c	\
 	$(NULL)
 
 # built sources
@@ -360,13 +299,6 @@ EXTRA_DIST += clutter-keysyms-update.pl
 
 pc_files += clutter-$(CLUTTER_API_VERSION).pc
 
-# in order to be compatible with Clutter < 1.10, when we shipped a single
-# shared library whose name was determined by the single backend it
-# supported, we need to install symbolic links so that existing applications
-# using Clutter won't break in the Brave New World of multi-backend support
-# in the same shared object.
-compat_libs =
-
 # backends source listings
 #
 #   backend_source_c := source code
@@ -389,12 +321,10 @@ x11_source_c = \
 	$(srcdir)/x11/clutter-input-device-core-x11.c	\
 	$(srcdir)/x11/clutter-keymap-x11.c		\
 	$(srcdir)/x11/clutter-stage-x11.c		\
-	$(srcdir)/x11/clutter-x11-texture-pixmap.c	\
 	$(NULL)
 
 x11_source_h = \
 	$(srcdir)/x11/clutter-x11.h			\
-	$(srcdir)/x11/clutter-x11-texture-pixmap.h	\
 	$(NULL)
 
 x11_source_h_priv = \
@@ -467,31 +397,6 @@ clutter-cogl-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
 	$(QUIET_GEN)cp -f $< $(@F)
 
 pc_files += clutter-cogl-$(CLUTTER_API_VERSION).pc
-endif
-
-# For compatibility with the old GLX backend
-#
-# Note: there wasn't actually anything GLX specific so we can add
-# the compatibility if clutter supports x11
-glx_source_c = $(srcdir)/x11/clutter-glx-texture-pixmap.c
-glx_source_h = $(srcdir)/x11/clutter-glx-texture-pixmap.h \
-	       $(srcdir)/x11/clutter-glx.h
-
-if SUPPORT_X11
-backend_source_h += $(glx_source_h)
-backend_source_c += $(glx_source_c)
-
-clutterglx_includedir = $(clutter_includedir)/glx
-clutterglx_include_HEADERS = $(glx_source_h)
-
-clutter-glx-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
-	$(QUIET_GEN)cp -f $< $(@F)
-
-pc_files += clutter-glx-$(CLUTTER_API_VERSION).pc
-
-compat_libs += \
-	libclutter-glx-$(CLUTTER_API_VERSION).so \
-	$(NULL)
 endif
 
 # GDK backend rules
@@ -632,10 +537,6 @@ clutter-cex100-$(CLUTTER_API_VERSION).pc: clutter-$(CLUTTER_API_VERSION).pc
 	$(QUIET_GEN)cp -f $< $(@F)
 
 pc_files += clutter-cex100-$(CLUTTER_API_VERSION).pc
-
-compat_libs += \
-	libclutter-cex100-$(CLUTTER_API_VERSION).so \
-	$(NULL)
 endif # SUPPORT_CEX100
 
 # EGL backend rules
@@ -750,14 +651,11 @@ cally_sources_h = \
 	$(srcdir)/cally/cally-actor.h		\
 	$(srcdir)/cally/cally-clone.h		\
 	$(srcdir)/cally/cally-factory.h		\
-	$(srcdir)/cally/cally-group.h		\
 	$(srcdir)/cally/cally.h			\
 	$(srcdir)/cally/cally-main.h		\
-	$(srcdir)/cally/cally-rectangle.h	\
 	$(srcdir)/cally/cally-root.h		\
 	$(srcdir)/cally/cally-stage.h		\
 	$(srcdir)/cally/cally-text.h		\
-	$(srcdir)/cally/cally-texture.h		\
 	$(srcdir)/cally/cally-util.h		\
 	$(NULL)
 
@@ -765,12 +663,9 @@ cally_sources_c = \
 	$(srcdir)/cally/cally-actor.c		\
 	$(srcdir)/cally/cally.c			\
 	$(srcdir)/cally/cally-clone.c		\
-	$(srcdir)/cally/cally-group.c		\
-	$(srcdir)/cally/cally-rectangle.c	\
 	$(srcdir)/cally/cally-root.c		\
 	$(srcdir)/cally/cally-stage.c		\
 	$(srcdir)/cally/cally-text.c		\
-	$(srcdir)/cally/cally-texture.c		\
 	$(srcdir)/cally/cally-util.c		\
 	$(NULL)
 
@@ -935,24 +830,6 @@ EXTRA_DIST += \
 
 # Let the VS9/VS10 Project files be cleared out before they are re-expanded...
 DISTCLEANFILES += ../build/win32/vs9/clutter.vcproj ../build/win32/vs10/clutter.vcxproj ../build/win32/vs10/clutter.vcxproj.filters ../build/win32/gen-enums.bat
-
-install-exec-local:
-	test -z "$(libdir)" || $(MKDIR_P) "$(DESTDIR)$(libdir)"
-	for lib in `echo $(compat_libs)`; do \
-	  (cd $(DESTDIR)$(libdir) && \
-	    rm -f $$lib.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION); \
-	  ) ; \
-	  (cd $(DESTDIR)$(libdir) && \
-	    { ln -s -f libclutter-$(CLUTTER_API_VERSION).so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib.0 || \
-	      { rm -f $$lib.0 && ln -s libclutter-1.0.so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib.0; }; \
-	    } \
-	  ) ; \
-	  (cd $(DESTDIR)$(libdir) && \
-	    { ln -s -f libclutter-$(CLUTTER_API_VERSION).so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib || \
-	      { rm -f $$lib && ln -s libclutter-1.0.so.0.$(CLUTTER_LT_CURRENT).$(CLUTTER_LT_REVISION) $$lib; }; \
-	    } \
-	  ) ; \
-	done
 
 # gobject-introspection rules
 -include $(INTROSPECTION_MAKEFILE)
