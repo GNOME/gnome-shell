@@ -141,6 +141,7 @@ const Overview = new Lang.Class({
         this._modal = false;            // have a modal grab
         this.animationInProgress = false;
         this._hideInProgress = false;
+        this.searchActive = false;
 
         // During transitions, we raise this to the top to avoid having the overview
         // area be reactive; it causes too many issues such as double clicks on
@@ -240,14 +241,36 @@ const Overview = new Lang.Class({
 
         this._viewSelector.connect('search-begin', Lang.bind(this,
             function() {
+                this.searchActive = true;
                 this._dash.hide();
                 this._thumbnailsBox.hide();
             }));
         this._viewSelector.connect('search-cancelled', Lang.bind(this,
             function() {
+                this.searchActive = false;
                 this._dash.show();
                 this._thumbnailsBox.show();
             }));
+
+        this.connect('app-drag-begin',
+                              Lang.bind(this, function () {
+                                  this._dash.show();
+                                  this._thumbnailsBox.show();
+                              }));
+        this.connect('app-drag-cancelled',
+                              Lang.bind(this, function () {
+                                  if (this.searchActive) {
+                                      this._dash.hide();
+                                      this._thumbnailsBox.hide();
+                                  }
+                              }));
+        this.connect('app-drag-end',
+                              Lang.bind(this, function () {
+                                  if (this.searchActive) {
+                                      this._dash.hide();
+                                      this._thumbnailsBox.hide();
+                                  }
+                              }));
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
         this._relayout();
