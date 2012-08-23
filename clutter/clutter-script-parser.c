@@ -34,21 +34,15 @@
 #include <glib.h>
 #include <gmodule.h>
 
-#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
-#include "deprecated/clutter-container.h"
-#include "deprecated/clutter-alpha.h"
-
 #include "clutter-actor.h"
+#include "clutter-container.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
-
+#include "clutter-private.h"
 #include "clutter-script.h"
 #include "clutter-script-private.h"
 #include "clutter-scriptable.h"
-
 #include "clutter-stage-manager.h"
-
-#include "clutter-private.h"
 
 static void clutter_script_parser_object_end (JsonParser *parser,
                                               JsonObject *object);
@@ -707,42 +701,8 @@ parse_signals (ClutterScript *script,
             }
         }
 
-      /* mandatory: "target-state" or "handler" */
-      if (json_object_has_member (object, "target-state"))
-        {
-          const gchar *state = NULL;
-          const gchar *target = NULL;
-          gboolean warp_to = FALSE;
-
-          target = json_object_get_string_member (object, "target-state");
-          if (target == NULL)
-            {
-              _clutter_script_warn_invalid_value (script,
-                                                  "target-state", "string",
-                                                  val);
-              continue;
-            }
-
-          if (json_object_has_member (object, "states"))
-            state = json_object_get_string_member (object, "states");
-
-          if (json_object_has_member (object, "warp"))
-            warp_to = json_object_get_boolean_member (object, "warp");
-
-          CLUTTER_NOTE (SCRIPT,
-                        "Added signal '%s' (states:%s, target-state:%s, warp:%s)",
-                        name,
-                        state != NULL ? state : "<default>", target,
-                        warp_to ? "true" : "false");
-
-          sinfo = g_slice_new0 (SignalInfo);
-          sinfo->is_handler = FALSE;
-          sinfo->name = g_strdup (name);
-          sinfo->state = g_strdup (state);
-          sinfo->target = g_strdup (target);
-          sinfo->warp_to = warp_to;
-        }
-      else if (json_object_has_member (object, "handler"))
+      /* mandatory: "handler" */
+      if (json_object_has_member (object, "handler"))
         {
           const gchar *handler;
           const gchar *connect;
@@ -792,7 +752,7 @@ parse_signals (ClutterScript *script,
       else
         _clutter_script_warn_missing_attribute (script,
                                                 NULL,
-                                                "handler or state");
+                                                "handler");
       if (sinfo != NULL)
         retval = g_list_prepend (retval, sinfo);
     }
@@ -800,98 +760,10 @@ parse_signals (ClutterScript *script,
   return retval;
 }
 
-static ClutterTimeline *
-construct_timeline (ClutterScript *script,
-                    JsonObject    *object)
-{
-  ClutterTimeline *retval = NULL;
-  ObjectInfo *oinfo;
-  GList *members, *l;
-
-  /* we fake an ObjectInfo so we can reuse clutter_script_construct_object()
-   * here; we do not save it inside the hash table, because if this had
-   * been a named object then we wouldn't have ended up here in the first
-   * place
-   */
-  oinfo = g_slice_new0 (ObjectInfo);
-  oinfo->gtype = CLUTTER_TYPE_TIMELINE;
-  oinfo->id = g_strdup ("dummy");
-
-  members = json_object_get_members (object);
-  for (l = members; l != NULL; l = l->next)
-    {
-      const gchar *name = l->data;
-      JsonNode *node = json_object_get_member (object, name);
-      PropertyInfo *pinfo = g_slice_new0 (PropertyInfo);
-
-      pinfo->name = g_strdelimit (g_strdup (name), G_STR_DELIMITERS, '-');
-      pinfo->node = json_node_copy (node);
-
-      oinfo->properties = g_list_prepend (oinfo->properties, pinfo);
-    }
-
-  g_list_free (members);
-
-  _clutter_script_construct_object (script, oinfo);
-  _clutter_script_apply_properties (script, oinfo);
-  retval = CLUTTER_TIMELINE (oinfo->object);
-
-  /* we transfer ownership to the alpha function, so we ref before
-   * destroying the ObjectInfo to avoid the timeline going away
-   */
-  g_object_ref (retval);
-  object_info_free (oinfo);
-
-  return retval;
-}
-
-/* define the names of the animation modes to match the ones
- * that developers might be more accustomed to
- */
-static const struct
-{
-  const gchar *name;
-  ClutterAnimationMode mode;
-} animation_modes[] = {
-  { "linear", CLUTTER_LINEAR },
-  { "easeInQuad", CLUTTER_EASE_IN_QUAD },
-  { "easeOutQuad", CLUTTER_EASE_OUT_QUAD },
-  { "easeInOutQuad", CLUTTER_EASE_IN_OUT_QUAD },
-  { "easeInCubic", CLUTTER_EASE_IN_CUBIC },
-  { "easeOutCubic", CLUTTER_EASE_OUT_CUBIC },
-  { "easeInOutCubic", CLUTTER_EASE_IN_OUT_CUBIC },
-  { "easeInQuart", CLUTTER_EASE_IN_QUART },
-  { "easeOutQuart", CLUTTER_EASE_OUT_QUART },
-  { "easeInOutQuart", CLUTTER_EASE_IN_OUT_QUART },
-  { "easeInQuint", CLUTTER_EASE_IN_QUINT },
-  { "easeOutQuint", CLUTTER_EASE_OUT_QUINT },
-  { "easeInOutQuint", CLUTTER_EASE_IN_OUT_QUINT },
-  { "easeInSine", CLUTTER_EASE_IN_SINE },
-  { "easeOutSine", CLUTTER_EASE_OUT_SINE },
-  { "easeInOutSine", CLUTTER_EASE_IN_OUT_SINE },
-  { "easeInExpo", CLUTTER_EASE_IN_EXPO },
-  { "easeOutExpo", CLUTTER_EASE_OUT_EXPO },
-  { "easeInOutExpo", CLUTTER_EASE_IN_OUT_EXPO },
-  { "easeInCirc", CLUTTER_EASE_IN_CIRC },
-  { "easeOutCirc", CLUTTER_EASE_OUT_CIRC },
-  { "easeInOutCirc", CLUTTER_EASE_IN_OUT_CIRC },
-  { "easeInElastic", CLUTTER_EASE_IN_ELASTIC },
-  { "easeOutElastic", CLUTTER_EASE_OUT_ELASTIC },
-  { "easeInOutElastic", CLUTTER_EASE_IN_OUT_ELASTIC },
-  { "easeInBack", CLUTTER_EASE_IN_BACK },
-  { "easeOutBack", CLUTTER_EASE_OUT_BACK },
-  { "easeInOutBack", CLUTTER_EASE_IN_OUT_BACK },
-  { "easeInBounce", CLUTTER_EASE_IN_BOUNCE },
-  { "easeOutBounce", CLUTTER_EASE_OUT_BOUNCE },
-  { "easeInOutBounce", CLUTTER_EASE_IN_OUT_BOUNCE },
-};
-
-static const gint n_animation_modes = G_N_ELEMENTS (animation_modes);
-
 gulong
 _clutter_script_resolve_animation_mode (JsonNode *node)
 {
-  gint i, res = CLUTTER_CUSTOM_MODE;
+  gint res = CLUTTER_CUSTOM_MODE;
 
   if (JSON_NODE_TYPE (node) != JSON_NODE_VALUE)
     return CLUTTER_CUSTOM_MODE;
@@ -903,18 +775,6 @@ _clutter_script_resolve_animation_mode (JsonNode *node)
     {
       const gchar *name = json_node_get_string (node);
 
-      /* XXX - we might be able to optimize by changing the ordering
-       * of the animation_modes array, e.g.
-       *  - special casing linear
-       *  - tokenizing ('ease', 'In', 'Sine') and matching on token
-       *  - binary searching?
-       */
-      for (i = 0; i < n_animation_modes; i++)
-        {
-          if (strcmp (animation_modes[i].name, name) == 0)
-            return animation_modes[i].mode;
-        }
-
       if (_clutter_script_enum_from_string (CLUTTER_TYPE_ANIMATION_MODE,
                                             name,
                                             &res))
@@ -924,106 +784,6 @@ _clutter_script_resolve_animation_mode (JsonNode *node)
     }
 
   return CLUTTER_CUSTOM_MODE;
-}
-
-static ClutterAlphaFunc
-resolve_alpha_func (const gchar *name)
-{
-  static GModule *module = NULL;
-  ClutterAlphaFunc func;
-
-  CLUTTER_NOTE (SCRIPT, "Looking up '%s' alpha function", name);
-
-  if (G_UNLIKELY (!module))
-    module = g_module_open (NULL, 0);
-
-  if (g_module_symbol (module, name, (gpointer) &func))
-    {
-      CLUTTER_NOTE (SCRIPT, "Found '%s' alpha function in the symbols table",
-                    name);
-      return func;
-    }
-
-  return NULL;
-}
-
-GObject *
-_clutter_script_parse_alpha (ClutterScript *script,
-                             JsonNode      *node)
-{
-  GObject *retval = NULL;
-  JsonObject *object;
-  ClutterTimeline *timeline = NULL;
-  ClutterAlphaFunc alpha_func = NULL;
-  ClutterAnimationMode mode = CLUTTER_CUSTOM_MODE;
-  JsonNode *val;
-  gboolean unref_timeline = FALSE;
-
-  if (JSON_NODE_TYPE (node) != JSON_NODE_OBJECT)
-    return NULL;
-
-  object = json_node_get_object (node);
-
-  val = json_object_get_member (object, "timeline");
-  if (val)
-    {
-      if (JSON_NODE_TYPE (val) == JSON_NODE_VALUE &&
-          json_node_get_string (val) != NULL)
-        {
-          const gchar *id_ = json_node_get_string (val);
-
-          timeline =
-            CLUTTER_TIMELINE (clutter_script_get_object (script, id_));
-        }
-      else if (JSON_NODE_TYPE (val) == JSON_NODE_OBJECT)
-        {
-          timeline = construct_timeline (script, json_node_get_object (val));
-          unref_timeline = TRUE;
-        }
-    }
-
-  val = json_object_get_member (object, "mode");
-  if (val != NULL)
-    mode = _clutter_script_resolve_animation_mode (val);
-
-  if (mode == CLUTTER_CUSTOM_MODE)
-    {
-      val = json_object_get_member (object, "function");
-      if (val && json_node_get_string (val) != NULL)
-        {
-          alpha_func = resolve_alpha_func (json_node_get_string (val));
-          if (!alpha_func)
-            {
-              g_warning ("Unable to find the function '%s' in the "
-                         "Clutter alpha functions or the symbols table",
-                         json_node_get_string (val));
-            }
-        }
-    }
-
-  CLUTTER_NOTE (SCRIPT, "Parsed alpha: %s timeline (%p) (mode:%d, func:%p)",
-                unref_timeline ? "implicit" : "explicit",
-                timeline ? timeline : 0x0,
-                mode != CLUTTER_CUSTOM_MODE ? mode : 0,
-                alpha_func ? alpha_func : 0x0);
-
-  retval = g_object_new (CLUTTER_TYPE_ALPHA, NULL);
-
-  if (mode != CLUTTER_CUSTOM_MODE)
-    clutter_alpha_set_mode (CLUTTER_ALPHA (retval), mode);
-
-  if (alpha_func != NULL)
-    clutter_alpha_set_func (CLUTTER_ALPHA (retval), alpha_func, NULL, NULL);
-
-  clutter_alpha_set_timeline (CLUTTER_ALPHA (retval), timeline);
-
-  /* if we created an implicit timeline, the Alpha has full ownership
-   * of it now, since it won't be accessible from ClutterScript
-   */
-  if (unref_timeline)
-    g_object_unref (timeline);
-
-  return retval;
 }
 
 static void
@@ -1786,7 +1546,8 @@ apply_layout_properties (ClutterScript    *script,
   ClutterLayoutManager *manager;
   GType meta_type;
 
-  manager = g_object_get_data (G_OBJECT (container), "clutter-layout-manager");
+  /* XXX:2.0 remove; only ClutterActor should have a layout manager */
+  manager = g_object_get_data (G_OBJECT (container), "-clutter-layout-manager");
   if (manager == NULL)
     return;
 
@@ -1980,7 +1741,7 @@ static void
 add_children (ClutterScript *script,
               ObjectInfo    *oinfo)
 {
-  ClutterContainer *container = CLUTTER_CONTAINER (oinfo->object);
+  ClutterActor *container = CLUTTER_ACTOR (oinfo->object);
   GList *l, *unresolved;
 
   unresolved = NULL;
@@ -2019,7 +1780,7 @@ add_children (ClutterScript *script,
                     name,
                     g_type_name (G_OBJECT_TYPE (container)));
 
-      clutter_container_add_actor (container, CLUTTER_ACTOR (object));
+      clutter_actor_add_child (container, CLUTTER_ACTOR (object));
     }
 
   g_list_foreach (oinfo->children, (GFunc) g_free, NULL);

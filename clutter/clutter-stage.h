@@ -55,7 +55,7 @@ typedef struct _ClutterStagePrivate ClutterStagePrivate;
 struct _ClutterStage
 {
   /*< private >*/
-  ClutterGroup parent_instance;
+  ClutterActor parent_instance;
 
   ClutterStagePrivate *priv;
 };
@@ -75,7 +75,7 @@ struct _ClutterStage
 struct _ClutterStageClass
 {
   /*< private >*/
-  ClutterGroupClass parent_class;
+  ClutterActorClass parent_class;
 
   /*< public >*/
   /* signals */

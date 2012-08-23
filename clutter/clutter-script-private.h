@@ -88,13 +88,10 @@ typedef struct {
   gchar *name;
   gchar *handler;
   gchar *object;
-  gchar *state;
-  gchar *target;
 
   GConnectFlags flags;
 
   guint is_handler : 1;
-  guint warp_to    : 1;
 } SignalInfo;
 
 void property_info_free (gpointer data);
@@ -128,8 +125,6 @@ gboolean _clutter_script_parse_geometry    (ClutterScript   *script,
 gboolean _clutter_script_parse_color       (ClutterScript   *script,
                                             JsonNode        *node,
                                             ClutterColor    *color);
-GObject *_clutter_script_parse_alpha       (ClutterScript   *script,
-                                            JsonNode        *node);
 gboolean _clutter_script_parse_point       (ClutterScript   *script,
                                             JsonNode        *node,
                                             ClutterPoint    *point);

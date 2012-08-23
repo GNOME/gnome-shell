@@ -79,173 +79,6 @@
  *   function whenever one of these properties changes.</para>
  * </refsect2>
  *
- * <refsect2 id="ClutterLayoutManager-animation">
- *   <title>Animating a ClutterLayoutManager</title>
- *   <para>A layout manager is used to let a #ClutterContainer take complete
- *   ownership over the layout (that is: the position and sizing) of its
- *   children; this means that using the Clutter animation API, like
- *   clutter_actor_animate(), to animate the position and sizing of a child of
- *   a layout manager it is not going to work properly, as the animation will
- *   automatically override any setting done by the layout manager
- *   itself.</para>
- *   <para>It is possible for a #ClutterLayoutManager sub-class to animate its
- *   children layout by using the base class animation support. The
- *   #ClutterLayoutManager animation support consists of three virtual
- *   functions: #ClutterLayoutManagerClass.begin_animation(),
- *   #ClutterLayoutManagerClass.get_animation_progress(), and
- *   #ClutterLayoutManagerClass.end_animation().</para>
- *   <variablelist>
- *     <varlistentry>
- *       <term><function>begin_animation (duration, easing)</function></term>
- *       <listitem><para>This virtual function is invoked when the layout
- *       manager should begin an animation. The implementation should set up
- *       the state for the animation and create the ancillary objects for
- *       animating the layout. The default implementation creates a
- *       #ClutterTimeline for the given duration and a #ClutterAlpha binding
- *       the timeline to the given easing mode. This function returns a
- *       #ClutterAlpha which should be used to control the animation from
- *       the caller perspective.</para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term><function>get_animation_progress()</function></term>
- *       <listitem><para>This virtual function should be invoked when animating
- *       a layout manager. It returns the progress of the animation, using the
- *       same semantics as the #ClutterAlpha:alpha value.</para></listitem>
- *     </varlistentry>
- *     <varlistentry>
- *       <term><function>end_animation()</function></term>
- *       <listitem><para>This virtual function is invoked when the animation of
- *       a layout manager ends, and it is meant to be used for bookkeeping the
- *       objects created in the <function>begin_animation()</function>
- *       function. The default implementation will call it implicitly when the
- *       timeline is complete.</para></listitem>
- *     </varlistentry>
- *   </variablelist>
- *   <para>The simplest way to animate a layout is to create a #ClutterTimeline
- *   inside the <function>begin_animation()</function> virtual function, along
- *   with a #ClutterAlpha, and for each #ClutterTimeline::new-frame signal
- *   emission call clutter_layout_manager_layout_changed(), which will cause a
- *   relayout. The #ClutterTimeline::completed signal emission should cause
- *   clutter_layout_manager_end_animation() to be called. The default
- *   implementation provided internally by #ClutterLayoutManager does exactly
- *   this, so most sub-classes should either not override any animation-related
- *   virtual function or simply override #ClutterLayoutManagerClass.begin_animation()
- *   and #ClutterLayoutManagerClass.end_animation() to set up ad hoc state, and then
- *   chain up to the parent's implementation.</para>
- *   <example id="example-ClutterLayoutManager-animation">
- *     <title>Animation of a Layout Manager</title>
- *     <para>The code below shows how a #ClutterLayoutManager sub-class should
- *     provide animating the allocation of its children from within the
- *     #ClutterLayoutManagerClass.allocate() virtual function implementation. The
- *     animation is computed between the last stable allocation performed
- *     before the animation started and the desired final allocation.</para>
- *     <para>The <varname>is_animating</varname> variable is stored inside the
- *     #ClutterLayoutManager sub-class and it is updated by overriding the
- *     #ClutterLayoutManagerClass.begin_animation() and the
- *     #ClutterLayoutManagerClass.end_animation() virtual functions and chaining up
- *     to the base class implementation.</para>
- *     <para>The last stable allocation is stored within a #ClutterLayoutMeta
- *     sub-class used by the implementation.</para>
- *     <programlisting>
- * static void
- * my_layout_manager_allocate (ClutterLayoutManager   *manager,
- *                             ClutterContainer       *container,
- *                             const ClutterActorBox  *allocation,
- *                             ClutterAllocationFlags  flags)
- * {
- *   MyLayoutManager *self = MY_LAYOUT_MANAGER (manager);
- *   ClutterActor *child;
- *
- *   for (child = clutter_actor_get_first_child (CLUTTER_ACTOR (container));
- *        child != NULL;
- *        child = clutter_actor_get_next_sibling (child))
- *     {
- *       ClutterLayoutMeta *meta;
- *       MyLayoutMeta *my_meta;
- *
- *       /&ast; retrieve the layout meta-object &ast;/
- *       meta = clutter_layout_manager_get_child_meta (manager,
- *                                                     container,
- *                                                     child);
- *       my_meta = MY_LAYOUT_META (meta);
- *
- *       /&ast; compute the desired allocation for the child &ast;/
- *       compute_allocation (self, my_meta, child,
- *                           allocation, flags,
- *                           &amp;child_box);
- *
- *       /&ast; this is the additional code that deals with the animation
- *        &ast; of the layout manager
- *        &ast;/
- *       if (!self-&gt;is_animating)
- *         {
- *           /&ast; store the last stable allocation for later use &ast;/
- *           my_meta-&gt;last_alloc = clutter_actor_box_copy (&amp;child_box);
- *         }
- *       else
- *         {
- *           ClutterActorBox end = { 0, };
- *           gdouble p;
- *
- *           /&ast; get the progress of the animation &ast;/
- *           p = clutter_layout_manager_get_animation_progress (manager);
- *
- *           if (my_meta-&gt;last_alloc != NULL)
- *             {
- *               /&ast; copy the desired allocation as the final state &ast;/
- *               end = child_box;
- *
- *               /&ast; then interpolate the initial and final state
- *                &ast; depending on the progress of the animation,
- *                &ast; and put the result inside the box we will use
- *                &ast; to allocate the child
- *                &ast;/
- *               clutter_actor_box_interpolate (my_meta-&gt;last_alloc,
- *                                              &amp;end,
- *                                              p,
- *                                              &amp;child_box);
- *             }
- *           else
- *             {
- *               /&ast; if there is no stable allocation then the child was
- *                &ast; added while animating; one possible course of action
- *                &ast; is to just bail out and fall through to the allocation
- *                &ast; to position the child directly at its final state
- *                &ast;/
- *               my_meta-&gt;last_alloc =
- *                 clutter_actor_box_copy (&amp;child_box);
- *             }
- *         }
- *
- *       /&ast; allocate the child &ast;/
- *       clutter_actor_allocate (child, &child_box, flags);
- *     }
- * }
- *     </programlisting>
- *   </example>
- *   <para>Sub-classes of #ClutterLayoutManager that support animations of the
- *   layout changes should call clutter_layout_manager_begin_animation()
- *   whenever a layout property changes value, e.g.:</para>
- *   <informalexample>
- *     <programlisting>
- * if (self->orientation != new_orientation)
- *   {
- *     ClutterLayoutManager *manager;
- *
- *     self->orientation = new_orientation;
- *
- *     manager = CLUTTER_LAYOUT_MANAGER (self);
- *     clutter_layout_manager_layout_changed (manager);
- *     clutter_layout_manager_begin_animation (manager, 500, CLUTTER_LINEAR);
- *
- *     g_object_notify (G_OBJECT (self), "orientation");
- *   }
- *     </programlisting>
- *   </informalexample>
- *   <para>The code above will animate a change in the
- *   <varname>orientation</varname> layout property of a layout manager.</para>
- * </refsect2>
- *
  * <refsect2 id="clutter-layout-properties">
  *   <title>Layout Properties</title>
  *   <para>If a layout manager has layout properties, that is properties that
@@ -362,7 +195,6 @@ G_DEFINE_ABSTRACT_TYPE (ClutterLayoutManager,
                         G_TYPE_INITIALLY_UNOWNED);
 
 static GQuark quark_layout_meta  = 0;
-static GQuark quark_layout_alpha = 0;
 
 static guint manager_signals[LAST_SIGNAL] = { 0, };
 
@@ -375,15 +207,15 @@ layout_manager_freeze_layout_change (ClutterLayoutManager *manager)
                 G_OBJECT_TYPE_NAME (manager),
                 manager);
 
-  is_frozen = g_object_get_data (G_OBJECT (manager), "freeze-change");
+  is_frozen = g_object_get_data (G_OBJECT (manager), "-clutter-layout-manager-freeze-change");
   if (is_frozen == NULL)
-    g_object_set_data (G_OBJECT (manager), "freeze-change",
+    g_object_set_data (G_OBJECT (manager), "-clutter-layout-manager-freeze-change",
                        GUINT_TO_POINTER (1));
   else
     {
       guint level = GPOINTER_TO_UINT (is_frozen) + 1;
 
-      g_object_set_data (G_OBJECT (manager), "freeze-change",
+      g_object_set_data (G_OBJECT (manager), "-clutter-layout-manager-freeze-change",
                          GUINT_TO_POINTER (level));
     }
 }
@@ -393,7 +225,7 @@ layout_manager_thaw_layout_change (ClutterLayoutManager *manager)
 {
   gpointer is_frozen;
 
-  is_frozen = g_object_get_data (G_OBJECT (manager), "freeze-change");
+  is_frozen = g_object_get_data (G_OBJECT (manager), "-clutter-layout-manager-freeze-change");
   if (is_frozen == NULL)
     g_critical (G_STRLOC ": Mismatched thaw; you have to call "
                 "clutter_layout_manager_freeze_layout_change() prior to "
@@ -410,9 +242,9 @@ layout_manager_thaw_layout_change (ClutterLayoutManager *manager)
 
       level -= 1;
       if (level == 0)
-        g_object_set_data (G_OBJECT (manager), "freeze-change", NULL);
+        g_object_set_data (G_OBJECT (manager), "-clutter-layout-manager-freeze-change", NULL);
       else
-        g_object_set_data (G_OBJECT (manager), "freeze-change",
+        g_object_set_data (G_OBJECT (manager), "-clutter-layout-manager-freeze-change",
                            GUINT_TO_POINTER (level));
     }
 
@@ -464,7 +296,7 @@ layout_manager_real_set_container (ClutterLayoutManager *manager,
                                    ClutterContainer     *container)
 {
   if (container != NULL)
-    g_object_set_data (G_OBJECT (container), "clutter-layout-manager", manager);
+    g_object_set_data (G_OBJECT (container), "-clutter-layout-manager", manager);
 }
 
 static ClutterLayoutMeta *
@@ -499,101 +331,11 @@ layout_manager_real_get_child_meta_type (ClutterLayoutManager *manager)
   return G_TYPE_INVALID;
 }
 
-/* XXX:2.0 - Remove */
-static ClutterAlpha *
-layout_manager_real_begin_animation (ClutterLayoutManager *manager,
-                                     guint                 duration,
-                                     gulong                mode)
-{
-  ClutterTimeline *timeline;
-  ClutterAlpha *alpha;
-
-  alpha = g_object_get_qdata (G_OBJECT (manager), quark_layout_alpha);
-  if (alpha != NULL)
-    {
-      clutter_alpha_set_mode (alpha, mode);
-
-      timeline = clutter_alpha_get_timeline (alpha);
-      clutter_timeline_set_duration (timeline, duration);
-      clutter_timeline_rewind (timeline);
-
-      return alpha;
-    };
-
-  timeline = clutter_timeline_new (duration);
-
-  alpha = clutter_alpha_new_full (timeline, mode);
-
-  /* let the alpha take ownership of the timeline */
-  g_object_unref (timeline);
-
-  g_signal_connect_swapped (timeline, "completed",
-                            G_CALLBACK (clutter_layout_manager_end_animation),
-                            manager);
-  g_signal_connect_swapped (timeline, "new-frame",
-                            G_CALLBACK (clutter_layout_manager_layout_changed),
-                            manager);
-
-  g_object_set_qdata_full (G_OBJECT (manager),
-                           quark_layout_alpha, alpha,
-                           (GDestroyNotify) g_object_unref);
-
-  clutter_timeline_start (timeline);
-
-  return alpha;
-}
-
-/* XXX:2.0 - Remove */
-static gdouble
-layout_manager_real_get_animation_progress (ClutterLayoutManager *manager)
-{
-  ClutterAlpha *alpha;
-
-  alpha = g_object_get_qdata (G_OBJECT (manager), quark_layout_alpha);
-  if (alpha == NULL)
-    return 1.0;
-
-  return clutter_alpha_get_alpha (alpha);
-}
-
-/* XXX:2.0 - Remove */
-static void
-layout_manager_real_end_animation (ClutterLayoutManager *manager)
-{
-  ClutterTimeline *timeline;
-  ClutterAlpha *alpha;
-
-  alpha = g_object_get_qdata (G_OBJECT (manager), quark_layout_alpha);
-  if (alpha == NULL)
-    return;
-
-  timeline = clutter_alpha_get_timeline (alpha);
-  g_assert (timeline != NULL);
-
-  if (clutter_timeline_is_playing (timeline))
-    clutter_timeline_stop (timeline);
-
-  g_signal_handlers_disconnect_by_func (timeline,
-                                        G_CALLBACK (clutter_layout_manager_end_animation),
-                                        manager);
-  g_signal_handlers_disconnect_by_func (timeline,
-                                        G_CALLBACK (clutter_layout_manager_layout_changed),
-                                        manager);
-
-  g_object_set_qdata (G_OBJECT (manager), quark_layout_alpha, NULL);
-
-  clutter_layout_manager_layout_changed (manager);
-}
-
 static void
 clutter_layout_manager_class_init (ClutterLayoutManagerClass *klass)
 {
   quark_layout_meta =
-    g_quark_from_static_string ("clutter-layout-manager-child-meta");
-
-  /* XXX:2.0 - Remove */
-  quark_layout_alpha =
-    g_quark_from_static_string ("clutter-layout-manager-alpha");
+    g_quark_from_static_string ("-clutter-layout-manager-child-meta");
 
   g_type_class_add_private (klass, sizeof (ClutterLayoutManagerPrivate));
 
@@ -602,11 +344,6 @@ clutter_layout_manager_class_init (ClutterLayoutManagerClass *klass)
   klass->allocate = layout_manager_real_allocate;
   klass->create_child_meta = layout_manager_real_create_child_meta;
   klass->get_child_meta_type = layout_manager_real_get_child_meta_type;
-
-  /* XXX:2.0 - Remove */
-  klass->begin_animation = layout_manager_real_begin_animation;
-  klass->get_animation_progress = layout_manager_real_get_animation_progress;
-  klass->end_animation = layout_manager_real_end_animation;
   klass->set_container = layout_manager_real_set_container;
 
   /**
@@ -775,7 +512,7 @@ clutter_layout_manager_layout_changed (ClutterLayoutManager *manager)
 
   g_return_if_fail (CLUTTER_IS_LAYOUT_MANAGER (manager));
 
-  is_frozen = g_object_get_data (G_OBJECT (manager), "freeze-change");
+  is_frozen = g_object_get_data (G_OBJECT (manager), "-clutter-layout-manager-freeze-change");
   if (is_frozen == NULL)
     g_signal_emit (manager, manager_signals[LAYOUT_CHANGED], 0);
   else

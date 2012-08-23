@@ -103,21 +103,6 @@ clutter_interval_real_validate (ClutterInterval *interval,
 {
   GType pspec_gtype = G_PARAM_SPEC_VALUE_TYPE (pspec);
 
-  /* check the GTypes we provide first */
-  if (pspec_gtype == COGL_TYPE_FIXED)
-    {
-      ClutterParamSpecFixed *pspec_fixed = CLUTTER_PARAM_SPEC_FIXED (pspec);
-      CoglFixed a, b;
-
-      a = b = 0;
-      clutter_interval_get_interval (interval, &a, &b);
-      if ((a >= pspec_fixed->minimum && a <= pspec_fixed->maximum) &&
-          (b >= pspec_fixed->minimum && b <= pspec_fixed->maximum))
-        return TRUE;
-      else
-        return FALSE;
-    }
-
   /* then check the fundamental types */
   switch (G_TYPE_FUNDAMENTAL (pspec_gtype))
     {

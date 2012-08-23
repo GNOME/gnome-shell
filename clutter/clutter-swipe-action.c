@@ -142,7 +142,7 @@ gesture_end (ClutterGestureAction *action,
   gfloat press_x, press_y;
   gfloat release_x, release_y;
   ClutterSwipeDirection direction = 0;
-  gboolean can_emit_swipe;
+  gboolean unused;
 
   clutter_gesture_action_get_press_coords (action,
                                            0,
@@ -162,20 +162,8 @@ gesture_end (ClutterGestureAction *action,
   else if (press_y - release_y > priv->threshold)
     direction |= CLUTTER_SWIPE_DIRECTION_UP;
 
-  /* XXX:2.0 remove */
   g_signal_emit (action, swipe_signals[SWIPE], 0, actor, direction,
-                 &can_emit_swipe);
-  if (can_emit_swipe)
-    g_signal_emit (action, swipe_signals[SWEPT], 0, actor, direction);
-}
-
-/* XXX:2.0 remove */
-static gboolean
-clutter_swipe_action_real_swipe (ClutterSwipeAction    *action,
-                                 ClutterActor          *actor,
-                                 ClutterSwipeDirection  direction)
-{
-  return TRUE;
+                 &unused);
 }
 
 static void
@@ -189,34 +177,6 @@ clutter_swipe_action_class_init (ClutterSwipeActionClass *klass)
   gesture_class->gesture_begin = gesture_begin;
   gesture_class->gesture_progress = gesture_progress;
   gesture_class->gesture_end = gesture_end;
-
-  /* XXX:2.0 remove */
-  klass->swipe = clutter_swipe_action_real_swipe;
-
-  /**
-   * ClutterSwipeAction::swept:
-   * @action: the #ClutterSwipeAction that emitted the signal
-   * @actor: the #ClutterActor attached to the @action
-   * @direction: the main direction of the swipe gesture
-   *
-   * The ::swept signal is emitted when a swipe gesture is recognized on the
-   * attached actor.
-   *
-   * Deprecated: 1.14: Use the ::swipe signal instead.
-   *
-   * Since: 1.8
-   */
-  swipe_signals[SWEPT] =
-    g_signal_new (I_("swept"),
-                  G_TYPE_FROM_CLASS (klass),
-                  G_SIGNAL_RUN_LAST |
-                  G_SIGNAL_DEPRECATED,
-                  G_STRUCT_OFFSET (ClutterSwipeActionClass, swept),
-                  NULL, NULL,
-                  _clutter_marshal_VOID__OBJECT_FLAGS,
-                  G_TYPE_NONE, 2,
-                  CLUTTER_TYPE_ACTOR,
-                  CLUTTER_TYPE_SWIPE_DIRECTION);
 
   /**
    * ClutterSwipeAction::swipe:

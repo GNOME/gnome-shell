@@ -81,7 +81,7 @@
 
 static void clutter_container_iface_init (ClutterContainerIface *iface);
 
-G_DEFINE_TYPE_WITH_CODE (ClutterStage, clutter_stage, CLUTTER_TYPE_GROUP,
+G_DEFINE_TYPE_WITH_CODE (ClutterStage, clutter_stage, CLUTTER_TYPE_ACTOR,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
                                                 clutter_container_iface_init))
 
@@ -2243,6 +2243,8 @@ clutter_stage_init (ClutterStage *self)
   ClutterStageWindow *impl;
   ClutterBackend *backend;
   GError *error;
+
+  CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_VISIBLE);
 
   /* a stage is a top-level object */
   CLUTTER_SET_PRIVATE_FLAGS (self, CLUTTER_IS_TOPLEVEL);

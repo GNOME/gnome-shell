@@ -79,17 +79,6 @@ struct _ClutterLayoutManager
  * @create_child_meta: virtual function; override to create a
  *   #ClutterLayoutMeta instance associated to a #ClutterContainer and a
  *   child #ClutterActor, used to maintain layout manager specific properties
- * @begin_animation: virtual function; override to control the animation
- *   of a #ClutterLayoutManager with the given duration and easing mode.
- *   This virtual function is deprecated, and it should not be overridden
- *   in newly written code.
- * @end_animation: virtual function; override to end an animation started
- *   by clutter_layout_manager_begin_animation(). This virtual function is
- *   deprecated, and it should not be overriden in newly written code.
- * @get_animation_progress: virtual function; override to control the
- *   progress of the animation of a #ClutterLayoutManager. This virtual
- *   function is deprecated, and it should not be overridden in newly written
- *   code.
  * @layout_changed: class handler for the #ClutterLayoutManager::layout-changed
  *   signal
  *
@@ -126,15 +115,6 @@ struct _ClutterLayoutManagerClass
   ClutterLayoutMeta *(* create_child_meta)      (ClutterLayoutManager   *manager,
                                                  ClutterContainer       *container,
                                                  ClutterActor           *actor);
-
-  /* deprecated */
-  ClutterAlpha *     (* begin_animation)        (ClutterLayoutManager   *manager,
-                                                 guint                   duration,
-                                                 gulong                  mode);
-  /* deprecated */
-  gdouble            (* get_animation_progress) (ClutterLayoutManager   *manager);
-  /* deprecated */
-  void               (* end_animation)          (ClutterLayoutManager   *manager);
 
   void               (* layout_changed)         (ClutterLayoutManager   *manager);
 

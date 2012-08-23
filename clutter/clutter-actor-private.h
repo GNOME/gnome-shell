@@ -183,22 +183,13 @@ struct _ClutterTransformInfo
 {
   /* rotation (angle and center) */
   gdouble rx_angle;
-  AnchorCoord rx_center;
-
   gdouble ry_angle;
-  AnchorCoord ry_center;
-
   gdouble rz_angle;
-  AnchorCoord rz_center;
 
   /* scaling */
   gdouble scale_x;
   gdouble scale_y;
   gdouble scale_z;
-  AnchorCoord scale_center;
-
-  /* anchor point */
-  AnchorCoord anchor;
 
   /* translation */
   ClutterVertex translation;
