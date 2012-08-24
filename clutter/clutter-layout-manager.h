@@ -181,15 +181,6 @@ void               clutter_layout_manager_child_get_property    (ClutterLayoutMa
                                                                  const gchar            *property_name,
                                                                  GValue                 *value);
 
-CLUTTER_DEPRECATED_IN_1_12
-ClutterAlpha *     clutter_layout_manager_begin_animation       (ClutterLayoutManager   *manager,
-                                                                 guint                   duration,
-                                                                 gulong                  mode);
-CLUTTER_DEPRECATED_IN_1_12
-void               clutter_layout_manager_end_animation         (ClutterLayoutManager   *manager);
-CLUTTER_DEPRECATED_IN_1_12
-gdouble            clutter_layout_manager_get_animation_progress (ClutterLayoutManager   *manager);
-
 G_END_DECLS
 
 #endif /* __CLUTTER_LAYOUT_MANAGER_H__ */

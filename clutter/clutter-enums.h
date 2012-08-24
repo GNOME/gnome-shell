@@ -484,34 +484,6 @@ typedef enum {
 } ClutterInterpolation;
 
 /**
- * ClutterBinAlignment:
- * @CLUTTER_BIN_ALIGNMENT_FIXED: Fixed position alignment; the
- *   #ClutterBinLayout will honour the fixed position provided
- *   by the actors themselves when allocating them
- * @CLUTTER_BIN_ALIGNMENT_FILL: Fill the allocation size
- * @CLUTTER_BIN_ALIGNMENT_START: Position the actors at the top
- *   or left side of the container, depending on the axis
- * @CLUTTER_BIN_ALIGNMENT_END: Position the actors at the bottom
- *   or right side of the container, depending on the axis
- * @CLUTTER_BIN_ALIGNMENT_CENTER: Position the actors at the
- *   center of the container, depending on the axis
- *
- * The alignment policies available on each axis for #ClutterBinLayout
- *
- * Since: 1.2
- *
- * Deprecated: 1.12: Use #ClutterActorAlign and the #ClutterActor
- *   API instead
- */
-typedef enum {
-  CLUTTER_BIN_ALIGNMENT_FIXED,
-  CLUTTER_BIN_ALIGNMENT_FILL,
-  CLUTTER_BIN_ALIGNMENT_START,
-  CLUTTER_BIN_ALIGNMENT_END,
-  CLUTTER_BIN_ALIGNMENT_CENTER
-} ClutterBinAlignment;
-
-/**
  * ClutterBindCoordinate:
  * @CLUTTER_BIND_X: Bind the X coordinate
  * @CLUTTER_BIND_Y: Bind the Y coordinate
@@ -1019,66 +991,6 @@ typedef enum { /*< prefix=CLUTTER_PAN >*/
   CLUTTER_PAN_X_AXIS,
   CLUTTER_PAN_Y_AXIS
 } ClutterPanAxis;
-
-
-/**
- * ClutterTableAlignment:
- * @CLUTTER_TABLE_ALIGNMENT_START: Align the child to the top or to the
- *   left of a cell in the table, depending on the axis
- * @CLUTTER_TABLE_ALIGNMENT_CENTER: Align the child to the center of
- *   a cell in the table
- * @CLUTTER_TABLE_ALIGNMENT_END: Align the child to the bottom or to the
- *   right of a cell in the table, depending on the axis
- *
- * The alignment policies available on each axis of the #ClutterTableLayout
- *
- * Since: 1.4
- */
-typedef enum {
-  CLUTTER_TABLE_ALIGNMENT_START,
-  CLUTTER_TABLE_ALIGNMENT_CENTER,
-  CLUTTER_TABLE_ALIGNMENT_END
-} ClutterTableAlignment;
-
-/**
- * ClutterTextureFlags:
- * @CLUTTER_TEXTURE_NONE: No flags
- * @CLUTTER_TEXTURE_RGB_FLAG_BGR: FIXME
- * @CLUTTER_TEXTURE_RGB_FLAG_PREMULT: FIXME
- * @CLUTTER_TEXTURE_YUV_FLAG_YUV2: FIXME
- *
- * Flags for clutter_texture_set_from_rgb_data() and
- * clutter_texture_set_from_yuv_data().
- *
- * Since: 0.4
- */
-typedef enum { /*< prefix=CLUTTER_TEXTURE >*/
-  CLUTTER_TEXTURE_NONE             = 0,
-  CLUTTER_TEXTURE_RGB_FLAG_BGR     = 1 << 1,
-  CLUTTER_TEXTURE_RGB_FLAG_PREMULT = 1 << 2, /* FIXME: not handled */
-  CLUTTER_TEXTURE_YUV_FLAG_YUV2    = 1 << 3
-
-  /* FIXME: add compressed types ? */
-} ClutterTextureFlags;
-
-/**
- * ClutterTextureQuality:
- * @CLUTTER_TEXTURE_QUALITY_LOW: fastest rendering will use nearest neighbour
- *   interpolation when rendering. good setting.
- * @CLUTTER_TEXTURE_QUALITY_MEDIUM: higher quality rendering without using
- *   extra resources.
- * @CLUTTER_TEXTURE_QUALITY_HIGH: render the texture with the best quality
- *   available using extra memory.
- *
- * Enumaration controlling the texture quality.
- *
- * Since: 0.8
- */
-typedef enum { /*< prefix=CLUTTER_TEXTURE_QUALITY >*/
-  CLUTTER_TEXTURE_QUALITY_LOW,
-  CLUTTER_TEXTURE_QUALITY_MEDIUM,
-  CLUTTER_TEXTURE_QUALITY_HIGH
-} ClutterTextureQuality;
 
 /**
  * ClutterTimelineDirection:
