@@ -52,7 +52,7 @@ const ViewSelector = new Lang.Class({
 
         this._activePage = null;
 
-        this.active = false;
+        this.entryNonEmpty = false;
         this._searchPending = false;
         this._searchTimeoutId = 0;
 
@@ -219,7 +219,7 @@ const ViewSelector = new Lang.Class({
     },
 
     _onShowAppsButtonToggled: function() {
-        if (this.active)
+        if (this.entryNonEmpty)
             this.reset();
         else
             this._showPage(this._showAppsButton.checked ? this._appsPage
@@ -235,7 +235,7 @@ const ViewSelector = new Lang.Class({
         let symbol = event.get_key_symbol();
 
         if (symbol == Clutter.Escape) {
-            if (this.active)
+            if (this.entryNonEmpty)
                 this.reset();
             else if (this._showAppsButton.checked)
                 this._resetShowAppsButton();
@@ -243,9 +243,9 @@ const ViewSelector = new Lang.Class({
                 Main.overview.hide();
             return true;
         } else if (Clutter.keysym_to_unicode(symbol) ||
-                   (symbol == Clutter.BackSpace && this.active)) {
+                   (symbol == Clutter.BackSpace && this.entryNonEmpty)) {
             this.startSearch(event);
-        } else if (!this.active) {
+        } else if (!this.entryNonEmpty) {
             if (symbol == Clutter.Tab || symbol == Clutter.Down) {
                 this._activePage.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
                 return true;
@@ -320,13 +320,13 @@ const ViewSelector = new Lang.Class({
     },
 
     _onTextChanged: function (se, prop) {
-        let searchPreviouslyActive = this.active;
-        this.active = this._entry.get_text() != '';
-        this._searchPending = this.active && !searchPreviouslyActive;
+        let searchPreviouslyActive = this.entryNonEmpty;
+        this.entryNonEmpty = this._entry.get_text() != '';
+        this._searchPending = this.entryNonEmpty && !searchPreviouslyActive;
         if (this._searchPending) {
             this._searchResults.startingSearch();
         }
-        if (this.active) {
+        if (this.entryNonEmpty) {
             this.emit('search-begin');
             this._entry.set_secondary_icon(this._activeIcon);
 
@@ -344,7 +344,7 @@ const ViewSelector = new Lang.Class({
             this._entry.set_secondary_icon(this._inactiveIcon);
             this._searchCancelled();
         }
-        if (!this.active) {
+        if (!this.entryNonEmpty) {
             if (this._searchTimeoutId > 0) {
                 Mainloop.source_remove(this._searchTimeoutId);
                 this._searchTimeoutId = 0;
@@ -372,7 +372,7 @@ const ViewSelector = new Lang.Class({
             }
             this._searchResults.activateDefault();
             return true;
-        } else if (this.active) {
+        } else if (this.entryNonEmpty) {
             let arrowNext, nextDirection;
             if (entry.get_text_direction() == Clutter.TextDirection.RTL) {
                 arrowNext = Clutter.Left;
