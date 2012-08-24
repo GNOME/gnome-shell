@@ -158,20 +158,16 @@ function loadExtension(extension) {
     _signals.emit('extension-state-changed', extension);
 }
 
-function unloadExtension(uuid) {
-    let extension = ExtensionUtils.extensions[uuid];
-    if (!extension)
-        return false;
-
+function unloadExtension(extension) {
     // Try to disable it -- if it's ERROR'd, we can't guarantee that,
     // but it will be removed on next reboot, and hopefully nothing
     // broke too much.
-    disableExtension(uuid);
+    disableExtension(extension.uuid);
 
     extension.state = ExtensionState.UNINSTALLED;
     _signals.emit('extension-state-changed', extension);
 
-    delete ExtensionUtils.extensions[uuid];
+    delete ExtensionUtils.extensions[extension.uuid];
     return true;
 }
 

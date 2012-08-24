@@ -60,7 +60,7 @@ function uninstallExtension(uuid) {
     if (extension.type != ExtensionUtils.ExtensionType.PER_USER)
         return false;
 
-    if (!ExtensionSystem.unloadExtension(uuid))
+    if (!ExtensionSystem.unloadExtension(extension))
         return false;
 
     FileUtils.recursivelyDeleteDir(extension.dir, true);
@@ -124,7 +124,7 @@ function updateExtension(uuid) {
             let oldExtension = ExtensionUtils.extensions[uuid];
             let extensionDir = oldExtension.dir;
 
-            if (!ExtensionSystem.unloadExtension(uuid))
+            if (!ExtensionSystem.unloadExtension(oldExtension))
                 return;
 
             FileUtils.recursivelyMoveDir(extensionDir, oldExtensionTmpDir);
@@ -135,7 +135,7 @@ function updateExtension(uuid) {
             try {
                 ExtensionSystem.loadExtension(extension);
             } catch(e) {
-                ExtensionSystem.unloadExtension(uuid);
+                ExtensionSystem.unloadExtension(extension);
 
                 logError(e, 'Error loading extension %s'.format(uuid));
 
