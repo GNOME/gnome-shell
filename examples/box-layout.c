@@ -137,7 +137,6 @@ add_actor (ClutterActor *box,
 {
   ClutterActor *rect, *text;
   ClutterColor color;
-  ClutterLayoutManager *layout;
 
   clutter_color_from_hls (&color,
                           g_random_double_range (0.0, 360.0),
@@ -145,10 +144,8 @@ add_actor (ClutterActor *box,
                           0.5);
   color.alpha = 255;
 
-  layout = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_CENTER,
-                                   CLUTTER_BIN_ALIGNMENT_CENTER);
   rect = clutter_actor_new ();
-  clutter_actor_set_layout_manager (rect, layout);
+  clutter_actor_set_layout_manager (rect, clutter_bin_layout_new ());
   clutter_actor_set_background_color (rect, &color);
   clutter_actor_set_reactive (rect, TRUE);
   clutter_actor_set_size (rect, 32, 64);

@@ -199,9 +199,9 @@ add_actor (ClutterActor *box,
            gint          width,
            gint          height)
 {
+  ClutterLayoutManager *layout;
   ClutterActor *rect, *text;
   ClutterColor color;
-  ClutterLayoutManager *layout;
 
   clutter_color_from_hls (&color,
                           g_random_double_range (0.0, 360.0),
@@ -209,10 +209,8 @@ add_actor (ClutterActor *box,
                           0.5);
   color.alpha = 255;
 
-  layout = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_CENTER,
-                                   CLUTTER_BIN_ALIGNMENT_CENTER);
   rect = clutter_actor_new ();
-  clutter_actor_set_layout_manager (rect, layout);
+  clutter_actor_set_layout_manager (rect, clutter_bin_layout_new ());
   clutter_actor_set_background_color (rect, &color);
   clutter_actor_set_reactive (rect, TRUE);
 
@@ -341,10 +339,9 @@ main (int argc, char *argv[])
   clutter_actor_set_x_expand (box, TRUE);
   clutter_actor_set_y_expand (box, TRUE);
   clutter_actor_set_layout_manager (box, grid_layout);
-  clutter_box_layout_pack (CLUTTER_BOX_LAYOUT (stage_layout), box,
-                           TRUE, TRUE, TRUE,
-                           CLUTTER_BOX_ALIGNMENT_CENTER,
-                           CLUTTER_BOX_ALIGNMENT_CENTER);
+  clutter_actor_add_child (stage, box);
+  clutter_actor_set_x_align (box, CLUTTER_ACTOR_ALIGN_FILL);
+  clutter_actor_set_y_align (box, CLUTTER_ACTOR_ALIGN_FILL);
 
   add_actor (box, 0, 0, 1, 1);
   add_actor (box, 1, 0, 1, 1);
@@ -360,10 +357,9 @@ main (int argc, char *argv[])
   clutter_actor_set_margin_top (instructions, 4);
   clutter_actor_set_margin_left (instructions, 4);
   clutter_actor_set_margin_bottom (instructions, 4);
-  clutter_box_layout_pack (CLUTTER_BOX_LAYOUT (stage_layout), instructions,
-                           FALSE, TRUE, FALSE,
-                           CLUTTER_BOX_ALIGNMENT_START,
-                           CLUTTER_BOX_ALIGNMENT_CENTER);
+  clutter_actor_add_child (stage, instructions);
+  clutter_actor_set_x_align (instructions, CLUTTER_ACTOR_ALIGN_FILL);
+  clutter_actor_set_y_align (instructions, CLUTTER_ACTOR_ALIGN_CENTER);
 
   g_signal_connect (stage, "destroy",
                     G_CALLBACK (clutter_main_quit), NULL);

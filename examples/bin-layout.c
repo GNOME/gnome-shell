@@ -180,9 +180,8 @@ main (int argc, char *argv[])
   clutter_actor_show (stage);
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
-  /* this is our BinLayout, with its default alignments */
-  layout = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_CENTER,
-                                   CLUTTER_BIN_ALIGNMENT_CENTER);
+  /* this is our BinLayout */
+  layout = clutter_bin_layout_new ();
 
   /* the main container; this actor will use the BinLayout to lay
    * out its children; we use the anchor point to keep it centered

@@ -76,8 +76,7 @@ struct _ClutterBinLayoutClass
 
 GType clutter_bin_layout_get_type (void) G_GNUC_CONST;
 
-ClutterLayoutManager *clutter_bin_layout_new           (ClutterBinAlignment  x_align,
-                                                        ClutterBinAlignment  y_align);
+ClutterLayoutManager *  clutter_bin_layout_new  (void);
 
 G_END_DECLS
 
