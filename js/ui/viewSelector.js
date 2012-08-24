@@ -114,9 +114,6 @@ const ViewSelector = new Lang.Class({
 
         global.focus_manager.add_group(this._searchResults.actor);
 
-        Main.overview.connect('app-drag-begin',
-                              Lang.bind(this, this._resetShowAppsButton));
-
         this._stageKeyPressId = 0;
         Main.overview.connect('showing', Lang.bind(this,
             function () {
