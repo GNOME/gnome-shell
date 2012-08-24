@@ -82,12 +82,9 @@
 
 #include <math.h>
 
-#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
-#include "deprecated/clutter-container.h"
-#include "deprecated/clutter-alpha.h"
-
 #include "clutter-table-layout.h"
 
+#include "clutter-container.h"
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
 #include "clutter-layout-meta.h"
@@ -128,12 +125,6 @@ struct _ClutterTableLayoutPrivate
 
   GArray *columns;
   GArray *rows;
-
-  gulong easing_mode;
-  guint easing_duration;
-
-  guint is_animating   : 1;
-  guint use_animations : 1;
 };
 
 struct _ClutterTableChild
@@ -145,14 +136,6 @@ struct _ClutterTableChild
 
   gint col_span;
   gint row_span;
-
-  ClutterTableAlignment x_align;
-  ClutterTableAlignment y_align;
-
-  guint x_expand            : 1;
-  guint y_expand            : 1;
-  guint x_fill              : 1;
-  guint y_fill              : 1;
 };
 
 enum
@@ -162,13 +145,7 @@ enum
   PROP_CHILD_ROW,
   PROP_CHILD_COLUMN,
   PROP_CHILD_ROW_SPAN,
-  PROP_CHILD_COLUMN_SPAN,
-  PROP_CHILD_X_ALIGN,
-  PROP_CHILD_Y_ALIGN,
-  PROP_CHILD_X_FILL,
-  PROP_CHILD_Y_FILL,
-  PROP_CHILD_X_EXPAND,
-  PROP_CHILD_Y_EXPAND
+  PROP_CHILD_COLUMN_SPAN
 };
 
 enum
@@ -176,21 +153,18 @@ enum
   PROP_0,
 
   PROP_ROW_SPACING,
-  PROP_COLUMN_SPACING,
-  PROP_USE_ANIMATIONS,
-  PROP_EASING_MODE,
-  PROP_EASING_DURATION
+  PROP_COLUMN_SPACING
 };
 
 GType clutter_table_child_get_type (void);
 
 G_DEFINE_TYPE (ClutterTableChild,
                clutter_table_child,
-               CLUTTER_TYPE_LAYOUT_META);
+               CLUTTER_TYPE_LAYOUT_META)
 
 G_DEFINE_TYPE (ClutterTableLayout,
                clutter_table_layout,
-               CLUTTER_TYPE_LAYOUT_MANAGER);
+               CLUTTER_TYPE_LAYOUT_MANAGER)
 
 /*
  * ClutterBoxChild
@@ -273,132 +247,6 @@ table_child_set_span (ClutterTableChild  *self,
 }
 
 static void
-table_child_set_align (ClutterTableChild     *self,
-                       ClutterTableAlignment  x_align,
-                       ClutterTableAlignment  y_align)
-{
-  gboolean x_changed = FALSE, y_changed = FALSE;
-
-  if (self->x_align != x_align)
-    {
-      self->x_align = x_align;
-
-      x_changed = TRUE;
-    }
-
-  if (self->y_align != y_align)
-    {
-      self->y_align = y_align;
-
-      y_changed = TRUE;
-    }
-
-  if (x_changed || y_changed)
-    {
-      ClutterLayoutManager *layout;
-
-      layout = clutter_layout_meta_get_manager (CLUTTER_LAYOUT_META (self));
-      clutter_layout_manager_layout_changed (layout);
-
-      g_object_freeze_notify (G_OBJECT (self));
-
-      if (x_changed)
-        g_object_notify (G_OBJECT (self), "x-align");
-
-      if (y_changed)
-        g_object_notify (G_OBJECT (self), "y-align");
-
-      g_object_thaw_notify (G_OBJECT (self));
-    }
-}
-
-static void
-table_child_set_fill (ClutterTableChild *self,
-                      gboolean           x_fill,
-                      gboolean           y_fill)
-{
-  gboolean x_changed = FALSE, y_changed = FALSE;
-
-  x_fill = !!x_fill;
-  y_fill = !!y_fill;
-
-  if (self->x_fill != x_fill)
-    {
-      self->x_fill = x_fill;
-
-      x_changed = TRUE;
-    }
-
-  if (self->y_fill != y_fill)
-    {
-      self->y_fill = y_fill;
-
-      y_changed = TRUE;
-    }
-
-  if (x_changed || y_changed)
-    {
-      ClutterLayoutManager *layout;
-
-      layout = clutter_layout_meta_get_manager (CLUTTER_LAYOUT_META (self));
-      clutter_layout_manager_layout_changed (layout);
-
-      g_object_freeze_notify (G_OBJECT (self));
-
-      if (x_changed)
-        g_object_notify (G_OBJECT (self), "x-fill");
-
-      if (y_changed)
-        g_object_notify (G_OBJECT (self), "y-fill");
-
-      g_object_thaw_notify (G_OBJECT (self));
-    }
-}
-
-static void
-table_child_set_expand (ClutterTableChild *self,
-                        gboolean           x_expand,
-                        gboolean           y_expand)
-{
-  gboolean x_changed = FALSE, y_changed = FALSE;
-
-  x_expand = !!x_expand;
-  y_expand = !!y_expand;
-
-  if (self->x_expand != x_expand)
-    {
-      self->x_expand = x_expand;
-
-      x_changed = TRUE;
-    }
-
-  if (self->y_expand != y_expand)
-    {
-      self->y_expand = y_expand;
-
-      y_changed = TRUE;
-    }
-
-  if (x_changed || y_changed)
-    {
-      ClutterLayoutManager *layout;
-
-      layout = clutter_layout_meta_get_manager (CLUTTER_LAYOUT_META (self));
-      clutter_layout_manager_layout_changed (layout);
-
-      g_object_freeze_notify (G_OBJECT (self));
-
-      if (x_changed)
-        g_object_notify (G_OBJECT (self), "x-expand");
-
-      if (y_changed)
-        g_object_notify (G_OBJECT (self), "y-expand");
-
-      g_object_thaw_notify (G_OBJECT (self));
-    }
-}
-
-static void
 clutter_table_child_set_property (GObject      *gobject,
                                   guint         prop_id,
                                   const GValue *value,
@@ -432,42 +280,6 @@ clutter_table_child_set_property (GObject      *gobject,
                             g_value_get_int (value));
       break;
 
-    case PROP_CHILD_X_ALIGN:
-      table_child_set_align (self,
-                             g_value_get_enum (value),
-                             self->y_align);
-      break;
-
-    case PROP_CHILD_Y_ALIGN:
-      table_child_set_align (self,
-                             self->x_align,
-                             g_value_get_enum (value));
-      break;
-
-    case PROP_CHILD_X_FILL:
-      table_child_set_fill (self,
-                            g_value_get_boolean (value),
-                            self->y_fill);
-      break;
-
-    case PROP_CHILD_Y_FILL:
-      table_child_set_fill (self,
-                            self->x_fill,
-                            g_value_get_boolean (value));
-      break;
-
-    case PROP_CHILD_X_EXPAND:
-      table_child_set_expand (self,
-                              g_value_get_boolean (value),
-                              self->y_expand);
-      break;
-
-    case PROP_CHILD_Y_EXPAND:
-      table_child_set_expand (self,
-                              self->x_expand,
-                              g_value_get_boolean (value));
-      break;
-
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -498,30 +310,6 @@ clutter_table_child_get_property (GObject    *gobject,
 
     case PROP_CHILD_COLUMN_SPAN:
       g_value_set_int (value, self->col_span);
-      break;
-
-    case PROP_CHILD_X_ALIGN:
-      g_value_set_enum (value, self->x_align);
-      break;
-
-    case PROP_CHILD_Y_ALIGN:
-      g_value_set_enum (value, self->y_align);
-      break;
-
-    case PROP_CHILD_X_FILL:
-      g_value_set_boolean (value, self->x_fill);
-      break;
-
-    case PROP_CHILD_Y_FILL:
-      g_value_set_boolean (value, self->y_fill);
-      break;
-
-    case PROP_CHILD_X_EXPAND:
-      g_value_set_boolean (value, self->x_expand);
-      break;
-
-    case PROP_CHILD_Y_EXPAND:
-      g_value_set_boolean (value, self->y_expand);
       break;
 
     default:
@@ -570,64 +358,6 @@ clutter_table_child_class_init (ClutterTableChildClass *klass)
                             1,
                             CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_CHILD_ROW_SPAN, pspec);
-
-  pspec = g_param_spec_boolean ("x-expand",
-                                P_("Horizontal Expand"),
-                                P_("Allocate extra space for the child in horizontal axis"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_CHILD_X_EXPAND, pspec);
-
-  pspec = g_param_spec_boolean ("y-expand",
-                                P_("Vertical Expand"),
-                                P_("Allocate extra space for the child in vertical axis"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_CHILD_Y_EXPAND, pspec);
-
-  pspec = g_param_spec_boolean ("x-fill",
-                                P_("Horizontal Fill"),
-                                P_("Whether the child should receive priority when the container is allocating spare space on the horizontal axis"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_CHILD_X_FILL, pspec);
-
-  pspec = g_param_spec_boolean ("y-fill",
-                                P_("Vertical Fill"),
-                                P_("Whether the child should receive priority when the container is allocating spare space on the vertical axis"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_CHILD_Y_FILL, pspec);
-
-  /**
-   * ClutterTableLayout:x-align:
-   *
-   * The horizontal alignment of the actor within the cell
-   *
-   * Since: 1.4
-   */
-  pspec = g_param_spec_enum ("x-align",
-                             P_("Horizontal Alignment"),
-                             P_("Horizontal alignment of the actor within the cell"),
-                             CLUTTER_TYPE_TABLE_ALIGNMENT,
-                             CLUTTER_TABLE_ALIGNMENT_CENTER,
-                             CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_CHILD_X_ALIGN, pspec);
-
-  /**
-   * ClutterTableLayout:y-align:
-   *
-   * The vertical alignment of the actor within the cell
-   *
-   * Since: 1.4
-   */
-  pspec = g_param_spec_enum ("y-align",
-                             P_("Vertical Alignment"),
-                             P_("Vertical alignment of the actor within the cell"),
-                             CLUTTER_TYPE_TABLE_ALIGNMENT,
-                             CLUTTER_TABLE_ALIGNMENT_CENTER,
-                             CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_CHILD_Y_ALIGN, pspec);
 }
 
 static void
@@ -635,15 +365,6 @@ clutter_table_child_init (ClutterTableChild *self)
 {
   self->col_span = 1;
   self->row_span = 1;
-
-  self->x_align = CLUTTER_TABLE_ALIGNMENT_CENTER;
-  self->y_align = CLUTTER_TABLE_ALIGNMENT_CENTER;
-
-  self->x_expand = TRUE;
-  self->y_expand = TRUE;
-
-  self->x_fill = TRUE;
-  self->y_fill = TRUE;
 }
 
 static GType
@@ -759,10 +480,7 @@ calculate_col_widths (ClutterTableLayout *self,
       col->pref_size = MAX (col->pref_size, c_pref);
 
       if (!col->expand)
-        {
-          col->expand = clutter_actor_needs_expand (child, orientation) ||
-            meta->x_expand;
-        }
+        col->expand = clutter_actor_needs_expand (child, orientation);
     }
 
   /* STAGE TWO: take spanning children into account */
@@ -811,12 +529,9 @@ calculate_col_widths (ClutterTableLayout *self,
             }
 
           if (!columns[i].expand)
-            {
-              columns[i].expand = clutter_actor_needs_expand (child,
-                                                              orientation) ||
-                meta->x_expand;
-            }
+            columns[i].expand = clutter_actor_needs_expand (child, orientation);
         }
+
       min_width += priv->col_spacing * (meta->col_span - 1);
       pref_width += priv->col_spacing * (meta->col_span - 1);
 
@@ -1037,10 +752,7 @@ calculate_row_heights (ClutterTableLayout *self,
       row->pref_size = MAX (row->pref_size, c_pref);
 
       if (!row->expand)
-        {
-          row->expand = clutter_actor_needs_expand (child, orientation) ||
-            meta->y_expand;
-        }
+        row->expand = clutter_actor_needs_expand (child, orientation);
     }
 
   /* STAGE TWO: take spanning children into account */
@@ -1091,10 +803,7 @@ calculate_row_heights (ClutterTableLayout *self,
             }
 
           if (!rows[i].expand)
-            {
-              rows[i].expand = clutter_actor_needs_expand (child, orientation) ||
-                meta->y_expand;
-            }
+            rows[i].expand = clutter_actor_needs_expand (child, orientation);
         }
 
       min_height += priv->row_spacing * (meta->row_span - 1);
@@ -1353,24 +1062,6 @@ clutter_table_layout_get_preferred_height (ClutterLayoutManager *layout,
     *natural_height_p = total_pref_height;
 }
 
-static gdouble
-get_table_alignment_factor (ClutterTableAlignment alignment)
-{
-  switch (alignment)
-    {
-    case CLUTTER_TABLE_ALIGNMENT_START:
-      return 0.0;
-
-    case CLUTTER_TABLE_ALIGNMENT_CENTER:
-      return 0.5;
-
-    case CLUTTER_TABLE_ALIGNMENT_END:
-      return 1.0;
-    }
-
-  return 0.0;
-}
-
 static void
 clutter_table_layout_allocate (ClutterLayoutManager   *layout,
                                ClutterContainer       *container,
@@ -1412,8 +1103,6 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
       ClutterTableChild *meta;
       ClutterActorBox childbox;
       gint child_x, child_y;
-      gdouble x_align, y_align;
-      gboolean x_fill, y_fill;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
@@ -1428,10 +1117,6 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
       row = meta->row;
       row_span = meta->row_span;
       col_span = meta->col_span;
-      x_align = get_table_alignment_factor (meta->x_align);
-      y_align = get_table_alignment_factor (meta->y_align);
-      x_fill = meta->x_fill;
-      y_fill = meta->y_fill;
 
       /* initialise the width and height */
       col_width = columns[col].final_size;
@@ -1498,24 +1183,7 @@ clutter_table_layout_allocate (ClutterLayoutManager   *layout,
       childbox.y1 = (float) child_y;
       childbox.y2 = (float) MAX (0, child_y + row_height);
 
-      if (priv->use_animations)
-        {
-          clutter_actor_save_easing_state (child);
-          clutter_actor_set_easing_mode (child, priv->easing_mode);
-          clutter_actor_set_easing_duration (child, priv->easing_duration);
-        }
-
-      if (clutter_actor_needs_expand (child, CLUTTER_ORIENTATION_HORIZONTAL) ||
-          clutter_actor_needs_expand (child, CLUTTER_ORIENTATION_VERTICAL))
-        clutter_actor_allocate (child, &childbox, flags);
-      else
-        clutter_actor_allocate_align_fill (child, &childbox,
-                                           x_align, y_align,
-                                           x_fill, y_fill,
-                                           flags);
-
-      if (priv->use_animations)
-        clutter_actor_restore_easing_state (child);
+      clutter_actor_allocate (child, &childbox, flags);
     }
 }
 
@@ -1535,18 +1203,6 @@ clutter_table_layout_set_property (GObject      *gobject,
 
     case PROP_ROW_SPACING:
       clutter_table_layout_set_row_spacing (self, g_value_get_uint (value));
-      break;
-
-    case PROP_USE_ANIMATIONS:
-      clutter_table_layout_set_use_animations (self, g_value_get_boolean (value));
-      break;
-
-    case PROP_EASING_MODE:
-      clutter_table_layout_set_easing_mode (self, g_value_get_ulong (value));
-      break;
-
-    case PROP_EASING_DURATION:
-      clutter_table_layout_set_easing_duration (self, g_value_get_uint (value));
       break;
 
     default:
@@ -1571,18 +1227,6 @@ clutter_table_layout_get_property (GObject    *gobject,
 
     case PROP_COLUMN_SPACING:
       g_value_set_uint (value, priv->col_spacing);
-      break;
-
-    case PROP_USE_ANIMATIONS:
-      g_value_set_boolean (value, priv->use_animations);
-      break;
-
-    case PROP_EASING_MODE:
-      g_value_set_ulong (value, priv->easing_mode);
-      break;
-
-    case PROP_EASING_DURATION:
-      g_value_set_uint (value, priv->easing_duration);
       break;
 
     default:
@@ -1653,77 +1297,6 @@ clutter_table_layout_class_init (ClutterTableLayoutClass *klass)
                              0, G_MAXUINT, 0,
                              CLUTTER_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_ROW_SPACING, pspec);
-
-  /**
-   * ClutterTableLayout:use-animations:
-   *
-   * Whether the #ClutterTableLayout should animate changes in the
-   * layout properties.
-   *
-   * By default, #ClutterTableLayout will honour the easing state of
-   * the children when allocating them. Setting this property to
-   * %TRUE will override the easing state with the layout manager's
-   * #ClutterTableLayout:easing-mode and #ClutterTableLayout:easing-duration
-   * properties.
-   *
-   * Since: 1.4
-   *
-   * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
-   *   of the children when allocating them
-   */
-  pspec = g_param_spec_boolean ("use-animations",
-                                P_("Use Animations"),
-                                P_("Whether layout changes should be animated"),
-                                FALSE,
-                                CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_USE_ANIMATIONS, pspec);
-
-  /**
-   * ClutterTableLayout:easing-mode:
-   *
-   * The easing mode for the animations, in case
-   * #ClutterTableLayout:use-animations is set to %TRUE.
-   *
-   * The easing mode has the same semantics of #ClutterAnimation:mode: it can
-   * either be a value from the #ClutterAnimationMode enumeration, like
-   * %CLUTTER_EASE_OUT_CUBIC, or a logical id as returned by
-   * clutter_alpha_register_func().
-   *
-   * The default value is %CLUTTER_EASE_OUT_CUBIC.
-   *
-   * Since: 1.4
-   *
-   * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
-   *   of the children when allocating them
-   */
-  pspec = g_param_spec_ulong ("easing-mode",
-                              P_("Easing Mode"),
-                              P_("The easing mode of the animations"),
-                              0, G_MAXULONG,
-                              CLUTTER_EASE_OUT_CUBIC,
-                              CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_EASING_MODE, pspec);
-
-  /**
-   * ClutterTableLayout:easing-duration:
-   *
-   * The duration of the animations, in case #ClutterTableLayout:use-animations
-   * is set to %TRUE.
-   *
-   * The duration is expressed in milliseconds.
-   *
-   * Since: 1.4
-   *
-   * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
-   *   of the children when allocating them
-   */
-  pspec = g_param_spec_uint ("easing-duration",
-                             P_("Easing Duration"),
-                             P_("The duration of the animations"),
-                             0, G_MAXUINT,
-                             500,
-                             CLUTTER_PARAM_READWRITE);
-  g_object_class_install_property (gobject_class, PROP_EASING_DURATION, pspec);
 }
 
 static void
@@ -1735,10 +1308,6 @@ clutter_table_layout_init (ClutterTableLayout *layout)
 
   priv->row_spacing = 0;
   priv->col_spacing = 0;
-
-  priv->use_animations = FALSE;
-  priv->easing_mode = CLUTTER_EASE_OUT_CUBIC;
-  priv->easing_duration = 500;
 
   priv->columns = g_array_new (FALSE, TRUE, sizeof (DimensionData));
   priv->rows = g_array_new (FALSE, TRUE, sizeof (DimensionData));
@@ -2024,531 +1593,6 @@ clutter_table_layout_get_span (ClutterTableLayout *layout,
   if (row_span)
     *row_span = CLUTTER_TABLE_CHILD (meta)->row_span;
 }
-
-/**
- * clutter_table_layout_set_alignment:
- * @layout: a #ClutterTableLayout
- * @actor: a #ClutterActor child of @layout
- * @x_align: Horizontal alignment policy for @actor
- * @y_align: Vertical alignment policy for @actor
- *
- * Sets the horizontal and vertical alignment policies for @actor
- * inside @layout
- *
- * Since: 1.4
- *
- * Deprecated: 1.12: Use clutter_actor_set_x_align() and
- *   clutter_actor_set_y_align() instead.
- */
-void
-clutter_table_layout_set_alignment (ClutterTableLayout    *layout,
-                                    ClutterActor          *actor,
-                                    ClutterTableAlignment  x_align,
-                                    ClutterTableAlignment  y_align)
-{
-  ClutterTableLayoutPrivate *priv;
-  ClutterLayoutManager *manager;
-  ClutterLayoutMeta *meta;
-
-  g_return_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-
-  priv = layout->priv;
-
-  if (priv->container == NULL)
-    {
-      g_warning ("The layout of type '%s' must be associated to "
-                 "a ClutterContainer before querying layout "
-                 "properties",
-                 G_OBJECT_TYPE_NAME (layout));
-      return;
-    }
-
-  manager = CLUTTER_LAYOUT_MANAGER (layout);
-  meta = clutter_layout_manager_get_child_meta (manager,
-                                                priv->container,
-                                                actor);
-  if (meta == NULL)
-    {
-      g_warning ("No layout meta found for the child of type '%s' "
-                 "inside the layout manager of type '%s'",
-                 G_OBJECT_TYPE_NAME (actor),
-                 G_OBJECT_TYPE_NAME (manager));
-      return;
-    }
-
-  g_assert (CLUTTER_IS_TABLE_CHILD (meta));
-
-  table_child_set_align (CLUTTER_TABLE_CHILD (meta), x_align, y_align);
-}
-
-/**
- * clutter_table_layout_get_alignment:
- * @layout: a #ClutterTableLayout
- * @actor: a #ClutterActor child of @layout
- * @x_align: (out): return location for the horizontal alignment policy
- * @y_align: (out): return location for the vertical alignment policy
- *
- * Retrieves the horizontal and vertical alignment policies for @actor
- * as set using clutter_table_layout_pack() or
- * clutter_table_layout_set_alignment().
- *
- * Since: 1.4
- *
- * Deprecated: 1.12: Use clutter_actor_get_x_align() and
- *   clutter_actor_get_y_align() instead.
- */
-void
-clutter_table_layout_get_alignment (ClutterTableLayout    *layout,
-                                    ClutterActor          *actor,
-                                    ClutterTableAlignment *x_align,
-                                    ClutterTableAlignment *y_align)
-{
-  ClutterTableLayoutPrivate *priv;
-  ClutterLayoutManager *manager;
-  ClutterLayoutMeta *meta;
-
-  g_return_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-
-  priv = layout->priv;
-
-  if (priv->container == NULL)
-    {
-      g_warning ("The layout of type '%s' must be associated to "
-                 "a ClutterContainer before querying layout "
-                 "properties",
-                 G_OBJECT_TYPE_NAME (layout));
-      return;
-    }
-
-  manager = CLUTTER_LAYOUT_MANAGER (layout);
-  meta = clutter_layout_manager_get_child_meta (manager,
-                                                priv->container,
-                                                actor);
-  if (meta == NULL)
-    {
-      g_warning ("No layout meta found for the child of type '%s' "
-                 "inside the layout manager of type '%s'",
-                 G_OBJECT_TYPE_NAME (actor),
-                 G_OBJECT_TYPE_NAME (manager));
-      return;
-    }
-
-  g_assert (CLUTTER_IS_TABLE_CHILD (meta));
-
-  if (x_align)
-    *x_align = CLUTTER_TABLE_CHILD (meta)->x_align;
-
-  if (y_align)
-    *y_align = CLUTTER_TABLE_CHILD (meta)->y_align;
-}
-
-/**
- * clutter_table_layout_set_fill:
- * @layout: a #ClutterTableLayout
- * @actor: a #ClutterActor child of @layout
- * @x_fill: whether @actor should fill horizontally the allocated space
- * @y_fill: whether @actor should fill vertically the allocated space
- *
- * Sets the horizontal and vertical fill policies for @actor
- * inside @layout
- *
- * Since: 1.4
- *
- * Deprecated: 1.12: Use clutter_actor_set_x_align() and
- *   clutter_actor_set_y_align() instead.
- */
-void
-clutter_table_layout_set_fill (ClutterTableLayout *layout,
-                               ClutterActor       *actor,
-                               gboolean            x_fill,
-                               gboolean            y_fill)
-{
-  ClutterTableLayoutPrivate *priv;
-  ClutterLayoutManager *manager;
-  ClutterLayoutMeta *meta;
-
-  g_return_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-
-  priv = layout->priv;
-
-  if (priv->container == NULL)
-    {
-      g_warning ("The layout of type '%s' must be associated to "
-                 "a ClutterContainer before querying layout "
-                 "properties",
-                 G_OBJECT_TYPE_NAME (layout));
-      return;
-    }
-
-  manager = CLUTTER_LAYOUT_MANAGER (layout);
-  meta = clutter_layout_manager_get_child_meta (manager,
-                                                priv->container,
-                                                actor);
-  if (meta == NULL)
-    {
-      g_warning ("No layout meta found for the child of type '%s' "
-                 "inside the layout manager of type '%s'",
-                 G_OBJECT_TYPE_NAME (actor),
-                 G_OBJECT_TYPE_NAME (manager));
-      return;
-    }
-
-  g_assert (CLUTTER_IS_TABLE_CHILD (meta));
-
-  table_child_set_fill (CLUTTER_TABLE_CHILD (meta), x_fill, y_fill);
-}
-
-/**
- * clutter_table_layout_get_fill:
- * @layout: a #ClutterTableLayout
- * @actor: a #ClutterActor child of @layout
- * @x_fill: (out): return location for the horizontal fill policy
- * @y_fill: (out): return location for the vertical fill policy
- *
- * Retrieves the horizontal and vertical fill policies for @actor
- * as set using clutter_table_layout_pack() or clutter_table_layout_set_fill()
- *
- * Since: 1.4
- *
- * Deprecated: 1.12: Use clutter_actor_get_x_align() and
- *   clutter_actor_get_y_align() instead.
- */
-void
-clutter_table_layout_get_fill (ClutterTableLayout *layout,
-                               ClutterActor       *actor,
-                               gboolean           *x_fill,
-                               gboolean           *y_fill)
-{
-  ClutterTableLayoutPrivate *priv;
-  ClutterLayoutManager *manager;
-  ClutterLayoutMeta *meta;
-
-  g_return_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-
-  priv = layout->priv;
-
-  if (priv->container == NULL)
-    {
-      g_warning ("The layout of type '%s' must be associated to "
-                 "a ClutterContainer before querying layout "
-                 "properties",
-                 G_OBJECT_TYPE_NAME (layout));
-      return;
-    }
-
-  manager = CLUTTER_LAYOUT_MANAGER (layout);
-  meta = clutter_layout_manager_get_child_meta (manager,
-                                                priv->container,
-                                                actor);
-  if (meta == NULL)
-    {
-      g_warning ("No layout meta found for the child of type '%s' "
-                 "inside the layout manager of type '%s'",
-                 G_OBJECT_TYPE_NAME (actor),
-                 G_OBJECT_TYPE_NAME (manager));
-      return;
-    }
-
-  g_assert (CLUTTER_IS_TABLE_CHILD (meta));
-
-  if (x_fill)
-    *x_fill = CLUTTER_TABLE_CHILD (meta)->x_fill;
-
-  if (y_fill)
-    *y_fill = CLUTTER_TABLE_CHILD (meta)->y_fill;
-}
-
-
-/**
- * clutter_table_layout_set_expand:
- * @layout: a #ClutterTableLayout
- * @actor: a #ClutterActor child of @layout
- * @x_expand: whether @actor should allocate extra space horizontally
- * @y_expand: whether @actor should allocate extra space vertically
- *
- * Sets the horizontal and vertical expand policies for @actor
- * inside @layout
- *
- * Since: 1.4
- *
- * Deprecated: 1.12: Use clutter_actor_set_x_expand() or
- *   clutter_actor_set_y_expand() instead.
- */
-void
-clutter_table_layout_set_expand (ClutterTableLayout *layout,
-                                 ClutterActor       *actor,
-                                 gboolean            x_expand,
-                                 gboolean            y_expand)
-{
-  ClutterTableLayoutPrivate *priv;
-  ClutterLayoutManager *manager;
-  ClutterLayoutMeta *meta;
-
-  g_return_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-
-  priv = layout->priv;
-
-  if (priv->container == NULL)
-    {
-      g_warning ("The layout of type '%s' must be associated to "
-                 "a ClutterContainer before querying layout "
-                 "properties",
-                 G_OBJECT_TYPE_NAME (layout));
-      return;
-    }
-
-  manager = CLUTTER_LAYOUT_MANAGER (layout);
-  meta = clutter_layout_manager_get_child_meta (manager,
-                                                priv->container,
-                                                actor);
-  if (meta == NULL)
-    {
-      g_warning ("No layout meta found for the child of type '%s' "
-                 "inside the layout manager of type '%s'",
-                 G_OBJECT_TYPE_NAME (actor),
-                 G_OBJECT_TYPE_NAME (manager));
-      return;
-    }
-
-  g_assert (CLUTTER_IS_TABLE_CHILD (meta));
-
-  table_child_set_expand (CLUTTER_TABLE_CHILD (meta), x_expand, y_expand);
-}
-
-/**
- * clutter_table_layout_get_expand:
- * @layout: a #ClutterTableLayout
- * @actor: a #ClutterActor child of @layout
- * @x_expand: (out): return location for the horizontal expand policy
- * @y_expand: (out): return location for the vertical expand policy
- *
- * Retrieves the horizontal and vertical expand policies for @actor
- * as set using clutter_table_layout_pack() or clutter_table_layout_set_expand()
- *
- * Since: 1.4
- *
- * Deprecated: 1.12: Use clutter_actor_get_x_expand() and
- *   clutter_actor_get_y_expand() instead.
- */
-void
-clutter_table_layout_get_expand (ClutterTableLayout *layout,
-                                 ClutterActor       *actor,
-                                 gboolean           *x_expand,
-                                 gboolean           *y_expand)
-{
-  ClutterTableLayoutPrivate *priv;
-  ClutterLayoutManager *manager;
-  ClutterLayoutMeta *meta;
-
-  g_return_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout));
-  g_return_if_fail (CLUTTER_IS_ACTOR (actor));
-
-  priv = layout->priv;
-
-  if (priv->container == NULL)
-    {
-      g_warning ("The layout of type '%s' must be associated to "
-                 "a ClutterContainer before querying layout "
-                 "properties",
-                 G_OBJECT_TYPE_NAME (layout));
-      return;
-    }
-
-  manager = CLUTTER_LAYOUT_MANAGER (layout);
-  meta = clutter_layout_manager_get_child_meta (manager,
-                                                priv->container,
-                                                actor);
-  if (meta == NULL)
-    {
-      g_warning ("No layout meta found for the child of type '%s' "
-                 "inside the layout manager of type '%s'",
-                 G_OBJECT_TYPE_NAME (actor),
-                 G_OBJECT_TYPE_NAME (manager));
-      return;
-    }
-
-  g_assert (CLUTTER_IS_TABLE_CHILD (meta));
-
-  if (x_expand)
-    *x_expand = CLUTTER_TABLE_CHILD (meta)->x_expand;
-
-  if (y_expand)
-    *y_expand = CLUTTER_TABLE_CHILD (meta)->y_expand;
-}
-
-/**
- * clutter_table_layout_set_use_animations:
- * @layout: a #ClutterTableLayout
- * @animate: %TRUE if the @layout should use animations
- *
- * Sets whether @layout should animate changes in the layout properties
- *
- * The duration of the animations is controlled by
- * clutter_table_layout_set_easing_duration(); the easing mode to be used
- * by the animations is controlled by clutter_table_layout_set_easing_mode()
- *
- * Since: 1.4
- *
- * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
- *   of the children when allocating them
- */
-void
-clutter_table_layout_set_use_animations (ClutterTableLayout *layout,
-                                         gboolean            animate)
-{
-  ClutterTableLayoutPrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout));
-
-  priv = layout->priv;
-
-  animate = !!animate;
-  if (priv->use_animations != animate)
-    {
-      priv->use_animations = animate;
-
-      g_object_notify (G_OBJECT (layout), "use-animations");
-    }
-}
-
-/**
- * clutter_table_layout_get_use_animations:
- * @layout: a #ClutterTableLayout
- *
- * Retrieves whether @layout should animate changes in the layout properties
- *
- * Since clutter_table_layout_set_use_animations()
- *
- * Return value: %TRUE if the animations should be used, %FALSE otherwise
- *
- * Since: 1.4
- *
- * Deprecated: 1.12
- */
-gboolean
-clutter_table_layout_get_use_animations (ClutterTableLayout *layout)
-{
-  g_return_val_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout), FALSE);
-
-  return layout->priv->use_animations;
-}
-
-/**
- * clutter_table_layout_set_easing_mode:
- * @layout: a #ClutterTableLayout
- * @mode: an easing mode, either from #ClutterAnimationMode or a logical id
- *   from clutter_alpha_register_func()
- *
- * Sets the easing mode to be used by @layout when animating changes in layout
- * properties
- *
- * Use clutter_table_layout_set_use_animations() to enable and disable the
- * animations
- *
- * Since: 1.4
- *
- * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
- *   of the children when allocating them
- */
-void
-clutter_table_layout_set_easing_mode (ClutterTableLayout *layout,
-                                      gulong              mode)
-{
-  ClutterTableLayoutPrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout));
-
-  priv = layout->priv;
-
-  if (priv->easing_mode != mode)
-    {
-      priv->easing_mode = mode;
-
-      g_object_notify (G_OBJECT (layout), "easing-mode");
-    }
-}
-
-/**
- * clutter_table_layout_get_easing_mode:
- * @layout: a #ClutterTableLayout
- *
- * Retrieves the easing mode set using clutter_table_layout_set_easing_mode()
- *
- * Return value: an easing mode
- *
- * Since: 1.4
- *
- * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
- *   of the children when allocating them
- */
-gulong
-clutter_table_layout_get_easing_mode (ClutterTableLayout *layout)
-{
-  g_return_val_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout),
-                        CLUTTER_EASE_OUT_CUBIC);
-
-  return layout->priv->easing_mode;
-}
-
-/**
- * clutter_table_layout_set_easing_duration:
- * @layout: a #ClutterTableLayout
- * @msecs: the duration of the animations, in milliseconds
- *
- * Sets the duration of the animations used by @layout when animating changes
- * in the layout properties
- *
- * Use clutter_table_layout_set_use_animations() to enable and disable the
- * animations
- *
- * Since: 1.4
- *
- * Deprecated: 1.12: #ClutterTableLayout will honour the easing state
- *   of the children when allocating them
- */
-void
-clutter_table_layout_set_easing_duration (ClutterTableLayout *layout,
-                                          guint               msecs)
-{
-  ClutterTableLayoutPrivate *priv;
-
-  g_return_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout));
-
-  priv = layout->priv;
-
-  if (priv->easing_duration != msecs)
-    {
-      priv->easing_duration = msecs;
-
-      g_object_notify (G_OBJECT (layout), "easing-duration");
-    }
-}
-
-/**
- * clutter_table_layout_get_easing_duration:
- * @layout: a #ClutterTableLayout
- *
- * Retrieves the duration set using clutter_table_layout_set_easing_duration()
- *
- * Return value: the duration of the animations, in milliseconds
- *
- * Since: 1.4
- *
- * Deprecated: 1.12
- */
-guint
-clutter_table_layout_get_easing_duration (ClutterTableLayout *layout)
-{
-  g_return_val_if_fail (CLUTTER_IS_TABLE_LAYOUT (layout), 500);
-
-  return layout->priv->easing_duration;
-}
-
 
 /**
  * clutter_table_layout_get_row_count:
