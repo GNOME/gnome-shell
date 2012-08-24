@@ -47,8 +47,7 @@ const ViewSelector = new Lang.Class({
 
         this._activePage = null;
 
-        this.active = false;
-        this._searchPending = false;
+        this._searchActive = false;
         this._searchTimeoutId = 0;
 
         this._searchSystem = new Search.SearchSystem();
@@ -224,7 +223,7 @@ const ViewSelector = new Lang.Class({
     },
 
     _onShowAppsButtonToggled: function() {
-        if (this.active)
+        if (this._searchActive)
             this.reset();
         else
             this._showPage(this._showAppsButton.checked ? this._appsPage
@@ -245,7 +244,7 @@ const ViewSelector = new Lang.Class({
         let symbol = event.get_key_symbol();
 
         if (symbol == Clutter.Escape) {
-            if (this.active)
+            if (this._searchActive)
                 this.reset();
             else if (this._showAppsButton.checked)
                 this._resetShowAppsButton();
@@ -253,9 +252,9 @@ const ViewSelector = new Lang.Class({
                 Main.overview.hide();
             return true;
         } else if (Clutter.keysym_to_unicode(symbol) ||
-                   (symbol == Clutter.BackSpace && this.active)) {
+                   (symbol == Clutter.BackSpace && this._searchActive)) {
             this.startSearch(event);
-        } else if (!this.active) {
+        } else if (!this._searchActive) {
             if (symbol == Clutter.Tab || symbol == Clutter.Down) {
                 this._activePage.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
                 return true;
@@ -329,39 +328,37 @@ const ViewSelector = new Lang.Class({
     },
 
     _onTextChanged: function (se, prop) {
-        let searchPreviouslyActive = this.active;
-        this.active = this._entry.get_text() != '';
-        this._searchPending = this.active && !searchPreviouslyActive;
-        if (this._searchPending) {
+        let searchPreviouslyActive = this._searchActive;
+        this._searchActive = this._entry.get_text() != '';
+
+        let startSearch = this._searchActive && !searchPreviouslyActive;
+        if (startSearch)
             this._searchResults.startingSearch();
-        }
-        if (this.active) {
+
+        if (this._searchActive) {
             this._entry.set_secondary_icon(this._activeIcon);
 
-            if (this._iconClickedId == 0) {
+            if (this._iconClickedId == 0)
                 this._iconClickedId = this._entry.connect('secondary-icon-clicked',
-                    Lang.bind(this, function() {
-                        this.reset();
-                    }));
-            }
-        } else {
-            if (this._iconClickedId > 0)
-                this._entry.disconnect(this._iconClickedId);
-            this._iconClickedId = 0;
+                    Lang.bind(this, this.reset));
 
-            this._entry.set_secondary_icon(this._inactiveIcon);
-            this._searchCancelled();
-        }
-        if (!this.active) {
+            if (this._searchTimeoutId == 0)
+                this._searchTimeoutId = Mainloop.timeout_add(150,
+                    Lang.bind(this, this._doSearch));
+        } else {
+            if (this._iconClickedId > 0) {
+                this._entry.disconnect(this._iconClickedId);
+                this._iconClickedId = 0;
+            }
+
             if (this._searchTimeoutId > 0) {
                 Mainloop.source_remove(this._searchTimeoutId);
                 this._searchTimeoutId = 0;
             }
-            return;
+
+            this._entry.set_secondary_icon(this._inactiveIcon);
+            this._searchCancelled();
         }
-        if (this._searchTimeoutId > 0)
-            return;
-        this._searchTimeoutId = Mainloop.timeout_add(150, Lang.bind(this, this._doSearch));
     },
 
     _onKeyPress: function(entry, event) {
@@ -380,7 +377,7 @@ const ViewSelector = new Lang.Class({
             }
             this._searchResults.activateDefault();
             return true;
-        } else if (this.active) {
+        } else if (this._searchActive) {
             let arrowNext, nextDirection;
             if (entry.get_text_direction() == Clutter.TextDirection.RTL) {
                 arrowNext = Clutter.Left;
