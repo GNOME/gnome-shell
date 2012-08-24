@@ -1186,7 +1186,7 @@ const SummaryItem = new Lang.Class({
                                      button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE,
                                      can_focus: true,
                                      track_hover: true });
-
+        this.actor.label_actor = new St.Label({ text: source.title });
         this._sourceBox = new St.BoxLayout({ style_class: 'summary-source' });
 
         this._sourceIcon = source.getSummaryIcon();
