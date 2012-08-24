@@ -171,6 +171,19 @@ function unloadExtension(extension) {
     return true;
 }
 
+function reloadExtension(oldExtension) {
+    // Grab the things we'll need to pass to createExtensionObject
+    // to reload it.
+    let { uuid: uuid, dir: dir, type: type } = oldExtension;
+
+    // Then unload the old extension.
+    unloadExtension(oldExtension);
+
+    // Now, recreate the extension and load it.
+    let newExtension = ExtensionUtils.createExtensionObject(uuid, dir, type);
+    loadExtension(newExtension);
+}
+
 function initExtension(uuid) {
     let extension = ExtensionUtils.extensions[uuid];
     let dir = extension.dir;

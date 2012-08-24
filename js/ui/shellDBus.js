@@ -318,8 +318,11 @@ const GnomeShellExtensions = new Lang.Class({
     },
 
     ReloadExtension: function(uuid) {
-        ExtensionSystem.unloadExtension(uuid);
-        ExtensionSystem.loadExtension(uuid);
+        let extension = ExtensionUtils.extensions[uuid];
+        if (!extension)
+            return;
+
+        ExtensionSystem.reloadExtension(extension);
     },
 
     CheckForUpdates: function() {
