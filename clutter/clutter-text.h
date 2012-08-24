@@ -65,7 +65,6 @@ struct _ClutterText
  * ClutterTextClass:
  * @text_changed: class handler for the #ClutterText::text-changed signal
  * @activate: class handler for the #ClutterText::activate signal
- * @cursor_event: class handler for the #ClutterText::cursor-event signal
  * @cursor_changed: class handler for the #ClutterText::cursor-changed signal
  *
  * The #ClutterTextClass struct contains only private data.
@@ -81,8 +80,6 @@ struct _ClutterTextClass
   /* signals, not vfuncs */
   void (* text_changed)   (ClutterText           *self);
   void (* activate)       (ClutterText           *self);
-  void (* cursor_event)   (ClutterText           *self,
-                           const ClutterGeometry *geometry);
   void (* cursor_changed) (ClutterText           *self);
 
   /*< private >*/
