@@ -55,9 +55,6 @@
 #include "clutter-stage-window.h"
 #include "clutter-version.h"
 
-#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
-#include "deprecated/clutter-backend.h"
-
 #ifdef HAVE_CLUTTER_WAYLAND_COMPOSITOR
 #include "wayland/clutter-wayland-compositor.h"
 #endif /* HAVE_CLUTTER_WAYLAND_COMPOSITOR */

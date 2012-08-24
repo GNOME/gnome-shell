@@ -62,8 +62,6 @@
 #include "clutter-private.h"
 #include "clutter-units.h"
 
-#include "deprecated/clutter-fixed.h"
-
 enum
 {
   PROP_0,

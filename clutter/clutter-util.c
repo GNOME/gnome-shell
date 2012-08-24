@@ -43,8 +43,6 @@
 #include "clutter-interval.h"
 #include "clutter-private.h"
 
-#include "deprecated/clutter-util.h"
-
 /*< private >
  * _clutter_gettext:
  * @str: a string to localize
