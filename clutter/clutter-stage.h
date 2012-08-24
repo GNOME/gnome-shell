@@ -115,28 +115,7 @@ struct _ClutterPerspective
   gfloat z_far;
 };
 
-/**
- * ClutterFog:
- * @z_near: starting distance from the viewer to the near clipping
- *   plane (always positive)
- * @z_far: final distance from the viewer to the far clipping
- *   plane (always positive)
- *
- * Fog settings used to create the depth cueing effect.
- *
- * Since: 0.6
- *
- * Deprecated: 1.10: The fog-related API in #ClutterStage has been
- *   deprecated as well.
- */
-struct _ClutterFog
-{
-  gfloat z_near;
-  gfloat z_far;
-};
-
 GType clutter_perspective_get_type (void) G_GNUC_CONST;
-GType clutter_fog_get_type (void) G_GNUC_CONST;
 GType clutter_stage_get_type (void) G_GNUC_CONST;
 
 ClutterActor *  clutter_stage_new                               (void);
