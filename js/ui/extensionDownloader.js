@@ -82,7 +82,7 @@ function gotExtensionZipFile(session, message, uuid, dir, callback, errback) {
     }
 
     let [file, stream] = Gio.File.new_tmp('XXXXXX.shell-extension.zip');
-    let contents = message.response_body.flatten().as_bytes();
+    let contents = message.response_body.flatten().get_as_bytes();
     stream.output_stream.write_bytes(contents, null);
     stream.close(null);
     let [success, pid] = GLib.spawn_async(null,
