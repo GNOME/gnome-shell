@@ -936,8 +936,6 @@ enum
   PARENT_SET,
   KEY_FOCUS_IN,
   KEY_FOCUS_OUT,
-  PAINT,
-  PICK,
   REALIZE,
   UNREALIZE,
   QUEUE_REDRAW,
@@ -3710,8 +3708,7 @@ clutter_actor_continue_paint (ClutterActor *self)
           clutter_actor_paint_node (self, dummy);
           clutter_paint_node_unref (dummy);
 
-          /* XXX:2.0 - Call the paint() virtual directly */
-          g_signal_emit (self, actor_signals[PAINT], 0);
+          CLUTTER_ACTOR_GET_CLASS (self)->paint (self);
 
           /* the actor was painted at least once */
           priv->was_painted = TRUE;
@@ -3728,7 +3725,7 @@ clutter_actor_continue_paint (ClutterActor *self)
            *
            * XXX:2.0 - Call the pick() virtual directly
            */
-          g_signal_emit (self, actor_signals[PICK], 0, &col);
+          CLUTTER_ACTOR_GET_CLASS (self)->pick (self, &col);
         }
     }
   else
@@ -7282,38 +7279,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
 		  CLUTTER_TYPE_EVENT | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   /**
-   * ClutterActor::paint:
-   * @actor: the #ClutterActor that received the signal
-   *
-   * The ::paint signal is emitted each time an actor is being painted.
-   *
-   * Subclasses of #ClutterActor should override the #ClutterActorClass.paint
-   * virtual function paint themselves in that function.
-   *
-   * <warning>It is strongly discouraged to connect a signal handler to
-   * the #ClutterActor::paint signal; if you want to change the paint
-   * sequence of an existing #ClutterActor instance, either create a new
-   * #ClutterActor class and override the #ClutterActorClass.paint virtual
-   * function, or use a #ClutterEffect. The #ClutterActor::paint signal
-   * will be removed in a future version of Clutter.</warning>
-   *
-   * Since: 0.8
-   *
-   * Deprecated: 1.12: Override the #ClutterActorClass.paint virtual
-   *   function, use a #ClutterContent implementation, or a #ClutterEffect
-   *   instead of connecting to this signal.
-   */
-  actor_signals[PAINT] =
-    g_signal_new (I_("paint"),
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST |
-                  G_SIGNAL_NO_HOOKS |
-                  G_SIGNAL_DEPRECATED,
-                  G_STRUCT_OFFSET (ClutterActorClass, paint),
-                  NULL, NULL,
-                  _clutter_marshal_VOID__VOID,
-                  G_TYPE_NONE, 0);
-  /**
    * ClutterActor::realize:
    * @actor: the #ClutterActor that received the signal
    *
@@ -7347,36 +7312,6 @@ clutter_actor_class_init (ClutterActorClass *klass)
                   NULL, NULL,
                   _clutter_marshal_VOID__VOID,
                   G_TYPE_NONE, 0);
-
-  /**
-   * ClutterActor::pick:
-   * @actor: the #ClutterActor that received the signal
-   * @color: the #ClutterColor to be used when picking
-   *
-   * The ::pick signal is emitted each time an actor is being painted
-   * in "pick mode". The pick mode is used to identify the actor during
-   * the event handling phase, or by clutter_stage_get_actor_at_pos().
-   * The actor should paint its shape using the passed @pick_color.
-   *
-   * Subclasses of #ClutterActor should override the class signal handler
-   * and paint themselves in that function.
-   *
-   * It is possible to connect a handler to the ::pick signal in order
-   * to set up some custom aspect of a paint in pick mode.
-   *
-   * Since: 1.0
-   * Deprecated: 1.12: Override the #ClutterActorClass.pick virtual function
-   *   instead.
-   */
-  actor_signals[PICK] =
-    g_signal_new (I_("pick"),
-                  G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST | G_SIGNAL_DEPRECATED,
-                  G_STRUCT_OFFSET (ClutterActorClass, pick),
-                  NULL, NULL,
-                  _clutter_marshal_VOID__BOXED,
-                  G_TYPE_NONE, 1,
-                  CLUTTER_TYPE_COLOR | G_SIGNAL_TYPE_STATIC_SCOPE);
 
   /**
    * ClutterActor::allocation-changed:
@@ -14739,46 +14674,6 @@ _clutter_actor_get_paint_volume_real (ClutterActor *self,
     {
       CLUTTER_NOTE (CLIPPING, "Bail from get_paint_volume (%s): "
                     "Actor needs allocation",
-                    _clutter_actor_get_debug_name (self));
-      return FALSE;
-    }
-
-  /* Check if there are any handlers connected to the paint
-   * signal. If there are then all bets are off for what the paint
-   * volume for this actor might possibly be!
-   *
-   * XXX: It's expected that this is going to end up being quite a
-   * costly check to have to do here, but we haven't come up with
-   * another solution that can reliably catch paint signal handlers at
-   * the right time to either avoid artefacts due to invalid stage
-   * clipping or due to incorrect culling.
-   *
-   * Previously we checked in clutter_actor_paint(), but at that time
-   * we may already be using a stage clip that could be derived from
-   * an invalid paint-volume. We used to try and handle that by
-   * queuing a follow up, unclipped, redraw but still the previous
-   * checking wasn't enough to catch invalid volumes involved in
-   * culling (considering that containers may derive their volume from
-   * children that haven't yet been painted)
-   *
-   * Longer term, improved solutions could be:
-   * - Disallow painting in the paint signal, only allow using it
-   *   for tracking when paints happen. We can add another API that
-   *   allows monkey patching the paint of arbitrary actors but in a
-   *   more controlled way and that also supports modifying the
-   *   paint-volume.
-   * - If we could be notified somehow when signal handlers are
-   *   connected we wouldn't have to poll for handlers like this.
-   *
-   * XXX:2.0 - Remove when we remove the paint signal
-   */
-  if (g_signal_has_handler_pending (self,
-                                    actor_signals[PAINT],
-                                    0,
-                                    TRUE))
-    {
-      CLUTTER_NOTE (CLIPPING, "Bail from get_paint_volume (%s): "
-                    "Actor has \"paint\" signal handlers",
                     _clutter_actor_get_debug_name (self));
       return FALSE;
     }
