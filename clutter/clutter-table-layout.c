@@ -1896,7 +1896,7 @@ clutter_table_layout_pack (ClutterTableLayout  *layout,
 
   update_row_col (CLUTTER_TABLE_LAYOUT (layout), priv->container);
 
-  clutter_container_add_actor (priv->container, actor);
+  clutter_actor_add_child (CLUTTER_ACTOR (priv->container), actor);
 
   manager = CLUTTER_LAYOUT_MANAGER (layout);
   meta = clutter_layout_manager_get_child_meta (manager,

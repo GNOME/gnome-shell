@@ -1841,7 +1841,7 @@ clutter_box_layout_pack (ClutterBoxLayout    *layout,
       return;
     }
 
-  clutter_container_add_actor (priv->container, actor);
+  clutter_actor_add_child (CLUTTER_ACTOR (priv->container), actor);
 
   manager = CLUTTER_LAYOUT_MANAGER (layout);
   meta = clutter_layout_manager_get_child_meta (manager,

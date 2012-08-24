@@ -79,11 +79,7 @@
 
 #include "cogl/cogl.h"
 
-static void clutter_container_iface_init (ClutterContainerIface *iface);
-
-G_DEFINE_TYPE_WITH_CODE (ClutterStage, clutter_stage, CLUTTER_TYPE_ACTOR,
-                         G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTAINER,
-                                                clutter_container_iface_init))
+G_DEFINE_TYPE (ClutterStage, clutter_stage, CLUTTER_TYPE_ACTOR)
 
 #define CLUTTER_STAGE_GET_PRIVATE(obj) \
 (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_STAGE, ClutterStagePrivate))
@@ -209,70 +205,6 @@ static const ClutterColor default_stage_color = { 255, 255, 255, 255 };
 
 static void _clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage);
 static void free_queue_redraw_entry (ClutterStageQueueRedrawEntry *entry);
-
-static void
-clutter_stage_real_add (ClutterContainer *container,
-                        ClutterActor     *child)
-{
-  clutter_actor_add_child (CLUTTER_ACTOR (container), child);
-}
-
-static void
-clutter_stage_real_remove (ClutterContainer *container,
-                           ClutterActor     *child)
-{
-  clutter_actor_remove_child (CLUTTER_ACTOR (container), child);
-}
-
-static void
-clutter_stage_real_foreach (ClutterContainer *container,
-                            ClutterCallback   callback,
-                            gpointer          user_data)
-{
-  ClutterActorIter iter;
-  ClutterActor *child;
-
-  clutter_actor_iter_init (&iter, CLUTTER_ACTOR (container));
-
-  while (clutter_actor_iter_next (&iter, &child))
-    callback (child, user_data);
-}
-
-static void
-clutter_stage_real_raise (ClutterContainer *container,
-                          ClutterActor     *child,
-                          ClutterActor     *sibling)
-{
-  clutter_actor_set_child_above_sibling (CLUTTER_ACTOR (container),
-                                         child,
-                                         sibling);
-}
-
-static void
-clutter_stage_real_lower (ClutterContainer *container,
-                          ClutterActor     *child,
-                          ClutterActor     *sibling)
-{
-  clutter_actor_set_child_below_sibling (CLUTTER_ACTOR (container),
-                                         child,
-                                         sibling);
-}
-
-static void
-clutter_stage_real_sort_depth_order (ClutterContainer *container)
-{
-}
-
-static void
-clutter_container_iface_init (ClutterContainerIface *iface)
-{
-  iface->add = clutter_stage_real_add;
-  iface->remove = clutter_stage_real_remove;
-  iface->foreach = clutter_stage_real_foreach;
-  iface->raise = clutter_stage_real_raise;
-  iface->lower = clutter_stage_real_lower;
-  iface->sort_depth_order = clutter_stage_real_sort_depth_order;
-}
 
 static void
 clutter_stage_get_preferred_width (ClutterActor *self,
