@@ -251,6 +251,7 @@ const ShowAppsIcon = new Lang.Class({
 
         this.setChild(this.toggleButton);
         this.setHover(false);
+        this.toggleButton.label_actor = this.label;
     },
 
     _createIcon: function(size) {
