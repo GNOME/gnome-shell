@@ -986,15 +986,10 @@ const Workspace = new Lang.Class({
         if (this._reservedSlot == clone)
             return;
 
-        if (clone && this.containsMetaWindow(clone.metaWindow)) {
-            this._reservedSlot = null;
-            this.positionWindows(WindowPositionFlags.ANIMATE);
-            return;
-        }
-        if (clone)
-            this._reservedSlot = clone;
-        else
-            this._reservedSlot = null;
+        if (clone && this.containsMetaWindow(clone.metaWindow))
+            clone = null;
+
+        this._reservedSlot = clone;
         this.positionWindows(WindowPositionFlags.ANIMATE);
     },
 
