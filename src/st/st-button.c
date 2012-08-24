@@ -778,13 +778,31 @@ st_button_accessible_notify_label_cb (StButton   *button,
 }
 
 static void
+st_button_accessible_compute_role (AtkObject *accessible,
+                                   StButton  *button)
+{
+  atk_object_set_role (accessible, button->priv->is_toggle
+                       ? ATK_ROLE_TOGGLE_BUTTON : ATK_ROLE_PUSH_BUTTON);
+}
+
+static void
+st_button_accessible_notify_toggle_mode_cb (StButton   *button,
+                                            GParamSpec *psec,
+                                            AtkObject  *accessible)
+{
+  st_button_accessible_compute_role (accessible, button);
+}
+
+static void
 st_button_accessible_initialize (AtkObject *obj,
-                                gpointer   data)
+                                 gpointer   data)
 {
   ATK_OBJECT_CLASS (st_button_accessible_parent_class)->initialize (obj, data);
 
-  obj->role = ATK_ROLE_PUSH_BUTTON;
+  st_button_accessible_compute_role (obj, ST_BUTTON (data));
 
   g_signal_connect (data, "notify::label",
                     G_CALLBACK (st_button_accessible_notify_label_cb), obj);
+  g_signal_connect (data, "notify::toggle-mode",
+                    G_CALLBACK (st_button_accessible_notify_toggle_mode_cb), obj);
 }
