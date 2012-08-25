@@ -113,10 +113,20 @@ void            clutter_gesture_action_get_motion_coords        (ClutterGestureA
                                                                  guint                 device,
                                                                  gfloat               *motion_x,
                                                                  gfloat               *motion_y);
+CLUTTER_AVAILABLE_IN_1_12
+gfloat          clutter_gesture_action_get_motion_delta         (ClutterGestureAction *action,
+                                                                 guint                 device,
+                                                                 gfloat               *delta_x,
+                                                                 gfloat               *delta_y);
 void            clutter_gesture_action_get_release_coords       (ClutterGestureAction *action,
                                                                  guint                 device,
                                                                  gfloat               *release_x,
                                                                  gfloat               *release_y);
+CLUTTER_AVAILABLE_IN_1_12
+gfloat          clutter_gesture_action_get_velocity             (ClutterGestureAction *action,
+                                                                 guint                 device,
+                                                                 gfloat               *velocity_x,
+                                                                 gfloat               *velocity_y);
 
 G_END_DECLS
 

@@ -62,7 +62,10 @@
 #include "clutter-marshal.h"
 #include "clutter-private.h"
 
+#include <math.h>
+
 #define MAX_GESTURE_POINTS (10)
+#define FLOAT_EPSILON   (1e-15)
 
 typedef struct
 {
@@ -70,7 +73,10 @@ typedef struct
   ClutterEventSequence *sequence;
 
   gfloat press_x, press_y;
+  gint64 last_motion_time;
   gfloat last_motion_x, last_motion_y;
+  gint64 last_delta_time;
+  gfloat last_delta_x, last_delta_y;
   gfloat release_x, release_y;
 } GesturePoint;
 
@@ -118,6 +124,10 @@ gesture_register_point (ClutterGestureAction *action, ClutterEvent *event)
   clutter_event_get_coords (event, &point->press_x, &point->press_y);
   point->last_motion_x = point->press_x;
   point->last_motion_y = point->press_y;
+  point->last_motion_time = clutter_event_get_time (event);
+
+  point->last_delta_x = point->last_delta_y = 0;
+  point->last_delta_time = 0;
 
   if (clutter_event_type (event) != CLUTTER_BUTTON_PRESS)
     point->sequence = clutter_event_get_event_sequence (event);
@@ -192,6 +202,8 @@ stage_captured_event_cb (ClutterActor       *stage,
   gint position;
   gboolean return_value;
   GesturePoint *point;
+  gfloat motion_x, motion_y;
+  gint64 time;
 
   if ((point = gesture_find_point (action, event, &position)) == NULL)
     return CLUTTER_EVENT_PROPAGATE;
@@ -218,8 +230,8 @@ stage_captured_event_cb (ClutterActor       *stage,
 
     case CLUTTER_TOUCH_UPDATE:
       clutter_event_get_coords (event,
-                                &point->last_motion_x,
-                                &point->last_motion_y);
+                                &motion_x,
+                                &motion_y);
 
       if (priv->points->len < priv->requested_nb_points)
         return CLUTTER_EVENT_PROPAGATE;
@@ -233,8 +245,8 @@ stage_captured_event_cb (ClutterActor       *stage,
                         "dnd-drag-threshold", &drag_threshold,
                         NULL);
 
-          if ((ABS (point->press_y - point->last_motion_y) >= drag_threshold) ||
-              (ABS (point->press_x - point->last_motion_x) >= drag_threshold))
+          if ((ABS (point->press_y - motion_y) >= drag_threshold) ||
+              (ABS (point->press_x - motion_x) >= drag_threshold))
             {
               priv->in_gesture = TRUE;
 
@@ -249,6 +261,15 @@ stage_captured_event_cb (ClutterActor       *stage,
           else
             return CLUTTER_EVENT_PROPAGATE;
         }
+
+      point->last_delta_x = motion_x - point->last_motion_x;
+      point->last_delta_y = motion_y - point->last_motion_y;
+      point->last_motion_x = motion_x;
+      point->last_motion_y = motion_y;
+
+      time = clutter_event_get_time (event);
+      point->last_delta_time = time - point->last_motion_time;
+      point->last_motion_time = time;
 
       g_signal_emit (action, gesture_signals[GESTURE_PROGRESS], 0, actor,
                      &return_value);
@@ -267,6 +288,12 @@ stage_captured_event_cb (ClutterActor       *stage,
         if (priv->in_gesture &&
             ((priv->points->len - 1) < priv->requested_nb_points))
           {
+            /* Treat the release event as the continuation of the last motion,
+             * in case the user keeps the pointer still for a while before
+             * releasing it. */
+            time = clutter_event_get_time (event);
+            point->last_delta_time += time - point->last_motion_time;
+
             priv->in_gesture = FALSE;
             g_signal_emit (action, gesture_signals[GESTURE_END], 0, actor);
           }
@@ -573,6 +600,49 @@ clutter_gesture_action_get_motion_coords (ClutterGestureAction *action,
 }
 
 /**
+ * clutter_gesture_action_get_motion_delta:
+ * @action: a #ClutterGestureAction
+ * @device: currently unused, set to 0
+ * @delta_x: (out) (allow-none): return location for the X axis
+ *   component of the incremental motion delta
+ * @delta_y: (out) (allow-none): return location for the Y axis
+ *   component of the incremental motion delta
+ *
+ * Retrieves the incremental delta since the last motion event
+ * during the dragging.
+ *
+ * Return value: the distance since last motion event
+ *
+ * Since: 1.12
+ */
+gfloat
+clutter_gesture_action_get_motion_delta (ClutterGestureAction *action,
+                                         guint                 device,
+                                         gfloat               *delta_x,
+                                         gfloat               *delta_y)
+{
+  gfloat d_x, d_y;
+
+  g_return_val_if_fail (CLUTTER_IS_GESTURE_ACTION (action), 0);
+  g_return_val_if_fail (action->priv->points->len > device, 0);
+
+  d_x = g_array_index (action->priv->points,
+                       GesturePoint,
+                       device).last_delta_x;
+  d_y = g_array_index (action->priv->points,
+                       GesturePoint,
+                       device).last_delta_y;
+
+  if (delta_x)
+    *delta_x = d_x;
+
+  if (delta_y)
+    *delta_y = d_y;
+
+  return sqrt ((d_x * d_x) + (d_y * d_y));
+}
+
+/**
  * clutter_gesture_action_get_release_coords:
  * @action: a #ClutterGestureAction
  * @device: currently unused, set to 0
@@ -604,6 +674,49 @@ clutter_gesture_action_get_release_coords (ClutterGestureAction *action,
     *release_y = g_array_index (action->priv->points,
                                 GesturePoint,
                                 device).release_y;
+}
+
+/**
+ * clutter_gesture_action_get_velocity:
+ * @action: a #ClutterGestureAction
+ * @device: currently unused, set to 0
+ * @velocity_x: (out) (allow-none): return location for the latest motion
+ *   event's X velocity
+ * @velocity_y: (out) (allow-none): return location for the latest motion
+ *   event's Y velocity
+ *
+ * Retrieves the velocity, in stage pixels per microseconds, of the
+ * latest motion event during the dragging
+ *
+ * Since: 1.12
+ */
+gfloat
+clutter_gesture_action_get_velocity (ClutterGestureAction *action,
+                                     guint                 device,
+                                     gfloat               *velocity_x,
+                                     gfloat               *velocity_y)
+{
+  gfloat d_x, d_y, distance, velocity;
+  gint64 d_t;
+
+  g_return_val_if_fail (CLUTTER_IS_GESTURE_ACTION (action), 0);
+  g_return_val_if_fail (action->priv->points->len > device, 0);
+
+  distance = clutter_gesture_action_get_motion_delta (action, device,
+                                                      &d_x, &d_y);
+
+  d_t = g_array_index (action->priv->points,
+                       GesturePoint,
+                       device).last_delta_time;
+
+  if (velocity_x)
+    *velocity_x = d_t > FLOAT_EPSILON ? d_x / d_t : 0;
+
+  if (velocity_y)
+    *velocity_y = d_t > FLOAT_EPSILON ? d_y / d_t : 0;
+
+  velocity = d_t > FLOAT_EPSILON ? distance / d_t : 0;
+  return velocity;
 }
 
 /**
