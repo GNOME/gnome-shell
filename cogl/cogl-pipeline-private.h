@@ -665,7 +665,7 @@ void _cogl_pipeline_update_blend_enable (CoglPipeline *pipeline,
 
 typedef enum
 {
-  COGL_PIPELINE_GET_LAYER_NO_CREATE
+  COGL_PIPELINE_GET_LAYER_NO_CREATE = 1<<0
 } CoglPipelineGetLayerFlags;
 
 CoglPipelineLayer *
