@@ -508,8 +508,10 @@ clutter_gesture_action_new (void)
  * clutter_gesture_action_get_press_coords:
  * @action: a #ClutterGestureAction
  * @device: currently unused, set to 0
- * @press_x: (out): return location for the press event's X coordinate
- * @press_y: (out): return location for the press event's Y coordinate
+ * @press_x: (out) (allow-none): return location for the press
+ *   event's X coordinate
+ * @press_y: (out) (allow-none): return location for the press
+ *   event's Y coordinate
  *
  * Retrieves the coordinates, in stage space, of the press event
  * that started the dragging for an specific pointer device
@@ -540,9 +542,9 @@ clutter_gesture_action_get_press_coords (ClutterGestureAction *action,
  * clutter_gesture_action_get_motion_coords:
  * @action: a #ClutterGestureAction
  * @device: currently unused, set to 0
- * @motion_x: (out): return location for the latest motion
+ * @motion_x: (out) (allow-none): return location for the latest motion
  *   event's X coordinate
- * @motion_y: (out): return location for the latest motion
+ * @motion_y: (out) (allow-none): return location for the latest motion
  *   event's Y coordinate
  *
  * Retrieves the coordinates, in stage space, of the latest motion
@@ -574,8 +576,10 @@ clutter_gesture_action_get_motion_coords (ClutterGestureAction *action,
  * clutter_gesture_action_get_release_coords:
  * @action: a #ClutterGestureAction
  * @device: currently unused, set to 0
- * @release_x: (out): return location for the X coordinate of the last release
- * @release_y: (out): return location for the Y coordinate of the last release
+ * @release_x: (out) (allow-none): return location for the X coordinate of
+ *   the last release
+ * @release_y: (out) (allow-none): return location for the Y coordinate of
+ *   the last release
  *
  * Retrieves the coordinates, in stage space, of the point where the pointer
  * device was last released.
