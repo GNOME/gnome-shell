@@ -183,8 +183,9 @@ const NotificationsBox = new Lang.Class({
         };
 
         if (obj.resident) {
+            this._residentNotificationBox.add(item.notificationStackWidget);
+            item.closeButtonVisible = false;
             item.prepareNotificationStackForShowing();
-            this._residentNotificationBox.add(item.notificationStackView);
         } else {
             [obj.sourceBox, obj.countLabel] = this._makeNotificationSource(item.source);
             this._persistentNotificationBox.add(obj.sourceBox, { x_fill: false, x_align: St.Align.MIDDLE });
@@ -229,7 +230,8 @@ const NotificationsBox = new Lang.Class({
 
         if (obj.resident && !itemShouldBeResident) {
             // make into a regular item
-            this._residentNotificationBox.remove_actor(obj.item.notificationStackView);
+            obj.item.doneShowingNotificationStack();
+            this._residentNotificationBox.remove_actor(obj.item.notificationStackWidget);
 
             [obj.sourceBox, obj.countLabel] = this._makeNotificationSource(obj.source);
             this._persistentNotificationBox.add(obj.sourceBox);
@@ -239,8 +241,9 @@ const NotificationsBox = new Lang.Class({
             obj.sourceBox = obj.countLabel = null;
             obj.resident = true;
 
+            this._residentNotificationBox.add(obj.item.notificationStackWidget);
+            obj.item.closeButtonVisible = false;
             obj.item.prepareNotificationStackForShowing();
-            this._residentNotificationBox.add(obj.item.notificationStackView);
         } else {
             // just update the counter
             let count = obj.source.unseenCount;
@@ -262,8 +265,8 @@ const NotificationsBox = new Lang.Class({
 
     _removeItem: function(obj) {
         if (obj.resident) {
-            this._residentNotificationBox.remove_actor(obj.item.notificationStackView);
             obj.item.doneShowingNotificationStack();
+            this._residentNotificationBox.remove_actor(obj.item.notificationStackWidget);
         } else {
             obj.sourceBox.destroy();
         }

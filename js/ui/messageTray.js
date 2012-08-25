@@ -1258,6 +1258,14 @@ const SummaryItem = new Lang.Class({
         global.focus_manager.add_group(this.rightClickMenu);
     },
 
+    get closeButtonVisible() {
+        return this._closeButton.visible;
+    },
+
+    set closeButtonVisible(v) {
+        this._closeButton.visible = v;
+    },
+
     prepareNotificationStackForShowing: function() {
         if (this.notificationStack.get_n_children() > 0)
             return;
@@ -1266,7 +1274,6 @@ const SummaryItem = new Lang.Class({
             this._appendNotificationToStack(this.source.notifications[i]);
         }
 
-        this.notificationStackWidget.width = this.notificationStackView.width;
         this.scrollTo(St.Side.BOTTOM);
     },
 
@@ -2341,6 +2348,7 @@ const MessageTray = new Lang.Class({
             this._notificationQueue = newQueue;
 
             this._summaryBoxPointer.bin.child = this._summaryBoxPointerItem.notificationStackWidget;
+            this._summaryBoxPointerItem.closeButtonVisible = true;
             this._summaryBoxPointerItem.prepareNotificationStackForShowing();
         } else if (this._clickedSummaryItemMouseButton == 3) {
             this._summaryBoxPointer.bin.child = this._clickedSummaryItem.rightClickMenu;
