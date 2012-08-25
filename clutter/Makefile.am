@@ -102,6 +102,7 @@ source_h =					\
 	$(srcdir)/clutter-page-turn-effect.h	\
 	$(srcdir)/clutter-paint-nodes.h		\
 	$(srcdir)/clutter-paint-node.h		\
+	$(srcdir)/clutter-pan-action.h		\
 	$(srcdir)/clutter-path-constraint.h	\
 	$(srcdir)/clutter-path.h		\
 	$(srcdir)/clutter-property-transition.h	\
@@ -182,6 +183,7 @@ source_c = \
 	$(srcdir)/clutter-page-turn-effect.c	\
 	$(srcdir)/clutter-paint-nodes.c		\
 	$(srcdir)/clutter-paint-node.c		\
+	$(srcdir)/clutter-pan-action.c		\
 	$(srcdir)/clutter-path-constraint.c	\
 	$(srcdir)/clutter-path.c		\
 	$(srcdir)/clutter-property-transition.c	\

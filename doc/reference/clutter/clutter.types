@@ -54,6 +54,7 @@ clutter_model_get_type
 clutter_model_iter_get_type
 clutter_offscreen_effect_get_type
 clutter_page_turn_effect_get_type
+clutter_pan_action_get_type
 clutter_paint_node_get_type
 clutter_path_constraint_get_type
 clutter_path_get_type

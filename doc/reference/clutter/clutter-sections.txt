@@ -3449,3 +3449,32 @@ CLUTTER_ZOOM_ACTION_GET_CLASS
 ClutterZoomActionPrivate
 clutter_zoom_action_get_type
 </SECTION>
+
+<SECTION>
+<FILE>clutter-pan-action</FILE>
+ClutterPanAction
+ClutterPanActionClass
+clutter_pan_action_new
+ClutterPanAxis
+clutter_pan_action_set_pan_axis
+clutter_pan_action_get_pan_axis
+clutter_pan_action_set_interpolate
+clutter_pan_action_get_interpolate
+clutter_pan_action_set_deceleration
+clutter_pan_action_get_deceleration
+clutter_pan_action_set_acceleration_factor
+clutter_pan_action_get_acceleration_factor
+<SUBSECTION>
+clutter_pan_action_get_interpolated_coords
+clutter_pan_action_get_interpolated_delta
+<SUBSECTION Standard>
+CLUTTER_IS_PAN_ACTION
+CLUTTER_IS_PAN_ACTION_CLASS
+CLUTTER_TYPE_PAN_ACTION
+CLUTTER_PAN_ACTION
+CLUTTER_PAN_ACTION_CLASS
+CLUTTER_PAN_ACTION_GET_CLASS
+<SUBSECTION Private>
+ClutterPanActionPrivate
+clutter_pan_action_get_type
+</SECTION>

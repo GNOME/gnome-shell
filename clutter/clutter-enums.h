@@ -1003,6 +1003,25 @@ typedef enum { /*< prefix=CLUTTER_SWIPE_DIRECTION >*/
 } ClutterSwipeDirection;
 
 /**
+ * ClutterPanAxis:
+ * @CLUTTER_PAN_AXIS_NONE: No constraint
+ * @CLUTTER_PAN_X_AXIS: Set a constraint on the X axis
+ * @CLUTTER_PAN_Y_AXIS: Set a constraint on the Y axis
+ *
+ * The axis of the constraint that should be applied on the
+ * panning action
+ *
+ * Since: 1.12
+ */
+typedef enum { /*< prefix=CLUTTER_PAN >*/
+  CLUTTER_PAN_AXIS_NONE = 0,
+
+  CLUTTER_PAN_X_AXIS,
+  CLUTTER_PAN_Y_AXIS
+} ClutterPanAxis;
+
+
+/**
  * ClutterTableAlignment:
  * @CLUTTER_TABLE_ALIGNMENT_START: Align the child to the top or to the
  *   left of a cell in the table, depending on the axis

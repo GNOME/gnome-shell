@@ -11,6 +11,7 @@ all_examples = \
 	flow-layout \
 	grid-layout \
 	layout-manager \
+	pan-action \
 	rounded-rectangle \
 	scroll-actor \
 	threads
