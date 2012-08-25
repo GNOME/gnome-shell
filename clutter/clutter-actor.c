@@ -3567,11 +3567,6 @@ clutter_actor_paint_node (ClutterActor     *actor,
 
   _clutter_paint_node_paint (root);
 
-#if 0
-  /* XXX: Uncomment this when we disable emitting the paint signal */
-  CLUTTER_ACTOR_GET_CLASS (actor)->paint (actor);
-#endif
-
   return TRUE;
 }
 
@@ -3866,6 +3861,7 @@ clutter_actor_continue_paint (ClutterActor *self)
           clutter_actor_paint_node (self, dummy);
           clutter_paint_node_unref (dummy);
 
+          /* XXX:2.0 - Call the paint() virtual directly */
           g_signal_emit (self, actor_signals[PAINT], 0);
         }
       else
@@ -3877,6 +3873,8 @@ clutter_actor_continue_paint (ClutterActor *self)
           /* Actor will then paint silhouette of itself in supplied
            * color.  See clutter_stage_get_actor_at_pos() for where
            * picking is enabled.
+           *
+           * XXX:2.0 - Call the pick() virtual directly
            */
           g_signal_emit (self, actor_signals[PICK], 0, &col);
         }
@@ -8169,11 +8167,13 @@ clutter_actor_class_init (ClutterActorClass *klass)
    * to set up some custom aspect of a paint in pick mode.
    *
    * Since: 1.0
+   * Deprecated: 1.12: Override the #ClutterActorClass.pick virtual function
+   *   instead.
    */
   actor_signals[PICK] =
     g_signal_new (I_("pick"),
                   G_TYPE_FROM_CLASS (object_class),
-                  G_SIGNAL_RUN_LAST,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_DEPRECATED,
                   G_STRUCT_OFFSET (ClutterActorClass, pick),
                   NULL, NULL,
                   _clutter_marshal_VOID__BOXED,
@@ -16828,6 +16828,8 @@ _clutter_actor_get_paint_volume_real (ClutterActor *self,
    *   paint-volume.
    * - If we could be notified somehow when signal handlers are
    *   connected we wouldn't have to poll for handlers like this.
+   *
+   * XXX:2.0 - Remove when we remove the paint signal
    */
   if (g_signal_has_handler_pending (self,
                                     actor_signals[PAINT],
