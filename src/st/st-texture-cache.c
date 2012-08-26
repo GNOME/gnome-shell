@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include "st-texture-cache.h"
+#include "st-private.h"
 #include <gtk/gtk.h>
 #include <string.h>
 #include <glib.h>
@@ -967,9 +968,6 @@ load_gicon_with_colors (StTextureCache    *cache,
  * icon isn't loaded already, the texture will be filled
  * asynchronously.
  *
- * This will load @icon as a full-color icon; if you want a symbolic
- * icon, you must use st_texture_cache_load_icon_name().
- *
  * Return Value: (transfer none): A new #ClutterActor for the icon, or %NULL if not found
  */
 ClutterActor *
@@ -1135,46 +1133,6 @@ st_texture_cache_load_sliced_image (StTextureCache    *cache,
  * full-color icon.
  */
 
-/* generates names like g_themed_icon_new_with_default_fallbacks(),
- * but *only* symbolic names
- */
-static char **
-symbolic_names_for_icon (const char *name)
-{
-  char **parts, **names;
-  int i, numnames;
-
-  parts = g_strsplit (name, "-", -1);
-  numnames = g_strv_length (parts);
-  names = g_new (char *, numnames + 1);
-  for (i = 0; parts[i]; i++)
-    {
-      if (i == 0)
-        {
-          names[i] = g_strdup_printf ("%s-symbolic", parts[i]);
-        }
-      else
-        {
-          names[i] = g_strdup_printf ("%.*s-%s-symbolic",
-                                      (int) (strlen (names[i - 1]) - strlen ("-symbolic")),
-                                      names[i - 1], parts[i]);
-        }
-    }
-  names[i] = NULL;
-
-  g_strfreev (parts);
-
-  /* need to reverse here, because longest (most specific)
-     name has to come first */
-  for (i = 0; i < (numnames / 2); i++) {
-    char *tmp = names[i];
-    names[i] = names[numnames - i - 1];
-    names[numnames - i - 1] = tmp;
-  }
-
-  return names;
-}
-
 /**
  * st_texture_cache_load_icon_name:
  * @cache: The texture cache instance
@@ -1198,16 +1156,13 @@ st_texture_cache_load_icon_name (StTextureCache    *cache,
 {
   ClutterActor *texture;
   GIcon *themed;
-  char **names;
 
   g_return_val_if_fail (!(icon_type == ST_ICON_SYMBOLIC && theme_node == NULL), NULL);
 
   switch (icon_type)
     {
     case ST_ICON_SYMBOLIC:
-      names = symbolic_names_for_icon (name);
-      themed = g_themed_icon_new_from_names (names, -1);
-      g_strfreev (names);
+      themed = _st_make_symbolic_themed_icon (name);
       texture = load_gicon_with_colors (cache, themed, size,
                                         st_theme_node_get_icon_colors (theme_node));
       g_object_unref (themed);

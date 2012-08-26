@@ -79,4 +79,6 @@ void _st_paint_shadow_with_opacity (StShadow        *shadow_spec,
                                     ClutterActorBox *box,
                                     guint8           paint_opacity);
 
+GIcon *_st_make_symbolic_themed_icon (const char    *icon_name);
+
 #endif /* __ST_PRIVATE_H__ */

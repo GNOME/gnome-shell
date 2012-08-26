@@ -53,7 +53,6 @@ struct _StIconPrivate
   guint         opacity_handler_id;
 
   GIcon        *gicon;
-  gchar        *icon_name;
   StIconType    icon_type;
   gint          prop_icon_size;  /* icon size set as property */
   gint          theme_icon_size; /* icon size from theme node */
@@ -172,20 +171,6 @@ st_icon_dispose (GObject *gobject)
     }
 
   G_OBJECT_CLASS (st_icon_parent_class)->dispose (gobject);
-}
-
-static void
-st_icon_finalize (GObject *gobject)
-{
-  StIconPrivate *priv = ST_ICON (gobject)->priv;
-
-  if (priv->icon_name)
-    {
-      g_free (priv->icon_name);
-      priv->icon_name = NULL;
-    }
-
-  G_OBJECT_CLASS (st_icon_parent_class)->finalize (gobject);
 }
 
 static void
@@ -337,7 +322,6 @@ st_icon_class_init (StIconClass *klass)
   object_class->get_property = st_icon_get_property;
   object_class->set_property = st_icon_set_property;
   object_class->dispose = st_icon_dispose;
-  object_class->finalize = st_icon_finalize;
 
   actor_class->get_preferred_height = st_icon_get_preferred_height;
   actor_class->get_preferred_width = st_icon_get_preferred_width;
@@ -348,7 +332,7 @@ st_icon_class_init (StIconClass *klass)
 
   pspec = g_param_spec_object ("gicon",
                                "GIcon",
-                               "A GIcon to override :icon-name",
+                               "The GIcon shown by this icon actor",
                                G_TYPE_ICON,
                                ST_PARAM_READWRITE);
   g_object_class_install_property (object_class, PROP_GICON, pspec);
@@ -356,7 +340,7 @@ st_icon_class_init (StIconClass *klass)
   pspec = g_param_spec_string ("icon-name",
                                "Icon name",
                                "An icon name",
-                               NULL, ST_PARAM_READWRITE);
+                               NULL, ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
   g_object_class_install_property (object_class, PROP_ICON_NAME, pspec);
 
   pspec = g_param_spec_enum ("icon-type",
@@ -364,7 +348,7 @@ st_icon_class_init (StIconClass *klass)
                              "The type of icon that should be used",
                              ST_TYPE_ICON_TYPE,
                              DEFAULT_ICON_TYPE,
-                             ST_PARAM_READWRITE);
+                             ST_PARAM_READWRITE | G_PARAM_DEPRECATED);
   g_object_class_install_property (object_class, PROP_ICON_TYPE, pspec);
 
   pspec = g_param_spec_int ("icon-size",
@@ -492,14 +476,6 @@ st_icon_update (StIcon *icon)
                                                            priv->gicon,
                                                            priv->icon_size);
     }
-  else if (priv->icon_name)
-    {
-      priv->pending_texture = st_texture_cache_load_icon_name (cache,
-                                                               theme_node,
-                                                               priv->icon_name,
-                                                               priv->icon_type,
-                                                               priv->icon_size);
-    }
 
   if (priv->pending_texture)
     {
@@ -562,9 +538,16 @@ st_icon_new (void)
 const gchar *
 st_icon_get_icon_name (StIcon *icon)
 {
+  StIconPrivate *priv;
+
   g_return_val_if_fail (ST_IS_ICON (icon), NULL);
 
-  return icon->priv->icon_name;
+  priv = icon->priv;
+
+  if (priv->gicon && G_IS_THEMED_ICON (priv->gicon))
+    return g_themed_icon_get_names (G_THEMED_ICON (priv->gicon)) [0];
+  else
+    return NULL;
 }
 
 void
@@ -577,20 +560,20 @@ st_icon_set_icon_name (StIcon      *icon,
 
   priv = icon->priv;
 
-  /* Check if there's no change */
-  if (g_strcmp0 (priv->icon_name, icon_name) == 0)
-    return;
-
-  g_free (priv->icon_name);
-  priv->icon_name = g_strdup (icon_name);
-
   if (priv->gicon)
-    {
-      g_object_unref (priv->gicon);
-      priv->gicon = NULL;
-      g_object_notify (G_OBJECT (icon), "gicon");
-    }
+    g_object_unref (priv->gicon);
 
+  if (icon_name)
+    {
+      if (priv->icon_type == ST_ICON_SYMBOLIC)
+        priv->gicon = _st_make_symbolic_themed_icon (icon_name);
+      else
+        priv->gicon = g_themed_icon_new_with_default_fallbacks (icon_name);
+    }
+  else
+    priv->gicon = NULL;
+
+  g_object_notify (G_OBJECT (icon), "gicon");
   g_object_notify (G_OBJECT (icon), "icon-name");
 
   st_icon_update (icon);
@@ -665,7 +648,7 @@ void
 st_icon_set_gicon (StIcon *icon, GIcon *gicon)
 {
   g_return_if_fail (ST_IS_ICON (icon));
-  g_return_if_fail (G_IS_ICON (gicon));
+  g_return_if_fail (gicon == NULL || G_IS_ICON (gicon));
 
   if (icon->priv->gicon == gicon) /* do nothing */
     return;
@@ -678,13 +661,6 @@ st_icon_set_gicon (StIcon *icon, GIcon *gicon)
 
   if (gicon)
     icon->priv->gicon = g_object_ref (gicon);
-
-  if (icon->priv->icon_name)
-    {
-      g_free (icon->priv->icon_name);
-      icon->priv->icon_name = NULL;
-      g_object_notify (G_OBJECT (icon), "icon-name");
-    }
 
   g_object_notify (G_OBJECT (icon), "gicon");
 
