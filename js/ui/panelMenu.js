@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
@@ -230,19 +231,36 @@ const SystemStatusButton = new Lang.Class({
 
     _init: function(iconName, nameText) {
         this.parent(0.0, nameText);
-
-        this._iconActor = new St.Icon({ icon_name: iconName,
-                                        icon_type: St.IconType.SYMBOLIC,
-                                        style_class: 'system-status-icon' });
-        this.actor.add_actor(this._iconActor);
         this.actor.add_style_class_name('panel-status-button');
+
+        this._box = new St.BoxLayout({ style_class: 'panel-status-button-box' });
+        this.actor.add_actor(this._box);
+
+        this.setIcon(iconName);
+    },
+
+    addIcon: function(gicon) {
+        let icon = new St.Icon({ gicon: gicon,
+                                 icon_type: St.IconType.SYMBOLIC,
+                                 style_class: 'system-status-icon' });
+        this._box.add_actor(icon);
+
+        return icon;
     },
 
     setIcon: function(iconName) {
-        this._iconActor.icon_name = iconName;
+        // Need to first add a NULL GIcon and then set icon_name, to ensure
+        // compatibility with -symbolic fallbacks
+
+        if (!this.mainIcon)
+            this.mainIcon = this.addIcon(null);
+        this.mainIcon.icon_name = iconName;
     },
 
     setGIcon: function(gicon) {
-        this._iconActor.gicon = gicon;
+        if (this.mainIcon)
+            this.mainIcon.gicon = gicon;
+        else
+            this.mainIcon = this.addIcon(gicon);
     }
 });

@@ -502,7 +502,7 @@ StButton.popup-menu-item:insensitive {
     -boxpointer-gap: 4px
 }
 
-#networkMenu {
+.panel-status-button-box {
     spacing: 4px;
 }
 

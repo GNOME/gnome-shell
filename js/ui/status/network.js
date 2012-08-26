@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
+const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const NetworkManager = imports.gi.NetworkManager;
 const NMClient = imports.gi.NMClient;
@@ -1564,25 +1565,13 @@ const NMDeviceWireless = new Lang.Class({
 
 const NMApplet = new Lang.Class({
     Name: 'NMApplet',
-    Extends: PanelMenu.Button,
+    Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        this.parent(0.0, _('Network'));
+        this.parent('network-offline', _('Network'));
 
-        this._box = new St.BoxLayout({ name: 'networkMenu' });
-        this.actor.add_actor (this._box);
-        this.actor.add_style_class_name('panel-status-button');
-
-        this._primaryIcon = new St.Icon({ icon_name: 'network-offline',
-                                          icon_type: St.IconType.SYMBOLIC,
-                                          style_class: 'system-status-icon' });
-        this._box.add_actor(this._primaryIcon);
-
-        this._secondaryIcon = new St.Icon({ icon_name: 'network-vpn',
-                                            icon_type: St.IconType.SYMBOLIC,
-                                            style_class: 'system-status-icon',
-                                            visible: false });
-        this._box.add_actor(this._secondaryIcon);
+        this._secondaryIcon = this.addIcon(new Gio.ThemedIcon({ name: 'network-vpn' }));
+        this._secondaryIcon.hide();
 
         this._client = NMClient.Client.new();
 
@@ -1689,10 +1678,6 @@ const NMApplet = new Lang.Class({
                 this._settings.connect('new-connection', Lang.bind(this, this._newConnection));
             }
         }));
-    },
-
-    setIcon: function(iconName) {
-        this._primaryIcon.icon_name = iconName;
     },
 
     setLockedState: function(locked) {
