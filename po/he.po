@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-10 14:43+0300\n"
-"PO-Revision-Date: 2012-08-10 14:44+0200\n"
+"POT-Creation-Date: 2012-08-26 10:43+0300\n"
+"PO-Revision-Date: 2012-08-26 10:46+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <sh.yaron@gmail.com>\n"
 "Language: he\n"
@@ -177,56 +177,61 @@ msgctxt "title"
 msgid "Sign In"
 msgstr "כניסה"
 
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger instead
-#: ../js/gdm/loginDialog.js:766
-#: ../js/ui/unlockDialog.js:124
-msgid "(or swipe finger)"
-msgstr "(או להעביר אצבע)"
-
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:787
+#: ../js/gdm/loginDialog.js:784
 msgid "Not listed?"
 msgstr "לא רשום?"
 
-#: ../js/gdm/loginDialog.js:930
-#: ../js/ui/endSessionDialog.js:406
+#: ../js/gdm/loginDialog.js:929
+#: ../js/ui/endSessionDialog.js:407
 #: ../js/ui/extensionDownloader.js:195
-#: ../js/ui/networkAgent.js:153
+#: ../js/ui/networkAgent.js:156
 #: ../js/ui/polkitAuthenticationAgent.js:176
 #: ../js/ui/shellMountOperation.js:396
 #: ../js/ui/status/bluetooth.js:432
+#: ../js/ui/unlockDialog.js:129
 msgid "Cancel"
 msgstr "ביטול"
 
-#: ../js/gdm/loginDialog.js:935
+#: ../js/gdm/loginDialog.js:934
 msgctxt "button"
 msgid "Sign In"
 msgstr "כניסה"
 
-#: ../js/gdm/loginDialog.js:1278
+#: ../js/gdm/loginDialog.js:1277
 msgid "Login Window"
 msgstr "חלון כניסה"
 
-#: ../js/gdm/powerMenu.js:130
-#: ../js/ui/userMenu.js:612
-#: ../js/ui/userMenu.js:616
-#: ../js/ui/userMenu.js:727
+#: ../js/gdm/powerMenu.js:88
+#: ../js/ui/userMenu.js:634
+#: ../js/ui/userMenu.js:638
+#: ../js/ui/userMenu.js:749
 msgid "Suspend"
 msgstr "השהיה"
 
-#: ../js/gdm/powerMenu.js:135
+#: ../js/gdm/powerMenu.js:93
 msgid "Restart"
 msgstr "הפעלה מחדש"
 
-#: ../js/gdm/powerMenu.js:140
-#: ../js/ui/userMenu.js:614
-#: ../js/ui/userMenu.js:616
-#: ../js/ui/userMenu.js:726
+#: ../js/gdm/powerMenu.js:98
+#: ../js/ui/userMenu.js:636
+#: ../js/ui/userMenu.js:638
+#: ../js/ui/userMenu.js:748
 msgid "Power Off"
 msgstr "כיבוי"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: ../js/gdm/util.js:220
+msgid "(or swipe finger)"
+msgstr "(או להעביר אצבע)"
+
+#: ../js/gdm/util.js:245
+#, c-format
+msgid "(e.g., user or %s)"
+msgstr "(משתמש או %s לדוגמה)"
 
 #: ../js/misc/util.js:92
 msgid "Command not found"
@@ -261,6 +266,7 @@ msgid "New Window"
 msgstr "חלון חדש"
 
 #: ../js/ui/appDisplay.js:678
+#: ../js/ui/dash.js:271
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
@@ -278,16 +284,16 @@ msgstr "%s נוסף למועדפים שלך."
 msgid "%s has been removed from your favorites."
 msgstr "%s הוסר מהמועדפים שלך."
 
-#: ../js/ui/autorunManager.js:261
+#: ../js/ui/autorunManager.js:264
 msgid "Removable Devices"
 msgstr "התקנים נשלפים"
 
-#: ../js/ui/autorunManager.js:548
+#: ../js/ui/autorunManager.js:551
 #, c-format
 msgid "Open with %s"
 msgstr "פתיחה באמצעות %s"
 
-#: ../js/ui/autorunManager.js:574
+#: ../js/ui/autorunManager.js:577
 msgid "Eject"
 msgstr "שליפה"
 
@@ -429,18 +435,18 @@ msgstr "היום"
 msgid "Tomorrow"
 msgstr "מחר"
 
-#: ../js/ui/calendar.js:727
+#: ../js/ui/calendar.js:729
 msgid "This week"
 msgstr "השבוע"
 
-#: ../js/ui/calendar.js:735
+#: ../js/ui/calendar.js:737
 msgid "Next week"
 msgstr "בשבוע הבא"
 
-#: ../js/ui/dash.js:238
-#: ../js/ui/messageTray.js:1321
-msgid "Remove"
-msgstr "הסרה"
+#: ../js/ui/dash.js:245
+#: ../js/ui/dash.js:273
+msgid "Show Applications"
+msgstr "הצגת יישומים"
 
 #: ../js/ui/dateMenu.js:94
 msgid "Date and Time Settings"
@@ -565,7 +571,7 @@ msgstr "מגש מערכת"
 
 #: ../js/ui/keyboard.js:545
 #: ../js/ui/status/keyboard.js:146
-#: ../js/ui/status/power.js:205
+#: ../js/ui/status/power.js:207
 msgid "Keyboard"
 msgstr "מקלדת"
 
@@ -574,7 +580,7 @@ msgstr "מקלדת"
 msgid "Password:"
 msgstr "ססמה:"
 
-#: ../js/ui/keyringPrompt.js:102
+#: ../js/ui/keyringPrompt.js:105
 msgid "Type again:"
 msgstr "נא להקליד שוב:"
 
@@ -634,127 +640,135 @@ msgstr "דף אינטרנט"
 msgid "Screencast from %d %t"
 msgstr "צילום מסך מהקובץ %d %t"
 
-#: ../js/ui/messageTray.js:1314
+#: ../js/ui/messageTray.js:1228
 msgid "Open"
 msgstr "פתיחה"
 
-#: ../js/ui/messageTray.js:1331
+#: ../js/ui/messageTray.js:1235
+msgid "Remove"
+msgstr "הסרה"
+
+#: ../js/ui/messageTray.js:1245
 msgid "Unmute"
 msgstr "ביטול ההשתקה"
 
-#: ../js/ui/messageTray.js:1331
+#: ../js/ui/messageTray.js:1245
 msgid "Mute"
 msgstr "השתקה"
 
-#: ../js/ui/messageTray.js:2664
+#: ../js/ui/messageTray.js:2020
+msgid "Message Tray"
+msgstr "אזור דיווח ההודעות"
+
+#: ../js/ui/messageTray.js:2458
 msgid "System Information"
 msgstr "פרטי המערכת"
 
-#: ../js/ui/networkAgent.js:148
+#: ../js/ui/networkAgent.js:151
 msgid "Connect"
 msgstr "התחברות"
 
 #. Cisco LEAP
-#: ../js/ui/networkAgent.js:238
-#: ../js/ui/networkAgent.js:250
-#: ../js/ui/networkAgent.js:277
-#: ../js/ui/networkAgent.js:297
-#: ../js/ui/networkAgent.js:307
+#: ../js/ui/networkAgent.js:241
+#: ../js/ui/networkAgent.js:253
+#: ../js/ui/networkAgent.js:280
+#: ../js/ui/networkAgent.js:300
+#: ../js/ui/networkAgent.js:310
 msgid "Password: "
 msgstr "ססמה:"
 
 #. static WEP
-#: ../js/ui/networkAgent.js:243
+#: ../js/ui/networkAgent.js:246
 msgid "Key: "
 msgstr "מפתח:"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:275
-#: ../js/ui/networkAgent.js:293
+#: ../js/ui/networkAgent.js:278
+#: ../js/ui/networkAgent.js:296
 msgid "Username: "
 msgstr "שם משתמש:"
 
-#: ../js/ui/networkAgent.js:281
+#: ../js/ui/networkAgent.js:284
 msgid "Identity: "
 msgstr "זהות:"
 
-#: ../js/ui/networkAgent.js:283
+#: ../js/ui/networkAgent.js:286
 msgid "Private key password: "
 msgstr "ססמת מפתח פרטי:"
 
-#: ../js/ui/networkAgent.js:295
+#: ../js/ui/networkAgent.js:298
 msgid "Service: "
 msgstr "שירות:"
 
-#: ../js/ui/networkAgent.js:324
+#: ../js/ui/networkAgent.js:327
 msgid "Authentication required by wireless network"
 msgstr "הרשת האלחוטית דורשת אימות"
 
-#: ../js/ui/networkAgent.js:325
+#: ../js/ui/networkAgent.js:328
 #, c-format
 msgid "Passwords or encryption keys are required to access the wireless network '%s'."
 msgstr "ססמאות או מפתחות הצפנה נדרשים כדי לגשת לרשת האלחוטית '%s'."
 
-#: ../js/ui/networkAgent.js:329
+#: ../js/ui/networkAgent.js:332
 msgid "Wired 802.1X authentication"
 msgstr "אימות Wired 802.1X"
 
-#: ../js/ui/networkAgent.js:331
+#: ../js/ui/networkAgent.js:334
 msgid "Network name: "
 msgstr "שם הרשת:"
 
-#: ../js/ui/networkAgent.js:336
+#: ../js/ui/networkAgent.js:339
 msgid "DSL authentication"
 msgstr "אימות DSL"
 
-#: ../js/ui/networkAgent.js:343
+#: ../js/ui/networkAgent.js:346
 msgid "PIN code required"
 msgstr "נדרש קוד PIN"
 
-#: ../js/ui/networkAgent.js:344
+#: ../js/ui/networkAgent.js:347
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "נדרש קוד PIN עבור התקן החיבור האלחוטי בפס רחב"
 
-#: ../js/ui/networkAgent.js:345
+#: ../js/ui/networkAgent.js:348
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/networkAgent.js:351
+#: ../js/ui/networkAgent.js:354
 msgid "Mobile broadband network password"
 msgstr "ססמת רשת הפס הרחב הניידת"
 
-#: ../js/ui/networkAgent.js:352
+#: ../js/ui/networkAgent.js:355
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "נדרשת ססמה כדי להתחבר אל '%s'."
 
 #: ../js/ui/notificationDaemon.js:506
-#: ../src/shell-app.c:374
+#: ../src/shell-app.c:373
 msgctxt "program"
 msgid "Unknown"
 msgstr "לא ידוע"
 
-#: ../js/ui/overview.js:89
+#: ../js/ui/overview.js:84
 msgid "Undo"
 msgstr "ביטול"
 
-#: ../js/ui/overview.js:129
+#: ../js/ui/overview.js:124
 msgid "Overview"
 msgstr "סקירה"
 
-#: ../js/ui/overview.js:199
-msgid "Windows"
-msgstr "חלונות"
-
-#: ../js/ui/overview.js:202
-msgid "Applications"
-msgstr "יישומים"
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/overview.js:193
+msgid "Type to search..."
+msgstr "יש להקליד כדי לחפש..."
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:227
+#: ../js/ui/overview.js:214
 msgid "Dash"
 msgstr "חלונית"
 
@@ -815,7 +829,7 @@ msgstr "פעולה זו לא הצליחה, נא לנסות שוב. עמך הסל
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:723
+#: ../js/ui/popupMenu.js:726
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -823,11 +837,33 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "נא להזין פקודה:"
 
-#: ../js/ui/searchDisplay.js:320
+#. Translators: This is a time format for a date in
+#. long format
+#: ../js/ui/screenShield.js:69
+msgid "%A, %B %d"
+msgstr "%A, ה־%d ב%B"
+
+#: ../js/ui/screenShield.js:134
+#, c-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "הודעה חדשה אחת"
+msgstr[1] "%d הודעות חדשות"
+msgstr[2] "2 הודעות חדשות"
+
+#: ../js/ui/screenShield.js:136
+#, c-format
+msgid "%d new notification"
+msgid_plural "%d new notifications"
+msgstr[0] "התרעה אחת"
+msgstr[1] "%d התרעות"
+msgstr[2] "2 התרעות"
+
+#: ../js/ui/searchDisplay.js:274
 msgid "Searching..."
 msgstr "בחיפוש..."
 
-#: ../js/ui/searchDisplay.js:373
+#: ../js/ui/searchDisplay.js:325
 msgid "No matching results."
 msgstr "אין תוצאות תואמות."
 
@@ -856,7 +892,7 @@ msgid "Remember Passphrase"
 msgstr "שמירת מילת הצופן"
 
 #: ../js/ui/shellMountOperation.js:400
-#: ../js/ui/unlockDialog.js:129
+#: ../js/ui/unlockDialog.js:132
 msgid "Unlock"
 msgstr "שחרור"
 
@@ -1005,7 +1041,7 @@ msgid "Grant this time only"
 msgstr "הענקת גישה הפעם בלבד"
 
 #: ../js/ui/status/bluetooth.js:351
-#: ../js/ui/telepathyClient.js:1106
+#: ../js/ui/telepathyClient.js:1110
 msgid "Reject"
 msgstr "סירוב"
 
@@ -1164,15 +1200,15 @@ msgstr "הגדרות הרשת"
 msgid "Network Manager"
 msgstr "מנהל הרשתות"
 
-#: ../js/ui/status/network.js:1802
+#: ../js/ui/status/network.js:1801
 msgid "Connection failed"
 msgstr "ההתחברות נכשל"
 
-#: ../js/ui/status/network.js:1803
+#: ../js/ui/status/network.js:1802
 msgid "Activation of network connection failed"
 msgstr "הפעלת חיבור הרשת נכשלה"
 
-#: ../js/ui/status/network.js:2066
+#: ../js/ui/status/network.js:2103
 msgid "Networking is disabled"
 msgstr "תכונת הרשת מנוטרלת"
 
@@ -1233,47 +1269,47 @@ msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../js/ui/status/power.js:195
+#: ../js/ui/status/power.js:197
 msgid "AC adapter"
 msgstr "מתאם חשמל"
 
-#: ../js/ui/status/power.js:197
+#: ../js/ui/status/power.js:199
 msgid "Laptop battery"
 msgstr "סוללת נייד"
 
-#: ../js/ui/status/power.js:199
+#: ../js/ui/status/power.js:201
 msgid "UPS"
 msgstr "אל־פסק"
 
-#: ../js/ui/status/power.js:201
+#: ../js/ui/status/power.js:203
 msgid "Monitor"
 msgstr "צג"
 
-#: ../js/ui/status/power.js:203
+#: ../js/ui/status/power.js:205
 msgid "Mouse"
 msgstr "עכבר"
 
-#: ../js/ui/status/power.js:207
+#: ../js/ui/status/power.js:209
 msgid "PDA"
 msgstr "מחשב כף יד"
 
-#: ../js/ui/status/power.js:209
+#: ../js/ui/status/power.js:211
 msgid "Cell phone"
 msgstr "טלפון סלולרי"
 
-#: ../js/ui/status/power.js:211
+#: ../js/ui/status/power.js:213
 msgid "Media player"
 msgstr "נגן מדיה"
 
-#: ../js/ui/status/power.js:213
+#: ../js/ui/status/power.js:215
 msgid "Tablet"
 msgstr "טבלת שליטה"
 
-#: ../js/ui/status/power.js:215
+#: ../js/ui/status/power.js:217
 msgid "Computer"
 msgstr "מחשב"
 
-#: ../js/ui/status/power.js:217
+#: ../js/ui/status/power.js:219
 msgctxt "device"
 msgid "Unknown"
 msgstr "לא ידוע"
@@ -1290,60 +1326,60 @@ msgstr "מיקרופון"
 
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/telepathyClient.js:226
+#: ../js/ui/telepathyClient.js:228
 msgid "Invitation"
 msgstr "הזמנה"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:284
+#: ../js/ui/telepathyClient.js:288
 msgid "Call"
 msgstr "התקשרות"
 
 #. We got the TpContact
-#: ../js/ui/telepathyClient.js:300
+#: ../js/ui/telepathyClient.js:304
 msgid "File Transfer"
 msgstr "העברת קבצים"
 
-#: ../js/ui/telepathyClient.js:381
+#: ../js/ui/telepathyClient.js:385
 msgid "Subscription request"
 msgstr "בקשת הרשמה"
 
-#: ../js/ui/telepathyClient.js:418
+#: ../js/ui/telepathyClient.js:422
 msgid "Connection error"
 msgstr "שגיאת התחברות"
 
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:917
+#: ../js/ui/telepathyClient.js:921
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "נשלח ב־<b>%X</b> בשעה <b>%A</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:923
+#: ../js/ui/telepathyClient.js:927
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "נשלח ב<b>%A</b>, <b>ה־%d ב%B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:928
+#: ../js/ui/telepathyClient.js:932
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "נשלח ב<b>%A</b>, <b>ה־%d ב%B</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:957
+#: ../js/ui/telepathyClient.js:961
 #, c-format
 msgid "%s is now known as %s"
 msgstr "השם של %s הוחלף ל־%s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1057
+#: ../js/ui/telepathyClient.js:1061
 #, c-format
 msgid "Invitation to %s"
 msgstr "הזמנה ל־%s"
@@ -1351,37 +1387,37 @@ msgstr "הזמנה ל־%s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1065
+#: ../js/ui/telepathyClient.js:1069
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "הוזמנת על ידי %s להצטרף אל %s"
 
-#: ../js/ui/telepathyClient.js:1067
-#: ../js/ui/telepathyClient.js:1146
-#: ../js/ui/telepathyClient.js:1210
+#: ../js/ui/telepathyClient.js:1071
+#: ../js/ui/telepathyClient.js:1150
+#: ../js/ui/telepathyClient.js:1214
 msgid "Decline"
 msgstr "דחייה"
 
-#: ../js/ui/telepathyClient.js:1068
-#: ../js/ui/telepathyClient.js:1147
-#: ../js/ui/telepathyClient.js:1211
+#: ../js/ui/telepathyClient.js:1072
+#: ../js/ui/telepathyClient.js:1151
+#: ../js/ui/telepathyClient.js:1215
 msgid "Accept"
 msgstr "אישור"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1098
+#: ../js/ui/telepathyClient.js:1102
 #, c-format
 msgid "Video call from %s"
 msgstr "שיחת וידאו מאת %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1101
+#: ../js/ui/telepathyClient.js:1105
 #, c-format
 msgid "Call from %s"
 msgstr "שיחה מאת %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1108
+#: ../js/ui/telepathyClient.js:1112
 msgid "Answer"
 msgstr "מענה"
 
@@ -1390,211 +1426,211 @@ msgstr "מענה"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1140
+#: ../js/ui/telepathyClient.js:1144
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s שולח/ת אליך %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1175
+#: ../js/ui/telepathyClient.js:1179
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s רוצה לקבל הרשאות כדי לראות מתי מצבך הוא מקוון"
 
-#: ../js/ui/telepathyClient.js:1268
+#: ../js/ui/telepathyClient.js:1272
 msgid "Network error"
 msgstr "שגיאת רשת"
 
-#: ../js/ui/telepathyClient.js:1270
+#: ../js/ui/telepathyClient.js:1274
 msgid "Authentication failed"
 msgstr "האימות נכשל"
 
-#: ../js/ui/telepathyClient.js:1272
+#: ../js/ui/telepathyClient.js:1276
 msgid "Encryption error"
 msgstr "שגיאת הצפנה"
 
-#: ../js/ui/telepathyClient.js:1274
+#: ../js/ui/telepathyClient.js:1278
 msgid "Certificate not provided"
 msgstr "לא סופק אישור"
 
-#: ../js/ui/telepathyClient.js:1276
+#: ../js/ui/telepathyClient.js:1280
 msgid "Certificate untrusted"
 msgstr "האישור אינו מהימן"
 
-#: ../js/ui/telepathyClient.js:1278
+#: ../js/ui/telepathyClient.js:1282
 msgid "Certificate expired"
 msgstr "האישור פג"
 
-#: ../js/ui/telepathyClient.js:1280
+#: ../js/ui/telepathyClient.js:1284
 msgid "Certificate not activated"
 msgstr "האישור לא מופעל"
 
-#: ../js/ui/telepathyClient.js:1282
+#: ../js/ui/telepathyClient.js:1286
 msgid "Certificate hostname mismatch"
 msgstr "שם המארח באישור אינו תואם"
 
-#: ../js/ui/telepathyClient.js:1284
+#: ../js/ui/telepathyClient.js:1288
 msgid "Certificate fingerprint mismatch"
 msgstr "חוסר התאמה בטביעת האצבע של האישור"
 
-#: ../js/ui/telepathyClient.js:1286
+#: ../js/ui/telepathyClient.js:1290
 msgid "Certificate self-signed"
 msgstr "אישור בחתימה עצמית"
 
-#: ../js/ui/telepathyClient.js:1288
+#: ../js/ui/telepathyClient.js:1292
 msgid "Status is set to offline"
 msgstr "המצב הוגדר ל'מנותק'"
 
-#: ../js/ui/telepathyClient.js:1290
+#: ../js/ui/telepathyClient.js:1294
 msgid "Encryption is not available"
 msgstr "ההצפנה אינה זמינה"
 
-#: ../js/ui/telepathyClient.js:1292
+#: ../js/ui/telepathyClient.js:1296
 msgid "Certificate is invalid"
 msgstr "האישור אינו תקף"
 
-#: ../js/ui/telepathyClient.js:1294
+#: ../js/ui/telepathyClient.js:1298
 msgid "Connection has been refused"
 msgstr "ההתחברות נשללה"
 
-#: ../js/ui/telepathyClient.js:1296
+#: ../js/ui/telepathyClient.js:1300
 msgid "Connection can't be established"
 msgstr "לא ניתן להפעיל את החיבור"
 
-#: ../js/ui/telepathyClient.js:1298
+#: ../js/ui/telepathyClient.js:1302
 msgid "Connection has been lost"
 msgstr "החיבור אבד"
 
-#: ../js/ui/telepathyClient.js:1300
+#: ../js/ui/telepathyClient.js:1304
 msgid "This account is already connected to the server"
 msgstr "חשבון זה כבר מחובר לשרת"
 
-#: ../js/ui/telepathyClient.js:1302
+#: ../js/ui/telepathyClient.js:1306
 msgid "Connection has been replaced by a new connection using the same resource"
 msgstr "החיבור הוחלף בחיבור חדש באמצעות אותו המשאב"
 
-#: ../js/ui/telepathyClient.js:1304
+#: ../js/ui/telepathyClient.js:1308
 msgid "The account already exists on the server"
 msgstr "החשבון כבר קיים בשרת"
 
-#: ../js/ui/telepathyClient.js:1306
+#: ../js/ui/telepathyClient.js:1310
 msgid "Server is currently too busy to handle the connection"
 msgstr "השרת עסוק ברגע זה מכדי לטפל בחיבור"
 
-#: ../js/ui/telepathyClient.js:1308
+#: ../js/ui/telepathyClient.js:1312
 msgid "Certificate has been revoked"
 msgstr "האישור נשלל"
 
-#: ../js/ui/telepathyClient.js:1310
+#: ../js/ui/telepathyClient.js:1314
 msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr "האישור משתמש באלגוריתם הצפנה שאינו בטוח או חלש מבחינת הצפנה"
 
-#: ../js/ui/telepathyClient.js:1312
+#: ../js/ui/telepathyClient.js:1316
 msgid "The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library"
 msgstr "אורך אישור השרת, או עומק שרשרת אישור השרת, חורגים מהמגבלות שנכפו על ידי ספריית ההצפנה"
 
-#: ../js/ui/telepathyClient.js:1314
+#: ../js/ui/telepathyClient.js:1318
 msgid "Internal error"
 msgstr "שגיאה פנימית"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1324
+#: ../js/ui/telepathyClient.js:1328
 #, c-format
 msgid "Connection to %s failed"
 msgstr "החיבור אל %s נכשל"
 
-#: ../js/ui/telepathyClient.js:1333
+#: ../js/ui/telepathyClient.js:1337
 msgid "Reconnect"
 msgstr "התחברות מחדש"
 
-#: ../js/ui/telepathyClient.js:1334
+#: ../js/ui/telepathyClient.js:1338
 msgid "Edit account"
 msgstr "עריכת חשבון"
 
-#: ../js/ui/telepathyClient.js:1380
+#: ../js/ui/telepathyClient.js:1383
 msgid "Unknown reason"
 msgstr "סיבה לא ידועה"
 
-#: ../js/ui/unlockDialog.js:138
-msgid "Login as another user"
+#: ../js/ui/unlockDialog.js:140
+msgid "Log in as another user"
 msgstr "כניסה בתור משתמש אחר"
 
-#: ../js/ui/userMenu.js:161
+#: ../js/ui/userMenu.js:167
 msgid "Available"
 msgstr "זמין"
 
-#: ../js/ui/userMenu.js:164
+#: ../js/ui/userMenu.js:170
 msgid "Busy"
 msgstr "עסוק"
 
-#: ../js/ui/userMenu.js:167
+#: ../js/ui/userMenu.js:173
 msgid "Invisible"
 msgstr "בלתי נראה"
 
-#: ../js/ui/userMenu.js:170
+#: ../js/ui/userMenu.js:176
 msgid "Away"
 msgstr "מרוחק"
 
-#: ../js/ui/userMenu.js:173
+#: ../js/ui/userMenu.js:179
 msgid "Idle"
 msgstr "בהמתנה"
 
-#: ../js/ui/userMenu.js:176
+#: ../js/ui/userMenu.js:182
 msgid "Unavailable"
 msgstr "לא זמין"
 
-#: ../js/ui/userMenu.js:567
-#: ../js/ui/userMenu.js:708
+#: ../js/ui/userMenu.js:589
+#: ../js/ui/userMenu.js:730
 msgid "Switch User"
 msgstr "החלפת משתמש"
 
-#: ../js/ui/userMenu.js:568
+#: ../js/ui/userMenu.js:590
 msgid "Switch Session"
 msgstr "החלפת הפעלה"
 
-#: ../js/ui/userMenu.js:691
+#: ../js/ui/userMenu.js:713
 msgid "Notifications"
 msgstr "התרעות"
 
-#: ../js/ui/userMenu.js:700
+#: ../js/ui/userMenu.js:722
 msgid "System Settings"
 msgstr "הגדרות המערכת"
 
-#: ../js/ui/userMenu.js:713
+#: ../js/ui/userMenu.js:735
 msgid "Log Out"
 msgstr "ֹיציאה"
 
-#: ../js/ui/userMenu.js:718
+#: ../js/ui/userMenu.js:740
 msgid "Lock"
 msgstr "נעילה"
 
-#: ../js/ui/userMenu.js:733
+#: ../js/ui/userMenu.js:755
 msgid "Install Updates & Restart"
 msgstr "התקנת עדכונים והפעלה מחדש"
 
-#: ../js/ui/userMenu.js:751
+#: ../js/ui/userMenu.js:773
 msgid "Your chat status will be set to busy"
 msgstr "מצב הצ׳אט שלך יוגדר ל'עסוק'"
 
-#: ../js/ui/userMenu.js:752
+#: ../js/ui/userMenu.js:774
 msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
 msgstr "ההתרעות כבויות כעת, לרבות הודעות צ׳אט. המצב המקוון שלך הותאם כדי לבשר לאחרים שיתכן שהודעותיהם לא יתקבלו באופן מיידי."
 
-#. Translators: this is the text displayed
-#. in the search entry when no search is
-#. active; it should not exceed ~30
-#. characters.
-#: ../js/ui/viewSelector.js:113
-msgid "Type to search..."
-msgstr "יש להקליד כדי לחפש..."
+#: ../js/ui/viewSelector.js:88
+msgid "Windows"
+msgstr "חלונות"
 
-#: ../js/ui/viewSelector.js:131
-#: ../src/shell-util.c:254
+#: ../js/ui/viewSelector.js:92
+msgid "Applications"
+msgstr "יישומים"
+
+#: ../js/ui/viewSelector.js:96
+#: ../src/shell-util.c:250
 msgid "Search"
 msgstr "חיפוש"
 
-#: ../js/ui/wanda.js:124
+#: ../js/ui/wanda.js:125
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1603,12 +1639,12 @@ msgstr ""
 "אין משפטי חכמה עבורך להיום, צר לי:\n"
 "%s"
 
-#: ../js/ui/wanda.js:128
+#: ../js/ui/wanda.js:129
 #, c-format
 msgid "%s the Oracle says"
 msgstr "%s, כה אמרה האוראקל"
 
-#: ../js/ui/wanda.js:168
+#: ../js/ui/wanda.js:170
 msgid "Your favorite Easter Egg"
 msgstr "ביצת הפסחא האהובה עליך"
 
@@ -1661,7 +1697,7 @@ msgstr "שימוש במצב מסוים, לדוגמה: „gdm“ למסך הכנ�
 msgid "List possible modes"
 msgstr "הצגת המצבים האפשריים"
 
-#: ../src/shell-app.c:622
+#: ../src/shell-app.c:621
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "אירע כשל בטעינת '%s'"
@@ -1688,13 +1724,13 @@ msgstr "המשתמש בחר להתעלם מתיבת דו־שיח האימות"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:98
+#: ../src/shell-util.c:94
 msgid "Home"
 msgstr "בית"
 
 #. Translators: this is the same string as the one found in
 #. * nautilus
-#: ../src/shell-util.c:108
+#: ../src/shell-util.c:104
 msgid "File System"
 msgstr "מערכת הקבצים"
 
@@ -1703,7 +1739,7 @@ msgstr "מערכת הקבצים"
 #. * example, "Trash: some-directory". It means that the
 #. * directory called "some-directory" is in the trash.
 #.
-#: ../src/shell-util.c:304
+#: ../src/shell-util.c:300
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
