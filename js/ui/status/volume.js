@@ -12,14 +12,27 @@ const VOLUME_ADJUSTMENT_STEP = 0.05; /* Volume adjustment step in % */
 
 const VOLUME_NOTIFY_ID = 1;
 
-const Indicator = new Lang.Class({
-    Name: 'VolumeIndicator',
-    Extends: PanelMenu.SystemStatusButton,
+// Each Gvc.MixerControl is a connection to PulseAudio,
+// so it's better to make it a singleton
+let _mixerControl;
+function getMixerControl() {
+    if (_mixerControl)
+        return _mixerControl;
 
-    _init: function() {
-        this.parent('audio-volume-muted', _("Volume"));
+    _mixerControl = new Gvc.MixerControl({ name: 'GNOME Shell Volume Control' });
+    _mixerControl.open();
 
-        this._control = new Gvc.MixerControl({ name: 'GNOME Shell Volume Control' });
+    return _mixerControl;
+}
+
+const VolumeMenu = new Lang.Class({
+    Name: 'VolumeMenu',
+    Extends: PopupMenu.PopupMenuSection,
+
+    _init: function(control) {
+        this.parent();
+
+        this._control = control;
         this._control.connect('state-changed', Lang.bind(this, this._onControlStateChanged));
         this._control.connect('default-sink-changed', Lang.bind(this, this._readOutput));
         this._control.connect('default-source-changed', Lang.bind(this, this._readInput));
@@ -35,10 +48,10 @@ const Indicator = new Lang.Class({
         this._outputSlider = new PopupMenu.PopupSliderMenuItem(0);
         this._outputSlider.connect('value-changed', Lang.bind(this, this._sliderChanged, '_output'));
         this._outputSlider.connect('drag-end', Lang.bind(this, this._notifyVolumeChange));
-        this.menu.addMenuItem(this._outputTitle);
-        this.menu.addMenuItem(this._outputSlider);
+        this.addMenuItem(this._outputTitle);
+        this.addMenuItem(this._outputSlider);
 
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this._input = null;
         this._inputVolumeId = 0;
@@ -47,22 +60,11 @@ const Indicator = new Lang.Class({
         this._inputSlider = new PopupMenu.PopupSliderMenuItem(0);
         this._inputSlider.connect('value-changed', Lang.bind(this, this._sliderChanged, '_input'));
         this._inputSlider.connect('drag-end', Lang.bind(this, this._notifyVolumeChange));
-        this.menu.addMenuItem(this._inputTitle);
-        this.menu.addMenuItem(this._inputSlider);
-
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.menu.addSettingsAction(_("Sound Settings"), 'gnome-sound-panel.desktop');
-
-        this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
-        this._control.open();
+        this.addMenuItem(this._inputTitle);
+        this.addMenuItem(this._inputSlider);
     },
 
-    setLockedState: function(locked) {
-        this.menu.setSettingsVisibility(!locked);
-    },
-
-    _onScrollEvent: function(actor, event) {
-        let direction = event.get_scroll_direction();
+    scroll: function(direction) {
         let currentVolume = this._output.volume;
 
         if (direction == Clutter.ScrollDirection.DOWN) {
@@ -88,9 +90,8 @@ const Indicator = new Lang.Class({
         if (this._control.get_state() == Gvc.MixerControlState.READY) {
             this._readOutput();
             this._readInput();
-            this.actor.show();
         } else {
-            this.actor.hide();
+            this.emit('icon-changed', null);
         }
     },
 
@@ -109,7 +110,7 @@ const Indicator = new Lang.Class({
             this._volumeChanged (null, null, '_output');
         } else {
             this._outputSlider.setValue(0);
-            this.setIcon('audio-volume-muted-symbolic');
+            this.emit('icon-changed', 'audio-volume-muted-symbolic');
         }
     },
 
@@ -196,15 +197,55 @@ const Indicator = new Lang.Class({
         slider.setValue(muted ? 0 : (this[property].volume / this._volumeMax));
         if (property == '_output') {
             if (muted)
-                this.setIcon('audio-volume-muted');
+                this.emit('icon-changed', 'audio-volume-muted');
             else
-                this.setIcon(this._volumeToIcon(this._output.volume));
+                this.emit('icon-changed', this._volumeToIcon(this._output.volume));
         }
     },
 
     _volumeChanged: function(object, param_spec, property) {
         this[property+'Slider'].setValue(this[property].volume / this._volumeMax);
         if (property == '_output' && !this._output.is_muted)
-            this.setIcon(this._volumeToIcon(this._output.volume));
+            this.emit('icon-changed', this._volumeToIcon(this._output.volume));
+    }
+});
+
+const Indicator = new Lang.Class({
+    Name: 'VolumeIndicator',
+    Extends: PanelMenu.SystemStatusButton,
+
+    _init: function() {
+        this.parent('audio-volume-muted', _("Volume"));
+
+        this._isLocked = false;
+
+        this._control = getMixerControl();
+        this._volumeMenu = new VolumeMenu(this._control);
+        this._volumeMenu.connect('icon-changed', Lang.bind(this, function(menu, icon) {
+            this._hasPulseAudio = (icon != null);
+            this.setIcon(icon);
+            this._syncVisibility();
+        }));
+
+        this.menu.addMenuItem(this._volumeMenu);
+
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.menu.addSettingsAction(_("Sound Settings"), 'gnome-sound-panel.desktop');
+
+        this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
+    },
+
+    setLockedState: function(locked) {
+        this._isLocked = locked;
+        this._syncVisibility();
+    },
+
+    _syncVisibility: function() {
+        this.actor.visible = this._hasPulseAudio && !this._isLocked;
+        this.mainIcon.visible = this._hasPulseAudio;
+    },
+
+    _onScrollEvent: function(actor, event) {
+        this._volumeMenu.scroll(event.get_scroll_direction());
     }
 });

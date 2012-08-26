@@ -56,6 +56,7 @@ const Indicator = new Lang.Class({
 
         this._proxy = new PowerManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH);
 
+        this._isLocked = false;
         this._deviceItems = [ ];
         this._hasPrimary = false;
         this._primaryDeviceId = null;
@@ -77,9 +78,8 @@ const Indicator = new Lang.Class({
     },
 
     setLockedState: function(locked) {
-        if (locked)
-            this.menu.close();
-        this.actor.reactive = !locked;
+        this._isLocked = locked;
+        this._syncIcon();
     },
 
     _readPrimaryDevice: function() {
@@ -150,16 +150,20 @@ const Indicator = new Lang.Class({
         }));
     },
 
-    _devicesChanged: function() {
+    _syncIcon: function() {
         let icon = this._proxy.Icon;
-        if (icon) {
+        let hasIcon = (icon != null);
+
+        if (hasIcon) {
             let gicon = Gio.icon_new_for_string(icon);
             this.setGIcon(gicon);
-            this.actor.show();
-        } else {
-            this.menu.close();
-            this.actor.hide();
         }
+        this.mainIcon.visible = hasIcon;
+        this.actor.visible = hasIcon && !this._isLocked;
+    },
+
+    _devicesChanged: function() {
+        this._syncIcon();
         this._readPrimaryDevice();
         this._readOtherDevices();
     }

@@ -908,7 +908,7 @@ const Panel = new Lang.Class({
                                                   reactive: true });
         this.actor._delegate = this;
 
-        this._statusArea = {};
+        this.statusArea = {};
 
         Main.overview.connect('shown', Lang.bind(this, function () {
             this.actor.add_style_class_name('in-overview');
@@ -1126,7 +1126,7 @@ const Panel = new Lang.Class({
     },
 
     addToStatusArea: function(role, indicator, position) {
-        if (this._statusArea[role])
+        if (this.statusArea[role])
             throw new Error('Extension point conflict: there is already a status indicator for role ' + role);
 
         if (!(indicator instanceof PanelMenu.Button))
@@ -1138,9 +1138,9 @@ const Panel = new Lang.Class({
         if (indicator.menu)
             this._menus.addMenu(indicator.menu);
 
-        this._statusArea[role] = indicator;
+        this.statusArea[role] = indicator;
         let destroyId = indicator.connect('destroy', Lang.bind(this, function(emitter) {
-            delete this._statusArea[role];
+            delete this.statusArea[role];
             emitter.disconnect(destroyId);
         }));
 
@@ -1155,7 +1155,7 @@ const Panel = new Lang.Class({
         if (this._dateMenu)
             this._dateMenu.setLockedState(locked);
 
-        for (let id in this._statusArea)
-            this._statusArea[id].setLockedState(locked);
+        for (let id in this.statusArea)
+            this.statusArea[id].setLockedState(locked);
     },
 });

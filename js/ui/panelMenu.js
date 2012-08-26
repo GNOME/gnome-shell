@@ -236,7 +236,8 @@ const SystemStatusButton = new Lang.Class({
         this._box = new St.BoxLayout({ style_class: 'panel-status-button-box' });
         this.actor.add_actor(this._box);
 
-        this.setIcon(iconName);
+        if (iconName)
+            this.setIcon(iconName);
     },
 
     addIcon: function(gicon) {

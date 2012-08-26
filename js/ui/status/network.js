@@ -1570,9 +1570,10 @@ const NMApplet = new Lang.Class({
     _init: function() {
         this.parent('network-offline', _('Network'));
 
-        this._secondaryIcon = this.addIcon(new Gio.ThemedIcon({ name: 'network-vpn' }));
-        this._secondaryIcon.hide();
+        this.secondaryIcon = this.addIcon(new Gio.ThemedIcon({ name: 'network-vpn' }));
+        this.secondaryIcon.hide();
 
+        this._isLocked = false;
         this._client = NMClient.Client.new();
 
         this._statusSection = new PopupMenu.PopupMenuSection();
@@ -1681,12 +1682,8 @@ const NMApplet = new Lang.Class({
     },
 
     setLockedState: function(locked) {
-        // FIXME: more design discussion is needed before we can
-        // expose part of this menu
-
-        if (locked)
-            this.menu.close();
-        this.actor.reactive = !locked;
+        this._isLocked = locked;
+        this._syncNMState();
     },
 
     _ensureSource: function() {
@@ -2074,13 +2071,8 @@ const NMApplet = new Lang.Class({
     },
 
     _syncNMState: function() {
-        if (!this._client.manager_running) {
-            log('NetworkManager is not running, hiding...');
-            this.menu.close();
-            this.actor.hide();
-            return;
-        } else
-            this.actor.show();
+        this.mainIcon.visible = this._client.manager_running;
+        this.actor.visible = this.mainIcon.visible && !this._isLocked;
 
         if (!this._client.networking_enabled) {
             this.setIcon('network-offline');
@@ -2192,14 +2184,14 @@ const NMApplet = new Lang.Class({
             // only show a separate icon when we're using a wireless/3g connection
             if (mc._section == NMConnectionCategory.WIRELESS || 
                 mc._section == NMConnectionCategory.WWAN) {
-                this._secondaryIcon.icon_name = vpnIconName;
-                this._secondaryIcon.visible = true;
+                this.secondaryIcon.icon_name = vpnIconName;
+                this.secondaryIcon.show();
             } else {
                 this.setIcon(vpnIconName);
-                this._secondaryIcon.visible = false;
+                this.secondaryIcon.hide();
             }
         } else {
-            this._secondaryIcon.visible = false;
+            this.secondaryIcon.hide();
         }
 
         // cleanup stale signal connections

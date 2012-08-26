@@ -11,6 +11,7 @@ const STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION = {
     'a11y': imports.ui.status.accessibility.ATIndicator,
     'volume': imports.ui.status.volume.Indicator,
     'battery': imports.ui.status.power.Indicator,
+    'lockScreen': imports.ui.status.lockScreenMenu.Indicator,
     'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
     'userMenu': imports.ui.userMenu.UserMenuButton
 };
@@ -44,12 +45,13 @@ const _modes = {
              statusArea: {
                  order: [
                      'a11y', 'display', 'keyboard',
-                     'volume', 'battery', 'powerMenu'
+                     'volume', 'battery', 'lockScreen', 'powerMenu'
                  ],
                  implementation: {
                      'a11y': imports.ui.status.accessibility.ATIndicator,
                      'volume': imports.ui.status.volume.Indicator,
                      'battery': imports.ui.status.power.Indicator,
+                     'lockScreen': imports.ui.status.lockScreenMenu.Indicator,
                      'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
                      'powerMenu': imports.gdm.powerMenu.PowerMenuButton
                  }
@@ -68,12 +70,13 @@ const _modes = {
                        extraStylesheet: null,
                        statusArea: {
                            order: [
-                               'a11y', 'keyboard', 'volume'
+                               'a11y', 'keyboard', 'volume', 'lockScreen',
                            ],
                            implementation: {
                                'a11y': imports.ui.status.accessibility.ATIndicator,
                                'keyboard': imports.ui.status.keyboard.XKBIndicator,
-                               'volume': imports.ui.status.volume.Indicator
+                               'volume': imports.ui.status.volume.Indicator,
+                               'lockScreen': imports.ui.status.lockScreenMenu.Indicator,
                         }
                 }
            },
@@ -92,7 +95,7 @@ const _modes = {
               statusArea: {
                   order: [
                       'input-method', 'a11y', 'keyboard', 'volume', 'bluetooth',
-                      'network', 'battery', 'userMenu'
+                      'network', 'battery', 'lockScreen', 'userMenu'
                   ],
                   implementation: STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION
               }
