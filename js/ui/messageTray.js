@@ -1513,8 +1513,7 @@ const MessageTray = new Lang.Class({
                 this._updateState();
             }));
 
-        this._isScreenLocked = false;
-        Main.screenShield.connect('lock-status-changed', Lang.bind(this, this._onScreenLockStatusChanged));
+        Main.sessionMode.connect('updated', Lang.bind(this, this._updateState));
 
         global.display.add_keybinding('toggle-message-tray',
                                       new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
@@ -1686,11 +1685,6 @@ const MessageTray = new Lang.Class({
         notification.destroy();
         if (index != -1)
             this._notificationQueue.splice(index, 1);
-    },
-
-    _onScreenLockStatusChanged: function(screenShield, locked) {
-        this._isScreenLocked = locked;
-        this._updateState();
     },
 
     _lock: function() {
@@ -1919,15 +1913,12 @@ const MessageTray = new Lang.Class({
     _updateState: function() {
         // Notifications
         let notificationQueue = this._notificationQueue.filter(Lang.bind(this, function(notification) {
-            if (this._isScreenLocked)
-                return notification.showWhenLocked;
-            else
-                return true;
+            return notification.showWhenLocked || Main.sessionMode.hasNotifications;
         }));
         let notificationUrgent = notificationQueue.length > 0 && notificationQueue[0].urgency == Urgency.CRITICAL;
         // notificationsLimited is false when the screen is locked, because they go through
         // different filtering, and we want to show non urgent messages at times
-        let notificationsLimited = (this._busy || this._inFullscreen) && !this._isScreenLocked;
+        let notificationsLimited = (this._busy || this._inFullscreen) && Main.sessionMode.hasNotifications;
         let notificationsPending = notificationQueue.length > 0 && (!notificationsLimited || notificationUrgent);
         let nextNotification = notificationQueue.length > 0 ? notificationQueue[0] : null;
         let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;
@@ -1938,7 +1929,7 @@ const MessageTray = new Lang.Class({
                                   !this._pointerInTray &&
                                   !this._locked &&
                                   !(this._pointerInKeyboard && notificationExpanded);
-        let notificationLockedOut = this._isScreenLocked && (this._notification && !this._notification.showWhenLocked);
+        let notificationLockedOut = !Main.sessionMode.hasNotifications && (this._notification && !this._notification.showWhenLocked);
         // TODO: how to deal with locked out notiifcations if want to keep showing notifications?!
         let notificationMustClose = this._notificationRemoved || notificationLockedOut || (notificationExpired && this._userActiveWhileNotificationShown) || this._notificationClosed;
         let canShowNotification = notificationsPending && this._summaryState == State.HIDDEN;
@@ -1968,7 +1959,7 @@ const MessageTray = new Lang.Class({
 
         let summaryOptionalInOverview = this._overviewVisible && !this._locked && !summaryHovered;
         let mustHideSummary = (notificationsPending && (notificationUrgent || summaryOptionalInOverview))
-                              || notificationsVisible || this._isScreenLocked;
+                              || notificationsVisible || !Main.sessionMode.hasNotifications;
 
         if (this._summaryState == State.HIDDEN && !mustHideSummary && summarySummoned)
             this._showSummary();

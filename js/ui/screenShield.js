@@ -422,8 +422,9 @@ const ScreenShield = new Lang.Class({
         this._settings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
 
         this._isModal = false;
-        this._isLocked = false;
         this._hasLockScreen = false;
+        this._isGreeter = false;
+        this._isActive = false;
 
         this._lightbox = new Lightbox.Lightbox(Main.uiGroup,
                                                { inhibitEvents: true,
@@ -519,7 +520,7 @@ const ScreenShield = new Lang.Class({
             // If we have a unlock dialog, cancel it
             if (this._dialog) {
                 this._dialog.cancel();
-                if (!this._keepDialog) {
+                if (!this._isGreeter) {
                     this._dialog = null;
                 }
             }
@@ -530,7 +531,7 @@ const ScreenShield = new Lang.Class({
         if (status == GnomeSession.PresenceStatus.IDLE) {
             if (this._dialog) {
                 this._dialog.cancel();
-                if (!this._keepDialog) {
+                if (!this._isGreeter) {
                     this._dialog = null;
                 }
             }
@@ -540,14 +541,14 @@ const ScreenShield = new Lang.Class({
                 this._isModal = true;
             }
 
-            if (!this._isLocked)
+            if (!this._isActive)
                 this._lightbox.show();
         } else {
             let lightboxWasShown = this._lightbox.shown;
             this._lightbox.hide();
 
             let shouldLock = lightboxWasShown && this._settings.get_boolean(LOCK_ENABLED_KEY);
-            if (shouldLock || this._isLocked) {
+            if (shouldLock || this._isActive) {
                 this.lock(false);
             } else if (this._isModal) {
                 this.unlock();
@@ -556,7 +557,13 @@ const ScreenShield = new Lang.Class({
     },
 
     showDialog: function() {
-        this.lock(true);
+        if (!this._isModal) {
+            Main.pushModal(this.actor);
+            this._isModal = true;
+        }
+
+        this.actor.show();
+        this._isGreeter = Main.sessionMode.isGreeter;
         this._ensureUnlockDialog();
         this._hideLockScreen(false);
     },
@@ -590,25 +597,24 @@ const ScreenShield = new Lang.Class({
                                time: time,
                                transition: 'linear',
                                onComplete: function() {
-                                   this._lockScreenHidden();
+                                   this._lockScreenState = MessageTray.State.HIDDEN;
+                                   this._lockScreenGroup.hide();
                                },
                                onCompleteScope: this,
                              });
         } else {
-            this._lockScreenHidden();
+            this._lockScreenState = MessageTray.State.HIDDEN;
+            this._lockScreenGroup.hide();
         }
-    },
 
-    _lockScreenHidden: function() {
-        this._lockScreenState = MessageTray.State.HIDDEN;
-        this._lockScreenGroup.hide();
+        if (Main.sessionMode.currentMode == 'lock-screen')
+            Main.sessionMode.popMode('lock-screen');
     },
 
     _ensureUnlockDialog: function() {
         if (!this._dialog) {
             let constructor = Main.sessionMode.unlockDialog;
             this._dialog = new constructor(this._lockDialogGroup);
-            this._keepDialog = Main.sessionMode.isGreeter;
             if (!this._dialog) {
                 // This session mode has no locking capabilities
                 this.unlock();
@@ -625,15 +631,6 @@ const ScreenShield = new Lang.Class({
             this._dialog.connect('failed', Lang.bind(this, this._onUnlockFailed));
             this._dialog.connect('unlocked', Lang.bind(this, this._onUnlockSucceded));
         }
-
-        if (Main.sessionMode.isGreeter) {
-            // Notify the other components that even though we are showing the
-            // screenshield, we're not in a locked state
-            // (this happens for the gdm greeter)
-
-            this._isLocked = false;
-            this.emit('lock-status-changed', false);
-        }
     },
 
     _onUnlockFailed: function() {
@@ -648,6 +645,7 @@ const ScreenShield = new Lang.Class({
     },
 
     _resetLockScreen: function(animate) {
+        this._ensureLockScreen();
         this._lockDialogGroup.scale_x = 1;
         this._lockDialogGroup.scale_y = 1;
 
@@ -679,6 +677,9 @@ const ScreenShield = new Lang.Class({
         }
 
         this._lockScreenGroup.grab_key_focus();
+
+        if (Main.sessionMode.currentMode != 'lock-screen')
+            Main.sessionMode.pushMode('lock-screen');
     },
 
     _lockScreenShown: function() {
@@ -696,7 +697,10 @@ const ScreenShield = new Lang.Class({
 
     // Some of the actors in the lock screen are heavy in
     // resources, so we only create them when needed
-    _prepareLockScreen: function() {
+    _ensureLockScreen: function() {
+        if (this._hasLockScreen)
+            return;
+
         this._lockScreenContentsBox = new St.BoxLayout({ x_align: Clutter.ActorAlign.CENTER,
                                                          y_align: Clutter.ActorAlign.CENTER,
                                                          x_expand: true,
@@ -738,7 +742,7 @@ const ScreenShield = new Lang.Class({
     },
 
     get locked() {
-        return this._isLocked;
+        return this._isActive;
     },
 
     _tweenUnlocked: function() {
@@ -760,13 +764,10 @@ const ScreenShield = new Lang.Class({
     },
 
     unlock: function() {
-        if (!this._isLocked)
-            return;
-
         if (this._hasLockScreen)
             this._clearLockScreen();
 
-        if (this._dialog && !this._keepDialog) {
+        if (this._dialog && !this._isGreeter) {
             this._dialog.destroy();
             this._dialog = null;
         }
@@ -778,30 +779,36 @@ const ScreenShield = new Lang.Class({
             this._isModal = false;
         }
 
-        this._isLocked = false;
+        this.actor.hide();
 
-        this.emit('lock-status-changed', false);
-        Main.sessionMode.popMode('lock-screen');
+        if (Main.sessionMode.currentMode == 'lock-screen')
+            Main.sessionMode.popMode('lock-screen');
+        if (Main.sessionMode.currentMode == 'unlock-dialog')
+            Main.sessionMode.popMode('unlock-dialog');
+
+        this._isActive = false;
+        this.emit('lock-status-changed');
     },
 
     lock: function(animate) {
-        if (this._isLocked)
-            return;
-
-        if (!this._hasLockScreen)
-            this._prepareLockScreen();
-
         if (!this._isModal) {
             Main.pushModal(this.actor);
             this._isModal = true;
         }
 
-        this._isLocked = true;
         this.actor.show();
+
+        if (Main.sessionMode.currentMode != 'unlock-dialog' &&
+            Main.sessionMode.currentMode != 'lock-screen') {
+            this._isGreeter = Main.sessionMode.isGreeter;
+            if (!this._isGreeter)
+                Main.sessionMode.pushMode('unlock-dialog');
+        }
+
         this._resetLockScreen(animate);
 
-        this.emit('lock-status-changed', true);
-        Main.sessionMode.pushMode('lock-screen');
+        this._isActive = true;
+        this.emit('lock-status-changed');
     },
 });
 Signals.addSignalMethods(ScreenShield.prototype);

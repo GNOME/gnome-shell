@@ -18,6 +18,7 @@ const _modes = {
         hasRunDialog: false,
         hasWorkspaces: false,
         hasWindows: false,
+        hasNotifications: false,
         isLocked: false,
         isGreeter: false,
         isPrimary: false,
@@ -32,6 +33,7 @@ const _modes = {
 
     'gdm': {
         allowKeybindingsWhenModal: true,
+        hasNotifications: true,
         isGreeter: true,
         isPrimary: true,
         unlockDialog: imports.gdm.loginDialog.LoginDialog,
@@ -46,13 +48,23 @@ const _modes = {
 
     'lock-screen': {
         isLocked: true,
-        isGreeter: undefined,
         unlockDialog: undefined,
         components: ['networkAgent', 'polkitAgent', 'telepathyClient'],
         panel: {
             left: ['userMenu'],
             center: [],
             right: ['lockScreen']
+        },
+    },
+
+    'unlock-dialog': {
+        isLocked: true,
+        unlockDialog: undefined,
+        components: ['networkAgent', 'polkitAgent', 'telepathyClient'],
+        panel: {
+            left: ['userMenu'],
+            center: [],
+            right: ['a11y', 'keyboard', 'lockScreen']
         },
     },
 
@@ -74,9 +86,10 @@ const _modes = {
         hasRunDialog: true,
         hasWorkspaces: true,
         hasWindows: true,
-        unlockDialog: imports.ui.unlockDialog.UnlockDialog,
+        hasNotifications: true,
         isLocked: false,
         isPrimary: true,
+        unlockDialog: imports.ui.unlockDialog.UnlockDialog,
         components: ['networkAgent', 'polkitAgent', 'telepathyClient',
                      'keyring', 'recorder', 'autorunManager', 'automountManager'],
         panel: {
@@ -115,6 +128,13 @@ const SessionMode = new Lang.Class({
         if (this.currentMode != mode || this._modeStack.length === 1)
             throw new Error("Invalid SessionMode.popMode");
         this._modeStack.pop();
+        this._sync();
+    },
+
+    switchMode: function(to) {
+        if (this.currentMode == to)
+            return;
+        this._modeStack[this._modeStack.length - 1] = to;
         this._sync();
     },
 
