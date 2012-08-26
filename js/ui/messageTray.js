@@ -337,6 +337,7 @@ const Notification = new Lang.Class({
             }));
 
         this.actor = new St.Button({ accessible_role: Atk.Role.NOTIFICATION });
+        this.actor.add_style_class_name('notification-unexpanded');
         this.actor._delegate = this;
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
@@ -852,6 +853,8 @@ const Notification = new Lang.Class({
 
     expand: function(animate) {
         this.expanded = true;
+        this.actor.remove_style_class_name('notification-unexpanded');
+
         // The banner is never shown when the title did not fit, so this
         // can be an if-else statement.
         if (!this._titleFitsInBannerMode) {
@@ -889,6 +892,8 @@ const Notification = new Lang.Class({
         // Restore banner opacity in case the notification is shown in the
         // banner mode again on update.
         this._bannerLabel.opacity = 255;
+        // Restore height requisition
+        this.actor.add_style_class_name('notification-unexpanded');
         this.emit('collapsed');
     },
 

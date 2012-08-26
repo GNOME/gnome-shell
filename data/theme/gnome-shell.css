@@ -1210,6 +1210,13 @@ StButton.popup-menu-item:insensitive {
     padding-bottom: 8px;
 }
 
+.notification-unexpanded {
+    /* We want to force the actor at a specific size, irrespective
+       of its minimum and preferred size, so we override both */
+    min-height: 36px;
+    height: 36px;
+}
+
 /* We use row-span = 2 for the image cell, which prevents its height preferences to be
    taken into account during allocation, so its height ends up being limited by the height
    of the content in the other rows. To avoid showing a stretched image, we set the minimum
