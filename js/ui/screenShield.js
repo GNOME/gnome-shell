@@ -282,6 +282,7 @@ const ScreenShield = new Lang.Class({
     _init: function() {
         this.actor = Main.layoutManager.screenShieldGroup;
 
+        this._lockScreenState = MessageTray.State.HIDDEN;
         this._lockScreenGroup = new St.Widget({ x_expand: true,
                                                 y_expand: true,
                                                 reactive: true,
@@ -365,10 +366,10 @@ const ScreenShield = new Lang.Class({
             return true;
         }
 
-        // If the dialog is created, but hasn't received focus yet,
-        // the lock screen could be still focused, so bumping would
-        // make the curtain fall again.
-        if (!this._dialog)
+        // Don't bump if the lock screen is not showing or is
+        // animating, as the bump overrides the animation and would
+        // remove any onComplete handler
+        if (this._lockScreenState == MessageTray.State.SHOWN)
             this._bumpLockScreen();
         return true;
     },
@@ -388,6 +389,7 @@ const ScreenShield = new Lang.Class({
 
     _onDragBegin: function() {
         Tweener.removeTweens(this._lockScreenGroup);
+        this._lockScreenState = MessageTray.State.HIDING;
         this._ensureUnlockDialog();
     },
 
@@ -406,8 +408,10 @@ const ScreenShield = new Lang.Class({
                                time: time,
                                transition: 'linear',
                                onComplete: function() {
-                                   this.fixed_position_set = false;
-                               }
+                                   this._lockScreenGroup.fixed_position_set = false;
+                                   this._lockScreenState = MessageTray.State.SHOWN;
+                               },
+                               onCompleteScope: this,
                              });
 
             // If we have a unlock dialog, cancel it
@@ -471,6 +475,8 @@ const ScreenShield = new Lang.Class({
     },
 
     _hideLockScreen: function(animate) {
+        this._lockScreenState = MessageTray.State.HIDING;
+
         if (animate) {
             // Tween the lock screen out of screen
             // try to use the same speed regardless of original position
@@ -481,11 +487,19 @@ const ScreenShield = new Lang.Class({
                              { y: -h,
                                time: time,
                                transition: 'linear',
-                               onComplete: function() { this.hide(); }
+                               onComplete: function() {
+                                   this._lockScreenHidden();
+                               },
+                               onCompleteScope: this,
                              });
         } else {
-            this._lockScreenGroup.hide();
+            this._lockScreenHidden();
         }
+    },
+
+    _lockScreenHidden: function() {
+        this._lockScreenState = MessageTray.State.HIDDEN;
+        this._lockScreenGroup.hide();
     },
 
     _ensureUnlockDialog: function() {
@@ -531,6 +545,7 @@ const ScreenShield = new Lang.Class({
 
     _resetLockScreen: function(animate) {
         this._lockScreenGroup.show();
+        this._lockScreenState = MessageTray.State.SHOWING;
 
         if (animate) {
             this._lockScreenGroup.y = -global.screen_height;
@@ -540,8 +555,7 @@ const ScreenShield = new Lang.Class({
                                time: SHORT_FADE_TIME,
                                transition: 'linear',
                                onComplete: function() {
-                                   this._lockScreenGroup.fixed_position_set = false;
-                                   this.emit('lock-screen-shown');
+                                   this._lockScreenShown();
                                },
                                onCompleteScope: this
                              });
@@ -553,12 +567,18 @@ const ScreenShield = new Lang.Class({
                                time: SHORT_FADE_TIME,
                                transition: 'easeOutQuad' });
         } else {
-            this._lockScreenGroup.fixed_position_set = false;
             this._lockDialogGroup.opacity = 255;
-            this.emit('lock-screen-shown');
+            this._lockScreenShown();
         }
 
         this._lockScreenGroup.grab_key_focus();
+    },
+
+    _lockScreenShown: function() {
+        this._lockScreenState = MessageTray.State.SHOWN;
+        this._lockScreenGroup.fixed_position_set = false;
+
+        this.emit('lock-screen-shown');
     },
 
     // Some of the actors in the lock screen are heavy in
