@@ -166,6 +166,7 @@ const UnlockDialog = new Lang.Class({
     },
 
     _reset: function() {
+        this._userVerifier.clear();
         this._userVerifier.begin(this._userName, new Batch.Hold());
     },
 

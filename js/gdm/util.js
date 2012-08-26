@@ -79,17 +79,16 @@ const ShellUserVerifier = new Lang.Class({
 
         this._settings = new Gio.Settings({ schema: LOGIN_SCREEN_SCHEMA });
 
-        this._cancellable = new Gio.Cancellable();
-
         this._fprintManager = new Fprint.FprintManager();
-        this._checkForFingerprintReader();
-
         this._realmManager = new Realmd.Manager();
     },
 
     begin: function(userName, hold) {
+        this._cancellable = new Gio.Cancellable();
         this._hold = hold;
         this._userName = userName;
+
+        this._checkForFingerprintReader();
 
         if (userName) {
             // If possible, reauthenticate an already running session,
@@ -102,15 +101,18 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     cancel: function() {
-        this._cancellable.cancel();
+        if (this._cancellable)
+            this._cancellable.cancel();
 
         if (this._userVerifier)
             this._userVerifier.call_cancel_sync(null);
-        this._cancellable = new Gio.Cancellable();
     },
 
     clear: function() {
-        this._cancellable.cancel();
+        if (this._cancellable) {
+            this._cancellable.cancel();
+            this._cancellable = null;
+        }
 
         if (this._userVerifier) {
             this._userVerifier.run_dispose();
@@ -144,11 +146,12 @@ const ShellUserVerifier = new Lang.Class({
             this._hold.release();
         } catch (e) {
             if (this._reauthOnly) {
+                if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
+                    return;
+
                 logError(e, 'Failed to open reauthentication channel');
-
-                this._hold.release();
                 this.emit('verification-failed');
-
+                this._hold.release();
                 return;
             }
 
@@ -159,10 +162,14 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     _userVerifierGot: function(client, result) {
-        this._userVerifier = client.get_user_verifier_finish(result);
+        try {
+            this._userVerifier = client.get_user_verifier_finish(result);
+        } catch(e if e.matches(Gio.IOErrorEnum, Gio.ErrorEnum.CANCELLED)) {
+            return;
+        }
+
         this._connectSignals();
         this._beginVerification();
-
         this._hold.release();
     },
 
@@ -184,7 +191,12 @@ const ShellUserVerifier = new Lang.Class({
                                                                 this._userName,
                                                                 this._cancellable,
                                                                 Lang.bind(this, function(obj, result) {
-                obj.call_begin_verification_for_user_finish(result);
+                try {
+                    obj.call_begin_verification_for_user_finish(result);
+                } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
+                    return;
+                }
+
                 this._hold.release();
             }));
 
@@ -195,7 +207,12 @@ const ShellUserVerifier = new Lang.Class({
                                                                     this._userName,
                                                                     this._cancellable,
                                                                     Lang.bind(this, function(obj, result) {
-                    obj.call_begin_verification_for_user_finish(result);
+                    try {
+                        obj.call_begin_verification_for_user_finish(result);
+                    } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
+                        return;
+                    }
+
                     this._hold.release();
                 }));
             }
@@ -203,7 +220,12 @@ const ShellUserVerifier = new Lang.Class({
             this._userVerifier.call_begin_verification(PASSWORD_SERVICE_NAME,
                                                        this._cancellable,
                                                        Lang.bind(this, function(obj, result) {
-                obj.call_begin_verification_finish(result);
+                try {
+                    obj.call_begin_verification_finish(result);
+                } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
+                    return;
+                }
+
                 this._hold.release();
             }));
         }
@@ -270,8 +292,6 @@ const ShellUserVerifier = new Lang.Class({
     _onReset: function() {
         this._userVerifier.run_dispose();
         this._userVerifier = null;
-
-        this._checkForFingerprintReader();
 
         this.emit('reset');
     },
