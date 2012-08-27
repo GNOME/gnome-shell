@@ -19961,6 +19961,8 @@ clutter_actor_set_child_transform (ClutterActor        *self,
 
   info->child_transform_set = transform != NULL;
 
+  clutter_actor_queue_redraw (self);
+
   obj = G_OBJECT (self);
   g_object_notify_by_pspec (obj, obj_props[PROP_CHILD_TRANSFORM]);
   g_object_notify_by_pspec (obj, obj_props[PROP_CHILD_TRANSFORM_SET]);
