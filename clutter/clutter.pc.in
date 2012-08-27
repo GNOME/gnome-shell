@@ -8,13 +8,6 @@ requires=@CLUTTER_REQUIRES@
 requires_private=@CLUTTER_REQUIRES_PRIVATE@
 backends=@CLUTTER_BACKENDS@
 
-# only kept for backward compatibility
-soname_infix=@CLUTTER_SONAME_INFIX@
-winsys=@CLUTTER_WINSYS@
-backend=@CLUTTER_WINSYS@
-cogl=deprecated
-cogl_driver=deprecated
-
 Name: Clutter
 Description: Clutter Core Library
 Version: @VERSION@
