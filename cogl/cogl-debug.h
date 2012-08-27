@@ -75,8 +75,6 @@ typedef enum {
 extern GHashTable *_cogl_debug_instances;
 #define COGL_DEBUG_N_LONGS COGL_FLAGS_N_LONGS_FOR_SIZE (COGL_DEBUG_N_FLAGS)
 
-#ifdef COGL_ENABLE_DEBUG
-
 /* _cogl_debug_flags currently needs to exported outside of the shared
    library for cogl-pango. The special COGL_EXPORT macro is needed to
    get this to work when building with MSVC */
@@ -106,20 +104,6 @@ COGL_EXPORT extern unsigned long _cogl_debug_flags[COGL_DEBUG_N_LONGS];
         }                                           } G_STMT_END
 
 #endif /* __GNUC__ */
-
-#else /* !COGL_ENABLE_DEBUG */
-
-#define COGL_NOTE(type,...) G_STMT_START {} G_STMT_END
-
-#define COGL_DEBUG_ENABLED(flag) FALSE
-
-#define COGL_DEBUG_SET_FLAG(flag) \
-  G_STMT_START { } G_STMT_END
-
-#define COGL_DEBUG_CLEAR_FLAG(flag) \
-  G_STMT_START { } G_STMT_END
-
-#endif /* COGL_ENABLE_DEBUG */
 
 void
 _cogl_debug_check_environment (void);
