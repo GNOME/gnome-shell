@@ -102,7 +102,7 @@ typedef union _ClutterEvent                     ClutterEvent;
  * The <structname>ClutterEventSequence</structname> structure is an opaque
  * type used to denote the event sequence of a touch event.
  *
- * Since: 1.12
+ *
  */
 typedef struct _ClutterEventSequence            ClutterEventSequence;
 
@@ -126,7 +126,7 @@ typedef struct _ClutterShader                   ClutterShader; /* deprecated */
  * Other internal representation and methods for describing the
  * bounding volume may be added in the future.
  *
- * Since: 1.4
+ *
  */
 typedef struct _ClutterPaintVolume      ClutterPaintVolume;
 
@@ -137,7 +137,7 @@ typedef struct _ClutterPaintVolume      ClutterPaintVolume;
  *
  * A point in 2D space.
  *
- * Since: 1.12
+ *
  */
 struct _ClutterPoint
 {
@@ -156,7 +156,7 @@ struct _ClutterPoint
  *   ClutterPoint p = CLUTTER_POINT_INIT (100, 100);
  * ]|
  *
- * Since: 1.12
+ *
  */
 #define CLUTTER_POINT_INIT(x,y)         { (x), (y) }
 
@@ -166,7 +166,7 @@ struct _ClutterPoint
  * A simple macro for initializing a #ClutterPoint to (0, 0) when
  * declaring it.
  *
- * Since: 1.12
+ *
  */
 #define CLUTTER_POINT_INIT_ZERO         CLUTTER_POINT_INIT (0.f, 0.f)
 
@@ -201,7 +201,7 @@ float                   clutter_point_distance  (const ClutterPoint *a,
  *
  * A size, in 2D space.
  *
- * Since: 1.12
+ *
  */
 struct _ClutterSize
 {
@@ -220,7 +220,7 @@ struct _ClutterSize
  *   ClutterSize s = CLUTTER_SIZE_INIT (200, 200);
  * ]|
  *
- * Since: 1.12
+ *
  */
 #define CLUTTER_SIZE_INIT(width,height) { (width), (height) }
 
@@ -230,7 +230,7 @@ struct _ClutterSize
  * A simple macro for initializing a #ClutterSize to (0, 0) when
  * declaring it.
  *
- * Since: 1.12
+ *
  */
 #define CLUTTER_SIZE_INIT_ZERO          CLUTTER_SIZE_INIT (0.f, 0.f)
 
@@ -270,7 +270,7 @@ gboolean        clutter_size_equals     (const ClutterSize *a,
  * it is safer to access the contents of a #ClutterRect by using the provided
  * API at all times, instead of directly accessing the structure members.
  *
- * Since: 1.12
+ *
  */
 struct _ClutterRect
 {
@@ -291,7 +291,7 @@ struct _ClutterRect
  *   ClutterRect r = CLUTTER_RECT_INIT (100, 100, 200, 200);
  * ]|
  *
- * Since: 1.12
+ *
  */
 #define CLUTTER_RECT_INIT(x,y,width,height)     { { (x), (y) }, { (width), (height) } }
 
@@ -301,7 +301,7 @@ struct _ClutterRect
  * A simple macro for initializing a #ClutterRect to (0, 0, 0, 0) when
  * declaring it.
  *
- * Since: 1.12
+ *
  */
 #define CLUTTER_RECT_INIT_ZERO                  CLUTTER_RECT_INIT (0.f, 0.f, 0.f, 0.f)
 
@@ -372,7 +372,7 @@ float                   clutter_rect_get_height         (ClutterRect       *rect
  *
  * A point in 3D space, expressed in pixels
  *
- * Since: 0.4
+ *
  */
 struct _ClutterVertex
 {
@@ -393,7 +393,7 @@ struct _ClutterVertex
  *   ClutterVertex v = CLUTTER_VERTEX_INIT (x, y, z);
  * ]|
  *
- * Since: 1.10
+ *
  */
 #define CLUTTER_VERTEX_INIT(x,y,z)      { (x), (y), (z) }
 
@@ -402,7 +402,7 @@ struct _ClutterVertex
  *
  * A simple macro for initializing a #ClutterVertex to (0, 0, 0).
  *
- * Since: 1.12
+ *
  */
 #define CLUTTER_VERTEX_INIT_ZERO        CLUTTER_VERTEX_INIT (0.f, 0.f, 0.f)
 
@@ -455,7 +455,7 @@ struct _ClutterActorBox
  *   ClutterActorBox box = CLUTTER_ACTOR_BOX_INIT (0, 0, 400, 600);
  * ]|
  *
- * Since: 1.10
+ *
  */
 #define CLUTTER_ACTOR_BOX_INIT(x_1,y_1,x_2,y_2)         { (x_1), (y_1), (x_2), (y_2) }
 
@@ -469,7 +469,7 @@ struct _ClutterActorBox
  *   ClutterActorBox box = CLUTTER_ACTOR_BOX_INIT_ZERO;
  * ]|
  *
- * Since: 1.12
+ *
  */
 #define CLUTTER_ACTOR_BOX_INIT_ZERO                     CLUTTER_ACTOR_BOX_INIT (0.f, 0.f, 0.f, 0.f)
 
@@ -533,7 +533,7 @@ void             clutter_actor_box_set_size       (ClutterActorBox       *box,
  *
  * Point in a path behaviour.
  *
- * Since: 0.2
+ *
  */
 struct _ClutterKnot
 {
@@ -559,7 +559,7 @@ gboolean     clutter_knot_equal    (const ClutterKnot *knot_a,
  * pair of coordinates, %CLUTTER_PATH_CURVE_TO uses all three and
  * %CLUTTER_PATH_CLOSE uses none.
  *
- * Since: 1.0
+ *
  */
 struct _ClutterPathNode
 {
@@ -615,7 +615,7 @@ gboolean            clutter_paint_volume_set_from_allocation (ClutterPaintVolume
  *
  * A representation of the components of a margin.
  *
- * Since: 1.10
+ *
  */
 struct _ClutterMargin
 {
@@ -652,7 +652,7 @@ void            clutter_margin_free     (ClutterMargin       *margin_);
  * Return value: %TRUE if the function successfully computed
  *   the value and stored it inside @retval
  *
- * Since: 1.0
+ *
  */
 typedef gboolean (* ClutterProgressFunc) (const GValue *a,
                                           const GValue *b,

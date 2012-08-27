@@ -44,7 +44,7 @@ G_BEGIN_DECLS
  * <structname>ClutterBrightnessContrastEffect</structname> is an opaque structure
  * whose members cannot be directly accessed
  *
- * Since: 1.10
+ *
  */
 typedef struct _ClutterBrightnessContrastEffect         ClutterBrightnessContrastEffect;
 typedef struct _ClutterBrightnessContrastEffectClass    ClutterBrightnessContrastEffectClass;

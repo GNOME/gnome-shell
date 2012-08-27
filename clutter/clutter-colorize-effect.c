@@ -244,7 +244,7 @@ clutter_colorize_effect_class_init (ClutterColorizeEffectClass *klass)
    *
    * The tint to apply to the actor
    *
-   * Since: 1.4
+   *
    */
   obj_props[PROP_TINT] =
     clutter_param_spec_color ("tint",
@@ -318,7 +318,7 @@ clutter_colorize_effect_init (ClutterColorizeEffect *self)
  *
  * Return value: the newly created #ClutterColorizeEffect or %NULL
  *
- * Since: 1.4
+ *
  */
 ClutterEffect *
 clutter_colorize_effect_new (const ClutterColor *tint)
@@ -335,7 +335,7 @@ clutter_colorize_effect_new (const ClutterColor *tint)
  *
  * Sets the tint to be used when colorizing
  *
- * Since: 1.4
+ *
  */
 void
 clutter_colorize_effect_set_tint (ClutterColorizeEffect *effect,
@@ -359,7 +359,7 @@ clutter_colorize_effect_set_tint (ClutterColorizeEffect *effect,
  *
  * Retrieves the tint used by @effect
  *
- * Since: 1.4
+ *
  */
 void
 clutter_colorize_effect_get_tint (ClutterColorizeEffect *effect,

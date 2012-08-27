@@ -1258,7 +1258,7 @@ clutter_event_translator_iface_init (ClutterEventTranslatorIface *iface)
  *
  * Return value: An XID for the stage window.
  *
- * Since: 0.4
+ *
  */
 Window
 clutter_x11_get_stage_window (ClutterStage *stage)
@@ -1292,7 +1292,7 @@ clutter_x11_get_stage_window_from_window (Window win)
  * Return value: (transfer none): A #ClutterStage, or% NULL if a stage
  *   does not exist for the window
  *
- * Since: 0.8
+ *
  */
 ClutterStage *
 clutter_x11_get_stage_from_window (Window win)
@@ -1324,7 +1324,7 @@ clutter_x11_get_stage_from_window (Window win)
  *
  * Deprecated: 1.2: Use clutter_x11_get_visual_info() instead
  *
- * Since: 0.4
+ *
  */
 XVisualInfo *
 clutter_x11_get_stage_visual (ClutterStage *stage)
@@ -1394,7 +1394,7 @@ set_foreign_window_callback (ClutterActor *actor,
  *
  * Return value: %TRUE if foreign window is valid
  *
- * Since: 0.4
+ *
  */
 gboolean
 clutter_x11_set_stage_foreign (ClutterStage *stage,

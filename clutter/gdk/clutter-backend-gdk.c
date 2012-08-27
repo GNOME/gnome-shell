@@ -393,7 +393,7 @@ clutter_backend_gdk_init (ClutterBackendGdk *backend_gdk)
  *
  * Return value: (transfer none): the default display
  *
- * Since: 0.6
+ *
  */
 GdkDisplay *
 clutter_gdk_get_default_display (void)
@@ -428,7 +428,7 @@ clutter_gdk_get_default_display (void)
  * g_option_context_parse() yourself, you should also call
  * clutter_gdk_set_display() before g_option_context_parse().
  *
- * Since: 0.8
+ *
  */
 void
 clutter_gdk_set_display (GdkDisplay *display)
@@ -454,7 +454,7 @@ clutter_gdk_set_display (GdkDisplay *display)
  * This function should only be used when embedding Clutter into
  * a GDK based toolkit.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_gdk_disable_event_retrieval (void)

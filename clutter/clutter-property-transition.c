@@ -264,7 +264,7 @@ clutter_property_transition_class_init (ClutterPropertyTransitionClass *klass)
    *
    * The name of the property of a #ClutterAnimatable to animate.
    *
-   * Since: 1.10
+   *
    */
   obj_props[PROP_PROPERTY_NAME] =
     g_param_spec_string ("property-name",
@@ -293,7 +293,7 @@ clutter_property_transition_init (ClutterPropertyTransition *self)
  * Return value: (transfer full): the newly created #ClutterPropertyTransition.
  *   Use g_object_unref() when done
  *
- * Since: 1.10
+ *
  */
 ClutterTransition *
 clutter_property_transition_new (const char *property_name)
@@ -310,7 +310,7 @@ clutter_property_transition_new (const char *property_name)
  *
  * Sets the #ClutterPropertyTransition:property-name property of @transition.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_property_transition_set_property_name (ClutterPropertyTransition *transition,
@@ -353,7 +353,7 @@ clutter_property_transition_set_property_name (ClutterPropertyTransition *transi
  *   none is set. The returned string is owned by the @transition and
  *   it should not be freed.
  *
- * Since: 1.10
+ *
  */
 const char *
 clutter_property_transition_get_property_name (ClutterPropertyTransition *transition)

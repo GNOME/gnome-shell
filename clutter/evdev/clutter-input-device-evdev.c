@@ -152,7 +152,7 @@ clutter_input_device_evdev_class_init (ClutterInputDeviceEvdevClass *klass)
    *
    * The Sysfs path of the device
    *
-   * Since: 1.6
+   *
    */
   pspec =
     g_param_spec_string ("sysfs-path",
@@ -168,7 +168,7 @@ clutter_input_device_evdev_class_init (ClutterInputDeviceEvdevClass *klass)
    *
    * The path of the device file.
    *
-   * Since: 1.6
+   *
    */
   pspec =
     g_param_spec_string ("device-path",

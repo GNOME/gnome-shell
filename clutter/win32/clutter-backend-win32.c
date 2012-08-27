@@ -163,7 +163,7 @@ clutter_backend_win32_get_features (ClutterBackend *backend)
  *
  * This function can only be called before calling clutter_init().
  *
- * Since: 0.8
+ *
  */
 void
 clutter_win32_disable_event_retrieval (void)

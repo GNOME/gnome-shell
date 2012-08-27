@@ -53,7 +53,7 @@ typedef struct _ClutterTimelinePrivate ClutterTimelinePrivate;
  *
  * Return value: the progress, as a floating point value between -1.0 and 2.0.
  *
- * Since: 1.10
+ *
  */
 typedef gdouble (* ClutterTimelineProgressFunc) (ClutterTimeline *timeline,
                                                  gdouble          elapsed,
@@ -66,7 +66,7 @@ typedef gdouble (* ClutterTimelineProgressFunc) (ClutterTimeline *timeline,
  * The #ClutterTimeline structure contains only private data
  * and should be accessed using the provided API
  *
- * Since: 0.2
+ *
  */
 struct _ClutterTimeline
 {
@@ -87,7 +87,7 @@ struct _ClutterTimeline
  *
  * The #ClutterTimelineClass structure contains only private data
  *
- * Since: 0.2
+ *
  */
 struct _ClutterTimelineClass
 {

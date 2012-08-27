@@ -95,7 +95,7 @@ clutter_backend_egl_native_init (ClutterBackendEglNative *backend_egl_native)
  *
  * Return value: the EGL display, or 0
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.6: Use clutter_egl_get_egl_display() instead.
  */
@@ -112,7 +112,7 @@ clutter_eglx_display (void)
  *
  * Return value: the EGL display used by Clutter, or 0
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.6: Use clutter_egl_get_egl_display() instead.
  */
@@ -130,7 +130,7 @@ clutter_egl_display (void)
  *
  * Return value: the EGL display used by Clutter, or 0
  *
- * Since: 1.6
+ *
  */
 EGLDisplay
 clutter_egl_get_egl_display (void)

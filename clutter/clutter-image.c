@@ -184,7 +184,7 @@ clutter_content_iface_init (ClutterContentIface *iface)
  * Return value: (transfer full): the newly created #ClutterImage instance.
  *   Use g_object_unref() when done.
  *
- * Since: 1.10
+ *
  */
 ClutterContent *
 clutter_image_new (void)
@@ -214,7 +214,7 @@ clutter_image_new (void)
  * Return value: %TRUE if the image data was successfully loaded,
  *   and %FALSE otherwise.
  *
- * Since: 1.10
+ *
  */
 gboolean
 clutter_image_set_data (ClutterImage     *image,
@@ -277,7 +277,7 @@ clutter_image_set_data (ClutterImage     *image,
  * Return value: %TRUE if the image data was successfully loaded,
  *   and %FALSE otherwise.
  *
- * Since: 1.12
+ *
  */
 gboolean
 clutter_image_set_bytes (ClutterImage     *image,
@@ -344,7 +344,7 @@ clutter_image_set_bytes (ClutterImage     *image,
  * Return value: %TRUE if the image data was successfully loaded,
  *   and %FALSE otherwise.
  *
- * Since: 1.10
+ *
  */
 gboolean
 clutter_image_set_area (ClutterImage                 *image,
@@ -417,7 +417,7 @@ clutter_image_set_area (ClutterImage                 *image,
  *
  * Return value: (transfer none): a pointer to the Cogl texture, or %NULL
  *
- * Since: 1.10
+ *
  * Stability: unstable
  */
 CoglTexture *

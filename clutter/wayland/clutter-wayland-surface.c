@@ -225,7 +225,7 @@ set_size (ClutterWaylandSurface *self,
  *
  * Return value: (transfer none): a wl_surface pointer, or %NULL
  *
- * Since: 1.10
+ *
  */
 struct wl_surface *
 clutter_wayland_surface_get_surface (ClutterWaylandSurface *self)
@@ -241,7 +241,7 @@ clutter_wayland_surface_get_surface (ClutterWaylandSurface *self)
  *
  * Sets the Wayland surface to be used by the actor.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_wayland_surface_set_surface (ClutterWaylandSurface *self,
@@ -472,7 +472,7 @@ clutter_wayland_surface_class_init (ClutterWaylandSurfaceClass *klass)
    * then you must also provide your own damage signal handler to
    * queue a redraw that blocks this default behaviour.
    *
-   * Since: 1.10
+   *
    */
   signals[QUEUE_DAMAGE_REDRAW] =
     g_signal_new (g_intern_static_string ("queue-damage-redraw"),
@@ -497,7 +497,7 @@ clutter_wayland_surface_class_init (ClutterWaylandSurfaceClass *klass)
  *
  * Return value: A new #ClutterWaylandSurface representing @surface
  *
- * Since: 1.8
+ *
  * Stability: unstable
  */
 ClutterActor *
@@ -522,7 +522,7 @@ clutter_wayland_surface_new (struct wl_surface *surface)
  * actor @self. This will automatically result in @self being re-drawn
  * with the new buffer contents.
  *
- * Since: 1.8
+ *
  * Stability: unstable
  */
 gboolean
@@ -574,7 +574,7 @@ clutter_wayland_surface_attach_buffer (ClutterWaylandSurface *self,
  * If multiple regions are changed then this should be called multiple
  * times with different damage rectangles.
  *
- * Since: 1.8
+ *
  * Stability: unstable
  */
 void
@@ -640,7 +640,7 @@ clutter_wayland_surface_damage_buffer (ClutterWaylandSurface *self,
  *
  * Return value: (transfer none): a Cogl texture, or %NULL
  *
- * Since: 1.10
+ *
  */
 CoglTexture *
 clutter_wayland_surface_get_cogl_texture (ClutterWaylandSurface *self)

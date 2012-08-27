@@ -144,7 +144,7 @@ clutter_backend_cex100_init (ClutterBackendCex100 *backend_cex100)
  *
  * <note>This function has to be called before clutter_init()</note>
  *
- * Since: 1.6
+ *
  */
 void
 clutter_cex100_set_plane (gdl_plane_id_t plane)
@@ -166,7 +166,7 @@ clutter_cex100_set_plane (gdl_plane_id_t plane)
  *
  * <note>This function has to be called before clutter_init()</note>
  *
- * Since: 1.6
+ *
  */
 void
 clutter_cex100_set_buffering_mode (ClutterCex100BufferingMode mode)
@@ -185,7 +185,7 @@ clutter_cex100_set_buffering_mode (ClutterCex100BufferingMode mode)
  *
  * Return value: the EGL display used by Clutter, or 0
  *
- * Since: 1.10
+ *
  */
 EGLDisplay
 clutter_cex100_get_egl_display (void)

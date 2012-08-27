@@ -502,7 +502,7 @@ clutter_offscreen_effect_init (ClutterOffscreenEffect *self)
  *   returned texture is owned by Clutter and it should not be
  *   modified or freed
  *
- * Since: 1.10
+ *
  */
 CoglHandle
 clutter_offscreen_effect_get_texture (ClutterOffscreenEffect *effect)
@@ -527,7 +527,7 @@ clutter_offscreen_effect_get_texture (ClutterOffscreenEffect *effect)
  *   returned material is owned by Clutter and it should not be
  *   modified or freed
  *
- * Since: 1.4
+ *
  */
 CoglMaterial *
 clutter_offscreen_effect_get_target (ClutterOffscreenEffect *effect)
@@ -544,7 +544,7 @@ clutter_offscreen_effect_get_target (ClutterOffscreenEffect *effect)
  *
  * Calls the paint_target() virtual function of the @effect
  *
- * Since: 1.4
+ *
  */
 void
 clutter_offscreen_effect_paint_target (ClutterOffscreenEffect *effect)
@@ -566,7 +566,7 @@ clutter_offscreen_effect_paint_target (ClutterOffscreenEffect *effect)
  *   %COGL_INVALID_HANDLE. The returned handle has its reference
  *   count increased.
  *
- * Since: 1.4
+ *
  */
 CoglHandle
 clutter_offscreen_effect_create_texture (ClutterOffscreenEffect *effect,
@@ -596,10 +596,6 @@ clutter_offscreen_effect_create_texture (ClutterOffscreenEffect *effect,
  *
  * Return value: %TRUE if the offscreen buffer has a valid size,
  *   and %FALSE otherwise
- *
- * Since: 1.8
- *
- * Deprecated: 1.14: Use clutter_offscreen_effect_get_target_rect() instead
  */
 gboolean
 clutter_offscreen_effect_get_target_size (ClutterOffscreenEffect *effect,
@@ -638,8 +634,6 @@ clutter_offscreen_effect_get_target_size (ClutterOffscreenEffect *effect,
  *
  * Return value: %TRUE if the offscreen buffer has a valid rectangle,
  *   and %FALSE otherwise
- *
- * Since: 1.14
  */
 gboolean
 clutter_offscreen_effect_get_target_rect (ClutterOffscreenEffect *effect,

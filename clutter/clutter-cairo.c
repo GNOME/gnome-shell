@@ -50,7 +50,7 @@
  *                          color->alpha / 255.0);
  * ]|
  *
- * Since: 1.0
+ *
  */
 void
 clutter_cairo_set_source_color (cairo_t            *cr,
@@ -78,7 +78,7 @@ clutter_cairo_set_source_color (cairo_t            *cr,
  *
  * Utility function to clear a Cairo context.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_cairo_clear (cairo_t *cr)

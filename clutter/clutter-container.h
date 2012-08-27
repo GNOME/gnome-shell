@@ -50,7 +50,7 @@ typedef struct _ClutterContainerIface   ClutterContainerIface;
  * #ClutterContainer is an opaque structure whose members cannot be directly
  * accessed
  *
- * Since: 0.4
+ *
  */
 
 /**
@@ -73,7 +73,7 @@ typedef struct _ClutterContainerIface   ClutterContainerIface;
  * virtual functions must be provided by any implementation; the other
  * virtual functions are optional.
  *
- * Since: 0.4
+ *
  */
 struct _ClutterContainerIface
 {

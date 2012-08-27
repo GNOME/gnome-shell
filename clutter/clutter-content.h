@@ -46,7 +46,7 @@ typedef struct _ClutterContentIface     ClutterContentIface;
  * The <structname>ClutterContent</structname> structure is an opaque type
  * whose members cannot be acccessed directly.
  *
- * Since: 1.10
+ *
  */
 
 /**
@@ -65,7 +65,7 @@ typedef struct _ClutterContentIface     ClutterContentIface;
  * The <structname>ClutterContentIface</structname> structure contains only
  * private data.
  *
- * Since: 1.10
+ *
  */
 struct _ClutterContentIface
 {

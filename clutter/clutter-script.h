@@ -58,7 +58,7 @@ typedef struct _ClutterScriptClass      ClutterScriptClass;
  * intended for interpreted language bindings, but could be useful where the
  * programmer wants more control over the signal connection process.
  *
- * Since: 0.6
+ *
  */
 typedef void (* ClutterScriptConnectFunc) (ClutterScript *script,
                                            GObject       *object,
@@ -77,7 +77,7 @@ typedef void (* ClutterScriptConnectFunc) (ClutterScript *script,
  *
  * #ClutterScript error enumeration.
  *
- * Since: 0.6
+ *
  */
 typedef enum {
   CLUTTER_SCRIPT_ERROR_INVALID_TYPE_FUNCTION,
@@ -90,7 +90,7 @@ typedef enum {
  *
  * Error domain for the #ClutterScript errors
  *
- * Since: 0.6
+ *
  */
 #define CLUTTER_SCRIPT_ERROR    (clutter_script_error_quark ())
 GQuark clutter_script_error_quark (void);
@@ -101,7 +101,7 @@ GQuark clutter_script_error_quark (void);
  * The #ClutterScript structure contains only private data
  * and should be accessed using the provided API
  *
- * Since: 0.6
+ *
  */
 struct _ClutterScript
 {
@@ -120,7 +120,7 @@ struct _ClutterScript
  *
  * The #ClutterScriptClass structure contains only private data
  *
- * Since: 0.6
+ *
  */
 struct _ClutterScriptClass
 {

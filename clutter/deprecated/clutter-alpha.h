@@ -57,7 +57,7 @@ typedef struct _ClutterAlphaPrivate     ClutterAlphaPrivate;
  *
  * Return value: a floating point value
  *
- * Since: 0.2
+ *
  */
 typedef gdouble (*ClutterAlphaFunc) (ClutterAlpha *alpha,
                                      gpointer      user_data); 
@@ -69,7 +69,7 @@ typedef gdouble (*ClutterAlphaFunc) (ClutterAlpha *alpha,
  * The contents of the #ClutterAlpha structure are private and should
  * only be accessed using the provided API.
  *
- * Since: 0.2
+ *
  */
 struct _ClutterAlpha
 {
@@ -84,7 +84,7 @@ struct _ClutterAlpha
  *
  * Base class for #ClutterAlpha
  *
- * Since: 0.2
+ *
  */
 struct _ClutterAlphaClass
 {

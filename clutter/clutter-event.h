@@ -40,7 +40,7 @@ G_BEGIN_DECLS
  *
  * Priority for event handling.
  *
- * Since: 0.4
+ *
  */
 #define CLUTTER_PRIORITY_EVENTS         (G_PRIORITY_DEFAULT)
 
@@ -49,7 +49,7 @@ G_BEGIN_DECLS
  *
  * Default value for "now".
  *
- * Since: 0.4
+ *
  */
 #define CLUTTER_CURRENT_TIME            (0L)
 
@@ -59,7 +59,7 @@ G_BEGIN_DECLS
  * Continues the propagation of an event; this macro should be
  * used in event-related signals.
  *
- * Since: 1.10
+ *
  */
 #define CLUTTER_EVENT_PROPAGATE         (FALSE)
 
@@ -69,7 +69,7 @@ G_BEGIN_DECLS
  * Stops the propagation of an event; this macro should be used
  * in event-related signals.
  *
- * Since: 1.10
+ *
  */
 #define CLUTTER_EVENT_STOP              (TRUE)
 
@@ -81,7 +81,7 @@ G_BEGIN_DECLS
  * This is typically the left mouse button in a right-handed
  * mouse configuration.
  *
- * Since: 1.10
+ *
  */
 #define CLUTTER_BUTTON_PRIMARY          (1)
 
@@ -90,7 +90,7 @@ G_BEGIN_DECLS
  *
  * The middle button of a pointer device.
  *
- * Since: 1.10
+ *
  */
 #define CLUTTER_BUTTON_MIDDLE           (2)
 
@@ -102,7 +102,7 @@ G_BEGIN_DECLS
  * This is typically the right mouse button in a right-handed
  * mouse configuration.
  *
- * Since: 1.10
+ *
  */
 #define CLUTTER_BUTTON_SECONDARY        (3)
 
@@ -124,7 +124,7 @@ typedef struct _ClutterTouchEvent       ClutterTouchEvent;
  *
  * Common members for a #ClutterEvent
  *
- * Since: 0.2
+ *
  */
 struct _ClutterAnyEvent
 {
@@ -150,7 +150,7 @@ struct _ClutterAnyEvent
  *
  * Key event
  *
- * Since: 0.2
+ *
  */
 struct _ClutterKeyEvent
 {
@@ -189,7 +189,7 @@ struct _ClutterKeyEvent
  * event, and can be transformed into actor-relative coordinates by
  * using clutter_actor_transform_stage_point().
  *
- * Since: 0.2
+ *
  */
 struct _ClutterButtonEvent
 {
@@ -222,7 +222,7 @@ struct _ClutterButtonEvent
  *
  * Event for the movement of the pointer across different actors
  *
- * Since: 0.2
+ *
  */
 struct _ClutterCrossingEvent
 {
@@ -253,7 +253,7 @@ struct _ClutterCrossingEvent
  *
  * Event for the pointer motion
  *
- * Since: 0.2
+ *
  */
 struct _ClutterMotionEvent
 {
@@ -286,7 +286,7 @@ struct _ClutterMotionEvent
  *
  * Scroll wheel (or similar device) event
  *
- * Since: 0.2
+ *
  */
 struct _ClutterScrollEvent
 {
@@ -316,7 +316,7 @@ struct _ClutterScrollEvent
  *
  * Event signalling a change in the #ClutterStage state.
  *
- * Since: 0.2
+ *
  */
 struct _ClutterStageStateEvent
 {
@@ -359,7 +359,7 @@ struct _ClutterStageStateEvent
  * With multi-touch capable devices there can be multiple event sequence
  * running at the same time.
  *
- * Since: 1.10
+ *
  */
 struct _ClutterTouchEvent
 {
@@ -382,7 +382,7 @@ struct _ClutterTouchEvent
  *
  * Generic event wrapper.
  *
- * Since: 0.2
+ *
  */
 union _ClutterEvent
 {

@@ -49,7 +49,7 @@ typedef struct _ClutterFixedLayoutClass         ClutterFixedLayoutClass;
  * The #ClutterFixedLayout structure contains only private data and
  * it should be accessed using the provided API
  *
- * Since: 1.2
+ *
  */
 struct _ClutterFixedLayout
 {
@@ -63,7 +63,7 @@ struct _ClutterFixedLayout
  * The #ClutterFixedLayoutClass structure contains only private data
  * and it should be accessed using the provided API
  *
- * Since: 1.2
+ *
  */
 struct _ClutterFixedLayoutClass
 {

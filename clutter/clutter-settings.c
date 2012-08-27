@@ -45,7 +45,7 @@
  * <structname>ClutterSettings</structname> is an opaque structure whose
  * members cannot be directly accessed.
  *
- * Since: 1.4
+ *
  */
 struct _ClutterSettings
 {
@@ -417,7 +417,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    * The time, in milliseconds, that should elapse between button-press
    * events in order to increase the click count by 1.
    *
-   * Since: 1.4
+   *
    */
   obj_props[PROP_DOUBLE_CLICK_TIME] =
     g_param_spec_int ("double-click-time",
@@ -433,7 +433,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    * The maximum distance, in pixels, between button-press events that
    * determines whether or not to increase the click count by 1.
    *
-   * Since: 1.4
+   *
    */
   obj_props[PROP_DOUBLE_CLICK_DISTANCE] =
     g_param_spec_int ("double-click-distance",
@@ -449,7 +449,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    * The default distance that the cursor of a pointer device
    * should travel before a drag operation should start.
    *
-   * Since: 1.8
+   *
    */
   obj_props[PROP_DND_DRAG_THRESHOLD] =
     g_param_spec_int ("dnd-drag-threshold",
@@ -465,7 +465,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    * The default font name that should be used by text actors, as
    * a string that can be passed to pango_font_description_from_string().
    *
-   * Since: 1.4
+   *
    */
   obj_props[PROP_FONT_NAME] =
     g_param_spec_string ("font-name",
@@ -481,7 +481,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    * of 1 enables it unconditionally; a value of 0 disables it
    * unconditionally; and -1 will use the system's default.
    *
-   * Since: 1.4
+   *
    */
   obj_props[PROP_FONT_ANTIALIAS] =
     g_param_spec_int ("font-antialias",
@@ -498,7 +498,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *
    * If set to -1, the system's default will be used instead
    *
-   * Since: 1.4
+   *
    */
   obj_props[PROP_FONT_DPI] =
     g_param_spec_int ("font-dpi",
@@ -515,7 +515,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    * unconditionally enables it; a value of 0 unconditionally disables
    * it; and a value of -1 will use the system's default.
    *
-   * Since: 1.4
+   *
    */
   obj_props[PROP_FONT_HINTING] =
     g_param_spec_int ("font-hinting",
@@ -537,7 +537,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *   <listitem><simpara>hintfull</simpara></listitem>
    * </itemizedlist>
    *
-   * Since: 1.4
+   *
    */
   obj_props[PROP_FONT_HINT_STYLE] =
     g_param_spec_string ("font-hint-style",
@@ -559,7 +559,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *   <listitem><simpara>vbgr</simpara></listitem>
    * </itemizedlist>
    *
-   * Since: 1.4
+   *
    */
   obj_props[PROP_FONT_RGBA] =
     g_param_spec_string ("font-subpixel-order",
@@ -576,7 +576,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    *
    * See also #ClutterClickAction:long-press-duration.
    *
-   * Since: 1.8
+   *
    */
   obj_props[PROP_LONG_PRESS_DURATION] =
     g_param_spec_int ("long-press-duration",
@@ -602,7 +602,7 @@ clutter_settings_class_init (ClutterSettingsClass *klass)
    * disables showing the password hint. 600 is a good value for
    * enabling the hint.
    *
-   * Since: 1.10
+   *
    */
   obj_props[PROP_PASSWORD_HINT_TIME] =
     g_param_spec_uint ("password-hint-time",
@@ -649,7 +649,7 @@ clutter_settings_init (ClutterSettings *self)
  *   returned object is owned by Clutter and it should not be unreferenced
  *   directly
  *
- * Since: 1.4
+ *
  */
 ClutterSettings *
 clutter_settings_get_default (void)

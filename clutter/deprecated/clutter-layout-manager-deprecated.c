@@ -22,7 +22,7 @@
  *   layout manager; the returned instance is owned by the layout
  *   manager and should not be unreferenced
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -48,7 +48,7 @@ clutter_layout_manager_begin_animation (ClutterLayoutManager *manager,
  *
  * The result of this call depends on the @manager implementation
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -72,7 +72,7 @@ clutter_layout_manager_end_animation (ClutterLayoutManager *manager)
  *
  * Return value: the progress of the animation
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.12
  */

@@ -281,7 +281,7 @@ struct _ClutterActorClass
  * The contents of the <structname>ClutterActorIter</structname> structure
  * are private and should only be accessed using the provided API.
  *
- * Since: 1.10
+ *
  */
 struct _ClutterActorIter
 {

@@ -57,7 +57,7 @@ G_BEGIN_DECLS
  *
  * Return value: the EGL display
  *
- * Since: 0.4
+ *
  *
  * Deprecated: 1.6: Use clutter_egl_get_egl_display() instead
  */
@@ -83,7 +83,7 @@ EGLDisplay      clutter_egl_display             (void);
  *
  * Return value: the EGL display
  *
- * Since: 1.6
+ *
  */
 EGLDisplay      clutter_egl_get_egl_display     (void);
 

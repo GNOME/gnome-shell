@@ -48,7 +48,7 @@ typedef struct _ClutterMediaIface       ClutterMediaIface;
  * #ClutterMedia is an opaque structure whose members cannot be directly
  * accessed
  *
- * Since: 0.2
+ *
  */
 
 /**
@@ -58,7 +58,7 @@ typedef struct _ClutterMediaIface       ClutterMediaIface;
  *
  * Interface vtable for #ClutterMedia implementations
  *
- * Since: 0.2
+ *
  */
 struct _ClutterMediaIface
 {

@@ -43,7 +43,7 @@ G_BEGIN_DECLS
  * <structname>ClutterAlignConstraint</structname> is an opaque structure
  * whose members cannot be directly accesses
  *
- * Since: 1.4
+ *
  */
 typedef struct _ClutterAlignConstraint          ClutterAlignConstraint;
 typedef struct _ClutterAlignConstraintClass     ClutterAlignConstraintClass;

@@ -52,7 +52,7 @@ typedef struct _ClutterBoxClass         ClutterBoxClass;
  * The #ClutterBox structure contains only private data and should
  * be accessed using the provided API
  *
- * Since: 1.2
+ *
  */
 struct _ClutterBox
 {
@@ -67,7 +67,7 @@ struct _ClutterBox
  *
  * The #ClutterBoxClass structure contains only private data
  *
- * Since: 1.2
+ *
  */
 struct _ClutterBoxClass
 {

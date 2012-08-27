@@ -43,7 +43,7 @@ G_BEGIN_DECLS
  * <structname>ClutterBlurEffect</structname> is an opaque structure
  * whose members cannot be accessed directly
  *
- * Since: 1.4
+ *
  */
 typedef struct _ClutterBlurEffect       ClutterBlurEffect;
 typedef struct _ClutterBlurEffectClass  ClutterBlurEffectClass;

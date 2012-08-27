@@ -48,7 +48,7 @@ typedef struct _ClutterKeyframeTransitionClass          ClutterKeyframeTransitio
  *
  * FIXME
  *
- * Since: 1.12
+ *
  */
 struct _ClutterKeyframeTransition
 {
@@ -63,7 +63,7 @@ struct _ClutterKeyframeTransition
  *
  * FIXME
  *
- * Since: 1.12
+ *
  */
 struct _ClutterKeyframeTransitionClass
 {

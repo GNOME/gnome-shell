@@ -48,7 +48,7 @@ typedef struct _ClutterConstraintClass          ClutterConstraintClass;
  * The <structname>ClutterConstraint</structname> structure contains only
  * private data and should be accessed using the provided API
  *
- * Since: 1.4
+ *
  */
 struct _ClutterConstraint
 {
@@ -62,7 +62,7 @@ struct _ClutterConstraint
  * The <structname>ClutterConstraintClass</structname> structure contains
  * only private data
  *
- * Since: 1.4
+ *
  */
 struct _ClutterConstraintClass
 {

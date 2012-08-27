@@ -149,7 +149,7 @@ ClutterPaintNode *      clutter_paint_node_get_parent                   (Clutter
  * The <structname>ClutterLayerNode</structname> structure is an opaque
  * type whose members cannot be directly accessed.
  *
- * Since: 1.10
+ *
  */
 typedef struct _ClutterLayerNode                ClutterLayerNode;
 typedef struct _ClutterLayerNodeClass           ClutterLayerNodeClass;

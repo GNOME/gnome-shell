@@ -1275,7 +1275,7 @@ clutter_table_layout_class_init (ClutterTableLayoutClass *klass)
    *
    * The spacing between columns of the #ClutterTableLayout, in pixels
    *
-   * Since: 1.4
+   *
    */
   pspec = g_param_spec_uint ("column-spacing",
                              P_("Column Spacing"),
@@ -1289,7 +1289,7 @@ clutter_table_layout_class_init (ClutterTableLayoutClass *klass)
    *
    * The spacing between rows of the #ClutterTableLayout, in pixels
    *
-   * Since: 1.4
+   *
    */
   pspec = g_param_spec_uint ("row-spacing",
                              P_("Row Spacing"),
@@ -1320,7 +1320,7 @@ clutter_table_layout_init (ClutterTableLayout *layout)
  *
  * Return value: the newly created #ClutterTableLayout
  *
- * Since: 1.4
+ *
  */
 ClutterLayoutManager *
 clutter_table_layout_new (void)
@@ -1335,7 +1335,7 @@ clutter_table_layout_new (void)
  *
  * Sets the spacing between columns of @layout
  *
- * Since: 1.4
+ *
  */
 void
 clutter_table_layout_set_column_spacing (ClutterTableLayout *layout,
@@ -1368,7 +1368,7 @@ clutter_table_layout_set_column_spacing (ClutterTableLayout *layout,
  *
  * Return value: the spacing between columns of the #ClutterTableLayout
  *
- * Since: 1.4
+ *
  */
 guint
 clutter_table_layout_get_column_spacing (ClutterTableLayout *layout)
@@ -1385,7 +1385,7 @@ clutter_table_layout_get_column_spacing (ClutterTableLayout *layout)
  *
  * Sets the spacing between rows of @layout
  *
- * Since: 1.4
+ *
  */
 void
 clutter_table_layout_set_row_spacing (ClutterTableLayout *layout,
@@ -1418,7 +1418,7 @@ clutter_table_layout_set_row_spacing (ClutterTableLayout *layout,
  *
  * Return value: the spacing between rows of the #ClutterTableLayout
  *
- * Since: 1.4
+ *
  */
 guint
 clutter_table_layout_get_row_spacing (ClutterTableLayout *layout)
@@ -1438,7 +1438,7 @@ clutter_table_layout_get_row_spacing (ClutterTableLayout *layout)
  * Packs @actor inside the #ClutterContainer associated to @layout
  * at the given row and column.
  *
- * Since: 1.4
+ *
  */
 void
 clutter_table_layout_pack (ClutterTableLayout  *layout,
@@ -1492,7 +1492,7 @@ clutter_table_layout_pack (ClutterTableLayout  *layout,
  * Sets the row and column span for @actor
  * inside @layout
  *
- * Since: 1.4
+ *
  */
 void
 clutter_table_layout_set_span (ClutterTableLayout *layout,
@@ -1546,7 +1546,7 @@ clutter_table_layout_set_span (ClutterTableLayout *layout,
  * Retrieves the row and column span for @actor as set using
  * clutter_table_layout_pack() or clutter_table_layout_set_span()
  *
- * Since: 1.4
+ *
  */
 void
 clutter_table_layout_get_span (ClutterTableLayout *layout,
@@ -1602,7 +1602,7 @@ clutter_table_layout_get_span (ClutterTableLayout *layout,
  *
  * Returns: the number of rows
  *
- * Since: 1.4
+ *
  */
 gint
 clutter_table_layout_get_row_count (ClutterTableLayout *layout)
@@ -1621,7 +1621,7 @@ clutter_table_layout_get_row_count (ClutterTableLayout *layout)
  *
  * Returns: the number of columns
  *
- * Since: 1.4
+ *
  */
 gint
 clutter_table_layout_get_column_count (ClutterTableLayout *layout)

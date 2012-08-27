@@ -17,7 +17,7 @@ G_BEGIN_DECLS
  * <structname>ClutterStageWindow</structname> is an opaque structure
  * whose members should not be accessed directly
  *
- * Since: 0.8
+ *
  */
 typedef struct _ClutterStageWindow      ClutterStageWindow; /* dummy */
 typedef struct _ClutterStageWindowIface ClutterStageWindowIface;
@@ -27,7 +27,7 @@ typedef struct _ClutterStageWindowIface ClutterStageWindowIface;
  *
  * The interface implemented by backends for stage windows
  *
- * Since: 0.8
+ *
  */
 struct _ClutterStageWindowIface
 {

@@ -48,7 +48,7 @@ typedef struct _ClutterEffectClass      ClutterEffectClass;
  * The #ClutterEffect structure contains only private data and should
  * be accessed using the provided API
  *
- * Since: 1.4
+ *
  */
 struct _ClutterEffect
 {
@@ -66,7 +66,7 @@ struct _ClutterEffect
  *
  * The #ClutterEffectClass structure contains only private data
  *
- * Since: 1.4
+ *
  */
 struct _ClutterEffectClass
 {

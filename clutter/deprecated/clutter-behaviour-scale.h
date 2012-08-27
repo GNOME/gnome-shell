@@ -51,7 +51,7 @@ typedef struct _ClutterBehaviourScaleClass      ClutterBehaviourScaleClass;
  * The #ClutterBehaviourScale struct contains only private data and
  * should be accessed using the provided API
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6: Use clutter_actor_animate() with #ClutterActor:scale-x
  *   and #ClutterActor:scale-y instead.
@@ -69,7 +69,7 @@ struct _ClutterBehaviourScale
  *
  * The #ClutterBehaviourScaleClass struct contains only private data
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */

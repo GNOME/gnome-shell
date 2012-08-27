@@ -50,7 +50,7 @@ typedef struct _ClutterDropActionClass          ClutterDropActionClass;
  * The <structname>ClutterDropAction</structname> structure contains only
  * private data and should be accessed using the provided API.
  *
- * Since: 1.8
+ *
  */
 struct _ClutterDropAction
 {
@@ -70,7 +70,7 @@ struct _ClutterDropAction
  * The <structname>ClutterDropActionClass</structname> structure contains
  * only private data.
  *
- * Since: 1.8
+ *
  */
 struct _ClutterDropActionClass
 {

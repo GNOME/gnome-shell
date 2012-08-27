@@ -56,7 +56,7 @@ G_BEGIN_DECLS
  *
  * Return values for the #ClutterX11FilterFunc function.
  *
- * Since: 0.6
+ *
  */
 typedef enum {
   CLUTTER_X11_FILTER_CONTINUE,
@@ -91,7 +91,7 @@ typedef struct _ClutterX11XInputDevice ClutterX11XInputDevice;
  *
  * Return value: the result of the filtering
  *
- * Since: 0.6
+ *
  */
 typedef ClutterX11FilterReturn (*ClutterX11FilterFunc) (XEvent        *xev,
                                                         ClutterEvent  *cev,

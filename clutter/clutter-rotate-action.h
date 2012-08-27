@@ -50,7 +50,7 @@ typedef struct _ClutterRotateActionClass         ClutterRotateActionClass;
  * The <structname>ClutterRotateAction</structname> structure contains
  * only private data and should be accessed using the provided API
  *
- * Since: 1.12
+ *
  */
 struct _ClutterRotateAction
 {
@@ -67,7 +67,7 @@ struct _ClutterRotateAction
  * The <structname>ClutterRotateActionClass</structname> structure contains
  * only private data.
  *
- * Since: 1.12
+ *
  */
 struct _ClutterRotateActionClass
 {

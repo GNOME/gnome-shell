@@ -44,7 +44,7 @@ G_BEGIN_DECLS
  * <structname>ClutterColorizeEffect</structname> is an opaque structure
  * whose members cannot be directly accessed
  *
- * Since: 1.4
+ *
  */
 typedef struct _ClutterColorizeEffect           ClutterColorizeEffect;
 typedef struct _ClutterColorizeEffectClass      ClutterColorizeEffectClass;

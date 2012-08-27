@@ -243,7 +243,7 @@ clutter_stage_wayland_class_init (ClutterStageWaylandClass *klass)
  * Returns: (transfer non): the Wayland shell surface associated with
  * @stage
  *
- * Since: 1.10
+ *
  */
 struct wl_shell_surface *
 clutter_wayland_stage_get_wl_shell_surface (ClutterStage *stage)

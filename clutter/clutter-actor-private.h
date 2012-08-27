@@ -36,7 +36,7 @@ G_BEGIN_DECLS
  * Flags passed to the clutter_actor_queue_redraw_with_clip ()
  * function
  *
- * Since: 1.6
+ *
  */
 typedef enum
 {

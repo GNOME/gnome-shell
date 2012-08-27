@@ -52,7 +52,7 @@ typedef struct _ClutterCairoTexturePrivate      ClutterCairoTexturePrivate;
  *
  * The #ClutterCairoTexture struct contains only private data.
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12: Use #ClutterCanvas instead
  */
@@ -72,7 +72,7 @@ struct _ClutterCairoTexture
  *
  * The #ClutterCairoTextureClass struct contains only private data.
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12: Use #ClutterCanvas instead
  */

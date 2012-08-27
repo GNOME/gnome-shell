@@ -40,8 +40,6 @@ G_BEGIN_DECLS
  *
  * Enum passed to the _clutter_gesture_action_set_threshold_trigger_edge()
  * function.
- *
- * Since: 1.14
  */
 typedef enum
 {

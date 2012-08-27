@@ -50,7 +50,7 @@ typedef struct _ClutterScoreClass   ClutterScoreClass;
  * The #ClutterScore structure contains only private data
  * and should be accessed using the provided API
  *
- * Since: 0.6
+ *
  */
 struct _ClutterScore
 {
@@ -70,7 +70,7 @@ struct _ClutterScore
  *
  * The #ClutterScoreClass structure contains only private data
  *
- * Since: 0.6
+ *
  */
 struct _ClutterScoreClass
 {

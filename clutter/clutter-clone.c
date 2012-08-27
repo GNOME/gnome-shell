@@ -338,7 +338,7 @@ clutter_clone_class_init (ClutterCloneClass *klass)
    *
    * This property specifies the source actor being cloned.
    *
-   * Since: 1.0
+   *
    */
   obj_props[PROP_SOURCE] =
     g_param_spec_object ("source",
@@ -369,7 +369,7 @@ clutter_clone_init (ClutterClone *self)
  *
  * Return value: the newly created #ClutterClone
  *
- * Since: 1.0
+ *
  */
 ClutterActor *
 clutter_clone_new (ClutterActor *source)
@@ -411,7 +411,7 @@ clutter_clone_set_source_internal (ClutterClone *self,
  *
  * Sets @source as the source actor to be cloned by @self.
  *
- * Since: 1.0
+ *
  */
 void
 clutter_clone_set_source (ClutterClone *self,
@@ -432,7 +432,7 @@ clutter_clone_set_source (ClutterClone *self,
  *
  * Return value: (transfer none): the actor source for the clone
  *
- * Since: 1.0
+ *
  */
 ClutterActor *
 clutter_clone_get_source (ClutterClone *self)

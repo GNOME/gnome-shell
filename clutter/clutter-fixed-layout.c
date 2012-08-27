@@ -171,7 +171,7 @@ clutter_fixed_layout_init (ClutterFixedLayout *self)
  *
  * Return value: the newly created #ClutterFixedLayout
  *
- * Since: 1.2
+ *
  */
 ClutterLayoutManager *
 clutter_fixed_layout_new (void)

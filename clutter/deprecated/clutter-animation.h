@@ -49,7 +49,7 @@ typedef struct _ClutterAnimationClass           ClutterAnimationClass;
  * The #ClutterAnimation structure contains only private data and should
  * be accessed using the provided functions.
  *
- * Since: 1.0
+ *
  */
 struct _ClutterAnimation
 {
@@ -67,7 +67,7 @@ struct _ClutterAnimation
  * The #ClutterAnimationClass structure contains only private data and
  * should be accessed using the provided functions.
  *
- * Since: 1.0
+ *
  */
 struct _ClutterAnimationClass
 {

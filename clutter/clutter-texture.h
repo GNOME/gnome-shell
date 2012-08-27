@@ -51,7 +51,7 @@ G_BEGIN_DECLS
  *
  * Error enumeration for #ClutterTexture
  *
- * Since: 0.4
+ *
  */
 typedef enum {
   CLUTTER_TEXTURE_ERROR_OUT_OF_MEMORY,
@@ -64,7 +64,7 @@ typedef enum {
  *
  * Error domain for #ClutterTexture errors
  *
- * Since: 0.4
+ *
  */
 #define CLUTTER_TEXTURE_ERROR   (clutter_texture_error_quark ())
 GQuark clutter_texture_error_quark (void);
@@ -79,7 +79,7 @@ typedef struct _ClutterTexturePrivate ClutterTexturePrivate;
  * The #ClutterTexture structure contains only private data
  * and should be accessed using the provided API
  *
- * Since: 0.1
+ *
  */
 struct _ClutterTexture
 {
@@ -97,7 +97,7 @@ struct _ClutterTexture
  *
  * The #ClutterTextureClass structure contains only private data
  *
- * Since: 0.1
+ *
  */
 struct _ClutterTextureClass
 {

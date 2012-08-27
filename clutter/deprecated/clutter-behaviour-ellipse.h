@@ -64,7 +64,7 @@ typedef struct _ClutterBehaviourEllipseClass   ClutterBehaviourEllipseClass;
  * The #ClutterBehaviourEllipse struct contains only private data
  * and should be accessed using the provided API
  *
- * Since: 0.4
+ *
  *
  * Deprecated: 1.6
  */
@@ -80,7 +80,7 @@ struct _ClutterBehaviourEllipse
  *
  * The #ClutterBehaviourEllipseClass struct contains only private data
  *
- * Since: 0.4
+ *
  *
  * Deprecated: 1.6
  */

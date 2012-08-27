@@ -235,7 +235,7 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    *
    * The unique identifier of the device
    *
-   * Since: 1.2
+   *
    */
   obj_props[PROP_ID] =
     g_param_spec_int ("id",
@@ -251,7 +251,7 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    *
    * The name of the device
    *
-   * Since: 1.2
+   *
    */
   obj_props[PROP_NAME] =
     g_param_spec_string ("name",
@@ -266,7 +266,7 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    *
    * The type of the device
    *
-   * Since: 1.2
+   *
    */
   obj_props[PROP_DEVICE_TYPE] =
     g_param_spec_enum ("device-type",
@@ -282,7 +282,7 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    *
    * The #ClutterDeviceManager instance which owns the device
    *
-   * Since: 1.6
+   *
    */
   obj_props[PROP_DEVICE_MANAGER] =
     g_param_spec_object ("device-manager",
@@ -296,7 +296,7 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    *
    * The mode of the device.
    *
-   * Since: 1.6
+   *
    */
   obj_props[PROP_DEVICE_MODE] =
     g_param_spec_enum ("device-mode",
@@ -311,7 +311,7 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    *
    * Whether the device has an on screen cursor following its movement.
    *
-   * Since: 1.6
+   *
    */
   obj_props[PROP_HAS_CURSOR] =
     g_param_spec_boolean ("has-cursor",
@@ -330,7 +330,7 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    *
    * A device must be enabled in order to receive events from it.
    *
-   * Since: 1.6
+   *
    */
   obj_props[PROP_ENABLED] =
     g_param_spec_boolean ("enabled",
@@ -344,7 +344,7 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    *
    * The number of axes of the device.
    *
-   * Since: 1.6
+   *
    */
   obj_props[PROP_N_AXES] =
     g_param_spec_uint ("n-axes",
@@ -359,7 +359,7 @@ clutter_input_device_class_init (ClutterInputDeviceClass *klass)
    *
    * The #ClutterBackend that created the device.
    *
-   * Since: 1.6
+   *
    */
   obj_props[PROP_BACKEND] =
     g_param_spec_object ("backend",
@@ -713,7 +713,7 @@ _clutter_input_device_set_actor (ClutterInputDevice   *device,
  *
  * Return value: the type of the device
  *
- * Since: 1.0
+ *
  */
 ClutterInputDeviceType
 clutter_input_device_get_device_type (ClutterInputDevice *device)
@@ -732,7 +732,7 @@ clutter_input_device_get_device_type (ClutterInputDevice *device)
  *
  * Return value: the identifier of the device
  *
- * Since: 1.0
+ *
  */
 gint
 clutter_input_device_get_device_id (ClutterInputDevice *device)
@@ -753,7 +753,7 @@ clutter_input_device_get_device_id (ClutterInputDevice *device)
  * to %CLUTTER_INPUT_MODE_SLAVE or %CLUTTER_INPUT_MODE_FLOATING can
  * be disabled.
  *
- * Since: 1.6
+ *
  */
 void
 clutter_input_device_set_enabled (ClutterInputDevice *device,
@@ -782,7 +782,7 @@ clutter_input_device_set_enabled (ClutterInputDevice *device,
  *
  * Return value: %TRUE if the device is enabled
  *
- * Since: 1.6
+ *
  */
 gboolean
 clutter_input_device_get_enabled (ClutterInputDevice *device)
@@ -806,7 +806,7 @@ clutter_input_device_get_enabled (ClutterInputDevice *device)
  * Return value: %FALSE if the device's sequence hasn't been found,
  *   and %TRUE otherwise.
  *
- * Since: 1.12
+ *
  */
 gboolean
 clutter_input_device_get_coords (ClutterInputDevice   *device,
@@ -848,7 +848,7 @@ clutter_input_device_get_coords (ClutterInputDevice   *device,
  * This function only works for #ClutterInputDevice of type
  * %CLUTTER_POINTER_DEVICE.
  *
- * Since: 1.2
+ *
  */
 ClutterActor *
 _clutter_input_device_update (ClutterInputDevice   *device,
@@ -912,7 +912,7 @@ _clutter_input_device_update (ClutterInputDevice   *device,
  *
  * Return value: (transfer none): a pointer to the #ClutterActor or %NULL
  *
- * Since: 1.2
+ *
  */
 ClutterActor *
 clutter_input_device_get_pointer_actor (ClutterInputDevice *device)
@@ -931,7 +931,7 @@ clutter_input_device_get_pointer_actor (ClutterInputDevice *device)
  *
  * Return value: (transfer none): a pointer to the #ClutterStage or %NULL
  *
- * Since: 1.2
+ *
  */
 ClutterStage *
 clutter_input_device_get_pointer_stage (ClutterInputDevice *device)
@@ -952,7 +952,7 @@ clutter_input_device_get_pointer_stage (ClutterInputDevice *device)
  *   is owned by the #ClutterInputDevice and should never be modified
  *   or freed
  *
- * Since: 1.2
+ *
  */
 const gchar *
 clutter_input_device_get_device_name (ClutterInputDevice *device)
@@ -971,7 +971,7 @@ clutter_input_device_get_device_name (ClutterInputDevice *device)
  *
  * Return value: %TRUE if the device has a cursor
  *
- * Since: 1.6
+ *
  */
 gboolean
 clutter_input_device_get_has_cursor (ClutterInputDevice *device)
@@ -989,7 +989,7 @@ clutter_input_device_get_has_cursor (ClutterInputDevice *device)
  *
  * Return value: the device mode
  *
- * Since: 1.6
+ *
  */
 ClutterInputMode
 clutter_input_device_get_device_mode (ClutterInputDevice *device)
@@ -1061,7 +1061,7 @@ clutter_input_device_get_device_mode (ClutterInputDevice *device)
  * enters and leaves a #ClutterStage; it will use the #ClutterStage field
  * of the passed @event to update the stage associated to the input device.
  *
- * Since: 1.2
+ *
  */
 void
 clutter_input_device_update_from_event (ClutterInputDevice *device,
@@ -1219,7 +1219,7 @@ _clutter_input_device_translate_axis (ClutterInputDevice *device,
  *
  * Return value: the axis type
  *
- * Since: 1.6
+ *
  */
 ClutterInputAxis
 clutter_input_device_get_axis (ClutterInputDevice *device,
@@ -1266,7 +1266,7 @@ clutter_input_device_get_axis (ClutterInputDevice *device,
  *
  * Return value: %TRUE if the value was set, and %FALSE otherwise
  *
- * Since: 1.6
+ *
  */
 gboolean
 clutter_input_device_get_axis_value (ClutterInputDevice *device,
@@ -1305,7 +1305,7 @@ clutter_input_device_get_axis_value (ClutterInputDevice *device,
  *
  * Return value: the number of axes on the device
  *
- * Since: 1.6
+ *
  */
 guint
 clutter_input_device_get_n_axes (ClutterInputDevice *device)
@@ -1349,7 +1349,7 @@ _clutter_input_device_set_n_keys (ClutterInputDevice *device,
  *
  * Return value: the number of registered keys
  *
- * Since: 1.6
+ *
  */
 guint
 clutter_input_device_get_n_keys (ClutterInputDevice *device)
@@ -1371,7 +1371,7 @@ clutter_input_device_get_n_keys (ClutterInputDevice *device)
  * Clutter will use the keyval and modifiers set when filling out
  * an event coming from the same input device.
  *
- * Since: 1.6
+ *
  */
 void
 clutter_input_device_set_key (ClutterInputDevice  *device,
@@ -1400,7 +1400,7 @@ clutter_input_device_set_key (ClutterInputDevice  *device,
  *
  * Return value: %TRUE if a key was set at the given index
  *
- * Since: 1.6
+ *
  */
 gboolean
 clutter_input_device_get_key (ClutterInputDevice  *device,
@@ -1538,7 +1538,7 @@ _clutter_input_device_remove_event_sequence (ClutterInputDevice *device,
  *   list of #ClutterInputDevice, or %NULL. The contents of the list are
  *   owned by the device. Use g_list_free() when done
  *
- * Since: 1.6
+ *
  */
 GList *
 clutter_input_device_get_slave_devices (ClutterInputDevice *device)
@@ -1605,7 +1605,7 @@ _clutter_input_device_set_associated_device (ClutterInputDevice *device,
  *
  * Return value: (transfer none): a #ClutterInputDevice, or %NULL
  *
- * Since: 1.6
+ *
  */
 ClutterInputDevice *
 clutter_input_device_get_associated_device (ClutterInputDevice *device)
@@ -1651,7 +1651,7 @@ _clutter_input_device_select_stage_events (ClutterInputDevice *device,
  *
  * Return value: %TRUE if the conversion succeeded, %FALSE otherwise.
  *
- * Since: 1.10
+ *
  */
 gboolean
 clutter_input_device_keycode_to_evdev (ClutterInputDevice *device,
@@ -1798,7 +1798,7 @@ on_grab_sequence_actor_destroy (ClutterActor       *actor,
  * The grab is client-side: even if the windowing system used by the Clutter
  * backend has the concept of "device grabs", Clutter will not use them.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_input_device_sequence_grab (ClutterInputDevice   *device,
@@ -1846,7 +1846,7 @@ clutter_input_device_sequence_grab (ClutterInputDevice   *device,
  * Releases the grab on the @device for the given @sequence, if one is
  * in place.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_input_device_sequence_ungrab (ClutterInputDevice   *device,
@@ -1889,7 +1889,7 @@ clutter_input_device_sequence_ungrab (ClutterInputDevice   *device,
  *
  * Return value: (transfer none): a #ClutterActor, or %NULL
  *
- * Since: 1.12
+ *
  */
 ClutterActor *
 clutter_input_device_sequence_get_grabbed_actor (ClutterInputDevice   *device,

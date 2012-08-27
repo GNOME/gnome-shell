@@ -346,7 +346,7 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
    *
    * A #ClutterTimeline instance used to drive the alpha function.
    *
-   * Since: 0.2
+   *
    *
    * Deprecated: 1.12
    */
@@ -364,7 +364,7 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
    * interval is 0.0 to 1.0, but the Alpha allows overshooting by
    * one unit in each direction, so the valid interval is -1.0 to 2.0.
    *
-   * Since: 0.2
+   *
    * Deprecated: 1.12
    */
   obj_props[PROP_ALPHA] =
@@ -386,7 +386,7 @@ clutter_alpha_class_init (ClutterAlphaClass *klass)
    * clutter_alpha_set_closure() or clutter_alpha_set_func()
    * will be used.
    *
-   * Since: 1.0
+   *
    * Deprecated: 1.12
    */
   obj_props[PROP_MODE] =
@@ -421,7 +421,7 @@ clutter_alpha_init (ClutterAlpha *self)
  *
  * Return Value: The current alpha value for the alpha
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -512,7 +512,7 @@ clutter_alpha_set_closure_internal (ClutterAlpha *alpha,
  * Sets the #GClosure used to compute the alpha value at each
  * frame of the #ClutterTimeline bound to @alpha.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.12
  */
@@ -546,7 +546,7 @@ clutter_alpha_set_closure (ClutterAlpha *alpha,
  *
  * This function will not register @func as a global alpha function.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -589,7 +589,7 @@ clutter_alpha_set_func (ClutterAlpha    *alpha,
  *
  * Binds @alpha to @timeline.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -637,7 +637,7 @@ clutter_alpha_set_timeline (ClutterAlpha    *alpha,
  *
  * Return value: (transfer none): a #ClutterTimeline instance
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -662,7 +662,7 @@ clutter_alpha_get_timeline (ClutterAlpha *alpha)
  *
  * Return value: the newly created empty #ClutterAlpha instance.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -684,7 +684,7 @@ clutter_alpha_new (void)
  *
  * Return Value: the newly created #ClutterAlpha
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -717,7 +717,7 @@ clutter_alpha_new_full (ClutterTimeline *timeline,
  *
  * Return value: the newly created #ClutterAlpha
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -747,7 +747,7 @@ clutter_alpha_new_with_func (ClutterTimeline  *timeline,
  *
  * Return value: the animation mode
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -796,7 +796,7 @@ clutter_alpha_easing_func (ClutterAlpha *alpha,
  * of @mode, as taken by the #ClutterAnimationMode enumeration or
  * using the value returned by clutter_alpha_register_func().
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -905,7 +905,7 @@ register_alpha_internal (AlphaData *alpha_data)
  *
  * Return value: the logical id of the alpha function
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -940,7 +940,7 @@ clutter_alpha_register_func (ClutterAlphaFunc func,
  *
  * Return value: the logical id of the alpha function
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */

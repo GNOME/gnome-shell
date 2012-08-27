@@ -59,7 +59,7 @@ typedef struct _ClutterModelIterPrivate ClutterModelIterPrivate;
  *
  * Return value: If the row should be displayed, return %TRUE
  *
- * Since: 0.6
+ *
  */
 typedef gboolean (*ClutterModelFilterFunc) (ClutterModel     *model,
                                             ClutterModelIter *iter,
@@ -77,7 +77,7 @@ typedef gboolean (*ClutterModelFilterFunc) (ClutterModel     *model,
  * Return value: a positive integer if @a is after @b, a negative integer if
  *   @a is before @b, or 0 if the rows are the same
  *
- * Since: 0.6
+ *
  */
 typedef gint (*ClutterModelSortFunc) (ClutterModel *model,
                                       const GValue *a,
@@ -94,7 +94,7 @@ typedef gint (*ClutterModelSortFunc) (ClutterModel *model,
  *
  * Return value: %TRUE if the iteration should continue, %FALSE otherwise
  *
- * Since: 0.6
+ *
  */
 typedef gboolean (*ClutterModelForeachFunc) (ClutterModel     *model,
                                              ClutterModelIter *iter,
@@ -107,7 +107,7 @@ typedef gboolean (*ClutterModelForeachFunc) (ClutterModel     *model,
  * only private data and should be manipulated using the provided
  * API.
  *
- * Since: 0.6
+ *
  */
 struct _ClutterModel
 {
@@ -141,7 +141,7 @@ struct _ClutterModel
  *
  * Class for #ClutterModel instances.
  *
- * Since: 0.6
+ *
  */
 struct _ClutterModelClass 
 {
@@ -278,7 +278,7 @@ gboolean              clutter_model_filter_iter        (ClutterModel     *model,
  * contains only private data and should be manipulated using the
  * provided API.
  *
- * Since: 0.6
+ *
  */
 struct _ClutterModelIter
 {
@@ -310,7 +310,7 @@ struct _ClutterModelIter
  *
  * Class for #ClutterModelIter instances.
  *
- * Since: 0.6
+ *
  */
 struct _ClutterModelIterClass 
 {

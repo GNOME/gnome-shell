@@ -346,7 +346,7 @@ clutter_script_class_init (ClutterScriptClass *klass)
    * is %TRUE then the currently parsed data comes from a file, and the
    * file name is stored inside the #ClutterScript:filename property.
    *
-   * Since: 0.6
+   *
    */
   obj_props[PROP_FILENAME_SET] =
     g_param_spec_boolean ("filename-set",
@@ -361,7 +361,7 @@ clutter_script_class_init (ClutterScriptClass *klass)
    * The path of the currently parsed file. If #ClutterScript:filename-set
    * is %FALSE then the value of this property is undefined.
    *
-   * Since: 0.6
+   *
    */
   obj_props[PROP_FILENAME] =
     g_param_spec_string ("filename",
@@ -379,7 +379,7 @@ clutter_script_class_init (ClutterScriptClass *klass)
    * If #ClutterScript:translation-domain is set to %NULL, #ClutterScript
    * will use gettext(), otherwise g_dgettext() will be used.
    *
-   * Since: 1.10
+   *
    */
   obj_props[PROP_TRANSLATION_DOMAIN] =
     g_param_spec_string ("translation-domain",
@@ -427,7 +427,7 @@ clutter_script_init (ClutterScript *script)
  * Return value: the newly created #ClutterScript instance. Use
  *   g_object_unref() when done.
  *
- * Since: 0.6
+ *
  */
 ClutterScript *
 clutter_script_new (void)
@@ -448,7 +448,7 @@ clutter_script_new (void)
  *   accordingly. On success, the merge id for the UI definitions is
  *   returned. You can use the merge id with clutter_script_unmerge_objects().
  *
- * Since: 0.6
+ *
  */
 guint
 clutter_script_load_from_file (ClutterScript  *script,
@@ -497,7 +497,7 @@ clutter_script_load_from_file (ClutterScript  *script,
  *   accordingly. On success, the merge id for the UI definitions is
  *   returned. You can use the merge id with clutter_script_unmerge_objects().
  *
- * Since: 0.6
+ *
  */
 guint
 clutter_script_load_from_data (ClutterScript  *script,
@@ -548,7 +548,7 @@ clutter_script_load_from_data (ClutterScript  *script,
  *   accordingly. On success, the merge id for the UI definitions is
  *   returned. You can use the merge id with clutter_script_unmerge_objects().
  *
- * Since: 1.10
+ *
  */
 guint
 clutter_script_load_from_resource (ClutterScript  *script,
@@ -585,7 +585,7 @@ clutter_script_load_from_resource (ClutterScript  *script,
  * Return value: (transfer none): the named object, or %NULL if no object
  *   with the given name was available
  *
- * Since: 0.6
+ *
  */
 GObject *
 clutter_script_get_object (ClutterScript *script,
@@ -657,7 +657,7 @@ clutter_script_get_objects_valist (ClutterScript *script,
  *
  * Return value: the number of objects returned.
  *
- * Since: 0.6
+ *
  */
 gint
 clutter_script_get_objects (ClutterScript *script,
@@ -712,7 +712,7 @@ remove_by_merge_id (gpointer key,
  *
  * Unmerges the objects identified by @merge_id.
  *
- * Since: 0.6
+ *
  */
 void
 clutter_script_unmerge_objects (ClutterScript *script,
@@ -772,7 +772,7 @@ construct_each_objects (gpointer key,
  * Ensure that every object defined inside @script is correctly
  * constructed. You should rarely need to use this function.
  *
- * Since: 0.6
+ *
  */
 void
 clutter_script_ensure_objects (ClutterScript *script)
@@ -797,7 +797,7 @@ clutter_script_ensure_objects (ClutterScript *script)
  * Return value: the type for the requested type name, or
  *   %G_TYPE_INVALID if not corresponding type was found.
  *
- * Since: 0.6
+ *
  */
 GType
 clutter_script_get_type_from_name (ClutterScript *script,
@@ -819,7 +819,7 @@ clutter_script_get_type_from_name (ClutterScript *script,
  *   a UI definition file. The returned string is owned by the object and
  *   should never be modified or freed.
  *
- * Since: 0.6
+ *
  */
 const gchar *
 clutter_get_script_id (GObject *gobject)
@@ -902,7 +902,7 @@ clutter_script_default_connect (ClutterScript *script,
  * Note that this function will not work if #GModule is not supported by
  * the platform Clutter is running on.
  *
- * Since: 0.6
+ *
  */
 void
 clutter_script_connect_signals (ClutterScript *script,
@@ -1004,7 +1004,7 @@ connect_each_object (gpointer key,
  *
  * Applications should use clutter_script_connect_signals().
  *
- * Since: 0.6
+ *
  */
 void
 clutter_script_connect_signals_full (ClutterScript            *script,
@@ -1042,7 +1042,7 @@ clutter_script_error_quark (void)
  * can be used to define search paths for the textures source file name
  * or other custom, file-based properties.
  *
- * Since: 0.8
+ *
  */
 void
 clutter_script_add_search_paths (ClutterScript       *script,
@@ -1101,7 +1101,7 @@ clutter_script_add_search_paths (ClutterScript       *script,
  * Return value: the full path of @filename or %NULL if no path was
  *   found.
  *
- * Since: 0.8
+ *
  */
 gchar *
 clutter_script_lookup_filename (ClutterScript *script,
@@ -1169,7 +1169,7 @@ clutter_script_lookup_filename (ClutterScript *script,
  *   #ClutterScript instance. Use g_list_free() on the returned list when
  *   done.
  *
- * Since: 0.8.2
+ *
  */
 GList *
 clutter_script_list_objects (ClutterScript *script)
@@ -1205,7 +1205,7 @@ clutter_script_list_objects (ClutterScript *script)
  *
  * Sets the translation domain for @script.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_script_set_translation_domain (ClutterScript *script,
@@ -1232,7 +1232,7 @@ clutter_script_set_translation_domain (ClutterScript *script,
  * Return value: (transfer none): the translation domain, if any is set,
  *   or %NULL
  *
- * Since: 1.10
+ *
  */
 const gchar *
 clutter_script_get_translation_domain (ClutterScript *script)

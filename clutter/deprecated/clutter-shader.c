@@ -253,7 +253,7 @@ clutter_shader_class_init (ClutterShaderClass *klass)
    * GLSL source code for the vertex shader part of the shader
    * program, if any
    *
-   * Since: 0.6
+   *
    *
    * Deprecated: 1.8: Use #ClutterShaderEffect instead.
    */
@@ -270,7 +270,7 @@ clutter_shader_class_init (ClutterShaderClass *klass)
    *
    * GLSL source code for the fragment shader part of the shader program.
    *
-   * Since: 0.6
+   *
    *
    * Deprecated: 1.8: Use #ClutterShaderEffect instead.
    */
@@ -288,7 +288,7 @@ clutter_shader_class_init (ClutterShaderClass *klass)
    * Whether the shader is compiled and linked, ready for use
    * in the GL context.
    *
-   * Since: 0.8
+   *
    *
    * Deprecated: 1.8: Use #ClutterShaderEffect instead.
    */
@@ -305,7 +305,7 @@ clutter_shader_class_init (ClutterShaderClass *klass)
    *
    * Whether the shader is currently used in the GL rendering pipeline.
    *
-   * Since: 0.6
+   *
    *
    * Deprecated: 1.8: Use #ClutterShaderEffect instead.
    */
@@ -342,7 +342,7 @@ clutter_shader_init (ClutterShader *self)
  *
  * Return value: a new #ClutterShader.
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead.
  */
@@ -411,7 +411,7 @@ clutter_shader_set_source (ClutterShader     *shader,
  * Sets the GLSL source code to be used by a #ClutterShader for the fragment
  * program.
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead.
  */
@@ -435,7 +435,7 @@ clutter_shader_set_fragment_source (ClutterShader      *shader,
  * Sets the GLSL source code to be used by a #ClutterShader for the vertex
  * program.
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead.
  */
@@ -589,7 +589,7 @@ bind_glsl_shader (ClutterShader  *self,
  *
  * Return value: returns TRUE if the shader was succesfully compiled.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead.
  */
@@ -639,7 +639,7 @@ clutter_shader_compile (ClutterShader  *shader,
  *
  * Frees up any GL context resources held by the shader.
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead.
  */
@@ -662,7 +662,7 @@ clutter_shader_release (ClutterShader *shader)
  *
  * Return value: %TRUE if the shader is compiled, linked and ready for use.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead.
  */
@@ -685,7 +685,7 @@ clutter_shader_is_compiled (ClutterShader *shader)
  * When @enabled is %FALSE the default state of the GL pipeline will be
  * used instead.
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead.
  */
@@ -734,7 +734,7 @@ clutter_shader_set_is_enabled (ClutterShader *shader,
  *
  * Return value: %TRUE if the shader is enabled.
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead.
  */
@@ -756,7 +756,7 @@ clutter_shader_get_is_enabled (ClutterShader *shader)
  * Sets a user configurable variable in the GLSL shader programs attached to
  * a #ClutterShader.
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead.
  */
@@ -835,7 +835,7 @@ clutter_shader_set_uniform (ClutterShader *shader,
  * ClutterShader object or %NULL. The returned string is owned by the
  * shader object and should never be modified or freed
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead.
  */
@@ -857,7 +857,7 @@ clutter_shader_get_fragment_source (ClutterShader *shader)
  * ClutterShader object or %NULL. The returned string is owned by the
  * shader object and should never be modified or freed
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead.
  */
@@ -879,7 +879,7 @@ clutter_shader_get_vertex_source (ClutterShader *shader)
  *   or %NULL. The handle is owned by the #ClutterShader and it should
  *   not be unreferenced
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead.
  */
@@ -901,7 +901,7 @@ clutter_shader_get_cogl_program (ClutterShader *shader)
  *   shader, or %NULL. The handle is owned by the #ClutterShader
  *   and it should not be unreferenced
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead.
  */
@@ -923,7 +923,7 @@ clutter_shader_get_cogl_fragment_shader (ClutterShader *shader)
  *   shader, or %NULL. The handle is owned by the #ClutterShader
  *   and it should not be unreferenced
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead.
  */

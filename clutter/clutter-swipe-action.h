@@ -54,7 +54,7 @@ typedef struct _ClutterSwipeActionClass         ClutterSwipeActionClass;
  * The <structname>ClutterSwipeAction</structname> structure contains
  * only private data and should be accessed using the provided API
  *
- * Since: 1.8
+ *
  */
 struct _ClutterSwipeAction
 {
@@ -73,7 +73,7 @@ struct _ClutterSwipeAction
  * The <structname>ClutterSwipeActionClass</structname> structure contains
  * only private data.
  *
- * Since: 1.8
+ *
  */
 struct _ClutterSwipeActionClass
 {

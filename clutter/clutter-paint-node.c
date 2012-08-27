@@ -52,7 +52,7 @@
  * Set Value Func: clutter_value_set_paint_node
  * Get Value Func: clutter_value_get_paint_node
  *
- * Since: 1.10
+ *
  */
 
 /**
@@ -61,7 +61,7 @@
  * The <structname>ClutterPaintNodeClass</structname> structure contains
  * only private data.
  *
- * Since: 1.10
+ *
  */
 
 #ifdef HAVE_CONFIG_H
@@ -304,7 +304,7 @@ clutter_paint_node_get_type (void)
  *
  * The @node will copy the passed string.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_paint_node_set_name (ClutterPaintNode *node,
@@ -324,7 +324,7 @@ clutter_paint_node_set_name (ClutterPaintNode *node,
  *
  * Return value: (transfer full): the #ClutterPaintNode
  *
- * Since: 1.10
+ *
  */
 ClutterPaintNode *
 clutter_paint_node_ref (ClutterPaintNode *node)
@@ -342,7 +342,7 @@ clutter_paint_node_ref (ClutterPaintNode *node)
  *
  * Releases a reference on @node.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_paint_node_unref (ClutterPaintNode *node)
@@ -366,7 +366,7 @@ clutter_paint_node_unref (ClutterPaintNode *node)
  *
  * This function will acquire a reference on @child.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_paint_node_add_child (ClutterPaintNode *node,
@@ -408,7 +408,7 @@ clutter_paint_node_add_child (ClutterPaintNode *node,
  * This function will release the reference on @child acquired by
  * using clutter_paint_node_add_child().
  *
- * Since: 1.10
+ *
  */
 void
 clutter_paint_node_remove_child (ClutterPaintNode *node,
@@ -457,7 +457,7 @@ clutter_paint_node_remove_child (ClutterPaintNode *node,
  * This function will release the reference on @old_child acquired
  * by @node, and will acquire a new reference on @new_child.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_paint_node_replace_child (ClutterPaintNode *node,
@@ -507,7 +507,7 @@ clutter_paint_node_replace_child (ClutterPaintNode *node,
  * This function releases the reference acquired by @node on its
  * children.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_paint_node_remove_all (ClutterPaintNode *node)
@@ -536,7 +536,7 @@ clutter_paint_node_remove_all (ClutterPaintNode *node)
  * Return value: (transfer none): a pointer to the first child of
  *   the #ClutterPaintNode.
  *
- * Since: 1.10
+ *
  */
 ClutterPaintNode *
 clutter_paint_node_get_first_child (ClutterPaintNode *node)
@@ -555,7 +555,7 @@ clutter_paint_node_get_first_child (ClutterPaintNode *node)
  * Return value: (transfer none): a pointer to the previous sibling
  *   of the #ClutterPaintNode.
  *
- * Since: 1.10
+ *
  */
 ClutterPaintNode *
 clutter_paint_node_get_previous_sibling (ClutterPaintNode *node)
@@ -574,7 +574,7 @@ clutter_paint_node_get_previous_sibling (ClutterPaintNode *node)
  * Return value: (transfer none): a pointer to the next sibling
  *   of a #ClutterPaintNode
  *
- * Since: 1.10
+ *
  */
 ClutterPaintNode *
 clutter_paint_node_get_next_sibling (ClutterPaintNode *node)
@@ -593,7 +593,7 @@ clutter_paint_node_get_next_sibling (ClutterPaintNode *node)
  * Return value: (transfer none): a pointer to the last child
  *   of a #ClutterPaintNode
  *
- * Since: 1.10
+ *
  */
 ClutterPaintNode *
 clutter_paint_node_get_last_child (ClutterPaintNode *node)
@@ -612,7 +612,7 @@ clutter_paint_node_get_last_child (ClutterPaintNode *node)
  * Return value: (transfer none): a pointer to the parent of
  *   a #ClutterPaintNode
  *
- * Since: 1.10
+ *
  */
 ClutterPaintNode *
 clutter_paint_node_get_parent (ClutterPaintNode *node)
@@ -630,7 +630,7 @@ clutter_paint_node_get_parent (ClutterPaintNode *node)
  *
  * Return value: the number of children of a #ClutterPaintNode
  *
- * Since: 1.10
+ *
  */
 guint
 clutter_paint_node_get_n_children (ClutterPaintNode *node)
@@ -651,7 +651,7 @@ clutter_paint_node_get_n_children (ClutterPaintNode *node)
  * to increase the reference count, use clutter_value_take_paint_node()
  * instead. The reference count will be released by g_value_unset().
  *
- * Since: 1.10
+ *
  */
 void
 clutter_value_set_paint_node (GValue   *value,
@@ -687,7 +687,7 @@ clutter_value_set_paint_node (GValue   *value,
  * reference on the passed @node: instead, it will take ownership of the
  * current reference count.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_value_take_paint_node (GValue   *value,
@@ -723,7 +723,7 @@ clutter_value_take_paint_node (GValue   *value,
  * Return value: (transfer none) (type Clutter.PaintNode): a pointer to
  *   a #ClutterPaintNode, or %NULL
  *
- * Since: 1.10
+ *
  */
 gpointer
 clutter_value_get_paint_node (const GValue *value)
@@ -745,7 +745,7 @@ clutter_value_get_paint_node (const GValue *value)
  *   to the #ClutterPaintNode, with its reference count increased,
  *   or %NULL
  *
- * Since: 1.10
+ *
  */
 gpointer
 clutter_value_dup_paint_node (const GValue *value)
@@ -840,7 +840,7 @@ clutter_paint_node_maybe_init_operations (ClutterPaintNode *node)
  * Adds a rectangle region to the @node, as described by the
  * passed @rect.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_paint_node_add_rectangle (ClutterPaintNode      *node,
@@ -868,7 +868,7 @@ clutter_paint_node_add_rectangle (ClutterPaintNode      *node,
  *
  * Adds a rectangle region to the @node, with texture coordinates.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_paint_node_add_texture_rectangle (ClutterPaintNode      *node,
@@ -899,7 +899,7 @@ clutter_paint_node_add_texture_rectangle (ClutterPaintNode      *node,
  * This function acquires a reference on the passed @path, so it
  * is safe to call cogl_object_unref() when it returns.
  *
- * Since: 1.10
+ *
  * Stability: unstable
  */
 void
@@ -927,7 +927,7 @@ clutter_paint_node_add_path (ClutterPaintNode *node,
  * This function acquires a reference on @primitive, so it is safe
  * to call cogl_object_unref() when it returns.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_paint_node_add_primitive (ClutterPaintNode *node,

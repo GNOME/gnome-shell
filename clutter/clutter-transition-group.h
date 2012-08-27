@@ -45,7 +45,7 @@ typedef struct _ClutterTransitionGroupClass             ClutterTransitionGroupCl
  * The <structname>ClutterTransitionGroup</structname> structure contains
  * private data and should only be accessed using the provided API.
  *
- * Since: 1.12
+ *
  */
 struct _ClutterTransitionGroup
 {
@@ -61,7 +61,7 @@ struct _ClutterTransitionGroup
  * The <structname>ClutterTransitionGroupClass</structname> structure
  * contains only private data.
  *
- * Since: 1.12
+ *
  */
 struct _ClutterTransitionGroupClass
 {

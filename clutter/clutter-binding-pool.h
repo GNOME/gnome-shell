@@ -43,7 +43,7 @@ G_BEGIN_DECLS
  * Container of key bindings. The #ClutterBindingPool struct is
  * private.
  *
- * Since: 1.0
+ *
  */
 typedef struct _ClutterBindingPool      ClutterBindingPool;
 typedef struct _ClutterBindingPoolClass ClutterBindingPoolClass;
@@ -63,7 +63,7 @@ typedef struct _ClutterBindingPoolClass ClutterBindingPoolClass;
  * Return value: the function should return %TRUE if the key
  *   binding has been handled, and return %FALSE otherwise
  *
- * Since: 1.0
+ *
  */
 typedef gboolean (* ClutterBindingActionFunc) (GObject             *gobject,
                                                const gchar         *action_name,

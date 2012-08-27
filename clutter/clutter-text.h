@@ -51,7 +51,7 @@ typedef struct _ClutterTextClass   ClutterTextClass;
  *
  * The #ClutterText struct contains only private data.
  *
- * Since: 1.0
+ *
  */
 struct _ClutterText
 {
@@ -69,7 +69,7 @@ struct _ClutterText
  *
  * The #ClutterTextClass struct contains only private data.
  *
- * Since: 1.0
+ *
  */
 struct _ClutterTextClass
 {

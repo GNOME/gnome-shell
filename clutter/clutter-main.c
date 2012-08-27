@@ -476,7 +476,7 @@ _clutter_context_get_show_fps (void)
  *
  * Return value: %TRUE if Clutter has accessibility support enabled
  *
- * Since: 1.4
+ *
  */
 gboolean
 clutter_get_accessibility_enabled (void)
@@ -491,8 +491,6 @@ clutter_get_accessibility_enabled (void)
  * as setting the environment variable
  * CLUTTER_DISABLE_ACCESSIBILITY. For the same reason, this method
  * should be called before clutter_init().
- *
- * Since: 1.14
  */
 void
 clutter_disable_accessibility (void)
@@ -914,7 +912,7 @@ clutter_main (void)
  * This method must be called before clutter_init(), and cannot
  * be called multiple times.
  *
- * Since: 0.4
+ *
  */
 void
 clutter_threads_set_lock_functions (GCallback enter_fn,
@@ -1053,7 +1051,7 @@ _clutter_threads_dispatch_free (gpointer data)
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- * Since: 0.4
+ *
  */
 guint
 clutter_threads_add_idle_full (gint           priority,
@@ -1085,7 +1083,7 @@ clutter_threads_add_idle_full (gint           priority,
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- * Since: 0.4
+ *
  */
 guint
 clutter_threads_add_idle (GSourceFunc func,
@@ -1125,7 +1123,7 @@ clutter_threads_add_idle (GSourceFunc func,
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- * Since: 0.4
+ *
  */
 guint
 clutter_threads_add_timeout_full (gint           priority,
@@ -1159,7 +1157,7 @@ clutter_threads_add_timeout_full (gint           priority,
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- * Since: 0.4
+ *
  */
 guint
 clutter_threads_add_timeout (guint       interval,
@@ -1661,7 +1659,7 @@ post_parse_hook (GOptionContext  *context,
  * Return value: (transfer full): a #GOptionGroup for the commandline arguments
  *   recognized by Clutter
  *
- * Since: 0.2
+ *
  */
 GOptionGroup *
 clutter_get_option_group (void)
@@ -1706,7 +1704,7 @@ clutter_get_option_group (void)
  * Return value: (transfer full): a #GOptionGroup for the commandline arguments
  *   recognized by Clutter
  *
- * Since: 0.8.2
+ *
  */
 GOptionGroup *
 clutter_get_option_group_without_init (void)
@@ -1760,7 +1758,7 @@ clutter_get_option_group_without_init (void)
  *   initialised, or other values or #ClutterInitError in case of
  *   error.
  *
- * Since: 0.2
+ *
  */
 ClutterInitError
 clutter_init_with_args (int            *argc,
@@ -2214,7 +2212,7 @@ is_off_stage (ClutterActor *stage,
  * This function is only useful when embedding Clutter inside another
  * toolkit, and it should never be called by applications.
  *
- * Since: 0.4
+ *
  */
 void
 clutter_do_event (ClutterEvent *event)
@@ -2644,7 +2642,7 @@ clutter_base_init (void)
  *
  * Return value: the default frame rate
  *
- * Since: 0.6
+ *
  */
 guint
 clutter_get_default_frame_rate (void)
@@ -2708,7 +2706,7 @@ on_grab_actor_destroy (ClutterActor       *actor,
  * If a grab is required, you are strongly encouraged to use a specific
  * input device by calling clutter_input_device_grab().
  *
- * Since: 0.6
+ *
  */
 void
 clutter_grab_pointer (ClutterActor *actor)
@@ -2757,7 +2755,7 @@ clutter_grab_pointer (ClutterActor *actor)
  * Only #ClutterInputDevice of types %CLUTTER_POINTER_DEVICE and
  * %CLUTTER_KEYBOARD_DEVICE can hold a grab.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_input_device_grab (ClutterInputDevice *device,
@@ -2804,7 +2802,7 @@ clutter_input_device_grab (ClutterInputDevice *device,
  *
  * Releases the grab on the @device, if one is in place.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_input_device_ungrab (ClutterInputDevice *device)
@@ -2846,7 +2844,7 @@ clutter_input_device_ungrab (ClutterInputDevice *device)
  *
  * Return value: (transfer none): a #ClutterActor, or %NULL
  *
- * Since: 1.10
+ *
  */
 ClutterActor *
 clutter_input_device_get_grabbed_actor (ClutterInputDevice *device)
@@ -2873,7 +2871,7 @@ clutter_input_device_get_grabbed_actor (ClutterInputDevice *device)
  *
  * Removes an existing grab of the pointer.
  *
- * Since: 0.6
+ *
  */
 void
 clutter_ungrab_pointer (void)
@@ -2888,7 +2886,7 @@ clutter_ungrab_pointer (void)
  *
  * Return value: (transfer none): the actor currently holding the pointer grab, or NULL if there is no grab.
  *
- * Since: 0.6
+ *
  */
 ClutterActor *
 clutter_get_pointer_grab (void)
@@ -2916,7 +2914,7 @@ clutter_get_pointer_grab (void)
  * See also clutter_stage_set_key_focus() and clutter_actor_grab_key_focus()
  * to perform a "soft" key grab and assign key focus to a specific actor.
  *
- * Since: 0.6
+ *
  */
 void
 clutter_grab_keyboard (ClutterActor *actor)
@@ -2953,7 +2951,7 @@ clutter_grab_keyboard (ClutterActor *actor)
  *
  * Removes an existing grab of the keyboard.
  *
- * Since: 0.6
+ *
  */
 void
 clutter_ungrab_keyboard (void)
@@ -2968,7 +2966,7 @@ clutter_ungrab_keyboard (void)
  *
  * Return value: (transfer none): the actor currently holding the keyboard grab, or NULL if there is no grab.
  *
- * Since: 0.6
+ *
  */
 ClutterActor *
 clutter_get_keyboard_grab (void)
@@ -2990,7 +2988,7 @@ clutter_get_keyboard_grab (void)
  * Return value: (transfer none): the #PangoFontMap instance. The returned
  *   value is owned by Clutter and it should never be unreferenced.
  *
- * Since: 1.0
+ *
  */
 PangoFontMap *
 clutter_get_font_map (void)
@@ -3013,7 +3011,7 @@ typedef struct _ClutterRepaintFunction
  *
  * Removes the repaint function with @handle_id as its id
  *
- * Since: 1.0
+ *
  */
 void
 clutter_threads_remove_repaint_func (guint handle_id)
@@ -3090,7 +3088,7 @@ clutter_threads_remove_repaint_func (guint handle_id)
  *   can use the returned integer to remove the repaint function by
  *   calling clutter_threads_remove_repaint_func().
  *
- * Since: 1.0
+ *
  */
 guint
 clutter_threads_add_repaint_func (GSourceFunc    func,
@@ -3138,7 +3136,7 @@ clutter_threads_add_repaint_func (GSourceFunc    func,
  *   can use the returned integer to remove the repaint function by
  *   calling clutter_threads_remove_repaint_func().
  *
- * Since: 1.10
+ *
  */
 guint
 clutter_threads_add_repaint_func_full (ClutterRepaintFlags flags,
@@ -3257,7 +3255,7 @@ _clutter_run_repaint_functions (ClutterRepaintFlags flags)
  * Return value: %TRUE if the version of the Clutter library is
  *   greater than (@major, @minor, @micro), and %FALSE otherwise
  *
- * Since: 1.2
+ *
  */
 gboolean
 clutter_check_version (guint major,
@@ -3284,7 +3282,7 @@ clutter_check_version (guint major,
  *
  * Return value: the default text direction
  *
- * Since: 1.2
+ *
  */
 ClutterTextDirection
 clutter_get_default_text_direction (void)
@@ -3431,7 +3429,7 @@ _clutter_context_get_motion_events_enabled (void)
  * Return value: %TRUE if the current Clutter windowing system backend is
  *   the one checked, and %FALSE otherwise
  *
- * Since: 1.10
+ *
  */
 gboolean
 clutter_check_windowing_backend (const char *backend_type)

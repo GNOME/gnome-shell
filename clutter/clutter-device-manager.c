@@ -147,7 +147,7 @@ clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
    * The ::device-added signal is emitted each time a device has been
    * added to the #ClutterDeviceManager
    *
-   * Since: 1.2
+   *
    */
   manager_signals[DEVICE_ADDED] =
     g_signal_new (I_("device-added"),
@@ -167,7 +167,7 @@ clutter_device_manager_class_init (ClutterDeviceManagerClass *klass)
    * The ::device-removed signal is emitted each time a device has been
    * removed from the #ClutterDeviceManager
    *
-   * Since: 1.2
+   *
    */
   manager_signals[DEVICE_REMOVED] =
     g_signal_new (I_("device-removed"),
@@ -195,7 +195,7 @@ clutter_device_manager_init (ClutterDeviceManager *self)
  *   The returned instance is owned by Clutter and it should not be
  *   modified or freed
  *
- * Since: 1.2
+ *
  */
 ClutterDeviceManager *
 clutter_device_manager_get_default (void)
@@ -215,7 +215,7 @@ clutter_device_manager_get_default (void)
  *   a newly allocated list of #ClutterInputDevice objects. Use
  *   g_slist_free() to deallocate it when done
  *
- * Since: 1.2
+ *
  */
 GSList *
 clutter_device_manager_list_devices (ClutterDeviceManager *device_manager)
@@ -240,7 +240,7 @@ clutter_device_manager_list_devices (ClutterDeviceManager *device_manager)
  *   returned list is owned by the #ClutterDeviceManager and should never
  *   be modified or freed
  *
- * Since: 1.2
+ *
  */
 const GSList *
 clutter_device_manager_peek_devices (ClutterDeviceManager *device_manager)
@@ -264,7 +264,7 @@ clutter_device_manager_peek_devices (ClutterDeviceManager *device_manager)
  *   returned device is owned by the #ClutterDeviceManager and should
  *   never be modified or freed
  *
- * Since: 1.2
+ *
  */
 ClutterInputDevice *
 clutter_device_manager_get_device (ClutterDeviceManager *device_manager,
@@ -292,7 +292,7 @@ clutter_device_manager_get_device (ClutterDeviceManager *device_manager,
  *   returned device is owned by the #ClutterDeviceManager and should
  *   not be modified or freed
  *
- * Since: 1.2
+ *
  */
 ClutterInputDevice *
 clutter_device_manager_get_core_device (ClutterDeviceManager   *device_manager,

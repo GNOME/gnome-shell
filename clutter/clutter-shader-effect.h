@@ -50,7 +50,7 @@ typedef struct _ClutterShaderEffectClass        ClutterShaderEffectClass;
  * The <structname>ClutterShaderEffect</structname> structure contains
  * only private data and should be accessed using the provided API
  *
- * Since: 1.4
+ *
  */
 struct _ClutterShaderEffect
 {
@@ -71,7 +71,7 @@ struct _ClutterShaderEffect
  * The <structname>ClutterShaderEffectClass</structname> structure contains
  * only private data
  *
- * Since: 1.4
+ *
  */
 struct _ClutterShaderEffectClass
 {

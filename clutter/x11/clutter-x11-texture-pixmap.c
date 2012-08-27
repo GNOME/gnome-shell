@@ -653,7 +653,7 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
    * The ::update-area signal is emitted to ask the texture to update its
    * content from its source pixmap.
    *
-   * Since: 0.8
+   *
    */
   signals[UPDATE_AREA] =
       g_signal_new (g_intern_static_string ("update-area"),
@@ -690,7 +690,7 @@ clutter_x11_texture_pixmap_class_init (ClutterX11TexturePixmapClass *klass)
    * then you must also provide your own damage signal handler to
    * queue a redraw that blocks this default behaviour.
    *
-   * Since: 1.2
+   *
    */
   signals[QUEUE_DAMAGE_REDRAW] =
     g_signal_new (g_intern_static_string ("queue-damage-redraw"),
@@ -733,7 +733,7 @@ clutter_x11_texture_pixmap_update_area_real (ClutterX11TexturePixmap *texture,
  *
  * Return value: A new #ClutterX11TexturePixmap
  *
- * Since: 0.8
+ *
  */
 ClutterActor *
 clutter_x11_texture_pixmap_new (void)
@@ -753,7 +753,7 @@ clutter_x11_texture_pixmap_new (void)
  *
  * Return value: A new #ClutterX11TexturePixmap bound to the given X Pixmap
  *
- * Since: 0.8
+ *
  */
 ClutterActor *
 clutter_x11_texture_pixmap_new_with_pixmap (Pixmap pixmap)
@@ -775,7 +775,7 @@ clutter_x11_texture_pixmap_new_with_pixmap (Pixmap pixmap)
  *
  * Return value: A new #ClutterX11TexturePixmap bound to the given X window.
  *
- * Since: 0.8
+ *
  **/
 ClutterActor *
 clutter_x11_texture_pixmap_new_with_window (Window window)
@@ -796,7 +796,7 @@ clutter_x11_texture_pixmap_new_with_window (Window window)
  *
  * Sets the X Pixmap to which the texture should be bound.
  *
- * Since: 0.8
+ *
  */
 void
 clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
@@ -943,7 +943,7 @@ clutter_x11_texture_pixmap_set_pixmap (ClutterX11TexturePixmap *texture,
  *
  * This function has no effect unless the XComposite extension is available.
  *
- * Since: 0.8
+ *
  */
 void
 clutter_x11_texture_pixmap_set_window (ClutterX11TexturePixmap *texture,
@@ -1136,7 +1136,7 @@ clutter_x11_texture_pixmap_sync_window_internal (ClutterX11TexturePixmap *textur
  * Resets the texture's pixmap from its window, perhaps in response to the
  * pixmap's invalidation as the window changed size.
  *
- * Since: 0.8
+ *
  */
 void
 clutter_x11_texture_pixmap_sync_window (ClutterX11TexturePixmap *texture)
@@ -1218,7 +1218,7 @@ clutter_x11_texture_pixmap_destroyed (ClutterX11TexturePixmap *texture)
  * the pixmap. Can be called to update the texture if the pixmap
  * content has changed.
  *
- * Since: 0.8
+ *
  **/
 void
 clutter_x11_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
@@ -1246,7 +1246,7 @@ clutter_x11_texture_pixmap_update_area (ClutterX11TexturePixmap *texture,
  * Enables or disables the automatic updates ot @texture in case the backing
  * pixmap or window is damaged
  *
- * Since: 0.8
+ *
  */
 void
 clutter_x11_texture_pixmap_set_automatic (ClutterX11TexturePixmap *texture,

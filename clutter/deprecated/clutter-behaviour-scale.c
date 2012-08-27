@@ -218,7 +218,7 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
    *
    * The initial scaling factor on the X axis for the actors.
    *
-   * Since: 0.6
+   *
    *
    * Deprecated: 1.6
    */
@@ -237,7 +237,7 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
    *
    * The final scaling factor on the X axis for the actors.
    *
-   * Since: 0.6
+   *
    *
    * Deprecated: 1.6
    */
@@ -256,7 +256,7 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
    *
    * The initial scaling factor on the Y axis for the actors.
    *
-   * Since: 0.6
+   *
    *
    * Deprecated: 1.6
    */
@@ -275,7 +275,7 @@ clutter_behaviour_scale_class_init (ClutterBehaviourScaleClass *klass)
    *
    * The final scaling factor on the Y axis for the actors.
    *
-   * Since: 0.6
+   *
    *
    * Deprecated: 1.6
    */
@@ -320,7 +320,7 @@ clutter_behaviour_scale_init (ClutterBehaviourScale *self)
  *
  * Return value: (transfer full): the newly created #ClutterBehaviourScale
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */
@@ -352,7 +352,7 @@ clutter_behaviour_scale_new (ClutterAlpha   *alpha,
  *
  * Sets the bounds used by scale behaviour.
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.6
  */
@@ -412,7 +412,7 @@ clutter_behaviour_scale_set_bounds (ClutterBehaviourScale *scale,
  *
  * Retrieves the bounds used by scale behaviour.
  *
- * Since: 0.4
+ *
  *
  * Deprecated: 1.6
  */

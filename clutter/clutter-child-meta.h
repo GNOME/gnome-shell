@@ -85,7 +85,7 @@ typedef struct _ClutterChildMetaClass           ClutterChildMetaClass;
  * <function>destroy_child_meta</function>,
  * and <function>get_child_meta</function>.
  *
- * Since: 0.8
+ *
  */
 struct _ClutterChildMeta
 {
@@ -102,7 +102,7 @@ struct _ClutterChildMeta
  *
  * The #ClutterChildMetaClass contains only private data
  *
- * Since: 0.8
+ *
  */
 struct _ClutterChildMetaClass
 {

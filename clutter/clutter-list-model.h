@@ -52,7 +52,7 @@ typedef struct _ClutterListModelClass           ClutterListModelClass;
  *
  * The #ClutterListModel struct contains only private data.
  *
- * Since: 0.6
+ *
  */
 struct _ClutterListModel
 {
@@ -67,7 +67,7 @@ struct _ClutterListModel
  *
  * The #ClutterListModelClass struct contains only private data.
  *
- * Since: 0.6
+ *
  */
 struct _ClutterListModelClass
 {

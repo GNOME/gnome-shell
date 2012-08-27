@@ -53,7 +53,7 @@ typedef struct _ClutterAnimatorPrivate ClutterAnimatorPrivate;
  *
  * A key frame inside a #ClutterAnimator
  *
- * Since: 1.2
+ *
  */
 typedef struct _ClutterAnimatorKey     ClutterAnimatorKey;
 
@@ -63,7 +63,7 @@ typedef struct _ClutterAnimatorKey     ClutterAnimatorKey;
  * The #ClutterAnimator structure contains only private data and
  * should be accessed using the provided API
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -80,7 +80,7 @@ struct _ClutterAnimator
  *
  * The #ClutterAnimatorClass structure contains only private data
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.12
  */

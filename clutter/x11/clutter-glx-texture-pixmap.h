@@ -46,7 +46,7 @@ typedef struct _ClutterGLXTexturePixmapPrivate ClutterGLXTexturePixmapPrivate;
  *
  * The #ClutterGLXTexturePixmapClass structure contains only private data
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.6: Use #ClutterX11TexturePixmapClass instead
  */
@@ -61,7 +61,7 @@ struct _ClutterGLXTexturePixmapClass
  *
  * The #ClutterGLXTexturePixmap structure contains only private data
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.6: Use #ClutterX11TexturePixmap instead
  */

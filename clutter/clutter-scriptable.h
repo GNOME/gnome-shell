@@ -49,7 +49,7 @@ typedef struct _ClutterScriptableIface          ClutterScriptableIface;
  * #ClutterScriptable is an opaque structure whose members cannot be directly
  * accessed
  *
- * Since: 0.6
+ *
  */
 
 /**
@@ -64,7 +64,7 @@ typedef struct _ClutterScriptableIface          ClutterScriptableIface;
  * this interface can override the parsing and properties setting sequence
  * when loading a UI definition data with #ClutterScript
  *
- * Since: 0.6
+ *
  */
 struct _ClutterScriptableIface
 {

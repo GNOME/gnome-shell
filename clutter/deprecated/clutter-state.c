@@ -303,7 +303,7 @@ G_DEFINE_TYPE_WITH_CODE (ClutterState, clutter_state, G_TYPE_OBJECT,
  *
  * Return value: the newly create #ClutterState instance
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -813,7 +813,7 @@ clutter_state_change (ClutterState *state,
  *   state transition. The returned timeline is owned by the #ClutterState
  *   and it should not be unreferenced
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -837,7 +837,7 @@ clutter_state_set_state (ClutterState *state,
  *   state transition. The returned timeline is owned by the #ClutterState
  *   and it should not be unreferenced
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -967,7 +967,7 @@ get_property_from_object (GObject     *gobject,
  * will pause for 20% of the duration of the transition before animating,
  * and 20% of the duration after animating.
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1205,7 +1205,7 @@ clutter_state_fetch_state (ClutterState *state,
  * Return value: (transfer none): the #ClutterState instance, allowing
  *   chaining of multiple calls
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1266,7 +1266,7 @@ clutter_state_set_key (ClutterState  *state,
  *   g_list_free() to free the resources allocated by the returned list when
  *   done using it
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1298,7 +1298,7 @@ clutter_state_get_states (ClutterState *state)
  *   modified or freed. Use g_list_free() to free the resources allocated
  *   by the returned list when done using it
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1372,7 +1372,7 @@ clutter_state_get_keys (ClutterState *state,
  *
  * Removes all keys matching the search criteria passed in arguments.
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1401,7 +1401,7 @@ clutter_state_remove_key (ClutterState *state,
  *   the state change animations. The returned timeline is owned
  *   by the #ClutterState and it should not be unreferenced directly
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1476,7 +1476,7 @@ clutter_state_class_init (ClutterStateClass *klass)
    * the target state specified by clutter_state_set_state() or
    * clutter_state_warp_to_state().
    *
-   * Since: 1.4
+   *
    * Deprecated: 1.12: Use #ClutterKeyframeTransition and
    *   #ClutterTransitionGroup instead
    */
@@ -1497,7 +1497,7 @@ clutter_state_class_init (ClutterStateClass *klass)
    * clutter_state_warp_to_state() to change state without
    * a transition.
    *
-   * Since: 1.4
+   *
    * Deprecated: 1.12: Use #ClutterKeyframeTransition and
    *   #ClutterTransitionGroup instead
    */
@@ -1515,7 +1515,7 @@ clutter_state_class_init (ClutterStateClass *klass)
    * Default duration used if an duration has not been specified for a specific
    * source/target state pair. The values is in milliseconds.
    *
-   * Since: 1.4
+   *
    * Deprecated: 1.12: Use #ClutterKeyframeTransition and
    *   #ClutterTransitionGroup instead
    */
@@ -1567,7 +1567,7 @@ clutter_state_init (ClutterState *self)
  *
  * Return value: (transfer none): a #ClutterAnimator instance, or %NULL
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1622,7 +1622,7 @@ clutter_state_get_animator (ClutterState *state,
  *
  * #ClutterState will take a reference on the passed @animator, if any
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1702,7 +1702,7 @@ G_DEFINE_BOXED_TYPE (ClutterStateKey, clutter_state_key,
  *
  * Return value: the pre delay used before starting the transition.
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1723,7 +1723,7 @@ clutter_state_key_get_pre_delay (const ClutterStateKey *state_key)
  *
  * Return value: the post delay, used after doing the transition.
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1743,7 +1743,7 @@ clutter_state_key_get_post_delay (const ClutterStateKey *state_key)
  *
  * Return value: the mode of a #ClutterStateKey
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1771,7 +1771,7 @@ clutter_state_key_get_mode (const ClutterStateKey *state_key)
  * Return value: %TRUE if the value was successfully retrieved,
  *   and %FALSE otherwise
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1823,7 +1823,7 @@ clutter_state_key_get_value (const ClutterStateKey *state_key,
  *
  * Return value: (transfer none): the object this state key applies to.
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1844,7 +1844,7 @@ clutter_state_key_get_object (const ClutterStateKey *state_key)
  * Return value: the name of the property. The returned string is owned
  *   by the #ClutterStateKey and should never be modified or freed
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1867,7 +1867,7 @@ clutter_state_key_get_property_name (const ClutterStateKey *state_key)
  *   transitioning to the target state. The returned string is owned
  *   by the #ClutterStateKey and should never be modified or freed
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1893,7 +1893,7 @@ clutter_state_key_get_source_state_name (const ClutterStateKey *state_key)
  * Return value: the name of the source state for this key, or NULL if
  *   the key is generic
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1916,7 +1916,7 @@ clutter_state_key_get_target_state_name (const ClutterStateKey *state_key)
  *
  * Return value: the #GType of the property
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -1946,7 +1946,7 @@ clutter_state_key_get_property_type (const ClutterStateKey *key)
  * If both states names are specified, the passed @duration only applies
  * to the specified transition.
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -2004,7 +2004,7 @@ clutter_state_set_duration (ClutterState *state,
  * 
  * Return value: the duration, in milliseconds
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */
@@ -2065,7 +2065,7 @@ clutter_state_get_duration (ClutterState *state,
  * Return value: a string containing the target state. The returned string
  *   is owned by the #ClutterState and should not be modified or freed
  *
- * Since: 1.4
+ *
  * Deprecated: 1.12: Use #ClutterKeyframeTransition and
  *   #ClutterTransitionGroup instead
  */

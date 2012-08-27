@@ -314,7 +314,7 @@ clutter_snap_constraint_class_init (ClutterSnapConstraintClass *klass)
    *
    * The #ClutterActor used as the source for the constraint
    *
-   * Since: 1.6
+   *
    */
   obj_props[PROP_SOURCE] =
     g_param_spec_object ("source",
@@ -328,7 +328,7 @@ clutter_snap_constraint_class_init (ClutterSnapConstraintClass *klass)
    *
    * The edge of the #ClutterActor that should be snapped
    *
-   * Since: 1.6
+   *
    */
   obj_props[PROP_FROM_EDGE] =
     g_param_spec_enum ("from-edge",
@@ -343,7 +343,7 @@ clutter_snap_constraint_class_init (ClutterSnapConstraintClass *klass)
    *
    * The edge of the #ClutterSnapConstraint:source that should be snapped
    *
-   * Since: 1.6
+   *
    */
   obj_props[PROP_TO_EDGE] =
     g_param_spec_enum ("to-edge",
@@ -359,7 +359,7 @@ clutter_snap_constraint_class_init (ClutterSnapConstraintClass *klass)
    * The offset, in pixels, between #ClutterSnapConstraint:from-edge
    * and #ClutterSnapConstraint:to-edge
    *
-   * Since: 1.6
+   *
    */
   obj_props[PROP_OFFSET] =
     g_param_spec_float ("offset",
@@ -400,7 +400,7 @@ clutter_snap_constraint_init (ClutterSnapConstraint *self)
  *
  * Return value: the newly created #ClutterSnapConstraint
  *
- * Since: 1.6
+ *
  */
 ClutterConstraint *
 clutter_snap_constraint_new (ClutterActor    *source,
@@ -425,7 +425,7 @@ clutter_snap_constraint_new (ClutterActor    *source,
  *
  * Sets the source #ClutterActor for the constraint
  *
- * Since: 1.6
+ *
  */
 void
 clutter_snap_constraint_set_source (ClutterSnapConstraint *constraint,
@@ -475,7 +475,7 @@ clutter_snap_constraint_set_source (ClutterSnapConstraint *constraint,
  *
  * Return value: (transfer none): a pointer to the source actor
  *
- * Since: 1.6
+ *
  */
 ClutterActor *
 clutter_snap_constraint_get_source (ClutterSnapConstraint *constraint)
@@ -497,7 +497,7 @@ clutter_snap_constraint_get_source (ClutterSnapConstraint *constraint)
  * has been added. The @to_edge is the edge of the #ClutterActor inside
  * the #ClutterSnapConstraint:source property.
  *
- * Since: 1.6
+ *
  */
 void
 clutter_snap_constraint_set_edges (ClutterSnapConstraint *constraint,
@@ -543,7 +543,7 @@ clutter_snap_constraint_set_edges (ClutterSnapConstraint *constraint,
  *
  * Retrieves the edges used by the @constraint
  *
- * Since: 1.6
+ *
  */
 void
 clutter_snap_constraint_get_edges (ClutterSnapConstraint *constraint,
@@ -566,7 +566,7 @@ clutter_snap_constraint_get_edges (ClutterSnapConstraint *constraint,
  *
  * Sets the offset to be applied to the constraint
  *
- * Since: 1.6
+ *
  */
 void
 clutter_snap_constraint_set_offset (ClutterSnapConstraint *constraint,
@@ -593,7 +593,7 @@ clutter_snap_constraint_set_offset (ClutterSnapConstraint *constraint,
  *
  * Return value: the offset, in pixels
  *
- * Since: 1.6
+ *
  */
 gfloat
 clutter_snap_constraint_get_offset (ClutterSnapConstraint *constraint)

@@ -596,7 +596,7 @@ clutter_backend_class_init (ClutterBackendClass *klass)
    * The ::resolution-changed signal is emitted each time the font
    * resolutions has been changed through #ClutterSettings.
    *
-   * Since: 1.0
+   *
    */
   backend_signals[RESOLUTION_CHANGED] =
     g_signal_new (I_("resolution-changed"),
@@ -614,7 +614,7 @@ clutter_backend_class_init (ClutterBackendClass *klass)
    * The ::font-changed signal is emitted each time the font options
    * have been changed through #ClutterSettings.
    *
-   * Since: 1.0
+   *
    */
   backend_signals[FONT_CHANGED] =
     g_signal_new (I_("font-changed"),
@@ -632,7 +632,7 @@ clutter_backend_class_init (ClutterBackendClass *klass)
    * The ::settings-changed signal is emitted each time the #ClutterSettings
    * properties have been changed.
    *
-   * Since: 1.4
+   *
    */
   backend_signals[SETTINGS_CHANGED] =
     g_signal_new (I_("settings-changed"),
@@ -927,7 +927,7 @@ _clutter_backend_free_event_data (ClutterBackend *backend,
  *   not ref or unref the returned object. Applications should rarely
  *   need to use this.
  *
- * Since: 0.4
+ *
  */
 ClutterBackend *
 clutter_get_default_backend (void)
@@ -957,7 +957,7 @@ clutter_get_default_backend (void)
  * Return value: the current resolution, or -1 if no resolution
  *   has been set.
  *
- * Since: 0.4
+ *
  */
 gdouble
 clutter_backend_get_resolution (ClutterBackend *backend)
@@ -991,7 +991,7 @@ clutter_backend_get_resolution (ClutterBackend *backend)
  * This function is intended for actors creating a Pango layout
  * using the PangoCairo API.
  *
- * Since: 0.8
+ *
  */
 void
 clutter_backend_set_font_options (ClutterBackend             *backend,
@@ -1027,7 +1027,7 @@ clutter_backend_set_font_options (ClutterBackend             *backend,
  *   The returned #cairo_font_options_t is owned by the backend and should
  *   not be modified or freed
  *
- * Since: 0.8
+ *
  */
 const cairo_font_options_t *
 clutter_backend_get_font_options (ClutterBackend *backend)
@@ -1114,7 +1114,7 @@ _clutter_backend_remove_event_translator (ClutterBackend         *backend,
  *
  * Return value: The #CoglContext associated with @backend.
  *
- * Since: 1.8
+ *
  * Stability: unstable
  */
 CoglContext *
@@ -1131,7 +1131,7 @@ clutter_backend_get_cogl_context (ClutterBackend *backend)
  * This informs Clutter of your compositor side Wayland display
  * object. This must be called before calling clutter_init().
  *
- * Since: 1.8
+ *
  * Stability: unstable
  */
 void

@@ -46,7 +46,7 @@ G_BEGIN_DECLS
  *
  * Error domain for #ClutterShader errors
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.8
  */
@@ -60,7 +60,7 @@ G_BEGIN_DECLS
  *
  * #ClutterShader error enumeration
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.8
  */
@@ -79,7 +79,7 @@ typedef struct _ClutterShaderClass   ClutterShaderClass;
  * The #ClutterShader structure contains only private data
  * and should be accessed using the provided API
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect instead
  */
@@ -95,7 +95,7 @@ struct _ClutterShader
  *
  * The #ClutterShaderClass structure contains only private data
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffectClass instead
  */

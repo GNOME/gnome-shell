@@ -51,7 +51,7 @@ typedef struct _ClutterDeformEffectClass        ClutterDeformEffectClass;
  * The <structname>ClutterDeformEffect</structname> structure contains
  * only private data and should be accessed using the provided API
  *
- * Since: 1.4
+ *
  */
 struct _ClutterDeformEffect
 {
@@ -69,7 +69,7 @@ struct _ClutterDeformEffect
  * The <structname>ClutterDeformEffectClass</structname> structure contains
  * only private data
  *
- * Since: 1.4
+ *
  */
 struct _ClutterDeformEffectClass
 {

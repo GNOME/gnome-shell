@@ -343,7 +343,7 @@ get_key_modifier_state (const BYTE *key_states)
  * was not handled at all or if Clutter expects processing to take
  * place.
  *
- * Since: 1.6
+ *
  */
 gboolean
 clutter_win32_handle_event (const MSG *msg)

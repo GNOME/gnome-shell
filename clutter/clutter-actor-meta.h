@@ -49,7 +49,7 @@ typedef struct _ClutterActorMetaClass           ClutterActorMetaClass;
  * The <structname>ClutterActorMeta</structname> structure contains only
  * private data and should be accessed using the provided API
  *
- * Since: 1.4
+ *
  */
 struct _ClutterActorMeta
 {
@@ -67,7 +67,7 @@ struct _ClutterActorMeta
  * The <structname>ClutterActorMetaClass</structname> structure contains
  * only private data
  *
- * Since: 1.4
+ *
  */
 struct _ClutterActorMetaClass
 {

@@ -50,7 +50,7 @@ typedef struct _ClutterX11TexturePixmapPrivate ClutterX11TexturePixmapPrivate;
  *
  * The #ClutterX11TexturePixmap structure contains only private data
  *
- * Since: 0.8
+ *
  */
 struct _ClutterX11TexturePixmap
 {
@@ -66,7 +66,7 @@ struct _ClutterX11TexturePixmap
  *
  * The #ClutterX11TexturePixmapClass structure contains only private data
  *
- * Since: 0.8
+ *
  */
 struct _ClutterX11TexturePixmapClass
 {

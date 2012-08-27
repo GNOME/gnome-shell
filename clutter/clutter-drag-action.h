@@ -51,7 +51,7 @@ typedef struct _ClutterDragActionClass          ClutterDragActionClass;
  * The <structname>ClutterDragAction</structname> structure contains only
  * private data and should be accessed using the provided API
  *
- * Since: 1.4
+ *
  */
 struct _ClutterDragAction
 {
@@ -71,7 +71,7 @@ struct _ClutterDragAction
  * The <structname>ClutterDragActionClass</structname> structure contains
  * only private data
  *
- * Since: 1.4
+ *
  */
 struct _ClutterDragActionClass
 {

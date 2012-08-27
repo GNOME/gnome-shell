@@ -263,7 +263,7 @@ clutter_desaturate_effect_class_init (ClutterDesaturateEffectClass *klass)
    * The desaturation factor, between 0.0 (no desaturation) and 1.0 (full
    * desaturation).
    *
-   * Since: 1.4
+   *
    */
   obj_props[PROP_FACTOR] =
     g_param_spec_double ("factor",
@@ -323,7 +323,7 @@ clutter_desaturate_effect_init (ClutterDesaturateEffect *self)
  *
  * Return value: the newly created #ClutterDesaturateEffect or %NULL
  *
- * Since: 1.4
+ *
  */
 ClutterEffect *
 clutter_desaturate_effect_new (gdouble factor)
@@ -343,7 +343,7 @@ clutter_desaturate_effect_new (gdouble factor)
  * Sets the desaturation factor for @effect, with 0.0 being "do not desaturate"
  * and 1.0 being "fully desaturate"
  *
- * Since: 1.4
+ *
  */
 void
 clutter_desaturate_effect_set_factor (ClutterDesaturateEffect *effect,
@@ -371,7 +371,7 @@ clutter_desaturate_effect_set_factor (ClutterDesaturateEffect *effect,
  *
  * Return value: the desaturation factor
  *
- * Since: 1.4
+ *
  */
 gdouble
 clutter_desaturate_effect_get_factor (ClutterDesaturateEffect *effect)

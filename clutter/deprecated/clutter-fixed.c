@@ -49,7 +49,7 @@
  *
  * Sets @value to @fixed_.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.10: Use g_value_set_int() instead.
  */
@@ -70,7 +70,7 @@ clutter_value_set_fixed (GValue    *value,
  *
  * Return value: the value inside the passed #GValue
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.10: Use g_value_get_int() instead.
  */
@@ -176,7 +176,7 @@ clutter_param_fixed_get_type (void)
  *
  * Return value: (transfer full): the newly created #GParamSpec
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.10: Use #GParamSpecInt instead.
  */

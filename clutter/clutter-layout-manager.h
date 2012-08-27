@@ -49,7 +49,7 @@ typedef struct _ClutterLayoutManagerClass       ClutterLayoutManagerClass;
  * The #ClutterLayoutManager structure contains only private data
  * and should be accessed using the provided API
  *
- * Since: 1.2
+ *
  */
 struct _ClutterLayoutManager
 {
@@ -85,7 +85,7 @@ struct _ClutterLayoutManager
  * The #ClutterLayoutManagerClass structure contains only private
  * data and should be accessed using the provided API
  *
- * Since: 1.2
+ *
  */
 struct _ClutterLayoutManagerClass
 {

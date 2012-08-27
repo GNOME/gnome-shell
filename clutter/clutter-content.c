@@ -119,7 +119,7 @@ clutter_content_default_init (ClutterContentInterface *iface)
    * This signal is emitted each time a #ClutterContent implementation is
    * assigned to a #ClutterActor.
    *
-   * Since: 1.10
+   *
    */
   content_signals[ATTACHED] =
     g_signal_new (I_("attached"),
@@ -139,7 +139,7 @@ clutter_content_default_init (ClutterContentInterface *iface)
    * This signal is emitted each time a #ClutterContent implementation is
    * removed from a #ClutterActor.
    *
-   * Since: 1.10
+   *
    */
   content_signals[DETACHED] =
     g_signal_new (I_("detached"),
@@ -162,7 +162,7 @@ clutter_content_default_init (ClutterContentInterface *iface)
  * they change the way a the content should be painted regardless of the
  * actor state.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_content_invalidate (ClutterContent *content)
@@ -290,7 +290,7 @@ _clutter_content_paint_content (ClutterContent   *content,
  * Return value: %TRUE if the content has a preferred size, and %FALSE
  *   otherwise
  *
- * Since: 1.10
+ *
  */
 gboolean
 clutter_content_get_preferred_size (ClutterContent *content,

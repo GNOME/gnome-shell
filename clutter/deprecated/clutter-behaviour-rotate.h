@@ -49,7 +49,7 @@ typedef struct _ClutterBehaviourRotateClass     ClutterBehaviourRotateClass;
  * The #ClutterBehaviourRotate struct contains only private data and
  * should be accessed using the provided API
  *
- * Since: 0.4
+ *
  *
  * Deprecated: 1.6: Use clutter_actor_animate() instead.
  */
@@ -66,7 +66,7 @@ struct _ClutterBehaviourRotate
  *
  * The #ClutterBehaviourRotateClass struct contains only private data
  *
- * Since: 0.4
+ *
  *
  * Deprecated: 1.6
  */

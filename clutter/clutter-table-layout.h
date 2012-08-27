@@ -53,7 +53,7 @@ typedef struct _ClutterTableLayoutClass           ClutterTableLayoutClass;
  * The #ClutterTableLayout structure contains only private data
  * and should be accessed using the provided API
  *
- * Since: 1.4
+ *
  */
 struct _ClutterTableLayout
 {
@@ -69,7 +69,7 @@ struct _ClutterTableLayout
  * The #ClutterTableLayoutClass structure contains only private
  * data and should be accessed using the provided API
  *
- * Since: 1.4
+ *
  */
 struct _ClutterTableLayoutClass
 {

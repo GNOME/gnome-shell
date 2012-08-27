@@ -29,7 +29,7 @@
  *
  * #ClutterBehaviourOpacity controls the opacity of a set of actors.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6: Use the #ClutterActor:opacity property and
  *   clutter_actor_animate(), or #ClutterAnimator, or #ClutterState
@@ -176,7 +176,7 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
    *
    * Initial opacity level of the behaviour.
    *
-   * Since: 0.2
+   *
    *
    * Deprecated: 1.6
    */
@@ -194,7 +194,7 @@ clutter_behaviour_opacity_class_init (ClutterBehaviourOpacityClass *klass)
    *
    * Final opacity level of the behaviour.
    *
-   * Since: 0.2
+   *
    *
    * Deprecated: 1.6
    */
@@ -235,7 +235,7 @@ clutter_behaviour_opacity_init (ClutterBehaviourOpacity *self)
  *
  * Return value: the newly created #ClutterBehaviourOpacity
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */
@@ -260,7 +260,7 @@ clutter_behaviour_opacity_new (ClutterAlpha *alpha,
  * Sets the initial and final levels of the opacity applied by @behaviour
  * on each actor it controls.
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.6
  */
@@ -303,7 +303,7 @@ clutter_behaviour_opacity_set_bounds (ClutterBehaviourOpacity *behaviour,
  * Gets the initial and final levels of the opacity applied by @behaviour
  * on each actor it controls.
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.6
  */

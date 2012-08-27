@@ -253,7 +253,7 @@ clutter_box_class_init (ClutterBoxClass *klass)
    * #ClutterBox. Setting this property will set the
    * #ClutterBox:color-set property as a side effect
    *
-   * Since: 1.2
+   *
    */
   obj_props[PROP_COLOR] =
     clutter_param_spec_color ("color",
@@ -267,7 +267,7 @@ clutter_box_class_init (ClutterBoxClass *klass)
    *
    * Whether the #ClutterBox:color property has been set
    *
-   * Since: 1.2
+   *
    */
   obj_props[PROP_COLOR_SET] =
     g_param_spec_boolean ("color-set",
@@ -294,7 +294,7 @@ clutter_box_init (ClutterBox *self)
  *
  * Return value: the newly created #ClutterBox actor
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.10: Use clutter_actor_new() instead.
  */
@@ -318,7 +318,7 @@ clutter_box_new (ClutterLayoutManager *manager)
  * A #ClutterLayoutManager is a delegate object that controls the
  * layout of the children of @box
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.10: Use clutter_actor_set_layout_manager() instead.
  */
@@ -339,7 +339,7 @@ clutter_box_set_layout_manager (ClutterBox           *box,
  *   #ClutterLayoutManager is owned by the #ClutterBox and it should not
  *   be unreferenced
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.10: Use clutter_actor_get_layout_manager() instead.
  */
@@ -362,7 +362,7 @@ clutter_box_get_layout_manager (ClutterBox *box)
  * Vector-based variant of clutter_box_pack(), intended for language
  * bindings to use
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.10: Use clutter_actor_add_child() instead.
  */
@@ -524,7 +524,7 @@ clutter_box_set_property_valist (ClutterBox   *box,
  * Language bindings should use the vector-based clutter_box_packv()
  * variant instead
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.10: Use clutter_actor_add_child() instead.
  */
@@ -567,7 +567,7 @@ clutter_box_pack (ClutterBox   *box,
  * This function is a wrapper around clutter_container_add_actor(),
  * clutter_container_raise_child() and clutter_layout_manager_child_set()
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.10: Use clutter_actor_insert_child_above() instead.
  */
@@ -613,7 +613,7 @@ clutter_box_pack_after (ClutterBox   *box,
  * This function is a wrapper around clutter_container_add_actor(),
  * clutter_container_lower_child() and clutter_layout_manager_child_set()
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.10: Use clutter_actor_insert_child_below() instead.
  */
@@ -657,7 +657,7 @@ clutter_box_pack_before (ClutterBox   *box,
  * children of @box, the new child is added at the end of the list of
  * children
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.10: Use clutter_actor_insert_child_at_index() instead.
  */
@@ -699,7 +699,7 @@ clutter_box_pack_at (ClutterBox   *box,
  *
  * Sets (or unsets) the background color for @box
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.10: Use clutter_actor_set_background_color() instead.
  */
@@ -722,7 +722,7 @@ clutter_box_set_color (ClutterBox         *box,
  * If the #ClutterBox:color-set property is set to %FALSE the
  * returned #ClutterColor is undefined
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.10: Use clutter_actor_get_background_color() instead.
  */

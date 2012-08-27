@@ -523,7 +523,7 @@ clutter_group_remove_all (ClutterGroup *self)
  *
  * Return value: The number of child actors held in the group.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.10: Use clutter_actor_get_n_children() instead.
  */
@@ -545,7 +545,7 @@ clutter_group_get_n_children (ClutterGroup *self)
  * Return value: (transfer none): A Clutter actor, or %NULL if
  *   @index_ is invalid.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.10: Use clutter_actor_get_child_at_index() instead.
  */

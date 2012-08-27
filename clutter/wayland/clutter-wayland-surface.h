@@ -51,7 +51,7 @@ typedef struct _ClutterWaylandSurfacePrivate ClutterWaylandSurfacePrivate;
  *
  * The #ClutterWaylandSurface structure contains only private data
  *
- * Since: 1.10
+ *
  * Stability: unstable
  */
 struct _ClutterWaylandSurface
@@ -68,7 +68,7 @@ struct _ClutterWaylandSurface
  *
  * The #ClutterWaylandSurfaceClass structure contains only private data
  *
- * Since: 1.10
+ *
  * Stability: unstable
  */
 struct _ClutterWaylandSurfaceClass

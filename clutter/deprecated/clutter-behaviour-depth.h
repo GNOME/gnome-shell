@@ -51,7 +51,7 @@ typedef struct _ClutterBehaviourDepthClass      ClutterBehaviourDepthClass;
  * The #ClutterBehaviourDepth structure contains only private data
  * and should be accessed using the provided API
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6: Use clutter_actor_animate() with #ClutterActor:depth
  *   instead.
@@ -69,7 +69,7 @@ struct _ClutterBehaviourDepth
  *
  * The #ClutterBehaviourDepthClass structure contains only private data
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */

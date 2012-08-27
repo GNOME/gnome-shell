@@ -281,7 +281,7 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
    *
    * The color of the border of the rectangle.
    *
-   * Since: 0.2
+   *
    */
   pspec = clutter_param_spec_color ("border-color",
                                     P_("Border Color"),
@@ -295,7 +295,7 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
    *
    * The width of the border of the rectangle, in pixels.
    *
-   * Since: 0.2
+   *
    */
   g_object_class_install_property (gobject_class,
                                    PROP_BORDER_WIDTH,
@@ -310,7 +310,7 @@ clutter_rectangle_class_init (ClutterRectangleClass *klass)
    *
    * Whether the #ClutterRectangle should be displayed with a border.
    *
-   * Since: 0.2
+   *
    */
   g_object_class_install_property (gobject_class,
                                    PROP_HAS_BORDER,
@@ -440,7 +440,7 @@ clutter_rectangle_set_color (ClutterRectangle   *rectangle,
  *
  * Return value: the border's width
  *
- * Since: 0.2
+ *
  */
 guint
 clutter_rectangle_get_border_width (ClutterRectangle *rectangle)
@@ -458,7 +458,7 @@ clutter_rectangle_get_border_width (ClutterRectangle *rectangle)
  * Sets the width (in pixel) of the border used by @rectangle.
  * A @width of 0 will unset the border.
  *
- * Since: 0.2
+ *
  */
 void
 clutter_rectangle_set_border_width (ClutterRectangle *rectangle,
@@ -496,7 +496,7 @@ clutter_rectangle_set_border_width (ClutterRectangle *rectangle,
  * Gets the color of the border used by @rectangle and places
  * it into @color.
  *
- * Since: 0.2
+ *
  */
 void
 clutter_rectangle_get_border_color (ClutterRectangle *rectangle,

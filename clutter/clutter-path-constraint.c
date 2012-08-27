@@ -205,7 +205,7 @@ clutter_path_constraint_class_init (ClutterPathConstraintClass *klass)
    *
    * The #ClutterPath used to constrain the position of an actor.
    *
-   * Since: 1.6
+   *
    */
   path_properties[PROP_PATH] =
     g_param_spec_object ("path",
@@ -219,7 +219,7 @@ clutter_path_constraint_class_init (ClutterPathConstraintClass *klass)
    *
    * The offset along the #ClutterPathConstraint:path, between -1.0 and 2.0.
    *
-   * Since: 1.6
+   *
    */
   path_properties[PROP_OFFSET] =
     g_param_spec_float ("offset",
@@ -250,7 +250,7 @@ clutter_path_constraint_class_init (ClutterPathConstraintClass *klass)
    * #ClutterPathConstraint:offset value results in the actor
    * passing a #ClutterPathNode
    *
-   * Since: 1.6
+   *
    */
   path_signals[NODE_REACHED] =
     g_signal_new (I_("node-reached"),
@@ -280,7 +280,7 @@ clutter_path_constraint_init (ClutterPathConstraint *self)
  *
  * Return value: the newly created #ClutterPathConstraint
  *
- * Since: 1.6
+ *
  */
 ClutterConstraint *
 clutter_path_constraint_new (ClutterPath *path,
@@ -304,7 +304,7 @@ clutter_path_constraint_new (ClutterPath *path,
  * The @constraint will take ownership of the #ClutterPath passed to this
  * function.
  *
- * Since: 1.6
+ *
  */
 void
 clutter_path_constraint_set_path (ClutterPathConstraint *constraint,
@@ -341,7 +341,7 @@ clutter_path_constraint_set_path (ClutterPathConstraint *constraint,
  *   #ClutterPathConstraint, or %NULL. The returned #ClutterPath is owned
  *   by the constraint and it should not be unreferenced
  *
- * Since: 1.6
+ *
  */
 ClutterPath *
 clutter_path_constraint_get_path (ClutterPathConstraint *constraint)
@@ -358,7 +358,7 @@ clutter_path_constraint_get_path (ClutterPathConstraint *constraint)
  *
  * Sets the offset along the #ClutterPath used by @constraint.
  *
- * Since: 1.6
+ *
  */
 void
 clutter_path_constraint_set_offset (ClutterPathConstraint *constraint,
@@ -385,7 +385,7 @@ clutter_path_constraint_set_offset (ClutterPathConstraint *constraint,
  *
  * Return value: the offset
  *
- * Since: 1.6
+ *
  */
 gfloat
 clutter_path_constraint_get_offset (ClutterPathConstraint *constraint)

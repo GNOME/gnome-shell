@@ -220,7 +220,7 @@ clutter_score_class_init (ClutterScoreClass *klass)
    *
    * Whether the #ClutterScore should restart once finished.
    *
-   * Since: 0.6
+   *
    * Deprecated: 1.8
    */
   g_object_class_install_property (gobject_class,
@@ -239,7 +239,7 @@ clutter_score_class_init (ClutterScoreClass *klass)
    * The ::timeline-started signal is emitted each time a new timeline
    * inside a #ClutterScore starts playing.
    *
-   * Since: 0.6
+   *
    * Deprecated: 1.8
    */
   score_signals[TIMELINE_STARTED] =
@@ -259,7 +259,7 @@ clutter_score_class_init (ClutterScoreClass *klass)
    * The ::timeline-completed signal is emitted each time a timeline
    * inside a #ClutterScore terminates.
    *
-   * Since: 0.6
+   *
    * Deprecated: 1.8
    */
   score_signals[TIMELINE_COMPLETED] =
@@ -277,7 +277,7 @@ clutter_score_class_init (ClutterScoreClass *klass)
    *
    * The ::completed signal is emitted each time a #ClutterScore terminates.
    *
-   * Since: 0.6
+   *
    * Deprecated: 1.8
    */
   score_signals[COMPLETED] =
@@ -294,7 +294,7 @@ clutter_score_class_init (ClutterScoreClass *klass)
    *
    * The ::started signal is emitted each time a #ClutterScore starts playing.
    *
-   * Since: 0.6
+   *
    * Deprecated: 1.8
    */
   score_signals[STARTED] =
@@ -312,7 +312,7 @@ clutter_score_class_init (ClutterScoreClass *klass)
    * The ::paused signal is emitted each time a #ClutterScore
    * is paused.
    *
-   * Since: 0.6
+   *
    * Deprecated: 1.8
    */
   score_signals[PAUSED] =
@@ -352,7 +352,7 @@ clutter_score_init (ClutterScore *self)
  * Return value: the newly created #ClutterScore. Use g_object_unref()
  *   when done.
  *
- * Since: 0.6
+ *
  * Deprecated: 1.8
  */
 ClutterScore *
@@ -369,7 +369,7 @@ clutter_score_new (void)
  * Sets whether @score should loop. A looping #ClutterScore will start
  * from its initial state after the ::complete signal has been fired.
  *
- * Since: 0.6
+ *
  * Deprecated: 1.8
  */
 void
@@ -394,7 +394,7 @@ clutter_score_set_loop (ClutterScore *score,
  *
  * Return value: %TRUE if the score is looping
  *
- * Since: 0.6
+ *
  * Deprecated: 1.8
  */
 gboolean
@@ -413,7 +413,7 @@ clutter_score_get_loop (ClutterScore *score)
  *
  * Return Value: %TRUE if score is currently playing
  *
- * Since: 0.6
+ *
  * Deprecated: 1.8
  */
 gboolean
@@ -752,7 +752,7 @@ foreach_running_timeline (gpointer key,
  *
  * Starts the score.
  *
- * Since: 0.6
+ *
  * Deprecated: 1.8
  */
 void
@@ -787,7 +787,7 @@ clutter_score_start (ClutterScore *score)
  *
  * Stops and rewinds a playing #ClutterScore instance.
  *
- * Since: 0.6
+ *
  * Deprecated: 1.8
  */
 void
@@ -815,7 +815,7 @@ clutter_score_stop (ClutterScore *score)
  *
  * Pauses a playing score @score.
  *
- * Since: 0.6
+ *
  * Deprecated: 1.8
  */
 void
@@ -845,7 +845,7 @@ clutter_score_pause (ClutterScore *score)
  *
  * Rewinds a #ClutterScore to its initial state.
  *
- * Since: 0.6
+ *
  * Deprecated: 1.8
  */
 void
@@ -894,7 +894,7 @@ clutter_score_clear (ClutterScore *score)
  *   0 on failure. The returned id can be used with clutter_score_remove()
  *   or clutter_score_get_timeline().
  *
- * Since: 0.6
+ *
  * Deprecated: 1.8
  */
 gulong
@@ -971,7 +971,7 @@ clutter_score_append (ClutterScore    *score,
  *   0 on failure. The returned id can be used with clutter_score_remove()
  *   or clutter_score_get_timeline().
  *
- * Since: 0.8
+ *
  * Deprecated: 1.8
  */
 gulong
@@ -1037,7 +1037,7 @@ clutter_score_append_at_marker (ClutterScore    *score,
  * the timeline has other timelines attached to it, those are removed
  * as well.
  *
- * Since: 0.6
+ *
  * Deprecated: 1.8
  */
 void
@@ -1073,7 +1073,7 @@ clutter_score_remove (ClutterScore *score,
  *
  * Removes all the timelines inside @score.
  *
- * Since: 0.6
+ *
  * Deprecated: 1.8
  */
 void
@@ -1106,7 +1106,7 @@ clutter_score_remove_all (ClutterScore *score)
  *   function does not increase the reference count on the returned
  *   #ClutterTimeline
  *
- * Since: 0.6
+ *
  * Deprecated: 1.8
  */
 ClutterTimeline *
@@ -1139,7 +1139,7 @@ clutter_score_get_timeline (ClutterScore *score,
  *   not increase the reference count of the returned timelines. Use
  *   g_slist_free() on the returned list to deallocate its resources.
  *
- * Since: 0.6
+ *
  * Deprecated: 1.8
  */
 GSList *

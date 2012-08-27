@@ -68,7 +68,7 @@ typedef struct _ClutterBehaviourClass   ClutterBehaviourClass;
  * This function is passed to clutter_behaviour_actors_foreach() and
  * will be called for each actor driven by @behaviour.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */
@@ -82,7 +82,7 @@ typedef void (*ClutterBehaviourForeachFunc) (ClutterBehaviour *behaviour,
  * #ClutterBehaviour-struct contains only private data and should
  * be accessed with the functions below.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */
@@ -104,7 +104,7 @@ struct _ClutterBehaviour
  *
  * Base class for behaviours.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */

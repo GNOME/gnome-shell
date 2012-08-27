@@ -277,7 +277,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
    *
    * The initial angle from whence the rotation should start.
    *
-   * Since: 0.4
+   *
    */
   pspec = g_param_spec_double ("angle-start",
                                P_("Angle Begin"),
@@ -295,7 +295,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
    *
    * The final angle to where the rotation should end.
    *
-   * Since: 0.4
+   *
    */
   pspec = g_param_spec_double ("angle-end",
                                P_("Angle End"),
@@ -313,7 +313,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
    *
    * The axis of rotation.
    *
-   * Since: 0.4
+   *
    */
   pspec = g_param_spec_enum ("axis",
                              P_("Axis"),
@@ -331,7 +331,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
    *
    * The direction of the rotation.
    *
-   * Since: 0.4
+   *
    */
   pspec = g_param_spec_enum ("direction",
                              P_("Direction"),
@@ -349,7 +349,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
    *
    * The x center of rotation.
    *
-   * Since: 0.4
+   *
    */
   pspec = g_param_spec_int ("center-x",
                             P_("Center X"),
@@ -367,7 +367,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
    *
    * The y center of rotation.
    *
-   * Since: 0.4
+   *
    */
   pspec = g_param_spec_int ("center-y",
                             P_("Center Y"),
@@ -385,7 +385,7 @@ clutter_behaviour_rotate_class_init (ClutterBehaviourRotateClass *klass)
    *
    * The z center of rotation.
    *
-   * Since: 0.4
+   *
    */
   pspec = g_param_spec_int ("center-z",
                             P_("Center Z"),
@@ -435,7 +435,7 @@ clutter_behaviour_rotate_init (ClutterBehaviourRotate *rotate)
  *
  * Return value: the newly created #ClutterBehaviourRotate.
  *
- * Since: 0.4
+ *
  */
 ClutterBehaviour *
 clutter_behaviour_rotate_new (ClutterAlpha           *alpha,
@@ -463,7 +463,7 @@ clutter_behaviour_rotate_new (ClutterAlpha           *alpha,
  *
  * Return value: the rotation axis
  *
- * Since: 0.4
+ *
  */
 ClutterRotateAxis
 clutter_behaviour_rotate_get_axis (ClutterBehaviourRotate *rotate)
@@ -480,7 +480,7 @@ clutter_behaviour_rotate_get_axis (ClutterBehaviourRotate *rotate)
  *
  * Sets the axis used by the rotate behaviour.
  *
- * Since: 0.4
+ *
  */
 void
 clutter_behaviour_rotate_set_axis (ClutterBehaviourRotate *rotate,
@@ -508,7 +508,7 @@ clutter_behaviour_rotate_set_axis (ClutterBehaviourRotate *rotate,
  *
  * Return value: the rotation direction
  *
- * Since: 0.4
+ *
  */
 ClutterRotateDirection
 clutter_behaviour_rotate_get_direction (ClutterBehaviourRotate *rotate)
@@ -526,7 +526,7 @@ clutter_behaviour_rotate_get_direction (ClutterBehaviourRotate *rotate)
  *
  * Sets the rotation direction used by the rotate behaviour.
  *
- * Since: 0.4
+ *
  */
 void
 clutter_behaviour_rotate_set_direction (ClutterBehaviourRotate *rotate,
@@ -554,7 +554,7 @@ clutter_behaviour_rotate_set_direction (ClutterBehaviourRotate *rotate,
  *
  * Retrieves the rotation boundaries of the rotate behaviour.
  *
- * Since: 0.4
+ *
  */
 void
 clutter_behaviour_rotate_get_bounds (ClutterBehaviourRotate *rotate,
@@ -583,7 +583,7 @@ clutter_behaviour_rotate_get_bounds (ClutterBehaviourRotate *rotate,
  * Sets the initial and final angles of a rotation behaviour; angles >= 360
  * degrees get clamped to the canonical interval <0, 360).
  *
- * Since: 0.4
+ *
  */
 void
 clutter_behaviour_rotate_set_bounds (ClutterBehaviourRotate *rotate,
@@ -625,7 +625,7 @@ clutter_behaviour_rotate_set_bounds (ClutterBehaviourRotate *rotate,
  * Sets the center of rotation. The coordinates are relative to the plane
  * normal to the rotation axis set with clutter_behaviour_rotate_set_axis().
  *
- * Since: 0.4
+ *
  */
 void
 clutter_behaviour_rotate_set_center (ClutterBehaviourRotate *rotate,
@@ -672,7 +672,7 @@ clutter_behaviour_rotate_set_center (ClutterBehaviourRotate *rotate,
  * Retrieves the center of rotation set using
  * clutter_behaviour_rotate_set_center().
  *
- * Since: 0.4
+ *
  */
 void
 clutter_behaviour_rotate_get_center (ClutterBehaviourRotate *rotate,

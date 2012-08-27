@@ -961,7 +961,7 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
    * The orientation of the #ClutterBoxLayout, either horizontal
    * or vertical
    *
-   * Since: 1.12
+   *
    */
   obj_props[PROP_ORIENTATION] =
     g_param_spec_enum ("orientation",
@@ -978,7 +978,7 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
    * Whether the #ClutterBoxLayout should arrange its children
    * homogeneously, i.e. all childs get the same size
    *
-   * Since: 1.4
+   *
    */
   obj_props[PROP_HOMOGENEOUS] =
     g_param_spec_boolean ("homogeneous",
@@ -994,7 +994,7 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
    * Whether the #ClutterBoxLayout should pack items at the start
    * or append them at the end
    *
-   * Since: 1.2
+   *
    */
   obj_props[PROP_PACK_START] =
     g_param_spec_boolean ("pack-start",
@@ -1008,7 +1008,7 @@ clutter_box_layout_class_init (ClutterBoxLayoutClass *klass)
    *
    * The spacing between children of the #ClutterBoxLayout, in pixels
    *
-   * Since: 1.2
+   *
    */
   obj_props[PROP_SPACING] =
     g_param_spec_uint ("spacing",
@@ -1046,7 +1046,7 @@ clutter_box_layout_init (ClutterBoxLayout *layout)
  *
  * Return value: the newly created #ClutterBoxLayout
  *
- * Since: 1.2
+ *
  */
 ClutterLayoutManager *
 clutter_box_layout_new (void)
@@ -1061,7 +1061,7 @@ clutter_box_layout_new (void)
  *
  * Sets the spacing between children of @layout
  *
- * Since: 1.2
+ *
  */
 void
 clutter_box_layout_set_spacing (ClutterBoxLayout *layout,
@@ -1095,7 +1095,7 @@ clutter_box_layout_set_spacing (ClutterBoxLayout *layout,
  *
  * Return value: the spacing between children of the #ClutterBoxLayout
  *
- * Since: 1.2
+ *
  */
 guint
 clutter_box_layout_get_spacing (ClutterBoxLayout *layout)
@@ -1112,7 +1112,7 @@ clutter_box_layout_get_spacing (ClutterBoxLayout *layout)
  *
  * Sets the orientation of the #ClutterBoxLayout layout manager.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_box_layout_set_orientation (ClutterBoxLayout   *layout,
@@ -1145,7 +1145,7 @@ clutter_box_layout_set_orientation (ClutterBoxLayout   *layout,
  *
  * Return value: the orientation of the layout
  *
- * Since: 1.12
+ *
  */
 ClutterOrientation
 clutter_box_layout_get_orientation (ClutterBoxLayout *layout)
@@ -1164,7 +1164,7 @@ clutter_box_layout_get_orientation (ClutterBoxLayout *layout)
  * Sets whether the size of @layout children should be
  * homogeneous
  *
- * Since: 1.4
+ *
  */
 void
 clutter_box_layout_set_homogeneous (ClutterBoxLayout *layout,
@@ -1199,7 +1199,7 @@ clutter_box_layout_set_homogeneous (ClutterBoxLayout *layout,
  * Return value: %TRUE if the #ClutterBoxLayout is arranging its children
  *   homogeneously, and %FALSE otherwise
  *
- * Since: 1.4
+ *
  */
 gboolean
 clutter_box_layout_get_homogeneous (ClutterBoxLayout *layout)
@@ -1218,7 +1218,7 @@ clutter_box_layout_get_homogeneous (ClutterBoxLayout *layout)
  * Sets whether children of @layout should be layed out by appending
  * them or by prepending them
  *
- * Since: 1.2
+ *
  */
 void
 clutter_box_layout_set_pack_start (ClutterBoxLayout *layout,
@@ -1253,7 +1253,7 @@ clutter_box_layout_set_pack_start (ClutterBoxLayout *layout,
  * Return value: %TRUE if the #ClutterBoxLayout should pack children
  *  at the beginning of the layout, and %FALSE otherwise
  *
- * Since: 1.2
+ *
  */
 gboolean
 clutter_box_layout_get_pack_start (ClutterBoxLayout *layout)

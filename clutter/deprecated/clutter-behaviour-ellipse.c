@@ -40,7 +40,7 @@
  * Deprecated: 1.6: Use clutter_actor_animate(), #ClutterPath and a
  *   #ClutterPathConstraint instead.
  *
- * Since: 0.4
+ *
  */
 
 #ifdef HAVE_CONFIG_H
@@ -395,7 +395,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    *
    * The initial angle from where the rotation should start.
    *
-   * Since: 0.4
+   *
    */
   pspec = g_param_spec_double ("angle-start",
                                P_("Start Angle"),
@@ -411,7 +411,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    *
    * The final angle to where the rotation should end.
    *
-   * Since: 0.4
+   *
    */
   pspec = g_param_spec_double ("angle-end",
                                P_("End Angle"),
@@ -427,7 +427,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    *
    * The tilt angle for the rotation around center in X axis
    *
-   * Since: 0.4
+   *
    */
   pspec = g_param_spec_double ("angle-tilt-x",
                                P_("Angle x tilt"),
@@ -443,7 +443,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    *
    * The tilt angle for the rotation around center in Y axis
    *
-   * Since: 0.4
+   *
    */
   pspec = g_param_spec_double ("angle-tilt-y",
                                P_("Angle y tilt"),
@@ -459,7 +459,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    *
    * The tilt angle for the rotation on the Z axis
    *
-   * Since: 0.4
+   *
    */
   pspec = g_param_spec_double ("angle-tilt-z",
                                P_("Angle z tilt"),
@@ -475,7 +475,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    *
    * Width of the ellipse, in pixels
    *
-   * Since: 0.4
+   *
    */
   pspec = g_param_spec_int ("width",
                             P_("Width"),
@@ -491,7 +491,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    *
    * Height of the ellipse, in pixels
    *
-   * Since: 0.4
+   *
    */
   pspec = g_param_spec_int ("height",
                             P_("Height"),
@@ -507,7 +507,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    *
    * The center of the ellipse.
    *
-   * Since: 0.4
+   *
    */
   pspec = g_param_spec_boxed ("center",
                               P_("Center"),
@@ -522,7 +522,7 @@ clutter_behaviour_ellipse_class_init (ClutterBehaviourEllipseClass *klass)
    *
    * The direction of the rotation.
    *
-   * Since: 0.4
+   *
    */
   pspec = g_param_spec_enum ("direction",
                              P_("Direction"),
@@ -578,7 +578,7 @@ clutter_behaviour_ellipse_init (ClutterBehaviourEllipse * self)
  *
  * Return value: the newly created #ClutterBehaviourEllipse
  *
- * Since: 0.4
+ *
  */
 ClutterBehaviour *
 clutter_behaviour_ellipse_new (ClutterAlpha           *alpha,
@@ -616,7 +616,7 @@ clutter_behaviour_ellipse_new (ClutterAlpha           *alpha,
  *
  * Sets the center of the elliptical path to the point represented by knot.
  *
- * Since: 0.4
+ *
  */
 void
 clutter_behaviour_ellipse_set_center (ClutterBehaviourEllipse *self,
@@ -646,7 +646,7 @@ clutter_behaviour_ellipse_set_center (ClutterBehaviourEllipse *self,
  *
  * Gets the center of the elliptical path path.
  *
- * Since: 0.4
+ *
  */
 void
 clutter_behaviour_ellipse_get_center (ClutterBehaviourEllipse  *self,
@@ -674,7 +674,7 @@ clutter_behaviour_ellipse_get_center (ClutterBehaviourEllipse  *self,
  *
  * Sets the width of the elliptical path.
  *
- * Since: 0.4
+ *
  */
 void
 clutter_behaviour_ellipse_set_width (ClutterBehaviourEllipse *self,
@@ -702,7 +702,7 @@ clutter_behaviour_ellipse_set_width (ClutterBehaviourEllipse *self,
  *
  * Return value: the width of the path
  *
- * Since: 0.4
+ *
  */
 gint
 clutter_behaviour_ellipse_get_width (ClutterBehaviourEllipse *self)
@@ -719,7 +719,7 @@ clutter_behaviour_ellipse_get_width (ClutterBehaviourEllipse *self)
  *
  * Sets the height of the elliptical path.
  *
- * Since: 0.4
+ *
  */
 void
 clutter_behaviour_ellipse_set_height (ClutterBehaviourEllipse *self,
@@ -747,7 +747,7 @@ clutter_behaviour_ellipse_set_height (ClutterBehaviourEllipse *self,
  *
  * Return value: the height of the path
  *
- * Since: 0.4
+ *
  */
 gint
 clutter_behaviour_ellipse_get_height (ClutterBehaviourEllipse *self)
@@ -765,7 +765,7 @@ clutter_behaviour_ellipse_get_height (ClutterBehaviourEllipse *self)
  * Sets the angle at which movement starts; angles >= 360 degress get clamped
  * to the canonical interval <0, 360).
  *
- * Since: 0.6
+ *
  */
 void
 clutter_behaviour_ellipse_set_angle_start (ClutterBehaviourEllipse *self,
@@ -795,7 +795,7 @@ clutter_behaviour_ellipse_set_angle_start (ClutterBehaviourEllipse *self,
  *
  * Return value: angle in degrees
  *
- * Since: 0.6
+ *
  */
 gdouble
 clutter_behaviour_ellipse_get_angle_start (ClutterBehaviourEllipse *self)
@@ -813,7 +813,7 @@ clutter_behaviour_ellipse_get_angle_start (ClutterBehaviourEllipse *self)
  * Sets the angle at which movement ends; angles >= 360 degress get clamped
  * to the canonical interval <0, 360).
  *
- * Since: 0.4
+ *
  */
 void
 clutter_behaviour_ellipse_set_angle_end (ClutterBehaviourEllipse *self,
@@ -844,7 +844,7 @@ clutter_behaviour_ellipse_set_angle_end (ClutterBehaviourEllipse *self,
  *
  * Return value: angle in degrees
  *
- * Since: 0.4
+ *
  */
 gdouble
 clutter_behaviour_ellipse_get_angle_end (ClutterBehaviourEllipse *self)
@@ -863,7 +863,7 @@ clutter_behaviour_ellipse_get_angle_end (ClutterBehaviourEllipse *self)
  *
  * Sets the angle at which the ellipse should be tilted around it's center.
  *
- * Since: 0.4
+ *
  */
 void
 clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse *self,
@@ -916,7 +916,7 @@ clutter_behaviour_ellipse_set_angle_tilt (ClutterBehaviourEllipse *self,
  *
  * Return value: angle in degrees.
  *
- * Since: 0.4
+ *
  */
 gdouble
 clutter_behaviour_ellipse_get_angle_tilt (ClutterBehaviourEllipse *self,
@@ -948,7 +948,7 @@ clutter_behaviour_ellipse_get_angle_tilt (ClutterBehaviourEllipse *self,
  *
  * Sets the angles at which the ellipse should be tilted around it's center.
  *
- * Since: 0.4
+ *
  */
 void
 clutter_behaviour_ellipse_set_tilt (ClutterBehaviourEllipse *self,
@@ -997,7 +997,7 @@ clutter_behaviour_ellipse_set_tilt (ClutterBehaviourEllipse *self,
  *
  * Gets the tilt of the ellipse around the center in Y axis.
  *
- * Since: 0.4
+ *
  */
 void
 clutter_behaviour_ellipse_get_tilt (ClutterBehaviourEllipse *self,
@@ -1029,7 +1029,7 @@ clutter_behaviour_ellipse_get_tilt (ClutterBehaviourEllipse *self,
  *
  * Return value: the rotation direction
  *
- * Since: 0.4
+ *
  */
 ClutterRotateDirection
 clutter_behaviour_ellipse_get_direction (ClutterBehaviourEllipse *self)
@@ -1047,7 +1047,7 @@ clutter_behaviour_ellipse_get_direction (ClutterBehaviourEllipse *self)
  *
  * Sets the rotation direction used by the ellipse behaviour.
  *
- * Since: 0.4
+ *
  */
 void
 clutter_behaviour_ellipse_set_direction (ClutterBehaviourEllipse *self,

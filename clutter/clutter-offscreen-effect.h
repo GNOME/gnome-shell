@@ -52,7 +52,7 @@ typedef struct _ClutterOffscreenEffectClass     ClutterOffscreenEffectClass;
  * The #ClutterOffscreenEffect structure contains only private data
  * and should be accessed using the provided API
  *
- * Since: 1.4
+ *
  */
 struct _ClutterOffscreenEffect
 {
@@ -69,7 +69,7 @@ struct _ClutterOffscreenEffect
  *
  * The #ClutterOffscreenEffectClass structure contains only private data
  *
- * Since: 1.4
+ *
  */
 struct _ClutterOffscreenEffectClass
 {

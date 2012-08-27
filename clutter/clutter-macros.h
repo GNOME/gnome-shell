@@ -33,7 +33,7 @@
  *
  * GL Windowing system used
  *
- * Since: 0.4
+ *
  *
  * Deprecated: 1.10: The macro evaluates to "deprecated" as Clutter can be
  *   compiled with multiple windowing system backends. Use the various
@@ -49,7 +49,7 @@
  * Cogl (internal GL abstraction utility library) backend. Can be "gl" or
  * "gles" currently
  *
- * Since: 0.4
+ *
  *
  * Deprecated: 1.10: The macro evaluates to "deprecated" as Cogl can be
  *   compiled against multiple GL implementations.
@@ -61,7 +61,7 @@
  *
  * The default GObject type for the Clutter stage.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.10: The macro evaluates to "deprecated" as Clutter can
  *   be compiled against multiple windowing systems. You can use the
@@ -123,7 +123,7 @@
  * is possible to use this symbol to avoid the compiler warnings without
  * disabling warnings for every deprecated function.
  *
- * Since: 1.10
+ *
  */
 #ifndef CLUTTER_VERSION_MIN_REQUIRED
 # define CLUTTER_VERSION_MIN_REQUIRED   (CLUTTER_VERSION_CUR_STABLE)
@@ -144,7 +144,7 @@
  * is possible to use this symbol to get compiler warnings when trying
  * to use that function.
  *
- * Since: 1.10
+ *
  */
 #ifndef CLUTTER_VERSION_MAX_ALLOWED
 # if CLUTTER_VERSION_MIN_REQUIRED > CLUTTER_VERSION_PREV_STABLE

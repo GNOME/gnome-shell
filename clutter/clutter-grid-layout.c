@@ -1543,7 +1543,7 @@ clutter_grid_layout_class_init (ClutterGridLayoutClass *klass)
    *
    * The orientation of the layout, either horizontal or vertical
    *
-   * Since: 1.12
+   *
    */
   obj_props[PROP_ORIENTATION] =
     g_param_spec_enum ("orientation",
@@ -1558,7 +1558,7 @@ clutter_grid_layout_class_init (ClutterGridLayoutClass *klass)
    *
    * The amount of space in pixels between two consecutive rows
    *
-   * Since: 1.12
+   *
    */
   obj_props[PROP_ROW_SPACING] =
     g_param_spec_uint ("row-spacing",
@@ -1572,7 +1572,7 @@ clutter_grid_layout_class_init (ClutterGridLayoutClass *klass)
    *
    * The amount of space in pixels between two consecutive columns
    *
-   * Since: 1.12
+   *
    */
   obj_props[PROP_COLUMN_SPACING] =
     g_param_spec_uint ("column-spacing",
@@ -1587,7 +1587,7 @@ clutter_grid_layout_class_init (ClutterGridLayoutClass *klass)
    *
    * Whether all rows of the layout should have the same height
    *
-   * Since: 1.12
+   *
    */
   obj_props[PROP_ROW_HOMOGENEOUS] =
     g_param_spec_boolean ("row-homogeneous",
@@ -1601,7 +1601,7 @@ clutter_grid_layout_class_init (ClutterGridLayoutClass *klass)
    *
    * Whether all columns of the layout should have the same width
    *
-   * Since: 1.12
+   *
    */
   obj_props[PROP_COLUMN_HOMOGENEOUS] =
     g_param_spec_boolean ("column-homogeneous",
@@ -1657,7 +1657,7 @@ clutter_grid_layout_new (void)
  * number of 'cells' that @child will occupy is determined by
  * @width and @height.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_grid_layout_attach (ClutterGridLayout *layout,
@@ -1700,7 +1700,7 @@ clutter_grid_layout_attach (ClutterGridLayout *layout,
  * Attaching widgets labeled [1], [2], [3] with @sibling == %NULL and
  * @side == %CLUTTER_GRID_POSITION_LEFT yields a layout of [3][2][1].
  *
- * Since: 1.12
+ *
  */
 void
 clutter_grid_layout_attach_next_to (ClutterGridLayout   *layout,
@@ -1735,7 +1735,7 @@ clutter_grid_layout_attach_next_to (ClutterGridLayout   *layout,
  *
  * Sets the orientation of the @layout
  *
- * Since: 1.12
+ *
  */
 void
 clutter_grid_layout_set_orientation (ClutterGridLayout *layout,
@@ -1767,7 +1767,7 @@ clutter_grid_layout_set_orientation (ClutterGridLayout *layout,
  *
  * Returns: (transfer none): the child at the given position, or %NULL
  *
- * Since: 1.12
+ *
  */
 ClutterActor *
 clutter_grid_layout_get_child_at (ClutterGridLayout *layout,
@@ -1812,7 +1812,7 @@ clutter_grid_layout_get_child_at (ClutterGridLayout *layout,
  * are moved one row down. Children which span across this
  * position are grown to span the new row.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_grid_layout_insert_row (ClutterGridLayout *layout,
@@ -1866,7 +1866,7 @@ clutter_grid_layout_insert_row (ClutterGridLayout *layout,
  * are moved one column to the right. Children which span across this
  * position are grown to span the new column.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_grid_layout_insert_column (ClutterGridLayout *layout,
@@ -1924,7 +1924,7 @@ clutter_grid_layout_insert_column (ClutterGridLayout *layout,
  * %CLUTTER_GRID_POSITION_LEFT of %CLUTTER_GRID_POSITION_RIGHT,
  * a column is inserted.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_grid_layout_insert_next_to (ClutterGridLayout   *layout,
@@ -1971,7 +1971,7 @@ clutter_grid_layout_insert_next_to (ClutterGridLayout   *layout,
  *
  * Return value: the orientation of the layout
  *
- * Since: 1.12
+ *
  */
 ClutterOrientation
 clutter_grid_layout_get_orientation (ClutterGridLayout *layout)
@@ -1989,7 +1989,7 @@ clutter_grid_layout_get_orientation (ClutterGridLayout *layout)
  *
  * Sets the spacing between rows of @layout
  *
- * Since: 1.12
+ *
  */
 void
 clutter_grid_layout_set_row_spacing (ClutterGridLayout *layout,
@@ -2019,7 +2019,7 @@ clutter_grid_layout_set_row_spacing (ClutterGridLayout *layout,
  *
  * Return value: the spacing between rows of @layout
  *
- * Since: 1.12
+ *
  */
 guint
 clutter_grid_layout_get_row_spacing (ClutterGridLayout *layout)
@@ -2040,7 +2040,7 @@ clutter_grid_layout_get_row_spacing (ClutterGridLayout *layout)
  *
  * Sets the spacing between columns of @layout
  *
- * Since: 1.12
+ *
  */
 void
 clutter_grid_layout_set_column_spacing (ClutterGridLayout *layout,
@@ -2070,7 +2070,7 @@ clutter_grid_layout_set_column_spacing (ClutterGridLayout *layout,
  *
  * Return value: the spacing between coluns of @layout
  *
- * Since: 1.12
+ *
  */
 guint
 clutter_grid_layout_get_column_spacing (ClutterGridLayout *layout)
@@ -2091,7 +2091,7 @@ clutter_grid_layout_get_column_spacing (ClutterGridLayout *layout)
  *
  * Sets whether all columns of @layout will have the same width.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_grid_layout_set_column_homogeneous (ClutterGridLayout *layout,
@@ -2140,7 +2140,7 @@ clutter_grid_layout_get_column_homogeneous (ClutterGridLayout *layout)
  *
  * Sets whether all rows of @layout will have the same height.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_grid_layout_set_row_homogeneous (ClutterGridLayout *layout,
@@ -2170,7 +2170,7 @@ clutter_grid_layout_set_row_homogeneous (ClutterGridLayout *layout,
  *
  * Returns: whether all rows of @layout have the same height.
  *
- * Since: 1.12
+ *
  */
 gboolean
 clutter_grid_layout_get_row_homogeneous (ClutterGridLayout *layout)

@@ -56,7 +56,7 @@ typedef struct _ClutterLayoutMetaClass          ClutterLayoutMetaClass;
  * instance by overriding the #ClutterLayoutManager::create_child_meta()
  * virtual function
  *
- * Since: 1.2
+ *
  */
 struct _ClutterLayoutMeta
 {
@@ -78,7 +78,7 @@ struct _ClutterLayoutMeta
  * The #ClutterLayoutMetaClass contains only private data and
  * should never be accessed directly
  *
- * Since: 1.2
+ *
  */
 struct _ClutterLayoutMetaClass
 {

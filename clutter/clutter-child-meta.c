@@ -120,7 +120,7 @@ clutter_child_meta_class_init (ClutterChildMetaClass *klass)
    *
    * The #ClutterContainer that created this #ClutterChildMeta.
    *
-   * Since: 0.8
+   *
    */
   obj_props[PROP_CONTAINER] =
     g_param_spec_object ("container",
@@ -135,7 +135,7 @@ clutter_child_meta_class_init (ClutterChildMetaClass *klass)
    *
    * The #ClutterActor being wrapped by this #ClutterChildMeta
    *
-   * Since: 0.8
+   *
    */
   obj_props[PROP_ACTOR] =
     g_param_spec_object ("actor",
@@ -163,7 +163,7 @@ clutter_child_meta_init (ClutterChildMeta *self)
  *
  * Return value: (transfer none): a #ClutterContainer
  *
- * Since: 0.8
+ *
  */
 ClutterContainer *
 clutter_child_meta_get_container (ClutterChildMeta *data)
@@ -181,7 +181,7 @@ clutter_child_meta_get_container (ClutterChildMeta *data)
  *
  * Return value: (transfer none): a #ClutterActor
  *
- * Since: 0.8
+ *
  */
 ClutterActor *
 clutter_child_meta_get_actor (ClutterChildMeta *data)

@@ -186,7 +186,7 @@ clutter_transition_group_init (ClutterTransitionGroup *self)
  *   g_object_unref() when done to deallocate the resources it
  *   uses
  *
- * Since: 1.12
+ *
  */
 ClutterTransition *
 clutter_transition_group_new (void)
@@ -204,7 +204,7 @@ clutter_transition_group_new (void)
  * This function acquires a reference on @transition that will be released
  * when calling clutter_transition_group_remove_transition().
  *
- * Since: 1.12
+ *
  */
 void
 clutter_transition_group_add_transition (ClutterTransitionGroup *group,
@@ -226,7 +226,7 @@ clutter_transition_group_add_transition (ClutterTransitionGroup *group,
  * This function releases the reference acquired on @transition when
  * calling clutter_transition_group_add_transition().
  *
- * Since: 1.12
+ *
  */
 void
 clutter_transition_group_remove_transition (ClutterTransitionGroup *group,
@@ -246,7 +246,7 @@ clutter_transition_group_remove_transition (ClutterTransitionGroup *group,
  * This function releases the reference acquired when calling
  * clutter_transition_group_add_transition().
  *
- * Since: 1.12
+ *
  */
 void
 clutter_transition_group_remove_all (ClutterTransitionGroup *group)

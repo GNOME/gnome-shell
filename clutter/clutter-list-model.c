@@ -750,7 +750,7 @@ clutter_list_model_init (ClutterListModel *model)
  *
  * Return value: a new #ClutterListModel
  *
- * Since: 0.6
+ *
  */
 ClutterModel *
 clutter_list_model_new (guint n_columns,
@@ -800,7 +800,7 @@ clutter_list_model_new (guint n_columns,
  *
  * Return value: (transfer full): a new default #ClutterModel
  *
- * Since: 0.6
+ *
  */
 ClutterModel *
 clutter_list_model_newv (guint                n_columns,

@@ -380,7 +380,7 @@ _clutter_effect_get_paint_volume (ClutterEffect      *effect,
  * will instead be called with the %CLUTTER_EFFECT_PAINT_ACTOR_DIRTY
  * flag set.
  *
- * Since: 1.8
+ *
  */
 void
 clutter_effect_queue_repaint (ClutterEffect *effect)

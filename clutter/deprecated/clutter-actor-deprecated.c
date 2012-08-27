@@ -66,7 +66,7 @@ destroy_shader_data (gpointer data)
  * Return value: (transfer none): The currently set #ClutterShader
  *   or %NULL if no shader is set.
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.8: Use clutter_actor_get_effect() instead.
  */
@@ -100,7 +100,7 @@ clutter_actor_get_shader (ClutterActor *self)
  * Return value: %TRUE if the shader was successfully applied
  *   or removed
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.8: Use #ClutterShaderEffect and
  *   clutter_actor_add_effect() instead.
@@ -242,7 +242,7 @@ clutter_actor_set_shader_param_internal (ClutterActor *self,
  * Sets the value for a named parameter of the shader applied
  * to @actor.
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.8: Use clutter_shader_effect_set_uniform_value() instead
  */
@@ -271,7 +271,7 @@ clutter_actor_set_shader_param (ClutterActor *self,
  * Sets the value for a named float parameter of the shader applied
  * to @actor.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.8: Use clutter_shader_effect_set_uniform() instead
  */
@@ -299,7 +299,7 @@ clutter_actor_set_shader_param_float (ClutterActor *self,
  * Sets the value for a named int parameter of the shader applied to
  * @actor.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.8: Use clutter_shader_effect_set_uniform() instead
  */
@@ -389,7 +389,7 @@ clutter_actor_get_geometry (ClutterActor    *self,
  *
  * The returned rectangle is in pixels.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.12: Use clutter_actor_get_allocation_box() instead.
  */

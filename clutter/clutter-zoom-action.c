@@ -43,7 +43,7 @@
  * will automatically result in the actor to be scale according to the
  * distance between two touch points.
  *
- * Since: 1.12
+ *
  */
 
 #ifdef HAVE_CONFIG_H
@@ -347,7 +347,7 @@ clutter_zoom_action_class_init (ClutterZoomActionClass *klass)
    *
    * Constraints the zooming action to the specified axis
    *
-   * Since: 1.12
+   *
    */
   zoom_props[PROP_ZOOM_AXIS] =
     g_param_spec_enum ("zoom-axis",
@@ -380,7 +380,7 @@ clutter_zoom_action_class_init (ClutterZoomActionClass *klass)
    * Return value: %TRUE if the zoom should continue, and %FALSE if
    *   the zoom should be cancelled.
    *
-   * Since: 1.12
+   *
    */
   zoom_signals[ZOOM] =
     g_signal_new (I_("zoom"),
@@ -413,7 +413,7 @@ clutter_zoom_action_init (ClutterZoomAction *self)
  *
  * Return value: the newly created #ClutterZoomAction
  *
- * Since: 1.12
+ *
  */
 ClutterAction *
 clutter_zoom_action_new (void)
@@ -428,7 +428,7 @@ clutter_zoom_action_new (void)
  *
  * Restricts the zooming action to a specific axis
  *
- * Since: 1.12
+ *
  */
 void
 clutter_zoom_action_set_zoom_axis (ClutterZoomAction *action,
@@ -454,7 +454,7 @@ clutter_zoom_action_set_zoom_axis (ClutterZoomAction *action,
  *
  * Return value: the axis constraint
  *
- * Since: 1.12
+ *
  */
 ClutterZoomAxis
 clutter_zoom_action_get_zoom_axis (ClutterZoomAction *action)
@@ -472,7 +472,7 @@ clutter_zoom_action_get_zoom_axis (ClutterZoomAction *action)
  *
  * Retrieves the focal point of the current zoom
  *
- * Since: 1.12
+ *
  */
 void
 clutter_zoom_action_get_focal_point (ClutterZoomAction *action,
@@ -492,7 +492,7 @@ clutter_zoom_action_get_focal_point (ClutterZoomAction *action,
  * Retrieves the focal point relative to the actor's coordinates of
  * the current zoom
  *
- * Since: 1.12
+ *
  */
 void
 clutter_zoom_action_get_transformed_focal_point (ClutterZoomAction *action,

@@ -538,7 +538,7 @@ clutter_input_device_wayland_init (ClutterInputDeviceWayland *self)
  * Returns: (transfer none): the Wayland input device associated with the
  * @device
  *
- * Since: 1.10
+ *
  */
 struct wl_seat *
 clutter_wayland_input_device_get_wl_seat (ClutterInputDevice *device)

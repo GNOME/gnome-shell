@@ -379,7 +379,7 @@ clutter_timeout_pool_finalize (GSource *source)
  *   destroyed when the context is destroyed. It is possible to force
  *   the destruction of the timeout pool using g_source_destroy()
  *
- * Since: 0.4
+ *
  *
  * Deprecated: 1.6
  */
@@ -435,7 +435,7 @@ clutter_timeout_pool_new (gint priority)
  * Return value: the ID (greater than 0) of the timeout inside the pool.
  *   Use clutter_timeout_pool_remove() to stop the timeout.
  *
- * Since: 0.4
+ *
  *
  * Deprecated: 1.6
  */
@@ -472,7 +472,7 @@ clutter_timeout_pool_add (ClutterTimeoutPool *pool,
  * is the same returned when adding a function to the timeout pool with
  * clutter_timeout_pool_add().
  *
- * Since: 0.4
+ *
  *
  * Deprecated: 1.6
  */

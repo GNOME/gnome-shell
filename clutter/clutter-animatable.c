@@ -72,7 +72,7 @@ clutter_animatable_default_init (ClutterAnimatableInterface *iface)
  * Return value: (transfer none): The #GParamSpec for the given property
  *   or %NULL
  *
- * Since: 1.4
+ *
  */
 GParamSpec *
 clutter_animatable_find_property (ClutterAnimatable *animatable,
@@ -101,7 +101,7 @@ clutter_animatable_find_property (ClutterAnimatable *animatable,
  *
  * Retrieves the current state of @property_name and sets @value with it
  *
- * Since: 1.4
+ *
  */
 void
 clutter_animatable_get_initial_state (ClutterAnimatable *animatable,
@@ -130,7 +130,7 @@ clutter_animatable_get_initial_state (ClutterAnimatable *animatable,
  *
  * Sets the current state of @property_name to @value
  *
- * Since: 1.4
+ *
  */
 void
 clutter_animatable_set_final_state (ClutterAnimatable *animatable,
@@ -172,7 +172,7 @@ clutter_animatable_set_final_state (ClutterAnimatable *animatable,
  * Return value: %TRUE if the interpolation was successful,
  *   and %FALSE otherwise
  *
- * Since: 1.8
+ *
  */
 gboolean
 clutter_animatable_interpolate_value (ClutterAnimatable *animatable,

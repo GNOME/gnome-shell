@@ -1111,7 +1111,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    * it must be performed from within the same thread that called
    * clutter_main().
    *
-   * Since: 1.0
+   *
    *
    * Deprecated: 1.12
    */
@@ -1130,7 +1130,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    * Like #ClutterTexture:load-async but loads the width and height
    * synchronously causing some blocking.
    *
-   * Since: 1.0
+   *
    *
    * Deprecated: 1.12
    */
@@ -1157,7 +1157,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    * determine what value of alpha is considered pickable, and so
    * only fully opaque parts of the texture will react to picking.
    *
-   * Since: 1.4
+   *
    *
    * Deprecated: 1.12
    */
@@ -1218,7 +1218,7 @@ clutter_texture_class_init (ClutterTextureClass *klass)
    * completed. If there was an error during loading, @error will
    * be set, otherwise it will be %NULL
    *
-   * Since: 1.0
+   *
    *
    * Deprecated: 1.12
    */
@@ -1336,7 +1336,7 @@ clutter_texture_init (ClutterTexture *self)
  *   material is owned by the #ClutterTexture and it should not be
  *   unreferenced
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -1362,7 +1362,7 @@ clutter_texture_get_cogl_material (ClutterTexture *texture)
  * layer so you should set one on the material before calling this
  * function.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.12
  */
@@ -1437,7 +1437,7 @@ get_first_layer_index (CoglPipeline *pipeline, int *layer_index)
  * Return value: (transfer none): a #CoglHandle for the texture. The returned
  *   handle is owned by the #ClutterTexture and it should not be unreferenced
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.12
  */
@@ -1466,7 +1466,7 @@ clutter_texture_get_cogl_texture (ClutterTexture *texture)
  * @cogl_tex. A reference to the texture is taken so if the handle is
  * no longer needed it should be deref'd with cogl_handle_unref.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.12
  */
@@ -1680,7 +1680,7 @@ get_pixel_format_from_texture_flags (gint                 bpp,
  *
  * Return value: %TRUE on success, %FALSE on failure.
  *
- * Since: 0.4
+ *
  *
  * Deprecated: 1.12
  */
@@ -1735,7 +1735,7 @@ clutter_texture_set_from_rgb_data (ClutterTexture       *texture,
  *
  * Return value: %TRUE if the texture was successfully updated
  *
- * Since: 0.4
+ *
  *
  * Deprecated: 1.10: Use clutter_texture_get_cogl_material() and
  *   the Cogl API to install a fragment shader for decoding YUV
@@ -2053,7 +2053,7 @@ clutter_texture_async_load (ClutterTexture *self,
  *
  * Return value: %TRUE if the image was successfully loaded and set
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.12
  */
@@ -2128,7 +2128,7 @@ clutter_texture_set_from_file (ClutterTexture *texture,
  * improve scaled down rendering as well (by using mipmaps). The default value
  * is %CLUTTER_TEXTURE_QUALITY_MEDIUM.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.12
  */
@@ -2171,7 +2171,7 @@ clutter_texture_set_filter_quality (ClutterTexture        *texture,
  *
  * Return value: The filter quality value.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.12
  */
@@ -2216,7 +2216,7 @@ clutter_texture_get_filter_quality (ClutterTexture *texture)
  * Return value: The maximum waste or -1 if the texture waste is
  *   unlimited.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.12
  */
@@ -2250,7 +2250,7 @@ clutter_texture_get_max_tile_waste (ClutterTexture *texture)
  * Return value: A newly created #ClutterTexture object or NULL on
  * error.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.12
  */
@@ -2330,7 +2330,7 @@ clutter_texture_get_base_size (ClutterTexture *texture,
  *
  * Return value: %TRUE on success, %FALSE on failure.
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.12
  */
@@ -2576,7 +2576,7 @@ fbo_source_queue_relayout_cb (ClutterActor *source,
  *
  * Return value: A newly created #ClutterTexture object, or %NULL on failure.
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.8: Use the #ClutterOffscreenEffect and #ClutterShaderEffect
  *   directly on the intended #ClutterActor to replace the functionality of
@@ -2748,7 +2748,7 @@ texture_fbo_free_resources (ClutterTexture *texture)
  * Sets whether @texture should have the same preferred size as the
  * underlying image data.
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -2781,7 +2781,7 @@ clutter_texture_set_sync_size (ClutterTexture *texture,
  * Return value: %TRUE if the #ClutterTexture should have the same
  *   preferred size of the underlying image data
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -2802,7 +2802,7 @@ clutter_texture_get_sync_size (ClutterTexture *texture)
  * Sets whether the @texture should repeat horizontally or
  * vertically when the actor size is bigger than the image size
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -2853,7 +2853,7 @@ clutter_texture_set_repeat (ClutterTexture *texture,
  * Retrieves the horizontal and vertical repeat values set
  * using clutter_texture_set_repeat()
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -2887,7 +2887,7 @@ clutter_texture_get_repeat (ClutterTexture *texture,
  *
  * Return value: a #CoglPixelFormat value
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -2913,7 +2913,7 @@ clutter_texture_get_pixel_format (ClutterTexture *texture)
  * Sets whether @texture should have a preferred size maintaining
  * the aspect ratio of the underlying image
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -2946,7 +2946,7 @@ clutter_texture_set_keep_aspect_ratio (ClutterTexture *texture,
  * Return value: %TRUE if the #ClutterTexture should maintain the
  *   aspect ratio of the underlying image
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -2971,7 +2971,7 @@ clutter_texture_get_keep_aspect_ratio (ClutterTexture *texture)
  * See the #ClutterTexture:load-async property documentation, and
  * clutter_texture_set_load_data_async().
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -3008,7 +3008,7 @@ clutter_texture_set_load_async (ClutterTexture *texture,
  * Return value: %TRUE if the #ClutterTexture should load the data from
  *   disk asynchronously
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -3034,7 +3034,7 @@ clutter_texture_get_load_async (ClutterTexture *texture)
  * See the #ClutterTexture:load-async property documentation, and
  * clutter_texture_set_load_async().
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -3070,7 +3070,7 @@ clutter_texture_set_load_data_async (ClutterTexture *texture,
  * Return value: %TRUE if the #ClutterTexture should load the image
  *   data from a file asynchronously
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -3101,7 +3101,7 @@ clutter_texture_get_load_data_async (ClutterTexture *texture)
  * determine what value of alpha is considered pickable, and so only
  * fully opaque parts of the texture will react to picking.
  *
- * Since: 1.4
+ *
  *
  * Deprecated: 1.12
  */
@@ -3142,7 +3142,7 @@ clutter_texture_set_pick_with_alpha (ClutterTexture *texture,
  * Return value: %TRUE if the #ClutterTexture should define its shape
  * using the alpha channel when picking.
  *
- * Since: 1.4
+ *
  *
  * Deprecated: 1.12
  */

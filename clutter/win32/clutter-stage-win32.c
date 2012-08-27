@@ -661,7 +661,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
  *
  * Return value: An HWND for the stage window.
  *
- * Since: 0.8
+ *
  */
 HWND
 clutter_win32_get_stage_window (ClutterStage *stage)
@@ -686,7 +686,7 @@ clutter_win32_get_stage_window (ClutterStage *stage)
  * Return value: The stage or NULL if a stage does not exist for the
  * window.
  *
- * Since: 0.8
+ *
  */
 ClutterStage *
 clutter_win32_get_stage_from_window (HWND hwnd)
@@ -771,7 +771,7 @@ set_foreign_window_callback (ClutterActor *actor,
  *
  * Return value: %TRUE if foreign window is valid
  *
- * Since: 0.8
+ *
  */
 gboolean
 clutter_win32_set_stage_foreign (ClutterStage *stage,

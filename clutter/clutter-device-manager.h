@@ -49,7 +49,7 @@ typedef struct _ClutterDeviceManagerClass       ClutterDeviceManagerClass;
  *
  * The #ClutterDeviceManager structure contains only private data
  *
- * Since: 1.2
+ *
  */
 struct _ClutterDeviceManager
 {
@@ -64,7 +64,7 @@ struct _ClutterDeviceManager
  *
  * The #ClutterDeviceManagerClass structure contains only private data
  *
- * Since: 1.2
+ *
  */
 struct _ClutterDeviceManagerClass
 {

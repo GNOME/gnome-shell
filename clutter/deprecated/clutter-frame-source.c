@@ -89,7 +89,7 @@ static GSourceFuncs clutter_frame_source_funcs =
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.6
  */
@@ -130,7 +130,7 @@ clutter_frame_source_add_full (gint           priority,
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.6
  */
@@ -213,7 +213,7 @@ clutter_frame_source_dispatch (GSource     *source,
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.6
  */
@@ -249,7 +249,7 @@ clutter_threads_add_frame_source_full (gint           priority,
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.6
  */

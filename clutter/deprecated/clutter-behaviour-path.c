@@ -238,7 +238,7 @@ clutter_behaviour_path_class_init (ClutterBehaviourPathClass *klass)
    * This signal is emitted each time a node defined inside the path
    * is reached.
    *
-   * Since: 0.2
+   *
    *
    * Deprecated: 1.6
    */
@@ -335,7 +335,7 @@ clutter_behaviour_path_init (ClutterBehaviourPath *self)
  *
  * Return value: (transfer full): a #ClutterBehaviour
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */
@@ -363,7 +363,7 @@ clutter_behaviour_path_new (ClutterAlpha *alpha,
  *
  * Return value: (transfer full): a #ClutterBehaviour
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.6
  */
@@ -396,7 +396,7 @@ clutter_behaviour_path_new_with_description (ClutterAlpha *alpha,
  *
  * Return value: (transfer full): a #ClutterBehaviour
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.6
  */
@@ -431,7 +431,7 @@ clutter_behaviour_path_new_with_knots (ClutterAlpha      *alpha,
  * floating reference on the #ClutterPath so you do not need to unref
  * it.
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.6
  */
@@ -464,7 +464,7 @@ clutter_behaviour_path_set_path (ClutterBehaviourPath *pathb,
  *
  * Return value: (transfer none): the path
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.6
  */

@@ -17,7 +17,7 @@
  *
  * Retrieves the latest coordinates of the pointer of @device
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.12: Use clutter_input_device_get_coords() instead.
  */

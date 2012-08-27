@@ -64,7 +64,7 @@ struct _ClutterColor
  *
  * A macro that initializes a #ClutterColor, to be used when declaring it.
  *
- * Since: 1.12
+ *
  */
 #define CLUTTER_COLOR_INIT(r,g,b,a)     { (r), (g), (b), (a) }
 
@@ -133,7 +133,7 @@ void          clutter_color_interpolate (const ClutterColor *initial,
  *
  * Evaluates to %TRUE if @x holds a #ClutterColor<!-- -->.
  *
- * Since: 1.0
+ *
  */
 #define CLUTTER_VALUE_HOLDS_COLOR(x)       (G_VALUE_HOLDS ((x), CLUTTER_TYPE_COLOR))
 
@@ -146,7 +146,7 @@ typedef struct _ClutterParamSpecColor  ClutterParamSpecColor;
  * A #GParamSpec subclass for defining properties holding
  * a #ClutterColor.
  *
- * Since: 1.0
+ *
  */
 struct _ClutterParamSpecColor
 {

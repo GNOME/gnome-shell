@@ -479,7 +479,7 @@ clutter_shader_effect_class_init (ClutterShaderEffectClass *klass)
    * should be set by the constructor of #ClutterShaderEffect
    * sub-classes.
    *
-   * Since: 1.4
+   *
    */
   obj_props[PROP_SHADER_TYPE] =
     g_param_spec_enum ("shader-type",
@@ -522,7 +522,7 @@ clutter_shader_effect_init (ClutterShaderEffect *effect)
  * Return value: the newly created #ClutterShaderEffect.
  *   Use g_object_unref() when done.
  *
- * Since: 1.8
+ *
  */
 ClutterEffect *
 clutter_shader_effect_new (ClutterShaderType shader_type)
@@ -541,7 +541,7 @@ clutter_shader_effect_new (ClutterShaderType shader_type)
  * Return value: (transfer none): a pointer to the shader's handle,
  *   or %COGL_INVALID_HANDLE
  *
- * Since: 1.4
+ *
  */
 CoglHandle
 clutter_shader_effect_get_shader (ClutterShaderEffect *effect)
@@ -561,7 +561,7 @@ clutter_shader_effect_get_shader (ClutterShaderEffect *effect)
  * Return value: (transfer none): a pointer to the program's handle,
  *   or %COGL_INVALID_HANDLE
  *
- * Since: 1.4
+ *
  */
 CoglHandle
 clutter_shader_effect_get_program (ClutterShaderEffect *effect)
@@ -658,7 +658,7 @@ clutter_shader_effect_add_uniform (ClutterShaderEffect *effect,
  * values. It also accepts %G_TYPE_DOUBLE for compatibility with other
  * languages than C.
  *
- * Since: 1.4
+ *
  */
 void
 clutter_shader_effect_set_uniform_value (ClutterShaderEffect *effect,
@@ -845,7 +845,7 @@ add_uniform:
  *                                      cogl_matrix_get_array (&matrix));
  * ]|
  *
- * Since: 1.4
+ *
  */
 void
 clutter_shader_effect_set_uniform (ClutterShaderEffect *effect,
@@ -884,7 +884,7 @@ clutter_shader_effect_set_uniform (ClutterShaderEffect *effect,
  *
  * Return value: %TRUE if the source was set
  *
- * Since: 1.4
+ *
  */
 gboolean
 clutter_shader_effect_set_shader_source (ClutterShaderEffect *effect,

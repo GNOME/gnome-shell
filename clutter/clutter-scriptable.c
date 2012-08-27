@@ -72,7 +72,7 @@ clutter_scriptable_default_init (ClutterScriptableInterface *iface)
  * define a unique name for an object constructable using the UI
  * definition language parsed by #ClutterScript.
  *
- * Since: 0.6
+ *
  */
 void
 clutter_scriptable_set_id (ClutterScriptable *scriptable,
@@ -102,7 +102,7 @@ clutter_scriptable_set_id (ClutterScriptable *scriptable,
  * Return value: the id of the object. The returned string is owned by
  *   the scriptable object and should never be modified of freed
  *
- * Since: 0.6
+ *
  */
 const gchar *
 clutter_scriptable_get_id (ClutterScriptable *scriptable)
@@ -131,7 +131,7 @@ clutter_scriptable_get_id (ClutterScriptable *scriptable)
  *
  * Return value: %TRUE if the node was successfully parsed, %FALSE otherwise.
  *
- * Since: 0.6
+ *
  */
 gboolean
 clutter_scriptable_parse_custom_node (ClutterScriptable *scriptable,
@@ -164,7 +164,7 @@ clutter_scriptable_parse_custom_node (ClutterScriptable *scriptable,
  * Overrides the common properties setting. The underlying virtual
  * function should be used when implementing custom properties.
  *
- * Since: 0.6
+ *
  */
 void
 clutter_scriptable_set_custom_property (ClutterScriptable *scriptable,

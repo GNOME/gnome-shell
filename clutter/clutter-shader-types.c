@@ -388,7 +388,7 @@ clutter_shader_matrix_get_type (void)
  * Sets @floats as the contents of @value. The passed #GValue
  * must have been initialized using %CLUTTER_TYPE_SHADER_FLOAT.
  *
- * Since: 0.8
+ *
  */
 void
 clutter_value_set_shader_float (GValue         *value,
@@ -418,7 +418,7 @@ clutter_value_set_shader_float (GValue         *value,
  * Sets @ints as the contents of @value. The passed #GValue
  * must have been initialized using %CLUTTER_TYPE_SHADER_INT.
  *
- * Since: 0.8
+ *
  */
 void
 clutter_value_set_shader_int (GValue     *value,
@@ -448,7 +448,7 @@ clutter_value_set_shader_int (GValue     *value,
  * Sets @matrix as the contents of @value. The passed #GValue
  * must have been initialized using %CLUTTER_TYPE_SHADER_MATRIX.
  *
- * Since: 0.8
+ *
  */
 void
 clutter_value_set_shader_matrix (GValue       *value,
@@ -483,7 +483,7 @@ clutter_value_set_shader_matrix (GValue       *value,
  *   floating point values.  The returned value is owned by the
  *   #GValue and should never be modified or freed.
  *
- * Since: 0.8
+ *
  */
 const gfloat *
 clutter_value_get_shader_float (const GValue *value,
@@ -515,7 +515,7 @@ clutter_value_get_shader_float (const GValue *value,
  *   integer values.  The returned value is owned by the #GValue and
  *   should never be modified or freed.
  *
- * Since: 0.8
+ *
  */
 const gint *
 clutter_value_get_shader_int (const GValue *value,
@@ -547,7 +547,7 @@ clutter_value_get_shader_int (const GValue *value,
  *   of floating point values. The returned value is owned by the #GValue and
  *   should never be modified or freed.
  *
- * Since: 0.8
+ *
  */
 const gfloat *
 clutter_value_get_shader_matrix (const GValue *value,

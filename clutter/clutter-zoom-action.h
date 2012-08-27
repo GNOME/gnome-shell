@@ -52,7 +52,7 @@ typedef struct _ClutterZoomActionClass          ClutterZoomActionClass;
  * The <structname>ClutterZoomAction</structname> structure contains only
  * private data and should be accessed using the provided API
  *
- * Since: 1.12
+ *
  */
 struct _ClutterZoomAction
 {
@@ -69,7 +69,7 @@ struct _ClutterZoomAction
  * The <structname>ClutterZoomActionClass</structname> structure contains
  * only private data
  *
- * Since: 1.12
+ *
  */
 struct _ClutterZoomActionClass
 {

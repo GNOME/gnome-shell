@@ -172,7 +172,7 @@ clutter_behaviour_depth_class_init (ClutterBehaviourDepthClass *klass)
    *
    * Start depth level to apply to the actors.
    *
-   * Since: 0.4
+   *
    *
    * Deprecated: 1.6
    */
@@ -188,7 +188,7 @@ clutter_behaviour_depth_class_init (ClutterBehaviourDepthClass *klass)
    *
    * End depth level to apply to the actors.
    *
-   * Since: 0.4
+   *
    *
    * Deprecated: 1.6
    */
@@ -224,7 +224,7 @@ clutter_behaviour_depth_init (ClutterBehaviourDepth *depth)
  *
  * Return value: (transfer full): the newly created behaviour
  *
- * Since: 0.4
+ *
  *
  * Deprecated: 1.6
  */
@@ -250,7 +250,7 @@ clutter_behaviour_depth_new (ClutterAlpha *alpha,
  *
  * Sets the boundaries of the @behaviour.
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.6
  */
@@ -290,7 +290,7 @@ clutter_behaviour_depth_set_bounds (ClutterBehaviourDepth *behaviour,
  *
  * Gets the boundaries of the @behaviour
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.6
  */

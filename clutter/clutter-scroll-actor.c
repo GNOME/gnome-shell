@@ -183,7 +183,7 @@ clutter_scroll_actor_class_init (ClutterScrollActorClass *klass)
    *
    * The scrollin direction.
    *
-   * Since: 1.12
+   *
    */
   obj_props[PROP_SCROLL_MODE] =
     g_param_spec_flags ("scroll-mode",
@@ -276,7 +276,7 @@ clutter_animatable_iface_init (ClutterAnimatableIface *iface)
  * Return value: The newly created #ClutterScrollActor
  *   instance.
  *
- * Since: 1.12
+ *
  */
 ClutterActor *
 clutter_scroll_actor_new (void)
@@ -291,7 +291,7 @@ clutter_scroll_actor_new (void)
  *
  * Sets the #ClutterScrollActor:scroll-mode property.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_scroll_actor_set_scroll_mode (ClutterScrollActor *actor,
@@ -319,7 +319,7 @@ clutter_scroll_actor_set_scroll_mode (ClutterScrollActor *actor,
  *
  * Return value: the scrolling mode
  *
- * Since: 1.12
+ *
  */
 ClutterScrollMode
 clutter_scroll_actor_get_scroll_mode (ClutterScrollActor *actor)
@@ -342,7 +342,7 @@ clutter_scroll_actor_get_scroll_mode (ClutterScrollActor *actor)
  * This function will use the currently set easing state of the @actor
  * to transition from the current scroll origin to the new one.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_scroll_actor_scroll_to_point (ClutterScrollActor *actor,
@@ -424,7 +424,7 @@ clutter_scroll_actor_scroll_to_point (ClutterScrollActor *actor,
  *
  * Scrolls @actor so that @rect is in the visible portion.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_scroll_actor_scroll_to_rect (ClutterScrollActor *actor,

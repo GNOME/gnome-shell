@@ -37,7 +37,7 @@ G_BEGIN_DECLS
  *
  * Macro that evaluates to the width of the default stage
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.2: Use clutter_actor_get_width() instead
  */
@@ -48,7 +48,7 @@ G_BEGIN_DECLS
  *
  * Macro that evaluates to the height of the default stage
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.2: use clutter_actor_get_height() instead
  */

@@ -43,7 +43,7 @@ G_BEGIN_DECLS
  * <structname>ClutterDesaturateEffect</structname> is an opaque structure
  * whose members cannot be directly accessed
  *
- * Since: 1.4
+ *
  */
 typedef struct _ClutterDesaturateEffect         ClutterDesaturateEffect;
 typedef struct _ClutterDesaturateEffectClass    ClutterDesaturateEffectClass;

@@ -111,7 +111,7 @@ clutter_layout_meta_class_init (ClutterLayoutMetaClass *klass)
    *
    * The #ClutterLayoutManager that created this #ClutterLayoutMeta.
    *
-   * Since: 1.2
+   *
    */
   pspec = g_param_spec_object ("manager",
                                P_("Manager"),
@@ -136,7 +136,7 @@ clutter_layout_meta_init (ClutterLayoutMeta *self)
  *
  * Return value: (transfer none): a #ClutterLayoutManager
  *
- * Since: 1.2
+ *
  */
 ClutterLayoutManager *
 clutter_layout_meta_get_manager (ClutterLayoutMeta *data)

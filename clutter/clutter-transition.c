@@ -239,7 +239,7 @@ clutter_transition_class_init (ClutterTransitionClass *klass)
    * The #ClutterInterval used to describe the initial and final states
    * of the transition.
    *
-   * Since: 1.10
+   *
    */
   obj_props[PROP_INTERVAL] =
     g_param_spec_object ("interval",
@@ -254,7 +254,7 @@ clutter_transition_class_init (ClutterTransitionClass *klass)
    *
    * The #ClutterAnimatable instance currently being animated.
    *
-   * Since: 1.10
+   *
    */
   obj_props[PROP_ANIMATABLE] =
     g_param_spec_object ("animatable",
@@ -276,7 +276,7 @@ clutter_transition_class_init (ClutterTransitionClass *klass)
    * and it only detaches the transition if the transition is not
    * repeating.
    *
-   * Since: 1.10
+   *
    */
   obj_props[PROP_REMOVE_ON_COMPLETE] =
     g_param_spec_boolean ("remove-on-complete",
@@ -305,7 +305,7 @@ clutter_transition_init (ClutterTransition *self)
  * The @transition will acquire a reference on the @interval, sinking
  * the floating flag on it if necessary.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_transition_set_interval (ClutterTransition *transition,
@@ -339,7 +339,7 @@ clutter_transition_set_interval (ClutterTransition *transition,
  *   interval is owned by the #ClutterTransition and it should not be freed
  *   directly
  *
- * Since: 1.10
+ *
  */
 ClutterInterval *
 clutter_transition_get_interval (ClutterTransition *transition)
@@ -363,7 +363,7 @@ clutter_transition_get_interval (ClutterTransition *transition)
  * reference will be released, and the #ClutterTransitionClass.detached()
  * virtual function will be called.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_transition_set_animatable (ClutterTransition *transition,
@@ -401,7 +401,7 @@ clutter_transition_set_animatable (ClutterTransition *transition,
  *   animatable is owned by the #ClutterTransition, and it should not be freed
  *   directly.
  *
- * Since: 1.10
+ *
  */
 ClutterAnimatable *
 clutter_transition_get_animatable (ClutterTransition *transition)
@@ -420,7 +420,7 @@ clutter_transition_get_animatable (ClutterTransition *transition)
  * set using clutter_transition_set_animatable() when the
  * #ClutterTimeline::completed signal is emitted.
  *
- * Since: 1.10
+ *
  */
 void
 clutter_transition_set_remove_on_complete (ClutterTransition *transition,
@@ -448,7 +448,7 @@ clutter_transition_set_remove_on_complete (ClutterTransition *transition,
  * Return value: %TRUE if the @transition should be detached when complete,
  *   and %FALSE otherwise
  *
- * Since: 1.10
+ *
  */
 gboolean
 clutter_transition_get_remove_on_complete (ClutterTransition *transition)
@@ -533,7 +533,7 @@ clutter_transition_set_value (ClutterTransition *transition,
  *
  * Rename to: clutter_transition_set_from
  *
- * Since: 1.12
+ *
  */
 void
 clutter_transition_set_from_value (ClutterTransition *transition,
@@ -569,7 +569,7 @@ clutter_transition_set_from_value (ClutterTransition *transition,
  *
  * Rename to: clutter_transition_set_to
  *
- * Since: 1.12
+ *
  */
 void
 clutter_transition_set_to_value (ClutterTransition *transition,
@@ -602,7 +602,7 @@ clutter_transition_set_to_value (ClutterTransition *transition,
  * This is a convenience function for the C API; language bindings
  * should use clutter_transition_set_from_value() instead.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_transition_set_from (ClutterTransition *transition,
@@ -655,7 +655,7 @@ clutter_transition_set_from (ClutterTransition *transition,
  * This is a convenience function for the C API; language bindings
  * should use clutter_transition_set_to_value() instead.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_transition_set_to (ClutterTransition *transition,

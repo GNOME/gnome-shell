@@ -148,7 +148,7 @@ units_em_to_pixels (const gchar *font_name,
  *
  * Stores a value in millimiters inside @units
  *
- * Since: 1.0
+ *
  */
 void
 clutter_units_from_mm (ClutterUnits *units,
@@ -174,7 +174,7 @@ clutter_units_from_mm (ClutterUnits *units,
  *
  * Stores a value in centimeters inside @units
  *
- * Since: 1.2
+ *
  */
 void
 clutter_units_from_cm (ClutterUnits *units,
@@ -200,7 +200,7 @@ clutter_units_from_cm (ClutterUnits *units,
  *
  * Stores a value in typographic points inside @units
  *
- * Since: 1.0
+ *
  */
 void
 clutter_units_from_pt (ClutterUnits *units,
@@ -227,7 +227,7 @@ clutter_units_from_pt (ClutterUnits *units,
  * Stores a value in em inside @units, using the default font
  * name as returned by clutter_backend_get_font_name()
  *
- * Since: 1.0
+ *
  */
 void
 clutter_units_from_em (ClutterUnits *units,
@@ -254,7 +254,7 @@ clutter_units_from_em (ClutterUnits *units,
  *
  * Stores a value in em inside @units using @font_name
  *
- * Since: 1.0
+ *
  */
 void
 clutter_units_from_em_for_font (ClutterUnits *units,
@@ -281,7 +281,7 @@ clutter_units_from_em_for_font (ClutterUnits *units,
  *
  * Stores a value in pixels inside @units
  *
- * Since: 1.0
+ *
  */
 void
 clutter_units_from_pixels (ClutterUnits *units,
@@ -308,7 +308,7 @@ clutter_units_from_pixels (ClutterUnits *units,
  *
  * Return value: a unit type
  *
- * Since: 1.0
+ *
  */
 ClutterUnitType
 clutter_units_get_unit_type (const ClutterUnits *units)
@@ -326,7 +326,7 @@ clutter_units_get_unit_type (const ClutterUnits *units)
  *
  * Return value: the value stored inside a #ClutterUnits
  *
- * Since: 1.0
+ *
  */
 gfloat
 clutter_units_get_unit_value (const ClutterUnits *units)
@@ -346,7 +346,7 @@ clutter_units_get_unit_value (const ClutterUnits *units)
  *   #ClutterUnits structure. Use clutter_units_free() to free
  *   the allocated resources
  *
- * Since: 1.0
+ *
  */
 ClutterUnits *
 clutter_units_copy (const ClutterUnits *units)
@@ -366,7 +366,7 @@ clutter_units_copy (const ClutterUnits *units)
  * You should only call this function on a #ClutterUnits
  * created using clutter_units_copy()
  *
- * Since: 1.0
+ *
  */
 void
 clutter_units_free (ClutterUnits *units)
@@ -383,7 +383,7 @@ clutter_units_free (ClutterUnits *units)
  *
  * Return value: the value in pixels
  *
- * Since: 1.0
+ *
  */
 gfloat
 clutter_units_to_pixels (ClutterUnits *units)
@@ -471,7 +471,7 @@ clutter_units_to_pixels (ClutterUnits *units)
  * Return value: %TRUE if the string was successfully parsed,
  *   and %FALSE otherwise
  *
- * Since: 1.0
+ *
  */
 gboolean
 clutter_units_from_string (ClutterUnits *units,
@@ -602,7 +602,7 @@ clutter_unit_type_name (ClutterUnitType unit_type)
  * Return value: a newly allocated string containing the encoded
  *   #ClutterUnits value. Use g_free() to free the string
  *
- * Since: 1.0
+ *
  */
 gchar *
 clutter_units_to_string (const ClutterUnits *units)
@@ -752,7 +752,7 @@ G_DEFINE_BOXED_TYPE_WITH_CODE (ClutterUnits, clutter_units,
  *
  * Sets @value to @units
  *
- * Since: 0.8
+ *
  */
 void
 clutter_value_set_units (GValue             *value,
@@ -771,7 +771,7 @@ clutter_value_set_units (GValue             *value,
  *
  * Return value: the units inside the passed #GValue
  *
- * Since: 0.8
+ *
  */
 const ClutterUnits *
 clutter_value_get_units (const GValue *value)
@@ -904,7 +904,7 @@ clutter_param_units_get_type (void)
  *
  * Return value: the newly created #GParamSpec
  *
- * Since: 1.0
+ *
  */
 GParamSpec *
 clutter_param_spec_units (const gchar     *name,

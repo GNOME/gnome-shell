@@ -46,7 +46,7 @@ G_BEGIN_DECLS
  * <structname>ClutterPageTurnEffect</structname> is an opaque structure
  * whose members can only be accessed using the provided API
  *
- * Since: 1.4
+ *
  */
 typedef struct _ClutterPageTurnEffect           ClutterPageTurnEffect;
 typedef struct _ClutterPageTurnEffectClass      ClutterPageTurnEffectClass;

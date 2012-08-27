@@ -67,7 +67,7 @@ typedef struct _ClutterBehaviourPathClass   ClutterBehaviourPathClass;
  * The #ClutterBehaviourPath structure contains only private data
  * and should be accessed using the provided API
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6: Use #ClutterPathConstraint and clutter_actor_animate()
  *   instead.
@@ -86,7 +86,7 @@ struct _ClutterBehaviourPath
  *
  * The #ClutterBehaviourPathClass struct contains only private data
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */

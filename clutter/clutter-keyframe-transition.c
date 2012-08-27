@@ -403,7 +403,7 @@ clutter_keyframe_transition_init (ClutterKeyframeTransition *self)
  *   #ClutterKeyframeTransition instance. Use g_object_unref() when
  *   done to free its resources.
  *
- * Since: 1.12
+ *
  */
 ClutterTransition *
 clutter_keyframe_transition_new (const char *property_name)
@@ -426,7 +426,7 @@ clutter_keyframe_transition_new (const char *property_name)
  * will be created; if @transition already has key frames, @key_frames must
  * have at least as many elements as the number of key frames.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_keyframe_transition_set_key_frames (ClutterKeyframeTransition *transition,
@@ -468,7 +468,7 @@ clutter_keyframe_transition_set_key_frames (ClutterKeyframeTransition *transitio
  * be created; if @transition already has key frames, @values must have
  * at least as many elements as the number of key frames.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_keyframe_transition_set_values (ClutterKeyframeTransition *transition,
@@ -515,7 +515,7 @@ clutter_keyframe_transition_set_values (ClutterKeyframeTransition *transition,
  * be created; if @transition already has key frames, @modes must have
  * at least as many elements as the number of key frames.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_keyframe_transition_set_modes (ClutterKeyframeTransition  *transition,
@@ -560,7 +560,7 @@ clutter_keyframe_transition_set_modes (ClutterKeyframeTransition  *transition,
  * clutter_keyframe_transition_set_modes(), and
  * clutter_keyframe_transition_set_values() instead.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_keyframe_transition_set (ClutterKeyframeTransition *transition,
@@ -618,7 +618,7 @@ clutter_keyframe_transition_set (ClutterKeyframeTransition *transition,
  *
  * Removes all key frames from @transition.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_keyframe_transition_clear (ClutterKeyframeTransition *transition)
@@ -640,7 +640,7 @@ clutter_keyframe_transition_clear (ClutterKeyframeTransition *transition)
  *
  * Return value: the number of key frames
  *
- * Since: 1.12
+ *
  */
 guint
 clutter_keyframe_transition_get_n_key_frames (ClutterKeyframeTransition *transition)
@@ -666,7 +666,7 @@ clutter_keyframe_transition_get_n_key_frames (ClutterKeyframeTransition *transit
  * The @transition must already have a key frame at @index_, and @index_
  * must be smaller than the number of key frames inside @transition.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_keyframe_transition_set_key_frame (ClutterKeyframeTransition *transition,
@@ -704,7 +704,7 @@ clutter_keyframe_transition_set_key_frame (ClutterKeyframeTransition *transition
  * The @transition must already have key frames set, and @index_ must be
  * smaller than the number of key frames.
  *
- * Since: 1.12
+ *
  */
 void
 clutter_keyframe_transition_get_key_frame (ClutterKeyframeTransition *transition,

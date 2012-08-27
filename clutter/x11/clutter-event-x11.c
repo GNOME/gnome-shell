@@ -157,7 +157,7 @@ _clutter_x11_event_source_new (ClutterBackendX11 *backend_x11)
  *  any exclusive action. %CLUTTER_X11_FILTER_TRANSLATE will not
  *  occur.
  *
- * Since: 0.8
+ *
  */
 ClutterX11FilterReturn
 clutter_x11_handle_event (XEvent *xevent)
@@ -340,7 +340,7 @@ clutter_event_dispatch (GSource     *source,
  *
  * Return value: a timestamp, in milliseconds
  *
- * Since: 1.0
+ *
  */
 Time
 clutter_x11_get_current_event_time (void)
@@ -358,7 +358,7 @@ clutter_x11_get_current_event_time (void)
  *
  * Return value: the group id
  *
- * Since: 1.4
+ *
  */
 gint
 clutter_x11_event_get_key_group (const ClutterEvent *event)
@@ -383,8 +383,6 @@ clutter_x11_event_get_key_group (const ClutterEvent *event)
  * Retrieves the touch detail froma #ClutterEventSequence.
  *
  * Return value: the touch detail
- *
- * Since: 1.12
  */
 guint
 clutter_x11_event_sequence_get_touch_detail (const ClutterEventSequence *sequence)

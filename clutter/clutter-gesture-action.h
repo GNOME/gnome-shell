@@ -51,7 +51,7 @@ typedef struct _ClutterGestureActionClass         ClutterGestureActionClass;
  * The <structname>ClutterGestureAction</structname> structure contains
  * only private data and should be accessed using the provided API
  *
- * Since: 1.8
+ *
  */
 struct _ClutterGestureAction
 {
@@ -73,7 +73,7 @@ struct _ClutterGestureAction
  * The <structname>ClutterGestureClass</structname> structure contains only
  * private data.
  *
- * Since: 1.8
+ *
  */
 struct _ClutterGestureActionClass
 {

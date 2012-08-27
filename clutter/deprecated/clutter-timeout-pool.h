@@ -45,7 +45,7 @@ G_BEGIN_DECLS
  * <structname>ClutterTimeoutPool</structname> is an opaque structure
  * whose members cannot be directly accessed.
  *
- * Since: 0.6
+ *
  *
  * Deprecated: 1.6
  */

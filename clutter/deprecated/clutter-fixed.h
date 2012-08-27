@@ -44,7 +44,7 @@ G_BEGIN_DECLS
  *
  * Evaluates to %TRUE if @x holds a #CoglFixed   .
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.10: Use %G_VALUE_HOLDS_INT instead
  */
@@ -60,7 +60,7 @@ typedef struct _ClutterParamSpecFixed   ClutterParamSpecFixed;
  *
  * #GParamSpec subclass for fixed point based properties
  *
- * Since: 0.8
+ *
  *
  * Deprecated: Use #GParamSpecInt instead
  */

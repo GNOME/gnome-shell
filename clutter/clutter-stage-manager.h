@@ -47,7 +47,7 @@ typedef struct _ClutterStageManagerClass        ClutterStageManagerClass;
  *
  * The #ClutterStageManager structure is private.
  *
- * Since: 1.0
+ *
  */
 
 /**
@@ -56,7 +56,7 @@ typedef struct _ClutterStageManagerClass        ClutterStageManagerClass;
  * The #ClutterStageManagerClass structure contains only private data
  * and should be accessed using the provided API
  *
- * Since: 1.0
+ *
  */
 struct _ClutterStageManagerClass
 {

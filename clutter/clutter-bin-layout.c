@@ -257,7 +257,7 @@ clutter_bin_layout_init (ClutterBinLayout *self)
  *
  * Return value: the newly created layout manager
  *
- * Since: 1.2
+ *
  */
 ClutterLayoutManager *
 clutter_bin_layout_new (void)

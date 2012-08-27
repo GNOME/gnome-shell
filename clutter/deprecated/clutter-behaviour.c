@@ -232,7 +232,7 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
    * (the "alpha") depending on the time. Each time the alpha value changes
    * the alpha-notify virtual function is called.
    *
-   * Since: 0.2
+   *
    *
    * Deprecated: 1.6
    */
@@ -257,7 +257,7 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
    * The ::apply signal is emitted each time the behaviour is applied
    * to an actor.
    *
-   * Since: 0.4
+   *
    *
    * Deprecated: 1.6
    */
@@ -278,7 +278,7 @@ clutter_behaviour_class_init (ClutterBehaviourClass *klass)
    * The ::removed signal is emitted each time a behaviour is not applied
    * to an actor anymore.
    *
-   * Since: 0.4
+   *
    *
    * Deprecated: 1.6
    */
@@ -316,7 +316,7 @@ remove_actor_on_destroy (ClutterActor     *actor,
  * Applies @behave to @actor.  This function adds a reference on
  * the actor.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */
@@ -357,7 +357,7 @@ clutter_behaviour_apply (ClutterBehaviour *behave,
  *
  * Return value: TRUE if actor has behaviour. FALSE otherwise.
  *
- * Since: 0.4
+ *
  *
  * Deprecated: 1.6
  */
@@ -379,7 +379,7 @@ clutter_behaviour_is_applied (ClutterBehaviour *behave,
  * Removes @actor from the list of #ClutterActor<!-- -->s to which
  * @behave applies.  This function removes a reference on the actor.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */
@@ -422,7 +422,7 @@ clutter_behaviour_remove (ClutterBehaviour *behave,
  *
  * Return value: The number of applied actors 
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */
@@ -443,7 +443,7 @@ clutter_behaviour_get_n_actors (ClutterBehaviour *behave)
  *
  * Return value: (transfer none): A Clutter actor or NULL if @index_ is invalid.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */
@@ -465,7 +465,7 @@ clutter_behaviour_get_nth_actor (ClutterBehaviour *behave,
  *
  * Calls @func for every actor driven by @behave.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */
@@ -498,7 +498,7 @@ clutter_behaviour_actors_foreach (ClutterBehaviour            *behave,
  * Return value: (transfer none): a #ClutterAlpha object, or %NULL if no alpha
  *   object has been bound to this behaviour.
  * 
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */
@@ -552,7 +552,7 @@ notify_cb (GObject          *object,
  * If @alpha is not %NULL, the #ClutterBehaviour will take ownership
  * of the #ClutterAlpha instance.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */
@@ -614,7 +614,7 @@ clutter_behaviour_set_alpha (ClutterBehaviour *behave,
  *   actors. You should free the returned list with g_slist_free() when
  *   finished using it.
  * 
- * Since: 0.2
+ *
  *
  * Deprecated: 1.6
  */
@@ -640,7 +640,7 @@ clutter_behaviour_get_actors (ClutterBehaviour *behave)
  *
  * Removes every actor from the list that @behave holds.
  *
- * Since: 0.4
+ *
  *
  * Deprecated: 1.6
  */

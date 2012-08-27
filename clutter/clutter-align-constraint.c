@@ -272,7 +272,7 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
    * The #ClutterActor must not be a child or a grandchild of the actor
    * using the constraint.
    *
-   * Since: 1.4
+   *
    */
   obj_props[PROP_SOURCE] =
     g_param_spec_object ("source",
@@ -286,7 +286,7 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
    *
    * The axis to be used to compute the alignment
    *
-   * Since: 1.4
+   *
    */
   obj_props[PROP_ALIGN_AXIS] =
     g_param_spec_enum ("align-axis",
@@ -306,7 +306,7 @@ clutter_align_constraint_class_init (ClutterAlignConstraintClass *klass)
    * 1.0 means right; with a value of %CLUTTER_ALIGN_Y_AXIS, 0.0 means top
    * and 1.0 means bottom.
    *
-   * Since: 1.4
+   *
    */
   obj_props[PROP_FACTOR] =
     g_param_spec_float ("factor",
@@ -344,7 +344,7 @@ clutter_align_constraint_init (ClutterAlignConstraint *self)
  *
  * Return value: the newly created #ClutterAlignConstraint
  *
- * Since: 1.4
+ *
  */
 ClutterConstraint *
 clutter_align_constraint_new (ClutterActor     *source,
@@ -367,7 +367,7 @@ clutter_align_constraint_new (ClutterActor     *source,
  *
  * Sets the source of the alignment constraint
  *
- * Since: 1.4
+ *
  */
 void
 clutter_align_constraint_set_source (ClutterAlignConstraint *align,
@@ -435,7 +435,7 @@ clutter_align_constraint_set_source (ClutterAlignConstraint *align,
  * Return value: (transfer none): the #ClutterActor used as the source
  *   of the alignment
  *
- * Since: 1.4
+ *
  */
 ClutterActor *
 clutter_align_constraint_get_source (ClutterAlignConstraint *align)
@@ -452,7 +452,7 @@ clutter_align_constraint_get_source (ClutterAlignConstraint *align)
  *
  * Sets the axis to which the alignment refers to
  *
- * Since: 1.4
+ *
  */
 void
 clutter_align_constraint_set_align_axis (ClutterAlignConstraint *align,
@@ -479,7 +479,7 @@ clutter_align_constraint_set_align_axis (ClutterAlignConstraint *align,
  *
  * Return value: the alignment axis
  *
- * Since: 1.4
+ *
  */
 ClutterAlignAxis
 clutter_align_constraint_get_align_axis (ClutterAlignConstraint *align)
@@ -507,7 +507,7 @@ clutter_align_constraint_get_align_axis (ClutterAlignConstraint *align)
  * %CLUTTER_ALIGN_Y_AXIS). A value of 0.5 aligns in the middle in either
  * cases
  *
- * Since: 1.4
+ *
  */
 void
 clutter_align_constraint_set_factor (ClutterAlignConstraint *align,
@@ -531,7 +531,7 @@ clutter_align_constraint_set_factor (ClutterAlignConstraint *align,
  *
  * Return value: the alignment factor
  *
- * Since: 1.4
+ *
  */
 gfloat
 clutter_align_constraint_get_factor (ClutterAlignConstraint *align)

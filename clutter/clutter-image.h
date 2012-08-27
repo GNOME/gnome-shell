@@ -46,7 +46,7 @@ G_BEGIN_DECLS
  *
  * Error domain for the #ClutterImageError enumeration.
  *
- * Since: 1.10
+ *
  */
 #define CLUTTER_IMAGE_ERROR             (clutter_image_error_quark ())
 
@@ -61,7 +61,7 @@ typedef struct _ClutterImageClass      ClutterImageClass;
  *
  * Error enumeration for #ClutterImage.
  *
- * Since: 1.10
+ *
  */
 typedef enum {
   CLUTTER_IMAGE_ERROR_INVALID_DATA
@@ -74,7 +74,7 @@ typedef enum {
  * private data and should only be accessed using the provided
  * API.
  *
- * Since: 1.10
+ *
  */
 struct _ClutterImage
 {
@@ -90,7 +90,7 @@ struct _ClutterImage
  * The <structname>ClutterImageClass</structname> structure contains
  * private data.
  *
- * Since: 1.10
+ *
  */
 struct _ClutterImageClass
 {

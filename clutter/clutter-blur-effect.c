@@ -269,7 +269,7 @@ clutter_blur_effect_init (ClutterBlurEffect *self)
  *
  * Return value: the newly created #ClutterBlurEffect or %NULL
  *
- * Since: 1.4
+ *
  */
 ClutterEffect *
 clutter_blur_effect_new (void)

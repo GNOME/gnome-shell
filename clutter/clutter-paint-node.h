@@ -82,7 +82,7 @@ void                    clutter_paint_node_add_primitive                (Clutter
  * Evaluates to %TRUE if the @value has been initialized to hold
  * a #ClutterPaintNode.
  *
- * Since: 1.10
+ *
  */
 #define CLUTTER_VALUE_HOLDS_PAINT_NODE(value)   (G_VALUE_HOLDS (value, CLUTTER_TYPE_PAINT_NODE))
 

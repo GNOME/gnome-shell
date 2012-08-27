@@ -407,7 +407,7 @@ clutter_drop_action_class_init (ClutterDropActionClass *klass)
    *
    * Return value: %TRUE if the drop is accepted, and %FALSE otherwise
    *
-   * Since: 1.8
+   *
    */
   drop_signals[CAN_DROP] =
     g_signal_new (I_("can-drop"),
@@ -429,7 +429,7 @@ clutter_drop_action_class_init (ClutterDropActionClass *klass)
    * The ::over-in signal is emitted when the dragged actor crosses
    * into @actor.
    *
-   * Since: 1.8
+   *
    */
   drop_signals[OVER_IN] =
     g_signal_new (I_("over-in"),
@@ -449,7 +449,7 @@ clutter_drop_action_class_init (ClutterDropActionClass *klass)
    * The ::over-out signal is emitted when the dragged actor crosses
    * outside @actor.
    *
-   * Since: 1.8
+   *
    */
   drop_signals[OVER_OUT] =
     g_signal_new (I_("over-out"),
@@ -472,7 +472,7 @@ clutter_drop_action_class_init (ClutterDropActionClass *klass)
    * on @actor. This signal is only emitted if at least an handler of
    * #ClutterDropAction::can-drop returns %TRUE.
    *
-   * Since: 1.8
+   *
    */
   drop_signals[DROP] =
     g_signal_new (I_("drop"),
@@ -500,7 +500,7 @@ clutter_drop_action_class_init (ClutterDropActionClass *klass)
    * After the ::drop-cancel signal is fired the active drag is
    * terminated.
    *
-   * Since: 1.12
+   *
    */
   drop_signals[DROP_CANCEL] =
     g_signal_new (I_("drop-cancel"),
@@ -531,7 +531,7 @@ clutter_drop_action_init (ClutterDropAction *self)
  *
  * Return value: the newly created #ClutterDropAction
  *
- * Since: 1.8
+ *
  */
 ClutterAction *
 clutter_drop_action_new (void)

@@ -75,7 +75,7 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    *
    * The location of a media file, expressed as a valid URI.
    *
-   * Since: 0.2
+   *
    *
    * Deprecated: 1.12
    */
@@ -92,7 +92,7 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    *
    * Whether the #ClutterMedia actor is playing.
    *
-   * Since: 0.2
+   *
    *
    * Deprecated: 1.12
    */
@@ -110,7 +110,7 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    * The current progress of the playback, as a normalized
    * value between 0.0 and 1.0.
    *
-   * Since: 1.0
+   *
    *
    * Deprecated: 1.12
    */
@@ -127,7 +127,7 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    *
    * The location of a subtitle file, expressed as a valid URI.
    *
-   * Since: 1.2
+   *
    *
    * Deprecated: 1.12
    */
@@ -146,7 +146,7 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    * follow the same grammar as the one recognized by
    * pango_font_description_from_string().
    *
-   * Since: 1.2
+   *
    *
    * Deprecated: 1.12
    */
@@ -164,7 +164,7 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    * The volume of the audio, as a normalized value between
    * 0.0 and 1.0.
    *
-   * Since: 1.0
+   *
    *
    * Deprecated: 1.12
    */
@@ -181,7 +181,7 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    *
    * Whether the current stream is seekable.
    *
-   * Since: 0.2
+   *
    *
    * Deprecated: 1.12
    */
@@ -199,7 +199,7 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    * The fill level of the buffer for the current stream,
    * as a value between 0.0 and 1.0.
    *
-   * Since: 1.0
+   *
    *
    * Deprecated: 1.12
    */
@@ -216,7 +216,7 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    *
    * The duration of the current stream, in seconds
    *
-   * Since: 0.2
+   *
    *
    * Deprecated: 1.12
    */
@@ -233,7 +233,7 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    *
    * The ::eos signal is emitted each time the media stream ends.
    *
-   * Since: 0.2
+   *
    *
    * Deprecated: 1.12
    */
@@ -252,7 +252,7 @@ clutter_media_default_init (ClutterMediaInterface *iface)
    *
    * The ::error signal is emitted each time an error occurred.
    *
-   * Since: 0.2
+   *
    *
    * Deprecated: 1.12
    */
@@ -275,7 +275,7 @@ clutter_media_default_init (ClutterMediaInterface *iface)
  *
  * Sets the URI of @media to @uri.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -297,7 +297,7 @@ clutter_media_set_uri (ClutterMedia *media,
  * Return value: the URI of the media stream. Use g_free()
  *   to free the returned string
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -326,7 +326,7 @@ clutter_media_get_uri (ClutterMedia *media)
  * current state with clutter_media_get_playing(). ClutterGstVideoTexture
  * in clutter-gst is an example of such an asynchronous implementation.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -347,7 +347,7 @@ clutter_media_set_playing (ClutterMedia *media,
  *
  * Return value: %TRUE if playing, %FALSE if stopped.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -371,7 +371,7 @@ clutter_media_get_playing (ClutterMedia *media)
  * Sets the playback progress of @media. The @progress is
  * a normalized value between 0.0 (begin) and 1.0 (end).
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -392,7 +392,7 @@ clutter_media_set_progress (ClutterMedia *media,
  *
  * Return value: the playback progress, between 0.0 and 1.0
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -415,7 +415,7 @@ clutter_media_get_progress (ClutterMedia *media)
  *
  * Sets the location of a subtitle file to display while playing @media.
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -437,7 +437,7 @@ clutter_media_set_subtitle_uri (ClutterMedia *media,
  * Return value: the URI of the subtitle file. Use g_free()
  *   to free the returned string
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -467,7 +467,7 @@ clutter_media_get_subtitle_uri (ClutterMedia *media)
  *   clutter_media_set_subtitle_font_name (media, "Sans 24pt");
  * ]|
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -489,7 +489,7 @@ clutter_media_set_subtitle_font_name (ClutterMedia *media,
  * Return value: a string containing the font name. Use g_free()
  *   to free the returned string
  *
- * Since: 1.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -512,7 +512,7 @@ clutter_media_get_subtitle_font_name (ClutterMedia *media)
  *
  * Sets the playback volume of @media to @volume.
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -533,7 +533,7 @@ clutter_media_set_audio_volume (ClutterMedia *media,
  *
  * Return value: The playback volume between 0.0 and 1.0
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -557,7 +557,7 @@ clutter_media_get_audio_volume (ClutterMedia *media)
  *
  * Return value: %TRUE if @media can seek, %FALSE otherwise.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -581,7 +581,7 @@ clutter_media_get_can_seek (ClutterMedia *media)
  *
  * Return value: the fill level, between 0.0 and 1.0
  *
- * Since: 1.0
+ *
  *
  * Deprecated: 1.12
  */
@@ -605,7 +605,7 @@ clutter_media_get_buffer_fill (ClutterMedia *media)
  *
  * Return value: the duration of the media stream, in seconds
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.12
  */
@@ -630,7 +630,7 @@ clutter_media_get_duration (ClutterMedia *media)
  *
  * Sets the source of @media using a file path.
  *
- * Since: 0.2
+ *
  *
  * Deprecated: 1.12
  */

@@ -44,7 +44,7 @@ G_BEGIN_DECLS
  * <structname>ClutterPathConstraint</structname> is an opaque structure
  * whose members cannot be directly accessed
  *
- * Since: 1.6
+ *
  */
 typedef struct _ClutterPathConstraint           ClutterPathConstraint;
 typedef struct _ClutterPathConstraintClass      ClutterPathConstraintClass;

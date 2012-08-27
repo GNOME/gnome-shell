@@ -86,7 +86,7 @@ clutter_glx_texture_pixmap_class_init (ClutterGLXTexturePixmapClass *klass)
  * Deprecated: 1.6: Use cogl_texture_pixmap_x11_is_using_tfp_extension()
  *   on the texture handle instead.
  *
- * Since: 0.8
+ *
  */
 gboolean
 clutter_glx_texture_pixmap_using_extension (ClutterGLXTexturePixmap *texture)
@@ -109,7 +109,7 @@ clutter_glx_texture_pixmap_using_extension (ClutterGLXTexturePixmap *texture)
  *
  * Return value: A new #ClutterGLXTexturePixmap bound to the given X Pixmap
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.6: Use clutter_x11_texture_pixmap_new_with_pixmap() instead
  */
@@ -129,7 +129,7 @@ clutter_glx_texture_pixmap_new_with_pixmap (Pixmap pixmap)
  *
  * Return value: A new #ClutterGLXTexturePixmap bound to the given X window
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.6: Use clutter_x11_texture_pixmap_new_with_window() instead
  */
@@ -148,7 +148,7 @@ clutter_glx_texture_pixmap_new_with_window (Window window)
  *
  * Return value: A new #ClutterGLXTexturePixmap
  *
- * Since: 0.8
+ *
  *
  * Deprecated: 1.6: Use clutter_x11_texture_pixmap_new() instead
  */

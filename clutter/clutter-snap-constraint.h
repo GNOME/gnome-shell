@@ -43,7 +43,7 @@ G_BEGIN_DECLS
  * <structname>ClutterSnapConstraint</structname> is an opaque structure
  * whose members cannot be directly accesses
  *
- * Since: 1.6
+ *
  */
 typedef struct _ClutterSnapConstraint           ClutterSnapConstraint;
 typedef struct _ClutterSnapConstraintClass      ClutterSnapConstraintClass;
