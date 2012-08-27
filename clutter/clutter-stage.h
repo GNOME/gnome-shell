@@ -89,7 +89,7 @@ struct _ClutterStageClass
 
   /*< private >*/
   /* padding for future expansion */
-  gpointer _padding_dummy[31];
+  gpointer _padding_dummy[16];
 };
 
 /**
