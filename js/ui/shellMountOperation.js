@@ -361,12 +361,12 @@ const ShellMountPasswordDialog = new Lang.Class({
         if (strings[1])
             description.set_text(strings[1]);
 
-        this._passwordBox = new St.BoxLayout({ vertical: false });
+        this._passwordBox = new St.BoxLayout({ vertical: false, style_class: 'prompt-dialog-password-box' });
         this._messageBox.add(this._passwordBox);
 
         this._passwordLabel = new St.Label(({ style_class: 'prompt-dialog-password-label',
                                               text: _("Passphrase") }));
-        this._passwordBox.add(this._passwordLabel);
+        this._passwordBox.add(this._passwordLabel, { y_fill: false, y_align: St.Align.MIDDLE });
 
         this._passwordEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
                                              text: "",
