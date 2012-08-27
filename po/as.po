@@ -26,7 +26,7 @@ msgstr "GNOME শ্বেল"
 
 #: ../data/gnome-shell.desktop.in.in.h:2
 msgid "Window management and application launching"
-msgstr "উইন্ডো ব্যৱস্থাপনা আৰু অনুপ্ৰয়োগৰ লঞ্চ"
+msgstr "উইন্ডো ব্যৱস্থাপনা আৰু এপ্লিকেচনৰ লঞ্চ"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
 #: ../js/extensionPrefs/main.js:152
@@ -69,7 +69,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "Whether to collect stats about applications usage"
-msgstr "অনুপ্ৰয়োগ ব্যৱহাৰ বিষয়ে পৰিসংখ্যা সংগ্ৰহ কৰা হব নে"
+msgstr "এপ্লিকেচন ব্যৱহাৰ বিষয়ে পৰিসংখ্যা সংগ্ৰহ কৰা হব নে"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:6
 msgid ""
@@ -78,20 +78,20 @@ msgid ""
 "want to disable this for privacy reasons. Please note that doing so won't "
 "remove already saved data."
 msgstr ""
-"শ্বেলে সাধাৰণত সক্ৰিয় অনুপ্ৰয়োগসমূহ মনিটৰ কৰে যাতে সকলোতকৈ অধিক ব্যৱহৃতসমূহ "
+"শ্বেলে সাধাৰণত সক্ৰিয় এপ্লিকেচনসমূহ মনিটৰ কৰে যাতে সকলোতকৈ অধিক ব্যৱহৃতসমূহ "
 "(উদাহৰনস্বৰুপে লঞ্চাৰসমূহত) ক দেখুৱাব পাৰে। যত এই তথ্য গোপন ৰখা হব, আপুনি ইয়াক "
 "গোপনীয়তা কাৰণসমূহৰ কাৰণে অসামৰ্থবান কৰিব পাৰে। অনুগ্ৰহ কৰি মন কৰিব যে এনেকুৱা "
 "কৰাত ইতিমধ্যে সংৰক্ষীত তথ্য আতৰি নাযায়।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
-msgstr "পছন্দৰ অনুপ্ৰয়োগসমূহৰ কাৰণে ডেস্কটপ নথিপত্ৰ IDসমূহৰ তালিকা"
+msgstr "পছন্দৰ এপ্লিকেচনসমূহৰ কাৰণে ডেস্কটপ ফাইল IDসমূহৰ তালিকা"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:8
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
-msgstr "এই পৰিচয়কসমূহৰ লগত আনুষংগিক অনুপ্ৰয়োগসমূহ পছন্দৰ স্থানত প্ৰদৰ্শীত কৰা হব।"
+msgstr "এই পৰিচয়কসমূহৰ লগত আনুষংগিক এপ্লিকেচনসমূহ পছন্দৰ স্থানত প্ৰদৰ্শীত কৰা হব।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "disabled OpenSearch providers"
@@ -131,11 +131,11 @@ msgstr "যদি সত্য, ISO সপ্তাহ তাৰিখক কে
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid "Keybinding to open the application menu"
-msgstr "অনুপ্ৰয়োগ মেনু খোলিবলে Keybinding"
+msgstr "এপ্লিকেচন মেনু খোলিবলে Keybinding"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Keybinding to open the application menu."
-msgstr "অনুপ্ৰয়োগ মেনু খোলিবলে Keybinding।"
+msgstr "এপ্লিকেচন মেনু খোলিবলে Keybinding।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "Keybinding to toggle the visibility of the message tray"
@@ -194,7 +194,7 @@ msgstr ""
 "ৰেকৰ্ডিংসমূহ এনক'ড কৰোতে ব্যৱহৃত GStreamer পাইপলাইন সংহতি কৰে। ই gst-launch ৰ "
 "কাৰণে ব্যৱহৃত বাক্যবিন্যাস অনুকৰন কৰে। পাইপলাইনৰ এটা অসংযোগিত চিঙ্ক পেড থাকিব লাগে "
 "যত ৰেকৰ্ড কৰা ভিডিঅ' ৰেকৰ্ড কৰা হয়। ইয়াৰ সাধাৰণত এটা অসংযোগিত উৎস পেড থাকিব; "
-"সেই পেডৰ পৰা আউটপুট এটা আউটপুট নথিপত্ৰলে লিখা হব। যি কি নহওক পাইপলাইনে নিজৰ "
+"সেই পেডৰ পৰা আউটপুট এটা আউটপুট ফাইললে লিখা হব। যি কি নহওক পাইপলাইনে নিজৰ "
 "আউটপুটৰ যত্ন লব পাৰে - ইয়াৰ হওতো আউটপুটক shout2send অথবা সমসাময়িকৰে এটা icecast "
 "চাৰ্ভাৰত পঠাবলে ব্যৱহাৰ হব পাৰে। যেতিয়া এটা ৰিক্ত মানলে অসংহিত বা সংহিত, "
 "অবিকল্পিত পাইপলাইন ব্যৱহাৰ কৰা হব। এইটো বৰ্তমানত 'vp8enc quality=8 speed=6 "
@@ -211,9 +211,9 @@ msgid ""
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
-"ৰেকৰ্ড কৰা screencasts ৰ কাৰণে নথিপত্ৰ নাম বৰ্তমান তাৰিখৰ উপৰত ভিত্তি কৰি এটা "
-"অবিকল্প নথিপত্ৰ নাম হব, আৰু এই সম্প্ৰসাৰন ব্যৱহাৰ কৰিব। ইয়াক এটা ভিন্ন অন্তৰ্ভুক্তক "
-"বিন্যাসত ৰেকৰ্ড কৰোতে পৰিৱৰ্তন কৰিব লাগিব।"
+"ৰেকৰ্ড কৰা screencasts ৰ কাৰণে ফাইল নাম বৰ্তমান তাৰিখৰ উপৰত ভিত্তি কৰি এটা "
+"অবিকল্প ফাইল নাম হব, আৰু এই সম্প্ৰসাৰন ব্যৱহাৰ কৰিব। ইয়াক এটা ভিন্ন অন্তৰ্ভুক্তক "
+"বিন্যাসত ৰেকৰ্ড কৰোতে পৰিবৰ্তন কৰিব লাগিব।"
 
 #: ../js/extensionPrefs/main.js:124
 #, c-format
@@ -498,7 +498,7 @@ msgstr "অহা সপ্তাহ"
 #: ../js/ui/dash.js:241
 #| msgid "Applications"
 msgid "Show Applications"
-msgstr "অনুপ্ৰয়োগসমূহ দেখুৱাওক"
+msgstr "এপ্লিকেচনসমূহ দেখুৱাওক"
 
 #: ../js/ui/dateMenu.js:94
 msgid "Date and Time Settings"
@@ -528,7 +528,7 @@ msgstr "লগ আউট কৰক"
 
 #: ../js/ui/endSessionDialog.js:62
 msgid "Click Log Out to quit these applications and log out of the system."
-msgstr "এই অনুপ্ৰয়োগসমূহ প্ৰস্থান কৰি চিস্টেমৰ পৰা লগ আউট হবলে লগ আউট ক্লিক কৰক।"
+msgstr "এই এপ্লিকেচনসমূহ প্ৰস্থান কৰি চিস্টেমৰ পৰা লগ আউট হবলে লগ আউট ক্লিক কৰক।"
 
 #: ../js/ui/endSessionDialog.js:64
 #, c-format
@@ -560,7 +560,7 @@ msgstr "পাৱাৰ অফ"
 
 #: ../js/ui/endSessionDialog.js:81
 msgid "Click Power Off to quit these applications and power off the system."
-msgstr "এই অনুপ্ৰয়োগসমূহক প্ৰস্থান কৰি চিস্টেম পাৱাৰ অফ কৰিবলে পাৱাৰ অফ ক্লিক কৰক।"
+msgstr "এই এপ্লিকেচনসমূহক প্ৰস্থান কৰি চিস্টেম পাৱাৰ অফ কৰিবলে পাৱাৰ অফ ক্লিক কৰক।"
 
 #: ../js/ui/endSessionDialog.js:83
 #, c-format
@@ -590,7 +590,7 @@ msgstr "পুনৰাম্ভ কৰক"
 
 #: ../js/ui/endSessionDialog.js:98
 msgid "Click Restart to quit these applications and restart the system."
-msgstr "এই অনুপ্ৰয়োগসমূহক প্ৰস্থান কৰি চিস্টেম পুনৰাম্ভ কৰিবলে পুনৰাম্ভ ক্লিক কৰক।"
+msgstr "এই এপ্লিকেচনসমূহক প্ৰস্থান কৰি চিস্টেম পুনৰাম্ভ কৰিবলে পুনৰাম্ভ ক্লিক কৰক।"
 
 #: ../js/ui/endSessionDialog.js:100
 #, c-format
@@ -998,7 +998,7 @@ msgstr "দৃশ্যমানতা"
 
 #: ../js/ui/status/bluetooth.js:58
 msgid "Send Files to Device..."
-msgstr "নথিপত্ৰসমূহক ডিভাইচলে পঠাওক..."
+msgstr "ফাইলসমূহক ডিভাইচলে পঠাওক..."
 
 #: ../js/ui/status/bluetooth.js:59
 msgid "Set up a New Device..."
@@ -1028,11 +1028,11 @@ msgstr "সংযোগ কৰা হৈ আছে..."
 
 #: ../js/ui/status/bluetooth.js:243
 msgid "Send Files..."
-msgstr "নথিপত্ৰসমূহ পঠাওক..."
+msgstr "ফাইলসমূহ পঠাওক..."
 
 #: ../js/ui/status/bluetooth.js:248
 msgid "Browse Files..."
-msgstr "নথিপত্ৰসমূহ ব্ৰাউছ কৰক..."
+msgstr "ফাইলসমূহ ব্ৰাউছ কৰক..."
 
 #: ../js/ui/status/bluetooth.js:257
 msgid "Error browsing device"
@@ -1358,7 +1358,7 @@ msgstr "কল"
 #. We got the TpContact
 #: ../js/ui/telepathyClient.js:304
 msgid "File Transfer"
-msgstr "নথিপত্ৰ স্থানান্তৰ"
+msgstr "ফাইল স্থানান্তৰ"
 
 #: ../js/ui/telepathyClient.js:385
 msgid "Subscription request"
@@ -1651,7 +1651,7 @@ msgstr "উইন্ডোসমূহ"
 
 #: ../js/ui/viewSelector.js:92
 msgid "Applications"
-msgstr "অনুপ্ৰয়োগসমূহ"
+msgstr "এপ্লিকেচনসমূহ"
 
 #: ../js/ui/viewSelector.js:96 ../src/shell-util.c:250
 msgid "Search"
@@ -1757,7 +1757,7 @@ msgstr "ঘৰ"
 #. * nautilus
 #: ../src/shell-util.c:104
 msgid "File System"
-msgstr "নথিপত্ৰ প্ৰণালী"
+msgstr "ফাইল চিস্টেম"
 
 #. Translators: the first string is the name of a gvfs
 #. * method, and the second string is a path. For
