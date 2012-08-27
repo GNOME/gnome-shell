@@ -233,11 +233,6 @@ function start() {
         global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
                                                 false, -1, 1);
 
-    if (sessionMode.allowExtensions) {
-        ExtensionDownloader.init();
-        ExtensionSystem.loadExtensions();
-    }
-
     if (sessionMode.hasRunDialog) {
         Meta.keybindings_set_custom_handler('panel-run-dialog', function() {
            getRunDialog().open();
@@ -286,6 +281,11 @@ function start() {
     global.screen.connect('restacked', _windowsRestacked);
 
     _nWorkspacesChanged();
+
+    if (sessionMode.allowExtensions) {
+        ExtensionDownloader.init();
+        ExtensionSystem.loadExtensions();
+    }
 }
 
 let _workspaces = [];
