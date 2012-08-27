@@ -71,7 +71,6 @@ const ShellInfo = new Lang.Class({
         if (this._source.notifications.length == 0) {
             notification = new MessageTray.Notification(this._source, text, null);
             notification.setTransient(true);
-            notification.setShowWhenLocked(true);
         } else {
             notification = this._source.notifications[0];
             notification.update(text, null, { clear: true });

@@ -319,7 +319,6 @@ const Notification = new Lang.Class({
         this.isTransient = false;
         this.expanded = false;
         this.focused = false;
-        this.showWhenLocked = false;
         this.acknowledged = false;
         this._destroyed = false;
         this._useActionIcons = false;
@@ -710,14 +709,6 @@ const Notification = new Lang.Class({
 
     setTransient: function(isTransient) {
         this.isTransient = isTransient;
-    },
-
-    setShowWhenLocked: function(show) {
-        if (show && !this.isTransient) {
-            throw new Error('ShowWhenLocked can only be set on a transient notification');
-        }
-
-        this.showWhenLocked = show;
     },
 
     setUseActionIcons: function(useIcons) {
@@ -1904,14 +1895,10 @@ const MessageTray = new Lang.Class({
     // at the present time.
     _updateState: function() {
         // Notifications
-        let notificationQueue = this._notificationQueue.filter(Lang.bind(this, function(notification) {
-            return notification.showWhenLocked || Main.sessionMode.hasNotifications;
-        }));
+        let notificationQueue = this._notificationQueue;
         let notificationUrgent = notificationQueue.length > 0 && notificationQueue[0].urgency == Urgency.CRITICAL;
-        // notificationsLimited is false when the screen is locked, because they go through
-        // different filtering, and we want to show non urgent messages at times
-        let notificationsLimited = (this._busy || this._inFullscreen) && Main.sessionMode.hasNotifications;
-        let notificationsPending = notificationQueue.length > 0 && (!notificationsLimited || notificationUrgent);
+        let notificationsLimited = this._busy || this._inFullscreen;
+        let notificationsPending = notificationQueue.length > 0 && (!notificationsLimited || notificationUrgent) && Main.sessionMode.hasNotifications;
         let nextNotification = notificationQueue.length > 0 ? notificationQueue[0] : null;
         let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;
         let notificationExpanded = this._notification && this._notification.expanded;
@@ -1921,15 +1908,13 @@ const MessageTray = new Lang.Class({
                                   !this._pointerInTray &&
                                   !this._locked &&
                                   !(this._pointerInKeyboard && notificationExpanded);
-        let notificationLockedOut = !Main.sessionMode.hasNotifications && (this._notification && !this._notification.showWhenLocked);
-        // TODO: how to deal with locked out notiifcations if want to keep showing notifications?!
+        let notificationLockedOut = !Main.sessionMode.hasNotifications && this._notification;
         let notificationMustClose = this._notificationRemoved || notificationLockedOut || (notificationExpired && this._userActiveWhileNotificationShown) || this._notificationClosed;
         let canShowNotification = notificationsPending && this._summaryState == State.HIDDEN;
 
         if (this._notificationState == State.HIDDEN) {
             if (canShowNotification) {
-                this._showNotification(nextNotification);
-                this._notificationQueue.splice(this._notificationQueue.indexOf(nextNotification), 1);
+                this._showNotification();
             }
         } else if (this._notificationState == State.SHOWN) {
             if (notificationMustClose)
@@ -2123,8 +2108,8 @@ const MessageTray = new Lang.Class({
         this._updateState();
     },
 
-    _showNotification: function(notification) {
-        this._notification = notification;
+    _showNotification: function() {
+        this._notification = this._notificationQueue.shift();
         this._userActiveWhileNotificationShown = this.idleMonitor.get_idletime() <= IDLE_TIME;
         this._idleMonitorWatchId = this.idleMonitor.add_watch(IDLE_TIME,
                                                               Lang.bind(this, this._onIdleMonitorWatch));

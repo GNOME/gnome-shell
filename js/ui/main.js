@@ -433,7 +433,6 @@ function notify(msg, details) {
     messageTray.add(source);
     let notification = new MessageTray.Notification(source, msg, details);
     notification.setTransient(true);
-    notification.setShowWhenLocked(true);
     source.notify(notification);
 }
 
