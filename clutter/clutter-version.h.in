@@ -99,13 +99,6 @@ G_BEGIN_DECLS
 #define CLUTTER_MICRO_VERSION   (@CLUTTER_MICRO_VERSION@)
 
 /**
- * CLUTTER_VERSION:
- *
- * The full version of the Clutter library, like 1.2.3
- */
-#define CLUTTER_VERSION         @CLUTTER_VERSION@
-
-/**
  * CLUTTER_VERSION_S:
  *
  * The full version of the Clutter library, in string form (suited for
@@ -114,105 +107,23 @@ G_BEGIN_DECLS
 #define CLUTTER_VERSION_S       "@CLUTTER_VERSION@"
 
 /**
- * CLUTTER_VERSION_HEX:
+ * CLUTTER_VERSION:
  *
  * Numerically encoded version of the Clutter library, like 0x010203
  */
-#define CLUTTER_VERSION_HEX     ((CLUTTER_MAJOR_VERSION << 24) | \
+#define CLUTTER_VERSION         ((CLUTTER_MAJOR_VERSION << 24) | \
                                  (CLUTTER_MINOR_VERSION << 16) | \
                                  (CLUTTER_MICRO_VERSION << 8))
 
 /* XXX - Every new stable minor release bump should add a macro here */
 
 /**
- * CLUTTER_VERSION_1_0:
+ * CLUTTER_VERSION_2_0:
  *
  * A macro that evaluates to the 1.0 version of Clutter, in a format
  * that can be used by the C pre-processor.
- *
- * Since: 1.10
  */
 #define CLUTTER_VERSION_1_0     (G_ENCODE_VERSION (1, 0))
-
-/**
- * CLUTTER_VERSION_1_2:
- *
- * A macro that evaluates to the 1.2 version of Clutter, in a format
- * that can be used by the C pre-processor.
- *
- * Since: 1.10
- */
-#define CLUTTER_VERSION_1_2     (G_ENCODE_VERSION (1, 2))
-
-/**
- * CLUTTER_VERSION_1_4:
- *
- * A macro that evaluates to the 1.4 version of Clutter, in a format
- * that can be used by the C pre-processor.
- *
- * Since: 1.10
- */
-#define CLUTTER_VERSION_1_4     (G_ENCODE_VERSION (1, 4))
-
-/**
- * CLUTTER_VERSION_1_6:
- *
- * A macro that evaluates to the 1.6 version of Clutter, in a format
- * that can be used by the C pre-processor.
- *
- * Since: 1.10
- */
-#define CLUTTER_VERSION_1_6     (G_ENCODE_VERSION (1, 6))
-
-/**
- * CLUTTER_VERSION_1_8:
- *
- * A macro that evaluates to the 1.8 version of Clutter, in a format
- * that can be used by the C pre-processor.
- *
- * Since: 1.10
- */
-#define CLUTTER_VERSION_1_8     (G_ENCODE_VERSION (1, 8))
-
-/**
- * CLUTTER_VERSION_1_10:
- *
- * A macro that evaluates to the 1.10 version of Clutter, in a format
- * that can be used by the C pre-processor.
- *
- * Since: 1.10
- */
-#define CLUTTER_VERSION_1_10    (G_ENCODE_VERSION (1, 10))
-
-/**
- * CLUTTER_VERSION_1_12:
- *
- * A macro that evaluates to the 1.12 version of Clutter, in a format
- * that can be used by the C pre-processor.
- *
- * Since: 1.12
- */
-#define CLUTTER_VERSION_1_12    (G_ENCODE_VERSION (1, 12))
-
-/**
- * CLUTTER_VERSION_1_14:
- *
- * A macro that evaluates to the 1.14 version of Clutter, in a format
- * that can be used by the C pre-processor.
- *
- * Since: 1.14
- */
-#define CLUTTER_VERSION_1_14    (G_ENCODE_VERSION (1, 14))
-
-/**
- * CLUTTER_VERSION_1_16:
- *
- * A macro that evaluates to the 1.16 version of Clutter, in a format
- * that can be used by the C pre-processor.
- *
- * Since: 1.14
- */
-#define CLUTTER_VERSION_1_16    (G_ENCODE_VERSION (1, 16))
 
 /* evaluates to the current stable version; for development cycles,
  * this means the next stable target
@@ -243,63 +154,6 @@ G_BEGIN_DECLS
         (CLUTTER_MAJOR_VERSION > (major) || \
          (CLUTTER_MAJOR_VERSION == (major) && CLUTTER_MINOR_VERSION > (minor)) || \
          (CLUTTER_MAJOR_VERSION == (major) && CLUTTER_MINOR_VERSION == (minor) && CLUTTER_MICRO_VERSION >= (micro)))
-
-/* annotation for exported variables
- *
- * XXX: this has to be defined here because clutter-macro.h imports this
- * header file.
- */
-#ifdef _MSC_VER
-# ifdef CLUTTER_COMPILATION
-#  define CLUTTER_VAR __declspec(dllexport)
-# else
-#  define CLUTTER_VAR extern __declspec(dllimport)
-# endif
-#else
-# define CLUTTER_VAR extern
-#endif
-
-/**
- * clutter_major_version:
- *
- * The major component of the Clutter library version, e.g. 1 if the version
- * is 1.2.3
- *
- * This value can be used for run-time version checks
- *
- * For a compile-time check, use %CLUTTER_MAJOR_VERSION
- *
- * Since: 1.2
- */
-CLUTTER_VAR const guint clutter_major_version;
-
-/**
- * clutter_minor_version:
- *
- * The minor component of the Clutter library version, e.g. 2 if the version
- * is 1.2.3
- *
- * This value can be used for run-time version checks
- *
- * For a compile-time check, use %CLUTTER_MINOR_VERSION
- *
- * Since: 1.2
- */
-CLUTTER_VAR const guint clutter_minor_version;
-
-/**
- * clutter_micro_version:
- *
- * The micro component of the Clutter library version, e.g. 3 if the version
- * is 1.2.3
- *
- * This value can be used for run-time version checks
- *
- * For a compile-time check, use %CLUTTER_MICRO_VERSION
- *
- * Since: 1.2
- */
-CLUTTER_VAR const guint clutter_micro_version;
 
 gboolean clutter_check_version (guint major,
                                 guint minor,

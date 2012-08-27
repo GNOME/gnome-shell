@@ -170,9 +170,9 @@ guint clutter_pick_debug_flags  = 0;
 /* profile flags */
 guint clutter_profile_flags     = 0;
 
-const guint clutter_major_version = CLUTTER_MAJOR_VERSION;
-const guint clutter_minor_version = CLUTTER_MINOR_VERSION;
-const guint clutter_micro_version = CLUTTER_MICRO_VERSION;
+static const guint clutter_major_version = CLUTTER_MAJOR_VERSION;
+static const guint clutter_minor_version = CLUTTER_MINOR_VERSION;
+static const guint clutter_micro_version = CLUTTER_MICRO_VERSION;
 
 #ifdef CLUTTER_ENABLE_DEBUG
 static const GDebugKey clutter_debug_keys[] = {

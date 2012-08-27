@@ -28,58 +28,6 @@
 
 #include <clutter/clutter-version.h>
 
-/**
- * CLUTTER_FLAVOUR:
- *
- * GL Windowing system used
- *
- *
- *
- * Deprecated: 1.10: The macro evaluates to "deprecated" as Clutter can be
- *   compiled with multiple windowing system backends. Use the various
- *   CLUTTER_WINDOWING_* macros to detect the windowing system that Clutter
- *   is being compiled against, and the type check macros for the
- *   #ClutterBackend for a run-time check.
- */
-#define CLUTTER_FLAVOUR         "deprecated"
-
-/**
- * CLUTTER_COGL:
- *
- * Cogl (internal GL abstraction utility library) backend. Can be "gl" or
- * "gles" currently
- *
- *
- *
- * Deprecated: 1.10: The macro evaluates to "deprecated" as Cogl can be
- *   compiled against multiple GL implementations.
- */
-#define CLUTTER_COGL            "deprecated"
-
-/**
- * CLUTTER_STAGE_TYPE:
- *
- * The default GObject type for the Clutter stage.
- *
- *
- *
- * Deprecated: 1.10: The macro evaluates to "deprecated" as Clutter can
- *   be compiled against multiple windowing systems. You can use the
- *   CLUTTER_WINDOWING_* macros for compile-time checks, and the type
- *   check macros for run-time checks.
- */
-#define CLUTTER_STAGE_TYPE      "deprecated"
-
-/**
- * CLUTTER_NO_FPU:
- *
- * Set to 1 if Clutter was built without FPU (i.e fixed math), 0 otherwise
- *
- * Deprecated: 0.6: This macro is no longer defined (identical code is used
- *  regardless the presence of FPU).
- */
-#define CLUTTER_NO_FPU          (0)
-
 /* some structures are meant to be opaque and still be allocated on the stack;
  * in order to avoid people poking at their internals, we use this macro to
  * ensure that users don't accidentally access a struct private members.
@@ -90,6 +38,21 @@
 #define CLUTTER_PRIVATE_FIELD(x)        x
 #else
 #define CLUTTER_PRIVATE_FIELD(x)        clutter_private_ ## x
+#endif
+
+/* annotation for exported variables
+ *
+ * XXX: this has to be defined here because clutter-macro.h imports this
+ * header file.
+ */
+#ifdef _MSC_VER
+# ifdef CLUTTER_COMPILATION
+#  define CLUTTER_VAR __declspec(dllexport)
+# else
+#  define CLUTTER_VAR extern __declspec(dllimport)
+# endif
+#else
+# define CLUTTER_VAR extern
 #endif
 
 /* these macros are used to mark deprecated functions, and thus have to be
@@ -164,102 +127,18 @@
 
 /* XXX: Every new stable minor release should add a set of macros here */
 
-#if CLUTTER_VERSION_MIN_REQUIRED >= CLUTTER_VERSION_1_0
-# define CLUTTER_DEPRECATED_IN_1_0              CLUTTER_DEPRECATED
-# define CLUTTER_DEPRECATED_IN_1_0_FOR(f)       CLUTTER_DEPRECATED_FOR(f)
+#if CLUTTER_VERSION_MIN_REQUIRED >= CLUTTER_VERSION_2_0
+# define CLUTTER_DEPRECATED_IN_2_0              CLUTTER_DEPRECATED
+# define CLUTTER_DEPRECATED_IN_2_0_FOR(f)       CLUTTER_DEPRECATED_FOR(f)
 #else
-# define CLUTTER_DEPRECATED_IN_1_0
-# define CLUTTER_DEPRECATED_IN_1_0_FOR(f)
+# define CLUTTER_DEPRECATED_IN_2_0
+# define CLUTTER_DEPRECATED_IN_2_0_FOR(f)
 #endif
 
-#if CLUTTER_VERSION_MAX_ALLOWED < CLUTTER_VERSION_1_0
-# define CLUTTER_AVAILABLE_IN_1_0               CLUTTER_UNAVAILABLE(1, 0)
+#if CLUTTER_VERSION_MAX_ALLOWED < CLUTTER_VERSION_2_0
+# define CLUTTER_AVAILABLE_IN_2_0               CLUTTER_UNAVAILABLE(2, 0)
 #else
-# define CLUTTER_AVAILABLE_IN_1_0
-#endif
-
-#if CLUTTER_VERSION_MIN_REQUIRED >= CLUTTER_VERSION_1_2
-# define CLUTTER_DEPRECATED_IN_1_2              CLUTTER_DEPRECATED
-# define CLUTTER_DEPRECATED_IN_1_2_FOR(f)       CLUTTER_DEPRECATED_FOR(f)
-#else
-# define CLUTTER_DEPRECATED_IN_1_2
-# define CLUTTER_DEPRECATED_IN_1_2_FOR(f)
-#endif
-
-#if CLUTTER_VERSION_MAX_ALLOWED < CLUTTER_VERSION_1_2
-# define CLUTTER_AVAILABLE_IN_1_2               CLUTTER_UNAVAILABLE(1, 2)
-#else
-# define CLUTTER_AVAILABLE_IN_1_2
-#endif
-
-#if CLUTTER_VERSION_MIN_REQUIRED >= CLUTTER_VERSION_1_4
-# define CLUTTER_DEPRECATED_IN_1_4              CLUTTER_DEPRECATED
-# define CLUTTER_DEPRECATED_IN_1_4_FOR(f)       CLUTTER_DEPRECATED_FOR(f)
-#else
-# define CLUTTER_DEPRECATED_IN_1_4
-# define CLUTTER_DEPRECATED_IN_1_4_FOR(f)
-#endif
-
-#if CLUTTER_VERSION_MAX_ALLOWED < CLUTTER_VERSION_1_4
-# define CLUTTER_AVAILABLE_IN_1_4               CLUTTER_UNAVAILABLE(1, 4)
-#else
-# define CLUTTER_AVAILABLE_IN_1_4
-#endif
-
-#if CLUTTER_VERSION_MIN_REQUIRED >= CLUTTER_VERSION_1_6
-# define CLUTTER_DEPRECATED_IN_1_6              CLUTTER_DEPRECATED
-# define CLUTTER_DEPRECATED_IN_1_6_FOR(f)       CLUTTER_DEPRECATED_FOR(f)
-#else
-# define CLUTTER_DEPRECATED_IN_1_6
-# define CLUTTER_DEPRECATED_IN_1_6_FOR(f)
-#endif
-
-#if CLUTTER_VERSION_MAX_ALLOWED < CLUTTER_VERSION_1_6
-# define CLUTTER_AVAILABLE_IN_1_6               CLUTTER_UNAVAILABLE(1, 6)
-#else
-# define CLUTTER_AVAILABLE_IN_1_6
-#endif
-
-#if CLUTTER_VERSION_MIN_REQUIRED >= CLUTTER_VERSION_1_8
-# define CLUTTER_DEPRECATED_IN_1_8              CLUTTER_DEPRECATED
-# define CLUTTER_DEPRECATED_IN_1_8_FOR(f)       CLUTTER_DEPRECATED_FOR(f)
-#else
-# define CLUTTER_DEPRECATED_IN_1_8
-# define CLUTTER_DEPRECATED_IN_1_8_FOR(f)
-#endif
-
-#if CLUTTER_VERSION_MAX_ALLOWED < CLUTTER_VERSION_1_8
-# define CLUTTER_AVAILABLE_IN_1_8               CLUTTER_UNAVAILABLE(1, 8)
-#else
-# define CLUTTER_AVAILABLE_IN_1_8
-#endif
-
-#if CLUTTER_VERSION_MIN_REQUIRED >= CLUTTER_VERSION_1_10
-# define CLUTTER_DEPRECATED_IN_1_10             CLUTTER_DEPRECATED
-# define CLUTTER_DEPRECATED_IN_1_10_FOR(f)      CLUTTER_DEPRECATED_FOR(f)
-#else
-# define CLUTTER_DEPRECATED_IN_1_10
-# define CLUTTER_DEPRECATED_IN_1_10_FOR(f)
-#endif
-
-#if CLUTTER_VERSION_MAX_ALLOWED < CLUTTER_VERSION_1_10
-# define CLUTTER_AVAILABLE_IN_1_10              CLUTTER_UNAVAILABLE(1, 10)
-#else
-# define CLUTTER_AVAILABLE_IN_1_10
-#endif
-
-#if CLUTTER_VERSION_MIN_REQUIRED >= CLUTTER_VERSION_1_12
-# define CLUTTER_DEPRECATED_IN_1_12             CLUTTER_DEPRECATED
-# define CLUTTER_DEPRECATED_IN_1_12_FOR(f)      CLUTTER_DEPRECATED_FOR(f)
-#else
-# define CLUTTER_DEPRECATED_IN_1_12
-# define CLUTTER_DEPRECATED_IN_1_12_FOR(f)
-#endif
-
-#if CLUTTER_VERSION_MAX_ALLOWED < CLUTTER_VERSION_1_12
-# define CLUTTER_AVAILABLE_IN_1_12              CLUTTER_UNAVAILABLE(1, 12)
-#else
-# define CLUTTER_AVAILABLE_IN_1_12
+# define CLUTTER_AVAILABLE_IN_2_0
 #endif
 
 #if CLUTTER_VERSION_MIN_REQUIRED >= CLUTTER_VERSION_1_14
