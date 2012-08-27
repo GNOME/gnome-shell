@@ -18173,7 +18173,7 @@ clutter_actor_iter_is_valid (const ClutterActorIter *iter)
 /**
  * clutter_actor_iter_next:
  * @iter: a #ClutterActorIter
- * @child: (out): return location for a #ClutterActor
+ * @child: (out) (transfer none): return location for a #ClutterActor
  *
  * Advances the @iter and retrieves the next child of the root #ClutterActor
  * that was used to initialize the #ClutterActorIterator.
@@ -18214,7 +18214,7 @@ clutter_actor_iter_next (ClutterActorIter  *iter,
 /**
  * clutter_actor_iter_prev:
  * @iter: a #ClutterActorIter
- * @child: (out): return location for a #ClutterActor
+ * @child: (out) (transfer none): return location for a #ClutterActor
  *
  * Advances the @iter and retrieves the previous child of the root
  * #ClutterActor that was used to initialize the #ClutterActorIterator.
