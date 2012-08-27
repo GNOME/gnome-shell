@@ -109,7 +109,7 @@ msgstr "আধাৰসমূহ অনুকৰণ কৰক"
 
 #: ../cogl/cogl-debug-options.h:58
 msgid "Trace all matrix manipulation"
-msgstr "সকলো আধাৰ পৰিৱৰ্তন অনুকৰণ কৰক"
+msgstr "সকলো আধাৰ পৰিবৰ্তন অনুকৰণ কৰক"
 
 #: ../cogl/cogl-debug-options.h:63
 msgid "Trace Misc Drawing"
@@ -192,11 +192,11 @@ msgstr "OpenGL পিক্সেল বাফাৰসমূহৰ ব্যৱ
 
 #: ../cogl/cogl-debug-options.h:103
 msgid "Disable software rect transform"
-msgstr "চফ্টৱেৰ ৰেক্ট পৰিৱৰ্তন অসামৰ্থবান কৰক"
+msgstr "চফ্টৱেৰ ৰেক্ট পৰিবৰ্তন অসামৰ্থবান কৰক"
 
 #: ../cogl/cogl-debug-options.h:104
 msgid "Use the GPU to transform rectangular geometry"
-msgstr "আয়তীয় জ্যামিতি পৰিৱৰ্তন কৰিবলে GPU ব্যৱহাৰ কৰক"
+msgstr "আয়তীয় জ্যামিতি পৰিবৰ্তন কৰিবলে GPU ব্যৱহাৰ কৰক"
 
 #: ../cogl/cogl-debug-options.h:106
 msgid "Cogl Specialist"
@@ -208,7 +208,7 @@ msgstr "ভূচিত্ৰাৱলী ছবিসমূহ ডাম্প 
 
 #: ../cogl/cogl-debug-options.h:109
 msgid "Dump texture atlas changes to an image file"
-msgstr "এটা ছবি নথিপত্ৰলে গাঁথনি ভূচিত্ৰাৱলী পৰিৱৰ্তনসমূহ ডাম্প কৰক"
+msgstr "এটা ছবি ফাইললে গাঁথনি ভূচিত্ৰাৱলী পৰিবৰ্তনসমূহ ডাম্প কৰক"
 
 #: ../cogl/cogl-debug-options.h:113
 msgid "Disable texture atlasing"
