@@ -35,7 +35,48 @@ print_exit_report (void)
 {
   if (getenv ("COGL_PROFILE_OUTPUT_REPORT"))
     {
-      UProfReport *report = uprof_report_new ("Cogl report");
+      UProfContext *mainloop_context;
+      UProfTimerResult *mainloop_timer;
+      UProfReport *report;
+
+      /* NB: uprof provides a shared context for mainloop statistics
+       * which needs to be setup by the application which controls the
+       * mainloop.
+       *
+       * If no "Mainloop" timer has been setup then we print a warning
+       * since we can't provide a meaningful Cogl report without one.
+       */
+      mainloop_context = uprof_get_mainloop_context ();
+      mainloop_timer = uprof_context_get_timer_result (mainloop_context,
+                                                       "Mainloop");
+      /* just bail out if the mainloop timer wasn't hit */
+      if (!mainloop_timer)
+        {
+          g_warning ("\n\n"
+                     "No UProf \"Mainloop\" timer was setup by the "
+                     "application therefore we\ncan't provide a meaningful "
+                     "profile report.\n"
+                     "\n"
+                     "This should be done automatically if you are using Clutter "
+                     "(if\nbuilt with --enable-profile)\n"
+                     "\n"
+                     "If you aren't using Clutter then you can declare a "
+                     "\"Mainloop\" UProf\ntimer in your application like this:\n\n"
+                     "  UPROF_STATIC_TIMER (mainloop_timer, \n"
+                     "                      NULL,\n"
+                     "                      \"Mainloop\",\n"
+                     "                      \"Time in glib mainloop\",\n"
+                     "                      0);\n"
+                     "\n"
+                     "And start/stop it around your mainloop like this:\n"
+                     "\n"
+                     "  UPROF_TIMER_START (uprof_get_mainloop_context (), mainloop_timer);\n"
+                     "  g_main_loop_run (loop);\n"
+                     "  UPROF_TIMER_STOP (uprof_get_mainloop_context (), mainloop_timer);\n");
+          return;
+        }
+
+      report = uprof_report_new ("Cogl report");
       uprof_report_add_context (report, _cogl_uprof_context);
       uprof_report_print (report);
       uprof_report_unref (report);
@@ -47,6 +88,7 @@ void
 _cogl_uprof_init (void)
 {
   _cogl_uprof_context = uprof_context_new ("Cogl");
+  uprof_context_link (_cogl_uprof_context, uprof_get_mainloop_context ());
 #define OPT(MASK_NAME, GROUP, NAME, NAME_FORMATTED, DESCRIPTION) \
   G_STMT_START { \
     int shift = COGL_DEBUG_ ## MASK_NAME; \
