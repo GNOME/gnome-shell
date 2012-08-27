@@ -1266,6 +1266,11 @@ _cogl_journal_flush (CoglJournal *journal)
                      "Journal Flush",
                      "The time spent flushing the Cogl journal",
                      0 /* no application private data */);
+  COGL_STATIC_TIMER (discard_timer,
+                     "Journal Flush", /* parent */
+                     "flush: discard",
+                     "The time spent discarding the Cogl journal after a flush",
+                     0 /* no application private data */);
 
   if (journal->entries->len == 0)
     return;
@@ -1357,7 +1362,9 @@ _cogl_journal_flush (CoglJournal *journal)
 
   cogl_object_unref (state.attribute_buffer);
 
+  COGL_TIMER_START (_cogl_uprof_context, discard_timer);
   _cogl_journal_discard (journal);
+  COGL_TIMER_STOP (_cogl_uprof_context, discard_timer);
 
   COGL_TIMER_STOP (_cogl_uprof_context, flush_timer);
 }
