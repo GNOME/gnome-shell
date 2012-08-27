@@ -19948,6 +19948,8 @@ clutter_actor_set_child_transform (ClutterActor        *self,
                                    const ClutterMatrix *transform)
 {
   ClutterTransformInfo *info;
+  ClutterActorIter iter;
+  ClutterActor *child;
   GObject *obj;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
@@ -19960,6 +19962,11 @@ clutter_actor_set_child_transform (ClutterActor        *self,
     clutter_matrix_init_identity (&info->child_transform);
 
   info->child_transform_set = transform != NULL;
+
+  /* we need to reset the transform_valid flag on each child */
+  clutter_actor_iter_init (&iter, self);
+  while (clutter_actor_iter_next (&iter, &child))
+    child->priv->transform_valid = FALSE;
 
   clutter_actor_queue_redraw (self);
 
