@@ -880,7 +880,7 @@ msgstr "জীৱন্তকৰণসমূহ ব্যৱহাৰ কৰক"
 
 #: ../clutter/clutter-box-layout.c:1449 ../clutter/clutter-table-layout.c:1676
 msgid "Whether layout changes should be animated"
-msgstr "বিন্যাস পৰিৱৰ্তনসমূহ জীৱন্ত কৰিব লাগে নে"
+msgstr "বিন্যাস পৰিবৰ্তনসমূহ জীৱন্ত কৰিব লাগে নে"
 
 #: ../clutter/clutter-box-layout.c:1473 ../clutter/clutter-table-layout.c:1700
 msgid "Easing Mode"
@@ -904,7 +904,7 @@ msgstr "উজ্জ্বলতা"
 
 #: ../clutter/clutter-brightness-contrast-effect.c:308
 msgid "The brightness change to apply"
-msgstr "প্ৰয়োগ কৰিব লগিয়া উজ্জ্বলতা পৰিৱৰ্তন"
+msgstr "প্ৰয়োগ কৰিব লগিয়া উজ্জ্বলতা পৰিবৰ্তন"
 
 #: ../clutter/clutter-brightness-contrast-effect.c:327
 msgid "Contrast"
@@ -912,7 +912,7 @@ msgstr "প্ৰভেদ"
 
 #: ../clutter/clutter-brightness-contrast-effect.c:328
 msgid "The contrast change to apply"
-msgstr "প্ৰয়োগ কৰিব লগিয়া প্ৰভেদ পৰিৱৰ্তন"
+msgstr "প্ৰয়োগ কৰিব লগিয়া প্ৰভেদ পৰিবৰ্তন"
 
 #: ../clutter/clutter-canvas.c:216
 msgid "The width of the canvas"
@@ -1355,7 +1355,7 @@ msgstr "জীৱন্ত কৰিব লগিয়া বৈশিষ্টৰ
 
 #: ../clutter/clutter-script.c:466
 msgid "Filename Set"
-msgstr "নথিপত্ৰনাম সংহতি"
+msgstr "ফাইলনাম সংহতি"
 
 #: ../clutter/clutter-script.c:467
 msgid "Whether the :filename property is set"
@@ -1364,11 +1364,11 @@ msgstr ":filename বৈশিষ্ট সংহতি কৰা হৈছে �
 #: ../clutter/clutter-script.c:481
 #: ../clutter/deprecated/clutter-texture.c:1082
 msgid "Filename"
-msgstr "নথিপত্ৰনাম"
+msgstr "ফাইলনাম"
 
 #: ../clutter/clutter-script.c:482
 msgid "The path of the currently parsed file"
-msgstr "বৰ্তমানে বিশ্লেষণ কৰা নথিপত্ৰৰ পথ"
+msgstr "বৰ্তমানে বিশ্লেষণ কৰা ফাইলৰ পথ"
 
 #: ../clutter/clutter-script.c:499
 msgid "Translation Domain"
@@ -2279,7 +2279,7 @@ msgstr "URI"
 
 #: ../clutter/deprecated/clutter-media.c:84
 msgid "URI of a media file"
-msgstr "এটা মাধ্যম নথিপত্ৰৰ URl"
+msgstr "এটা মাধ্যম ফাইলৰ URl"
 
 #: ../clutter/deprecated/clutter-media.c:100
 msgid "Playing"
@@ -2303,7 +2303,7 @@ msgstr "উপশীৰ্ষক URl"
 
 #: ../clutter/deprecated/clutter-media.c:136
 msgid "URI of a subtitle file"
-msgstr "এটা উপশীৰ্ষক নথিপত্ৰৰ URl"
+msgstr "এটা উপশীৰ্ষক ফাইলৰ URl"
 
 #: ../clutter/deprecated/clutter-media.c:154
 msgid "Subtitle Font Name"
@@ -2501,7 +2501,7 @@ msgstr "এই অভিনেতাক আকিবলে ব্যৱহৃত
 
 #: ../clutter/deprecated/clutter-texture.c:1083
 msgid "The path of the file containing the image data"
-msgstr "ছবি তথ্য অন্তৰ্ভুক্ত কৰা নথিপত্ৰৰ পথ"
+msgstr "ছবি তথ্য অন্তৰ্ভুক্ত কৰা ফাইলৰ পথ"
 
 #: ../clutter/deprecated/clutter-texture.c:1090
 msgid "Keep Aspect Ratio"
@@ -2520,7 +2520,7 @@ msgstr "অসমকালীভাৱে ল'ড কৰক"
 #: ../clutter/deprecated/clutter-texture.c:1120
 msgid "Load files inside a thread to avoid blocking when loading images from disk"
 msgstr ""
-"ডিস্কৰ পৰা ছবিসমূহ ল'ড কৰি থাকোতে প্ৰতিৰোধ বাধা দিবলে নথিপত্ৰসমূহক এটা থ্ৰেডৰ "
+"ডিস্কৰ পৰা ছবিসমূহ ল'ড কৰি থাকোতে প্ৰতিৰোধ বাধা দিবলে ফাইলসমূহক এটা থ্ৰেডৰ "
 "ভিতৰত ল'ড কৰক"
 
 #: ../clutter/deprecated/clutter-texture.c:1138
@@ -2532,7 +2532,7 @@ msgid ""
 "Decode image data files inside a thread to reduce blocking when loading "
 "images from disk"
 msgstr ""
-"ডিস্কৰ পৰা ছবিসমূহ ল'ড কৰি থাকোতে প্ৰতিৰোধ বাধা দিবলে ছবি তথ্য নথিপত্ৰসমূহক এটা "
+"ডিস্কৰ পৰা ছবিসমূহ ল'ড কৰি থাকোতে প্ৰতিৰোধ বাধা দিবলে ছবি তথ্য ফাইলসমূহক এটা "
 "থ্ৰেডৰ ভিতৰত ডিকোড কৰক"
 
 #: ../clutter/deprecated/clutter-texture.c:1165
@@ -2664,7 +2664,7 @@ msgstr "স্বচালিত আপডেইটসমূহ"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:576
 msgid "If the texture should be kept in sync with any pixmap changes."
-msgstr "গাঁথনিক কোনো পিক্সমেপ পৰিৱৰ্তনৰ সৈতে সংমিহলি কৰা হব নে।"
+msgstr "গাঁথনিক কোনো পিক্সমেপ পৰিবৰ্তনৰ সৈতে সংমিহলি কৰা হব নে।"
 
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:584
 msgid "Window"
