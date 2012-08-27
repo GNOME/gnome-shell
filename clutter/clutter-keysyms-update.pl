@@ -58,10 +58,6 @@ die "Could not open file keysymdef.h: $!\n"
 die "Could not open file clutter-keysyms.h: $!\n"
     unless open(OUT_KEYSYMS, ">:utf8", "clutter-keysyms.h");
 
-# Output: clutter/clutter/deprecated/clutter-keysyms.h
-die "Could not open file clutter-keysyms-compat.h: $!\n"
-    unless open(OUT_KEYSYMS_COMPAT, ">:utf8", "deprecated/clutter-keysyms.h");
-
 my $LICENSE_HEADER= <<EOF;
 /* Clutter
  *
@@ -85,7 +81,6 @@ my $LICENSE_HEADER= <<EOF;
 EOF
 
 print OUT_KEYSYMS $LICENSE_HEADER;
-print OUT_KEYSYMS_COMPAT $LICENSE_HEADER;
 
 print OUT_KEYSYMS<<EOF;
 
@@ -101,23 +96,6 @@ print OUT_KEYSYMS<<EOF;
 
 #ifndef __CLUTTER_KEYSYMS_H__
 #define __CLUTTER_KEYSYMS_H__
-
-EOF
-
-print OUT_KEYSYMS_COMPAT<<EOF;
-/*
- * Compatibility version of clutter-keysyms.h.
- *
- * Since Clutter 1.4, the key symbol defines have been changed to have
- * a KEY_ prefix. This is a compatibility header that is included when
- * deprecated symbols are enabled. Consider porting to the new names
- * instead.
- */
-
-#ifndef __CLUTTER_KEYSYMS_DEPRECATED_H__
-#define __CLUTTER_KEYSYMS_DEPRECATED_H__
-
-#ifndef CLUTTER_DISABLE_DEPRECATED
 
 EOF
 
@@ -137,11 +115,8 @@ while (<IN_KEYSYMDEF>)
 	my $element = $keysymelements[1];
 	my $binding = $element;
 	$binding =~ s/^XK_/CLUTTER_KEY_/g;
-	my $compat_binding = $element;
-	$compat_binding =~ s/^XK_/CLUTTER_/g;
 
 	printf OUT_KEYSYMS "#define %s 0x%03x\n", $binding, hex($keysymelements[2]);
-	printf OUT_KEYSYMS_COMPAT "#define %s 0x%03x\n", $compat_binding, hex($keysymelements[2]);
 }
 
 close IN_KEYSYMDEF;
@@ -185,11 +160,8 @@ while (<IN_XF86KEYSYM>)
 	my $element = $keysymelements[1];
 	my $binding = $element;
 	$binding =~ s/^XF86XK_/CLUTTER_KEY_/g;
-	my $compat_binding = $element;
-	$compat_binding =~ s/^XF86XK_/CLUTTER_/g;
 
 	printf OUT_KEYSYMS "#define %s 0x%03x\n", $binding, hex($keysymelements[2]);
-	printf OUT_KEYSYMS_COMPAT "#define %s 0x%03x\n", $compat_binding, hex($keysymelements[2]);
 }
 
 close IN_XF86KEYSYM;
@@ -198,13 +170,6 @@ close IN_XF86KEYSYM;
 print OUT_KEYSYMS<<EOF;
 
 #endif /* __CLUTTER_KEYSYMS_H__ */
-EOF
-
-print OUT_KEYSYMS_COMPAT<<EOF;
-
-#endif /* CLUTTER_DISABLE_DEPRECATED */
-
-#endif /* __CLUTTER_KEYSYMS_DEPRECATED_H__ */
 EOF
 
 foreach my $f (qw/ keysymdef.h XF86keysym.h /) {
