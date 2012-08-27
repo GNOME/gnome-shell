@@ -1,9 +1,6 @@
 cally_actor_get_type
 cally_clone_get_type
-cally_group_get_type
-cally_rectangle_get_type
 cally_root_get_type
 cally_stage_get_type
 cally_text_get_type
-cally_texture_get_type
 cally_util_get_type

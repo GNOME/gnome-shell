@@ -1,15 +1,12 @@
 ## Process this file with automake to produce Makefile.in
 
-# We require automake 1.6 at least.
-AUTOMAKE_OPTIONS = 1.6
-
 # This is a blank Makefile.am for using gtk-doc.
 # Copy this to your project's API docs directory and modify the variables to
 # suit your project. See the GTK+ Makefiles in gtk+/docs/reference for examples
 # of using the various options.
 
 # The name of the module, e.g. 'glib'.
-DOC_MODULE=cally
+DOC_MODULE=cally2
 
 # The top-level SGML file. You can change this if you want to.
 DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.xml

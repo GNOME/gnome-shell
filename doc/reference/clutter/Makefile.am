@@ -1,4 +1,4 @@
-DOC_MODULE = clutter
+DOC_MODULE = clutter2
 DOC_MAIN_SGML_FILE = $(DOC_MODULE)-docs.xml
 
 # The directory containing the source code. Relative to $(srcdir).
@@ -38,8 +38,6 @@ HFILE_GLOB = \
 	$(top_srcdir)/clutter/*.h \
 	$(top_builddir)/clutter/*.h \
 	$(top_srcdir)/clutter/x11/clutter-x11.h \
-	$(top_srcdir)/clutter/x11/clutter-x11-texture-pixmap.h \
-	$(top_srcdir)/clutter/x11/clutter-glx-texture-pixmap.h \
 	$(top_srcdir)/clutter/egl/clutter-egl.h \
 	$(top_srcdir)/clutter/cex100/clutter-cex100.h \
 	$(top_srcdir)/clutter/win32/clutter-win32.h \
@@ -79,7 +77,6 @@ IGNORE_HFILES = \
 	clutter-gesture-action-private.h	\
 	clutter-id-pool.h 		\
 	clutter-keysyms.h 		\
-	clutter-keysyms-compat.h	\
 	clutter-keysyms-table.h 	\
 	clutter-marshal.h 		\
 	clutter-master-clock.h 		\
@@ -107,8 +104,6 @@ IGNORE_HFILES = \
 
 EXTRA_HFILES = \
         $(top_srcdir)/clutter/x11/clutter-x11.h \
-	$(top_srcdir)/clutter/x11/clutter-x11-texture-pixmap.h \
-	$(top_srcdir)/clutter/x11/clutter-glx-texture-pixmap.h \
 	$(top_srcdir)/clutter/egl/clutter-egl.h \
 	$(top_srcdir)/clutter/cex100/clutter-cex100.h \
 	$(top_srcdir)/clutter/win32/clutter-win32.h \
@@ -143,11 +138,7 @@ content_files = \
 	glossary.xml \
 	clutter-overview.xml \
 	building-clutter.xml \
-	running-clutter.xml \
-	migrating-ClutterAnimation.xml \
-	migrating-ClutterBehaviour.xml \
-	migrating-ClutterEffect.xml \
-	migrating-ClutterPath.xml
+	running-clutter.xml
 
 # SGML files where gtk-doc abbrevations (#GtkWidget) are expanded
 # These files must be listed here *and* in content_files
@@ -156,11 +147,7 @@ expand_content_files = \
 	glossary.xml \
 	clutter-overview.xml \
 	building-clutter.xml \
-	running-clutter.xml \
-	migrating-ClutterAnimation.xml \
-	migrating-ClutterBehaviour.xml \
-	migrating-ClutterEffect.xml \
-	migrating-ClutterPath.xml
+	running-clutter.xml
 
 # CFLAGS and LDFLAGS for compiling gtkdoc-scangobj with your library.
 # Only needed if you are using gtkdoc-scangobj to dynamically query widget
