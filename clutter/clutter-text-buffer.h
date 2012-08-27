@@ -123,46 +123,46 @@ struct _ClutterTextBufferClass
   void (*_clutter_reserved8) (void);
 };
 
-CLUTTER_AVAILABLE_IN_1_10
+
 GType               clutter_text_buffer_get_type            (void) G_GNUC_CONST;
 
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterTextBuffer*  clutter_text_buffer_new                 (void);
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterTextBuffer*  clutter_text_buffer_new_with_text       (const gchar       *text,
                                                              gssize             text_len);
 
-CLUTTER_AVAILABLE_IN_1_10
+
 gsize               clutter_text_buffer_get_bytes           (ClutterTextBuffer *buffer);
-CLUTTER_AVAILABLE_IN_1_10
+
 guint               clutter_text_buffer_get_length          (ClutterTextBuffer *buffer);
-CLUTTER_AVAILABLE_IN_1_10
+
 const gchar*        clutter_text_buffer_get_text            (ClutterTextBuffer *buffer);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                clutter_text_buffer_set_text            (ClutterTextBuffer *buffer,
                                                              const gchar       *chars,
                                                              gint               n_chars);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                clutter_text_buffer_set_max_length      (ClutterTextBuffer *buffer,
                                                              gint               max_length);
-CLUTTER_AVAILABLE_IN_1_10
+
 gint                clutter_text_buffer_get_max_length      (ClutterTextBuffer  *buffer);
 
-CLUTTER_AVAILABLE_IN_1_10
+
 guint               clutter_text_buffer_insert_text         (ClutterTextBuffer *buffer,
                                                              guint              position,
                                                              const gchar       *chars,
                                                              gint               n_chars);
-CLUTTER_AVAILABLE_IN_1_10
+
 guint               clutter_text_buffer_delete_text         (ClutterTextBuffer *buffer,
                                                              guint              position,
                                                              gint               n_chars);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                clutter_text_buffer_emit_inserted_text  (ClutterTextBuffer *buffer,
                                                              guint              position,
                                                              const gchar       *chars,
                                                              guint              n_chars);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                clutter_text_buffer_emit_deleted_text   (ClutterTextBuffer *buffer,
                                                              guint              position,
                                                              guint              n_chars);

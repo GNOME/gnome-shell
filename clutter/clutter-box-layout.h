@@ -81,10 +81,10 @@ GType clutter_box_layout_get_type (void) G_GNUC_CONST;
 
 ClutterLayoutManager *  clutter_box_layout_new                 (void);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_box_layout_set_orientation      (ClutterBoxLayout    *layout,
                                                                  ClutterOrientation   orientation);
-CLUTTER_AVAILABLE_IN_1_12
+
 ClutterOrientation      clutter_box_layout_get_orientation      (ClutterBoxLayout    *layout);
 
 void                    clutter_box_layout_set_spacing          (ClutterBoxLayout    *layout,

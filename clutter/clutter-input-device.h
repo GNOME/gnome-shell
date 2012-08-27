@@ -52,7 +52,7 @@ GType clutter_input_device_get_type (void) G_GNUC_CONST;
 ClutterInputDeviceType  clutter_input_device_get_device_type    (ClutterInputDevice  *device);
 gint                    clutter_input_device_get_device_id      (ClutterInputDevice  *device);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 gboolean                clutter_input_device_get_coords        (ClutterInputDevice   *device,
                                                                 ClutterEventSequence *sequence,
                                                                 ClutterPoint         *point);
@@ -90,22 +90,22 @@ void                    clutter_input_device_update_from_event  (ClutterInputDev
                                                                  ClutterEvent        *event,
                                                                  gboolean             update_stage);
 
-CLUTTER_AVAILABLE_IN_1_10
+
 void                    clutter_input_device_grab               (ClutterInputDevice  *device,
                                                                  ClutterActor        *actor);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                    clutter_input_device_ungrab             (ClutterInputDevice  *device);
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterActor *          clutter_input_device_get_grabbed_actor  (ClutterInputDevice  *device);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_input_device_sequence_grab      (ClutterInputDevice   *device,
                                                                  ClutterEventSequence *sequence,
                                                                  ClutterActor         *actor);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_input_device_sequence_ungrab    (ClutterInputDevice   *device,
                                                                  ClutterEventSequence *sequence);
-CLUTTER_AVAILABLE_IN_1_12
+
 ClutterActor *          clutter_input_device_sequence_get_grabbed_actor (ClutterInputDevice   *device,
                                                                          ClutterEventSequence *sequence);
 

@@ -153,7 +153,7 @@ guint           clutter_script_load_from_data           (ClutterScript          
                                                          const gchar               *data,
                                                          gssize                     length,
                                                          GError                   **error);
-CLUTTER_AVAILABLE_IN_1_10
+
 guint           clutter_script_load_from_resource       (ClutterScript             *script,
                                                          const gchar               *resource_path,
                                                          GError                   **error);
@@ -182,10 +182,10 @@ gchar *         clutter_script_lookup_filename          (ClutterScript          
 GType           clutter_script_get_type_from_name       (ClutterScript             *script,
                                                          const gchar               *type_name);
 
-CLUTTER_AVAILABLE_IN_1_10
+
 void            clutter_script_set_translation_domain   (ClutterScript             *script,
                                                          const gchar               *domain);
-CLUTTER_AVAILABLE_IN_1_10
+
 const gchar *   clutter_script_get_translation_domain   (ClutterScript             *script);
 
 const gchar *   clutter_get_script_id                   (GObject                   *gobject);

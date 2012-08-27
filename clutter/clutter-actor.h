@@ -311,7 +311,7 @@ void                            clutter_actor_unmap                             
 void                            clutter_actor_paint                             (ClutterActor                *self);
 void                            clutter_actor_continue_paint                    (ClutterActor                *self);
 void                            clutter_actor_queue_redraw                      (ClutterActor                *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_queue_redraw_with_clip            (ClutterActor                *self,
                                                                                  const cairo_rectangle_int_t *clip);
 void                            clutter_actor_queue_relayout                    (ClutterActor                *self);
@@ -397,63 +397,63 @@ void                            clutter_actor_set_x                             
                                                                                  gfloat                       x);
 void                            clutter_actor_set_y                             (ClutterActor                *self,
                                                                                  gfloat                       y);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_actor_set_z_position                    (ClutterActor                *self,
                                                                                  gfloat                       z_position);
-CLUTTER_AVAILABLE_IN_1_12
+
 gfloat                          clutter_actor_get_z_position                    (ClutterActor                *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_layout_manager                (ClutterActor                *self,
                                                                                  ClutterLayoutManager        *manager);
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterLayoutManager *          clutter_actor_get_layout_manager                (ClutterActor                *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_x_align                       (ClutterActor                *self,
                                                                                  ClutterActorAlign            x_align);
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterActorAlign               clutter_actor_get_x_align                       (ClutterActor                *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_y_align                       (ClutterActor                *self,
                                                                                  ClutterActorAlign            y_align);
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterActorAlign               clutter_actor_get_y_align                       (ClutterActor                *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_margin_top                    (ClutterActor                *self,
                                                                                  gfloat                       margin);
-CLUTTER_AVAILABLE_IN_1_10
+
 gfloat                          clutter_actor_get_margin_top                    (ClutterActor                *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_margin_bottom                 (ClutterActor                *self,
                                                                                  gfloat                       margin);
-CLUTTER_AVAILABLE_IN_1_10
+
 gfloat                          clutter_actor_get_margin_bottom                 (ClutterActor                *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_margin_left                   (ClutterActor                *self,
                                                                                  gfloat                       margin);
-CLUTTER_AVAILABLE_IN_1_10
+
 gfloat                          clutter_actor_get_margin_left                   (ClutterActor                *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_margin_right                  (ClutterActor                *self,
                                                                                  gfloat                       margin);
-CLUTTER_AVAILABLE_IN_1_10
+
 gfloat                          clutter_actor_get_margin_right                  (ClutterActor                *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_margin                        (ClutterActor                *self,
                                                                                  const ClutterMargin         *margin);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_get_margin                        (ClutterActor                *self,
                                                                                  ClutterMargin               *margin);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_actor_set_x_expand                      (ClutterActor                *self,
                                                                                  gboolean                     expand);
-CLUTTER_AVAILABLE_IN_1_12
+
 gboolean                        clutter_actor_get_x_expand                      (ClutterActor                *self);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_actor_set_y_expand                      (ClutterActor                *self,
                                                                                  gboolean                     expand);
-CLUTTER_AVAILABLE_IN_1_12
+
 gboolean                        clutter_actor_get_y_expand                      (ClutterActor                *self);
-CLUTTER_AVAILABLE_IN_1_12
+
 gboolean                        clutter_actor_needs_expand                      (ClutterActor                *self,
                                                                                  ClutterOrientation           orientation);
 
@@ -488,42 +488,42 @@ gboolean                        clutter_actor_get_paint_box                     
 gboolean                        clutter_actor_has_overlaps                      (ClutterActor               *self);
 
 /* Content */
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_content                       (ClutterActor               *self,
                                                                                  ClutterContent             *content);
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterContent *                clutter_actor_get_content                       (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_content_gravity               (ClutterActor               *self,
                                                                                  ClutterContentGravity       gravity);
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterContentGravity           clutter_actor_get_content_gravity               (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_content_scaling_filters       (ClutterActor               *self,
                                                                                  ClutterScalingFilter        min_filter,
                                                                                  ClutterScalingFilter        mag_filter);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_get_content_scaling_filters       (ClutterActor               *self,
                                                                                  ClutterScalingFilter       *min_filter,
                                                                                  ClutterScalingFilter       *mag_filter);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_actor_set_content_repeat                (ClutterActor               *self,
                                                                                  ClutterContentRepeat        repeat);
-CLUTTER_AVAILABLE_IN_1_12
+
 ClutterContentRepeat            clutter_actor_get_content_repeat                (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_get_content_box                   (ClutterActor               *self,
                                                                                  ClutterActorBox            *box);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_background_color              (ClutterActor               *self,
                                                                                  const ClutterColor         *color);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_get_background_color              (ClutterActor               *self,
                                                                                  ClutterColor               *color);
 const ClutterPaintVolume *      clutter_actor_get_paint_volume                  (ClutterActor               *self);
 const ClutterPaintVolume *      clutter_actor_get_transformed_paint_volume      (ClutterActor               *self,
                                                                                  ClutterActor               *relative_to_ancestor);
-CLUTTER_AVAILABLE_IN_1_10
+
 const ClutterPaintVolume *      clutter_actor_get_default_paint_volume          (ClutterActor               *self);
 
 /* Events */
@@ -547,100 +547,100 @@ void                            clutter_actor_set_text_direction                
 ClutterTextDirection            clutter_actor_get_text_direction                (ClutterActor               *self);
 
 /* Actor hierarchy */
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_add_child                         (ClutterActor               *self,
                                                                                  ClutterActor               *child);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_insert_child_at_index             (ClutterActor               *self,
                                                                                  ClutterActor               *child,
                                                                                  gint                        index_);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_insert_child_above                (ClutterActor               *self,
                                                                                  ClutterActor               *child,
                                                                                  ClutterActor               *sibling);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_insert_child_below                (ClutterActor               *self,
                                                                                  ClutterActor               *child,
                                                                                  ClutterActor               *sibling);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_replace_child                     (ClutterActor               *self,
                                                                                  ClutterActor               *old_child,
                                                                                  ClutterActor               *new_child);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_remove_child                      (ClutterActor               *self,
                                                                                  ClutterActor               *child);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_remove_all_children               (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_destroy_all_children              (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 GList *                         clutter_actor_get_children                      (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 gint                            clutter_actor_get_n_children                    (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterActor *                  clutter_actor_get_child_at_index                (ClutterActor               *self,
                                                                                  gint                        index_);
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterActor *                  clutter_actor_get_previous_sibling              (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterActor *                  clutter_actor_get_next_sibling                  (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterActor *                  clutter_actor_get_first_child                   (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterActor *                  clutter_actor_get_last_child                    (ClutterActor               *self);
 ClutterActor *                  clutter_actor_get_parent                        (ClutterActor               *self);
 gboolean                        clutter_actor_contains                          (ClutterActor               *self,
                                                                                  ClutterActor               *descendant);
 ClutterActor*                   clutter_actor_get_stage                         (ClutterActor               *actor);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_child_below_sibling           (ClutterActor               *self,
                                                                                  ClutterActor               *child,
                                                                                  ClutterActor               *sibling);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_child_above_sibling           (ClutterActor               *self,
                                                                                  ClutterActor               *child,
                                                                                  ClutterActor               *sibling);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_child_at_index                (ClutterActor               *self,
                                                                                  ClutterActor               *child,
                                                                                  gint                        index_);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_iter_init                         (ClutterActorIter           *iter,
                                                                                  ClutterActor               *root);
-CLUTTER_AVAILABLE_IN_1_10
+
 gboolean                        clutter_actor_iter_next                         (ClutterActorIter           *iter,
                                                                                  ClutterActor              **child);
-CLUTTER_AVAILABLE_IN_1_10
+
 gboolean                        clutter_actor_iter_prev                         (ClutterActorIter           *iter,
                                                                                  ClutterActor              **child);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_iter_remove                       (ClutterActorIter           *iter);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_iter_destroy                      (ClutterActorIter           *iter);
-CLUTTER_AVAILABLE_IN_1_12
+
 gboolean                        clutter_actor_iter_is_valid                     (const ClutterActorIter     *iter);
 
 /* Transformations */
 gboolean                        clutter_actor_is_rotated                        (ClutterActor               *self);
 gboolean                        clutter_actor_is_scaled                         (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_actor_set_pivot_point                   (ClutterActor               *self,
                                                                                  gfloat                      pivot_x,
                                                                                  gfloat                      pivot_y);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_actor_get_pivot_point                   (ClutterActor               *self,
                                                                                  gfloat                     *pivot_x,
                                                                                  gfloat                     *pivot_y);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_actor_set_pivot_point_z                 (ClutterActor               *self,
                                                                                  gfloat                      pivot_z);
-CLUTTER_AVAILABLE_IN_1_12
+
 gfloat                          clutter_actor_get_pivot_point_z                 (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_actor_set_rotation_angle                (ClutterActor               *self,
                                                                                  ClutterRotateAxis           axis,
                                                                                  gdouble                     angle);
-CLUTTER_AVAILABLE_IN_1_12
+
 gdouble                         clutter_actor_get_rotation_angle                (ClutterActor               *self,
                                                                                  ClutterRotateAxis           axis);
 void                            clutter_actor_set_scale                         (ClutterActor               *self,
@@ -649,31 +649,31 @@ void                            clutter_actor_set_scale                         
 void                            clutter_actor_get_scale                         (ClutterActor               *self,
                                                                                  gdouble                    *scale_x,
                                                                                  gdouble                    *scale_y);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_actor_set_scale_z                       (ClutterActor               *self,
                                                                                  gdouble                     scale_z);
-CLUTTER_AVAILABLE_IN_1_12
+
 gdouble                         clutter_actor_get_scale_z                       (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_actor_set_translation                   (ClutterActor               *self,
                                                                                  gfloat                      translate_x,
                                                                                  gfloat                      translate_y,
                                                                                  gfloat                      translate_z);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_actor_get_translation                   (ClutterActor               *self,
                                                                                  gfloat                     *translate_x,
                                                                                  gfloat                     *translate_y,
                                                                                  gfloat                     *translate_z);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_actor_set_transform                     (ClutterActor               *self,
                                                                                  const ClutterMatrix        *transform);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_actor_get_transform                     (ClutterActor               *self,
                                                                                  ClutterMatrix              *transform);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_actor_set_child_transform               (ClutterActor               *self,
                                                                                  const ClutterMatrix        *transform);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_actor_get_child_transform               (ClutterActor               *self,
                                                                                  ClutterMatrix              *transform);
 void                            clutter_actor_get_transformed_position          (ClutterActor               *self,
@@ -698,36 +698,36 @@ void                            clutter_actor_apply_relative_transform_to_point 
                                                                                  ClutterVertex              *vertex);
 
 /* Implicit animations */
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_save_easing_state                 (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_restore_easing_state              (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_easing_mode                   (ClutterActor               *self,
                                                                                  ClutterAnimationMode        mode);
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterAnimationMode            clutter_actor_get_easing_mode                   (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_easing_duration               (ClutterActor               *self,
                                                                                  guint                       msecs);
-CLUTTER_AVAILABLE_IN_1_10
+
 guint                           clutter_actor_get_easing_duration               (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_set_easing_delay                  (ClutterActor               *self,
                                                                                  guint                       msecs);
-CLUTTER_AVAILABLE_IN_1_10
+
 guint                           clutter_actor_get_easing_delay                  (ClutterActor               *self);
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterTransition *             clutter_actor_get_transition                    (ClutterActor               *self,
                                                                                  const char                 *name);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_add_transition                    (ClutterActor               *self,
                                                                                  const char                 *name,
                                                                                  ClutterTransition          *transition);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_remove_transition                 (ClutterActor               *self,
                                                                                  const char                 *name);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_actor_remove_all_transitions            (ClutterActor               *self);
 
 G_END_DECLS

@@ -443,24 +443,24 @@ void                    clutter_event_set_coords                (ClutterEvent   
 void                    clutter_event_get_coords                (const ClutterEvent     *event,
                                                                  gfloat                 *x,
                                                                  gfloat                 *y);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_event_get_position              (const ClutterEvent     *event,
                                                                  ClutterPoint           *position);
-CLUTTER_AVAILABLE_IN_1_12
+
 float                   clutter_event_get_distance              (const ClutterEvent     *source,
                                                                  const ClutterEvent     *target);
-CLUTTER_AVAILABLE_IN_1_12
+
 double                  clutter_event_get_angle                 (const ClutterEvent     *source,
                                                                  const ClutterEvent     *target);
 
 gdouble *               clutter_event_get_axes                  (const ClutterEvent     *event,
                                                                  guint                  *n_axes);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 gboolean                clutter_event_has_shift_modifier        (const ClutterEvent     *event);
-CLUTTER_AVAILABLE_IN_1_12
+
 gboolean                clutter_event_has_control_modifier      (const ClutterEvent     *event);
-CLUTTER_AVAILABLE_IN_1_12
+
 gboolean                clutter_event_is_pointer_emulated       (const ClutterEvent     *event);
 
 void                    clutter_event_set_key_symbol            (ClutterEvent           *event,
@@ -485,20 +485,20 @@ ClutterActor *          clutter_event_get_related               (const ClutterEv
 void                    clutter_event_set_scroll_direction      (ClutterEvent           *event,
                                                                  ClutterScrollDirection  direction);
 ClutterScrollDirection  clutter_event_get_scroll_direction      (const ClutterEvent     *event);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                    clutter_event_set_scroll_delta          (ClutterEvent           *event,
                                                                  gdouble                 dx,
                                                                  gdouble                 dy);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                    clutter_event_get_scroll_delta          (const ClutterEvent     *event,
                                                                  gdouble                *dx,
                                                                  gdouble                *dy);
 
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterEventSequence *  clutter_event_get_event_sequence        (const ClutterEvent     *event);
 
 guint32                 clutter_keysym_to_unicode               (guint                   keyval);
-CLUTTER_AVAILABLE_IN_1_10
+
 guint                   clutter_unicode_to_keysym               (guint32                 wc);
 
 guint32                 clutter_get_current_event_time          (void);

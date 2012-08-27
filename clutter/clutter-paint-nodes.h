@@ -49,10 +49,10 @@ G_BEGIN_DECLS
 typedef struct _ClutterColorNode                ClutterColorNode;
 typedef struct _ClutterColorNodeClass           ClutterColorNodeClass;
 
-CLUTTER_AVAILABLE_IN_1_10
+
 GType clutter_color_node_get_type (void) G_GNUC_CONST;
 
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterPaintNode *      clutter_color_node_new          (const ClutterColor    *color);
 
 #define CLUTTER_TYPE_TEXTURE_NODE               (clutter_texture_node_get_type ())
@@ -70,10 +70,10 @@ ClutterPaintNode *      clutter_color_node_new          (const ClutterColor    *
 typedef struct _ClutterTextureNode              ClutterTextureNode;
 typedef struct _ClutterTextureNodeClass         ClutterTextureNodeClass;
 
-CLUTTER_AVAILABLE_IN_1_10
+
 GType clutter_texture_node_get_type (void) G_GNUC_CONST;
 
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterPaintNode *      clutter_texture_node_new        (CoglTexture           *texture,
                                                          const ClutterColor    *color,
                                                          ClutterScalingFilter   min_filter,
@@ -94,10 +94,10 @@ ClutterPaintNode *      clutter_texture_node_new        (CoglTexture           *
 typedef struct _ClutterClipNode                 ClutterClipNode;
 typedef struct _ClutterClipNodeClass            ClutterClipNodeClass;
 
-CLUTTER_AVAILABLE_IN_1_10
+
 GType clutter_clip_node_get_type (void) G_GNUC_CONST;
 
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterPaintNode *      clutter_clip_node_new           (void);
 
 #define CLUTTER_TYPE_PIPELINE_NODE              (clutter_pipeline_node_get_type ())
@@ -115,11 +115,10 @@ ClutterPaintNode *      clutter_clip_node_new           (void);
 typedef struct _ClutterPipelineNode             ClutterPipelineNode;
 typedef struct _ClutterPipelineNodeClass        ClutterPipelineNodeClass;
 
-CLUTTER_AVAILABLE_IN_1_10
+
 GType clutter_pipeline_node_get_type (void) G_GNUC_CONST;
 
 #if defined(COGL_ENABLE_EXPERIMENTAL_API) && defined(CLUTTER_ENABLE_EXPERIMENTAL_API)
-CLUTTER_AVAILABLE_IN_1_10
 ClutterPaintNode *      clutter_pipeline_node_new       (CoglPipeline          *pipeline);
 #endif /* COGL_ENABLE_EXPERIMENTAL_API && CLUTTER_ENABLE_EXPERIMENTAL_API */
 
@@ -138,10 +137,10 @@ ClutterPaintNode *      clutter_pipeline_node_new       (CoglPipeline          *
 typedef struct _ClutterTextNode                 ClutterTextNode;
 typedef struct _ClutterTextNodeClass            ClutterTextNodeClass;
 
-CLUTTER_AVAILABLE_IN_1_10
+
 GType clutter_text_node_get_type (void) G_GNUC_CONST;
 
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterPaintNode *      clutter_text_node_new           (PangoLayout           *layout,
                                                          const ClutterColor    *color);
 

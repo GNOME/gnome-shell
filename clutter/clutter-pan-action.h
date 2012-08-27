@@ -95,49 +95,36 @@ struct _ClutterPanActionClass
   void (* _clutter_pan_action6) (void);
 };
 
-CLUTTER_AVAILABLE_IN_1_12
 GType clutter_pan_action_get_type (void) G_GNUC_CONST;
 
-CLUTTER_AVAILABLE_IN_1_12
 ClutterAction * clutter_pan_action_new                      (void);
-CLUTTER_AVAILABLE_IN_1_12
 void            clutter_pan_action_set_pan_axis             (ClutterPanAction *self,
                                                              ClutterPanAxis    axis);
-CLUTTER_AVAILABLE_IN_1_12
 ClutterPanAxis clutter_pan_action_get_pan_axis              (ClutterPanAction *self);
-CLUTTER_AVAILABLE_IN_1_12
 void            clutter_pan_action_set_interpolate          (ClutterPanAction *self,
                                                              gboolean          should_interpolate);
-CLUTTER_AVAILABLE_IN_1_12
 gboolean        clutter_pan_action_get_interpolate          (ClutterPanAction *self);
-CLUTTER_AVAILABLE_IN_1_12
 void            clutter_pan_action_set_deceleration         (ClutterPanAction *self,
                                                              gdouble           rate);
-CLUTTER_AVAILABLE_IN_1_12
 gdouble         clutter_pan_action_get_deceleration         (ClutterPanAction *self);
-CLUTTER_AVAILABLE_IN_1_12
 void            clutter_pan_action_set_acceleration_factor  (ClutterPanAction *self,
                                                              gdouble           factor);
-CLUTTER_AVAILABLE_IN_1_12
 gdouble         clutter_pan_action_get_acceleration_factor  (ClutterPanAction *self);
-CLUTTER_AVAILABLE_IN_1_12
 void            clutter_pan_action_get_interpolated_coords  (ClutterPanAction *self,
                                                              gfloat           *interpolated_x,
                                                              gfloat           *interpolated_y);
-CLUTTER_AVAILABLE_IN_1_12
 gfloat          clutter_pan_action_get_interpolated_delta   (ClutterPanAction *self,
                                                              gfloat           *delta_x,
                                                              gfloat           *delta_y);
-CLUTTER_AVAILABLE_IN_1_14
 gfloat          clutter_pan_action_get_motion_delta         (ClutterPanAction *self,
                                                              guint             point,
                                                              gfloat           *delta_x,
                                                              gfloat           *delta_y);
-CLUTTER_AVAILABLE_IN_1_14
 void            clutter_pan_action_get_motion_coords        (ClutterPanAction *self,
                                                              guint             point,
                                                              gfloat           *motion_x,
                                                              gfloat           *motion_y);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_PAN_ACTION_H__ */

@@ -80,13 +80,13 @@ struct _ClutterGridLayoutClass
   gpointer _padding[8];
 };
 
-CLUTTER_AVAILABLE_IN_1_12
+
 GType clutter_grid_layout_get_type (void) G_GNUC_CONST;
 
-CLUTTER_AVAILABLE_IN_1_12
+
 ClutterLayoutManager *  clutter_grid_layout_new                 (void);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                clutter_grid_layout_attach                      (ClutterGridLayout *layout,
                                                                      ClutterActor      *child,
                                                                      gint               left,
@@ -94,7 +94,7 @@ void                clutter_grid_layout_attach                      (ClutterGrid
                                                                      gint               width,
                                                                      gint               height);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                clutter_grid_layout_attach_next_to              (ClutterGridLayout   *layout,
                                                                      ClutterActor        *child,
                                                                      ClutterActor        *sibling,
@@ -102,58 +102,58 @@ void                clutter_grid_layout_attach_next_to              (ClutterGrid
                                                                      gint                 width,
                                                                      gint                 height);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 ClutterActor *      clutter_grid_layout_get_child_at                (ClutterGridLayout *layout,
                                                                      gint               left,
                                                                      gint               top);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                clutter_grid_layout_insert_row                  (ClutterGridLayout *layout,
                                                                      gint               position);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                clutter_grid_layout_insert_column               (ClutterGridLayout *layout,
                                                                      gint               position);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                clutter_grid_layout_insert_next_to              (ClutterGridLayout   *layout,
                                                                      ClutterActor        *sibling,
                                                                      ClutterGridPosition  side);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                clutter_grid_layout_set_orientation             (ClutterGridLayout *layout,
                                                                      ClutterOrientation orientation);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 ClutterOrientation  clutter_grid_layout_get_orientation             (ClutterGridLayout *layout);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                clutter_grid_layout_set_column_spacing          (ClutterGridLayout *layout,
                                                                      guint              spacing);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 guint               clutter_grid_layout_get_column_spacing          (ClutterGridLayout *layout);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                clutter_grid_layout_set_row_spacing             (ClutterGridLayout *layout,
                                                                      guint              spacing);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 guint               clutter_grid_layout_get_row_spacing             (ClutterGridLayout *layout);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                clutter_grid_layout_set_column_homogeneous      (ClutterGridLayout *layout,
                                                                      gboolean           homogeneous);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 gboolean            clutter_grid_layout_get_column_homogeneous      (ClutterGridLayout *layout);
 
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                clutter_grid_layout_set_row_homogeneous         (ClutterGridLayout *layout,
                                                                      gboolean           homogeneous);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 gboolean            clutter_grid_layout_get_row_homogeneous         (ClutterGridLayout *layout);
 
 G_END_DECLS

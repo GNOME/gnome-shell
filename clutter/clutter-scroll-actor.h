@@ -73,22 +73,22 @@ struct _ClutterScrollActorClass
   gpointer _padding[8];
 };
 
-CLUTTER_AVAILABLE_IN_1_12
+
 GType clutter_scroll_actor_get_type (void) G_GNUC_CONST;
 
-CLUTTER_AVAILABLE_IN_1_12
+
 ClutterActor *          clutter_scroll_actor_new                (void);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_scroll_actor_set_scroll_mode    (ClutterScrollActor *actor,
                                                                  ClutterScrollMode   mode);
-CLUTTER_AVAILABLE_IN_1_12
+
 ClutterScrollMode       clutter_scroll_actor_get_scroll_mode    (ClutterScrollActor *actor);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_scroll_actor_scroll_to_point    (ClutterScrollActor *actor,
                                                                  const ClutterPoint *point);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_scroll_actor_scroll_to_rect     (ClutterScrollActor *actor,
                                                                  const ClutterRect  *rect);
 

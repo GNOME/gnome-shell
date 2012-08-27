@@ -123,7 +123,7 @@ guint                   clutter_threads_add_timeout_full        (gint           
 guint                   clutter_threads_add_repaint_func        (GSourceFunc    func,
                                                                  gpointer       data,
                                                                  GDestroyNotify notify);
-CLUTTER_AVAILABLE_IN_1_10
+
 guint                   clutter_threads_add_repaint_func_full   (ClutterRepaintFlags flags,
                                                                  GSourceFunc    func,
                                                                  gpointer       data,

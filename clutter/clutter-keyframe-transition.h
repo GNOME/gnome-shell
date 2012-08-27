@@ -73,46 +73,46 @@ struct _ClutterKeyframeTransitionClass
   gpointer _padding[8];
 };
 
-CLUTTER_AVAILABLE_IN_1_12
+
 GType clutter_keyframe_transition_get_type (void) G_GNUC_CONST;
 
-CLUTTER_AVAILABLE_IN_1_12
+
 ClutterTransition *     clutter_keyframe_transition_new                 (const char *property_name);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_keyframe_transition_set_key_frames      (ClutterKeyframeTransition  *transition,
                                                                          guint                       n_key_frames,
                                                                          const double               *key_frames);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_keyframe_transition_set_values          (ClutterKeyframeTransition  *transition,
                                                                          guint                       n_values,
                                                                          const GValue               *values);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_keyframe_transition_set_modes           (ClutterKeyframeTransition  *transition,
                                                                          guint                       n_modes,
                                                                          const ClutterAnimationMode *modes);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_keyframe_transition_set                 (ClutterKeyframeTransition  *transition,
                                                                          GType                       gtype,
                                                                          guint                       n_key_frames,
                                                                          ...);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_keyframe_transition_set_key_frame       (ClutterKeyframeTransition  *transition,
                                                                          guint                       index_,
                                                                          double                      key,
                                                                          ClutterAnimationMode        mode,
                                                                          const GValue               *value);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_keyframe_transition_get_key_frame       (ClutterKeyframeTransition  *transition,
                                                                          guint                       index_,
                                                                          double                     *key,
                                                                          ClutterAnimationMode       *mode,
                                                                          GValue                     *value);
-CLUTTER_AVAILABLE_IN_1_12
+
 guint                   clutter_keyframe_transition_get_n_key_frames    (ClutterKeyframeTransition  *transition);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_keyframe_transition_clear               (ClutterKeyframeTransition  *transition);
 
 G_END_DECLS

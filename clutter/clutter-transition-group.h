@@ -71,19 +71,19 @@ struct _ClutterTransitionGroupClass
   gpointer _padding[8];
 };
 
-CLUTTER_AVAILABLE_IN_1_12
+
 GType clutter_transition_group_get_type (void) G_GNUC_CONST;
 
-CLUTTER_AVAILABLE_IN_1_12
+
 ClutterTransition *     clutter_transition_group_new            (void);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_transition_group_add_transition         (ClutterTransitionGroup *group,
                                                                          ClutterTransition      *transition);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_transition_group_remove_transition      (ClutterTransitionGroup *group,
                                                                          ClutterTransition      *transition);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                    clutter_transition_group_remove_all             (ClutterTransitionGroup *group);
 
 G_END_DECLS

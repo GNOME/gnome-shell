@@ -129,11 +129,11 @@ void            clutter_drag_action_get_motion_coords  (ClutterDragAction *actio
                                                         gfloat            *motion_x,
                                                         gfloat            *motion_y);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 gboolean        clutter_drag_action_get_drag_area      (ClutterDragAction *action,
                                                         ClutterRect       *drag_area);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void            clutter_drag_action_set_drag_area      (ClutterDragAction *action,
                                                         const ClutterRect *drag_area);
 

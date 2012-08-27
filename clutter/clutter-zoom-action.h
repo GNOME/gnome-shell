@@ -90,22 +90,22 @@ struct _ClutterZoomActionClass
   void (* _clutter_zoom_action5) (void);
 };
 
-CLUTTER_AVAILABLE_IN_1_12
+
 GType clutter_zoom_action_get_type (void) G_GNUC_CONST;
 
-CLUTTER_AVAILABLE_IN_1_12
+
 ClutterAction * clutter_zoom_action_new                         (void);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void            clutter_zoom_action_set_zoom_axis               (ClutterZoomAction *action,
                                                                  ClutterZoomAxis    axis);
-CLUTTER_AVAILABLE_IN_1_12
+
 ClutterZoomAxis clutter_zoom_action_get_zoom_axis               (ClutterZoomAction *action);
 
-CLUTTER_AVAILABLE_IN_1_12
+
 void            clutter_zoom_action_get_focal_point             (ClutterZoomAction *action,
                                                                  ClutterPoint      *point);
-CLUTTER_AVAILABLE_IN_1_12
+
 void            clutter_zoom_action_get_transformed_focal_point (ClutterZoomAction *action,
                                                                  ClutterPoint      *point);
 

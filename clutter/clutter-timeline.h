@@ -131,10 +131,10 @@ void                            clutter_timeline_stop                           
 void                            clutter_timeline_set_auto_reverse               (ClutterTimeline          *timeline,
                                                                                  gboolean                  reverse);
 gboolean                        clutter_timeline_get_auto_reverse               (ClutterTimeline          *timeline);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_timeline_set_repeat_count               (ClutterTimeline          *timeline,
                                                                                  gint                      count);
-CLUTTER_AVAILABLE_IN_1_10
+
 gint                            clutter_timeline_get_repeat_count               (ClutterTimeline          *timeline);
 void                            clutter_timeline_rewind                         (ClutterTimeline          *timeline);
 void                            clutter_timeline_skip                           (ClutterTimeline          *timeline,
@@ -164,36 +164,36 @@ gboolean                        clutter_timeline_has_marker                     
                                                                                  const gchar              *marker_name);
 void                            clutter_timeline_advance_to_marker              (ClutterTimeline          *timeline,
                                                                                  const gchar              *marker_name);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_timeline_set_progress_func              (ClutterTimeline          *timeline,
                                                                                  ClutterTimelineProgressFunc func,
                                                                                  gpointer                  data,
                                                                                  GDestroyNotify            notify);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                            clutter_timeline_set_progress_mode              (ClutterTimeline          *timeline,
                                                                                  ClutterAnimationMode      mode);
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterAnimationMode            clutter_timeline_get_progress_mode              (ClutterTimeline          *timeline);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_timeline_set_step_progress              (ClutterTimeline          *timeline,
                                                                                  gint                      n_steps,
                                                                                  ClutterStepMode           step_mode);
-CLUTTER_AVAILABLE_IN_1_12
+
 gboolean                        clutter_timeline_get_step_progress              (ClutterTimeline          *timeline,
                                                                                  gint                     *n_steps,
                                                                                  ClutterStepMode          *step_mode);
-CLUTTER_AVAILABLE_IN_1_12
+
 void                            clutter_timeline_set_cubic_bezier_progress      (ClutterTimeline          *timeline,
                                                                                  const ClutterPoint       *c_1,
                                                                                  const ClutterPoint       *c_2);
-CLUTTER_AVAILABLE_IN_1_12
+
 gboolean                        clutter_timeline_get_cubic_bezier_progress      (ClutterTimeline          *timeline,
                                                                                  ClutterPoint             *c_1,
                                                                                  ClutterPoint             *c_2);
 
-CLUTTER_AVAILABLE_IN_1_10
+
 gint64                          clutter_timeline_get_duration_hint              (ClutterTimeline          *timeline);
-CLUTTER_AVAILABLE_IN_1_10
+
 gint                            clutter_timeline_get_current_repeat             (ClutterTimeline          *timeline);
 
 G_END_DECLS

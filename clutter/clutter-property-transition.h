@@ -75,15 +75,15 @@ struct _ClutterPropertyTransitionClass
   gpointer _padding[8];
 };
 
-CLUTTER_AVAILABLE_IN_1_10
+
 GType clutter_property_transition_get_type (void) G_GNUC_CONST;
 
-CLUTTER_AVAILABLE_IN_1_10
+
 ClutterTransition *     clutter_property_transition_new                 (const char                *property_name);
-CLUTTER_AVAILABLE_IN_1_10
+
 void                    clutter_property_transition_set_property_name   (ClutterPropertyTransition *transition,
                                                                          const char                *property_name);
-CLUTTER_AVAILABLE_IN_1_10
+
 const char *            clutter_property_transition_get_property_name   (ClutterPropertyTransition *transition);
 
 G_END_DECLS
