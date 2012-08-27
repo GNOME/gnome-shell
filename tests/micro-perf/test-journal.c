@@ -2,6 +2,8 @@
 #include <cogl/cogl2-experimental.h>
 #include <math.h>
 
+#include "cogl/cogl-profile.h"
+
 #define FRAMEBUFFER_WIDTH 800
 #define FRAMEBUFFER_HEIGHT 600
 
@@ -141,6 +143,11 @@ main (int argc, char **argv)
   CoglOnscreen *onscreen;
   GSource *cogl_source;
   GMainLoop *loop;
+  COGL_STATIC_TIMER (mainloop_timer,
+                      NULL, //no parent
+                      "Mainloop",
+                      "The time spent in the glib mainloop",
+                      0);  // no application private data
 
   data.ctx = cogl_context_new (NULL, NULL);
 
@@ -176,7 +183,9 @@ main (int argc, char **argv)
   g_timer_start (data.timer);
 
   loop = g_main_loop_new (NULL, TRUE);
+  COGL_TIMER_START (uprof_get_mainloop_context (), mainloop_timer);
   g_main_loop_run (loop);
+  COGL_TIMER_STOP (uprof_get_mainloop_context (), mainloop_timer);
 
   return 0;
 }
