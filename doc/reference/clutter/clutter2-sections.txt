@@ -1,34 +1,4 @@
 <SECTION>
-<FILE>clutter-media</FILE>
-<TITLE>ClutterMedia</TITLE>
-ClutterMedia
-ClutterMediaIface
-clutter_media_set_uri
-clutter_media_get_uri
-clutter_media_set_playing
-clutter_media_get_playing
-clutter_media_set_progress
-clutter_media_get_progress
-clutter_media_set_subtitle_uri
-clutter_media_get_subtitle_uri
-clutter_media_set_subtitle_font_name
-clutter_media_get_subtitle_font_name
-clutter_media_set_audio_volume
-clutter_media_get_audio_volume
-clutter_media_get_can_seek
-clutter_media_get_buffer_fill
-clutter_media_get_duration
-clutter_media_set_filename
-<SUBSECTION Standard>
-CLUTTER_MEDIA
-CLUTTER_IS_MEDIA
-CLUTTER_TYPE_MEDIA
-CLUTTER_MEDIA_GET_INTERFACE
-<SUBSECTION Private>
-clutter_media_get_type
-</SECTION>
-
-<SECTION>
 <FILE>clutter-units</FILE>
 <TITLE>Unit conversion</TITLE>
 ClutterUnitType
@@ -70,70 +40,6 @@ clutter_units_pt
 </SECTION>
 
 <SECTION>
-<FILE>clutter-behaviour</FILE>
-<TITLE>ClutterBehaviour</TITLE>
-ClutterBehaviour
-ClutterBehaviourClass
-clutter_behaviour_apply
-clutter_behaviour_remove
-clutter_behaviour_remove_all
-clutter_behaviour_is_applied
-ClutterBehaviourForeachFunc
-clutter_behaviour_actors_foreach
-clutter_behaviour_get_actors
-clutter_behaviour_get_n_actors
-clutter_behaviour_get_nth_actor
-clutter_behaviour_get_alpha
-clutter_behaviour_set_alpha
-<SUBSECTION Standard>
-CLUTTER_BEHAVIOUR
-CLUTTER_IS_BEHAVIOUR
-CLUTTER_TYPE_BEHAVIOUR
-CLUTTER_BEHAVIOUR_CLASS
-CLUTTER_IS_BEHAVIOUR_CLASS
-CLUTTER_BEHAVIOUR_GET_CLASS
-<SUBSECTION Private>
-ClutterBehaviourPrivate
-clutter_behaviour_get_type
-</SECTION>
-
-<SECTION>
-<FILE>clutter-alpha</FILE>
-<TITLE>ClutterAlpha</TITLE>
-ClutterAlpha
-ClutterAlphaClass
-ClutterAlphaFunc
-clutter_alpha_new
-clutter_alpha_new_full
-clutter_alpha_new_with_func
-clutter_alpha_set_timeline
-clutter_alpha_get_timeline
-clutter_alpha_set_mode
-clutter_alpha_get_mode
-clutter_alpha_get_alpha
-
-<SUBSECTION>
-clutter_alpha_set_func
-clutter_alpha_set_closure
-
-<SUBSECTION>
-clutter_alpha_register_closure
-clutter_alpha_register_func
-
-<SUBSECTION Standard>
-CLUTTER_ALPHA
-CLUTTER_IS_ALPHA
-CLUTTER_TYPE_ALPHA
-CLUTTER_ALPHA_CLASS
-CLUTTER_IS_ALPHA_CLASS
-CLUTTER_ALPHA_GET_CLASS
-
-<SUBSECTION Private>
-ClutterAlphaPrivate
-clutter_alpha_get_type
-</SECTION>
-
-<SECTION>
 <FILE>clutter-clone</FILE>
 <TITLE>ClutterClone</TITLE>
 ClutterClone
@@ -154,47 +60,10 @@ clutter_clone_get_type
 </SECTION>
 
 <SECTION>
-<FILE>clutter-group</FILE>
-<TITLE>ClutterGroup</TITLE>
-ClutterGroup
-ClutterGroupClass
-clutter_group_new
-clutter_group_remove_all
-clutter_group_get_n_children
-clutter_group_get_nth_child
-<SUBSECTION Standard>
-CLUTTER_GROUP
-CLUTTER_IS_GROUP
-CLUTTER_TYPE_GROUP
-CLUTTER_GROUP_CLASS
-CLUTTER_IS_GROUP_CLASS
-CLUTTER_GROUP_GET_CLASS
-<SUBSECTION Private>
-ClutterGroupPrivate
-clutter_group_get_type
-clutter_group_add
-</SECTION>
-
-<SECTION>
 <FILE>clutter-container</FILE>
 <TITLE>ClutterContainer</TITLE>
 ClutterContainer
 ClutterContainerIface
-clutter_container_add_actor
-clutter_container_add
-clutter_container_add_valist
-clutter_container_remove_actor
-clutter_container_remove
-clutter_container_remove_valist
-clutter_container_get_children
-clutter_container_foreach
-clutter_container_foreach_with_internals
-
-<SUBSECTION>
-clutter_container_find_child_by_name
-clutter_container_raise_child
-clutter_container_lower_child
-clutter_container_sort_depth_order
 
 <SUBSECTION>
 clutter_container_class_find_child_property
@@ -235,31 +104,6 @@ CLUTTER_IS_CHILD_META_CLASS
 CLUTTER_CHILD_META_GET_CLASS
 <SUBSECTION Private>
 clutter_child_meta_get_type
-</SECTION>
-
-<SECTION>
-<FILE>clutter-rectangle</FILE>
-<TITLE>ClutterRectangle</TITLE>
-ClutterRectangle
-ClutterRectangleClass
-clutter_rectangle_new
-clutter_rectangle_new_with_color
-clutter_rectangle_get_color
-clutter_rectangle_set_color
-clutter_rectangle_get_border_color
-clutter_rectangle_set_border_color
-clutter_rectangle_get_border_width
-clutter_rectangle_set_border_width
-<SUBSECTION Standard>
-CLUTTER_RECTANGLE
-CLUTTER_IS_RECTANGLE
-CLUTTER_TYPE_RECTANGLE
-CLUTTER_RECTANGLE_CLASS
-CLUTTER_IS_RECTANGLE_CLASS
-CLUTTER_RECTANGLE_GET_CLASS
-<SUBSECTION Private>
-ClutterRectanglePrivate
-clutter_rectangle_get_type
 </SECTION>
 
 <SECTION>
@@ -512,39 +356,6 @@ clutter_actor_get_effects
 clutter_actor_get_effect
 clutter_actor_clear_effects
 
-<SUBSECTION>
-clutter_actor_set_scale_full
-clutter_actor_set_scale_with_gravity
-clutter_actor_get_scale_center
-clutter_actor_get_scale_gravity
-clutter_actor_set_depth
-clutter_actor_get_depth
-clutter_actor_push_internal
-clutter_actor_pop_internal
-clutter_actor_set_parent
-clutter_actor_reparent
-clutter_actor_unparent
-clutter_actor_raise
-clutter_actor_lower
-clutter_actor_raise_top
-clutter_actor_lower_bottom
-clutter_actor_set_shader
-clutter_actor_get_shader
-clutter_actor_set_shader_param
-clutter_actor_set_shader_param_float
-clutter_actor_set_shader_param_int
-clutter_actor_set_anchor_point
-clutter_actor_get_anchor_point
-clutter_actor_set_anchor_point_from_gravity
-clutter_actor_get_anchor_point_gravity
-clutter_actor_move_anchor_point
-clutter_actor_move_anchor_point_from_gravity
-clutter_actor_set_rotation
-clutter_actor_get_rotation
-clutter_actor_set_z_rotation_from_gravity
-clutter_actor_get_z_rotation_gravity
-clutter_actor_get_transformation_matrix
-
 <SUBSECTION Standard>
 CLUTTER_TYPE_MARGIN
 CLUTTER_ACTOR
@@ -562,77 +373,13 @@ clutter_margin_get_type
 </SECTION>
 
 <SECTION>
-<FILE>clutter-texture</FILE>
-<TITLE>ClutterTexture</TITLE>
-ClutterTexture
-ClutterTextureClass
-ClutterTextureFlags
-ClutterTextureQuality
-clutter_texture_new
-clutter_texture_new_from_file
-clutter_texture_new_from_actor
-
-<SUBSECTION>
-CLUTTER_TEXTURE_ERROR
-ClutterTextureError
-clutter_texture_set_from_file
-clutter_texture_set_from_rgb_data
-clutter_texture_set_from_yuv_data
-clutter_texture_set_area_from_rgb_data
-
-<SUBSECTION>
-clutter_texture_get_base_size
-clutter_texture_get_pixel_format
-clutter_texture_get_max_tile_waste
-
-<SUBSECTION>
-clutter_texture_get_filter_quality
-clutter_texture_set_filter_quality
-clutter_texture_get_cogl_texture
-clutter_texture_set_cogl_texture
-clutter_texture_get_cogl_material
-clutter_texture_set_cogl_material
-clutter_texture_get_sync_size
-clutter_texture_set_sync_size
-clutter_texture_get_repeat
-clutter_texture_set_repeat
-clutter_texture_get_keep_aspect_ratio
-clutter_texture_set_keep_aspect_ratio
-clutter_texture_get_load_async
-clutter_texture_set_load_async
-clutter_texture_get_load_data_async
-clutter_texture_set_load_data_async
-clutter_texture_get_pick_with_alpha
-clutter_texture_set_pick_with_alpha
-
-<SUBSECTION Standard>
-CLUTTER_TEXTURE
-CLUTTER_IS_TEXTURE
-CLUTTER_TYPE_TEXTURE
-CLUTTER_TEXTURE_CLASS
-CLUTTER_IS_TEXTURE_CLASS
-CLUTTER_TEXTURE_GET_CLASS
-
-<SUBSECTION Private>
-ClutterTexturePrivate
-clutter_texture_error_quark
-clutter_texture_get_type
-</SECTION>
-
-<SECTION>
 <FILE>clutter-stage</FILE>
 <TITLE>ClutterStage</TITLE>
 ClutterStage
 ClutterStageClass
-CLUTTER_STAGE_WIDTH
-CLUTTER_STAGE_HEIGHT
-clutter_stage_get_default
 clutter_stage_new
-clutter_stage_is_default
 
 <SUBSECTION>
-clutter_stage_set_color
-clutter_stage_get_color
 clutter_stage_set_fullscreen
 clutter_stage_get_fullscreen
 clutter_stage_show_cursor
@@ -672,13 +419,6 @@ clutter_stage_set_title
 clutter_stage_get_title
 clutter_stage_set_user_resizable
 clutter_stage_get_user_resizable
-
-<SUBSECTION>
-ClutterFog
-clutter_stage_set_use_fog
-clutter_stage_get_use_fog
-clutter_stage_set_fog
-clutter_stage_get_fog
 
 <SUBSECTION Standard>
 CLUTTER_STAGE
@@ -730,8 +470,6 @@ ClutterTimelineProgressFunc
 clutter_timeline_set_progress_func
 clutter_timeline_get_duration_hint
 clutter_timeline_get_current_repeat
-clutter_timeline_set_loop
-clutter_timeline_get_loop
 
 <SUBSECTION>
 clutter_timeline_start
@@ -764,29 +502,6 @@ CLUTTER_TIMELINE_GET_CLASS
 ClutterTimelinePrivate
 clutter_timeline_get_type
 clutter_timeline_do_tick
-</SECTION>
-
-<SECTION>
-<FILE>clutter-behaviour-path</FILE>
-<TITLE>ClutterBehaviourPath</TITLE>
-ClutterBehaviourPath
-ClutterBehaviourPathClass
-clutter_behaviour_path_new
-clutter_behaviour_path_new_with_description
-clutter_behaviour_path_new_with_knots
-clutter_behaviour_path_set_path
-clutter_behaviour_path_get_path
-
-<SUBSECTION Standard>
-CLUTTER_BEHAVIOUR_PATH
-CLUTTER_IS_BEHAVIOUR_PATH
-CLUTTER_TYPE_BEHAVIOUR_PATH
-CLUTTER_BEHAVIOUR_PATH_CLASS
-CLUTTER_IS_BEHAVIOUR_PATH_CLASS
-CLUTTER_BEHAVIOUR_PATH_GET_CLASS
-<SUBSECTION Private>
-ClutterBehaviourPathPrivate
-clutter_behaviour_path_get_type
 </SECTION>
 
 <SECTION>
@@ -849,124 +564,13 @@ clutter_path_node_get_type
 </SECTION>
 
 <SECTION>
-<FILE>clutter-behaviour-opacity</FILE>
-<TITLE>ClutterBehaviourOpacity</TITLE>
-ClutterBehaviourOpacity
-ClutterBehaviourOpacityClass
-clutter_behaviour_opacity_new
-clutter_behaviour_opacity_set_bounds
-clutter_behaviour_opacity_get_bounds
-<SUBSECTION Standard>
-CLUTTER_BEHAVIOUR_OPACITY
-CLUTTER_IS_BEHAVIOUR_OPACITY
-CLUTTER_TYPE_BEHAVIOUR_OPACITY
-CLUTTER_BEHAVIOUR_OPACITY_CLASS
-CLUTTER_IS_BEHAVIOUR_OPACITY_CLASS
-CLUTTER_BEHAVIOUR_OPACITY_GET_CLASS
-<SUBSECTION Private>
-ClutterBehaviourOpacityPrivate
-clutter_behaviour_opacity_get_type
-</SECTION>
-
-<SECTION>
-<FILE>clutter-behaviour-rotate</FILE>
-<TITLE>ClutterBehaviourRotate</TITLE>
-ClutterRotateAxis
-ClutterRotateDirection
-ClutterBehaviourRotate
-ClutterBehaviourRotateClass
-clutter_behaviour_rotate_new
-clutter_behaviour_rotate_set_axis
-clutter_behaviour_rotate_get_axis
-clutter_behaviour_rotate_set_direction
-clutter_behaviour_rotate_get_direction
-clutter_behaviour_rotate_set_bounds
-clutter_behaviour_rotate_get_bounds
-clutter_behaviour_rotate_set_center
-clutter_behaviour_rotate_get_center
-<SUBSECTION Standard>
-CLUTTER_TYPE_BEHAVIOUR_ROTATE
-CLUTTER_BEHAVIOUR_ROTATE
-CLUTTER_IS_BEHAVIOUR_ROTATE
-CLUTTER_BEHAVIOUR_ROTATE_CLASS
-CLUTTER_IS_BEHAVIOUR_ROTATE_CLASS
-CLUTTER_BEHAVIOUR_ROTATE_GET_CLASS
-<SUBSECTION Private>
-ClutterBehaviourRotatePrivate
-clutter_behaviour_rotate_get_type
-</SECTION>
-
-<SECTION>
-<FILE>clutter-behaviour-scale</FILE>
-<TITLE>ClutterBehaviourScale</TITLE>
-ClutterGravity
-ClutterBehaviourScale
-ClutterBehaviourScaleClass
-clutter_behaviour_scale_new
-clutter_behaviour_scale_set_bounds
-clutter_behaviour_scale_get_bounds
-<SUBSECTION Standard>
-CLUTTER_BEHAVIOUR_SCALE
-CLUTTER_IS_BEHAVIOUR_SCALE
-CLUTTER_TYPE_BEHAVIOUR_SCALE
-CLUTTER_BEHAVIOUR_SCALE_CLASS
-CLUTTER_IS_BEHAVIOUR_SCALE_CLASS
-CLUTTER_BEHAVIOUR_SCALE_GET_CLASS
-<SUBSECTION Private>
-ClutterBehaviourScalePrivate
-clutter_behaviour_scale_get_type
-</SECTION>
-
-<SECTION>
-<FILE>clutter-behaviour-ellipse</FILE>
-<TITLE>ClutterBehaviourEllipse</TITLE>
-ClutterBehaviourEllipse
-ClutterBehaviourEllipseClass
-clutter_behaviour_ellipse_new
-clutter_behaviour_ellipse_set_center
-clutter_behaviour_ellipse_get_center
-clutter_behaviour_ellipse_set_angle_start
-clutter_behaviour_ellipse_get_angle_start
-clutter_behaviour_ellipse_set_angle_end
-clutter_behaviour_ellipse_get_angle_end
-clutter_behaviour_ellipse_set_angle_tilt
-clutter_behaviour_ellipse_get_angle_tilt
-clutter_behaviour_ellipse_set_height
-clutter_behaviour_ellipse_get_height
-clutter_behaviour_ellipse_set_width
-clutter_behaviour_ellipse_get_width
-clutter_behaviour_ellipse_set_tilt
-clutter_behaviour_ellipse_get_tilt
-clutter_behaviour_ellipse_set_direction
-clutter_behaviour_ellipse_get_direction
-<SUBSECTION Standard>
-CLUTTER_TYPE_BEHAVIOUR_ELLIPSE
-CLUTTER_BEHAVIOUR_ELLIPSE
-CLUTTER_BEHAVIOUR_ELLIPSE_CLASS
-CLUTTER_IS_BEHAVIOUR_ELLIPSE
-CLUTTER_IS_BEHAVIOUR_ELLIPSE_CLASS
-CLUTTER_BEHAVIOUR_ELLIPSE_GET_CLASS
-<SUBSECTION Private>
-ClutterBehaviourEllipsePrivate
-clutter_behaviour_ellipse_get_type
-</SECTION>
-
-
-<SECTION>
 <FILE>clutter-backend</FILE>
 <TITLE>ClutterBackend</TITLE>
 ClutterBackend
 clutter_get_default_backend
-clutter_backend_set_resolution
 clutter_backend_get_resolution
-clutter_backend_set_double_click_time
-clutter_backend_get_double_click_time
-clutter_backend_set_double_click_distance
-clutter_backend_get_double_click_distance
 clutter_backend_set_font_options
 clutter_backend_get_font_options
-clutter_backend_set_font_name
-clutter_backend_get_font_name
 clutter_backend_get_cogl_context
 
 <SUBSECTION>
@@ -982,35 +586,6 @@ CLUTTER_TYPE_BACKEND
 <SUBSECTION Private>
 ClutterBackendClass
 clutter_backend_get_type
-</SECTION>
-
-<SECTION>
-<FILE>clutter-util</FILE>
-<TITLE>Utilities</TITLE>
-clutter_util_next_p2
-
-<SUBSECTION>
-clutter_timeout_pool_new
-clutter_timeout_pool_add
-clutter_timeout_pool_remove
-
-<SUBSECTION>
-clutter_frame_source_add
-clutter_frame_source_add_full
-
-<SUBSECTION>
-ClutterParamSpecFixed
-clutter_param_spec_fixed
-CLUTTER_VALUE_HOLDS_FIXED
-clutter_value_set_fixed
-clutter_value_get_fixed
-
-<SUBSECTION Private>
-ClutterTimeoutPool
-CLUTTER_TYPE_PARAM_FIXED
-CLUTTER_PARAM_SPEC_FIXED
-CLUTTER_IS_PARAM_SPEC_FIXED
-clutter_param_fixed_get_type
 </SECTION>
 
 <SECTION>
@@ -1505,38 +1080,11 @@ CLUTTER_VERSION_MAX_ALLOWED
 CLUTTER_VERSION_MIN_REQUIRED
 
 <SUBSECTION>
-clutter_major_version
-clutter_minor_version
-clutter_micro_version
 clutter_check_version
 
 <SUBSECTION Private>
 CLUTTER_VERSION_CUR_STABLE
 CLUTTER_VERSION_PREV_STABLE
-CLUTTER_AVAILABLE_IN_1_0
-CLUTTER_AVAILABLE_IN_1_2
-CLUTTER_AVAILABLE_IN_1_4
-CLUTTER_AVAILABLE_IN_1_6
-CLUTTER_AVAILABLE_IN_1_8
-CLUTTER_AVAILABLE_IN_1_10
-CLUTTER_AVAILABLE_IN_1_12
-CLUTTER_AVAILABLE_IN_1_14
-CLUTTER_DEPRECATED_IN_1_0
-CLUTTER_DEPRECATED_IN_1_0_FOR
-CLUTTER_DEPRECATED_IN_1_2
-CLUTTER_DEPRECATED_IN_1_2_FOR
-CLUTTER_DEPRECATED_IN_1_4
-CLUTTER_DEPRECATED_IN_1_4_FOR
-CLUTTER_DEPRECATED_IN_1_6
-CLUTTER_DEPRECATED_IN_1_6_FOR
-CLUTTER_DEPRECATED_IN_1_8
-CLUTTER_DEPRECATED_IN_1_8_FOR
-CLUTTER_DEPRECATED_IN_1_10
-CLUTTER_DEPRECATED_IN_1_10_FOR
-CLUTTER_DEPRECATED_IN_1_12
-CLUTTER_DEPRECATED_IN_1_12_FOR
-CLUTTER_DEPRECATED_IN_1_14
-CLUTTER_DEPRECATED_IN_1_14_FOR
 CLUTTER_UNAVAILABLE
 </SECTION>
 

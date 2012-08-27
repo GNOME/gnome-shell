@@ -216,52 +216,12 @@
 
     <xi:include href="xml/clutter-backend.xml"/>
     <xi:include href="xml/clutter-x11.xml"/>
-    <xi:include href="xml/clutter-x11-texture-pixmap.xml"/>
-    <xi:include href="xml/clutter-glx-texture-pixmap.xml"/>
     <xi:include href="xml/clutter-win32.xml"/>
     <xi:include href="xml/clutter-egl.xml"/>
     <xi:include href="xml/clutter-cex100.xml"/>
     <xi:include href="xml/clutter-gdk.xml"/>
     <xi:include href="xml/clutter-wayland-compositor.xml"/>
     <xi:include href="xml/clutter-wayland-surface.xml"/>
-  </part>
-
-  <part id="migration">
-    <title>Migrating from previous version of Clutter</title>
-
-    <partintro>
-      <part>This section describes the changes that need to be
-      done in applications using Clutter to use new features or
-      to migrate from old, deprecated API to the new ones.</part>
-    </partintro>
-
-    <xi:include href="xml/migrating-ClutterEffect.xml"/>
-    <xi:include href="xml/migrating-ClutterPath.xml"/>
-    <xi:include href="xml/migrating-ClutterBehaviour.xml"/>
-    <xi:include href="xml/migrating-ClutterAnimation.xml"/>
-
-  </part>
-
-  <part id="deprecated">
-    <title>Deprecated Classes</title>
-
-      <xi:include href="xml/clutter-alpha.xml"/>
-      <xi:include href="xml/clutter-animation.xml"/>
-      <xi:include href="xml/clutter-animator.xml"/>
-      <xi:include href="xml/clutter-behaviour.xml"/>
-      <xi:include href="xml/clutter-behaviour-depth.xml"/>
-      <xi:include href="xml/clutter-behaviour-ellipse.xml"/>
-      <xi:include href="xml/clutter-behaviour-opacity.xml"/>
-      <xi:include href="xml/clutter-behaviour-path.xml"/>
-      <xi:include href="xml/clutter-behaviour-rotate.xml"/>
-      <xi:include href="xml/clutter-behaviour-scale.xml"/>
-      <xi:include href="xml/clutter-box.xml"/>
-      <xi:include href="xml/clutter-cairo-texture.xml"/>
-      <xi:include href="xml/clutter-group.xml"/>
-      <xi:include href="xml/clutter-rectangle.xml"/>
-      <xi:include href="xml/clutter-score.xml"/>
-      <xi:include href="xml/clutter-shader.xml"/>
-      <xi:include href="xml/clutter-state.xml"/>
   </part>
 
   <part id="clutterobjects">
@@ -295,66 +255,6 @@
   <index role="deprecated">
     <title>Index of deprecated symbols</title>
     <xi:include href="xml/api-index-deprecated.xml"><xi:fallback /></xi:include>
-  </index>
-
-  <index role="0.2">
-    <title>Index of new symbols in 0.2</title>
-    <xi:include href="xml/api-index-0.2.xml"><xi:fallback /></xi:include>
-  </index>
-
-  <index role="0.4">
-    <title>Index of new symbols in 0.4</title>
-    <xi:include href="xml/api-index-0.4.xml"><xi:fallback /></xi:include>
-  </index>
-
-  <index role="0.6">
-    <title>Index of new symbols in 0.6</title>
-    <xi:include href="xml/api-index-0.6.xml"><xi:fallback /></xi:include>
-  </index>
-
-  <index role="0.8">
-    <title>Index of new symbols in 0.8</title>
-    <xi:include href="xml/api-index-0.8.xml"><xi:fallback /></xi:include>
-  </index>
-
-  <index role="1.0">
-    <title>Index of new symbols in 1.0</title>
-    <xi:include href="xml/api-index-1.0.xml"><xi:fallback /></xi:include>
-  </index>
-
-  <index role="1.2">
-    <title>Index of new symbols in 1.2</title>
-    <xi:include href="xml/api-index-1.2.xml"><xi:fallback /></xi:include>
-  </index>
-
-  <index role="1.4">
-    <title>Index of new symbols in 1.4</title>
-    <xi:include href="xml/api-index-1.4.xml"><xi:fallback /></xi:include>
-  </index>
-
-  <index role="1.6">
-    <title>Index of new symbols in 1.6</title>
-    <xi:include href="xml/api-index-1.6.xml"><xi:fallback /></xi:include>
-  </index>
-
-  <index role="1.8">
-    <title>Index of new symbols in 1.8</title>
-    <xi:include href="xml/api-index-1.8.xml"><xi:fallback /></xi:include>
-  </index>
-
-  <index role="1.10">
-    <title>Index of new symbols in 1.10</title>
-    <xi:include href="xml/api-index-1.10.xml"><xi:fallback /></xi:include>
-  </index>
-
-  <index role="1.12">
-    <title>Index of new symbols in 1.12</title>
-    <xi:include href="xml/api-index-1.12.xml"><xi:fallback /></xi:include>
-  </index>
-
-  <index role="1.14">
-    <title>Index of new symbols in 1.14</title>
-    <xi:include href="xml/api-index-1.14.xml"><xi:fallback /></xi:include>
   </index>
 
   <appendix id="license">
