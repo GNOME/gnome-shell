@@ -182,9 +182,8 @@ static void
 meta_window_group_paint (ClutterActor *actor)
 {
   cairo_region_t *visible_region;
-  cairo_region_t *unredirected_window_region = NULL;
   ClutterActor *stage;
-  cairo_rectangle_int_t visible_rect, unredirected_rect;
+  cairo_rectangle_int_t visible_rect;
   GList *children, *l;
   int paint_x_origin, paint_y_origin;
   int actor_x_origin, actor_y_origin;
@@ -216,12 +215,6 @@ meta_window_group_paint (ClutterActor *actor)
   paint_x_offset = paint_x_origin - actor_x_origin;
   paint_y_offset = paint_y_origin - actor_y_origin;
 
-  if (info->unredirected_window != NULL)
-    {
-      meta_window_actor_get_shape_bounds (META_WINDOW_ACTOR (info->unredirected_window), &unredirected_rect);
-      unredirected_window_region = cairo_region_create_rectangle (&unredirected_rect);
-    }
-
   /* We walk the list from top to bottom (opposite of painting order),
    * and subtract the opaque area of each window out of the visible
    * region that we pass to the windows below.
@@ -241,8 +234,12 @@ meta_window_group_paint (ClutterActor *actor)
 
   visible_region = cairo_region_create_rectangle (&visible_rect);
 
-  if (unredirected_window_region)
-    cairo_region_subtract (visible_region, unredirected_window_region);
+  if (info->unredirected_window != NULL)
+    {
+      cairo_rectangle_int_t unredirected_rect;
+      meta_window_actor_get_shape_bounds (META_WINDOW_ACTOR (info->unredirected_window), &unredirected_rect);
+      cairo_region_subtract_rectangle (visible_region, &unredirected_rect);
+    }
 
   for (l = children; l; l = l->next)
     {
@@ -312,9 +309,6 @@ meta_window_group_paint (ClutterActor *actor)
     }
 
   cairo_region_destroy (visible_region);
-
-  if (unredirected_window_region)
-    cairo_region_destroy (unredirected_window_region);
 
   CLUTTER_ACTOR_CLASS (meta_window_group_parent_class)->paint (actor);
 
