@@ -6,340 +6,348 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=clutter\n"
-"POT-Creation-Date: 2012-03-05 23:14+0000\n"
-"PO-Revision-Date: 2012-01-13 23:49+0300\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=cogl&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-08-01 10:44+0000\n"
+"PO-Revision-Date: 2012-08-28 21:59+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
-"%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: cogl/cogl-debug.c:172
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
 msgstr "Palaikomos derinimo reikšmės:"
 
-#: cogl/cogl-debug.c:177
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
 msgstr "Specialios derinimo reikšmės:"
 
-#: cogl/cogl-debug.c:179 cogl/cogl-debug.c:181
+#: ../cogl/cogl-debug.c:181
+#: ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr "Įjungia visas ne-elgsenos derinimo parinktis"
 
-#: cogl/cogl-debug.c:225
-msgid "Cogl debugging flags to set"
-msgstr "Cogl derinimo požymiai įjungimui"
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "Papildomi aplinkos kintamieji:"
 
-#: cogl/cogl-debug.c:227
-msgid "Cogl debugging flags to unset"
-msgstr "Cogl derinimo požymiai išjungimui"
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr "Kableliais skiriamas GL plėtinių sąrašas, kurį laikyti išjungtu"
 
-#: cogl/cogl-debug.c:276
-msgid "Cogl Options"
-msgstr "Cogl parinktys"
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr "GL versija, kurią Cogl turi laikyti, kad tvarkyklė palaiko"
 
-#: cogl/cogl-debug.c:277
-msgid "Show Cogl options"
-msgstr "Rodyti Cogl parinktis"
-
-#: cogl/cogl-debug-options.h:25 cogl/cogl-debug-options.h:30
-#: cogl/cogl-debug-options.h:35 cogl/cogl-debug-options.h:40
-#: cogl/cogl-debug-options.h:45 cogl/cogl-debug-options.h:50
-#: cogl/cogl-debug-options.h:55 cogl/cogl-debug-options.h:61
-#: cogl/cogl-debug-options.h:66 cogl/cogl-debug-options.h:71
-#: cogl/cogl-debug-options.h:158 cogl/cogl-debug-options.h:163
-#: cogl/cogl-debug-options.h:168 cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:25
+#: ../cogl/cogl-debug-options.h:30
+#: ../cogl/cogl-debug-options.h:35
+#: ../cogl/cogl-debug-options.h:40
+#: ../cogl/cogl-debug-options.h:45
+#: ../cogl/cogl-debug-options.h:50
+#: ../cogl/cogl-debug-options.h:55
+#: ../cogl/cogl-debug-options.h:61
+#: ../cogl/cogl-debug-options.h:66
+#: ../cogl/cogl-debug-options.h:71
+#: ../cogl/cogl-debug-options.h:158
+#: ../cogl/cogl-debug-options.h:163
+#: ../cogl/cogl-debug-options.h:168
+#: ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Cogl sekimas"
 
-#: cogl/cogl-debug-options.h:27
+#: ../cogl/cogl-debug-options.h:27
 msgid "CoglObject references"
 msgstr "CoglObject nuorodos"
 
-#: cogl/cogl-debug-options.h:28
+#: ../cogl/cogl-debug-options.h:28
 msgid "Debug ref counting issues for CoglObjects"
 msgstr "Derinti nuorodų skaičiavimo problemas CoglObject'ams"
 
-#: cogl/cogl-debug-options.h:32
+#: ../cogl/cogl-debug-options.h:32
 msgid "Trace Texture Slicing"
 msgstr "Sekti rašto kirpimus"
 
-#: cogl/cogl-debug-options.h:33
+#: ../cogl/cogl-debug-options.h:33
 msgid "debug the creation of texture slices"
 msgstr "derinti raštų iškarpų sukūrimus"
 
-#: cogl/cogl-debug-options.h:37
+#: ../cogl/cogl-debug-options.h:37
 msgid "Trace Atlas Textures"
 msgstr "Sekti atlaso raštus"
 
-#: cogl/cogl-debug-options.h:38
+#: ../cogl/cogl-debug-options.h:38
 msgid "Debug texture atlas management"
 msgstr "Derinti raštų atlaso valdymą"
 
-#: cogl/cogl-debug-options.h:42
+#: ../cogl/cogl-debug-options.h:42
 msgid "Trace Blend Strings"
 msgstr "Sekti derinimo eilutes"
 
-#: cogl/cogl-debug-options.h:43
+#: ../cogl/cogl-debug-options.h:43
 msgid "Debug CoglBlendString parsing"
 msgstr "Derinti CoglBlendString skaitymą"
 
-#: cogl/cogl-debug-options.h:47
+#: ../cogl/cogl-debug-options.h:47
 msgid "Trace Journal"
 msgstr "Sekti žurnalą"
 
-#: cogl/cogl-debug-options.h:48
+#: ../cogl/cogl-debug-options.h:48
 msgid "View all the geometry passing through the journal"
 msgstr "Rodyti visą geometrijos perdavimą per žurnalą"
 
-#: cogl/cogl-debug-options.h:52
+#: ../cogl/cogl-debug-options.h:52
 msgid "Trace Batching"
 msgstr "Sekti darbų partijas"
 
-#: cogl/cogl-debug-options.h:53
+#: ../cogl/cogl-debug-options.h:53
 msgid "Show how geometry is being batched in the journal"
 msgstr "Rodyti, kaip geometrija grupuojama žurnale"
 
-#: cogl/cogl-debug-options.h:57
+#: ../cogl/cogl-debug-options.h:57
 msgid "Trace matrices"
 msgstr "Sekti matricas"
 
-#: cogl/cogl-debug-options.h:58
+#: ../cogl/cogl-debug-options.h:58
 msgid "Trace all matrix manipulation"
 msgstr "Sekti visą matricų manipuliavimą"
 
-#: cogl/cogl-debug-options.h:63
+#: ../cogl/cogl-debug-options.h:63
 msgid "Trace Misc Drawing"
 msgstr "Sekti įvairų piešimą"
 
-#: cogl/cogl-debug-options.h:64
+#: ../cogl/cogl-debug-options.h:64
 msgid "Trace some misc drawing operations"
 msgstr "Sekti dalį įvairių piešimo veiksmų"
 
-#: cogl/cogl-debug-options.h:68
+#: ../cogl/cogl-debug-options.h:68
 msgid "Trace Pango Renderer"
 msgstr "Sekti Pango piešėją"
 
-#: cogl/cogl-debug-options.h:69
+#: ../cogl/cogl-debug-options.h:69
 msgid "Trace the Cogl Pango renderer"
 msgstr "Sekti Cogl Pango piešėją"
 
-#: cogl/cogl-debug-options.h:73
+#: ../cogl/cogl-debug-options.h:73
 msgid "Trace CoglTexturePixmap backend"
 msgstr "Sekti CoglTexturePixmap realizaciją"
 
-#: cogl/cogl-debug-options.h:74
+#: ../cogl/cogl-debug-options.h:74
 msgid "Trace the Cogl texture pixmap backend"
 msgstr "Sekti Cogl rašto pikselių žemėlapio realizaciją"
 
-#: cogl/cogl-debug-options.h:76 cogl/cogl-debug-options.h:81
+#: ../cogl/cogl-debug-options.h:76
+#: ../cogl/cogl-debug-options.h:81
 msgid "Visualize"
 msgstr "Pateikti"
 
-#: cogl/cogl-debug-options.h:78
+#: ../cogl/cogl-debug-options.h:78
 msgid "Outline rectangles"
 msgstr "Apibrėžti stačiakampius"
 
-#: cogl/cogl-debug-options.h:79
+#: ../cogl/cogl-debug-options.h:79
 msgid "Add wire outlines for all rectangular geometry"
 msgstr "Apibrėžti visą stačiakampę geometriją"
 
-#: cogl/cogl-debug-options.h:83
+#: ../cogl/cogl-debug-options.h:83
 msgid "Show wireframes"
 msgstr "Rodyti apibrėžimus"
 
-#: cogl/cogl-debug-options.h:84
+#: ../cogl/cogl-debug-options.h:84
 msgid "Add wire outlines for all geometry"
 msgstr "Apibrėžti visą geometriją"
 
-#: cogl/cogl-debug-options.h:86 cogl/cogl-debug-options.h:91
-#: cogl/cogl-debug-options.h:96 cogl/cogl-debug-options.h:101
-#: cogl/cogl-debug-options.h:111 cogl/cogl-debug-options.h:116
-#: cogl/cogl-debug-options.h:122 cogl/cogl-debug-options.h:127
-#: cogl/cogl-debug-options.h:132 cogl/cogl-debug-options.h:137
-#: cogl/cogl-debug-options.h:142 cogl/cogl-debug-options.h:147
-#: cogl/cogl-debug-options.h:153 cogl/cogl-debug-options.h:173
-#: cogl/cogl-debug-options.h:178
+#: ../cogl/cogl-debug-options.h:86
+#: ../cogl/cogl-debug-options.h:91
+#: ../cogl/cogl-debug-options.h:96
+#: ../cogl/cogl-debug-options.h:101
+#: ../cogl/cogl-debug-options.h:111
+#: ../cogl/cogl-debug-options.h:116
+#: ../cogl/cogl-debug-options.h:122
+#: ../cogl/cogl-debug-options.h:127
+#: ../cogl/cogl-debug-options.h:132
+#: ../cogl/cogl-debug-options.h:137
+#: ../cogl/cogl-debug-options.h:142
+#: ../cogl/cogl-debug-options.h:147
+#: ../cogl/cogl-debug-options.h:153
+#: ../cogl/cogl-debug-options.h:173
+#: ../cogl/cogl-debug-options.h:178
 msgid "Root Cause"
 msgstr "Pagrindinė priežastis"
 
-#: cogl/cogl-debug-options.h:88
+#: ../cogl/cogl-debug-options.h:88
 msgid "Disable Journal batching"
 msgstr "Išjungti žurnalo grupavimą"
 
-#: cogl/cogl-debug-options.h:89
+#: ../cogl/cogl-debug-options.h:89
 msgid "Disable batching of geometry in the Cogl Journal."
 msgstr "Išjungti geometrijos grupavimą Cogl žurnale"
 
-#: cogl/cogl-debug-options.h:93
+#: ../cogl/cogl-debug-options.h:93
 msgid "Disable GL Vertex Buffers"
 msgstr "Išjungti GL viršūnių buferius"
 
-#: cogl/cogl-debug-options.h:94
+#: ../cogl/cogl-debug-options.h:94
 msgid "Disable use of OpenGL vertex buffer objects"
 msgstr "Išjungti OpenGL viršūnių buferių naudojimą"
 
-#: cogl/cogl-debug-options.h:98
+#: ../cogl/cogl-debug-options.h:98
 msgid "Disable GL Pixel Buffers"
 msgstr "Išjungti GL pikselių buferius"
 
-#: cogl/cogl-debug-options.h:99
+#: ../cogl/cogl-debug-options.h:99
 msgid "Disable use of OpenGL pixel buffer objects"
 msgstr "Išjungti OpenGL pikselių buferių objektus"
 
-#: cogl/cogl-debug-options.h:103
+#: ../cogl/cogl-debug-options.h:103
 msgid "Disable software rect transform"
 msgstr "Išjungti programinį stačiakampių transformavimą"
 
-#: cogl/cogl-debug-options.h:104
+#: ../cogl/cogl-debug-options.h:104
 msgid "Use the GPU to transform rectangular geometry"
 msgstr "Naudoti GPU stačiakampės geometrijos transformavimui"
 
-#: cogl/cogl-debug-options.h:106
+#: ../cogl/cogl-debug-options.h:106
 msgid "Cogl Specialist"
 msgstr "Cogl specialistas"
 
-#: cogl/cogl-debug-options.h:108
+#: ../cogl/cogl-debug-options.h:108
 msgid "Dump atlas images"
 msgstr "Iškloti atlaso paveikslėlius"
 
-#: cogl/cogl-debug-options.h:109
+#: ../cogl/cogl-debug-options.h:109
 msgid "Dump texture atlas changes to an image file"
 msgstr "Iškloti raštų atlaso pasikeitimus į paveikslėlio failą"
 
-#: cogl/cogl-debug-options.h:113
+#: ../cogl/cogl-debug-options.h:113
 msgid "Disable texture atlasing"
 msgstr "Išjungti raštų atlasą"
 
-#: cogl/cogl-debug-options.h:114
+#: ../cogl/cogl-debug-options.h:114
 msgid "Disable use of texture atlasing"
 msgstr "Išjungti raštų atlaso naudojimą"
 
-#: cogl/cogl-debug-options.h:118
+#: ../cogl/cogl-debug-options.h:118
 msgid "Disable sharing the texture atlas between text and images"
 msgstr "Išjungti raštų atlaso dalijimąsi tarp teksto ir paveikslėlių"
 
-#: cogl/cogl-debug-options.h:119
-msgid ""
-"When this is set the glyph cache will always use a separate texture for its "
-"atlas. Otherwise it will try to share the atlas with images."
-msgstr ""
-"Kai tai nustatyta, paveikslėlių podėlis visada naudos atskirą raštą savo "
-"atlasui. Priešingu atveju jis mėgins dalytis atlasu su paveikslėliais."
+#: ../cogl/cogl-debug-options.h:119
+msgid "When this is set the glyph cache will always use a separate texture for its atlas. Otherwise it will try to share the atlas with images."
+msgstr "Kai tai nustatyta, paveikslėlių podėlis visada naudos atskirą raštą savo atlasui. Priešingu atveju jis mėgins dalytis atlasu su paveikslėliais."
 
-#: cogl/cogl-debug-options.h:124
+#: ../cogl/cogl-debug-options.h:124
 msgid "Disable texturing"
 msgstr "Išjungti raštus"
 
-#: cogl/cogl-debug-options.h:125
+#: ../cogl/cogl-debug-options.h:125
 msgid "Disable texturing any primitives"
 msgstr "Išjungti bet kokių primityvų raštus"
 
-#: cogl/cogl-debug-options.h:129
+#: ../cogl/cogl-debug-options.h:129
 msgid "Disable arbfp"
 msgstr "Išjungti arbfp"
 
-#: cogl/cogl-debug-options.h:130
+#: ../cogl/cogl-debug-options.h:130
 msgid "Disable use of ARB fragment programs"
 msgstr "Išjungti ARB fragmentų programų naudojimą"
 
-#: cogl/cogl-debug-options.h:134
+#: ../cogl/cogl-debug-options.h:134
 msgid "Disable fixed"
 msgstr "Išjungti fiksuotą"
 
-#: cogl/cogl-debug-options.h:135
+#: ../cogl/cogl-debug-options.h:135
 msgid "Disable use of the fixed function pipeline backend"
 msgstr "Išjungti fiksuotos funkcijos konvejerio realizacijos naudojimą"
 
-#: cogl/cogl-debug-options.h:139
+#: ../cogl/cogl-debug-options.h:139
 msgid "Disable GLSL"
 msgstr "Išjungti GLSL"
 
-#: cogl/cogl-debug-options.h:140
+#: ../cogl/cogl-debug-options.h:140
 msgid "Disable use of GLSL"
 msgstr "Išjungti GLSL naudojimą"
 
-#: cogl/cogl-debug-options.h:144
+#: ../cogl/cogl-debug-options.h:144
 msgid "Disable blending"
 msgstr "Išjungti derinimą"
 
-#: cogl/cogl-debug-options.h:145
+#: ../cogl/cogl-debug-options.h:145
 msgid "Disable use of blending"
 msgstr "Išjungti derinimo naudojimą"
 
-#: cogl/cogl-debug-options.h:149
+#: ../cogl/cogl-debug-options.h:149
 msgid "Disable non-power-of-two textures"
 msgstr "Išjungti ne dvejeto laipsnių raštus"
 
-#: cogl/cogl-debug-options.h:150
-msgid ""
-"Makes Cogl think that the GL driver doesn't support NPOT textures so that it "
-"will create sliced textures or textures with waste instead."
-msgstr ""
-"Priverčia Cogl galvoti, kad GL tvarkyklė nepalaiko NPOT raštų, todėl tai "
-"sukurs karpytus raštus arba raštus su šiukšlėmis."
+#: ../cogl/cogl-debug-options.h:150
+msgid "Makes Cogl think that the GL driver doesn't support NPOT textures so that it will create sliced textures or textures with waste instead."
+msgstr "Priverčia Cogl galvoti, kad GL tvarkyklė nepalaiko NPOT raštų, todėl tai sukurs karpytus raštus arba raštus su šiukšlėmis."
 
-#: cogl/cogl-debug-options.h:155
+#: ../cogl/cogl-debug-options.h:155
 msgid "Disable software clipping"
 msgstr "Išjungti programinė karpymą"
 
-#: cogl/cogl-debug-options.h:156
+#: ../cogl/cogl-debug-options.h:156
 msgid "Disables Cogl's attempts to clip some rectangles in software."
-msgstr ""
-"Išjungia Cogl bandymus iškirpti kai kuriuos stačiakampius programiškai."
+msgstr "Išjungia Cogl bandymus iškirpti kai kuriuos stačiakampius programiškai."
 
-#: cogl/cogl-debug-options.h:160
+#: ../cogl/cogl-debug-options.h:160
 msgid "Show source"
 msgstr "Rodyti išeities tekstą"
 
-#: cogl/cogl-debug-options.h:161
+#: ../cogl/cogl-debug-options.h:161
 msgid "Show generated ARBfp/GLSL source code"
 msgstr "Parodo sugeneruotą ARBfp/GLSL išeities tekstą"
 
-#: cogl/cogl-debug-options.h:165
+#: ../cogl/cogl-debug-options.h:165
 msgid "Trace some OpenGL"
 msgstr "Sekti dalį OpenGL"
 
-#: cogl/cogl-debug-options.h:166
+#: ../cogl/cogl-debug-options.h:166
 msgid "Traces some select OpenGL calls"
 msgstr "Seka kai kuriuos pasirinktus OpenGL kvietinius"
 
-#: cogl/cogl-debug-options.h:170
+#: ../cogl/cogl-debug-options.h:170
 msgid "Trace offscreen support"
 msgstr "Sekti už ekrano palaikymą"
 
-#: cogl/cogl-debug-options.h:171
+#: ../cogl/cogl-debug-options.h:171
 msgid "Debug offscreen support"
 msgstr "Derinti už ekrano palaikymą"
 
-#: cogl/cogl-debug-options.h:175
+#: ../cogl/cogl-debug-options.h:175
 msgid "Disable program caches"
 msgstr "Išjungti programos podėlį"
 
-#: cogl/cogl-debug-options.h:176
+#: ../cogl/cogl-debug-options.h:176
 msgid "Disable fallback caches for arbfp and glsl programs"
 msgstr "Išjungti atsarginius podėlius arbfp ir glsl programoms"
 
-#: cogl/cogl-debug-options.h:180
+#: ../cogl/cogl-debug-options.h:180
 msgid "Disable read pixel optimization"
 msgstr "Išjungti pikselių skaitymo optimizaciją"
 
-#: cogl/cogl-debug-options.h:181
-msgid ""
-"Disable optimization for reading 1px for simple scenes of opaque rectangles"
-msgstr ""
-"Išjungti vieno pikselio skaitymo optimizavimą paprastoms nepermatomų "
-"stačiakampių scenoms"
+#: ../cogl/cogl-debug-options.h:181
+msgid "Disable optimization for reading 1px for simple scenes of opaque rectangles"
+msgstr "Išjungti vieno pikselio skaitymo optimizavimą paprastoms nepermatomų stačiakampių scenoms"
 
-#: cogl/cogl-debug-options.h:186
+#: ../cogl/cogl-debug-options.h:186
 msgid "Trace clipping"
 msgstr "Sekti karpymą"
 
-#: cogl/cogl-debug-options.h:187
+#: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "Įrašo į žurnalą, kaip Cogl realizuoja karpymą"
+
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr "Sekti našumo rūpesčius"
+
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "Mėgina išryškinti neoptimalų Cogl naudojimą."
+
