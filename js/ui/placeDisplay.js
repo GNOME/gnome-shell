@@ -153,26 +153,8 @@ const PlacesManager = new Lang.Class({
                 Gio.app_info_launch_default_for_uri(desktopUri, _makeLaunchContext(params));
             });
 
-        this._connect = new PlaceInfo('special:connect', _("Connect to..."),
-            function (size) {
-                // do NOT use St.Icon here, it crashes the shell
-                // see wanda.js for details
-                return St.TextureCache.get_default().load_icon_name(null,
-                                                                    'applications-internet',
-                                                                    St.IconType.FULLCOLOR,
-                                                                    size);
-            },
-            function (params) {
-                // BUG: nautilus-connect-server doesn't have a desktop file, so we can't
-                // launch it with the workspace from params. It's probably pretty rare
-                // and odd to drag this place onto a workspace in any case
-
-                Util.spawn(['nautilus-connect-server']);
-            });
-
         this._defaultPlaces.push(this._home);
         this._defaultPlaces.push(this._desktopMenu);
-        this._defaultPlaces.push(this._connect);
 
         /*
         * Show devices, code more or less ported from nautilus-places-sidebar.c
