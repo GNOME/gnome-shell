@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-19 17:31+0000\n"
-"PO-Revision-Date: 2012-08-20 22:52+0300\n"
+"POT-Creation-Date: 2012-08-28 13:46+0000\n"
+"PO-Revision-Date: 2012-08-28 21:53+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <>\n"
 "Language: lt\n"
@@ -18,693 +18,669 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
-#: ../clutter/clutter-actor.c:6123
+#: ../clutter/clutter-actor.c:6121
 msgid "X coordinate"
 msgstr "X koordinatė"
 
-#: ../clutter/clutter-actor.c:6124
+#: ../clutter/clutter-actor.c:6122
 msgid "X coordinate of the actor"
 msgstr "Aktoriaus X koordinatė"
 
-#: ../clutter/clutter-actor.c:6142
+#: ../clutter/clutter-actor.c:6140
 msgid "Y coordinate"
 msgstr "Y koordinatė"
 
-#: ../clutter/clutter-actor.c:6143
+#: ../clutter/clutter-actor.c:6141
 msgid "Y coordinate of the actor"
 msgstr "Aktoriaus Y koordinatė"
 
-#: ../clutter/clutter-actor.c:6165
-#| msgid "Cursor Position"
+#: ../clutter/clutter-actor.c:6163
 msgid "Position"
 msgstr "Padėtis"
 
-#: ../clutter/clutter-actor.c:6166
-#| msgid "The cursor position of the other end of the selection"
+#: ../clutter/clutter-actor.c:6164
 msgid "The position of the origin of the actor"
 msgstr "Aktoriaus originali padėtis"
 
-#: ../clutter/clutter-actor.c:6183
+#: ../clutter/clutter-actor.c:6181
 #: ../clutter/clutter-canvas.c:215
 #: ../clutter/clutter-grid-layout.c:1238
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:481
 msgid "Width"
 msgstr "Plotis"
 
-#: ../clutter/clutter-actor.c:6184
+#: ../clutter/clutter-actor.c:6182
 msgid "Width of the actor"
 msgstr "Aktoriaus plotis"
 
-#: ../clutter/clutter-actor.c:6202
+#: ../clutter/clutter-actor.c:6200
 #: ../clutter/clutter-canvas.c:231
 #: ../clutter/clutter-grid-layout.c:1245
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:497
 msgid "Height"
 msgstr "Aukštis"
 
-#: ../clutter/clutter-actor.c:6203
+#: ../clutter/clutter-actor.c:6201
 msgid "Height of the actor"
 msgstr "Aktoriaus aukštis"
 
-#: ../clutter/clutter-actor.c:6224
+#: ../clutter/clutter-actor.c:6222
 msgid "Size"
 msgstr "Dydis"
 
-#: ../clutter/clutter-actor.c:6225
-#| msgid "Height of the actor"
+#: ../clutter/clutter-actor.c:6223
 msgid "The size of the actor"
 msgstr "Aktoriaus dydis"
 
-#: ../clutter/clutter-actor.c:6243
+#: ../clutter/clutter-actor.c:6241
 msgid "Fixed X"
 msgstr "Fiksuota X"
 
-#: ../clutter/clutter-actor.c:6244
+#: ../clutter/clutter-actor.c:6242
 msgid "Forced X position of the actor"
 msgstr "Aktoriaus priverstinė X padėtis"
 
-#: ../clutter/clutter-actor.c:6261
+#: ../clutter/clutter-actor.c:6259
 msgid "Fixed Y"
 msgstr "Fiksuota Y"
 
-#: ../clutter/clutter-actor.c:6262
+#: ../clutter/clutter-actor.c:6260
 msgid "Forced Y position of the actor"
 msgstr "Aktoriaus priverstinė Y padėtis"
 
-#: ../clutter/clutter-actor.c:6277
+#: ../clutter/clutter-actor.c:6275
 msgid "Fixed position set"
 msgstr "Fiksuota padėties aibė"
 
-#: ../clutter/clutter-actor.c:6278
+#: ../clutter/clutter-actor.c:6276
 msgid "Whether to use fixed positioning for the actor"
 msgstr "Ar naudoti fiksuotą aktoriaus padėtį"
 
-#: ../clutter/clutter-actor.c:6296
+#: ../clutter/clutter-actor.c:6294
 msgid "Min Width"
 msgstr "Mažiausias plotis"
 
-#: ../clutter/clutter-actor.c:6297
+#: ../clutter/clutter-actor.c:6295
 msgid "Forced minimum width request for the actor"
 msgstr "Priverstinis mažiausias pločio prašymas aktoriui"
 
-#: ../clutter/clutter-actor.c:6315
+#: ../clutter/clutter-actor.c:6313
 msgid "Min Height"
 msgstr "Mažiausias aukštis"
 
-#: ../clutter/clutter-actor.c:6316
+#: ../clutter/clutter-actor.c:6314
 msgid "Forced minimum height request for the actor"
 msgstr "Priverstinis mažiausias aukščio prašymas aktoriui"
 
-#: ../clutter/clutter-actor.c:6334
+#: ../clutter/clutter-actor.c:6332
 msgid "Natural Width"
 msgstr "Natūralusis plotis"
 
-#: ../clutter/clutter-actor.c:6335
+#: ../clutter/clutter-actor.c:6333
 msgid "Forced natural width request for the actor"
 msgstr "Priverstinis natūralusis pločio prašymas aktoriui"
 
-#: ../clutter/clutter-actor.c:6353
+#: ../clutter/clutter-actor.c:6351
 msgid "Natural Height"
 msgstr "Natūralusis aukštis"
 
-#: ../clutter/clutter-actor.c:6354
+#: ../clutter/clutter-actor.c:6352
 msgid "Forced natural height request for the actor"
 msgstr "Priverstinis natūralusis aukščio prašymas aktoriui"
 
-#: ../clutter/clutter-actor.c:6369
+#: ../clutter/clutter-actor.c:6367
 msgid "Minimum width set"
 msgstr "Mažiausiais plotis nustatytas"
 
-#: ../clutter/clutter-actor.c:6370
+#: ../clutter/clutter-actor.c:6368
 msgid "Whether to use the min-width property"
 msgstr "Ar naudoti min-width savybę"
 
-#: ../clutter/clutter-actor.c:6384
+#: ../clutter/clutter-actor.c:6382
 msgid "Minimum height set"
 msgstr "Mažiausias aukštis nustatytas"
 
-#: ../clutter/clutter-actor.c:6385
+#: ../clutter/clutter-actor.c:6383
 msgid "Whether to use the min-height property"
 msgstr "Ar naudoti min-height savybę"
 
-#: ../clutter/clutter-actor.c:6399
+#: ../clutter/clutter-actor.c:6397
 msgid "Natural width set"
 msgstr "Natūralusis plotis nustatytas"
 
-#: ../clutter/clutter-actor.c:6400
+#: ../clutter/clutter-actor.c:6398
 msgid "Whether to use the natural-width property"
 msgstr "Ar naudoti natural-width savybę"
 
-#: ../clutter/clutter-actor.c:6414
+#: ../clutter/clutter-actor.c:6412
 msgid "Natural height set"
 msgstr "Natūralusis aukštis nustatytas"
 
-#: ../clutter/clutter-actor.c:6415
+#: ../clutter/clutter-actor.c:6413
 msgid "Whether to use the natural-height property"
 msgstr "Ar naudoti natural-height savybę"
 
-#: ../clutter/clutter-actor.c:6431
+#: ../clutter/clutter-actor.c:6429
 msgid "Allocation"
 msgstr "Išskyrimas"
 
-#: ../clutter/clutter-actor.c:6432
+#: ../clutter/clutter-actor.c:6430
 msgid "The actor's allocation"
 msgstr "Aktoriaus išskyrimas"
 
-#: ../clutter/clutter-actor.c:6489
+#: ../clutter/clutter-actor.c:6487
 msgid "Request Mode"
 msgstr "Prašymo veiksena"
 
-#: ../clutter/clutter-actor.c:6490
+#: ../clutter/clutter-actor.c:6488
 msgid "The actor's request mode"
 msgstr "Aktoriaus prašymo veiksena"
 
-#: ../clutter/clutter-actor.c:6514
+#: ../clutter/clutter-actor.c:6512
 msgid "Depth"
 msgstr "Gylis"
 
-#: ../clutter/clutter-actor.c:6515
+#: ../clutter/clutter-actor.c:6513
 msgid "Position on the Z axis"
 msgstr "Padėtis Z ašyje"
 
-#: ../clutter/clutter-actor.c:6542
-#| msgid "Cursor Position"
+#: ../clutter/clutter-actor.c:6540
 msgid "Z Position"
 msgstr "Z padėtis"
 
-#: ../clutter/clutter-actor.c:6543
-#| msgid "Position on the Z axis"
+#: ../clutter/clutter-actor.c:6541
 msgid "The actor's position on the Z axis"
 msgstr "Aktoriaus padėtis Z ašyje"
 
-#: ../clutter/clutter-actor.c:6560
+#: ../clutter/clutter-actor.c:6558
 msgid "Opacity"
 msgstr "Nepermatomumas"
 
-#: ../clutter/clutter-actor.c:6561
+#: ../clutter/clutter-actor.c:6559
 msgid "Opacity of an actor"
 msgstr "Aktoriaus nepermatomumas"
 
-#: ../clutter/clutter-actor.c:6581
+#: ../clutter/clutter-actor.c:6579
 msgid "Offscreen redirect"
 msgstr "Nukreipimas už ekrano"
 
-#: ../clutter/clutter-actor.c:6582
+#: ../clutter/clutter-actor.c:6580
 msgid "Flags controlling when to flatten the actor into a single image"
 msgstr "Požymiai, valdantys, kada projektuoti aktorių į vieną paveikslėlį"
 
-#: ../clutter/clutter-actor.c:6596
+#: ../clutter/clutter-actor.c:6594
 msgid "Visible"
 msgstr "Matomas"
 
-#: ../clutter/clutter-actor.c:6597
+#: ../clutter/clutter-actor.c:6595
 msgid "Whether the actor is visible or not"
 msgstr "Ar aktorius yra matomas"
 
-#: ../clutter/clutter-actor.c:6611
+#: ../clutter/clutter-actor.c:6609
 msgid "Mapped"
 msgstr "Patalpintas"
 
-#: ../clutter/clutter-actor.c:6612
+#: ../clutter/clutter-actor.c:6610
 msgid "Whether the actor will be painted"
 msgstr "Ar aktorius bus piešiamas"
 
-#: ../clutter/clutter-actor.c:6625
+#: ../clutter/clutter-actor.c:6623
 msgid "Realized"
 msgstr "Realizuotas"
 
-#: ../clutter/clutter-actor.c:6626
+#: ../clutter/clutter-actor.c:6624
 msgid "Whether the actor has been realized"
 msgstr "Ar aktorius buvo realizuotas"
 
-#: ../clutter/clutter-actor.c:6641
+#: ../clutter/clutter-actor.c:6639
 msgid "Reactive"
 msgstr "Reaktyvus"
 
-#: ../clutter/clutter-actor.c:6642
+#: ../clutter/clutter-actor.c:6640
 msgid "Whether the actor is reactive to events"
 msgstr "Ar aktorius reaguoja į įvykius"
 
-#: ../clutter/clutter-actor.c:6653
+#: ../clutter/clutter-actor.c:6651
 msgid "Has Clip"
 msgstr "Turi įkirpimą"
 
-#: ../clutter/clutter-actor.c:6654
+#: ../clutter/clutter-actor.c:6652
 msgid "Whether the actor has a clip set"
 msgstr "Ar aktorius turi nustatytą įkirpimą"
 
-#: ../clutter/clutter-actor.c:6667
+#: ../clutter/clutter-actor.c:6665
 msgid "Clip"
 msgstr "Įkirpimas"
 
-#: ../clutter/clutter-actor.c:6668
+#: ../clutter/clutter-actor.c:6666
 msgid "The clip region for the actor"
 msgstr "Aktoriaus įkirpimo sritis"
 
-#: ../clutter/clutter-actor.c:6687
+#: ../clutter/clutter-actor.c:6685
 msgid "Clip Rectangle"
 msgstr "Apkirpti stačiakampį"
 
-#: ../clutter/clutter-actor.c:6688
-#| msgid "The clip region for the actor"
+#: ../clutter/clutter-actor.c:6686
 msgid "The visible region of the actor"
 msgstr "Aktoriaus matoma sritis"
 
-#: ../clutter/clutter-actor.c:6702
+#: ../clutter/clutter-actor.c:6700
 #: ../clutter/clutter-actor-meta.c:207
 #: ../clutter/clutter-binding-pool.c:319
 #: ../clutter/clutter-input-device.c:258
 msgid "Name"
 msgstr "Vardas"
 
-#: ../clutter/clutter-actor.c:6703
+#: ../clutter/clutter-actor.c:6701
 msgid "Name of the actor"
 msgstr "Aktoriaus vardas"
 
-#: ../clutter/clutter-actor.c:6724
+#: ../clutter/clutter-actor.c:6722
 msgid "Pivot Point"
 msgstr "Inkaro taškas"
 
-#: ../clutter/clutter-actor.c:6725
+#: ../clutter/clutter-actor.c:6723
 msgid "The point around which the scaling and rotation occur"
 msgstr "Taškas, aplink kūrį vyksta didinimas ir sukimas"
 
-#: ../clutter/clutter-actor.c:6743
+#: ../clutter/clutter-actor.c:6741
 msgid "Pivot Point Z"
 msgstr "Inkaro taškas Z"
 
-#: ../clutter/clutter-actor.c:6744
-#| msgid "X coordinate of the anchor point"
+#: ../clutter/clutter-actor.c:6742
 msgid "Z component of the pivot point"
 msgstr "Inkaro taško Z koordinatė"
 
-#: ../clutter/clutter-actor.c:6762
+#: ../clutter/clutter-actor.c:6760
 msgid "Scale X"
 msgstr "X plėtimasis"
 
-#: ../clutter/clutter-actor.c:6763
+#: ../clutter/clutter-actor.c:6761
 msgid "Scale factor on the X axis"
 msgstr "Plėtimosi faktorius X ašyje"
 
-#: ../clutter/clutter-actor.c:6781
+#: ../clutter/clutter-actor.c:6779
 msgid "Scale Y"
 msgstr "Y plėtimasis"
 
-#: ../clutter/clutter-actor.c:6782
+#: ../clutter/clutter-actor.c:6780
 msgid "Scale factor on the Y axis"
 msgstr "Plėtimosi faktorius Y ašyje"
 
-#: ../clutter/clutter-actor.c:6800
-#| msgid "Scale X"
+#: ../clutter/clutter-actor.c:6798
 msgid "Scale Z"
 msgstr "Z plėtimasis"
 
-#: ../clutter/clutter-actor.c:6801
-#| msgid "Scale factor on the X axis"
+#: ../clutter/clutter-actor.c:6799
 msgid "Scale factor on the Z axis"
 msgstr "Plėtimosi faktorius Z ašyje"
 
-#: ../clutter/clutter-actor.c:6819
+#: ../clutter/clutter-actor.c:6817
 msgid "Scale Center X"
 msgstr "X centruotas plėtimasis"
 
-#: ../clutter/clutter-actor.c:6820
+#: ../clutter/clutter-actor.c:6818
 msgid "Horizontal scale center"
 msgstr "Horizontalus centruotas plėtimasis"
 
-#: ../clutter/clutter-actor.c:6838
+#: ../clutter/clutter-actor.c:6836
 msgid "Scale Center Y"
 msgstr "Y centruotas plėtimasis"
 
-#: ../clutter/clutter-actor.c:6839
+#: ../clutter/clutter-actor.c:6837
 msgid "Vertical scale center"
 msgstr "Vertikalus centruotas plėtimasis"
 
-#: ../clutter/clutter-actor.c:6857
+#: ../clutter/clutter-actor.c:6855
 msgid "Scale Gravity"
 msgstr "Plėtimosi trauka"
 
-#: ../clutter/clutter-actor.c:6858
+#: ../clutter/clutter-actor.c:6856
 msgid "The center of scaling"
 msgstr "Plėtimosi centras"
 
-#: ../clutter/clutter-actor.c:6876
+#: ../clutter/clutter-actor.c:6874
 msgid "Rotation Angle X"
 msgstr "X posūkio kampas"
 
-#: ../clutter/clutter-actor.c:6877
+#: ../clutter/clutter-actor.c:6875
 msgid "The rotation angle on the X axis"
 msgstr "Posūkio kampas X ašyje"
 
-#: ../clutter/clutter-actor.c:6895
+#: ../clutter/clutter-actor.c:6893
 msgid "Rotation Angle Y"
 msgstr "Y posūkio kampas"
 
-#: ../clutter/clutter-actor.c:6896
+#: ../clutter/clutter-actor.c:6894
 msgid "The rotation angle on the Y axis"
 msgstr "Posūkio kampas Y ašyje"
 
-#: ../clutter/clutter-actor.c:6914
+#: ../clutter/clutter-actor.c:6912
 msgid "Rotation Angle Z"
 msgstr "Z posūkio kampas"
 
-#: ../clutter/clutter-actor.c:6915
+#: ../clutter/clutter-actor.c:6913
 msgid "The rotation angle on the Z axis"
 msgstr "Posūkio kampas Z ašyje"
 
-#: ../clutter/clutter-actor.c:6933
+#: ../clutter/clutter-actor.c:6931
 msgid "Rotation Center X"
 msgstr "X posūkio centras"
 
-#: ../clutter/clutter-actor.c:6934
+#: ../clutter/clutter-actor.c:6932
 msgid "The rotation center on the X axis"
 msgstr "Posūkio centras X ašyje"
 
-#: ../clutter/clutter-actor.c:6951
+#: ../clutter/clutter-actor.c:6949
 msgid "Rotation Center Y"
 msgstr "Y posūkio centras"
 
-#: ../clutter/clutter-actor.c:6952
+#: ../clutter/clutter-actor.c:6950
 msgid "The rotation center on the Y axis"
 msgstr "Posūkio centras Y ašyje"
 
-#: ../clutter/clutter-actor.c:6969
+#: ../clutter/clutter-actor.c:6967
 msgid "Rotation Center Z"
 msgstr "Z posūkio centras"
 
-#: ../clutter/clutter-actor.c:6970
+#: ../clutter/clutter-actor.c:6968
 msgid "The rotation center on the Z axis"
 msgstr "Posūkio centras Z ašyje"
 
-#: ../clutter/clutter-actor.c:6987
+#: ../clutter/clutter-actor.c:6985
 msgid "Rotation Center Z Gravity"
 msgstr "Posūkio centro Z trauka"
 
-#: ../clutter/clutter-actor.c:6988
+#: ../clutter/clutter-actor.c:6986
 msgid "Center point for rotation around the Z axis"
 msgstr "Centrinis taškas posūkiui apie Z ašį"
 
-#: ../clutter/clutter-actor.c:7016
+#: ../clutter/clutter-actor.c:7014
 msgid "Anchor X"
 msgstr "Inkaro X"
 
-#: ../clutter/clutter-actor.c:7017
+#: ../clutter/clutter-actor.c:7015
 msgid "X coordinate of the anchor point"
 msgstr "Inkaro taško X koordinatė"
 
-#: ../clutter/clutter-actor.c:7045
+#: ../clutter/clutter-actor.c:7043
 msgid "Anchor Y"
 msgstr "Inkaro Y"
 
-#: ../clutter/clutter-actor.c:7046
+#: ../clutter/clutter-actor.c:7044
 msgid "Y coordinate of the anchor point"
 msgstr "Inkaro taško Y koordinatė"
 
-#: ../clutter/clutter-actor.c:7073
+#: ../clutter/clutter-actor.c:7071
 msgid "Anchor Gravity"
 msgstr "Inkaro trauka"
 
-#: ../clutter/clutter-actor.c:7074
+#: ../clutter/clutter-actor.c:7072
 msgid "The anchor point as a ClutterGravity"
 msgstr "Inkaro taškas kaip ClutterGravity"
 
-#: ../clutter/clutter-actor.c:7093
-#| msgid "Translation Domain"
+#: ../clutter/clutter-actor.c:7091
 msgid "Translation X"
 msgstr "Vertimas X"
 
-#: ../clutter/clutter-actor.c:7094
-#| msgid "The rotation angle on the X axis"
+#: ../clutter/clutter-actor.c:7092
 msgid "Translation along the X axis"
 msgstr "Vertimas X ašyje"
 
-#: ../clutter/clutter-actor.c:7113
-#| msgid "Translation Domain"
+#: ../clutter/clutter-actor.c:7111
 msgid "Translation Y"
 msgstr "Vertimas Y"
 
-#: ../clutter/clutter-actor.c:7114
-#| msgid "The rotation angle on the Y axis"
+#: ../clutter/clutter-actor.c:7112
 msgid "Translation along the Y axis"
 msgstr "Vertimas Y ašyje"
 
-#: ../clutter/clutter-actor.c:7133
-#| msgid "Translation Domain"
+#: ../clutter/clutter-actor.c:7131
 msgid "Translation Z"
 msgstr "Vertimas Z"
 
-#: ../clutter/clutter-actor.c:7134
-#| msgid "The rotation angle on the Z axis"
+#: ../clutter/clutter-actor.c:7132
 msgid "Translation along the Z axis"
 msgstr "Vertimas Z ašyje"
 
-#: ../clutter/clutter-actor.c:7162
+#: ../clutter/clutter-actor.c:7160
 msgid "Transform"
 msgstr "Transformuoti"
 
-#: ../clutter/clutter-actor.c:7163
-#| msgid "Translation Domain"
+#: ../clutter/clutter-actor.c:7161
 msgid "Transformation matrix"
 msgstr "Transformacijos matrica"
 
-#: ../clutter/clutter-actor.c:7177
+#: ../clutter/clutter-actor.c:7175
 msgid "Transform Set"
 msgstr "Transformacija nustatyta"
 
-#: ../clutter/clutter-actor.c:7178
-#| msgid "Whether the :filename property is set"
+#: ../clutter/clutter-actor.c:7176
 msgid "Whether the transform property is set"
 msgstr "Ar transformavimo savybė yra nustatyta"
 
-#: ../clutter/clutter-actor.c:7197
+#: ../clutter/clutter-actor.c:7195
 msgid "Child Transform"
 msgstr "Vaiko transformavimas"
 
-#: ../clutter/clutter-actor.c:7198
+#: ../clutter/clutter-actor.c:7196
 msgid "Children transformation matrix"
 msgstr "Vaikų transformacijos matrica"
 
-#: ../clutter/clutter-actor.c:7212
+#: ../clutter/clutter-actor.c:7210
 msgid "Child Transform Set"
 msgstr "Vaiko transformacija nustatyta"
 
-#: ../clutter/clutter-actor.c:7213
-#| msgid "Whether the :filename property is set"
+#: ../clutter/clutter-actor.c:7211
 msgid "Whether the child-transform property is set"
 msgstr "Ar vaiko transformavimo savybė yra nustatyta"
 
-#: ../clutter/clutter-actor.c:7230
+#: ../clutter/clutter-actor.c:7228
 msgid "Show on set parent"
 msgstr "Rodyti nustačius tėvą"
 
-#: ../clutter/clutter-actor.c:7231
+#: ../clutter/clutter-actor.c:7229
 msgid "Whether the actor is shown when parented"
 msgstr "Ar aktorius yra rodomas kai turi tėvą"
 
-#: ../clutter/clutter-actor.c:7248
+#: ../clutter/clutter-actor.c:7246
 msgid "Clip to Allocation"
 msgstr "Iškirpimas į išskyrimą"
 
-#: ../clutter/clutter-actor.c:7249
+#: ../clutter/clutter-actor.c:7247
 msgid "Sets the clip region to track the actor's allocation"
 msgstr "Nustato iškirpimo regioną aktoriaus išskyrimo sekimui"
 
-#: ../clutter/clutter-actor.c:7262
+#: ../clutter/clutter-actor.c:7260
 msgid "Text Direction"
 msgstr "Teksto kryptis"
 
-#: ../clutter/clutter-actor.c:7263
+#: ../clutter/clutter-actor.c:7261
 msgid "Direction of the text"
 msgstr "Teksto kryptis"
 
-#: ../clutter/clutter-actor.c:7278
+#: ../clutter/clutter-actor.c:7276
 msgid "Has Pointer"
 msgstr "Turi žymeklį"
 
-#: ../clutter/clutter-actor.c:7279
+#: ../clutter/clutter-actor.c:7277
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "Ar aktorius turi įvesties įrenginio žymeklį"
 
-#: ../clutter/clutter-actor.c:7292
+#: ../clutter/clutter-actor.c:7290
 msgid "Actions"
 msgstr "Veiksmai"
 
-#: ../clutter/clutter-actor.c:7293
+#: ../clutter/clutter-actor.c:7291
 msgid "Adds an action to the actor"
 msgstr "Prideda aktoriui veiksmą"
 
-#: ../clutter/clutter-actor.c:7306
+#: ../clutter/clutter-actor.c:7304
 msgid "Constraints"
 msgstr "Ribojimai"
 
-#: ../clutter/clutter-actor.c:7307
+#: ../clutter/clutter-actor.c:7305
 msgid "Adds a constraint to the actor"
 msgstr "Prideda aktoriui ribojimą"
 
-#: ../clutter/clutter-actor.c:7320
+#: ../clutter/clutter-actor.c:7318
 msgid "Effect"
 msgstr "Efektas"
 
-#: ../clutter/clutter-actor.c:7321
+#: ../clutter/clutter-actor.c:7319
 msgid "Add an effect to be applied on the actor"
 msgstr "Prideda efektą, kuris bus pritaikytas aktoriui"
 
-#: ../clutter/clutter-actor.c:7335
+#: ../clutter/clutter-actor.c:7333
 msgid "Layout Manager"
 msgstr "Lygiavimų tvarkyklė"
 
-#: ../clutter/clutter-actor.c:7336
+#: ../clutter/clutter-actor.c:7334
 msgid "The object controlling the layout of an actor's children"
 msgstr "Objektas, valdantis aktoriaus vaikų išdėstymą"
 
-#: ../clutter/clutter-actor.c:7350
-#| msgid "Expand"
+#: ../clutter/clutter-actor.c:7348
 msgid "X Expand"
 msgstr "X plėtimasis"
 
-#: ../clutter/clutter-actor.c:7351
-#| msgid "Whether the surface should match the allocation"
+#: ../clutter/clutter-actor.c:7349
 msgid "Whether extra horizontal space should be assigned to the actor"
 msgstr "Ar aktoriui turi būti priskirta papildoma vieta horizontaliai"
 
-#: ../clutter/clutter-actor.c:7366
-#| msgid "Expand"
+#: ../clutter/clutter-actor.c:7364
 msgid "Y Expand"
 msgstr "Y plėtimasis"
 
-#: ../clutter/clutter-actor.c:7367
-#| msgid "Whether the surface should match the allocation"
+#: ../clutter/clutter-actor.c:7365
 msgid "Whether extra vertical space should be assigned to the actor"
 msgstr "Ar aktoriui turi būti priskirta papildoma vieta vertikaliai"
 
-#: ../clutter/clutter-actor.c:7383
+#: ../clutter/clutter-actor.c:7381
 msgid "X Alignment"
 msgstr "X lygiuotė"
 
-#: ../clutter/clutter-actor.c:7384
+#: ../clutter/clutter-actor.c:7382
 msgid "The alignment of the actor on the X axis within its allocation"
 msgstr "Aktoriaus lygiuotė X ašyje šioje vietoje"
 
-#: ../clutter/clutter-actor.c:7399
+#: ../clutter/clutter-actor.c:7397
 msgid "Y Alignment"
 msgstr "Y lygiuotė"
 
-#: ../clutter/clutter-actor.c:7400
+#: ../clutter/clutter-actor.c:7398
 msgid "The alignment of the actor on the Y axis within its allocation"
 msgstr "Aktoriaus lygiuotė Y ašyje šioje vietoje"
 
-#: ../clutter/clutter-actor.c:7419
+#: ../clutter/clutter-actor.c:7417
 msgid "Margin Top"
 msgstr "Paraštės viršus"
 
-#: ../clutter/clutter-actor.c:7420
+#: ../clutter/clutter-actor.c:7418
 msgid "Extra space at the top"
 msgstr "Papildoma vieta viršuje"
 
-#: ../clutter/clutter-actor.c:7441
+#: ../clutter/clutter-actor.c:7439
 msgid "Margin Bottom"
 msgstr "Paraštės apačia"
 
-#: ../clutter/clutter-actor.c:7442
+#: ../clutter/clutter-actor.c:7440
 msgid "Extra space at the bottom"
 msgstr "Papildoma vieta apačioje"
 
-#: ../clutter/clutter-actor.c:7463
+#: ../clutter/clutter-actor.c:7461
 msgid "Margin Left"
 msgstr "Paraštės kairė"
 
-#: ../clutter/clutter-actor.c:7464
+#: ../clutter/clutter-actor.c:7462
 msgid "Extra space at the left"
 msgstr "Papildoma vieta kairėje"
 
-#: ../clutter/clutter-actor.c:7485
+#: ../clutter/clutter-actor.c:7483
 msgid "Margin Right"
 msgstr "Paraštės dešinė"
 
-#: ../clutter/clutter-actor.c:7486
+#: ../clutter/clutter-actor.c:7484
 msgid "Extra space at the right"
 msgstr "Papildoma vieta dešinėje"
 
-#: ../clutter/clutter-actor.c:7502
+#: ../clutter/clutter-actor.c:7500
 msgid "Background Color Set"
 msgstr "Fono spalva nustatyta"
 
-#: ../clutter/clutter-actor.c:7503
+#: ../clutter/clutter-actor.c:7501
 #: ../clutter/deprecated/clutter-box.c:275
 msgid "Whether the background color is set"
 msgstr "Ar fono spalva nustatyta"
 
-#: ../clutter/clutter-actor.c:7519
+#: ../clutter/clutter-actor.c:7517
 msgid "Background color"
 msgstr "Fono spalva"
 
-#: ../clutter/clutter-actor.c:7520
+#: ../clutter/clutter-actor.c:7518
 msgid "The actor's background color"
 msgstr "Aktoriaus fono spalva"
 
-#: ../clutter/clutter-actor.c:7535
+#: ../clutter/clutter-actor.c:7533
 msgid "First Child"
 msgstr "Pirmas vaikas"
 
-#: ../clutter/clutter-actor.c:7536
+#: ../clutter/clutter-actor.c:7534
 msgid "The actor's first child"
 msgstr "Aktoriaus pirmasis vaikas"
 
-#: ../clutter/clutter-actor.c:7549
+#: ../clutter/clutter-actor.c:7547
 msgid "Last Child"
 msgstr "Paskutinis vaikas"
 
-#: ../clutter/clutter-actor.c:7550
+#: ../clutter/clutter-actor.c:7548
 msgid "The actor's last child"
 msgstr "Aktoriaus paskutinis vaikas"
 
-#: ../clutter/clutter-actor.c:7564
+#: ../clutter/clutter-actor.c:7562
 msgid "Content"
 msgstr "Turinys"
 
-#: ../clutter/clutter-actor.c:7565
+#: ../clutter/clutter-actor.c:7563
 msgid "Delegate object for painting the actor's content"
 msgstr "Deleguotas objektas aktoriaus turinio piešimui"
 
-#: ../clutter/clutter-actor.c:7590
+#: ../clutter/clutter-actor.c:7588
 msgid "Content Gravity"
 msgstr "Turinio trauka"
 
-#: ../clutter/clutter-actor.c:7591
+#: ../clutter/clutter-actor.c:7589
 msgid "Alignment of the actor's content"
 msgstr "Aktoriaus turinio lygiavimas"
 
-#: ../clutter/clutter-actor.c:7611
+#: ../clutter/clutter-actor.c:7609
 msgid "Content Box"
 msgstr "Dabartinė dėžutė"
 
-#: ../clutter/clutter-actor.c:7612
+#: ../clutter/clutter-actor.c:7610
 msgid "The bounding box of the actor's content"
 msgstr "Aktoriaus turinio ribojimo dėžutė"
 
-#: ../clutter/clutter-actor.c:7620
+#: ../clutter/clutter-actor.c:7618
 msgid "Minification Filter"
 msgstr "Mažinimo filtras"
 
-#: ../clutter/clutter-actor.c:7621
+#: ../clutter/clutter-actor.c:7619
 msgid "The filter used when reducing the size of the content"
 msgstr "Filtras, naudojamas mažinant turinio dydį"
 
-#: ../clutter/clutter-actor.c:7628
+#: ../clutter/clutter-actor.c:7626
 msgid "Magnification Filter"
 msgstr "Didinimo filtras"
 
-#: ../clutter/clutter-actor.c:7629
+#: ../clutter/clutter-actor.c:7627
 msgid "The filter used when increasing the size of the content"
 msgstr "Filtras, naudojamas didinant turinio dydį"
 
-#: ../clutter/clutter-actor.c:7643
-#| msgid "Content Gravity"
+#: ../clutter/clutter-actor.c:7641
 msgid "Content Repeat"
 msgstr "Turinio pakartojimas"
 
-#: ../clutter/clutter-actor.c:7644
-#| msgid "The bounding box of the actor's content"
+#: ../clutter/clutter-actor.c:7642
 msgid "The repeat policy for the actor's content"
 msgstr "Aktoriaus turinio pakartojimo tvarka"
 
@@ -795,8 +771,8 @@ msgid "The unique name of the binding pool"
 msgstr "Unikalus pririšimo vardas"
 
 #: ../clutter/clutter-bin-layout.c:240
-#: ../clutter/clutter-bin-layout.c:641
-#: ../clutter/clutter-box-layout.c:373
+#: ../clutter/clutter-bin-layout.c:649
+#: ../clutter/clutter-box-layout.c:390
 #: ../clutter/clutter-table-layout.c:610
 msgid "Horizontal Alignment"
 msgstr "Horizontalus lygiavimas"
@@ -806,8 +782,8 @@ msgid "Horizontal alignment for the actor inside the layout manager"
 msgstr "Aktoriaus horizontalus lygiavimas lygiavimo tvarkyklėje"
 
 #: ../clutter/clutter-bin-layout.c:249
-#: ../clutter/clutter-bin-layout.c:661
-#: ../clutter/clutter-box-layout.c:382
+#: ../clutter/clutter-bin-layout.c:669
+#: ../clutter/clutter-box-layout.c:399
 #: ../clutter/clutter-table-layout.c:625
 msgid "Vertical Alignment"
 msgstr "Vertikalus lygiavimas"
@@ -816,123 +792,123 @@ msgstr "Vertikalus lygiavimas"
 msgid "Vertical alignment for the actor inside the layout manager"
 msgstr "Aktoriaus vertikalus lygiavimas lygiavimo tvarkyklėje"
 
-#: ../clutter/clutter-bin-layout.c:642
+#: ../clutter/clutter-bin-layout.c:650
 msgid "Default horizontal alignment for the actors inside the layout manager"
 msgstr "Aktoriaus numatytasis horizontalus lygiavimas lygiavimo tvarkyklėje"
 
-#: ../clutter/clutter-bin-layout.c:662
+#: ../clutter/clutter-bin-layout.c:670
 msgid "Default vertical alignment for the actors inside the layout manager"
 msgstr "Aktoriaus numatytasis vertikalus lygiavimas lygiavimo tvarkyklėje"
 
-#: ../clutter/clutter-box-layout.c:348
+#: ../clutter/clutter-box-layout.c:365
 msgid "Expand"
 msgstr "Išplėsti"
 
-#: ../clutter/clutter-box-layout.c:349
+#: ../clutter/clutter-box-layout.c:366
 msgid "Allocate extra space for the child"
 msgstr "Išskirti papildomai vietos vaikui"
 
-#: ../clutter/clutter-box-layout.c:355
+#: ../clutter/clutter-box-layout.c:372
 #: ../clutter/clutter-table-layout.c:589
 msgid "Horizontal Fill"
 msgstr "Horizontalus užpildas"
 
-#: ../clutter/clutter-box-layout.c:356
+#: ../clutter/clutter-box-layout.c:373
 #: ../clutter/clutter-table-layout.c:590
 msgid "Whether the child should receive priority when the container is allocating spare space on the horizontal axis"
 msgstr "Ar laikas turi gauti prioritetą, kai konteineris išskiria laisvą vietą horizontalioje ašyje"
 
-#: ../clutter/clutter-box-layout.c:364
+#: ../clutter/clutter-box-layout.c:381
 #: ../clutter/clutter-table-layout.c:596
 msgid "Vertical Fill"
 msgstr "Vertikalus užpildas"
 
-#: ../clutter/clutter-box-layout.c:365
+#: ../clutter/clutter-box-layout.c:382
 #: ../clutter/clutter-table-layout.c:597
 msgid "Whether the child should receive priority when the container is allocating spare space on the vertical axis"
 msgstr "Ar laikas turi gauti prioritetą, kai konteineris išskiria laisvą vietą vertikalioje ašyje"
 
-#: ../clutter/clutter-box-layout.c:374
+#: ../clutter/clutter-box-layout.c:391
 #: ../clutter/clutter-table-layout.c:611
 msgid "Horizontal alignment of the actor within the cell"
 msgstr "Horizontalus aktoriaus lygiavimas ląstelėje"
 
-#: ../clutter/clutter-box-layout.c:383
+#: ../clutter/clutter-box-layout.c:400
 #: ../clutter/clutter-table-layout.c:626
 msgid "Vertical alignment of the actor within the cell"
 msgstr "Vertikalus aktoriaus lygiavimas ląstelėje"
 
-#: ../clutter/clutter-box-layout.c:1233
+#: ../clutter/clutter-box-layout.c:1365
 msgid "Vertical"
 msgstr "Vertikalus"
 
-#: ../clutter/clutter-box-layout.c:1234
+#: ../clutter/clutter-box-layout.c:1366
 msgid "Whether the layout should be vertical, rather than horizontal"
 msgstr "Ar išdėstymas turi būti vertikalus, užuot buvęs horizontalus"
 
-#: ../clutter/clutter-box-layout.c:1251
+#: ../clutter/clutter-box-layout.c:1383
 #: ../clutter/clutter-flow-layout.c:890
 #: ../clutter/clutter-grid-layout.c:1547
 msgid "Orientation"
 msgstr "Orientacija"
 
-#: ../clutter/clutter-box-layout.c:1252
+#: ../clutter/clutter-box-layout.c:1384
 #: ../clutter/clutter-flow-layout.c:891
 #: ../clutter/clutter-grid-layout.c:1548
 msgid "The orientation of the layout"
 msgstr "Išdėstymo orientacija"
 
-#: ../clutter/clutter-box-layout.c:1268
+#: ../clutter/clutter-box-layout.c:1400
 #: ../clutter/clutter-flow-layout.c:906
 msgid "Homogeneous"
 msgstr "Vienalytis"
 
-#: ../clutter/clutter-box-layout.c:1269
+#: ../clutter/clutter-box-layout.c:1401
 msgid "Whether the layout should be homogeneous, i.e. all childs get the same size"
 msgstr "Ar išdėstymas turi būti vienalytis, t. y. visi vaikai yra to paties dydžio"
 
-#: ../clutter/clutter-box-layout.c:1284
+#: ../clutter/clutter-box-layout.c:1416
 msgid "Pack Start"
 msgstr "Pakuoti pradžioje"
 
-#: ../clutter/clutter-box-layout.c:1285
+#: ../clutter/clutter-box-layout.c:1417
 msgid "Whether to pack items at the start of the box"
 msgstr "Ar pakuoti elementus dėžutės pradžioje"
 
-#: ../clutter/clutter-box-layout.c:1298
+#: ../clutter/clutter-box-layout.c:1430
 msgid "Spacing"
 msgstr "Tarpai"
 
-#: ../clutter/clutter-box-layout.c:1299
+#: ../clutter/clutter-box-layout.c:1431
 msgid "Spacing between children"
 msgstr "Tarpai tarp vaikų"
 
-#: ../clutter/clutter-box-layout.c:1316
+#: ../clutter/clutter-box-layout.c:1448
 #: ../clutter/clutter-table-layout.c:1675
 msgid "Use Animations"
 msgstr "Naudoti animacijas"
 
-#: ../clutter/clutter-box-layout.c:1317
+#: ../clutter/clutter-box-layout.c:1449
 #: ../clutter/clutter-table-layout.c:1676
 msgid "Whether layout changes should be animated"
 msgstr "Ar išdėstymo pasikeitimai turi būti animuoti"
 
-#: ../clutter/clutter-box-layout.c:1341
+#: ../clutter/clutter-box-layout.c:1473
 #: ../clutter/clutter-table-layout.c:1700
 msgid "Easing Mode"
 msgstr "Lengvinimo veiksena"
 
-#: ../clutter/clutter-box-layout.c:1342
+#: ../clutter/clutter-box-layout.c:1474
 #: ../clutter/clutter-table-layout.c:1701
 msgid "The easing mode of the animations"
 msgstr "Lengvinimo veiksena animacijoms"
 
-#: ../clutter/clutter-box-layout.c:1362
+#: ../clutter/clutter-box-layout.c:1494
 #: ../clutter/clutter-table-layout.c:1721
 msgid "Easing Duration"
 msgstr "Lengvinimo trukmė"
 
-#: ../clutter/clutter-box-layout.c:1363
+#: ../clutter/clutter-box-layout.c:1495
 #: ../clutter/clutter-table-layout.c:1722
 msgid "The duration of the animations"
 msgstr "Animacijų trukmė"
@@ -1089,12 +1065,10 @@ msgid "Constraints the dragging to an axis"
 msgstr "Apriboja tempimą ašimi"
 
 #: ../clutter/clutter-drag-action.c:790
-#| msgid "Drag Axis"
 msgid "Drag Area"
 msgstr "Tempimo sritis"
 
 #: ../clutter/clutter-drag-action.c:791
-#| msgid "Constraints the dragging to an axis"
 msgid "Constrains the dragging to a rectangle"
 msgstr "Apriboja tempimą stačiakampiu"
 
@@ -1103,7 +1077,6 @@ msgid "Drag Area Set"
 msgstr "Tempimo sritis nustatyta"
 
 #: ../clutter/clutter-drag-action.c:805
-#| msgid "Whether the actor has a clip set"
 msgid "Whether the drag area is set"
 msgstr "Ar tempimo sritis nustatyta"
 
@@ -1178,17 +1151,14 @@ msgid "The row number to attach the top side of a child widget to"
 msgstr "Eilutės numeris, prie kurio prikabinti vaiko viršutinį kraštą"
 
 #: ../clutter/clutter-grid-layout.c:1239
-#| msgid "The number of columns the widget should span"
 msgid "The number of columns that a child spans"
 msgstr "Vaiko apimamų stulpelių skaičius"
 
 #: ../clutter/clutter-grid-layout.c:1246
-#| msgid "The number of rows the widget should span"
 msgid "The number of rows that a child spans"
 msgstr "Vaiko apimamų eilučių skaičius"
 
 #: ../clutter/clutter-grid-layout.c:1562
-#| msgid "Row Spacing"
 msgid "Row spacing"
 msgstr "Eilučių tarpai"
 
@@ -1197,17 +1167,14 @@ msgid "The amount of space between two consecutive rows"
 msgstr "Vietos kiekis tarp dviejų gretimų eilučių"
 
 #: ../clutter/clutter-grid-layout.c:1576
-#| msgid "Column Spacing"
 msgid "Column spacing"
 msgstr "Stulpelių tarpai"
 
 #: ../clutter/clutter-grid-layout.c:1577
-#| msgid "The spacing between columns"
 msgid "The amount of space between two consecutive columns"
 msgstr "Tarpai tarp gretimų stulpelių"
 
 #: ../clutter/clutter-grid-layout.c:1591
-#| msgid "Homogeneous"
 msgid "Row Homogeneous"
 msgstr "Eilutės vienalyčios"
 
@@ -1216,7 +1183,6 @@ msgid "If TRUE, the rows are all the same height"
 msgstr "Jei TEIGIAMA, visos eilutės yra to paties aukščio"
 
 #: ../clutter/clutter-grid-layout.c:1605
-#| msgid "Homogeneous"
 msgid "Column Homogeneous"
 msgstr "Stulpeliai vienalyčiai"
 
@@ -1299,22 +1265,18 @@ msgid "The type of the values in the interval"
 msgstr "Reikšmių tipas intervale"
 
 #: ../clutter/clutter-interval.c:522
-#| msgid "Initial angle"
 msgid "Initial Value"
 msgstr "Pradinė vertė"
 
 #: ../clutter/clutter-interval.c:523
-#| msgid "Initial scale on the X axis"
 msgid "Initial value of the interval"
 msgstr "Pradinė intervalo vertė"
 
 #: ../clutter/clutter-interval.c:537
-#| msgid "Final angle"
 msgid "Final Value"
 msgstr "Galutinė vertė"
 
 #: ../clutter/clutter-interval.c:538
-#| msgid "Final scale on the X axis"
 msgid "Final value of the interval"
 msgstr "Galutinė intervalo vertė"
 
@@ -1389,6 +1351,44 @@ msgstr "Clutter parinktys"
 msgid "Show Clutter Options"
 msgstr "Rodyti Clutter parinktis"
 
+#: ../clutter/clutter-pan-action.c:440
+#| msgid "Drag Axis"
+msgid "Pan Axis"
+msgstr "Dėjimo ašis"
+
+#: ../clutter/clutter-pan-action.c:441
+#| msgid "Constraints the dragging to an axis"
+msgid "Constraints the panning to an axis"
+msgstr "Ribojimą dėjimą ašimi"
+
+#: ../clutter/clutter-pan-action.c:455
+#| msgid "Interval"
+msgid "Interpolate"
+msgstr "Interpoliuoti"
+
+#: ../clutter/clutter-pan-action.c:456
+#| msgid "Whether the device is enabled"
+msgid "Whether interpolated events emission is enabled."
+msgstr "Ar interpoliuotų įvykių kėlimas yra įjungtas."
+
+#: ../clutter/clutter-pan-action.c:472
+#| msgid "Duration"
+msgid "Deceleration"
+msgstr "Lėtėjimas"
+
+#: ../clutter/clutter-pan-action.c:473
+msgid "Rate at which the interpolated panning will decelerate in"
+msgstr "Dažnis, kuriuo lėtės interpoliuotas išdėstymas"
+
+#: ../clutter/clutter-pan-action.c:490
+#| msgid "The desaturation factor"
+msgid "Initial acceleration factor"
+msgstr "Pradinis greitėjimo faktorius"
+
+#: ../clutter/clutter-pan-action.c:491
+msgid "Factor applied to the momentum when starting the interpolated phase"
+msgstr "Momentui taikomas faktorius pradedant interpoliacijos fazę"
+
 #: ../clutter/clutter-path-constraint.c:212
 #: ../clutter/deprecated/clutter-behaviour-path.c:225
 msgid "Path"
@@ -1440,7 +1440,6 @@ msgid "Scroll Mode"
 msgstr "Slinkimo veiksena"
 
 #: ../clutter/clutter-scroll-actor.c:264
-#| msgid "The cursor position"
 msgid "The scrolling direction"
 msgstr "Slinkimo kryptis"
 
@@ -2048,6 +2047,16 @@ msgstr "Pašalinti pabaigus"
 #: ../clutter/clutter-transition.c:284
 msgid "Detach the transition when completed"
 msgstr "Atjungti perėjimą baigus"
+
+#: ../clutter/clutter-zoom-action.c:353
+#| msgid "Axis"
+msgid "Zoom Axis"
+msgstr "Didinimo ašis"
+
+#: ../clutter/clutter-zoom-action.c:354
+#| msgid "Constraints the dragging to an axis"
+msgid "Constraints the zoom to an axis"
+msgstr "Apriboja didinimą ašimi"
 
 #: ../clutter/deprecated/clutter-alpha.c:355
 #: ../clutter/deprecated/clutter-animation.c:575
