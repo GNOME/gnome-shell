@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.5.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-22 12:31+0200\n"
-"PO-Revision-Date: 2012-08-22 12:34+0200\n"
+"POT-Creation-Date: 2012-08-28 07:44+0200\n"
+"PO-Revision-Date: 2012-08-28 07:45+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -231,7 +231,7 @@ msgstr "Logg inn"
 msgid "Not listed?"
 msgstr "Ikke listet?"
 
-#: ../js/gdm/loginDialog.js:929 ../js/ui/endSessionDialog.js:406
+#: ../js/gdm/loginDialog.js:929 ../js/ui/endSessionDialog.js:407
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/networkAgent.js:156
 #: ../js/ui/polkitAuthenticationAgent.js:176
 #: ../js/ui/shellMountOperation.js:396 ../js/ui/status/bluetooth.js:432
@@ -264,11 +264,11 @@ msgstr "Slå av"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:220
+#: ../js/gdm/util.js:221
 msgid "(or swipe finger)"
 msgstr "(eller dra finger)"
 
-#: ../js/gdm/util.js:245
+#: ../js/gdm/util.js:246
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(f.eks. bruker eller %s)"
@@ -305,7 +305,7 @@ msgstr "INNSTILLINGER"
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:678
+#: ../js/ui/appDisplay.js:678 ../js/ui/dash.js:272
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
@@ -323,16 +323,16 @@ msgstr "%s ble lagt til i dine favoritter."
 msgid "%s has been removed from your favorites."
 msgstr "%s ble fjernet fra dine favoritter."
 
-#: ../js/ui/autorunManager.js:261
+#: ../js/ui/autorunManager.js:264
 msgid "Removable Devices"
 msgstr "Avtagbare enheter"
 
-#: ../js/ui/autorunManager.js:548
+#: ../js/ui/autorunManager.js:552
 #, c-format
 msgid "Open with %s"
 msgstr "Åpne med %s"
 
-#: ../js/ui/autorunManager.js:574
+#: ../js/ui/autorunManager.js:578
 msgid "Eject"
 msgstr "Løs ut"
 
@@ -482,7 +482,7 @@ msgstr "Denne uken"
 msgid "Next week"
 msgstr "Neste uke"
 
-#: ../js/ui/dash.js:241
+#: ../js/ui/dash.js:245 ../js/ui/dash.js:274
 msgid "Show Applications"
 msgstr "Vis programmer"
 
@@ -673,27 +673,27 @@ msgstr "Nettside"
 msgid "Screencast from %d %t"
 msgstr "Skjermvideo fra %d %t"
 
-#: ../js/ui/messageTray.js:1228
+#: ../js/ui/messageTray.js:1229
 msgid "Open"
 msgstr "Åpne"
 
-#: ../js/ui/messageTray.js:1235
+#: ../js/ui/messageTray.js:1236
 msgid "Remove"
 msgstr "Fjern"
 
-#: ../js/ui/messageTray.js:1245
+#: ../js/ui/messageTray.js:1246
 msgid "Unmute"
 msgstr "Fjern demping"
 
-#: ../js/ui/messageTray.js:1245
+#: ../js/ui/messageTray.js:1246
 msgid "Mute"
 msgstr "Demp"
 
-#: ../js/ui/messageTray.js:2007
+#: ../js/ui/messageTray.js:2021
 msgid "Message Tray"
 msgstr "Meldingstrau"
 
-#: ../js/ui/messageTray.js:2445
+#: ../js/ui/messageTray.js:2459
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -702,41 +702,41 @@ msgid "Connect"
 msgstr "Koble til"
 
 #. Cisco LEAP
-#: ../js/ui/networkAgent.js:241 ../js/ui/networkAgent.js:253
-#: ../js/ui/networkAgent.js:280 ../js/ui/networkAgent.js:300
-#: ../js/ui/networkAgent.js:310
+#: ../js/ui/networkAgent.js:242 ../js/ui/networkAgent.js:254
+#: ../js/ui/networkAgent.js:281 ../js/ui/networkAgent.js:301
+#: ../js/ui/networkAgent.js:311
 msgid "Password: "
 msgstr "Passord: "
 
 #. static WEP
-#: ../js/ui/networkAgent.js:246
+#: ../js/ui/networkAgent.js:247
 msgid "Key: "
 msgstr "Nøkkel: "
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:278 ../js/ui/networkAgent.js:296
+#: ../js/ui/networkAgent.js:279 ../js/ui/networkAgent.js:297
 msgid "Username: "
 msgstr "Brukernavn: "
 
-#: ../js/ui/networkAgent.js:284
+#: ../js/ui/networkAgent.js:285
 msgid "Identity: "
 msgstr "Identitet: "
 
-#: ../js/ui/networkAgent.js:286
+#: ../js/ui/networkAgent.js:287
 msgid "Private key password: "
 msgstr "Passord for privat nøkkel: "
 
-#: ../js/ui/networkAgent.js:298
+#: ../js/ui/networkAgent.js:299
 msgid "Service: "
 msgstr "Tjeneste: "
 
-#: ../js/ui/networkAgent.js:327
+#: ../js/ui/networkAgent.js:328
 msgid "Authentication required by wireless network"
 msgstr "Autentisering kreves av trådløst nettverk"
 
-#: ../js/ui/networkAgent.js:328
+#: ../js/ui/networkAgent.js:329
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -745,49 +745,49 @@ msgstr ""
 "Passord eller krypteringsnøkler kreves for å koble til trådløst nettverk "
 "«%s»."
 
-#: ../js/ui/networkAgent.js:332
+#: ../js/ui/networkAgent.js:333
 msgid "Wired 802.1X authentication"
 msgstr "802.1X autentisering for trådbundet nettverk"
 
-#: ../js/ui/networkAgent.js:334
+#: ../js/ui/networkAgent.js:335
 msgid "Network name: "
 msgstr "Navn på nettverk: "
 
-#: ../js/ui/networkAgent.js:339
+#: ../js/ui/networkAgent.js:340
 msgid "DSL authentication"
 msgstr "DSL-autentisering"
 
-#: ../js/ui/networkAgent.js:346
+#: ../js/ui/networkAgent.js:347
 msgid "PIN code required"
 msgstr "PIN-kode kreves"
 
-#: ../js/ui/networkAgent.js:347
+#: ../js/ui/networkAgent.js:348
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "PIN-kode kreves for mobil bredbåndsenhet"
 
-#: ../js/ui/networkAgent.js:348
+#: ../js/ui/networkAgent.js:349
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/networkAgent.js:354
+#: ../js/ui/networkAgent.js:355
 msgid "Mobile broadband network password"
 msgstr "Nettverkspassord for mobilt bredbånd"
 
-#: ../js/ui/networkAgent.js:355
+#: ../js/ui/networkAgent.js:356
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Et passord kreves for å koble til «%s»."
 
-#: ../js/ui/notificationDaemon.js:506 ../src/shell-app.c:374
+#: ../js/ui/notificationDaemon.js:506 ../src/shell-app.c:373
 msgctxt "program"
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: ../js/ui/overview.js:84
+#: ../js/ui/overview.js:83
 msgid "Undo"
 msgstr "Angre"
 
-#: ../js/ui/overview.js:124
+#: ../js/ui/overview.js:123
 msgid "Overview"
 msgstr "Oversikt"
 
@@ -795,13 +795,13 @@ msgstr "Oversikt"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:193
+#: ../js/ui/overview.js:192
 msgid "Type to search..."
 msgstr "Skriv for å søke …"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:214
+#: ../js/ui/overview.js:213
 msgid "Dash"
 msgstr "Favoritter"
 
@@ -862,7 +862,7 @@ msgstr "Beklager, det virket ikke. Vennligst prøv igjen."
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:726
+#: ../js/ui/popupMenu.js:728
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -915,12 +915,12 @@ msgid "Hide Text"
 msgstr "Skjul tekst"
 
 #: ../js/ui/shellMountOperation.js:368
-msgid "Passphrase"
-msgstr "Passordfrase"
+msgid "Password"
+msgstr "Passord"
 
 #: ../js/ui/shellMountOperation.js:389
-msgid "Remember Passphrase"
-msgstr "Husk passordfrase"
+msgid "Remember Password"
+msgstr "Husk passord"
 
 #: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:132
 msgid "Unlock"
@@ -1713,7 +1713,7 @@ msgstr "Bruk spesifikt modus, f.eks «gdm» for innloggingsskjerm"
 msgid "List possible modes"
 msgstr "Vis mulige modi"
 
-#: ../src/shell-app.c:622
+#: ../src/shell-app.c:621
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Klarte ikke å starte «%s»"
