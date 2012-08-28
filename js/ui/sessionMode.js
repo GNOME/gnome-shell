@@ -2,37 +2,13 @@
 
 const Lang = imports.lang;
 
-const Config = imports.misc.config;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
-
-
-const STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION = {
-    'a11y': imports.ui.status.accessibility.ATIndicator,
-    'volume': imports.ui.status.volume.Indicator,
-    'battery': imports.ui.status.power.Indicator,
-    'lockScreen': imports.ui.status.lockScreenMenu.Indicator,
-    'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
-    'userMenu': imports.ui.userMenu.UserMenuButton
-};
-
-if (Config.HAVE_BLUETOOTH)
-    STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION['bluetooth'] =
-        imports.ui.status.bluetooth.Indicator;
-
-try {
-    STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION['network'] =
-        imports.ui.status.network.NMApplet;
-} catch(e) {
-    log('NMApplet is not supported. It is possible that your NetworkManager version is too old');
-}
-
 
 const DEFAULT_MODE = 'user';
 
 const _modes = {
     'gdm': { hasOverview: false,
-             hasAppMenu: false,
              showCalendarEvents: false,
              allowSettings: false,
              allowExtensions: false,
@@ -42,24 +18,15 @@ const _modes = {
              createSession: Main.createGDMSession,
              createUnlockDialog: Main.createGDMLoginDialog,
              extraStylesheet: null,
-             statusArea: {
-                 order: [
-                     'a11y', 'display', 'keyboard',
-                     'volume', 'battery', 'lockScreen', 'powerMenu'
-                 ],
-                 implementation: {
-                     'a11y': imports.ui.status.accessibility.ATIndicator,
-                     'volume': imports.ui.status.volume.Indicator,
-                     'battery': imports.ui.status.power.Indicator,
-                     'lockScreen': imports.ui.status.lockScreenMenu.Indicator,
-                     'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
-                     'powerMenu': imports.gdm.powerMenu.PowerMenuButton
-                 }
+             panel: {
+                 left: [],
+                 center: ['dateMenu'],
+                 right: ['a11y', 'display', 'keyboard',
+                         'volume', 'battery', 'lockScreen', 'powerMenu']
              }
            },
 
     'initial-setup': { hasOverview: false,
-                       hasAppMenu: false,
                        showCalendarEvents: false,
                        allowSettings: false,
                        allowExtensions: false,
@@ -68,21 +35,14 @@ const _modes = {
                        hasWorkspaces: false,
                        createSession: Main.createInitialSetupSession,
                        extraStylesheet: null,
-                       statusArea: {
-                           order: [
-                               'a11y', 'keyboard', 'volume', 'lockScreen',
-                           ],
-                           implementation: {
-                               'a11y': imports.ui.status.accessibility.ATIndicator,
-                               'keyboard': imports.ui.status.keyboard.XKBIndicator,
-                               'volume': imports.ui.status.volume.Indicator,
-                               'lockScreen': imports.ui.status.lockScreenMenu.Indicator,
-                        }
-                }
-           },
+                       panel: {
+                           left: [],
+                           center: ['dateMenu'],
+                           right: ['a11y', 'keyboard', 'volume', 'lockScreen']
+                       }
+                     },
 
     'user': { hasOverview: true,
-              hasAppMenu: true,
               showCalendarEvents: true,
               allowSettings: true,
               allowExtensions: true,
@@ -92,12 +52,11 @@ const _modes = {
               createSession: Main.createUserSession,
               createUnlockDialog: Main.createSessionUnlockDialog,
               extraStylesheet: null,
-              statusArea: {
-                  order: [
-                      'input-method', 'a11y', 'keyboard', 'volume', 'bluetooth',
-                      'network', 'battery', 'lockScreen', 'userMenu'
-                  ],
-                  implementation: STANDARD_STATUS_AREA_SHELL_IMPLEMENTATION
+              panel: {
+                  left: ['activities', 'appMenu'],
+                  center: ['dateMenu'],
+                  right: ['a11y', 'keyboard', 'volume', 'bluetooth',
+                          'network', 'battery', 'lockScreen', 'userMenu']
               }
             }
 };

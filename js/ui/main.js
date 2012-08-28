@@ -222,8 +222,7 @@ function start() {
 
     sessionMode.createSession();
 
-    panel.startStatusArea();
-
+    panel.init();
     layoutManager.init();
     keyboard.init();
     overview.init();

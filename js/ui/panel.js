@@ -14,13 +14,14 @@ const St = imports.gi.St;
 const Signals = imports.signals;
 const Atk = imports.gi.Atk;
 
+
+const Config = imports.misc.config;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const DND = imports.ui.dnd;
 const Layout = imports.ui.layout;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
-const DateMenu = imports.ui.dateMenu;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
@@ -221,14 +222,14 @@ const AppMenuButton = new Lang.Class({
     Name: 'AppMenuButton',
     Extends: PanelMenu.Button,
 
-    _init: function(menuManager) {
+    _init: function(panel) {
         this.parent(0.0, null, true);
 
         this.actor.accessible_role = Atk.Role.MENU;
 
         this._startingApps = [];
 
-        this._menuManager = menuManager;
+        this._menuManager = panel.menuManager;
         this._targetApp = null;
         this._appMenuNotifyId = 0;
         this._actionGroupNotifyId = 0;
@@ -899,6 +900,29 @@ const PanelCorner = new Lang.Class({
     }
 });
 
+const PANEL_ITEM_IMPLEMENTATIONS = {
+    'activities': ActivitiesButton,
+    'appMenu': AppMenuButton,
+    'dateMenu': imports.ui.dateMenu.DateMenuButton,
+    'a11y': imports.ui.status.accessibility.ATIndicator,
+    'volume': imports.ui.status.volume.Indicator,
+    'battery': imports.ui.status.power.Indicator,
+    'lockScreen': imports.ui.status.lockScreenMenu.Indicator,
+    'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
+    'powerMenu': imports.gdm.powerMenu.PowerMenuButton,
+    'userMenu': imports.ui.userMenu.UserMenuButton
+};
+
+if (Config.HAVE_BLUETOOTH)
+    PANEL_ITEM_IMPLEMENTATIONS['bluetooth'] =
+        imports.ui.status.bluetooth.Indicator;
+
+try {
+    PANEL_ITEM_IMPLEMENTATIONS['network'] =
+        imports.ui.status.network.NMApplet;
+} catch(e) {
+    log('NMApplet is not supported. It is possible that your NetworkManager version is too old');
+}
 
 const Panel = new Lang.Class({
     Name: 'Panel',
@@ -919,7 +943,7 @@ const Panel = new Lang.Class({
 
         Main.screenShield.connect('lock-status-changed', Lang.bind(this, this._onLockStateChanged));
 
-        this._menus = new PopupMenu.PopupMenuManager(this);
+        this.menuManager = new PopupMenu.PopupMenuManager(this);
 
         this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
         this.actor.add_actor(this._leftBox);
@@ -945,27 +969,6 @@ const Panel = new Lang.Class({
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
-
-        /* Button on the left side of the panel. */
-        if (Main.sessionMode.hasOverview) {
-            this._activitiesButton = new ActivitiesButton();
-            this._activities = this._activitiesButton.actor;
-            this._leftBox.add(this._activities);
-
-            // The activities button has a pretend menu, so as to integrate
-            // more cleanly with the rest of the panel
-            this._menus.addMenu(this._activitiesButton.menu);
-        }
-
-        if (Main.sessionMode.hasAppMenu) {
-            this._appMenu = new AppMenuButton(this._menus);
-            this._leftBox.add(this._appMenu.actor);
-        }
-
-        /* center */
-        this._dateMenu = new DateMenu.DateMenuButton();
-        this._centerBox.add(this._dateMenu.actor, { y_fill: true });
-        this._menus.addMenu(this._dateMenu.menu);
 
         Main.layoutManager.panelBox.add(this.actor);
         Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'start-here-symbolic',
@@ -1086,75 +1089,70 @@ const Panel = new Lang.Class({
     },
 
     openAppMenu: function() {
-        let menu = this._appMenu.menu;
-        if (!this._appMenu.actor.reactive || menu.isOpen)
+        let indicator = this.statusArea.appMenu;
+        if (!indicator) // appMenu not supported by current session mode
+            return;
+
+        let menu = indicator.menu;
+        if (!indicator.actor.reactive || menu.isOpen)
             return;
 
         menu.open();
         menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
     },
 
-    startStatusArea: function() {
-        for (let i = 0; i < Main.sessionMode.statusArea.order.length; i++) {
-            let role = Main.sessionMode.statusArea.order[i];
-            let constructor = Main.sessionMode.statusArea.implementation[role];
+    init: function() {
+        let panel = Main.sessionMode.panel;
+        this._initBox(panel.left, this._leftBox);
+        this._initBox(panel.center, this._centerBox);
+        this._initBox(panel.right, this._rightBox);
+    },
+
+    _initBox: function(elements, box) {
+        for (let i = 0; i < elements.length; i++) {
+            let role = elements[i];
+            let constructor = PANEL_ITEM_IMPLEMENTATIONS[role];
             if (!constructor) {
-                // This icon is not implemented (this is a bug)
+                // panel icon is not supported (can happen for
+                // bluetooth or network)
                 continue;
             }
 
-            let indicator = new constructor();
-            this.addToStatusArea(role, indicator, i);
+            let indicator = new constructor(this);
+            this._addToPanelBox(role, indicator, i, box);
         }
     },
 
-    _insertStatusItem: function(actor, position) {
-        let children = this._rightBox.get_children();
-        let i;
-        for (i = children.length - 1; i >= 0; i--) {
-            let rolePosition = children[i]._rolePosition;
-            if (position > rolePosition) {
-                this._rightBox.insert_child_at_index(actor, i + 1);
-                break;
-            }
-        }
-        if (i == -1) {
-            // If we didn't find a position, we must be first
-            this._rightBox.insert_child_at_index(actor, 0);
-        }
-        actor._rolePosition = position;
+    _addToPanelBox: function(role, indicator, position, box) {
+        box.insert_child_at_index(indicator.actor, position);
+        if (indicator.menu)
+            this.menuManager.addMenu(indicator.menu);
+        this.statusArea[role] = indicator;
+        let destroyId = indicator.connect('destroy', Lang.bind(this, function(emitter) {
+            delete this.statusArea[role];
+            emitter.disconnect(destroyId);
+        }));
     },
 
-    addToStatusArea: function(role, indicator, position) {
+    addToStatusArea: function(role, indicator, position, box) {
         if (this.statusArea[role])
             throw new Error('Extension point conflict: there is already a status indicator for role ' + role);
 
         if (!(indicator instanceof PanelMenu.Button))
             throw new TypeError('Status indicator must be an instance of PanelMenu.Button');
 
-        if (!position)
-            position = 0;
-        this._insertStatusItem(indicator.actor, position);
-        if (indicator.menu)
-            this._menus.addMenu(indicator.menu);
-
-        this.statusArea[role] = indicator;
-        let destroyId = indicator.connect('destroy', Lang.bind(this, function(emitter) {
-            delete this.statusArea[role];
-            emitter.disconnect(destroyId);
-        }));
-
+        position = position || 0;
+        let boxes = {
+            left: this._leftBox,
+            center: this._centerBox,
+            right: this._rightBox
+        };
+        let boxContainer = boxes[box] || this._rightBox;
+        this._addToPanelBox(role, indicator, position, boxContainer);
         return indicator;
     },
 
     _onLockStateChanged: function(shield, locked) {
-        if (this._activitiesButton)
-            this._activitiesButton.setLockedState(locked);
-        if (this._appMenu)
-            this._appMenu.setLockedState(locked);
-        if (this._dateMenu)
-            this._dateMenu.setLockedState(locked);
-
         for (let id in this.statusArea)
             this.statusArea[id].setLockedState(locked);
     },
