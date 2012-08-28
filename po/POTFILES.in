@@ -32,6 +32,7 @@ clutter/clutter-layout-manager.c
 clutter/clutter-layout-meta.c
 clutter/clutter-main.c
 clutter/clutter-paint-node.c
+clutter/clutter-pan-action.c
 clutter/clutter-path-constraint.c
 clutter/clutter-property-transition.c
 clutter/clutter-rotate-action.c
