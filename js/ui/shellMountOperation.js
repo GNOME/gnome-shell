@@ -365,7 +365,7 @@ const ShellMountPasswordDialog = new Lang.Class({
         this._messageBox.add(this._passwordBox);
 
         this._passwordLabel = new St.Label(({ style_class: 'prompt-dialog-password-label',
-                                              text: _("Passphrase") }));
+                                              text: _("Password") }));
         this._passwordBox.add(this._passwordLabel, { y_fill: false, y_align: St.Align.MIDDLE });
 
         this._passwordEntry = new St.Entry({ style_class: 'prompt-dialog-password-entry',
@@ -386,7 +386,7 @@ const ShellMountPasswordDialog = new Lang.Class({
 
         if (flags & Gio.AskPasswordFlags.SAVING_SUPPORTED) {
             this._rememberChoice = new CheckBox.CheckBox();
-            this._rememberChoice.getLabelActor().text = _("Remember Passphrase");
+            this._rememberChoice.getLabelActor().text = _("Remember Password");
             this._rememberChoice.actor.checked = true;
             this._messageBox.add(this._rememberChoice.actor);
         } else {
