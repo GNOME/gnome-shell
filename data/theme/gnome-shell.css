@@ -1834,6 +1834,7 @@ StButton.popup-menu-item:insensitive {
 
 .prompt-dialog-password-box {
     spacing: 1em;
+    padding-bottom: 1em;
 }
 
 .prompt-dialog-error-label {
