@@ -19478,43 +19478,21 @@ clutter_actor_get_content_box (ClutterActor    *self,
       {
         double r_c = content_w / content_h;
 
-        if (r_c >= 1.0)
+        if ((alloc_w / r_c) > alloc_h)
           {
-            if ((alloc_w / r_c) > alloc_h)
-              {
-                box->x1 = 0.f;
-                box->x2 = alloc_w;
+            box->y1 = 0.f;
+            box->y2 = alloc_h;
 
-                box->y1 = (alloc_h - (alloc_w / r_c)) / 2.0f;
-                box->y2 = box->y1 + (alloc_w / r_c);
-              }
-            else
-              {
-                box->y1 = 0.f;
-                box->y2 = alloc_h;
-
-                box->x1 = (alloc_w - (alloc_h * r_c)) / 2.0f;
-                box->x2 = box->x1 + (alloc_h * r_c);
-              }
+            box->x1 = (alloc_w - (alloc_h * r_c)) / 2.0f;
+            box->x2 = box->x1 + (alloc_h * r_c);
           }
         else
           {
-            if ((alloc_w / r_c) > alloc_h)
-              {
-                box->y1 = 0.f;
-                box->y2 = alloc_h;
+            box->x1 = 0.f;
+            box->x2 = alloc_w;
 
-                box->x1 = (alloc_w - (alloc_h * r_c)) / 2.0f;
-                box->x2 = box->x1 + (alloc_h * r_c);
-              }
-            else
-              {
-                box->x1 = 0.f;
-                box->x2 = alloc_w;
-
-                box->y1 = (alloc_h - (alloc_w / r_c)) / 2.0f;
-                box->y2 = box->y1 + (alloc_w / r_c);
-              }
+            box->y1 = (alloc_h - (alloc_w / r_c)) / 2.0f;
+            box->y2 = box->y1 + (alloc_w / r_c);
           }
 
         CLUTTER_NOTE (LAYOUT,
