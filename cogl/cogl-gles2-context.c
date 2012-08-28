@@ -59,24 +59,27 @@ static CoglUserDataKey offscreen_wrapper_key;
 /* This uniform is used to flip the rendering or not depending on
  * whether we are rendering to an offscreen buffer or not */
 #define MAIN_WRAPPER_FLIP_UNIFORM "_cogl_flip_vector"
+/* These comments are used to delimit the added wrapper snippet so
+ * that we can remove it again when the shader source is requested via
+ * glGetShaderSource */
+#define MAIN_WRAPPER_BEGIN "/*_COGL_WRAPPER_BEGIN*/"
+#define MAIN_WRAPPER_END "/*_COGL_WRAPPER_END*/"
 
 /* This wrapper function around 'main' is appended to every vertex shader
  * so that we can add some extra code to flip the rendering when
  * rendering to an offscreen buffer */
 static const char
-main_wrapper_prelude[] =
-  "uniform vec4 " MAIN_WRAPPER_FLIP_UNIFORM ";\n"
-  "\n";
-
-static const char
 main_wrapper_function[] =
+  MAIN_WRAPPER_BEGIN "\n"
+  "uniform vec4 " MAIN_WRAPPER_FLIP_UNIFORM ";\n"
   "\n"
   "void\n"
   "main ()\n"
   "{\n"
   "  " MAIN_WRAPPER_REPLACEMENT_NAME " ();\n"
   "  gl_Position *= " MAIN_WRAPPER_FLIP_UNIFORM ";\n"
-  "}\n";
+  "}\n"
+  MAIN_WRAPPER_END;
 
 enum {
   RESTORE_FB_NONE,
@@ -827,12 +830,9 @@ gl_shader_source_wrapper (GLuint shader,
                                           GINT_TO_POINTER (shader))) &&
       shader_data->type == GL_VERTEX_SHADER)
     {
-      char **string_copy = g_alloca ((count + 2) * sizeof (char *));
-      int *length_copy = g_alloca ((count +2) * sizeof (int));
+      char **string_copy = g_alloca ((count + 1) * sizeof (char *));
+      int *length_copy = g_alloca ((count + 1) * sizeof (int));
       int i;
-
-      string_copy[0] = main_wrapper_prelude;
-      length_copy[0] = -1;
 
       /* Replace any occurences of the symbol 'main' with a different
        * symbol so that we can provide our own wrapper main
@@ -847,28 +847,27 @@ gl_shader_source_wrapper (GLuint shader,
           else
             string_length = length[i];
 
-          string_copy[i + 1] = g_memdup (string[i], string_length);
+          string_copy[i] = g_memdup (string[i], string_length);
 
           replace_token (string_copy[i],
                          "main",
                          MAIN_WRAPPER_REPLACEMENT_NAME,
                          string_length);
 
-          length_copy[i + 1] = string_length;
+          length_copy[i] = string_length;
         }
 
-      string_copy[count + 1] = main_wrapper_function;
-      length_copy[count + 1] = -1;
+      string_copy[count] = (char *) main_wrapper_function;
+      length_copy[count] = sizeof (main_wrapper_function) - 1;
 
       gles2_ctx->context->glShaderSource (shader,
-                                          count + 2,
+                                          count + 1,
                                           (const char *const *) string_copy,
                                           length_copy);
 
-      /* Note: we don't need to free the first and last entries in
-       * string_copy[] which are our prelude and wrapper strings
-       * respectively... */
-      for (i = 1; i < count; i++)
+      /* Note: we don't need to free the last entry in string_copy[]
+       * because it is our static wrapper string... */
+      for (i = 0; i < count; i++)
         g_free (string_copy[i]);
     }
   else
@@ -895,6 +894,23 @@ gl_get_shader_source_wrapper (GLuint shader,
       shader_data->type == GL_VERTEX_SHADER)
     {
       GLsizei copy_length = MIN (length, buf_size - 1);
+      static const char wrapper_marker[] = MAIN_WRAPPER_BEGIN;
+      char *wrapper_start;
+
+      /* Strip out the wrapper snippet we added when the source was
+       * specified */
+      wrapper_start = _cogl_util_memmem (source,
+                                         copy_length,
+                                         wrapper_marker,
+                                         sizeof (wrapper_marker) - 1);
+      if (wrapper_start)
+        {
+          length = wrapper_start - source;
+          copy_length = length;
+          *wrapper_start = '\0';
+        }
+
+      /* Correct the name of the main function back to its original */
       replace_token (source,
                      MAIN_WRAPPER_REPLACEMENT_NAME,
                      "main",
@@ -947,36 +963,6 @@ gl_get_program_iv_wrapper (GLuint program,
         (*params)--;
       break;
     }
-}
-
-static void
-gl_get_attached_shaders_wrapper (GLuint program,
-                                 GLsizei max_count,
-                                 GLsizei *count_ret,
-                                 GLuint *obj)
-{
-  CoglGLES2Context *gles2_ctx = current_gles2_context;
-  GLuint *tmp_buf;
-  GLsizei count, count_out;
-  int i;
-
-  /* We need to remove the wrapper shader we added from this list */
-
-  /* Allocate a temporary buffer that is one larger than the buffer
-   * passed in in case the application allocated exactly the size
-   * returned by GL_ATTACHED_SHADERS. */
-  tmp_buf = g_alloca (sizeof (GLuint) * (max_count + 1));
-
-  gles2_ctx->context->glGetAttachedShaders (program,
-                                            max_count + 1,
-                                            &count,
-                                            tmp_buf);
-
-  for (i = 0, count_out = 0; i < count; i++)
-    obj[count_out++] = tmp_buf[i];
-
-  if (count_ret)
-    *count_ret = count_out;
 }
 
 static void
@@ -1636,7 +1622,6 @@ cogl_gles2_context_new (CoglContext *ctx, GError **error)
   gles2_ctx->vtable->glGetShaderSource = gl_get_shader_source_wrapper;
   gles2_ctx->vtable->glLinkProgram = gl_link_program_wrapper;
   gles2_ctx->vtable->glGetProgramiv = gl_get_program_iv_wrapper;
-  gles2_ctx->vtable->glGetAttachedShaders = gl_get_attached_shaders_wrapper;
   gles2_ctx->vtable->glGetProgramInfoLog = gl_get_program_info_log_wrapper;
   gles2_ctx->vtable->glGetShaderInfoLog = gl_get_shader_info_log_wrapper;
   gles2_ctx->vtable->glClear = gl_clear_wrapper;
