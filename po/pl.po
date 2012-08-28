@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-28 18:54+0200\n"
-"PO-Revision-Date: 2012-08-28 18:55+0200\n"
+"POT-Creation-Date: 2012-08-29 01:49+0200\n"
+"PO-Revision-Date: 2012-08-29 01:50+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -631,7 +631,7 @@ msgid "tray"
 msgstr "Ikona"
 
 #: ../js/ui/keyboard.js:545 ../js/ui/status/keyboard.js:146
-#: ../js/ui/status/power.js:207
+#: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Klawiatura"
 
@@ -697,27 +697,27 @@ msgstr "Strona WWW"
 msgid "Screencast from %d %t"
 msgstr "Nagranie ekranu z %d %t"
 
-#: ../js/ui/messageTray.js:1229
+#: ../js/ui/messageTray.js:1234
 msgid "Open"
 msgstr "Otwórz"
 
-#: ../js/ui/messageTray.js:1236
+#: ../js/ui/messageTray.js:1241
 msgid "Remove"
 msgstr "Usuń"
 
-#: ../js/ui/messageTray.js:1246
+#: ../js/ui/messageTray.js:1251
 msgid "Unmute"
 msgstr "Anuluj wyciszenie"
 
-#: ../js/ui/messageTray.js:1246
+#: ../js/ui/messageTray.js:1251
 msgid "Mute"
 msgstr "Wycisz"
 
-#: ../js/ui/messageTray.js:2021
+#: ../js/ui/messageTray.js:2026
 msgid "Message Tray"
 msgstr "Obszar powiadamiania"
 
-#: ../js/ui/messageTray.js:2459
+#: ../js/ui/messageTray.js:2464
 msgid "System Information"
 msgstr "Informacje systemowe"
 
@@ -802,7 +802,7 @@ msgstr "Hasło sieci komórkowej"
 msgid "A password is required to connect to '%s'."
 msgstr "Do połączenia z siecią \"%s\" wymagane jest hasło."
 
-#: ../js/ui/notificationDaemon.js:506 ../src/shell-app.c:373
+#: ../js/ui/notificationDaemon.js:507 ../src/shell-app.c:373
 msgctxt "program"
 msgid "Unknown"
 msgstr "Nieznany"
@@ -852,11 +852,7 @@ msgstr "Odmontowanie \"%s\" się nie powiodło"
 msgid "Retry"
 msgstr "Ponów"
 
-#: ../js/ui/placeDisplay.js:156
-msgid "Connect to..."
-msgstr "Połącz z..."
-
-#: ../js/ui/placeDisplay.js:367
+#: ../js/ui/placeDisplay.js:349
 msgid "PLACES & DEVICES"
 msgstr "Miejsca i urządzenia"
 
@@ -1003,7 +999,7 @@ msgstr "Duży tekst"
 #: ../js/ui/status/bluetooth.js:27 ../js/ui/status/bluetooth.js:31
 #: ../js/ui/status/bluetooth.js:256 ../js/ui/status/bluetooth.js:309
 #: ../js/ui/status/bluetooth.js:340 ../js/ui/status/bluetooth.js:376
-#: ../js/ui/status/bluetooth.js:405 ../js/ui/status/network.js:841
+#: ../js/ui/status/bluetooth.js:405 ../js/ui/status/network.js:842
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1024,7 +1020,7 @@ msgid "Bluetooth Settings"
 msgstr "Ustawienia Bluetooth"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:108 ../js/ui/status/network.js:208
+#: ../js/ui/status/bluetooth.js:108 ../js/ui/status/network.js:209
 msgid "hardware disabled"
 msgstr "sprzęt jest wyłączony"
 
@@ -1032,12 +1028,12 @@ msgstr "sprzęt jest wyłączony"
 msgid "Connection"
 msgstr "Połączenie"
 
-#: ../js/ui/status/bluetooth.js:212 ../js/ui/status/network.js:442
+#: ../js/ui/status/bluetooth.js:212 ../js/ui/status/network.js:443
 msgid "disconnecting..."
 msgstr "rozłączanie..."
 
-#: ../js/ui/status/bluetooth.js:225 ../js/ui/status/network.js:448
-#: ../js/ui/status/network.js:908
+#: ../js/ui/status/bluetooth.js:225 ../js/ui/status/network.js:449
+#: ../js/ui/status/network.js:909
 msgid "connecting..."
 msgstr "łączenie..."
 
@@ -1066,7 +1062,7 @@ msgstr "Ustawienia klawiatury"
 msgid "Mouse Settings"
 msgstr "Ustawienia myszy"
 
-#: ../js/ui/status/bluetooth.js:274 ../js/ui/status/volume.js:54
+#: ../js/ui/status/bluetooth.js:274 ../js/ui/status/volume.js:233
 msgid "Sound Settings"
 msgstr "Ustawienia dźwięku"
 
@@ -1136,120 +1132,124 @@ msgstr "Wyświetl układ klawiatury"
 msgid "Region and Language Settings"
 msgstr "Ustawienia regionu i języka"
 
-#: ../js/ui/status/network.js:93
+#: ../js/ui/status/lockScreenMenu.js:18
+msgid "Volume, network, battery"
+msgstr "Głośność, sieć, akumulator"
+
+#: ../js/ui/status/network.js:94
 msgid "<unknown>"
 msgstr "<nieznane>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:230
+#: ../js/ui/status/network.js:231
 msgid "disabled"
 msgstr "wyłączone"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:440
+#: ../js/ui/status/network.js:441
 msgid "unmanaged"
 msgstr "niezarządzane"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:911
+#: ../js/ui/status/network.js:452 ../js/ui/status/network.js:912
 msgid "authentication required"
 msgstr "wymagane jest uwierzytelnienie"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:461
+#: ../js/ui/status/network.js:462
 msgid "firmware missing"
 msgstr "brak oprogramowania wbudowanego"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:468
+#: ../js/ui/status/network.js:469
 msgid "cable unplugged"
 msgstr "kabel jest niepodłączony"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:473
+#: ../js/ui/status/network.js:474
 msgid "unavailable"
 msgstr "niedostępne"
 
-#: ../js/ui/status/network.js:475 ../js/ui/status/network.js:913
+#: ../js/ui/status/network.js:476 ../js/ui/status/network.js:914
 msgid "connection failed"
 msgstr "połączenie się nie powiodło"
 
-#: ../js/ui/status/network.js:536 ../js/ui/status/network.js:1534
+#: ../js/ui/status/network.js:537 ../js/ui/status/network.js:1535
 msgid "More..."
 msgstr "Więcej..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:572 ../js/ui/status/network.js:1464
+#: ../js/ui/status/network.js:573 ../js/ui/status/network.js:1465
 msgid "Connected (private)"
 msgstr "Połączono (prywatne)"
 
-#: ../js/ui/status/network.js:647
+#: ../js/ui/status/network.js:648
 msgid "Auto Ethernet"
 msgstr "Automatyczne Ethernet"
 
-#: ../js/ui/status/network.js:705
+#: ../js/ui/status/network.js:706
 msgid "Auto broadband"
 msgstr "Automatyczne komórkowe"
 
-#: ../js/ui/status/network.js:708
+#: ../js/ui/status/network.js:709
 msgid "Auto dial-up"
 msgstr "Automatyczne wdzwaniane"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:827 ../js/ui/status/network.js:1481
+#: ../js/ui/status/network.js:828 ../js/ui/status/network.js:1482
 #, c-format
 msgid "Auto %s"
 msgstr "Automatyczne %s"
 
-#: ../js/ui/status/network.js:829
+#: ../js/ui/status/network.js:830
 msgid "Auto bluetooth"
 msgstr "Automatyczne Bluetooth"
 
-#: ../js/ui/status/network.js:1483
+#: ../js/ui/status/network.js:1484
 msgid "Auto wireless"
 msgstr "Automatyczne bezprzewodowe"
 
-#: ../js/ui/status/network.js:1592
+#: ../js/ui/status/network.js:1582
 msgid "Enable networking"
 msgstr "Włącz sieć"
 
-#: ../js/ui/status/network.js:1614
+#: ../js/ui/status/network.js:1604
 msgid "Wired"
 msgstr "Przewodowe"
 
-#: ../js/ui/status/network.js:1625
+#: ../js/ui/status/network.js:1615
 msgid "Wireless"
 msgstr "Bezprzewodowe"
 
-#: ../js/ui/status/network.js:1635
+#: ../js/ui/status/network.js:1625
 msgid "Mobile broadband"
 msgstr "Komórkowe"
 
-#: ../js/ui/status/network.js:1645
+#: ../js/ui/status/network.js:1635
 msgid "VPN Connections"
 msgstr "Połączenia VPN"
 
-#: ../js/ui/status/network.js:1652
+#: ../js/ui/status/network.js:1642
 msgid "Network Settings"
 msgstr "Ustawienia sieci"
 
-#: ../js/ui/status/network.js:1709
+#: ../js/ui/status/network.js:1691
 msgid "Network Manager"
 msgstr "Menedżer sieci"
 
-#: ../js/ui/status/network.js:1801
+#: ../js/ui/status/network.js:1783
 msgid "Connection failed"
 msgstr "Połączenie się nie powiodło"
 
-#: ../js/ui/status/network.js:1802
+#: ../js/ui/status/network.js:1784
 msgid "Activation of network connection failed"
 msgstr "Aktywacja połączenia sieciowego się nie powiodła"
 
-#: ../js/ui/status/network.js:2103
+#: ../js/ui/status/network.js:2080
 msgid "Networking is disabled"
 msgstr "Sieć jest wyłączona"
 
@@ -1257,7 +1257,7 @@ msgstr "Sieć jest wyłączona"
 msgid "Battery"
 msgstr "Akumulator"
 
-#: ../js/ui/status/power.js:72
+#: ../js/ui/status/power.js:73
 msgid "Power Settings"
 msgstr "Ustawienia zasilania"
 
@@ -1303,63 +1303,63 @@ msgstr[0] "Pozostała %d minuta"
 msgstr[1] "Pozostały %d minuty"
 msgstr[2] "Pozostało %d minut"
 
-#: ../js/ui/status/power.js:118 ../js/ui/status/power.js:188
+#: ../js/ui/status/power.js:118 ../js/ui/status/power.js:192
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../js/ui/status/power.js:197
+#: ../js/ui/status/power.js:201
 msgid "AC adapter"
 msgstr "Zasilacz sieciowy"
 
-#: ../js/ui/status/power.js:199
+#: ../js/ui/status/power.js:203
 msgid "Laptop battery"
 msgstr "Akumulator laptopa"
 
-#: ../js/ui/status/power.js:201
+#: ../js/ui/status/power.js:205
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:203
+#: ../js/ui/status/power.js:207
 msgid "Monitor"
 msgstr "Monitor"
 
-#: ../js/ui/status/power.js:205
+#: ../js/ui/status/power.js:209
 msgid "Mouse"
 msgstr "Mysz"
 
-#: ../js/ui/status/power.js:209
+#: ../js/ui/status/power.js:213
 msgid "PDA"
 msgstr "Urządzenie PDA"
 
-#: ../js/ui/status/power.js:211
+#: ../js/ui/status/power.js:215
 msgid "Cell phone"
 msgstr "Telefon komórkowy"
 
-#: ../js/ui/status/power.js:213
+#: ../js/ui/status/power.js:217
 msgid "Media player"
 msgstr "Odtwarzacz multimedialny"
 
-#: ../js/ui/status/power.js:215
+#: ../js/ui/status/power.js:219
 msgid "Tablet"
 msgstr "Tablet"
 
-#: ../js/ui/status/power.js:217
+#: ../js/ui/status/power.js:221
 msgid "Computer"
 msgstr "Komputer"
 
-#: ../js/ui/status/power.js:219
+#: ../js/ui/status/power.js:223
 msgctxt "device"
 msgid "Unknown"
 msgstr "Nieznane"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:20 ../js/ui/status/volume.js:34
+#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:218
 msgid "Volume"
 msgstr "Głośność"
 
-#: ../js/ui/status/volume.js:46
+#: ../js/ui/status/volume.js:59
 msgid "Microphone"
 msgstr "Mikrofon"
 
