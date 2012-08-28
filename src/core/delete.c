@@ -110,8 +110,8 @@ delete_ping_timeout_func (MetaDisplay *display,
   if (window_title)
     {
       gchar *bold;
-      bold = g_strconcat ("<tt>", window_title, "</tt>", NULL);
-      tmp = g_markup_printf_escaped (_("%s is not responding."), bold);
+      bold = g_markup_printf_escaped ("<tt>%s</tt>", window_title);
+      tmp = g_strdup_printf (_("%s is not responding."), bold);
       g_free (bold);
     }
   else
