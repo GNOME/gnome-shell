@@ -60,9 +60,9 @@ static CoglUserDataKey offscreen_wrapper_key;
  * whether we are rendering to an offscreen buffer or not */
 #define MAIN_WRAPPER_FLIP_UNIFORM "_cogl_flip_vector"
 
-/* This wrapper function around 'main' is appended to every program in
- * a separate shader so that we can add some extra code to flip the
- * rendering when rendering to an offscreen buffer */
+/* This wrapper function around 'main' is appended to every vertex shader
+ * so that we can add some extra code to flip the rendering when
+ * rendering to an offscreen buffer */
 static const char
 main_wrapper_prelude[] =
   "uniform vec4 " MAIN_WRAPPER_FLIP_UNIFORM ";\n"
@@ -827,43 +827,48 @@ gl_shader_source_wrapper (GLuint shader,
                                           GINT_TO_POINTER (shader))) &&
       shader_data->type == GL_VERTEX_SHADER)
     {
-      char **string_copy = g_alloca (count * sizeof (char *));
-      GLint *length_copy = g_alloca (count * sizeof (GLint));
+      char **string_copy = g_alloca ((count + 2) * sizeof (char *));
+      int *length_copy = g_alloca ((count +2) * sizeof (int));
       int i;
 
-      /* First, copy the shader into a new string; then, replace all
-       * instances of the symbol 'main' with our replacement symbol
-       * so we can provide our own wrapper main function; then append
-       * that wrapper function. */
+      string_copy[0] = main_wrapper_prelude;
+      length_copy[0] = -1;
+
+      /* Replace any occurences of the symbol 'main' with a different
+       * symbol so that we can provide our own wrapper main
+       * function */
+
       for (i = 0; i < count; i++)
         {
-          int string_length = length ? length[i] : strlen (string[i]);
-          int prelude_length = strlen (main_wrapper_prelude);
-          int wrapper_length = strlen (main_wrapper_function);
+          int string_length;
 
-          length_copy[i] = string_length + prelude_length + wrapper_length;
-          string_copy[i] = g_malloc (length_copy[i] + 1);
-          memcpy (string_copy[i], string[i], string_length);
-          string_copy[i][string_length] = '\0';
+          if (length == NULL || length[i] < 0)
+            string_length = strlen (string[i]);
+          else
+            string_length = length[i];
+
+          string_copy[i + 1] = g_memdup (string[i], string_length);
+
           replace_token (string_copy[i],
                          "main",
                          MAIN_WRAPPER_REPLACEMENT_NAME,
                          string_length);
 
-          memmove (&string_copy[i][prelude_length], string_copy[i],
-                   string_length);
-          memcpy (string_copy[i], main_wrapper_prelude, prelude_length);
-          memcpy (&string_copy[i][prelude_length + string_length],
-                  main_wrapper_function, wrapper_length);
-          string_copy[i][length_copy[i]] = '\0';
+          length_copy[i + 1] = string_length;
         }
 
+      string_copy[count + 1] = main_wrapper_function;
+      length_copy[count + 1] = -1;
+
       gles2_ctx->context->glShaderSource (shader,
-                                          count,
+                                          count + 2,
                                           (const char *const *) string_copy,
                                           length_copy);
 
-      for (i = 0; i < count; i++)
+      /* Note: we don't need to free the first and last entries in
+       * string_copy[] which are our prelude and wrapper strings
+       * respectively... */
+      for (i = 1; i < count; i++)
         g_free (string_copy[i]);
     }
   else
