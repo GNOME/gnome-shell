@@ -555,6 +555,12 @@ meta_gravity_to_string (int gravity)
     }
 }
 
+char*
+meta_external_binding_name_for_action (guint keybinding_action)
+{
+  return g_strdup_printf ("external-grab-%u", keybinding_action);
+}
+
 static gboolean
 zenity_supports_option (const char *section, const char *option)
 {

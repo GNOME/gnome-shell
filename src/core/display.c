@@ -138,6 +138,7 @@ G_DEFINE_TYPE(MetaDisplay, meta_display, G_TYPE_OBJECT);
 enum
 {
   OVERLAY_KEY,
+  ACCELERATOR_ACTIVATED,
   FOCUS_WINDOW,
   WINDOW_CREATED,
   WINDOW_DEMANDS_ATTENTION,
@@ -245,6 +246,14 @@ meta_display_class_init (MetaDisplayClass *klass)
                   0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
+
+  display_signals[ACCELERATOR_ACTIVATED] =
+    g_signal_new ("accelerator-activated",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_UINT);
 
   display_signals[WINDOW_CREATED] =
     g_signal_new ("window-created",
@@ -5660,6 +5669,15 @@ void
 meta_display_overlay_key_activate (MetaDisplay *display)
 {
   g_signal_emit (display, display_signals[OVERLAY_KEY], 0);
+}
+
+void
+meta_display_accelerator_activate (MetaDisplay *display,
+                                   guint        action,
+                                   guint        deviceid)
+{
+  g_signal_emit (display, display_signals[ACCELERATOR_ACTIVATED],
+                 0, action, deviceid);
 }
 
 void
