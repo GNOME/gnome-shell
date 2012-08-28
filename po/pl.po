@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-22 04:27+0200\n"
-"PO-Revision-Date: 2012-08-24 04:24+0200\n"
+"POT-Creation-Date: 2012-08-28 18:54+0200\n"
+"PO-Revision-Date: 2012-08-28 18:55+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -252,8 +252,8 @@ msgstr "Proszę się zalogować"
 msgid "Not listed?"
 msgstr "Inny użytkownik?"
 
-#: ../js/gdm/loginDialog.js:929 ../js/ui/endSessionDialog.js:406
-#: ../js/ui/extensionDownloader.js:195 ../js/ui/networkAgent.js:153
+#: ../js/gdm/loginDialog.js:929 ../js/ui/endSessionDialog.js:407
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/networkAgent.js:156
 #: ../js/ui/polkitAuthenticationAgent.js:176
 #: ../js/ui/shellMountOperation.js:396 ../js/ui/status/bluetooth.js:432
 #: ../js/ui/unlockDialog.js:129
@@ -285,11 +285,11 @@ msgstr "Wyłącz komputer"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:220
+#: ../js/gdm/util.js:221
 msgid "(or swipe finger)"
 msgstr "(lub przeciągnięcie palca)"
 
-#: ../js/gdm/util.js:245
+#: ../js/gdm/util.js:246
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(np. użytkownik lub %s)"
@@ -326,7 +326,7 @@ msgstr "Ustawienia"
 msgid "New Window"
 msgstr "Nowe okno"
 
-#: ../js/ui/appDisplay.js:678
+#: ../js/ui/appDisplay.js:678 ../js/ui/dash.js:272
 msgid "Remove from Favorites"
 msgstr "Usuń z ulubionych"
 
@@ -344,16 +344,16 @@ msgstr "Program %s został dodany do ulubionych."
 msgid "%s has been removed from your favorites."
 msgstr "Program %s został usunięty z ulubionych."
 
-#: ../js/ui/autorunManager.js:261
+#: ../js/ui/autorunManager.js:264
 msgid "Removable Devices"
 msgstr "Urządzenia wymienne"
 
-#: ../js/ui/autorunManager.js:548
+#: ../js/ui/autorunManager.js:552
 #, c-format
 msgid "Open with %s"
 msgstr "Otwórz za pomocą %s"
 
-#: ../js/ui/autorunManager.js:574
+#: ../js/ui/autorunManager.js:578
 msgid "Eject"
 msgstr "Wysuń"
 
@@ -503,7 +503,7 @@ msgstr "Ten tydzień"
 msgid "Next week"
 msgstr "Następny tydzień"
 
-#: ../js/ui/dash.js:241
+#: ../js/ui/dash.js:245 ../js/ui/dash.js:274
 msgid "Show Applications"
 msgstr "Wyświetl programy"
 
@@ -697,70 +697,70 @@ msgstr "Strona WWW"
 msgid "Screencast from %d %t"
 msgstr "Nagranie ekranu z %d %t"
 
-#: ../js/ui/messageTray.js:1228
+#: ../js/ui/messageTray.js:1229
 msgid "Open"
 msgstr "Otwórz"
 
-#: ../js/ui/messageTray.js:1235
+#: ../js/ui/messageTray.js:1236
 msgid "Remove"
 msgstr "Usuń"
 
-#: ../js/ui/messageTray.js:1245
+#: ../js/ui/messageTray.js:1246
 msgid "Unmute"
 msgstr "Anuluj wyciszenie"
 
-#: ../js/ui/messageTray.js:1245
+#: ../js/ui/messageTray.js:1246
 msgid "Mute"
 msgstr "Wycisz"
 
-#: ../js/ui/messageTray.js:2007
+#: ../js/ui/messageTray.js:2021
 msgid "Message Tray"
 msgstr "Obszar powiadamiania"
 
-#: ../js/ui/messageTray.js:2445
+#: ../js/ui/messageTray.js:2459
 msgid "System Information"
 msgstr "Informacje systemowe"
 
-#: ../js/ui/networkAgent.js:148
+#: ../js/ui/networkAgent.js:151
 msgid "Connect"
 msgstr "Połącz"
 
 #. Cisco LEAP
-#: ../js/ui/networkAgent.js:238 ../js/ui/networkAgent.js:250
-#: ../js/ui/networkAgent.js:277 ../js/ui/networkAgent.js:297
-#: ../js/ui/networkAgent.js:307
+#: ../js/ui/networkAgent.js:242 ../js/ui/networkAgent.js:254
+#: ../js/ui/networkAgent.js:281 ../js/ui/networkAgent.js:301
+#: ../js/ui/networkAgent.js:311
 msgid "Password: "
 msgstr "Hasło: "
 
 #. static WEP
-#: ../js/ui/networkAgent.js:243
+#: ../js/ui/networkAgent.js:247
 msgid "Key: "
 msgstr "Klucz: "
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:275 ../js/ui/networkAgent.js:293
+#: ../js/ui/networkAgent.js:279 ../js/ui/networkAgent.js:297
 msgid "Username: "
 msgstr "Nazwa użytkownika: "
 
-#: ../js/ui/networkAgent.js:281
+#: ../js/ui/networkAgent.js:285
 msgid "Identity: "
 msgstr "Tożsamość: "
 
-#: ../js/ui/networkAgent.js:283
+#: ../js/ui/networkAgent.js:287
 msgid "Private key password: "
 msgstr "Hasło klucza prywatnego: "
 
-#: ../js/ui/networkAgent.js:295
+#: ../js/ui/networkAgent.js:299
 msgid "Service: "
 msgstr "Usługa: "
 
-#: ../js/ui/networkAgent.js:324
+#: ../js/ui/networkAgent.js:328
 msgid "Authentication required by wireless network"
 msgstr "Sieć bezprzewodowa wymaga uwierzytelnienia"
 
-#: ../js/ui/networkAgent.js:325
+#: ../js/ui/networkAgent.js:329
 #, c-format
 msgid ""
 "Passwords or encryption keys are required to access the wireless network "
@@ -769,49 +769,49 @@ msgstr ""
 "Do uzyskania dostępu do sieci bezprzewodowej \"%s\" wymagane jest hasło lub "
 "klucze szyfrowania."
 
-#: ../js/ui/networkAgent.js:329
+#: ../js/ui/networkAgent.js:333
 msgid "Wired 802.1X authentication"
 msgstr "Uwierzytelnianie przewodowe 802.1X"
 
-#: ../js/ui/networkAgent.js:331
+#: ../js/ui/networkAgent.js:335
 msgid "Network name: "
 msgstr "Nazwa sieci: "
 
-#: ../js/ui/networkAgent.js:336
+#: ../js/ui/networkAgent.js:340
 msgid "DSL authentication"
 msgstr "Uwierzytelnienie DSL"
 
-#: ../js/ui/networkAgent.js:343
+#: ../js/ui/networkAgent.js:347
 msgid "PIN code required"
 msgstr "Wymagany kod PIN"
 
-#: ../js/ui/networkAgent.js:344
+#: ../js/ui/networkAgent.js:348
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Do korzystania z urządzenia komórkowego wymagane jest podanie kodu PIN"
 
-#: ../js/ui/networkAgent.js:345
+#: ../js/ui/networkAgent.js:349
 msgid "PIN: "
 msgstr "Kod PIN: "
 
-#: ../js/ui/networkAgent.js:351
+#: ../js/ui/networkAgent.js:355
 msgid "Mobile broadband network password"
 msgstr "Hasło sieci komórkowej"
 
-#: ../js/ui/networkAgent.js:352
+#: ../js/ui/networkAgent.js:356
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Do połączenia z siecią \"%s\" wymagane jest hasło."
 
-#: ../js/ui/notificationDaemon.js:506 ../src/shell-app.c:374
+#: ../js/ui/notificationDaemon.js:506 ../src/shell-app.c:373
 msgctxt "program"
 msgid "Unknown"
 msgstr "Nieznany"
 
-#: ../js/ui/overview.js:84
+#: ../js/ui/overview.js:83
 msgid "Undo"
 msgstr "Cofnij"
 
-#: ../js/ui/overview.js:124
+#: ../js/ui/overview.js:123
 msgid "Overview"
 msgstr "Podgląd"
 
@@ -819,13 +819,13 @@ msgstr "Podgląd"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:193
+#: ../js/ui/overview.js:192
 msgid "Type to search..."
 msgstr "Wyszukiwanie..."
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:214
+#: ../js/ui/overview.js:213
 msgid "Dash"
 msgstr "Ulubione"
 
@@ -886,7 +886,7 @@ msgstr "To nie zadziałało. Proszę spróbować ponownie."
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:726
+#: ../js/ui/popupMenu.js:728
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -941,11 +941,11 @@ msgid "Hide Text"
 msgstr "Ukryj tekst"
 
 #: ../js/ui/shellMountOperation.js:368
-msgid "Passphrase"
+msgid "Password"
 msgstr "Hasło"
 
 #: ../js/ui/shellMountOperation.js:389
-msgid "Remember Passphrase"
+msgid "Remember Password"
 msgstr "Zapamiętanie hasła"
 
 #: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:132
@@ -1241,15 +1241,15 @@ msgstr "Ustawienia sieci"
 msgid "Network Manager"
 msgstr "Menedżer sieci"
 
-#: ../js/ui/status/network.js:1802
+#: ../js/ui/status/network.js:1801
 msgid "Connection failed"
 msgstr "Połączenie się nie powiodło"
 
-#: ../js/ui/status/network.js:1803
+#: ../js/ui/status/network.js:1802
 msgid "Activation of network connection failed"
 msgstr "Aktywacja połączenia sieciowego się nie powiodła"
 
-#: ../js/ui/status/network.js:2104
+#: ../js/ui/status/network.js:2103
 msgid "Networking is disabled"
 msgstr "Sieć jest wyłączona"
 
@@ -1747,7 +1747,7 @@ msgstr "Używa podanego trybu, np. \"gdm\" dla ekranu logowania"
 msgid "List possible modes"
 msgstr "Wyświetla listę możliwych trybów"
 
-#: ../src/shell-app.c:622
+#: ../src/shell-app.c:621
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Uruchomienie \"%s\" się nie powiodło"
