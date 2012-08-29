@@ -5,6 +5,7 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const NetworkManager = imports.gi.NetworkManager;
 const NMClient = imports.gi.NMClient;
+const NMGtk = imports.gi.NMGtk;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
@@ -136,46 +137,6 @@ const NMNetworkMenuItem = new Lang.Class({
             return 'network-workgroup-symbolic';
         else
             return 'network-wireless-signal-' + signalToIcon(this.bestAP.strength) + '-symbolic';
-    }
-});
-
-const NMWiredSectionTitleMenuItem = new Lang.Class({
-    Name: 'NMWiredSectionTitleMenuItem',
-    Extends: PopupMenu.PopupSwitchMenuItem,
-
-    _init: function(label, params) {
-        params = params || { };
-        params.style_class = 'popup-subtitle-menu-item';
-        this.parent(label, false, params);
-    },
-
-    updateForDevice: function(device) {
-        if (device) {
-            this._device = device;
-            this.setStatus(device.getStatusLabel());
-            this.setToggleState(device.connected);
-        } else
-            this.setStatus('');
-    },
-
-    activate: function(event) {
-        this.parent(event);
-
-        if (!this._device) {
-            log('Section title activated when there is more than one device, should be non reactive');
-            return;
-        }
-
-        let newState = this._switch.state;
-
-        let ok;
-        if (newState)
-            ok = this._device.activate();
-        else
-            ok = this._device.deactivate();
-
-        if (!ok)
-            this._switch.setToggleState(false);
     }
 });
 
@@ -351,7 +312,7 @@ const NMDevice = new Lang.Class({
         this._autoConnectionItem = null;
         this._overflowItem = null;
 
-        this.statusItem = new PopupMenu.PopupSwitchMenuItem(this._getDescription(), this.connected, { style_class: 'popup-subtitle-menu-item' });
+        this.statusItem = new PopupMenu.PopupSwitchMenuItem('', this.connected, { style_class: 'popup-subtitle-menu-item' });
         this._statusChanged = this.statusItem.connect('toggled', Lang.bind(this, function(item, state) {
             let ok;
             if (state)
@@ -512,6 +473,10 @@ const NMDevice = new Lang.Class({
         }
     },
 
+    syncDescription: function() {
+        this.statusItem.label.text = this.device._description;
+    },
+
     // protected
     _createAutomaticConnection: function() {
         throw new TypeError('Invoking pure virtual function NMDevice.createAutomaticConnection');
@@ -639,25 +604,6 @@ const NMDevice = new Lang.Class({
         this.statusItem.setStatus(this.getStatusLabel());
 
         this.emit('state-changed');
-    },
-
-    _getDescription: function() {
-        let dev_product = this.device.get_product();
-        let dev_vendor = this.device.get_vendor();
-        if (!dev_product || !dev_vendor)
-	    return '';
-
-        let product = Util.fixupPCIDescription(dev_product);
-        let vendor = Util.fixupPCIDescription(dev_vendor);
-        let out = '';
-
-        // Another quick hack; if all of the fixed up vendor string
-        // is found in product, ignore the vendor.
-        if (product.indexOf(vendor) == -1)
-            out += vendor + ' ';
-        out += product;
-
-        return out;
     }
 });
 
@@ -867,10 +813,6 @@ const NMDeviceBluetooth = new Lang.Class({
         this._clearSection();
         this._queueCreateSection();
         this._updateStatusItem();
-    },
-
-    _getDescription: function() {
-        return this.device.name || _("Bluetooth");
     }
 });
 
@@ -1651,15 +1593,14 @@ const NMApplet = new Lang.Class({
         this._mobileUpdateId = 0;
         this._mobileUpdateDevice = null;
 
+        this._nmDevices = [];
         this._devices = { };
 
         this._devices.wired = {
             section: new PopupMenu.PopupMenuSection(),
             devices: [ ],
-            item: new NMWiredSectionTitleMenuItem(_("Wired"))
         };
 
-        this._devices.wired.section.addMenuItem(this._devices.wired.item);
         this._devices.wired.section.actor.hide();
         this.menu.addMenuItem(this._devices.wired.section);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
@@ -1667,7 +1608,7 @@ const NMApplet = new Lang.Class({
         this._devices.wireless = {
             section: new PopupMenu.PopupMenuSection(),
             devices: [ ],
-            item: this._makeToggleItem('wireless', _("Wireless"))
+            item: this._makeToggleItem('wireless', _("Wi-Fi"))
         };
         this._devices.wireless.section.addMenuItem(this._devices.wireless.item);
         this._devices.wireless.section.actor.hide();
@@ -1677,9 +1618,7 @@ const NMApplet = new Lang.Class({
         this._devices.wwan = {
             section: new PopupMenu.PopupMenuSection(),
             devices: [ ],
-            item: this._makeToggleItem('wwan', _("Mobile broadband"))
         };
-        this._devices.wwan.section.addMenuItem(this._devices.wwan.item);
         this._devices.wwan.section.actor.hide();
         this.menu.addMenuItem(this._devices.wwan.section);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
@@ -1762,16 +1701,23 @@ const NMApplet = new Lang.Class({
             section.actor.hide();
         else {
             section.actor.show();
-            if (devices.length == 1) {
-                let dev = devices[0];
-                dev.statusItem.actor.hide();
-                item.updateForDevice(dev);
-            } else {
-                devices.forEach(function(dev) {
-                    dev.statusItem.actor.show();
-                });
-                // remove status text from the section title item
-                item.updateForDevice(null);
+
+            // Sync the relation between the section title
+            // item (the one with the airplane mode switch)
+            // and the individual device switches
+            if (item) {
+                if (devices.length == 1) {
+                    let dev = devices[0];
+                    dev.statusItem.actor.hide();
+                    item.updateForDevice(dev);
+                } else {
+                    devices.forEach(function(dev) {
+                        dev.statusItem.actor.show();
+                    });
+
+                    // remove status text from the section title item
+                    item.updateForDevice(null);
+                }
             }
         }
     },
@@ -1779,8 +1725,9 @@ const NMApplet = new Lang.Class({
     _readDevices: function() {
         let devices = this._client.get_devices() || [ ];
         for (let i = 0; i < devices.length; ++i) {
-            this._deviceAdded(this._client, devices[i]);
+            this._deviceAdded(this._client, devices[i], true);
         }
+        this._syncDeviceNames();
     },
 
     _notifyForDevice: function(device, iconName, title, text, urgency) {
@@ -1828,7 +1775,18 @@ const NMApplet = new Lang.Class({
         return wrapper;
     },
 
-    _deviceAdded: function(client, device) {
+    _syncDeviceNames: function() {
+        let names = NMGtk.utils_disambiguate_device_names(this._nmDevices);
+        for (let i = 0; i < this._nmDevices.length; i++) {
+            let device = this._nmDevices[i];
+            if (device._description != names[i]) {
+                device._description = names[i];
+                device._delegate.syncDescription();
+            }
+        }
+    },
+
+    _deviceAdded: function(client, device, skipSyncDeviceNames) {
         if (device._delegate) {
             // already seen, not adding again
             return;
@@ -1839,9 +1797,13 @@ const NMApplet = new Lang.Class({
             let section = this._devices[wrapper.category].section;
             let devices = this._devices[wrapper.category].devices;
 
-            section.addMenuItem(wrapper.section, 1);
-            section.addMenuItem(wrapper.statusItem, 1);
+            section.addMenuItem(wrapper.statusItem);
+            section.addMenuItem(wrapper.section);
             devices.push(wrapper);
+
+            this._nmDevices.push(device);
+            if (!skipSyncDeviceNames)
+                this._syncDeviceNames();
 
             this._syncSectionTitle(wrapper.category);
         }
@@ -1859,6 +1821,10 @@ const NMApplet = new Lang.Class({
         let devices = this._devices[wrapper.category].devices;
         let pos = devices.indexOf(wrapper);
         devices.splice(pos, 1);
+
+        pos = this._nmDevices.indexOf(device);
+        this._nmDevices.splice(pos, 1);
+        this._syncDeviceNames();
 
         this._syncSectionTitle(wrapper.category)
     },
