@@ -671,7 +671,7 @@ meta_display_get_keybinding_action (MetaDisplay  *display,
    * of mutter keybindings while holding a grab, the overlay-key-only-pressed
    * tracking is left to the plugin here.
    */
-  if (keycode == display->overlay_key_combo.keycode)
+  if (keycode == (unsigned int)display->overlay_key_combo.keycode)
     return META_KEYBINDING_ACTION_OVERLAY_KEY;
 
   keysym = XKeycodeToKeysym (display->xdisplay, keycode, 0);
