@@ -236,8 +236,11 @@ meta_window_group_paint (ClutterActor *actor)
 
   if (info->unredirected_window != NULL)
     {
+      int x, y;
       cairo_rectangle_int_t unredirected_rect;
-      meta_window_actor_get_shape_bounds (META_WINDOW_ACTOR (info->unredirected_window), &unredirected_rect);
+      MetaWindow *window = meta_window_actor_get_meta_window (info->unredirected_window);
+
+      meta_window_get_outer_rect (window, &unredirected_rect);
       cairo_region_subtract_rectangle (visible_region, &unredirected_rect);
     }
 
