@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-21 18:33+0000\n"
-"PO-Revision-Date: 2012-08-22 22:28+0300\n"
+"POT-Creation-Date: 2012-08-28 23:49+0000\n"
+"PO-Revision-Date: 2012-08-29 23:09+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lithuanian\n"
 "Language: lt\n"
@@ -110,17 +110,14 @@ msgid "Keybinding to toggle the visibility of the message tray"
 msgstr "Klavišų susiejimas pranešimų juostos matomumui perjungti"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
-#| msgid "Keybinding to open the application menu."
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "Klavišų susiejimas pranešimų juostos matomumui perjungti."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
-#| msgid "Keybinding to open the application menu"
 msgid "Keybinding to toggle the screen recorder"
 msgstr "Klavišų susiejimas ekrano įrašymui perjungti"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:21
-#| msgid "Keybinding to open the application menu."
 msgid "Keybinding to start/stop the builtin screen recorder."
 msgstr "Klavišų susiejimas integruotam ekrano įrašymui paleisti/išjungti."
 
@@ -163,7 +160,6 @@ msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Įvyko klaida įkeliant %s nustatymų dialogą:"
 
 #: ../js/extensionPrefs/main.js:164
-#| msgid "<b>Extension</b>"
 msgid "Extension"
 msgstr "Plėtinys"
 
@@ -188,9 +184,9 @@ msgid "Not listed?"
 msgstr "Nėra sąraše?"
 
 #: ../js/gdm/loginDialog.js:929
-#: ../js/ui/endSessionDialog.js:406
+#: ../js/ui/endSessionDialog.js:407
 #: ../js/ui/extensionDownloader.js:195
-#: ../js/ui/networkAgent.js:153
+#: ../js/ui/networkAgent.js:156
 #: ../js/ui/polkitAuthenticationAgent.js:176
 #: ../js/ui/shellMountOperation.js:396
 #: ../js/ui/status/bluetooth.js:432
@@ -227,11 +223,11 @@ msgstr "Išjungti"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:220
+#: ../js/gdm/util.js:221
 msgid "(or swipe finger)"
 msgstr "(arba perbraukite pirštu)"
 
-#: ../js/gdm/util.js:245
+#: ../js/gdm/util.js:246
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(pvz., naudotojas arba %s)"
@@ -269,6 +265,7 @@ msgid "New Window"
 msgstr "Naujas langas"
 
 #: ../js/ui/appDisplay.js:678
+#: ../js/ui/dash.js:272
 msgid "Remove from Favorites"
 msgstr "Pašalinti iš mėgstamų"
 
@@ -286,16 +283,16 @@ msgstr "%s pridėta prie jūsų mėgstamų."
 msgid "%s has been removed from your favorites."
 msgstr "%s pašalinta iš jūsų mėgstamų."
 
-#: ../js/ui/autorunManager.js:261
+#: ../js/ui/autorunManager.js:264
 msgid "Removable Devices"
 msgstr "Išimami įrenginiai"
 
-#: ../js/ui/autorunManager.js:548
+#: ../js/ui/autorunManager.js:552
 #, c-format
 msgid "Open with %s"
 msgstr "Atverti su %s"
 
-#: ../js/ui/autorunManager.js:574
+#: ../js/ui/autorunManager.js:578
 msgid "Eject"
 msgstr "Išimti"
 
@@ -445,8 +442,8 @@ msgstr "Šią savaitę"
 msgid "Next week"
 msgstr "Kitą savaitę"
 
-#: ../js/ui/dash.js:241
-#| msgid "Applications"
+#: ../js/ui/dash.js:245
+#: ../js/ui/dash.js:274
 msgid "Show Applications"
 msgstr "Rodyti programos"
 
@@ -573,7 +570,7 @@ msgstr "dėklas"
 
 #: ../js/ui/keyboard.js:545
 #: ../js/ui/status/keyboard.js:146
-#: ../js/ui/status/power.js:207
+#: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Klaviatūra"
 
@@ -642,122 +639,121 @@ msgstr "Tinklalapis"
 msgid "Screencast from %d %t"
 msgstr "Ekrano vaizdo įrašas iš %d %t"
 
-#: ../js/ui/messageTray.js:1228
+#: ../js/ui/messageTray.js:1234
 msgid "Open"
 msgstr "Atverti"
 
-#: ../js/ui/messageTray.js:1235
+#: ../js/ui/messageTray.js:1241
 msgid "Remove"
 msgstr "Pašalinti"
 
-#: ../js/ui/messageTray.js:1245
+#: ../js/ui/messageTray.js:1251
 msgid "Unmute"
 msgstr "Įjungti garsą"
 
-#: ../js/ui/messageTray.js:1245
+#: ../js/ui/messageTray.js:1251
 msgid "Mute"
 msgstr "Nutildyti"
 
-#: ../js/ui/messageTray.js:2027
+#: ../js/ui/messageTray.js:2026
 msgid "Message Tray"
 msgstr "Pranešimų juosta"
 
-#: ../js/ui/messageTray.js:2465
+#: ../js/ui/messageTray.js:2464
 msgid "System Information"
 msgstr "Sistemos informacija"
 
-#: ../js/ui/networkAgent.js:148
+#: ../js/ui/networkAgent.js:151
 msgid "Connect"
 msgstr "Prisijungti"
 
 #. Cisco LEAP
-#: ../js/ui/networkAgent.js:238
-#: ../js/ui/networkAgent.js:250
-#: ../js/ui/networkAgent.js:277
-#: ../js/ui/networkAgent.js:297
-#: ../js/ui/networkAgent.js:307
+#: ../js/ui/networkAgent.js:242
+#: ../js/ui/networkAgent.js:254
+#: ../js/ui/networkAgent.js:281
+#: ../js/ui/networkAgent.js:301
+#: ../js/ui/networkAgent.js:311
 msgid "Password: "
 msgstr "Slaptažodis: "
 
 #. static WEP
-#: ../js/ui/networkAgent.js:243
+#: ../js/ui/networkAgent.js:247
 msgid "Key: "
 msgstr "Raktas: "
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:275
-#: ../js/ui/networkAgent.js:293
+#: ../js/ui/networkAgent.js:279
+#: ../js/ui/networkAgent.js:297
 msgid "Username: "
 msgstr "Naudotojo vardas: "
 
-#: ../js/ui/networkAgent.js:281
+#: ../js/ui/networkAgent.js:285
 msgid "Identity: "
 msgstr "Tapatybė: "
 
-#: ../js/ui/networkAgent.js:283
+#: ../js/ui/networkAgent.js:287
 msgid "Private key password: "
 msgstr "Privataus rakto slaptažodis: "
 
-#: ../js/ui/networkAgent.js:295
+#: ../js/ui/networkAgent.js:299
 msgid "Service: "
 msgstr "Tarnyba: "
 
-#: ../js/ui/networkAgent.js:324
+#: ../js/ui/networkAgent.js:328
 msgid "Authentication required by wireless network"
 msgstr "Belaidžiam tinklui reikia patvirtinti tapatybę"
 
-#: ../js/ui/networkAgent.js:325
+#: ../js/ui/networkAgent.js:329
 #, c-format
 msgid "Passwords or encryption keys are required to access the wireless network '%s'."
 msgstr "Slaptažodžiai arba šifravimo raktai yra būtini priėjimui prie belaidžio tinklo „%s“."
 
-#: ../js/ui/networkAgent.js:329
+#: ../js/ui/networkAgent.js:333
 msgid "Wired 802.1X authentication"
 msgstr "Laidinis 802.1X tapatybės patvirtinimas"
 
-#: ../js/ui/networkAgent.js:331
+#: ../js/ui/networkAgent.js:335
 msgid "Network name: "
 msgstr "Tinklo vardas: "
 
-#: ../js/ui/networkAgent.js:336
+#: ../js/ui/networkAgent.js:340
 msgid "DSL authentication"
 msgstr "DSL tapatybės patvirtinimas"
 
-#: ../js/ui/networkAgent.js:343
+#: ../js/ui/networkAgent.js:347
 msgid "PIN code required"
 msgstr "Reikalingas PIN kodas"
 
-#: ../js/ui/networkAgent.js:344
+#: ../js/ui/networkAgent.js:348
 msgid "PIN code is needed for the mobile broadband device"
 msgstr "Reikalingas PIN kodas mobiliajam plačiajuosčiam įrenginiui"
 
-#: ../js/ui/networkAgent.js:345
+#: ../js/ui/networkAgent.js:349
 msgid "PIN: "
 msgstr "PIN: "
 
-#: ../js/ui/networkAgent.js:351
+#: ../js/ui/networkAgent.js:355
 msgid "Mobile broadband network password"
 msgstr "Mobiliojo plačiajuosčio tinklo slaptažodis"
 
-#: ../js/ui/networkAgent.js:352
+#: ../js/ui/networkAgent.js:356
 #, c-format
 msgid "A password is required to connect to '%s'."
 msgstr "Būtinas slaptažodis norint prisijungti prie „%s“"
 
-#: ../js/ui/notificationDaemon.js:506
-#: ../src/shell-app.c:374
-#| msgid "Unknown"
+#: ../js/ui/notificationDaemon.js:507
+#: ../src/shell-app.c:373
 msgctxt "program"
 msgid "Unknown"
 msgstr "Nežinoma"
 
-#: ../js/ui/overview.js:84
+#: ../js/ui/overview.js:83
 msgid "Undo"
 msgstr "Atšaukti"
 
-#: ../js/ui/overview.js:124
+#: ../js/ui/overview.js:123
 msgid "Overview"
 msgstr "Apžvalga"
 
@@ -765,13 +761,13 @@ msgstr "Apžvalga"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:193
+#: ../js/ui/overview.js:192
 msgid "Type to search..."
 msgstr "Ieškoti..."
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:214
+#: ../js/ui/overview.js:213
 msgid "Dash"
 msgstr "Paleidimo sritis"
 
@@ -798,11 +794,7 @@ msgstr "Nepavyko atjungti „%s“"
 msgid "Retry"
 msgstr "Bandyti dar kartą"
 
-#: ../js/ui/placeDisplay.js:156
-msgid "Connect to..."
-msgstr "Prisijungti prie..."
-
-#: ../js/ui/placeDisplay.js:367
+#: ../js/ui/placeDisplay.js:349
 msgid "PLACES & DEVICES"
 msgstr "VIETOS IR ĮRENGINIAI"
 
@@ -832,7 +824,7 @@ msgstr "Atsiprašome, tai nesuveikė. Bandykite dar kartą."
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:726
+#: ../js/ui/popupMenu.js:728
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -843,8 +835,6 @@ msgstr "Įveskite komandą:"
 #. Translators: This is a time format for a date in
 #. long format
 #: ../js/ui/screenShield.js:69
-#| msgctxt "calendar heading"
-#| msgid "%A, %B %d"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
@@ -858,7 +848,6 @@ msgstr[2] "%d naujų pranešimų"
 
 #: ../js/ui/screenShield.js:136
 #, c-format
-#| msgid "Notifications"
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d naujas pranešimas"
@@ -890,11 +879,13 @@ msgid "Hide Text"
 msgstr "Slėpti tekstą"
 
 #: ../js/ui/shellMountOperation.js:368
-msgid "Passphrase"
+#| msgid "Password:"
+msgid "Password"
 msgstr "Slaptažodis"
 
 #: ../js/ui/shellMountOperation.js:389
-msgid "Remember Passphrase"
+#| msgid "Remember Passphrase"
+msgid "Remember Password"
 msgstr "Atsiminti slaptažodį"
 
 #: ../js/ui/shellMountOperation.js:400
@@ -911,7 +902,6 @@ msgid "Zoom"
 msgstr "Priartinimas"
 
 #: ../js/ui/status/accessibility.js:51
-#| msgid "Screen Keyboard"
 msgid "Screen Reader"
 msgstr "Ekrano skaityklė"
 
@@ -958,7 +948,7 @@ msgstr "Didelis tekstas"
 #: ../js/ui/status/bluetooth.js:340
 #: ../js/ui/status/bluetooth.js:376
 #: ../js/ui/status/bluetooth.js:405
-#: ../js/ui/status/network.js:841
+#: ../js/ui/status/network.js:842
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -980,7 +970,7 @@ msgstr "Bluetooth nustatymai"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
 #: ../js/ui/status/bluetooth.js:108
-#: ../js/ui/status/network.js:208
+#: ../js/ui/status/network.js:209
 msgid "hardware disabled"
 msgstr "įrenginys išjungtas"
 
@@ -989,13 +979,13 @@ msgid "Connection"
 msgstr "Ryšys"
 
 #: ../js/ui/status/bluetooth.js:212
-#: ../js/ui/status/network.js:442
+#: ../js/ui/status/network.js:443
 msgid "disconnecting..."
 msgstr "atsijungiama..."
 
 #: ../js/ui/status/bluetooth.js:225
-#: ../js/ui/status/network.js:448
-#: ../js/ui/status/network.js:908
+#: ../js/ui/status/network.js:449
+#: ../js/ui/status/network.js:909
 msgid "connecting..."
 msgstr "jungiamasi..."
 
@@ -1025,7 +1015,7 @@ msgid "Mouse Settings"
 msgstr "Pelės nustatymai"
 
 #: ../js/ui/status/bluetooth.js:274
-#: ../js/ui/status/volume.js:54
+#: ../js/ui/status/volume.js:233
 msgid "Sound Settings"
 msgstr "Garso nustatymai"
 
@@ -1065,7 +1055,6 @@ msgstr "Įrenginys %s pageidauja būti suporuotas su šiuo kompiuteriu"
 
 #: ../js/ui/status/bluetooth.js:384
 #, c-format
-#| msgid "Please confirm whether the PIN '%s' matches the one on the device."
 msgid "Please confirm whether the PIN '%06d' matches the one on the device."
 msgstr "Patvirtinkite, kad PIN „%06d“ sutampa su įrenginio PIN."
 
@@ -1098,125 +1087,129 @@ msgstr "Rodyti klaviatūros išdėstymą"
 msgid "Region and Language Settings"
 msgstr "Regiono ir kalbos nustatymai"
 
-#: ../js/ui/status/network.js:93
+#: ../js/ui/status/lockScreenMenu.js:18
+msgid "Volume, network, battery"
+msgstr "Garsas, tinklas, baterija"
+
+#: ../js/ui/status/network.js:94
 msgid "<unknown>"
 msgstr "<nežinoma>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:230
+#: ../js/ui/status/network.js:231
 msgid "disabled"
 msgstr "išjungta"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:440
+#: ../js/ui/status/network.js:441
 msgid "unmanaged"
 msgstr "nevaldomas"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:451
-#: ../js/ui/status/network.js:911
+#: ../js/ui/status/network.js:452
+#: ../js/ui/status/network.js:912
 msgid "authentication required"
 msgstr "reikia patvirtinti tapatybę"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:461
+#: ../js/ui/status/network.js:462
 msgid "firmware missing"
 msgstr "Trūksta integruotos programinės įrangos (firmware)"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:468
+#: ../js/ui/status/network.js:469
 msgid "cable unplugged"
 msgstr "atjungtas laidas"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:473
+#: ../js/ui/status/network.js:474
 msgid "unavailable"
 msgstr "nepasiekiamas"
 
-#: ../js/ui/status/network.js:475
-#: ../js/ui/status/network.js:913
+#: ../js/ui/status/network.js:476
+#: ../js/ui/status/network.js:914
 msgid "connection failed"
 msgstr "nepavyko prisijungti"
 
-#: ../js/ui/status/network.js:536
-#: ../js/ui/status/network.js:1534
+#: ../js/ui/status/network.js:537
+#: ../js/ui/status/network.js:1535
 msgid "More..."
 msgstr "Rodyti daugiau tinklų..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:572
-#: ../js/ui/status/network.js:1464
+#: ../js/ui/status/network.js:573
+#: ../js/ui/status/network.js:1465
 msgid "Connected (private)"
 msgstr "Prisijungta (privatus)"
 
-#: ../js/ui/status/network.js:647
+#: ../js/ui/status/network.js:648
 msgid "Auto Ethernet"
 msgstr "Automatinis vietinis"
 
-#: ../js/ui/status/network.js:705
+#: ../js/ui/status/network.js:706
 msgid "Auto broadband"
 msgstr "Automatinis plačiajuostis"
 
-#: ../js/ui/status/network.js:708
+#: ../js/ui/status/network.js:709
 msgid "Auto dial-up"
 msgstr "Automatinis telefoninis"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:827
-#: ../js/ui/status/network.js:1481
+#: ../js/ui/status/network.js:828
+#: ../js/ui/status/network.js:1482
 #, c-format
 msgid "Auto %s"
 msgstr "Automatinis %s"
 
-#: ../js/ui/status/network.js:829
+#: ../js/ui/status/network.js:830
 msgid "Auto bluetooth"
 msgstr "Automatinis bluetooth"
 
-#: ../js/ui/status/network.js:1483
+#: ../js/ui/status/network.js:1484
 msgid "Auto wireless"
 msgstr "Automatinis belaidis"
 
-#: ../js/ui/status/network.js:1592
+#: ../js/ui/status/network.js:1582
 msgid "Enable networking"
 msgstr "Įjungti tinklą"
 
-#: ../js/ui/status/network.js:1614
+#: ../js/ui/status/network.js:1604
 msgid "Wired"
 msgstr "Laidinis"
 
-#: ../js/ui/status/network.js:1625
+#: ../js/ui/status/network.js:1615
 msgid "Wireless"
 msgstr "Belaidis"
 
-#: ../js/ui/status/network.js:1635
+#: ../js/ui/status/network.js:1625
 msgid "Mobile broadband"
 msgstr "Mobilus plačiajuostis"
 
-#: ../js/ui/status/network.js:1645
+#: ../js/ui/status/network.js:1635
 msgid "VPN Connections"
 msgstr "VPN ryšiai"
 
-#: ../js/ui/status/network.js:1652
+#: ../js/ui/status/network.js:1642
 msgid "Network Settings"
 msgstr "Tinklo nustatymai"
 
-#: ../js/ui/status/network.js:1709
+#: ../js/ui/status/network.js:1691
 msgid "Network Manager"
 msgstr "Tinklo valdymas"
 
-#: ../js/ui/status/network.js:1802
+#: ../js/ui/status/network.js:1783
 msgid "Connection failed"
 msgstr "Nepavyko prisijungti"
 
-#: ../js/ui/status/network.js:1803
+#: ../js/ui/status/network.js:1784
 msgid "Activation of network connection failed"
 msgstr "Tinklo ryšio nepavyko aktyvuoti"
 
-#: ../js/ui/status/network.js:2104
+#: ../js/ui/status/network.js:2080
 msgid "Networking is disabled"
 msgstr "Tinklas išjungtas"
 
@@ -1224,7 +1217,7 @@ msgstr "Tinklas išjungtas"
 msgid "Battery"
 msgstr "Baterija"
 
-#: ../js/ui/status/power.js:72
+#: ../js/ui/status/power.js:73
 msgid "Power Settings"
 msgstr "Energijos valdymo nustatymai"
 
@@ -1271,65 +1264,64 @@ msgstr[1] "liko %d minutės"
 msgstr[2] "liko %d minučių"
 
 #: ../js/ui/status/power.js:118
-#: ../js/ui/status/power.js:188
+#: ../js/ui/status/power.js:192
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../js/ui/status/power.js:197
+#: ../js/ui/status/power.js:201
 msgid "AC adapter"
 msgstr "AC adapteris"
 
-#: ../js/ui/status/power.js:199
+#: ../js/ui/status/power.js:203
 msgid "Laptop battery"
 msgstr "Nešiojamojo kompiuterio akumuliatorius"
 
-#: ../js/ui/status/power.js:201
+#: ../js/ui/status/power.js:205
 msgid "UPS"
 msgstr "Nenutrūkstamo maitinimo šaltinis"
 
-#: ../js/ui/status/power.js:203
+#: ../js/ui/status/power.js:207
 msgid "Monitor"
 msgstr "Vaizduoklis"
 
-#: ../js/ui/status/power.js:205
+#: ../js/ui/status/power.js:209
 msgid "Mouse"
 msgstr "Pelė"
 
-#: ../js/ui/status/power.js:209
+#: ../js/ui/status/power.js:213
 msgid "PDA"
 msgstr "Delninukas"
 
-#: ../js/ui/status/power.js:211
+#: ../js/ui/status/power.js:215
 msgid "Cell phone"
 msgstr "Mobilusis telefonas"
 
-#: ../js/ui/status/power.js:213
+#: ../js/ui/status/power.js:217
 msgid "Media player"
 msgstr "Daugialypės terpės grotuvas"
 
-#: ../js/ui/status/power.js:215
+#: ../js/ui/status/power.js:219
 msgid "Tablet"
 msgstr "Planšetinis kompiuteris"
 
-#: ../js/ui/status/power.js:217
+#: ../js/ui/status/power.js:221
 msgid "Computer"
 msgstr "Kompiuteris"
 
-#: ../js/ui/status/power.js:219
-#| msgid "Unknown"
+#: ../js/ui/status/power.js:223
 msgctxt "device"
 msgid "Unknown"
 msgstr "Nežinoma"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:20
-#: ../js/ui/status/volume.js:34
+#: ../js/ui/status/volume.js:47
+#: ../js/ui/status/volume.js:218
 msgid "Volume"
 msgstr "Garsumas"
 
-#: ../js/ui/status/volume.js:46
+#: ../js/ui/status/volume.js:59
 msgid "Microphone"
 msgstr "Mikrofonas"
 
@@ -1595,7 +1587,6 @@ msgid "Switch User"
 msgstr "Keisti naudotoją"
 
 #: ../js/ui/userMenu.js:590
-#| msgid "Switch User"
 msgid "Switch Session"
 msgstr "Perjungti seansą"
 
@@ -1608,8 +1599,6 @@ msgid "System Settings"
 msgstr "Sistemos nustatymai"
 
 #: ../js/ui/userMenu.js:735
-#| msgctxt "title"
-#| msgid "Log Out"
 msgid "Log Out"
 msgstr "Atsijungti"
 
@@ -1666,7 +1655,6 @@ msgid "'%s' is ready"
 msgstr "„%s“ yra pasirengusi"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
-#| msgid "Open Calendar"
 msgid "Evolution Calendar"
 msgstr "Evolution kalendorius"
 
@@ -1710,7 +1698,7 @@ msgstr "Naudoti specialią veikseną, pvz. „gdm“ prisijungimo ekranui"
 msgid "List possible modes"
 msgstr "Išvardinti galimas veiksenas"
 
-#: ../src/shell-app.c:622
+#: ../src/shell-app.c:621
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Nepavyko paleisti „%s“"
