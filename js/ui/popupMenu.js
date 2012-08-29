@@ -1052,14 +1052,17 @@ const PopupMenuBase = new Lang.Class({
 
         if (menuItem instanceof PopupMenuSection) {
             this._connectSubMenuSignals(menuItem, menuItem);
-            menuItem._closingId = this.connect('open-state-changed',
+            menuItem._parentOpenStateChangedId = this.connect('open-state-changed',
                 function(self, open) {
-                    if (!open)
-                        menuItem.close(BoxPointer.PopupAnimation.FADE);
+                    if (open)
+                        menuItem.open();
+                    else
+                        menuItem.close();
                 });
             menuItem.connect('destroy', Lang.bind(this, function() {
                 menuItem.disconnect(menuItem._subMenuActivateId);
                 menuItem.disconnect(menuItem._subMenuActiveChangeId);
+                this.disconnect(menuItem._parentOpenStateChangedId);
 
                 this.length--;
             }));
@@ -1440,7 +1443,7 @@ const PopupMenuSection = new Lang.Class({
 
     // deliberately ignore any attempt to open() or close(), but emit the
     // corresponding signal so children can still pick it up
-    open: function(animate) { this.emit('open-state-changed', true); },
+    open: function() { this.emit('open-state-changed', true); },
     close: function() { this.emit('open-state-changed', false); },
 
     destroy: function() {
