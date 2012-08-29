@@ -14,6 +14,7 @@ const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const Tweener = imports.ui.tweener;
+const WindowManager = imports.ui.windowManager;
 
 const WINDOW_DND_SIZE = 256;
 
@@ -35,6 +36,68 @@ function _interpolate(start, end, step) {
     return start + (end - start) * step;
 }
 
+const WindowCloneLayout = new Lang.Class({
+    Name: 'WindowCloneLayout',
+    Extends: Clutter.LayoutManager,
+
+    _init: function(boundingBox) {
+        this.parent();
+
+        this._boundingBox = boundingBox;
+    },
+
+    get boundingBox() {
+        return this._boundingBox;
+    },
+
+    set boundingBox(b) {
+        this._boundingBox = b;
+        this.layout_changed();
+    },
+
+    _makeBoxForWindow: function(window) {
+        // We need to adjust the position of the actor because of the
+        // consequences of invisible borders -- in reality, the texture
+        // has an extra set of "padding" around it that we need to trim
+        // down.
+
+        // The outer rect (from which we compute the bounding box)
+        // paradoxically is the smaller rectangle, containing the positions
+        // of the visible frame. The input rect contains everything,
+        // including the invisible border padding.
+        let inputRect = window.get_input_rect();
+
+        let box = new Clutter.ActorBox();
+
+        box.set_origin(inputRect.x - this._boundingBox.x,
+                       inputRect.y - this._boundingBox.y);
+        box.set_size(inputRect.width, inputRect.height);
+
+        return box;
+    },
+
+    vfunc_get_preferred_height: function(container, forWidth) {
+        return [this._boundingBox.height, this._boundingBox.height];
+    },
+
+    vfunc_get_preferred_width: function(container, forHeight) {
+        return [this._boundingBox.width, this._boundingBox.width];
+    },
+
+    vfunc_allocate: function(container, box, flags) {
+        let clone = container.get_children().forEach(function (child) {
+            let realWindow;
+            if (child == container._delegate._windowClone)
+                realWindow = container._delegate.realWindow;
+            else
+                realWindow = child.source;
+
+            child.allocate(this._makeBoxForWindow(realWindow.meta_window),
+                           flags);
+        }, this);
+    },
+});
+
 const WindowClone = new Lang.Class({
     Name: 'WindowClone',
 
@@ -44,10 +107,7 @@ const WindowClone = new Lang.Class({
         this.metaWindow._delegate = this;
         this._workspace = workspace;
 
-        let [borderX, borderY] = this._getInvisibleBorderPadding();
-        this._windowClone = new Clutter.Clone({ source: realWindow.get_texture(),
-                                                x: -borderX,
-                                                y: -borderY });
+        this._windowClone = new Clutter.Clone({ source: realWindow.get_texture() });
         // We expect this.actor to be used for all interaction rather than
         // this._windowClone; as the former is reactive and the latter
         // is not, this just works for most cases. However, for DND all
@@ -55,21 +115,13 @@ const WindowClone = new Lang.Class({
         // To avoid this, we hide it from pick.
         Shell.util_set_hidden_from_pick(this._windowClone, true);
 
-        this.origX = realWindow.x + borderX;
-        this.origY = realWindow.y + borderY;
-
-        let outerRect = realWindow.meta_window.get_outer_rect();
-
         // The MetaShapedTexture that we clone has a size that includes
         // the invisible border; this is inconvenient; rather than trying
         // to compensate all over the place we insert a ClutterActor into
         // the hierarchy that is sized to only the visible portion.
         this.actor = new St.Widget({ reactive: true,
                                      can_focus: true,
-                                     x: this.origX,
-                                     y: this.origY,
-                                     width: outerRect.width,
-                                     height: outerRect.height });
+                                     layout_manager: new WindowCloneLayout() });
 
         this.actor.add_child(this._windowClone);
 
@@ -79,10 +131,19 @@ const WindowClone = new Lang.Class({
         this._dragSlot = [0, 0, 0, 0];
         this._stackAbove = null;
 
-        this._sizeChangedId = this.realWindow.connect('size-changed',
+        this._windowClone._updateId = this.realWindow.connect('size-changed',
             Lang.bind(this, this._onRealWindowSizeChanged));
-        this._realWindowDestroyId = this.realWindow.connect('destroy',
-            Lang.bind(this, this._disconnectRealWindowSignals));
+        this._windowClone._destroyId = this.realWindow.connect('destroy', Lang.bind(this, function() {
+            // First destroy the clone and then destroy everything
+            // This will ensure that we never see it in the _disconnectSignals loop
+            this._windowClone.destroy();
+            this.destroy();
+        }));
+
+        this._updateAttachedDialogs();
+        this._computeBoundingBox();
+        this.actor.x = this._boundingBox.x;
+        this.actor.y = this._boundingBox.y;
 
         let clickAction = new Clutter.ClickAction();
         clickAction.connect('clicked', Lang.bind(this, this._onClicked));
@@ -114,6 +175,97 @@ const WindowClone = new Lang.Class({
             return this._dragSlot;
         else
             return this._slot;
+    },
+
+    deleteAll: function() {
+        // Delete all windows, starting from the bottom-most (most-modal) one
+
+        let windows = this.actor.get_children();
+        for (let i = windows.length - 1; i >= 1; i--) {
+            let realWindow = windows[i].source;
+            let metaWindow = realWindow.meta_window;
+
+            metaWindow.delete(global.get_current_time());
+        }
+
+        this.metaWindow.delete(global.get_current_time());
+    },
+
+    addAttachedDialog: function(win) {
+        this._doAddAttachedDialog(win, win.get_compositor_private());
+        this._computeBoundingBox();
+        this._updateDimmer();
+        this.emit('size-changed');
+    },
+
+    _doAddAttachedDialog: function(metaWin, realWin) {
+        let clone = new Clutter.Clone({ source: realWin });
+        clone._updateId = realWin.connect('size-changed', Lang.bind(this, function() {
+            this._computeBoundingBox();
+            this.emit('size-changed');
+        }));
+        clone._destroyId = realWin.connect('destroy', Lang.bind(this, function() {
+            clone.destroy();
+
+            this._computeBoundingBox();
+            this._updateDimmer();
+            this.emit('size-changed');
+        }));
+        this.actor.add_child(clone);
+    },
+
+    _updateAttachedDialogs: function() {
+        let iter = Lang.bind(this, function(win) {
+            let actor = win.get_compositor_private();
+
+            if (!actor)
+                return false;
+            if (!win.is_attached_dialog())
+                return false;
+
+            this._doAddAttachedDialog(win, actor);
+            win.foreach_transient(iter);
+            return true;
+        });
+        this.metaWindow.foreach_transient(iter);
+
+        this._dimmer = new WindowManager.WindowDimmer(this._windowClone);
+        this._updateDimmer();
+    },
+
+    _updateDimmer: function() {
+        if (this.actor.get_n_children() > 1) {
+            this._dimmer.setEnabled(true);
+            this._dimmer.dimFactor = 1.0;
+        } else {
+            this._dimmer.setEnabled(false);
+        }
+    },
+
+    get boundingBox() {
+        return this._boundingBox;
+    },
+
+    getOriginalPosition: function() {
+        return [this._boundingBox.x, this._boundingBox.y];
+    },
+
+    _computeBoundingBox: function() {
+        let rect = this.metaWindow.get_outer_rect();
+
+        this.actor.get_children().forEach(function (child) {
+            let realWindow;
+            if (child == this._windowClone)
+                realWindow = this.realWindow;
+            else
+                realWindow = child.source;
+
+            let metaWindow = realWindow.meta_window;
+            rect = rect.union(metaWindow.get_outer_rect());
+        }, this);
+
+        this._boundingBox = rect;
+        this.actor.layout_manager.boundingBox = rect;
     },
 
     // Find the actor just below us, respecting reparenting done
@@ -149,44 +301,26 @@ const WindowClone = new Lang.Class({
         this.actor.destroy();
     },
 
-    _disconnectRealWindowSignals: function() {
-        if (this._sizeChangedId > 0)
-            this.realWindow.disconnect(this._sizeChangedId);
-        this._sizeChangedId = 0;
+    _disconnectSignals: function() {
+        this.actor.get_children().forEach(Lang.bind(this, function (child) {
+            let realWindow;
+            if (child == this._windowClone)
+                realWindow = this.realWindow;
+            else
+                realWindow = child.source;
 
-        if (this._realWindowDestroyId > 0)
-            this.realWindow.disconnect(this._realWindowDestroyId);
-        this._realWindowDestroyId = 0;
-    },
-
-    _getInvisibleBorderPadding: function() {
-        // We need to adjust the position of the actor because of the
-        // consequences of invisible borders -- in reality, the texture
-        // has an extra set of "padding" around it that we need to trim
-        // down.
-
-        // The outer rect paradoxically is the smaller rectangle,
-        // containing the positions of the visible frame. The input
-        // rect contains everything, including the invisible border
-        // padding.
-        let outerRect = this.metaWindow.get_outer_rect();
-        let inputRect = this.metaWindow.get_input_rect();
-        let [borderX, borderY] = [outerRect.x - inputRect.x,
-                                  outerRect.y - inputRect.y];
-
-        return [borderX, borderY];
+            realWindow.disconnect(child._updateId);
+            realWindow.disconnect(child._destroyId);
+        }));
     },
 
     _onRealWindowSizeChanged: function() {
-        let [borderX, borderY] = this._getInvisibleBorderPadding();
-        let outerRect = this.metaWindow.get_outer_rect();
-        this.actor.set_size(outerRect.width, outerRect.height);
-        this._windowClone.set_position(-borderX, -borderY);
+        this._computeBoundingBox();
         this.emit('size-changed');
     },
 
     _onDestroy: function() {
-        this._disconnectRealWindowSignals();
+        this._disconnectSignals();
 
         this.metaWindow._delegate = null;
         this.actor._delegate = null;
@@ -454,7 +588,7 @@ const WindowOverlay = new Lang.Class({
                                                       Lang.bind(this,
                                                                 this._onWindowAdded));
 
-        metaWindow.delete(global.get_current_time());
+        this._windowClone.deleteAll();
     },
 
     _windowCanClose: function() {
@@ -1321,8 +1455,28 @@ const Workspace = new Lang.Class({
         if (this._lookupIndex (metaWin) != -1)
             return;
 
-        if (!this._isMyWindow(win) || !this._isOverviewWindow(win))
+        if (!this._isMyWindow(win))
             return;
+
+        if (!this._isOverviewWindow(win)) {
+            if (metaWin.is_attached_dialog()) {
+                let parent = metaWin.get_transient_for();
+                while (parent.is_attached_dialog())
+                    parent = metaWin.get_transient_for();
+
+                let idx = this._lookupIndex (parent);
+                if (idx < 0) {
+                    // parent was not created yet, it will take care
+                    // of the dialog when created
+                    return;
+                }
+
+                let clone = this._windows[idx];
+                clone.addAttachedDialog(metaWin);
+            }
+
+            return;
+        }
 
         let [clone, overlay] = this._addWindowClone(win, false);
 
@@ -1411,9 +1565,11 @@ const Workspace = new Lang.Class({
                 overlay.hide();
 
             if (clone.metaWindow.showing_on_its_workspace()) {
+                let [origX, origY] = clone.getOriginalPosition();
+
                 Tweener.addTween(clone.actor,
-                                 { x: clone.origX,
-                                   y: clone.origY,
+                                 { x: origX,
+                                   y: origY,
                                    scale_x: 1.0,
                                    scale_y: 1.0,
                                    time: Overview.ANIMATION_TIME,
