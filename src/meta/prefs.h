@@ -45,6 +45,7 @@ typedef enum
   META_PREF_ACTION_RIGHT_CLICK_TITLEBAR,
   META_PREF_AUTO_RAISE,
   META_PREF_AUTO_RAISE_DELAY,
+  META_PREF_FOCUS_CHANGE_ON_POINTER_REST,
   META_PREF_THEME,
   META_PREF_TITLEBAR_FONT,
   META_PREF_NUM_WORKSPACES,
@@ -100,6 +101,7 @@ gboolean                    meta_prefs_get_application_based  (void);
 gboolean                    meta_prefs_get_disable_workarounds (void);
 gboolean                    meta_prefs_get_auto_raise         (void);
 int                         meta_prefs_get_auto_raise_delay   (void);
+gboolean                    meta_prefs_get_focus_change_on_pointer_rest (void);
 gboolean                    meta_prefs_get_gnome_accessibility (void);
 gboolean                    meta_prefs_get_gnome_animations   (void);
 gboolean                    meta_prefs_get_edge_tiling        (void);

@@ -63,6 +63,16 @@
       </_description>
     </key>
 
+    <key name="focus-change-on-pointer-rest" type="b">
+      <default>false</default>
+      <_summary>Delay focus changes until the pointer stops moving</_summary>
+      <_description>
+        If set to true, and the focus mode is either "sloppy" or "mouse"
+        then the focus will not be changed immediately when entering a
+        window, but only after the pointer stops moving.
+      </_description>
+    </key>
+
     <key name="draggable-border-width" type="i">
       <default>10</default>
       <range min="0" max="64"/>
