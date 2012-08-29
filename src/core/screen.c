@@ -3411,8 +3411,11 @@ meta_screen_get_size (MetaScreen *screen,
                       int        *width,
                       int        *height)
 {
-  *width = screen->rect.width;
-  *height = screen->rect.height;
+  if (width != NULL)
+    *width = screen->rect.width;
+
+  if (height != NULL)
+    *height = screen->rect.height;
 }
 
 /**
