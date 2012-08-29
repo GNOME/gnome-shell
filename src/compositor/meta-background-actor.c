@@ -55,7 +55,7 @@ struct _MetaScreenBackground
 
   float texture_width;
   float texture_height;
-  CoglHandle texture;
+  CoglTexture *texture;
   CoglMaterialWrapMode wrap_mode;
   guint have_pixmap : 1;
 };
@@ -63,7 +63,8 @@ struct _MetaScreenBackground
 struct _MetaBackgroundActorPrivate
 {
   MetaScreenBackground *background;
-  CoglHandle material;
+  CoglPipeline *pipeline;
+
   cairo_region_t *visible_region;
   float dim_factor;
 };
@@ -140,7 +141,7 @@ update_wrap_mode_of_actor (MetaBackgroundActor *self)
 {
   MetaBackgroundActorPrivate *priv = self->priv;
 
-  cogl_material_set_layer_wrap_mode (priv->material, 0, priv->background->wrap_mode);
+  cogl_pipeline_set_layer_wrap_mode (priv->pipeline, 0, priv->background->wrap_mode);
 }
 
 static void
@@ -174,7 +175,7 @@ set_texture_on_actor (MetaBackgroundActor *self)
    * the underlying X pixmap is already gone has the tendency to trigger
    * X errors inside DRI. For safety, trap errors */
   meta_error_trap_push (display);
-  cogl_material_set_layer (priv->material, 0, priv->background->texture);
+  cogl_pipeline_set_layer_texture (priv->pipeline, 0, priv->background->texture);
   meta_error_trap_pop (display);
 
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
@@ -210,7 +211,7 @@ set_texture (MetaScreenBackground *background,
   update_wrap_mode (background);
 }
 
-/* Sets our material to paint with a 1x1 texture of the stage's background
+/* Sets our pipeline to paint with a 1x1 texture of the stage's background
  * color; doing this when we have no pixmap allows the application to turn
  * off painting the stage. There might be a performance benefit to
  * painting in this case with a solid color, but the normal solid color
@@ -250,11 +251,7 @@ meta_background_actor_dispose (GObject *object)
       priv->background = NULL;
     }
 
-  if (priv->material != COGL_INVALID_HANDLE)
-    {
-      cogl_handle_unref (priv->material);
-      priv->material = COGL_INVALID_HANDLE;
-    }
+  g_clear_pointer(&priv->pipeline, cogl_object_unref);
 
   G_OBJECT_CLASS (meta_background_actor_parent_class)->dispose (object);
 }
@@ -309,13 +306,13 @@ meta_background_actor_paint (ClutterActor *actor)
 
   color_component = (int)(0.5 + opacity * priv->dim_factor);
 
-  cogl_material_set_color4ub (priv->material,
+  cogl_pipeline_set_color4ub (priv->pipeline,
                               color_component,
                               color_component,
                               color_component,
                               opacity);
 
-  cogl_set_source (priv->material);
+  cogl_set_source (priv->pipeline);
 
   if (priv->visible_region)
     {
@@ -483,7 +480,8 @@ meta_background_actor_new_for_screen (MetaScreen *screen)
   priv->background = meta_screen_background_get (screen);
   priv->background->actors = g_slist_prepend (priv->background->actors, self);
 
-  priv->material = meta_create_texture_material (NULL);
+  /* A CoglMaterial and a CoglPipeline are the same thing */
+  priv->pipeline = (CoglPipeline*) meta_create_texture_material (NULL);
 
   set_texture_on_actor (self);
   update_wrap_mode_of_actor (self);
@@ -625,3 +623,48 @@ meta_background_actor_screen_size_changed (MetaScreen *screen)
   for (l = background->actors; l; l = l->next)
     clutter_actor_queue_relayout (l->data);
 }
+
+/**
+ * meta_background_actor_add_glsl_snippet:
+ * @actor: a #MetaBackgroundActor
+ * @hook: where to insert the code
+ * @declarations: GLSL declarations
+ * @code: GLSL code
+ * @is_replace: wheter Cogl code should be replaced by the custom shader
+ *
+ * Adds a GLSL snippet to the pipeline used for drawing the background.
+ * See #CoglSnippet for details.
+ */
+void
+meta_background_actor_add_glsl_snippet (MetaBackgroundActor *actor,
+                                        MetaSnippetHook      hook,
+                                        const char          *declarations,
+                                        const char          *code,
+                                        gboolean             is_replace)
+{
+  MetaBackgroundActorPrivate *priv;
+  CoglSnippet *snippet;
+
+  g_return_if_fail (META_IS_BACKGROUND_ACTOR (actor));
+
+  priv = actor->priv;
+
+  if (is_replace)
+    {
+      snippet = cogl_snippet_new (hook, declarations, NULL);
+      cogl_snippet_set_replace (snippet, code);
+    }
+  else
+    {
+      snippet = cogl_snippet_new (hook, declarations, code);
+    }
+
+  if (hook == COGL_SNIPPET_HOOK_VERTEX ||
+      hook == COGL_SNIPPET_HOOK_FRAGMENT)
+    cogl_pipeline_add_snippet (priv->pipeline, snippet);
+  else
+    cogl_pipeline_add_layer_snippet (priv->pipeline, 0, snippet);
+
+  cogl_object_unref (snippet);
+}
+
