@@ -206,6 +206,8 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
                                    src_x, src_y,
                                    0, 0, /* dst_x/y */
                                    width, height);
+
+      src_x = src_y = 0;
     }
   else
     slice_bmp = prepare_bitmap_alignment_for_upload (ctx, source_bmp);
