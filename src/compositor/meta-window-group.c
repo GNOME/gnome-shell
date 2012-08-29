@@ -246,6 +246,9 @@ meta_window_group_paint (ClutterActor *actor)
       if (!CLUTTER_ACTOR_IS_VISIBLE (l->data))
         continue;
 
+      if (l->data == info->unredirected_window)
+        continue;
+
       /* If an actor has effects applied, then that can change the area
        * it paints and the opacity, so we no longer can figure out what
        * portion of the actor is obscured and what portion of the screen
