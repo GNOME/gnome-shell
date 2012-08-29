@@ -1702,8 +1702,18 @@ meta_key_pref_free (MetaKeyPref *pref)
 static void
 init_bindings (void)
 {
+  MetaKeyPref *pref;
+
   key_bindings = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
                                         (GDestroyNotify)meta_key_pref_free);
+
+  pref = g_new0 (MetaKeyPref, 1);
+  pref->name = g_strdup ("overlay-key");
+  pref->action = META_KEYBINDING_ACTION_OVERLAY_KEY;
+  pref->bindings = g_slist_prepend (pref->bindings, &overlay_key_combo);
+  pref->builtin = 1;
+
+  g_hash_table_insert (key_bindings, g_strdup ("overlay-key"), pref);
 }
 
 static void

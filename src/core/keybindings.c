@@ -1499,6 +1499,18 @@ process_overlay_key (MetaDisplay *display,
           /* We want to unfreeze events, but keep the grab so that if the user
            * starts typing into the overlay we get all the keys */
           XAllowEvents (display->xdisplay, AsyncKeyboard, event->xkey.time);
+
+          if (display->grab_op == META_GRAB_OP_COMPOSITOR)
+            {
+              MetaKeyBinding *binding =
+                  display_get_keybinding (display,
+                                          display->overlay_key_combo.keysym,
+                                          display->overlay_key_combo.keycode,
+                                          display->grab_mask);
+              if (binding &&
+                  meta_compositor_filter_keybinding (display->compositor, screen, binding))
+                return TRUE;
+            }
           meta_display_overlay_key_activate (display);
         }
 
@@ -4221,6 +4233,8 @@ init_builtin_key_bindings (MetaDisplay *display)
 void
 meta_display_init_keys (MetaDisplay *display)
 {
+  MetaKeyHandler *handler;
+
   /* Keybindings */
   display->keymap = NULL;
   display->keysyms_per_keycode = 0;
@@ -4250,6 +4264,13 @@ meta_display_init_keys (MetaDisplay *display)
 
   key_handlers = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
                                         (GDestroyNotify) key_handler_free);
+
+  handler = g_new0 (MetaKeyHandler, 1);
+  handler->name = g_strdup ("overlay-key");
+  handler->flags = META_KEY_BINDING_BUILTIN;
+
+  g_hash_table_insert (key_handlers, g_strdup ("overlay-key"), handler);
+
   init_builtin_key_bindings (display);
 
   rebuild_key_binding_table (display);
