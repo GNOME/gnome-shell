@@ -292,6 +292,10 @@ reload_keycodes (MetaDisplay *display)
       display->overlay_key_combo.keycode =
         keysym_to_keycode (display, display->overlay_key_combo.keysym);
     }
+  else
+    {
+      display->overlay_key_combo.keycode = 0;
+    }
   
   if (display->key_bindings)
     {
@@ -469,11 +473,7 @@ rebuild_special_bindings (MetaDisplay *display)
   MetaKeyCombo combo;
   
   meta_prefs_get_overlay_binding (&combo);
-
-  if (combo.keysym != None || combo.keycode != 0)
-    {
-      display->overlay_key_combo = combo;
-    }
+  display->overlay_key_combo = combo;
 }
 
 static void
