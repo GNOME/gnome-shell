@@ -215,7 +215,7 @@ const Indicator = new Lang.Class({
     Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        this.parent('audio-volume-muted', _("Volume"));
+        this.parent('audio-volume-muted-symbolic', _("Volume"));
 
         this._isLocked = false;
 
