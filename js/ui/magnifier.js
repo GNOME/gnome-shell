@@ -12,7 +12,7 @@ const Signals = imports.signals;
 const Main = imports.ui.main;
 const MagnifierDBus = imports.ui.magnifierDBus;
 const Params = imports.misc.params;
-
+const PointerWatcher = imports.ui.pointerWatcher;
 
 const MOUSE_POLL_FREQUENCY = 50;
 const CROSSHAIRS_CLIP_SIZE = [100, 100];
@@ -136,11 +136,8 @@ const Magnifier = new Lang.Class({
      * Turn on mouse tracking, if not already doing so.
      */
     startTrackingMouse: function() {
-        if (!this._mouseTrackingId)
-            this._mouseTrackingId = Mainloop.timeout_add(
-                MOUSE_POLL_FREQUENCY,
-                Lang.bind(this, this.scrollToMousePos)
-            );
+        if (!this._pointerWatch)
+            this._pointerWatch = PointerWatcher.getPointerWatcher().addWatch(MOUSE_POLL_FREQUENCY, Lang.bind(this, this.scrollToMousePos));
     },
 
     /**
@@ -148,10 +145,10 @@ const Magnifier = new Lang.Class({
      * Turn off mouse tracking, if not already doing so.
      */
     stopTrackingMouse: function() {
-        if (this._mouseTrackingId)
-            Mainloop.source_remove(this._mouseTrackingId);
+        if (this._pointerWatch)
+            this._pointerWatch.remove();
 
-        this._mouseTrackingId = null;
+        this._pointerWatch = null;
     },
 
     /**
