@@ -66,7 +66,7 @@ const UserAvatarWidget = new Lang.Class({
             this.actor.style = 'background-image: url("%s");'.format(iconFile);
         } else {
             this.actor.style = null;
-            this.actor.child = new St.Icon({ icon_name: 'avatar-default',
+            this.actor.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
                                              icon_size: DIALOG_ICON_SIZE });
         }
     }
@@ -491,7 +491,7 @@ const UserMenuButton = new Lang.Class({
                                        style_class: 'popup-menu-icon' });
         this._idleIcon = new St.Icon({ icon_name: 'user-idle-symbolic',
                                        style_class: 'popup-menu-icon' });
-        this._pendingIcon = new St.Icon({ icon_name: 'user-status-pending',
+        this._pendingIcon = new St.Icon({ icon_name: 'user-status-pending-symbolic',
                                           style_class: 'popup-menu-icon' });
 
         this._accountMgr.connect('most-available-presence-changed',

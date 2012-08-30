@@ -2021,7 +2021,7 @@ const MessageTray = new Lang.Class({
         // Don't move the windows up if we are in the overview,
         // but show the tray in the ctrl+alt+tab list.
         if (this._overviewVisible) {
-            Main.ctrlAltTabManager.addGroup(this._summary, _("Message Tray"), 'start-here',
+            Main.ctrlAltTabManager.addGroup(this._summary, _("Message Tray"), 'start-here-symbolic',
                                             { sortGroup: CtrlAltTab.SortGroup.BOTTOM });
             return;
         }
