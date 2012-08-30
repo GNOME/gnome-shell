@@ -216,6 +216,38 @@ clutter_wayland_handle_keymap (void *data,
     }
 }
 
+/* XXX: Need a wl_keyboard event to harmonise these across clients. */
+#define KEY_REPEAT_DELAY 660
+#define KEY_REPEAT_INTERVAL 40
+
+static gboolean
+clutter_wayland_repeat_key (void *data)
+{
+  ClutterInputDeviceWayland *device = data;
+  ClutterStageCogl          *stage_cogl = device->keyboard_focus;
+  ClutterEvent              *event;
+
+  event = _clutter_key_event_new_from_evdev ((ClutterInputDevice *) device,
+                                             stage_cogl->wrapper,
+                                             device->xkb,
+                                             device->repeat_time,
+                                             device->repeat_key,
+                                             1);
+  device->repeat_time += KEY_REPEAT_INTERVAL;
+  _clutter_event_push (event, FALSE);
+
+  if (!device->is_initial_repeat)
+    return TRUE;
+
+  g_source_remove (device->repeat_source);
+  device->repeat_source = g_timeout_add (KEY_REPEAT_INTERVAL,
+                                         clutter_wayland_repeat_key,
+                                         device);
+  device->is_initial_repeat = FALSE;
+
+  return FALSE;
+}
+
 static void
 clutter_wayland_handle_key (void *data,
                             struct wl_keyboard *keyboard,
@@ -235,6 +267,26 @@ clutter_wayland_handle_key (void *data,
                                              _time, key, state);
 
   _clutter_event_push (event, FALSE);
+
+  if (!xkb_key_repeats (xkb_state_get_map (device->xkb), key))
+    return;
+
+  if (state)
+    {
+      if (device->repeat_key != XKB_KEYCODE_INVALID)
+        g_source_remove (device->repeat_source);
+      device->repeat_key = key;
+      device->repeat_time = _time + KEY_REPEAT_DELAY;
+      device->repeat_source = g_timeout_add (KEY_REPEAT_DELAY,
+                                             clutter_wayland_repeat_key,
+                                             device);
+      device->is_initial_repeat = TRUE;
+    }
+  else if (device->repeat_key == key)
+    {
+      g_source_remove (device->repeat_source);
+      device->repeat_key = XKB_KEYCODE_INVALID;
+    }
 }
 
 static void
@@ -373,6 +425,12 @@ clutter_wayland_handle_keyboard_leave (void *data,
   _clutter_stage_update_state (stage_cogl->wrapper,
                                CLUTTER_STAGE_STATE_ACTIVATED,
                                0);
+
+  if (device->repeat_key != XKB_KEYCODE_INVALID)
+    {
+      g_source_remove (device->repeat_source);
+      device->repeat_key = XKB_KEYCODE_INVALID;
+    }
 
   device->keyboard_focus = NULL;
 }

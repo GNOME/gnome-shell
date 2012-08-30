@@ -26,6 +26,7 @@
 #ifndef __CLUTTER_INPUT_DEVICE_WAYLAND_H__
 #define __CLUTTER_INPUT_DEVICE_WAYLAND_H__
 
+#include <xkbcommon/xkbcommon.h>
 #include <glib-object.h>
 #include <clutter/clutter-event.h>
 
@@ -48,6 +49,10 @@ struct _ClutterInputDeviceWayland
   struct xkb_state       *xkb;
   gint                    has_pointer;
   gint                    has_keyboard;
+  xkb_keycode_t           repeat_key;
+  guint                   repeat_time;
+  guint                   repeat_source;
+  gboolean                is_initial_repeat;
 };
 
 GType clutter_input_device_wayland_get_type (void) G_GNUC_CONST;
