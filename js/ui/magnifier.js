@@ -1090,7 +1090,6 @@ const ZoomRegion = new Lang.Class({
         // chrome, the windows, etc.
         this._uiGroupClone = new Clutter.Clone({ source: Main.uiGroup });
         mainGroup.add_actor(this._uiGroupClone);
-        Main.uiGroup.set_size(global.screen_width, global.screen_height);
         this._background.set_size(global.screen_width, global.screen_height);
 
         // Add either the given mouseSourceActor to the ZoomRegion, or a clone of
@@ -1353,7 +1352,6 @@ const ZoomRegion = new Lang.Class({
         if (!this.isActive())
             return;
 
-        Main.uiGroup.set_size(global.screen_width, global.screen_height);
         this._background.set_size(global.screen_width, global.screen_height);
 
         if (this._screenPosition == GDesktopEnums.MagnifierScreenPosition.NONE)
