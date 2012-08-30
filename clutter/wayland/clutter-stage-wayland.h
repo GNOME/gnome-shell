@@ -36,7 +36,7 @@
 
 #include "cogl/clutter-stage-cogl.h"
 
-#define CLUTTER_TYPE_STAGE_WAYLAND                  (clutter_stage_wayland_get_type ())
+#define CLUTTER_TYPE_STAGE_WAYLAND                  (_clutter_stage_wayland_get_type ())
 #define CLUTTER_STAGE_WAYLAND(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_STAGE_WAYLAND, ClutterStageWayland))
 #define CLUTTER_IS_STAGE_WAYLAND(obj)               (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_STAGE_WAYLAND))
 #define CLUTTER_STAGE_WAYLAND_CLASS(klass)          (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_STAGE_WAYLAND, ClutterStageWaylandClass))
@@ -60,6 +60,6 @@ struct _ClutterStageWaylandClass
   ClutterStageCoglClass parent_class;
 };
 
-GType clutter_stage_wayland_get_type (void) G_GNUC_CONST;
+GType _clutter_stage_wayland_get_type (void) G_GNUC_CONST;
 
 #endif /* __CLUTTER_STAGE_WAYLAND_H__ */

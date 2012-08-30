@@ -33,7 +33,7 @@
 #include "clutter-device-manager-private.h"
 #include "cogl/clutter-stage-cogl.h"
 
-#define CLUTTER_TYPE_INPUT_DEVICE_WAYLAND       (clutter_input_device_wayland_get_type ())
+#define CLUTTER_TYPE_INPUT_DEVICE_WAYLAND       (_clutter_input_device_wayland_get_type ())
 #define CLUTTER_INPUT_DEVICE_WAYLAND(obj)       (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_INPUT_DEVICE_WAYLAND, ClutterInputDeviceWayland))
 #define CLUTTER_IS_INPUT_DEVICE_WAYLAND(obj)    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_INPUT_DEVICE_WAYLAND))
 
@@ -55,7 +55,7 @@ struct _ClutterInputDeviceWayland
   gboolean                is_initial_repeat;
 };
 
-GType clutter_input_device_wayland_get_type (void) G_GNUC_CONST;
+GType _clutter_input_device_wayland_get_type (void) G_GNUC_CONST;
 
 extern const struct wl_seat_listener _clutter_seat_wayland_listener;
 

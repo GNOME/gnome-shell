@@ -49,6 +49,9 @@
 
 typedef struct _ClutterInputDeviceClass         ClutterInputDeviceWaylandClass;
 
+#define clutter_input_device_wayland_get_type \
+    _clutter_input_device_wayland_get_type
+
 G_DEFINE_TYPE (ClutterInputDeviceWayland,
                clutter_input_device_wayland,
                CLUTTER_TYPE_INPUT_DEVICE);
