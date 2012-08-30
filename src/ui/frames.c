@@ -455,7 +455,8 @@ meta_frames_ensure_layout (MetaFrames  *frames,
 
       pango_layout_set_ellipsize (frame->layout, PANGO_ELLIPSIZE_END);
       pango_layout_set_auto_dir (frame->layout, FALSE);
-      
+      pango_layout_set_single_paragraph_mode (frame->layout, TRUE);
+
       font_desc = meta_gtk_widget_get_font_desc (widget, scale,
                                                  meta_prefs_get_titlebar_font ());
 
