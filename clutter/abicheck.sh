@@ -2,10 +2,12 @@
 
 has_x11_backend=no
 has_gdk_backend=no
+has_wayland_backend=no
 for backend in ${CLUTTER_BACKENDS}; do
         case "$backend" in
                 x11) has_x11_backend=yes ;;
                 gdk) has_gdk_backend=yes ;;
+                wayland) has_wayland_backend=yes ;;
         esac
 done
 
@@ -16,6 +18,10 @@ fi
 
 if [ $has_gdk_backend = "yes" ]; then
         cppargs="$cppargs -DCLUTTER_WINDOWING_GDK"
+fi
+
+if [ $has_wayland_backend = "yes" ]; then
+        cppargs="$cppargs -DCLUTTER_WINDOWING_WAYLAND"
 fi
 
 cpp -P ${cppargs} ${srcdir:-.}/clutter.symbols | sed -e '/^$/d' -e 's/ G_GNUC.*$//' -e 's/ PRIVATE//' -e 's/ DATA//' | sort > expected-abi
