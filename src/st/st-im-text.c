@@ -77,13 +77,6 @@ struct _StIMTextPrivate
   guint need_im_reset : 1;
 };
 
-static void st_im_text_commit_cb (GtkIMContext *context,
-                                  const gchar  *str,
-                                  StIMText     *imtext);
-
-static void st_im_text_preedit_changed_cb (GtkIMContext *context,
-                                           StIMText     *imtext);
-
 G_DEFINE_TYPE (StIMText, st_im_text, CLUTTER_TYPE_TEXT)
 
 static void
@@ -91,18 +84,7 @@ st_im_text_dispose (GObject *object)
 {
   StIMTextPrivate *priv = ST_IM_TEXT (object)->priv;
 
-  if (priv->im_context != NULL)
-    {
-      g_signal_handlers_disconnect_by_func (priv->im_context,
-                                            (void *) st_im_text_commit_cb,
-                                            object);
-      g_signal_handlers_disconnect_by_func (priv->im_context,
-                                            (void *) st_im_text_preedit_changed_cb,
-                                            object);
-
-      g_object_unref (priv->im_context);
-      priv->im_context = NULL;
-    }
+  g_clear_object (&priv->im_context);
 
   G_OBJECT_CLASS (st_im_text_parent_class)->dispose (object);
 }
