@@ -171,7 +171,7 @@ const UserListItem = new Lang.Class({
         if (GLib.file_test(iconFileName, GLib.FileTest.EXISTS))
             this._setIconFromFile(iconFileName, 'login-dialog-user-list-item-icon');
         else
-            this._setIconFromName('avatar-default', 'login-dialog-user-list-item-icon');
+            this._setIconFromName('avatar-default-symbolic', 'login-dialog-user-list-item-icon');
     },
 
     syncStyleClasses: function() {

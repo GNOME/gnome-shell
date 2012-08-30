@@ -391,7 +391,7 @@ const EndSessionDialog = new Lang.Class({
             if (GLib.file_test(iconFile, GLib.FileTest.EXISTS))
                 this._setIconFromFile(iconFile, dialogContent.iconStyleClass);
             else
-                this._setIconFromName('avatar-default', dialogContent.iconStyleClass);
+                this._setIconFromName('avatar-default-symbolic', dialogContent.iconStyleClass);
         } else if (dialogContent.iconName) {
             this._setIconFromName(dialogContent.iconName,
                                   dialogContent.iconStyleClass);

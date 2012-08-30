@@ -321,7 +321,7 @@ const AuthenticationDialog = new Lang.Class({
                 if (iconFile.query_exists(null)) {
                     icon = new Gio.FileIcon({file: iconFile});
                 } else {
-                    icon = new Gio.ThemedIcon({name: 'avatar-default'});
+                    icon = new Gio.ThemedIcon({name: 'avatar-default-symbolic'});
                 }
                 this._userIcon.set_gicon (icon);
                 this._userIcon.show();

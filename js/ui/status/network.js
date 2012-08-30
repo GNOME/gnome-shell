@@ -1771,7 +1771,7 @@ const NMApplet = new Lang.Class({
         wrapper._activationFailedId = wrapper.connect('activation-failed', Lang.bind(this, function(device, reason) {
             // XXX: nm-applet has no special text depending on reason
             // but I'm not sure of this generic message
-            this._notifyForDevice(device, 'network-error',
+            this._notifyForDevice(device, 'network-error-symbolic',
                                   _("Connection failed"),
                                   _("Activation of network connection failed"),
                                   MessageTray.Urgency.HIGH);
