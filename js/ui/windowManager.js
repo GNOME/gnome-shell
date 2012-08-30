@@ -27,16 +27,24 @@ const WindowDimmer = new Lang.Class({
         this._brightnessEffect = new Clutter.BrightnessContrastEffect();
         actor.add_effect(this._brightnessEffect);
         this.actor = actor;
+        this._enabled = true;
         this._dimFactor = 0.0;
+        this._syncEnabled();
+    },
+
+    _syncEnabled: function() {
+        this._brightnessEffect.enabled = (this._enabled && this._dimFactor > 0);
     },
 
     setEnabled: function(enabled) {
-        this._brightnessEffect.enabled = enabled;
+        this._enabled = enabled;
+        this._syncEnabled();
     },
 
     set dimFactor(factor) {
         this._dimFactor = factor;
         this._brightnessEffect.set_brightness(factor * DIM_BRIGHTNESS);
+        this._syncEnabled();
     },
 
     get dimFactor() {
@@ -45,10 +53,17 @@ const WindowDimmer = new Lang.Class({
 });
 
 function getWindowDimmer(actor) {
-    if (!actor._windowDimmer)
-        actor._windowDimmer = new WindowDimmer(actor);
+    let enabled = Meta.prefs_get_attach_modal_dialogs();
+    if (actor._windowDimmer)
+        actor._windowDimmer.setEnabled(enabled);
 
-    return actor._windowDimmer;
+    if (enabled) {
+        if (!actor._windowDimmer)
+            actor._windowDimmer = new WindowDimmer(actor);
+        return actor._windowDimmer;
+    } else {
+        return null;
+    }
 }
 
 const WindowManager = new Lang.Class({
@@ -255,9 +270,7 @@ const WindowManager = new Lang.Class({
         if (!actor)
             return;
         let dimmer = getWindowDimmer(actor);
-        let enabled = Meta.prefs_get_attach_modal_dialogs();
-        dimmer.setEnabled(enabled);
-        if (!enabled)
+        if (!dimmer)
             return;
         Tweener.addTween(dimmer,
                          { dimFactor: 1.0,
@@ -271,15 +284,12 @@ const WindowManager = new Lang.Class({
         if (!actor)
             return;
         let dimmer = getWindowDimmer(actor);
-        let enabled = Meta.prefs_get_attach_modal_dialogs();
-        dimmer.setEnabled(enabled);
-        if (!enabled)
+        if (!dimmer)
             return;
         Tweener.addTween(dimmer,
                          { dimFactor: 0.0,
                            time: UNDIM_TIME,
-                           transition: 'linear'
-                         });
+                           transition: 'linear' });
     },
 
     _mapWindow : function(shellwm, actor) {
