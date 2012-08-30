@@ -36,22 +36,6 @@
  * ClutterIMText but using GtkIMContext rather than ClutterIMContext.
  */
 
-/* Places where this actor doesn't support all of GtkIMContext:
- *
- *  A) It doesn't support preedit. This makes it fairly useless for
- *     most complicated input methods. Fixing this requires support
- *     directly in ClutterText, since there is no way to wedge a
- *     preedit string in externally.
- *  B) It doesn't support surrounding context via the
- *     :retrieve-surrounding and :delete-surrounding signals. This could
- *     be added here, but  only affects a small number of input methods
- *     and really doesn't make a lot of sense without A)
- *
- * Another problem that will show up with usage in GNOME Shell's overview
- * is that the user may have trouble seeing and interacting with ancilliary
- * windows shown by the IM.
- */
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -149,6 +133,49 @@ st_im_text_preedit_changed_cb (GtkIMContext *context,
 
   g_free (preedit_str);
   pango_attr_list_unref (preedit_attrs);
+}
+
+static gboolean
+st_im_text_retrieve_surrounding_cb (GtkIMContext *context,
+                                    StIMText     *imtext)
+{
+  ClutterText *clutter_text = CLUTTER_TEXT (imtext);
+  ClutterTextBuffer *buffer;
+  const gchar *text;
+  gint cursor_pos;
+
+  buffer = clutter_text_get_buffer (clutter_text);
+  text = clutter_text_buffer_get_text (buffer);
+
+  cursor_pos = clutter_text_get_cursor_position (clutter_text);
+  if (cursor_pos < 0)
+    cursor_pos = clutter_text_buffer_get_length (buffer);
+
+  gtk_im_context_set_surrounding (context, text,
+                                  /* length and cursor_index are in bytes */
+                                  clutter_text_buffer_get_bytes (buffer),
+                                  g_utf8_offset_to_pointer (text, cursor_pos) - text);
+
+  return TRUE;
+}
+
+static gboolean
+st_im_text_delete_surrounding_cb (GtkIMContext *context,
+                                  gint          offset,
+                                  gint          n_chars,
+                                  StIMText     *imtext)
+{
+  ClutterText *clutter_text = CLUTTER_TEXT (imtext);
+
+  if (clutter_text_get_editable (clutter_text))
+    {
+      gint cursor_pos = clutter_text_get_cursor_position (clutter_text);
+      clutter_text_delete_text (clutter_text,
+                                cursor_pos + offset,
+                                cursor_pos + offset + n_chars);
+    }
+
+  return TRUE;
 }
 
 static void
@@ -458,6 +485,10 @@ st_im_text_init (StIMText *self)
                     G_CALLBACK (st_im_text_commit_cb), self);
   g_signal_connect (priv->im_context, "preedit-changed",
                     G_CALLBACK (st_im_text_preedit_changed_cb), self);
+  g_signal_connect (priv->im_context, "retrieve-surrounding",
+                    G_CALLBACK (st_im_text_retrieve_surrounding_cb), self);
+  g_signal_connect (priv->im_context, "delete-surrounding",
+                    G_CALLBACK (st_im_text_delete_surrounding_cb), self);
 }
 
 /**
