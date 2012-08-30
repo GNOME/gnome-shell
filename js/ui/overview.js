@@ -28,6 +28,24 @@ const DASH_MAX_WIDTH = 96;
 
 const DND_WINDOW_SWITCH_TIMEOUT = 1250;
 
+const GLSL_DIM_EFFECT_DECLARATIONS = '';
+const GLSL_DIM_EFFECT_CODE = '\
+   vec2 dist = cogl_tex_coord_in[0].xy - vec2(0.5, 0.5); \
+   float elipse_radius = 0.5; \
+   /* from https://bugzilla.gnome.org/show_bug.cgi?id=669798: \
+      the alpha on the gradient goes from 165 at its darkest to 98 at its most transparent. */ \
+   float y = 165.0 / 255.0; \
+   float x = 98.0 / 255.0; \
+   /* interpolate darkening value, based on distance from screen center */ \
+   float val = min(length(dist), elipse_radius); \
+   float a = mix(x, y, val / elipse_radius); \
+   /* dim_factor varies from [1.0 -> 0.5] when overview is showing \
+      We use it to smooth value, then we clamp it to valid color interval */ \
+   a = clamp(a - cogl_color_in.r + 0.5, 0.0, 1.0); \
+   /* We\'re blending between: color and black color (obviously omitted in the equation) */ \
+   cogl_color_out.xyz = cogl_color_out.xyz * (1.0 - a); \
+   cogl_color_out.a = 1.0;';
+
 const SwipeScrollDirection = {
     NONE: 0,
     HORIZONTAL: 1,
@@ -119,6 +137,10 @@ const Overview = new Lang.Class({
         // scenes which allows us to show the background with different
         // rendering options without duplicating the texture data.
         this._background = Meta.BackgroundActor.new_for_screen(global.screen);
+        this._background.add_glsl_snippet(Meta.SnippetHook.FRAGMENT,
+                                          GLSL_DIM_EFFECT_DECLARATIONS,
+                                          GLSL_DIM_EFFECT_CODE,
+                                          false);
         this._background.hide();
         global.overlay_group.add_actor(this._background);
 
@@ -633,7 +655,7 @@ const Overview = new Lang.Class({
                          });
 
         Tweener.addTween(this._background,
-                         { dim_factor: 0.4,
+                         { dim_factor: 0.8,
                            time: ANIMATION_TIME,
                            transition: 'easeOutQuad'
                          });
