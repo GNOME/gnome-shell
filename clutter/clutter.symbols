@@ -1580,7 +1580,9 @@ clutter_vertex_get_type
 clutter_vertex_init
 clutter_vertex_new
 #ifdef CLUTTER_WINDOWING_WAYLAND
-clutter_wayland_get_egl_display
+clutter_wayland_input_device_get_wl_seat
+clutter_wayland_stage_get_wl_shell_surface
+clutter_wayland_stage_get_wl_surface
 #endif
 #ifdef CLUTTER_WINDOWING_WIN32
 clutter_win32_disable_event_retrieval
