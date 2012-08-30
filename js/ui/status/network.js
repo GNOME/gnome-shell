@@ -2174,7 +2174,7 @@ const NMApplet = new Lang.Class({
 
         // update VPN indicator
         if (this._vpnConnection) {
-            let vpnIconName = 'network-vpn';
+            let vpnIconName = 'network-vpn-symbolic';
             if (this._vpnConnection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
                 vpnIconName = 'network-vpn-acquiring';
 
