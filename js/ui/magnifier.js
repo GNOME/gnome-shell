@@ -1325,7 +1325,7 @@ const ZoomRegion = new Lang.Class({
         this._mouseActor.set_scale(this._xMagFactor, this._yMagFactor);
 
         let [x, y] = this._screenToViewPort(0, 0);
-        this._uiGroupClone.set_position(x, y);
+        this._uiGroupClone.set_position(Math.round(x), Math.round(y));
 
         this._updateMousePosition();
     },
