@@ -1497,7 +1497,10 @@ const MessageTray = new Lang.Class({
     },
 
     _checkTrayDwell: function(x, y) {
-        if (y == global.screen_height - 1) {
+        let monitor = Main.layoutManager.bottomMonitor;
+        let shouldDwell = (x >= monitor.x && x <= monitor.x + monitor.width &&
+                           y == monitor.y + monitor.height - 1);
+        if (shouldDwell) {
             // We only set up dwell timeout when the user is not hovering over the tray
             // (!this.actor.hover). This avoids bringing up the message tray after the
             // user clicks on a notification with the pointer on the bottom pixel
