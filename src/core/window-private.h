@@ -413,6 +413,10 @@ struct _MetaWindow
 
   /* The currently complementary tiled window, if any */
   MetaWindow *tile_match;
+
+  /* Bypass compositor hints */
+  guint bypass_compositor : 1;
+  guint dont_bypass_compositor : 1;
 };
 
 struct _MetaWindowClass

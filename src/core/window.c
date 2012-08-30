@@ -3640,6 +3640,28 @@ meta_window_is_on_primary_monitor (MetaWindow *window)
   return window->monitor->is_primary;
 }
 
+/**
+ * meta_window_requested_bypass_compositor:
+ *
+ * Return value: %TRUE if the window requested to bypass the compositor
+ */
+gboolean
+meta_window_requested_bypass_compositor (MetaWindow *window)
+{
+  return window->bypass_compositor;
+}
+
+/**
+ * meta_window_requested_dont_bypass_compositor:
+ *
+ * Return value: %TRUE if the window requested to opt out of unredirecting
+ */
+gboolean
+meta_window_requested_dont_bypass_compositor (MetaWindow *window)
+{
+  return window->dont_bypass_compositor;
+}
+
 void
 meta_window_tile (MetaWindow *window)
 {

@@ -1193,17 +1193,25 @@ meta_window_actor_should_unredirect (MetaWindowActor *self)
   int num_monitors = meta_screen_get_n_monitors (screen);
   int i;
 
-  if (!meta_window_is_override_redirect (metaWindow))
+  if (meta_window_requested_dont_bypass_compositor (metaWindow))
+    return FALSE;
+
+  if (!meta_window_is_override_redirect (metaWindow) &&
+      !meta_window_requested_bypass_compositor (metaWindow))
     return FALSE;
 
   if (priv->opacity != 0xff)
     return FALSE;
 
-  if (priv->argb32)
+  if (priv->argb32 && !meta_window_requested_bypass_compositor (metaWindow))
     return FALSE;
 
   if (metaWindow->has_shape)
     return FALSE;
+
+  if (meta_window_requested_bypass_compositor (metaWindow) &&
+      meta_window_is_fullscreen (metaWindow))
+    return TRUE;
 
   meta_screen_get_size (screen, &screen_width, &screen_height);
   meta_window_get_outer_rect (metaWindow, &window_rect);
