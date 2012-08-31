@@ -456,7 +456,10 @@ const PinNotification = new Lang.Class({
 
     _canActivateOkButton: function() {
         // PINs have a fixed length of 6
-        return this._entry.clutter_text.text.length == 6;
+        if (this._numeric)
+            return this._entry.clutter_text.text.length == 6;
+        else
+            return true;
     },
 
     grabFocus: function(lockTray) {
