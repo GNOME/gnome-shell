@@ -56,7 +56,7 @@ const Magnifier = new Lang.Class({
         let xfixesCursor = Shell.XFixesCursor.get_for_stage(global.stage);
         this._mouseSprite = new Clutter.Texture();
         xfixesCursor.update_texture_image(this._mouseSprite);
-        this._cursorRoot = new Clutter.Group();
+        this._cursorRoot = new Clutter.Actor();
         this._cursorRoot.add_actor(this._mouseSprite);
 
         // Create the first ZoomRegion and initialize it according to the
@@ -1077,20 +1077,21 @@ const ZoomRegion = new Lang.Class({
         // hide the magnified region from CLUTTER_PICK_ALL
         Shell.util_set_hidden_from_pick (this._magView, true);
 
-        // Append a Clutter.Group to clip the contents of the magnified view.
-        let mainGroup = new Clutter.Group({ clip_to_allocation: true });
+        // Add a group to clip the contents of the magnified view.
+        let mainGroup = new Clutter.Actor({ clip_to_allocation: true });
         this._magView.set_child(mainGroup);
 
         // Add a background for when the magnified uiGroup is scrolled
         // out of view (don't want to see desktop showing through).
-        this._background = new Clutter.Rectangle({ color: Main.DEFAULT_BACKGROUND_COLOR });
+        this._background = new Clutter.Actor({ background_color: Main.DEFAULT_BACKGROUND_COLOR,
+                                               width: global.screen_width,
+                                               height: global.screen_height });
         mainGroup.add_actor(this._background);
 
         // Clone the group that contains all of UI on the screen.  This is the
         // chrome, the windows, etc.
         this._uiGroupClone = new Clutter.Clone({ source: Main.uiGroup });
         mainGroup.add_actor(this._uiGroupClone);
-        this._background.set_size(global.screen_width, global.screen_height);
 
         // Add either the given mouseSourceActor to the ZoomRegion, or a clone of
         // it.
@@ -1375,15 +1376,15 @@ const Crosshairs = new Lang.Class({
         let groupWidth = global.screen_width * 3;
         let groupHeight = global.screen_height * 3;
 
-        this._actor = new Clutter.Group({
+        this._actor = new Clutter.Actor({
             clip_to_allocation: false,
             width: groupWidth,
             height: groupHeight
         });
-        this._horizLeftHair = new Clutter.Rectangle();
-        this._horizRightHair = new Clutter.Rectangle();
-        this._vertTopHair = new Clutter.Rectangle();
-        this._vertBottomHair = new Clutter.Rectangle();
+        this._horizLeftHair = new Clutter.Actor();
+        this._horizRightHair = new Clutter.Actor();
+        this._vertTopHair = new Clutter.Actor();
+        this._vertBottomHair = new Clutter.Actor();
         this._actor.add_actor(this._horizLeftHair);
         this._actor.add_actor(this._horizRightHair);
         this._actor.add_actor(this._vertTopHair);
@@ -1454,10 +1455,10 @@ const Crosshairs = new Lang.Class({
      * @clutterColor:   The color as a Clutter.Color.
      */
     setColor: function(clutterColor) {
-        this._horizLeftHair.set_color(clutterColor);
-        this._horizRightHair.set_color(clutterColor);
-        this._vertTopHair.set_color(clutterColor);
-        this._vertBottomHair.set_color(clutterColor);
+        this._horizLeftHair.background_color = clutterColor;
+        this._horizRightHair.background_color = clutterColor;
+        this._vertTopHair.background_color = clutterColor;
+        this._vertBottomHair.background_color = clutterColor;
     },
 
     /**
