@@ -43,8 +43,7 @@ const XdndHandler = imports.ui.xdndHandler;
 const Util = imports.misc.util;
 
 const OVERRIDES_SCHEMA = 'org.gnome.shell.overrides';
-const DEFAULT_BACKGROUND_COLOR = new Clutter.Color();
-DEFAULT_BACKGROUND_COLOR.from_pixel(0x2266bbff);
+const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2266bbff);
 
 let automountManager = null;
 let autorunManager = null;

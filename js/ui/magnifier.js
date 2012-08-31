@@ -303,8 +303,7 @@ const Magnifier = new Lang.Class({
      */
     setCrosshairsColor: function(color) {
         if (this._crossHairs) {
-            let clutterColor = new Clutter.Color();
-            clutterColor.from_string(color);
+            let [res, clutterColor] = Clutter.Color.from_string(color);
             this._crossHairs.setColor(clutterColor);
         }
     },
@@ -1472,9 +1471,7 @@ const Crosshairs = new Lang.Class({
      * @color:  The color as a Clutter.Color.
      */
     getColor: function() {
-        let clutterColor = new Clutter.Color();
-        this._horizLeftHair.get_color(clutterColor);
-        return clutterColor;
+        return this._horizLeftHair.get_color();
     },
 
     /**
