@@ -35,6 +35,9 @@ const PolkitAgent = imports.gi.PolkitAgent;
 
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
+const UserMenu = imports.ui.userMenu;
+
+const DIALOG_ICON_SIZE = 48;
 
 const AuthenticationDialog = new Lang.Class({
     Name: 'AuthenticationDialog',
@@ -117,9 +120,11 @@ const AuthenticationDialog = new Lang.Class({
             let userBox = new St.BoxLayout({ style_class: 'polkit-dialog-user-layout',
                                              vertical: false });
             messageBox.add(userBox);
-            this._userIcon = new St.Icon();
-            this._userIcon.hide();
-            userBox.add(this._userIcon,
+            this._userAvatar = new UserMenu.UserAvatarWidget(this._user,
+                                                             { iconSize: DIALOG_ICON_SIZE,
+                                                               styleClass: 'polkit-dialog-user-icon' });
+            this._userAvatar.actor.hide();
+            userBox.add(this._userAvatar.actor,
                         { x_fill:  true,
                           y_fill:  false,
                           x_align: St.Align.END,
@@ -314,18 +319,8 @@ const AuthenticationDialog = new Lang.Class({
 
     _onUserChanged: function() {
         if (this._user.is_loaded) {
-            if (this._userIcon) {
-                let iconFileName = this._user.get_icon_file();
-                let iconFile = Gio.file_new_for_path(iconFileName);
-                let icon;
-                if (iconFile.query_exists(null)) {
-                    icon = new Gio.FileIcon({file: iconFile});
-                } else {
-                    icon = new Gio.ThemedIcon({name: 'avatar-default-symbolic'});
-                }
-                this._userIcon.set_gicon (icon);
-                this._userIcon.show();
-            }
+            this._userAvatar.update();
+            this._userAvatar.actor.show();
         }
     },
 

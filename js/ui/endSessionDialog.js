@@ -34,6 +34,7 @@ const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
+const UserMenu = imports.ui.userMenu;
 
 let _endSessionDialog = null;
 
@@ -303,40 +304,6 @@ const EndSessionDialog = new Lang.Class({
         this._user.disconnect(this._userChangedId);
     },
 
-    _setIconFromFile: function(iconFile, styleClass) {
-        if (styleClass)
-            this._iconBin.set_style_class_name(styleClass);
-        this._iconBin.set_style(null);
-
-        this._iconBin.child = null;
-        if (iconFile) {
-            this._iconBin.show();
-            this._iconBin.set_style('background-image: url("' + iconFile + '");' +
-                                    'background-size: contain;');
-        } else {
-            this._iconBin.hide();
-        }
-    },
-
-    _setIconFromName: function(iconName, styleClass) {
-        if (styleClass)
-            this._iconBin.set_style_class_name(styleClass);
-        this._iconBin.set_style(null);
-
-        if (iconName != null) {
-            let textureCache = St.TextureCache.get_default();
-            let icon = textureCache.load_icon_name(this._iconBin.get_theme_node(),
-                                                   iconName,
-                                                   _DIALOG_ICON_SIZE);
-
-            this._iconBin.child = icon;
-            this._iconBin.show();
-        } else {
-            this._iconBin.child = null;
-            this._iconBin.hide();
-        }
-    },
-
     _updateDescription: function() {
         if (this.state != ModalDialog.State.OPENING &&
             this.state != ModalDialog.State.OPENED)
@@ -385,16 +352,16 @@ const EndSessionDialog = new Lang.Class({
             return;
 
         let dialogContent = DialogContent[this._type];
-
-        if (this._user.is_loaded && !dialogContent.iconName) {
-            let iconFile = this._user.get_icon_file();
-            if (GLib.file_test(iconFile, GLib.FileTest.EXISTS))
-                this._setIconFromFile(iconFile, dialogContent.iconStyleClass);
-            else
-                this._setIconFromName('avatar-default-symbolic', dialogContent.iconStyleClass);
-        } else if (dialogContent.iconName) {
-            this._setIconFromName(dialogContent.iconName,
-                                  dialogContent.iconStyleClass);
+        if (dialogContent.iconName) {
+            this._iconBin.child = new St.Icon({ icon_name: dialogContent.iconName,
+                                                icon_size: _DIALOG_ICON_SIZE,
+                                                style_class: dialogContent.iconStyleClass });
+        } else {
+            let avatarWidget = new UserMenu.UserAvatarWidget(this._user,
+                                                             { iconSize: _DIALOG_ICON_SIZE,
+                                                               styleClass: dialogContent.iconStyleClass });
+            this._iconBin.child = avatarWidget.actor;
+            avatarWidget.update();
         }
 
         this._updateDescription();

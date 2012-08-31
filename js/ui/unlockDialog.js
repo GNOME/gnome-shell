@@ -33,7 +33,7 @@ const UserWidget = new Lang.Class({
         this.actor = new St.BoxLayout({ style_class: 'unlock-dialog-user-name-container',
                                         vertical: false });
 
-        this._avatar = new UserMenu.UserAvatarWidget(user, { reactive: false });
+        this._avatar = new UserMenu.UserAvatarWidget(user);
         this.actor.add(this._avatar.actor,
                        { x_fill: true, y_fill: true });
 

@@ -48,9 +48,12 @@ const UserAvatarWidget = new Lang.Class({
 
     _init: function(user, params) {
         this._user = user;
-        params = Params.parse(params, { reactive: true });
+        params = Params.parse(params, { reactive: false,
+                                        iconSize: DIALOG_ICON_SIZE,
+                                        styleClass: 'status-chooser-user-icon' });
+        this._iconSize = params.iconSize;
 
-        this.actor = new St.Bin({ style_class: 'status-chooser-user-icon',
+        this.actor = new St.Bin({ style_class: params.styleClass,
                                   track_hover: params.reactive,
                                   reactive: params.reactive });
     },
@@ -67,7 +70,7 @@ const UserAvatarWidget = new Lang.Class({
         } else {
             this.actor.style = null;
             this.actor.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
-                                             icon_size: DIALOG_ICON_SIZE });
+                                             icon_size: this._iconSize });
         }
     }
 });
@@ -143,7 +146,7 @@ const IMStatusChooserItem = new Lang.Class({
         this._userManager = AccountsService.UserManager.get_default();
         this._user = this._userManager.get_user(GLib.get_user_name());
 
-        this._avatar = new UserAvatarWidget(this._user);
+        this._avatar = new UserAvatarWidget(this._user, { reactive: true });
         this._iconBin = new St.Button({ child: this._avatar.actor });
         this.addActor(this._iconBin);
 

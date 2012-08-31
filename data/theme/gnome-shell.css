@@ -1686,6 +1686,7 @@ StButton.popup-menu-item:insensitive {
     border-radius: 5px;
     width: 32px;
     height: 32px;
+    background-size: contain;
 }
 
 .end-session-dialog-shutdown-icon {
@@ -1883,6 +1884,14 @@ StButton.popup-menu-item:insensitive {
 
 .polkit-dialog-user-root-label {
     color: #ff0000;
+}
+
+.polkit-dialog-user-icon {
+    border: 2px solid #8b8b8b;
+    border-radius: 5px;
+    background-size: contain;
+    width: 48px;
+    height: 48px;
 }
 
 /* Network Agent Dialog */

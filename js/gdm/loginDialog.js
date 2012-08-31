@@ -39,6 +39,7 @@ const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
+const UserMenu = imports.ui.userMenu;
 
 const _RESIZE_ANIMATION_TIME = 0.25;
 const _SCROLL_ANIMATION_TIME = 0.5;
@@ -96,8 +97,9 @@ const UserListItem = new Lang.Class({
                                      x_align: St.Align.START,
                                      x_fill: true });
 
-        this._iconBin = new St.Bin();
-        layout.add(this._iconBin);
+        this._userAvatar = new UserMenu.UserAvatarWidget(this.user,
+                                                         { styleClass: 'login-dialog-user-list-item-icon' });
+        layout.add(this._userAvatar.actor);
         let textLayout = new St.BoxLayout({ style_class: 'login-dialog-user-list-item-text-box',
                                             vertical:    true });
         layout.add(textLayout, { expand: true });
@@ -125,53 +127,8 @@ const UserListItem = new Lang.Class({
 
     _onUserChanged: function() {
         this._nameLabel.set_text(this.user.get_real_name());
-        this._updateIcon();
+        this._userAvatar.update();
         this._updateLoggedIn();
-    },
-
-    _setIconFromFile: function(iconFile, styleClass) {
-        if (styleClass)
-            this._iconBin.set_style_class_name(styleClass);
-        this._iconBin.set_style(null);
-
-        this._iconBin.child = null;
-        if (iconFile) {
-            this._iconBin.show();
-            // We use background-image instead of, say, St.TextureCache
-            // so the theme writers can add a rounded frame around the image
-            // and so theme writers can pick the icon size.
-            this._iconBin.set_style('background-image: url("' + iconFile + '");' +
-                                    'background-size: contain;');
-        } else {
-            this._iconBin.hide();
-        }
-    },
-
-    _setIconFromName: function(iconName, styleClass) {
-        if (styleClass)
-            this._iconBin.set_style_class_name(styleClass);
-        this._iconBin.set_style(null);
-
-        if (iconName != null) {
-            let icon = new St.Icon();
-            icon.set_icon_name(iconName)
-
-            this._iconBin.child = icon;
-            this._iconBin.show();
-        } else {
-            this._iconBin.child = null;
-            this._iconBin.hide();
-        }
-    },
-
-    _updateIcon: function() {
-        let iconFileName = this.user.get_icon_file();
-        let gicon = null;
-
-        if (GLib.file_test(iconFileName, GLib.FileTest.EXISTS))
-            this._setIconFromFile(iconFileName, 'login-dialog-user-list-item-icon');
-        else
-            this._setIconFromName('avatar-default-symbolic', 'login-dialog-user-list-item-icon');
     },
 
     syncStyleClasses: function() {
