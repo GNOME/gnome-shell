@@ -241,8 +241,10 @@ const InputSourceIndicator = new Lang.Class({
             } else if (type == INPUT_SOURCE_TYPE_IBUS) {
                 let engineDesc = this._ibusManager.getEngineDesc(id);
                 if (engineDesc) {
+                    let language = IBus.get_language_name(engineDesc.get_language());
+
                     info.exists = true;
-                    info.displayName = engineDesc.get_longname();
+                    info.displayName = language + ' (' + engineDesc.get_longname() + ')';
                     info.shortName = engineDesc.get_symbol();
                 }
             }
