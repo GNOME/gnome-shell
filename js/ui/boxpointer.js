@@ -410,6 +410,7 @@ const BoxPointer = new Lang.Class({
 
         let themeNode = this.actor.get_theme_node();
         let gap = themeNode.get_length('-boxpointer-gap');
+        let padding = themeNode.get_length('-arrow-rise');
 
         let resX, resY;
 
@@ -435,8 +436,8 @@ const BoxPointer = new Lang.Class({
         case St.Side.BOTTOM:
             resX = sourceCenterX - (halfMargin + (natWidth - margin) * alignment);
 
-            resX = Math.max(resX, monitor.x + 10);
-            resX = Math.min(resX, monitor.x + monitor.width - (10 + natWidth));
+            resX = Math.max(resX, monitor.x + padding);
+            resX = Math.min(resX, monitor.x + monitor.width - (padding + natWidth));
             this.setArrowOrigin(sourceCenterX - resX);
             break;
 
@@ -444,8 +445,8 @@ const BoxPointer = new Lang.Class({
         case St.Side.RIGHT:
             resY = sourceCenterY - (halfMargin + (natHeight - margin) * alignment);
 
-            resY = Math.max(resY, monitor.y + 10);
-            resY = Math.min(resY, monitor.y + monitor.height - (10 + natHeight));
+            resY = Math.max(resY, monitor.y + padding);
+            resY = Math.min(resY, monitor.y + monitor.height - (padding + natHeight));
 
             this.setArrowOrigin(sourceCenterY - resY);
             break;
