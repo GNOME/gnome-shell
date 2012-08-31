@@ -58,18 +58,15 @@
  */
 static const gchar *box_blur_glsl_declarations =
 "uniform vec2 pixel_step;\n";
-/* FIXME: Is this shader right? It is doing 10 samples (ie, sampling
-   the middle texel twice) and then only dividing by 9 */
 #define SAMPLE(offx, offy) \
   "cogl_texel += texture2D (cogl_sampler, cogl_tex_coord.st + pixel_step * " \
-  "vec2 (" G_STRINGIFY (offx) ", " G_STRINGIFY (offy) ") * 2.0);\n"
+  "vec2 (" G_STRINGIFY (offx) ", " G_STRINGIFY (offy) "));\n"
 static const gchar *box_blur_glsl_shader =
 "  cogl_texel = texture2D (cogl_sampler, cogl_tex_coord.st);\n"
   SAMPLE (-1.0, -1.0)
   SAMPLE ( 0.0, -1.0)
   SAMPLE (+1.0, -1.0)
   SAMPLE (-1.0,  0.0)
-  SAMPLE ( 0.0,  0.0)
   SAMPLE (+1.0,  0.0)
   SAMPLE (-1.0, +1.0)
   SAMPLE ( 0.0, +1.0)
