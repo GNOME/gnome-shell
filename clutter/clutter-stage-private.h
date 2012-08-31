@@ -85,13 +85,6 @@ ClutterStageQueueRedrawEntry *_clutter_stage_queue_actor_redraw            (Clut
                                                                             ClutterPaintVolume           *clip);
 void                          _clutter_stage_queue_redraw_entry_invalidate (ClutterStageQueueRedrawEntry *entry);
 
-void            _clutter_stage_add_device       (ClutterStage       *stage,
-                                                 ClutterInputDevice *device);
-void            _clutter_stage_remove_device    (ClutterStage       *stage,
-                                                 ClutterInputDevice *device);
-gboolean        _clutter_stage_has_device       (ClutterStage       *stage,
-                                                 ClutterInputDevice *device);
-
 CoglFramebuffer *_clutter_stage_get_active_framebuffer (ClutterStage *stage);
 
 gint32          _clutter_stage_acquire_pick_id          (ClutterStage *stage,

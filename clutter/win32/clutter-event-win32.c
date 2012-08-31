@@ -571,7 +571,7 @@ clutter_win32_handle_event (const MSG *msg)
             clutter_event_set_device (event, core_pointer);
 
             /* we entered the stage */
-            _clutter_stage_add_device (stage, core_pointer);
+            _clutter_input_device_set_stage (core_pointer, stage);
 
             take_and_queue_event (crossing);
 
@@ -596,7 +596,7 @@ clutter_win32_handle_event (const MSG *msg)
         clutter_event_set_device (event, core_pointer);
 
         /* we left the stage */
-        _clutter_stage_remove_device (stage, core_pointer);
+        _clutter_input_device_set_stage (core_pointer, NULL);
 
         /* When we get a leave message the mouse tracking is
            automatically cancelled so we'll need to start it again when

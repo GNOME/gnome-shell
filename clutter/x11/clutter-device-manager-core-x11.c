@@ -488,7 +488,7 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
       event->crossing.related = NULL;
       clutter_event_set_device (event, manager_x11->core_pointer);
 
-      _clutter_stage_add_device (stage, manager_x11->core_pointer);
+      _clutter_input_device_set_stage (manager_x11->core_pointer, stage);
 
       res = CLUTTER_TRANSLATE_QUEUE;
       break;
@@ -514,7 +514,7 @@ clutter_device_manager_x11_translate_event (ClutterEventTranslator *translator,
       event->crossing.related = NULL;
       clutter_event_set_device (event, manager_x11->core_pointer);
 
-      _clutter_stage_remove_device (stage, manager_x11->core_pointer);
+      _clutter_input_device_set_stage (manager_x11->core_pointer, NULL);
 
       res = CLUTTER_TRANSLATE_QUEUE;
       break;

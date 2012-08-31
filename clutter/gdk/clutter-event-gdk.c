@@ -219,9 +219,9 @@ clutter_gdk_handle_event (GdkEvent *gdk_event)
       clutter_event_set_device (event, device);
       clutter_event_set_source_device (event, source_device);
       if (gdk_event->type == GDK_ENTER_NOTIFY)
-        _clutter_stage_add_device (stage, clutter_event_get_device (event));
+        _clutter_input_device_set_stage (clutter_event_get_device (event), stage);
       else
-        _clutter_stage_remove_device (stage, clutter_event_get_device (event));
+        _clutter_input_device_set_stage (clutter_event_get_device (event), NULL);
       CLUTTER_NOTE (EVENT, "Crossing %s [%.2f, %.2f]",
                     event->type == CLUTTER_ENTER ? "enter" : "leave",
                     event->crossing.x,

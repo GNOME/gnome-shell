@@ -145,8 +145,6 @@ struct _ClutterStagePrivate
 
   CoglFramebuffer *active_framebuffer;
 
-  GHashTable *devices;
-
   GTimer *fps_timer;
   gint32 timer_n_frames;
 
@@ -1843,8 +1841,6 @@ clutter_stage_finalize (GObject *object)
 
   g_array_free (priv->paint_volume_stack, TRUE);
 
-  g_hash_table_destroy (priv->devices);
-
   _clutter_id_pool_free (priv->pick_id_pool);
 
   if (priv->fps_timer != NULL)
@@ -2308,8 +2304,6 @@ clutter_stage_init (ClutterStage *self)
 
   priv->paint_volume_stack =
     g_array_new (FALSE, FALSE, sizeof (ClutterPaintVolume));
-
-  priv->devices = g_hash_table_new (NULL, NULL);
 
   priv->pick_id_pool = _clutter_id_pool_new (256);
 }
@@ -4159,38 +4153,6 @@ clutter_stage_get_accept_focus (ClutterStage *stage)
   g_return_val_if_fail (CLUTTER_IS_STAGE (stage), TRUE);
 
   return stage->priv->accept_focus;
-}
-
-void
-_clutter_stage_add_device (ClutterStage       *stage,
-                           ClutterInputDevice *device)
-{
-  ClutterStagePrivate *priv = stage->priv;
-
-  if (g_hash_table_lookup (priv->devices, device) != NULL)
-    return;
-
-  g_hash_table_insert (priv->devices, device, GINT_TO_POINTER (1));
-  _clutter_input_device_set_stage (device, stage);
-}
-
-void
-_clutter_stage_remove_device (ClutterStage       *stage,
-                              ClutterInputDevice *device)
-{
-  ClutterStagePrivate *priv = stage->priv;
-
-  _clutter_input_device_set_stage (device, NULL);
-  g_hash_table_remove (priv->devices, device);
-}
-
-gboolean
-_clutter_stage_has_device (ClutterStage       *stage,
-                           ClutterInputDevice *device)
-{
-  ClutterStagePrivate *priv = stage->priv;
-
-  return g_hash_table_lookup (priv->devices, device) != NULL;
 }
 
 /**

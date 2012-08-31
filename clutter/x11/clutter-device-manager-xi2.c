@@ -1185,7 +1185,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             event->crossing.x = xev->event_x;
             event->crossing.y = xev->event_y;
 
-            _clutter_stage_add_device (stage, device);
+            _clutter_input_device_set_stage (device, stage);
           }
         else
           {
@@ -1209,7 +1209,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             event->crossing.x = xev->event_x;
             event->crossing.y = xev->event_y;
 
-            _clutter_stage_remove_device (stage, device);
+            _clutter_input_device_set_stage (device, NULL);
           }
 
         _clutter_input_device_reset_scroll_info (source_device);

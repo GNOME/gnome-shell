@@ -371,7 +371,7 @@ clutter_event_osx_translate (NSEvent *nsevent,
       event->crossing.source = CLUTTER_ACTOR (stage);
       clutter_event_set_device (event, manager_osx->core_pointer);
 
-      _clutter_stage_add_device (stage, manager_osx->core_pointer);
+      _clutter_input_device_set_stage (manager_osx->core_pointer, stage);
 
       CLUTTER_NOTE (EVENT, "enter at %f,%f",
                     event->crossing.x, event->crossing.y);
@@ -385,7 +385,7 @@ clutter_event_osx_translate (NSEvent *nsevent,
       event->crossing.source = CLUTTER_ACTOR (stage);
       clutter_event_set_device (event, manager_osx->core_pointer);
 
-      _clutter_stage_remove_device (stage, manager_osx->core_pointer);
+      _clutter_input_device_set_stage (manager_osx->core_pointer, NULL);
 
       CLUTTER_NOTE (EVENT, "exit at %f,%f",
                     event->crossing.x, event->crossing.y);
