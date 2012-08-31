@@ -306,7 +306,7 @@ const Indicator = new Lang.Class({
 
     _ensureSource: function() {
         if (!this._source) {
-            this._source = new MessageTray.Source(_("Bluetooth"), 'bluetooth-active-symbolic');
+            this._source = new MessageTray.Source(_("Bluetooth"), 'bluetooth-active');
             Main.messageTray.add(this._source);
         }
     },

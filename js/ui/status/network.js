@@ -1683,7 +1683,7 @@ const NMApplet = new Lang.Class({
     _ensureSource: function() {
         if (!this._source) {
             this._source = new MessageTray.Source(_("Network Manager"),
-                                                  'network-transmit-receive-symbolic');
+                                                  'network-transmit-receive');
 
             this._source.connect('destroy', Lang.bind(this, function() {
                 this._source = null;
@@ -2170,7 +2170,7 @@ const NMApplet = new Lang.Class({
         if (this._vpnConnection) {
             let vpnIconName = 'network-vpn-symbolic';
             if (this._vpnConnection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
-                vpnIconName = 'network-vpn-acquiring';
+                vpnIconName = 'network-vpn-acquiring-symbolic';
 
             // only show a separate icon when we're using a wireless/3g connection
             if (mc._section == NMConnectionCategory.WIRELESS || 
