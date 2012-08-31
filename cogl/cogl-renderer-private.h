@@ -29,6 +29,8 @@
 #include "cogl-object-private.h"
 #include "cogl-winsys-private.h"
 #include "cogl-internal.h"
+#include "cogl-driver.h"
+#include "cogl-texture-driver.h"
 
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include <X11/Xlib.h>
@@ -43,6 +45,8 @@ struct _CoglRenderer
   CoglObject _parent;
   CoglBool connected;
   CoglDriver driver_override;
+  const CoglDriverVtable *driver_vtable;
+  const CoglTextureDriver *texture_driver;
   const CoglWinsysVtable *winsys_vtable;
   CoglWinsysID winsys_id_override;
   GList *constraints;

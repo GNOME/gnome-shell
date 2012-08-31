@@ -78,6 +78,15 @@
 
 typedef const CoglWinsysVtable *(*CoglWinsysVtableGetter) (void);
 
+#ifdef HAVE_COGL_GL
+extern const CoglTextureDriver _cogl_texture_driver_gl;
+extern const CoglDriverVtable _cogl_driver_gl;
+#endif
+#if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GLES2)
+extern const CoglTextureDriver _cogl_texture_driver_gles;
+extern const CoglDriverVtable _cogl_driver_gles;
+#endif
+
 static CoglWinsysVtableGetter _cogl_winsys_vtable_getters[] =
 {
 #ifdef COGL_HAS_GLX_SUPPORT
@@ -331,6 +340,27 @@ found:
     }
 
 #endif /* HAVE_DIRECTLY_LINKED_GL_LIBRARY */
+
+  switch (renderer->driver)
+    {
+#ifdef HAVE_COGL_GL
+    case COGL_DRIVER_GL:
+      renderer->driver_vtable = &_cogl_driver_gl;
+      renderer->texture_driver = &_cogl_texture_driver_gl;
+      break;
+#endif
+
+#if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GLES2)
+    case COGL_DRIVER_GLES1:
+    case COGL_DRIVER_GLES2:
+      renderer->driver_vtable = &_cogl_driver_gles;
+      renderer->texture_driver = &_cogl_texture_driver_gles;
+      break;
+#endif
+
+    default:
+      g_assert_not_reached ();
+    }
 
   return TRUE;
 }

@@ -25,6 +25,8 @@
 #define __COGL_DRIVER_H
 
 #include "cogl-context.h"
+#include "cogl-offscreen.h"
+#include "cogl-framebuffer-private.h"
 
 typedef struct _CoglDriverVtable CoglDriverVtable;
 
@@ -45,6 +47,61 @@ struct _CoglDriverVtable
   CoglBool
   (* update_features) (CoglContext *context,
                        GError **error);
+
+  CoglBool
+  (* offscreen_allocate) (CoglOffscreen *offscreen,
+                          GError **error);
+
+  void
+  (* offscreen_free) (CoglOffscreen *offscreen);
+
+  void
+  (* framebuffer_flush_state) (CoglFramebuffer *draw_buffer,
+                               CoglFramebuffer *read_buffer,
+                               CoglFramebufferState state);
+
+  void
+  (* framebuffer_clear) (CoglFramebuffer *framebuffer,
+                         unsigned long buffers,
+                         float red,
+                         float green,
+                         float blue,
+                         float alpha);
+
+  void
+  (* framebuffer_query_bits) (CoglFramebuffer *framebuffer,
+                              int *red,
+                              int *green,
+                              int *blue,
+                              int *alpha);
+
+  void
+  (* framebuffer_finish) (CoglFramebuffer *framebuffer);
+
+  void
+  (* framebuffer_discard_buffers) (CoglFramebuffer *framebuffer,
+                                   unsigned long buffers);
+
+  void
+  (* framebuffer_draw_attributes) (CoglFramebuffer *framebuffer,
+                                   CoglPipeline *pipeline,
+                                   CoglVerticesMode mode,
+                                   int first_vertex,
+                                   int n_vertices,
+                                   CoglAttribute **attributes,
+                                   int n_attributes,
+                                   CoglDrawFlags flags);
+
+  void
+  (* framebuffer_draw_indexed_attributes) (CoglFramebuffer *framebuffer,
+                                           CoglPipeline *pipeline,
+                                           CoglVerticesMode mode,
+                                           int first_vertex,
+                                           int n_vertices,
+                                           CoglIndices *indices,
+                                           CoglAttribute **attributes,
+                                           int n_attributes,
+                                           CoglDrawFlags flags);
 };
 
 #endif /* __COGL_DRIVER_H */

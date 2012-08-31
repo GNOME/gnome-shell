@@ -61,15 +61,6 @@
 #define GL_POINT_SPRITE 0x8861
 #endif
 
-#ifdef HAVE_COGL_GL
-extern const CoglTextureDriver _cogl_texture_driver_gl;
-extern const CoglDriverVtable _cogl_driver_gl;
-#endif
-#if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GLES2)
-extern const CoglTextureDriver _cogl_texture_driver_gles;
-extern const CoglDriverVtable _cogl_driver_gles;
-#endif
-
 static void _cogl_context_free (CoglContext *context);
 
 COGL_OBJECT_DEFINE (Context, context);
@@ -216,26 +207,10 @@ cogl_context_new (CoglDisplay *display,
      lot throughout Cogl */
   context->driver = display->renderer->driver;
 
-  switch (context->driver)
-    {
-#ifdef HAVE_COGL_GL
-    case COGL_DRIVER_GL:
-      context->driver_vtable = &_cogl_driver_gl;
-      context->texture_driver = &_cogl_texture_driver_gl;
-      break;
-#endif
-
-#if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GLES2)
-    case COGL_DRIVER_GLES1:
-    case COGL_DRIVER_GLES2:
-      context->driver_vtable = &_cogl_driver_gles;
-      context->texture_driver = &_cogl_texture_driver_gles;
-      break;
-#endif
-
-    default:
-      g_assert_not_reached ();
-    }
+  /* Again this is duplicated data, but it convenient to be able
+   * access these from the context. */
+  context->driver_vtable = display->renderer->driver_vtable;
+  context->texture_driver = display->renderer->texture_driver;
 
   winsys = _cogl_context_get_winsys (context);
   if (!winsys->context_init (context, error))

@@ -130,16 +130,8 @@ struct _CoglFramebuffer
 
   CoglClipState       clip_state;
 
-  CoglBool            dirty_bitmasks;
-  int                 red_bits;
-  int                 blue_bits;
-  int                 green_bits;
-  int                 alpha_bits;
-
   CoglBool            dither_enabled;
   CoglColorMask       color_mask;
-
-  int                 samples_per_pixel;
 
   /* We journal the textured rectangles we want to submit to OpenGL so
    * we have an oppertunity to batch them together into less draw
@@ -165,6 +157,15 @@ struct _CoglFramebuffer
   int                 clear_clip_x1;
   int                 clear_clip_y1;
   CoglBool            clear_clip_dirty;
+
+  /* driver specific */
+  CoglBool            dirty_bitmasks;
+  int                 red_bits;
+  int                 blue_bits;
+  int                 green_bits;
+  int                 alpha_bits;
+
+  int                 samples_per_pixel;
 };
 
 typedef enum {
@@ -429,7 +430,26 @@ _cogl_framebuffer_try_creating_gl_fbo (CoglContext *ctx,
                                        CoglOffscreenAllocateFlags flags,
                                        CoglGLFramebuffer *gl_framebuffer);
 
-void
-_cogl_gl_framebuffer_bind (CoglFramebuffer *framebuffer, GLenum target);
+unsigned long
+_cogl_framebuffer_compare (CoglFramebuffer *a,
+                           CoglFramebuffer *b,
+                           unsigned long state);
+
+static inline CoglMatrixEntry *
+_cogl_framebuffer_get_modelview_entry (CoglFramebuffer *framebuffer)
+{
+  CoglMatrixStack *modelview_stack =
+    _cogl_framebuffer_get_modelview_stack (framebuffer);
+  return modelview_stack->last_entry;
+}
+
+static inline CoglMatrixEntry *
+_cogl_framebuffer_get_projection_entry (CoglFramebuffer *framebuffer)
+{
+  CoglMatrixStack *projection_stack =
+    _cogl_framebuffer_get_projection_stack (framebuffer);
+  return projection_stack->last_entry;
+}
+
 
 #endif /* __COGL_FRAMEBUFFER_PRIVATE_H */

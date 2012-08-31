@@ -39,6 +39,7 @@
 #include "cogl-context-private.h"
 #include "cogl-display-private.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-framebuffer-gl-private.h"
 #include "cogl-onscreen-template-private.h"
 #include "cogl-renderer-private.h"
 #include "cogl-swap-chain-private.h"
@@ -424,7 +425,7 @@ transient_bind_read_buffer (CoglGLES2Context *gles2_ctx)
         }
       else
         {
-          _cogl_gl_framebuffer_bind (gles2_ctx->read_buffer,
+          _cogl_framebuffer_gl_bind (gles2_ctx->read_buffer,
                                      0 /* target ignored */);
 
           return RESTORE_FB_FROM_ONSCREEN;
@@ -448,14 +449,14 @@ restore_write_buffer (CoglGLES2Context *gles2_ctx,
     case RESTORE_FB_FROM_ONSCREEN:
 
       /* Note: we can't restore the original write buffer using
-       * _cogl_gl_framebuffer_bind() if it's an offscreen
-       * framebuffer because _cogl_gl_framebuffer_bind() doesn't
+       * _cogl_framebuffer_gl_bind() if it's an offscreen
+       * framebuffer because _cogl_framebuffer_gl_bind() doesn't
        * know about the fbo handle owned by the gles2 context.
        */
       if (cogl_is_offscreen (gles2_ctx->write_buffer))
         gl_bind_framebuffer_wrapper (GL_FRAMEBUFFER, 0);
       else
-        _cogl_gl_framebuffer_bind (gles2_ctx->write_buffer, GL_FRAMEBUFFER);
+        _cogl_framebuffer_gl_bind (gles2_ctx->write_buffer, GL_FRAMEBUFFER);
 
       break;
     case RESTORE_FB_NONE:

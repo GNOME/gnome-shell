@@ -382,6 +382,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-magazine.c			\
 	$(srcdir)/cogl-gles2-context-private.h		\
 	$(srcdir)/cogl-gles2-context.c			\
+	$(srcdir)/cogl-framebuffer-gl-private.h		\
+	$(srcdir)/cogl-framebuffer-gl.c			\
 	$(NULL)
 
 if USE_GLIB

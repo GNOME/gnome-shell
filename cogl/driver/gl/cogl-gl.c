@@ -32,6 +32,7 @@
 #include "cogl-context-private.h"
 #include "cogl-feature-private.h"
 #include "cogl-renderer-private.h"
+#include "cogl-framebuffer-gl-private.h"
 
 static CoglBool
 _cogl_driver_pixel_format_from_gl_internal (CoglContext *context,
@@ -522,5 +523,14 @@ _cogl_driver_gl =
   {
     _cogl_driver_pixel_format_from_gl_internal,
     _cogl_driver_pixel_format_to_gl,
-    _cogl_driver_update_features
+    _cogl_driver_update_features,
+    _cogl_offscreen_gl_allocate,
+    _cogl_offscreen_gl_free,
+    _cogl_framebuffer_gl_flush_state,
+    _cogl_framebuffer_gl_clear,
+    _cogl_framebuffer_gl_query_bits,
+    _cogl_framebuffer_gl_finish,
+    _cogl_framebuffer_gl_discard_buffers,
+    _cogl_framebuffer_gl_draw_attributes,
+    _cogl_framebuffer_gl_draw_indexed_attributes,
   };
