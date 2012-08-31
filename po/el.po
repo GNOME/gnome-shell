@@ -4,8 +4,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.po.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-26 14:57+0000\n"
-"PO-Revision-Date: 2012-08-26 16:15+0200\n"
+"POT-Creation-Date: 2012-08-30 16:52+0000\n"
+"PO-Revision-Date: 2012-08-31 11:04+0200\n"
 "Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
 "Language-Team: team@gnome.gr\n"
 "Language: el\n"
@@ -263,7 +263,7 @@ msgstr "Σύνδεση"
 msgid "Not listed?"
 msgstr "Δεν είστε στη λίστα;"
 
-#: ../js/gdm/loginDialog.js:929 ../js/ui/endSessionDialog.js:407
+#: ../js/gdm/loginDialog.js:929 ../js/ui/endSessionDialog.js:406
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/networkAgent.js:156
 #: ../js/ui/polkitAuthenticationAgent.js:176
 #: ../js/ui/shellMountOperation.js:396 ../js/ui/status/bluetooth.js:432
@@ -280,8 +280,8 @@ msgstr "Σύνδεση"
 msgid "Login Window"
 msgstr "Παράθυρο σύνδεσης"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:634 ../js/ui/userMenu.js:638
-#: ../js/ui/userMenu.js:749
+#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:633 ../js/ui/userMenu.js:637
+#: ../js/ui/userMenu.js:748
 msgid "Suspend"
 msgstr "Αναστολή"
 
@@ -289,8 +289,8 @@ msgstr "Αναστολή"
 msgid "Restart"
 msgstr "Επανεκκίνηση"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:636 ../js/ui/userMenu.js:638
-#: ../js/ui/userMenu.js:748
+#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:635 ../js/ui/userMenu.js:637
+#: ../js/ui/userMenu.js:747
 msgid "Power Off"
 msgstr "Απενεργοποίηση"
 
@@ -566,7 +566,7 @@ msgstr[1] "Θα αποσυνδεθείτε αυτόματα σε %d δευτερ
 
 #: ../js/ui/endSessionDialog.js:73
 msgid "Logging out of the system."
-msgstr "Αποσύνδεση απο το σύστημα."
+msgstr "Αποσύνδεση από το σύστημα."
 
 #: ../js/ui/endSessionDialog.js:75
 msgctxt "button"
@@ -641,7 +641,7 @@ msgid "tray"
 msgstr "συρτάρι"
 
 #: ../js/ui/keyboard.js:545 ../js/ui/status/keyboard.js:146
-#: ../js/ui/status/power.js:207
+#: ../js/ui/status/power.js:210
 msgid "Keyboard"
 msgstr "Πληκτρολόγιο"
 
@@ -707,27 +707,27 @@ msgstr "Ιστοσελίδα"
 msgid "Screencast from %d %t"
 msgstr "Screencast από %d %t"
 
-#: ../js/ui/messageTray.js:1229
+#: ../js/ui/messageTray.js:1232
 msgid "Open"
 msgstr "Άνοιγμα"
 
-#: ../js/ui/messageTray.js:1236
+#: ../js/ui/messageTray.js:1239
 msgid "Remove"
 msgstr "Απομάκρυνση"
 
-#: ../js/ui/messageTray.js:1246
+#: ../js/ui/messageTray.js:1249
 msgid "Unmute"
 msgstr "Άρση σίγασης"
 
-#: ../js/ui/messageTray.js:1246
+#: ../js/ui/messageTray.js:1249
 msgid "Mute"
 msgstr "Σίγαση"
 
-#: ../js/ui/messageTray.js:2021
+#: ../js/ui/messageTray.js:2027
 msgid "Message Tray"
 msgstr "Περιοχή ειδοποιήσεων"
 
-#: ../js/ui/messageTray.js:2459
+#: ../js/ui/messageTray.js:2465
 msgid "System Information"
 msgstr "Πληροφορίες συστήματος"
 
@@ -797,7 +797,7 @@ msgstr "Απαιτείται κωδικός PIN"
 
 #: ../js/ui/networkAgent.js:348
 msgid "PIN code is needed for the mobile broadband device"
-msgstr "Ο κωδικός PIN απαιτείται για την συσκευή κινητής ευρυζωνικής"
+msgstr "Ο κωδικός PIN απαιτείται για τη συσκευή κινητής ευρυζωνικής σύνδεσης"
 
 #: ../js/ui/networkAgent.js:349
 msgid "PIN: "
@@ -805,7 +805,7 @@ msgstr "PIN: "
 
 #: ../js/ui/networkAgent.js:355
 msgid "Mobile broadband network password"
-msgstr "Κωδικός  δικτύου κινητής ευρυζωνικής"
+msgstr "Κωδικός  δικτύου κινητής ευρυζωνικής σύνδεσης"
 
 #: ../js/ui/networkAgent.js:356
 #, c-format
@@ -817,11 +817,11 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Άγνωστο"
 
-#: ../js/ui/overview.js:84
+#: ../js/ui/overview.js:83
 msgid "Undo"
 msgstr "Αναίρεση"
 
-#: ../js/ui/overview.js:124
+#: ../js/ui/overview.js:123
 msgid "Overview"
 msgstr "Επισκόπηση"
 
@@ -829,13 +829,13 @@ msgstr "Επισκόπηση"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:193
+#: ../js/ui/overview.js:192
 msgid "Type to search..."
 msgstr "Πληκτρολογήστε για αναζήτηση..."
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:214
+#: ../js/ui/overview.js:213
 msgid "Dash"
 msgstr "Ταμπλό"
 
@@ -862,11 +862,7 @@ msgstr "Αποτυχία αποπροσάρτησης '%s'"
 msgid "Retry"
 msgstr "Προσπάθεια ξανά"
 
-#: ../js/ui/placeDisplay.js:156
-msgid "Connect to..."
-msgstr "Σύνδεση σε..."
-
-#: ../js/ui/placeDisplay.js:367
+#: ../js/ui/placeDisplay.js:349
 msgid "PLACES & DEVICES"
 msgstr "ΤΟΠΟΘΕΣΙΕΣ & ΣΥΣΚΕΥΕΣ"
 
@@ -949,12 +945,14 @@ msgid "Hide Text"
 msgstr "Απόκρυψη κειμένου"
 
 #: ../js/ui/shellMountOperation.js:368
-msgid "Passphrase"
-msgstr "Συνθηματική φράση"
+#| msgid "Password:"
+msgid "Password"
+msgstr "Κωδικός"
 
 #: ../js/ui/shellMountOperation.js:389
-msgid "Remember Passphrase"
-msgstr "Απομνημόνευση συνθηματικής φράσης"
+#| msgid "Remember Passphrase"
+msgid "Remember Password"
+msgstr "Απομνημόνευση κωδικού"
 
 #: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:132
 msgid "Unlock"
@@ -1011,7 +1009,7 @@ msgstr "Μεγάλο κείμενο"
 #: ../js/ui/status/bluetooth.js:27 ../js/ui/status/bluetooth.js:31
 #: ../js/ui/status/bluetooth.js:256 ../js/ui/status/bluetooth.js:309
 #: ../js/ui/status/bluetooth.js:340 ../js/ui/status/bluetooth.js:376
-#: ../js/ui/status/bluetooth.js:405 ../js/ui/status/network.js:841
+#: ../js/ui/status/bluetooth.js:405 ../js/ui/status/network.js:842
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1021,18 +1019,18 @@ msgstr "Ορατότητα"
 
 #: ../js/ui/status/bluetooth.js:58
 msgid "Send Files to Device..."
-msgstr "Αποστολή αρχείων σε συσκευή..."
+msgstr "Αποστολή αρχείων στη συσκευή..."
 
 #: ../js/ui/status/bluetooth.js:59
 msgid "Set up a New Device..."
-msgstr "Ρύθμιση μιας νέας συσκευής..."
+msgstr "Ρύθμιση νέας συσκευής..."
 
 #: ../js/ui/status/bluetooth.js:83
 msgid "Bluetooth Settings"
 msgstr "Ρυθμίσεις Bluetooth"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:108 ../js/ui/status/network.js:208
+#: ../js/ui/status/bluetooth.js:108 ../js/ui/status/network.js:209
 msgid "hardware disabled"
 msgstr "απενεργοποιημένο μέσω διακόπτη"
 
@@ -1040,12 +1038,12 @@ msgstr "απενεργοποιημένο μέσω διακόπτη"
 msgid "Connection"
 msgstr "Σύνδεση"
 
-#: ../js/ui/status/bluetooth.js:212 ../js/ui/status/network.js:442
+#: ../js/ui/status/bluetooth.js:212 ../js/ui/status/network.js:443
 msgid "disconnecting..."
 msgstr "αποσύνδεση..."
 
-#: ../js/ui/status/bluetooth.js:225 ../js/ui/status/network.js:448
-#: ../js/ui/status/network.js:908
+#: ../js/ui/status/bluetooth.js:225 ../js/ui/status/network.js:449
+#: ../js/ui/status/network.js:909
 msgid "connecting..."
 msgstr "σύνδεση..."
 
@@ -1075,7 +1073,7 @@ msgstr "Ρυθμίσεις πληκτρολογίου"
 msgid "Mouse Settings"
 msgstr "Ρυθμίσεις ποντικιού"
 
-#: ../js/ui/status/bluetooth.js:274 ../js/ui/status/volume.js:54
+#: ../js/ui/status/bluetooth.js:274 ../js/ui/status/volume.js:233
 msgid "Sound Settings"
 msgstr "Ρυθμίσεις ήχου"
 
@@ -1097,7 +1095,7 @@ msgstr "Να επιτρέπεται πάντα η πρόσβαση"
 msgid "Grant this time only"
 msgstr "Μόνο για αυτή τη φορά"
 
-#: ../js/ui/status/bluetooth.js:351 ../js/ui/telepathyClient.js:1110
+#: ../js/ui/status/bluetooth.js:351 ../js/ui/telepathyClient.js:1106
 msgid "Reject"
 msgstr "Απόρριψη"
 
@@ -1145,120 +1143,124 @@ msgstr "Εμφάνιση διάταξης πληκτρολογίου"
 msgid "Region and Language Settings"
 msgstr "Ρυθμίσεις  περιοχής και γλώσσας"
 
-#: ../js/ui/status/network.js:93
+#: ../js/ui/status/lockScreenMenu.js:18
+msgid "Volume, network, battery"
+msgstr "Ένταση, δίκτυο, μπαταρία"
+
+#: ../js/ui/status/network.js:94
 msgid "<unknown>"
 msgstr "<άγνωστο>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:230
+#: ../js/ui/status/network.js:231
 msgid "disabled"
 msgstr "απενεργοποιημένο"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:440
+#: ../js/ui/status/network.js:441
 msgid "unmanaged"
 msgstr "μη διαχειριζόμενες"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:451 ../js/ui/status/network.js:911
+#: ../js/ui/status/network.js:452 ../js/ui/status/network.js:912
 msgid "authentication required"
 msgstr "απαιτείται πιστοποίηση"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:461
+#: ../js/ui/status/network.js:462
 msgid "firmware missing"
 msgstr "έλλειψη firmware"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:468
+#: ../js/ui/status/network.js:469
 msgid "cable unplugged"
 msgstr "καλώδιο αποσυνδέθηκε"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:473
+#: ../js/ui/status/network.js:474
 msgid "unavailable"
 msgstr "Μη διαθέσιμος-η"
 
-#: ../js/ui/status/network.js:475 ../js/ui/status/network.js:913
+#: ../js/ui/status/network.js:476 ../js/ui/status/network.js:914
 msgid "connection failed"
 msgstr "αποτυχία σύνδεσης"
 
-#: ../js/ui/status/network.js:536 ../js/ui/status/network.js:1534
+#: ../js/ui/status/network.js:537 ../js/ui/status/network.js:1535
 msgid "More..."
 msgstr "Περισσότερα..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:572 ../js/ui/status/network.js:1464
+#: ../js/ui/status/network.js:573 ../js/ui/status/network.js:1465
 msgid "Connected (private)"
 msgstr "Συνδεμένο (ιδιωτικό)"
 
-#: ../js/ui/status/network.js:647
+#: ../js/ui/status/network.js:648
 msgid "Auto Ethernet"
 msgstr "Αυτόματα Ethernet"
 
-#: ../js/ui/status/network.js:705
+#: ../js/ui/status/network.js:706
 msgid "Auto broadband"
 msgstr "Αυτόματα ευρυζωνική"
 
-#: ../js/ui/status/network.js:708
+#: ../js/ui/status/network.js:709
 msgid "Auto dial-up"
 msgstr "Αυτόματα dial-up"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:827 ../js/ui/status/network.js:1481
+#: ../js/ui/status/network.js:828 ../js/ui/status/network.js:1482
 #, c-format
 msgid "Auto %s"
 msgstr "Αυτόματα %s"
 
-#: ../js/ui/status/network.js:829
+#: ../js/ui/status/network.js:830
 msgid "Auto bluetooth"
 msgstr "Αυτόματα bluetooth"
 
-#: ../js/ui/status/network.js:1483
+#: ../js/ui/status/network.js:1484
 msgid "Auto wireless"
 msgstr "Αυτόματα ασύρματο"
 
-#: ../js/ui/status/network.js:1592
+#: ../js/ui/status/network.js:1582
 msgid "Enable networking"
 msgstr "Ενεργοποίηση δικτύωσης"
 
-#: ../js/ui/status/network.js:1614
+#: ../js/ui/status/network.js:1604
 msgid "Wired"
 msgstr "Ενσύρματο"
 
-#: ../js/ui/status/network.js:1625
+#: ../js/ui/status/network.js:1615
 msgid "Wireless"
 msgstr "Ασύρματο"
 
-#: ../js/ui/status/network.js:1635
+#: ../js/ui/status/network.js:1625
 msgid "Mobile broadband"
 msgstr "Κινήτη ευρυζωνική"
 
-#: ../js/ui/status/network.js:1645
+#: ../js/ui/status/network.js:1635
 msgid "VPN Connections"
 msgstr "Συνδέσεις VPN"
 
-#: ../js/ui/status/network.js:1652
+#: ../js/ui/status/network.js:1642
 msgid "Network Settings"
-msgstr "Ρυθμίσεις Δικτύου"
+msgstr "Ρυθμίσεις δικτύου"
 
-#: ../js/ui/status/network.js:1709
+#: ../js/ui/status/network.js:1691
 msgid "Network Manager"
 msgstr "Διαχειριστής δικτύου"
 
-#: ../js/ui/status/network.js:1801
+#: ../js/ui/status/network.js:1781
 msgid "Connection failed"
 msgstr "Αποτυχία σύνδεσης"
 
-#: ../js/ui/status/network.js:1802
+#: ../js/ui/status/network.js:1782
 msgid "Activation of network connection failed"
 msgstr "Αποτυχία ενεργοποίησης σύνδεσης δικτύου"
 
-#: ../js/ui/status/network.js:2103
+#: ../js/ui/status/network.js:2077
 msgid "Networking is disabled"
 msgstr "Η δικτύωση είναι απενεργοποιημένη"
 
@@ -1266,7 +1268,7 @@ msgstr "Η δικτύωση είναι απενεργοποιημένη"
 msgid "Battery"
 msgstr "Μπαταρία"
 
-#: ../js/ui/status/power.js:72
+#: ../js/ui/status/power.js:73
 msgid "Power Settings"
 msgstr "Ρυθμίσεις τροφοδοσίας"
 
@@ -1308,63 +1310,63 @@ msgid_plural "%d minutes remaining"
 msgstr[0] "%d λεπτό απομένει"
 msgstr[1] "%d λεπτά απομένουν"
 
-#: ../js/ui/status/power.js:118 ../js/ui/status/power.js:188
+#: ../js/ui/status/power.js:118 ../js/ui/status/power.js:191
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../js/ui/status/power.js:197
+#: ../js/ui/status/power.js:200
 msgid "AC adapter"
 msgstr "Τροφοδοσία AC"
 
-#: ../js/ui/status/power.js:199
+#: ../js/ui/status/power.js:202
 msgid "Laptop battery"
 msgstr "Μπαταρία φορητού"
 
-#: ../js/ui/status/power.js:201
+#: ../js/ui/status/power.js:204
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:203
+#: ../js/ui/status/power.js:206
 msgid "Monitor"
 msgstr "Οθόνη"
 
-#: ../js/ui/status/power.js:205
+#: ../js/ui/status/power.js:208
 msgid "Mouse"
 msgstr "Ποντίκι"
 
-#: ../js/ui/status/power.js:209
+#: ../js/ui/status/power.js:212
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:211
+#: ../js/ui/status/power.js:214
 msgid "Cell phone"
-msgstr "Κινητό"
+msgstr "Κινητό τηλέφωνο"
 
-#: ../js/ui/status/power.js:213
+#: ../js/ui/status/power.js:216
 msgid "Media player"
 msgstr "Αναπαραγωγή πολυμέσων"
 
-#: ../js/ui/status/power.js:215
+#: ../js/ui/status/power.js:218
 msgid "Tablet"
 msgstr "Ταμπλέτα"
 
-#: ../js/ui/status/power.js:217
+#: ../js/ui/status/power.js:220
 msgid "Computer"
 msgstr "Υπολογιστής"
 
-#: ../js/ui/status/power.js:219
+#: ../js/ui/status/power.js:222
 msgctxt "device"
 msgid "Unknown"
 msgstr "Άγνωστο"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:20 ../js/ui/status/volume.js:34
+#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:218
 msgid "Volume"
 msgstr "Ένταση ήχου"
 
-#: ../js/ui/status/volume.js:46
+#: ../js/ui/status/volume.js:59
 msgid "Microphone"
 msgstr "Μικρόφωνο"
 
@@ -1388,42 +1390,42 @@ msgstr "Μεταφορά αρχείου"
 msgid "Subscription request"
 msgstr "Αίτηση συνδρομής"
 
-#: ../js/ui/telepathyClient.js:422
+#: ../js/ui/telepathyClient.js:421
 msgid "Connection error"
 msgstr "Σφάλμα σύνδεσης"
 
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:921
+#: ../js/ui/telepathyClient.js:917
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Στάλθηκε στις  <b>%A</b> και ώρα  <b>%X</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:927
+#: ../js/ui/telepathyClient.js:923
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Στάλθηκε την <b>%A</b>, <b>%d %B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:932
+#: ../js/ui/telepathyClient.js:928
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Στάλθηκε την <b>%A</b>, <b>%d %B</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:961
+#: ../js/ui/telepathyClient.js:957
 #, c-format
 msgid "%s is now known as %s"
 msgstr "Ο/η %s είναι τώρα γνωστός ως %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1061
+#: ../js/ui/telepathyClient.js:1057
 #, c-format
 msgid "Invitation to %s"
 msgstr "Πρόσκληση στο δωμάτιο %s"
@@ -1431,35 +1433,35 @@ msgstr "Πρόσκληση στο δωμάτιο %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1069
+#: ../js/ui/telepathyClient.js:1065
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "Ο/η %s σας προσκαλεί να μπείτε στο δωμάτιο %s"
 
-#: ../js/ui/telepathyClient.js:1071 ../js/ui/telepathyClient.js:1150
-#: ../js/ui/telepathyClient.js:1214
+#: ../js/ui/telepathyClient.js:1067 ../js/ui/telepathyClient.js:1146
+#: ../js/ui/telepathyClient.js:1209
 msgid "Decline"
-msgstr "Άρνηση"
+msgstr "Απόρριψη"
 
-#: ../js/ui/telepathyClient.js:1072 ../js/ui/telepathyClient.js:1151
-#: ../js/ui/telepathyClient.js:1215
+#: ../js/ui/telepathyClient.js:1068 ../js/ui/telepathyClient.js:1147
+#: ../js/ui/telepathyClient.js:1210
 msgid "Accept"
 msgstr "Αποδοχή"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1102
+#: ../js/ui/telepathyClient.js:1098
 #, c-format
 msgid "Video call from %s"
 msgstr "Βιντεοκλήση από %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1105
+#: ../js/ui/telepathyClient.js:1101
 #, c-format
 msgid "Call from %s"
 msgstr "Κλήση από %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1112
+#: ../js/ui/telepathyClient.js:1108
 msgid "Answer"
 msgstr "Απάντηση"
 
@@ -1468,112 +1470,112 @@ msgstr "Απάντηση"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1144
+#: ../js/ui/telepathyClient.js:1140
 #, c-format
 msgid "%s is sending you %s"
 msgstr "Ο/η %s σας στέλνει %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1179
+#: ../js/ui/telepathyClient.js:1175
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "Ο/η %s ζητάει την άδεια σας για να βλέπει πότε είστε συνδεδεμένος"
 
-#: ../js/ui/telepathyClient.js:1272
+#: ../js/ui/telepathyClient.js:1267
 msgid "Network error"
 msgstr "Σφάλμα δικτύου"
 
-#: ../js/ui/telepathyClient.js:1274
+#: ../js/ui/telepathyClient.js:1269
 msgid "Authentication failed"
 msgstr "Απαιτείται πιστοποίηση"
 
-#: ../js/ui/telepathyClient.js:1276
+#: ../js/ui/telepathyClient.js:1271
 msgid "Encryption error"
 msgstr "Σφάλμα κρυπτογράφησης"
 
-#: ../js/ui/telepathyClient.js:1278
+#: ../js/ui/telepathyClient.js:1273
 msgid "Certificate not provided"
 msgstr "Δεν υπάρχει πιστοποιητικό"
 
-#: ../js/ui/telepathyClient.js:1280
+#: ../js/ui/telepathyClient.js:1275
 msgid "Certificate untrusted"
 msgstr "Μη έμπιστο πιστοποιητικό"
 
-#: ../js/ui/telepathyClient.js:1282
+#: ../js/ui/telepathyClient.js:1277
 msgid "Certificate expired"
 msgstr "Ληγμένο πιστοποιητικό"
 
-#: ../js/ui/telepathyClient.js:1284
+#: ../js/ui/telepathyClient.js:1279
 msgid "Certificate not activated"
 msgstr "Το πιστοποιητικό δεν ενεργοποιήθηκε"
 
-#: ../js/ui/telepathyClient.js:1286
+#: ../js/ui/telepathyClient.js:1281
 msgid "Certificate hostname mismatch"
 msgstr "Αταίριαστο όνομα κεντρικού υπολογιστή πιστοποιητικού"
 
-#: ../js/ui/telepathyClient.js:1288
+#: ../js/ui/telepathyClient.js:1283
 msgid "Certificate fingerprint mismatch"
 msgstr "Αταίριαστο αποτύπωμα πιστοποιητικού"
 
-#: ../js/ui/telepathyClient.js:1290
+#: ../js/ui/telepathyClient.js:1285
 msgid "Certificate self-signed"
 msgstr "Αυτο-υπογεγραμμένο πιστοποιητικό"
 
-#: ../js/ui/telepathyClient.js:1292
+#: ../js/ui/telepathyClient.js:1287
 msgid "Status is set to offline"
 msgstr "Η κατάσταση έχει ορισθεί σε αποσυνδεδεμένος"
 
-#: ../js/ui/telepathyClient.js:1294
+#: ../js/ui/telepathyClient.js:1289
 msgid "Encryption is not available"
 msgstr "Δεν υπάρχει διαθέσιμη κρυπτογράφηση"
 
-#: ../js/ui/telepathyClient.js:1296
+#: ../js/ui/telepathyClient.js:1291
 msgid "Certificate is invalid"
 msgstr "Το πιστοποιητικό δεν είναι έγκυρο"
 
-#: ../js/ui/telepathyClient.js:1298
+#: ../js/ui/telepathyClient.js:1293
 msgid "Connection has been refused"
 msgstr "Άρνηση σύνδεσης"
 
-#: ../js/ui/telepathyClient.js:1300
+#: ../js/ui/telepathyClient.js:1295
 msgid "Connection can't be established"
 msgstr "Δεν είναι δυνατή η σύνδεση"
 
-#: ../js/ui/telepathyClient.js:1302
+#: ../js/ui/telepathyClient.js:1297
 msgid "Connection has been lost"
 msgstr "Η σύνδεση χάθηκε"
 
-#: ../js/ui/telepathyClient.js:1304
+#: ../js/ui/telepathyClient.js:1299
 msgid "This account is already connected to the server"
 msgstr "Αυτός ο λογαριασμός είναι ήδη συνδεδεμένος με τον εξυπηρετητή"
 
-#: ../js/ui/telepathyClient.js:1306
+#: ../js/ui/telepathyClient.js:1301
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Η σύνδεση έχει αντικατασταθεί από μια νέα σύνδεση που χρησιμοποιεί τον ίδιο "
 "πόρο"
 
-#: ../js/ui/telepathyClient.js:1308
+#: ../js/ui/telepathyClient.js:1303
 msgid "The account already exists on the server"
 msgstr "Ο λογαριασμός υπάρχει ήδη στον διακομιστή"
 
-#: ../js/ui/telepathyClient.js:1310
+#: ../js/ui/telepathyClient.js:1305
 msgid "Server is currently too busy to handle the connection"
 msgstr "Ο διακομιστής είναι πολύ απασχολημένος ώστε να χειριστεί την σύνδεση"
 
-#: ../js/ui/telepathyClient.js:1312
+#: ../js/ui/telepathyClient.js:1307
 msgid "Certificate has been revoked"
 msgstr "Το πιστοποιητικό έχει ανακληθεί"
 
-#: ../js/ui/telepathyClient.js:1314
+#: ../js/ui/telepathyClient.js:1309
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Το πιστοποιητικό χρησιμοποιεί ένα μη ασφαλή αλγόριθμο αποτυπώματος ή είναι "
 "αδύναμα κρυπτογραφημένο"
 
-#: ../js/ui/telepathyClient.js:1316
+#: ../js/ui/telepathyClient.js:1311
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -1582,26 +1584,26 @@ msgstr ""
 "πιστοποιητικού του εξυπηρετητή υπερβαίνει τα όρια που επιτρέπει η βιβλιοθήκη "
 "κρυπτογραφίας"
 
-#: ../js/ui/telepathyClient.js:1318
+#: ../js/ui/telepathyClient.js:1313
 msgid "Internal error"
 msgstr "Εσωτερικό σφάλμα"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1328
+#: ../js/ui/telepathyClient.js:1323
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Η σύνδεση στο %s απέτυχε"
 
-#: ../js/ui/telepathyClient.js:1337
+#: ../js/ui/telepathyClient.js:1332
 msgid "Reconnect"
 msgstr "Επανασύνδεση"
 
-#: ../js/ui/telepathyClient.js:1338
+#: ../js/ui/telepathyClient.js:1333
 msgid "Edit account"
 msgstr "Επεξεργασία λογαριασμού"
 
-#: ../js/ui/telepathyClient.js:1383
+#: ../js/ui/telepathyClient.js:1378
 msgid "Unknown reason"
 msgstr "Άγνωστος λόγος"
 
@@ -1609,63 +1611,63 @@ msgstr "Άγνωστος λόγος"
 msgid "Log in as another user"
 msgstr "Είσοδος ως άλλος χρήστης"
 
-#: ../js/ui/userMenu.js:167
+#: ../js/ui/userMenu.js:166
 msgid "Available"
 msgstr "Διαθέσιμος"
 
-#: ../js/ui/userMenu.js:170
+#: ../js/ui/userMenu.js:169
 msgid "Busy"
 msgstr "Απασχολημένος"
 
-#: ../js/ui/userMenu.js:173
+#: ../js/ui/userMenu.js:172
 msgid "Invisible"
 msgstr "Αόρατος-η"
 
-#: ../js/ui/userMenu.js:176
+#: ../js/ui/userMenu.js:175
 msgid "Away"
 msgstr "Μακρυά"
 
-#: ../js/ui/userMenu.js:179
+#: ../js/ui/userMenu.js:178
 msgid "Idle"
 msgstr "Αδρανής"
 
-#: ../js/ui/userMenu.js:182
+#: ../js/ui/userMenu.js:181
 msgid "Unavailable"
 msgstr "Μη διαθέσιμος-η"
 
-#: ../js/ui/userMenu.js:589 ../js/ui/userMenu.js:730
+#: ../js/ui/userMenu.js:588 ../js/ui/userMenu.js:729
 msgid "Switch User"
 msgstr "Αλλαγή χρήστη"
 
-#: ../js/ui/userMenu.js:590
+#: ../js/ui/userMenu.js:589
 msgid "Switch Session"
 msgstr "Αλλαγή συνεδρίας"
 
-#: ../js/ui/userMenu.js:713
+#: ../js/ui/userMenu.js:712
 msgid "Notifications"
 msgstr "Ειδοποιήσεις"
 
-#: ../js/ui/userMenu.js:722
+#: ../js/ui/userMenu.js:721
 msgid "System Settings"
 msgstr "Ρυθμίσεις συστήματος"
 
-#: ../js/ui/userMenu.js:735
+#: ../js/ui/userMenu.js:734
 msgid "Log Out"
 msgstr "Αποσύνδεση"
 
-#: ../js/ui/userMenu.js:740
+#: ../js/ui/userMenu.js:739
 msgid "Lock"
 msgstr "Κλείδωμα"
 
-#: ../js/ui/userMenu.js:755
+#: ../js/ui/userMenu.js:754
 msgid "Install Updates & Restart"
 msgstr "Εγκατάσταση ενημερώσεων & επανεκκίνηση"
 
-#: ../js/ui/userMenu.js:773
+#: ../js/ui/userMenu.js:772
 msgid "Your chat status will be set to busy"
 msgstr "Η κατάσταση συνομιλίας σας θα ορισθεί σε απασχολημένος"
 
-#: ../js/ui/userMenu.js:774
+#: ../js/ui/userMenu.js:773
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1674,19 +1676,19 @@ msgstr ""
 "κατάσταση σας έχει  ορισθεί έτσι ώστε να γίνεται γνωστό ότι πιθανόν να μην "
 "δείτε τα μηνύματα τους,"
 
-#: ../js/ui/viewSelector.js:88
+#: ../js/ui/viewSelector.js:86
 msgid "Windows"
 msgstr "Παράθυρα"
 
-#: ../js/ui/viewSelector.js:92
+#: ../js/ui/viewSelector.js:90
 msgid "Applications"
 msgstr "Εφαρμογές"
 
-#: ../js/ui/viewSelector.js:96 ../src/shell-util.c:250
+#: ../js/ui/viewSelector.js:94 ../src/shell-util.c:250
 msgid "Search"
 msgstr "Αναζήτηση"
 
-#: ../js/ui/wanda.js:125
+#: ../js/ui/wanda.js:123
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1695,12 +1697,12 @@ msgstr ""
 "Συγγνώμη, κανένα απόφθεγμα για εσάς σήμερα:\n"
 "%s"
 
-#: ../js/ui/wanda.js:129
+#: ../js/ui/wanda.js:127
 #, c-format
 msgid "%s the Oracle says"
 msgstr "%s ο Προφήτης λέει"
 
-#: ../js/ui/wanda.js:170
+#: ../js/ui/wanda.js:168
 msgid "Your favorite Easter Egg"
 msgstr "Το αγαπημένο σας Easter Egg"
 
@@ -1798,6 +1800,12 @@ msgstr "Σύστημα αρχείων"
 #, c-format
 msgid "%1$s: %2$s"
 msgstr "%1$s: %2$s"
+
+#~ msgid "Connect to..."
+#~ msgstr "Σύνδεση σε..."
+
+#~ msgid "Passphrase"
+#~ msgstr "Συνθηματική φράση"
 
 #~ msgctxt "contact"
 #~ msgid "Unknown"
