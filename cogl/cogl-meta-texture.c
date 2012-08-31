@@ -182,7 +182,7 @@ create_grid_and_repeat_cb (CoglTexture *slice_texture,
                                   data->height,
                                   &y_real_index);
 
-  data->padded_textures[n_y_spans * y_real_index + x_real_index] =
+  data->padded_textures[n_x_spans * y_real_index + x_real_index] =
     slice_texture;
 
   /* Our callback is going to be passed normalized slice texture
@@ -214,7 +214,7 @@ create_grid_and_repeat_cb (CoglTexture *slice_texture,
                                          data);
 
   /* Clear the padded_textures ready for the next iteration */
-  data->padded_textures[n_y_spans * y_real_index + x_real_index] = NULL;
+  data->padded_textures[n_x_spans * y_real_index + x_real_index] = NULL;
 }
 
 #define SWAP(A,B) do { float tmp = B; B = A; A = tmp; } while (0)

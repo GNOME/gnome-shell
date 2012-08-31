@@ -1441,7 +1441,7 @@ _cogl_texture_spans_foreach_in_region (CoglSpan *x_spans,
           slice_coords[2] = (slice_coords[2] - iter_x.pos) / iter_x.span->size;
 
 	  /* Pluck out the cogl texture for this span */
-          span_tex = textures[iter_y.index * n_y_spans + iter_x.index];
+          span_tex = textures[iter_y.index * n_x_spans + iter_x.index];
 
           span_virtual_coords[0] = iter_x.intersect_start;
           span_virtual_coords[1] = iter_y.intersect_start;
