@@ -21,7 +21,7 @@ test_push_pop_single_context (void)
   CoglPipeline *pipeline;
   CoglGLES2Context *gles2_ctx;
   const CoglGLES2Vtable *gles2;
-  GError *error = NULL;
+  CoglError *error = NULL;
 
   offscreen_texture = COGL_TEXTURE (
     cogl_texture_2d_new_with_size (ctx,
@@ -146,7 +146,7 @@ create_gles2_context (CoglTexture **offscreen_texture,
                       CoglGLES2Context **gles2_ctx,
                       const CoglGLES2Vtable **gles2)
 {
-  GError *error = NULL;
+  CoglError *error = NULL;
 
   *offscreen_texture = COGL_TEXTURE (
     cogl_texture_2d_new_with_size (ctx,
@@ -179,7 +179,7 @@ test_push_pop_multi_context (void)
   CoglPipeline *pipeline1;
   CoglGLES2Context *gles2_ctx1;
   const CoglGLES2Vtable *gles21;
-  GError *error = NULL;
+  CoglError *error = NULL;
 
   create_gles2_context (&offscreen_texture0,
                         &offscreen0,
@@ -278,7 +278,7 @@ test_gles2_read_pixels (void)
   CoglPipeline *pipeline;
   CoglGLES2Context *gles2_ctx;
   const CoglGLES2Vtable *gles2;
-  GError *error = NULL;
+  CoglError *error = NULL;
   GLubyte pixel[3];
   GLuint fbo_handle;
 
@@ -684,7 +684,7 @@ test_gles2_context_fbo (void)
       CoglPipeline *pipeline;
       CoglGLES2Context *gles2_ctx;
       GLuint program;
-      GError *error = NULL;
+      CoglError *error = NULL;
 
       create_gles2_context (&offscreen_texture,
                             &offscreen,
@@ -814,7 +814,7 @@ test_gles2_context_copy_tex_image (void)
   CoglPipeline *pipeline;
   CoglGLES2Context *gles2_ctx;
   const CoglGLES2Vtable *gles2;
-  GError *error = NULL;
+  CoglError *error = NULL;
   GLuint tex;
   GLint tex_uniform_location;
   GLint pos_location;

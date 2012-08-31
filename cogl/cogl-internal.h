@@ -118,7 +118,7 @@ typedef enum _CoglPipelineEvalFlags
 CoglBool
 _cogl_check_extension (const char *name, const char *ext);
 
-GQuark
+uint32_t
 _cogl_driver_error_quark (void);
 
 #endif /* __COGL_INTERNAL_H */

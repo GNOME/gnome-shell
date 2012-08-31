@@ -43,7 +43,7 @@
 
 #include "cogl-poll.h"
 
-GQuark
+uint32_t
 _cogl_winsys_error_quark (void);
 
 #define COGL_WINSYS_ERROR (_cogl_winsys_error_quark ())
@@ -78,28 +78,28 @@ typedef struct _CoglWinsysVtable
                                 CoglBool in_core);
 
   CoglBool
-  (*renderer_connect) (CoglRenderer *renderer, GError **error);
+  (*renderer_connect) (CoglRenderer *renderer, CoglError **error);
 
   void
   (*renderer_disconnect) (CoglRenderer *renderer);
 
   CoglBool
-  (*display_setup) (CoglDisplay *display, GError **error);
+  (*display_setup) (CoglDisplay *display, CoglError **error);
 
   void
   (*display_destroy) (CoglDisplay *display);
 
   CoglBool
-  (*context_init) (CoglContext *context, GError **error);
+  (*context_init) (CoglContext *context, CoglError **error);
 
   void
   (*context_deinit) (CoglContext *context);
 
   void *
-  (*context_create_gles2_context) (CoglContext *ctx, GError **error);
+  (*context_create_gles2_context) (CoglContext *ctx, CoglError **error);
 
   CoglBool
-  (*onscreen_init) (CoglOnscreen *onscreen, GError **error);
+  (*onscreen_init) (CoglOnscreen *onscreen, CoglError **error);
 
   void
   (*onscreen_deinit) (CoglOnscreen *onscreen);
@@ -176,7 +176,7 @@ typedef struct _CoglWinsysVtable
   (*save_context) (CoglContext *ctx);
 
   CoglBool
-  (*set_gles2_context) (CoglGLES2Context *gles2_ctx, GError **error);
+  (*set_gles2_context) (CoglGLES2Context *gles2_ctx, CoglError **error);
 
   void
   (*restore_context) (CoglContext *ctx);

@@ -57,7 +57,7 @@ cogl_texture_3d_error_quark (void);
 
 CoglBool
 cogl_index_buffer_allocate (CoglIndexBuffer *indices,
-                            GError *error);
+                            CoglError *error);
 
 CoglBool
 cogl_is_journal (void *object);
@@ -97,7 +97,7 @@ cogl_texture_3d_error_quark (void)
 
 CoglBool
 cogl_index_buffer_allocate (CoglIndexBuffer *indices,
-                            GError *error)
+                            CoglError *error)
 {
   return TRUE;
 }

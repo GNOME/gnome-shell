@@ -38,6 +38,7 @@
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-error-private.h"
 #ifdef COGL_HAS_EGL_SUPPORT
 #include "cogl-winsys-egl-private.h"
 #endif
@@ -183,7 +184,7 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
                                int width,
                                int height,
                                CoglPixelFormat internal_format,
-                               GError **error)
+                               CoglError **error)
 {
   CoglTexture2D         *tex_2d;
   GLenum                 gl_intformat;
@@ -196,10 +197,10 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
 
   if (!_cogl_texture_2d_can_create (ctx, width, height, internal_format))
     {
-      g_set_error (error, COGL_TEXTURE_ERROR,
-                   COGL_TEXTURE_ERROR_SIZE,
-                   "Failed to create texture 2d due to size/format"
-                   " constraints");
+      _cogl_set_error (error, COGL_TEXTURE_ERROR,
+                       COGL_TEXTURE_ERROR_SIZE,
+                       "Failed to create texture 2d due to size/format"
+                       " constraints");
       return NULL;
     }
 
@@ -226,7 +227,7 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
 CoglTexture2D *
 cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp,
                                  CoglPixelFormat internal_format,
-                                 GError **error)
+                                 CoglError **error)
 {
   CoglTexture2D *tex_2d;
   CoglBitmap *dst_bmp;
@@ -249,10 +250,10 @@ cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp,
                                     cogl_bitmap_get_height (bmp),
                                     internal_format))
     {
-      g_set_error (error, COGL_TEXTURE_ERROR,
-                   COGL_TEXTURE_ERROR_SIZE,
-                   "Failed to create texture 2d due to size/format"
-                   " constraints");
+      _cogl_set_error (error, COGL_TEXTURE_ERROR,
+                       COGL_TEXTURE_ERROR_SIZE,
+                       "Failed to create texture 2d due to size/format"
+                       " constraints");
       return NULL;
 
     }
@@ -264,9 +265,9 @@ cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp,
                                                    &gl_format,
                                                    &gl_type)) == NULL)
     {
-      g_set_error (error, COGL_TEXTURE_ERROR,
-                   COGL_TEXTURE_ERROR_FORMAT,
-                   "Failed to prepare texture upload due to format");
+      _cogl_set_error (error, COGL_TEXTURE_ERROR,
+                       COGL_TEXTURE_ERROR_FORMAT,
+                       "Failed to prepare texture upload due to format");
       return NULL;
     }
 
@@ -315,7 +316,7 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
                                CoglPixelFormat internal_format,
                                int rowstride,
                                const uint8_t *data,
-                               GError **error)
+                               CoglError **error)
 {
   CoglBitmap *bmp;
   CoglTexture2D *tex_2d;
@@ -349,7 +350,7 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
                                   int width,
                                   int height,
                                   CoglPixelFormat format,
-                                  GError **error)
+                                  CoglError **error)
 {
   /* NOTE: width, height and internal format are not queriable
    * in GLES, hence such a function prototype.
@@ -365,9 +366,9 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
 
   if (!ctx->texture_driver->allows_foreign_gl_target (ctx, GL_TEXTURE_2D))
     {
-      g_set_error (error,
-                   COGL_ERROR,
-                   COGL_ERROR_UNSUPPORTED,
+      _cogl_set_error (error,
+                   COGL_SYSTEM_ERROR,
+                   COGL_SYSTEM_ERROR_UNSUPPORTED,
                    "Foreign GL_TEXTURE_2D textures are not "
                    "supported by your system");
       return NULL;
@@ -381,10 +382,10 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D, gl_handle, TRUE);
   if (ctx->glGetError () != GL_NO_ERROR)
     {
-      g_set_error (error,
-                   COGL_ERROR,
-                   COGL_ERROR_UNSUPPORTED,
-                   "Failed to bind foreign GL_TEXTURE_2D texture");
+      _cogl_set_error (error,
+                       COGL_SYSTEM_ERROR,
+                       COGL_SYSTEM_ERROR_UNSUPPORTED,
+                       "Failed to bind foreign GL_TEXTURE_2D texture");
       return NULL;
     }
 
@@ -414,10 +415,10 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
                                                               gl_int_format,
                                                               &format))
         {
-          g_set_error (error,
-                       COGL_ERROR,
-                       COGL_ERROR_UNSUPPORTED,
-                       "Unsupported internal format for foreign texture");
+          _cogl_set_error (error,
+                           COGL_SYSTEM_ERROR,
+                           COGL_SYSTEM_ERROR_UNSUPPORTED,
+                           "Unsupported internal format for foreign texture");
           return NULL;
         }
     }
@@ -446,10 +447,10 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
   /* Compressed texture images not supported */
   if (gl_compressed == GL_TRUE)
     {
-      g_set_error (error,
-                   COGL_ERROR,
-                   COGL_ERROR_UNSUPPORTED,
-                   "Compressed foreign textures aren't currently supported");
+      _cogl_set_error (error,
+                       COGL_SYSTEM_ERROR,
+                       COGL_SYSTEM_ERROR_UNSUPPORTED,
+                       "Compressed foreign textures aren't currently supported");
       return NULL;
     }
 
@@ -496,7 +497,7 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
                                      int height,
                                      CoglPixelFormat format,
                                      EGLImageKHR image,
-                                     GError **error)
+                                     CoglError **error)
 {
   CoglTexture2D *tex_2d;
   GLenum gl_error;
@@ -523,10 +524,11 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
   ctx->glEGLImageTargetTexture2D (GL_TEXTURE_2D, image);
   if (ctx->glGetError () != GL_NO_ERROR)
     {
-      g_set_error (error,
-                   COGL_TEXTURE_ERROR,
-                   COGL_TEXTURE_ERROR_BAD_PARAMETER,
-                   "Could not create a CoglTexture2D from a given EGLImage");
+      _cogl_set_error (error,
+                       COGL_TEXTURE_ERROR,
+                       COGL_TEXTURE_ERROR_BAD_PARAMETER,
+                       "Could not create a CoglTexture2D from a given "
+                       "EGLImage");
       return NULL;
     }
 
@@ -538,7 +540,7 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
 CoglTexture2D *
 cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
                                          struct wl_buffer *buffer,
-                                         GError **error)
+                                         CoglError **error)
 {
   if (wl_buffer_is_shm (buffer))
     {

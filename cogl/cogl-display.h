@@ -124,7 +124,7 @@ cogl_display_get_renderer (CoglDisplay *display);
 /**
  * cogl_display_setup:
  * @display: a #CoglDisplay
- * @error: return location for a #GError
+ * @error: return location for a #CoglError
  *
  * Explicitly sets up the given @display object. Use of this api is
  * optional since Cogl will internally setup the display if not done
@@ -154,7 +154,7 @@ cogl_display_get_renderer (CoglDisplay *display);
  */
 CoglBool
 cogl_display_setup (CoglDisplay *display,
-                    GError **error);
+                    CoglError **error);
 
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
 /**

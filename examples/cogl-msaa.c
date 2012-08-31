@@ -10,7 +10,7 @@ main (int argc, char **argv)
     CoglContext *ctx;
     CoglOnscreen *onscreen;
     CoglFramebuffer *fb;
-    GError *error = NULL;
+    CoglError *error = NULL;
     CoglVertexP2C4 triangle_vertices[] = {
         {0, 0.7, 0xff, 0x00, 0x00, 0x80},
         {-0.7, -0.7, 0x00, 0xff, 0x00, 0xff},
@@ -49,7 +49,7 @@ main (int argc, char **argv)
       {
         fprintf (stderr, "Failed to allocate 4x msaa offscreen framebuffer, "
                  "disabling msaa for onscreen rendering: %s\n", error->message);
-        g_error_free (error);
+        cogl_error_free (error);
         cogl_framebuffer_set_samples_per_pixel (fb, 0);
 
         error = NULL;
@@ -70,7 +70,7 @@ main (int argc, char **argv)
     cogl_framebuffer_set_samples_per_pixel (offscreen_fb, 4);
     if (!cogl_framebuffer_allocate (offscreen_fb, &error))
       {
-        g_error_free (error);
+        cogl_error_free (error);
         error = NULL;
         fprintf (stderr, "Failed to allocate 4x msaa offscreen framebuffer, "
                  "disabling msaa for offscreen rendering");

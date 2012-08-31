@@ -225,7 +225,7 @@ _cogl_bitmap_new_shared (CoglBitmap              *shared_bmp,
 
 CoglBitmap *
 cogl_bitmap_new_from_file (const char *filename,
-                           GError **error)
+                           CoglError **error)
 {
   _COGL_GET_CONTEXT (ctx, NULL);
 
@@ -298,7 +298,7 @@ CoglBitmap *
 cogl_android_bitmap_new_from_asset (CoglContext *ctx,
                                     AAssetManager *manager,
                                     const char *filename,
-                                    GError **error)
+                                    CoglError **error)
 {
   _COGL_RETURN_VAL_IF_FAIL (ctx != NULL, NULL);
   _COGL_RETURN_VAL_IF_FAIL (manager != NULL, NULL);
@@ -349,7 +349,7 @@ cogl_bitmap_get_buffer (CoglBitmap *bitmap)
   return COGL_PIXEL_BUFFER (bitmap->buffer);
 }
 
-GQuark
+uint32_t
 cogl_bitmap_error_quark (void)
 {
   return g_quark_from_static_string ("cogl-bitmap-error-quark");

@@ -37,6 +37,7 @@
 #include "cogl-context-private.h"
 #include "cogl-debug.h"
 #include "cogl-blend-string.h"
+#include "cogl-error-private.h"
 
 typedef enum _ParserState
 {
@@ -118,7 +119,7 @@ static CoglBlendStringFunctionInfo blend_functions[] = {
 
 #undef DEFINE_FUNCTION
 
-GQuark
+uint32_t
 cogl_blend_string_error_quark (void)
 {
   return g_quark_from_static_string ("cogl-blend-string-error-quark");
@@ -161,7 +162,7 @@ _cogl_blend_string_split_rgba_statement (CoglBlendStringStatement *statement,
 static CoglBool
 validate_tex_combine_statements (CoglBlendStringStatement *statements,
                                  int n_statements,
-                                 GError **error)
+                                 CoglError **error)
 {
   int i, j;
   const char *error_string;
@@ -190,11 +191,11 @@ validate_tex_combine_statements (CoglBlendStringStatement *statements,
   return TRUE;
 
 error:
-  g_set_error (error,
-               COGL_BLEND_STRING_ERROR,
-               detail,
-               "Invalid texture combine string: %s",
-               error_string);
+  _cogl_set_error (error,
+                   COGL_BLEND_STRING_ERROR,
+                   detail,
+                   "Invalid texture combine string: %s",
+                   error_string);
 
   if (COGL_DEBUG_ENABLED (COGL_DEBUG_BLEND_STRINGS))
     {
@@ -207,7 +208,7 @@ error:
 static CoglBool
 validate_blend_statements (CoglBlendStringStatement *statements,
                            int n_statements,
-                           GError **error)
+                           CoglError **error)
 {
   int i, j;
   const char *error_string;
@@ -275,11 +276,11 @@ validate_blend_statements (CoglBlendStringStatement *statements,
   return TRUE;
 
 error:
-  g_set_error (error,
-               COGL_BLEND_STRING_ERROR,
-               detail,
-               "Invalid blend string: %s",
-               error_string);
+  _cogl_set_error (error,
+                   COGL_BLEND_STRING_ERROR,
+                   detail,
+                   "Invalid blend string: %s",
+                   error_string);
   return FALSE;
 }
 
@@ -287,7 +288,7 @@ static CoglBool
 validate_statements_for_context (CoglBlendStringStatement *statements,
                                  int n_statements,
                                  CoglBlendStringContext context,
-                                 GError **error)
+                                 CoglError **error)
 {
   const char *error_string;
 
@@ -313,13 +314,13 @@ validate_statements_for_context (CoglBlendStringStatement *statements,
     return validate_tex_combine_statements (statements, n_statements, error);
 
 error:
-  g_set_error (error,
-               COGL_BLEND_STRING_ERROR,
-               COGL_BLEND_STRING_ERROR_INVALID_ERROR,
-               "Invalid %s string: %s",
-               context == COGL_BLEND_STRING_CONTEXT_BLENDING ?
-               "blend" : "texture combine",
-               error_string);
+  _cogl_set_error (error,
+                   COGL_BLEND_STRING_ERROR,
+                   COGL_BLEND_STRING_ERROR_INVALID_ERROR,
+                   "Invalid %s string: %s",
+                   context == COGL_BLEND_STRING_CONTEXT_BLENDING ?
+                   "blend" : "texture combine",
+                   error_string);
 
   if (COGL_DEBUG_ENABLED (COGL_DEBUG_BLEND_STRINGS))
     {
@@ -474,7 +475,7 @@ parse_argument (const char *string, /* original user string */
                 int current_arg,
                 CoglBlendStringArgument *arg, /* OUT */
                 CoglBlendStringContext context,
-                GError **error)
+                CoglError **error)
 {
   const char *p = *ret_p;
   const char *mark = NULL;
@@ -743,13 +744,13 @@ parse_argument (const char *string, /* original user string */
 error:
   {
     int offset = p - string;
-    g_set_error (error,
-                 COGL_BLEND_STRING_ERROR,
-                 COGL_BLEND_STRING_ERROR_ARGUMENT_PARSE_ERROR,
-                 "Syntax error for argument %d at offset %d: %s",
-                 current_arg,
-                 offset,
-                 error_string);
+    _cogl_set_error (error,
+                     COGL_BLEND_STRING_ERROR,
+                     COGL_BLEND_STRING_ERROR_ARGUMENT_PARSE_ERROR,
+                     "Syntax error for argument %d at offset %d: %s",
+                     current_arg,
+                     offset,
+                     error_string);
 
     if (COGL_DEBUG_ENABLED (COGL_DEBUG_BLEND_STRINGS))
       {
@@ -764,7 +765,7 @@ int
 _cogl_blend_string_compile (const char *string,
                             CoglBlendStringContext context,
                             CoglBlendStringStatement *statements,
-                            GError **error)
+                            CoglError **error)
 {
   const char *p = string;
   const char *mark = NULL;
@@ -924,12 +925,12 @@ finished:
 error:
     {
       int offset = p - string;
-      g_set_error (error,
-                   COGL_BLEND_STRING_ERROR,
-                   COGL_BLEND_STRING_ERROR_PARSE_ERROR,
-                   "Syntax error at offset %d: %s",
-                   offset,
-                   error_string);
+      _cogl_set_error (error,
+                       COGL_BLEND_STRING_ERROR,
+                       COGL_BLEND_STRING_ERROR_PARSE_ERROR,
+                       "Syntax error at offset %d: %s",
+                       offset,
+                       error_string);
 
       if (COGL_DEBUG_ENABLED (COGL_DEBUG_BLEND_STRINGS))
         {
@@ -981,7 +982,7 @@ _cogl_blend_string_test (void)
   };
   int i;
 
-  GError *error = NULL;
+  CoglError *error = NULL;
   for (i = 0; strings[i].string; i++)
     {
       CoglBlendStringStatement statements[2];
@@ -994,7 +995,7 @@ _cogl_blend_string_test (void)
           g_print ("Failed to parse string:\n%s\n%s\n",
                    strings[i].string,
                    error->message);
-          g_error_free (error);
+          cogl_error_free (error);
           error = NULL;
           continue;
         }

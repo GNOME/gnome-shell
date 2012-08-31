@@ -37,6 +37,7 @@
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-pipeline-opengl-private.h"
+#include "cogl-error-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -145,7 +146,7 @@ _cogl_texture_3d_can_create (CoglContext *ctx,
                              int height,
                              int depth,
                              CoglPixelFormat internal_format,
-                             GError **error)
+                             CoglError **error)
 {
   GLenum gl_intformat;
   GLenum gl_type;
@@ -153,10 +154,10 @@ _cogl_texture_3d_can_create (CoglContext *ctx,
   /* This should only happen on GLES */
   if (!cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_3D))
     {
-      g_set_error (error,
-                   COGL_ERROR,
-                   COGL_ERROR_UNSUPPORTED,
-                   "3D textures are not supported by the GPU");
+      _cogl_set_error (error,
+                       COGL_SYSTEM_ERROR,
+                       COGL_SYSTEM_ERROR_UNSUPPORTED,
+                       "3D textures are not supported by the GPU");
       return FALSE;
     }
 
@@ -167,11 +168,11 @@ _cogl_texture_3d_can_create (CoglContext *ctx,
        !_cogl_util_is_pot (height) ||
        !_cogl_util_is_pot (depth)))
     {
-      g_set_error (error,
-                   COGL_ERROR,
-                   COGL_ERROR_UNSUPPORTED,
-                   "A non-power-of-two size was requested but this is not "
-                   "supported by the GPU");
+      _cogl_set_error (error,
+                       COGL_SYSTEM_ERROR,
+                       COGL_SYSTEM_ERROR_UNSUPPORTED,
+                       "A non-power-of-two size was requested but this is not "
+                       "supported by the GPU");
       return FALSE;
     }
 
@@ -190,10 +191,10 @@ _cogl_texture_3d_can_create (CoglContext *ctx,
                                                height,
                                                depth))
     {
-      g_set_error (error,
-                   COGL_ERROR,
-                   COGL_ERROR_UNSUPPORTED,
-                   "The requested dimensions are not supported by the GPU");
+      _cogl_set_error (error,
+                       COGL_SYSTEM_ERROR,
+                       COGL_SYSTEM_ERROR_UNSUPPORTED,
+                       "The requested dimensions are not supported by the GPU");
       return FALSE;
     }
 
@@ -206,7 +207,7 @@ cogl_texture_3d_new_with_size (CoglContext *ctx,
                                int height,
                                int depth,
                                CoglPixelFormat internal_format,
-                               GError **error)
+                               CoglError **error)
 {
   CoglTexture3D         *tex_3d;
   GLenum                 gl_intformat;
@@ -248,7 +249,7 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
                                  unsigned int height,
                                  unsigned int depth,
                                  CoglPixelFormat internal_format,
-                                 GError **error)
+                                 CoglError **error)
 {
   CoglTexture3D *tex_3d;
   CoglBitmap *dst_bmp;
@@ -283,8 +284,8 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
 
   if (dst_bmp == NULL)
     {
-      g_set_error (error, COGL_BITMAP_ERROR, COGL_BITMAP_ERROR_FAILED,
-                   "Bitmap conversion failed");
+      _cogl_set_error (error, COGL_BITMAP_ERROR, COGL_BITMAP_ERROR_FAILED,
+                       "Bitmap conversion failed");
       return NULL;
     }
 
@@ -337,13 +338,13 @@ cogl_texture_3d_new_from_data (CoglContext *context,
                                int rowstride,
                                int image_stride,
                                const uint8_t *data,
-                               GError **error)
+                               CoglError **error)
 {
   CoglBitmap *bitmap;
   CoglTexture3D *ret;
 
   /* These are considered a programmer errors so we won't set a
-     GError. It would be nice if this was a _COGL_RETURN_IF_FAIL but the
+     CoglError. It would be nice if this was a _COGL_RETURN_IF_FAIL but the
      rest of Cogl isn't using that */
   if (format == COGL_PIXEL_FORMAT_ANY)
     return NULL;

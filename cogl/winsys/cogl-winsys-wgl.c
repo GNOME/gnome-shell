@@ -232,7 +232,7 @@ win32_event_filter_cb (MSG *msg, void *data)
 
 static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
-                               GError **error)
+                               CoglError **error)
 {
   renderer->winsys = g_slice_new0 (CoglRendererWgl);
 
@@ -372,7 +372,7 @@ choose_pixel_format (CoglFramebufferConfig *config,
 }
 
 static CoglBool
-create_window_class (CoglDisplay *display, GError **error)
+create_window_class (CoglDisplay *display, CoglError **error)
 {
   CoglDisplayWgl *wgl_display = display->winsys;
   char *class_name_ascii, *src;
@@ -415,7 +415,7 @@ create_window_class (CoglDisplay *display, GError **error)
 
   if (wgl_display->window_class == 0)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "Unable to register window class");
       return FALSE;
@@ -425,7 +425,7 @@ create_window_class (CoglDisplay *display, GError **error)
 }
 
 static CoglBool
-create_context (CoglDisplay *display, GError **error)
+create_context (CoglDisplay *display, CoglError **error)
 {
   CoglDisplayWgl *wgl_display = display->winsys;
 
@@ -451,7 +451,7 @@ create_context (CoglDisplay *display, GError **error)
 
       if (wgl_display->dummy_hwnd == NULL)
         {
-          g_set_error (error, COGL_WINSYS_ERROR,
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
                        COGL_WINSYS_ERROR_CREATE_CONTEXT,
                        "Unable to create dummy window");
           return FALSE;
@@ -470,7 +470,7 @@ create_context (CoglDisplay *display, GError **error)
 
       if (pf == 0 || !SetPixelFormat (wgl_display->dummy_dc, pf, &pfd))
         {
-          g_set_error (error, COGL_WINSYS_ERROR,
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
                        COGL_WINSYS_ERROR_CREATE_CONTEXT,
                        "Unable to find suitable GL pixel format");
           ReleaseDC (wgl_display->dummy_hwnd, wgl_display->dummy_dc);
@@ -485,7 +485,7 @@ create_context (CoglDisplay *display, GError **error)
 
       if (wgl_display->wgl_context == NULL)
         {
-          g_set_error (error, COGL_WINSYS_ERROR,
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
                        COGL_WINSYS_ERROR_CREATE_CONTEXT,
                        "Unable to create suitable GL context");
           return FALSE;
@@ -529,7 +529,7 @@ _cogl_winsys_display_destroy (CoglDisplay *display)
 
 static CoglBool
 _cogl_winsys_display_setup (CoglDisplay *display,
-                            GError **error)
+                            CoglError **error)
 {
   CoglDisplayWgl *wgl_display;
 
@@ -587,7 +587,7 @@ get_wgl_extensions_string (HDC dc)
 }
 
 static CoglBool
-update_winsys_features (CoglContext *context, GError **error)
+update_winsys_features (CoglContext *context, CoglError **error)
 {
   CoglDisplayWgl *wgl_display = context->display->winsys;
   CoglRendererWgl *wgl_renderer = context->display->renderer->winsys;
@@ -633,7 +633,7 @@ update_winsys_features (CoglContext *context, GError **error)
 }
 
 static CoglBool
-_cogl_winsys_context_init (CoglContext *context, GError **error)
+_cogl_winsys_context_init (CoglContext *context, CoglError **error)
 {
   CoglContextWgl *wgl_context;
 
@@ -733,7 +733,7 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 
 static CoglBool
 _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
-                            GError **error)
+                            CoglError **error)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = framebuffer->context;
@@ -789,7 +789,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
       if (hwnd == NULL)
         {
-          g_set_error (error, COGL_WINSYS_ERROR,
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
                        COGL_WINSYS_ERROR_CREATE_ONSCREEN,
                        "Unable to create window");
           return FALSE;
@@ -814,7 +814,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
   if (pf == 0 || !SetPixelFormat (wgl_onscreen->client_dc, pf, &pfd))
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_ONSCREEN,
                    "Error setting pixel format on the window");
 

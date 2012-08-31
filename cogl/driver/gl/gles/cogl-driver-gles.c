@@ -184,7 +184,7 @@ _cogl_driver_pixel_format_to_gl (CoglContext *context,
 
 static CoglBool
 _cogl_driver_update_features (CoglContext *context,
-                              GError **error)
+                              CoglError **error)
 {
   CoglPrivateFeatureFlags private_flags = 0;
   CoglFeatureFlags flags = 0;

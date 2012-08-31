@@ -75,7 +75,7 @@ cogl_is_texture_2d (void *object);
  * @width: Width of the texture to allocate
  * @height: Height of the texture to allocate
  * @internal_format: The format of the texture
- * @error: A #GError for exceptions
+ * @error: A #CoglError for exceptions
  *
  * Allocates a low-level #CoglTexture2D texture that your GPU can
  * texture from directly. This is unlike sliced textures for example
@@ -100,7 +100,7 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
                                int width,
                                int height,
                                CoglPixelFormat internal_format,
-                               GError **error);
+                               CoglError **error);
 
 /**
  * cogl_texture_2d_new_from_data:
@@ -120,7 +120,7 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
  *    scanlines in @data. A value of 0 will make Cogl automatically
  *    calculate @rowstride from @width and @format.
  * @data: pointer the memory region where the source buffer resides
- * @error: A #GError for exceptions
+ * @error: A #CoglError for exceptions
  *
  * Creates a new #CoglTexture2D texture based on data residing in memory.
  * These are unlike sliced textures for example which may be comprised
@@ -147,7 +147,7 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
                                CoglPixelFormat internal_format,
                                int rowstride,
                                const uint8_t *data,
-                               GError **error);
+                               CoglError **error);
 
 /**
  * cogl_texture_2d_new_from_bitmap:
@@ -160,7 +160,7 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
  *    is if you have non-premultiplied source data and are going to adjust
  *    the blend mode (see cogl_pipeline_set_blend()) or use the data for
  *    something other than straight blending.
- * @error: A #GError for exceptions
+ * @error: A #CoglError for exceptions
  *
  * Creates a new #CoglTexture2D texture based on data residing in a
  * bitmap. These are unlike sliced textures for example which may be
@@ -184,7 +184,7 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
 CoglTexture2D *
 cogl_texture_2d_new_from_bitmap (CoglBitmap *bitmap,
                                  CoglPixelFormat internal_format,
-                                 GError **error);
+                                 CoglError **error);
 
 
 /**
@@ -194,7 +194,7 @@ cogl_texture_2d_new_from_bitmap (CoglBitmap *bitmap,
  * @width: Width of the foreign GL texture
  * @height: Height of the foreign GL texture
  * @internal_format: The format of the texture
- * @error: A #GError for exceptions
+ * @error: A #CoglError for exceptions
  *
  * Wraps an existing GL_TEXTURE_2D texture object as a #CoglTexture2D.
  * This can be used for integrating Cogl with software using OpenGL
@@ -217,7 +217,7 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
                                   int width,
                                   int height,
                                   CoglPixelFormat format,
-                                  GError **error);
+                                  CoglError **error);
 
 G_END_DECLS
 

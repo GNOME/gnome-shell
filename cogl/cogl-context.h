@@ -94,7 +94,7 @@ G_BEGIN_DECLS
 /**
  * cogl_context_new:
  * @display: A #CoglDisplay pointer
- * @error: A GError return location.
+ * @error: A CoglError return location.
  *
  * Creates a new #CoglContext which acts as an application sandbox
  * for any state objects that are allocated.
@@ -105,7 +105,7 @@ G_BEGIN_DECLS
  */
 CoglContext *
 cogl_context_new (CoglDisplay *display,
-                  GError **error);
+                  CoglError **error);
 
 /**
  * cogl_context_get_display:

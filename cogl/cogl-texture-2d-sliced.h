@@ -75,7 +75,7 @@ typedef struct _CoglTexture2DSliced CoglTexture2DSliced;
  *             are allowed in the non-power-of-two textures before
  *             they must be sliced to reduce the amount of waste.
  * @internal_format: The format of the texture
- * @error: A #GError for exceptions.
+ * @error: A #CoglError for exceptions.
  *
  * Creates a #CoglTexture2DSliced that may internally be comprised of
  * 1 or more #CoglTexture2D textures with power-of-two sizes.
@@ -97,7 +97,7 @@ cogl_texture_2d_sliced_new_with_size (CoglContext *ctx,
                                       unsigned int height,
                                       int max_waste,
                                       CoglPixelFormat internal_format,
-                                      GError **error);
+                                      CoglError **error);
 
 /**
  * cogl_is_texture_2d_sliced:

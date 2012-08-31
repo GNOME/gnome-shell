@@ -109,14 +109,14 @@ _cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
 CoglBitmap *
 _cogl_bitmap_from_file (CoglContext *ctx,
                         const char *filename,
-			GError **error);
+			CoglError **error);
 
 #ifdef COGL_HAS_ANDROID_SUPPORT
 CoglBitmap *
 _cogl_android_bitmap_new_from_asset (CoglContext *ctx,
                                      AAssetManager *manager,
                                      const char *filename,
-                                     GError **error);
+                                     CoglError **error);
 #endif
 
 CoglBool

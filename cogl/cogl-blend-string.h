@@ -126,7 +126,7 @@ CoglBool
 _cogl_blend_string_compile (const char *string,
                             CoglBlendStringContext context,
                             CoglBlendStringStatement *statements,
-                            GError **error);
+                            CoglError **error);
 
 void
 _cogl_blend_string_split_rgba_statement (CoglBlendStringStatement *statement,

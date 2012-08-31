@@ -299,7 +299,7 @@ cogland_surface_attach_buffer (struct wl_client *wayland_client,
 
   if (!buffer->texture)
     {
-      GError *error = NULL;
+      CoglError *error = NULL;
 
       buffer->texture =
         cogl_wayland_texture_2d_new_from_buffer (compositor->cogl_context,
@@ -453,7 +453,7 @@ cogland_compositor_create_output (CoglandCompositor *compositor,
 {
   CoglandOutput *output = g_slice_new0 (CoglandOutput);
   CoglFramebuffer *fb;
-  GError *error = NULL;
+  CoglError *error = NULL;
   CoglandMode *mode;
 
   output->x = x;
@@ -694,7 +694,7 @@ main (int argc, char **argv)
 {
   CoglandCompositor compositor;
   GMainLoop *loop;
-  GError *error = NULL;
+  CoglError *error = NULL;
   CoglVertexP2C4 triangle_vertices[] = {
       {0, 0.7, 0xff, 0x00, 0x00, 0x80},
       {-0.7, -0.7, 0x00, 0xff, 0x00, 0xff},

@@ -559,7 +559,7 @@ cogl_set_projection_matrix (CoglMatrix *matrix)
   cogl_framebuffer_set_projection_matrix (cogl_get_draw_framebuffer (), matrix);
 }
 
-GQuark
+uint32_t
 _cogl_driver_error_quark (void)
 {
   return g_quark_from_static_string ("cogl-driver-error-quark");
@@ -784,10 +784,10 @@ _cogl_transform_point (const CoglMatrix *matrix_mv,
 #undef VIEWPORT_TRANSFORM_X
 #undef VIEWPORT_TRANSFORM_Y
 
-GQuark
-_cogl_error_quark (void)
+uint32_t
+_cogl_system_error_quark (void)
 {
-  return g_quark_from_static_string ("cogl-error-quark");
+  return g_quark_from_static_string ("cogl-system-error-quark");
 }
 
 void

@@ -16,7 +16,7 @@ void
 test_utils_init (TestFlags flags)
 {
   static int counter = 0;
-  GError *error = NULL;
+  CoglError *error = NULL;
   CoglOnscreen *onscreen = NULL;
   CoglDisplay *display;
   CoglRenderer *renderer;

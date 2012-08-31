@@ -23,7 +23,7 @@ static gboolean
 paint_cb (void *user_data)
 {
     Data *data = user_data;
-    GError *error = NULL;
+    CoglError *error = NULL;
     const CoglGLES2Vtable *gles2 = data->gles2_vtable;
 
     /* Draw scene with GLES2 */
@@ -71,7 +71,7 @@ main (int argc, char **argv)
 {
     Data data;
     CoglOnscreen *onscreen;
-    GError *error = NULL;
+    CoglError *error = NULL;
     CoglVertexP2C4 triangle_vertices[] = {
         {0, 0.7, 0xff, 0x00, 0x00, 0x80},
         {-0.7, -0.7, 0x00, 0xff, 0x00, 0xff},

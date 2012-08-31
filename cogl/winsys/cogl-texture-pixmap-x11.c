@@ -47,6 +47,7 @@
 #include "cogl-winsys-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-xlib.h"
+#include "cogl-error-private.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -64,7 +65,7 @@ COGL_TEXTURE_DEFINE (TexturePixmapX11, texture_pixmap_x11);
 
 static const CoglTextureVtable cogl_texture_pixmap_x11_vtable;
 
-GQuark
+uint32_t
 cogl_texture_pixmap_x11_error_quark (void)
 {
   return g_quark_from_static_string ("cogl-texture-pixmap-error-quark");
@@ -273,7 +274,7 @@ CoglTexturePixmapX11 *
 cogl_texture_pixmap_x11_new (CoglContext *ctxt,
                              uint32_t pixmap,
                              CoglBool automatic_updates,
-                             GError **error)
+                             CoglError **error)
 {
   CoglTexturePixmapX11 *tex_pixmap = g_new (CoglTexturePixmapX11, 1);
   Display *display = cogl_xlib_get_display ();
@@ -300,7 +301,7 @@ cogl_texture_pixmap_x11_new (CoglContext *ctxt,
                      &pixmap_border_width, &tex_pixmap->depth))
     {
       g_free (tex_pixmap);
-      g_set_error (error,
+      _cogl_set_error (error,
                    COGL_TEXTURE_PIXMAP_X11_ERROR,
                    COGL_TEXTURE_PIXMAP_X11_ERROR_X11,
                    "Unable to query pixmap size");
@@ -312,7 +313,7 @@ cogl_texture_pixmap_x11_new (CoglContext *ctxt,
   if (!XGetWindowAttributes (display, pixmap_root_window, &window_attributes))
     {
       g_free (tex_pixmap);
-      g_set_error (error,
+      _cogl_set_error (error,
                    COGL_TEXTURE_PIXMAP_X11_ERROR,
                    COGL_TEXTURE_PIXMAP_X11_ERROR_X11,
                    "Unable to query root window attributes");

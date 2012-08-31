@@ -43,6 +43,7 @@
 #include "cogl-winsys-private.h"
 #include "cogl-winsys-stub-private.h"
 #include "cogl-config-private.h"
+#include "cogl-error-private.h"
 
 #ifdef COGL_HAS_EGL_PLATFORM_XLIB_SUPPORT
 #include "cogl-winsys-egl-x11-private.h"
@@ -129,7 +130,7 @@ typedef struct _CoglNativeFilterClosure
   void *data;
 } CoglNativeFilterClosure;
 
-GQuark
+uint32_t
 cogl_renderer_error_quark (void)
 {
   return g_quark_from_static_string ("cogl-renderer-error-quark");
@@ -225,7 +226,7 @@ cogl_xlib_renderer_set_event_retrieval_enabled (CoglRenderer *renderer,
 CoglBool
 cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
                                        CoglOnscreenTemplate *onscreen_template,
-                                       GError **error)
+                                       CoglError **error)
 {
   CoglDisplay *display;
 
@@ -246,7 +247,7 @@ cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
 
 static CoglBool
 _cogl_renderer_choose_driver (CoglRenderer *renderer,
-                              GError **error)
+                              CoglError **error)
 {
   const char *driver_name = g_getenv ("COGL_DRIVER");
   const char *libgl_name;
@@ -307,7 +308,7 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
     }
 #endif
 
-  g_set_error (error,
+  _cogl_set_error (error,
                COGL_DRIVER_ERROR,
                COGL_DRIVER_ERROR_NO_SUITABLE_DRIVER_FOUND,
                "No suitable driver found");
@@ -318,7 +319,7 @@ found:
   if (support_gles2_constraint &&
       renderer->driver != COGL_DRIVER_GLES2)
     {
-      g_set_error (error,
+      _cogl_set_error (error,
                    COGL_RENDERER_ERROR,
                    COGL_RENDERER_ERROR_BAD_CONSTRAINT,
                    "No suitable driver found");
@@ -332,7 +333,7 @@ found:
 
   if (renderer->libgl_module == NULL)
     {
-      g_set_error (error, COGL_DRIVER_ERROR,
+      _cogl_set_error (error, COGL_DRIVER_ERROR,
                    COGL_DRIVER_ERROR_FAILED_TO_LOAD_LIBRARY,
                    "Failed to dynamically open the GL library \"%s\"",
                    libgl_name);
@@ -368,7 +369,7 @@ found:
 /* Final connection API */
 
 CoglBool
-cogl_renderer_connect (CoglRenderer *renderer, GError **error)
+cogl_renderer_connect (CoglRenderer *renderer, CoglError **error)
 {
   int i;
   GString *error_message;
@@ -387,7 +388,7 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
   for (i = 0; i < G_N_ELEMENTS (_cogl_winsys_vtable_getters); i++)
     {
       const CoglWinsysVtable *winsys = _cogl_winsys_vtable_getters[i]();
-      GError *tmp_error = NULL;
+      CoglError *tmp_error = NULL;
       GList *l;
       CoglBool skip_due_to_constraints = FALSE;
 
@@ -430,7 +431,7 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
         {
           g_string_append_c (error_message, '\n');
           g_string_append (error_message, tmp_error->message);
-          g_error_free (tmp_error);
+          cogl_error_free (tmp_error);
         }
       else
         {
@@ -444,14 +445,14 @@ cogl_renderer_connect (CoglRenderer *renderer, GError **error)
     {
       if (constraints_failed)
         {
-          g_set_error (error, COGL_RENDERER_ERROR,
+          _cogl_set_error (error, COGL_RENDERER_ERROR,
                        COGL_RENDERER_ERROR_BAD_CONSTRAINT,
                        "Failed to connected to any renderer due to constraints");
           return FALSE;
         }
 
       renderer->winsys_vtable = NULL;
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
                    "Failed to connected to any renderer: %s",
                    error_message->str);

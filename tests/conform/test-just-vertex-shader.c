@@ -30,7 +30,7 @@ paint_legacy (TestState *state)
   CoglHandle material = cogl_material_new ();
   CoglTexture *tex;
   CoglColor color;
-  GError *error = NULL;
+  CoglError *error = NULL;
   CoglHandle shader, program;
 
   cogl_color_init_from_4ub (&color, 0, 0, 0, 255);
@@ -100,7 +100,7 @@ paint (TestState *state)
   CoglPipeline *pipeline = cogl_pipeline_new (ctx);
   CoglTexture *tex;
   CoglColor color;
-  GError *error = NULL;
+  CoglError *error = NULL;
   CoglHandle shader, program;
 
   cogl_color_init_from_4ub (&color, 0, 0, 0, 255);

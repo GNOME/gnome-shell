@@ -560,7 +560,7 @@ paint_cb (void *user_data)
     Data *data = user_data;
     double elapsed = g_timer_elapsed (data->timer, NULL);
     double dt = elapsed - data->last_elapsed;
-    GError *error = NULL;
+    CoglError *error = NULL;
 
     /* Draw scene with GLES2 */
     if (!cogl_push_gles2_context (data->ctx,
@@ -755,7 +755,7 @@ main (int argc, char **argv)
 {
     Data data;
     CoglOnscreen *onscreen;
-    GError *error = NULL;
+    CoglError *error = NULL;
     GSource *cogl_source;
     GMainLoop *loop;
     CoglRenderer *renderer;

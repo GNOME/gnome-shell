@@ -46,11 +46,11 @@ struct _CoglDriverVtable
 
   CoglBool
   (* update_features) (CoglContext *context,
-                       GError **error);
+                       CoglError **error);
 
   CoglBool
   (* offscreen_allocate) (CoglOffscreen *offscreen,
-                          GError **error);
+                          CoglError **error);
 
   void
   (* offscreen_free) (CoglOffscreen *offscreen);

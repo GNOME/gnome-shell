@@ -11,6 +11,16 @@ cogl_object_set_user_data
 </SECTION>
 
 <SECTION>
+<FILE>cogl-error</FILE>
+<TITLE>Exception handling</TITLE>
+CoglError
+cogl_error_matches
+cogl_error_free
+cogl_error_copy
+COGL_GLIB_ERROR
+</SECTION>
+
+<SECTION>
 <FILE>cogl-renderer</FILE>
 <TITLE>CoglRenderer: Connect to a backend renderer</TITLE>
 cogl_renderer_new
@@ -691,7 +701,7 @@ cogl_pipeline_add_layer_snippet
 
 <SUBSECTION Private>
 cogl_blend_string_error_get_type
-cogl_blend_string_error_quark
+cogl_blend_string_error_domain
 </SECTION>
 
 <SECTION>

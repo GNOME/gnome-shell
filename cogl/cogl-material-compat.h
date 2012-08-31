@@ -31,6 +31,7 @@
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-matrix.h>
 #include <cogl/cogl-depth-state.h>
+#include <cogl/cogl-error.h>
 
 G_BEGIN_DECLS
 
@@ -508,7 +509,7 @@ cogl_material_set_alpha_test_function (CoglMaterial         *material,
  * @material: A #CoglMaterial object
  * @blend_string: A <link linkend="cogl-Blend-Strings">Cogl blend string</link>
  *   describing the desired blend function.
- * @error: return location for a #GError that may report lack of driver
+ * @error: return location for a #CoglError that may report lack of driver
  *   support if you give separate blend string statements for the alpha
  *   channel and RGB channels since some drivers, or backends such as
  *   GLES 1.1, don't support this feature. May be %NULL, in which case a
@@ -590,7 +591,7 @@ cogl_material_set_alpha_test_function (CoglMaterial         *material,
 CoglBool
 cogl_material_set_blend (CoglMaterial *material,
                          const char   *blend_string,
-                         GError      **error);
+                         CoglError   **error);
 
 /**
  * cogl_material_set_blend_constant:
@@ -746,7 +747,7 @@ cogl_material_remove_layer (CoglMaterial *material,
  * @layer_index: Specifies the layer you want define a combine function for
  * @blend_string: A <link linkend="cogl-Blend-Strings">Cogl blend string</link>
  *    describing the desired texture combine function.
- * @error: A #GError that may report parse errors or lack of GPU/driver
+ * @error: A #CoglError that may report parse errors or lack of GPU/driver
  *   support. May be %NULL, in which case a warning will be printed out if an
  *   error is encountered.
  *
@@ -836,7 +837,7 @@ CoglBool
 cogl_material_set_layer_combine (CoglMaterial *material,
 				 int           layer_index,
 				 const char   *blend_string,
-                                 GError      **error);
+                                 CoglError   **error);
 
 /**
  * cogl_material_set_layer_combine_constant:
@@ -997,7 +998,7 @@ cogl_material_set_layer_filters (CoglMaterial      *material,
  * @material: a #CoglHandle to a material.
  * @layer_index: the layer number to change.
  * @enable: whether to enable point sprite coord generation.
- * @error: A return location for a GError, or NULL to ignore errors.
+ * @error: A return location for a CoglError, or NULL to ignore errors.
  *
  * When rendering points, if @enable is %TRUE then the texture
  * coordinates for this layer will be replaced with coordinates that
@@ -1017,7 +1018,7 @@ CoglBool
 cogl_material_set_layer_point_sprite_coords_enabled (CoglMaterial *material,
                                                      int           layer_index,
                                                      CoglBool      enable,
-                                                     GError      **error);
+                                                     CoglError   **error);
 
 /**
  * cogl_material_get_layer_point_sprite_coords_enabled:
@@ -1199,7 +1200,7 @@ cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer);
  * cogl_material_set_depth_state:
  * @material: A #CoglMaterial object
  * @state: A #CoglDepthState struct
- * @error: A #GError to report failures to setup the given @state.
+ * @error: A #CoglError to report failures to setup the given @state.
  *
  * This commits all the depth state configured in @state struct to the
  * given @material. The configuration values are copied into the
@@ -1218,7 +1219,7 @@ cogl_material_layer_get_wrap_mode_p (CoglMaterialLayer *layer);
 CoglBool
 cogl_material_set_depth_state (CoglMaterial *material,
                                const CoglDepthState *state,
-                               GError **error);
+                               CoglError **error);
 
 /**
  * cogl_material_get_depth_state:

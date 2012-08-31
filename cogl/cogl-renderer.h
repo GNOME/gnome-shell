@@ -32,6 +32,7 @@
 
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-onscreen-template.h>
+#include <cogl/cogl-error.h>
 
 G_BEGIN_DECLS
 
@@ -75,7 +76,7 @@ G_BEGIN_DECLS
  */
 #define COGL_RENDERER_ERROR cogl_renderer_error_quark ()
 
-GQuark
+uint32_t
 cogl_renderer_error_quark (void);
 
 typedef struct _CoglRenderer CoglRenderer;
@@ -220,7 +221,7 @@ cogl_renderer_get_n_fragment_texture_units (CoglRenderer *renderer);
  * cogl_renderer_check_onscreen_template:
  * @renderer: A #CoglRenderer
  * @onscreen_template: A #CoglOnscreenTemplate
- * @error: A pointer to a #GError for reporting exceptions
+ * @error: A pointer to a #CoglError for reporting exceptions
  *
  * Tests if a given @onscreen_template can be supported with the given
  * @renderer.
@@ -233,14 +234,14 @@ cogl_renderer_get_n_fragment_texture_units (CoglRenderer *renderer);
 CoglBool
 cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
                                        CoglOnscreenTemplate *onscreen_template,
-                                       GError **error);
+                                       CoglError **error);
 
 /* Final connection API */
 
 /**
  * cogl_renderer_connect:
  * @renderer: An unconnected #CoglRenderer
- * @error a pointer to a #GError for reporting exceptions
+ * @error a pointer to a #CoglError for reporting exceptions
  *
  * Connects the configured @renderer. Renderer connection isn't a
  * very active process, it basically just means validating that
@@ -253,7 +254,7 @@ cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
  * Stability: unstable
  */
 CoglBool
-cogl_renderer_connect (CoglRenderer *renderer, GError **error);
+cogl_renderer_connect (CoglRenderer *renderer, CoglError **error);
 
 /**
  * CoglRendererConstraint:

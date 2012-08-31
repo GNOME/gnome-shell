@@ -29,6 +29,7 @@
 #include "cogl-context-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-framebuffer-gl-private.h"
+#include "cogl-error-private.h"
 
 #include <glib.h>
 
@@ -692,7 +693,7 @@ _cogl_framebuffer_try_creating_gl_fbo (CoglContext *ctx,
 
 CoglBool
 _cogl_offscreen_gl_allocate (CoglOffscreen *offscreen,
-                             GError **error)
+                             CoglError **error)
 {
   CoglFramebuffer *fb = COGL_FRAMEBUFFER (offscreen);
   CoglContext *ctx = fb->context;
@@ -711,9 +712,9 @@ _cogl_offscreen_gl_allocate (CoglOffscreen *offscreen,
         _cogl_texture_associate_framebuffer (offscreen->depth_texture, fb);
       else
         {
-          g_set_error (error, COGL_FRAMEBUFFER_ERROR,
-                       COGL_FRAMEBUFFER_ERROR_ALLOCATE,
-                       "Failed to allocate depth texture for framebuffer");
+          _cogl_set_error (error, COGL_FRAMEBUFFER_ERROR,
+                           COGL_FRAMEBUFFER_ERROR_ALLOCATE,
+                           "Failed to allocate depth texture for framebuffer");
         }
     }
 
@@ -824,9 +825,9 @@ _cogl_offscreen_gl_allocate (CoglOffscreen *offscreen,
     }
   else
     {
-      g_set_error (error, COGL_FRAMEBUFFER_ERROR,
-                   COGL_FRAMEBUFFER_ERROR_ALLOCATE,
-                   "Failed to create an OpenGL framebuffer object");
+      _cogl_set_error (error, COGL_FRAMEBUFFER_ERROR,
+                       COGL_FRAMEBUFFER_ERROR_ALLOCATE,
+                       "Failed to create an OpenGL framebuffer object");
       return FALSE;
     }
 }

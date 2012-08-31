@@ -55,7 +55,7 @@ test_blend (TestState *state,
   CoglHandle material;
   CoglPipeline *pipeline;
   CoglBool status;
-  GError *error = NULL;
+  CoglError *error = NULL;
   int y_off;
   int x_off;
 
@@ -230,7 +230,7 @@ test_tex_combine (TestState *state,
 
   CoglHandle material;
   CoglBool status;
-  GError *error = NULL;
+  CoglError *error = NULL;
   int y_off;
   int x_off;
 

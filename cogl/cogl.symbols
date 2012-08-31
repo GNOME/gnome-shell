@@ -37,7 +37,7 @@ cogl_attribute_type_get_type
 cogl_begin_gl
 
 cogl_bitmap_error_get_type
-cogl_bitmap_error_quark
+cogl_bitmap_error_domain
 cogl_bitmap_get_buffer
 cogl_bitmap_get_format
 cogl_bitmap_get_height
@@ -49,7 +49,7 @@ cogl_bitmap_new_from_file
 cogl_bitmap_new_from_buffer
 cogl_bitmap_new_with_size
 cogl_blend_string_error_get_type
-cogl_blend_string_error_quark
+cogl_blend_string_error_domain
 
 cogl_buffer_bit_get_type
 cogl_buffer_get_size
@@ -216,7 +216,7 @@ cogl_framebuffer_draw_rectangle
 cogl_framebuffer_draw_rectangles
 cogl_framebuffer_draw_textured_rectangle
 cogl_framebuffer_draw_textured_rectangles
-cogl_framebuffer_error_quark
+cogl_framebuffer_error_domain
 cogl_framebuffer_fill_path
 cogl_framebuffer_finish
 cogl_framebuffer_frustum
@@ -695,7 +695,7 @@ cogl_renderer_connect
 cogl_renderer_get_driver
 cogl_renderer_get_n_fragment_texture_units
 cogl_renderer_error_get_type
-cogl_renderer_error_quark
+cogl_renderer_error_domain
 cogl_renderer_get_winsys_id
 cogl_renderer_new
 cogl_renderer_remove_constraint
@@ -766,7 +766,7 @@ cogl_swap_chain_new
 cogl_swap_chain_set_has_alpha
 cogl_swap_chain_set_length
 
-cogl_texture_error_quark
+cogl_texture_error_domain
 cogl_texture_flags_get_type
 cogl_texture_get_data
 cogl_texture_get_format
@@ -783,7 +783,7 @@ cogl_texture_new_from_foreign
 cogl_texture_new_from_sub_texture
 cogl_texture_new_with_size
 #ifdef COGL_HAS_X11
-cogl_texture_pixmap_x11_error_quark
+cogl_texture_pixmap_x11_error_domain
 cogl_texture_pixmap_x11_is_using_tfp_extension
 cogl_texture_pixmap_x11_new
 cogl_texture_pixmap_x11_set_damage_object
@@ -908,7 +908,7 @@ _cogl_atlas_texture_new_from_bitmap
 _cogl_atlas_texture_new_with_size
 _cogl_atlas_texture_remove_reorganize_callback
 _cogl_context_get_default
-_cogl_error_quark
+_cogl_system_error_domain
 _cogl_texture_associate_framebuffer
 _cogl_texture_can_hardware_repeat
 _cogl_texture_determine_internal_format

@@ -54,7 +54,7 @@ cogl_wayland_display_set_compositor_display (CoglDisplay *display,
  * cogl_wayland_texture_2d_new_from_buffer:
  * @ctx: A #CoglContext
  * @buffer: A Wayland buffer
- * @error: A #GError for exceptions
+ * @error: A #CoglError for exceptions
  *
  * Uploads the given Wayland @buffer to a #CoglTexture2D.
  *
@@ -77,7 +77,7 @@ cogl_wayland_display_set_compositor_display (CoglDisplay *display,
 CoglTexture2D *
 cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
                                          struct wl_buffer *buffer,
-                                         GError **error);
+                                         CoglError **error);
 
 G_END_DECLS
 

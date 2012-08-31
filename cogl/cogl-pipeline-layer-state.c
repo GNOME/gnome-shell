@@ -37,6 +37,7 @@
 #include "cogl-snippet-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-pipeline-layer-state-private.h"
+#include "cogl-error-private.h"
 
 #include "string.h"
 #if 0
@@ -734,7 +735,7 @@ CoglBool
 cogl_pipeline_set_layer_point_sprite_coords_enabled (CoglPipeline *pipeline,
                                                      int layer_index,
                                                      CoglBool enable,
-                                                     GError **error)
+                                                     CoglError **error)
 {
   CoglPipelineLayerState       change =
     COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS;
@@ -752,9 +753,11 @@ cogl_pipeline_set_layer_point_sprite_coords_enabled (CoglPipeline *pipeline,
     {
       if (error)
         {
-          g_set_error (error, COGL_ERROR, COGL_ERROR_UNSUPPORTED,
-                       "Point sprite texture coordinates are enabled "
-                       "for a layer but the GL driver does not support it.");
+          _cogl_set_error (error,
+                           COGL_SYSTEM_ERROR,
+                           COGL_SYSTEM_ERROR_UNSUPPORTED,
+                           "Point sprite texture coordinates are enabled for "
+                           "a layer but the GL driver does not support it.");
         }
       else
         {
@@ -1168,7 +1171,7 @@ CoglBool
 cogl_pipeline_set_layer_combine (CoglPipeline *pipeline,
 				 int layer_index,
 				 const char *combine_description,
-                                 GError **error)
+                                 CoglError **error)
 {
   CoglPipelineLayerState state = COGL_PIPELINE_LAYER_STATE_COMBINE;
   CoglPipelineLayer *authority;
@@ -1177,7 +1180,6 @@ cogl_pipeline_set_layer_combine (CoglPipeline *pipeline,
   CoglBlendStringStatement split[2];
   CoglBlendStringStatement *rgb;
   CoglBlendStringStatement *a;
-  GError *internal_error = NULL;
   int count;
 
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_pipeline (pipeline), FALSE);
@@ -1198,19 +1200,9 @@ cogl_pipeline_set_layer_combine (CoglPipeline *pipeline,
     _cogl_blend_string_compile (combine_description,
                                 COGL_BLEND_STRING_CONTEXT_TEXTURE_COMBINE,
                                 statements,
-                                &internal_error);
+                                error);
   if (!count)
-    {
-      if (error)
-	g_propagate_error (error, internal_error);
-      else
-	{
-	  g_warning ("Cannot compile combine description: %s\n",
-		     internal_error->message);
-	  g_error_free (internal_error);
-	}
-      return FALSE;
-    }
+    return FALSE;
 
   if (statements[0].mask == COGL_BLEND_STRING_CHANNEL_MASK_RGBA)
     {

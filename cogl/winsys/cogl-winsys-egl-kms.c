@@ -52,6 +52,7 @@
 #include "cogl-kms-renderer.h"
 #include "cogl-kms-display.h"
 #include "cogl-version.h"
+#include "cogl-error-private.h"
 
 static const CoglWinsysEGLVtable _cogl_winsys_egl_vtable;
 
@@ -115,7 +116,7 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 
 static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
-                               GError **error)
+                               CoglError **error)
 {
   CoglRendererEGL *egl_renderer;
   CoglRendererKMS *kms_renderer;
@@ -131,7 +132,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   if (kms_renderer->fd < 0)
     {
       /* Probably permissions error */
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
                    "Couldn't open %s", device_name);
       return FALSE;
@@ -140,7 +141,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   kms_renderer->gbm = gbm_create_device (kms_renderer->fd);
   if (kms_renderer->gbm == NULL)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
                    "Couldn't create gbm device");
       goto close_fd;
@@ -149,7 +150,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   egl_renderer->edpy = eglGetDisplay ((EGLNativeDisplayType)kms_renderer->gbm);
   if (egl_renderer->edpy == EGL_NO_DISPLAY)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
                    "Couldn't get eglDisplay");
       goto destroy_gbm_device;
@@ -264,7 +265,7 @@ find_output (int _index,
              drmModeRes *resources,
              int *excluded_connectors,
              int n_excluded_connectors,
-             GError **error)
+             CoglError **error)
 {
   char *connector_env_name = g_strdup_printf ("COGL_KMS_CONNECTOR%d", _index);
   char *mode_env_name;
@@ -288,7 +289,7 @@ find_output (int _index,
                                 excluded_connectors, n_excluded_connectors);
   if (connector == NULL)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
                    "No currently active connector found");
       return NULL;
@@ -340,7 +341,7 @@ find_output (int _index,
       if (!found)
         {
           g_free (mode_env_name);
-          g_set_error (error, COGL_WINSYS_ERROR,
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
                        COGL_WINSYS_ERROR_INIT,
                        "COGL_KMS_CONNECTOR%d_MODE of %s could not be found",
                        _index, name);
@@ -384,7 +385,7 @@ setup_crtc_modes (CoglDisplay *display, int fb_id)
 
 static CoglBool
 _cogl_winsys_egl_display_setup (CoglDisplay *display,
-                                GError **error)
+                                CoglError **error)
 {
   CoglDisplayEGL *egl_display = display->winsys;
   CoglDisplayKMS *kms_display;
@@ -400,7 +401,7 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
   resources = drmModeGetResources (kms_renderer->fd);
   if (!resources)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
                    "drmModeGetResources failed");
       return FALSE;
@@ -440,7 +441,7 @@ _cogl_winsys_egl_display_setup (CoglDisplay *display,
                               &output0->mode,
                               &output1->mode))
         {
-          g_set_error (error, COGL_WINSYS_ERROR,
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
                        COGL_WINSYS_ERROR_INIT,
                        "Failed to find matching modes for mirroring");
           return FALSE;
@@ -508,7 +509,7 @@ _cogl_winsys_egl_display_destroy (CoglDisplay *display)
 
 static CoglBool
 _cogl_winsys_egl_context_created (CoglDisplay *display,
-                                  GError **error)
+                                  CoglError **error)
 {
   CoglDisplayEGL *egl_display = display->winsys;
   CoglDisplayKMS *kms_display = egl_display->platform;
@@ -522,7 +523,7 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
                                                        GBM_BO_USE_RENDERING);
   if (!kms_display->dummy_gbm_surface)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "Failed to create dummy GBM surface");
       return FALSE;
@@ -535,7 +536,7 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
                             NULL);
   if (egl_display->dummy_surface == EGL_NO_SURFACE)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "Failed to create dummy EGL surface");
       return FALSE;
@@ -546,7 +547,7 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
                                       egl_display->dummy_surface,
                                       egl_display->egl_context))
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "Failed to make context current");
       return FALSE;
@@ -749,7 +750,7 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
 
 static CoglBool
 _cogl_winsys_egl_context_init (CoglContext *context,
-                               GError **error)
+                               CoglError **error)
 {
   COGL_FLAGS_SET (context->features,
                   COGL_FEATURE_ID_SWAP_BUFFERS_EVENT, TRUE);
@@ -762,7 +763,7 @@ _cogl_winsys_egl_context_init (CoglContext *context,
 
 static CoglBool
 _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
-                            GError **error)
+                            CoglError **error)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = framebuffer->context;
@@ -793,7 +794,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
   if (!kms_onscreen->surface)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_ONSCREEN,
                    "Failed to allocate surface");
       return FALSE;
@@ -806,7 +807,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                             NULL);
   if (egl_onscreen->egl_surface == EGL_NO_SURFACE)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_ONSCREEN,
                    "Failed to allocate surface");
       return FALSE;

@@ -62,6 +62,7 @@
     </section>
 
     <xi:include href="xml/cogl-object.xml"/>
+    <xi:include href="xml/cogl-error.xml"/>
     <xi:include href="xml/cogl-context.xml"/>
     <xi:include href="xml/cogl-poll.xml"/>
 

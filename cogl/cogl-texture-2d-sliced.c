@@ -45,6 +45,7 @@
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-primitive-texture.h"
+#include "cogl-error-private.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -752,7 +753,7 @@ _cogl_texture_2d_sliced_slices_create (CoglContext *ctx,
 
       for (x = 0; x < n_x_slices; ++x)
         {
-          GError *error = NULL;
+          CoglError *error = NULL;
           x_span = &g_array_index (tex_2ds->slice_x_spans, CoglSpan, x);
 
           COGL_NOTE (SLICING, "CREATE SLICE (%d,%d)\tsize (%d,%d)",
@@ -766,7 +767,7 @@ _cogl_texture_2d_sliced_slices_create (CoglContext *ctx,
           if (!slice_textures[y * n_x_slices + x])
             {
               g_array_set_size (tex_2ds->slice_textures, y * n_x_slices + x);
-              g_error_free (error);
+              cogl_error_free (error);
               return FALSE;
             }
         }
@@ -843,7 +844,7 @@ cogl_texture_2d_sliced_new_with_size (CoglContext *ctx,
                                       unsigned int height,
                                       int max_waste,
                                       CoglPixelFormat internal_format,
-                                      GError **error)
+                                      CoglError **error)
 {
   CoglTexture2DSliced   *tex_2ds;
 
@@ -862,10 +863,10 @@ cogl_texture_2d_sliced_new_with_size (CoglContext *ctx,
                                           internal_format))
     {
       _cogl_texture_2d_sliced_free (tex_2ds);
-      g_set_error (error,
-                   COGL_ERROR,
-                   COGL_ERROR_NO_MEMORY,
-                   "Not enough memory to allocate texture slices");
+      _cogl_set_error (error,
+                       COGL_SYSTEM_ERROR,
+                       COGL_SYSTEM_ERROR_NO_MEMORY,
+                       "Not enough memory to allocate texture slices");
       return NULL;
     }
 

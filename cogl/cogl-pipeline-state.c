@@ -36,6 +36,7 @@
 #include "cogl-depth-state-private.h"
 #include "cogl-pipeline-state-private.h"
 #include "cogl-snippet-private.h"
+#include "cogl-error-private.h"
 
 #include "string.h"
 
@@ -938,14 +939,13 @@ setup_blend_state (CoglBlendStringStatement *statement,
 CoglBool
 cogl_pipeline_set_blend (CoglPipeline *pipeline,
                          const char *blend_description,
-                         GError **error)
+                         CoglError **error)
 {
   CoglPipelineState state = COGL_PIPELINE_STATE_BLEND;
   CoglPipeline *authority;
   CoglBlendStringStatement statements[2];
   CoglBlendStringStatement *rgb;
   CoglBlendStringStatement *a;
-  GError *internal_error = NULL;
   int count;
   CoglPipelineBlendState *blend_state;
 
@@ -957,19 +957,9 @@ cogl_pipeline_set_blend (CoglPipeline *pipeline,
     _cogl_blend_string_compile (blend_description,
                                 COGL_BLEND_STRING_CONTEXT_BLENDING,
                                 statements,
-                                &internal_error);
+                                error);
   if (!count)
-    {
-      if (error)
-	g_propagate_error (error, internal_error);
-      else
-	{
-	  g_warning ("Cannot compile blend description: %s\n",
-		     internal_error->message);
-	  g_error_free (internal_error);
-	}
-      return FALSE;
-    }
+    return FALSE;
 
   if (count == 1)
     rgb = a = statements;
@@ -1161,7 +1151,7 @@ cogl_pipeline_set_user_program (CoglPipeline *pipeline,
 CoglBool
 cogl_pipeline_set_depth_state (CoglPipeline *pipeline,
                                const CoglDepthState *depth_state,
-                               GError **error)
+                               CoglError **error)
 {
   CoglPipelineState state = COGL_PIPELINE_STATE_DEPTH;
   CoglPipeline *authority;
@@ -1186,10 +1176,10 @@ cogl_pipeline_set_depth_state (CoglPipeline *pipeline,
       (depth_state->range_near != 0 ||
        depth_state->range_far != 1))
     {
-      g_set_error (error,
-                   COGL_ERROR,
-                   COGL_ERROR_UNSUPPORTED,
-                   "glDepthRange not available on GLES 1");
+      _cogl_set_error (error,
+                       COGL_SYSTEM_ERROR,
+                       COGL_SYSTEM_ERROR_UNSUPPORTED,
+                       "glDepthRange not available on GLES 1");
       return FALSE;
     }
 

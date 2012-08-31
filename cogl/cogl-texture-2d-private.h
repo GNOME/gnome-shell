@@ -67,7 +67,7 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
                                      int height,
                                      CoglPixelFormat format,
                                      EGLImageKHR image,
-                                     GError **error);
+                                     CoglError **error);
 #endif
 
 /*

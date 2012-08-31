@@ -144,7 +144,7 @@ main (int argc, char **argv)
   CoglContext *ctx;
   CoglOnscreen *onscreen;
   CoglFramebuffer *fb;
-  GError *error = NULL;
+  CoglError *error = NULL;
   Data data;
   PangoRectangle hello_label_size;
   float fovy, aspect, z_near, z_2d, z_far;

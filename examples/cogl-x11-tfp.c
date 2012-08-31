@@ -49,7 +49,7 @@ main (int argc, char **argv)
   CoglContext *ctx;
   CoglOnscreen *onscreen;
   CoglFramebuffer *fb;
-  GError *error = NULL;
+  CoglError *error = NULL;
   uint32_t visual;
   XVisualInfo template, *xvisinfo;
   int visinfos_count;

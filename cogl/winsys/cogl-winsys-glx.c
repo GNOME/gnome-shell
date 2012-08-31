@@ -48,6 +48,7 @@
 #include "cogl-xlib-renderer.h"
 #include "cogl-util.h"
 #include "cogl-winsys-glx-private.h"
+#include "cogl-error-private.h"
 
 #include <stdlib.h>
 #include <sys/types.h>
@@ -261,7 +262,7 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 
 static CoglBool
 resolve_core_glx_functions (CoglRenderer *renderer,
-                            GError **error)
+                            CoglError **error)
 {
   CoglGLXRenderer *glx_renderer;
 
@@ -306,7 +307,7 @@ resolve_core_glx_functions (CoglRenderer *renderer,
        !g_module_symbol (glx_renderer->libgl_module, "glXGetProcAddressARB",
                          (void **) &glx_renderer->glXGetProcAddress)))
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
                    "Failed to resolve required GLX symbol");
       return FALSE;
@@ -317,7 +318,7 @@ resolve_core_glx_functions (CoglRenderer *renderer,
 
 static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
-                               GError **error)
+                               CoglError **error)
 {
   CoglGLXRenderer *glx_renderer;
   CoglXlibRenderer *xlib_renderer;
@@ -332,7 +333,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 
   if (renderer->driver != COGL_DRIVER_GL)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
                    "GLX Backend can only be used in conjunction with OpenGL");
       goto error;
@@ -343,7 +344,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 
   if (glx_renderer->libgl_module == NULL)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
                    "Failed to dynamically open the OpenGL library");
       goto error;
@@ -356,7 +357,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                         &glx_renderer->glx_error_base,
                                         &glx_renderer->glx_event_base))
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
                    "XServer appears to lack required GLX support");
       goto error;
@@ -370,7 +371,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                       &glx_renderer->glx_minor)
       || !(glx_renderer->glx_major == 1 && glx_renderer->glx_minor >= 2))
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
                    "XServer appears to lack required GLX 1.2 support");
       goto error;
@@ -386,7 +387,7 @@ error:
 }
 
 static CoglBool
-update_winsys_features (CoglContext *context, GError **error)
+update_winsys_features (CoglContext *context, CoglError **error)
 {
   CoglGLXDisplay *glx_display = context->display->winsys;
   CoglXlibRenderer *xlib_renderer =
@@ -540,7 +541,7 @@ static CoglBool
 find_fbconfig (CoglDisplay *display,
                CoglFramebufferConfig *config,
                GLXFBConfig *config_ret,
-               GError **error)
+               CoglError **error)
 {
   CoglXlibRenderer *xlib_renderer =
     _cogl_xlib_renderer_get_data (display->renderer);
@@ -559,7 +560,7 @@ find_fbconfig (CoglDisplay *display,
                                              &n_configs);
   if (!configs || n_configs == 0)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "Failed to find any compatible fbconfigs");
       ret = FALSE;
@@ -589,7 +590,7 @@ find_fbconfig (CoglDisplay *display,
             }
         }
 
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "Unable to find fbconfig with rgba visual");
       ret = FALSE;
@@ -607,7 +608,7 @@ done:
 }
 
 static CoglBool
-create_context (CoglDisplay *display, GError **error)
+create_context (CoglDisplay *display, CoglError **error)
 {
   CoglGLXDisplay *glx_display = display->winsys;
   CoglXlibRenderer *xlib_renderer =
@@ -616,7 +617,7 @@ create_context (CoglDisplay *display, GError **error)
   CoglBool support_transparent_windows =
     display->onscreen_template->config.swap_chain->has_alpha;
   GLXFBConfig config;
-  GError *fbconfig_error = NULL;
+  CoglError *fbconfig_error = NULL;
   XSetWindowAttributes attrs;
   XVisualInfo *xvisinfo;
   GLXDrawable dummy_drawable;
@@ -629,11 +630,11 @@ create_context (CoglDisplay *display, GError **error)
                    &fbconfig_error);
   if (!glx_display->found_fbconfig)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "Unable to find suitable fbconfig for the GLX context: %s",
                    fbconfig_error->message);
-      g_error_free (fbconfig_error);
+      cogl_error_free (fbconfig_error);
       return FALSE;
     }
 
@@ -651,7 +652,7 @@ create_context (CoglDisplay *display, GError **error)
                                        True);
   if (glx_display->glx_context == NULL)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "Unable to create suitable GL context");
       return FALSE;
@@ -672,7 +673,7 @@ create_context (CoglDisplay *display, GError **error)
                                                      config);
   if (xvisinfo == NULL)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "Unable to retrieve the X11 visual");
       return FALSE;
@@ -727,7 +728,7 @@ create_context (CoglDisplay *display, GError **error)
 
   if (_cogl_xlib_renderer_untrap_errors (display->renderer, &old_state))
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "Unable to select the newly created GLX context");
       return FALSE;
@@ -774,7 +775,7 @@ _cogl_winsys_display_destroy (CoglDisplay *display)
 
 static CoglBool
 _cogl_winsys_display_setup (CoglDisplay *display,
-                            GError **error)
+                            CoglError **error)
 {
   CoglGLXDisplay *glx_display;
   int i;
@@ -798,7 +799,7 @@ error:
 }
 
 static CoglBool
-_cogl_winsys_context_init (CoglContext *context, GError **error)
+_cogl_winsys_context_init (CoglContext *context, CoglError **error)
 {
   context->winsys = g_new0 (CoglContextGLX, 1);
 
@@ -819,7 +820,7 @@ _cogl_winsys_context_deinit (CoglContext *context)
 
 static CoglBool
 _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
-                            GError **error)
+                            CoglError **error)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = framebuffer->context;
@@ -832,7 +833,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   CoglOnscreenXlib *xlib_onscreen;
   CoglOnscreenGLX *glx_onscreen;
   GLXFBConfig fbconfig;
-  GError *fbconfig_error = NULL;
+  CoglError *fbconfig_error = NULL;
 
   _COGL_RETURN_VAL_IF_FAIL (glx_display->glx_context, FALSE);
 
@@ -840,11 +841,11 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                       &fbconfig,
                       &fbconfig_error))
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "Unable to find suitable fbconfig for the GLX context: %s",
                    fbconfig_error->message);
-      g_error_free (fbconfig_error);
+      cogl_error_free (fbconfig_error);
       return FALSE;
     }
 
@@ -888,7 +889,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
         {
           char message[1000];
           XGetErrorText (xlib_renderer->xdpy, xerror, message, sizeof(message));
-          g_set_error (error, COGL_WINSYS_ERROR,
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
                        COGL_WINSYS_ERROR_CREATE_ONSCREEN,
                        "Unable to query geometry of foreign xid 0x%08lX: %s",
                        xwin, message);
@@ -922,7 +923,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
                                                          fbconfig);
       if (xvisinfo == NULL)
         {
-          g_set_error (error, COGL_WINSYS_ERROR,
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
                        COGL_WINSYS_ERROR_CREATE_ONSCREEN,
                        "Unable to retrieve the X11 visual of context's "
                        "fbconfig");
@@ -961,7 +962,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
           char message[1000];
           XGetErrorText (xlib_renderer->xdpy, xerror,
                          message, sizeof (message));
-          g_set_error (error, COGL_WINSYS_ERROR,
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
                        COGL_WINSYS_ERROR_CREATE_ONSCREEN,
                        "X error while creating Window for CoglOnscreen: %s",
                        message);
@@ -1113,7 +1114,7 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
 
   XSync (xlib_renderer->xdpy, False);
 
-  /* FIXME: We should be reporting a GError here
+  /* FIXME: We should be reporting a CoglError here
    */
   if (_cogl_xlib_renderer_untrap_errors (context->display->renderer,
                                          &old_state))
@@ -1917,7 +1918,7 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
   if (glx_tex_pixmap->glx_tex == NULL)
     {
       CoglPixelFormat texture_format;
-      GError *error = NULL;
+      CoglError *error = NULL;
 
       texture_format = (tex_pixmap->depth >= 32 ?
                         COGL_PIXEL_FORMAT_RGBA_8888_PRE :
@@ -1940,7 +1941,7 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
               COGL_NOTE (TEXTURE_PIXMAP, "Falling back for %p because a "
                          "texture rectangle could not be created: %s",
                          tex_pixmap, error->message);
-              g_error_free (error);
+              cogl_error_free (error);
               free_glx_pixmap (ctx, glx_tex_pixmap);
               return FALSE;
             }

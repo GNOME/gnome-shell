@@ -30,7 +30,7 @@
 
 CoglBool
 _cogl_offscreen_gl_allocate (CoglOffscreen *offscreen,
-                             GError **error);
+                             CoglError **error);
 
 void
 _cogl_offscreen_gl_free (CoglOffscreen *offscreen);

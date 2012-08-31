@@ -38,6 +38,7 @@
 #include "cogl-renderer-private.h"
 #include "cogl-onscreen-private.h"
 #include "cogl-wayland-renderer.h"
+#include "cogl-error-private.h"
 
 static const CoglWinsysEGLVtable _cogl_winsys_egl_vtable;
 
@@ -108,7 +109,7 @@ static const struct wl_registry_listener registry_listener = {
 
 static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
-                               GError **error)
+                               CoglError **error)
 {
   CoglRendererEGL *egl_renderer;
   CoglRendererWayland *wayland_renderer;
@@ -144,7 +145,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
       wayland_renderer->wayland_display = wl_display_connect (NULL);
       if (!wayland_renderer->wayland_display)
         {
-          g_set_error (error, COGL_WINSYS_ERROR,
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
                        COGL_WINSYS_ERROR_INIT,
                        "Failed to connect wayland display");
           goto error;
@@ -183,7 +184,7 @@ error:
 
 static CoglBool
 _cogl_winsys_egl_display_setup (CoglDisplay *display,
-                                GError **error)
+                                CoglError **error)
 {
   CoglDisplayEGL *egl_display = display->winsys;
   CoglDisplayWayland *wayland_display;
@@ -204,7 +205,7 @@ _cogl_winsys_egl_display_destroy (CoglDisplay *display)
 
 static CoglBool
 _cogl_winsys_egl_context_created (CoglDisplay *display,
-                                  GError **error)
+                                  CoglError **error)
 {
   CoglRenderer *renderer = display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
@@ -255,7 +256,7 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
   return TRUE;
 
  fail:
-  g_set_error (error, COGL_WINSYS_ERROR,
+  _cogl_set_error (error, COGL_WINSYS_ERROR,
                COGL_WINSYS_ERROR_CREATE_CONTEXT,
                "%s", error_message);
   return FALSE;
@@ -290,7 +291,7 @@ _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
 
 static CoglBool
 _cogl_winsys_egl_context_init (CoglContext *context,
-                               GError **error)
+                               CoglError **error)
 {
   context->feature_flags |= COGL_FEATURE_ONSCREEN_MULTIPLE;
   COGL_FLAGS_SET (context->features,
@@ -305,7 +306,7 @@ _cogl_winsys_egl_context_init (CoglContext *context,
 static CoglBool
 _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
                                 EGLConfig egl_config,
-                                GError **error)
+                                CoglError **error)
 {
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglOnscreenWayland *wayland_onscreen;
@@ -322,7 +323,7 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
     wl_compositor_create_surface (wayland_renderer->wayland_compositor);
   if (!wayland_onscreen->wayland_surface)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_ONSCREEN,
                    "Error while creating wayland surface for CoglOnscreen");
       return FALSE;
@@ -338,7 +339,7 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
                           cogl_framebuffer_get_height (framebuffer));
   if (!wayland_onscreen->wayland_egl_native_window)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_ONSCREEN,
                    "Error while creating wayland egl native window "
                    "for CoglOnscreen");

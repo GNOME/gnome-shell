@@ -37,6 +37,7 @@
 #include "cogl-xlib-renderer-private.h"
 #include "cogl-x11-renderer-private.h"
 #include "cogl-winsys-private.h"
+#include "cogl-error-private.h"
 
 #include <X11/Xlib.h>
 #include <X11/extensions/Xdamage.h>
@@ -164,7 +165,7 @@ _cogl_xlib_renderer_untrap_errors (CoglRenderer *renderer,
 }
 
 static Display *
-assert_xlib_display (CoglRenderer *renderer, GError **error)
+assert_xlib_display (CoglRenderer *renderer, CoglError **error)
 {
   Display *xdpy = cogl_xlib_renderer_get_foreign_display (renderer);
   CoglXlibRenderer *xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
@@ -179,7 +180,7 @@ assert_xlib_display (CoglRenderer *renderer, GError **error)
   xdpy = XOpenDisplay (_cogl_x11_display_name);
   if (xdpy == NULL)
     {
-      g_set_error (error,
+      _cogl_set_error (error,
                    COGL_RENDERER_ERROR,
                    COGL_RENDERER_ERROR_XLIB_DISPLAY_OPEN,
                    "Failed to open X Display %s", _cogl_x11_display_name);
@@ -191,7 +192,7 @@ assert_xlib_display (CoglRenderer *renderer, GError **error)
 }
 
 CoglBool
-_cogl_xlib_renderer_connect (CoglRenderer *renderer, GError **error)
+_cogl_xlib_renderer_connect (CoglRenderer *renderer, CoglError **error)
 {
   CoglXlibRenderer *xlib_renderer =
     _cogl_xlib_renderer_get_data (renderer);

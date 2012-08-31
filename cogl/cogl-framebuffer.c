@@ -49,6 +49,7 @@
 #include "cogl-private.h"
 #include "cogl-primitives-private.h"
 #include "cogl-path-private.h"
+#include "cogl-error-private.h"
 
 typedef struct _CoglFramebufferStackEntry
 {
@@ -75,7 +76,7 @@ COGL_OBJECT_DEFINE_DEPRECATED_REF_COUNTING (offscreen);
  * abstract class manually.
  */
 
-GQuark
+uint32_t
 cogl_framebuffer_error_quark (void)
 {
   return g_quark_from_static_string ("cogl-framebuffer-error-quark");
@@ -652,7 +653,7 @@ _cogl_offscreen_free (CoglOffscreen *offscreen)
 
 CoglBool
 cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
-                           GError **error)
+                           CoglError **error)
 {
   CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
   const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
@@ -664,10 +665,10 @@ cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
     {
       if (framebuffer->config.depth_texture_enabled)
         {
-          g_set_error (error, COGL_FRAMEBUFFER_ERROR,
-                       COGL_FRAMEBUFFER_ERROR_ALLOCATE,
-                       "Can't allocate onscreen framebuffer with a "
-                       "texture based depth buffer");
+          _cogl_set_error (error, COGL_FRAMEBUFFER_ERROR,
+                           COGL_FRAMEBUFFER_ERROR_ALLOCATE,
+                           "Can't allocate onscreen framebuffer with a "
+                           "texture based depth buffer");
           return FALSE;
         }
 

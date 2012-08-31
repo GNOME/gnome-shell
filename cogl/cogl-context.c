@@ -49,6 +49,7 @@
 #include "cogl1-context.h"
 #include "cogl-gpu-info-private.h"
 #include "cogl-config-private.h"
+#include "cogl-error-private.h"
 
 #include <string.h>
 
@@ -124,13 +125,14 @@ _cogl_context_get_winsys (CoglContext *context)
  */
 CoglContext *
 cogl_context_new (CoglDisplay *display,
-                  GError **error)
+                  CoglError **error)
 {
   CoglContext *context;
   GLubyte default_texture_data[] = { 0xff, 0xff, 0xff, 0x0 };
   CoglBitmap *default_texture_bitmap;
   const CoglWinsysVtable *winsys;
   int i;
+  CoglError *internal_error = NULL;
 
   _cogl_init ();
 
@@ -390,18 +392,26 @@ cogl_context_new (CoglDisplay *display,
                                      /* internal format */
                                      COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                      NULL);
-  /* If 3D or rectangle textures aren't supported then these should
-     just silently return NULL */
+
+  /* If 3D or rectangle textures aren't supported then these will
+   * return errors that we can simply ignore. */
+  internal_error = NULL;
   context->default_gl_texture_3d_tex =
     cogl_texture_3d_new_from_bitmap (default_texture_bitmap,
                                      1, /* height */
                                      1, /* depth */
                                      COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                     NULL);
+                                     &internal_error);
+  if (internal_error)
+    cogl_error_free (internal_error);
+
+  internal_error = NULL;
   context->default_gl_texture_rect_tex =
     cogl_texture_rectangle_new_from_bitmap (default_texture_bitmap,
                                             COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                            NULL);
+                                            &internal_error);
+  if (internal_error)
+    cogl_error_free (internal_error);
 
   cogl_object_unref (default_texture_bitmap);
 
@@ -532,7 +542,7 @@ _cogl_context_free (CoglContext *context)
 CoglContext *
 _cogl_context_get_default (void)
 {
-  GError *error = NULL;
+  CoglError *error = NULL;
   /* Create if doesn't exist yet */
   if (_cogl_context == NULL)
     {
@@ -541,7 +551,7 @@ _cogl_context_get_default (void)
         {
           g_warning ("Failed to create default context: %s",
                      error->message);
-          g_error_free (error);
+          cogl_error_free (error);
         }
     }
 
@@ -569,7 +579,7 @@ cogl_egl_context_get_egl_display (CoglContext *context)
 
 CoglBool
 _cogl_context_update_features (CoglContext *context,
-                               GError **error)
+                               CoglError **error)
 {
   return context->driver_vtable->update_features (context, error);
 }

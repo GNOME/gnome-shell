@@ -67,7 +67,7 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 
 static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
-                               GError **error)
+                               CoglError **error)
 {
   CoglRendererEGL *egl_renderer;
   CoglRendererGDL *gdl_renderer;
@@ -91,7 +91,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   rc = gdl_init (NULL);
   if (rc != GDL_SUCCESS)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
                    "GDL initialize failed. %s",
                    gdl_get_error_string (rc));
@@ -101,7 +101,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   rc = gdl_get_display_info (GDL_DISPLAY_ID_0, &gdl_display_info);
   if (rc != GDL_SUCCESS)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
                    "GDL failed to get display information: %s",
                    gdl_get_error_string (rc));
@@ -120,7 +120,7 @@ error:
 
 static CoglBool
 _cogl_winsys_egl_context_created (CoglDisplay *display,
-                                  GError **error)
+                                  CoglError **error)
 {
   CoglRenderer *renderer = display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
@@ -162,14 +162,14 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
   return TRUE;
 
  fail:
-  g_set_error (error, COGL_WINSYS_ERROR,
+  _cogl_set_error (error, COGL_WINSYS_ERROR,
                COGL_WINSYS_ERROR_CREATE_CONTEXT,
                "%s", error_message);
   return FALSE;
 }
 
 static CoglBool
-gdl_plane_init (CoglDisplay *display, GError **error)
+gdl_plane_init (CoglDisplay *display, CoglError **error)
 {
   CoglBool ret = TRUE;
   gdl_color_space_t colorSpace = GDL_COLOR_SPACE_RGB;
@@ -180,7 +180,7 @@ gdl_plane_init (CoglDisplay *display, GError **error)
 
   if (!display->gdl_plane)
     {
-      g_set_error (error, COGL_WINSYS_ERROR, COGL_WINSYS_ERROR_CREATE_CONTEXT,
+      _cogl_set_error (error, COGL_WINSYS_ERROR, COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "No GDL plane specified with "
                    "cogl_gdl_display_set_plane");
       return FALSE;
@@ -189,7 +189,7 @@ gdl_plane_init (CoglDisplay *display, GError **error)
   rc = gdl_init (NULL);
   if (rc != GDL_SUCCESS)
     {
-      g_set_error (error, COGL_WINSYS_ERROR, COGL_WINSYS_ERROR_CREATE_CONTEXT,
+      _cogl_set_error (error, COGL_WINSYS_ERROR, COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "GDL initialize failed. %s", gdl_get_error_string (rc));
       return FALSE;
     }
@@ -197,7 +197,7 @@ gdl_plane_init (CoglDisplay *display, GError **error)
   rc = gdl_get_display_info (GDL_DISPLAY_ID_0, &display_info);
   if (rc != GDL_SUCCESS)
     {
-      g_set_error (error, COGL_WINSYS_ERROR, COGL_WINSYS_ERROR_CREATE_CONTEXT,
+      _cogl_set_error (error, COGL_WINSYS_ERROR, COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "GDL failed to get display infomation: %s",
                    gdl_get_error_string (rc));
       gdl_close ();
@@ -243,7 +243,7 @@ gdl_plane_init (CoglDisplay *display, GError **error)
 
   if (rc != GDL_SUCCESS)
     {
-      g_set_error (error, COGL_WINSYS_ERROR, COGL_WINSYS_ERROR_CREATE_CONTEXT,
+      _cogl_set_error (error, COGL_WINSYS_ERROR, COGL_WINSYS_ERROR_CREATE_CONTEXT,
                    "GDL configuration failed: %s.", gdl_get_error_string (rc));
       ret = FALSE;
     }
@@ -255,7 +255,7 @@ gdl_plane_init (CoglDisplay *display, GError **error)
 
 static CoglBool
 _cogl_winsys_egl_display_setup (CoglDisplay *display,
-                                GError **error)
+                                CoglError **error)
 {
   CoglDisplayEGL *egl_display = display->winsys;
   CoglDisplayGDL *gdl_display;
@@ -294,7 +294,7 @@ _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
 static CoglBool
 _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
                                 EGLConfig egl_config,
-                                GError **error)
+                                CoglError **error)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = framebuffer->context;
@@ -305,7 +305,7 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
 
   if (gdl_display->have_onscreen)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_ONSCREEN,
                    "EGL platform only supports a single onscreen window");
       return FALSE;

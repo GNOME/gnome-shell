@@ -59,7 +59,7 @@ typedef enum
 /**
  * COGL_TEXTURE_PIXMAP_X11_ERROR:
  *
- * #GError domain for texture-pixmap-x11 errors.
+ * #CoglError domain for texture-pixmap-x11 errors.
  *
  * Since: 1.10
  */
@@ -78,7 +78,7 @@ typedef enum {
   COGL_TEXTURE_PIXMAP_X11_ERROR_X11,
 } CoglTexturePixmapX11Error;
 
-GQuark cogl_texture_pixmap_x11_error_quark (void);
+uint32_t cogl_texture_pixmap_x11_error_quark (void);
 
 /**
  * cogl_texture_pixmap_x11_new:
@@ -86,7 +86,7 @@ GQuark cogl_texture_pixmap_x11_error_quark (void);
  * @pixmap: A X11 pixmap ID
  * @automatic_updates: Whether to automatically copy the contents of
  * the pixmap to the texture.
- * @error: A #GError for exceptions
+ * @error: A #CoglError for exceptions
  *
  * Creates a texture that contains the contents of @pixmap. If
  * @automatic_updates is %TRUE then Cogl will attempt to listen for
@@ -102,7 +102,7 @@ CoglTexturePixmapX11 *
 cogl_texture_pixmap_x11_new (CoglContext *context,
                              uint32_t pixmap,
                              CoglBool automatic_updates,
-                             GError **error);
+                             CoglError **error);
 
 /**
  * cogl_texture_pixmap_x11_update_area:

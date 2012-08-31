@@ -566,7 +566,7 @@ typedef enum {
 /**
  * COGL_BLEND_STRING_ERROR:
  *
- * #GError domain for blend string parser errors
+ * #CoglError domain for blend string parser errors
  *
  * Since: 1.0
  */
@@ -591,28 +591,28 @@ typedef enum { /*< prefix=COGL_BLEND_STRING_ERROR >*/
   COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR
 } CoglBlendStringError;
 
-GQuark
+uint32_t
 cogl_blend_string_error_quark (void);
 
-#define COGL_ERROR (_cogl_error_quark ())
+#define COGL_SYSTEM_ERROR (_cogl_system_error_quark ())
 
 /**
- * CoglError:
- * @COGL_ERROR_UNSUPPORTED: You tried to use a feature or
+ * CoglSystemError:
+ * @COGL_SYSTEM_ERROR_UNSUPPORTED: You tried to use a feature or
  *    configuration not currently available.
- * @COGL_ERROR_NO_MEMORY: You tried to allocate a resource
+ * @COGL_SYSTEM_ERROR_NO_MEMORY: You tried to allocate a resource
  *    such as a texture and there wasn't enough memory.
  *
  * Error enumeration for Cogl
  *
- * The @COGL_ERROR_UNSUPPORTED error can be thrown for a variety of
- * reasons. For example:
+ * The @COGL_SYSTEM_ERROR_UNSUPPORTED error can be thrown for a
+ * variety of reasons. For example:
  *
  * <itemizedlist>
  *  <listitem><para>You've tried to use a feature that is not
- *   advertised by cogl_get_features(). This could happen if you create
+ *   advertised by cogl_has_feature(). This could happen if you create
  *   a 2d texture with a non-power-of-two size when
- *   %COGL_FEATURE_TEXTURE_NPOT is not advertised.</para></listitem>
+ *   %COGL_FEATURE_ID_TEXTURE_NPOT is not advertised.</para></listitem>
  *  <listitem><para>The GPU can not handle the configuration you have
  *   requested. An example might be if you try to use too many texture
  *   layers in a single #CoglPipeline</para></listitem>
@@ -627,12 +627,12 @@ cogl_blend_string_error_quark (void);
  * Stability: unstable
  */
 typedef enum { /*< prefix=COGL_ERROR >*/
-  COGL_ERROR_UNSUPPORTED,
-  COGL_ERROR_NO_MEMORY
-} CoglError;
+  COGL_SYSTEM_ERROR_UNSUPPORTED,
+  COGL_SYSTEM_ERROR_NO_MEMORY
+} CoglSystemError;
 
-GQuark
-_cogl_error_quark (void);
+uint32_t
+_cogl_system_error_quark (void);
 
 /**
  * CoglAttributeType:

@@ -208,7 +208,7 @@ cogl_pipeline_remove_layer (CoglPipeline *pipeline,
  * @layer_index: Specifies the layer you want define a combine function for
  * @blend_string: A <link linkend="cogl-Blend-Strings">Cogl blend string</link>
  *    describing the desired texture combine function.
- * @error: A #GError that may report parse errors or lack of GPU/driver
+ * @error: A #CoglError that may report parse errors or lack of GPU/driver
  *   support. May be %NULL, in which case a warning will be printed out if an
  *   error is encountered.
  *
@@ -299,7 +299,7 @@ CoglBool
 cogl_pipeline_set_layer_combine (CoglPipeline *pipeline,
 				 int           layer_index,
 				 const char   *blend_string,
-                                 GError      **error);
+                                 CoglError      **error);
 
 /**
  * cogl_pipeline_set_layer_combine_constant:
@@ -416,7 +416,7 @@ cogl_pipeline_get_layer_mag_filter (CoglPipeline *pipeline,
  * @pipeline: A #CoglPipeline object
  * @layer_index: the layer number to change.
  * @enable: whether to enable point sprite coord generation.
- * @error: A return location for a GError, or NULL to ignore errors.
+ * @error: A return location for a CoglError, or NULL to ignore errors.
  *
  * When rendering points, if @enable is %TRUE then the texture
  * coordinates for this layer will be replaced with coordinates that
@@ -437,7 +437,7 @@ CoglBool
 cogl_pipeline_set_layer_point_sprite_coords_enabled (CoglPipeline *pipeline,
                                                      int           layer_index,
                                                      CoglBool      enable,
-                                                     GError      **error);
+                                                     CoglError      **error);
 
 /**
  * cogl_pipeline_get_layer_point_sprite_coords_enabled:

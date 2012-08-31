@@ -37,6 +37,7 @@
 #include "cogl-context-private.h"
 #include "cogl-onscreen-private.h"
 #include "cogl-winsys-sdl-private.h"
+#include "cogl-error-private.h"
 
 typedef struct _CoglRendererSdl
 {
@@ -84,12 +85,12 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 
 static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
-                               GError **error)
+                               CoglError **error)
 {
 #ifndef COGL_HAS_SDL_GLES_SUPPORT
   if (renderer->driver != COGL_DRIVER_GL)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
                    "The SDL winsys only supports the GL driver");
       return FALSE;
@@ -98,7 +99,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 
   if (SDL_Init (SDL_INIT_VIDEO) == -1)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
                    "SDL_Init failed: %s",
                    SDL_GetError ());
@@ -144,7 +145,7 @@ set_gl_attribs_from_framebuffer_config (CoglFramebufferConfig *config)
 
 static CoglBool
 _cogl_winsys_display_setup (CoglDisplay *display,
-                            GError **error)
+                            CoglError **error)
 {
   CoglDisplaySdl *sdl_display;
 
@@ -189,7 +190,7 @@ _cogl_winsys_display_setup (CoglDisplay *display,
 
   if (sdl_display->surface == NULL)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
                    "SDL_SetVideoMode failed: %s",
                    SDL_GetError ());
@@ -237,7 +238,7 @@ sdl_event_filter_cb (SDL_Event *event, void *data)
 }
 
 static CoglBool
-_cogl_winsys_context_init (CoglContext *context, GError **error)
+_cogl_winsys_context_init (CoglContext *context, CoglError **error)
 {
   CoglRenderer *renderer = context->display->renderer;
 
@@ -274,7 +275,7 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 
 static CoglBool
 _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
-                            GError **error)
+                            CoglError **error)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = framebuffer->context;
@@ -284,7 +285,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
   if (sdl_display->onscreen)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_ONSCREEN,
                    "SDL winsys only supports a single onscreen window");
       return FALSE;
@@ -303,7 +304,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
 
       if (sdl_display->surface == NULL)
         {
-          g_set_error (error, COGL_WINSYS_ERROR,
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
                        COGL_WINSYS_ERROR_CREATE_ONSCREEN,
                        "SDL_SetVideoMode failed: %s",
                        SDL_GetError ());

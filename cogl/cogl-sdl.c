@@ -46,7 +46,7 @@ cogl_sdl_renderer_get_event_type (CoglRenderer *renderer)
 }
 
 CoglContext *
-cogl_sdl_context_new (int type, GError **error)
+cogl_sdl_context_new (int type, CoglError **error)
 {
   CoglRenderer *renderer = cogl_renderer_new ();
   CoglDisplay *display;

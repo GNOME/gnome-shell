@@ -336,7 +336,7 @@ _cogl_context_get_winsys (CoglContext *context);
  * return FALSE and set @error */
 CoglBool
 _cogl_context_update_features (CoglContext *context,
-                               GError **error);
+                               CoglError **error);
 
 /* Obtains the context and returns retval if NULL */
 #define _COGL_GET_CONTEXT(ctxvar, retval) \

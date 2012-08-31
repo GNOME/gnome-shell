@@ -55,7 +55,7 @@ typedef struct _CoglBitmap CoglBitmap;
 /**
  * cogl_bitmap_new_from_file:
  * @filename: the file to load.
- * @error: a #GError or %NULL.
+ * @error: a #CoglError or %NULL.
  *
  * Loads an image file from disk. This function can be safely called from
  * within a thread.
@@ -67,7 +67,7 @@ typedef struct _CoglBitmap CoglBitmap;
  */
 CoglBitmap *
 cogl_bitmap_new_from_file (const char *filename,
-                           GError **error);
+                           CoglError **error);
 
 #ifdef COGL_HAS_ANDROID_SUPPORT
 /**
@@ -75,7 +75,7 @@ cogl_bitmap_new_from_file (const char *filename,
  * @context: A #CoglContext
  * @manager: An Android Asset Manager.
  * @filename: The file name for the asset
- * @error: A return location for a GError exception.
+ * @error: A return location for a CoglError exception.
  *
  * Loads an Android asset into a newly allocated #CoglBitmap.
  *
@@ -88,7 +88,7 @@ CoglBitmap *
 cogl_android_bitmap_new_from_asset (CoglContext *context,
                                     AAssetManager *manager,
                                     const char *filename,
-                                    GError **error);
+                                    CoglError **error);
 #endif
 
 #if defined (COGL_ENABLE_EXPERIMENTAL_API)
@@ -280,7 +280,7 @@ cogl_is_bitmap (void *object);
 /**
  * COGL_BITMAP_ERROR:
  *
- * #GError domain for bitmap errors.
+ * #CoglError domain for bitmap errors.
  *
  * Since: 1.4
  */
@@ -307,7 +307,7 @@ typedef enum {
   COGL_BITMAP_ERROR_CORRUPT_IMAGE
 } CoglBitmapError;
 
-GQuark cogl_bitmap_error_quark (void);
+uint32_t cogl_bitmap_error_quark (void);
 
 G_END_DECLS
 

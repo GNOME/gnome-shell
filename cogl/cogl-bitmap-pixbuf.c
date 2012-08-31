@@ -30,6 +30,7 @@
 #include "cogl-bitmap-private.h"
 #include "cogl-context-private.h"
 #include "cogl-private.h"
+#include "cogl-error-private.h"
 
 #include <string.h>
 
@@ -59,7 +60,7 @@ _cogl_bitmap_get_size_from_file (const char *filename,
 CoglBitmap *
 _cogl_bitmap_from_file (CoglContext *ctx,
                         const char *filename,
-			GError **error)
+			CoglError **error)
 {
   CFURLRef url;
   CGImageSourceRef image_source;
@@ -83,10 +84,10 @@ _cogl_bitmap_from_file (CoglContext *ctx,
   if (image_source == NULL)
     {
       /* doesn't exist, not readable, etc. */
-      g_set_error_literal (error,
-                           COGL_BITMAP_ERROR,
-                           COGL_BITMAP_ERROR_FAILED,
-                           g_strerror (save_errno));
+      _cogl_set_error_literal (error,
+                               COGL_BITMAP_ERROR,
+                               COGL_BITMAP_ERROR_FAILED,
+                               g_strerror (save_errno));
       return NULL;
     }
 
@@ -97,10 +98,10 @@ _cogl_bitmap_from_file (CoglContext *ctx,
   if (type == NULL)
     {
       CFRelease (image_source);
-      g_set_error_literal (error,
-                           COGL_BITMAP_ERROR,
-                           COGL_BITMAP_ERROR_UNKNOWN_TYPE,
-                           "Unknown image type");
+      _cogl_set_error_literal (error,
+                               COGL_BITMAP_ERROR,
+                               COGL_BITMAP_ERROR_UNKNOWN_TYPE,
+                               "Unknown image type");
       return NULL;
     }
 
@@ -115,10 +116,10 @@ _cogl_bitmap_from_file (CoglContext *ctx,
     {
       /* incomplete or corrupt */
       CFRelease (image);
-      g_set_error_literal (error,
-                           COGL_BITMAP_ERROR,
-                           COGL_BITMAP_ERROR_CORRUPT_IMAGE,
-                           "Image has zero width or height");
+      _cogl_set_error_literal (error,
+                               COGL_BITMAP_ERROR,
+                               COGL_BITMAP_ERROR_CORRUPT_IMAGE,
+                               "Image has zero width or height");
       return NULL;
     }
 
@@ -174,24 +175,28 @@ _cogl_bitmap_get_size_from_file (const char *filename,
 CoglBitmap *
 _cogl_bitmap_from_file (CoglContext *ctx,
                         const char *filename,
-			GError **error)
+			CoglError **error)
 {
   static CoglUserDataKey pixbuf_key;
-  GdkPixbuf        *pixbuf;
-  CoglBool          has_alpha;
-  GdkColorspace     color_space;
-  CoglPixelFormat   pixel_format;
-  int               width;
-  int               height;
-  int               rowstride;
-  int               bits_per_sample;
-  int               n_channels;
-  CoglBitmap       *bmp;
+  GdkPixbuf *pixbuf;
+  CoglBool has_alpha;
+  GdkColorspace color_space;
+  CoglPixelFormat pixel_format;
+  int width;
+  int height;
+  int rowstride;
+  int bits_per_sample;
+  int n_channels;
+  CoglBitmap *bmp;
+  GError *glib_error = NULL;
 
   /* Load from file using GdkPixbuf */
-  pixbuf = gdk_pixbuf_new_from_file (filename, error);
+  pixbuf = gdk_pixbuf_new_from_file (filename, &glib_error);
   if (pixbuf == NULL)
-    return FALSE;
+    {
+      _cogl_propogate_gerror (error, glib_error);
+      return FALSE;
+    }
 
   /* Get pixbuf properties */
   has_alpha       = gdk_pixbuf_get_has_alpha (pixbuf);
@@ -308,7 +313,7 @@ _cogl_bitmap_new_from_stb_pixels (CoglContext *ctx,
                                   int stb_pixel_format,
                                   int width,
                                   int height,
-                                  GError **error)
+                                  CoglError **error)
 {
   static CoglUserDataKey bitmap_data_key;
   CoglBitmap *bmp;
@@ -317,10 +322,10 @@ _cogl_bitmap_new_from_stb_pixels (CoglContext *ctx,
 
   if (pixels == NULL)
     {
-      g_set_error_literal (error,
-                           COGL_BITMAP_ERROR,
-                           COGL_BITMAP_ERROR_FAILED,
-                           "Failed to load image with stb image library");
+      _cogl_set_error_literal (error,
+                               COGL_BITMAP_ERROR,
+                               COGL_BITMAP_ERROR_FAILED,
+                               "Failed to load image with stb image library");
       return NULL;
     }
 
@@ -338,11 +343,11 @@ _cogl_bitmap_new_from_stb_pixels (CoglContext *ctx,
 
         if (!pixels)
           {
-            g_set_error_literal (error,
-                                 COGL_BITMAP_ERROR,
-                                 COGL_BITMAP_ERROR_FAILED,
-                                 "Failed to alloc memory to convert "
-                                 "gray_alpha to rgba8888");
+            _cogl_set_error_literal (error,
+                                     COGL_BITMAP_ERROR,
+                                     COGL_BITMAP_ERROR_FAILED,
+                                     "Failed to alloc memory to convert "
+                                     "gray_alpha to rgba8888");
             return NULL;
           }
 
@@ -380,7 +385,7 @@ _cogl_bitmap_new_from_stb_pixels (CoglContext *ctx,
 CoglBitmap *
 _cogl_bitmap_from_file (CoglContext *ctx,
                         const char *filename,
-			GError **error)
+			CoglError **error)
 {
   int stb_pixel_format;
   int width;
@@ -401,7 +406,7 @@ CoglBitmap *
 _cogl_android_bitmap_new_from_asset (CoglContext *ctx,
                                      AAssetManager *manager,
                                      const char *filename,
-                                     GError **error)
+                                     CoglError **error)
 {
   AAsset *asset;
   const void *data;
@@ -415,20 +420,20 @@ _cogl_android_bitmap_new_from_asset (CoglContext *ctx,
   asset = AAssetManager_open (manager, filename, AASSET_MODE_BUFFER);
   if (!asset)
     {
-      g_set_error_literal (error,
-                           COGL_BITMAP_ERROR,
-                           COGL_BITMAP_ERROR_FAILED,
-                           "Failed to open asset");
+      _cogl_set_error_literal (error,
+                               COGL_BITMAP_ERROR,
+                               COGL_BITMAP_ERROR_FAILED,
+                               "Failed to open asset");
       return NULL;
     }
 
   data = AAsset_getBuffer (asset);
   if (!data)
     {
-      g_set_error_literal (error,
-                           COGL_BITMAP_ERROR,
-                           COGL_BITMAP_ERROR_FAILED,
-                           "Failed to ::getBuffer from asset");
+      _cogl_set_error_literal (error,
+                               COGL_BITMAP_ERROR,
+                               COGL_BITMAP_ERROR_FAILED,
+                               "Failed to ::getBuffer from asset");
       return NULL;
     }
 

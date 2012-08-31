@@ -56,7 +56,7 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 
 static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
-                               GError **error)
+                               CoglError **error)
 {
   CoglRendererEGL *egl_renderer;
 
@@ -79,7 +79,7 @@ error:
 
 static CoglBool
 _cogl_winsys_egl_context_created (CoglDisplay *display,
-                                  GError **error)
+                                  CoglError **error)
 {
   CoglRenderer *renderer = display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
@@ -120,7 +120,7 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
   return TRUE;
 
  fail:
-  g_set_error (error, COGL_WINSYS_ERROR,
+  _cogl_set_error (error, COGL_WINSYS_ERROR,
                COGL_WINSYS_ERROR_CREATE_CONTEXT,
                "%s", error_message);
   return FALSE;
@@ -128,7 +128,7 @@ _cogl_winsys_egl_context_created (CoglDisplay *display,
 
 static CoglBool
 _cogl_winsys_egl_display_setup (CoglDisplay *display,
-                                GError **error)
+                                CoglError **error)
 {
   CoglDisplayEGL *egl_display = display->winsys;
   CoglDisplayNull *null_display;
@@ -164,7 +164,7 @@ _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
 static CoglBool
 _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
                                 EGLConfig egl_config,
-                                GError **error)
+                                CoglError **error)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = framebuffer->context;
@@ -175,7 +175,7 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
 
   if (null_display->have_onscreen)
     {
-      g_set_error (error, COGL_WINSYS_ERROR,
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_CREATE_ONSCREEN,
                    "EGL platform only supports a single onscreen window");
       return FALSE;

@@ -34,19 +34,19 @@ typedef struct _CoglWinsysEGLVtable
 {
   CoglBool
   (* display_setup) (CoglDisplay *display,
-                     GError **error);
+                     CoglError **error);
   void
   (* display_destroy) (CoglDisplay *display);
 
   CoglBool
   (* context_created) (CoglDisplay *display,
-                       GError **error);
+                       CoglError **error);
 
   void
   (* cleanup_context) (CoglDisplay *display);
 
   CoglBool
-  (* context_init) (CoglContext *context, GError **error);
+  (* context_init) (CoglContext *context, CoglError **error);
 
   void
   (* context_deinit) (CoglContext *context);
@@ -54,7 +54,7 @@ typedef struct _CoglWinsysEGLVtable
   CoglBool
   (* onscreen_init) (CoglOnscreen *onscreen,
                      EGLConfig config,
-                     GError **error);
+                     CoglError **error);
   void
   (* onscreen_deinit) (CoglOnscreen *onscreen);
 
@@ -159,6 +159,6 @@ _cogl_egl_destroy_image (CoglContext *ctx,
 
 CoglBool
 _cogl_winsys_egl_renderer_connect_common (CoglRenderer *renderer,
-                                          GError **error);
+                                          CoglError **error);
 
 #endif /* __COGL_WINSYS_EGL_PRIVATE_H */

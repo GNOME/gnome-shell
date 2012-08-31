@@ -31,7 +31,6 @@ create_source (TestState *state)
   int dx, dy;
   uint8_t *data = g_malloc (SOURCE_SIZE * SOURCE_SIZE * 4);
   CoglTexture2D *tex;
-  GError *error = NULL;
 
   /* Create a texture with a different coloured rectangle at each
      corner */
@@ -61,8 +60,7 @@ create_source (TestState *state)
                                        COGL_PIXEL_FORMAT_ANY,
                                        SOURCE_SIZE * 4,
                                        data,
-                                       &error);
-  g_assert_no_error (error);
+                                       NULL);
   return tex;
 }
 
@@ -72,7 +70,6 @@ create_test_texture (TestState *state)
   CoglTexture2D *tex;
   uint8_t *data = g_malloc (256 * 256 * 4), *p = data;
   int x, y;
-  GError *error = NULL;
 
   /* Create a texture that is 256x256 where the red component ranges
      from 0->255 along the x axis and the green component ranges from
@@ -93,9 +90,7 @@ create_test_texture (TestState *state)
                                        COGL_PIXEL_FORMAT_ANY,
                                        256 * 4,
                                        data,
-                                       &error);
-  g_assert_no_error (error);
-
+                                       NULL);
   g_free (data);
 
   return tex;

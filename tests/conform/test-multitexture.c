@@ -104,7 +104,7 @@ on_paint (ClutterActor *actor, TestState *state)
   CoglHandle tex0, tex1;
   CoglHandle material;
   CoglBool status;
-  GError *error = NULL;
+  CoglError *error = NULL;
   float tex_coords[] = {
     0, 0, 0.5, 0.5, /* tex0 */
     0.5, 0.5, 1, 1 /* tex1 */

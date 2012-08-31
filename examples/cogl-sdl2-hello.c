@@ -77,7 +77,7 @@ main (int argc, char **argv)
 {
   CoglContext *ctx;
   CoglOnscreen *onscreen;
-  GError *error = NULL;
+  CoglError *error = NULL;
   CoglVertexP2C4 triangle_vertices[] = {
     {0, 0.7, 0xff, 0x00, 0x00, 0x80},
     {-0.7, -0.7, 0x00, 0xff, 0x00, 0xff},

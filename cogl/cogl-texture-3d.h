@@ -57,12 +57,12 @@ typedef struct _CoglTexture3D CoglTexture3D;
  * @depth: depth of the texture in pixels.
  * @internal_format: the #CoglPixelFormat to use for the GPU
  *    storage of the texture.
- * @error: A GError return location.
+ * @error: A CoglError return location.
  *
  * Creates a new Cogl 3D texture with the specified dimensions and
  * pixel format.
  *
- * Note that this function will throw a #GError if
+ * Note that this function will throw a #CoglError if
  * %COGL_FEATURE_TEXTURE_3D is not advertised. It can also fail if the
  * requested dimensions are not supported by the GPU.
  *
@@ -78,7 +78,7 @@ cogl_texture_3d_new_with_size (CoglContext *context,
                                int height,
                                int depth,
                                CoglPixelFormat  internal_format,
-                               GError **error);
+                               CoglError **error);
 
 /**
  * cogl_texture_3d_new_from_data:
@@ -103,13 +103,13 @@ cogl_texture_3d_new_with_size (CoglContext *context,
  *    rows. Alternatively 0 can be passed to infer the @image_stride
  *    from the @height.
  * @data: pointer the memory region where the source buffer resides
- * @error: A GError return location.
+ * @error: A CoglError return location.
  *
  * Creates a new 3D texture and initializes it with @data. The data is
  * assumed to be packed array of @depth images. There can be padding
  * between the images using @image_stride.
  *
- * Note that this function will throw a #GError if
+ * Note that this function will throw a #CoglError if
  * %COGL_FEATURE_TEXTURE_3D is not advertised. It can also fail if the
  * requested dimensions are not supported by the GPU.
  *
@@ -129,7 +129,7 @@ cogl_texture_3d_new_from_data (CoglContext *context,
                                int rowstride,
                                int image_stride,
                                const uint8_t *data,
-                               GError **error);
+                               CoglError **error);
 
 /**
  * cogl_texture_3d_new_from_bitmap:
@@ -144,7 +144,7 @@ cogl_texture_3d_new_from_data (CoglContext *context,
  *    is if you have non-premultiplied source data and are going to adjust
  *    the blend mode (see cogl_pipeline_set_blend()) or use the data for
  *    something other than straight blending.
- * @error: A GError return location.
+ * @error: A CoglError return location.
  *
  * Creates a new 3D texture and initializes it with the images in
  * @bitmap. The images are assumed to be packed together after one
@@ -163,7 +163,7 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bitmap,
                                  unsigned int height,
                                  unsigned int depth,
                                  CoglPixelFormat internal_format,
-                                 GError **error);
+                                 CoglError **error);
 
 /**
  * cogl_is_texture_3d:
