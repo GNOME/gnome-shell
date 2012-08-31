@@ -583,18 +583,12 @@ const Source = new Lang.Class({
             this.notifications.length > 0)
             return false;
 
-        if (Main.overview.visible) {
-            // We can't just connect to Main.overview's 'hidden' signal,
-            // because it's emitted *before* it calls popModal()...
-            let id = global.connect('notify::stage-input-mode', Lang.bind(this,
-                function () {
-                    global.disconnect(id);
-                    this.trayIcon.click(event);
-                }));
-            Main.overview.hide();
-        } else {
+        let id = global.connect('notify::stage-input-mode', Lang.bind(this, function () {
+            global.disconnect(id);
             this.trayIcon.click(event);
-        }
+        }));
+
+        Main.overview.hide();
         return true;
     },
 

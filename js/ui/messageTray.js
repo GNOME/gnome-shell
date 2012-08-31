@@ -1740,7 +1740,7 @@ const MessageTray = new Lang.Class({
 
     _onSummaryItemClicked: function(summaryItem, button) {
         if (summaryItem.source.handleSummaryClick()) {
-            this._setClickedSummaryItem(null);
+            this._escapeTray();
         } else {
             if (!this._setClickedSummaryItem(summaryItem, button))
                 this._setClickedSummaryItem(null);
