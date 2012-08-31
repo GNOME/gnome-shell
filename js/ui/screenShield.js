@@ -367,6 +367,10 @@ const Arrow = new Lang.Class({
     }
 });
 
+function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+}
+
 /**
  * To test screen shield, make sure to kill gnome-screensaver.
  *
@@ -424,14 +428,11 @@ const ScreenShield = new Lang.Class({
         }
         this._lockScreenContents.add_actor(this._arrowContainer);
 
-        let dragArea = new Clutter.Rect({ origin: new Clutter.Point({ x: 0, y: -global.screen_height, }),
-                                          size: new Clutter.Size({ width: global.screen_width,
-                                                                   height: global.screen_height }) });
-        let action = new Clutter.DragAction({ drag_axis: Clutter.DragAxis.Y_AXIS,
-                                              drag_area: dragArea });
-        action.connect('drag-begin', Lang.bind(this, this._onDragBegin));
-        action.connect('drag-end', Lang.bind(this, this._onDragEnd));
-        this._lockScreenGroup.add_action(action);
+        this._dragAction = new Clutter.GestureAction();
+        this._dragAction.connect('gesture-begin', Lang.bind(this, this._onDragBegin));
+        this._dragAction.connect('gesture-progress', Lang.bind(this, this._onDragMotion));
+        this._dragAction.connect('gesture-end', Lang.bind(this, this._onDragEnd));
+        this._lockScreenGroup.add_action(this._dragAction);
 
         this._lockDialogGroup = new St.Widget({ x_expand: true,
                                                 y_expand: true,
@@ -495,7 +496,7 @@ const ScreenShield = new Lang.Class({
             symbol == Clutter.KEY_Return ||
             symbol == Clutter.KEY_KP_Enter) {
             this._ensureUnlockDialog(true);
-            this._hideLockScreen(true);
+            this._hideLockScreen(true, 0);
             return true;
         }
 
@@ -518,7 +519,7 @@ const ScreenShield = new Lang.Class({
         // 7 standard scrolls to lift up
         if (this._lockScreenScrollCounter > 35) {
             this._ensureUnlockDialog(false);
-            this._hideLockScreen(true);
+            this._hideLockScreen(true, 0);
         }
 
         return true;
@@ -550,12 +551,27 @@ const ScreenShield = new Lang.Class({
         Tweener.removeTweens(this._lockScreenGroup);
         this._lockScreenState = MessageTray.State.HIDING;
         this._ensureUnlockDialog(false);
+
+        return true;
+    },
+
+    _onDragMotion: function() {
+	let [origX, origY] = this._dragAction.get_press_coords(0);
+	let [currentX, currentY] = this._dragAction.get_motion_coords(0);
+
+	let newY = currentY - origY;
+	newY = clamp(newY, -global.stage.height, 0);
+
+	this._lockScreenGroup.y = newY;
+
+	return true;
     },
 
     _onDragEnd: function(action, actor, eventX, eventY, modifiers) {
         if (this._lockScreenGroup.y < -(ARROW_DRAG_THRESHOLD * global.stage.height)) {
             // Complete motion automatically
-            this._hideLockScreen(true);
+	    let [velocity, velocityX, velocityY] = this._dragAction.get_velocity(0);
+	    this._hideLockScreen(true, -velocityY);
         } else {
             // restore the lock screen to its original place
             // try to use the same speed as the normal animation
@@ -639,7 +655,7 @@ const ScreenShield = new Lang.Class({
         this.actor.show();
         this._isGreeter = Main.sessionMode.isGreeter;
         this._ensureUnlockDialog(true);
-        this._hideLockScreen(false);
+        this._hideLockScreen(false, 0);
     },
 
     _bumpLockScreen: function() {
@@ -657,14 +673,21 @@ const ScreenShield = new Lang.Class({
                          });
     },
 
-    _hideLockScreen: function(animate) {
+    _hideLockScreen: function(animate, velocity) {
         this._lockScreenState = MessageTray.State.HIDING;
 
         if (animate) {
             // Tween the lock screen out of screen
-            // try to use the same speed regardless of original position
+            // if velocity is not specified (i.e. we come here from pressing ESC),
+            // use the same speed regardless of original position
+            // if velocity is specified, it's in pixels per milliseconds
             let h = global.stage.height;
-            let time = CURTAIN_SLIDE_TIME * (h + this._lockScreenGroup.y) / h;
+            let delta = (h + this._lockScreenGroup.y);
+            let min_velocity = global.stage.height / (CURTAIN_SLIDE_TIME * 1000);
+
+            velocity = Math.max(min_velocity, velocity);
+            let time = (delta / velocity) / 1000;
+
             Tweener.removeTweens(this._lockScreenGroup);
             Tweener.addTween(this._lockScreenGroup,
                              { y: -h,
