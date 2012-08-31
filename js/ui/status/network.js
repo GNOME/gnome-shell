@@ -168,15 +168,14 @@ const NMWiredSectionTitleMenuItem = new Lang.Class({
 
         let newState = this._switch.state;
 
-        // Immediately reset the switch to false, it will be updated appropriately
-        // by state-changed signals in devices (but fixes the VPN not being in sync
-        // if the ActiveConnection object is never seen by libnm-glib)
-        this._switch.setToggleState(false);
-
+        let ok;
         if (newState)
-            this._device.activate();
+            ok = this._device.activate();
         else
-            this._device.deactivate();
+            ok = this._device.deactivate();
+
+        if (!ok)
+            this._switch.setToggleState(false);
     }
 });
 
@@ -273,11 +272,14 @@ const NMDevice = new Lang.Class({
         if (this.device) {
             this.statusItem = new PopupMenu.PopupSwitchMenuItem(this._getDescription(), this.connected, { style_class: 'popup-subtitle-menu-item' });
             this._statusChanged = this.statusItem.connect('toggled', Lang.bind(this, function(item, state) {
+                let ok;
                 if (state)
-                    this.activate();
+                    ok = this.activate();
                 else
-                    this.deactivate();
-                this.emit('enabled-changed');
+                    ok = this.deactivate();
+
+                if (!ok)
+                    item.setToggleState(!state);
             }));
 
             this._updateStatusItem();
@@ -315,22 +317,35 @@ const NMDevice = new Lang.Class({
 
     deactivate: function() {
         this.device.disconnect(null);
+        return true;
     },
 
     activate: function() {
         if (this._activeConnection)
             // nothing to do
-            return;
+            return true;
 
-        // pick the most recently used connection and connect to that
-        // or if no connections ever set, create an automatic one
-        if (this._connections.length > 0) {
+        // If there is only one connection available, use that
+        // Otherwise, if no connection is currently configured,
+        // try automatic configuration (or summon the config dialog)
+        if (this._connections.length == 1) {
             this._client.activate_connection(this._connections[0].connection, this.device, null, null);
-        } else if (this._autoConnectionName) {
-            let connection = this._createAutomaticConnection();
-            if (connection)
-                this._client.add_and_activate_connection(connection, this.device, null, null);
+            return true;
+        } else if (this._connections.length == 0) {
+            return this._activateAutomaticConnection();
         }
+
+        return false;
+    },
+
+    _activateAutomaticConnection: function() {
+        let connection = this._createAutomaticConnection();
+        if (connection) {
+            this._client.add_and_activate_connection(connection, this.device, null, null);
+            return true;
+        }
+
+        return false;
     },
 
     get connected() {
@@ -787,13 +802,13 @@ const NMDeviceModem = new Lang.Class({
         this.parent();
     },
 
-    _createAutomaticConnection: function() {
+    _activateAutomaticConnection: function() {
         // Mobile wizard is too complex for the shell UI and
         // is handled by the network panel
         Util.spawn(['gnome-control-center', 'network',
                     'connect-3g', this.device.get_path()]);
-        return null;
-    }
+        return true;
+    },
 });
 
 const NMDeviceBluetooth = new Lang.Class({
@@ -820,6 +835,16 @@ const NMDeviceBluetooth = new Lang.Class({
             autoconnect: false
         }));
         return connection;
+    },
+
+    _activateAutomaticConnection: function() {
+        // FIXME: DUN devices are configured like modems, so
+        // we need to spawn the mobile wizard
+        // but the network panel doesn't support bluetooth at the moment
+        // so we just create an empty connection and hope
+        // that this phone supports PAN
+
+        return this.parent();
     },
 
     _makeConnectionName: function(device) {
@@ -1042,44 +1067,13 @@ const NMDeviceWireless = new Lang.Class({
     activate: function() {
         if (this._activeConnection)
             // nothing to do
-            return;
+            return true;
 
-        // among all visible networks, pick the last recently used connection
-        let best = null;
-        let bestApObj = null;
-        let bestTime = 0;
-        for (let i = 0; i < this._networks.length; i++) {
-            let apObj = this._networks[i];
-            for (let j = 0; j < apObj.connections.length; j++) {
-                let connection = apObj.connections[j];
-                if (connection._timestamp > bestTime) {
-                    best = connection;
-                    bestTime = connection._timestamp;
-                    bestApObj = apObj;
-                }
-            }
-        }
-
-        if (best) {
-            for (let i = 0; i < bestApObj.accessPoints.length; i++) {
-                let ap = bestApObj.accessPoints[i];
-                if (ap.connection_valid(best)) {
-                    this._client.activate_connection(best, this.device, ap.dbus_path, null);
-                    break;
-                }
-            }
-            return;
-        }
-
-        // XXX: what else to do?
-        // for now, just pick a random network
-        // (this function is called in a corner case anyway, that is, only when
-        // the user toggles the switch and has more than one wireless device)
-        if (this._networks.length > 0) {
-            let connection = this._createAutomaticConnection(this._networks[0]);
-            let accessPoints = this._networks[0].accessPoints;
-            this._client.add_and_activate_connection(connection, this.device, accessPoints[0].dbus_path, null);
-        }
+        // All possible policy we can have here is just broken
+        // NM autoconnects when wifi devices are enabled, and if it
+        // didn't, there is a good reason
+        // User, pick a connection from the list, thank you
+        return false;
     },
 
     _notifySsidCb: function(accessPoint) {
