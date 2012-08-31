@@ -190,7 +190,7 @@ const SearchResults = new Lang.Class({
         scrollView.add_actor(this._content);
 
         this.actor.add(scrollView, { x_fill: true,
-                                     y_fill: false,
+                                     y_fill: true,
                                      expand: true,
                                      x_align: St.Align.START,
                                      y_align: St.Align.START });
@@ -205,7 +205,10 @@ const SearchResults = new Lang.Class({
             }));
 
         this._statusText = new St.Label({ style_class: 'search-statustext' });
-        this._content.add(this._statusText);
+        this._statusBin = new St.Bin({ x_align: St.Align.MIDDLE,
+                                       y_align: St.Align.MIDDLE });
+        this._content.add(this._statusBin, { expand: true });
+        this._statusBin.add_actor(this._statusText);
         this._providers = this._searchSystem.getProviders();
         this._providerMeta = [];
         for (let i = 0; i < this._providers.length; i++) {
@@ -265,14 +268,14 @@ const SearchResults = new Lang.Class({
 
     reset: function() {
         this._searchSystem.reset();
-        this._statusText.hide();
+        this._statusBin.hide();
         this._clearDisplay();
     },
 
     startingSearch: function() {
         this.reset();
         this._statusText.set_text(_("Searching..."));
-        this._statusText.show();
+        this._statusBin.show();
     },
 
     doSearch: function (searchString) {
@@ -322,10 +325,10 @@ const SearchResults = new Lang.Class({
             }
 
         if (!haveResults) {
-            this._statusText.set_text(_("No matching results."));
-            this._statusText.show();
+            this._statusText.set_text(_("No results."));
+            this._statusBin.show();
         } else {
-            this._statusText.hide();
+            this._statusBin.hide();
         }
     },
 

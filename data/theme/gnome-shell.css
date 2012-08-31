@@ -695,12 +695,17 @@ StButton.popup-menu-item:insensitive {
     padding-left: 20px;
 }
 
-.search-statustext,
 .search-section-header {
     padding: 4px 12px;
     spacing: 4px;
     color: #6f6f6f;
     font-size: .8em;
+}
+
+.search-statustext {
+    color: #efefef;
+    font-size: 2em;
+    font-weight: bold;
 }
 
 .search-section-results {
