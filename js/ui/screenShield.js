@@ -704,6 +704,8 @@ const ScreenShield = new Lang.Class({
             this._lockScreenGroup.hide();
         }
 
+        global.stage.show_cursor();
+
         if (Main.sessionMode.currentMode == 'lock-screen')
             Main.sessionMode.popMode('lock-screen');
     },
@@ -791,6 +793,16 @@ const ScreenShield = new Lang.Class({
             Mainloop.source_remove(this._arrowAnimationId);
         this._arrowAnimationId = Mainloop.timeout_add(6000, Lang.bind(this, this._animateArrows));
         this._animateArrows();
+
+        let motionId = global.stage.connect('captured-event', function(stage, event) {
+            if (event.type() == Clutter.EventType.MOTION) {
+                global.stage.show_cursor();
+                global.stage.disconnect(motionId);
+            }
+
+            return false;
+        });
+        global.stage.hide_cursor();
 
         this._lockScreenState = MessageTray.State.SHOWN;
         this._lockScreenGroup.fixed_position_set = false;
