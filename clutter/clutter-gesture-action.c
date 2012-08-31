@@ -185,8 +185,11 @@ cancel_gesture (ClutterGestureAction *action)
 
   priv->in_gesture = FALSE;
 
-  g_signal_handler_disconnect (priv->stage, priv->stage_capture_id);
-  priv->stage_capture_id = 0;
+  if (priv->stage_capture_id != 0)
+    {
+      g_signal_handler_disconnect (priv->stage, priv->stage_capture_id);
+      priv->stage_capture_id = 0;
+    }
 
   actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
   g_signal_emit (action, gesture_signals[GESTURE_CANCEL], 0, actor);
@@ -799,4 +802,83 @@ clutter_gesture_action_set_n_touch_points (ClutterGestureAction *action,
             }
         }
     }
+}
+
+/**
+ * clutter_gesture_action_get_n_current_points:
+ * @action: a #ClutterGestureAction
+ *
+ * Retrieves the number of points currently active.
+ *
+ * Return value: the number of points currently active.
+ *
+ * Since: 1.12
+ */
+guint
+clutter_gesture_action_get_n_current_points (ClutterGestureAction *action)
+{
+  g_return_val_if_fail (CLUTTER_IS_GESTURE_ACTION (action), 0);
+
+  return action->priv->points->len;
+}
+
+/**
+ * clutter_gesture_action_get_sequence:
+ * @action: a #ClutterGestureAction
+ * @point: index of a point currently active
+ *
+ * Retrieves the #ClutterEventSequence of a touch point.
+ *
+ * Return value: (transfer none): the #ClutterEventSequence of a touch point.
+ *
+ * Since: 1.12
+ */
+ClutterEventSequence *
+clutter_gesture_action_get_sequence (ClutterGestureAction *action,
+                                     guint                 point)
+{
+  g_return_val_if_fail (CLUTTER_IS_GESTURE_ACTION (action), NULL);
+  g_return_val_if_fail (action->priv->points->len > point, NULL);
+
+  return g_array_index (action->priv->points, GesturePoint, point).sequence;
+}
+
+/**
+ * clutter_gesture_action_get_device:
+ * @action: a #ClutterGestureAction
+ * @point: index of a point currently active
+ *
+ * Retrieves the #ClutterInputDevice of a touch point.
+ *
+ * Return value: (transfer none): the #ClutterInputDevice of a touch point.
+ *
+ * Since: 1.12
+ */
+ClutterInputDevice *
+clutter_gesture_action_get_device (ClutterGestureAction *action,
+                                   guint                 point)
+{
+  g_return_val_if_fail (CLUTTER_IS_GESTURE_ACTION (action), NULL);
+  g_return_val_if_fail (action->priv->points->len > point, NULL);
+
+  return g_array_index (action->priv->points, GesturePoint, point).device;
+}
+
+/**
+ * clutter_gesture_action_cancel:
+ * @action: a #ClutterGestureAction
+ *
+ * Cancel a #ClutterGestureAction before it begins
+ *
+ * Since: 1.12
+ */
+void
+clutter_gesture_action_cancel (ClutterGestureAction *action)
+{
+  g_return_if_fail (CLUTTER_IS_GESTURE_ACTION (action));
+  g_return_if_fail (!action->priv->in_gesture);
+
+  cancel_gesture (action);
+
+  g_array_set_size (action->priv->points, 0);
 }
