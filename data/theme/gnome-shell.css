@@ -1418,7 +1418,8 @@ StButton.popup-menu-item:insensitive {
 
 #summary-mode {
     padding: 2px 0px 0px 4px;
-    height: 72px;
+    height: 60px;
+    spacing: 10px;
 }
 
 #summary-mode:rtl {

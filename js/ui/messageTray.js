@@ -1361,6 +1361,7 @@ const MessageTray = new Lang.Class({
         }));
 
         this.actor = new St.Widget({ name: 'message-tray',
+                                     layout_manager: new Clutter.BinLayout(),
                                      reactive: true,
                                      track_hover: true });
         this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
@@ -1378,6 +1379,7 @@ const MessageTray = new Lang.Class({
         this._notificationClickedId = 0;
 
         this._summaryBin = new St.Bin({ x_align: St.Align.END,
+                                        y_expand: true, // this is the Clutter property
                                         reactive: true });
         this._summaryBin.connect('button-release-event', Lang.bind(this, function(actor, event) {
             this._setClickedSummaryItem(null);
