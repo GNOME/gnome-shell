@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-30 14:17+0200\n"
-"PO-Revision-Date: 2012-08-30 14:18+0200\n"
+"POT-Creation-Date: 2012-09-01 02:22+0200\n"
+"PO-Revision-Date: 2012-09-01 02:22+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -239,11 +239,11 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Seleccione unha extensión que configurar usando a caixa combinada de arriba."
 
-#: ../js/gdm/loginDialog.js:572
+#: ../js/gdm/loginDialog.js:529
 msgid "Session..."
 msgstr "Sesión…"
 
-#: ../js/gdm/loginDialog.js:721
+#: ../js/gdm/loginDialog.js:678
 msgctxt "title"
 msgid "Sign In"
 msgstr "Iniciar sesión"
@@ -251,29 +251,29 @@ msgstr "Iniciar sesión"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:784
+#: ../js/gdm/loginDialog.js:741
 msgid "Not listed?"
 msgstr "Non está na lista?"
 
-#: ../js/gdm/loginDialog.js:929 ../js/ui/endSessionDialog.js:406
+#: ../js/gdm/loginDialog.js:886 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/networkAgent.js:156
-#: ../js/ui/polkitAuthenticationAgent.js:176
+#: ../js/ui/polkitAuthenticationAgent.js:181
 #: ../js/ui/shellMountOperation.js:396 ../js/ui/status/bluetooth.js:432
 #: ../js/ui/unlockDialog.js:129
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../js/gdm/loginDialog.js:934
+#: ../js/gdm/loginDialog.js:891
 msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar sesión"
 
-#: ../js/gdm/loginDialog.js:1277
+#: ../js/gdm/loginDialog.js:1234
 msgid "Login Window"
 msgstr "Xanela de inicio de sesión"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:633 ../js/ui/userMenu.js:637
-#: ../js/ui/userMenu.js:748
+#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:636 ../js/ui/userMenu.js:640
+#: ../js/ui/userMenu.js:751
 msgid "Suspend"
 msgstr "Suspender"
 
@@ -281,8 +281,8 @@ msgstr "Suspender"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:635 ../js/ui/userMenu.js:637
-#: ../js/ui/userMenu.js:747
+#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:638 ../js/ui/userMenu.js:640
+#: ../js/ui/userMenu.js:750
 msgid "Power Off"
 msgstr "Apagar"
 
@@ -525,93 +525,93 @@ msgstr "Abrir o calendario"
 msgid "%A %B %e, %Y"
 msgstr "%a, %e de %B, %Y"
 
-#: ../js/ui/endSessionDialog.js:60
+#: ../js/ui/endSessionDialog.js:61
 #, c-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Saír da sesión %s"
 
-#: ../js/ui/endSessionDialog.js:61
+#: ../js/ui/endSessionDialog.js:62
 msgctxt "title"
 msgid "Log Out"
 msgstr "Saír da sesión"
 
-#: ../js/ui/endSessionDialog.js:62
+#: ../js/ui/endSessionDialog.js:63
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Prema sobre «Saír da sesión» para saír deses aplicativos e saír da sesión do "
 "sistema."
 
-#: ../js/ui/endSessionDialog.js:64
+#: ../js/ui/endSessionDialog.js:65
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "Vaise pechar a sesión de %s en %d segundo."
 msgstr[1] "Vaise pechar a sesión de %s en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:69
+#: ../js/ui/endSessionDialog.js:70
 #, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "A súa sesión pecharase automaticamente en %d segundo."
 msgstr[1] "A súa sesión pecharase automaticamente en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:73
+#: ../js/ui/endSessionDialog.js:74
 msgid "Logging out of the system."
 msgstr "Saíndo da sesión."
 
-#: ../js/ui/endSessionDialog.js:75
+#: ../js/ui/endSessionDialog.js:76
 msgctxt "button"
 msgid "Log Out"
 msgstr "Saír da sesión"
 
-#: ../js/ui/endSessionDialog.js:80
+#: ../js/ui/endSessionDialog.js:81
 msgctxt "title"
 msgid "Power Off"
 msgstr "Apagar"
 
-#: ../js/ui/endSessionDialog.js:81
+#: ../js/ui/endSessionDialog.js:82
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "Prema sobre «Apagar» para saír deses aplicativos e apagar o sistema."
 
-#: ../js/ui/endSessionDialog.js:83
+#: ../js/ui/endSessionDialog.js:84
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "O sistema apagarase automaticamente en %d segundo."
 msgstr[1] "O sistema apagarase automaticamente en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:87
+#: ../js/ui/endSessionDialog.js:88
 msgid "Powering off the system."
 msgstr "Apagando o sistema."
 
-#: ../js/ui/endSessionDialog.js:89 ../js/ui/endSessionDialog.js:106
+#: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:107
 msgctxt "button"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/ui/endSessionDialog.js:91
+#: ../js/ui/endSessionDialog.js:92
 msgctxt "button"
 msgid "Power Off"
 msgstr "Apagar"
 
-#: ../js/ui/endSessionDialog.js:97
+#: ../js/ui/endSessionDialog.js:98
 msgctxt "title"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/ui/endSessionDialog.js:98
+#: ../js/ui/endSessionDialog.js:99
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "Prema «Reiniciar» para saír deses aplicativos e reiniciar o sistema."
 
-#: ../js/ui/endSessionDialog.js:100
+#: ../js/ui/endSessionDialog.js:101
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "O sistema reiniciarase automaticamente en %d segundo."
 msgstr[1] "O sistema reiniciarase automaticamente en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:104
+#: ../js/ui/endSessionDialog.js:105
 msgid "Restarting the system."
 msgstr "Reiniciando o sistema."
 
@@ -633,7 +633,7 @@ msgstr "área de notificación"
 msgid "Keyboard"
 msgstr "Teclado"
 
-#: ../js/ui/keyringPrompt.js:86 ../js/ui/polkitAuthenticationAgent.js:274
+#: ../js/ui/keyringPrompt.js:86 ../js/ui/polkitAuthenticationAgent.js:279
 msgid "Password:"
 msgstr "Contrasinal:"
 
@@ -641,56 +641,56 @@ msgstr "Contrasinal:"
 msgid "Type again:"
 msgstr "Escriba de novo:"
 
-#: ../js/ui/lookingGlass.js:695
+#: ../js/ui/lookingGlass.js:694
 msgid "No extensions installed"
 msgstr "Non hai ningunha extensión instalada"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:749
+#: ../js/ui/lookingGlass.js:748
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s non xerou ningún erro."
 
-#: ../js/ui/lookingGlass.js:755
+#: ../js/ui/lookingGlass.js:754
 msgid "Hide Errors"
 msgstr "Ocultar erros"
 
-#: ../js/ui/lookingGlass.js:759 ../js/ui/lookingGlass.js:819
+#: ../js/ui/lookingGlass.js:758 ../js/ui/lookingGlass.js:818
 msgid "Show Errors"
 msgstr "Mostrar erros"
 
-#: ../js/ui/lookingGlass.js:768
+#: ../js/ui/lookingGlass.js:767
 msgid "Enabled"
 msgstr "Activado"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:771 ../src/gvc/gvc-mixer-control.c:1082
+#: ../js/ui/lookingGlass.js:770 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "Desactivado"
 
-#: ../js/ui/lookingGlass.js:773
+#: ../js/ui/lookingGlass.js:772
 msgid "Error"
 msgstr "Erro"
 
-#: ../js/ui/lookingGlass.js:775
+#: ../js/ui/lookingGlass.js:774
 msgid "Out of date"
 msgstr "Caducado"
 
-#: ../js/ui/lookingGlass.js:777
+#: ../js/ui/lookingGlass.js:776
 msgid "Downloading"
 msgstr "Descargando"
 
-#: ../js/ui/lookingGlass.js:801
+#: ../js/ui/lookingGlass.js:800
 msgid "View Source"
 msgstr "Ver fonte"
 
-#: ../js/ui/lookingGlass.js:810
+#: ../js/ui/lookingGlass.js:809
 msgid "Web Page"
 msgstr "Páxina web"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:138
+#: ../js/ui/main.js:137
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Screencast desde %d %t"
@@ -711,11 +711,11 @@ msgstr "Desactivar silencio"
 msgid "Mute"
 msgstr "Silenciar"
 
-#: ../js/ui/messageTray.js:2024
+#: ../js/ui/messageTray.js:2027
 msgid "Message Tray"
 msgstr "Bandexa de mensaxes"
 
-#: ../js/ui/messageTray.js:2462
+#: ../js/ui/messageTray.js:2465
 msgid "System Information"
 msgstr "Información do sistema"
 
@@ -854,15 +854,15 @@ msgstr "Reintentar"
 msgid "PLACES & DEVICES"
 msgstr "LUGARES E DISPOSITIVOS"
 
-#: ../js/ui/polkitAuthenticationAgent.js:71
+#: ../js/ui/polkitAuthenticationAgent.js:74
 msgid "Authentication Required"
 msgstr "Requírese autenticación"
 
-#: ../js/ui/polkitAuthenticationAgent.js:109
+#: ../js/ui/polkitAuthenticationAgent.js:112
 msgid "Administrator"
 msgstr "Administrador"
 
-#: ../js/ui/polkitAuthenticationAgent.js:180
+#: ../js/ui/polkitAuthenticationAgent.js:185
 msgid "Authenticate"
 msgstr "Autenticar"
 
@@ -870,7 +870,7 @@ msgstr "Autenticar"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/polkitAuthenticationAgent.js:262
+#: ../js/ui/polkitAuthenticationAgent.js:267
 #: ../js/ui/shellMountOperation.js:381
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Desculpe, iso non funcionou. Ténteo de novo."
@@ -908,13 +908,13 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d notificación nova"
 msgstr[1] "%d notificacións novas"
 
-#: ../js/ui/searchDisplay.js:274
+#: ../js/ui/searchDisplay.js:277
 msgid "Searching..."
 msgstr "Buscando…"
 
-#: ../js/ui/searchDisplay.js:325
-msgid "No matching results."
-msgstr "Non hai resultados que coincidan."
+#: ../js/ui/searchDisplay.js:328
+msgid "No results."
+msgstr "Sen resultados."
 
 #: ../js/ui/shellEntry.js:26
 msgid "Copy"
@@ -995,7 +995,7 @@ msgstr "Texto grande"
 #: ../js/ui/status/bluetooth.js:27 ../js/ui/status/bluetooth.js:31
 #: ../js/ui/status/bluetooth.js:256 ../js/ui/status/bluetooth.js:309
 #: ../js/ui/status/bluetooth.js:340 ../js/ui/status/bluetooth.js:376
-#: ../js/ui/status/bluetooth.js:405 ../js/ui/status/network.js:842
+#: ../js/ui/status/bluetooth.js:405 ../js/ui/status/network.js:867
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1016,7 +1016,7 @@ msgid "Bluetooth Settings"
 msgstr "Preferencias do Bluetooth"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:108 ../js/ui/status/network.js:209
+#: ../js/ui/status/bluetooth.js:108 ../js/ui/status/network.js:208
 msgid "hardware disabled"
 msgstr "hardware desactivado"
 
@@ -1024,12 +1024,12 @@ msgstr "hardware desactivado"
 msgid "Connection"
 msgstr "Conexión"
 
-#: ../js/ui/status/bluetooth.js:212 ../js/ui/status/network.js:443
+#: ../js/ui/status/bluetooth.js:212 ../js/ui/status/network.js:458
 msgid "disconnecting..."
 msgstr "desconectando…"
 
-#: ../js/ui/status/bluetooth.js:225 ../js/ui/status/network.js:449
-#: ../js/ui/status/network.js:909
+#: ../js/ui/status/bluetooth.js:225 ../js/ui/status/network.js:464
+#: ../js/ui/status/network.js:934
 msgid "connecting..."
 msgstr "conectando…"
 
@@ -1137,115 +1137,115 @@ msgid "<unknown>"
 msgstr "<descoñecido>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:231
+#: ../js/ui/status/network.js:230
 msgid "disabled"
 msgstr "desactivada"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:441
+#: ../js/ui/status/network.js:456
 msgid "unmanaged"
 msgstr "non xestionada"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:452 ../js/ui/status/network.js:912
+#: ../js/ui/status/network.js:467 ../js/ui/status/network.js:937
 msgid "authentication required"
 msgstr "requírese autenticación"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:462
+#: ../js/ui/status/network.js:477
 msgid "firmware missing"
 msgstr "falta o «firmware»"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:469
+#: ../js/ui/status/network.js:484
 msgid "cable unplugged"
 msgstr "cable desconectado"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:474
+#: ../js/ui/status/network.js:489
 msgid "unavailable"
 msgstr "non dispoñíbel"
 
-#: ../js/ui/status/network.js:476 ../js/ui/status/network.js:914
+#: ../js/ui/status/network.js:491 ../js/ui/status/network.js:939
 msgid "connection failed"
 msgstr "conexión fallida"
 
-#: ../js/ui/status/network.js:537 ../js/ui/status/network.js:1535
+#: ../js/ui/status/network.js:552 ../js/ui/status/network.js:1529
 msgid "More..."
 msgstr "Máis…"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:573 ../js/ui/status/network.js:1465
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1459
 msgid "Connected (private)"
 msgstr "Conectada (privada)"
 
-#: ../js/ui/status/network.js:648
+#: ../js/ui/status/network.js:663
 msgid "Auto Ethernet"
 msgstr "Ethernet automática"
 
-#: ../js/ui/status/network.js:706
+#: ../js/ui/status/network.js:721
 msgid "Auto broadband"
 msgstr "Banda larga automática"
 
-#: ../js/ui/status/network.js:709
+#: ../js/ui/status/network.js:724
 msgid "Auto dial-up"
 msgstr "Marcado automático"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:828 ../js/ui/status/network.js:1482
+#: ../js/ui/status/network.js:853 ../js/ui/status/network.js:1476
 #, c-format
 msgid "Auto %s"
 msgstr "%s automática"
 
-#: ../js/ui/status/network.js:830
+#: ../js/ui/status/network.js:855
 msgid "Auto bluetooth"
 msgstr "Bluetooth automática"
 
-#: ../js/ui/status/network.js:1484
+#: ../js/ui/status/network.js:1478
 msgid "Auto wireless"
 msgstr "Sen fíos automática"
 
-#: ../js/ui/status/network.js:1582
+#: ../js/ui/status/network.js:1576
 msgid "Enable networking"
 msgstr "Activar rede"
 
-#: ../js/ui/status/network.js:1604
+#: ../js/ui/status/network.js:1598
 msgid "Wired"
 msgstr "Con fíos"
 
-#: ../js/ui/status/network.js:1615
+#: ../js/ui/status/network.js:1609
 msgid "Wireless"
 msgstr "Sen fíos"
 
-#: ../js/ui/status/network.js:1625
+#: ../js/ui/status/network.js:1619
 msgid "Mobile broadband"
 msgstr "Banda larga móbil"
 
-#: ../js/ui/status/network.js:1635
+#: ../js/ui/status/network.js:1629
 msgid "VPN Connections"
 msgstr "Conexións VPN"
 
-#: ../js/ui/status/network.js:1642
+#: ../js/ui/status/network.js:1636
 msgid "Network Settings"
 msgstr "Preferencias da rede"
 
-#: ../js/ui/status/network.js:1691
+#: ../js/ui/status/network.js:1685
 msgid "Network Manager"
 msgstr "Xestor da rede"
 
-#: ../js/ui/status/network.js:1781
+#: ../js/ui/status/network.js:1775
 msgid "Connection failed"
 msgstr "Produciuse un fallo na conexión"
 
-#: ../js/ui/status/network.js:1782
+#: ../js/ui/status/network.js:1776
 msgid "Activation of network connection failed"
 msgstr "Produciuse un fallo na activación da conexión de rede"
 
-#: ../js/ui/status/network.js:2077
+#: ../js/ui/status/network.js:2071
 msgid "Networking is disabled"
 msgstr "A rede está desactivada"
 
@@ -1596,63 +1596,63 @@ msgstr "Razón descoñecida"
 msgid "Log in as another user"
 msgstr "Iniciar sesión como outro usuario"
 
-#: ../js/ui/userMenu.js:166
+#: ../js/ui/userMenu.js:169
 msgid "Available"
 msgstr "Dispoñíbel"
 
-#: ../js/ui/userMenu.js:169
+#: ../js/ui/userMenu.js:172
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../js/ui/userMenu.js:172
+#: ../js/ui/userMenu.js:175
 msgid "Invisible"
 msgstr "Invisíbel"
 
-#: ../js/ui/userMenu.js:175
+#: ../js/ui/userMenu.js:178
 msgid "Away"
 msgstr "Ausente"
 
-#: ../js/ui/userMenu.js:178
+#: ../js/ui/userMenu.js:181
 msgid "Idle"
 msgstr "Inactivo"
 
-#: ../js/ui/userMenu.js:181
+#: ../js/ui/userMenu.js:184
 msgid "Unavailable"
 msgstr "Non dispoñíbel"
 
-#: ../js/ui/userMenu.js:588 ../js/ui/userMenu.js:729
+#: ../js/ui/userMenu.js:591 ../js/ui/userMenu.js:732
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/userMenu.js:589
+#: ../js/ui/userMenu.js:592
 msgid "Switch Session"
 msgstr "Cambiar de sesión"
 
-#: ../js/ui/userMenu.js:712
+#: ../js/ui/userMenu.js:715
 msgid "Notifications"
 msgstr "Notificacións"
 
-#: ../js/ui/userMenu.js:721
+#: ../js/ui/userMenu.js:724
 msgid "System Settings"
 msgstr "Preferencias do sistema"
 
-#: ../js/ui/userMenu.js:734
+#: ../js/ui/userMenu.js:737
 msgid "Log Out"
 msgstr "Saír da sesión"
 
-#: ../js/ui/userMenu.js:739
+#: ../js/ui/userMenu.js:742
 msgid "Lock"
 msgstr "Bloquear"
 
-#: ../js/ui/userMenu.js:754
+#: ../js/ui/userMenu.js:757
 msgid "Install Updates & Restart"
 msgstr "Instalar actualizacións e reiniciar"
 
-#: ../js/ui/userMenu.js:772
+#: ../js/ui/userMenu.js:775
 msgid "Your chat status will be set to busy"
 msgstr "O seu estado de conversa definirase como «ocupado»"
 
-#: ../js/ui/userMenu.js:773
+#: ../js/ui/userMenu.js:776
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
