@@ -113,6 +113,21 @@ const Button = new Lang.Class({
             this.setMenu(new PopupMenu.PopupMenu(this.actor, menuAlignment, St.Side.TOP, 0));
 
         this.setName(nameText);
+        this._frozenCount = 0;
+    },
+
+    freeze: function() {
+        this._frozenCount++;
+    },
+
+    thaw: function() {
+        this._frozenCount--;
+        if (this._frozenCount == 0)
+            this.emit('thawed');
+    },
+
+    get frozen() {
+        return this._frozenCount > 0;
     },
 
     setSensitive: function(sensitive) {

@@ -574,6 +574,8 @@ const UserMenuButton = new Lang.Class({
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
         this._sessionUpdated();
+
+        this.connect('thawed', Lang.bind(this, this._onThawed));
     },
 
     _sessionUpdated: function() {
@@ -666,6 +668,9 @@ const UserMenuButton = new Lang.Class({
     },
 
     _updatePresenceIcon: function(accountMgr, presence, status, message) {
+        if (this.frozen)
+            return;
+
         if (Main.sessionMode.isLocked)
             this._iconBox.child = this._lockedIcon;
         else if (presence == Tp.ConnectionPresenceType.AVAILABLE)
@@ -796,6 +801,10 @@ const UserMenuButton = new Lang.Class({
         }
 
         this._presence.status = status;
+    },
+
+    _onThawed: function() {
+        this._updatePresenceIcon();
     },
 
     _onMyAccountActivate: function() {

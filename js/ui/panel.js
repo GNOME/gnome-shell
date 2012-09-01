@@ -1131,7 +1131,7 @@ const Panel = new Lang.Class({
     },
 
     _tweenAndUpdatePanel: function() {
-        this._closeIndicatorMenus();
+        this._freezeAndCloseIndicators();
 
         Tweener.addTween(this, {
             boxOpacity: 0,
@@ -1140,6 +1140,7 @@ const Panel = new Lang.Class({
             onCompleteScope: this,
             onComplete: function() {
                 this._updatePanel();
+                this._thawIndicators();
                 Tweener.addTween(this, {
                     boxOpacity: 255,
                     time: Overview.ANIMATION_TIME / 2,
@@ -1153,10 +1154,18 @@ const Panel = new Lang.Class({
         this._tweenAndUpdatePanel();
     },
 
-    _closeIndicatorMenus: function() {
+    _freezeAndCloseIndicators: function() {
         for (let role in this.statusArea) {
             let indicator = this.statusArea[role];
+            indicator.freeze();
             indicator.menu.close();
+        }
+    },
+
+    _thawIndicators: function() {
+        for (let role in this.statusArea) {
+            let indicator = this.statusArea[role];
+            indicator.thaw();
         }
     },
 
