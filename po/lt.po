@@ -10,17 +10,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-15 21:29+0000\n"
-"PO-Revision-Date: 2012-03-26 23:34+0300\n"
+"POT-Creation-Date: 2012-08-06 23:35+0000\n"
+"PO-Revision-Date: 2012-09-01 22:57+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
+"Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../src/50-mutter-windows.xml.in.h:1
-#| msgid "_Windows"
 msgid "Windows"
 msgstr "Langai"
 
@@ -39,7 +39,7 @@ msgstr "Rodyti skyrimą dešinėje"
 msgid "Another compositing manager is already running on screen %i on display \"%s\"."
 msgstr "Kita kompozicijos valdyklė jau veikia ekrane %i vaizduoklyje „%s“."
 
-#: ../src/core/bell.c:307
+#: ../src/core/bell.c:320
 msgid "Bell event"
 msgstr "Skambučio įvykis"
 
@@ -48,72 +48,73 @@ msgstr "Skambučio įvykis"
 msgid "Unknown window information request: %d"
 msgstr "Nežinoma langų informacijos užklausa: %d"
 
-#: ../src/core/delete.c:111
-#, c-format
-msgid "<tt>%s</tt> is not responding."
-msgstr "<tt>%s</tt> neatsiliepia į komandas."
-
 #: ../src/core/delete.c:114
+#, c-format
+#| msgid "<tt>%s</tt> is not responding."
+msgid "%s is not responding."
+msgstr "%s neatsiliepia į komandas."
+
+#: ../src/core/delete.c:118
 msgid "Application is not responding."
 msgstr "Programa neatsiliepia į komandas."
 
-#: ../src/core/delete.c:119
+#: ../src/core/delete.c:123
 msgid "You may choose to wait a short while for it to continue or force the application to quit entirely."
 msgstr "Galite šiek tiek palaukti arba priverstinai uždaryti programą."
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Wait"
 msgstr "_Laukti"
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Force Quit"
 msgstr "_Priverstinai išeiti"
 
-#: ../src/core/display.c:387
+#: ../src/core/display.c:380
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Trūksta %s priedo, reikalingo komponavimui"
 
-#: ../src/core/display.c:453
+#: ../src/core/display.c:446
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nepavyko atverti X Window sistemos ekrano „%s“\n"
 
-#: ../src/core/keybindings.c:852
+#: ../src/core/keybindings.c:844
 #, c-format
 msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
 msgstr "Kažkokia kita programa jau naudoja %s klavišą su modifikatoriais %x kaip susiejimą\n"
 
-#: ../src/core/main.c:206
+#: ../src/core/main.c:196
 msgid "Disable connection to session manager"
 msgstr "Išjungti susijungimą su sesijos valdykle"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:202
 msgid "Replace the running window manager"
 msgstr "Pakeisti veikiančią langų valdyklę"
 
-#: ../src/core/main.c:218
+#: ../src/core/main.c:208
 msgid "Specify session management ID"
 msgstr "Nurodyti sesijos valdymo ID"
 
-#: ../src/core/main.c:223
+#: ../src/core/main.c:213
 msgid "X Display to use"
 msgstr "Naudotinas X ekranas"
 
-#: ../src/core/main.c:229
+#: ../src/core/main.c:219
 msgid "Initialize session from savefile"
 msgstr "Inicializuoti sesiją iš išsaugojimo failo"
 
-#: ../src/core/main.c:235
+#: ../src/core/main.c:225
 msgid "Make X calls synchronous"
 msgstr "Sinchronizuoti X iškvietimus"
 
-#: ../src/core/main.c:504
+#: ../src/core/main.c:494
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Nepavyko nuskanuoti temų aplanko: %s\n"
 
-#: ../src/core/main.c:520
+#: ../src/core/main.c:510
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr "Nepavyko rasti temos! Įsitikinkite, kad %s egzistuoja ir kad ten yra įprastos temos.\n"
@@ -138,55 +139,55 @@ msgid "Print version"
 msgstr "Parodyti versiją"
 
 #: ../src/core/mutter.c:60
-msgid "Comma-separated list of compositor plugins"
-msgstr "Kableliais skiriami komponuotojo įskiepiai"
+#| msgid "Clutter Plugins"
+msgid "Mutter plugin to use"
+msgstr "Naudojamas Mutter įskiepis"
 
-#: ../src/core/prefs.c:1077
+#: ../src/core/prefs.c:1065
 msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
 msgstr "Apsauga nuo sugadintų programų atjungta. Kai kurios programos gali pradėti keistai elgtis.\n"
 
-#: ../src/core/prefs.c:1152
+#: ../src/core/prefs.c:1140
 #, c-format
-#| msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Nepavyko perskaityti šrifto aprašymo „%s“ saugomo GSettings rakte %s\n"
 
-#: ../src/core/prefs.c:1218
+#: ../src/core/prefs.c:1206
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 msgstr "„%s“ reikšmė rasta nustatymų duomenų bazėje yra netinkama pelės mygtuko keitiklio aprašymui\n"
 
-#: ../src/core/prefs.c:1739
+#: ../src/core/prefs.c:1724
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 msgstr "„%s“ reikšmė rasta konfiguracijos duomenų bazė yra netinkama klavišų kombinacijai „%s“\n"
 
-#: ../src/core/prefs.c:1836
+#: ../src/core/prefs.c:1821
 #, c-format
 msgid "Workspace %d"
 msgstr "Darbalaukis %d"
 
-#: ../src/core/screen.c:730
+#: ../src/core/screen.c:652
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ekranas %d vaizduoklyje „%s“ netinkamas\n"
 
-#: ../src/core/screen.c:746
+#: ../src/core/screen.c:668
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
 msgstr "Ekranas %d vaizduoklyje „%s“ jau turi langų valdyklę; pabandykite pasinaudoti parinktimi --replace, jei norite pakeisti esamą langų valdyklę.\n"
 
-#: ../src/core/screen.c:773
+#: ../src/core/screen.c:695
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Nepavyko aptikti langų valdyklės pasirinkimo ekrano %d vaizduoklyje „%s“\n"
 
-#: ../src/core/screen.c:828
+#: ../src/core/screen.c:750
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Ekranas %d vaizduoklyje „%s“ jau turi langų valdyklę\n"
 
-#: ../src/core/screen.c:1013
+#: ../src/core/screen.c:935
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nepavyko pasitraukti iš ekrano %d vaizduoklyje „%s“\n"
@@ -245,45 +246,45 @@ msgstr "Nežinomas elementas %s"
 msgid "These windows do not support &quot;save current setup&quot; and will have to be restarted manually next time you log in."
 msgstr "Šie langai nepalaiko &quot;išsaugoti esamus nustatymus&quot; komandos ir turi būti paleisti rankiniu būdu, kai prisijungsite kitą kartą."
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:80
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Nepavyko atverti derinimo žurnalo: %s\n"
 
-#: ../src/core/util.c:121
+#: ../src/core/util.c:90
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Funkcija fdopen() su žurnalo failu %s nesėkminga: %s\n"
 
-#: ../src/core/util.c:127
+#: ../src/core/util.c:96
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Atvertas žurnalo failas %s\n"
 
-#: ../src/core/util.c:146
+#: ../src/core/util.c:115
 #: ../src/tools/mutter-message.c:149
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter buvo sukompiliuota be išsamaus veikimo veiksenos\n"
 
-#: ../src/core/util.c:290
+#: ../src/core/util.c:259
 msgid "Window manager: "
 msgstr "Langų valdyklė:"
 
-#: ../src/core/util.c:438
+#: ../src/core/util.c:407
 msgid "Bug in window manager: "
 msgstr "Klaida langų valdyklėje:"
 
-#: ../src/core/util.c:471
+#: ../src/core/util.c:438
 msgid "Window manager warning: "
 msgstr "Langų valdyklės perspėjimas:"
 
-#: ../src/core/util.c:499
+#: ../src/core/util.c:466
 msgid "Window manager error: "
 msgstr "Langų valdyklės klaida:"
 
 #. first time through
-#: ../src/core/window.c:7269
+#: ../src/core/window.c:7234
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Langas %s nustatė SM_CLIENT_ID kintamajį į save patį vietoj to, kad nustatytų jį į WM_CLIENT_LEADER langą kaip nurodo ICCCM..\n"
@@ -295,27 +296,27 @@ msgstr "Langas %s nustatė SM_CLIENT_ID kintamajį į save patį vietoj to, kad 
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7932
+#: ../src/core/window.c:7899
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Langas %s nustatė MWM požymį teigdamas, kad jo dydis nėra kintamas, tačiau tuo pat metu nustatė ir leistinas mažiausio dydžio %d x %d bei didžiausio dydžio %d x %d reikšmes; tai yra beprasmiška.\n"
 
-#: ../src/core/window-props.c:309
+#: ../src/core/window-props.c:310
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Programa nustatė netinkamą _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:426
+#: ../src/core/window-props.c:429
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (kompiuteryje %s)"
 
-#: ../src/core/window-props.c:1481
+#: ../src/core/window-props.c:1484
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Nekorektiškas WM_TRANSIENT_FOR langas 0x%lx nurodytas %s.\n"
 
-#: ../src/core/window-props.c:1492
+#: ../src/core/window-props.c:1495
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR langas 0x%lx nurodytas %s sukurtų ciklą.\n"
@@ -367,59 +368,50 @@ msgid "When true, instead of having independent titlebars, modal dialogs appear 
 msgstr "Kai teigiama, užuot turėje nepriklausomas antraštes, modaliniai dialogai pasirodys prikabinti prie tėvinio lango antraštės ir yra perkialiami kartu su tėviniu langu."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:5
-msgid "Live Hidden Windows"
-msgstr "„Gyvi“ paslėpti langai"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:6
-msgid "Determines whether hidden windows (i.e., minimized windows and windows on other workspaces than the current one) should be kept alive."
-msgstr "Nusako, ar paslėpti langai (pvz. sumažinti langai ir langai kituose darbalaukiuose) turėtų būti laikomi „gyvi“."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Įjungti kraštų uždengimą numetant langus ekrano kraštuose"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:8
+#: ../src/org.gnome.mutter.gschema.xml.in.h:6
 msgid "If enabled, dropping windows on vertical screen edges maximizes them vertically and resizes them horizontally to cover half of the available area. Dropping windows on the top screen edge maximizes them completely."
 msgstr "Jei įjungta, langų numetimas vertikaliuose kraštuose juos išdidina vertikaliai ir pakeičia dydį horizontaliai taip, kad užimtų pusę esamos vietos. Langų numetimas ekrano viršuje juos visiškai išdidina."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:9
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Workspaces are managed dynamically"
 msgstr "Darbalaukiai valdomi dinamiškai"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid "Determines whether workspaces are managed dynamically or whether there's a static number of workspaces (determined by the num-workspaces key in org.gnome.desktop.wm.preferences)."
 msgstr "Nusako, ar darbastaliai yra valdomi dinamiškai, ar yra pastovus darbalaukių skaičius (nusakomas raktu num-workspaces schemoje org.gnome.desktop.wm.preferences)."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:11
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Workspaces only on primary"
 msgstr "Darbalaukiai tik pagrindiniame"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid "Determines whether workspace switching should happen for windows on all monitors or only for windows on the primary monitor."
 msgstr "Nusako, ar darbalaukių perjungimas turi įvykti langams viusose monitoriuose, ar tik langams pagrindiniame monitoriuje."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "No tab popup"
 msgstr "Nėra tab iššokimo"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
 msgid "Determines whether the use of popup and highlight frame should be disabled for window cycling."
 msgstr "Nusako, ar iššokančio lango ir rėmelio paryškinimo naudojimas turėtų būti išjungtas langų perėjime."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "Draggable border width"
 msgstr "Tempiamos paraštės prolis"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid "The amount of total draggable borders. If the theme's visible borders are not enough, invisible borders will be added to meet this value."
 msgstr "Bendros tempiamos paraštės dydis. Jei temos matomos paraštės yra nepakankamos, bus pridėtos nematomos paraštės."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:17
-#| msgid "Remove Window From Top"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Select window from tab popup"
 msgstr "Pasirinkti langą iš tab iššokimo"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid "Cancel tab popup"
 msgstr "Atšaukti tab iššokimą"
 
@@ -628,247 +620,247 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:253
+#: ../src/ui/theme.c:234
 msgid "top"
 msgstr "viršus"
 
-#: ../src/ui/theme.c:255
+#: ../src/ui/theme.c:236
 msgid "bottom"
 msgstr "apačia"
 
-#: ../src/ui/theme.c:257
+#: ../src/ui/theme.c:238
 msgid "left"
 msgstr "kairė"
 
-#: ../src/ui/theme.c:259
+#: ../src/ui/theme.c:240
 msgid "right"
 msgstr "dešinė"
 
-#: ../src/ui/theme.c:286
+#: ../src/ui/theme.c:268
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "rėmelio aprašyme nenurodytas „%s“ matmuo"
 
-#: ../src/ui/theme.c:305
+#: ../src/ui/theme.c:287
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "rėmelio aprašyme nenurodytas paraštės „%2$s“ „%1$s“ matmuo"
 
-#: ../src/ui/theme.c:342
+#: ../src/ui/theme.c:324
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Mygtuko dydžio santykis %g yra nenuosaikus"
 
-#: ../src/ui/theme.c:354
+#: ../src/ui/theme.c:336
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Rėmelio aprašyme nenurodytas mygtukų dydis"
 
-#: ../src/ui/theme.c:1067
+#: ../src/ui/theme.c:1049
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Aprašant persiliejančias spalvas reikia nurodyti bent dvi spalvas"
 
-#: ../src/ui/theme.c:1219
+#: ../src/ui/theme.c:1201
 #, c-format
 msgid "GTK custom color specification must have color name and fallback in parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
 msgstr "GTK spalvų aprašymas po būsenos turi turėti spalvos pavadinimą ir uždarančius laužtinius skliaustus, pvz.: gtk:custom(foo,bar); nepavyko perskaityti „%s“"
 
-#: ../src/ui/theme.c:1235
+#: ../src/ui/theme.c:1217
 #, c-format
 msgid "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-_ are valid"
 msgstr "Netinkamas simbolis „%c“ gtk:custom parametre color_name, leidžiama tik A-Za-z0-9_"
 
-#: ../src/ui/theme.c:1249
+#: ../src/ui/theme.c:1231
 #, c-format
 msgid "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not fit the format"
 msgstr "Gtk:custom formatas yra „gtk:custom(color_name,fallback)“, „%s“ neatitinka šio formato"
 
-#: ../src/ui/theme.c:1294
+#: ../src/ui/theme.c:1276
 #, c-format
 msgid "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr "GTK spalvų aprašymas turi turėti būsenos aprašymą patalpintą tarp laužtinių skliaustų, pvz.: gtk:fg[NORMAL], kur NORMAL yra būsena; nepavyko apdoroti \"%s\""
 
-#: ../src/ui/theme.c:1308
+#: ../src/ui/theme.c:1290
 #, c-format
 msgid "GTK color specification must have a close bracket after the state, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr "GTK spalvų aprašymas po būsenos turi turėti uždarančius laužtinius skliaustus, pvz.: gtk:fg[NORMAL], kur NORMAL yra būsena; nepavyko apdoroti \"%s\""
 
-#: ../src/ui/theme.c:1319
+#: ../src/ui/theme.c:1301
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Nesuprantama spalvų aprašymo būsena \"%s\""
 
-#: ../src/ui/theme.c:1332
+#: ../src/ui/theme.c:1314
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Spalvų aprašyme nurodytas nesuprantamas spalvos komponentas \"%s\""
 
-#: ../src/ui/theme.c:1361
+#: ../src/ui/theme.c:1343
 #, c-format
 msgid "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the format"
 msgstr "Išplaukimo formatas yra \"blend/bg_color/fg_color/alpha\", \"%s\" neatitinka šio formato"
 
-#: ../src/ui/theme.c:1372
+#: ../src/ui/theme.c:1354
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Nepavyko aprodoti skaidrumo reikšmės \"%s\" priskirtos išplaukiančiai spalva"
 
-#: ../src/ui/theme.c:1382
+#: ../src/ui/theme.c:1364
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Skaidrumo reikšmė \"%s\" tarp išplaukiančios spalvos yra ne tarp 0.0 ir 1.0"
 
-#: ../src/ui/theme.c:1429
+#: ../src/ui/theme.c:1411
 #, c-format
 msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "Šešėlio formatas yra \"shade/base_color/factor\", \"%s\" neatitinka šio formato"
 
-#: ../src/ui/theme.c:1440
+#: ../src/ui/theme.c:1422
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Nepavyko apdoroti šešėlinės spalvos šešėlių rodiklio \"%s\""
 
-#: ../src/ui/theme.c:1450
+#: ../src/ui/theme.c:1432
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Šešėlio rodiklis \"%s\" tarp šešėlinės spalvos yra neigiamas"
 
-#: ../src/ui/theme.c:1479
+#: ../src/ui/theme.c:1461
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Nepavyko apdoroti spalvos \"%s\""
 
-#: ../src/ui/theme.c:1790
+#: ../src/ui/theme.c:1778
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Koordinačių išraiška turi neleistiną simbolį '%s'"
 
-#: ../src/ui/theme.c:1817
+#: ../src/ui/theme.c:1805
 #, c-format
 msgid "Coordinate expression contains floating point number '%s' which could not be parsed"
 msgstr "Koordinačių išraiška turi skaičių su slankiu kableliu '%s', kuris negali būti apdorotas"
 
-#: ../src/ui/theme.c:1831
+#: ../src/ui/theme.c:1819
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "Koordinačių išraiška turi sveiką skaičių '%s', kuris negali būti apdorotas"
 
-#: ../src/ui/theme.c:1953
+#: ../src/ui/theme.c:1940
 #, c-format
 msgid "Coordinate expression contained unknown operator at the start of this text: \"%s\""
 msgstr "Koordinačių išraiškoje nurodytas nežinomas operatorius šio teksto pradžioje: \"%s\""
 
-#: ../src/ui/theme.c:2010
+#: ../src/ui/theme.c:1997
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Koordinačių išraiška tuščia arba nesuprantama"
 
-#: ../src/ui/theme.c:2121
-#: ../src/ui/theme.c:2131
-#: ../src/ui/theme.c:2165
+#: ../src/ui/theme.c:2110
+#: ../src/ui/theme.c:2120
+#: ../src/ui/theme.c:2154
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Koordinačių išraiška sukelia dalybą iš nulio"
 
-#: ../src/ui/theme.c:2173
+#: ../src/ui/theme.c:2162
 #, c-format
 msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "Koordinačių išraiška bando panaudoti liekanos operatorių (mod) slankaus kablelio skaičiui"
 
-#: ../src/ui/theme.c:2229
+#: ../src/ui/theme.c:2218
 #, c-format
 msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Koordinačių išraiškoje įvestas operatorius \"%s\" ten, kur turi būti vedamas operandas"
 
-#: ../src/ui/theme.c:2238
+#: ../src/ui/theme.c:2227
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Koordinačių išraiškoje operandas įrašytas operatoriaus vietoje"
 
-#: ../src/ui/theme.c:2246
+#: ../src/ui/theme.c:2235
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Koordinačių išraiška pasibaigė operatoriumi, o ne operandu"
 
-#: ../src/ui/theme.c:2256
+#: ../src/ui/theme.c:2245
 #, c-format
 msgid "Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"
 msgstr "Koordinačių išraiškoje operatorius \"%c\" eina po operatoriaus \"%c\" be tarpinio operando"
 
-#: ../src/ui/theme.c:2407
-#: ../src/ui/theme.c:2452
+#: ../src/ui/theme.c:2396
+#: ../src/ui/theme.c:2441
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Koordinačių išraiška saugo nežinomą kintamąjį arba konstantą \"%s\""
 
-#: ../src/ui/theme.c:2506
+#: ../src/ui/theme.c:2495
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Koordinačių išraiškų skaitytuvas perpildė buferį."
 
-#: ../src/ui/theme.c:2535
+#: ../src/ui/theme.c:2524
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Koordinačių išraiškoje įvesti uždarantys skliaustai, nors atidarančių skliaustų nerasta"
 
-#: ../src/ui/theme.c:2599
+#: ../src/ui/theme.c:2588
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Koordinačių išraiškoje po atidarančių skliaustų neįvesti uždarantys skliaustai"
 
-#: ../src/ui/theme.c:2610
+#: ../src/ui/theme.c:2599
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Koordinačių išraiška neturi jokių operatorių ar operandų"
 
-#: ../src/ui/theme.c:2822
-#: ../src/ui/theme.c:2842
-#: ../src/ui/theme.c:2862
+#: ../src/ui/theme.c:2812
+#: ../src/ui/theme.c:2832
+#: ../src/ui/theme.c:2852
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Temoje esanti išraiška sukėlė klaidą: %s\n"
 
-#: ../src/ui/theme.c:4533
+#: ../src/ui/theme.c:4498
 #, c-format
 msgid "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
 msgstr "Šiam rėmelio stiliui turi būti nurodytas <button function=\"%s\" state=\"%s\" draw_ops=\"kažkokswhatever\"/> požymis"
 
-#: ../src/ui/theme.c:5066
-#: ../src/ui/theme.c:5091
+#: ../src/ui/theme.c:5009
+#: ../src/ui/theme.c:5034
 #, c-format
 msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "Trūksta <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"kažkoks\"/>"
 
-#: ../src/ui/theme.c:5139
+#: ../src/ui/theme.c:5082
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Nepavyko paleisti temos \"%s\": %s\n"
 
-#: ../src/ui/theme.c:5275
-#: ../src/ui/theme.c:5282
-#: ../src/ui/theme.c:5289
-#: ../src/ui/theme.c:5296
-#: ../src/ui/theme.c:5303
+#: ../src/ui/theme.c:5218
+#: ../src/ui/theme.c:5225
+#: ../src/ui/theme.c:5232
+#: ../src/ui/theme.c:5239
+#: ../src/ui/theme.c:5246
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Temoje \"%2$s\" trūksta <%1$s> nustatymų"
 
-#: ../src/ui/theme.c:5311
+#: ../src/ui/theme.c:5254
 #, c-format
 msgid "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
 msgstr "Rėmelio stilius nenurodytas lango tipui \"%s\" temoje \"%s\", pridėkite <window type=\"%s\" style_set=\"kažkoks\"/> elementą"
 
-#: ../src/ui/theme.c:5709
-#: ../src/ui/theme.c:5771
-#: ../src/ui/theme.c:5834
+#: ../src/ui/theme.c:5650
+#: ../src/ui/theme.c:5712
+#: ../src/ui/theme.c:5775
 #, c-format
 msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "Naudotojo nustatytos konstantos turi prasidėti didžiąja raide; „%s“ nėra didžioji"
 
-#: ../src/ui/theme.c:5717
-#: ../src/ui/theme.c:5779
-#: ../src/ui/theme.c:5842
+#: ../src/ui/theme.c:5658
+#: ../src/ui/theme.c:5720
+#: ../src/ui/theme.c:5783
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstanta „%s“ jau aprašyta"
@@ -1240,7 +1232,7 @@ msgstr "Elemente <%s> tekstas negalimas"
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> elementas temos aprašyme nurodytas du kartus"
 
-#: ../src/ui/theme-parser.c:4348
+#: ../src/ui/theme-parser.c:4334
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Nepavyko rasti tinkamo temos %s failo\n"
@@ -1437,2389 +1429,3 @@ msgstr "y reikšmė buvo %d, tikėtasi %d"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "Koordinačių %d išraiška apdorota per %g sekundžių (%g sekundžių vidurkis)\n"
 
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Perjungti į darbalaukį Nr.1"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Perjungti į darbalaukį Nr.2"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Perjungti į darbalaukį Nr.3"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Perjungti į darbalaukį Nr.4"
-
-#~ msgid "Switch to workspace 5"
-#~ msgstr "Perjungti į darbalaukį Nr.5"
-
-#~ msgid "Switch to workspace 6"
-#~ msgstr "Perjungti į darbalaukį Nr.6"
-
-#~ msgid "Switch to workspace 7"
-#~ msgstr "Perjungti į darbalaukį Nr.7"
-
-#~ msgid "Switch to workspace 8"
-#~ msgstr "Perjungti į darbalaukį Nr.8"
-
-#~ msgid "Switch to workspace 9"
-#~ msgstr "Perjungti į darbalaukį Nr.9"
-
-#~ msgid "Switch to workspace 10"
-#~ msgstr "Perjungti į darbalaukį Nr.10"
-
-#~ msgid "Switch to workspace 11"
-#~ msgstr "Perjungti į darbalaukį Nr.11"
-
-#~ msgid "Switch to workspace 12"
-#~ msgstr "Perjungti į darbalaukį Nr.12"
-
-#~ msgid "Switch to workspace on the left of the current workspace"
-#~ msgstr "Perjungti į kairiau esantį darbalaukį"
-
-#~ msgid "Switch to workspace on the right of the current workspace"
-#~ msgstr "Perjungti į dešiniau esantį darbalaukį"
-
-#~ msgid "Switch to workspace above the current workspace"
-#~ msgstr "Perjungti į aukščiau esantį darbalaukį"
-
-#~ msgid "Switch to workspace below the current workspace"
-#~ msgstr "Perjungti į žemiau esantį darbalaukį"
-
-#~ msgid "Move between windows of an application, using a popup window"
-#~ msgstr "Perjungti tarp programos langų su iššokančiu langu"
-
-#~ msgid ""
-#~ "Move backward between windows of an application, using a popup window"
-#~ msgstr "Perjungti atgal tarp programos langų su iššokančiu langu"
-
-#~ msgid "Move between windows, using a popup window"
-#~ msgstr "Persijunginėti tarp langų su iššokančiu langu"
-
-#~ msgid "Move backward between windows, using a popup window"
-#~ msgstr "Perjungti tarp langų atgal kartu su iššokančiu langu"
-
-#~ msgid "Move between panels and the desktop, using a popup window"
-#~ msgstr "Judėti tarp skydelių ir darbastalio su iššokančiu langu"
-
-#~ msgid "Move backward between panels and the desktop, using a popup window"
-#~ msgstr "Judėti atgal tarp skydelių ir darbastalio su iššokančiu langu"
-
-#~ msgid "Move between windows of an application immediately"
-#~ msgstr "Greitai persijungti tarp programos langų"
-
-#~ msgid "Move backward between windows of an application immediately"
-#~ msgstr "Iškart judėti atgal tarp programos langų"
-
-#~ msgid "Move between windows immediately"
-#~ msgstr "Iškart persijungti tarp langų"
-
-#~ msgid "Move backward between windows immediately"
-#~ msgstr "Iškart judėti atgal tarp langų"
-
-#~ msgid "Move between panels and the desktop immediately"
-#~ msgstr "Greitai judėti tarp skydelių ir darbastalio"
-
-#~ msgid "Move backward between panels and the desktop immediately"
-#~ msgstr "Greitas judėjimas atgal tarp skydelių ir darbastalio"
-
-#~ msgid "Hide all normal windows and set focus to the desktop"
-#~ msgstr "Paslėpti visus langus ir suaktyvinti darbastalį"
-
-#~ msgid "Show the panel's main menu"
-#~ msgstr "Rodyti skydelio pagrindinį meniu"
-
-#~ msgid "Show the panel's \"Run Application\" dialog box"
-#~ msgstr "Rodyti skydelio programų paleidimo langą"
-
-#~ msgid "Start or stop recording the session"
-#~ msgstr "Pradėti arba baigti sesijos įrašymą"
-
-#~ msgid "Take a screenshot"
-#~ msgstr "Padaryti ekrano nuotrauką"
-
-#~ msgid "Take a screenshot of a window"
-#~ msgstr "Padaryti lango nuotrauką"
-
-#~ msgid "Run a terminal"
-#~ msgstr "Paleisti terminalą"
-
-#~ msgid "Activate the window menu"
-#~ msgstr "Parodyti lango meniu"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Perjungti viso ekrano veikseną"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Perjungti lango išdidinimo veikseną"
-
-#~ msgid "Toggle whether a window will always be visible over other windows"
-#~ msgstr "Nurodyti, ar langas visada matomas virš kitų langų"
-
-#~ msgid "Maximize window"
-#~ msgstr "Išdidinti langą"
-
-#~ msgid "Restore window"
-#~ msgstr "Atkurti lango dydį"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Perjungti lango sutraukimo būseną"
-
-#~ msgid "Minimize window"
-#~ msgstr "Sumažinti langą"
-
-#~ msgid "Close window"
-#~ msgstr "Užverti langą"
-
-#~ msgid "Move window"
-#~ msgstr "Perkelti langą"
-
-#~ msgid "Resize window"
-#~ msgstr "Keisti lango dydį"
-
-#~ msgid "Toggle whether window is on all workspaces or just one"
-#~ msgstr "Keisti lango matomumą visuose darbalaukiuose"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Perkelti langą į darbalaukį Nr.1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Perkelti langą į darbalaukį Nr.2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Perkelti langą į darbalaukį Nr.3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Perkelti langą į darbalaukį Nr.4"
-
-#~ msgid "Move window to workspace 5"
-#~ msgstr "Perkelti langą į darbalaukį Nr.5"
-
-#~ msgid "Move window to workspace 6"
-#~ msgstr "Perkelti langą į darbalaukį Nr.6"
-
-#~ msgid "Move window to workspace 7"
-#~ msgstr "Perkelti langą į darbalaukį Nr.7"
-
-#~ msgid "Move window to workspace 8"
-#~ msgstr "Perkelti langą į darbalaukį Nr.8"
-
-#~ msgid "Move window to workspace 9"
-#~ msgstr "Perkelti langą į darbalaukį Nr.9"
-
-#~ msgid "Move window to workspace 10"
-#~ msgstr "Perkelti langą į darbalaukį Nr.10"
-
-#~ msgid "Move window to workspace 11"
-#~ msgstr "Perkelti langą į darbalaukį Nr.11"
-
-#~ msgid "Move window to workspace 12"
-#~ msgstr "Perkelti langą į darbalaukį Nr.12"
-
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Perkelti langą į kairiau esantį darbalaukį"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Perkelti langą į dešiniau esantį darbalaukį"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Perkelti langą į aukščiau esantį darbalaukį"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Perkelti langą į žemiau esantį darbalaukį"
-
-#~ msgid "Raise window if it's covered by another window, otherwise lower it"
-#~ msgstr ""
-#~ "Iškelti neaktyvų langą, jei jis uždengtas kito lango, kitu atveju – "
-#~ "paslėpti jį"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Iškelti langą virš kitų langų"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Nuleisti langą žemiau kitų langų"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Išdidinti langą vertikaliai"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Išdidinti langą horizontaliai"
-
-#~ msgid "Move window to north-west (top left) corner"
-#~ msgstr "Perkelti langą į ekrano viršutinį kairįjį kampą"
-
-#~ msgid "Move window to north-east (top right) corner"
-#~ msgstr "Perkelti langą į ekrano viršutinį dešinįjį kampą"
-
-#~ msgid "Move window to south-west (bottom left) corner"
-#~ msgstr "Perkelti langą į ekrano apatinį kairįjį kampą"
-
-#~ msgid "Move window to south-east (bottom right) corner"
-#~ msgstr "Perkelti langą į ekrano apatinį dešinįjį kampą"
-
-#~ msgid "Move window to north (top) side of screen"
-#~ msgstr "Perkelti langą į viršutinę ekrano dalį"
-
-#~ msgid "Move window to south (bottom) side of screen"
-#~ msgstr "Perkelti langą į apatinę ekrano pusę"
-
-#~ msgid "Move window to east (right) side of screen"
-#~ msgstr "Perkelti langą į dešinę ekrano pusę"
-
-#~ msgid "Move window to west (left) side of screen"
-#~ msgstr "Perkelti langą į kairę ekrano pusę"
-
-#~ msgid "Move window to center of screen"
-#~ msgstr "Perkelti langą į ekrano vidurį"
-
-#~ msgid ""
-#~ "There was an error running <tt>%s</tt>:\n"
-#~ "\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Įvyko klaida bandant paleisti <tt>%s</tt>:\n"
-#~ "\n"
-#~ "%s."
-
-#~ msgid "No command %d has been defined.\n"
-#~ msgstr "Komanda %d neaprašyta.\n"
-
-#~ msgid "No terminal command has been defined.\n"
-#~ msgstr "Terminalo komanda nebuvo nurodyta.\n"
-
-#~ msgid "GConf key '%s' is set to an invalid value\n"
-#~ msgstr "GConf rakte „%s“ nurodyta netinkama reikšmė\n"
-
-#~ msgid "%d stored in GConf key %s is out of range %d to %d\n"
-#~ msgstr "%d reikšmė, saugoma GConf rakte %s, netelpa tarp %d ir %d\n"
-
-#~ msgid "GConf key \"%s\" is set to an invalid type\n"
-#~ msgstr "GConf raktui „%s“ nustatytas neteisingas tipas\n"
-
-#~ msgid "GConf key %s is already in use and can't be used to override %s\n"
-#~ msgstr ""
-#~ "GConf raktas %s jau naudojamas ir negali būti naudojamas %s pakeitimui\n"
-
-#~ msgid "Can't override GConf key, %s not found\n"
-#~ msgstr "Negalima pakeisti GConf rakto, %s nerastas\n"
-
-#~ msgid "Error setting number of workspaces to %d: %s\n"
-#~ msgstr "Įvyko klaida nustatant darbalaukų skaičių į %d: %s\n"
-
-#~ msgid "Error setting name for workspace %d to \"%s\": %s\n"
-#~ msgstr "Įvyko klaida pervadinant darbalaukį %d į „%s“: %s\n"
-
-#~ msgid "Error setting live hidden windows status status: %s\n"
-#~ msgstr "Įvyko klaida nustatant „gyvo“ paslėpto lango būsenos būseną: %s\n"
-
-#~ msgid "Error setting no tab popup status: %s\n"
-#~ msgstr "Įvyko klaida nustatant iššokimo be kortelių būseną: %s\n"
-
-#~ msgid "Close Window"
-#~ msgstr "Užverti langą"
-
-#~ msgid "Window Menu"
-#~ msgstr "Lango meniu"
-
-#~ msgid "Minimize Window"
-#~ msgstr "Sumažinti langą"
-
-#~ msgid "Maximize Window"
-#~ msgstr "Išdidinti langą"
-
-#~ msgid "Restore Window"
-#~ msgstr "Atkurti lango dydį"
-
-#~ msgid "Roll Up Window"
-#~ msgstr "Suvynioti langą"
-
-#~ msgid "Unroll Window"
-#~ msgstr "Išvynioti langą"
-
-#~ msgid "Keep Window On Top"
-#~ msgstr "Langas visada viršuje"
-
-#~ msgid "Always On Visible Workspace"
-#~ msgstr "Visada matomame darbalaukyje"
-
-#~ msgid "Put Window On Only One Workspace"
-#~ msgstr "Langas tik viename darbalaukyje"
-
-#~ msgid "Failed to get hostname: %s\n"
-#~ msgstr "Nepavyko gauti kompiuterio vardo: %s\n"
-
-#~ msgid ""
-#~ "Lost connection to the display '%s';\n"
-#~ "most likely the X server was shut down or you killed/destroyed\n"
-#~ "the window manager.\n"
-#~ msgstr ""
-#~ "Prarastas ryšys su ekranu „%s“;\n"
-#~ "greičiausiai X serveris buvo išjungtas arba jūs priverstinai\n"
-#~ "išjungėte langų valdyklę.\n"
-
-#~ msgid "Fatal IO error %d (%s) on display '%s'.\n"
-#~ msgstr "Kritinė IO klaida %d (%s) ekrane „%s“.\n"
-
-#~ msgid "Turn compositing on"
-#~ msgstr "Įjungti komponavimą"
-
-#~ msgid "Turn compositing off"
-#~ msgstr "Išjungti komponavimą"
-
-#~ msgid ""
-#~ "Don't make fullscreen windows that are maximized and have no decorations"
-#~ msgstr ""
-#~ "Nepaversti langų per visą ekraną, jei jie išdidinti ir neturi dekoracijų"
-
-#~ msgid "Whether window popup/frame should be shown when cycling windows."
-#~ msgstr "Ar lango iškilimas/rėmelis turi būti rodomas sukant langus ratu."
-
-#~ msgid "Internal argument for GObject introspection"
-#~ msgstr "Vidinis argumentas GObject introspekcijai"
-
-#~ msgid "Failed to restart: %s\n"
-#~ msgstr "Nepavyko perleisti: %s\n"
-
-#~ msgid "Error setting compositor status: %s\n"
-#~ msgstr "Įvyko klaida nustatant komponavimo posistemės būseną: %s\n"
-
-#~ msgid "Error setting clutter plugin list: %s\n"
-#~ msgstr "Įvyko klaida nustatant clutter įskiepių sąrašą: %s\n"
-
-#~ msgid "Clutter Plugins"
-#~ msgstr "Clutter įskiepiai"
-
-#~ msgid "Plugins to load for the Clutter-based compositing manager."
-#~ msgstr "Pakraunami įskiepiai clutter pagrindo komponavimo valdyklei."
-
-#~ msgid "Theme file %s did not contain a root <metacity_theme> element"
-#~ msgstr "Temos faile %s trūksta pagrindinio <metacity_theme> elemento"
-
-#~ msgid "/Windows/tearoff"
-#~ msgstr "/Langai/atkabinimas"
-
-#~ msgid "/Windows/_Dialog"
-#~ msgstr "/Langai/_Dialogas"
-
-#~ msgid "/Windows/_Modal dialog"
-#~ msgstr "/Langai/_Modalinis dialogas"
-
-#~ msgid "/Windows/Des_ktop"
-#~ msgstr "/Langai/_Darbastalis"
-
-#~ msgid "Window Management"
-#~ msgstr "Langų valdymas"
-
-#~ msgid "Failed to parse message \"%s\" from dialog process\n"
-#~ msgstr "Nepavyko apdoroti dialogo proceso pranešimo „%s“\n"
-
-#~ msgid "Error reading from dialog display process: %s\n"
-#~ msgstr "Įvyko klaida skaitant duomenis iš dialogo išvedimo proceso: %s\n"
-
-#~ msgid ""
-#~ "Error launching metacity-dialog to ask about killing an application: %s\n"
-#~ msgstr ""
-#~ "Įvyko klaida paleidžiant metacity-dialog, klausiantį apie programos "
-#~ "veikimo sustabdymą: %s\n"
-
-#~ msgid ""
-#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-#~ "\n"
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Formatas maždaug toks: „<Control>a“ arba „<Shift><Alt>F1“.\n"
-#~ "\n"
-#~ "Sistema apdorojanti aprašymą yra gana laisva ir leidžia maišyti "
-#~ "didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus kaip "
-#~ "„<Ctl>“ ir „<Ctrl>“. Nustačius specialų požymį „disabled“, su šiuo "
-#~ "veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-#~ "\n"
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action.\n"
-#~ "\n"
-#~ "This keybinding may be reversed by holding down the \"shift\" key; "
-#~ "therefore, \"shift\" cannot be one of the keys it uses."
-#~ msgstr ""
-#~ "Formatas maždaug toks: „<Control>a“ arba „<Shift><Alt>F1“.\n"
-#~ "\n"
-#~ "Sistema, apdorojanti aprašymą, yra gana laisva ir leidžia maišyti "
-#~ "didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus kaip "
-#~ "„<Ctl>“ ir „<Ctrl>“. Nustačius specialų požymį „disabled“, su šiuo "
-#~ "veiksmu nebus susieta jokia klavišų kombinacija.\n"
-#~ "\n"
-#~ "Šis klavišų susiejimas gali būti apsuktas nuspaudus „Shift“ klavišą, "
-#~ "taigi jame negalima naudoti „Shift“."
-
-#~ msgid "Failed to read saved session file %s: %s\n"
-#~ msgstr "Nepavyko perskaityti išsaugoto seanso failo %s: %s\n"
-
-#~ msgid ""
-#~ "Error launching metacity-dialog to warn about apps that don't support "
-#~ "session management: %s\n"
-#~ msgstr ""
-#~ "Įvyko klaida paleidžiant langų valdyklės dialogo langą, perspėjantį apie "
-#~ "programas, kurios nepalaiko sesijos valdymo: %s\n"
-
-#~ msgid "Metacity"
-#~ msgstr "Metacity"
-
-#~ msgid ""
-#~ "(Not implemented) Navigation works in terms of applications not windows"
-#~ msgstr ""
-#~ "(Neįgyvendinta) Persijungimas galimas tarp programų, o ne tarp programos "
-#~ "langų"
-
-#~ msgid ""
-#~ "A font description string describing a font for window titlebars. The "
-#~ "size from the description will only be used if the titlebar_font_size "
-#~ "option is set to 0. Also, this option is disabled if the "
-#~ "titlebar_uses_desktop_font option is set to true."
-#~ msgstr ""
-#~ "Šrifto aprašymo seka, nurodanti šriftą, naudojamą langų antraštėms. "
-#~ "Šrifto dydis, esantis aprašyme, naudojamas tik tuo atveju, jei "
-#~ "titlebar_font_size požymis yra lygus 0. Be to, šis požymis atjungiamas, "
-#~ "jei titlebar_uses_desktop_font požymis yra teigiamas true."
-
-#~ msgid "Action on title bar double-click"
-#~ msgstr "Veiksmas du kartus spustelėjus antraštės juostą"
-
-#~ msgid "Action on title bar middle-click"
-#~ msgstr "Veiksmas spustelėjus antraštės juostą viduriniuoju pelės mygtuku"
-
-#~ msgid "Action on title bar right-click"
-#~ msgstr "Veiksmas spustelėjus antraštės juostą dešiniuoju pelės mygtuku"
-
-#~ msgid "Arrangement of buttons on the titlebar"
-#~ msgstr "Mygtukų išdėstymas antraštėje"
-
-#~ msgid ""
-#~ "Arrangement of buttons on the titlebar. The value should be a string, "
-#~ "such as \"menu:minimize,maximize,spacer,close\"; the colon separates the "
-#~ "left corner of the window from the right corner, and the button names are "
-#~ "comma-separated. Duplicate buttons are not allowed. Unknown button names "
-#~ "are silently ignored so that buttons can be added in future metacity "
-#~ "versions without breaking older versions. A special spacer tag can be "
-#~ "used to insert some space between two adjacent buttons."
-#~ msgstr ""
-#~ "Mygtukų išdėstymas antraštės juostoje. Požymio reikšmė turi būti simbolių "
-#~ "seka, pvz., „menu:minimize,maximize,close“; dvitaškis skiria kairįjį "
-#~ "lango kampą nuo dešiniojo, o mygtukų vardai atskiriami kableliais. "
-#~ "Mygtukų vardai neturi pasikartoti. Nežinomi mygtukai yra ignoruojami, jei "
-#~ "juos kada nors panaudotų būsimos metacity laidos. Speciali tarpo žymė "
-#~ "palieka šiek tiek vietos tarp gretimų mygtukų."
-
-#~ msgid "Automatically raises the focused window"
-#~ msgstr "Automatiškai iškelia suaktyvintą langą"
-
-#~ msgid ""
-#~ "Clicking a window while holding down this modifier key will move the "
-#~ "window (left click), resize the window (middle click), or show the window "
-#~ "menu (right click). The left and right operations may be swapped using "
-#~ "the \"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" "
-#~ "or \"&lt;Super&gt;\" for example."
-#~ msgstr ""
-#~ "Spustelėjus ant lango, kai yra paspaustas šis specialusis klavišas, "
-#~ "langas bus perkeltas (kairysis spustelėjimas), keičiamas jo dydį "
-#~ "(vidurinis spustelėjimas), arba rodomas lango meniu (dešinysis "
-#~ "spustelėjimas). Kairiojo ir dešiniojo mygtuko operacijos gali būti "
-#~ "sukeistos naudojantis „mouse_button_resize“ nustatymu. Specialus klavišas "
-#~ "gali būti nustatytas kaip, pavyzdžiui, \"&lt;Alt&gt;\" arba \"&lt;"
-#~ "Super&gt;\"."
-
-#~ msgid "Commands to run in response to keybindings"
-#~ msgstr ""
-#~ "Komandos, kurios turi būti paleistos, suveikus nustatytoms klavišų "
-#~ "kombinacijoms"
-
-#~ msgid "Compositing Manager"
-#~ msgstr "Kompozicijos valdyklė"
-
-#~ msgid "Control how new windows get focus"
-#~ msgstr "Nustatyti, kada nauji langai suaktyvinami"
-
-#~ msgid "Current theme"
-#~ msgstr "Esama tema"
-
-#~ msgid "Delay in milliseconds for the auto raise option"
-#~ msgstr ""
-#~ "Uždelsimas milisekundėmis prieš suveikiant automatinio lango iškėlimui."
-
-#~ msgid "Determines whether Metacity is a compositing manager."
-#~ msgstr "Nurodo ar Metacity yra komponuojanti valdyklė."
-
-#~ msgid ""
-#~ "Determines whether applications or the system can generate audible "
-#~ "'beeps'; may be used in conjunction with 'visual bell' to allow silent "
-#~ "'beeps'."
-#~ msgstr ""
-#~ "Nustato, ar programos arba sistema gali generuoti garsinius "
-#~ "„pyptelėjimus“; gali būti naudojamas kartu su „vaizdiniu audio signalu“ "
-#~ "norint generuoti tylius „pyptelėjimus“."
-
-#~ msgid "Disable misfeatures that are required by old or broken applications"
-#~ msgstr ""
-#~ "Atjungti savybes, kurias gali naudoti senos arba sugadintos programos"
-
-#~ msgid "Enable Visual Bell"
-#~ msgstr "Įjungti vaizdinį signalą"
-
-#~ msgid ""
-#~ "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-#~ "the focused window will be automatically raised after a delay specified "
-#~ "by the auto_raise_delay key. This is not related to clicking on a window "
-#~ "to raise it, nor to entering a window during drag-and-drop."
-#~ msgstr ""
-#~ "Jei reikšmė teigiama ir aktyvinimo veiksena yra „sloppy“ arba „mouse“, "
-#~ "tada suaktyvintas langas po rakte „auto_raise_delay“ nurodyto laiko tarpo "
-#~ "bus automatiškai iškeltas. Tai nesusiję su lango spustelėjimu norint jį "
-#~ "pakelti arba užvedimo ant lango objekto vilkimo metu."
-
-#~ msgid ""
-#~ "If true, ignore the titlebar_font option, and use the standard "
-#~ "application font for window titles."
-#~ msgstr ""
-#~ "Jei reikšmė teigiama, nepaisyti titlebar_font parinkties ir langų "
-#~ "antraštėms naudoti standartinį programų šriftą."
-
-#~ msgid ""
-#~ "If true, metacity will give the user less feedback by using wireframes, "
-#~ "avoiding animations, or other means. This is a significant reduction in "
-#~ "usability for many users, but may allow legacy applications to continue "
-#~ "working, and may also be a useful tradeoff for terminal servers. However, "
-#~ "the wireframe feature is disabled when accessibility is on."
-#~ msgstr ""
-#~ "Jei reikšmė teigiama, metacity, naudodama langų rėmelius, vengdama "
-#~ "animacijų ar kitų efektų, pateiks naudotojui mažiau reakcijų ir bus "
-#~ "mažiau jaučiama „tiesioginė manipuliacija“. Tai smarkiai suprastina "
-#~ "sąsajos išraiškingumą, bet leidžia normaliai veikti senesnėms programoms "
-#~ "bei terminalų serveriams. Kai įjungtos prieinamumo funkcijos, rėmelių "
-#~ "naudojimas išjungiamas."
-
-#~ msgid ""
-#~ "If true, then Metacity works in terms of applications rather than "
-#~ "windows. The concept is a bit abstract, but in general an application-"
-#~ "based setup is more like the Mac and less like Windows. When you focus a "
-#~ "window in application-based mode, all the windows in the application will "
-#~ "be raised. Also, in application-based mode, focus clicks are not passed "
-#~ "through to windows in other applications. Application-based mode is, "
-#~ "however, largely unimplemented at the moment."
-#~ msgstr ""
-#~ "Esant teigiamai reikšmei, langų valdyklės darbas yra artimesnis darbui su "
-#~ "programomis nei su langais. Sąvoka gana neapibrėžta, bet apskritai "
-#~ "programų veiksena yra artimesnė Macintosh operacinei sistemai nei "
-#~ "Windows. Kai suaktyvinate langą programų veiksenoje, visi programos "
-#~ "langai bus iškelti. Be to, programų veiksenoje langų aktyvinimo "
-#~ "spustelėjimai neveikia langų, priklausančių kitoms programoms. Kol kas "
-#~ "programų veiksenos realizacija dar ankstyvoje stadijoje."
-
-#~ msgid "If true, trade off usability for less resource usage"
-#~ msgstr ""
-#~ "Jei reikšmė teigiama, atsisakyti dalies galimybių vardan efektyvesnio "
-#~ "resursų panaudojimo"
-
-#~ msgid "Name of workspace"
-#~ msgstr "Darbalaukio vardas"
-
-#~ msgid "Number of workspaces"
-#~ msgstr "Darbalaukų kiekis"
-
-#~ msgid ""
-#~ "Number of workspaces. Must be more than zero, and has a fixed maximum to "
-#~ "prevent making the desktop unusable by accidentally asking for too many "
-#~ "workspaces."
-#~ msgstr ""
-#~ "Darbalaukių kiekis. Turi būti didesnis už nulį. Be to, nustatyta "
-#~ "maksimali reikšmė, kad netyčia nesunaikintumėte savo darbo aplinkos įvedę "
-#~ "labai didelio skaičių."
-
-#~ msgid "Run a defined command"
-#~ msgstr "Paleisti nurodytą komandą"
-
-#~ msgid ""
-#~ "Set this to true to resize with the right button and show a menu with the "
-#~ "middle button while holding down the key given in \"mouse_button_modifier"
-#~ "\"; set it to false to make it work the opposite way around."
-#~ msgstr ""
-#~ "Nustatykite į teisingą, jei norite keisti dydį dešiniuoju mygtuku ir "
-#~ "rodyti meniu viduriniuoju mygtuku nuspaudus klavišą, nurodytą "
-#~ "„mouse_button_modifier“; nustatykite į klaidingą, jei norite, kad veiktų "
-#~ "priešingai."
-
-#~ msgid ""
-#~ "Setting this option to false can lead to buggy behavior, so users are "
-#~ "strongly discouraged from changing it from the default of true. Many "
-#~ "actions (e.g. clicking in the client area, moving or resizing the window) "
-#~ "normally raise the window as a side-effect. Setting this option to false, "
-#~ "which is strongly discouraged, will decouple raising from other user "
-#~ "actions, and ignore raise requests generated by applications. See http://"
-#~ "bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option is "
-#~ "false, windows can still be raised by an alt-left-click anywhere on the "
-#~ "window, a normal click on the window decorations, or by special messages "
-#~ "from pagers, such as activation requests from tasklist applets. This "
-#~ "option is currently disabled in click-to-focus mode. Note that the list "
-#~ "of ways to raise windows when raise_on_click is false does not include "
-#~ "programmatic requests from applications to raise windows; such requests "
-#~ "will be ignored regardless of the reason for the request. If you are an "
-#~ "application developer and have a user complaining that your application "
-#~ "does not work with this setting disabled, tell them it is _their_ fault "
-#~ "for breaking their window manager and that they need to change this "
-#~ "option back to true or live with the \"bug\" they requested."
-#~ msgstr ""
-#~ "Nustačius šią parinktį į neigiamą reikšmę, programa gali veikti "
-#~ "nekorektiškai, todėl labai rekomenduojama nekeisti jos numatytosios "
-#~ "teigiamos reikšmės. Daugelio veiksmų (pvz., spustelėjimo kliento srityje, "
-#~ "lango perkėlimo arba dydžio keitimo) pašalinis efektas paprastai bus "
-#~ "lango iškėlimas. Nustatykite šią parinktį į neigiamą, kad atskirtumėte "
-#~ "iškėlimą nuo kitų naudotojo veiksmų. Žr. http://bugzilla.gnome.org/"
-#~ "show_bug.cgi?id=445447#c6. Netgi jeigu ši parinktis neigiama, langus vis "
-#~ "tiek galima iškelti laikant Alt ir spustelėjus kairiuoju mygtuku bet "
-#~ "kurią lango vietą, paprastai spustelėjus lango dekoracijas, arba "
-#~ "specialiais pranešimais, pvz., aktyvavimo užklausomis iš užduočių sąrašo "
-#~ "įtaisų. Šiuo metu ši parinktis yra išjungta aktyvinimo spustelint "
-#~ "veiksenoje. Atminkite, kad tarp langų iškėlimo būdų, kai raise_on_click "
-#~ "reikšmė yra neigiama, nėra programinių užklausų iškelti langą iš "
-#~ "programų; tokių užklausų bus nepaisoma, nepaisant jų priežasties. Jeigu "
-#~ "esate programos kūrėjas ir jūsų naudotojai skundžiasi, kad jūsų programa "
-#~ "neveikia, kai šis parametras išjungtas, pasakykite jiems, kad tai _jų_ "
-#~ "kaltė, kad sugadino savo langų valdyklę ir, kad jie turi atkurti šią "
-#~ "parinktį atgal į teigiamą arba ir toliau gyventi su klaida, dėl kurios "
-#~ "skundžiasi."
-
-#~ msgid ""
-#~ "Some applications disregard specifications in ways that result in window "
-#~ "manager misfeatures. This option puts Metacity in a rigorously correct "
-#~ "mode, which gives a more consistent user interface, provided one does not "
-#~ "need to run any misbehaving applications."
-#~ msgstr ""
-#~ "Kai kurios programos nevykdo nurodymų specifikacijose, todėl kyla smulkių "
-#~ "nesklandumų. Ši parinktis įjungia griežtą veikseną, kuri padaro aplinką "
-#~ "vienalytiškesnę, jei nenaudojate nekorektiškų programų."
-
-#~ msgid "System Bell is Audible"
-#~ msgstr "Sisteminis signalas yra garsinis"
-
-#~ msgid ""
-#~ "Tells Metacity how to implement the visual indication that the system "
-#~ "bell or another application 'bell' indicator has been rung. Currently "
-#~ "there are two valid values, \"fullscreen\", which causes a fullscreen "
-#~ "white-black flash, and \"frame_flash\" which causes the titlebar of the "
-#~ "application which sent the bell signal to flash. If the application which "
-#~ "sent the bell is unknown (as is usually the case for the default \"system "
-#~ "beep\"), the currently focused window's titlebar is flashed."
-#~ msgstr ""
-#~ "Nustato kaip langų valdyklė vykdo vaizdinį signalą suveikus sisteminiam "
-#~ "pyptelėjimui arba kokios nors programos pyptelėjimo signalui. Šiuo metu "
-#~ "galimos dvi reikšmės - „fullscreen“, kuris sukuria viso ekrano vaizdo "
-#~ "juodai baltą blykstelėjimą, bei „frame_flash“, kuris sukuria programos, "
-#~ "pasiuntusios signalą, antraštės mirgėjimą. Jei programa pasiuntusi "
-#~ "signalą yra nežinoma (paprastai tai būna kai suveikia standartinis "
-#~ "sisteminis pyptelėjimas), mirga tuo momentu naudojamo lango antraštė."
-
-#~ msgid ""
-#~ "The /apps/metacity/global_keybindings/run_command_N keys define "
-#~ "keybindings that correspond to these commands. Pressing the keybinding "
-#~ "for run_command_N will execute command_N."
-#~ msgstr ""
-#~ "/apps/metacity/global_keybindings/run_command_N raktai nustato specialias "
-#~ "klavišų kombinacijas, kurios atitinka nurodytas komanda. Paspaudus "
-#~ "klavišo kombinaciją priskirtą run_command_N bus įvykdyta komanda "
-#~ "command_N."
-
-#~ msgid ""
-#~ "The /apps/metacity/global_keybindings/run_command_screenshot key defines "
-#~ "a keybinding which causes the command specified by this setting to be "
-#~ "invoked."
-#~ msgstr ""
-#~ "/apps/metacity/global_keybindings/run_command_screenshot raktas nustato "
-#~ "klavišų kombinaciją, kuri iškviečia šiame nustatyme nurodytą komandą."
-
-#~ msgid ""
-#~ "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
-#~ "defines a keybinding which causes the command specified by this setting "
-#~ "to be invoked."
-#~ msgstr ""
-#~ "/apps/metacity/global_keybindings/run_command_window_screenshot raktas "
-#~ "nustato klavišų kombinaciją, kuri iškviečia šiame nustatyme nurodytą "
-#~ "komandą."
-
-#~ msgid ""
-#~ "The keybinding that runs the correspondingly-numbered command in /apps/"
-#~ "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" "
-#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
-#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-#~ "\"disabled\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri paleidžia atitinkamą sunumeruotą komandą iš /"
-#~ "apps/metacity/keybinding_commands raktų. Klavišų kombinacijos formatas "
-#~ "gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Sistema apdorojanti aprašymą yra gana laisva ir leidžia maišyti "
-#~ "didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus kaip \"&lt;"
-#~ "Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su "
-#~ "šiuo veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid "The name of a workspace."
-#~ msgstr "Darbalaukio vardas"
-
-#~ msgid "The screenshot command"
-#~ msgstr "Ekrano fotografavimo komanda"
-
-#~ msgid ""
-#~ "The theme determines the appearance of window borders, titlebar, and so "
-#~ "forth."
-#~ msgstr "Tema nurodo langų rėmelių, antraščių ir kitų elementų išvaizdą."
-
-#~ msgid ""
-#~ "The time delay before raising a window if auto_raise is set to true. The "
-#~ "delay is given in thousandths of a second."
-#~ msgstr ""
-#~ "Uždelsimo laikas prieš pakeliant langą, jei auto_raise požymis yra "
-#~ "teigiamas. Laikas nurodomas tūkstantosiomis sekundės dalimis."
-
-#~ msgid ""
-#~ "The window focus mode indicates how windows are activated. It has three "
-#~ "possible values; \"click\" means windows must be clicked in order to "
-#~ "focus them, \"sloppy\" means windows are focused when the mouse enters "
-#~ "the window, and \"mouse\" means windows are focused when the mouse enters "
-#~ "the window and unfocused when the mouse leaves the window."
-#~ msgstr ""
-#~ "Lango aktyvinimo veiksena nustato kaip bus aktyvuojami langai. Yra trys "
-#~ "galimos reikšmės; \"click\" reiškia, kad reikia spustelėti ant lango "
-#~ "norint jį aktyvuoti, \"sloppy\" aktyvuoja langus kai ant jų užvedamas "
-#~ "pelės kursorius, o \"mouse\" reiškia, kad langai bus aktyvuojami kai ant "
-#~ "jų bus užvestas kursorius ir aktyvacija bus atšaukta kursoriui "
-#~ "pasitraukus."
-
-#~ msgid "The window screenshot command"
-#~ msgstr "Langų fotografavimo komanda"
-
-#~ msgid ""
-#~ "This option determines the effects of double-clicking on the title bar. "
-#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
-#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
-#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
-#~ "which will minimize the window, 'shade' which will roll the window up, "
-#~ "'menu' which will display the window menu, 'lower' which will put the "
-#~ "window behind all the others, and 'none' which will not do anything."
-#~ msgstr ""
-#~ "Ši parinktis nurodo dvigubo antraštės spustelėjimo veiksmą. Galimos "
-#~ "reikšmės: „toggle_shade“ – suvynioti / išvynioti langą, „toggle_maximize“ "
-#~ "– išdidinti / sumažinti langą, „toggle_maximize_horizontally“ ir "
-#~ "„toggle_maximize_vertically“ – išdidinti langą nurodyta "
-#~ "kryptimi, „minimize“ – paslėpti langą, „shade“ – suvynioti langą, „menu“ "
-#~ "– parodyti lango meniu, „lower“ – nukelti langą už kitų langų ir „none“ – "
-#~ "nedaryti nieko."
-
-#~ msgid ""
-#~ "This option determines the effects of middle-clicking on the title bar. "
-#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
-#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
-#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
-#~ "which will minimize the window, 'shade' which will roll the window up, "
-#~ "'menu' which will display the window menu, 'lower' which will put the "
-#~ "window behind all the others, and 'none' which will not do anything."
-#~ msgstr ""
-#~ "Ši parinktis nurodo antraštės spustelėjimo viduriniuoju mygtuku veiksmą. "
-#~ "Galimos reikšmės: „toggle_shade“ – suvynioti / išvynioti langą, "
-#~ "„toggle_maximize“ – išdidinti / sumažinti langą, "
-#~ "„toggle_maximize_horizontally“ ir „toggle_maximize_vertically“ – "
-#~ "išdidinti langą nurodyta kryptimi, „minimize“ – paslėpti langą, „shade“ – "
-#~ "suvynioti langą, „menu“ – parodyti lango meniu, „lower“ – nukelti langą "
-#~ "už kitų langų ir „none“ – nedaryti nieko."
-
-#~ msgid ""
-#~ "This option determines the effects of right-clicking on the title bar. "
-#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
-#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
-#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
-#~ "which will minimize the window, 'shade' which will roll the window up, "
-#~ "'menu' which will display the window menu, 'lower' which will put the "
-#~ "window behind all the others, and 'none' which will not do anything."
-#~ msgstr ""
-#~ "Ši parinktis nurodo antraštės spustelėjimo dešiniuoju mygtuku veiksmą. "
-#~ "Galimos reikšmės: „toggle_shade“ – suvynioti / išvynioti langą, "
-#~ "„toggle_maximize“ – išdidinti / sumažinti langą, "
-#~ "„toggle_maximize_horizontally“ ir „toggle_maximize_vertically“ – "
-#~ "išdidinti langą nurodyta kryptimi, „minimize“ – paslėpti langą, „shade“ – "
-#~ "suvynioti langą, „menu“ – parodyti lango meniu, „lower“ – nukelti langą "
-#~ "už kitų langų ir „none“ – nedaryti nieko."
-
-#~ msgid ""
-#~ "This option provides additional control over how newly created windows "
-#~ "get focus. It has two possible values; \"smart\" applies the user's "
-#~ "normal focus mode, and \"strict\" results in windows started from a "
-#~ "terminal not being given focus."
-#~ msgstr ""
-#~ "Ši parinktis leidžia tiksliau valdyti naujų langų aktyvinimą. Leidžiamos "
-#~ "dvi reikšmės: „smart“ įjungia normalią veikseną, o „strict“ neaktyvina "
-#~ "langų, paleistų iš terminalo."
-
-#~ msgid ""
-#~ "Turns on a visual indication when an application or the system issues a "
-#~ "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-#~ "environments."
-#~ msgstr ""
-#~ "Įjungia vaizdinius indikatorius, kai programa arba sistema perduoda "
-#~ "standartinius garsinius perspėjimo signalus; naudinga esant klausos "
-#~ "sutrikimams, triukšmingoje aplinkoje arba kai garsinis signalas yra "
-#~ "išjungtas."
-
-#~ msgid "Use standard system font in window titles"
-#~ msgstr "Langų antraštėse naudoti standartinį sistemos šriftą"
-
-#~ msgid "Visual Bell Type"
-#~ msgstr "Vaizdinio signalo tipas"
-
-#~ msgid "Whether raising should be a side-effect of other user interactions"
-#~ msgstr "Ar pakėlimas turėtų būti pašalinis kitų naudotojo veiksmų efektas"
-
-#~ msgid "Whether to resize with the right button"
-#~ msgstr "Ar keisti dydį dešiniuoju mygtuku"
-
-#~ msgid "Window focus mode"
-#~ msgstr "Langų aktyvinimo veiksena"
-
-#~ msgid "Window title font"
-#~ msgstr "Lango antraštės šriftas"
-
-#~ msgid "Title"
-#~ msgstr "Antraštė"
-
-#~ msgid "Class"
-#~ msgstr "Klasė"
-
-#~ msgid ""
-#~ "There was an error running \"%s\":\n"
-#~ "%s."
-#~ msgstr ""
-#~ "Įvyko klaida bandant paleisti „%s“:\n"
-#~ "%s."
-
-#~ msgid "<author> specified twice for this theme"
-#~ msgstr "<author> elementas temos aprašyme nurodytas du kartus"
-
-#~ msgid "<copyright> specified twice for this theme"
-#~ msgstr "<copyright> elementas temos aprašyme nurodytas du kartus"
-
-#~ msgid "<date> specified twice for this theme"
-#~ msgstr "<date> elementas temos aprašyme nurodytas du kartus"
-
-#~ msgid "<description> specified twice for this theme"
-#~ msgstr "<description> elementas temos aprašyme nurodytas du kartus"
-
-#~ msgid ""
-#~ "Error launching metacity-dialog to print an error about a command: %s\n"
-#~ msgstr ""
-#~ "Įvyko klaida paleidžiant metacity-dialog, išvedantį informaciją apie "
-#~ "komandos klaidą: %s\n"
-
-#~ msgid "Unknown attribute %s on <metacity_session> element"
-#~ msgstr "Nežinomas požymis %s <metacity_session> elemente"
-
-#~ msgid "Unknown attribute %s on <maximized> element"
-#~ msgstr "Nežinomas požymis %s <maximized> elemente"
-
-#~ msgid "Unknown attribute %s on <geometry> element"
-#~ msgstr "Nežinomas požymis %s <geometry> elemente"
-
-#~ msgid "The keybinding used to activate the window menu."
-#~ msgstr "Klavišų susiejimas lango meniu aktyvuoti"
-
-#, fuzzy
-#~ msgid "The keybinding used to toggle fullscreen mode."
-#~ msgstr "Perjungti viso ekrano veikseną"
-
-#~ msgid "The keybinding used to toggle maximization."
-#~ msgstr "Klavišų susiejimas lango išdidinimo veiksenai keisti"
-
-#~ msgid "Toggle always on top state"
-#~ msgstr "Perjungti visada viršuje būseną"
-
-#~ msgid ""
-#~ "The keybinding used to toggle always on top.  A window that is always on "
-#~ "top will always be visible over other overlapping windows."
-#~ msgstr ""
-#~ "Klavišų susiejimas, keičiantis „visada viršuje“ būseną. Langas, esantis "
-#~ "visada viršuje bus matomas virš kitų jį dengiančių langų."
-
-#~ msgid "The keybinding used to maximize a window."
-#~ msgstr "Klavišų susiejimas langui išdidinti."
-
-#~ msgid "Unmaximize window"
-#~ msgstr "Atšaukti lango išdidinimą"
-
-#~ msgid "The keybinding used to unmaximize a window."
-#~ msgstr "Klavišų susiejimas lango išdidinimui atšaukti"
-
-#~ msgid "The keybinding used to toggle shaded/unshaded state."
-#~ msgstr "Klavišų susiejimas lango sutraukimo būsenai keisti"
-
-#~ msgid "The keybinding used to minimize a window."
-#~ msgstr "Klavišų susiejimas langui sumažinti"
-
-#~ msgid "The keybinding used to close a window."
-#~ msgstr "Klavišų susiejimas langui užverti"
-
-#~ msgid ""
-#~ "The keybinding used to enter \"move mode\" and begin moving a window "
-#~ "using the keyboard."
-#~ msgstr ""
-#~ "Klavišų susiejimas įėjimui į „perkėlimo veikseną“ ir pradėjimui stumdyti "
-#~ "langą naudojantis klaviatūra."
-
-#~ msgid "Toggle window on all workspaces"
-#~ msgstr "Perjungti lango buvimo visuose darbalaukiuose būseną"
-
-#, fuzzy
-#~ msgid "The keybinding used to move a window to workspace 1."
-#~ msgstr "Perkelti langą į darbalaukį Nr.1"
-
-#, fuzzy
-#~ msgid "The keybinding used to move a window to workspace 2."
-#~ msgstr "Perkelti langą į darbalaukį Nr.2"
-
-#, fuzzy
-#~ msgid "The keybinding used to move a window to workspace 3."
-#~ msgstr "Perkelti langą į darbalaukį Nr.3"
-
-#, fuzzy
-#~ msgid "The keybinding used to move a window to workspace 4."
-#~ msgstr "Perkelti langą į darbalaukį Nr.4"
-
-#, fuzzy
-#~ msgid "The keybinding used to move a window to workspace 5."
-#~ msgstr "Perkelti langą į darbalaukį Nr.5"
-
-#, fuzzy
-#~ msgid "The keybinding used to move a window to workspace 6."
-#~ msgstr "Perkelti langą į darbalaukį Nr.6"
-
-#, fuzzy
-#~ msgid "The keybinding used to move a window to workspace 7."
-#~ msgstr "Perkelti langą į darbalaukį Nr.7"
-
-#, fuzzy
-#~ msgid "The keybinding used to move a window to workspace 8."
-#~ msgstr "Perkelti langą į darbalaukį Nr.8"
-
-#, fuzzy
-#~ msgid "The keybinding used to move a window to workspace 9."
-#~ msgstr "Perkelti langą į darbalaukį Nr.9"
-
-#, fuzzy
-#~ msgid "The keybinding used to move a window to workspace 10."
-#~ msgstr "Perkelti langą į darbalaukį Nr.10"
-
-#, fuzzy
-#~ msgid "The keybinding used to move a window to workspace 11."
-#~ msgstr "Perkelti langą į darbalaukį Nr.11"
-
-#, fuzzy
-#~ msgid "The keybinding used to move a window to workspace 12."
-#~ msgstr "Perkelti langą į darbalaukį Nr.12"
-
-#, fuzzy
-#~ msgid "The keybinding used to move a window one workspace to the left."
-#~ msgstr "Perkelti langą į kairiau esantį darbalaukį"
-
-#, fuzzy
-#~ msgid "The keybinding used to move a window one workspace to the right."
-#~ msgstr "Perkelti langą į dešiniau esantį darbalaukį"
-
-#, fuzzy
-#~ msgid "The keybinding used to move a window one workspace up."
-#~ msgstr "Perkelti langą į aukščiau esantį darbalaukį"
-
-#, fuzzy
-#~ msgid "The keybinding used to move a window one workspace down."
-#~ msgstr "Perkelti langą į žemiau esantį darbalaukį"
-
-#, fuzzy
-#~ msgid "This keybinding raises the window above other windows."
-#~ msgstr "Iškelti langą virš kitų langų"
-
-#, fuzzy
-#~ msgid "This keybinding lowers a window below other windows."
-#~ msgstr "Nuleisti langą žemiau kitų langų"
-
-#, fuzzy
-#~ msgid ""
-#~ "This keybinding moves a window against the north (top) side of the screen."
-#~ msgstr "Perkelti langą į viršutinę ekrano dalį"
-
-#, fuzzy
-#~ msgid "This keybinding moves a window into the center of the screen."
-#~ msgstr "Perkelti langą į kairę ekrano pusę"
-
-#~ msgid ""
-#~ "Many actions (e.g. clicking in the client area, moving or resizing the "
-#~ "window) normally raise the window as a side-effect. Setting this option "
-#~ "to false, which is strongly discouraged, will decouple raising from other "
-#~ "user actions, and ignore raise requests generated by applications. See "
-#~ "http://bugzilla.gnome.org/show_bug.cgi?id=445447#c6."
-#~ msgstr ""
-#~ "Daug veiksmų (pvz., spustelėjimas kliento srityje, lango stūmimas ar "
-#~ "dydžio keitimas) paprastai langą pakelia į viršų. Jei ši parinktis "
-#~ "išjungta (nerekomenduojama), pakėlimas bus atsietas nuo kitų veiksmų ir "
-#~ "programų užklausos pakelti langą bus ignoruojamos. Žr. http://bugzilla."
-#~ "gnome.org/show_bug.cgi?id=445447#c6."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace above the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia darbalaukį į aukščiau esantį. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace below the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia darbalaukį į žemiau esantį. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace on the left of the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia darbalaukį į kairiau esantį. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding that switches to the workspace on the right of the current "
-#~ "workspace. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia darbalaukį į dešiniau esantį. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 1. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia darbalaukį į darbalaukį nr.1. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 10. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia darbalaukį į darbalaukį nr.10. "
-#~ "Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" "
-#~ "arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
-#~ "laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 11. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia darbalaukį į darbalaukį nr.11. "
-#~ "Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" "
-#~ "arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
-#~ "laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 12. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia darbalaukį į darbalaukį nr.12. "
-#~ "Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" "
-#~ "arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
-#~ "laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 2. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia darbalaukį į darbalaukį nr.2. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 3. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia darbalaukį į darbalaukį nr.3. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 4. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia darbalaukį į darbalaukį nr.4. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 5. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia darbalaukį į darbalaukį nr.5. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 6. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia darbalaukį į darbalaukį nr.6. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 7. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia darbalaukį į darbalaukį nr.7. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 8. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia darbalaukį į darbalaukį nr.8. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding that switches to workspace 9. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia darbalaukį į darbalaukį nr.9. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to activate the window menu. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, aktyvuojanti lango meniu. Klavišų kombinacijos "
-#~ "formatas gali būti panašus į „&lt;Control&gt;a“ arba „&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1“. Sistema apdorojanti aprašymą yra gana laisva ir leidžia "
-#~ "maišyti didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus "
-#~ "kaip „&lt;Ctl&gt;“ ir „&lt;Ctrl&gt;“. Nustačius specialų požymį "
-#~ "„disabled“, su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to close a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri uždaro langą. Klavišų kombinacijos formatas "
-#~ "gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Sistema apdorojanti aprašymą yra gana laisva ir leidžia maišyti "
-#~ "didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus kaip \"&lt;"
-#~ "Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su "
-#~ "šiuo veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to enter \"move mode\" and begin moving a window "
-#~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perjungia langą į \"judėjimo veikseną\" ir "
-#~ "leidžia po to judinti langą klaviatūros pagalba. Klavišų kombinacijos "
-#~ "formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir leidžia "
-#~ "maišyti didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus "
-#~ "kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį "
-#~ "\"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to enter \"resize mode\" and begin resizing a window "
-#~ "using the keyboard. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, perjungianti langą į „dydžio keitimo“ veikseną ir po "
-#~ "to leidžianti keisti lango dydį klaviatūros pagalba. Klavišų kombinacijos "
-#~ "formatas gali būti panašus į „&lt;Control&gt;a“ arba „&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1“. Sistema apdorojanti aprašymą yra gana laisva ir leidžia "
-#~ "maišyti didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus "
-#~ "kaip „&lt;Ctl&gt;“ ir „&lt;Ctrl&gt;“. Nustačius specialų požymį "
-#~ "„disabled“, su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to hide all normal windows and set the focus to the "
-#~ "desktop background. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri paslepia visus langus ir aktyvuoja darbalaukį. "
-#~ "Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" "
-#~ "arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
-#~ "laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to maximize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, naudojama išplėsti langui. Klavišų kombinacijos "
-#~ "formatas gali būti panašus į „&lt;Control&gt;a“ arba „&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1“. Sistema apdorojanti aprašymą yra gana laisva ir leidžia "
-#~ "maišyti didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus "
-#~ "kaip „&lt;Ctl&gt;“ ir „&lt;Ctrl&gt;“. Nustačius specialų požymį "
-#~ "„disabled“, su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to minimize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri sumažina langą. Klavišų kombinacijos formatas "
-#~ "gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Sistema apdorojanti aprašymą yra gana laisva ir leidžia maišyti "
-#~ "didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus kaip \"&lt;"
-#~ "Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su "
-#~ "šiuo veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace down. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perkelia langą į žemiau esantį darbalaukį. "
-#~ "Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" "
-#~ "arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
-#~ "laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace to the left. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perkelia langą į kairiau esantį darbalaukį. "
-#~ "Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" "
-#~ "arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
-#~ "laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace to the right. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perkelia langą į dešiniau esantį darbalaukį. "
-#~ "Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" "
-#~ "arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
-#~ "laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move a window one workspace up. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perkelia langą į aukščiau esantį darbalaukį. "
-#~ "Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" "
-#~ "arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
-#~ "laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 1. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perkelia langą į darbalaukį nr.1. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 10. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perkelia langą į darbalaukį nr.10. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 11. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perkelia langą į darbalaukį nr.11. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 12. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perkelia langą į darbalaukį nr.12. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 2. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perkelia langą į darbalaukį nr.2. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 3. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perkelia langą į darbalaukį nr.3. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 4. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perkelia langą į darbalaukį nr.4. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 5. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perkelia langą į darbalaukį nr.5. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 6. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perkelia langą į darbalaukį nr.6. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 7. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perkelia langą į darbalaukį nr.7. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 8. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perkelia langą į darbalaukį nr.8. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move a window to workspace 9. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri perkelia langą į darbalaukį nr.9. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between panels and the "
-#~ "desktop, using a popup window. The format looks like \"&lt;Control&gt;a\" "
-#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
-#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-#~ "\"disabled\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri judina aktyvinimo požymius atgal tarp skydelių "
-#~ "ir darbalaukio kartu su iššokančiu langu. Klavišų kombinacijos formatas "
-#~ "gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Sistema apdorojanti aprašymą yra gana laisva ir leidžia maišyti "
-#~ "didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus kaip \"&lt;"
-#~ "Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su "
-#~ "šiuo veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between panels and the "
-#~ "desktop, without a popup window. The format looks like \"&lt;Control&gt;a"
-#~ "\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
-#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
-#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
-#~ "\"disabled\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri judina aktyvinimo požymius atgal tarp skydelių "
-#~ "ir darbalaukio be iššokančio lango. Klavišų kombinacijos formatas gali "
-#~ "būti panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Sistema apdorojanti aprašymą yra gana laisva ir leidžia maišyti "
-#~ "didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus kaip \"&lt;"
-#~ "Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su "
-#~ "šiuo veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows of an "
-#~ "application without a popup window. Holding \"shift\" together with this "
-#~ "binding makes the direction go forward again. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri judina aktyvinimo požymius atgal tarp langų be "
-#~ "iššokančio lango. Nuspaudus „Lyg2“ bus vėl judama į priekį. Klavišų "
-#~ "kombinacijos formatas panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir leidžia "
-#~ "maišyti didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus "
-#~ "kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį "
-#~ "\"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows of an "
-#~ "application, using a popup window. Holding \"shift\" together with this "
-#~ "binding makes the direction go forward again. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri judina aktyvinimo požymius atgal tarp langų "
-#~ "kartu su iššokančiu langu. Nuspaudus „Lyg2“ bus vėl judama į priekį. "
-#~ "Klavišų kombinacijos formatas panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows without a "
-#~ "popup window. Holding \"shift\" together with this binding makes the "
-#~ "direction go forward again. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri judina aktyvinimo požymius atgal tarp langų be "
-#~ "iššokančio lango. Klavišų kombinacijos formatas gali būti panašus į \"&lt;"
-#~ "Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti "
-#~ "aprašymą yra gana laisva ir leidžia maišyti didžiąsias bei mažąsias "
-#~ "raides ir naudoti tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;"
-#~ "Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu nebus "
-#~ "susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move focus backwards between windows, using a "
-#~ "popup window. Holding \"shift\" together with this binding makes the "
-#~ "direction go forward again. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri judina aktyvinimo požymius atgal tarp langų "
-#~ "kartu su iššokančiu langu. Klavišų kombinacijos formatas gali būti "
-#~ "panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema "
-#~ "apdorojanti aprašymą yra gana laisva ir leidžia maišyti didžiąsias bei "
-#~ "mažąsias raides ir naudoti tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir "
-#~ "\"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu "
-#~ "nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between panels and the desktop, using a "
-#~ "popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri judina aktyvinimo požymius tarp skydelių ir "
-#~ "darbalaukio kartu su iššokančiu langu. Klavišų kombinacijos formatas gali "
-#~ "būti panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. "
-#~ "Sistema apdorojanti aprašymą yra gana laisva ir leidžia maišyti "
-#~ "didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus kaip \"&lt;"
-#~ "Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su "
-#~ "šiuo veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between panels and the desktop, without "
-#~ "a popup window. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri judina aktyvinimo požymius tarp skydelių ir "
-#~ "darbalaukio be iššokančio lango. Klavišų kombinacijos formatas gali būti "
-#~ "panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema "
-#~ "apdorojanti aprašymą yra gana laisva ir leidžia maišyti didžiąsias bei "
-#~ "mažąsias raides ir naudoti tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir "
-#~ "\"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu "
-#~ "nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between windows of an application "
-#~ "without a popup window. Holding the \"shift\" key while using this "
-#~ "binding reverses the direction of movement. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri judina aktyvinimo požymius tarp langų be "
-#~ "iššokančio lango. \"Lyg2\" klavišas keičia judėjimo kryptį. Klavišų "
-#~ "kombinacijos formatas panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir leidžia "
-#~ "maišyti didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus "
-#~ "kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį "
-#~ "\"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between windows of an application, "
-#~ "using a popup window. (Traditionally &lt;Alt&gt;F6) Holding the \"shift\" "
-#~ "key while using this binding reverses the direction of movement. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri judina aktyvinimo požymius tarp programos langų "
-#~ "su iššokančiu langu. (Paprastai &lt;Alt&gt;F6) \"lyg2\" klavišas keičia "
-#~ "judėjimo kryptį. Klavišų kombinacijos formatas gali būti panašus į \"&lt;"
-#~ "Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti "
-#~ "aprašymą yra gana laisva ir leidžia maišyti didžiąsias bei mažąsias "
-#~ "raides ir naudoti tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;"
-#~ "Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu nebus "
-#~ "susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between windows without a popup window. "
-#~ "(Traditionally &lt;Alt&gt;Escape) Holding the \"shift\" key while using "
-#~ "this binding reverses the direction of movement. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri judina aktyvinimo požymius tarp langų be "
-#~ "iššokančio lango. (Paprastai &lt;Alt&gt;Escape) \"lyg2\" klavišas keičia "
-#~ "judėjimo kryptį. Klavišų kombinacijos formatas gali būti panašus į \"&lt;"
-#~ "Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti "
-#~ "aprašymą yra gana laisva ir leidžia maišyti didžiąsias bei mažąsias "
-#~ "raides ir naudoti tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;"
-#~ "Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu nebus "
-#~ "susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to move focus between windows, using a popup window. "
-#~ "(Traditionally &lt;Alt&gt;Tab) Holding the \"shift\" key while using this "
-#~ "binding reverses the direction of movement. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri judina aktyvinimo požymius tarp langų kartu su "
-#~ "iššokančiu langu. (Paprastai &lt;Alt&gt;Tab) \"lyg2\" klavišas keičia "
-#~ "judėjimo kryptį. Klavišų kombinacijos formatas gali būti panašus į \"&lt;"
-#~ "Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti "
-#~ "aprašymą yra gana laisva ir leidžia maišyti didžiąsias bei mažąsias "
-#~ "raides ir naudoti tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;"
-#~ "Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu nebus "
-#~ "susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to toggle always on top. A window that is always on "
-#~ "top will always be visible over other overlapping windows. The format "
-#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-#~ "parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, įjungianti veikseną „visada viršuje. Įjungus šią "
-#~ "veikseną langas visada bus aukščiau kitų persidengiančių langų. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į „&lt;Control&gt;a“ arba „&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1“. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip „&lt;Ctl&gt;“ ir „&lt;Ctrl&gt;“. Nustačius specialų "
-#~ "požymį „disabled“, su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to toggle fullscreen mode. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, perjungianti viso ekrano veikseną. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į „&lt;Control&gt;a“ arba „&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1“. Sistema apdorojanti aprašymą yra gana liberali "
-#~ "ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip „&lt;Ctl&gt;“ ir „&lt;Ctrl&gt;“. Nustačius specialų "
-#~ "požymį „disabled“, su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to toggle maximization. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri įjungia arba išjungia lango išdidinimą. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to toggle shaded/unshaded state. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri keičia lango šešėlinę/ne šešėlinę būseną. "
-#~ "Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" "
-#~ "arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
-#~ "laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to toggle whether the window is on all workspaces or "
-#~ "just one. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri nustato ar langas bus tik viename darbalauke, "
-#~ "ar visuose. Klavišų kombinacijos formatas gali būti panašus į \"&lt;"
-#~ "Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti "
-#~ "aprašymą yra gana laisva ir leidžia maišyti didžiąsias bei mažąsias "
-#~ "raides ir naudoti tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;"
-#~ "Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su šiuo veiksmu nebus "
-#~ "susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding used to unmaximize a window. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri sutraukia langą. Klavišų kombinacijos formatas "
-#~ "gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;Alt&gt;"
-#~ "F1. Sistema apdorojanti aprašymą yra gana laisva ir leidžia maišyti "
-#~ "didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus kaip \"&lt;"
-#~ "Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį \"disabled\", su "
-#~ "šiuo veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding which display's the panel's \"Run Application\" dialog "
-#~ "box. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri iškviečia skydelio programos paleidimo dialogo "
-#~ "langą. Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;"
-#~ "a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra "
-#~ "gana laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding which invokes a terminal. The format looks like \"&lt;"
-#~ "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#~ "liberal and allows lower or upper case, and also abbreviations such as "
-#~ "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#~ "special string \"disabled\", then there will be no keybinding for this "
-#~ "action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri iškviečia terminalą. Klavišų kombinacijos "
-#~ "formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1. Sistema, apdorojanti aprašymą, yra gana laisva ir leidžia "
-#~ "maišyti didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus "
-#~ "kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį "
-#~ "\"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding which invokes the panel's screenshot utility to take a "
-#~ "screenshot of a window. The format looks like \"&lt;Control&gt;a\" or "
-#~ "\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-#~ "lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-#~ "\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled"
-#~ "\", then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri paleidžia skydelio ekrano vaizdo kopijų darymo "
-#~ "programą tam, kad toji padarytų lango vaizdo kopiją. Klavišų kombinacijos "
-#~ "formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir leidžia "
-#~ "maišyti didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus "
-#~ "kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius specialų požymį "
-#~ "\"disabled\", su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid ""
-#~ "The keybinding which invokes the panel's screenshot utility. The format "
-#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-#~ "parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri skydelio ekrano vaizdo kopijų darymo progamą. "
-#~ "Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" "
-#~ "arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
-#~ "laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "The keybinding which shows the panel's main menu. The format looks like "
-#~ "\"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is "
-#~ "fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri iškviečia skydelio pagrindinį meniu. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "This keybinding changes whether a window is above or below other windows. "
-#~ "If the window is covered by another one, it raises the window above all "
-#~ "others, and if the window is already fully visible, it lowers it below "
-#~ "all others. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri keičia lango buvimo žemiau/aukščiau kitų langų "
-#~ "būklę. Jei langas yra paslėptas po kitu langu, jis bus iškeltas aukščiau "
-#~ "kitų. Jei langas yra pilnai matomas, jis atsidurs žemiau kitų langų. "
-#~ "Klavišų kombinacijos formatas panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "This keybinding lowers a window below other windows. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri paslepia langą po kitais langais. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "This keybinding moves a window against the north (top) side of the "
-#~ "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "Ši klavišų kombinacija priglaudžia langą prie viršutinio ekrano krašto. "
-#~ "Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" "
-#~ "arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
-#~ "laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#, fuzzy
-#~ msgid ""
-#~ "This keybinding moves a window into the center of the screen. The format "
-#~ "looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The "
-#~ "parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Ši klavišų kombinacija priglaudžia langą prie kairiojo ekrano krašto. "
-#~ "Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" "
-#~ "arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
-#~ "laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the east (right) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-#~ "\". The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Ši klavišų kombinacija priglaudžia langą prie dešiniojo ekrano krašto. "
-#~ "Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" "
-#~ "arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
-#~ "laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the north-east (top right) corner of "
-#~ "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Ši klavišų kombinacija priglaudžia langą prie ekrano viršutinio kairiojo "
-#~ "kampo. Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;"
-#~ "a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra "
-#~ "gana laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the north-west (top left) corner of "
-#~ "the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;"
-#~ "&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower or upper "
-#~ "case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;"
-#~ "\". If you set the option to the special string \"disabled\", then there "
-#~ "will be no keybinding for this action."
-#~ msgstr ""
-#~ "Ši klavišų kombinacija priglaudžia langą prie ekrano viršutinio dešiniojo "
-#~ "kampo. Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;"
-#~ "a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra "
-#~ "gana laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the south (bottom) side of the "
-#~ "screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1\". The parser is fairly liberal and allows lower or upper case, "
-#~ "and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If "
-#~ "you set the option to the special string \"disabled\", then there will be "
-#~ "no keybinding for this action."
-#~ msgstr ""
-#~ "Ši klavišų kombinacija priglaudžia langą prie apatinio ekrano krašto. "
-#~ "Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" "
-#~ "arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
-#~ "laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the south-east (bottom right) corner "
-#~ "of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Ši klavišų kombinacija priglaudžia langą prie ekrano apatinio dešiniojo "
-#~ "kampo. Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;"
-#~ "a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra "
-#~ "gana laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the south-west (bottom left) corner "
-#~ "of the screen. The format looks like \"&lt;Control&gt;a\" or \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows lower "
-#~ "or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;"
-#~ "Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-#~ "then there will be no keybinding for this action."
-#~ msgstr ""
-#~ "Ši klavišų kombinacija priglaudžia langą prie ekrano apatinio kairiojo "
-#~ "kampo. Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;"
-#~ "a\" arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra "
-#~ "gana laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "This keybinding moves a window into the west (left) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-#~ "\". The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Ši klavišų kombinacija priglaudžia langą prie kairiojo ekrano krašto. "
-#~ "Klavišų kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" "
-#~ "arba \"&lt;Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana "
-#~ "laisva ir leidžia maišyti didžiąsias bei mažąsias raides ir naudoti "
-#~ "tokius sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "This keybinding raises the window above other windows. The format looks "
-#~ "like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser "
-#~ "is fairly liberal and allows lower or upper case, and also abbreviations "
-#~ "such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to "
-#~ "the special string \"disabled\", then there will be no keybinding for "
-#~ "this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri iškelia langą virš kitų langų. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "This keybinding resizes a window to fill available horizontal space. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, kuri išplečia langą horizontaliai. Klavišų "
-#~ "kombinacijos formatas gali būti panašus į \"&lt;Control&gt;a\" arba \"&lt;"
-#~ "Shift&gt;&lt;Alt&gt;F1. Sistema apdorojanti aprašymą yra gana laisva ir "
-#~ "leidžia maišyti didžiąsias bei mažąsias raides ir naudoti tokius "
-#~ "sutrumpinimus kaip \"&lt;Ctl&gt;\" ir \"&lt;Ctrl&gt;\". Nustačius "
-#~ "specialų požymį \"disabled\", su šiuo veiksmu nebus susieta jokia klavišų "
-#~ "kombinacija."
-
-#~ msgid ""
-#~ "This keybinding resizes a window to fill available vertical space. The "
-#~ "format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". "
-#~ "The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
-#~ "keybinding for this action."
-#~ msgstr ""
-#~ "Klavišų kombinacija, išdidinanti langą vertikaliai. Klavišų kombinacijos "
-#~ "formatas gali būti panašus į „&lt;Control&gt;a“ arba „&lt;Shift&gt;&lt;"
-#~ "Alt&gt;F1“. Sistema apdorojanti aprašymą yra gana laisva ir leidžia "
-#~ "maišyti didžiąsias bei mažąsias raides ir naudoti tokius sutrumpinimus "
-#~ "kaip „&lt;Ctl&gt;“ ir „&lt;Ctrl&gt;“. Nustačius specialų požymį "
-#~ "„disabled“, su šiuo veiksmu nebus susieta jokia klavišų kombinacija."
-
-#~ msgid "Unmaximize Window"
-#~ msgstr "Sutraukti langą"
-
-#~ msgid "No \"%s\" attribute on <%s> element"
-#~ msgstr "Elemente <%2$s> trūksta požymio \"%1$s\""
-
-#~ msgid "Theme already has a fallback icon"
-#~ msgstr "Tema jau turi atsarginę piktogramą"
-
-#~ msgid "Theme already has a fallback mini_icon"
-#~ msgstr "Tema jau turi atsarginę mini piktogramą"
-
-#~ msgid "No \"name\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"name\" požymio"
-
-#~ msgid "No \"value\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"value\" požymio"
-
-#~ msgid "No \"top\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"top\" požymio"
-
-#~ msgid "No \"bottom\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"bottom\" požymio"
-
-#~ msgid "No \"left\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"left\" požymio"
-
-#~ msgid "No \"right\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"right\" požymio"
-
-#~ msgid "No \"color\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"color\" požymio"
-
-#~ msgid "No \"x1\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"x1\" požymio"
-
-#~ msgid "No \"y1\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"y1\" požymio"
-
-#~ msgid "No \"x2\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"x2\" požymio"
-
-#~ msgid "No \"y2\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"y2\" požymio"
-
-#~ msgid "No \"y\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"y\" požymio"
-
-#~ msgid "No \"width\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"width\" požymio"
-
-#~ msgid "No \"height\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"height\" požymio"
-
-#~ msgid "No \"start_angle\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"start_angle\" požymio"
-
-#~ msgid "No \"extent_angle\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"extent_angle\" požymio"
-
-#~ msgid "No \"alpha\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"alpha\" požymio"
-
-#~ msgid "No \"type\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"type\" požymio"
-
-#~ msgid "No \"filename\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"filename\" požymio"
-
-#~ msgid "No \"state\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"state\" požymio"
-
-#~ msgid "No \"shadow\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"shadow\" požymio"
-
-#~ msgid "No \"arrow\" attribute on element <%s>"
-#~ msgstr "Elemente <%s> trūksta \"arror\" požymio"
-
-#~ msgid "No \"value\" attribute on <%s> element"
-#~ msgstr "Elemente <%s> trūksta \"value\" požymio"
-
-#~ msgid "No \"position\" attribute on <%s> element"
-#~ msgstr "Elemente <%s> trūksta \"position\" požymio"
-
-#~ msgid "No \"function\" attribute on <%s> element"
-#~ msgstr "Elemente <%s> trūksta \"function\" požymio"
-
-#~ msgid "No \"state\" attribute on <%s> element"
-#~ msgstr "Elemente <%s> trūksta \"state\" požymio"
-
-#~ msgid "No \"focus\" attribute on <%s> element"
-#~ msgstr "Elemente <%s> trūksta požymio „focus“"
-
-#~ msgid "No \"style\" attribute on <%s> element"
-#~ msgstr "Elemente <%s> trūksta požymio „style“"
-
-#~ msgid "No \"resize\" attribute on <%s> element"
-#~ msgstr "Elemente <%s> trūksta požymio „resize“"
-
-#~ msgid "Type of %s was not integer"
-#~ msgstr "%s tipas buvo ne sveikasis skaičius"
-
-#~ msgid ""
-#~ "%d stored in GConf key %s is not a reasonable cursor_size; must be in the "
-#~ "range 1..128\n"
-#~ msgstr ""
-#~ "%d saugoma GConf rakte %s yra nenuosaikus cursor_size; turi būti nuo 1 "
-#~ "iki 128\n"
-
-#~ msgid ""
-#~ "%d stored in GConf key %s is not a reasonable number of workspaces, "
-#~ "current maximum is %d\n"
-#~ msgstr ""
-#~ "%d reikšmė saugoma GConf rakte %s nurodo nepriimtina darbalaukų skaičių, "
-#~ "šiuo metu maksimali reikšmė yra %d\n"
