@@ -505,6 +505,8 @@ const UserMenuButton = new Lang.Class({
                                        style_class: 'popup-menu-icon' });
         this._pendingIcon = new St.Icon({ icon_name: 'user-status-pending-symbolic',
                                           style_class: 'popup-menu-icon' });
+        this._lockedIcon = new St.Icon({ icon_name: 'changes-prevent-symbolic',
+                                         style_class: 'popup-menu-icon' });
 
         this._accountMgr.connect('most-available-presence-changed',
                                   Lang.bind(this, this._updatePresenceIcon));
@@ -578,6 +580,9 @@ const UserMenuButton = new Lang.Class({
         let allowSettings = Main.sessionMode.allowSettings;
         this._statusChooser.setSensitive(allowSettings);
         this._systemSettings.visible = allowSettings;
+
+        this.setSensitive(!Main.sessionMode.isLocked);
+        this._updatePresenceIcon();
     },
 
     _onDestroy: function() {
@@ -661,7 +666,9 @@ const UserMenuButton = new Lang.Class({
     },
 
     _updatePresenceIcon: function(accountMgr, presence, status, message) {
-        if (presence == Tp.ConnectionPresenceType.AVAILABLE)
+        if (Main.sessionMode.isLocked)
+            this._iconBox.child = this._lockedIcon;
+        else if (presence == Tp.ConnectionPresenceType.AVAILABLE)
             this._iconBox.child = this._availableIcon;
         else if (presence == Tp.ConnectionPresenceType.BUSY)
             this._iconBox.child = this._busyIcon;

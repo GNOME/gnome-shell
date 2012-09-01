@@ -36,6 +36,7 @@ const _modes = {
         hasRunDialog: false,
         hasWorkspaces: false,
         hasWindows: false,
+        isLocked: true,
         components: ['networkAgent', 'polkitAgent', 'telepathyClient'],
         panel: {
             left: ['userMenu'],
@@ -68,6 +69,7 @@ const _modes = {
               hasWorkspaces: true,
               hasWindows: true,
               createUnlockDialog: Main.createSessionUnlockDialog,
+              isLocked: false,
               components: ['networkAgent', 'polkitAgent', 'telepathyClient',
                            'keyring', 'recorder', 'autorunManager', 'automountManager'],
               panel: {

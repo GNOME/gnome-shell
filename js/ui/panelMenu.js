@@ -115,6 +115,12 @@ const Button = new Lang.Class({
         this.setName(nameText);
     },
 
+    setSensitive: function(sensitive) {
+        this.actor.reactive = sensitive;
+        this.actor.can_focus = sensitive;
+        this.actor.track_hover = sensitive;
+    },
+
     setName: function(text) {
         if (text != null) {
             // This is the easiest way to provide a accessible name to
