@@ -469,10 +469,12 @@ const AppMenuButton = new Lang.Class({
     },
 
     setLockedState: function(locked) {
-        if (locked)
+        if (locked) {
             this.hide();
-        else
+        } else {
+            this.show();
             this._sync();
+        }
     },
 
     _sync: function() {
