@@ -32,16 +32,13 @@ G_BEGIN_DECLS
 
 typedef struct _CoglSwapChain CoglSwapChain;
 
-#define cogl_swap_chain_new cogl_swap_chain_new_EXP
 CoglSwapChain *
 cogl_swap_chain_new (void);
 
-#define cogl_swap_chain_set_has_alpha cogl_swap_chain_set_has_alpha_EXP
 void
 cogl_swap_chain_set_has_alpha (CoglSwapChain *swap_chain,
                                CoglBool has_alpha);
 
-#define cogl_swap_chain_set_length cogl_swap_chain_set_length_EXP
 void
 cogl_swap_chain_set_length (CoglSwapChain *swap_chain,
                             int length);

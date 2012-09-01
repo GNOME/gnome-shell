@@ -423,8 +423,6 @@ cogl_texture_set_region (CoglTexture *texture,
 
 #if defined (COGL_ENABLE_EXPERIMENTAL_API)
 
-#define cogl_texture_set_region_from_bitmap \
-  cogl_texture_set_region_from_bitmap_EXP
 /**
  * cogl_texture_set_region_from_bitmap:
  * @texture a #CoglTexture pointer

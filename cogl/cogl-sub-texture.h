@@ -49,7 +49,6 @@ G_BEGIN_DECLS
 #define COGL_SUB_TEXTURE(tex) ((CoglSubTexture *) tex)
 typedef struct _CoglSubTexture CoglSubTexture;
 
-#define cogl_sub_texture_new cogl_sub_texture_new_EXP
 /**
  * cogl_sub_texture_new:
  * @context: A #CoglContext pointer
@@ -105,7 +104,6 @@ cogl_sub_texture_new (CoglContext *ctx,
 CoglTexture *
 cogl_sub_texture_get_parent (CoglSubTexture *sub_texture);
 
-#define cogl_is_sub_texture cogl_is_sub_texture_EXP
 /**
  * cogl_is_sub_texture:
  * @object: a #CoglObject

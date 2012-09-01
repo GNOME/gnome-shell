@@ -1,8 +1,3 @@
-#if 0
-/* note: those with the _EXP suffix are defined as */
-/* the same symbols sans the _EXP suffix */
-/* (this may be subject to change!) */
-#endif
 
 /* cogl2_clip_push_from_path is only for 1.10.x*/
 cogl2_clip_push_from_path
@@ -28,7 +23,7 @@ cogl2_path_set_fill_rule
 cogl2_path_stroke
 
 #ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
-cogl_android_set_native_window_EXP
+cogl_android_set_native_window
 #endif
 
 cogl_attribute_new
@@ -68,7 +63,7 @@ cogl_buffer_set_data
 cogl_buffer_set_update_hint
 #if 0
 /* not implemented! */
-cogl_buffer_set_usage_hint_EXP
+cogl_buffer_set_usage_hint
 #endif
 cogl_buffer_target_get_type
 cogl_buffer_unmap
@@ -341,23 +336,23 @@ cogl_is_index_buffer
 cogl_is_indices_array
 #endif
 cogl_is_material
-cogl_is_offscreen 
+cogl_is_offscreen
 cogl_is_path
 cogl_is_pipeline
-cogl_is_pixel_buffer_EXP
+cogl_is_pixel_buffer
 cogl_is_primitive
 cogl_is_primitive_texture
 cogl_is_program
 cogl_is_renderer
 cogl_is_shader
 cogl_is_snippet
-cogl_is_sub_texture_EXP
+cogl_is_sub_texture
 cogl_is_texture
 #ifdef COGL_HAS_X11
 cogl_is_texture_pixmap_x11
 #endif
-cogl_is_texture_rectangle_EXP
-cogl_is_texture_2d_EXP
+cogl_is_texture_rectangle
+cogl_is_texture_2d
 cogl_is_texture_3d
 
 #ifdef COGL_HAS_EGL_PLATFORM_KMS_SUPPORT
@@ -487,7 +482,7 @@ cogl_onscreen_set_swap_throttled
 cogl_onscreen_show
 cogl_onscreen_swap_buffers
 cogl_onscreen_swap_region
-cogl_onscreen_template_new_EXP
+cogl_onscreen_template_new
 cogl_onscreen_template_set_samples_per_pixel
 cogl_onscreen_template_set_swap_throttled
 
@@ -585,10 +580,10 @@ cogl_pipeline_set_uniform_1f
 cogl_pipeline_set_uniform_1i
 cogl_pipeline_set_user_program
 
-cogl_pixel_buffer_new_EXP
+cogl_pixel_buffer_new
 #if 0
 /* not exported in the main APIs for now */
-cogl_pixel_buffer_set_region_EXP
+cogl_pixel_buffer_set_region
 #endif
 cogl_pixel_format_get_type
 
@@ -610,7 +605,7 @@ cogl_primitive_foreach_attribute
 cogl_primitive_get_first_vertex
 cogl_primitive_get_indices
 cogl_primitive_get_mode
-cogl_primitive_get_n_vertices_EXP
+cogl_primitive_get_n_vertices
 cogl_primitive_new
 cogl_primitive_new_p2
 cogl_primitive_new_p2c4
@@ -623,9 +618,9 @@ cogl_primitive_new_p3t2c4
 cogl_primitive_new_with_attributes
 cogl_primitive_set_attributes
 cogl_primitive_set_first_vertex
-cogl_primitive_set_indices_EXP
+cogl_primitive_set_indices
 cogl_primitive_set_mode
-cogl_primitive_set_n_vertices_EXP
+cogl_primitive_set_n_vertices
 
 cogl_primitive_texture_set_auto_mipmap
 
@@ -765,11 +760,11 @@ cogl_snippet_set_replace
 cogl_sqrti
 
 cogl_sub_texture_get_parent
-cogl_sub_texture_new_EXP
+cogl_sub_texture_new
 
-cogl_swap_chain_new_EXP
-cogl_swap_chain_set_has_alpha_EXP
-cogl_swap_chain_set_length_EXP
+cogl_swap_chain_new
+cogl_swap_chain_set_has_alpha
+cogl_swap_chain_set_length
 
 cogl_texture_error_quark
 cogl_texture_flags_get_type
@@ -795,19 +790,19 @@ cogl_texture_pixmap_x11_set_damage_object
 cogl_texture_pixmap_x11_update_area
 #endif
 cogl_texture_rectangle_new_from_bitmap
-cogl_texture_rectangle_new_with_size_EXP
+cogl_texture_rectangle_new_with_size
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_texture_ref
 #endif
 cogl_texture_set_region
-cogl_texture_set_region_from_bitmap_EXP
+cogl_texture_set_region_from_bitmap
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_texture_unref
 #endif
 cogl_texture_2d_new_from_bitmap
-cogl_texture_2d_new_from_data_EXP
-cogl_texture_2d_new_from_foreign_EXP
-cogl_texture_2d_new_with_size_EXP
+cogl_texture_2d_new_from_data
+cogl_texture_2d_new_from_foreign
+cogl_texture_2d_new_with_size
 cogl_texture_2d_sliced_new_with_size
 cogl_texture_3d_new_from_bitmap
 cogl_texture_3d_new_from_data
@@ -875,22 +870,22 @@ cogl_wayland_texture_2d_new_from_buffer
 #ifdef COGL_HAS_WIN32_SUPPORT
 cogl_win32_onscreen_get_window
 cogl_win32_onscreen_set_foreign_window
-cogl_win32_renderer_add_filter_EXP
-cogl_win32_renderer_handle_event_EXP
-cogl_win32_renderer_remove_filter_EXP
+cogl_win32_renderer_add_filter
+cogl_win32_renderer_handle_event
+cogl_win32_renderer_remove_filter
 #endif
 
 #ifdef COGL_HAS_XLIB
-cogl_xlib_get_display_EXP
-cogl_xlib_handle_event_EXP
-cogl_xlib_renderer_add_filter_EXP
-cogl_xlib_renderer_get_display_EXP
-cogl_xlib_renderer_get_foreign_display_EXP
-cogl_xlib_renderer_handle_event_EXP
-cogl_xlib_renderer_remove_filter_EXP
+cogl_xlib_get_display
+cogl_xlib_handle_event
+cogl_xlib_renderer_add_filter
+cogl_xlib_renderer_get_display
+cogl_xlib_renderer_get_foreign_display
+cogl_xlib_renderer_handle_event
+cogl_xlib_renderer_remove_filter
 cogl_xlib_renderer_set_event_retrieval_enabled
-cogl_xlib_renderer_set_foreign_display_EXP
-cogl_xlib_set_display_EXP
+cogl_xlib_renderer_set_foreign_display
+cogl_xlib_set_display
 #endif
 
 #ifdef COGL_HAS_X11
@@ -898,7 +893,7 @@ cogl_x11_onscreen_get_visual_xid
 cogl_x11_onscreen_set_foreign_window_xid
 #endif
 
-#ifndef COGL_NO_EXPORT_UNDERSCORE 
+#ifndef COGL_NO_EXPORT_UNDERSCORE
 /* probably these should not be exported at all, but anyways, for now... */
 /* eventually, this section should disappear (or cogl, cogl-pango, clutter et al */
 /* will link without the following) */

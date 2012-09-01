@@ -33,8 +33,6 @@
 
 G_BEGIN_DECLS
 
-#define cogl_win32_renderer_handle_event \
-  cogl_win32_renderer_handle_event_EXP
 /**
  * cogl_win32_renderer_handle_event:
  * @message: A pointer to a win32 MSG struct
@@ -66,7 +64,6 @@ cogl_win32_renderer_handle_event (CoglRenderer *renderer,
 typedef CoglFilterReturn (* CoglWin32FilterFunc) (MSG *message,
                                                   void *data);
 
-#define cogl_win32_renderer_add_filter cogl_win32_renderer_add_filter_EXP
 /**
  * cogl_win32_renderer_add_filter:
  *
@@ -79,8 +76,6 @@ cogl_win32_renderer_add_filter (CoglRenderer *renderer,
                                 CoglWin32FilterFunc func,
                                 void *data);
 
-#define cogl_win32_renderer_remove_filter \
-  cogl_win32_renderer_remove_filter_EXP
 /**
  * cogl_win32_renderer_remove_filter:
  *

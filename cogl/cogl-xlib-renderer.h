@@ -36,8 +36,6 @@
 
 G_BEGIN_DECLS
 
-#define cogl_xlib_renderer_handle_event \
-  cogl_xlib_renderer_handle_event_EXP
 /*
  * cogl_xlib_renderer_handle_event:
  * @event: pointer to an XEvent structure
@@ -69,7 +67,6 @@ cogl_xlib_renderer_handle_event (CoglRenderer *renderer,
 typedef CoglFilterReturn (* CoglXlibFilterFunc) (XEvent *event,
                                                  void *data);
 
-#define cogl_xlib_renderer_add_filter cogl_xlib_renderer_add_filter_EXP
 /*
  * cogl_xlib_renderer_add_filter:
  *
@@ -82,8 +79,6 @@ cogl_xlib_renderer_add_filter (CoglRenderer *renderer,
                                CoglXlibFilterFunc func,
                                void *data);
 
-#define cogl_xlib_renderer_remove_filter \
-  cogl_xlib_renderer_remove_filter_EXP
 /*
  * cogl_xlib_renderer_remove_filter:
  *
@@ -95,8 +90,6 @@ cogl_xlib_renderer_remove_filter (CoglRenderer *renderer,
                                   CoglXlibFilterFunc func,
                                   void *data);
 
-#define cogl_xlib_renderer_get_foreign_display \
-  cogl_xlib_renderer_get_foreign_display_EXP
 /*
  * cogl_xlib_renderer_get_foreign_display:
  *
@@ -107,8 +100,6 @@ cogl_xlib_renderer_remove_filter (CoglRenderer *renderer,
 Display *
 cogl_xlib_renderer_get_foreign_display (CoglRenderer *renderer);
 
-#define cogl_xlib_renderer_set_foreign_display \
-  cogl_xlib_renderer_set_foreign_display_EXP
 /*
  * cogl_xlib_renderer_set_foreign_display:
  *
@@ -146,7 +137,6 @@ void
 cogl_xlib_renderer_set_event_retrieval_enabled (CoglRenderer *renderer,
                                                 CoglBool enable);
 
-#define cogl_xlib_renderer_get_display cogl_xlib_renderer_get_display_EXP
 Display *
 cogl_xlib_renderer_get_display (CoglRenderer *renderer);
 

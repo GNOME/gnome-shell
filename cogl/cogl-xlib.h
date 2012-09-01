@@ -44,7 +44,6 @@ G_BEGIN_DECLS
  *
  * Stability: Unstable
  */
-#define cogl_xlib_get_display cogl_xlib_get_display_EXP
 Display *
 cogl_xlib_get_display (void);
 
@@ -57,7 +56,6 @@ cogl_xlib_get_display (void);
  *
  * Stability: Unstable
  */
-#define cogl_xlib_set_display cogl_xlib_set_display_EXP
 void
 cogl_xlib_set_display (Display *display);
 
@@ -78,7 +76,6 @@ cogl_xlib_set_display (Display *display);
  *
  * Stability: Unstable
  */
-#define cogl_xlib_handle_event cogl_xlib_handle_event_EXP
 CoglFilterReturn
 cogl_xlib_handle_event (XEvent *xevent);
 

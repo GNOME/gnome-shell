@@ -56,7 +56,6 @@ G_BEGIN_DECLS
 typedef struct _CoglTexture2D CoglTexture2D;
 #define COGL_TEXTURE_2D(X) ((CoglTexture2D *)X)
 
-#define cogl_is_texture_2d cogl_is_texture_2d_EXP
 /**
  * cogl_is_texture_2d:
  * @object: A #CoglObject
@@ -70,7 +69,6 @@ typedef struct _CoglTexture2D CoglTexture2D;
 CoglBool
 cogl_is_texture_2d (void *object);
 
-#define cogl_texture_2d_new_with_size cogl_texture_2d_new_with_size_EXP
 /**
  * cogl_texture_2d_new_with_size:
  * @ctx: A #CoglContext
@@ -104,7 +102,6 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
                                CoglPixelFormat internal_format,
                                GError **error);
 
-#define cogl_texture_2d_new_from_data cogl_texture_2d_new_from_data_EXP
 /**
  * cogl_texture_2d_new_from_data:
  * @ctx: A #CoglContext
@@ -190,7 +187,6 @@ cogl_texture_2d_new_from_bitmap (CoglBitmap *bitmap,
                                  GError **error);
 
 
-#define cogl_texture_2d_new_from_foreign cogl_texture_2d_new_from_foreign_EXP
 /**
  * cogl_texture_2d_new_from_foreign:
  * @ctx: A #CoglContext

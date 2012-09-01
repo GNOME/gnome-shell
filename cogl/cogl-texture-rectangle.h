@@ -63,7 +63,6 @@ G_BEGIN_DECLS
 typedef struct _CoglTextureRectangle CoglTextureRectangle;
 #define COGL_TEXTURE_RECTANGLE(X) ((CoglTextureRectangle *)X)
 
-#define cogl_is_texture_rectangle cogl_is_texture_rectangle_EXP
 /**
  * cogl_is_texture_rectangle:
  * @object: A #CoglObject
@@ -77,8 +76,6 @@ typedef struct _CoglTextureRectangle CoglTextureRectangle;
 CoglBool
 cogl_is_texture_rectangle (void *object);
 
-#define cogl_texture_rectangle_new_with_size \
-  cogl_texture_rectangle_new_with_size_EXP
 /**
  * cogl_texture_rectangle_new_with_size:
  * @context: A #CoglContext pointer

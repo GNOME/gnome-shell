@@ -687,7 +687,6 @@ void
 cogl_primitive_set_first_vertex (CoglPrimitive *primitive,
                                  int first_vertex);
 
-#define cogl_primitive_get_n_vertices cogl_primitive_get_n_vertices_EXP
 /**
  * cogl_primitive_get_n_vertices:
  * @primitive: A #CoglPrimitive object
@@ -713,7 +712,6 @@ cogl_primitive_set_first_vertex (CoglPrimitive *primitive,
 int
 cogl_primitive_get_n_vertices (CoglPrimitive *primitive);
 
-#define cogl_primitive_set_n_vertices cogl_primitive_set_n_vertices_EXP
 /**
  * cogl_primitive_set_n_vertices:
  * @primitive: A #CoglPrimitive object
@@ -759,7 +757,6 @@ cogl_primitive_set_attributes (CoglPrimitive *primitive,
                                CoglAttribute **attributes,
                                int n_attributes);
 
-#define cogl_primitive_set_indices cogl_primitive_set_indices_EXP
 /**
  * cogl_primitive_set_indices:
  * @primitive: A #CoglPrimitive

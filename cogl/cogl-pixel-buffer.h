@@ -38,20 +38,7 @@
 
 G_BEGIN_DECLS
 
-/* All of the cogl-pixel-buffer API is currently experimental so we
- * suffix the actual symbols with _EXP so if somone is monitoring for
- * ABI changes it will hopefully be clearer to them what's going on if
- * any of the symbols dissapear at a later date.
- */
-
 #define COGL_PIXEL_BUFFER(buffer) ((CoglPixelBuffer *)(buffer))
-
-#define cogl_pixel_buffer_new cogl_pixel_buffer_new_EXP
-#define cogl_pixel_buffer_new_with_size cogl_pixel_buffer_new_with_size_EXP
-#define cogl_is_pixel_buffer cogl_is_pixel_buffer_EXP
-#if 0
-#define cogl_pixel_buffer_set_region cogl_pixel_buffer_set_region_EXP
-#endif
 
 typedef struct _CoglPixelBuffer CoglPixelBuffer;
 
