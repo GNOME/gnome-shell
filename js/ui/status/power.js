@@ -152,11 +152,12 @@ const Indicator = new Lang.Class({
 
     _syncIcon: function() {
         let icon = this._proxy.Icon;
-        let hasIcon = (icon != null);
+        let hasIcon = false;
 
-        if (hasIcon) {
+        if (icon) {
             let gicon = Gio.icon_new_for_string(icon);
             this.setGIcon(gicon);
+            hasIcon = true;
         }
         this.mainIcon.visible = hasIcon;
         this.actor.visible = hasIcon && !this._isLocked;
