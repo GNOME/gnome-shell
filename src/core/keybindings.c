@@ -3591,6 +3591,19 @@ meta_set_keybindings_disabled (gboolean setting)
               "Keybindings %s\n", all_bindings_disabled ? "disabled" : "enabled");
 }
 
+/**
+ * meta_keybindings_set_custom_handler:
+ * @name: The name of the keybinding to set
+ * @handler: (allow-none): The new handler function
+ * @user_data: User data to pass to the callback
+ * @free_data: Will be called when this handler is overridden.
+ *
+ * Allows users to register a custom handler for a
+ * builtin key binding.
+ *
+ * Returns: %TRUE if the binding known as @name was found,
+ * %FALSE otherwise.
+ */
 gboolean
 meta_keybindings_set_custom_handler (const gchar        *name,
                                      MetaKeyHandlerFunc  handler,
