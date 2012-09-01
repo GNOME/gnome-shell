@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-08-06 23:35+0000\n"
-"PO-Revision-Date: 2012-09-01 22:31+0700\n"
+"PO-Revision-Date: 2012-09-01 22:32+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "Language: vi\n"
@@ -51,10 +51,10 @@ msgid "Unknown window information request: %d"
 msgstr "Yêu cầu thông tin cửa sổ không rõ: %d"
 
 #: ../src/core/delete.c:114
-#, fuzzy, c-format
+#, c-format
 #| msgid "<tt>%s</tt> is not responding."
 msgid "%s is not responding."
-msgstr "<tt>%s</tt> không trả lời."
+msgstr "%s không trả lời."
 
 #: ../src/core/delete.c:118
 msgid "Application is not responding."
@@ -151,10 +151,9 @@ msgid "Print version"
 msgstr "In phiên bản"
 
 #: ../src/core/mutter.c:60
-#, fuzzy
 #| msgid "Clutter Plugins"
 msgid "Mutter plugin to use"
-msgstr "Phần bổ sung Clutter"
+msgstr "Phần bổ sung Mutter cần dùng"
 
 #: ../src/core/prefs.c:1065
 msgid ""
