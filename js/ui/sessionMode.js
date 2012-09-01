@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Lang = imports.lang;
+const Signals = imports.signals;
 
 const Main = imports.ui.main;
 const Params = imports.misc.params;
@@ -15,15 +16,32 @@ const _modes = {
              allowKeybindingsWhenModal: true,
              hasRunDialog: false,
              hasWorkspaces: false,
+             hasWindows: false,
              createSession: Main.createGDMSession,
              createUnlockDialog: Main.createGDMLoginDialog,
              panel: {
                  left: [],
                  center: ['dateMenu'],
                  right: ['a11y', 'display', 'keyboard',
-                         'volume', 'battery', 'lockScreen', 'powerMenu']
+                         'volume', 'battery', 'powerMenu']
              }
            },
+
+    'lock-screen': {
+        hasOverview: false,
+        showCalendarEvents: false,
+        allowSettings: false,
+        allowExtensions: false,
+        allowKeybindingsWhenModal: false,
+        hasRunDialog: false,
+        hasWorkspaces: false,
+        hasWindows: false,
+        panel: {
+            left: ['userMenu'],
+            center: [],
+            right: ['lockScreen']
+        },
+    },
 
     'initial-setup': { hasOverview: false,
                        showCalendarEvents: false,
@@ -36,7 +54,7 @@ const _modes = {
                        panel: {
                            left: [],
                            center: ['dateMenu'],
-                           right: ['a11y', 'keyboard', 'volume', 'lockScreen']
+                           right: ['a11y', 'keyboard', 'volume']
                        }
                      },
 
@@ -47,13 +65,14 @@ const _modes = {
               allowKeybindingsWhenModal: false,
               hasRunDialog: true,
               hasWorkspaces: true,
+              hasWindows: true,
               createSession: Main.createUserSession,
               createUnlockDialog: Main.createSessionUnlockDialog,
               panel: {
                   left: ['activities', 'appMenu'],
                   center: ['dateMenu'],
                   right: ['a11y', 'keyboard', 'volume', 'bluetooth',
-                          'network', 'battery', 'lockScreen', 'userMenu']
+                          'network', 'battery', 'userMenu']
               }
             }
 };
@@ -68,8 +87,29 @@ const SessionMode = new Lang.Class({
     Name: 'SessionMode',
 
     _init: function() {
-        let params = _modes[global.session_mode];
+        global.connect('notify::session-mode', Lang.bind(this, this._sync));
+        this._modeStack = [global.session_mode];
+        this._sync();
+    },
 
+    pushMode: function(mode) {
+        this._modeStack.push(mode);
+        this._sync();
+    },
+
+    popMode: function(mode) {
+        if (this.currentMode != mode || this._modeStack.length === 1)
+            throw new Error("Invalid SessionMode.popMode");
+        this._modeStack.pop();
+        this._sync();
+    },
+
+    get currentMode() {
+        return this._modeStack[this._modeStack.length - 1];
+    },
+
+    _sync: function() {
+        let params = _modes[this.currentMode];
         params = Params.parse(params, _modes[DEFAULT_MODE]);
 
         this._createSession = params.createSession;
@@ -78,6 +118,7 @@ const SessionMode = new Lang.Class({
         delete params.createUnlockDialog;
 
         Lang.copyProperties(params, this);
+        this.emit('updated');
     },
 
     createSession: function() {
@@ -92,3 +133,4 @@ const SessionMode = new Lang.Class({
             return null;
     },
 });
+Signals.addSignalMethods(SessionMode.prototype);

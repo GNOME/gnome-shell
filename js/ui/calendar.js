@@ -339,22 +339,10 @@ const DBusEventSource = new Lang.Class({
 });
 Signals.addSignalMethods(DBusEventSource.prototype);
 
-// Calendar:
-// @eventSource: is an object implementing the EventSource API, e.g. the
-// requestRange(), getEvents(), hasEvents() methods and the ::changed signal.
 const Calendar = new Lang.Class({
     Name: 'Calendar',
 
-    _init: function(eventSource) {
-        if (eventSource) {
-            this._eventSource = eventSource;
-
-            this._eventSource.connect('changed', Lang.bind(this,
-                                                           function() {
-                                                               this._update(false);
-                                                           }));
-        }
-
+    _init: function() {
         this._weekStart = Shell.util_get_week_start();
         this._weekdate = NaN;
         this._digitWidth = NaN;
@@ -389,6 +377,24 @@ const Calendar = new Lang.Class({
                            Lang.bind(this, this._onScroll));
 
         this._buildHeader ();
+    },
+
+    // @eventSource: is an object implementing the EventSource API, e.g. the
+    // requestRange(), getEvents(), hasEvents() methods and the ::changed signal.
+    setEventSource: function(eventSource) {
+        if (this._eventSource) {
+            this._eventSource.disconnect(this._eventSourceChangedId);
+            this._eventSource = null;
+        }
+
+        this._eventSource = eventSource;
+
+        if (this._eventSource) {
+            this._eventSourceChangedId = this._eventSource.connect('changed', Lang.bind(this, function() {
+                this._update(false);
+            }));
+            this._update(true);
+        }
     },
 
     // Sets the calendar to show a specific date
@@ -621,16 +627,25 @@ Signals.addSignalMethods(Calendar.prototype);
 const EventsList = new Lang.Class({
     Name: 'EventsList',
 
-    _init: function(eventSource) {
+    _init: function() {
         this.actor = new St.BoxLayout({ vertical: true, style_class: 'events-header-vbox'});
         this._date = new Date();
-        this._eventSource = eventSource;
-        this._eventSource.connect('changed', Lang.bind(this, this._update));
         this._desktopSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
         this._desktopSettings.connect('changed', Lang.bind(this, this._update));
         this._weekStart = Shell.util_get_week_start();
+    },
 
-        this._update();
+    setEventSource: function(eventSource) {
+        if (this._eventSource) {
+            this._eventSource.disconnect(this._eventSourceChangedId);
+            this._eventSource = null;
+        }
+
+        this._eventSource = eventSource;
+
+        if (this._eventSource) {
+            this._eventSourceChangedId = this._eventSource.connect('changed', Lang.bind(this, this._update));
+        }
     },
 
     _addEvent: function(dayNameBox, timeBox, eventTitleBox, includeDayName, day, time, desc) {

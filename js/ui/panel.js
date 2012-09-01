@@ -468,15 +468,6 @@ const AppMenuButton = new Lang.Class({
         this._sync();
     },
 
-    setLockedState: function(locked) {
-        if (locked) {
-            this.hide();
-        } else {
-            this.show();
-            this._sync();
-        }
-    },
-
     _sync: function() {
         let tracker = Shell.WindowTracker.get_default();
         let focusedApp = tracker.focus_app;
@@ -943,8 +934,6 @@ const Panel = new Lang.Class({
             this.actor.remove_style_class_name('in-overview');
         }));
 
-        Main.screenShield.connect('lock-status-changed', Lang.bind(this, this._onLockStateChanged));
-
         this.menuManager = new PopupMenu.PopupMenuManager(this);
 
         this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
@@ -975,6 +964,9 @@ const Panel = new Lang.Class({
         Main.layoutManager.panelBox.add(this.actor);
         Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'start-here-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
+
+        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        this._updatePanel();
     },
 
     _getPreferredWidth: function(actor, forHeight, alloc) {
@@ -1103,11 +1095,27 @@ const Panel = new Lang.Class({
         menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
     },
 
-    init: function() {
+    set boxOpacity(value) {
+        let isReactive = value > 0;
+
+        this._leftBox.opacity = value;
+        this._leftBox.reactive = isReactive;
+        this._centerBox.opacity = value;
+        this._centerBox.reactive = isReactive;
+        this._rightBox.opacity = value;
+        this._rightBox.reactive = isReactive;
+    },
+
+    get boxOpacity() {
+        return this._leftBox.opacity;
+    },
+
+    _updatePanel: function() {
         let panel = Main.sessionMode.panel;
-        this._initBox(panel.left, this._leftBox);
-        this._initBox(panel.center, this._centerBox);
-        this._initBox(panel.right, this._rightBox);
+        this._hideIndicators();
+        this._updateBox(panel.left, this._leftBox);
+        this._updateBox(panel.center, this._centerBox);
+        this._updateBox(panel.right, this._rightBox);
     },
 
     _initBox: function(elements, box) {
@@ -1119,20 +1127,97 @@ const Panel = new Lang.Class({
                 // bluetooth or network)
                 continue;
             }
+        }
+    },
 
-            let indicator = new constructor(this);
-            this._addToPanelBox(role, indicator, i, box);
+    _tweenAndUpdatePanel: function() {
+        this._closeIndicatorMenus();
+
+        Tweener.addTween(this, {
+            boxOpacity: 0,
+            time: Overview.ANIMATION_TIME / 2,
+            transition: 'easeOutQuad',
+            onCompleteScope: this,
+            onComplete: function() {
+                this._updatePanel();
+                Tweener.addTween(this, {
+                    boxOpacity: 255,
+                    time: Overview.ANIMATION_TIME / 2,
+                    transition: 'easeOutQuad'
+                });
+            }
+        });
+    },
+
+    _sessionUpdated: function() {
+        this._tweenAndUpdatePanel();
+    },
+
+    _closeIndicatorMenus: function() {
+        for (let role in this.statusArea) {
+            let indicator = this.statusArea[role];
+            indicator.menu.close();
+        }
+    },
+
+    _hideIndicators: function() {
+        for (let role in PANEL_ITEM_IMPLEMENTATIONS) {
+            let indicator = this.statusArea[role];
+            if (!indicator)
+                continue;
+            indicator._panelContainer.hide();
+        }
+    },
+
+    _ensureIndicator: function(role) {
+        let indicator = this.statusArea[role];
+        if (!indicator) {
+            let constructor = PANEL_ITEM_IMPLEMENTATIONS[role];
+            if (!constructor) {
+                // This icon is not implemented (this is a bug)
+                return null;
+            }
+            indicator = new constructor(this);
+            this.statusArea[role] = indicator;
+        }
+        return indicator;
+    },
+
+    _updateBox: function(elements, box) {
+        let nChildren = box.get_n_children();
+
+        for (let i = 0; i < elements.length; i++) {
+            let role = elements[i];
+            let indicator = this._ensureIndicator(role);
+            if (indicator == null)
+                continue;
+
+            this._addToPanelBox(role, indicator, i + nChildren, box);
         }
     },
 
     _addToPanelBox: function(role, indicator, position, box) {
-        box.insert_child_at_index(indicator.actor, position);
+        let container = indicator._panelContainer;
+        if (!container) {
+            container = new St.Bin({ y_fill: true,
+                                     child: indicator.actor });
+            indicator._panelContainer = container;
+        }
+        container.show();
+
+        let parent = container.get_parent();
+        if (parent) {
+            parent.remove_actor(container);
+        }
+
+        box.insert_child_at_index(container, position);
         if (indicator.menu)
             this.menuManager.addMenu(indicator.menu);
         this.statusArea[role] = indicator;
         let destroyId = indicator.connect('destroy', Lang.bind(this, function(emitter) {
             delete this.statusArea[role];
             emitter.disconnect(destroyId);
+            container.destroy();
         }));
     },
 
@@ -1150,12 +1235,8 @@ const Panel = new Lang.Class({
             right: this._rightBox
         };
         let boxContainer = boxes[box] || this._rightBox;
+        this.statusArea[role] = indicator;
         this._addToPanelBox(role, indicator, position, boxContainer);
         return indicator;
-    },
-
-    _onLockStateChanged: function(shield, locked) {
-        for (let id in this.statusArea)
-            this.statusArea[id].setLockedState(locked);
-    },
+    }
 });

@@ -70,16 +70,8 @@ const DateMenuButton = new Lang.Class({
         this._date.style_class = 'datemenu-date-label';
         vbox.add(this._date);
 
-        if (Main.sessionMode.showCalendarEvents) {
-            this._eventSource = new Calendar.DBusEventSource();
-            this._eventList = new Calendar.EventsList(this._eventSource);
-        } else {
-            this._eventSource = null;
-            this._eventList = null;
-        }
-
-        // Calendar
-        this._calendar = new Calendar.Calendar(this._eventSource);
+        this._eventList = new Calendar.EventsList();
+        this._calendar = new Calendar.Calendar();
 
         this._calendar.connect('selected-date-changed',
                                Lang.bind(this, function(calendar, date) {
@@ -101,27 +93,23 @@ const DateMenuButton = new Lang.Class({
             item.actor.reparent(vbox);
         }
 
-        if (Main.sessionMode.showCalendarEvents) {
-            // Add vertical separator
+        this._separator = new St.DrawingArea({ style_class: 'calendar-vertical-separator',
+                                               pseudo_class: 'highlighted' });
+        this._separator.connect('repaint', Lang.bind(this, _onVertSepRepaint));
+        hbox.add(this._separator);
 
-            item = new St.DrawingArea({ style_class: 'calendar-vertical-separator',
-                                        pseudo_class: 'highlighted' });
-            item.connect('repaint', Lang.bind(this, _onVertSepRepaint));
-            hbox.add(item);
+        // Fill up the second column
+        vbox = new St.BoxLayout({ name: 'calendarEventsArea',
+                                  vertical: true });
+        hbox.add(vbox, { expand: true });
 
-            // Fill up the second column
-            vbox = new St.BoxLayout({name:     'calendarEventsArea',
-                                     vertical: true});
-            hbox.add(vbox, { expand: true });
+        // Event list
+        vbox.add(this._eventList.actor, { expand: true });
 
-            // Event list
-            vbox.add(this._eventList.actor, { expand: true });
-
-            item = new PopupMenu.PopupMenuItem(_("Open Calendar"));
-            item.connect('activate', Lang.bind(this, this._onOpenCalendarActivate));
-            item.actor.can_focus = false;
-            vbox.add(item.actor, {y_align: St.Align.END, expand: true, y_fill: false});
-        }
+        this._openCalendarItem = new PopupMenu.PopupMenuItem(_("Open Calendar"));
+        this._openCalendarItem.connect('activate', Lang.bind(this, this._onOpenCalendarActivate));
+        this._openCalendarItem.actor.can_focus = false;
+        vbox.add(this._openCalendarItem.actor, {y_align: St.Align.END, expand: true, y_fill: false});
 
         // Whenever the menu is opened, select today
         this.menu.connect('open-state-changed', Lang.bind(this, function(menu, isOpen) {
@@ -151,6 +139,32 @@ const DateMenuButton = new Lang.Class({
         this._clock = new GnomeDesktop.WallClock();
         this._clock.connect('notify::clock', Lang.bind(this, this._updateClockAndDate));
         this._updateClockAndDate();
+
+        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        this._sessionUpdated();
+    },
+
+    _setEventsVisibility: function(visible) {
+        this._separator.visible = visible;
+        this._eventList.visible = visible;
+        this._openCalendarItem.visible = visible;
+    },
+
+    _setEventSource: function(eventSource) {
+        this._calendar.setEventSource(eventSource);
+        this._eventList.setEventSource(eventSource);
+    },
+
+    _sessionUpdated: function() {
+        let eventSource;
+        let showEvents = Main.sessionMode.showCalendarEvents;
+        if (showEvents) {
+            eventSource = new Calendar.DBusEventSource();
+        } else {
+            eventSource = null;
+        }
+        this._setEventSource(eventSource);
+        this._setEventsVisibility(showEvents);
     },
 
     _updateClockAndDate: function() {

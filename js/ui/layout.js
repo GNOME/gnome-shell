@@ -639,7 +639,6 @@ const Chrome = new Lang.Class({
 
         this._monitors = [];
         this._inOverview = false;
-        this._isLocked = false;
         this._updateRegionIdle = 0;
         this._freezeUpdateCount = 0;
 
@@ -658,12 +657,9 @@ const Chrome = new Lang.Class({
     },
 
     init: function() {
-        Main.overview.connect('showing',
-                             Lang.bind(this, this._overviewShowing));
-        Main.overview.connect('hidden',
-                             Lang.bind(this, this._overviewHidden));
-        Main.screenShield.connect('lock-status-changed',
-                                  Lang.bind(this, this._lockStatusChanged));
+        Main.overview.connect('showing', Lang.bind(this, this._overviewShowing));
+        Main.overview.connect('hidden', Lang.bind(this, this._overviewHidden));
+        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
     },
 
     addActor: function(actor, params) {
@@ -763,7 +759,7 @@ const Chrome = new Lang.Class({
             if (!actorData.isToplevel)
                 continue;
 
-            if (this._inOverview || this._isLocked)
+            if (this._inOverview || Main.sessionMode.hasWindows)
                 visible = true;
             else if (this.findMonitorForActor(actorData.actor).inFullscreen)
                 visible = false;
@@ -785,8 +781,7 @@ const Chrome = new Lang.Class({
         this._queueUpdateRegions();
     },
 
-    _lockStatusChanged: function(shield, locked) {
-        this._isLocked = locked;
+    _sessionUpdated: function() {
         this._updateVisibility();
         this._queueUpdateRegions();
     },

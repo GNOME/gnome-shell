@@ -166,22 +166,21 @@ const InputSourceIndicator = new Lang.Class({
 
         this._inputSourcesChanged();
 
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this._showLayoutItem = this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, this._showLayout));
+
+        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        this._sessionUpdated();
+
+        this.menu.addSettingsAction(_("Region and Language Settings"), 'gnome-region-panel.desktop');
+    },
+
+    _sessionUpdated: function() {
         // re-using "allowSettings" for the keyboard layout is a bit shady,
         // but at least for now it is used as "allow popping up windows
         // from shell menus"; we can always add a separate sessionMode
         // option if need arises.
-        if (Main.sessionMode.allowSettings) {
-            this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-            this._showLayoutItem = this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, this._showLayout));
-        }
-        this.menu.addSettingsAction(_("Region and Language Settings"), 'gnome-region-panel.desktop');
-    },
-
-    setLockedState: function(locked) {
-        if (Main.sessionMode.allowSettings) {
-            this._showLayoutItem.actor.visible = !locked;
-        }
-        this.menu.setSettingsVisibility(!locked);
+        this._showLayoutItem.visible = Main.sessionMode.allowSettings;
     },
 
     _currentInputSourceChanged: function() {

@@ -92,16 +92,21 @@ const ShellInfo = new Lang.Class({
 const Overview = new Lang.Class({
     Name: 'Overview',
 
-    _init : function() {
-        this.isDummy = !Main.sessionMode.hasOverview;
+    _init: function() {
+        this._overviewCreated = false;
 
-        // We only have an overview in user sessions, so
-        // create a dummy overview in other cases
-        if (this.isDummy) {
-            this.animationInProgress = false;
-            this.visible = false;
+        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        this._sessionUpdated();
+    },
+
+    _createOverview: function() {
+        if (this._overviewCreated)
             return;
-        }
+
+        if (this.isDummy)
+            return;
+
+        this._overviewCreated = true;
 
         // The main BackgroundActor is inside global.window_group which is
         // hidden when displaying the overview, so we create a new
@@ -172,6 +177,11 @@ const Overview = new Lang.Class({
         this._lastActiveWorkspaceIndex = -1;
         this._lastHoveredWindow = null;
         this._needsFakePointerEvent = false;
+    },
+
+    _sessionUpdated: function() {
+        this.isDummy = !Main.sessionMode.hasOverview;
+        this._createOverview();
     },
 
     // The members we construct that are implemented in JS might

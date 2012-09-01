@@ -1567,7 +1567,6 @@ const NMApplet = new Lang.Class({
         this.secondaryIcon = this.addIcon(new Gio.ThemedIcon({ name: 'network-vpn-symbolic' }));
         this.secondaryIcon.hide();
 
-        this._isLocked = false;
         this._client = NMClient.Client.new();
 
         this._statusSection = new PopupMenu.PopupMenuSection();
@@ -1673,11 +1672,6 @@ const NMApplet = new Lang.Class({
                 this._settings.connect('new-connection', Lang.bind(this, this._newConnection));
             }
         }));
-    },
-
-    setLockedState: function(locked) {
-        this._isLocked = locked;
-        this._syncNMState();
     },
 
     _ensureSource: function() {
@@ -2063,7 +2057,7 @@ const NMApplet = new Lang.Class({
 
     _syncNMState: function() {
         this.mainIcon.visible = this._client.manager_running;
-        this.actor.visible = this.mainIcon.visible && !this._isLocked;
+        this.actor.visible = this.mainIcon.visible;
 
         if (!this._client.networking_enabled) {
             this.setIcon('network-offline-symbolic');

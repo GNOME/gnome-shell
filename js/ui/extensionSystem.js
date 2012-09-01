@@ -8,6 +8,7 @@ const Gio = imports.gi.Gio;
 const St = imports.gi.St;
 
 const ExtensionUtils = imports.misc.extensionUtils;
+const Main = imports.ui.main;
 
 const ExtensionState = {
     ENABLED: 1,
@@ -37,6 +38,9 @@ const connect = Lang.bind(_signals, _signals.connect);
 const disconnect = Lang.bind(_signals, _signals.disconnect);
 
 const ENABLED_EXTENSIONS_KEY = 'enabled-extensions';
+
+var initted = false;
+var enabled;
 
 function disableExtension(uuid) {
     let extension = ExtensionUtils.extensions[uuid];
@@ -216,6 +220,9 @@ function initExtension(uuid) {
 function onEnabledExtensionsChanged() {
     let newEnabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
 
+    if (!enabled)
+        return;
+
     // Find and enable all the newly enabled extensions: UUIDs found in the
     // new setting, but not in the old one.
     newEnabledExtensions.filter(function(uuid) {
@@ -243,7 +250,7 @@ function onEnabledExtensionsChanged() {
     enabledExtensions = newEnabledExtensions;
 }
 
-function loadExtensions() {
+function _loadExtensions() {
     global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
     enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
 
@@ -256,4 +263,44 @@ function loadExtensions() {
         }
     });
     finder.scanExtensions();
+}
+
+function enableAllExtensions() {
+    if (enabled)
+        return;
+
+    if (!initted) {
+        _loadExtensions();
+        initted = true;
+    } else {
+        enabledExtensions.forEach(function(uuid) {
+            enableExtension(uuid);
+        });
+    }
+    enabled = true;
+}
+
+function disableAllExtensions() {
+    if (!enabled)
+        return;
+
+    if (initted) {
+        enabledExtensions.forEach(function(uuid) {
+            disableExtension(uuid);
+        });
+    }
+
+    enabled = false;
+}
+
+function _sessionUpdated() {
+    if (Main.sessionMode.allowExtensions)
+        enableAllExtensions();
+    else
+        disableAllExtensions();
+}
+
+function init() {
+    Main.sessionMode.connect('updated', _sessionUpdated);
+    _sessionUpdated();
 }

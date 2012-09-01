@@ -217,8 +217,6 @@ const Indicator = new Lang.Class({
     _init: function() {
         this.parent('audio-volume-muted-symbolic', _("Volume"));
 
-        this._isLocked = false;
-
         this._control = getMixerControl();
         this._volumeMenu = new VolumeMenu(this._control);
         this._volumeMenu.connect('icon-changed', Lang.bind(this, function(menu, icon) {
@@ -235,13 +233,8 @@ const Indicator = new Lang.Class({
         this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
     },
 
-    setLockedState: function(locked) {
-        this._isLocked = locked;
-        this._syncVisibility();
-    },
-
     _syncVisibility: function() {
-        this.actor.visible = this._hasPulseAudio && !this._isLocked;
+        this.actor.visible = this._hasPulseAudio;
         this.mainIcon.visible = this._hasPulseAudio;
     },
 

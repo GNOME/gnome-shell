@@ -870,6 +870,12 @@ const PopupMenuBase = new Lang.Class({
         this._activeMenuItem = null;
         this._childMenus = [];
         this._settingsActions = { };
+
+        this._sessionUpdatedId = Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+    },
+
+    _sessionUpdated: function() {
+        this._setSettingsVisibility(Main.sessionMode.allowSettings);
     },
 
     addAction: function(title, callback) {
@@ -883,9 +889,6 @@ const PopupMenuBase = new Lang.Class({
     },
 
     addSettingsAction: function(title, desktopFile) {
-        if (!Main.sessionMode.allowSettings)
-            return null;
-
         let menuItem = this.addAction(title, function() {
                            let app = Shell.AppSystem.get_default().lookup_setting(desktopFile);
 
@@ -903,7 +906,7 @@ const PopupMenuBase = new Lang.Class({
         return menuItem;
     },
 
-    setSettingsVisibility: function(visible) {
+    _setSettingsVisibility: function(visible) {
         for (let id in this._settingsActions) {
             let item = this._settingsActions[id];
             item.actor.visible = visible;
@@ -1172,6 +1175,9 @@ const PopupMenuBase = new Lang.Class({
         this.actor.destroy();
 
         this.emit('destroy');
+
+        Main.sessionMode.disconnect(this._sessionUpdatedId);
+        this._sessionUpdatedId = 0;
     }
 });
 Signals.addSignalMethods(PopupMenuBase.prototype);
@@ -2041,6 +2047,9 @@ const PopupMenuManager = new Lang.Class({
     },
 
     addMenu: function(menu, position) {
+        if (this._findMenu(menu) > -1)
+            return;
+
         let menudata = {
             menu:              menu,
             openStateChangeId: menu.connect('open-state-changed', Lang.bind(this, this._onMenuOpenState)),

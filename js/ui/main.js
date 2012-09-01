@@ -143,6 +143,11 @@ function _initRecorder() {
     });
 }
 
+function _sessionUpdated() {
+    Meta.keybindings_set_custom_handler('panel-run-dialog', sessionMode.hasRunDialog ? openRunDialog : null);
+    loadTheme();
+}
+
 function start() {
     // These are here so we don't break compatibility.
     global.logError = window.log;
@@ -217,29 +222,17 @@ function start() {
 
     sessionMode.createSession();
 
-    panel.init();
     layoutManager.init();
     keyboard.init();
     overview.init();
 
-    if (sessionMode.hasWorkspaces)
-        global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
-                                                false, -1, 1);
+    global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
+                                            false, -1, 1);
+    Meta.keybindings_set_custom_handler('panel-main-menu', Lang.bind(overview, overview.toggle));
+    global.display.connect('overlay-key', Lang.bind(overview, overview.toggle));
 
-    if (sessionMode.hasRunDialog) {
-        Meta.keybindings_set_custom_handler('panel-run-dialog', function() {
-           getRunDialog().open();
-        });
-    }
-
-    if (sessionMode.hasOverview) {
-        Meta.keybindings_set_custom_handler('panel-main-menu', function () {
-            overview.toggle();
-        });
-
-        global.display.connect('overlay-key',
-                               Lang.bind(overview, overview.toggle));
-    }
+    sessionMode.connect('update', _sessionUpdated);
+    _sessionUpdated();
 
     // Provide the bus object for gnome-session to
     // initiate logouts.
@@ -275,10 +268,8 @@ function start() {
 
     _nWorkspacesChanged();
 
-    if (sessionMode.allowExtensions) {
-        ExtensionDownloader.init();
-        ExtensionSystem.loadExtensions();
-    }
+    ExtensionDownloader.init();
+    ExtensionSystem.init();
 }
 
 let _workspaces = [];
@@ -617,7 +608,7 @@ function _globalKeyPressHandler(actor, event) {
             if (!sessionMode.hasRunDialog)
                 return false;
 
-            getRunDialog().open();
+            openRunDialog();
             return true;
         case Meta.KeyBindingAction.PANEL_MAIN_MENU:
         case Meta.KeyBindingAction.OVERLAY_KEY:
@@ -763,11 +754,11 @@ function createLookingGlass() {
     return lookingGlass;
 }
 
-function getRunDialog() {
+function openRunDialog() {
     if (runDialog == null) {
         runDialog = new RunDialog.RunDialog();
     }
-    return runDialog;
+    runDialog.open();
 }
 
 /**

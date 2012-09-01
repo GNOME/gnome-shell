@@ -56,7 +56,6 @@ const Indicator = new Lang.Class({
 
         this._proxy = new PowerManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH);
 
-        this._isLocked = false;
         this._deviceItems = [ ];
         this._hasPrimary = false;
         this._primaryDeviceId = null;
@@ -75,11 +74,6 @@ const Indicator = new Lang.Class({
         this._proxy.connect('g-properties-changed',
                             Lang.bind(this, this._devicesChanged));
         this._devicesChanged();
-    },
-
-    setLockedState: function(locked) {
-        this._isLocked = locked;
-        this._syncIcon();
     },
 
     _readPrimaryDevice: function() {
@@ -160,7 +154,7 @@ const Indicator = new Lang.Class({
             hasIcon = true;
         }
         this.mainIcon.visible = hasIcon;
-        this.actor.visible = hasIcon && !this._isLocked;
+        this.actor.visible = hasIcon;
     },
 
     _devicesChanged: function() {

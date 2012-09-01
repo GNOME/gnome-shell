@@ -16,7 +16,6 @@ const Indicator = new Lang.Class({
 
     _init: function() {
         this.parent(null, _("Volume, network, battery"));
-        this.actor.hide();
 
         this._volume = Main.panel.statusArea.volume;
         if (this._volume) {
@@ -54,9 +53,5 @@ const Indicator = new Lang.Class({
             this._battery.mainIcon.bind_property('visible', this._batteryIcon, 'visible',
                                                  GObject.BindingFlags.SYNC_CREATE);
         }
-    },
-
-    setLockedState: function(locked) {
-        this.actor.visible = locked;
     }
 });

@@ -88,11 +88,6 @@ const Indicator = new Lang.Class({
         this._applet.connect('cancel-request', Lang.bind(this, this._cancelRequest));
     },
 
-    setLockedState: function(locked) {
-        this._isLocked = locked;
-        this._updateKillswitch();
-    },
-
     _updateKillswitch: function() {
         let current_state = this._applet.killswitch_state;
         let on = current_state == GnomeBluetooth.KillswitchState.UNBLOCKED;
@@ -107,7 +102,7 @@ const Indicator = new Lang.Class({
             /* TRANSLATORS: this means that bluetooth was disabled by hardware rfkill */
             this._killswitch.setStatus(_("hardware disabled"));
 
-        this.actor.visible = !this._isLocked && has_adapter;
+        this.actor.visible = has_adapter;
 
         if (on) {
             this._discoverable.actor.show();

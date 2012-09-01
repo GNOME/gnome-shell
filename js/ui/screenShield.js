@@ -735,6 +735,9 @@ const ScreenShield = new Lang.Class({
     },
 
     unlock: function() {
+        if (!this._isLocked)
+            return;
+
         if (this._hasLockScreen)
             this._clearLockScreen();
 
@@ -762,9 +765,13 @@ const ScreenShield = new Lang.Class({
         this.actor.hide();
 
         this.emit('lock-status-changed', false);
+        Main.sessionMode.popMode('lock-screen');
     },
 
     lock: function(animate) {
+        if (this._isLocked)
+            return;
+
         if (!this._hasLockScreen)
             this._prepareLockScreen();
 
@@ -778,6 +785,7 @@ const ScreenShield = new Lang.Class({
         this._resetLockScreen(animate);
 
         this.emit('lock-status-changed', true);
+        Main.sessionMode.pushMode('lock-screen');
     },
 });
 Signals.addSignalMethods(ScreenShield.prototype);

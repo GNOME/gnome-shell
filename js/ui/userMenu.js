@@ -58,6 +58,11 @@ const UserAvatarWidget = new Lang.Class({
                                   reactive: params.reactive });
     },
 
+    setSensitive: function(sensitive) {
+        this.actor.can_focus = sensitive;
+        this.actor.reactive = sensitive;
+    },
+
     update: function() {
         let iconFile = this._user.get_icon_file();
         if (!GLib.file_test(iconFile, GLib.FileTest.EXISTS))
@@ -236,6 +241,10 @@ const IMStatusChooserItem = new Lang.Class({
             if (this.actor.mapped)
                 this._updateUser();
         }));
+
+        this.connect('sensitive-changed', function(sensitive) {
+            this._avatar.setSensitive(sensitive);
+        });
     },
 
     _restorePresence: function() {
@@ -560,10 +569,15 @@ const UserMenuButton = new Lang.Class({
                                        Lang.bind(this, this._updateHaveShutdown));
 
         this._upClient.connect('notify::can-suspend', Lang.bind(this, this._updateSuspendOrPowerOff));
+
+        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        this._sessionUpdated();
     },
 
-    setLockedState: function(locked) {
-        this.actor.visible = !locked;
+    _sessionUpdated: function() {
+        let allowSettings = Main.sessionMode.allowSettings;
+        this._statusChooser.setSensitive(allowSettings);
+        this._systemSettings.visible = allowSettings;
     },
 
     _onDestroy: function() {
@@ -707,8 +721,7 @@ const UserMenuButton = new Lang.Class({
         let item;
 
         item = new IMStatusChooserItem();
-        if (Main.sessionMode.allowSettings)
-            item.connect('activate', Lang.bind(this, this._onMyAccountActivate));
+        item.connect('activate', Lang.bind(this, this._onMyAccountActivate));
         this.menu.addMenuItem(item);
         this._statusChooser = item;
 
@@ -720,11 +733,10 @@ const UserMenuButton = new Lang.Class({
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        if (Main.sessionMode.allowSettings) {
-            item = new PopupMenu.PopupMenuItem(_("System Settings"));
-            item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
-            this.menu.addMenuItem(item);
-        }
+        item = new PopupMenu.PopupMenuItem(_("System Settings"));
+        item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
+        this.menu.addMenuItem(item);
+        this._systemSettings = item;
 
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
