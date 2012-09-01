@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-08-31 20:28+0000\n"
-"PO-Revision-Date: 2012-09-01 17:18+0700\n"
+"PO-Revision-Date: 2012-09-01 17:21+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "Language: vi\n"
@@ -135,16 +135,14 @@ msgid "Keybinding to open the application menu."
 msgstr "Phím mở trình đơn ứng dụng."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
-#, fuzzy
 #| msgid "Keybinding to toggle the screen recorder"
 msgid "Keybinding to toggle the visibility of the message tray"
-msgstr "Phím bật/tắt trình thu màn hình"
+msgstr "Phím bật/tắt hiện khay thông báo"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
-#, fuzzy
 #| msgid "Keybinding to toggle the screen recorder"
 msgid "Keybinding to toggle the visibility of the message tray."
-msgstr "Phím bật/tắt trình thu màn hình"
+msgstr "Phím bật/tắt hiện khay thông báo."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to toggle the screen recorder"
@@ -221,10 +219,9 @@ msgid "There was an error loading the preferences dialog for %s:"
 msgstr "Lỗi nạp hộp thoại tuỳ thích cho %s:"
 
 #: ../js/extensionPrefs/main.js:164
-#, fuzzy
 #| msgid "<b>Extension</b>"
 msgid "Extension"
-msgstr "<b>Phần mở rộng</b>"
+msgstr "Phần mở rộng"
 
 #: ../js/extensionPrefs/main.js:188
 msgid "Select an extension to configure using the combobox above."
@@ -286,7 +283,7 @@ msgstr "(hoặc quẹt ngón tay)"
 #: ../js/gdm/util.js:246
 #, c-format
 msgid "(e.g., user or %s)"
-msgstr ""
+msgstr "(ví dụ người dùng hoặc %s)"
 
 #: ../js/misc/util.js:92
 msgid "Command not found"
@@ -498,10 +495,9 @@ msgid "Next week"
 msgstr "Tuần tới"
 
 #: ../js/ui/dash.js:245 ../js/ui/dash.js:273
-#, fuzzy
 #| msgid "Applications"
 msgid "Show Applications"
-msgstr "Ứng dụng"
+msgstr "Hiện ứng dụng"
 
 #: ../js/ui/dateMenu.js:94
 msgid "Date and Time Settings"
@@ -701,7 +697,7 @@ msgstr "Im lặng"
 
 #: ../js/ui/messageTray.js:2027
 msgid "Message Tray"
-msgstr ""
+msgstr "Khay thông báo"
 
 #: ../js/ui/messageTray.js:2465
 msgid "System Information"
@@ -877,7 +873,6 @@ msgstr "Vui lòng nhập lệnh:"
 #. Translators: This is a time format for a date in
 #. long format
 #: ../js/ui/screenShield.js:69
-#, fuzzy
 #| msgctxt "calendar heading"
 #| msgid "%A, %B %d"
 msgid "%A, %B %d"
@@ -887,24 +882,23 @@ msgstr "%A, %d %B"
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
-msgstr[0] ""
+msgstr[0] "%d tin nhắn mới"
 
 #: ../js/ui/screenShield.js:136
-#, fuzzy, c-format
+#, c-format
 #| msgid "Notifications"
 msgid "%d new notification"
 msgid_plural "%d new notifications"
-msgstr[0] "Thông báo"
+msgstr[0] "%d thông báo mới"
 
 #: ../js/ui/searchDisplay.js:277
 msgid "Searching..."
 msgstr "Đang tìm..."
 
 #: ../js/ui/searchDisplay.js:328
-#, fuzzy
 #| msgid "No matching results."
 msgid "No results."
-msgstr "Không tìm thấy."
+msgstr "Không có kết quả."
 
 #: ../js/ui/shellEntry.js:26
 msgid "Copy"
@@ -923,13 +917,11 @@ msgid "Hide Text"
 msgstr "Ẩn chữ"
 
 #: ../js/ui/shellMountOperation.js:368
-#, fuzzy
 #| msgid "Password:"
 msgid "Password"
-msgstr "Mật khẩu:"
+msgstr "Mật khẩu"
 
 #: ../js/ui/shellMountOperation.js:389
-#, fuzzy
 #| msgid "Remember Passphrase"
 msgid "Remember Password"
 msgstr "Nhớ mật khẩu"
@@ -1124,7 +1116,7 @@ msgstr "Thiết lập Lãnh thổ và Ngôn ngữ"
 
 #: ../js/ui/status/lockScreenMenu.js:18
 msgid "Volume, network, battery"
-msgstr ""
+msgstr "Đĩa, mạng, pin"
 
 #: ../js/ui/status/network.js:94
 msgid "<unknown>"
@@ -1579,7 +1571,7 @@ msgstr "Lý do không biết"
 
 #: ../js/ui/unlockDialog.js:140
 msgid "Log in as another user"
-msgstr ""
+msgstr "Đăng nhập người dùng khác"
 
 #: ../js/ui/userMenu.js:166
 msgid "Available"
@@ -1631,7 +1623,7 @@ msgstr "Khoá"
 
 #: ../js/ui/userMenu.js:754
 msgid "Install Updates & Restart"
-msgstr ""
+msgstr "Cài đặt bản cập nhật và khởi động lại"
 
 #: ../js/ui/userMenu.js:772
 msgid "Your chat status will be set to busy"
@@ -1681,10 +1673,9 @@ msgid "'%s' is ready"
 msgstr "'%s' đã sẵn sàng"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
-#, fuzzy
 #| msgid "Open Calendar"
 msgid "Evolution Calendar"
-msgstr "Mở lịch"
+msgstr "Lịch Evolution"
 
 #. translators:
 #. * The number of sound outputs on a particular device
