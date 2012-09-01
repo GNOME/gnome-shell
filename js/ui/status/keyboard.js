@@ -5,6 +5,7 @@ const GLib = imports.gi.GLib;
 const GnomeDesktop = imports.gi.GnomeDesktop;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
+const Signals = imports.signals;
 const St = imports.gi.St;
 
 try {
@@ -45,6 +46,7 @@ const IBusManager = new Lang.Class({
         this._panelService = null;
         this._engines = {};
         this._ready = false;
+        this._registerPropertiesId = 0;
 
         this._nameWatcherId = Gio.DBus.session.watch_name(IBus.SERVICE_IBUS,
                                                           Gio.BusNameWatcherFlags.NONE,
@@ -63,6 +65,7 @@ const IBusManager = new Lang.Class({
         this._candidatePopup.setPanelService(null);
         this._engines = {};
         this._ready = false;
+        this._registerPropertiesId = 0;
     },
 
     _onNameAppeared: function() {
@@ -100,6 +103,11 @@ const IBusManager = new Lang.Class({
             this._panelService = new IBus.PanelService({ connection: this._ibus.get_connection(),
                                                          object_path: IBus.PATH_PANEL });
             this._candidatePopup.setPanelService(this._panelService);
+            // Need to set this to get 'global-engine-changed' emitions
+            this._ibus.set_watch_ibus_signal(true);
+            this._ibus.connect('global-engine-changed', Lang.bind(this, this._resetProperties));
+            this._panelService.connect('update-property', Lang.bind(this, this._updateProperty));
+            this._resetProperties();
         } else {
             this._clear();
             return;
@@ -116,6 +124,39 @@ const IBusManager = new Lang.Class({
             this._readyCallback();
     },
 
+    _resetProperties: function() {
+        this.emit('properties-registered', null);
+
+        if (this._registerPropertiesId != 0)
+            return;
+
+        this._registerPropertiesId =
+            this._panelService.connect('register-properties', Lang.bind(this, function(p, props) {
+                if (!props.get(0))
+                    return;
+
+                this._panelService.disconnect(this._registerPropertiesId);
+                this._registerPropertiesId = 0;
+
+                this.emit('properties-registered', props);
+            }));
+    },
+
+    _updateProperty: function(panel, prop) {
+        this.emit('property-updated', prop);
+    },
+
+    activateProperty: function(key, state) {
+        this._panelService.property_activate(key, state);
+    },
+
+    hasProperties: function(id) {
+        if (id == 'anthy')
+            return true;
+
+        return false;
+    },
+
     getEngineDesc: function(id) {
         if (!IBus || !this._ready)
             return null;
@@ -123,6 +164,7 @@ const IBusManager = new Lang.Class({
         return this._engines[id];
     }
 });
+Signals.addSignalMethods(IBusManager.prototype);
 
 const LayoutMenuItem = new Lang.Class({
     Name: 'LayoutMenuItem',
@@ -141,6 +183,12 @@ const LayoutMenuItem = new Lang.Class({
 const InputSourceIndicator = new Lang.Class({
     Name: 'InputSourceIndicator',
     Extends: PanelMenu.Button,
+
+    _propertiesWhitelist: [
+        'InputMode',
+        'TypingMode',
+        'DictMode'
+    ],
 
     _init: function() {
         this.parent(0.0, _("Keyboard"));
@@ -162,8 +210,16 @@ const InputSourceIndicator = new Lang.Class({
         this._currentSourceIndex = this._settings.get_uint(KEY_CURRENT_INPUT_SOURCE);
         this._xkbInfo = new GnomeDesktop.XkbInfo();
 
-        this._ibusManager = new IBusManager(Lang.bind(this, this._inputSourcesChanged));
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this._propSection = new PopupMenu.PopupMenuSection();
+        this.menu.addMenuItem(this._propSection);
+        this._propSection.actor.hide();
 
+        this._properties = null;
+
+        this._ibusManager = new IBusManager(Lang.bind(this, this._inputSourcesChanged));
+        this._ibusManager.connect('properties-registered', Lang.bind(this, this._ibusPropertiesRegistered));
+        this._ibusManager.connect('property-updated', Lang.bind(this, this._ibusPropertyUpdated));
         this._inputSourcesChanged();
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
@@ -185,32 +241,41 @@ const InputSourceIndicator = new Lang.Class({
 
     _currentInputSourceChanged: function() {
         let nVisibleSources = Object.keys(this._layoutItems).length;
-        if (nVisibleSources < 2)
-            return;
-
-        let nSources = this._settings.get_value(KEY_INPUT_SOURCES).n_children();
         let newCurrentSourceIndex = this._settings.get_uint(KEY_CURRENT_INPUT_SOURCE);
-        if (newCurrentSourceIndex >= nSources)
-            return;
+        let newLayoutItem = this._layoutItems[newCurrentSourceIndex];
+        let hasProperties;
 
-        if (!this._layoutItems[newCurrentSourceIndex]) {
-            // This source index is invalid as we weren't able to
-            // build a menu item for it, so we hide ourselves since we
-            // can't fix it here. *shrug*
+        if (newLayoutItem)
+            hasProperties = this._ibusManager.hasProperties(newLayoutItem.ibusEngineId);
+        else
+            hasProperties = false;
+
+        if (!newLayoutItem || (nVisibleSources < 2 && !hasProperties)) {
+            // This source index might be invalid if we weren't able
+            // to build a menu item for it, so we hide ourselves since
+            // we can't fix it here. *shrug*
+
+            // We also hide if we have only one visible source unless
+            // it's an IBus source with properties.
             this.menu.close();
             this.actor.hide();
             return;
-        } else {
-            this.actor.show();
         }
+
+        this.actor.show();
 
         if (this._layoutItems[this._currentSourceIndex]) {
             this._layoutItems[this._currentSourceIndex].setShowDot(false);
             this._container.set_skip_paint(this._labelActors[this._currentSourceIndex], true);
         }
 
-        this._layoutItems[newCurrentSourceIndex].setShowDot(true);
-        this._container.set_skip_paint(this._labelActors[newCurrentSourceIndex], false);
+        newLayoutItem.setShowDot(true);
+
+        let newLabelActor = this._labelActors[newCurrentSourceIndex];
+        this._container.set_skip_paint(newLabelActor, false);
+
+        if (hasProperties)
+            newLabelActor.set_text(newLayoutItem.indicator.get_text());
 
         this._currentSourceIndex = newCurrentSourceIndex;
     },
@@ -246,6 +311,7 @@ const InputSourceIndicator = new Lang.Class({
                     info.exists = true;
                     info.displayName = language + ' (' + engineDesc.get_longname() + ')';
                     info.shortName = this._makeEngineShortName(engineDesc);
+                    info.ibusEngineId = id;
                 }
             }
 
@@ -260,13 +326,6 @@ const InputSourceIndicator = new Lang.Class({
             infos.push(info);
         }
 
-        if (infos.length > 1) {
-            this.actor.show();
-        } else {
-            this.menu.close();
-            this.actor.hide();
-        }
-
         for (let i = 0; i < infos.length; i++) {
             let info = infos[i];
             if (infosByShortName[info.shortName].length > 1) {
@@ -275,6 +334,7 @@ const InputSourceIndicator = new Lang.Class({
             }
 
             let item = new LayoutMenuItem(info.displayName, info.shortName);
+            item.ibusEngineId = info.ibusEngineId;
             this._layoutItems[info.sourceIndex] = item;
             this.menu.addMenuItem(item, i);
             item.connect('activate', Lang.bind(this, function() {
@@ -330,6 +390,131 @@ const InputSourceIndicator = new Lang.Class({
             return langCode.toLowerCase();
 
         return String.fromCharCode(0x2328); // keyboard glyph
+    },
+
+    _propertyWhitelisted: function(prop) {
+        for (let i = 0; i < this._propertiesWhitelist.length; ++i) {
+            let key = prop.get_key();
+            if (key.substr(0, this._propertiesWhitelist[i].length) == this._propertiesWhitelist[i])
+                return true;
+        }
+        return false;
+    },
+
+    _ibusPropertiesRegistered: function(im, props) {
+        this._properties = props;
+        this._buildPropSection();
+    },
+
+    _ibusPropertyUpdated: function(im, prop) {
+        if (!this._propertyWhitelisted(prop))
+            return;
+
+        if (this._updateSubProperty(this._properties, prop))
+            this._buildPropSection();
+    },
+
+    _updateSubProperty: function(props, prop) {
+        if (!props)
+            return false;
+
+        let p;
+        for (let i = 0; (p = props.get(i)) != null; ++i) {
+            if (p.get_key() == prop.get_key() && p.get_prop_type() == prop.get_prop_type()) {
+                p.update(prop);
+                return true;
+            } else if (p.get_prop_type() == IBus.PropType.MENU) {
+                if (this._updateSubProperty(p.get_sub_props(), prop))
+                    return true;
+            }
+        }
+        return false;
+    },
+
+    _updateIndicatorLabel: function(text) {
+        let layoutItem = this._layoutItems[this._currentSourceIndex];
+        let hasProperties;
+
+        if (layoutItem)
+            hasProperties = this._ibusManager.hasProperties(layoutItem.ibusEngineId);
+        else
+            hasProperties = false;
+
+        if (hasProperties)
+            this._labelActors[this._currentSourceIndex].set_text(text);
+    },
+
+    _buildPropSection: function() {
+        this._propSection.actor.hide();
+        this._propSection.removeAll();
+
+        this._buildPropSubMenu(this._propSection, this._properties);
+
+        if (!this._propSection.isEmpty())
+            this._propSection.actor.show();
+    },
+
+    _buildPropSubMenu: function(menu, props) {
+        if (!props)
+            return;
+
+        let radioGroup = [];
+        let p;
+        for (let i = 0; (p = props.get(i)) != null; ++i) {
+            let prop = p;
+
+            if (!this._propertyWhitelisted(prop) ||
+                !prop.get_visible())
+                continue;
+
+            if (prop.get_key() == 'InputMode') {
+                let text;
+                if (prop.get_symbol)
+                    text = prop.get_symbol().get_text();
+                else
+                    text = prop.get_label().get_text();
+
+                if (text && text.length > 0 && text.length < 3)
+                    this._updateIndicatorLabel(text);
+            }
+
+            let item;
+            let type = prop.get_prop_type();
+            if (type == IBus.PropType.MENU) {
+                item = new PopupMenu.PopupSubMenuMenuItem(prop.get_label().get_text());
+                this._buildPropSubMenu(item.menu, prop.get_sub_props());
+            } else if (type == IBus.PropType.RADIO) {
+                item = new PopupMenu.PopupMenuItem(prop.get_label().get_text());
+                item.prop = prop;
+                radioGroup.push(item);
+                item.radioGroup = radioGroup;
+                item.setShowDot(prop.get_state() == IBus.PropState.CHECKED);
+                item.connect('activate', Lang.bind(this, function() {
+                    if (item.prop.get_state() == IBus.PropState.CHECKED)
+                        return;
+
+                    let group = item.radioGroup;
+                    for (let i = 0; i < group.length; ++i) {
+                        if (group[i] == item) {
+                            item.setShowDot(true);
+                            item.prop.set_state(IBus.PropState.CHECKED);
+                            this._ibusManager.activateProperty(item.prop.get_key(),
+                                                               IBus.PropState.CHECKED);
+                        } else {
+                            group[i].setShowDot(false);
+                            group[i].prop.set_state(IBus.PropState.UNCHECKED);
+                            this._ibusManager.activateProperty(group[i].prop.get_key(),
+                                                               IBus.PropState.UNCHECKED);
+                        }
+                    }
+                }));
+            } else {
+                continue;
+            }
+
+            item.setSensitive(prop.get_sensitive());
+            menu.addMenuItem(item);
+        }
     },
 
     _containerGetPreferredWidth: function(container, for_height, alloc) {
