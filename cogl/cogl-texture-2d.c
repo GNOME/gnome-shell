@@ -343,7 +343,7 @@ cogl_texture_2d_new_from_data (CoglContext *ctx,
 
 CoglTexture2D *
 cogl_texture_2d_new_from_foreign (CoglContext *ctx,
-                                  GLuint gl_handle,
+                                  unsigned int gl_handle,
                                   int width,
                                   int height,
                                   CoglPixelFormat format,
@@ -353,17 +353,24 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
    * in GLES, hence such a function prototype.
    */
 
-  GLenum         gl_error      = 0;
-  GLint          gl_compressed = GL_FALSE;
-  GLenum         gl_int_format = 0;
+  GLenum gl_error = 0;
+  GLint gl_compressed = GL_FALSE;
+  GLenum gl_int_format = 0;
   CoglTexture2D *tex_2d;
 
-  if (!ctx->texture_driver->allows_foreign_gl_target (ctx, GL_TEXTURE_2D))
-    return NULL;
+  /* Assert it is a valid GL texture object */
+  g_return_val_if_fail (ctx->glIsTexture (gl_handle), NULL);
 
-  /* Make sure it is a valid GL texture object */
-  if (!ctx->glIsTexture (gl_handle))
-    return NULL;
+  if (!ctx->texture_driver->allows_foreign_gl_target (ctx, GL_TEXTURE_2D))
+    {
+      g_set_error (error,
+                   COGL_ERROR,
+                   COGL_ERROR_UNSUPPORTED,
+                   "Foreign GL_TEXTURE_2D textures are not "
+                   "supported by your system");
+      return NULL;
+    }
+
 
   /* Make sure binding succeeds */
   while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
@@ -371,7 +378,13 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D, gl_handle, TRUE);
   if (ctx->glGetError () != GL_NO_ERROR)
-    return NULL;
+    {
+      g_set_error (error,
+                   COGL_ERROR,
+                   COGL_ERROR_UNSUPPORTED,
+                   "Failed to bind foreign GL_TEXTURE_2D texture");
+      return NULL;
+    }
 
   /* Obtain texture parameters
      (only level 0 we are interested in) */
@@ -398,7 +411,13 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
       if (!ctx->driver_vtable->pixel_format_from_gl_internal (ctx,
                                                               gl_int_format,
                                                               &format))
-        return NULL;
+        {
+          g_set_error (error,
+                       COGL_ERROR,
+                       COGL_ERROR_UNSUPPORTED,
+                       "Unsupported internal format for foreign texture");
+          return NULL;
+        }
     }
   else
 #endif
@@ -420,18 +439,23 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
    */
 
   /* Validate width and height */
-  if (width <= 0 || height <= 0)
-    return NULL;
+  g_return_val_if_fail (width > 0 && height > 0, NULL);
 
   /* Compressed texture images not supported */
   if (gl_compressed == GL_TRUE)
-    return NULL;
+    {
+      g_set_error (error,
+                   COGL_ERROR,
+                   COGL_ERROR_UNSUPPORTED,
+                   "Compressed foreign textures aren't currently supported");
+      return NULL;
+    }
 
   /* Note: previously this code would query the texture object for
      whether it has GL_GENERATE_MIPMAP enabled to determine whether to
      auto-generate the mipmap. This doesn't make much sense any more
      since Cogl switch to using glGenerateMipmap. Ideally I think
-     cogl_texture_new_from_foreign should take a flags parameter so
+     cogl_texture_2d_new_from_foreign should take a flags parameter so
      that the application can decide whether it wants
      auto-mipmapping. To be compatible with existing code, Cogl now
      disables its own auto-mipmapping but leaves the value of
