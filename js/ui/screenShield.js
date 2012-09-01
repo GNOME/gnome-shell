@@ -17,6 +17,7 @@ const Layout = imports.ui.layout;
 const LoginManager = imports.misc.loginManager;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
+const Overview = imports.ui.overview;
 const MessageTray = imports.ui.messageTray;
 const Tweener = imports.ui.tweener;
 
@@ -395,6 +396,7 @@ const ScreenShield = new Lang.Class({
 
         this._lockDialogGroup = new St.Widget({ x_expand: true,
                                                 y_expand: true,
+                                                pivot_point: new Clutter.Point({ x: 0.5, y: 0.5 }),
                                                 name: 'lockDialogGroup' });
 
         this.actor.add_actor(this._lockDialogGroup);
@@ -640,10 +642,13 @@ const ScreenShield = new Lang.Class({
     },
 
     _onUnlockSucceded: function() {
-        this.unlock();
+        this._tweenUnlocked();
     },
 
     _resetLockScreen: function(animate) {
+        this._lockDialogGroup.scale_x = 1;
+        this._lockDialogGroup.scale_y = 1;
+
         this._lockScreenGroup.show();
         this._lockScreenState = MessageTray.State.SHOWING;
 
@@ -734,6 +739,24 @@ const ScreenShield = new Lang.Class({
         return this._isLocked;
     },
 
+    _tweenUnlocked: function() {
+        this.unlock();
+        Tweener.addTween(this._lockDialogGroup, {
+            scale_x: 0,
+            scale_y: 0,
+            time: Overview.ANIMATION_TIME,
+            transition: 'easeOutQuad',
+            onComplete: function() {
+                if (this._dialog) {
+                    this._dialog.destroy();
+                    this._dialog = null;
+                }
+                this.actor.hide();
+            },
+            onCompleteScope: this
+        });
+    },
+
     unlock: function() {
         if (!this._isLocked)
             return;
@@ -749,11 +772,6 @@ const ScreenShield = new Lang.Class({
             return;
         }
 
-        if (this._dialog) {
-            this._dialog.destroy();
-            this._dialog = null;
-        }
-
         this._lightbox.hide();
 
         if (this._isModal) {
@@ -762,7 +780,6 @@ const ScreenShield = new Lang.Class({
         }
 
         this._isLocked = false;
-        this.actor.hide();
 
         this.emit('lock-status-changed', false);
         Main.sessionMode.popMode('lock-screen');
