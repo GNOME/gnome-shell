@@ -104,8 +104,7 @@ const UserListItem = new Lang.Class({
                                             vertical:    true });
         layout.add(textLayout, { expand: true });
 
-        this._nameLabel = new St.Label({ text:        this.user.get_real_name(),
-                                         style_class: 'login-dialog-user-list-item-name' });
+        this._nameLabel = new St.Label({ style_class: 'login-dialog-user-list-item-name' });
         textLayout.add(this._nameLabel,
                        { y_fill: false,
                          y_align: St.Align.MIDDLE,
@@ -119,10 +118,8 @@ const UserListItem = new Lang.Class({
                          y_fill: false,
                          y_align: St.Align.END });
 
-        this._updateIcon();
-        this._updateLoggedIn();
-
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
+        this._onUserChanged();
     },
 
     _onUserChanged: function() {
