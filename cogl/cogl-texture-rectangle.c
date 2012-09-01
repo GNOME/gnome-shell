@@ -294,29 +294,35 @@ cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bmp,
 }
 
 CoglTextureRectangle *
-_cogl_texture_rectangle_new_from_foreign (GLuint gl_handle,
-                                          GLuint width,
-                                          GLuint height,
-                                          CoglPixelFormat format)
+cogl_texture_rectangle_new_from_foreign (CoglContext *ctx,
+                                         unsigned int gl_handle,
+                                         int width,
+                                         int height,
+                                         CoglPixelFormat format,
+                                         GError **error)
 {
   /* NOTE: width, height and internal format are not queriable
    * in GLES, hence such a function prototype.
    */
 
-  GLenum                gl_error      = 0;
-  GLint                 gl_compressed = GL_FALSE;
-  GLenum                gl_int_format = 0;
+  GLenum gl_error = 0;
+  GLint gl_compressed = GL_FALSE;
+  GLenum gl_int_format = 0;
   CoglTextureRectangle *tex_rect;
 
-  _COGL_GET_CONTEXT (ctx, NULL);
+  /* Assert that it is a valid GL texture object */
+  g_return_val_if_fail (ctx->glIsTexture (gl_handle), NULL);
 
   if (!ctx->texture_driver->allows_foreign_gl_target (ctx,
                                                       GL_TEXTURE_RECTANGLE_ARB))
-    return NULL;
-
-  /* Make sure it is a valid GL texture object */
-  if (!ctx->glIsTexture (gl_handle))
-    return NULL;
+    {
+      g_set_error (error,
+                   COGL_ERROR,
+                   COGL_ERROR_UNSUPPORTED,
+                   "Foreign GL_TEXTURE_RECTANGLE textures are not "
+                   "supported by your system");
+      return NULL;
+    }
 
   /* Make sure binding succeeds */
   while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
@@ -324,7 +330,13 @@ _cogl_texture_rectangle_new_from_foreign (GLuint gl_handle,
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB, gl_handle, TRUE);
   if (ctx->glGetError () != GL_NO_ERROR)
-    return NULL;
+    {
+      g_set_error (error,
+                   COGL_ERROR,
+                   COGL_ERROR_UNSUPPORTED,
+                   "Failed to bind foreign GL_TEXTURE_RECTANGLE texture");
+      return NULL;
+    }
 
   /* Obtain texture parameters */
 
@@ -348,7 +360,13 @@ _cogl_texture_rectangle_new_from_foreign (GLuint gl_handle,
       if (!ctx->driver_vtable->pixel_format_from_gl_internal (ctx,
                                                               gl_int_format,
                                                               &format))
-        return NULL;
+        {
+          g_set_error (error,
+                       COGL_ERROR,
+                       COGL_ERROR_UNSUPPORTED,
+                       "Unsupported internal format for foreign texture");
+          return NULL;
+        }
     }
   else
 #endif
@@ -370,12 +388,17 @@ _cogl_texture_rectangle_new_from_foreign (GLuint gl_handle,
    */
 
   /* Validate width and height */
-  if (width <= 0 || height <= 0)
-    return NULL;
+  g_return_val_if_fail (width > 0 && height > 0, NULL);
 
   /* Compressed texture images not supported */
   if (gl_compressed == GL_TRUE)
-    return NULL;
+    {
+      g_set_error (error,
+                   COGL_ERROR,
+                   COGL_ERROR_UNSUPPORTED,
+                   "Compressed foreign textures aren't currently supported");
+      return NULL;
+    }
 
   /* Create new texture */
   tex_rect = _cogl_texture_rectangle_create_base (ctx, width, height, format);

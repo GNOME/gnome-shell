@@ -89,6 +89,12 @@ cogl_is_texture_rectangle (void *object);
  * the GPU can sample from directly unlike high-level textures such
  * as #CoglTexture2DSliced and #CoglAtlasTexture.
  *
+ * <note>Unlike for #CoglTexture2D textures, coordinates for
+ * #CoglTextureRectangle textures should not be normalized. So instead
+ * of using the coordinate (1, 1) to sample the bottom right corner of
+ * a rectangle texture you would use (@width, @height) where @width
+ * and @height are the width and height of the texture.</note>
+ *
  * <note>If you want to sample from a rectangle texture from GLSL you
  * should use the sampler2DRect sampler type.</note>
  *
@@ -124,6 +130,12 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
  * directly unlike high-level textures such as #CoglTexture2DSliced
  * and #CoglAtlasTexture.
  *
+ * <note>Unlike for #CoglTexture2D textures, coordinates for
+ * #CoglTextureRectangle textures should not be normalized. So instead
+ * of using the coordinate (1, 1) to sample the bottom right corner of
+ * a rectangle texture you would use (@width, @height) where @width
+ * and @height are the width and height of the texture.</note>
+ *
  * <note>If you want to sample from a rectangle texture from GLSL you
  * should use the sampler2DRect sampler type.</note>
  *
@@ -141,6 +153,51 @@ CoglTextureRectangle *
 cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bitmap,
                                         CoglPixelFormat internal_format,
                                         GError **error);
+
+/**
+ * cogl_texture_rectangle_new_from_foreign:
+ * @ctx: A #CoglContext
+ * @gl_handle: A GL handle for a GL_TEXTURE_RECTANGLE texture object
+ * @width: Width of the foreign GL texture
+ * @height: Height of the foreign GL texture
+ * @internal_format: The format of the texture
+ * @error: A #GError for exceptions
+ *
+ * Wraps an existing GL_TEXTURE_RECTANGLE texture object as a
+ * #CoglTextureRectangle.  This can be used for integrating Cogl with
+ * software using OpenGL directly.
+ *
+ * <note>Unlike for #CoglTexture2D textures, coordinates for
+ * #CoglTextureRectangle textures should not be normalized. So instead
+ * of using the coordinate (1, 1) to sample the bottom right corner of
+ * a rectangle texture you would use (@width, @height) where @width
+ * and @height are the width and height of the texture.</note>
+ *
+ * <note>The results are undefined for passing an invalid @gl_handle
+ * or if @width or @height don't have the correct texture
+ * geometry.</note>
+ *
+ * <note>If you want to sample from a rectangle texture from GLSL you
+ * should use the sampler2DRect sampler type.</note>
+ *
+ * <note>Applications wanting to use #CoglTextureRectangle should
+ * first check for the %COGL_FEATURE_ID_TEXTURE_RECTANGLE feature
+ * using cogl_has_feature().</note>
+
+ * Returns: A newly allocated #CoglTextureRectangle, or if Cogl could
+ *          not validate the @gl_handle in some way (perhaps because
+ *          of an unsupported format) it will return %NULL and set
+ *          @error.
+ *
+
+ */
+CoglTextureRectangle *
+cogl_texture_rectangle_new_from_foreign (CoglContext *ctx,
+                                         unsigned int gl_handle,
+                                         int width,
+                                         int height,
+                                         CoglPixelFormat format,
+                                         GError **error);
 
 G_END_DECLS
 

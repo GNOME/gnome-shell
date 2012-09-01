@@ -503,10 +503,13 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
           return NULL;
         }
 
-      texture_rectangle = _cogl_texture_rectangle_new_from_foreign (gl_handle,
-                                                                    width,
-                                                                    height,
-                                                                    format);
+      texture_rectangle = cogl_texture_rectangle_new_from_foreign (ctx,
+                                                                   gl_handle,
+                                                                   width,
+                                                                   height,
+                                                                   format,
+                                                                   NULL);
+
       /* CoglTextureRectangle textures work with non-normalized
        * coordinates, but the semantics for this function that people
        * depend on are that all returned texture works with normalized
