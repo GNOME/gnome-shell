@@ -1597,6 +1597,8 @@ st_widget_set_track_hover (StWidget *widget,
 
       if (priv->track_hover)
         st_widget_sync_hover (widget);
+      else
+        st_widget_set_hover (widget, FALSE);
     }
 }
 
