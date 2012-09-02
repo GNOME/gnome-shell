@@ -48,7 +48,6 @@ const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2266bbff);
 let automountManager = null;
 let autorunManager = null;
 let panel = null;
-let hotCorners = [];
 let overview = null;
 let runDialog = null;
 let lookingGlass = null;
