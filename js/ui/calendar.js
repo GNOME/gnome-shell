@@ -204,12 +204,11 @@ const CalendarServerInfo  = Gio.DBusInterfaceInfo.new_for_xml(CalendarServerIfac
 
 function CalendarServer() {
     var self = new Gio.DBusProxy({ g_connection: Gio.DBus.session,
-				   g_interface_name: CalendarServerInfo.name,
-				   g_interface_info: CalendarServerInfo,
-				   g_name: 'org.gnome.Shell.CalendarServer',
-				   g_object_path: '/org/gnome/Shell/CalendarServer',
-                                   g_flags: (Gio.DBusProxyFlags.DO_NOT_AUTO_START |
-                                             Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES) });
+                                   g_interface_name: CalendarServerInfo.name,
+                                   g_interface_info: CalendarServerInfo,
+                                   g_name: 'org.gnome.Shell.CalendarServer',
+                                   g_object_path: '/org/gnome/Shell/CalendarServer',
+                                   g_flags: Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES });
 
     self.init(null);
     return self;

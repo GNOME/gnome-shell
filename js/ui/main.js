@@ -80,10 +80,6 @@ let _overridesSettings = null;
 let background = null;
 
 function createUserSession() {
-    // Load the calendar server. Note that we are careful about
-    // not loading any events until the user presses the clock
-    global.launch_calendar_server();
-
     telepathyClient = new TelepathyClient.Client();
     automountManager = new AutomountManager.AutomountManager();
     autorunManager = new AutorunManager.AutorunManager();

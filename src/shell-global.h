@@ -134,8 +134,6 @@ void     shell_global_init_xdnd                 (ShellGlobal  *global);
 
 void     shell_global_reexec_self               (ShellGlobal  *global);
 
-void     shell_global_launch_calendar_server    (ShellGlobal  *global);
-
 const char *     shell_global_get_session_mode  (ShellGlobal  *global);
 
 G_END_DECLS
