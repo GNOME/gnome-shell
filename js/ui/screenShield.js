@@ -355,6 +355,8 @@ const ScreenShield = new Lang.Class({
                                               });
         this._lockScreenGroup.connect('key-release-event',
                                       Lang.bind(this, this._onLockScreenKeyRelease));
+        this._lockScreenGroup.connect('scroll-event',
+                                      Lang.bind(this, this._onLockScreenScroll));
 
         this._lockScreenContents = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                                    name: 'lockScreenContents' });
@@ -436,6 +438,27 @@ const ScreenShield = new Lang.Class({
         // remove any onComplete handler
         if (this._lockScreenState == MessageTray.State.SHOWN)
             this._bumpLockScreen();
+        return true;
+    },
+
+    _onLockScreenScroll: function(actor, event) {
+        if (this._lockScreenState != MessageTray.State.SHOWN)
+            return false;
+
+        let delta = 0;
+        if (event.get_scroll_direction() == Clutter.ScrollDirection.UP)
+            delta = 5;
+        else if (event.get_scroll_direction() == Clutter.ScrollDirection.SMOOTH)
+            delta = Math.max(0, event.get_scroll_delta()[0]);
+
+        this._lockScreenScrollCounter += delta;
+
+        // 7 standard scrolls to lift up
+        if (this._lockScreenScrollCounter > 35) {
+            this._ensureUnlockDialog();
+            this._hideLockScreen(0);
+        }
+
         return true;
     },
 
@@ -656,6 +679,7 @@ const ScreenShield = new Lang.Class({
 
         this._lockScreenState = MessageTray.State.SHOWN;
         this._lockScreenGroup.fixed_position_set = false;
+        this._lockScreenScrollCounter = 0;
 
         this.emit('lock-screen-shown');
     },
