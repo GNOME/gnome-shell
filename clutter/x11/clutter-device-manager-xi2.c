@@ -891,7 +891,12 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                           "invalid",
                           event->scroll.x,
                           event->scroll.y,
-                          (xev->flags & XIPointerEmulated) ? "yes" : "no");
+#ifdef HAVE_XINPUT_2_2
+                          (xev->flags & XIPointerEmulated) ? "yes" : "no"
+#else
+                          "no"
+#endif
+                          );
             break;
 
           default:
@@ -939,7 +944,12 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                           event->button.x,
                           event->button.y,
                           event->button.axes != NULL ? "yes" : "no",
-                          (xev->flags & XIPointerEmulated) ? "yes" : "no");
+#ifdef HAVE_XINPUT_2_2
+                          (xev->flags & XIPointerEmulated) ? "yes" : "no"
+#else
+                          "no"
+#endif
+                          );
             break;
           }
 
