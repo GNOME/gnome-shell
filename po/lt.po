@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-28 23:49+0000\n"
-"PO-Revision-Date: 2012-08-29 23:09+0300\n"
+"POT-Creation-Date: 2012-08-31 20:28+0000\n"
+"PO-Revision-Date: 2012-09-02 15:35+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lithuanian\n"
 "Language: lt\n"
@@ -184,7 +184,7 @@ msgid "Not listed?"
 msgstr "Nėra sąraše?"
 
 #: ../js/gdm/loginDialog.js:929
-#: ../js/ui/endSessionDialog.js:407
+#: ../js/ui/endSessionDialog.js:406
 #: ../js/ui/extensionDownloader.js:195
 #: ../js/ui/networkAgent.js:156
 #: ../js/ui/polkitAuthenticationAgent.js:176
@@ -204,9 +204,9 @@ msgid "Login Window"
 msgstr "Prisijungimo langas"
 
 #: ../js/gdm/powerMenu.js:88
-#: ../js/ui/userMenu.js:634
-#: ../js/ui/userMenu.js:638
-#: ../js/ui/userMenu.js:749
+#: ../js/ui/userMenu.js:633
+#: ../js/ui/userMenu.js:637
+#: ../js/ui/userMenu.js:748
 msgid "Suspend"
 msgstr "Užmigdyti"
 
@@ -215,9 +215,9 @@ msgid "Restart"
 msgstr "Paleisti iš naujo"
 
 #: ../js/gdm/powerMenu.js:98
-#: ../js/ui/userMenu.js:636
-#: ../js/ui/userMenu.js:638
-#: ../js/ui/userMenu.js:748
+#: ../js/ui/userMenu.js:635
+#: ../js/ui/userMenu.js:637
+#: ../js/ui/userMenu.js:747
 msgid "Power Off"
 msgstr "Išjungti"
 
@@ -265,7 +265,7 @@ msgid "New Window"
 msgstr "Naujas langas"
 
 #: ../js/ui/appDisplay.js:678
-#: ../js/ui/dash.js:272
+#: ../js/ui/dash.js:271
 msgid "Remove from Favorites"
 msgstr "Pašalinti iš mėgstamų"
 
@@ -443,7 +443,7 @@ msgid "Next week"
 msgstr "Kitą savaitę"
 
 #: ../js/ui/dash.js:245
-#: ../js/ui/dash.js:274
+#: ../js/ui/dash.js:273
 msgid "Show Applications"
 msgstr "Rodyti programos"
 
@@ -570,7 +570,7 @@ msgstr "dėklas"
 
 #: ../js/ui/keyboard.js:545
 #: ../js/ui/status/keyboard.js:146
-#: ../js/ui/status/power.js:211
+#: ../js/ui/status/power.js:210
 msgid "Keyboard"
 msgstr "Klaviatūra"
 
@@ -583,83 +583,83 @@ msgstr "Slaptažodis:"
 msgid "Type again:"
 msgstr "Įveskite dar kartą:"
 
-#: ../js/ui/lookingGlass.js:695
+#: ../js/ui/lookingGlass.js:694
 msgid "No extensions installed"
 msgstr "Nėra įdiegtų plėtinių"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:749
+#: ../js/ui/lookingGlass.js:748
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s nepranešė apie jokias klaidas."
 
-#: ../js/ui/lookingGlass.js:755
+#: ../js/ui/lookingGlass.js:754
 msgid "Hide Errors"
 msgstr "Slėpti klaidas"
 
-#: ../js/ui/lookingGlass.js:759
-#: ../js/ui/lookingGlass.js:819
+#: ../js/ui/lookingGlass.js:758
+#: ../js/ui/lookingGlass.js:818
 msgid "Show Errors"
 msgstr "Rodyti klaidas"
 
-#: ../js/ui/lookingGlass.js:768
+#: ../js/ui/lookingGlass.js:767
 msgid "Enabled"
 msgstr "Įjungta"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:771
+#: ../js/ui/lookingGlass.js:770
 #: ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "Išjungta"
 
-#: ../js/ui/lookingGlass.js:773
+#: ../js/ui/lookingGlass.js:772
 msgid "Error"
 msgstr "Klaida"
 
-#: ../js/ui/lookingGlass.js:775
+#: ../js/ui/lookingGlass.js:774
 msgid "Out of date"
 msgstr "Pasenęs"
 
-#: ../js/ui/lookingGlass.js:777
+#: ../js/ui/lookingGlass.js:776
 msgid "Downloading"
 msgstr "Atsiunčiama"
 
-#: ../js/ui/lookingGlass.js:801
+#: ../js/ui/lookingGlass.js:800
 msgid "View Source"
 msgstr "Žiūrėti šaltinį"
 
-#: ../js/ui/lookingGlass.js:810
+#: ../js/ui/lookingGlass.js:809
 msgid "Web Page"
 msgstr "Tinklalapis"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:138
+#: ../js/ui/main.js:137
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Ekrano vaizdo įrašas iš %d %t"
 
-#: ../js/ui/messageTray.js:1234
+#: ../js/ui/messageTray.js:1232
 msgid "Open"
 msgstr "Atverti"
 
-#: ../js/ui/messageTray.js:1241
+#: ../js/ui/messageTray.js:1239
 msgid "Remove"
 msgstr "Pašalinti"
 
-#: ../js/ui/messageTray.js:1251
+#: ../js/ui/messageTray.js:1249
 msgid "Unmute"
 msgstr "Įjungti garsą"
 
-#: ../js/ui/messageTray.js:1251
+#: ../js/ui/messageTray.js:1249
 msgid "Mute"
 msgstr "Nutildyti"
 
-#: ../js/ui/messageTray.js:2026
+#: ../js/ui/messageTray.js:2027
 msgid "Message Tray"
 msgstr "Pranešimų juosta"
 
-#: ../js/ui/messageTray.js:2464
+#: ../js/ui/messageTray.js:2465
 msgid "System Information"
 msgstr "Sistemos informacija"
 
@@ -743,7 +743,7 @@ msgstr "Mobiliojo plačiajuosčio tinklo slaptažodis"
 msgid "A password is required to connect to '%s'."
 msgstr "Būtinas slaptažodis norint prisijungti prie „%s“"
 
-#: ../js/ui/notificationDaemon.js:507
+#: ../js/ui/notificationDaemon.js:506
 #: ../src/shell-app.c:373
 msgctxt "program"
 msgid "Unknown"
@@ -854,12 +854,13 @@ msgstr[0] "%d naujas pranešimas"
 msgstr[1] "%d nauji pranešimai"
 msgstr[2] "%d naujų pranešimų"
 
-#: ../js/ui/searchDisplay.js:274
+#: ../js/ui/searchDisplay.js:277
 msgid "Searching..."
 msgstr "Ieškoma..."
 
-#: ../js/ui/searchDisplay.js:325
-msgid "No matching results."
+#: ../js/ui/searchDisplay.js:328
+#| msgid "No matching results."
+msgid "No results."
 msgstr "Nerasta atitikmenų."
 
 #: ../js/ui/shellEntry.js:26
@@ -879,12 +880,10 @@ msgid "Hide Text"
 msgstr "Slėpti tekstą"
 
 #: ../js/ui/shellMountOperation.js:368
-#| msgid "Password:"
 msgid "Password"
 msgstr "Slaptažodis"
 
 #: ../js/ui/shellMountOperation.js:389
-#| msgid "Remember Passphrase"
 msgid "Remember Password"
 msgstr "Atsiminti slaptažodį"
 
@@ -1038,7 +1037,7 @@ msgid "Grant this time only"
 msgstr "Leisti tik šį kartą"
 
 #: ../js/ui/status/bluetooth.js:351
-#: ../js/ui/telepathyClient.js:1110
+#: ../js/ui/telepathyClient.js:1106
 msgid "Reject"
 msgstr "Atmesti"
 
@@ -1201,15 +1200,15 @@ msgstr "Tinklo nustatymai"
 msgid "Network Manager"
 msgstr "Tinklo valdymas"
 
-#: ../js/ui/status/network.js:1783
+#: ../js/ui/status/network.js:1781
 msgid "Connection failed"
 msgstr "Nepavyko prisijungti"
 
-#: ../js/ui/status/network.js:1784
+#: ../js/ui/status/network.js:1782
 msgid "Activation of network connection failed"
 msgstr "Tinklo ryšio nepavyko aktyvuoti"
 
-#: ../js/ui/status/network.js:2080
+#: ../js/ui/status/network.js:2077
 msgid "Networking is disabled"
 msgstr "Tinklas išjungtas"
 
@@ -1264,53 +1263,53 @@ msgstr[1] "liko %d minutės"
 msgstr[2] "liko %d minučių"
 
 #: ../js/ui/status/power.js:118
-#: ../js/ui/status/power.js:192
+#: ../js/ui/status/power.js:191
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../js/ui/status/power.js:201
+#: ../js/ui/status/power.js:200
 msgid "AC adapter"
 msgstr "AC adapteris"
 
-#: ../js/ui/status/power.js:203
+#: ../js/ui/status/power.js:202
 msgid "Laptop battery"
 msgstr "Nešiojamojo kompiuterio akumuliatorius"
 
-#: ../js/ui/status/power.js:205
+#: ../js/ui/status/power.js:204
 msgid "UPS"
 msgstr "Nenutrūkstamo maitinimo šaltinis"
 
-#: ../js/ui/status/power.js:207
+#: ../js/ui/status/power.js:206
 msgid "Monitor"
 msgstr "Vaizduoklis"
 
-#: ../js/ui/status/power.js:209
+#: ../js/ui/status/power.js:208
 msgid "Mouse"
 msgstr "Pelė"
 
-#: ../js/ui/status/power.js:213
+#: ../js/ui/status/power.js:212
 msgid "PDA"
 msgstr "Delninukas"
 
-#: ../js/ui/status/power.js:215
+#: ../js/ui/status/power.js:214
 msgid "Cell phone"
 msgstr "Mobilusis telefonas"
 
-#: ../js/ui/status/power.js:217
+#: ../js/ui/status/power.js:216
 msgid "Media player"
 msgstr "Daugialypės terpės grotuvas"
 
-#: ../js/ui/status/power.js:219
+#: ../js/ui/status/power.js:218
 msgid "Tablet"
 msgstr "Planšetinis kompiuteris"
 
-#: ../js/ui/status/power.js:221
+#: ../js/ui/status/power.js:220
 msgid "Computer"
 msgstr "Kompiuteris"
 
-#: ../js/ui/status/power.js:223
+#: ../js/ui/status/power.js:222
 msgctxt "device"
 msgid "Unknown"
 msgstr "Nežinoma"
@@ -1345,42 +1344,42 @@ msgstr "Failo persiuntimas"
 msgid "Subscription request"
 msgstr "Registracijos užklausa"
 
-#: ../js/ui/telepathyClient.js:422
+#: ../js/ui/telepathyClient.js:421
 msgid "Connection error"
 msgstr "Ryšio klaida"
 
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/telepathyClient.js:921
+#: ../js/ui/telepathyClient.js:917
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Išsiųsta <b>%X</b> <b>%A</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:927
+#: ../js/ui/telepathyClient.js:923
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Išsiųsta <b>%B %d</b>, <b>%A</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:932
+#: ../js/ui/telepathyClient.js:928
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Išsiųsta %Y <b>%B %d</b>, <b>%A</b>"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/telepathyClient.js:961
+#: ../js/ui/telepathyClient.js:957
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s nuo šiol vadinasi %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1061
+#: ../js/ui/telepathyClient.js:1057
 #, c-format
 msgid "Invitation to %s"
 msgstr "Kvietimas į %s"
@@ -1388,37 +1387,37 @@ msgstr "Kvietimas į %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/telepathyClient.js:1069
+#: ../js/ui/telepathyClient.js:1065
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s jus kviečia prisijungti prie %s"
 
-#: ../js/ui/telepathyClient.js:1071
-#: ../js/ui/telepathyClient.js:1150
-#: ../js/ui/telepathyClient.js:1214
+#: ../js/ui/telepathyClient.js:1067
+#: ../js/ui/telepathyClient.js:1146
+#: ../js/ui/telepathyClient.js:1209
 msgid "Decline"
 msgstr "Atmesti"
 
-#: ../js/ui/telepathyClient.js:1072
-#: ../js/ui/telepathyClient.js:1151
-#: ../js/ui/telepathyClient.js:1215
+#: ../js/ui/telepathyClient.js:1068
+#: ../js/ui/telepathyClient.js:1147
+#: ../js/ui/telepathyClient.js:1210
 msgid "Accept"
 msgstr "Priimti"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1102
+#: ../js/ui/telepathyClient.js:1098
 #, c-format
 msgid "Video call from %s"
 msgstr "Vaizdo skambutis nuo %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1105
+#: ../js/ui/telepathyClient.js:1101
 #, c-format
 msgid "Call from %s"
 msgstr "Skambutis nuo %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1112
+#: ../js/ui/telepathyClient.js:1108
 msgid "Answer"
 msgstr "Atsiliepti"
 
@@ -1427,129 +1426,129 @@ msgstr "Atsiliepti"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/telepathyClient.js:1144
+#: ../js/ui/telepathyClient.js:1140
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s jums siunčia %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1179
+#: ../js/ui/telepathyClient.js:1175
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s pageidauja matyti, kai esate prisijungę prie interneto"
 
-#: ../js/ui/telepathyClient.js:1272
+#: ../js/ui/telepathyClient.js:1267
 msgid "Network error"
 msgstr "Tinklo klaida"
 
-#: ../js/ui/telepathyClient.js:1274
+#: ../js/ui/telepathyClient.js:1269
 msgid "Authentication failed"
 msgstr "Nepavyko patvirtinti tapatybės"
 
-#: ../js/ui/telepathyClient.js:1276
+#: ../js/ui/telepathyClient.js:1271
 msgid "Encryption error"
 msgstr "Šifravimo klaida"
 
-#: ../js/ui/telepathyClient.js:1278
+#: ../js/ui/telepathyClient.js:1273
 msgid "Certificate not provided"
 msgstr "Liudijimas nepateiktas"
 
-#: ../js/ui/telepathyClient.js:1280
+#: ../js/ui/telepathyClient.js:1275
 msgid "Certificate untrusted"
 msgstr "Liudijimas nepatikimas"
 
-#: ../js/ui/telepathyClient.js:1282
+#: ../js/ui/telepathyClient.js:1277
 msgid "Certificate expired"
 msgstr "Liudijimo galiojimas pasibaigęs"
 
-#: ../js/ui/telepathyClient.js:1284
+#: ../js/ui/telepathyClient.js:1279
 msgid "Certificate not activated"
 msgstr "Liudijimas neaktyvuotas"
 
-#: ../js/ui/telepathyClient.js:1286
+#: ../js/ui/telepathyClient.js:1281
 msgid "Certificate hostname mismatch"
 msgstr "Liudijimo serverio vardo nesutapimas"
 
-#: ../js/ui/telepathyClient.js:1288
+#: ../js/ui/telepathyClient.js:1283
 msgid "Certificate fingerprint mismatch"
 msgstr "Liudijimo piršto atspaudo nesutapimas"
 
-#: ../js/ui/telepathyClient.js:1290
+#: ../js/ui/telepathyClient.js:1285
 msgid "Certificate self-signed"
 msgstr "Liudijimas pačių pasirašytas"
 
-#: ../js/ui/telepathyClient.js:1292
+#: ../js/ui/telepathyClient.js:1287
 msgid "Status is set to offline"
 msgstr "Nustatyta atsijungimo būsena"
 
-#: ../js/ui/telepathyClient.js:1294
+#: ../js/ui/telepathyClient.js:1289
 msgid "Encryption is not available"
 msgstr "Šifravimas negalimas"
 
-#: ../js/ui/telepathyClient.js:1296
+#: ../js/ui/telepathyClient.js:1291
 msgid "Certificate is invalid"
 msgstr "Liudijimas netinkamas"
 
-#: ../js/ui/telepathyClient.js:1298
+#: ../js/ui/telepathyClient.js:1293
 msgid "Connection has been refused"
 msgstr "Ryšys atmestas"
 
-#: ../js/ui/telepathyClient.js:1300
+#: ../js/ui/telepathyClient.js:1295
 msgid "Connection can't be established"
 msgstr "Nepavyko užmegzti ryšio"
 
-#: ../js/ui/telepathyClient.js:1302
+#: ../js/ui/telepathyClient.js:1297
 msgid "Connection has been lost"
 msgstr "Ryšys nutrūko"
 
-#: ../js/ui/telepathyClient.js:1304
+#: ../js/ui/telepathyClient.js:1299
 msgid "This account is already connected to the server"
 msgstr "Ši paskyra jau prijungta prie serverio"
 
-#: ../js/ui/telepathyClient.js:1306
+#: ../js/ui/telepathyClient.js:1301
 msgid "Connection has been replaced by a new connection using the same resource"
 msgstr "Ryšys pakeistas nauju ryšiu naudojant tą patį išteklių"
 
-#: ../js/ui/telepathyClient.js:1308
+#: ../js/ui/telepathyClient.js:1303
 msgid "The account already exists on the server"
 msgstr "Tokia paskyra serveryje jau yra"
 
-#: ../js/ui/telepathyClient.js:1310
+#: ../js/ui/telepathyClient.js:1305
 msgid "Server is currently too busy to handle the connection"
 msgstr "Šiuo metu serveris per daug užimtas šiai užklausai apdoroti"
 
-#: ../js/ui/telepathyClient.js:1312
+#: ../js/ui/telepathyClient.js:1307
 msgid "Certificate has been revoked"
 msgstr "Liudijimas atšauktas"
 
-#: ../js/ui/telepathyClient.js:1314
+#: ../js/ui/telepathyClient.js:1309
 msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr "Liudijimui naudojamas nesaugus šifravimo algoritmas arba jis kriptografiškai silpnas"
 
-#: ../js/ui/telepathyClient.js:1316
+#: ../js/ui/telepathyClient.js:1311
 msgid "The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library"
 msgstr "Serverio liudijimo ilgis arba liudijimų eilės dydis viršija kriptografijos bibliotekos apribojimus"
 
-#: ../js/ui/telepathyClient.js:1318
+#: ../js/ui/telepathyClient.js:1313
 msgid "Internal error"
 msgstr "Vidinė klaida"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1328
+#: ../js/ui/telepathyClient.js:1323
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Nepavyko prisijungti prie %s"
 
-#: ../js/ui/telepathyClient.js:1337
+#: ../js/ui/telepathyClient.js:1332
 msgid "Reconnect"
 msgstr "Prisijungti iš naujo"
 
-#: ../js/ui/telepathyClient.js:1338
+#: ../js/ui/telepathyClient.js:1333
 msgid "Edit account"
 msgstr "Taisyti paskyrą"
 
-#: ../js/ui/telepathyClient.js:1383
+#: ../js/ui/telepathyClient.js:1378
 msgid "Unknown reason"
 msgstr "Nežinoma priežastis"
 
@@ -1557,81 +1556,81 @@ msgstr "Nežinoma priežastis"
 msgid "Log in as another user"
 msgstr "Prisijungti kaip kitas naudotojas"
 
-#: ../js/ui/userMenu.js:167
+#: ../js/ui/userMenu.js:166
 msgid "Available"
 msgstr "Esu"
 
-#: ../js/ui/userMenu.js:170
+#: ../js/ui/userMenu.js:169
 msgid "Busy"
 msgstr "Užsiėmęs (-usi)"
 
-#: ../js/ui/userMenu.js:173
+#: ../js/ui/userMenu.js:172
 msgid "Invisible"
 msgstr "Nematomas"
 
-#: ../js/ui/userMenu.js:176
+#: ../js/ui/userMenu.js:175
 msgid "Away"
 msgstr "Išėjęs (-usi)"
 
-#: ../js/ui/userMenu.js:179
+#: ../js/ui/userMenu.js:178
 msgid "Idle"
 msgstr "Neužimtas"
 
-#: ../js/ui/userMenu.js:182
+#: ../js/ui/userMenu.js:181
 msgid "Unavailable"
 msgstr "Nepasiekiamas"
 
-#: ../js/ui/userMenu.js:589
-#: ../js/ui/userMenu.js:730
+#: ../js/ui/userMenu.js:588
+#: ../js/ui/userMenu.js:729
 msgid "Switch User"
 msgstr "Keisti naudotoją"
 
-#: ../js/ui/userMenu.js:590
+#: ../js/ui/userMenu.js:589
 msgid "Switch Session"
 msgstr "Perjungti seansą"
 
-#: ../js/ui/userMenu.js:713
+#: ../js/ui/userMenu.js:712
 msgid "Notifications"
 msgstr "Pranešimai"
 
-#: ../js/ui/userMenu.js:722
+#: ../js/ui/userMenu.js:721
 msgid "System Settings"
 msgstr "Sistemos nustatymai"
 
-#: ../js/ui/userMenu.js:735
+#: ../js/ui/userMenu.js:734
 msgid "Log Out"
 msgstr "Atsijungti"
 
-#: ../js/ui/userMenu.js:740
+#: ../js/ui/userMenu.js:739
 msgid "Lock"
 msgstr "Užrakinti"
 
-#: ../js/ui/userMenu.js:755
+#: ../js/ui/userMenu.js:754
 msgid "Install Updates & Restart"
 msgstr "Įdiegti atnaujinimus ir įkelti iš naujo"
 
-#: ../js/ui/userMenu.js:773
+#: ../js/ui/userMenu.js:772
 msgid "Your chat status will be set to busy"
 msgstr "Jūsų pokalbio būsena bus nustatyta į užimta"
 
-#: ../js/ui/userMenu.js:774
+#: ../js/ui/userMenu.js:773
 msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
 msgstr "Pranešimai šiuo metu yra išjungti, įskaitant pokalbių pranešimus. Jūsų būsena internete atitinkamai pakoreguota, kad kiti galėtų žinoti, jog jūs galite nepamatyti jų pranešimų."
 
-#: ../js/ui/viewSelector.js:88
+#: ../js/ui/viewSelector.js:86
 msgid "Windows"
 msgstr "Langai"
 
-#: ../js/ui/viewSelector.js:92
+#: ../js/ui/viewSelector.js:90
 msgid "Applications"
 msgstr "Programos"
 
-#: ../js/ui/viewSelector.js:96
+#: ../js/ui/viewSelector.js:94
 #: ../src/shell-util.c:250
 msgid "Search"
 msgstr "Ieškoti"
 
-#: ../js/ui/wanda.js:125
+#: ../js/ui/wanda.js:123
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1640,12 +1639,12 @@ msgstr ""
 "Atleiskite, šiandien išminties nebus:\n"
 "%s"
 
-#: ../js/ui/wanda.js:129
+#: ../js/ui/wanda.js:127
 #, c-format
 msgid "%s the Oracle says"
 msgstr "Orakulė %s sako"
 
-#: ../js/ui/wanda.js:170
+#: ../js/ui/wanda.js:168
 msgid "Your favorite Easter Egg"
 msgstr "Jūsų mėgstamiausias velykinis kiaušinis"
 
