@@ -1417,13 +1417,9 @@ StButton.popup-menu-item:insensitive {
 }
 
 #summary-mode {
-    padding: 2px 0px 0px 4px;
+    padding: 0px 6px 0px 6px; /* same as the values in .summary-source */
     height: 60px;
     spacing: 10px;
-}
-
-#summary-mode:rtl {
-    padding: 2px 4px 0px 0px;
 }
 
 .summary-source-button {
