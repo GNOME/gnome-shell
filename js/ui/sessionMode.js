@@ -17,7 +17,6 @@ const _modes = {
              hasWorkspaces: false,
              createSession: Main.createGDMSession,
              createUnlockDialog: Main.createGDMLoginDialog,
-             extraStylesheet: null,
              panel: {
                  left: [],
                  center: ['dateMenu'],
@@ -34,7 +33,6 @@ const _modes = {
                        hasRunDialog: false,
                        hasWorkspaces: false,
                        createSession: Main.createInitialSetupSession,
-                       extraStylesheet: null,
                        panel: {
                            left: [],
                            center: ['dateMenu'],
@@ -51,7 +49,6 @@ const _modes = {
               hasWorkspaces: true,
               createSession: Main.createUserSession,
               createUnlockDialog: Main.createSessionUnlockDialog,
-              extraStylesheet: null,
               panel: {
                   left: ['activities', 'appMenu'],
                   center: ['dateMenu'],

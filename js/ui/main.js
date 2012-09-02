@@ -507,9 +507,6 @@ function loadTheme() {
 
     let theme = new St.Theme ({ application_stylesheet: cssStylesheet });
 
-    if (sessionMode.extraStylesheet)
-        theme.load_stylesheet(sessionMode.extraStylesheet);
-
     if (previousTheme) {
         let customStylesheets = previousTheme.get_custom_stylesheets();
 
