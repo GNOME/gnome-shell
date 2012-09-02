@@ -31,7 +31,7 @@ const PowerMenuButton = new Lang.Class({
     Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        this.parent('system-shutdown', null);
+        this.parent('system-shutdown-symbolic', null);
         this._upClient = new UPowerGlib.Client();
 
         this._loginManager = LoginManager.getLoginManager();
