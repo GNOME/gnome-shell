@@ -87,16 +87,18 @@ UProf is available from:
 DOCUMENTATION
 -------------------------------------------------------------------------------
 
-The API references for the latest stable release are available at:
+The 1.x stable API is documented here:
 
-   http://docs.clutter-project.org/docs/cogl/stable/
+  http://developer.gnome.org/cogl/stable/
 
-The experimental 2.0 API can be found here:
+The 1.x development API is documented here:
 
-   http://docs.clutter-project.org/docs/cogl-2.0-experimental/stable/
+  http://developer.gnome.org/cogl/1.$(COGL_1_MINOR_VERSION)
 
-   Note: The confusing "stable" at the end refers to the overall Cogl release
-   status, not the documentation specifically.
+The experimental 2.0 API is currently not hosted online but can be built
+by passing the --enable-gtk-doc option to ./configure when building
+and the documentation can then be found under
+doc/reference/cogl-2.0-experimental/html/index.html
 
 --
 LICENSE
