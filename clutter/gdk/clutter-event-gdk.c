@@ -34,6 +34,7 @@
 #include "clutter-actor-private.h"
 #include "clutter-backend-private.h"
 #include "clutter-debug.h"
+#include "clutter-device-manager-private.h"
 #include "clutter-event-private.h"
 #include "clutter-main.h"
 #include "clutter-paint-volume-private.h"
