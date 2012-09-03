@@ -1,3 +1,39 @@
+Cogl 1.11.4                                                        2012-09-03
+
+  • List of changes since Cogl 1.11.2
+
+  » Fix the pkg-config requires for cogl-gles2
+  » Fix where we install cogl-gles2 headers
+  » Updates for the MSVC build
+  » Fix texture sub-region uploads when we don't have
+    GL_EXT_unpack_subimage
+  » Update the KMS winsys backend to the latest libgbm api
+  » Fix a leak of primitive indices
+  » Added a UProf profiling timer around journal discard code
+  » Enabled UProf profiling support to test-journal
+
+  • List of bugs fixed since Cogl 1.11.2
+
+  #682340 - Trivial build fix
+
+Many thanks to:
+
+  Robert Bragg
+  Chun-wei Fan
+  Piotr Drąg
+  Tomeu Vizoso
+  A S Alam
+  Andika Triwidada
+  Aurimas Černius
+  Duarte Loreto
+  Fran Diéguez
+  Krishnababu Krothapalli
+  Neil Roberts
+  Nilamdyuti Goswami
+  Patrick Welche
+  Sjoerd Simons
+  Tom Tryfonidis
+
 Cogl 1.11.2                                                        2012-08-14
 
   • List of changes since Cogl 1.10.0
