@@ -2135,9 +2135,10 @@ const MessageTray = new Lang.Class({
         // explicitly mouses away from it and then mouses back in.
         this._showNotificationMouseX = x;
         this._showNotificationMouseY = y;
-        // We save the y coordinate of the mouse at the time when we started showing the notification
-        // and then we update it in _notifiationTimeout() if the mouse is moving towards the
-        // notification. We don't pop down the notification if the mouse is moving towards it.
+        // We save the coordinates of the mouse at the time when we started showing the notification
+        // and then we update it in _notificationTimeout(). We don't pop down the notification if
+        // the mouse is moving towards it or within it.
+        this._lastSeenMouseX = x;
         this._lastSeenMouseY = y;
     },
 
@@ -2205,13 +2206,20 @@ const MessageTray = new Lang.Class({
             // hide it yet. (We just create a new timeout (and destroy
             // the old one) each time because the bookkeeping is
             // simpler.)
-            this._lastSeenMouseY = y;
+            this._updateNotificationTimeout(1000);
+        } else if (this._useLongerTrayLeftTimeout && !this._trayLeftTimeoutId &&
+                  (x != this._lastSeenMouseX || y != this._lastSeenMouseY)) {
+            // Refresh the timeout if the notification originally
+            // popped up under the pointer, and the pointer is hovering
+            // inside it.
             this._updateNotificationTimeout(1000);
         } else {
             this._notificationTimeoutId = 0;
             this._updateState();
         }
 
+        this._lastSeenMouseX = x;
+        this._lastSeenMouseY = y;
         return false;
     },
 
