@@ -10,11 +10,12 @@ const St = imports.gi.St;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 
-function _navigateActor(actor, needsGrab) {
+function _navigateActor(actor) {
     if (!actor)
         return;
 
-    if (needsGrab && actor instanceof St.Widget)
+    let needsGrab = true;
+    if (actor instanceof St.Widget)
         needsGrab = !actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
     if (needsGrab)
         actor.grab_key_focus();
@@ -169,7 +170,8 @@ const GrabHelper = new Lang.Class({
         if (params.grabFocus)
             this._grabFocusCount++;
 
-        _navigateActor(newFocus, hadFocus);
+        if (hadFocus)
+            _navigateActor(newFocus);
 
         return true;
     },
@@ -254,7 +256,9 @@ const GrabHelper = new Lang.Class({
             this._fullUngrab(wasModal);
 
         let poppedGrab = poppedGrabs[0];
-        _navigateActor(poppedGrab.savedFocus, hadFocus);
+
+        if (hadFocus)
+            _navigateActor(poppedGrab.savedFocus);
     },
 
     _fullUngrab: function(wasModal) {
