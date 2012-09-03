@@ -3039,6 +3039,10 @@ clutter_stage_set_key_focus (ClutterStage *stage,
 
   priv = stage->priv;
 
+  /* normalize the key focus. NULL == stage */
+  if (actor == CLUTTER_ACTOR (stage))
+    actor = NULL;
+
   /* avoid emitting signals and notifications if we're setting the same
    * actor as the key focus
    */
