@@ -33,7 +33,7 @@
  * Cogl offers a set of macros for checking the version of the library
  * at compile time.
  *
- * Since: 2.0
+ * Since: 1.12.0
  */
 
 /**
@@ -41,7 +41,7 @@
  *
  * The major version of the Cogl library (1, if %COGL_VERSION is 1.2.3)
  *
- * Since: 2.0
+ * Since: 1.12.0
  */
 #define COGL_VERSION_MAJOR COGL_VERSION_MAJOR_INTERNAL
 
@@ -50,7 +50,7 @@
  *
  * The minor version of the Cogl library (2, if %COGL_VERSION is 1.2.3)
  *
- * Since: 2.0
+ * Since: 1.12.0
  */
 #define COGL_VERSION_MINOR COGL_VERSION_MINOR_INTERNAL
 
@@ -59,7 +59,7 @@
  *
  * The micro version of the Cogl library (3, if %COGL_VERSION is 1.2.3)
  *
- * Since: 2.0
+ * Since: 1.12.0
  */
 #define COGL_VERSION_MICRO COGL_VERSION_MICRO_INTERNAL
 
@@ -69,7 +69,7 @@
  * The full version of the Cogl library, in string form (suited for
  * string concatenation)
  *
- * Since: 2.0
+ * Since: 1.12.0
  */
 #define COGL_VERSION_STRING COGL_VERSION_STRING_INTERNAL
 
@@ -87,7 +87,7 @@
  * COGL_VERSION_ENCODE() macro. This can be used for quick comparisons
  * with particular versions.
  *
- * Since: 2.0
+ * Since: 1.12.0
  */
 #define COGL_VERSION                            \
   COGL_VERSION_ENCODE (COGL_VERSION_MAJOR,      \
@@ -112,7 +112,7 @@
  * #endif
  * ]|
  *
- * Since: 2.0
+ * Since: 1.12.0
  */
 #define COGL_VERSION_ENCODE(major, minor, micro)        \
   (((major) << (COGL_VERSION_COMPONENT_BITS * 2)) |     \
@@ -125,7 +125,7 @@
  *
  * Extracts the major part of an encoded version number.
  *
- * Since: 2.0
+ * Since: 1.12.0
  */
 #define COGL_VERSION_GET_MAJOR(version)                 \
   (((version) >> (COGL_VERSION_COMPONENT_BITS * 2))     \
@@ -137,7 +137,7 @@
  *
  * Extracts the minor part of an encoded version number.
  *
- * Since: 2.0
+ * Since: 1.12.0
  */
 #define COGL_VERSION_GET_MINOR(version)         \
   (((version) >> COGL_VERSION_COMPONENT_BITS) & \
@@ -149,7 +149,7 @@
  *
  * Extracts the micro part of an encoded version number.
  *
- * Since: 2.0
+ * Since: 1.12.0
  */
 #define COGL_VERSION_GET_MICRO(version) \
   ((version) & COGL_VERSION_MAX_COMPONENT_VALUE)
@@ -177,6 +177,7 @@
  *
  * Return value: %TRUE if the Cogl version being compiled against is
  *   greater than or equal to the given three part version number.
+ * Since: 1.12.0
  */
 #define COGL_VERSION_CHECK(major, minor, micro) \
   (COGL_VERSION >= COGL_VERSION_ENCODE (major, minor, micro))
