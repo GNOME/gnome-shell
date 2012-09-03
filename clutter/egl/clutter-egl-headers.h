@@ -25,6 +25,17 @@
 /* Clutter relies on Cogl to abstract GLES1/2/OpenGL and GLX/EGL etc
  * so we simply include the Cogl header to pull in the appropriate EGL
  * header. */
+
 #include <cogl/cogl.h>
+
+/* Since Cogl 1.11.2, the EGL headers are no longer included from
+ * cogl.h when the experimental 2.0 API is requested. Clutter requests
+ * this in its configure script so we need to switch the header we
+ * include in that case. COGL_VERSION_CHECK is also new in 1.11.2 */
+#ifdef COGL_VERSION_CHECK
+#if COGL_VERSION_CHECK (1, 11, 2)
+#include <cogl/cogl-egl.h>
+#endif
+#endif
 
 #endif /* __CLUTTER_EGL_HEADERS_H__ */
