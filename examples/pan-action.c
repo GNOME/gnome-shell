@@ -91,7 +91,12 @@ on_key_press (ClutterActor *stage,
   key_symbol = clutter_event_get_key_symbol (event);
 
   if (key_symbol == CLUTTER_KEY_space)
-    clutter_actor_set_child_transform (scroll, NULL);
+    {
+      clutter_actor_save_easing_state (scroll);
+      clutter_actor_set_easing_duration (scroll, 1000);
+      clutter_actor_set_child_transform (scroll, NULL);
+      clutter_actor_restore_easing_state (scroll);
+    }
 
   return CLUTTER_EVENT_STOP;
 }
