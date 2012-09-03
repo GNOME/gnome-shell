@@ -688,7 +688,7 @@ clutter_gesture_action_get_release_coords (ClutterGestureAction *action,
  * @velocity_y: (out) (allow-none): return location for the latest motion
  *   event's Y velocity
  *
- * Retrieves the velocity, in stage pixels per microseconds, of the
+ * Retrieves the velocity, in stage pixels per milliseconds, of the
  * latest motion event during the dragging
  *
  * Since: 1.12
