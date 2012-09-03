@@ -18624,6 +18624,9 @@ _clutter_actor_create_transition (ClutterActor *actor,
    */
   if (info->cur_state->easing_duration == 0)
     {
+      /* remove a transition, if one exists */
+      clutter_actor_remove_transition (actor, pspec->name);
+
       clutter_actor_set_animatable_property (actor,
                                              pspec->param_id,
                                              &final,
@@ -18784,6 +18787,8 @@ clutter_actor_remove_transition (ClutterActor *self,
     return;
 
   clos = g_hash_table_lookup (info->transitions, name);
+  if (clos == NULL)
+    return;
 
   was_playing =
     clutter_timeline_is_playing (CLUTTER_TIMELINE (clos->transition));
