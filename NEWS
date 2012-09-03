@@ -1,3 +1,75 @@
+Clutter 1.11.14                                                      2012-09-03
+===============================================================================
+
+  • List of changes since Clutter 1.11.12
+
+    - Fixes for the touch sequence handling
+    The stage associated with an input device is now set when a touch sequence
+    begins, and cleared when the last touch sequence ends.
+
+    - Add interpolation for matrices
+    Using the CSS3 Transforms specification for decomposing matrices and
+    interpolating the resulting transformations. This allows animating
+    properties like ClutterActor:transform and ClutterActor:child-transform.
+
+    - Add ClutterPanAction
+    The PanAction is a gesture recogniser that allows panning children of
+    a "scrollable" viewport.
+
+    - Add more accessors to GestureAction for its subclasses
+    GestureAction now allows retrieving the velocity and delta of pointer,
+    as well as the event sequences and devices involved in the gesture. This
+    allows writing more complex gesture recognisers. It is also possible, now,
+    to ask a GestureAction to cancel the current gesture programmatically,
+    e.g. from a timer.
+
+    - Fix ClutterTableLayout.pack() with negative row/column
+    Using a negative number to appen an actor into a TableLayout was causing
+    additional rows and columns to be appended, due to an off by one error.
+
+    - Fix press coordinates when using ClutterDragAction with a drag handle
+    The transformation of the coordinates is now done using the drag actor,
+    as it was supposed to be.
+
+    - Documentation and annotation fixes
+
+    - Deprecate the ClutterActor::pick signal
+    Similarly to the ClutterActor::paint signal, it's now discouraged to
+    connect to the ClutterActor::pick signal; connecting to the pick signal
+    will raise a warning when using the CLUTTER_ENABLE_DIAGNOSTIC environment
+    variable.
+
+    - Updated translations
+    Lithuanian, Indonesian, Traditional Chinese (Hong Kong and Taiwan),
+    Polish, Spanish, Assamese, Greek, Spanish, Polish, Galician,
+    Belarusian.
+
+  • List of bugs fixed since Clutter 1.11.12
+
+    #682795 - Annotation problem for clutter_actor_iter_next() and
+              clutter_actor_iter_prev()
+    #682754 - ClutterRotateAction wrong marshaller usage
+    #681746 - Drag handle misplacemente in examples/drag-action
+    #679990 - clutter_table_layout_pack increments column/row count by two
+    #681648 - add Pan action
+    #683219 - Build failure with old (?) XI2
+    #683066 - brightness-contrast-effect: Don't actually run if it will have
+              no effect
+    #683090 - gesture-action: Add API for cancelling a gesture
+    #683126 - Remove tracking of input devices and sequences from the stage
+    #682362 - Multi touch events skipped
+    #683113 - Bug in ClutterGestureAction documentation
+    #680255 - The middle and right mouse buttons are swapped when using the
+              evdev backend
+
+Many thanks to:
+
+  Emanuele Aina Piotr Drąg, Lionel Landwerlin, Aurimas Černius,
+  Daniel Mustieles, Jasper St. Pierre, Neil Roberts, Nilamdyuti Goswami,
+  Tomeu Vizoso, Andika Triwidada, Andre Kuehne, Chao-Hsiung Liao, Chun-wei Fan,
+  Fran Diéguez, Ihar Hrachyshka, Tom Tryfonidis.
+
+
 Clutter 1.11.12                                                      2012-08-20
 ===============================================================================
 
