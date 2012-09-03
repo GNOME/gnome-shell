@@ -1629,7 +1629,44 @@ const NMApplet = new Lang.Class({
         this.secondaryIcon = this.addIcon(new Gio.ThemedIcon({ name: 'network-vpn-symbolic' }));
         this.secondaryIcon.hide();
 
-        this._client = NMClient.Client.new();
+        // Device types
+        this._dtypes = { };
+        this._dtypes[NetworkManager.DeviceType.ETHERNET] = NMDeviceWired;
+        this._dtypes[NetworkManager.DeviceType.WIFI] = NMDeviceWireless;
+        this._dtypes[NetworkManager.DeviceType.MODEM] = NMDeviceModem;
+        this._dtypes[NetworkManager.DeviceType.BT] = NMDeviceBluetooth;
+        // TODO: WiMax support
+
+        // Connection types
+        this._ctypes = { };
+        this._ctypes[NetworkManager.SETTING_WIRELESS_SETTING_NAME] = NMConnectionCategory.WIRELESS;
+        this._ctypes[NetworkManager.SETTING_WIRED_SETTING_NAME] = NMConnectionCategory.WIRED;
+        this._ctypes[NetworkManager.SETTING_PPPOE_SETTING_NAME] = NMConnectionCategory.WIRED;
+        this._ctypes[NetworkManager.SETTING_PPP_SETTING_NAME] = NMConnectionCategory.WIRED;
+        this._ctypes[NetworkManager.SETTING_BLUETOOTH_SETTING_NAME] = NMConnectionCategory.WWAN;
+        this._ctypes[NetworkManager.SETTING_CDMA_SETTING_NAME] = NMConnectionCategory.WWAN;
+        this._ctypes[NetworkManager.SETTING_GSM_SETTING_NAME] = NMConnectionCategory.WWAN;
+        this._ctypes[NetworkManager.SETTING_VPN_SETTING_NAME] = NMConnectionCategory.VPN;
+
+        NMClient.Client.new_async(null, Lang.bind(this, this._clientGot));
+        NMClient.RemoteSettings.new_async(null, null, Lang.bind(this, this._remoteSettingsGot));
+    },
+
+    _clientGot: function(obj, result) {
+        this._client = NMClient.Client.new_finish(result);
+
+        this._tryLateInit();
+    },
+
+    _remoteSettingsGot: function(obj, result) {
+        this._settings = NMClient.RemoteSettings.new_finish(result);
+
+        this._tryLateInit();
+    },
+
+    _tryLateInit: function() {
+        if (!this._client || !this._settings)
+            return;
 
         this._statusSection = new PopupMenu.PopupMenuSection();
         this._statusItem = new PopupMenu.PopupMenuItem('', { reactive: false });
@@ -1690,44 +1727,17 @@ const NMApplet = new Lang.Class({
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addSettingsAction(_("Network Settings"), 'gnome-network-panel.desktop');
 
-        // Device types
-        this._dtypes = { };
-        this._dtypes[NetworkManager.DeviceType.ETHERNET] = NMDeviceWired;
-        this._dtypes[NetworkManager.DeviceType.WIFI] = NMDeviceWireless;
-        this._dtypes[NetworkManager.DeviceType.MODEM] = NMDeviceModem;
-        this._dtypes[NetworkManager.DeviceType.BT] = NMDeviceBluetooth;
-        // TODO: WiMax support
+        this._readConnections();
+        this._readDevices();
+        this._syncNMState();
 
-        // Connection types
-        this._ctypes = { };
-        this._ctypes[NetworkManager.SETTING_WIRELESS_SETTING_NAME] = NMConnectionCategory.WIRELESS;
-        this._ctypes[NetworkManager.SETTING_WIRED_SETTING_NAME] = NMConnectionCategory.WIRED;
-        this._ctypes[NetworkManager.SETTING_PPPOE_SETTING_NAME] = NMConnectionCategory.WIRED;
-        this._ctypes[NetworkManager.SETTING_PPP_SETTING_NAME] = NMConnectionCategory.WIRED;
-        this._ctypes[NetworkManager.SETTING_BLUETOOTH_SETTING_NAME] = NMConnectionCategory.WWAN;
-        this._ctypes[NetworkManager.SETTING_CDMA_SETTING_NAME] = NMConnectionCategory.WWAN;
-        this._ctypes[NetworkManager.SETTING_GSM_SETTING_NAME] = NMConnectionCategory.WWAN;
-        this._ctypes[NetworkManager.SETTING_VPN_SETTING_NAME] = NMConnectionCategory.VPN;
-
-        this._settings = NMClient.RemoteSettings.new(null);
-        this._connectionsReadId = this._settings.connect('connections-read', Lang.bind(this, function() {
-            this._readConnections();
-            this._readDevices();
-            this._syncNMState();
-
-            // Connect to signals late so that early signals don't find in inconsistent state
-            // and connect only once (this signal handler can be called again if NetworkManager goes up and down)
-            if (!this._inited) {
-                this._inited = true;
-                this._client.connect('notify::manager-running', Lang.bind(this, this._syncNMState));
-                this._client.connect('notify::networking-enabled', Lang.bind(this, this._syncNMState));
-                this._client.connect('notify::state', Lang.bind(this, this._syncNMState));
-                this._client.connect('notify::active-connections', Lang.bind(this, this._updateIcon));
-                this._client.connect('device-added', Lang.bind(this, this._deviceAdded));
-                this._client.connect('device-removed', Lang.bind(this, this._deviceRemoved));
-                this._settings.connect('new-connection', Lang.bind(this, this._newConnection));
-            }
-        }));
+        this._client.connect('notify::manager-running', Lang.bind(this, this._syncNMState));
+        this._client.connect('notify::networking-enabled', Lang.bind(this, this._syncNMState));
+        this._client.connect('notify::state', Lang.bind(this, this._syncNMState));
+        this._client.connect('notify::active-connections', Lang.bind(this, this._updateIcon));
+        this._client.connect('device-added', Lang.bind(this, this._deviceAdded));
+        this._client.connect('device-removed', Lang.bind(this, this._deviceRemoved));
+        this._settings.connect('new-connection', Lang.bind(this, this._newConnection));
     },
 
     _ensureSource: function() {
