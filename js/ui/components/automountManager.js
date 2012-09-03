@@ -34,28 +34,30 @@ const AutomountManager = new Lang.Class({
         this._inhibited = false;
 
         this._loginManager = LoginManager.getLoginManager();
-
-        Main.screenShield.connect('lock-status-changed', Lang.bind(this, this._lockStatusChanged));
-
         this._volumeMonitor = Gio.VolumeMonitor.get();
+    },
 
-        this._volumeMonitor.connect('volume-added',
-                                    Lang.bind(this,
-                                              this._onVolumeAdded));
-        this._volumeMonitor.connect('volume-removed',
-                                    Lang.bind(this,
-                                              this._onVolumeRemoved));
-        this._volumeMonitor.connect('drive-connected',
-                                    Lang.bind(this,
-                                              this._onDriveConnected));
-        this._volumeMonitor.connect('drive-disconnected',
-                                    Lang.bind(this,
-                                              this._onDriveDisconnected));
-        this._volumeMonitor.connect('drive-eject-button',
-                                    Lang.bind(this,
-                                              this._onDriveEjectButton));
+    enable: function() {
+        this._volumeAddedId = this._volumeMonitor.connect('volume-added', Lang.bind(this, this._onVolumeAdded));
+        this._volumeRemovedId = this._volumeMonitor.connect('volume-removed', Lang.bind(this, this._onVolumeRemoved));
+        this._driveConnectedId = this._volumeMonitor.connect('drive-connected', Lang.bind(this, this._onDriveConnected));
+        this._driveDisconnectedId = this._volumeMonitor.connect('drive-disconnected', Lang.bind(this, this._onDriveDisconnected));
+        this._driveEjectButtonId = this._volumeMonitor.connect('drive-eject-button', Lang.bind(this, this._onDriveEjectButton));
 
-        Mainloop.idle_add(Lang.bind(this, this._startupMountAll));
+        this._mountAllId = Mainloop.idle_add(Lang.bind(this, this._startupMountAll));
+    },
+
+    disable: function() {
+        this._volumeMonitor.disconnect(this._volumeAddedId);
+        this._volumeMonitor.disconnect(this._volumeRemovedId);
+        this._volumeMonitor.disconnect(this._driveConnectedId);
+        this._volumeMonitor.disconnect(this._driveDisconnectedId);
+        this._volumeMonitor.disconnect(this._driveEjectButtonId);
+
+        if (this._mountAllId > 0) {
+            Mainloop.source_remove(this._mountAllId);
+            this._mountAllId = 0;
+        }
     },
 
     _InhibitorsChanged: function(object, senderName, [inhibtor]) {
@@ -68,17 +70,6 @@ const AutomountManager = new Lang.Class({
                 }));
     },
 
-    _lockStatusChanged: function(shield, locked) {
-        if (!locked) {
-            this._volumeQueue.forEach(Lang.bind(this, function(volume) {
-                this._checkAndMountVolume(volume);
-            }));
-        }
-
-        // clear the queue anyway
-        this._volumeQueue = [];
-    },
-
     _startupMountAll: function() {
         let volumes = this._volumeMonitor.get_volumes();
         volumes.forEach(Lang.bind(this, function(volume) {
@@ -87,6 +78,7 @@ const AutomountManager = new Lang.Class({
                                                 allowAutorun: false });
         }));
 
+        this._mountAllId = 0;
         return false;
     },
 
@@ -96,9 +88,6 @@ const AutomountManager = new Lang.Class({
         if (!this._loginManager.sessionActive)
             return;
 
-        if (Main.screenShield.locked)
-            return;
-
         global.play_theme_sound(0, 'device-added-media');
     },
 
@@ -106,9 +95,6 @@ const AutomountManager = new Lang.Class({
         // if we're not in the current ConsoleKit session,
         // or screensaver is active, don't play sounds
         if (!this._loginManager.sessionActive)
-            return;
-
-        if (Main.screenShield.locked)
             return;
 
         global.play_theme_sound(0, 'device-removed-media');        
@@ -159,13 +145,6 @@ const AutomountManager = new Lang.Class({
             // don't attempt automount
             if (!this._loginManager.sessionActive)
                 return;
-
-            if (Main.screenShield.locked) {
-                if (this._volumeQueue.indexOf(volume) == -1)
-                    this._volumeQueue.push(volume);
-
-                return;
-            }
         }
 
         if (this._inhibited)
@@ -259,3 +238,4 @@ const AutomountManager = new Lang.Class({
         });
     }
 });
+const Component = AutomountManager;

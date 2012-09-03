@@ -1,24 +1,4 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/*
- * Copyright 2010 Red Hat, Inc
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
-*
- * Author: David Zeuthen <davidz@redhat.com>
- */
 
 const Lang = imports.lang;
 const Signals = imports.signals;
@@ -33,6 +13,7 @@ const Mainloop = imports.mainloop;
 const Polkit = imports.gi.Polkit;
 const PolkitAgent = imports.gi.PolkitAgent;
 
+const Components = imports.ui.components;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const UserMenu = imports.ui.userMenu;
@@ -336,11 +317,20 @@ const AuthenticationAgent = new Lang.Class({
     Name: 'AuthenticationAgent',
 
     _init: function() {
+        this._currentDialog = null;
+        this._isCompleting = false;
+        this._handle = null;
         this._native = new Shell.PolkitAuthenticationAgent();
         this._native.connect('initiate', Lang.bind(this, this._onInitiate));
         this._native.connect('cancel', Lang.bind(this, this._onCancel));
-        this._currentDialog = null;
-        this._isCompleting = false;
+    },
+
+    enable: function() {
+        this._native.register();
+    },
+
+    disable: function() {
+        this._native.unregister();
     },
 
     _onInitiate: function(nativeAgent, actionId, message, iconName, cookie, userNames) {
@@ -398,6 +388,4 @@ const AuthenticationAgent = new Lang.Class({
     }
 });
 
-function init() {
-    let agent = new AuthenticationAgent();
-}
+const Component = AuthenticationAgent;

@@ -1,23 +1,4 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
-/*
- * Copyright 2011 Giovanni Campagna <scampa.giovanni@gmail.com>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2, or (at your option)
- * any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
- * 02111-1307, USA.
- *
- */
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
@@ -603,7 +584,7 @@ const NetworkAgent = new Lang.Class({
     Name: 'NetworkAgent',
 
     _init: function() {
-        this._native = new Shell.NetworkAgent({ auto_register: true,
+        this._native = new Shell.NetworkAgent({ auto_register: false,
                                                 identifier: 'org.gnome.Shell.NetworkAgent' });
 
         this._dialogs = { };
@@ -611,6 +592,14 @@ const NetworkAgent = new Lang.Class({
 
         this._native.connect('new-request', Lang.bind(this, this._newRequest));
         this._native.connect('cancel-request', Lang.bind(this, this._cancelRequest));
+    },
+
+    enable: function() {
+        this._native.register();
+    },
+
+    disable: function() {
+        this._native.unregister();
     },
 
     _newRequest:  function(agent, requestId, connection, settingName, hints, flags) {
@@ -702,3 +691,4 @@ const NetworkAgent = new Lang.Class({
         }
     }
 });
+const Component = NetworkAgent;

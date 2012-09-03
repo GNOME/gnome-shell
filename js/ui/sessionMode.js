@@ -17,8 +17,8 @@ const _modes = {
              hasRunDialog: false,
              hasWorkspaces: false,
              hasWindows: false,
-             createSession: Main.createGDMSession,
              createUnlockDialog: Main.createGDMLoginDialog,
+             components: [],
              panel: {
                  left: [],
                  center: ['dateMenu'],
@@ -36,6 +36,7 @@ const _modes = {
         hasRunDialog: false,
         hasWorkspaces: false,
         hasWindows: false,
+        components: ['networkAgent', 'polkitAgent', 'telepathyClient'],
         panel: {
             left: ['userMenu'],
             center: [],
@@ -50,7 +51,7 @@ const _modes = {
                        allowKeybindingsWhenModal: false,
                        hasRunDialog: false,
                        hasWorkspaces: false,
-                       createSession: Main.createInitialSetupSession,
+                       components: ['keyring'],
                        panel: {
                            left: [],
                            center: ['dateMenu'],
@@ -66,8 +67,9 @@ const _modes = {
               hasRunDialog: true,
               hasWorkspaces: true,
               hasWindows: true,
-              createSession: Main.createUserSession,
               createUnlockDialog: Main.createSessionUnlockDialog,
+              components: ['networkAgent', 'polkitAgent', 'telepathyClient',
+                           'keyring', 'recorder', 'autorunManager', 'automountManager'],
               panel: {
                   left: ['activities', 'appMenu'],
                   center: ['dateMenu'],
@@ -112,18 +114,11 @@ const SessionMode = new Lang.Class({
         let params = _modes[this.currentMode];
         params = Params.parse(params, _modes[DEFAULT_MODE]);
 
-        this._createSession = params.createSession;
-        delete params.createSession;
         this._createUnlockDialog = params.createUnlockDialog;
         delete params.createUnlockDialog;
 
         Lang.copyProperties(params, this);
         this.emit('updated');
-    },
-
-    createSession: function() {
-        if (this._createSession)
-            this._createSession();
     },
 
     createUnlockDialog: function() {

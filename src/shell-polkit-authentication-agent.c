@@ -62,8 +62,9 @@ struct _ShellPolkitAuthenticationAgent {
   PolkitAgentListener parent_instance;
 
   GList *scheduled_requests;
-
   AuthRequest *current_request;
+
+  gpointer handle;
 };
 
 /* Signals */
@@ -93,55 +94,40 @@ static gboolean initiate_authentication_finish (PolkitAgentListener  *listener,
                                                 GAsyncResult         *res,
                                                 GError              **error);
 
-static void
+void
 shell_polkit_authentication_agent_init (ShellPolkitAuthenticationAgent *agent)
 {
-  gpointer handle;
+}
+
+void
+shell_polkit_authentication_agent_register (ShellPolkitAuthenticationAgent *agent,
+                                            GError                        **error_out)
+{
+  GError *error = NULL;
   PolkitSubject *subject;
-  GError *error;
 
-  subject = NULL;
-
-  error = NULL;
   subject = polkit_unix_session_new_for_process_sync (getpid (),
                                                       NULL, /* GCancellable* */
                                                       &error);
   if (subject == NULL)
     {
-      if (error) /* polkit version 104 and older don't properly set error on failure */
-        {
-          g_warning ("Error getting session for the process we are in: %s (%s %d)",
-                     error->message,
-                     g_quark_to_string (error->domain),
-                     error->code);
-          g_error_free (error);
-        }
-      else
-        {
-          g_warning ("Error getting session for the process we are in");
-        }
+      if (error == NULL) /* polkit version 104 and older don't properly set error on failure */
+        error = g_error_new (POLKIT_ERROR, POLKIT_ERROR_FAILED,
+                             "PolKit failed to properly get our session");
       goto out;
     }
 
-  handle = polkit_agent_listener_register (POLKIT_AGENT_LISTENER (agent),
-                                           POLKIT_AGENT_REGISTER_FLAGS_NONE,
-                                           subject,
-                                           NULL, /* use default object path */
-                                           NULL, /* GCancellable */
-                                           &error);
-  if (handle == NULL)
-    {
-      g_warning ("Error registering polkit authentication agent: %s (%s %d)",
-                 error->message,
-                 g_quark_to_string (error->domain),
-                 error->code);
-      g_error_free (error);
-      goto out;
-    }
-
-  /* We don't need to register so skip saving handle */
+  agent->handle = polkit_agent_listener_register (POLKIT_AGENT_LISTENER (agent),
+                                                  POLKIT_AGENT_REGISTER_FLAGS_NONE,
+                                                  subject,
+                                                  NULL, /* use default object path */
+                                                  NULL, /* GCancellable */
+                                                  &error);
 
  out:
+  if (error != NULL)
+    g_propagate_error (error_out, error);
+
   if (subject != NULL)
     g_object_unref (subject);
 }
@@ -149,12 +135,8 @@ shell_polkit_authentication_agent_init (ShellPolkitAuthenticationAgent *agent)
 static void
 shell_polkit_authentication_agent_finalize (GObject *object)
 {
-  /* ShellPolkitAuthenticationAgent *agent = SHELL_POLKIT_AUTHENTICATION_AGENT (object); */
-
-  /* Specifically left empty since the object stays alive forever - if code
-   *  is reused it would need to free outstanding requests etc.
-   */
-
+  ShellPolkitAuthenticationAgent *agent = SHELL_POLKIT_AUTHENTICATION_AGENT (object);
+  shell_polkit_authentication_agent_unregister (agent);
   G_OBJECT_CLASS (shell_polkit_authentication_agent_parent_class)->finalize (object);
 }
 
@@ -323,6 +305,27 @@ on_request_cancelled (GCancellable *cancellable,
    *  https://bugzilla.gnome.org/show_bug.cgi?id=642968
    */
   g_idle_add (handle_cancelled_in_idle, request);
+}
+
+static void
+auth_request_dismiss (AuthRequest *request)
+{
+  auth_request_complete (request, TRUE);
+}
+
+void
+shell_polkit_authentication_agent_unregister (ShellPolkitAuthenticationAgent *agent)
+{
+  if (agent->scheduled_requests != NULL)
+    {
+      g_list_foreach (agent->scheduled_requests, (GFunc)auth_request_dismiss, NULL);
+      agent->scheduled_requests = NULL;
+    }
+  if (agent->current_request != NULL)
+    auth_request_dismiss (agent->current_request);
+
+  polkit_agent_listener_unregister (agent->handle);
+  agent->handle = NULL;
 }
 
 static void maybe_process_next_request (ShellPolkitAuthenticationAgent *agent);

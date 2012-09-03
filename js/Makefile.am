@@ -1,3 +1,4 @@
+NULL =
 
 EXTRA_DIST = misc/config.js.in
 CLEANFILES = misc/config.js
@@ -37,8 +38,6 @@ nobase_dist_js_DATA = 	\
 	ui/altTab.js		\
 	ui/appDisplay.js	\
 	ui/appFavorites.js	\
-	ui/automountManager.js  \
-	ui/autorunManager.js    \
 	ui/boxpointer.js	\
 	ui/calendar.js		\
 	ui/checkBox.js		\
@@ -47,15 +46,14 @@ nobase_dist_js_DATA = 	\
 	ui/dateMenu.js		\
 	ui/dnd.js		\
 	ui/endSessionDialog.js	\
-	ui/environment.js	\
 	ui/extensionSystem.js	\
 	ui/extensionDownloader.js \
+	ui/environment.js	\
 	ui/flashspot.js		\
 	ui/ibusCandidatePopup.js\
 	ui/grabHelper.js	\
 	ui/iconGrid.js		\
 	ui/keyboard.js		\
-	ui/keyringPrompt.js	\
 	ui/layout.js		\
 	ui/lightbox.js		\
 	ui/lookingGlass.js	\
@@ -64,7 +62,6 @@ nobase_dist_js_DATA = 	\
 	ui/main.js		\
 	ui/messageTray.js	\
 	ui/modalDialog.js	\
-	ui/networkAgent.js	\
 	ui/sessionMode.js	\
 	ui/shellEntry.js	\
 	ui/shellMountOperation.js \
@@ -74,7 +71,6 @@ nobase_dist_js_DATA = 	\
 	ui/panelMenu.js		\
 	ui/placeDisplay.js	\
 	ui/pointerWatcher.js    \
-	ui/polkitAuthenticationAgent.js \
 	ui/popupMenu.js		\
 	ui/remoteSearch.js	\
 	ui/runDialog.js		\
@@ -90,7 +86,6 @@ nobase_dist_js_DATA = 	\
 	ui/status/power.js	\
 	ui/status/volume.js	\
 	ui/status/bluetooth.js	\
-	ui/telepathyClient.js	\
 	ui/tweener.js		\
 	ui/unlockDialog.js	\
 	ui/userMenu.js		\
@@ -102,4 +97,13 @@ nobase_dist_js_DATA = 	\
 	ui/workspaceThumbnail.js	\
 	ui/workspacesView.js	\
 	ui/workspaceSwitcherPopup.js    \
-	ui/xdndHandler.js
+	ui/xdndHandler.js	\
+	ui/components/__init__.js		\
+	ui/components/autorunManager.js		\
+	ui/components/automountManager.js	\
+	ui/components/networkAgent.js		\
+	ui/components/polkitAgent.js		\
+	ui/components/recorder.js		\
+	ui/components/telepathyClient.js	\
+	ui/components/keyring.js		\
+	$(NULL)

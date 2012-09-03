@@ -27,6 +27,9 @@ GType                           shell_polkit_authentication_agent_get_type (void
 ShellPolkitAuthenticationAgent *shell_polkit_authentication_agent_new      (void);
 void                            shell_polkit_authentication_agent_complete (ShellPolkitAuthenticationAgent *agent,
                                                                             gboolean                        dismissed);
+void                            shell_polkit_authentication_agent_register (ShellPolkitAuthenticationAgent *agent,
+                                                                            GError                        **error_out);
+void                            shell_polkit_authentication_agent_unregister (ShellPolkitAuthenticationAgent *agent);
 
 G_END_DECLS
 

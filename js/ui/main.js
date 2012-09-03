@@ -10,12 +10,9 @@ const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
-const AutomountManager = imports.ui.automountManager;
-const AutorunManager = imports.ui.autorunManager;
+const Components = imports.ui.components;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const EndSessionDialog = imports.ui.endSessionDialog;
-const PolkitAuthenticationAgent = imports.ui.polkitAuthenticationAgent;
-const KeyringPrompt = imports.ui.keyringPrompt;
 const Environment = imports.ui.environment;
 const ExtensionSystem = imports.ui.extensionSystem;
 const ExtensionDownloader = imports.ui.extensionDownloader;
@@ -27,7 +24,6 @@ const PlaceDisplay = imports.ui.placeDisplay;
 const RunDialog = imports.ui.runDialog;
 const Layout = imports.ui.layout;
 const LookingGlass = imports.ui.lookingGlass;
-const NetworkAgent = imports.ui.networkAgent;
 const NotificationDaemon = imports.ui.notificationDaemon;
 const WindowAttentionHandler = imports.ui.windowAttentionHandler;
 const ScreenShield = imports.ui.screenShield;
@@ -35,7 +31,6 @@ const Scripting = imports.ui.scripting;
 const SessionMode = imports.ui.sessionMode;
 const ShellDBus = imports.ui.shellDBus;
 const ShellMountOperation = imports.ui.shellMountOperation;
-const TelepathyClient = imports.ui.telepathyClient;
 const UnlockDialog = imports.ui.unlockDialog;
 const WindowManager = imports.ui.windowManager;
 const Magnifier = imports.ui.magnifier;
@@ -45,8 +40,7 @@ const Util = imports.misc.util;
 const OVERRIDES_SCHEMA = 'org.gnome.shell.overrides';
 const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2266bbff);
 
-let automountManager = null;
-let autorunManager = null;
+let componentManager = null;
 let panel = null;
 let overview = null;
 let runDialog = null;
@@ -56,9 +50,7 @@ let messageTray = null;
 let screenShield = null;
 let notificationDaemon = null;
 let windowAttentionHandler = null;
-let telepathyClient = null;
 let ctrlAltTabManager = null;
-let recorder = null;
 let sessionMode = null;
 let shellDBusService = null;
 let shellMountOpDBusService = null;
@@ -70,26 +62,12 @@ let magnifier = null;
 let xdndHandler = null;
 let keyboard = null;
 let layoutManager = null;
-let networkAgent = null;
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
 let _overridesSettings = null;
 
 let background = null;
-
-function createUserSession() {
-    telepathyClient = new TelepathyClient.Client();
-    automountManager = new AutomountManager.AutomountManager();
-    autorunManager = new AutorunManager.AutorunManager();
-    networkAgent = new NetworkAgent.NetworkAgent();
-
-    _initRecorder();
-}
-
-function createGDMSession() {
-    screenShield.showDialog();
-}
 
 function createGDMLoginDialog(parentActor) {
     // We do this this here instead of at the top to prevent GDM
@@ -105,47 +83,8 @@ function createSessionUnlockDialog(parentActor) {
     return [dialog, false];
 }
 
-function createInitialSetupSession() {
-    networkAgent = new NetworkAgent.NetworkAgent();
-}
-
-function _initRecorder() {
-    let recorderSettings = new Gio.Settings({ schema: 'org.gnome.shell.recorder' });
-    let desktopLockdownSettings = new Gio.Settings({ schema: 'org.gnome.desktop.lockdown' });
-    let bindingSettings = new Gio.Settings({ schema: 'org.gnome.shell.keybindings' });
-
-    global.display.add_keybinding('toggle-recording',
-                                  bindingSettings,
-                                  Meta.KeyBindingFlags.NONE, function() {
-        if (recorder == null) {
-            recorder = new Shell.Recorder({ stage: global.stage });
-        }
-
-        if (recorder.is_recording()) {
-            recorder.close();
-            Meta.enable_unredirect_for_screen(global.screen);
-        } else if (!desktopLockdownSettings.get_boolean('disable-save-to-disk')) {
-            // read the parameters from GSettings always in case they have changed
-            recorder.set_framerate(recorderSettings.get_int('framerate'));
-            /* Translators: this is a filename used for screencast recording */
-            // xgettext:no-c-format
-            recorder.set_filename(_("Screencast from %d %t") + '.' + recorderSettings.get_string('file-extension'));
-            let pipeline = recorderSettings.get_string('pipeline');
-
-            if (!pipeline.match(/^\s*$/))
-                recorder.set_pipeline(pipeline);
-            else
-                recorder.set_pipeline(null);
-
-            Meta.disable_unredirect_for_screen(global.screen);
-            recorder.record();
-        }
-    });
-}
-
 function _sessionUpdated() {
     Meta.keybindings_set_custom_handler('panel-run-dialog', sessionMode.hasRunDialog ? openRunDialog : null);
-    loadTheme();
 }
 
 function start() {
@@ -219,8 +158,7 @@ function start() {
     keyboard = new Keyboard.Keyboard();
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
-
-    sessionMode.createSession();
+    componentManager = new Components.ComponentManager();
 
     layoutManager.init();
     keyboard.init();
@@ -237,12 +175,6 @@ function start() {
     // Provide the bus object for gnome-session to
     // initiate logouts.
     EndSessionDialog.init();
-
-    // Attempt to become a PolicyKit authentication agent
-    PolkitAuthenticationAgent.init()
-
-    // Become a prompter for gnome keyring
-    KeyringPrompt.init();
 
     _startDate = new Date();
 

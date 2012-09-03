@@ -63,10 +63,10 @@ function makeMessageFromTplEvent(event) {
     };
 }
 
-const Client = new Lang.Class({
-    Name: 'Client',
+const TelepathyClient = new Lang.Class({
+    Name: 'TelepathyClient',
 
-    _init : function() {
+    _init: function() {
         // channel path -> ChatSource
         this._chatSources = {};
         this._chatState = Tp.ChannelChatState.ACTIVE;
@@ -89,15 +89,19 @@ const Client = new Lang.Class({
         // channel matching its filters is detected.
         // The second argument, recover, means _observeChannels will be run
         // for any existing channel as well.
-        this._tpClient = new Shell.TpClient({ 'account-manager': this._accountManager,
-                                              'name': 'GnomeShell',
-                                              'uniquify-name': true })
+        this._tpClient = new Shell.TpClient({ name: 'GnomeShell',
+                                              account_manager: this._accountManager,
+                                              uniquify_name: true });
         this._tpClient.set_observe_channels_func(
             Lang.bind(this, this._observeChannels));
         this._tpClient.set_approve_channels_func(
             Lang.bind(this, this._approveChannels));
         this._tpClient.set_handle_channels_func(
             Lang.bind(this, this._handleChannels));
+
+        // Watch subscription requests and connection errors
+        this._subscriptionSource = null;
+        this._accountSource = null;
 
         // Workaround for gjs not supporting GPtrArray in signals.
         // See BGO bug #653941 for context.
@@ -108,21 +112,26 @@ const Client = new Lang.Class({
         // needed
         this._tpClient.set_delegated_channels_callback(
             Lang.bind(this, this._delegatedChannelsCb));
+    },
 
+    enable: function() {
         try {
             this._tpClient.register();
         } catch (e) {
             throw new Error('Couldn\'t register Telepathy client. Error: \n' + e);
         }
 
-        // Watch subscription requests and connection errors
-        this._subscriptionSource = null;
-        this._accountSource = null;
+        this._accountManagerValidityChangedId = this._accountManager.connect('account-validity-changed',
+                                                                             Lang.bind(this, this._accountValidityChanged));
 
-        this._accountManager.connect('account-validity-changed',
-            Lang.bind(this, this._accountValidityChanged));
+        if (!this._accountManager.is_prepared(Tp.AccountManager.get_feature_quark_core()))
+            this._accountManager.prepare_async(null, Lang.bind(this, this._accountManagerPrepared));
+    },
 
-        this._accountManager.prepare_async(null, Lang.bind(this, this._accountManagerPrepared));
+    disable: function() {
+        this._tpClient.unregister();
+        this._accountManager.disconnect(this._accountManagerValidityChangedId);
+        this._accountManagerValidityChangedId = 0;
     },
 
     _observeChannels: function(observer, account, conn, channels,
@@ -1399,3 +1408,4 @@ const AccountNotification = new Lang.Class({
         this.parent();
     }
 });
+const Component = TelepathyClient;

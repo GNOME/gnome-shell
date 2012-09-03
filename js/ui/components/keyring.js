@@ -192,23 +192,35 @@ const KeyringDialog = new Lang.Class({
     },
 
     _onContinueButton: function() {
-        this.prompt.complete()
+        this.prompt.complete();
     },
 
     _onCancelButton: function() {
-        this.prompt.cancel()
+        this.prompt.cancel();
     },
 });
 
-function init() {
-    prompter = new Gcr.SystemPrompter();
-    prompter.connect('new-prompt', function(prompter) {
-        let dialog = new KeyringDialog();
-        return dialog.prompt;
-    });
+const KeyringPrompter = new Lang.Class({
+    Name: 'KeyringPrompter',
 
-    let connection = Gio.DBus.session;
-    prompter.register(connection);
-    Gio.bus_own_name_on_connection (connection, 'org.gnome.keyring.SystemPrompter',
-                                    Gio.BusNameOwnerFlags.REPLACE, null, null);
-}
+    _init: function() {
+        this._prompter = new Gcr.SystemPrompter();
+        this._prompter.connect('new-prompt', function(prompter) {
+            let dialog = new KeyringDialog();
+            return dialog.prompt;
+        });
+        this._dbusId = null;
+    },
+
+    enable: function() {
+        this._prompter.register(Gio.DBus.session);
+        this._dbusId = Gio.DBus.session.own_name('org.gnome.keyring.SystemPrompter',
+                                                 Gio.BusNameOwnerFlags.REPLACE, null, null);
+    },
+
+    disable: function() {
+        Gio.DBus.session.unown_name(this._dbusId);
+    }
+});
+
+const Component = KeyringPrompter;
