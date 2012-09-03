@@ -694,14 +694,20 @@ typedef gboolean (* ClutterProgressFunc) (const GValue *a,
 void clutter_interval_register_progress_func (GType               value_type,
                                               ClutterProgressFunc func);
 
+CLUTTER_AVAILABLE_IN_1_12
 GType clutter_matrix_get_type (void) G_GNUC_CONST;
 
+CLUTTER_AVAILABLE_IN_1_12
 ClutterMatrix * clutter_matrix_alloc            (void);
+CLUTTER_AVAILABLE_IN_1_12
 ClutterMatrix * clutter_matrix_init_identity    (ClutterMatrix       *matrix);
+CLUTTER_AVAILABLE_IN_1_12
 ClutterMatrix * clutter_matrix_init_from_array  (ClutterMatrix       *matrix,
                                                  const float          values[16]);
+CLUTTER_AVAILABLE_IN_1_12
 ClutterMatrix * clutter_matrix_init_from_matrix (ClutterMatrix       *a,
                                                  const ClutterMatrix *b);
+CLUTTER_AVAILABLE_IN_1_12
 void            clutter_matrix_free             (ClutterMatrix       *matrix);
 
 G_END_DECLS
