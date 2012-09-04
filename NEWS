@@ -1,3 +1,18 @@
+3.5.91
+======
+* Do not include markup in app not responding dialog [Alex]
+* Fix subtracting unredirected windows from visible region [Jasper; #677116]
+* Minor improvements and bugfixes [Jasper, Florian; #682648, #682993]
+
+Contributors:
+  Alexander Larsson, Florian Müllner, Jasper St. Pierre
+
+Translations:
+  Dirgita [id], Piotr Drąg [pl], A S Alam [pa], Yuri Myasoedov [ru],
+  Milo Casagrande [it], Nilamdyuti Goswami [as], Tom Tryfonidis [el],
+  Duarte Loreto [pt], Fran Diéguez [gl], Nguyễn Thái Ngọc Duy [vi],
+  Aurimas Černius [lt], Daniel Nylander [sv]
+
 3.5.90
 ======
 * Fix logic for handling translations of the windows group [Owen; #681221]
