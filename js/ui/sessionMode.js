@@ -6,20 +6,31 @@ const Signals = imports.signals;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 
-const DEFAULT_MODE = 'user';
+const DEFAULT_MODE = 'restrictive';
 
 const _modes = {
-    'gdm': {
+    'restrictive': {
         hasOverview: false,
         showCalendarEvents: false,
         allowSettings: false,
         allowExtensions: false,
-        allowKeybindingsWhenModal: true,
+        allowKeybindingsWhenModal: false,
         hasRunDialog: false,
         hasWorkspaces: false,
         hasWindows: false,
-        createUnlockDialog: Main.createGDMLoginDialog,
+        isLocked: false,
+        createUnlockDialog: null,
         components: [],
+        panel: {
+            left: [],
+            center: [],
+            right: []
+        },
+    },
+
+    'gdm': {
+        allowKeybindingsWhenModal: true,
+        createUnlockDialog: Main.createGDMLoginDialog,
         panel: {
             left: [],
             center: ['dateMenu'],
@@ -29,16 +40,9 @@ const _modes = {
     },
 
     'lock-screen': {
-        hasOverview: false,
-        showCalendarEvents: false,
-        allowSettings: false,
-        allowExtensions: false,
-        allowKeybindingsWhenModal: false,
-        hasRunDialog: false,
-        hasWorkspaces: false,
-        hasWindows: false,
         isLocked: true,
         components: ['networkAgent', 'polkitAgent', 'telepathyClient'],
+        createUnlockDialog: Main.createSessionUnlockDialog,
         panel: {
             left: ['userMenu'],
             center: [],
@@ -47,13 +51,6 @@ const _modes = {
     },
 
     'initial-setup': {
-        hasOverview: false,
-        showCalendarEvents: false,
-        allowSettings: false,
-        allowExtensions: false,
-        allowKeybindingsWhenModal: false,
-        hasRunDialog: false,
-        hasWorkspaces: false,
         components: ['keyring'],
         panel: {
             left: [],
@@ -67,12 +64,9 @@ const _modes = {
         showCalendarEvents: true,
         allowSettings: true,
         allowExtensions: true,
-        allowKeybindingsWhenModal: false,
         hasRunDialog: true,
         hasWorkspaces: true,
         hasWindows: true,
-        createUnlockDialog: Main.createSessionUnlockDialog,
-        isLocked: false,
         components: ['networkAgent', 'polkitAgent', 'telepathyClient',
                      'keyring', 'recorder', 'autorunManager', 'automountManager'],
         panel: {
