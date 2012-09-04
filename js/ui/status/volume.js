@@ -62,6 +62,11 @@ const VolumeMenu = new Lang.Class({
         this._inputSlider.connect('drag-end', Lang.bind(this, this._notifyVolumeChange));
         this.addMenuItem(this._inputTitle);
         this.addMenuItem(this._inputSlider);
+
+        if (this._control.get_state() == Gvc.MixerControlState.READY) {
+            this._readOutput();
+            this._readInput();
+        }
     },
 
     scroll: function(direction) {
