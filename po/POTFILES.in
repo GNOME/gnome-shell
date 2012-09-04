@@ -13,6 +13,7 @@ js/ui/components/autorunManager.js
 js/ui/components/keyring.js
 js/ui/components/networkAgent.js
 js/ui/components/polkitAgent.js
+js/ui/components/recorder.js
 js/ui/components/telepathyClient.js
 js/ui/dash.js
 js/ui/dateMenu.js
