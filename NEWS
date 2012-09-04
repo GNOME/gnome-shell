@@ -1,3 +1,58 @@
+3.5.91
+======
+* Improve modal dialog styling of network secret prompts [Jasper; #682412]
+* Fix visibility of non-active workspaces during overview transition
+  [Florian; #682002]
+* Improve scrollbar theming [Cosimo; #682476]
+* Make sure the app menu remains hidden in locked state [Florian; #682475]
+* Add tooltip to show-applications icon [Jasper; #682445]
+* Do not add duplicate remote search providers [Florian; #682470]
+* Handle 'popup-menu' signal on summary items [Florian; #682486]
+* Fix dwelling during mouse-down [Owen; #682385]
+* Set label actor for endSessionDialog.ListItem [Alejandro; #677503]
+* Don't match on comments when searching applications [Florian; #682529]
+* Make workspace selector more similar to the mockup [Stefano; #662087]
+* Fix extension installation and reloading [Jasper; #682578]
+* Hide removable devices in the lock screen [Giovanni; #681143]
+* Reset cancellable after hitting Escape on login screen [Alban; #681537]
+* Fix suspend from the user menu [Giovanni; #682746]
+* Set label actor for summary items in message tray [Alejandro; #677229]
+* Set label for the "Show applications" dash button [Alejandro; #682366]
+* Load extensions as late as possible [Jasper; #682822]
+* Improve mount operation dialogs [Jon; #682645]
+* Remove "Connect to ..." item from places search [Florian; #682817]
+* Don't auto-expand notifications with actions [Giovanni; #682738]
+* Add a new lock screen menu to combine volume network and power
+  [Giovanni; #682540]
+* Add support for pre-edit to StIMText [Daiki; #664041]
+* Remove StIconType [Jasper, Florian, Rui, Giovanni, Debarshi; #682540]
+* Use monitor geometry for dwelling [Florian; #683044]
+* Add support for surrounding-text to StIMText [Daiki; #683015]
+* Improve the placement and style of the "No results" text [Jasper; #683135]
+* Remove broken network device activation policy [Giovanni; #683136]
+* Hide power status icon when no battery is present [Tim; #683080]
+* Ensure summary items are square and have spacing [Debarshi; #682248]
+* Fix close buttons overlapping screen edge [Debarshi; #682343]
+* Escape the tray when a legacy icon is clicked [Giovanni; #682244]
+* Update arrow in the screen shield to match latest mockups [Giovanni; #682285]
+* Allow lifting the screen shield with the mouse wheel [Giovanni; #683164]
+* Make sure to show the app menu after unlocking the screen [Jasper; #683154]
+* Misc bug fixes and cleanups [Debarshi, Florian, Giovanni, Jasper, Rui;
+  #582650, #667439, #682238, #682268, #682429, #682455, #682544, #682546,
+  #682683, #682710, #682998, #683073, #683137, #683156]
+
+Contributors:
+  Alban Browaeys, Giovanni Campagna, Cosimo Cecchi, Stefano Facchini,
+  Adel Gadllah, Tim Lunn, Rui Matos, William Jon McCann, Florian Müllner,
+  Alejandro Piñeiro, Debarshi Ray, Jasper St. Pierre, Owen Taylor, Daiki Ueno
+
+Translations:
+  Piotr Drąg [pl], Takayuki KUSANO [ja], Kjartan Maraas [nb],
+  Aurimas Černius [lt], Daniel Mustieles [es], Yuri Myasoedov [ru],
+  Khaled Hosny [ar], Yaron Shahrabani [he], Tom Tryfonidis [el],
+  Nilamdyuti Goswami [as], Fran Diéguez [gl], Nguyễn Thái Ngọc Duy [vi],
+  A S Alam [pa], Dr.T.Vasudevan [ta], Luca Ferretti [it]
+
 3.5.90
 ======
 * Use symbolic icons for workspace switch OSD [Jon; #680738]
