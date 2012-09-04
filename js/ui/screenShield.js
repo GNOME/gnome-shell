@@ -27,7 +27,7 @@ const LOCK_ENABLED_KEY = 'lock-enabled';
 const CURTAIN_SLIDE_TIME = 0.5;
 // fraction of screen height the arrow must reach before completing
 // the slide up automatically
-const ARROW_DRAG_TRESHOLD = 0.1;
+const ARROW_DRAG_THRESHOLD = 0.1;
 
 // Parameters for the arrow animation
 const N_ARROWS = 3;
@@ -496,7 +496,7 @@ const ScreenShield = new Lang.Class({
     },
 
     _onDragEnd: function(action, actor, eventX, eventY, modifiers) {
-        if (this._lockScreenGroup.y < -(ARROW_DRAG_TRESHOLD * global.stage.height)) {
+        if (this._lockScreenGroup.y < -(ARROW_DRAG_THRESHOLD * global.stage.height)) {
             // Complete motion automatically
             this._hideLockScreen(true);
         } else {
