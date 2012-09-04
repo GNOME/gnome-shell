@@ -558,10 +558,16 @@ const ScreenShield = new Lang.Class({
     },
 
     showDialog: function() {
-        if (!this._isModal) {
-            Main.pushModal(this.actor);
-            this._isModal = true;
-        }
+        // Ensure that the stage window is mapped, before taking a grab
+        // otherwise X errors out
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+            if (!this._isModal) {
+                Main.pushModal(this.actor);
+                this._isModal = true;
+            }
+
+            return false;
+        }));
 
         this.actor.show();
         this._isGreeter = Main.sessionMode.isGreeter;
