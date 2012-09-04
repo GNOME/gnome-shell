@@ -9,23 +9,24 @@ const Params = imports.misc.params;
 const DEFAULT_MODE = 'user';
 
 const _modes = {
-    'gdm': { hasOverview: false,
-             showCalendarEvents: false,
-             allowSettings: false,
-             allowExtensions: false,
-             allowKeybindingsWhenModal: true,
-             hasRunDialog: false,
-             hasWorkspaces: false,
-             hasWindows: false,
-             createUnlockDialog: Main.createGDMLoginDialog,
-             components: [],
-             panel: {
-                 left: [],
-                 center: ['dateMenu'],
-                 right: ['a11y', 'display', 'keyboard',
-                         'volume', 'battery', 'powerMenu']
-             }
-           },
+    'gdm': {
+        hasOverview: false,
+        showCalendarEvents: false,
+        allowSettings: false,
+        allowExtensions: false,
+        allowKeybindingsWhenModal: true,
+        hasRunDialog: false,
+        hasWorkspaces: false,
+        hasWindows: false,
+        createUnlockDialog: Main.createGDMLoginDialog,
+        components: [],
+        panel: {
+            left: [],
+            center: ['dateMenu'],
+            right: ['a11y', 'display', 'keyboard',
+                    'volume', 'battery', 'powerMenu']
+        }
+    },
 
     'lock-screen': {
         hasOverview: false,
@@ -45,40 +46,42 @@ const _modes = {
         },
     },
 
-    'initial-setup': { hasOverview: false,
-                       showCalendarEvents: false,
-                       allowSettings: false,
-                       allowExtensions: false,
-                       allowKeybindingsWhenModal: false,
-                       hasRunDialog: false,
-                       hasWorkspaces: false,
-                       components: ['keyring'],
-                       panel: {
-                           left: [],
-                           center: ['dateMenu'],
-                           right: ['a11y', 'keyboard', 'volume']
-                       }
-                     },
+    'initial-setup': {
+        hasOverview: false,
+        showCalendarEvents: false,
+        allowSettings: false,
+        allowExtensions: false,
+        allowKeybindingsWhenModal: false,
+        hasRunDialog: false,
+        hasWorkspaces: false,
+        components: ['keyring'],
+        panel: {
+            left: [],
+            center: ['dateMenu'],
+            right: ['a11y', 'keyboard', 'volume']
+        }
+    },
 
-    'user': { hasOverview: true,
-              showCalendarEvents: true,
-              allowSettings: true,
-              allowExtensions: true,
-              allowKeybindingsWhenModal: false,
-              hasRunDialog: true,
-              hasWorkspaces: true,
-              hasWindows: true,
-              createUnlockDialog: Main.createSessionUnlockDialog,
-              isLocked: false,
-              components: ['networkAgent', 'polkitAgent', 'telepathyClient',
-                           'keyring', 'recorder', 'autorunManager', 'automountManager'],
-              panel: {
-                  left: ['activities', 'appMenu'],
-                  center: ['dateMenu'],
-                  right: ['a11y', 'keyboard', 'volume', 'bluetooth',
-                          'network', 'battery', 'userMenu']
-              }
-            }
+    'user': {
+        hasOverview: true,
+        showCalendarEvents: true,
+        allowSettings: true,
+        allowExtensions: true,
+        allowKeybindingsWhenModal: false,
+        hasRunDialog: true,
+        hasWorkspaces: true,
+        hasWindows: true,
+        createUnlockDialog: Main.createSessionUnlockDialog,
+        isLocked: false,
+        components: ['networkAgent', 'polkitAgent', 'telepathyClient',
+                     'keyring', 'recorder', 'autorunManager', 'automountManager'],
+        panel: {
+            left: ['activities', 'appMenu'],
+            center: ['dateMenu'],
+            right: ['a11y', 'keyboard', 'volume', 'bluetooth',
+                    'network', 'battery', 'userMenu']
+        }
+    }
 };
 
 function listModes() {
