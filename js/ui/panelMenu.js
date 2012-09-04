@@ -21,6 +21,10 @@ const ButtonBox = new Lang.Class({
         this.actor = new Shell.GenericContainer(params);
         this.actor._delegate = this;
 
+        this.container = new St.Bin({ y_fill: true,
+                                      x_fill: true,
+                                      child: this.actor });
+
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));

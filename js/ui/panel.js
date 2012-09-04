@@ -1174,7 +1174,7 @@ const Panel = new Lang.Class({
             let indicator = this.statusArea[role];
             if (!indicator)
                 continue;
-            indicator._panelContainer.hide();
+            indicator.container.hide();
         }
     },
 
@@ -1206,18 +1206,12 @@ const Panel = new Lang.Class({
     },
 
     _addToPanelBox: function(role, indicator, position, box) {
-        let container = indicator._panelContainer;
-        if (!container) {
-            container = new St.Bin({ y_fill: true,
-                                     child: indicator.actor });
-            indicator._panelContainer = container;
-        }
+        let container = indicator.container;
         container.show();
 
         let parent = container.get_parent();
-        if (parent) {
+        if (parent)
             parent.remove_actor(container);
-        }
 
         box.insert_child_at_index(container, position);
         if (indicator.menu)
