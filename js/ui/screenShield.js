@@ -606,7 +606,9 @@ const ScreenShield = new Lang.Class({
 
     _ensureUnlockDialog: function() {
         if (!this._dialog) {
-            [this._dialog, this._keepDialog] = Main.sessionMode.createUnlockDialog(this._lockDialogGroup);
+            let constructor = Main.sessionMode.unlockDialog;
+            this._dialog = new constructor(this._lockDialogGroup);
+            this._keepDialog = Main.sessionMode.isGreeter;
             if (!this._dialog) {
                 // This session mode has no locking capabilities
                 this.unlock();
@@ -624,7 +626,7 @@ const ScreenShield = new Lang.Class({
             this._dialog.connect('unlocked', Lang.bind(this, this._onUnlockSucceded));
         }
 
-        if (this._keepDialog) {
+        if (Main.sessionMode.isGreeter) {
             // Notify the other components that even though we are showing the
             // screenshield, we're not in a locked state
             // (this happens for the gdm greeter)
@@ -764,12 +766,9 @@ const ScreenShield = new Lang.Class({
         if (this._hasLockScreen)
             this._clearLockScreen();
 
-        if (this._keepDialog) {
-            // The dialog must be kept alive,
-            // so immediately go back to it
-            // This will also reset _isLocked
-            this._ensureUnlockDialog();
-            return;
+        if (this._dialog && !this._keepDialog) {
+            this._dialog.destroy();
+            this._dialog = null;
         }
 
         this._lightbox.hide();

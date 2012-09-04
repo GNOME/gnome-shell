@@ -19,7 +19,8 @@ const _modes = {
         hasWorkspaces: false,
         hasWindows: false,
         isLocked: false,
-        createUnlockDialog: null,
+        isGreeter: false,
+        unlockDialog: null,
         components: [],
         panel: {
             left: [],
@@ -30,7 +31,8 @@ const _modes = {
 
     'gdm': {
         allowKeybindingsWhenModal: true,
-        createUnlockDialog: Main.createGDMLoginDialog,
+        isGreeter: true,
+        unlockDialog: imports.gdm.loginDialog.LoginDialog,
         panel: {
             left: [],
             center: ['dateMenu'],
@@ -41,8 +43,9 @@ const _modes = {
 
     'lock-screen': {
         isLocked: true,
+        isGreeter: undefined,
+        unlockDialog: undefined,
         components: ['networkAgent', 'polkitAgent', 'telepathyClient'],
-        createUnlockDialog: Main.createSessionUnlockDialog,
         panel: {
             left: ['userMenu'],
             center: [],
@@ -67,6 +70,8 @@ const _modes = {
         hasRunDialog: true,
         hasWorkspaces: true,
         hasWindows: true,
+        unlockDialog: imports.ui.unlockDialog.UnlockDialog,
+        isLocked: false,
         components: ['networkAgent', 'polkitAgent', 'telepathyClient',
                      'keyring', 'recorder', 'autorunManager', 'automountManager'],
         panel: {
@@ -113,18 +118,14 @@ const SessionMode = new Lang.Class({
         let params = _modes[this.currentMode];
         params = Params.parse(params, _modes[DEFAULT_MODE]);
 
-        this._createUnlockDialog = params.createUnlockDialog;
-        delete params.createUnlockDialog;
+        // A simplified version of Lang.copyProperties, handles
+        // undefined as a special case for "no change / inherit from previous mode"
+        for (let prop in params) {
+            if (params[prop] !== undefined)
+                this[prop] = params[prop];
+        }
 
-        Lang.copyProperties(params, this);
         this.emit('updated');
-    },
-
-    createUnlockDialog: function() {
-        if (this._createUnlockDialog)
-            return this._createUnlockDialog.apply(this, arguments);
-        else
-            return null;
-    },
+    }
 });
 Signals.addSignalMethods(SessionMode.prototype);

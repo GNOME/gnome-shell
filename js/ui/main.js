@@ -69,22 +69,9 @@ let _overridesSettings = null;
 
 let background = null;
 
-function createGDMLoginDialog(parentActor) {
-    // We do this this here instead of at the top to prevent GDM
-    // related code from getting loaded in normal user sessions
-    const LoginDialog = imports.gdm.loginDialog;
-
-    let loginDialog = new LoginDialog.LoginDialog(parentActor);
-    return [loginDialog, true];
-}
-
-function createSessionUnlockDialog(parentActor) {
-    let dialog = new UnlockDialog.UnlockDialog(parentActor);
-    return [dialog, false];
-}
-
 function _sessionUpdated() {
-    Meta.keybindings_set_custom_handler('panel-run-dialog', sessionMode.hasRunDialog ? openRunDialog : null);
+    if (sessionMode.isGreeter)
+        screenShield.showDialog();
 }
 
 function start() {
