@@ -6,47 +6,46 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
-"cgi?product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-10-17 13:01+0000\n"
-"PO-Revision-Date: 2012-03-23 11:56+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=cogl&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-08-01 10:44+0000\n"
+"PO-Revision-Date: 2012-09-05 00:49+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
-"Language-Team: Magyar <gnome-hu-list at gnome dot org>\n"
+"Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
+"Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
-"X-Generator: Lokalize 1.0\n"
+"X-Generator: Lokalize 1.4\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: ../cogl/cogl-debug.c:154
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
 msgstr "Támogatott hibakeresési értékek:"
 
-#: ../cogl/cogl-debug.c:159
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
 msgstr "Speciális hibakeresési értékek:"
 
-#: ../cogl/cogl-debug.c:161 ../cogl/cogl-debug.c:163
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr ""
 "Minden nem viselkedéssel kapcsolatos hibakeresési lehetőség engedélyezése"
 
-#: ../cogl/cogl-debug.c:207
-msgid "Cogl debugging flags to set"
-msgstr "Beállítandó Cogl hibakereső jelzők"
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "További környezeti változók:"
 
-#: ../cogl/cogl-debug.c:209
-msgid "Cogl debugging flags to unset"
-msgstr "Törlendő Cogl hibakereső jelzők"
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr ""
+"GL kiterjesztések vesszőkkel elválasztott listája, amelyek letiltása "
+"szimulálandó"
 
-#: ../cogl/cogl-debug.c:258
-msgid "Cogl Options"
-msgstr "Cogl beállításai"
-
-#: ../cogl/cogl-debug.c:259
-msgid "Show Cogl options"
-msgstr "Cogl beállításainak megjelenítése"
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr ""
+"A GL verzió felülbírálása, amelyről a Cogl feltételezi, hogy támogatott"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
@@ -55,6 +54,7 @@ msgstr "Cogl beállításainak megjelenítése"
 #: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Cogl követése"
 
@@ -346,4 +346,22 @@ msgstr "Vágás követése"
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "Információk naplózása a Cogl vágásmegvalósításáról"
 
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr "Teljesítménygondok követése"
 
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "Az optimálisnál rosszabb Cogl használat kiszűrése"
+
+#~ msgid "Cogl debugging flags to set"
+#~ msgstr "Beállítandó Cogl hibakereső jelzők"
+
+#~ msgid "Cogl debugging flags to unset"
+#~ msgstr "Törlendő Cogl hibakereső jelzők"
+
+#~ msgid "Cogl Options"
+#~ msgstr "Cogl beállításai"
+
+#~ msgid "Show Cogl options"
+#~ msgstr "Cogl beállításainak megjelenítése"
