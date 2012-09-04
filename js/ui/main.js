@@ -70,6 +70,7 @@ let _overridesSettings = null;
 let background = null;
 
 function _sessionUpdated() {
+    Meta.keybindings_set_custom_handler('panel-run-dialog', sessionMode.hasRunDialog ? openRunDialog : null);
     if (sessionMode.isGreeter)
         screenShield.showDialog();
 }
