@@ -4,12 +4,19 @@
 # pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas:
 # gnomepl@aviary.pl
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+# Zbigniew Chyla <chyla@alice.ci.pwr.wroc.pl>, 2002-2003.
+# Artur Flinta <aflinta@at.kernel.pl>, 2003-2005.
+# Marek Stępień <marcoos@aviary.pl>, 2007.
+# Wadim Dziedzic <wdziedzic@aviary.pl>, 2007.
+# Tomasz Dominikowski <dominikowski@gmail.com>, 2008-2009.
+# Piotr Drąg <piotrdrag@gmail.com>, 2010-2012.
+# Aviary.pl <gnomepl@aviary.pl>, 2007-2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-22 03:03+0200\n"
-"PO-Revision-Date: 2012-08-22 03:04+0200\n"
+"POT-Creation-Date: 2012-09-04 19:28+0200\n"
+"PO-Revision-Date: 2012-09-04 19:29+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -1579,27 +1586,27 @@ msgstr "test wyrażenia pozycji zwrócił wartość FAŁSZ, lecz nie ustawił b�
 
 #: ../src/ui/theme-viewer.c:1272
 msgid "Error was expected but none given"
-msgstr "Spodziewano się błędu, lecz nie podano żadnego"
+msgstr "Oczekiwano błędu, lecz nie otrzymano żadnego"
 
 #: ../src/ui/theme-viewer.c:1274
 #, c-format
 msgid "Error %d was expected but %d given"
-msgstr "Spodziewano się błędu %d, lecz otrzymano %d"
+msgstr "Oczekiwano błędu %d, lecz otrzymano %d"
 
 #: ../src/ui/theme-viewer.c:1280
 #, c-format
 msgid "Error not expected but one was returned: %s"
-msgstr "Nie spodziewano się błędu, lecz został on zwrócony: %s"
+msgstr "Nie oczekiwano błędu, lecz został on zwrócony: %s"
 
 #: ../src/ui/theme-viewer.c:1284
 #, c-format
 msgid "x value was %d, %d was expected"
-msgstr "Wartością X było %d, spodziewano się wartości %d"
+msgstr "Wartością X było %d, oczekiwano wartości %d"
 
 #: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "y value was %d, %d was expected"
-msgstr "Wartością Y było %d, spodziewano się wartości %d"
+msgstr "Wartością Y było %d, oczekiwano wartości %d"
 
 #: ../src/ui/theme-viewer.c:1352
 #, c-format
