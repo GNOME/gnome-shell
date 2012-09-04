@@ -219,6 +219,7 @@ const KeyringPrompter = new Lang.Class({
     },
 
     disable: function() {
+        this._prompter.unregister(false);
         Gio.DBus.session.unown_name(this._dbusId);
     }
 });
