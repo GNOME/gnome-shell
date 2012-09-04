@@ -1204,7 +1204,6 @@ const SummaryItem = new Lang.Class({
             this.emit('done-displaying-content');
         }));
 
-        this.notificationStackWidget.add_actor(this._closeButton);
         this.notificationStackView = new St.ScrollView({ style_class: source.isChat ? '' : 'summary-notification-stack-scrollview',
                                                          vscrollbar_policy: source.isChat ? Gtk.PolicyType.NEVER : Gtk.PolicyType.AUTOMATIC,
                                                          hscrollbar_policy: Gtk.PolicyType.NEVER });
@@ -1213,6 +1212,7 @@ const SummaryItem = new Lang.Class({
                                                     vertical: true });
         this.notificationStackView.add_actor(this.notificationStack);
         this.notificationStackWidget.add_actor(this.notificationStackView);
+        this.notificationStackWidget.add_actor(this._closeButton);
         this._stackedNotifications = [];
 
         this._oldMaxScrollAdjustment = 0;
