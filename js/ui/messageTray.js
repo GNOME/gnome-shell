@@ -318,6 +318,7 @@ const Notification = new Lang.Class({
         // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
         this.isTransient = false;
         this.expanded = false;
+        this.focused = false;
         this.showWhenLocked = false;
         this.acknowledged = false;
         this._destroyed = false;
@@ -1913,6 +1914,7 @@ const MessageTray = new Lang.Class({
         let notificationExpanded = this._notification && this._notification.expanded;
         let notificationExpired = this._notificationTimeoutId == 0 &&
                                   !(this._notification && this._notification.urgency == Urgency.CRITICAL) &&
+                                  !(this._notification && this._notification.focused) &&
                                   !this._pointerInTray &&
                                   !this._locked &&
                                   !(this._pointerInKeyboard && notificationExpanded);
@@ -2125,6 +2127,9 @@ const MessageTray = new Lang.Class({
                                                               Lang.bind(this, this._onIdleMonitorWatch));
         this._notificationClickedId = this._notification.connect('done-displaying',
                                                                  Lang.bind(this, this._escapeTray));
+        this._notification.connect('unfocused', Lang.bind(this, function() {
+            this._updateState();
+        }));
         this._notificationBin.child = this._notification.actor;
 
         this._notificationWidget.opacity = 0;

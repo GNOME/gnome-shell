@@ -756,6 +756,14 @@ const ChatNotification = new Lang.Class({
         this._responseEntry.clutter_text.connect('text-changed', Lang.bind(this, this._onEntryChanged));
         this.setActionArea(this._responseEntry);
 
+        this._responseEntry.clutter_text.connect('key-focus-in', Lang.bind(this, function() {
+            this.focused = true;
+        }));
+        this._responseEntry.clutter_text.connect('key-focus-out', Lang.bind(this, function() {
+            this.focused = false;
+            this.emit('unfocused');
+        }));
+
         this._oldMaxScrollAdjustment = 0;
         this._createScrollArea();
         this._lastGroup = null;
