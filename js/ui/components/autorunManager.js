@@ -169,7 +169,8 @@ const AutorunManager = new Lang.Class({
     },
 
     disable: function() {
-        this._residentSource.destroy();
+        if (this._residentSource)
+            this._residentSource.destroy();
         this._volumeMonitor.disconnect(this._mountAddedId);
         this._volumeMonitor.disconnect(this._mountRemovedId);
     },
