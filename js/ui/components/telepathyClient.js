@@ -746,8 +746,6 @@ const ChatSource = new Lang.Class({
             this._pendingMessages.splice(idx, 1);
             this.countUpdated();
         }
-        else
-            throw new Error('Message not in our pending list: ' + message);
     },
 
     _ackMessages: function() {
