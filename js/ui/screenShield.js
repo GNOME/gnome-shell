@@ -461,7 +461,7 @@ const ScreenShield = new Lang.Class({
         // 7 standard scrolls to lift up
         if (this._lockScreenScrollCounter > 35) {
             this._ensureUnlockDialog();
-            this._hideLockScreen(0);
+            this._hideLockScreen(true);
         }
 
         return true;
