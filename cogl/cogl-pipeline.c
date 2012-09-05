@@ -1521,16 +1521,20 @@ _cogl_pipeline_prune_to_n_layers (CoglPipeline *pipeline, int n)
   if (authority->n_layers <= n)
     return;
 
-  _cogl_pipeline_pre_change_notify (pipeline,
-                                    COGL_PIPELINE_STATE_LAYERS,
-                                    NULL,
-                                    FALSE);
-
+  /* This call to foreach_layer_internal needs to be done before
+   * calling pre_change_notify because it recreates the layer cache.
+   * We are relying on pre_change_notify to clear the layer cache
+   * before we change the number of layers */
   state.keep_n = n;
   state.current_pos = 0;
   _cogl_pipeline_foreach_layer_internal (pipeline,
                                          update_prune_layers_info_cb,
                                          &state);
+
+  _cogl_pipeline_pre_change_notify (pipeline,
+                                    COGL_PIPELINE_STATE_LAYERS,
+                                    NULL,
+                                    FALSE);
 
   pipeline->differences |= COGL_PIPELINE_STATE_LAYERS;
   pipeline->n_layers = n;
