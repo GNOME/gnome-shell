@@ -67,6 +67,8 @@ struct _ClutterGestureAction
  * @gesture_progress: class handler for the #ClutterGestureAction::gesture-progress signal
  * @gesture_end: class handler for the #ClutterGestureAction::gesture-end signal
  * @gesture_cancel: class handler for the #ClutterGestureAction::gesture-cancel signal
+ * @gesture_prepare: virtual function called before emitting the
+ *   #ClutterGestureAction::gesture-cancel signal
  *
  * The <structname>ClutterGestureClass</structname> structure contains only
  * private data.
@@ -87,6 +89,8 @@ struct _ClutterGestureActionClass
                                  ClutterActor          *actor);
   void     (* gesture_cancel)   (ClutterGestureAction  *action,
                                  ClutterActor          *actor);
+  gboolean (* gesture_prepare)  (ClutterGestureAction  *action,
+                                 ClutterActor          *actor);
 
   /*< private >*/
   void (* _clutter_gesture_action1) (void);
@@ -95,7 +99,6 @@ struct _ClutterGestureActionClass
   void (* _clutter_gesture_action4) (void);
   void (* _clutter_gesture_action5) (void);
   void (* _clutter_gesture_action6) (void);
-  void (* _clutter_gesture_action7) (void);
 };
 
 GType clutter_gesture_action_get_type (void) G_GNUC_CONST;

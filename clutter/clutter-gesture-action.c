@@ -253,6 +253,12 @@ stage_captured_event_cb (ClutterActor       *stage,
             {
               priv->in_gesture = TRUE;
 
+              if (!CLUTTER_GESTURE_ACTION_GET_CLASS (action)->gesture_prepare (action, actor))
+                {
+                  cancel_gesture (action);
+                  return CLUTTER_EVENT_PROPAGATE;
+                }
+
               g_signal_emit (action, gesture_signals[GESTURE_BEGIN], 0, actor,
                              &return_value);
               if (!return_value)
@@ -415,6 +421,7 @@ clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
 
   klass->gesture_begin = default_event_handler;
   klass->gesture_progress = default_event_handler;
+  klass->gesture_prepare = default_event_handler;
 
   /**
    * ClutterGestureAction::gesture-begin:
