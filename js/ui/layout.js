@@ -120,7 +120,8 @@ const LayoutManager = new Lang.Class({
         this.panelBox.connect('allocation-changed',
                               Lang.bind(this, this._updatePanelBarriers));
 
-        this.trayBox = new St.BoxLayout({ name: 'trayBox' }); 
+        this.trayBox = new St.Widget({ name: 'trayBox',
+                                       layout_manager: new Clutter.BinLayout() }); 
         this.addChrome(this.trayBox);
         this.trayBox.connect('allocation-changed',
                              Lang.bind(this, this._updateTrayBarrier));

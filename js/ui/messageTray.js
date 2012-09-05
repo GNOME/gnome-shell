@@ -1368,39 +1368,45 @@ const MessageTray = new Lang.Class({
         }));
 
         this.actor = new St.Widget({ name: 'message-tray',
-                                     layout_manager: new Clutter.BinLayout(),
                                      reactive: true,
-                                     track_hover: true });
-        this.actor.connect('style-changed', Lang.bind(this, this._onStyleChanged));
+                                     track_hover: true,
+                                     layout_manager: new Clutter.BinLayout(),
+                                     x_expand: true,
+                                     y_expand: true,
+                                     y_align: Clutter.ActorAlign.START,
+                                   });
         this.actor.connect('notify::hover', Lang.bind(this, this._onTrayHoverChanged));
 
         this._notificationWidget = new St.Widget({ name: 'notification-container',
+                                                   x_align: Clutter.ActorAlign.CENTER,
+                                                   x_expand: true,
                                                    layout_manager: new Clutter.BinLayout() });
         this.actor.add_actor(this._notificationWidget);
 
-        this._notificationBin = new St.Bin();
+        this._notificationBin = new St.Bin({ y_expand: true });
+        this._notificationBin.set_y_align(Clutter.ActorAlign.START);
         this._notificationWidget.add_actor(this._notificationBin);
         this._notificationWidget.hide();
         this._notificationQueue = [];
         this._notification = null;
         this._notificationClickedId = 0;
 
-        this._summaryBin = new St.Bin({ x_align: St.Align.END,
-                                        y_expand: true, // this is the Clutter property
-                                        reactive: true });
-        this._summaryBin.connect('button-release-event', Lang.bind(this, function(actor, event) {
+        this.actor.connect('button-release-event', Lang.bind(this, function(actor, event) {
             this._setClickedSummaryItem(null);
             this._updateState();
             actor.grab_key_focus();
         }));
-        this.actor.add_actor(this._summaryBin);
         this._summary = new St.BoxLayout({ name: 'summary-mode',
                                            reactive: true,
-                                           track_hover: true });
+                                           track_hover: true,
+                                           x_align: Clutter.ActorAlign.END,
+                                           x_expand: true,
+                                           y_align: Clutter.ActorAlign.CENTER,
+                                           y_expand: true });
         global.focus_manager.add_group(this._summary);
         this._summary.connect('notify::hover', Lang.bind(this, this._onSummaryHoverChanged));
-        this._summaryBin.child = this._summary;
-        this._summaryBin.opacity = 0;
+        this.actor.add_actor(this._summary);
+        this._summary.opacity = 0;
 
         this._summaryMotionId = 0;
         this._trayMotionId = 0;
@@ -1469,9 +1475,6 @@ const MessageTray = new Lang.Class({
         Main.layoutManager.trackChrome(this._notificationWidget);
         Main.layoutManager.trackChrome(this._closeButton);
 
-        Main.layoutManager.connect('monitors-changed', Lang.bind(this, function() {
-            this.actor.style_changed();
-        }));
         Main.layoutManager.connect('primary-fullscreen-changed', Lang.bind(this, this._onFullscreenChanged));
 
         Main.overview.connect('showing', Lang.bind(this,
@@ -1548,15 +1551,6 @@ const MessageTray = new Lang.Class({
                 if (!this._notification.resident)
                     this._notification.destroy();
         }
-    },
-
-    _onStyleChanged: function() {
-        let monitor = Main.layoutManager.bottomMonitor;
-
-        let width = this._notificationWidget.get_width();
-        this._notificationWidget.x = Math.floor((monitor.width - width) / 2);
-        this._summaryBin.x = 0;
-        this._summaryBin.width = monitor.width;
     },
 
     contains: function(source) {
@@ -2311,18 +2305,16 @@ const MessageTray = new Lang.Class({
     },
 
     _showSummary: function() {
-        this._summaryBin.opacity = 0;
-        this._summaryBin.y = this.actor.height;
-        this._tween(this._summaryBin, '_summaryState', State.SHOWN,
-                    { y: 0,
-                      opacity: 255,
+        this._summary.opacity = 0;
+        this._tween(this._summary, '_summaryState', State.SHOWN,
+                    { opacity: 255,
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad',
                     });
     },
 
     _hideSummary: function() {
-        this._tween(this._summaryBin, '_summaryState', State.HIDDEN,
+        this._tween(this._summary, '_summaryState', State.HIDDEN,
                     { opacity: 0,
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad',
