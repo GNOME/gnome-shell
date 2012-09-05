@@ -1364,6 +1364,7 @@ clutter_x11_get_input_devices
 clutter_x11_has_xinput
 clutter_x11_enable_xinput
 clutter_x11_event_get_key_group
+clutter_x11_event_sequence_get_touch_detail
 
 <SUBSECTION Private>
 ClutterX11XInputDevice

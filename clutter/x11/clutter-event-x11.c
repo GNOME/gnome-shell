@@ -375,3 +375,21 @@ clutter_x11_event_get_key_group (const ClutterEvent *event)
 
   return event_x11->key_group;
 }
+
+/**
+ * clutter_x11_event_sequence_get_touch_detail:
+ * @sequence: a #ClutterEventSequence
+ *
+ * Retrieves the touch detail froma #ClutterEventSequence.
+ *
+ * Return value: the touch detail
+ *
+ * Since: 1.12
+ */
+guint
+clutter_x11_event_sequence_get_touch_detail (const ClutterEventSequence *sequence)
+{
+  g_return_val_if_fail (sequence != NULL, 0);
+
+  return GPOINTER_TO_UINT (sequence);
+}

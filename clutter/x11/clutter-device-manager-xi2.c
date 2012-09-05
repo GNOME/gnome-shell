@@ -1098,10 +1098,11 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         if (xev->flags & XITouchEmulatingPointer)
           _clutter_event_set_pointer_emulated (event, TRUE);
 
-        CLUTTER_NOTE (EVENT, "touch %s: win:0x%x device:%s (x:%.2f, y:%.2f, axes:%s)",
+        CLUTTER_NOTE (EVENT, "touch %s: win:0x%x device:%s (seq:%d, x:%.2f, y:%.2f, axes:%s)",
                       event->type == CLUTTER_TOUCH_BEGIN ? "begin" : "end",
                       (unsigned int) stage_x11->xwin,
                       event->touch.device->device_name,
+                      GPOINTER_TO_UINT (event->touch.sequence),
                       event->touch.x,
                       event->touch.y,
                       event->touch.axes != NULL ? "yes" : "no");
@@ -1144,9 +1145,10 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         if (xev->flags & XITouchEmulatingPointer)
           _clutter_event_set_pointer_emulated (event, TRUE);
 
-        CLUTTER_NOTE (EVENT, "touch update: win:0x%x device:%s (x:%.2f, y:%.2f, axes:%s)",
+        CLUTTER_NOTE (EVENT, "touch update: win:0x%x device:%s (seq:%d, x:%.2f, y:%.2f, axes:%s)",
                       (unsigned int) stage_x11->xwin,
                       event->touch.device->device_name,
+                      GPOINTER_TO_UINT (event->touch.sequence),
                       event->touch.x,
                       event->touch.y,
                       event->touch.axes != NULL ? "yes" : "no");

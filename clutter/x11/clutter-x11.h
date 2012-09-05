@@ -140,6 +140,8 @@ Time clutter_x11_get_current_event_time (void);
 
 gint clutter_x11_event_get_key_group (const ClutterEvent *event);
 
+guint clutter_x11_event_sequence_get_touch_detail (const ClutterEventSequence *sequence);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_X11_H__ */
