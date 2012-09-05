@@ -41,6 +41,7 @@ const UserWidget = new Lang.Class({
         this.actor.add(this._label,
                        { expand: true,
                          x_fill: true,
+                         y_fill: false,
                          y_align: St.Align.MIDDLE });
 
         this._userLoadedId = this._user.connect('notify::is-loaded',
