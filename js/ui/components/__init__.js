@@ -41,6 +41,9 @@ const ComponentManager = new Lang.Class({
         if (component)
             return component;
 
+	if (Main.sessionMode.isLocked)
+	    return null;
+
         let constructor = this._importComponent(name);
         component = new constructor();
         this._allComponents[name] = component;
@@ -49,7 +52,8 @@ const ComponentManager = new Lang.Class({
 
     _enableComponent: function(name) {
         let component = this._ensureComponent(name);
-        component.enable();
+	if (component)
+            component.enable();
     },
 
     _disableComponent: function(name) {
