@@ -371,7 +371,8 @@ const ObjInspector = new Lang.Class({
 
         this._parentList = [];
 
-        this.actor = new St.ScrollView({ x_fill: true, y_fill: true });
+        this.actor = new St.ScrollView({ pivot_point: new Clutter.Point({ x: 0.5, y: 0.5 }),
+                                         x_fill: true, y_fill: true });
         this.actor.get_hscroll_bar().hide();
         this._container = new St.BoxLayout({ name: 'LookingGlassPropertyInspector',
                                              style_class: 'lg-dialog',
@@ -443,10 +444,6 @@ const ObjInspector = new Lang.Class({
         this.actor.show();
         if (sourceActor) {
             this.actor.set_scale(0, 0);
-            let [sourceX, sourceY] = sourceActor.get_transformed_position();
-            let [sourceWidth, sourceHeight] = sourceActor.get_transformed_size();
-            this.actor.move_anchor_point(Math.floor(sourceX + sourceWidth / 2),
-                                         Math.floor(sourceY + sourceHeight / 2));
             Tweener.addTween(this.actor, { scale_x: 1, scale_y: 1,
                                            transition: 'easeOutQuad',
                                            time: 0.2 });
@@ -1092,8 +1089,8 @@ const LookingGlass = new Lang.Class({
         this.actor.width = myWidth;
         this.actor.height = myHeight;
         this._objInspector.actor.set_size(Math.floor(myWidth * 0.8), Math.floor(myHeight * 0.8));
-        this._objInspector.actor.set_position(this.actor.x + Math.floor(myWidth * 0.1),
-                                              this._targetY + Math.floor(myHeight * 0.1));
+        this._objInspector.actor.set_position(primary.x + this.actor.x + Math.floor(myWidth * 0.1),
+                                              primary.y + this._targetY + Math.floor(myHeight * 0.1));
     },
 
     insertObject: function(obj) {
