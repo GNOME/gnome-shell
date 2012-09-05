@@ -1081,6 +1081,27 @@ const Source = new Lang.Class({
         this.emit('count-updated');
     },
 
+    buildRightClickMenu: function() {
+        let item;
+        let rightClickMenu = new St.BoxLayout({ name: 'summary-right-click-menu',
+                                                vertical: true });
+
+        item = new PopupMenu.PopupMenuItem(_("Open"));
+        item.connect('activate', Lang.bind(this, function() {
+            this.open();
+            this.emit('done-displaying-content');
+        }));
+        rightClickMenu.add(item.actor);
+
+        item = new PopupMenu.PopupMenuItem(_("Remove"));
+        item.connect('activate', Lang.bind(this, function() {
+            this.destroy();
+            this.emit('done-displaying-content');
+        }));
+        rightClickMenu.add(item.actor);
+        return rightClickMenu;
+    },
+
     setTransient: function(isTransient) {
         this.isTransient = isTransient;
     },
@@ -1220,7 +1241,7 @@ const SummaryItem = new Lang.Class({
         this._closeButton = makeCloseButton();
         this._closeButton.connect('clicked', Lang.bind(this, function() {
             source.destroy();
-            this.emit('done-displaying-content');
+            source.emit('done-displaying-content');
         }));
 
         this.notificationStackView = new St.ScrollView({ style_class: source.isChat ? '' : 'summary-notification-stack-scrollview',
@@ -1243,38 +1264,9 @@ const SummaryItem = new Lang.Class({
             this._oldMaxScrollAdjustment = adjustment.upper;
         }));
 
-        this.rightClickMenu = new St.BoxLayout({ name: 'summary-right-click-menu',
-                                                 vertical: true });
-
-        let item;
-
-        item = new PopupMenu.PopupMenuItem(_("Open"));
-        item.connect('activate', Lang.bind(this, function() {
-            source.open();
-            this.emit('done-displaying-content');
-        }));
-        this.rightClickMenu.add(item.actor);
-
-        item = new PopupMenu.PopupMenuItem(_("Remove"));
-        item.connect('activate', Lang.bind(this, function() {
-            source.destroy();
-            this.emit('done-displaying-content');
-        }));
-        this.rightClickMenu.add(item.actor);
-
-	if (source.isChat) {
-            item = new PopupMenu.PopupMenuItem('');
-            item.actor.connect('notify::mapped', Lang.bind(this, function() {
-                item.label.set_text(source.isMuted ? _("Unmute") : _("Mute"));
-            }));
-            item.connect('activate', Lang.bind(this, function() {
-                source.setMuted(!source.isMuted);
-                this.emit('done-displaying-content');
-            }));
-            this.rightClickMenu.add(item.actor);
-	}
-
-        global.focus_manager.add_group(this.rightClickMenu);
+        this.rightClickMenu = source.buildRightClickMenu();
+        if (this.rightClickMenu)
+            global.focus_manager.add_group(this.rightClickMenu);
     },
 
     get closeButtonVisible() {
@@ -1349,7 +1341,7 @@ const SummaryItem = new Lang.Class({
     },
 
     _notificationDoneDisplaying: function() {
-        this.emit('done-displaying-content');
+        this.source.emit('done-displaying-content');
     },
 
     _notificationDestroyed: function(notification) {
@@ -2346,8 +2338,8 @@ const MessageTray = new Lang.Class({
         this._summaryBoxPointerItem = this._clickedSummaryItem;
         this._summaryBoxPointerContentUpdatedId = this._summaryBoxPointerItem.connect('content-updated',
                                                                                       Lang.bind(this, this._onSummaryBoxPointerContentUpdated));
-        this._summaryBoxPointerDoneDisplayingId = this._summaryBoxPointerItem.connect('done-displaying-content',
-                                                                                      Lang.bind(this, this._escapeTray));
+        this._sourceDoneDisplayingId = this._summaryBoxPointerItem.source.connect('done-displaying-content',
+                                                                                  Lang.bind(this, this._escapeTray));
         if (this._clickedSummaryItemMouseButton == 1) {
             let newQueue = [];
             for (let i = 0; i < this._notificationQueue.length; i++) {
@@ -2462,7 +2454,7 @@ const MessageTray = new Lang.Class({
         this._summaryBoxPointer.bin.child = null;
         this._summaryBoxPointerItem.disconnect(this._summaryBoxPointerContentUpdatedId);
         this._summaryBoxPointerContentUpdatedId = 0;
-        this._summaryBoxPointerItem.disconnect(this._summaryBoxPointerDoneDisplayingId);
+        this._summaryBoxPointerItem.source.disconnect(this._sourceDoneDisplayingId);
         this._summaryBoxPointerDoneDisplayingId = 0;
 
         let sourceNotificationStackDoneShowing = null;
