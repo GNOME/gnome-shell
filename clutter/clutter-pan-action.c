@@ -188,14 +188,24 @@ on_deceleration_new_frame (ClutterTimeline     *timeline,
 }
 
 static gboolean
-gesture_begin (ClutterGestureAction  *gesture,
-               ClutterActor          *actor)
+gesture_prepare (ClutterGestureAction  *gesture,
+                 ClutterActor          *actor)
 {
   ClutterPanAction *self = CLUTTER_PAN_ACTION (gesture);
   ClutterPanActionPrivate *priv = self->priv;
 
   if (priv->state == PAN_STATE_INTERPOLATING && priv->deceleration_timeline)
     clutter_timeline_stop (priv->deceleration_timeline);
+
+  return TRUE;
+}
+
+static gboolean
+gesture_begin (ClutterGestureAction  *gesture,
+               ClutterActor          *actor)
+{
+  ClutterPanAction *self = CLUTTER_PAN_ACTION (gesture);
+  ClutterPanActionPrivate *priv = self->priv;
 
   priv->state = PAN_STATE_PANNING;
   priv->interpolated_x = priv->interpolated_y = 0.0f;
@@ -421,6 +431,7 @@ clutter_pan_action_class_init (ClutterPanActionClass *klass)
 
   klass->pan = clutter_pan_action_real_pan;
 
+  gesture_class->gesture_prepare = gesture_prepare;
   gesture_class->gesture_begin = gesture_begin;
   gesture_class->gesture_progress = gesture_progress;
   gesture_class->gesture_cancel = gesture_cancel;
