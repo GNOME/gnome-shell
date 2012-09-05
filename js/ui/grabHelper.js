@@ -170,7 +170,7 @@ const GrabHelper = new Lang.Class({
         if (params.grabFocus)
             this._grabFocusCount++;
 
-        if (hadFocus)
+        if (hadFocus || params.grabFocus)
             _navigateActor(newFocus);
 
         return true;
