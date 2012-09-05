@@ -284,6 +284,10 @@ const AutorunResidentSource = new Lang.Class({
         this._notification = new AutorunResidentNotification(this._manager, this);
     },
 
+    buildRightClickMenu: function() {
+        return null;
+    },
+
     addMount: function(mount, apps) {
         if (!shouldAutorunMount(mount, false))
             return;

@@ -2340,7 +2340,9 @@ const MessageTray = new Lang.Class({
                                                                                       Lang.bind(this, this._onSummaryBoxPointerContentUpdated));
         this._sourceDoneDisplayingId = this._summaryBoxPointerItem.source.connect('done-displaying-content',
                                                                                   Lang.bind(this, this._escapeTray));
-        if (this._clickedSummaryItemMouseButton == 1) {
+
+        let hasRightClickMenu = this._summaryBoxPointerItem.rightClickMenu != null;
+        if (this._clickedSummaryItemMouseButton == 1 || !hasRightClickMenu) {
             let newQueue = [];
             for (let i = 0; i < this._notificationQueue.length; i++) {
                 let notification = this._notificationQueue[i];
