@@ -33,6 +33,7 @@ const _modes = {
         allowKeybindingsWhenModal: true,
         isGreeter: true,
         unlockDialog: imports.gdm.loginDialog.LoginDialog,
+        components: ['polkitAgent'],
         panel: {
             left: [],
             center: ['dateMenu'],
