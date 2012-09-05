@@ -351,7 +351,13 @@ const ScreenSaverDBus = new Lang.Class({
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/ScreenSaver');
     },
 
-    Lock: function() {
+    LockAsync: function(parameters, invocation) {
+        let tmpId = Main.screenShield.connect('lock-screen-shown', Lang.bind(this, function() {
+            Main.screenShield.disconnect(tmpId);
+
+            invocation.return_value(null);
+        }));
+
         Main.screenShield.lock(true);
     },
 
