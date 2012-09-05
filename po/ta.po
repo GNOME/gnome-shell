@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.gnome-2-26.ta\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-28 14:25+0530\n"
-"PO-Revision-Date: 2012-02-28 14:33+0530\n"
+"POT-Creation-Date: 2012-09-05 21:26+0530\n"
+"PO-Revision-Date: 2012-09-05 21:30+0530\n"
 "Last-Translator: Dr.T.Vasudevan <agnihot3@gmail.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -50,7 +50,7 @@ msgid ""
 "\"."
 msgstr " %i திரையில் காட்சி \"%s\" இல் இன்னொரு சாளர மேலாளர் இயங்கிக்கொண்டு இருக்கிறது."
 
-#: ../src/core/bell.c:307
+#: ../src/core/bell.c:320
 msgid "Bell event"
 msgstr "மணி நிகழ்ச்சி"
 
@@ -59,16 +59,16 @@ msgstr "மணி நிகழ்ச்சி"
 msgid "Unknown window information request: %d"
 msgstr "தெரியாத சாளர தகவல் வேண்டுகோள்: %d"
 
-#: ../src/core/delete.c:111
-#, c-format
-msgid "<tt>%s</tt> is not responding."
-msgstr "<tt>%s</tt> பதிலளிக்கவில்லை"
-
 #: ../src/core/delete.c:114
+#, c-format
+msgid "%s is not responding."
+msgstr "%s பதிலளிக்கவில்லை"
+
+#: ../src/core/delete.c:118
 msgid "Application is not responding."
 msgstr "பயன்பாடு இயங்கவில்லை"
 
-#: ../src/core/delete.c:119
+#: ../src/core/delete.c:123
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -76,61 +76,61 @@ msgstr ""
 "நீங்கள் சிறிது நேரம் பொறுத்து அது தொடர அனுமதிக்கலாம் அல்லது செயல்பாட்டை வன் வெளியேறு "
 "செய்யலாம்."
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Wait"
 msgstr "_காத்திரு"
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Force Quit"
 msgstr "கட்டாய வெளியேற்றம் (_F)"
 
-#: ../src/core/display.c:361
+#: ../src/core/display.c:380
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "நீட்சி  %s  காணப்படவில்லை பவின் ஆக்கத்துக்கு அது அவசியம்"
 
-#: ../src/core/display.c:427
+#: ../src/core/display.c:446
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X சாளர காட்சியை திறப்பதில் தோல்வி '%s'\n"
 
-#: ../src/core/keybindings.c:852
+#: ../src/core/keybindings.c:853
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "விசை %s ஐ மாற்றி  %x ஓடு இணைத்து வேறு நிரல் பயன்படுத்திக்கொண்டிருக்கிறது\n"
 
-#: ../src/core/main.c:206
+#: ../src/core/main.c:196
 msgid "Disable connection to session manager"
 msgstr "அமர்வு மேலாளருடன் இருக்கும் இணைப்பை முடக்கு"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:202
 msgid "Replace the running window manager"
 msgstr "இயங்கும் சாளர மேலாளரை  மாற்றுக"
 
-#: ../src/core/main.c:218
+#: ../src/core/main.c:208
 msgid "Specify session management ID"
 msgstr "அமர்வு மேலாண் எண்ணை குறிப்பிடு"
 
-#: ../src/core/main.c:223
+#: ../src/core/main.c:213
 msgid "X Display to use"
 msgstr "பயன்படுத்த வேண்டிய X காட்சி"
 
-#: ../src/core/main.c:229
+#: ../src/core/main.c:219
 msgid "Initialize session from savefile"
 msgstr "அமர்வை சேவ்பைல் இலிருந்து துவக்கு "
 
-#: ../src/core/main.c:235
+#: ../src/core/main.c:225
 msgid "Make X calls synchronous"
 msgstr "எக்ஸ் அழைப்புகளை ஒத்திசை."
 
-#: ../src/core/main.c:504
+#: ../src/core/main.c:494
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "கருப்பொருள் அடைவை வருடுவதில் தோல்வி: %s\n"
 
-#: ../src/core/main.c:520
+#: ../src/core/main.c:510
 #, c-format
 msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
@@ -157,10 +157,10 @@ msgid "Print version"
 msgstr "அச்சு பதிப்பு"
 
 #: ../src/core/mutter.c:60
-msgid "Comma-separated list of compositor plugins"
-msgstr "பல்வினையாக்கியின் சொருகிகளின் கமாவால் பிரித்த பட்டியல்."
+msgid "Mutter plugin to use"
+msgstr "பயன்படுத்த க்ளட்டர் செருகிகள்"
 
-#: ../src/core/prefs.c:1069
+#: ../src/core/prefs.c:1071
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -168,36 +168,36 @@ msgstr ""
 "உடைந்த பயன்பாடுகளின் செயல்பாடு தடைசெய்யப்பட்டது, சில பயன்பாடுகள் சரியாக வேலை "
 "செய்யாது.\n"
 
-#: ../src/core/prefs.c:1144
+#: ../src/core/prefs.c:1146
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "எழுத்துரு விளக்கம் \"%s\" ஐ ஜிசெட்டிங்க்ஸ் விசையிலிருந்து பகுக்க முடியவில்லை %s\n"
 
-#: ../src/core/prefs.c:1210
+#: ../src/core/prefs.c:1212
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "அமைப்பு பாங்கில் உள்ள \"%s\" சுட்டி பட்டன் மாற்றியில் செல்லாத மதிப்பு\n"
 
-#: ../src/core/prefs.c:1722
+#: ../src/core/prefs.c:1736
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "\"%s\" அமைப்பு தரவுத்தளத்தில் உள்ள மதிப்பு செல்லாத கீபைன்டிங்\"%s\"\n"
 
-#: ../src/core/prefs.c:1819
+#: ../src/core/prefs.c:1833
 #, c-format
 msgid "Workspace %d"
 msgstr "வேலையிடம் %d"
 
-#: ../src/core/screen.c:730
+#: ../src/core/screen.c:652
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "திரை %d காட்சி '%s' இல் செல்லாது\n"
 
-#: ../src/core/screen.c:746
+#: ../src/core/screen.c:668
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -206,17 +206,17 @@ msgstr ""
 "திரை %d காட்சி \"%s\" க்கு சாளர மேலாளர் உள்ளது; --replace தேர்வை பயன்படுத்தி "
 "தற்போதைய சாளரத்தை மாற்றவும்.\n"
 
-#: ../src/core/screen.c:773
+#: ../src/core/screen.c:695
 #, c-format
 msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "திரையில் சாளர மேலாளர் தேர்வை பெறமுடியவில்லை %d காட்சி \"%s\"\n"
 
-#: ../src/core/screen.c:828
+#: ../src/core/screen.c:750
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "திரை %d யின் காட்சி \"%s\" க்கு சாளர மேலாளர் ஏற்கெனவே உள்ளது\n"
 
-#: ../src/core/screen.c:1013
+#: ../src/core/screen.c:935
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "திரை %d ஐ விடுவிக்க முடியவில்லை \"%s\"\n"
@@ -276,44 +276,44 @@ msgstr ""
 " &quot;தற்போதைய அமைப்பை சேமி&quot; செயலுக்கு ஆதரவு இல்லை மேலும் அடுத்த முறை "
 "உள்நுழையும் போது நீங்களாக துவக்க வேண்டும்"
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:80
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "பிழைதிருத்த பட்டியலை திறப்பதில் தோல்வி: %s\n"
 
-#: ../src/core/util.c:121
+#: ../src/core/util.c:90
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "fdopen() பதிவுக்கோப்பு தோல்வி %s: %s\n"
 
-#: ../src/core/util.c:127
+#: ../src/core/util.c:96
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "பதிவுக்கோப்பு திறக்கப்பட்டது %s\n"
 
-#: ../src/core/util.c:146 ../src/tools/mutter-message.c:149
+#: ../src/core/util.c:115 ../src/tools/mutter-message.c:149
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "வெர்போஸ் ஆதரவு இல்லாமல் மட்டர் அமைக்கப்பட்டது\n"
 
-#: ../src/core/util.c:290
+#: ../src/core/util.c:259
 msgid "Window manager: "
 msgstr "சாளர மேலாளர்:"
 
-#: ../src/core/util.c:438
+#: ../src/core/util.c:407
 msgid "Bug in window manager: "
 msgstr "சாளர மேலாளரில் பிழை"
 
-#: ../src/core/util.c:471
+#: ../src/core/util.c:438
 msgid "Window manager warning: "
 msgstr "சாளர மேலாளர் எச்சரிக்கை:"
 
-#: ../src/core/util.c:499
+#: ../src/core/util.c:466
 msgid "Window manager error: "
 msgstr "சாளர மேலாளர் பிழை"
 
 #. first time through
-#: ../src/core/window.c:7224
+#: ../src/core/window.c:7234
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -329,7 +329,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7887
+#: ../src/core/window.c:7899
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -338,22 +338,22 @@ msgstr ""
 "சாளரம் %s MWM அளவு மாற்ற முடியும் என குறிப்பிடுகிறதும் ஆனால் %d x %d மற்றும் அதிக "
 "பட்ச அளவு %d x %d; பொருள் தரும்படி இல்லை.\n"
 
-#: ../src/core/window-props.c:309
+#: ../src/core/window-props.c:310
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "பயன்பாடு பொய்யான ஒரு _NET_WM_PID %lu ஐ அமைத்தது\n"
 
-#: ../src/core/window-props.c:426
+#: ../src/core/window-props.c:429
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (%s மீது)"
 
-#: ../src/core/window-props.c:1481
+#: ../src/core/window-props.c:1484
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "செல்லாத WM_TRANSIENT_FOR சாளரம் 0x%lx இதற்கு குறிக்கப்பட்டது: %s.\n"
 
-#: ../src/core/window-props.c:1492
+#: ../src/core/window-props.c:1495
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR சாளரம் 0x%lx %s க்கு சுழல் நிகழ்வை உருவாக்கும்.\n"
@@ -397,27 +397,29 @@ msgstr "கீற்று துள்ளுவதை இரத்து செ
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid ""
-"Determines whether hidden windows (i.e., minimized windows and windows on "
-"other workspaces than the current one) should be kept alive."
-msgstr ""
-"மறைந்துள்ள சாளரங்கள் (அதாவது குறூக்கியவை, நடப்பில் இல்லாத வேறு பணிக்களத்தில் உள்ளவை) "
-"உயிர்ப்புடன் வைக்கப்பட வேண்டுமா என தீர்மானிக்கிறது."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:4
-msgid ""
 "Determines whether the use of popup and highlight frame should be disabled "
 "for window cycling."
 msgstr ""
 "சாளரங்கள் சுழற்சிக்கு துள்ளுவதையும் சட்டத்தை சிறப்பாக காட்டுவதையும் பயன்படுத்த வேண்டுமா என "
 "நிர்ணயிக்கிறது"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:5
+#: ../src/org.gnome.mutter.gschema.xml.in.h:4
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
 msgstr ""
 "வேலைக்கள் மாற்றம் எல்லா திரைகளிலும் உள்ள சாளரங்களுக்குமா அல்லது முதன்மை திரை சாளரத்துக்கு "
 "மட்டுமா என தீர்மானிக்கிறது"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:5
+msgid ""
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
+msgstr ""
+"பணியிடங்கள் இயங்கு நிலையில் மேலாளப்படுமா அல்லது நிலையான பணியிடங்கள் இருக்க வேன்டுமா என "
+"நிர்ணயிக்கிறது. (org."
+"gnome.desktop.wm.விருப்பங்களில் நிர்ணயித்த பணியிடங்கள் எண்ணிக்கையால்)."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:6
 msgid "Draggable border width"
@@ -438,22 +440,18 @@ msgstr ""
 "மேல்  விளிம்பில் விட அவை முழுமையாக அதிகரிக்கப்படும்."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
-msgid "Live Hidden Windows"
-msgstr "உயிர்ப்புள்ள மறைந்த சாளரங்கள்"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid "Modifier to use for extended window management operations"
 msgstr "நீட்டிக்கப்பட்ட சாளர மேலாண்மை செயல்பாடுகளுக்கு பயன்பட வேண்டிய மாற்றி"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:11
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid "No tab popup"
 msgstr "கீற்று துள்ளல் இல்லை"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "Select window from tab popup"
 msgstr "கீற்றுத்துள்ளலிருந்து சாளரத்தை தேர்ந்தெடுக்கவும்."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -461,7 +459,7 @@ msgstr ""
 "இழுக்கக்கூடிய விளிம்புகளின் மொத்த அளவு. கருத்தின் தெரியும் விளிம்புகள் போதவில்லை எனில் "
 "இந்த மதிப்பை அடைய மறை விளிம்பு சேர்க்கப்படும்."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
@@ -472,7 +470,7 @@ msgstr ""
 "முன்னிருப்பு கணினி வன்பொருட்களின் சாளர விசையாக யோசிக்கப்படுகிறது. இந்த பிணைப்பை "
 "முன்னிருப்பாகவோ காலி சரமாகவோ அமைக்கவும்."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
@@ -480,6 +478,10 @@ msgid ""
 msgstr ""
 "உண்மை எனில் சுதந்திர தனி தலைப்பு பட்டைகளுக்கு பதில் மாதிரி உரையாடல்கள் முதன்மை "
 "சாளரத்தின் தலைப்பு பட்டயுடன் இணைத்து இருக்கும்; இவை முதன்மை சாளரத்துடனே நகர்த்தப்படும்."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+msgid "Workspaces are managed dynamically"
+msgstr "பணியிடங்கள் இயக்கநிலையில் மேலாளப்படும்"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid "Workspaces only on primary"
@@ -489,50 +491,6 @@ msgstr "வேலைக்களங்கள் முதன்மையில�
 #, c-format
 msgid "Usage: %s\n"
 msgstr "பயன்பாடு: %s\n"
-
-#: ../src/ui/frames.c:1157
-msgid "Close Window"
-msgstr "சாளரம் மூடவும்"
-
-#: ../src/ui/frames.c:1160
-msgid "Window Menu"
-msgstr "சாளர பட்டி"
-
-#: ../src/ui/frames.c:1163
-msgid "Minimize Window"
-msgstr "சாளரத்தை குறுக்கவும்"
-
-#: ../src/ui/frames.c:1166
-msgid "Maximize Window"
-msgstr "சாளரத்தை பெரிதாக்கவும்"
-
-#: ../src/ui/frames.c:1169
-msgid "Restore Window"
-msgstr "சாளரத்தை மீட்டமை"
-
-#: ../src/ui/frames.c:1172
-msgid "Roll Up Window"
-msgstr "சாளரத்தை மேலே சுருட்டு"
-
-#: ../src/ui/frames.c:1175
-msgid "Unroll Window"
-msgstr "சாளரம் விரிக்கவும்"
-
-#: ../src/ui/frames.c:1178
-msgid "Keep Window On Top"
-msgstr "சாளரத்தை மேலே வைத்திரு "
-
-#: ../src/ui/frames.c:1181
-msgid "Remove Window From Top"
-msgstr "மேலிருந்து சாளரத்தை நீக்கு  "
-
-#: ../src/ui/frames.c:1184
-msgid "Always On Visible Workspace"
-msgstr "வேலைகளத்தில்  எப்போதும் தெரியும் "
-
-#: ../src/ui/frames.c:1187
-msgid "Put Window On Only One Workspace"
-msgstr "சாளரத்தை ஒரே ஒரு பணியிடத்தில் மட்டும் வைக்கவும்"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:69
@@ -733,48 +691,48 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:253
+#: ../src/ui/theme.c:234
 msgid "top"
 msgstr "மேல்"
 
-#: ../src/ui/theme.c:255
+#: ../src/ui/theme.c:236
 msgid "bottom"
 msgstr "கீழ்"
 
-#: ../src/ui/theme.c:257
+#: ../src/ui/theme.c:238
 msgid "left"
 msgstr "இடது"
 
-#: ../src/ui/theme.c:259
+#: ../src/ui/theme.c:240
 msgid "right"
 msgstr "வலது"
 
-#: ../src/ui/theme.c:286
+#: ../src/ui/theme.c:268
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "சட்ட வடிவியல் \"%s\" அளவை குறிப்பிடவில்லை"
 
-#: ../src/ui/theme.c:305
+#: ../src/ui/theme.c:287
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "\"%s\" ஓரத்திற்கு வடிவியல் \"%s\" அளவை குறிப்பிடவில்லை"
 
-#: ../src/ui/theme.c:342
+#: ../src/ui/theme.c:324
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "பட்டன் அளவு விகிதம் %g சரியில்ல"
 
-#: ../src/ui/theme.c:354
+#: ../src/ui/theme.c:336
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "சட்ட அளவு பட்டன் அளவை குறிப்பிடவில்லை"
 
-#: ../src/ui/theme.c:1067
+#: ../src/ui/theme.c:1049
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "க்ரேடியன்டில் இரண்டு நிறங்களாவது இருக்க வேண்டும்"
 
-#: ../src/ui/theme.c:1219
+#: ../src/ui/theme.c:1201
 #, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
@@ -783,7 +741,7 @@ msgstr ""
 "GTK தனிப்பயன் வண்ணத்தின் பெயர் வணத்தின் பெயரையும் காப்பை மூடிய அடைப்புக்குறிகளுக்குள்ளும்  "
 "கொண்டிருக்க வேண்டும் உம்  gtk:custom(foo,bar); \"%s\" ஐ பகுக்க முடியவில்லை"
 
-#: ../src/ui/theme.c:1235
+#: ../src/ui/theme.c:1217
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
@@ -792,7 +750,7 @@ msgstr ""
 "gtk:custom இன் color_name தருமதிப்பில்  செல்லுபடியாகாத எழுத்துரு '%c'   A-Za-z0-9-"
 "_ ஆகியன மட்டுமே செல்லுபடியாகும்."
 
-#: ../src/ui/theme.c:1249
+#: ../src/ui/theme.c:1231
 #, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
@@ -801,7 +759,7 @@ msgstr ""
 "ஜிடிகே:தனிப்பயன் ஒழுங்கு \"gtk:custom(color_name,fallback)\", \"%s\" இந்த "
 "ஒழுங்குக்கு பொருந்தாது"
 
-#: ../src/ui/theme.c:1294
+#: ../src/ui/theme.c:1276
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -810,7 +768,7 @@ msgstr ""
 "GTK வண்ணம் அடைப்புக்குறிகளை கொண்டிருக்க வேண்டும் உம் gtk:fg[NORMAL] NORMAL நிலையை "
 "குறிக்கும் பகுக்க முடியாது \"%s\""
 
-#: ../src/ui/theme.c:1308
+#: ../src/ui/theme.c:1290
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -819,17 +777,17 @@ msgstr ""
 "GTK வண்ணம் மூடிய அடைப்புக்குறிகளை கொண்டிருக்க வேண்டும் உம் gtk:fg[NORMAL] NORMAL "
 "நிலையை குறிக்கும் பகுக்க முடியாது \"%s\""
 
-#: ../src/ui/theme.c:1319
+#: ../src/ui/theme.c:1301
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "நிலை \"%s\" வண்ண குறிப்பில் புரிந்துகொள்ள முடியவில்லை"
 
-#: ../src/ui/theme.c:1332
+#: ../src/ui/theme.c:1314
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "நிலை \"%s\" வண்ண குறிப்பு பொருளில் புரிந்துகொள்ள முடியவில்லை"
 
-#: ../src/ui/theme.c:1361
+#: ../src/ui/theme.c:1343
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -838,128 +796,128 @@ msgstr ""
 "வளைந்த அமைப்பு \"blend/bg_color/fg_color/alpha\", \"%s\" இந்த வடிவமைப்பிற்கு "
 "பொருந்தாது"
 
-#: ../src/ui/theme.c:1372
+#: ../src/ui/theme.c:1354
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "ஆம்ஃபா மதிப்பை \"%s\" வளைந்த நிறத்தில் பகுக்க முடியவில்லை"
 
-#: ../src/ui/theme.c:1382
+#: ../src/ui/theme.c:1364
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "ஆல்ஃபா மதுப்பு \"%s\"வளைவு நிறத்தில் 0.0 க்கும் 1.0 க்கும் இடையில் இல்லை"
 
-#: ../src/ui/theme.c:1429
+#: ../src/ui/theme.c:1411
 #, c-format
 msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "நிழல் வடிவமைப்பு \"shade/base_color/factor\", \"%s\" இந்த அமைப்பிற்கு பொருந்தாது"
 
-#: ../src/ui/theme.c:1440
+#: ../src/ui/theme.c:1422
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "நிழல்விகிதத்தை \"%s\" நிறத்தோடு பகுக்க முடியாது"
 
-#: ../src/ui/theme.c:1450
+#: ../src/ui/theme.c:1432
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "நிழல் விகிதம் \"%s\" முழுக்களாக உள்ளது "
 
-#: ../src/ui/theme.c:1479
+#: ../src/ui/theme.c:1461
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "\"%s\" நிறத்தை பகுக்க முடியவில்லை"
 
-#: ../src/ui/theme.c:1790
+#: ../src/ui/theme.c:1778
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "அச்சுக்கள் எழுத்தால் குறிக்கப்பட்டுள்ளது '%s' க்கு அனுமதி இல்லை"
 
-#: ../src/ui/theme.c:1817
+#: ../src/ui/theme.c:1805
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "அச்சுக்கள் பின்ன எண்ணால் குறிக்கப்பட்டுள்ளது '%s' ஐ பகுக்க முடியாது"
 
-#: ../src/ui/theme.c:1831
+#: ../src/ui/theme.c:1819
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "அச்சுக்கள் இயல் எண்ணால் குறிக்கப்பட்டுள்ளது '%s' ஐ பகுக்க முடியாது"
 
-#: ../src/ui/theme.c:1953
+#: ../src/ui/theme.c:1940
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "உரையின் துவக்கத்தில் அச்சின் கூற்றில் தெரியாத செயல் இடம்பெற்றுள்ளது \"%s\""
 
-#: ../src/ui/theme.c:2010
+#: ../src/ui/theme.c:1997
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "அச்சு கூற்று காலியாக உள்ளது அல்லது புரியவில்லை"
 
-#: ../src/ui/theme.c:2121 ../src/ui/theme.c:2131 ../src/ui/theme.c:2165
+#: ../src/ui/theme.c:2110 ../src/ui/theme.c:2120 ../src/ui/theme.c:2154
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "அச்சு கூற்று பூஜ்ஜியத்தால் வகுத்தல் பிழையை தந்தது"
 
-#: ../src/ui/theme.c:2173
+#: ../src/ui/theme.c:2162
 #, c-format
 msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "அச்சு கூற்று mod ஆப்பரேட்டரை பின்ன எண்ணில் பயன்படுத்த முயல்கிறது"
 
-#: ../src/ui/theme.c:2229
+#: ../src/ui/theme.c:2218
 #, c-format
 msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "அச்சு கூற்றில் ஆப்பரேட்டர் உள்ளது \"%s\" ஆப்பரன் எதிர்பார்க்கப்படுகிறது"
 
-#: ../src/ui/theme.c:2238
+#: ../src/ui/theme.c:2227
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "அச்சு கூற்றில் ஆப்பரன்ட் உள்ளது ஆனால் ஆப்பரேட்டர் எதிர்பார்க்கப்படுகிறது"
 
-#: ../src/ui/theme.c:2246
+#: ../src/ui/theme.c:2235
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "அச்சு கூற்றில் ஆப்பரன்ட்டுக்கு பதில் ஆப்பரேட்டரால் முடிந்தது"
 
-#: ../src/ui/theme.c:2256
+#: ../src/ui/theme.c:2245
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr "அச்சு கூற்றில்  \"%c\" ஆப்பரேட்டர் உள்ளது \"%c\" ஆப்பரேட்டருக்கு ஆப்பரன்ட் இல்லை"
 
-#: ../src/ui/theme.c:2407 ../src/ui/theme.c:2452
+#: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "அச்சு கூற்றில் செல்லாத மாற்றி மற்றும் கான்ஸ்ட்டன் உள்ளது \"%s\""
 
-#: ../src/ui/theme.c:2506
+#: ../src/ui/theme.c:2495
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "ஆயத்தொலைவு தெரிவிப்பு பகுப்பி அதன் இடையகத்தை நிரப்பியது"
 
-#: ../src/ui/theme.c:2535
+#: ../src/ui/theme.c:2524
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "அச்சு கூற்றில் மூடிய அடைப்புக்குறி உள்ளது ஆனால் திறந்த அடைப்புகுறி இல்லை"
 
-#: ../src/ui/theme.c:2599
+#: ../src/ui/theme.c:2588
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "அச்சு கூற்றில் திறந்த அடைப்புக்குறி உள்ளது ஆனால் மூடிய அடைப்புகுறி இல்லை"
 
-#: ../src/ui/theme.c:2610
+#: ../src/ui/theme.c:2599
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "அச்சுக்கூற்றில் ஆப்பரன்ட் மற்றும் ஆப்பரேட்டர் காணப்படவில்லை"
 
-#: ../src/ui/theme.c:2822 ../src/ui/theme.c:2842 ../src/ui/theme.c:2862
+#: ../src/ui/theme.c:2812 ../src/ui/theme.c:2832 ../src/ui/theme.c:2852
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "கருப்பொருளில் ஒரு கூற்று இருந்தது. அது பிழையை ஏற்படுத்தியது : %s\n"
 
-#: ../src/ui/theme.c:4533
+#: ../src/ui/theme.c:4498
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -968,23 +926,23 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> இந்த சட்ட பாணிக்கு "
 "குறிப்பிடப்பட வேண்டும்"
 
-#: ../src/ui/theme.c:5066 ../src/ui/theme.c:5091
+#: ../src/ui/theme.c:5009 ../src/ui/theme.c:5034
 #, c-format
 msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "காணவில்லை <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/ui/theme.c:5139
+#: ../src/ui/theme.c:5082
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "கருப்பொருளை ஏற்றுவதில் தோல்வி \"%s\": %s\n"
 
-#: ../src/ui/theme.c:5275 ../src/ui/theme.c:5282 ../src/ui/theme.c:5289
-#: ../src/ui/theme.c:5296 ../src/ui/theme.c:5303
+#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "இல்லை<%s> கருப்பொருளுக்காக அமைக்கப்பட்டது \"%s\""
 
-#: ../src/ui/theme.c:5311
+#: ../src/ui/theme.c:5254
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -993,12 +951,12 @@ msgstr ""
 "சட்ட பாணி சாளர வகை இல்லை\"%s\" கருப்பொருளில் \"%s\", <window type=\"%s\" "
 "style_set=\"whatever\"/> உறுப்பை சேர்க்கவும்"
 
-#: ../src/ui/theme.c:5709 ../src/ui/theme.c:5771 ../src/ui/theme.c:5834
+#: ../src/ui/theme.c:5650 ../src/ui/theme.c:5712 ../src/ui/theme.c:5775
 #, c-format
 msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "பயனீட்டாளர்-குறிப்பிட்ட கான்ஸ்டன் பெரிய எழுத்தில் துவங்க வேண்டும்; \"%s\" இல்லை"
 
-#: ../src/ui/theme.c:5717 ../src/ui/theme.c:5779 ../src/ui/theme.c:5842
+#: ../src/ui/theme.c:5658 ../src/ui/theme.c:5720 ../src/ui/theme.c:5783
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "கான்ஸ்டன் \"%s\" ஏற்கெனவே குறிப்பிடப்பட்டது"
@@ -1367,7 +1325,7 @@ msgstr "உறுப்பிற்குள் உரை அனுமதி இ
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> இந்த கருப்பொருளுக்கு இரண்டுமுறை குறிப்பிட்டுள்ளது"
 
-#: ../src/ui/theme-parser.c:4348
+#: ../src/ui/theme-parser.c:4334
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "%s கருத்துக்கு செல்லுபடியாகும் கோப்பு கண்டுபிடித்தல் தோல்வியுற்றது \n"
@@ -1568,6 +1526,52 @@ msgstr "y மதிப்பு %d, %d எதிர்பார்க்கப�
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d அச்சு கூற்று பகுக்கப்பட்டது %g செகண்டில் (%g சராசரி செகண்ட்)\n"
+
+#~ msgid "Comma-separated list of compositor plugins"
+#~ msgstr "பல்வினையாக்கியின் சொருகிகளின் கமாவால் பிரித்த பட்டியல்."
+
+#~ msgid ""
+#~ "Determines whether hidden windows (i.e., minimized windows and windows on "
+#~ "other workspaces than the current one) should be kept alive."
+#~ msgstr ""
+#~ "மறைந்துள்ள சாளரங்கள் (அதாவது குறூக்கியவை, நடப்பில் இல்லாத வேறு பணிக்களத்தில் உள்ளவை) "
+#~ "உயிர்ப்புடன் வைக்கப்பட வேண்டுமா என தீர்மானிக்கிறது."
+
+#~ msgid "Live Hidden Windows"
+#~ msgstr "உயிர்ப்புள்ள மறைந்த சாளரங்கள்"
+
+#~ msgid "Close Window"
+#~ msgstr "சாளரம் மூடவும்"
+
+#~ msgid "Window Menu"
+#~ msgstr "சாளர பட்டி"
+
+#~ msgid "Minimize Window"
+#~ msgstr "சாளரத்தை குறுக்கவும்"
+
+#~ msgid "Maximize Window"
+#~ msgstr "சாளரத்தை பெரிதாக்கவும்"
+
+#~ msgid "Restore Window"
+#~ msgstr "சாளரத்தை மீட்டமை"
+
+#~ msgid "Roll Up Window"
+#~ msgstr "சாளரத்தை மேலே சுருட்டு"
+
+#~ msgid "Unroll Window"
+#~ msgstr "சாளரம் விரிக்கவும்"
+
+#~ msgid "Keep Window On Top"
+#~ msgstr "சாளரத்தை மேலே வைத்திரு "
+
+#~ msgid "Remove Window From Top"
+#~ msgstr "மேலிருந்து சாளரத்தை நீக்கு  "
+
+#~ msgid "Always On Visible Workspace"
+#~ msgstr "வேலைகளத்தில்  எப்போதும் தெரியும் "
+
+#~ msgid "Put Window On Only One Workspace"
+#~ msgstr "சாளரத்தை ஒரே ஒரு பணியிடத்தில் மட்டும் வைக்கவும்"
 
 #~ msgid "Switch to workspace 1"
 #~ msgstr "பணியிடம் 1க்கு மாறு"
@@ -1883,9 +1887,6 @@ msgstr "%d அச்சு கூற்று பகுக்கப்பட்�
 
 #~ msgid "Error setting clutter plugin list: %s\n"
 #~ msgstr "க்ளட்டர் சொருகிகளை அமைப்பதில் பிழை: %s\n"
-
-#~ msgid "Clutter Plugins"
-#~ msgstr "க்ளட்டர் செருகிகள்"
 
 #~ msgid "Plugins to load for the Clutter-based compositing manager."
 #~ msgstr "க்ளட்டர் அடிப்பைடையிலான பலவின்ஆக்க மேலாளர் க்கு ஏற்ற வேண்டிய சொருகிகள்"
