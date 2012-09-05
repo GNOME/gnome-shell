@@ -1546,7 +1546,7 @@ _cogl_pipeline_prune_to_n_layers (CoglPipeline *pipeline, int n)
       CoglPipelineLayer *layer = l->data;
       next = l->next; /* we're modifying the list we're iterating */
 
-      if (layer->index > state.first_index_to_prune)
+      if (layer->index >= state.first_index_to_prune)
         _cogl_pipeline_remove_layer_difference (pipeline, layer, FALSE);
     }
 
