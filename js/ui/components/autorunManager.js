@@ -150,8 +150,18 @@ const AutorunManager = new Lang.Class({
         this._transDispatcher = new AutorunTransientDispatcher(this);
     },
 
-    enable: function() {
+    _ensureResidentSource: function() {
+        if (this._residentSource)
+            return;
+
         this._residentSource = new AutorunResidentSource(this);
+        let destroyId = this._residentSource.connect('destroy', Lang.bind(this, function() {
+            this._residentSource.disconnect(destroyId);
+            this._residentSource = null;
+        }));
+    },
+
+    enable: function() {
         this._scanMounts();
 
         this._mountAddedId = this._volumeMonitor.connect('mount-added', Lang.bind(this, this._onMountAdded));
@@ -169,6 +179,7 @@ const AutorunManager = new Lang.Class({
         mounts.forEach(Lang.bind(this, function (mount) {
             let discoverer = new ContentTypeDiscoverer(Lang.bind (this, 
                 function (mount, apps) {
+                    this._ensureResidentSource();
                     this._residentSource.addMount(mount, apps);
                 }));
 
@@ -185,6 +196,7 @@ const AutorunManager = new Lang.Class({
         let discoverer = new ContentTypeDiscoverer(Lang.bind (this,
             function (mount, apps, contentTypes) {
                 this._transDispatcher.addMount(mount, apps, contentTypes);
+                this._ensureResidentSource();
                 this._residentSource.addMount(mount, apps);
             }));
 
@@ -193,7 +205,8 @@ const AutorunManager = new Lang.Class({
 
     _onMountRemoved: function(monitor, mount) {
         this._transDispatcher.removeMount(mount);
-        this._residentSource.removeMount(mount);
+        if (this._residentSource)
+            this._residentSource.removeMount(mount);
     },
 
     ejectMount: function(mount) {
@@ -266,8 +279,8 @@ const AutorunResidentSource = new Lang.Class({
 
         this._mounts = [];
 
-        this._notification = new AutorunResidentNotification(this._manager, this);
         this._manager = manager;
+        this._notification = new AutorunResidentNotification(this._manager, this);
     },
 
     addMount: function(mount, apps) {
@@ -384,7 +397,7 @@ const AutorunResidentNotification = new Lang.Class({
 
         // now connect signals
         mountButton.connect('clicked', Lang.bind(this, function(actor, event) {
-            this._manager.startAppForMount(apps[0], mount);
+            startAppForMount(apps[0], mount);
         }));
 
         ejectButton.connect('clicked', Lang.bind(this, function() {
