@@ -20,7 +20,6 @@ const Keyboard = imports.ui.keyboard;
 const MessageTray = imports.ui.messageTray;
 const Overview = imports.ui.overview;
 const Panel = imports.ui.panel;
-const PlaceDisplay = imports.ui.placeDisplay;
 const RunDialog = imports.ui.runDialog;
 const Layout = imports.ui.layout;
 const LookingGlass = imports.ui.lookingGlass;

@@ -11,7 +11,6 @@ const St = imports.gi.St;
 
 const AppDisplay = imports.ui.appDisplay;
 const Main = imports.ui.main;
-const PlaceDisplay = imports.ui.placeDisplay;
 const RemoteSearch = imports.ui.remoteSearch;
 const Search = imports.ui.search;
 const SearchDisplay = imports.ui.searchDisplay;
@@ -98,7 +97,6 @@ const ViewSelector = new Lang.Class({
         this.addSearchProvider(new Wanda.WandaSearchProvider());
         this.addSearchProvider(new AppDisplay.AppSearchProvider());
         this.addSearchProvider(new AppDisplay.SettingsSearchProvider());
-        this.addSearchProvider(new PlaceDisplay.PlaceSearchProvider());
 
         // Load remote search providers provided by applications
         RemoteSearch.loadRemoteSearchProviders(Lang.bind(this, this.addSearchProvider));

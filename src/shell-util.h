@@ -10,9 +10,6 @@
 
 G_BEGIN_DECLS
 
-char    *shell_util_get_label_for_uri          (const char       *text_uri);
-GIcon   *shell_util_get_icon_for_uri           (const char       *text_uri);
-
 void     shell_util_set_hidden_from_pick       (ClutterActor     *actor,
                                                 gboolean          hidden);
 
