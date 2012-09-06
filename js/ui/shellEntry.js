@@ -76,6 +76,12 @@ const EntryMenu = new Lang.Class({
             this.actor.grab_key_focus();
 
         this.parent();
+        this._entry.add_style_pseudo_class('focus');
+    },
+
+    close: function() {
+        this._entry.grab_key_focus();
+        this.parent();
     },
 
     _updateCopyItem: function() {
