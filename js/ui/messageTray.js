@@ -1451,6 +1451,7 @@ const MessageTray = new Lang.Class({
         this._pointerInKeyboard = false;
         this._summaryState = State.HIDDEN;
         this._pointerInSummary = false;
+        this._notificationClosed = false;
         this._notificationState = State.HIDDEN;
         this._notificationTimeoutId = 0;
         this._notificationExpandedId = 0;
@@ -1547,9 +1548,13 @@ const MessageTray = new Lang.Class({
 
     _onCloseClicked: function() {
         if (this._notificationState == State.SHOWN) {
+            this._notificationClosed = true;
             this._notification.emit('done-displaying');
+
                 if (!this._notification.resident)
                     this._notification.destroy();
+
+            this._notificationClosed = false;
         }
     },
 
@@ -1913,7 +1918,7 @@ const MessageTray = new Lang.Class({
                                   !(this._pointerInKeyboard && notificationExpanded);
         let notificationLockedOut = this._isScreenLocked && (this._notification && !this._notification.showWhenLocked);
         // TODO: how to deal with locked out notiifcations if want to keep showing notifications?!
-        let notificationMustClose = this._notificationRemoved || notificationLockedOut || (notificationExpired && this._userActiveWhileNotificationShown);
+        let notificationMustClose = this._notificationRemoved || notificationLockedOut || (notificationExpired && this._userActiveWhileNotificationShown) || this._notificationClosed;
         let canShowNotification = notificationsPending && this._summaryState == State.HIDDEN;
 
         if (this._notificationState == State.HIDDEN) {
