@@ -327,7 +327,6 @@ const BoxPointer = new Lang.Class({
         }
 
         if (!skipTopRight) {
-            // top-right corner
             cr.lineTo(x2 - borderRadius, y1);
             cr.arc(x2 - borderRadius, y1 + borderRadius, borderRadius,
                    3*Math.PI/2, Math.PI*2);
@@ -349,7 +348,6 @@ const BoxPointer = new Lang.Class({
         }
 
         if (!skipBottomRight) {
-            // bottom-right corner
             cr.lineTo(x2, y2 - borderRadius);
             cr.arc(x2 - borderRadius, y2 - borderRadius, borderRadius,
                    0, Math.PI/2);
@@ -371,7 +369,6 @@ const BoxPointer = new Lang.Class({
         }
 
         if (!skipBottomLeft) {
-            // bottom-left corner
             cr.lineTo(x1 + borderRadius, y2);
             cr.arc(x1 + borderRadius, y2 - borderRadius, borderRadius,
                    Math.PI/2, Math.PI);
@@ -393,7 +390,6 @@ const BoxPointer = new Lang.Class({
         }
 
         if (!skipTopLeft) {
-            // top-left corner
             cr.lineTo(x1, y1 + borderRadius);
             cr.arc(x1 + borderRadius, y1 + borderRadius, borderRadius,
                    Math.PI, 3*Math.PI/2);
@@ -451,7 +447,6 @@ const BoxPointer = new Lang.Class({
         let borderRadius = themeNode.get_length('-arrow-border-radius');
         let margin = (4 * borderRadius + borderWidth + arrowBase);
 
-        let halfMargin = margin / 2;
         let gap = themeNode.get_length('-boxpointer-gap');
         let padding = themeNode.get_length('-arrow-rise');
 
@@ -486,6 +481,7 @@ const BoxPointer = new Lang.Class({
         let arrowOrigin;
         let halfBase = Math.floor(arrowBase/2);
         let halfBorder = borderWidth / 2;
+        let halfMargin = margin / 2;
         let [x1, y1] = [halfBorder, halfBorder];
         let [x2, y2] = [natWidth - halfBorder, natHeight - halfBorder];
 
