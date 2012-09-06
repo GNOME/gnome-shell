@@ -141,34 +141,43 @@ const ShellUserVerifier = new Lang.Class({
             }));
     },
 
+    _reportInitError: function(where, error) {
+        logError(error, where);
+        this._hold.relase();
+
+        this.emit('show-message', _("Authentication error"), 'login-dialog-message-warning');
+        this._verificationFailed(false);
+    },
+
     _reauthenticationChannelOpened: function(client, result) {
         try {
             this._userVerifier = client.open_reauthentication_channel_finish(result);
-            this._connectSignals();
-            this._beginVerification();
-
-            this._hold.release();
-        } catch (e) {
-            if (this._reauthOnly) {
-                if (e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED))
-                    return;
-
-                logError(e, 'Failed to open reauthentication channel');
-                this.emit('verification-failed');
-                this._hold.release();
-                return;
-            }
-
-            // If there's no session running, or it otherwise fails, then fall back
-            // to performing verification from this login session
+        } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
+            return;
+        } catch(e if e.matches(Gio.DBusError, Gio.DBusError.ACCESS_DENIED) &&
+                !this._reauthOnly) {
+            // Gdm emits org.freedesktop.DBus.Error.AccessDenied when there is
+            // no session to reauthenticate. Fall back to performing verification
+            // from this login session
             client.get_user_verifier(this._cancellable, Lang.bind(this, this._userVerifierGot));
+            return;
+        } catch(e) {
+            this._reportInitError('Failed to open reauthentication channel', e);
+            return;
         }
+
+        this._connectSignals();
+        this._beginVerification();
+        this._hold.release();
     },
 
     _userVerifierGot: function(client, result) {
         try {
             this._userVerifier = client.get_user_verifier_finish(result);
-        } catch(e if e.matches(Gio.IOErrorEnum, Gio.ErrorEnum.CANCELLED)) {
+        } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
+            return;
+        } catch(e) {
+            this._reportInitError('Failed to obtain user verifier', e);
             return;
         }
 
@@ -199,6 +208,9 @@ const ShellUserVerifier = new Lang.Class({
                     obj.call_begin_verification_for_user_finish(result);
                 } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
                     return;
+                } catch(e) {
+                    this._reportInitError('Failed to start verification for user', e);
+                    return;
                 }
 
                 this._hold.release();
@@ -215,6 +227,9 @@ const ShellUserVerifier = new Lang.Class({
                         obj.call_begin_verification_for_user_finish(result);
                     } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
                         return;
+                    } catch(e) {
+                        this._reportInitError('Failed to start fingerprint verification for user', e);
+                        return;
                     }
 
                     this._hold.release();
@@ -227,6 +242,9 @@ const ShellUserVerifier = new Lang.Class({
                 try {
                     obj.call_begin_verification_finish(result);
                 } catch(e if e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED)) {
+                    return;
+                } catch(e) {
+                    this._reportInitError('Failed to start verification', e);
                     return;
                 }
 
@@ -306,23 +324,27 @@ const ShellUserVerifier = new Lang.Class({
         this.emit('verification-complete');
     },
 
-    _verificationFailed: function() {
+    _verificationFailed: function(retry) {
         // For Not Listed / enterprise logins, immediately reset
         // the dialog
         // Otherwise, we allow ALLOWED_FAILURES attempts. After that, we
         // go back to the welcome screen.
 
-        if (!this._userName ||
-            (++this._failCounter) == this._settings.get_int(ALLOWED_FAILURES_KEY)) {
+        let canRetry = retry && this._userName &&
+            this._failCounter < this._settings.get_int(ALLOWED_FAILURES_KEY);
+
+        if (canRetry) {
+            this._failCounter++;
+
+            this.clear();
+            this.begin(this._userName, new Batch.Hold());
+        } else {
             // Allow some time to see the message, then reset everything
             Mainloop.timeout_add(3000, Lang.bind(this, function() {
                 this.cancel();
 
                 this._onReset();
             }));
-        } else {
-            this.clear();
-            this.begin(this._userName, new Batch.Hold());
         }
 
         this.emit('verification-failed');
@@ -333,7 +355,7 @@ const ShellUserVerifier = new Lang.Class({
         // But if, e.g., fingerprint fails, still give
         // password authentication a chance to succeed
         if (serviceName == PASSWORD_SERVICE_NAME) {
-            this._verificationFailed();
+            this._verificationFailed(true);
         }
 
         this.emit('hide-login-hint');
