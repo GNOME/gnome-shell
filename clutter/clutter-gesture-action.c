@@ -226,6 +226,7 @@ stage_captured_event_cb (ClutterActor       *stage,
         if (!(mods & CLUTTER_BUTTON1_MASK))
           {
             cancel_gesture (action);
+            gesture_unregister_point (action, position);
             return CLUTTER_EVENT_PROPAGATE;
           }
       }
