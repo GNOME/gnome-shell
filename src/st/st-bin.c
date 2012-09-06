@@ -200,8 +200,15 @@ st_bin_navigate_focus (StWidget         *widget,
       if (from && clutter_actor_contains (bin_actor, from))
         return FALSE;
 
-      clutter_actor_grab_key_focus (bin_actor);
-      return TRUE;
+      if (CLUTTER_ACTOR_IS_MAPPED (bin_actor))
+        {
+          clutter_actor_grab_key_focus (bin_actor);
+          return TRUE;
+        }
+      else
+        {
+          return FALSE;
+        }
     }
   else if (priv->child && ST_IS_WIDGET (priv->child))
     return st_widget_navigate_focus (ST_WIDGET (priv->child), from, direction, FALSE);

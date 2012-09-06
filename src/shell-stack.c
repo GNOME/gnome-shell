@@ -155,8 +155,15 @@ shell_stack_navigate_focus (StWidget         *widget,
       if (from && clutter_actor_contains (CLUTTER_ACTOR (widget), from))
         return FALSE;
 
-      clutter_actor_grab_key_focus (CLUTTER_ACTOR (widget));
-      return TRUE;
+      if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (widget)))
+        {
+          clutter_actor_grab_key_focus (CLUTTER_ACTOR (widget));
+          return TRUE;
+        }
+      else
+        {
+          return FALSE;
+        }
     }
 
   top_actor = clutter_actor_get_last_child (CLUTTER_ACTOR (widget));

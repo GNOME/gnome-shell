@@ -763,18 +763,7 @@ st_widget_get_paint_volume (ClutterActor *self,
 static GList *
 st_widget_real_get_focus_chain (StWidget *widget)
 {
-  ClutterActorIter iter;
-  ClutterActor *child;
-  GList *focus_chain = NULL;
-
-  clutter_actor_iter_init (&iter, CLUTTER_ACTOR (widget));
-  while (clutter_actor_iter_next (&iter, &child))
-    {
-      if (CLUTTER_ACTOR_IS_VISIBLE (child))
-        focus_chain = g_list_prepend (focus_chain, child);
-    }
-
-  return g_list_reverse (focus_chain);
+  return clutter_actor_get_children (CLUTTER_ACTOR (widget));
 }
 
 
@@ -1898,9 +1887,17 @@ st_widget_real_navigate_focus (StWidget         *widget,
     {
       if (!focus_child)
         {
-          /* Accept focus from outside */
-          clutter_actor_grab_key_focus (widget_actor);
-          return TRUE;
+          if (CLUTTER_ACTOR_IS_MAPPED (widget_actor))
+            {
+              /* Accept focus from outside */
+              clutter_actor_grab_key_focus (widget_actor);
+              return TRUE;
+            }
+          else
+            {
+              /* Refuse to set focus on hidden actors */
+              return FALSE;
+            }
         }
       else
         {
