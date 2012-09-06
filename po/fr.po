@@ -20,10 +20,11 @@ msgstr ""
 "org/enter_bug.cgi?product=mutter&component=general\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-06-13 18:21+0000\n"
+"POT-Creation-Date: 2012-08-06 23:35+0000\n"
 "PO-Revision-Date: 2012-06-15 20:22+0200\n"
 "Last-Translator: Alain Lojewski <allomervan@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -60,16 +61,17 @@ msgstr "Évènement sonore"
 msgid "Unknown window information request: %d"
 msgstr "Requête d'information de fenêtre inconnue : %d"
 
-#: ../src/core/delete.c:111
-#, c-format
-msgid "<tt>%s</tt> is not responding."
+#: ../src/core/delete.c:114
+#, fuzzy, c-format
+#| msgid "<tt>%s</tt> is not responding."
+msgid "%s is not responding."
 msgstr "<tt>%s</tt> ne répond pas."
 
-#: ../src/core/delete.c:114
+#: ../src/core/delete.c:118
 msgid "Application is not responding."
 msgstr "L'application ne répond pas."
 
-#: ../src/core/delete.c:119
+#: ../src/core/delete.c:123
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -77,11 +79,11 @@ msgstr ""
 "Vous pouvez patienter un instant pour continuer ou forcer l'application à "
 "quitter définitivement."
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Wait"
 msgstr "_Attendre"
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Force Quit"
 msgstr "_Forcer à quitter"
 
@@ -95,7 +97,7 @@ msgstr "Il manque l'extension %s nécessaire à la composition"
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Impossible d'ouvrir le visuel « %s » du système X Window\n"
 
-#: ../src/core/keybindings.c:852
+#: ../src/core/keybindings.c:844
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -165,7 +167,7 @@ msgstr "Afficher la version"
 msgid "Mutter plugin to use"
 msgstr "Greffon de Mutter à utiliser"
 
-#: ../src/core/prefs.c:1064
+#: ../src/core/prefs.c:1065
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -173,14 +175,14 @@ msgstr ""
 "Solutions de rechange désactivées pour les applications endommagées. "
 "Certaines applications peuvent ne pas se comporter correctement.\n"
 
-#: ../src/core/prefs.c:1139
+#: ../src/core/prefs.c:1140
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
-"Impossible d'analyser la description de police « %s » depuis la clé GSettings "
-"%s\n"
+"Impossible d'analyser la description de police « %s » depuis la clé "
+"GSettings %s\n"
 
-#: ../src/core/prefs.c:1205
+#: ../src/core/prefs.c:1206
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -189,7 +191,7 @@ msgstr ""
 "« %s » trouvée dans la base de données de configuration n'est pas une valeur "
 "correcte pour le bouton de souris\n"
 
-#: ../src/core/prefs.c:1723
+#: ../src/core/prefs.c:1724
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -198,7 +200,7 @@ msgstr ""
 "« %s » trouvé dans la base de données de configuration n'est pas une valeur "
 "correcte pour la combinaison de touches « %s »\n"
 
-#: ../src/core/prefs.c:1820
+#: ../src/core/prefs.c:1821
 #, c-format
 msgid "Workspace %d"
 msgstr "Espace de travail %d"
@@ -290,8 +292,9 @@ msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
 msgstr ""
-"Ces fenêtres ne prennent pas en charge « l'enregistrement de la configuration "
-"actuelle » et devront être redémarrées manuellement à la prochaine connexion."
+"Ces fenêtres ne prennent pas en charge « l'enregistrement de la "
+"configuration actuelle » et devront être redémarrées manuellement à la "
+"prochaine connexion."
 
 #: ../src/core/util.c:80
 #, c-format
@@ -350,8 +353,8 @@ msgstr ""
 #: ../src/core/window.c:7899
 #, c-format
 msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
-"d x %d and max size %d x %d; this doesn't make much sense.\n"
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
+"%d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
 "La fenêtre %s positionne un indice MWM indiquant qu'elle n'est pas "
 "redimensionnable, mais positionne une taille minimale de %d x %d et une "
@@ -747,7 +750,8 @@ msgstr "la géométrie du cadre n'indique pas la dimension « %s »"
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr ""
-"la géométrie du cadre n'indique pas la dimension « %s » pour la bordure « %s »"
+"la géométrie du cadre n'indique pas la dimension « %s » pour la bordure "
+"« %s »"
 
 #: ../src/ui/theme.c:324
 #, c-format
@@ -780,8 +784,8 @@ msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
 "_ are valid"
 msgstr ""
-"Caractère « %c » non valide dans le paramètre color_name de gtk:custom, seuls "
-"A-Za-z0-9-_ sont acceptés"
+"Caractère « %c » non valide dans le paramètre color_name de gtk:custom, "
+"seuls A-Za-z0-9-_ sont acceptés"
 
 #: ../src/ui/theme.c:1231
 #, c-format
@@ -808,20 +812,21 @@ msgid ""
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
 "La spécification de couleur GTK doit comporter un crochet de fermeture après "
-"l'état, p. ex. gtk:fg[NORMAL] où NORMAL est l'état ; impossible d'analyser « %"
-"s »"
+"l'état, p. ex. gtk:fg[NORMAL] où NORMAL est l'état ; impossible d'analyser "
+"« %s »"
 
 #: ../src/ui/theme.c:1301
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr "Impossible de comprendre l'état « %s » dans la spécification de couleur"
+msgstr ""
+"Impossible de comprendre l'état « %s » dans la spécification de couleur"
 
 #: ../src/ui/theme.c:1314
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr ""
-"Impossible de comprendre le composant de couleur « %s » dans la spécification "
-"de couleur"
+"Impossible de comprendre le composant de couleur « %s » dans la "
+"spécification de couleur"
 
 #: ../src/ui/theme.c:1343
 #, c-format
@@ -841,15 +846,16 @@ msgstr "Impossible d'analyser la valeur alpha « %s » en couleur mélangée"
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr ""
-"La valeur alpha « %s » en couleur mélangée n'est pas comprise entre 0,0 et 1,0"
+"La valeur alpha « %s » en couleur mélangée n'est pas comprise entre 0,0 et "
+"1,0"
 
 #: ../src/ui/theme.c:1411
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
-"Le format d'ombre est « shade/base_color/factor », « %s » ne correspond pas au "
-"format"
+"Le format d'ombre est « shade/base_color/factor », « %s » ne correspond pas "
+"au format"
 
 #: ../src/ui/theme.c:1422
 #, c-format
@@ -943,15 +949,15 @@ msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
-"L'expression de la coordonnée a un opérateur « %c » suivant l'opérateur « %c » "
-"sans opérande entre eux"
+"L'expression de la coordonnée a un opérateur « %c » suivant l'opérateur "
+"« %c » sans opérande entre eux"
 
 #: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
-"L'expression de la coordonnée possède une variable ou constante inconnue « %"
-"s »"
+"L'expression de la coordonnée possède une variable ou constante inconnue "
+"« %s »"
 
 #: ../src/ui/theme.c:2495
 #, c-format
@@ -1018,8 +1024,8 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"Aucun style de cadre défini pour le type de fenêtre « %s » dans le thème « %"
-"s », ajoutez un élément <window type=\"%s\" style_set=\"whatever\"/>"
+"Aucun style de cadre défini pour le type de fenêtre « %s » dans le thème "
+"« %s », ajoutez un élément <window type=\"%s\" style_set=\"whatever\"/>"
 
 #: ../src/ui/theme.c:5650 ../src/ui/theme.c:5712 ../src/ui/theme.c:5775
 #, c-format
@@ -1085,7 +1091,8 @@ msgstr "Impossible d'analyser « %s » en tant que valeur en virgule flottante
 #: ../src/ui/theme-parser.c:680 ../src/ui/theme-parser.c:708
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "Les valeurs booléennes doivent être « true » ou « false » et non « %s »"
+msgstr ""
+"Les valeurs booléennes doivent être « true » ou « false » et non « %s »"
 
 #: ../src/ui/theme-parser.c:735
 #, c-format
@@ -1164,8 +1171,9 @@ msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
 msgstr ""
-"Impossible d'indiquer à la fois « button_width » / « button_height » (largeur/"
-"hauteur) et « aspect_ratio » (proportion) pour les boutons"
+"Impossible d'indiquer à la fois « button_width » / "
+"« button_height » (largeur/hauteur) et « aspect_ratio » (proportion) pour "
+"les boutons"
 
 #: ../src/ui/theme-parser.c:1450
 #, c-format
@@ -1186,15 +1194,15 @@ msgstr "Bordure « %s » inconnue"
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr ""
-"Aucun attribut « start_angle » (« début d'angle ») ou « from » (« depuis ») sur "
-"l'élément <%s>"
+"Aucun attribut « start_angle » (« début d'angle ») ou « from » (« depuis ») "
+"sur l'élément <%s>"
 
 #: ../src/ui/theme-parser.c:1875
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr ""
-"Aucun attribut « extent_angle » (« extension d'angle ») ou « to » (« vers ») sur "
-"l'élément <%s>"
+"Aucun attribut « extent_angle » (« extension d'angle ») ou « to » (« vers ») "
+"sur l'élément <%s>"
 
 #: ../src/ui/theme-parser.c:2115
 #, c-format
@@ -1257,7 +1265,8 @@ msgstr "Fonction inconnue « %s » pour le bouton"
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr ""
-"La fonction « %s » du bouton n'existe pas dans la version (%d, a besoin de %d)"
+"La fonction « %s » du bouton n'existe pas dans la version (%d, a besoin de "
+"%d)"
 
 #: ../src/ui/theme-parser.c:2994
 #, c-format
@@ -1287,7 +1296,8 @@ msgstr "Aucun style appelé « %s » n'a été défini"
 #: ../src/ui/theme-parser.c:3113 ../src/ui/theme-parser.c:3136
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr "« %s » n'est pas une valeur valide pour l'attribut de redimensionnement"
+msgstr ""
+"« %s » n'est pas une valeur valide pour l'attribut de redimensionnement"
 
 #: ../src/ui/theme-parser.c:3147
 #, c-format
@@ -1632,4 +1642,3 @@ msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d expressions de coordonnées analysées en %g secondes (%g secondes en "
 "moyenne)\n"
-
