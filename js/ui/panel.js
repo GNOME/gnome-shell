@@ -965,7 +965,7 @@ const Panel = new Lang.Class({
         Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'start-here-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
 
-        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        Main.sessionMode.connect('updated', Lang.bind(this, this._updatePanel));
         this._updatePanel();
     },
 
@@ -1130,41 +1130,13 @@ const Panel = new Lang.Class({
         }
     },
 
-    _tweenAndUpdatePanel: function() {
-        this._closeIndicatorMenus();
-
-        Tweener.addTween(this, {
-            boxOpacity: 0,
-            time: Overview.ANIMATION_TIME / 2,
-            transition: 'easeOutQuad',
-            onCompleteScope: this,
-            onComplete: function() {
-                this._updatePanel();
-                Tweener.addTween(this, {
-                    boxOpacity: 255,
-                    time: Overview.ANIMATION_TIME / 2,
-                    transition: 'easeOutQuad'
-                });
-            }
-        });
-    },
-
-    _sessionUpdated: function() {
-        this._tweenAndUpdatePanel();
-    },
-
-    _closeIndicatorMenus: function() {
-        for (let role in this.statusArea) {
-            let indicator = this.statusArea[role];
-            indicator.menu.close();
-        }
-    },
-
     _hideIndicators: function() {
         for (let role in PANEL_ITEM_IMPLEMENTATIONS) {
             let indicator = this.statusArea[role];
             if (!indicator)
                 continue;
+            if (indicator.menu)
+                indicator.menu.close();
             indicator.container.hide();
         }
     },
