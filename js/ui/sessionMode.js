@@ -20,6 +20,7 @@ const _modes = {
         hasWindows: false,
         isLocked: false,
         isGreeter: false,
+        isPrimary: false,
         unlockDialog: null,
         components: [],
         panel: {
@@ -32,6 +33,7 @@ const _modes = {
     'gdm': {
         allowKeybindingsWhenModal: true,
         isGreeter: true,
+        isPrimary: true,
         unlockDialog: imports.gdm.loginDialog.LoginDialog,
         components: ['polkitAgent'],
         panel: {
@@ -55,6 +57,7 @@ const _modes = {
     },
 
     'initial-setup': {
+        isPrimary: true,
         components: ['keyring'],
         panel: {
             left: [],
@@ -73,6 +76,7 @@ const _modes = {
         hasWindows: true,
         unlockDialog: imports.ui.unlockDialog.UnlockDialog,
         isLocked: false,
+        isPrimary: true,
         components: ['networkAgent', 'polkitAgent', 'telepathyClient',
                      'keyring', 'recorder', 'autorunManager', 'automountManager'],
         panel: {
@@ -87,7 +91,8 @@ const _modes = {
 function listModes() {
     let modes = Object.getOwnPropertyNames(_modes);
     for (let i = 0; i < modes.length; i++)
-        print(modes[i]);
+        if (_modes[modes[i]].isPrimary)
+            print(modes[i]);
 }
 
 const SessionMode = new Lang.Class({
@@ -95,7 +100,9 @@ const SessionMode = new Lang.Class({
 
     _init: function() {
         global.connect('notify::session-mode', Lang.bind(this, this._sync));
-        this._modeStack = [global.session_mode];
+        let mode = _modes[global.session_mode].isPrimary ? global.session_mode
+                                                         : 'user';
+        this._modeStack = [mode];
         this._sync();
     },
 
