@@ -560,26 +560,27 @@ load_pixbuf_async_finish (StTextureCache *cache, GAsyncResult *result, GError **
 }
 
 static CoglHandle
-pixbuf_to_cogl_handle (GdkPixbuf *pixbuf,
-                       gboolean   add_padding)
+data_to_cogl_handle (const guchar *data,
+                     gboolean      has_alpha,
+                     int           width,
+                     int           height,
+                     int           rowstride,
+                     gboolean      add_padding)
 {
   CoglHandle texture, offscreen;
   CoglColor clear_color;
-  int width, height;
   guint size;
 
-  width = gdk_pixbuf_get_width (pixbuf);
-  height = gdk_pixbuf_get_height (pixbuf);
   size = MAX (width, height);
 
   if (!add_padding || width == height)
     return cogl_texture_new_from_data (width,
                                        height,
                                        COGL_TEXTURE_NONE,
-                                       gdk_pixbuf_get_has_alpha (pixbuf) ? COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
+                                       has_alpha ? COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
                                        COGL_PIXEL_FORMAT_ANY,
-                                       gdk_pixbuf_get_rowstride (pixbuf),
-                                       gdk_pixbuf_get_pixels (pixbuf));
+                                       rowstride,
+                                       data);
 
   texture = cogl_texture_new_with_size (size, size,
                                         COGL_TEXTURE_NO_SLICING,
@@ -597,10 +598,22 @@ pixbuf_to_cogl_handle (GdkPixbuf *pixbuf,
                            (size - width) / 2, (size - height) / 2,
                            width, height,
                            width, height,
-                           gdk_pixbuf_get_has_alpha (pixbuf) ? COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
-                           gdk_pixbuf_get_rowstride (pixbuf),
-                           gdk_pixbuf_get_pixels (pixbuf));
+                           has_alpha ? COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
+                           rowstride,
+                           data);
   return texture;
+}
+
+static CoglHandle
+pixbuf_to_cogl_handle (GdkPixbuf *pixbuf,
+                       gboolean   add_padding)
+{
+  return data_to_cogl_handle (gdk_pixbuf_get_pixels (pixbuf),
+                              gdk_pixbuf_get_has_alpha (pixbuf),
+                              gdk_pixbuf_get_width (pixbuf),
+                              gdk_pixbuf_get_height (pixbuf),
+                              gdk_pixbuf_get_rowstride (pixbuf),
+                              add_padding);
 }
 
 static cairo_surface_t *
@@ -1408,10 +1421,7 @@ st_texture_cache_load_from_raw (StTextureCache    *cache,
   texdata = g_hash_table_lookup (cache->priv->keyed_cache, key);
   if (texdata == NULL)
     {
-      texdata = cogl_texture_new_from_data (width, height, COGL_TEXTURE_NONE,
-                                            has_alpha ? COGL_PIXEL_FORMAT_RGBA_8888 : COGL_PIXEL_FORMAT_RGB_888,
-                                            COGL_PIXEL_FORMAT_ANY,
-                                            rowstride, data);
+      texdata = data_to_cogl_handle (data, has_alpha, width, height, rowstride, TRUE);
       g_hash_table_insert (cache->priv->keyed_cache, g_strdup (key), texdata);
     }
 
