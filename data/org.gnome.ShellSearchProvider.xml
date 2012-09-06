@@ -108,7 +108,7 @@
           </doc:summary>
         </doc:doc>
       </arg>
-      <arg type="a{sv}" direction="out">
+      <arg type="aa{sv}" direction="out">
         <doc:doc>
           <doc:summary>
             <doc:para>
