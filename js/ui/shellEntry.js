@@ -126,34 +126,20 @@ function _setMenuAlignment(entry, stageX) {
         entry.menu.setSourceAlignment(entryX / entry.width);
 };
 
-function _onClicked(action, actor) {
-    let entry = actor.menu ? actor : actor.get_parent();
-
+function _onButtonPressEvent(actor, event, entry) {
     if (entry.menu.isOpen) {
         entry.menu.close();
-    } else if (action.get_button() == 3) {
-        let [stageX, stageY] = action.get_coords();
+        return true;
+    } else if (event.get_button() == 3) {
+        let [stageX, stageY] = event.get_coords();
         _setMenuAlignment(entry, stageX);
         entry.menu.open();
-    }
-};
-
-function _onLongPress(action, actor, state) {
-    let entry = actor.menu ? actor : actor.get_parent();
-
-    if (state == Clutter.LongPressState.QUERY)
-        return action.get_button() == 1 && !entry.menu.isOpen;
-
-    if (state == Clutter.LongPressState.ACTIVATE) {
-        let [stageX, stageY] = action.get_coords();
-        _setMenuAlignment(entry, stageX);
-        entry.menu.open();
+        return true;
     }
     return false;
 };
 
-function _onPopup(actor) {
-    let entry = actor.menu ? actor : actor.get_parent();
+function _onPopup(actor, entry) {
     let [success, textX, textY, lineHeight] = entry.clutter_text.position_to_coords(-1);
     if (success)
         entry.menu.setSourceAlignment(textX / entry.width);
@@ -168,20 +154,11 @@ function addContextMenu(entry, params) {
     entry._menuManager = new PopupMenu.PopupMenuManager({ actor: entry });
     entry._menuManager.addMenu(entry.menu);
 
-    let clickAction;
-
-    // Add a click action to both the entry and its clutter_text; the former
+    // Add an event handler to both the entry and its clutter_text; the former
     // so padding is included in the clickable area, the latter because the
     // event processing of ClutterText prevents event-bubbling.
-    clickAction = new Clutter.ClickAction();
-    clickAction.connect('clicked', _onClicked);
-    clickAction.connect('long-press', _onLongPress);
-    entry.clutter_text.add_action(clickAction);
+    entry.clutter_text.connect('button-press-event', Lang.bind(null, _onButtonPressEvent, entry));
+    entry.connect('button-press-event', Lang.bind(null, _onButtonPressEvent, entry));
 
-    clickAction = new Clutter.ClickAction();
-    clickAction.connect('clicked', _onClicked);
-    clickAction.connect('long-press', _onLongPress);
-    entry.add_action(clickAction);
-
-    entry.connect('popup-menu', _onPopup);
+    entry.connect('popup-menu', Lang.bind(null, _onPopup, entry));
 }
