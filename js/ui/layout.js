@@ -760,7 +760,7 @@ const Chrome = new Lang.Class({
             if (!actorData.isToplevel)
                 continue;
 
-            if (this._inOverview || Main.sessionMode.hasWindows)
+            if (this._inOverview || !Main.sessionMode.hasWindows)
                 visible = true;
             else if (this.findMonitorForActor(actorData.actor).inFullscreen)
                 visible = false;
