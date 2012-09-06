@@ -384,17 +384,8 @@ clutter_color_shade (const ClutterColor *color,
   
   clutter_color_to_hls (color, &h, &l, &s);
 
-  l *= factor;
-  if (l > 1.0)
-    l = 1.0;
-  else if (l < 0)
-    l = 0;
-
-  s *= factor;
-  if (s > 1.0)
-    s = 1.0;
-  else if (s < 0)
-    s = 0;
+  l = CLAMP (l * factor, 0.0, 1.0);
+  s = CLAMP (s * factor, 0.0, 1.0);
   
   clutter_color_from_hls (result, h, l, s);
 
