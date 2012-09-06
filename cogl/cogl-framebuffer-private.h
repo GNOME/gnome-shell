@@ -168,9 +168,8 @@ struct _CoglFramebuffer
 
 typedef enum {
   COGL_OFFSCREEN_ALLOCATE_FLAG_DEPTH_STENCIL    = 1L<<0,
-  COGL_OFFSCREEN_ALLOCATE_FLAG_DEPTH24_STENCIL8 = 1L<<1,
-  COGL_OFFSCREEN_ALLOCATE_FLAG_DEPTH            = 1L<<2,
-  COGL_OFFSCREEN_ALLOCATE_FLAG_STENCIL          = 1L<<3
+  COGL_OFFSCREEN_ALLOCATE_FLAG_DEPTH            = 1L<<1,
+  COGL_OFFSCREEN_ALLOCATE_FLAG_STENCIL          = 1L<<2
 } CoglOffscreenAllocateFlags;
 
 typedef struct _CoglGLFramebuffer

@@ -831,11 +831,26 @@ try_creating_renderbuffers (CoglContext *ctx,
   GList *renderbuffers = NULL;
   GLuint gl_depth_stencil_handle;
 
-  if (flags & (COGL_OFFSCREEN_ALLOCATE_FLAG_DEPTH_STENCIL |
-               COGL_OFFSCREEN_ALLOCATE_FLAG_DEPTH24_STENCIL8))
+  if (flags & COGL_OFFSCREEN_ALLOCATE_FLAG_DEPTH_STENCIL)
     {
-      GLenum format = ((flags & COGL_OFFSCREEN_ALLOCATE_FLAG_DEPTH_STENCIL) ?
-                       GL_DEPTH_STENCIL : GL_DEPTH24_STENCIL8);
+      GLenum format;
+
+      /* Although GL_OES_packed_depth_stencil is mostly equivalent to
+       * GL_EXT_packed_depth_stencil, one notable difference is that
+       * GL_OES_packed_depth_stencil doesn't allow GL_DEPTH_STENCIL to
+       * be passed as an internal format to glRenderbufferStorage.
+       */
+      if (ctx->private_feature_flags &
+          COGL_PRIVATE_FEATURE_EXT_PACKED_DEPTH_STENCIL)
+        format = GL_DEPTH_STENCIL;
+      else
+        {
+          _COGL_RETURN_VAL_IF_FAIL (
+                                  ctx->private_feature_flags &
+                                  COGL_PRIVATE_FEATURE_OES_PACKED_DEPTH_STENCIL,
+                                  NULL);
+          format = GL_DEPTH24_STENCIL8;
+        }
 
       /* Create a renderbuffer for depth and stenciling */
       GE (ctx, glGenRenderbuffers (1, &gl_depth_stencil_handle));
@@ -1073,7 +1088,8 @@ _cogl_offscreen_allocate (CoglOffscreen *offscreen,
                          gl_framebuffer)) ||
 
       ((ctx->private_feature_flags &
-        COGL_PRIVATE_FEATURE_EXT_PACKED_DEPTH_STENCIL) &&
+        (COGL_PRIVATE_FEATURE_EXT_PACKED_DEPTH_STENCIL |
+         COGL_PRIVATE_FEATURE_OES_PACKED_DEPTH_STENCIL)) &&
        try_creating_fbo (ctx,
                          offscreen->texture,
                          offscreen->texture_level,
@@ -1081,17 +1097,6 @@ _cogl_offscreen_allocate (CoglOffscreen *offscreen,
                          offscreen->texture_level_height,
                          &fb->config,
                          flags = COGL_OFFSCREEN_ALLOCATE_FLAG_DEPTH_STENCIL,
-                         gl_framebuffer)) ||
-
-      ((ctx->private_feature_flags &
-        COGL_PRIVATE_FEATURE_OES_PACKED_DEPTH_STENCIL) &&
-       try_creating_fbo (ctx,
-                         offscreen->texture,
-                         offscreen->texture_level,
-                         offscreen->texture_level_width,
-                         offscreen->texture_level_height,
-                         &fb->config,
-                         flags = COGL_OFFSCREEN_ALLOCATE_FLAG_DEPTH24_STENCIL8,
                          gl_framebuffer)) ||
 
       try_creating_fbo (ctx,
