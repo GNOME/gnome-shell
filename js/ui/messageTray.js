@@ -1510,6 +1510,7 @@ const MessageTray = new Lang.Class({
         pointerWatcher.addWatch(TRAY_DWELL_CHECK_INTERVAL, Lang.bind(this, this._checkTrayDwell));
         this._trayDwellTimeoutId = 0;
         this._trayDwelling = false;
+        this._trayDwellUserTime = 0;
     },
 
     _checkTrayDwell: function(x, y) {
@@ -1523,9 +1524,14 @@ const MessageTray = new Lang.Class({
             // of the monitor. The _trayDwelling variable is used so that we only try to
             // fire off one tray dwell - if it fails (because, say, the user has the mouse down),
             // we don't try again until the user moves the mouse up and down again.
-            if (!this._trayDwelling && !this.actor.hover && this._trayDwellTimeoutId == 0)
+            if (!this._trayDwelling && !this.actor.hover && this._trayDwellTimeoutId == 0) {
+                // Save the interaction timestamp so we can detect user input
+                let focusWindow = global.display.focus_window;
+                this._trayDwellUserTime = focusWindow ? focusWindow.user_time : 0;
+
                 this._trayDwellTimeoutId = Mainloop.timeout_add(TRAY_DWELL_TIME,
                                                                 Lang.bind(this, this._trayDwellTimeout));
+            }
             this._trayDwelling = true;
         } else {
             this._cancelTrayDwell();
@@ -1541,6 +1547,13 @@ const MessageTray = new Lang.Class({
     },
 
     _trayDwellTimeout: function() {
+        // If the user interacted with the focus window since we started the tray
+        // dwell (by clicking or typing), don't activate the message tray
+        let focusWindow = global.display.focus_window;
+        let currentUserTime = focusWindow ? focusWindow.user_time : 0;
+        if (currentUserTime != this._trayDwellUserTime)
+            return false;
+
         this._trayDwellTimeoutId = 0;
 
         this._traySummoned = true;
