@@ -1343,6 +1343,11 @@ const PopupSubMenu = new Lang.Class({
         this.actor.vscrollbar_policy =
             needsScrollbar ? Gtk.PolicyType.AUTOMATIC : Gtk.PolicyType.NEVER;
 
+        if (needsScrollbar)
+            this.actor.add_style_pseudo_class('scrolled');
+        else
+            this.actor.remove_style_pseudo_class('scrolled');
+
         // It looks funny if we animate with a scrollbar (at what point is
         // the scrollbar added?) so just skip that case
         if (animate && needsScrollbar)

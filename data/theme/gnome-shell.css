@@ -151,11 +151,11 @@ StScrollBar StButton#vhandle:active {
     box-shadow: inset 0px 2px 4px rgba(0,0,0,0.9);
 }
 
-.popup-sub-menu .popup-menu-item:ltr {
+.popup-sub-menu:scrolled .popup-menu-item:ltr {
     padding-right: 0em;
 }
 
-.popup-sub-menu .popup-menu-item:rtl {
+.popup-sub-menu:scrolled .popup-menu-item:rtl {
     padding-left: 0em;
 }
 
