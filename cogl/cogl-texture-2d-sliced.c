@@ -175,8 +175,7 @@ _cogl_texture_2d_sliced_set_waste (CoglTexture2DSliced *tex_2ds,
                                    int dst_y)
 {
   CoglBool need_x, need_y;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglContext *ctx = COGL_TEXTURE (tex_2ds)->context;
 
   /* If the x_span is sliced and the upload touches the
      rightmost pixels then fill the waste with copies of the
@@ -818,7 +817,7 @@ _cogl_texture_2d_sliced_init_base (CoglContext *ctx,
 {
   CoglTexture *tex = COGL_TEXTURE (tex_2ds);
 
-  _cogl_texture_init (tex, &cogl_texture_2d_sliced_vtable);
+  _cogl_texture_init (tex, ctx, &cogl_texture_2d_sliced_vtable);
 
   tex_2ds->slice_x_spans = NULL;
   tex_2ds->slice_y_spans = NULL;
@@ -1243,10 +1242,8 @@ _cogl_texture_2d_sliced_set_region (CoglTexture    *tex,
                                     CoglBitmap     *bmp)
 {
   CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
-  GLenum               gl_format;
-  GLenum               gl_type;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
+  GLenum gl_format;
+  GLenum gl_type;
 
   bmp = _cogl_texture_prepare_for_upload (bmp,
                                           cogl_texture_get_format (tex),

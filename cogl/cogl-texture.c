@@ -128,8 +128,10 @@ cogl_texture_unref (void *object)
 
 void
 _cogl_texture_init (CoglTexture *texture,
+                    CoglContext *context,
                     const CoglTextureVtable *vtable)
 {
+  texture->context = context;
   texture->vtable = vtable;
   texture->framebuffers = NULL;
 }
@@ -721,10 +723,9 @@ cogl_texture_set_region (CoglTexture *texture,
 			 unsigned int rowstride,
 			 const uint8_t *data)
 {
+  CoglContext *ctx = texture->context;
   CoglBitmap *source_bmp;
-  CoglBool    ret;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
+  CoglBool ret;
 
   _COGL_RETURN_VAL_IF_FAIL ((width - src_x) >= dst_width, FALSE);
   _COGL_RETURN_VAL_IF_FAIL ((height - src_y) >= dst_height, FALSE);
@@ -1010,12 +1011,11 @@ get_texture_bits_via_offscreen (CoglTexture    *texture,
                                 unsigned int    dst_rowstride,
                                 CoglPixelFormat dst_format)
 {
+  CoglContext *ctx = texture->context;
   CoglOffscreen *offscreen;
   CoglFramebuffer *framebuffer;
   CoglBitmap *bitmap;
   CoglBool ret;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
 
   if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
     return FALSE;
@@ -1175,19 +1175,18 @@ cogl_texture_get_data (CoglTexture *texture,
 		       unsigned int rowstride,
 		       uint8_t *data)
 {
-  int              bpp;
-  int              byte_size;
-  CoglPixelFormat  closest_format;
-  GLenum           closest_gl_format;
-  GLenum           closest_gl_type;
-  CoglBitmap      *target_bmp;
-  int              tex_width;
-  int              tex_height;
-  CoglPixelFormat  texture_format;
+  CoglContext *ctx = texture->context;
+  int bpp;
+  int byte_size;
+  CoglPixelFormat closest_format;
+  GLenum closest_gl_format;
+  GLenum closest_gl_type;
+  CoglBitmap *target_bmp;
+  int tex_width;
+  int tex_height;
+  CoglPixelFormat texture_format;
 
   CoglTextureGetData tg_data;
-
-  _COGL_GET_CONTEXT (ctx, 0);
 
   texture_format = cogl_texture_get_format (texture);
 

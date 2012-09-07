@@ -62,8 +62,7 @@ _cogl_texture_3d_set_wrap_mode_parameters (CoglTexture *tex,
                                            GLenum wrap_mode_p)
 {
   CoglTexture3D *tex_3d = COGL_TEXTURE_3D (tex);
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglContext *ctx = tex->context;
 
   /* Only set the wrap mode if it's different from the current value
      to avoid too many GL calls. */
@@ -118,7 +117,7 @@ _cogl_texture_3d_create_base (CoglContext *ctx,
   CoglTexture3D *tex_3d = g_new (CoglTexture3D, 1);
   CoglTexture *tex = COGL_TEXTURE (tex_3d);
 
-  _cogl_texture_init (tex, &cogl_texture_3d_vtable);
+  _cogl_texture_init (tex, ctx, &cogl_texture_3d_vtable);
 
   tex_3d->width = width;
   tex_3d->height = height;
@@ -485,8 +484,7 @@ _cogl_texture_3d_set_filters (CoglTexture *tex,
                               GLenum       mag_filter)
 {
   CoglTexture3D *tex_3d = COGL_TEXTURE_3D (tex);
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglContext *ctx = tex->context;
 
   if (min_filter == tex_3d->min_filter
       && mag_filter == tex_3d->mag_filter)
@@ -508,8 +506,7 @@ static void
 _cogl_texture_3d_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
 {
   CoglTexture3D *tex_3d = COGL_TEXTURE_3D (tex);
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglContext *ctx = tex->context;
 
   /* Only update if the mipmaps are dirty */
   if ((flags & COGL_TEXTURE_NEEDS_MIPMAP) &&

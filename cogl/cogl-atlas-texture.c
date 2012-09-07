@@ -685,6 +685,7 @@ _cogl_atlas_texture_new_with_size (unsigned int width,
   atlas_tex->atlas = NULL;
 
   _cogl_texture_init (COGL_TEXTURE (atlas_tex),
+                      ctx,
                       &cogl_atlas_texture_vtable);
 
   atlas_tex->sub_texture = NULL;

@@ -136,8 +136,9 @@ struct _CoglTextureVtable
 
 struct _CoglTexture
 {
-  CoglObject               _parent;
-  GList                   *framebuffers;
+  CoglObject _parent;
+  CoglContext *context;
+  GList *framebuffers;
   const CoglTextureVtable *vtable;
 };
 
@@ -170,6 +171,7 @@ struct _CoglTexturePixel
 
 void
 _cogl_texture_init (CoglTexture *texture,
+                    CoglContext *ctx,
                     const CoglTextureVtable *vtable);
 
 void

@@ -285,7 +285,7 @@ cogl_texture_pixmap_x11_new (CoglContext *ctxt,
   int damage_base;
   const CoglWinsysVtable *winsys;
 
-  _cogl_texture_init (tex, &cogl_texture_pixmap_x11_vtable);
+  _cogl_texture_init (tex, ctxt, &cogl_texture_pixmap_x11_vtable);
 
   tex_pixmap->pixmap = pixmap;
   tex_pixmap->image = NULL;

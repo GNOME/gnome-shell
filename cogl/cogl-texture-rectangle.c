@@ -73,8 +73,7 @@ _cogl_texture_rectangle_set_wrap_mode_parameters (CoglTexture *tex,
                                                   GLenum wrap_mode_p)
 {
   CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglContext *ctx = tex->context;
 
   /* Only set the wrap mode if it's different from the current value
      to avoid too many GL calls. Texture rectangle doesn't make use of
@@ -109,7 +108,8 @@ _cogl_texture_rectangle_free (CoglTextureRectangle *tex_rect)
 }
 
 static CoglBool
-_cogl_texture_rectangle_can_create (unsigned int width,
+_cogl_texture_rectangle_can_create (CoglContext *ctx,
+                                    unsigned int width,
                                     unsigned int height,
                                     CoglPixelFormat internal_format,
                                     GError **error)
@@ -117,8 +117,6 @@ _cogl_texture_rectangle_can_create (unsigned int width,
   GLenum gl_intformat;
   GLenum gl_format;
   GLenum gl_type;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
 
   if (!cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_RECTANGLE))
     {
@@ -163,14 +161,15 @@ _cogl_texture_rectangle_set_auto_mipmap (CoglTexture *tex,
 }
 
 static CoglTextureRectangle *
-_cogl_texture_rectangle_create_base (unsigned int     width,
-                                     unsigned int     height,
-                                     CoglPixelFormat  internal_format)
+_cogl_texture_rectangle_create_base (CoglContext *ctx,
+                                     int width,
+                                     int height,
+                                     CoglPixelFormat internal_format)
 {
   CoglTextureRectangle *tex_rect = g_new (CoglTextureRectangle, 1);
   CoglTexture *tex = COGL_TEXTURE (tex_rect);
 
-  _cogl_texture_init (tex, &cogl_texture_rectangle_vtable);
+  _cogl_texture_init (tex, ctx, &cogl_texture_rectangle_vtable);
 
   tex_rect->width = width;
   tex_rect->height = height;
@@ -204,7 +203,8 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
   if (internal_format == COGL_PIXEL_FORMAT_ANY)
     internal_format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
 
-  if (!_cogl_texture_rectangle_can_create (width, height,
+  if (!_cogl_texture_rectangle_can_create (ctx,
+                                           width, height,
                                            internal_format, error))
     return NULL;
 
@@ -214,7 +214,8 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
                                                             &gl_format,
                                                             &gl_type);
 
-  tex_rect = _cogl_texture_rectangle_create_base (width, height,
+  tex_rect = _cogl_texture_rectangle_create_base (ctx,
+                                                  width, height,
                                                   internal_format);
 
   ctx->texture_driver->gen (ctx,
@@ -250,7 +251,8 @@ cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bmp,
     _cogl_texture_determine_internal_format (cogl_bitmap_get_format (bmp),
                                              internal_format);
 
-  if (!_cogl_texture_rectangle_can_create (cogl_bitmap_get_width (bmp),
+  if (!_cogl_texture_rectangle_can_create (ctx,
+                                           cogl_bitmap_get_width (bmp),
                                            cogl_bitmap_get_height (bmp),
                                            internal_format,
                                            error))
@@ -266,7 +268,8 @@ cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bmp,
   if (dst_bmp == NULL)
     return NULL;
 
-  tex_rect = _cogl_texture_rectangle_create_base (cogl_bitmap_get_width (bmp),
+  tex_rect = _cogl_texture_rectangle_create_base (ctx,
+                                                  cogl_bitmap_get_width (bmp),
                                                   cogl_bitmap_get_height (bmp),
                                                   internal_format);
 
@@ -375,7 +378,7 @@ _cogl_texture_rectangle_new_from_foreign (GLuint gl_handle,
     return NULL;
 
   /* Create new texture */
-  tex_rect = _cogl_texture_rectangle_create_base (width, height, format);
+  tex_rect = _cogl_texture_rectangle_create_base (ctx, width, height, format);
 
   /* Setup bitmap info */
   tex_rect->is_foreign = TRUE;
@@ -462,8 +465,7 @@ _cogl_texture_rectangle_set_filters (CoglTexture *tex,
                                      GLenum       mag_filter)
 {
   CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglContext *ctx = tex->context;
 
   if (min_filter == tex_rect->min_filter
       && mag_filter == tex_rect->mag_filter)
@@ -490,8 +492,6 @@ static void
 _cogl_texture_rectangle_pre_paint (CoglTexture *tex,
                                    CoglTexturePrePaintFlags flags)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   /* Rectangle textures don't support mipmaps */
   g_assert ((flags & COGL_TEXTURE_NEEDS_MIPMAP) == 0);
 }
@@ -513,10 +513,9 @@ _cogl_texture_rectangle_set_region (CoglTexture    *tex,
                                     CoglBitmap     *bmp)
 {
   CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
-  GLenum                gl_format;
-  GLenum                gl_type;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
+  GLenum gl_format;
+  GLenum gl_type;
+  CoglContext *ctx = tex->context;
 
   bmp = _cogl_texture_prepare_for_upload (bmp,
                                           cogl_texture_get_format (tex),
@@ -549,11 +548,10 @@ _cogl_texture_rectangle_get_data (CoglTexture *tex,
                                   uint8_t *data)
 {
   CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
-  int                   bpp;
-  GLenum                gl_format;
-  GLenum                gl_type;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
+  CoglContext *ctx = tex->context;
+  int bpp;
+  GLenum gl_format;
+  GLenum gl_type;
 
   bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
 
