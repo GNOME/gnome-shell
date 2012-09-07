@@ -214,8 +214,6 @@ const SearchResults = new Lang.Class({
         for (let i = 0; i < this._providers.length; i++) {
             this.createProviderMeta(this._providers[i]);
         }
-        this._searchProvidersBox = new St.BoxLayout({ style_class: 'search-providers-box' });
-        this.actor.add(this._searchProvidersBox);
 
         this._highlightDefault = false;
         this._defaultResult = null;
@@ -301,9 +299,6 @@ const SearchResults = new Lang.Class({
                 break; // select this one!
             }
         }
-
-        if (!newDefaultResult)
-            newDefaultResult = this._searchProvidersBox.get_first_child();
 
         if (newDefaultResult != this._defaultResult) {
             if (this._defaultResult)

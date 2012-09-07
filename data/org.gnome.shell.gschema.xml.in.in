@@ -39,10 +39,6 @@
         will be displayed in the favorites area.
       </_description>
     </key>
-    <key name="disabled-open-search-providers" type="as">
-      <default>[]</default>
-      <_summary>disabled OpenSearch providers</_summary>
-    </key>
     <key name="command-history" type="as">
       <default>[]</default>
       <_summary>History for command (Alt-F2) dialog</_summary>

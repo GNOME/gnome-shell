@@ -720,10 +720,6 @@ StButton.popup-menu-item:insensitive {
     spacing: 4px;
 }
 
-.search-providers-box {
-    spacing: 12px;
-}
-
 /* Text labels are an odd number of pixels tall. The uneven top and bottom
  * padding compensates for this and ensures that the label is vertically
  * centered */
