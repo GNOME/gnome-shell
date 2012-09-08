@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-04 19:28+0200\n"
-"PO-Revision-Date: 2012-09-04 19:29+0200\n"
+"POT-Creation-Date: 2012-09-08 15:39+0200\n"
+"PO-Revision-Date: 2012-09-08 15:40+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -85,7 +85,7 @@ msgstr "_Zakończ"
 #: ../src/core/display.c:380
 #, c-format
 msgid "Missing %s extension required for compositing"
-msgstr "Brak rozszerzenia %s wymaganego przez składanie"
+msgstr "Brak rozszerzenia %s, wymaganego przez składanie"
 
 #: ../src/core/display.c:446
 #, c-format
@@ -124,7 +124,7 @@ msgstr "Inicjuje sesję z zapisanego pliku"
 
 #: ../src/core/main.c:225
 msgid "Make X calls synchronous"
-msgstr "Synchroniczne wezwania X"
+msgstr "Synchroniczne wywołania X"
 
 #: ../src/core/main.c:494
 #, c-format
@@ -169,7 +169,7 @@ msgid ""
 "behave properly.\n"
 msgstr ""
 "Obejścia dla błędnie działających programów są wyłączone. Niektóre z nich "
-"mogą się więc zachowywać w sposób nieprzewidywalny.\n"
+"mogą się zachowywać w sposób nieprzewidywalny.\n"
 
 #: ../src/core/prefs.c:1146
 #, c-format
@@ -384,7 +384,7 @@ msgid ""
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
-"Okno 0x%lx ma właściwość %s,\n"
+"Okno 0x%lx posiada właściwość %s,\n"
 "której oczekiwanym typem jest %s, w formacie %d,\n"
 "a w rzeczywistości ma typ %s, w formacie %d przy n_items %d.\n"
 "Prawdopodobnie jest to błąd programu, a nie menedżera okien.\n"
@@ -422,7 +422,7 @@ msgid ""
 msgstr ""
 "Ten klawisz inicjuje tryb \"overlay\", który jest połączeniem podglądu okien "
 "i systemu uruchamiania programów. Domyślnie jest przeznaczony do powiązania "
-"z klawiszem \"Windows\" na sprzęcie typu PC. Ustawienie tego powiązania "
+"z klawiszem \"Windows\" na komputerach typu PC. Ustawienie tego powiązania "
 "powinno być domyślne lub puste."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:3
@@ -472,7 +472,7 @@ msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Workspaces only on primary"
-msgstr "Obszary robocze tylko na pierwszym"
+msgstr "Obszary robocze tylko na pierwszym monitorze"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid ""
@@ -533,7 +533,7 @@ msgstr "Zm_aksymalizuj"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:73
 msgid "Unma_ximize"
-msgstr "Przywróć zm_aksymalizowane"
+msgstr "Cofnij m_aksymalizację"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:75
@@ -767,8 +767,9 @@ msgid ""
 "GTK custom color specification must have color name and fallback in "
 "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
 msgstr ""
-"Własna specyfikacja koloru GTK+ musi posiadać nazwę koloru i kolor zastępczy "
-"w nawiasach, np. gtk:custom(foo,bar); nie można przetworzyć \"%s\""
+"Własna specyfikacja koloru biblioteki GTK+ musi posiadać nazwę koloru i "
+"kolor zastępczy w nawiasach, np. gtk:custom(foo,bar); nie można przetworzyć "
+"\"%s\""
 
 #: ../src/ui/theme.c:1217
 #, c-format
@@ -794,8 +795,9 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"Specyfikacja koloru GTK+ musi zawierać stan w nawiasach kwadratowych, np. "
-"gtk:fg[NORMAL], gdzie NORMAL jest nazwą stanu; nie można przetworzyć \"%s\""
+"Specyfikacja koloru biblioteki GTK+ musi zawierać stan w nawiasach "
+"kwadratowych, np. gtk:fg[NORMAL], gdzie NORMAL jest nazwą stanu; nie można "
+"przetworzyć \"%s\""
 
 #: ../src/ui/theme.c:1290
 #, c-format
@@ -803,9 +805,9 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"Specyfikacja koloru GTK+ musi po nazwie stanu zawierać zamykający nawias "
-"kwadratowy, np. gtk:fg[NORMAL], gdzie NORMAL jest nazwą stanu; nie można "
-"przetworzyć \"%s\""
+"Specyfikacja koloru biblioteki GTK+ musi po nazwie stanu zawierać zamykający "
+"nawias kwadratowy, np. gtk:fg[NORMAL], gdzie NORMAL jest nazwą stanu; nie "
+"można przetworzyć \"%s\""
 
 #: ../src/ui/theme.c:1301
 #, c-format
@@ -909,16 +911,16 @@ msgstr "Wyrażenie opisujące położenie zawiera dzielenie przez zero"
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
-"Wyrażenie opisujące położenie używa operatora dzielenia modulo z argumentem "
-"zmiennoprzecinkowym"
+"Wyrażenie opisujące położenie używa operatora dzielenia modulo z liczbą "
+"zmiennoprzecinkową"
 
 #: ../src/ui/theme.c:2218
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
-"Wyrażenie opisujące położenie zawiera operand \"%s\" w miejscu, w którym "
-"oczekiwano argumentu"
+"Wyrażenie opisujące położenie zawiera operator \"%s\" w miejscu, w którym "
+"oczekiwano operandu"
 
 #: ../src/ui/theme.c:2227
 #, c-format
@@ -938,8 +940,8 @@ msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
-"Wyrażenie opisujące położenie zawiera argument \"%c\" bezpośrednio po "
-"argumencie \"%c\" bez rozdzielającego ich operatora"
+"Wyrażenie opisujące położenie zawiera operator \"%c\" bezpośrednio po "
+"operatorze \"%c\" bez rozdzielającego ich operandu"
 
 #: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
 #, c-format
@@ -1068,7 +1070,7 @@ msgstr "Liczba całkowita %ld musi być dodatnia"
 #: ../src/ui/theme-parser.c:621
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr "Liczba całkowita %ld jest zbyt duża, obecne maksimum to %d"
+msgstr "Liczba całkowita %ld jest za duża, obecne maksimum to %d"
 
 #: ../src/ui/theme-parser.c:649 ../src/ui/theme-parser.c:765
 #, c-format
@@ -1090,7 +1092,7 @@ msgstr "Wartość kąta musi się mieścić pomiędzy 0,0 i 360,0, odczytano %g\
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
 msgstr ""
 "Wartość alfa musi się mieścić pomiędzy 0,0 (niewidoczne) i 1,0 (w pełni "
-"przezroczyste), odczytano %g\n"
+"nieprzezroczyste), odczytano %g\n"
 
 #: ../src/ui/theme-parser.c:863
 #, c-format
@@ -1125,7 +1127,7 @@ msgstr "<%s> musi albo określać geometrię, albo element nadrzędny z geometri
 
 #: ../src/ui/theme-parser.c:1196
 msgid "You must specify a background for an alpha value to be meaningful"
-msgstr "Aby wartość alpha miała sens, należy określić tło"
+msgstr "Aby wartość alfa miała sens, należy określić tło"
 
 #: ../src/ui/theme-parser.c:1264
 #, c-format
@@ -1199,17 +1201,17 @@ msgstr "Niezrozumiały typ wypełnienia \"%s\" elementu <%s>"
 #: ../src/ui/theme-parser.c:2506
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "Niezrozumiały stan \"%s\" (atrybut state) elementu <%s>"
+msgstr "Niezrozumiały stan \"%s\" (atrybut \"state\") elementu <%s>"
 
 #: ../src/ui/theme-parser.c:2370 ../src/ui/theme-parser.c:2453
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "Niezrozumiały cień \"%s\" (atrybut shadow) elementu <%s>"
+msgstr "Niezrozumiały cień \"%s\" (atrybut \"shadow\") elementu <%s>"
 
 #: ../src/ui/theme-parser.c:2380
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "Niezrozumiała strzałka \"%s\" (atrybut arrow) elementu <%s>"
+msgstr "Niezrozumiała strzałka \"%s\" (atrybut \"arrow\") elementu <%s>"
 
 #: ../src/ui/theme-parser.c:2694 ../src/ui/theme-parser.c:2790
 #, c-format
@@ -1220,8 +1222,8 @@ msgstr "Nie określono elementu <draw_ops> o nazwie \"%s\""
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr ""
-"Włączenie tutaj elementu draw_ops o nazwie \"%s\" spowodowałoby zapętlone "
-"odwołanie"
+"Włączenie tutaj elementu \"draw_ops\" o nazwie \"%s\" spowodowałoby "
+"zapętlone odwołanie"
 
 #: ../src/ui/theme-parser.c:2917
 #, c-format
@@ -1313,24 +1315,24 @@ msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Element <piece> nie może zawierać dwóch draw_ops (motyw zawiera atrybut "
-"draw_ops i element <draw_ops> lub dwa elementy)"
+"Element <piece> nie może zawierać dwóch \"draw_ops\" (motyw zawiera atrybut "
+"\"draw_ops\" i element <draw_ops> lub dwa elementy)"
 
 #: ../src/ui/theme-parser.c:3332
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Element <button> nie może zawierać dwóch draw_ops (motyw zawiera atrybut "
-"draw_ops i element <draw_ops> lub dwa elementy)"
+"Element <button> nie może zawierać dwóch \"draw_ops\" (motyw zawiera atrybut "
+"\"draw_ops\" i element <draw_ops> lub dwa elementy)"
 
 #: ../src/ui/theme-parser.c:3370
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Element <menu_icon> nie może zawierać dwóch draw_ops (motyw zawiera atrybut "
-"draw_ops i element <draw_ops> lub dwa elementy)"
+"Element <menu_icon> nie może zawierać dwóch \"draw_ops\" (motyw zawiera "
+"atrybut \"draw_ops\" i element <draw_ops> lub dwa elementy)"
 
 #: ../src/ui/theme-parser.c:3434
 #, c-format
@@ -1381,7 +1383,7 @@ msgstr ""
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr ""
-"Element <%s> nie jest dopuszczalny wewnątrz elementu operacji rysowania"
+"Element <%s> nie jest dopuszczalny wewnątrz elementu działania rysowania"
 
 #: ../src/ui/theme-parser.c:3631 ../src/ui/theme-parser.c:3661
 #: ../src/ui/theme-parser.c:3666 ../src/ui/theme-parser.c:3671
@@ -1391,11 +1393,11 @@ msgstr "Element <%s> nie jest dopuszczalny wewnątrz elementu <%s>"
 
 #: ../src/ui/theme-parser.c:3899
 msgid "No draw_ops provided for frame piece"
-msgstr "Brak elementu <draw_ops> powiązanego z elementem ramki"
+msgstr "Brak elementu \"draw_ops\" powiązanego z elementem ramki"
 
 #: ../src/ui/theme-parser.c:3914
 msgid "No draw_ops provided for button"
-msgstr "Brak elementu <draw_ops> powiązanego z przyciskiem"
+msgstr "Brak elementu \"draw_ops\" powiązanego z przyciskiem"
 
 #: ../src/ui/theme-parser.c:3968
 #, c-format
@@ -1460,7 +1462,7 @@ msgstr "Pu_lpit"
 
 #: ../src/ui/theme-viewer.c:115
 msgid "Open another one of these windows"
-msgstr "Otwiera kolejne z tych okien"
+msgstr "Otwiera kolejne okno tego typu"
 
 #: ../src/ui/theme-viewer.c:117
 msgid "This is a demo button with an 'open' icon"
@@ -1505,7 +1507,7 @@ msgstr "Paleta narzędziowa"
 
 #: ../src/ui/theme-viewer.c:398
 msgid "Torn-off Menu"
-msgstr "Menu rozwijane"
+msgstr "Menu oderwane"
 
 #: ../src/ui/theme-viewer.c:402
 msgid "Border"
@@ -1528,7 +1530,7 @@ msgstr "%g milisekundy do narysowania jednej ramki okna"
 #: ../src/ui/theme-viewer.c:813
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "Użycie: methacity-theme-viewer [NAZWA_MOTYWU]\n"
+msgstr "Użycie: metacity-theme-viewer [NAZWA_MOTYWU]\n"
 
 #: ../src/ui/theme-viewer.c:820
 #, c-format
@@ -1578,11 +1580,11 @@ msgstr ""
 
 #: ../src/ui/theme-viewer.c:1266
 msgid "position expression test returned TRUE but set error"
-msgstr "test wyrażenia pozycji zwrócił wartość PRAWDA, lecz ustawił błąd"
+msgstr "Test wyrażenia pozycji zwrócił wartość PRAWDA, lecz ustawił błąd"
 
 #: ../src/ui/theme-viewer.c:1268
 msgid "position expression test returned FALSE but didn't set error"
-msgstr "test wyrażenia pozycji zwrócił wartość FAŁSZ, lecz nie ustawił błędu"
+msgstr "Test wyrażenia pozycji zwrócił wartość FAŁSZ, lecz nie ustawił błędu"
 
 #: ../src/ui/theme-viewer.c:1272
 msgid "Error was expected but none given"
