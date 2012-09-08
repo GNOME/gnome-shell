@@ -1194,6 +1194,11 @@ StScrollBar StButton#vhandle:active {
     height: 72px;
 }
 
+#message-tray:keyboard {
+    /* Same as the OSK */
+    background: rgba(0, 0, 0, 0.8);
+}
+
 #message-tray:overview {
     background: rgba(0, 0, 0, 0.1);
     border-top: 1px solid rgba(128, 128, 128, 0.3);

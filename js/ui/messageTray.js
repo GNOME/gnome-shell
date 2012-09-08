@@ -1458,6 +1458,7 @@ const MessageTray = new Lang.Class({
             this._grabHelper.addActor(Main.panel.statusArea.activities.hotCorner.actor);
 
         Main.layoutManager.keyboardBox.connect('notify::hover', Lang.bind(this, this._onKeyboardHoverChanged));
+        Main.layoutManager.connect('keyboard-visible-changed', Lang.bind(this, this._onKeyboardVisibleChanged));
 
         this._trayState = State.HIDDEN;
         this._locked = false;
@@ -1466,6 +1467,7 @@ const MessageTray = new Lang.Class({
         this._trayLeftTimeoutId = 0;
         this._pointerInTray = false;
         this._pointerInKeyboard = false;
+        this._keyboardVisible = false;
         this._summaryState = State.HIDDEN;
         this._pointerInSummary = false;
         this._notificationClosed = false;
@@ -1474,11 +1476,13 @@ const MessageTray = new Lang.Class({
         this._notificationExpandedId = 0;
         this._summaryBoxPointerState = State.HIDDEN;
         this._summaryBoxPointerTimeoutId = 0;
+        this._desktopCloneState = State.HIDDEN;
         this._overviewVisible = Main.overview.visible;
         this._notificationRemoved = false;
         this._reNotifyAfterHideNotification = null;
         this._inFullscreen = false;
         this._desktopClone = null;
+        this._inCtrlAltTab = false;
 
         this._lightbox = new Lightbox.Lightbox(global.window_group,
                                                { inhibitEvents: true,
@@ -1863,6 +1867,17 @@ const MessageTray = new Lang.Class({
         this._updateState();
     },
 
+    _onKeyboardVisibleChanged: function(layoutManager, keyboardVisible) {
+        this._keyboardVisible = keyboardVisible;
+
+        if (keyboardVisible)
+            this.actor.add_style_pseudo_class('keyboard');
+        else
+            this.actor.remove_style_pseudo_class('keyboard');
+
+        this._updateState();
+    },
+
     _onFullscreenChanged: function(obj, state) {
         this._inFullscreen = state;
         this._updateState();
@@ -2006,6 +2021,19 @@ const MessageTray = new Lang.Class({
             this._showTray();
         else if (trayIsVisible && !trayShouldBeVisible)
             this._hideTray();
+
+        // Desktop clone
+        let desktopCloneIsVisible = (this._desktopCloneState == State.SHOWING ||
+                                     this._desktopCloneState == State.SHOWN);
+        let desktopCloneShouldBeVisible = (trayShouldBeVisible &&
+                                           !this._overviewVisible &&
+                                           !this._keyboardVisible);
+
+        if (!desktopCloneIsVisible && desktopCloneShouldBeVisible) {
+            this._showDesktopClone();
+        } else if (desktopCloneIsVisible && !desktopCloneShouldBeVisible) {
+            this._hideDesktopClone (this._keyboardVisible);
+        }
     },
 
     _tween: function(actor, statevar, value, params) {
@@ -2049,42 +2077,42 @@ const MessageTray = new Lang.Class({
                       transition: 'easeOutQuad'
                     });
 
-        // Don't move the windows up if we are in the overview,
-        // but show the tray in the ctrl+alt+tab list.
         if (this._overviewVisible) {
             Main.ctrlAltTabManager.addGroup(this._summary, _("Message Tray"), 'start-here-symbolic',
                                             { sortGroup: CtrlAltTab.SortGroup.BOTTOM });
-            return;
+            this._inCtrlAltTab = true;
+        } else {
+            this._lightbox.show();
         }
+    },
 
+    _showDesktopClone: function() {
         let bottomMonitor = Main.layoutManager.bottomMonitor;
         let geometry = new Clutter.Geometry({ x: bottomMonitor.x,
                                               y: bottomMonitor.y,
                                               width: bottomMonitor.width,
                                               height: bottomMonitor.height
                                             });
+        if (this._desktopClone)
+            this._desktopClone.destroy();
         this._desktopClone = new Clutter.Clone({ source: global.window_group, clip: geometry });
         Main.uiGroup.insert_child_above(this._desktopClone, global.window_group);
         this._desktopClone.x = 0;
         this._desktopClone.y = 0;
         this._desktopClone.show();
 
-        this._lightbox.show();
-
-        this._desktopClone._progress = 0;
-        Tweener.addTween(this._desktopClone,
-                         { _progress: this.actor.height,
-                           time: ANIMATION_TIME,
-                           transition: 'easeOutQuad',
-                           onUpdate: Lang.bind(this, function() {
-                               let progress = Math.round(this._desktopClone._progress);
-                               this._desktopClone.y = - progress;
-                               this._desktopClone.set_clip(geometry.x,
-                                                           geometry.y + progress,
-                                                           geometry.width,
-                                                           geometry.height - progress);
-                           })
-                         });
+        this._tween(this._desktopClone, '_desktopCloneState', State.SHOWN,
+                    { y: -this.actor.height,
+                      time: ANIMATION_TIME,
+                      transition: 'easeOutQuad',
+                      onUpdate: function() {
+                          let progress = Math.round(-this.y);
+                          this.set_clip(geometry.x,
+                                        geometry.y + progress,
+                                        geometry.width,
+                                        geometry.height - progress);
+                      }
+                    });
     },
 
     _hideTray: function() {
@@ -2099,34 +2127,39 @@ const MessageTray = new Lang.Class({
         // This is a no-op in that case.
         this._grabHelper.ungrab({ actor: this.actor });
 
-        // If we are coming back from the overview, there are no windows
-        // to be moved. Just remove the tray from the ctrl+alt+tab list.
-        if (!this._desktopClone) {
+        if (this._inCtrlAltTab) {
             Main.ctrlAltTabManager.removeGroup(this._summary);
+            this._inCtrlAltTab = false;
+        } else {
+            this._lightbox.hide();
+        }
+    },
+
+    _hideDesktopClone: function(now) {
+        if (now) {
+            this._desktopClone.destroy();
+            this._desktopClone = null;
+            this._desktopCloneState = State.HIDDEN;
             return;
         }
 
         let geometry = this._desktopClone.clip;
-        this._desktopClone._progress = 0;
-        Tweener.addTween(this._desktopClone,
-                         { _progress: this.actor.height,
-                           time: ANIMATION_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this, function() {
-                               this._desktopClone.destroy();
-                               this._desktopClone = null;
-                           }),
-                           onUpdate: Lang.bind(this, function() {
-                               let progress = Math.round(this._desktopClone._progress);
-                               this._desktopClone.y = progress - this.actor.height;
-                               this._desktopClone.set_clip(geometry.x,
-                                                           geometry.y - progress,
-                                                           geometry.width,
-                                                           geometry.height + progress);
-                           })
-                         });
-
-        this._lightbox.hide();
+        this._tween(this._desktopClone, '_desktopCloneState', State.HIDDEN,
+                    { y: 0,
+                      time: ANIMATION_TIME,
+                      transition: 'easeOutQuad',
+                      onComplete: Lang.bind(this, function() {
+                          this._desktopClone.destroy();
+                          this._desktopClone = null;
+                      }),
+                      onUpdate: function() {
+                          let progress = Math.round(-this.y);
+                          this.set_clip(geometry.x,
+                                        geometry.y - progress,
+                                        geometry.width,
+                                        geometry.height + progress);
+                      }
+                    });
     },
 
     _onIdleMonitorWatch: function(monitor, id, userBecameIdle) {

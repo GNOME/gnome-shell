@@ -370,7 +370,6 @@ const LayoutManager = new Lang.Class({
     },
 
     showKeyboard: function () {
-        Main.messageTray.hide();
         this.keyboardBox.raise_top();
         Tweener.addTween(this.keyboardBox,
                          { anchor_y: this.keyboardBox.height,
@@ -384,6 +383,8 @@ const LayoutManager = new Lang.Class({
                            time: KEYBOARD_ANIMATION_TIME,
                            transition: 'easeOutQuad'
                          });
+
+        this.emit('keyboard-visible-changed', true);
     },
 
     _showKeyboardComplete: function() {
@@ -398,7 +399,6 @@ const LayoutManager = new Lang.Class({
     },
 
     hideKeyboard: function (immediate) {
-        Main.messageTray.hide();
         if (this._keyboardHeightNotifyId) {
             this.keyboardBox.disconnect(this._keyboardHeightNotifyId);
             this._keyboardHeightNotifyId = 0;
@@ -415,6 +415,8 @@ const LayoutManager = new Lang.Class({
                            time: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
                            transition: 'easeOutQuad'
                          });
+
+        this.emit('keyboard-visible-changed', false);
     },
 
     _hideKeyboardComplete: function() {
