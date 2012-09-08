@@ -193,9 +193,8 @@ msgid "Z Position"
 msgstr "Položaj Z"
 
 #: ../clutter/clutter-actor.c:6545
-#, fuzzy
 msgid "The actor's position on the Z axis"
-msgstr "Faktor merila na osi X"
+msgstr "Položaj premeta na osi Z"
 
 #: ../clutter/clutter-actor.c:6562
 msgid "Opacity"
@@ -262,14 +261,12 @@ msgid "The clip region for the actor"
 msgstr "Območje izreza za predmet"
 
 #: ../clutter/clutter-actor.c:6689
-#, fuzzy
 msgid "Clip Rectangle"
-msgstr "Barva pravokotnika"
+msgstr "Pravokotnik porezave"
 
 #: ../clutter/clutter-actor.c:6690
-#, fuzzy
 msgid "The visible region of the actor"
-msgstr "Območje izreza za predmet"
+msgstr "Vidno območje za predmet"
 
 #: ../clutter/clutter-actor.c:6704
 #: ../clutter/clutter-actor-meta.c:207
@@ -288,7 +285,7 @@ msgstr "Vrtilna točka"
 
 #: ../clutter/clutter-actor.c:6727
 msgid "The point around which the scaling and rotation occur"
-msgstr ""
+msgstr "Točka, okoli katere se vrši sprememba merila in sukanje"
 
 #: ../clutter/clutter-actor.c:6745
 msgid "Pivot Point Z"
@@ -319,9 +316,8 @@ msgid "Scale Z"
 msgstr "Merilo Z"
 
 #: ../clutter/clutter-actor.c:6803
-#, fuzzy
 msgid "Scale factor on the Z axis"
-msgstr "Faktor merila na osi X"
+msgstr "Faktor merila na osi Z"
 
 #: ../clutter/clutter-actor.c:6821
 msgid "Scale Center X"
@@ -428,34 +424,28 @@ msgid "The anchor point as a ClutterGravity"
 msgstr "Točka sidra poravnave"
 
 #: ../clutter/clutter-actor.c:7095
-#, fuzzy
 msgid "Translation X"
-msgstr "Prevod"
+msgstr "Translacija X"
 
 #: ../clutter/clutter-actor.c:7096
-#, fuzzy
 msgid "Translation along the X axis"
-msgstr "Velikost pisave osi X"
+msgstr "Translacija vzdolž osi X"
 
 #: ../clutter/clutter-actor.c:7115
-#, fuzzy
 msgid "Translation Y"
-msgstr "Prevod"
+msgstr "Translacija Y"
 
 #: ../clutter/clutter-actor.c:7116
-#, fuzzy
 msgid "Translation along the Y axis"
-msgstr "Velikost pisave osi X"
+msgstr "Translacija vzdolž osi Y"
 
 #: ../clutter/clutter-actor.c:7135
-#, fuzzy
 msgid "Translation Z"
-msgstr "Prevod"
+msgstr "Translacija Z"
 
 #: ../clutter/clutter-actor.c:7136
-#, fuzzy
 msgid "Translation along the Z axis"
-msgstr "Velikost pisave osi X"
+msgstr "Translacija vzdolž osi Z"
 
 #: ../clutter/clutter-actor.c:7166
 msgid "Transform"
@@ -466,34 +456,28 @@ msgid "Transformation matrix"
 msgstr "Matrika preoblikovanja"
 
 #: ../clutter/clutter-actor.c:7182
-#, fuzzy
 msgid "Transform Set"
-msgstr "Ni nastavljeno"
+msgstr "Preoblikovanje je nastavljeno"
 
 #: ../clutter/clutter-actor.c:7183
-#, fuzzy
 msgid "Whether the transform property is set"
-msgstr "Ali je lastnost :filename nastavljena"
+msgstr "Ali je lastnost preoblikovanja nastavljena"
 
 #: ../clutter/clutter-actor.c:7204
-#, fuzzy
 msgid "Child Transform"
-msgstr "orodna vrstica (preoblikovanje)"
+msgstr "Preoblikovanje podrejenega predmeta"
 
 #: ../clutter/clutter-actor.c:7205
-#, fuzzy
 msgid "Children transformation matrix"
-msgstr "Izbriši stolpec matrike"
+msgstr "Matrika preoblikovanja podrejenega predmeta"
 
 #: ../clutter/clutter-actor.c:7220
-#, fuzzy
 msgid "Child Transform Set"
-msgstr "Določitev lastnosti signala"
+msgstr "Preoblikovanje podrejenega predmeta je določeno"
 
 #: ../clutter/clutter-actor.c:7221
-#, fuzzy
 msgid "Whether the child-transform property is set"
-msgstr "Ali je lastnost :filename nastavljena"
+msgstr "Ali je lastnost preoblikovanja podrejenega predmeta nastavljena"
 
 #: ../clutter/clutter-actor.c:7238
 msgid "Show on set parent"
@@ -697,14 +681,12 @@ msgid "The filter used when increasing the size of the content"
 msgstr "Filter, uporabljen za približanje vsebine"
 
 #: ../clutter/clutter-actor.c:7651
-#, fuzzy
 msgid "Content Repeat"
-msgstr "_Brez ponavljanja"
+msgstr "Ponavljanje vsebine"
 
 #: ../clutter/clutter-actor.c:7652
-#, fuzzy
 msgid "The repeat policy for the actor's content"
-msgstr "Določitev načina izrisa vsebine predmeta"
+msgstr "Načela ponavljanja vsebine predmeta"
 
 #: ../clutter/clutter-actor-meta.c:193
 #: ../clutter/clutter-child-meta.c:142
@@ -1087,24 +1069,20 @@ msgid "Constraints the dragging to an axis"
 msgstr "Omejitve vlečenja na osi"
 
 #: ../clutter/clutter-drag-action.c:790
-#, fuzzy
 msgid "Drag Area"
-msgstr "risalna površina"
+msgstr "Vlečno območje"
 
 #: ../clutter/clutter-drag-action.c:791
-#, fuzzy
 msgid "Constrains the dragging to a rectangle"
-msgstr "Koordinata X pravokotnika za snemanje"
+msgstr "Omeji vleko na pravokotnik"
 
 #: ../clutter/clutter-drag-action.c:804
-#, fuzzy
 msgid "Drag Area Set"
-msgstr "Določi območje tiskanja"
+msgstr "Vlečno območje je določeno"
 
 #: ../clutter/clutter-drag-action.c:805
-#, fuzzy
 msgid "Whether the drag area is set"
-msgstr "Ali je barva ozadja nastavljena"
+msgstr "Ali je vlečno območje nastavljeno"
 
 #: ../clutter/clutter-flow-layout.c:907
 msgid "Whether each item should receive the same allocation"
@@ -1378,42 +1356,36 @@ msgid "Show Clutter Options"
 msgstr "Prikaže možnosti Cluttra"
 
 #: ../clutter/clutter-pan-action.c:451
-#, fuzzy
 msgid "Pan Axis"
-msgstr "Poravnaj os"
+msgstr "Zamakni os"
 
 #: ../clutter/clutter-pan-action.c:452
-#, fuzzy
 msgid "Constraints the panning to an axis"
-msgstr "Omejitve vlečenja na osi"
+msgstr "Omeji zamikanje na os"
 
 #: ../clutter/clutter-pan-action.c:466
-#, fuzzy
 msgid "Interpolate"
-msgstr "Preslikaj sliko"
+msgstr "Interpoliraj"
 
 #: ../clutter/clutter-pan-action.c:467
-#, fuzzy
 msgid "Whether interpolated events emission is enabled."
-msgstr "Ali naj bo naprava omogočena"
+msgstr "Ali naj bo oddajanje interpoliranih dogodkov omogočeno"
 
 #: ../clutter/clutter-pan-action.c:483
-#, fuzzy
 msgid "Deceleration"
-msgstr "Trajanje"
+msgstr "Upočasnitev"
 
 #: ../clutter/clutter-pan-action.c:484
 msgid "Rate at which the interpolated panning will decelerate in"
-msgstr ""
+msgstr "Vrednost, s katero se bo interpolirani zamik pojenjal"
 
 #: ../clutter/clutter-pan-action.c:501
-#, fuzzy
 msgid "Initial acceleration factor"
-msgstr "Žerki večkratnikov"
+msgstr "Začetni faktor pospeška"
 
 #: ../clutter/clutter-pan-action.c:502
 msgid "Factor applied to the momentum when starting the interpolated phase"
-msgstr ""
+msgstr "Faktor za pospešek ob začetku interpolirane faze"
 
 #: ../clutter/clutter-path-constraint.c:212
 #: ../clutter/deprecated/clutter-behaviour-path.c:225
@@ -2075,14 +2047,12 @@ msgid "Detach the transition when completed"
 msgstr "Odstrani prehod po končanju"
 
 #: ../clutter/clutter-zoom-action.c:353
-#, fuzzy
 msgid "Zoom Axis"
-msgstr "Poravnaj os"
+msgstr "Približaj po osi"
 
 #: ../clutter/clutter-zoom-action.c:354
-#, fuzzy
 msgid "Constraints the zoom to an axis"
-msgstr "Omejitve vlečenja na osi"
+msgstr "Omeji približevanje na os"
 
 #: ../clutter/deprecated/clutter-alpha.c:355
 #: ../clutter/deprecated/clutter-animation.c:575
@@ -2796,9 +2766,3 @@ msgstr "Preusmeritev prepisa okna"
 #: ../clutter/x11/clutter-x11-texture-pixmap.c:641
 msgid "If this is an override-redirect window"
 msgstr "Ali je to okno preusmeritve prepisa"
-
-#~ msgid "Easing Delay"
-#~ msgstr "Zamik začetka"
-
-#~ msgid "The delay befor the animations start"
-#~ msgstr "Časovni zamik pred začetkom animacije"
