@@ -99,6 +99,7 @@ static gboolean resize_with_right_button = FALSE;
 static gboolean edge_tiling = FALSE;
 static gboolean force_fullscreen = TRUE;
 static gboolean ignore_request_hide_titlebar = FALSE;
+static gboolean auto_maximize = TRUE;
 
 static GDesktopVisualBellType visual_bell_type = G_DESKTOP_VISUAL_BELL_FULLSCREEN_FLASH;
 static MetaButtonLayout button_layout;
@@ -367,6 +368,13 @@ static MetaBoolPreference preferences_bool[] =
         META_PREF_NO_TAB_POPUP,
       },
       &no_tab_popup,
+    },
+    {
+      { "auto-maximize",
+        SCHEMA_MUTTER,
+        META_PREF_AUTO_MAXIMIZE,
+      },
+      &auto_maximize,
     },
     { { NULL, 0, 0 }, NULL },
   };
@@ -1666,6 +1674,9 @@ meta_preference_to_string (MetaPreference pref)
 
     case META_PREF_DYNAMIC_WORKSPACES:
       return "DYNAMIC_WORKSPACES";
+
+    case META_PREF_AUTO_MAXIMIZE:
+      return "AUTO_MAXIMIZE";
     }
 
   return "(unknown)";
@@ -2089,6 +2100,12 @@ gboolean
 meta_prefs_get_edge_tiling ()
 {
   return edge_tiling;
+}
+
+gboolean
+meta_prefs_get_auto_maximize (void)
+{
+  return auto_maximize;
 }
 
 MetaKeyBindingAction

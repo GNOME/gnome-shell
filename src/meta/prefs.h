@@ -67,7 +67,8 @@ typedef enum
   META_PREF_FORCE_FULLSCREEN,
   META_PREF_WORKSPACES_ONLY_ON_PRIMARY,
   META_PREF_NO_TAB_POPUP,
-  META_PREF_DRAGGABLE_BORDER_WIDTH
+  META_PREF_DRAGGABLE_BORDER_WIDTH,
+  META_PREF_AUTO_MAXIMIZE
 } MetaPreference;
 
 typedef void (* MetaPrefsChangedFunc) (MetaPreference pref,
@@ -105,6 +106,7 @@ gboolean                    meta_prefs_get_focus_change_on_pointer_rest (void);
 gboolean                    meta_prefs_get_gnome_accessibility (void);
 gboolean                    meta_prefs_get_gnome_animations   (void);
 gboolean                    meta_prefs_get_edge_tiling        (void);
+gboolean                    meta_prefs_get_auto_maximize      (void);
 
 void                        meta_prefs_get_button_layout (MetaButtonLayout *button_layout);
 

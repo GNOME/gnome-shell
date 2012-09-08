@@ -84,6 +84,15 @@
       </_description>
     </key>
 
+    <key name="auto-maximize" type="b">
+      <default>true</default>
+      <_summary>Auto maximize nearly monitor sized windows</_summary>
+      <_description>
+        If enabled, monitor nearly monitor sized windows automatically get
+        maximized when mapped.
+      </_description>
+    </key>
+
     <child name="keybindings" schema="org.gnome.mutter.keybindings"/>
 
   </schema>
