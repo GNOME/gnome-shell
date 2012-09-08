@@ -1379,7 +1379,9 @@ const MessageTray = new Lang.Class({
         this.actor.connect('notify::hover', Lang.bind(this, this._onTrayHoverChanged));
 
         this._notificationWidget = new St.Widget({ name: 'notification-container',
+                                                   y_align: Clutter.ActorAlign.START,
                                                    x_align: Clutter.ActorAlign.CENTER,
+                                                   y_expand: true,
                                                    x_expand: true,
                                                    layout_manager: new Clutter.BinLayout() });
         this.actor.add_actor(this._notificationWidget);
