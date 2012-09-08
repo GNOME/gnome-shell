@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-02 07:23+0000\n"
-"PO-Revision-Date: 2012-04-04 13:10+0200\n"
+"POT-Creation-Date: 2012-09-07 13:16+0000\n"
+"PO-Revision-Date: 2012-09-08 14:45+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
+"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: ../cogl/cogl-debug.c:174
@@ -32,21 +32,20 @@ msgstr "Speciální ladicí hodnoty:"
 msgid "Enables all non-behavioural debug options"
 msgstr "Zapnout všechny ladicí volby, které se netýkají chování"
 
-#: ../cogl/cogl-debug.c:227
-msgid "Cogl debugging flags to set"
-msgstr "Ladicí příznaky Cogl, které se mají nastavit"
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "Dodatečné proměnné prostředí:"
 
-#: ../cogl/cogl-debug.c:229
-msgid "Cogl debugging flags to unset"
-msgstr "Ladicí příznaky Cogl, jejichž nastavení se má zrušit"
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr ""
+"Čárkami oddělený seznam rozšíření GL, u kterých se má předstírat, že jsou "
+"vypnutá"
 
-#: ../cogl/cogl-debug.c:278
-msgid "Cogl Options"
-msgstr "Přepínače Cogl"
-
-#: ../cogl/cogl-debug.c:279
-msgid "Show Cogl options"
-msgstr "Zobrazit přepínače Cogl"
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr ""
+"Verzi GL, o které se Cogl domnívá, že ji podporuje ovladač, přepsat na tuto"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
