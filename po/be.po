@@ -5,7 +5,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-08-28 13:46+0000\n"
-"PO-Revision-Date: 2012-08-30 16:04+0300\n"
+"PO-Revision-Date: 2012-09-09 15:29+0300\n"
 "Last-Translator: Kasia Bondarava <kasia.bondarava@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -1335,16 +1335,12 @@ msgid "Show Clutter Options"
 msgstr "Паказаць параметры Clutter"
 
 #: ../clutter/clutter-pan-action.c:440
-#, fuzzy
-#| msgid "Drag Axis"
 msgid "Pan Axis"
-msgstr "Вось перацягвання"
+msgstr "Вось панарамнага руху камеры"
 
 #: ../clutter/clutter-pan-action.c:441
-#, fuzzy
-#| msgid "Constraints the dragging to an axis"
 msgid "Constraints the panning to an axis"
-msgstr "Абмяжоўвае перацягванне пэўнай воссю"
+msgstr "Абмяжоўвае панарамны рух камеры пэўнай воссю"
 
 #: ../clutter/clutter-pan-action.c:455
 msgid "Interpolate"
@@ -1356,11 +1352,11 @@ msgstr "Ці ўключана генерацыя інтэрпаляваных п
 
 #: ../clutter/clutter-pan-action.c:472
 msgid "Deceleration"
-msgstr ""
+msgstr "Запавольванне"
 
 #: ../clutter/clutter-pan-action.c:473
 msgid "Rate at which the interpolated panning will decelerate in"
-msgstr ""
+msgstr "Частата запавольвання інтэрпаляванага панарамнага руху камеры"
 
 #: ../clutter/clutter-pan-action.c:490
 msgid "Initial acceleration factor"
