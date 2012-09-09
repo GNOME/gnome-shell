@@ -2074,7 +2074,7 @@ clutter_text_key_press (ClutterActor    *actor,
       if (key_unichar == '\r')
         key_unichar = '\n';
 
-      if (key_unichar == '\n' ||
+      if ((key_unichar == '\n' && !priv->single_line_mode) ||
           (g_unichar_validate (key_unichar) &&
            !g_unichar_iscntrl (key_unichar)))
         {
