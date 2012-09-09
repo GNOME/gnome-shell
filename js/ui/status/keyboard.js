@@ -245,7 +245,7 @@ const InputSourceIndicator = new Lang.Class({
 
                     info.exists = true;
                     info.displayName = language + ' (' + engineDesc.get_longname() + ')';
-                    info.shortName = engineDesc.get_symbol();
+                    info.shortName = this._makeEngineShortName(engineDesc);
                 }
             }
 
@@ -318,6 +318,18 @@ const InputSourceIndicator = new Lang.Class({
             description = description + '\t' + xkbVariant;
 
         Util.spawn(['gkbd-keyboard-display', '-l', description]);
+    },
+
+    _makeEngineShortName: function(engineDesc) {
+        let symbol = engineDesc.get_symbol();
+        if (symbol && symbol[0])
+            return symbol;
+
+        let langCode = engineDesc.get_language().split('_', 1)[0];
+        if (langCode.length == 2 || langCode.length == 3)
+            return langCode.toLowerCase();
+
+        return String.fromCharCode(0x2328); // keyboard glyph
     },
 
     _containerGetPreferredWidth: function(container, for_height, alloc) {
