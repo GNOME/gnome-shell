@@ -33,6 +33,7 @@
 #include "cogl-renderer-private.h"
 #include "cogl-private.h"
 #include "cogl-framebuffer-gl-private.h"
+#include "cogl-texture-2d-gl-private.h"
 
 #ifndef GL_UNSIGNED_INT_24_8
 #define GL_UNSIGNED_INT_24_8 0x84FA
@@ -352,4 +353,17 @@ _cogl_driver_gles =
     _cogl_framebuffer_gl_discard_buffers,
     _cogl_framebuffer_gl_draw_attributes,
     _cogl_framebuffer_gl_draw_indexed_attributes,
+    _cogl_texture_2d_gl_free,
+    _cogl_texture_2d_gl_can_create,
+    _cogl_texture_2d_gl_init,
+    _cogl_texture_2d_gl_new_with_size,
+    _cogl_texture_2d_gl_new_from_bitmap,
+#if defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base)
+    _cogl_egl_texture_2d_gl_new_from_image,
+#endif
+    _cogl_texture_2d_gl_copy_from_framebuffer,
+    _cogl_texture_2d_gl_get_gl_handle,
+    _cogl_texture_2d_gl_generate_mipmap,
+    _cogl_texture_2d_gl_copy_from_bitmap,
+    NULL, /* texture_2d_get_data */
   };

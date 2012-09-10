@@ -118,6 +118,7 @@ cogl_experimental_h = \
 	$(srcdir)/cogl-poll.h			\
 	$(srcdir)/cogl-texture-3d.h             \
 	$(srcdir)/cogl-texture-2d.h             \
+	$(srcdir)/cogl-texture-2d-gl.h 		\
 	$(srcdir)/cogl-texture-rectangle.h      \
 	$(srcdir)/cogl-texture-2d-sliced.h      \
 	$(srcdir)/cogl-sub-texture.h            \
@@ -147,6 +148,8 @@ cogl_gl_prototypes_h = \
 # driver sources
 cogl_driver_sources = \
 	$(srcdir)/driver/gl/cogl-framebuffer-gl.c \
+	$(srcdir)/driver/gl/cogl-texture-2d-gl-private.h \
+	$(srcdir)/driver/gl/cogl-texture-2d-gl.c \
 	$(srcdir)/driver/gl/cogl-pipeline-opengl.c \
 	$(srcdir)/driver/gl/cogl-pipeline-opengl-private.h \
 	$(srcdir)/driver/gl/cogl-pipeline-fragend-glsl.c \

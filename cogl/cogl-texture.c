@@ -42,6 +42,7 @@
 #include "cogl-texture-driver.h"
 #include "cogl-texture-2d-sliced-private.h"
 #include "cogl-texture-2d-private.h"
+#include "cogl-texture-2d-gl.h"
 #include "cogl-texture-rectangle-private.h"
 #include "cogl-sub-texture-private.h"
 #include "cogl-atlas-texture-private.h"

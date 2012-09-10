@@ -36,6 +36,7 @@
 #include "cogl-bitmap.h"
 #include "cogl-bitmap-private.h"
 #include "cogl-texture-private.h"
+#include "cogl-texture-2d-gl.h"
 #include "cogl-texture-2d-private.h"
 #include "cogl-texture-2d-sliced-private.h"
 #include "cogl-texture-driver.h"

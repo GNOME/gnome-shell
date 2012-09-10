@@ -43,6 +43,7 @@
 #include "cogl-onscreen-template-private.h"
 #include "cogl-renderer-private.h"
 #include "cogl-swap-chain-private.h"
+#include "cogl-texture-2d-gl.h"
 #include "cogl-texture-2d-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-error-private.h"

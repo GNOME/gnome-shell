@@ -74,6 +74,16 @@ _cogl_egl_texture_2d_new_from_image (CoglContext *ctx,
                                      CoglError **error);
 #endif
 
+CoglTexture2D *
+_cogl_texture_2d_create_base (CoglContext *ctx,
+                              int width,
+                              int height,
+                              CoglPixelFormat internal_format);
+
+void
+_cogl_texture_2d_set_auto_mipmap (CoglTexture *tex,
+                                  CoglBool value);
+
 /*
  * _cogl_texture_2d_externally_modified:
  * @texture: A #CoglTexture2D object

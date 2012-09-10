@@ -32,8 +32,9 @@
 #include "cogl-context-private.h"
 #include "cogl-feature-private.h"
 #include "cogl-renderer-private.h"
-#include "cogl-framebuffer-gl-private.h"
 #include "cogl-error-private.h"
+#include "cogl-framebuffer-gl-private.h"
+#include "cogl-texture-2d-gl-private.h"
 
 static CoglBool
 _cogl_driver_pixel_format_from_gl_internal (CoglContext *context,
@@ -534,4 +535,17 @@ _cogl_driver_gl =
     _cogl_framebuffer_gl_discard_buffers,
     _cogl_framebuffer_gl_draw_attributes,
     _cogl_framebuffer_gl_draw_indexed_attributes,
+    _cogl_texture_2d_gl_free,
+    _cogl_texture_2d_gl_can_create,
+    _cogl_texture_2d_gl_init,
+    _cogl_texture_2d_gl_new_with_size,
+    _cogl_texture_2d_gl_new_from_bitmap,
+#if defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base)
+    _cogl_egl_texture_2d_gl_new_from_image,
+#endif
+    _cogl_texture_2d_gl_copy_from_framebuffer,
+    _cogl_texture_2d_gl_get_gl_handle,
+    _cogl_texture_2d_gl_generate_mipmap,
+    _cogl_texture_2d_gl_copy_from_bitmap,
+    _cogl_texture_2d_gl_get_data,
   };
