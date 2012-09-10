@@ -77,7 +77,7 @@ COGL_OBJECT_DEFINE (Context, context);
 extern void
 _cogl_create_context_driver (CoglContext *context);
 
-static CoglContext *_context = NULL;
+static CoglContext *_cogl_context = NULL;
 
 static void
 _cogl_init_feature_overrides (CoglContext *ctx)
@@ -174,7 +174,7 @@ cogl_context_new (CoglDisplay *display,
    * has been updated to take an explicit context argument we have
    * to immediately make our pointer the default context.
    */
-  _context = context;
+  _cogl_context = context;
 
   /* Init default values */
   memset (context->features, 0, sizeof (context->features));
@@ -263,7 +263,7 @@ cogl_context_new (CoglDisplay *display,
   /* Initialise the driver specific state */
   _cogl_init_feature_overrides (context);
 
-  _context->sampler_cache = _cogl_sampler_cache_new (_context);
+  context->sampler_cache = _cogl_sampler_cache_new (context);
 
   _cogl_pipeline_init_default_pipeline ();
   _cogl_pipeline_init_default_layers ();
@@ -396,14 +396,14 @@ cogl_context_new (CoglDisplay *display,
     GE (context, glEnable (GL_ALPHA_TEST));
 #endif
 
-  _context->current_modelview_entry = NULL;
-  _context->current_projection_entry = NULL;
-  _cogl_matrix_entry_identity_init (&_context->identity_entry);
-  _cogl_matrix_entry_cache_init (&_context->builtin_flushed_projection);
-  _cogl_matrix_entry_cache_init (&_context->builtin_flushed_modelview);
+  context->current_modelview_entry = NULL;
+  context->current_projection_entry = NULL;
+  _cogl_matrix_entry_identity_init (&context->identity_entry);
+  _cogl_matrix_entry_cache_init (&context->builtin_flushed_projection);
+  _cogl_matrix_entry_cache_init (&context->builtin_flushed_modelview);
 
   default_texture_bitmap =
-    cogl_bitmap_new_for_data (_context,
+    cogl_bitmap_new_for_data (context,
                               1, 1, /* width/height */
                               COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                               4, /* rowstride */
@@ -435,8 +435,8 @@ cogl_context_new (CoglDisplay *display,
   context->atlases = NULL;
   g_hook_list_init (&context->atlas_reorganize_callbacks, sizeof (GHook));
 
-  _context->buffer_map_fallback_array = g_byte_array_new ();
-  _context->buffer_map_fallback_in_use = FALSE;
+  context->buffer_map_fallback_array = g_byte_array_new ();
+  context->buffer_map_fallback_in_use = FALSE;
 
   /* As far as I can tell, GL_POINT_SPRITE doesn't have any effect
      unless GL_COORD_REPLACE is enabled for an individual
@@ -445,7 +445,7 @@ cogl_context_new (CoglDisplay *display,
      each pipeline to track whether any layers have point sprite
      coords enabled. We don't need to do this for GLES2 because point
      sprites are handled using a builtin varying in the shader. */
-  if (_context->driver != COGL_DRIVER_GLES2 &&
+  if (context->driver != COGL_DRIVER_GLES2 &&
       cogl_has_feature (context, COGL_FEATURE_ID_POINT_SPRITE))
     GE (context, glEnable (GL_POINT_SPRITE));
 
@@ -528,10 +528,10 @@ _cogl_context_free (CoglContext *context)
   g_slist_free (context->texture_types);
   g_slist_free (context->buffer_types);
 
-  if (_context->current_modelview_entry)
-    _cogl_matrix_entry_unref (_context->current_modelview_entry);
-  if (_context->current_projection_entry)
-    _cogl_matrix_entry_unref (_context->current_projection_entry);
+  if (context->current_modelview_entry)
+    _cogl_matrix_entry_unref (context->current_modelview_entry);
+  if (context->current_projection_entry)
+    _cogl_matrix_entry_unref (context->current_projection_entry);
   _cogl_matrix_entry_cache_destroy (&context->builtin_flushed_projection);
   _cogl_matrix_entry_cache_destroy (&context->builtin_flushed_modelview);
 
@@ -559,10 +559,10 @@ _cogl_context_get_default (void)
 {
   GError *error = NULL;
   /* Create if doesn't exist yet */
-  if (_context == NULL)
+  if (_cogl_context == NULL)
     {
-      _context = cogl_context_new (NULL, &error);
-      if (!_context)
+      _cogl_context = cogl_context_new (NULL, &error);
+      if (!_cogl_context)
         {
           g_warning ("Failed to create default context: %s",
                      error->message);
@@ -570,7 +570,7 @@ _cogl_context_get_default (void)
         }
     }
 
-  return _context;
+  return _cogl_context;
 }
 
 CoglDisplay *
