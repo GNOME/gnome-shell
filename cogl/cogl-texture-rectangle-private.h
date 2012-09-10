@@ -30,22 +30,26 @@
 
 struct _CoglTextureRectangle
 {
-  CoglTexture     _parent;
+  CoglTexture _parent;
 
-  /* The internal format of the GL texture represented as a
+  /* The internal format of the texture represented as a
      CoglPixelFormat */
   CoglPixelFormat format;
+  int width;
+  int height;
+
+  /* TODO: factor out these OpenGL specific members into some form
+   * of driver private state. */
+
   /* The internal format of the GL texture represented as a GL enum */
-  GLenum          gl_format;
+  GLenum gl_format;
   /* The texture object number */
-  GLuint          gl_texture;
-  int             width;
-  int             height;
-  GLenum          min_filter;
-  GLenum          mag_filter;
-  GLint           wrap_mode_s;
-  GLint           wrap_mode_t;
-  CoglBool        is_foreign;
+  GLuint gl_texture;
+  GLenum gl_legacy_texobj_min_filter;
+  GLenum gl_legacy_texobj_mag_filter;
+  GLint gl_legacy_texobj_wrap_mode_s;
+  GLint gl_legacy_texobj_wrap_mode_t;
+  CoglBool is_foreign;
 };
 
 CoglTextureRectangle *

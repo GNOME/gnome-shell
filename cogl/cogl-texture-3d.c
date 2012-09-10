@@ -57,19 +57,19 @@ COGL_TEXTURE_DEFINE (Texture3D, texture_3d);
 static const CoglTextureVtable cogl_texture_3d_vtable;
 
 static void
-_cogl_texture_3d_set_wrap_mode_parameters (CoglTexture *tex,
-                                           GLenum wrap_mode_s,
-                                           GLenum wrap_mode_t,
-                                           GLenum wrap_mode_p)
+_cogl_texture_3d_gl_flush_legacy_texobj_wrap_modes (CoglTexture *tex,
+                                                    GLenum wrap_mode_s,
+                                                    GLenum wrap_mode_t,
+                                                    GLenum wrap_mode_p)
 {
   CoglTexture3D *tex_3d = COGL_TEXTURE_3D (tex);
   CoglContext *ctx = tex->context;
 
   /* Only set the wrap mode if it's different from the current value
      to avoid too many GL calls. */
-  if (tex_3d->wrap_mode_s != wrap_mode_s ||
-      tex_3d->wrap_mode_t != wrap_mode_t ||
-      tex_3d->wrap_mode_p != wrap_mode_p)
+  if (tex_3d->gl_legacy_texobj_wrap_mode_s != wrap_mode_s ||
+      tex_3d->gl_legacy_texobj_wrap_mode_t != wrap_mode_t ||
+      tex_3d->gl_legacy_texobj_wrap_mode_p != wrap_mode_p)
     {
       _cogl_bind_gl_texture_transient (GL_TEXTURE_3D,
                                        tex_3d->gl_texture,
@@ -84,9 +84,9 @@ _cogl_texture_3d_set_wrap_mode_parameters (CoglTexture *tex,
                                 GL_TEXTURE_WRAP_R,
                                 wrap_mode_p) );
 
-      tex_3d->wrap_mode_s = wrap_mode_s;
-      tex_3d->wrap_mode_t = wrap_mode_t;
-      tex_3d->wrap_mode_p = wrap_mode_p;
+      tex_3d->gl_legacy_texobj_wrap_mode_s = wrap_mode_s;
+      tex_3d->gl_legacy_texobj_wrap_mode_t = wrap_mode_t;
+      tex_3d->gl_legacy_texobj_wrap_mode_p = wrap_mode_p;
     }
 }
 
@@ -127,13 +127,13 @@ _cogl_texture_3d_create_base (CoglContext *ctx,
   tex_3d->auto_mipmap = TRUE;
 
   /* We default to GL_LINEAR for both filters */
-  tex_3d->min_filter = GL_LINEAR;
-  tex_3d->mag_filter = GL_LINEAR;
+  tex_3d->gl_legacy_texobj_min_filter = GL_LINEAR;
+  tex_3d->gl_legacy_texobj_mag_filter = GL_LINEAR;
 
   /* Wrap mode not yet set */
-  tex_3d->wrap_mode_s = GL_FALSE;
-  tex_3d->wrap_mode_t = GL_FALSE;
-  tex_3d->wrap_mode_p = GL_FALSE;
+  tex_3d->gl_legacy_texobj_wrap_mode_s = GL_FALSE;
+  tex_3d->gl_legacy_texobj_wrap_mode_t = GL_FALSE;
+  tex_3d->gl_legacy_texobj_wrap_mode_p = GL_FALSE;
 
   tex_3d->format = internal_format;
 
@@ -480,20 +480,20 @@ _cogl_texture_3d_get_gl_texture (CoglTexture *tex,
 }
 
 static void
-_cogl_texture_3d_set_filters (CoglTexture *tex,
-                              GLenum       min_filter,
-                              GLenum       mag_filter)
+_cogl_texture_3d_gl_flush_legacy_texobj_filters (CoglTexture *tex,
+                                                 GLenum min_filter,
+                                                 GLenum mag_filter)
 {
   CoglTexture3D *tex_3d = COGL_TEXTURE_3D (tex);
   CoglContext *ctx = tex->context;
 
-  if (min_filter == tex_3d->min_filter
-      && mag_filter == tex_3d->mag_filter)
+  if (min_filter == tex_3d->gl_legacy_texobj_min_filter
+      && mag_filter == tex_3d->gl_legacy_texobj_mag_filter)
     return;
 
   /* Store new values */
-  tex_3d->min_filter = min_filter;
-  tex_3d->mag_filter = mag_filter;
+  tex_3d->gl_legacy_texobj_min_filter = min_filter;
+  tex_3d->gl_legacy_texobj_mag_filter = mag_filter;
 
   /* Apply new filters to the texture */
   _cogl_bind_gl_texture_transient (GL_TEXTURE_3D,
@@ -626,10 +626,10 @@ cogl_texture_3d_vtable =
     _cogl_texture_3d_transform_coords_to_gl,
     _cogl_texture_3d_transform_quad_coords_to_gl,
     _cogl_texture_3d_get_gl_texture,
-    _cogl_texture_3d_set_filters,
+    _cogl_texture_3d_gl_flush_legacy_texobj_filters,
     _cogl_texture_3d_pre_paint,
     _cogl_texture_3d_ensure_non_quad_rendering,
-    _cogl_texture_3d_set_wrap_mode_parameters,
+    _cogl_texture_3d_gl_flush_legacy_texobj_wrap_modes,
     _cogl_texture_3d_get_format,
     _cogl_texture_3d_get_gl_format,
     _cogl_texture_3d_get_width,

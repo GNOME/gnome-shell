@@ -64,10 +64,10 @@ typedef struct _CoglTexture2DManualRepeatData
 } CoglTexture2DManualRepeatData;
 
 static void
-_cogl_texture_2d_set_wrap_mode_parameters (CoglTexture *tex,
-                                           GLenum wrap_mode_s,
-                                           GLenum wrap_mode_t,
-                                           GLenum wrap_mode_p)
+_cogl_texture_2d_gl_flush_legacy_texobj_wrap_modes (CoglTexture *tex,
+                                                    GLenum wrap_mode_s,
+                                                    GLenum wrap_mode_t,
+                                                    GLenum wrap_mode_p)
 {
   CoglTexture2D *tex_2d = COGL_TEXTURE_2D (tex);
   CoglContext *ctx = tex->context;
@@ -75,8 +75,8 @@ _cogl_texture_2d_set_wrap_mode_parameters (CoglTexture *tex,
   /* Only set the wrap mode if it's different from the current value
      to avoid too many GL calls. Texture 2D doesn't make use of the r
      coordinate so we can ignore its wrap mode */
-  if (tex_2d->wrap_mode_s != wrap_mode_s ||
-      tex_2d->wrap_mode_t != wrap_mode_t)
+  if (tex_2d->gl_legacy_texobj_wrap_mode_s != wrap_mode_s ||
+      tex_2d->gl_legacy_texobj_wrap_mode_t != wrap_mode_t)
     {
       _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                        tex_2d->gl_texture,
@@ -88,8 +88,8 @@ _cogl_texture_2d_set_wrap_mode_parameters (CoglTexture *tex,
                                 GL_TEXTURE_WRAP_T,
                                 wrap_mode_t) );
 
-      tex_2d->wrap_mode_s = wrap_mode_s;
-      tex_2d->wrap_mode_t = wrap_mode_t;
+      tex_2d->gl_legacy_texobj_wrap_mode_s = wrap_mode_s;
+      tex_2d->gl_legacy_texobj_wrap_mode_t = wrap_mode_t;
     }
 }
 
@@ -165,12 +165,12 @@ _cogl_texture_2d_create_base (CoglContext *ctx,
   tex_2d->auto_mipmap = TRUE;
 
   /* We default to GL_LINEAR for both filters */
-  tex_2d->min_filter = GL_LINEAR;
-  tex_2d->mag_filter = GL_LINEAR;
+  tex_2d->gl_legacy_texobj_min_filter = GL_LINEAR;
+  tex_2d->gl_legacy_texobj_mag_filter = GL_LINEAR;
 
   /* Wrap mode not yet set */
-  tex_2d->wrap_mode_s = GL_FALSE;
-  tex_2d->wrap_mode_t = GL_FALSE;
+  tex_2d->gl_legacy_texobj_wrap_mode_s = GL_FALSE;
+  tex_2d->gl_legacy_texobj_wrap_mode_t = GL_FALSE;
 
   tex_2d->is_foreign = FALSE;
 
@@ -481,8 +481,8 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
   tex_2d->gl_format = gl_int_format;
 
   /* Unknown filter */
-  tex_2d->min_filter = GL_FALSE;
-  tex_2d->mag_filter = GL_FALSE;
+  tex_2d->gl_legacy_texobj_min_filter = GL_FALSE;
+  tex_2d->gl_legacy_texobj_mag_filter = GL_FALSE;
 
   return _cogl_texture_2d_object_new (tex_2d);
 }
@@ -724,20 +724,20 @@ _cogl_texture_2d_get_gl_texture (CoglTexture *tex,
 }
 
 static void
-_cogl_texture_2d_set_filters (CoglTexture *tex,
-                              GLenum       min_filter,
-                              GLenum       mag_filter)
+_cogl_texture_2d_gl_flush_legacy_texobj_filters (CoglTexture *tex,
+                                                 GLenum min_filter,
+                                                 GLenum mag_filter)
 {
   CoglTexture2D *tex_2d = COGL_TEXTURE_2D (tex);
   CoglContext *ctx = tex->context;
 
-  if (min_filter == tex_2d->min_filter
-      && mag_filter == tex_2d->mag_filter)
+  if (min_filter == tex_2d->gl_legacy_texobj_min_filter
+      && mag_filter == tex_2d->gl_legacy_texobj_mag_filter)
     return;
 
   /* Store new values */
-  tex_2d->min_filter = min_filter;
-  tex_2d->mag_filter = mag_filter;
+  tex_2d->gl_legacy_texobj_min_filter = min_filter;
+  tex_2d->gl_legacy_texobj_mag_filter = mag_filter;
 
   /* Apply new filters to the texture */
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
@@ -934,10 +934,10 @@ cogl_texture_2d_vtable =
     _cogl_texture_2d_transform_coords_to_gl,
     _cogl_texture_2d_transform_quad_coords_to_gl,
     _cogl_texture_2d_get_gl_texture,
-    _cogl_texture_2d_set_filters,
+    _cogl_texture_2d_gl_flush_legacy_texobj_filters,
     _cogl_texture_2d_pre_paint,
     _cogl_texture_2d_ensure_non_quad_rendering,
-    _cogl_texture_2d_set_wrap_mode_parameters,
+    _cogl_texture_2d_gl_flush_legacy_texobj_wrap_modes,
     _cogl_texture_2d_get_format,
     _cogl_texture_2d_get_gl_format,
     _cogl_texture_2d_get_width,

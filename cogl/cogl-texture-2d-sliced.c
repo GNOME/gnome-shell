@@ -584,10 +584,10 @@ _cogl_pot_slices_for_size (int    size_to_fill,
 }
 
 static void
-_cogl_texture_2d_sliced_set_wrap_mode_parameters (CoglTexture *tex,
-                                                  GLenum wrap_mode_s,
-                                                  GLenum wrap_mode_t,
-                                                  GLenum wrap_mode_p)
+_cogl_texture_2d_sliced_gl_flush_legacy_texobj_wrap_modes (CoglTexture *tex,
+                                                           GLenum wrap_mode_s,
+                                                           GLenum wrap_mode_t,
+                                                           GLenum wrap_mode_p)
 {
   CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
   int i;
@@ -599,10 +599,10 @@ _cogl_texture_2d_sliced_set_wrap_mode_parameters (CoglTexture *tex,
                                                 CoglTexture2D *,
                                                 i);
 
-      _cogl_texture_set_wrap_mode_parameters (COGL_TEXTURE (slice_tex),
-                                              wrap_mode_s,
-                                              wrap_mode_t,
-                                              wrap_mode_p);
+      _cogl_texture_gl_flush_legacy_texobj_wrap_modes (COGL_TEXTURE (slice_tex),
+                                                       wrap_mode_s,
+                                                       wrap_mode_t,
+                                                       wrap_mode_p);
     }
 }
 
@@ -1170,9 +1170,9 @@ _cogl_texture_2d_sliced_get_gl_texture (CoglTexture *tex,
 }
 
 static void
-_cogl_texture_2d_sliced_set_filters (CoglTexture *tex,
-                                     GLenum min_filter,
-                                     GLenum mag_filter)
+_cogl_texture_2d_sliced_gl_flush_legacy_texobj_filters (CoglTexture *tex,
+                                                        GLenum min_filter,
+                                                        GLenum mag_filter)
 {
   CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
   CoglTexture2D       *slice_tex;
@@ -1188,8 +1188,8 @@ _cogl_texture_2d_sliced_set_filters (CoglTexture *tex,
   for (i = 0; i < tex_2ds->slice_textures->len; i++)
     {
       slice_tex = g_array_index (tex_2ds->slice_textures, CoglTexture2D *, i);
-      _cogl_texture_set_filters (COGL_TEXTURE (slice_tex),
-                                 min_filter, mag_filter);
+      _cogl_texture_gl_flush_legacy_texobj_filters (COGL_TEXTURE (slice_tex),
+                                                    min_filter, mag_filter);
     }
 }
 
@@ -1328,10 +1328,10 @@ cogl_texture_2d_sliced_vtable =
     _cogl_texture_2d_sliced_transform_coords_to_gl,
     _cogl_texture_2d_sliced_transform_quad_coords_to_gl,
     _cogl_texture_2d_sliced_get_gl_texture,
-    _cogl_texture_2d_sliced_set_filters,
+    _cogl_texture_2d_sliced_gl_flush_legacy_texobj_filters,
     _cogl_texture_2d_sliced_pre_paint,
     _cogl_texture_2d_sliced_ensure_non_quad_rendering,
-    _cogl_texture_2d_sliced_set_wrap_mode_parameters,
+    _cogl_texture_2d_sliced_gl_flush_legacy_texobj_wrap_modes,
     _cogl_texture_2d_sliced_get_format,
     _cogl_texture_2d_sliced_get_gl_format,
     _cogl_texture_2d_sliced_get_width,

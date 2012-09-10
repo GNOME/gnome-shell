@@ -68,10 +68,10 @@ can_use_wrap_mode (GLenum wrap_mode)
 }
 
 static void
-_cogl_texture_rectangle_set_wrap_mode_parameters (CoglTexture *tex,
-                                                  GLenum wrap_mode_s,
-                                                  GLenum wrap_mode_t,
-                                                  GLenum wrap_mode_p)
+_cogl_texture_rectangle_gl_flush_legacy_texobj_wrap_modes (CoglTexture *tex,
+                                                           GLenum wrap_mode_s,
+                                                           GLenum wrap_mode_t,
+                                                           GLenum wrap_mode_p)
 {
   CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
   CoglContext *ctx = tex->context;
@@ -79,8 +79,8 @@ _cogl_texture_rectangle_set_wrap_mode_parameters (CoglTexture *tex,
   /* Only set the wrap mode if it's different from the current value
      to avoid too many GL calls. Texture rectangle doesn't make use of
      the r coordinate so we can ignore its wrap mode */
-  if (tex_rect->wrap_mode_s != wrap_mode_s ||
-      tex_rect->wrap_mode_t != wrap_mode_t)
+  if (tex_rect->gl_legacy_texobj_wrap_mode_s != wrap_mode_s ||
+      tex_rect->gl_legacy_texobj_wrap_mode_t != wrap_mode_t)
     {
       g_assert (can_use_wrap_mode (wrap_mode_s));
       g_assert (can_use_wrap_mode (wrap_mode_t));
@@ -93,8 +93,8 @@ _cogl_texture_rectangle_set_wrap_mode_parameters (CoglTexture *tex,
       GE( ctx, glTexParameteri (GL_TEXTURE_RECTANGLE_ARB,
                                 GL_TEXTURE_WRAP_T, wrap_mode_t) );
 
-      tex_rect->wrap_mode_s = wrap_mode_s;
-      tex_rect->wrap_mode_t = wrap_mode_t;
+      tex_rect->gl_legacy_texobj_wrap_mode_s = wrap_mode_s;
+      tex_rect->gl_legacy_texobj_wrap_mode_t = wrap_mode_t;
     }
 }
 
@@ -176,12 +176,12 @@ _cogl_texture_rectangle_create_base (CoglContext *ctx,
   tex_rect->height = height;
 
   /* We default to GL_LINEAR for both filters */
-  tex_rect->min_filter = GL_LINEAR;
-  tex_rect->mag_filter = GL_LINEAR;
+  tex_rect->gl_legacy_texobj_min_filter = GL_LINEAR;
+  tex_rect->gl_legacy_texobj_mag_filter = GL_LINEAR;
 
   /* Wrap mode not yet set */
-  tex_rect->wrap_mode_s = GL_FALSE;
-  tex_rect->wrap_mode_t = GL_FALSE;
+  tex_rect->gl_legacy_texobj_wrap_mode_s = GL_FALSE;
+  tex_rect->gl_legacy_texobj_wrap_mode_t = GL_FALSE;
 
   tex_rect->format = internal_format;
 
@@ -413,8 +413,8 @@ cogl_texture_rectangle_new_from_foreign (CoglContext *ctx,
   tex_rect->gl_format = gl_int_format;
 
   /* Unknown filter */
-  tex_rect->min_filter = GL_FALSE;
-  tex_rect->mag_filter = GL_FALSE;
+  tex_rect->gl_legacy_texobj_min_filter = GL_FALSE;
+  tex_rect->gl_legacy_texobj_mag_filter = GL_FALSE;
 
   return _cogl_texture_rectangle_object_new (tex_rect);
 }
@@ -484,23 +484,23 @@ _cogl_texture_rectangle_get_gl_texture (CoglTexture *tex,
 }
 
 static void
-_cogl_texture_rectangle_set_filters (CoglTexture *tex,
-                                     GLenum       min_filter,
-                                     GLenum       mag_filter)
+_cogl_texture_rectangle_gl_flush_legacy_texobj_filters (CoglTexture *tex,
+                                                        GLenum min_filter,
+                                                        GLenum mag_filter)
 {
   CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
   CoglContext *ctx = tex->context;
 
-  if (min_filter == tex_rect->min_filter
-      && mag_filter == tex_rect->mag_filter)
+  if (min_filter == tex_rect->gl_legacy_texobj_min_filter
+      && mag_filter == tex_rect->gl_legacy_texobj_mag_filter)
     return;
 
   /* Rectangle textures don't support mipmapping */
   g_assert (min_filter == GL_LINEAR || min_filter == GL_NEAREST);
 
   /* Store new values */
-  tex_rect->min_filter = min_filter;
-  tex_rect->mag_filter = mag_filter;
+  tex_rect->gl_legacy_texobj_min_filter = min_filter;
+  tex_rect->gl_legacy_texobj_mag_filter = mag_filter;
 
   /* Apply new filters to the texture */
   _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB,
@@ -649,10 +649,10 @@ cogl_texture_rectangle_vtable =
     _cogl_texture_rectangle_transform_coords_to_gl,
     _cogl_texture_rectangle_transform_quad_coords_to_gl,
     _cogl_texture_rectangle_get_gl_texture,
-    _cogl_texture_rectangle_set_filters,
+    _cogl_texture_rectangle_gl_flush_legacy_texobj_filters,
     _cogl_texture_rectangle_pre_paint,
     _cogl_texture_rectangle_ensure_non_quad_rendering,
-    _cogl_texture_rectangle_set_wrap_mode_parameters,
+    _cogl_texture_rectangle_gl_flush_legacy_texobj_wrap_modes,
     _cogl_texture_rectangle_get_format,
     _cogl_texture_rectangle_get_gl_format,
     _cogl_texture_rectangle_get_width,

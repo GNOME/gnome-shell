@@ -35,25 +35,29 @@
 
 struct _CoglTexture2D
 {
-  CoglTexture     _parent;
+  CoglTexture _parent;
 
   /* The internal format of the GL texture represented as a
      CoglPixelFormat */
   CoglPixelFormat format;
-  /* The internal format of the GL texture represented as a GL enum */
-  GLenum          gl_format;
-  /* The texture object number */
-  GLuint          gl_texture;
-  int             width;
-  int             height;
-  GLenum          min_filter;
-  GLenum          mag_filter;
-  GLint           wrap_mode_s;
-  GLint           wrap_mode_t;
-  CoglBool        auto_mipmap;
-  CoglBool        mipmaps_dirty;
-  CoglBool        is_foreign;
+  int width;
+  int height;
 
+  CoglBool auto_mipmap;
+  CoglBool mipmaps_dirty;
+  CoglBool is_foreign;
+
+  /* TODO: factor out these OpenGL specific members into some form
+   * of driver private state. */
+
+  /* The internal format of the GL texture represented as a GL enum */
+  GLenum gl_format;
+  /* The texture object number */
+  GLuint gl_texture;
+  GLenum gl_legacy_texobj_min_filter;
+  GLenum gl_legacy_texobj_mag_filter;
+  GLint gl_legacy_texobj_wrap_mode_s;
+  GLint gl_legacy_texobj_wrap_mode_t;
   CoglTexturePixel first_pixel;
 };
 

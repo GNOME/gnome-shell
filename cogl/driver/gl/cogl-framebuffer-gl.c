@@ -728,7 +728,8 @@ _cogl_offscreen_gl_allocate (CoglOffscreen *offscreen,
    * the texture is actually used for rendering according to the filters set on
    * the corresponding CoglPipeline.
    */
-  _cogl_texture_set_filters (offscreen->texture, GL_NEAREST, GL_NEAREST);
+  _cogl_texture_gl_flush_legacy_texobj_filters (offscreen->texture,
+                                                GL_NEAREST, GL_NEAREST);
 
   if (((offscreen->create_flags & COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL) &&
        try_creating_fbo (ctx,

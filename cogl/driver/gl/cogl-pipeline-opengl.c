@@ -947,10 +947,10 @@ _cogl_pipeline_layer_forward_wrap_modes (CoglPipelineLayer *layer,
   else
     gl_wrap_mode_p = wrap_mode_p;
 
-  _cogl_texture_set_wrap_mode_parameters (texture,
-                                          gl_wrap_mode_s,
-                                          gl_wrap_mode_t,
-                                          gl_wrap_mode_p);
+  _cogl_texture_gl_flush_legacy_texobj_wrap_modes (texture,
+                                                   gl_wrap_mode_s,
+                                                   gl_wrap_mode_t,
+                                                   gl_wrap_mode_p);
 }
 
 /* OpenGL associates the min/mag filters and repeat modes with the
@@ -985,7 +985,7 @@ foreach_texture_unit_update_filter_and_wrap_modes (void)
               CoglPipelineFilter mag;
 
               _cogl_pipeline_layer_get_filters (unit->layer, &min, &mag);
-              _cogl_texture_set_filters (texture, min, mag);
+              _cogl_texture_gl_flush_legacy_texobj_filters (texture, min, mag);
 
               _cogl_pipeline_layer_forward_wrap_modes (unit->layer, texture);
             }

@@ -108,17 +108,19 @@ struct _CoglTextureVtable
                                GLuint *out_gl_handle,
                                GLenum *out_gl_target);
 
-  void (* set_filters) (CoglTexture *tex,
-                        GLenum min_filter,
-                        GLenum mag_filter);
+  /* OpenGL driver specific virtual function */
+  void (* gl_flush_legacy_texobj_filters) (CoglTexture *tex,
+                                           GLenum min_filter,
+                                           GLenum mag_filter);
 
   void (* pre_paint) (CoglTexture *tex, CoglTexturePrePaintFlags flags);
   void (* ensure_non_quad_rendering) (CoglTexture *tex);
 
-  void (* set_wrap_mode_parameters) (CoglTexture *tex,
-                                     GLenum wrap_mode_s,
-                                     GLenum wrap_mode_t,
-                                     GLenum wrap_mode_p);
+  /* OpenGL driver specific virtual function */
+  void (* gl_flush_legacy_texobj_wrap_modes) (CoglTexture *tex,
+                                              GLenum wrap_mode_s,
+                                              GLenum wrap_mode_t,
+                                              GLenum wrap_mode_p);
 
   CoglPixelFormat (* get_format) (CoglTexture *tex);
   GLenum (* get_gl_format) (CoglTexture *tex);
@@ -207,16 +209,15 @@ GLenum
 _cogl_texture_get_gl_format (CoglTexture *texture);
 
 void
-_cogl_texture_set_wrap_mode_parameters (CoglTexture *texture,
-                                        GLenum wrap_mode_s,
-                                        GLenum wrap_mode_t,
-                                        GLenum wrap_mode_p);
-
+_cogl_texture_gl_flush_legacy_texobj_wrap_modes (CoglTexture *texture,
+                                                 GLenum wrap_mode_s,
+                                                 GLenum wrap_mode_t,
+                                                 GLenum wrap_mode_p);
 
 void
-_cogl_texture_set_filters (CoglTexture *texture,
-                           GLenum min_filter,
-                           GLenum mag_filter);
+_cogl_texture_gl_flush_legacy_texobj_filters (CoglTexture *texture,
+                                              GLenum min_filter,
+                                              GLenum mag_filter);
 
 void
 _cogl_texture_pre_paint (CoglTexture *texture, CoglTexturePrePaintFlags flags);

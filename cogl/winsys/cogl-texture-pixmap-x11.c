@@ -853,15 +853,16 @@ _cogl_texture_pixmap_x11_get_gl_texture (CoglTexture *tex,
 }
 
 static void
-_cogl_texture_pixmap_x11_set_filters (CoglTexture *tex,
-                                      GLenum       min_filter,
-                                      GLenum       mag_filter)
+_cogl_texture_pixmap_x11_gl_flush_legacy_texobj_filters (CoglTexture *tex,
+                                                         GLenum min_filter,
+                                                         GLenum mag_filter)
 {
   CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (tex);
   CoglTexture *child_tex = _cogl_texture_pixmap_x11_get_texture (tex_pixmap);
 
   /* Forward on to the child texture */
-  _cogl_texture_set_filters (child_tex, min_filter, mag_filter);
+  _cogl_texture_gl_flush_legacy_texobj_filters (child_tex,
+                                                min_filter, mag_filter);
 }
 
 static void
@@ -890,19 +891,19 @@ _cogl_texture_pixmap_x11_ensure_non_quad_rendering (CoglTexture *tex)
 }
 
 static void
-_cogl_texture_pixmap_x11_set_wrap_mode_parameters (CoglTexture *tex,
-                                                   GLenum       wrap_mode_s,
-                                                   GLenum       wrap_mode_t,
-                                                   GLenum       wrap_mode_p)
+_cogl_texture_pixmap_x11_gl_flush_legacy_texobj_wrap_modes (CoglTexture *tex,
+                                                            GLenum wrap_mode_s,
+                                                            GLenum wrap_mode_t,
+                                                            GLenum wrap_mode_p)
 {
   CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (tex);
   CoglTexture *child_tex = _cogl_texture_pixmap_x11_get_texture (tex_pixmap);
 
   /* Forward on to the child texture */
-  _cogl_texture_set_wrap_mode_parameters (child_tex,
-                                          wrap_mode_s,
-                                          wrap_mode_t,
-                                          wrap_mode_p);
+  _cogl_texture_gl_flush_legacy_texobj_wrap_modes (child_tex,
+                                                   wrap_mode_s,
+                                                   wrap_mode_t,
+                                                   wrap_mode_p);
 }
 
 static CoglPixelFormat
@@ -996,10 +997,10 @@ cogl_texture_pixmap_x11_vtable =
     _cogl_texture_pixmap_x11_transform_coords_to_gl,
     _cogl_texture_pixmap_x11_transform_quad_coords_to_gl,
     _cogl_texture_pixmap_x11_get_gl_texture,
-    _cogl_texture_pixmap_x11_set_filters,
+    _cogl_texture_pixmap_x11_gl_flush_legacy_texobj_filters,
     _cogl_texture_pixmap_x11_pre_paint,
     _cogl_texture_pixmap_x11_ensure_non_quad_rendering,
-    _cogl_texture_pixmap_x11_set_wrap_mode_parameters,
+    _cogl_texture_pixmap_x11_gl_flush_legacy_texobj_wrap_modes,
     _cogl_texture_pixmap_x11_get_format,
     _cogl_texture_pixmap_x11_get_gl_format,
     _cogl_texture_pixmap_x11_get_width,

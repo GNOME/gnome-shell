@@ -301,19 +301,6 @@ _cogl_texture_prep_gl_alignment_for_pixels_download (int bpp,
   GE( ctx, glPixelStorei (GL_PACK_ALIGNMENT, alignment) );
 }
 
-/* FIXME: wrap modes should be set on pipelines not textures */
-void
-_cogl_texture_set_wrap_mode_parameters (CoglTexture *texture,
-                                        GLenum wrap_mode_s,
-                                        GLenum wrap_mode_t,
-                                        GLenum wrap_mode_p)
-{
-  texture->vtable->set_wrap_mode_parameters (texture,
-                                             wrap_mode_s,
-                                             wrap_mode_t,
-                                             wrap_mode_p);
-}
-
 CoglTexture *
 cogl_texture_new_with_size (unsigned int     width,
 			    unsigned int     height,
@@ -653,14 +640,6 @@ CoglTextureType
 _cogl_texture_get_type (CoglTexture *texture)
 {
   return texture->vtable->get_type (texture);
-}
-
-void
-_cogl_texture_set_filters (CoglTexture *texture,
-                           GLenum min_filter,
-                           GLenum mag_filter)
-{
-  texture->vtable->set_filters (texture, min_filter, mag_filter);
 }
 
 void
@@ -1458,3 +1437,23 @@ _cogl_texture_spans_foreach_in_region (CoglSpan *x_spans,
     }
 }
 
+void
+_cogl_texture_gl_flush_legacy_texobj_wrap_modes (CoglTexture *texture,
+                                                 GLenum wrap_mode_s,
+                                                 GLenum wrap_mode_t,
+                                                 GLenum wrap_mode_p)
+{
+  texture->vtable->gl_flush_legacy_texobj_wrap_modes (texture,
+                                                      wrap_mode_s,
+                                                      wrap_mode_t,
+                                                      wrap_mode_p);
+}
+
+void
+_cogl_texture_gl_flush_legacy_texobj_filters (CoglTexture *texture,
+                                              GLenum min_filter,
+                                              GLenum mag_filter)
+{
+  texture->vtable->gl_flush_legacy_texobj_filters (texture,
+                                                   min_filter, mag_filter);
+}

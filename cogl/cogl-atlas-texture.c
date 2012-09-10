@@ -247,18 +247,18 @@ _cogl_atlas_texture_foreach_sub_texture_in_region (
 }
 
 static void
-_cogl_atlas_texture_set_wrap_mode_parameters (CoglTexture *tex,
-                                              GLenum wrap_mode_s,
-                                              GLenum wrap_mode_t,
-                                              GLenum wrap_mode_p)
+_cogl_atlas_texture_gl_flush_legacy_texobj_wrap_modes (CoglTexture *tex,
+                                                       GLenum wrap_mode_s,
+                                                       GLenum wrap_mode_t,
+                                                       GLenum wrap_mode_p)
 {
   CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
 
   /* Forward on to the sub texture */
-  _cogl_texture_set_wrap_mode_parameters (atlas_tex->sub_texture,
-                                          wrap_mode_s,
-                                          wrap_mode_t,
-                                          wrap_mode_p);
+  _cogl_texture_gl_flush_legacy_texobj_wrap_modes (atlas_tex->sub_texture,
+                                                   wrap_mode_s,
+                                                   wrap_mode_t,
+                                                   wrap_mode_p);
 }
 
 static void
@@ -348,14 +348,15 @@ _cogl_atlas_texture_get_gl_texture (CoglTexture *tex,
 }
 
 static void
-_cogl_atlas_texture_set_filters (CoglTexture *tex,
-                                 GLenum min_filter,
-                                 GLenum mag_filter)
+_cogl_atlas_texture_gl_flush_legacy_texobj_filters (CoglTexture *tex,
+                                                    GLenum min_filter,
+                                                    GLenum mag_filter)
 {
   CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
 
   /* Forward on to the sub texture */
-  _cogl_texture_set_filters (atlas_tex->sub_texture, min_filter, mag_filter);
+  _cogl_texture_gl_flush_legacy_texobj_filters (atlas_tex->sub_texture,
+                                                min_filter, mag_filter);
 }
 
 static void
@@ -826,10 +827,10 @@ cogl_atlas_texture_vtable =
     _cogl_atlas_texture_transform_coords_to_gl,
     _cogl_atlas_texture_transform_quad_coords_to_gl,
     _cogl_atlas_texture_get_gl_texture,
-    _cogl_atlas_texture_set_filters,
+    _cogl_atlas_texture_gl_flush_legacy_texobj_filters,
     _cogl_atlas_texture_pre_paint,
     _cogl_atlas_texture_ensure_non_quad_rendering,
-    _cogl_atlas_texture_set_wrap_mode_parameters,
+    _cogl_atlas_texture_gl_flush_legacy_texobj_wrap_modes,
     _cogl_atlas_texture_get_format,
     _cogl_atlas_texture_get_gl_format,
     _cogl_atlas_texture_get_width,
