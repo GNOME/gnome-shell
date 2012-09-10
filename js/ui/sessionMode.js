@@ -48,6 +48,7 @@ const _modes = {
 
     'lock-screen': {
         isLocked: true,
+        isGreeter: undefined,
         unlockDialog: undefined,
         components: ['networkAgent', 'polkitAgent', 'telepathyClient'],
         panel: {

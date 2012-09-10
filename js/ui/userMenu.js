@@ -577,6 +577,8 @@ const UserMenuButton = new Lang.Class({
     },
 
     _sessionUpdated: function() {
+        this.actor.visible = !Main.sessionMode.isGreeter;
+
         let allowSettings = Main.sessionMode.allowSettings;
         this._statusChooser.setSensitive(allowSettings);
         this._systemSettings.visible = allowSettings;
