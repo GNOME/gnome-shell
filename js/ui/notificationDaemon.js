@@ -499,7 +499,7 @@ const NotificationDaemon = new Lang.Class({
     },
 
     _onTrayIconAdded: function(o, icon) {
-        let wmClass = icon.wm_class.toLowerCase();
+        let wmClass = icon.wm_class ? icon.wm_class.toLowerCase() : '';
         if (STANDARD_TRAY_ICON_IMPLEMENTATIONS[wmClass] !== undefined)
             return;
 
