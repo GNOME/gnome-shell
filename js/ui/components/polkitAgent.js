@@ -299,7 +299,7 @@ const AuthenticationDialog = new Lang.Class({
     },
 
     _onUserChanged: function() {
-        if (this._user.is_loaded) {
+        if (this._user.is_loaded && this._userAvatar) {
             this._userAvatar.update();
             this._userAvatar.actor.show();
         }
