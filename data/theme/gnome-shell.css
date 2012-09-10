@@ -1438,13 +1438,14 @@ StButton.popup-menu-item:insensitive {
 }
 
 .summary-source-counter {
-    color: white;
-    background-color: #3465A4;
-    text-shadow: black 1px 1px 0;
-    font-size: 9pt;
-    border-radius: 1em;
-    min-height: 1em;
-    min-width: 1em;
+    background-image: url("summary-counter.svg");
+    background-size: 2.5em;
+    font-size: 10pt;
+    font-weight: bold;
+    height: 2.5em;
+    width: 2.5em;
+    -shell-counter-overlap-x: 4px;
+    -shell-counter-overlap-y: 4px;
 }
 
 /* App Switcher */

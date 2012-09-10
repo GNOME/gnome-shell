@@ -953,10 +953,21 @@ const SourceActor = new Lang.Class({
         }));
         this._actorDestroyed = false;
 
-        this._counterLabel = new St.Label();
+        this._counterLabel = new St.Label( {x_align: Clutter.ActorAlign.CENTER,
+                                            x_expand: true,
+                                            y_align: Clutter.ActorAlign.CENTER,
+                                            y_expand: true });
+
         this._counterBin = new St.Bin({ style_class: 'summary-source-counter',
-                                        child: this._counterLabel });
+                                        child: this._counterLabel,
+                                        layout_manager: new Clutter.BinLayout() });
         this._counterBin.hide();
+
+        this._counterBin.connect('style-changed', Lang.bind(this, function() {
+            let themeNode = this._counterBin.get_theme_node();
+            this._counterBin.translation_x = themeNode.get_length('-shell-counter-overlap-x');
+            this._counterBin.translation_y = themeNode.get_length('-shell-counter-overlap-y');
+        }));
 
         this._iconBin = new St.Bin({ width: size,
                                      height: size,
@@ -1026,7 +1037,14 @@ const SourceActor = new Lang.Class({
             return;
 
         this._counterBin.visible = this._source.countVisible;
-        this._counterLabel.set_text(this._source.count.toString());
+
+        let text;
+        if (this._source.count < 100)
+            text = this._source.count.toString();
+        else
+            text = String.fromCharCode(0x22EF); // midline horizontal ellipsis
+
+        this._counterLabel.set_text(text);
     }
 });
 

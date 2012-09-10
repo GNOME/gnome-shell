@@ -39,6 +39,7 @@ dist_theme_DATA =				\
 	theme/process-working.svg		\
 	theme/running-indicator.svg		\
 	theme/source-button-border.svg		\
+	theme/summary-counter.svg		\
 	theme/toggle-off-us.svg			\
 	theme/toggle-off-intl.svg		\
 	theme/toggle-on-us.svg			\
