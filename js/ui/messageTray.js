@@ -2310,6 +2310,18 @@ const MessageTray = new Lang.Class({
     },
 
     _hideNotification: function() {
+        // HACK!
+        // There seems to be a reentrancy issue in calling .ungrab() here,
+        // which causes _updateState to be called before _notificationState
+        // becomes HIDING. That hides the notification again, nullifying the
+        // object but not setting _notificationState (and that's the weird part)
+        // As then _notificationState is stuck into SHOWN but _notification
+        // is null, every new _updateState fails and the message tray is
+        // lost forever.
+        //
+        // See more at https://bugzilla.gnome.org/show_bug.cgi?id=683986
+        this._notificationState = State.HIDING;
+
         this._grabHelper.ungrab({ actor: this._notification.actor });
 
         if (this._idleMonitorBecameActiveId) {
