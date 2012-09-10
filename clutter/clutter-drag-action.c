@@ -295,6 +295,12 @@ emit_drag_end (ClutterDragAction *action,
 {
   ClutterDragActionPrivate *priv = action->priv;
 
+  /* ::drag-end may result in the destruction of the actor, which in turn
+   * will lead to the removal and finalization of the action, so we need
+   * to keep the action alive for the entire emission sequence
+   */
+  g_object_ref (action);
+
   /* if we have an event, update our own state, otherwise we'll
    * just use the currently stored state when emitting the ::drag-end
    * signal
@@ -315,6 +321,9 @@ emit_drag_end (ClutterDragAction *action,
                    priv->last_motion_x, priv->last_motion_y,
                    priv->last_motion_state);
 
+  if (priv->stage == NULL)
+    goto out;
+
   /* disconnect the capture */
   if (priv->capture_id != 0)
     {
@@ -325,7 +334,7 @@ emit_drag_end (ClutterDragAction *action,
   clutter_stage_set_motion_events_enabled (priv->stage,
                                            priv->motion_events_enabled);
 
-  if (priv->last_motion_device != NULL)
+  if (priv->last_motion_device != NULL && event != NULL)
     {
       if (clutter_event_type (event) == CLUTTER_BUTTON_RELEASE)
         _clutter_stage_remove_pointer_drag_actor (priv->stage,
@@ -335,7 +344,11 @@ emit_drag_end (ClutterDragAction *action,
                                                 priv->sequence);
     }
 
+out:
+  priv->last_motion_device = NULL;
   priv->sequence = NULL;
+
+  g_object_unref (action);
 }
 
 static gboolean
@@ -641,8 +654,28 @@ clutter_drag_action_dispose (GObject *gobject)
 {
   ClutterDragActionPrivate *priv = CLUTTER_DRAG_ACTION (gobject)->priv;
 
+  /* if we're being disposed while a capture is still present, we
+   * need to reset the state we are currently holding
+   */
+  if (priv->last_motion_device != NULL)
+    {
+      _clutter_stage_remove_pointer_drag_actor (priv->stage,
+                                                priv->last_motion_device);
+      priv->last_motion_device = NULL;
+    }
+
+  if (priv->sequence != NULL)
+    {
+      _clutter_stage_remove_touch_drag_actor (priv->stage,
+                                              priv->sequence);
+      priv->sequence = NULL;
+    }
+
   if (priv->capture_id != 0)
     {
+      clutter_stage_set_motion_events_enabled (priv->stage,
+                                               priv->motion_events_enabled);
+
       if (priv->stage != NULL)
         g_signal_handler_disconnect (priv->stage, priv->capture_id);
 
