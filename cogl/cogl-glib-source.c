@@ -159,8 +159,6 @@ cogl_glib_source_finalize (GSource *source)
 {
   CoglGLibSource *cogl_source = (CoglGLibSource *) source;
 
-  cogl_object_unref (cogl_source->context);
-
   g_array_free (cogl_source->poll_fds, TRUE);
 }
 
@@ -184,7 +182,7 @@ cogl_glib_source_new (CoglContext *context,
                          sizeof (CoglGLibSource));
   cogl_source = (CoglGLibSource *) source;
 
-  cogl_source->context = cogl_object_ref (context);
+  cogl_source->context = context;
   cogl_source->poll_fds = g_array_new (FALSE, FALSE, sizeof (GPollFD));
 
   if (priority != G_PRIORITY_DEFAULT)

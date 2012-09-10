@@ -66,6 +66,25 @@ G_BEGIN_DECLS
  * design since it helps you write orthogonal rendering components
  * that can all access the same GPU without having to worry about
  * what state other components have left you with.
+ *
+ * <note>Cogl does not maintain internal references to the context for
+ * resources that depend on the context so applications. This is to
+ * help applications control the lifetime a context without us needing to
+ * introduce special api to handle the breakup of internal circular
+ * references due to internal resources and caches associated with the
+ * context.
+ *
+ * One a context has been destroyed then all directly or indirectly
+ * dependant resources will be in an inconsistent state and should not
+ * be manipulated or queried in any way.
+ *
+ * For applications that rely on the operating system to clean up
+ * resources this policy shouldn't affect them, but for applications
+ * that need to carefully destroy and re-create Cogl contexts multiple
+ * times throughout their lifetime (such as Android applications) they
+ * should be careful to destroy all context dependant resources, such as
+ * framebuffers or textures etc before unrefing and destroying the
+ * context.<note>
  */
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API

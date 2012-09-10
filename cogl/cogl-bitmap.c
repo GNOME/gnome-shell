@@ -51,9 +51,6 @@ _cogl_bitmap_free (CoglBitmap *bmp)
   if (bmp->buffer)
     cogl_object_unref (bmp->buffer);
 
-  if (bmp->context)
-    cogl_object_unref (bmp->context);
-
   g_slice_free (CoglBitmap, bmp);
 }
 
@@ -167,7 +164,7 @@ cogl_bitmap_new_for_data (CoglContext *context,
   g_return_val_if_fail (cogl_is_context (context), NULL);
 
   bmp = g_slice_new (CoglBitmap);
-  bmp->context = cogl_object_ref (context);
+  bmp->context = context;
   bmp->format = format;
   bmp->width = width;
   bmp->height = height;

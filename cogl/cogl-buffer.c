@@ -300,14 +300,14 @@ _cogl_buffer_initialize (CoglBuffer           *buffer,
                          CoglBufferUsageHint   usage_hint,
                          CoglBufferUpdateHint  update_hint)
 {
-  buffer->context       = cogl_object_ref (context);
-  buffer->flags         = COGL_BUFFER_FLAG_NONE;
+  buffer->context = context;
+  buffer->flags = COGL_BUFFER_FLAG_NONE;
   buffer->store_created = FALSE;
-  buffer->size          = size;
-  buffer->last_target   = default_target;
-  buffer->usage_hint    = usage_hint;
-  buffer->update_hint   = update_hint;
-  buffer->data          = NULL;
+  buffer->size = size;
+  buffer->last_target = default_target;
+  buffer->usage_hint = usage_hint;
+  buffer->update_hint = update_hint;
+  buffer->data = NULL;
   buffer->immutable_ref = 0;
 
   if (use_malloc)
@@ -339,8 +339,6 @@ _cogl_buffer_fini (CoglBuffer *buffer)
     GE( buffer->context, glDeleteBuffers (1, &buffer->gl_handle) );
   else
     g_free (buffer->data);
-
-  cogl_object_unref (buffer->context);
 }
 
 GLenum

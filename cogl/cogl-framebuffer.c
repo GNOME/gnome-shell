@@ -162,24 +162,24 @@ _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
                         int width,
                         int height)
 {
-  framebuffer->context = cogl_object_ref (ctx);
+  framebuffer->context = ctx;
 
-  framebuffer->type             = type;
-  framebuffer->width            = width;
-  framebuffer->height           = height;
-  framebuffer->format           = format;
-  framebuffer->viewport_x       = 0;
-  framebuffer->viewport_y       = 0;
-  framebuffer->viewport_width   = width;
-  framebuffer->viewport_height  = height;
-  framebuffer->dither_enabled   = TRUE;
+  framebuffer->type = type;
+  framebuffer->width = width;
+  framebuffer->height = height;
+  framebuffer->format = format;
+  framebuffer->viewport_x = 0;
+  framebuffer->viewport_y = 0;
+  framebuffer->viewport_width = width;
+  framebuffer->viewport_height = height;
+  framebuffer->dither_enabled = TRUE;
 
-  framebuffer->modelview_stack  = _cogl_matrix_stack_new ();
+  framebuffer->modelview_stack = _cogl_matrix_stack_new ();
   framebuffer->projection_stack = _cogl_matrix_stack_new ();
 
-  framebuffer->dirty_bitmasks   = TRUE;
+  framebuffer->dirty_bitmasks = TRUE;
 
-  framebuffer->color_mask       = COGL_COLOR_MASK_ALL;
+  framebuffer->color_mask = COGL_COLOR_MASK_ALL;
 
   framebuffer->samples_per_pixel = 0;
 
@@ -240,7 +240,6 @@ _cogl_framebuffer_free (CoglFramebuffer *framebuffer)
   cogl_object_unref (framebuffer->journal);
 
   ctx->framebuffers = g_list_remove (ctx->framebuffers, framebuffer);
-  cogl_object_unref (ctx);
 
   if (ctx->current_draw_buffer == framebuffer)
     ctx->current_draw_buffer = NULL;
