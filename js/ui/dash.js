@@ -310,6 +310,40 @@ const DragPlaceholderItem = new Lang.Class({
     }
 });
 
+const DashActor = new Lang.Class({
+    Name: 'DashActor',
+    Extends: St.Widget,
+
+    _init: function() {
+        let layout = new Clutter.BoxLayout({ orientation: Clutter.Orientation.VERTICAL });
+        this.parent({ name: 'dash',
+                      layout_manager: layout,
+                      clip_to_allocation: true });
+    },
+
+    vfunc_allocate: function(box, flags) {
+        let contentBox = this.get_theme_node().get_content_box(box);
+        let availWidth = contentBox.x2 - contentBox.x1;
+        let availHeight = contentBox.y2 - contentBox.y1;
+
+        this.set_allocation(box, flags);
+
+        let [appIcons, showAppsButton] = this.get_children();
+        let [minHeight, natHeight] = showAppsButton.get_preferred_height(availWidth);
+
+        let childBox = new Clutter.ActorBox();
+        childBox.x1 = 0;
+        childBox.x2 = availWidth;
+        childBox.y1 = 0;
+        childBox.y2 = availHeight - natHeight;
+        appIcons.allocate(childBox, flags);
+
+        childBox.y1 = availHeight - natHeight;
+        childBox.y2 = availHeight;
+        showAppsButton.allocate(childBox, flags);
+    }
+});
+
 const Dash = new Lang.Class({
     Name: 'Dash',
 
@@ -325,14 +359,11 @@ const Dash = new Lang.Class({
         this._resetHoverTimeoutId = 0;
         this._labelShowing = false;
 
-        this._container = new St.BoxLayout({ name: 'dash',
-                                             vertical: true,
-                                             clip_to_allocation: true });
-
+        this._container = new DashActor();
         this._box = new St.BoxLayout({ vertical: true,
                                        clip_to_allocation: true });
         this._box._delegate = this;
-        this._container.add(this._box);
+        this._container.add_actor(this._box);
 
         this._showAppsIcon = new ShowAppsIcon();
         this._showAppsIcon.icon.setIconSize(this.iconSize);
@@ -340,7 +371,7 @@ const Dash = new Lang.Class({
 
         this.showAppsButton = this._showAppsIcon.toggleButton;
 
-        this._container.add(this._showAppsIcon.actor);
+        this._container.add_actor(this._showAppsIcon.actor);
 
         this.actor = new St.Bin({ child: this._container });
         this.actor.connect('notify::height', Lang.bind(this,
