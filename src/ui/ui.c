@@ -82,6 +82,12 @@ meta_ui_get_display (void)
   return GDK_DISPLAY_XDISPLAY (gdk_display_get_default ());
 }
 
+gint
+meta_ui_get_screen_number (void)
+{
+  return gdk_screen_get_number (gdk_screen_get_default ());
+}
+
 /* We do some of our event handling in frames.c, which expects
  * GDK events delivered by GTK+.  However, since the transition to
  * client side windows, we can't let GDK see button events, since the

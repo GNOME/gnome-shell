@@ -470,6 +470,7 @@ meta_display_open (void)
 {
   Display *xdisplay;
   GSList *screens;
+  MetaScreen *screen;
   GSList *tmp;
   int i;
   guint32 timestamp;
@@ -854,19 +855,18 @@ meta_display_open (void)
   the_display->last_user_time = timestamp;
   the_display->compositor = NULL;
   
+  /* Mutter used to manage all X screens of the display in a single process, but
+   * now it always manages exactly one screen as specified by the DISPLAY
+   * environment variable. The screens GSList is left for simplicity.
+   */
   screens = NULL;
-  
-  i = 0;
-  while (i < ScreenCount (xdisplay))
-    {
-      MetaScreen *screen;
 
-      screen = meta_screen_new (the_display, i, timestamp);
+  i = meta_ui_get_screen_number ();
 
-      if (screen)
-        screens = g_slist_prepend (screens, screen);
-      ++i;
-    }
+  screen = meta_screen_new (the_display, i, timestamp);
+
+  if (screen)
+    screens = g_slist_prepend (screens, screen);
   
   the_display->screens = screens;
   
