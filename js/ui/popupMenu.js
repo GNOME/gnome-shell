@@ -61,6 +61,9 @@ const PopupBaseMenuItem = new Lang.Class({
 
         this.setSensitive(this.sensitive);
 
+        if (!this._activatable)
+            this.actor.add_style_class_name('popup-inactive-menu-item');
+
         if (params.style_class)
             this.actor.add_style_class_name(params.style_class);
 
@@ -763,7 +766,7 @@ const PopupSwitchMenuItem = new Lang.Class({
                       { expand: true, span: -1, align: St.Align.END });
 
         this._statusLabel = new St.Label({ text: '',
-                                           style_class: 'popup-inactive-menu-item'
+                                           style_class: 'popup-status-menu-item'
                                          });
         this._statusBin.child = this._switch.actor;
     },

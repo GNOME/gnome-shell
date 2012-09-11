@@ -1570,7 +1570,7 @@ const NMApplet = new Lang.Class({
         this._client = NMClient.Client.new();
 
         this._statusSection = new PopupMenu.PopupMenuSection();
-        this._statusItem = new PopupMenu.PopupMenuItem('', { style_class: 'popup-inactive-menu-item', reactive: false });
+        this._statusItem = new PopupMenu.PopupMenuItem('', { reactive: false });
         this._statusSection.addMenuItem(this._statusItem);
         this._statusSection.addAction(_("Enable networking"), Lang.bind(this, function() {
             this._client.networking_enabled = true;
