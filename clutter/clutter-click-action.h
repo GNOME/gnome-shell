@@ -42,7 +42,7 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_CLICK_ACTION(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_CLICK_ACTION))
 #define CLUTTER_CLICK_ACTION_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_CLICK_ACTION, ClutterClickActionClass))
 #define CLUTTER_IS_CLICK_ACTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_CLICK_ACTION))
-#define CLUTTER_CLICK_ACTION_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_CLICK_ACTION, ClutterClickActionClass))
+#define CLUTTER_CLICK_ACTION_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_CLICK_ACTION, ClutterClickActionClass))
 
 typedef struct _ClutterClickAction              ClutterClickAction;
 typedef struct _ClutterClickActionPrivate       ClutterClickActionPrivate;

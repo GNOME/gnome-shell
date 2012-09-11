@@ -46,7 +46,7 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_PAN_ACTION(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_PAN_ACTION))
 #define CLUTTER_PAN_ACTION_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_PAN_ACTION, ClutterPanActionClass))
 #define CLUTTER_IS_PAN_ACTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_PAN_ACTION))
-#define CLUTTER_PAN_ACTION_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_PAN_ACTION, ClutterPanActionClass))
+#define CLUTTER_PAN_ACTION_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_PAN_ACTION, ClutterPanActionClass))
 
 typedef struct _ClutterPanAction              ClutterPanAction;
 typedef struct _ClutterPanActionPrivate       ClutterPanActionPrivate;

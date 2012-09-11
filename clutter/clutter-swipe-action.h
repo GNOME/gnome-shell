@@ -42,7 +42,7 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_SWIPE_ACTION(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_SWIPE_ACTION))
 #define CLUTTER_SWIPE_ACTION_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_SWIPE_ACTION, ClutterSwipeActionClass))
 #define CLUTTER_IS_SWIPE_ACTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_SWIPE_ACTION))
-#define CLUTTER_SWIPE_ACTION_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_SWIPE_ACTION, ClutterSwipeActionClass))
+#define CLUTTER_SWIPE_ACTION_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_SWIPE_ACTION, ClutterSwipeActionClass))
 
 typedef struct _ClutterSwipeAction              ClutterSwipeAction;
 typedef struct _ClutterSwipeActionPrivate       ClutterSwipeActionPrivate;

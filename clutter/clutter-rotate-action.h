@@ -38,7 +38,7 @@ G_BEGIN_DECLS
 #define CLUTTER_IS_ROTATE_ACTION(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), CLUTTER_TYPE_ROTATE_ACTION))
 #define CLUTTER_ROTATE_ACTION_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), CLUTTER_TYPE_ROTATE_ACTION, ClutterRotateActionClass))
 #define CLUTTER_IS_ROTATE_ACTION_CLASS(klass)    (G_TYPE_CHECK_CLASS_TYPE ((klass), CLUTTER_TYPE_ROTATE_ACTION))
-#define CLUTTER_ROTATE_ACTION_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CLUTTER_TYPE_ROTATE_ACTION, ClutterRotateActionClass))
+#define CLUTTER_ROTATE_ACTION_GET_CLASS(obj)     (G_TYPE_INSTANCE_GET_CLASS ((obj), CLUTTER_TYPE_ROTATE_ACTION, ClutterRotateActionClass))
 
 typedef struct _ClutterRotateAction              ClutterRotateAction;
 typedef struct _ClutterRotateActionPrivate       ClutterRotateActionPrivate;
