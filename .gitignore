@@ -13,7 +13,7 @@ compile
 *.la
 *.gcov
 *.exe
-README
+/README
 stamp-enum-types
 stamp-marshal
 /build/autotools/*.m4
