@@ -254,11 +254,24 @@ input_cb (ClutterActor *actor,
 	       clutter_actor_get_name (source_actor));
       break;
     case CLUTTER_SCROLL:
-      g_print ("[%s] BUTTON SCROLL (direction:%s)",
-	       clutter_actor_get_name (source_actor),
-               clutter_event_get_scroll_direction (event) == CLUTTER_SCROLL_UP
-                 ? "up"
-                 : "down");
+      {
+        ClutterScrollDirection dir = clutter_event_get_scroll_direction(event);
+
+        if (dir == CLUTTER_SCROLL_SMOOTH)
+          {
+            gdouble dx, dy;
+            clutter_event_get_scroll_delta(event, &dx, &dy);
+            g_print ("[%s] BUTTON SCROLL (direction:smooth %.02f,%.02f)",
+                clutter_actor_get_name (source_actor), dx, dy);
+          }
+        else
+          g_print ("[%s] BUTTON SCROLL (direction:%s)",
+              clutter_actor_get_name (source_actor),
+              dir == CLUTTER_SCROLL_UP ? "up" :
+              dir == CLUTTER_SCROLL_DOWN ? "down" :
+              dir == CLUTTER_SCROLL_LEFT ? "left" :
+              dir == CLUTTER_SCROLL_RIGHT ? "right" : "?");
+      }
       break;
     case CLUTTER_STAGE_STATE:
       g_print ("[%s] STAGE STATE", clutter_actor_get_name (source_actor));
