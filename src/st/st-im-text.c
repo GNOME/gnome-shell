@@ -355,18 +355,22 @@ st_im_text_button_press_event (ClutterActor       *actor,
 }
 
 static gboolean
-st_im_text_key_press_event (ClutterActor    *actor,
-                            ClutterKeyEvent *event)
+st_im_text_captured_event (ClutterActor *actor,
+                           ClutterEvent *event)
 {
   StIMText *self = ST_IM_TEXT (actor);
   StIMTextPrivate *priv = self->priv;
   ClutterText *clutter_text = CLUTTER_TEXT (actor);
+  ClutterEventType type = clutter_event_type (event);
   gboolean result = FALSE;
   int old_position;
 
+  if (type != CLUTTER_KEY_PRESS && type != CLUTTER_KEY_RELEASE)
+    return FALSE;
+
   if (clutter_text_get_editable (clutter_text))
     {
-      GdkEventKey *event_gdk = key_event_to_gdk (event);
+      GdkEventKey *event_gdk = key_event_to_gdk ((ClutterKeyEvent *)event);
 
       if (gtk_im_context_filter_keypress (priv->im_context, event_gdk))
         {
@@ -380,41 +384,12 @@ st_im_text_key_press_event (ClutterActor    *actor,
   old_position = clutter_text_get_cursor_position (clutter_text);
 
   if (!result &&
-      CLUTTER_ACTOR_CLASS (st_im_text_parent_class)->key_press_event)
-    result = CLUTTER_ACTOR_CLASS (st_im_text_parent_class)->key_press_event (actor, event);
+      CLUTTER_ACTOR_CLASS (st_im_text_parent_class)->captured_event)
+    result = CLUTTER_ACTOR_CLASS (st_im_text_parent_class)->captured_event (actor, event);
 
-  if (clutter_text_get_cursor_position (clutter_text) != old_position)
+  if (type == CLUTTER_KEY_PRESS &&
+      clutter_text_get_cursor_position (clutter_text) != old_position)
     reset_im_context (self);
-
-  return result;
-}
-
-static gboolean
-st_im_text_key_release_event (ClutterActor    *actor,
-                              ClutterKeyEvent *event)
-{
-  StIMText *self = ST_IM_TEXT (actor);
-  StIMTextPrivate *priv = self->priv;
-  ClutterText *clutter_text = CLUTTER_TEXT (actor);
-  GdkEventKey *event_gdk;
-  gboolean result = FALSE;
-
-  if (clutter_text_get_editable (clutter_text))
-    {
-      event_gdk = key_event_to_gdk (event);
-
-      if (gtk_im_context_filter_keypress (priv->im_context, event_gdk))
-        {
-          priv->need_im_reset = TRUE;
-          result = TRUE;
-        }
-
-      gdk_event_free ((GdkEvent *)event_gdk);
-    }
-
-  if (!result &&
-      CLUTTER_ACTOR_CLASS (st_im_text_parent_class)->key_release_event)
-    result = CLUTTER_ACTOR_CLASS (st_im_text_parent_class)->key_release_event (actor, event);
 
   return result;
 }
@@ -467,8 +442,7 @@ st_im_text_class_init (StIMTextClass *klass)
   actor_class->unrealize = st_im_text_unrealize;
 
   actor_class->button_press_event = st_im_text_button_press_event;
-  actor_class->key_press_event = st_im_text_key_press_event;
-  actor_class->key_release_event = st_im_text_key_release_event;
+  actor_class->captured_event = st_im_text_captured_event;
   actor_class->key_focus_in = st_im_text_key_focus_in;
   actor_class->key_focus_out = st_im_text_key_focus_out;
 }
