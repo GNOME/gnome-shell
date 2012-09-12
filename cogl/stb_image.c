@@ -2362,10 +2362,11 @@ static int create_png_image_raw(png *a, uint8_t *raw, uint32_t raw_len, int out_
    a->out = (uint8_t *) malloc(x * y * out_n);
    if (!a->out) return e("outofmem", "Out of memory");
    if (!stbi_png_partial) {
-      if (s->img_x == x && s->img_y == y)
+      if (s->img_x == x && s->img_y == y) {
          if (raw_len != (img_n * x + 1) * y) return e("not enough pixels","Corrupt PNG");
-      else // interlaced:
+      } else { // interlaced:
          if (raw_len < (img_n * x + 1) * y) return e("not enough pixels","Corrupt PNG");
+      }
    }
    for (j=0; j < y; ++j) {
       uint8_t *cur = a->out + stride*j;
@@ -2849,7 +2850,7 @@ static int shiftsigned(int v, int shift, int bits)
 static stbi_uc *bmp_load(stbi *s, int *x, int *y, int *comp, int req_comp)
 {
    uint8_t *out;
-   unsigned int mr=0,mg=0,mb=0,ma=0, fake_a=0;
+   unsigned int mr=0,mg=0,mb=0,ma=0;
    stbi_uc pal[256][4];
    int psize=0,i,j,compress=0,width;
    int bpp, flip_vertically, pad, target, offset, hsz;
@@ -2899,7 +2900,6 @@ static stbi_uc *bmp_load(stbi *s, int *x, int *y, int *comp, int req_comp)
                   mg = 0xff <<  8;
                   mb = 0xff <<  0;
                   ma = 0xff << 24;
-                  fake_a = 1; // @TODO: check for cases like alpha value is all 0 and switch it to 255
                } else {
                   mr = 31 << 10;
                   mg = 31 <<  5;
@@ -3265,6 +3265,10 @@ static stbi_uc *tga_load(stbi *s, int *x, int *y, int *comp, int req_comp)
 				trans_data[2] = raw_data[0];
 				trans_data[3] = raw_data[3];
 				break;
+                        default:
+				trans_data[0] = trans_data[1] = 0;
+				trans_data[2] = trans_data[3] = 0;
+				break;
 			}
 			//	clear the reading flag for the next pixel
 			read_next_pixel = 0;
@@ -3606,7 +3610,7 @@ int stbi_hdr_test_file(FILE *f)
 static char *hdr_gettoken(stbi *z, char *buffer)
 {
    int len=0;
-	char *s = buffer, c = '\0';
+	char c = '\2';
 
    c = get8(z);
 
