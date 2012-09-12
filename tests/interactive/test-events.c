@@ -33,6 +33,18 @@ get_event_type_name (const ClutterEvent *event)
     case CLUTTER_DELETE:
       return "DELETE";
 
+    case CLUTTER_TOUCH_BEGIN:
+      return "TOUCH BEGIN";
+
+    case CLUTTER_TOUCH_UPDATE:
+      return "TOUCH UPDATE";
+
+    case CLUTTER_TOUCH_END:
+      return "TOUCH END";
+
+    case CLUTTER_TOUCH_CANCEL:
+      return "TOUCH CANCEL";
+
     default:
       return "EVENT";
     }
@@ -229,6 +241,18 @@ input_cb (ClutterActor *actor,
                clutter_actor_get_parent (actor) == stage)
 	clutter_stage_set_key_focus (CLUTTER_STAGE (stage), actor);
       break;
+    case CLUTTER_TOUCH_BEGIN:
+      g_print ("[%s] TOUCH BEGIN",
+	       clutter_actor_get_name (source_actor));
+      break;
+    case CLUTTER_TOUCH_UPDATE:
+      g_print ("[%s] TOUCH UPDATE",
+	       clutter_actor_get_name (source_actor));
+      break;
+    case CLUTTER_TOUCH_END:
+      g_print ("[%s] TOUCH END",
+	       clutter_actor_get_name (source_actor));
+      break;
     case CLUTTER_SCROLL:
       g_print ("[%s] BUTTON SCROLL (direction:%s)",
 	       clutter_actor_get_name (source_actor),
@@ -264,6 +288,10 @@ G_MODULE_EXPORT int
 test_events_main (int argc, char *argv[])
 {
   ClutterActor *stage, *actor, *focus_box, *group;
+
+#ifdef CLUTTER_WINDOWING_X11
+  clutter_x11_enable_xinput ();
+#endif
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;
