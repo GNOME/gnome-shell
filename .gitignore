@@ -31,6 +31,7 @@ stamp-marshal
 /cogl/cogl-defines.h
 /cogl/cogl-defines.h.win32
 /cogl/cogl-defines.h.win32_SDL
+/cogl/cogl-egl-defines.h
 /cogl/cogl-enum-types.c
 /cogl/cogl-enum-types.h
 /cogl/cogl-gl-header.h
