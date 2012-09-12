@@ -20,7 +20,9 @@ INCLUDES = \
 	-I$(top_builddir)			\
 	-I$(srcdir)/tesselator			\
 	-I$(srcdir)/winsys 			\
-	-I$(srcdir)/driver/$(COGL_DRIVER) 	\
+	-I$(srcdir)/driver/gl 			\
+	-I$(srcdir)/driver/gl/gl 		\
+	-I$(srcdir)/driver/gl/gles 		\
 	$(NULL)
 
 AM_CPPFLAGS = \
@@ -128,6 +130,7 @@ cogl_experimental_h = \
 cogl_nodist_experimental_h = \
 	$(NULL)
 
+# gl driver sources
 cogl_gl_prototypes_h = \
 	$(srcdir)/gl-prototypes/cogl-gles2-functions.h		\
 	$(srcdir)/gl-prototypes/cogl-core-functions.h		\
@@ -137,19 +140,37 @@ cogl_gl_prototypes_h = \
 	$(NULL)
 
 # driver sources
-cogl_driver_sources =
+cogl_driver_sources = \
+	$(srcdir)/driver/gl/cogl-framebuffer-gl.c \
+	$(srcdir)/driver/gl/cogl-pipeline-opengl.c \
+	$(srcdir)/driver/gl/cogl-pipeline-opengl-private.h \
+	$(srcdir)/driver/gl/cogl-pipeline-fragend-glsl.c \
+	$(srcdir)/driver/gl/cogl-pipeline-fragend-glsl-private.h \
+	$(srcdir)/driver/gl/gl/cogl-pipeline-fragend-arbfp.c \
+	$(srcdir)/driver/gl/gl/cogl-pipeline-fragend-arbfp-private.h \
+	$(srcdir)/driver/gl/cogl-pipeline-fragend-fixed.c \
+	$(srcdir)/driver/gl/cogl-pipeline-fragend-fixed-private.h \
+	$(srcdir)/driver/gl/cogl-pipeline-vertend-glsl.c \
+	$(srcdir)/driver/gl/cogl-pipeline-vertend-glsl-private.h \
+	$(srcdir)/driver/gl/cogl-pipeline-vertend-fixed.c \
+	$(srcdir)/driver/gl/cogl-pipeline-vertend-fixed-private.h \
+	$(srcdir)/driver/gl/cogl-pipeline-progend-fixed.c \
+	$(srcdir)/driver/gl/cogl-pipeline-progend-fixed-private.h \
+	$(srcdir)/driver/gl/cogl-pipeline-progend-glsl.c \
+	$(srcdir)/driver/gl/cogl-pipeline-progend-glsl-private.h \
+	$(NULL)
 
 if COGL_DRIVER_GL_SUPPORTED
 cogl_driver_sources += \
-	$(srcdir)/driver/gl/cogl-gl.c			\
-	$(srcdir)/driver/gl/cogl-texture-driver-gl.c	\
+	$(srcdir)/driver/gl/gl/cogl-driver-gl.c \
+	$(srcdir)/driver/gl/gl/cogl-texture-driver-gl.c \
 	$(NULL)
 endif
 
 if COGL_DRIVER_GLES_SUPPORTED
 cogl_driver_sources += \
-	$(srcdir)/driver/gles/cogl-gles.c			\
-	$(srcdir)/driver/gles/cogl-texture-driver-gles.c	\
+	$(srcdir)/driver/gl/gles/cogl-driver-gles.c \
+	$(srcdir)/driver/gl/gles/cogl-texture-driver-gles.c	\
 	$(NULL)
 endif
 
@@ -286,22 +307,6 @@ cogl_sources_c = \
 	$(srcdir)/cogl-pipeline-layer-state.c		\
 	$(srcdir)/cogl-pipeline-state-private.h		\
 	$(srcdir)/cogl-pipeline-debug.c			\
-	$(srcdir)/cogl-pipeline-opengl.c		\
-	$(srcdir)/cogl-pipeline-opengl-private.h	\
-	$(srcdir)/cogl-pipeline-fragend-glsl.c		\
-	$(srcdir)/cogl-pipeline-fragend-glsl-private.h	\
-	$(srcdir)/cogl-pipeline-fragend-arbfp.c		\
-	$(srcdir)/cogl-pipeline-fragend-arbfp-private.h	\
-	$(srcdir)/cogl-pipeline-fragend-fixed.c		\
-	$(srcdir)/cogl-pipeline-fragend-fixed-private.h	\
-	$(srcdir)/cogl-pipeline-vertend-glsl.c		\
-	$(srcdir)/cogl-pipeline-vertend-glsl-private.h	\
-	$(srcdir)/cogl-pipeline-vertend-fixed.c		\
-	$(srcdir)/cogl-pipeline-vertend-fixed-private.h	\
-	$(srcdir)/cogl-pipeline-progend-fixed.c		\
-	$(srcdir)/cogl-pipeline-progend-fixed-private.h	\
-	$(srcdir)/cogl-pipeline-progend-glsl.c		\
-	$(srcdir)/cogl-pipeline-progend-glsl-private.h	\
 	$(srcdir)/cogl-pipeline-snippet-private.h	\
 	$(srcdir)/cogl-pipeline-snippet.c		\
 	$(srcdir)/cogl-pipeline-cache.h			\
@@ -357,8 +362,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-point-in-poly-private.h       	\
 	$(srcdir)/cogl-point-in-poly.c       		\
 	$(srcdir)/cogl-clutter.c       			\
-	$(srcdir)/winsys/cogl-winsys-stub-private.h	\
 	$(srcdir)/cogl-queue.h				\
+	$(srcdir)/winsys/cogl-winsys-stub-private.h	\
 	$(srcdir)/winsys/cogl-winsys-stub.c		\
 	$(srcdir)/cogl-config-private.h			\
 	$(srcdir)/cogl-config.c				\
@@ -382,8 +387,6 @@ cogl_sources_c = \
 	$(srcdir)/cogl-magazine.c			\
 	$(srcdir)/cogl-gles2-context-private.h		\
 	$(srcdir)/cogl-gles2-context.c			\
-	$(srcdir)/cogl-framebuffer-gl-private.h		\
-	$(srcdir)/cogl-framebuffer-gl.c			\
 	$(NULL)
 
 if USE_GLIB
