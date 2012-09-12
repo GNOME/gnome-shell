@@ -748,7 +748,6 @@ typedef enum
 /* NB: The above definitions are taken from gl.h equivalents */
 
 typedef enum { /*< prefix=COGL_RENDERER_ERROR >*/
-  COGL_RENDERER_ERROR_NOT_FOUND,
   COGL_RENDERER_ERROR_XLIB_DISPLAY_OPEN,
   COGL_RENDERER_ERROR_BAD_CONSTRAINT
 } CoglRendererError;
