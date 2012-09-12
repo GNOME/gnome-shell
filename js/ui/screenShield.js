@@ -434,7 +434,11 @@ const ScreenShield = new Lang.Class({
     },
 
     _onLockScreenKeyRelease: function(actor, event) {
-        if (event.get_key_symbol() == Clutter.KEY_Escape) {
+        let symbol = event.get_key_symbol();
+
+        if (symbol == Clutter.KEY_Escape ||
+            symbol == Clutter.KEY_Return ||
+            symbol == Clutter.KEY_KP_Enter) {
             this._ensureUnlockDialog();
             this._hideLockScreen(true);
             return true;
