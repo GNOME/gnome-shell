@@ -182,6 +182,8 @@ check_mesa_vendor (const CoglGpuInfoStrings *strings)
     return TRUE;
   else if (strcmp (strings->vendor_string, "VMware, Inc.") == 0)
     return TRUE;
+  else if (strcmp (strings->vendor_string, "Mesa Project") == 0)
+    return TRUE;
 
   return FALSE;
 }
@@ -214,7 +216,8 @@ check_softpipe_architecture (const CoglGpuInfoStrings *strings)
 static CoglBool
 check_swrast_architecture (const CoglGpuInfoStrings *strings)
 {
-  return match_phrase (strings->renderer_string, "software rasterizer");
+  return match_phrase (strings->renderer_string, "software rasterizer") ||
+    match_phrase (strings->renderer_string, "Software Rasterizer");
 }
 
 static CoglBool
