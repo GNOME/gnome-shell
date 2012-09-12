@@ -88,6 +88,8 @@ extern const CoglTextureDriver _cogl_texture_driver_gles;
 extern const CoglDriverVtable _cogl_driver_gles;
 #endif
 
+extern const CoglDriverVtable _cogl_driver_nop;
+
 static CoglWinsysVtableGetter _cogl_winsys_vtable_getters[] =
 {
 #ifdef COGL_HAS_GLX_SUPPORT
@@ -308,6 +310,15 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
     }
 #endif
 
+  if (renderer->driver_override == COGL_DRIVER_NOP ||
+      (renderer->driver_override == COGL_DRIVER_ANY &&
+       (driver_name == NULL || !g_ascii_strcasecmp (driver_name, "nop"))))
+    {
+      renderer->driver = COGL_DRIVER_NOP;
+      libgl_name = NULL;
+      goto found;
+    }
+
   _cogl_set_error (error,
                COGL_DRIVER_ERROR,
                COGL_DRIVER_ERROR_NO_SUITABLE_DRIVER_FOUND,
@@ -328,16 +339,21 @@ found:
 
 #ifndef HAVE_DIRECTLY_LINKED_GL_LIBRARY
 
-  renderer->libgl_module = g_module_open (libgl_name,
-                                          G_MODULE_BIND_LAZY);
-
-  if (renderer->libgl_module == NULL)
+  if (renderer->driver == COGL_DRIVER_GL ||
+      renderer->driver == COGL_DRIVER_GLES1 ||
+      renderer->driver == COGL_DRIVER_GLES2)
     {
-      _cogl_set_error (error, COGL_DRIVER_ERROR,
-                   COGL_DRIVER_ERROR_FAILED_TO_LOAD_LIBRARY,
-                   "Failed to dynamically open the GL library \"%s\"",
-                   libgl_name);
-      return FALSE;
+      renderer->libgl_module = g_module_open (libgl_name,
+                                              G_MODULE_BIND_LAZY);
+
+      if (renderer->libgl_module == NULL)
+        {
+          _cogl_set_error (error, COGL_DRIVER_ERROR,
+                       COGL_DRIVER_ERROR_FAILED_TO_LOAD_LIBRARY,
+                       "Failed to dynamically open the GL library \"%s\"",
+                       libgl_name);
+          return FALSE;
+        }
     }
 
 #endif /* HAVE_DIRECTLY_LINKED_GL_LIBRARY */
@@ -359,8 +375,10 @@ found:
       break;
 #endif
 
+    case COGL_DRIVER_NOP:
     default:
-      g_assert_not_reached ();
+      renderer->driver_vtable = &_cogl_driver_nop;
+      renderer->texture_driver = NULL;
     }
 
   return TRUE;

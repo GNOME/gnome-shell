@@ -136,6 +136,20 @@ cogl_experimental_h = \
 cogl_nodist_experimental_h = \
 	$(NULL)
 
+# nop driver
+cogl_driver_sources = \
+	$(srcdir)/driver/nop/cogl-driver-nop-private.h \
+	$(srcdir)/driver/nop/cogl-driver-nop.c \
+	$(srcdir)/driver/nop/cogl-framebuffer-nop-private.h \
+	$(srcdir)/driver/nop/cogl-framebuffer-nop.c \
+	$(srcdir)/driver/nop/cogl-attribute-nop-private.h \
+	$(srcdir)/driver/nop/cogl-attribute-nop.c \
+	$(srcdir)/driver/nop/cogl-clip-stack-nop-private.h \
+	$(srcdir)/driver/nop/cogl-clip-stack-nop.c \
+	$(srcdir)/driver/nop/cogl-texture-2d-nop-private.h \
+	$(srcdir)/driver/nop/cogl-texture-2d-nop.c \
+	$(NULL)
+
 # gl driver sources
 cogl_gl_prototypes_h = \
 	$(srcdir)/gl-prototypes/cogl-gles2-functions.h		\
@@ -145,8 +159,7 @@ cogl_gl_prototypes_h = \
 	$(srcdir)/gl-prototypes/cogl-glsl-functions.h		\
 	$(NULL)
 
-# driver sources
-cogl_driver_sources = \
+cogl_driver_sources += \
 	$(srcdir)/driver/gl/cogl-framebuffer-gl.c \
 	$(srcdir)/driver/gl/cogl-texture-2d-gl-private.h \
 	$(srcdir)/driver/gl/cogl-texture-2d-gl.c \

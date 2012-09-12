@@ -261,10 +261,15 @@ cogl_context_new (CoglDisplay *display,
   context->texture_units =
     g_array_new (FALSE, FALSE, sizeof (CoglTextureUnit));
 
-  /* See cogl-pipeline.c for more details about why we leave texture unit 1
-   * active by default... */
-  context->active_texture_unit = 1;
-  GE (context, glActiveTexture (GL_TEXTURE1));
+  if (context->driver == COGL_DRIVER_GL ||
+      context->driver == COGL_DRIVER_GLES1 ||
+      context->driver == COGL_DRIVER_GLES2)
+    {
+      /* See cogl-pipeline.c for more details about why we leave texture unit 1
+       * active by default... */
+      context->active_texture_unit = 1;
+      GE (context, glActiveTexture (GL_TEXTURE1));
+    }
 
   context->legacy_fog_state.enabled = FALSE;
 
@@ -363,7 +368,8 @@ cogl_context_new (CoglDisplay *display,
   context->blit_texture_pipeline = NULL;
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
-  if (context->driver != COGL_DRIVER_GLES2)
+  if (context->driver == COGL_DRIVER_GL ||
+      context->driver == COGL_DRIVER_GLES1)
     /* The default for GL_ALPHA_TEST is to always pass which is equivalent to
      * the test being disabled therefore we assume that for all drivers there
      * will be no performance impact if we always leave the test enabled which
