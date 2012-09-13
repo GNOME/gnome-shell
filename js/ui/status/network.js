@@ -1562,7 +1562,7 @@ const NMApplet = new Lang.Class({
     Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        this.parent('network-offline', _('Network'));
+        this.parent('network-offline-symbolic', _('Network'));
 
         this.secondaryIcon = this.addIcon(new Gio.ThemedIcon({ name: 'network-vpn-symbolic' }));
         this.secondaryIcon.hide();
