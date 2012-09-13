@@ -392,7 +392,7 @@ clutter_stage_allocate (ClutterActor           *self,
   if (!clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
     {
       CLUTTER_NOTE (LAYOUT,
-                    "Following allocation to %dx%d (origin %s)",
+                    "Following allocation to %.2fx%.2f (origin %s)",
                     width, height,
                     origin_changed ? "changed" : "not changed");
 
@@ -447,8 +447,8 @@ clutter_stage_allocate (ClutterActor           *self,
       override.y2 = window_size.height;
 
       CLUTTER_NOTE (LAYOUT,
-                    "Overrigin original allocation of %dx%d "
-                    "with %dx%d (origin %s)",
+                    "Overriding original allocation of %dx%d "
+                    "with %.2fx%.2f (origin %s)",
                     width, height,
                     (int) (override.x2),
                     (int) (override.y2),
