@@ -2196,6 +2196,11 @@ StButton.popup-menu-item:insensitive {
 
 /* Screen shield */
 
+.screen-shield-background {
+    background: black;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.9);
+}
+
 #lockDialogGroup {
     background: #2e3436 url(noise-texture.png);
     background-repeat: repeat;

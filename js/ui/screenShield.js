@@ -366,7 +366,8 @@ const ScreenShield = new Lang.Class({
                                                    name: 'lockScreenContents' });
         this._lockScreenContents.add_constraint(new Layout.MonitorConstraint({ primary: true }));
 
-        this._background = Meta.BackgroundActor.new_for_screen(global.screen);
+        this._background = new St.Bin({ style_class: 'screen-shield-background',
+                                        child: Meta.BackgroundActor.new_for_screen(global.screen) });
         this._lockScreenGroup.add_actor(this._background);
         this._lockScreenGroup.add_actor(this._lockScreenContents);
 
