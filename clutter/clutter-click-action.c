@@ -116,6 +116,8 @@ struct _ClutterClickActionPrivate
   gint drag_threshold;
 
   guint press_button;
+  gint press_device_id;
+  ClutterEventSequence *press_sequence;
   ClutterModifierType modifier_state;
   gfloat press_x;
   gfloat press_y;
@@ -277,14 +279,17 @@ on_event (ClutterActor       *actor,
           ClutterClickAction *action)
 {
   ClutterClickActionPrivate *priv = action->priv;
+  gboolean has_button = TRUE;
 
   if (!clutter_actor_meta_get_enabled (CLUTTER_ACTOR_META (action)))
     return CLUTTER_EVENT_PROPAGATE;
 
   switch (clutter_event_type (event))
     {
+    case CLUTTER_TOUCH_BEGIN:
+      has_button = FALSE;
     case CLUTTER_BUTTON_PRESS:
-      if (clutter_event_get_click_count (event) != 1)
+      if (has_button && clutter_event_get_click_count (event) != 1)
         return CLUTTER_EVENT_PROPAGATE;
 
       if (priv->is_held)
@@ -293,7 +298,9 @@ on_event (ClutterActor       *actor,
       if (!clutter_actor_contains (actor, clutter_event_get_source (event)))
         return CLUTTER_EVENT_PROPAGATE;
 
-      priv->press_button = clutter_event_get_button (event);
+      priv->press_button = has_button ? clutter_event_get_button (event) : 0;
+      priv->press_device_id = clutter_event_get_device_id (event);
+      priv->press_sequence = clutter_event_get_event_sequence (event);
       priv->modifier_state = clutter_event_get_state (event);
       clutter_event_get_coords (event, &priv->press_x, &priv->press_y);
 
@@ -344,17 +351,22 @@ on_captured_event (ClutterActor       *stage,
   ClutterClickActionPrivate *priv = action->priv;
   ClutterActor *actor;
   ClutterModifierType modifier_state;
+  gboolean has_button = TRUE;
 
   actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
 
   switch (clutter_event_type (event))
     {
+    case CLUTTER_TOUCH_END:
+      has_button = FALSE;
     case CLUTTER_BUTTON_RELEASE:
       if (!priv->is_held)
         return CLUTTER_EVENT_STOP;
 
-      if (clutter_event_get_button (event) != priv->press_button ||
-          clutter_event_get_click_count (event) != 1)
+      if ((has_button && clutter_event_get_button (event) != priv->press_button) ||
+          (has_button && clutter_event_get_click_count (event) != 1) ||
+          clutter_event_get_device_id (event) != priv->press_device_id ||
+          clutter_event_get_event_sequence (event) != priv->press_sequence)
         return CLUTTER_EVENT_PROPAGATE;
 
       click_action_set_held (action, FALSE);
@@ -397,6 +409,7 @@ on_captured_event (ClutterActor       *stage,
       break;
 
     case CLUTTER_MOTION:
+    case CLUTTER_TOUCH_UPDATE:
       {
         gfloat motion_x, motion_y;
         gfloat delta_x, delta_y;
