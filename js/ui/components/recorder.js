@@ -36,13 +36,13 @@ const Recorder = new Lang.Class({
         if (recorder.is_recording()) {
             recorder.close();
             Meta.enable_unredirect_for_screen(global.screen);
-        } else if (!desktopLockdownSettings.get_boolean('disable-save-to-disk')) {
+        } else if (!this._desktopLockdownSettings.get_boolean('disable-save-to-disk')) {
             // read the parameters from GSettings always in case they have changed
-            recorder.set_framerate(recorderSettings.get_int('framerate'));
+            recorder.set_framerate(this._recorderSettings.get_int('framerate'));
             /* Translators: this is a filename used for screencast recording */
             // xgettext:no-c-format
-            recorder.set_filename(_("Screencast from %d %t") + '.' + recorderSettings.get_string('file-extension'));
-            let pipeline = recorderSettings.get_string('pipeline');
+            recorder.set_filename(_("Screencast from %d %t") + '.' + this._recorderSettings.get_string('file-extension'));
+            let pipeline = this._recorderSettings.get_string('pipeline');
 
             if (!pipeline.match(/^\s*$/))
                 recorder.set_pipeline(pipeline);
