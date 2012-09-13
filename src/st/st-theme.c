@@ -935,21 +935,20 @@ add_matched_properties (StTheme      *a_this,
     }
 }
 
-#define ORIGIN_AUTHOR_IMPORTANT (ORIGIN_AUTHOR + 1)
-#define ORIGIN_USER_IMPORTANT   (ORIGIN_AUTHOR + 2)
+#define ORIGIN_OFFSET_IMPORTANT (NB_ORIGINS)
+#define ORIGIN_OFFSET_EXTENSION (NB_ORIGINS * 2)
 
 static inline int
 get_origin (const CRDeclaration * decl)
 {
   enum CRStyleOrigin origin = decl->parent_statement->parent_sheet->origin;
+  gboolean is_extension_sheet = GPOINTER_TO_UINT (decl->parent_statement->parent_sheet->app_data);
 
   if (decl->important)
-    {
-      if (origin == ORIGIN_AUTHOR)
-        return ORIGIN_AUTHOR_IMPORTANT;
-      else if (origin == ORIGIN_USER)
-        return ORIGIN_USER_IMPORTANT;
-    }
+    origin += ORIGIN_OFFSET_IMPORTANT;
+
+  if (is_extension_sheet)
+    origin += ORIGIN_OFFSET_EXTENSION;
 
   return origin;
 }
@@ -963,7 +962,6 @@ compare_declarations (gconstpointer a,
   /* g_ptr_array_sort() is broooken */
   CRDeclaration *decl_a = *(CRDeclaration **) a;
   CRDeclaration *decl_b = *(CRDeclaration **) b;
-  gboolean a_is_extension_sheet, b_is_extension_sheet;
 
   int origin_a = get_origin (decl_a);
   int origin_b = get_origin (decl_b);
@@ -973,12 +971,6 @@ compare_declarations (gconstpointer a,
 
   if (decl_a->parent_statement->specificity != decl_b->parent_statement->specificity)
     return decl_a->parent_statement->specificity - decl_b->parent_statement->specificity;
-
-  a_is_extension_sheet = GPOINTER_TO_UINT (decl_a->parent_statement->parent_sheet->app_data);
-  b_is_extension_sheet = GPOINTER_TO_UINT (decl_b->parent_statement->parent_sheet->app_data);
-
-  if (a_is_extension_sheet != b_is_extension_sheet)
-    return a_is_extension_sheet ? 1 : -1;
 
   return 0;
 }
