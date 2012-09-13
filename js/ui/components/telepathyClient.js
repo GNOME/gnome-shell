@@ -11,10 +11,10 @@ const Tpl = imports.gi.TelepathyLogger;
 const Tp = imports.gi.TelepathyGLib;
 
 const History = imports.misc.history;
-const Params = imports.misc.params;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
-
+const Params = imports.misc.params;
+const PopupMenu = imports.ui.popupMenu;
 
 // See Notification.appendMessage
 const SCROLLBACK_IMMEDIATE_TIME = 60; // 1 minute
