@@ -106,14 +106,14 @@ function enableExtension(uuid) {
 
     extensionOrder.push(uuid);
 
-    extension.stateObj.enable();
-
     let stylesheetFile = extension.dir.get_child('stylesheet.css');
     if (stylesheetFile.query_exists(null)) {
         let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
         theme.load_stylesheet(stylesheetFile.get_path());
         extension.stylesheet = stylesheetFile;
     }
+
+    extension.stateObj.enable();
 
     extension.state = ExtensionState.ENABLED;
     _signals.emit('extension-state-changed', extension);
