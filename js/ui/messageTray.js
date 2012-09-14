@@ -2436,14 +2436,6 @@ const MessageTray = new Lang.Class({
     },
 
     _hideSummaryBoxPointer: function() {
-        // We should be sure to hide the box pointer if all notifications in it are destroyed while
-        // it is hiding, so that we don't show an animation of an empty blob being hidden.
-        if (this._summaryBoxPointerState == State.HIDING &&
-            this._summaryBoxPointerItem.notificationStack.get_n_children() == 0) {
-            this._summaryBoxPointer.actor.hide();
-            return;
-        }
-
         this._grabHelper.ungrab({ actor: this._summaryBoxPointer.bin.child });
     },
 
