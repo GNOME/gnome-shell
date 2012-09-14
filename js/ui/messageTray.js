@@ -2071,16 +2071,16 @@ const MessageTray = new Lang.Class({
     },
 
     _hideTray: function() {
-        // Note that we might have entered here without a grab,
-        // which would happen if GrabHelper ungrabbed for us.
-        // This is a no-op in that case.
-        this._grabHelper.ungrab({ actor: this.actor });
-
         this._tween(this.actor, '_trayState', State.HIDDEN,
                     { y: 0,
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad'
                     });
+
+        // Note that we might have entered here without a grab,
+        // which would happen if GrabHelper ungrabbed for us.
+        // This is a no-op in that case.
+        this._grabHelper.ungrab({ actor: this.actor });
 
         // If we are coming back from the overview, there are no windows
         // to be moved. Just remove the tray from the ctrl+alt+tab list.
