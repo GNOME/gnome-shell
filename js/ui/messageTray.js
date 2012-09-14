@@ -1221,6 +1221,7 @@ const SummaryItem = new Lang.Class({
                                      can_focus: true,
                                      track_hover: true });
         this.actor.label_actor = new St.Label({ text: source.title });
+        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPress));
         this._sourceBox = new St.BoxLayout({ style_class: 'summary-source' });
 
         this._sourceIcon = source.getSummaryIcon();
@@ -1266,6 +1267,14 @@ const SummaryItem = new Lang.Class({
 
     set closeButtonVisible(v) {
         this._closeButton.visible = v;
+    },
+
+    _onKeyPress: function(actor, event) {
+        if (event.get_key_symbol() == Clutter.KEY_Up) {
+            actor.emit('clicked', 1);
+            return true;
+        }
+        return false;
     },
 
     prepareNotificationStackForShowing: function() {
