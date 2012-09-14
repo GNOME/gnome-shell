@@ -527,33 +527,32 @@ const ChatSource = new Lang.Class({
     },
 
     createSecondaryIcon: function() {
-        let iconBox = new St.Bin();
-        iconBox.child = new St.Icon({ style_class: 'secondary-icon' });
+        let iconName;
         let presenceType = this._contact.get_presence_type();
 
         switch (presenceType) {
             case Tp.ConnectionPresenceType.AVAILABLE:
-                iconBox.child.icon_name = 'user-available';
+                iconName = 'user-available';
                 break;
             case Tp.ConnectionPresenceType.BUSY:
-                iconBox.child.icon_name = 'user-busy';
+                iconName = 'user-busy';
                 break;
             case Tp.ConnectionPresenceType.OFFLINE:
-                iconBox.child.icon_name = 'user-offline';
+                iconName = 'user-offline';
                 break;
             case Tp.ConnectionPresenceType.HIDDEN:
-                iconBox.child.icon_name = 'user-invisible';
+                iconName = 'user-invisible';
                 break;
             case Tp.ConnectionPresenceType.AWAY:
-                iconBox.child.icon_name = 'user-away';
+                iconName = 'user-away';
                 break;
             case Tp.ConnectionPresenceType.EXTENDED_AWAY:
-                iconBox.child.icon_name = 'user-idle';
+                iconName = 'user-idle';
                 break;
             default:
-                iconBox.child.icon_name = 'user-offline';
+                iconName = 'user-offline';
        }
-       return iconBox;
+       return new Gio.ThemedIcon({ name: iconName });
     },
 
     _updateAvatarIcon: function() {
@@ -733,7 +732,7 @@ const ChatSource = new Lang.Class({
 
         title = GLib.markup_escape_text(this.title, -1);
 
-        this._notification.update(this._notification.title, null, { customContent: true, secondaryIcon: this.createSecondaryIcon() });
+        this._notification.update(this._notification.title, null, { customContent: true, secondaryGIcon: this.createSecondaryIcon() });
 
         if (message)
             msg += ' <i>(' + GLib.markup_escape_text(message, -1) + ')</i>';
@@ -761,7 +760,7 @@ const ChatNotification = new Lang.Class({
     Extends: MessageTray.Notification,
 
     _init: function(source) {
-        this.parent(source, source.title, null, { customContent: true, secondaryIcon: source.createSecondaryIcon() });
+        this.parent(source, source.title, null, { customContent: true, secondaryGIcon: source.createSecondaryIcon() });
         this.setResident(true);
 
         this._responseEntry = new St.Entry({ style_class: 'chat-response',

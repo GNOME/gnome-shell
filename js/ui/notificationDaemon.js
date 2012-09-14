@@ -356,12 +356,10 @@ const NotificationDaemon = new Lang.Class({
              ndata.actions, ndata.hints, ndata.notification];
 
         let gicon = this._iconForNotificationData(icon, hints);
-        let iconActor = new St.Icon({ gicon: gicon,
-                                      icon_size: MessageTray.NOTIFICATION_ICON_SIZE });
 
         if (notification == null) {
             notification = new MessageTray.Notification(source, summary, body,
-                                                        { icon: iconActor,
+                                                        { gicon: gicon,
                                                           bannerMarkup: true });
             ndata.notification = notification;
             notification.connect('destroy', Lang.bind(this,
@@ -386,7 +384,7 @@ const NotificationDaemon = new Lang.Class({
                     this._emitActionInvoked(ndata.id, actionId);
                 }));
         } else {
-            notification.update(summary, body, { icon: iconActor,
+            notification.update(summary, body, { gicon: gicon,
                                                  bannerMarkup: true,
                                                  clear: true });
         }

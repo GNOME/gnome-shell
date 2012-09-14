@@ -35,8 +35,6 @@ const LONGER_SUMMARY_TIMEOUT = 4;
 const HIDE_TIMEOUT = 0.2;
 const LONGER_HIDE_TIMEOUT = 0.6;
 
-const NOTIFICATION_ICON_SIZE = 24;
-
 // We delay hiding of the tray if the mouse is within MOUSE_LEFT_ACTOR_THRESHOLD
 // range from the point where it left the tray.
 const MOUSE_LEFT_ACTOR_THRESHOLD = 20;
@@ -291,9 +289,12 @@ function makeCloseButton() {
 // If @params contains a 'body' parameter, then that text will be added to
 // the content area (as with addBody()).
 //
-// By default, the icon shown is created by calling
-// source.createIcon(). However, if @params contains an 'icon'
-// parameter, the passed in icon will be used.
+// By default, the icon shown is the same as the source's.
+// However, if @params contains a 'gicon' parameter, the passed in gicon
+// will be used.
+//
+// You can add a secondary icon to the banner with 'secondaryGIcon'. There
+// is no fallback for this icon.
 //
 // If @params contains a 'titleMarkup', 'bannerMarkup', or
 // 'bodyMarkup' parameter with the value %true, then the corresponding
@@ -307,6 +308,8 @@ function makeCloseButton() {
 // because it might contain the @banner that didn't fit in the banner mode.
 const Notification = new Lang.Class({
     Name: 'Notification',
+
+    ICON_SIZE: 24,
 
     IMAGE_SIZE: 125,
 
@@ -391,8 +394,8 @@ const Notification = new Lang.Class({
     update: function(title, banner, params) {
         params = Params.parse(params, { customContent: false,
                                         body: null,
-                                        icon: null,
-                                        secondaryIcon: null,
+                                        gicon: null,
+                                        secondaryGIcon: null,
                                         titleMarkup: false,
                                         bannerMarkup: false,
                                         bodyMarkup: false,
@@ -402,12 +405,12 @@ const Notification = new Lang.Class({
 
         let oldFocus = global.stage.key_focus;
 
-        if (this._icon && (params.icon || params.clear)) {
+        if (this._icon && (params.gicon || params.clear)) {
             this._icon.destroy();
             this._icon = null;
         }
 
-        if (this._secondaryIcon && (params.secondaryIcon || params.clear)) {
+        if (this._secondaryIcon && (params.secondaryGIcon || params.clear)) {
             this._secondaryIcon.destroy();
             this._secondaryIcon = null;
         }
@@ -437,8 +440,14 @@ const Notification = new Lang.Class({
         if (!this._scrollArea && !this._actionArea && !this._imageBin)
             this._table.remove_style_class_name('multi-line-notification');
 
-        if (!this._icon) {
-            this._icon = params.icon || this.source.createIcon(NOTIFICATION_ICON_SIZE);
+        if (params.gicon) {
+            this._icon = new St.Icon({ gicon: params.gicon,
+                                       icon_size: this.ICON_SIZE });
+        } else {
+            this._icon = this.source.createIcon(this.ICON_SIZE);
+        }
+
+        if (this._icon) {
             this._table.add(this._icon, { row: 0,
                                           col: 0,
                                           x_expand: false,
@@ -447,11 +456,10 @@ const Notification = new Lang.Class({
                                           y_align: St.Align.START });
         }
 
-        if (!this._secondaryIcon) {
-            this._secondaryIcon = params.secondaryIcon;
-
-            if (this._secondaryIcon)
-                this._bannerBox.add_actor(this._secondaryIcon);
+        if (params.secondaryGIcon) {
+            this._secondaryIcon = new St.Icon({ gicon: params.secondaryGIcon,
+                                                style_class: 'secondary-icon' });
+            this._bannerBox.add_actor(this._secondaryIcon);
         }
 
         this.title = title;

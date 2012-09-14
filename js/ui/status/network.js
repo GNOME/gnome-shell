@@ -1747,10 +1747,9 @@ const NMApplet = new Lang.Class({
            or this._source will be cleared */
         this._ensureSource();
 
-        let icon = new St.Icon({ icon_name: iconName,
-                                 icon_size: MessageTray.NOTIFICATION_ICON_SIZE });
+        let gicon = new Gio.ThemedIcon({ name: iconName });
         device._notification = new MessageTray.Notification(this._source, title, text,
-                                                            { icon: icon });
+                                                            { gicon: gicon });
         device._notification.setUrgency(urgency);
         device._notification.setTransient(true);
         device._notification.connect('destroy', function() {
