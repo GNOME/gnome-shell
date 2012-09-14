@@ -180,10 +180,13 @@ void
 st_focus_manager_add_group (StFocusManager *manager,
                             StWidget       *root)
 {
+  gpointer count_p = g_hash_table_lookup (manager->priv->groups, root);
+  int count = count_p ? GPOINTER_TO_INT (count_p) : 0;
+
   g_signal_connect (root, "destroy",
                     G_CALLBACK (remove_destroyed_group),
                     manager);
-  g_hash_table_insert (manager->priv->groups, root, GINT_TO_POINTER (1));
+  g_hash_table_insert (manager->priv->groups, root, GINT_TO_POINTER (++count));
 }
 
 /**
@@ -197,7 +200,15 @@ void
 st_focus_manager_remove_group (StFocusManager *manager,
                                StWidget       *root)
 {
-  g_hash_table_remove (manager->priv->groups, root);
+  gpointer count_p = g_hash_table_lookup (manager->priv->groups, root);
+  int count = count_p ? GPOINTER_TO_INT (count_p) : 0;
+
+  if (count == 0)
+    return;
+  if (count == 1)
+    g_hash_table_remove (manager->priv->groups, root);
+  else
+    g_hash_table_insert (manager->priv->groups, root, GINT_TO_POINTER(--count));
 }
 
 /**
