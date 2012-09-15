@@ -1409,6 +1409,7 @@ const MessageTray = new Lang.Class({
             this._updateState();
             actor.grab_key_focus();
         }));
+        global.focus_manager.add_group(this.actor);
         this._summary = new St.BoxLayout({ name: 'summary-mode',
                                            reactive: true,
                                            track_hover: true,
@@ -1416,7 +1417,6 @@ const MessageTray = new Lang.Class({
                                            x_expand: true,
                                            y_align: Clutter.ActorAlign.CENTER,
                                            y_expand: true });
-        global.focus_manager.add_group(this._summary);
         this._summary.connect('notify::hover', Lang.bind(this, this._onSummaryHoverChanged));
         this.actor.add_actor(this._summary);
         this._summary.opacity = 0;
