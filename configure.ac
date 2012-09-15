@@ -142,6 +142,33 @@ dnl Export the source code release status
 dnl ================================================================
 AC_SUBST([COGL_RELEASE_STATUS], [cogl_release_status])
 
+dnl ================================================================
+dnl Compiler stuff.
+dnl ================================================================
+AC_PROG_CC
+AC_PROG_CPP
+AM_PROG_CC_C_O
+AC_ISC_POSIX
+AC_C_CONST
+
+dnl     ============================================================
+dnl     Compiler features
+dnl     ============================================================
+AC_MSG_CHECKING([for _Static_assert])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([_Static_assert (1, "");],
+                                   [(void) 0])],
+                  [AC_DEFINE([HAVE_STATIC_ASSERT], [1],
+                             [Whether _Static_assert can be used or not])
+                   AC_MSG_RESULT([yes])],
+                  [AC_MSG_RESULT([no])])
+
+dnl ================================================================
+dnl Libtool stuff.
+dnl ================================================================
+dnl AC_PROG_LIBTOOL
+dnl LIBTOOL="$LIBTOOL --preserve-dup-deps"
+LT_PREREQ([2.2.6])
+LT_INIT([disable-static])
 
 dnl ================================================================
 dnl See what platform we are building for
@@ -1011,35 +1038,6 @@ AS_IF([test "x$NEED_XLIB" = "xyes"],
 AM_CONDITIONAL(X11_TESTS, [test "x$SUPPORT_X11" = "xyes"])
 AM_CONDITIONAL(SUPPORT_X11, [test "x$SUPPORT_X11" = "xyes"])
 AM_CONDITIONAL(SUPPORT_XLIB, [test "x$SUPPORT_XLIB" = "xyes"])
-
-
-dnl ================================================================
-dnl Compiler stuff.
-dnl ================================================================
-AC_PROG_CC
-AC_PROG_CPP
-AM_PROG_CC_C_O
-AC_ISC_POSIX
-AC_C_CONST
-
-dnl     ============================================================
-dnl     Compiler features
-dnl     ============================================================
-AC_MSG_CHECKING([for _Static_assert])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([_Static_assert (1, "");],
-                                   [(void) 0])],
-                  [AC_DEFINE([HAVE_STATIC_ASSERT], [1],
-                             [Whether _Static_assert can be used or not])
-                   AC_MSG_RESULT([yes])],
-                  [AC_MSG_RESULT([no])])
-
-dnl ================================================================
-dnl Libtool stuff.
-dnl ================================================================
-dnl AC_PROG_LIBTOOL
-dnl LIBTOOL="$LIBTOOL --preserve-dup-deps"
-LT_PREREQ([2.2.6])
-LT_INIT([disable-static])
 
 dnl ================================================================
 dnl I18n stuff.
