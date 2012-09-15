@@ -11,7 +11,11 @@ test_conformance_CPPFLAGS = \
 	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\"
 
 
-noinst_PROGRAMS = test-journal
+noinst_PROGRAMS =
+
+if USE_GLIB
+noinst_PROGRAMS += test-journal
+endif
 
 AM_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS)
 
