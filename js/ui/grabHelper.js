@@ -330,7 +330,7 @@ const GrabHelper = new Lang.Class({
             // which should be a release event.
             if (press)
                 this._ignoreRelease = true;
-            this.ungrab();
+            this.ungrab({ actor: this._grabStack[0].actor });
         }
 
         return this._modalCount > 0;
