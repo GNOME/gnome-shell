@@ -1427,6 +1427,8 @@ const MessageTray = new Lang.Class({
         this._summaryBoxPointer = new BoxPointer.BoxPointer(St.Side.BOTTOM,
                                                             { reactive: true,
                                                               track_hover: true });
+        this._summaryBoxPointer.actor.connect('key-press-event',
+                                              Lang.bind(this, this._onSummaryBoxPointerKeyPress));
         this._summaryBoxPointer.actor.style_class = 'summary-boxpointer';
         this._summaryBoxPointer.actor.hide();
         Main.layoutManager.addChrome(this._summaryBoxPointer.actor);
@@ -2372,7 +2374,6 @@ const MessageTray = new Lang.Class({
         }
 
         this._grabHelper.grab({ actor: this._summaryBoxPointer.bin.child,
-                                untracked: true,
                                 grabFocus: true,
                                 onUngrab: Lang.bind(this, this._onSummaryBoxPointerUngrabbed) });
         this._lock();
@@ -2434,6 +2435,21 @@ const MessageTray = new Lang.Class({
 
         return true;
     },
+
+   _onSummaryBoxPointerKeyPress: function(actor, event) {
+       switch (event.get_key_symbol()) {
+           case Clutter.KEY_Down:
+           case Clutter.KEY_Escape:
+               this._setClickedSummaryItem(null);
+               this._updateState();
+               return true;
+           case Clutter.KEY_Delete:
+               this._clickedSummaryItem.source.destroy();
+               this._escapeTray();
+               return true;
+       }
+       return false;
+   },
 
     _onSummaryBoxPointerUngrabbed: function() {
         this._summaryBoxPointerState = State.HIDING;
