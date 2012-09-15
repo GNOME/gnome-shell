@@ -800,7 +800,9 @@ _cogl_init (void)
       bindtextdomain (GETTEXT_PACKAGE, COGL_LOCALEDIR);
       bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
+#ifdef COGL_HAS_GTYPE_SUPPORT
       g_type_init ();
+#endif
 
       _cogl_config_read ();
       _cogl_debug_check_environment ();
