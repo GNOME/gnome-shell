@@ -160,7 +160,7 @@ const GrabHelper = new Lang.Class({
         this._grabStack.push(params);
 
         if (params.modal)
-            this._takeModalGrab(hadFocus);
+            this._takeModalGrab();
 
         if (params.grabFocus)
             this._takeFocusGrab(hadFocus);
@@ -171,7 +171,7 @@ const GrabHelper = new Lang.Class({
         return true;
     },
 
-    _takeModalGrab: function(hadFocus) {
+    _takeModalGrab: function() {
         let firstGrab = (this._modalCount == 0);
         this._modalCount++;
         if (!firstGrab)
