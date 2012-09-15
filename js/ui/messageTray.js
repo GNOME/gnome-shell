@@ -1410,10 +1410,12 @@ const MessageTray = new Lang.Class({
             actor.grab_key_focus();
         }));
         global.focus_manager.add_group(this.actor);
+        let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
         this._summary = new St.BoxLayout({ name: 'summary-mode',
                                            reactive: true,
                                            track_hover: true,
-                                           x_align: Clutter.ActorAlign.END,
+                                           x_align: rtl ? Clutter.ActorAlign.START
+                                                        : Clutter.ActorAlign.END,
                                            x_expand: true,
                                            y_align: Clutter.ActorAlign.CENTER,
                                            y_expand: true });
