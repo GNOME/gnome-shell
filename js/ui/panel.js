@@ -601,8 +601,8 @@ const ActivitiesButton = new Lang.Class({
 
         this.actor.label_actor = this._label;
 
-        this._hotCorner = new Layout.HotCorner();
-        container.add_actor(this._hotCorner.actor);
+        this.hotCorner = new Layout.HotCorner();
+        container.add_actor(this.hotCorner.actor);
 
         // Hack up our menu...
         this.menu.open = Lang.bind(this, this._onMenuOpenRequest);
@@ -652,10 +652,10 @@ const ActivitiesButton = new Lang.Class({
         }
 
         hotBox.x1 = Math.round(x);
-        hotBox.x2 = hotBox.x1 + this._hotCorner.actor.width;
+        hotBox.x2 = hotBox.x1 + this.hotCorner.actor.width;
         hotBox.y1 = Math.round(y);
-        hotBox.y2 = hotBox.y1 + this._hotCorner.actor.height;
-        this._hotCorner.actor.allocate(hotBox, flags);
+        hotBox.y2 = hotBox.y1 + this.hotCorner.actor.height;
+        this.hotCorner.actor.allocate(hotBox, flags);
     },
 
     handleDragOver: function(source, actor, x, y, time) {
@@ -677,7 +677,7 @@ const ActivitiesButton = new Lang.Class({
 
     _onCapturedEvent: function(actor, event) {
         if (event.type() == Clutter.EventType.BUTTON_PRESS) {
-            if (!this._hotCorner.shouldToggleOverviewOnClick())
+            if (!this.hotCorner.shouldToggleOverviewOnClick())
                 return true;
         }
         return false;
