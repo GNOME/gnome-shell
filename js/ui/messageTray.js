@@ -1443,6 +1443,7 @@ const MessageTray = new Lang.Class({
         this._grabHelper = new GrabHelper.GrabHelper(this.actor);
         this._grabHelper.addActor(this._summaryBoxPointer.actor);
         this._grabHelper.addActor(this.actor);
+        this._grabHelper.addActor(Main.panel.statusArea['activities'].hotCorner.actor);
 
         Main.layoutManager.keyboardBox.connect('notify::hover', Lang.bind(this, this._onKeyboardHoverChanged));
 
@@ -1485,6 +1486,7 @@ const MessageTray = new Lang.Class({
         Main.overview.connect('showing', Lang.bind(this,
             function() {
                 this._overviewVisible = true;
+                this._grabHelper.ungrab(); // drop modal grab if necessary
                 this.actor.add_style_pseudo_class('overview');
                 this._updateState();
             }));
