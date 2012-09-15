@@ -156,19 +156,14 @@ const GrabHelper = new Lang.Class({
         if (this.isActorGrabbed(params.actor))
             return true;
 
-        if (this._grabFocusCount == 0 && this._modalCount == 0) {
-            if (!this._fullGrab(hadFocus, params.modal, params.grabFocus))
-                return false;
-        }
-
         params.savedFocus = focus;
         this._grabStack.push(params);
 
         if (params.modal)
-            this._modalCount++;
+            this._takeModalGrab(hadFocus);
 
         if (params.grabFocus)
-            this._grabFocusCount++;
+            this._takeFocusGrab(hadFocus);
 
         if (hadFocus || params.grabFocus)
             _navigateActor(newFocus);
@@ -176,34 +171,89 @@ const GrabHelper = new Lang.Class({
         return true;
     },
 
-    _fullGrab: function(hadFocus, modal, grabFocus) {
+    _takeModalGrab: function(hadFocus) {
+        let firstGrab = (this._modalCount == 0);
+        this._modalCount++;
+        if (!firstGrab)
+            return;
+
+        if (!Main.pushModal(this._owner))
+            return;
+
+        this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
+        this._eventId = global.stage.connect('event', Lang.bind(this, this._onEvent));
+    },
+
+    _releaseModalGrab: function() {
+        this._modalCount--;
+        if (this._modalCount > 0)
+            return;
+
+        if (this._capturedEventId > 0) {
+            global.stage.disconnect(this._capturedEventId);
+            this._capturedEventId = 0;
+        }
+
+        if (this._eventId > 0) {
+            global.stage.disconnect(this._eventId);
+            this._eventId = 0;
+        }
+
+        Main.popModal(this._owner);
+        global.sync_pointer();
+    },
+
+    _takeFocusGrab: function() {
+        let firstGrab = (this._grabFocusCount == 0);
+        this._grabFocusCount++;
+        if (!firstGrab)
+            return;
+
         let metaDisplay = global.screen.get_display();
 
-        if (modal) {
-            if (!Main.pushModal(this._owner))
-                return false;
+        this._preGrabInputMode = global.stage_input_mode;
+        this._prevFocusedWindow = metaDisplay.focus_window;
+
+        if (this._preGrabInputMode == Shell.StageInputMode.NONREACTIVE ||
+            this._preGrabInputMode == Shell.StageInputMode.NORMAL) {
+            global.set_stage_input_mode(Shell.StageInputMode.FOCUSED);
         }
 
-        this._grabbedFromKeynav = hadFocus;
-        this._preGrabInputMode = global.stage_input_mode;
-        this._prevFocusedWindow = null;
+        this._keyFocusNotifyId = global.stage.connect('notify::key-focus', Lang.bind(this, this._onKeyFocusChanged));
+        this._focusWindowChangedId = metaDisplay.connect('notify::focus-window', Lang.bind(this, this._focusWindowChanged));
+    },
 
-        if (grabFocus) {
-            this._prevFocusedWindow = metaDisplay.focus_window;
-            if (this._preGrabInputMode == Shell.StageInputMode.NONREACTIVE ||
-                this._preGrabInputMode == Shell.StageInputMode.NORMAL) {
+    _releaseFocusGrab: function() {
+        this._grabFocusCount--;
+        if (this._grabFocusCount > 0)
+            return;
+
+        if (this._keyFocusNotifyId > 0) {
+            global.stage.disconnect(this._keyFocusNotifyId);
+            this._keyFocusNotifyId = 0;
+        }
+
+        if (!this._focusWindowChanged > 0) {
+            let metaDisplay = global.screen.get_display();
+            metaDisplay.disconnect(this._focusWindowChangedId);
+            this._focusWindowChangedId = 0;
+        }
+
+        let prePopInputMode = global.stage_input_mode;
+
+        if (this._grabbedFromKeynav) {
+            if (this._preGrabInputMode == Shell.StageInputMode.FOCUSED &&
+                prePopInputMode != Shell.StageInputMode.FULLSCREEN)
                 global.set_stage_input_mode(Shell.StageInputMode.FOCUSED);
+        }
+
+        if (this._prevFocusedWindow) {
+            let metaDisplay = global.screen.get_display();
+            if (!metaDisplay.focus_window) {
+                metaDisplay.set_input_focus_window(this._prevFocusedWindow,
+                                                   false, global.get_current_time());
             }
         }
-
-        if (modal || grabFocus) {
-            this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
-            this._eventId = global.stage.connect('event', Lang.bind(this, this._onEvent));
-            this._keyFocusNotifyId = global.stage.connect('notify::key-focus', Lang.bind(this, this._onKeyFocusChanged));
-            this._focusWindowChangedId = metaDisplay.connect('notify::focus-window', Lang.bind(this, this._focusWindowChanged));
-        }
-
-        return true;
     },
 
     // ignoreRelease:
@@ -230,12 +280,14 @@ const GrabHelper = new Lang.Class({
         if (grabStackIndex < 0)
             return;
 
+        let focus = global.stage.key_focus;
+        let hadFocus = focus && this._isWithinGrabbedActor(focus);
+
         let poppedGrabs = this._grabStack.slice(grabStackIndex);
         // "Pop" all newly ungrabbed actors off the grab stack
         // by truncating the array.
         this._grabStack.length = grabStackIndex;
 
-        let wasModal = this._modalCount > 0;
         for (let i = poppedGrabs.length - 1; i >= 0; i--) {
             let poppedGrab = poppedGrabs[i];
 
@@ -243,65 +295,15 @@ const GrabHelper = new Lang.Class({
                 poppedGrab.onUngrab();
 
             if (poppedGrab.modal)
-                this._modalCount--;
+                this._releaseModalGrab();
 
             if (poppedGrab.grabFocus)
-                this._grabFocusCount--;
+                this._releaseFocusGrab();
         }
 
-        let focus = global.stage.key_focus;
-        let hadFocus = focus && this._isWithinGrabbedActor(focus);
-
-        if (this._grabFocusCount == 0 && this._modalCount == 0)
-            this._fullUngrab(wasModal);
-
-        let poppedGrab = poppedGrabs[0];
-
-        if (hadFocus)
+        if (hadFocus) {
+            let poppedGrab = poppedGrabs[0];
             _navigateActor(poppedGrab.savedFocus);
-    },
-
-    _fullUngrab: function(wasModal) {
-        if (this._capturedEventId > 0) {
-            global.stage.disconnect(this._capturedEventId);
-            this._capturedEventId = 0;
-        }
-
-        if (this._eventId > 0) {
-            global.stage.disconnect(this._eventId);
-            this._eventId = 0;
-        }
-
-        if (this._keyFocusNotifyId > 0) {
-            global.stage.disconnect(this._keyFocusNotifyId);
-            this._keyFocusNotifyId = 0;
-        }
-
-        if (!this._focusWindowChanged > 0) {
-            let metaDisplay = global.screen.get_display();
-            metaDisplay.disconnect(this._focusWindowChangedId);
-            this._focusWindowChangedId = 0;
-        }
-
-        let prePopInputMode = global.stage_input_mode;
-
-        if (wasModal) {
-            Main.popModal(this._owner);
-            global.sync_pointer();
-        }
-
-        if (this._grabbedFromKeynav) {
-            if (this._preGrabInputMode == Shell.StageInputMode.FOCUSED &&
-                prePopInputMode != Shell.StageInputMode.FULLSCREEN)
-                global.set_stage_input_mode(Shell.StageInputMode.FOCUSED);
-        }
-
-        if (this._prevFocusedWindow) {
-            let metaDisplay = global.screen.get_display();
-            if (!metaDisplay.focus_window) {
-                metaDisplay.set_input_focus_window(this._prevFocusedWindow,
-                                                   false, global.get_current_time());
-            }
         }
     },
 
