@@ -1715,10 +1715,8 @@ const MessageTray = new Lang.Class({
     },
 
     toggleAndNavigate: function() {
-        // Grab the key focus so that GrabHelper knows
-        // that we have the key grab.
-        this._summary.grab_key_focus();
         this.toggle();
+        this._summary.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
     },
 
     hide: function() {
