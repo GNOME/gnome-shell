@@ -38,6 +38,16 @@ char *_cogl_config_renderer;
 char *_cogl_config_disable_gl_extensions;
 char *_cogl_config_override_gl_version;
 
+#ifndef COGL_HAS_GLIB_SUPPORT
+
+void
+_cogl_config_read (void)
+{
+
+}
+
+#else /* COGL_HAS_GLIB_SUPPORT */
+
 /* Array of config options that just set a global string */
 static const struct
 {
@@ -127,3 +137,5 @@ _cogl_config_read (void)
 
   g_key_file_free (key_file);
 }
+
+#endif /* COGL_HAS_GLIB_SUPPORT */
