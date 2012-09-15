@@ -85,11 +85,7 @@ const GrabHelper = new Lang.Class({
     },
 
     get currentGrab() {
-        let idx = this._grabStack.length - 1;
-        while (idx >= 0 && this._grabStack[idx].untracked)
-            idx--;
-
-        return this._grabStack[idx] || {};
+        return this._grabStack[this._grabStack.length - 1] || {};
     },
 
     _findStackIndex: function(actor) {
@@ -138,14 +134,9 @@ const GrabHelper = new Lang.Class({
     // input mode to %Shell.StageInputMode.FOCUSED, and ungrab() will
     // revert it back, and re-focus the previously-focused window (if
     // another window hasn't been explicitly focused before then).
-    //
-    // If @params contains { untracked: true }, then it will be skipped
-    // when the grab helper ungrabs for you, or when calculating
-    // currentGrab.
     grab: function(params) {
         params = Params.parse(params, { actor: null,
                                         modal: false,
-                                        untracked: false,
                                         grabFocus: false,
                                         onUngrab: null });
 
