@@ -29,8 +29,6 @@
   <chapter>
     <title>Search</title>
     <xi:include href="xml/shell-app-system.xml"/>
-    <xi:include href="xml/shell-contact-system.xml"/>
-    <xi:include href="xml/shell-doc-system.xml"/>
   </chapter>
   <chapter>
     <title>Tray Icons</title>
@@ -42,7 +40,6 @@
   <chapter>
     <title>Recorder</title>
     <xi:include href="xml/shell-recorder.xml"/>
-    <xi:include href="xml/shell-recorder-src.xml"/>
   </chapter>
   <chapter>
     <title>Integration helpers and utilities</title>
