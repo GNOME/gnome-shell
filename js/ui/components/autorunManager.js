@@ -546,9 +546,8 @@ const AutorunTransientSource = new Lang.Class({
         this.notify(this._notification);
     },
 
-    createIcon: function(size) {
-        return new St.Icon({ gicon: this.mount.get_icon(),
-                             icon_size: size });
+    getIcon: function() {
+        return this.mount.get_icon();
     }
 });
 

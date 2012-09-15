@@ -509,24 +509,16 @@ const ChatSource = new Lang.Class({
         this._notification.appendAliasChange(oldAlias, newAlias);
     },
 
-    createIcon: function(size) {
-        this._iconBox = new St.Bin({ style_class: 'avatar-box' });
-        this._iconBox._size = size;
-        let textureCache = St.TextureCache.get_default();
+    getIcon: function() {
         let file = this._contact.get_avatar_file();
-
         if (file) {
-            let uri = file.get_uri();
-            this._iconBox.child = textureCache.load_uri_async(uri, this._iconBox._size, this._iconBox._size);
+            return new Gio.FileIcon({ file: file });
         } else {
-            this._iconBox.child = new St.Icon({ icon_name: 'avatar-default',
-                                                icon_size: this._iconBox._size });
+            return new Gio.ThemedIcon({ name: 'avatar-default' });
         }
-
-        return this._iconBox;
     },
 
-    createSecondaryIcon: function() {
+    getSecondaryIcon: function() {
         let iconName;
         let presenceType = this._contact.get_presence_type();
 
@@ -732,7 +724,7 @@ const ChatSource = new Lang.Class({
 
         title = GLib.markup_escape_text(this.title, -1);
 
-        this._notification.update(this._notification.title, null, { customContent: true, secondaryGIcon: this.createSecondaryIcon() });
+        this._notification.update(this._notification.title, null, { customContent: true, secondaryGIcon: this.getSecondaryIcon() });
 
         if (message)
             msg += ' <i>(' + GLib.markup_escape_text(message, -1) + ')</i>';
@@ -760,7 +752,7 @@ const ChatNotification = new Lang.Class({
     Extends: MessageTray.Notification,
 
     _init: function(source) {
-        this.parent(source, source.title, null, { customContent: true, secondaryGIcon: source.createSecondaryIcon() });
+        this.parent(source, source.title, null, { customContent: true, secondaryGIcon: source.getSecondaryIcon() });
         this.setResident(true);
 
         this._responseEntry = new St.Entry({ style_class: 'chat-response',
@@ -1070,9 +1062,8 @@ const ApproverSource = new Lang.Class({
         this.parent();
     },
 
-    createIcon: function(size) {
-        return new St.Icon({ gicon: this._gicon,
-                             icon_size: size });
+    getIcon: function() {
+        return this._gicon;
     }
 });
 

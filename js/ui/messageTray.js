@@ -1122,8 +1122,12 @@ const Source = new Lang.Class({
     // Provides a sane default implementation, override if you need
     // something more fancy.
     createIcon: function(size) {
-        return new St.Icon({ icon_name: this.iconName,
+        return new St.Icon({ gicon: this.getIcon(),
                              icon_size: size });
+    },
+
+    getIcon: function() {
+        return new Gio.ThemedIcon({ name: this.iconName });
     },
 
     _ensureMainIcon: function() {
