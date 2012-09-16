@@ -77,9 +77,14 @@ const WandaIcon = new Lang.Class({
             }
         }));
 
-        this._i = 0;
-
         return this._animations;
+    },
+
+    _createIconTexture: function(size) {
+        if (size == this.iconSize)
+            return;
+
+        this.parent(size);
     },
 
     _update: function() {
