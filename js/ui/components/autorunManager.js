@@ -83,13 +83,20 @@ const ContentTypeDiscoverer = new Lang.Class({
 
     _init: function(callback) {
         this._callback = callback;
+        this._settings = new Gio.Settings({ schema: SETTINGS_SCHEMA });
     },
 
     guessContentTypes: function(mount) {
-        // guess mount's content types using GIO
-        mount.guess_content_type(false, null,
-                                 Lang.bind(this,
-                                           this._onContentTypeGuessed));
+        let autorunEnabled = !this._settings.get_boolean(SETTING_DISABLE_AUTORUN);
+
+        if (autorunEnabled) {
+            // guess mount's content types using GIO
+            mount.guess_content_type(false, null,
+                                     Lang.bind(this,
+                                               this._onContentTypeGuessed));
+        } else {
+            this._emitCallback(mount, []);
+        }
     },
 
     _onContentTypeGuessed: function(mount, res) {
