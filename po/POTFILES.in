@@ -27,7 +27,6 @@ js/ui/messageTray.js
 js/ui/notificationDaemon.js
 js/ui/overview.js
 js/ui/panel.js
-js/ui/placeDisplay.js
 js/ui/popupMenu.js
 js/ui/runDialog.js
 js/ui/screenShield.js
