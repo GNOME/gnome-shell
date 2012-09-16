@@ -44,6 +44,19 @@ function isMountRootHidden(root) {
     return (path.indexOf('/.') != -1);
 }
 
+function isMountNonLocal(mount) {
+    // If the mount doesn't have an associated volume, that means it could
+    // be a remote filesystem. For certain kinds of local filesystems,
+    // like digital cameras and music players, there's no associated
+    // gvfs volume, so err on the side of caution and assume it's a local
+    // filesystem to allow the prompt.
+    let volume = mount.get_volume();
+    if (volume == null)
+        return false;
+
+    return (volume.get_identifier("class") == "network");
+}
+
 function startAppForMount(app, mount) {
     let files = [];
     let root = mount.get_root();
@@ -88,8 +101,9 @@ const ContentTypeDiscoverer = new Lang.Class({
 
     guessContentTypes: function(mount) {
         let autorunEnabled = !this._settings.get_boolean(SETTING_DISABLE_AUTORUN);
+        let shouldScan = autorunEnabled && !isMountNonLocal(mount);
 
-        if (autorunEnabled) {
+        if (shouldScan) {
             // guess mount's content types using GIO
             mount.guess_content_type(false, null,
                                      Lang.bind(this,
