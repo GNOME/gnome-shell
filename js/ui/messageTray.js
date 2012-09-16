@@ -1443,7 +1443,8 @@ const MessageTray = new Lang.Class({
         this._grabHelper = new GrabHelper.GrabHelper(this.actor);
         this._grabHelper.addActor(this._summaryBoxPointer.actor);
         this._grabHelper.addActor(this.actor);
-        this._grabHelper.addActor(Main.panel.statusArea['activities'].hotCorner.actor);
+        if (Main.panel.statusArea.activities)
+            this._grabHelper.addActor(Main.panel.statusArea.activities.hotCorner.actor);
 
         Main.layoutManager.keyboardBox.connect('notify::hover', Lang.bind(this, this._onKeyboardHoverChanged));
 
