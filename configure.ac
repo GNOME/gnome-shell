@@ -1277,7 +1277,7 @@ fi
 if test "x$SUPPORT_SDL" = "xyes"; then
 echo "        Support GLES under SDL: ${SUPPORT_SDL_GLES}"
 fi
-echo "        Build libcogl-gles2 GLES 2.0 frontend api: ${BUILD_COGL_GLES2}"
+echo "        Build libcogl-gles2 GLES 2.0 frontend api: ${enable_cogl_gles2}"
 echo "        Image backend: ${COGL_IMAGE_BACKEND}"
 echo "        Cogl Pango: ${enable_cogl_pango}"
 echo "        Profiling: ${enable_profile}"
