@@ -203,7 +203,7 @@ const GrabHelper = new Lang.Class({
         global.sync_pointer();
     },
 
-    _takeFocusGrab: function() {
+    _takeFocusGrab: function(hadFocus) {
         let firstGrab = (this._grabFocusCount == 0);
         this._grabFocusCount++;
         if (!firstGrab)
@@ -211,6 +211,7 @@ const GrabHelper = new Lang.Class({
 
         let metaDisplay = global.screen.get_display();
 
+        this._grabbedFromKeynav = hadFocus;
         this._preGrabInputMode = global.stage_input_mode;
         this._prevFocusedWindow = metaDisplay.focus_window;
 
