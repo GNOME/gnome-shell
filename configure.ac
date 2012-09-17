@@ -196,6 +196,26 @@ dnl Handle extra configure options
 dnl ================================================================
 
 dnl     ============================================================
+dnl     Standalone cogl
+dnl     ============================================================
+
+AC_ARG_ENABLE(
+  [standalone],
+  [AC_HELP_STRING([--enable-debug=@<:@no/yes@:>@], [Build Cogl without any external depedency @<:@default=no@:>@])],
+  [],
+  enable_standalone=no
+)
+AS_IF([test "x$enable_standalone" = "xyes"],
+      [
+        enable_cairo=no
+        enable_glib=no
+        enable_cogl_pango=no
+        enable_nls=no
+        enable_gdk_pixbuf=no
+       ]
+)
+
+dnl     ============================================================
 dnl     Enable debugging
 dnl     ============================================================
 m4_define([debug_default], [m4_if(cogl_release_status, [git], [yes], [no])])
