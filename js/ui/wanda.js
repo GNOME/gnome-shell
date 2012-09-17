@@ -50,21 +50,12 @@ const WandaIcon = new Lang.Class({
     },
 
     createIcon: function(iconSize) {
-        if (this._animations)
-            this._animations.destroy();
-
         if (!this._imageFile) {
             return new St.Icon({ icon_name: 'face-smile',
                                  icon_size: iconSize });
         }
 
         this._animations = St.TextureCache.get_default().load_sliced_image(this._imageFile, this._imgWidth, this._imgHeight);
-        this._animations.connect('destroy', Lang.bind(this, function() {
-            if (this._timeoutId)
-                GLib.source_remove(this._timeoutId);
-            this._timeoutId = 0;
-            this._animations = null;
-        }));
         this._animations.connect('notify::mapped', Lang.bind(this, function() {
             if (this._animations.mapped && !this._timeoutId) {
                 this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, FISH_SPEED, Lang.bind(this, this._update));
