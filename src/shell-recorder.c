@@ -143,7 +143,7 @@ G_DEFINE_TYPE(ShellRecorder, shell_recorder, G_TYPE_OBJECT);
  * (Theora does have some support for frames at non-uniform times, but
  * things seem to break down if there are large gaps.)
  */
-#define DEFAULT_PIPELINE "vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux"
+#define DEFAULT_PIPELINE "vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux"
 
 /* If we can find the amount of memory on the machine, we use half
  * of that for memory_target, otherwise, we use this value, in kB.
@@ -1598,7 +1598,7 @@ shell_recorder_set_filename (ShellRecorder *recorder,
  * might be used to send the output to an icecast server
  * via shout2send or similar.
  *
- * The default value is 'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux'
+ * The default value is 'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux'
  */
 void
 shell_recorder_set_pipeline (ShellRecorder *recorder,

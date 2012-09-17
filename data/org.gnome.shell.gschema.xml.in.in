@@ -132,7 +132,7 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
         take care of its own output - this might be used to send the output
         to an icecast server via shout2send or similar. When unset or set
         to an empty value, the default pipeline will be used. This is currently
-        'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux'
+        'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux'
         and records to WEBM using the VP8 codec. %T is used as a placeholder
         for a guess at the optimal thread count on the system.
       </_description>
