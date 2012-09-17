@@ -1,3 +1,40 @@
+Cogl 1.11.6                                                        2012-09-17
+
+  • List of changes since Cogl 1.11.4
+
+  » Support latest libgbm api
+  » Improve error handling for cogl_texture_2d_new_from_foreign
+  » Avoid referencing contexts internally so Android
+    applications can reliably destroy the resources of a context without
+    us needing to introduce api to break internal circular references.
+  » More work to reduce our dependence on a global context internally.
+  » Recognize the latest Mesa GL vendor strings and the "Software
+    Rasterizer" renderer string.
+  » Improved cogl-gles2 support by not depending on drivers allowing
+    multiple vertex shaders in one program which isn't actually meant
+    to be supported in GLES 2.0 anyway. (We were lucky before because
+    Mesa happened to allow this but it doesn't work with other vendor
+    drivers.)
+
+  • List of bugs fixed since Cogl 1.11.4
+
+    #683414 - memory corruption when freeing layer cache
+    #683818 - Need to pick up new Mesa strings
+    #683083 - Fix textures[] index
+
+Many thanks to:
+
+  Robert Bragg
+  Neil Roberts
+  Alban Browaeys
+  Alexander Larsson
+  Bruce Cowan
+  Daniel Stone
+  Gabor Kelemen
+  Ihar Hrachyshka
+  Marek Černocký
+  Piotr Drąg
+
 Cogl 1.11.4                                                        2012-09-03
 
   • List of changes since Cogl 1.11.2
