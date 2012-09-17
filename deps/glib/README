@@ -1,0 +1,14 @@
+These are files striped from glib 2.30.2 to build a standalone cogl. A few
+changes were done on those imported files:
+
+- the needed functions in gconvert.[ch] have been stubbed (don't want any of the
+  charset conversions in error messages in standalone mode,
+- gmain.c has been stipped to only have the one used function
+  (g_get_current_time()),
+- gtestutils.c has also being stripped down to what cogl uses to reduce what it
+  pulls in,
+- gmessage.c has seen the charset conversions and invalid unicode caracters
+  escaping stripped.
+- charset conversion in error messages has been removed in gstrfuncs.c
+- g_string_append_uri_escaped() has been removed from gstrinc.c
+- remove g_get_codeset() from gutils.c

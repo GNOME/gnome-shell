@@ -147,6 +147,7 @@ dnl Compiler stuff.
 dnl ================================================================
 AC_PROG_CC
 AC_PROG_CPP
+AC_PROG_CXX
 AM_PROG_CC_C_O
 AC_ISC_POSIX
 AC_C_CONST
@@ -392,25 +393,6 @@ AS_IF(
   ]
 )
 
-
-dnl     ============================================================
-dnl     Should cogl-pango be built?
-dnl     ============================================================
-
-AC_ARG_ENABLE(
-  [cogl-pango],
-  [AC_HELP_STRING([--enable-cogl-pango=@<:@no/yes@:>@], [Enable pango support @<:@default=yes@:>@])],
-  [],
-  enable_cogl_pango=yes
-)
-AM_CONDITIONAL([BUILD_COGL_PANGO], [test "x$enable_cogl_pango" = "xyes"])
-
-AS_IF([test "x$enable_cogl_pango" = "xyes"],
-      [
-	COGL_PANGO_PKG_REQUIRES="$COGL_PANGO_PKG_REQUIRES pangocairo >= pangocairo_req_version"
-      ]
-)
-
 dnl     ============================================================
 dnl     Should examples be installed?
 dnl     ============================================================
@@ -421,27 +403,6 @@ AC_ARG_ENABLE(
   enable_examples_install=no
 )
 AM_CONDITIONAL([INSTALL_EXAMPLES], [test "x$enable_examples_install" = "xyes"])
-
-dnl     ============================================================
-dnl     Should glib be used?
-dnl     ============================================================
-AC_ARG_ENABLE(
-  [glib],
-  [AC_HELP_STRING([--enable-glib=@<:@no/yes@:>@], [Enable glib support @<:@default=yes@:>@])],
-  [],
-  enable_glib=yes
-)
-AM_CONDITIONAL([USE_GLIB], [test "x$enable_glib" = "xyes"])
-
-AS_IF([test "x$enable_glib" = "xyes"],
-      [
-        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLIB_SUPPORT"
-      ],
-      [
-        EXPERIMENTAL_CONFIG=yes
-        EXPERIMENTAL_OPTIONS="$EXPERIMENTAL_OPTIONS --disable-glib,"
-      ]
-)
 
 dnl     ============================================================
 dnl     Determine which drivers and window systems we can support
@@ -1040,20 +1001,6 @@ AM_CONDITIONAL(SUPPORT_X11, [test "x$SUPPORT_X11" = "xyes"])
 AM_CONDITIONAL(SUPPORT_XLIB, [test "x$SUPPORT_XLIB" = "xyes"])
 
 dnl ================================================================
-dnl I18n stuff.
-dnl ================================================================
-AM_GNU_GETTEXT_VERSION([0.17])
-AM_GNU_GETTEXT([external])
-
-GETTEXT_PACKAGE="cogl"
-AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,
-                   "$GETTEXT_PACKAGE",
-                   [The prefix for our gettext translation domains.])
-AS_ALL_LINGUAS
-
-
-dnl ================================================================
 dnl Documentation stuff.
 dnl ================================================================
 # gtkdocize greps for ^GTK_DOC_CHECK and parses it, so you need to have
@@ -1068,14 +1015,79 @@ dnl Check for dependency packages.
 dnl ================================================================
 
 dnl     ============================================================
-dnl     Check glib dependencies
+dnl     Should glib be used?
 dnl     ============================================================
 AM_PATH_GLIB_2_0([glib_req_version],
                  [have_glib=yes], [have_glib=no],
                  [gobject gthread gmodule-no-export])
-AS_IF([test "x$have_glib" = "xno"], AC_MSG_ERROR([gobject-2.0 is required]))
+AC_ARG_ENABLE(
+  [glib],
+  [AC_HELP_STRING([--enable-glib=@<:@no/yes@:>@], [Enable glib support @<:@default=yes@:>@])],
+  [],
+  enable_glib=yes
+)
 
-COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gobject-2.0 gmodule-no-export-2.0"
+AS_IF([test "x$have_glib" = "xno" && test "x$enable_glib" = "xyes"],
+      [AC_MSG_ERROR([gobject-2.0 is required])])
+
+AM_CONDITIONAL([USE_GLIB], [test "x$enable_glib" = "xyes"])
+
+AS_IF([test "x$enable_glib" = "xyes"],
+      [
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLIB_SUPPORT"
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GTYPE_SUPPORT"
+        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gobject-2.0 gmodule-no-export-2.0"
+      ],
+      [
+        AS_GLIBCONFIG([deps/glib])
+        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_srcdir)/deps"
+        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_srcdir)/deps/glib"
+        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_srcdir)/deps/gmodule"
+        EXPERIMENTAL_CONFIG=yes
+        EXPERIMENTAL_OPTIONS="$EXPERIMENTAL_OPTIONS --disable-glib,"
+        enable_nls=no
+      ]
+)
+
+dnl     ============================================================
+dnl     Should cogl-pango be built?
+dnl     ============================================================
+
+AS_IF([test "x$enable_glib" != "xyes"],
+      [
+        AS_IF([test "x$enable_cogl_pango" = "xyes"],
+              AC_MSG_ERROR([--enable-cogl-pango conflicts with --disable-glib]))
+        enable_cogl_pango=no
+      ]
+)
+
+AC_ARG_ENABLE(
+  [cogl-pango],
+  [AC_HELP_STRING([--enable-cogl-pango=@<:@no/yes@:>@], [Enable pango support @<:@default=yes@:>@])],
+  [],
+  enable_cogl_pango=yes
+)
+AS_IF([test "x$enable_cogl_pango" = "xyes"],
+      [
+	COGL_PANGO_PKG_REQUIRES="$COGL_PANGO_PKG_REQUIRES pangocairo >= pangocairo_req_version"
+      ]
+)
+
+
+dnl ================================================================
+dnl I18n stuff.
+dnl ================================================================
+AM_GNU_GETTEXT_VERSION([0.17])
+AM_GNU_GETTEXT([external])
+
+GETTEXT_PACKAGE="cogl"
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,
+                   "$GETTEXT_PACKAGE",
+                   [The prefix for our gettext translation domains.])
+AS_ALL_LINGUAS
+
+
 AC_SUBST(COGL_PKG_REQUIRES)
 PKG_CHECK_MODULES(COGL_DEP, [$COGL_PKG_REQUIRES])
 if test -n "$COGL_PKG_REQUIRES_GL"; then
@@ -1099,6 +1111,8 @@ AC_SUBST(COGL_PANGO_PKG_REQUIRES)
 AS_IF([test "x$enable_cogl_pango" = "xyes"],
   [PKG_CHECK_MODULES(COGL_PANGO_DEP, [$COGL_PANGO_PKG_REQUIRES])]
 )
+AM_CONDITIONAL([BUILD_COGL_PANGO], [test "x$enable_cogl_pango" = "xyes"])
+
 
 dnl ================================================================
 dnl Misc program dependencies.
@@ -1108,7 +1122,15 @@ AC_PROG_INSTALL
 dnl ================================================================
 dnl GObject-Introspection check
 dnl ================================================================
-GOBJECT_INTROSPECTION_CHECK([gi_req_version])
+AS_IF([test "x$enable_glib" = "xyes"],
+  [
+    GOBJECT_INTROSPECTION_CHECK([gi_req_version])
+  ],
+  [
+    enable_introspection="no"
+    AM_CONDITIONAL([HAVE_INTROSPECTION], 0)
+  ]
+)
 
 dnl ================================================================
 dnl Checks for header files.
@@ -1214,6 +1236,10 @@ build/Makefile
 build/win32/Makefile
 build/win32/vs9/Makefile
 build/win32/vs10/Makefile
+deps/Makefile
+deps/glib/Makefile
+deps/gmodule/Makefile
+deps/gmodule/gmoduleconf.h
 cogl/Makefile
 cogl/cogl-1.0.pc
 cogl/cogl-2.0-experimental.pc

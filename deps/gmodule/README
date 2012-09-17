@@ -1,0 +1,4 @@
+gmodule is taken from the same glib version as deps/glib.
+
+The only modification is to drop the support for .la libtool archive, which
+avoid pulling in GParser (and its dependencies).

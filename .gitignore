@@ -18,7 +18,9 @@ stamp-enum-types
 stamp-marshal
 /build/autotools/*.m4
 /build/win32/*.bat
+!/build/autotools/acglib.m4
 !/build/autotools/introspection.m4
+!/build/autotools/as-glibconfig.m4
 !/build/autotools/as-linguas.m4
 !/build/autotools/as-compiler-flag.m4
 /build/config.guess
@@ -42,6 +44,8 @@ config.log
 config.status
 configure
 depcomp
+/deps/glib/glibconfig.h
+/deps/gmodule/gmoduleconf.h
 /doc/reference/cogl2/cogl2-*.txt
 !/doc/reference/cogl2/cogl2-sections.txt
 /doc/reference/cogl2/html

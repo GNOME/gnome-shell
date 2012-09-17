@@ -110,7 +110,8 @@ BUILT_SOURCES = wrappers
 # testing (such as test-bitmask) will still compile
 INCLUDES = \
 	-I$(top_srcdir) \
-	-I$(top_builddir)/cogl
+	-I$(top_builddir)/cogl \
+	-I$(top_builddir)/deps/glib
 
 test_conformance_CPPFLAGS = \
 	-DCOGL_ENABLE_EXPERIMENTAL_API \
@@ -120,6 +121,9 @@ test_conformance_CPPFLAGS = \
 
 test_conformance_CFLAGS = -g3 -O0 $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS)
 test_conformance_LDADD = $(COGL_DEP_LIBS) $(top_builddir)/cogl/libcogl.la
+if !USE_GLIB
+test_conformance_LDADD += $(top_builddir)/deps/glib/libglib.la
+endif
 test_conformance_LDFLAGS = -export-dynamic
 
 test: wrappers
