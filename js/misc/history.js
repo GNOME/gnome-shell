@@ -41,24 +41,26 @@ const HistoryManager = new Lang.Class({
         this._historyIndex = this._history.length;
     },
 
-    prevItem: function(text) {
+    _setPrevItem: function(text) {
         if (this._historyIndex <= 0)
-            return text;
+            return false;
 
         if (text)
             this._history[this._historyIndex] = text;
         this._historyIndex--;
-        return this._indexChanged();
+        this._indexChanged();
+        return true;
     },
 
-    nextItem: function(text) {
+    _setNextItem: function(text) {
         if (this._historyIndex >= this._history.length)
-            return text;
+            return false;
 
         if (text)
             this._history[this._historyIndex] = text;
         this._historyIndex++;
-        return this._indexChanged();
+        this._indexChanged();
+        return true;
     },
 
     lastItem: function() {
@@ -83,11 +85,9 @@ const HistoryManager = new Lang.Class({
     _onEntryKeyPress: function(entry, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Up) {
-            this.prevItem(entry.get_text());
-            return true;
+            return this._setPrevItem(entry.get_text());
         } else if (symbol == Clutter.KEY_Down) {
-            this.nextItem(entry.get_text());
-            return true;
+            return this._setNextItem(entry.get_text());
         }
         return false;
     },
@@ -98,8 +98,6 @@ const HistoryManager = new Lang.Class({
 
         if (this._entry)
             this._entry.set_text(current);
-
-        return current;
     },
 
     _save: function() {
