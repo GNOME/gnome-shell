@@ -1,3 +1,49 @@
+Clutter 1.11.16                                                      2012-09-17
+===============================================================================
+
+  • List of changes since Clutter 1.11.14
+
+    - Fixes for gesture-based actions
+    Ensure that the ClutterPanAction::pan-stopped signal is emitted before
+    the ClutterGestureAction::gesture-begin signal, in case a new gesture
+    starts; this requires adding a new state to ClutterGestureAction, the
+    gesture-prepare state.
+
+    - Ensure modified Enter keys do not end up in the Text buffer
+    For single-line ClutterText actors.
+
+    - Add touch event support to ClutterClickAction
+
+    - Updated translations
+    British English, Indonesian, Traditional Chinese (Hong Kong and Taiwan),
+    French, Serbian, Russian, German, Slovenian, Brazilian Portuguese, Greek,
+    Portuguese, Belarusian, Assamese, Danish.
+
+  • List of bugs fixed since Clutter 1.11.14
+
+    #683301 - stage: Normalize key focus setting
+    #683430 - CLUTTER_GESTURE_ACTION_GET_CLASS() calls
+              G_TYPE_INSTANCE_GET_PRIVATE() instead of
+              G_TYPE_INSTANCE_GET_CLASS()
+    #683431 - PanAction::pan-stopped sometimes is emitted before
+              ::gesture-begin
+    #683471 - All gestures get cancelled after missing a button release event
+    #682161 - ClutterImage overflows beyond its actor's allocation
+    #623344 - Search incorrectly handles input
+    #683869 - test-events does not track touch events
+    #683870 - test-events only reports up/down scrolls
+    #683936 - ClickAction doesn't support touch events
+    #683937 - Wrong format identifiers in debug messages in
+              clutter_stage_allocate()
+
+Many thanks to:
+
+  Emanuele Aina, Emmanuele Bassi, Alexandre Franke, Ask H. Larsen, Bruce Cowan,
+  Chao-Hsiung Liao, Christian Kirbach, Debarshi Ray, Dirgita, Duarte Loreto,
+  Enrico Nicoletto, Ihar Hrachyshka, Jasper St. Pierre, Martin Srebotnjak,
+  Matej Urbančič, Nilamdyuti Goswami, Rui Matos, Tom Tryfonidis, Yuri Myasoedov,
+  Мирослав Николић.
+
 Clutter 1.11.14                                                      2012-09-03
 ===============================================================================
 
