@@ -190,5 +190,13 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
         This key overrides the key in org.gnome.mutter when running GNOME Shell.
       </description>
     </key>
+
+    <key name="focus-change-on-pointer-rest" type="b">
+      <default>true</default>
+      <summary>Delay focus changes in mouse mode until the pointer stops moving</summary>
+      <description>
+        This key overrides the key in org.gnome.mutter when running GNOME Shell.
+      </description>
+    </key>
   </schema>
 </schemalist>
