@@ -196,6 +196,6 @@ test_read_texture_formats (void)
 
   cogl_object_unref (tex_2d);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }

@@ -182,6 +182,6 @@ test_write_texture_formats (void)
                   2, 0xff, 10, 0x56, 10, 0x34, 10, 0x12,
                   -1);
 
-  if (g_test_verbose ())
+  if (cogl_test_verbose ())
     g_print ("OK\n");
 }
