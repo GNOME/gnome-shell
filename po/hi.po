@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master.hi\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-17 17:49+0000\n"
-"PO-Revision-Date: 2012-09-18 15:16+0530\n"
+"POT-Creation-Date: 2012-09-18 09:49+0000\n"
+"PO-Revision-Date: 2012-09-18 15:56+0530\n"
 "Last-Translator: rajesh <rajeshkajha@yahoo.com>\n"
 "Language-Team: Hindi <Indlinux>\n"
 "Language: hi\n"
@@ -19,8 +19,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-DamnedLies-Scope: partial\n"
 "X-Generator: Lokalize 1.2\n"
+"X-DamnedLies-Scope: partial\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -39,6 +39,16 @@ msgstr "गनोम शेल एक्सटेंशन वरीयताए
 msgid "Configure GNOME Shell Extensions"
 msgstr "गनोम शेल एक्सटेंशन विन्यस्त करें"
 
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:3
+#| msgid "No extensions installed"
+msgid "Uuids of extensions to enable"
+msgstr "एक्सटेंशन का Uuid सक्रिय किया जाना है"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+#| msgid "If true, display date in the clock, in addition to time."
+msgid "If true, display the ISO week date in the calendar."
+msgstr "अगर सही है, तो पंचांग में ISO सप्ताह तिथि दिखाएँ."
+
 #: ../js/extensionPrefs/main.js:124
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
@@ -54,7 +64,6 @@ msgstr ""
 "उपर्युक्त कोंबोबॉक्स के उपयोग को विन्यस्त करने के लिए किसी विस्तार को चुनें."
 
 #: ../js/gdm/loginDialog.js:526
-#| msgid "Searching..."
 msgid "Session..."
 msgstr "सत्र..."
 
@@ -367,7 +376,6 @@ msgid "Service: "
 msgstr "सेवा: "
 
 #: ../js/ui/components/networkAgent.js:309
-#| msgid "Authentication Required"
 msgid "Authentication required by wireless network"
 msgstr "बेतार संजाल के द्वारा सत्यापन जरूरी"
 
@@ -661,10 +669,10 @@ msgid ""
 "chain, exceed the limits imposed by the cryptography library"
 msgstr ""
 "सर्वर प्रमाणपत्र की लंबाई या सर्वर प्रमाणपत्र की शृंखला की गहराई कूटलेखन "
-"लाइब्रेरी के द्वारा लगायी गई सीमा से आगे है"
+"लाइब्रेरी के "
+"द्वारा लगायी गई सीमा से आगे है"
 
 #: ../js/ui/components/telepathyClient.js:1344
-#| msgid "Connection error"
 msgid "Internal error"
 msgstr "आंतरिक त्रुटि"
 
@@ -688,7 +696,6 @@ msgid "Unknown reason"
 msgstr "अज्ञात कारण"
 
 #: ../js/ui/dash.js:245 ../js/ui/dash.js:273
-#| msgid "Applications"
 msgid "Show Applications"
 msgstr "अनुप्रयोग दिखाएँ"
 
@@ -709,13 +716,11 @@ msgstr "%A %B %e, %Y"
 
 #: ../js/ui/endSessionDialog.js:61
 #, c-format
-#| msgid "Log Out %s"
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "लॉग आउट %s"
 
 #: ../js/ui/endSessionDialog.js:62
-#| msgid "Log Out"
 msgctxt "title"
 msgid "Log Out"
 msgstr "लॉग आउट"
@@ -745,13 +750,11 @@ msgid "Logging out of the system."
 msgstr "तंत्र से लॉगिंग आउट."
 
 #: ../js/ui/endSessionDialog.js:76
-#| msgid "Log Out"
 msgctxt "button"
 msgid "Log Out"
 msgstr "लॉग आउट"
 
 #: ../js/ui/endSessionDialog.js:81
-#| msgid "Power Off"
 msgctxt "title"
 msgid "Power Off"
 msgstr "बिजली बंद"
@@ -774,19 +777,16 @@ msgid "Powering off the system."
 msgstr "तंत्र बंद किया जा रहा है."
 
 #: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:107
-#| msgid "Restart"
 msgctxt "button"
 msgid "Restart"
 msgstr "फिर आरंभ करें"
 
 #: ../js/ui/endSessionDialog.js:92
-#| msgid "Power Off"
 msgctxt "button"
 msgid "Power Off"
 msgstr "बिजली बंद"
 
 #: ../js/ui/endSessionDialog.js:98
-#| msgid "Restart"
 msgctxt "title"
 msgid "Restart"
 msgstr "फिर आरंभ करें"
@@ -837,12 +837,10 @@ msgid "%s has not emitted any errors."
 msgstr "%s ने कोई त्रुटि नहीं दिया है."
 
 #: ../js/ui/lookingGlass.js:751
-#| msgid "Error"
 msgid "Hide Errors"
 msgstr "त्रुटियाँ छुपाएँ"
 
 #: ../js/ui/lookingGlass.js:755 ../js/ui/lookingGlass.js:815
-#| msgid "Error"
 msgid "Show Errors"
 msgstr "त्रुटियाँ दिखाएँ"
 
@@ -893,7 +891,6 @@ msgid "System Information"
 msgstr "तंत्र जानकारी"
 
 #: ../js/ui/notificationDaemon.js:506 ../src/shell-app.c:373
-#| msgid "Unknown"
 msgctxt "program"
 msgid "Unknown"
 msgstr "अज्ञात"
@@ -921,7 +918,6 @@ msgid "Dash"
 msgstr "डैश"
 
 #: ../js/ui/panel.js:567
-#| msgid "Quit %s"
 msgid "Quit"
 msgstr "बाहर"
 
@@ -951,8 +947,6 @@ msgstr "कृपया कमांड दर्ज करें:"
 #. Translators: This is a time format for a date in
 #. long format
 #: ../js/ui/screenShield.js:78
-#| msgctxt "calendar heading"
-#| msgid "%A, %B %d"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
@@ -965,7 +959,6 @@ msgstr[1] "%d नए संदेश"
 
 #: ../js/ui/screenShield.js:145
 #, c-format
-#| msgid "Notifications"
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d नयी अधिसूचना"
@@ -976,7 +969,6 @@ msgid "Searching..."
 msgstr "ढूँढ रहे हैं..."
 
 #: ../js/ui/searchDisplay.js:323
-#| msgid "No matching results."
 msgid "No results."
 msgstr "कोई परिणाम नहीं."
 
@@ -993,17 +985,14 @@ msgid "Show Text"
 msgstr "पाठ दिखाएँ"
 
 #: ../js/ui/shellEntry.js:104
-#| msgid "Large Text"
 msgid "Hide Text"
 msgstr "पाठ छिपाएँ"
 
 #: ../js/ui/shellMountOperation.js:368
-#| msgid "Password:"
 msgid "Password"
 msgstr "कूटशब्द:"
 
 #: ../js/ui/shellMountOperation.js:389
-#| msgid "Password:"
 msgid "Remember Password"
 msgstr "कूटशब्द याद रखें"
 
@@ -1012,7 +1001,6 @@ msgid "Unlock"
 msgstr "ताला खोलें"
 
 #: ../js/ui/status/accessibility.js:39
-#| msgid "Visibility"
 msgid "Accessibility"
 msgstr "पहुँच"
 
@@ -1025,7 +1013,6 @@ msgid "Screen Reader"
 msgstr "स्क्रीन वाचक"
 
 #: ../js/ui/status/accessibility.js:55
-#| msgid "Keyboard"
 msgid "Screen Keyboard"
 msgstr "स्क्रीन कुँजीपटल"
 
@@ -1408,7 +1395,6 @@ msgid "Computer"
 msgstr "कम्प्यूटर"
 
 #: ../js/ui/status/power.js:217
-#| msgid "Unknown"
 msgctxt "device"
 msgid "Unknown"
 msgstr "अज्ञात"
@@ -1455,7 +1441,6 @@ msgid "Switch User"
 msgstr "उपयोक्ता बदलें"
 
 #: ../js/ui/userMenu.js:613
-#| msgid "Switch User"
 msgid "Switch Session"
 msgstr "सत्र बदलें"
 
@@ -1489,7 +1474,8 @@ msgid ""
 "has been adjusted to let others know that you might not see their messages."
 msgstr ""
 "चैट संदेश सहित अधिसूचना अब निष्क्रिय है. आपकी ऑनलाइन स्थिति दूसरे को यह जानने "
-"के लिए समायोजित की जाएगी जिसे आप अपने संदेश में नहीं देख सकते हैं."
+"के लिए "
+"समायोजित की जाएगी जिसे आप अपने संदेश में नहीं देख सकते हैं."
 
 #: ../js/ui/viewSelector.js:85
 msgid "Windows"
@@ -1503,7 +1489,7 @@ msgstr "अनुप्रयोग"
 msgid "Search"
 msgstr "ढूँढें"
 
-#: ../js/ui/wanda.js:123
+#: ../js/ui/wanda.js:119
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1512,12 +1498,12 @@ msgstr ""
 "माफ़ करें, आपके लिए आज कोई दृष्टि नहीं:\n"
 "%s"
 
-#: ../js/ui/wanda.js:127
+#: ../js/ui/wanda.js:123
 #, c-format
 msgid "%s the Oracle says"
 msgstr "%s ओरेकल कहती है"
 
-#: ../js/ui/wanda.js:168
+#: ../js/ui/wanda.js:164
 msgid "Your favorite Easter Egg"
 msgstr "आपकी पसंदीदा ईस्टर एग"
 
@@ -1527,7 +1513,6 @@ msgid "'%s' is ready"
 msgstr "'%s' तैयार है"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
-#| msgid "Open Calendar"
 msgid "Evolution Calendar"
 msgstr "एवोल्यूशन पंचांग"
 
@@ -1575,7 +1560,6 @@ msgid "Failed to launch '%s'"
 msgstr "'%s' लॉन्च करने में विफल"
 
 #: ../src/shell-keyring-prompt.c:708
-#| msgid "Does not match"
 msgid "Passwords do not match."
 msgstr "कूटशब्द मेल नहीं खाता है."
 
@@ -1594,9 +1578,6 @@ msgstr "तयशुदा"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "सत्यापन संवाद को उपयोक्ता के द्वारा खारिज़ कर दिया गया"
-
-#~ msgid "If true, display date in the clock, in addition to time."
-#~ msgstr "अगर सत्य है तो घड़ी में समय के साथ ही तिथि भी दर्शाएगा"
 
 #, fuzzy
 #~| msgid "If true, display seconds in time."
