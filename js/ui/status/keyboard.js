@@ -210,7 +210,8 @@ const InputSourceIndicator = new Lang.Class({
         this._currentSourceIndex = this._settings.get_uint(KEY_CURRENT_INPUT_SOURCE);
         this._xkbInfo = new GnomeDesktop.XkbInfo();
 
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this._propSeparator = new PopupMenu.PopupSeparatorMenuItem();
+        this.menu.addMenuItem(this._propSeparator);
         this._propSection = new PopupMenu.PopupMenuSection();
         this.menu.addMenuItem(this._propSection);
         this._propSection.actor.hide();
@@ -445,13 +446,16 @@ const InputSourceIndicator = new Lang.Class({
     },
 
     _buildPropSection: function() {
+        this._propSeparator.actor.hide();
         this._propSection.actor.hide();
         this._propSection.removeAll();
 
         this._buildPropSubMenu(this._propSection, this._properties);
 
-        if (!this._propSection.isEmpty())
+        if (!this._propSection.isEmpty()) {
             this._propSection.actor.show();
+            this._propSeparator.actor.show();
+        }
     },
 
     _buildPropSubMenu: function(menu, props) {
