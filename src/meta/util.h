@@ -107,6 +107,7 @@ GPid meta_show_dialog (const char *type,
                        const char *display,
                        const char *ok_text,
                        const char *cancel_text,
+                       const char *icon_name,
                        const int transient_for,
                        GSList *columns,
                        GSList *entries);

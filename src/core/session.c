@@ -1811,7 +1811,7 @@ warn_about_lame_clients_and_finish_interact (gboolean shutdown)
                            "you log in."),
                          "240",
                          meta_get_display()->active_screen->screen_name,
-                         NULL, NULL,
+                         NULL, NULL, NULL,
                          None,
                          columns,
                          lame_details);
