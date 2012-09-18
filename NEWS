@@ -1,3 +1,71 @@
+3.5.92
+======
+* Login/UnlockDialog: Don't reset immediately if auth fails [Giovanni; #682544]
+* Allow changing session mode at runtime [Jasper, Giovanni; #683156]
+* Add zoom out animation on login [Jasper; #683170]
+* Bluetooth: don't restrict the length of non numeric PINs [Giovanni; #683356]
+* Force chat notification to stay open when focusing entry [Debarshi; #682236]
+* Make sure the screen is fully locked before suspending [Giovanni; #683448]
+* st-texture-cache: Fix a case of distorted textures [Florian; #683483]
+* popupSubMenu: Fix padding for non-scrolled submenus [Florian; #683009]
+* popupMenu: Fix width changes on submenu open/close [Florian; #683485]
+* boxpointer: Avoid malformed boxpointer arrow [Debarshi; #680077]
+* Change stage background color to grey [Adel; #683514]
+* messageTray: Update style of summary counters [Debarshi; #682891]
+* Don't fail if a legacy tray icon has no WM_CLASS [Giovanni; #683724]
+* PolkitAgent: Fix a crash if there is no avatar [Giovanni; #683707]
+* Hide the a11y menu in the lock screen, but show it in the login screen
+  [Giovanni; #682542]
+* Fix show-apps button dropping off the dash [Florian; #683340]
+* Fix committing strings to shell entries from input method [Florian; #658325]
+* Make IBus display strings consistent with control-center [Rui; #683124]
+* Fix missing short codes for some input sources [Rui; #683613]
+* Remove support for long-press from entry context menus [Jasper; #683509]
+* screenShield: Add box-shadow to the shield [Florian]
+* Don't show a right-click menu for the hotplug source [Jasper; #683438]
+* Fix extension styling [Giovanni; #682128]
+* Fix on-screen keyboard not working with system-modal dialogs
+  [Giovanni; #664309]
+* Fix insensitive styling for popup menu items [Giovanni; #683988]
+* Disable the message tray dwell when the user is interacting [Owen; #683811]
+* Animate going from the unlock dialog to the lock screen [Giovanni; #681143]
+* Autostart fprintd when necessary [Ray; #683131]
+* UnlockDialog: Allow typing before the first PAM question [Giovanni; #681576]
+* Make Return key dismiss screenshield [Ray; #683889]
+* Fix keyboard navigation in the message tray [Florian; #682243]
+* Remove the places & devices search provider [Giovanni; #683506]
+* Enable hot corner while the message tray is up [Florian; #682255]
+* Port screen recorder to new GStreamer vp8enc API [Adel; #684206]
+* Fix fish flickering [Giovanni; #684154]
+* Fix extension ordering with !important [Jasper; #684163]
+* Allow the shell to run without the screenshield [Giovanni; #683060]
+* Add menu items for IBus Anthy's InputMode, TypingMode [Rui; #682314]
+* Improve transition to the login dialog [Jasper; #682428]
+* Keep unlock dialog around until shield animation ends [Florian; #684342]
+* Expose shell keybindings in System Settings [Florian; #671010]
+* Misc. bugfixes and cleanups [Debarshi, Florian, Giovanni, Jasper, Rico, Rui;
+  #672790, #677434, #683305, #683357, #683369, #683377, #683378, #683400,
+  #683449, #683472, #683482, #683487, #683488, #683526, #683529, #683546,
+  #683583, #683628, #683705, #683982, #683989, #684035, #684036, #684040,
+  #684162, #684214, #684343]
+
+Contributors:
+  Giovanni Campagna, Adel Gadllah, Rui Matos, Florian Müllner, Debarshi Ray,
+  Jasper St. Pierre, Ray Strode, Owen Taylor, Rico Tzschichholz
+
+Translations:
+  Gabor Kelemen [hu], Piotr Drąg [pl], Khaled Hosny [ar],
+  Мирослав Николић [sr, sr@latin], Chao-Hsiung Liao [zh_HK, zh_TW],
+  Bruce Cowan [en_GB], Dirgita [id], Tom Tryfonidis [el], Timo Jyrinki [fi],
+  Adorilson Bezerra [pt_BR], Arash Mousavi [fa], Matej Urbančič [sl],
+  Christian Kirbach [de], Yaron Shahrabani [he], Ihar Hrachyshka [be],
+  Changwoo Ryu [ko], Duarte Loreto [pt], Theppitak Karoonboonyanan [th],
+  Nilamdyuti Goswami [as], Sandeep Sheshrao Shedmake [mr],
+  Alexandre Franke [fr], Ivaylo Valkov [bg], tuhaihe [zh_CN],
+  Yuri Myasoedov [ru], Aurimas Černius [lt], Andika Triwidada [id],
+  Rajesh Ranjan [hi], Sweta Kothari [gu], Daniel Mustieles [es],
+  Fran Diéguez [gl], Praveen Illa [te]
+
 3.5.91
 ======
 * Improve modal dialog styling of network secret prompts [Jasper; #682412]
