@@ -176,6 +176,8 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
     _clutter_event_source_wayland_new (backend_wayland->wayland_display);
   g_source_attach (backend_wayland->wayland_source, NULL);
 
+  g_object_set (clutter_settings_get_default (), "font-dpi", 96 * 1024, NULL);
+
   /* XXX: We require the device manager to exist as soon as we connect to the
    * compositor and setup an event handler because we will immediately be
    * notified of the available input devices which need to be associated with
