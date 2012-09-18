@@ -1,3 +1,20 @@
+3.5.92
+======
+* screen: Allow NULL out arguments in meta_screen_get_size [Tomeu]
+* display: Add API to set wm_name / wm_keybindings [Florian; #671010]
+* Improve the not responding dialog [Jon, Florian; #684306]
+* Misc. bugfixes [Jasper]
+
+Contributors:
+  William Jon McCann, Florian Müllner, Jasper St. Pierre, Tomeu Vizoso
+
+Translations:
+  Gabor Kelemen [hu], Piotr Drąg [pl], Dr.T.Vasudevan [ta], Bruce Cowan [en_GB],
+  Alexandre Franke [fr], Theppitak Karoonboonyanan [th], Gil Forcada [ca],
+  Carles Ferrando [ca@valencia], Tobias Endrigkeit [de], Tom Tryfonidis [el],
+  Nguyễn Thái Ngọc Duy [vi], Changwoo Ryu [ko], Ask H. Larsen [da],
+  Rafael Ferreira [pt_BR], Marek Černocký [cs]
+
 3.5.91
 ======
 * Do not include markup in app not responding dialog [Alex]
