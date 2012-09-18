@@ -325,9 +325,6 @@ const AutorunNotification = new Lang.Class({
 
         this._manager = manager;
         this._mount = source.mount;
-
-        // set the notification to urgent, so that it expands out
-        this.setUrgency(MessageTray.Urgency.CRITICAL);
     },
 
     createBanner: function() {
