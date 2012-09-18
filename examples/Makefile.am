@@ -60,6 +60,18 @@ cogland_LDADD = $(common_ldadd)
 endif
 endif
 
+cogl_gles2_context_SOURCES = cogl-gles2-context.c
+cogl_gles2_context_LDADD = $(common_ldadd)
+
+if BUILD_COGL_GLES2
+programs += cogl-gles2-gears
+cogl_gles2_gears_SOURCES = cogl-gles2-gears.c
+cogl_gles2_gears_CFLAGS = -I$(top_srcdir)/cogl-gles2 $(AM_CFLAGS)
+cogl_gles2_gears_LDADD = $(common_ldadd) $(top_builddir)/cogl-gles2/libcogl-gles2.la
+endif
+
+endif #USE_GLIB
+
 if SUPPORT_SDL
 programs += cogl-sdl-hello
 cogl_sdl_hello_SOURCES = cogl-sdl-hello.c
@@ -72,17 +84,6 @@ cogl_sdl2_hello_SOURCES = cogl-sdl2-hello.c
 cogl_sdl2_hello_LDADD = $(common_ldadd)
 endif
 
-cogl_gles2_context_SOURCES = cogl-gles2-context.c
-cogl_gles2_context_LDADD = $(common_ldadd)
-
-if BUILD_COGL_GLES2
-programs += cogl-gles2-gears
-cogl_gles2_gears_SOURCES = cogl-gles2-gears.c
-cogl_gles2_gears_CFLAGS = -I$(top_srcdir)/cogl-gles2 $(AM_CFLAGS)
-cogl_gles2_gears_LDADD = $(common_ldadd) $(top_builddir)/cogl-gles2/libcogl-gles2.la
-endif
-
-endif #USE_GLIB
 
 if INSTALL_EXAMPLES
 bin_PROGRAMS = $(programs)
