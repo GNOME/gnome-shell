@@ -34,6 +34,7 @@
 #include "cogl-blit.h"
 #include "cogl-context-private.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-texture-private.h"
 #include "cogl-texture-2d-private.h"
 #include "cogl-private.h"
 #include "cogl1-context.h"
@@ -43,12 +44,11 @@ static const CoglBlitMode *_cogl_blit_default_mode = NULL;
 static CoglBool
 _cogl_blit_texture_render_begin (CoglBlitData *data)
 {
+  CoglContext *ctx = data->src_tex->context;
   CoglOffscreen *offscreen;
   CoglFramebuffer *fb;
   CoglPipeline *pipeline;
   unsigned int dst_width, dst_height;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
 
   offscreen = _cogl_offscreen_new_to_texture_full
     (data->dst_tex, COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL, 0 /* level */);
@@ -125,7 +125,7 @@ _cogl_blit_texture_render_blit (CoglBlitData *data,
 static void
 _cogl_blit_texture_render_end (CoglBlitData *data)
 {
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  CoglContext *ctx = data->src_tex->context;
 
   cogl_pop_source ();
   cogl_pop_framebuffer ();
@@ -145,10 +145,9 @@ _cogl_blit_texture_render_end (CoglBlitData *data)
 static CoglBool
 _cogl_blit_framebuffer_begin (CoglBlitData *data)
 {
+  CoglContext *ctx = data->src_tex->context;
   CoglOffscreen *dst_offscreen = NULL, *src_offscreen = NULL;
   CoglFramebuffer *dst_fb, *src_fb;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
 
   /* We can only blit between FBOs if both textures are the same
      format and the blit framebuffer extension is supported */
@@ -217,8 +216,6 @@ _cogl_blit_copy_tex_sub_image_begin (CoglBlitData *data)
 {
   CoglOffscreen *offscreen;
   CoglFramebuffer *fb;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
 
   /* This will only work if the target texture is a CoglTexture2D */
   if (!cogl_is_texture_2d (data->dst_tex))
