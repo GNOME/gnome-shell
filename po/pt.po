@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-09 12:32+0100\n"
-"PO-Revision-Date: 2012-09-09 12:40+0000\n"
+"POT-Creation-Date: 2012-09-18 07:55+0100\n"
+"PO-Revision-Date: 2012-09-18 07:55+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "Language: pt\n"
@@ -185,9 +185,9 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM "
-"using the VP8 codec. %T is used as a placeholder for a guess at the optimal "
-"thread count on the system."
+"'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
+"threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is "
+"used as a placeholder for a guess at the optimal thread count on the system."
 msgstr ""
 "Define o canal GStreamer utilizado para codificar as gravações. Segue a "
 "sintaxe utilizada para o gst-launch. O canal deverá ter um ponto de saída "
@@ -197,8 +197,9 @@ msgstr ""
 "ser utilizado para enviar o resultado para um servidor icecast através do "
 "shout2send ou semelhante. Quando não definido ou definido com um valor "
 "vazio, será utilizado o canal por omissão. Este é actualmente 'vp8enc "
-"quality=8 speed=6 threads=%T ! queue ! webmmux' e grava para WEBM utilizando "
-"o codec VP8. %T é utilizado como uma varável para se tentar inferir o número "
+"min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
+"threads=%T ! queue ! webmmux' e grava para WEBM utilizando "
+"o codec VP8. %T é utilizado como uma variável para se tentar inferir o número "
 "óptimo de threads no sistema."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
@@ -248,7 +249,7 @@ msgstr "Não está listada?"
 #: ../js/gdm/loginDialog.js:895 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
-#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:135
+#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:137
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -261,8 +262,8 @@ msgstr "Iniciar Sessão"
 msgid "Login Window"
 msgstr "Janela de Início de Sessão"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:655 ../js/ui/userMenu.js:659
-#: ../js/ui/userMenu.js:770
+#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:657 ../js/ui/userMenu.js:661
+#: ../js/ui/userMenu.js:772
 msgid "Suspend"
 msgstr "Suspender"
 
@@ -270,8 +271,8 @@ msgstr "Suspender"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:657 ../js/ui/userMenu.js:659
-#: ../js/ui/userMenu.js:769
+#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:659 ../js/ui/userMenu.js:661
+#: ../js/ui/userMenu.js:771
 msgid "Power Off"
 msgstr "Desligar"
 
@@ -486,12 +487,12 @@ msgstr "Próxima semana"
 msgid "Removable Devices"
 msgstr "Dispositivos Removíveis"
 
-#: ../js/ui/components/autorunManager.js:571
+#: ../js/ui/components/autorunManager.js:575
 #, c-format
 msgid "Open with %s"
 msgstr "Abrir com %s"
 
-#: ../js/ui/components/autorunManager.js:597
+#: ../js/ui/components/autorunManager.js:601
 msgid "Eject"
 msgstr "Ejectar"
 
@@ -637,38 +638,46 @@ msgstr "Pedido de subscrição"
 msgid "Connection error"
 msgstr "Erro na ligação"
 
+#: ../js/ui/components/telepathyClient.js:491
+msgid "Unmute"
+msgstr "Activar Som"
+
+#: ../js/ui/components/telepathyClient.js:491
+msgid "Mute"
+msgstr "Silenciar"
+
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/components/telepathyClient.js:934
+#: ../js/ui/components/telepathyClient.js:948
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "Enviado às <b>%X</b> de <b>%A</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/components/telepathyClient.js:940
+#: ../js/ui/components/telepathyClient.js:954
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr "Enviado em <b>%A</b>, <b>%d de %B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/components/telepathyClient.js:945
+#: ../js/ui/components/telepathyClient.js:959
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "Enviado em <b>%A</b>, <b>%d de %B</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:974
+#: ../js/ui/components/telepathyClient.js:988
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s é agora conhecido como %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1074
+#: ../js/ui/components/telepathyClient.js:1088
 #, c-format
 msgid "Invitation to %s"
 msgstr "Convite para %s"
@@ -676,42 +685,42 @@ msgstr "Convite para %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/components/telepathyClient.js:1082
+#: ../js/ui/components/telepathyClient.js:1096
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s está a convidá-lo para se juntar a %s"
 
-#: ../js/ui/components/telepathyClient.js:1084
-#: ../js/ui/components/telepathyClient.js:1163
-#: ../js/ui/components/telepathyClient.js:1226
+#: ../js/ui/components/telepathyClient.js:1098
+#: ../js/ui/components/telepathyClient.js:1177
+#: ../js/ui/components/telepathyClient.js:1240
 msgid "Decline"
 msgstr "Recusar"
 
-#: ../js/ui/components/telepathyClient.js:1085
-#: ../js/ui/components/telepathyClient.js:1164
-#: ../js/ui/components/telepathyClient.js:1227
+#: ../js/ui/components/telepathyClient.js:1099
+#: ../js/ui/components/telepathyClient.js:1178
+#: ../js/ui/components/telepathyClient.js:1241
 msgid "Accept"
 msgstr "Aceitar"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1115
+#: ../js/ui/components/telepathyClient.js:1129
 #, c-format
 msgid "Video call from %s"
 msgstr "Chamada vídeo de %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1118
+#: ../js/ui/components/telepathyClient.js:1132
 #, c-format
 msgid "Call from %s"
 msgstr "Chamada de %s"
 
-#: ../js/ui/components/telepathyClient.js:1123
+#: ../js/ui/components/telepathyClient.js:1137
 #: ../js/ui/status/bluetooth.js:346
 msgid "Reject"
 msgstr "Rejeitar"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1125
+#: ../js/ui/components/telepathyClient.js:1139
 msgid "Answer"
 msgstr "Atender"
 
@@ -720,110 +729,110 @@ msgstr "Atender"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/components/telepathyClient.js:1157
+#: ../js/ui/components/telepathyClient.js:1171
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s está a enviar-lhe %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1192
+#: ../js/ui/components/telepathyClient.js:1206
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s deseja a sua autorização para ver quando está ligado"
 
-#: ../js/ui/components/telepathyClient.js:1284
+#: ../js/ui/components/telepathyClient.js:1298
 msgid "Network error"
 msgstr "Erro de rede"
 
-#: ../js/ui/components/telepathyClient.js:1286
+#: ../js/ui/components/telepathyClient.js:1300
 msgid "Authentication failed"
 msgstr "Falha na autenticação"
 
-#: ../js/ui/components/telepathyClient.js:1288
+#: ../js/ui/components/telepathyClient.js:1302
 msgid "Encryption error"
 msgstr "Erro de encriptação"
 
-#: ../js/ui/components/telepathyClient.js:1290
+#: ../js/ui/components/telepathyClient.js:1304
 msgid "Certificate not provided"
 msgstr "Não foi disponibilizado o certificado"
 
-#: ../js/ui/components/telepathyClient.js:1292
+#: ../js/ui/components/telepathyClient.js:1306
 msgid "Certificate untrusted"
 msgstr "Certificado não é de confiança"
 
-#: ../js/ui/components/telepathyClient.js:1294
+#: ../js/ui/components/telepathyClient.js:1308
 msgid "Certificate expired"
 msgstr "Certificado expirou"
 
-#: ../js/ui/components/telepathyClient.js:1296
+#: ../js/ui/components/telepathyClient.js:1310
 msgid "Certificate not activated"
 msgstr "Certificado não está activo"
 
-#: ../js/ui/components/telepathyClient.js:1298
+#: ../js/ui/components/telepathyClient.js:1312
 msgid "Certificate hostname mismatch"
 msgstr "Nome de máquina incorrecto no certificado"
 
-#: ../js/ui/components/telepathyClient.js:1300
+#: ../js/ui/components/telepathyClient.js:1314
 msgid "Certificate fingerprint mismatch"
 msgstr "Impressão digital incorrecta no certificado"
 
-#: ../js/ui/components/telepathyClient.js:1302
+#: ../js/ui/components/telepathyClient.js:1316
 msgid "Certificate self-signed"
 msgstr "Certificado assinado pelo próprio"
 
-#: ../js/ui/components/telepathyClient.js:1304
+#: ../js/ui/components/telepathyClient.js:1318
 msgid "Status is set to offline"
 msgstr "Estado definido como desligado"
 
-#: ../js/ui/components/telepathyClient.js:1306
+#: ../js/ui/components/telepathyClient.js:1320
 msgid "Encryption is not available"
 msgstr "Encriptação indisponível"
 
-#: ../js/ui/components/telepathyClient.js:1308
+#: ../js/ui/components/telepathyClient.js:1322
 msgid "Certificate is invalid"
 msgstr "Certificado inválido"
 
-#: ../js/ui/components/telepathyClient.js:1310
+#: ../js/ui/components/telepathyClient.js:1324
 msgid "Connection has been refused"
 msgstr "A ligação foi recusada"
 
-#: ../js/ui/components/telepathyClient.js:1312
+#: ../js/ui/components/telepathyClient.js:1326
 msgid "Connection can't be established"
 msgstr "Incapaz de estabelecer a ligação"
 
-#: ../js/ui/components/telepathyClient.js:1314
+#: ../js/ui/components/telepathyClient.js:1328
 msgid "Connection has been lost"
 msgstr "A ligação foi perdida"
 
-#: ../js/ui/components/telepathyClient.js:1316
+#: ../js/ui/components/telepathyClient.js:1330
 msgid "This account is already connected to the server"
 msgstr "Esta conta já se encontra ligada ao servidor"
 
-#: ../js/ui/components/telepathyClient.js:1318
+#: ../js/ui/components/telepathyClient.js:1332
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "A ligação foi substituída por uma nova ligação utilizando o mesmo recurso"
 
-#: ../js/ui/components/telepathyClient.js:1320
+#: ../js/ui/components/telepathyClient.js:1334
 msgid "The account already exists on the server"
 msgstr "A conta já existe no servidor"
 
-#: ../js/ui/components/telepathyClient.js:1322
+#: ../js/ui/components/telepathyClient.js:1336
 msgid "Server is currently too busy to handle the connection"
 msgstr "O servidor está de momento demasiado ocupado para gerir a ligação"
 
-#: ../js/ui/components/telepathyClient.js:1324
+#: ../js/ui/components/telepathyClient.js:1338
 msgid "Certificate has been revoked"
 msgstr "Certificado foi revogado"
 
-#: ../js/ui/components/telepathyClient.js:1326
+#: ../js/ui/components/telepathyClient.js:1340
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Certificado tem um algoritmo de cifra inseguro ou é criptologicamente fraco"
 
-#: ../js/ui/components/telepathyClient.js:1328
+#: ../js/ui/components/telepathyClient.js:1342
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -832,26 +841,26 @@ msgstr ""
 "certificado do servidor excede os limites impostos pela biblioteca "
 "criptográfica"
 
-#: ../js/ui/components/telepathyClient.js:1330
+#: ../js/ui/components/telepathyClient.js:1344
 msgid "Internal error"
 msgstr "Erro interno"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1340
+#: ../js/ui/components/telepathyClient.js:1354
 #, c-format
 msgid "Connection to %s failed"
 msgstr "Falha ao ligar a %s"
 
-#: ../js/ui/components/telepathyClient.js:1349
+#: ../js/ui/components/telepathyClient.js:1363
 msgid "Reconnect"
 msgstr "Ligar Novamente"
 
-#: ../js/ui/components/telepathyClient.js:1350
+#: ../js/ui/components/telepathyClient.js:1364
 msgid "Edit account"
 msgstr "Editar a conta"
 
-#: ../js/ui/components/telepathyClient.js:1395
+#: ../js/ui/components/telepathyClient.js:1409
 msgid "Unknown reason"
 msgstr "Motivo desconhecido"
 
@@ -978,80 +987,72 @@ msgstr "Realizar download de extensions.gnome.org e instalar '%s'?"
 msgid "tray"
 msgstr "área de notificação"
 
-#: ../js/ui/keyboard.js:545 ../js/ui/status/keyboard.js:146
+#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:146
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "Teclado"
 
-#: ../js/ui/lookingGlass.js:694
+#: ../js/ui/lookingGlass.js:691
 msgid "No extensions installed"
 msgstr "Nenhuma extensão instalada"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:748
+#: ../js/ui/lookingGlass.js:745
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s não emitiu qualquer erro."
 
-#: ../js/ui/lookingGlass.js:754
+#: ../js/ui/lookingGlass.js:751
 msgid "Hide Errors"
 msgstr "Esconder Erros"
 
-#: ../js/ui/lookingGlass.js:758 ../js/ui/lookingGlass.js:818
+#: ../js/ui/lookingGlass.js:755 ../js/ui/lookingGlass.js:815
 msgid "Show Errors"
 msgstr "Apresentar Erros"
 
-#: ../js/ui/lookingGlass.js:767
+#: ../js/ui/lookingGlass.js:764
 msgid "Enabled"
 msgstr "Activo"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:770 ../src/gvc/gvc-mixer-control.c:1082
+#: ../js/ui/lookingGlass.js:767 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "Inactivo"
 
-#: ../js/ui/lookingGlass.js:772
+#: ../js/ui/lookingGlass.js:769
 msgid "Error"
 msgstr "Erro"
 
-#: ../js/ui/lookingGlass.js:774
+#: ../js/ui/lookingGlass.js:771
 msgid "Out of date"
 msgstr "Data inválida"
 
-#: ../js/ui/lookingGlass.js:776
+#: ../js/ui/lookingGlass.js:773
 msgid "Downloading"
 msgstr "A Realizar Download"
 
-#: ../js/ui/lookingGlass.js:800
+#: ../js/ui/lookingGlass.js:797
 msgid "View Source"
 msgstr "Visualizar o Código Fonte"
 
-#: ../js/ui/lookingGlass.js:809
+#: ../js/ui/lookingGlass.js:806
 msgid "Web Page"
 msgstr "Página Web"
 
-#: ../js/ui/messageTray.js:1233
+#: ../js/ui/messageTray.js:1080
 msgid "Open"
 msgstr "Abrir"
 
-#: ../js/ui/messageTray.js:1240
+#: ../js/ui/messageTray.js:1087
 msgid "Remove"
 msgstr "Remover"
 
-#: ../js/ui/messageTray.js:1250
-msgid "Unmute"
-msgstr "Activar Som"
-
-#: ../js/ui/messageTray.js:1250
-msgid "Mute"
-msgstr "Silenciar"
-
-#: ../js/ui/messageTray.js:2037
+#: ../js/ui/messageTray.js:2041
 msgid "Message Tray"
 msgstr "Zona de Notificações"
 
-#: ../js/ui/messageTray.js:2485
+#: ../js/ui/messageTray.js:2483
 msgid "System Information"
 msgstr "Informação do Sistema"
 
@@ -1060,11 +1061,11 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Desconhecida"
 
-#: ../js/ui/overview.js:83
+#: ../js/ui/overview.js:82
 msgid "Undo"
 msgstr "Desfazer"
 
-#: ../js/ui/overview.js:128
+#: ../js/ui/overview.js:127
 msgid "Overview"
 msgstr "Resumo"
 
@@ -1072,13 +1073,13 @@ msgstr "Resumo"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:202
+#: ../js/ui/overview.js:201
 msgid "Type to search..."
 msgstr "Escreva para procurar..."
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:223
+#: ../js/ui/overview.js:222
 msgid "Dash"
 msgstr "Atalhos"
 
@@ -1096,25 +1097,12 @@ msgstr "Actividades"
 msgid "Top Bar"
 msgstr "Barra Superior"
 
-#: ../js/ui/placeDisplay.js:115
-#, c-format
-msgid "Failed to unmount '%s'"
-msgstr "Falha ao desmontar '%s'"
-
-#: ../js/ui/placeDisplay.js:118
-msgid "Retry"
-msgstr "Tentar Novamente"
-
-#: ../js/ui/placeDisplay.js:349
-msgid "PLACES & DEVICES"
-msgstr "LOCAIS & DISPOSITIVOS"
-
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:728
+#: ../js/ui/popupMenu.js:731
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1158,11 +1146,11 @@ msgstr "Copiar"
 msgid "Paste"
 msgstr "Colar"
 
-#: ../js/ui/shellEntry.js:96
+#: ../js/ui/shellEntry.js:102
 msgid "Show Text"
 msgstr "Apresentar Texto"
 
-#: ../js/ui/shellEntry.js:98
+#: ../js/ui/shellEntry.js:104
 msgid "Hide Text"
 msgstr "Esconder Texto"
 
@@ -1174,7 +1162,7 @@ msgstr "Senha"
 msgid "Remember Password"
 msgstr "Recordar Senha"
 
-#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:138
+#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:140
 msgid "Unlock"
 msgstr "Destrancar"
 
@@ -1585,7 +1573,7 @@ msgstr "Volume"
 msgid "Microphone"
 msgstr "Microfone"
 
-#: ../js/ui/unlockDialog.js:145
+#: ../js/ui/unlockDialog.js:147
 msgid "Log in as another user"
 msgstr "Iniciar sessão como outro utilizador"
 
@@ -1613,40 +1601,40 @@ msgstr "Inactivo"
 msgid "Unavailable"
 msgstr "Indisponível"
 
-#: ../js/ui/userMenu.js:610 ../js/ui/userMenu.js:751
+#: ../js/ui/userMenu.js:612 ../js/ui/userMenu.js:753
 msgid "Switch User"
 msgstr "Alternar Utilizador"
 
-#: ../js/ui/userMenu.js:611
+#: ../js/ui/userMenu.js:613
 msgid "Switch Session"
 msgstr "Alternar Sessão"
 
-#: ../js/ui/userMenu.js:735
+#: ../js/ui/userMenu.js:737
 msgid "Notifications"
 msgstr "Notificações"
 
-#: ../js/ui/userMenu.js:743
+#: ../js/ui/userMenu.js:745
 msgid "System Settings"
 msgstr "Definições de Sistema"
 
-#: ../js/ui/userMenu.js:756
+#: ../js/ui/userMenu.js:758
 msgid "Log Out"
 msgstr "Terminar Sessão"
 
-#: ../js/ui/userMenu.js:761
+#: ../js/ui/userMenu.js:763
 msgid "Lock"
 msgstr "Trancar"
 
-#: ../js/ui/userMenu.js:776
+#: ../js/ui/userMenu.js:778
 msgid "Install Updates & Restart"
 msgstr "Instalar Actualizações & Reiniciar"
 
-#: ../js/ui/userMenu.js:794
+#: ../js/ui/userMenu.js:796
 msgid "Your chat status will be set to busy"
 msgstr ""
 "O seu estado de disponibilidade para diálogo será definido como ocupado"
 
-#: ../js/ui/userMenu.js:795
+#: ../js/ui/userMenu.js:797
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1655,19 +1643,19 @@ msgstr ""
 "estado online foi ajustado para que os outros saibam que poderá não ver as "
 "mensagens que lhe forem enviadas."
 
-#: ../js/ui/viewSelector.js:86
+#: ../js/ui/viewSelector.js:85
 msgid "Windows"
 msgstr "Janelas"
 
-#: ../js/ui/viewSelector.js:90
+#: ../js/ui/viewSelector.js:89
 msgid "Applications"
 msgstr "Aplicações"
 
-#: ../js/ui/viewSelector.js:94 ../src/shell-util.c:250
+#: ../js/ui/viewSelector.js:93
 msgid "Search"
 msgstr "Procurar"
 
-#: ../js/ui/wanda.js:123
+#: ../js/ui/wanda.js:119
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1676,12 +1664,12 @@ msgstr ""
 "Hoje não há nenhuma pérola de sabedoria:\n"
 "%s"
 
-#: ../js/ui/wanda.js:127
+#: ../js/ui/wanda.js:123
 #, c-format
 msgid "%s the Oracle says"
 msgstr "%s, o Oráculo, diz"
 
-#: ../js/ui/wanda.js:168
+#: ../js/ui/wanda.js:164
 msgid "Your favorite Easter Egg"
 msgstr "A sua Funcionalidade Secreta (Easter Egg) favorita"
 
@@ -1726,7 +1714,8 @@ msgstr "Modo utilizado pelo GDM para o ecrã de início de sessão"
 
 #: ../src/main.c:342
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
-msgstr "Utilizar um modo específico, por ex. \"gdm\" para o ecrã de início de sessão"
+msgstr ""
+"Utilizar um modo específico, por ex. \"gdm\" para o ecrã de início de sessão"
 
 #: ../src/main.c:348
 msgid "List possible modes"
@@ -1757,27 +1746,23 @@ msgstr "Omissão"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "O diálogo de autenticação foi fechado pelo utilizador"
 
-#. Translators: this is the same string as the one found in
-#. * nautilus
-#: ../src/shell-util.c:94
-msgid "Home"
-msgstr "Pasta Pessoal"
+#~ msgid "Failed to unmount '%s'"
+#~ msgstr "Falha ao desmontar '%s'"
 
-#. Translators: this is the same string as the one found in
-#. * nautilus
-#: ../src/shell-util.c:104
-msgid "File System"
-msgstr "Sistema de Ficheiros"
+#~ msgid "Retry"
+#~ msgstr "Tentar Novamente"
 
-#. Translators: the first string is the name of a gvfs
-#. * method, and the second string is a path. For
-#. * example, "Trash: some-directory". It means that the
-#. * directory called "some-directory" is in the trash.
-#.
-#: ../src/shell-util.c:300
-#, c-format
-msgid "%1$s: %2$s"
-msgstr "%1$s: %2$s"
+#~ msgid "PLACES & DEVICES"
+#~ msgstr "LOCAIS & DISPOSITIVOS"
+
+#~ msgid "Home"
+#~ msgstr "Pasta Pessoal"
+
+#~ msgid "File System"
+#~ msgstr "Sistema de Ficheiros"
+
+#~ msgid "%1$s: %2$s"
+#~ msgstr "%1$s: %2$s"
 
 #~ msgid "disabled OpenSearch providers"
 #~ msgstr "fornecedores OpenSearch desactivados"
