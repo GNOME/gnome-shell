@@ -16,16 +16,17 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-09-17 17:50+0000\n"
-"PO-Revision-Date: 2012-09-13 14:24-0300\n"
-"Last-Translator: Felipe Borges <felipeborges@src.gnome.org>\n"
+"PO-Revision-Date: 2012-09-18 09:42-0200\n"
+"Last-Translator: Djavan Fagundes <djavan@comum.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
 "X-DamnedLies-Scope: partial\n"
-"X-Generator: Virtaal 0.6.1\n"
+"X-Project-Style: gnome\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -116,12 +117,17 @@ msgid ""
 "Internally used to store the last IM presence explicitly set by the user. "
 "The value here is from the TpConnectionPresenceType enumeration."
 msgstr ""
+"Usado internamente para armazenar a última presença de MI explicitamente "
+"definida pelo usuário. O valor aqui é de uma enumeração "
+"TpConnectionPresenceType."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid ""
 "Internally used to store the last session presence status for the user. The "
 "value here is from the GsmPresenceStatus enumeration."
 msgstr ""
+"Usado internamente para armazenar o último status de presença de sessão "
+"definida pelo usuário. O valor aqui é de uma enumeração GsmPresenceStatus."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "Show the week date in the calendar"
@@ -133,27 +139,29 @@ msgstr "Se verdadeiro, exibe o número da semana no calendário."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid "Keybinding to open the application menu"
-msgstr ""
+msgstr "Associação de tecla para abrir um menu de aplicativo"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid "Keybinding to open the application menu."
-msgstr ""
+msgstr "Associação de tecla para abrir um menu de aplicativo."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr ""
+"Associação de tecla para alternar a visibilidade da bandeja de mensagens"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr ""
+"Associação de tecla para alternar a visibilidade da bandeja de mensagens."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to toggle the screen recorder"
-msgstr ""
+msgstr "Associação de tecla para alternar o gravador de tela"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to start/stop the builtin screen recorder."
-msgstr ""
+msgstr "Associação de tecla para iniciar/parar o gravador de tela embutido."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Which keyboard to use"
@@ -180,7 +188,7 @@ msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "A fila de processamento gstreamer usada para codificar o screencast"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
-#, fuzzy, no-c-format
+#, no-c-format
 #| msgid ""
 #| "Sets the GStreamer pipeline used to encode recordings. It follows the "
 #| "syntax used for gst-launch. The pipeline should have an unconnected sink "
@@ -212,9 +220,10 @@ msgstr ""
 "própria saída - isto poderia ser usado para enviar a saída para um servidor "
 "icecast via shout2send ou similar. Quando não definido ou definido para um "
 "valor vazio, o fluxo de processamento padrão será usado. Atualmente é "
-"\"vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux'\" e grava para WEBM "
-"usando o codec VP8. %T é usado como espaço reservado para um convidado na "
-"lista para uma ótima contagem de threads no sistema."
+"\"vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
+"threads=%T ! queue ! webmmux\" e grava para WEBM usando o codec VP8. %T é "
+"usado como espaço reservado para um convidado na lista para uma ótima "
+"contagem de threads no sistema."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "File extension used for storing the screencast"
