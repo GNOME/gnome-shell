@@ -42,10 +42,10 @@ test_conform_simple_fixture_setup (TestConformSimpleFixture *fixture,
 
         exit (EXIT_SUCCESS);
       }
-  }
 
-  /* enable XInput support */
-  clutter_x11_enable_xinput ();
+      /* enable XInput support */
+      clutter_x11_enable_xinput ();
+  }
 #endif
 
   g_assert (clutter_init (shared_state->argc_addr, shared_state->argv_addr)
@@ -60,7 +60,8 @@ test_conform_simple_fixture_setup (TestConformSimpleFixture *fixture,
    * later but since the tests are so short lived and may only render
    * a single frame this is not an acceptable semantic.
    */
-  XSynchronize (clutter_x11_get_default_display(), TRUE);
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
+    XSynchronize (clutter_x11_get_default_display(), TRUE);
 #endif
 }
 
