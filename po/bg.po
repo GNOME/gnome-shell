@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2012-06-27 07:20+0300\n"
-"PO-Revision-Date: 2012-06-27 07:20+0300\n"
+"POT-Creation-Date: 2012-09-19 21:11+0300\n"
+"PO-Revision-Date: 2012-09-19 21:11+0300\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -31,6 +31,20 @@ msgstr "Специални нива на съобщенията за отстр�
 msgid "Enables all non-behavioural debug options"
 msgstr ""
 "Включване на всички флагове за изчистване на грешки освен тези за поведението"
+
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "Допълнителни променливи от обвивката:"
+
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr "Списък с разширения на GL, които Cogl да приема, че липсват"
+
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr ""
+"Изрично задаване на версията на GL, която Cogl да приема, че драйверът "
+"поддържа"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
