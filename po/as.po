@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-18 04:20+0000\n"
-"PO-Revision-Date: 2012-09-18 14:54+0530\n"
+"POT-Creation-Date: 2012-09-19 11:02+0000\n"
+"PO-Revision-Date: 2012-09-20 00:13+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: as_IN <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -19,6 +19,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Lokalize 1.0\n"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:1
+msgid "Screenshots"
+msgstr "স্ক্ৰিনশ্বটসমূহ"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:2
+msgid "Record a screencast"
+msgstr "এটা স্ক্ৰিনশ্বট ৰেকৰ্ড কৰক"
+
+#: ../data/50-gnome-shell-system.xml.in.h:1
+#| msgid "File System"
+msgid "System"
+msgstr "চিস্টেম"
+
+#: ../data/50-gnome-shell-system.xml.in.h:2
+#| msgid "Message Tray"
+msgid "Show the message tray"
+msgstr "বাৰ্তা ট্ৰে দেখুৱাওক"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -175,17 +193,6 @@ msgstr "screencast এনক'ড কৰিবলে ব্যৱহাৰ কৰ
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 #, no-c-format
-#| msgid ""
-#| "Sets the GStreamer pipeline used to encode recordings. It follows the "
-#| "syntax used for gst-launch. The pipeline should have an unconnected sink "
-#| "pad where the recorded video is recorded. It will normally have a "
-#| "unconnected source pad; output from that pad will be written into the "
-#| "output file. However the pipeline can also take care of its own output - "
-#| "this might be used to send the output to an icecast server via shout2send "
-#| "or similar. When unset or set to an empty value, the default pipeline "
-#| "will be used. This is currently 'vp8enc quality=8 speed=6 threads=%T ! "
-#| "queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a "
-#| "placeholder for a guess at the optimal thread count on the system."
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -205,10 +212,9 @@ msgstr ""
 "আউটপুটৰ যত্ন লব পাৰে - ইয়াৰ হওতো আউটপুটক shout2send অথবা সমসাময়িকৰে এটা icecast "
 "চাৰ্ভাৰত পঠাবলে ব্যৱহাৰ হব পাৰে। যেতিয়া এটা ৰিক্ত মানলে অসংহিত বা সংহিত, "
 "অবিকল্পিত পাইপলাইন ব্যৱহাৰ কৰা হব। এইটো বৰ্তমানত 'vp8enc min_quantizer=13 "
-"max_quantizer=13 "
-"cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' আৰু VP8 কডেক ব্যৱহাৰ কৰি "
-"WEBM ত ৰেকৰ্ড কৰে। %T -ক "
-"চিস্টেমত অনুকূলিত থ্ৰেড কাওন্টত এটা অনুমানৰ প্লেইচহল্ডাৰ হিচাপে ব্যৱহাৰ কৰা হয়।"
+"max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' "
+"আৰু VP8 কডেক ব্যৱহাৰ কৰি WEBM ত ৰেকৰ্ড কৰে। %T -ক চিস্টেমত অনুকূলিত থ্ৰেড কাওন্টত "
+"এটা অনুমানৰ প্লেইচহল্ডাৰ হিচাপে ব্যৱহাৰ কৰা হয়।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "File extension used for storing the screencast"
@@ -241,7 +247,7 @@ msgstr "উপৰত দিয়া কম্বোবাকচ ব্যৱহা
 msgid "Session..."
 msgstr "অধিবেশন..."
 
-#: ../js/gdm/loginDialog.js:675
+#: ../js/gdm/loginDialog.js:674
 msgctxt "title"
 msgid "Sign In"
 msgstr "ছাইন ইন কৰক"
@@ -249,28 +255,28 @@ msgstr "ছাইন ইন কৰক"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:742
+#: ../js/gdm/loginDialog.js:741
 msgid "Not listed?"
 msgstr "তালিকাভুক্ত নহয়?"
 
-#: ../js/gdm/loginDialog.js:895 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:894 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
-#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:137
+#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "বাতিল কৰক"
 
-#: ../js/gdm/loginDialog.js:900
+#: ../js/gdm/loginDialog.js:899
 msgctxt "button"
 msgid "Sign In"
 msgstr "ছাইন ইন কৰক"
 
-#: ../js/gdm/loginDialog.js:1239
+#: ../js/gdm/loginDialog.js:1238
 msgid "Login Window"
 msgstr "লগিন উইন্ডো"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:657 ../js/ui/userMenu.js:661
-#: ../js/ui/userMenu.js:772
+#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:658 ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:773
 msgid "Suspend"
 msgstr "বাতিল কৰক"
 
@@ -278,18 +284,23 @@ msgstr "বাতিল কৰক"
 msgid "Restart"
 msgstr "পুনৰাম্ভ কৰক"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:659 ../js/ui/userMenu.js:661
-#: ../js/ui/userMenu.js:771
+#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:772
 msgid "Power Off"
 msgstr "পাৱাৰ অফ"
 
+#: ../js/gdm/util.js:148
+#| msgid "Authentication Required"
+msgid "Authentication error"
+msgstr "প্ৰমাণীকৰণ ত্ৰুটি"
+
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:247
+#: ../js/gdm/util.js:265
 msgid "(or swipe finger)"
 msgstr "(অথবা আঙুলি স্বাইপ কৰক)"
 
-#: ../js/gdm/util.js:272
+#: ../js/gdm/util.js:290
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(উদাহৰণ, ব্যৱহাৰকাৰী অথবা %s)"
@@ -985,7 +996,7 @@ msgstr "extensions.gnome.org ৰ পৰা  '%s' ক ডাউনল'ড আৰ�
 msgid "tray"
 msgstr "ট্ৰে"
 
-#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:146
+#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:194
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "কিবৰ্ড"
@@ -1046,11 +1057,11 @@ msgstr "খোলক"
 msgid "Remove"
 msgstr "আতৰাওক"
 
-#: ../js/ui/messageTray.js:2041
+#: ../js/ui/messageTray.js:2052
 msgid "Message Tray"
 msgstr "বাৰ্তা ট্ৰে"
 
-#: ../js/ui/messageTray.js:2483
+#: ../js/ui/messageTray.js:2508
 msgid "System Information"
 msgstr "চিস্টেম তথ্য"
 
@@ -1110,18 +1121,18 @@ msgstr "অনুগ্ৰহ কৰি এটা কমান্ড সুম�
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:78
+#: ../js/ui/screenShield.js:79
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/screenShield.js:143
+#: ../js/ui/screenShield.js:144
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d নতুন বাৰ্তা"
 msgstr[1] "%d নতুন বাৰ্তাসমূহ"
 
-#: ../js/ui/screenShield.js:145
+#: ../js/ui/screenShield.js:146
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1160,7 +1171,7 @@ msgstr "পাছৱাৰ্ড"
 msgid "Remember Password"
 msgstr "পাছৱাৰ্ড মনত ৰাখক"
 
-#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:140
+#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:169
 msgid "Unlock"
 msgstr "আনলক কৰক"
 
@@ -1336,11 +1347,11 @@ msgstr "অনুগ্ৰহ কৰি ডিভাইচত উল্লেখ
 msgid "OK"
 msgstr "ঠিক আছে"
 
-#: ../js/ui/status/keyboard.js:170
+#: ../js/ui/status/keyboard.js:227
 msgid "Show Keyboard Layout"
 msgstr "কিবৰ্ড বিন্যাস দেখুৱাওক"
 
-#: ../js/ui/status/keyboard.js:175
+#: ../js/ui/status/keyboard.js:232
 msgid "Region and Language Settings"
 msgstr "অঞ্চল আৰু ভাষা সংহতিসমূহ"
 
@@ -1571,67 +1582,67 @@ msgstr "ভলিউম"
 msgid "Microphone"
 msgstr "মাইক্ৰোফোন"
 
-#: ../js/ui/unlockDialog.js:147
+#: ../js/ui/unlockDialog.js:176
 msgid "Log in as another user"
 msgstr "অন্য ব্যৱহাৰকাৰী হিচাপে লগিন কৰক"
 
-#: ../js/ui/userMenu.js:174
+#: ../js/ui/userMenu.js:175
 msgid "Available"
 msgstr "উপলব্ধ"
 
-#: ../js/ui/userMenu.js:177
+#: ../js/ui/userMenu.js:178
 msgid "Busy"
 msgstr "ব্যস্থ"
 
-#: ../js/ui/userMenu.js:180
+#: ../js/ui/userMenu.js:181
 msgid "Invisible"
 msgstr "অদৃশ্য"
 
-#: ../js/ui/userMenu.js:183
+#: ../js/ui/userMenu.js:184
 msgid "Away"
 msgstr "আতৰত"
 
-#: ../js/ui/userMenu.js:186
+#: ../js/ui/userMenu.js:187
 msgid "Idle"
 msgstr "অলস"
 
-#: ../js/ui/userMenu.js:189
+#: ../js/ui/userMenu.js:190
 msgid "Unavailable"
 msgstr "উপলব্ধ নাই"
 
-#: ../js/ui/userMenu.js:612 ../js/ui/userMenu.js:753
+#: ../js/ui/userMenu.js:613 ../js/ui/userMenu.js:754
 msgid "Switch User"
 msgstr "ব্যৱহাৰকাৰী পৰিবৰ্তন কৰক"
 
-#: ../js/ui/userMenu.js:613
+#: ../js/ui/userMenu.js:614
 msgid "Switch Session"
 msgstr "অধিবেশন পৰিবৰ্তন কৰক"
 
-#: ../js/ui/userMenu.js:737
+#: ../js/ui/userMenu.js:738
 msgid "Notifications"
 msgstr "অধিসূচনাসমূহ"
 
-#: ../js/ui/userMenu.js:745
+#: ../js/ui/userMenu.js:746
 msgid "System Settings"
 msgstr "চিস্টেম সংহতিসমূহ"
 
-#: ../js/ui/userMenu.js:758
+#: ../js/ui/userMenu.js:759
 msgid "Log Out"
 msgstr "লগ আউট কৰক"
 
-#: ../js/ui/userMenu.js:763
+#: ../js/ui/userMenu.js:764
 msgid "Lock"
 msgstr "লক কৰক"
 
-#: ../js/ui/userMenu.js:778
+#: ../js/ui/userMenu.js:779
 msgid "Install Updates & Restart"
 msgstr "আপডেইটসমূহ ইনস্টল কৰক & পুনাৰম্ভ কৰক"
 
-#: ../js/ui/userMenu.js:796
+#: ../js/ui/userMenu.js:797
 msgid "Your chat status will be set to busy"
 msgstr "আপোনাৰ চেট অৱস্থা ব্যস্থলে সংহতি কৰা হব"
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:798
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1753,9 +1764,6 @@ msgstr "প্ৰমাণীকৰণ ডাইলগ ব্যৱহাৰক�
 
 #~ msgid "Home"
 #~ msgstr "ঘৰ"
-
-#~ msgid "File System"
-#~ msgstr "ফাইল চিস্টেম"
 
 #~ msgid "%1$s: %2$s"
 #~ msgstr "%1$s: %2$s"
