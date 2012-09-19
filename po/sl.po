@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-17 17:50+0000\n"
-"PO-Revision-Date: 2012-09-17 21:29+0100\n"
+"POT-Creation-Date: 2012-09-19 11:25+0000\n"
+"PO-Revision-Date: 2012-09-19 13:46+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -20,6 +20,22 @@ msgstr ""
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: SLOVENIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:1
+msgid "Screenshots"
+msgstr "Zajete slike"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:2
+msgid "Record a screencast"
+msgstr "Shrani zaslonski posnetek"
+
+#: ../data/50-gnome-shell-system.xml.in.h:1
+msgid "System"
+msgstr "Sistem"
+
+#: ../data/50-gnome-shell-system.xml.in.h:2
+msgid "Show the message tray"
+msgstr "Pokaži sporočilno vrstico"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -168,7 +184,7 @@ msgstr "Razširitev za nastavljanje je mogoče izbrati iz spustnega seznama zgor
 msgid "Session..."
 msgstr "Seja ..."
 
-#: ../js/gdm/loginDialog.js:675
+#: ../js/gdm/loginDialog.js:674
 msgctxt "title"
 msgid "Sign In"
 msgstr "Prijava"
@@ -176,34 +192,34 @@ msgstr "Prijava"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:742
+#: ../js/gdm/loginDialog.js:741
 msgid "Not listed?"
 msgstr "Ali je ni na seznamu?"
 
-#: ../js/gdm/loginDialog.js:895
+#: ../js/gdm/loginDialog.js:894
 #: ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162
 #: ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195
 #: ../js/ui/shellMountOperation.js:396
 #: ../js/ui/status/bluetooth.js:427
-#: ../js/ui/unlockDialog.js:137
+#: ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "Prekliči"
 
-#: ../js/gdm/loginDialog.js:900
+#: ../js/gdm/loginDialog.js:899
 msgctxt "button"
 msgid "Sign In"
 msgstr "Prijava"
 
-#: ../js/gdm/loginDialog.js:1239
+#: ../js/gdm/loginDialog.js:1238
 msgid "Login Window"
 msgstr "Prijavno okno"
 
 #: ../js/gdm/powerMenu.js:88
-#: ../js/ui/userMenu.js:657
-#: ../js/ui/userMenu.js:661
-#: ../js/ui/userMenu.js:772
+#: ../js/ui/userMenu.js:658
+#: ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:773
 msgid "Suspend"
 msgstr "Zaustavi"
 
@@ -212,19 +228,23 @@ msgid "Restart"
 msgstr "Zaženi znova"
 
 #: ../js/gdm/powerMenu.js:98
-#: ../js/ui/userMenu.js:659
-#: ../js/ui/userMenu.js:661
-#: ../js/ui/userMenu.js:771
+#: ../js/ui/userMenu.js:660
+#: ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:772
 msgid "Power Off"
 msgstr "Izklop"
 
+#: ../js/gdm/util.js:148
+msgid "Authentication error"
+msgstr "Napaka overitve"
+
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:247
+#: ../js/gdm/util.js:265
 msgid "(or swipe finger)"
 msgstr "(ali pa povlecite prst)"
 
-#: ../js/gdm/util.js:272
+#: ../js/gdm/util.js:290
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(na primer, uporabnika ali %s)"
@@ -927,7 +947,7 @@ msgid "tray"
 msgstr "sistemska vrstica"
 
 #: ../js/ui/keyboard.js:561
-#: ../js/ui/status/keyboard.js:146
+#: ../js/ui/status/keyboard.js:194
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "Tipkovnica"
@@ -990,11 +1010,11 @@ msgstr "Odpri"
 msgid "Remove"
 msgstr "Odstrani"
 
-#: ../js/ui/messageTray.js:2041
+#: ../js/ui/messageTray.js:2050
 msgid "Message Tray"
 msgstr "Vrstica sporočanja"
 
-#: ../js/ui/messageTray.js:2483
+#: ../js/ui/messageTray.js:2506
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -1055,11 +1075,11 @@ msgstr "Vnos ukaza:"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:78
+#: ../js/ui/screenShield.js:79
 msgid "%A, %B %d"
 msgstr "%A, %d. %m."
 
-#: ../js/ui/screenShield.js:143
+#: ../js/ui/screenShield.js:144
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1068,7 +1088,7 @@ msgstr[1] "%d novo sporočilo"
 msgstr[2] "%d novi sporočili"
 msgstr[3] "%d nova sporočila"
 
-#: ../js/ui/screenShield.js:145
+#: ../js/ui/screenShield.js:146
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1110,7 +1130,7 @@ msgid "Remember Password"
 msgstr "Zapomni si geslo"
 
 #: ../js/ui/shellMountOperation.js:400
-#: ../js/ui/unlockDialog.js:140
+#: ../js/ui/unlockDialog.js:169
 msgid "Unlock"
 msgstr "Odkleni"
 
@@ -1295,11 +1315,11 @@ msgstr "Vnesite PIN, ki je naveden na napravi."
 msgid "OK"
 msgstr "V redu"
 
-#: ../js/ui/status/keyboard.js:170
+#: ../js/ui/status/keyboard.js:227
 msgid "Show Keyboard Layout"
 msgstr "Pokaži razporeditev tipkovnice"
 
-#: ../js/ui/status/keyboard.js:175
+#: ../js/ui/status/keyboard.js:232
 msgid "Region and Language Settings"
 msgstr "Nastavitve območja in jezika"
 
@@ -1545,68 +1565,68 @@ msgstr "Glasnost"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/unlockDialog.js:147
+#: ../js/ui/unlockDialog.js:176
 msgid "Log in as another user"
 msgstr "Prijava kot drug uporabnik"
 
-#: ../js/ui/userMenu.js:174
+#: ../js/ui/userMenu.js:175
 msgid "Available"
 msgstr "Na voljo"
 
-#: ../js/ui/userMenu.js:177
+#: ../js/ui/userMenu.js:178
 msgid "Busy"
 msgstr "Zaposleno"
 
-#: ../js/ui/userMenu.js:180
+#: ../js/ui/userMenu.js:181
 msgid "Invisible"
 msgstr "Nevidno"
 
-#: ../js/ui/userMenu.js:183
+#: ../js/ui/userMenu.js:184
 msgid "Away"
 msgstr "Odsotno"
 
-#: ../js/ui/userMenu.js:186
+#: ../js/ui/userMenu.js:187
 msgid "Idle"
 msgstr "Nedejavno"
 
-#: ../js/ui/userMenu.js:189
+#: ../js/ui/userMenu.js:190
 msgid "Unavailable"
 msgstr "Nedostopno"
 
-#: ../js/ui/userMenu.js:612
-#: ../js/ui/userMenu.js:753
+#: ../js/ui/userMenu.js:613
+#: ../js/ui/userMenu.js:754
 msgid "Switch User"
 msgstr "Preklopi uporabnika"
 
-#: ../js/ui/userMenu.js:613
+#: ../js/ui/userMenu.js:614
 msgid "Switch Session"
 msgstr "Preklopi sejo"
 
-#: ../js/ui/userMenu.js:737
+#: ../js/ui/userMenu.js:738
 msgid "Notifications"
 msgstr "Obvestila"
 
-#: ../js/ui/userMenu.js:745
+#: ../js/ui/userMenu.js:746
 msgid "System Settings"
 msgstr "Sistemske nastavitve"
 
-#: ../js/ui/userMenu.js:758
+#: ../js/ui/userMenu.js:759
 msgid "Log Out"
 msgstr "Odjava"
 
-#: ../js/ui/userMenu.js:763
+#: ../js/ui/userMenu.js:764
 msgid "Lock"
 msgstr "Zakleni"
 
-#: ../js/ui/userMenu.js:778
+#: ../js/ui/userMenu.js:779
 msgid "Install Updates & Restart"
 msgstr "Namesti posodobitve in ponovno zaženi"
 
-#: ../js/ui/userMenu.js:796
+#: ../js/ui/userMenu.js:797
 msgid "Your chat status will be set to busy"
 msgstr "Stanje vašega klepeta bo nastavljeno na zasedeno"
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:798
 msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
 msgstr "Obveščanje je zdaj onemogočeno, vključno s sporočili klepeta. Vaše stanje povezanosti se je prilagodilo, da bodo drugi vedeli, da njihovih sporočil morda ne boste opazili."
 
@@ -1730,9 +1750,6 @@ msgstr "Uporabnik je zavrnil pogovorno okno overitve"
 
 #~ msgid "Home"
 #~ msgstr "Domača mapa"
-
-#~ msgid "File System"
-#~ msgstr "Datotečni sistem"
 
 #~ msgid "%1$s: %2$s"
 #~ msgstr "%1$s: %2$s"
