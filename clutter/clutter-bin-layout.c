@@ -382,7 +382,8 @@ clutter_bin_layout_get_preferred_height (ClutterLayoutManager *manager,
 }
 
 static gdouble
-get_bin_alignment_factor (ClutterBinAlignment alignment)
+get_bin_alignment_factor (ClutterBinAlignment alignment,
+                          ClutterTextDirection text_dir)
 {
   switch (alignment)
     {
@@ -390,10 +391,10 @@ get_bin_alignment_factor (ClutterBinAlignment alignment)
       return 0.5;
 
     case CLUTTER_BIN_ALIGNMENT_START:
-      return 0.0;
+      return text_dir == CLUTTER_TEXT_DIRECTION_LTR ? 0.0 : 1.0;
 
     case CLUTTER_BIN_ALIGNMENT_END:
-      return 1.0;
+      return text_dir == CLUTTER_TEXT_DIRECTION_LTR ? 1.0 : 0.0;
 
     case CLUTTER_BIN_ALIGNMENT_FIXED:
     case CLUTTER_BIN_ALIGNMENT_FILL:
@@ -497,16 +498,20 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
         {
           ClutterActorAlign align;
 
-          align = _clutter_actor_get_effective_x_align (child);
+          align = clutter_actor_get_x_align (child);
           x_fill = align == CLUTTER_ACTOR_ALIGN_FILL;
           x_align = get_actor_align_factor (align);
         }
       else
         {
+          ClutterTextDirection text_dir;
+
           x_fill = (layer->x_align == CLUTTER_BIN_ALIGNMENT_FILL);
 
+          text_dir = clutter_actor_get_text_direction (child);
+
           if (!is_fixed_position_set)
-            x_align = get_bin_alignment_factor (layer->x_align);
+            x_align = get_bin_alignment_factor (layer->x_align, text_dir);
           else
             x_align = 0.0;
         }
@@ -524,7 +529,8 @@ clutter_bin_layout_allocate (ClutterLayoutManager   *manager,
           y_fill = (layer->y_align == CLUTTER_BIN_ALIGNMENT_FILL);
 
           if (!is_fixed_position_set)
-            y_align = get_bin_alignment_factor (layer->y_align);
+            y_align = get_bin_alignment_factor (layer->y_align,
+                                                CLUTTER_TEXT_DIRECTION_LTR);
           else
             y_align = 0.0;
         }
