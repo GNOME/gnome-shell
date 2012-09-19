@@ -108,7 +108,11 @@ delete_ping_timeout_func (MetaDisplay *display,
 
   /* Translators: %s is a window title */
   if (window_title)
-    tmp = g_strdup_printf (_("“%s” is not responding."), window_title);
+    {
+      char *title = g_strdup_printf ("“%s”", window_title);
+      tmp = g_strdup_printf (_("%s is not responding."), title);
+      g_free (title);
+    }
   else
     tmp = g_strdup (_("Application is not responding."));
 
