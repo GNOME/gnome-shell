@@ -1592,11 +1592,7 @@ const MessageTray = new Lang.Class({
     _onCloseClicked: function() {
         if (this._notificationState == State.SHOWN) {
             this._notificationClosed = true;
-            this._notification.emit('done-displaying');
-
-                if (!this._notification.resident)
-                    this._notification.destroy();
-
+            this._updateState();
             this._notificationClosed = false;
         }
     },
