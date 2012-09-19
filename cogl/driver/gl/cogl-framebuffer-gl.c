@@ -1066,7 +1066,7 @@ _cogl_framebuffer_gl_draw_indexed_attributes (CoglFramebuffer *framebuffer,
                                 attributes, n_attributes);
 
   buffer = COGL_BUFFER (cogl_indices_get_buffer (indices));
-  base = _cogl_buffer_bind (buffer, COGL_BUFFER_BIND_TARGET_INDEX_BUFFER);
+  base = _cogl_buffer_gl_bind (buffer, COGL_BUFFER_BIND_TARGET_INDEX_BUFFER);
   buffer_offset = cogl_indices_get_offset (indices);
   index_size = sizeof_index_type (cogl_indices_get_type (indices));
 
@@ -1089,5 +1089,5 @@ _cogl_framebuffer_gl_draw_indexed_attributes (CoglFramebuffer *framebuffer,
                       indices_gl_type,
                       base + buffer_offset + index_size * first_vertex));
 
-  _cogl_buffer_unbind (buffer);
+  _cogl_buffer_gl_unbind (buffer);
 }

@@ -367,7 +367,7 @@ _cogl_buffer_access_to_gl_enum (CoglBufferAccess access)
 }
 
 void *
-_cogl_buffer_bind (CoglBuffer *buffer, CoglBufferBindTarget target)
+_cogl_buffer_gl_bind (CoglBuffer *buffer, CoglBufferBindTarget target)
 {
   void *ret;
 
@@ -384,7 +384,7 @@ _cogl_buffer_bind (CoglBuffer *buffer, CoglBufferBindTarget target)
 }
 
 void
-_cogl_buffer_unbind (CoglBuffer *buffer)
+_cogl_buffer_gl_unbind (CoglBuffer *buffer)
 {
   CoglContext *ctx = buffer->context;
 

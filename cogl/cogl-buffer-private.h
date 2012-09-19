@@ -123,12 +123,14 @@ _cogl_buffer_initialize (CoglBuffer *buffer,
 void
 _cogl_buffer_fini (CoglBuffer *buffer);
 
+/* TODO: split these GL specific bind and unbind functions out into
+ * some GL specific file. */
 void *
-_cogl_buffer_bind (CoglBuffer *buffer,
-                   CoglBufferBindTarget target);
+_cogl_buffer_gl_bind (CoglBuffer *buffer,
+                      CoglBufferBindTarget target);
 
 void
-_cogl_buffer_unbind (CoglBuffer *buffer);
+_cogl_buffer_gl_unbind (CoglBuffer *buffer);
 
 CoglBufferUsageHint
 _cogl_buffer_get_usage_hint (CoglBuffer *buffer);

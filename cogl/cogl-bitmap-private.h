@@ -169,18 +169,21 @@ void
 _cogl_bitmap_unmap (CoglBitmap *bitmap);
 
 /* These two are replacements for map and unmap that should used when
-   the pointer is going to be passed to GL for pixel packing or
-   unpacking. The address might not be valid for reading if the bitmap
-   was created with new_from_buffer but it will however be good to
-   pass to glTexImage2D for example. The access should be READ for
-   unpacking and WRITE for packing. It can not be both */
+ * the pointer is going to be passed to GL for pixel packing or
+ * unpacking. The address might not be valid for reading if the bitmap
+ * was created with new_from_buffer but it will however be good to
+ * pass to glTexImage2D for example. The access should be READ for
+ * unpacking and WRITE for packing. It can not be both
+ *
+ * TODO: split this bind/unbind functions out into a GL specific file
+ */
 uint8_t *
-_cogl_bitmap_bind (CoglBitmap *bitmap,
-                   CoglBufferAccess access,
-                   CoglBufferMapHint hints);
+_cogl_bitmap_gl_bind (CoglBitmap *bitmap,
+                      CoglBufferAccess access,
+                      CoglBufferMapHint hints);
 
 void
-_cogl_bitmap_unbind (CoglBitmap *bitmap);
+_cogl_bitmap_gl_unbind (CoglBitmap *bitmap);
 
 CoglContext *
 _cogl_bitmap_get_context (CoglBitmap *bitmap);

@@ -312,7 +312,7 @@ _cogl_gl_flush_attributes_state (CoglFramebuffer *framebuffer,
 
       attribute_buffer = cogl_attribute_get_buffer (attribute);
       buffer = COGL_BUFFER (attribute_buffer);
-      base = _cogl_buffer_bind (buffer, COGL_BUFFER_BIND_TARGET_ATTRIBUTE_BUFFER);
+      base = _cogl_buffer_gl_bind (buffer, COGL_BUFFER_BIND_TARGET_ATTRIBUTE_BUFFER);
 
       switch (attribute->name_state->name_id)
         {
@@ -388,7 +388,7 @@ _cogl_gl_flush_attributes_state (CoglFramebuffer *framebuffer,
           g_warning ("Unrecognised attribute type 0x%08x", attribute->type);
         }
 
-      _cogl_buffer_unbind (buffer);
+      _cogl_buffer_gl_unbind (buffer);
     }
 
   apply_attribute_enable_updates (ctx, pipeline);

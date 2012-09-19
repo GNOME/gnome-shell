@@ -217,7 +217,7 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
   /* Setup gl alignment to match rowstride and top-left corner */
   prep_gl_for_pixels_upload_full (ctx, rowstride, src_x, src_y, bpp);
 
-  data = _cogl_bitmap_bind (slice_bmp, COGL_BUFFER_ACCESS_READ, 0);
+  data = _cogl_bitmap_gl_bind (slice_bmp, COGL_BUFFER_ACCESS_READ, 0);
 
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
@@ -228,7 +228,7 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
                             source_gl_type,
                             data) );
 
-  _cogl_bitmap_unbind (slice_bmp);
+  _cogl_bitmap_gl_unbind (slice_bmp);
 
   cogl_object_unref (slice_bmp);
 }
@@ -259,7 +259,7 @@ _cogl_texture_driver_upload_to_gl (CoglContext *ctx,
 
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
-  data = _cogl_bitmap_bind (bmp, COGL_BUFFER_ACCESS_READ, 0);
+  data = _cogl_bitmap_gl_bind (bmp, COGL_BUFFER_ACCESS_READ, 0);
 
   GE( ctx, glTexImage2D (gl_target, 0,
                          internal_gl_format,
@@ -269,7 +269,7 @@ _cogl_texture_driver_upload_to_gl (CoglContext *ctx,
                          source_gl_type,
                          data) );
 
-  _cogl_bitmap_unbind (bmp);
+  _cogl_bitmap_gl_unbind (bmp);
 
   cogl_object_unref (bmp);
 }
@@ -336,8 +336,8 @@ _cogl_texture_driver_upload_to_gl_3d (CoglContext *ctx,
                                        bmp_width,
                                        height);
 
-          data = _cogl_bitmap_bind (bmp,
-                                    COGL_BUFFER_ACCESS_READ, 0);
+          data = _cogl_bitmap_gl_bind (bmp,
+                                       COGL_BUFFER_ACCESS_READ, 0);
 
           GE( ctx, glTexSubImage3D (gl_target,
                                     0, /* level */
@@ -351,14 +351,14 @@ _cogl_texture_driver_upload_to_gl_3d (CoglContext *ctx,
                                     source_gl_type,
                                     data) );
 
-          _cogl_bitmap_unbind (bmp);
+          _cogl_bitmap_gl_unbind (bmp);
         }
 
       cogl_object_unref (bmp);
     }
   else
     {
-      data = _cogl_bitmap_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0);
+      data = _cogl_bitmap_gl_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0);
 
       _cogl_texture_driver_prep_gl_for_pixels_upload (ctx, rowstride, bpp);
 
@@ -373,7 +373,7 @@ _cogl_texture_driver_upload_to_gl_3d (CoglContext *ctx,
                              source_gl_type,
                              data) );
 
-      _cogl_bitmap_unbind (source_bmp);
+      _cogl_bitmap_gl_unbind (source_bmp);
     }
 }
 

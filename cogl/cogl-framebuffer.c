@@ -1591,15 +1591,15 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
                                                         width,
                                                         bpp);
 
-      tmp_data = _cogl_bitmap_bind (tmp_bmp,
-                                    COGL_BUFFER_ACCESS_WRITE,
-                                    COGL_BUFFER_MAP_HINT_DISCARD);
+      tmp_data = _cogl_bitmap_gl_bind (tmp_bmp,
+                                       COGL_BUFFER_ACCESS_WRITE,
+                                       COGL_BUFFER_MAP_HINT_DISCARD);
 
       GE( ctx, glReadPixels (x, y, width, height,
                              gl_format, gl_type,
                              tmp_data) );
 
-      _cogl_bitmap_unbind (tmp_bmp);
+      _cogl_bitmap_gl_unbind (tmp_bmp);
 
       succeeded = _cogl_bitmap_convert_into_bitmap (tmp_bmp, bitmap);
 
@@ -1642,16 +1642,16 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
                                                         width,
                                                         bpp);
 
-      pixels = _cogl_bitmap_bind (shared_bmp,
-                                  COGL_BUFFER_ACCESS_WRITE,
-                                  0 /* hints */);
+      pixels = _cogl_bitmap_gl_bind (shared_bmp,
+                                     COGL_BUFFER_ACCESS_WRITE,
+                                     0 /* hints */);
 
       GE( ctx, glReadPixels (x, y,
                              width, height,
                              gl_format, gl_type,
                              pixels) );
 
-      _cogl_bitmap_unbind (shared_bmp);
+      _cogl_bitmap_gl_unbind (shared_bmp);
 
       /* Convert to the premult format specified by the caller
          in-place. This will do nothing if the premult status is already

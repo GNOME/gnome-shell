@@ -411,15 +411,15 @@ _cogl_bitmap_unmap (CoglBitmap *bitmap)
 }
 
 uint8_t *
-_cogl_bitmap_bind (CoglBitmap *bitmap,
-                   CoglBufferAccess access,
-                   CoglBufferMapHint hints)
+_cogl_bitmap_gl_bind (CoglBitmap *bitmap,
+                      CoglBufferAccess access,
+                      CoglBufferMapHint hints)
 {
   uint8_t *ptr;
 
   /* Divert to another bitmap if this data is shared */
   if (bitmap->shared_bmp)
-    return _cogl_bitmap_bind (bitmap->shared_bmp, access, hints);
+    return _cogl_bitmap_gl_bind (bitmap->shared_bmp, access, hints);
 
   g_assert (!bitmap->bound);
 
@@ -436,11 +436,11 @@ _cogl_bitmap_bind (CoglBitmap *bitmap,
   bitmap->bound = TRUE;
 
   if (access == COGL_BUFFER_ACCESS_READ)
-    ptr = _cogl_buffer_bind (bitmap->buffer,
-                             COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK);
+    ptr = _cogl_buffer_gl_bind (bitmap->buffer,
+                                COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK);
   else if (access == COGL_BUFFER_ACCESS_WRITE)
-    ptr = _cogl_buffer_bind (bitmap->buffer,
-                             COGL_BUFFER_BIND_TARGET_PIXEL_PACK);
+    ptr = _cogl_buffer_gl_bind (bitmap->buffer,
+                                COGL_BUFFER_BIND_TARGET_PIXEL_PACK);
   else
     g_assert_not_reached ();
 
@@ -449,12 +449,12 @@ _cogl_bitmap_bind (CoglBitmap *bitmap,
 }
 
 void
-_cogl_bitmap_unbind (CoglBitmap *bitmap)
+_cogl_bitmap_gl_unbind (CoglBitmap *bitmap)
 {
   /* Divert to another bitmap if this data is shared */
   if (bitmap->shared_bmp)
     {
-      _cogl_bitmap_unbind (bitmap->shared_bmp);
+      _cogl_bitmap_gl_unbind (bitmap->shared_bmp);
       return;
     }
 
@@ -464,7 +464,7 @@ _cogl_bitmap_unbind (CoglBitmap *bitmap)
   /* If the bitmap wasn't created from a pixel array then the
      implementation of unbind is the same as unmap */
   if (bitmap->buffer)
-    _cogl_buffer_unbind (bitmap->buffer);
+    _cogl_buffer_gl_unbind (bitmap->buffer);
   else
     _cogl_bitmap_unmap (bitmap);
 }
