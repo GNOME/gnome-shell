@@ -34,6 +34,7 @@
 #include "cogl-private.h"
 #include "cogl-framebuffer-gl-private.h"
 #include "cogl-texture-2d-gl-private.h"
+#include "cogl-attribute-gl-private.h"
 
 #ifndef GL_UNSIGNED_INT_24_8
 #define GL_UNSIGNED_INT_24_8 0x84FA
@@ -366,4 +367,5 @@ _cogl_driver_gles =
     _cogl_texture_2d_gl_generate_mipmap,
     _cogl_texture_2d_gl_copy_from_bitmap,
     NULL, /* texture_2d_get_data */
+    _cogl_gl_flush_attributes_state,
   };

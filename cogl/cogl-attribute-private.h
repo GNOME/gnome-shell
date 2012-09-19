@@ -31,6 +31,7 @@
 #include "cogl-object-private.h"
 #include "cogl-attribute.h"
 #include "cogl-framebuffer.h"
+#include "cogl-pipeline-private.h"
 
 typedef enum
 {
@@ -99,8 +100,12 @@ _cogl_attribute_immutable_ref (CoglAttribute *attribute);
 void
 _cogl_attribute_immutable_unref (CoglAttribute *attribute);
 
-void
-_cogl_attribute_disable_cached_arrays (void);
+typedef struct
+{
+  int unit;
+  CoglPipelineFlushOptions options;
+  uint32_t fallback_layers;
+} CoglFlushLayerState;
 
 void
 _cogl_flush_attributes_state (CoglFramebuffer *framebuffer,

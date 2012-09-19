@@ -27,6 +27,7 @@
 #include "cogl-context.h"
 #include "cogl-offscreen.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-attribute-private.h"
 
 typedef struct _CoglDriverVtable CoglDriverVtable;
 
@@ -210,6 +211,17 @@ struct _CoglDriverVtable
                            CoglPixelFormat format,
                            unsigned int rowstride,
                            uint8_t *data);
+
+  /* Prepares for drawing by flushing the journal, framebuffer state,
+   * pipeline state and attribute state.
+   */
+  void
+  (* flush_attributes_state) (CoglFramebuffer *framebuffer,
+                              CoglPipeline *pipeline,
+                              CoglFlushLayerState *layer_state,
+                              CoglDrawFlags flags,
+                              CoglAttribute **attributes,
+                              int n_attributes);
 };
 
 #endif /* __COGL_DRIVER_H */

@@ -150,6 +150,8 @@ cogl_driver_sources = \
 	$(srcdir)/driver/gl/cogl-framebuffer-gl.c \
 	$(srcdir)/driver/gl/cogl-texture-2d-gl-private.h \
 	$(srcdir)/driver/gl/cogl-texture-2d-gl.c \
+	$(srcdir)/driver/gl/cogl-attribute-gl-private.h \
+	$(srcdir)/driver/gl/cogl-attribute-gl.c \
 	$(srcdir)/driver/gl/cogl-pipeline-opengl.c \
 	$(srcdir)/driver/gl/cogl-pipeline-opengl-private.h \
 	$(srcdir)/driver/gl/cogl-pipeline-fragend-glsl.c \
