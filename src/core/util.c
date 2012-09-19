@@ -555,6 +555,23 @@ meta_gravity_to_string (int gravity)
     }
 }
 
+static gboolean
+zenity_supports_option (const char *section, const char *option)
+{
+  char *command, *out;
+  gboolean rv;
+
+  command = g_strdup_printf ("zenity %s", section);
+  g_spawn_command_line_sync (command, &out, NULL, NULL, NULL);
+
+  rv = (out && strstr (out, option));
+
+  g_free (command);
+  g_free (out);
+
+  return rv;
+}
+
 /* Command line arguments are passed in the locale encoding; in almost
  * all cases, we'd hope that is UTF-8 and no conversion is necessary.
  * If it's not UTF-8, then it's possible that the message isn't
@@ -628,8 +645,13 @@ meta_show_dialog (const char *type,
 
   if (icon_name)
     {
-      append_argument (args, "--icon-name");
-      append_argument (args, icon_name);
+      char *option = g_strdup_printf ("--help%s", type + 1);
+      if (zenity_supports_option (option, "--icon-name"))
+        {
+          append_argument (args, "--icon-name");
+          append_argument (args, icon_name);
+        }
+      g_free (option);
     }
 
   tmp = columns;
@@ -653,7 +675,8 @@ meta_show_dialog (const char *type,
       setenv ("WINDOWID", env, 1);
       g_free (env);
 
-      append_argument (args, "--modal");
+      if (zenity_supports_option ("--help-general", "--modal"))
+        append_argument (args, "--modal");
     }
 
   g_ptr_array_add (args, NULL); /* NULL-terminate */
