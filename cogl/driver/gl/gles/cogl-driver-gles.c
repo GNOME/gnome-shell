@@ -36,6 +36,7 @@
 #include "cogl-texture-2d-gl-private.h"
 #include "cogl-attribute-gl-private.h"
 #include "cogl-clip-stack-gl-private.h"
+#include "cogl-buffer-gl-private.h"
 
 #ifndef GL_UNSIGNED_INT_24_8
 #define GL_UNSIGNED_INT_24_8 0x84FA
@@ -370,4 +371,9 @@ _cogl_driver_gles =
     NULL, /* texture_2d_get_data */
     _cogl_gl_flush_attributes_state,
     _cogl_clip_stack_gl_flush,
+    _cogl_buffer_gl_create,
+    _cogl_buffer_gl_destroy,
+    _cogl_buffer_gl_map,
+    _cogl_buffer_gl_unmap,
+    _cogl_buffer_gl_set_data,
   };

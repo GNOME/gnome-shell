@@ -50,6 +50,7 @@
 #include "cogl-private.h"
 #include "cogl1-context.h"
 #include "cogl-offscreen.h"
+#include "cogl-attribute-gl-private.h"
 
 #ifdef COGL_GL_DEBUG
 /* GL error to string conversion */
@@ -446,7 +447,7 @@ cogl_begin_gl (void)
                                  cogl_pipeline_get_n_layers (pipeline));
 
   /* Disable any cached vertex arrays */
-  _cogl_attribute_disable_cached_arrays ();
+  _cogl_gl_disable_all_attributes (ctx);
 }
 
 void

@@ -384,6 +384,7 @@ _cogl_flush_attributes_state (CoglFramebuffer *framebuffer,
 {
   CoglContext *ctx = framebuffer->context;
   CoglFlushLayerState layers_state;
+  CoglPipeline *copy = NULL;
 
   if (!(flags & COGL_DRAW_SKIP_JOURNAL_FLUSH))
     _cogl_journal_flush (framebuffer->journal);
@@ -418,12 +419,8 @@ _cogl_flush_attributes_state (CoglFramebuffer *framebuffer,
       G_UNLIKELY (ctx->legacy_state_set) &&
       _cogl_get_enable_legacy_state ())
     {
-      /* If we haven't already created a derived pipeline... */
-      if (!copy)
-        {
-          copy = cogl_pipeline_copy (pipeline);
-          pipeline = copy;
-        }
+      copy = cogl_pipeline_copy (pipeline);
+      pipeline = copy;
       _cogl_pipeline_apply_legacy_state (pipeline);
     }
 

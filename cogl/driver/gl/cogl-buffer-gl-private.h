@@ -25,23 +25,38 @@
  *   Robert Bragg <robert@linux.intel.com>
  */
 
-#ifndef _COGL_ATTRIBUTE_GL_PRIVATE_H_
-#define _COGL_ATTRIBUTE_GL_PRIVATE_H_
+#ifndef _COGL_BUFFER_GL_PRIVATE_H_
+#define _COGL_BUFFER_GL_PRIVATE_H_
 
 #include "cogl-types.h"
-#include "cogl-framebuffer.h"
-#include "cogl-attribute.h"
-#include "cogl-attribute-private.h"
+#include "cogl-context.h"
+#include "cogl-buffer.h"
+#include "cogl-buffer-private.h"
 
 void
-_cogl_gl_flush_attributes_state (CoglFramebuffer *framebuffer,
-                                 CoglPipeline *pipeline,
-                                 CoglFlushLayerState *layers_state,
-                                 CoglDrawFlags flags,
-                                 CoglAttribute **attributes,
-                                 int n_attributes);
+_cogl_buffer_gl_create (CoglBuffer *buffer);
 
 void
-_cogl_gl_disable_all_attributes (CoglContext *ctx);
+_cogl_buffer_gl_destroy (CoglBuffer *buffer);
 
-#endif /* _COGL_ATTRIBUTE_GL_PRIVATE_H_ */
+void *
+_cogl_buffer_gl_map (CoglBuffer *buffer,
+                     CoglBufferAccess  access,
+                     CoglBufferMapHint hints);
+
+void
+_cogl_buffer_gl_unmap (CoglBuffer *buffer);
+
+CoglBool
+_cogl_buffer_gl_set_data (CoglBuffer *buffer,
+                          unsigned int offset,
+                          const void *data,
+                          unsigned int size);
+
+void *
+_cogl_buffer_gl_bind (CoglBuffer *buffer, CoglBufferBindTarget target);
+
+void
+_cogl_buffer_gl_unbind (CoglBuffer *buffer);
+
+#endif /* _COGL_BUFFER_GL_PRIVATE_H_ */

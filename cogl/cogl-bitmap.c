@@ -32,6 +32,7 @@
 #include "cogl-buffer-private.h"
 #include "cogl-pixel-buffer.h"
 #include "cogl-context-private.h"
+#include "cogl-buffer-gl-private.h"
 
 #include <string.h>
 

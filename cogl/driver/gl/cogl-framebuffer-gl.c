@@ -29,6 +29,7 @@
 #include "cogl-context-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-framebuffer-gl-private.h"
+#include "cogl-buffer-gl-private.h"
 #include "cogl-error-private.h"
 
 #include <glib.h>

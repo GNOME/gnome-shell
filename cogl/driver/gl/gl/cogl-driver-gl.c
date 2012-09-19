@@ -37,6 +37,7 @@
 #include "cogl-texture-2d-gl-private.h"
 #include "cogl-attribute-gl-private.h"
 #include "cogl-clip-stack-gl-private.h"
+#include "cogl-buffer-gl-private.h"
 
 static CoglBool
 _cogl_driver_pixel_format_from_gl_internal (CoglContext *context,
@@ -552,4 +553,9 @@ _cogl_driver_gl =
     _cogl_texture_2d_gl_get_data,
     _cogl_gl_flush_attributes_state,
     _cogl_clip_stack_gl_flush,
+    _cogl_buffer_gl_create,
+    _cogl_buffer_gl_destroy,
+    _cogl_buffer_gl_map,
+    _cogl_buffer_gl_unmap,
+    _cogl_buffer_gl_set_data,
   };

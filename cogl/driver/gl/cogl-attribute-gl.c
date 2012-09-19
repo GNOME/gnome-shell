@@ -39,6 +39,7 @@
 #include "cogl-attribute-private.h"
 #include "cogl-attribute-gl-private.h"
 #include "cogl-pipeline-progend-glsl-private.h"
+#include "cogl-buffer-gl-private.h"
 
 typedef struct _ForeachChangedBitState
 {
@@ -395,4 +396,17 @@ _cogl_gl_flush_attributes_state (CoglFramebuffer *framebuffer,
 
   if (copy)
     cogl_object_unref (copy);
+}
+
+void
+_cogl_gl_disable_all_attributes (CoglContext *ctx)
+{
+  _cogl_bitmask_clear_all (&ctx->enable_builtin_attributes_tmp);
+  _cogl_bitmask_clear_all (&ctx->enable_texcoord_attributes_tmp);
+  _cogl_bitmask_clear_all (&ctx->enable_custom_attributes_tmp);
+
+  /* XXX: we can pass a NULL source pipeline here because we know a
+   * source pipeline only needs to be referenced when enabling
+   * attributes. */
+  apply_attribute_enable_updates (ctx, NULL);
 }

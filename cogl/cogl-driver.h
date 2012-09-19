@@ -229,6 +229,32 @@ struct _CoglDriverVtable
   void
   (* clip_stack_flush) (CoglClipStack *stack, CoglFramebuffer *framebuffer);
 
+  /* Enables the driver to create some meta data to represent a buffer
+   * but with no corresponding storage allocated yet.
+   */
+  void
+  (* buffer_create) (CoglBuffer *buffer);
+
+  void
+  (* buffer_destroy) (CoglBuffer *buffer);
+
+  /* Maps a buffer into the CPU */
+  void *
+  (* buffer_map) (CoglBuffer *buffer,
+                  CoglBufferAccess  access,
+                  CoglBufferMapHint hints);
+
+  /* Unmaps a buffer */
+  void
+  (* buffer_unmap) (CoglBuffer *buffer);
+
+  /* Uploads data to the buffer without needing to map it necessarily
+   */
+  CoglBool
+  (* buffer_set_data) (CoglBuffer *buffer,
+                       unsigned int offset,
+                       const void *data,
+                       unsigned int size);
 };
 
 #endif /* __COGL_DRIVER_H */
