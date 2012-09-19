@@ -648,9 +648,6 @@ const ScreenShield = new Lang.Class({
     },
 
     _onUnlockFailed: function() {
-        this._dialog.destroy();
-        this._dialog = null;
-
         this._resetLockScreen(true, false);
     },
 
@@ -701,6 +698,10 @@ const ScreenShield = new Lang.Class({
     },
 
     _lockScreenShown: function() {
+        if (this._dialog)
+            this._dialog.destroy();
+        this._dialog = null;
+
         if (this._arrowAnimationId)
             Mainloop.source_remove(this._arrowAnimationId);
         this._arrowAnimationId = Mainloop.timeout_add(6000, Lang.bind(this, this._animateArrows));
