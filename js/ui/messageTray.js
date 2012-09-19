@@ -1244,10 +1244,6 @@ const SummaryItem = new Lang.Class({
         this.notificationStackWidget.add_actor(this.notificationStackView);
 
         this.closeButton = makeCloseButton();
-        this.closeButton.connect('clicked', Lang.bind(this, function() {
-            source.destroy();
-            source.emit('done-displaying-content');
-        }));
         this.notificationStackWidget.add_actor(this.closeButton);
         this._stackedNotifications = [];
 
@@ -2400,6 +2396,7 @@ const MessageTray = new Lang.Class({
 
             let closeButton = this._summaryBoxPointerItem.closeButton;
             closeButton.show();
+            this._summaryBoxPointerCloseClickedId = closeButton.connect('clicked', Lang.bind(this, this._hideSummaryBoxPointer));
             this._summaryBoxPointerItem.prepareNotificationStackForShowing();
         } else if (this._clickedSummaryItemMouseButton == 3) {
             this._summaryBoxPointer.bin.child = this._clickedSummaryItem.rightClickMenu;
@@ -2509,6 +2506,8 @@ const MessageTray = new Lang.Class({
         this._summaryBoxPointer.bin.child = null;
         this._summaryBoxPointerItem.disconnect(this._summaryBoxPointerContentUpdatedId);
         this._summaryBoxPointerContentUpdatedId = 0;
+        this._summaryBoxPointerItem.closeButton.disconnect(this._summaryBoxPointerCloseClickedId);
+        this._summaryBoxPointerCloseClickedId = 0;
         this._summaryBoxPointerItem.source.disconnect(this._sourceDoneDisplayingId);
         this._summaryBoxPointerDoneDisplayingId = 0;
 
