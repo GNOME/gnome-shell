@@ -73,18 +73,11 @@ cogl_pixel_buffer_new (CoglContext *context,
 {
   CoglPixelBuffer *pixel_buffer = g_slice_new0 (CoglPixelBuffer);
   CoglBuffer *buffer = COGL_BUFFER (pixel_buffer);
-  CoglBool use_malloc;
-
-  if (!(context->private_feature_flags & COGL_PRIVATE_FEATURE_PBOS))
-    use_malloc = TRUE;
-  else
-    use_malloc = FALSE;
 
   /* parent's constructor */
   _cogl_buffer_initialize (buffer,
                            context,
                            size,
-                           use_malloc,
                            COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK,
                            COGL_BUFFER_USAGE_HINT_TEXTURE,
                            COGL_BUFFER_UPDATE_HINT_STATIC);

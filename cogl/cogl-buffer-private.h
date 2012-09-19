@@ -113,12 +113,11 @@ _cogl_buffer_register_buffer_type (const CoglObjectClass *klass);
    _cogl_buffer_register_buffer_type (&_cogl_##type_name##_class))
 
 void
-_cogl_buffer_initialize (CoglBuffer          *buffer,
-                         CoglContext         *context,
-                         unsigned int         size,
-                         CoglBool             use_malloc,
+_cogl_buffer_initialize (CoglBuffer *buffer,
+                         CoglContext *context,
+                         size_t size,
                          CoglBufferBindTarget default_target,
-                         CoglBufferUsageHint  usage_hint,
+                         CoglBufferUsageHint usage_hint,
                          CoglBufferUpdateHint update_hint);
 
 void

@@ -44,18 +44,11 @@ cogl_attribute_buffer_new (CoglContext *context,
                            const void *data)
 {
   CoglAttributeBuffer *array = g_slice_new (CoglAttributeBuffer);
-  CoglBool use_malloc;
-
-  if (!(context->private_feature_flags & COGL_PRIVATE_FEATURE_VBOS))
-    use_malloc = TRUE;
-  else
-    use_malloc = FALSE;
 
   /* parent's constructor */
   _cogl_buffer_initialize (COGL_BUFFER (array),
                            context,
                            bytes,
-                           use_malloc,
                            COGL_BUFFER_BIND_TARGET_ATTRIBUTE_BUFFER,
                            COGL_BUFFER_USAGE_HINT_ATTRIBUTE_BUFFER,
                            COGL_BUFFER_UPDATE_HINT_STATIC);

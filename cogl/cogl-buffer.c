@@ -292,14 +292,15 @@ malloc_set_data (CoglBuffer   *buffer,
 }
 
 void
-_cogl_buffer_initialize (CoglBuffer           *buffer,
-                         CoglContext          *context,
-                         unsigned int          size,
-                         CoglBool              use_malloc,
-                         CoglBufferBindTarget  default_target,
-                         CoglBufferUsageHint   usage_hint,
-                         CoglBufferUpdateHint  update_hint)
+_cogl_buffer_initialize (CoglBuffer *buffer,
+                         CoglContext *context,
+                         size_t size,
+                         CoglBufferBindTarget default_target,
+                         CoglBufferUsageHint usage_hint,
+                         CoglBufferUpdateHint update_hint)
 {
+  CoglBool use_malloc = FALSE;
+
   buffer->context = context;
   buffer->flags = COGL_BUFFER_FLAG_NONE;
   buffer->store_created = FALSE;
@@ -309,6 +310,19 @@ _cogl_buffer_initialize (CoglBuffer           *buffer,
   buffer->update_hint = update_hint;
   buffer->data = NULL;
   buffer->immutable_ref = 0;
+
+  if (default_target == COGL_BUFFER_BIND_TARGET_PIXEL_PACK ||
+      default_target == COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK)
+    {
+      if (!(context->private_feature_flags & COGL_PRIVATE_FEATURE_PBOS))
+        use_malloc = TRUE;
+    }
+  else if (default_target == COGL_BUFFER_BIND_TARGET_ATTRIBUTE_BUFFER ||
+           default_target == COGL_BUFFER_BIND_TARGET_INDEX_BUFFER)
+    {
+      if (!(context->private_feature_flags & COGL_PRIVATE_FEATURE_VBOS))
+        use_malloc = TRUE;
+    }
 
   if (use_malloc)
     {
