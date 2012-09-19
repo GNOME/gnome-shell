@@ -175,16 +175,21 @@ const AutorunManager = new Lang.Class({
         this._volumeMonitor.disconnect(this._mountRemovedId);
     },
 
+    _processMount: function(mount, hotplug) {
+        let discoverer = new ContentTypeDiscoverer(Lang.bind(this, function(mount, apps, contentTypes) {
+            this._ensureResidentSource();
+            this._residentSource.addMount(mount, apps);
+
+            if (hotplug)
+                this._transDispatcher.addMount(mount, apps, contentTypes);
+        }));
+        discoverer.guessContentTypes(mount);
+    },
+
     _scanMounts: function() {
         let mounts = this._volumeMonitor.get_mounts();
-        mounts.forEach(Lang.bind(this, function (mount) {
-            let discoverer = new ContentTypeDiscoverer(Lang.bind (this, 
-                function (mount, apps) {
-                    this._ensureResidentSource();
-                    this._residentSource.addMount(mount, apps);
-                }));
-
-            discoverer.guessContentTypes(mount);
+        mounts.forEach(Lang.bind(this, function(mount) {
+            this._processMount(mount, false);
         }));
     },
 
@@ -194,14 +199,7 @@ const AutorunManager = new Lang.Class({
         if (!this._loginManager.sessionActive)
             return;
 
-        let discoverer = new ContentTypeDiscoverer(Lang.bind (this,
-            function (mount, apps, contentTypes) {
-                this._transDispatcher.addMount(mount, apps, contentTypes);
-                this._ensureResidentSource();
-                this._residentSource.addMount(mount, apps);
-            }));
-
-        discoverer.guessContentTypes(mount);
+        this._processMount(mount, true);
     },
 
     _onMountRemoved: function(monitor, mount) {
