@@ -12,6 +12,7 @@ const Tp = imports.gi.TelepathyGLib;
 const UPowerGlib = imports.gi.UPowerGlib;
 const Atk = imports.gi.Atk;
 
+const BoxPointer = imports.ui.boxpointer;
 const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -813,6 +814,7 @@ const UserMenuButton = new Lang.Class({
     },
 
     _onLockScreenActivate: function() {
+        this.menu.close(BoxPointer.PopupAnimation.NONE);
         Main.overview.hide();
         Main.screenShield.lock(true);
     },
