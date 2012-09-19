@@ -224,7 +224,7 @@ const SearchResults = new Lang.Class({
                                              vertical: true });
         let title = new St.Label({ style_class: 'search-section-header',
                                    text: provider.title });
-        providerBox.add(title);
+        providerBox.add(title, { x_fill: false, x_align: St.Align.START });
 
         let resultDisplayBin = new St.Bin({ style_class: 'search-section-results',
                                             x_fill: true,
