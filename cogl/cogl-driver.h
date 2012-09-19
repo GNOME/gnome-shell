@@ -222,6 +222,13 @@ struct _CoglDriverVtable
                               CoglDrawFlags flags,
                               CoglAttribute **attributes,
                               int n_attributes);
+
+  /* Flushes the clip stack to the GPU using a combination of the
+   * stencil buffer, scissor and clip plane state.
+   */
+  void
+  (* clip_stack_flush) (CoglClipStack *stack, CoglFramebuffer *framebuffer);
+
 };
 
 #endif /* __COGL_DRIVER_H */
