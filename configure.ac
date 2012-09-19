@@ -170,6 +170,9 @@ dnl AC_PROG_LIBTOOL
 dnl LIBTOOL="$LIBTOOL --preserve-dup-deps"
 LT_PREREQ([2.2.6])
 LT_INIT([disable-static])
+dnl when using libtool 2.x create libtool early, because it's used in the
+dnl internal glib configure (as-glibconfig.m4)
+m4_ifdef([LT_OUTPUT], [LT_OUTPUT])
 
 dnl ================================================================
 dnl See what platform we are building for
