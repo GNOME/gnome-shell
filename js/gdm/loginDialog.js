@@ -649,11 +649,6 @@ const LoginDialog = new Lang.Class({
         this._userVerifier.connect('ask-question', Lang.bind(this, this._askQuestion));
         this._userVerifier.connect('show-message', Lang.bind(this, this._showMessage));
         this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
-        this._userVerifier.connect('not-supported', Lang.bind(this, function(verifier, error) {
-            Main.notifyError(_("Configuration problem: Could not connect to GDM"), error.message);
-            this._onReset();
-        }));
-
         this._userVerifier.connect('show-login-hint', Lang.bind(this, this._showLoginHint));
         this._userVerifier.connect('hide-login-hint', Lang.bind(this, this._hideLoginHint));
 

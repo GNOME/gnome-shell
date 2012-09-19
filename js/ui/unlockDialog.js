@@ -133,12 +133,6 @@ const UnlockDialog = new Lang.Class({
         this._userVerifier.connect('show-login-hint', Lang.bind(this, this._showLoginHint));
         this._userVerifier.connect('hide-login-hint', Lang.bind(this, this._hideLoginHint));
 
-        this._userVerifier.connect('not-supported', Lang.bind(this, function(verifier, error) {
-            Main.notifyError(_("Could not connect to GDM. Screen locking was automatically disabled."), error.message);
-            this._userVerifier.clear();
-            this.emit('unlocked');
-        }));
-
         this._userWidget = new UserWidget(this._user);
         this.contentLayout.add_actor(this._userWidget.actor);
 
