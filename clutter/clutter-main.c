@@ -769,6 +769,9 @@ clutter_get_text_direction (void)
         g_warning ("Whoever translated default:LTR did so wrongly.");
     }
 
+  CLUTTER_NOTE (MISC, "Text direction: %s",
+                dir == CLUTTER_TEXT_DIRECTION_RTL ? "rtl" : "ltr");
+
   return dir;
 }
 
