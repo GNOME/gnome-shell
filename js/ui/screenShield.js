@@ -698,9 +698,10 @@ const ScreenShield = new Lang.Class({
     },
 
     _lockScreenShown: function() {
-        if (this._dialog)
+        if (this._dialog && !this._isGreeter) {
             this._dialog.destroy();
-        this._dialog = null;
+            this._dialog = null;
+        }
 
         if (this._arrowAnimationId)
             Mainloop.source_remove(this._arrowAnimationId);
