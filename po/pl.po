@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-18 00:03+0200\n"
-"PO-Revision-Date: 2012-09-18 00:04+0200\n"
+"POT-Creation-Date: 2012-09-19 16:38+0200\n"
+"PO-Revision-Date: 2012-09-19 16:40+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -23,6 +23,22 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Poedit-Language: Polish\n"
 "X-Poedit-Country: Poland\n"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:1
+msgid "Screenshots"
+msgstr "Zrzuty ekranu"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:2
+msgid "Record a screencast"
+msgstr "Nagranie ekranu"
+
+#: ../data/50-gnome-shell-system.xml.in.h:1
+msgid "System"
+msgstr "System"
+
+#: ../data/50-gnome-shell-system.xml.in.h:2
+msgid "Show the message tray"
+msgstr "Wyświetlenie obszaru powiadamiania"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -169,17 +185,17 @@ msgstr "Typ używanej klawiatury."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Framerate used for recording screencasts."
-msgstr "Liczba klatek na sekundę do nagrywania pulpitu."
+msgstr "Liczba klatek na sekundę do nagrywania ekranu."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
-msgstr "Liczba klatek na sekundę wynikowego nagrania pulpitu."
+msgstr "Liczba klatek na sekundę wynikowego nagrania ekranu."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "The gstreamer pipeline used to encode the screencast"
-msgstr "Potok biblioteki GStreamer używany do zakodowania nagrania pulpitu"
+msgstr "Potok biblioteki GStreamer używany do zakodowania nagrania ekranu"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 #, no-c-format
@@ -208,7 +224,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "File extension used for storing the screencast"
-msgstr "Rozszerzenie pliku używane do przechowywania nagrań pulpitu"
+msgstr "Rozszerzenie pliku używane do przechowywania nagrań ekranu"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid ""
@@ -216,7 +232,7 @@ msgid ""
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
-"Nazwa pliku dla nagrań pulpitu będzie unikalną nazwą opartą na bieżącej "
+"Nazwa pliku dla nagrań ekranu będzie unikalną nazwą opartą na bieżącej "
 "dacie, i używającej tego rozszerzenia. Rozszerzenie powinno zostać "
 "zmienione, aby nagrywać w innym formacie kontenera."
 
@@ -240,7 +256,7 @@ msgstr ""
 msgid "Session..."
 msgstr "Sesja..."
 
-#: ../js/gdm/loginDialog.js:675
+#: ../js/gdm/loginDialog.js:674
 msgctxt "title"
 msgid "Sign In"
 msgstr "Proszę się zalogować"
@@ -248,28 +264,28 @@ msgstr "Proszę się zalogować"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:742
+#: ../js/gdm/loginDialog.js:741
 msgid "Not listed?"
 msgstr "Inny użytkownik?"
 
-#: ../js/gdm/loginDialog.js:895 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:894 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
-#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:137
+#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: ../js/gdm/loginDialog.js:900
+#: ../js/gdm/loginDialog.js:899
 msgctxt "button"
 msgid "Sign In"
 msgstr "Zaloguj"
 
-#: ../js/gdm/loginDialog.js:1239
+#: ../js/gdm/loginDialog.js:1238
 msgid "Login Window"
 msgstr "Okno logowania"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:657 ../js/ui/userMenu.js:661
-#: ../js/ui/userMenu.js:772
+#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:658 ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:773
 msgid "Suspend"
 msgstr "Uśpij"
 
@@ -277,18 +293,22 @@ msgstr "Uśpij"
 msgid "Restart"
 msgstr "Uruchom ponownie"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:659 ../js/ui/userMenu.js:661
-#: ../js/ui/userMenu.js:771
+#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:772
 msgid "Power Off"
 msgstr "Wyłącz komputer"
 
+#: ../js/gdm/util.js:148
+msgid "Authentication error"
+msgstr "Błąd uwierzytelniania"
+
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:247
+#: ../js/gdm/util.js:265
 msgid "(or swipe finger)"
 msgstr "(lub przeciągnięcie palca)"
 
-#: ../js/gdm/util.js:272
+#: ../js/gdm/util.js:290
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(np. użytkownik lub %s)"
@@ -997,7 +1017,7 @@ msgstr ""
 msgid "tray"
 msgstr "Ikona"
 
-#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:146
+#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:194
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "Klawiatura"
@@ -1058,11 +1078,11 @@ msgstr "Otwórz"
 msgid "Remove"
 msgstr "Usuń"
 
-#: ../js/ui/messageTray.js:2041
+#: ../js/ui/messageTray.js:2050
 msgid "Message Tray"
 msgstr "Obszar powiadamiania"
 
-#: ../js/ui/messageTray.js:2483
+#: ../js/ui/messageTray.js:2506
 msgid "System Information"
 msgstr "Informacje systemowe"
 
@@ -1122,11 +1142,11 @@ msgstr "Proszę wprowadzić polecenie:"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:78
+#: ../js/ui/screenShield.js:79
 msgid "%A, %B %d"
 msgstr "%A, %e %B"
 
-#: ../js/ui/screenShield.js:143
+#: ../js/ui/screenShield.js:144
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1134,7 +1154,7 @@ msgstr[0] "%d nowa wiadomość"
 msgstr[1] "%d nowe wiadomości"
 msgstr[2] "%d nowych wiadomości"
 
-#: ../js/ui/screenShield.js:145
+#: ../js/ui/screenShield.js:146
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1174,7 +1194,7 @@ msgstr "Hasło"
 msgid "Remember Password"
 msgstr "Zapamiętanie hasła"
 
-#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:140
+#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:169
 msgid "Unlock"
 msgstr "Odblokuj"
 
@@ -1196,7 +1216,7 @@ msgstr "Klawiatura ekranowa"
 
 #: ../js/ui/status/accessibility.js:59
 msgid "Visual Alerts"
-msgstr "Ostrzeżenia wzrokowe"
+msgstr "Alarmy wizualne"
 
 #: ../js/ui/status/accessibility.js:62
 msgid "Sticky Keys"
@@ -1208,7 +1228,7 @@ msgstr "Powolne klawisze"
 
 #: ../js/ui/status/accessibility.js:68
 msgid "Bounce Keys"
-msgstr "Odbijanie klawiszy"
+msgstr "Odskakujące klawisze"
 
 #: ../js/ui/status/accessibility.js:71
 msgid "Mouse Keys"
@@ -1350,11 +1370,11 @@ msgstr "Proszę wprowadzić PIN wyświetlony na urządzeniu."
 msgid "OK"
 msgstr "OK"
 
-#: ../js/ui/status/keyboard.js:170
+#: ../js/ui/status/keyboard.js:227
 msgid "Show Keyboard Layout"
 msgstr "Wyświetl układ klawiatury"
 
-#: ../js/ui/status/keyboard.js:175
+#: ../js/ui/status/keyboard.js:232
 msgid "Region and Language Settings"
 msgstr "Ustawienia regionu i języka"
 
@@ -1589,67 +1609,67 @@ msgstr "Głośność"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/unlockDialog.js:147
+#: ../js/ui/unlockDialog.js:176
 msgid "Log in as another user"
 msgstr "Zaloguj jako inny użytkownik"
 
-#: ../js/ui/userMenu.js:174
+#: ../js/ui/userMenu.js:175
 msgid "Available"
 msgstr "Dostępny"
 
-#: ../js/ui/userMenu.js:177
+#: ../js/ui/userMenu.js:178
 msgid "Busy"
 msgstr "Zajęty"
 
-#: ../js/ui/userMenu.js:180
+#: ../js/ui/userMenu.js:181
 msgid "Invisible"
 msgstr "Niewidoczny"
 
-#: ../js/ui/userMenu.js:183
+#: ../js/ui/userMenu.js:184
 msgid "Away"
 msgstr "Nieobecny"
 
-#: ../js/ui/userMenu.js:186
+#: ../js/ui/userMenu.js:187
 msgid "Idle"
 msgstr "Bezczynny"
 
-#: ../js/ui/userMenu.js:189
+#: ../js/ui/userMenu.js:190
 msgid "Unavailable"
 msgstr "Niedostępny"
 
-#: ../js/ui/userMenu.js:612 ../js/ui/userMenu.js:753
+#: ../js/ui/userMenu.js:613 ../js/ui/userMenu.js:754
 msgid "Switch User"
 msgstr "Przełącz użytkownika"
 
-#: ../js/ui/userMenu.js:613
+#: ../js/ui/userMenu.js:614
 msgid "Switch Session"
 msgstr "Przełącz sesję"
 
-#: ../js/ui/userMenu.js:737
+#: ../js/ui/userMenu.js:738
 msgid "Notifications"
 msgstr "Powiadomienia"
 
-#: ../js/ui/userMenu.js:745
+#: ../js/ui/userMenu.js:746
 msgid "System Settings"
 msgstr "Ustawienia systemu"
 
-#: ../js/ui/userMenu.js:758
+#: ../js/ui/userMenu.js:759
 msgid "Log Out"
 msgstr "Wyloguj się"
 
-#: ../js/ui/userMenu.js:763
+#: ../js/ui/userMenu.js:764
 msgid "Lock"
 msgstr "Zablokuj ekran"
 
-#: ../js/ui/userMenu.js:778
+#: ../js/ui/userMenu.js:779
 msgid "Install Updates & Restart"
 msgstr "Zaktualizuj i uruchom ponownie"
 
-#: ../js/ui/userMenu.js:796
+#: ../js/ui/userMenu.js:797
 msgid "Your chat status will be set to busy"
 msgstr "Stan komunikatora zostanie ustawiony na \"zajęty\""
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:798
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
