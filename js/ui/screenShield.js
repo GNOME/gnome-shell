@@ -187,7 +187,7 @@ const NotificationsBox = new Lang.Class({
 
         if (obj.resident) {
             this._residentNotificationBox.add(item.notificationStackWidget);
-            item.closeButtonVisible = false;
+            item.closeButton.hide();
             item.prepareNotificationStackForShowing();
         } else {
             [obj.sourceBox, obj.countLabel] = this._makeNotificationSource(item.source);
@@ -245,7 +245,7 @@ const NotificationsBox = new Lang.Class({
             obj.resident = true;
 
             this._residentNotificationBox.add(obj.item.notificationStackWidget);
-            obj.item.closeButtonVisible = false;
+            obj.item.closeButton.hide();
             obj.item.prepareNotificationStackForShowing();
         } else {
             // just update the counter

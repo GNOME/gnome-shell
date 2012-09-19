@@ -1234,12 +1234,6 @@ const SummaryItem = new Lang.Class({
 
         this.notificationStackWidget = new St.Widget({ layout_manager: new Clutter.BinLayout() });
 
-        this._closeButton = makeCloseButton();
-        this._closeButton.connect('clicked', Lang.bind(this, function() {
-            source.destroy();
-            source.emit('done-displaying-content');
-        }));
-
         this.notificationStackView = new St.ScrollView({ style_class: source.isChat ? '' : 'summary-notification-stack-scrollview',
                                                          vscrollbar_policy: source.isChat ? Gtk.PolicyType.NEVER : Gtk.PolicyType.AUTOMATIC,
                                                          hscrollbar_policy: Gtk.PolicyType.NEVER });
@@ -1248,7 +1242,13 @@ const SummaryItem = new Lang.Class({
                                                     vertical: true });
         this.notificationStackView.add_actor(this.notificationStack);
         this.notificationStackWidget.add_actor(this.notificationStackView);
-        this.notificationStackWidget.add_actor(this._closeButton);
+
+        this.closeButton = makeCloseButton();
+        this.closeButton.connect('clicked', Lang.bind(this, function() {
+            source.destroy();
+            source.emit('done-displaying-content');
+        }));
+        this.notificationStackWidget.add_actor(this.closeButton);
         this._stackedNotifications = [];
 
         this._oldMaxScrollAdjustment = 0;
@@ -1263,14 +1263,6 @@ const SummaryItem = new Lang.Class({
         this.rightClickMenu = source.buildRightClickMenu();
         if (this.rightClickMenu)
             global.focus_manager.add_group(this.rightClickMenu);
-    },
-
-    get closeButtonVisible() {
-        return this._closeButton.visible;
-    },
-
-    set closeButtonVisible(v) {
-        this._closeButton.visible = v;
     },
 
     _onKeyPress: function(actor, event) {
@@ -2405,7 +2397,9 @@ const MessageTray = new Lang.Class({
             this._notificationQueue = newQueue;
 
             this._summaryBoxPointer.bin.child = this._summaryBoxPointerItem.notificationStackWidget;
-            this._summaryBoxPointerItem.closeButtonVisible = true;
+
+            let closeButton = this._summaryBoxPointerItem.closeButton;
+            closeButton.show();
             this._summaryBoxPointerItem.prepareNotificationStackForShowing();
         } else if (this._clickedSummaryItemMouseButton == 3) {
             this._summaryBoxPointer.bin.child = this._clickedSummaryItem.rightClickMenu;
