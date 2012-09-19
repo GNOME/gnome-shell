@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-02 16:35+0530\n"
-"PO-Revision-Date: 2012-09-02 16:53+0530\n"
+"POT-Creation-Date: 2012-09-19 19:40+0530\n"
+"PO-Revision-Date: 2012-09-19 19:45+0530\n"
 "Last-Translator: Dr.T.Vasudevan <agnihot3@gmail.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: ta\n"
@@ -17,6 +17,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.1\n"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:1
+msgid "Record a screencast"
+msgstr "ஒரு திரைவெட்டை பதிவெடு."
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:2
+msgid "Screenshots"
+msgstr "திரைவெட்டுகள்"
+
+#: ../data/50-gnome-shell-system.xml.in.h:1
+msgid "Show the message tray"
+msgstr "அறிவிப்பு பலகத்தை காட்டுக"
+
+#: ../data/50-gnome-shell-system.xml.in.h:2
+msgid "System"
+msgstr "கணினி"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -135,9 +151,9 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM "
-"using the VP8 codec. %T is used as a placeholder for a guess at the optimal "
-"thread count on the system."
+"'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
+"threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is "
+"used as a placeholder for a guess at the optimal thread count on the system."
 msgstr ""
 "பதிவுகளை குறியாக்க ஜிஸ்ட்ரீமர் குழாயை அமைக்கிறது. ஜிஎஸ்டி லான்ஸ் க்கு பயன்படும் அதே "
 "இலக்கணத்தை பின் பற்றும். குழாய்க்கு இணைப்பில்லா பதிவுக்குழி இருத்தல் வேண்டும். இதில் விடியோ "
@@ -145,7 +161,8 @@ msgstr ""
 "வெளியீட்டு கோப்பாக பதிவாகும். எனினும் குழாய் தன் வெளியீட்டை தானே கவனித்துக்கொள்ள இயலும். "
 "இது வெளியீட்டை ஐஸ்காஸ்ட் அல்லது ஷௌட்2சென்ட் போன்றவற்றுக்கு நேரடியாக அனுப்ப இயலும். அமைப்பை "
 "அன்செட் செய்தாலல்லது காலி மதிப்புக்கு அமைத்தாலும் முன்னிருப்பு குழாய் பயன்படுத்தப்படும். "
-"நடப்பில் இது 'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux'  ஆகும்; "
+"நடப்பில் இது 'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
+"threads=%T ! queue ! webmmux'  ஆகும்; "
 "இதுVP8 கோடக் ஐ பயன்படுத்தி WEBM க்கு பதிவுசெய்யும். கணினியில் பொருத்தமான இழை "
 "கணக்குக்கு ஊகம் செய்வதற்கு %T இடப்பிடிப்பானாக வேலை செய்யும்."
 
@@ -207,10 +224,6 @@ msgstr "நிரல்களின் பயன்பாடு குறித�
 msgid "Which keyboard to use"
 msgstr "எந்த விசைப்பலகையை பயன்படுத்த வேண்டும்?"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
-msgid "disabled OpenSearch providers"
-msgstr "ஓபன்செர்ச் வழங்குவோர் செயல்நீக்கம் செய்யபட்டனர்."
-
 #: ../js/extensionPrefs/main.js:124
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
@@ -228,7 +241,7 @@ msgstr "மேலுள்ள கூட்டுப்பெட்டியை �
 msgid "Session..."
 msgstr "அமர்வு..."
 
-#: ../js/gdm/loginDialog.js:675
+#: ../js/gdm/loginDialog.js:674
 msgctxt "title"
 msgid "Sign In"
 msgstr "உள்நுழை"
@@ -236,29 +249,28 @@ msgstr "உள்நுழை"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:738
+#: ../js/gdm/loginDialog.js:741
 msgid "Not listed?"
 msgstr "பட்டியலில் இல்லை?"
 
-#: ../js/gdm/loginDialog.js:883 ../js/ui/endSessionDialog.js:373
-#: ../js/ui/extensionDownloader.js:195 ../js/ui/networkAgent.js:156
-#: ../js/ui/polkitAuthenticationAgent.js:181
-#: ../js/ui/shellMountOperation.js:396 ../js/ui/status/bluetooth.js:432
-#: ../js/ui/unlockDialog.js:129
+#: ../js/gdm/loginDialog.js:894 ../js/ui/components/networkAgent.js:137
+#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
+#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "ரத்துசெய்க"
 
-#: ../js/gdm/loginDialog.js:888
+#: ../js/gdm/loginDialog.js:899
 msgctxt "button"
 msgid "Sign In"
 msgstr "உள்நுழை"
 
-#: ../js/gdm/loginDialog.js:1231
+#: ../js/gdm/loginDialog.js:1238
 msgid "Login Window"
 msgstr "உள்புகு சாளரம்"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:636 ../js/ui/userMenu.js:640
-#: ../js/ui/userMenu.js:751
+#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:658 ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:773
 msgid "Suspend"
 msgstr "இடைநிறுத்தம்."
 
@@ -266,18 +278,22 @@ msgstr "இடைநிறுத்தம்."
 msgid "Restart"
 msgstr "மறு துவக்கம்"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:638 ../js/ui/userMenu.js:640
-#: ../js/ui/userMenu.js:750
+#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:772
 msgid "Power Off"
 msgstr "மின்சக்தி நிறுத்தம்"
 
+#: ../js/gdm/util.js:148
+msgid "Authentication error"
+msgstr "உறுதிப்படுத்தல் பிழை"
+
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:221
+#: ../js/gdm/util.js:265
 msgid "(or swipe finger)"
 msgstr "(அல்லது விரல் தீய்ப்பு)"
 
-#: ../js/gdm/util.js:246
+#: ../js/gdm/util.js:290
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(எ.கா., பயனர் அல்லது %s)"
@@ -331,19 +347,6 @@ msgstr "%s உங்கள் விருப்பங்களில் சே�
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "%s உங்கள் விருப்பங்களில் இருந்து நீக்கப்பட்டது"
-
-#: ../js/ui/autorunManager.js:264
-msgid "Removable Devices"
-msgstr "நீக்கப்படக்கூடிய சாதனங்கள் "
-
-#: ../js/ui/autorunManager.js:552
-#, c-format
-msgid "Open with %s"
-msgstr "%s ஆல் திற"
-
-#: ../js/ui/autorunManager.js:578
-msgid "Eject"
-msgstr "வெளியேற்று"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
@@ -459,54 +462,430 @@ msgid "S"
 msgstr "ச"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:685
+#: ../js/ui/calendar.js:699
 msgid "Nothing Scheduled"
 msgstr "திட்டம் எதுவுமில்லை"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:701
+#: ../js/ui/calendar.js:715
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:704
+#: ../js/ui/calendar.js:718
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:714
+#: ../js/ui/calendar.js:728
 msgid "Today"
 msgstr "இன்று"
 
-#: ../js/ui/calendar.js:718
+#: ../js/ui/calendar.js:732
 msgid "Tomorrow"
 msgstr "நாளை"
 
-#: ../js/ui/calendar.js:729
+#: ../js/ui/calendar.js:743
 msgid "This week"
 msgstr "இந்த வாரம்"
 
-#: ../js/ui/calendar.js:737
+#: ../js/ui/calendar.js:751
 msgid "Next week"
 msgstr "அடுத்த வாரம்"
+
+#: ../js/ui/components/autorunManager.js:278
+msgid "Removable Devices"
+msgstr "நீக்கப்படக்கூடிய சாதனங்கள் "
+
+#: ../js/ui/components/autorunManager.js:575
+#, c-format
+msgid "Open with %s"
+msgstr "%s ஆல் திற"
+
+#: ../js/ui/components/autorunManager.js:601
+msgid "Eject"
+msgstr "வெளியேற்று"
+
+#: ../js/ui/components/keyring.js:86 ../js/ui/components/polkitAgent.js:260
+msgid "Password:"
+msgstr "கடவுச்சொல்:"
+
+#: ../js/ui/components/keyring.js:105
+msgid "Type again:"
+msgstr "மீண்டும் உள்ளிடவும்:"
+
+#: ../js/ui/components/networkAgent.js:132
+msgid "Connect"
+msgstr "இணை"
+
+#. Cisco LEAP
+#: ../js/ui/components/networkAgent.js:223
+#: ../js/ui/components/networkAgent.js:235
+#: ../js/ui/components/networkAgent.js:262
+#: ../js/ui/components/networkAgent.js:282
+#: ../js/ui/components/networkAgent.js:292
+msgid "Password: "
+msgstr "கடவுச்சொல்:"
+
+#. static WEP
+#: ../js/ui/components/networkAgent.js:228
+msgid "Key: "
+msgstr "விசை: "
+
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: ../js/ui/components/networkAgent.js:260
+#: ../js/ui/components/networkAgent.js:278
+msgid "Username: "
+msgstr "பயனர்பெயர்: "
+
+#: ../js/ui/components/networkAgent.js:266
+msgid "Identity: "
+msgstr "அடையாளம்: "
+
+#: ../js/ui/components/networkAgent.js:268
+msgid "Private key password: "
+msgstr "அந்தரங்க முதன்மை கடவுச்சொல்: "
+
+#: ../js/ui/components/networkAgent.js:280
+msgid "Service: "
+msgstr "சேவை:"
+
+#: ../js/ui/components/networkAgent.js:309
+msgid "Authentication required by wireless network"
+msgstr "கம்பியில்லா வலைப்பின்னலுக்கு உறுதிப்படுத்துதல் தேவை"
+
+#: ../js/ui/components/networkAgent.js:310
+#, c-format
+msgid ""
+"Passwords or encryption keys are required to access the wireless network "
+"'%s'."
+msgstr "கம்பியில்லா வலைப்பின்னல் '%s' ஐ அணுக  கடவுச்சொற்கள் அல்லது மறையாக்க விசைகள் தேவை"
+
+#: ../js/ui/components/networkAgent.js:314
+msgid "Wired 802.1X authentication"
+msgstr "கம்பியுள்ள 802.1X அங்கீகாரம்"
+
+#: ../js/ui/components/networkAgent.js:316
+msgid "Network name: "
+msgstr "வலைப்பின்னல் பெயர்:"
+
+#: ../js/ui/components/networkAgent.js:321
+msgid "DSL authentication"
+msgstr "டிஎஸ்எல் உறுதிப்படுத்துதல் "
+
+#: ../js/ui/components/networkAgent.js:328
+msgid "PIN code required"
+msgstr "பின் கோட் தேவைப்படுகிறது"
+
+#: ../js/ui/components/networkAgent.js:329
+msgid "PIN code is needed for the mobile broadband device"
+msgstr "அலை அகலப்பட்டை சாதனத்துக்கு பின் கோட் தேவை"
+
+#: ../js/ui/components/networkAgent.js:330
+msgid "PIN: "
+msgstr "PIN: "
+
+#: ../js/ui/components/networkAgent.js:336
+msgid "Mobile broadband network password"
+msgstr "அலை அகலப்பட்டைக்கு வலைப்பின்னல் கடவுச்சொல்"
+
+#: ../js/ui/components/networkAgent.js:337
+#, c-format
+msgid "A password is required to connect to '%s'."
+msgstr " '%s' க்கு இணைக்க கடவுச்சொல் தேவை"
+
+#: ../js/ui/components/polkitAgent.js:55
+msgid "Authentication Required"
+msgstr "உறுதிப்படுத்தல் தேவை"
+
+#: ../js/ui/components/polkitAgent.js:93
+msgid "Administrator"
+msgstr "நிர்வாகி"
+
+#: ../js/ui/components/polkitAgent.js:166
+msgid "Authenticate"
+msgstr "உறுதிப்படுத்து"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: ../js/ui/components/polkitAgent.js:248 ../js/ui/shellMountOperation.js:381
+msgid "Sorry, that didn't work. Please try again."
+msgstr "மன்னிக்க, அது வேலை செய்யவில்லை. மீண்டு முயற்சி செய்க."
+
+#. Translators: this is a filename used for screencast recording
+#: ../js/ui/components/recorder.js:44
+#, no-c-format
+msgid "Screencast from %d %t"
+msgstr "%d %t இலிருந்து ஸ்க்ரீண்காஸ்ட்"
+
+#. FIXME: We don't have a 'chat room' icon (bgo #653737) use
+#. system-users for now as Empathy does.
+#: ../js/ui/components/telepathyClient.js:237
+msgid "Invitation"
+msgstr "அழைப்பு"
+
+#. We got the TpContact
+#: ../js/ui/components/telepathyClient.js:297
+msgid "Call"
+msgstr "அழை"
+
+#. We got the TpContact
+#: ../js/ui/components/telepathyClient.js:313
+msgid "File Transfer"
+msgstr "கோப்பு பறிமாற்றம் "
+
+#: ../js/ui/components/telepathyClient.js:394
+msgid "Subscription request"
+msgstr "சந்தா வேண்டுதல்"
+
+#: ../js/ui/components/telepathyClient.js:430
+msgid "Connection error"
+msgstr "இணைப்பு பிழை"
+
+#: ../js/ui/components/telepathyClient.js:491
+msgid "Unmute"
+msgstr "ஒலி நிறுத்தம் நீக்கு"
+
+#: ../js/ui/components/telepathyClient.js:491
+msgid "Mute"
+msgstr "ஒலி நிறுத்தம்"
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/components/telepathyClient.js:948
+#, no-c-format
+msgid "Sent at <b>%X</b> on <b>%A</b>"
+msgstr " <b>%X</b> போது <b>%A</b> %A அன்று அனுப்பியது"
+
+#. Translators: this is a time format in the style of "Wednesday, May 25",
+#. shown when you get a chat message in the same year.
+#: ../js/ui/components/telepathyClient.js:954
+#, no-c-format
+msgid "Sent on <b>%A</b>, <b>%B %d</b>"
+msgstr "<b>%A</b>, <b>%B %d</b> அன்று அனுப்பியது"
+
+#. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
+#. shown when you get a chat message in a different year.
+#: ../js/ui/components/telepathyClient.js:959
+#, no-c-format
+msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
+msgstr " <b>%A</b>, <b>%B %d</b>, %Y அன்று அனுப்பியது"
+
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name.
+#: ../js/ui/components/telepathyClient.js:988
+#, c-format
+msgid "%s is now known as %s"
+msgstr "%s இப்போது %s ஆனார்"
+
+#. translators: argument is a room name like
+#. * room@jabber.org for example.
+#: ../js/ui/components/telepathyClient.js:1088
+#, c-format
+msgid "Invitation to %s"
+msgstr "%s க்கு அழைப்பு"
+
+#. translators: first argument is the name of a contact and the second
+#. * one the name of a room. "Alice is inviting you to join room@jabber.org
+#. * for example.
+#: ../js/ui/components/telepathyClient.js:1096
+#, c-format
+msgid "%s is inviting you to join %s"
+msgstr "%s உங்களை %s உடன் சேர அழைக்கிறார்."
+
+#: ../js/ui/components/telepathyClient.js:1098
+#: ../js/ui/components/telepathyClient.js:1177
+#: ../js/ui/components/telepathyClient.js:1240
+msgid "Decline"
+msgstr "நிராகரி"
+
+#: ../js/ui/components/telepathyClient.js:1099
+#: ../js/ui/components/telepathyClient.js:1178
+#: ../js/ui/components/telepathyClient.js:1241
+msgid "Accept"
+msgstr "ஏற்றுக்கொள்"
+
+#. translators: argument is a contact name like Alice for example.
+#: ../js/ui/components/telepathyClient.js:1129
+#, c-format
+msgid "Video call from %s"
+msgstr "%s இடமிருந்து விடியோ அழைப்பு"
+
+#. translators: argument is a contact name like Alice for example.
+#: ../js/ui/components/telepathyClient.js:1132
+#, c-format
+msgid "Call from %s"
+msgstr "%s இடமிருந்து அழைப்பு"
+
+#: ../js/ui/components/telepathyClient.js:1137
+#: ../js/ui/status/bluetooth.js:346
+msgid "Reject"
+msgstr "மறு"
+
+#. translators: this is a button label (verb), not a noun
+#: ../js/ui/components/telepathyClient.js:1139
+msgid "Answer"
+msgstr "பதிலளி"
+
+#. To translators: The first parameter is
+#. * the contact's alias and the second one is the
+#. * file name. The string will be something
+#. * like: "Alice is sending you test.ogg"
+#.
+#: ../js/ui/components/telepathyClient.js:1171
+#, c-format
+msgid "%s is sending you %s"
+msgstr "%s உங்களுக்கு %s அனுப்புகிறார்"
+
+#. To translators: The parameter is the contact's alias
+#: ../js/ui/components/telepathyClient.js:1206
+#, c-format
+msgid "%s would like permission to see when you are online"
+msgstr "%s நீங்கள் இணைப்பில் இருக்கும் போது காண அனுமதி வேண்டுகிறார். "
+
+#: ../js/ui/components/telepathyClient.js:1298
+msgid "Network error"
+msgstr "வலையமைப்பு பிழை"
+
+#: ../js/ui/components/telepathyClient.js:1300
+msgid "Authentication failed"
+msgstr "உறுதி செய்தல் தோல்வி"
+
+#: ../js/ui/components/telepathyClient.js:1302
+msgid "Encryption error"
+msgstr "மறையாக்க பிழை"
+
+#: ../js/ui/components/telepathyClient.js:1304
+msgid "Certificate not provided"
+msgstr "சான்றிதழ் தரப்படவில்லை"
+
+#: ../js/ui/components/telepathyClient.js:1306
+msgid "Certificate untrusted"
+msgstr "சான்றிதழில் நம்பக தன்மை இல்லை"
+
+#: ../js/ui/components/telepathyClient.js:1308
+msgid "Certificate expired"
+msgstr "சான்றிதழ் காலாவதியானது"
+
+#: ../js/ui/components/telepathyClient.js:1310
+msgid "Certificate not activated"
+msgstr "சான்றிதழ் செயல்படுத்தப்படவில்லை"
+
+#: ../js/ui/components/telepathyClient.js:1312
+msgid "Certificate hostname mismatch"
+msgstr "சான்றிதழ் புரவலன் பெயர் ஒத்திசையவில்லை"
+
+#: ../js/ui/components/telepathyClient.js:1314
+msgid "Certificate fingerprint mismatch"
+msgstr "சான்றிதழ் அடையாளம் ஒத்திசையவில்லை"
+
+#: ../js/ui/components/telepathyClient.js:1316
+msgid "Certificate self-signed"
+msgstr "சான்றிதழ் தானே கையெழுத்திட்டது"
+
+#: ../js/ui/components/telepathyClient.js:1318
+msgid "Status is set to offline"
+msgstr "நிலை இப்போது இணைப்பு விலகி "
+
+#: ../js/ui/components/telepathyClient.js:1320
+msgid "Encryption is not available"
+msgstr "குறீயீட்டுமுறை கிடைப்பில் இல்லை"
+
+#: ../js/ui/components/telepathyClient.js:1322
+msgid "Certificate is invalid"
+msgstr "சான்றிதழ் செல்லுபடியாகாது"
+
+#: ../js/ui/components/telepathyClient.js:1324
+msgid "Connection has been refused"
+msgstr "இணைப்பு மறுக்கப்பட்டது"
+
+#: ../js/ui/components/telepathyClient.js:1326
+msgid "Connection can't be established"
+msgstr "இணைக்க முடியவில்லை"
+
+#: ../js/ui/components/telepathyClient.js:1328
+msgid "Connection has been lost"
+msgstr "இணைப்பு அற்றுப்போயிற்று"
+
+#: ../js/ui/components/telepathyClient.js:1330
+msgid "This account is already connected to the server"
+msgstr "இந்த கணக்கு ஏற்கனவே சேவையகத்துக்கு இணைக்கப்பட்டது"
+
+#: ../js/ui/components/telepathyClient.js:1332
+msgid "Connection has been replaced by a new connection using the same resource"
+msgstr "இணைப்பு அதே முலத்துடன் புதிய இணைப்பால் மாற்றப்பட்டது."
+
+#: ../js/ui/components/telepathyClient.js:1334
+msgid "The account already exists on the server"
+msgstr "இந்த கணக்கு ஏற்கனவே சேவையகத்தில் உள்ளது"
+
+#: ../js/ui/components/telepathyClient.js:1336
+msgid "Server is currently too busy to handle the connection"
+msgstr "இணைப்பை கையாள சேவையகம் இப்போது மிகவும் வேலை பளுவில் உள்ளது."
+
+#: ../js/ui/components/telepathyClient.js:1338
+msgid "Certificate has been revoked"
+msgstr "சான்றிதழ் ரத்து செய்யப்பட்டது"
+
+#: ../js/ui/components/telepathyClient.js:1340
+msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+msgstr ""
+"சான்றிதழ் பாதுகாப்பில்லாத சைபர் அல்கோரிதத்தை பயன்படுத்துகிறது. இது மறையாக்கத்தில் "
+"பலகீனமானது."
+
+#: ../js/ui/components/telepathyClient.js:1342
+msgid ""
+"The length of the server certificate, or the depth of the server certificate "
+"chain, exceed the limits imposed by the cryptography library"
+msgstr ""
+"சேவயகத்தின் சான்றிதழின் நீளம் அல்லது சங்கிலியின் ஆழம் மறையாக்க நூலகம் வரயறுத்த மதிப்பை "
+"தாண்டியது."
+
+#: ../js/ui/components/telepathyClient.js:1344
+msgid "Internal error"
+msgstr "உள்ளார்ந்த பிழை"
+
+#. translators: argument is the account name, like
+#. * name@jabber.org for example.
+#: ../js/ui/components/telepathyClient.js:1354
+#, c-format
+msgid "Connection to %s failed"
+msgstr " %s க்கு இணைப்பு தோல்வி அடைந்தது"
+
+#: ../js/ui/components/telepathyClient.js:1363
+msgid "Reconnect"
+msgstr "மீள் இணை"
+
+#: ../js/ui/components/telepathyClient.js:1364
+msgid "Edit account"
+msgstr "கணக்கை திருத்துக"
+
+#: ../js/ui/components/telepathyClient.js:1409
+msgid "Unknown reason"
+msgstr "தெரியாத காரணம்"
 
 #: ../js/ui/dash.js:245 ../js/ui/dash.js:273
 msgid "Show Applications"
 msgstr "பயன்பாடுகளை காட்டு"
 
-#: ../js/ui/dateMenu.js:94
+#: ../js/ui/dateMenu.js:86
 msgid "Date and Time Settings"
 msgstr "தேதி நேரம் அமைப்புகள்"
 
-#: ../js/ui/dateMenu.js:120
+#: ../js/ui/dateMenu.js:109
 msgid "Open Calendar"
 msgstr "நாள்காட்டியை திற"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:161
+#: ../js/ui/dateMenu.js:175
 msgid "%A %B %e, %Y"
 msgstr "%A %B %e, %Y"
 
@@ -611,186 +990,85 @@ msgstr "'%s' ஐ எக்ஸ்டென்ஷன்ஸ்.க்னோம்.�
 msgid "tray"
 msgstr "தட்டு"
 
-#: ../js/ui/keyboard.js:545 ../js/ui/status/keyboard.js:146
-#: ../js/ui/status/power.js:211
+#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:194
+#: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "விசைப்பலகை"
 
-#: ../js/ui/keyringPrompt.js:86 ../js/ui/polkitAuthenticationAgent.js:279
-msgid "Password:"
-msgstr "கடவுச்சொல்:"
-
-#: ../js/ui/keyringPrompt.js:105
-msgid "Type again:"
-msgstr "மீண்டும் உள்ளிடவும்:"
-
-#: ../js/ui/lookingGlass.js:694
+#: ../js/ui/lookingGlass.js:691
 msgid "No extensions installed"
 msgstr "நீட்சிகள் ஏதும் நிறுவப்படவில்லை"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:748
+#: ../js/ui/lookingGlass.js:745
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s எந்த பிழையையும் வெளியிடவில்லை"
 
-#: ../js/ui/lookingGlass.js:754
+#: ../js/ui/lookingGlass.js:751
 msgid "Hide Errors"
 msgstr "பிழைகளை மறை"
 
-#: ../js/ui/lookingGlass.js:758 ../js/ui/lookingGlass.js:818
+#: ../js/ui/lookingGlass.js:755 ../js/ui/lookingGlass.js:815
 msgid "Show Errors"
 msgstr "பிழைகளை காட்டுக"
 
-#: ../js/ui/lookingGlass.js:767
+#: ../js/ui/lookingGlass.js:764
 msgid "Enabled"
 msgstr "செயலாக்கப்பட்டது"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:770 ../src/gvc/gvc-mixer-control.c:1082
+#: ../js/ui/lookingGlass.js:767 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "செயல்நீக்கப்பட்டது"
 
-#: ../js/ui/lookingGlass.js:772
+#: ../js/ui/lookingGlass.js:769
 msgid "Error"
 msgstr "பிழை"
 
-#: ../js/ui/lookingGlass.js:774
+#: ../js/ui/lookingGlass.js:771
 msgid "Out of date"
 msgstr "காலாவதியானது"
 
-#: ../js/ui/lookingGlass.js:776
+#: ../js/ui/lookingGlass.js:773
 msgid "Downloading"
 msgstr "பதிவிறக்குகிறது"
 
-#: ../js/ui/lookingGlass.js:800
+#: ../js/ui/lookingGlass.js:797
 msgid "View Source"
 msgstr "மூலத்தை பார்க்க"
 
-#: ../js/ui/lookingGlass.js:809
+#: ../js/ui/lookingGlass.js:806
 msgid "Web Page"
 msgstr "இணைய பக்கம்"
 
-#. Translators: this is a filename used for screencast recording
-#: ../js/ui/main.js:137
-#, no-c-format
-msgid "Screencast from %d %t"
-msgstr "%d %t இலிருந்து ஸ்க்ரீண்காஸ்ட்"
-
-#: ../js/ui/messageTray.js:1232
+#: ../js/ui/messageTray.js:1080
 msgid "Open"
 msgstr "திற"
 
-#: ../js/ui/messageTray.js:1239
+#: ../js/ui/messageTray.js:1087
 msgid "Remove"
 msgstr "நீக்கு"
 
-#: ../js/ui/messageTray.js:1249
-msgid "Unmute"
-msgstr "ஒலி நிறுத்தம் நீக்கு"
-
-#: ../js/ui/messageTray.js:1249
-msgid "Mute"
-msgstr "ஒலி நிறுத்தம்"
-
-#: ../js/ui/messageTray.js:2029
+#: ../js/ui/messageTray.js:2050
 msgid "Message Tray"
 msgstr "அறிவிப்பு பலகம்"
 
-#: ../js/ui/messageTray.js:2467
+#: ../js/ui/messageTray.js:2506
 msgid "System Information"
 msgstr "கணினி தகவல்கள்"
-
-#: ../js/ui/networkAgent.js:151
-msgid "Connect"
-msgstr "இணை"
-
-#. Cisco LEAP
-#: ../js/ui/networkAgent.js:242 ../js/ui/networkAgent.js:254
-#: ../js/ui/networkAgent.js:281 ../js/ui/networkAgent.js:301
-#: ../js/ui/networkAgent.js:311
-msgid "Password: "
-msgstr "கடவுச்சொல்:"
-
-#. static WEP
-#: ../js/ui/networkAgent.js:247
-msgid "Key: "
-msgstr "விசை: "
-
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:279 ../js/ui/networkAgent.js:297
-msgid "Username: "
-msgstr "பயனர்பெயர்: "
-
-#: ../js/ui/networkAgent.js:285
-msgid "Identity: "
-msgstr "அடையாளம்: "
-
-#: ../js/ui/networkAgent.js:287
-msgid "Private key password: "
-msgstr "அந்தரங்க முதன்மை கடவுச்சொல்: "
-
-#: ../js/ui/networkAgent.js:299
-msgid "Service: "
-msgstr "சேவை:"
-
-#: ../js/ui/networkAgent.js:328
-msgid "Authentication required by wireless network"
-msgstr "கம்பியில்லா வலைப்பின்னலுக்கு உறுதிப்படுத்துதல் தேவை"
-
-#: ../js/ui/networkAgent.js:329
-#, c-format
-msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"'%s'."
-msgstr "கம்பியில்லா வலைப்பின்னல் '%s' ஐ அணுக  கடவுச்சொற்கள் அல்லது மறையாக்க விசைகள் தேவை"
-
-#: ../js/ui/networkAgent.js:333
-msgid "Wired 802.1X authentication"
-msgstr "கம்பியுள்ள 802.1X அங்கீகாரம்"
-
-#: ../js/ui/networkAgent.js:335
-msgid "Network name: "
-msgstr "வலைப்பின்னல் பெயர்:"
-
-#: ../js/ui/networkAgent.js:340
-msgid "DSL authentication"
-msgstr "டிஎஸ்எல் உறுதிப்படுத்துதல் "
-
-#: ../js/ui/networkAgent.js:347
-msgid "PIN code required"
-msgstr "பின் கோட் தேவைப்படுகிறது"
-
-#: ../js/ui/networkAgent.js:348
-msgid "PIN code is needed for the mobile broadband device"
-msgstr "அலை அகலப்பட்டை சாதனத்துக்கு பின் கோட் தேவை"
-
-#: ../js/ui/networkAgent.js:349
-msgid "PIN: "
-msgstr "PIN: "
-
-#: ../js/ui/networkAgent.js:355
-msgid "Mobile broadband network password"
-msgstr "அலை அகலப்பட்டைக்கு வலைப்பின்னல் கடவுச்சொல்"
-
-#: ../js/ui/networkAgent.js:356
-#, c-format
-msgid "A password is required to connect to '%s'."
-msgstr " '%s' க்கு இணைக்க கடவுச்சொல் தேவை"
 
 #: ../js/ui/notificationDaemon.js:506 ../src/shell-app.c:373
 msgctxt "program"
 msgid "Unknown"
 msgstr "தெரியாத"
 
-#: ../js/ui/overview.js:83
+#: ../js/ui/overview.js:82
 msgid "Undo"
 msgstr "மறை"
 
-#: ../js/ui/overview.js:123
+#: ../js/ui/overview.js:127
 msgid "Overview"
 msgstr "மேலோட்டம்"
 
@@ -798,70 +1076,36 @@ msgstr "மேலோட்டம்"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:192
+#: ../js/ui/overview.js:201
 msgid "Type to search..."
 msgstr "தேட உள்ளிடு..."
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:213
+#: ../js/ui/overview.js:222
 msgid "Dash"
 msgstr "டேஷ்போர்ட்"
 
-#: ../js/ui/panel.js:573
+#: ../js/ui/panel.js:567
 msgid "Quit"
 msgstr "வெளியேறு"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:605
+#: ../js/ui/panel.js:599
 msgid "Activities"
 msgstr "செயல்பாடுகள்"
 
-#: ../js/ui/panel.js:971
+#: ../js/ui/panel.js:965
 msgid "Top Bar"
 msgstr "மேல் பட்டை"
-
-#: ../js/ui/placeDisplay.js:115
-#, c-format
-msgid "Failed to unmount '%s'"
-msgstr "'%s' ஐ இறக்க முடியவில்லை"
-
-#: ../js/ui/placeDisplay.js:118
-msgid "Retry"
-msgstr "மறு முயற்சி"
-
-#: ../js/ui/placeDisplay.js:349
-msgid "PLACES & DEVICES"
-msgstr "PLACES & DEVICES"
-
-#: ../js/ui/polkitAuthenticationAgent.js:74
-msgid "Authentication Required"
-msgstr "உறுதிப்படுத்தல் தேவை"
-
-#: ../js/ui/polkitAuthenticationAgent.js:112
-msgid "Administrator"
-msgstr "நிர்வாகி"
-
-#: ../js/ui/polkitAuthenticationAgent.js:185
-msgid "Authenticate"
-msgstr "உறுதிப்படுத்து"
-
-#. Translators: "that didn't work" refers to the fact that the
-#. * requested authentication was not gained; this can happen
-#. * because of an authentication error (like invalid password),
-#. * for instance.
-#: ../js/ui/polkitAuthenticationAgent.js:267
-#: ../js/ui/shellMountOperation.js:381
-msgid "Sorry, that didn't work. Please try again."
-msgstr "மன்னிக்க, அது வேலை செய்யவில்லை. மீண்டு முயற்சி செய்க."
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:728
+#: ../js/ui/popupMenu.js:731
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -871,29 +1115,29 @@ msgstr "தயை செய்து ஒரு கட்டளையை உள�
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:77
+#: ../js/ui/screenShield.js:79
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/screenShield.js:142
+#: ../js/ui/screenShield.js:144
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d புதிய செய்தி"
 msgstr[1] "%d புதிய செய்திகள்"
 
-#: ../js/ui/screenShield.js:144
+#: ../js/ui/screenShield.js:146
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d புதிய அறிவிப்பு"
 msgstr[1] "%d புதிய அறிவிப்புகள்"
 
-#: ../js/ui/searchDisplay.js:277
+#: ../js/ui/searchDisplay.js:275
 msgid "Searching..."
 msgstr "தேடுகிறது..."
 
-#: ../js/ui/searchDisplay.js:328
+#: ../js/ui/searchDisplay.js:323
 msgid "No results."
 msgstr "விடைகள் இல்லை."
 
@@ -905,11 +1149,11 @@ msgstr "நகலெடு"
 msgid "Paste"
 msgstr "ஒட்டு"
 
-#: ../js/ui/shellEntry.js:96
+#: ../js/ui/shellEntry.js:102
 msgid "Show Text"
 msgstr "உரையை காட்டுக"
 
-#: ../js/ui/shellEntry.js:98
+#: ../js/ui/shellEntry.js:104
 msgid "Hide Text"
 msgstr "உரையை மறை"
 
@@ -921,7 +1165,7 @@ msgstr "கடவுச்சொல்"
 msgid "Remember Password"
 msgstr "கடவுச்சொல்லை நினைவு கொள்ளவும்"
 
-#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:132
+#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:169
 msgid "Unlock"
 msgstr "பூட்டை திற"
 
@@ -965,18 +1209,18 @@ msgstr "சொடுக்கி விசைகள்"
 msgid "Universal Access Settings"
 msgstr "உலகளாவிய அணுகல் அமைப்பு"
 
-#: ../js/ui/status/accessibility.js:113
+#: ../js/ui/status/accessibility.js:109
 msgid "High Contrast"
 msgstr "அதிக முறண்"
 
-#: ../js/ui/status/accessibility.js:150
+#: ../js/ui/status/accessibility.js:146
 msgid "Large Text"
 msgstr "பெரிய உரை"
 
 #: ../js/ui/status/bluetooth.js:27 ../js/ui/status/bluetooth.js:31
-#: ../js/ui/status/bluetooth.js:256 ../js/ui/status/bluetooth.js:309
-#: ../js/ui/status/bluetooth.js:340 ../js/ui/status/bluetooth.js:376
-#: ../js/ui/status/bluetooth.js:405 ../js/ui/status/network.js:867
+#: ../js/ui/status/bluetooth.js:251 ../js/ui/status/bluetooth.js:304
+#: ../js/ui/status/bluetooth.js:335 ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:400 ../js/ui/status/network.js:867
 msgid "Bluetooth"
 msgstr "ப்ளூடூத்"
 
@@ -997,115 +1241,111 @@ msgid "Bluetooth Settings"
 msgstr "ப்ளூடூத் அமைப்புகள்"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:108 ../js/ui/status/network.js:208
+#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:208
 msgid "hardware disabled"
 msgstr "வன்பொருள் செயல்நீக்கப்பட்டது"
 
-#: ../js/ui/status/bluetooth.js:201
+#: ../js/ui/status/bluetooth.js:196
 msgid "Connection"
 msgstr "இணைப்பு"
 
-#: ../js/ui/status/bluetooth.js:212 ../js/ui/status/network.js:458
+#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:458
 msgid "disconnecting..."
 msgstr "துண்டிக்கப்படுகிறது......"
 
-#: ../js/ui/status/bluetooth.js:225 ../js/ui/status/network.js:464
+#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:464
 #: ../js/ui/status/network.js:934
 msgid "connecting..."
 msgstr "இணைக்கிறது..."
 
-#: ../js/ui/status/bluetooth.js:243
+#: ../js/ui/status/bluetooth.js:238
 msgid "Send Files..."
 msgstr "கோப்புகளை அனுப்பவும்..."
 
-#: ../js/ui/status/bluetooth.js:248
+#: ../js/ui/status/bluetooth.js:243
 msgid "Browse Files..."
 msgstr "கோப்புகளை உலாவு..."
 
-#: ../js/ui/status/bluetooth.js:257
+#: ../js/ui/status/bluetooth.js:252
 msgid "Error browsing device"
 msgstr "சாதனத்தில் உலாவுகையில் பிழை"
 
-#: ../js/ui/status/bluetooth.js:258
+#: ../js/ui/status/bluetooth.js:253
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr "வேண்டிய சாதனத்தில் உலாவ இயலாது, பிழை  '%s'"
 
-#: ../js/ui/status/bluetooth.js:266
+#: ../js/ui/status/bluetooth.js:261
 msgid "Keyboard Settings"
 msgstr "விசைப்பலகை அமைப்புகள்"
 
-#: ../js/ui/status/bluetooth.js:269
+#: ../js/ui/status/bluetooth.js:264
 msgid "Mouse Settings"
 msgstr "சொடுக்கி அமைப்புகள்"
 
-#: ../js/ui/status/bluetooth.js:274 ../js/ui/status/volume.js:233
+#: ../js/ui/status/bluetooth.js:269 ../js/ui/status/volume.js:236
 msgid "Sound Settings"
 msgstr "ஒலி அமைப்புகள்"
 
-#: ../js/ui/status/bluetooth.js:341
+#: ../js/ui/status/bluetooth.js:336
 #, c-format
 msgid "Authorization request from %s"
 msgstr "%s இடமிருந்து உறுதிப்படுத்தல் வேண்டுதல்"
 
-#: ../js/ui/status/bluetooth.js:347
+#: ../js/ui/status/bluetooth.js:342
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "சாதனம் %s  ' சேவை %s' க்கு அணுகல் வேண்டுகிறது"
 
-#: ../js/ui/status/bluetooth.js:349
+#: ../js/ui/status/bluetooth.js:344
 msgid "Always grant access"
 msgstr "எப்போதும் அணுகலை அளி"
 
-#: ../js/ui/status/bluetooth.js:350
+#: ../js/ui/status/bluetooth.js:345
 msgid "Grant this time only"
 msgstr "இம்முறை மட்டும் அணுகலை அளி"
 
-#: ../js/ui/status/bluetooth.js:351 ../js/ui/telepathyClient.js:1106
-msgid "Reject"
-msgstr "மறு"
-
-#: ../js/ui/status/bluetooth.js:377
+#: ../js/ui/status/bluetooth.js:372
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "%s க்கு இணை சேர்த்த உறுதிப்படுத்தல்"
 
-#: ../js/ui/status/bluetooth.js:383 ../js/ui/status/bluetooth.js:413
+#: ../js/ui/status/bluetooth.js:378 ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "சாதனம்  %s இந்த கணினியுடன் இணைக்க விரும்புகிறது"
 
-#: ../js/ui/status/bluetooth.js:384
+#: ../js/ui/status/bluetooth.js:379
 #, c-format
 msgid "Please confirm whether the PIN '%06d' matches the one on the device."
 msgstr "தயை செய்து பின்(PIN) '%06d'  சாதனத்தில் உள்ள ஒன்றுடன் பொருந்துகிறதா என உறுதி செய்யவும்."
 
-#: ../js/ui/status/bluetooth.js:386
+#: ../js/ui/status/bluetooth.js:381
 msgid "Matches"
 msgstr "பொருந்துகிறது"
 
-#: ../js/ui/status/bluetooth.js:387
+#: ../js/ui/status/bluetooth.js:382
 msgid "Does not match"
 msgstr "பொருந்தவில்லை"
 
-#: ../js/ui/status/bluetooth.js:406
+#: ../js/ui/status/bluetooth.js:401
 #, c-format
 msgid "Pairing request for %s"
 msgstr "%s க்கு இணைக்க வேண்டுதல்"
 
-#: ../js/ui/status/bluetooth.js:414
+#: ../js/ui/status/bluetooth.js:409
 msgid "Please enter the PIN mentioned on the device."
 msgstr "சாதனத்தின் சொல்லும் பின் ஐ உள்ளீடு செய்க"
 
-#: ../js/ui/status/bluetooth.js:431
+#: ../js/ui/status/bluetooth.js:426
 msgid "OK"
 msgstr "சரி"
 
-#: ../js/ui/status/keyboard.js:175
+#: ../js/ui/status/keyboard.js:227
 msgid "Show Keyboard Layout"
 msgstr "விசைப்பலகை இடவமைவை காட்டுக"
 
-#: ../js/ui/status/keyboard.js:177
+#: ../js/ui/status/keyboard.js:232
 msgid "Region and Language Settings"
 msgstr " வட்டாரம் மற்றும் மொழி  அமைப்பு"
 
@@ -1190,43 +1430,43 @@ msgstr "தானியங்கி ப்ளூடூத்"
 msgid "Auto wireless"
 msgstr "தானியங்கி கம்பியில்லாத"
 
-#: ../js/ui/status/network.js:1576
+#: ../js/ui/status/network.js:1575
 msgid "Enable networking"
 msgstr "வலைபின்னலை செயலாக்கு"
 
-#: ../js/ui/status/network.js:1598
+#: ../js/ui/status/network.js:1597
 msgid "Wired"
 msgstr "கம்பியுள்ள"
 
-#: ../js/ui/status/network.js:1609
+#: ../js/ui/status/network.js:1608
 msgid "Wireless"
 msgstr "கம்பியில்லாத"
 
-#: ../js/ui/status/network.js:1619
+#: ../js/ui/status/network.js:1618
 msgid "Mobile broadband"
 msgstr "லை அகலப்பட்டை"
 
-#: ../js/ui/status/network.js:1629
+#: ../js/ui/status/network.js:1628
 msgid "VPN Connections"
 msgstr "விபிஎன் இணைப்புகள்"
 
-#: ../js/ui/status/network.js:1636
+#: ../js/ui/status/network.js:1635
 msgid "Network Settings"
 msgstr "வலைப்பின்னல் அமைப்புகள்"
 
-#: ../js/ui/status/network.js:1685
+#: ../js/ui/status/network.js:1679
 msgid "Network Manager"
 msgstr "வலைப்பின்னல் மேலாளர்"
 
-#: ../js/ui/status/network.js:1775
+#: ../js/ui/status/network.js:1769
 msgid "Connection failed"
 msgstr "இணைப்பு தோல்வியுற்றது"
 
-#: ../js/ui/status/network.js:1776
+#: ../js/ui/status/network.js:1770
 msgid "Activation of network connection failed"
 msgstr "வலைப்பின்னல் இணைப்பு செயலாக்கம் தோல்வி அடைந்தது"
 
-#: ../js/ui/status/network.js:2071
+#: ../js/ui/status/network.js:2065
 msgid "Networking is disabled"
 msgstr "வலைப்பின்னல் செயல் நீக்கப்பட்டது"
 
@@ -1234,17 +1474,17 @@ msgstr "வலைப்பின்னல் செயல் நீக்கப�
 msgid "Battery"
 msgstr "மின்கலம்"
 
-#: ../js/ui/status/power.js:73
+#: ../js/ui/status/power.js:72
 msgid "Power Settings"
 msgstr "மின்சக்தி அமைப்புகள்"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:100
+#: ../js/ui/status/power.js:94
 msgid "Estimating..."
 msgstr "கணிக்கிறது..."
 
-#: ../js/ui/status/power.js:107
+#: ../js/ui/status/power.js:101
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -1252,83 +1492,83 @@ msgstr[0] "%d மணிநேரம் மீதி "
 msgstr[1] "%d மணிகள் மீதி "
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:110
+#: ../js/ui/status/power.js:104
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s மீதமுள்ளது"
 
-#: ../js/ui/status/power.js:112
+#: ../js/ui/status/power.js:106
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "மணி"
 msgstr[1] "மணிகள்"
 
-#: ../js/ui/status/power.js:112
+#: ../js/ui/status/power.js:106
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "நிமிடம்"
 msgstr[1] "நிமிடங்கள்"
 
-#: ../js/ui/status/power.js:115
+#: ../js/ui/status/power.js:109
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d நிமிடம் மீதி"
 msgstr[1] "%d நிமிடங்கள் மீதி"
 
-#: ../js/ui/status/power.js:118 ../js/ui/status/power.js:192
+#: ../js/ui/status/power.js:112 ../js/ui/status/power.js:186
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../js/ui/status/power.js:201
+#: ../js/ui/status/power.js:195
 msgid "AC adapter"
 msgstr "ஏசி தகைவி"
 
-#: ../js/ui/status/power.js:203
+#: ../js/ui/status/power.js:197
 msgid "Laptop battery"
 msgstr "மடிக்கணினி மின்கலம்"
 
-#: ../js/ui/status/power.js:205
+#: ../js/ui/status/power.js:199
 msgid "UPS"
 msgstr "யூபிஎஸ்"
 
-#: ../js/ui/status/power.js:207
+#: ../js/ui/status/power.js:201
 msgid "Monitor"
 msgstr "திரை"
 
-#: ../js/ui/status/power.js:209
+#: ../js/ui/status/power.js:203
 msgid "Mouse"
 msgstr "சொடுக்கி"
 
-#: ../js/ui/status/power.js:213
+#: ../js/ui/status/power.js:207
 msgid "PDA"
 msgstr "பிடிஏ"
 
-#: ../js/ui/status/power.js:215
+#: ../js/ui/status/power.js:209
 msgid "Cell phone"
 msgstr "அலைபேசி"
 
-#: ../js/ui/status/power.js:217
+#: ../js/ui/status/power.js:211
 msgid "Media player"
 msgstr "ஊடக இயக்கி"
 
-#: ../js/ui/status/power.js:219
+#: ../js/ui/status/power.js:213
 msgid "Tablet"
 msgstr "திட்டு"
 
-#: ../js/ui/status/power.js:221
+#: ../js/ui/status/power.js:215
 msgid "Computer"
 msgstr "கணினி"
 
-#: ../js/ui/status/power.js:223
+#: ../js/ui/status/power.js:217
 msgctxt "device"
 msgid "Unknown"
 msgstr "தெரியாத"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:218
+#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:223
 msgid "Volume"
 msgstr "ஒலிஅளவு"
 
@@ -1336,299 +1576,67 @@ msgstr "ஒலிஅளவு"
 msgid "Microphone"
 msgstr "ஒலிவாங்கி"
 
-#. FIXME: We don't have a 'chat room' icon (bgo #653737) use
-#. system-users for now as Empathy does.
-#: ../js/ui/telepathyClient.js:228
-msgid "Invitation"
-msgstr "அழைப்பு"
-
-#. We got the TpContact
-#: ../js/ui/telepathyClient.js:288
-msgid "Call"
-msgstr "அழை"
-
-#. We got the TpContact
-#: ../js/ui/telepathyClient.js:304
-msgid "File Transfer"
-msgstr "கோப்பு பறிமாற்றம் "
-
-#: ../js/ui/telepathyClient.js:385
-msgid "Subscription request"
-msgstr "சந்தா வேண்டுதல்"
-
-#: ../js/ui/telepathyClient.js:421
-msgid "Connection error"
-msgstr "இணைப்பு பிழை"
-
-#. Translators: this is a time format string followed by a date.
-#. If applicable, replace %X with a strftime format valid for your
-#. locale, without seconds.
-#: ../js/ui/telepathyClient.js:917
-#, no-c-format
-msgid "Sent at <b>%X</b> on <b>%A</b>"
-msgstr " <b>%X</b> போது <b>%A</b> %A அன்று அனுப்பியது"
-
-#. Translators: this is a time format in the style of "Wednesday, May 25",
-#. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:923
-#, no-c-format
-msgid "Sent on <b>%A</b>, <b>%B %d</b>"
-msgstr "<b>%A</b>, <b>%B %d</b> அன்று அனுப்பியது"
-
-#. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
-#. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:928
-#, no-c-format
-msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-msgstr " <b>%A</b>, <b>%B %d</b>, %Y அன்று அனுப்பியது"
-
-#. Translators: this is the other person changing their old IM name to their new
-#. IM name.
-#: ../js/ui/telepathyClient.js:957
-#, c-format
-msgid "%s is now known as %s"
-msgstr "%s இப்போது %s ஆனார்"
-
-#. translators: argument is a room name like
-#. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1057
-#, c-format
-msgid "Invitation to %s"
-msgstr "%s க்கு அழைப்பு"
-
-#. translators: first argument is the name of a contact and the second
-#. * one the name of a room. "Alice is inviting you to join room@jabber.org
-#. * for example.
-#: ../js/ui/telepathyClient.js:1065
-#, c-format
-msgid "%s is inviting you to join %s"
-msgstr "%s உங்களை %s உடன் சேர அழைக்கிறார்."
-
-#: ../js/ui/telepathyClient.js:1067 ../js/ui/telepathyClient.js:1146
-#: ../js/ui/telepathyClient.js:1209
-msgid "Decline"
-msgstr "நிராகரி"
-
-#: ../js/ui/telepathyClient.js:1068 ../js/ui/telepathyClient.js:1147
-#: ../js/ui/telepathyClient.js:1210
-msgid "Accept"
-msgstr "ஏற்றுக்கொள்"
-
-#. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1098
-#, c-format
-msgid "Video call from %s"
-msgstr "%s இடமிருந்து விடியோ அழைப்பு"
-
-#. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1101
-#, c-format
-msgid "Call from %s"
-msgstr "%s இடமிருந்து அழைப்பு"
-
-#. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1108
-msgid "Answer"
-msgstr "பதிலளி"
-
-#. To translators: The first parameter is
-#. * the contact's alias and the second one is the
-#. * file name. The string will be something
-#. * like: "Alice is sending you test.ogg"
-#.
-#: ../js/ui/telepathyClient.js:1140
-#, c-format
-msgid "%s is sending you %s"
-msgstr "%s உங்களுக்கு %s அனுப்புகிறார்"
-
-#. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1175
-#, c-format
-msgid "%s would like permission to see when you are online"
-msgstr "%s நீங்கள் இணைப்பில் இருக்கும் போது காண அனுமதி வேண்டுகிறார். "
-
-#: ../js/ui/telepathyClient.js:1267
-msgid "Network error"
-msgstr "வலையமைப்பு பிழை"
-
-#: ../js/ui/telepathyClient.js:1269
-msgid "Authentication failed"
-msgstr "உறுதி செய்தல் தோல்வி"
-
-#: ../js/ui/telepathyClient.js:1271
-msgid "Encryption error"
-msgstr "மறையாக்க பிழை"
-
-#: ../js/ui/telepathyClient.js:1273
-msgid "Certificate not provided"
-msgstr "சான்றிதழ் தரப்படவில்லை"
-
-#: ../js/ui/telepathyClient.js:1275
-msgid "Certificate untrusted"
-msgstr "சான்றிதழில் நம்பக தன்மை இல்லை"
-
-#: ../js/ui/telepathyClient.js:1277
-msgid "Certificate expired"
-msgstr "சான்றிதழ் காலாவதியானது"
-
-#: ../js/ui/telepathyClient.js:1279
-msgid "Certificate not activated"
-msgstr "சான்றிதழ் செயல்படுத்தப்படவில்லை"
-
-#: ../js/ui/telepathyClient.js:1281
-msgid "Certificate hostname mismatch"
-msgstr "சான்றிதழ் புரவலன் பெயர் ஒத்திசையவில்லை"
-
-#: ../js/ui/telepathyClient.js:1283
-msgid "Certificate fingerprint mismatch"
-msgstr "சான்றிதழ் அடையாளம் ஒத்திசையவில்லை"
-
-#: ../js/ui/telepathyClient.js:1285
-msgid "Certificate self-signed"
-msgstr "சான்றிதழ் தானே கையெழுத்திட்டது"
-
-#: ../js/ui/telepathyClient.js:1287
-msgid "Status is set to offline"
-msgstr "நிலை இப்போது இணைப்பு விலகி "
-
-#: ../js/ui/telepathyClient.js:1289
-msgid "Encryption is not available"
-msgstr "குறீயீட்டுமுறை கிடைப்பில் இல்லை"
-
-#: ../js/ui/telepathyClient.js:1291
-msgid "Certificate is invalid"
-msgstr "சான்றிதழ் செல்லுபடியாகாது"
-
-#: ../js/ui/telepathyClient.js:1293
-msgid "Connection has been refused"
-msgstr "இணைப்பு மறுக்கப்பட்டது"
-
-#: ../js/ui/telepathyClient.js:1295
-msgid "Connection can't be established"
-msgstr "இணைக்க முடியவில்லை"
-
-#: ../js/ui/telepathyClient.js:1297
-msgid "Connection has been lost"
-msgstr "இணைப்பு அற்றுப்போயிற்று"
-
-#: ../js/ui/telepathyClient.js:1299
-msgid "This account is already connected to the server"
-msgstr "இந்த கணக்கு ஏற்கனவே சேவையகத்துக்கு இணைக்கப்பட்டது"
-
-#: ../js/ui/telepathyClient.js:1301
-msgid "Connection has been replaced by a new connection using the same resource"
-msgstr "இணைப்பு அதே முலத்துடன் புதிய இணைப்பால் மாற்றப்பட்டது."
-
-#: ../js/ui/telepathyClient.js:1303
-msgid "The account already exists on the server"
-msgstr "இந்த கணக்கு ஏற்கனவே சேவையகத்தில் உள்ளது"
-
-#: ../js/ui/telepathyClient.js:1305
-msgid "Server is currently too busy to handle the connection"
-msgstr "இணைப்பை கையாள சேவையகம் இப்போது மிகவும் வேலை பளுவில் உள்ளது."
-
-#: ../js/ui/telepathyClient.js:1307
-msgid "Certificate has been revoked"
-msgstr "சான்றிதழ் ரத்து செய்யப்பட்டது"
-
-#: ../js/ui/telepathyClient.js:1309
-msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr ""
-"சான்றிதழ் பாதுகாப்பில்லாத சைபர் அல்கோரிதத்தை பயன்படுத்துகிறது. இது மறையாக்கத்தில் "
-"பலகீனமானது."
-
-#: ../js/ui/telepathyClient.js:1311
-msgid ""
-"The length of the server certificate, or the depth of the server certificate "
-"chain, exceed the limits imposed by the cryptography library"
-msgstr ""
-"சேவயகத்தின் சான்றிதழின் நீளம் அல்லது சங்கிலியின் ஆழம் மறையாக்க நூலகம் வரயறுத்த மதிப்பை "
-"தாண்டியது."
-
-#: ../js/ui/telepathyClient.js:1313
-msgid "Internal error"
-msgstr "உள்ளார்ந்த பிழை"
-
-#. translators: argument is the account name, like
-#. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1323
-#, c-format
-msgid "Connection to %s failed"
-msgstr " %s க்கு இணைப்பு தோல்வி அடைந்தது"
-
-#: ../js/ui/telepathyClient.js:1332
-msgid "Reconnect"
-msgstr "மீள் இணை"
-
-#: ../js/ui/telepathyClient.js:1333
-msgid "Edit account"
-msgstr "கணக்கை திருத்துக"
-
-#: ../js/ui/telepathyClient.js:1378
-msgid "Unknown reason"
-msgstr "தெரியாத காரணம்"
-
-#: ../js/ui/unlockDialog.js:140
+#: ../js/ui/unlockDialog.js:176
 msgid "Log in as another user"
 msgstr "வேறு பயனராக உள்நுழைக"
 
-#: ../js/ui/userMenu.js:169
+#: ../js/ui/userMenu.js:175
 msgid "Available"
 msgstr "இருப்பவை"
 
-#: ../js/ui/userMenu.js:172
+#: ../js/ui/userMenu.js:178
 msgid "Busy"
 msgstr "வேலையில்"
 
-#: ../js/ui/userMenu.js:175
+#: ../js/ui/userMenu.js:181
 msgid "Invisible"
 msgstr "மறைந்து"
 
-#: ../js/ui/userMenu.js:178
+#: ../js/ui/userMenu.js:184
 msgid "Away"
 msgstr "வெளியில்"
 
-#: ../js/ui/userMenu.js:181
+#: ../js/ui/userMenu.js:187
 msgid "Idle"
 msgstr "சும்மாயிருத்தல் "
 
-#: ../js/ui/userMenu.js:184
+#: ../js/ui/userMenu.js:190
 msgid "Unavailable"
 msgstr "இருப்பில் இல்லை"
 
-#: ../js/ui/userMenu.js:591 ../js/ui/userMenu.js:732
+#: ../js/ui/userMenu.js:613 ../js/ui/userMenu.js:754
 msgid "Switch User"
 msgstr "பயனர் மாற்று"
 
-#: ../js/ui/userMenu.js:592
+#: ../js/ui/userMenu.js:614
 msgid "Switch Session"
 msgstr "அமர்வு மாற்று"
 
-#: ../js/ui/userMenu.js:715
+#: ../js/ui/userMenu.js:738
 msgid "Notifications"
 msgstr "அறிவிப்புகள்"
 
-#: ../js/ui/userMenu.js:724
+#: ../js/ui/userMenu.js:746
 msgid "System Settings"
 msgstr "கணினி அமைப்புகள்"
 
-#: ../js/ui/userMenu.js:737
+#: ../js/ui/userMenu.js:759
 msgid "Log Out"
 msgstr "வெளியேறு"
 
-#: ../js/ui/userMenu.js:742
+#: ../js/ui/userMenu.js:764
 msgid "Lock"
 msgstr "பூட்டு"
 
-#: ../js/ui/userMenu.js:757
+#: ../js/ui/userMenu.js:779
 msgid "Install Updates & Restart"
 msgstr "மேம்படுத்தல்களை நிறுவி மீள்துவக்கு"
 
-#: ../js/ui/userMenu.js:775
+#: ../js/ui/userMenu.js:797
 msgid "Your chat status will be set to busy"
 msgstr "உங்கள் நடப்பு நிலையை வேலையில் என  அமைக்கப்பட்டது"
 
-#: ../js/ui/userMenu.js:776
+#: ../js/ui/userMenu.js:798
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1636,19 +1644,19 @@ msgstr ""
 "அறிவிப்புகள் இப்போது செயல் நீக்கப்பட்டன. இது அரட்டை செய்திகளையும் உள்லடக்கும். உங்கள் "
 "வலைஇணைப்பு நிலை நீங்கள் மற்றவர் செய்திகளை காணமாட்டீர்கள் என மாற்றி அமைக்கப்பட்டது"
 
-#: ../js/ui/viewSelector.js:86
+#: ../js/ui/viewSelector.js:85
 msgid "Windows"
 msgstr "சாளரங்கள்"
 
-#: ../js/ui/viewSelector.js:90
+#: ../js/ui/viewSelector.js:89
 msgid "Applications"
 msgstr "பயன்பாடுகள்"
 
-#: ../js/ui/viewSelector.js:94 ../src/shell-util.c:250
+#: ../js/ui/viewSelector.js:93
 msgid "Search"
 msgstr "தேடு"
 
-#: ../js/ui/wanda.js:123
+#: ../js/ui/wanda.js:119
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1657,12 +1665,12 @@ msgstr ""
 "மன்னிக்க இன்றூ உங்களுக்கு பொன்மொழி இல்லை:\n"
 "%s"
 
-#: ../js/ui/wanda.js:127
+#: ../js/ui/wanda.js:123
 #, c-format
 msgid "%s the Oracle says"
 msgstr "%s அசரீரி சொல்லுகிறது"
 
-#: ../js/ui/wanda.js:168
+#: ../js/ui/wanda.js:164
 msgid "Your favorite Easter Egg"
 msgstr "உங்களுடைய அபிமான ஈஸ்டர் முட்டை"
 
@@ -1734,31 +1742,27 @@ msgstr "ஐக்கிய முடியரசுகள்"
 msgid "Default"
 msgstr "முன்னிருப்பு"
 
-#: ../src/shell-polkit-authentication-agent.c:340
+#: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "பயனர் உறுதிப்படுத்தல் உரையாடலை வெளியனுப்பினார்."
 
-#. Translators: this is the same string as the one found in
-#. * nautilus
-#: ../src/shell-util.c:94
-msgid "Home"
-msgstr "இல்லம்"
+#~ msgid "disabled OpenSearch providers"
+#~ msgstr "ஓபன்செர்ச் வழங்குவோர் செயல்நீக்கம் செய்யபட்டனர்."
 
-#. Translators: this is the same string as the one found in
-#. * nautilus
-#: ../src/shell-util.c:104
-msgid "File System"
-msgstr "கோப்பு அமைப்பு"
+#~ msgid "Failed to unmount '%s'"
+#~ msgstr "'%s' ஐ இறக்க முடியவில்லை"
 
-#. Translators: the first string is the name of a gvfs
-#. * method, and the second string is a path. For
-#. * example, "Trash: some-directory". It means that the
-#. * directory called "some-directory" is in the trash.
-#.
-#: ../src/shell-util.c:300
-#, c-format
-msgid "%1$s: %2$s"
-msgstr "%1$s: %2$s"
+#~ msgid "Retry"
+#~ msgstr "மறு முயற்சி"
+
+#~ msgid "PLACES & DEVICES"
+#~ msgstr "PLACES & DEVICES"
+
+#~ msgid "Home"
+#~ msgstr "இல்லம்"
+
+#~ msgid "%1$s: %2$s"
+#~ msgstr "%1$s: %2$s"
 
 #~ msgid "If true, display date in the clock, in addition to time."
 #~ msgstr "உண்மையெனில், கடிகாரத்தில் மணியுடன் நாளை காட்டு."
@@ -2023,9 +2027,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "Opacity of the crosshairs"
 #~ msgstr "குறுக்கிழைகள் இன் ஒளிபுகாதன்மை"
-
-#~ msgid "Screen position"
-#~ msgstr "திரை நிலை"
 
 #~ msgid "Scroll magnified contents beyond the edges of the desktop"
 #~ msgstr "மேல்மேசையின் விளிம்புகளுக்கு வெளீயே இருக்கும் அடக்கத்தை உருளை மூலம் காட்டு"
