@@ -2,15 +2,15 @@
 # Copyright (C) 2011 cogl's COPYRIGHT HOLDER
 # This file is distributed under the same license as the cogl package.
 #
-# I Felix <ifelix@redhat.com>, 2011.
 # Shantha Kumar <shantha.thamizh@gmail.com> 2012.
+# I Felix <ifelix@redhat.com>, 2011.
+# Dr.T.Vasudevan <agnihot3@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
-"cgi?product=clutter\n"
-"POT-Creation-Date: 2012-03-05 23:14+0000\n"
-"PO-Revision-Date: 2012-08-31 09:43+0530\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter\n"
+"POT-Creation-Date: 2012-09-20 10:47+0530\n"
+"PO-Revision-Date: 2012-09-20 10:51+0530\n"
 "Last-Translator: Dr.T.Vasudevan <agnihot3@gmail.com>\n"
 "Language-Team: Tamil <ta@li.org>\n"
 "Language: ta\n"
@@ -20,337 +20,344 @@ msgstr ""
 "X-Generator: Lokalize 1.1\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: cogl/cogl-debug.c:172
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
 msgstr "ஆதரிக்கப்படும் வழுநீக்கல் மதிப்புகள்:"
 
-#: cogl/cogl-debug.c:177
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
 msgstr "சிறப்பு வழுநீக்கல் மதிப்புகள்:"
 
-#: cogl/cogl-debug.c:179 cogl/cogl-debug.c:181
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr "நடத்தை - அல்லாத பிற ஏல்லா வழுநீக்கல் விருப்பங்களையும் செயல்படுத்தும்"
 
-#: cogl/cogl-debug.c:225
-msgid "Cogl debugging flags to set"
-msgstr "Cogl பிழைதிருத்துதல் கொடிகளை அமைக்கிறது"
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "கூடுதல் சூழல் மாறிகள்:"
 
-#: cogl/cogl-debug.c:227
-msgid "Cogl debugging flags to unset"
-msgstr "Cogl பிழைதிருத்துதல் கொடிகளை அமைத்தல்நீக்குகிறது"
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr "காண்பித்துக்கொள்ள வேண்டிய GL நீட்சிகளின் கமாவால் பிரித்த பட்டியல் முடக்கப்பட்டுள்ளது"
 
-#: cogl/cogl-debug.c:276
-msgid "Cogl Options"
-msgstr "Cogl விருப்பங்கள்"
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr ""
+"இயக்ககம் ஆதரிக்கும் என Cogl அனுமானித்துக்கொள்ளும் GL பதிப்பை மீறி "
+"செயல்படுத்து"
 
-#: cogl/cogl-debug.c:277
-msgid "Show Cogl options"
-msgstr "Cogl விருப்பங்களை காட்டவும்"
-
-#: cogl/cogl-debug-options.h:25 cogl/cogl-debug-options.h:30
-#: cogl/cogl-debug-options.h:35 cogl/cogl-debug-options.h:40
-#: cogl/cogl-debug-options.h:45 cogl/cogl-debug-options.h:50
-#: cogl/cogl-debug-options.h:55 cogl/cogl-debug-options.h:61
-#: cogl/cogl-debug-options.h:66 cogl/cogl-debug-options.h:71
-#: cogl/cogl-debug-options.h:158 cogl/cogl-debug-options.h:163
-#: cogl/cogl-debug-options.h:168 cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
+#: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
+#: ../cogl/cogl-debug-options.h:45 ../cogl/cogl-debug-options.h:50
+#: ../cogl/cogl-debug-options.h:55 ../cogl/cogl-debug-options.h:61
+#: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
+#: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
+#: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Cogl தடமறிதல்"
 
-#: cogl/cogl-debug-options.h:27
+#: ../cogl/cogl-debug-options.h:27
 msgid "CoglObject references"
 msgstr "CoglObject குறிப்புகள்"
 
-#: cogl/cogl-debug-options.h:28
+#: ../cogl/cogl-debug-options.h:28
 msgid "Debug ref counting issues for CoglObjects"
 msgstr "CoglObjects க்கான குறிப்பு எண்ணிடல் சிக்கல்களை வழுநீக்கு"
 
-#: cogl/cogl-debug-options.h:32
+#: ../cogl/cogl-debug-options.h:32
 msgid "Trace Texture Slicing"
 msgstr "டெக்ஸ்ச்சர் ஸ்லைசிங்கை தடமறி"
 
-#: cogl/cogl-debug-options.h:33
+#: ../cogl/cogl-debug-options.h:33
 msgid "debug the creation of texture slices"
 msgstr "டெக்ஸ்ச்சர் ஸ்லைசஸின் உருவாக்கத்தை வழுநீக்கு"
 
-#: cogl/cogl-debug-options.h:37
+#: ../cogl/cogl-debug-options.h:37
 msgid "Trace Atlas Textures"
 msgstr "அட்லாஸ் டெக்ஸ்ச்சர்களைத் தடமறி"
 
-#: cogl/cogl-debug-options.h:38
+#: ../cogl/cogl-debug-options.h:38
 msgid "Debug texture atlas management"
 msgstr "டெக்ஸ்ச்சர் அட்லாஸ் நிர்வாகத்தை வழுநீக்கு"
 
-#: cogl/cogl-debug-options.h:42
+#: ../cogl/cogl-debug-options.h:42
 msgid "Trace Blend Strings"
 msgstr "கலப்பு சரங்களைத் தடமறி"
 
-#: cogl/cogl-debug-options.h:43
+#: ../cogl/cogl-debug-options.h:43
 msgid "Debug CoglBlendString parsing"
 msgstr "CoglBlendString பாகுபடுத்தலை வழுநீக்கு"
 
-#: cogl/cogl-debug-options.h:47
+#: ../cogl/cogl-debug-options.h:47
 msgid "Trace Journal"
 msgstr "இதழைத் தடமறி"
 
-#: cogl/cogl-debug-options.h:48
+#: ../cogl/cogl-debug-options.h:48
 msgid "View all the geometry passing through the journal"
 msgstr "இதழின் வழியே கடந்து செல்லும் எல்லா வடிவங்களையும் காண்பி"
 
-#: cogl/cogl-debug-options.h:52
+#: ../cogl/cogl-debug-options.h:52
 msgid "Trace Batching"
 msgstr "தொகுப்பாக்கத்தைத் தடமறி"
 
-#: cogl/cogl-debug-options.h:53
+#: ../cogl/cogl-debug-options.h:53
 msgid "Show how geometry is being batched in the journal"
 msgstr "இதழில் வடிவம் எப்படி தொகுப்பாக்கம் செய்யப்படுகிறது எனக் காண்பி"
 
-#: cogl/cogl-debug-options.h:57
+#: ../cogl/cogl-debug-options.h:57
 msgid "Trace matrices"
 msgstr "அணிகளைத் தடமறி"
 
-#: cogl/cogl-debug-options.h:58
+#: ../cogl/cogl-debug-options.h:58
 msgid "Trace all matrix manipulation"
 msgstr "எல்லா அணி கையாளுகைகளையும் தடமறி"
 
-#: cogl/cogl-debug-options.h:63
+#: ../cogl/cogl-debug-options.h:63
 msgid "Trace Misc Drawing"
 msgstr "மற்ற வரைபொருள்களைத் தடமறி"
 
-#: cogl/cogl-debug-options.h:64
+#: ../cogl/cogl-debug-options.h:64
 msgid "Trace some misc drawing operations"
 msgstr "சில மற்ற வரைபொருள் செயல்பாடுகளைத் தடமறி"
 
-#: cogl/cogl-debug-options.h:68
+#: ../cogl/cogl-debug-options.h:68
 msgid "Trace Pango Renderer"
 msgstr "பேங்கோ ரென்டரரைத் தடமறி"
 
-#: cogl/cogl-debug-options.h:69
+#: ../cogl/cogl-debug-options.h:69
 msgid "Trace the Cogl Pango renderer"
 msgstr "Cogl பேங்கோ ரென்டரரைத் தடமறி"
 
-#: cogl/cogl-debug-options.h:73
+#: ../cogl/cogl-debug-options.h:73
 msgid "Trace CoglTexturePixmap backend"
 msgstr "CoglTexturePixmap பின்புல முறைமையைத் தடமறி"
 
-#: cogl/cogl-debug-options.h:74
+#: ../cogl/cogl-debug-options.h:74
 msgid "Trace the Cogl texture pixmap backend"
 msgstr "CoglTexturePixmap பின்புல டெக்ஸ்ச்சர் முறைமையைத் தடமறி"
 
-#: cogl/cogl-debug-options.h:76 cogl/cogl-debug-options.h:81
+#: ../cogl/cogl-debug-options.h:76 ../cogl/cogl-debug-options.h:81
 msgid "Visualize"
 msgstr "காட்சிப்படுத்து"
 
-#: cogl/cogl-debug-options.h:78
+#: ../cogl/cogl-debug-options.h:78
 msgid "Outline rectangles"
 msgstr "வெளிவரை செவ்வகங்கள்"
 
-#: cogl/cogl-debug-options.h:79
+#: ../cogl/cogl-debug-options.h:79
 msgid "Add wire outlines for all rectangular geometry"
 msgstr "செவ்வக வடிவங்கள் அனைத்துக்கும் வயர் வெளிவரையைச் சேர்க்கவும்"
 
-#: cogl/cogl-debug-options.h:83
+#: ../cogl/cogl-debug-options.h:83
 msgid "Show wireframes"
 msgstr "வயர்ஃப்ரேம்களைக் காண்பி"
 
-#: cogl/cogl-debug-options.h:84
+#: ../cogl/cogl-debug-options.h:84
 msgid "Add wire outlines for all geometry"
 msgstr "வடிவங்கள் அனைத்துக்கும் வயர் வெளிவரையைச் சேர்க்கவும்"
 
-#: cogl/cogl-debug-options.h:86 cogl/cogl-debug-options.h:91
-#: cogl/cogl-debug-options.h:96 cogl/cogl-debug-options.h:101
-#: cogl/cogl-debug-options.h:111 cogl/cogl-debug-options.h:116
-#: cogl/cogl-debug-options.h:122 cogl/cogl-debug-options.h:127
-#: cogl/cogl-debug-options.h:132 cogl/cogl-debug-options.h:137
-#: cogl/cogl-debug-options.h:142 cogl/cogl-debug-options.h:147
-#: cogl/cogl-debug-options.h:153 cogl/cogl-debug-options.h:173
-#: cogl/cogl-debug-options.h:178
+#: ../cogl/cogl-debug-options.h:86 ../cogl/cogl-debug-options.h:91
+#: ../cogl/cogl-debug-options.h:96 ../cogl/cogl-debug-options.h:101
+#: ../cogl/cogl-debug-options.h:111 ../cogl/cogl-debug-options.h:116
+#: ../cogl/cogl-debug-options.h:122 ../cogl/cogl-debug-options.h:127
+#: ../cogl/cogl-debug-options.h:132 ../cogl/cogl-debug-options.h:137
+#: ../cogl/cogl-debug-options.h:142 ../cogl/cogl-debug-options.h:147
+#: ../cogl/cogl-debug-options.h:153 ../cogl/cogl-debug-options.h:173
+#: ../cogl/cogl-debug-options.h:178
 msgid "Root Cause"
 msgstr "மூலக் காரணம்"
 
-#: cogl/cogl-debug-options.h:88
+#: ../cogl/cogl-debug-options.h:88
 msgid "Disable Journal batching"
 msgstr "இதழ் தொகுப்பாக்கத்தை முடக்கு"
 
-#: cogl/cogl-debug-options.h:89
+#: ../cogl/cogl-debug-options.h:89
 msgid "Disable batching of geometry in the Cogl Journal."
 msgstr "Cogl இதழில் வடிவங்களைத் தொகுப்பாக்கம் செய்தலை முடக்கு."
 
-#: cogl/cogl-debug-options.h:93
+#: ../cogl/cogl-debug-options.h:93
 msgid "Disable GL Vertex Buffers"
 msgstr "GL முனை தாங்கல்களை முடக்கு"
 
-#: cogl/cogl-debug-options.h:94
+#: ../cogl/cogl-debug-options.h:94
 msgid "Disable use of OpenGL vertex buffer objects"
 msgstr "OpenGL முனை தாங்கல் பொருள்களைப் பயன்படுத்துவதை முடக்கு"
 
-#: cogl/cogl-debug-options.h:98
+#: ../cogl/cogl-debug-options.h:98
 msgid "Disable GL Pixel Buffers"
 msgstr "GL பிக்சல் தாங்கல்களை முடக்கு"
 
-#: cogl/cogl-debug-options.h:99
+#: ../cogl/cogl-debug-options.h:99
 msgid "Disable use of OpenGL pixel buffer objects"
 msgstr "OpenGL பிக்சல் தாங்கல் பொருள்களைப் பயன்படுத்துவதை முடக்கு"
 
-#: cogl/cogl-debug-options.h:103
+#: ../cogl/cogl-debug-options.h:103
 msgid "Disable software rect transform"
 msgstr "மென்பொருள் செவ்வக உருமாற்றத்தை முடக்கு"
 
-#: cogl/cogl-debug-options.h:104
+#: ../cogl/cogl-debug-options.h:104
 msgid "Use the GPU to transform rectangular geometry"
 msgstr "செவ்வக வடிவத்தை உருமாற்ற GPU வைப் பயன்படுத்து"
 
-#: cogl/cogl-debug-options.h:106
+#: ../cogl/cogl-debug-options.h:106
 msgid "Cogl Specialist"
 msgstr "Cogl வல்லுநர்"
 
-#: cogl/cogl-debug-options.h:108
-#, fuzzy
+#: ../cogl/cogl-debug-options.h:108
 msgid "Dump atlas images"
 msgstr "அட்லாஸ் படங்களைத் திணி"
 
-#: cogl/cogl-debug-options.h:109
-#, fuzzy
+#: ../cogl/cogl-debug-options.h:109
 msgid "Dump texture atlas changes to an image file"
 msgstr "டெக்ஸ்ச்சர் அட்லாஸ் மாற்றங்களை ஒரு படக் கோப்பில் திணி"
 
-#: cogl/cogl-debug-options.h:113
+#: ../cogl/cogl-debug-options.h:113
 msgid "Disable texture atlasing"
 msgstr "டெக்ஸ்ச்சர் அட்லாசிங்கை முடக்கு"
 
-#: cogl/cogl-debug-options.h:114
+#: ../cogl/cogl-debug-options.h:114
 msgid "Disable use of texture atlasing"
 msgstr "டெக்ஸ்ச்சர் அட்லாஸிங்கைப் பயன்படுத்துவதை முடக்கு"
 
-#: cogl/cogl-debug-options.h:118
+#: ../cogl/cogl-debug-options.h:118
 msgid "Disable sharing the texture atlas between text and images"
-msgstr ""
-"உரைக்கும் படங்களுக்கும் இடையே டெக்ஸ்ச்சர் அட்லாசைப் பகிர்ந்துகொள்ளுதலை "
-"முடக்கு"
+msgstr "உரைக்கும் படங்களுக்கும் இடையே டெக்ஸ்ச்சர் அட்லாசைப் பகிர்ந்துகொள்ளுதலை முடக்கு"
 
-#: cogl/cogl-debug-options.h:119
+#: ../cogl/cogl-debug-options.h:119
 msgid ""
 "When this is set the glyph cache will always use a separate texture for its "
 "atlas. Otherwise it will try to share the atlas with images."
 msgstr ""
-"இதை அமைத்திருந்தால், கிளிஃப் தேக்ககமானது அதன் அட்லாசுக்கு எப்போதும் தனியான "
-"ஒரு "
-"டெக்ஸ்ச்சரையே பயன்படுத்தும். இல்லாவிட்டால் அட்லாஸை படங்களுடன் பகிர்ந்துகொள்ள "
-"முயற்சிக்கும்."
+"இதை அமைத்திருந்தால், கிளிஃப் தேக்ககமானது அதன் அட்லாசுக்கு எப்போதும் தனியான ஒரு "
+"டெக்ஸ்ச்சரையே பயன்படுத்தும். இல்லாவிட்டால் அட்லாஸை படங்களுடன் பகிர்ந்துகொள்ள முயற்சிக்கும்."
 
-#: cogl/cogl-debug-options.h:124
+#: ../cogl/cogl-debug-options.h:124
 msgid "Disable texturing"
 msgstr "டெக்ஸ்ச்சரிங் செய்தலை முடக்கு"
 
-#: cogl/cogl-debug-options.h:125
+#: ../cogl/cogl-debug-options.h:125
 msgid "Disable texturing any primitives"
 msgstr "பண்பற்றதை டெக்ஸ்ச்சரிங் செய்தலை முடக்கு"
 
-#: cogl/cogl-debug-options.h:129
+#: ../cogl/cogl-debug-options.h:129
 msgid "Disable arbfp"
 msgstr "arbfp ஐ முடக்கு"
 
-#: cogl/cogl-debug-options.h:130
+#: ../cogl/cogl-debug-options.h:130
 msgid "Disable use of ARB fragment programs"
 msgstr "ARB துண்டு நிரல்களைப் பயன்படுத்துவதை முடக்கு"
 
-#: cogl/cogl-debug-options.h:134
+#: ../cogl/cogl-debug-options.h:134
 msgid "Disable fixed"
 msgstr "நிலையானவற்றை முடக்கு"
 
-#: cogl/cogl-debug-options.h:135
+#: ../cogl/cogl-debug-options.h:135
 msgid "Disable use of the fixed function pipeline backend"
 msgstr "நிலையான செயல்தொகுதி பைப்லைன் பின்புல முறைமையைப் பயன்படுத்துவதை முடக்கு"
 
-#: cogl/cogl-debug-options.h:139
+#: ../cogl/cogl-debug-options.h:139
 msgid "Disable GLSL"
 msgstr "GLSL ஐ முடக்கு"
 
-#: cogl/cogl-debug-options.h:140
+#: ../cogl/cogl-debug-options.h:140
 msgid "Disable use of GLSL"
 msgstr "GLSL பயன்பாட்டை முடக்கு"
 
-#: cogl/cogl-debug-options.h:144
+#: ../cogl/cogl-debug-options.h:144
 msgid "Disable blending"
 msgstr "கலத்தலை முடக்கு"
 
-#: cogl/cogl-debug-options.h:145
+#: ../cogl/cogl-debug-options.h:145
 msgid "Disable use of blending"
 msgstr "கலத்தலைப் பயன்படுத்துவதை முடக்கு"
 
-#: cogl/cogl-debug-options.h:149
+#: ../cogl/cogl-debug-options.h:149
 msgid "Disable non-power-of-two textures"
 msgstr "அடுக்கு இரன்டு என அல்லாத டெக்ஸ்ச்சர்களை முடக்கு"
 
-#: cogl/cogl-debug-options.h:150
+#: ../cogl/cogl-debug-options.h:150
 msgid ""
 "Makes Cogl think that the GL driver doesn't support NPOT textures so that it "
 "will create sliced textures or textures with waste instead."
 msgstr ""
-"GL இயக்ககங்கள் NPOT டெக்ஸ்ச்சர்களை ஆதரிக்காது, ஆகவே அது கூறிட்ட "
-"டெக்ஸ்ச்சர்கள் அல்லது வீணான "
+"GL இயக்ககங்கள் NPOT டெக்ஸ்ச்சர்களை ஆதரிக்காது, ஆகவே அது கூறிட்ட டெக்ஸ்ச்சர்கள் அல்லது வீணான "
 "டெக்ஸ்ச்சர்களை உருவாக்கும் என Cogl ஐ நினைத்துக்கொள்ளச் செய்யும்."
 
-#: cogl/cogl-debug-options.h:155
+#: ../cogl/cogl-debug-options.h:155
 msgid "Disable software clipping"
 msgstr "மென்பொருள் கிளிப்பிங்கை முடக்கு"
 
-#: cogl/cogl-debug-options.h:156
+#: ../cogl/cogl-debug-options.h:156
 msgid "Disables Cogl's attempts to clip some rectangles in software."
-msgstr ""
-"மென்பொருளில் சில செவ்வகங்களைக் கிளிப் செய்ய Cogl எடுக்கும் முயற்சிகளை "
-"முடக்குகிறது."
+msgstr "மென்பொருளில் சில செவ்வகங்களைக் கிளிப் செய்ய Cogl எடுக்கும் முயற்சிகளை முடக்குகிறது."
 
-#: cogl/cogl-debug-options.h:160
+#: ../cogl/cogl-debug-options.h:160
 msgid "Show source"
 msgstr "மூலத்தைக் காண்பி"
 
-#: cogl/cogl-debug-options.h:161
+#: ../cogl/cogl-debug-options.h:161
 msgid "Show generated ARBfp/GLSL source code"
 msgstr "உருவாக்கப்பட்ட ARBfp/GLSL மூலக் குறியீட்டைக் காண்பி"
 
-#: cogl/cogl-debug-options.h:165
+#: ../cogl/cogl-debug-options.h:165
 msgid "Trace some OpenGL"
 msgstr "சில OpenGL ஐத் தடமறி"
 
-#: cogl/cogl-debug-options.h:166
+#: ../cogl/cogl-debug-options.h:166
 msgid "Traces some select OpenGL calls"
 msgstr "தேர்ந்தெடுக்கப்பட்ட சில OpenGL அழைப்புகளைத் தடமறி"
 
-#: cogl/cogl-debug-options.h:170
+#: ../cogl/cogl-debug-options.h:170
 msgid "Trace offscreen support"
 msgstr "திரையிலல்லாத ஆதரவைத் தடமறி"
 
-#: cogl/cogl-debug-options.h:171
+#: ../cogl/cogl-debug-options.h:171
 msgid "Debug offscreen support"
 msgstr "திரையிலல்லாத ஆதரவை வழுநீக்கு"
 
-#: cogl/cogl-debug-options.h:175
+#: ../cogl/cogl-debug-options.h:175
 msgid "Disable program caches"
 msgstr "நிரல் தேக்ககங்களை முடக்கு"
 
-#: cogl/cogl-debug-options.h:176
+#: ../cogl/cogl-debug-options.h:176
 msgid "Disable fallback caches for arbfp and glsl programs"
 msgstr "arbfp மற்றும் glsl நிரல்களுக்கு ஃபால்பேக் தேக்ககங்களை முடக்கு"
 
-#: cogl/cogl-debug-options.h:180
+#: ../cogl/cogl-debug-options.h:180
 msgid "Disable read pixel optimization"
 msgstr "பிக்சல் உகப்பாக்குதலைப் படித்தலை முடக்கு"
 
-#: cogl/cogl-debug-options.h:181
-msgid ""
-"Disable optimization for reading 1px for simple scenes of opaque rectangles"
+#: ../cogl/cogl-debug-options.h:181
+msgid "Disable optimization for reading 1px for simple scenes of opaque rectangles"
 msgstr ""
-"ஒளி  ஊடுருவக்கூடிய செவ்வகங்களின் எளிய காட்சிகளுக்கு 1px ஐ வாசிப்பதற்கான "
-"உகப்பாக்கலை "
+"ஒளி  ஊடுருவக்கூடிய செவ்வகங்களின் எளிய காட்சிகளுக்கு 1px ஐ வாசிப்பதற்கான உகப்பாக்கலை "
 "முடக்கு"
 
-#: cogl/cogl-debug-options.h:186
+#: ../cogl/cogl-debug-options.h:186
 msgid "Trace clipping"
 msgstr "கிளிப்பிங்கைத் தடமறி"
 
-#: cogl/cogl-debug-options.h:187
+#: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "Cogl எப்படி கிளிப்பிங்கை செயல்படுத்துகிறது என்ற தகவலைப் பதிவு செய்யும்"
 
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr "செயல்திறன் விவகாரங்களைத் தடமறி"
+
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "உப-உகப்பாக்கல் Cogl பயன்பாட்டைத் தனிப்படுத்திக் காண்பிக்க முயற்சிக்கிறது."
+
+#~ msgid "Cogl debugging flags to set"
+#~ msgstr "Cogl பிழைதிருத்துதல் கொடிகளை அமைக்கிறது"
+
+#~ msgid "Cogl debugging flags to unset"
+#~ msgstr "Cogl பிழைதிருத்துதல் கொடிகளை அமைத்தல்நீக்குகிறது"
+
+#~ msgid "Cogl Options"
+#~ msgstr "Cogl விருப்பங்கள்"
+
+#~ msgid "Show Cogl options"
+#~ msgstr "Cogl விருப்பங்களை காட்டவும்"
