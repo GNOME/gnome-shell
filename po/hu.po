@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-17 23:19+0200\n"
-"PO-Revision-Date: 2012-09-17 23:20+0200\n"
+"POT-Creation-Date: 2012-09-20 14:55+0200\n"
+"PO-Revision-Date: 2012-09-20 14:52+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Lokalize 1.4\n"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -149,7 +149,8 @@ msgstr "Billentyűtársítás a képernyőfelvevő megnyitásához"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to start/stop the builtin screen recorder."
-msgstr "Billentyűtársítás a beépített képernyőfelvevő elindításához/leállításához."
+msgstr ""
+"Billentyűtársítás a beépített képernyőfelvevő elindításához/leállításához."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Which keyboard to use"
@@ -197,7 +198,10 @@ msgstr ""
 "adatcsatorna is kezelheti a saját kimenetét – ennek segítségével a kimenet "
 "elküldhető egy icecast kiszolgálóra a shout2send vagy hasonló segítségével. "
 "Ha nincs beállítva, vagy üres értékre van állítva, akkor az alapértelmezett "
-"adatcsatorna kerül felhasználásra. Ez jelenleg: „vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux” és WEBM formátumba rögzít a VP8 kodek használatával. A %T egy helykitöltő, a rendszeren optimális szálmennyiség megtippelésére."
+"adatcsatorna kerül felhasználásra. Ez jelenleg: „vp8enc min_quantizer=13 "
+"max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux” "
+"és WEBM formátumba rögzít a VP8 kodek használatával. A %T egy helykitöltő, a "
+"rendszeren optimális szálmennyiség megtippelésére."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "File extension used for storing the screencast"
@@ -805,8 +809,10 @@ msgid "This account is already connected to the server"
 msgstr "Ez a fiók már kapcsolódik a kiszolgálóhoz"
 
 #: ../js/ui/components/telepathyClient.js:1332
-msgid "Connection has been replaced by a new connection using the same resource"
-msgstr "A kapcsolatot leváltotta egy új, ugyanazt az erőforrást használó kapcsolat"
+msgid ""
+"Connection has been replaced by a new connection using the same resource"
+msgstr ""
+"A kapcsolatot leváltotta egy új, ugyanazt az erőforrást használó kapcsolat"
 
 #: ../js/ui/components/telepathyClient.js:1334
 msgid "The account already exists on the server"
@@ -821,7 +827,8 @@ msgid "Certificate has been revoked"
 msgstr "A tanúsítvány visszavonva"
 
 #: ../js/ui/components/telepathyClient.js:1340
-msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
+msgid ""
+"Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "A tanúsítvány nem biztonságos titkosító algoritmust használ, vagy "
 "titkosításilag gyenge"
@@ -977,7 +984,8 @@ msgstr "Telepítés"
 #: ../js/ui/extensionDownloader.js:204
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
-msgstr "Letölti és telepíti a következőt az extensions.gnome.org webhelyről: „%s”?"
+msgstr ""
+"Letölti és telepíti a következőt az extensions.gnome.org webhelyről: „%s”?"
 
 #: ../js/ui/keyboard.js:327
 msgid "tray"
@@ -1710,7 +1718,8 @@ msgstr "A GDM által a bejelentkezési képernyőhöz használt mód"
 
 #: ../src/main.c:342
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
-msgstr "Használjon egy adott módot, például a „gdm”-et a bejelentkező képernyőn"
+msgstr ""
+"Használjon egy adott módot, például a „gdm”-et a bejelentkező képernyőn"
 
 #: ../src/main.c:348
 msgid "List possible modes"
@@ -1741,3 +1750,20 @@ msgstr "Alapértelmezett"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "A hitelesítési ablakot a felhasználó bezárta"
 
+#~ msgid "Screenshots"
+#~ msgstr "Képernyőképek"
+
+#~ msgid "Record a screencast"
+#~ msgstr "Képernyővideó felvétele"
+
+#~| msgid "System Sounds"
+#~ msgid "System"
+#~ msgstr "Rendszer"
+
+#~| msgid "Message Tray"
+#~ msgid "Show the message tray"
+#~ msgstr "Üzenettálca megjelenítése"
+
+#~| msgid "Authentication Required"
+#~ msgid "Authentication error"
+#~ msgstr "Hitelesítési hiba"
