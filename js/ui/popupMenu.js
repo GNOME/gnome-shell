@@ -904,6 +904,7 @@ const PopupMenuBase = new Lang.Class({
                            app.activate();
                        });
 
+        menuItem.actor.visible = Main.sessionMode.allowSettings;
         this._settingsActions[desktopFile] = menuItem;
 
         return menuItem;
