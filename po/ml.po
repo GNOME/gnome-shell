@@ -909,8 +909,8 @@ msgstr[1] "%s %d നിമിഷങ്ങള്‍ക്കുള്ളില്
 #, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
-msgstr[0] "നിങ്ങള്‍ %s നിമിഷത്തിനുള്ളില്‍ സ്വയമേ പുറത്ത് കടക്കുന്നതാണു്."
-msgstr[1] "നിങ്ങള്‍ %s നിമിഷങ്ങള്‍ക്കുള്ളില്‍ സ്വയമേ പുറത്ത് കടക്കുന്നതാണു്."
+msgstr[0] "നിങ്ങള്‍ %d നിമിഷത്തിനുള്ളില്‍ സ്വയമേ പുറത്ത് കടക്കുന്നതാണു്."
+msgstr[1] "നിങ്ങള്‍ %d നിമിഷങ്ങള്‍ക്കുള്ളില്‍ സ്വയമേ പുറത്ത് കടക്കുന്നതാണു്."
 
 #: ../js/ui/endSessionDialog.js:74
 msgid "Logging out of the system."
@@ -936,8 +936,8 @@ msgstr ""
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "സിസ്റ്റം %s നിമിഷത്തിനുള്ളില്‍ സ്വയമേ ഓഫ് ചെയ്യപ്പെടുന്നതാണു്."
-msgstr[1] "സിസ്റ്റം %s നിമിഷങ്ങള്‍ക്കുള്ളില്‍ സ്വയമേ ഓഫ് ചെയ്യപ്പെടുന്നതാണു്."
+msgstr[0] "സിസ്റ്റം %d നിമിഷത്തിനുള്ളില്‍ സ്വയമേ ഓഫ് ചെയ്യപ്പെടുന്നതാണു്."
+msgstr[1] "സിസ്റ്റം %d നിമിഷങ്ങള്‍ക്കുള്ളില്‍ സ്വയമേ ഓഫ് ചെയ്യപ്പെടുന്നതാണു്."
 
 #: ../js/ui/endSessionDialog.js:88
 msgid "Powering off the system."
@@ -966,8 +966,8 @@ msgstr "ഈ പ്രയോഗങ്ങള്‍ നിറുത്തി സി
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] "സിസ്റ്റം %s നിമിഷത്തിനുള്ളില്‍ സ്വയമേ വീണ്ടും ആരംഭിയ്ക്കുന്നു."
-msgstr[1] "സിസ്റ്റം %s നിമിഷങ്ങള്‍ക്കുള്ളില്‍ സ്വയമേ വീണ്ടും ആരംഭിയ്ക്കുന്നു."
+msgstr[0] "സിസ്റ്റം %d നിമിഷത്തിനുള്ളില്‍ സ്വയമേ വീണ്ടും ആരംഭിയ്ക്കുന്നു."
+msgstr[1] "സിസ്റ്റം %d നിമിഷങ്ങള്‍ക്കുള്ളില്‍ സ്വയമേ വീണ്ടും ആരംഭിയ്ക്കുന്നു."
 
 #: ../js/ui/endSessionDialog.js:105
 msgid "Restarting the system."
