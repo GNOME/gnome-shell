@@ -3,13 +3,15 @@
 # Khaled Hosny <khaledhosny@eglug.org>, 2009, 2010, 2011, 2012.
 # Muhammed Abd-ulaziz Abd-ullah <thenubianmuha_idrecy@yahoo.co.uk>, 2012.
 # Abderrahim Kitouni <a.kitouni@gmail.com>, 2012.
+# Ibrahim Saed <ibraheem5000@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-20 06:45+0200\n"
-"PO-Revision-Date: 2012-09-20 06:45+0200\n"
-"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-09-19 14:43+0000\n"
+"PO-Revision-Date: 2012-09-19 17:03+0200\n"
+"Last-Translator: Ibrahim Saed <ibraheem5000@gmail.com>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +19,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-"X-Generator: Virtaal 0.7.0\n"
+"X-Generator: Virtaal 0.7.1\n"
 "&& n%100<=10 ? 3: n%100>=11 ? 4 : 5;\n"
 "X-Project-Style: gnome\n"
 
@@ -56,13 +58,15 @@ msgstr "اضبط امتدادات صدفة جنوم"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr ""
+msgstr "تمكين الأدوات الداخلية المفيدة للمطورين والمختبرين من Alt-F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:2
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
+"السماح بالوصول إلى التنقيح الداخلي ومراقبة الأدوات باستخدام نافذة حوار Alt-"
+"F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "Uuids of extensions to enable"
@@ -78,7 +82,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "Whether to collect stats about applications usage"
-msgstr ""
+msgstr "ما إذا كنت ترغب في تجميع الحالات عن استخدام التطبيقات"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:6
 msgid ""
@@ -100,7 +104,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "History for command (Alt-F2) dialog"
-msgstr ""
+msgstr "التأريخ لنافذة حوار الأمر (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid "History for the looking glass dialog"
@@ -120,7 +124,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "Show the week date in the calendar"
-msgstr ""
+msgstr "اعرض تاريخ الأسبوع في التقويم"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid "If true, display the ISO week date in the calendar."
@@ -152,11 +156,11 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Which keyboard to use"
-msgstr ""
+msgstr "أي لوحة مفاتيح ترغب باستخدامها"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid "The type of keyboard to use."
-msgstr ""
+msgstr "نوع لوحة المفاتيح التي ترغب باستخدامها."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Framerate used for recording screencasts."
