@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-16 20:45+0000\n"
-"PO-Revision-Date: 2012-09-20 21:36+0000\n"
+"POT-Creation-Date: 2012-09-20 16:11+0000\n"
+"PO-Revision-Date: 2012-09-20 22:56+0000\n"
 "Last-Translator: Ani Peter <apeter@redhat.com>\n"
 "Language-Team: Malayalam <discuss@lists.smc.org.in>\n"
 "Language: ml\n"
@@ -21,6 +21,25 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.0\n"
 "X-DamnedLies-Scope: partial\n"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:1
+#| msgid "Screen position"
+msgid "Screenshots"
+msgstr "സ്ക്രീന്‍ഷോട്ടുകള്‍"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:2
+msgid "Record a screencast"
+msgstr "ഒരു സ്ക്രീന്‍കാസ്റ്റ് റിക്കോര്‍ഡ് ചെയ്യുക"
+
+#: ../data/50-gnome-shell-system.xml.in.h:1
+#| msgid "File System"
+msgid "System"
+msgstr "സിസ്റ്റം"
+
+#: ../data/50-gnome-shell-system.xml.in.h:2
+#| msgid "Message Tray"
+msgid "Show the message tray"
+msgstr "സന്ദേശത്തിന്റെ ട്രേ കാണിയ്ക്കുക"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -50,8 +69,8 @@ msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
-"Alt-F2 ഡയലോഗ് ഉപയോഗിച്ചു് ആന്തരിക ഡീബഗ്ഗിലേക്കും നീരീക്ഷണ പ്രയോഗങ്ങളിലേക്കും "
-"പ്രവേശനം അനുവദിയ്ക്കുക."
+"Alt-F2 ഡയലോഗ് ഉപയോഗിച്ചു് ആന്തരിക ഡീബഗ്ഗിലേക്കും നീരീക്ഷണ പ്രയോഗങ്ങളിലേക്കും പ്രവേശനം "
+"അനുവദിയ്ക്കുക."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "Uuids of extensions to enable"
@@ -64,11 +83,10 @@ msgid ""
 "list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension DBus methods on org.gnome.Shell."
 msgstr ""
-"ഗ്നോം ഷെല്‍ എക്സ്റ്റെന്‍ഷനുകള്‍ക്കു് ഒരു യുയുഐഡി വിശേഷതയുണ്ടു്; ലഭ്യമാക്കേണ്ട എക്സ്റ്റെന്‍ഷനുകള്‍ "
-"ഈ കീ പട്ടിക ലഭ്യമാക്കുന്നു. ലഭ്യമാക്കേണ്ട ഏതു് എക്സ്റ്റെന്‍ഷനും ഈ പട്ടികയിലുണ്ടാവണം. org.gnome."
-"Shell-ല്‍ "
-"നിങ്ങള്‍ക്കു് EnableExtension, DisableExtension എന്നീ ഡീബസ് രീതികളിലൂടെ ഈ പട്ടിക കൈകാര്യം "
-"ചെയ്യുവാനും സാധിയ്ക്കുന്നു."
+"ഗ്നോം ഷെല്‍ എക്സ്റ്റെന്‍ഷനുകള്‍ക്കു് ഒരു യുയുഐഡി വിശേഷതയുണ്ടു്; ലഭ്യമാക്കേണ്ട എക്സ്റ്റെന്‍ഷനുകള്‍ ഈ കീ പട്ടിക "
+"ലഭ്യമാക്കുന്നു. ലഭ്യമാക്കേണ്ട ഏതു് എക്സ്റ്റെന്‍ഷനും ഈ പട്ടികയിലുണ്ടാവണം. org.gnome.Shell-ല്‍ "
+"നിങ്ങള്‍ക്കു് EnableExtension, DisableExtension എന്നീ ഡീബസ് രീതികളിലൂടെ ഈ പട്ടിക "
+"കൈകാര്യം ചെയ്യുവാനും സാധിയ്ക്കുന്നു."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "Whether to collect stats about applications usage"
@@ -81,11 +99,10 @@ msgid ""
 "want to disable this for privacy reasons. Please note that doing so won't "
 "remove already saved data."
 msgstr ""
-"ഏറ്റവും കൂടുതല്‍ തവണ ഉപയോഗിയ്ക്കുന്ന പ്രയോഗങ്ങള്‍ ലഭ്യമാക്കുന്നതിനായി "
-"ഷെല്‍ സാധാരണയായി സജീവമായ പ്രയോഗങ്ങളെ നിരീക്ഷിയ്ക്കുന്നു. (ഉദാഹരണത്തിനു്, "
-"ലോഞ്ചേര്‍സ്). ഈ ഡേറ്റാ സ്വകാര്യമായി സൂക്ഷിയ്ക്കുന്നെങ്കിലും, ചില കാരണങ്ങളാല്‍ "
-"ഇതു് പ്രവര്‍ത്തന രഹിതമാക്കേണ്ടതുണ്ടു്. ഇങ്ങനെ ചെയ്യുന്നതു് നിങ്ങള്‍ സൂക്ഷിച്ച "
-"ഡേറ്റയെ ബാധിയ്ക്കുന്നതല്ല."
+"ഏറ്റവും കൂടുതല്‍ തവണ ഉപയോഗിയ്ക്കുന്ന പ്രയോഗങ്ങള്‍ ലഭ്യമാക്കുന്നതിനായി ഷെല്‍ സാധാരണയായി സജീവമായ "
+"പ്രയോഗങ്ങളെ നിരീക്ഷിയ്ക്കുന്നു. (ഉദാഹരണത്തിനു്, ലോഞ്ചേര്‍സ്). ഈ ഡേറ്റാ സ്വകാര്യമായി "
+"സൂക്ഷിയ്ക്കുന്നെങ്കിലും, ചില കാരണങ്ങളാല്‍ ഇതു് പ്രവര്‍ത്തന രഹിതമാക്കേണ്ടതുണ്ടു്. ഇങ്ങനെ ചെയ്യുന്നതു് "
+"നിങ്ങള്‍ സൂക്ഷിച്ച ഡേറ്റയെ ബാധിയ്ക്കുന്നതല്ല."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
@@ -95,9 +112,7 @@ msgstr "ഇഷ്ടമുള്ള പ്രയോഗങ്ങള്‍ക്�
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
-msgstr ""
-"ഈ ഐഡന്റിഫയറുകള്‍ക്കുള്ള പ്രയോഗങ്ങള്‍ ഉചിതമായ സ്ഥലങ്ങളില്‍ "
-"കാണിയ്ക്കുന്നു."
+msgstr "ഈ ഐഡന്റിഫയറുകള്‍ക്കുള്ള പ്രയോഗങ്ങള്‍ ഉചിതമായ സ്ഥലങ്ങളില്‍ കാണിയ്ക്കുന്നു."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "History for command (Alt-F2) dialog"
@@ -112,16 +127,16 @@ msgid ""
 "Internally used to store the last IM presence explicitly set by the user. "
 "The value here is from the TpConnectionPresenceType enumeration."
 msgstr ""
-"ഉപയോക്താവു് സജ്ജമാക്കിയ അവസാന ഐഎം ആന്തരികമായി സൂക്ഷിയ്ക്കുന്നതിനു് "
-"ഉപയോഗിയ്ക്കുന്നു. മൂല്യം TpConnectionPresenceType തരത്തിലുള്ളതാകുന്നു."
+"ഉപയോക്താവു് സജ്ജമാക്കിയ അവസാന ഐഎം ആന്തരികമായി സൂക്ഷിയ്ക്കുന്നതിനു് ഉപയോഗിയ്ക്കുന്നു. മൂല്യം "
+"TpConnectionPresenceType തരത്തിലുള്ളതാകുന്നു."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid ""
 "Internally used to store the last session presence status for the user. The "
 "value here is from the GsmPresenceStatus enumeration."
 msgstr ""
-"ഉപയോക്താവിനുള്ള അവസാന സെഷന്‍ അവസ്ഥ ആന്തരികമായി സൂക്ഷിയ്ക്കുന്നതിനു് "
-"ഉപയോഗിയ്ക്കുന്നു. മൂല്യം GsmPresenceStatus തരത്തിലുള്ളതാകുന്നു."
+"ഉപയോക്താവിനുള്ള അവസാന സെഷന്‍ അവസ്ഥ ആന്തരികമായി സൂക്ഷിയ്ക്കുന്നതിനു് ഉപയോഗിയ്ക്കുന്നു. മൂല്യം "
+"GsmPresenceStatus തരത്തിലുള്ളതാകുന്നു."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "Show the week date in the calendar"
@@ -181,6 +196,17 @@ msgstr "സ്ക്രീന്‍കാസ്റ്റ് എന്‍കോ�
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 #, no-c-format
+#| msgid ""
+#| "Sets the GStreamer pipeline used to encode recordings. It follows the "
+#| "syntax used for gst-launch. The pipeline should have an unconnected sink "
+#| "pad where the recorded video is recorded. It will normally have a "
+#| "unconnected source pad; output from that pad will be written into the "
+#| "output file. However the pipeline can also take care of its own output - "
+#| "this might be used to send the output to an icecast server via shout2send "
+#| "or similar. When unset or set to an empty value, the default pipeline "
+#| "will be used. This is currently 'vp8enc quality=8 speed=6 threads=%T ! "
+#| "queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a "
+#| "placeholder for a guess at the optimal thread count on the system."
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -189,20 +215,15 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM "
-"using the VP8 codec. %T is used as a placeholder for a guess at the optimal "
-"thread count on the system."
+"'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
+"threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is "
+"used as a placeholder for a guess at the optimal thread count on the system."
 msgstr ""
-"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
-"used for gst-launch. The pipeline should have an unconnected sink pad where "
-"the recorded video is recorded. It will normally have a unconnected source "
-"pad; output from that pad will be written into the output file. However the "
-"pipeline can also take care of its own output - this might be used to send "
-"the output to an icecast server via shout2send or similar. When unset or set "
-"to an empty value, the default pipeline will be used. This is currently "
-"'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM "
-"using the VP8 codec. %T is used as a placeholder for a guess at the optimal "
-"thread count on the system."
+"റിക്കോര്‍ഡിങുകള്‍ എന്‍കോഡ് ചെയ്യുന്നതിനായി GStreamer പൈപ്പ് ലൈന്‍ ഉപയോഗിയ്ക്കുന്നു. "
+"gst-launch-നുള്ള സിന്റാക്സ് ഉപയോഗിയ്ക്കുന്നു. കാലിയായി സജ്ജമാക്കുമ്പോള്‍ കാലിയാകുന്നു."
+"ഇതു് നിലവില്‍ 'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
+"threads=%T ! queue ! webmmux' ആകുന്നുസ WEBM VP8 കോഡ് ഉപയോഗിച്ചു് റിക്കോര്‍ഡ് "
+"ചെയ്യുന്നു."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "File extension used for storing the screencast"
@@ -214,9 +235,8 @@ msgid ""
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
-"റിക്കോര്‍ഡ് ചെയ്ത സ്ക്രീന്‍കാസ്റ്റുകള്‍ക്കുള്ള ഫയല്‍നാമം നിലവിലുള്ള തീയതി, എക്സ്റ്റെന്‍ഷന്‍ "
-"എന്നിവ അനുസരിച്ചാകുന്നു. മറ്റൊരു ശൈലിയിലേക്കു് റിക്കോര്‍ഡ് ചെയ്യുമ്പോള്‍ "
-"ഇതു് മാറ്റണം."
+"റിക്കോര്‍ഡ് ചെയ്ത സ്ക്രീന്‍കാസ്റ്റുകള്‍ക്കുള്ള ഫയല്‍നാമം നിലവിലുള്ള തീയതി, എക്സ്റ്റെന്‍ഷന്‍ എന്നിവ "
+"അനുസരിച്ചാകുന്നു. മറ്റൊരു ശൈലിയിലേക്കു് റിക്കോര്‍ഡ് ചെയ്യുമ്പോള്‍ ഇതു് മാറ്റണം."
 
 #: ../js/extensionPrefs/main.js:124
 #, c-format
@@ -229,14 +249,13 @@ msgstr "എക്സ്റ്റെന്‍ഷന്‍"
 
 #: ../js/extensionPrefs/main.js:188
 msgid "Select an extension to configure using the combobox above."
-msgstr ""
-"മുകളിലുള്ള കോമ്പോ ബോക്സ് ഉപയോഗിച്ചു് ക്രമീകരിയ്ക്കുന്നതിനുള്ളൊരു എക്സ്റ്റെന്‍ഷന്‍ തെര‍ഞ്ഞെടുക്കുക."
+msgstr "മുകളിലുള്ള കോമ്പോ ബോക്സ് ഉപയോഗിച്ചു് ക്രമീകരിയ്ക്കുന്നതിനുള്ളൊരു എക്സ്റ്റെന്‍ഷന്‍ തെര‍ഞ്ഞെടുക്കുക."
 
 #: ../js/gdm/loginDialog.js:526
 msgid "Session..."
 msgstr "പ്രവര്‍ത്തനവേള"
 
-#: ../js/gdm/loginDialog.js:675
+#: ../js/gdm/loginDialog.js:674
 msgctxt "title"
 msgid "Sign In"
 msgstr "അകത്തുകയറുക"
@@ -244,28 +263,28 @@ msgstr "അകത്തുകയറുക"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:742
+#: ../js/gdm/loginDialog.js:741
 msgid "Not listed?"
 msgstr "ലഭ്യമല്ലേ?"
 
-#: ../js/gdm/loginDialog.js:895 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:894 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
-#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:137
+#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "വേണ്ട"
 
-#: ../js/gdm/loginDialog.js:900
+#: ../js/gdm/loginDialog.js:899
 msgctxt "button"
 msgid "Sign In"
 msgstr "അകത്തുകയറുക"
 
-#: ../js/gdm/loginDialog.js:1239
+#: ../js/gdm/loginDialog.js:1238
 msgid "Login Window"
 msgstr "പ്രവേശന ജാലകം"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:657 ../js/ui/userMenu.js:661
-#: ../js/ui/userMenu.js:772
+#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:658 ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:773
 msgid "Suspend"
 msgstr "താത്കാലികമായി നിര്‍ത്തുക"
 
@@ -273,18 +292,23 @@ msgstr "താത്കാലികമായി നിര്‍ത്തുക"
 msgid "Restart"
 msgstr "പുനരാരംഭിക്കുക"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:659 ../js/ui/userMenu.js:661
-#: ../js/ui/userMenu.js:771
+#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:772
 msgid "Power Off"
 msgstr "നിര്‍ത്തുക"
 
+#: ../js/gdm/util.js:148
+#| msgid "Authentication Required"
+msgid "Authentication error"
+msgstr "തിരിച്ചറിയല്‍ പിശക്"
+
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:247
+#: ../js/gdm/util.js:265
 msgid "(or swipe finger)"
 msgstr "(അല്ലെങ്കില്‍ ഫിംഗര്‍ സ്വൈപ്പ് ചെയ്യുക)"
 
-#: ../js/gdm/util.js:272
+#: ../js/gdm/util.js:290
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(e.g., ഉപയോക്താവു് അല്ലെങ്കില്‍ %s)"
@@ -554,8 +578,8 @@ msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "'%s'."
 msgstr ""
-"വയര്‍ലെസ് നെറ്റ്‌വര്‍ക്ക് '%s'-ലേക്ക് പ്രവേശിക്കുന്നതിനായി രഹസ്യവാക്കുകള്‍ അല്ലെങ്കില്‍ എന്‍ക്രിപ്ഷന്‍ "
-"കീകള്‍ ആവശ്യമുണ്ടു്."
+"വയര്‍ലെസ് നെറ്റ്‌വര്‍ക്ക് '%s'-ലേക്ക് പ്രവേശിക്കുന്നതിനായി രഹസ്യവാക്കുകള്‍ അല്ലെങ്കില്‍ എന്‍ക്രിപ്ഷന്‍ കീകള്‍ "
+"ആവശ്യമുണ്ടു്."
 
 #: ../js/ui/components/networkAgent.js:314
 msgid "Wired 802.1X authentication"
@@ -835,8 +859,8 @@ msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
 msgstr ""
-"സര്‍വറിന്റെ സമ്മതപത്രത്തിന്റെ വ്യാപ്തി, അല്ലെങ്കില്‍ സര്‍വര്‍ സമ്മതപത്ര ചെയിന്റെ "
-"വ്യാപ്തി, എന്നിവ പരിധിയില്‍ കൂടുന്നു"
+"സര്‍വറിന്റെ സമ്മതപത്രത്തിന്റെ വ്യാപ്തി, അല്ലെങ്കില്‍ സര്‍വര്‍ സമ്മതപത്ര ചെയിന്റെ വ്യാപ്തി, എന്നിവ "
+"പരിധിയില്‍ കൂടുന്നു"
 
 #: ../js/ui/components/telepathyClient.js:1344
 msgid "Internal error"
@@ -862,7 +886,6 @@ msgid "Unknown reason"
 msgstr "അജ്ഞാതമായ കാരണം"
 
 #: ../js/ui/dash.js:245 ../js/ui/dash.js:273
-#| msgid "Applications"
 msgid "Show Applications"
 msgstr "പ്രയോഗങ്ങള്‍ കാണിയ്ക്കുക"
 
@@ -895,8 +918,8 @@ msgstr "പുറത്ത് കടക്കുക"
 #: ../js/ui/endSessionDialog.js:63
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
-"ഈ പ്രയോഗങ്ങളില്‍ നിന്നും പുറത്തു് കടക്കുന്നതിനായി പുറത്തു കടക്കുക ക്ലിക്ക് ചെയ്തു് സിസ്റ്റത്തില്‍ "
-"നിന്നും പുറത്തു് കടക്കുക."
+"ഈ പ്രയോഗങ്ങളില്‍ നിന്നും പുറത്തു് കടക്കുന്നതിനായി പുറത്തു കടക്കുക ക്ലിക്ക് ചെയ്തു് സിസ്റ്റത്തില്‍ നിന്നും "
+"പുറത്തു് കടക്കുക."
 
 #: ../js/ui/endSessionDialog.js:65
 #, c-format
@@ -986,7 +1009,7 @@ msgstr "extensions.gnome.org ഇല്‍ നിന്നും '%s' ഡൗണ�
 msgid "tray"
 msgstr "ട്രേ"
 
-#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:146
+#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:194
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "കീബോര്‍ഡ്"
@@ -1047,16 +1070,15 @@ msgstr "തുറക്കുക"
 msgid "Remove"
 msgstr "നീക്കം ചെയ്യുക"
 
-#: ../js/ui/messageTray.js:2040
+#: ../js/ui/messageTray.js:2050
 msgid "Message Tray"
 msgstr "സന്ദേശത്തിന്റെ ട്രേ"
 
-#: ../js/ui/messageTray.js:2482
+#: ../js/ui/messageTray.js:2506
 msgid "System Information"
 msgstr "സിസ്റ്റത്തെക്കുറിച്ചുള്ള വിവരം"
 
 #: ../js/ui/notificationDaemon.js:506 ../src/shell-app.c:373
-#| msgid "Unknown"
 msgctxt "program"
 msgid "Unknown"
 msgstr "അജ്ഞാതം"
@@ -1112,22 +1134,19 @@ msgstr "ദയവായി ഒരു കമാന്‍ഡ് നല്‍കു
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:78
-#| msgctxt "calendar heading"
-#| msgid "%A, %B %d"
+#: ../js/ui/screenShield.js:79
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/screenShield.js:143
+#: ../js/ui/screenShield.js:144
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d പുതിയ സന്ദേശം"
 msgstr[1] "%d പുതിയ സന്ദേശങ്ങള്‍"
 
-#: ../js/ui/screenShield.js:145
+#: ../js/ui/screenShield.js:146
 #, c-format
-#| msgid "Notifications"
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d പുതിയ അറിയിപ്പു്"
@@ -1158,17 +1177,14 @@ msgid "Hide Text"
 msgstr "പദാവലി മറക്കുക"
 
 #: ../js/ui/shellMountOperation.js:368
-#| msgid "Password:"
 msgid "Password"
 msgstr "രഹസ്യവാക്ക്"
 
 #: ../js/ui/shellMountOperation.js:389
-#| msgid "Password:"
 msgid "Remember Password"
 msgstr "രഹസ്യവാക്ക് ഓര്‍ത്തു് വയ്ക്കുക"
 
-#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:140
-#| msgid "Clock"
+#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:169
 msgid "Unlock"
 msgstr "പൂട്ട് തുറക്കുക"
 
@@ -1344,11 +1360,11 @@ msgstr "ഉപകരണത്തില്‍ പറഞ്ഞിരിക്ക�
 msgid "OK"
 msgstr "ശരി"
 
-#: ../js/ui/status/keyboard.js:170
+#: ../js/ui/status/keyboard.js:227
 msgid "Show Keyboard Layout"
 msgstr "കീബോര്‍ഡ് വിന്യാസ കാണിയ്ക്കുക"
 
-#: ../js/ui/status/keyboard.js:175
+#: ../js/ui/status/keyboard.js:232
 msgid "Region and Language Settings"
 msgstr "സ്ഥലവും ഭാഷ സജ്ജീകരണങ്ങളും"
 
@@ -1566,7 +1582,6 @@ msgid "Computer"
 msgstr "കമ്പ്യൂട്ടര്‍"
 
 #: ../js/ui/status/power.js:217
-#| msgid "Unknown"
 msgctxt "device"
 msgid "Unknown"
 msgstr "അജ്ഞാതം"
@@ -1580,77 +1595,73 @@ msgstr "ഒച്ച"
 msgid "Microphone"
 msgstr "മൈക്രോഫോണ്‍"
 
-#: ../js/ui/unlockDialog.js:147
+#: ../js/ui/unlockDialog.js:176
 msgid "Log in as another user"
 msgstr "മറ്റൊരു ഉപയോക്താവായി പ്രവേശിയ്ക്കുക"
 
-#: ../js/ui/userMenu.js:174
+#: ../js/ui/userMenu.js:175
 msgid "Available"
 msgstr "ലഭ്യമാണ്"
 
-#: ../js/ui/userMenu.js:177
+#: ../js/ui/userMenu.js:178
 msgid "Busy"
 msgstr "തിരക്കിലാണ്"
 
-#: ../js/ui/userMenu.js:180
+#: ../js/ui/userMenu.js:181
 msgid "Invisible"
 msgstr "അദൃശ്യം"
 
-#: ../js/ui/userMenu.js:183
+#: ../js/ui/userMenu.js:184
 msgid "Away"
 msgstr "വിദൂരെയാണ്"
 
-#: ../js/ui/userMenu.js:186
+#: ../js/ui/userMenu.js:187
 msgid "Idle"
 msgstr "പ്രവര്‍ത്തനത്തിലല്ല"
 
-#: ../js/ui/userMenu.js:189
+#: ../js/ui/userMenu.js:190
 msgid "Unavailable"
 msgstr "ലഭ്യമല്ല"
 
-#: ../js/ui/userMenu.js:612 ../js/ui/userMenu.js:753
+#: ../js/ui/userMenu.js:613 ../js/ui/userMenu.js:754
 msgid "Switch User"
 msgstr "ഉപയോക്താവിനെ മാറ്റുക"
 
-#: ../js/ui/userMenu.js:613
-#| msgid "Switch User"
+#: ../js/ui/userMenu.js:614
 msgid "Switch Session"
 msgstr "സെഷന്‍ മാറ്റുക"
 
-#: ../js/ui/userMenu.js:737
+#: ../js/ui/userMenu.js:738
 msgid "Notifications"
 msgstr "അറിയിപ്പുകള്‍"
 
-#: ../js/ui/userMenu.js:745
+#: ../js/ui/userMenu.js:746
 msgid "System Settings"
 msgstr "സിസ്റ്റം ക്രമീകരണങ്ങള്‍"
 
-#: ../js/ui/userMenu.js:758
-#| msgctxt "title"
-#| msgid "Log Out"
+#: ../js/ui/userMenu.js:759
 msgid "Log Out"
 msgstr "പുറത്ത് കടക്കുക"
 
-#: ../js/ui/userMenu.js:763
+#: ../js/ui/userMenu.js:764
 msgid "Lock"
 msgstr "പൂട്ടുക"
 
-#: ../js/ui/userMenu.js:778
+#: ../js/ui/userMenu.js:779
 msgid "Install Updates & Restart"
 msgstr "പരിഷ്കരണങ്ങള്‍ ഇന്‍സ്റ്റോള്‍ ചെയ്തു് വീണ്ടും ആരംഭിയ്ക്കുക"
 
-#: ../js/ui/userMenu.js:796
+#: ../js/ui/userMenu.js:797
 msgid "Your chat status will be set to busy"
 msgstr "നിങ്ങളുടെ ചാറ്റ് അവസ്ഥ - തിരക്കില്‍"
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:798
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
 msgstr ""
-"ചാറ്റ് സന്ദേശങ്ങള്‍ എന്ന പോലെ അറിയിപ്പുകള്‍ പ്രവര്‍ത്തന രഹിതമാക്കുന്നു. മറ്റുള്ളവരുടെ "
-"ചാറ്റ് സന്ദേശങ്ങള്‍ നിങ്ങള്‍ക്കു് കാണുവാന്‍ സാധ്യമല്ല എന്നു് നിങ്ങളുടെ ഓണ്‍ലൈന്‍ "
-"അവസ്ഥയില്‍ വ്യക്തമാക്കുന്നു."
+"ചാറ്റ് സന്ദേശങ്ങള്‍ എന്ന പോലെ അറിയിപ്പുകള്‍ പ്രവര്‍ത്തന രഹിതമാക്കുന്നു. മറ്റുള്ളവരുടെ ചാറ്റ് സന്ദേശങ്ങള്‍ "
+"നിങ്ങള്‍ക്കു് കാണുവാന്‍ സാധ്യമല്ല എന്നു് നിങ്ങളുടെ ഓണ്‍ലൈന്‍ അവസ്ഥയില്‍ വ്യക്തമാക്കുന്നു."
 
 #: ../js/ui/viewSelector.js:85
 msgid "Windows"
@@ -1664,7 +1675,7 @@ msgstr "പ്രയോഗങ്ങള്‍"
 msgid "Search"
 msgstr "തിരയല്‍"
 
-#: ../js/ui/wanda.js:123
+#: ../js/ui/wanda.js:119
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1673,12 +1684,12 @@ msgstr ""
 "ക്ഷമിയ്ക്കണം, ഇന്നത്തേക്കു് ഒന്നും ലഭ്യമല്ല:\n"
 "%s"
 
-#: ../js/ui/wanda.js:127
+#: ../js/ui/wanda.js:123
 #, c-format
 msgid "%s the Oracle says"
 msgstr "%s എന്ന ഒറക്കിള്‍ പറയുന്നു"
 
-#: ../js/ui/wanda.js:168
+#: ../js/ui/wanda.js:164
 msgid "Your favorite Easter Egg"
 msgstr "നിങ്ങള്‍ക്കു് ഇഷ്ടമുള്ള ഈസ്റ്റര്‍ മുട്ട"
 
@@ -1688,7 +1699,6 @@ msgid "'%s' is ready"
 msgstr "'%s' തയ്യാറാണ്"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
-#| msgid "Open Calendar"
 msgid "Evolution Calendar"
 msgstr "ഇവല്യൂഷന്‍ കലണ്ടര്‍"
 
@@ -1858,9 +1868,6 @@ msgstr "ഉപയോക്താവു് ആധികാരികത ഉറപ�
 #~ msgid "Home"
 #~ msgstr "വീട്"
 
-#~ msgid "File System"
-#~ msgstr "ഫയല്‍ സിസ്റ്റം"
-
 #~ msgid "%1$s: %2$s"
 #~ msgstr "%1$s: %2$s"
 
@@ -1869,9 +1876,6 @@ msgstr "ഉപയോക്താവു് ആധികാരികത ഉറപ�
 
 #~ msgid "Hour format"
 #~ msgstr "മണിക്കുര്‍ ശൈലി"
-
-#~ msgid "Screen position"
-#~ msgstr "സ്ക്രീനിന്റെ സ്ഥാനം"
 
 #~ msgid "Clock Format"
 #~ msgstr "ഘടികാര ശൈലി"
