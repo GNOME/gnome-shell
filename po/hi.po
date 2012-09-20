@@ -5,22 +5,41 @@
 #
 # Rajesh <rranjan>, 2011.
 # rajesh <rajeshkajha@yahoo.com>, 2012.
+# chandankumar <chandankumar.093047@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master.hi\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-18 10:30+0000\n"
-"PO-Revision-Date: 2012-09-18 16:02+0530\n"
-"Last-Translator: rajesh <rajeshkajha@yahoo.com>\n"
-"Language-Team: Hindi <Indlinux>\n"
+"POT-Creation-Date: 2012-09-19 11:02+0000\n"
+"PO-Revision-Date: 2012-09-20 09:51+0530\n"
+"Last-Translator: chandankumar <chandankumar.093047@gmail.com>\n"
+"Language-Team: Hindi <kde-i18n-doc@kde.org>\n"
 "Language: hi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.2\n"
+"X-Generator: Lokalize 1.4\n"
 "X-DamnedLies-Scope: partial\n"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:1
+msgid "Screenshots"
+msgstr "स्क्रीनशॉट"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:2
+msgid "Record a screencast"
+msgstr "screencast रिकॉर्ड करें"
+
+#: ../data/50-gnome-shell-system.xml.in.h:1
+#| msgid "File System"
+msgid "System"
+msgstr "तंत्र"
+
+#: ../data/50-gnome-shell-system.xml.in.h:2
+#| msgid "Message Tray"
+msgid "Show the message tray"
+msgstr "संदेश तश्तरी दिखाएँ"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -39,18 +58,183 @@ msgstr "गनोम शेल एक्सटेंशन वरीयताए
 msgid "Configure GNOME Shell Extensions"
 msgstr "गनोम शेल एक्सटेंशन विन्यस्त करें"
 
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:1
+msgid "Enable internal tools useful for developers and testers from Alt-F2"
+msgstr ""
+"Alt-F2 से डेवलपर्स और परीक्षकों के लिए उपयोगी आंतरिक उपकरण को सक्षम करें"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:2
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Alt-F2 संवाद का उपयोग करके आंतरिक डिबगिंग और निगरानी उपकरण "
+"तक पहुँच पायें."
+
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "Uuids of extensions to enable"
 msgstr "एक्सटेंशन का Uuid सक्रिय किया जाना है"
 
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:4
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension DBus methods on org.gnome.Shell."
+msgstr ""
+"गनोम शैल एक्सटेंशन का एक uuid गुण है, इस कुंजी एक्सटेंशन जो लोड किया जाना "
+"चाहिए की सूची दिखाता हैं. किसी भी विस्तारक जिसे लोड करने के लिए चाहता है को "
+"इस सूची में होने की जरूरत है. आप भी  इस सूची में EnableExtension और "
+"DisableExtension डिबस  तरीकों के साथ org.gnome.Shell पर हेरफेर कर सकते हैं."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:5
+msgid "Whether to collect stats about applications usage"
+msgstr "क्या अनुप्रयोगों के उपयोग के बारे में आँकड़े इकट्ठा करना हैं."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"सबसे अधिक इस्तेमाल किया जाने वाले  सक्रिय अनुप्रयोगों (जैसे लांचरों में ) पर "
+"शेल सामान्य रूप से नज़र रखता है. हालांकि इस डेटा को निजी रखा जाएगा, आप "
+"गोपनीयता कारणों के लिए इसे अक्षम कर सकते हैं. कृपया ध्यान दें कि ऐसा करने से "
+"पहले से सहेजे गए डेटा को हटाया नहीं जायेगा."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
+msgid "List of desktop file IDs for favorite applications"
+msgstr "पसंदीदा अनुप्रयोगों के लिए डेस्कटॉप फ़ाइल आईडी की सूची."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"इन पहचानकर्ता के लिए अनुप्रयोगों को पसंदीदा क्षेत्र में प्रदर्शित किया जाएगा."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
+msgid "History for command (Alt-F2) dialog"
+msgstr "कमांड (Alt-F2) के लिए इतिहास संवाद "
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+msgid "History for the looking glass dialog"
+msgstr "ग्लास खोज संवाद के लिए इतिहास"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
+msgid ""
+"Internally used to store the last IM presence explicitly set by the user. "
+"The value here is from the TpConnectionPresenceType enumeration."
+msgstr ""
+"स्पष्ट रूप से उपयोगकर्ता द्वारा निर्धारित की गई आंतरिक रूप से पिछले आईएम "
+"उपस्थिति का इस्तेमाल किया किया जाता हैं. यह TpConnectionPresenceType  गणन से "
+"मान लिया गया हैं "
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+msgid ""
+"Internally used to store the last session presence status for the user. The "
+"value here is from the GsmPresenceStatus enumeration."
+msgstr ""
+"आंतरिक रूप से उपयोगकर्ता के लिए पिछले सत्र उपस्थिति स्थिति को संग्रहीत करने "
+"के लिए उपयोग किया जाता हैं. यह GsmPresenceStatus गणन से मान लिया गया हैं "
+
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
-#| msgid "If true, display the ISO week date in the calendar."
 msgid "Show the week date in the calendar"
 msgstr "अगर सही है, पंचांग में सप्ताह संख्या दिखाएँ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid "If true, display the ISO week date in the calendar."
 msgstr "अगर सही है, तो पंचांग में ISO सप्ताह तिथि दिखाएँ."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+msgid "Keybinding to open the application menu"
+msgstr "अनुप्रयोग मेनू को खोलने के लिए कीबाइंडिंग"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+msgid "Keybinding to open the application menu."
+msgstr "अनुप्रयोग मेनू को खोलने के लिए कीबाइंडिंग."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+msgid "Keybinding to toggle the visibility of the message tray"
+msgstr "संदेश ट्रे की दृश्यता को टॉगल करने के लिए कीबाइंडिंग"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+msgid "Keybinding to toggle the visibility of the message tray."
+msgstr "संदेश ट्रे की दृश्यता को टॉगल करने के लिए कीबाइंडिंग."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+msgid "Keybinding to toggle the screen recorder"
+msgstr "स्क्रीन रिकॉर्डर को टॉगल करने के लिए कीबाइंडिंग"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+msgid "Keybinding to start/stop the builtin screen recorder."
+msgstr " निर्मित स्क्रीन रिकॉर्डर को रोकने/शुरू करने के लिए कीबाइंडिंग"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+msgid "Which keyboard to use"
+msgstr "उपयोग करने के लिए कुंजीपटल"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+msgid "The type of keyboard to use."
+msgstr "उपयोग करने के लिए कीबोर्ड के प्रकार"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+msgid "Framerate used for recording screencasts."
+msgstr "screencasts के लिए फ्रेमरेट रिकॉर्डिंग इस्तेमाल किया."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+" गनोम शैल के स्क्रीनकास्ट रिकॉर्डर द्वारा परिणामस्वरूप रिकॉर्ड किये गए "
+"स्क्रीनकास्ट का फ्रेमरेट फ्रेम प्रति सेकंड में."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+msgid "The gstreamer pipeline used to encode the screencast"
+msgstr "Gstreamer पाइपलाइन स्क्रीनकास्ट एनकोड करने के लिए प्रयोग किया जाता है."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#, no-c-format
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
+"threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is "
+"used as a placeholder for a guess at the optimal thread count on the system."
+msgstr ""
+"रिकॉर्डिंग को इनकोड करने के लिए GStreamer पाइपलाइन सेट करें. पाइपलाइन के पास "
+"एक असंबद्ध सिंक पैड है जहाँ रिकॉर्ड की गई वीडियो दर्ज की गई है.यह सामान्य रूप "
+"से एक असंबद्ध स्रोत पैड होगा,  इस पैड के उत्पादन को आउटपुट फाइल में लिखा "
+"जाएगा. लेकिन पाइप लाइन भी अपने स्वयं केआउटपुट की देखभाल ले सकते हैं-  इस "
+"shout2send या इसी तरह के माध्यम से एक Icecast सर्वर से आउटपुट को भेजने के लिए "
+"इस्तेमाल किया जा सकता है.  रिक्त मान को निर्धारित या अनिर्धारित करने के "
+"दौरान, डिफ़ॉल्ट पाइपलाइन का इस्तेमाल किया जाएगा. VP8 कोडेक का उपयोग करके को  "
+"WEBM रिकॉर्ड कर सकते हैं और यह वर्त्तमान में 'vp8enc min_quantizer=13 "
+"max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' "
+"हैं.  %T सिस्टम पर इष्टतम धागा गिनती में एक अनुमान के लिए एक प्लेसहोल्डर के "
+"रूप में प्रयोग किया जाता है."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+msgid "File extension used for storing the screencast"
+msgstr " स्क्रीनकास्ट के भंडारण के लिए इस्तेमाल किया जाने वाला फ़ाइल एक्सटेंशन"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+"रिकॉर्ड किये गए स्क्रीनकास्ट के लिए फ़ाइल का नाम अद्वितीय वर्तमान दिनांक के "
+"आधार पर फ़ाइलनाम होगा और "
+"इस विस्तारक का उपयोग करेगा. एक अलग कंटेनर प्रारूप के साथ रिकॉर्डिंग करने के "
+"दौरान बदला जाना चाहिए."
 
 #: ../js/extensionPrefs/main.js:124
 #, c-format
@@ -70,7 +254,7 @@ msgstr ""
 msgid "Session..."
 msgstr "सत्र..."
 
-#: ../js/gdm/loginDialog.js:675
+#: ../js/gdm/loginDialog.js:674
 msgctxt "title"
 msgid "Sign In"
 msgstr "साइन इन"
@@ -78,28 +262,28 @@ msgstr "साइन इन"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:742
+#: ../js/gdm/loginDialog.js:741
 msgid "Not listed?"
 msgstr "सूचीबद्ध नहीं?"
 
-#: ../js/gdm/loginDialog.js:895 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:894 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
-#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:137
+#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "रद्द करें"
 
-#: ../js/gdm/loginDialog.js:900
+#: ../js/gdm/loginDialog.js:899
 msgctxt "button"
 msgid "Sign In"
 msgstr "साइन इन"
 
-#: ../js/gdm/loginDialog.js:1239
+#: ../js/gdm/loginDialog.js:1238
 msgid "Login Window"
 msgstr "लॉगिन विंडो"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:657 ../js/ui/userMenu.js:661
-#: ../js/ui/userMenu.js:772
+#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:658 ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:773
 msgid "Suspend"
 msgstr "स्थगित"
 
@@ -107,18 +291,23 @@ msgstr "स्थगित"
 msgid "Restart"
 msgstr "फिर आरंभ करें"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:659 ../js/ui/userMenu.js:661
-#: ../js/ui/userMenu.js:771
+#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:772
 msgid "Power Off"
 msgstr "बिजली बंद"
 
+#: ../js/gdm/util.js:148
+#| msgid "Authentication Required"
+msgid "Authentication error"
+msgstr "प्रमाणीकरण त्रुटि"
+
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:247
+#: ../js/gdm/util.js:265
 msgid "(or swipe finger)"
 msgstr "(या स्वाइप फिंगर)"
 
-#: ../js/gdm/util.js:272
+#: ../js/gdm/util.js:290
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(उदाहरण के लिए, उपयोक्ता या %s)"
@@ -824,7 +1013,7 @@ msgstr "'%s' को extensions.gnome.org से डाउनलोड कर स
 msgid "tray"
 msgstr "तश्तरी"
 
-#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:146
+#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:194
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "कुंजीपटल"
@@ -885,11 +1074,11 @@ msgstr "खोलें"
 msgid "Remove"
 msgstr "हटाएँ"
 
-#: ../js/ui/messageTray.js:2041
+#: ../js/ui/messageTray.js:2052
 msgid "Message Tray"
 msgstr "संदेश तश्तरी"
 
-#: ../js/ui/messageTray.js:2483
+#: ../js/ui/messageTray.js:2508
 msgid "System Information"
 msgstr "तंत्र जानकारी"
 
@@ -949,18 +1138,18 @@ msgstr "कृपया कमांड दर्ज करें:"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:78
+#: ../js/ui/screenShield.js:79
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/screenShield.js:143
+#: ../js/ui/screenShield.js:144
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d नया संदेश"
 msgstr[1] "%d नए संदेश"
 
-#: ../js/ui/screenShield.js:145
+#: ../js/ui/screenShield.js:146
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -999,7 +1188,7 @@ msgstr "कूटशब्द:"
 msgid "Remember Password"
 msgstr "कूटशब्द याद रखें"
 
-#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:140
+#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:169
 msgid "Unlock"
 msgstr "ताला खोलें"
 
@@ -1176,11 +1365,11 @@ msgstr "कृपया युक्ति पर वर्णित पिन �
 msgid "OK"
 msgstr "ठीक"
 
-#: ../js/ui/status/keyboard.js:170
+#: ../js/ui/status/keyboard.js:227
 msgid "Show Keyboard Layout"
 msgstr "कुंजीपट लेआउट दिखाएँ"
 
-#: ../js/ui/status/keyboard.js:175
+#: ../js/ui/status/keyboard.js:232
 msgid "Region and Language Settings"
 msgstr "क्षेत्र और भाषा सेटिंग्स"
 
@@ -1411,67 +1600,67 @@ msgstr "आवाज़"
 msgid "Microphone"
 msgstr "माइक्रोफोन"
 
-#: ../js/ui/unlockDialog.js:147
+#: ../js/ui/unlockDialog.js:176
 msgid "Log in as another user"
 msgstr "बतौर अन्य उपयोक्ता लॉगिन करें"
 
-#: ../js/ui/userMenu.js:174
+#: ../js/ui/userMenu.js:175
 msgid "Available"
 msgstr "उपलब्ध"
 
-#: ../js/ui/userMenu.js:177
+#: ../js/ui/userMenu.js:178
 msgid "Busy"
 msgstr "व्यस्त"
 
-#: ../js/ui/userMenu.js:180
+#: ../js/ui/userMenu.js:181
 msgid "Invisible"
 msgstr "अदृश्य"
 
-#: ../js/ui/userMenu.js:183
+#: ../js/ui/userMenu.js:184
 msgid "Away"
 msgstr "दूर"
 
-#: ../js/ui/userMenu.js:186
+#: ../js/ui/userMenu.js:187
 msgid "Idle"
 msgstr "निष्क्रिय"
 
-#: ../js/ui/userMenu.js:189
+#: ../js/ui/userMenu.js:190
 msgid "Unavailable"
 msgstr "अनुपलब्ध"
 
-#: ../js/ui/userMenu.js:612 ../js/ui/userMenu.js:753
+#: ../js/ui/userMenu.js:613 ../js/ui/userMenu.js:754
 msgid "Switch User"
 msgstr "उपयोक्ता बदलें"
 
-#: ../js/ui/userMenu.js:613
+#: ../js/ui/userMenu.js:614
 msgid "Switch Session"
 msgstr "सत्र बदलें"
 
-#: ../js/ui/userMenu.js:737
+#: ../js/ui/userMenu.js:738
 msgid "Notifications"
 msgstr "अधिसूचना"
 
-#: ../js/ui/userMenu.js:745
+#: ../js/ui/userMenu.js:746
 msgid "System Settings"
 msgstr "तंत्र विन्यास"
 
-#: ../js/ui/userMenu.js:758
+#: ../js/ui/userMenu.js:759
 msgid "Log Out"
 msgstr "लॉग आउट"
 
-#: ../js/ui/userMenu.js:763
+#: ../js/ui/userMenu.js:764
 msgid "Lock"
 msgstr "तालाबंद"
 
-#: ../js/ui/userMenu.js:778
+#: ../js/ui/userMenu.js:779
 msgid "Install Updates & Restart"
 msgstr "अद्यतन संस्थापित करें और फिर आरंभ करें"
 
-#: ../js/ui/userMenu.js:796
+#: ../js/ui/userMenu.js:797
 msgid "Your chat status will be set to busy"
 msgstr "आपकी चैट स्थिति व्यस्त नियत की जाएगी"
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:798
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1673,9 +1862,6 @@ msgstr "सत्यापन संवाद को उपयोक्ता �
 
 #~ msgid "Home Folder"
 #~ msgstr "घर फ़ोल्डर"
-
-#~ msgid "File System"
-#~ msgstr "फ़ाइल सिस्टम"
 
 #~ msgid "%1$s: %2$s"
 #~ msgstr "%1$s: %2$s"
