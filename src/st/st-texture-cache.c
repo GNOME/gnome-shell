@@ -42,6 +42,9 @@ struct _StTextureCachePrivate
 
   /* Presently this is used to de-duplicate requests for GIcons and async URIs. */
   GHashTable *outstanding_requests; /* char * -> AsyncTextureLoadData * */
+
+  /* File monitors to evict cache data on changes */
+  GHashTable *file_monitors; /* char * -> GFileMonitor * */
 };
 
 static void st_texture_cache_dispose (GObject *object);
@@ -50,6 +53,7 @@ static void st_texture_cache_finalize (GObject *object);
 enum
 {
   ICON_THEME_CHANGED,
+  TEXTURE_FILE_CHANGED,
 
   LAST_SIGNAL
 };
@@ -92,6 +96,14 @@ st_texture_cache_class_init (StTextureCacheClass *klass)
                   0, /* no default handler slot */
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 0);
+
+  signals[TEXTURE_FILE_CHANGED] =
+    g_signal_new ("texture-file-changed",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0, /* no default handler slot */
+                  NULL, NULL, NULL,
+                  G_TYPE_NONE, 1, G_TYPE_STRING);
 }
 
 /**
@@ -164,6 +176,9 @@ st_texture_cache_init (StTextureCache *self)
                                                    g_free, cogl_handle_unref);
   self->priv->outstanding_requests = g_hash_table_new_full (g_str_hash, g_str_equal,
                                                             g_free, NULL);
+  self->priv->file_monitors = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                     g_object_unref, g_object_unref);
+
 }
 
 static void
@@ -179,13 +194,9 @@ st_texture_cache_dispose (GObject *object)
       self->priv->icon_theme = NULL;
     }
 
-  if (self->priv->keyed_cache)
-    g_hash_table_destroy (self->priv->keyed_cache);
-  self->priv->keyed_cache = NULL;
-
-  if (self->priv->outstanding_requests)
-    g_hash_table_destroy (self->priv->outstanding_requests);
-  self->priv->outstanding_requests = NULL;
+  g_clear_pointer (&self->priv->keyed_cache, g_hash_table_destroy);
+  g_clear_pointer (&self->priv->outstanding_requests, g_hash_table_destroy);
+  g_clear_pointer (&self->priv->file_monitors, g_hash_table_destroy);
 
   G_OBJECT_CLASS (st_texture_cache_parent_class)->dispose (object);
 }
@@ -1039,6 +1050,52 @@ load_from_pixbuf (GdkPixbuf *pixbuf)
   return CLUTTER_ACTOR (texture);
 }
 
+static void
+file_changed_cb (GFileMonitor      *monitor,
+                 GFile             *file,
+                 GFile             *other,
+                 GFileMonitorEvent  event_type,
+                 gpointer           user_data)
+{
+  StTextureCache *cache = user_data;
+  char *uri, *key;
+
+  if (event_type != G_FILE_MONITOR_EVENT_CHANGED)
+    return;
+
+  uri = g_file_get_uri (file);
+
+  key = g_strconcat (CACHE_PREFIX_URI, uri, NULL);
+  g_hash_table_remove (cache->priv->keyed_cache, key);
+  g_free (key);
+
+  key = g_strconcat (CACHE_PREFIX_URI_FOR_CAIRO, uri, NULL);
+  g_hash_table_remove (cache->priv->keyed_cache, key);
+  g_free (key);
+
+  g_signal_emit (cache, signals[TEXTURE_FILE_CHANGED], 0, uri);
+
+  g_free (uri);
+}
+
+static void
+ensure_monitor_for_uri (StTextureCache *cache,
+                        const gchar    *uri)
+{
+  StTextureCachePrivate *priv = cache->priv;
+  GFile *file = g_file_new_for_uri (uri);
+
+  if (g_hash_table_lookup (priv->file_monitors, uri) == NULL)
+    {
+      GFileMonitor *monitor = g_file_monitor_file (file, G_FILE_MONITOR_NONE,
+                                                   NULL, NULL);
+      g_signal_connect (monitor, "changed",
+                        G_CALLBACK (file_changed_cb), cache);
+      g_hash_table_insert (priv->file_monitors, g_strdup (uri), monitor);
+    }
+  g_object_unref (file);
+}
+
 typedef struct {
   gchar *path;
   gint   grid_width, grid_height;
@@ -1211,6 +1268,8 @@ st_texture_cache_load_uri_async (StTextureCache *cache,
       load_texture_async (cache, request);
     }
 
+  ensure_monitor_for_uri (cache, uri);
+
   return CLUTTER_ACTOR (texture);
 }
 
@@ -1247,6 +1306,8 @@ st_texture_cache_load_uri_sync_to_cogl_texture (StTextureCache *cache,
     }
   else
     cogl_handle_ref (texdata);
+
+  ensure_monitor_for_uri (cache, uri);
 
 out:
   g_free (key);
@@ -1286,6 +1347,8 @@ st_texture_cache_load_uri_sync_to_cairo_surface (StTextureCache        *cache,
     }
   else
     cairo_surface_reference (surface);
+
+  ensure_monitor_for_uri (cache, uri);
 
 out:
   g_free (key);
