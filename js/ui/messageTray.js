@@ -2031,8 +2031,10 @@ const MessageTray = new Lang.Class({
         // Don't actually take a modal grab in the overview.
         // Just add something to the grab stack that we can
         // pop later.
+        let modal = !this._overviewVisible;
+
         if (!this._grabHelper.grab({ actor: this.actor,
-                                     modal: !this._overviewVisible,
+                                     modal: modal,
                                      onUngrab: Lang.bind(this, this._escapeTray) })) {
             this._traySummoned = false;
             return;
