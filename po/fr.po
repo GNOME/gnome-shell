@@ -5,7 +5,7 @@
 # Mathieu Bridon <bochecha@fedoraproject.org>, 2009.
 # Pablo Martin-Gomez <pablo.martin-gomez@laposte.net>, 2010.
 # Claude Paroz <claude@2xlibre.net>, 2010-2011.
-# Bruno Brouard <annoa.b@gmail.com>, 2011-12.
+# Bruno Brouard <annoa.b@gmail.com>, 2011-2012.
 # Cyril Arnaud <cyril dot arnaud at gmail dot com>, 2011.
 # Luc Guillemin <luc.guillemin@gmail.com>, 2011.
 # Luc Pionchon <pionchon.luc@gmail.com>, 2011.
@@ -17,8 +17,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master fr\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-13 22:18+0000\n"
-"PO-Revision-Date: 2012-09-13 20:03+0200\n"
+"POT-Creation-Date: 2012-09-20 07:05+0000\n"
+"PO-Revision-Date: 2012-09-20 12:25+0200\n"
 "Last-Translator: Alexandre Franke <alexandre.franke@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: \n"
@@ -26,6 +26,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:1
+msgid "Screenshots"
+msgstr "Captures d'écran"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:2
+msgid "Record a screencast"
+msgstr "Enregistrer une vidéo d'écran"
+
+#: ../data/50-gnome-shell-system.xml.in.h:1
+msgid "System"
+msgstr "Système"
+
+#: ../data/50-gnome-shell-system.xml.in.h:2
+msgid "Show the message tray"
+msgstr "Afficher le tiroir de messagerie"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -201,9 +217,9 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM "
-"using the VP8 codec. %T is used as a placeholder for a guess at the optimal "
-"thread count on the system."
+"'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
+"threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is "
+"used as a placeholder for a guess at the optimal thread count on the system."
 msgstr ""
 "Définition du pipeline GStreamer utilisé pour coder les enregistrements "
 "vidéo. La syntaxe est identique à celle de gst-launch. Le connecteur "
@@ -213,10 +229,11 @@ msgstr ""
 "pipeline peut aussi se charger de sa propre sortie, par exemple pour diriger "
 "la sortie vers un serveur icecast via shout2send ou autre. Si cette clé "
 "n'est pas définie ou si elle est vide, c'est le pipeline par défaut qui est "
-"utilisé. Celui-ci est actuellement « vp8enc quality=8 speed=6 threads=%T ! "
-"queue ! webmmux' » et l'enregistrement utilise le format WEBM et le codec "
-"VP8. %T est utilisé comme paramètre pour une supposition quant au nombre "
-"optimal de threads à utiliser sur le système."
+"utilisé. Celui-ci est actuellement « vp8enc min_quantizer=13 "
+"max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' » "
+"et l'enregistrement utilise le format WEBM et le codec VP8. %T est utilisé "
+"comme paramètre pour une supposition quant au nombre optimal de threads à "
+"utiliser sur le système."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "File extension used for storing the screencast"
@@ -253,7 +270,7 @@ msgstr ""
 msgid "Session..."
 msgstr "Session..."
 
-#: ../js/gdm/loginDialog.js:675
+#: ../js/gdm/loginDialog.js:674
 msgctxt "title"
 msgid "Sign In"
 msgstr "Connexion"
@@ -261,28 +278,28 @@ msgstr "Connexion"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:742
+#: ../js/gdm/loginDialog.js:741
 msgid "Not listed?"
 msgstr "Absent de la liste ?"
 
-#: ../js/gdm/loginDialog.js:895 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:894 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
-#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:135
+#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "Annuler"
 
-#: ../js/gdm/loginDialog.js:900
+#: ../js/gdm/loginDialog.js:899
 msgctxt "button"
 msgid "Sign In"
 msgstr "Se connecter"
 
-#: ../js/gdm/loginDialog.js:1239
+#: ../js/gdm/loginDialog.js:1238
 msgid "Login Window"
 msgstr "Fenêtre de connexion"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:657 ../js/ui/userMenu.js:661
-#: ../js/ui/userMenu.js:772
+#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:658 ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:773
 msgid "Suspend"
 msgstr "Mettre en veille"
 
@@ -290,18 +307,22 @@ msgstr "Mettre en veille"
 msgid "Restart"
 msgstr "Redémarrer"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:659 ../js/ui/userMenu.js:661
-#: ../js/ui/userMenu.js:771
+#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:772
 msgid "Power Off"
 msgstr "Éteindre"
 
+#: ../js/gdm/util.js:148
+msgid "Authentication error"
+msgstr "Erreur d'authentification"
+
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:247
+#: ../js/gdm/util.js:265
 msgid "(or swipe finger)"
 msgstr "(ou faites glisser le doigt)"
 
-#: ../js/gdm/util.js:272
+#: ../js/gdm/util.js:290
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(par ex. utilisateur ou %s)"
@@ -1041,56 +1062,56 @@ msgstr "Télécharger et installer « %s » à partir de extensions.gnome.org�
 msgid "tray"
 msgstr "tiroir de messagerie"
 
-#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:146
+#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:194
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "Clavier"
 
-#: ../js/ui/lookingGlass.js:694
+#: ../js/ui/lookingGlass.js:691
 msgid "No extensions installed"
 msgstr "Aucune extension installée"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:748
+#: ../js/ui/lookingGlass.js:745
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s n'a émis aucune erreur."
 
-#: ../js/ui/lookingGlass.js:754
+#: ../js/ui/lookingGlass.js:751
 msgid "Hide Errors"
 msgstr "Masquer les erreurs"
 
-#: ../js/ui/lookingGlass.js:758 ../js/ui/lookingGlass.js:818
+#: ../js/ui/lookingGlass.js:755 ../js/ui/lookingGlass.js:815
 msgid "Show Errors"
 msgstr "Afficher les erreurs"
 
-#: ../js/ui/lookingGlass.js:767
+#: ../js/ui/lookingGlass.js:764
 msgid "Enabled"
 msgstr "Activé"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:770 ../src/gvc/gvc-mixer-control.c:1082
+#: ../js/ui/lookingGlass.js:767 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "Désactivé"
 
-#: ../js/ui/lookingGlass.js:772
+#: ../js/ui/lookingGlass.js:769
 msgid "Error"
 msgstr "Erreur"
 
-#: ../js/ui/lookingGlass.js:774
+#: ../js/ui/lookingGlass.js:771
 msgid "Out of date"
 msgstr "Périmé"
 
-#: ../js/ui/lookingGlass.js:776
+#: ../js/ui/lookingGlass.js:773
 msgid "Downloading"
 msgstr "Téléchargement"
 
-#: ../js/ui/lookingGlass.js:800
+#: ../js/ui/lookingGlass.js:797
 msgid "View Source"
 msgstr "Afficher la source"
 
-#: ../js/ui/lookingGlass.js:809
+#: ../js/ui/lookingGlass.js:806
 msgid "Web Page"
 msgstr "Page Web"
 
@@ -1102,11 +1123,11 @@ msgstr "Ouvrir"
 msgid "Remove"
 msgstr "Enlever"
 
-#: ../js/ui/messageTray.js:2025
+#: ../js/ui/messageTray.js:2050
 msgid "Message Tray"
 msgstr "Tiroir de messagerie"
 
-#: ../js/ui/messageTray.js:2475
+#: ../js/ui/messageTray.js:2506
 msgid "System Information"
 msgstr "Informations du système"
 
@@ -1151,19 +1172,6 @@ msgstr "Activités"
 msgid "Top Bar"
 msgstr "Barre supérieure"
 
-#: ../js/ui/placeDisplay.js:115
-#, c-format
-msgid "Failed to unmount '%s'"
-msgstr "Impossible de monter « %s »"
-
-#: ../js/ui/placeDisplay.js:118
-msgid "Retry"
-msgstr "Réessayer"
-
-#: ../js/ui/placeDisplay.js:349
-msgid "PLACES & DEVICES"
-msgstr "RACCOURCIS et PÉRIPHÉRIQUES"
-
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
@@ -1179,18 +1187,18 @@ msgstr "Veuillez saisir une commande :"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:78
+#: ../js/ui/screenShield.js:79
 msgid "%A, %B %d"
 msgstr "%A %d %B"
 
-#: ../js/ui/screenShield.js:143
+#: ../js/ui/screenShield.js:144
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "Un nouveau message"
 msgstr[1] "%d nouveaux messages"
 
-#: ../js/ui/screenShield.js:145
+#: ../js/ui/screenShield.js:146
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1229,7 +1237,7 @@ msgstr "Mot de passe"
 msgid "Remember Password"
 msgstr "Se souvenir du mot de passe"
 
-#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:138
+#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:169
 msgid "Unlock"
 msgstr "Déverrouiller"
 
@@ -1409,11 +1417,11 @@ msgstr ""
 msgid "OK"
 msgstr "Valider"
 
-#: ../js/ui/status/keyboard.js:170
+#: ../js/ui/status/keyboard.js:227
 msgid "Show Keyboard Layout"
 msgstr "Afficher la disposition du clavier"
 
-#: ../js/ui/status/keyboard.js:175
+#: ../js/ui/status/keyboard.js:232
 msgid "Region and Language Settings"
 msgstr "Paramètres de région et de langue"
 
@@ -1644,67 +1652,67 @@ msgstr "Volume"
 msgid "Microphone"
 msgstr "Microphone"
 
-#: ../js/ui/unlockDialog.js:145
+#: ../js/ui/unlockDialog.js:176
 msgid "Log in as another user"
 msgstr "Se connecter en tant qu'un autre utilisateur"
 
-#: ../js/ui/userMenu.js:174
+#: ../js/ui/userMenu.js:175
 msgid "Available"
 msgstr "Disponible"
 
-#: ../js/ui/userMenu.js:177
+#: ../js/ui/userMenu.js:178
 msgid "Busy"
 msgstr "Occupé"
 
-#: ../js/ui/userMenu.js:180
+#: ../js/ui/userMenu.js:181
 msgid "Invisible"
 msgstr "Invisible"
 
-#: ../js/ui/userMenu.js:183
+#: ../js/ui/userMenu.js:184
 msgid "Away"
 msgstr "Absent"
 
-#: ../js/ui/userMenu.js:186
+#: ../js/ui/userMenu.js:187
 msgid "Idle"
 msgstr "Inactif"
 
-#: ../js/ui/userMenu.js:189
+#: ../js/ui/userMenu.js:190
 msgid "Unavailable"
 msgstr "Non disponible"
 
-#: ../js/ui/userMenu.js:612 ../js/ui/userMenu.js:753
+#: ../js/ui/userMenu.js:613 ../js/ui/userMenu.js:754
 msgid "Switch User"
 msgstr "Changer d'utilisateur"
 
-#: ../js/ui/userMenu.js:613
+#: ../js/ui/userMenu.js:614
 msgid "Switch Session"
 msgstr "Changer de session"
 
-#: ../js/ui/userMenu.js:737
+#: ../js/ui/userMenu.js:738
 msgid "Notifications"
 msgstr "Notifications"
 
-#: ../js/ui/userMenu.js:745
+#: ../js/ui/userMenu.js:746
 msgid "System Settings"
 msgstr "Paramètres système"
 
-#: ../js/ui/userMenu.js:758
+#: ../js/ui/userMenu.js:759
 msgid "Log Out"
 msgstr "Fermer la session"
 
-#: ../js/ui/userMenu.js:763
+#: ../js/ui/userMenu.js:764
 msgid "Lock"
 msgstr "Verrouiller"
 
-#: ../js/ui/userMenu.js:778
+#: ../js/ui/userMenu.js:779
 msgid "Install Updates & Restart"
 msgstr "Installer les mises à jour et redémarrer"
 
-#: ../js/ui/userMenu.js:796
+#: ../js/ui/userMenu.js:797
 msgid "Your chat status will be set to busy"
 msgstr "Votre statut pour les discussions sera défini à occupé"
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:798
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1713,19 +1721,19 @@ msgstr ""
 "discussion. Votre statut en ligne a été modifié afin que les autres sachent "
 "qu'il se peut que vous ne voyez pas leurs messages."
 
-#: ../js/ui/viewSelector.js:86
+#: ../js/ui/viewSelector.js:85
 msgid "Windows"
 msgstr "Fenêtres"
 
-#: ../js/ui/viewSelector.js:90
+#: ../js/ui/viewSelector.js:89
 msgid "Applications"
 msgstr "Applications"
 
-#: ../js/ui/viewSelector.js:94 ../src/shell-util.c:250
+#: ../js/ui/viewSelector.js:93
 msgid "Search"
 msgstr "Recherche"
 
-#: ../js/ui/wanda.js:123
+#: ../js/ui/wanda.js:119
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1734,12 +1742,12 @@ msgstr ""
 "Désolé, aucune sagesse pour vous aujourd'hui :\n"
 "%s"
 
-#: ../js/ui/wanda.js:127
+#: ../js/ui/wanda.js:123
 #, c-format
 msgid "%s the Oracle says"
 msgstr "L'Oracle %s déclare"
 
-#: ../js/ui/wanda.js:168
+#: ../js/ui/wanda.js:164
 msgid "Your favorite Easter Egg"
 msgstr "Votre œuf de Pâques favori"
 
@@ -1815,108 +1823,3 @@ msgstr "Défaut"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "La fenêtre d'authentification a été écartée par l'utilisateur"
-
-#. Translators: this is the same string as the one found in
-#. * nautilus
-#: ../src/shell-util.c:94
-msgid "Home"
-msgstr "Dossier personnel"
-
-#. Translators: this is the same string as the one found in
-#. * nautilus
-#: ../src/shell-util.c:104
-msgid "File System"
-msgstr "Système de fichiers"
-
-#. Translators: the first string is the name of a gvfs
-#. * method, and the second string is a path. For
-#. * example, "Trash: some-directory". It means that the
-#. * directory called "some-directory" is in the trash.
-#.
-#: ../src/shell-util.c:300
-#, c-format
-msgid "%1$s: %2$s"
-msgstr "%1$s : %2$s"
-
-#~ msgid "disabled OpenSearch providers"
-#~ msgstr "fournisseurs OpenSearch désactivés"
-
-#~ msgid "Show time with seconds"
-#~ msgstr "Afficher l'heure avec les secondes"
-
-#~ msgid "If true, display seconds in time."
-#~ msgstr "Si vrai, afficher les secondes dans l'horloge."
-
-#~ msgid "Show date in clock"
-#~ msgstr "Afficher la date dans l'horloge"
-
-#~ msgid "If true, display date in the clock, in addition to time."
-#~ msgstr "Si vrai, afficher la date dans l'horloge, en plus de l'heure."
-
-#~ msgid "Offline"
-#~ msgstr "Déconnecté"
-
-#~ msgid "CONTACTS"
-#~ msgstr "CONTACTS"
-
-#~ msgid "%a %b %e, %R:%S"
-#~ msgstr "%a %e %b, %R:%S"
-
-#~ msgid "%a %b %e, %R"
-#~ msgstr "%a %e %b, %R"
-
-#~ msgid "%a %R:%S"
-#~ msgstr "%a %R:%S"
-
-#~ msgid "%a %R"
-#~ msgstr "%a %R"
-
-#~ msgid "%a %b %e, %l:%M:%S %p"
-#~ msgstr "%a %e %b, %l:%M:%S %p"
-
-#~ msgid "%a %b %e, %l:%M %p"
-#~ msgstr "%a %e %b, %l:%M %p"
-
-#~ msgid "%a %l:%M:%S %p"
-#~ msgstr "%a %l:%M:%S %p"
-
-#~ msgid "%a %l:%M %p"
-#~ msgstr "%a %l:%M %p"
-
-#~ msgid "Connect to..."
-#~ msgstr "Connexion à..."
-
-#~ msgid "Wrong password, please try again"
-#~ msgstr "Mot de passe incorrect, réessayez"
-
-#~ msgid "Network"
-#~ msgstr "Réseau"
-
-#~ msgid "%s is online."
-#~ msgstr "%s est en ligne."
-
-#
-# luc: note: Empathy utilise « déconnecté »
-#~ msgid "%s is offline."
-#~ msgstr "%s est hors ligne."
-
-#~ msgid "%s is away."
-#~ msgstr "%s est absent."
-
-#~ msgid "%s is busy."
-#~ msgstr "%s est occupé."
-
-#~ msgid "Hidden"
-#~ msgstr "Invisible"
-
-#~ msgid "Power Off..."
-#~ msgstr "Éteindre..."
-
-#~ msgid "Online Accounts"
-#~ msgstr "Comptes en ligne"
-
-#~ msgid "Lock Screen"
-#~ msgstr "Verrouiller l'écran"
-
-#~ msgid "Log Out..."
-#~ msgstr "Fermer la session..."
