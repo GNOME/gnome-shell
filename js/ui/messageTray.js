@@ -1561,6 +1561,9 @@ const MessageTray = new Lang.Class({
     },
 
     _trayDwellTimeout: function() {
+        if (Main.modalCount > 0)
+            return false;
+
         // If the user interacted with the focus window since we started the tray
         // dwell (by clicking or typing), don't activate the message tray
         let focusWindow = global.display.focus_window;
