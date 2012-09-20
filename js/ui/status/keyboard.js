@@ -177,6 +177,7 @@ const LayoutMenuItem = new Lang.Class({
         this.indicator = new St.Label({ text: shortName });
         this.addActor(this.label);
         this.addActor(this.indicator);
+        this.actor.label_actor = this.label;
     }
 });
 
