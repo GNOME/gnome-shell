@@ -270,6 +270,39 @@ st_widget_remove_transition (StWidget *widget)
 }
 
 static void
+st_widget_texture_cache_changed (StTextureCache *cache,
+                                 const char     *uri,
+                                 gpointer        user_data)
+{
+  StWidget *actor = ST_WIDGET (user_data);
+  StThemeNode *node = actor->priv->theme_node;
+  StBorderImage *border_image;
+  char *path;
+  gboolean changed;
+
+  if (node == NULL)
+    return;
+
+  path = g_filename_from_uri (uri, NULL, NULL);
+
+  changed = g_strcmp0 (st_theme_node_get_background_image (node), path) == 0;
+
+  border_image = st_theme_node_get_border_image (node);
+  if (!changed && border_image)
+    changed = strcmp (st_border_image_get_filename (border_image), path) == 0;
+
+  g_free (path);
+
+  if (!changed)
+    return;
+
+  st_theme_node_invalidate_paint_state (node);
+
+  if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (actor)))
+    clutter_actor_queue_redraw (CLUTTER_ACTOR (actor));
+}
+
+static void
 st_widget_dispose (GObject *gobject)
 {
   StWidget *actor = ST_WIDGET (gobject);
@@ -301,6 +334,10 @@ st_widget_dispose (GObject *gobject)
       g_object_unref (priv->label_actor);
       priv->label_actor = NULL;
     }
+
+  g_signal_handlers_disconnect_by_func (st_texture_cache_get_default (),
+                                        st_widget_texture_cache_changed,
+                                        actor);
 
   g_clear_object (&priv->prev_first_child);
   g_clear_object (&priv->prev_last_child);
@@ -1470,6 +1507,8 @@ st_widget_init (StWidget *actor)
 
   g_signal_connect (actor, "notify::first-child", G_CALLBACK (st_widget_first_child_notify), NULL);
   g_signal_connect (actor, "notify::last-child", G_CALLBACK (st_widget_last_child_notify), NULL);
+  g_signal_connect (st_texture_cache_get_default (), "texture-file-changed",
+                    G_CALLBACK (st_widget_texture_cache_changed), actor);
 }
 
 static void
