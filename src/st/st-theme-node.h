@@ -244,6 +244,7 @@ void st_theme_node_paint (StThemeNode            *node,
 
 void st_theme_node_copy_cached_paint_state (StThemeNode *node,
                                             StThemeNode *other);
+void st_theme_node_invalidate_paint_state  (StThemeNode *node);
 
 G_END_DECLS
 

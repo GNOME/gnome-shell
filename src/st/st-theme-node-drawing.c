@@ -2088,3 +2088,10 @@ st_theme_node_copy_cached_paint_state (StThemeNode *node,
     if (other->corner_material[corner_id])
       node->corner_material[corner_id] = cogl_handle_ref (other->corner_material[corner_id]);
 }
+
+void
+st_theme_node_invalidate_paint_state (StThemeNode *node)
+{
+  node->alloc_width = 0;
+  node->alloc_height = 0;
+}
