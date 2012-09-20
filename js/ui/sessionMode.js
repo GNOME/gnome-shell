@@ -50,7 +50,7 @@ const _modes = {
         isLocked: true,
         isGreeter: undefined,
         unlockDialog: undefined,
-        components: ['networkAgent', 'polkitAgent', 'telepathyClient'],
+        components: ['polkitAgent', 'telepathyClient'],
         panel: {
             left: ['userMenu'],
             center: [],
@@ -61,7 +61,7 @@ const _modes = {
     'unlock-dialog': {
         isLocked: true,
         unlockDialog: undefined,
-        components: ['networkAgent', 'polkitAgent', 'telepathyClient'],
+        components: ['polkitAgent', 'telepathyClient'],
         panel: {
             left: ['userMenu'],
             center: [],
