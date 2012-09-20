@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-18 07:55+0100\n"
-"PO-Revision-Date: 2012-09-18 07:55+0000\n"
+"POT-Creation-Date: 2012-09-20 22:18+0100\n"
+"PO-Revision-Date: 2012-09-20 22:20+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "Language: pt\n"
@@ -17,6 +17,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:1
+msgid "Screenshots"
+msgstr "Capturas de Ecrã"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:2
+msgid "Record a screencast"
+msgstr "Gravar uma emissão de ecrã"
+
+#: ../data/50-gnome-shell-system.xml.in.h:1
+msgid "System"
+msgstr "Sistema"
+
+#: ../data/50-gnome-shell-system.xml.in.h:2
+msgid "Show the message tray"
+msgstr "Apresentar a zona de notificações"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -197,10 +213,10 @@ msgstr ""
 "ser utilizado para enviar o resultado para um servidor icecast através do "
 "shout2send ou semelhante. Quando não definido ou definido com um valor "
 "vazio, será utilizado o canal por omissão. Este é actualmente 'vp8enc "
-"min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
-"threads=%T ! queue ! webmmux' e grava para WEBM utilizando "
-"o codec VP8. %T é utilizado como uma variável para se tentar inferir o número "
-"óptimo de threads no sistema."
+"min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! "
+"queue ! webmmux' e grava para WEBM utilizando o codec VP8. %T é utilizado "
+"como uma variável para se tentar inferir o número óptimo de threads no "
+"sistema."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "File extension used for storing the screencast"
@@ -234,7 +250,7 @@ msgstr ""
 msgid "Session..."
 msgstr "Sessão..."
 
-#: ../js/gdm/loginDialog.js:675
+#: ../js/gdm/loginDialog.js:674
 msgctxt "title"
 msgid "Sign In"
 msgstr "Iniciar Sessão"
@@ -242,28 +258,28 @@ msgstr "Iniciar Sessão"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:742
+#: ../js/gdm/loginDialog.js:741
 msgid "Not listed?"
 msgstr "Não está listada?"
 
-#: ../js/gdm/loginDialog.js:895 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:894 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
-#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:137
+#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../js/gdm/loginDialog.js:900
+#: ../js/gdm/loginDialog.js:899
 msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar Sessão"
 
-#: ../js/gdm/loginDialog.js:1239
+#: ../js/gdm/loginDialog.js:1238
 msgid "Login Window"
 msgstr "Janela de Início de Sessão"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:657 ../js/ui/userMenu.js:661
-#: ../js/ui/userMenu.js:772
+#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:658 ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:773
 msgid "Suspend"
 msgstr "Suspender"
 
@@ -271,18 +287,22 @@ msgstr "Suspender"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:659 ../js/ui/userMenu.js:661
-#: ../js/ui/userMenu.js:771
+#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:772
 msgid "Power Off"
 msgstr "Desligar"
 
+#: ../js/gdm/util.js:148
+msgid "Authentication error"
+msgstr "Erro de autenticação"
+
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:247
+#: ../js/gdm/util.js:265
 msgid "(or swipe finger)"
 msgstr "(ou utilize a impressão digital)"
 
-#: ../js/gdm/util.js:272
+#: ../js/gdm/util.js:290
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(por ex., utilizador ou %s)"
@@ -987,7 +1007,7 @@ msgstr "Realizar download de extensions.gnome.org e instalar '%s'?"
 msgid "tray"
 msgstr "área de notificação"
 
-#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:146
+#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:195
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "Teclado"
@@ -1048,11 +1068,11 @@ msgstr "Abrir"
 msgid "Remove"
 msgstr "Remover"
 
-#: ../js/ui/messageTray.js:2041
+#: ../js/ui/messageTray.js:2050
 msgid "Message Tray"
 msgstr "Zona de Notificações"
 
-#: ../js/ui/messageTray.js:2483
+#: ../js/ui/messageTray.js:2506
 msgid "System Information"
 msgstr "Informação do Sistema"
 
@@ -1112,18 +1132,18 @@ msgstr "Introduza um comando:"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:78
+#: ../js/ui/screenShield.js:79
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/screenShield.js:143
+#: ../js/ui/screenShield.js:144
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d nova mensagem"
 msgstr[1] "%d novas mensagens"
 
-#: ../js/ui/screenShield.js:145
+#: ../js/ui/screenShield.js:146
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1162,7 +1182,7 @@ msgstr "Senha"
 msgid "Remember Password"
 msgstr "Recordar Senha"
 
-#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:140
+#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:169
 msgid "Unlock"
 msgstr "Destrancar"
 
@@ -1338,11 +1358,11 @@ msgstr "Introduza o PIN indicado no dispositivo."
 msgid "OK"
 msgstr "OK"
 
-#: ../js/ui/status/keyboard.js:170
+#: ../js/ui/status/keyboard.js:228
 msgid "Show Keyboard Layout"
 msgstr "Apresentar a Disposição de Teclado"
 
-#: ../js/ui/status/keyboard.js:175
+#: ../js/ui/status/keyboard.js:233
 msgid "Region and Language Settings"
 msgstr "Definições de Região e Idioma"
 
@@ -1573,68 +1593,68 @@ msgstr "Volume"
 msgid "Microphone"
 msgstr "Microfone"
 
-#: ../js/ui/unlockDialog.js:147
+#: ../js/ui/unlockDialog.js:176
 msgid "Log in as another user"
 msgstr "Iniciar sessão como outro utilizador"
 
-#: ../js/ui/userMenu.js:174
+#: ../js/ui/userMenu.js:175
 msgid "Available"
 msgstr "Disponível"
 
-#: ../js/ui/userMenu.js:177
+#: ../js/ui/userMenu.js:178
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../js/ui/userMenu.js:180
+#: ../js/ui/userMenu.js:181
 msgid "Invisible"
 msgstr "Invisível"
 
-#: ../js/ui/userMenu.js:183
+#: ../js/ui/userMenu.js:184
 msgid "Away"
 msgstr "Ausente"
 
-#: ../js/ui/userMenu.js:186
+#: ../js/ui/userMenu.js:187
 msgid "Idle"
 msgstr "Inactivo"
 
-#: ../js/ui/userMenu.js:189
+#: ../js/ui/userMenu.js:190
 msgid "Unavailable"
 msgstr "Indisponível"
 
-#: ../js/ui/userMenu.js:612 ../js/ui/userMenu.js:753
+#: ../js/ui/userMenu.js:613 ../js/ui/userMenu.js:754
 msgid "Switch User"
 msgstr "Alternar Utilizador"
 
-#: ../js/ui/userMenu.js:613
+#: ../js/ui/userMenu.js:614
 msgid "Switch Session"
 msgstr "Alternar Sessão"
 
-#: ../js/ui/userMenu.js:737
+#: ../js/ui/userMenu.js:738
 msgid "Notifications"
 msgstr "Notificações"
 
-#: ../js/ui/userMenu.js:745
+#: ../js/ui/userMenu.js:746
 msgid "System Settings"
 msgstr "Definições de Sistema"
 
-#: ../js/ui/userMenu.js:758
+#: ../js/ui/userMenu.js:759
 msgid "Log Out"
 msgstr "Terminar Sessão"
 
-#: ../js/ui/userMenu.js:763
+#: ../js/ui/userMenu.js:764
 msgid "Lock"
 msgstr "Trancar"
 
-#: ../js/ui/userMenu.js:778
+#: ../js/ui/userMenu.js:779
 msgid "Install Updates & Restart"
 msgstr "Instalar Actualizações & Reiniciar"
 
-#: ../js/ui/userMenu.js:796
+#: ../js/ui/userMenu.js:797
 msgid "Your chat status will be set to busy"
 msgstr ""
 "O seu estado de disponibilidade para diálogo será definido como ocupado"
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:798
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1757,9 +1777,6 @@ msgstr "O diálogo de autenticação foi fechado pelo utilizador"
 
 #~ msgid "Home"
 #~ msgstr "Pasta Pessoal"
-
-#~ msgid "File System"
-#~ msgstr "Sistema de Ficheiros"
 
 #~ msgid "%1$s: %2$s"
 #~ msgstr "%1$s: %2$s"
