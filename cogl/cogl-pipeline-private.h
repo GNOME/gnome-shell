@@ -45,6 +45,14 @@
 
 #ifdef HAVE_COGL_GL
 
+#define COGL_PIPELINE_PROGEND_FIXED       0
+#define COGL_PIPELINE_PROGEND_GLSL        1
+#define COGL_PIPELINE_N_PROGENDS          2
+
+#define COGL_PIPELINE_VERTEND_FIXED 0
+#define COGL_PIPELINE_VERTEND_GLSL  1
+#define COGL_PIPELINE_N_VERTENDS    2
+
 #define COGL_PIPELINE_FRAGEND_ARBFP 0
 #define COGL_PIPELINE_FRAGEND_FIXED 1
 #define COGL_PIPELINE_FRAGEND_GLSL  2
@@ -54,18 +62,32 @@
 
 #ifdef HAVE_COGL_GLES2
 
+#define COGL_PIPELINE_PROGEND_GLSL 0
+#define COGL_PIPELINE_VERTEND_GLSL 0
 #define COGL_PIPELINE_FRAGEND_GLSL 0
+
 #ifdef HAVE_COGL_GLES
+#define COGL_PIPELINE_PROGEND_FIXED 1
+#define COGL_PIPELINE_VERTEND_FIXED 1
 #define COGL_PIPELINE_FRAGEND_FIXED 1
+
+#define COGL_PIPELINE_N_PROGENDS    2
+#define COGL_PIPELINE_N_VERTENDS    2
 #define COGL_PIPELINE_N_FRAGENDS    2
 #else
+#define COGL_PIPELINE_N_PROGENDS    1
+#define COGL_PIPELINE_N_VERTENDS    1
 #define COGL_PIPELINE_N_FRAGENDS    1
 #endif
 
 #else /* HAVE_COGL_GLES2 */
 
 #ifdef HAVE_COGL_GLES
+#define COGL_PIPELINE_PROGEND_FIXED 0
+#define COGL_PIPELINE_VERTEND_FIXED 0
 #define COGL_PIPELINE_FRAGEND_FIXED 0
+#define COGL_PIPELINE_N_PROGENDS    1
+#define COGL_PIPELINE_N_VERTENDS    1
 #define COGL_PIPELINE_N_FRAGENDS    1
 #else
 #error No drivers defined
@@ -78,65 +100,8 @@
 #define COGL_PIPELINE_FRAGEND_DEFAULT    0
 #define COGL_PIPELINE_FRAGEND_UNDEFINED  3
 
-#ifdef HAVE_COGL_GL
-
-#define COGL_PIPELINE_VERTEND_FIXED 0
-#define COGL_PIPELINE_VERTEND_GLSL  1
-#define COGL_PIPELINE_N_VERTENDS    2
-
-#else /* HAVE_COGL_GL */
-
-#ifdef HAVE_COGL_GLES2
-
-#define COGL_PIPELINE_VERTEND_GLSL  0
-#ifdef HAVE_COGL_GLES
-#define COGL_PIPELINE_VERTEND_FIXED 1
-#define COGL_PIPELINE_N_VERTENDS    2
-#else
-#define COGL_PIPELINE_N_VERTENDS    1
-#endif
-
-#else /* HAVE_COGL_GLES2 */
-
-#ifdef HAVE_COGL_GLES
-#define COGL_PIPELINE_VERTEND_FIXED 0
-#define COGL_PIPELINE_N_VERTENDS    1
-#else
-#error No drivers defined
-#endif /* HAVE_COGL_GLES */
-
-#endif /* HAVE_COGL_GLES2 */
-
-#endif /* HAVE_COGL_GL */
-
 #define COGL_PIPELINE_VERTEND_DEFAULT    0
 #define COGL_PIPELINE_VERTEND_UNDEFINED  3
-
-/* If we have either of the GLSL backends then we also need a GLSL
-   progend to combine the shaders generated into a single
-   program. Same goes for the fixed progends which are used to flush
-   the matrices */
-#ifdef COGL_PIPELINE_FRAGEND_FIXED
-
-#define COGL_PIPELINE_PROGEND_FIXED      0
-
-#ifdef COGL_PIPELINE_FRAGEND_GLSL
-#define COGL_PIPELINE_PROGEND_GLSL       1
-#define COGL_PIPELINE_N_PROGENDS         2
-#else
-#define COGL_PIPELINE_N_PROGENDS         1
-#endif
-
-#else /* COGL_PIPELINE_FRAGEND_FIXED */
-
-#ifdef COGL_PIPELINE_FRAGEND_GLSL
-#define COGL_PIPELINE_PROGEND_GLSL       0
-#define COGL_PIPELINE_N_PROGENDS         1
-#else
-#define COGL_PIPELINE_N_PROGENDS         0
-#endif
-
-#endif /* COGL_PIPELINE_FRAGEND_FIXED */
 
 /* XXX: should I rename these as
  * COGL_PIPELINE_STATE_INDEX_XYZ... ?
