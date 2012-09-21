@@ -429,6 +429,7 @@ const ScreenShield = new Lang.Class({
         this._hasLockScreen = false;
         this._isGreeter = false;
         this._isActive = false;
+        this._inUnlockAnimation = false;
 
         this._lightbox = new Lightbox.Lightbox(Main.uiGroup,
                                                { inhibitEvents: true,
@@ -766,6 +767,7 @@ const ScreenShield = new Lang.Class({
     },
 
     _tweenUnlocked: function() {
+        this._inUnlockAnimation = true;
         this.unlock();
         Tweener.addTween(this._lockDialogGroup, {
             scale_x: 0,
@@ -778,6 +780,7 @@ const ScreenShield = new Lang.Class({
                     this._dialog = null;
                 }
                 this.actor.hide();
+                this._inUnlockAnimation = false;
             },
             onCompleteScope: this
         });
@@ -799,7 +802,8 @@ const ScreenShield = new Lang.Class({
             this._isModal = false;
         }
 
-        this.actor.hide();
+        if (!this._inUnlockAnimation)
+            this.actor.hide();
 
         if (Main.sessionMode.currentMode == 'lock-screen')
             Main.sessionMode.popMode('lock-screen');
