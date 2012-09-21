@@ -964,6 +964,8 @@ const Panel = new Lang.Class({
                                                   reactive: true });
         this.actor._delegate = this;
 
+        this._sessionStyle = null;
+
         this.statusArea = {};
 
         this.menuManager = new PopupMenu.PopupMenuManager(this);
@@ -1151,6 +1153,13 @@ const Panel = new Lang.Class({
         this._updateBox(panel.left, this._leftBox);
         this._updateBox(panel.center, this._centerBox);
         this._updateBox(panel.right, this._rightBox);
+
+        if (this._sessionStyle)
+            this._removeStyleClassName(this._sessionStyle);
+
+        this._sessionStyle = Main.sessionMode.panelStyle;
+        if (this._sessionStyle)
+            this._addStyleClassName(this._sessionStyle);
     },
 
     _initBox: function(elements, box) {
@@ -1239,5 +1248,17 @@ const Panel = new Lang.Class({
         this.statusArea[role] = indicator;
         this._addToPanelBox(role, indicator, position, boxContainer);
         return indicator;
+    },
+
+    _addStyleClassName: function(className) {
+        this.actor.add_style_class_name(className);
+        this._rightCorner.actor.add_style_class_name(className);
+        this._leftCorner.actor.add_style_class_name(className);
+    },
+
+    _removeStyleClassName: function(className) {
+        this.actor.remove_style_class_name(className);
+        this._rightCorner.actor.remove_style_class_name(className);
+        this._leftCorner.actor.remove_style_class_name(className);
     }
 });

@@ -28,6 +28,7 @@ const _modes = {
             center: [],
             right: []
         },
+        panelStyle: null
     },
 
     'gdm': {
@@ -41,7 +42,8 @@ const _modes = {
             center: ['dateMenu'],
             right: ['a11y', 'display', 'keyboard',
                     'volume', 'battery', 'powerMenu']
-        }
+        },
+        panelStyle: 'login-screen'
     },
 
     'lock-screen': {
@@ -54,6 +56,7 @@ const _modes = {
             center: [],
             right: ['lockScreen']
         },
+        panelStyle: 'lock-screen'
     },
 
     'unlock-dialog': {
@@ -65,6 +68,7 @@ const _modes = {
             center: [],
             right: ['a11y', 'keyboard', 'lockScreen']
         },
+        panelStyle: 'unlock-screen'
     },
 
     'initial-setup': {
