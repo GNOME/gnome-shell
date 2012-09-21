@@ -420,6 +420,18 @@ StScrollBar StButton#vhandle:active {
     background-color: black;
     font-weight: bold;
     height: 1.86em;
+    transition-duration: 250;
+}
+
+#panel.lock-screen {
+    height: 2em;
+    background-color: rgba(0,0,0,0.3);
+}
+
+#panel.unlock-screen,
+#panel.login-screen {
+    height: 2em;
+    background-color: transparent;
 }
 
 #panelLeft, #panelCenter {
@@ -455,6 +467,13 @@ StScrollBar StButton#vhandle:active {
     -panel-corner-border-color: rgba(255,255,255,0.8);
 }
 
+.panel-corner.lock-screen,
+.panel-corner.unlock-screen,
+.panel-corner.login-screen {
+    -panel-corner-background-color: transparent;
+    -panel-corner-border-color: transparent;
+}
+
 #appMenu {
     spacing: 4px;
 }
@@ -485,6 +504,24 @@ StScrollBar StButton#vhandle:active {
     font-weight: bold;
     color: #ccc;
     transition-duration: 100;
+}
+
+#panel.unlock-screen .panel-button,
+#panel.lock-screen .panel-button,
+#panel.login-screen .panel-button {
+    color: #e6e6e6;
+}
+
+#panel.unlock-screen .panel-button:hover,
+#panel.lock-screen .panel-button:hover,
+#panel.login-screen .panel-button:hover,
+#panel.unlock-screen .panel-button:active,
+#panel.lock-screen .panel-button:active,
+#panel.login-screen .panel-button:active,
+#panel.unlock-screen .panel-button:focus,
+#panel.lock-screen .panel-button:focus,
+#panel.login-screen .panel-button:focus {
+    color: white;
 }
 
 .panel-button:hover {
