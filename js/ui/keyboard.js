@@ -565,6 +565,7 @@ const KeyboardSource = new Lang.Class({
     _init: function(keyboard) {
         this._keyboard = keyboard;
         this.parent(_("Keyboard"), 'input-keyboard-symbolic');
+        this.keepTrayOnSummaryClick = true;
     },
 
     handleSummaryClick: function() {

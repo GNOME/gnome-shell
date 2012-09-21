@@ -1052,6 +1052,7 @@ const Source = new Lang.Class({
         this.isChat = false;
         this.isMuted = false;
         this.showInLockScreen = true;
+        this.keepTrayOnSummaryClick = false;
 
         this.notifications = [];
     },
@@ -1776,7 +1777,10 @@ const MessageTray = new Lang.Class({
 
     _onSummaryItemClicked: function(summaryItem, button) {
         if (summaryItem.source.handleSummaryClick()) {
-            this._escapeTray();
+            if (summaryItem.source.keepTrayOnSummaryClick)
+                this._setClickedSummaryItem(null);
+            else
+                this._escapeTray();
         } else {
             if (!this._setClickedSummaryItem(summaryItem, button))
                 this._setClickedSummaryItem(null);
