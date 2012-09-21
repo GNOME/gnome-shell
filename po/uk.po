@@ -2,14 +2,15 @@
 # Yuriy Syrota <rasta@renome.rovno.ua>, 2001, 2002.
 # Maxim Dziumanenko <dziumanenko@gmail.com>, 2004-2008
 # Korostil Daniel <ted.korostiled@gmail.com>, 2011, 2012.
+# Re. <ted.korostiled@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-18 17:38+0200\n"
-"PO-Revision-Date: 2012-03-18 17:42+0300\n"
-"Last-Translator: Korostil Daniel <ted.korostiled@gmail.com>\n"
-"Language-Team: translation@linux.org.ua\n"
+"POT-Creation-Date: 2012-09-21 10:04+0300\n"
+"PO-Revision-Date: 2012-09-21 10:05+0300\n"
+"Last-Translator: Re. <ted.korostiled@gmail.com>\n"
+"Language-Team: linux.org.ua\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,7 +40,7 @@ msgid ""
 "\"."
 msgstr "Уже запущено інший композитний менеджер на екрані %i через показ «%s»."
 
-#: ../src/core/bell.c:307
+#: ../src/core/bell.c:320
 msgid "Bell event"
 msgstr "Подія гудка"
 
@@ -48,77 +49,77 @@ msgstr "Подія гудка"
 msgid "Unknown window information request: %d"
 msgstr "Запит інформації невідомого вікна: %d"
 
-#: ../src/core/delete.c:111
+#: ../src/core/delete.c:113
 #, c-format
-msgid "<tt>%s</tt> is not responding."
-msgstr "<tt>%s</tt> не відповідає."
+msgid "%s is not responding."
+msgstr "%s не відповідає."
 
-#: ../src/core/delete.c:114
+#: ../src/core/delete.c:117
 msgid "Application is not responding."
 msgstr "Програма не відповідає."
 
-#: ../src/core/delete.c:119
+#: ../src/core/delete.c:122
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
 "Можете трошки зачекати відновлення активності або примусово закрити програму."
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:129
 msgid "_Wait"
 msgstr "_Зачекати"
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:129
 msgid "_Force Quit"
 msgstr "_Завершити примусово"
 
-#: ../src/core/display.c:387
+#: ../src/core/display.c:386
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Нема розширення %s, яке потрібне для композитного режиму"
 
-#: ../src/core/display.c:453
+#: ../src/core/display.c:482
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Не вдалось відкрити дисплей віконної системи X «%s»\n"
 
-#: ../src/core/keybindings.c:852
+#: ../src/core/keybindings.c:853
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr "Клавішу «%s» з модифікаторами «%x» вже використовує інша програма\n"
 
-#: ../src/core/main.c:206
+#: ../src/core/main.c:196
 msgid "Disable connection to session manager"
 msgstr "Вимкнути з'єднання з менеджером сеансу"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:202
 msgid "Replace the running window manager"
 msgstr "Замінити запущений віконний менеджер"
 
-#: ../src/core/main.c:218
+#: ../src/core/main.c:208
 msgid "Specify session management ID"
 msgstr "Вказати ідентифікатор сеансу"
 
-#: ../src/core/main.c:223
+#: ../src/core/main.c:213
 msgid "X Display to use"
 msgstr "Дисплей X"
 
-#: ../src/core/main.c:229
+#: ../src/core/main.c:219
 msgid "Initialize session from savefile"
 msgstr "Розпочати сеанс зі збереженого файла"
 
-#: ../src/core/main.c:235
+#: ../src/core/main.c:225
 msgid "Make X calls synchronous"
 msgstr "Зробити виклики X синхронними"
 
-#: ../src/core/main.c:504
+#: ../src/core/main.c:494
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Помилка зчитування каталогу тем: %s\n"
 
-#: ../src/core/main.c:520
+#: ../src/core/main.c:510
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -146,10 +147,10 @@ msgid "Print version"
 msgstr "Показати версію"
 
 #: ../src/core/mutter.c:60
-msgid "Comma-separated list of compositor plugins"
-msgstr "Список композитних додатків розділених комою"
+msgid "Mutter plugin to use"
+msgstr "Додатки Clutter для використання"
 
-#: ../src/core/prefs.c:1077
+#: ../src/core/prefs.c:1071
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -157,12 +158,12 @@ msgstr ""
 "Обхід для роботи із зіпсованими програмами вимкнено. Деякі додатки можуть "
 "працювати некоректно.\n"
 
-#: ../src/core/prefs.c:1152
+#: ../src/core/prefs.c:1146
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Неможливо проаналізувати опис шрифту «%s» у ключі GSettings %s\n"
 
-#: ../src/core/prefs.c:1218
+#: ../src/core/prefs.c:1212
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -171,7 +172,7 @@ msgstr ""
 "У базі даних налаштування знайдено «%s» — що не є правильним значенням "
 "модифікатора клавіші миші.\n"
 
-#: ../src/core/prefs.c:1739
+#: ../src/core/prefs.c:1736
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -180,17 +181,17 @@ msgstr ""
 "Знайдене у базі даних налаштування значення «%s» не є правильним записом "
 "прив'язки клавіш «%s»\n"
 
-#: ../src/core/prefs.c:1836
+#: ../src/core/prefs.c:1833
 #, c-format
 msgid "Workspace %d"
 msgstr "Робочий простір %d"
 
-#: ../src/core/screen.c:730
+#: ../src/core/screen.c:652
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Екран %d на дисплеї «%s» не правильний\n"
 
-#: ../src/core/screen.c:746
+#: ../src/core/screen.c:668
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -199,7 +200,7 @@ msgstr ""
 "Екран %d на дисплеї «%s» вже має менеджера вікон; спробуйте вказати параметр "
 "--replace, щоб замінити поточний менеджер вікон.\n"
 
-#: ../src/core/screen.c:773
+#: ../src/core/screen.c:695
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -207,12 +208,12 @@ msgstr ""
 "Не вдалось одержати функцію виділення менеджеру вікон на екрані %d дисплею "
 "«%s»\n"
 
-#: ../src/core/screen.c:828
+#: ../src/core/screen.c:750
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Екран %d на дисплеї «%s» вже має менеджера вікон\n"
 
-#: ../src/core/screen.c:1013
+#: ../src/core/screen.c:935
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не вдалось відпустити екран %d на дисплеї «%s»\n"
@@ -272,44 +273,44 @@ msgstr ""
 "Ці вікна не підтримують &quot;збереження поточних параметрів&quot; і при "
 "наступному входженні їх треба запустити власноруч."
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:80
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Збій відкриття журналу зневадження: %s\n"
 
-#: ../src/core/util.c:121
+#: ../src/core/util.c:90
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Збій виконання fdopen() для журналу %s: %s\n"
 
-#: ../src/core/util.c:127
+#: ../src/core/util.c:96
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Відкрито журнал %s\n"
 
-#: ../src/core/util.c:146 ../src/tools/mutter-message.c:149
+#: ../src/core/util.c:115 ../src/tools/mutter-message.c:149
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter зібрано без підтримки докладного режиму\n"
 
-#: ../src/core/util.c:290
+#: ../src/core/util.c:259
 msgid "Window manager: "
 msgstr "Віконний менеджер:"
 
-#: ../src/core/util.c:438
+#: ../src/core/util.c:407
 msgid "Bug in window manager: "
 msgstr "Вада у віконному менеджері:"
 
-#: ../src/core/util.c:471
+#: ../src/core/util.c:438
 msgid "Window manager warning: "
 msgstr "Попередження віконного менеджера:"
 
-#: ../src/core/util.c:499
+#: ../src/core/util.c:466
 msgid "Window manager error: "
 msgstr "Помилка віконного менеджера:"
 
 #. first time through
-#: ../src/core/window.c:7266
+#: ../src/core/window.c:7234
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -325,7 +326,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7931
+#: ../src/core/window.c:7899
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -335,22 +336,22 @@ msgstr ""
 "змінюватись, але встановило мінімальний розмір %d x %d та максимальний %d x "
 "%d;, в чому не має сенсу.\n"
 
-#: ../src/core/window-props.c:309
+#: ../src/core/window-props.c:310
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Програма встановила неправильне значення параметра _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:426
+#: ../src/core/window-props.c:429
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (на %s)"
 
-#: ../src/core/window-props.c:1481
+#: ../src/core/window-props.c:1484
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Неправильний параметр WM_TRANSIENT_FOR вікна 0x%lx вказано для %s.\n"
 
-#: ../src/core/window-props.c:1492
+#: ../src/core/window-props.c:1495
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "Вікно WM_TRANSIENT_FOR 0x%lx для %s створило б петлю.\n"
@@ -417,22 +418,10 @@ msgstr ""
 "вікном."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:5
-msgid "Live Hidden Windows"
-msgstr "Активувати сховані вікна"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:6
-msgid ""
-"Determines whether hidden windows (i.e., minimized windows and windows on "
-"other workspaces than the current one) should be kept alive."
-msgstr ""
-"Визначає, чи сховані вікна (наприклад, згорнуті вікна та вікна на інших "
-"робочих просторах) слід утримувати активними."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Увімкнути розбиття країв, коли кладуться вікна на краї екрана"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:8
+#: ../src/org.gnome.mutter.gschema.xml.in.h:6
 msgid ""
 "If enabled, dropping windows on vertical screen edges maximizes them "
 "vertically and resizes them horizontally to cover half of the available "
@@ -442,25 +431,25 @@ msgstr ""
 "змінить їхній розмір горизонтально, щоб покрити половину доступної ділянки. "
 "Перекидання вікон на верхівку екрана розгорне їх повністю."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:9
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Workspaces are managed dynamically"
 msgstr "Робочі простори організовуються динамічно"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid ""
 "Determines whether workspaces are managed dynamically or whether there's a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
 "Визначає, чи робочі простори керуються динамічно, чи є певна статична "
-"кількість просторів (визначено ключем num-workspaces у "
-"org.gnome.desktop.wm.preferences)."
+"кількість просторів (визначено ключем num-workspaces у org.gnome.desktop.wm."
+"preferences)."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:11
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Workspaces only on primary"
 msgstr "Робочий простір лише на первинному"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
@@ -468,11 +457,11 @@ msgstr ""
 "Визначає, чи перемикання робочого простору повинно здійснюватись для вікон "
 "на всіх моніторах, чи лише для вікон на первинному моніторі."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "No tab popup"
 msgstr "Без контекстних вкладок"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
 msgid ""
 "Determines whether the use of popup and highlight frame should be disabled "
 "for window cycling."
@@ -480,11 +469,11 @@ msgstr ""
 "Визначає, чи слід вимкнути виринання і підкреслювання рамки для повторюваних "
 "вікон. "
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "Draggable border width"
 msgstr "Перетяжна ширина меж"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -492,11 +481,11 @@ msgstr ""
 "Загальний об'єм перетяжних меж. Якщо видимих меж теми не вистачає, буде "
 "використано це значення з невидимих меж."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:17
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Select window from tab popup"
 msgstr "Вибрати вікно з контекстних вкладок"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid "Cancel tab popup"
 msgstr "Скасувати контекстні вкладки"
 
@@ -704,48 +693,48 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:253
+#: ../src/ui/theme.c:234
 msgid "top"
 msgstr "top"
 
-#: ../src/ui/theme.c:255
+#: ../src/ui/theme.c:236
 msgid "bottom"
 msgstr "bottom"
 
-#: ../src/ui/theme.c:257
+#: ../src/ui/theme.c:238
 msgid "left"
 msgstr "left"
 
-#: ../src/ui/theme.c:259
+#: ../src/ui/theme.c:240
 msgid "right"
 msgstr "right"
 
-#: ../src/ui/theme.c:286
+#: ../src/ui/theme.c:268
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "геометрія рамки не визначає розмір «%s»"
 
-#: ../src/ui/theme.c:305
+#: ../src/ui/theme.c:287
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "геометрія рамки не визначає розмір «%s» рамки «%s»"
 
-#: ../src/ui/theme.c:342
+#: ../src/ui/theme.c:324
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Неприпустимий коефіцієнт пропорційності %g"
 
-#: ../src/ui/theme.c:354
+#: ../src/ui/theme.c:336
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Геометрія рамки не визначає розміри кнопок"
 
-#: ../src/ui/theme.c:1067
+#: ../src/ui/theme.c:1049
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Градієнти повинні мати принаймні два кольори"
 
-#: ../src/ui/theme.c:1219
+#: ../src/ui/theme.c:1201
 #, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
@@ -754,7 +743,7 @@ msgstr ""
 "Специфікації власного кольору GTK повинні мати назву кольору і запас у "
 "дужках, наприклад, gtk:custom(foo,bar); неможливо розібрати «%s»"
 
-#: ../src/ui/theme.c:1235
+#: ../src/ui/theme.c:1217
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
@@ -763,7 +752,7 @@ msgstr ""
 "Неправильний символ «%c» у параметрі color_name для gtk:custom, дозволено "
 "тільки A-Za-z0-9-_"
 
-#: ../src/ui/theme.c:1249
+#: ../src/ui/theme.c:1231
 #, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
@@ -772,7 +761,7 @@ msgstr ""
 "Формат Gtk:custom — «gtk:custom(color_name,fallback)», «%s» не відповідає "
 "формату"
 
-#: ../src/ui/theme.c:1294
+#: ../src/ui/theme.c:1276
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -781,7 +770,7 @@ msgstr ""
 "При визначенні кольору GTK потрібно вказувати режим у прямокутних дужках, "
 "наприклад, gtk:fg[NORMAL], де NORMAL — режим; неможливо розібрати «%s»"
 
-#: ../src/ui/theme.c:1308
+#: ../src/ui/theme.c:1290
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -791,17 +780,17 @@ msgstr ""
 "прямокутна дужка, наприклад, gtk:fg[NORMAL], де NORMAL — режим; неможливо "
 "розібрати «%s»"
 
-#: ../src/ui/theme.c:1319
+#: ../src/ui/theme.c:1301
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Неможливо розпізнати режим «%s» у визначенні кольору"
 
-#: ../src/ui/theme.c:1332
+#: ../src/ui/theme.c:1314
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Неможливо розпізнати компонент кольору «%s» у визначенні кольору"
 
-#: ../src/ui/theme.c:1361
+#: ../src/ui/theme.c:1343
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -810,44 +799,44 @@ msgstr ""
 "Формат визначення змішаного кольору такий — «blend/bg_color/fg_color/alpha», "
 "«%s» не відповідає формату"
 
-#: ../src/ui/theme.c:1372
+#: ../src/ui/theme.c:1354
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Неможливо розібрати значення альфа «%s» у змішаному кольорі"
 
-#: ../src/ui/theme.c:1382
+#: ../src/ui/theme.c:1364
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Значення альфа «%s» у змішаному кольорі поза межами 0.0 — 1.0"
 
-#: ../src/ui/theme.c:1429
+#: ../src/ui/theme.c:1411
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
 "Формат тіні такий — «shade/base_color/factor», «%s» не відповідає формату"
 
-#: ../src/ui/theme.c:1440
+#: ../src/ui/theme.c:1422
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Не вдалось проаналізувати компонент тіні «%s» у затіненому кольорі"
 
-#: ../src/ui/theme.c:1450
+#: ../src/ui/theme.c:1432
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Компонент тіні «%s» у затіненому кольорі від'ємний"
 
-#: ../src/ui/theme.c:1479
+#: ../src/ui/theme.c:1461
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Не вдалось проаналізувати колір «%s»"
 
-#: ../src/ui/theme.c:1790
+#: ../src/ui/theme.c:1778
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Вираз координати містить заборонений символ «%s»"
 
-#: ../src/ui/theme.c:1817
+#: ../src/ui/theme.c:1805
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -855,29 +844,29 @@ msgid ""
 msgstr ""
 "Вираз координати містить число з рухомою комою «%s», яке не вдалось розібрати"
 
-#: ../src/ui/theme.c:1831
+#: ../src/ui/theme.c:1819
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "Вираз координати містить ціле число «%s», яке не вдалось розібрати"
 
-#: ../src/ui/theme.c:1953
+#: ../src/ui/theme.c:1940
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "Вираз координати містить невідомий оператор на початку тексту: «%s»"
 
-#: ../src/ui/theme.c:2010
+#: ../src/ui/theme.c:1997
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Вираз координати був пустий або його неможливо розпізнати"
 
-#: ../src/ui/theme.c:2121 ../src/ui/theme.c:2131 ../src/ui/theme.c:2165
+#: ../src/ui/theme.c:2110 ../src/ui/theme.c:2120 ../src/ui/theme.c:2154
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Вираз координати призвів до ділення на нуль"
 
-#: ../src/ui/theme.c:2173
+#: ../src/ui/theme.c:2162
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
@@ -885,23 +874,23 @@ msgstr ""
 "Вираз координати намагається використати оператор знаходження залишку від "
 "ділення для числа з рухомою комою"
 
-#: ../src/ui/theme.c:2229
+#: ../src/ui/theme.c:2218
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Вираз координати містить оператор «%s», там де очікувався операнд"
 
-#: ../src/ui/theme.c:2238
+#: ../src/ui/theme.c:2227
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Вираз координати містить оператор, там де очікувався оператор"
 
-#: ../src/ui/theme.c:2246
+#: ../src/ui/theme.c:2235
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Вираз координати закінчується оператором замість операнда"
 
-#: ../src/ui/theme.c:2256
+#: ../src/ui/theme.c:2245
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -910,37 +899,37 @@ msgstr ""
 "Вираз координати містить оператор «%c», за яким йде оператор «%c» без "
 "операнду між ними"
 
-#: ../src/ui/theme.c:2407 ../src/ui/theme.c:2452
+#: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Вираз координати містить невідому змінну або константу «%s»"
 
-#: ../src/ui/theme.c:2506
+#: ../src/ui/theme.c:2495
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Переповнення буфера обробника координат."
 
-#: ../src/ui/theme.c:2535
+#: ../src/ui/theme.c:2524
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Вираз координати містить завершальну дужку без відповідної починальної"
 
-#: ../src/ui/theme.c:2599
+#: ../src/ui/theme.c:2588
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Вираз координати містить починальну дужку без відповідної завершальної"
 
-#: ../src/ui/theme.c:2610
+#: ../src/ui/theme.c:2599
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Здається, вираз координати не містить жодного оператора чи операнду"
 
-#: ../src/ui/theme.c:2822 ../src/ui/theme.c:2842 ../src/ui/theme.c:2862
+#: ../src/ui/theme.c:2812 ../src/ui/theme.c:2832 ../src/ui/theme.c:2852
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Тема містить вираз, що призводить до помилки: %s\n"
 
-#: ../src/ui/theme.c:4533
+#: ../src/ui/theme.c:4498
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -949,25 +938,25 @@ msgstr ""
 "для цього стилю рамки треба вказати <button function=\"%s\" state=\"%s\" "
 "draw_ops=\"будь-що\"/>"
 
-#: ../src/ui/theme.c:5066 ../src/ui/theme.c:5091
+#: ../src/ui/theme.c:5009 ../src/ui/theme.c:5034
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Нема <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"будь-що\"/>"
 
-#: ../src/ui/theme.c:5139
+#: ../src/ui/theme.c:5082
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Не вдалось завантажити тему «%s»: %s\n"
 
-#: ../src/ui/theme.c:5275 ../src/ui/theme.c:5282 ../src/ui/theme.c:5289
-#: ../src/ui/theme.c:5296 ../src/ui/theme.c:5303
+#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Не встановлено <%s> для теми «%s»"
 
-#: ../src/ui/theme.c:5311
+#: ../src/ui/theme.c:5254
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -976,7 +965,7 @@ msgstr ""
 "Немає стилю рамки для вікна типу «%s» у темі «%s», додайте елемент  <window "
 "type=\"%s\" style_set=\"будь-що\"/> "
 
-#: ../src/ui/theme.c:5709 ../src/ui/theme.c:5771 ../src/ui/theme.c:5834
+#: ../src/ui/theme.c:5650 ../src/ui/theme.c:5712 ../src/ui/theme.c:5775
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -984,7 +973,7 @@ msgstr ""
 "Визначені користувачем константи повинні починатись з великої літери; «%s» "
 "не починається з великої літери"
 
-#: ../src/ui/theme.c:5717 ../src/ui/theme.c:5779 ../src/ui/theme.c:5842
+#: ../src/ui/theme.c:5658 ../src/ui/theme.c:5720 ../src/ui/theme.c:5783
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Константу «%s» вже визначено"
@@ -1371,7 +1360,7 @@ msgstr "Текст не дозволяється у елементі <%s>"
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> в цій темі вказано двічі"
 
-#: ../src/ui/theme-parser.c:4348
+#: ../src/ui/theme-parser.c:4334
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Не вдалось знайти коректний файл для теми %s\n"
@@ -1578,6 +1567,19 @@ msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d координатних виразів проаналізовано за %g секунд (середнє значення: %g "
 "секунд)\n"
+
+#~ msgid "Comma-separated list of compositor plugins"
+#~ msgstr "Список композитних додатків розділених комою"
+
+#~ msgid "Live Hidden Windows"
+#~ msgstr "Активувати сховані вікна"
+
+#~ msgid ""
+#~ "Determines whether hidden windows (i.e., minimized windows and windows on "
+#~ "other workspaces than the current one) should be kept alive."
+#~ msgstr ""
+#~ "Визначає, чи сховані вікна (наприклад, згорнуті вікна та вікна на інших "
+#~ "робочих просторах) слід утримувати активними."
 
 #~ msgid "Close Window"
 #~ msgstr "Закрити вікно"
@@ -1904,9 +1906,6 @@ msgstr ""
 
 #~ msgid "Error setting clutter plugin list: %s\n"
 #~ msgstr "Помилка налаштування списку додатків Clutter: %s\n"
-
-#~ msgid "Clutter Plugins"
-#~ msgstr "Додатки Clutter"
 
 #~ msgid "Plugins to load for the Clutter-based compositing manager."
 #~ msgstr ""
