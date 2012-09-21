@@ -832,6 +832,17 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
       {
         XIDeviceEvent *xev = (XIDeviceEvent *) xi_event;
 
+        source_device = g_hash_table_lookup (manager_xi2->devices_by_id,
+                                             GINT_TO_POINTER (xev->sourceid));
+        device = g_hash_table_lookup (manager_xi2->devices_by_id,
+                                      GINT_TO_POINTER (xev->deviceid));
+
+        /* Set the stage for core events coming out of nowhere (see bug #684509) */
+        if (clutter_input_device_get_device_mode (device) == CLUTTER_INPUT_MODE_MASTER &&
+            clutter_input_device_get_pointer_stage (device) == NULL &&
+            stage != NULL)
+          _clutter_input_device_set_stage (device, stage);
+
         switch (xev->detail)
           {
           case 4:
@@ -862,12 +873,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
               _clutter_input_device_xi2_translate_state (&xev->mods,
                                                          &xev->buttons);
 
-            source_device = g_hash_table_lookup (manager_xi2->devices_by_id,
-                                                 GINT_TO_POINTER (xev->sourceid));
             clutter_event_set_source_device (event, source_device);
-
-            device = g_hash_table_lookup (manager_xi2->devices_by_id,
-                                          GINT_TO_POINTER (xev->deviceid));
             clutter_event_set_device (event, device);
 
             event->scroll.axes = translate_axes (event->scroll.device,
@@ -915,12 +921,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
               _clutter_input_device_xi2_translate_state (&xev->mods,
                                                          &xev->buttons);
 
-            source_device = g_hash_table_lookup (manager_xi2->devices_by_id,
-                                                 GINT_TO_POINTER (xev->sourceid));
             clutter_event_set_source_device (event, source_device);
-
-            device = g_hash_table_lookup (manager_xi2->devices_by_id,
-                                          GINT_TO_POINTER (xev->deviceid));
             clutter_event_set_device (event, device);
 
             event->button.axes = translate_axes (event->button.device,
@@ -977,6 +978,14 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
         source_device = g_hash_table_lookup (manager_xi2->devices_by_id,
                                              GINT_TO_POINTER (xev->sourceid));
+        device = g_hash_table_lookup (manager_xi2->devices_by_id,
+                                      GINT_TO_POINTER (xev->deviceid));
+
+        /* Set the stage for core events coming out of nowhere (see bug #684509) */
+        if (clutter_input_device_get_device_mode (device) == CLUTTER_INPUT_MODE_MASTER &&
+            clutter_input_device_get_pointer_stage (device) == NULL &&
+            stage != NULL)
+          _clutter_input_device_set_stage (device, stage);
 
         if (scroll_valuators_changed (source_device,
                                       &xev->valuators,
@@ -995,9 +1004,6 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
             clutter_event_set_scroll_delta (event, delta_x, delta_y);
             clutter_event_set_source_device (event, source_device);
-
-            device = g_hash_table_lookup (manager_xi2->devices_by_id,
-                                          GINT_TO_POINTER (xev->deviceid));
             clutter_event_set_device (event, device);
 
             CLUTTER_NOTE (EVENT,
@@ -1025,9 +1031,6 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                                                      &xev->buttons);
 
         clutter_event_set_source_device (event, source_device);
-
-        device = g_hash_table_lookup (manager_xi2->devices_by_id,
-                                      GINT_TO_POINTER (xev->deviceid));
         clutter_event_set_device (event, device);
 
         event->motion.axes = translate_axes (event->motion.device,
