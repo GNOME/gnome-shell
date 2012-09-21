@@ -877,11 +877,12 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                                                  &xev->valuators);
 
             CLUTTER_NOTE (EVENT,
-                          "scroll: win:0x%x, device:%s, time:%d "
+                          "scroll: win:0x%x, device:%d '%s', time:%d "
                           "(direction:%s, "
                           "x:%.2f, y:%.2f, "
                           "emulated:%s)",
                           (unsigned int) stage_x11->xwin,
+                          device->id,
                           device->device_name,
                           event->any.time,
                           event->scroll.direction == CLUTTER_SCROLL_UP ? "up" :
@@ -929,7 +930,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                                                  &xev->valuators);
 
             CLUTTER_NOTE (EVENT,
-                          "%s: win:0x%x, device:%s, time:%d "
+                          "%s: win:0x%x, device:%d '%s', time:%d "
                           "(button:%d, "
                           "x:%.2f, y:%.2f, "
                           "axes:%s, "
@@ -938,6 +939,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
                             ? "button press  "
                             : "button release",
                           (unsigned int) stage_x11->xwin,
+                          device->id,
                           device->device_name,
                           event->any.time,
                           event->button.button,
@@ -999,8 +1001,9 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             clutter_event_set_device (event, device);
 
             CLUTTER_NOTE (EVENT,
-                          "smooth scroll: win:0x%x device:%s (x:%.2f, y:%.2f, delta:%f, %f)",
+                          "smooth scroll: win:0x%x device:%d '%s' (x:%.2f, y:%.2f, delta:%f, %f)",
                           (unsigned int) stage_x11->xwin,
+                          event->scroll.device->id,
                           event->scroll.device->device_name,
                           event->scroll.x,
                           event->scroll.y,
@@ -1041,8 +1044,9 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
           _clutter_event_set_pointer_emulated (event, TRUE);
 #endif /* HAVE_XINPUT_2_2 */
 
-        CLUTTER_NOTE (EVENT, "motion: win:0x%x device:%s (x:%.2f, y:%.2f, axes:%s)",
+        CLUTTER_NOTE (EVENT, "motion: win:0x%x device:%d '%s' (x:%.2f, y:%.2f, axes:%s)",
                       (unsigned int) stage_x11->xwin,
+                      event->motion.device->id,
                       event->motion.device->device_name,
                       event->motion.x,
                       event->motion.y,
@@ -1098,9 +1102,10 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         if (xev->flags & XITouchEmulatingPointer)
           _clutter_event_set_pointer_emulated (event, TRUE);
 
-        CLUTTER_NOTE (EVENT, "touch %s: win:0x%x device:%s (seq:%d, x:%.2f, y:%.2f, axes:%s)",
+        CLUTTER_NOTE (EVENT, "touch %s: win:0x%x device:%d '%s' (seq:%d, x:%.2f, y:%.2f, axes:%s)",
                       event->type == CLUTTER_TOUCH_BEGIN ? "begin" : "end",
                       (unsigned int) stage_x11->xwin,
+                      event->touch.device->id,
                       event->touch.device->device_name,
                       GPOINTER_TO_UINT (event->touch.sequence),
                       event->touch.x,
@@ -1145,8 +1150,9 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         if (xev->flags & XITouchEmulatingPointer)
           _clutter_event_set_pointer_emulated (event, TRUE);
 
-        CLUTTER_NOTE (EVENT, "touch update: win:0x%x device:%s (seq:%d, x:%.2f, y:%.2f, axes:%s)",
+        CLUTTER_NOTE (EVENT, "touch update: win:0x%x device:%d '%s' (seq:%d, x:%.2f, y:%.2f, axes:%s)",
                       (unsigned int) stage_x11->xwin,
+                      event->touch.device->id,
                       event->touch.device->device_name,
                       GPOINTER_TO_UINT (event->touch.sequence),
                       event->touch.x,

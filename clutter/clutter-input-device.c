@@ -866,7 +866,8 @@ _clutter_input_device_update (ClutterInputDevice   *device,
   stage = device->stage;
   if (G_UNLIKELY (stage == NULL))
     {
-      CLUTTER_NOTE (EVENT, "No stage defined for device '%s'",
+      CLUTTER_NOTE (EVENT, "No stage defined for device %d '%s'",
+                    clutter_input_device_get_device_id (device),
                     clutter_input_device_get_device_name (device));
       return NULL;
     }
@@ -1570,8 +1571,12 @@ _clutter_input_device_set_associated_device (ClutterInputDevice *device,
   if (device->associated != NULL)
     g_object_ref (device->associated);
 
-  CLUTTER_NOTE (MISC, "Associating device '%s' to device '%s'",
+  CLUTTER_NOTE (MISC, "Associating device %d '%s' to device %d '%s'",
+                clutter_input_device_get_device_id (device),
                 clutter_input_device_get_device_name (device),
+                device->associated != NULL
+                  ? clutter_input_device_get_device_id (device->associated)
+                  : -1,
                 device->associated != NULL
                   ? clutter_input_device_get_device_name (device->associated)
                   : "(none)");
