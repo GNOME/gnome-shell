@@ -73,6 +73,11 @@ const UserAvatarWidget = new Lang.Class({
             let file = Gio.File.new_for_path(iconFile);
             this.actor.child = null;
             this.actor.style = 'background-image: url("%s");'.format(iconFile);
+
+            // AccountsService uses a fixed location for avatar images, so
+            // we need to clear out all cached data to pick up image changes,
+            // see https://bugzilla.gnome.org/show_bug.cgi?id=679268
+            this.actor.clear_background_image();
         } else {
             this.actor.style = null;
             this.actor.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
