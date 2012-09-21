@@ -1185,24 +1185,6 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
         }
     }
 
-  /* The fixed function backend has no private state and can't
-   * do anything special to handle small pipeline changes so we may as
-   * well try to find a better backend whenever the pipeline changes.
-   *
-   * The programmable backends may be able to cache a lot of the code
-   * they generate and only need to update a small section of that
-   * code in response to a pipeline change therefore we don't want to
-   * try searching for another backend when the pipeline changes.
-   */
-#ifdef COGL_PIPELINE_FRAGEND_FIXED
-  if (pipeline->fragend == COGL_PIPELINE_FRAGEND_FIXED)
-    _cogl_pipeline_set_fragend (pipeline, COGL_PIPELINE_FRAGEND_UNDEFINED);
-#endif
-#ifdef COGL_PIPELINE_VERTEND_FIXED
-  if (pipeline->vertend == COGL_PIPELINE_VERTEND_FIXED)
-    _cogl_pipeline_set_vertend (pipeline, COGL_PIPELINE_VERTEND_UNDEFINED);
-#endif
-
   /* XXX:
    * To simplify things for the vertex, fragment and program backends
    * we are careful about how we report STATE_LAYERS changes.
