@@ -318,6 +318,9 @@ const GrabHelper = new Lang.Class({
         if (this._isWithinGrabbedActor(event.get_source()))
             return false;
 
+        if (Main.keyboard.shouldTakeEvent(event))
+            return false;
+
         if (button) {
             // If we have a press event, ignore the next event,
             // which should be a release event.
