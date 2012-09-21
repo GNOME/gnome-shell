@@ -112,9 +112,6 @@
 #define COGL_PIPELINE_VERTEND_DEFAULT    0
 #define COGL_PIPELINE_VERTEND_UNDEFINED  3
 
-#define COGL_PIPELINE_VERTEND_DEFAULT    0
-#define COGL_PIPELINE_VERTEND_UNDEFINED  3
-
 /* If we have either of the GLSL backends then we also need a GLSL
    progend to combine the shaders generated into a single
    program. Same goes for the fixed progends which are used to flush
