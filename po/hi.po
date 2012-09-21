@@ -5,19 +5,23 @@
 # G Karunakar <karunakar@freedomink.org>, 2003.
 # Ravishankar Shrivastava <raviratlami@yahoo.com>, 2004.
 # Rajesh Ranjan <rranjan@redhat.com>, 2005, 2006, 2009.
+# chandankumar <chandankumar.093047@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.gnome-2-26.hi\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=metacity&component=general\n"
-"POT-Creation-Date: 2009-02-05 16:08+0000\n"
-"PO-Revision-Date: 2009-03-14 10:43+0530\n"
-"Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
-"Language-Team: Hindi <hindi.sf.net>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=mutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-07-15 00:47+0000\n"
+"PO-Revision-Date: 2012-09-21 15:15+0530\n"
+"Last-Translator: chandankumar <chandankumar.093047@gmail.com>\n"
+"Language-Team: Hindi <kde-i18n-doc@kde.org>\n"
+"Language: hi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"X-Generator: Lokalize 1.4\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -26,459 +30,329 @@ msgstr ""
 "\n"
 "\n"
 
-#: ../src/50-metacity-desktop-key.xml.in.h:1
-#| msgid "top"
-msgid "Desktop"
-msgstr "डेस्कटॉप"
+#: ../src/50-mutter-windows.xml.in.h:1
+#| msgid "/_Windows"
+msgid "Windows"
+msgstr "विंडोज़"
 
-#: ../src/50-metacity-key.xml.in.h:1
-#| msgid "Window manager: "
-msgid "Window Management"
-msgstr "विंडो प्रबंधन"
+#: ../src/50-mutter-windows.xml.in.h:2
+msgid "View split on left"
+msgstr "बाईं तरफ विभाजन देखें"
 
-#: ../src/core/core.c:206
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "View split on right"
+msgstr "दाईं तरफ विभाजन देखें"
+
+#. This probably means that a non-WM compositor like xcompmgr is running;
+#. * we have no way to get it to exit
+#: ../src/compositor/compositor.c:492
+#, c-format
+#| msgid ""
+#| "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Another compositing manager is already running on screen %i on display \"%s"
+"\"."
+msgstr "स्क्रीन %i प्रदर्शक \"%s\" पर विंडो प्रबंधक चयन प्राप्त नहीं कर सका."
+
+#: ../src/core/bell.c:320
+msgid "Bell event"
+msgstr "बेल इवेंट"
+
+#: ../src/core/core.c:157
 #, c-format
 msgid "Unknown window information request: %d"
 msgstr "अज्ञात विंडो सूचना आग्रह: %d"
 
-#: ../src/core/delete.c:70 ../src/core/delete.c:97
-#: ../src/ui/metacity-dialog.c:50 ../src/ui/theme-parser.c:522
+#: ../src/core/delete.c:114
 #, c-format
-msgid "Could not parse \"%s\" as an integer"
-msgstr "\"%s\" को पूर्णांक की तरह व्याख्या नहीं कर सका"
+#| msgid "\"%s\" is not responding."
+msgid "%s is not responding."
+msgstr "%s प्रतिक्रिया नहीं दे रहा है."
 
-#: ../src/core/delete.c:77 ../src/core/delete.c:104
-#: ../src/ui/metacity-dialog.c:57 ../src/ui/theme-parser.c:531
-#: ../src/ui/theme-parser.c:586
-#, c-format
-msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "पुछल्ले अक्षरों \"%s\" को स्ट्रिंग \"%s\" में समझ नहीं सका"
+#: ../src/core/delete.c:118
+#| msgid "\"%s\" is not responding."
+msgid "Application is not responding."
+msgstr "अनुप्रयोग प्रतिक्रिया नहीं दे रहा है."
 
-#: ../src/core/delete.c:135
-#, c-format
-msgid "Failed to parse message \"%s\" from dialog process\n"
-msgstr "संदेश \"%s\" की व्याख्या संवाद प्रक्रिया से नहीं कर सका\n"
+#: ../src/core/delete.c:123
+msgid ""
+"You may choose to wait a short while for it to continue or force the "
+"application to quit entirely."
+msgstr ""
+"आप थोड़ी देर के लिए इसकी प्रतीक्षा के लिए चयन कर सकते हैं पूरी तरह से "
+"अनुप्रयोग के जारी "
+"रखने व छोड़ने के लिए दबाव दे सकते हैं."
 
-#: ../src/core/delete.c:253
-#, c-format
-msgid "Error reading from dialog display process: %s\n"
-msgstr "संवाद प्रदर्शक प्रक्रिया: %s से पढ़ने में त्रुटि\n"
+#: ../src/core/delete.c:130
+msgid "_Wait"
+msgstr "प्रतीक्षा करें (_W)"
 
-#: ../src/core/delete.c:336
-#, c-format
-msgid "Error launching metacity-dialog to ask about killing an application: %s\n"
-msgstr "किसी अनुप्रयोग को खत्म करने के लिए पूछने हेतु मेटासिटी-संवाद  प्रारंभ करने में त्रुटि: %s\n"
+#: ../src/core/delete.c:130
+msgid "_Force Quit"
+msgstr "जबर्दस्ती बाहर (_F)"
 
-#: ../src/core/delete.c:445
-#, c-format
-msgid "Failed to get hostname: %s\n"
-msgstr "होस्टनाम पाने में असफल: %s\n"
-
-#: ../src/core/display.c:256
+#: ../src/core/display.c:380
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "अनुपस्थित %s विस्तार कंपोजिटिंग के लिए जरूरी है"
 
-#: ../src/core/display.c:334
+#: ../src/core/display.c:446
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X विंडो तंत्र प्रदर्शक '%s' खोलने में असफल\n"
 
-#: ../src/core/errors.c:272
-#, c-format
-msgid ""
-"Lost connection to the display '%s';\n"
-"most likely the X server was shut down or you killed/destroyed\n"
-"the window manager.\n"
-msgstr ""
-"प्रदर्शक '%s' से कनेक्शन छूट गया;\n"
-"बहुत संभावना है कि या तो एक्स सर्वर बन्द कर दिया गया या आपने विंडो प्रबंधक को \n"
-"खत्म/समाप्त कर दिया है.\n"
-
-#: ../src/core/errors.c:279
-#, c-format
-msgid "Fatal IO error %d (%s) on display '%s'.\n"
-msgstr "गंभीर आईओ त्रुटि %d (%s), प्रदर्शक '%s' में.\n"
-
-#: ../src/core/keybindings.c:680
+#: ../src/core/keybindings.c:844
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
-msgstr "कोई अन्य प्रोग्राम पहले से ही कुंजी %s उपयोग में ले रहा है, परिवर्धक %x बाइंडिंग के रूप में \n"
-
-#. Displayed when a keybinding which is
-#. * supposed to launch a program fails.
-#.
-#: ../src/core/keybindings.c:2294
-#, c-format
-#| msgid ""
-#| "There was an error running \"%s\":\n"
-#| "%s."
-msgid ""
-"There was an error running <tt>%s</tt>:\n"
-"\n"
-"%s"
 msgstr ""
-"<tt>%s</tt> चलाने में त्रुटि थी:\n"
-"\n"
-"%s"
+"कोई अन्य प्रोग्राम पहले से ही कुंजी %s उपयोग में ले रहा है, परिवर्धक %x "
+"बाइंडिंग के रूप में \n"
 
-#: ../src/core/keybindings.c:2381
-#, c-format
-msgid "No command %d has been defined.\n"
-msgstr "कोई कमांड %d पारिभाषित नहीं है.\n"
-
-#: ../src/core/keybindings.c:3335
-#, c-format
-msgid "No terminal command has been defined.\n"
-msgstr "कोई टर्मिनल कमांड पारिभाषित नहीं है.\n"
-
-#: ../src/core/main.c:116
-#, c-format
-#| msgid ""
-#| "metacity %s\n"
-#| "Copyright (C) 2001-2002 Havoc Pennington, Red Hat, Inc., and others\n"
-#| "This is free software; see the source for copying conditions.\n"
-#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-#| "PARTICULAR PURPOSE.\n"
-msgid ""
-"metacity %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
-"This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-"PARTICULAR PURPOSE.\n"
-msgstr ""
-"metacity %s\n"
-"Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
-"This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-"PARTICULAR PURPOSE.\n"
-
-#: ../src/core/main.c:253
+#: ../src/core/main.c:196
 msgid "Disable connection to session manager"
 msgstr "सत्र प्रबंधक में संबंधन निष्क्रिय करें"
 
-#: ../src/core/main.c:259
-msgid "Replace the running window manager with Metacity"
-msgstr "मेटासिटी के सात कार्यशील विंडो प्रबंधक बदलें"
+#: ../src/core/main.c:202
+#| msgid "Replace the running window manager with Metacity"
+msgid "Replace the running window manager"
+msgstr "कार्यशील विंडो प्रबंधक बदलें"
 
-#: ../src/core/main.c:265
+#: ../src/core/main.c:208
 msgid "Specify session management ID"
 msgstr "सत्र प्रबंधन ID निर्दिष्ट करें"
 
-#: ../src/core/main.c:270
+#: ../src/core/main.c:213
 msgid "X Display to use"
 msgstr "प्रयोग के लिये X प्रदर्शन"
 
-#: ../src/core/main.c:276
+#: ../src/core/main.c:219
 msgid "Initialize session from savefile"
 msgstr "सेवफाइल के लिये सत्र आरंभीकृत करें"
 
-#: ../src/core/main.c:282
-msgid "Print version"
-msgstr "मुद्रण संस्करण"
-
-#: ../src/core/main.c:288
+#: ../src/core/main.c:225
 msgid "Make X calls synchronous"
 msgstr "X कॉल तुल्यकालित करें"
 
-#: ../src/core/main.c:294
-#| msgid "Compositing Manager"
-msgid "Turn compositing on"
-msgstr "कंपोजिटिंग चालू करें"
-
-#: ../src/core/main.c:300
-msgid "Turn compositing off"
-msgstr "कंपोजिटिंग बंद करें"
-
-#: ../src/core/main.c:478
+#: ../src/core/main.c:494
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "प्रसंग डिरेक्ट्री स्कैन करने में असफल: %s\n"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:510
+#, c-format
+msgid ""
+"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgstr ""
+"प्रसंग नहीं ढूंढ सका! सुनिश्चित करें कि %s मौज़ूद है, तथा इसमें सामान्य "
+"प्रसंग हैं.\n"
+
+#: ../src/core/mutter.c:40
 #, c-format
 #| msgid ""
-#| "Could not find a theme! Be sure %s exists and contains the usual themes."
-msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr "प्रसंग नहीं ढूंढ सका! सुनिश्चित करें कि %s मौज़ूद है, तथा इसमें सामान्य प्रसंग हैं.\n"
+#| "metacity %s\n"
+#| "Copyright (C) 2001-2008 Havoc Pennington, Red Hat, Inc., and others\n"
+#| "This is free software; see the source for copying conditions.\n"
+#| "There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+#| "PARTICULAR PURPOSE.\n"
+msgid ""
+"mutter %s\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"This is free software; see the source for copying conditions.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
+"PARTICULAR PURPOSE.\n"
+msgstr ""
+"mutter %s\n"
+"Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
+"यह मुफ्त सॉफ्टवेयर है; नकल की शर्ते के लिए स्रोत देखें.\n"
+"यहाँ  किसी प्रकार की वारंटी नहीं है;  या किसी विशेष प्रयोजन के लिए "
+"व्यापारिकता और "
+" फिटनेस के लिए भी नहीं.\n"
 
-#: ../src/core/main.c:550
-#, c-format
-msgid "Failed to restart: %s\n"
-msgstr "पुनः प्रारंभ करने में असफल: %s\n"
+#: ../src/core/mutter.c:54
+msgid "Print version"
+msgstr "मुद्रण संस्करण"
 
-#.
-#. * We found it, but it was invalid.  Complain.
-#. *
-#. * FIXME: This replicates the original behaviour, but in the future
-#. * we might consider reverting invalid keys to their original values.
-#. * (We know the old value, so we can look up a suitable string in
-#. * the symtab.)
-#. *
-#. * (Empty comment follows so the translators don't see this.)
-#.
-#.
-#: ../src/core/prefs.c:505 ../src/core/prefs.c:660
-#, c-format
-msgid "GConf key '%s' is set to an invalid value\n"
-msgstr "जी-कॉन्फ़ कुंजी '%s'  एक अवैध प्रकार में नियत है\n"
+#: ../src/core/mutter.c:60
+msgid "Mutter plugin to use"
+msgstr " उपयोग करने के लिए Mutter प्लगइन"
 
-#: ../src/core/prefs.c:586 ../src/core/prefs.c:829
-#, c-format
-#| msgid "%d stored in GConf key %s is out of range 0 to %d\n"
-msgid "%d stored in GConf key %s is out of range %d to %d\n"
-msgstr "%d जो जी-कॉन्फ़ कुंजी %s में भंडारित है वह सीमा %d से %d सीमा से बाहर है\n"
-
-#: ../src/core/prefs.c:630 ../src/core/prefs.c:707 ../src/core/prefs.c:755
-#: ../src/core/prefs.c:819 ../src/core/prefs.c:1112 ../src/core/prefs.c:1128
-#: ../src/core/prefs.c:1145 ../src/core/prefs.c:1161
-#, c-format
-msgid "GConf key \"%s\" is set to an invalid type\n"
-msgstr "जी-कॉन्फ़ कुंजी \"%s\" एक अवैध प्रकार में नियत है\n"
-
-#: ../src/core/prefs.c:1231
+#: ../src/core/prefs.c:1065
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
-"टूटे अनुप्रयोगों हेतु वर्कअराउन्ड अक्षम किया हुआ है. हो सकता है कुछ अनुप्रयोग उचित प्रकार "
+"टूटे अनुप्रयोगों हेतु वर्कअराउन्ड अक्षम किया हुआ है. हो सकता है कुछ अनुप्रयोग "
+"उचित प्रकार "
 "व्यवहार न करें.\n"
 
-#: ../src/core/prefs.c:1302
+#: ../src/core/prefs.c:1140
 #, c-format
-msgid "Could not parse font description \"%s\" from GConf key %s\n"
-msgstr "फ़ॉन्ट विवरण \"%s\" की व्याख्या जी-कॉन्फ़ कुंजी %s से नहीं कर सका\n"
+#| msgid "Could not parse font description \"%s\" from GConf key %s\n"
+msgid "Could not parse font description \"%s\" from GSettings key %s\n"
+msgstr "GSettings कुंजी %s से वर्णन फ़ॉन्ट \"%s\" का व्याख्या नहीं कर सका.\n"
 
-#: ../src/core/prefs.c:1364
+#: ../src/core/prefs.c:1206
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
-msgstr "कॉन्फ़िगरेशन डेटाबेस में प्राप्त \"%s\" माउस बटन मॉडीफ़ायर वैध मूल्य नहीं है\n"
+msgstr ""
+"कॉन्फ़िगरेशन डेटाबेस में प्राप्त \"%s\" माउस बटन मॉडीफ़ायर वैध मूल्य नहीं है\n"
 
-#: ../src/core/prefs.c:1782
-#, c-format
-msgid "Error setting number of workspaces to %d: %s\n"
-msgstr "कार्यस्थान संख्या %d  पर तय करने में त्रुटि: %s हुई.\n"
-
-#: ../src/core/prefs.c:1971 ../src/core/prefs.c:2474
-#, c-format
-msgid "Workspace %d"
-msgstr "कार्यस्थान %d"
-
-#: ../src/core/prefs.c:2001 ../src/core/prefs.c:2179
+#: ../src/core/prefs.c:1724
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
-msgstr "कॉन्फ़िगरेशन डेटाबेस में प्राप्त \"%s\" कीबाइंडिंग \"%s\" हेतु वैध मूल्य नहीं है\n"
+msgstr ""
+"कॉन्फ़िगरेशन डेटाबेस में प्राप्त \"%s\" कीबाइंडिंग \"%s\" हेतु वैध मूल्य नहीं "
+"है\n"
 
-#: ../src/core/prefs.c:2555
+#: ../src/core/prefs.c:1821
 #, c-format
-msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgstr "कार्यस्थान नाम %d को \"%s\" से में बदलने में त्रुटि: %s हुई\n"
+msgid "Workspace %d"
+msgstr "कार्यस्थान %d"
 
-#: ../src/core/prefs.c:2753
-#, c-format
-#| msgid "Error setting name for workspace %d to \"%s\": %s\n"
-msgid "Error setting compositor status: %s\n"
-msgstr "कंपोजिटर स्थिति सेटिंग में त्रुटि: %s\n"
-
-#: ../src/core/screen.c:350
+#: ../src/core/screen.c:652
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "स्क्रीन %d जो प्रदर्शक '%s' पर है वह अवैध है\n"
 
-#: ../src/core/screen.c:366
+#: ../src/core/screen.c:668
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"स्क्रीन %d जो प्रदर्शक \"%s\" पर है वहां पहले ही विंडो प्रबंधक है, --replace विकल्प का "
+"स्क्रीन %d जो प्रदर्शक \"%s\" पर है वहां पहले ही विंडो प्रबंधक है, --replace "
+"विकल्प का "
 "प्रयोग कर वर्तमान विंडो प्रबंधक को बदलने की कोशिश करें.\n"
 
-#: ../src/core/screen.c:393
+#: ../src/core/screen.c:695
 #, c-format
-msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgid ""
+"Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "स्क्रीन %d प्रदर्शक \"%s\" पर विंडो प्रबंधक चयन प्राप्त नहीं कर सका\n"
 
-#: ../src/core/screen.c:451
+#: ../src/core/screen.c:750
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "स्क्रीन %d जो प्रदर्शक \"%s\" पर है वहां पहले ही विंडो प्रबंधक है\n"
 
-#: ../src/core/screen.c:661
+#: ../src/core/screen.c:935
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "स्क्रीन %d जो प्रदर्शक \"%s\" पर है को मुक्त नहीं कर सका\n"
 
-#. Translators: Please don't translate "Control", "Shift", etc, since these
-#. * are hardcoded (in gtk/gtkaccelgroup.c; it's not metacity's fault).
-#. * "disabled" must also stay as it is.
-#.
-#: ../src/core/schema-bindings.c:169
-#| msgid ""
-#| "The keybinding used to close a window. The format looks like \"&lt;"
-#| "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#| "liberal and allows lower or upper case, and also abbreviations such as "
-#| "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#| "special string \"disabled\", then there will be no keybinding for this "
-#| "action."
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action."
-msgstr ""
-"फ़ॉर्मेट इस तरह दिखेंगे \"<Control>a\" या <Shift><Alt>F1\".\n"
-"यह पारसर पूरी तरह लिबरल है और बड़े या छोटे अक्षर दोनों "
-"स्वीकार करता है, तथा संक्षिप्ताक्षर भी जैसे- \"<Ctl>\" और \"<Ctl>\". "
-"यदि आपने विकल्प विशेष स्ट्रिंग में तय किया है \"disabled\", तब वहाँ इस क्रिया हेतु कोई "
-"कीबाइंडिंग नहीं होगा."
-
-#: ../src/core/schema-bindings.c:177
-#| msgid ""
-#| "The keybinding used to close a window. The format looks like \"&lt;"
-#| "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
-#| "liberal and allows lower or upper case, and also abbreviations such as "
-#| "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
-#| "special string \"disabled\", then there will be no keybinding for this "
-#| "action."
-msgid ""
-"The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
-"\n"
-"The parser is fairly liberal and allows lower or upper case, and also "
-"abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to the "
-"special string \"disabled\", then there will be no keybinding for this "
-"action.\n"
-"\n"
-"This keybinding may be reversed by holding down the \"shift\" key; "
-"therefore, \"shift\" cannot be one of the keys it uses."
-msgstr ""
-"फ़ॉर्मेट इस तरह दिखेंगे \"<Control>a\" or <Shift><Alt>F1\".\n"
-"यह पारसर पूरी तरह लिबरल है और बड़े या छोटे अक्षर दोनों स्वीकार करता है, तथा संक्षिप्ताक्षर भी जैसे- \"<Ctl>\" और \"<Ctl>\". यदि आपने विकल्प विशेष स्ट्रिंग में तय किया है \"disabled\", तब वहाँ इस क्रिया हेतु कोई "
-"कीबाइंडिंग नहीं होगा."
-
-#: ../src/core/session.c:837 ../src/core/session.c:844
+#: ../src/core/session.c:843 ../src/core/session.c:850
 #, c-format
 msgid "Could not create directory '%s': %s\n"
 msgstr "डिरेक्ट्री '%s' बना नहीं पाया: %s\n"
 
-#: ../src/core/session.c:854
+#: ../src/core/session.c:860
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
 msgstr "सत्र फ़ाइल '%s' लिखने हेतु नही खोल पाया: %s\n"
 
-#: ../src/core/session.c:995
+#: ../src/core/session.c:1001
 #, c-format
 msgid "Error writing session file '%s': %s\n"
 msgstr "स्त्र फ़ाइल लिखने में त्रुटि '%s': %s\n"
 
-#: ../src/core/session.c:1000
+#: ../src/core/session.c:1006
 #, c-format
 msgid "Error closing session file '%s': %s\n"
 msgstr "सत्र फ़ाइल बंद करने में त्रुटि '%s': %s\n"
 
-#. oh, just give up
-#: ../src/core/session.c:1093
-#, c-format
-msgid "Failed to read saved session file %s: %s\n"
-msgstr "सहेजी गई सत्र फ़ाइल %s पढ़ने में असफल: %s\n"
-
-#: ../src/core/session.c:1132
+#: ../src/core/session.c:1136
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
 msgstr "सहेजी गई सत्र फ़ाइल: %s की व्याख्या करने में असफल\n"
 
-#: ../src/core/session.c:1181
+#: ../src/core/session.c:1185
 #, c-format
-msgid "<metacity_session> attribute seen but we already have the session ID"
-msgstr "<मेटासिटी_सत्र> गुण देखा पर हमारे पास पहले ही सत्र आईडी है"
+#| msgid "<metacity_session> attribute seen but we already have the session ID"
+msgid "<mutter_session> attribute seen but we already have the session ID"
+msgstr "<mutter_session> गुण देखा पर हमारे पास पहले ही सत्र आईडी है"
 
-#: ../src/core/session.c:1194 ../src/core/session.c:1269
-#: ../src/core/session.c:1301 ../src/core/session.c:1373
-#: ../src/core/session.c:1433
+#: ../src/core/session.c:1198 ../src/core/session.c:1273
+#: ../src/core/session.c:1305 ../src/core/session.c:1377
+#: ../src/core/session.c:1437
 #, c-format
-#| msgid "Unknown attribute %s on <window> element"
 msgid "Unknown attribute %s on <%s> element"
 msgstr "अज्ञात विशेषता %s <%s> तत्व पर"
 
-#: ../src/core/session.c:1211
+#: ../src/core/session.c:1215
 #, c-format
 msgid "nested <window> tag"
 msgstr "नेस्टेड <विंडो> टैग"
 
-#: ../src/core/session.c:1453
+#: ../src/core/session.c:1457
 #, c-format
 msgid "Unknown element %s"
 msgstr "अज्ञात तत्व %s"
 
-#: ../src/core/session.c:1879
-#, c-format
+#: ../src/core/session.c:1809
+#| msgid ""
+#| "These windows do not support \"save current setup\" and will have to be "
+#| "restarted manually next time you log in."
 msgid ""
-"Error launching metacity-dialog to warn about apps that don't support "
-"session management: %s\n"
+"These windows do not support &quot;save current setup&quot; and will have to "
+"be restarted manually next time you log in."
 msgstr ""
-"अनुप्रयोग जो सत्र प्रबंधन समर्थन: %s  नहीं रखते हैं उनकी चेतावनी बताने हेतु मेटासिटी संवाद "
-"प्रारंभ करने में त्रुटि\n"
+"ये विंडो &quot;save current setup&quot; समर्थन नहीं करते अतः इन्हें अगली बार "
+"जब आप "
+"लॉगइन करेंगे तब पुनः प्रारंभ करना होगा."
 
-#: ../src/core/util.c:101
+#: ../src/core/util.c:80
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "डिबग लॉग: %s खोलने में असफल\n"
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:90
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "लॉग फ़ाइल %s:  fdopen() में असफल %s\n"
 
-#: ../src/core/util.c:117
+#: ../src/core/util.c:96
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "लॉग फ़ाइल %s खोला\n"
 
-#: ../src/core/util.c:136 ../src/tools/metacity-message.c:176
+#: ../src/core/util.c:115 ../src/tools/mutter-message.c:149
 #, c-format
-msgid "Metacity was compiled without support for verbose mode\n"
-msgstr "मेटासिटी को वाचाल विधि के बगैर कम्पाइल किया गया है\n"
+#| msgid "Metacity was compiled without support for verbose mode\n"
+msgid "Mutter was compiled without support for verbose mode\n"
+msgstr "Mutter को वाचाल विधि के बगैर कम्पाइल किया गया है\n"
 
-#: ../src/core/util.c:236
+#: ../src/core/util.c:259
 msgid "Window manager: "
 msgstr "विंडो प्रबंधक:"
 
-#: ../src/core/util.c:388
+#: ../src/core/util.c:407
 msgid "Bug in window manager: "
 msgstr "विंडो प्रबंधक में बग:"
 
-#: ../src/core/util.c:421
+#: ../src/core/util.c:438
 msgid "Window manager warning: "
 msgstr "विंडो प्रबंधक चेतावनी"
 
-#: ../src/core/util.c:449
+#: ../src/core/util.c:466
 msgid "Window manager error: "
 msgstr "विंडो प्रबंधक त्रुटिः"
 
-#. Translators: This is the title used on dialog boxes
-#. eof all-keybindings.h
-#: ../src/core/util.c:577 ../src/metacity.desktop.in.h:1
-#: ../src/metacity-wm.desktop.in.h:1
-msgid "Metacity"
-msgstr "मेटासिटी"
-
 #  first time through
 #. first time through
-#: ../src/core/window.c:5626
+#: ../src/core/window.c:7237
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
-"विंडो %s नियत करता है SM_CLIENT_ID अपने आप ही, बजाए WM_CLIENT_LEADER विंडो के जैसा "
+"विंडो %s नियत करता है SM_CLIENT_ID अपने आप ही, बजाए WM_CLIENT_LEADER विंडो के "
+"जैसा "
 "कि  ICCCM में उल्लेखित किया गया है.\n"
 
 #  We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
@@ -494,30 +368,38 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:6191
+#: ../src/core/window.c:7902
 #, c-format
 msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
-"d x %d and max size %d x %d; this doesn't make much sense.\n"
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
+"%d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
-"विंडो  %s ने एक एमडबल्यूएम संकेत नियत किया यह दिखाते हुए कि यह आकार बदलने लायक नहीं है, "
-"परंतु न्यूनतम आकार नियत किया %d x %d तथा अधिकतम आकार  %d x %d; इसका कोई खास अर्थ "
+"विंडो  %s ने एक एमडबल्यूएम संकेत नियत किया यह दिखाते हुए कि यह आकार बदलने "
+"लायक नहीं है, "
+"परंतु न्यूनतम आकार नियत किया %d x %d तथा अधिकतम आकार  %d x %d; इसका कोई खास "
+"अर्थ "
 "नहीं निकलता.\n"
 
-#: ../src/core/window-props.c:260
+#: ../src/core/window-props.c:310
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "अनुप्रयोग ने नियत किया एक bogus _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:377
+#: ../src/core/window-props.c:429
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (%s पर)"
 
-#: ../src/core/window-props.c:1358
+#: ../src/core/window-props.c:1484
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "अवैध WM_TRANSIENT_FOR window 0x%lx %s के लिये निर्दिष्ट.\n"
+
+#: ../src/core/window-props.c:1495
+#, c-format
+#| msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
+msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
+msgstr "WM_TRANSIENT_FOR विंडो 0x%lx  %s के लिए लूप का निर्माण नहीं कर सका."
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -534,979 +416,231 @@ msgstr ""
 " इस बात की पूरी संभावना है कि यह एक अनुप्रयोग बग है, विंडो प्रबंधक बग नहीं.\n"
 " विंडो का शीर्षक है=\"%s\" क्लास=\"%s\" नाम=\"%s\"\n"
 
-#: ../src/core/xprops.c:401
+#: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "गुण %s विंडो 0x%lx में अवैध यूटीएफ़-8 है \n"
 
-#: ../src/core/xprops.c:484
+#: ../src/core/xprops.c:494
 #, c-format
-msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgid ""
+"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr "गुण %s विंडो 0x%lx पर %d वस्तुओं हेतु सूची में अवैध यूटीएफ़-8 है\n"
 
-#: ../src/include/all-keybindings.h:88
-msgid "Switch to workspace 1"
-msgstr "कार्यस्थान 1 पर जाएँ"
-
-#: ../src/include/all-keybindings.h:90
-msgid "Switch to workspace 2"
-msgstr "कार्यस्थान 2 पर जाएँ"
-
-#: ../src/include/all-keybindings.h:92
-msgid "Switch to workspace 3"
-msgstr "कार्यस्थान 3 पर जाएँ"
-
-#: ../src/include/all-keybindings.h:94
-msgid "Switch to workspace 4"
-msgstr "कार्यस्थान 4 पर जाएँ"
-
-#: ../src/include/all-keybindings.h:96
-msgid "Switch to workspace 5"
-msgstr "कार्यस्थान 5 पर जाएँ"
-
-#: ../src/include/all-keybindings.h:98
-msgid "Switch to workspace 6"
-msgstr "कार्यस्थान 6 पर जाएँ"
-
-#: ../src/include/all-keybindings.h:100
-msgid "Switch to workspace 7"
-msgstr "कार्यस्थान 7  पर जाएँ"
-
-#: ../src/include/all-keybindings.h:102
-msgid "Switch to workspace 8"
-msgstr "कार्यस्थान 8 पर जाएँ"
-
-#: ../src/include/all-keybindings.h:104
-msgid "Switch to workspace 9"
-msgstr "कार्यस्थान 9 पर जाएँ"
-
-#: ../src/include/all-keybindings.h:106
-msgid "Switch to workspace 10"
-msgstr "कार्यस्थान 10  पर जाएँ"
-
-#: ../src/include/all-keybindings.h:108
-msgid "Switch to workspace 11"
-msgstr "कार्यस्थान 11  पर जाएँ"
-
-#: ../src/include/all-keybindings.h:110
-msgid "Switch to workspace 12"
-msgstr "कार्यस्थान 12  पर जाएँ"
-
-#: ../src/include/all-keybindings.h:122
-#| msgid "Switch to workspace on the left"
-msgid "Switch to workspace on the left of the current workspace"
-msgstr "मौजूदा कार्यस्थान के बाएँ कार्यस्थान पर जाएँ"
-
-#: ../src/include/all-keybindings.h:126
-#| msgid "Switch to workspace on the right"
-msgid "Switch to workspace on the right of the current workspace"
-msgstr "मौजूदा कार्यस्थान के दाहिने कार्यस्थान पर जाएँ"
-
-#: ../src/include/all-keybindings.h:130
-#| msgid "Switch to workspace above this one"
-msgid "Switch to workspace above the current workspace"
-msgstr "मौजूदा कार्यस्थान के ऊपर कार्यस्थान पर जाएँ"
-
-#: ../src/include/all-keybindings.h:134
-#| msgid "Switch to workspace below this one"
-msgid "Switch to workspace below the current workspace"
-msgstr "मौजूदा कार्यस्थान के नीचे कार्यस्थान पर जाएँ"
-
-#: ../src/include/all-keybindings.h:150
-#| msgid "Move between windows of an application with popup"
-msgid "Move between windows of an application, using a popup window"
-msgstr "पॉपअप के साथ अनुप्रयोग के विंडो के बीच जायें"
-
-#: ../src/include/all-keybindings.h:153
-#| msgid "Move backwards between windows of an application with popup"
-msgid "Move backward between windows of an application, using a popup window"
-msgstr "पॉपअप के साथ तत्काल अनुप्रयोग के विंडो के बीच पीछे जायें"
-
-#: ../src/include/all-keybindings.h:157
-#| msgid "Move between windows with popup"
-msgid "Move between windows, using a popup window"
-msgstr "विंडोज़ के बीच पॉपअप के प्रयोग से खिसकाएँ"
-
-#: ../src/include/all-keybindings.h:160
-#| msgid "Move focus backwards between windows using popup display"
-msgid "Move backward between windows, using a popup window"
-msgstr "पॉपअप प्रदर्शक के द्वारा विंडो के बीच पीछे ले जाएँ"
-
-#: ../src/include/all-keybindings.h:163
-#| msgid "Move between panels and the desktop with popup"
-msgid "Move between panels and the desktop, using a popup window"
-msgstr "पटल तथा डेस्कटॉप के बीच पॉपअप के प्रयोग से खिसकाएँ"
-
-#: ../src/include/all-keybindings.h:166
-#| msgid "Move backwards between panels and the desktop with popup"
-msgid "Move backward between panels and the desktop, using a popup window"
-msgstr "पटल तथा डेस्कटॉप के बीच पॉपअप के प्रयोग से पीछे जाएँ"
-
-#: ../src/include/all-keybindings.h:171
-msgid "Move between windows of an application immediately"
-msgstr "तत्काल अनुप्रयोग के विंडो के बीच जायें"
-
-#: ../src/include/all-keybindings.h:174
-#| msgid "Move backwards between windows of an application immediately"
-msgid "Move backward between windows of an application immediately"
-msgstr "तत्काल अनुप्रयोग के विंडो के बीच पीछे जायें"
-
-#: ../src/include/all-keybindings.h:177
-msgid "Move between windows immediately"
-msgstr "विंडोज़ के बीच तत्काल खिसकाएँ"
-
-#: ../src/include/all-keybindings.h:180
-#| msgid "Move backwards between windows immediately"
-msgid "Move backward between windows immediately"
-msgstr "विंडोज़ के बीच तत्काल पीछे जाएँ"
-
-#: ../src/include/all-keybindings.h:183
-msgid "Move between panels and the desktop immediately"
-msgstr "पटल तथा डेस्कटॉप के बीच तत्काल खिसकाएँ"
-
-#: ../src/include/all-keybindings.h:186
-msgid "Move backward between panels and the desktop immediately"
-msgstr "पटल तथा डेस्कटॉप के बीच तत्काल पीछे जाएँ"
-
-#: ../src/include/all-keybindings.h:191
-#| msgid "Hide all windows and focus desktop"
-msgid "Hide all normal windows and set focus to the desktop"
-msgstr "सभी सामान्य विंडो को छुपाएँ और डेस्कटॉप पर फ़ोकस करें"
-
-#: ../src/include/all-keybindings.h:194
-#| msgid "Show the panel menu"
-msgid "Show the panel's main menu"
-msgstr "पटल मुख्य मेन्यू दिखाएँ"
-
-#: ../src/include/all-keybindings.h:197
-#| msgid "Show the panel run application dialog"
-msgid "Show the panel's \"Run Application\" dialog box"
-msgstr "पटल के \"अनुप्रयोग चलाएँ\" संवाद दिखाएँ"
-
-#: ../src/include/all-keybindings.h:238
-msgid "Take a screenshot"
-msgstr "स्क्रीन का चित्र लें"
-
-#: ../src/include/all-keybindings.h:240
-msgid "Take a screenshot of a window"
-msgstr "विंडो का चित्र लें"
-
-#: ../src/include/all-keybindings.h:242
-msgid "Run a terminal"
-msgstr "एक टर्मिनल चलायें"
-
-#: ../src/include/all-keybindings.h:257
-#| msgid "Activate window menu"
-msgid "Activate the window menu"
-msgstr "विंडो मेन्यू सक्रिय करें"
-
-#: ../src/include/all-keybindings.h:260
-msgid "Toggle fullscreen mode"
-msgstr "पूरा स्क्रीन मोड टॉगल करें"
-
-#: ../src/include/all-keybindings.h:262
-msgid "Toggle maximization state"
-msgstr "अधिकतम स्थिति टॉगल करें"
-
-#: ../src/include/all-keybindings.h:264
-#| msgid "Lower window below other windows"
-msgid "Toggle whether a window will always be visible over other windows"
-msgstr "टॉगल करें कि क्या दूसरे विंडो के बीच एक विंडो हमेशा दृश्य रहेगा"
-
-#: ../src/include/all-keybindings.h:266
-msgid "Maximize window"
-msgstr "विंडो अधिकतम करें"
-
-#: ../src/include/all-keybindings.h:268
-#| msgid "Resize window"
-msgid "Restore window"
-msgstr "विंडो फिर बहाल करें"
-
-#: ../src/include/all-keybindings.h:270
-msgid "Toggle shaded state"
-msgstr "आभायुक्त स्थिति टॉगल करें"
-
-#: ../src/include/all-keybindings.h:272
-msgid "Minimize window"
-msgstr "विंडो को न्यूनतम करें"
-
-#: ../src/include/all-keybindings.h:274
-msgid "Close window"
-msgstr "विंडो बंद करें"
-
-#: ../src/include/all-keybindings.h:276
-msgid "Move window"
-msgstr "विंडो खिसकाएँ"
-
-#: ../src/include/all-keybindings.h:278
-msgid "Resize window"
-msgstr "विंडो का आकार बदलें"
-
-#: ../src/include/all-keybindings.h:281
-#| msgid "Toggle window on all workspaces"
-msgid "Toggle whether window is on all workspaces or just one"
-msgstr "टॉगल करें कि विंडो सभी कार्यस्थान पर है या केवल एक पर"
-
-#: ../src/include/all-keybindings.h:285
-msgid "Move window to workspace 1"
-msgstr "विंडो को कार्यस्थान 1 पर ले जाएँ"
-
-#: ../src/include/all-keybindings.h:288
-msgid "Move window to workspace 2"
-msgstr "विंडो को कार्यस्थान 2 पर ले जाएँ"
-
-#: ../src/include/all-keybindings.h:291
-msgid "Move window to workspace 3"
-msgstr "विंडो को कार्यस्थान 3 पर ले जाएँ"
-
-#: ../src/include/all-keybindings.h:294
-msgid "Move window to workspace 4"
-msgstr "विंडो को कार्यस्थान 4 पर ले जाएँ"
-
-#: ../src/include/all-keybindings.h:297
-msgid "Move window to workspace 5"
-msgstr "विंडो को कार्यस्थान 5 पर ले जाएँ"
-
-#: ../src/include/all-keybindings.h:300
-msgid "Move window to workspace 6"
-msgstr "विंडो को कार्यस्थान 6 पर ले जाएँ"
-
-#: ../src/include/all-keybindings.h:303
-msgid "Move window to workspace 7"
-msgstr "विंडो को कार्यस्थान 7 पर ले जाएँ"
-
-#: ../src/include/all-keybindings.h:306
-msgid "Move window to workspace 8"
-msgstr "विंडो को कार्यस्थान 8 पर ले जाएँ"
-
-#: ../src/include/all-keybindings.h:309
-msgid "Move window to workspace 9"
-msgstr "विंडो को कार्यस्थान 9 पर ले जाएँ"
-
-#: ../src/include/all-keybindings.h:312
-msgid "Move window to workspace 10"
-msgstr "विंडो को कार्यस्थान 10  पर ले जाएँ"
-
-#: ../src/include/all-keybindings.h:315
-msgid "Move window to workspace 11"
-msgstr "विंडो को कार्यस्थान 11 पर ले जाएँ"
-
-#: ../src/include/all-keybindings.h:318
-msgid "Move window to workspace 12"
-msgstr "विंडो को कार्यस्थान 12 पर ले जाएँ"
-
-#: ../src/include/all-keybindings.h:330
-msgid "Move window one workspace to the left"
-msgstr "विंडो को एक कार्यस्थान बाएँ लाएँ"
-
-#: ../src/include/all-keybindings.h:333
-msgid "Move window one workspace to the right"
-msgstr "विंडो को एक कार्यस्थान दाएँ लाएँ"
-
-#: ../src/include/all-keybindings.h:336
-msgid "Move window one workspace up"
-msgstr "विंडो को एक कार्यस्थान ऊपर लाएँ"
-
-#: ../src/include/all-keybindings.h:339
-msgid "Move window one workspace down"
-msgstr "विंडो को एक कार्यस्थान नीचे लाएँ"
-
-#: ../src/include/all-keybindings.h:342
-#| msgid "Raise obscured window, otherwise lower"
-msgid "Raise window if it's covered by another window, otherwise lower it"
-msgstr "विंडो बढ़ाएँ कि क्या यह दूसरे विंडो द्वारा आच्छादित है, अन्यथा इसे नीचे करें"
-
-#: ../src/include/all-keybindings.h:344
-msgid "Raise window above other windows"
-msgstr "विंडो को अन्य विंडो के ऊपर रखें"
-
-#: ../src/include/all-keybindings.h:346
-msgid "Lower window below other windows"
-msgstr "विंडो को अन्य विंडो के नीचे रखें"
-
-#: ../src/include/all-keybindings.h:350
-msgid "Maximize window vertically"
-msgstr "विंडो खड़ा अधिकतम करें"
-
-#: ../src/include/all-keybindings.h:354
-msgid "Maximize window horizontally"
-msgstr "विंडो आड़ा अधिकतम करें"
-
-#: ../src/include/all-keybindings.h:358
-#| msgid "Move window one workspace to the left"
-msgid "Move window to north-west (top left) corner"
-msgstr "विंडो को उत्तर-पश्चिमी (उपरी बाएँ) कोने में ले जाएँ"
-
-#: ../src/include/all-keybindings.h:361
-#| msgid "Move window one workspace to the right"
-msgid "Move window to north-east (top right) corner"
-msgstr "विंडो को उत्तर-पूर्वी (उपरी दाहिने) कोने में ले जाएँ"
-
-#: ../src/include/all-keybindings.h:364
-msgid "Move window to south-west (bottom left) corner"
-msgstr "विंडो को दक्षिणी-पश्चिमी (उपरी बाएँ) कोने में ले जाएँ"
-
-#: ../src/include/all-keybindings.h:367
-msgid "Move window to south-east (bottom right) corner"
-msgstr "विंडो को दक्षिणी-पूर्वी (तल के दाहिने) कोने में ले जाएँ"
-
-#: ../src/include/all-keybindings.h:371
-msgid "Move window to north (top) side of screen"
-msgstr "विंडो को स्क्रीन के किनारे उत्तरी (शीर्ष) कोने में ले जाएँ"
-
-#: ../src/include/all-keybindings.h:374
-msgid "Move window to south (bottom) side of screen"
-msgstr "विंडो को स्क्रीन के किनारे दक्षिणी (तल) कोने में ले जाएँ"
-
-#: ../src/include/all-keybindings.h:377
-msgid "Move window to east (right) side of screen"
-msgstr "विंडो को स्क्रीन के किनारे पूर्वी (दाहिने) कोने में ले जाएँ"
-
-#: ../src/include/all-keybindings.h:380
-msgid "Move window to west (left) side of screen"
-msgstr "विंडो को स्क्रीन के किनारे पश्चिमी (बाएँ) कोने में ले जाएँ"
-
-#: ../src/include/all-keybindings.h:383
-#| msgid "Move window one workspace down"
-msgid "Move window to center of screen"
-msgstr "विंडो को स्क्रीन के केंद्र में खिसकाएँ"
-
-#: ../src/metacity.schemas.in.in.h:1
-msgid "(Not implemented) Navigation works in terms of applications not windows"
-msgstr "(कार्यान्वित नहीं) संचलन अनुप्रयोगों के अनुसार चलता है, विंडोज़ से नहीं"
-
-#: ../src/metacity.schemas.in.in.h:2
+#: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
+msgid "Mutter"
+msgstr "Mutter"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:1
+#| msgid "Modifier to use for modified window click actions"
+msgid "Modifier to use for extended window management operations"
+msgstr "विस्तारित विंडो प्रबंधन संचालन का उपयोग के लिए संशोधक"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:2
 msgid ""
-"A font description string describing a font for window titlebars. The size "
-"from the description will only be used if the titlebar_font_size option is "
-"set to 0. Also, this option is disabled if the titlebar_uses_desktop_font "
-"option is set to true."
+"This key will initiate the \"overlay\", which is a combination window "
+"overview and application launching system. The default is intended to be the "
+"\"Windows key\" on PC hardware. It's expected that this binding either the "
+"default or set to the empty string."
 msgstr ""
-"एक फंट विवरण स्ट्रिंग विंडो शीर्षक पट्टी के लिये फंट के बारे में बता रहा है. विवरण से आकार "
-"प्रयुक्त होगा अगर titlebar_font_size विकल्प 0 में सेट किया जाता है, साथ ही, यह विकल्प "
-"निष्क्रिय किया जाता है अगर titlebar_uses_desktop_font विकल्प को सही पर सेट किया "
-"जाता है."
+"इस कुंजी से \"उपरिशायी\" आरंभ हो जाएगा, जो विंडो अवलोकन और अनुप्रयोग को "
+"प्रारंभ करने वाली प्रणाली का संयोजन हैं.  पीसी हार्डवेयर पर \"विंडोज कुंजी\" "
+"डिफ़ॉल्ट होता हैं. "
+"यह उम्मीद है कि यह बाध्यकारी या तो डिफ़ॉल्ट या खाली स्ट्रिंग पर सेट हैं."
 
-#: ../src/metacity.schemas.in.in.h:3
-msgid "Action on title bar double-click"
-msgstr "शीर्षक पट्टी में दोहरा-क्लिक करने पर क्रिया"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:3
+msgid "Attach modal dialogs"
+msgstr "मोडल संवाद अनुलग्न करें"
 
-#: ../src/metacity.schemas.in.in.h:4
-#| msgid "Action on title bar double-click"
-msgid "Action on title bar middle-click"
-msgstr "शीर्षक पट्टी में मध्य-क्लिक पर क्रिया"
-
-#: ../src/metacity.schemas.in.in.h:5
-#| msgid "Action on title bar double-click"
-msgid "Action on title bar right-click"
-msgstr "शीर्षक पट्टी में दाहिना-क्लिक पर क्रिया"
-
-#: ../src/metacity.schemas.in.in.h:6
-msgid "Arrangement of buttons on the titlebar"
-msgstr "शीर्षक-पट्टी में बटनों का विन्यास"
-
-#: ../src/metacity.schemas.in.in.h:7
-#| msgid ""
-#| "Arrangement of buttons on the titlebar. The value should be a string, "
-#| "such as \"menu:minimize,maximize,close\"; the colon separates the left "
-#| "corner of the window from the right corner, and the button names are "
-#| "comma-separated. Duplicate buttons are not allowed. Unknown button names "
-#| "are silently ignored so that buttons can be added in future metacity "
-#| "versions without breaking older versions."
+#: ../src/org.gnome.mutter.gschema.xml.in.h:4
 msgid ""
-"Arrangement of buttons on the titlebar. The value should be a string, such "
-"as \"menu:minimize,maximize,spacer,close\"; the colon separates the left "
-"corner of the window from the right corner, and the button names are comma-"
-"separated. Duplicate buttons are not allowed. Unknown button names are "
-"silently ignored so that buttons can be added in future metacity versions "
-"without breaking older versions. A special spacer tag can be used to insert "
-"some space between two adjacent buttons."
+"When true, instead of having independent titlebars, modal dialogs appear "
+"attached to the titlebar of the parent window and are moved together with "
+"the parent window."
 msgstr ""
-"शीर्षक-पट्टी में बटनों का विन्यास. मूल्य स्ट्रिंग होने चाहिएँ, जैसे \"menu:minimize,maximize,spacer,close\"; कॉलन विंडो के बाएँ कोने को दांए कोने से अलग करता है तथा बटन के नाम "
-"कॉमा से अलग हैं. दोहरे बटन स्वीकार्य नहीं हैं. अज्ञात बटन नामों को शांति से अनदेखा कर दिया गया है ताकि "
-"भविष्य के मेटासिटी संस्करण में, पुराने संस्करण को तोड़े बगैर ये जोड़े जा सकें."
+"यदि सही हैं तो, स्वतंत्र शीर्षक पट्टी होने के बजाय,  मोडल संवाद मूल विंडो के "
+"शीर्षक पट्टी में संलग्न दिखाई देते हैं और मूल विंडोज के साथ साथ घूमते नज़र आते "
+"हैं."
 
-#: ../src/metacity.schemas.in.in.h:8
-msgid "Automatically raises the focused window"
-msgstr "फ़ोकस किए विंडो को स्वचालित उठाएँ"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:5
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr "जब स्क्रीन किनारे पर विंडोज़ को छोड़ने बढ़त टाइलिंग सक्षम करें"
 
-#: ../src/metacity.schemas.in.in.h:9
-#| msgid ""
-#| "Clicking a window while holding down this modifier key will move the "
-#| "window (left click), resize the window (middle click), or show the window "
-#| "menu (right click). Modifier is expressed as \"&lt;Alt&gt;\" or \"&lt;"
-#| "Super&gt;\" for example."
+#: ../src/org.gnome.mutter.gschema.xml.in.h:6
 msgid ""
-"Clicking a window while holding down this modifier key will move the window "
-"(left click), resize the window (middle click), or show the window menu "
-"(right click). The left and right operations may be swapped using the "
-"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
-"\"&lt;Super&gt;\" for example."
+"If enabled, dropping windows on vertical screen edges maximizes them "
+"vertically and resizes them horizontally to cover half of the available "
+"area. Dropping windows on the top screen edge maximizes them completely."
 msgstr ""
-"Clicking a window while holding down this modifier key will move the window "
-"(left click), resize the window (middle click), or show the window menu "
-"(right click). The left and right operations may be swapped using the "
-"\"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" or "
-"\"&lt;Super&gt;\" for example."
+"यदि सक्रिय है, ऊर्ध्वाधर स्क्रीन किनारों पर विंडोज़ को छोड़ने से वे खड़ी में "
+"अधिकतम हो जाते हैं और क्षैतिज में आकार बदलता है उपलब्ध क्षेत्र के आधे भाग को "
+"छेकने के लिए. शीर्ष स्क्रीन किनारे पर विंडोज़ छोड़ने से वे पूरी तरह से अधिकतम "
+"हो जाते हैं"
 
-#: ../src/metacity.schemas.in.in.h:10
-msgid "Commands to run in response to keybindings"
-msgstr "कीबाइंडिंग के प्रत्युत्तर में चलाया जाने वाला कमांड"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
+msgid "Workspaces are managed dynamically"
+msgstr "कार्यस्थान गतिशील रूप से प्रबंधित की जाती हैं"
 
-#: ../src/metacity.schemas.in.in.h:11
-msgid "Compositing Manager"
-msgstr "कंपोजिटिंग प्रबंधक"
-
-#: ../src/metacity.schemas.in.in.h:12
-msgid "Control how new windows get focus"
-msgstr "नियंत्रित करें कि कैसे नया विंडो फोकस पाता है"
-
-#: ../src/metacity.schemas.in.in.h:13
-msgid "Current theme"
-msgstr "वर्तमान प्रसंग"
-
-#: ../src/metacity.schemas.in.in.h:14
-msgid "Delay in milliseconds for the auto raise option"
-msgstr "आटो रेस विकल्प हेतु मिलीसेकण्ड्स में देरी"
-
-#: ../src/metacity.schemas.in.in.h:15
-msgid "Determines whether Metacity is a compositing manager."
-msgstr "निर्धारित करें कि Metacity एक कंपोजिटिंग प्रबंधक है."
-
-#: ../src/metacity.schemas.in.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid ""
-"Determines whether applications or the system can generate audible 'beeps'; "
-"may be used in conjunction with 'visual bell' to allow silent 'beeps'."
+"Determines whether workspaces are managed dynamically or whether there's a "
+"static number of workspaces (determined by the num-workspaces key in org."
+"gnome.desktop.wm.preferences)."
 msgstr ""
-"निर्धारित करता है कि क्या अनुप्रयोग या तंत्र सुनने योग्य बीप पैदा कर सकता है, शायद "
-"दृष्टिगोच़र घंटी के साथ उपयोग किया जाकर शांति मय बीप स्वीकारे."
+"यह निर्धारित करता है कि कार्यस्थानों को गतिशील रूप से प्रबंधित की जाती हैं या "
+"कि क्या वहाँ कार्यस्थानों के एक स्थिर संख्या हैं "
+"(org.gnome.desktop.wm.preferences में कुंजी संख्या कार्यस्थानों द्वारा "
+"निर्धारित की जाती है)."
 
-#: ../src/metacity.schemas.in.in.h:17
-msgid "Disable misfeatures that are required by old or broken applications"
-msgstr "मिसफीचर्स असमर्थ करें जो कि पुराने या टूटे अनुप्रयोगों द्वारा वांछित होते हैं"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
+msgid "Workspaces only on primary"
+msgstr "केवल प्राथमिक पर कार्यस्थान"
 
-#: ../src/metacity.schemas.in.in.h:18
-msgid "Enable Visual Bell"
-msgstr "दृष्टिगोच़र घंटी सक्षम करें"
-
-#: ../src/metacity.schemas.in.in.h:19
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid ""
-"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-"the focused window will be automatically raised after a delay specified by "
-"the auto_raise_delay key. This is not related to clicking on a window to "
-"raise it, nor to entering a window during drag-and-drop."
+"Determines whether workspace switching should happen for windows on all "
+"monitors or only for windows on the primary monitor."
 msgstr ""
-"अगर सही पर सेट किया जाता है, और फोकस मोड या तो \"स्लोपी\" या \"माउस\" हो तब "
-"फोकस किया विंडो तब auto_raise_delay कुंजी से निर्दिष्ट विलंब से फोकस किया विंडो उठाया "
-"जायेगा. यह विंडो पर क्लिक किये जाने से संबंधित नहीं है, न तो खींचे व छोड़ें पर दाखिल होकर."
+" निर्धारित करता है कि क्या कार्यस्थान को स्विच करना सभी मॉनिटर पर विंडोज़ के "
+"लिए संभव हैं या केवल प्राथमिक मॉनीटर पर विंडोज के लिए."
 
-#: ../src/metacity.schemas.in.in.h:20
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
+msgid "No tab popup"
+msgstr "कोई टैब पॉपअप नहीं"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
 msgid ""
-"If true, ignore the titlebar_font option, and use the standard application "
-"font for window titles."
+"Determines whether the use of popup and highlight frame should be disabled "
+"for window cycling."
 msgstr ""
-"यदि सही है, शीर्षक पट्टी फ़ॉन्ट विकल्प का अनदेखा करें तथा विंडो शीर्षकों हेतु मानक अनुप्रयोग "
-"फ़ॉन्ट का प्रयोग करें"
+"निर्धारित करता है कि क्या पॉपअप और उजागर फ्रेम के उपयोग विंडो साइकिल चालन के "
+"लिए निष्क्रिय किया जाना चाहिए."
 
-#: ../src/metacity.schemas.in.in.h:21
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Draggable border width"
+msgstr "ड्रैग करने योग्य सीमा चौड़ाई"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
-"If true, metacity will give the user less feedback by using wireframes, "
-"avoiding animations, or other means. This is a significant reduction in "
-"usability for many users, but may allow legacy applications to continue "
-"working, and may also be a useful tradeoff for terminal servers. However, "
-"the wireframe feature is disabled when accessibility is on."
+"The amount of total draggable borders. If the theme's visible borders are "
+"not enough, invisible borders will be added to meet this value."
 msgstr ""
-"अगर सही है, metacity उपयोक्ता को कम फीडबेक और सीधा हस्तक्षेप का कम सेंस देगा, "
-"वायरफ्रेम, एनीमेशन अनदेखा करते हुये, या अन्य साधन. यह महत्वपूर्ण कमी है कई उपयोक्ता के "
-"प्रयोग में, लेकिन कई पुरातन अनुप्रयोग व टर्मिनल सर्वर की अनुमति देते हैं कि वे कब अन्यथा रूप "
-"से अप्रायोगिक होगें. हालांकि, वायरफ्रेम फीचर को निष्क्रिय किया जाता है जब पहुंच वीयर्ड "
-"डेस्कटॉप खंडन को अनदेखा करने के लिये हो."
+"कुल ड्रैग करने योग्य सीमाओं की मात्रा. यदि विषय दृश्यमान सीमाओं के लिए "
+"पर्याप्त नहीं हैं, अदृश्य सीमाओं इस मान को पूरा करने के लिए जोड़ दिया जाएगा."
 
-#: ../src/metacity.schemas.in.in.h:22
-msgid ""
-"If true, then Metacity works in terms of applications rather than windows. "
-"The concept is a bit abstract, but in general an application-based setup is "
-"more like the Mac and less like Windows. When you focus a window in "
-"application-based mode, all the windows in the application will be raised. "
-"Also, in application-based mode, focus clicks are not passed through to "
-"windows in other applications. Application-based mode is, however, largely "
-"unimplemented at the moment."
-msgstr ""
-"यदि सही है तो मेटासिटी विंडो के बजाए अनुप्रयोग जैसे कार्य करेगा. परिकल्पना थोड़ी संक्षिप्त "
-"है परंतु आमतौर पर अनुप्रयोग आधारित सेटअप मैक जैसा ज्यादा होगा विंडोज़ की तरह कम. यदि आप "
-"किसी विंडो को अनुप्रयोग आधारित मोड पर फ़ोकस करेंगे तो अनुप्रयोग में के सभी विंडो ऊपर हो "
-"जाएंगे. यह भी कि अनुप्रयोग आधारित मोड में फ़ोकस क्लिक अन्य अनुप्रयोग के विंडो से होकर नहीं "
-"जाता. अनुप्रयोग आधारित मोड विस्तृत रूप से इस समय कार्यान्वित नहीं है."
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#| msgid "Remove Window From Top"
+msgid "Select window from tab popup"
+msgstr "पॉपअप टैब से विंडो का चयन करें"
 
-#: ../src/metacity.schemas.in.in.h:23
-msgid "If true, trade off usability for less resource usage"
-msgstr "यदि सही है, उपयोगिता को कम साधन उपयोग के साथ बदलें"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+msgid "Cancel tab popup"
+msgstr "टैब पॉपअप रद्द करें"
 
-#: ../src/metacity.schemas.in.in.h:24
-msgid "Modifier to use for modified window click actions"
-msgstr "विंडो क्लिक क्रिया परिवर्तन हेतु उपयोग में परिवर्धक"
-
-#: ../src/metacity.schemas.in.in.h:25
-msgid "Name of workspace"
-msgstr "कार्यस्थान का नाम"
-
-#: ../src/metacity.schemas.in.in.h:26
-msgid "Number of workspaces"
-msgstr "कार्यस्थान की संख्या"
-
-#: ../src/metacity.schemas.in.in.h:27
-msgid ""
-"Number of workspaces. Must be more than zero, and has a fixed maximum to "
-"prevent making the desktop unusable by accidentally asking for too many "
-"workspaces."
-msgstr ""
-"कार्यस्थान की संख्या. यह शून्य से अधिक होना चाहिए तथा इसे एक अधिकतम पर निर्धारित करना "
-"चाहिये ज्यादा कार्यस्थान की मांग करने पर आपके डेस्कटॉप को दुर्धटनावश नष्ट होने से बचाने हेतु."
-
-#: ../src/metacity.schemas.in.in.h:28
-msgid "Run a defined command"
-msgstr "पारिभाषित कमांड चलाएँ"
-
-#: ../src/metacity.schemas.in.in.h:29
-msgid ""
-"Set this to true to resize with the right button and show a menu with the "
-"middle button while holding down the key given in \"mouse_button_modifier\"; "
-"set it to false to make it work the opposite way around."
-msgstr ""
-"Set this to true to resize with the right button and show a menu with the "
-"middle button while holding down the key given in \"mouse_button_modifier\"; "
-"set it to false to make it work the opposite way around."
-
-#: ../src/metacity.schemas.in.in.h:30
-msgid ""
-"Setting this option to false can lead to buggy behavior, so users are "
-"strongly discouraged from changing it from the default of true. Many actions "
-"(e.g. clicking in the client area, moving or resizing the window) normally "
-"raise the window as a side-effect. Setting this option to false, which is "
-"strongly discouraged, will decouple raising from other user actions, and "
-"ignore raise requests generated by applications. See http://bugzilla.gnome."
-"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
-"still be raised by an alt-left-click anywhere on the window, a normal click "
-"on the window decorations, or by special messages from pagers, such as "
-"activation requests from tasklist applets. This option is currently disabled "
-"in click-to-focus mode. Note that the list of ways to raise windows when "
-"raise_on_click is false does not include programmatic requests from "
-"applications to raise windows; such requests will be ignored regardless of "
-"the reason for the request. If you are an application developer and have a "
-"user complaining that your application does not work with this setting "
-"disabled, tell them it is _their_ fault for breaking their window manager "
-"and that they need to change this option back to true or live with the \"bug"
-"\" they requested."
-msgstr ""
-"Setting this option to false can lead to buggy behavior, so users are "
-"strongly discouraged from changing it from the default of true. Many actions "
-"(e.g. clicking in the client area, moving or resizing the window) normally "
-"raise the window as a side-effect. Setting this option to false, which is "
-"strongly discouraged, will decouple raising from other user actions, and "
-"ignore raise requests generated by applications. See http://bugzilla.gnome."
-"org/show_bug.cgi?id=445447#c6. Even when this option is false, windows can "
-"still be raised by an alt-left-click anywhere on the window, a normal click "
-"on the window decorations, or by special messages from pagers, such as "
-"activation requests from tasklist applets. This option is currently disabled "
-"in click-to-focus mode. Note that the list of ways to raise windows when "
-"raise_on_click is false does not include programmatic requests from "
-"applications to raise windows; such requests will be ignored regardless of "
-"the reason for the request. If you are an application developer and have a "
-"user complaining that your application does not work with this setting "
-"disabled, tell them it is _their_ fault for breaking their window manager "
-"and that they need to change this option back to true or live with the \"bug"
-"\" they requested."
-
-#: ../src/metacity.schemas.in.in.h:31
-msgid ""
-"Some applications disregard specifications in ways that result in window "
-"manager misfeatures. This option puts Metacity in a rigorously correct mode, "
-"which gives a more consistent user interface, provided one does not need to "
-"run any misbehaving applications."
-msgstr ""
-"कुछ अनुप्रयोग विशेषता को महत्व नहीं देते हैं जो कि विंडो प्रबंधक मिसफीचर में परिणाम लाता है. "
-"यह विकल्प Metacity को काफी सही मोड में रखता है, जो कि ज्यादा संगत उपयोक्ता अंतरफलक "
-"देता है, अगर कोई गलत अनुप्रयोग नहीं चला रहा है."
-
-#: ../src/metacity.schemas.in.in.h:32
-msgid "System Bell is Audible"
-msgstr "तंत्र घंटी सुनने योग्य है"
-
-#: ../src/metacity.schemas.in.in.h:33
-msgid ""
-"Tells Metacity how to implement the visual indication that the system bell "
-"or another application 'bell' indicator has been rung. Currently there are "
-"two valid values, \"fullscreen\", which causes a fullscreen white-black "
-"flash, and \"frame_flash\" which causes the titlebar of the application "
-"which sent the bell signal to flash. If the application which sent the bell "
-"is unknown (as is usually the case for the default \"system beep\"), the "
-"currently focused window's titlebar is flashed."
-msgstr ""
-"मेटासिटी को बताता है कि कैसे दृश्य संकेत काम में लिया जाए कि तंत्र घंटी या अन्य अनुप्रयोग "
-"घंटी बजाना है. वर्तमान में दो मान्य मूल्य हैं, \"पूरा स्क्रीन\", जो फुलस्क्रीन काला-सफेद फ्लेश "
-"करता है तथा \"फ्रेम-फ्लैश\"  जो संबंधित अनुप्रयोग के टाइटलबार को फ्लेश करने हेतु संकेत करता "
-"है, जिसको घंटी संकेत भेजता है. यदि अनुप्रयोग जिसने घंटी संकेत भेजा है. अज्ञात है तो ( जैसा कि "
-"आमतौर पर डिफ़ॉल्ट \"तंत्र बीप\" में होता है), वर्तमान फ़ोकस विंडो का शीर्षक पट्टी फ्लैश "
-"करेगा. "
-
-#: ../src/metacity.schemas.in.in.h:34
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_N keys define keybindings "
-"that correspond to these commands. Pressing the keybinding for run_command_N "
-"will execute command_N."
-msgstr ""
-"कुंजियाँ  /apps/metacity/global_keybindings/run_command_N इन कमांड के तदनुरूप "
-"कीबाइंडिंग पारिभाषित करती हैं. run_command_N  का कीबाइंडिंग दबाने पर यह command_N "
-"को चलाएगा. "
-
-#: ../src/metacity.schemas.in.in.h:35
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_screenshot key defines a "
-"keybinding which causes the command specified by this setting to be invoked."
-msgstr ""
-"कुंजी /apps/metacity/global_keybindings/run_command_screenshot वह कीबाइंडिंग "
-"पारिभाषित करती है जो इस विन्यास से उल्लेखित कमांड को प्रारंभ करती है."
-
-#: ../src/metacity.schemas.in.in.h:36
-msgid ""
-"The /apps/metacity/global_keybindings/run_command_window_screenshot key "
-"defines a keybinding which causes the command specified by this setting to "
-"be invoked."
-msgstr ""
-"कुंजी /apps/metacity/global_keybindings/run_command_window_screenshot वह "
-"कीबाइंडिंग पारिभाषित करती है जो इस विन्यास से उल्लेखित कमांड को प्रारंभ करती है."
-
-#: ../src/metacity.schemas.in.in.h:37
-msgid ""
-"The keybinding that runs the correspondingly-numbered command in /apps/"
-"metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" or "
-"\"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and allows "
-"lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;\" and "
-"\"&lt;Ctrl&gt;\". If you set the option to the special string \"disabled\", "
-"then there will be no keybinding for this action."
-msgstr ""
-"कीबाइंडिंग जो कि /apps/metacity/keybinding_commands के तदनुरूप नम्बर वाले कमांड को "
-"चलाता है . फ़ॉर्मेट इस तरह दिखेंगे \"&lt;Control&gt;a\" या \"&lt;Shift&gt;&lt;"
-"Alt&gt;F1. यह पारसर पूरी तरह लिबरल है और बड़े या छोटे अक्षर दोनों स्वीकार करता है, "
-"तथा संक्षिप्ताक्षर भी जैसे-  \"&lt;Ctl&gt;\" और \"&lt;Ctrl&gt;\". यदि आपने विकल्प "
-"विशेष स्ट्रिंग में तय किया है \"disabled\", तब वहाँ इस क्रिया हेतु कोई कीबाइंडिंग नहीं "
-"होगा."
-
-#: ../src/metacity.schemas.in.in.h:38
-msgid "The name of a workspace."
-msgstr "कार्यस्थान का नाम"
-
-#: ../src/metacity.schemas.in.in.h:39
-msgid "The screenshot command"
-msgstr "स्क्रीन-शॉट कमांड "
-
-#: ../src/metacity.schemas.in.in.h:40
-msgid ""
-"The theme determines the appearance of window borders, titlebar, and so "
-"forth."
-msgstr "प्रसंग, विंडो किनारा, शीर्षक पट्टी इत्यादि के रंग-रूप को निर्धारित करता है."
-
-#: ../src/metacity.schemas.in.in.h:41
-msgid ""
-"The time delay before raising a window if auto_raise is set to true. The "
-"delay is given in thousandths of a second."
-msgstr ""
-"यदि auto_raise  सही पर नियत है तो विंडो ऊपर उठाने से पहले विलम्ब समय. यह विलम्ब "
-"सेकण्ड के हजारवें हिस्से में दिया जाता है."
-
-#: ../src/metacity.schemas.in.in.h:42
-msgid ""
-"The window focus mode indicates how windows are activated. It has three "
-"possible values; \"click\" means windows must be clicked in order to focus "
-"them, \"sloppy\" means windows are focused when the mouse enters the window, "
-"and \"mouse\" means windows are focused when the mouse enters the window and "
-"unfocused when the mouse leaves the window."
-msgstr ""
-"विंडो फ़ोकस मोड जो संकेत करता है कि विंडोज़ कैसे सक्रिय हों. इसके तीन संभावित मूल्य हैं, क्लिक "
-"\"क्लिक\" मतलब विंडो को फ़ोकस करने हेतु उनमें क्लिक करना होगा, \"स्लॉपी\" मतलब विंडो तब "
-"फ़ोकस होंगे जब माउस विंडो में प्रवेश करेगा, तथा \"माउस\" मतलब विंडो तब फ़ोकस होंगे जब "
-"माउस विंडो में प्रवेश करेगा तथा फ़ोकस से बाहर होगा जब माउस विंडो से बाहर होगा."
-
-#: ../src/metacity.schemas.in.in.h:43
-msgid "The window screenshot command"
-msgstr "विंडो स्क्रीन-शॉट कमांड "
-
-#: ../src/metacity.schemas.in.in.h:44
-#| msgid ""
-#| "This option determines the effects of double-clicking on the title bar. "
-#| "Current valid options are 'toggle_shade', which will shade/unshade the "
-#| "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-#| "'minimize' which will minimize the window, and 'none' which will not do "
-#| "anything."
-msgid ""
-"This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"This option determines the effects of double-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-
-#: ../src/metacity.schemas.in.in.h:45
-#| msgid ""
-#| "This option determines the effects of double-clicking on the title bar. "
-#| "Current valid options are 'toggle_shade', which will shade/unshade the "
-#| "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-#| "'minimize' which will minimize the window, and 'none' which will not do "
-#| "anything."
-msgid ""
-"This option determines the effects of middle-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"This option determines the effects of middle-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-
-#: ../src/metacity.schemas.in.in.h:46
-#| msgid ""
-#| "This option determines the effects of double-clicking on the title bar. "
-#| "Current valid options are 'toggle_shade', which will shade/unshade the "
-#| "window, 'toggle_maximize' which will maximize/unmaximize the window, "
-#| "'minimize' which will minimize the window, and 'none' which will not do "
-#| "anything."
-msgid ""
-"This option determines the effects of right-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-msgstr ""
-"This option determines the effects of right-clicking on the title bar. "
-"Current valid options are 'toggle_shade', which will shade/unshade the "
-"window, 'toggle_maximize' which will maximize/unmaximize the window, "
-"'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which will "
-"maximize/unmaximize the window in that direction only, 'minimize' which will "
-"minimize the window, 'shade' which will roll the window up, 'menu' which "
-"will display the window menu, 'lower' which will put the window behind all "
-"the others, and 'none' which will not do anything."
-
-#: ../src/metacity.schemas.in.in.h:47
-msgid ""
-"This option provides additional control over how newly created windows get "
-"focus. It has two possible values; \"smart\" applies the user's normal focus "
-"mode, and \"strict\" results in windows started from a terminal not being "
-"given focus."
-msgstr ""
-"यह विकल्प अतिरिक्त नियंत्रण देता है कि कैसे नया बनाया विंडो फोकस पाता है. इसके दो "
-"संभावित मान हैं; \"smart\" उपयोक्ता के सामान्य फोकस मोड पर लागू होता है और \"strict"
-"\" ऐसे विंडो के रूप में आता है जो टर्मिनल से फोकस नहीं किये गये रूप में आता है."
-
-#: ../src/metacity.schemas.in.in.h:48
-msgid ""
-"Turns on a visual indication when an application or the system issues a "
-"'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
-"environments."
-msgstr ""
-"दृश्य संकेत चालू करना जब कोई अनुप्रयोग या तंत्र घंटी या बीप जारी करते हैं तो, शोरयुक्त "
-"वातावरण- जहाँ सुनने में कठिनाई हो या उंचा सुनने वाले के लिये उपयोगी होता है."
-
-#: ../src/metacity.schemas.in.in.h:49
-msgid "Use standard system font in window titles"
-msgstr "विंडो शीर्षकों में मानक तंत्र फ़ॉन्ट प्रयोग करें"
-
-#: ../src/metacity.schemas.in.in.h:50
-msgid "Visual Bell Type"
-msgstr "दृष्टिगोच़र घंटी प्रकार"
-
-#: ../src/metacity.schemas.in.in.h:51
-msgid "Whether raising should be a side-effect of other user interactions"
-msgstr "अन्य उपयोक्ता अंतःक्रिया के प्रभाव को क्या उठाया जाना चाहिये"
-
-#: ../src/metacity.schemas.in.in.h:52
-msgid "Whether to resize with the right button"
-msgstr "क्या दाहिना बटन फिर आकार दिया जाना है"
-
-#: ../src/metacity.schemas.in.in.h:53
-msgid "Window focus mode"
-msgstr "विंडो फ़ोकस मोड"
-
-#: ../src/metacity.schemas.in.in.h:54
-msgid "Window title font"
-msgstr "विंडो शीर्षक फ़ॉन्ट"
-
-#: ../src/tools/metacity-message.c:150
+#: ../src/tools/mutter-message.c:123
 #, c-format
 msgid "Usage: %s\n"
 msgstr "उपयोग: %s\n"
 
-#: ../src/ui/frames.c:1118
-msgid "Close Window"
-msgstr "विंडो बंद करें"
-
-#: ../src/ui/frames.c:1121
-msgid "Window Menu"
-msgstr "विंडो मेनू"
-
-#: ../src/ui/frames.c:1124
-msgid "Minimize Window"
-msgstr "विंडो न्यूनतम करें"
-
-#: ../src/ui/frames.c:1127
-msgid "Maximize Window"
-msgstr "विंडो अधिकतम करें"
-
-#: ../src/ui/frames.c:1130
-#| msgid "Resize window"
-msgid "Restore Window"
-msgstr "विंडो फिर बहाल करें"
-
-#: ../src/ui/frames.c:1133
-#| msgid "Roll _Up"
-msgid "Roll Up Window"
-msgstr "विंडो रॉल अप करें"
-
-#: ../src/ui/frames.c:1136
-#| msgid "Close Window"
-msgid "Unroll Window"
-msgstr "विंडो खोलें"
-
-#: ../src/ui/frames.c:1139
-msgid "Keep Window On Top"
-msgstr "विंडो को सबसे ऊपर रखें"
-
-#: ../src/ui/frames.c:1142
-msgid "Remove Window From Top"
-msgstr "ऊपर से विंडो हटाएं"
-
-#: ../src/ui/frames.c:1145
-#| msgid "_Always on Visible Workspace"
-msgid "Always On Visible Workspace"
-msgstr "हमेशा दृश्य कार्यस्थान पर"
-
-#: ../src/ui/frames.c:1148
-#| msgid "Toggle window on all workspaces"
-msgid "Put Window On Only One Workspace"
-msgstr "सिर्फ एक कार्यस्थान पर विंडो रखें"
-
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:70
+#: ../src/ui/menu.c:69
 msgid "Mi_nimize"
 msgstr "न्यूनतम (_n)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:72
+#: ../src/ui/menu.c:71
 msgid "Ma_ximize"
 msgstr "अधिकतम (_x)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:74
+#: ../src/ui/menu.c:73
 msgid "Unma_ximize"
 msgstr "बड़े से छोटा करें (_x)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:76
+#: ../src/ui/menu.c:75
 msgid "Roll _Up"
 msgstr "उपर समेटें (_U)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:78
+#: ../src/ui/menu.c:77
 msgid "_Unroll"
 msgstr "वापस खोलें (_U)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:80
+#: ../src/ui/menu.c:79
 msgid "_Move"
 msgstr "खिसकाएँ (_M)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:82
+#: ../src/ui/menu.c:81
 msgid "_Resize"
 msgstr "आकार बदलें (_R)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:84
+#: ../src/ui/menu.c:83
 msgid "Move Titlebar On_screen"
 msgstr "ऑनस्क्रीन शीर्षकबार खिसकायें (_s)"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:87 ../src/ui/menu.c:89
+#: ../src/ui/menu.c:86 ../src/ui/menu.c:88
 msgid "Always on _Top"
 msgstr "हमेशा शीर्ष पर (_T)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:91
+#: ../src/ui/menu.c:90
 msgid "_Always on Visible Workspace"
 msgstr "हमेशा दृश्य कार्यस्थान पर (_A)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:93
+#: ../src/ui/menu.c:92
 msgid "_Only on This Workspace"
 msgstr "सिर्फ इसी कार्यस्थान पर (_O)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:95
+#: ../src/ui/menu.c:94
 msgid "Move to Workspace _Left"
 msgstr "बाएँ कार्यस्थान में ले जाएँ (_i)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:97
+#: ../src/ui/menu.c:96
 msgid "Move to Workspace R_ight"
 msgstr "दाएँ कार्यस्थान में ले जाएँ (_i)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:99
+#: ../src/ui/menu.c:98
 msgid "Move to Workspace _Up"
 msgstr "ऊपर कार्यस्थान में ले जाएँ (_U)"
 
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:101
+#: ../src/ui/menu.c:100
 msgid "Move to Workspace _Down"
 msgstr "नीचे कार्यस्थान में ले जाएँ (_D)"
 
 #  separator
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
-#: ../src/ui/menu.c:105
+#: ../src/ui/menu.c:104
 msgid "_Close"
 msgstr "बंद करें (_C)"
 
-#: ../src/ui/menu.c:203
+#: ../src/ui/menu.c:204
 #, c-format
-#| msgid "Workspace %d"
 msgid "Workspace %d%n"
 msgstr "कार्यस्थान %d%n"
 
-#: ../src/ui/menu.c:213
+#: ../src/ui/menu.c:214
 #, c-format
 msgid "Workspace 1_0"
 msgstr "कार्यस्थान 1_0"
 
-#: ../src/ui/menu.c:215
+#: ../src/ui/menu.c:216
 #, c-format
 msgid "Workspace %s%d"
 msgstr "कार्यस्थान %s%d"
 
-#: ../src/ui/menu.c:395
+#: ../src/ui/menu.c:397
 msgid "Move to Another _Workspace"
 msgstr "अन्य कार्यस्थान में ले जाएँ (_W)"
 
@@ -1519,7 +653,7 @@ msgstr "अन्य कार्यस्थान में ले जाए�
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:104
+#: ../src/ui/metaaccellabel.c:77
 msgid "Shift"
 msgstr "शिफ़्ट"
 
@@ -1532,7 +666,7 @@ msgstr "शिफ़्ट"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:110
+#: ../src/ui/metaaccellabel.c:83
 msgid "Ctrl"
 msgstr "कंट्रोल"
 
@@ -1545,7 +679,7 @@ msgstr "कंट्रोल"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:116
+#: ../src/ui/metaaccellabel.c:89
 msgid "Alt"
 msgstr "आल्ट"
 
@@ -1554,7 +688,7 @@ msgstr "आल्ट"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:122
+#: ../src/ui/metaaccellabel.c:95
 msgid "Meta"
 msgstr "मेटा"
 
@@ -1567,7 +701,7 @@ msgstr "मेटा"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:128
+#: ../src/ui/metaaccellabel.c:101
 msgid "Super"
 msgstr "सुपर"
 
@@ -1580,7 +714,7 @@ msgstr "सुपर"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:134
+#: ../src/ui/metaaccellabel.c:107
 msgid "Hyper"
 msgstr "हाइपर"
 
@@ -1593,7 +727,7 @@ msgstr "हाइपर"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:140
+#: ../src/ui/metaaccellabel.c:113
 msgid "Mod2"
 msgstr "परि.2"
 
@@ -1606,7 +740,7 @@ msgstr "परि.2"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:146
+#: ../src/ui/metaaccellabel.c:119
 msgid "Mod3"
 msgstr "परि.3"
 
@@ -1619,7 +753,7 @@ msgstr "परि.3"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:152
+#: ../src/ui/metaaccellabel.c:125
 msgid "Mod4"
 msgstr "परि.4"
 
@@ -1632,57 +766,9 @@ msgstr "परि.4"
 #. * translated on keyboards used for your language, don't translate
 #. * this.
 #.
-#: ../src/ui/metaaccellabel.c:158
+#: ../src/ui/metaaccellabel.c:131
 msgid "Mod5"
 msgstr "परि.5"
-
-#: ../src/ui/metacity-dialog.c:90
-#, c-format
-#| msgid "The window \"%s\" is not responding."
-msgid "\"%s\" is not responding."
-msgstr "\"%s\" प्रतिक्रिया नहीं दे रहा है."
-
-#: ../src/ui/metacity-dialog.c:97
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr "आप थोड़ी देर के लिए इसकी प्रतीक्षा के लिए चयन कर सकते हैं पूरी तरह से अनुप्रयोग के जारी रखने व छोड़ने के लिए दबाव दे सकते हैं."
-
-#: ../src/ui/metacity-dialog.c:107
-msgid "_Wait"
-msgstr "प्रतीक्षा करें (_W)"
-
-#: ../src/ui/metacity-dialog.c:109
-msgid "_Force Quit"
-msgstr "जबर्दस्ती बाहर (_F)"
-
-# #-#-#-#-#  libgnomeui.HEAD.hi.po (libgnomeui-2.0.hi)  #-#-#-#-#
-# libgnomeui/gnome-druid-page-standard.c:121
-# libgnomeui/gnome-font-picker.c:155
-#: ../src/ui/metacity-dialog.c:206
-msgid "Title"
-msgstr "शीर्षक"
-
-#: ../src/ui/metacity-dialog.c:218
-msgid "Class"
-msgstr "वर्ग"
-
-#: ../src/ui/metacity-dialog.c:244
-msgid ""
-"These windows do not support \"save current setup\" and will have to be "
-"restarted manually next time you log in."
-msgstr ""
-"ये विंडो \"वर्तमान सेटअप सहेजें\" समर्थन नहीं करते अतः इन्हें अगली बार जब आप लॉगइन करेंगे तब "
-"पुनः प्रारंभ करना होगा."
-
-#: ../src/ui/metacity-dialog.c:310
-#, c-format
-msgid ""
-"There was an error running \"%s\":\n"
-"%s."
-msgstr ""
-"\"%s\" को चलाने में त्रुटि थी:\n"
-"%s."
 
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
@@ -1692,248 +778,306 @@ msgstr ""
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:254
+#: ../src/ui/theme.c:234
 msgid "top"
 msgstr "उपर"
 
-#: ../src/ui/theme.c:256
+#: ../src/ui/theme.c:236
 msgid "bottom"
 msgstr "नीचे"
 
-#: ../src/ui/theme.c:258
+#: ../src/ui/theme.c:238
 msgid "left"
 msgstr "बाएँ"
 
-#: ../src/ui/theme.c:260
+#: ../src/ui/theme.c:240
 msgid "right"
 msgstr "दाएँ"
 
-#: ../src/ui/theme.c:287
+#: ../src/ui/theme.c:268
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "फ्रेम ज्यामिती \"%s\" आयाम को उल्लेखित नहीं करता"
 
-#: ../src/ui/theme.c:306
+#: ../src/ui/theme.c:287
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "फ्रेम ज्यामिती आयाम \"%s\" को किनारा \"%s\" हेतु उल्लेखित नहीं करता"
 
-#: ../src/ui/theme.c:343
+#: ../src/ui/theme.c:324
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "बटन आस्पेक्ट रेशो %g यथोचित नहीं है"
 
-#: ../src/ui/theme.c:355
+#: ../src/ui/theme.c:336
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "फ्रेम ज्यामिती बटनों के आकार को उल्लेखित नहीं करता"
 
-#: ../src/ui/theme.c:1020
+#: ../src/ui/theme.c:1049
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "अनुपात में कम से कम दो रंग होने चाहिएँ"
 
-#: ../src/ui/theme.c:1146
+#: ../src/ui/theme.c:1201
+#, c-format
+#| msgid ""
+#| "GTK color specification must have a close bracket after the state, e.g. "
+#| "gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgid ""
+"GTK custom color specification must have color name and fallback in "
+"parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
+msgstr ""
+"कोष्ठक में जीटीके कस्टम रंग विनिर्देशन के लिए रंग का नाम और फ़ॉलबैक होना "
+"चाहिए, जैसे  gtk:custom(foo,bar); \"%s\" विश्लेषित नहीं कर सका."
+
+#: ../src/ui/theme.c:1217
+#, c-format
+msgid ""
+"Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
+"_ are valid"
+msgstr ""
+"जीटीके: कस्टम के color_name पैरामीटर में अमान्य वर्ण '%c', केवल A-za-Z0-9-_ "
+"मान्य हैं"
+
+#: ../src/ui/theme.c:1231
+#, c-format
+#| msgid ""
+#| "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the "
+#| "format"
+msgid ""
+"Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
+"fit the format"
+msgstr ""
+"Gtk:custom फॉर्मेट है \"\"gtk:custom(color_name,fallback)\", \"%s\" जो "
+"फॉर्मेट के अनुरूप नहीं "
+"होता"
+
+#: ../src/ui/theme.c:1276
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"जीटीके रंग लक्षण कोष्ठक में स्थिति (स्टेट) होने चाहिएँ जैसे-  gtk:fg[NORMAL] यहाँ NORMAL "
+"जीटीके रंग लक्षण कोष्ठक में स्थिति (स्टेट) होने चाहिएँ जैसे-  gtk:fg[NORMAL] "
+"यहाँ NORMAL "
 "स्थिति है;  \"%s\" की व्याख्या नहीं कर सका"
 
-#: ../src/ui/theme.c:1160
+#: ../src/ui/theme.c:1290
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"जीटीके रंग लक्षण स्थिति के बाद बंद कोष्ठक में होने चाहिएँ जैसे-  gtk:fg[NORMAL] यहाँ "
+"जीटीके रंग लक्षण स्थिति के बाद बंद कोष्ठक में होने चाहिएँ जैसे-  "
+"gtk:fg[NORMAL] यहाँ "
 "NORMAL स्थिति है;  \"%s\" की व्याख्या नहीं कर सका"
 
-#: ../src/ui/theme.c:1171
+#: ../src/ui/theme.c:1301
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "स्थिति \"%s\" रंग लक्षण में समझ नहीं सका"
 
-#: ../src/ui/theme.c:1184
+#: ../src/ui/theme.c:1314
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "रंग अवयव \"%s\" रंग लक्षण में समझ नहीं सका"
 
-#: ../src/ui/theme.c:1214
+#: ../src/ui/theme.c:1343
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
-"ब्लेंड फ़ॉर्मेट है \"blend/bg_color/fg_color/alpha\", \"%s\" जो फ़ॉर्मेट के अनुरूप नहीं "
+"ब्लेंड फ़ॉर्मेट है \"blend/bg_color/fg_color/alpha\", \"%s\" जो फ़ॉर्मेट के "
+"अनुरूप नहीं "
 "होता"
 
-#: ../src/ui/theme.c:1225
+#: ../src/ui/theme.c:1354
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "अल्फा मूल्य \"%s\" की ब्लेंडेड रंग में व्याख्या नहीं कर सका"
 
-#: ../src/ui/theme.c:1235
+#: ../src/ui/theme.c:1364
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "अल्फा मूल्य \"%s\" ब्लेंडेड रंग में 0.0 और 1.0 के बीच नहीं है"
 
-#: ../src/ui/theme.c:1282
+#: ../src/ui/theme.c:1411
 #, c-format
-msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr "शेड फॉर्मेट है \"shade/base_color/factor\", \"%s\" जो फॉर्मेट के अनुरूप नहीं होता"
+msgid ""
+"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr ""
+"शेड फॉर्मेट है \"shade/base_color/factor\", \"%s\" जो फॉर्मेट के अनुरूप नहीं "
+"होता"
 
-#: ../src/ui/theme.c:1293
+#: ../src/ui/theme.c:1422
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "शेड फैक्टर \"%s\" की आभायुक्त रंग में व्याख्या नहीं कर सका"
 
-#: ../src/ui/theme.c:1303
+#: ../src/ui/theme.c:1432
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "शेड फैक्टर \"%s\" आभायुक्त रंग में ऋणात्मक है"
 
-#: ../src/ui/theme.c:1332
+#: ../src/ui/theme.c:1461
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "\"%s\" रंग की व्याख्या नहीं कर सका"
 
-#: ../src/ui/theme.c:1582
+#: ../src/ui/theme.c:1778
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "कोआर्डिनेट एक्सप्रेशन मे अक्षर '%s' है जो स्वीकार्य नहीं है"
 
-#: ../src/ui/theme.c:1609
+#: ../src/ui/theme.c:1805
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr "कोआर्डिनेट एक्सप्रेशन मे फ्लोटिंग पाइंट नम्बर '%s' है जिसकी व्याख्या नहीं की जा सकी"
+msgstr ""
+"कोआर्डिनेट एक्सप्रेशन मे फ्लोटिंग पाइंट नम्बर '%s' है जिसकी व्याख्या नहीं की "
+"जा सकी"
 
-#: ../src/ui/theme.c:1623
+#: ../src/ui/theme.c:1819
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "कोआर्डिनेट एक्सप्रेशन मे पूर्णांक '%s' है जिसकी व्याख्या नहीं की जा सकी"
+msgstr ""
+"कोआर्डिनेट एक्सप्रेशन मे पूर्णांक '%s' है जिसकी व्याख्या नहीं की जा सकी"
 
-#: ../src/ui/theme.c:1745
+#: ../src/ui/theme.c:1940
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
-msgstr "कोआर्डिनेट एक्सप्रेशन मे इस पाठ: \"%s\" के आरंभ में ही अज्ञात आपरेटर है "
+msgstr ""
+"कोआर्डिनेट एक्सप्रेशन मे इस पाठ: \"%s\" के आरंभ में ही अज्ञात आपरेटर है "
 
-#: ../src/ui/theme.c:1802
+#: ../src/ui/theme.c:1997
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "कोआर्डिनेट एक्सप्रेशन या खाली है या समझा नहीं जा सका"
 
-#: ../src/ui/theme.c:1913 ../src/ui/theme.c:1923 ../src/ui/theme.c:1957
+#: ../src/ui/theme.c:2110 ../src/ui/theme.c:2120 ../src/ui/theme.c:2154
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "कोआर्डिनेट एक्सप्रेशन परिणाम शून्य से भाजक के रूप में मिला"
 
-#: ../src/ui/theme.c:1965
+#: ../src/ui/theme.c:2162
 #, c-format
-msgid "Coordinate expression tries to use mod operator on a floating-point number"
-msgstr "कोआर्डिनेट एक्सप्रेशन, फ्लोटिंग पाइंट नम्बर पर माड आपरेटर के उपयोग की कोशिश में"
+msgid ""
+"Coordinate expression tries to use mod operator on a floating-point number"
+msgstr ""
+"कोआर्डिनेट एक्सप्रेशन, फ्लोटिंग पाइंट नम्बर पर माड आपरेटर के उपयोग की कोशिश "
+"में"
 
-#: ../src/ui/theme.c:2021
+#: ../src/ui/theme.c:2218
 #, c-format
-msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid ""
+"Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "कोआर्डिनेट एक्सप्रेशन में एक आपरेटर \"%s\" है जबकि आपरेंड वांछित है"
 
-#: ../src/ui/theme.c:2030
+#: ../src/ui/theme.c:2227
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "कोआर्डिनेट एक्सप्रेशन में एक आपरेंड है जबकि आपरेटर वांछित है"
 
-#: ../src/ui/theme.c:2038
+#: ../src/ui/theme.c:2235
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "कोआर्डिनेट एक्सप्रेशन एक आपरेटर से अंत हो रहा है एक आपरेंड के बदले"
 
-#: ../src/ui/theme.c:2048
+#: ../src/ui/theme.c:2245
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
-msgstr "कोआर्डिनेट एक्सप्रेशन में आपरेटर \"%c\" के बाद आपरेटर \"%c\" है बीच में कोई आपरेण्ड नहीं है"
+msgstr ""
+"कोआर्डिनेट एक्सप्रेशन में आपरेटर \"%c\" के बाद आपरेटर \"%c\" है बीच में कोई "
+"आपरेण्ड नहीं है"
 
-#: ../src/ui/theme.c:2195 ../src/ui/theme.c:2236
+#: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "कोआर्डिनेट एक्सप्रेशन में अज्ञात चर या अचर \"%s\" है"
 
-#: ../src/ui/theme.c:2290
+#: ../src/ui/theme.c:2495
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "कोआर्डिनेट एक्सप्रेशन विश्लेषक इसके बफर को ओवरफ्लो कर गया है."
 
-#: ../src/ui/theme.c:2319
+#: ../src/ui/theme.c:2524
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
-msgstr "कोआर्डिनेट एक्सप्रेशन में बन्द लघुकोष्ठक है जिसमें कोई खुला कोष्ठक नहीं है"
+msgstr ""
+"कोआर्डिनेट एक्सप्रेशन में बन्द लघुकोष्ठक है जिसमें कोई खुला कोष्ठक नहीं है"
 
-#: ../src/ui/theme.c:2383
+#: ../src/ui/theme.c:2588
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
-msgstr "कोआर्डिनेट एक्सप्रेशन में खुला लघुकोष्ठक है जिसमें कोई बंद कोष्ठक नहीं है"
+msgstr ""
+"कोआर्डिनेट एक्सप्रेशन में खुला लघुकोष्ठक है जिसमें कोई बंद कोष्ठक नहीं है"
 
-#: ../src/ui/theme.c:2394
+#: ../src/ui/theme.c:2599
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr "प्रतीत होता है कि कोआर्डिनेट एक्सप्रेशन में कोई आपरेटर या आपरेंड नहीं है"
+msgstr ""
+"प्रतीत होता है कि कोआर्डिनेट एक्सप्रेशन में कोई आपरेटर या आपरेंड नहीं है"
 
-#: ../src/ui/theme.c:2596 ../src/ui/theme.c:2616 ../src/ui/theme.c:2636
+#: ../src/ui/theme.c:2812 ../src/ui/theme.c:2832 ../src/ui/theme.c:2852
 #, c-format
-#| msgid "Theme contained an expression \"%s\" that resulted in an error: %s\n"
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "प्रसंग में एक अभिव्यक्ति है जिसके प्रतिफल में त्रुटि हुई: %s\n"
 
-#: ../src/ui/theme.c:4187
+#: ../src/ui/theme.c:4498
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> इस फ्रेम शैली हेतु "
+"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> इस फ्रेम शैली "
+"हेतु "
 "निर्दिष्ट किया जाना अनिवार्य है"
 
-#: ../src/ui/theme.c:4695 ../src/ui/theme.c:4720
+#: ../src/ui/theme.c:5009 ../src/ui/theme.c:5034
 #, c-format
-msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr "नहीं है <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgid ""
+"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr ""
+"नहीं है <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/ui/theme.c:4764
+#: ../src/ui/theme.c:5082
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "प्रसंग \"%s\" लोड करने में असफल: %s\n"
 
-#: ../src/ui/theme.c:4894 ../src/ui/theme.c:4901 ../src/ui/theme.c:4908
-#: ../src/ui/theme.c:4915 ../src/ui/theme.c:4922
+#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "कोई <%s> सेट प्रसंग \"%s\" हेतु नहीं है"
 
-#: ../src/ui/theme.c:4930
+#: ../src/ui/theme.c:5254
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"विंडो प्रकार \"%s\"  में प्रसंग \"%s\" में कोई फ्रेम स्टाइल नियत नहीं है,  जोड़ें <window "
+"विंडो प्रकार \"%s\"  में प्रसंग \"%s\" में कोई फ्रेम स्टाइल नियत नहीं है,  "
+"जोड़ें <window "
 "type=\"%s\" style_set=\"whatever\"/> तत्व "
 
-#: ../src/ui/theme.c:5383 ../src/ui/theme.c:5445 ../src/ui/theme.c:5508
+#: ../src/ui/theme.c:5650 ../src/ui/theme.c:5712 ../src/ui/theme.c:5775
 #, c-format
-msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgid ""
+"User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
-"उपयोगकर्ता द्वारा पारिभाषित स्थिरांक बड़े अक्षर से शुरू होने चाहिएँ, जो \"%s\" नहीं हो "
+"उपयोगकर्ता द्वारा पारिभाषित स्थिरांक बड़े अक्षर से शुरू होने चाहिएँ, जो \"%"
+"s\" नहीं हो "
 "रहा है"
 
-#: ../src/ui/theme.c:5391 ../src/ui/theme.c:5453 ../src/ui/theme.c:5516
+#: ../src/ui/theme.c:5658 ../src/ui/theme.c:5720 ../src/ui/theme.c:5783
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "स्थिरांक \"%s\" पहले ही पारिभाषित है"
@@ -1941,562 +1085,1492 @@ msgstr "स्थिरांक \"%s\" पहले ही पारिभा�
 #. Translators: This means that an attribute which should have been found
 #. * on an XML element was not in fact found.
 #.
-#: ../src/ui/theme-parser.c:202
+#: ../src/ui/theme-parser.c:236
 #, c-format
-#| msgid "No \"x\" attribute on element <%s>"
 msgid "No \"%s\" attribute on element <%s>"
 msgstr "कोई \"%s\" गुण तत्व <%s> पर नहीं "
 
-#: ../src/ui/theme-parser.c:231 ../src/ui/theme-parser.c:249
+#: ../src/ui/theme-parser.c:265 ../src/ui/theme-parser.c:283
 #, c-format
 msgid "Line %d character %d: %s"
 msgstr "पंक्ति %d अक्षर %d: %s"
 
-#: ../src/ui/theme-parser.c:413
+#: ../src/ui/theme-parser.c:479
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
 msgstr "गुण \"%s\" दो बार इसी <%s> तत्व पर दोहराया गया"
 
-#: ../src/ui/theme-parser.c:437 ../src/ui/theme-parser.c:480
+#: ../src/ui/theme-parser.c:503 ../src/ui/theme-parser.c:552
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
 msgstr "गुण \"%s\", <%s> तत्व इस संदर्भ में अवैध है "
 
-#: ../src/ui/theme-parser.c:541
+#: ../src/ui/theme-parser.c:594
+#, c-format
+msgid "Could not parse \"%s\" as an integer"
+msgstr "\"%s\" को पूर्णांक की तरह व्याख्या नहीं कर सका"
+
+#: ../src/ui/theme-parser.c:603 ../src/ui/theme-parser.c:658
+#, c-format
+msgid "Did not understand trailing characters \"%s\" in string \"%s\""
+msgstr "पुछल्ले अक्षरों \"%s\" को स्ट्रिंग \"%s\" में समझ नहीं सका"
+
+#: ../src/ui/theme-parser.c:613
 #, c-format
 msgid "Integer %ld must be positive"
 msgstr "पूर्णांक %ld धनात्मक होना ही चाहिए"
 
-#: ../src/ui/theme-parser.c:549
+#: ../src/ui/theme-parser.c:621
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
 msgstr "पूर्णांक %ld बहुत बड़ा है, वर्तमान अधिकतम है %d"
 
-#: ../src/ui/theme-parser.c:577 ../src/ui/theme-parser.c:693
+#: ../src/ui/theme-parser.c:649 ../src/ui/theme-parser.c:765
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr "\"%s\" की फ्लोटिंग पाइंट संख्या की तरह व्याख्या नहीं कर सका"
 
-#: ../src/ui/theme-parser.c:608 ../src/ui/theme-parser.c:636
+#: ../src/ui/theme-parser.c:680 ../src/ui/theme-parser.c:708
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
 msgstr "बूलियन मूल्य होने चाहिएँ - \"सही\" या \"गलत\" न कि \"%s\""
 
-#: ../src/ui/theme-parser.c:663
+#: ../src/ui/theme-parser.c:735
 #, c-format
 msgid "Angle must be between 0.0 and 360.0, was %g\n"
 msgstr "कोण 0.0 और  360.0, के बीच होना चाहिए, जो था %g\n"
 
-#: ../src/ui/theme-parser.c:726
+#: ../src/ui/theme-parser.c:798
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr "अल्फा 0.0 (अदृश्य) और 1.0 (पूर्ण अपारदर्शी), के बीच होना चाहिए, जो था %g\n"
+msgstr ""
+"अल्फा 0.0 (अदृश्य) और 1.0 (पूर्ण अपारदर्शी), के बीच होना चाहिए, जो था %g\n"
 
-#: ../src/ui/theme-parser.c:791
+#: ../src/ui/theme-parser.c:863
 #, c-format
 msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"अवैध शीर्षक स्केल \"%s\" (इसमें से एक होना चाहिएः xx-small,x-small,small,medium,"
+"अवैध शीर्षक स्केल \"%s\" (इसमें से एक होना चाहिएः "
+"xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 
-#: ../src/ui/theme-parser.c:936 ../src/ui/theme-parser.c:999
-#: ../src/ui/theme-parser.c:1033 ../src/ui/theme-parser.c:1136
+#: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
+#: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
 msgstr "<%s> नाम \"%s\" दूसरी बार उपयोग में"
 
-#: ../src/ui/theme-parser.c:948 ../src/ui/theme-parser.c:1045
-#: ../src/ui/theme-parser.c:1148
+#: ../src/ui/theme-parser.c:1031 ../src/ui/theme-parser.c:1128
+#: ../src/ui/theme-parser.c:1231
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
 msgstr "<%s> मूल \"%s\" पारिभाषित नहीं है."
 
-#: ../src/ui/theme-parser.c:1058
+#: ../src/ui/theme-parser.c:1141
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
 msgstr "<%s>ज्यामिती \"%s\" पारिभाषित नहीं है."
 
-#: ../src/ui/theme-parser.c:1071
+#: ../src/ui/theme-parser.c:1154
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr "<%s> को या तो ज्यामिती या मूल जिसमें ज्यामिती हो, को निर्दिष्ट करना होगा"
+msgstr ""
+"<%s> को या तो ज्यामिती या मूल जिसमें ज्यामिती हो, को निर्दिष्ट करना होगा"
 
-#: ../src/ui/theme-parser.c:1113
+#: ../src/ui/theme-parser.c:1196
 msgid "You must specify a background for an alpha value to be meaningful"
-msgstr "आप अल्फा मान के लिए अर्थपूर्ण होने के लिए जरूर पृष्ठभूमि निर्दिष्ट करें"
+msgstr ""
+"आप अल्फा मान के लिए अर्थपूर्ण होने के लिए जरूर पृष्ठभूमि निर्दिष्ट करें"
 
-#: ../src/ui/theme-parser.c:1180
+#: ../src/ui/theme-parser.c:1264
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
 msgstr "अज्ञात प्रकार \"%s\" तत्व <%s> पर नहीं "
 
-#: ../src/ui/theme-parser.c:1191
+#: ../src/ui/theme-parser.c:1275
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
 msgstr "अज्ञात स्टाइल-सेट \"%s\" तत्व <%s> पर नहीं "
 
-#: ../src/ui/theme-parser.c:1199
+#: ../src/ui/theme-parser.c:1283
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
 msgstr "विंडो प्रकार \"%s\" को पहले ही एक स्टाइल सेट आबंटित है"
 
-#: ../src/ui/theme-parser.c:1229 ../src/ui/theme-parser.c:1293
-#: ../src/ui/theme-parser.c:1519 ../src/ui/theme-parser.c:2732
-#: ../src/ui/theme-parser.c:2778 ../src/ui/theme-parser.c:2926
-#: ../src/ui/theme-parser.c:3118 ../src/ui/theme-parser.c:3156
-#: ../src/ui/theme-parser.c:3194 ../src/ui/theme-parser.c:3232
+#: ../src/ui/theme-parser.c:1313 ../src/ui/theme-parser.c:1377
+#: ../src/ui/theme-parser.c:1603 ../src/ui/theme-parser.c:2838
+#: ../src/ui/theme-parser.c:2884 ../src/ui/theme-parser.c:3034
+#: ../src/ui/theme-parser.c:3273 ../src/ui/theme-parser.c:3311
+#: ../src/ui/theme-parser.c:3349 ../src/ui/theme-parser.c:3387
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
 msgstr "तत्व <%s>,  <%s>से नीचे स्वीकार्य नहीं है"
 
-#: ../src/ui/theme-parser.c:1343 ../src/ui/theme-parser.c:1357
-#: ../src/ui/theme-parser.c:1402
-#| msgid ""
-#| "Cannot specify both button_width/button_height and aspect ratio for "
-#| "buttons"
+#: ../src/ui/theme-parser.c:1427 ../src/ui/theme-parser.c:1441
+#: ../src/ui/theme-parser.c:1486
 msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
-msgstr "बटनों हेतु \"button_width\"/\"button_height\" और \"aspect_ratio\" निर्दिष्ट नहीं कर सका"
+msgstr ""
+"बटनों हेतु \"button_width\"/\"button_height\" और \"aspect_ratio\" निर्दिष्ट "
+"नहीं "
+"कर सका"
 
-#: ../src/ui/theme-parser.c:1366
+#: ../src/ui/theme-parser.c:1450
 #, c-format
 msgid "Distance \"%s\" is unknown"
 msgstr "दूरी \"%s\" अज्ञात है"
 
-#: ../src/ui/theme-parser.c:1411
+#: ../src/ui/theme-parser.c:1495
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
 msgstr "आकृति अनुपात \"%s\" अज्ञात है"
 
-#: ../src/ui/theme-parser.c:1473
+#: ../src/ui/theme-parser.c:1557
 #, c-format
 msgid "Border \"%s\" is unknown"
 msgstr "किनारा \"%s\" अज्ञात है"
 
-#: ../src/ui/theme-parser.c:1776
+#: ../src/ui/theme-parser.c:1868
 #, c-format
-#| msgid "No \"start_angle\" attribute on element <%s>"
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr "कोई \"start_angle\" या \"from\" गुण तत्व <%s> पर नहीं "
 
-#: ../src/ui/theme-parser.c:1783
+#: ../src/ui/theme-parser.c:1875
 #, c-format
-#| msgid "No \"extent_angle\" attribute on element <%s>"
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr "कोई \"extent_angle\" या \"to\" गुण तत्व <%s> पर नहीं "
 
-#: ../src/ui/theme-parser.c:2023
+#: ../src/ui/theme-parser.c:2115
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
 msgstr "ग्रेडिएंट प्रकार हेतु मान \"%s\"  समझ नहीं पाया"
 
-#: ../src/ui/theme-parser.c:2101 ../src/ui/theme-parser.c:2476
+#: ../src/ui/theme-parser.c:2193 ../src/ui/theme-parser.c:2568
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
 msgstr "तत्व <%s> हेतु भराव प्रकार \"%s\" समझ नहीं पाया"
 
-#: ../src/ui/theme-parser.c:2268 ../src/ui/theme-parser.c:2351
-#: ../src/ui/theme-parser.c:2414
+#: ../src/ui/theme-parser.c:2360 ../src/ui/theme-parser.c:2443
+#: ../src/ui/theme-parser.c:2506
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
 msgstr "तत्व <%s> हेतु स्थिति \"%s\" समझ नहीं पाया"
 
-#: ../src/ui/theme-parser.c:2278 ../src/ui/theme-parser.c:2361
+#: ../src/ui/theme-parser.c:2370 ../src/ui/theme-parser.c:2453
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
 msgstr "तत्व <%s> हेतु छाया \"%s\" समझ नहीं पाया"
 
-#: ../src/ui/theme-parser.c:2288
+#: ../src/ui/theme-parser.c:2380
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
 msgstr "तत्व <%s> हेतु एरो \"%s\" समझ नहीं पाया"
 
-#: ../src/ui/theme-parser.c:2588 ../src/ui/theme-parser.c:2684
+#: ../src/ui/theme-parser.c:2694 ../src/ui/theme-parser.c:2790
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "कोई <draw_ops> \"%s\" नाम से पारिभाषित नहीं है"
 
-#: ../src/ui/theme-parser.c:2600 ../src/ui/theme-parser.c:2696
+#: ../src/ui/theme-parser.c:2706 ../src/ui/theme-parser.c:2802
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr "draw_ops यहाँ: \"%s\" जोड़ने से सर्कुलर रेफरेंस बन जाएगा"
 
-#: ../src/ui/theme-parser.c:2811
+#: ../src/ui/theme-parser.c:2917
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
 msgstr "अज्ञात स्थिति \"%s\" फ्रेम पीस हेतु"
 
-#: ../src/ui/theme-parser.c:2819
+#: ../src/ui/theme-parser.c:2925
 #, c-format
 msgid "Frame style already has a piece at position %s"
 msgstr "स्थिति %s पर फ्रेम शैली के पास पहले ही एक पीस है"
 
-#: ../src/ui/theme-parser.c:2836 ../src/ui/theme-parser.c:2911
+#: ../src/ui/theme-parser.c:2942 ../src/ui/theme-parser.c:3019
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
 msgstr "कोई भी <draw_ops> नाम \"%s\"  के साथ पारिभाषित नहीं है"
 
-#: ../src/ui/theme-parser.c:2865
+#: ../src/ui/theme-parser.c:2972
 #, c-format
 msgid "Unknown function \"%s\" for button"
 msgstr "अज्ञात फंक्शन बटन \"%s\" हेतु"
 
-#: ../src/ui/theme-parser.c:2874
+#: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr "बटन फंक्शन \"%s\" इस संस्करण (%d, need %d) में मौजूद नहीं है"
 
-#: ../src/ui/theme-parser.c:2886
+#: ../src/ui/theme-parser.c:2994
 #, c-format
 msgid "Unknown state \"%s\" for button"
 msgstr "अज्ञात स्थिति बटन \"%s\" हेतु"
 
-#: ../src/ui/theme-parser.c:2894
+#: ../src/ui/theme-parser.c:3002
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr "फंक्शन %s स्थिति %s हेतु फ्रेम शैली में पहले ही एक बटन है"
 
-#: ../src/ui/theme-parser.c:2965
+#: ../src/ui/theme-parser.c:3073
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
 msgstr "\"%s\" फ़ोकस गुण हेतु वैध मूल्य नहीं है"
 
-#: ../src/ui/theme-parser.c:2974
+#: ../src/ui/theme-parser.c:3082
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
 msgstr "\"%s\" स्थिति गुण हेतु वैध मूल्य नहीं है"
 
-#: ../src/ui/theme-parser.c:2984
+#: ../src/ui/theme-parser.c:3092
 #, c-format
 msgid "A style called \"%s\" has not been defined"
 msgstr "शैली \"%s\" पारिभाषित नहीं है"
 
-#: ../src/ui/theme-parser.c:3005 ../src/ui/theme-parser.c:3028
+#: ../src/ui/theme-parser.c:3113 ../src/ui/theme-parser.c:3136
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
 msgstr "\"%s\" नया आकार गुण हेतु वैध मूल्य नहीं है"
 
-#: ../src/ui/theme-parser.c:3039
+#: ../src/ui/theme-parser.c:3147
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr "\"नया-आकार\" गुण <%s> तत्व पर अधिकतम/आभायुक्त स्थिति हेतु नहीं है "
 
-#: ../src/ui/theme-parser.c:3053
+#: ../src/ui/theme-parser.c:3161
 #, c-format
-#| msgid ""
-#| "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
-#| "states"
-msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
+msgid ""
+"Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr "\"resize\" गुण को अधिकतम स्थिति के लिए <%s> तत्व पर नहीं रखना चाहिए"
 
-#: ../src/ui/theme-parser.c:3067 ../src/ui/theme-parser.c:3089
+#: ../src/ui/theme-parser.c:3175 ../src/ui/theme-parser.c:3222
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr "शैली पहले ही स्थिति %s नया-आकार %s  फ़ोकस %s हेतु निर्दिष्ट है"
 
-#: ../src/ui/theme-parser.c:3078 ../src/ui/theme-parser.c:3100
+#: ../src/ui/theme-parser.c:3186 ../src/ui/theme-parser.c:3197
+#: ../src/ui/theme-parser.c:3208 ../src/ui/theme-parser.c:3233
+#: ../src/ui/theme-parser.c:3244 ../src/ui/theme-parser.c:3255
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
 msgstr "शैली पहले ही स्थिति %s फ़ोकस %s हेतु निर्दिष्ट है"
 
-#: ../src/ui/theme-parser.c:3139
+#: ../src/ui/theme-parser.c:3294
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"दो draw_ops नहीं हो सकते एक <पीस> तत्व हेतु (प्रसंग ने बटन किया एक draw_ops एट्रिब्यूट "
+"दो draw_ops नहीं हो सकते एक <पीस> तत्व हेतु (प्रसंग ने बटन किया एक draw_ops "
+"एट्रिब्यूट "
 "तथा एक और <draw_ops> तत्व, या बटन किया दो तत्व )"
 
-#: ../src/ui/theme-parser.c:3177
+#: ../src/ui/theme-parser.c:3332
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"दो draw_ops नहीं हो सकते एक <बटन> तत्व हेतु (प्रसंग ने निर्दिष्ट किया एक draw_ops "
+"दो draw_ops नहीं हो सकते एक <बटन> तत्व हेतु (प्रसंग ने निर्दिष्ट किया एक "
+"draw_ops "
 "एट्रिब्यूट तथा एक और <draw_ops> तत्व, या निर्दिष्ट किया दो तत्व)"
 
-#: ../src/ui/theme-parser.c:3215
+#: ../src/ui/theme-parser.c:3370
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"दो draw_ops नहीं हो सकते एक <मेनू-चिह्न> तत्व हेतु (प्रसंग ने निर्दिष्ट किया एक draw_ops "
+"दो draw_ops नहीं हो सकते एक <मेनू-चिह्न> तत्व हेतु (प्रसंग ने निर्दिष्ट किया "
+"एक draw_ops "
 "एट्रिब्यूट तथा एक और <draw_ops> तत्व, या निर्दिष्ट किया दो तत्व)"
 
-#: ../src/ui/theme-parser.c:3263
+#: ../src/ui/theme-parser.c:3434
+#, c-format
+msgid "Bad version specification '%s'"
+msgstr "गलत संस्करण विनिर्देशन '%s'पोर्ट"
+
+#: ../src/ui/theme-parser.c:3507
+msgid ""
+"\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
+"theme-2.xml"
+msgstr ""
+"\"संस्करण\" विशेषता मेटासिटी विषय 1.xml या मेटासिटी विषय 2.xml में उपयोग नहीं "
+"किया जा सकता है."
+
+#: ../src/ui/theme-parser.c:3530
+#, c-format
+msgid "Theme requires version %s but latest supported theme version is %d.%d"
+msgstr ""
+"विषय को संस्करण %s की आवश्यकता है लेकिन नवीनतम समर्थित विषय संस्करण%d.%d है."
+
+#: ../src/ui/theme-parser.c:3562
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "प्रसंग का सबसे बाहरी तत्व <मेटासिटी-प्रसंग> होना चाहिए न कि <%s>"
 
-#: ../src/ui/theme-parser.c:3283
+#: ../src/ui/theme-parser.c:3582
 #, c-format
-msgid "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr "तत्व <%s>, एक name/author/date/description  तत्व के भीतर स्वीकार्य नहीं है"
+msgid ""
+"Element <%s> is not allowed inside a name/author/date/description element"
+msgstr ""
+"तत्व <%s>, एक name/author/date/description  तत्व के भीतर स्वीकार्य नहीं है"
 
-#: ../src/ui/theme-parser.c:3288
+#: ../src/ui/theme-parser.c:3587
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "तत्व <%s> <स्थिरांक> तत्व के भीतर स्वीकार्य नहीं है"
 
-#: ../src/ui/theme-parser.c:3300
+#: ../src/ui/theme-parser.c:3599
 #, c-format
-msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "तत्व <%s>, distance/border/aspect_ratio  तत्व के भीतर स्वीकार्य नहीं है"
+msgid ""
+"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr ""
+"तत्व <%s>, distance/border/aspect_ratio  तत्व के भीतर स्वीकार्य नहीं है"
 
-#: ../src/ui/theme-parser.c:3322
+#: ../src/ui/theme-parser.c:3621
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
 msgstr "तत्व <%s>, ड्रा ऑपरेशन तत्व के भीतर स्वीकार्य नहीं है"
 
-#: ../src/ui/theme-parser.c:3332 ../src/ui/theme-parser.c:3362
-#: ../src/ui/theme-parser.c:3367 ../src/ui/theme-parser.c:3372
+#: ../src/ui/theme-parser.c:3631 ../src/ui/theme-parser.c:3661
+#: ../src/ui/theme-parser.c:3666 ../src/ui/theme-parser.c:3671
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
 msgstr "तत्व <%s>, एक <%s> तत्व के भीतर स्वीकार्य नहीं है"
 
-#: ../src/ui/theme-parser.c:3594
+#: ../src/ui/theme-parser.c:3899
 msgid "No draw_ops provided for frame piece"
 msgstr "फ्रेम पीस हेतु कोई draw_ops नहीं दिया गया है"
 
-#: ../src/ui/theme-parser.c:3609
+#: ../src/ui/theme-parser.c:3914
 msgid "No draw_ops provided for button"
 msgstr "बटन हेतु कोई draw_ops नहीं दिया गया है"
 
-#: ../src/ui/theme-parser.c:3661
+#: ../src/ui/theme-parser.c:3968
 #, c-format
 msgid "No text is allowed inside element <%s>"
 msgstr "कोई पाठ तत्व <%s> के भीतर स्वीकार्य नहीं है"
 
-#: ../src/ui/theme-parser.c:3716
-msgid "<name> specified twice for this theme"
-msgstr "<नाम> इस प्रसंग हेतु दोबार उल्लेखित किया गया है"
-
-#: ../src/ui/theme-parser.c:3727
-msgid "<author> specified twice for this theme"
-msgstr "<लेखक> इस प्रसंग हेतु दोबार उल्लेखित किया गया है"
-
-#: ../src/ui/theme-parser.c:3738
-msgid "<copyright> specified twice for this theme"
-msgstr " <सर्वाधिकार सुरक्षित> इस प्रसंग हेतु दोबार उल्लेखित किया गया है"
-
-#: ../src/ui/theme-parser.c:3749
-msgid "<date> specified twice for this theme"
-msgstr "<तिथि> इस प्रसंग हेतु दोबार उल्लेखित किया गया है"
-
-#: ../src/ui/theme-parser.c:3760
-msgid "<description> specified twice for this theme"
-msgstr " <विवरण> इस प्रसंग हेतु दोबार उल्लेखित किया गया है"
-
-#: ../src/ui/theme-parser.c:4027
+#: ../src/ui/theme-parser.c:4026 ../src/ui/theme-parser.c:4038
+#: ../src/ui/theme-parser.c:4050 ../src/ui/theme-parser.c:4062
+#: ../src/ui/theme-parser.c:4074
 #, c-format
-#| msgid "Failed to fdopen() log file %s: %s\n"
+#| msgid "<name> specified twice for this theme"
+msgid "<%s> specified twice for this theme"
+msgstr "<%s> ने इस प्रसंग के लिए दो बार निर्दिष्ट किया है"
+
+#: ../src/ui/theme-parser.c:4334
+#, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "%s प्रसंग के लिए वैध फाइल पाने में विफल\n"
 
-#: ../src/ui/theme-parser.c:4083
-#, c-format
-msgid "Theme file %s did not contain a root <metacity_theme> element"
-msgstr "प्रसंग फ़ाइल %s में रूट <मेटासिटी-प्रसंग> तत्व सम्मिलित नहीं है"
+#: ../src/ui/theme-viewer.c:99
+#| msgid "/_Windows"
+msgid "_Windows"
+msgstr "विंडो (_W)"
 
-#: ../src/ui/theme-viewer.c:75
-msgid "/_Windows"
-msgstr "/विंडोज़ (_W)"
+#: ../src/ui/theme-viewer.c:100
+#| msgid "Dialog Box"
+msgid "_Dialog"
+msgstr "संवाद (_D)"
 
-#: ../src/ui/theme-viewer.c:76
-msgid "/Windows/tearoff"
-msgstr "/विंडोज़/टीयरऑफ़"
+#: ../src/ui/theme-viewer.c:101
+#| msgid "Modal Dialog Box"
+msgid "_Modal dialog"
+msgstr "मॉडल संवाद (_M)"
 
-#: ../src/ui/theme-viewer.c:77
-msgid "/Windows/_Dialog"
-msgstr "/विंडोज़/संवाद (_D)"
+#: ../src/ui/theme-viewer.c:102
+#| msgid "/Windows/_Utility"
+msgid "_Utility"
+msgstr "यूटिलिटी (_U)"
 
-#: ../src/ui/theme-viewer.c:78
-msgid "/Windows/_Modal dialog"
-msgstr "/विंडोज़/मॉडल संवाद (_M)"
+#: ../src/ui/theme-viewer.c:103
+#| msgid "/Windows/_Splashscreen"
+msgid "_Splashscreen"
+msgstr "स्प्लैशस्क्रीन (_S)"
 
-#: ../src/ui/theme-viewer.c:79
-msgid "/Windows/_Utility"
-msgstr "/विंडोज़/यूटिलिटी (_U)"
+#: ../src/ui/theme-viewer.c:104
+#| msgid "/Windows/_Top dock"
+msgid "_Top dock"
+msgstr "शीर्ष डॉक (_T)"
 
-#: ../src/ui/theme-viewer.c:80
-msgid "/Windows/_Splashscreen"
-msgstr "/विंडोज़/स्प्लैशस्क्रीन (_S)"
+#: ../src/ui/theme-viewer.c:105
+#| msgid "/Windows/_Bottom dock"
+msgid "_Bottom dock"
+msgstr "निचला डॉक (_B)"
 
-#: ../src/ui/theme-viewer.c:81
-msgid "/Windows/_Top dock"
-msgstr "/विंडोज़/शीर्ष डॉक (_T)"
+#: ../src/ui/theme-viewer.c:106
+#| msgid "/Windows/_Left dock"
+msgid "_Left dock"
+msgstr "बायाँ डॉक (_L)"
 
-#: ../src/ui/theme-viewer.c:82
-msgid "/Windows/_Bottom dock"
-msgstr "/विंडोज़/निचला डॉक (_B)"
+#: ../src/ui/theme-viewer.c:107
+#| msgid "/Windows/_Right dock"
+msgid "_Right dock"
+msgstr "दायाँ डॉक (_R)"
 
-#: ../src/ui/theme-viewer.c:83
-msgid "/Windows/_Left dock"
-msgstr "/विंडोज़/बायाँ डॉक (_L)"
+#: ../src/ui/theme-viewer.c:108
+#| msgid "/Windows/_All docks"
+msgid "_All docks"
+msgstr "सभी डॉक्स (_A)"
 
-#: ../src/ui/theme-viewer.c:84
-msgid "/Windows/_Right dock"
-msgstr "/विंडोज़/दायाँ डॉक (_R)"
+#: ../src/ui/theme-viewer.c:109
+#| msgid "Desktop"
+msgid "Des_ktop"
+msgstr "डेस्कटॉप (_k)"
 
-#: ../src/ui/theme-viewer.c:85
-msgid "/Windows/_All docks"
-msgstr "/विंडोज़/सभी डॉक्स (_A)"
-
-#: ../src/ui/theme-viewer.c:86
-msgid "/Windows/Des_ktop"
-msgstr "/विंडोज़/डेस्कटॉप (_k)"
-
-#: ../src/ui/theme-viewer.c:135
+#: ../src/ui/theme-viewer.c:115
 msgid "Open another one of these windows"
 msgstr "इनमें से एक अन्य विंडो खोलें"
 
-#: ../src/ui/theme-viewer.c:142
+#: ../src/ui/theme-viewer.c:117
 msgid "This is a demo button with an 'open' icon"
 msgstr "यह 'खोलें' चिह्न युक्त एक डेमो बटन है"
 
-#: ../src/ui/theme-viewer.c:149
+#: ../src/ui/theme-viewer.c:119
 msgid "This is a demo button with a 'quit' icon"
 msgstr "यह एक डेमो बटन है 'बाहर' चिह्न के साथ"
 
-#: ../src/ui/theme-viewer.c:242
+#: ../src/ui/theme-viewer.c:248
 msgid "This is a sample message in a sample dialog"
 msgstr "यह नमूना संवाद में नमूना संदेश था"
 
-#: ../src/ui/theme-viewer.c:325
+#: ../src/ui/theme-viewer.c:328
 #, c-format
 msgid "Fake menu item %d\n"
 msgstr "नकली मेनू वस्तु %d\n"
 
-#: ../src/ui/theme-viewer.c:359
+#: ../src/ui/theme-viewer.c:363
 msgid "Border-only window"
 msgstr "सिर्फ-किनारा विंडो"
 
-#: ../src/ui/theme-viewer.c:361
+#: ../src/ui/theme-viewer.c:365
 msgid "Bar"
 msgstr "पट्टी"
 
-#: ../src/ui/theme-viewer.c:378
+#: ../src/ui/theme-viewer.c:382
 msgid "Normal Application Window"
 msgstr "सामान्य अनुप्रयोग विंडो"
 
-#: ../src/ui/theme-viewer.c:382
+#: ../src/ui/theme-viewer.c:386
 msgid "Dialog Box"
 msgstr "संवाद बक्सा"
 
-#: ../src/ui/theme-viewer.c:386
+#: ../src/ui/theme-viewer.c:390
 msgid "Modal Dialog Box"
 msgstr "मॉडल संवाद बक्सा"
 
-#: ../src/ui/theme-viewer.c:390
+#: ../src/ui/theme-viewer.c:394
 msgid "Utility Palette"
 msgstr "यूटिलिटी पट्टिका"
 
-#: ../src/ui/theme-viewer.c:394
+#: ../src/ui/theme-viewer.c:398
 msgid "Torn-off Menu"
 msgstr "टॉर्न-ऑफ मेनू"
 
-#: ../src/ui/theme-viewer.c:398
+#: ../src/ui/theme-viewer.c:402
 msgid "Border"
 msgstr "किनारा"
 
-#: ../src/ui/theme-viewer.c:726
+#: ../src/ui/theme-viewer.c:406
+#| msgid "Modal Dialog Box"
+msgid "Attached Modal Dialog"
+msgstr "मॉडल संवाद संलग्न है"
+
+#: ../src/ui/theme-viewer.c:739
 #, c-format
 msgid "Button layout test %d"
 msgstr "बटन अभिन्यास जाँच %d"
 
-#: ../src/ui/theme-viewer.c:755
+#: ../src/ui/theme-viewer.c:768
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g मिलीसेकण्ड एक विंडो फ्रेम ड्रॉ करने में"
 
-#: ../src/ui/theme-viewer.c:798
+#: ../src/ui/theme-viewer.c:813
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "उपयोग: metacity-theme-viewer [THEMENAME]\n"
 
-#: ../src/ui/theme-viewer.c:805
+#: ../src/ui/theme-viewer.c:820
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "प्रसंग लोड करने में त्रुटि: %s\n"
 
-#: ../src/ui/theme-viewer.c:811
+#: ../src/ui/theme-viewer.c:826
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "प्रसंग \"%s\" लोड किया %g सेकण्ड्स में\n"
 
-#: ../src/ui/theme-viewer.c:852
+#: ../src/ui/theme-viewer.c:870
 msgid "Normal Title Font"
 msgstr "सामान्य शीर्षक फ़ॉन्ट"
 
-#: ../src/ui/theme-viewer.c:858
+#: ../src/ui/theme-viewer.c:876
 msgid "Small Title Font"
 msgstr "छोटा शीर्षक फ़ॉन्ट"
 
-#: ../src/ui/theme-viewer.c:864
+#: ../src/ui/theme-viewer.c:882
 msgid "Large Title Font"
 msgstr "बड़ा शीर्षक फ़ॉन्ट"
 
-#: ../src/ui/theme-viewer.c:869
+#: ../src/ui/theme-viewer.c:887
 msgid "Button Layouts"
 msgstr "बटन अभिन्यास"
 
-#: ../src/ui/theme-viewer.c:874
+#: ../src/ui/theme-viewer.c:892
 msgid "Benchmark"
 msgstr "बेंचमार्क"
 
-#: ../src/ui/theme-viewer.c:921
+#: ../src/ui/theme-viewer.c:944
 msgid "Window Title Goes Here"
 msgstr "विंडो शीर्षक यहाँ जाएगा"
 
-#: ../src/ui/theme-viewer.c:1025
+#: ../src/ui/theme-viewer.c:1047
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
-"%d frames को %g क्लाइंट पक्ष सेकेंड में खींचा (%g milliseconds per frame) और %g X "
+"%d frames को %g क्लाइंट पक्ष सेकेंड में खींचा (%g milliseconds per frame) और %"
+"g X "
 "सर्वर संसाधन को समाहित करता सेकेंड वाल घड़ी (%g विविध प्रति फ्रेम)\n"
 
-#: ../src/ui/theme-viewer.c:1244
+#: ../src/ui/theme-viewer.c:1266
 msgid "position expression test returned TRUE but set error"
 msgstr "स्थिति एक्सप्रेशन जाँच ने सही लौटाया परंतु त्रुटि नियत नहीं किया"
 
-#: ../src/ui/theme-viewer.c:1246
+#: ../src/ui/theme-viewer.c:1268
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "स्थिति एक्सप्रेशन जाँच ने ग़लत लौटाया परंतु त्रुटि नियत नहीं किया"
 
-#: ../src/ui/theme-viewer.c:1250
+#: ../src/ui/theme-viewer.c:1272
 msgid "Error was expected but none given"
 msgstr "त्रुटि प्रत्याशित था, परन्तु दिया नहीं गया"
 
-#: ../src/ui/theme-viewer.c:1252
+#: ../src/ui/theme-viewer.c:1274
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "त्रुटि %d वांछित था परन्तु %d दिया गया"
 
-#: ../src/ui/theme-viewer.c:1258
+#: ../src/ui/theme-viewer.c:1280
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "त्रुटि की प्रत्याशा नहीं थी परन्तु एक लौटाया गया: %s"
 
-#: ../src/ui/theme-viewer.c:1262
+#: ../src/ui/theme-viewer.c:1284
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "एक्स मूल्य था %d, %d वांछित था"
 
-#: ../src/ui/theme-viewer.c:1265
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "वाई मूल्य था %d, %d वांछित था"
 
-#: ../src/ui/theme-viewer.c:1330
+#: ../src/ui/theme-viewer.c:1352
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "%d निर्देशांक एक्सप्रेशन्स पार्स किया %g सेकण्ड्स में (औसतन %g सेकण्ड्स)\n"
+msgstr ""
+"%d निर्देशांक एक्सप्रेशन्स पार्स किया %g सेकण्ड्स में (औसतन %g सेकण्ड्स)\n"
 
+#~| msgid "Window manager: "
+#~ msgid "Window Management"
+#~ msgstr "विंडो प्रबंधन"
+
+#~ msgid "Failed to parse message \"%s\" from dialog process\n"
+#~ msgstr "संदेश \"%s\" की व्याख्या संवाद प्रक्रिया से नहीं कर सका\n"
+
+#~ msgid "Error reading from dialog display process: %s\n"
+#~ msgstr "संवाद प्रदर्शक प्रक्रिया: %s से पढ़ने में त्रुटि\n"
+
+#~ msgid ""
+#~ "Error launching metacity-dialog to ask about killing an application: %s\n"
+#~ msgstr ""
+#~ "किसी अनुप्रयोग को खत्म करने के लिए पूछने हेतु मेटासिटी-संवाद  प्रारंभ करने में त्रुटि: %s\n"
+
+#~ msgid "Failed to get hostname: %s\n"
+#~ msgstr "होस्टनाम पाने में असफल: %s\n"
+
+#~ msgid ""
+#~ "Lost connection to the display '%s';\n"
+#~ "most likely the X server was shut down or you killed/destroyed\n"
+#~ "the window manager.\n"
+#~ msgstr ""
+#~ "प्रदर्शक '%s' से कनेक्शन छूट गया;\n"
+#~ "बहुत संभावना है कि या तो एक्स सर्वर बन्द कर दिया गया या आपने विंडो प्रबंधक को \n"
+#~ "खत्म/समाप्त कर दिया है.\n"
+
+#~ msgid "Fatal IO error %d (%s) on display '%s'.\n"
+#~ msgstr "गंभीर आईओ त्रुटि %d (%s), प्रदर्शक '%s' में.\n"
+
+#~| msgid ""
+#~| "There was an error running \"%s\":\n"
+#~| "%s."
+#~ msgid ""
+#~ "There was an error running <tt>%s</tt>:\n"
+#~ "\n"
+#~ "%s"
+#~ msgstr ""
+#~ "<tt>%s</tt> चलाने में त्रुटि थी:\n"
+#~ "\n"
+#~ "%s"
+
+#~ msgid "No command %d has been defined.\n"
+#~ msgstr "कोई कमांड %d पारिभाषित नहीं है.\n"
+
+#~ msgid "No terminal command has been defined.\n"
+#~ msgstr "कोई टर्मिनल कमांड पारिभाषित नहीं है.\n"
+
+#~| msgid "Compositing Manager"
+#~ msgid "Turn compositing on"
+#~ msgstr "कंपोजिटिंग चालू करें"
+
+#~ msgid "Turn compositing off"
+#~ msgstr "कंपोजिटिंग बंद करें"
+
+#~ msgid "Failed to restart: %s\n"
+#~ msgstr "पुनः प्रारंभ करने में असफल: %s\n"
+
+#~ msgid "GConf key '%s' is set to an invalid value\n"
+#~ msgstr "जी-कॉन्फ़ कुंजी '%s'  एक अवैध प्रकार में नियत है\n"
+
+#~| msgid "%d stored in GConf key %s is out of range 0 to %d\n"
+#~ msgid "%d stored in GConf key %s is out of range %d to %d\n"
+#~ msgstr "%d जो जी-कॉन्फ़ कुंजी %s में भंडारित है वह सीमा %d से %d सीमा से बाहर है\n"
+
+#~ msgid "GConf key \"%s\" is set to an invalid type\n"
+#~ msgstr "जी-कॉन्फ़ कुंजी \"%s\" एक अवैध प्रकार में नियत है\n"
+
+#~ msgid "Error setting number of workspaces to %d: %s\n"
+#~ msgstr "कार्यस्थान संख्या %d  पर तय करने में त्रुटि: %s हुई.\n"
+
+#~ msgid "Error setting name for workspace %d to \"%s\": %s\n"
+#~ msgstr "कार्यस्थान नाम %d को \"%s\" से में बदलने में त्रुटि: %s हुई\n"
+
+#~| msgid "Error setting name for workspace %d to \"%s\": %s\n"
+#~ msgid "Error setting compositor status: %s\n"
+#~ msgstr "कंपोजिटर स्थिति सेटिंग में त्रुटि: %s\n"
+
+#~| msgid ""
+#~| "The keybinding used to close a window. The format looks like \"&lt;"
+#~| "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~| "liberal and allows lower or upper case, and also abbreviations such as "
+#~| "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~| "special string \"disabled\", then there will be no keybinding for this "
+#~| "action."
+#~ msgid ""
+#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#~ "\n"
+#~ "The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action."
+#~ msgstr ""
+#~ "फ़ॉर्मेट इस तरह दिखेंगे \"<Control>a\" या <Shift><Alt>F1\".\n"
+#~ "यह पारसर पूरी तरह लिबरल है और बड़े या छोटे अक्षर दोनों स्वीकार करता है, तथा "
+#~ "संक्षिप्ताक्षर भी जैसे- \"<Ctl>\" और \"<Ctl>\". यदि आपने विकल्प विशेष स्ट्रिंग में तय "
+#~ "किया है \"disabled\", तब वहाँ इस क्रिया हेतु कोई कीबाइंडिंग नहीं होगा."
+
+#~| msgid ""
+#~| "The keybinding used to close a window. The format looks like \"&lt;"
+#~| "Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly "
+#~| "liberal and allows lower or upper case, and also abbreviations such as "
+#~| "\"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set the option to the "
+#~| "special string \"disabled\", then there will be no keybinding for this "
+#~| "action."
+#~ msgid ""
+#~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
+#~ "\n"
+#~ "The parser is fairly liberal and allows lower or upper case, and also "
+#~ "abbreviations such as \"<Ctl>\" and \"<Ctrl>\". If you set the option to "
+#~ "the special string \"disabled\", then there will be no keybinding for "
+#~ "this action.\n"
+#~ "\n"
+#~ "This keybinding may be reversed by holding down the \"shift\" key; "
+#~ "therefore, \"shift\" cannot be one of the keys it uses."
+#~ msgstr ""
+#~ "फ़ॉर्मेट इस तरह दिखेंगे \"<Control>a\" or <Shift><Alt>F1\".\n"
+#~ "यह पारसर पूरी तरह लिबरल है और बड़े या छोटे अक्षर दोनों स्वीकार करता है, तथा "
+#~ "संक्षिप्ताक्षर भी जैसे- \"<Ctl>\" और \"<Ctl>\". यदि आपने विकल्प विशेष स्ट्रिंग में तय "
+#~ "किया है \"disabled\", तब वहाँ इस क्रिया हेतु कोई कीबाइंडिंग नहीं होगा."
+
+#~ msgid "Failed to read saved session file %s: %s\n"
+#~ msgstr "सहेजी गई सत्र फ़ाइल %s पढ़ने में असफल: %s\n"
+
+#~ msgid ""
+#~ "Error launching metacity-dialog to warn about apps that don't support "
+#~ "session management: %s\n"
+#~ msgstr ""
+#~ "अनुप्रयोग जो सत्र प्रबंधन समर्थन: %s  नहीं रखते हैं उनकी चेतावनी बताने हेतु मेटासिटी "
+#~ "संवाद प्रारंभ करने में त्रुटि\n"
+
+#~ msgid "Metacity"
+#~ msgstr "मेटासिटी"
+
+#~ msgid "Switch to workspace 1"
+#~ msgstr "कार्यस्थान 1 पर जाएँ"
+
+#~ msgid "Switch to workspace 2"
+#~ msgstr "कार्यस्थान 2 पर जाएँ"
+
+#~ msgid "Switch to workspace 3"
+#~ msgstr "कार्यस्थान 3 पर जाएँ"
+
+#~ msgid "Switch to workspace 4"
+#~ msgstr "कार्यस्थान 4 पर जाएँ"
+
+#~ msgid "Switch to workspace 5"
+#~ msgstr "कार्यस्थान 5 पर जाएँ"
+
+#~ msgid "Switch to workspace 6"
+#~ msgstr "कार्यस्थान 6 पर जाएँ"
+
+#~ msgid "Switch to workspace 7"
+#~ msgstr "कार्यस्थान 7  पर जाएँ"
+
+#~ msgid "Switch to workspace 8"
+#~ msgstr "कार्यस्थान 8 पर जाएँ"
+
+#~ msgid "Switch to workspace 9"
+#~ msgstr "कार्यस्थान 9 पर जाएँ"
+
+#~ msgid "Switch to workspace 10"
+#~ msgstr "कार्यस्थान 10  पर जाएँ"
+
+#~ msgid "Switch to workspace 11"
+#~ msgstr "कार्यस्थान 11  पर जाएँ"
+
+#~ msgid "Switch to workspace 12"
+#~ msgstr "कार्यस्थान 12  पर जाएँ"
+
+#~| msgid "Switch to workspace on the left"
+#~ msgid "Switch to workspace on the left of the current workspace"
+#~ msgstr "मौजूदा कार्यस्थान के बाएँ कार्यस्थान पर जाएँ"
+
+#~| msgid "Switch to workspace on the right"
+#~ msgid "Switch to workspace on the right of the current workspace"
+#~ msgstr "मौजूदा कार्यस्थान के दाहिने कार्यस्थान पर जाएँ"
+
+#~| msgid "Switch to workspace above this one"
+#~ msgid "Switch to workspace above the current workspace"
+#~ msgstr "मौजूदा कार्यस्थान के ऊपर कार्यस्थान पर जाएँ"
+
+#~| msgid "Switch to workspace below this one"
+#~ msgid "Switch to workspace below the current workspace"
+#~ msgstr "मौजूदा कार्यस्थान के नीचे कार्यस्थान पर जाएँ"
+
+#~| msgid "Move between windows of an application with popup"
+#~ msgid "Move between windows of an application, using a popup window"
+#~ msgstr "पॉपअप के साथ अनुप्रयोग के विंडो के बीच जायें"
+
+#~| msgid "Move backwards between windows of an application with popup"
+#~ msgid ""
+#~ "Move backward between windows of an application, using a popup window"
+#~ msgstr "पॉपअप के साथ तत्काल अनुप्रयोग के विंडो के बीच पीछे जायें"
+
+#~| msgid "Move between windows with popup"
+#~ msgid "Move between windows, using a popup window"
+#~ msgstr "विंडोज़ के बीच पॉपअप के प्रयोग से खिसकाएँ"
+
+#~| msgid "Move focus backwards between windows using popup display"
+#~ msgid "Move backward between windows, using a popup window"
+#~ msgstr "पॉपअप प्रदर्शक के द्वारा विंडो के बीच पीछे ले जाएँ"
+
+#~| msgid "Move between panels and the desktop with popup"
+#~ msgid "Move between panels and the desktop, using a popup window"
+#~ msgstr "पटल तथा डेस्कटॉप के बीच पॉपअप के प्रयोग से खिसकाएँ"
+
+#~| msgid "Move backwards between panels and the desktop with popup"
+#~ msgid "Move backward between panels and the desktop, using a popup window"
+#~ msgstr "पटल तथा डेस्कटॉप के बीच पॉपअप के प्रयोग से पीछे जाएँ"
+
+#~ msgid "Move between windows of an application immediately"
+#~ msgstr "तत्काल अनुप्रयोग के विंडो के बीच जायें"
+
+#~| msgid "Move backwards between windows of an application immediately"
+#~ msgid "Move backward between windows of an application immediately"
+#~ msgstr "तत्काल अनुप्रयोग के विंडो के बीच पीछे जायें"
+
+#~ msgid "Move between windows immediately"
+#~ msgstr "विंडोज़ के बीच तत्काल खिसकाएँ"
+
+#~| msgid "Move backwards between windows immediately"
+#~ msgid "Move backward between windows immediately"
+#~ msgstr "विंडोज़ के बीच तत्काल पीछे जाएँ"
+
+#~ msgid "Move between panels and the desktop immediately"
+#~ msgstr "पटल तथा डेस्कटॉप के बीच तत्काल खिसकाएँ"
+
+#~ msgid "Move backward between panels and the desktop immediately"
+#~ msgstr "पटल तथा डेस्कटॉप के बीच तत्काल पीछे जाएँ"
+
+#~| msgid "Hide all windows and focus desktop"
+#~ msgid "Hide all normal windows and set focus to the desktop"
+#~ msgstr "सभी सामान्य विंडो को छुपाएँ और डेस्कटॉप पर फ़ोकस करें"
+
+#~| msgid "Show the panel menu"
+#~ msgid "Show the panel's main menu"
+#~ msgstr "पटल मुख्य मेन्यू दिखाएँ"
+
+#~| msgid "Show the panel run application dialog"
+#~ msgid "Show the panel's \"Run Application\" dialog box"
+#~ msgstr "पटल के \"अनुप्रयोग चलाएँ\" संवाद दिखाएँ"
+
+#~ msgid "Take a screenshot"
+#~ msgstr "स्क्रीन का चित्र लें"
+
+#~ msgid "Take a screenshot of a window"
+#~ msgstr "विंडो का चित्र लें"
+
+#~ msgid "Run a terminal"
+#~ msgstr "एक टर्मिनल चलायें"
+
+#~| msgid "Activate window menu"
+#~ msgid "Activate the window menu"
+#~ msgstr "विंडो मेन्यू सक्रिय करें"
+
+#~ msgid "Toggle fullscreen mode"
+#~ msgstr "पूरा स्क्रीन मोड टॉगल करें"
+
+#~ msgid "Toggle maximization state"
+#~ msgstr "अधिकतम स्थिति टॉगल करें"
+
+#~| msgid "Lower window below other windows"
+#~ msgid "Toggle whether a window will always be visible over other windows"
+#~ msgstr "टॉगल करें कि क्या दूसरे विंडो के बीच एक विंडो हमेशा दृश्य रहेगा"
+
+#~ msgid "Maximize window"
+#~ msgstr "विंडो अधिकतम करें"
+
+#~| msgid "Resize window"
+#~ msgid "Restore window"
+#~ msgstr "विंडो फिर बहाल करें"
+
+#~ msgid "Toggle shaded state"
+#~ msgstr "आभायुक्त स्थिति टॉगल करें"
+
+#~ msgid "Minimize window"
+#~ msgstr "विंडो को न्यूनतम करें"
+
+#~ msgid "Close window"
+#~ msgstr "विंडो बंद करें"
+
+#~ msgid "Move window"
+#~ msgstr "विंडो खिसकाएँ"
+
+#~ msgid "Resize window"
+#~ msgstr "विंडो का आकार बदलें"
+
+#~| msgid "Toggle window on all workspaces"
+#~ msgid "Toggle whether window is on all workspaces or just one"
+#~ msgstr "टॉगल करें कि विंडो सभी कार्यस्थान पर है या केवल एक पर"
+
+#~ msgid "Move window to workspace 1"
+#~ msgstr "विंडो को कार्यस्थान 1 पर ले जाएँ"
+
+#~ msgid "Move window to workspace 2"
+#~ msgstr "विंडो को कार्यस्थान 2 पर ले जाएँ"
+
+#~ msgid "Move window to workspace 3"
+#~ msgstr "विंडो को कार्यस्थान 3 पर ले जाएँ"
+
+#~ msgid "Move window to workspace 4"
+#~ msgstr "विंडो को कार्यस्थान 4 पर ले जाएँ"
+
+#~ msgid "Move window to workspace 5"
+#~ msgstr "विंडो को कार्यस्थान 5 पर ले जाएँ"
+
+#~ msgid "Move window to workspace 6"
+#~ msgstr "विंडो को कार्यस्थान 6 पर ले जाएँ"
+
+#~ msgid "Move window to workspace 7"
+#~ msgstr "विंडो को कार्यस्थान 7 पर ले जाएँ"
+
+#~ msgid "Move window to workspace 8"
+#~ msgstr "विंडो को कार्यस्थान 8 पर ले जाएँ"
+
+#~ msgid "Move window to workspace 9"
+#~ msgstr "विंडो को कार्यस्थान 9 पर ले जाएँ"
+
+#~ msgid "Move window to workspace 10"
+#~ msgstr "विंडो को कार्यस्थान 10  पर ले जाएँ"
+
+#~ msgid "Move window to workspace 11"
+#~ msgstr "विंडो को कार्यस्थान 11 पर ले जाएँ"
+
+#~ msgid "Move window to workspace 12"
+#~ msgstr "विंडो को कार्यस्थान 12 पर ले जाएँ"
+
+#~ msgid "Move window one workspace to the left"
+#~ msgstr "विंडो को एक कार्यस्थान बाएँ लाएँ"
+
+#~ msgid "Move window one workspace to the right"
+#~ msgstr "विंडो को एक कार्यस्थान दाएँ लाएँ"
+
+#~ msgid "Move window one workspace up"
+#~ msgstr "विंडो को एक कार्यस्थान ऊपर लाएँ"
+
+#~ msgid "Move window one workspace down"
+#~ msgstr "विंडो को एक कार्यस्थान नीचे लाएँ"
+
+#~| msgid "Raise obscured window, otherwise lower"
+#~ msgid "Raise window if it's covered by another window, otherwise lower it"
+#~ msgstr "विंडो बढ़ाएँ कि क्या यह दूसरे विंडो द्वारा आच्छादित है, अन्यथा इसे नीचे करें"
+
+#~ msgid "Raise window above other windows"
+#~ msgstr "विंडो को अन्य विंडो के ऊपर रखें"
+
+#~ msgid "Lower window below other windows"
+#~ msgstr "विंडो को अन्य विंडो के नीचे रखें"
+
+#~ msgid "Maximize window vertically"
+#~ msgstr "विंडो खड़ा अधिकतम करें"
+
+#~ msgid "Maximize window horizontally"
+#~ msgstr "विंडो आड़ा अधिकतम करें"
+
+#~| msgid "Move window one workspace to the left"
+#~ msgid "Move window to north-west (top left) corner"
+#~ msgstr "विंडो को उत्तर-पश्चिमी (उपरी बाएँ) कोने में ले जाएँ"
+
+#~| msgid "Move window one workspace to the right"
+#~ msgid "Move window to north-east (top right) corner"
+#~ msgstr "विंडो को उत्तर-पूर्वी (उपरी दाहिने) कोने में ले जाएँ"
+
+#~ msgid "Move window to south-west (bottom left) corner"
+#~ msgstr "विंडो को दक्षिणी-पश्चिमी (उपरी बाएँ) कोने में ले जाएँ"
+
+#~ msgid "Move window to south-east (bottom right) corner"
+#~ msgstr "विंडो को दक्षिणी-पूर्वी (तल के दाहिने) कोने में ले जाएँ"
+
+#~ msgid "Move window to north (top) side of screen"
+#~ msgstr "विंडो को स्क्रीन के किनारे उत्तरी (शीर्ष) कोने में ले जाएँ"
+
+#~ msgid "Move window to south (bottom) side of screen"
+#~ msgstr "विंडो को स्क्रीन के किनारे दक्षिणी (तल) कोने में ले जाएँ"
+
+#~ msgid "Move window to east (right) side of screen"
+#~ msgstr "विंडो को स्क्रीन के किनारे पूर्वी (दाहिने) कोने में ले जाएँ"
+
+#~ msgid "Move window to west (left) side of screen"
+#~ msgstr "विंडो को स्क्रीन के किनारे पश्चिमी (बाएँ) कोने में ले जाएँ"
+
+#~| msgid "Move window one workspace down"
+#~ msgid "Move window to center of screen"
+#~ msgstr "विंडो को स्क्रीन के केंद्र में खिसकाएँ"
+
+#~ msgid ""
+#~ "(Not implemented) Navigation works in terms of applications not windows"
+#~ msgstr "(कार्यान्वित नहीं) संचलन अनुप्रयोगों के अनुसार चलता है, विंडोज़ से नहीं"
+
+#~ msgid ""
+#~ "A font description string describing a font for window titlebars. The "
+#~ "size from the description will only be used if the titlebar_font_size "
+#~ "option is set to 0. Also, this option is disabled if the "
+#~ "titlebar_uses_desktop_font option is set to true."
+#~ msgstr ""
+#~ "एक फंट विवरण स्ट्रिंग विंडो शीर्षक पट्टी के लिये फंट के बारे में बता रहा है. विवरण से "
+#~ "आकार प्रयुक्त होगा अगर titlebar_font_size विकल्प 0 में सेट किया जाता है, साथ ही, "
+#~ "यह विकल्प निष्क्रिय किया जाता है अगर titlebar_uses_desktop_font विकल्प को सही "
+#~ "पर सेट किया जाता है."
+
+#~ msgid "Action on title bar double-click"
+#~ msgstr "शीर्षक पट्टी में दोहरा-क्लिक करने पर क्रिया"
+
+#~| msgid "Action on title bar double-click"
+#~ msgid "Action on title bar middle-click"
+#~ msgstr "शीर्षक पट्टी में मध्य-क्लिक पर क्रिया"
+
+#~| msgid "Action on title bar double-click"
+#~ msgid "Action on title bar right-click"
+#~ msgstr "शीर्षक पट्टी में दाहिना-क्लिक पर क्रिया"
+
+#~ msgid "Arrangement of buttons on the titlebar"
+#~ msgstr "शीर्षक-पट्टी में बटनों का विन्यास"
+
+#~| msgid ""
+#~| "Arrangement of buttons on the titlebar. The value should be a string, "
+#~| "such as \"menu:minimize,maximize,close\"; the colon separates the left "
+#~| "corner of the window from the right corner, and the button names are "
+#~| "comma-separated. Duplicate buttons are not allowed. Unknown button names "
+#~| "are silently ignored so that buttons can be added in future metacity "
+#~| "versions without breaking older versions."
+#~ msgid ""
+#~ "Arrangement of buttons on the titlebar. The value should be a string, "
+#~ "such as \"menu:minimize,maximize,spacer,close\"; the colon separates the "
+#~ "left corner of the window from the right corner, and the button names are "
+#~ "comma-separated. Duplicate buttons are not allowed. Unknown button names "
+#~ "are silently ignored so that buttons can be added in future metacity "
+#~ "versions without breaking older versions. A special spacer tag can be "
+#~ "used to insert some space between two adjacent buttons."
+#~ msgstr ""
+#~ "शीर्षक-पट्टी में बटनों का विन्यास. मूल्य स्ट्रिंग होने चाहिएँ, जैसे \"menu:minimize,"
+#~ "maximize,spacer,close\"; कॉलन विंडो के बाएँ कोने को दांए कोने से अलग करता है तथा "
+#~ "बटन के नाम कॉमा से अलग हैं. दोहरे बटन स्वीकार्य नहीं हैं. अज्ञात बटन नामों को शांति से "
+#~ "अनदेखा कर दिया गया है ताकि भविष्य के मेटासिटी संस्करण में, पुराने संस्करण को तोड़े बगैर ये "
+#~ "जोड़े जा सकें."
+
+#~ msgid "Automatically raises the focused window"
+#~ msgstr "फ़ोकस किए विंडो को स्वचालित उठाएँ"
+
+#~| msgid ""
+#~| "Clicking a window while holding down this modifier key will move the "
+#~| "window (left click), resize the window (middle click), or show the "
+#~| "window menu (right click). Modifier is expressed as \"&lt;Alt&gt;\" or "
+#~| "\"&lt;Super&gt;\" for example."
+#~ msgid ""
+#~ "Clicking a window while holding down this modifier key will move the "
+#~ "window (left click), resize the window (middle click), or show the window "
+#~ "menu (right click). The left and right operations may be swapped using "
+#~ "the \"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" "
+#~ "or \"&lt;Super&gt;\" for example."
+#~ msgstr ""
+#~ "Clicking a window while holding down this modifier key will move the "
+#~ "window (left click), resize the window (middle click), or show the window "
+#~ "menu (right click). The left and right operations may be swapped using "
+#~ "the \"mouse_button_resize\" key. Modifier is expressed as \"&lt;Alt&gt;\" "
+#~ "or \"&lt;Super&gt;\" for example."
+
+#~ msgid "Commands to run in response to keybindings"
+#~ msgstr "कीबाइंडिंग के प्रत्युत्तर में चलाया जाने वाला कमांड"
+
+#~ msgid "Compositing Manager"
+#~ msgstr "कंपोजिटिंग प्रबंधक"
+
+#~ msgid "Control how new windows get focus"
+#~ msgstr "नियंत्रित करें कि कैसे नया विंडो फोकस पाता है"
+
+#~ msgid "Current theme"
+#~ msgstr "वर्तमान प्रसंग"
+
+#~ msgid "Delay in milliseconds for the auto raise option"
+#~ msgstr "आटो रेस विकल्प हेतु मिलीसेकण्ड्स में देरी"
+
+#~ msgid "Determines whether Metacity is a compositing manager."
+#~ msgstr "निर्धारित करें कि Metacity एक कंपोजिटिंग प्रबंधक है."
+
+#~ msgid ""
+#~ "Determines whether applications or the system can generate audible "
+#~ "'beeps'; may be used in conjunction with 'visual bell' to allow silent "
+#~ "'beeps'."
+#~ msgstr ""
+#~ "निर्धारित करता है कि क्या अनुप्रयोग या तंत्र सुनने योग्य बीप पैदा कर सकता है, शायद "
+#~ "दृष्टिगोच़र घंटी के साथ उपयोग किया जाकर शांति मय बीप स्वीकारे."
+
+#~ msgid "Disable misfeatures that are required by old or broken applications"
+#~ msgstr "मिसफीचर्स असमर्थ करें जो कि पुराने या टूटे अनुप्रयोगों द्वारा वांछित होते हैं"
+
+#~ msgid "Enable Visual Bell"
+#~ msgstr "दृष्टिगोच़र घंटी सक्षम करें"
+
+#~ msgid ""
+#~ "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+#~ "the focused window will be automatically raised after a delay specified "
+#~ "by the auto_raise_delay key. This is not related to clicking on a window "
+#~ "to raise it, nor to entering a window during drag-and-drop."
+#~ msgstr ""
+#~ "अगर सही पर सेट किया जाता है, और फोकस मोड या तो \"स्लोपी\" या \"माउस\" हो तब "
+#~ "फोकस किया विंडो तब auto_raise_delay कुंजी से निर्दिष्ट विलंब से फोकस किया विंडो "
+#~ "उठाया जायेगा. यह विंडो पर क्लिक किये जाने से संबंधित नहीं है, न तो खींचे व छोड़ें पर "
+#~ "दाखिल होकर."
+
+#~ msgid ""
+#~ "If true, ignore the titlebar_font option, and use the standard "
+#~ "application font for window titles."
+#~ msgstr ""
+#~ "यदि सही है, शीर्षक पट्टी फ़ॉन्ट विकल्प का अनदेखा करें तथा विंडो शीर्षकों हेतु मानक "
+#~ "अनुप्रयोग फ़ॉन्ट का प्रयोग करें"
+
+#~ msgid ""
+#~ "If true, metacity will give the user less feedback by using wireframes, "
+#~ "avoiding animations, or other means. This is a significant reduction in "
+#~ "usability for many users, but may allow legacy applications to continue "
+#~ "working, and may also be a useful tradeoff for terminal servers. However, "
+#~ "the wireframe feature is disabled when accessibility is on."
+#~ msgstr ""
+#~ "अगर सही है, metacity उपयोक्ता को कम फीडबेक और सीधा हस्तक्षेप का कम सेंस देगा, "
+#~ "वायरफ्रेम, एनीमेशन अनदेखा करते हुये, या अन्य साधन. यह महत्वपूर्ण कमी है कई उपयोक्ता के "
+#~ "प्रयोग में, लेकिन कई पुरातन अनुप्रयोग व टर्मिनल सर्वर की अनुमति देते हैं कि वे कब अन्यथा "
+#~ "रूप से अप्रायोगिक होगें. हालांकि, वायरफ्रेम फीचर को निष्क्रिय किया जाता है जब पहुंच "
+#~ "वीयर्ड डेस्कटॉप खंडन को अनदेखा करने के लिये हो."
+
+#~ msgid ""
+#~ "If true, then Metacity works in terms of applications rather than "
+#~ "windows. The concept is a bit abstract, but in general an application-"
+#~ "based setup is more like the Mac and less like Windows. When you focus a "
+#~ "window in application-based mode, all the windows in the application will "
+#~ "be raised. Also, in application-based mode, focus clicks are not passed "
+#~ "through to windows in other applications. Application-based mode is, "
+#~ "however, largely unimplemented at the moment."
+#~ msgstr ""
+#~ "यदि सही है तो मेटासिटी विंडो के बजाए अनुप्रयोग जैसे कार्य करेगा. परिकल्पना थोड़ी "
+#~ "संक्षिप्त है परंतु आमतौर पर अनुप्रयोग आधारित सेटअप मैक जैसा ज्यादा होगा विंडोज़ की तरह "
+#~ "कम. यदि आप किसी विंडो को अनुप्रयोग आधारित मोड पर फ़ोकस करेंगे तो अनुप्रयोग में के सभी "
+#~ "विंडो ऊपर हो जाएंगे. यह भी कि अनुप्रयोग आधारित मोड में फ़ोकस क्लिक अन्य अनुप्रयोग के "
+#~ "विंडो से होकर नहीं जाता. अनुप्रयोग आधारित मोड विस्तृत रूप से इस समय कार्यान्वित नहीं "
+#~ "है."
+
+#~ msgid "If true, trade off usability for less resource usage"
+#~ msgstr "यदि सही है, उपयोगिता को कम साधन उपयोग के साथ बदलें"
+
+#~ msgid "Name of workspace"
+#~ msgstr "कार्यस्थान का नाम"
+
+#~ msgid "Number of workspaces"
+#~ msgstr "कार्यस्थान की संख्या"
+
+#~ msgid ""
+#~ "Number of workspaces. Must be more than zero, and has a fixed maximum to "
+#~ "prevent making the desktop unusable by accidentally asking for too many "
+#~ "workspaces."
+#~ msgstr ""
+#~ "कार्यस्थान की संख्या. यह शून्य से अधिक होना चाहिए तथा इसे एक अधिकतम पर निर्धारित "
+#~ "करना चाहिये ज्यादा कार्यस्थान की मांग करने पर आपके डेस्कटॉप को दुर्धटनावश नष्ट होने से "
+#~ "बचाने हेतु."
+
+#~ msgid "Run a defined command"
+#~ msgstr "पारिभाषित कमांड चलाएँ"
+
+#~ msgid ""
+#~ "Set this to true to resize with the right button and show a menu with the "
+#~ "middle button while holding down the key given in \"mouse_button_modifier"
+#~ "\"; set it to false to make it work the opposite way around."
+#~ msgstr ""
+#~ "Set this to true to resize with the right button and show a menu with the "
+#~ "middle button while holding down the key given in \"mouse_button_modifier"
+#~ "\"; set it to false to make it work the opposite way around."
+
+#~ msgid ""
+#~ "Setting this option to false can lead to buggy behavior, so users are "
+#~ "strongly discouraged from changing it from the default of true. Many "
+#~ "actions (e.g. clicking in the client area, moving or resizing the window) "
+#~ "normally raise the window as a side-effect. Setting this option to false, "
+#~ "which is strongly discouraged, will decouple raising from other user "
+#~ "actions, and ignore raise requests generated by applications. See http://"
+#~ "bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option is "
+#~ "false, windows can still be raised by an alt-left-click anywhere on the "
+#~ "window, a normal click on the window decorations, or by special messages "
+#~ "from pagers, such as activation requests from tasklist applets. This "
+#~ "option is currently disabled in click-to-focus mode. Note that the list "
+#~ "of ways to raise windows when raise_on_click is false does not include "
+#~ "programmatic requests from applications to raise windows; such requests "
+#~ "will be ignored regardless of the reason for the request. If you are an "
+#~ "application developer and have a user complaining that your application "
+#~ "does not work with this setting disabled, tell them it is _their_ fault "
+#~ "for breaking their window manager and that they need to change this "
+#~ "option back to true or live with the \"bug\" they requested."
+#~ msgstr ""
+#~ "Setting this option to false can lead to buggy behavior, so users are "
+#~ "strongly discouraged from changing it from the default of true. Many "
+#~ "actions (e.g. clicking in the client area, moving or resizing the window) "
+#~ "normally raise the window as a side-effect. Setting this option to false, "
+#~ "which is strongly discouraged, will decouple raising from other user "
+#~ "actions, and ignore raise requests generated by applications. See http://"
+#~ "bugzilla.gnome.org/show_bug.cgi?id=445447#c6. Even when this option is "
+#~ "false, windows can still be raised by an alt-left-click anywhere on the "
+#~ "window, a normal click on the window decorations, or by special messages "
+#~ "from pagers, such as activation requests from tasklist applets. This "
+#~ "option is currently disabled in click-to-focus mode. Note that the list "
+#~ "of ways to raise windows when raise_on_click is false does not include "
+#~ "programmatic requests from applications to raise windows; such requests "
+#~ "will be ignored regardless of the reason for the request. If you are an "
+#~ "application developer and have a user complaining that your application "
+#~ "does not work with this setting disabled, tell them it is _their_ fault "
+#~ "for breaking their window manager and that they need to change this "
+#~ "option back to true or live with the \"bug\" they requested."
+
+#~ msgid ""
+#~ "Some applications disregard specifications in ways that result in window "
+#~ "manager misfeatures. This option puts Metacity in a rigorously correct "
+#~ "mode, which gives a more consistent user interface, provided one does not "
+#~ "need to run any misbehaving applications."
+#~ msgstr ""
+#~ "कुछ अनुप्रयोग विशेषता को महत्व नहीं देते हैं जो कि विंडो प्रबंधक मिसफीचर में परिणाम लाता "
+#~ "है. यह विकल्प Metacity को काफी सही मोड में रखता है, जो कि ज्यादा संगत उपयोक्ता "
+#~ "अंतरफलक देता है, अगर कोई गलत अनुप्रयोग नहीं चला रहा है."
+
+#~ msgid "System Bell is Audible"
+#~ msgstr "तंत्र घंटी सुनने योग्य है"
+
+#~ msgid ""
+#~ "Tells Metacity how to implement the visual indication that the system "
+#~ "bell or another application 'bell' indicator has been rung. Currently "
+#~ "there are two valid values, \"fullscreen\", which causes a fullscreen "
+#~ "white-black flash, and \"frame_flash\" which causes the titlebar of the "
+#~ "application which sent the bell signal to flash. If the application which "
+#~ "sent the bell is unknown (as is usually the case for the default \"system "
+#~ "beep\"), the currently focused window's titlebar is flashed."
+#~ msgstr ""
+#~ "मेटासिटी को बताता है कि कैसे दृश्य संकेत काम में लिया जाए कि तंत्र घंटी या अन्य अनुप्रयोग "
+#~ "घंटी बजाना है. वर्तमान में दो मान्य मूल्य हैं, \"पूरा स्क्रीन\", जो फुलस्क्रीन काला-सफेद "
+#~ "फ्लेश करता है तथा \"फ्रेम-फ्लैश\"  जो संबंधित अनुप्रयोग के टाइटलबार को फ्लेश करने हेतु संकेत "
+#~ "करता है, जिसको घंटी संकेत भेजता है. यदि अनुप्रयोग जिसने घंटी संकेत भेजा है. अज्ञात है तो "
+#~ "( जैसा कि आमतौर पर डिफ़ॉल्ट \"तंत्र बीप\" में होता है), वर्तमान फ़ोकस विंडो का शीर्षक "
+#~ "पट्टी फ्लैश करेगा. "
+
+#~ msgid ""
+#~ "The /apps/metacity/global_keybindings/run_command_N keys define "
+#~ "keybindings that correspond to these commands. Pressing the keybinding "
+#~ "for run_command_N will execute command_N."
+#~ msgstr ""
+#~ "कुंजियाँ  /apps/metacity/global_keybindings/run_command_N इन कमांड के तदनुरूप "
+#~ "कीबाइंडिंग पारिभाषित करती हैं. run_command_N  का कीबाइंडिंग दबाने पर यह "
+#~ "command_N को चलाएगा. "
+
+#~ msgid ""
+#~ "The /apps/metacity/global_keybindings/run_command_screenshot key defines "
+#~ "a keybinding which causes the command specified by this setting to be "
+#~ "invoked."
+#~ msgstr ""
+#~ "कुंजी /apps/metacity/global_keybindings/run_command_screenshot वह कीबाइंडिंग "
+#~ "पारिभाषित करती है जो इस विन्यास से उल्लेखित कमांड को प्रारंभ करती है."
+
+#~ msgid ""
+#~ "The /apps/metacity/global_keybindings/run_command_window_screenshot key "
+#~ "defines a keybinding which causes the command specified by this setting "
+#~ "to be invoked."
+#~ msgstr ""
+#~ "कुंजी /apps/metacity/global_keybindings/run_command_window_screenshot वह "
+#~ "कीबाइंडिंग पारिभाषित करती है जो इस विन्यास से उल्लेखित कमांड को प्रारंभ करती है."
+
+#~ msgid ""
+#~ "The keybinding that runs the correspondingly-numbered command in /apps/"
+#~ "metacity/keybinding_commands The format looks like \"&lt;Control&gt;a\" "
+#~ "or \"&lt;Shift&gt;&lt;Alt&gt;F1\". The parser is fairly liberal and "
+#~ "allows lower or upper case, and also abbreviations such as \"&lt;Ctl&gt;"
+#~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
+#~ "\"disabled\", then there will be no keybinding for this action."
+#~ msgstr ""
+#~ "कीबाइंडिंग जो कि /apps/metacity/keybinding_commands के तदनुरूप नम्बर वाले कमांड "
+#~ "को चलाता है . फ़ॉर्मेट इस तरह दिखेंगे \"&lt;Control&gt;a\" या \"&lt;Shift&gt;&lt;"
+#~ "Alt&gt;F1. यह पारसर पूरी तरह लिबरल है और बड़े या छोटे अक्षर दोनों स्वीकार करता है, "
+#~ "तथा संक्षिप्ताक्षर भी जैसे-  \"&lt;Ctl&gt;\" और \"&lt;Ctrl&gt;\". यदि आपने विकल्प "
+#~ "विशेष स्ट्रिंग में तय किया है \"disabled\", तब वहाँ इस क्रिया हेतु कोई कीबाइंडिंग नहीं "
+#~ "होगा."
+
+#~ msgid "The name of a workspace."
+#~ msgstr "कार्यस्थान का नाम"
+
+#~ msgid "The screenshot command"
+#~ msgstr "स्क्रीन-शॉट कमांड "
+
+#~ msgid ""
+#~ "The theme determines the appearance of window borders, titlebar, and so "
+#~ "forth."
+#~ msgstr "प्रसंग, विंडो किनारा, शीर्षक पट्टी इत्यादि के रंग-रूप को निर्धारित करता है."
+
+#~ msgid ""
+#~ "The time delay before raising a window if auto_raise is set to true. The "
+#~ "delay is given in thousandths of a second."
+#~ msgstr ""
+#~ "यदि auto_raise  सही पर नियत है तो विंडो ऊपर उठाने से पहले विलम्ब समय. यह विलम्ब "
+#~ "सेकण्ड के हजारवें हिस्से में दिया जाता है."
+
+#~ msgid ""
+#~ "The window focus mode indicates how windows are activated. It has three "
+#~ "possible values; \"click\" means windows must be clicked in order to "
+#~ "focus them, \"sloppy\" means windows are focused when the mouse enters "
+#~ "the window, and \"mouse\" means windows are focused when the mouse enters "
+#~ "the window and unfocused when the mouse leaves the window."
+#~ msgstr ""
+#~ "विंडो फ़ोकस मोड जो संकेत करता है कि विंडोज़ कैसे सक्रिय हों. इसके तीन संभावित मूल्य हैं, "
+#~ "क्लिक \"क्लिक\" मतलब विंडो को फ़ोकस करने हेतु उनमें क्लिक करना होगा, \"स्लॉपी\" मतलब "
+#~ "विंडो तब फ़ोकस होंगे जब माउस विंडो में प्रवेश करेगा, तथा \"माउस\" मतलब विंडो तब फ़ोकस "
+#~ "होंगे जब माउस विंडो में प्रवेश करेगा तथा फ़ोकस से बाहर होगा जब माउस विंडो से बाहर "
+#~ "होगा."
+
+#~ msgid "The window screenshot command"
+#~ msgstr "विंडो स्क्रीन-शॉट कमांड "
+
+#~| msgid ""
+#~| "This option determines the effects of double-clicking on the title bar. "
+#~| "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~| "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~| "'minimize' which will minimize the window, and 'none' which will not do "
+#~| "anything."
+#~ msgid ""
+#~ "This option determines the effects of double-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "This option determines the effects of double-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+
+#~| msgid ""
+#~| "This option determines the effects of double-clicking on the title bar. "
+#~| "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~| "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~| "'minimize' which will minimize the window, and 'none' which will not do "
+#~| "anything."
+#~ msgid ""
+#~ "This option determines the effects of middle-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "This option determines the effects of middle-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+
+#~| msgid ""
+#~| "This option determines the effects of double-clicking on the title bar. "
+#~| "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~| "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~| "'minimize' which will minimize the window, and 'none' which will not do "
+#~| "anything."
+#~ msgid ""
+#~ "This option determines the effects of right-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+#~ msgstr ""
+#~ "This option determines the effects of right-clicking on the title bar. "
+#~ "Current valid options are 'toggle_shade', which will shade/unshade the "
+#~ "window, 'toggle_maximize' which will maximize/unmaximize the window, "
+#~ "'toggle_maximize_horizontally' and 'toggle_maximize_vertically' which "
+#~ "will maximize/unmaximize the window in that direction only, 'minimize' "
+#~ "which will minimize the window, 'shade' which will roll the window up, "
+#~ "'menu' which will display the window menu, 'lower' which will put the "
+#~ "window behind all the others, and 'none' which will not do anything."
+
+#~ msgid ""
+#~ "This option provides additional control over how newly created windows "
+#~ "get focus. It has two possible values; \"smart\" applies the user's "
+#~ "normal focus mode, and \"strict\" results in windows started from a "
+#~ "terminal not being given focus."
+#~ msgstr ""
+#~ "यह विकल्प अतिरिक्त नियंत्रण देता है कि कैसे नया बनाया विंडो फोकस पाता है. इसके दो "
+#~ "संभावित मान हैं; \"smart\" उपयोक्ता के सामान्य फोकस मोड पर लागू होता है और "
+#~ "\"strict\" ऐसे विंडो के रूप में आता है जो टर्मिनल से फोकस नहीं किये गये रूप में आता है."
+
+#~ msgid ""
+#~ "Turns on a visual indication when an application or the system issues a "
+#~ "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
+#~ "environments."
+#~ msgstr ""
+#~ "दृश्य संकेत चालू करना जब कोई अनुप्रयोग या तंत्र घंटी या बीप जारी करते हैं तो, शोरयुक्त "
+#~ "वातावरण- जहाँ सुनने में कठिनाई हो या उंचा सुनने वाले के लिये उपयोगी होता है."
+
+#~ msgid "Use standard system font in window titles"
+#~ msgstr "विंडो शीर्षकों में मानक तंत्र फ़ॉन्ट प्रयोग करें"
+
+#~ msgid "Visual Bell Type"
+#~ msgstr "दृष्टिगोच़र घंटी प्रकार"
+
+#~ msgid "Whether raising should be a side-effect of other user interactions"
+#~ msgstr "अन्य उपयोक्ता अंतःक्रिया के प्रभाव को क्या उठाया जाना चाहिये"
+
+#~ msgid "Whether to resize with the right button"
+#~ msgstr "क्या दाहिना बटन फिर आकार दिया जाना है"
+
+#~ msgid "Window focus mode"
+#~ msgstr "विंडो फ़ोकस मोड"
+
+#~ msgid "Window title font"
+#~ msgstr "विंडो शीर्षक फ़ॉन्ट"
+
+#~ msgid "Close Window"
+#~ msgstr "विंडो बंद करें"
+
+#~ msgid "Window Menu"
+#~ msgstr "विंडो मेनू"
+
+#~ msgid "Minimize Window"
+#~ msgstr "विंडो न्यूनतम करें"
+
+#~ msgid "Maximize Window"
+#~ msgstr "विंडो अधिकतम करें"
+
+#~| msgid "Resize window"
+#~ msgid "Restore Window"
+#~ msgstr "विंडो फिर बहाल करें"
+
+#~| msgid "Roll _Up"
+#~ msgid "Roll Up Window"
+#~ msgstr "विंडो रॉल अप करें"
+
+#~| msgid "Close Window"
+#~ msgid "Unroll Window"
+#~ msgstr "विंडो खोलें"
+
+#~ msgid "Keep Window On Top"
+#~ msgstr "विंडो को सबसे ऊपर रखें"
+
+#~| msgid "_Always on Visible Workspace"
+#~ msgid "Always On Visible Workspace"
+#~ msgstr "हमेशा दृश्य कार्यस्थान पर"
+
+#~| msgid "Toggle window on all workspaces"
+#~ msgid "Put Window On Only One Workspace"
+#~ msgstr "सिर्फ एक कार्यस्थान पर विंडो रखें"
+
+# #-#-#-#-#  libgnomeui.HEAD.hi.po (libgnomeui-2.0.hi)  #-#-#-#-#
+# libgnomeui/gnome-druid-page-standard.c:121
+# libgnomeui/gnome-font-picker.c:155
+#~ msgid "Title"
+#~ msgstr "शीर्षक"
+
+#~ msgid "Class"
+#~ msgstr "वर्ग"
+
+#~ msgid ""
+#~ "There was an error running \"%s\":\n"
+#~ "%s."
+#~ msgstr ""
+#~ "\"%s\" को चलाने में त्रुटि थी:\n"
+#~ "%s."
+
+#~ msgid "<author> specified twice for this theme"
+#~ msgstr "<लेखक> इस प्रसंग हेतु दोबार उल्लेखित किया गया है"
+
+#~ msgid "<copyright> specified twice for this theme"
+#~ msgstr " <सर्वाधिकार सुरक्षित> इस प्रसंग हेतु दोबार उल्लेखित किया गया है"
+
+#~ msgid "<date> specified twice for this theme"
+#~ msgstr "<तिथि> इस प्रसंग हेतु दोबार उल्लेखित किया गया है"
+
+#~ msgid "<description> specified twice for this theme"
+#~ msgstr " <विवरण> इस प्रसंग हेतु दोबार उल्लेखित किया गया है"
+
+#~ msgid "Theme file %s did not contain a root <metacity_theme> element"
+#~ msgstr "प्रसंग फ़ाइल %s में रूट <मेटासिटी-प्रसंग> तत्व सम्मिलित नहीं है"
+
+#~ msgid "/Windows/tearoff"
+#~ msgstr "/विंडोज़/टीयरऑफ़"
+
+#~ msgid "/Windows/_Dialog"
+#~ msgstr "/विंडोज़/संवाद (_D)"
+
+#~ msgid "/Windows/_Modal dialog"
+#~ msgstr "/विंडोज़/मॉडल संवाद (_M)"
+
+#~ msgid "/Windows/Des_ktop"
+#~ msgstr "/विंडोज़/डेस्कटॉप (_k)"
