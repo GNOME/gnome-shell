@@ -966,13 +966,6 @@ const Panel = new Lang.Class({
 
         this.statusArea = {};
 
-        Main.overview.connect('shown', Lang.bind(this, function () {
-            this.actor.add_style_class_name('in-overview');
-        }));
-        Main.overview.connect('hiding', Lang.bind(this, function () {
-            this.actor.remove_style_class_name('in-overview');
-        }));
-
         this.menuManager = new PopupMenu.PopupMenuManager(this);
 
         this._leftBox = new St.BoxLayout({ name: 'panelLeft' });
