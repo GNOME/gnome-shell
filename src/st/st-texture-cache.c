@@ -94,6 +94,33 @@ st_texture_cache_class_init (StTextureCacheClass *klass)
                   G_TYPE_NONE, 0);
 }
 
+/**
+ * st_texture_cache_clear_uri:
+ * @cache: A #StTextureCache
+ * @uri: URI of cached object
+ *
+ * If the given @uri is known to have been modified
+ * externally, this function may be used to invalidate
+ * the in-memory cache.
+ */
+void
+st_texture_cache_clear_uri (StTextureCache *cache,
+                            const char     *uri)
+{
+  char *key;
+
+  g_return_if_fail (ST_IS_TEXTURE_CACHE (cache));
+  g_return_if_fail (uri != NULL);
+
+  key = g_strconcat (CACHE_PREFIX_URI, uri, NULL);
+  g_hash_table_remove (cache->priv->keyed_cache, key);
+  g_free (key);
+
+  key = g_strconcat (CACHE_PREFIX_URI_FOR_CAIRO, uri, NULL);
+  g_hash_table_remove (cache->priv->keyed_cache, key);
+  g_free (key);
+}
+
 /* Evicts all cached textures for named icons */
 static void
 st_texture_cache_evict_icons (StTextureCache *cache)
