@@ -324,22 +324,21 @@ const DashActor = new Lang.Class({
     vfunc_allocate: function(box, flags) {
         let contentBox = this.get_theme_node().get_content_box(box);
         let availWidth = contentBox.x2 - contentBox.x1;
-        let availHeight = contentBox.y2 - contentBox.y1;
 
         this.set_allocation(box, flags);
 
         let [appIcons, showAppsButton] = this.get_children();
-        let [minHeight, natHeight] = showAppsButton.get_preferred_height(availWidth);
+        let [showAppsMinHeight, showAppsNatHeight] = showAppsButton.get_preferred_height(availWidth);
 
         let childBox = new Clutter.ActorBox();
-        childBox.x1 = 0;
-        childBox.x2 = availWidth;
-        childBox.y1 = 0;
-        childBox.y2 = availHeight - natHeight;
+        childBox.x1 = contentBox.x1;
+        childBox.y1 = contentBox.y1;
+        childBox.x2 = contentBox.x2;
+        childBox.y2 = contentBox.y2 - showAppsNatHeight;
         appIcons.allocate(childBox, flags);
 
-        childBox.y1 = availHeight - natHeight;
-        childBox.y2 = availHeight;
+        childBox.y1 = contentBox.y2 - showAppsNatHeight;
+        childBox.y2 = contentBox.y2;
         showAppsButton.allocate(childBox, flags);
     }
 });
