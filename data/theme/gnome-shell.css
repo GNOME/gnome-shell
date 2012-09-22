@@ -658,11 +658,6 @@ StScrollBar StButton#vhandle:active {
     border-radius: 9px 0px 0px 9px;
 }
 
-#dash:empty {
-    height: 100px;
-    width: 60px;
-}
-
 .placeholder {
     background-image: url("dash-placeholder.svg");
     background-size: contain;
