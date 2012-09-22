@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-22 15:05+0300\n"
+"POT-Creation-Date: 2012-09-22 15:06+0300\n"
 "PO-Revision-Date: 2012-09-22 15:06+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <sh.yaron@gmail.com>\n"
@@ -27,7 +27,7 @@ msgstr "צילומי מסך"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:2
 msgid "Record a screencast"
-msgstr "הקלטת וידאו מהמסך"
+msgstr "הסרטת המסך"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
