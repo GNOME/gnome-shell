@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-19 20:42+0300\n"
-"PO-Revision-Date: 2012-09-19 20:42+0300\n"
+"POT-Creation-Date: 2012-09-22 12:52+0300\n"
+"PO-Revision-Date: 2012-09-22 12:51+0300\n"
 "Last-Translator: Ivaylo Valkov <ivaylo@e-valkov.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -1014,7 +1014,7 @@ msgstr "Да се изтегли и инсталира ли „%s“ от from e
 msgid "tray"
 msgstr "област за уведомяване"
 
-#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:194
+#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:195
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "Клавиатура"
@@ -1365,11 +1365,11 @@ msgstr "Въведете кода на устройството %s."
 msgid "OK"
 msgstr "Добре"
 
-#: ../js/ui/status/keyboard.js:227
+#: ../js/ui/status/keyboard.js:228
 msgid "Show Keyboard Layout"
 msgstr "Показване на клавиатурната подредба"
 
-#: ../js/ui/status/keyboard.js:232
+#: ../js/ui/status/keyboard.js:233
 msgid "Region and Language Settings"
 msgstr "Настройки на региона и езика"
 
@@ -1642,7 +1642,7 @@ msgstr "Известия"
 
 #: ../js/ui/userMenu.js:746
 msgid "System Settings"
-msgstr "Настройки на системата"
+msgstr "Системни настройки"
 
 #: ../js/ui/userMenu.js:759
 msgid "Log Out"
