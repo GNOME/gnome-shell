@@ -8,24 +8,44 @@
 # Ray Wang <raywang@gnome.org>, 2009, 2011.
 # 李炜 <lw124124@gmail.com>, 2011.
 # chiachen <luojiazhen@gmail.com>, 2011.
-# YunQiang Su <wzssyqa@gmail.com>, 2010, 2011.
 # StarBrilliant <m13253@hotmail.com>, 2011
 # Aron Xu <aronxu@gnome.org>, 2010, 2011, 2012.
+# YunQiang Su <wzssyqa@gmail.com>, 2010, 2011, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-14 16:46+0000\n"
-"PO-Revision-Date: 2012-09-03 23:56+0800\n"
-"Last-Translator: tuhaihe <1132321739qq@gmail.com>\n"
+"POT-Creation-Date: 2012-09-19 11:02+0000\n"
+"PO-Revision-Date: 2012-09-23 04:35+0800\n"
+"Last-Translator: YunQiang Su <wzssyqa@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bits\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Gtranslator 2.91.5\n"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:1
+#| msgid "Screen position"
+msgid "Screenshots"
+msgstr "屏幕截图"
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:2
+msgid "Record a screencast"
+msgstr "屏幕录像"
+
+#: ../data/50-gnome-shell-system.xml.in.h:1
+#| msgid "File System"
+msgid "System"
+msgstr "系统"
+
+#: ../data/50-gnome-shell-system.xml.in.h:2
+#| msgid "Message Tray"
+msgid "Show the message tray"
+msgstr "显示消息托盘"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -174,6 +194,17 @@ msgstr "用于编码屏幕录像的 GStreamer 管道"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 #, no-c-format
+#| msgid ""
+#| "Sets the GStreamer pipeline used to encode recordings. It follows the "
+#| "syntax used for gst-launch. The pipeline should have an unconnected sink "
+#| "pad where the recorded video is recorded. It will normally have a "
+#| "unconnected source pad; output from that pad will be written into the "
+#| "output file. However the pipeline can also take care of its own output - "
+#| "this might be used to send the output to an icecast server via shout2send "
+#| "or similar. When unset or set to an empty value, the default pipeline "
+#| "will be used. This is currently 'vp8enc quality=8 speed=6 threads=%T ! "
+#| "queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a "
+#| "placeholder for a guess at the optimal thread count on the system."
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -182,17 +213,18 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'vp8enc quality=8 speed=6 threads=%T ! queue ! webmmux' and records to WEBM "
-"using the VP8 codec. %T is used as a placeholder for a guess at the optimal "
-"thread count on the system."
+"'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
+"threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is "
+"used as a placeholder for a guess at the optimal thread count on the system."
 msgstr ""
-"设置 GStreamer 管道用来编码录音。它遵循 gst-launch 的语法。该管道应当有一个未"
-"连接的 sink 衬垫(pad)，录制的视频就是在此录制的。该管道一般还会有一个未连接"
+"设置用来编码录像的 GStreamer 管道。它遵循 gst-launch 的语法。该管道应当有一个"
+"未连接的 sink 衬垫(pad)，录制的视频就是在此录制的。该管道一般还会有一个未连接"
 "的 source 衬垫(pad)；这个衬垫的输出将被写入输出文件中。但是管道还能够处理自己"
 "的输出 - 这将用来通过 shout2send 或者类似方法把输出发送到一个 icecast 服务"
-"器。当管道未被设置或者设置为空值时，默认的管道将被启用。其值当前为“vp8enc "
-"quality=8 speed=6 threads=%T ! queue ! webmmux”并输出为 VP8 编码的 WebM 格"
-"式。这里的 %T 是一个占位符，其实际值是根据您系统的情况估计的线程数。"
+"器。当管道未被设置或者设置为空值时，将使用默认的管道。其值当前为“vp8enc "
+"min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! "
+"queue ! webmmux”并输出为 VP8 编码的 WebM 格式。这里的 %T 是一个占位符，其实际"
+"值是根据您系统的情况估计的线程数。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "File extension used for storing the screencast"
@@ -224,7 +256,7 @@ msgstr "使用上面的下拉框选择一个要配置的扩展。"
 msgid "Session..."
 msgstr "会话..."
 
-#: ../js/gdm/loginDialog.js:675
+#: ../js/gdm/loginDialog.js:674
 msgctxt "title"
 msgid "Sign In"
 msgstr "登录"
@@ -232,28 +264,28 @@ msgstr "登录"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:742
+#: ../js/gdm/loginDialog.js:741
 msgid "Not listed?"
 msgstr "未列出？"
 
-#: ../js/gdm/loginDialog.js:895 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:894 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
-#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:137
+#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "取消"
 
-#: ../js/gdm/loginDialog.js:900
+#: ../js/gdm/loginDialog.js:899
 msgctxt "button"
 msgid "Sign In"
 msgstr "登录"
 
-#: ../js/gdm/loginDialog.js:1239
+#: ../js/gdm/loginDialog.js:1238
 msgid "Login Window"
 msgstr "登录窗口"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:657 ../js/ui/userMenu.js:661
-#: ../js/ui/userMenu.js:772
+#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:658 ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:773
 msgid "Suspend"
 msgstr "挂起"
 
@@ -261,18 +293,23 @@ msgstr "挂起"
 msgid "Restart"
 msgstr "重启"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:659 ../js/ui/userMenu.js:661
-#: ../js/ui/userMenu.js:771
+#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
+#: ../js/ui/userMenu.js:772
 msgid "Power Off"
 msgstr "关机"
 
+#: ../js/gdm/util.js:148
+#| msgid "Authentication Required"
+msgid "Authentication error"
+msgstr "认证出错"
+
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:247
+#: ../js/gdm/util.js:265
 msgid "(or swipe finger)"
 msgstr "(或滑动手指)"
 
-#: ../js/gdm/util.js:272
+#: ../js/gdm/util.js:290
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(如用户或 %s)"
@@ -963,56 +1000,56 @@ msgstr "从 extensions.gnome.org 下载并安装 %s？"
 msgid "tray"
 msgstr "托盘"
 
-#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:146
+#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:194
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "键盘"
 
-#: ../js/ui/lookingGlass.js:694
+#: ../js/ui/lookingGlass.js:691
 msgid "No extensions installed"
 msgstr "未安装扩展"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:748
+#: ../js/ui/lookingGlass.js:745
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s 没有传出任何错误信息。"
 
-#: ../js/ui/lookingGlass.js:754
+#: ../js/ui/lookingGlass.js:751
 msgid "Hide Errors"
 msgstr "隐藏错误"
 
-#: ../js/ui/lookingGlass.js:758 ../js/ui/lookingGlass.js:818
+#: ../js/ui/lookingGlass.js:755 ../js/ui/lookingGlass.js:815
 msgid "Show Errors"
 msgstr "显示错误"
 
-#: ../js/ui/lookingGlass.js:767
+#: ../js/ui/lookingGlass.js:764
 msgid "Enabled"
 msgstr "已启用"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:770 ../src/gvc/gvc-mixer-control.c:1082
+#: ../js/ui/lookingGlass.js:767 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "已禁用"
 
-#: ../js/ui/lookingGlass.js:772
+#: ../js/ui/lookingGlass.js:769
 msgid "Error"
 msgstr "错误"
 
-#: ../js/ui/lookingGlass.js:774
+#: ../js/ui/lookingGlass.js:771
 msgid "Out of date"
 msgstr "过时"
 
-#: ../js/ui/lookingGlass.js:776
+#: ../js/ui/lookingGlass.js:773
 msgid "Downloading"
 msgstr "正在下载"
 
-#: ../js/ui/lookingGlass.js:800
+#: ../js/ui/lookingGlass.js:797
 msgid "View Source"
 msgstr "查看源"
 
-#: ../js/ui/lookingGlass.js:809
+#: ../js/ui/lookingGlass.js:806
 msgid "Web Page"
 msgstr "网页"
 
@@ -1024,11 +1061,11 @@ msgstr "打开"
 msgid "Remove"
 msgstr "移除"
 
-#: ../js/ui/messageTray.js:2038
+#: ../js/ui/messageTray.js:2052
 msgid "Message Tray"
 msgstr "消息托盘"
 
-#: ../js/ui/messageTray.js:2480
+#: ../js/ui/messageTray.js:2508
 msgid "System Information"
 msgstr "系统信息"
 
@@ -1073,19 +1110,6 @@ msgstr "活动"
 msgid "Top Bar"
 msgstr "顶栏"
 
-#: ../js/ui/placeDisplay.js:115
-#, c-format
-msgid "Failed to unmount '%s'"
-msgstr "卸载 %s 失败"
-
-#: ../js/ui/placeDisplay.js:118
-msgid "Retry"
-msgstr "重试"
-
-#: ../js/ui/placeDisplay.js:349
-msgid "PLACES & DEVICES"
-msgstr "位置和设备"
-
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
@@ -1101,17 +1125,17 @@ msgstr "请输入一个命令："
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:78
+#: ../js/ui/screenShield.js:79
 msgid "%A, %B %d"
 msgstr "%m月%d日%A"
 
-#: ../js/ui/screenShield.js:143
+#: ../js/ui/screenShield.js:144
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d 条新消息"
 
-#: ../js/ui/screenShield.js:145
+#: ../js/ui/screenShield.js:146
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1149,7 +1173,7 @@ msgstr "密码"
 msgid "Remember Password"
 msgstr "记住密码"
 
-#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:140
+#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:169
 msgid "Unlock"
 msgstr "解锁"
 
@@ -1325,11 +1349,11 @@ msgstr "请输入设备上的 PIN 码。"
 msgid "OK"
 msgstr "确定"
 
-#: ../js/ui/status/keyboard.js:170
+#: ../js/ui/status/keyboard.js:227
 msgid "Show Keyboard Layout"
 msgstr "显示键盘布局"
 
-#: ../js/ui/status/keyboard.js:175
+#: ../js/ui/status/keyboard.js:232
 msgid "Region and Language Settings"
 msgstr "区域和语言设置"
 
@@ -1556,67 +1580,67 @@ msgstr "音量"
 msgid "Microphone"
 msgstr "麦克风"
 
-#: ../js/ui/unlockDialog.js:147
+#: ../js/ui/unlockDialog.js:176
 msgid "Log in as another user"
 msgstr "以另一个用户身份登录"
 
-#: ../js/ui/userMenu.js:174
+#: ../js/ui/userMenu.js:175
 msgid "Available"
 msgstr "可用"
 
-#: ../js/ui/userMenu.js:177
+#: ../js/ui/userMenu.js:178
 msgid "Busy"
 msgstr "忙碌"
 
-#: ../js/ui/userMenu.js:180
+#: ../js/ui/userMenu.js:181
 msgid "Invisible"
 msgstr "隐身"
 
-#: ../js/ui/userMenu.js:183
+#: ../js/ui/userMenu.js:184
 msgid "Away"
 msgstr "离开"
 
-#: ../js/ui/userMenu.js:186
+#: ../js/ui/userMenu.js:187
 msgid "Idle"
 msgstr "空闲"
 
-#: ../js/ui/userMenu.js:189
+#: ../js/ui/userMenu.js:190
 msgid "Unavailable"
 msgstr "不可用"
 
-#: ../js/ui/userMenu.js:612 ../js/ui/userMenu.js:753
+#: ../js/ui/userMenu.js:613 ../js/ui/userMenu.js:754
 msgid "Switch User"
 msgstr "切换用户"
 
-#: ../js/ui/userMenu.js:613
+#: ../js/ui/userMenu.js:614
 msgid "Switch Session"
 msgstr "切换会话"
 
-#: ../js/ui/userMenu.js:737
+#: ../js/ui/userMenu.js:738
 msgid "Notifications"
 msgstr "提示"
 
-#: ../js/ui/userMenu.js:745
+#: ../js/ui/userMenu.js:746
 msgid "System Settings"
 msgstr "系统设置"
 
-#: ../js/ui/userMenu.js:758
+#: ../js/ui/userMenu.js:759
 msgid "Log Out"
 msgstr "注销"
 
-#: ../js/ui/userMenu.js:763
+#: ../js/ui/userMenu.js:764
 msgid "Lock"
 msgstr "锁定"
 
-#: ../js/ui/userMenu.js:778
+#: ../js/ui/userMenu.js:779
 msgid "Install Updates & Restart"
 msgstr "安装更新并重启"
 
-#: ../js/ui/userMenu.js:796
+#: ../js/ui/userMenu.js:797
 msgid "Your chat status will be set to busy"
 msgstr "您的聊天状态将被设置为忙碌"
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:798
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1624,19 +1648,19 @@ msgstr ""
 "提示现已禁用，聊天消息也同时被禁用。您的在线状态已被自动调整，以便他人知道您"
 "可能无法看到消息。"
 
-#: ../js/ui/viewSelector.js:86
+#: ../js/ui/viewSelector.js:85
 msgid "Windows"
 msgstr "窗口"
 
-#: ../js/ui/viewSelector.js:90
+#: ../js/ui/viewSelector.js:89
 msgid "Applications"
 msgstr "应用程序"
 
-#: ../js/ui/viewSelector.js:94 ../src/shell-util.c:250
+#: ../js/ui/viewSelector.js:93
 msgid "Search"
 msgstr "搜索"
 
-#: ../js/ui/wanda.js:123
+#: ../js/ui/wanda.js:119
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1645,12 +1669,12 @@ msgstr ""
 "抱歉，今天没有学问给你：\n"
 "%s"
 
-#: ../js/ui/wanda.js:127
+#: ../js/ui/wanda.js:123
 #, c-format
 msgid "%s the Oracle says"
 msgstr "预言家 %s 说"
 
-#: ../js/ui/wanda.js:168
+#: ../js/ui/wanda.js:164
 msgid "Your favorite Easter Egg"
 msgstr "您最爱的彩蛋"
 
@@ -1724,27 +1748,20 @@ msgstr "默认"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "认证对话框被用户驳回"
 
-#. Translators: this is the same string as the one found in
-#. * nautilus
-#: ../src/shell-util.c:94
-msgid "Home"
-msgstr "主目录"
+#~ msgid "Failed to unmount '%s'"
+#~ msgstr "卸载 %s 失败"
 
-#. Translators: this is the same string as the one found in
-#. * nautilus
-#: ../src/shell-util.c:104
-msgid "File System"
-msgstr "文件系统"
+#~ msgid "Retry"
+#~ msgstr "重试"
 
-#. Translators: the first string is the name of a gvfs
-#. * method, and the second string is a path. For
-#. * example, "Trash: some-directory". It means that the
-#. * directory called "some-directory" is in the trash.
-#.
-#: ../src/shell-util.c:300
-#, c-format
-msgid "%1$s: %2$s"
-msgstr "%1$s: %2$s"
+#~ msgid "PLACES & DEVICES"
+#~ msgstr "位置和设备"
+
+#~ msgid "Home"
+#~ msgstr "主目录"
+
+#~ msgid "%1$s: %2$s"
+#~ msgstr "%1$s: %2$s"
 
 #~ msgid "disabled OpenSearch providers"
 #~ msgstr "已禁用的 OpenSearch 提供商"
@@ -2036,9 +2053,6 @@ msgstr "%1$s: %2$s"
 
 #~ msgid "Opacity of the crosshairs"
 #~ msgstr "十字的不透明度"
-
-#~ msgid "Screen position"
-#~ msgstr "屏幕位置"
 
 #~ msgid "Scroll magnified contents beyond the edges of the desktop"
 #~ msgstr "在桌面边界以外滚动放大内容"
