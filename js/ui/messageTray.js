@@ -1868,6 +1868,9 @@ const MessageTray = new Lang.Class({
     },
 
     _onKeyboardVisibleChanged: function(layoutManager, keyboardVisible) {
+        if (this._keyboardVisible == keyboardVisible)
+            return;
+
         this._keyboardVisible = keyboardVisible;
 
         if (keyboardVisible)
