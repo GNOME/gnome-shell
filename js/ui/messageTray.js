@@ -1483,7 +1483,6 @@ const MessageTray = new Lang.Class({
         this._reNotifyAfterHideNotification = null;
         this._inFullscreen = false;
         this._desktopClone = null;
-        this._inCtrlAltTab = false;
 
         this._lightbox = new Lightbox.Lightbox(global.window_group,
                                                { inhibitEvents: true,
@@ -1530,6 +1529,10 @@ const MessageTray = new Lang.Class({
         this._trayDwellTimeoutId = 0;
         this._trayDwelling = false;
         this._trayDwellUserTime = 0;
+
+        Main.ctrlAltTabManager.addGroup(this._summary, _("Message Tray"), 'start-here-symbolic',
+                                        { focusCallback: Lang.bind(this, this.toggleAndNavigate),
+                                          sortGroup: CtrlAltTab.SortGroup.BOTTOM });
     },
 
     _checkTrayDwell: function(x, y) {
@@ -2085,10 +2088,6 @@ const MessageTray = new Lang.Class({
                     });
 
         if (this._overviewVisible) {
-            Main.ctrlAltTabManager.addGroup(this._summary, _("Message Tray"), 'start-here-symbolic',
-                                            { sortGroup: CtrlAltTab.SortGroup.BOTTOM });
-            this._inCtrlAltTab = true;
-        } else {
             this._lightbox.show();
         }
     },
@@ -2133,13 +2132,7 @@ const MessageTray = new Lang.Class({
         // which would happen if GrabHelper ungrabbed for us.
         // This is a no-op in that case.
         this._grabHelper.ungrab({ actor: this.actor });
-
-        if (this._inCtrlAltTab) {
-            Main.ctrlAltTabManager.removeGroup(this._summary);
-            this._inCtrlAltTab = false;
-        } else {
-            this._lightbox.hide();
-        }
+        this._lightbox.hide();
     },
 
     _hideDesktopClone: function(now) {
