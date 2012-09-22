@@ -620,9 +620,7 @@ const ThumbnailsBox = new Lang.Class({
         if (!source.realWindow && !source.shellWorkspaceLaunch && source != Main.xdndHandler)
             return DND.DragMotionResult.CONTINUE;
 
-        if (!Meta.prefs_get_dynamic_workspaces())
-            return DND.DragMotionResult.CONTINUE;
-
+        let canCreateWorkspaces = Meta.prefs_get_dynamic_workspaces();
         let spacing = this.actor.get_theme_node().get_length('spacing');
 
         this._dropWorkspace = -1;
@@ -647,7 +645,7 @@ const ThumbnailsBox = new Lang.Class({
             if (i == this._dropPlaceholderPos)
                 targetBottom += this._dropPlaceholder.get_height();
 
-            if (y > targetTop && y <= targetBottom && source != Main.xdndHandler) {
+            if (y > targetTop && y <= targetBottom && source != Main.xdndHandler && canCreateWorkspaces) {
                 placeholderPos = i;
                 break;
             } else if (y > targetBottom && y <= nextTargetTop) {
