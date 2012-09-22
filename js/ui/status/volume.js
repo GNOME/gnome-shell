@@ -63,10 +63,7 @@ const VolumeMenu = new Lang.Class({
         this.addMenuItem(this._inputTitle);
         this.addMenuItem(this._inputSlider);
 
-        if (this._control.get_state() == Gvc.MixerControlState.READY) {
-            this._readOutput();
-            this._readInput();
-        }
+        this._onControlStateChanged();
     },
 
     scroll: function(direction) {
@@ -95,6 +92,7 @@ const VolumeMenu = new Lang.Class({
         if (this._control.get_state() == Gvc.MixerControlState.READY) {
             this._readOutput();
             this._readInput();
+            this._maybeShowInput();
         } else {
             this.emit('icon-changed', null);
         }
