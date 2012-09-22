@@ -8,7 +8,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=mutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-08-06 23:35+0000\n"
-"PO-Revision-Date: 2012-08-08 12:12+0530\n"
+"PO-Revision-Date: 2012-09-22 23:31+0530\n"
 "Last-Translator: \n"
 "Language-Team: gu_IN <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -36,27 +36,26 @@ msgstr "વિન્ડો"
 
 #: ../src/50-mutter-windows.xml.in.h:2
 msgid "View split on left"
-msgstr ""
+msgstr "ડાબી બાજુએ અલગ કરેલ દૃશ્ય"
 
 #: ../src/50-mutter-windows.xml.in.h:3
 msgid "View split on right"
-msgstr ""
+msgstr "જમણી બાજુએ અલગ કરેલ દૃશ્ય"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
 #: ../src/compositor/compositor.c:492
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
-msgstr ""
-"સ્ક્રીન %d કે જે ડિસ્પ્લે \"%s\" પર છે તે વિન્ડો વ્યવસ્થાપકની પસંદગીને મેળવી શકાતી નથી\n"
+msgstr "સ્ક્રીન %i કે જે દર્શાવ \"%s\" પર છે તે બીજુ બનતુ સંચાલક પહેલેથી ચાલી રહ્યુ છે."
 
 #: ../src/core/bell.c:320
 msgid "Bell event"
-msgstr ""
+msgstr "બેલ ઘટના"
 
 #: ../src/core/core.c:157
 #, c-format
@@ -253,10 +252,10 @@ msgid "Failed to parse saved session file: %s\n"
 msgstr "સંગ્રહિત સત્રની ફાઈલ ને પદચ્છેદ કરવામાં ભૂલ: %s\n"
 
 #: ../src/core/session.c:1185
-#, fuzzy, c-format
+#, c-format
 #| msgid "<metacity_session> attribute seen but we already have the session ID"
 msgid "<mutter_session> attribute seen but we already have the session ID"
-msgstr "<metacity_session> લક્ષણ દેખાય છે પરંતુ આપણી પાસે પહેલેથી જ સત્ર ID છે"
+msgstr "<mutter_session> લક્ષણ દેખાય છે પરંતુ આપણી પાસે પહેલેથી જ સત્ર ID છે"
 
 #: ../src/core/session.c:1198 ../src/core/session.c:1273
 #: ../src/core/session.c:1305 ../src/core/session.c:1377
@@ -276,7 +275,6 @@ msgid "Unknown element %s"
 msgstr "અજાણી વસ્તુ %s"
 
 #: ../src/core/session.c:1809
-#, fuzzy
 #| msgid ""
 #| "These windows do not support \"save current setup\" and will have to be "
 #| "restarted manually next time you log in."
@@ -284,7 +282,7 @@ msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
 msgstr ""
-"આ બધી વિન્ડો \"વર્તમાન સુયોજનનો સંગ્રહ કરો\" ને આધાર આપતી નથી અને બીજી વખત તમે પ્રવેશ "
+"આ બધી વિન્ડો &quot;વર્તમાન સુયોજનનો સંગ્રહ કરો&quot; ને આધાર આપતી નથી અને બીજી વખત તમે પ્રવેશ "
 "કરો ત્યારે જાતે જ ફરી શરુ કરવું પડશે."
 
 #: ../src/core/util.c:80
@@ -366,10 +364,10 @@ msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "અયોગ્ય WM_TRANSIENT_FOR વિન્ડો 0x%lx એ %s માટે સ્પષ્ટ થયેલ છે.\n"
 
 #: ../src/core/window-props.c:1495
-#, fuzzy, c-format
+#, c-format
 #| msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
-msgstr "અયોગ્ય WM_TRANSIENT_FOR વિન્ડો 0x%lx એ %s માટે સ્પષ્ટ થયેલ છે.\n"
+msgstr "WM_TRANSIENT_FOR વિન્ડો 0x%lx એ %s માટે  લુપ બનાવશે.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -401,10 +399,9 @@ msgid "Mutter"
 msgstr "Mutter"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:1
-#, fuzzy
 #| msgid "Modifier to use for modified window click actions"
 msgid "Modifier to use for extended window management operations"
-msgstr "બદલેલી વિન્ડોની ક્લિક ક્રિયાઓ માટે વાપરવાનું બદલનાર"
+msgstr "વિસ્તરેલ વિન્ડો સંચાલન ક્રિયાઓ માટે વપરાતુ સંશોધક"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:2
 msgid ""
@@ -413,6 +410,9 @@ msgid ""
 "\"Windows key\" on PC hardware. It's expected that this binding either the "
 "default or set to the empty string."
 msgstr ""
+"આ કી \"overlay\" ને શરૂ કરશે, કે જે વિન્ડો ઝાંખી અને કાર્યક્રમ શરૂઆત સિસ્ટમનું સંયોજન છે. "
+"મૂળભૂત PC હાર્ડવેર પર \"Windows key\" ને લગતુ છે. તેને ઇચ્છા રાખેલ થે કે આ ક્યાંતો મૂળભૂત છે "
+"અથવા ખાલી શબ્દમાળામાં સુયોજિત છે."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid "Attach modal dialogs"
@@ -424,10 +424,12 @@ msgid ""
 "attached to the titlebar of the parent window and are moved together with "
 "the parent window."
 msgstr ""
+"જ્યારે true હોય, સ્વતંત્ર શીર્ષકપટ્ટીને લીધા કરતા, મોડલ સંવાદ મુખ્ય વિન્ડોની શીર્ષકપટ્ટી સાથે "
+"જોડાયેલ છે તેવુ દેખાય છે અને મુખ્ય વિન્ડો સાથે એકસાથે ખસેડેલ છે."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:5
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
+msgstr "જ્યારે સ્ક્રીન બાજુ પર વિન્ડોને પડતી મૂકી રહ્યા હોય ત્યારે ટાઇલીંગ સક્રિય કરો"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:6
 msgid ""
@@ -435,6 +437,9 @@ msgid ""
 "vertically and resizes them horizontally to cover half of the available "
 "area. Dropping windows on the top screen edge maximizes them completely."
 msgstr ""
+"જો સક્રિય હોય તો, ઊભી સ્ક્રીન બાજુ પર પડતી વિન્ડો તેઓને ઊભી રીતે મહત્તમ કરે છે અને ઉપલબ્ધ "
+"વિસ્તારમાં આડી રીતે આવરવા માટે આડી રીતે તેઓનું માપ બદલે છે. ટોચ સ્ક્રીન પર પડતી બાજુ પર પડતી "
+"વિન્ડોને તેઓને સંપૂર્ણપણે મહત્તમ કરે છે."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Workspaces are managed dynamically"
@@ -446,6 +451,9 @@ msgid ""
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
+"શું કામકરવાની જગ્યા ગતિશીલ રીતે સંચાલિત થયેલ છે તે નક્કી કરે છે અથવા શું ત્યા કામ કરવાની "
+"જગ્યાની સ્થિર સંખ્યા છે (org."
+"gnome.desktop.wm.preferences માં કામ કરવાની જગ્યા દ્દારા નક્કી થયેલ છે)."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Workspaces only on primary"
@@ -456,6 +464,8 @@ msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
 msgstr ""
+"શું કામ કરવાની જગ્યાને બધા મોનિટર પર વિન્ડો માટે અદલાબદલી થવી જોઇએ અથવા પ્રાથમિક મોનિટર પર "
+"ફક્ત વિન્ડો માટે."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "No tab popup"
@@ -466,16 +476,19 @@ msgid ""
 "Determines whether the use of popup and highlight frame should be disabled "
 "for window cycling."
 msgstr ""
+"શું પોપઅપ અને પ્રકાશિત ફ્રેમનો વપરાશ વિન્ડો સાયકલીંગ માટે નિષ્ક્રિય થવુ જોઇએ તે નક્કી કરે છે."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "Draggable border width"
-msgstr ""
+msgstr "ખેંચી શકાય તેવી સીમા પહોળાઇ"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
+"કુલ ખેંચી શકાય તેવી સીમાઓની સંખ્યા. જો થીમની દૃશ્યમાન સીમાઓ પૂરતી નથી, અદૃશ્ય સીમાઓ આ કિંમતને "
+"મેળવવા માટે ઉમેરાશે."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Select window from tab popup"
@@ -731,7 +744,7 @@ msgid "Gradients should have at least two colors"
 msgstr "ઢાળમાં ઓછામાં ઓછા બે રંગ હોવા જોઈએ"
 
 #: ../src/ui/theme.c:1201
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "GTK color specification must have a close bracket after the state, e.g. "
 #| "gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
@@ -739,8 +752,8 @@ msgid ""
 "GTK custom color specification must have color name and fallback in "
 "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
 msgstr ""
-"GTK રંગના સ્પષ્ટીકરણમાં સ્થિતિ પછી કૌંસ બંધ થવો જોઈએ દા.ત. gtk:fg[NORMAL] જ્યાં "
-"NORMAL સ્થિતિ છે; \"%s\" નો પદચ્છેદ કરી શકાય નહિં"
+"GTK વૈવિધ્ય રંગના સ્પષ્ટીકરણનું રંગ નામ હોવુ જ જોઇએ અને સ્થિતિ પછી કૌંસ બંધ થવો જોઈએ દા.ત. "
+"gtk:custom(foo,bar); \"%s\" નું પદચ્છેદ કરી શકાય નહિં"
 
 #: ../src/ui/theme.c:1217
 #, c-format
