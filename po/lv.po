@@ -9,33 +9,29 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: lv\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
-"&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-11 21:56+0000\n"
-"PO-Revision-Date: 2012-03-13 23:11+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=mutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-08-06 23:35+0000\n"
+"PO-Revision-Date: 2012-09-22 00:16+0200\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
+"Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
-"X-Generator: Lokalize 1.2\n"
-"Language: lv\n"
+"X-Generator: Lokalize 1.4\n"
 
 #: ../src/50-mutter-windows.xml.in.h:1
-#: ../src/50-mutter-windows.xml.in.h:3
-#| msgid "_Windows"
 msgid "Windows"
 msgstr "Logi"
 
 #: ../src/50-mutter-windows.xml.in.h:2
-#: ../src/50-mutter-windows.xml.in.h:1
 msgid "View split on left"
 msgstr "Izvietot kreisajā ekrāna pusē"
 
 #: ../src/50-mutter-windows.xml.in.h:3
-#: ../src/50-mutter-windows.xml.in.h:2
 msgid "View split on right"
 msgstr "Izvietot labajā ekrāna pusē"
 
@@ -46,55 +42,54 @@ msgstr "Izvietot labajā ekrāna pusē"
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
-msgstr "Cits kompozīcijas pārvaldnieks jau darbojas ekrānā %d displejā \"%s\"."
+msgstr "Cits kompozīcijas pārvaldnieks jau darbojas ekrānā %d displejā “%s”."
 
-#: ../src/core/bell.c:307
+#: ../src/core/bell.c:320
 msgid "Bell event"
 msgstr "Zvana notikums"
 
 #: ../src/core/core.c:157
 #, c-format
 msgid "Unknown window information request: %d"
-msgstr "Nezināms logu informācijas pieprasījums: %d"
-
-#: ../src/core/delete.c:111
-#, c-format
-msgid "<tt>%s</tt> is not responding."
-msgstr "<tt>%s</tt> nereaģē."
+msgstr "Nezināms logu informācijas pieprasījums — %d"
 
 #: ../src/core/delete.c:114
+#, c-format
+#| msgid "<tt>%s</tt> is not responding."
+msgid "%s is not responding."
+msgstr "%s nereaģē."
+
+#: ../src/core/delete.c:118
 msgid "Application is not responding."
 msgstr "Lietotne nereaģē."
 
-#: ../src/core/delete.c:119
+#: ../src/core/delete.c:123
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
-"Jūs varat uzgaidīt neilgu brīdi, līdz tā atgūstas, vai arī aizvērt to "
+"Var uzgaidīt neilgu brīdi, līdz tā atgūstas, vai arī aizvērt to "
 "piespiedu kārtā."
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Wait"
 msgstr "_Gaidīt"
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Force Quit"
 msgstr "Aizvērt _piespiedu kārtā"
 
-#: ../src/core/display.c:361
-#: ../src/core/display.c:365
+#: ../src/core/display.c:380
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Trūkst %s paplašinājuma, kas nepieciešams kompozicionēšanai"
 
-#: ../src/core/display.c:427
-#: ../src/core/display.c:431
+#: ../src/core/display.c:446
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "Neizdevās atvērt X logu sistēmas displeju '%s'\n"
+msgstr "Neizdevās atvērt X logu sistēmas displeju “%s”\n"
 
-#: ../src/core/keybindings.c:852
+#: ../src/core/keybindings.c:844
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -102,45 +97,44 @@ msgid ""
 msgstr ""
 "Kāda cita programma jau lieto taustiņu %s ar modificētājiem %x kā sasaisti\n"
 
-#: ../src/core/main.c:206
+#: ../src/core/main.c:196
 msgid "Disable connection to session manager"
-msgstr "Atslēgt savienojumu ar sesiju pārvaldnieku"
+msgstr "Deaktivēt savienojumu ar sesiju pārvaldnieku"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:202
 msgid "Replace the running window manager"
 msgstr "Aizvietot darbojošos logu pārvaldnieku"
 
-#: ../src/core/main.c:218
+#: ../src/core/main.c:208
 msgid "Specify session management ID"
-msgstr "Norādīt sesijas pārvaldības ID"
+msgstr "Norādiet sesiju pārvaldības ID"
 
-#: ../src/core/main.c:223
+#: ../src/core/main.c:213
 msgid "X Display to use"
 msgstr "Lietojamais X displejs"
 
-#: ../src/core/main.c:229
+#: ../src/core/main.c:219
 msgid "Initialize session from savefile"
-msgstr "Inicializēt sesiju no saglabātā faila"
+msgstr "Inicializēt sesiju no saglabātās datnes"
 
-#: ../src/core/main.c:235
+#: ../src/core/main.c:225
 msgid "Make X calls synchronous"
 msgstr "Padarīt X izsaukumus sinhronus"
 
-#: ../src/core/main.c:504
+#: ../src/core/main.c:494
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
-msgstr "Neizdevās noskanēt tēmu direktoriju: %s\n"
+msgstr "Neizdevās noskanēt motīvu direktoriju — %s\n"
 
-#: ../src/core/main.c:520
+#: ../src/core/main.c:510
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
 msgstr ""
-"Neizdevās atrast tēmu! Pārliecinieties, ka %s eksistē un satur parastās "
-"tēmas.\n"
+"Neizdevās atrast motīvu! Pārliecinieties, ka %s eksistē un satur parastos "
+"motīvus.\n"
 
 #: ../src/core/mutter.c:40
-#: ../src/core/mutter.c:42
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -156,122 +150,108 @@ msgstr ""
 "NOTEIKTAM NOLŪKAM.\n"
 
 #: ../src/core/mutter.c:54
-#: ../src/core/mutter.c:56
 msgid "Print version"
 msgstr "Parādīt versiju"
 
 #: ../src/core/mutter.c:60
-#: ../src/core/mutter.c:62
-msgid "Comma-separated list of compositor plugins"
-msgstr "Ar komatu atdalīts kompozīcijas spraudņu saraksts"
+msgid "Mutter plugin to use"
+msgstr "Izmantojamais mutter spraudnis"
 
-#: ../src/core/prefs.c:1077
-#: ../src/core/prefs.c:1067
+#: ../src/core/prefs.c:1065
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
-"Apvedceļi bojātām lietotnēm atslēgti. Dažas lietotnes var neuzvesties "
+"Apvedceļi bojātām lietotnēm ir deaktivēti. Dažas lietotnes var neuzvesties "
 "pareizi.\n"
 
-#: ../src/core/prefs.c:1152
-#: ../src/core/prefs.c:1142
-#, c-format, c-format
-#| msgid "Could not parse font description \"%s\" from GConf key %s\n"
+#: ../src/core/prefs.c:1140
+#, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
-msgstr "Neizdevās parsēt fonta aprakstu \"%s\" no GSettings atslēgas %s\n"
+msgstr "Neizdevās parsēt fonta aprakstu “%s” no GSettings atslēgas %s\n"
 
-#: ../src/core/prefs.c:1218
-#: ../src/core/prefs.c:1208
+#: ../src/core/prefs.c:1206
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
-"\"%s\", kas atrasta konfigurācijas datubāzē, nav derīga vērtība peles pogas "
+"“%s”, kas atrasta konfigurācijas datubāzē, nav derīga vērtība peles pogas "
 "modifikatoram\n"
 
-#: ../src/core/prefs.c:1736
-#: ../src/core/prefs.c:1720
+#: ../src/core/prefs.c:1724
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr ""
-"\"%s\", kas atrasta konfigurācijas datubāzē, nav derīga vērtība "
-"taustiņsasaistei \"%s\"\n"
+"“%s”, kas atrasta konfigurācijas datubāzē, nav derīga vērtība "
+"taustiņsasaistei “%s”\n"
 
-#: ../src/core/prefs.c:1833
-#: ../src/core/prefs.c:1817
+#: ../src/core/prefs.c:1821
 #, c-format
 msgid "Workspace %d"
 msgstr "Darbvieta %d"
 
-#: ../src/core/screen.c:730
-#: ../src/core/screen.c:741
+#: ../src/core/screen.c:652
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
-msgstr "Ekrāna %d displejs \"%s\" ir nederīgs\n"
+msgstr "Ekrāna %d displejs “%s“ nav derīgs\n"
 
-#: ../src/core/screen.c:746
-#: ../src/core/screen.c:757
+#: ../src/core/screen.c:668
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"Ekrāna %d displejam \"%s\" jau ir logu pārvaldnieks; mēģiniet lietot "
-"--replace "
-"iespēju, lai aizvietotu pašreizējo logu pārvaldnieku.\n"
+"Ekrāna %d displejam “%s” jau ir logu pārvaldnieks; mēģiniet lietot --"
+"replace iespēju, lai aizvietotu pašreizējo logu pārvaldnieku.\n"
 
-#: ../src/core/screen.c:773
-#: ../src/core/screen.c:784
+#: ../src/core/screen.c:695
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr "Neizdevās iegūt logu pārvaldnieka izvēli ekrāna %d displejā \"%s\"\n"
+msgstr "Neizdevās iegūt logu pārvaldnieka izvēli ekrāna %d displejā “%s”\n"
 
-#: ../src/core/screen.c:828
-#: ../src/core/screen.c:839
+#: ../src/core/screen.c:750
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Ekrāna %d displejam \"%s\" jau ir logu pārvaldnieks\n"
+msgstr "Ekrāna %d displejam “%s” jau ir logu pārvaldnieks\n"
 
-#: ../src/core/screen.c:1013
-#: ../src/core/screen.c:1024
+#: ../src/core/screen.c:935
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr "Neizdevās atlaist ekrānu %d uz displeja \"%s\"\n"
+msgstr "Neizdevās atlaist ekrānu %d uz displeja “%s”\n"
 
 #: ../src/core/session.c:843 ../src/core/session.c:850
 #, c-format
 msgid "Could not create directory '%s': %s\n"
-msgstr "Neizdevās izveidot mapi '%s': %s\n"
+msgstr "Neizdevās izveidot direktoriju “%s” — %s\n"
 
 #: ../src/core/session.c:860
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Neizdevās atvērt sesijas failu '%s' rakstīšanai: %s\n"
+msgstr "Neizdevās atvērt sesijas datni “%s” rakstīšanai — %s\n"
 
 #: ../src/core/session.c:1001
 #, c-format
 msgid "Error writing session file '%s': %s\n"
-msgstr "Kļūda, ierakstot sesijas failu '%s': %s\n"
+msgstr "Kļūda, ierakstot sesijas datni “%s” — %s\n"
 
 #: ../src/core/session.c:1006
 #, c-format
 msgid "Error closing session file '%s': %s\n"
-msgstr "Kļūda, aizverot sesijas failu '%s': %s\n"
+msgstr "Kļūda, aizverot sesijas datni “%s” — %s\n"
 
 #: ../src/core/session.c:1136
 #, c-format
 msgid "Failed to parse saved session file: %s\n"
-msgstr "Kļūda, parsējot saglabāto sesijas failu: %s\n"
+msgstr "Kļūda, parsējot saglabāto sesijas datni — %s\n"
 
 #: ../src/core/session.c:1185
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
-msgstr "<mutter_session> atribūts pamanits, bet mums jau ir sesijas ID"
+msgstr "<mutter_session> atribūts pamanīts, bet mums jau ir sesijas ID"
 
 #: ../src/core/session.c:1198 ../src/core/session.c:1273
 #: ../src/core/session.c:1305 ../src/core/session.c:1377
@@ -295,48 +275,47 @@ msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
 msgstr ""
-"Šie logi neatbalsta &quot;saglabāt pašreizējos iestatījumus&quot; un būs "
-"jāpārstartē pašrocīgi nākamreiz, kad pieteiksieties."
+"Šie logi neatbalsta “saglabāt pašreizējos iestatījumus” un būs "
+"jāpārstartē pašrocīgi nākamreiz, kad ierakstīsities."
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:80
 #, c-format
 msgid "Failed to open debug log: %s\n"
-msgstr "Neizdevās atvērt atkļūdošanas žurnālu: %s\n"
+msgstr "Neizdevās atvērt atkļūdošanas žurnālu — %s\n"
 
-#: ../src/core/util.c:121
+#: ../src/core/util.c:90
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Neizdevās fdopen() žurnāla failu %s: %s\n"
+msgstr "Neizdevās fdopen() žurnāla datni %s — %s\n"
 
-#: ../src/core/util.c:127
+#: ../src/core/util.c:96
 #, c-format
 msgid "Opened log file %s\n"
-msgstr "Atvērtais žurnāla fails %s\n"
+msgstr "Atvērtā žurnāla datne %s\n"
 
-#: ../src/core/util.c:146 ../src/tools/mutter-message.c:149
+#: ../src/core/util.c:115 ../src/tools/mutter-message.c:149
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
-msgstr "Mutter tika kompilēts bez vārdiskā režīma atbalsta\n"
+msgstr "Mutter tika kompilēts bez detalizētas izvades režīma atbalsta\n"
 
-#: ../src/core/util.c:290
+#: ../src/core/util.c:259
 msgid "Window manager: "
 msgstr "Logu pārvaldnieks: "
 
-#: ../src/core/util.c:438
+#: ../src/core/util.c:407
 msgid "Bug in window manager: "
 msgstr "Kļūda logu pārvaldniekā: "
 
-#: ../src/core/util.c:471
+#: ../src/core/util.c:438
 msgid "Window manager warning: "
 msgstr "Logu pārvaldnieka brīdinājums: "
 
-#: ../src/core/util.c:499
+#: ../src/core/util.c:466
 msgid "Window manager error: "
 msgstr "Logu pārvaldnieka kļūda: "
 
 #. first time through
-#: ../src/core/window.c:7224
-#: ../src/core/window.c:7145
+#: ../src/core/window.c:7234
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -352,35 +331,34 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7887
-#: ../src/core/window.c:7808
+#: ../src/core/window.c:7899
 #, c-format
 msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
-"d x %d and max size %d x %d; this doesn't make much sense.\n"
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
+"%d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
-"Logs %s iestata MWM padomu, ka tā izmērs nav maināms, bet iestata minimālo "
+"Logs %s iestata MWM norādi, ka tā izmērs nav maināms, bet iestata minimālo "
 "izmēru %d x %d un maksimālo izmēru %d x %d; tas ir diezgan dīvaini.\n"
 
-#: ../src/core/window-props.c:309
+#: ../src/core/window-props.c:310
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Lietotne iestatīja neīstu _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:426
+#: ../src/core/window-props.c:429
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (uz %s)"
 
-#: ../src/core/window-props.c:1481
+#: ../src/core/window-props.c:1484
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Nederīgs WM_TRANSIENT_FOR logs 0x%lx norādīts %s.\n"
 
-#: ../src/core/window-props.c:1492
+#: ../src/core/window-props.c:1495
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
-msgstr "WM_TRANSIENT_FOR logs 0x%lx priekš %s veidotu cilpu.\n"
+msgstr "WM_TRANSIENT_FOR logs 0x%lx priekš %s veidotu ciklu.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -391,7 +369,7 @@ msgid ""
 "This is most likely an application bug, not a window manager bug.\n"
 "The window has title=\"%s\" class=\"%s\" name=\"%s\"\n"
 msgstr ""
-"Logam 0x%lx ir rekvizīts %s,\n"
+"Logam 0x%lx ir īpašība %s,\n"
 "kam vajadzēja būt %s tipa formātā %d,\n"
 "bet īstenībā bija %s tipa formātā %d n_items %d\n"
 "Šī visdrīzāk ir lietotnes, nevis logu pārvaldnieka kļūda.\n"
@@ -400,102 +378,84 @@ msgstr ""
 #: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr "Rekvizīts %s logā 0x%lx saturēja nederīgu UTF-8\n"
+msgstr "Īpašība %s logā 0x%lx saturēja nederīgu UTF-8\n"
 
 #: ../src/core/xprops.c:494
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-"Rekvizīts %slogā 0x%lx saturēja nederīgu UTF-8 priekšmetam %d no saraksta\n"
+"Īpašība %s logā 0x%lx saturēja nederīgu UTF-8 vienumam %d no saraksta\n"
 
 #: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:1
-#: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid "Modifier to use for extended window management operations"
 msgstr "Modifikators, kuru lietot paplašinātām loga pārvaldības darbībām"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:2
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
 "\"Windows key\" on PC hardware. It's expected that this binding either the "
 "default or set to the empty string."
 msgstr ""
-"Šis taustiņš inicializēs \"pārklāšanu\", kas ir kombināciju loga pārskats un "
-"lietotnes palaišanas sistēma. Noklusētais parasti ir \"Windows taustiņš\" uz "
-"PC aparatūras. Tiek sagaidīts, ka šī sasaite ir vai nu noklusētā, vai tukša "
+"Šis taustiņš inicializēs “pārklāšanu”, kas ir kombināciju loga pārskats un "
+"lietotnes palaišanas sistēma. Noklusētais parasti ir “Windows taustiņš” uz "
+"PC aparatūras. Tiek sagaidīts, ka šī sasaite ir vai nu noklusējuma, vai tukša "
 "virkne."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:3
-#: ../src/org.gnome.mutter.gschema.xml.in.h:1
 msgid "Attach modal dialogs"
 msgstr "Piesaistīt modālos dialogus"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:4
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
 "attached to the titlebar of the parent window and are moved together with "
 "the parent window."
 msgstr ""
-"Ja patiess, vietā, lai būtu neatkarīgas virsraksta joslas, modālais dialogs "
+"Ja patiess, tā vietā, lai būtu neatkarīgas virsraksta joslas, modālais "
+"dialogs "
 "būs piesaistīts virsraksta joslai vecāka logam un tiks pārvietots kopā ar "
 "vecāka logu."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:5
-#: ../src/org.gnome.mutter.gschema.xml.in.h:9
-msgid "Live Hidden Windows"
-msgstr "Dzīvie slēptie logi"
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr "Aktivēt logu sānisko izklāšanu, kad to nomet uz ekrāna malas"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:6
-#: ../src/org.gnome.mutter.gschema.xml.in.h:3
-msgid ""
-"Determines whether hidden windows (i.e., minimized windows and windows on "
-"other workspaces than the current one) should be kept alive."
-msgstr ""
-"Nosaka, vai slēpto logu vajadzētu (t.i. minimizētie logi un logi, kas "
-"atrodas citās darbvietās) uzturēt pie dzīvības."
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:7
-msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr "Automātiski izklāt logu, kad to nomet uz ekrāna malas"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid ""
 "If enabled, dropping windows on vertical screen edges maximizes them "
 "vertically and resizes them horizontally to cover half of the available "
 "area. Dropping windows on the top screen edge maximizes them completely."
 msgstr ""
-"Logi, kas nomesti uz ekrāna labās vai kreisās malas, tiks izklāti pa visu "
-"ekrāna augstumu un pusi no pieejamā platuma, bet tie, kas nomesti uz "
+"Ja aktivēts, logi, kas nomesti uz ekrāna labās vai kreisās malas, tiks "
+"izklāti pa visu ekrāna augstumu pusē no pieejamā platuma, bet tie, kas "
+"nomesti uz "
 "augšējās malas, tiks izklāti pa visu ekrānu."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:9
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Workspaces are managed dynamically"
 msgstr "Darbvirsmas tiek pārvaldītas dinamiski"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid ""
 "Determines whether workspaces are managed dynamically or whether there's a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
 "Nosaka, vai darbvirsmas tiek pārvaldītas dinamiski, vai arī ir statisks "
-"darbvirsmu skaits (ko nosaka num-workspaces atslēga laukā org."
-"gnome.desktop.wm.preferences)."
+"darbvirsmu skaits (ko nosaka num-workspaces atslēga laukā org.gnome.desktop."
+"wm.preferences)."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:11
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Workspaces only on primary"
 msgstr "Darbvietas tikai uz galvenā"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
-#: ../src/org.gnome.mutter.gschema.xml.in.h:5
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
@@ -503,13 +463,11 @@ msgstr ""
 "Nosaka, vai darbvietu pārslēgšanai vajadzētu notikt visiem logiem visos "
 "monitoros, vai tikai logiem galvenajā monitorā."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 #: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "No tab popup"
 msgstr "Nerādīt logus pārslēgšanās laikā"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
-#: ../src/org.gnome.mutter.gschema.xml.in.h:4
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
 msgid ""
 "Determines whether the use of popup and highlight frame should be disabled "
 "for window cycling."
@@ -517,28 +475,23 @@ msgstr ""
 "Nosaka, vai atslēgt uzlecošo izvēlni ar logu attēliem un izvēles rāmi, kad "
 "notiek pārslēgšanās starp logiem ar tabulatora vai tildes taustiņiem."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
-#: ../src/org.gnome.mutter.gschema.xml.in.h:6
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "Draggable border width"
 msgstr "Velkams malas platums"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
-"Kopējo velkamo malu apjoms. Ja tēmas redzamās robežas nav pietiekamas, tiks "
+"Kopējo velkamo malu apjoms. Ja motīva redzamās robežas nav pietiekamas, tiks "
 "pievienotas neredzamas robežas, lai iegūtu šo vērtību."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:17
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
-#| msgid "Remove Window From Top"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Select window from tab popup"
 msgstr "Izvēlēties logu no tabulatora izvēlnes"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:18
-#: ../src/org.gnome.mutter.gschema.xml.in.h:2
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid "Cancel tab popup"
 msgstr "Atcelt logu rādīšanu"
 
@@ -546,61 +499,6 @@ msgstr "Atcelt logu rādīšanu"
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Lietojums: %s\n"
-
-#: ../src/ui/frames.c:1158
-#: ../src/ui/frames.c:1157
-msgid "Close Window"
-msgstr "Aizvērt logu"
-
-#: ../src/ui/frames.c:1161
-#: ../src/ui/frames.c:1160
-msgid "Window Menu"
-msgstr "Loga izvēlne"
-
-#: ../src/ui/frames.c:1164
-#: ../src/ui/frames.c:1163
-msgid "Minimize Window"
-msgstr "Minimizēt logu"
-
-#: ../src/ui/frames.c:1167
-#: ../src/ui/frames.c:1166
-msgid "Maximize Window"
-msgstr "Maksimizēt logu"
-
-#: ../src/ui/frames.c:1170
-#: ../src/ui/frames.c:1169
-msgid "Restore Window"
-msgstr "Atjaunot logu"
-
-#: ../src/ui/frames.c:1173
-#: ../src/ui/frames.c:1172
-msgid "Roll Up Window"
-msgstr "Uzrullēt logu"
-
-#: ../src/ui/frames.c:1176
-#: ../src/ui/frames.c:1175
-msgid "Unroll Window"
-msgstr "Norullēt logu"
-
-#: ../src/ui/frames.c:1179
-#: ../src/ui/frames.c:1178
-msgid "Keep Window On Top"
-msgstr "Turēt logu virspusē"
-
-#: ../src/ui/frames.c:1182
-#: ../src/ui/frames.c:1181
-msgid "Remove Window From Top"
-msgstr "Aizvākt logu no virspuses"
-
-#: ../src/ui/frames.c:1185
-#: ../src/ui/frames.c:1184
-msgid "Always On Visible Workspace"
-msgstr "Vienmēr redzamajā darbvietā"
-
-#: ../src/ui/frames.c:1188
-#: ../src/ui/frames.c:1187
-msgid "Put Window On Only One Workspace"
-msgstr "Turēt logu tikai vienā darbvietā"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:69
@@ -610,7 +508,7 @@ msgstr "Mi_nimizēt"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:71
 msgid "Ma_ximize"
-msgstr "Ma_ksimizēt"
+msgstr "Mak_simizēt"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:73
@@ -630,12 +528,12 @@ msgstr "_Norullēt"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:79
 msgid "_Move"
-msgstr "_Pārvietot"
+msgstr "Pār_vietot"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:81
 msgid "_Resize"
-msgstr "_Mainīt"
+msgstr "Mainīt izmē_ru"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:83
@@ -651,7 +549,7 @@ msgstr "Vienmēr _virspusē"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:90
 msgid "_Always on Visible Workspace"
-msgstr "Vienmēr uz redzamās d_arbvietas"
+msgstr "Vienmēr uz redz_amās darbvietas"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:92
@@ -801,290 +699,287 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:253
+#: ../src/ui/theme.c:234
 msgid "top"
 msgstr "augša"
 
-#: ../src/ui/theme.c:255
+#: ../src/ui/theme.c:236
 msgid "bottom"
 msgstr "apakša"
 
-#: ../src/ui/theme.c:257
+#: ../src/ui/theme.c:238
 msgid "left"
 msgstr "pa kreisi"
 
-#: ../src/ui/theme.c:259
+#: ../src/ui/theme.c:240
 msgid "right"
 msgstr "pa labi"
 
-#: ../src/ui/theme.c:286
+#: ../src/ui/theme.c:268
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
-msgstr "rāmja ģeometrija nenosaka \"%s\" dimensiju"
+msgstr "rāmja ģeometrija nenosaka “%s” dimensiju"
 
-#: ../src/ui/theme.c:305
+#: ../src/ui/theme.c:287
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
-msgstr "rāmja ģeometrija nenosaka dimensiju \"%s\" robežai \"%s\""
+msgstr "rāmja ģeometrija nenosaka dimensiju “%s” robežai “%s”"
 
-#: ../src/ui/theme.c:342
+#: ../src/ui/theme.c:324
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Pogas samērs %g nav saprātīgs"
 
-#: ../src/ui/theme.c:354
+#: ../src/ui/theme.c:336
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Rāmja ģeometrija nenosaka pogu izmēru"
 
-#: ../src/ui/theme.c:1067
+#: ../src/ui/theme.c:1049
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Krāsu pārejās ir jābūt vismaz divām krāsām"
 
-#: ../src/ui/theme.c:1219
+#: ../src/ui/theme.c:1201
 #, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
 "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
 msgstr ""
 "GTK pielāgotajā krāsu specifikācijā ir jābūt krāsas nosaukumam un atkāpšanās "
-"ceļam iekavās, piem., gtk:custom(foo,bar); neizdevās parsēt \"%s\""
+"ceļam iekavās, piemēram, gtk:custom(foo,bar); neizdevās parsēt “%s”"
 
-#: ../src/ui/theme.c:1235
+#: ../src/ui/theme.c:1217
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
 "_ are valid"
 msgstr ""
-"Nederīga rakstzīme '%c' iekš color_name parameter no gtk:custom, tikai "
-"A-Za-z0-9-_ ir derīgas"
+"Nederīga rakstzīme “%c” color_name parametrā no gtk:custom, ir derīgas tikai "
+"A-Za-z0-9-_"
 
-#: ../src/ui/theme.c:1249
+#: ../src/ui/theme.c:1231
 #, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
 "fit the format"
 msgstr ""
-"Gtk:custom formāts ir \"gtk:custom(color_name,fallback)\", \"%s\" neiekļaujas "
-"formātā"
+"Gtk:custom formāts ir “gtk:custom(color_name,fallback)”, “%s” "
+"neiekļaujas formātā"
 
-#: ../src/ui/theme.c:1294
+#: ../src/ui/theme.c:1276
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"GTK krāsas specifikācijā ir jābūt stāvoklim iekavās, piem., gtk:fg[NORMAL], "
-"kur NORMAL ir stāvoklis; neizdevās parsēt \"%s\""
+"GTK krāsas specifikācijā ir jābūt stāvoklim iekavās, piemēram, "
+"gtk:fg[NORMAL], "
+"kur NORMAL ir stāvoklis; neizdevās parsēt “%s”"
 
-#: ../src/ui/theme.c:1308
+#: ../src/ui/theme.c:1290
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"GTK krāsas specifikācijā ir jābūt kvadrātiekavām pēc stāvokļa, piem., "
-"gtk:fg[NORMAL], kur NORMAL ir stāvoklis; neizdevās parsēt \"%s\""
+"GTK krāsas specifikācijā ir jābūt kvadrātiekavām pēc stāvokļa, piemēram, "
+"gtk:fg[NORMAL], kur NORMAL ir stāvoklis; neizdevās parsēt “%s”"
 
-#: ../src/ui/theme.c:1319
+#: ../src/ui/theme.c:1301
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr "Nesaprotams stāvoklis \"%s\" krāsas specifikācijā"
+msgstr "Nesaprotams stāvoklis “%s” krāsas specifikācijā"
 
-#: ../src/ui/theme.c:1332
+#: ../src/ui/theme.c:1314
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr "Nesaprotams krāsas komponents \"%s\" krāsas specifikācijā"
+msgstr "Nesaprotams krāsas komponents “%s” krāsas specifikācijā"
 
-#: ../src/ui/theme.c:1361
+#: ../src/ui/theme.c:1343
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
-"Saplūšanas formāts ir \"blend/bg_color/fg_color/alpha\", \"%s\" neatbilst "
+"Saplūšanas formāts ir “blend/bg_color/fg_color/alpha”, “%s” neatbilst "
 "formātam"
 
-#: ../src/ui/theme.c:1372
+#: ../src/ui/theme.c:1354
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
-msgstr "Neizdevās parsēt alfa vērtību \"%s\" sapludinātajā krāsā"
+msgstr "Neizdevās parsēt alfa vērtību “%s” sapludinātajā krāsā"
 
-#: ../src/ui/theme.c:1382
+#: ../src/ui/theme.c:1364
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
-msgstr "Alfa vērtība \"%s\" sapludinātajā krāsā nav starp 0.0 un 1.0"
+msgstr "Alfa vērtība “%s” sapludinātajā krāsā nav starp 0.0 un 1.0"
 
-#: ../src/ui/theme.c:1429
+#: ../src/ui/theme.c:1411
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"Ēnošanas formāts ir \"shade/base_color/factor\", \"%s\" neatbilst formātam"
+msgstr "Ēnošanas formāts ir “shade/base_color/factor”, “%s” neatbilst formātam"
 
-#: ../src/ui/theme.c:1440
+#: ../src/ui/theme.c:1422
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr "Neizdevās parsēt ēnas faktoru \"%s\" ēnotajā krāsā"
+msgstr "Neizdevās parsēt ēnas koeficientu “%s” ēnotajā krāsā"
 
-#: ../src/ui/theme.c:1450
+#: ../src/ui/theme.c:1432
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "Ēnošanas faktors \"%s\" ēnotajā krāsā ir negatīvs"
+msgstr "Ēnošanas koeficients “%s” ēnotajā krāsā ir negatīvs"
 
-#: ../src/ui/theme.c:1479
+#: ../src/ui/theme.c:1461
 #, c-format
 msgid "Could not parse color \"%s\""
-msgstr "Neizdevās parsēt krāsu \"%s\""
+msgstr "Neizdevās parsēt krāsu “%s”"
 
-#: ../src/ui/theme.c:1790
+#: ../src/ui/theme.c:1778
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Koordinātu izteiksme satur rakstzīmi '%s', kas nav atļauta"
+msgstr "Koordinātu izteiksme satur rakstzīmi “%s”, kas nav atļauta"
 
-#: ../src/ui/theme.c:1817
+#: ../src/ui/theme.c:1805
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
-msgstr "Koordinātu izteiksme satur neparsējamu peldošā punkta skaitli '%s'"
+msgstr "Koordinātu izteiksme satur neparsējamu peldošā punkta skaitli “%s”"
 
-#: ../src/ui/theme.c:1831
+#: ../src/ui/theme.c:1819
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
-msgstr "Koordinātu izteiksme satur neparsējamu veselu skaitli '%s'"
+msgstr "Koordinātu izteiksme satur neparsējamu veselu skaitli “%s”"
 
-#: ../src/ui/theme.c:1953
+#: ../src/ui/theme.c:1940
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
-msgstr "Koordinātu izteiksme satur nezināmu operatoru šī teksta sākumā: \"%s\""
+msgstr "Koordinātu izteiksme satur nezināmu operatoru šī teksta sākumā — “%s”"
 
-#: ../src/ui/theme.c:2010
+#: ../src/ui/theme.c:1997
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Koordinātu izteiksme bija tukša vai nesaprasta"
 
-#: ../src/ui/theme.c:2121 ../src/ui/theme.c:2131 ../src/ui/theme.c:2165
+#: ../src/ui/theme.c:2110 ../src/ui/theme.c:2120 ../src/ui/theme.c:2154
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Koordinātu izteiksme noved pie dalīšanas ar nulli"
 
-#: ../src/ui/theme.c:2173
+#: ../src/ui/theme.c:2162
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
-"Koordinātu izteiksme mēģina lietot mod operatoru uz peldošā punkta skaitļa"
+"Koordinātu izteiksme mēģina lietot mod operatoru uz peldošā komata skaitļa"
 
-#: ../src/ui/theme.c:2229
+#: ../src/ui/theme.c:2218
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr "Koordinātu izteiksmei ir operators \"%s\", kur tika gaidīts operands"
+msgstr "Koordinātu izteiksmei ir operators “%s”, kur tika gaidīts operands"
 
-#: ../src/ui/theme.c:2238
+#: ../src/ui/theme.c:2227
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Koordinātu izteiksmei bija operands, kur tika gaidīts operators"
 
-#: ../src/ui/theme.c:2246
+#: ../src/ui/theme.c:2235
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Koordinātu izteiksme beidzās ar operatoru, nevis ar operandu"
 
-#: ../src/ui/theme.c:2256
+#: ../src/ui/theme.c:2245
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
-"Koordinātu izteiksmē ir operatoram \"%c\" sekojošais operators \"%c\" bez "
+"Koordinātu izteiksmē ir operatoram “%c” sekojošais operators “%c” bez "
 "operanda to starpā"
 
-#: ../src/ui/theme.c:2407 ../src/ui/theme.c:2452
+#: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
-msgstr "Koordinātu izteiksmē bija nezināms mainīgais vai konstante \"%s\""
+msgstr "Koordinātu izteiksmē bija nezināms mainīgais vai konstante “%s”"
 
-#: ../src/ui/theme.c:2506
+#: ../src/ui/theme.c:2495
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Koordinātu izteiksme pārpildīja parsera buferi."
 
-#: ../src/ui/theme.c:2535
+#: ../src/ui/theme.c:2524
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
-"Koordinātu izteiksmei bija aizvērtās iekavas bez nevienas atvērtās iekavas"
+"Koordinātu izteiksmei bija aizverošās iekavas bez nevienas atvērtās iekavas"
 
-#: ../src/ui/theme.c:2599
+#: ../src/ui/theme.c:2588
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
-"Koordinātu izteiksmei bija atvērtās iekavas bez nevienas aizvērtās iekavas"
+"Koordinātu izteiksmei bija atverošās iekavas bez nevienas aizvērtās iekavas"
 
-#: ../src/ui/theme.c:2610
+#: ../src/ui/theme.c:2599
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Šķiet, ka koordinātu izteiksmē nav ne operatoru, ne operandu"
 
-#: ../src/ui/theme.c:2822 ../src/ui/theme.c:2842 ../src/ui/theme.c:2862
+#: ../src/ui/theme.c:2812 ../src/ui/theme.c:2832 ../src/ui/theme.c:2852
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
-msgstr "Tēma saturēja izteiksmi, kas noveda pie kļūdas: %s\n"
+msgstr "Motīvs saturēja izteiksmi, kas noveda pie kļūdas — %s\n"
 
-#: ../src/ui/theme.c:4533
+#: ../src/ui/theme.c:4498
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"jebkas\"/> jābūt noteiktam "
-"šajā "
-"rāmja stilā"
+"šajā rāmja stilā"
 
-#: ../src/ui/theme.c:5066 ../src/ui/theme.c:5091
+#: ../src/ui/theme.c:5009 ../src/ui/theme.c:5034
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Iztrūkst <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"jebkas\"/>"
 
-#: ../src/ui/theme.c:5139
+#: ../src/ui/theme.c:5082
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
-msgstr "Neizdevās ielādēt tēmu \"%s\": %s\n"
+msgstr "Neizdevās ielādēt motīvu “%s” — %s\n"
 
-#: ../src/ui/theme.c:5275 ../src/ui/theme.c:5282 ../src/ui/theme.c:5289
-#: ../src/ui/theme.c:5296 ../src/ui/theme.c:5303
+#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr "Nav iestatīts <%s> tēmai \"%s\""
+msgstr "Nav iestatīts <%s> motīvam “%s”"
 
-#: ../src/ui/theme.c:5311
+#: ../src/ui/theme.c:5254
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"Nav rāmja stila kopas loga tipam \"%s\" tēmā \"%s\"; pievienojiet <window "
-"type=\""
-"%s\" style_set=\"jebkas\"/> elementu"
+"Nav rāmja stila kopas loga tipam “%s” motīvā “%s”; pievienojiet <window "
+"type=\"%s\" style_set=\"jebkas\"/> elementu"
 
-#: ../src/ui/theme.c:5709 ../src/ui/theme.c:5771 ../src/ui/theme.c:5834
+#: ../src/ui/theme.c:5650 ../src/ui/theme.c:5712 ../src/ui/theme.c:5775
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"Lietotāja definētajām konstantēm jāsākas ar lielo burtu; \"%s\" nesākas"
+msgstr "Lietotāja definētajām konstantēm jāsākas ar lielo burtu; “%s” tāds nav"
 
-#: ../src/ui/theme.c:5717 ../src/ui/theme.c:5779 ../src/ui/theme.c:5842
+#: ../src/ui/theme.c:5658 ../src/ui/theme.c:5720 ../src/ui/theme.c:5783
 #, c-format
 msgid "Constant \"%s\" has already been defined"
-msgstr "Konstante \"%s\" jau tikusi definēta"
+msgstr "Konstante “%s” jau tika definēta"
 
 #. Translators: This means that an attribute which should have been found
 #. * on an XML element was not in fact found.
@@ -1092,52 +987,52 @@ msgstr "Konstante \"%s\" jau tikusi definēta"
 #: ../src/ui/theme-parser.c:236
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr "Nav \"%s\" atribūta elementam <%s>"
+msgstr "Nav “%s” atribūta elementam <%s>"
 
 #: ../src/ui/theme-parser.c:265 ../src/ui/theme-parser.c:283
 #, c-format
 msgid "Line %d character %d: %s"
-msgstr "Rinda %d rakstzīme %d: %s"
+msgstr "Rinda %d rakstzīme %d — %s"
 
 #: ../src/ui/theme-parser.c:479
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr "Atribūts \"%s\" atkārtots divreiz vienam <%s> elementam"
+msgstr "Atribūts “%s” atkārtojas divreiz tajā pašā <%s> elementā"
 
 #: ../src/ui/theme-parser.c:503 ../src/ui/theme-parser.c:552
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr "Atribūts \"%s\" ir nederīgs <%s> elementam šajā kontekstā"
+msgstr "Atribūts “%s” ir nederīgs <%s> elementam šajā kontekstā"
 
 #: ../src/ui/theme-parser.c:594
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr "Neizdevās parsēt \"%s\" kā veselu skaitli"
+msgstr "Neizdevās parsēt “%s” kā veselu skaitli"
 
 #: ../src/ui/theme-parser.c:603 ../src/ui/theme-parser.c:658
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "Nesaprotamas sekojošās rakstzīmes \"%s\" virknē \"%s\""
+msgstr "Nesaprotamas sekojošās rakstzīmes “%s” virknē “%s”"
 
 #: ../src/ui/theme-parser.c:613
 #, c-format
 msgid "Integer %ld must be positive"
-msgstr "Skaitlim %ld jābūt pozitīvam"
+msgstr "Veselajam skaitlim %ld jābūt pozitīvam"
 
 #: ../src/ui/theme-parser.c:621
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr "Skaitlis %ld ir pārāk liels, pašreizējais maksimums ir %d"
+msgstr "Veselais skaitlis %ld ir pārāk liels, pašreizējais maksimums ir %d"
 
 #: ../src/ui/theme-parser.c:649 ../src/ui/theme-parser.c:765
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
-msgstr "Neizdevās parsēt \"%s\" kā peldošā punkta skaitli"
+msgstr "Neizdevās parsēt “%s” kā peldošā komata skaitli"
 
 #: ../src/ui/theme-parser.c:680 ../src/ui/theme-parser.c:708
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr "Vērtībai jābūt \"true\" vai \"false\", nevis \"%s\""
+msgstr "Būla vērtībai jābūt \"true\" vai \"false\", nevis “%s”"
 
 #: ../src/ui/theme-parser.c:735
 #, c-format
@@ -1156,25 +1051,25 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"Nederīgs virsraksta mērogs \"%s\" (var būt: xx-"
-"small,x-small,small,medium,large,x-large,xx-large)\n"
+"Nederīgs virsraksta mērogs “%s” (var būt xx-small,x-small,small,medium,"
+"large,x-large,xx-large)\n"
 
 #: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
 #: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
 #, c-format
 msgid "<%s> name \"%s\" used a second time"
-msgstr "<%s> vārds \"%s\" lietots otru reizi"
+msgstr "<%s> nosaukums “%s” lietots otru reizi"
 
 #: ../src/ui/theme-parser.c:1031 ../src/ui/theme-parser.c:1128
 #: ../src/ui/theme-parser.c:1231
 #, c-format
 msgid "<%s> parent \"%s\" has not been defined"
-msgstr "<%s> vecāks \"%s\" nav ticis definēts"
+msgstr "<%s> vecāks “%s” netika definēts"
 
 #: ../src/ui/theme-parser.c:1141
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "<%s> ģeometrija \"%s\" nav tikusi definēta"
+msgstr "<%s> ģeometrija “%s” netika definēta"
 
 #: ../src/ui/theme-parser.c:1154
 #, c-format
@@ -1188,17 +1083,17 @@ msgstr "Lai alfa vērtībai būtu jēga, jānorāda fons"
 #: ../src/ui/theme-parser.c:1264
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr "Nezināms tips \"%s\" <%s> elementam"
+msgstr "Nezināms tips “%s” elementam <%s>"
 
 #: ../src/ui/theme-parser.c:1275
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "Nezināms style_set \"%s\" <%s> elementam"
+msgstr "Nezināms style_set “%s” elementam <%s>"
 
 #: ../src/ui/theme-parser.c:1283
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr "Loga tipam \"%s\" jau ir piešķirta stila kopa"
+msgstr "Loga tipam “%s” jau ir piešķirta stila kopa"
 
 #: ../src/ui/theme-parser.c:1313 ../src/ui/theme-parser.c:1377
 #: ../src/ui/theme-parser.c:1603 ../src/ui/theme-parser.c:2838
@@ -1207,7 +1102,7 @@ msgstr "Loga tipam \"%s\" jau ir piešķirta stila kopa"
 #: ../src/ui/theme-parser.c:3349 ../src/ui/theme-parser.c:3387
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr "Elements <%s> netiek atļauts zem <%s>"
+msgstr "Elements <%s> nav atļauts zem <%s>"
 
 #: ../src/ui/theme-parser.c:1427 ../src/ui/theme-parser.c:1441
 #: ../src/ui/theme-parser.c:1486
@@ -1215,74 +1110,74 @@ msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
 msgstr ""
-"Nevar noteikt gan \"button_width\"/\"button_height\", gan \"aspect_ratio\" "
+"Nevar norādīt gan “button_width” / “button_height”, gan “aspect_ratio” "
 "pogām"
 
 #: ../src/ui/theme-parser.c:1450
 #, c-format
 msgid "Distance \"%s\" is unknown"
-msgstr "Attālums \"%s\" ir nezināms"
+msgstr "Attālums “%s” ir nezināms"
 
 #: ../src/ui/theme-parser.c:1495
 #, c-format
 msgid "Aspect ratio \"%s\" is unknown"
-msgstr "Samērs \"%s\" ir nezināms"
+msgstr "Samērs “%s” ir nezināms"
 
 #: ../src/ui/theme-parser.c:1557
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr "Robeža \"%s\" ir nezināma"
+msgstr "Robeža “%s” ir nezināma"
 
 #: ../src/ui/theme-parser.c:1868
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-msgstr "Nav \"start_angle\" vai \"from\" atribūta elementam <%s>"
+msgstr "Nav “start_angle” vai “from” atribūta elementam <%s>"
 
 #: ../src/ui/theme-parser.c:1875
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-msgstr "Nav \"extent_angle\" vai \"to\" atribūta elementam <%s>"
+msgstr "Nav “extent_angle” vai “to” atribūta elementam <%s>"
 
 #: ../src/ui/theme-parser.c:2115
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr "Nesaprotama krāsu pārejas tipa vērtība \"%s\""
+msgstr "Nesaprotama krāsu pārejas tipa vērtība “%s”"
 
 #: ../src/ui/theme-parser.c:2193 ../src/ui/theme-parser.c:2568
 #, c-format
 msgid "Did not understand fill type \"%s\" for <%s> element"
-msgstr "Nesaprotams aizpildījuma tips \"%s\" <%s> elementam"
+msgstr "Nesaprotams aizpildījuma tips “%s” elementam <%s>"
 
 #: ../src/ui/theme-parser.c:2360 ../src/ui/theme-parser.c:2443
 #: ../src/ui/theme-parser.c:2506
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "Nesaprotams stāvoklis \"%s\" elementam <%s>"
+msgstr "Nesaprotams stāvoklis “%s” elementam <%s>"
 
 #: ../src/ui/theme-parser.c:2370 ../src/ui/theme-parser.c:2453
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "Nesaprotama ēna \"%s\" elementam <%s>"
+msgstr "Nesaprotama ēna “%s” elementam <%s>"
 
 #: ../src/ui/theme-parser.c:2380
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "Nesaprotama bulta \"%s\" elementam <%s>"
+msgstr "Nesaprotama bulta “%s” elementam <%s>"
 
 #: ../src/ui/theme-parser.c:2694 ../src/ui/theme-parser.c:2790
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr "Neviens <draw_ops> ar nosaukumu \"%s\" nav ticis definēts"
+msgstr "Neviens <draw_ops> ar nosaukumu “%s” netika definēts"
 
 #: ../src/ui/theme-parser.c:2706 ../src/ui/theme-parser.c:2802
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
-msgstr "Iekļaujot šeit draw_ops \"%s\", rastos riņķveida atsauce"
+msgstr "Iekļaujot šeit draw_ops “%s”, rastos riņķveida atsauce"
 
 #: ../src/ui/theme-parser.c:2917
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr "Nezināma pozīcija \"%s\" rāmja daļai"
+msgstr "Nezināma pozīcija “%s” rāmja daļai"
 
 #: ../src/ui/theme-parser.c:2925
 #, c-format
@@ -1292,22 +1187,22 @@ msgstr "Rāmja stilam jau ir daļa %s pozīcijā"
 #: ../src/ui/theme-parser.c:2942 ../src/ui/theme-parser.c:3019
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "Neviens <draw_ops> ar nosaukumu \"%s\" nav ticis definēts"
+msgstr "Neviens <draw_ops> ar nosaukumu “%s” netika definēts"
 
 #: ../src/ui/theme-parser.c:2972
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr "Nezināma pogas funkcija \"%s\""
+msgstr "Nezināma pogas funkcija “%s“"
 
 #: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr "Pogas funkcija \"%s\" neeksistē šajā versijā (%d, nepieciešama %d)"
+msgstr "Pogas funkcija “%s” šajā versijā neeksistē (%d, bet vajag %d)"
 
 #: ../src/ui/theme-parser.c:2994
 #, c-format
 msgid "Unknown state \"%s\" for button"
-msgstr "Nezināms pogas stāvoklis \"%s\""
+msgstr "Nezināms pogas stāvoklis “%s”"
 
 #: ../src/ui/theme-parser.c:3002
 #, c-format
@@ -1317,22 +1212,22 @@ msgstr "Rāmja stilam jau ir poga funkcijas %s stāvoklim %s"
 #: ../src/ui/theme-parser.c:3073
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr "\"%s\" nav derīga vērtība fokusa atribūtam"
+msgstr "“%s” nav derīga vērtība fokusa atribūtam"
 
 #: ../src/ui/theme-parser.c:3082
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr "\"%s\" nav derīga vērtība stāvokļa atribūtam"
+msgstr "“%s” nav derīga vērtība stāvokļa atribūtam"
 
 #: ../src/ui/theme-parser.c:3092
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr "Stils \"%s\" nav ticis definēts"
+msgstr "Stils “%s” netika definēts"
 
 #: ../src/ui/theme-parser.c:3113 ../src/ui/theme-parser.c:3136
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr "\"%s\" nav derīga vērtība izmēra maiņas atribūtam"
+msgstr "“%s” nav derīga vērtība izmēra maiņas atribūtam"
 
 #: ../src/ui/theme-parser.c:3147
 #, c-format
@@ -1340,7 +1235,7 @@ msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr ""
-"Elementam <%s> nevajadzētu būt \"resize\" atribūtam maksimizētos/ēnotos "
+"Elementam <%s> nevajadzētu būt “resize” atribūtam maksimizētos/ēnotos "
 "stāvokļos"
 
 #: ../src/ui/theme-parser.c:3161
@@ -1348,7 +1243,7 @@ msgstr ""
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
-"Elementam <%s> nevajadzētu būt \"resize\" atribūtam maksimizētajos stāvokļos"
+"Elementam <%s> nevajadzētu būt “resize” atribūtam maksimizētajos stāvokļos"
 
 #: ../src/ui/theme-parser.c:3175 ../src/ui/theme-parser.c:3222
 #, c-format
@@ -1367,7 +1262,8 @@ msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Nevar būt divi draw_ops <piece> elementam (tēma noteica draw_ops atribūtu un "
+"Nevar būt divi draw_ops <piece> elementam (motīvs noteica draw_ops atribūtu "
+"un "
 "arī <draw_ops> elementu, vai noteica divus elementus)"
 
 #: ../src/ui/theme-parser.c:3332
@@ -1375,7 +1271,7 @@ msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Nevar būt divi draw_ops <button> elementam (tēma noteica draw_ops atribūtu "
+"Nevar būt divi draw_ops <button> elementam (motīvs noteica draw_ops atribūtu "
 "un arī <draw_ops> elementu, vai noteica divus elementus)"
 
 #: ../src/ui/theme-parser.c:3370
@@ -1383,61 +1279,61 @@ msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Nevar būt divi draw_ops <menu_icon> elementam (tēma noteica draw_ops "
+"Nevar būt divi draw_ops <menu_icon> elementam (motīvs noteica draw_ops "
 "atribūtu un arī <draw_ops> elementu, vai noteica divus elementus)"
 
 #: ../src/ui/theme-parser.c:3434
 #, c-format
 msgid "Bad version specification '%s'"
-msgstr "Slikta versijas specifikācija '%s'"
+msgstr "Slikta versijas specifikācija “%s”"
 
 #: ../src/ui/theme-parser.c:3507
 msgid ""
 "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
 "theme-2.xml"
 msgstr ""
-"\"version\" atribūtu nevar izmantot iekš metacity-theme-1.xml vai metacity-"
+"“version” atribūtu nevar izmantot iekš metacity-theme-1.xml vai metacity-"
 "theme-2.xml"
 
 #: ../src/ui/theme-parser.c:3530
 #, c-format
 msgid "Theme requires version %s but latest supported theme version is %d.%d"
 msgstr ""
-"Šai tēmai ir nepieciešama versija %s, bet jaunākā atbalstītā tēmas versija "
+"Šim motīvam ir vajadzīga versija %s, bet jaunākā atbalstītā motīva versija "
 "ir %d.%d"
 
 #: ../src/ui/theme-parser.c:3562
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr "Ārējam tēmas elementam jābūt <metacity_theme>, nevis <%s>"
+msgstr "Ārējam motīva elementam jābūt <metacity_theme>, nevis <%s>"
 
 #: ../src/ui/theme-parser.c:3582
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr "Elements <%s> netiek atļauts elementā name/author/date/description"
+msgstr "Elements <%s> nav atļauts elementā name/author/date/description"
 
 #: ../src/ui/theme-parser.c:3587
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr "Elements <%s> netiek atļauts elementā <constant>"
+msgstr "Elements <%s> nav atļauts elementā <constant>"
 
 #: ../src/ui/theme-parser.c:3599
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "Elements <%s> netiek atļauts distance/border/aspect_ratio elementā"
+msgstr "Elements <%s> nav atļauts elementā distance/border/aspect_ratio"
 
 #: ../src/ui/theme-parser.c:3621
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr "Elements <%s> netiek atļauts zīmēšanas operāciju elementā"
+msgstr "Elements <%s> nav atļauts zīmēšanas operāciju elementā"
 
 #: ../src/ui/theme-parser.c:3631 ../src/ui/theme-parser.c:3661
 #: ../src/ui/theme-parser.c:3666 ../src/ui/theme-parser.c:3671
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr "Elements <%s> netiek atļauts elementā <%s>"
+msgstr "Elements <%s> nav atļauts elementā <%s>"
 
 #: ../src/ui/theme-parser.c:3899
 msgid "No draw_ops provided for frame piece"
@@ -1457,16 +1353,16 @@ msgstr "Teksts nav atļauts elementā <%s>"
 #: ../src/ui/theme-parser.c:4074
 #, c-format
 msgid "<%s> specified twice for this theme"
-msgstr "<%s> šai tēmai noteikts divreiz"
+msgstr "<%s> šim motīvam norādīts divreiz"
 
-#: ../src/ui/theme-parser.c:4348
+#: ../src/ui/theme-parser.c:4334
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
-msgstr "Neizdevās atrast derīgu faila nosaukumu tēmai %s\n"
+msgstr "Neizdevās atrast derīgu datnes nosaukumu motīvam %s\n"
 
 #: ../src/ui/theme-viewer.c:99
 msgid "_Windows"
-msgstr "_Windows"
+msgstr "_Logi"
 
 #: ../src/ui/theme-viewer.c:100
 msgid "_Dialog"
@@ -1474,7 +1370,7 @@ msgstr "_Dialoglodziņš"
 
 #: ../src/ui/theme-viewer.c:101
 msgid "_Modal dialog"
-msgstr "_Modālais dialogs"
+msgstr "_Modālais dialoglodziņš"
 
 #: ../src/ui/theme-viewer.c:102
 msgid "_Utility"
@@ -1510,19 +1406,19 @@ msgstr "Darbvi_rsma"
 
 #: ../src/ui/theme-viewer.c:115
 msgid "Open another one of these windows"
-msgstr "Atvērt vēlvienu no šiem logiem"
+msgstr "Atvērt vēl vienu no šiem logiem"
 
 #: ../src/ui/theme-viewer.c:117
 msgid "This is a demo button with an 'open' icon"
-msgstr "Šī ir demo poga ar 'atvērt' ikonu"
+msgstr "Šī ir demo poga ar “atvērt” ikonu"
 
 #: ../src/ui/theme-viewer.c:119
 msgid "This is a demo button with a 'quit' icon"
-msgstr "Šī ir demo poga ar 'aizvērt' ikonu"
+msgstr "Šī ir demo poga ar “aizvērt” ikonu"
 
 #: ../src/ui/theme-viewer.c:248
 msgid "This is a sample message in a sample dialog"
-msgstr "Šis ir paraugpaziņojums parauga dialogā"
+msgstr "Šis ir paraugpaziņojums parauga dialoglodziņā"
 
 #: ../src/ui/theme-viewer.c:328
 #, c-format
@@ -1543,11 +1439,11 @@ msgstr "Normāls lietotnes logs"
 
 #: ../src/ui/theme-viewer.c:386
 msgid "Dialog Box"
-msgstr "Dialoglodziņš"
+msgstr "Dialoglodziņa kaste"
 
 #: ../src/ui/theme-viewer.c:390
 msgid "Modal Dialog Box"
-msgstr "Modālais dialoglodziņš"
+msgstr "Modālā dialoglodziņa kaste"
 
 #: ../src/ui/theme-viewer.c:394
 msgid "Utility Palette"
@@ -1563,7 +1459,7 @@ msgstr "Apmale"
 
 #: ../src/ui/theme-viewer.c:406
 msgid "Attached Modal Dialog"
-msgstr "Piesaistītais modālais dialogs"
+msgstr "Piesaistītais modālais dialoglodziņš"
 
 #: ../src/ui/theme-viewer.c:739
 #, c-format
@@ -1578,17 +1474,17 @@ msgstr "%g milisekundes, lai uzzīmētu loga rāmi"
 #: ../src/ui/theme-viewer.c:813
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
-msgstr "Pielietojums: metacity-theme-viewer [TĒMASNOSAUKUMS]\n"
+msgstr "Pielietojums: metacity-theme-viewer [MOTĪVANOSAUKUMS]\n"
 
 #: ../src/ui/theme-viewer.c:820
 #, c-format
 msgid "Error loading theme: %s\n"
-msgstr "Kļūda, ielādējot tēmu: %s\n"
+msgstr "Kļūda, ielādējot motīvu — %s\n"
 
 #: ../src/ui/theme-viewer.c:826
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Tēma \"%s\" ielādēta \"%g\"sekundēs\n"
+msgstr "Motīvs “%s” ielādēts %g sekundēs\n"
 
 #: ../src/ui/theme-viewer.c:870
 msgid "Normal Title Font"
@@ -1621,8 +1517,8 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
-"Uzzīmēju %d kadrus %g klienta puses sekundēs (%g milisekundes uz kadru) un %"
-"g sekundēs pēc ierastā laika, ieskaitot X servera resursus (%g milisekundes "
+"Uzzīmēja %d kadrus %g klienta puses sekundēs (%g milisekundes uz kadru) un "
+"%g sekundēs pēc ierastā laika, ieskaitot X servera resursus (%g milisekundes "
 "uz kadru)\n"
 
 #: ../src/ui/theme-viewer.c:1266
@@ -1645,7 +1541,7 @@ msgstr "Tika gaidīta kļūda %d, bet saņemta kļūda %d"
 #: ../src/ui/theme-viewer.c:1280
 #, c-format
 msgid "Error not expected but one was returned: %s"
-msgstr "Kļūda netika gaidīta, taču tika saņemta: %s"
+msgstr "Kļūda netika gaidīta, taču tika saņemta — %s"
 
 #: ../src/ui/theme-viewer.c:1284
 #, c-format
@@ -1661,6 +1557,52 @@ msgstr "y vērtība bija %d, tika gaidīta %d"
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)\n"
+
+#~ msgid "Comma-separated list of compositor plugins"
+#~ msgstr "Ar komatu atdalīts kompozīcijas spraudņu saraksts"
+
+#~ msgid "Live Hidden Windows"
+#~ msgstr "Dzīvie slēptie logi"
+
+#~ msgid ""
+#~ "Determines whether hidden windows (i.e., minimized windows and windows on "
+#~ "other workspaces than the current one) should be kept alive."
+#~ msgstr ""
+#~ "Nosaka, vai slēpto logu vajadzētu (t.i. minimizētie logi un logi, kas "
+#~ "atrodas citās darbvietās) uzturēt pie dzīvības."
+
+#~ msgid "Close Window"
+#~ msgstr "Aizvērt logu"
+
+#~ msgid "Window Menu"
+#~ msgstr "Loga izvēlne"
+
+#~ msgid "Minimize Window"
+#~ msgstr "Minimizēt logu"
+
+#~ msgid "Maximize Window"
+#~ msgstr "Maksimizēt logu"
+
+#~ msgid "Restore Window"
+#~ msgstr "Atjaunot logu"
+
+#~ msgid "Roll Up Window"
+#~ msgstr "Uzrullēt logu"
+
+#~ msgid "Unroll Window"
+#~ msgstr "Norullēt logu"
+
+#~ msgid "Keep Window On Top"
+#~ msgstr "Turēt logu virspusē"
+
+#~ msgid "Remove Window From Top"
+#~ msgstr "Aizvākt logu no virspuses"
+
+#~ msgid "Always On Visible Workspace"
+#~ msgstr "Vienmēr redzamajā darbvietā"
+
+#~ msgid "Put Window On Only One Workspace"
+#~ msgstr "Turēt logu tikai vienā darbvietā"
 
 #~ msgid "Switch to workspace 1"
 #~ msgstr "Pārslēgties uz 1. darbvietu"
@@ -1920,8 +1862,9 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ msgstr "GConf atslēga \"%s\" ir iestatīta uz nederīgu tipu\n"
 
 #~ msgid "GConf key %s is already in use and can't be used to override %s\n"
-#~ msgstr "GConf atslēga \"%s\" jau tiek izmantota un to nevar izmantot, lai  pārrakstītu "
-#~ "%s\n"
+#~ msgstr ""
+#~ "GConf atslēga \"%s\" jau tiek izmantota un to nevar izmantot, lai  "
+#~ "pārrakstītu %s\n"
 
 #~ msgid "Can't override GConf key, %s not found\n"
 #~ msgstr "Nevar pārrakstīt GConf atslēgu, %s nav atrasts\n"
@@ -1949,7 +1892,8 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 
 #~ msgid ""
 #~ "Error launching metacity-dialog to ask about killing an application: %s\n"
-#~ msgstr "Kļūda palaižot metacity-dialogu, lai pavaicātu par šīs aplikācijas "
+#~ msgstr ""
+#~ "Kļūda palaižot metacity-dialogu, lai pavaicātu par šīs aplikācijas "
 #~ "nokaušanu: %s\n"
 
 #~ msgid "Failed to get hostname: %s\n"
@@ -1987,8 +1931,9 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ "Formāts izskatās kā \"<Control>a\" vai \"<Shift><Alt>F1\".\n"
 #~ "\n"
 #~ "Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī "
-#~ "saīsinājumus, tādus kā \"<Ctl>\" un \"<Ctrl>\". Ja jūs iestatīsit iespēju uz "
-#~ "speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai."
+#~ "saīsinājumus, tādus kā \"<Ctl>\" un \"<Ctrl>\". Ja jūs iestatīsit iespēju "
+#~ "uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai "
+#~ "darbībai."
 
 #~ msgid ""
 #~ "The format looks like \"<Control>a\" or <Shift><Alt>F1\".\n"
@@ -2004,11 +1949,12 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ "Formāts izskatās kā \"<Control>a\" vai \"<Shift><Alt>F1\".\n"
 #~ "\n"
 #~ "Sadalīšana ir diezgan liberāla un pieļauj lielos un mazos burtus, arī "
-#~ "saīsinājumus, tādus kā \"<Ctl>\" un \"<Ctrl>\". Ja jūs iestatīsit iespēju uz "
-#~ "speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai darbībai.\n"
+#~ "saīsinājumus, tādus kā \"<Ctl>\" un \"<Ctrl>\". Ja jūs iestatīsit iespēju "
+#~ "uz speciālo rindiņu \"disabled\", tad šeit nebūs taustiņsasaistes šai "
+#~ "darbībai.\n"
 #~ "\n"
-#~ "Taustiņsaiti var rezervēt turot nospiestu \"shift\" taustiņu, tāpēc \"shift\" "
-#~ "taustiņu nevar piesaistīt nevienā taustiņu kombinācijā."
+#~ "Taustiņsaiti var rezervēt turot nospiestu \"shift\" taustiņu, tāpēc "
+#~ "\"shift\" taustiņu nevar piesaistīt nevienā taustiņu kombinācijā."
 
 #~ msgid "Failed to read saved session file %s: %s\n"
 #~ msgstr "Nevarēja nolasīt saglabāto sesijas failu %s: %s\n"
@@ -2016,7 +1962,8 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ msgid ""
 #~ "Error launching metacity-dialog to warn about apps that don't support "
 #~ "session management: %s\n"
-#~ msgstr "Kļūda palaižot metacity-dialogu, lai paziņotu par aplikācijām, kas "
+#~ msgstr ""
+#~ "Kļūda palaižot metacity-dialogu, lai paziņotu par aplikācijām, kas "
 #~ "neatbalsta sesijas pārvaldīšanu: %s\n"
 
 #~ msgid "Metacity"
@@ -2060,9 +2007,9 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ "versions without breaking older versions. A special spacer tag can be "
 #~ "used to insert some space between two adjacent buttons."
 #~ msgstr ""
-#~ "Pogu kārtība virsrakstjoslā. Vērtībai jābūt virknei, tādai kā "
-#~ "\"menu:minimize,maximize,close\"; kols atdala kreiso loga stūri no labā stūra "
-#~ "un pogu nosaukumi ir komatu atdalīti. Dublētas pogas netiek pieļautas. "
+#~ "Pogu kārtība virsrakstjoslā. Vērtībai jābūt virknei, tādai kā \"menu:"
+#~ "minimize,maximize,close\"; kols atdala kreiso loga stūri no labā stūra un "
+#~ "pogu nosaukumi ir komatu atdalīti. Dublētas pogas netiek pieļautas. "
 #~ "Nezināmi pogu nosaukumi tiek klusi ignorēti, tādējādi pogas var tikt "
 #~ "pievienotas turpmākās metacity versijās, nesabojājot vecākas versijas. "
 #~ "Speciālas atstarpju birkas var izmantot, lai ievietotu atstarpes starp "
@@ -2078,8 +2025,8 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ "Super&gt;\" for example."
 #~ msgstr ""
 #~ "Klikšķinot uz loga, turot nospiestu šo modifikatoru, pārvietos logu "
-#~ "(kreisais klikšķis), mainīs loga izmēru (vidējais klikšķis) vai parādīs loga "
-#~ "izvēlni (labais klikšķis). Modifikātors tieks izteikts, piemēram, kā "
+#~ "(kreisais klikšķis), mainīs loga izmēru (vidējais klikšķis) vai parādīs "
+#~ "loga izvēlni (labais klikšķis). Modifikātors tieks izteikts, piemēram, kā "
 #~ "\"&lt;Alt&gt;\" vai \"&lt;Super&gt;\"."
 
 #~ msgid "Commands to run in response to keybindings"
@@ -2124,8 +2071,8 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ "Ja patiess un fokusēšanas režīms ir vai nu \"paviršs\" vai \"pele\", tad "
 #~ "fokusetais logs tiks automātiski aktivizēts pēc aiztures (aizture tiek "
 #~ "noteikta ar auto_raise_delay taustiņu). Tas nebūs saistīts ar loga "
-#~ "aktivizēšanu pēc tam, kad uz to tiek uzklikšķināts vai arī ja tajā tiek kaut "
-#~ "kas ievilkts."
+#~ "aktivizēšanu pēc tam, kad uz to tiek uzklikšķināts vai arī ja tajā tiek "
+#~ "kaut kas ievilkts."
 
 #~ msgid ""
 #~ "If true, ignore the titlebar_font option, and use the standard "
@@ -2143,8 +2090,8 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ msgstr ""
 #~ "Ja šī vēŗtība ir atzīmēta, metacity sniegs lietotājam mazāku atbalstu "
 #~ "izmantojot vadrāmjus, izvairoties no animācijām vai kā savādāk. Tas ir "
-#~ "ievērojams lietojamības līmeņa zaudējums, taču ļauj veiksmīgi darboties arī "
-#~ "vecākām programmu versijām. Šī iespēja varētu noderēt terminālserveru "
+#~ "ievērojams lietojamības līmeņa zaudējums, taču ļauj veiksmīgi darboties "
+#~ "arī vecākām programmu versijām. Šī iespēja varētu noderēt terminālserveru "
 #~ "risinājumos, taču, ja ir aktivizētas pieejamības funkcijas vadrāmji "
 #~ "nedarbojas."
 
@@ -2158,20 +2105,20 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ "however, largely unimplemented at the moment."
 #~ msgstr ""
 #~ "Ja patiess, tad Metacity darbojas vairāk pēc aplikāciju, nekā logu "
-#~ "nosacījumiem. Koncepcija ir nedaudz apstrakta, taču kopumā "
-#~ "aplikācijām-bāzēts iestatījums ir vairāk līdzinās Mac nekā Windows. Kad jūs "
-#~ "fokusējat logu aplikācijām-bāzētajā režīmā, visi logi aplikacijā tiks "
-#~ "aktivizēti. Tāpat arī aplikācijām-bāzētajā režīmā fokusēšanas klikšķi netiek "
-#~ "laisti caur logiem citās aplikācijās. Šī iestatījuma eksistence ir diezgan "
-#~ "apšaubāma. Bet šādi ir labāk, nekā iestatījumi visām specifiskajām detaļām "
-#~ "attiecībās starp aplikācijām-bāzētajiem un logiem-bāzētajiem režīmiem, "
-#~ "piem., vai caurlaist klikšķus. Tāpat arī aplikācijām-bāzētais režīms ir "
-#~ "diezgan neizstrādāta uz doto brīdi."
+#~ "nosacījumiem. Koncepcija ir nedaudz apstrakta, taču kopumā aplikācijām-"
+#~ "bāzēts iestatījums ir vairāk līdzinās Mac nekā Windows. Kad jūs fokusējat "
+#~ "logu aplikācijām-bāzētajā režīmā, visi logi aplikacijā tiks aktivizēti. "
+#~ "Tāpat arī aplikācijām-bāzētajā režīmā fokusēšanas klikšķi netiek laisti "
+#~ "caur logiem citās aplikācijās. Šī iestatījuma eksistence ir diezgan "
+#~ "apšaubāma. Bet šādi ir labāk, nekā iestatījumi visām specifiskajām "
+#~ "detaļām attiecībās starp aplikācijām-bāzētajiem un logiem-bāzētajiem "
+#~ "režīmiem, piem., vai caurlaist klikšķus. Tāpat arī aplikācijām-bāzētais "
+#~ "režīms ir diezgan neizstrādāta uz doto brīdi."
 
 #~ msgid "If true, trade off usability for less resource usage"
 #~ msgstr ""
-#~ "Ja šis elements ir atsīmēts, lietojamība tiks iemainīta pret mazāku resursu "
-#~ "izmantojumu"
+#~ "Ja šis elements ir atsīmēts, lietojamība tiks iemainīta pret mazāku "
+#~ "resursu izmantojumu"
 
 #~ msgid "Name of workspace"
 #~ msgstr "Darba vietas nosaukums"
@@ -2198,8 +2145,8 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ msgstr ""
 #~ "Dažas programmas neievēro specifikācijas, kas noved pie logu pārvaldnieka "
 #~ "kļūmēm. Šī vērtība aktivizē metacity aktīvās koriģēšanas režīmu, kas ļauj "
-#~ "iegūt daudz saskangāku lietotāja saskarni, pieņemot, ka jums nav vajadzīgas "
-#~ "nepaklausīgās programmas."
+#~ "iegūt daudz saskangāku lietotāja saskarni, pieņemot, ka jums nav "
+#~ "vajadzīgas nepaklausīgās programmas."
 
 #~ msgid "System Bell is Audible"
 #~ msgstr "Sistēmas zvans ir dzirdams"
@@ -2214,11 +2161,11 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ "beep\"), the currently focused window's titlebar is flashed."
 #~ msgstr ""
 #~ "Nosaka kā Metacity vajadzētu implementēt vizuālo indikāciku, ka sistēmas "
-#~ "zvans vai citas programmas 'zvana' indikators ir darbojies. Šobrīd ir divas "
-#~ "derīgas vērtības, \"fullscreen\", kas izraisa zipsni pa visu ekrānu un "
-#~ "\"frame_flash\", kas liek iezipznīties izsaucošās programmas virsraksta "
-#~ "joslai. Ja nav zināma programma, kas ir nosūtījusi zvanu, tad iezipsnīsies "
-#~ "aktīvā loga virsraksta josla."
+#~ "zvans vai citas programmas 'zvana' indikators ir darbojies. Šobrīd ir "
+#~ "divas derīgas vērtības, \"fullscreen\", kas izraisa zipsni pa visu ekrānu "
+#~ "un \"frame_flash\", kas liek iezipznīties izsaucošās programmas "
+#~ "virsraksta joslai. Ja nav zināma programma, kas ir nosūtījusi zvanu, tad "
+#~ "iezipsnīsies aktīvā loga virsraksta josla."
 
 #~ msgid ""
 #~ "The /apps/metacity/global_keybindings/run_command_N keys define "
@@ -2226,8 +2173,8 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ "for run_command_N will execute command_N."
 #~ msgstr ""
 #~ "/apps/metacity/global_keybindings/run_command_N keys definē "
-#~ "taustiņsasaistes, kas atbilst šīm komandām. Spiežot taustiņsasaisti priekš "
-#~ "run_command_N palaidīs command_N."
+#~ "taustiņsasaistes, kas atbilst šīm komandām. Spiežot taustiņsasaisti "
+#~ "priekš run_command_N palaidīs command_N."
 
 #~ msgid ""
 #~ "The /apps/metacity/global_keybindings/run_command_screenshot key defines "
@@ -2244,8 +2191,8 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ "to be invoked."
 #~ msgstr ""
 #~ "/apps/metacity/global_keybindings/run_command_window_screenshot atslēga "
-#~ "definē taustiņsasaistes, kas nospiežot norādīto taustiņu kombināciju izpilda "
-#~ "attiecīgo komandu."
+#~ "definē taustiņsasaistes, kas nospiežot norādīto taustiņu kombināciju "
+#~ "izpilda attiecīgo komandu."
 
 #~ msgid ""
 #~ "The keybinding that runs the correspondingly-numbered command in /apps/"
@@ -2255,11 +2202,11 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ "\" and \"&lt;Ctrl&gt;\". If you set the option to the special string "
 #~ "\"disabled\", then there will be no keybinding for this action."
 #~ msgstr ""
-#~ "Taustiņsasaiste, kas palaiž atbilstoši numurēto komandu no "
-#~ "/apps/metacity/keybinding_commands. Formāts izskatās kā \"&lt;Control&gt;a\" "
-#~ "vai \"&lt;Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj "
-#~ "lielos un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un "
-#~ "\"&lt;Ctrl&gt;\". Ja jūs iestatīsit iespēju uz speciālo rindiņu \"disabled\", "
+#~ "Taustiņsasaiste, kas palaiž atbilstoši numurēto komandu no /apps/metacity/"
+#~ "keybinding_commands. Formāts izskatās kā \"&lt;Control&gt;a\" vai \"&lt;"
+#~ "Shift&gt;&lt;Alt&gt;F1. Sadalīšana ir diezgan liberāla un pieļauj lielos "
+#~ "un mazos burtus, arī saīsinājumus, tādus kā \"&lt;Ctl&gt;\" un \"&lt;"
+#~ "Ctrl&gt;\". Ja jūs iestatīsit iespēju uz speciālo rindiņu \"disabled\", "
 #~ "tad šeit nebūs taustiņsasaistes šai darbībai."
 
 #~ msgid "The name of a workspace."
@@ -2277,8 +2224,8 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ "The time delay before raising a window if auto_raise is set to true. The "
 #~ "delay is given in thousandths of a second."
 #~ msgstr ""
-#~ "Laika aizture pirms loga pacelšanas, ja auto_raise ir iestatīts kā patiess. "
-#~ "Aizture tiek izteikta sekundes tūkstošdaļās."
+#~ "Laika aizture pirms loga pacelšanas, ja auto_raise ir iestatīts kā "
+#~ "patiess. Aizture tiek izteikta sekundes tūkstošdaļās."
 
 #~ msgid ""
 #~ "The window focus mode indicates how windows are activated. It has three "
@@ -2288,10 +2235,10 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ "the window and unfocused when the mouse leaves the window."
 #~ msgstr ""
 #~ "Loga fokusēšanās režīms nosaka, kā logi tiek aktivizēti. Tam ir trīs "
-#~ "iespējamās vērtības; \"klikšķis\" nozīmē, ka uz logiem ir jāuzklikšķina, lai "
-#~ "tos fokusētu, \"paviršs\" nozīmē , ka logi tiek fokusēti, kad pele slīd tiem "
-#~ "pāri, un \"pele\" nozīmē, ka logi tiek fokusēti, kad pele slīd logam pāri, un "
-#~ "atfokusēti, kad pele pamet logu."
+#~ "iespējamās vērtības; \"klikšķis\" nozīmē, ka uz logiem ir jāuzklikšķina, "
+#~ "lai tos fokusētu, \"paviršs\" nozīmē , ka logi tiek fokusēti, kad pele "
+#~ "slīd tiem pāri, un \"pele\" nozīmē, ka logi tiek fokusēti, kad pele slīd "
+#~ "logam pāri, un atfokusēti, kad pele pamet logu."
 
 #~ msgid "The window screenshot command"
 #~ msgstr "Loga ekrānkopijas komanda"
@@ -2309,10 +2256,10 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ "Šī vērtība nosaka peles dubultklikšķa efektu uz virsrakstjoslas. Šobrīd "
 #~ "derīgas vērtības ir 'toggle_shade', kas ēnos/atēnos logu, un "
 #~ "'toggle_maximize_horizontally' un 'toggle_maximize_vertically', kas "
-#~ "maksimizēs/atmaksimizēs logu tikai šajā virzienā, 'minimize', kas minimizēs "
-#~ "logu, 'shade', kas uzritinās logu augšup, 'menu', kas parādīs loga izvēlni, "
-#~ "'lower', kas novietos logu aiz visiem citiem logiem un 'none', kas nedarīs "
-#~ "neko."
+#~ "maksimizēs/atmaksimizēs logu tikai šajā virzienā, 'minimize', kas "
+#~ "minimizēs logu, 'shade', kas uzritinās logu augšup, 'menu', kas parādīs "
+#~ "loga izvēlni, 'lower', kas novietos logu aiz visiem citiem logiem un "
+#~ "'none', kas nedarīs neko."
 
 #~ msgid ""
 #~ "This option determines the effects of middle-clicking on the title bar. "
@@ -2324,13 +2271,13 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ "'menu' which will display the window menu, 'lower' which will put the "
 #~ "window behind all the others, and 'none' which will not do anything."
 #~ msgstr ""
-#~ "Šī vērtība nosaka peles vidējā taustiņa klikšķa efektu uz virsrakstjoslas. "
-#~ "Šobrīd derīgas vērtības ir 'toggle_shade', kas ēnos/atēnos logu, un "
-#~ "'toggle_maximize_horizontally' un 'toggle_maximize_vertically', kas "
-#~ "maksimizēs/atmaksimizēs logu tikai šajā virzienā, 'minimize', kas minimizēs "
-#~ "logu, 'shade', kas uzritinās logu augšup, 'menu', kas parādīs loga izvēlni, "
-#~ "'lower', kas novietos logu aiz visiem citiem logiem un 'none', kas nedarīs "
-#~ "neko."
+#~ "Šī vērtība nosaka peles vidējā taustiņa klikšķa efektu uz "
+#~ "virsrakstjoslas. Šobrīd derīgas vērtības ir 'toggle_shade', kas ēnos/"
+#~ "atēnos logu, un 'toggle_maximize_horizontally' un "
+#~ "'toggle_maximize_vertically', kas maksimizēs/atmaksimizēs logu tikai šajā "
+#~ "virzienā, 'minimize', kas minimizēs logu, 'shade', kas uzritinās logu "
+#~ "augšup, 'menu', kas parādīs loga izvēlni, 'lower', kas novietos logu aiz "
+#~ "visiem citiem logiem un 'none', kas nedarīs neko."
 
 #~ msgid ""
 #~ "This option determines the effects of right-clicking on the title bar. "
@@ -2345,10 +2292,10 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ "Šī vērtība nosaka peles labā taustiņa klikšķa efektu uz virsrakstjoslas. "
 #~ "Šobrīd derīgas vērtības ir 'toggle_shade', kas ēnos/atēnos logu, un "
 #~ "'toggle_maximize_horizontally' un 'toggle_maximize_vertically', kas "
-#~ "maksimizēs/atmaksimizēs logu tikai šajā virzienā, 'minimize', kas minimizēs "
-#~ "logu, 'shade', kas uzritinās logu augšup, 'menu', kas parādīs loga izvēlni, "
-#~ "'lower', kas novietos logu aiz visiem citiem logiem un 'none', kas nedarīs "
-#~ "neko."
+#~ "maksimizēs/atmaksimizēs logu tikai šajā virzienā, 'minimize', kas "
+#~ "minimizēs logu, 'shade', kas uzritinās logu augšup, 'menu', kas parādīs "
+#~ "loga izvēlni, 'lower', kas novietos logu aiz visiem citiem logiem un "
+#~ "'none', kas nedarīs neko."
 
 #~ msgid ""
 #~ "This option provides additional control over how newly created windows "
@@ -2357,17 +2304,17 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ "terminal not being given focus."
 #~ msgstr ""
 #~ "Šī vērtība nodrošina paildus kontroli pār to, kā jauizveidotie logi tiek "
-#~ "aktivizēti. Tai ir divas iespējamas vērtības; \"smart\", izmanto standarta "
-#~ "aktivizēšanas iestatījumus un \"strict\", kas nosaka, ka no komandrindas "
-#~ "palaistie logi netiks aktivizēti."
+#~ "aktivizēti. Tai ir divas iespējamas vērtības; \"smart\", izmanto "
+#~ "standarta aktivizēšanas iestatījumus un \"strict\", kas nosaka, ka no "
+#~ "komandrindas palaistie logi netiks aktivizēti."
 
 #~ msgid ""
 #~ "Turns on a visual indication when an application or the system issues a "
 #~ "'bell' or 'beep'; useful for the hard-of-hearing and for use in noisy "
 #~ "environments."
 #~ msgstr ""
-#~ "Ieslēdz programmu vai sistēmas 'zvanu' vai 'pīkstienu' vizuālu indikāciju; "
-#~ "noderīga troksņainos un sliktas dzirdamības vidēs."
+#~ "Ieslēdz programmu vai sistēmas 'zvanu' vai 'pīkstienu' vizuālu "
+#~ "indikāciju; noderīga troksņainos un sliktas dzirdamības vidēs."
 
 #~ msgid "Use standard system font in window titles"
 #~ msgstr "Lietot sistēmas standarta fontu logu nosaukumos"
