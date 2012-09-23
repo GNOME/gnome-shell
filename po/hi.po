@@ -294,7 +294,7 @@ msgstr "फिर आरंभ करें"
 #: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
 #: ../js/ui/userMenu.js:772
 msgid "Power Off"
-msgstr "बिजली बंद"
+msgstr "बंद करें"
 
 #: ../js/gdm/util.js:148
 #| msgid "Authentication Required"
@@ -949,12 +949,12 @@ msgstr "लॉग आउट"
 #: ../js/ui/endSessionDialog.js:81
 msgctxt "title"
 msgid "Power Off"
-msgstr "बिजली बंद"
+msgstr "बंद करें"
 
 #: ../js/ui/endSessionDialog.js:82
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
-"इन अनुप्रयोगों से बाहर निकलने या तंत्र को बंद करने के लिए बिजली बंद करें पर "
+"इन अनुप्रयोगों से बाहर निकलने या तंत्र की बिजली बंद करने के लिए बंद करें पर "
 "क्लिक करें."
 
 #: ../js/ui/endSessionDialog.js:84
@@ -976,7 +976,7 @@ msgstr "फिर आरंभ करें"
 #: ../js/ui/endSessionDialog.js:92
 msgctxt "button"
 msgid "Power Off"
-msgstr "बिजली बंद"
+msgstr "बंद करें"
 
 #: ../js/ui/endSessionDialog.js:98
 msgctxt "title"
