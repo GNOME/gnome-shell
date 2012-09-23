@@ -1,0 +1,2775 @@
+# Japanese translation for clutter.
+# Copyright (C) 2012 clutter's COPYRIGHT HOLDER
+# This file is distributed under the same license as the clutter package.
+# Nishio Futoshi <fut_nis@d3.dion.ne.jp>, 2012.
+# Jiro Matsuzawa <jmatsuzawa@gnome.org>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: clutter master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=clutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-09-21 19:41+0000\n"
+"PO-Revision-Date: 2012-09-16 21:27+0900\n"
+"Last-Translator: Nishio Futoshi <fut_nis@d3.dion.ne.jp>\n"
+"Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+# axis じゃないのか
+#: ../clutter/clutter-actor.c:6125
+msgid "X coordinate"
+msgstr "X座標"
+
+#: ../clutter/clutter-actor.c:6126
+msgid "X coordinate of the actor"
+msgstr "アクターのX座標"
+
+#: ../clutter/clutter-actor.c:6144
+msgid "Y coordinate"
+msgstr "Y座標"
+
+#: ../clutter/clutter-actor.c:6145
+msgid "Y coordinate of the actor"
+msgstr "アクターのY座標"
+
+#: ../clutter/clutter-actor.c:6167
+msgid "Position"
+msgstr "位置"
+
+# origin を本来のとした。clutter では位置指定後にアフィン変換等ができるため、このような表現が必要だと思われる。
+#: ../clutter/clutter-actor.c:6168
+msgid "The position of the origin of the actor"
+msgstr "アクターの本来の位置"
+
+#: ../clutter/clutter-actor.c:6185 ../clutter/clutter-canvas.c:215
+#: ../clutter/clutter-grid-layout.c:1238
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:481
+msgid "Width"
+msgstr "幅"
+
+#: ../clutter/clutter-actor.c:6186
+msgid "Width of the actor"
+msgstr "アクターの幅"
+
+#: ../clutter/clutter-actor.c:6204 ../clutter/clutter-canvas.c:231
+#: ../clutter/clutter-grid-layout.c:1245
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:497
+msgid "Height"
+msgstr "高さ"
+
+#: ../clutter/clutter-actor.c:6205
+msgid "Height of the actor"
+msgstr "アクターの高さ"
+
+#: ../clutter/clutter-actor.c:6226
+msgid "Size"
+msgstr "大きさ"
+
+#: ../clutter/clutter-actor.c:6227
+msgid "The size of the actor"
+msgstr "アクターの大きさ"
+
+# Xの値を固定することだと思われる
+#: ../clutter/clutter-actor.c:6245
+msgid "Fixed X"
+msgstr "固定されたX"
+
+#: ../clutter/clutter-actor.c:6246
+msgid "Forced X position of the actor"
+msgstr "アクターの固定されたX軸の位置"
+
+#: ../clutter/clutter-actor.c:6263
+msgid "Fixed Y"
+msgstr "固定されたY"
+
+#: ../clutter/clutter-actor.c:6264
+msgid "Forced Y position of the actor"
+msgstr "アクターの固定されたY軸の位置"
+
+#: ../clutter/clutter-actor.c:6279
+msgid "Fixed position set"
+msgstr "固定された位置セット"
+
+#: ../clutter/clutter-actor.c:6280
+msgid "Whether to use fixed positioning for the actor"
+msgstr "アクターを固定した位置で使用するかどうか"
+
+#: ../clutter/clutter-actor.c:6298
+msgid "Min Width"
+msgstr "最小幅"
+
+#: ../clutter/clutter-actor.c:6299
+msgid "Forced minimum width request for the actor"
+msgstr "アクターが要求する固定した最小幅"
+
+#: ../clutter/clutter-actor.c:6317
+msgid "Min Height"
+msgstr "最小高さ"
+
+#: ../clutter/clutter-actor.c:6318
+msgid "Forced minimum height request for the actor"
+msgstr "アクターが要求する固定した最小高さ"
+
+#: ../clutter/clutter-actor.c:6336
+msgid "Natural Width"
+msgstr "通常の幅"
+
+#: ../clutter/clutter-actor.c:6337
+msgid "Forced natural width request for the actor"
+msgstr "アクターが要求する固定した通常の幅"
+
+#: ../clutter/clutter-actor.c:6355
+msgid "Natural Height"
+msgstr "通常の高さ"
+
+#: ../clutter/clutter-actor.c:6356
+msgid "Forced natural height request for the actor"
+msgstr "アクターが要求する固定した通常の高さ"
+
+#: ../clutter/clutter-actor.c:6371
+msgid "Minimum width set"
+msgstr "最小幅のセット"
+
+#: ../clutter/clutter-actor.c:6372
+msgid "Whether to use the min-width property"
+msgstr "最小幅プロパティを使用するかどうか"
+
+#: ../clutter/clutter-actor.c:6386
+msgid "Minimum height set"
+msgstr "最小高さのセット"
+
+#: ../clutter/clutter-actor.c:6387
+msgid "Whether to use the min-height property"
+msgstr "最小高さのプロパティを使用するかどうか"
+
+#: ../clutter/clutter-actor.c:6401
+msgid "Natural width set"
+msgstr "通常の幅のセット"
+
+#: ../clutter/clutter-actor.c:6402
+msgid "Whether to use the natural-width property"
+msgstr "通常の幅のプロパティを使用するかどうか"
+
+#: ../clutter/clutter-actor.c:6416
+msgid "Natural height set"
+msgstr "通常の高さのセット"
+
+#: ../clutter/clutter-actor.c:6417
+msgid "Whether to use the natural-height property"
+msgstr "通常の高さのプロパティを使用するかどうか"
+
+# Allocation を"領域"と訳す
+#: ../clutter/clutter-actor.c:6433
+msgid "Allocation"
+msgstr "領域"
+
+#: ../clutter/clutter-actor.c:6434
+msgid "The actor's allocation"
+msgstr "アクターの領域"
+
+#: ../clutter/clutter-actor.c:6491
+msgid "Request Mode"
+msgstr "要求されたモード"
+
+#: ../clutter/clutter-actor.c:6492
+msgid "The actor's request mode"
+msgstr "アクターが要求するモード"
+
+#: ../clutter/clutter-actor.c:6516
+msgid "Depth"
+msgstr "深さ"
+
+#: ../clutter/clutter-actor.c:6517
+msgid "Position on the Z axis"
+msgstr "Z軸の位置"
+
+#: ../clutter/clutter-actor.c:6544
+msgid "Z Position"
+msgstr "Z軸の位置"
+
+#: ../clutter/clutter-actor.c:6545
+msgid "The actor's position on the Z axis"
+msgstr "Z軸上の アクターの位置"
+
+#: ../clutter/clutter-actor.c:6562
+msgid "Opacity"
+msgstr "不透明度"
+
+#: ../clutter/clutter-actor.c:6563
+msgid "Opacity of an actor"
+msgstr "アクターの不透明度"
+
+#: ../clutter/clutter-actor.c:6583
+msgid "Offscreen redirect"
+msgstr "オフスクリーンリダイレクト"
+
+#: ../clutter/clutter-actor.c:6584
+msgid "Flags controlling when to flatten the actor into a single image"
+msgstr "単一イメージに アクターを配置した時の制御フラグ"
+
+#: ../clutter/clutter-actor.c:6598
+msgid "Visible"
+msgstr "表示"
+
+#: ../clutter/clutter-actor.c:6599
+msgid "Whether the actor is visible or not"
+msgstr "アクターを表示するかどうか"
+
+#: ../clutter/clutter-actor.c:6613
+msgid "Mapped"
+msgstr "配置"
+
+#: ../clutter/clutter-actor.c:6614
+msgid "Whether the actor will be painted"
+msgstr "アクターを描画するかどうか"
+
+# Realize を"実体化する"と訳した
+#: ../clutter/clutter-actor.c:6627
+msgid "Realized"
+msgstr "実体化"
+
+#: ../clutter/clutter-actor.c:6628
+msgid "Whether the actor has been realized"
+msgstr "アクターが実体化されているかどうか"
+
+#: ../clutter/clutter-actor.c:6643
+msgid "Reactive"
+msgstr "イベントへの反応"
+
+#: ../clutter/clutter-actor.c:6644
+msgid "Whether the actor is reactive to events"
+msgstr "アクターをイベントに反応させるかどうか"
+
+# Clip を"切り取り"と訳した。実際には、星型など特異形状の Actor を作成するためのクリッピングマスク。
+#: ../clutter/clutter-actor.c:6655
+msgid "Has Clip"
+msgstr "クリッピングマスクあり"
+
+#: ../clutter/clutter-actor.c:6656
+msgid "Whether the actor has a clip set"
+msgstr "アクターにクリッピングマスクがあるかどうか"
+
+#: ../clutter/clutter-actor.c:6669
+msgid "Clip"
+msgstr "クリッピングマスク"
+
+#: ../clutter/clutter-actor.c:6670
+msgid "The clip region for the actor"
+msgstr "アクターのクリッピング領域"
+
+#: ../clutter/clutter-actor.c:6689
+msgid "Clip Rectangle"
+msgstr "クリッピングする長方形"
+
+#: ../clutter/clutter-actor.c:6690
+msgid "The visible region of the actor"
+msgstr "アクターの可視化領域"
+
+#: ../clutter/clutter-actor.c:6704 ../clutter/clutter-actor-meta.c:207
+#: ../clutter/clutter-binding-pool.c:319 ../clutter/clutter-input-device.c:258
+msgid "Name"
+msgstr "名前"
+
+#: ../clutter/clutter-actor.c:6705
+msgid "Name of the actor"
+msgstr "アクターの名前"
+
+#: ../clutter/clutter-actor.c:6726
+msgid "Pivot Point"
+msgstr "回転の中心"
+
+#: ../clutter/clutter-actor.c:6727
+msgid "The point around which the scaling and rotation occur"
+msgstr "拡大縮小と回転の起点"
+
+#: ../clutter/clutter-actor.c:6745
+msgid "Pivot Point Z"
+msgstr "Z軸の回転の中心"
+
+#: ../clutter/clutter-actor.c:6746
+msgid "Z component of the pivot point"
+msgstr "回転の中心のZ成分"
+
+#: ../clutter/clutter-actor.c:6764
+msgid "Scale X"
+msgstr "X軸の拡大縮小"
+
+#: ../clutter/clutter-actor.c:6765
+msgid "Scale factor on the X axis"
+msgstr "X軸の拡大縮小係数"
+
+#: ../clutter/clutter-actor.c:6783
+msgid "Scale Y"
+msgstr "Y軸の拡大縮小"
+
+#: ../clutter/clutter-actor.c:6784
+msgid "Scale factor on the Y axis"
+msgstr "Y軸の拡大縮小係数"
+
+#: ../clutter/clutter-actor.c:6802
+msgid "Scale Z"
+msgstr "Z軸の拡大縮小"
+
+#: ../clutter/clutter-actor.c:6803
+msgid "Scale factor on the Z axis"
+msgstr "Z軸の拡大縮小係数"
+
+#: ../clutter/clutter-actor.c:6821
+msgid "Scale Center X"
+msgstr "X軸の拡大縮小の中心"
+
+#: ../clutter/clutter-actor.c:6822
+msgid "Horizontal scale center"
+msgstr "水平方向の拡大縮小の中心"
+
+#: ../clutter/clutter-actor.c:6840
+msgid "Scale Center Y"
+msgstr "Y軸の拡大縮小の中心"
+
+#: ../clutter/clutter-actor.c:6841
+msgid "Vertical scale center"
+msgstr "垂直方向の拡大縮小の中心"
+
+#: ../clutter/clutter-actor.c:6859
+msgid "Scale Gravity"
+msgstr "重力方向の拡大縮小"
+
+#: ../clutter/clutter-actor.c:6860
+msgid "The center of scaling"
+msgstr "拡大縮小の中心"
+
+#: ../clutter/clutter-actor.c:6878
+msgid "Rotation Angle X"
+msgstr "X軸の回転角度"
+
+#: ../clutter/clutter-actor.c:6879
+msgid "The rotation angle on the X axis"
+msgstr "X軸の回転角度"
+
+#: ../clutter/clutter-actor.c:6897
+msgid "Rotation Angle Y"
+msgstr "Y軸の回転角度"
+
+#: ../clutter/clutter-actor.c:6898
+msgid "The rotation angle on the Y axis"
+msgstr "Y軸の回転角度"
+
+#: ../clutter/clutter-actor.c:6916
+msgid "Rotation Angle Z"
+msgstr "Z軸の回転角度"
+
+#: ../clutter/clutter-actor.c:6917
+msgid "The rotation angle on the Z axis"
+msgstr "Z軸の回転角度"
+
+#: ../clutter/clutter-actor.c:6935
+msgid "Rotation Center X"
+msgstr "X軸の回転の中心"
+
+#: ../clutter/clutter-actor.c:6936
+msgid "The rotation center on the X axis"
+msgstr "X軸の回転の中心"
+
+#: ../clutter/clutter-actor.c:6953
+msgid "Rotation Center Y"
+msgstr "Y軸の回転の中心"
+
+#: ../clutter/clutter-actor.c:6954
+msgid "The rotation center on the Y axis"
+msgstr "Y軸の回転の中心"
+
+#: ../clutter/clutter-actor.c:6971
+msgid "Rotation Center Z"
+msgstr "Z軸の回転の中心"
+
+#: ../clutter/clutter-actor.c:6972
+msgid "The rotation center on the Z axis"
+msgstr "Z軸の回転の中心"
+
+# Gravity は訳語から外した
+#: ../clutter/clutter-actor.c:6989
+msgid "Rotation Center Z Gravity"
+msgstr "Z軸の回転の中心"
+
+#: ../clutter/clutter-actor.c:6990
+msgid "Center point for rotation around the Z axis"
+msgstr "Z軸の回転の中心点"
+
+#: ../clutter/clutter-actor.c:7018
+msgid "Anchor X"
+msgstr "X軸のアンカー"
+
+#: ../clutter/clutter-actor.c:7019
+msgid "X coordinate of the anchor point"
+msgstr "X軸のアンカー点"
+
+#: ../clutter/clutter-actor.c:7047
+msgid "Anchor Y"
+msgstr "Y軸のアンカー"
+
+#: ../clutter/clutter-actor.c:7048
+msgid "Y coordinate of the anchor point"
+msgstr "Y軸のアンカー点"
+
+#: ../clutter/clutter-actor.c:7075
+msgid "Anchor Gravity"
+msgstr "重力方向のアンカー"
+
+#: ../clutter/clutter-actor.c:7076
+msgid "The anchor point as a ClutterGravity"
+msgstr "Clutter の重力のアンカー点"
+
+#: ../clutter/clutter-actor.c:7095
+msgid "Translation X"
+msgstr "X軸移動"
+
+#: ../clutter/clutter-actor.c:7096
+msgid "Translation along the X axis"
+msgstr "X軸方向の移動"
+
+#: ../clutter/clutter-actor.c:7115
+msgid "Translation Y"
+msgstr "Y軸移動"
+
+#: ../clutter/clutter-actor.c:7116
+msgid "Translation along the Y axis"
+msgstr "Y軸方向の移動"
+
+#: ../clutter/clutter-actor.c:7135
+msgid "Translation Z"
+msgstr "Z軸移動"
+
+#: ../clutter/clutter-actor.c:7136
+msgid "Translation along the Z axis"
+msgstr "Z軸方向の移動"
+
+#: ../clutter/clutter-actor.c:7166
+msgid "Transform"
+msgstr "変形"
+
+#: ../clutter/clutter-actor.c:7167
+msgid "Transformation matrix"
+msgstr "変形行列"
+
+#: ../clutter/clutter-actor.c:7182
+msgid "Transform Set"
+msgstr "変形セット"
+
+#: ../clutter/clutter-actor.c:7183
+msgid "Whether the transform property is set"
+msgstr "変形プロパティを設定するかどうか"
+
+#: ../clutter/clutter-actor.c:7204
+msgid "Child Transform"
+msgstr "子オブジェクトの変形"
+
+#: ../clutter/clutter-actor.c:7205
+msgid "Children transformation matrix"
+msgstr "子オブジェクトの変形行列"
+
+#: ../clutter/clutter-actor.c:7220
+msgid "Child Transform Set"
+msgstr "子オブジェクトの変形の設定"
+
+#: ../clutter/clutter-actor.c:7221
+msgid "Whether the child-transform property is set"
+msgstr "子オブジェクトの変形プロパティを設定するかどうか"
+
+#: ../clutter/clutter-actor.c:7238
+msgid "Show on set parent"
+msgstr "設定された親オブジェクトを表示するかどうか"
+
+#: ../clutter/clutter-actor.c:7239
+msgid "Whether the actor is shown when parented"
+msgstr "親オブジェクトになった アクターを表示するかどうか"
+
+#: ../clutter/clutter-actor.c:7256
+msgid "Clip to Allocation"
+msgstr "領域のクリップ"
+
+#: ../clutter/clutter-actor.c:7257
+msgid "Sets the clip region to track the actor's allocation"
+msgstr "アクターの領域をトレースし、クリップ領域を設定する"
+
+#: ../clutter/clutter-actor.c:7270
+msgid "Text Direction"
+msgstr "文字の方向"
+
+#: ../clutter/clutter-actor.c:7271
+msgid "Direction of the text"
+msgstr "文字の方向"
+
+#: ../clutter/clutter-actor.c:7286
+msgid "Has Pointer"
+msgstr "ポインターあり"
+
+#: ../clutter/clutter-actor.c:7287
+msgid "Whether the actor contains the pointer of an input device"
+msgstr "入力デバイスのポインターが アクターに含まれているかどうか"
+
+#: ../clutter/clutter-actor.c:7300
+msgid "Actions"
+msgstr "動作"
+
+#: ../clutter/clutter-actor.c:7301
+msgid "Adds an action to the actor"
+msgstr "アクターに動作を追加する"
+
+#: ../clutter/clutter-actor.c:7314
+msgid "Constraints"
+msgstr "制約条件"
+
+#: ../clutter/clutter-actor.c:7315
+msgid "Adds a constraint to the actor"
+msgstr "アクターに制約条件を追加する"
+
+#: ../clutter/clutter-actor.c:7328
+msgid "Effect"
+msgstr "効果"
+
+#: ../clutter/clutter-actor.c:7329
+msgid "Add an effect to be applied on the actor"
+msgstr "アクターに適用する効果を追加する"
+
+#: ../clutter/clutter-actor.c:7343
+msgid "Layout Manager"
+msgstr "レイアウトマネジャー"
+
+#: ../clutter/clutter-actor.c:7344
+msgid "The object controlling the layout of an actor's children"
+msgstr "アクターの子オブジェクトのレイアウトを制御するオブジェクト"
+
+#: ../clutter/clutter-actor.c:7358
+msgid "X Expand"
+msgstr "X軸拡張"
+
+#: ../clutter/clutter-actor.c:7359
+msgid "Whether extra horizontal space should be assigned to the actor"
+msgstr "アクターの水平方向に追加の間隔を割り当てるかどうか"
+
+#: ../clutter/clutter-actor.c:7374
+msgid "Y Expand"
+msgstr "Y軸拡張"
+
+#: ../clutter/clutter-actor.c:7375
+msgid "Whether extra vertical space should be assigned to the actor"
+msgstr "アクターの垂直方向に追加の間隔を割り当てるかどうか"
+
+#: ../clutter/clutter-actor.c:7391
+msgid "X Alignment"
+msgstr "X軸の整列"
+
+#: ../clutter/clutter-actor.c:7392
+msgid "The alignment of the actor on the X axis within its allocation"
+msgstr "アクターの領域をX軸に整列する"
+
+#: ../clutter/clutter-actor.c:7407
+msgid "Y Alignment"
+msgstr "Y軸の整列"
+
+#: ../clutter/clutter-actor.c:7408
+msgid "The alignment of the actor on the Y axis within its allocation"
+msgstr "アクターの領域をX軸に整列する"
+
+#: ../clutter/clutter-actor.c:7427
+msgid "Margin Top"
+msgstr "上余白"
+
+#: ../clutter/clutter-actor.c:7428
+msgid "Extra space at the top"
+msgstr "上の追加の余白"
+
+#: ../clutter/clutter-actor.c:7449
+msgid "Margin Bottom"
+msgstr "下余白"
+
+#: ../clutter/clutter-actor.c:7450
+msgid "Extra space at the bottom"
+msgstr "下の追加の余白"
+
+#: ../clutter/clutter-actor.c:7471
+msgid "Margin Left"
+msgstr "左余白"
+
+#: ../clutter/clutter-actor.c:7472
+msgid "Extra space at the left"
+msgstr "左の追加の余白"
+
+#: ../clutter/clutter-actor.c:7493
+msgid "Margin Right"
+msgstr "右余白"
+
+#: ../clutter/clutter-actor.c:7494
+msgid "Extra space at the right"
+msgstr "右の追加の余白"
+
+#: ../clutter/clutter-actor.c:7510
+msgid "Background Color Set"
+msgstr "背景色の設定"
+
+#: ../clutter/clutter-actor.c:7511 ../clutter/deprecated/clutter-box.c:275
+msgid "Whether the background color is set"
+msgstr "背景色が設定されているかどうか"
+
+#: ../clutter/clutter-actor.c:7527
+msgid "Background color"
+msgstr "背景色"
+
+#: ../clutter/clutter-actor.c:7528
+msgid "The actor's background color"
+msgstr "アクターの背景色"
+
+#: ../clutter/clutter-actor.c:7543
+msgid "First Child"
+msgstr "最初の子オブジェクト"
+
+#: ../clutter/clutter-actor.c:7544
+msgid "The actor's first child"
+msgstr "アクターの最初の子オブジェクト"
+
+#: ../clutter/clutter-actor.c:7557
+msgid "Last Child"
+msgstr "最後の子オブジェクト"
+
+#: ../clutter/clutter-actor.c:7558
+msgid "The actor's last child"
+msgstr "アクターの最後の子オブジェクト"
+
+#: ../clutter/clutter-actor.c:7572
+msgid "Content"
+msgstr "中身"
+
+#: ../clutter/clutter-actor.c:7573
+msgid "Delegate object for painting the actor's content"
+msgstr "アクターの中身描画をオブジェクトに移譲する"
+
+#: ../clutter/clutter-actor.c:7598
+msgid "Content Gravity"
+msgstr "中身の重力"
+
+#: ../clutter/clutter-actor.c:7599
+msgid "Alignment of the actor's content"
+msgstr "アクターの中身の整列"
+
+#: ../clutter/clutter-actor.c:7619
+msgid "Content Box"
+msgstr "コンテンツボックス"
+
+#: ../clutter/clutter-actor.c:7620
+msgid "The bounding box of the actor's content"
+msgstr "アクターの中身の境界を示す立方体"
+
+#: ../clutter/clutter-actor.c:7628
+msgid "Minification Filter"
+msgstr "縮小フィルター"
+
+#: ../clutter/clutter-actor.c:7629
+msgid "The filter used when reducing the size of the content"
+msgstr "中身の大きさを小さくした時に使用するフィルター"
+
+#: ../clutter/clutter-actor.c:7636
+msgid "Magnification Filter"
+msgstr "拡大フィルター"
+
+#: ../clutter/clutter-actor.c:7637
+msgid "The filter used when increasing the size of the content"
+msgstr "中身の大きさを大きくした時に使用するフィルター"
+
+#: ../clutter/clutter-actor.c:7651
+msgid "Content Repeat"
+msgstr "中身の繰り返し"
+
+#: ../clutter/clutter-actor.c:7652
+msgid "The repeat policy for the actor's content"
+msgstr "アクターの中身の繰り返し方法"
+
+#: ../clutter/clutter-actor-meta.c:193 ../clutter/clutter-child-meta.c:142
+msgid "Actor"
+msgstr "Actor"
+
+#: ../clutter/clutter-actor-meta.c:194
+msgid "The actor attached to the meta"
+msgstr "アクターに適用するメタ情報"
+
+#: ../clutter/clutter-actor-meta.c:208
+msgid "The name of the meta"
+msgstr "メタ情報の名前"
+
+#: ../clutter/clutter-actor-meta.c:221 ../clutter/clutter-input-device.c:337
+#: ../clutter/deprecated/clutter-shader.c:313
+msgid "Enabled"
+msgstr "利用可能"
+
+#: ../clutter/clutter-actor-meta.c:222
+msgid "Whether the meta is enabled"
+msgstr "メタ情報を利用可能にするかどうか"
+
+#: ../clutter/clutter-align-constraint.c:279
+#: ../clutter/clutter-bind-constraint.c:358 ../clutter/clutter-clone.c:345
+#: ../clutter/clutter-snap-constraint.c:321
+msgid "Source"
+msgstr "原点"
+
+#: ../clutter/clutter-align-constraint.c:280
+msgid "The source of the alignment"
+msgstr "整列の原点"
+
+#: ../clutter/clutter-align-constraint.c:293
+msgid "Align Axis"
+msgstr "整列の軸"
+
+#: ../clutter/clutter-align-constraint.c:294
+msgid "The axis to align the position to"
+msgstr "位置を整列させる軸"
+
+#: ../clutter/clutter-align-constraint.c:313
+#: ../clutter/clutter-desaturate-effect.c:270
+msgid "Factor"
+msgstr "係数"
+
+#: ../clutter/clutter-align-constraint.c:314
+msgid "The alignment factor, between 0.0 and 1.0"
+msgstr "整列の係数。0.0から1.0まで"
+
+#: ../clutter/clutter-backend.c:379
+msgid "Unable to initialize the Clutter backend"
+msgstr "Clutter のバックエンドを初期化できません"
+
+#: ../clutter/clutter-backend.c:453
+#, c-format
+msgid "The backend of type '%s' does not support creating multiple stages"
+msgstr ""
+"バックエンドの形式 '%s' は作成している複数のステージでサポートされていません"
+
+#: ../clutter/clutter-bind-constraint.c:359
+msgid "The source of the binding"
+msgstr "拘束する原点"
+
+#: ../clutter/clutter-bind-constraint.c:372
+msgid "Coordinate"
+msgstr "座標"
+
+#: ../clutter/clutter-bind-constraint.c:373
+msgid "The coordinate to bind"
+msgstr "拘束される座標"
+
+#: ../clutter/clutter-bind-constraint.c:387
+#: ../clutter/clutter-path-constraint.c:226
+#: ../clutter/clutter-snap-constraint.c:366
+msgid "Offset"
+msgstr "オフセット"
+
+#: ../clutter/clutter-bind-constraint.c:388
+msgid "The offset in pixels to apply to the binding"
+msgstr "拘束を適用するピクセル単位のオフセット"
+
+#: ../clutter/clutter-binding-pool.c:320
+msgid "The unique name of the binding pool"
+msgstr "拘束する予備領域の固有名"
+
+#: ../clutter/clutter-bin-layout.c:240 ../clutter/clutter-bin-layout.c:655
+#: ../clutter/clutter-box-layout.c:390 ../clutter/clutter-table-layout.c:610
+msgid "Horizontal Alignment"
+msgstr "水平方向の整列"
+
+#: ../clutter/clutter-bin-layout.c:241
+msgid "Horizontal alignment for the actor inside the layout manager"
+msgstr "レイアウトマネジャー内のアクターの水平方向の整列"
+
+#: ../clutter/clutter-bin-layout.c:249 ../clutter/clutter-bin-layout.c:675
+#: ../clutter/clutter-box-layout.c:399 ../clutter/clutter-table-layout.c:625
+msgid "Vertical Alignment"
+msgstr "垂直方向の整列"
+
+#: ../clutter/clutter-bin-layout.c:250
+msgid "Vertical alignment for the actor inside the layout manager"
+msgstr "レイアウトマネジャー内のアクターの垂直方向の整列"
+
+#: ../clutter/clutter-bin-layout.c:656
+msgid "Default horizontal alignment for the actors inside the layout manager"
+msgstr "レイアウトマネジャー内のアクターの水平方向の整列のデフォルト"
+
+#: ../clutter/clutter-bin-layout.c:676
+msgid "Default vertical alignment for the actors inside the layout manager"
+msgstr "レイアウトマネジャー内のアクターの水平方向の整列のデフォルト"
+
+#: ../clutter/clutter-box-layout.c:365
+msgid "Expand"
+msgstr "展張"
+
+#: ../clutter/clutter-box-layout.c:366
+msgid "Allocate extra space for the child"
+msgstr "子オブジェクトの追加領域"
+
+#: ../clutter/clutter-box-layout.c:372 ../clutter/clutter-table-layout.c:589
+msgid "Horizontal Fill"
+msgstr "水平方向に展張"
+
+#: ../clutter/clutter-box-layout.c:373 ../clutter/clutter-table-layout.c:590
+msgid ""
+"Whether the child should receive priority when the container is allocating "
+"spare space on the horizontal axis"
+msgstr ""
+"コンテナーの水平軸に割り当てられている追加領域を子オブジェクトに割り当てるか"
+"どうか"
+
+#: ../clutter/clutter-box-layout.c:381 ../clutter/clutter-table-layout.c:596
+msgid "Vertical Fill"
+msgstr "垂直方向に展張"
+
+#: ../clutter/clutter-box-layout.c:382 ../clutter/clutter-table-layout.c:597
+msgid ""
+"Whether the child should receive priority when the container is allocating "
+"spare space on the vertical axis"
+msgstr ""
+"コンテナーの垂直軸に割り当てられている追加領域を子オブジェクトに割り当てるか"
+"どうか"
+
+#: ../clutter/clutter-box-layout.c:391 ../clutter/clutter-table-layout.c:611
+msgid "Horizontal alignment of the actor within the cell"
+msgstr "セル内のアクターの水平整列"
+
+#: ../clutter/clutter-box-layout.c:400 ../clutter/clutter-table-layout.c:626
+msgid "Vertical alignment of the actor within the cell"
+msgstr "セル内のアクターの垂直整列"
+
+#: ../clutter/clutter-box-layout.c:1365
+msgid "Vertical"
+msgstr "垂直方向"
+
+#: ../clutter/clutter-box-layout.c:1366
+msgid "Whether the layout should be vertical, rather than horizontal"
+msgstr "レイアウトの優先順位を水平方向ではなく垂直方向にするかどうか"
+
+#: ../clutter/clutter-box-layout.c:1383 ../clutter/clutter-flow-layout.c:890
+#: ../clutter/clutter-grid-layout.c:1547
+msgid "Orientation"
+msgstr "向き"
+
+#: ../clutter/clutter-box-layout.c:1384 ../clutter/clutter-flow-layout.c:891
+#: ../clutter/clutter-grid-layout.c:1548
+msgid "The orientation of the layout"
+msgstr "レイアウトの向き"
+
+#: ../clutter/clutter-box-layout.c:1400 ../clutter/clutter-flow-layout.c:906
+msgid "Homogeneous"
+msgstr "均等配置"
+
+#: ../clutter/clutter-box-layout.c:1401
+msgid ""
+"Whether the layout should be homogeneous, i.e. all childs get the same size"
+msgstr ""
+"レイアウトを均等配置にするかどうか。たとえば子オブジェクトをすべて同じ大きさ"
+"にする"
+
+#: ../clutter/clutter-box-layout.c:1416
+msgid "Pack Start"
+msgstr "パックの開始"
+
+#: ../clutter/clutter-box-layout.c:1417
+msgid "Whether to pack items at the start of the box"
+msgstr "ボックスの開始時にアイテムをパックするかどうか"
+
+#: ../clutter/clutter-box-layout.c:1430
+msgid "Spacing"
+msgstr "間隔"
+
+#: ../clutter/clutter-box-layout.c:1431
+msgid "Spacing between children"
+msgstr "子オブジェクト間の間隔"
+
+#: ../clutter/clutter-box-layout.c:1448 ../clutter/clutter-table-layout.c:1675
+msgid "Use Animations"
+msgstr "アニメーションを使用する"
+
+#: ../clutter/clutter-box-layout.c:1449 ../clutter/clutter-table-layout.c:1676
+msgid "Whether layout changes should be animated"
+msgstr "レイアウトの変更をアニメーション化するかどうか"
+
+# Easing とは Tween の変化曲線を意味する。Tween は減少なので、暫減モードとでも訳したほうが良いかもしれない。
+#: ../clutter/clutter-box-layout.c:1473 ../clutter/clutter-table-layout.c:1700
+msgid "Easing Mode"
+msgstr "イージングモード"
+
+#: ../clutter/clutter-box-layout.c:1474 ../clutter/clutter-table-layout.c:1701
+msgid "The easing mode of the animations"
+msgstr "アニメーションのイージングモード"
+
+#: ../clutter/clutter-box-layout.c:1494 ../clutter/clutter-table-layout.c:1721
+msgid "Easing Duration"
+msgstr "イージング継続時間"
+
+#: ../clutter/clutter-box-layout.c:1495 ../clutter/clutter-table-layout.c:1722
+msgid "The duration of the animations"
+msgstr "アニメーションの継続時間"
+
+#: ../clutter/clutter-brightness-contrast-effect.c:321
+msgid "Brightness"
+msgstr "明るさ"
+
+#: ../clutter/clutter-brightness-contrast-effect.c:322
+msgid "The brightness change to apply"
+msgstr "明るさの変化を適用する"
+
+#: ../clutter/clutter-brightness-contrast-effect.c:341
+msgid "Contrast"
+msgstr "コントラスト"
+
+#: ../clutter/clutter-brightness-contrast-effect.c:342
+msgid "The contrast change to apply"
+msgstr "コントラストの変化を適用する"
+
+#: ../clutter/clutter-canvas.c:216
+msgid "The width of the canvas"
+msgstr "カンバスの幅"
+
+#: ../clutter/clutter-canvas.c:232
+msgid "The height of the canvas"
+msgstr "カンバスの高さ"
+
+#: ../clutter/clutter-child-meta.c:127
+msgid "Container"
+msgstr "コンテナー"
+
+#: ../clutter/clutter-child-meta.c:128
+msgid "The container that created this data"
+msgstr "このデータで作成されるコンテナー"
+
+#: ../clutter/clutter-child-meta.c:143
+msgid "The actor wrapped by this data"
+msgstr "このデータでラップされるアクター"
+
+#: ../clutter/clutter-click-action.c:559
+msgid "Pressed"
+msgstr "押下"
+
+#: ../clutter/clutter-click-action.c:560
+msgid "Whether the clickable should be in pressed state"
+msgstr "クリック可能なものの押下状態にするかどうか"
+
+#: ../clutter/clutter-click-action.c:573
+msgid "Held"
+msgstr "保留"
+
+#: ../clutter/clutter-click-action.c:574
+msgid "Whether the clickable has a grab"
+msgstr "クリック可能なものの状態を保持するかどうか"
+
+#: ../clutter/clutter-click-action.c:591 ../clutter/clutter-settings.c:599
+msgid "Long Press Duration"
+msgstr "長い押下時間"
+
+#: ../clutter/clutter-click-action.c:592
+msgid "The minimum duration of a long press to recognize the gesture"
+msgstr "ジェスチャーで長い押下として認識される最小の押下時間"
+
+#: ../clutter/clutter-click-action.c:610
+msgid "Long Press Threshold"
+msgstr "長い押下のしきい値"
+
+#: ../clutter/clutter-click-action.c:611
+msgid "The maximum threshold before a long press is cancelled"
+msgstr "長い押下ではないと認識されるまでの最大しきい値"
+
+#: ../clutter/clutter-clone.c:346
+msgid "Specifies the actor to be cloned"
+msgstr "複製されるアクターの指定"
+
+#: ../clutter/clutter-colorize-effect.c:251
+msgid "Tint"
+msgstr "色合い"
+
+#: ../clutter/clutter-colorize-effect.c:252
+msgid "The tint to apply"
+msgstr "適用する色合い"
+
+#: ../clutter/clutter-deform-effect.c:588
+msgid "Horizontal Tiles"
+msgstr "水平タイル"
+
+#: ../clutter/clutter-deform-effect.c:589
+msgid "The number of horizontal tiles"
+msgstr "水平タイルの数"
+
+#: ../clutter/clutter-deform-effect.c:604
+msgid "Vertical Tiles"
+msgstr "垂直タイル"
+
+#: ../clutter/clutter-deform-effect.c:605
+msgid "The number of vertical tiles"
+msgstr "垂直タイルの数"
+
+#: ../clutter/clutter-deform-effect.c:622
+msgid "Back Material"
+msgstr "背景の質感"
+
+#: ../clutter/clutter-deform-effect.c:623
+msgid "The material to be used when painting the back of the actor"
+msgstr "アクターの背景描画時の質感"
+
+#: ../clutter/clutter-desaturate-effect.c:271
+msgid "The desaturation factor"
+msgstr "脱飽和係数"
+
+#: ../clutter/clutter-device-manager.c:131
+#: ../clutter/clutter-input-device.c:366
+#: ../clutter/x11/clutter-keymap-x11.c:316
+msgid "Backend"
+msgstr "バックエンド"
+
+#: ../clutter/clutter-device-manager.c:132
+msgid "The ClutterBackend of the device manager"
+msgstr "デバイスマネジャーのClutterBackend"
+
+#: ../clutter/clutter-drag-action.c:742
+msgid "Horizontal Drag Threshold"
+msgstr "水平ドラッグのしきい値"
+
+#: ../clutter/clutter-drag-action.c:743
+msgid "The horizontal amount of pixels required to start dragging"
+msgstr "ドラッグ開始で必要となるピクセル単位の最小水平移動量"
+
+#: ../clutter/clutter-drag-action.c:770
+msgid "Vertical Drag Threshold"
+msgstr "垂直ドラッグのしきい値"
+
+#: ../clutter/clutter-drag-action.c:771
+msgid "The vertical amount of pixels required to start dragging"
+msgstr "ドラッグ開始で必要となるピクセル単位の最小垂直移動量"
+
+#: ../clutter/clutter-drag-action.c:792
+msgid "Drag Handle"
+msgstr "ドラッグ処理"
+
+#: ../clutter/clutter-drag-action.c:793
+msgid "The actor that is being dragged"
+msgstr "ドラッグされているアクター"
+
+#: ../clutter/clutter-drag-action.c:806
+msgid "Drag Axis"
+msgstr "ドラッグ方向"
+
+#: ../clutter/clutter-drag-action.c:807
+msgid "Constraints the dragging to an axis"
+msgstr "ドラッグが制限される軸"
+
+#: ../clutter/clutter-drag-action.c:823
+msgid "Drag Area"
+msgstr "ドラッグ領域"
+
+#: ../clutter/clutter-drag-action.c:824
+msgid "Constrains the dragging to a rectangle"
+msgstr "ドラッグ可能な長方形の制限"
+
+#: ../clutter/clutter-drag-action.c:837
+msgid "Drag Area Set"
+msgstr "ドラッグ領域を設定"
+
+#: ../clutter/clutter-drag-action.c:838
+msgid "Whether the drag area is set"
+msgstr "ドラッグ領域を設定するかどうか"
+
+#: ../clutter/clutter-flow-layout.c:907
+msgid "Whether each item should receive the same allocation"
+msgstr "別の要素が同じ領域を占めるかどうか"
+
+#: ../clutter/clutter-flow-layout.c:922 ../clutter/clutter-table-layout.c:1637
+msgid "Column Spacing"
+msgstr "列の間隔"
+
+#: ../clutter/clutter-flow-layout.c:923
+msgid "The spacing between columns"
+msgstr "列の間隔"
+
+#: ../clutter/clutter-flow-layout.c:939 ../clutter/clutter-table-layout.c:1651
+msgid "Row Spacing"
+msgstr "行の間隔"
+
+#: ../clutter/clutter-flow-layout.c:940
+msgid "The spacing between rows"
+msgstr "行の間隔"
+
+#: ../clutter/clutter-flow-layout.c:954
+msgid "Minimum Column Width"
+msgstr "列の最小幅"
+
+#: ../clutter/clutter-flow-layout.c:955
+msgid "Minimum width for each column"
+msgstr "それぞれの列の最小幅"
+
+#: ../clutter/clutter-flow-layout.c:970
+msgid "Maximum Column Width"
+msgstr "列の最大幅"
+
+#: ../clutter/clutter-flow-layout.c:971
+msgid "Maximum width for each column"
+msgstr "それぞれの列の最大幅"
+
+#: ../clutter/clutter-flow-layout.c:985
+msgid "Minimum Row Height"
+msgstr "行の最小高さ"
+
+#: ../clutter/clutter-flow-layout.c:986
+msgid "Minimum height for each row"
+msgstr "それぞれの行の最小高さ"
+
+#: ../clutter/clutter-flow-layout.c:1001
+msgid "Maximum Row Height"
+msgstr "行の最大高さ"
+
+#: ../clutter/clutter-flow-layout.c:1002
+msgid "Maximum height for each row"
+msgstr "それぞれの行の最大高さ"
+
+#: ../clutter/clutter-grid-layout.c:1222
+msgid "Left attachment"
+msgstr "左アタッチ"
+
+#: ../clutter/clutter-grid-layout.c:1223
+msgid "The column number to attach the left side of the child to"
+msgstr "子オブジェクトの左側にアタッチする列番号"
+
+#: ../clutter/clutter-grid-layout.c:1230
+msgid "Top attachment"
+msgstr "上アタッチ"
+
+#: ../clutter/clutter-grid-layout.c:1231
+msgid "The row number to attach the top side of a child widget to"
+msgstr "子オブジェクトの上側にアタッチする行番号"
+
+#: ../clutter/clutter-grid-layout.c:1239
+msgid "The number of columns that a child spans"
+msgstr "子オブジェクトを展開する列数"
+
+#: ../clutter/clutter-grid-layout.c:1246
+msgid "The number of rows that a child spans"
+msgstr "子オブジェクトを展開する行数"
+
+#: ../clutter/clutter-grid-layout.c:1562
+msgid "Row spacing"
+msgstr "行の展開"
+
+#: ../clutter/clutter-grid-layout.c:1563
+msgid "The amount of space between two consecutive rows"
+msgstr "隣接する2行間の間隔"
+
+#: ../clutter/clutter-grid-layout.c:1576
+msgid "Column spacing"
+msgstr "列の展開"
+
+#: ../clutter/clutter-grid-layout.c:1577
+msgid "The amount of space between two consecutive columns"
+msgstr "隣接する2列間の間隔"
+
+#: ../clutter/clutter-grid-layout.c:1591
+msgid "Row Homogeneous"
+msgstr "行の均等配置"
+
+#: ../clutter/clutter-grid-layout.c:1592
+msgid "If TRUE, the rows are all the same height"
+msgstr "真の場合、全行を同じ高さにする"
+
+#: ../clutter/clutter-grid-layout.c:1605
+msgid "Column Homogeneous"
+msgstr "列の均等配置"
+
+#: ../clutter/clutter-grid-layout.c:1606
+msgid "If TRUE, the columns are all the same width"
+msgstr "真の場合、全列を同じ高さにする"
+
+#: ../clutter/clutter-image.c:248 ../clutter/clutter-image.c:311
+#: ../clutter/clutter-image.c:399
+msgid "Unable to load image data"
+msgstr "画像データを読み込めません"
+
+#: ../clutter/clutter-input-device.c:242
+msgid "Id"
+msgstr "ID"
+
+#: ../clutter/clutter-input-device.c:243
+msgid "Unique identifier of the device"
+msgstr "デバイスの固有識別子"
+
+#: ../clutter/clutter-input-device.c:259
+msgid "The name of the device"
+msgstr "デバイス名"
+
+#: ../clutter/clutter-input-device.c:273
+msgid "Device Type"
+msgstr "デバイスの形式"
+
+#: ../clutter/clutter-input-device.c:274
+msgid "The type of the device"
+msgstr "デバイスの形式"
+
+#: ../clutter/clutter-input-device.c:289
+msgid "Device Manager"
+msgstr "デバイスマネジャー"
+
+#: ../clutter/clutter-input-device.c:290
+msgid "The device manager instance"
+msgstr "デバイスマネジャーのインスタンス"
+
+#: ../clutter/clutter-input-device.c:303
+msgid "Device Mode"
+msgstr "デバイスモード"
+
+#: ../clutter/clutter-input-device.c:304
+msgid "The mode of the device"
+msgstr "デバイスのモード"
+
+#: ../clutter/clutter-input-device.c:318
+msgid "Has Cursor"
+msgstr "カーソルの有無"
+
+#: ../clutter/clutter-input-device.c:319
+msgid "Whether the device has a cursor"
+msgstr "デバイスにカーソルがあるかどうか"
+
+#: ../clutter/clutter-input-device.c:338
+msgid "Whether the device is enabled"
+msgstr "デバイスが利用可能かどうか"
+
+#: ../clutter/clutter-input-device.c:351
+msgid "Number of Axes"
+msgstr "軸の数"
+
+#: ../clutter/clutter-input-device.c:352
+msgid "The number of axes on the device"
+msgstr "デバイスの軸の数"
+
+#: ../clutter/clutter-input-device.c:367
+msgid "The backend instance"
+msgstr "バックエンドのインスタンス"
+
+#: ../clutter/clutter-interval.c:506
+msgid "Value Type"
+msgstr "値の形式"
+
+#: ../clutter/clutter-interval.c:507
+msgid "The type of the values in the interval"
+msgstr "インターバルの値の形式"
+
+#: ../clutter/clutter-interval.c:522
+msgid "Initial Value"
+msgstr "初期値"
+
+#: ../clutter/clutter-interval.c:523
+msgid "Initial value of the interval"
+msgstr "インターバルの初期値"
+
+#: ../clutter/clutter-interval.c:537
+msgid "Final Value"
+msgstr "終了値"
+
+#: ../clutter/clutter-interval.c:538
+msgid "Final value of the interval"
+msgstr "インターバルの終了値"
+
+#: ../clutter/clutter-layout-meta.c:117
+msgid "Manager"
+msgstr "マネジャー"
+
+#: ../clutter/clutter-layout-meta.c:118
+msgid "The manager that created this data"
+msgstr "このデータで作成されるマネジャー"
+
+#. Translators: Leave this UNTRANSLATED if your language is
+#. * left-to-right.  If your language is right-to-left
+#. * (e.g. Hebrew, Arabic), translate it to "default:RTL".
+#. *
+#. * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
+#. * it isn't default:LTR or default:RTL it will not work.
+#.
+#: ../clutter/clutter-main.c:762
+msgid "default:LTR"
+msgstr "デフォルトの文字方向:左から右へ"
+
+#: ../clutter/clutter-main.c:1636
+msgid "Show frames per second"
+msgstr "1秒に表示されるフレーム数"
+
+#: ../clutter/clutter-main.c:1638
+msgid "Default frame rate"
+msgstr "デフォルトのフレームレート"
+
+#: ../clutter/clutter-main.c:1640
+msgid "Make all warnings fatal"
+msgstr "すべての警告を致命的として扱う"
+
+#: ../clutter/clutter-main.c:1643
+msgid "Direction for the text"
+msgstr "文字の方向"
+
+#: ../clutter/clutter-main.c:1646
+msgid "Disable mipmapping on text"
+msgstr "テキストのミップマッピングを利用不可にする"
+
+#: ../clutter/clutter-main.c:1649
+msgid "Use 'fuzzy' picking"
+msgstr "fuzzy 選択を使用"
+
+#: ../clutter/clutter-main.c:1652
+msgid "Clutter debugging flags to set"
+msgstr "Clutter のデバッグフラグを設定する"
+
+#: ../clutter/clutter-main.c:1654
+msgid "Clutter debugging flags to unset"
+msgstr "Clutter のデバッグフラグを解除する"
+
+#: ../clutter/clutter-main.c:1658
+msgid "Clutter profiling flags to set"
+msgstr "Clutter のプロファイルフラグを設定する"
+
+#: ../clutter/clutter-main.c:1660
+msgid "Clutter profiling flags to unset"
+msgstr "Clutter のプロファイルフラグを解除する"
+
+#: ../clutter/clutter-main.c:1663
+msgid "Enable accessibility"
+msgstr "アクセシビリティを利用可能にする"
+
+#: ../clutter/clutter-main.c:1855
+msgid "Clutter Options"
+msgstr "Clutter のオプション"
+
+#: ../clutter/clutter-main.c:1856
+msgid "Show Clutter Options"
+msgstr "Clutter のオプションを表示する"
+
+#: ../clutter/clutter-pan-action.c:451
+msgid "Pan Axis"
+msgstr "パン方向"
+
+#: ../clutter/clutter-pan-action.c:452
+msgid "Constraints the panning to an axis"
+msgstr "パンする軸を制限する"
+
+#: ../clutter/clutter-pan-action.c:466
+msgid "Interpolate"
+msgstr "補完"
+
+#: ../clutter/clutter-pan-action.c:467
+msgid "Whether interpolated events emission is enabled."
+msgstr "補完イベントの発生を利用するかどうか"
+
+#: ../clutter/clutter-pan-action.c:483
+msgid "Deceleration"
+msgstr "減速"
+
+#: ../clutter/clutter-pan-action.c:484
+msgid "Rate at which the interpolated panning will decelerate in"
+msgstr "パンの補完比率を減速する"
+
+#: ../clutter/clutter-pan-action.c:501
+msgid "Initial acceleration factor"
+msgstr "内部加速係数"
+
+#: ../clutter/clutter-pan-action.c:502
+msgid "Factor applied to the momentum when starting the interpolated phase"
+msgstr "補完フェーズ開始時の運動量の係数"
+
+#: ../clutter/clutter-path-constraint.c:212
+#: ../clutter/deprecated/clutter-behaviour-path.c:225
+msgid "Path"
+msgstr "パス"
+
+#: ../clutter/clutter-path-constraint.c:213
+msgid "The path used to constrain an actor"
+msgstr "アクターの移動を制限するパス"
+
+#: ../clutter/clutter-path-constraint.c:227
+msgid "The offset along the path, between -1.0 and 2.0"
+msgstr "パスのオフセット、-1.0から2.0まで"
+
+#: ../clutter/clutter-property-transition.c:271
+msgid "Property Name"
+msgstr "プロパティ名"
+
+#: ../clutter/clutter-property-transition.c:272
+msgid "The name of the property to animate"
+msgstr "アニメーションのプロパティ名"
+
+#: ../clutter/clutter-script.c:466
+msgid "Filename Set"
+msgstr "ファイル名の設定"
+
+#: ../clutter/clutter-script.c:467
+msgid "Whether the :filename property is set"
+msgstr "ファイル名プロパティが設定されているかどうか"
+
+#: ../clutter/clutter-script.c:481
+#: ../clutter/deprecated/clutter-texture.c:1082
+msgid "Filename"
+msgstr "ファイル名"
+
+#: ../clutter/clutter-script.c:482
+msgid "The path of the currently parsed file"
+msgstr "現在解析しているファイルのパス"
+
+#: ../clutter/clutter-script.c:499
+msgid "Translation Domain"
+msgstr "翻訳のドメイン"
+
+#: ../clutter/clutter-script.c:500
+msgid "The translation domain used to localize string"
+msgstr "ローカライズされた文字の翻訳ドメイン"
+
+#: ../clutter/clutter-scroll-actor.c:263
+msgid "Scroll Mode"
+msgstr "スクロールモード"
+
+#: ../clutter/clutter-scroll-actor.c:264
+msgid "The scrolling direction"
+msgstr "スクロールの方向"
+
+#: ../clutter/clutter-settings.c:440
+msgid "Double Click Time"
+msgstr "ダブルクリック時間"
+
+#: ../clutter/clutter-settings.c:441
+msgid "The time between clicks necessary to detect a multiple click"
+msgstr "複数回クリックしたことを検出するのに必要なクリック間の時間"
+
+# Distance は距離だけど、ここでは"移動量"と訳す
+#: ../clutter/clutter-settings.c:456
+msgid "Double Click Distance"
+msgstr "ダブルクリックの移動量"
+
+#: ../clutter/clutter-settings.c:457
+msgid "The distance between clicks necessary to detect a multiple click"
+msgstr "複数回クリックしたことを検出するのに必要なクリック間の移動量"
+
+#: ../clutter/clutter-settings.c:472
+msgid "Drag Threshold"
+msgstr "ドラッグのしきい値"
+
+#: ../clutter/clutter-settings.c:473
+msgid "The distance the cursor should travel before starting to drag"
+msgstr "ドラッグ開始からのカーソル移動量"
+
+#: ../clutter/clutter-settings.c:488 ../clutter/clutter-text.c:3368
+msgid "Font Name"
+msgstr "フォント名"
+
+#: ../clutter/clutter-settings.c:489
+msgid ""
+"The description of the default font, as one that could be parsed by Pango"
+msgstr "Pango で解析可能な、デフォルトフォントの説明"
+
+#: ../clutter/clutter-settings.c:504
+msgid "Font Antialias"
+msgstr "フォントのアンチエイリアス"
+
+#: ../clutter/clutter-settings.c:505
+msgid ""
+"Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
+"default)"
+msgstr ""
+"アンチエイリアスを使用するかどうか(1は使用、0は使用しない、-1はデフォルトを使"
+"用)"
+
+#: ../clutter/clutter-settings.c:521
+msgid "Font DPI"
+msgstr "フォントのDPI"
+
+#: ../clutter/clutter-settings.c:522
+msgid ""
+"The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
+msgstr "フォントの解像度、1024 * dot/inch または デフォルトを使用する -1"
+
+#: ../clutter/clutter-settings.c:538
+msgid "Font Hinting"
+msgstr "フォントのヒンティング"
+
+#: ../clutter/clutter-settings.c:539
+msgid ""
+"Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
+msgstr ""
+"フォントのヒンティングを使用するかどうか (1は使用、0は使用しない、-1はデフォ"
+"ルトを使用する)"
+
+#: ../clutter/clutter-settings.c:560
+msgid "Font Hint Style"
+msgstr "フォントのヒンティングスタイル"
+
+#: ../clutter/clutter-settings.c:561
+msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
+msgstr "ヒンティングのスタイル (hintnone, hintslight, hintmedium, hintfull)"
+
+#: ../clutter/clutter-settings.c:582
+msgid "Font Subpixel Order"
+msgstr "フォントのサプピクセルオーダー"
+
+#: ../clutter/clutter-settings.c:583
+msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
+msgstr "サブピクセルのアンチエイリアシングの形式 (none, rgb, bgr, vrgb, vbgr)"
+
+#: ../clutter/clutter-settings.c:600
+msgid "The minimum duration for a long press gesture to be recognized"
+msgstr "長押しジェスチャーと認識される最小時間"
+
+#: ../clutter/clutter-settings.c:607
+msgid "Fontconfig configuration timestamp"
+msgstr "Fontconfig で設定したタイムスタンプ"
+
+#: ../clutter/clutter-settings.c:608
+msgid "Timestamp of the current fontconfig configuration"
+msgstr "現在使用している fontconfig 設定のタイムスタンプ"
+
+#: ../clutter/clutter-settings.c:625
+msgid "Password Hint Time"
+msgstr "パスワードのヒントを表示する時間"
+
+#: ../clutter/clutter-settings.c:626
+msgid "How long to show the last input character in hidden entries"
+msgstr "隠し文字入力で最後に入力した文字を表示する時間"
+
+#: ../clutter/clutter-shader-effect.c:486
+msgid "Shader Type"
+msgstr "シェーダーの形式"
+
+#: ../clutter/clutter-shader-effect.c:487
+msgid "The type of shader used"
+msgstr "使用しているシェーダーの形式"
+
+#: ../clutter/clutter-snap-constraint.c:322
+msgid "The source of the constraint"
+msgstr "制限の原点"
+
+#: ../clutter/clutter-snap-constraint.c:335
+msgid "From Edge"
+msgstr "エッジから"
+
+#: ../clutter/clutter-snap-constraint.c:336
+msgid "The edge of the actor that should be snapped"
+msgstr "アクターをスナップするエッジ"
+
+#: ../clutter/clutter-snap-constraint.c:350
+msgid "To Edge"
+msgstr "エッジまで"
+
+#: ../clutter/clutter-snap-constraint.c:351
+msgid "The edge of the source that should be snapped"
+msgstr "スナップする原点のエッジ"
+
+#: ../clutter/clutter-snap-constraint.c:367
+msgid "The offset in pixels to apply to the constraint"
+msgstr "制限で適用するピクセル単位のオフセット"
+
+#: ../clutter/clutter-stage.c:1895
+msgid "Fullscreen Set"
+msgstr "フルスクリーン設定"
+
+#: ../clutter/clutter-stage.c:1896
+msgid "Whether the main stage is fullscreen"
+msgstr "中心となるステージをフルスクリーン表示するかどうか"
+
+#: ../clutter/clutter-stage.c:1910
+msgid "Offscreen"
+msgstr "オフスクリーン"
+
+#: ../clutter/clutter-stage.c:1911
+msgid "Whether the main stage should be rendered offscreen"
+msgstr "中心となるステージをオフスクリーンでレンダリングするかどうか"
+
+#: ../clutter/clutter-stage.c:1923 ../clutter/clutter-text.c:3482
+msgid "Cursor Visible"
+msgstr "カーソル表示"
+
+#: ../clutter/clutter-stage.c:1924
+msgid "Whether the mouse pointer is visible on the main stage"
+msgstr "中心となるステージでマウスポインターを表示するかどうか"
+
+#: ../clutter/clutter-stage.c:1938
+msgid "User Resizable"
+msgstr "ユーザーによるサイズの変更"
+
+#: ../clutter/clutter-stage.c:1939
+msgid "Whether the stage is able to be resized via user interaction"
+msgstr "ステージをユーザーがサイズ変更できるかどうか"
+
+#: ../clutter/clutter-stage.c:1954 ../clutter/deprecated/clutter-box.c:260
+#: ../clutter/deprecated/clutter-rectangle.c:273
+msgid "Color"
+msgstr "色"
+
+#: ../clutter/clutter-stage.c:1955
+msgid "The color of the stage"
+msgstr "ステージの色"
+
+#: ../clutter/clutter-stage.c:1970
+msgid "Perspective"
+msgstr "遠近法"
+
+#: ../clutter/clutter-stage.c:1971
+msgid "Perspective projection parameters"
+msgstr "遠近法の投影パラメーター"
+
+#: ../clutter/clutter-stage.c:1986
+msgid "Title"
+msgstr "タイトル"
+
+#: ../clutter/clutter-stage.c:1987
+msgid "Stage Title"
+msgstr "ステージのタイトル"
+
+#: ../clutter/clutter-stage.c:2004
+msgid "Use Fog"
+msgstr "Fog(霞効果)を使用する"
+
+#: ../clutter/clutter-stage.c:2005
+msgid "Whether to enable depth cueing"
+msgstr "頭出しの深さを利用可能にするかどうか"
+
+#: ../clutter/clutter-stage.c:2021
+msgid "Fog"
+msgstr "Fog(霞効果)"
+
+#: ../clutter/clutter-stage.c:2022
+msgid "Settings for the depth cueing"
+msgstr "深さの先頭の設定"
+
+#: ../clutter/clutter-stage.c:2038
+msgid "Use Alpha"
+msgstr "アルファを使用する"
+
+#: ../clutter/clutter-stage.c:2039
+msgid "Whether to honour the alpha component of the stage color"
+msgstr "ステージ色のアルファ値を尊重するかどうか"
+
+#: ../clutter/clutter-stage.c:2055
+msgid "Key Focus"
+msgstr "キーフォーカス"
+
+#: ../clutter/clutter-stage.c:2056
+msgid "The currently key focused actor"
+msgstr "現在キーフォーカスされているアクター"
+
+#: ../clutter/clutter-stage.c:2072
+msgid "No Clear Hint"
+msgstr "不鮮明なヒンティング"
+
+#: ../clutter/clutter-stage.c:2073
+msgid "Whether the stage should clear its contents"
+msgstr "ステージの中身を鮮明にするかどうか"
+
+#: ../clutter/clutter-stage.c:2086
+msgid "Accept Focus"
+msgstr "フォーカスの許可"
+
+#: ../clutter/clutter-stage.c:2087
+msgid "Whether the stage should accept focus on show"
+msgstr "ステージが表示時にフォーカスを許可するかどうか"
+
+#: ../clutter/clutter-table-layout.c:543
+msgid "Column Number"
+msgstr "列番号"
+
+#: ../clutter/clutter-table-layout.c:544
+msgid "The column the widget resides in"
+msgstr "ウィジェットに隣接する列番号"
+
+#: ../clutter/clutter-table-layout.c:551
+msgid "Row Number"
+msgstr "行番号"
+
+#: ../clutter/clutter-table-layout.c:552
+msgid "The row the widget resides in"
+msgstr "ウィジェットが隣接する行番号"
+
+#: ../clutter/clutter-table-layout.c:559
+msgid "Column Span"
+msgstr "列の展張"
+
+#: ../clutter/clutter-table-layout.c:560
+msgid "The number of columns the widget should span"
+msgstr "ウィジェットを展張する列数"
+
+#: ../clutter/clutter-table-layout.c:567
+msgid "Row Span"
+msgstr "行の展張"
+
+#: ../clutter/clutter-table-layout.c:568
+msgid "The number of rows the widget should span"
+msgstr "ウィジェットを展張する行数"
+
+#: ../clutter/clutter-table-layout.c:575
+msgid "Horizontal Expand"
+msgstr "水平拡張"
+
+#: ../clutter/clutter-table-layout.c:576
+msgid "Allocate extra space for the child in horizontal axis"
+msgstr "子オブジェクト用の水平方向の追加領域"
+
+#: ../clutter/clutter-table-layout.c:582
+msgid "Vertical Expand"
+msgstr "垂直拡張"
+
+#: ../clutter/clutter-table-layout.c:583
+msgid "Allocate extra space for the child in vertical axis"
+msgstr "子オブジェクト用の垂直方向の追加領域"
+
+#: ../clutter/clutter-table-layout.c:1638
+msgid "Spacing between columns"
+msgstr "列の間隔"
+
+#: ../clutter/clutter-table-layout.c:1652
+msgid "Spacing between rows"
+msgstr "行の間隔"
+
+#: ../clutter/clutter-text-buffer.c:351 ../clutter/clutter-text.c:3403
+msgid "Text"
+msgstr "テキスト"
+
+#: ../clutter/clutter-text-buffer.c:352
+msgid "The contents of the buffer"
+msgstr "バッファーの内容"
+
+#: ../clutter/clutter-text-buffer.c:365
+msgid "Text length"
+msgstr "テキストの長さ"
+
+#: ../clutter/clutter-text-buffer.c:366
+msgid "Length of the text currently in the buffer"
+msgstr "バッファー内の現在のテキストの長さ"
+
+#: ../clutter/clutter-text-buffer.c:379
+msgid "Maximum length"
+msgstr "最大長"
+
+#: ../clutter/clutter-text-buffer.c:380
+msgid "Maximum number of characters for this entry. Zero if no maximum"
+msgstr "この入力枠の最大文字数。最大値が無い場合は 0"
+
+#: ../clutter/clutter-text.c:3350
+msgid "Buffer"
+msgstr "バッファー"
+
+#: ../clutter/clutter-text.c:3351
+msgid "The buffer for the text"
+msgstr "テキストのバッファー"
+
+#: ../clutter/clutter-text.c:3369
+msgid "The font to be used by the text"
+msgstr "テキストで使用するフォント"
+
+# description を"項目"と訳出
+#: ../clutter/clutter-text.c:3386
+msgid "Font Description"
+msgstr "フォントの項目"
+
+#: ../clutter/clutter-text.c:3387
+msgid "The font description to be used"
+msgstr "使用するフォントの項目"
+
+#: ../clutter/clutter-text.c:3404
+msgid "The text to render"
+msgstr "レンダリングするテキスト"
+
+#: ../clutter/clutter-text.c:3418
+msgid "Font Color"
+msgstr "フォントの色"
+
+#: ../clutter/clutter-text.c:3419
+msgid "Color of the font used by the text"
+msgstr "テキストで使用するフォントの色"
+
+#: ../clutter/clutter-text.c:3434
+msgid "Editable"
+msgstr "編集可能"
+
+#: ../clutter/clutter-text.c:3435
+msgid "Whether the text is editable"
+msgstr "テキストを編集可能にするかどうか"
+
+#: ../clutter/clutter-text.c:3450
+msgid "Selectable"
+msgstr "選択可能"
+
+#: ../clutter/clutter-text.c:3451
+msgid "Whether the text is selectable"
+msgstr "テキストを選択可能にするかどうか"
+
+#: ../clutter/clutter-text.c:3465
+msgid "Activatable"
+msgstr "利用可能"
+
+#: ../clutter/clutter-text.c:3466
+msgid "Whether pressing return causes the activate signal to be emitted"
+msgstr "リターンキーで activate シグナルを送信するかどうか"
+
+#: ../clutter/clutter-text.c:3483
+msgid "Whether the input cursor is visible"
+msgstr "入力カーソルを表示するかどうか"
+
+#: ../clutter/clutter-text.c:3497 ../clutter/clutter-text.c:3498
+msgid "Cursor Color"
+msgstr "カーソルの色"
+
+#: ../clutter/clutter-text.c:3513
+msgid "Cursor Color Set"
+msgstr "カーソルの色の設定"
+
+#: ../clutter/clutter-text.c:3514
+msgid "Whether the cursor color has been set"
+msgstr "カーソルの色が設定されているかどうか"
+
+#: ../clutter/clutter-text.c:3529
+msgid "Cursor Size"
+msgstr "カーソルの大きさ"
+
+#: ../clutter/clutter-text.c:3530
+msgid "The width of the cursor, in pixels"
+msgstr "ピクセル単位のカーソルの幅"
+
+#: ../clutter/clutter-text.c:3546 ../clutter/clutter-text.c:3564
+msgid "Cursor Position"
+msgstr "カーソルの位置"
+
+#: ../clutter/clutter-text.c:3547 ../clutter/clutter-text.c:3565
+msgid "The cursor position"
+msgstr "カーソルの位置"
+
+#: ../clutter/clutter-text.c:3580
+msgid "Selection-bound"
+msgstr "選択の範囲"
+
+#: ../clutter/clutter-text.c:3581
+msgid "The cursor position of the other end of the selection"
+msgstr "選択のもう一方のカーソルの位置"
+
+#: ../clutter/clutter-text.c:3596 ../clutter/clutter-text.c:3597
+msgid "Selection Color"
+msgstr "選択色"
+
+#: ../clutter/clutter-text.c:3612
+msgid "Selection Color Set"
+msgstr "選択色の設定"
+
+#: ../clutter/clutter-text.c:3613
+msgid "Whether the selection color has been set"
+msgstr "選択色が設定されているかどうか"
+
+#: ../clutter/clutter-text.c:3628
+msgid "Attributes"
+msgstr "属性"
+
+#: ../clutter/clutter-text.c:3629
+msgid "A list of style attributes to apply to the contents of the actor"
+msgstr "アクターの中身に適用するスタイル属性の一覧"
+
+#: ../clutter/clutter-text.c:3651
+msgid "Use markup"
+msgstr "マークアップ使用"
+
+#: ../clutter/clutter-text.c:3652
+msgid "Whether or not the text includes Pango markup"
+msgstr "テキストを Pango マークアップに含めるかどうか"
+
+#: ../clutter/clutter-text.c:3668
+msgid "Line wrap"
+msgstr "行の折り返し"
+
+#: ../clutter/clutter-text.c:3669
+msgid "If set, wrap the lines if the text becomes too wide"
+msgstr "設定されている場合は、テキストが長くなりすぎると折り返す"
+
+#: ../clutter/clutter-text.c:3684
+msgid "Line wrap mode"
+msgstr "行の折り返しモード"
+
+#: ../clutter/clutter-text.c:3685
+msgid "Control how line-wrapping is done"
+msgstr "業の折り返し方法を制御"
+
+#: ../clutter/clutter-text.c:3700
+msgid "Ellipsize"
+msgstr "省略記号"
+
+#: ../clutter/clutter-text.c:3701
+msgid "The preferred place to ellipsize the string"
+msgstr "文字列の省略が望まれる場所"
+
+#: ../clutter/clutter-text.c:3717
+msgid "Line Alignment"
+msgstr "行揃え"
+
+#: ../clutter/clutter-text.c:3718
+msgid "The preferred alignment for the string, for multi-line text"
+msgstr "複数行のテキストで望まれる文字列の行揃え"
+
+#: ../clutter/clutter-text.c:3734
+msgid "Justify"
+msgstr "両端揃え"
+
+#: ../clutter/clutter-text.c:3735
+msgid "Whether the text should be justified"
+msgstr "テキストを両端揃えするかどうか"
+
+#: ../clutter/clutter-text.c:3750
+msgid "Password Character"
+msgstr "パスワード文字"
+
+#: ../clutter/clutter-text.c:3751
+msgid "If non-zero, use this character to display the actor's contents"
+msgstr "ゼロでない場合、アクターの中身をその文字を使って表示する"
+
+#: ../clutter/clutter-text.c:3765
+msgid "Max Length"
+msgstr "最大長"
+
+#: ../clutter/clutter-text.c:3766
+msgid "Maximum length of the text inside the actor"
+msgstr "アクター内のテキストの最大長"
+
+#: ../clutter/clutter-text.c:3789
+msgid "Single Line Mode"
+msgstr "一行モード"
+
+#: ../clutter/clutter-text.c:3790
+msgid "Whether the text should be a single line"
+msgstr "テキストを一行モードにするかどうか"
+
+#: ../clutter/clutter-text.c:3804 ../clutter/clutter-text.c:3805
+msgid "Selected Text Color"
+msgstr "選択されたテキストの色"
+
+#: ../clutter/clutter-text.c:3820
+msgid "Selected Text Color Set"
+msgstr "選択されたテキストの色を設定"
+
+#: ../clutter/clutter-text.c:3821
+msgid "Whether the selected text color has been set"
+msgstr "選択されたテキストの色が設定されているかどうか"
+
+#: ../clutter/clutter-timeline.c:561
+#: ../clutter/deprecated/clutter-animation.c:560
+msgid "Loop"
+msgstr "ループ"
+
+#
+#: ../clutter/clutter-timeline.c:562
+msgid "Should the timeline automatically restart"
+msgstr "タイムラインを自動的に再開する"
+
+#: ../clutter/clutter-timeline.c:576
+msgid "Delay"
+msgstr "遅延"
+
+#: ../clutter/clutter-timeline.c:577
+msgid "Delay before start"
+msgstr "開始までの遅延"
+
+#: ../clutter/clutter-timeline.c:592
+#: ../clutter/deprecated/clutter-animation.c:544
+#: ../clutter/deprecated/clutter-animator.c:1803
+#: ../clutter/deprecated/clutter-media.c:224
+#: ../clutter/deprecated/clutter-state.c:1522
+msgid "Duration"
+msgstr "継続時間"
+
+#: ../clutter/clutter-timeline.c:593
+msgid "Duration of the timeline in milliseconds"
+msgstr "タイムラインのミリ秒単位の継続時間"
+
+#: ../clutter/clutter-timeline.c:608
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:528
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:337
+msgid "Direction"
+msgstr "方向"
+
+#: ../clutter/clutter-timeline.c:609
+msgid "Direction of the timeline"
+msgstr "Timeline の方向"
+
+#: ../clutter/clutter-timeline.c:624
+msgid "Auto Reverse"
+msgstr "自動反転"
+
+#: ../clutter/clutter-timeline.c:625
+msgid "Whether the direction should be reversed when reaching the end"
+msgstr "終了時に方向を自動反転するかどうか"
+
+#: ../clutter/clutter-timeline.c:643
+msgid "Repeat Count"
+msgstr "繰り返し回数"
+
+#: ../clutter/clutter-timeline.c:644
+msgid "How many times the timeline should repeat"
+msgstr "Timeline の繰り返し回数"
+
+#: ../clutter/clutter-timeline.c:658
+msgid "Progress Mode"
+msgstr "プログレスモード"
+
+# tween の曲線のこと
+#: ../clutter/clutter-timeline.c:659
+msgid "How the timeline should compute the progress"
+msgstr "Timeline のプログレスモード"
+
+#: ../clutter/clutter-transition.c:246
+msgid "Interval"
+msgstr "間隔"
+
+#: ../clutter/clutter-transition.c:247
+msgid "The interval of values to transition"
+msgstr "変換の時間間隔"
+
+#: ../clutter/clutter-transition.c:261
+msgid "Animatable"
+msgstr "アニメーション化"
+
+#: ../clutter/clutter-transition.c:262
+msgid "The animatable object"
+msgstr "オブジェクトをアニメーション化する"
+
+#: ../clutter/clutter-transition.c:283
+msgid "Remove on Complete"
+msgstr "完了時に削除"
+
+#: ../clutter/clutter-transition.c:284
+msgid "Detach the transition when completed"
+msgstr "完了時に変換を切り離す"
+
+#: ../clutter/clutter-zoom-action.c:353
+msgid "Zoom Axis"
+msgstr "ズームの軸方向"
+
+#: ../clutter/clutter-zoom-action.c:354
+msgid "Constraints the zoom to an axis"
+msgstr "ズームの軸方向を制限する"
+
+#: ../clutter/deprecated/clutter-alpha.c:355
+#: ../clutter/deprecated/clutter-animation.c:575
+#: ../clutter/deprecated/clutter-animator.c:1820
+msgid "Timeline"
+msgstr "タイムライン"
+
+#: ../clutter/deprecated/clutter-alpha.c:356
+msgid "Timeline used by the alpha"
+msgstr "アルファで使用するタイムライン"
+
+#: ../clutter/deprecated/clutter-alpha.c:372
+msgid "Alpha value"
+msgstr "アルファ値"
+
+#: ../clutter/deprecated/clutter-alpha.c:373
+msgid "Alpha value as computed by the alpha"
+msgstr "アルファとして計算するアルファ値"
+
+#: ../clutter/deprecated/clutter-alpha.c:394
+#: ../clutter/deprecated/clutter-animation.c:528
+msgid "Mode"
+msgstr "モード"
+
+#: ../clutter/deprecated/clutter-alpha.c:395
+msgid "Progress mode"
+msgstr "プログレスモード"
+
+#: ../clutter/deprecated/clutter-animation.c:511
+msgid "Object"
+msgstr "オブジェクト"
+
+#: ../clutter/deprecated/clutter-animation.c:512
+msgid "Object to which the animation applies"
+msgstr "アニメーションを適用するオブジェクト"
+
+#: ../clutter/deprecated/clutter-animation.c:529
+msgid "The mode of the animation"
+msgstr "アニメーションのモード"
+
+#: ../clutter/deprecated/clutter-animation.c:545
+msgid "Duration of the animation, in milliseconds"
+msgstr "ミリ秒単位のアニメーションの継続時間"
+
+#: ../clutter/deprecated/clutter-animation.c:561
+msgid "Whether the animation should loop"
+msgstr "アニメーションを繰り返すかどうか"
+
+#: ../clutter/deprecated/clutter-animation.c:576
+msgid "The timeline used by the animation"
+msgstr "アニメーションで使用するタイムライン"
+
+#: ../clutter/deprecated/clutter-animation.c:592
+#: ../clutter/deprecated/clutter-behaviour.c:241
+msgid "Alpha"
+msgstr "アルファ"
+
+#: ../clutter/deprecated/clutter-animation.c:593
+msgid "The alpha used by the animation"
+msgstr "アニメーションで使用するアルファ"
+
+#: ../clutter/deprecated/clutter-animator.c:1804
+msgid "The duration of the animation"
+msgstr "アニメーションの継続時間"
+
+#: ../clutter/deprecated/clutter-animator.c:1821
+msgid "The timeline of the animation"
+msgstr "アニメーションのタイムライン"
+
+#: ../clutter/deprecated/clutter-behaviour.c:242
+msgid "Alpha Object to drive the behaviour"
+msgstr "動作を支持するアルファオブジェクト"
+
+#: ../clutter/deprecated/clutter-behaviour-depth.c:182
+msgid "Start Depth"
+msgstr "深さの初期値"
+
+#: ../clutter/deprecated/clutter-behaviour-depth.c:183
+msgid "Initial depth to apply"
+msgstr "適用する初期の深さ"
+
+#: ../clutter/deprecated/clutter-behaviour-depth.c:198
+msgid "End Depth"
+msgstr "深さの最終値"
+
+#: ../clutter/deprecated/clutter-behaviour-depth.c:199
+msgid "Final depth to apply"
+msgstr "適用する最終の深さ"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:401
+msgid "Start Angle"
+msgstr "開始角度"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:402
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:284
+msgid "Initial angle"
+msgstr "初期角度"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:417
+msgid "End Angle"
+msgstr "終了角度"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:418
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:302
+msgid "Final angle"
+msgstr "最終角度"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:433
+msgid "Angle x tilt"
+msgstr "X軸の傾き角度"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:434
+msgid "Tilt of the ellipse around x axis"
+msgstr "X軸周りの楕円の傾き角"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:449
+msgid "Angle y tilt"
+msgstr "Y軸の傾き角度"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:450
+msgid "Tilt of the ellipse around y axis"
+msgstr "Y軸周りの楕円の傾き角"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:465
+msgid "Angle z tilt"
+msgstr "Z軸の傾き角度"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:466
+msgid "Tilt of the ellipse around z axis"
+msgstr "Z軸周りの楕円の傾き角"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:482
+msgid "Width of the ellipse"
+msgstr "楕円の幅"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:498
+msgid "Height of ellipse"
+msgstr "楕円の高さ"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:513
+msgid "Center"
+msgstr "中心"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:514
+msgid "Center of ellipse"
+msgstr "楕円の中心"
+
+#: ../clutter/deprecated/clutter-behaviour-ellipse.c:529
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:338
+msgid "Direction of rotation"
+msgstr "回転方向"
+
+#: ../clutter/deprecated/clutter-behaviour-opacity.c:184
+msgid "Opacity Start"
+msgstr "不透明度の開始値"
+
+#: ../clutter/deprecated/clutter-behaviour-opacity.c:185
+msgid "Initial opacity level"
+msgstr "最初の不透明度レベル"
+
+#: ../clutter/deprecated/clutter-behaviour-opacity.c:202
+msgid "Opacity End"
+msgstr "不透明度の終了値"
+
+#: ../clutter/deprecated/clutter-behaviour-opacity.c:203
+msgid "Final opacity level"
+msgstr "最終の不透明度レベル"
+
+#: ../clutter/deprecated/clutter-behaviour-path.c:226
+msgid "The ClutterPath object representing the path to animate along"
+msgstr "動きを表現するために添わせるパスとなる ClutterPath オブジェクト"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:283
+msgid "Angle Begin"
+msgstr "開始角度"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:301
+msgid "Angle End"
+msgstr "終了角度"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:319
+msgid "Axis"
+msgstr "軸"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:320
+msgid "Axis of rotation"
+msgstr "回転軸"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:355
+msgid "Center X"
+msgstr "X軸の中心"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:356
+msgid "X coordinate of the center of rotation"
+msgstr "回転の中心となるX座標"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:373
+msgid "Center Y"
+msgstr "Y軸の中心"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:374
+msgid "Y coordinate of the center of rotation"
+msgstr "回転の中心となるY座標"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:391
+msgid "Center Z"
+msgstr "Z軸の中心"
+
+#: ../clutter/deprecated/clutter-behaviour-rotate.c:392
+msgid "Z coordinate of the center of rotation"
+msgstr "回転の中心となるZ座標"
+
+#: ../clutter/deprecated/clutter-behaviour-scale.c:226
+msgid "X Start Scale"
+msgstr "X軸の拡大縮小の起点"
+
+#: ../clutter/deprecated/clutter-behaviour-scale.c:227
+msgid "Initial scale on the X axis"
+msgstr "X軸上の拡大縮小の初期拡大率"
+
+#: ../clutter/deprecated/clutter-behaviour-scale.c:245
+msgid "X End Scale"
+msgstr "X軸の拡大縮小の終点"
+
+#: ../clutter/deprecated/clutter-behaviour-scale.c:246
+msgid "Final scale on the X axis"
+msgstr "X軸上の拡大縮小の最終拡大率"
+
+#: ../clutter/deprecated/clutter-behaviour-scale.c:264
+msgid "Y Start Scale"
+msgstr "Y軸の拡大縮小の起点"
+
+#: ../clutter/deprecated/clutter-behaviour-scale.c:265
+msgid "Initial scale on the Y axis"
+msgstr "Y軸上の拡大縮小の初期拡大率"
+
+#: ../clutter/deprecated/clutter-behaviour-scale.c:283
+msgid "Y End Scale"
+msgstr "Y軸の拡大縮小の終点"
+
+#: ../clutter/deprecated/clutter-behaviour-scale.c:284
+msgid "Final scale on the Y axis"
+msgstr "Y軸上の拡大縮小の最終拡大率"
+
+#: ../clutter/deprecated/clutter-box.c:261
+msgid "The background color of the box"
+msgstr "ボックスの背景色"
+
+#: ../clutter/deprecated/clutter-box.c:274
+msgid "Color Set"
+msgstr "色の設定"
+
+#: ../clutter/deprecated/clutter-cairo-texture.c:597
+msgid "Surface Width"
+msgstr "表面の幅"
+
+#: ../clutter/deprecated/clutter-cairo-texture.c:598
+msgid "The width of the Cairo surface"
+msgstr "Cairo 表面の幅"
+
+#: ../clutter/deprecated/clutter-cairo-texture.c:615
+msgid "Surface Height"
+msgstr "表面の高さ"
+
+#: ../clutter/deprecated/clutter-cairo-texture.c:616
+msgid "The height of the Cairo surface"
+msgstr "Cairo 表面の高さ"
+
+#: ../clutter/deprecated/clutter-cairo-texture.c:636
+msgid "Auto Resize"
+msgstr "自動リサイズ"
+
+#: ../clutter/deprecated/clutter-cairo-texture.c:637
+msgid "Whether the surface should match the allocation"
+msgstr "表面が領域に一致するようにするかどうか"
+
+# 訳出しない
+#: ../clutter/deprecated/clutter-media.c:83
+msgid "URI"
+msgstr "URI"
+
+#: ../clutter/deprecated/clutter-media.c:84
+msgid "URI of a media file"
+msgstr "メディアファイルの URI"
+
+#: ../clutter/deprecated/clutter-media.c:100
+msgid "Playing"
+msgstr "再生中"
+
+#: ../clutter/deprecated/clutter-media.c:101
+msgid "Whether the actor is playing"
+msgstr "アクターが再生中かどうか"
+
+#: ../clutter/deprecated/clutter-media.c:118
+msgid "Progress"
+msgstr "進度"
+
+#: ../clutter/deprecated/clutter-media.c:119
+msgid "Current progress of the playback"
+msgstr "プレイバックの現在の進み具合"
+
+#: ../clutter/deprecated/clutter-media.c:135
+msgid "Subtitle URI"
+msgstr "サブタイトルの URI"
+
+#: ../clutter/deprecated/clutter-media.c:136
+msgid "URI of a subtitle file"
+msgstr "サブタイトルの URI"
+
+#: ../clutter/deprecated/clutter-media.c:154
+msgid "Subtitle Font Name"
+msgstr "サブタイトルのフォント名"
+
+#: ../clutter/deprecated/clutter-media.c:155
+msgid "The font used to display subtitles"
+msgstr "サブタイトルの表示に使用するフォント"
+
+#: ../clutter/deprecated/clutter-media.c:172
+msgid "Audio Volume"
+msgstr "オーディオの音量"
+
+#: ../clutter/deprecated/clutter-media.c:173
+msgid "The volume of the audio"
+msgstr "オーディオの音量"
+
+#: ../clutter/deprecated/clutter-media.c:189
+msgid "Can Seek"
+msgstr "シーク可能"
+
+#: ../clutter/deprecated/clutter-media.c:190
+msgid "Whether the current stream is seekable"
+msgstr "現在の音源がシーク可能かどうか"
+
+#: ../clutter/deprecated/clutter-media.c:207
+msgid "Buffer Fill"
+msgstr "バッファーの補充"
+
+#: ../clutter/deprecated/clutter-media.c:208
+msgid "The fill level of the buffer"
+msgstr "バッファーの補充レベル"
+
+#: ../clutter/deprecated/clutter-media.c:225
+msgid "The duration of the stream, in seconds"
+msgstr "ストリームの秒単位の演奏時間"
+
+#: ../clutter/deprecated/clutter-rectangle.c:274
+msgid "The color of the rectangle"
+msgstr "長方形の色"
+
+#: ../clutter/deprecated/clutter-rectangle.c:287
+msgid "Border Color"
+msgstr "境界の色"
+
+#: ../clutter/deprecated/clutter-rectangle.c:288
+msgid "The color of the border of the rectangle"
+msgstr "長方形の境界の色"
+
+#: ../clutter/deprecated/clutter-rectangle.c:303
+msgid "Border Width"
+msgstr "境界の幅"
+
+#: ../clutter/deprecated/clutter-rectangle.c:304
+msgid "The width of the border of the rectangle"
+msgstr "長方形の境界の幅"
+
+#: ../clutter/deprecated/clutter-rectangle.c:318
+msgid "Has Border"
+msgstr "境界あり"
+
+#: ../clutter/deprecated/clutter-rectangle.c:319
+msgid "Whether the rectangle should have a border"
+msgstr "長方形に境界をもたせるかどうか"
+
+# Vertex は"頂点"とした。ヴァーテックスシェーダーのことだが、頂点シェーダーという記載もあり。http://ja.wikipedia.org/wiki/%E3%83%90%E3%83%BC%E3%83%86%E3%83%83%E3%82%AF%E3%82%B9%E3%82%B7%E3%82%A7%E3%83%BC%E3%83%80
+#: ../clutter/deprecated/clutter-shader.c:261
+msgid "Vertex Source"
+msgstr "頂点の原点"
+
+#: ../clutter/deprecated/clutter-shader.c:262
+msgid "Source of vertex shader"
+msgstr "頂点のシェーダーの原点"
+
+#: ../clutter/deprecated/clutter-shader.c:278
+msgid "Fragment Source"
+msgstr "フラグメントの原点"
+
+#: ../clutter/deprecated/clutter-shader.c:279
+msgid "Source of fragment shader"
+msgstr "フラグメントシェーダーの原点"
+
+#: ../clutter/deprecated/clutter-shader.c:296
+msgid "Compiled"
+msgstr "コンパイル済み"
+
+#: ../clutter/deprecated/clutter-shader.c:297
+msgid "Whether the shader is compiled and linked"
+msgstr "シェーダーがコンパイルとリンクがなされているかどうか"
+
+#: ../clutter/deprecated/clutter-shader.c:314
+msgid "Whether the shader is enabled"
+msgstr "シェーダーが利用可能かどうか"
+
+#: ../clutter/deprecated/clutter-shader.c:525
+#, c-format
+msgid "%s compilation failed: %s"
+msgstr "%s のコンパイルに失敗しました: %s"
+
+#: ../clutter/deprecated/clutter-shader.c:526
+msgid "Vertex shader"
+msgstr "頂点シェーダー"
+
+# DirectXではピクセルシェーダーと呼ばれている
+#: ../clutter/deprecated/clutter-shader.c:527
+msgid "Fragment shader"
+msgstr "フラグメントシェーダー"
+
+#: ../clutter/deprecated/clutter-state.c:1504
+msgid "State"
+msgstr "状態"
+
+#: ../clutter/deprecated/clutter-state.c:1505
+msgid "Currently set state, (transition to this state might not be complete)"
+msgstr "現在の状態 (変換をこの状態にすると完了しない)"
+
+#: ../clutter/deprecated/clutter-state.c:1523
+msgid "Default transition duration"
+msgstr "デフォルトの変換時間"
+
+#: ../clutter/deprecated/clutter-texture.c:994
+msgid "Sync size of actor"
+msgstr "アクターの大きさの同期"
+
+#: ../clutter/deprecated/clutter-texture.c:995
+msgid "Auto sync size of actor to underlying pixbuf dimensions"
+msgstr "根底となる pixbuf の次元に、自動的にアクターの大きさを同期する"
+
+#: ../clutter/deprecated/clutter-texture.c:1002
+msgid "Disable Slicing"
+msgstr "スライシングの無効化"
+
+#: ../clutter/deprecated/clutter-texture.c:1003
+msgid ""
+"Forces the underlying texture to be singular and not made of smaller space "
+"saving individual textures"
+msgstr ""
+"単一かつ個別テクスチャとして保存される空間より小さい根底となるテクスチャに"
+"フォーカスを与える"
+
+#: ../clutter/deprecated/clutter-texture.c:1012
+msgid "Tile Waste"
+msgstr "余分なタイル"
+
+#: ../clutter/deprecated/clutter-texture.c:1013
+msgid "Maximum waste area of a sliced texture"
+msgstr "分割されたテクスチャーの最大無駄領域"
+
+#: ../clutter/deprecated/clutter-texture.c:1021
+msgid "Horizontal repeat"
+msgstr "水平方向の繰り返し"
+
+#: ../clutter/deprecated/clutter-texture.c:1022
+msgid "Repeat the contents rather than scaling them horizontally"
+msgstr "水平方向に拡大せず、中身を繰り返す"
+
+#: ../clutter/deprecated/clutter-texture.c:1029
+msgid "Vertical repeat"
+msgstr "垂直方向の繰り返し"
+
+#: ../clutter/deprecated/clutter-texture.c:1030
+msgid "Repeat the contents rather than scaling them vertically"
+msgstr "垂直方向に拡大せず、中身を繰り返す"
+
+#: ../clutter/deprecated/clutter-texture.c:1037
+msgid "Filter Quality"
+msgstr "フィルターの品質"
+
+#: ../clutter/deprecated/clutter-texture.c:1038
+msgid "Rendering quality used when drawing the texture"
+msgstr "テクスチャーの描画時に使用するレンダリング品質"
+
+#: ../clutter/deprecated/clutter-texture.c:1046
+msgid "Pixel Format"
+msgstr "ピクセルフォーマット"
+
+#: ../clutter/deprecated/clutter-texture.c:1047
+msgid "The Cogl pixel format to use"
+msgstr "使用する Cogl ピクセルフォーマット"
+
+#: ../clutter/deprecated/clutter-texture.c:1055
+#: ../clutter/wayland/clutter-wayland-surface.c:449
+msgid "Cogl Texture"
+msgstr "Cogl テクスチャー"
+
+#: ../clutter/deprecated/clutter-texture.c:1056
+#: ../clutter/wayland/clutter-wayland-surface.c:450
+msgid "The underlying Cogl texture handle used to draw this actor"
+msgstr "このアクターを描画する際に使用する、根底となる Cogl テクスチャーの処理"
+
+#: ../clutter/deprecated/clutter-texture.c:1063
+msgid "Cogl Material"
+msgstr "Cogl 質感"
+
+#: ../clutter/deprecated/clutter-texture.c:1064
+msgid "The underlying Cogl material handle used to draw this actor"
+msgstr "このアクターを描画する際に使用する、根底となる Cogl 質感の処理"
+
+#: ../clutter/deprecated/clutter-texture.c:1083
+msgid "The path of the file containing the image data"
+msgstr "画像データが含まれているファイルのパス"
+
+#: ../clutter/deprecated/clutter-texture.c:1090
+msgid "Keep Aspect Ratio"
+msgstr "縦横比を維持する"
+
+#: ../clutter/deprecated/clutter-texture.c:1091
+msgid ""
+"Keep the aspect ratio of the texture when requesting the preferred width or "
+"height"
+msgstr "幅と高さの要求時にテクスチャの縦横比を維持する"
+
+#: ../clutter/deprecated/clutter-texture.c:1119
+msgid "Load asynchronously"
+msgstr "非同期にロードする"
+
+#: ../clutter/deprecated/clutter-texture.c:1120
+msgid ""
+"Load files inside a thread to avoid blocking when loading images from disk"
+msgstr ""
+"画像をディスクからロードするとき、ブロッキングを避けるため内部スレッドでファ"
+"イルをロードする"
+
+#: ../clutter/deprecated/clutter-texture.c:1138
+msgid "Load data asynchronously"
+msgstr "データを非同期にロードする"
+
+#: ../clutter/deprecated/clutter-texture.c:1139
+msgid ""
+"Decode image data files inside a thread to reduce blocking when loading "
+"images from disk"
+msgstr ""
+"ディスクから画像をロードするとき、ブロッキングを低減するため内部スレッドで画"
+"像データファイルをデコードする"
+
+#: ../clutter/deprecated/clutter-texture.c:1165
+msgid "Pick With Alpha"
+msgstr "アルファで選択する"
+
+#: ../clutter/deprecated/clutter-texture.c:1166
+msgid "Shape actor with alpha channel when picking"
+msgstr "選択時にアルファチャネルでアクターの形を作る"
+
+#: ../clutter/deprecated/clutter-texture.c:1599
+#: ../clutter/deprecated/clutter-texture.c:1994
+#: ../clutter/deprecated/clutter-texture.c:2090
+#: ../clutter/deprecated/clutter-texture.c:2388
+#, c-format
+msgid "Failed to load the image data"
+msgstr "画像データのロードに失敗しました"
+
+#: ../clutter/deprecated/clutter-texture.c:1758
+#, c-format
+msgid "YUV textures are not supported"
+msgstr "YUV形式のテクスチャーはサポートしていません"
+
+#: ../clutter/deprecated/clutter-texture.c:1767
+#, c-format
+msgid "YUV2 textues are not supported"
+msgstr "YUV2形式のテクスチャーはサポートしていません"
+
+#: ../clutter/evdev/clutter-input-device-evdev.c:159
+msgid "sysfs Path"
+msgstr "sysfgのパス"
+
+#: ../clutter/evdev/clutter-input-device-evdev.c:160
+msgid "Path of the device in sysfs"
+msgstr "sysfsでデバイスのパス"
+
+#: ../clutter/evdev/clutter-input-device-evdev.c:175
+msgid "Device Path"
+msgstr "デバイスのパス"
+
+#: ../clutter/evdev/clutter-input-device-evdev.c:176
+msgid "Path of the device node"
+msgstr "デバイスノードのパス"
+
+#: ../clutter/gdk/clutter-backend-gdk.c:296
+#, c-format
+msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
+msgstr "%s 形式の GdkDisplay に対して適切な CoglWinsys が見つかりません"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:423
+msgid "Surface"
+msgstr "表面"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:424
+msgid "The underlying wayland surface"
+msgstr "根底となる wayland の表面"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:431
+msgid "Surface width"
+msgstr "表面の幅"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:432
+msgid "The width of the underlying wayland surface"
+msgstr "根底となる wayland 表面の幅"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:440
+msgid "Surface height"
+msgstr "表面の高さ"
+
+#: ../clutter/wayland/clutter-wayland-surface.c:441
+msgid "The height of the underlying wayland surface"
+msgstr "根底となる wayland 表面の高さ"
+
+#: ../clutter/x11/clutter-backend-x11.c:516
+msgid "X display to use"
+msgstr "使用する X ディスプレイ"
+
+#: ../clutter/x11/clutter-backend-x11.c:522
+msgid "X screen to use"
+msgstr "使用する X スクリーン"
+
+#: ../clutter/x11/clutter-backend-x11.c:527
+msgid "Make X calls synchronous"
+msgstr "X の呼び出しを同期する"
+
+#: ../clutter/x11/clutter-backend-x11.c:534
+msgid "Enable XInput support"
+msgstr "XInput サポートを利用可能にする"
+
+#: ../clutter/x11/clutter-keymap-x11.c:317
+msgid "The Clutter backend"
+msgstr "Clutter バックエンド"
+
+# 訳さない
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:539
+msgid "Pixmap"
+msgstr "Pixmap"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:540
+msgid "The X11 Pixmap to be bound"
+msgstr "X11 Pixmap を結びつける"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:548
+msgid "Pixmap width"
+msgstr "Pixmap の幅"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:549
+msgid "The width of the pixmap bound to this texture"
+msgstr "このテクスチャーに結び付けられた Pixmap の幅"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:557
+msgid "Pixmap height"
+msgstr "Pixmap の高さ"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:558
+msgid "The height of the pixmap bound to this texture"
+msgstr "このテクスチャーに結び付けられている Pixmap の高さ"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:566
+msgid "Pixmap Depth"
+msgstr "Pixmap の深さ"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:567
+msgid "The depth (in number of bits) of the pixmap bound to this texture"
+msgstr "このテクスチャーに結び付けられている Pixmap の深さ(ビット数)"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:575
+msgid "Automatic Updates"
+msgstr "自動更新"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:576
+msgid "If the texture should be kept in sync with any pixmap changes."
+msgstr "Pixmap の変更にテクスチャーを同期させるかどうか"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:584
+msgid "Window"
+msgstr "ウィンドウ"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:585
+msgid "The X11 Window to be bound"
+msgstr "結び付けられている X11 ウィンドウ"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:593
+msgid "Window Redirect Automatic"
+msgstr "ウィンドウの自動割り当て"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:594
+msgid "If composite window redirects are set to Automatic (or Manual if false)"
+msgstr "コンポジットウィンドウを自動的に割り当てるかどうか(false の場合は手動)"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:604
+msgid "Window Mapped"
+msgstr "ウィンドウのマップ"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:605
+msgid "If window is mapped"
+msgstr "ウィンドウを配置するかどうか"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:614
+msgid "Destroyed"
+msgstr "破棄された"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:615
+msgid "If window has been destroyed"
+msgstr "ウィンドウが破棄されているかどうか"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:623
+msgid "Window X"
+msgstr "ウィンドウのX位置"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:624
+msgid "X position of window on screen according to X11"
+msgstr "X11のスクリーン領域上のウィンドウのXの位置"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:632
+msgid "Window Y"
+msgstr "ウィンドウのY位置"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:633
+msgid "Y position of window on screen according to X11"
+msgstr "X11のスクリーン領域上のウィンドウのYの位置"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:640
+msgid "Window Override Redirect"
+msgstr "ウィンドウのオーバーライド割り当て"
+
+#: ../clutter/x11/clutter-x11-texture-pixmap.c:641
+msgid "If this is an override-redirect window"
+msgstr "ウィンドウのオーバーライド割り当てを行うかどうか"
