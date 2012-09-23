@@ -12,47 +12,47 @@ msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-06-10 17:39+0000\n"
-"PO-Revision-Date: 2012-06-10 18:18+0200\n"
-"Last-Translator: Wolfgang Stoeggl <c72578@yahoo.de>\n"
+"POT-Creation-Date: 2012-09-07 13:16+0000\n"
+"PO-Revision-Date: 2012-09-23 14:16+0100\n"
+"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Generator: Gtranslator 2.91.5\n"
 
-#: ../cogl/cogl-debug.c:173
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
 msgstr "Unterstützte Werte zur Fehlerdiagnose:"
 
-#: ../cogl/cogl-debug.c:178
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
 msgstr "Spezielle Werte zur Fehlerdiagnose:"
 
-#: ../cogl/cogl-debug.c:180 ../cogl/cogl-debug.c:182
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr ""
 "Alle nicht-verhaltensmäßigen Einstellungen zur Fehlerdiagnose aktivieren"
 
-#: ../cogl/cogl-debug.c:226
-msgid "Cogl debugging flags to set"
-msgstr "Zu setzende Cogl-Fehlerdiagnose-Flags"
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "Zusätzliche Umgebungsvariablen:"
 
-#: ../cogl/cogl-debug.c:228
-msgid "Cogl debugging flags to unset"
-msgstr "Zurückzusetzende Cogl-Fehlerdiagnose-Flags"
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr ""
+"Durch Kommata getrennte Liste der GL-Erweiterungen, die als deaktiviert "
+"vorgegeben sind"
 
-#: ../cogl/cogl-debug.c:277
-msgid "Cogl Options"
-msgstr "Cogl-Einstellungen"
-
-#: ../cogl/cogl-debug.c:278
-msgid "Show Cogl options"
-msgstr "Cogl-Einstellungen anzeigen"
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr ""
+"Die GL-Version überschreiben, von welcher Cogl annimmt, dass der Treiber sie "
+"unterstützt"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
@@ -61,6 +61,7 @@ msgstr "Cogl-Einstellungen anzeigen"
 #: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Cogl-Tracing"
 
@@ -358,3 +359,23 @@ msgstr "Clipping verfolgen"
 #: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "Protokolliert Informationen, wie Cogl Clipping implementiert"
+
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr "Leistungsbelange verfolgen"
+
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "Versucht suboptimale Nutzung von Cogl aufzuzeigen."
+
+#~ msgid "Cogl debugging flags to set"
+#~ msgstr "Zu setzende Cogl-Fehlerdiagnose-Flags"
+
+#~ msgid "Cogl debugging flags to unset"
+#~ msgstr "Zurückzusetzende Cogl-Fehlerdiagnose-Flags"
+
+#~ msgid "Cogl Options"
+#~ msgstr "Cogl-Einstellungen"
+
+#~ msgid "Show Cogl options"
+#~ msgstr "Cogl-Einstellungen anzeigen"
