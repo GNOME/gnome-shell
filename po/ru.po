@@ -1,52 +1,50 @@
 # Russian translation for cogl.
 # Copyright (C) 2011 cogl's COPYRIGHT HOLDER
 # This file is distributed under the same license as the cogl package.
-# Yuri Myasoedov <omerta13@yandex.ru>, 2011.
 # Vitteran <vitteran@gmail.com>, 2011.
 # Yuri Kozlov <yuray@komyakino.ru>, 2012.
+# Yuri Myasoedov <omerta13@yandex.ru>, 2011, 2012.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-16 18:37+0000\n"
-"PO-Revision-Date: 2012-03-17 14:00+0400\n"
-"Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
-"Language-Team: Russian <gnome-cyr@gnome.org>\n"
+"POT-Creation-Date: 2012-08-01 10:44+0000\n"
+"PO-Revision-Date: 2012-09-23 20:09+0400\n"
+"Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
+"Language-Team: русский <gnome-cyr@gnome.org>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../cogl/cogl-debug.c:173
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
 msgstr "Поддерживаемые значения отладки:"
 
-#: ../cogl/cogl-debug.c:178
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
 msgstr "Специальные значения отладки:"
 
-#: ../cogl/cogl-debug.c:180 ../cogl/cogl-debug.c:182
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr "Включить все внеповеденческие параметры отладки"
 
-#: ../cogl/cogl-debug.c:226
-msgid "Cogl debugging flags to set"
-msgstr "Отладочные флаги Cogl для установки"
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "Дополнительные переменные окружения:"
 
-#: ../cogl/cogl-debug.c:228
-msgid "Cogl debugging flags to unset"
-msgstr "Отладочные флаги Cogl для сброса"
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr "Список отключённых расширений GL, разделённый запятыми"
 
-#: ../cogl/cogl-debug.c:277
-msgid "Cogl Options"
-msgstr "Параметры Cogl"
-
-#: ../cogl/cogl-debug.c:278
-msgid "Show Cogl options"
-msgstr "Показать параметры Cogl"
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr "Переопределить версию GL, для которой Cogl имеет поддержку драйвера"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
@@ -55,6 +53,7 @@ msgstr "Показать параметры Cogl"
 #: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Трассировка Cogl"
 
@@ -343,3 +342,23 @@ msgstr "Трассировка усечения"
 #: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "Протоколировать информацию о том, как Cogl реализует усечение"
+
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr "Трассировка проблем с производительностью"
+
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "Пытается выделить неоптимальное использование Cogl."
+
+#~ msgid "Cogl debugging flags to set"
+#~ msgstr "Отладочные флаги Cogl для установки"
+
+#~ msgid "Cogl debugging flags to unset"
+#~ msgstr "Отладочные флаги Cogl для сброса"
+
+#~ msgid "Cogl Options"
+#~ msgstr "Параметры Cogl"
+
+#~ msgid "Show Cogl options"
+#~ msgstr "Показать параметры Cogl"
