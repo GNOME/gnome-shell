@@ -2877,7 +2877,8 @@ _cogl_pipeline_get_layer_state_for_fragment_codegen (CoglContext *context)
      COGL_PIPELINE_LAYER_STATE_UNIT |
      COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS);
 
-  if (context->driver == COGL_DRIVER_GLES2)
+  if (context->driver == COGL_DRIVER_GL ||
+      context->driver == COGL_DRIVER_GLES2)
     state |= COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS;
 
   return state;

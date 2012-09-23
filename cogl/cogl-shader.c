@@ -90,9 +90,7 @@ cogl_create_shader (CoglShaderType type)
   shader = g_slice_new (CoglShader);
   shader->language = COGL_SHADER_LANGUAGE_GLSL;
   shader->gl_handle = 0;
-#ifdef HAVE_COGL_GLES2
   shader->n_tex_coord_attribs = 0;
-#endif
   shader->type = type;
 
   return _cogl_shader_handle_new (shader);
@@ -153,19 +151,14 @@ cogl_shader_source (CoglHandle   handle,
 void
 cogl_shader_compile (CoglHandle handle)
 {
-  CoglShader *shader = handle;
-
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   if (!cogl_is_shader (handle))
     return;
 
-  if (ctx->driver == COGL_DRIVER_GL)
-    _cogl_shader_compile_real (shader, 0 /* ignored */);
-
-  /* XXX: For GLES2 we don't actually compile anything until the
-   * shader gets used so we have an opportunity to add some
-   * boilerplate to the shader.
+  /* XXX: We don't actually compile anything until the shader gets
+   * used so we have an opportunity to add some boilerplate to the
+   * shader.
    *
    * At the end of the day this is obviously a badly designed API
    * given that we are having to lie to the user. It was a mistake to
@@ -178,6 +171,7 @@ _cogl_shader_compile_real (CoglHandle handle,
                            int n_tex_coord_attribs)
 {
   CoglShader *shader = handle;
+  const char *version;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -223,13 +217,8 @@ _cogl_shader_compile_real (CoglHandle handle,
     {
       GLenum gl_type;
 
-      if (shader->gl_handle
-#ifdef HAVE_COGL_GLES2
-          &&
-          (ctx->driver != COGL_DRIVER_GLES2 ||
-           shader->n_tex_coord_attribs == n_tex_coord_attribs)
-#endif
-         )
+      if (shader->gl_handle &&
+          shader->n_tex_coord_attribs == n_tex_coord_attribs)
         return;
 
       if (shader->gl_handle)
@@ -250,7 +239,17 @@ _cogl_shader_compile_real (CoglHandle handle,
 
       shader->gl_handle = ctx->glCreateShader (gl_type);
 
+      if (ctx->driver == COGL_DRIVER_GL &&
+          ctx->glsl_major == 1 &&
+          ctx->glsl_minor >= 2)
+        {
+          version = "#version 120\n";
+        }
+      else
+        version = NULL;
+
       _cogl_glsl_shader_set_source_with_boilerplate (ctx,
+                                                     version,
                                                      shader->gl_handle,
                                                      gl_type,
                                                      n_tex_coord_attribs,
@@ -261,9 +260,7 @@ _cogl_shader_compile_real (CoglHandle handle,
 
       GE (ctx, glCompileShader (shader->gl_handle));
 
-#ifdef HAVE_COGL_GLES2
       shader->n_tex_coord_attribs = n_tex_coord_attribs;
-#endif
 
 #ifdef COGL_GL_DEBUG
       if (!cogl_shader_is_compiled (handle))

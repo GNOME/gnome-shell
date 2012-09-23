@@ -118,6 +118,7 @@ typedef struct
 #ifdef HAVE_COGL_GLES2
   unsigned long dirty_builtin_uniforms;
   GLint builtin_uniform_locations[G_N_ELEMENTS (builtin_uniforms)];
+#endif
 
   GLint modelview_uniform;
   GLint projection_uniform;
@@ -125,7 +126,6 @@ typedef struct
 
   CoglMatrixEntryCache projection_cache;
   CoglMatrixEntryCache modelview_cache;
-#endif
 
   /* We need to track the last pipeline that the program was used with
    * so know if we need to update all of the uniforms */
@@ -226,8 +226,6 @@ clear_attribute_cache (CoglPipelineProgramState *program_state)
     }
 }
 
-#ifdef HAVE_COGL_GLES2
-
 static void
 clear_flushed_matrix_stacks (CoglPipelineProgramState *program_state)
 {
@@ -236,8 +234,6 @@ clear_flushed_matrix_stacks (CoglPipelineProgramState *program_state)
   _cogl_matrix_entry_cache_destroy (&program_state->modelview_cache);
   _cogl_matrix_entry_cache_init (&program_state->modelview_cache);
 }
-
-#endif /* HAVE_COGL_GLES2 */
 
 static CoglPipelineProgramState *
 program_state_new (int n_layers)
@@ -251,10 +247,8 @@ program_state_new (int n_layers)
   program_state->unit_state = g_new (UnitState, n_layers);
   program_state->uniform_locations = NULL;
   program_state->attribute_locations = NULL;
-#ifdef HAVE_COGL_GLES2
   _cogl_matrix_entry_cache_init (&program_state->modelview_cache);
   _cogl_matrix_entry_cache_init (&program_state->projection_cache);
-#endif
 
   return program_state;
 }
@@ -278,13 +272,8 @@ destroy_program_state (void *user_data,
     {
       clear_attribute_cache (program_state);
 
-#ifdef HAVE_COGL_GLES2
-      if (ctx->driver == COGL_DRIVER_GLES2)
-        {
-          _cogl_matrix_entry_cache_destroy (&program_state->projection_cache);
-          _cogl_matrix_entry_cache_destroy (&program_state->modelview_cache);
-        }
-#endif
+      _cogl_matrix_entry_cache_destroy (&program_state->projection_cache);
+      _cogl_matrix_entry_cache_destroy (&program_state->modelview_cache);
 
       if (program_state->program)
         GE( ctx, glDeleteProgram (program_state->program) );
@@ -395,20 +384,15 @@ get_uniform_cb (CoglPipeline *pipeline,
 
   unit_state->combine_constant_uniform = uniform_location;
 
-#ifdef HAVE_COGL_GLES2
-  if (ctx->driver == COGL_DRIVER_GLES2)
-    {
-      g_string_set_size (ctx->codegen_source_buffer, 0);
-      g_string_append_printf (ctx->codegen_source_buffer,
-                              "cogl_texture_matrix[%i]", state->unit);
+  g_string_set_size (ctx->codegen_source_buffer, 0);
+  g_string_append_printf (ctx->codegen_source_buffer,
+                          "cogl_texture_matrix[%i]", state->unit);
 
-      GE_RET( uniform_location,
-              ctx, glGetUniformLocation (state->gl_program,
-                                         ctx->codegen_source_buffer->str) );
+  GE_RET( uniform_location,
+          ctx, glGetUniformLocation (state->gl_program,
+                                     ctx->codegen_source_buffer->str) );
 
-      unit_state->texture_matrix_uniform = uniform_location;
-    }
-#endif
+  unit_state->texture_matrix_uniform = uniform_location;
 
   state->unit++;
 
@@ -438,10 +422,7 @@ update_constants_cb (CoglPipeline *pipeline,
       unit_state->dirty_combine_constant = FALSE;
     }
 
-#ifdef HAVE_COGL_GLES2
-
-  if (ctx->driver == COGL_DRIVER_GLES2 &&
-      unit_state->texture_matrix_uniform != -1 &&
+  if (unit_state->texture_matrix_uniform != -1 &&
       (state->update_all || unit_state->dirty_texture_matrix))
     {
       const CoglMatrix *matrix;
@@ -453,8 +434,6 @@ update_constants_cb (CoglPipeline *pipeline,
                                    1, FALSE, array));
       unit_state->dirty_texture_matrix = FALSE;
     }
-
-#endif /* HAVE_COGL_GLES2 */
 
   return TRUE;
 }
@@ -742,8 +721,7 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
    * _cogl_tex_coord[] varying array declaration. */
   if ((program_state->program && user_program &&
        user_program->age != program_state->user_program_age) ||
-      (ctx->driver == COGL_DRIVER_GLES2 &&
-       n_tex_coord_attribs != program_state->n_tex_coord_attribs))
+       n_tex_coord_attribs != program_state->n_tex_coord_attribs)
     {
       GE( ctx, glDeleteProgram (program_state->program) );
       program_state->program = 0;
@@ -816,38 +794,36 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
                                update_constants_cb,
                                &state);
 
-#ifdef HAVE_COGL_GLES2
-  if (ctx->driver == COGL_DRIVER_GLES2)
+  if (program_changed)
     {
-      if (program_changed)
-        {
-          int i;
+      int i;
 
-          clear_flushed_matrix_stacks (program_state);
+      clear_flushed_matrix_stacks (program_state);
 
-          for (i = 0; i < G_N_ELEMENTS (builtin_uniforms); i++)
-            GE_RET( program_state->builtin_uniform_locations[i], ctx,
-                    glGetUniformLocation (gl_program,
-                                          builtin_uniforms[i].uniform_name) );
+      for (i = 0; i < G_N_ELEMENTS (builtin_uniforms); i++)
+        GE_RET( program_state->builtin_uniform_locations[i], ctx,
+                glGetUniformLocation (gl_program,
+                                      builtin_uniforms[i].uniform_name) );
 
-          GE_RET( program_state->modelview_uniform, ctx,
-                  glGetUniformLocation (gl_program,
-                                        "cogl_modelview_matrix") );
+      GE_RET( program_state->modelview_uniform, ctx,
+              glGetUniformLocation (gl_program,
+                                    "cogl_modelview_matrix") );
 
-          GE_RET( program_state->projection_uniform, ctx,
-                  glGetUniformLocation (gl_program,
-                                        "cogl_projection_matrix") );
+      GE_RET( program_state->projection_uniform, ctx,
+              glGetUniformLocation (gl_program,
+                                    "cogl_projection_matrix") );
 
-          GE_RET( program_state->mvp_uniform, ctx,
-                  glGetUniformLocation (gl_program,
-                                        "cogl_modelview_projection_matrix") );
-        }
-      if (program_changed ||
-          program_state->last_used_for_pipeline != pipeline)
-        program_state->dirty_builtin_uniforms = ~(unsigned long) 0;
-
-      update_builtin_uniforms (pipeline, gl_program, program_state);
+      GE_RET( program_state->mvp_uniform, ctx,
+              glGetUniformLocation (gl_program,
+                                    "cogl_modelview_projection_matrix") );
     }
+
+#ifdef HAVE_COGL_GLES2
+  if (program_changed ||
+      program_state->last_used_for_pipeline != pipeline)
+    program_state->dirty_builtin_uniforms = ~(unsigned long) 0;
+
+  update_builtin_uniforms (pipeline, gl_program, program_state);
 #endif
 
   _cogl_pipeline_progend_glsl_flush_uniforms (pipeline,
@@ -944,6 +920,11 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline,
   CoglMatrixEntry *projection_entry;
   CoglMatrixEntry *modelview_entry;
   CoglPipelineProgramState *program_state;
+  CoglBool modelview_changed;
+  CoglBool projection_changed;
+  CoglBool need_modelview;
+  CoglBool need_projection;
+  CoglMatrix modelview, projection;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
@@ -960,116 +941,86 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline,
 
   needs_flip = cogl_is_offscreen (ctx->current_draw_buffer);
 
-#ifdef HAVE_COGL_GLES2
-  if (ctx->driver == COGL_DRIVER_GLES2)
+  projection_changed =
+    _cogl_matrix_entry_cache_maybe_update (&program_state->projection_cache,
+                                           projection_entry,
+                                           (needs_flip &&
+                                            program_state->flip_uniform ==
+                                            -1));
+
+  modelview_changed =
+    _cogl_matrix_entry_cache_maybe_update (&program_state->modelview_cache,
+                                           modelview_entry,
+                                           /* never flip modelview */
+                                           FALSE);
+
+  if (modelview_changed || projection_changed)
     {
-      CoglBool modelview_changed;
-      CoglBool projection_changed;
-      CoglBool need_modelview;
-      CoglBool need_projection;
-      CoglMatrix modelview, projection;
-
-      projection_changed =
-        _cogl_matrix_entry_cache_maybe_update (&program_state->projection_cache,
-                                               projection_entry,
-                                               (needs_flip &&
-                                                program_state->flip_uniform ==
-                                                -1));
-
-      modelview_changed =
-        _cogl_matrix_entry_cache_maybe_update (&program_state->modelview_cache,
-                                               modelview_entry,
-                                               /* never flip modelview */
-                                               FALSE);
-
-      if (modelview_changed || projection_changed)
+      if (program_state->mvp_uniform != -1)
+        need_modelview = need_projection = TRUE;
+      else
         {
-          if (program_state->mvp_uniform != -1)
-            need_modelview = need_projection = TRUE;
+          need_projection = (program_state->projection_uniform != -1 &&
+                             projection_changed);
+          need_modelview = (program_state->modelview_uniform != -1 &&
+                            modelview_changed);
+        }
+
+      if (need_modelview)
+        _cogl_matrix_entry_get (modelview_entry, &modelview);
+      if (need_projection)
+        {
+          if (needs_flip && program_state->flip_uniform == -1)
+            {
+              CoglMatrix tmp_matrix;
+              _cogl_matrix_entry_get (projection_entry, &tmp_matrix);
+              cogl_matrix_multiply (&projection,
+                                    &ctx->y_flip_matrix,
+                                    &tmp_matrix);
+            }
+          else
+            _cogl_matrix_entry_get (projection_entry, &projection);
+        }
+
+      if (projection_changed && program_state->projection_uniform != -1)
+        GE (ctx, glUniformMatrix4fv (program_state->projection_uniform,
+                                     1, /* count */
+                                     FALSE, /* transpose */
+                                     cogl_matrix_get_array (&projection)));
+
+      if (modelview_changed && program_state->modelview_uniform != -1)
+        GE (ctx, glUniformMatrix4fv (program_state->modelview_uniform,
+                                     1, /* count */
+                                     FALSE, /* transpose */
+                                     cogl_matrix_get_array (&modelview)));
+
+      if (program_state->mvp_uniform != -1)
+        {
+          /* The journal usually uses an identity matrix for the
+             modelview so we can optimise this common case by
+             avoiding the matrix multiplication */
+          if (_cogl_matrix_entry_has_identity_flag (modelview_entry))
+            {
+              GE (ctx,
+                  glUniformMatrix4fv (program_state->mvp_uniform,
+                                      1, /* count */
+                                      FALSE, /* transpose */
+                                      cogl_matrix_get_array (&projection)));
+            }
           else
             {
-              need_projection = (program_state->projection_uniform != -1 &&
-                                 projection_changed);
-              need_modelview = (program_state->modelview_uniform != -1 &&
-                                modelview_changed);
-            }
+              CoglMatrix combined;
 
-          if (need_modelview)
-            _cogl_matrix_entry_get (modelview_entry, &modelview);
-          if (need_projection)
-            {
-              if (needs_flip && program_state->flip_uniform == -1)
-                {
-                  CoglMatrix tmp_matrix;
-                  _cogl_matrix_entry_get (projection_entry, &tmp_matrix);
-                  cogl_matrix_multiply (&projection,
-                                        &ctx->y_flip_matrix,
-                                        &tmp_matrix);
-                }
-              else
-                _cogl_matrix_entry_get (projection_entry, &projection);
-            }
-
-          if (projection_changed && program_state->projection_uniform != -1)
-            GE (ctx, glUniformMatrix4fv (program_state->projection_uniform,
-                                         1, /* count */
-                                         FALSE, /* transpose */
-                                         cogl_matrix_get_array (&projection)));
-
-          if (modelview_changed && program_state->modelview_uniform != -1)
-            GE (ctx, glUniformMatrix4fv (program_state->modelview_uniform,
-                                         1, /* count */
-                                         FALSE, /* transpose */
-                                         cogl_matrix_get_array (&modelview)));
-
-          if (program_state->mvp_uniform != -1)
-            {
-              /* The journal usually uses an identity matrix for the
-                 modelview so we can optimise this common case by
-                 avoiding the matrix multiplication */
-              if (_cogl_matrix_entry_has_identity_flag (modelview_entry))
-                {
-                  GE (ctx,
-                      glUniformMatrix4fv (program_state->mvp_uniform,
-                                          1, /* count */
-                                          FALSE, /* transpose */
-                                          cogl_matrix_get_array (&projection)));
-                }
-              else
-                {
-                  CoglMatrix combined;
-
-                  cogl_matrix_multiply (&combined,
-                                        &projection,
-                                        &modelview);
-                  GE (ctx,
-                      glUniformMatrix4fv (program_state->mvp_uniform,
-                                          1, /* count */
-                                          FALSE, /* transpose */
-                                          cogl_matrix_get_array (&combined)));
-                }
+              cogl_matrix_multiply (&combined,
+                                    &projection,
+                                    &modelview);
+              GE (ctx,
+                  glUniformMatrix4fv (program_state->mvp_uniform,
+                                      1, /* count */
+                                      FALSE, /* transpose */
+                                      cogl_matrix_get_array (&combined)));
             }
         }
-    }
-  else
-#endif
-    {
-      CoglBool disable_flip;
-
-      /* If there are vertex snippets, then we'll disable flipping the
-         geometry via the matrix and use the flip vertex instead */
-      disable_flip = program_state->flip_uniform != -1;
-
-      _cogl_matrix_entry_flush_to_gl_builtins (ctx,
-                                               projection_entry,
-                                               COGL_MATRIX_PROJECTION,
-                                               framebuffer,
-                                               disable_flip);
-      _cogl_matrix_entry_flush_to_gl_builtins (ctx,
-                                               modelview_entry,
-                                               COGL_MATRIX_MODELVIEW,
-                                               framebuffer,
-                                               disable_flip);
     }
 
   if (program_state->flip_uniform != -1

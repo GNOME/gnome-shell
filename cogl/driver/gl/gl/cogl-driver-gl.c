@@ -457,13 +457,6 @@ _cogl_driver_update_features (CoglContext *ctx,
       _cogl_check_extension ("GL_EXT_pixel_buffer_object", gl_extensions))
     private_flags |= COGL_PRIVATE_FEATURE_PBOS;
 
-  if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 0) ||
-      _cogl_check_extension ("GL_ARB_point_sprite", gl_extensions))
-    {
-      flags |= COGL_FEATURE_POINT_SPRITE;
-      COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_POINT_SPRITE, TRUE);
-    }
-
   if (ctx->glGenPrograms)
     {
       flags |= COGL_FEATURE_SHADERS_ARBFP;
@@ -501,6 +494,20 @@ _cogl_driver_update_features (CoglContext *ctx,
 
       flags |= COGL_FEATURE_SHADERS_GLSL;
       COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_GLSL, TRUE);
+    }
+
+  if ((COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 0) ||
+       _cogl_check_extension ("GL_ARB_point_sprite", gl_extensions)) &&
+
+      /* If GLSL is supported then we only enable point sprite support
+       * too if we have glsl >= 1.2 otherwise we don't have the
+       * gl_PointCoord builtin which we depend on in the glsl backend.
+       */
+      (!COGL_FLAGS_GET (ctx->features, COGL_FEATURE_ID_GLSL) ||
+       COGL_CHECK_GL_VERSION (ctx->glsl_major, ctx->glsl_minor, 1, 2)))
+    {
+      flags |= COGL_FEATURE_POINT_SPRITE;
+      COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_POINT_SPRITE, TRUE);
     }
 
   if (ctx->glGenBuffers)

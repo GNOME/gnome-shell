@@ -41,6 +41,7 @@
 
 void
 _cogl_glsl_shader_set_source_with_boilerplate (CoglContext *ctx,
+                                               const char *version_string,
                                                GLuint shader_gl_handle,
                                                GLenum shader_gl_type,
                                                int n_tex_coord_attribs,
@@ -51,20 +52,18 @@ _cogl_glsl_shader_set_source_with_boilerplate (CoglContext *ctx,
   const char *vertex_boilerplate;
   const char *fragment_boilerplate;
 
-  const char **strings = g_alloca (sizeof (char *) * (count_in + 3));
-  GLint *lengths = g_alloca (sizeof (GLint) * (count_in + 3));
+  const char **strings = g_alloca (sizeof (char *) * (count_in + 4));
+  GLint *lengths = g_alloca (sizeof (GLint) * (count_in + 4));
   int count = 0;
   char *tex_coord_declarations = NULL;
 
-  if (ctx->driver == COGL_DRIVER_GLES2)
+  vertex_boilerplate = _COGL_VERTEX_SHADER_BOILERPLATE;
+  fragment_boilerplate = _COGL_FRAGMENT_SHADER_BOILERPLATE;
+
+  if (version_string)
     {
-      vertex_boilerplate = _COGL_VERTEX_SHADER_BOILERPLATE_GLES2;
-      fragment_boilerplate = _COGL_FRAGMENT_SHADER_BOILERPLATE_GLES2;
-    }
-  else
-    {
-      vertex_boilerplate = _COGL_VERTEX_SHADER_BOILERPLATE_GL;
-      fragment_boilerplate = _COGL_FRAGMENT_SHADER_BOILERPLATE_GL;
+      strings[count] = version_string;
+      lengths[count++] = -1;
     }
 
   if (ctx->driver == COGL_DRIVER_GLES2 &&
@@ -87,8 +86,7 @@ _cogl_glsl_shader_set_source_with_boilerplate (CoglContext *ctx,
       lengths[count++] = strlen (fragment_boilerplate);
     }
 
-  if (ctx->driver == COGL_DRIVER_GLES2 &&
-      n_tex_coord_attribs)
+  if (n_tex_coord_attribs)
     {
       GString *declarations = g_string_new (NULL);
 

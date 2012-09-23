@@ -850,8 +850,11 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
       GE( ctx, glBindSampler (unit_index, sampler_state->sampler_object) );
     }
 
-  /* Under GLES2 the fragment shader will use gl_PointCoord instead of
-     replacing the texture coordinates */
+  /* FIXME: If using GLSL the progend we will use gl_PointCoord
+   * instead of us needing to replace the texture coordinates but at
+   * this point we can't currently tell if we are using the fixed or
+   * glsl progend.
+   */
 #if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GL)
   if (ctx->driver != COGL_DRIVER_GLES2 &&
       (layers_difference & COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS))
@@ -1342,12 +1345,11 @@ done:
 
   progend = _cogl_pipeline_progends[pipeline->progend];
 
-  /* We can't assume the color will be retained between flushes on
-     GLES2 because the generic attribute values are not stored as part
-     of the program object so they could be overridden by any
-     attribute changes in another program */
-#ifdef HAVE_COGL_GLES2
-  if (ctx->driver == COGL_DRIVER_GLES2 && !skip_gl_color)
+  /* We can't assume the color will be retained between flushes when
+   * using the glsl progend because the generic attribute values are
+   * not stored as part of the program object so they could be
+   * overridden by any attribute changes in another program */
+  if (pipeline->progend == COGL_PIPELINE_PROGEND_GLSL && !skip_gl_color)
     {
       int attribute;
       CoglPipeline *authority =
@@ -1364,7 +1366,6 @@ done:
                               cogl_color_get_blue_float (&authority->color),
                               cogl_color_get_alpha_float (&authority->color)));
     }
-#endif
 
   /* Give the progend a chance to update any uniforms that might not
    * depend on the material state. This is used on GLES2 to update the

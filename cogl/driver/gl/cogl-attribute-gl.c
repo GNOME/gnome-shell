@@ -318,8 +318,8 @@ _cogl_gl_flush_attributes_state (CoglFramebuffer *framebuffer,
       switch (attribute->name_state->name_id)
         {
         case COGL_ATTRIBUTE_NAME_ID_COLOR_ARRAY:
-#ifdef HAVE_COGL_GLES2
-          if (ctx->driver == COGL_DRIVER_GLES2)
+#ifdef COGL_PIPELINE_PROGEND_GLSL
+          if (pipeline->progend == COGL_PIPELINE_PROGEND_GLSL)
             setup_generic_attribute (ctx, pipeline, attribute, base);
           else
 #endif
@@ -333,8 +333,8 @@ _cogl_gl_flush_attributes_state (CoglFramebuffer *framebuffer,
             }
           break;
         case COGL_ATTRIBUTE_NAME_ID_NORMAL_ARRAY:
-#ifdef HAVE_COGL_GLES2
-          if (ctx->driver == COGL_DRIVER_GLES2)
+#ifdef COGL_PIPELINE_PROGEND_GLSL
+          if (pipeline->progend == COGL_PIPELINE_PROGEND_GLSL)
             setup_generic_attribute (ctx, pipeline, attribute, base);
           else
 #endif
@@ -347,8 +347,8 @@ _cogl_gl_flush_attributes_state (CoglFramebuffer *framebuffer,
             }
           break;
         case COGL_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY:
-#ifdef HAVE_COGL_GLES2
-          if (ctx->driver == COGL_DRIVER_GLES2)
+#ifdef COGL_PIPELINE_PROGEND_GLSL
+          if (pipeline->progend == COGL_PIPELINE_PROGEND_GLSL)
             setup_generic_attribute (ctx, pipeline, attribute, base);
           else
 #endif
@@ -365,8 +365,8 @@ _cogl_gl_flush_attributes_state (CoglFramebuffer *framebuffer,
             }
           break;
         case COGL_ATTRIBUTE_NAME_ID_POSITION_ARRAY:
-#ifdef HAVE_COGL_GLES2
-          if (ctx->driver == COGL_DRIVER_GLES2)
+#ifdef COGL_PIPELINE_PROGEND_GLSL
+          if (pipeline->progend == COGL_PIPELINE_PROGEND_GLSL)
             setup_generic_attribute (ctx, pipeline, attribute, base);
           else
 #endif
@@ -381,7 +381,7 @@ _cogl_gl_flush_attributes_state (CoglFramebuffer *framebuffer,
           break;
         case COGL_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY:
 #ifdef COGL_PIPELINE_PROGEND_GLSL
-          if (ctx->driver != COGL_DRIVER_GLES1)
+          if (pipeline->progend == COGL_PIPELINE_PROGEND_GLSL)
             setup_generic_attribute (ctx, pipeline, attribute, base);
 #endif
           break;
