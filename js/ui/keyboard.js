@@ -289,7 +289,7 @@ const Keyboard = new Lang.Class({
 
         // Showing an extended key popup and clicking a key from the extended keys
         // will grab focus, but ignore that
-        if (focus && (focus._extended_keys || (focus._key && focus._key.extended_key)))
+        if (focus && (focus._extended_keys || focus.extended_key))
             return;
 
         // Ignore focus changes caused by message tray showing/hiding
