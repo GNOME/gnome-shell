@@ -2799,38 +2799,3 @@ st_widget_get_focus_chain (StWidget *widget)
 {
   return ST_WIDGET_GET_CLASS (widget)->get_focus_chain (widget);
 }
-
-/**
- * st_widget_clear_background_image:
- * @widget: An #StWidget
- *
- * Force a reload of the background-image property. Usually properties
- * are cached heavily to avoid unnecessary work on paint, this method
- * will force the cache to be recreated.
- */
-void
-st_widget_clear_background_image (StWidget *actor)
-{
-  GFile *file;
-  const char *path;
-  char *uri;
-
-  if (actor->priv->theme_node == NULL)
-    return;
-
-  path = st_theme_node_get_background_image (actor->priv->theme_node);
-  if (path == NULL)
-    return;
-
-  file = g_file_new_for_path (path);
-  uri = g_file_get_uri (file);
-
-  st_texture_cache_clear_uri (st_texture_cache_get_default (), uri);
-  st_theme_node_invalidate_paint_state (actor->priv->theme_node);
-
-  if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (actor)))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (actor));
-
-  g_object_unref (file);
-  g_free (uri);
-}
