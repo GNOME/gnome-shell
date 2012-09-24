@@ -1,3 +1,36 @@
+3.6.0
+=====
+* keyboard: Make input source items accessible [Florian; #684462]
+* Don't show network dialogs in the lock screen [Giovanni; #684384]
+* popupMenu: Fix initial visibility of settings items [Florian; #684473]
+* userMenu: Close menu immediately on user/session switch [Florian; #684459]
+* Fix alignment of search section headers in RTL locales [Florian; #684379]
+* screenShield: Fix unlock animation [Florian; #684591]
+* Don't open the tray from a dwell while in a modal grab [Jasper; #684458]
+* userMenu: Fix texture updates on icon changes [Florian; #679268]
+* Fix a11y support in the login screen [Florian, Ray; #684727, #684728, #684748]
+* Make On-Screen-Keyboard usable with new message tray [Giovanni, Florian;
+  #683546]
+* Fix initial visibility of input volume in lock-screen [Florian; #684611]
+
+Contributors:
+  Giovanni Campagna, Florian Müllner, Jasper St. Pierre, Ray Strode
+
+Translations:
+  Matej Urbančič [sl], Dr.T.Vasudevan [ta], Piotr Drąg [pl], A S Alam [pa],
+  Alexander Shopov [bg], Nilamdyuti Goswami [as], Chandan Kumar [hi],
+  Khaled Hosny [ar], Ibrahim Saed [ar], Sandeep Sheshrao Shedmake [mr],
+  Tom Tryfonidis [el], Theppitak Karoonboonyanan [th], Alexandre Franke [fr],
+  Fran Diéguez [gl], Gabor Kelemen [hu], Ani Peter [ml], Daniel Mustieles [es],
+  Мирослав Николић [sr, sr@latin], Duarte Loreto [pt], ManojKumar Giri [or],
+  Ihar Hrachyshka [be], Aurimas Černius [lt], Djavan Fagundes [pt_BR],
+  Changwoo Ryu [ko], Bruce Cowan [en_GB], Kris Thomsen [da], Gil Forcada [ca],
+  Yaron Shahrabani [he], Milo Casagrande [it], Ville-Pekka Vainio [fi],
+  YunQiang Su [zh_CN], Carles Ferrando [ca@valencia], Mario Blättermann [de],
+  Rajesh Ranjan [hi], Yuri Myasoedov [ru], Rūdolfs Mazurs [lv],
+  Jiro Matsuzawa [ja], Mattias Põldaru [et], Timur Zhamakeev [ky],
+  Petr Kovar [cs], Chao-Hsiung Liao [zh_HK,zh_TW], Andika Triwidada [id]
+
 3.5.92
 ======
 * Login/UnlockDialog: Don't reset immediately if auth fails [Giovanni; #682544]
