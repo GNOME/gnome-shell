@@ -50,6 +50,8 @@
 #include "cally-root.h"
 #include "cally-stage.h"
 
+#define DEFAULT_PASSWORD_CHAR '*'
+
 /* atkutil.h */
 
 static guint                 cally_util_add_key_event_listener	    (AtkKeySnoopFunc listener,
@@ -77,8 +79,6 @@ static gboolean              notify_hf                               (gpointer k
 static void                  insert_hf                               (gpointer key,
                                                                       gpointer value,
                                                                       gpointer data);
-static AtkKeyEventStruct *  atk_key_event_from_clutter_event_key     (ClutterKeyEvent *event);
-
 
 /* This is just a copy of the Gail one, a shared library or place to
    define it could be a good idea. */
@@ -249,7 +249,8 @@ cally_util_simulate_snooper_remove (void)
 }
 
 static AtkKeyEventStruct *
-atk_key_event_from_clutter_event_key (ClutterKeyEvent *clutter_event)
+atk_key_event_from_clutter_event_key (ClutterKeyEvent *clutter_event,
+                                      gunichar         password_char)
 {
   AtkKeyEventStruct *atk_event = g_new0 (AtkKeyEventStruct, 1);
   gunichar key_unichar;
@@ -267,7 +268,10 @@ atk_key_event_from_clutter_event_key (ClutterKeyEvent *clutter_event)
       return NULL;
     }
 
-  atk_event->state = clutter_event->modifier_state;
+  if (password_char)
+    atk_event->state = 0;
+  else
+    atk_event->state = clutter_event->modifier_state;
 
   /* We emit the clutter keyval. This is not exactly the one expected
      by AtkKeyEventStruct, as it expects a Gdk-like event, with the
@@ -275,7 +279,10 @@ atk_key_event_from_clutter_event_key (ClutterKeyEvent *clutter_event)
      that on the AT application.
      More information: Bug 1952 and bug 2072
   */
-  atk_event->keyval = clutter_event->keyval;
+  if (password_char)
+    atk_event->keyval = clutter_unicode_to_keysym (password_char);
+  else
+    atk_event->keyval = clutter_event->keyval;
 
   /* It is expected to store a key defining string here (ie "Space" in
      case you press a space). Anyway, there are no function on clutter
@@ -286,7 +293,10 @@ atk_key_event_from_clutter_event_key (ClutterKeyEvent *clutter_event)
      More information: Bug 1952 and 2072
   */
 
-  key_unichar = clutter_event_get_key_unicode ((ClutterEvent *) clutter_event);
+  if (password_char)
+    key_unichar = password_char;
+  else
+    key_unichar = clutter_event_get_key_unicode ((ClutterEvent *) clutter_event);
 
   if (g_unichar_validate (key_unichar) && !g_unichar_iscntrl (key_unichar))
     {
@@ -302,7 +312,15 @@ atk_key_event_from_clutter_event_key (ClutterKeyEvent *clutter_event)
 
   atk_event->length = 0;
 
-  atk_event->keycode = clutter_event->hardware_keycode;
+  /* Computing the hardware keycode from the password-char is
+     difficult. But we are in a password situation. We are already a
+     unichar that it is not the original one. Providing a "almost
+     real" keycode is irrelevant */
+  if (password_char)
+    atk_event->keycode = 0;
+  else
+    atk_event->keycode = clutter_event->hardware_keycode;
+
   atk_event->timestamp = clutter_event->time;
 
 #ifdef CALLY_DEBUG
@@ -335,6 +353,37 @@ insert_hf (gpointer key, gpointer value, gpointer data)
   g_hash_table_insert (new_table, key, value);
 }
 
+
+/*
+ * 0 if the key of that event is visible, in other case the password
+ * char
+ */
+static gunichar
+check_key_visibility (ClutterEvent *event)
+{
+  ClutterKeyEvent *key_event = (ClutterKeyEvent *)event;
+  AtkObject *accessible = clutter_actor_get_accessible (key_event->source);
+
+  g_return_val_if_fail (accessible != NULL, 0);
+
+  if (atk_object_get_role (accessible) != ATK_ROLE_PASSWORD_TEXT)
+    return 0;
+
+  /* If it is a clutter text, we use his password char.  Note that
+     although at Clutter toolkit itself, only ClutterText exposes a
+     password role, nothing prevents on any derived toolkit (like st)
+     to create a new actor that can behave like a password entry. And
+     the key event will still be emitted here. Although in that case
+     we would lose any password char from the derived toolkit, it is
+     still better fill this with a default unichar that the original
+     one */
+
+  if (CLUTTER_IS_TEXT (key_event->source))
+    return clutter_text_get_password_char (CLUTTER_TEXT (key_event->source));
+  else
+    return DEFAULT_PASSWORD_CHAR;
+}
+
 static gboolean
 cally_key_snooper (ClutterActor *actor,
                    ClutterEvent *event,
@@ -342,6 +391,7 @@ cally_key_snooper (ClutterActor *actor,
 {
   AtkKeyEventStruct *key_event = NULL;
   gint consumed = 0;
+  gunichar password_char = 0;
 
   /* filter key events */
   if ((event->type != CLUTTER_KEY_PRESS) && (event->type != CLUTTER_KEY_RELEASE))
@@ -349,12 +399,15 @@ cally_key_snooper (ClutterActor *actor,
       return FALSE;
     }
 
+  password_char = check_key_visibility (event);
+
   if (key_listener_list)
     {
       GHashTable *new_hash = g_hash_table_new (NULL, NULL);
 
       g_hash_table_foreach (key_listener_list, insert_hf, new_hash);
-      key_event = atk_key_event_from_clutter_event_key ((ClutterKeyEvent *)event);
+      key_event = atk_key_event_from_clutter_event_key ((ClutterKeyEvent *)event,
+                                                        password_char);
       /* func data is inside the hash table */
       consumed = g_hash_table_foreach_steal (new_hash, notify_hf, key_event);
       g_hash_table_destroy (new_hash);
