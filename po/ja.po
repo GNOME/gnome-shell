@@ -3,47 +3,45 @@
 # This file is distributed under the same license as the cogl package.
 # Takeshi AIHANA <takeshi.aihana@gmail.com>, 2011.
 # Hajime Taira <htaira@redhat.com>, 2012.
+# Nishio Futoshi <fut_nis@d3.dion.ne.jp>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-06 13:24+0000\n"
-"PO-Revision-Date: 2012-05-07 08:16+0900\n"
-"Last-Translator: Hajime Taira <htaira@redhat.com>\n"
-"Language-Team: Japanese <takeshi.aihana@gmail.com>\n"
+"POT-Creation-Date: 2012-09-20 05:21+0000\n"
+"PO-Revision-Date: 2012-09-22 07:50+0900\n"
+"Last-Translator: Nishio Futoshi <fut_nis@d3.dion.ne.jp>\n"
+"Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../cogl/cogl-debug.c:173
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
 msgstr "サポートするデバッグ変数:"
 
-#: ../cogl/cogl-debug.c:178
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
 msgstr "特別なデバッグ変数:"
 
-#: ../cogl/cogl-debug.c:180 ../cogl/cogl-debug.c:182
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr "すべての非ビヘイビアのデバッグオプションを有効にします。"
 
-#: ../cogl/cogl-debug.c:226
-msgid "Cogl debugging flags to set"
-msgstr "Cogl のデバッグフラグを指定する"
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "追加の環境変数:"
 
-#: ../cogl/cogl-debug.c:228
-msgid "Cogl debugging flags to unset"
-msgstr "Cogl のデバッグフラグを解除する"
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr "GL 拡張にみえるが利用不可能なものをカンマで分離したリスト"
 
-#: ../cogl/cogl-debug.c:277
-msgid "Cogl Options"
-msgstr "Cogl のオプション"
-
-#: ../cogl/cogl-debug.c:278
-msgid "Show Cogl options"
-msgstr "Cogl のオプションを表示する"
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr "ドライバーがサポートしていると Cogl が仮定する GL のバージョンをオーバーライドする"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
@@ -52,6 +50,7 @@ msgstr "Cogl のオプションを表示する"
 #: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Cogl のトレーシング"
 
@@ -329,3 +328,24 @@ msgstr "クリッピングのトレース"
 #: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "Cogl に実装されているクリッピング機能のログ情報を記録します。"
+
+# ROIとは違うのかな？
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr "トレース実行の関心領域"
+
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "Cogl の使用時の最適下限の強調表示を試みる"
+
+#~ msgid "Cogl debugging flags to set"
+#~ msgstr "Cogl のデバッグフラグを指定する"
+
+#~ msgid "Cogl debugging flags to unset"
+#~ msgstr "Cogl のデバッグフラグを解除する"
+
+#~ msgid "Cogl Options"
+#~ msgstr "Cogl のオプション"
+
+#~ msgid "Show Cogl options"
+#~ msgstr "Cogl のオプションを表示する"

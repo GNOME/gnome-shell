@@ -4,20 +4,23 @@
 # Wylmer Wang <wantinghard@gmail.com>, 2011.
 # 甘霖 <thlgood@yucoat.com>, 2012.
 # fenghelong <fenghelongnjit@gmail.com>, 2012.
+# YunQiang Su <wzssyqa@gmail.com>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-07-07 17:06+0000\n"
-"PO-Revision-Date: 2012-06-29 11:11+0800\n"
-"Last-Translator: fenghelong <fenghelongnjit@gmail.com>\n"
-"Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
+"POT-Creation-Date: 2012-09-07 13:16+0000\n"
+"PO-Revision-Date: 2012-09-23 12:50+0800\n"
+"Last-Translator: YunQiang Su <wzssyqa@gmail.com>\n"
+"Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bits\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Gtranslator 2.91.5\n"
 
 #: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
@@ -30,6 +33,18 @@ msgstr "特殊的调试值："
 #: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr "启用所有非行为调式选项"
+
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "附加环境变量："
+
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr ""
+
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr "覆盖 Cogl 将假设驱动支持的 GL 版本"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
@@ -59,12 +74,10 @@ msgid "debug the creation of texture slices"
 msgstr "调试纹理切片的创建"
 
 #: ../cogl/cogl-debug-options.h:37
-#, fuzzy
 msgid "Trace Atlas Textures"
 msgstr "跟踪 Atlas 纹理"
 
 #: ../cogl/cogl-debug-options.h:38
-#, fuzzy
 msgid "Debug texture atlas management"
 msgstr "调试纹理 atlas 管理"
 
@@ -77,12 +90,10 @@ msgid "Debug CoglBlendString parsing"
 msgstr "调试 CoglBlendString 解析"
 
 #: ../cogl/cogl-debug-options.h:47
-#, fuzzy
 msgid "Trace Journal"
 msgstr "跟踪日志"
 
 #: ../cogl/cogl-debug-options.h:48
-#, fuzzy
 msgid "View all the geometry passing through the journal"
 msgstr "查看所有通过日志传递的几何体"
 
@@ -91,9 +102,8 @@ msgid "Trace Batching"
 msgstr "跟踪批处理"
 
 #: ../cogl/cogl-debug-options.h:53
-#, fuzzy
 msgid "Show how geometry is being batched in the journal"
-msgstr "显示几何体在日志中被分批处理的情况"
+msgstr "显示几何体在日志中批处理的情况"
 
 #: ../cogl/cogl-debug-options.h:57
 msgid "Trace matrices"
@@ -104,12 +114,10 @@ msgid "Trace all matrix manipulation"
 msgstr "跟踪所有矩阵操作"
 
 #: ../cogl/cogl-debug-options.h:63
-#, fuzzy
 msgid "Trace Misc Drawing"
 msgstr "跟踪混杂绘制"
 
 #: ../cogl/cogl-debug-options.h:64
-#, fuzzy
 msgid "Trace some misc drawing operations"
 msgstr "跟踪一些混杂的绘制操作"
 
@@ -138,7 +146,6 @@ msgid "Outline rectangles"
 msgstr "突显矩形"
 
 #: ../cogl/cogl-debug-options.h:79
-#, fuzzy
 msgid "Add wire outlines for all rectangular geometry"
 msgstr "对所有矩形形状添加实线外框"
 
@@ -158,7 +165,6 @@ msgstr "对所有形状添加线框"
 #: ../cogl/cogl-debug-options.h:142 ../cogl/cogl-debug-options.h:147
 #: ../cogl/cogl-debug-options.h:153 ../cogl/cogl-debug-options.h:173
 #: ../cogl/cogl-debug-options.h:178
-#, fuzzy
 msgid "Root Cause"
 msgstr "根目标"
 
@@ -167,7 +173,6 @@ msgid "Disable Journal batching"
 msgstr "禁用日志批处理"
 
 #: ../cogl/cogl-debug-options.h:89
-#, fuzzy
 msgid "Disable batching of geometry in the Cogl Journal."
 msgstr "在 Cogl 日志中禁用几何体批处理"
 
@@ -196,7 +201,6 @@ msgid "Use the GPU to transform rectangular geometry"
 msgstr "使用 GPU 来变换矩形"
 
 #: ../cogl/cogl-debug-options.h:106
-#, fuzzy
 msgid "Cogl Specialist"
 msgstr "Cogl 专家"
 
@@ -217,12 +221,10 @@ msgid "Disable use of texture atlasing"
 msgstr "禁止使用纹理平滑"
 
 #: ../cogl/cogl-debug-options.h:118
-#, fuzzy
 msgid "Disable sharing the texture atlas between text and images"
-msgstr "禁用文档和图形间的纹理 Atlas 共享"
+msgstr "禁用文本和图形间的纹理 Atlas 共享"
 
 #: ../cogl/cogl-debug-options.h:119
-#, fuzzy
 msgid ""
 "When this is set the glyph cache will always use a separate texture for its "
 "atlas. Otherwise it will try to share the atlas with images."
@@ -249,12 +251,12 @@ msgstr "禁用 ARB 分割程序"
 #: ../cogl/cogl-debug-options.h:134
 #, fuzzy
 msgid "Disable fixed"
-msgstr "禁止固定"
+msgstr "禁止定点"
 
 #: ../cogl/cogl-debug-options.h:135
 #, fuzzy
 msgid "Disable use of the fixed function pipeline backend"
-msgstr "禁用固定的函数管道后端"
+msgstr "禁用定点函数管道后端"
 
 #: ../cogl/cogl-debug-options.h:139
 msgid "Disable GLSL"
@@ -286,14 +288,12 @@ msgstr ""
 "使 Cogl 认为 GL 驱动不支持 NPOT 纹理，以便使它创建切片纹理或用无效纹理代替。"
 
 #: ../cogl/cogl-debug-options.h:155
-#, fuzzy
 msgid "Disable software clipping"
-msgstr "禁用软件剪切"
+msgstr "禁用软件裁剪"
 
 #: ../cogl/cogl-debug-options.h:156
-#, fuzzy
 msgid "Disables Cogl's attempts to clip some rectangles in software."
-msgstr "在软件中禁止 Cogl 尝试剪切某些矩形。"
+msgstr "禁止 Cogl 在软件中尝试裁剪某些矩形。"
 
 #: ../cogl/cogl-debug-options.h:160
 msgid "Show source"
@@ -334,20 +334,17 @@ msgid "Disable read pixel optimization"
 msgstr "禁用读取像素优化"
 
 #: ../cogl/cogl-debug-options.h:181
-#, fuzzy
 msgid ""
 "Disable optimization for reading 1px for simple scenes of opaque rectangles"
 msgstr "禁止对在透明矩形场景中读取单个像素操作的优化"
 
 #: ../cogl/cogl-debug-options.h:186
-#, fuzzy
 msgid "Trace clipping"
-msgstr "跟踪剪切"
+msgstr "跟踪裁剪"
 
 #: ../cogl/cogl-debug-options.h:187
-#, fuzzy
 msgid "Logs information about how Cogl is implementing clipping"
-msgstr "记录有关 Cogl 如何实施剪切的信息"
+msgstr "记录有关 Cogl 如何实施裁剪的信息"
 
 #: ../cogl/cogl-debug-options.h:191
 msgid "Trace performance concerns"

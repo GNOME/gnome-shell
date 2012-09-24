@@ -3,49 +3,48 @@
 # This file is distributed under the same license as the cogl package.
 #
 # chandan kumar <chandankumar.093047@gmail.com>, 2012.
+# rajesh <rajeshkajha@yahoo.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-21 16:31+0000\n"
-"PO-Revision-Date: 2012-03-22 18:15+0530\n"
-"Last-Translator: chandankumar(ciypro) <chandankumar.093047@gmail.com>\n"
+"POT-Creation-Date: 2012-08-01 10:44+0000\n"
+"PO-Revision-Date: 2012-09-19 17:46+0530\n"
+"Last-Translator: rajesh <rajeshkajha@yahoo.com>\n"
 "Language-Team: Hindi <kde-i18n-doc@kde.org>\n"
+"Language: hi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: hi\n"
 "X-Generator: Lokalize 1.2\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../cogl/cogl-debug.c:173
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
 msgstr "समर्थित डीबग मान:"
 
-#: ../cogl/cogl-debug.c:178
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
 msgstr "विशेष डीबग मानों:"
 
-#: ../cogl/cogl-debug.c:180 ../cogl/cogl-debug.c:182
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr "सभी गैर-व्यवहारिक डिबग विकल्प सक्रीय"
 
-#: ../cogl/cogl-debug.c:226
-msgid "Cogl debugging flags to set"
-msgstr "Cogl डिबगिंग फ्लैग सेट किया जाना है"
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "अतिरिक्त वातावरण चर:"
 
-#: ../cogl/cogl-debug.c:228
-msgid "Cogl debugging flags to unset"
-msgstr "Cogl डिबगिंग फ्लैग अनसेट किया जाना है"
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr ""
+"GL एक्सटेंशन का कौमा से पृथक सूची जिसे प्रीटेंड किया जाना है निष्क्रिय किया "
+"गया है"
 
-#: ../cogl/cogl-debug.c:277
-msgid "Cogl Options"
-msgstr "Cogl विकल्प"
-
-#: ../cogl/cogl-debug.c:278
-msgid "Show Cogl options"
-msgstr "Cogl विकल्प दिखाएँ"
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr "GL संस्करण को अधिरोहित करें जो Cogl ड्राइवर के समर्थन को लेगा"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
@@ -54,6 +53,7 @@ msgstr "Cogl विकल्प दिखाएँ"
 #: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Cogl ट्रैस कर रहा है"
 
@@ -230,7 +230,8 @@ msgid ""
 "atlas. Otherwise it will try to share the atlas with images."
 msgstr ""
 "जब यह सेट है कि ग्लिफ़ कैश इस एटलस के लिए हमेशा एक अलग बनावट का उपयोग करेगा. "
-"अन्यथा यह छवियों के साथ एटलस को साझा करने की कोशिश करेंगे."
+"अन्यथा "
+"यह छवियों के साथ एटलस को साझा करने की कोशिश करेंगे."
 
 #: ../cogl/cogl-debug-options.h:124
 msgid "Disable texturing"
@@ -282,8 +283,8 @@ msgid ""
 "will create sliced textures or textures with waste instead."
 msgstr ""
 "Cogl को लगता है की GL  ड्राइवर NPOT बनावट का समर्थन नहीं करता है इसीलिए यह "
-"कचरे के साथ "
-"कटा हुआ बनावट या बनावट के बजाय पैदा करने के लिए बनाएगा."
+"कचरे के "
+"साथ कटा हुआ बनावट या बनावट के बजाय पैदा करने के लिए बनाएगा."
 
 #: ../cogl/cogl-debug-options.h:155
 msgid "Disable software clipping"
@@ -344,3 +345,22 @@ msgstr "क्लिपिंग ट्रेस करें"
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "Cogl क्लिपिंग को कैसे लागू कर है के बारे में जानकारी लॉग्स करें"
 
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr "ट्रेस प्रदर्शन मुद्दे"
+
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "उप अनुकूलित Cogl प्रयोग को आलोकित करने की कोशिश करता है."
+
+#~ msgid "Cogl debugging flags to set"
+#~ msgstr "Cogl डिबगिंग फ्लैग सेट किया जाना है"
+
+#~ msgid "Cogl debugging flags to unset"
+#~ msgstr "Cogl डिबगिंग फ्लैग अनसेट किया जाना है"
+
+#~ msgid "Cogl Options"
+#~ msgstr "Cogl विकल्प"
+
+#~ msgid "Show Cogl options"
+#~ msgstr "Cogl विकल्प दिखाएँ"

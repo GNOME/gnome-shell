@@ -10,43 +10,43 @@ msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-05 12:49+0000\n"
-"PO-Revision-Date: 2012-03-25 23:15+0200\n"
+"POT-Creation-Date: 2012-08-29 14:01+0000\n"
+"PO-Revision-Date: 2012-08-30 01:07+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bits\n"
-"Language: ca\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../cogl/cogl-debug.c:173
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
 msgstr "Valors de depuració permesos:"
 
-#: ../cogl/cogl-debug.c:178
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
 msgstr "Valors de depuració especials:"
 
-#: ../cogl/cogl-debug.c:180 ../cogl/cogl-debug.c:182
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr "Habilita totes les opcions de depuració que no tinguin comportament"
 
-#: ../cogl/cogl-debug.c:226
-msgid "Cogl debugging flags to set"
-msgstr "Senyaladors de depuració de la Cogl a definir"
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "Variables d'entorn addicionals:"
 
-#: ../cogl/cogl-debug.c:228
-msgid "Cogl debugging flags to unset"
-msgstr "Senyaladors de depuració de la Cogl dels quals desfer-ne la definició"
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr ""
+"Llista separada per comes amb les extensions de GL que s'ha de fer veure que "
+"estan inhabilitades"
 
-#: ../cogl/cogl-debug.c:277
-msgid "Cogl Options"
-msgstr "Opcions de la Cogl"
-
-#: ../cogl/cogl-debug.c:278
-msgid "Show Cogl options"
-msgstr "Mostra les opcions de la Cogl"
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr ""
+"Sobreescriu la versió de GL que la Cogl assumeix que implementa el "
+"controlador"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
@@ -55,6 +55,7 @@ msgstr "Mostra les opcions de la Cogl"
 #: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Traçat de la Cogl"
 
@@ -347,3 +348,24 @@ msgstr "Traça el tallat"
 #: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "Registra informació sobre com la Cogl implementa el tallat"
+
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr "Traça els problemes de rendiment"
+
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "Intenta ressaltar utilitzacions no òptimes de la Cogl."
+
+#~ msgid "Cogl debugging flags to set"
+#~ msgstr "Senyaladors de depuració de la Cogl a definir"
+
+#~ msgid "Cogl debugging flags to unset"
+#~ msgstr ""
+#~ "Senyaladors de depuració de la Cogl dels quals desfer-ne la definició"
+
+#~ msgid "Cogl Options"
+#~ msgstr "Opcions de la Cogl"
+
+#~ msgid "Show Cogl options"
+#~ msgstr "Mostra les opcions de la Cogl"
