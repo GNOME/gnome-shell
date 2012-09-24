@@ -200,6 +200,7 @@ const Keyboard = new Lang.Class({
         this._impl.export(Gio.DBus.session, '/org/gnome/Caribou/Keyboard');
 
         this.actor = null;
+        this._focusInTray = false;
 
         this._timestamp = global.display.get_current_time_roundtrip();
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._redraw));
@@ -289,6 +290,12 @@ const Keyboard = new Lang.Class({
         // Showing an extended key popup and clicking a key from the extended keys
         // will grab focus, but ignore that
         if (focus && (focus._extended_keys || (focus._key && focus._key.extended_key)))
+            return;
+
+        // Ignore focus changes caused by message tray showing/hiding
+        let trayWasFocused = this._focusInTray;
+        this._focusInTray = (focus && Main.messageTray.actor.contains(focus));
+        if (this._focusInTray || trayWasFocused)
             return;
 
         let time = global.get_current_time();
