@@ -1,3 +1,34 @@
+Clutter 1.12.0                                                       2012-09-24
+===============================================================================
+
+  • List of changes since Clutter 1.11.16
+
+    - Fix the device tracking for core X11 pointers
+    If a master input device can emit both touch and pointer events we end up
+    in an inconsistent state; we should account for this case when tracking
+    the stage that contains the events of each input device.
+
+    - Respect text direction in BinLayout
+    The text direction of the children of an actor using the BinLayout layout
+    manager should be taken into account, both when using the Actor's align
+    flags and when using the legacy BinAlignment flags.
+
+    - Translations updates
+    Hindi, Telugu, Catalan, Malayalam, Japanese, Bulgarian, Kannada.
+
+  • List of bugs fixed since Clutter 1.11.16
+
+    #684214 - messageTray: Fix summary position in RTL locales
+    #684552 - Track coordinates and device ids in test-events
+    #684530 - Print device number in debug messages from input-device
+    #684509 - Mouse events lost after touch event from virtual core pointer
+
+Many thanks to:
+
+  Emanuele Aina, Emmanuele Bassi, Alexander Shopov, Ani Peter,
+  Carles Ferrando, Chandan Kumar, Gil Forcada, Krishnababu Krothapalli,
+  Nishio Futoshi, Shankar Prasad.
+
 Clutter 1.11.16                                                      2012-09-17
 ===============================================================================
 
