@@ -10,9 +10,9 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-22 18:40+0000\n"
-"PO-Revision-Date: 2012-09-10 22:25+0100\n"
-"Last-Translator: Adam Matoušek <adamatousek@gmail.com>\n"
+"POT-Creation-Date: 2012-09-24 13:42+0000\n"
+"PO-Revision-Date: 2012-09-24 18:30+0200\n"
+"Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
@@ -24,23 +24,21 @@ msgstr ""
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:1
 msgid "Screenshots"
-msgstr ""
+msgstr "Snímky obrazovky"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:2
 msgid "Record a screencast"
-msgstr ""
+msgstr "Nahrát dění na obrazovce"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
-#, fuzzy
 #| msgid "File System"
 msgid "System"
-msgstr "Systém souborů"
+msgstr "Systém"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-#, fuzzy
 #| msgid "Message Tray"
 msgid "Show the message tray"
-msgstr "Lišta zpráv"
+msgstr "Zobrazit lištu zpráv"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -197,7 +195,7 @@ msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Roura systému gstreamer určená ke kódování nahrávky dění na obrazovce"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
-#, fuzzy, no-c-format
+#, no-c-format
 #| msgid ""
 #| "Sets the GStreamer pipeline used to encode recordings. It follows the "
 #| "syntax used for gst-launch. The pipeline should have an unconnected sink "
@@ -227,9 +225,10 @@ msgstr ""
 "zapisován do výstupního souboru. Roura je ale schopna zabezpečit i vlastní "
 "výstup, což lze využít při odeslání výstupu na server icecast přes "
 "shout2send apod. Není-li nastaveno nebo je-li nastaveno na prázdnou hodnotu, "
-"bude použita výchozí roura. Aktuálně to je „vp8enc quality=8 speed=6 threads="
-"%T ! queue ! webmmux“ s nahráváním do WEBM s kodekem VP8. %T je použito jako "
-"zástupný symbol odhadu nejvhodnějšího počtu vláken na systému."
+"bude použita výchozí roura. Aktuálně to je „vp8enc min_quantizer=13 "
+"max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux“ s "
+"nahráváním do WEBM s kodekem VP8. %T je použito jako zástupný symbol odhadu "
+"nejvhodnějšího počtu vláken na systému."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "File extension used for storing the screencast"
@@ -243,7 +242,8 @@ msgid ""
 msgstr ""
 "Název souboru nahraných dění na obrazovce se bude sestávat z jedinečného "
 "názvu vycházejícího z aktuálního data a bude používat tuto příponu. Při "
-"nahrávání do jiného formátu kontejneru by měla být provedena úprava pravidel."
+"nahrávání do jiného formátu kontejneru by měla být provedena úprava "
+"pravidel."
 
 #: ../js/extensionPrefs/main.js:124
 #, c-format
@@ -307,10 +307,9 @@ msgid "Power Off"
 msgstr "Vypnout"
 
 #: ../js/gdm/util.js:148
-#, fuzzy
 #| msgid "Authentication Required"
 msgid "Authentication error"
-msgstr "Je vyžadováno ověření"
+msgstr "Chyba ověření"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
