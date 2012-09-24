@@ -6,20 +6,22 @@
 # Yukihiro Nakai <nakai@gnome.gr.jp>, 2003.
 # Satoru SATOH <ss@gnome.gr.jp>, 2006.
 # Jiro Matsuzawa <jmatsuzawa@gnome.org>, 2012.
+# Noriko Mizumoto <noriko@fedoraproject.org>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-05 18:56+0000\n"
-"PO-Revision-Date: 2012-04-07 15:39+0900\n"
-"Last-Translator: Jiro Matsuzawa <jmatsuzawa@gnome.org>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-09-23 10:31+0000\n"
+"PO-Revision-Date: 2012-09-24 13:27+0000\n"
+"Last-Translator: Noriko Mizumoto <noriko@fedoraproject.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
+"X-DamnedLies-Scope: partial\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/50-mutter-windows.xml.in.h:1
 msgid "Windows"
@@ -37,14 +39,10 @@ msgstr "画面右半分に表示する"
 #. * we have no way to get it to exit
 #: ../src/compositor/compositor.c:492
 #, c-format
-msgid ""
-"Another compositing manager is already running on screen %i on display \"%s"
-"\"."
-msgstr ""
-"既に別の合成マネージャーがディスプレイ \"%2$s\" 上のスクリーン %1$i で起動中"
-"です"
+msgid "Another compositing manager is already running on screen %i on display \"%s\"."
+msgstr "既に別の合成マネージャーがディスプレイ \"%2$s\" 上のスクリーン %1$i で起動中です"
 
-#: ../src/core/bell.c:307
+#: ../src/core/bell.c:320
 msgid "Bell event"
 msgstr "ベルのイベント"
 
@@ -53,87 +51,76 @@ msgstr "ベルのイベント"
 msgid "Unknown window information request: %d"
 msgstr "ウィンドウ情報の要求が不明です: %d"
 
-#: ../src/core/delete.c:111
+#: ../src/core/delete.c:113
 #, c-format
-msgid "<tt>%s</tt> is not responding."
-msgstr "<tt>%s</tt> から応答がありません"
+msgid "%s is not responding."
+msgstr "%s から応答がありません"
 
-#: ../src/core/delete.c:114
+#: ../src/core/delete.c:117
 msgid "Application is not responding."
 msgstr "アプリケーションから応答がありません"
 
-#: ../src/core/delete.c:119
-msgid ""
-"You may choose to wait a short while for it to continue or force the "
-"application to quit entirely."
-msgstr ""
-"応答があるまでしばらく待機するか、今すぐにアプリケーションを強制終了するかを"
-"選択して下さい。"
+#: ../src/core/delete.c:122
+msgid "You may choose to wait a short while for it to continue or force the application to quit entirely."
+msgstr "応答があるまでしばらく待機するか、今すぐにアプリケーションを強制終了するかを選択してください。"
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:129
 msgid "_Wait"
 msgstr "待機する(_W)"
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:129
 msgid "_Force Quit"
 msgstr "強制終了する(_F)"
 
-#: ../src/core/display.c:387
+#: ../src/core/display.c:386
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "ウィンドウの合成に必要な %s という拡張モジュールが存在しません"
 
-#: ../src/core/display.c:453
+#: ../src/core/display.c:482
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Ｘウィンドウ・システムのディスプレイ '%s' のオープンに失敗しました\n"
 
-#: ../src/core/keybindings.c:852
+#: ../src/core/keybindings.c:853
 #, c-format
-msgid ""
-"Some other program is already using the key %s with modifiers %x as a "
-"binding\n"
-msgstr ""
-"既にバインディングとして別のプログラムでキー %s (修飾キー %x) を使っていま"
-"す\n"
+msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
+msgstr "既にバインディングとして別のプログラムでキー %s (修飾キー %x) を使っています\n"
 
-#: ../src/core/main.c:206
+#: ../src/core/main.c:196
 msgid "Disable connection to session manager"
 msgstr "セッション・マネージャーに接続しない"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:202
 msgid "Replace the running window manager"
 msgstr "実行中のウィンドウ・マネージャーを置き換える"
 
-#: ../src/core/main.c:218
+#: ../src/core/main.c:208
 msgid "Specify session management ID"
 msgstr "セッション管理の ID を指定する"
 
-#: ../src/core/main.c:223
+#: ../src/core/main.c:213
 msgid "X Display to use"
 msgstr "使用するＸディスプレイを指定する"
 
-#: ../src/core/main.c:229
+#: ../src/core/main.c:219
 msgid "Initialize session from savefile"
 msgstr "保存ファイルからセッションを初期化する"
 
 # 'X' という１文字は固有名詞のため大文字にする
-#: ../src/core/main.c:235
+#: ../src/core/main.c:225
 msgid "Make X calls synchronous"
 msgstr "Ｘの呼び出しを同期させる"
 
-#: ../src/core/main.c:504
+#: ../src/core/main.c:494
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "テーマ・フォルダーのスキャンに失敗しました: %s\n"
 
-#: ../src/core/main.c:520
+#: ../src/core/main.c:510
 #, c-format
-msgid ""
-"Could not find a theme! Be sure %s exists and contains the usual themes.\n"
-msgstr ""
-"テーマが見つかりませんでした！ %s の存在と通常のテーマが含まれていることを確"
-"認して下さい。\n"
+msgid "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
+msgstr "テーマが見つかりませんでした！ %s の存在と通常のテーマが含まれていることを確認してください。\n"
 
 #: ../src/core/mutter.c:40
 #, c-format
@@ -141,90 +128,66 @@ msgid ""
 "mutter %s\n"
 "Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., and others\n"
 "This is free software; see the source for copying conditions.\n"
-"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A "
-"PARTICULAR PURPOSE.\n"
+"There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
 msgstr ""
 "mutter %s\n"
 "Copyright (C) 2001-%d Havoc Pennington, Red Hat, Inc., とその他の貢献者\n"
-"これはフリーソフトウェアです; 複製する際の条件はソース・ファイルを参照して下"
-"さい。\n"
-"このソフトウェアは無保証です; 商用での利用や特定の目的に対する利用についても"
-"保証しません。\n"
+"これはフリーソフトウェアです; 複製する際の条件はソース・ファイルを参照して下さい。\n"
+"このソフトウェアは無保証です; 商用での利用や特定の目的に対する利用についても保証しません。\n"
 
 #: ../src/core/mutter.c:54
 msgid "Print version"
 msgstr "バージョンを表示する"
 
 #: ../src/core/mutter.c:60
-msgid "Comma-separated list of compositor plugins"
-msgstr "画像の合成プラグインを指定する (複数ある時はカンマ ',' で区切る)"
+msgid "Mutter plugin to use"
+msgstr "使用する Mutter のプラグイン"
 
-#: ../src/core/prefs.c:1077
-msgid ""
-"Workarounds for broken applications disabled. Some applications may not "
-"behave properly.\n"
-msgstr ""
-"仕様に準拠していないアプリケーションに対する次善策は無効になっています．一部"
-"のアプリケーションは正常に動作しない可能性があります\n"
+#: ../src/core/prefs.c:1071
+msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
+msgstr "仕様に準拠していないアプリケーションに対する次善策は無効になっています．一部のアプリケーションは正常に動作しない可能性があります\n"
 
-#: ../src/core/prefs.c:1152
+#: ../src/core/prefs.c:1146
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "GSettings の %2$s キーからフォント名 \"%1$s\" を解析できませんでした\n"
 
-#: ../src/core/prefs.c:1218
+#: ../src/core/prefs.c:1212
 #, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for mouse button "
-"modifier\n"
-msgstr ""
-"GConf の \"%s\" はマウス・ボタンの修飾キーとして妥当な値ではありません\n"
+msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
+msgstr "GConf の \"%s\" はマウス・ボタンの修飾キーとして妥当な値ではありません\n"
 
-#: ../src/core/prefs.c:1739
+#: ../src/core/prefs.c:1736
 #, c-format
-msgid ""
-"\"%s\" found in configuration database is not a valid value for keybinding "
-"\"%s\"\n"
-msgstr ""
-"設定データベースで発見した \"%s\" はキーバインド \"%s\" に有効な値ではありま"
-"せん\n"
+msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
+msgstr "設定データベースで発見した \"%s\" はキーバインド \"%s\" に有効な値ではありません\n"
 
-#: ../src/core/prefs.c:1836
+#: ../src/core/prefs.c:1833
 #, c-format
 msgid "Workspace %d"
 msgstr "ワークスペース %d"
 
-#: ../src/core/screen.c:730
+#: ../src/core/screen.c:652
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "ディスプレイ '%2$s' 上のスクリーン %1$d は無効です\n"
 
-#: ../src/core/screen.c:746
+#: ../src/core/screen.c:668
 #, c-format
-msgid ""
-"Screen %d on display \"%s\" already has a window manager; try using the --"
-"replace option to replace the current window manager.\n"
-msgstr ""
-"ディスプレイ \"%2$s\" 上のスクリーン %1$d はすでにウィンドウマネージャーを"
-"持っています; 現在のウィンドウマネージャーを上書きするために --replace という"
-"オプションの使用を試してみて下さい。\n"
+msgid "Screen %d on display \"%s\" already has a window manager; try using the --replace option to replace the current window manager.\n"
+msgstr "ディスプレイ \"%2$s\" 上のスクリーン %1$d はすでにウィンドウマネージャーを持っています; 現在のウィンドウマネージャーを上書きするために --replace というオプションの使用を試してみてください。\n"
 
-#: ../src/core/screen.c:773
+#: ../src/core/screen.c:695
 #, c-format
-msgid ""
-"Could not acquire window manager selection on screen %d display \"%s\"\n"
-msgstr ""
-"ディスプレイ \"%2$s\" 上のスクリーン %1$d でウィンドウマネージャーの選択を取"
-"得できませんでした\n"
+msgid "Could not acquire window manager selection on screen %d display \"%s\"\n"
+msgstr "ディスプレイ \"%2$s\" 上のスクリーン %1$d でウィンドウマネージャーの選択を取得できませんでした\n"
 
-#: ../src/core/screen.c:828
+#: ../src/core/screen.c:750
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr ""
-"ディスプレイ \"%2$s\" 上のスクリーン %1$d はすでにウィンドウマネージャーを"
-"持っています\n"
+msgstr "ディスプレイ \"%2$s\" 上のスクリーン %1$d はすでにウィンドウマネージャーを持っています\n"
 
-#: ../src/core/screen.c:1013
+#: ../src/core/screen.c:935
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "ディスプレイ \"%2$s\" 上のスクリーン %1$d を解放できませんでした\n"
@@ -237,8 +200,7 @@ msgstr "ディレクトリを作成できませんでした: '%s': %s\n"
 #: ../src/core/session.c:860
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr ""
-"セッション・ファイルを書き込みモードでオープンできませんでした: '%s': %s\n"
+msgstr "セッション・ファイルを書き込みモードでオープンできませんでした: '%s': %s\n"
 
 #: ../src/core/session.c:1001
 #, c-format
@@ -278,58 +240,50 @@ msgid "Unknown element %s"
 msgstr "不明なエレメント %s があります"
 
 #: ../src/core/session.c:1809
-msgid ""
-"These windows do not support &quot;save current setup&quot; and will have to "
-"be restarted manually next time you log in."
-msgstr ""
-"これらのウィンドウは &quot;現在の設定を保存する&quot; という機能をサポートし"
-"ていません。必要であれば、次回ログインする際に手動で起動して下さい。"
+msgid "These windows do not support &quot;save current setup&quot; and will have to be restarted manually next time you log in."
+msgstr "これらのウィンドウは &quot;現在の設定を保存する&quot; という機能をサポートしていません。必要であれば、次回ログインする際に手動で起動してください。"
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:80
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "デバッグ・ログのオープンに失敗しました: %s\n"
 
-#: ../src/core/util.c:121
+#: ../src/core/util.c:90
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "ログ・ファイル %s の fdopen() に失敗しました: %s\n"
 
-#: ../src/core/util.c:127
+#: ../src/core/util.c:96
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "ログ・ファイル %s をオープンしました\n"
 
-#: ../src/core/util.c:146 ../src/tools/mutter-message.c:149
+#: ../src/core/util.c:115 ../src/tools/mutter-message.c:149
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "この mutter は詳細ログ・モードをサポートしていません\n"
 
-#: ../src/core/util.c:290
+#: ../src/core/util.c:259
 msgid "Window manager: "
 msgstr "ウィンドウ・マネージャー: "
 
-#: ../src/core/util.c:438
+#: ../src/core/util.c:407
 msgid "Bug in window manager: "
 msgstr "ウィンドウ・マネージャーのバグ: "
 
-#: ../src/core/util.c:471
+#: ../src/core/util.c:438
 msgid "Window manager warning: "
 msgstr "ウィンドウ・マネージャーの警告: "
 
-#: ../src/core/util.c:499
+#: ../src/core/util.c:466
 msgid "Window manager error: "
 msgstr "ウィンドウ・マネージャーのエラー: "
 
 #. first time through
-#: ../src/core/window.c:7266
+#: ../src/core/window.c:7234
 #, c-format
-msgid ""
-"Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
-"window as specified in the ICCCM.\n"
-msgstr ""
-"ウィンドウ %s は ICCCM で指定されてたような WM_CLIENT_LEADER ウィンドウの代わ"
-"りに自分自身で SM_CLIENT_ID を設定しています\n"
+msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
+msgstr "ウィンドウ %s は ICCCM で指定されてたような WM_CLIENT_LEADER ウィンドウの代わりに自分自身で SM_CLIENT_ID を設定しています\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -338,38 +292,30 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7931
+#: ../src/core/window.c:7899
 #, c-format
-msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
-"d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr ""
-"ウィンドウ %s はリサイズ可能ではない MWM ヒント指示を設定していますが，最小サ"
-"イズ %d x %d と最大サイズ %d x %dも設定しています．これはあまり意味がありませ"
-"ん\n"
+msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
+msgstr "ウィンドウ %s はリサイズ可能ではない MWM ヒント指示を設定していますが，最小サイズ %d x %d と最大サイズ %d x %dも設定しています．これはあまり意味がありません\n"
 
-#: ../src/core/window-props.c:309
+#: ../src/core/window-props.c:310
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "アプリケーションが間違った _NET_WM_PID %lu を設定しました\n"
 
-#: ../src/core/window-props.c:426
+#: ../src/core/window-props.c:429
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (%s)"
 
-#: ../src/core/window-props.c:1481
+#: ../src/core/window-props.c:1484
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr ""
-"%2$s で指定したウィンドウ 0x%1$lx の WM_TRANSIENT_FOR が間違っています\n"
+msgstr "%2$s で指定したウィンドウ 0x%1$lx の WM_TRANSIENT_FOR が間違っています\n"
 
-#: ../src/core/window-props.c:1492
+#: ../src/core/window-props.c:1495
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
-msgstr ""
-"%2$s で指定したウィンドウ 0x%1$lx の WM_TRANSIENT_FOR は無限ループになりま"
-"す\n"
+msgstr "%2$s で指定したウィンドウ 0x%1$lx の WM_TRANSIENT_FOR は無限ループになります\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -393,11 +339,8 @@ msgstr "ウィンドウ 0x%2$lx 上のプロパティ %1$s は無効なUTF-8を�
 
 #: ../src/core/xprops.c:494
 #, c-format
-msgid ""
-"Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-"ウィンドウ 0x%2$lx 上のプロパティ %1$s はリスト内のアイテム %3$d で無効な "
-"UTF-8を含んでいました\n"
+msgid "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
+msgstr "ウィンドウ 0x%2$lx 上のプロパティ %1$s はリスト内のアイテム %3$d で無効な UTF-8を含んでいました\n"
 
 #: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
@@ -408,108 +351,62 @@ msgid "Modifier to use for extended window management operations"
 msgstr "ウィンドウの拡張管理の操作で使用する修飾キー"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:2
-msgid ""
-"This key will initiate the \"overlay\", which is a combination window "
-"overview and application launching system. The default is intended to be the "
-"\"Windows key\" on PC hardware. It's expected that this binding either the "
-"default or set to the empty string."
-msgstr ""
-"ここに指定したキーで「オーバーレイの機能」を起動します。この機能は GNOME "
-"Shell などが提供するウィンドウの全体表示やアプリの起動システムと連携します。"
-"デフォルトのキーは PC のキーボードにある [Windows キー] です。指定可能な値: "
-"デフォルトのキー、または空の文字列"
+msgid "This key will initiate the \"overlay\", which is a combination window overview and application launching system. The default is intended to be the \"Windows key\" on PC hardware. It's expected that this binding either the default or set to the empty string."
+msgstr "ここに指定したキーで「オーバーレイの機能」を起動します。この機能は GNOME Shell などが提供するウィンドウの全体表示やアプリの起動システムと連携します。デフォルトのキーは PC のキーボードにある [Windows キー] です。指定可能な値: デフォルトのキー、または空の文字列"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid "Attach modal dialogs"
 msgstr "モーダルなダイアログを統合するかどうか"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:4
-msgid ""
-"When true, instead of having independent titlebars, modal dialogs appear "
-"attached to the titlebar of the parent window and are moved together with "
-"the parent window."
-msgstr ""
-"TRUE にすると、タイトルバーを持つ通常のモーダルなダイアログを表示する代わり"
-"に、親ウィンドウのタイトルバーに統合したダイアログを表示します (親ウィンドウ"
-"を移動すると一緒にモーダルなダイアログも移動します)。"
+msgid "When true, instead of having independent titlebars, modal dialogs appear attached to the titlebar of the parent window and are moved together with the parent window."
+msgstr "TRUE にすると、タイトルバーを持つ通常のモーダルなダイアログを表示する代わりに、親ウィンドウのタイトルバーに統合したダイアログを表示します (親ウィンドウを移動すると一緒にモーダルなダイアログも移動します)。"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:5
-msgid "Live Hidden Windows"
-msgstr "表示されていないウィンドウをそのままにしておくかどうか"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:6
-msgid ""
-"Determines whether hidden windows (i.e., minimized windows and windows on "
-"other workspaces than the current one) should be kept alive."
-msgstr ""
-"現在表示されていないウィンドウ (すなわち、最小化したウィンドウや現在のワーク"
-"スペースにはないウィンドウなど) を (表示させずに) そのままの状態にしておくか"
-"どうかです。"
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:8
-msgid ""
-"If enabled, dropping windows on vertical screen edges maximizes them "
-"vertically and resizes them horizontally to cover half of the available "
-"area. Dropping windows on the top screen edge maximizes them completely."
+#: ../src/org.gnome.mutter.gschema.xml.in.h:6
+msgid "If enabled, dropping windows on vertical screen edges maximizes them vertically and resizes them horizontally to cover half of the available area. Dropping windows on the top screen edge maximizes them completely."
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:9
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Workspaces are managed dynamically"
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:10
-msgid ""
-"Determines whether workspaces are managed dynamically or whether there's a "
-"static number of workspaces (determined by the num-workspaces key in org."
-"gnome.desktop.wm.preferences)."
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
+msgid "Determines whether workspaces are managed dynamically or whether there's a static number of workspaces (determined by the num-workspaces key in org.gnome.desktop.wm.preferences)."
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:11
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Workspaces only on primary"
 msgstr "プライマリ・モニターのみワークスペースを切り替えるかどうか"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
-msgid ""
-"Determines whether workspace switching should happen for windows on all "
-"monitors or only for windows on the primary monitor."
-msgstr ""
-"全てのモニターにあるウィンドウに対してワークスペースの切り替えを可能にする"
-"か、またはプライマリ・モニターにあるウィンドウに対してのみワークスペースの切"
-"り替えを提供するかどうかです。"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+msgid "Determines whether workspace switching should happen for windows on all monitors or only for windows on the primary monitor."
+msgstr "全てのモニターにあるウィンドウに対してワークスペースの切り替えを可能にするか、またはプライマリ・モニターにあるウィンドウに対してのみワークスペースの切り替えを提供するかどうかです。"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "No tab popup"
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
-msgid ""
-"Determines whether the use of popup and highlight frame should be disabled "
-"for window cycling."
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+msgid "Determines whether the use of popup and highlight frame should be disabled for window cycling."
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "Draggable border width"
 msgstr "ドラッグが可能になる境界線の幅"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
-msgid ""
-"The amount of total draggable borders. If the theme's visible borders are "
-"not enough, invisible borders will be added to meet this value."
-msgstr ""
-"ドラッグができるようになる境界線の幅です。テーマで表示している境界線がこの値"
-"よりも小さい場合は、表示できない境界線がこの値になるように追加されます。"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid "The amount of total draggable borders. If the theme's visible borders are not enough, invisible borders will be added to meet this value."
+msgstr "ドラッグができるようになる境界線の幅です。テーマで表示している境界線がこの値よりも小さい場合は、表示できない境界線がこの値になるように追加されます。"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:17
-#, fuzzy
-#| msgid "Remove Window From Top"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Select window from tab popup"
-msgstr "ウィンドウを最前面の維持から解除します"
+msgstr "タブのポップアップでウィンドウを選択します"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid "Cancel tab popup"
 msgstr ""
 
@@ -717,285 +614,234 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:253
+#: ../src/ui/theme.c:234
 msgid "top"
 msgstr "上"
 
-#: ../src/ui/theme.c:255
+#: ../src/ui/theme.c:236
 msgid "bottom"
 msgstr "下"
 
-#: ../src/ui/theme.c:257
+#: ../src/ui/theme.c:238
 msgid "left"
 msgstr "左"
 
-#: ../src/ui/theme.c:259
+#: ../src/ui/theme.c:240
 msgid "right"
 msgstr "右"
 
-#: ../src/ui/theme.c:286
+#: ../src/ui/theme.c:268
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "フレームジオメトリは \"%s\" のサイズを指定しません"
 
-#: ../src/ui/theme.c:305
+#: ../src/ui/theme.c:287
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "境界 \"%2$s\" 用のフレームジオメトリは大きさ \"%1$s\" を指定しません"
 
-#: ../src/ui/theme.c:342
+#: ../src/ui/theme.c:324
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "ボタンのアスペクト比 %g は妥当ではありません"
 
-#: ../src/ui/theme.c:354
+#: ../src/ui/theme.c:336
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "フレームジオメトリはボタンのサイズを指定しません"
 
-#: ../src/ui/theme.c:1067
+#: ../src/ui/theme.c:1049
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "階調度は少なくとも2つの色をもつべきです"
 
-#: ../src/ui/theme.c:1219
+#: ../src/ui/theme.c:1201
 #, c-format
-msgid ""
-"GTK custom color specification must have color name and fallback in "
-"parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
-msgstr ""
-"\"%s\" を解析できませんでした; GTK の色指定では gtk:custom(foo,bar); のように"
-"括弧の中に色の名前とそれと代替えになる色の名前を指定して下さい"
+msgid "GTK custom color specification must have color name and fallback in parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
+msgstr "\"%s\" を解析できませんでした; GTK の色指定では gtk:custom(foo,bar); のように括弧の中に色の名前とそれと代替えになる色の名前を指定してください"
 
-#: ../src/ui/theme.c:1235
+#: ../src/ui/theme.c:1217
 #, c-format
-msgid ""
-"Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
-"_ are valid"
-msgstr ""
-"gtk:custom の color_name で指定した文字が間違っています (使用できる文字は A-"
-"Za-z0-9-_): '%c'"
+msgid "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-_ are valid"
+msgstr "gtk:custom の color_name で指定した文字が間違っています (使用できる文字は A-Za-z0-9-_): '%c'"
 
-#: ../src/ui/theme.c:1249
+#: ../src/ui/theme.c:1231
 #, c-format
-msgid ""
-"Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
-"fit the format"
-msgstr ""
-"Gtk:custom の書式は \"gtk:custom(color_name,fallback)\" です (\"%s\" はこの書"
-"式に合っていません)"
+msgid "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not fit the format"
+msgstr "Gtk:custom の書式は \"gtk:custom(color_name,fallback)\" です (\"%s\" はこの書式に合っていません)"
 
-#: ../src/ui/theme.c:1294
+#: ../src/ui/theme.c:1276
 #, c-format
-msgid ""
-"GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
-"where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"\"%s\" を解析できませんでした; GTK の色指定では gtk:fg[NORMAL] のように状態を"
-"大括弧で囲み指定する必要があります (NORMAL は状態を示す)"
+msgid "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr "\"%s\" を解析できませんでした; GTK の色指定では gtk:fg[NORMAL] のように状態を大括弧で囲み指定する必要があります (NORMAL は状態を示す)"
 
-#: ../src/ui/theme.c:1308
+#: ../src/ui/theme.c:1290
 #, c-format
-msgid ""
-"GTK color specification must have a close bracket after the state, e.g. gtk:"
-"fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
-msgstr ""
-"\"%s\" を解析できませんでした; GTK の色指定では gtk:fg[NORMAL] のように状態の"
-"後に右大括弧をつける必要があります (NORMAL は状態を示す)"
+msgid "GTK color specification must have a close bracket after the state, e.g. gtk:fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
+msgstr "\"%s\" を解析できませんでした; GTK の色指定では gtk:fg[NORMAL] のように状態の後に右大括弧をつける必要があります (NORMAL は状態を示す)"
 
-#: ../src/ui/theme.c:1319
+#: ../src/ui/theme.c:1301
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "色指定で状態 \"%s\" は理解しませんでした"
 
-#: ../src/ui/theme.c:1332
+#: ../src/ui/theme.c:1314
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "色指定でカラーコンポーネント \"%s\" は理解しませんでした"
 
-#: ../src/ui/theme.c:1361
+#: ../src/ui/theme.c:1343
 #, c-format
-msgid ""
-"Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
-"format"
-msgstr ""
-"混合色のフォーマットは \"blend/bg_color/fg_color/alpha\" で，\"%s\" はこの"
-"フォーマットに適合していません"
+msgid "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the format"
+msgstr "混合色のフォーマットは \"blend/bg_color/fg_color/alpha\" で，\"%s\" はこのフォーマットに適合していません"
 
-#: ../src/ui/theme.c:1372
+#: ../src/ui/theme.c:1354
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "混合色のアルファ値 \"%s\" を解析できませんでした"
 
-#: ../src/ui/theme.c:1382
+#: ../src/ui/theme.c:1364
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "混合色のアルファ値 \"%s\" は 0.0 から 1.0 の間ではありません"
 
-#: ../src/ui/theme.c:1429
+#: ../src/ui/theme.c:1411
 #, c-format
-msgid ""
-"Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
-msgstr ""
-"シェードのフォーマットは \"shade/base_color/factor\" で，\"%s\" はこのフォー"
-"マットに適合していません"
+msgid "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
+msgstr "シェードのフォーマットは \"shade/base_color/factor\" で，\"%s\" はこのフォーマットに適合していません"
 
-#: ../src/ui/theme.c:1440
+#: ../src/ui/theme.c:1422
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "シェードカラーのシェード係数 \"%s\" をパスできませんでした"
 
-#: ../src/ui/theme.c:1450
+#: ../src/ui/theme.c:1432
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "シェードカラーのシェード係数 \"%s\" が負の値です"
 
-#: ../src/ui/theme.c:1479
+#: ../src/ui/theme.c:1461
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "次の色を解析できませんでした: \"%s\""
 
-#: ../src/ui/theme.c:1790
+#: ../src/ui/theme.c:1778
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "許可されていない文字が座標式に含まれています: '%s'"
 
-#: ../src/ui/theme.c:1817
+#: ../src/ui/theme.c:1805
 #, c-format
-msgid ""
-"Coordinate expression contains floating point number '%s' which could not be "
-"parsed"
+msgid "Coordinate expression contains floating point number '%s' which could not be parsed"
 msgstr "解析できない浮動小数点数が座標式に含まれています: '%s'"
 
-#: ../src/ui/theme.c:1831
+#: ../src/ui/theme.c:1819
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "解析できない整数が座標式に含まれています: '%s'"
 
-#: ../src/ui/theme.c:1953
+#: ../src/ui/theme.c:1940
 #, c-format
-msgid ""
-"Coordinate expression contained unknown operator at the start of this text: "
-"\"%s\""
+msgid "Coordinate expression contained unknown operator at the start of this text: \"%s\""
 msgstr "次のテキストの先頭に無効な演算子が座標式の中に含まれていました: \"%s\""
 
-#: ../src/ui/theme.c:2010
+#: ../src/ui/theme.c:1997
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "座標式が空か解析不能です"
 
-#: ../src/ui/theme.c:2121 ../src/ui/theme.c:2131 ../src/ui/theme.c:2165
+#: ../src/ui/theme.c:2110 ../src/ui/theme.c:2120 ../src/ui/theme.c:2154
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "座標式はゼロで除算しました"
 
-#: ../src/ui/theme.c:2173
+#: ../src/ui/theme.c:2162
 #, c-format
-msgid ""
-"Coordinate expression tries to use mod operator on a floating-point number"
+msgid "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr "座標式は浮動小数点で mod 演算子を使用しようとしています"
 
-#: ../src/ui/theme.c:2229
+#: ../src/ui/theme.c:2218
 #, c-format
-msgid ""
-"Coordinate expression has an operator \"%s\" where an operand was expected"
+msgid "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "座標式はオペランドが必要な場所に演算子 \"%s\" を使用しています"
 
-#: ../src/ui/theme.c:2238
+#: ../src/ui/theme.c:2227
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "座標式は演算子が必要な場所でオペランドを使用しています"
 
-#: ../src/ui/theme.c:2246
+#: ../src/ui/theme.c:2235
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "座標式はオペランドの代わりに演算子で終わっています"
 
-#: ../src/ui/theme.c:2256
+#: ../src/ui/theme.c:2245
 #, c-format
-msgid ""
-"Coordinate expression has operator \"%c\" following operator \"%c\" with no "
-"operand in between"
-msgstr ""
-"座標式は演算子 \"%2$c\" の後に演算子 \"%1$c\" が続いており，これらの間にオペ"
-"ランドがありません"
+msgid "Coordinate expression has operator \"%c\" following operator \"%c\" with no operand in between"
+msgstr "座標式は演算子 \"%2$c\" の後に演算子 \"%1$c\" が続いており，これらの間にオペランドがありません"
 
-#: ../src/ui/theme.c:2407 ../src/ui/theme.c:2452
+#: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "座標式は無効な値または定数 \"%s\" が使用されていました"
 
-#: ../src/ui/theme.c:2506
+#: ../src/ui/theme.c:2495
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "座標式を解析する際にオーバーフローが発生しました"
 
-#: ../src/ui/theme.c:2535
+#: ../src/ui/theme.c:2524
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "座標式は左括弧がなしに右括弧が指定されています"
 
-#: ../src/ui/theme.c:2599
+#: ../src/ui/theme.c:2588
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "座標式は左括弧が指定されていますが，右括弧がありません"
 
-#: ../src/ui/theme.c:2610
+#: ../src/ui/theme.c:2599
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "座標式は演算子もオペランドも使用していないようです"
 
-#: ../src/ui/theme.c:2822 ../src/ui/theme.c:2842 ../src/ui/theme.c:2862
+#: ../src/ui/theme.c:2812 ../src/ui/theme.c:2832 ../src/ui/theme.c:2852
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "テーマにエラーを引き起こす式が含まれていました: %s\n"
 
-#: ../src/ui/theme.c:4533
+#: ../src/ui/theme.c:4498
 #, c-format
-msgid ""
-"<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
-"specified for this frame style"
-msgstr ""
-"このフレームスタイルは <button function=\"%s\" state=\"%s\" draw_ops="
-"\"whatever\"/> を指定する必要があります"
+msgid "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be specified for this frame style"
+msgstr "このフレームスタイルは <button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> を指定する必要があります"
 
-#: ../src/ui/theme.c:5066 ../src/ui/theme.c:5091
+#: ../src/ui/theme.c:5009 ../src/ui/theme.c:5034
 #, c-format
-msgid ""
-"Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>がありませ"
-"ん"
+msgid "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>がありません"
 
-#: ../src/ui/theme.c:5139
+#: ../src/ui/theme.c:5082
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "テーマ \"%s\" の読み込みに失敗しました: %s\n"
 
-#: ../src/ui/theme.c:5275 ../src/ui/theme.c:5282 ../src/ui/theme.c:5289
-#: ../src/ui/theme.c:5296 ../src/ui/theme.c:5303
+#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "テーマ \"%1$s\" の <%2$s> が設定されていません"
 
-#: ../src/ui/theme.c:5311
+#: ../src/ui/theme.c:5254
 #, c-format
-msgid ""
-"No frame style set for window type \"%s\" in theme \"%s\", add a <window "
-"type=\"%s\" style_set=\"whatever\"/> element"
-msgstr ""
-"テーマ \"%2$s\" にウィンドウタイプ \"%1$s\" のフレームスタイルが設定されてい"
-"ません．<window type=\"%3$s\" style_set=\"whatever\"/> エレメントを追加してく"
-"ださい"
+msgid "No frame style set for window type \"%s\" in theme \"%s\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
+msgstr "テーマ \"%2$s\" にウィンドウタイプ \"%1$s\" のフレームスタイルが設定されていません．<window type=\"%3$s\" style_set=\"whatever\"/> エレメントを追加してください"
 
-#: ../src/ui/theme.c:5709 ../src/ui/theme.c:5771 ../src/ui/theme.c:5834
+#: ../src/ui/theme.c:5650 ../src/ui/theme.c:5712 ../src/ui/theme.c:5775
 #, c-format
-msgid ""
-"User-defined constants must begin with a capital letter; \"%s\" does not"
-msgstr ""
-"ユーザー定義の定数は大文字で始まらなければなりません; \"%s\" は違います"
+msgid "User-defined constants must begin with a capital letter; \"%s\" does not"
+msgstr "ユーザー定義の定数は大文字で始まらなければなりません; \"%s\" は違います"
 
-#: ../src/ui/theme.c:5717 ../src/ui/theme.c:5779 ../src/ui/theme.c:5842
+#: ../src/ui/theme.c:5658 ../src/ui/theme.c:5720 ../src/ui/theme.c:5783
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "定数 \"%s\" は既に定義されています"
@@ -1051,8 +897,7 @@ msgstr "浮動小数点として \"%s\" を解析できませんでした"
 #: ../src/ui/theme-parser.c:680 ../src/ui/theme-parser.c:708
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
-"ブール値は \"true\" か \"false\" でなければならず \"%s\" ではありません"
+msgstr "ブール値は \"true\" か \"false\" でなければならず \"%s\" ではありません"
 
 #: ../src/ui/theme-parser.c:735
 #, c-format
@@ -1062,18 +907,12 @@ msgstr "角度は 0.0 から 360.0 の間でなければなりませんが，%g 
 #: ../src/ui/theme-parser.c:798
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
-"アルファ値は 0.0 (不可視)と 1.0 (完全に不透明) の間でなければなりませんが，%"
-"g でした\n"
+msgstr "アルファ値は 0.0 (不可視)と 1.0 (完全に不透明) の間でなければなりませんが，%g でした\n"
 
 #: ../src/ui/theme-parser.c:863
 #, c-format
-msgid ""
-"Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
-"large,x-large,xx-large)\n"
-msgstr ""
-"無効なタイトルスケール \"%s\" です (xx-small,x-small,small,medium,large,x-"
-"large,xx-large のひとつでなければなりません)\n"
+msgid "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,large,x-large,xx-large)\n"
+msgstr "無効なタイトルスケール \"%s\" です (xx-small,x-small,small,medium,large,x-large,xx-large のひとつでなければなりません)\n"
 
 #: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
 #: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
@@ -1095,13 +934,11 @@ msgstr "<%s> のジオメトリ \"%s\" は定義されていません"
 #: ../src/ui/theme-parser.c:1154
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
-msgstr ""
-"<%s> はジオメトリ，またはジオメトリを持つ親のどちらかを指定しなければなりませ"
-"ん"
+msgstr "<%s> はジオメトリ，またはジオメトリを持つ親のどちらかを指定しなければなりません"
 
 #: ../src/ui/theme-parser.c:1196
 msgid "You must specify a background for an alpha value to be meaningful"
-msgstr "背景色の妥当なアルファ値を指定して下さい"
+msgstr "背景色の妥当なアルファ値を指定してください"
 
 #: ../src/ui/theme-parser.c:1264
 #, c-format
@@ -1129,12 +966,8 @@ msgstr "エレメント <%s> は <%s> の下では許可されていません"
 
 #: ../src/ui/theme-parser.c:1427 ../src/ui/theme-parser.c:1441
 #: ../src/ui/theme-parser.c:1486
-msgid ""
-"Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
-"for buttons"
-msgstr ""
-"複数のボタンに \"button_width\"/\"button_height\" と \"aspect_ratio\" の両方"
-"の属性を指定できません"
+msgid "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" for buttons"
+msgstr "複数のボタンに \"button_width\"/\"button_height\" と \"aspect_ratio\" の両方の属性を指定できません"
 
 #: ../src/ui/theme-parser.c:1450
 #, c-format
@@ -1222,8 +1055,7 @@ msgstr "ボタンのための機能 \"%s\" は不明です"
 #: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr ""
-"このバージョンでは \"%s\" というボタンの機能は提供していません (現 %d, 要 %d)"
+msgstr "このバージョンでは \"%s\" というボタンの機能は提供していません (現 %d, 要 %d)"
 
 #: ../src/ui/theme-parser.c:2994
 #, c-format
@@ -1257,23 +1089,18 @@ msgstr "\"%s\" はリサイズ属性のためには有効な値ではありま�
 
 #: ../src/ui/theme-parser.c:3147
 #, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized/shaded "
-"states"
-msgstr ""
-"最大化/シェード化のための <%s> エレメントには \"resize\" 属性を指定できません"
+msgid "Should not have \"resize\" attribute on <%s> element for maximized/shaded states"
+msgstr "最大化/シェード化のための <%s> エレメントには \"resize\" 属性を指定できません"
 
 #: ../src/ui/theme-parser.c:3161
 #, c-format
-msgid ""
-"Should not have \"resize\" attribute on <%s> element for maximized states"
+msgid "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr "最大化のための <%s> エレメントには \"resize\" 属性を指定できません"
 
 #: ../src/ui/theme-parser.c:3175 ../src/ui/theme-parser.c:3222
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
-"状態 %s リサイズ %s フォーカス %s のためのスタイルはすでに指定されています"
+msgstr "状態 %s リサイズ %s フォーカス %s のためのスタイルはすでに指定されています"
 
 #: ../src/ui/theme-parser.c:3186 ../src/ui/theme-parser.c:3197
 #: ../src/ui/theme-parser.c:3208 ../src/ui/theme-parser.c:3233
@@ -1283,31 +1110,16 @@ msgid "Style has already been specified for state %s focus %s"
 msgstr "状態 %s フォーカス %s のためのスタイルはすでに指定されています"
 
 #: ../src/ui/theme-parser.c:3294
-msgid ""
-"Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"<piece> エレメントは2つの draw_ops を持つことができません (テーマで draw_ops "
-"属性と <draw_ops> エレメントが指定されたか，あるいは 2 つのエレメントが指定さ"
-"れました)"
+msgid "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "<piece> エレメントは2つの draw_ops を持つことができません (テーマで draw_ops 属性と <draw_ops> エレメントが指定されたか，あるいは 2 つのエレメントが指定されました)"
 
 #: ../src/ui/theme-parser.c:3332
-msgid ""
-"Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
-"attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"<button> エレメントは 2 つの draw_ops を持つことができません (テーマで "
-"draw_ops 属性と <draw_ops> エレメントが指定されたか，あるいは 2 つのエレメン"
-"トが指定されました)"
+msgid "Can't have a two draw_ops for a <button> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "<button> エレメントは 2 つの draw_ops を持つことができません (テーマで draw_ops 属性と <draw_ops> エレメントが指定されたか，あるいは 2 つのエレメントが指定されました)"
 
 #: ../src/ui/theme-parser.c:3370
-msgid ""
-"Can't have a two draw_ops for a <menu_icon> element (theme specified a "
-"draw_ops attribute and also a <draw_ops> element, or specified two elements)"
-msgstr ""
-"<menu_icon> エレメントは 2 つの draw_ops を持つことができません (テーマで "
-"draw_ops 属性と <draw_ops> エレメントが指定されたか，あるいは 2 つのエレメン"
-"トが指定されました)"
+msgid "Can't have a two draw_ops for a <menu_icon> element (theme specified a draw_ops attribute and also a <draw_ops> element, or specified two elements)"
+msgstr "<menu_icon> エレメントは 2 つの draw_ops を持つことができません (テーマで draw_ops 属性と <draw_ops> エレメントが指定されたか，あるいは 2 つのエレメントが指定されました)"
 
 #: ../src/ui/theme-parser.c:3434
 #, c-format
@@ -1315,34 +1127,23 @@ msgid "Bad version specification '%s'"
 msgstr "バージョン '%s' の仕様はサポートしていません"
 
 #: ../src/ui/theme-parser.c:3507
-msgid ""
-"\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
-"theme-2.xml"
-msgstr ""
-"\"version\" 属性は metacity-theme-1.xml や metacity-theme-2.xml では指定でき"
-"ません"
+msgid "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-theme-2.xml"
+msgstr "\"version\" 属性は metacity-theme-1.xml や metacity-theme-2.xml では指定できません"
 
 #: ../src/ui/theme-parser.c:3530
 #, c-format
 msgid "Theme requires version %s but latest supported theme version is %d.%d"
-msgstr ""
-"バージョン %s のテーマが必要ですが、サポートしている最新のバージョンは %d.%d "
-"です"
+msgstr "バージョン %s のテーマが必要ですが、サポートしている最新のバージョンは %d.%d です"
 
 #: ../src/ui/theme-parser.c:3562
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
-"テーマの最も外側のエレメントは <metacity_theme> でなければならず，<%s>ではあ"
-"りません"
+msgstr "テーマの最も外側のエレメントは <metacity_theme> でなければならず，<%s>ではありません"
 
 #: ../src/ui/theme-parser.c:3582
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
-"エレメント <%s> は name/author/date/description エレメントの内側に許可されて"
-"いません"
+msgid "Element <%s> is not allowed inside a name/author/date/description element"
+msgstr "エレメント <%s> は name/author/date/description エレメントの内側に許可されていません"
 
 #: ../src/ui/theme-parser.c:3587
 #, c-format
@@ -1351,11 +1152,8 @@ msgstr "エレメント <%s> は <constant> エレメントの内側に許可さ
 
 #: ../src/ui/theme-parser.c:3599
 #, c-format
-msgid ""
-"Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr ""
-"エレメント <%s> はdistance/border/aspect_ratioエレメントの内側に許可されてい"
-"ません"
+msgid "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
+msgstr "エレメント <%s> はdistance/border/aspect_ratioエレメントの内側に許可されていません"
 
 #: ../src/ui/theme-parser.c:3621
 #, c-format
@@ -1388,7 +1186,7 @@ msgstr "エレメント <%s> の内側にテキストは許可されません"
 msgid "<%s> specified twice for this theme"
 msgstr "このテーマでは <%s> という要素を２回指定しています"
 
-#: ../src/ui/theme-parser.c:4348
+#: ../src/ui/theme-parser.c:4334
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "%s というテーマの妥当なファイルが見つかりませんでした\n"
@@ -1545,13 +1343,8 @@ msgstr "ここにウィンドウのタイトルが表示されます"
 
 #: ../src/ui/theme-viewer.c:1047
 #, c-format
-msgid ""
-"Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
-"seconds wall clock time including X server resources (%g milliseconds per "
-"frame)\n"
-msgstr ""
-"%d 個のフレームをクライアント側で%g秒 (1フレームにつき%gミリ秒)、実時間ではＸ"
-"サーバーのリソースを含めて%g秒 (1フレームにつき %gミリ秒)で描画しました\n"
+msgid "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g seconds wall clock time including X server resources (%g milliseconds per frame)\n"
+msgstr "%d 個のフレームをクライアント側で%g秒 (1フレームにつき%gミリ秒)、実時間ではＸサーバーのリソースを含めて%g秒 (1フレームにつき %gミリ秒)で描画しました\n"
 
 #: ../src/ui/theme-viewer.c:1266
 msgid "position expression test returned TRUE but set error"
@@ -1589,6 +1382,15 @@ msgstr "yの値は %d でした (期待値: %d)"
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d個の座標式を %g秒 (平均 %g秒) で解析しました\n"
+
+#~ msgid "Comma-separated list of compositor plugins"
+#~ msgstr "画像の合成プラグインを指定する (複数ある時はカンマ ',' で区切る)"
+
+#~ msgid "Live Hidden Windows"
+#~ msgstr "表示されていないウィンドウをそのままにしておくかどうか"
+
+#~ msgid "Determines whether hidden windows (i.e., minimized windows and windows on other workspaces than the current one) should be kept alive."
+#~ msgstr "現在表示されていないウィンドウ (すなわち、最小化したウィンドウや現在のワークスペースにはないウィンドウなど) を (表示させずに) そのままの状態にしておくかどうかです。"
 
 # ｢キーボード・ショートカット｣のアプレット (gnome-control-center) で表示するメッセージ
 #~ msgid "Switch to workspace 1"
@@ -1642,28 +1444,20 @@ msgstr "%d個の座標式を %g秒 (平均 %g秒) で解析しました\n"
 #~ msgid "Move between windows of an application, using a popup window"
 #~ msgstr "ポップアップ・ウィンドウを使って複数のウィンドウの間を移動する"
 
-#~ msgid ""
-#~ "Move backward between windows of an application, using a popup window"
-#~ msgstr ""
-#~ "ポップアップ・ウィンドウを使って複数のウィンドウの間を降順で移動する"
+#~ msgid "Move backward between windows of an application, using a popup window"
+#~ msgstr "ポップアップ・ウィンドウを使って複数のウィンドウの間を降順で移動する"
 
 #~ msgid "Move between windows, using a popup window"
-#~ msgstr ""
-#~ "ポップアップ・ウィンドウを使ってウィンドウ間のフォーカスを切り替える"
+#~ msgstr "ポップアップ・ウィンドウを使ってウィンドウ間のフォーカスを切り替える"
 
 #~ msgid "Move backward between windows, using a popup window"
-#~ msgstr ""
-#~ "ポップアップ・ウィンドウを使ってウィンドウ間のフォーカスを降順で切り替える"
+#~ msgstr "ポップアップ・ウィンドウを使ってウィンドウ間のフォーカスを降順で切り替える"
 
 #~ msgid "Move between panels and the desktop, using a popup window"
-#~ msgstr ""
-#~ "ポップアップ・ウィンドウを使ってパネルとデスクトップの間のフォーカスを切り"
-#~ "替える"
+#~ msgstr "ポップアップ・ウィンドウを使ってパネルとデスクトップの間のフォーカスを切り替える"
 
 #~ msgid "Move backward between panels and the desktop, using a popup window"
-#~ msgstr ""
-#~ "ポップアップ・ウィンドウを使ってパネルとデスクトップの間のフォーカスを降順"
-#~ "で切り替える"
+#~ msgstr "ポップアップ・ウィンドウを使ってパネルとデスクトップの間のフォーカスを降順で切り替える"
 
 #~ msgid "Move between windows of an application immediately"
 #~ msgstr "アプリケーションが持つ複数のウィンドウの間を移動する"
@@ -1864,13 +1658,10 @@ msgstr "%d個の座標式を %g秒 (平均 %g秒) で解析しました\n"
 #~ msgstr "ワークスペース数を %d に設定中にエラーが発生しました: %s\n"
 
 #~ msgid "Error setting name for workspace %d to \"%s\": %s\n"
-#~ msgstr ""
-#~ "ワークスペース %d の名前を \"%s\" に設定するときにエラーが発生しました: %"
-#~ "s\n"
+#~ msgstr "ワークスペース %d の名前を \"%s\" に設定するときにエラーが発生しました: %s\n"
 
 #~ msgid "Error setting live hidden windows status status: %s\n"
-#~ msgstr ""
-#~ "表示されていないが動作中のウィンドウに対するステータスの設定エラー: %s\n"
+#~ msgstr "表示されていないが動作中のウィンドウに対するステータスの設定エラー: %s\n"
 
 #~ msgid "Error setting no tab popup status: %s\n"
 #~ msgstr "タブなしのポップアップ・ステータスの設定エラー: %s\n"
