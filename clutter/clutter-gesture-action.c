@@ -59,6 +59,7 @@
   Prepare -> Begin -> Progress -> Cancel
   Prepare -> Begin -> Progress -> End
  * ]]>
+ *   </programlisting></informalexample>
  *   <para>Each #ClutterGestureAction starts in the "prepare" state, and calls
  *   the #ClutterGestureActionClass.gesture_prepare() virtual function; this
  *   state can be used to reset the internal state of a #ClutterGestureAction
@@ -77,7 +78,7 @@
  *   gesture, in which case the "end" state will be reached, or until the
  *   gesture is cancelled, in which case the "cancel" gesture will be used
  *   instead.</para>
- * </refsects2>
+ * </refsect2>
  *
  * Since: 1.8
  */
