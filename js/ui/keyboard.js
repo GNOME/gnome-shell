@@ -201,6 +201,7 @@ const Keyboard = new Lang.Class({
 
         this.actor = null;
         this._focusInTray = false;
+        this._focusInExtendedKeys = false;
 
         this._timestamp = global.display.get_current_time_roundtrip();
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._redraw));
@@ -289,7 +290,9 @@ const Keyboard = new Lang.Class({
 
         // Showing an extended key popup and clicking a key from the extended keys
         // will grab focus, but ignore that
-        if (focus && (focus._extended_keys || focus.extended_key))
+        let extendedKeysWereFocused = this._focusInExtendedKeys;
+        this._focusInExtendedKeys = focus && (focus._extended_keys || focus.extended_key);
+        if (this._focusInExtendedKeys || extendedKeysWereFocused)
             return;
 
         // Ignore focus changes caused by message tray showing/hiding
