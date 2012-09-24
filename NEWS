@@ -1,3 +1,30 @@
+Cogl 1.12.0                                                        2012-09-24
+
+  • List of changes since Cogl 1.11.4
+
+  » MSVC build updates to fix building with SDL support
+  » Lots of translation updates
+  
+  • List of bugs fixed since Cogl 1.11.6
+
+    #682071 - Fix Visual C++ build when using the SDL winsys
+
+Many thanks to:
+
+  Dr.T.Vasudevan
+  Alexander Shopov
+  Ani Peter
+  Ask H. Larsen
+  Carles Ferrando
+  Chun-wei Fan
+  Gil Forcada
+  Mario Blättermann
+  Nishio Futoshi
+  Rajesh Ranjan
+  Robert Bragg
+  YunQiang Su
+  Yuri Myasoedov
+
 Cogl 1.11.6                                                        2012-09-17
 
   • List of changes since Cogl 1.11.4
