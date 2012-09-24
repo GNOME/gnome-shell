@@ -316,9 +316,9 @@ cally_text_real_initialize(AtkObject *obj,
   _check_activate_action (cally_text, clutter_text);
 
   if (clutter_text_get_password_char (clutter_text) != 0)
-    obj->role = ATK_ROLE_PASSWORD_TEXT;
+    atk_object_set_role (obj, ATK_ROLE_PASSWORD_TEXT);
   else
-    obj->role = ATK_ROLE_TEXT;
+    atk_object_set_role (obj, ATK_ROLE_TEXT);
 }
 
 static AtkStateSet*
@@ -1077,13 +1077,28 @@ cally_text_get_text (AtkText *text,
                      gint end_offset)
 {
   ClutterActor *actor = NULL;
+  PangoLayout *layout = NULL;
+  const gchar *string = NULL;
+  gint character_count = 0;
 
   actor = CALLY_GET_CLUTTER_ACTOR (text);
   if (actor == NULL) /* Object is defunct */
     return NULL;
 
-  return clutter_text_get_chars (CLUTTER_TEXT (actor),
-                                 start_offset, end_offset);
+  /* we use the pango layout instead of clutter_text_get_chars because
+     it take into account password-char */
+
+  layout = clutter_text_get_layout (CLUTTER_TEXT (actor));
+  string = pango_layout_get_text (layout);
+  character_count = pango_layout_get_character_count (layout);
+
+  if (end_offset == -1 || end_offset > character_count)
+    end_offset = character_count;
+
+  if (string[0] == 0)
+    return g_strdup("");
+  else
+    return g_utf8_substring (string, start_offset, end_offset);
 }
 
 static gunichar
@@ -1091,15 +1106,21 @@ cally_text_get_character_at_offset (AtkText *text,
                                     gint     offset)
 {
   ClutterActor *actor      = NULL;
-  gchar        *string     = NULL;
+  const gchar  *string     = NULL;
   gchar        *index      = NULL;
   gunichar      unichar;
+  PangoLayout  *layout = NULL;
 
   actor = CALLY_GET_CLUTTER_ACTOR (text);
   if (actor == NULL) /* State is defunct */
     return '\0';
 
-  string = clutter_text_get_chars (CLUTTER_TEXT (actor), 0, -1);
+  /* we use the pango layout instead of clutter_text_get_chars because
+     it take into account password-char */
+
+  layout = clutter_text_get_layout (CLUTTER_TEXT (actor));
+  string = pango_layout_get_text (layout);
+
   if (offset >= g_utf8_strlen (string, -1))
     {
       unichar = '\0';
@@ -1108,10 +1129,8 @@ cally_text_get_character_at_offset (AtkText *text,
     {
       index = g_utf8_offset_to_pointer (string, offset);
 
-      unichar = g_utf8_get_char(index);
+      unichar = g_utf8_get_char (index);
     }
-
-  g_free(string);
 
   return unichar;
 }
