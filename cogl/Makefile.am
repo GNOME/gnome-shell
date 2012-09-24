@@ -18,13 +18,16 @@ lib_LTLIBRARIES =
 INCLUDES = \
 	-I$(top_srcdir)				\
 	-I$(top_builddir)			\
-	-I$(top_builddir)/deps/glib		\
 	-I$(srcdir)/tesselator			\
 	-I$(srcdir)/winsys 			\
 	-I$(srcdir)/driver/gl 			\
 	-I$(srcdir)/driver/gl/gl 		\
 	-I$(srcdir)/driver/gl/gles 		\
 	$(NULL)
+
+if !USE_GLIB
+	INCLUDES += -I$(top_builddir)/deps/glib
+endif
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"Cogl\" 	\

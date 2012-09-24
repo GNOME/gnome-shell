@@ -8,8 +8,11 @@ lib_LTLIBRARIES = libcogl-gles2.la
 
 INCLUDES = \
 	-I$(top_srcdir) \
-	-I$(top_builddir) \
-	-I$(top_builddir)/deps/glib
+	-I$(top_builddir)
+
+if !USE_GLIB
+INCLUDES += -I$(top_builddir)/deps/glib
+endif
 
 AM_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS) $(MAINTAINER_CFLAGS)
 
