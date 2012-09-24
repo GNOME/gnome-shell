@@ -349,6 +349,13 @@ const Keyboard = new Lang.Class({
             trayButton.reactive = true;
             trayButton.remove_style_pseudo_class('grayed');
         }));
+        Main.sessionMode.connect('updated', Lang.bind(this, function() {
+            trayButton.reactive = !Main.sessionMode.isLocked;
+            if (Main.sessionMode.isLocked)
+                trayButton.add_style_pseudo_class('grayed');
+            else
+                trayButton.remove_style_pseudo_class('grayed');
+        }));
 
         return trayButton;
     },
