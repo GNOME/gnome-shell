@@ -100,7 +100,6 @@ G_DEFINE_TYPE_WITH_CODE (ShellKeyringPrompt, shell_keyring_prompt, G_TYPE_OBJECT
 enum {
   SIGNAL_SHOW_PASSWORD,
   SIGNAL_SHOW_CONFIRM,
-  SIGNAL_HIDE_PROMPT,
   SIGNAL_LAST
 };
 
@@ -258,10 +257,8 @@ shell_keyring_prompt_dispose (GObject *obj)
 {
   ShellKeyringPrompt *self = SHELL_KEYRING_PROMPT (obj);
 
-  if (self->shown) {
-    self->shown = FALSE;
-    g_signal_emit (self, signals[SIGNAL_HIDE_PROMPT], 0);
-  }
+  if (self->shown)
+    gcr_prompt_close (GCR_PROMPT (self));
 
   if (self->async_result)
     shell_keyring_prompt_cancel (self);
@@ -384,11 +381,6 @@ shell_keyring_prompt_class_init (ShellKeyringPromptClass *klass)
                                                 0, 0, NULL, NULL,
                                                 g_cclosure_marshal_VOID__VOID,
                                                 G_TYPE_NONE, 0);
-
-  signals[SIGNAL_HIDE_PROMPT] =  g_signal_new ("hide-prompt", G_TYPE_FROM_CLASS (klass),
-                                               0, 0, NULL, NULL,
-                                               g_cclosure_marshal_VOID__VOID,
-                                               G_TYPE_NONE, 0);
 }
 
 static void
@@ -483,12 +475,26 @@ shell_keyring_prompt_confirm_finish (GcrPrompt    *prompt,
 }
 
 static void
+shell_keyring_prompt_close (GcrPrompt *prompt)
+{
+  ShellKeyringPrompt *self = SHELL_KEYRING_PROMPT (prompt);
+
+  /*
+   * We expect keyring.js to connect to this signal and do the
+   * actual work of closing the prompt.
+   */
+
+  self->shown = FALSE;
+}
+
+static void
 shell_keyring_prompt_iface (GcrPromptIface *iface)
 {
   iface->prompt_password_async = shell_keyring_prompt_password_async;
   iface->prompt_password_finish = shell_keyring_prompt_password_finish;
   iface->prompt_confirm_async = shell_keyring_prompt_confirm_async;
   iface->prompt_confirm_finish = shell_keyring_prompt_confirm_finish;
+  iface->prompt_close = shell_keyring_prompt_close;
 }
 
 /**
@@ -746,9 +752,19 @@ shell_keyring_prompt_cancel (ShellKeyringPrompt *self)
   GSimpleAsyncResult *res;
 
   g_return_if_fail (SHELL_IS_KEYRING_PROMPT (self));
-  g_return_if_fail (self->mode != PROMPTING_NONE);
-  g_return_if_fail (self->async_result != NULL);
 
+  /*
+   * If cancelled while not prompting, we should just close the prompt,
+   * the user wants it to go away.
+   */
+  if (self->mode == PROMPTING_NONE)
+    {
+      if (self->shown)
+        gcr_prompt_close (GCR_PROMPT (self));
+      return;
+    }
+
+  g_return_if_fail (self->async_result != NULL);
   self->last_reply = GCR_PROMPT_REPLY_CANCEL;
 
   res = self->async_result;
