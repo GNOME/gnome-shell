@@ -472,6 +472,7 @@ const SessionListItem = new Lang.Class({
 
         let label = new St.Label({ style_class: 'login-dialog-session-list-item-label',
                                    text: name });
+        this.actor.label_actor = label;
 
         this._box.add_actor(label);
     },
