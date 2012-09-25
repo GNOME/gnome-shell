@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-19 11:02+0000\n"
-"PO-Revision-Date: 2012-09-20 00:13+0530\n"
+"POT-Creation-Date: 2012-09-25 00:06+0000\n"
+"PO-Revision-Date: 2012-09-25 12:18+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: as_IN <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -29,12 +29,10 @@ msgid "Record a screencast"
 msgstr "এটা স্ক্ৰিনশ্বট ৰেকৰ্ড কৰক"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
-#| msgid "File System"
 msgid "System"
 msgstr "চিস্টেম"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-#| msgid "Message Tray"
 msgid "Show the message tray"
 msgstr "বাৰ্তা ট্ৰে দেখুৱাওক"
 
@@ -213,7 +211,7 @@ msgstr ""
 "চাৰ্ভাৰত পঠাবলে ব্যৱহাৰ হব পাৰে। যেতিয়া এটা ৰিক্ত মানলে অসংহিত বা সংহিত, "
 "অবিকল্পিত পাইপলাইন ব্যৱহাৰ কৰা হব। এইটো বৰ্তমানত 'vp8enc min_quantizer=13 "
 "max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' "
-"আৰু VP8 কডেক ব্যৱহাৰ কৰি WEBM ত ৰেকৰ্ড কৰে। %T -ক চিস্টেমত অনুকূলিত থ্ৰেড কাওন্টত "
+"আৰু VP8 কডেক ব্যৱহাৰ কৰি WEBM ত ৰেকৰ্ড কৰে। %T ক চিস্টেমত অনুকূলিত থ্ৰেড কাওন্টত "
 "এটা অনুমানৰ প্লেইচহল্ডাৰ হিচাপে ব্যৱহাৰ কৰা হয়।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
@@ -243,11 +241,11 @@ msgstr "প্ৰসাৰন"
 msgid "Select an extension to configure using the combobox above."
 msgstr "উপৰত দিয়া কম্বোবাকচ ব্যৱহাৰ কৰি সংৰূপণ কৰিবলে এটা সম্প্ৰসাৰন বাছক।"
 
-#: ../js/gdm/loginDialog.js:526
+#: ../js/gdm/loginDialog.js:527
 msgid "Session..."
 msgstr "অধিবেশন..."
 
-#: ../js/gdm/loginDialog.js:674
+#: ../js/gdm/loginDialog.js:675
 msgctxt "title"
 msgid "Sign In"
 msgstr "ছাইন ইন কৰক"
@@ -255,42 +253,47 @@ msgstr "ছাইন ইন কৰক"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:741
+#: ../js/gdm/loginDialog.js:742
 msgid "Not listed?"
 msgstr "তালিকাভুক্ত নহয়?"
 
-#: ../js/gdm/loginDialog.js:894 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:895 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
 #: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "বাতিল কৰক"
 
-#: ../js/gdm/loginDialog.js:899
+#: ../js/gdm/loginDialog.js:900
 msgctxt "button"
 msgid "Sign In"
 msgstr "ছাইন ইন কৰক"
 
-#: ../js/gdm/loginDialog.js:1238
+#: ../js/gdm/loginDialog.js:1239
 msgid "Login Window"
 msgstr "লগিন উইন্ডো"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:658 ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:773
+#. Translators: accessible name of the power menu in the login screen
+#: ../js/gdm/powerMenu.js:35
+#| msgid "Power Off"
+msgid "Power"
+msgstr "শক্তি"
+
+#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:663 ../js/ui/userMenu.js:667
+#: ../js/ui/userMenu.js:778
 msgid "Suspend"
 msgstr "বাতিল কৰক"
 
-#: ../js/gdm/powerMenu.js:93
+#: ../js/gdm/powerMenu.js:94
 msgid "Restart"
 msgstr "পুনৰাম্ভ কৰক"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:772
+#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:665 ../js/ui/userMenu.js:667
+#: ../js/ui/userMenu.js:777
 msgid "Power Off"
-msgstr "পাৱাৰ অফ"
+msgstr "বন্ধ কৰক"
 
 #: ../js/gdm/util.js:148
-#| msgid "Authentication Required"
 msgid "Authentication error"
 msgstr "প্ৰমাণীকৰণ ত্ৰুটি"
 
@@ -728,7 +731,7 @@ msgstr "%s ৰ পৰা ভিডিঅ' কল"
 #: ../js/ui/components/telepathyClient.js:1132
 #, c-format
 msgid "Call from %s"
-msgstr "%s - পৰা কল"
+msgstr "%s ৰ পৰা কল"
 
 #: ../js/ui/components/telepathyClient.js:1137
 #: ../js/ui/status/bluetooth.js:346
@@ -738,7 +741,7 @@ msgstr "নাকচ কৰক"
 #. translators: this is a button label (verb), not a noun
 #: ../js/ui/components/telepathyClient.js:1139
 msgid "Answer"
-msgstr "উত্তৰ"
+msgstr "উত্তৰ দিয়ক"
 
 #. To translators: The first parameter is
 #. * the contact's alias and the second one is the
@@ -926,7 +929,7 @@ msgstr[1] "আপুনি স্বচালিতভাৱে %d ছেকে�
 
 #: ../js/ui/endSessionDialog.js:74
 msgid "Logging out of the system."
-msgstr "চিস্টেমৰ পৰা লগ আউট হৈ আছে।"
+msgstr "চিস্টেমৰ পৰা লগ আউট কৰা হৈছে।"
 
 #: ../js/ui/endSessionDialog.js:76
 msgctxt "button"
@@ -936,22 +939,22 @@ msgstr "লগ আউট কৰক"
 #: ../js/ui/endSessionDialog.js:81
 msgctxt "title"
 msgid "Power Off"
-msgstr "পাৱাৰ অফ"
+msgstr "বন্ধ কৰক"
 
 #: ../js/ui/endSessionDialog.js:82
 msgid "Click Power Off to quit these applications and power off the system."
-msgstr "এই এপ্লিকেচনসমূহক প্ৰস্থান কৰি চিস্টেম পাৱাৰ অফ কৰিবলে পাৱাৰ অফ ক্লিক কৰক।"
+msgstr "এই এপ্লিকেচনসমূহক প্ৰস্থান কৰি চিস্টেম বন্ধ কৰিবলে বন্ধ কৰক ক্লিক কৰক।"
 
 #: ../js/ui/endSessionDialog.js:84
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] "চিস্টেম %d ছেকেণ্ড পিছত স্বচালিতভাৱে পাৱাৰ অফ হব। "
+msgstr[0] "চিস্টেম %d ছেকেণ্ড পিছত স্বচালিতভাৱে বন্ধ কৰক হব। "
 msgstr[1] "চিস্টেম %d ছেকেণ্ডৰ পিছত স্বচালিতভাৱে বন্ধ হব। "
 
 #: ../js/ui/endSessionDialog.js:88
 msgid "Powering off the system."
-msgstr "চিস্টেম পাৱাৰ অফ কৰা হৈ আছে।"
+msgstr "চিস্টেম বন্ধ কৰা হৈছে।"
 
 #: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:107
 msgctxt "button"
@@ -961,7 +964,7 @@ msgstr "পুনৰাম্ভ কৰক"
 #: ../js/ui/endSessionDialog.js:92
 msgctxt "button"
 msgid "Power Off"
-msgstr "পাৱাৰ অফ"
+msgstr "বন্ধ কৰক"
 
 #: ../js/ui/endSessionDialog.js:98
 msgctxt "title"
@@ -981,7 +984,7 @@ msgstr[1] "চিস্টেম %d ছেকেণ্ডত স্বচাল�
 
 #: ../js/ui/endSessionDialog.js:105
 msgid "Restarting the system."
-msgstr "চিস্টেম পুনৰাম্ভ কৰা হৈ আছে।"
+msgstr "চিস্টেম পুনৰাম্ভ কৰা হৈছে।"
 
 #: ../js/ui/extensionDownloader.js:199
 msgid "Install"
@@ -996,7 +999,7 @@ msgstr "extensions.gnome.org ৰ পৰা  '%s' ক ডাউনল'ড আৰ�
 msgid "tray"
 msgstr "ট্ৰে"
 
-#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:194
+#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:195
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "কিবৰ্ড"
@@ -1039,7 +1042,7 @@ msgstr "পুৰনি"
 
 #: ../js/ui/lookingGlass.js:773
 msgid "Downloading"
-msgstr "ডাউনল'ড কৰা হৈ আছে"
+msgstr "ডাউনল'ড কৰা হৈছে"
 
 #: ../js/ui/lookingGlass.js:797
 msgid "View Source"
@@ -1057,11 +1060,11 @@ msgstr "খোলক"
 msgid "Remove"
 msgstr "আতৰাওক"
 
-#: ../js/ui/messageTray.js:2052
+#: ../js/ui/messageTray.js:2055
 msgid "Message Tray"
 msgstr "বাৰ্তা ট্ৰে"
 
-#: ../js/ui/messageTray.js:2508
+#: ../js/ui/messageTray.js:2511
 msgid "System Information"
 msgstr "চিস্টেম তথ্য"
 
@@ -1257,12 +1260,12 @@ msgstr "সংযোগ"
 
 #: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:458
 msgid "disconnecting..."
-msgstr "বিচ্ছিনিত কৰা হৈ আছে..."
+msgstr "বিচ্ছিনিত কৰা হৈছে..."
 
 #: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:464
 #: ../js/ui/status/network.js:934
 msgid "connecting..."
-msgstr "সংযোগ কৰা হৈ আছে..."
+msgstr "সংযোগ কৰা হৈছে..."
 
 #: ../js/ui/status/bluetooth.js:238
 msgid "Send Files..."
@@ -1347,11 +1350,11 @@ msgstr "অনুগ্ৰহ কৰি ডিভাইচত উল্লেখ
 msgid "OK"
 msgstr "ঠিক আছে"
 
-#: ../js/ui/status/keyboard.js:227
+#: ../js/ui/status/keyboard.js:228
 msgid "Show Keyboard Layout"
 msgstr "কিবৰ্ড বিন্যাস দেখুৱাওক"
 
-#: ../js/ui/status/keyboard.js:232
+#: ../js/ui/status/keyboard.js:233
 msgid "Region and Language Settings"
 msgstr "অঞ্চল আৰু ভাষা সংহতিসমূহ"
 
@@ -1488,7 +1491,7 @@ msgstr "শক্তি সংহতিসমূহ"
 #. to estimate battery life
 #: ../js/ui/status/power.js:94
 msgid "Estimating..."
-msgstr "অনুমান কৰা হৈ আছে..."
+msgstr "অনুমান কৰা হৈছে..."
 
 #: ../js/ui/status/power.js:101
 #, c-format
@@ -1586,63 +1589,63 @@ msgstr "মাইক্ৰোফোন"
 msgid "Log in as another user"
 msgstr "অন্য ব্যৱহাৰকাৰী হিচাপে লগিন কৰক"
 
-#: ../js/ui/userMenu.js:175
+#: ../js/ui/userMenu.js:180
 msgid "Available"
 msgstr "উপলব্ধ"
 
-#: ../js/ui/userMenu.js:178
+#: ../js/ui/userMenu.js:183
 msgid "Busy"
 msgstr "ব্যস্থ"
 
-#: ../js/ui/userMenu.js:181
+#: ../js/ui/userMenu.js:186
 msgid "Invisible"
 msgstr "অদৃশ্য"
 
-#: ../js/ui/userMenu.js:184
+#: ../js/ui/userMenu.js:189
 msgid "Away"
 msgstr "আতৰত"
 
-#: ../js/ui/userMenu.js:187
+#: ../js/ui/userMenu.js:192
 msgid "Idle"
 msgstr "অলস"
 
-#: ../js/ui/userMenu.js:190
+#: ../js/ui/userMenu.js:195
 msgid "Unavailable"
 msgstr "উপলব্ধ নাই"
 
-#: ../js/ui/userMenu.js:613 ../js/ui/userMenu.js:754
+#: ../js/ui/userMenu.js:618 ../js/ui/userMenu.js:759
 msgid "Switch User"
 msgstr "ব্যৱহাৰকাৰী পৰিবৰ্তন কৰক"
 
-#: ../js/ui/userMenu.js:614
+#: ../js/ui/userMenu.js:619
 msgid "Switch Session"
 msgstr "অধিবেশন পৰিবৰ্তন কৰক"
 
-#: ../js/ui/userMenu.js:738
+#: ../js/ui/userMenu.js:743
 msgid "Notifications"
 msgstr "অধিসূচনাসমূহ"
 
-#: ../js/ui/userMenu.js:746
+#: ../js/ui/userMenu.js:751
 msgid "System Settings"
 msgstr "চিস্টেম সংহতিসমূহ"
 
-#: ../js/ui/userMenu.js:759
+#: ../js/ui/userMenu.js:764
 msgid "Log Out"
 msgstr "লগ আউট কৰক"
 
-#: ../js/ui/userMenu.js:764
+#: ../js/ui/userMenu.js:769
 msgid "Lock"
 msgstr "লক কৰক"
 
-#: ../js/ui/userMenu.js:779
+#: ../js/ui/userMenu.js:784
 msgid "Install Updates & Restart"
-msgstr "আপডেইটসমূহ ইনস্টল কৰক & পুনাৰম্ভ কৰক"
+msgstr "আপডেইটসমূহ ইনস্টল কৰক আৰু পুনাৰম্ভ কৰক"
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:802
 msgid "Your chat status will be set to busy"
 msgstr "আপোনাৰ চেট অৱস্থা ব্যস্থলে সংহতি কৰা হব"
 
-#: ../js/ui/userMenu.js:798
+#: ../js/ui/userMenu.js:803
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1841,7 +1844,7 @@ msgstr "প্ৰমাণীকৰণ ডাইলগ ব্যৱহাৰক�
 #~ msgstr "লুকাই থকা"
 
 #~ msgid "Power Off..."
-#~ msgstr "পাৱাৰ অফ"
+#~ msgstr "বন্ধ কৰক"
 
 #~ msgid "Online Accounts"
 #~ msgstr "অনলাইন একাওন্টসমূহ"
