@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-22 18:40+0000\n"
-"PO-Revision-Date: 2012-09-22 21:14+0900\n"
+"POT-Creation-Date: 2012-09-25 00:06+0000\n"
+"PO-Revision-Date: 2012-09-25 09:10+0900\n"
 "Last-Translator: Jiro Matsuzawa <jmatsuzawa@gnome.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -182,11 +182,11 @@ msgstr "拡張機能"
 msgid "Select an extension to configure using the combobox above."
 msgstr "設定する拡張機能を上部のコンボボックスから選択してください。"
 
-#: ../js/gdm/loginDialog.js:526
+#: ../js/gdm/loginDialog.js:527
 msgid "Session..."
 msgstr "セッション..."
 
-#: ../js/gdm/loginDialog.js:674
+#: ../js/gdm/loginDialog.js:675
 msgctxt "title"
 msgid "Sign In"
 msgstr "サインイン"
@@ -194,37 +194,42 @@ msgstr "サインイン"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:741
+#: ../js/gdm/loginDialog.js:742
 msgid "Not listed?"
 msgstr "アカウントが見つかりませんか?"
 
-#: ../js/gdm/loginDialog.js:894 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:895 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
 #: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "キャンセル"
 
-#: ../js/gdm/loginDialog.js:899
+#: ../js/gdm/loginDialog.js:900
 msgctxt "button"
 msgid "Sign In"
 msgstr "サインイン"
 
-#: ../js/gdm/loginDialog.js:1238
+#: ../js/gdm/loginDialog.js:1239
 msgid "Login Window"
 msgstr "ログインウィンドウ"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:658 ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:773
+#. Translators: accessible name of the power menu in the login screen
+#: ../js/gdm/powerMenu.js:35
+msgid "Power"
+msgstr "電源"
+
+#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:663 ../js/ui/userMenu.js:667
+#: ../js/ui/userMenu.js:778
 msgid "Suspend"
 msgstr "サスペンド"
 
-#: ../js/gdm/powerMenu.js:93
+#: ../js/gdm/powerMenu.js:94
 msgid "Restart"
 msgstr "再起動"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:772
+#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:665 ../js/ui/userMenu.js:667
+#: ../js/ui/userMenu.js:777
 msgid "Power Off"
 msgstr "電源オフ"
 
@@ -1509,63 +1514,63 @@ msgstr "マイク"
 msgid "Log in as another user"
 msgstr "他のユーザーでログイン"
 
-#: ../js/ui/userMenu.js:175
+#: ../js/ui/userMenu.js:180
 msgid "Available"
 msgstr "在席中"
 
-#: ../js/ui/userMenu.js:178
+#: ../js/ui/userMenu.js:183
 msgid "Busy"
 msgstr "取り込み中"
 
-#: ../js/ui/userMenu.js:181
+#: ../js/ui/userMenu.js:186
 msgid "Invisible"
 msgstr "非表示"
 
-#: ../js/ui/userMenu.js:184
+#: ../js/ui/userMenu.js:189
 msgid "Away"
 msgstr "離席中"
 
-#: ../js/ui/userMenu.js:187
+#: ../js/ui/userMenu.js:192
 msgid "Idle"
 msgstr "待機中"
 
-#: ../js/ui/userMenu.js:190
+#: ../js/ui/userMenu.js:195
 msgid "Unavailable"
 msgstr "オフライン"
 
-#: ../js/ui/userMenu.js:613 ../js/ui/userMenu.js:754
+#: ../js/ui/userMenu.js:618 ../js/ui/userMenu.js:759
 msgid "Switch User"
 msgstr "ユーザーの切り替え"
 
-#: ../js/ui/userMenu.js:614
+#: ../js/ui/userMenu.js:619
 msgid "Switch Session"
 msgstr "セッションの切り替え"
 
-#: ../js/ui/userMenu.js:738
+#: ../js/ui/userMenu.js:743
 msgid "Notifications"
 msgstr "通知"
 
-#: ../js/ui/userMenu.js:746
+#: ../js/ui/userMenu.js:751
 msgid "System Settings"
 msgstr "システム設定"
 
-#: ../js/ui/userMenu.js:759
+#: ../js/ui/userMenu.js:764
 msgid "Log Out"
 msgstr "ログアウト"
 
-#: ../js/ui/userMenu.js:764
+#: ../js/ui/userMenu.js:769
 msgid "Lock"
 msgstr "ロック"
 
-#: ../js/ui/userMenu.js:779
+#: ../js/ui/userMenu.js:784
 msgid "Install Updates & Restart"
 msgstr "更新のインストールと再起動"
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:802
 msgid "Your chat status will be set to busy"
 msgstr "取り込み中に設定されます"
 
-#: ../js/ui/userMenu.js:798
+#: ../js/ui/userMenu.js:803
 msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
 msgstr "チャットなどの通知メッセージが表示されなくなります。オンライン状態が変更され、あなたがメッセージに目を通せない状態にあることを、他の人が知ることができます。"
 
