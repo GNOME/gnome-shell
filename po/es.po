@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-19 11:02+0000\n"
-"PO-Revision-Date: 2012-09-21 17:50+0200\n"
+"POT-Creation-Date: 2012-09-25 00:06+0000\n"
+"PO-Revision-Date: 2012-09-25 10:26+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
@@ -22,7 +22,6 @@ msgstr ""
 "X-Generator: Gtranslator 2.91.5\n"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:1
-#| msgid "Screen position"
 msgid "Screenshots"
 msgstr "Capturas de pantalla"
 
@@ -31,12 +30,10 @@ msgid "Record a screencast"
 msgstr "Grabar una captura de pantalla"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
-#| msgid "File System"
 msgid "System"
 msgstr "Sistema"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-#| msgid "Message Tray"
 msgid "Show the message tray"
 msgstr "Mostrar la bandeja de mensajes"
 
@@ -251,11 +248,11 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Seleccione una extensión que configurar usando la caja combinada de arriba."
 
-#: ../js/gdm/loginDialog.js:526
+#: ../js/gdm/loginDialog.js:527
 msgid "Session..."
 msgstr "Sesión…"
 
-#: ../js/gdm/loginDialog.js:674
+#: ../js/gdm/loginDialog.js:675
 msgctxt "title"
 msgid "Sign In"
 msgstr "Iniciar sesión"
@@ -263,42 +260,47 @@ msgstr "Iniciar sesión"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:741
+#: ../js/gdm/loginDialog.js:742
 msgid "Not listed?"
 msgstr "¿No está en la lista?"
 
-#: ../js/gdm/loginDialog.js:894 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:895 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
 #: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../js/gdm/loginDialog.js:899
+#: ../js/gdm/loginDialog.js:900
 msgctxt "button"
 msgid "Sign In"
 msgstr "Iniciar sesión"
 
-#: ../js/gdm/loginDialog.js:1238
+#: ../js/gdm/loginDialog.js:1239
 msgid "Login Window"
 msgstr "Ventana de inicio de sesión"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:658 ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:773
+#. Translators: accessible name of the power menu in the login screen
+#: ../js/gdm/powerMenu.js:35
+#| msgid "Power Off"
+msgid "Power"
+msgstr "Energía"
+
+#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:663 ../js/ui/userMenu.js:667
+#: ../js/ui/userMenu.js:778
 msgid "Suspend"
 msgstr "Suspender"
 
-#: ../js/gdm/powerMenu.js:93
+#: ../js/gdm/powerMenu.js:94
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:772
+#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:665 ../js/ui/userMenu.js:667
+#: ../js/ui/userMenu.js:777
 msgid "Power Off"
 msgstr "Apagar"
 
 #: ../js/gdm/util.js:148
-#| msgid "Authentication Required"
 msgid "Authentication error"
 msgstr "Error de autenticación"
 
@@ -1015,7 +1017,7 @@ msgstr "¿Descargar e instalar «%s» desde extensions.gnome.org?"
 msgid "tray"
 msgstr "bandeja"
 
-#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:194
+#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:195
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "Teclado"
@@ -1076,11 +1078,11 @@ msgstr "Abrir"
 msgid "Remove"
 msgstr "Quitar"
 
-#: ../js/ui/messageTray.js:2052
+#: ../js/ui/messageTray.js:2055
 msgid "Message Tray"
 msgstr "Bandeja de mensajes"
 
-#: ../js/ui/messageTray.js:2508
+#: ../js/ui/messageTray.js:2511
 msgid "System Information"
 msgstr "Información del sistema"
 
@@ -1366,11 +1368,11 @@ msgstr "Introduzca el PIN mencionado en el dispositivo."
 msgid "OK"
 msgstr "Aceptar"
 
-#: ../js/ui/status/keyboard.js:227
+#: ../js/ui/status/keyboard.js:228
 msgid "Show Keyboard Layout"
 msgstr "Mostrar la distribución del teclado"
 
-#: ../js/ui/status/keyboard.js:232
+#: ../js/ui/status/keyboard.js:233
 msgid "Region and Language Settings"
 msgstr "Configuración de región e idioma"
 
@@ -1605,63 +1607,63 @@ msgstr "Micrófono"
 msgid "Log in as another user"
 msgstr "Iniciar sesión como otro usuario"
 
-#: ../js/ui/userMenu.js:175
+#: ../js/ui/userMenu.js:180
 msgid "Available"
 msgstr "Disponible"
 
-#: ../js/ui/userMenu.js:178
+#: ../js/ui/userMenu.js:183
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../js/ui/userMenu.js:181
+#: ../js/ui/userMenu.js:186
 msgid "Invisible"
 msgstr "Invisible"
 
-#: ../js/ui/userMenu.js:184
+#: ../js/ui/userMenu.js:189
 msgid "Away"
 msgstr "Ausente"
 
-#: ../js/ui/userMenu.js:187
+#: ../js/ui/userMenu.js:192
 msgid "Idle"
 msgstr "Inactivo"
 
-#: ../js/ui/userMenu.js:190
+#: ../js/ui/userMenu.js:195
 msgid "Unavailable"
 msgstr "No disponible"
 
-#: ../js/ui/userMenu.js:613 ../js/ui/userMenu.js:754
+#: ../js/ui/userMenu.js:618 ../js/ui/userMenu.js:759
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/userMenu.js:614
+#: ../js/ui/userMenu.js:619
 msgid "Switch Session"
 msgstr "Cambiar de sesión"
 
-#: ../js/ui/userMenu.js:738
+#: ../js/ui/userMenu.js:743
 msgid "Notifications"
 msgstr "Notificaciones"
 
-#: ../js/ui/userMenu.js:746
+#: ../js/ui/userMenu.js:751
 msgid "System Settings"
 msgstr "Configuración del sistema"
 
-#: ../js/ui/userMenu.js:759
+#: ../js/ui/userMenu.js:764
 msgid "Log Out"
 msgstr "Cerrar la sesión"
 
-#: ../js/ui/userMenu.js:764
+#: ../js/ui/userMenu.js:769
 msgid "Lock"
 msgstr "Bloquear"
 
-#: ../js/ui/userMenu.js:779
+#: ../js/ui/userMenu.js:784
 msgid "Install Updates & Restart"
 msgstr "Instalar actualizaciones y reiniciar"
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:802
 msgid "Your chat status will be set to busy"
 msgstr "Su estado del chat se establecerá a «ocupado»"
 
-#: ../js/ui/userMenu.js:798
+#: ../js/ui/userMenu.js:803
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
