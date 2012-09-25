@@ -25,7 +25,7 @@ const KeyringDialog = new Lang.Class({
         this.prompt = new Shell.KeyringPrompt();
         this.prompt.connect('show-password', Lang.bind(this, this._onShowPassword));
         this.prompt.connect('show-confirm', Lang.bind(this, this._onShowConfirm));
-        this.prompt.connect('hide-prompt', Lang.bind(this, this._onHidePrompt));
+        this.prompt.connect('prompt-close', Lang.bind(this, this._onHidePrompt));
 
         let mainContentBox = new St.BoxLayout({ style_class: 'prompt-dialog-main-layout',
                                                 vertical: false });
