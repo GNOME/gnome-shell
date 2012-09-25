@@ -15772,7 +15772,7 @@ clutter_actor_set_transform_internal (ClutterActor        *self,
   was_set = info->transform_set;
 
   info->transform = *transform;
-  info->transform_set = cogl_matrix_is_identity (&info->transform);
+  info->transform_set = !cogl_matrix_is_identity (&info->transform);
 
   self->priv->transform_valid = FALSE;
 
