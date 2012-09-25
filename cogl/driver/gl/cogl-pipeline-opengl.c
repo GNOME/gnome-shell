@@ -1035,28 +1035,30 @@ compare_layer_differences_cb (CoglPipelineLayer *layer, void *user_data)
 
 typedef struct
 {
+  CoglFramebuffer *framebuffer;
+  const CoglPipelineVertend *vertend;
   const CoglPipelineFragend *fragend;
   CoglPipeline *pipeline;
   unsigned long *layer_differences;
   CoglBool error_adding_layer;
   CoglBool added_layer;
-} CoglPipelineFragendAddLayerState;
-
+} CoglPipelineAddLayerState;
 
 static CoglBool
-fragend_add_layer_cb (CoglPipelineLayer *layer,
+vertend_add_layer_cb (CoglPipelineLayer *layer,
                       void *user_data)
 {
-  CoglPipelineFragendAddLayerState *state = user_data;
-  const CoglPipelineFragend *fragend = state->fragend;
+  CoglPipelineAddLayerState *state = user_data;
+  const CoglPipelineVertend *vertend = state->vertend;
   CoglPipeline *pipeline = state->pipeline;
   int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
 
   /* Either generate per layer code snippets or setup the
    * fixed function glTexEnv for each layer... */
-  if (G_LIKELY (fragend->add_layer (pipeline,
+  if (G_LIKELY (vertend->add_layer (pipeline,
                                     layer,
-                                    state->layer_differences[unit_index])))
+                                    state->layer_differences[unit_index],
+                                    state->framebuffer)))
     state->added_layer = TRUE;
   else
     {
@@ -1067,32 +1069,20 @@ fragend_add_layer_cb (CoglPipelineLayer *layer,
   return TRUE;
 }
 
-typedef struct
-{
-  CoglFramebuffer *framebuffer;
-  const CoglPipelineVertend *vertend;
-  CoglPipeline *pipeline;
-  unsigned long *layer_differences;
-  CoglBool error_adding_layer;
-  CoglBool added_layer;
-} CoglPipelineVertendAddLayerState;
-
-
 static CoglBool
-vertend_add_layer_cb (CoglPipelineLayer *layer,
+fragend_add_layer_cb (CoglPipelineLayer *layer,
                       void *user_data)
 {
-  CoglPipelineVertendAddLayerState *state = user_data;
-  const CoglPipelineVertend *vertend = state->vertend;
+  CoglPipelineAddLayerState *state = user_data;
+  const CoglPipelineFragend *fragend = state->fragend;
   CoglPipeline *pipeline = state->pipeline;
   int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
 
-  /* Either enerate per layer code snippets or setup the
-   * fixed function matrix uniforms for each layer... */
-  if (G_LIKELY (vertend->add_layer (pipeline,
+  /* Either generate per layer code snippets or setup the
+   * fixed function glTexEnv for each layer... */
+  if (G_LIKELY (fragend->add_layer (pipeline,
                                     layer,
-                                    state->layer_differences[unit_index],
-                                    state->framebuffer)))
+                                    state->layer_differences[unit_index])))
     state->added_layer = TRUE;
   else
     {
@@ -1159,11 +1149,12 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
                                CoglBool skip_gl_color,
                                int n_tex_coord_attribs)
 {
-  unsigned long    pipelines_difference;
-  int              n_layers;
-  unsigned long   *layer_differences;
-  int              i;
+  unsigned long pipelines_difference;
+  int n_layers;
+  unsigned long *layer_differences;
+  int i;
   CoglTextureUnit *unit1;
+  const CoglPipelineProgend *progend;
 
   COGL_STATIC_TIMER (pipeline_flush_timer,
                      "Mainloop", /* parent */
@@ -1242,88 +1233,40 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
                                         layer_differences,
                                         skip_gl_color);
 
-  /* Now flush the fragment processing state according to the current
-   * fragment processing backend.
+  /* Now flush the fragment, vertex and program state according to the
+   * current progend backend.
    *
-   * Note: Some of the backends may not support the current pipeline
-   * configuration and in that case it will report an error and we
-   * will fallback to a different backend.
+   * Note: Some backends may not support the current pipeline
+   * configuration and in that case it will report and error and we
+   * will look for a different backend.
    *
-   * NB: if pipeline->backend != COGL_PIPELINE_FRAGEND_UNDEFINED then
+   * NB: if pipeline->progend != COGL_PIPELINE_PROGEND_UNDEFINED then
    * we have previously managed to successfully flush this pipeline
-   * with the given backend so we will simply use that to avoid
+   * with the given progend so we will simply use that to avoid
    * fallback code paths.
    */
+  if (pipeline->progend == COGL_PIPELINE_PROGEND_UNDEFINED)
+    _cogl_pipeline_set_progend (pipeline, COGL_PIPELINE_PROGEND_DEFAULT);
 
-  if (pipeline->fragend == COGL_PIPELINE_FRAGEND_UNDEFINED)
-    _cogl_pipeline_set_fragend (pipeline, COGL_PIPELINE_FRAGEND_DEFAULT);
-
-  for (i = pipeline->fragend;
-       i < G_N_ELEMENTS (_cogl_pipeline_fragends);
-       i++, _cogl_pipeline_set_fragend (pipeline, i))
+  for (i = pipeline->progend;
+       i < COGL_PIPELINE_N_PROGENDS;
+       i++, _cogl_pipeline_set_progend (pipeline, i))
     {
-      const CoglPipelineFragend *fragend = _cogl_pipeline_fragends[i];
-      CoglPipelineFragendAddLayerState state;
+      const CoglPipelineVertend *vertend;
+      const CoglPipelineFragend *fragend;
+      CoglPipelineAddLayerState state;
 
-      /* E.g. For fragends generating code they can setup their
-       * scratch buffers here... */
-      if (G_UNLIKELY (!fragend->start (pipeline,
-                                       n_layers,
-                                       pipelines_difference,
-                                       n_tex_coord_attribs)))
+      progend = _cogl_pipeline_progends[i];
+
+      if (G_UNLIKELY (!progend->start (pipeline)))
         continue;
 
-      state.fragend = fragend;
-      state.pipeline = pipeline;
-      state.layer_differences = layer_differences;
-      state.error_adding_layer = FALSE;
-      state.added_layer = FALSE;
-      _cogl_pipeline_foreach_layer_internal (pipeline,
-                                             fragend_add_layer_cb,
-                                             &state);
+      vertend = _cogl_pipeline_vertends[progend->vertend];
 
-      if (G_UNLIKELY (state.error_adding_layer))
-        continue;
-
-      if (!state.added_layer &&
-          fragend->passthrough &&
-          G_UNLIKELY (!fragend->passthrough (pipeline)))
-        continue;
-
-      /* For fragends generating code they may compile and link their
-       * programs here, update any uniforms and tell OpenGL to use
-       * that program.
-       */
-      if (G_UNLIKELY (!fragend->end (pipeline, pipelines_difference)))
-        continue;
-
-      break;
-    }
-
-  if (G_UNLIKELY (i >= G_N_ELEMENTS (_cogl_pipeline_fragends)))
-    g_warning ("No usable pipeline fragment backend was found!");
-
-  /* Now flush the vertex processing state according to the current
-   * vertex processing backend.
-   */
-
-  if (pipeline->vertend == COGL_PIPELINE_VERTEND_UNDEFINED)
-    _cogl_pipeline_set_vertend (pipeline, COGL_PIPELINE_VERTEND_DEFAULT);
-
-  for (i = pipeline->vertend;
-       i < G_N_ELEMENTS (_cogl_pipeline_vertends);
-       i++, _cogl_pipeline_set_vertend (pipeline, i))
-    {
-      const CoglPipelineVertend *vertend = _cogl_pipeline_vertends[i];
-      CoglPipelineVertendAddLayerState state;
-
-      /* E.g. For vertends generating code they can setup their
-       * scratch buffers here... */
-      if (G_UNLIKELY (!vertend->start (pipeline,
-                                       n_layers,
-                                       pipelines_difference,
-                                       n_tex_coord_attribs)))
-        continue;
+      vertend->start (pipeline,
+                      n_layers,
+                      pipelines_difference,
+                      n_tex_coord_attribs);
 
       state.framebuffer = framebuffer;
       state.vertend = vertend;
@@ -1331,6 +1274,7 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
       state.layer_differences = layer_differences;
       state.error_adding_layer = FALSE;
       state.added_layer = FALSE;
+
       _cogl_pipeline_foreach_layer_internal (pipeline,
                                              vertend_add_layer_cb,
                                              &state);
@@ -1338,23 +1282,45 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
       if (G_UNLIKELY (state.error_adding_layer))
         continue;
 
-      /* For vertends generating code they may compile and link their
-       * programs here, update any uniforms and tell OpenGL to use
-       * that program.
-       */
       if (G_UNLIKELY (!vertend->end (pipeline, pipelines_difference)))
         continue;
 
+      /* Now prepare the fragment processing state (fragend)
+       *
+       * NB: We can't combine the setup of the vertend and fragend
+       * since the backends that do code generation share
+       * ctx->codegen_source_buffer as a scratch buffer.
+       */
+
+      fragend = _cogl_pipeline_fragends[progend->fragend];
+      state.fragend = fragend;
+
+      fragend->start (pipeline,
+                      n_layers,
+                      pipelines_difference,
+                      n_tex_coord_attribs);
+
+      _cogl_pipeline_foreach_layer_internal (pipeline,
+                                             fragend_add_layer_cb,
+                                             &state);
+
+      if (G_UNLIKELY (state.error_adding_layer))
+        continue;
+
+      if (!state.added_layer)
+        {
+          if (fragend->passthrough &&
+              G_UNLIKELY (!fragend->passthrough (pipeline)))
+            continue;
+        }
+
+      if (G_UNLIKELY (!fragend->end (pipeline, pipelines_difference)))
+        continue;
+
+      if (progend->end)
+        progend->end (pipeline, pipelines_difference, n_tex_coord_attribs);
       break;
     }
-
-  if (G_UNLIKELY (i >= G_N_ELEMENTS (_cogl_pipeline_vertends)))
-    g_warning ("No usable pipeline vertex backend was found!");
-
-  for (i = 0; i < COGL_PIPELINE_N_PROGENDS; i++)
-    if (_cogl_pipeline_progends[i]->end)
-      _cogl_pipeline_progends[i]->end (pipeline, pipelines_difference,
-                                       n_tex_coord_attribs);
 
   /* FIXME: This reference is actually resulting in lots of
    * copy-on-write reparenting because one-shot pipelines end up
@@ -1373,6 +1339,8 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
   ctx->current_pipeline_age = pipeline->age;
 
 done:
+
+  progend = _cogl_pipeline_progends[pipeline->progend];
 
   /* We can't assume the color will be retained between flushes on
      GLES2 because the generic attribute values are not stored as part
@@ -1398,12 +1366,11 @@ done:
     }
 #endif
 
-  /* Give any progends a chance to update any uniforms that might not
-     depend on the material state. This is used on GLES2 to update the
-     matrices */
-  for (i = 0; i < COGL_PIPELINE_N_PROGENDS; i++)
-    if (_cogl_pipeline_progends[i]->pre_paint)
-      _cogl_pipeline_progends[i]->pre_paint (pipeline, framebuffer);
+  /* Give the progend a chance to update any uniforms that might not
+   * depend on the material state. This is used on GLES2 to update the
+   * matrices */
+  if (progend->pre_paint)
+    progend->pre_paint (pipeline, framebuffer);
 
   /* Handle the fact that OpenGL associates texture filter and wrap
    * modes with the texture objects not the texture units... */

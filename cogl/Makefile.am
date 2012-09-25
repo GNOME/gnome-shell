@@ -175,6 +175,8 @@ cogl_driver_sources += \
 	$(srcdir)/driver/gl/cogl-pipeline-fragend-glsl-private.h \
 	$(srcdir)/driver/gl/gl/cogl-pipeline-fragend-arbfp.c \
 	$(srcdir)/driver/gl/gl/cogl-pipeline-fragend-arbfp-private.h \
+	$(srcdir)/driver/gl/gl/cogl-pipeline-progend-fixed-arbfp.c \
+	$(srcdir)/driver/gl/gl/cogl-pipeline-progend-fixed-arbfp-private.h \
 	$(srcdir)/driver/gl/cogl-pipeline-fragend-fixed.c \
 	$(srcdir)/driver/gl/cogl-pipeline-fragend-fixed-private.h \
 	$(srcdir)/driver/gl/cogl-pipeline-vertend-glsl.c \

@@ -89,37 +89,13 @@ get_max_texture_units (void)
   return ctx->max_texture_units;
 }
 
-static CoglBool
+static void
 _cogl_pipeline_fragend_fixed_start (CoglPipeline *pipeline,
                                     int n_layers,
                                     unsigned long pipelines_difference,
                                     int n_tex_coord_attribs)
 {
-  CoglHandle user_program;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
-
-  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_FIXED)))
-    return FALSE;
-
-  if (ctx->driver == COGL_DRIVER_GLES2)
-    return FALSE;
-
-  /* Fragment snippets are only supported in the GLSL fragend */
-  if (_cogl_pipeline_has_fragment_snippets (pipeline))
-    return FALSE;
-
-  /* If there is a user program with a fragment shader then the
-     appropriate backend for that language should handle it. We can
-     still use the fixed fragment backend if the program only contains
-     a vertex shader */
-  user_program = cogl_pipeline_get_user_program (pipeline);
-  if (user_program != COGL_INVALID_HANDLE &&
-      _cogl_program_has_fragment_shader (user_program))
-    return FALSE;
-
   _cogl_use_fragment_program (0, COGL_PIPELINE_PROGRAM_TYPE_FIXED);
-  return TRUE;
 }
 
 static void

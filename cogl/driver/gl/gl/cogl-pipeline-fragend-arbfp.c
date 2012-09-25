@@ -155,7 +155,7 @@ dirty_shader_state (CoglPipeline *pipeline)
                              NULL);
 }
 
-static CoglBool
+static void
 _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
                                     int n_layers,
                                     unsigned long pipelines_difference,
@@ -164,38 +164,9 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
   CoglPipelineShaderState *shader_state;
   CoglPipeline *authority;
   CoglPipeline *template_pipeline = NULL;
-  CoglHandle user_program;
+  CoglProgram *user_program = cogl_pipeline_get_user_program (pipeline);
 
-  _COGL_GET_CONTEXT (ctx, FALSE);
-
-  /* First validate that we can handle the current state using ARBfp
-   */
-
-  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_ARBFP))
-    return FALSE;
-
-  /* TODO: support fog */
-  if (_cogl_pipeline_get_fog_enabled (pipeline))
-    return FALSE;
-
-  /* Fragment snippets are only supported in the GLSL fragend */
-  if (_cogl_pipeline_has_fragment_snippets (pipeline))
-    return FALSE;
-
-  user_program = cogl_pipeline_get_user_program (pipeline);
-  if (user_program != COGL_INVALID_HANDLE)
-    {
-      /* If the program doesn't have a fragment shader then some other
-         vertend will handle the vertex shader state and we still need
-         to generate a fragment program */
-      if (!_cogl_program_has_fragment_shader (user_program))
-        user_program = COGL_INVALID_HANDLE;
-      /* If the user program does have a fragment shader then we can
-         only handle it if it's in ARBfp */
-      else if (_cogl_program_get_language (user_program) !=
-               COGL_SHADER_LANGUAGE_ARBFP)
-        return FALSE;
-    }
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* Now lookup our ARBfp backend private state */
   shader_state = get_shader_state (pipeline);
@@ -203,7 +174,7 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
   /* If we have a valid shader_state then we are all set and don't
    * need to generate a new program. */
   if (shader_state)
-    return TRUE;
+    return;
 
   /* If we don't have an associated arbfp program yet then find the
    * arbfp-authority (the oldest ancestor whose state will result in
@@ -226,7 +197,7 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
        * arbfp-authority... */
       shader_state->ref_count++;
       set_shader_state (pipeline, shader_state);
-      return TRUE;
+      return;
     }
 
   /* If we haven't yet found an existing program then before we resort to
@@ -285,8 +256,6 @@ _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
       shader_state->ref_count++;
       set_shader_state (template_pipeline, shader_state);
     }
-
-  return TRUE;
 }
 
 static const char *

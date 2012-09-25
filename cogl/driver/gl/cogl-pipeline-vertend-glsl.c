@@ -149,7 +149,7 @@ get_layer_vertex_snippets (CoglPipelineLayer *layer)
   return &layer->big_state->vertex_snippets;
 }
 
-static CoglBool
+static void
 _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
                                    int n_layers,
                                    unsigned long pipelines_difference,
@@ -157,21 +157,9 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
 {
   CoglPipelineShaderState *shader_state;
   CoglPipeline *template_pipeline = NULL;
-  CoglProgram *user_program;
+  CoglProgram *user_program = cogl_pipeline_get_user_program (pipeline);
 
-  _COGL_GET_CONTEXT (ctx, FALSE);
-
-  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_GLSL))
-    return FALSE;
-
-  user_program = cogl_pipeline_get_user_program (pipeline);
-
-  /* If the user program has a vertex shader that isn't GLSL then the
-     appropriate vertend for that language should handle it */
-  if (user_program &&
-      _cogl_program_has_vertex_shader (user_program) &&
-      _cogl_program_get_language (user_program) != COGL_SHADER_LANGUAGE_GLSL)
-    return FALSE;
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* Now lookup our glsl backend private state (allocating if
    * necessary) */
@@ -238,7 +226,7 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
            shader_state->user_program_age == user_program->age)
           && (ctx->driver != COGL_DRIVER_GLES2 ||
               shader_state->n_tex_coord_attribs == n_tex_coord_attribs))
-        return TRUE;
+        return;
 
       /* We need to recreate the shader so destroy the existing one */
       GE( ctx, glDeleteShader (shader_state->gl_shader) );
@@ -258,7 +246,7 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
      to generate one */
   if (user_program &&
       _cogl_program_has_vertex_shader (user_program))
-    return TRUE;
+    return;
 
   /* We reuse two grow-only GStrings for code-gen. One string
      contains the uniform and attribute declarations while the
@@ -280,8 +268,6 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
        to copy it from the custom uniform in the vertex shader */
     g_string_append (shader_state->source,
                      "  cogl_point_size_out = cogl_point_size_in;\n");
-
-  return TRUE;
 }
 
 static CoglBool

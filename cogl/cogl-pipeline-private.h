@@ -45,9 +45,10 @@
 
 #ifdef HAVE_COGL_GL
 
-#define COGL_PIPELINE_PROGEND_FIXED       0
-#define COGL_PIPELINE_PROGEND_GLSL        1
-#define COGL_PIPELINE_N_PROGENDS          2
+#define COGL_PIPELINE_PROGEND_FIXED_ARBFP 0
+#define COGL_PIPELINE_PROGEND_FIXED       1
+#define COGL_PIPELINE_PROGEND_GLSL        2
+#define COGL_PIPELINE_N_PROGENDS          3
 
 #define COGL_PIPELINE_VERTEND_FIXED 0
 #define COGL_PIPELINE_VERTEND_GLSL  1
@@ -97,11 +98,8 @@
 
 #endif /* HAVE_COGL_GL */
 
-#define COGL_PIPELINE_FRAGEND_DEFAULT    0
-#define COGL_PIPELINE_FRAGEND_UNDEFINED  3
-
-#define COGL_PIPELINE_VERTEND_DEFAULT    0
-#define COGL_PIPELINE_VERTEND_UNDEFINED  3
+#define COGL_PIPELINE_PROGEND_DEFAULT    0
+#define COGL_PIPELINE_PROGEND_UNDEFINED  3
 
 /* XXX: should I rename these as
  * COGL_PIPELINE_STATE_INDEX_XYZ... ?
@@ -480,20 +478,19 @@ struct _CoglPipeline
    * where the pipeline originates from */
   unsigned int          has_static_breadcrumb:1;
 
-  /* There are multiple fragment processing backends for CoglPipeline,
-   * glsl, arbfp and fixed. This identifies the backend being used for
-   * the pipeline and any private state the backend has associated
-   * with the pipeline. */
-  unsigned int          fragend:3;
-  unsigned int          vertend:3;
+  /* There are multiple fragment and vertex processing backends for
+   * CoglPipeline, glsl, arbfp and fixed that are bundled under a
+   * "progend". This identifies the backend being used for the
+   * pipeline. */
+  unsigned int          progend:3;
 };
 
 typedef struct _CoglPipelineFragend
 {
-  CoglBool (*start) (CoglPipeline *pipeline,
-                     int n_layers,
-                     unsigned long pipelines_difference,
-                     int n_tex_coord_attribs);
+  void (*start) (CoglPipeline *pipeline,
+                 int n_layers,
+                 unsigned long pipelines_difference,
+                 int n_tex_coord_attribs);
   CoglBool (*add_layer) (CoglPipeline *pipeline,
                          CoglPipelineLayer *layer,
                          unsigned long layers_difference);
@@ -512,10 +509,10 @@ typedef struct _CoglPipelineFragend
 
 typedef struct _CoglPipelineVertend
 {
-  CoglBool (*start) (CoglPipeline *pipeline,
-                     int n_layers,
-                     unsigned long pipelines_difference,
-                     int n_tex_coord_attribs);
+  void (*start) (CoglPipeline *pipeline,
+                 int n_layers,
+                 unsigned long pipelines_difference,
+                 int n_tex_coord_attribs);
   CoglBool (*add_layer) (CoglPipeline *pipeline,
                          CoglPipelineLayer *layer,
                          unsigned long layers_difference,
@@ -533,6 +530,9 @@ typedef struct _CoglPipelineVertend
 
 typedef struct
 {
+  int vertend;
+  int fragend;
+  CoglBool (*start) (CoglPipeline *pipeline);
   void (*end) (CoglPipeline *pipeline,
                unsigned long pipelines_difference,
                int n_tex_coord_attribs);
@@ -818,10 +818,7 @@ _cogl_pipeline_weak_copy (CoglPipeline *pipeline,
                           void *user_data);
 
 void
-_cogl_pipeline_set_fragend (CoglPipeline *pipeline, int fragend);
-
-void
-_cogl_pipeline_set_vertend (CoglPipeline *pipeline, int vertend);
+_cogl_pipeline_set_progend (CoglPipeline *pipeline, int progend);
 
 CoglPipeline *
 _cogl_pipeline_get_parent (CoglPipeline *pipeline);

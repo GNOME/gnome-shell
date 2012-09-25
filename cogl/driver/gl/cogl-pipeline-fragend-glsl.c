@@ -213,7 +213,7 @@ has_replace_hook (CoglPipelineLayer *layer,
   return FALSE;
 }
 
-static CoglBool
+static void
 _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
                                    int n_layers,
                                    unsigned long pipelines_difference,
@@ -222,22 +222,10 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
   CoglPipelineShaderState *shader_state;
   CoglPipeline *authority;
   CoglPipeline *template_pipeline = NULL;
-  CoglProgram *user_program;
+  CoglProgram *user_program = cogl_pipeline_get_user_program (pipeline);
   int i;
 
-  _COGL_GET_CONTEXT (ctx, FALSE);
-
-  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_GLSL))
-    return FALSE;
-
-  user_program = cogl_pipeline_get_user_program (pipeline);
-
-  /* If the user fragment shader isn't GLSL then we should let
-     another backend handle it */
-  if (user_program &&
-      _cogl_program_has_fragment_shader (user_program) &&
-      _cogl_program_get_language (user_program) != COGL_SHADER_LANGUAGE_GLSL)
-    return FALSE;
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* Now lookup our glsl backend private state */
   shader_state = get_shader_state (pipeline);
@@ -313,7 +301,7 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
            shader_state->user_program_age == user_program->age)
           && (ctx->driver != COGL_DRIVER_GLES2 ||
               shader_state->n_tex_coord_attribs == n_tex_coord_attribs))
-        return TRUE;
+        return;
 
       /* We need to recreate the shader so destroy the existing one */
       GE( ctx, glDeleteShader (shader_state->gl_shader) );
@@ -333,7 +321,7 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
      to generate one */
   if (user_program &&
       _cogl_program_has_fragment_shader (user_program))
-    return TRUE;
+    return;
 
   /* We reuse two grow-only GStrings for code-gen. One string
      contains the uniform and attribute declarations while the
@@ -356,8 +344,6 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
       shader_state->unit_state[i].sampled = FALSE;
       shader_state->unit_state[i].combine_constant_used = FALSE;
     }
-
-  return TRUE;
 }
 
 static void

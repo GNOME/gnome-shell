@@ -645,6 +645,24 @@ _cogl_pipeline_progend_glsl_flush_uniforms (CoglPipeline *pipeline,
     _cogl_bitmask_clear_all (&uniforms_state->changed_mask);
 }
 
+static CoglBool
+_cogl_pipeline_progend_glsl_start (CoglPipeline *pipeline)
+{
+  CoglHandle user_program;
+
+  _COGL_GET_CONTEXT (ctx, FALSE);
+
+  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_GLSL))
+    return FALSE;
+
+  user_program = cogl_pipeline_get_user_program (pipeline);
+  if (user_program &&
+      _cogl_program_get_language (user_program) != COGL_SHADER_LANGUAGE_GLSL)
+    return FALSE;
+
+  return TRUE;
+}
+
 static void
 _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
                                  unsigned long pipelines_difference,
@@ -658,12 +676,6 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
   CoglPipeline *template_pipeline = NULL;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  /* If neither of the glsl fragend or vertends are used then we don't
-     need to do anything */
-  if (pipeline->fragend != COGL_PIPELINE_FRAGEND_GLSL &&
-      pipeline->vertend != COGL_PIPELINE_VERTEND_GLSL)
-    return;
 
   program_state = get_program_state (pipeline);
 
@@ -763,11 +775,9 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
         }
 
       /* Attach any shaders from the GLSL backends */
-      if (pipeline->fragend == COGL_PIPELINE_FRAGEND_GLSL &&
-          (backend_shader = _cogl_pipeline_fragend_glsl_get_shader (pipeline)))
+      if ((backend_shader = _cogl_pipeline_fragend_glsl_get_shader (pipeline)))
         GE( ctx, glAttachShader (program_state->program, backend_shader) );
-      if (pipeline->vertend == COGL_PIPELINE_VERTEND_GLSL &&
-          (backend_shader = _cogl_pipeline_vertend_glsl_get_shader (pipeline)))
+      if ((backend_shader = _cogl_pipeline_vertend_glsl_get_shader (pipeline)))
         GE( ctx, glAttachShader (program_state->program, backend_shader) );
 
       link_program (program_state->program);
@@ -779,10 +789,8 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
 
   gl_program = program_state->program;
 
-  if (pipeline->fragend == COGL_PIPELINE_FRAGEND_GLSL)
-    _cogl_use_fragment_program (gl_program, COGL_PIPELINE_PROGRAM_TYPE_GLSL);
-  if (pipeline->vertend == COGL_PIPELINE_VERTEND_GLSL)
-    _cogl_use_vertex_program (gl_program, COGL_PIPELINE_PROGRAM_TYPE_GLSL);
+  _cogl_use_fragment_program (gl_program, COGL_PIPELINE_PROGRAM_TYPE_GLSL);
+  _cogl_use_vertex_program (gl_program, COGL_PIPELINE_PROGRAM_TYPE_GLSL);
 
   state.unit = 0;
   state.gl_program = gl_program;
@@ -938,9 +946,6 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline,
   CoglPipelineProgramState *program_state;
 
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  if (pipeline->vertend != COGL_PIPELINE_VERTEND_GLSL)
-    return;
 
   program_state = get_program_state (pipeline);
 
@@ -1099,6 +1104,9 @@ update_float_uniform (CoglPipeline *pipeline,
 
 const CoglPipelineProgend _cogl_pipeline_glsl_progend =
   {
+    COGL_PIPELINE_VERTEND_GLSL,
+    COGL_PIPELINE_FRAGEND_GLSL,
+    _cogl_pipeline_progend_glsl_start,
     _cogl_pipeline_progend_glsl_end,
     _cogl_pipeline_progend_glsl_pre_change_notify,
     _cogl_pipeline_progend_glsl_layer_pre_change_notify,
