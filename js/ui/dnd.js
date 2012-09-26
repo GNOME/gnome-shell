@@ -235,6 +235,10 @@ const _Draggable = new Lang.Class({
 
         if (this.actor._delegate && this.actor._delegate.getDragActor) {
             this._dragActor = this.actor._delegate.getDragActor(this._dragStartX, this._dragStartY);
+            this._dragActor.reparent(Main.uiGroup);
+            this._dragActor.raise_top();
+            Shell.util_set_hidden_from_pick(this._dragActor, true);
+
             // Drag actor does not always have to be the same as actor. For example drag actor
             // can be an image that's part of the actor. So to perform "snap back" correctly we need
             // to know what was the drag actor source.
@@ -263,6 +267,10 @@ const _Draggable = new Lang.Class({
             this._dragOffsetY = this._dragActor.y - this._dragStartY;
         } else {
             this._dragActor = this.actor;
+            this._dragActor.reparent(Main.uiGroup);
+            this._dragActor.raise_top();
+            Shell.util_set_hidden_from_pick(this._dragActor, true);
+
             this._dragActorSource = undefined;
             this._dragOrigParent = this.actor.get_parent();
             this._dragOrigX = this._dragActor.x;
@@ -279,10 +287,6 @@ const _Draggable = new Lang.Class({
             this.actor.set_scale(scaledWidth / this.actor.width,
                                  scaledHeight / this.actor.height);
         }
-
-        this._dragActor.reparent(Main.uiGroup);
-        this._dragActor.raise_top();
-        Shell.util_set_hidden_from_pick(this._dragActor, true);
 
         this._dragOrigOpacity = this._dragActor.opacity;
         if (this._dragActorOpacity != undefined)
