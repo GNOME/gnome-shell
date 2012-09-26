@@ -505,7 +505,7 @@ _cogl_texture_2d_set_region (CoglTexture    *tex,
 static CoglBool
 _cogl_texture_2d_get_data (CoglTexture *tex,
                            CoglPixelFormat format,
-                           unsigned int rowstride,
+                           int rowstride,
                            uint8_t *data)
 {
   CoglContext *ctx = tex->context;

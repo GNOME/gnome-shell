@@ -568,7 +568,7 @@ _cogl_texture_rectangle_set_region (CoglTexture    *tex,
 static CoglBool
 _cogl_texture_rectangle_get_data (CoglTexture *tex,
                                   CoglPixelFormat format,
-                                  unsigned int rowstride,
+                                  int rowstride,
                                   uint8_t *data)
 {
   CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);

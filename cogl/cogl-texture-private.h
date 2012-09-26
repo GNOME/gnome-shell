@@ -81,7 +81,7 @@ struct _CoglTextureVtable
      be necessary). */
   CoglBool (* get_data) (CoglTexture *tex,
                          CoglPixelFormat format,
-                         unsigned int rowstride,
+                         int rowstride,
                          uint8_t *data);
 
   void (* foreach_sub_texture_in_region) (CoglTexture *tex,

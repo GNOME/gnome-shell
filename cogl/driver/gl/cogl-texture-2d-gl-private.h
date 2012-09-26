@@ -106,7 +106,7 @@ _cogl_texture_2d_gl_copy_from_bitmap (CoglTexture2D *tex_2d,
 void
 _cogl_texture_2d_gl_get_data (CoglTexture2D *tex_2d,
                               CoglPixelFormat format,
-                              size_t rowstride,
+                              int rowstride,
                               uint8_t *data);
 
 #endif /* _COGL_TEXTURE_2D_GL_PRIVATE_H_ */

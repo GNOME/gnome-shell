@@ -572,7 +572,7 @@ _cogl_texture_3d_set_region (CoglTexture    *tex,
 static int
 _cogl_texture_3d_get_data (CoglTexture *tex,
                            CoglPixelFormat format,
-                           unsigned int rowstride,
+                           int rowstride,
                            uint8_t *data)
 {
   /* FIXME: we could probably implement this by assuming the data is

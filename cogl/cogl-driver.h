@@ -209,7 +209,7 @@ struct _CoglDriverVtable
   void
   (* texture_2d_get_data) (CoglTexture2D *tex_2d,
                            CoglPixelFormat format,
-                           unsigned int rowstride,
+                           int rowstride,
                            uint8_t *data);
 
   /* Prepares for drawing by flushing the journal, framebuffer state,
