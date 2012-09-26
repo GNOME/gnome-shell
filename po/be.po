@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: cogl.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-07 13:16+0000\n"
-"PO-Revision-Date: 2012-09-09 14:28+0300\n"
+"POT-Creation-Date: 2012-09-25 23:19+0000\n"
+"PO-Revision-Date: 2012-09-26 15:09+0300\n"
 "Last-Translator: Kasia Bondarava <kasia.bondarava@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -41,6 +41,22 @@ msgstr "Спіс GL-пашырэнняў, падзеленых коскамі, �
 #: ../cogl/cogl-debug.c:193
 msgid "Override the GL version that Cogl will assume the driver supports"
 msgstr "Падмяніць версію GL, якую, на думку Cogl, падтрымлівае відэадрайвер"
+
+#: ../cogl/cogl-debug.c:237
+msgid "Cogl debugging flags to set"
+msgstr "Патрэбныя адладачныя сцяжкі Cogl"
+
+#: ../cogl/cogl-debug.c:239
+msgid "Cogl debugging flags to unset"
+msgstr "Непатрэбныя адладачныя сцяжкі Cogl"
+
+#: ../cogl/cogl-debug.c:288
+msgid "Cogl Options"
+msgstr "Опцыі Cogl"
+
+#: ../cogl/cogl-debug.c:289
+msgid "Show Cogl options"
+msgstr "Паказаваць опцыі Cogl"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
