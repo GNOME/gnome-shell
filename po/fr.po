@@ -10,10 +10,11 @@ msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-17 12:57+0000\n"
+"POT-Creation-Date: 2012-09-26 02:01+0000\n"
 "PO-Revision-Date: 2012-04-30 18:04+0100\n"
 "Last-Translator: Pierre Henry <pierrehenry73@yahoo.fr>\n"
 "Language-Team: GNOME French team <gnomefr@traduc.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,6 +30,38 @@ msgstr "Valeurs de débogage spéciales :"
 #: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr "Active toutes les options de débogage non-associées au comportement"
+
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "Variables d'environnement supplémentaires :"
+
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr ""
+"Liste d'extensions GL séparées par des points-virgules pour lesquelles il "
+"faut faire comme si elles étaient désactivées"
+
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr ""
+"Passer outre la version de GL que Cogl supposera que le pilote prend en "
+"charge"
+
+#: ../cogl/cogl-debug.c:237
+msgid "Cogl debugging flags to set"
+msgstr "Drapeaux de débogage Cogl à définir"
+
+#: ../cogl/cogl-debug.c:239
+msgid "Cogl debugging flags to unset"
+msgstr "Drapeaux de débogage Cogl à annuler"
+
+#: ../cogl/cogl-debug.c:288
+msgid "Cogl Options"
+msgstr "Options Cogl"
+
+#: ../cogl/cogl-debug.c:289
+msgid "Show Cogl options"
+msgstr "Affiche les options Cogl"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
@@ -340,15 +373,3 @@ msgstr "Tracer les problèmes de performances"
 #: ../cogl/cogl-debug-options.h:192
 msgid "Tries to highlight sub-optimal Cogl usage."
 msgstr "Essaie de mettre en évidence l'utilisation sous-optimale de Cogl."
-
-#~ msgid "Cogl debugging flags to set"
-#~ msgstr "Drapeaux de débogage Cogl à définir"
-
-#~ msgid "Cogl debugging flags to unset"
-#~ msgstr "Drapeaux de débogage Cogl à annuler"
-
-#~ msgid "Cogl Options"
-#~ msgstr "Options Cogl"
-
-#~ msgid "Show Cogl options"
-#~ msgstr "Affiche les options Cogl"
