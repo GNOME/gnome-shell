@@ -5,17 +5,19 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: cogl master\n"
+"Project-Id-Version: cogl cogl-1.12\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-19 21:19+0000\n"
-"PO-Revision-Date: 2012-08-21 14:37+0700\n"
+"POT-Creation-Date: 2012-09-25 23:19+0000\n"
+"PO-Revision-Date: 2012-09-26 08:55+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.3\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
@@ -40,6 +42,22 @@ msgstr "Daftar yang dipisah koma dari ekstensi GL yang pura-pura dinonaktifkan"
 #: ../cogl/cogl-debug.c:193
 msgid "Override the GL version that Cogl will assume the driver supports"
 msgstr "Timpa versi GL yang akan diasumsikan oleh Cogl didukung oleh penggerak"
+
+#: ../cogl/cogl-debug.c:237
+msgid "Cogl debugging flags to set"
+msgstr "Flag pengawakutuan Cogl yang akan ditata"
+
+#: ../cogl/cogl-debug.c:239
+msgid "Cogl debugging flags to unset"
+msgstr "Flag pengawakutuan Cogl yang akan dikosongkan"
+
+#: ../cogl/cogl-debug.c:288
+msgid "Cogl Options"
+msgstr "Opsi Cogl"
+
+#: ../cogl/cogl-debug.c:289
+msgid "Show Cogl options"
+msgstr "Tunjukkan opsi Cogl"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
