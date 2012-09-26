@@ -243,16 +243,12 @@ _cogl_driver_pixel_format_to_gl (CoglContext *context,
 }
 
 static CoglBool
-_cogl_get_gl_version (CoglContext *ctx,
-                      int *major_out,
-                      int *minor_out)
+parse_gl_version (const char *version_string,
+                  int *major_out,
+                  int *minor_out)
 {
-  const char *version_string, *major_end, *minor_end;
+  const char *major_end, *minor_end;
   int major = 0, minor = 0;
-
-  /* Get the OpenGL version number */
-  if ((version_string = _cogl_context_get_gl_version (ctx)) == NULL)
-    return FALSE;
 
   /* Extract the major number */
   for (major_end = version_string; *major_end >= '0'
@@ -277,6 +273,20 @@ _cogl_get_gl_version (CoglContext *ctx,
   *minor_out = minor;
 
   return TRUE;
+}
+
+static CoglBool
+_cogl_get_gl_version (CoglContext *ctx,
+                      int *major_out,
+                      int *minor_out)
+{
+  const char *version_string;
+
+  /* Get the OpenGL version number */
+  if ((version_string = _cogl_context_get_gl_version (ctx)) == NULL)
+    return FALSE;
+
+  return parse_gl_version (version_string, major_out, minor_out);
 }
 
 static CoglBool
