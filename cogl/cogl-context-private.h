@@ -75,6 +75,9 @@ struct _CoglContext
   const CoglDriverVtable *driver_vtable;
   const CoglTextureDriver *texture_driver;
 
+  int glsl_major;
+  int glsl_minor;
+
   /* Features cache */
   unsigned long features[COGL_FLAGS_N_LONGS_FOR_SIZE (_COGL_N_FEATURE_IDS)];
   CoglFeatureFlags feature_flags; /* legacy/deprecated feature flags */

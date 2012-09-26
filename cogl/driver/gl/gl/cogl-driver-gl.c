@@ -375,6 +375,16 @@ _cogl_driver_update_features (CoglContext *ctx,
 
   _cogl_gpu_info_init (ctx, &ctx->gpu);
 
+  ctx->glsl_major = 1;
+  ctx->glsl_minor = 1;
+
+  if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 0))
+    {
+      const char *glsl_version =
+        (char *)ctx->glGetString (GL_SHADING_LANGUAGE_VERSION);
+      parse_gl_version (glsl_version, &ctx->glsl_major, &ctx->glsl_minor);
+    }
+
   flags = (COGL_FEATURE_TEXTURE_READ_PIXELS
            | COGL_FEATURE_UNSIGNED_INT_INDICES
            | COGL_FEATURE_DEPTH_RANGE);

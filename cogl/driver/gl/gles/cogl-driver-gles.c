@@ -216,6 +216,9 @@ _cogl_driver_update_features (CoglContext *context,
 
   _cogl_gpu_info_init (context, &context->gpu);
 
+  context->glsl_major = 1;
+  context->glsl_minor = 0;
+
   gl_extensions = _cogl_context_get_gl_extensions (context);
 
   _cogl_feature_check_ext_functions (context,
