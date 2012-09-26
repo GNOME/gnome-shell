@@ -783,7 +783,7 @@ const ThumbnailsBox = new Lang.Class({
         this._indicator.raise_top();
     },
 
-    removeThumbmails: function(start, count) {
+    removeThumbnails: function(start, count) {
         let currentPos = 0;
         for (let k = 0; k < this._thumbnails.length; k++) {
             let thumbnail = this._thumbnails[k];

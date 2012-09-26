@@ -968,7 +968,7 @@ const WorkspacesDisplay = new Lang.Class({
                 }
             }
 
-            this._thumbnailsBox.removeThumbmails(removedIndex, removedNum);
+            this._thumbnailsBox.removeThumbnails(removedIndex, removedNum);
         }
 
         for (let i = 0; i < this._workspacesViews.length; i++)
