@@ -6,44 +6,58 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-05-25 12:00+0000\n"
-"PO-Revision-Date: 2012-06-05 17:39+0300\n"
+"product=clutter\n"
+"POT-Creation-Date: 2012-09-26 12:01+0300\n"
+"PO-Revision-Date: 2012-09-26 12:02+0300\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
+"Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: lv\n"
 "X-Generator: Lokalize 1.4\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
 
-#: ../cogl/cogl-debug.c:173
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
 msgstr "Atbalstītās atkļūdošanas vērtības:"
 
-#: ../cogl/cogl-debug.c:178
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
 msgstr "Īpašās atkļūdošanas vērtības:"
 
-#: ../cogl/cogl-debug.c:180 ../cogl/cogl-debug.c:182
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr "Aktivē visas ne-uzvedības atkļūdošanas opcijas"
 
-#: ../cogl/cogl-debug.c:226
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "Papildu vides mainīgie:"
+
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr ""
+"Ar komatiem atdalīts saraksts ar GL paplašinājumiem, kas uzskatāmi par "
+"deaktivētiem"
+
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr "Pārrakstīt GL versiju, ko Cogl uzskatīs, ka atbalsta draiveris"
+
+#: ../cogl/cogl-debug.c:237
 msgid "Cogl debugging flags to set"
 msgstr "Iestatāmie Cogl atkļūdošanas karodziņi"
 
-#: ../cogl/cogl-debug.c:228
+#: ../cogl/cogl-debug.c:239
 msgid "Cogl debugging flags to unset"
 msgstr "Noņemamie Cogl atkļūdošanas karodziņi"
 
-#: ../cogl/cogl-debug.c:277
+#: ../cogl/cogl-debug.c:288
 msgid "Cogl Options"
 msgstr "Cogl opcijas"
 
-#: ../cogl/cogl-debug.c:278
+#: ../cogl/cogl-debug.c:289
 msgid "Show Cogl options"
 msgstr "Rādīt Cogl opcijas"
 
@@ -54,6 +68,7 @@ msgstr "Rādīt Cogl opcijas"
 #: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Cogl izsekošana"
 
@@ -342,4 +357,12 @@ msgstr "Izsekot apcirpšanu"
 #: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "Reģistrē informāciju par to, kā Cogl implementē apciršanu"
+
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr "Izsekot veiktspējas problēmas"
+
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "Mēģina izcelt neoptimālu Cogl lietojumu."
 
