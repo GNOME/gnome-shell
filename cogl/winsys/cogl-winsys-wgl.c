@@ -579,9 +579,14 @@ get_wgl_extensions_string (HDC dc)
      GL_EXT_SWAP_CONTROL so if the extension to get the list of WGL
      extensions isn't supported then we can at least fake it to
      support the swap control extension */
-  if (_cogl_check_extension ("WGL_EXT_swap_control",
-                             _cogl_context_get_gl_extensions (ctx)))
-    return "WGL_EXT_swap_control";
+  {
+    char **extensions = _cogl_context_get_gl_extensions (ctx);
+    CoglBool have_ext = _cogl_check_extension ("WGL_EXT_swap_control",
+                                               extensions);
+    g_strfreev (extensions);
+    if (have_ext)
+      return "WGL_EXT_swap_control";
+  }
 
   return NULL;
 }
@@ -612,13 +617,15 @@ update_winsys_features (CoglContext *context, CoglError **error)
 
   if (wgl_extensions)
     {
+      char **split_extensions = g_strsplit (wgl_extensions);
+
       COGL_NOTE (WINSYS, "  WGL Extensions: %s", wgl_extensions);
 
       for (i = 0; i < G_N_ELEMENTS (winsys_feature_data); i++)
         if (_cogl_feature_check (context->display->renderer,
                                  "WGL", winsys_feature_data + i, 0, 0,
                                  COGL_DRIVER_GL,
-                                 wgl_extensions,
+                                 split_extensions,
                                  wgl_renderer))
           {
             context->feature_flags |= winsys_feature_data[i].feature_flags;
@@ -627,6 +634,8 @@ update_winsys_features (CoglContext *context, CoglError **error)
                               winsys_feature_data[i].winsys_feature,
                               TRUE);
           }
+
+      g_strfreev (split_extensions);
     }
 
   return TRUE;

@@ -128,7 +128,7 @@ COGL_EXT_END ()
 
 
 
-COGL_EXT_BEGIN (offscreen_blit, 255, 255,
+COGL_EXT_BEGIN (offscreen_blit, 3, 0,
                 0, /* not in either GLES */
                 "EXT\0ANGLE\0",
                 "framebuffer_blit\0")
@@ -211,7 +211,7 @@ COGL_EXT_FUNCTION (void, glFramebufferTexture2DMultisampleIMG,
                     GLsizei          samples))
 COGL_EXT_END ()
 
-COGL_EXT_BEGIN (ARB_sampler_objects, 255, 255,
+COGL_EXT_BEGIN (ARB_sampler_objects, 3, 3,
                 0, /* not in either GLES */
                 "ARB:\0",
                 "sampler_objects\0")
@@ -263,4 +263,26 @@ COGL_EXT_FUNCTION (void, glGetAttachedObjects,
                     GLsizei maxcount,
                     GLsizei* count,
                     GLuint* shaders))
+COGL_EXT_END ()
+
+COGL_EXT_BEGIN (only_gl3, 3, 0,
+                0, /* not in either GLES */
+                "\0",
+                "\0")
+COGL_EXT_FUNCTION (const GLubyte *, glGetStringi,
+                   (GLenum name, GLuint index))
+COGL_EXT_END ()
+
+COGL_EXT_BEGIN (vertex_array_object, 3, 0,
+                0, /* not in either GLES */
+                "ARB\0OES\0",
+                "vertex_array_object\0")
+COGL_EXT_FUNCTION (void, glBindVertexArray,
+                   (GLuint array))
+COGL_EXT_FUNCTION (void, glDeleteVertexArrays,
+                   (GLsizei n,
+                    const GLuint *arrays))
+COGL_EXT_FUNCTION (void, glGenVertexArrays,
+                   (GLsizei n,
+                    GLuint *arrays))
 COGL_EXT_END ()

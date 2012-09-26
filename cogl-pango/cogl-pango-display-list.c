@@ -342,7 +342,7 @@ emit_vertex_buffer_geometry (CoglPangoDisplayListNode *node)
                                                  2 /* n_attributes */);
 
 #ifdef CLUTTER_COGL_HAS_GL
-      if (ctx->driver == COGL_DRIVER_GL)
+      if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_QUADS))
         cogl_primitive_set_mode (prim, GL_QUADS);
       else
 #endif

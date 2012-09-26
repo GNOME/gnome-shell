@@ -31,6 +31,7 @@
 
 #include "cogl-feature-private.h"
 #include "cogl-renderer-private.h"
+#include "cogl-private.h"
 
 CoglBool
 _cogl_feature_check (CoglRenderer *renderer,
@@ -39,7 +40,7 @@ _cogl_feature_check (CoglRenderer *renderer,
                      int gl_major,
                      int gl_minor,
                      CoglDriver driver,
-                     const char *extensions_string,
+                     char * const *extensions,
                      void *function_table)
 
 {
@@ -49,7 +50,8 @@ _cogl_feature_check (CoglRenderer *renderer,
 
   /* First check whether the functions should be directly provided by
      GL */
-  if ((driver == COGL_DRIVER_GL &&
+  if (((driver == COGL_DRIVER_GL ||
+        driver == COGL_DRIVER_GL3) &&
        COGL_CHECK_GL_VERSION (gl_major, gl_minor,
                               data->min_gl_major, data->min_gl_minor)) ||
       (driver == COGL_DRIVER_GLES1 &&
@@ -97,7 +99,7 @@ _cogl_feature_check (CoglRenderer *renderer,
               g_string_append_c (full_extension_name, '_');
               g_string_append (full_extension_name, extension);
               if (_cogl_check_extension (full_extension_name->str,
-                                         extensions_string))
+                                         extensions))
                 break;
             }
 
@@ -192,7 +194,7 @@ void
 _cogl_feature_check_ext_functions (CoglContext *context,
                                    int gl_major,
                                    int gl_minor,
-                                   const char *gl_extensions)
+                                   char * const *gl_extensions)
 {
   int i;
 

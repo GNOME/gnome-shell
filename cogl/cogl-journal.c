@@ -303,7 +303,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
     draw_flags |= COGL_DRAW_COLOR_ATTRIBUTE_IS_OPAQUE;
 
 #ifdef HAVE_COGL_GL
-  if (ctx->driver == COGL_DRIVER_GL)
+  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_QUADS))
     {
       /* XXX: it's rather evil that we sneak in the GL_QUADS enum here... */
       _cogl_framebuffer_draw_attributes (framebuffer,
@@ -615,7 +615,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
                         4,
                         COGL_ATTRIBUTE_TYPE_UNSIGNED_BYTE);
 
-  if (ctx->driver != COGL_DRIVER_GL)
+  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_QUADS))
     state->indices = cogl_get_rectangle_indices (ctx, batch_len);
 
   /* We only create new Attributes when the stride within the

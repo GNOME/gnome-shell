@@ -31,7 +31,7 @@
 G_BEGIN_DECLS
 
 CoglBool
-_cogl_check_extension (const char *name, const char *ext);
+_cogl_check_extension (const char *name, char * const *ext);
 
 void
 _cogl_clear (const CoglColor *color, unsigned long buffers);

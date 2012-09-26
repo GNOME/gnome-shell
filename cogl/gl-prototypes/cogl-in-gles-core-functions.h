@@ -50,11 +50,11 @@
  */
 
 COGL_EXT_BEGIN (only_in_both_gles,
-                255, 255,
+                4, 1,
                 COGL_EXT_IN_GLES |
                 COGL_EXT_IN_GLES2,
-                "\0",
-                "\0")
+                "ARB\0",
+                "ES2_compatibility\0")
 COGL_EXT_FUNCTION (void, glDepthRangef,
                    (GLfloat near_val, GLfloat far_val))
 COGL_EXT_FUNCTION (void, glClearDepthf,

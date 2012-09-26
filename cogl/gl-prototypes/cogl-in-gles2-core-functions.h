@@ -50,7 +50,7 @@
  */
 
 COGL_EXT_BEGIN (offscreen,
-                255, 255,
+                3, 0,
                 COGL_EXT_IN_GLES2,
                 /* for some reason the ARB version of this
                    extension doesn't have an ARB suffix for the
@@ -146,10 +146,10 @@ COGL_EXT_FUNCTION (void, glBlendEquationSeparate,
 COGL_EXT_END ()
 
 COGL_EXT_BEGIN (gles2_only_api,
-                255, 255,
+                4, 1,
                 COGL_EXT_IN_GLES2,
-                "\0",
-                "\0")
+                "ARB:\0",
+                "ES2_compatibility\0")
 COGL_EXT_FUNCTION (void, glReleaseShaderCompiler, (void))
 COGL_EXT_FUNCTION (void, glGetShaderPrecisionFormat,
                    (GLenum shadertype,

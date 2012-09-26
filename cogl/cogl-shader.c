@@ -239,7 +239,8 @@ _cogl_shader_compile_real (CoglHandle handle,
 
       shader->gl_handle = ctx->glCreateShader (gl_type);
 
-      if (ctx->driver == COGL_DRIVER_GL &&
+      if ((ctx->driver == COGL_DRIVER_GL ||
+           ctx->driver == COGL_DRIVER_GL3 ) &&
           ctx->glsl_major == 1 &&
           ctx->glsl_minor >= 2)
         {

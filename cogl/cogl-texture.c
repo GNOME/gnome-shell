@@ -206,7 +206,7 @@ _cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
      limited number of formats so we must convert using the Cogl
      bitmap code instead */
 
-  if (ctx->driver == COGL_DRIVER_GL)
+  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_FORMAT_CONVERSION))
     {
       /* If the source format does not have the same premult flag as the
          dst format then we need to copy and convert it */

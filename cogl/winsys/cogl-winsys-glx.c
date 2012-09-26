@@ -331,7 +331,8 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   if (!_cogl_xlib_renderer_connect (renderer, error))
     goto error;
 
-  if (renderer->driver != COGL_DRIVER_GL)
+  if (renderer->driver != COGL_DRIVER_GL &&
+      renderer->driver != COGL_DRIVER_GL3)
     {
       _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
@@ -394,6 +395,7 @@ update_winsys_features (CoglContext *context, CoglError **error)
     _cogl_xlib_renderer_get_data (context->display->renderer);
   CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
   const char *glx_extensions;
+  char **split_extensions;
   int default_screen;
   int i;
 
@@ -418,11 +420,13 @@ update_winsys_features (CoglContext *context, CoglError **error)
                   COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
                   TRUE);
 
+  split_extensions = g_strsplit (glx_extensions, " ", 0 /* max_tokens */);
+
   for (i = 0; i < G_N_ELEMENTS (winsys_feature_data); i++)
     if (_cogl_feature_check (context->display->renderer,
                              "GLX", winsys_feature_data + i, 0, 0,
                              COGL_DRIVER_GL, /* the driver isn't used */
-                             glx_extensions,
+                             split_extensions,
                              glx_renderer))
       {
         context->feature_flags |= winsys_feature_data[i].feature_flags;
@@ -431,6 +435,8 @@ update_winsys_features (CoglContext *context, CoglError **error)
                           winsys_feature_data[i].winsys_feature,
                           TRUE);
       }
+
+  g_strfreev (split_extensions);
 
   /* Note: the GLX_SGI_video_sync spec explicitly states this extension
    * only works for direct contexts. */
@@ -607,6 +613,36 @@ done:
   return ret;
 }
 
+static GLXContext
+create_gl3_context (CoglDisplay *display,
+                    GLXFBConfig fb_config)
+{
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (display->renderer);
+  CoglGLXRenderer *glx_renderer = display->renderer->winsys;
+
+  /* We want a core profile 3.1 context with no deprecated features */
+  static const int attrib_list[] =
+    {
+      GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
+      GLX_CONTEXT_MINOR_VERSION_ARB, 1,
+      GLX_CONTEXT_PROFILE_MASK_ARB,  GLX_CONTEXT_CORE_PROFILE_BIT_ARB,
+      GLX_CONTEXT_FLAGS_ARB,         GLX_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB,
+      None
+    };
+
+  /* Make sure that the display supports the GLX_ARB_create_context
+     extension */
+  if (glx_renderer->pf_glXCreateContextAttribs == NULL)
+    return NULL;
+
+  return glx_renderer->pf_glXCreateContextAttribs (xlib_renderer->xdpy,
+                                                   fb_config,
+                                                   NULL /* share_context */,
+                                                   True, /* direct */
+                                                   attrib_list);
+}
+
 static CoglBool
 create_context (CoglDisplay *display, CoglError **error)
 {
@@ -644,12 +680,16 @@ create_context (CoglDisplay *display, CoglError **error)
   COGL_NOTE (WINSYS, "Creating GLX Context (display: %p)",
              xlib_renderer->xdpy);
 
-  glx_display->glx_context =
-    glx_renderer->glXCreateNewContext (xlib_renderer->xdpy,
-                                       config,
-                                       GLX_RGBA_TYPE,
-                                       NULL,
-                                       True);
+  if (display->renderer->driver == COGL_DRIVER_GL3)
+    glx_display->glx_context = create_gl3_context (display, config);
+  else
+    glx_display->glx_context =
+      glx_renderer->glXCreateNewContext (xlib_renderer->xdpy,
+                                         config,
+                                         GLX_RGBA_TYPE,
+                                         NULL,
+                                         True);
+
   if (glx_display->glx_context == NULL)
     {
       _cogl_set_error (error, COGL_WINSYS_ERROR,

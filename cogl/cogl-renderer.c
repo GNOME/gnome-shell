@@ -286,6 +286,15 @@ _cogl_renderer_choose_driver (CoglRenderer *renderer,
       libgl_name = COGL_GL_LIBNAME;
       goto found;
     }
+
+  if (renderer->driver_override == COGL_DRIVER_GL3 ||
+      (renderer->driver_override == COGL_DRIVER_ANY &&
+       (driver_name == NULL || !g_ascii_strcasecmp (driver_name, "gl3"))))
+    {
+      renderer->driver = COGL_DRIVER_GL3;
+      libgl_name = COGL_GL_LIBNAME;
+      goto found;
+    }
 #endif
 
 #ifdef HAVE_COGL_GLES2
@@ -340,6 +349,7 @@ found:
 #ifndef HAVE_DIRECTLY_LINKED_GL_LIBRARY
 
   if (renderer->driver == COGL_DRIVER_GL ||
+      renderer->driver == COGL_DRIVER_GL3 ||
       renderer->driver == COGL_DRIVER_GLES1 ||
       renderer->driver == COGL_DRIVER_GLES2)
     {
@@ -362,6 +372,7 @@ found:
     {
 #ifdef HAVE_COGL_GL
     case COGL_DRIVER_GL:
+    case COGL_DRIVER_GL3:
       renderer->driver_vtable = &_cogl_driver_gl;
       renderer->texture_driver = &_cogl_texture_driver_gl;
       break;
@@ -579,7 +590,7 @@ cogl_renderer_get_n_fragment_texture_units (CoglRenderer *renderer)
   _COGL_GET_CONTEXT (ctx, 0);
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES2)
-  if (ctx->driver == COGL_DRIVER_GL || ctx->driver == COGL_DRIVER_GLES2)
+  if (cogl_has_feature (ctx, COGL_FEATURE_ID_GLSL))
     GE (ctx, glGetIntegerv (GL_MAX_TEXTURE_IMAGE_UNITS, &n));
 #endif
 

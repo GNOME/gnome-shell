@@ -261,9 +261,7 @@ cogl_context_new (CoglDisplay *display,
   context->texture_units =
     g_array_new (FALSE, FALSE, sizeof (CoglTextureUnit));
 
-  if (context->driver == COGL_DRIVER_GL ||
-      context->driver == COGL_DRIVER_GLES1 ||
-      context->driver == COGL_DRIVER_GLES2)
+  if ((context->private_feature_flags & COGL_PRIVATE_FEATURE_ANY_GL))
     {
       /* See cogl-pipeline.c for more details about why we leave texture unit 1
        * active by default... */
@@ -368,8 +366,7 @@ cogl_context_new (CoglDisplay *display,
   context->blit_texture_pipeline = NULL;
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
-  if (context->driver == COGL_DRIVER_GL ||
-      context->driver == COGL_DRIVER_GLES1)
+  if ((context->private_feature_flags & COGL_PRIVATE_FEATURE_ALPHA_TEST))
     /* The default for GL_ALPHA_TEST is to always pass which is equivalent to
      * the test being disabled therefore we assume that for all drivers there
      * will be no performance impact if we always leave the test enabled which
@@ -377,6 +374,22 @@ cogl_context_new (CoglDisplay *display,
      * implemented in the fragment shader so there is no enable for it
      */
     GE (context, glEnable (GL_ALPHA_TEST));
+#endif
+
+#if defined (HAVE_COGL_GL)
+  if ((context->driver == COGL_DRIVER_GL3))
+    {
+      GLuint vertex_array;
+
+      /* In a forward compatible context, GL 3 doesn't support rendering
+       * using the default vertex array object. Cogl doesn't use vertex
+       * array objects yet so for now we just create a dummy array
+       * object that we will use as our own default object. Eventually
+       * it could be good to attach the vertex array objects to
+       * CoglPrimitives */
+      context->glGenVertexArrays (1, &vertex_array);
+      context->glBindVertexArray (vertex_array);
+    }
 #endif
 
   context->current_modelview_entry = NULL;
@@ -430,13 +443,13 @@ cogl_context_new (CoglDisplay *display,
   context->buffer_map_fallback_in_use = FALSE;
 
   /* As far as I can tell, GL_POINT_SPRITE doesn't have any effect
-     unless GL_COORD_REPLACE is enabled for an individual
-     layer. Therefore it seems like it should be ok to just leave it
-     enabled all the time instead of having to have a set property on
-     each pipeline to track whether any layers have point sprite
-     coords enabled. We don't need to do this for GLES2 because point
+     unless GL_COORD_REPLACE is enabled for an individual layer.
+     Therefore it seems like it should be ok to just leave it enabled
+     all the time instead of having to have a set property on each
+     pipeline to track whether any layers have point sprite coords
+     enabled. We don't need to do this for GL3 or GLES2 because point
      sprites are handled using a builtin varying in the shader. */
-  if (context->driver != COGL_DRIVER_GLES2 &&
+  if ((context->private_feature_flags & COGL_PRIVATE_FEATURE_FIXED_FUNCTION) &&
       cogl_has_feature (context, COGL_FEATURE_ID_POINT_SPRITE))
     GE (context, glEnable (GL_POINT_SPRITE));
 
@@ -610,38 +623,45 @@ _cogl_context_set_current_modelview_entry (CoglContext *context,
   context->current_modelview_entry = entry;
 }
 
-const char *
+char **
 _cogl_context_get_gl_extensions (CoglContext *context)
 {
   const char *env_disabled_extensions;
+  char **ret;
+
+  /* In GL 3, querying GL_EXTENSIONS is deprecated so we have to build
+   * the array using glGetStringi instead */
+  if (context->driver == COGL_DRIVER_GL3)
+    {
+      int num_extensions, i;
+
+      context->glGetIntegerv (GL_NUM_EXTENSIONS, &num_extensions);
+
+      ret = g_malloc (sizeof (char *) * (num_extensions + 1));
+
+      for (i = 0; i < num_extensions; i++)
+        {
+          const char *ext =
+            (const char *) context->glGetStringi (GL_EXTENSIONS, i);
+          ret[i] = g_strdup (ext);
+        }
+
+      ret[num_extensions] = NULL;
+    }
+  else
+    {
+      const char *all_extensions =
+        (const char *) context->glGetString (GL_EXTENSIONS);
+
+      ret = g_strsplit (all_extensions, " ", 0 /* max tokens */);
+    }
 
   if ((env_disabled_extensions = g_getenv ("COGL_DISABLE_GL_EXTENSIONS"))
       || _cogl_config_disable_gl_extensions)
     {
-      static CoglUserDataKey extensions_key;
-      const char *enabled_extensions;
-      char **split_enabled_extensions;
       char **split_env_disabled_extensions;
       char **split_conf_disabled_extensions;
-      char **e;
-      GString *result;
-
-      /* We need to return a const string so we'll attach the results
-       * to the CoglContext to avoid leaking the generated string.
-       * This string is only used rarely so we are using
-       * cogl_object_set_user_data instead of adding an explicit
-       * member to CoglContext to avoid making the struct bigger */
-
-      enabled_extensions =
-        cogl_object_get_user_data (COGL_OBJECT (context), &extensions_key);
-      if (enabled_extensions)
-        return enabled_extensions;
-
-      enabled_extensions = (const char *) context->glGetString (GL_EXTENSIONS);
-
-      split_enabled_extensions = g_strsplit (enabled_extensions,
-                                             " ",
-                                             0 /* no max tokens */);
+      char **src, **dst;
 
       if (env_disabled_extensions)
         split_env_disabled_extensions =
@@ -659,46 +679,38 @@ _cogl_context_get_gl_extensions (CoglContext *context)
       else
         split_conf_disabled_extensions = NULL;
 
-      result = g_string_new (NULL);
-
-      for (e = split_enabled_extensions; *e; e++)
+      for (dst = ret, src = ret;
+           *src;
+           src++)
         {
           char **d;
 
           if (split_env_disabled_extensions)
             for (d = split_env_disabled_extensions; *d; d++)
-              if (!strcmp (*e, *d))
+              if (!strcmp (*src, *d))
                 goto disabled;
           if (split_conf_disabled_extensions)
             for (d = split_conf_disabled_extensions; *d; d++)
-              if (!strcmp (*e, *d))
+              if (!strcmp (*src, *d))
                 goto disabled;
 
-          if (result->len > 0)
-            g_string_append_c (result, ' ');
-          g_string_append (result, *e);
+          *(dst++) = *src;
+          continue;
 
         disabled:
+          g_free (*src);
           continue;
         }
 
-      enabled_extensions = g_string_free (result, FALSE);
+      *dst = NULL;
 
-      g_strfreev (split_enabled_extensions);
       if (split_env_disabled_extensions)
         g_strfreev (split_env_disabled_extensions);
       if (split_conf_disabled_extensions)
         g_strfreev (split_conf_disabled_extensions);
-
-      cogl_object_set_user_data (COGL_OBJECT (context),
-                                 &extensions_key,
-                                 (void *) enabled_extensions,
-                                 (CoglUserDataDestroyCallback) g_free);
-
-      return enabled_extensions;
     }
-  else
-    return (const char *) context->glGetString (GL_EXTENSIONS);
+
+  return ret;
 }
 
 const char *

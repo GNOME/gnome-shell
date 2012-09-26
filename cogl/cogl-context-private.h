@@ -356,7 +356,15 @@ void
 _cogl_context_set_current_modelview_entry (CoglContext *context,
                                            CoglMatrixEntry *entry);
 
-const char *
+/*
+ * _cogl_context_get_gl_extensions:
+ * @context: A CoglContext
+ *
+ * Return value: a NULL-terminated array of strings representing the
+ *   supported extensions by the current driver. This array is owned
+ *   by the caller and should be freed with g_strfreev().
+ */
+char **
 _cogl_context_get_gl_extensions (CoglContext *context);
 
 const char *

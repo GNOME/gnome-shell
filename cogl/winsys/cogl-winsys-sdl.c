@@ -162,6 +162,12 @@ _cogl_winsys_display_setup (CoglDisplay *display,
       sdl_display->video_mode_flags = SDL_OPENGL;
       break;
 
+    case COGL_DRIVER_GL3:
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
+                       COGL_WINSYS_ERROR_INIT,
+                       "The SDL winsys does not support GL 3");
+      goto error;
+
 #ifdef COGL_HAS_SDL_GLES_SUPPORT
     case COGL_DRIVER_GLES2:
       sdl_display->video_mode_flags = SDL_OPENGLES;

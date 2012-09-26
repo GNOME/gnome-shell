@@ -122,6 +122,7 @@ set_clip_plane (CoglFramebuffer *framebuffer,
       break;
 
     case COGL_DRIVER_GL:
+    case COGL_DRIVER_GL3:
       planed[0] = planef[0];
       planed[1] = planef[1];
       planed[2] = planef[2];

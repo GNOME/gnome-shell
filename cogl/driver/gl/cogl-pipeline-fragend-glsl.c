@@ -913,10 +913,10 @@ _cogl_pipeline_fragend_glsl_add_layer (CoglPipeline *pipeline,
   return TRUE;
 }
 
-/* GLES2 doesn't have alpha testing so we need to implement it in the
-   shader */
+/* GLES2 and GL3 don't have alpha testing so we need to implement it
+   in the shader */
 
-#ifdef HAVE_COGL_GLES2
+#if defined(HAVE_COGL_GLES2) || defined(HAVE_COGL_GL)
 
 static void
 add_alpha_test_snippet (CoglPipeline *pipeline,
@@ -1046,8 +1046,8 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
         g_string_append (shader_state->source,
                          "  cogl_color_out = cogl_color_in;\n");
 
-#ifdef HAVE_COGL_GLES2
-      if (ctx->driver == COGL_DRIVER_GLES2)
+#if defined(HAVE_COGL_GLES2) || defined (HAVE_COGL_GL)
+      if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_ALPHA_TEST))
         add_alpha_test_snippet (pipeline, shader_state);
 #endif
 
@@ -1072,10 +1072,9 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       source_strings[1] = shader_state->source->str;
 
       if (shader_state->ref_point_coord &&
-          ctx->driver == COGL_DRIVER_GL)
-        {
-          version_string = "#version 120\n";
-        }
+          (ctx->driver == COGL_DRIVER_GL ||
+           ctx->driver == COGL_DRIVER_GL3))
+        version_string = "#version 120\n";
       else
         version_string = NULL;
 

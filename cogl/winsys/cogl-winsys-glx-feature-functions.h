@@ -111,3 +111,17 @@ COGL_WINSYS_FEATURE_BEGIN (swap_event,
                            0,
                            COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT)
 COGL_WINSYS_FEATURE_END ()
+
+COGL_WINSYS_FEATURE_BEGIN (create_context,
+                           "ARB\0",
+                           "create_context",
+                           0,
+                           0,
+                           0)
+COGL_WINSYS_FEATURE_FUNCTION (GLXContext, glXCreateContextAttribs,
+                              (Display *dpy,
+                               GLXFBConfig config,
+                               GLXContext share_context,
+                               Bool direct,
+                               const int *attrib_list))
+COGL_WINSYS_FEATURE_END ()

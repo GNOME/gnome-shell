@@ -51,6 +51,7 @@
 #include "cogl1-context.h"
 #include "cogl-offscreen.h"
 #include "cogl-attribute-gl-private.h"
+#include "cogl-clutter.h"
 
 #ifdef COGL_GL_DEBUG
 /* GL error to string conversion */
@@ -99,26 +100,13 @@ cogl_get_proc_address (const char* name)
 }
 
 CoglBool
-_cogl_check_extension (const char *name, const gchar *ext)
+_cogl_check_extension (const char *name, char * const *ext)
 {
-  char *end;
-  int name_len, n;
-
-  if (name == NULL || ext == NULL)
-    return FALSE;
-
-  end = (char*)(ext + strlen(ext));
-
-  name_len = strlen(name);
-
-  while (ext < end)
-    {
-      n = strcspn(ext, " ");
-
-      if ((name_len == n) && (!strncmp(name, ext, n)))
-	return TRUE;
-      ext += (n + 1);
-    }
+  while (*ext)
+    if (!strcmp (name, *ext))
+      return TRUE;
+    else
+      ext++;
 
   return FALSE;
 }
@@ -127,7 +115,7 @@ _cogl_check_extension (const char *name, const gchar *ext)
 CoglBool
 cogl_check_extension (const char *name, const char *ext)
 {
-  return _cogl_check_extension (name, ext);
+  return cogl_clutter_check_extension (name, ext);
 }
 
 /* XXX: it's expected that we'll deprecated this with

@@ -48,7 +48,7 @@ _cogl_pipeline_progend_fixed_start (CoglPipeline *pipeline)
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_FIXED)))
     return FALSE;
 
-  if (ctx->driver == COGL_DRIVER_GLES2)
+  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_FIXED_FUNCTION))
     return FALSE;
 
   /* Vertex snippets are only supported in the GLSL fragend */

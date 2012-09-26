@@ -261,7 +261,8 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
                    "cogl_generated_source ()\n"
                    "{\n");
 
-  if (ctx->driver == COGL_DRIVER_GLES2)
+  if (!(ctx->private_feature_flags &
+        COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM))
     /* There is no builtin uniform for the pointsize on GLES2 so we need
        to copy it from the custom uniform in the vertex shader */
     g_string_append (shader_state->source,
@@ -460,7 +461,8 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
       shader_state->gl_shader = shader;
     }
 
-  if (ctx->driver == COGL_DRIVER_GL &&
+  if ((ctx->private_feature_flags &
+       COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM) &&
       (pipelines_difference & COGL_PIPELINE_STATE_POINT_SIZE))
     {
       CoglPipeline *authority =

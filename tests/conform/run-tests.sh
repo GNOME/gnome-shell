@@ -67,8 +67,8 @@ TITLE_FORMAT="%35s"
 printf $TITLE_FORMAT "Test"
 
 if test $HAVE_GL -eq 1; then
-  GL_FORMAT=" %6s %8s %7s %6s"
-  printf "$GL_FORMAT" "GL+FF" "GL+ARBFP" "GL+GLSL" "GL-NPT"
+  GL_FORMAT=" %6s %8s %7s %6s %6s"
+  printf "$GL_FORMAT" "GL+FF" "GL+ARBFP" "GL+GLSL" "GL-NPT" "GL3"
 fi
 if test $HAVE_GLES2 -eq 1; then
   GLES2_FORMAT=" %6s %7s"
@@ -101,6 +101,10 @@ do
     export COGL_DRIVER=gl
     export COGL_DEBUG=disable-npot-textures
     run_test $test gl_npot
+
+    export COGL_DRIVER=gl3
+    export COGL_DEBUG=
+    run_test $test gl3
   fi
 
   if test $HAVE_GLES2 -eq 1; then
@@ -119,7 +123,8 @@ do
       "`get_status $gl_ff_result`" \
       "`get_status $gl_arbfp_result`" \
       "`get_status $gl_glsl_result`" \
-      "`get_status $gl_npot_result`"
+      "`get_status $gl_npot_result`" \
+      "`get_status $gl3_result`"
   fi
   if test $HAVE_GLES2 -eq 1; then
     printf "$GLES2_FORMAT" \

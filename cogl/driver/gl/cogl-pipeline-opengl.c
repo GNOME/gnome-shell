@@ -452,7 +452,7 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* On GLES2 we'll flush the color later */
-  if (ctx->driver != COGL_DRIVER_GLES2 &&
+  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_FIXED_FUNCTION) &&
       !skip_gl_color)
     {
       if ((pipelines_difference & COGL_PIPELINE_STATE_COLOR) ||
@@ -531,7 +531,7 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
 
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
 
-  if (ctx->driver != COGL_DRIVER_GLES2)
+  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_ALPHA_TEST))
     {
       /* Under GLES2 the alpha function is implemented as part of the
          fragment shader */
@@ -675,7 +675,8 @@ get_max_activateable_texture_units (void)
       int i;
 
 #ifdef HAVE_COGL_GL
-      if (ctx->driver == COGL_DRIVER_GL)
+      if (ctx->driver == COGL_DRIVER_GL ||
+          ctx->driver == COGL_DRIVER_GL3)
         {
           /* GL_MAX_TEXTURE_COORDS is provided for both GLSL and ARBfp. It
              defines the number of texture coordinates that can be
@@ -856,7 +857,7 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
    * glsl progend.
    */
 #if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GL)
-  if (ctx->driver != COGL_DRIVER_GLES2 &&
+  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_FIXED_FUNCTION) &&
       (layers_difference & COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS))
     {
       CoglPipelineState change = COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS;

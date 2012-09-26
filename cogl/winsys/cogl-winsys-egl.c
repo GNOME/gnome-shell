@@ -148,9 +148,11 @@ check_egl_extensions (CoglRenderer *renderer)
 {
   CoglRendererEGL *egl_renderer = renderer->winsys;
   const char *egl_extensions;
+  char **split_extensions;
   int i;
 
   egl_extensions = eglQueryString (egl_renderer->edpy, EGL_EXTENSIONS);
+  split_extensions = g_strsplit (egl_extensions, " ", 0 /* max_tokens */);
 
   COGL_NOTE (WINSYS, "  EGL Extensions: %s", egl_extensions);
 
@@ -159,12 +161,14 @@ check_egl_extensions (CoglRenderer *renderer)
     if (_cogl_feature_check (renderer,
                              "EGL", winsys_feature_data + i, 0, 0,
                              COGL_DRIVER_GL, /* the driver isn't used */
-                             egl_extensions,
+                             split_extensions,
                              egl_renderer))
       {
         egl_renderer->private_features |=
           winsys_feature_data[i].feature_flags_private;
       }
+
+  g_strfreev (split_extensions);
 }
 
 CoglBool
@@ -234,11 +238,12 @@ egl_attributes_from_framebuffer_config (CoglDisplay *display,
   attributes[i++] = EGL_DONT_CARE;
 
   attributes[i++] = EGL_RENDERABLE_TYPE;
-  attributes[i++] = (renderer->driver == COGL_DRIVER_GL ?
-                      EGL_OPENGL_BIT :
-                      renderer->driver == COGL_DRIVER_GLES1 ?
-                      EGL_OPENGL_ES_BIT :
-                      EGL_OPENGL_ES2_BIT);
+  attributes[i++] = ((renderer->driver == COGL_DRIVER_GL ||
+                      renderer->driver == COGL_DRIVER_GL3) ?
+                     EGL_OPENGL_BIT :
+                     renderer->driver == COGL_DRIVER_GLES1 ?
+                     EGL_OPENGL_ES_BIT :
+                     EGL_OPENGL_ES2_BIT);
 
   attributes[i++] = EGL_SURFACE_TYPE;
   attributes[i++] = EGL_WINDOW_BIT;
@@ -314,23 +319,15 @@ try_create_context (CoglDisplay *display,
   EGLConfig config;
   EGLint config_count = 0;
   EGLBoolean status;
-  EGLint attribs[3];
+  EGLint attribs[9];
   EGLint cfg_attribs[MAX_EGL_CONFIG_ATTRIBS];
   const char *error_message;
 
   _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context == NULL, TRUE);
 
-  if (renderer->driver == COGL_DRIVER_GL)
+  if (renderer->driver == COGL_DRIVER_GL ||
+      renderer->driver == COGL_DRIVER_GL3)
     eglBindAPI (EGL_OPENGL_API);
-
-  if (display->renderer->driver == COGL_DRIVER_GLES2)
-    {
-      attribs[0] = EGL_CONTEXT_CLIENT_VERSION;
-      attribs[1] = 2;
-      attribs[2] = EGL_NONE;
-    }
-  else
-    attribs[0] = EGL_NONE;
 
   egl_attributes_from_framebuffer_config (display,
                                           &display->onscreen_template->config,
@@ -350,10 +347,40 @@ try_create_context (CoglDisplay *display,
 
   egl_display->egl_config = config;
 
+  if (display->renderer->driver == COGL_DRIVER_GL3)
+    {
+      if (!(egl_renderer->private_features &
+            COGL_EGL_WINSYS_FEATURE_CREATE_CONTEXT))
+        {
+          error_message = "Driver does not support GL 3 contexts";
+          goto fail;
+        }
+
+      /* Try to get a core profile 3.1 context with no deprecated features */
+      attribs[0] = EGL_CONTEXT_MAJOR_VERSION_KHR;
+      attribs[1] = 3;
+      attribs[2] = EGL_CONTEXT_MINOR_VERSION_KHR;
+      attribs[3] = 1;
+      attribs[4] = EGL_CONTEXT_FLAGS_KHR;
+      attribs[5] = EGL_CONTEXT_OPENGL_FORWARD_COMPATIBLE_BIT_KHR;
+      attribs[6] = EGL_CONTEXT_OPENGL_PROFILE_MASK_KHR;
+      attribs[7] = EGL_CONTEXT_OPENGL_CORE_PROFILE_BIT_KHR;
+      attribs[8] = EGL_NONE;
+    }
+  else if (display->renderer->driver == COGL_DRIVER_GLES2)
+    {
+      attribs[0] = EGL_CONTEXT_CLIENT_VERSION;
+      attribs[1] = 2;
+      attribs[2] = EGL_NONE;
+    }
+  else
+    attribs[0] = EGL_NONE;
+
   egl_display->egl_context = eglCreateContext (edpy,
                                                config,
                                                EGL_NO_CONTEXT,
                                                attribs);
+
   if (egl_display->egl_context == EGL_NO_CONTEXT)
     {
       error_message = "Unable to create a suitable EGL context";

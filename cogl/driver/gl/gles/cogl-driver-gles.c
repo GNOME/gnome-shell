@@ -192,7 +192,7 @@ _cogl_driver_update_features (CoglContext *context,
 {
   CoglPrivateFeatureFlags private_flags = 0;
   CoglFeatureFlags flags = 0;
-  const char *gl_extensions;
+  char **gl_extensions;
   int num_stencil_bits = 0;
 
   /* We have to special case getting the pointer to the glGetString
@@ -203,23 +203,30 @@ _cogl_driver_update_features (CoglContext *context,
                                               "glGetString",
                                               TRUE);
 
-  COGL_NOTE (WINSYS,
-             "Checking features\n"
-             "  GL_VENDOR: %s\n"
-             "  GL_RENDERER: %s\n"
-             "  GL_VERSION: %s\n"
-             "  GL_EXTENSIONS: %s",
-             context->glGetString (GL_VENDOR),
-             context->glGetString (GL_RENDERER),
-             _cogl_context_get_gl_version (context),
-             _cogl_context_get_gl_extensions (context));
+  gl_extensions = _cogl_context_get_gl_extensions (context);
 
-  _cogl_gpu_info_init (context, &context->gpu);
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_WINSYS)))
+    {
+      char *all_extensions = g_strjoinv (" ", gl_extensions);
+
+      COGL_NOTE (WINSYS,
+                 "Checking features\n"
+                 "  GL_VENDOR: %s\n"
+                 "  GL_RENDERER: %s\n"
+                 "  GL_VERSION: %s\n"
+                 "  GL_EXTENSIONS: %s",
+                 context->glGetString (GL_VENDOR),
+                 context->glGetString (GL_RENDERER),
+                 _cogl_context_get_gl_version (context),
+                 all_extensions);
+
+      g_free (all_extensions);
+    }
 
   context->glsl_major = 1;
   context->glsl_minor = 0;
 
-  gl_extensions = _cogl_context_get_gl_extensions (context);
+  _cogl_gpu_info_init (context, &context->gpu);
 
   _cogl_feature_check_ext_functions (context,
                                      -1 /* GL major version */,
@@ -255,9 +262,16 @@ _cogl_driver_update_features (CoglContext *context,
       COGL_FLAGS_SET (context->features, COGL_FEATURE_ID_DEPTH_RANGE, TRUE);
       COGL_FLAGS_SET (context->features,
                       COGL_FEATURE_ID_MIRRORED_REPEAT, TRUE);
-    }
 
-  private_flags |= COGL_PRIVATE_FEATURE_VBOS;
+      private_flags |= COGL_PRIVATE_FEATURE_BLEND_CONSTANT;
+    }
+  else if (context->driver == COGL_DRIVER_GLES1)
+    private_flags |= (COGL_PRIVATE_FEATURE_FIXED_FUNCTION |
+                      COGL_PRIVATE_FEATURE_ALPHA_TEST |
+                      COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM);
+
+  private_flags |= (COGL_PRIVATE_FEATURE_VBOS |
+                    COGL_PRIVATE_FEATURE_ANY_GL);
 
   /* Both GLES 1.1 and GLES 2.0 support point sprites in core */
   flags |= COGL_FEATURE_POINT_SPRITE;
@@ -340,6 +354,8 @@ _cogl_driver_update_features (CoglContext *context,
   /* Cache features */
   context->private_feature_flags |= private_flags;
   context->feature_flags |= flags;
+
+  g_strfreev (gl_extensions);
 
   return TRUE;
 }

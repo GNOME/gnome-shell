@@ -216,30 +216,14 @@ validate_blend_statements (CoglBlendStringStatement *statements,
 
   _COGL_GET_CONTEXT (ctx, 0);
 
-  if (ctx->driver == COGL_DRIVER_GL)
+  if (n_statements == 2 &&
+      !ctx->glBlendEquationSeparate &&
+      statements[0].function->type != statements[1].function->type)
     {
-      if (n_statements == 2)
-        {
-          /* glBlendEquationSeperate is GL 2.0 only */
-          if (!ctx->glBlendEquationSeparate &&
-              statements[0].function->type != statements[1].function->type)
-            {
-              error_string = "Separate blend functions for the RGB an A "
-                "channels isn't supported by the driver";
-              detail = COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR;
-              goto error;
-            }
-        }
-    }
-  else if (ctx->driver == COGL_DRIVER_GLES1)
-    {
-      if (n_statements != 1)
-        {
-          error_string = "Separate blend functions for the RGB an A "
-            "channels isn't supported by the GLES 1";
-          detail = COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR;
-          goto error;
-        }
+      error_string = "Separate blend functions for the RGB an A "
+        "channels isn't supported by the driver";
+      detail = COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR;
+      goto error;
     }
 
   for (i = 0; i < n_statements; i++)
@@ -262,12 +246,13 @@ validate_blend_statements (CoglBlendStringStatement *statements,
             goto error;
           }
 
-        if (ctx->driver == COGL_DRIVER_GLES1 &&
+        if (!(ctx->private_feature_flags &
+              COGL_PRIVATE_FEATURE_BLEND_CONSTANT) &&
             arg->factor.is_color &&
             (arg->factor.source.info->type ==
              COGL_BLEND_STRING_COLOR_SOURCE_CONSTANT))
           {
-            error_string = "GLES Doesn't support constant blend factors";
+            error_string = "Driver doesn't support constant blend factors";
             detail = COGL_BLEND_STRING_ERROR_GPU_UNSUPPORTED_ERROR;
             goto error;
           }

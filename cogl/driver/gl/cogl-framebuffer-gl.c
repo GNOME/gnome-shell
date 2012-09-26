@@ -896,8 +896,8 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
     return;
 
 #ifdef HAVE_COGL_GL
-  if (ctx->driver == COGL_DRIVER_GL &&
-      cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN) &&
+  if ((ctx->private_feature_flags &
+       COGL_PRIVATE_FEATURE_QUERY_FRAMEBUFFER_BITS) &&
       framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN)
     {
       GLenum attachment, pname;

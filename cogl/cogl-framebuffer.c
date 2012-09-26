@@ -1556,7 +1556,8 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
      GL_RGBA/GL_UNSIGNED_BYTE and convert if necessary. We also need
      to use this intermediate buffer if the rowstride has padding
      because GLES does not support setting GL_ROW_LENGTH */
-  if ((ctx->driver != COGL_DRIVER_GL &&
+  if ((!(ctx->private_feature_flags &
+         COGL_PRIVATE_FEATURE_READ_PIXELS_ANY_FORMAT) &&
        (gl_format != GL_RGBA || gl_type != GL_UNSIGNED_BYTE ||
         cogl_bitmap_get_rowstride (bitmap) != 4 * width)) ||
       (required_format & ~COGL_PREMULT_BIT) != (format & ~COGL_PREMULT_BIT))
@@ -1567,7 +1568,8 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
       uint8_t *tmp_data;
       int succeeded;
 
-      if (ctx->driver == COGL_DRIVER_GL)
+      if ((ctx->private_feature_flags &
+           COGL_PRIVATE_FEATURE_READ_PIXELS_ANY_FORMAT))
         read_format = required_format;
       else
         {

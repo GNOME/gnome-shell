@@ -53,7 +53,8 @@ test_utils_init (TestFlags flags)
   renderer = cogl_display_get_renderer (display);
 
   if (flags & TEST_REQUIREMENT_GL &&
-      cogl_renderer_get_driver (renderer) != COGL_DRIVER_GL)
+      cogl_renderer_get_driver (renderer) != COGL_DRIVER_GL &&
+      cogl_renderer_get_driver (renderer) != COGL_DRIVER_GL3)
     {
       missing_requirement = TRUE;
     }

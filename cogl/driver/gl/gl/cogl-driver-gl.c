@@ -291,10 +291,10 @@ _cogl_get_gl_version (CoglContext *ctx,
 
 static CoglBool
 check_gl_version (CoglContext *ctx,
+                  char **gl_extensions,
                   CoglError **error)
 {
   int major, minor;
-  const char *gl_extensions;
 
   if (!_cogl_get_gl_version (ctx, &major, &minor))
     {
@@ -308,8 +308,6 @@ check_gl_version (CoglContext *ctx,
   /* GL 1.3 supports all of the required functionality in core */
   if (COGL_CHECK_GL_VERSION (major, minor, 1, 3))
     return TRUE;
-
-  gl_extensions = _cogl_context_get_gl_extensions (ctx);
 
   /* OpenGL 1.2 is only supported if we have the multitexturing
      extension */
@@ -344,32 +342,49 @@ _cogl_driver_update_features (CoglContext *ctx,
 {
   CoglPrivateFeatureFlags private_flags = 0;
   CoglFeatureFlags flags = 0;
-  const char *gl_extensions;
+  char **gl_extensions;
   int max_clip_planes = 0;
   int num_stencil_bits = 0;
   int gl_major = 0, gl_minor = 0;
 
-  /* We have to special case getting the pointer to the glGetString
-     function because we need to use it to determine what functions we
-     can expect */
+  /* We have to special case getting the pointer to the glGetString*
+     functions because we need to use them to determine what functions
+     we can expect */
   ctx->glGetString =
     (void *) _cogl_renderer_get_proc_address (ctx->display->renderer,
                                               "glGetString",
                                               TRUE);
+  ctx->glGetStringi =
+    (void *) _cogl_renderer_get_proc_address (ctx->display->renderer,
+                                              "glGetStringi",
+                                              TRUE);
+  ctx->glGetIntegerv =
+    (void *) _cogl_renderer_get_proc_address (ctx->display->renderer,
+                                              "glGetIntegerv",
+                                              TRUE);
 
-  if (!check_gl_version (ctx, error))
+  gl_extensions = _cogl_context_get_gl_extensions (ctx);
+
+  if (!check_gl_version (ctx, gl_extensions, error))
     return FALSE;
 
-  COGL_NOTE (WINSYS,
-             "Checking features\n"
-             "  GL_VENDOR: %s\n"
-             "  GL_RENDERER: %s\n"
-             "  GL_VERSION: %s\n"
-             "  GL_EXTENSIONS: %s",
-             ctx->glGetString (GL_VENDOR),
-             ctx->glGetString (GL_RENDERER),
-             _cogl_context_get_gl_version (ctx),
-             _cogl_context_get_gl_extensions (ctx));
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_WINSYS)))
+    {
+      char *all_extensions = g_strjoinv (" ", gl_extensions);
+
+      COGL_NOTE (WINSYS,
+                 "Checking features\n"
+                 "  GL_VENDOR: %s\n"
+                 "  GL_RENDERER: %s\n"
+                 "  GL_VERSION: %s\n"
+                 "  GL_EXTENSIONS: %s",
+                 ctx->glGetString (GL_VENDOR),
+                 ctx->glGetString (GL_RENDERER),
+                 _cogl_context_get_gl_version (ctx),
+                 all_extensions);
+
+      g_free (all_extensions);
+    }
 
   _cogl_get_gl_version (ctx, &gl_major, &gl_minor);
 
@@ -394,8 +409,6 @@ _cogl_driver_update_features (CoglContext *ctx,
 
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 1, 4))
     COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_MIRRORED_REPEAT, TRUE);
-
-  gl_extensions = _cogl_context_get_gl_extensions (ctx);
 
   _cogl_feature_check_ext_functions (ctx,
                                      gl_major,
@@ -434,6 +447,7 @@ _cogl_driver_update_features (CoglContext *ctx,
     {
       flags |= COGL_FEATURE_OFFSCREEN;
       COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_OFFSCREEN, TRUE);
+      private_flags |= COGL_PRIVATE_FEATURE_QUERY_FRAMEBUFFER_BITS;
     }
 
   if (ctx->glBlitFramebuffer)
@@ -456,6 +470,10 @@ _cogl_driver_update_features (CoglContext *ctx,
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 1) ||
       _cogl_check_extension ("GL_EXT_pixel_buffer_object", gl_extensions))
     private_flags |= COGL_PRIVATE_FEATURE_PBOS;
+
+  if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 1, 4) ||
+      _cogl_check_extension ("GL_EXT_blend_color", gl_extensions))
+    private_flags |= COGL_PRIVATE_FEATURE_BLEND_CONSTANT;
 
   if (ctx->glGenPrograms)
     {
@@ -546,9 +564,24 @@ _cogl_driver_update_features (CoglContext *ctx,
   if (ctx->glGenSamplers)
     private_flags |= COGL_PRIVATE_FEATURE_SAMPLER_OBJECTS;
 
+  if (ctx->driver == COGL_DRIVER_GL)
+    /* Features which are not available in GL 3 */
+    private_flags |= (COGL_PRIVATE_FEATURE_FIXED_FUNCTION |
+                      COGL_PRIVATE_FEATURE_ALPHA_TEST |
+                      COGL_PRIVATE_FEATURE_QUADS);
+
+  private_flags |= (COGL_PRIVATE_FEATURE_READ_PIXELS_ANY_FORMAT |
+                    COGL_PRIVATE_FEATURE_ANY_GL |
+                    COGL_PRIVATE_FEATURE_FORMAT_CONVERSION |
+                    COGL_PRIVATE_FEATURE_BLEND_CONSTANT |
+                    COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM |
+                    COGL_PRIVATE_FEATURE_QUERY_TEXTURE_PARAMETERS);
+
   /* Cache features */
   ctx->private_feature_flags |= private_flags;
   ctx->feature_flags |= flags;
+
+  g_strfreev (gl_extensions);
 
   return TRUE;
 }

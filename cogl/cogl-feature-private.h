@@ -87,13 +87,13 @@ _cogl_feature_check (CoglRenderer *renderer,
                      int gl_major,
                      int gl_minor,
                      CoglDriver driver,
-                     const char *extensions_string,
+                     char * const *extensions,
                      void *function_table);
 
 void
 _cogl_feature_check_ext_functions (CoglContext *context,
                                    int gl_major,
                                    int gl_minor,
-                                   const char *gl_extensions);
+                                   char * const *gl_extensions);
 
 #endif /* __COGL_FEATURE_PRIVATE_H */
