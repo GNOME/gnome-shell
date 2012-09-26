@@ -11,8 +11,8 @@ msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-30 11:33+0000\n"
-"PO-Revision-Date: 2012-08-31 14:59+0200\n"
+"POT-Creation-Date: 2012-09-26 02:01+0000\n"
+"PO-Revision-Date: 2012-09-26 11:15+0200\n"
 "Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
 "Language-Team: team@gnome.gr\n"
 "Language: el\n"
@@ -47,6 +47,23 @@ msgstr ""
 #: ../cogl/cogl-debug.c:193
 msgid "Override the GL version that Cogl will assume the driver supports"
 msgstr ""
+"Παράκαμψη της έκδοσης GL όπου το Cogl θα υποθέσει την υποστήριξη του οδηγού"
+
+#: ../cogl/cogl-debug.c:237
+msgid "Cogl debugging flags to set"
+msgstr "Ενεργοποίηση σημαιών αποσφαλμάτωσης Cogl"
+
+#: ../cogl/cogl-debug.c:239
+msgid "Cogl debugging flags to unset"
+msgstr "Απενεργοποίηση σημαιών αποσφαλμάτωσης Cogl"
+
+#: ../cogl/cogl-debug.c:288
+msgid "Cogl Options"
+msgstr "Επιλογές Cogl"
+
+#: ../cogl/cogl-debug.c:289
+msgid "Show Cogl options"
+msgstr "Εμφάνιση επιλογών Cogl"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
@@ -355,15 +372,3 @@ msgstr "Ανησυχίες επιδόσεων ανίχνευσης "
 #: ../cogl/cogl-debug-options.h:192
 msgid "Tries to highlight sub-optimal Cogl usage."
 msgstr "Προσπαθεί να αναδείξει την υποβέλτιστη χρήση του Cogl."
-
-#~ msgid "Cogl debugging flags to set"
-#~ msgstr "Ενεργοποίηση σημαιών αποσφαλμάτωσης Cogl"
-
-#~ msgid "Cogl debugging flags to unset"
-#~ msgstr "Απενεργοποίηση σημαιών αποσφαλμάτωσης Cogl"
-
-#~ msgid "Cogl Options"
-#~ msgstr "Επιλογές Cogl"
-
-#~ msgid "Show Cogl options"
-#~ msgstr "Εμφάνιση επιλογών Cogl"
