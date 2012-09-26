@@ -226,6 +226,16 @@ clutter_threads_impl_lock (void)
 static void
 clutter_threads_impl_unlock (void)
 {
+  /* we need to trylock here, in case the lock hasn't been acquired; on
+   * various systems trying to release a mutex that hasn't been acquired
+   * will cause a run-time error. trylock() will either fail, in which
+   * case we can release the lock we own; or it will succeeds, in which
+   * case we need to release the lock we just acquired. so we ignore the
+   * returned value.
+   *
+   * see: https://bugs.gnome.org/679439
+   */
+  g_mutex_trylock (&clutter_threads_mutex);
   g_mutex_unlock (&clutter_threads_mutex);
 }
 
