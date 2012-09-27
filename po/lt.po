@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-19 11:02+0000\n"
-"PO-Revision-Date: 2012-09-21 20:53+0300\n"
+"POT-Creation-Date: 2012-09-25 00:06+0000\n"
+"PO-Revision-Date: 2012-09-27 22:25+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lithuanian\n"
 "Language: lt\n"
@@ -29,12 +29,10 @@ msgid "Record a screencast"
 msgstr "Įrašyti ekrano veiksmus"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
-#| msgid "File System"
 msgid "System"
 msgstr "Sistema"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-#| msgid "Message Tray"
 msgid "Show the message tray"
 msgstr "Rodyti pranešimų juostą"
 
@@ -181,11 +179,11 @@ msgstr "Plėtinys"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Išskleidžiamajame sąraše pasirinkite konfigūruotiną plėtinį."
 
-#: ../js/gdm/loginDialog.js:526
+#: ../js/gdm/loginDialog.js:527
 msgid "Session..."
 msgstr "Seansas..."
 
-#: ../js/gdm/loginDialog.js:674
+#: ../js/gdm/loginDialog.js:675
 msgctxt "title"
 msgid "Sign In"
 msgstr "Prisijungti"
@@ -193,11 +191,11 @@ msgstr "Prisijungti"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:741
+#: ../js/gdm/loginDialog.js:742
 msgid "Not listed?"
 msgstr "Nėra sąraše?"
 
-#: ../js/gdm/loginDialog.js:894
+#: ../js/gdm/loginDialog.js:895
 #: ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162
 #: ../js/ui/endSessionDialog.js:373
@@ -208,35 +206,40 @@ msgstr "Nėra sąraše?"
 msgid "Cancel"
 msgstr "Atsisakyti"
 
-#: ../js/gdm/loginDialog.js:899
+#: ../js/gdm/loginDialog.js:900
 msgctxt "button"
 msgid "Sign In"
 msgstr "Prisijungti"
 
-#: ../js/gdm/loginDialog.js:1238
+#: ../js/gdm/loginDialog.js:1239
 msgid "Login Window"
 msgstr "Prisijungimo langas"
 
-#: ../js/gdm/powerMenu.js:88
-#: ../js/ui/userMenu.js:658
-#: ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:773
+#. Translators: accessible name of the power menu in the login screen
+#: ../js/gdm/powerMenu.js:35
+#| msgid "Power Off"
+msgid "Power"
+msgstr "Energija"
+
+#: ../js/gdm/powerMenu.js:89
+#: ../js/ui/userMenu.js:663
+#: ../js/ui/userMenu.js:667
+#: ../js/ui/userMenu.js:778
 msgid "Suspend"
 msgstr "Užmigdyti"
 
-#: ../js/gdm/powerMenu.js:93
+#: ../js/gdm/powerMenu.js:94
 msgid "Restart"
 msgstr "Paleisti iš naujo"
 
-#: ../js/gdm/powerMenu.js:98
-#: ../js/ui/userMenu.js:660
-#: ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:772
+#: ../js/gdm/powerMenu.js:99
+#: ../js/ui/userMenu.js:665
+#: ../js/ui/userMenu.js:667
+#: ../js/ui/userMenu.js:777
 msgid "Power Off"
 msgstr "Išjungti"
 
 #: ../js/gdm/util.js:148
-#| msgid "Authentication Required"
 msgid "Authentication error"
 msgstr "Tapatybės patvirtinimo klaida"
 
@@ -945,7 +948,7 @@ msgid "tray"
 msgstr "dėklas"
 
 #: ../js/ui/keyboard.js:561
-#: ../js/ui/status/keyboard.js:194
+#: ../js/ui/status/keyboard.js:195
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "Klaviatūra"
@@ -1008,11 +1011,11 @@ msgstr "Atverti"
 msgid "Remove"
 msgstr "Pašalinti"
 
-#: ../js/ui/messageTray.js:2052
+#: ../js/ui/messageTray.js:2055
 msgid "Message Tray"
 msgstr "Pranešimų juosta"
 
-#: ../js/ui/messageTray.js:2508
+#: ../js/ui/messageTray.js:2511
 msgid "System Information"
 msgstr "Sistemos informacija"
 
@@ -1311,11 +1314,11 @@ msgstr "Įveskite PIN, nurodytą įrenginyje."
 msgid "OK"
 msgstr "Gerai"
 
-#: ../js/ui/status/keyboard.js:227
+#: ../js/ui/status/keyboard.js:228
 msgid "Show Keyboard Layout"
 msgstr "Rodyti klaviatūros išdėstymą"
 
-#: ../js/ui/status/keyboard.js:232
+#: ../js/ui/status/keyboard.js:233
 msgid "Region and Language Settings"
 msgstr "Regiono ir kalbos nustatymai"
 
@@ -1561,64 +1564,64 @@ msgstr "Mikrofonas"
 msgid "Log in as another user"
 msgstr "Prisijungti kaip kitas naudotojas"
 
-#: ../js/ui/userMenu.js:175
+#: ../js/ui/userMenu.js:180
 msgid "Available"
 msgstr "Esu"
 
-#: ../js/ui/userMenu.js:178
+#: ../js/ui/userMenu.js:183
 msgid "Busy"
 msgstr "Užsiėmęs (-usi)"
 
-#: ../js/ui/userMenu.js:181
+#: ../js/ui/userMenu.js:186
 msgid "Invisible"
 msgstr "Nematomas"
 
-#: ../js/ui/userMenu.js:184
+#: ../js/ui/userMenu.js:189
 msgid "Away"
 msgstr "Išėjęs (-usi)"
 
-#: ../js/ui/userMenu.js:187
+#: ../js/ui/userMenu.js:192
 msgid "Idle"
 msgstr "Neužimtas"
 
-#: ../js/ui/userMenu.js:190
+#: ../js/ui/userMenu.js:195
 msgid "Unavailable"
 msgstr "Nepasiekiamas"
 
-#: ../js/ui/userMenu.js:613
-#: ../js/ui/userMenu.js:754
+#: ../js/ui/userMenu.js:618
+#: ../js/ui/userMenu.js:759
 msgid "Switch User"
 msgstr "Keisti naudotoją"
 
-#: ../js/ui/userMenu.js:614
+#: ../js/ui/userMenu.js:619
 msgid "Switch Session"
 msgstr "Perjungti seansą"
 
-#: ../js/ui/userMenu.js:738
+#: ../js/ui/userMenu.js:743
 msgid "Notifications"
 msgstr "Pranešimai"
 
-#: ../js/ui/userMenu.js:746
+#: ../js/ui/userMenu.js:751
 msgid "System Settings"
 msgstr "Sistemos nustatymai"
 
-#: ../js/ui/userMenu.js:759
+#: ../js/ui/userMenu.js:764
 msgid "Log Out"
 msgstr "Atsijungti"
 
-#: ../js/ui/userMenu.js:764
+#: ../js/ui/userMenu.js:769
 msgid "Lock"
 msgstr "Užrakinti"
 
-#: ../js/ui/userMenu.js:779
+#: ../js/ui/userMenu.js:784
 msgid "Install Updates & Restart"
 msgstr "Įdiegti atnaujinimus ir įkelti iš naujo"
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:802
 msgid "Your chat status will be set to busy"
 msgstr "Jūsų pokalbio būsena bus nustatyta į užimta"
 
-#: ../js/ui/userMenu.js:798
+#: ../js/ui/userMenu.js:803
 msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
 msgstr "Pranešimai šiuo metu yra išjungti, įskaitant pokalbių pranešimus. Jūsų būsena internete atitinkamai pakoreguota, kad kiti galėtų žinoti, jog jūs galite nepamatyti jų pranešimų."
 
@@ -1726,20 +1729,3 @@ msgstr "Numatytasis"
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Naudotojas užvėrė tapatybės patvirtinimo dialogą"
 
-#~ msgid "disabled OpenSearch providers"
-#~ msgstr "išjungti OpenSearch tiekėjai"
-
-#~ msgid "Failed to unmount '%s'"
-#~ msgstr "Nepavyko atjungti „%s“"
-
-#~ msgid "Retry"
-#~ msgstr "Bandyti dar kartą"
-
-#~ msgid "PLACES & DEVICES"
-#~ msgstr "VIETOS IR ĮRENGINIAI"
-
-#~ msgid "Home"
-#~ msgstr "Namų aplankas"
-
-#~ msgid "%1$s: %2$s"
-#~ msgstr "%1$s: %2$s"
