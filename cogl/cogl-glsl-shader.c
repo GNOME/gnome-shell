@@ -44,7 +44,6 @@ _cogl_glsl_shader_set_source_with_boilerplate (CoglContext *ctx,
                                                const char *version_string,
                                                GLuint shader_gl_handle,
                                                GLenum shader_gl_type,
-                                               int n_tex_coord_attribs,
                                                GLsizei count_in,
                                                const char **strings_in,
                                                const GLint *lengths_in)
@@ -84,33 +83,6 @@ _cogl_glsl_shader_set_source_with_boilerplate (CoglContext *ctx,
     {
       strings[count] = fragment_boilerplate;
       lengths[count++] = strlen (fragment_boilerplate);
-    }
-
-  if (n_tex_coord_attribs)
-    {
-      GString *declarations = g_string_new (NULL);
-
-      g_string_append_printf (declarations,
-                              "varying vec4 _cogl_tex_coord[%d];\n",
-                              n_tex_coord_attribs);
-
-      if (shader_gl_type == GL_VERTEX_SHADER)
-        {
-          int i;
-
-          g_string_append_printf (declarations,
-                                  "uniform mat4 cogl_texture_matrix[%d];\n",
-                                  n_tex_coord_attribs);
-
-          for (i = 0; i < n_tex_coord_attribs; i++)
-            g_string_append_printf (declarations,
-                                    "attribute vec4 cogl_tex_coord%d_in;\n",
-                                    i);
-        }
-
-      tex_coord_declarations = g_string_free (declarations, FALSE);
-      strings[count] = tex_coord_declarations;
-      lengths[count++] = -1; /* null terminated */
     }
 
   memcpy (strings + count, strings_in, sizeof (char *) * count_in);

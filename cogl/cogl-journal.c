@@ -465,6 +465,67 @@ compare_entry_pipelines (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
     return FALSE;
 }
 
+typedef struct _CreateAttributeState
+{
+  int current;
+  CoglJournalFlushState *flush_state;
+} CreateAttributeState;
+
+static CoglBool
+create_attribute_cb (CoglPipeline *pipeline,
+                     int layer_number,
+                     void *user_data)
+{
+  CreateAttributeState *state = user_data;
+  CoglJournalFlushState *flush_state = state->flush_state;
+  CoglAttribute **attribute_entry =
+    &g_array_index (flush_state->attributes,
+                    CoglAttribute *,
+                    state->current + 2);
+  const char *names[] = {
+      "cogl_tex_coord0_in",
+      "cogl_tex_coord1_in",
+      "cogl_tex_coord2_in",
+      "cogl_tex_coord3_in",
+      "cogl_tex_coord4_in",
+      "cogl_tex_coord5_in",
+      "cogl_tex_coord6_in",
+      "cogl_tex_coord7_in"
+  };
+  char *name;
+
+  /* XXX NB:
+   * Our journal's vertex data is arranged as follows:
+   * 4 vertices per quad:
+   *    2 or 3 floats per position (3 when doing software transforms)
+   *    4 RGBA bytes,
+   *    2 floats per tex coord * n_layers
+   * (though n_layers may be padded; see definition of
+   *  GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS for details)
+   */
+  name = layer_number < 8 ? (char *)names[layer_number] :
+    g_strdup_printf ("cogl_tex_coord%d_in", layer_number);
+
+  /* XXX: it may be worth having some form of static initializer for
+   * attributes... */
+  *attribute_entry =
+    cogl_attribute_new (flush_state->attribute_buffer,
+                        name,
+                        flush_state->stride,
+                        flush_state->array_offset +
+                        (POS_STRIDE + COLOR_STRIDE) * 4 +
+                        TEX_STRIDE * 4 * state->current,
+                        2,
+                        COGL_ATTRIBUTE_TYPE_FLOAT);
+
+  if (layer_number >= 8)
+    g_free (name);
+
+  state->current++;
+
+  return TRUE;
+}
+
 /* Since the stride may not reflect the number of texture layers in use
  * (due to padding) we deal with texture coordinate offsets separately
  * from vertex and color offsets... */
@@ -475,7 +536,8 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
                                           void             *data)
 {
   CoglJournalFlushState *state = data;
-  int                    i;
+  CreateAttributeState create_attrib_state;
+  int i;
   COGL_STATIC_TIMER (time_flush_texcoord_pipeline_entries,
                      "flush: vbo+texcoords+pipeline+entries", /* parent */
                      "flush: texcoords+pipeline+entries",
@@ -494,49 +556,12 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
 
   g_array_set_size (state->attributes, batch_start->n_layers + 2);
 
-  for (i = 0; i < batch_start->n_layers; i++)
-    {
-      CoglAttribute **attribute_entry =
-        &g_array_index (state->attributes, CoglAttribute *, i + 2);
-      const char *names[] = {
-          "cogl_tex_coord0_in",
-          "cogl_tex_coord1_in",
-          "cogl_tex_coord2_in",
-          "cogl_tex_coord3_in",
-          "cogl_tex_coord4_in",
-          "cogl_tex_coord5_in",
-          "cogl_tex_coord6_in",
-          "cogl_tex_coord7_in"
-      };
-      char *name;
+  create_attrib_state.current = 0;
+  create_attrib_state.flush_state = state;
 
-      /* XXX NB:
-       * Our journal's vertex data is arranged as follows:
-       * 4 vertices per quad:
-       *    2 or 3 floats per position (3 when doing software transforms)
-       *    4 RGBA bytes,
-       *    2 floats per tex coord * n_layers
-       * (though n_layers may be padded; see definition of
-       *  GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS for details)
-       */
-      name = i < 8 ? (char *)names[i] :
-        g_strdup_printf ("cogl_tex_coord%d_in", i);
-
-      /* XXX: it may be worth having some form of static initializer for
-       * attributes... */
-      *attribute_entry =
-        cogl_attribute_new (state->attribute_buffer,
-                            name,
-                            state->stride,
-                            state->array_offset +
-                            (POS_STRIDE + COLOR_STRIDE) * 4 +
-                            TEX_STRIDE * 4 * i,
-                            2,
-                            COGL_ATTRIBUTE_TYPE_FLOAT);
-
-      if (i >= 8)
-        g_free (name);
-    }
+  cogl_pipeline_foreach_layer (batch_start->pipeline,
+                               create_attribute_cb,
+                               &create_attrib_state);
 
   batch_and_call (batch_start,
                   batch_len,
@@ -547,9 +572,9 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
 }
 
 static CoglBool
-compare_entry_n_layers (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
+compare_entry_layer_numbers (CoglJournalEntry *entry0, CoglJournalEntry *entry1)
 {
-  if (entry0->n_layers == entry1->n_layers)
+  if (_cogl_pipeline_layer_numbers_equal (entry0->pipeline, entry1->pipeline))
     return TRUE;
   else
     return FALSE;
@@ -646,7 +671,7 @@ _cogl_journal_flush_vbo_offsets_and_entries (CoglJournalEntry *batch_start,
 
   batch_and_call (batch_start,
                   batch_len,
-                  compare_entry_n_layers,
+                  compare_entry_layer_numbers,
                   _cogl_journal_flush_texcoord_vbo_offsets_and_entries,
                   data);
 

@@ -158,8 +158,7 @@ dirty_shader_state (CoglPipeline *pipeline)
 static void
 _cogl_pipeline_fragend_arbfp_start (CoglPipeline *pipeline,
                                     int n_layers,
-                                    unsigned long pipelines_difference,
-                                    int n_tex_coord_attribs)
+                                    unsigned long pipelines_difference)
 {
   CoglPipelineShaderState *shader_state;
   CoglPipeline *authority;

@@ -1147,8 +1147,7 @@ fragend_add_layer_cb (CoglPipelineLayer *layer,
 void
 _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
                                CoglFramebuffer *framebuffer,
-                               CoglBool skip_gl_color,
-                               int n_tex_coord_attribs)
+                               CoglBool skip_gl_color)
 {
   unsigned long pipelines_difference;
   int n_layers;
@@ -1203,16 +1202,6 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
   else
     layer_differences = NULL;
 
-  /* Make sure we generate the texture coordinate array to be at least
-     the number of layers. This is important because the vertend will
-     try to pass along the corresponding varying for each layer
-     regardless of whether the fragment shader is actually using
-     it. Also it is possible that the application is assuming that if
-     the attribute isn't passed then it will default to 0,0. This is
-     what test-cogl-primitive does */
-  if (n_layers > n_tex_coord_attribs)
-    n_tex_coord_attribs = n_layers;
-
   /* First flush everything that's the same regardless of which
    * pipeline backend is being used...
    *
@@ -1266,8 +1255,7 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
 
       vertend->start (pipeline,
                       n_layers,
-                      pipelines_difference,
-                      n_tex_coord_attribs);
+                      pipelines_difference);
 
       state.framebuffer = framebuffer;
       state.vertend = vertend;
@@ -1298,8 +1286,7 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
 
       fragend->start (pipeline,
                       n_layers,
-                      pipelines_difference,
-                      n_tex_coord_attribs);
+                      pipelines_difference);
 
       _cogl_pipeline_foreach_layer_internal (pipeline,
                                              fragend_add_layer_cb,
@@ -1319,7 +1306,7 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
         continue;
 
       if (progend->end)
-        progend->end (pipeline, pipelines_difference, n_tex_coord_attribs);
+        progend->end (pipeline, pipelines_difference);
       break;
     }
 

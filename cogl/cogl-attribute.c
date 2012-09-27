@@ -64,12 +64,12 @@ validate_cogl_attribute_name (const char *name,
                               char **real_attribute_name,
                               CoglAttributeNameID *name_id,
                               CoglBool *normalized,
-                              int *texture_unit)
+                              int *layer_number)
 {
   name = name + 5; /* skip "cogl_" */
 
   *normalized = FALSE;
-  *texture_unit = 0;
+  *layer_number = 0;
 
   if (strcmp (name, "position_in") == 0)
     *name_id = COGL_ATTRIBUTE_NAME_ID_POSITION_ARRAY;
@@ -86,7 +86,7 @@ validate_cogl_attribute_name (const char *name,
   else if (strncmp (name, "tex_coord", strlen ("tex_coord")) == 0)
     {
       char *endptr;
-      *texture_unit = strtoul (name + 9, &endptr, 10);
+      *layer_number = strtoul (name + 9, &endptr, 10);
       if (strcmp (endptr, "_in") != 0)
 	{
 	  g_warning ("Texture coordinate attributes should either be named "
@@ -126,14 +126,14 @@ _cogl_attribute_register_attribute_name (CoglContext *context,
                                          &name_state->name,
                                          &name_state->name_id,
                                          &name_state->normalized_default,
-                                         &name_state->texture_unit))
+                                         &name_state->layer_number))
         goto error;
     }
   else
     {
       name_state->name_id = COGL_ATTRIBUTE_NAME_ID_CUSTOM_ARRAY;
       name_state->normalized_default = FALSE;
-      name_state->texture_unit = 0;
+      name_state->layer_number = 0;
     }
 
   if (name_state->name == NULL)

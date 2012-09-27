@@ -218,7 +218,6 @@ _cogl_gl_flush_attributes_state (CoglFramebuffer *framebuffer,
   int i;
   CoglBool skip_gl_color = FALSE;
   CoglPipeline *copy = NULL;
-  int n_tex_coord_attribs = 0;
 
   /* Iterate the attributes to work out whether blending needs to be
      enabled and how many texture coords there are. We need to do this
@@ -237,10 +236,6 @@ _cogl_gl_flush_attributes_state (CoglFramebuffer *framebuffer,
             pipeline = copy;
           }
         skip_gl_color = TRUE;
-        break;
-
-      case COGL_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY:
-        n_tex_coord_attribs++;
         break;
 
       default:
@@ -293,8 +288,7 @@ _cogl_gl_flush_attributes_state (CoglFramebuffer *framebuffer,
 
   _cogl_pipeline_flush_gl_state (pipeline,
                                  framebuffer,
-                                 skip_gl_color,
-                                 n_tex_coord_attribs);
+                                 skip_gl_color);
 
   _cogl_bitmask_clear_all (&ctx->enable_builtin_attributes_tmp);
   _cogl_bitmask_clear_all (&ctx->enable_texcoord_attributes_tmp);
@@ -353,11 +347,14 @@ _cogl_gl_flush_attributes_state (CoglFramebuffer *framebuffer,
           else
 #endif
             {
+              int layer_number = attribute->name_state->layer_number;
+              CoglPipelineLayer *layer =
+                _cogl_pipeline_get_layer (pipeline, layer_number);
+              int unit = _cogl_pipeline_layer_get_unit_index (layer);
+
               _cogl_bitmask_set (&ctx->enable_texcoord_attributes_tmp,
-                                 attribute->name_state->texture_unit, TRUE);
-              GE (ctx,
-                  glClientActiveTexture (GL_TEXTURE0 +
-                                         attribute->name_state->texture_unit));
+                                 unit, TRUE);
+              GE (ctx, glClientActiveTexture (GL_TEXTURE0 + unit));
               GE (ctx, glTexCoordPointer (attribute->n_components,
                                           attribute->type,
                                           attribute->stride,

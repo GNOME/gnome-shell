@@ -48,7 +48,7 @@ typedef struct _CoglAttributeNameState
   CoglAttributeNameID name_id;
   int name_index;
   CoglBool normalized_default;
-  int texture_unit;
+  int layer_number;
 } CoglAttributeNameState;
 
 struct _CoglAttribute

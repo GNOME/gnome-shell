@@ -489,8 +489,7 @@ typedef struct _CoglPipelineFragend
 {
   void (*start) (CoglPipeline *pipeline,
                  int n_layers,
-                 unsigned long pipelines_difference,
-                 int n_tex_coord_attribs);
+                 unsigned long pipelines_difference);
   CoglBool (*add_layer) (CoglPipeline *pipeline,
                          CoglPipelineLayer *layer,
                          unsigned long layers_difference);
@@ -511,8 +510,7 @@ typedef struct _CoglPipelineVertend
 {
   void (*start) (CoglPipeline *pipeline,
                  int n_layers,
-                 unsigned long pipelines_difference,
-                 int n_tex_coord_attribs);
+                 unsigned long pipelines_difference);
   CoglBool (*add_layer) (CoglPipeline *pipeline,
                          CoglPipelineLayer *layer,
                          unsigned long layers_difference,
@@ -534,8 +532,7 @@ typedef struct
   int fragend;
   CoglBool (*start) (CoglPipeline *pipeline);
   void (*end) (CoglPipeline *pipeline,
-               unsigned long pipelines_difference,
-               int n_tex_coord_attribs);
+               unsigned long pipelines_difference);
   void (*pipeline_pre_change_notify) (CoglPipeline *pipeline,
                                       CoglPipelineState change,
                                       const CoglColor *new_color);
@@ -927,6 +924,10 @@ void
 _cogl_pipeline_foreach_layer_internal (CoglPipeline *pipeline,
                                        CoglPipelineInternalLayerCallback callback,
                                        void *user_data);
+
+CoglBool
+_cogl_pipeline_layer_numbers_equal (CoglPipeline *pipeline0,
+                                    CoglPipeline *pipeline1);
 
 CoglBool
 _cogl_pipeline_need_texture_combine_separate

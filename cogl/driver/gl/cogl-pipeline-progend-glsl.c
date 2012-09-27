@@ -109,15 +109,6 @@ typedef struct
 
   GLuint program;
 
-  /* To allow writing shaders that are portable between GLES 2 and
-   * OpenGL Cogl prepends a number of boilerplate #defines and
-   * declarations to user shaders. One of those declarations is an
-   * array of texture coordinate varyings, but to know how to emit the
-   * declaration we need to know how many texture coordinate
-   * attributes are in use.  The boilerplate also needs to be changed
-   * if this changes. */
-  int n_tex_coord_attribs;
-
   unsigned long dirty_builtin_uniforms;
   GLint builtin_uniform_locations[G_N_ELEMENTS (builtin_uniforms)];
 
@@ -244,7 +235,6 @@ program_state_new (int n_layers)
   program_state = g_slice_new (CoglPipelineProgramState);
   program_state->ref_count = 1;
   program_state->program = 0;
-  program_state->n_tex_coord_attribs = 0;
   program_state->unit_state = g_new (UnitState, n_layers);
   program_state->uniform_locations = NULL;
   program_state->attribute_locations = NULL;
@@ -387,7 +377,7 @@ get_uniform_cb (CoglPipeline *pipeline,
 
   g_string_set_size (ctx->codegen_source_buffer, 0);
   g_string_append_printf (ctx->codegen_source_buffer,
-                          "cogl_texture_matrix[%i]", state->unit);
+                          "cogl_texture_matrix%i", layer_index);
 
   GE_RET( uniform_location,
           ctx, glGetUniformLocation (state->gl_program,
@@ -644,8 +634,7 @@ _cogl_pipeline_progend_glsl_start (CoglPipeline *pipeline)
 
 static void
 _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
-                                 unsigned long pipelines_difference,
-                                 int n_tex_coord_attribs)
+                                 unsigned long pipelines_difference)
 {
   CoglPipelineProgramState *program_state;
   GLuint gl_program;
@@ -714,14 +703,9 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
     }
 
   /* If the program has changed since the last link then we do
-   * need to relink
-   *
-   * Also if the number of texture coordinate attributes in use has
-   * changed, then delete the program so we can prepend a new
-   * _cogl_tex_coord[] varying array declaration. */
-  if ((program_state->program && user_program &&
-       user_program->age != program_state->user_program_age) ||
-       n_tex_coord_attribs != program_state->n_tex_coord_attribs)
+   * need to relink */
+  if (program_state->program && user_program &&
+       user_program->age != program_state->user_program_age)
     {
       GE( ctx, glDeleteProgram (program_state->program) );
       program_state->program = 0;
@@ -741,7 +725,7 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
             {
               CoglShader *shader = l->data;
 
-              _cogl_shader_compile_real (shader, n_tex_coord_attribs);
+              _cogl_shader_compile_real (shader, 4);
 
               g_assert (shader->language == COGL_SHADER_LANGUAGE_GLSL);
 
@@ -761,8 +745,6 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
       link_program (program_state->program);
 
       program_changed = TRUE;
-
-      program_state->n_tex_coord_attribs = n_tex_coord_attribs;
     }
 
   gl_program = program_state->program;

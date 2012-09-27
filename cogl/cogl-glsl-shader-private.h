@@ -28,7 +28,6 @@ _cogl_glsl_shader_set_source_with_boilerplate (CoglContext *ctx,
                                                const char *version_string,
                                                GLuint shader_gl_handle,
                                                GLenum shader_gl_type,
-                                               int n_tex_coord_attribs,
                                                GLsizei count_in,
                                                const char **strings_in,
                                                const GLint *lengths_in);

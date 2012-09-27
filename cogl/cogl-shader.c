@@ -253,7 +253,6 @@ _cogl_shader_compile_real (CoglHandle handle,
                                                      version,
                                                      shader->gl_handle,
                                                      gl_type,
-                                                     n_tex_coord_attribs,
                                                      1,
                                                      (const char **)
                                                       &shader->source,
