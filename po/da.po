@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-22 12:27+0200\n"
-"PO-Revision-Date: 2012-09-21 22:28+0200\n"
+"POT-Creation-Date: 2012-09-27 22:54+0200\n"
+"PO-Revision-Date: 2012-09-25 09:19+0200\n"
 "Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -29,21 +29,19 @@ msgstr ""
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:1
 msgid "Screenshots"
-msgstr ""
+msgstr "Skærmbilleder"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:2
 msgid "Record a screencast"
-msgstr ""
+msgstr "Optag en skærmoptagelse"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
-#, fuzzy
 msgid "System"
-msgstr "Filsystem"
+msgstr "System"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-#, fuzzy
 msgid "Show the message tray"
-msgstr "Besked-statusfelt"
+msgstr "Vis besked-statusfeltet"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -202,7 +200,7 @@ msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Datakanalen for Gstreamer bruges til indkodning af skærmoptagelsen"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
-#, fuzzy, no-c-format
+#, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -222,9 +220,10 @@ msgstr ""
 "outputfilen. Dog kan datakanalen også tage sig af sit eget output - dette "
 "kan bruges til at sende outputtet til en icecast-server via shout2send eller "
 "lignende. Når der ændres til en tom værdi, vil standarddatakanalen blive "
-"brugt. Dette er i øjeblikket \"vp8enc quality=8 speed=6 threads=%T ! queue ! "
-"webmmux\" og optager i WEBM-formatet med VP8-codec'et. %T bruges som "
-"pladsholder for et gæt om det optimale trådantal på systemet."
+"brugt. Dette er i øjeblikket \"vp8enc min_quantizer=13 max_quantizer=13 cpu-"
+"used=5 deadline=1000000 threads=%T ! queue ! webmmux\" og optager i WEBM-"
+"formatet med VP8-codec'et. %T bruges som pladsholder for et gæt om det "
+"optimale trådantal på systemet."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "File extension used for storing the screencast"
@@ -254,11 +253,11 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Vælg en udvidelse at konfigurere ved hjælp af kombinationsboksen ovenfor."
 
-#: ../js/gdm/loginDialog.js:526
+#: ../js/gdm/loginDialog.js:528
 msgid "Session..."
 msgstr "Session..."
 
-#: ../js/gdm/loginDialog.js:674
+#: ../js/gdm/loginDialog.js:676
 msgctxt "title"
 msgid "Sign In"
 msgstr "Log ind"
@@ -266,44 +265,49 @@ msgstr "Log ind"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:741
+#: ../js/gdm/loginDialog.js:743
 msgid "Not listed?"
 msgstr "Ikke listet?"
 
-#: ../js/gdm/loginDialog.js:894 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:896 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
 #: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "Annullér"
 
-#: ../js/gdm/loginDialog.js:899
+#: ../js/gdm/loginDialog.js:901
 msgctxt "button"
 msgid "Sign In"
 msgstr "Log ind"
 
-#: ../js/gdm/loginDialog.js:1238
+#: ../js/gdm/loginDialog.js:1240
 msgid "Login Window"
 msgstr "Indlogningsvindue"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:658 ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:773
+#. Translators: accessible name of the power menu in the login screen
+#: ../js/gdm/powerMenu.js:35
+#, fuzzy
+msgid "Power"
+msgstr "Sluk"
+
+#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:663 ../js/ui/userMenu.js:667
+#: ../js/ui/userMenu.js:778
 msgid "Suspend"
 msgstr "Hviletilstand"
 
-#: ../js/gdm/powerMenu.js:93
+#: ../js/gdm/powerMenu.js:94
 msgid "Restart"
 msgstr "Genstart"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:772
+#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:665 ../js/ui/userMenu.js:667
+#: ../js/ui/userMenu.js:777
 msgid "Power Off"
 msgstr "Sluk"
 
 #: ../js/gdm/util.js:148
-#, fuzzy
 msgid "Authentication error"
-msgstr "Godkendelse er påkrævet"
+msgstr "Godkendelsesfejl"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
@@ -1009,11 +1013,11 @@ msgstr "Installér"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Hent og installér \"%s\" fra extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:327
+#: ../js/ui/keyboard.js:337
 msgid "tray"
 msgstr "statusfelt"
 
-#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:195
+#: ../js/ui/keyboard.js:584 ../js/ui/status/keyboard.js:195
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "Tastatur"
@@ -1066,19 +1070,19 @@ msgstr "Vis kilde"
 msgid "Web Page"
 msgstr "Webside"
 
-#: ../js/ui/messageTray.js:1080
+#: ../js/ui/messageTray.js:1081
 msgid "Open"
 msgstr "Åbn"
 
-#: ../js/ui/messageTray.js:1087
+#: ../js/ui/messageTray.js:1088
 msgid "Remove"
 msgstr "Fjern"
 
-#: ../js/ui/messageTray.js:2050
+#: ../js/ui/messageTray.js:2088
 msgid "Message Tray"
 msgstr "Besked-statusfelt"
 
-#: ../js/ui/messageTray.js:2506
+#: ../js/ui/messageTray.js:2551
 msgid "System Information"
 msgstr "Systeminformation"
 
@@ -1306,7 +1310,7 @@ msgstr "Indstillinger for tastatur"
 msgid "Mouse Settings"
 msgstr "Indstillinger for mus"
 
-#: ../js/ui/status/bluetooth.js:269 ../js/ui/status/volume.js:236
+#: ../js/ui/status/bluetooth.js:269 ../js/ui/status/volume.js:234
 msgid "Sound Settings"
 msgstr "Indstillinger for lyd"
 
@@ -1592,7 +1596,7 @@ msgid "Unknown"
 msgstr "Ukendt"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:223
+#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "Lydstyrke"
 
@@ -1604,63 +1608,63 @@ msgstr "Mikrofon"
 msgid "Log in as another user"
 msgstr "Log ind som en anden bruger"
 
-#: ../js/ui/userMenu.js:175
+#: ../js/ui/userMenu.js:180
 msgid "Available"
 msgstr "Tilgængelig"
 
-#: ../js/ui/userMenu.js:178
+#: ../js/ui/userMenu.js:183
 msgid "Busy"
 msgstr "Optaget"
 
-#: ../js/ui/userMenu.js:181
+#: ../js/ui/userMenu.js:186
 msgid "Invisible"
 msgstr "Usynlig"
 
-#: ../js/ui/userMenu.js:184
+#: ../js/ui/userMenu.js:189
 msgid "Away"
 msgstr "Ikke tilstede"
 
-#: ../js/ui/userMenu.js:187
+#: ../js/ui/userMenu.js:192
 msgid "Idle"
 msgstr "Tomgang"
 
-#: ../js/ui/userMenu.js:190
+#: ../js/ui/userMenu.js:195
 msgid "Unavailable"
 msgstr "Utilgængelig"
 
-#: ../js/ui/userMenu.js:613 ../js/ui/userMenu.js:754
+#: ../js/ui/userMenu.js:618 ../js/ui/userMenu.js:759
 msgid "Switch User"
 msgstr "Skift bruger"
 
-#: ../js/ui/userMenu.js:614
+#: ../js/ui/userMenu.js:619
 msgid "Switch Session"
 msgstr "Skift session"
 
-#: ../js/ui/userMenu.js:738
+#: ../js/ui/userMenu.js:743
 msgid "Notifications"
 msgstr "Beskeder"
 
-#: ../js/ui/userMenu.js:746
+#: ../js/ui/userMenu.js:751
 msgid "System Settings"
 msgstr "Systemindstillinger"
 
-#: ../js/ui/userMenu.js:759
+#: ../js/ui/userMenu.js:764
 msgid "Log Out"
 msgstr "Log ud"
 
-#: ../js/ui/userMenu.js:764
+#: ../js/ui/userMenu.js:769
 msgid "Lock"
 msgstr "Lås"
 
-#: ../js/ui/userMenu.js:779
+#: ../js/ui/userMenu.js:784
 msgid "Install Updates & Restart"
 msgstr "Installér opdateringer og genstart"
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:802
 msgid "Your chat status will be set to busy"
 msgstr "Din chat-status vil blive angivet som optaget"
 
-#: ../js/ui/userMenu.js:798
+#: ../js/ui/userMenu.js:803
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
