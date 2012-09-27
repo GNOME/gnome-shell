@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-01 10:44+0000\n"
-"PO-Revision-Date: 2012-08-28 21:59+0300\n"
+"POT-Creation-Date: 2012-09-25 23:19+0000\n"
+"PO-Revision-Date: 2012-09-27 21:58+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -41,6 +41,22 @@ msgstr "Kableliais skiriamas GL plėtinių sąrašas, kurį laikyti išjungtu"
 #: ../cogl/cogl-debug.c:193
 msgid "Override the GL version that Cogl will assume the driver supports"
 msgstr "GL versija, kurią Cogl turi laikyti, kad tvarkyklė palaiko"
+
+#: ../cogl/cogl-debug.c:237
+msgid "Cogl debugging flags to set"
+msgstr "Nustatomi Cogl derinimo požymiai"
+
+#: ../cogl/cogl-debug.c:239
+msgid "Cogl debugging flags to unset"
+msgstr "Nuimami Cogl derinimo požymiai"
+
+#: ../cogl/cogl-debug.c:288
+msgid "Cogl Options"
+msgstr "Cogl parinktys"
+
+#: ../cogl/cogl-debug.c:289
+msgid "Show Cogl options"
+msgstr "Rodyti Cogl parinktis"
 
 #: ../cogl/cogl-debug-options.h:25
 #: ../cogl/cogl-debug-options.h:30
