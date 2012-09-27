@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-19 11:02+0000\n"
-"PO-Revision-Date: 2012-09-20 20:20+0200\n"
+"POT-Creation-Date: 2012-09-25 00:06+0000\n"
+"PO-Revision-Date: 2012-09-27 05:24+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -29,12 +29,10 @@ msgid "Record a screencast"
 msgstr "Снимите радни ток екрана"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
-#| msgid "File System"
 msgid "System"
 msgstr "Систем"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-#| msgid "Message Tray"
 msgid "Show the message tray"
 msgstr "Прикажите фиоку порука"
 
@@ -193,17 +191,6 @@ msgstr "Процесни ланац Гстримера коришћен за к�
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 #, no-c-format
-#| msgid ""
-#| "Sets the GStreamer pipeline used to encode recordings. It follows the "
-#| "syntax used for gst-launch. The pipeline should have an unconnected sink "
-#| "pad where the recorded video is recorded. It will normally have a "
-#| "unconnected source pad; output from that pad will be written into the "
-#| "output file. However the pipeline can also take care of its own output - "
-#| "this might be used to send the output to an icecast server via shout2send "
-#| "or similar. When unset or set to an empty value, the default pipeline "
-#| "will be used. This is currently 'vp8enc quality=8 speed=6 threads=%T ! "
-#| "queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a "
-#| "placeholder for a guess at the optimal thread count on the system."
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -221,13 +208,13 @@ msgstr ""
 "да има један неповезани падиљон синхронизације за чување снимљеног видеа. "
 "Нормално ће имати неповезан падиљон извора; излаз са овог падиљона ће бити "
 "записиван у излазну датотеку. Ипак процесни ланац може да ради са сопственим "
-"излазом — ово може бити коришћено за слање излаза на ајскаст сервер преко "
-"d„shout2sen“ или сличне наредбе. Када ова опција није постављена или је "
+"излазом — ово може бити коришћено за слање излаза на ајскаст сервер преко d"
+"„shout2sen“ или сличне наредбе. Када ова опција није постављена или је "
 "постављена на неку празну вредност, биће коришћен подразумевани процесни "
 "ланац. А то је тренутно „vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 "
-"deadline=1000000 threads=%T ! queue ! webmmux“ и записује у „WEBM“ "
-"користећи ВП8 кодек. „%T“ се користи као носилац за откривање при оптималном "
-"прорачуну нити на систему."
+"deadline=1000000 threads=%T ! queue ! webmmux“ и записује у „WEBM“ користећи "
+"ВП8 кодек. „%T“ се користи као носилац за откривање при оптималном прорачуну "
+"нити на систему."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "File extension used for storing the screencast"
@@ -256,11 +243,11 @@ msgstr "Проширење"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Изаберите проширење за подешавање користећи прозорче за избор."
 
-#: ../js/gdm/loginDialog.js:526
+#: ../js/gdm/loginDialog.js:527
 msgid "Session..."
 msgstr "Сесија..."
 
-#: ../js/gdm/loginDialog.js:674
+#: ../js/gdm/loginDialog.js:675
 msgctxt "title"
 msgid "Sign In"
 msgstr "Пријавите се"
@@ -268,42 +255,47 @@ msgstr "Пријавите се"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:741
+#: ../js/gdm/loginDialog.js:742
 msgid "Not listed?"
 msgstr "Није на списку?"
 
-#: ../js/gdm/loginDialog.js:894 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:895 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
 #: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "Откажи"
 
-#: ../js/gdm/loginDialog.js:899
+#: ../js/gdm/loginDialog.js:900
 msgctxt "button"
 msgid "Sign In"
 msgstr "Пријави ме"
 
-#: ../js/gdm/loginDialog.js:1238
+#: ../js/gdm/loginDialog.js:1239
 msgid "Login Window"
 msgstr "Прозор за пријављивање"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:658 ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:773
+#. Translators: accessible name of the power menu in the login screen
+#: ../js/gdm/powerMenu.js:35
+#| msgid "Power Off"
+msgid "Power"
+msgstr "Угаси"
+
+#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:663 ../js/ui/userMenu.js:667
+#: ../js/ui/userMenu.js:778
 msgid "Suspend"
 msgstr "Обустави"
 
-#: ../js/gdm/powerMenu.js:93
+#: ../js/gdm/powerMenu.js:94
 msgid "Restart"
 msgstr "Поново покрени"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:772
+#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:665 ../js/ui/userMenu.js:667
+#: ../js/ui/userMenu.js:777
 msgid "Power Off"
 msgstr "Угаси"
 
 #: ../js/gdm/util.js:148
-#| msgid "Authentication Required"
 msgid "Authentication error"
 msgstr "Грешка потврђивања идентитета"
 
@@ -1024,7 +1016,7 @@ msgstr "Да преузмем и да инсталирам „%s“ са extensi
 msgid "tray"
 msgstr "фиока"
 
-#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:194
+#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:195
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "Тастатура"
@@ -1085,11 +1077,11 @@ msgstr "Отвори"
 msgid "Remove"
 msgstr "Уклони"
 
-#: ../js/ui/messageTray.js:2052
+#: ../js/ui/messageTray.js:2055
 msgid "Message Tray"
 msgstr "Фиока порука"
 
-#: ../js/ui/messageTray.js:2508
+#: ../js/ui/messageTray.js:2511
 msgid "System Information"
 msgstr "Подаци о систему"
 
@@ -1379,11 +1371,11 @@ msgstr "Молим унесите ПИН назначен на уређају."
 msgid "OK"
 msgstr "У реду"
 
-#: ../js/ui/status/keyboard.js:227
+#: ../js/ui/status/keyboard.js:228
 msgid "Show Keyboard Layout"
 msgstr "Прикажи распоред тастатуре"
 
-#: ../js/ui/status/keyboard.js:232
+#: ../js/ui/status/keyboard.js:233
 msgid "Region and Language Settings"
 msgstr "Подешавања региона и језика"
 
@@ -1626,63 +1618,63 @@ msgstr "Микрофон"
 msgid "Log in as another user"
 msgstr "Пријавите се као други корсник"
 
-#: ../js/ui/userMenu.js:175
+#: ../js/ui/userMenu.js:180
 msgid "Available"
 msgstr "Доступан"
 
-#: ../js/ui/userMenu.js:178
+#: ../js/ui/userMenu.js:183
 msgid "Busy"
 msgstr "Заузет"
 
-#: ../js/ui/userMenu.js:181
+#: ../js/ui/userMenu.js:186
 msgid "Invisible"
 msgstr "Невидљив"
 
-#: ../js/ui/userMenu.js:184
+#: ../js/ui/userMenu.js:189
 msgid "Away"
 msgstr "Одсутан"
 
-#: ../js/ui/userMenu.js:187
+#: ../js/ui/userMenu.js:192
 msgid "Idle"
 msgstr "Мирује"
 
-#: ../js/ui/userMenu.js:190
+#: ../js/ui/userMenu.js:195
 msgid "Unavailable"
 msgstr "Недоступан"
 
-#: ../js/ui/userMenu.js:613 ../js/ui/userMenu.js:754
+#: ../js/ui/userMenu.js:618 ../js/ui/userMenu.js:759
 msgid "Switch User"
 msgstr "Промени корисника"
 
-#: ../js/ui/userMenu.js:614
+#: ../js/ui/userMenu.js:619
 msgid "Switch Session"
 msgstr "Промени сесију"
 
-#: ../js/ui/userMenu.js:738
+#: ../js/ui/userMenu.js:743
 msgid "Notifications"
 msgstr "Обавештења"
 
-#: ../js/ui/userMenu.js:746
+#: ../js/ui/userMenu.js:751
 msgid "System Settings"
 msgstr "Подешавања система"
 
-#: ../js/ui/userMenu.js:759
+#: ../js/ui/userMenu.js:764
 msgid "Log Out"
 msgstr "Одјави ме"
 
-#: ../js/ui/userMenu.js:764
+#: ../js/ui/userMenu.js:769
 msgid "Lock"
 msgstr "Закључај"
 
-#: ../js/ui/userMenu.js:779
+#: ../js/ui/userMenu.js:784
 msgid "Install Updates & Restart"
 msgstr "Инсталирај ажурирања и поново покрени"
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:802
 msgid "Your chat status will be set to busy"
 msgstr "Ваше стање ћаскања ће бити постављено на заузето"
 
-#: ../js/ui/userMenu.js:798
+#: ../js/ui/userMenu.js:803
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
