@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=cogl&k"
 "eywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-01 10:44+0000\n"
-"PO-Revision-Date: 2012-08-06 11:13+0200\n"
+"POT-Creation-Date: 2012-09-25 23:19+0000\n"
+"PO-Revision-Date: 2012-09-27 05:41+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -44,6 +44,22 @@ msgid "Override the GL version that Cogl will assume the driver supports"
 msgstr ""
 "Превазилази ГЛ издање за које ће Когл сматрати да га подржавају управљачки "
 "програми"
+
+#: ../cogl/cogl-debug.c:237
+msgid "Cogl debugging flags to set"
+msgstr "Коглове опције прочишћавања за постављање"
+
+#: ../cogl/cogl-debug.c:239
+msgid "Cogl debugging flags to unset"
+msgstr "Коглове опције прочишћавања за уклањање"
+
+#: ../cogl/cogl-debug.c:288
+msgid "Cogl Options"
+msgstr "Опције Когла"
+
+#: ../cogl/cogl-debug.c:289
+msgid "Show Cogl options"
+msgstr "Приказује опције Когла"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
