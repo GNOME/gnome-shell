@@ -236,7 +236,7 @@ COGL_EXT_END ()
 COGL_EXT_BEGIN (shader_objects, 255, 255,
                 0, /* not in either GLES */
                 "ARB\0",
-                "shader_objects")
+                "shader_objects\0")
 COGL_EXT_FUNCTION (GLuint, glCreateProgramObject,
                    (void))
 COGL_EXT_FUNCTION (GLuint, glCreateShaderObject,
