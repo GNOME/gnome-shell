@@ -175,6 +175,8 @@ cogl_display_get_renderer
 cogl_display_new
 cogl_display_setup
 
+cogl_double_to_fixed
+
 cogl_end_gl
 
 cogl_error_get_type
@@ -759,6 +761,8 @@ cogl_snippet_set_declarations
 cogl_snippet_set_post
 cogl_snippet_set_pre
 cogl_snippet_set_replace
+
+cogl_sqrti
 
 cogl_sub_texture_get_parent
 cogl_sub_texture_new_EXP
