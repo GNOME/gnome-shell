@@ -468,32 +468,35 @@ _cogl_driver_update_features (CoglContext *ctx,
       flags |= COGL_FEATURE_SHADERS_GLSL;
       COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_GLSL, TRUE);
     }
-  /* If all of the old GLSL extensions are available then we can fake
-   * the GL 2.0 GLSL support by diverting to the old function names */
-  else if (ctx->glCreateProgramObject && /* GL_ARB_shader_objects */
+  else
+    {
+      /* If all of the old GLSL extensions are available then we can fake
+       * the GL 2.0 GLSL support by diverting to the old function names */
+      if (ctx->glCreateProgramObject && /* GL_ARB_shader_objects */
            ctx->glVertexAttribPointer && /* GL_ARB_vertex_shader */
            _cogl_check_extension ("GL_ARB_fragment_shader", gl_extensions))
-    {
-      ctx->glCreateShader = ctx->glCreateShaderObject;
-      ctx->glCreateProgram = ctx->glCreateProgramObject;
-      ctx->glDeleteShader = ctx->glDeleteObject;
-      ctx->glDeleteProgram = ctx->glDeleteObject;
-      ctx->glAttachShader = ctx->glAttachObject;
-      ctx->glUseProgram = ctx->glUseProgramObject;
-      ctx->glGetProgramInfoLog = ctx->glGetInfoLog;
-      ctx->glGetShaderInfoLog = ctx->glGetInfoLog;
-      ctx->glGetShaderiv = ctx->glGetObjectParameteriv;
-      ctx->glGetProgramiv = ctx->glGetObjectParameteriv;
-      ctx->glDetachShader = ctx->glDetachObject;
-      ctx->glGetAttachedShaders = ctx->glGetAttachedObjects;
-      /* FIXME: there doesn't seem to be an equivalent for glIsShader
-       * and glIsProgram. This doesn't matter for now because Cogl
-       * doesn't use these but if we add support for simulating a
-       * GLES2 context on top of regular GL then we'll need to do
-       * something here */
+        {
+          ctx->glCreateShader = ctx->glCreateShaderObject;
+          ctx->glCreateProgram = ctx->glCreateProgramObject;
+          ctx->glDeleteShader = ctx->glDeleteObject;
+          ctx->glDeleteProgram = ctx->glDeleteObject;
+          ctx->glAttachShader = ctx->glAttachObject;
+          ctx->glUseProgram = ctx->glUseProgramObject;
+          ctx->glGetProgramInfoLog = ctx->glGetInfoLog;
+          ctx->glGetShaderInfoLog = ctx->glGetInfoLog;
+          ctx->glGetShaderiv = ctx->glGetObjectParameteriv;
+          ctx->glGetProgramiv = ctx->glGetObjectParameteriv;
+          ctx->glDetachShader = ctx->glDetachObject;
+          ctx->glGetAttachedShaders = ctx->glGetAttachedObjects;
+          /* FIXME: there doesn't seem to be an equivalent for glIsShader
+           * and glIsProgram. This doesn't matter for now because Cogl
+           * doesn't use these but if we add support for simulating a
+           * GLES2 context on top of regular GL then we'll need to do
+           * something here */
 
-      flags |= COGL_FEATURE_SHADERS_GLSL;
-      COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_GLSL, TRUE);
+          flags |= COGL_FEATURE_SHADERS_GLSL;
+          COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_GLSL, TRUE);
+        }
     }
 
   if ((COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 0) ||
