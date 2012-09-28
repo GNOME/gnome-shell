@@ -534,7 +534,10 @@ _cogl_attribute_immutable_unref (CoglAttribute *attribute)
 static void
 _cogl_attribute_free (CoglAttribute *attribute)
 {
-  cogl_object_unref (attribute->d.buffered.attribute_buffer);
+  if (attribute->is_buffered)
+    cogl_object_unref (attribute->d.buffered.attribute_buffer);
+  else
+    _cogl_boxed_value_destroy (&attribute->d.constant.boxed);
 
   g_slice_free (CoglAttribute, attribute);
 }
