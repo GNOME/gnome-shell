@@ -199,7 +199,6 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 static void
 egl_attributes_from_framebuffer_config (CoglDisplay *display,
                                         CoglFramebufferConfig *config,
-                                        CoglBool needs_stencil_override,
                                         EGLint *attributes)
 {
   CoglRenderer *renderer = display->renderer;
@@ -212,8 +211,11 @@ egl_attributes_from_framebuffer_config (CoglDisplay *display,
                                                               config,
                                                               attributes);
 
-  attributes[i++] = EGL_STENCIL_SIZE;
-  attributes[i++] = needs_stencil_override ? 2 : 0;
+  if (config->need_stencil)
+    {
+      attributes[i++] = EGL_STENCIL_SIZE;
+      attributes[i++] = 2;
+    }
 
   attributes[i++] = EGL_RED_SIZE;
   attributes[i++] = 1;
@@ -252,78 +254,6 @@ egl_attributes_from_framebuffer_config (CoglDisplay *display,
   attributes[i++] = EGL_NONE;
 
   g_assert (i < MAX_EGL_CONFIG_ATTRIBS);
-}
-
-static CoglBool
-try_create_context (CoglDisplay *display,
-                    CoglBool with_stencil_buffer,
-                    CoglError **error)
-{
-  CoglRenderer *renderer = display->renderer;
-  CoglDisplayEGL *egl_display = display->winsys;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
-  EGLDisplay edpy;
-  EGLConfig config;
-  EGLint config_count = 0;
-  EGLBoolean status;
-  EGLint attribs[3];
-  EGLint cfg_attribs[MAX_EGL_CONFIG_ATTRIBS];
-  const char *error_message;
-
-  _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context == NULL, TRUE);
-
-  if (renderer->driver == COGL_DRIVER_GL)
-    eglBindAPI (EGL_OPENGL_API);
-
-  if (display->renderer->driver == COGL_DRIVER_GLES2)
-    {
-      attribs[0] = EGL_CONTEXT_CLIENT_VERSION;
-      attribs[1] = 2;
-      attribs[2] = EGL_NONE;
-    }
-  else
-    attribs[0] = EGL_NONE;
-
-  egl_attributes_from_framebuffer_config (display,
-                                          &display->onscreen_template->config,
-                                          with_stencil_buffer,
-                                          cfg_attribs);
-
-  edpy = egl_renderer->edpy;
-
-  status = eglChooseConfig (edpy,
-                            cfg_attribs,
-                            &config, 1,
-                            &config_count);
-  if (status != EGL_TRUE || config_count == 0)
-    {
-      error_message = "Unable to find a usable EGL configuration";
-      goto fail;
-    }
-
-  egl_display->egl_config = config;
-
-  egl_display->egl_context = eglCreateContext (edpy,
-                                               config,
-                                               EGL_NO_CONTEXT,
-                                               attribs);
-  if (egl_display->egl_context == EGL_NO_CONTEXT)
-    {
-      error_message = "Unable to create a suitable EGL context";
-      goto fail;
-    }
-
-  if (egl_renderer->platform_vtable->context_created &&
-      !egl_renderer->platform_vtable->context_created (display, error))
-    return FALSE;
-
-  return TRUE;
-
-fail:
-  _cogl_set_error (error, COGL_WINSYS_ERROR,
-               COGL_WINSYS_ERROR_CREATE_CONTEXT,
-               "%s", error_message);
-  return FALSE;
 }
 
 EGLBoolean
@@ -374,28 +304,76 @@ cleanup_context (CoglDisplay *display)
 }
 
 static CoglBool
-create_context (CoglDisplay *display, CoglError **error)
+try_create_context (CoglDisplay *display,
+                    CoglError **error)
 {
+  CoglRenderer *renderer = display->renderer;
   CoglDisplayEGL *egl_display = display->winsys;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  EGLDisplay edpy;
+  EGLConfig config;
+  EGLint config_count = 0;
+  EGLBoolean status;
+  EGLint attribs[3];
+  EGLint cfg_attribs[MAX_EGL_CONFIG_ATTRIBS];
+  const char *error_message;
 
-  /* Note: we don't just rely on eglChooseConfig to correctly
-   * report that the driver doesn't support a stencil buffer
-   * because we've seen PVR drivers that claim stencil buffer
-   * support according to the EGLConfig but then later fail
-   * when trying to create a context with such a config.
-   */
-  if (try_create_context (display, TRUE, error))
+  _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context == NULL, TRUE);
+
+  if (renderer->driver == COGL_DRIVER_GL)
+    eglBindAPI (EGL_OPENGL_API);
+
+  if (display->renderer->driver == COGL_DRIVER_GLES2)
     {
-      egl_display->stencil_disabled = FALSE;
-      return TRUE;
+      attribs[0] = EGL_CONTEXT_CLIENT_VERSION;
+      attribs[1] = 2;
+      attribs[2] = EGL_NONE;
     }
   else
+    attribs[0] = EGL_NONE;
+
+  egl_attributes_from_framebuffer_config (display,
+                                          &display->onscreen_template->config,
+                                          cfg_attribs);
+
+  edpy = egl_renderer->edpy;
+
+  status = eglChooseConfig (edpy,
+                            cfg_attribs,
+                            &config, 1,
+                            &config_count);
+  if (status != EGL_TRUE || config_count == 0)
     {
-      _cogl_clear_error (error);
-      cleanup_context (display);
-      egl_display->stencil_disabled = TRUE;
-      return try_create_context (display, FALSE, error);
+      error_message = "Unable to find a usable EGL configuration";
+      goto fail;
     }
+
+  egl_display->egl_config = config;
+
+  egl_display->egl_context = eglCreateContext (edpy,
+                                               config,
+                                               EGL_NO_CONTEXT,
+                                               attribs);
+  if (egl_display->egl_context == EGL_NO_CONTEXT)
+    {
+      error_message = "Unable to create a suitable EGL context";
+      goto fail;
+    }
+
+  if (egl_renderer->platform_vtable->context_created &&
+      !egl_renderer->platform_vtable->context_created (display, error))
+    return FALSE;
+
+  return TRUE;
+
+fail:
+  _cogl_set_error (error, COGL_WINSYS_ERROR,
+               COGL_WINSYS_ERROR_CREATE_CONTEXT,
+               "%s", error_message);
+
+  cleanup_context (display);
+
+  return FALSE;
 }
 
 static void
@@ -443,7 +421,7 @@ _cogl_winsys_display_setup (CoglDisplay *display,
       !egl_renderer->platform_vtable->display_setup (display, error))
     goto error;
 
-  if (!create_context (display, error))
+  if (!try_create_context (display, error))
     goto error;
 
   egl_display->found_egl_config = TRUE;
@@ -570,14 +548,11 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   EGLConfig egl_config;
   EGLint config_count = 0;
   EGLBoolean status;
-  CoglBool need_stencil =
-    egl_display->stencil_disabled ? FALSE : framebuffer->config.need_stencil;
 
   _COGL_RETURN_VAL_IF_FAIL (egl_display->egl_context, FALSE);
 
   egl_attributes_from_framebuffer_config (display,
                                           &framebuffer->config,
-                                          need_stencil,
                                           attributes);
 
   status = eglChooseConfig (egl_renderer->edpy,

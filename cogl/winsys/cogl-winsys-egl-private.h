@@ -108,7 +108,6 @@ typedef struct _CoglDisplayEGL
 
   EGLConfig egl_config;
   CoglBool found_egl_config;
-  CoglBool stencil_disabled;
 
   EGLSurface current_read_surface;
   EGLSurface current_draw_surface;
