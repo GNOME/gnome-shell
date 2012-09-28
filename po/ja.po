@@ -1,16 +1,15 @@
 # Japanese translation for clutter.
 # Copyright (C) 2012 clutter's COPYRIGHT HOLDER
 # This file is distributed under the same license as the clutter package.
-# Nishio Futoshi <fut_nis@d3.dion.ne.jp>, 2012.
 # Jiro Matsuzawa <jmatsuzawa@gnome.org>, 2012.
+# Nishio Futoshi <fut_nis@d3.dion.ne.jp>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-21 19:41+0000\n"
-"PO-Revision-Date: 2012-09-16 21:27+0900\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-09-25 08:16+0000\n"
+"PO-Revision-Date: 2012-09-28 19:03+0900\n"
 "Last-Translator: Nishio Futoshi <fut_nis@d3.dion.ne.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -742,8 +741,7 @@ msgstr "Clutter のバックエンドを初期化できません"
 #: ../clutter/clutter-backend.c:453
 #, c-format
 msgid "The backend of type '%s' does not support creating multiple stages"
-msgstr ""
-"バックエンドの形式 '%s' は作成している複数のステージでサポートされていません"
+msgstr "バックエンドの形式 '%s' は作成している複数のステージでサポートされていません"
 
 #: ../clutter/clutter-bind-constraint.c:359
 msgid "The source of the binding"
@@ -810,24 +808,16 @@ msgid "Horizontal Fill"
 msgstr "水平方向に展張"
 
 #: ../clutter/clutter-box-layout.c:373 ../clutter/clutter-table-layout.c:590
-msgid ""
-"Whether the child should receive priority when the container is allocating "
-"spare space on the horizontal axis"
-msgstr ""
-"コンテナーの水平軸に割り当てられている追加領域を子オブジェクトに割り当てるか"
-"どうか"
+msgid "Whether the child should receive priority when the container is allocating spare space on the horizontal axis"
+msgstr "コンテナーの水平軸に割り当てられている追加領域を子オブジェクトに割り当てるかどうか"
 
 #: ../clutter/clutter-box-layout.c:381 ../clutter/clutter-table-layout.c:596
 msgid "Vertical Fill"
 msgstr "垂直方向に展張"
 
 #: ../clutter/clutter-box-layout.c:382 ../clutter/clutter-table-layout.c:597
-msgid ""
-"Whether the child should receive priority when the container is allocating "
-"spare space on the vertical axis"
-msgstr ""
-"コンテナーの垂直軸に割り当てられている追加領域を子オブジェクトに割り当てるか"
-"どうか"
+msgid "Whether the child should receive priority when the container is allocating spare space on the vertical axis"
+msgstr "コンテナーの垂直軸に割り当てられている追加領域を子オブジェクトに割り当てるかどうか"
 
 #: ../clutter/clutter-box-layout.c:391 ../clutter/clutter-table-layout.c:611
 msgid "Horizontal alignment of the actor within the cell"
@@ -860,11 +850,8 @@ msgid "Homogeneous"
 msgstr "均等配置"
 
 #: ../clutter/clutter-box-layout.c:1401
-msgid ""
-"Whether the layout should be homogeneous, i.e. all childs get the same size"
-msgstr ""
-"レイアウトを均等配置にするかどうか。たとえば子オブジェクトをすべて同じ大きさ"
-"にする"
+msgid "Whether the layout should be homogeneous, i.e. all childs get the same size"
+msgstr "レイアウトを均等配置にするかどうか。たとえば子オブジェクトをすべて同じ大きさにする"
 
 #: ../clutter/clutter-box-layout.c:1416
 msgid "Pack Start"
@@ -1278,6 +1265,9 @@ msgstr "マネジャー"
 msgid "The manager that created this data"
 msgstr "このデータで作成されるマネジャー"
 
+# 翻訳せずに英文のまま残してください。
+# Whoever translated default:LTR did so wrongly.
+# というエラーになります。
 #. Translators: Leave this UNTRANSLATED if your language is
 #. * left-to-right.  If your language is right-to-left
 #. * (e.g. Hebrew, Arabic), translate it to "default:RTL".
@@ -1287,7 +1277,7 @@ msgstr "このデータで作成されるマネジャー"
 #.
 #: ../clutter/clutter-main.c:762
 msgid "default:LTR"
-msgstr "デフォルトの文字方向:左から右へ"
+msgstr "default:LTR"
 
 #: ../clutter/clutter-main.c:1636
 msgid "Show frames per second"
@@ -1457,8 +1447,7 @@ msgid "Font Name"
 msgstr "フォント名"
 
 #: ../clutter/clutter-settings.c:489
-msgid ""
-"The description of the default font, as one that could be parsed by Pango"
+msgid "The description of the default font, as one that could be parsed by Pango"
 msgstr "Pango で解析可能な、デフォルトフォントの説明"
 
 #: ../clutter/clutter-settings.c:504
@@ -1466,20 +1455,15 @@ msgid "Font Antialias"
 msgstr "フォントのアンチエイリアス"
 
 #: ../clutter/clutter-settings.c:505
-msgid ""
-"Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
-"default)"
-msgstr ""
-"アンチエイリアスを使用するかどうか(1は使用、0は使用しない、-1はデフォルトを使"
-"用)"
+msgid "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the default)"
+msgstr "アンチエイリアスを使用するかどうか(1は使用、0は使用しない、-1はデフォルトを使用)"
 
 #: ../clutter/clutter-settings.c:521
 msgid "Font DPI"
 msgstr "フォントのDPI"
 
 #: ../clutter/clutter-settings.c:522
-msgid ""
-"The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
+msgid "The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
 msgstr "フォントの解像度、1024 * dot/inch または デフォルトを使用する -1"
 
 #: ../clutter/clutter-settings.c:538
@@ -1487,11 +1471,8 @@ msgid "Font Hinting"
 msgstr "フォントのヒンティング"
 
 #: ../clutter/clutter-settings.c:539
-msgid ""
-"Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
-msgstr ""
-"フォントのヒンティングを使用するかどうか (1は使用、0は使用しない、-1はデフォ"
-"ルトを使用する)"
+msgid "Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
+msgstr "フォントのヒンティングを使用するかどうか (1は使用、0は使用しない、-1はデフォルトを使用する)"
 
 #: ../clutter/clutter-settings.c:560
 msgid "Font Hint Style"
@@ -2484,12 +2465,8 @@ msgid "Disable Slicing"
 msgstr "スライシングの無効化"
 
 #: ../clutter/deprecated/clutter-texture.c:1003
-msgid ""
-"Forces the underlying texture to be singular and not made of smaller space "
-"saving individual textures"
-msgstr ""
-"単一かつ個別テクスチャとして保存される空間より小さい根底となるテクスチャに"
-"フォーカスを与える"
+msgid "Forces the underlying texture to be singular and not made of smaller space saving individual textures"
+msgstr "単一かつ個別テクスチャとして保存される空間より小さい根底となるテクスチャにフォーカスを与える"
 
 #: ../clutter/deprecated/clutter-texture.c:1012
 msgid "Tile Waste"
@@ -2558,9 +2535,7 @@ msgid "Keep Aspect Ratio"
 msgstr "縦横比を維持する"
 
 #: ../clutter/deprecated/clutter-texture.c:1091
-msgid ""
-"Keep the aspect ratio of the texture when requesting the preferred width or "
-"height"
+msgid "Keep the aspect ratio of the texture when requesting the preferred width or height"
 msgstr "幅と高さの要求時にテクスチャの縦横比を維持する"
 
 #: ../clutter/deprecated/clutter-texture.c:1119
@@ -2568,23 +2543,16 @@ msgid "Load asynchronously"
 msgstr "非同期にロードする"
 
 #: ../clutter/deprecated/clutter-texture.c:1120
-msgid ""
-"Load files inside a thread to avoid blocking when loading images from disk"
-msgstr ""
-"画像をディスクからロードするとき、ブロッキングを避けるため内部スレッドでファ"
-"イルをロードする"
+msgid "Load files inside a thread to avoid blocking when loading images from disk"
+msgstr "画像をディスクからロードするとき、ブロッキングを避けるため内部スレッドでファイルをロードする"
 
 #: ../clutter/deprecated/clutter-texture.c:1138
 msgid "Load data asynchronously"
 msgstr "データを非同期にロードする"
 
 #: ../clutter/deprecated/clutter-texture.c:1139
-msgid ""
-"Decode image data files inside a thread to reduce blocking when loading "
-"images from disk"
-msgstr ""
-"ディスクから画像をロードするとき、ブロッキングを低減するため内部スレッドで画"
-"像データファイルをデコードする"
+msgid "Decode image data files inside a thread to reduce blocking when loading images from disk"
+msgstr "ディスクから画像をロードするとき、ブロッキングを低減するため内部スレッドで画像データファイルをデコードする"
 
 #: ../clutter/deprecated/clutter-texture.c:1165
 msgid "Pick With Alpha"
