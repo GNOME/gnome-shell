@@ -194,6 +194,16 @@ G_BEGIN_DECLS
  */
 #define CLUTTER_VERSION_1_12    (G_ENCODE_VERSION (1, 12))
 
+/**
+ * CLUTTER_VERSION_1_14:
+ *
+ * A macro that evaluates to the 1.14 version of Clutter, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.14
+ */
+#define CLUTTER_VERSION_1_14    (G_ENCODE_VERSION (1, 14))
+
 /* evaluates to the current stable version; for development cycles,
  * this means the next stable target
  */
