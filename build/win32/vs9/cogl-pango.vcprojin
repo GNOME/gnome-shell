@@ -22,7 +22,6 @@
 		<Configuration
 			Name="Debug|Win32"
 			InheritedPropertySheets=".\cogl.vsprops"
-			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\cogl-pango"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -50,7 +49,7 @@
 				AdditionalDependencies="pangocairo-1.0.lib pango-1.0.lib cairo.lib"
 				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="..\..\..\cogl-pango\cogl-pango.def"
+				ModuleDefinitionFile="$(IntDir)\cogl-pango.def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -60,7 +59,6 @@
 		<Configuration
 			Name="Debug|x64"
 			InheritedPropertySheets=".\cogl.vsprops"
-			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\cogl-pango"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -88,7 +86,7 @@
 				AdditionalDependencies="pangocairo-1.0.lib pango-1.0.lib cairo.lib"
 				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="..\..\..\cogl-pango\cogl-pango.def"
+				ModuleDefinitionFile="$(IntDir)\cogl-pango.def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -98,7 +96,6 @@
 		<Configuration
 			Name="Release|Win32"
 			InheritedPropertySheets=".\cogl.vsprops"
-			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\cogl-pango"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -127,7 +124,7 @@
 				AdditionalDependencies="pangocairo-1.0.lib pango-1.0.lib cairo.lib"
 				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
 				LinkIncremental="1"
-				ModuleDefinitionFile="..\..\..\cogl-pango\cogl-pango.def"
+				ModuleDefinitionFile="$(IntDir)\cogl-pango.def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -139,7 +136,6 @@
 		<Configuration
 			Name="Release|x64"
 			InheritedPropertySheets=".\cogl.vsprops"
-			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\cogl-pango"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -164,7 +160,7 @@
 				AdditionalDependencies="pangocairo-1.0.lib pango-1.0.lib cairo.lib"
 				OutputFile="$(OutDir)\$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll"
 				LinkIncremental="2"
-				ModuleDefinitionFile="..\..\..\cogl-pango\cogl-pango.def"
+				ModuleDefinitionFile="$(IntDir)\cogl-pango.def"
 				ImportLibrary="$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"

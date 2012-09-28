@@ -12,6 +12,7 @@
     <CoglPangoBuildDefines>G_LOG_DOMAIN="Cogl-Pango"</CoglPangoBuildDefines>
     <TestProgDef>COGL_COMPILATION;TESTS_DATADIR="../share/cogl-$(CoglApiVersion)/tests"</TestProgDef>
     <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
+    <DefDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</DefDir>
     <DoDefinesSDL>
 if exist ..\..\..\cogl\SDL_DEFINES goto DONE_COGL_DEFINES_H
 if not exist ..\..\..\cogl\WGL_DEFINES goto DO_COGL_DEFINES_H
@@ -114,6 +115,8 @@ copy ..\..\..\cogl\cogl-onscreen.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cog
 
 copy ..\..\..\cogl\cogl-primitives.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
+copy ..\..\..\cogl\cogl-primitive-texture.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
+
 copy ..\..\..\cogl\cogl-path.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-path-functions.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
@@ -181,6 +184,8 @@ copy ..\..\..\cogl\cogl-display.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-context.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
+copy ..\..\..\cogl\cogl-version.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
+
 copy ..\..\..\cogl\cogl-win32-renderer.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl1-context.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
@@ -193,21 +198,21 @@ copy ..\..\..\cogl\cogl2-compatibility.h $(CopyDir)\include\cogl-$(CoglApiVersio
 
 </CoglDoInstall>
     <GenerateCoglDef>
-         echo EXPORTS &gt; ..\..\..\cogl\cogl.def
+         echo EXPORTS &gt; $(DefDir)\cogl.def
 
-         cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; ..\..\..\cogl\cogl.def
+         cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; $(DefDir)\cogl.def
 
     </GenerateCoglDef>
     <GenerateCoglSDLDef>
-         echo EXPORTS &gt; ..\..\..\cogl\cogl.def
+         echo EXPORTS &gt; $(DefDir)\cogl.def
 
-         cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_HAS_SDL_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; ..\..\..\cogl\cogl.def
+         cl -EP -D_COGL_SUPPORTS_GTYPE_INTEGRATION -DCOGL_HAS_WIN32_SUPPORT -DCOGL_HAS_GLIB_SUPPORT -DCOGL_HAS_SDL_SUPPORT -DCOGL_ENABLE_EXPERIMENTAL_API ..\..\..\cogl\cogl.symbols &gt;&gt; $(DefDir)\cogl.def
 
     </GenerateCoglSDLDef>
     <GenerateCoglPangoDef>
-         echo EXPORTS &gt; ..\..\..\cogl-pango\cogl-pango.def
+         echo EXPORTS &gt; $(DefDir)\cogl-pango.def
 
-      cl -EP ..\..\..\cogl-pango\cogl-pango.symbols &gt;&gt; ..\..\..\cogl-pango\cogl-pango.def
+      cl -EP ..\..\..\cogl-pango\cogl-pango.symbols &gt;&gt; $(DefDir)\cogl-pango.def
 
      </GenerateCoglPangoDef>
     <CoglLibtoolCompatibleDllPrefix>lib</CoglLibtoolCompatibleDllPrefix>
@@ -237,6 +242,12 @@ copy ..\..\..\cogl\cogl2-compatibility.h $(CopyDir)\include\cogl-$(CoglApiVersio
   <ItemGroup>
     <BuildMacro Include="GlibEtcInstallRoot">
       <Value>$(GlibEtcInstallRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CopyDir">
+      <Value>$(CopyDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="DefDir">
+      <Value>$(DefDir)</Value>
     </BuildMacro>
     <BuildMacro Include="GlibEtcInstallRoot">
       <Value>$(GlibMkEnumsPath)</Value>

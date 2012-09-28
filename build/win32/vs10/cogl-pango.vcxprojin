@@ -88,7 +88,7 @@
 		<Link>
 			<AdditionalDependencies>pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
-			<ModuleDefinitionFile>..\..\..\cogl-pango\cogl-pango.def</ModuleDefinitionFile>
+			<ModuleDefinitionFile>$(IntDir)\cogl-pango.def</ModuleDefinitionFile>
 			<ImportLibrary>$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib</ImportLibrary>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
 			<SubSystem>Windows</SubSystem>
@@ -116,7 +116,7 @@
 		<Link>
 			<AdditionalDependencies>pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
-			<ModuleDefinitionFile>..\..\..\cogl-pango\cogl-pango.def</ModuleDefinitionFile>
+			<ModuleDefinitionFile>$(IntDir)\cogl-pango.def</ModuleDefinitionFile>
 			<ImportLibrary>$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib</ImportLibrary>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
 			<SubSystem>Windows</SubSystem>
@@ -144,7 +144,7 @@
 		<Link>
 			<AdditionalDependencies>pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
-			<ModuleDefinitionFile>..\..\..\cogl-pango\cogl-pango.def</ModuleDefinitionFile>
+			<ModuleDefinitionFile>$(IntDir)\cogl-pango.def</ModuleDefinitionFile>
 			<ImportLibrary>$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib</ImportLibrary>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
 			<SubSystem>Windows</SubSystem>
@@ -171,7 +171,7 @@
 		<Link>
 			<AdditionalDependencies>pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
-			<ModuleDefinitionFile>..\..\..\cogl-pango\cogl-pango.def</ModuleDefinitionFile>
+			<ModuleDefinitionFile>$(IntDir)\cogl-pango.def</ModuleDefinitionFile>
 			<ImportLibrary>$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib</ImportLibrary>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
 			<SubSystem>Windows</SubSystem>
