@@ -50,7 +50,7 @@ gen-enums.bat $(GlibMkEnumsPath)
 cd .\vs10
 
 
-</PreBuildCmd>
+    </PreBuildCmd>
     <CoglDoInstall>
 mkdir $(CopyDir)
 
@@ -196,7 +196,10 @@ copy ..\..\..\cogl\cogl2-experimental.h $(CopyDir)\include\cogl-$(CoglApiVersion
 
 copy ..\..\..\cogl\cogl2-compatibility.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
-</CoglDoInstall>
+    </CoglDoInstall>
+    <CoglDoInstallSDL>
+copy ..\..\..\cogl\cogl-sdl.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
+    </CoglDoInstallSDL>
     <GenerateCoglDef>
          echo EXPORTS &gt; $(DefDir)\cogl.def
 
@@ -287,6 +290,9 @@ copy ..\..\..\cogl\cogl2-compatibility.h $(CopyDir)\include\cogl-$(CoglApiVersio
     </BuildMacro>
     <BuildMacro Include="CoglDoInstall">
       <Value>$(CoglDoInstall)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CoglDoInstallSDL">
+      <Value>$(CoglDoInstallSDL)</Value>
     </BuildMacro>
     <BuildMacro Include="GenerateCoglDef">
       <Value>$(GenerateCoglDef)</Value>

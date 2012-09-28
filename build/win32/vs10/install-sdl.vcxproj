@@ -71,22 +71,34 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PostBuildEvent>
-      <Command>$(CoglDoInstall)</Command>
+      <Command>
+$(CoglDoInstall)
+$(CoglDoInstallSDL)
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PreBuildEvent>
-      <Command>$(CoglDoInstall)</Command>
+      <Command>
+$(CoglDoInstall)
+$(CoglDoInstallSDL)
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PostBuildEvent>
-      <Command>$(CoglDoInstall)</Command>
+      <Command>
+$(CoglDoInstall)
+$(CoglDoInstallSDL)
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PreBuildEvent>
-      <Command>$(CoglDoInstall)</Command>
+      <Command>
+$(CoglDoInstall)
+$(CoglDoInstallSDL)
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

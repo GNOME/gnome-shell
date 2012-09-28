@@ -189,6 +189,12 @@ copy ..\..\..\tests\data\valgrind.suppressions $(CopyDir)\share\cogl-$(CoglApiVe
 "
 	/>
 	<UserMacro
+		Name="CoglDoInstallSDL"
+		Value="
+copy ..\..\..\cogl\cogl-sdl.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl&#x0D;&#x0A;
+			  "
+	/>
+	<UserMacro
 		Name="GenerateCoglDef"
 		Value="
 		       echo EXPORTS &gt; $(DefDir)\cogl.def&#x0D;&#x0A;
