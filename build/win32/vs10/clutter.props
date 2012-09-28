@@ -6,6 +6,7 @@
 	<GlibGenMarshalPath>..\..\..\vs10\$(Platform)</GlibGenMarshalPath>
     <ClutterApiVersion>1.0</ClutterApiVersion>
     <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
+    <DefDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</DefDir>
     <BaseWinBuildDef>_WIN32_WINNT=0x0500</BaseWinBuildDef>
     <BaseBuildDef>$(BaseWinBuildDef)</BaseBuildDef>
     <LibBuildDefines>HAVE_CONFIG_H;CLUTTER_COMPILATION;COGL_ENABLE_EXPERIMENTAL_API;COGL_HAS_WIN32_SUPPORT;CLUTTER_ENABLE_EXPERIMENTAL_API</LibBuildDefines>
@@ -397,15 +398,15 @@ mkdir $(CopyDir)\lib
 copy $(SolutionDir)Debug\$(Platform)\bin\*-$(ClutterApiVersion).lib $(CopyDir)\lib
 </ClutterDoInstallDebugBin>
     <GenerateClutterDef>
-         echo EXPORTS &gt; ..\..\..\clutter\clutter.def
+         echo EXPORTS &gt; $(DefDir)\clutter.def
 
-         cl -EP -DHAVE_CAIRO -DCLUTTER_WINDOWING_WIN32 -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; ..\..\..\clutter\clutter.def
+         cl -EP -DHAVE_CAIRO -DCLUTTER_WINDOWING_WIN32 -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; $(DefDir)\clutter.def
 
     </GenerateClutterDef>
     <GenerateClutterGDKDef>
-         echo EXPORTS &gt; ..\..\..\clutter\clutter.def
+         echo EXPORTS &gt; $(DefDir)\clutter.def
 
-         cl -EP -DHAVE_CAIRO -DCLUTTER_WINDOWING_WIN32 -DCLUTTER_WINDOWING_GDK -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; ..\..\..\clutter\clutter.def
+         cl -EP -DHAVE_CAIRO -DCLUTTER_WINDOWING_WIN32 -DCLUTTER_WINDOWING_GDK -DCLUTTER_ENABLE_EXPERIMENTAL_API ..\..\..\clutter\clutter.symbols &gt;&gt; $(DefDir)\clutter.def
 
     </GenerateClutterGDKDef>
     <ClutterLibtoolCompatibleDllPrefix>lib</ClutterLibtoolCompatibleDllPrefix>
@@ -422,7 +423,7 @@ copy $(SolutionDir)Debug\$(Platform)\bin\*-$(ClutterApiVersion).lib $(CopyDir)\l
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..;$(GlibEtcInstallRoot)\include;$(GlibEtcInstallRoot)\include\glib-2.0;$(GlibEtcInstallRoot)\include\cairo;$(GlibEtcInstallRoot)\include\atk-1.0;$(GlibEtcInstallRoot)\include\pango-1.0;$(GlibEtcInstallRoot)\include\cogl-1.0;$(GlibEtcInstallRoot)\include\json-glib-1.0;$(GlibEtcInstallRoot)\lib\glib-2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..;..\..\..\clutter;$(GlibEtcInstallRoot)\include;$(GlibEtcInstallRoot)\include\glib-2.0;$(GlibEtcInstallRoot)\include\cairo;$(GlibEtcInstallRoot)\include\atk-1.0;$(GlibEtcInstallRoot)\include\pango-1.0;$(GlibEtcInstallRoot)\include\cogl-1.0;$(GlibEtcInstallRoot)\include\json-glib-1.0;$(GlibEtcInstallRoot)\lib\glib-2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>G_DISABLE_SINGLE_INCLUDES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>msvc_recommended_pragmas.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
@@ -435,6 +436,12 @@ copy $(SolutionDir)Debug\$(Platform)\bin\*-$(ClutterApiVersion).lib $(CopyDir)\l
   <ItemGroup>
     <BuildMacro Include="GlibEtcInstallRoot">
       <Value>$(GlibEtcInstallRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CopyDir">
+      <Value>$(CopyDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="DefDir">
+      <Value>$(DefDir)</Value>
     </BuildMacro>
     <BuildMacro Include="GlibMkEnumsPath">
       <Value>$(GlibMkEnumsPath)</Value>
