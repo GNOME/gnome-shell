@@ -282,9 +282,28 @@ _cogl_pipeline_layer_pre_change_notify (CoglPipeline *required_owner,
    * this layer (required_owner), and there are no other layers
    * dependant on this layer so it's ok to modify it. */
 
-  _cogl_pipeline_fragend_layer_change_notify (required_owner, layer, change);
-  _cogl_pipeline_vertend_layer_change_notify (required_owner, layer, change);
-  _cogl_pipeline_progend_layer_change_notify (required_owner, layer, change);
+  /* NB: Although layers can have private state associated with them
+   * by multiple backends we know that a layer can't be *changed* if
+   * it has multiple dependants so if we reach here we know we only
+   * have a single owner and can only be associated with a single
+   * backend that needs to be notified of the layer change...
+   */
+  if (required_owner->progend != COGL_PIPELINE_PROGEND_UNDEFINED)
+    {
+      const CoglPipelineProgend *progend =
+        _cogl_pipeline_progends[required_owner->progend];
+      const CoglPipelineFragend *fragend =
+        _cogl_pipeline_fragends[progend->fragend];
+      const CoglPipelineVertend *vertend =
+        _cogl_pipeline_vertends[progend->vertend];
+
+      if (fragend->layer_pre_change_notify)
+        fragend->layer_pre_change_notify (required_owner, layer, change);
+      if (vertend->layer_pre_change_notify)
+        vertend->layer_pre_change_notify (required_owner, layer, change);
+      if (progend->layer_pre_change_notify)
+        progend->layer_pre_change_notify (required_owner, layer, change);
+    }
 
   /* If the layer being changed is the same as the last layer we
    * flushed to the corresponding texture unit then we keep a track of

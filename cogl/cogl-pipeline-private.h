@@ -938,26 +938,11 @@ _cogl_pipeline_init_state_hash_functions (void);
 void
 _cogl_pipeline_init_layer_state_hash_functions (void);
 
-void
-_cogl_pipeline_fragend_layer_change_notify (CoglPipeline *owner,
-                                            CoglPipelineLayer *layer,
-                                            CoglPipelineLayerState change);
-
 CoglPipelineLayerState
 _cogl_pipeline_get_layer_state_for_fragment_codegen (CoglContext *context);
 
 CoglPipelineState
 _cogl_pipeline_get_state_for_fragment_codegen (CoglContext *context);
-
-void
-_cogl_pipeline_vertend_layer_change_notify (CoglPipeline *owner,
-                                            CoglPipelineLayer *layer,
-                                            CoglPipelineLayerState change);
-
-void
-_cogl_pipeline_progend_layer_change_notify (CoglPipeline *owner,
-                                            CoglPipelineLayer *layer,
-                                            CoglPipelineLayerState change);
 
 #endif /* __COGL_PIPELINE_PRIVATE_H */
 

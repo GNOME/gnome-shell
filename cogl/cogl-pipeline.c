@@ -1529,59 +1529,6 @@ _cogl_pipeline_prune_to_n_layers (CoglPipeline *pipeline, int n)
   pipeline->differences |= COGL_PIPELINE_STATE_LAYERS;
 }
 
-void
-_cogl_pipeline_fragend_layer_change_notify (CoglPipeline *owner,
-                                            CoglPipelineLayer *layer,
-                                            CoglPipelineLayerState change)
-{
-  /* NB: Although layers can have private state associated with them
-   * by multiple backends we know that a layer can't be *changed* if
-   * it has multiple dependants so if we reach here we know we only
-   * have a single owner and can only be associated with a single
-   * backend that needs to be notified of the layer change...
-   */
-  if (owner->progend != COGL_PIPELINE_PROGEND_UNDEFINED)
-    {
-      const CoglPipelineProgend *progend =
-        _cogl_pipeline_progends[owner->progend];
-      const CoglPipelineFragend *fragend =
-        _cogl_pipeline_fragends[progend->fragend];
-
-      if (fragend->layer_pre_change_notify)
-        fragend->layer_pre_change_notify (owner, layer, change);
-    }
-}
-
-void
-_cogl_pipeline_vertend_layer_change_notify (CoglPipeline *owner,
-                                            CoglPipelineLayer *layer,
-                                            CoglPipelineLayerState change)
-{
-  /* NB: The comment in fragend_layer_change_notify applies here too */
-  if (owner->progend != COGL_PIPELINE_PROGEND_UNDEFINED)
-    {
-      const CoglPipelineProgend *progend =
-        _cogl_pipeline_progends[owner->progend];
-      const CoglPipelineVertend *vertend =
-        _cogl_pipeline_vertends[progend->vertend];
-
-      if (vertend->layer_pre_change_notify)
-        vertend->layer_pre_change_notify (owner, layer, change);
-    }
-}
-
-void
-_cogl_pipeline_progend_layer_change_notify (CoglPipeline *owner,
-                                            CoglPipelineLayer *layer,
-                                            CoglPipelineLayerState change)
-{
-  const CoglPipelineProgend *progend =
-    _cogl_pipeline_progends[owner->progend];
-
-  if (progend->layer_pre_change_notify)
-    progend->layer_pre_change_notify (owner, layer, change);
-}
-
 typedef struct
 {
   /* The layer we are trying to find */
