@@ -1,5 +1,6 @@
 # Italian translations for gnome-shell package.
-# Copyright (C) 2009, 2010 the gnome-shell copyright holder
+# Copyright (C) 2009, 2010, the gnome-shell copyright holder
+# Copyright (C) 2011, 2012, the Free Software Foundation
 # This file is distributed under the same license as the gnome-shell package.
 #
 # Luca Ferretti <lferrett@gnome.org>, 2010, 2011, 2012.
@@ -9,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-22 16:54+0200\n"
-"PO-Revision-Date: 2012-09-22 16:54+0200\n"
+"POT-Creation-Date: 2012-09-29 18:06+0200\n"
+"PO-Revision-Date: 2012-09-29 18:08+0200\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -253,11 +254,11 @@ msgstr ""
 "Selezionare una estensione da configurare usando la casella combinata qui "
 "sopra."
 
-#: ../js/gdm/loginDialog.js:526
+#: ../js/gdm/loginDialog.js:528
 msgid "Session..."
 msgstr "Sessione..."
 
-#: ../js/gdm/loginDialog.js:674
+#: ../js/gdm/loginDialog.js:676
 msgctxt "title"
 msgid "Sign In"
 msgstr "Accesso"
@@ -265,37 +266,42 @@ msgstr "Accesso"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:741
+#: ../js/gdm/loginDialog.js:743
 msgid "Not listed?"
 msgstr "Non elencato?"
 
-#: ../js/gdm/loginDialog.js:894 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:896 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
 #: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "Annulla"
 
-#: ../js/gdm/loginDialog.js:899
+#: ../js/gdm/loginDialog.js:901
 msgctxt "button"
 msgid "Sign In"
 msgstr "Accedi"
 
-#: ../js/gdm/loginDialog.js:1238
+#: ../js/gdm/loginDialog.js:1240
 msgid "Login Window"
 msgstr "Finestra di accesso"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:658 ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:773
+#. Translators: accessible name of the power menu in the login screen
+#: ../js/gdm/powerMenu.js:35
+msgid "Power"
+msgstr "Risparmio energetico"
+
+#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:663 ../js/ui/userMenu.js:667
+#: ../js/ui/userMenu.js:778
 msgid "Suspend"
 msgstr "Sospendi"
 
-#: ../js/gdm/powerMenu.js:93
+#: ../js/gdm/powerMenu.js:94
 msgid "Restart"
 msgstr "Riavvia"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:772
+#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:665 ../js/ui/userMenu.js:667
+#: ../js/ui/userMenu.js:777
 msgid "Power Off"
 msgstr "Spegni"
 
@@ -1025,11 +1031,11 @@ msgstr "Scaricare e installare «%s» da extensions.gnome.org?"
 # FIXME!!!!!!
 # dai, ma come fai a tradurre un pulsante del genere?!?!?!
 # per ora ho messo nascondi, poi vedremo
-#: ../js/ui/keyboard.js:327
+#: ../js/ui/keyboard.js:337
 msgid "tray"
 msgstr "nascondi"
 
-#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:195
+#: ../js/ui/keyboard.js:584 ../js/ui/status/keyboard.js:195
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "Tastiera"
@@ -1084,19 +1090,19 @@ msgstr "Visualizza sorgente"
 msgid "Web Page"
 msgstr "Pagina web"
 
-#: ../js/ui/messageTray.js:1080
+#: ../js/ui/messageTray.js:1081
 msgid "Open"
 msgstr "Apri"
 
-#: ../js/ui/messageTray.js:1087
+#: ../js/ui/messageTray.js:1088
 msgid "Remove"
 msgstr "Rimuovi"
 
-#: ../js/ui/messageTray.js:2050
+#: ../js/ui/messageTray.js:2088
 msgid "Message Tray"
 msgstr "Cassetto messaggi"
 
-#: ../js/ui/messageTray.js:2506
+#: ../js/ui/messageTray.js:2551
 msgid "System Information"
 msgstr "Informazione di sistema"
 
@@ -1329,7 +1335,7 @@ msgstr "Impostazioni tastiera"
 msgid "Mouse Settings"
 msgstr "Impostazioni mouse"
 
-#: ../js/ui/status/bluetooth.js:269 ../js/ui/status/volume.js:236
+#: ../js/ui/status/bluetooth.js:269 ../js/ui/status/volume.js:234
 msgid "Sound Settings"
 msgstr "Impostazioni audio"
 
@@ -1617,7 +1623,7 @@ msgid "Unknown"
 msgstr "Sconosciuto"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:223
+#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "Volume"
 
@@ -1629,64 +1635,64 @@ msgstr "Microfono"
 msgid "Log in as another user"
 msgstr "Accedi come altro utente"
 
-#: ../js/ui/userMenu.js:175
+#: ../js/ui/userMenu.js:180
 msgid "Available"
 msgstr "Disponibile"
 
-#: ../js/ui/userMenu.js:178
+#: ../js/ui/userMenu.js:183
 msgid "Busy"
 msgstr "Non disponibile"
 
-#: ../js/ui/userMenu.js:181
+#: ../js/ui/userMenu.js:186
 msgid "Invisible"
 msgstr "Invisibile"
 
-#: ../js/ui/userMenu.js:184
+#: ../js/ui/userMenu.js:189
 msgid "Away"
 msgstr "Assente"
 
-#: ../js/ui/userMenu.js:187
+#: ../js/ui/userMenu.js:192
 msgid "Idle"
 msgstr "Inattivo"
 
-#: ../js/ui/userMenu.js:190
+#: ../js/ui/userMenu.js:195
 msgid "Unavailable"
 msgstr "Non disponibile"
 
-#: ../js/ui/userMenu.js:613 ../js/ui/userMenu.js:754
+#: ../js/ui/userMenu.js:618 ../js/ui/userMenu.js:759
 msgid "Switch User"
 msgstr "Cambia utente"
 
-#: ../js/ui/userMenu.js:614
+#: ../js/ui/userMenu.js:619
 msgid "Switch Session"
 msgstr "Cambia sessione"
 
-#: ../js/ui/userMenu.js:738
+#: ../js/ui/userMenu.js:743
 msgid "Notifications"
 msgstr "Notifiche"
 
-#: ../js/ui/userMenu.js:746
+#: ../js/ui/userMenu.js:751
 msgid "System Settings"
 msgstr "Impostazioni di sistema"
 
-#: ../js/ui/userMenu.js:759
+#: ../js/ui/userMenu.js:764
 msgid "Log Out"
 msgstr "Termina sessione"
 
-#: ../js/ui/userMenu.js:764
+#: ../js/ui/userMenu.js:769
 msgid "Lock"
 msgstr "Blocca"
 
-#: ../js/ui/userMenu.js:779
+#: ../js/ui/userMenu.js:784
 msgid "Install Updates & Restart"
 msgstr "Installa aggiornamenti e riavvia"
 
 # accorciato, altrimenti non si legge...
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:802
 msgid "Your chat status will be set to busy"
 msgstr "Stato per chat impostato a non disponibile"
 
-#: ../js/ui/userMenu.js:798
+#: ../js/ui/userMenu.js:803
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
