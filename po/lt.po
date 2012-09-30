@@ -1,5 +1,5 @@
 # Lithuanian translation for gnome-shell.
-# Copyright (C) 2010 Free Software Foundation, Inc.
+# Copyright © 2010-2012 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 # Žygimantas Beručka <zygis@gnome.org>, 2010, 2011, 2012.
 # Algimantas Margevičius <gymka@mail.ru>, 2011.
@@ -7,17 +7,19 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-25 00:06+0000\n"
-"PO-Revision-Date: 2012-09-27 22:25+0300\n"
-"Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-09-27 19:27+0000\n"
+"PO-Revision-Date: 2012-09-30 12:30+0300\n"
+"Last-Translator: Žygimantas Beručka <zygis@gnome.org>\n"
 "Language-Team: Lithuanian\n"
 "Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Virtaal 0.7.0\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
+"100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Virtaal 0.7.1\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:1
@@ -26,7 +28,7 @@ msgstr "Ekranvaizdžiai"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:2
 msgid "Record a screencast"
-msgstr "Įrašyti ekrano veiksmus"
+msgstr "Įrašyti ekrano vaizdo įrašą"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
 msgid "System"
@@ -55,35 +57,62 @@ msgstr "Konfigūruoti GNOME Shell plėtinius"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
-msgstr "Įjungti vidinius, Alt-F2 klavišų pagalba pasiekiamus įrankius, naudingus programuotojams ir bandytojams"
+msgstr ""
+"Įjungti vidinius, Alt-F2 klavišų pagalba pasiekiamus įrankius, naudingus "
+"programuotojams ir bandytojams"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:2
-msgid "Allows access to internal debugging and monitoring tools using the Alt-F2 dialog."
-msgstr "Suteikia prieigą prie vidinio derinimo ir stebėjimo įrankių, naudojant Alt-F2 dialogą."
+msgid ""
+"Allows access to internal debugging and monitoring tools using the Alt-F2 "
+"dialog."
+msgstr ""
+"Suteikia prieigą prie vidinio derinimo ir stebėjimo įrankių, naudojant Alt-"
+"F2 dialogą."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "Uuids of extensions to enable"
 msgstr "Įjungtinų plėtinių UUID."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:4
-msgid "GNOME Shell extensions have a uuid property; this key lists extensions which should be loaded. Any extension that wants to be loaded needs to be in this list. You can also manipulate this list with the EnableExtension and DisableExtension DBus methods on org.gnome.Shell."
-msgstr "GNOME Shell plėtiniai turi uuid savybę; šiame rakte išvardinti plėtiniai, kurie turėtų būti įkelti. Bet kuris plėtinys, kuris nori būti įkeltas, turi būti šiame sąraše. Šį sąrašą taip pat galima keisti naudojant org.gnome.Shell DBus metodus EnableExtension ir DisableExtension."
+msgid ""
+"GNOME Shell extensions have a uuid property; this key lists extensions which "
+"should be loaded. Any extension that wants to be loaded needs to be in this "
+"list. You can also manipulate this list with the EnableExtension and "
+"DisableExtension DBus methods on org.gnome.Shell."
+msgstr ""
+"GNOME Shell plėtiniai turi uuid savybę; šiame rakte išvardinti plėtiniai, "
+"kurie turėtų būti įkelti. Bet kuris plėtinys, kuris nori būti įkeltas, turi "
+"būti šiame sąraše. Šį sąrašą taip pat galima keisti naudojant org.gnome."
+"Shell DBus metodus EnableExtension ir DisableExtension."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "Whether to collect stats about applications usage"
 msgstr "Ar rinkti statistinę informaciją apie programų naudojimą"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:6
-msgid "The shell normally monitors active applications in order to present the most used ones (e.g. in launchers). While this data will be kept private, you may want to disable this for privacy reasons. Please note that doing so won't remove already saved data."
-msgstr "Įprastai GNOME aplinka stebi aktyvias programas siekiant pateikti dažniausiai naudojamas (pvz., leistukuose). Nors šie duomenys konfidencialiai saugomi, jei norite, saugumo sumetimais galite šią funkciją išjungti. Atminkite, kad išjungus šią funkciją anksčiau įrašyti duomenys nebus pašalinti."
+msgid ""
+"The shell normally monitors active applications in order to present the most "
+"used ones (e.g. in launchers). While this data will be kept private, you may "
+"want to disable this for privacy reasons. Please note that doing so won't "
+"remove already saved data."
+msgstr ""
+"Įprastai GNOME aplinka stebi aktyvias programas siekiant pateikti "
+"dažniausiai naudojamas (pvz., leistukuose). Nors šie duomenys "
+"konfidencialiai saugomi, jei norite, saugumo sumetimais galite šią funkciją "
+"išjungti. Atminkite, kad išjungus šią funkciją anksčiau įrašyti duomenys "
+"nebus pašalinti."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Mėgstamų programų darbastalio failų ID sąrašas"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:8
-msgid "The applications corresponding to these identifiers will be displayed in the favorites area."
-msgstr "Programos, atitinkančios šiuos identifikatorius, bus rodomos mėgstamų srityje."
+msgid ""
+"The applications corresponding to these identifiers will be displayed in the "
+"favorites area."
+msgstr ""
+"Programos, atitinkančios šiuos identifikatorius, bus rodomos mėgstamų "
+"srityje."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "History for command (Alt-F2) dialog"
@@ -94,12 +123,20 @@ msgid "History for the looking glass dialog"
 msgstr "Didinamojo stiklo dialogo retrospektyva"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
-msgid "Internally used to store the last IM presence explicitly set by the user. The value here is from the TpConnectionPresenceType enumeration."
-msgstr "Naudojama viduje paskutinei naudotojo nustatytai pranešimų būsenai saugoti. Vertė yra iš TpConnectionPresenceType išvardinimo."
+msgid ""
+"Internally used to store the last IM presence explicitly set by the user. "
+"The value here is from the TpConnectionPresenceType enumeration."
+msgstr ""
+"Naudojama viduje paskutinei naudotojo nustatytai pranešimų būsenai saugoti. "
+"Vertė yra iš TpConnectionPresenceType išvardinimo."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:12
-msgid "Internally used to store the last session presence status for the user. The value here is from the GsmPresenceStatus enumeration."
-msgstr "Naudojama viduje paskutines sesijos naudotojo būvimo būsenai saugoti. Vertė yra iš GsmPresenceStatus išvardinimo."
+msgid ""
+"Internally used to store the last session presence status for the user. The "
+"value here is from the GsmPresenceStatus enumeration."
+msgstr ""
+"Naudojama viduje paskutines sesijos naudotojo būvimo būsenai saugoti. Vertė "
+"yra iš GsmPresenceStatus išvardinimo."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "Show the week date in the calendar"
@@ -146,8 +183,12 @@ msgid "Framerate used for recording screencasts."
 msgstr "Kadrų dažnis, naudojamas norint įrašyti ekrano vaizdo įrašą."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:24
-msgid "The framerate of the resulting screencast recordered by GNOME Shell's screencast recorder in frames-per-second."
-msgstr "GNOME Shell ekranų įrašymo programa sukurto ekrano įrašo kadrų dažnis kadrais per sekundę."
+msgid ""
+"The framerate of the resulting screencast recordered by GNOME Shell's "
+"screencast recorder in frames-per-second."
+msgstr ""
+"GNOME Shell ekranų įrašymo programa sukurto ekrano įrašo kadrų dažnis "
+"kadrais per sekundę."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "The gstreamer pipeline used to encode the screencast"
@@ -155,16 +196,43 @@ msgstr "Gstreamer konvejeris, naudojamas užkoduojant ekrano vaizdo įrašą."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 #, no-c-format
-msgid "Sets the GStreamer pipeline used to encode recordings. It follows the syntax used for gst-launch. The pipeline should have an unconnected sink pad where the recorded video is recorded. It will normally have a unconnected source pad; output from that pad will be written into the output file. However the pipeline can also take care of its own output - this might be used to send the output to an icecast server via shout2send or similar. When unset or set to an empty value, the default pipeline will be used. This is currently 'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a placeholder for a guess at the optimal thread count on the system."
-msgstr "Nurodo GStreamer konvejerį, naudojamą įrašams koduoti. Jame naudojama gst-launch sintaksė. Konvejeryje turėtų būti neprijungtas išvesties pagrindo elementas, kuriame įrašomas vaizdo įrašas. Paprastai jame yra neprijungtas šaltinio elementas; išvestis iš to elemento bus įrašyta į išvesties failą. Tačiau konvejeris taip pat gali pasirūpinti savo paties išvestimi – tai gali būti panaudota norint perduoti išvestį icecast serveriui per shout2send ar pan. elementą. Kai reikšmė nenustatyta ar nustatyta tuščia reikšmė, naudojamas numatytasis konvejeris. Šiuo metu tai yra „vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! queue ! webmmux“ ir įrašo į WEBM naudojant VP8 kodeką. %T yra naudojamas kaip žymeklis optimalaus gijų skaičiaus sistemoje spėjimui."
+msgid ""
+"Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
+"used for gst-launch. The pipeline should have an unconnected sink pad where "
+"the recorded video is recorded. It will normally have a unconnected source "
+"pad; output from that pad will be written into the output file. However the "
+"pipeline can also take care of its own output - this might be used to send "
+"the output to an icecast server via shout2send or similar. When unset or set "
+"to an empty value, the default pipeline will be used. This is currently "
+"'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
+"threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is "
+"used as a placeholder for a guess at the optimal thread count on the system."
+msgstr ""
+"Nurodo GStreamer konvejerį, naudojamą įrašams koduoti. Jame naudojama gst-"
+"launch sintaksė. Konvejeryje turėtų būti neprijungtas išvesties pagrindo "
+"elementas, kuriame įrašomas vaizdo įrašas. Paprastai jame yra neprijungtas "
+"šaltinio elementas; išvestis iš to elemento bus įrašyta į išvesties failą. "
+"Tačiau konvejeris taip pat gali pasirūpinti savo paties išvestimi – tai gali "
+"būti panaudota norint perduoti išvestį icecast serveriui per shout2send ar "
+"pan. elementą. Kai reikšmė nenustatyta ar nustatyta tuščia reikšmė, "
+"naudojamas numatytasis konvejeris. Šiuo metu tai yra „vp8enc "
+"min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! "
+"queue ! webmmux“ ir įrašo į WEBM naudojant VP8 kodeką. %T yra naudojamas "
+"kaip žymeklis optimalaus gijų skaičiaus sistemoje spėjimui."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "File extension used for storing the screencast"
 msgstr "Failų plėtinys, naudojamas įrašyti ekrano vaizdo įrašą"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:29
-msgid "The filename for recorded screencasts will be a unique filename based on the current date, and use this extension. It should be changed when recording to a different container format."
-msgstr "Įrašytų ekrano vaizdo įrašų failų vardas bus unikalus, sudaromas atsižvelgiant į dabartinę datą ir naudojantis šį plėtinį. Rašant į kitą konteinerio formatą jį reikėtų pakeisti."
+msgid ""
+"The filename for recorded screencasts will be a unique filename based on the "
+"current date, and use this extension. It should be changed when recording to "
+"a different container format."
+msgstr ""
+"Įrašytų ekrano vaizdo įrašų failų vardas bus unikalus, sudaromas "
+"atsižvelgiant į dabartinę datą ir naudojantis šį plėtinį. Rašant į kitą "
+"konteinerio formatą jį reikėtų pakeisti."
 
 #: ../js/extensionPrefs/main.js:124
 #, c-format
@@ -179,11 +247,11 @@ msgstr "Plėtinys"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Išskleidžiamajame sąraše pasirinkite konfigūruotiną plėtinį."
 
-#: ../js/gdm/loginDialog.js:527
+#: ../js/gdm/loginDialog.js:528
 msgid "Session..."
 msgstr "Seansas..."
 
-#: ../js/gdm/loginDialog.js:675
+#: ../js/gdm/loginDialog.js:676
 msgctxt "title"
 msgid "Sign In"
 msgstr "Prisijungti"
@@ -191,39 +259,32 @@ msgstr "Prisijungti"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:742
+#: ../js/gdm/loginDialog.js:743
 msgid "Not listed?"
 msgstr "Nėra sąraše?"
 
-#: ../js/gdm/loginDialog.js:895
-#: ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:162
-#: ../js/ui/endSessionDialog.js:373
-#: ../js/ui/extensionDownloader.js:195
-#: ../js/ui/shellMountOperation.js:396
-#: ../js/ui/status/bluetooth.js:427
-#: ../js/ui/unlockDialog.js:166
+#: ../js/gdm/loginDialog.js:896 ../js/ui/components/networkAgent.js:137
+#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
+#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "Atsisakyti"
 
-#: ../js/gdm/loginDialog.js:900
+#: ../js/gdm/loginDialog.js:901
 msgctxt "button"
 msgid "Sign In"
 msgstr "Prisijungti"
 
-#: ../js/gdm/loginDialog.js:1239
+#: ../js/gdm/loginDialog.js:1240
 msgid "Login Window"
 msgstr "Prisijungimo langas"
 
 #. Translators: accessible name of the power menu in the login screen
 #: ../js/gdm/powerMenu.js:35
-#| msgid "Power Off"
 msgid "Power"
 msgstr "Energija"
 
-#: ../js/gdm/powerMenu.js:89
-#: ../js/ui/userMenu.js:663
-#: ../js/ui/userMenu.js:667
+#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:663 ../js/ui/userMenu.js:667
 #: ../js/ui/userMenu.js:778
 msgid "Suspend"
 msgstr "Užmigdyti"
@@ -232,9 +293,7 @@ msgstr "Užmigdyti"
 msgid "Restart"
 msgstr "Paleisti iš naujo"
 
-#: ../js/gdm/powerMenu.js:99
-#: ../js/ui/userMenu.js:665
-#: ../js/ui/userMenu.js:667
+#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:665 ../js/ui/userMenu.js:667
 #: ../js/ui/userMenu.js:777
 msgid "Power Off"
 msgstr "Išjungti"
@@ -286,8 +345,7 @@ msgstr "NUSTATYMAI"
 msgid "New Window"
 msgstr "Naujas langas"
 
-#: ../js/ui/appDisplay.js:678
-#: ../js/ui/dash.js:271
+#: ../js/ui/appDisplay.js:678 ../js/ui/dash.js:271
 msgid "Remove from Favorites"
 msgstr "Pašalinti iš mėgstamų"
 
@@ -464,8 +522,7 @@ msgstr "Atverti su %s"
 msgid "Eject"
 msgstr "Išimti"
 
-#: ../js/ui/components/keyring.js:86
-#: ../js/ui/components/polkitAgent.js:260
+#: ../js/ui/components/keyring.js:86 ../js/ui/components/polkitAgent.js:260
 msgid "Password:"
 msgstr "Slaptažodis:"
 
@@ -517,8 +574,12 @@ msgstr "Belaidžiam tinklui reikia patvirtinti tapatybę"
 
 #: ../js/ui/components/networkAgent.js:310
 #, c-format
-msgid "Passwords or encryption keys are required to access the wireless network '%s'."
-msgstr "Slaptažodžiai arba šifravimo raktai yra būtini priėjimui prie belaidžio tinklo „%s“."
+msgid ""
+"Passwords or encryption keys are required to access the wireless network "
+"'%s'."
+msgstr ""
+"Slaptažodžiai arba šifravimo raktai yra būtini priėjimui prie belaidžio "
+"tinklo „%s“."
 
 #: ../js/ui/components/networkAgent.js:314
 msgid "Wired 802.1X authentication"
@@ -569,8 +630,7 @@ msgstr "Patvirtinti tapatybę"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/components/polkitAgent.js:248
-#: ../js/ui/shellMountOperation.js:381
+#: ../js/ui/components/polkitAgent.js:248 ../js/ui/shellMountOperation.js:381
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Atsiprašome, tai nesuveikė. Bandykite dar kartą."
 
@@ -632,7 +692,7 @@ msgstr "Išsiųsta <b>%B %d</b>, <b>%A</b>"
 #: ../js/ui/components/telepathyClient.js:959
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-msgstr "Išsiųsta %Y <b>%B %d</b>, <b>%A</b>"
+msgstr "Išsiųsta %Y m. <b>%B %d d.</b>, <b>%A</b>"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -775,7 +835,8 @@ msgid "This account is already connected to the server"
 msgstr "Ši paskyra jau prijungta prie serverio"
 
 #: ../js/ui/components/telepathyClient.js:1332
-msgid "Connection has been replaced by a new connection using the same resource"
+msgid ""
+"Connection has been replaced by a new connection using the same resource"
 msgstr "Ryšys pakeistas nauju ryšiu naudojant tą patį išteklių"
 
 #: ../js/ui/components/telepathyClient.js:1334
@@ -791,12 +852,19 @@ msgid "Certificate has been revoked"
 msgstr "Liudijimas atšauktas"
 
 #: ../js/ui/components/telepathyClient.js:1340
-msgid "Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr "Liudijimui naudojamas nesaugus šifravimo algoritmas arba jis kriptografiškai silpnas"
+msgid ""
+"Certificate uses an insecure cipher algorithm or is cryptographically weak"
+msgstr ""
+"Liudijimui naudojamas nesaugus šifravimo algoritmas arba jis kriptografiškai "
+"silpnas"
 
 #: ../js/ui/components/telepathyClient.js:1342
-msgid "The length of the server certificate, or the depth of the server certificate chain, exceed the limits imposed by the cryptography library"
-msgstr "Serverio liudijimo ilgis arba liudijimų eilės dydis viršija kriptografijos bibliotekos apribojimus"
+msgid ""
+"The length of the server certificate, or the depth of the server certificate "
+"chain, exceed the limits imposed by the cryptography library"
+msgstr ""
+"Serverio liudijimo ilgis arba liudijimų eilės dydis viršija kriptografijos "
+"bibliotekos apribojimus"
 
 #: ../js/ui/components/telepathyClient.js:1344
 msgid "Internal error"
@@ -821,8 +889,7 @@ msgstr "Taisyti paskyrą"
 msgid "Unknown reason"
 msgstr "Nežinoma priežastis"
 
-#: ../js/ui/dash.js:245
-#: ../js/ui/dash.js:273
+#: ../js/ui/dash.js:245 ../js/ui/dash.js:273
 msgid "Show Applications"
 msgstr "Rodyti programos"
 
@@ -854,7 +921,9 @@ msgstr "Atsijungti"
 
 #: ../js/ui/endSessionDialog.js:63
 msgid "Click Log Out to quit these applications and log out of the system."
-msgstr "Spustelėkite „Išeiti“, jei norite užverti šias programas ir atsijungti nuo sistemos."
+msgstr ""
+"Spustelėkite „Išeiti“, jei norite užverti šias programas ir atsijungti nuo "
+"sistemos."
 
 #: ../js/ui/endSessionDialog.js:65
 #, c-format
@@ -888,7 +957,9 @@ msgstr "Išjungti"
 
 #: ../js/ui/endSessionDialog.js:82
 msgid "Click Power Off to quit these applications and power off the system."
-msgstr "Spustelėkite „Išjungti“, jei norite užverti šias programas ir išjungti sistemą."
+msgstr ""
+"Spustelėkite „Išjungti“, jei norite užverti šias programas ir išjungti "
+"sistemą."
 
 #: ../js/ui/endSessionDialog.js:84
 #, c-format
@@ -902,8 +973,7 @@ msgstr[2] "Sistema automatiškai išsijungs po %d sekundžių."
 msgid "Powering off the system."
 msgstr "Sistema išjungiama."
 
-#: ../js/ui/endSessionDialog.js:90
-#: ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:107
 msgctxt "button"
 msgid "Restart"
 msgstr "Paleisti iš naujo"
@@ -920,7 +990,9 @@ msgstr "Paleisti iš naujo"
 
 #: ../js/ui/endSessionDialog.js:99
 msgid "Click Restart to quit these applications and restart the system."
-msgstr "Spustelėkite „Paleisti iš naujo“, jei norite užverti šias programas ir paleisti sistemą iš naujo."
+msgstr ""
+"Spustelėkite „Paleisti iš naujo“, jei norite užverti šias programas ir "
+"paleisti sistemą iš naujo."
 
 #: ../js/ui/endSessionDialog.js:101
 #, c-format
@@ -943,12 +1015,11 @@ msgstr "Įdiegti"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Atsiųsti ir įdiegti „%s“ iš extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:327
+#: ../js/ui/keyboard.js:337
 msgid "tray"
 msgstr "dėklas"
 
-#: ../js/ui/keyboard.js:561
-#: ../js/ui/status/keyboard.js:195
+#: ../js/ui/keyboard.js:584 ../js/ui/status/keyboard.js:195
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "Klaviatūra"
@@ -967,8 +1038,7 @@ msgstr "%s nepranešė apie jokias klaidas."
 msgid "Hide Errors"
 msgstr "Slėpti klaidas"
 
-#: ../js/ui/lookingGlass.js:755
-#: ../js/ui/lookingGlass.js:815
+#: ../js/ui/lookingGlass.js:755 ../js/ui/lookingGlass.js:815
 msgid "Show Errors"
 msgstr "Rodyti klaidas"
 
@@ -978,8 +1048,7 @@ msgstr "Įjungta"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:767
-#: ../src/gvc/gvc-mixer-control.c:1082
+#: ../js/ui/lookingGlass.js:767 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "Išjungta"
 
@@ -1003,24 +1072,23 @@ msgstr "Žiūrėti šaltinį"
 msgid "Web Page"
 msgstr "Tinklalapis"
 
-#: ../js/ui/messageTray.js:1080
+#: ../js/ui/messageTray.js:1081
 msgid "Open"
 msgstr "Atverti"
 
-#: ../js/ui/messageTray.js:1087
+#: ../js/ui/messageTray.js:1088
 msgid "Remove"
 msgstr "Pašalinti"
 
-#: ../js/ui/messageTray.js:2055
+#: ../js/ui/messageTray.js:2088
 msgid "Message Tray"
 msgstr "Pranešimų juosta"
 
-#: ../js/ui/messageTray.js:2511
+#: ../js/ui/messageTray.js:2551
 msgid "System Information"
 msgstr "Sistemos informacija"
 
-#: ../js/ui/notificationDaemon.js:506
-#: ../src/shell-app.c:373
+#: ../js/ui/notificationDaemon.js:506 ../src/shell-app.c:373
 msgctxt "program"
 msgid "Unknown"
 msgstr "Nežinoma"
@@ -1128,8 +1196,7 @@ msgstr "Slaptažodis"
 msgid "Remember Password"
 msgstr "Atsiminti slaptažodį"
 
-#: ../js/ui/shellMountOperation.js:400
-#: ../js/ui/unlockDialog.js:169
+#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:169
 msgid "Unlock"
 msgstr "Atrakinti"
 
@@ -1181,14 +1248,10 @@ msgstr "Didelis kontrastas"
 msgid "Large Text"
 msgstr "Didelis tekstas"
 
-#: ../js/ui/status/bluetooth.js:27
-#: ../js/ui/status/bluetooth.js:31
-#: ../js/ui/status/bluetooth.js:251
-#: ../js/ui/status/bluetooth.js:304
-#: ../js/ui/status/bluetooth.js:335
-#: ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:400
-#: ../js/ui/status/network.js:867
+#: ../js/ui/status/bluetooth.js:27 ../js/ui/status/bluetooth.js:31
+#: ../js/ui/status/bluetooth.js:251 ../js/ui/status/bluetooth.js:304
+#: ../js/ui/status/bluetooth.js:335 ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:400 ../js/ui/status/network.js:867
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1209,8 +1272,7 @@ msgid "Bluetooth Settings"
 msgstr "Bluetooth nustatymai"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:103
-#: ../js/ui/status/network.js:208
+#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:208
 msgid "hardware disabled"
 msgstr "įrenginys išjungtas"
 
@@ -1218,13 +1280,11 @@ msgstr "įrenginys išjungtas"
 msgid "Connection"
 msgstr "Ryšys"
 
-#: ../js/ui/status/bluetooth.js:207
-#: ../js/ui/status/network.js:458
+#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:458
 msgid "disconnecting..."
 msgstr "atsijungiama..."
 
-#: ../js/ui/status/bluetooth.js:220
-#: ../js/ui/status/network.js:464
+#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:464
 #: ../js/ui/status/network.js:934
 msgid "connecting..."
 msgstr "jungiamasi..."
@@ -1254,8 +1314,7 @@ msgstr "Klaviatūros nustatymai"
 msgid "Mouse Settings"
 msgstr "Pelės nustatymai"
 
-#: ../js/ui/status/bluetooth.js:269
-#: ../js/ui/status/volume.js:236
+#: ../js/ui/status/bluetooth.js:269 ../js/ui/status/volume.js:234
 msgid "Sound Settings"
 msgstr "Garso nustatymai"
 
@@ -1282,8 +1341,7 @@ msgstr "Leisti tik šį kartą"
 msgid "Pairing confirmation for %s"
 msgstr "Suporavimo patvirtinimas įrenginiui %s"
 
-#: ../js/ui/status/bluetooth.js:378
-#: ../js/ui/status/bluetooth.js:408
+#: ../js/ui/status/bluetooth.js:378 ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Įrenginys %s pageidauja būti suporuotas su šiuo kompiuteriu"
@@ -1342,8 +1400,7 @@ msgid "unmanaged"
 msgstr "nevaldomas"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:467
-#: ../js/ui/status/network.js:937
+#: ../js/ui/status/network.js:467 ../js/ui/status/network.js:937
 msgid "authentication required"
 msgstr "reikia patvirtinti tapatybę"
 
@@ -1364,20 +1421,17 @@ msgstr "atjungtas laidas"
 msgid "unavailable"
 msgstr "nepasiekiamas"
 
-#: ../js/ui/status/network.js:491
-#: ../js/ui/status/network.js:939
+#: ../js/ui/status/network.js:491 ../js/ui/status/network.js:939
 msgid "connection failed"
 msgstr "nepavyko prisijungti"
 
-#: ../js/ui/status/network.js:552
-#: ../js/ui/status/network.js:1529
+#: ../js/ui/status/network.js:552 ../js/ui/status/network.js:1529
 msgid "More..."
 msgstr "Rodyti daugiau tinklų..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:588
-#: ../js/ui/status/network.js:1459
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1459
 msgid "Connected (private)"
 msgstr "Prisijungta (privatus)"
 
@@ -1394,8 +1448,7 @@ msgid "Auto dial-up"
 msgstr "Automatinis telefoninis"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:853
-#: ../js/ui/status/network.js:1476
+#: ../js/ui/status/network.js:853 ../js/ui/status/network.js:1476
 #, c-format
 msgid "Auto %s"
 msgstr "Automatinis %s"
@@ -1498,8 +1551,7 @@ msgstr[0] "liko %d minutė"
 msgstr[1] "liko %d minutės"
 msgstr[2] "liko %d minučių"
 
-#: ../js/ui/status/power.js:112
-#: ../js/ui/status/power.js:186
+#: ../js/ui/status/power.js:112 ../js/ui/status/power.js:186
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
@@ -1551,8 +1603,7 @@ msgid "Unknown"
 msgstr "Nežinoma"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:47
-#: ../js/ui/status/volume.js:223
+#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "Garsumas"
 
@@ -1588,8 +1639,7 @@ msgstr "Neužimtas"
 msgid "Unavailable"
 msgstr "Nepasiekiamas"
 
-#: ../js/ui/userMenu.js:618
-#: ../js/ui/userMenu.js:759
+#: ../js/ui/userMenu.js:618 ../js/ui/userMenu.js:759
 msgid "Switch User"
 msgstr "Keisti naudotoją"
 
@@ -1622,8 +1672,13 @@ msgid "Your chat status will be set to busy"
 msgstr "Jūsų pokalbio būsena bus nustatyta į užimta"
 
 #: ../js/ui/userMenu.js:803
-msgid "Notifications are now disabled, including chat messages. Your online status has been adjusted to let others know that you might not see their messages."
-msgstr "Pranešimai šiuo metu yra išjungti, įskaitant pokalbių pranešimus. Jūsų būsena internete atitinkamai pakoreguota, kad kiti galėtų žinoti, jog jūs galite nepamatyti jų pranešimų."
+msgid ""
+"Notifications are now disabled, including chat messages. Your online status "
+"has been adjusted to let others know that you might not see their messages."
+msgstr ""
+"Pranešimai šiuo metu yra išjungti, įskaitant pokalbių pranešimus. Jūsų "
+"būsena internete atitinkamai pakoreguota, kad kiti galėtų žinoti, jog jūs "
+"galite nepamatyti jų pranešimų."
 
 #: ../js/ui/viewSelector.js:85
 msgid "Windows"
@@ -1698,7 +1753,7 @@ msgstr "Veiksena, naudojama GDM prisijungimo ekrane"
 
 #: ../src/main.c:342
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
-msgstr "Naudoti specialią veikseną, pvz. „gdm“ prisijungimo ekranui"
+msgstr "Naudoti konkrečią veikseną, pvz., „gdm“ prisijungimo ekranui"
 
 #: ../src/main.c:348
 msgid "List possible modes"
@@ -1728,4 +1783,3 @@ msgstr "Numatytasis"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Naudotojas užvėrė tapatybės patvirtinimo dialogą"
-
