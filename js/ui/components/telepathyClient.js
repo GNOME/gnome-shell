@@ -930,24 +930,32 @@ const ChatNotification = new Lang.Class({
 
         let format;
 
-        // Show a week day and time if date is in the last week
-        if (daysAgo < 1 || (daysAgo < 7 && now.getDay() != date.getDay())) {
-            /* Translators: this is a time format string followed by a date.
-             If applicable, replace %X with a strftime format valid for your
-             locale, without seconds. */
+        // Show only the hour if date is on today
+        if(daysAgo < 1){
+            format = "<b>%H:%M</b>";
+        }
+        // Show the word "Yesterday" and time if date is on yesterday
+        else if(daysAgo <2){
+            /* Translators: this is a time format string followed by the word "Yesterday". i.e. "14:30 on Yesterday"*/
             // xgettext:no-c-format
-            format = _("Sent at <b>%X</b> on <b>%A</b>");
+            format = _("<b>%H:%M</b> on Yesterday");
+        }
+        // Show a week day and time if date is in the last week
+        else if (daysAgo < 7) {
+            /* Translators: this is a time format string followed by a week day name. i.e. "14:30 on Monday*/
+            // xgettext:no-c-format
+            format = _("<b>%H:%M</b> on <b>%A</b>");
 
         } else if (date.getYear() == now.getYear()) {
-            /* Translators: this is a time format in the style of "Wednesday, May 25",
-             shown when you get a chat message in the same year. */
+            /* Translators: this is a time format in the style of "14:30 on Wednesday, May 25",
+             shown when you get a chat message in the same year */
             // xgettext:no-c-format
-            format = _("Sent on <b>%A</b>, <b>%B %d</b>");
+            format = _("<b>%H:%M</b> on <b>%A</b>, <b>%B</b> <b>%d</b>");
         } else {
-            /* Translators: this is a time format in the style of "Wednesday, May 25, 2012",
-             shown when you get a chat message in a different year. */
+            /* Translators: this is a time format in the style of "14:30 on Wednesday, May 25, 2012",
+             shown when you get a chat message in a different year */
             // xgettext:no-c-format
-            format = _("Sent on <b>%A</b>, <b>%B %d</b>, %Y");
+            format = _("<b>%H:%M</b> on <b>%A</b>, <b>%B</b> <b>%d</b>, %Y");
         }
 
         return date.toLocaleFormat(format);
@@ -960,8 +968,7 @@ const ChatNotification = new Lang.Class({
         let timeLabel = this._append({ body: this._formatTimestamp(lastMessageDate),
                                        group: 'meta',
                                        styles: ['chat-meta-message'],
-                                       childProps: { expand: true, x_fill: false,
-                                                     x_align: St.Align.END },
+                                       childProps: { expand: true, x_fill: false },
                                        noTimestamp: true,
                                        timestamp: lastMessageTime });
 
