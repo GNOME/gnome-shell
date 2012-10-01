@@ -240,7 +240,8 @@ cogl_framebuffer_get_viewport_height (CoglFramebuffer *framebuffer);
 /**
  * cogl_framebuffer_get_viewport4fv:
  * @framebuffer: A #CoglFramebuffer
- * @viewport: A pointer to an array of 4 floats to receive the (x, y, width, height)
+ * @viewport: (out caller-allocates) (array fixed-size=4): A pointer to an
+ *            array of 4 floats to receive the (x, y, width, height)
  *            components of the current viewport.
  *
  * Queries the x, y, width and height components of the current viewport as set
