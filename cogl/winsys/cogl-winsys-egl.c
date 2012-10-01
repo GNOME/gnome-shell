@@ -483,7 +483,8 @@ _cogl_winsys_context_init (CoglContext *context, GError **error)
   /* NB: We currently only support creating standalone GLES2 contexts
    * for offscreen rendering and so we need a dummy (non-visible)
    * surface to be able to bind those contexts */
-  if (egl_display->dummy_surface != EGL_NO_SURFACE)
+  if (egl_display->dummy_surface != EGL_NO_SURFACE &&
+      context->driver == COGL_DRIVER_GLES2)
     COGL_FLAGS_SET (context->features,
                     COGL_FEATURE_ID_GLES2_CONTEXT, TRUE);
 
