@@ -51,10 +51,9 @@
 #include "cogl-framebuffer-private.h"
 #include "cogl-pipeline-progend-glsl-private.h"
 
-#ifdef HAVE_COGL_GLES2
-
 /* These are used to generalise updating some uniforms that are
-   required when building for GLES2 */
+   required when building for drivers missing some fixed function
+   state that we use */
 
 typedef void (* UpdateUniformFunc) (CoglPipeline *pipeline,
                                     int uniform_location,
@@ -70,19 +69,23 @@ typedef struct
   void *getter_func;
   UpdateUniformFunc update_func;
   CoglPipelineState change;
+
+  /* This builtin is only necessary if the following private feature
+   * is not implemented in the driver */
+  CoglPrivateFeatureFlags feature_replacement;
 } BuiltinUniformData;
 
 static BuiltinUniformData builtin_uniforms[] =
   {
     { "cogl_point_size_in",
       cogl_pipeline_get_point_size, update_float_uniform,
-      COGL_PIPELINE_STATE_POINT_SIZE },
+      COGL_PIPELINE_STATE_POINT_SIZE,
+      COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM },
     { "_cogl_alpha_test_ref",
       cogl_pipeline_get_alpha_test_reference, update_float_uniform,
-      COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE }
+      COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE,
+      COGL_PRIVATE_FEATURE_ALPHA_TEST }
   };
-
-#endif /* HAVE_COGL_GLES2 */
 
 const CoglPipelineProgend _cogl_pipeline_glsl_progend;
 
@@ -115,10 +118,8 @@ typedef struct
    * if this changes. */
   int n_tex_coord_attribs;
 
-#ifdef HAVE_COGL_GLES2
   unsigned long dirty_builtin_uniforms;
   GLint builtin_uniform_locations[G_N_ELEMENTS (builtin_uniforms)];
-#endif
 
   GLint modelview_uniform;
   GLint projection_uniform;
@@ -438,10 +439,9 @@ update_constants_cb (CoglPipeline *pipeline,
   return TRUE;
 }
 
-#ifdef HAVE_COGL_GLES2
-
 static void
-update_builtin_uniforms (CoglPipeline *pipeline,
+update_builtin_uniforms (CoglContext *context,
+                         CoglPipeline *pipeline,
                          GLuint gl_program,
                          CoglPipelineProgramState *program_state)
 {
@@ -451,7 +451,9 @@ update_builtin_uniforms (CoglPipeline *pipeline,
     return;
 
   for (i = 0; i < G_N_ELEMENTS (builtin_uniforms); i++)
-    if ((program_state->dirty_builtin_uniforms & (1 << i)) &&
+    if ((context->private_feature_flags &
+         builtin_uniforms[i].feature_replacement) == 0 &&
+        (program_state->dirty_builtin_uniforms & (1 << i)) &&
         program_state->builtin_uniform_locations[i] != -1)
       builtin_uniforms[i].update_func (pipeline,
                                        program_state
@@ -460,8 +462,6 @@ update_builtin_uniforms (CoglPipeline *pipeline,
 
   program_state->dirty_builtin_uniforms = 0;
 }
-
-#endif /* HAVE_COGL_GLES2 */
 
 typedef struct
 {
@@ -801,9 +801,11 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
       clear_flushed_matrix_stacks (program_state);
 
       for (i = 0; i < G_N_ELEMENTS (builtin_uniforms); i++)
-        GE_RET( program_state->builtin_uniform_locations[i], ctx,
-                glGetUniformLocation (gl_program,
-                                      builtin_uniforms[i].uniform_name) );
+        if ((ctx->private_feature_flags &
+             builtin_uniforms[i].feature_replacement) == 0)
+          GE_RET( program_state->builtin_uniform_locations[i], ctx,
+                  glGetUniformLocation (gl_program,
+                                        builtin_uniforms[i].uniform_name) );
 
       GE_RET( program_state->modelview_uniform, ctx,
               glGetUniformLocation (gl_program,
@@ -818,13 +820,11 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
                                     "cogl_modelview_projection_matrix") );
     }
 
-#ifdef HAVE_COGL_GLES2
   if (program_changed ||
       program_state->last_used_for_pipeline != pipeline)
     program_state->dirty_builtin_uniforms = ~(unsigned long) 0;
 
-  update_builtin_uniforms (pipeline, gl_program, program_state);
-#endif
+  update_builtin_uniforms (ctx, pipeline, gl_program, program_state);
 
   _cogl_pipeline_progend_glsl_flush_uniforms (pipeline,
                                               program_state,
@@ -850,14 +850,14 @@ _cogl_pipeline_progend_glsl_pre_change_notify (CoglPipeline *pipeline,
 
   if ((change & _cogl_pipeline_get_state_for_fragment_codegen (ctx)))
     dirty_program_state (pipeline);
-
-#ifdef HAVE_COGL_GLES2
-  else if (ctx->driver == COGL_DRIVER_GLES2)
+  else
     {
       int i;
 
       for (i = 0; i < G_N_ELEMENTS (builtin_uniforms); i++)
-        if ((change & builtin_uniforms[i].change))
+        if ((ctx->private_feature_flags &
+             builtin_uniforms[i].feature_replacement) == 0 &&
+            (change & builtin_uniforms[i].change))
           {
             CoglPipelineProgramState *program_state
               = get_program_state (pipeline);
@@ -866,7 +866,6 @@ _cogl_pipeline_progend_glsl_pre_change_notify (CoglPipeline *pipeline,
             return;
           }
     }
-#endif /* HAVE_COGL_GLES2 */
 }
 
 /* NB: layers are considered immutable once they have any dependants
@@ -1035,8 +1034,6 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline,
     }
 }
 
-#ifdef HAVE_COGL_GLES2
-
 static void
 update_float_uniform (CoglPipeline *pipeline,
                       int uniform_location,
@@ -1050,8 +1047,6 @@ update_float_uniform (CoglPipeline *pipeline,
   value = float_getter_func (pipeline);
   GE( ctx, glUniform1f (uniform_location, value) );
 }
-
-#endif
 
 const CoglPipelineProgend _cogl_pipeline_glsl_progend =
   {
