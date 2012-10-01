@@ -26,9 +26,9 @@ static int n_gravities = G_N_ELEMENTS (gravities);
 static int cur_gravity = 0;
 
 static void
-on_clicked (ClutterClickAction *action,
-            ClutterActor       *actor,
-            ClutterText        *label)
+on_tap (ClutterTapAction *action,
+        ClutterActor       *actor,
+        ClutterText        *label)
 {
   gchar *str;
 
@@ -105,8 +105,8 @@ main (int argc, char *argv[])
 
   g_free (str);
 
-  action = clutter_click_action_new ();
-  g_signal_connect (action, "clicked", G_CALLBACK (on_clicked), text);
+  action = clutter_tap_action_new ();
+  g_signal_connect (action, "tap", G_CALLBACK (on_tap), text);
   clutter_actor_set_reactive (box, TRUE);
   clutter_actor_add_action (box, action);
 

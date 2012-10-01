@@ -118,6 +118,7 @@ source_h =					\
 	$(srcdir)/clutter-stage.h 		\
 	$(srcdir)/clutter-stage-manager.h	\
 	$(srcdir)/clutter-table-layout.h	\
+	$(srcdir)/clutter-tap-action.h		\
 	$(srcdir)/clutter-texture.h 		\
 	$(srcdir)/clutter-text.h		\
 	$(srcdir)/clutter-text-buffer.h		\
@@ -201,6 +202,7 @@ source_c = \
 	$(srcdir)/clutter-stage-manager.c	\
 	$(srcdir)/clutter-stage-window.c	\
 	$(srcdir)/clutter-table-layout.c	\
+	$(srcdir)/clutter-tap-action.c		\
 	$(srcdir)/clutter-text.c		\
 	$(srcdir)/clutter-text-buffer.c		\
 	$(srcdir)/clutter-transition-group.c	\

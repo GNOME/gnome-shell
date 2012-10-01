@@ -3483,3 +3483,20 @@ CLUTTER_PAN_ACTION_GET_CLASS
 ClutterPanActionPrivate
 clutter_pan_action_get_type
 </SECTION>
+
+<SECTION>
+<FILE>clutter-tap-action</FILE>
+ClutterTapAction
+ClutterTapActionClass
+clutter_tap_action_new
+<SUBSECTION Standard>
+CLUTTER_IS_TAP_ACTION
+CLUTTER_IS_TAP_ACTION_CLASS
+CLUTTER_TYPE_TAP_ACTION
+CLUTTER_TAP_ACTION
+CLUTTER_TAP_ACTION_CLASS
+CLUTTER_TAP_ACTION_GET_CLASS
+<SUBSECTION Private>
+ClutterTapActionPrivate
+clutter_tap_action_get_type
+</SECTION>
