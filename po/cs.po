@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: cogl master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-07 13:16+0000\n"
-"PO-Revision-Date: 2012-09-08 14:45+0200\n"
+"POT-Creation-Date: 2012-09-29 16:02+0000\n"
+"PO-Revision-Date: 2012-10-01 19:41+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -46,6 +46,22 @@ msgstr ""
 msgid "Override the GL version that Cogl will assume the driver supports"
 msgstr ""
 "Verzi GL, o které se Cogl domnívá, že ji podporuje ovladač, přepsat na tuto"
+
+#: ../cogl/cogl-debug.c:237
+msgid "Cogl debugging flags to set"
+msgstr "Ladicí příznaky Cogl, které se mají nastavit"
+
+#: ../cogl/cogl-debug.c:239
+msgid "Cogl debugging flags to unset"
+msgstr "Ladicí příznaky Cogl, které se mají zrušit"
+
+#: ../cogl/cogl-debug.c:288
+msgid "Cogl Options"
+msgstr "Volby Cogl"
+
+#: ../cogl/cogl-debug.c:289
+msgid "Show Cogl options"
+msgstr "Zobrazit volby Cogl"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
