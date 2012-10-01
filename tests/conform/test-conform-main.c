@@ -100,6 +100,8 @@ main (int argc, char **argv)
 
   ADD_TEST (test_version, 0);
 
+  ADD_TEST (test_alpha_test, 0);
+
   UNPORTED_TEST (test_viewport);
 
   ADD_TEST (test_gles2_context, TEST_REQUIREMENT_GLES2_CONTEXT);

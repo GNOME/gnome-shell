@@ -57,6 +57,7 @@ test_sources = \
 	test-gles2-context.c \
 	test-euler-quaternion.c \
 	test-layer-remove.c \
+	test-alpha-test.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
