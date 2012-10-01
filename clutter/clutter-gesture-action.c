@@ -236,6 +236,8 @@ cancel_gesture (ClutterGestureAction *action)
 
   actor = clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
   g_signal_emit (action, gesture_signals[GESTURE_CANCEL], 0, actor);
+
+  g_array_set_size (action->priv->points, 0);
 }
 
 static gboolean
@@ -301,7 +303,6 @@ stage_captured_event_cb (ClutterActor       *stage,
         if (!(mods & CLUTTER_BUTTON1_MASK))
           {
             cancel_gesture (action);
-            gesture_unregister_point (action, position);
             return CLUTTER_EVENT_PROPAGATE;
           }
       }
@@ -968,6 +969,4 @@ clutter_gesture_action_cancel (ClutterGestureAction *action)
   g_return_if_fail (CLUTTER_IS_GESTURE_ACTION (action));
 
   cancel_gesture (action);
-
-  g_array_set_size (action->priv->points, 0);
 }
