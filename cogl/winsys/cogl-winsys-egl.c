@@ -645,17 +645,17 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 }
 
 static CoglBool
-bind_onscreen (CoglOnscreen *onscreen)
+bind_onscreen_with_context (CoglOnscreen *onscreen,
+                            EGLContext egl_context)
 {
   CoglFramebuffer *fb = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = fb->context;
-  CoglDisplayEGL *egl_display = context->display->winsys;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
 
   CoglBool status = _cogl_winsys_egl_make_current (context->display,
                                                    egl_onscreen->egl_surface,
                                                    egl_onscreen->egl_surface,
-                                                   egl_display->egl_context);
+                                                   egl_context);
   if (status)
     {
       CoglRenderer *renderer = context->display->renderer;
@@ -668,6 +668,16 @@ bind_onscreen (CoglOnscreen *onscreen)
     }
 
   return status;
+}
+
+static CoglBool
+bind_onscreen (CoglOnscreen *onscreen)
+{
+  CoglFramebuffer *fb = COGL_FRAMEBUFFER (onscreen);
+  CoglContext *context = fb->context;
+  CoglDisplayEGL *egl_display = context->display->winsys;
+
+  return bind_onscreen_with_context (onscreen, egl_display->egl_context);
 }
 
 static void
@@ -777,9 +787,9 @@ _cogl_winsys_set_gles2_context (CoglGLES2Context *gles2_ctx, GError **error)
 
   if (gles2_ctx->write_buffer &&
       cogl_is_onscreen (gles2_ctx->write_buffer))
-    {
-      status = bind_onscreen (COGL_ONSCREEN (gles2_ctx->write_buffer));
-    }
+    status =
+      bind_onscreen_with_context (COGL_ONSCREEN (gles2_ctx->write_buffer),
+                                  gles2_ctx->winsys);
   else
     status = _cogl_winsys_egl_make_current (ctx->display,
                                             egl_display->dummy_surface,
