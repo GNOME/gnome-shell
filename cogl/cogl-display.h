@@ -90,7 +90,7 @@ typedef struct _CoglDisplay	      CoglDisplay;
  * When a display is first allocated via cogl_display_new() it is in a
  * mutable configuration mode. It's designed this way so we can
  * extend the apis available for configuring a display without
- * requiring huge numbers of constructor arguements.
+ * requiring huge numbers of constructor arguments.
  *
  * When you have finished configuring a display object you can
  * optionally call cogl_display_setup() to explicitly apply the
@@ -133,7 +133,7 @@ cogl_display_get_renderer (CoglDisplay *display);
  * When a display is first allocated via cogl_display_new() it is in a
  * mutable configuration mode. This allows us to extend the apis
  * available for configuring a display without requiring huge numbers
- * of constructor arguements.
+ * of constructor arguments.
  *
  * Its possible to request a configuration that might not be
  * supportable on the current system and so this api provides a means
