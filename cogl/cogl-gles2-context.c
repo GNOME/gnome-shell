@@ -1639,10 +1639,6 @@ cogl_gles2_context_new (CoglContext *ctx, GError **error)
   gles2_ctx->vtable->glBindTexture = gl_bind_texture_wrapper;
   gles2_ctx->vtable->glTexImage2D = gl_tex_image_2d_wrapper;
 
-  /* FIXME: we need to do something with glCopyTexImage2D and
-   * glCopySubTexImage2D so that it will flip the data if it is read
-   * from a CoglOffscreen */
-
   gles2_ctx->shader_map =
     g_hash_table_new_full (g_direct_hash,
                            g_direct_equal,
