@@ -37,10 +37,7 @@
 #include "cogl-framebuffer-private.h"
 #include "cogl-offscreen.h"
 
-/* This is needed to set the color attribute on GLES2 */
-#ifdef HAVE_COGL_GLES2
 #include "cogl-pipeline-progend-glsl-private.h"
-#endif
 
 #include <glib.h>
 #include <string.h>
