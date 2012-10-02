@@ -10,40 +10,56 @@ msgstr ""
 "Project-Id-Version: cogl\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-06 21:08+0000\n"
-"PO-Revision-Date: 2012-03-06 17:50-0300\n"
-"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
+"POT-Creation-Date: 2012-09-29 16:02+0000\n"
+"PO-Revision-Date: 2012-09-30 23:10-0300\n"
+"Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
 "Language-Team: Português do Brasil <gnome-pt_br-list@gnome.com>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: ../cogl/cogl-debug.c:173
+#: ../cogl/cogl-debug.c:174
 msgid "Supported debug values:"
 msgstr "Valores de depuração suportados:"
 
-#: ../cogl/cogl-debug.c:178
+#: ../cogl/cogl-debug.c:179
 msgid "Special debug values:"
 msgstr "Valores especiais de depuração:"
 
-#: ../cogl/cogl-debug.c:180 ../cogl/cogl-debug.c:182
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
 msgstr "Habilita todas as opções de depuração não comportamentais"
 
-#: ../cogl/cogl-debug.c:226
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "Variáveis de ambiente adicionais:"
+
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr ""
+"Lista separada por vírgula contendo extensões de GL para fingir estarem "
+"desabilitadas"
+
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr ""
+"Sobrescrever a versão de GL que o Cogl vai presumir que o driver suporta"
+
+#: ../cogl/cogl-debug.c:237
 msgid "Cogl debugging flags to set"
 msgstr "Opções de depuração do Cogl a serem ativadas"
 
-#: ../cogl/cogl-debug.c:228
+#: ../cogl/cogl-debug.c:239
 msgid "Cogl debugging flags to unset"
 msgstr "Opções de depuração do Cogl a serem desativadas"
 
-#: ../cogl/cogl-debug.c:277
+#: ../cogl/cogl-debug.c:288
 msgid "Cogl Options"
 msgstr "Opções do Cogl"
 
-#: ../cogl/cogl-debug.c:278
+#: ../cogl/cogl-debug.c:289
 msgid "Show Cogl options"
 msgstr "Mostrar opções do Cogl"
 
@@ -54,6 +70,7 @@ msgstr "Mostrar opções do Cogl"
 #: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
 #: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
 msgstr "Rastreamento do Cogl"
 
@@ -347,3 +364,11 @@ msgstr "Rastrear recortes"
 #: ../cogl/cogl-debug-options.h:187
 msgid "Logs information about how Cogl is implementing clipping"
 msgstr "Registra informações sobre como Cogl está implementando recortes"
+
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr "Rastrear problemas de performance"
+
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "Tenta ressaltar o uso não ótimo de Cogl."
