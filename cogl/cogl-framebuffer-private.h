@@ -127,6 +127,8 @@ struct _CoglFramebuffer
   float               viewport_y;
   float               viewport_width;
   float               viewport_height;
+  int                 viewport_age;
+  int                 viewport_age_for_scissor_workaround;
 
   CoglClipState       clip_state;
 

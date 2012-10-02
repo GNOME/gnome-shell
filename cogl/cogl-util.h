@@ -278,4 +278,20 @@ _cogl_util_memmem (const void *haystack,
                    size_t needle_len);
 #endif
 
+static inline void
+_cogl_util_scissor_intersect (int rect_x0,
+                              int rect_y0,
+                              int rect_x1,
+                              int rect_y1,
+                              int *scissor_x0,
+                              int *scissor_y0,
+                              int *scissor_x1,
+                              int *scissor_y1)
+{
+  *scissor_x0 = MAX (*scissor_x0, rect_x0);
+  *scissor_y0 = MAX (*scissor_y0, rect_y0);
+  *scissor_x1 = MIN (*scissor_x1, rect_x1);
+  *scissor_y1 = MIN (*scissor_y1, rect_y1);
+}
+
 #endif /* __COGL_UTIL_H */

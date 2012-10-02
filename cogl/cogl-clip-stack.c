@@ -447,10 +447,14 @@ _cogl_clip_stack_get_bounds (CoglClipStack *stack,
     {
       /* Get the intersection of the current scissor and the bounding
          box of this clip */
-      *scissor_x0 = MAX (*scissor_x0, entry->bounds_x0);
-      *scissor_y0 = MAX (*scissor_y0, entry->bounds_y0);
-      *scissor_x1 = MIN (*scissor_x1, entry->bounds_x1);
-      *scissor_y1 = MIN (*scissor_y1, entry->bounds_y1);
+      _cogl_util_scissor_intersect (entry->bounds_x0,
+                                    entry->bounds_y0,
+                                    entry->bounds_x1,
+                                    entry->bounds_y1,
+                                    scissor_x0,
+                                    scissor_y0,
+                                    scissor_x1,
+                                    scissor_y1);
     }
 }
 

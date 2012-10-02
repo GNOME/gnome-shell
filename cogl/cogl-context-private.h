@@ -83,6 +83,9 @@ struct _CoglContext
   CoglFeatureFlags feature_flags; /* legacy/deprecated feature flags */
   CoglPrivateFeatureFlags private_feature_flags;
 
+  CoglBool needs_viewport_scissor_workaround;
+  CoglFramebuffer *viewport_scissor_workaround_framebuffer;
+
   CoglPipeline *default_pipeline;
   CoglPipelineLayer *default_layer_0;
   CoglPipelineLayer *default_layer_n;

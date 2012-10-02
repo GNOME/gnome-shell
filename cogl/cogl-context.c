@@ -52,6 +52,7 @@
 #include "cogl-error-private.h"
 
 #include <string.h>
+#include <stdlib.h>
 
 #ifdef HAVE_COGL_GL
 #include "cogl-pipeline-fragend-arbfp-private.h"
@@ -239,6 +240,22 @@ cogl_context_new (CoglDisplay *display,
 
   /* Initialise the driver specific state */
   _cogl_init_feature_overrides (context);
+
+  /* XXX: ONGOING BUG: Intel viewport scissor
+   *
+   * Intel gen6 drivers don't currently correctly handle offset
+   * viewports, since primitives aren't clipped within the bounds of
+   * the viewport.  To workaround this we push our own clip for the
+   * viewport that will use scissoring to ensure we clip as expected.
+   *
+   * TODO: file a bug upstream!
+   */
+  if (context->gpu.driver_package == COGL_GPU_INFO_DRIVER_PACKAGE_MESA &&
+      context->gpu.architecture == COGL_GPU_INFO_ARCHITECTURE_SANDYBRIDGE &&
+      !getenv ("COGL_DISABLE_INTEL_VIEWPORT_SCISSORT_WORKAROUND"))
+    context->needs_viewport_scissor_workaround = TRUE;
+  else
+    context->needs_viewport_scissor_workaround = FALSE;
 
   context->sampler_cache = _cogl_sampler_cache_new (context);
 

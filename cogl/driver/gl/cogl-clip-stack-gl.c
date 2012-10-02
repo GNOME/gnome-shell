@@ -467,7 +467,12 @@ _cogl_clip_stack_gl_flush (CoglClipStack *stack,
      anything */
   if (ctx->current_clip_stack_valid)
     {
-      if (ctx->current_clip_stack == stack)
+      if (ctx->current_clip_stack == stack &&
+          (ctx->needs_viewport_scissor_workaround == FALSE ||
+           (framebuffer->viewport_age ==
+            framebuffer->viewport_age_for_scissor_workaround &&
+            ctx->viewport_scissor_workaround_framebuffer ==
+            framebuffer)))
         return;
 
       _cogl_clip_stack_unref (ctx->current_clip_stack);
@@ -483,8 +488,11 @@ _cogl_clip_stack_gl_flush (CoglClipStack *stack,
     disable_clip_planes (ctx);
   GE( ctx, glDisable (GL_STENCIL_TEST) );
 
-  /* If the stack is empty then there's nothing else to do */
-  if (stack == NULL)
+  /* If the stack is empty then there's nothing else to do
+   *
+   * See comment below about ctx->needs_viewport_scissor_workaround
+   */
+  if (stack == NULL && !ctx->needs_viewport_scissor_workaround)
     {
       COGL_NOTE (CLIPPING, "Flushed empty clip stack");
 
@@ -500,6 +508,31 @@ _cogl_clip_stack_gl_flush (CoglClipStack *stack,
   _cogl_clip_stack_get_bounds (stack,
                                &scissor_x0, &scissor_y0,
                                &scissor_x1, &scissor_y1);
+
+  /* XXX: ONGOING BUG: Intel viewport scissor
+   *
+   * Intel gen6 drivers don't correctly handle offset viewports, since
+   * primitives aren't clipped within the bounds of the viewport.  To
+   * workaround this we push our own clip for the viewport that will
+   * use scissoring to ensure we clip as expected.
+   *
+   * TODO: file a bug upstream!
+   */
+  if (ctx->needs_viewport_scissor_workaround)
+    {
+      _cogl_util_scissor_intersect (framebuffer->viewport_x,
+                                    framebuffer->viewport_y,
+                                    framebuffer->viewport_x +
+                                      framebuffer->viewport_width,
+                                    framebuffer->viewport_y +
+                                      framebuffer->viewport_height,
+                                    &scissor_x0, &scissor_y0,
+                                    &scissor_x1, &scissor_y1);
+      framebuffer->viewport_age_for_scissor_workaround =
+        framebuffer->viewport_age;
+      ctx->viewport_scissor_workaround_framebuffer =
+        framebuffer;
+    }
 
   /* Enable scissoring as soon as possible */
   if (scissor_x0 >= scissor_x1 || scissor_y0 >= scissor_y1)
