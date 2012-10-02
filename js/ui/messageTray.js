@@ -2141,17 +2141,9 @@ const MessageTray = new Lang.Class({
     },
 
     _hideDesktopClone: function(now) {
-        if (now) {
-            this._desktopClone.destroy();
-            this._desktopClone = null;
-            this._desktopCloneState = State.HIDDEN;
-            this._bottomMonitorGeometry = null;
-            return;
-        }
-
         this._tween(this._desktopClone, '_desktopCloneState', State.HIDDEN,
                     { y: 0,
-                      time: ANIMATION_TIME,
+                      time: now ? 0 : ANIMATION_TIME,
                       transition: 'easeOutQuad',
                       onComplete: Lang.bind(this, function() {
                           this._desktopClone.destroy();
