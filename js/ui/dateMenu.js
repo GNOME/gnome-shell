@@ -89,8 +89,10 @@ const DateMenuButton = new Lang.Class({
             separator.setColumnWidths(1);
             vbox.add(separator.actor, {y_align: St.Align.END, expand: true, y_fill: false});
 
+            item.actor.show_on_set_parent = false;
             item.actor.can_focus = false;
             item.actor.reparent(vbox);
+            this._dateAndTimeSeparator = separator;
         }
 
         this._separator = new St.DrawingArea({ style_class: 'calendar-vertical-separator',
@@ -145,9 +147,18 @@ const DateMenuButton = new Lang.Class({
     },
 
     _setEventsVisibility: function(visible) {
+        this._openCalendarItem.actor.visible = visible;
         this._separator.visible = visible;
-        this._eventList.visible = visible;
-        this._openCalendarItem.visible = visible;
+        if (visible) {
+          let alignment = 0.25;
+          if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
+            alignment = 1.0 - alignment;
+          this.menu._arrowAlignment = alignment;
+          this._eventList.actor.get_parent().show();
+        } else {
+          this.menu._arrowAlignment = 0.5;
+          this._eventList.actor.get_parent().hide();
+        }
     },
 
     _setEventSource: function(eventSource) {
@@ -165,6 +176,10 @@ const DateMenuButton = new Lang.Class({
         }
         this._setEventSource(eventSource);
         this._setEventsVisibility(showEvents);
+
+        // This needs to be handled manually, as the code to
+        // autohide separators doesn't work across the vbox
+        this._dateAndTimeSeparator.actor.visible = Main.sessionMode.allowSettings;
     },
 
     _updateClockAndDate: function() {
