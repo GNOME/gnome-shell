@@ -238,7 +238,7 @@ const InputSourceIndicator = new Lang.Class({
         // but at least for now it is used as "allow popping up windows
         // from shell menus"; we can always add a separate sessionMode
         // option if need arises.
-        this._showLayoutItem.visible = Main.sessionMode.allowSettings;
+        this._showLayoutItem.actor.visible = Main.sessionMode.allowSettings;
     },
 
     _currentInputSourceChanged: function() {
