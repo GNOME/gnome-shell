@@ -2028,7 +2028,7 @@ const MessageTray = new Lang.Class({
         let trayShouldBeVisible = (this._summaryState == State.SHOWING ||
                                    this._summaryState == State.SHOWN);
         if (!trayIsVisible && trayShouldBeVisible)
-            this._showTray();
+            trayShouldBeVisible = this._showTray();
         else if (trayIsVisible && !trayShouldBeVisible)
             this._hideTray();
 
@@ -2078,7 +2078,7 @@ const MessageTray = new Lang.Class({
                                      modal: modal,
                                      onUngrab: Lang.bind(this, this._escapeTray) })) {
             this._traySummoned = false;
-            return;
+            return false;
         }
 
         this._tween(this.actor, '_trayState', State.SHOWN,
@@ -2090,6 +2090,8 @@ const MessageTray = new Lang.Class({
         if (this._overviewVisible) {
             this._lightbox.show();
         }
+
+        return true;
     },
 
     _showDesktopClone: function() {
