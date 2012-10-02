@@ -574,7 +574,11 @@ const NMDevice = new Lang.Class({
             this.emit('network-lost');
         }
 
-        if (newstate == NetworkManager.DeviceState.FAILED) {
+        /* Emit a notification if activation fails, but don't do it
+           if the reason is no secrets, as that indicates the user
+           cancelled the agent dialog */
+        if (newstate == NetworkManager.DeviceState.FAILED &&
+            reason != NetworkManager.DeviceStateReason.NO_SECRETS) {
             this.emit('activation-failed', reason);
         }
 
@@ -1540,7 +1544,8 @@ const NMVPNSection = new Lang.Class({
     },
 
     _connectionStateChanged: function(vpnConnection, newstate, reason) {
-        if (newstate == NetworkManager.VPNConnectionState.FAILED) {
+        if (newstate == NetworkManager.VPNConnectionState.FAILED &&
+            reason != NetworkManager.VPNConnectionStateReason.NO_SECRETS) {
             // FIXME: if we ever want to show something based on reason,
             // we need to convert from NetworkManager.VPNConnectionStateReason
             // to NetworkManager.DeviceStateReason
