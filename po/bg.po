@@ -6,11 +6,11 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: cogl master\n"
+"Project-Id-Version: cogl cogl-1.12\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2012-09-19 21:11+0300\n"
-"PO-Revision-Date: 2012-09-19 21:11+0300\n"
+"POT-Creation-Date: 2012-10-02 05:27+0300\n"
+"PO-Revision-Date: 2012-10-02 05:27+0300\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -45,6 +45,22 @@ msgid "Override the GL version that Cogl will assume the driver supports"
 msgstr ""
 "Изрично задаване на версията на GL, която Cogl да приема, че драйверът "
 "поддържа"
+
+#: ../cogl/cogl-debug.c:237
+msgid "Cogl debugging flags to set"
+msgstr "Флагове за изчистване на грешки на cogl, които да се включат"
+
+#: ../cogl/cogl-debug.c:239
+msgid "Cogl debugging flags to unset"
+msgstr "Флагове за изчистване на грешки на cogl, които да се изключат"
+
+#: ../cogl/cogl-debug.c:288
+msgid "Cogl Options"
+msgstr "Опции на cogl"
+
+#: ../cogl/cogl-debug.c:289
+msgid "Show Cogl options"
+msgstr "Извеждане на опциите на cogl"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
