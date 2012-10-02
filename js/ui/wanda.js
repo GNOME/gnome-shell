@@ -1,11 +1,9 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
-const Clutter = imports.gi.Clutter;
 const GdkPixbuf = imports.gi.GdkPixbuf;
 const GLib = imports.gi.GLib;
+const Gio = imports.gi.Gio;
 const Lang = imports.lang;
-const Shell = imports.gi.Shell;
-const Signals = imports.signals;
 const St = imports.gi.St;
 
 const IconGrid = imports.ui.iconGrid;
@@ -169,15 +167,8 @@ const WandaSearchProvider = new Lang.Class({
                     // only one which speaks the truth!
                     'name': capitalize(fish[0]),
                     'createIcon': function(iconSize) {
-                        // for DND only (maybe could be improved)
-                        // DON'T use St.Icon here, it crashes the shell
-                        // (dnd.js code assumes it can query the actor size
-                        // without parenting it, while StWidget accesses
-                        // StThemeNode in get_preferred_width/height, which
-                        // triggers an assertion failure)
-                        return St.TextureCache.get_default().load_icon_name(null,
-                                                                            'face-smile',
-                                                                            iconSize);
+                        return new St.Icon({ gicon: Gio.icon_new_for_string('face-smile'),
+                                             icon_size: iconSize });
                     }
                   }]);
     },
