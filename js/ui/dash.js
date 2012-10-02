@@ -285,8 +285,16 @@ const ShowAppsIcon = new Lang.Class({
             this.setLabelText(_("Show Applications"));
     },
 
-    // Rely on the dragged item being a favorite
     handleDragOver: function(source, actor, x, y, time) {
+        let app = getAppFromSource(source);
+        if (app == null)
+            return DND.DragMotionResult.NO_DROP;
+
+        let id = app.get_id();
+        let isFavorite = AppFavorites.getAppFavorites().isFavorite(id);
+        if (!isFavorite)
+            return DND.DragMotionResult.NO_DROP;
+
         return DND.DragMotionResult.MOVE_DROP;
     },
 
