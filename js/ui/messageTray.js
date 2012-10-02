@@ -2094,16 +2094,25 @@ const MessageTray = new Lang.Class({
         return true;
     },
 
+    _updateDesktopCloneClip: function() {
+        let geometry = this._bottomMonitorGeometry;
+        let progress = -Math.round(this._desktopClone.y);
+        this._desktopClone.set_clip(geometry.x,
+                                    geometry.y + progress,
+                                    geometry.width,
+                                    geometry.height - progress);
+    },
+
     _showDesktopClone: function() {
         let bottomMonitor = Main.layoutManager.bottomMonitor;
-        let geometry = new Clutter.Geometry({ x: bottomMonitor.x,
-                                              y: bottomMonitor.y,
-                                              width: bottomMonitor.width,
-                                              height: bottomMonitor.height
-                                            });
+        this._bottomMonitorGeometry = { x: bottomMonitor.x,
+                                        y: bottomMonitor.y,
+                                        width: bottomMonitor.width,
+                                        height: bottomMonitor.height };
+
         if (this._desktopClone)
             this._desktopClone.destroy();
-        this._desktopClone = new Clutter.Clone({ source: global.window_group, clip: geometry });
+        this._desktopClone = new Clutter.Clone({ source: global.window_group, clip: new Clutter.Geometry(this._bottomMonitorGeometry) });
         Main.uiGroup.insert_child_above(this._desktopClone, global.window_group);
         this._desktopClone.x = 0;
         this._desktopClone.y = 0;
@@ -2113,13 +2122,7 @@ const MessageTray = new Lang.Class({
                     { y: -this.actor.height,
                       time: ANIMATION_TIME,
                       transition: 'easeOutQuad',
-                      onUpdate: function() {
-                          let progress = Math.round(-this.y);
-                          this.set_clip(geometry.x,
-                                        geometry.y + progress,
-                                        geometry.width,
-                                        geometry.height - progress);
-                      }
+                      onUpdate: Lang.bind(this, this._updateDesktopCloneClip)
                     });
     },
 
@@ -2142,10 +2145,10 @@ const MessageTray = new Lang.Class({
             this._desktopClone.destroy();
             this._desktopClone = null;
             this._desktopCloneState = State.HIDDEN;
+            this._bottomMonitorGeometry = null;
             return;
         }
 
-        let geometry = this._desktopClone.clip;
         this._tween(this._desktopClone, '_desktopCloneState', State.HIDDEN,
                     { y: 0,
                       time: ANIMATION_TIME,
@@ -2153,14 +2156,9 @@ const MessageTray = new Lang.Class({
                       onComplete: Lang.bind(this, function() {
                           this._desktopClone.destroy();
                           this._desktopClone = null;
+                          this._bottomMonitorGeometry = null;
                       }),
-                      onUpdate: function() {
-                          let progress = Math.round(-this.y);
-                          this.set_clip(geometry.x,
-                                        geometry.y - progress,
-                                        geometry.width,
-                                        geometry.height + progress);
-                      }
+                      onUpdate: Lang.bind(this, this._updateDesktopCloneClip)
                     });
     },
 
