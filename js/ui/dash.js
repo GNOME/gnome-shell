@@ -262,7 +262,7 @@ const ShowAppsIcon = new Lang.Class({
         this.toggleButton._delegate = this;
 
         this.setChild(this.toggleButton);
-        this.setHover(false);
+        this.setDragApp(null);
         this.toggleButton.label_actor = this.label;
     },
 
@@ -274,12 +274,23 @@ const ShowAppsIcon = new Lang.Class({
         return this._iconActor;
     },
 
-    setHover: function(hovered) {
-        this.toggleButton.set_hover(hovered);
-        if (this._iconActor)
-            this._iconActor.set_hover(hovered);
+    _canRemoveApp: function(app) {
+        if (app == null)
+            return false;
 
-        if (hovered)
+        let id = app.get_id();
+        let isFavorite = AppFavorites.getAppFavorites().isFavorite(id);
+        return isFavorite;
+    },
+
+    setDragApp: function(app) {
+        let canRemove = this._canRemoveApp(app);
+
+        this.toggleButton.set_hover(canRemove);
+        if (this._iconActor)
+            this._iconActor.set_hover(canRemove);
+
+        if (canRemove)
             this.setLabelText(_("Remove from Favorites"));
         else
             this.setLabelText(_("Show Applications"));
@@ -453,7 +464,10 @@ const Dash = new Lang.Class({
         if (!this._box.contains(dragEvent.targetActor) || showAppsHovered)
             this._clearDragPlaceholder();
 
-        this._showAppsIcon.setHover(showAppsHovered);
+        if (showAppsHovered)
+            this._showAppsIcon.setDragApp(app);
+        else
+            this._showAppsIcon.setDragApp(null);
 
         return DND.DragMotionResult.CONTINUE;
     },
