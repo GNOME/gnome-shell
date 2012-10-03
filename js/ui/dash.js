@@ -48,6 +48,7 @@ const DashItemContainer = new Lang.Class({
                            Lang.bind(this, this._allocate));
         this.actor._delegate = this;
 
+        this._labelText = "";
         this.label = new St.Label({ style_class: 'dash-label'});
         this.label.hide();
         Main.layoutManager.addChrome(this.label);
@@ -106,6 +107,10 @@ const DashItemContainer = new Lang.Class({
     },
 
     showLabel: function() {
+        if (!this._labelText)
+            return;
+
+        this.label.set_text(this._labelText);
         this.label.opacity = 0;
         this.label.show();
 
@@ -136,7 +141,7 @@ const DashItemContainer = new Lang.Class({
     },
 
     setLabelText: function(text) {
-        this.label.set_text(text);
+        this._labelText = text;
     },
 
     hideLabel: function () {
