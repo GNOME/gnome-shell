@@ -48,7 +48,9 @@ const DashItemContainer = new Lang.Class({
                            Lang.bind(this, this._allocate));
         this.actor._delegate = this;
 
-        this.label = null;
+        this.label = new St.Label({ style_class: 'dash-label'});
+        this.label.hide();
+        Main.layoutManager.addChrome(this.label);
 
         this.child = null;
         this._childScale = 1;
@@ -103,9 +105,6 @@ const DashItemContainer = new Lang.Class({
     },
 
     showLabel: function() {
-        if (this.label == null)
-            return;
-
         this.label.opacity = 0;
         this.label.show();
 
@@ -136,19 +135,10 @@ const DashItemContainer = new Lang.Class({
     },
 
     setLabelText: function(text) {
-        if (this.label == null) {
-            this.label = new St.Label({ style_class: 'dash-label'});
-            Main.layoutManager.addChrome(this.label);
-            this.label.hide();
-        }
-
         this.label.set_text(text);
     },
 
     hideLabel: function () {
-        if (this.label == null)
-            return;
-
         Tweener.addTween(this.label,
                          { opacity: 0,
                            time: DASH_ITEM_LABEL_HIDE_TIME,
