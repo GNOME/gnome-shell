@@ -298,6 +298,20 @@ if [ ! -f $HOME/.jhbuildrc-custom ]; then
     echo "done"
 fi
 
+if [ -d $HOME/gnome-shell -a \! -d $HOME/gnome ] ; then
+    cat <<EOF
+WARNING:
+  The old source and install directory '$HOME/gnome-shell' exists, but
+  '$HOME/gnome' doesn't. An empty $HOME/gnome will be created.
+
+  To avoid starting again from scratch you should remove the empty directory
+  and move your old '$HOME/gnome-shell' to '$HOME/gnome':
+
+    rm -rf $HOME/gnome
+    mv $HOME/gnome-shell $HOME/gnome
+EOF
+fi
+
 echo "Installing modules as system packages when possible"
 $HOME/bin/jhbuild sysdeps --install
 

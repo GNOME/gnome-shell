@@ -23,10 +23,10 @@ moduleset = 'gnome-apps-3.6'
 modules = [ 'meta-gnome-core-shell' ]
 
 # what directory should the source be checked out to?
-checkoutroot = os.path.expanduser('~/gnome-shell/source')
+checkoutroot = os.path.expanduser('~/gnome/source')
 
 # the prefix to configure/install modules to (must have write access)
-prefix = os.path.expanduser('~/gnome-shell/install')
+prefix = os.path.expanduser('~/gnome/install')
 
 # reduce what we build as much as possible
 ignore_suggests = True
