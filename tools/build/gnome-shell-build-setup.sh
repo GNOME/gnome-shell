@@ -246,22 +246,29 @@ if [ -d $SOURCE ] ; then : ; else
     echo "Created $SOURCE"
 fi
 
-if [ -d $SOURCE/jhbuild ] ; then
-    if [ -d $SOURCE/jhbuild/.git ] ; then
-        echo -n "Updating jhbuild ... "
-        ( cd $SOURCE/jhbuild && git pull --rebase > /dev/null ) || exit 1
-        echo "done"
+checkout_git() {
+    module=$1
+    source=$2
+
+    if [ -d $SOURCE/$1 ] ; then
+        if [ -d $SOURCE/$1/.git ] ; then
+            echo -n "Updating $1 ... "
+            ( cd $SOURCE/$1 && git pull --rebase > /dev/null ) || exit 1
+            echo "done"
+        else
+            echo "$SOURCE/$1 is not a git repository"
+            echo "You should remove it and rerun this script"
+            exit 1
+        fi
     else
-        echo "$SOURCE/jhbuild is not a git repository"
-        echo "You should remove it and rerun this script"
-	exit 1
+        echo -n "Checking out $1 into $SOURCE/$1 ... "
+        cd $SOURCE
+        git clone $2 > /dev/null || exit 1
+        echo "done"
     fi
-else
-    echo -n "Checking out jhbuild into $SOURCE/jhbuild ... "
-    cd $SOURCE
-    git clone git://git.gnome.org/jhbuild > /dev/null || exit 1
-    echo "done"
-fi
+}
+
+checkout_git jhbuild git://git.gnome.org/jhbuild
 
 echo -n "Installing jhbuild ... "
 (cd $SOURCE/jhbuild &&
@@ -292,6 +299,19 @@ $HOME/bin/jhbuild sysdeps --install
 if test "x`echo $PATH | grep $HOME/bin`" = x; then
     echo "PATH does not contain $HOME/bin, it is recommended that you add that."
     echo
+fi
+
+checkout_git git-bz git://git.fishsoup.net/git-bz
+
+
+echo -n "Installing git-bz ... "
+old="`readlink $HOME/bin/git-bz`"
+( cd $HOME/bin && ln -sf ../Source/git-bz/git-bz . )
+new="`readlink $HOME/bin/git-bz`"
+echo "done"
+
+if test "$old" != "$new" ; then
+    echo "WARNING: $HOME/bin/git-bz was changed from '$old' to '$new'"
 fi
 
 echo "Done."
