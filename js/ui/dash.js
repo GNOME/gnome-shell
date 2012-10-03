@@ -51,6 +51,7 @@ const DashItemContainer = new Lang.Class({
         this.label = new St.Label({ style_class: 'dash-label'});
         this.label.hide();
         Main.layoutManager.addChrome(this.label);
+        this.actor.label_actor = this.label;
 
         this.child = null;
         this._childScale = 1;
