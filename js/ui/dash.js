@@ -21,6 +21,18 @@ const DASH_ITEM_LABEL_SHOW_TIME = 0.15;
 const DASH_ITEM_LABEL_HIDE_TIME = 0.1;
 const DASH_ITEM_HOVER_TIMEOUT = 300;
 
+function getAppFromSource(source) {
+    if (source instanceof AppDisplay.AppWellIcon) {
+        let appSystem = Shell.AppSystem.get_default();
+        return appSystem.lookup_app(source.getId());
+    } else if (source.metaWindow) {
+        let tracker = Shell.WindowTracker.get_default();
+        return tracker.get_window_app(source.metaWindow);
+    } else {
+        return null;
+    }
+}
+
 // A container like StBin, but taking the child's scale into account
 // when requesting a size
 const DashItemContainer = new Lang.Class({
@@ -279,14 +291,9 @@ const ShowAppsIcon = new Lang.Class({
     },
 
     acceptDrop: function(source, actor, x, y, time) {
-        let app = null;
-        if (source instanceof AppDisplay.AppWellIcon) {
-            let appSystem = Shell.AppSystem.get_default();
-            app = appSystem.lookup_app(source.getId());
-        } else if (source.metaWindow) {
-            let tracker = Shell.WindowTracker.get_default();
-            app = tracker.get_window_app(source.metaWindow);
-        }
+        let app = getAppFromSource(source);
+        if (app == null)
+            return false;
 
         let id = app.get_id();
 
@@ -382,7 +389,6 @@ const Dash = new Lang.Class({
 
         this._workId = Main.initializeDeferredWork(this._box, Lang.bind(this, this._redisplay));
 
-        this._tracker = Shell.WindowTracker.get_default();
         this._appSystem = Shell.AppSystem.get_default();
 
         this._appSystem.connect('installed-changed', Lang.bind(this, this._queueRedisplay));
@@ -429,12 +435,8 @@ const Dash = new Lang.Class({
     },
 
     _onDragMotion: function(dragEvent) {
-        let app = null;
-        if (dragEvent.source instanceof AppDisplay.AppWellIcon)
-            app = this._appSystem.lookup_app(dragEvent.source.getId());
-        else if (dragEvent.source.metaWindow)
-            app = this._tracker.get_window_app(dragEvent.source.metaWindow);
-        else
+        let app = getAppFromSource(dragEvent.source);
+        if (app == null)
             return DND.DragMotionResult.CONTINUE;
 
         let id = app.get_id();
@@ -762,11 +764,7 @@ const Dash = new Lang.Class({
     },
 
     handleDragOver : function(source, actor, x, y, time) {
-        let app = null;
-        if (source instanceof AppDisplay.AppWellIcon)
-            app = this._appSystem.lookup_app(source.getId());
-        else if (source.metaWindow)
-            app = this._tracker.get_window_app(source.metaWindow);
+        let app = getAppFromSource(source);
 
         // Don't allow favoriting of transient apps
         if (app == null || app.is_window_backed())
@@ -847,12 +845,7 @@ const Dash = new Lang.Class({
 
     // Draggable target interface
     acceptDrop : function(source, actor, x, y, time) {
-        let app = null;
-        if (source instanceof AppDisplay.AppWellIcon) {
-            app = this._appSystem.lookup_app(source.getId());
-        } else if (source.metaWindow) {
-            app = this._tracker.get_window_app(source.metaWindow);
-        }
+        let app = getAppFromSource(source);
 
         // Don't allow favoriting of transient apps
         if (app == null || app.is_window_backed()) {
