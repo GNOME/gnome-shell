@@ -128,6 +128,7 @@ const UnlockDialog = new Lang.Class({
         this._userVerifier.connect('ask-question', Lang.bind(this, this._onAskQuestion));
         this._userVerifier.connect('show-message', Lang.bind(this, this._showMessage));
         this._userVerifier.connect('verification-complete', Lang.bind(this, this._onVerificationComplete));
+        this._userVerifier.connect('verification-failed', Lang.bind(this, this._onVerificationFailed));
         this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
 
         this._userVerifier.connect('show-login-hint', Lang.bind(this, this._showLoginHint));
@@ -272,6 +273,16 @@ const UnlockDialog = new Lang.Class({
 
     _onReset: function() {
         this.emit('failed');
+    },
+
+    _onVerificationFailed: function() {
+        this._currentQuery = null;
+        this._firstQuestion = true;
+
+        this._promptEntry.clutter_text.set_password_char('\u25cf');
+        this._promptEntry.menu.isPassword = true;
+
+        this._updateSensitivity(false);
     },
 
     _escape: function() {
