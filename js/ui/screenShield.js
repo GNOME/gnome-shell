@@ -439,6 +439,17 @@ const ScreenShield = new Lang.Class({
     _onLockScreenKeyRelease: function(actor, event) {
         let symbol = event.get_key_symbol();
 
+        // Do nothing if the lock screen is not fully shown.
+        // This avoids reusing the previous (and stale) unlock
+        // dialog if esc is pressed while the curtain is going
+        // down after cancel.
+        // Similarly, don't bump if the lock screen is not showing or is
+        // animating, as the bump overrides the animation and would
+        // remove any onComplete handler.
+
+        if (this._lockScreenState != MessageTray.State.SHOWN)
+            return false;
+
         if (symbol == Clutter.KEY_Escape ||
             symbol == Clutter.KEY_Return ||
             symbol == Clutter.KEY_KP_Enter) {
@@ -447,11 +458,7 @@ const ScreenShield = new Lang.Class({
             return true;
         }
 
-        // Don't bump if the lock screen is not showing or is
-        // animating, as the bump overrides the animation and would
-        // remove any onComplete handler
-        if (this._lockScreenState == MessageTray.State.SHOWN)
-            this._bumpLockScreen();
+        this._bumpLockScreen();
         return true;
     },
 
