@@ -171,7 +171,7 @@ const UnlockDialog = new Lang.Class({
                            default: true };
         this.setButtons([cancelButton, this._okButton]);
 
-        this._updateOkButton(true);
+        this._updateSensitivity(true);
 
         let otherUserLabel = new St.Label({ text: _("Log in as another user"),
                                             style_class: 'login-dialog-not-listed-label' });
@@ -200,7 +200,9 @@ const UnlockDialog = new Lang.Class({
         this._idleWatchId = this._idleMonitor.add_watch(IDLE_TIMEOUT * 1000, Lang.bind(this, this._escape));
     },
 
-    _updateOkButton: function(sensitive) {
+    _updateSensitivity: function(sensitive) {
+        this._promptEntry.reactive = sensitive;
+        this._promptEntry.clutter_text.editable = sensitive;
         this._okButton.button.reactive = sensitive;
         this._okButton.button.can_focus = sensitive;
     },
@@ -230,7 +232,7 @@ const UnlockDialog = new Lang.Class({
         this._promptEntry.menu.isPassword = passwordChar != '';
 
         this._currentQuery = serviceName;
-        this._updateOkButton(true);
+        this._updateSensitivity(true);
     },
 
     _showLoginHint: function(verifier, message) {
@@ -248,7 +250,7 @@ const UnlockDialog = new Lang.Class({
             // and make ourself non-reactive
             // the actual reply to GDM will be sent as soon as asked
             this._firstQuestionAnswer = this._promptEntry.text;
-            this._updateOkButton(false);
+            this._updateSensitivity(false);
             return;
         }
 
@@ -258,7 +260,7 @@ const UnlockDialog = new Lang.Class({
         let query = this._currentQuery;
         this._currentQuery = null;
 
-        this._updateOkButton(false);
+        this._updateSensitivity(false);
 
         this._userVerifier.answerQuery(query, this._promptEntry.text);
     },

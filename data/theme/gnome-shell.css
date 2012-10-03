@@ -402,6 +402,8 @@ StScrollBar StButton#vhandle:active {
 .login-dialog-prompt-entry:insensitive {
     color: rgba(0,0,0,0.7);
     border: 2px solid #565656;
+    background-gradient-start: rgb(200,200,200);
+    background-gradient-end: rgb(210,210,210);
 }
 
 /* Panel */
