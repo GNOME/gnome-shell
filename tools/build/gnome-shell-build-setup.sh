@@ -55,6 +55,7 @@ git: f:git d:git-core
 # Build tools
 build-essential: d:build-essential
 automake: fd:automake
+asn1Parser: f:libtasn1-tools d:libtasn1-3-bin s:libtasn1 # gcr
 binutils: f:binutils
 bison: fds:bison
 cmake: fd:cmake # libproxy
@@ -70,6 +71,7 @@ make: f:make
 perl-XML-Simple: f:perl-XML-Simple d:libxml-simple-perl # icon-naming-utils
 pkgconfig: f:pkgconfig
 python: f:python
+ruby: fds:ruby # WebKit
 texinfo: fd:texinfo # libgtop
 xsltproc: f:libxslt d:xsltproc # gtk-doc
 
@@ -94,12 +96,14 @@ libXtst: f:libXtst-devel d:libxtst-dev # caribou
 xcb: f:xcb-util-devel d:libx11-xcb-dev # startup-notification
 
 # Other libraries
+cracklib: fs:cracklib-devel d:libcrack2-dev # libpwquality
 cups: fs:cups-devel d:libcups2-dev # gnome-control-center
 db4: f:db4-devel d:libdb-dev # evolution-data-server
 icu: f:libicu-devel d:libicu-dev # WebKit
 libacl: f:libacl-devel d:libacl1-dev # gudev
 libcurl: f:libcurl-devel # liboauth. See below for Debian
 libffi: fs:libffi-devel d:libffi-dev # gobject-introspection
+libsystemd-login: fs:systemd-devel # gnome-session gnome-settings-daemon polkit PackageKit
 libtool-ltdl: f:libtool-ltdl-devel d:libltdl-dev # libcanberra
 libusb: f:libusb1-devel d:libusb-1.0-0-dev # upower
 openssl: f:openssl-devel d:libssl-dev # liboauth
@@ -112,6 +116,7 @@ sqlite: d:libsqlite3-dev f:sqlite-devel # libsoup
 udev: f:libudev-devel d:libudev-dev # gudev
 uuid: f:libuuid-devel d:uuid-dev # Networkmanager
 vorbis: f:libvorbis-devel d:libvorbis-dev # libcanberra
+wireless-tools: f:wireless-tools-devel d:libiw-dev s:libiw-devel # NetworkManager
 
 # python libraries used by gnome-shell wrapper script
 # These are commented out because the gnome-shell wrapper script
