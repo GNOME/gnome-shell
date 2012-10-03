@@ -357,6 +357,12 @@ const NMDevice = new Lang.Class({
             this._firmwareChangedId = 0;
         }
 
+        if (this._deferredWorkId) {
+            // Just clear out, the actual removal is handled when the
+            // actor is destroyed
+            this._deferredWorkId = 0;
+        }
+
         this._clearSection();
         if (this.statusItem)
             this.statusItem.destroy();
@@ -490,8 +496,10 @@ const NMDevice = new Lang.Class({
     },
 
     _queueCreateSection: function() {
-        this._clearSection();
-        Main.queueDeferredWork(this._deferredWorkId);
+        if (this._deferredWorkId) {
+            this._clearSection();
+            Main.queueDeferredWork(this._deferredWorkId);
+        }
     },
 
     _clearSection: function() {
