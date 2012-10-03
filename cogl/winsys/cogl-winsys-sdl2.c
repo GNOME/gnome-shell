@@ -37,6 +37,7 @@
 #include "cogl-context-private.h"
 #include "cogl-onscreen-private.h"
 #include "cogl-winsys-sdl-private.h"
+#include "cogl-error-private.h"
 
 typedef struct _CoglContextSdl2
 {
@@ -91,9 +92,9 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   if (SDL_VideoInit (NULL) < 0)
     {
       _cogl_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_INIT,
-                   "SDL_Init failed: %s",
-                   SDL_GetError ());
+                       COGL_WINSYS_ERROR_INIT,
+                       "SDL_Init failed: %s",
+                       SDL_GetError ());
       return FALSE;
     }
 
@@ -170,9 +171,9 @@ _cogl_winsys_display_setup (CoglDisplay *display,
   if (sdl_display->dummy_window == NULL)
     {
       _cogl_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_INIT,
-                   "SDL_CreateWindow failed: %s",
-                   SDL_GetError ());
+                       COGL_WINSYS_ERROR_INIT,
+                       "SDL_CreateWindow failed: %s",
+                       SDL_GetError ());
       goto error;
     }
 
@@ -181,9 +182,9 @@ _cogl_winsys_display_setup (CoglDisplay *display,
   if (sdl_display->context == NULL)
     {
       _cogl_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_INIT,
-                   "SDL_GL_CreateContext failed: %s",
-                   SDL_GetError ());
+                       COGL_WINSYS_ERROR_INIT,
+                       "SDL_GL_CreateContext failed: %s",
+                       SDL_GetError ());
       goto error;
     }
 
@@ -203,8 +204,8 @@ _cogl_winsys_display_setup (CoglDisplay *display,
       if (!g_ascii_isdigit (gl_version[0]))
         {
           _cogl_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_INIT,
-                       "The GL driver was requested but SDL is using GLES");
+                           COGL_WINSYS_ERROR_INIT,
+                           "The GL driver was requested but SDL is using GLES");
           goto error;
         }
 
@@ -236,9 +237,9 @@ _cogl_winsys_display_setup (CoglDisplay *display,
       if (!g_str_has_prefix (gl_version, "OpenGL ES 2"))
         {
           _cogl_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_INIT,
-                       "The GLES2 driver was requested but SDL is "
-                       "not using GLES2");
+                           COGL_WINSYS_ERROR_INIT,
+                           "The GLES2 driver was requested but SDL is "
+                           "not using GLES2");
           goto error;
         }
       break;
@@ -247,9 +248,9 @@ _cogl_winsys_display_setup (CoglDisplay *display,
       if (!g_str_has_prefix (gl_version, "OpenGL ES 1"))
         {
           _cogl_set_error (error, COGL_WINSYS_ERROR,
-                       COGL_WINSYS_ERROR_INIT,
-                       "The GLES1 driver was requested but SDL is "
-                       "not using GLES1");
+                           COGL_WINSYS_ERROR_INIT,
+                           "The GLES1 driver was requested but SDL is "
+                           "not using GLES1");
           goto error;
         }
       break;
@@ -366,9 +367,9 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   if (window == NULL)
     {
       _cogl_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_CREATE_ONSCREEN,
-                   "SDL_CreateWindow failed: %s",
-                   SDL_GetError ());
+                       COGL_WINSYS_ERROR_CREATE_ONSCREEN,
+                       "SDL_CreateWindow failed: %s",
+                       SDL_GetError ());
       return FALSE;
     }
 
