@@ -159,7 +159,13 @@ _cogl_winsys_display_setup (CoglDisplay *display,
   else if (display->renderer->driver == COGL_DRIVER_GLES2)
     SDL_GL_SetAttribute (SDL_GL_CONTEXT_MAJOR_VERSION, 2);
   else if (display->renderer->driver == COGL_DRIVER_GL3)
-    SDL_GL_SetAttribute (SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    {
+      SDL_GL_SetAttribute (SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+      SDL_GL_SetAttribute (SDL_GL_CONTEXT_PROFILE_MASK,
+                           SDL_GL_CONTEXT_PROFILE_CORE);
+      SDL_GL_SetAttribute (SDL_GL_CONTEXT_FLAGS,
+                           SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
+    }
 
   /* Create a dummy 1x1 window that never gets display so that we can
    * create a GL context */
@@ -209,27 +215,14 @@ _cogl_winsys_display_setup (CoglDisplay *display,
           goto error;
         }
 
-      if (gl_version[0] >= '3')
+      if (display->renderer->driver == COGL_DRIVER_GL3 &&
+          gl_version[0] < '3')
         {
-          if (display->renderer->driver == COGL_DRIVER_GL)
-            {
-              _cogl_set_error (error, COGL_WINSYS_ERROR,
-                               COGL_WINSYS_ERROR_INIT,
-                               "The GL driver was requested but SDL is using "
-                               "GL %c", gl_version[0]);
-              goto error;
-            }
-        }
-      else
-        {
-          if (display->renderer->driver == COGL_DRIVER_GL3)
-            {
-              _cogl_set_error (error, COGL_WINSYS_ERROR,
-                               COGL_WINSYS_ERROR_INIT,
-                               "The GL3 driver was requested but SDL is using "
-                               "GL %c", gl_version[0]);
-              goto error;
-            }
+          _cogl_set_error (error, COGL_WINSYS_ERROR,
+                           COGL_WINSYS_ERROR_INIT,
+                           "The GL3 driver was requested but SDL is using "
+                           "GL %c", gl_version[0]);
+          goto error;
         }
       break;
 
