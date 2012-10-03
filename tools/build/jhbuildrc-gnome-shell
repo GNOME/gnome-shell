@@ -28,6 +28,9 @@ checkoutroot = os.path.expanduser('~/gnome-shell/source')
 # the prefix to configure/install modules to (must have write access)
 prefix = os.path.expanduser('~/gnome-shell/install')
 
+# reduce what we build as much as possible
+ignore_suggests = True
+
 # Use system libraries for the builds
 if use_lib64:
     _libdir = 'lib64'
