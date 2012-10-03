@@ -267,15 +267,16 @@ const _Draggable = new Lang.Class({
             this._dragOffsetY = this._dragActor.y - this._dragStartY;
         } else {
             this._dragActor = this.actor;
-            this._dragActor.reparent(Main.uiGroup);
-            this._dragActor.raise_top();
-            Shell.util_set_hidden_from_pick(this._dragActor, true);
 
             this._dragActorSource = undefined;
             this._dragOrigParent = this.actor.get_parent();
             this._dragOrigX = this._dragActor.x;
             this._dragOrigY = this._dragActor.y;
             this._dragOrigScale = this._dragActor.scale_x;
+
+            this._dragActor.reparent(Main.uiGroup);
+            this._dragActor.raise_top();
+            Shell.util_set_hidden_from_pick(this._dragActor, true);
 
             let [actorStageX, actorStageY] = this.actor.get_transformed_position();
             this._dragOffsetX = actorStageX - this._dragStartX;
