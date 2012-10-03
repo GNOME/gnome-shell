@@ -1162,6 +1162,41 @@ st_texture_cache_load_sliced_image (StTextureCache    *cache,
 }
 
 /**
+ * st_texture_cache_load_icon_name:
+ * @cache: The texture cache instance
+ * @theme_node: (allow-none): a #StThemeNode
+ * @name: Name of a themed icon
+ * @size: Size of themed icon
+ *
+ * Load a themed icon into a texture. The colors used for symbolic
+ * icons are derived from @theme_node.
+ *
+ * Return Value: (transfer none): A new #ClutterTexture for the icon
+ */
+ClutterActor *
+st_texture_cache_load_icon_name (StTextureCache    *cache,
+                                 StThemeNode       *theme_node,
+                                 const char        *name,
+                                 gint               size)
+{
+  ClutterActor *texture;
+  GIcon *themed;
+
+  themed = g_themed_icon_new_with_default_fallbacks (name);
+  texture = load_gicon_with_colors (cache, themed, size,
+                                    theme_node ? st_theme_node_get_icon_colors (theme_node) : NULL);
+  g_object_unref (themed);
+
+  if (texture == NULL)
+    {
+      texture = (ClutterActor *) create_default_texture ();
+      clutter_actor_set_size (texture, size, size);
+    }
+
+  return texture;
+}
+
+/**
  * st_texture_cache_load_uri_async:
  * @cache: The texture cache instance
  * @uri: uri of the image file from which to create a pixbuf
