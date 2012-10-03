@@ -143,7 +143,7 @@ const ShellUserVerifier = new Lang.Class({
 
     _reportInitError: function(where, error) {
         logError(error, where);
-        this._hold.relase();
+        this._hold.release();
 
         this.emit('show-message', _("Authentication error"), 'login-dialog-message-warning');
         this._verificationFailed(false);
