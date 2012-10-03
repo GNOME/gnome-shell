@@ -439,12 +439,6 @@ const Dash = new Lang.Class({
         if (app == null)
             return DND.DragMotionResult.CONTINUE;
 
-        let id = app.get_id();
-
-        let favorites = AppFavorites.getAppFavorites().getFavoriteMap();
-
-        let srcIsFavorite = (id in favorites);
-
         let showAppsHovered =
                 this._showAppsIcon.actor.contains(dragEvent.targetActor);
 
