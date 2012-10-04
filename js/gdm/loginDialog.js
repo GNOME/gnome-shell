@@ -901,15 +901,6 @@ const LoginDialog = new Lang.Class({
                          label: C_("button", "Sign In"),
                          default: true }];
 
-        this._promptEntryActivateCallbackId = this._promptEntry.clutter_text.connect('activate',
-                                                                                     Lang.bind(this, function() {
-                                                                                         hold.release();
-                                                                                     }));
-        hold.connect('release', Lang.bind(this, function() {
-                         this._promptEntry.clutter_text.disconnect(this._promptEntryActivateCallbackId);
-                         this._promptEntryActivateCallbackId = null;
-                     }));
-
         let tasks = [function() {
                          return this._fadeInPrompt();
                      },
@@ -926,11 +917,6 @@ const LoginDialog = new Lang.Class({
     },
 
     _hidePrompt: function() {
-        if (this._promptEntryActivateCallbackId) {
-            this._promptEntry.clutter_text.disconnect(this._promptEntryActivateCallbackId);
-            this._promptEntryActivateCallbackId = null;
-        }
-
         this.setButtons([]);
 
         let tasks = [function() {
