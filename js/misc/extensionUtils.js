@@ -161,7 +161,8 @@ const ExtensionFinder = new Lang.Class({
         try {
             fileEnum = dir.enumerate_children('standard::*', Gio.FileQueryInfoFlags.NONE, null);
         } catch(e) {
-            logError(e, 'Could not enumerate extensions directory');
+            if (e.domain != Gio.io_error_quark() || e.code != Gio.IOErrorEnum.NOT_FOUND)
+                logError(e, 'Could not enumerate extensions directory');
             return;
         }
 
