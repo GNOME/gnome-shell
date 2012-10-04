@@ -5059,12 +5059,28 @@ meta_window_move_resize_internal (MetaWindow          *window,
    * efficiently as possible
    */
 
-  /* configure frame first if we grow more than we shrink
+  /* Normally, we configure the frame first depending on whether
+   * we grow the frame more than we shrink. The idea is to avoid
+   * messing up the window contents by having a temporary situation
+   * where the frame is smaller than the window. However, if we're
+   * cooperating with the client to create an atomic frame upate,
+   * and the window is redirected, then we should always update
+   * the frame first, since updating the frame will force a new
+   * backing pixmap to be allocated, and the old backing pixmap
+   * will be left undisturbed for us to paint to the screen until
+   * the client finishes redrawing.
    */
-  size_dx = w - window->rect.width;
-  size_dy = h - window->rect.height;
+  if (window->extended_sync_request_counter)
+    {
+      configure_frame_first = TRUE;
+    }
+  else
+    {
+      size_dx = w - window->rect.width;
+      size_dy = h - window->rect.height;
 
-  configure_frame_first = (size_dx + size_dy >= 0);
+      configure_frame_first = size_dx + size_dy >= 0;
+    }
 
   if (use_static_gravity)
     meta_window_set_gravity (window, StaticGravity);
