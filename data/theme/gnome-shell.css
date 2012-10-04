@@ -2033,7 +2033,6 @@ StScrollBar StButton#vhandle:active {
 }
 
 .login-dialog-user-list-item {
-    color: #666666;
     border-radius: 10px;
     padding: .2em;
 }
@@ -2051,6 +2050,11 @@ StScrollBar StButton#vhandle:active {
     padding-left: 1em;
 }
 
+.login-dialog-user-list:expanded .login-dialog-user-list-item {
+    color: #666666;
+}
+
+.login-dialog-user-list-item,
 .login-dialog-user-list-item:hover .login-dialog-user-list-item-name,
 .login-dialog-user-list:expanded .login-dialog-user-list-item:focus .login-dialog-user-list-item-name,
 .login-dialog-user-list:expanded .login-dialog-user-list-item:logged-in {

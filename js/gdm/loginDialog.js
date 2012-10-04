@@ -220,10 +220,6 @@ const UserList = new Lang.Class({
     _showItem: function(item) {
         let tasks = [function() {
                          return GdmUtil.fadeInActor(item.actor);
-                     },
-
-                     function() {
-                         return item.fadeInName();
                      }];
 
         let batch = new Batch.ConsecutiveBatch(this, tasks);
@@ -686,30 +682,22 @@ const LoginDialog = new Lang.Class({
                               { y_fill: false,
                                 y_align: St.Align.START });
 
-        let mainContentBox = new St.BoxLayout({ vertical: false });
-        this.contentLayout.add(mainContentBox,
+        this._userList = new UserList();
+        this.contentLayout.add(this._userList.actor,
                                { expand: true,
                                  x_fill: true,
-                                 y_fill: false });
-
-        this._userList = new UserList();
-        mainContentBox.add(this._userList.actor,
-                           { expand: true,
-                             x_fill: true,
-                             y_fill: true });
+                                 y_fill: true });
 
         this.setInitialKeyFocus(this._userList.actor);
 
         this._promptBox = new St.BoxLayout({ style_class: 'login-dialog-prompt-layout',
                                              vertical: true });
-        mainContentBox.add(this._promptBox,
-                           { expand: true,
-                             x_fill: true,
-                             y_fill: true,
-                             x_align: St.Align.START });
+        this.contentLayout.add(this._promptBox,
+                               { expand: true,
+                                 x_fill: true,
+                                 y_fill: true,
+                                 x_align: St.Align.START });
         this._promptLabel = new St.Label({ style_class: 'login-dialog-prompt-label' });
-
-        this._mainContentBox = mainContentBox;
 
         this._promptBox.add(this._promptLabel,
                             { expand: true,
@@ -1170,10 +1158,6 @@ const LoginDialog = new Lang.Class({
                          return this._userList.giveUpWhitespace();
                      },
 
-                     function() {
-                         return activatedItem.fadeOutName();
-                     },
-
                      new Batch.ConcurrentBatch(this, [this._fadeOutTitleLabel,
                                                       this._fadeOutNotListedButton,
                                                       this._fadeOutLogo]),
@@ -1229,7 +1213,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _onOpened: function() {
-        Main.ctrlAltTabManager.addGroup(this._mainContentBox,
+        Main.ctrlAltTabManager.addGroup(this.contentLayout,
                                         _("Login Window"),
                                         'dialog-password',
                                         { sortGroup: CtrlAltTab.SortGroup.MIDDLE });
