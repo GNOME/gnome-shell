@@ -18,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-09-25 00:06+0000\n"
-"PO-Revision-Date: 2012-09-25 17:28+0200\n"
+"PO-Revision-Date: 2012-10-04 15:34+0200\n"
 "Last-Translator: Alexandre Franke <alexandre.franke@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: \n"
@@ -521,7 +521,7 @@ msgstr "Sa"
 #. Translators: Text to show if there are no events
 #: ../js/ui/calendar.js:699
 msgid "Nothing Scheduled"
-msgstr "Rien au calendrier"
+msgstr "Rien de prévu"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
 #: ../js/ui/calendar.js:715
@@ -945,7 +945,7 @@ msgstr "Paramètres de date et heure"
 
 #: ../js/ui/dateMenu.js:109
 msgid "Open Calendar"
-msgstr "Ouvrir le calendrier"
+msgstr "Ouvrir l'agenda"
 
 # luc: FIXME: how to have a capitalized weekday (start of sentence)?
 #      %a (abbreviated) %A (full weekday) %^A (full weekday all uppercase)
@@ -1763,7 +1763,7 @@ msgstr "« %s » est prêt"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
-msgstr "Calendrier Evolution"
+msgstr "Agenda d'Evolution"
 
 #. translators:
 #. * The number of sound outputs on a particular device
