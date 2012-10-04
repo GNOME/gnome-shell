@@ -131,8 +131,11 @@ const ModalDialog = new Lang.Class({
             let key = buttonInfo['key'];
             let isDefault = buttonInfo['default'];
 
-            if (isDefault && !key)
+            if (isDefault && !key) {
+                this._actionKeys[Clutter.KEY_KP_Enter] = action;
+                this._actionKeys[Clutter.KEY_ISO_Enter] = action;
                 key = Clutter.KEY_Return;
+            }
 
             buttonInfo.button = new St.Button({ style_class: 'modal-dialog-button',
                                                 reactive:    true,
