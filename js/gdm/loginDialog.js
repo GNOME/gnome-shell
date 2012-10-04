@@ -150,14 +150,6 @@ const UserListItem = new Lang.Class({
         this.emit('activate');
     },
 
-    fadeOutName: function() {
-        return GdmUtil.fadeOutActor(this._nameLabel);
-    },
-
-    fadeInName: function() {
-        return GdmUtil.fadeInActor(this._nameLabel);
-    },
-
     showTimedLoginIndicator: function(time) {
         let hold = new Batch.Hold();
 
