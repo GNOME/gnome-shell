@@ -942,6 +942,19 @@ meta_window_actor_thaw (MetaWindowActor *self)
    * don't know what real damage has happened. */
   if (self->priv->needs_damage_all)
     meta_window_actor_damage_all (self);
+  else if (self->priv->frame_drawn_serial != 0)
+    {
+      /* A frame was marked by the client without actually doing any damage;
+       * we need to make sure that the pre_paint/post_paint functions
+       * get called, enabling us to send a _NET_WM_FRAME_DRAWN. We do a
+       * 1-pixel redraw to get consistent timing with non-empty frames.
+       */
+      if (self->priv->mapped && !self->priv->needs_pixmap)
+        {
+          const cairo_rectangle_int_t clip = { 0, 0, 1, 1 };
+          clutter_actor_queue_redraw_with_clip (self->priv->actor, &clip);
+        }
+    }
 }
 
 gboolean
