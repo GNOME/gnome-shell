@@ -292,6 +292,11 @@ stage_captured_event_cb (ClutterActor       *stage,
                   return CLUTTER_EVENT_PROPAGATE;
                 }
 
+              /* clutter_gesture_action_cancel() may have been called during
+               * gesture_prepare(), check that the gesture is still active. */
+              if (!priv->in_gesture)
+                return CLUTTER_EVENT_PROPAGATE;
+
               g_signal_emit (action, gesture_signals[GESTURE_BEGIN], 0, actor,
                              &return_value);
               if (!return_value)
@@ -916,7 +921,6 @@ void
 clutter_gesture_action_cancel (ClutterGestureAction *action)
 {
   g_return_if_fail (CLUTTER_IS_GESTURE_ACTION (action));
-  g_return_if_fail (!action->priv->in_gesture);
 
   cancel_gesture (action);
 
