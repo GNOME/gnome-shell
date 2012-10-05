@@ -275,13 +275,16 @@ const UserList = new Lang.Class({
                 });
         }
 
-        this._box.remove_style_pseudo_class('expanded');
         let batch = new Batch.ConsecutiveBatch(this,
                                                [function() {
                                                     return GdmUtil.fadeOutActor(this.actor.vscroll);
                                                 },
 
-                                                new Batch.ConcurrentBatch(this, tasks)
+                                                new Batch.ConcurrentBatch(this, tasks),
+
+                                                function() {
+                                                    this._box.remove_style_pseudo_class('expanded');
+                                                }
                                                ]);
 
         return batch.run();
@@ -331,7 +334,6 @@ const UserList = new Lang.Class({
             });
         }
 
-        this._box.add_style_pseudo_class('expanded');
         let batch = new Batch.ConsecutiveBatch(this,
                                                [function() {
                                                     this.takeOverWhitespace();
@@ -340,6 +342,10 @@ const UserList = new Lang.Class({
                                                 function() {
                                                     let fullHeight = this._getExpandedHeight();
                                                     return _smoothlyResizeActor(this._box, -1, fullHeight);
+                                                },
+
+                                                function() {
+                                                    this._box.add_style_pseudo_class('expanded');
                                                 },
 
                                                 new Batch.ConcurrentBatch(this, tasks),
