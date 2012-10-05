@@ -98,7 +98,7 @@ xcb: f:xcb-util-devel d:libx11-xcb-dev # startup-notification
 # Other libraries
 cracklib: fs:cracklib-devel d:libcrack2-dev # libpwquality
 cups: fs:cups-devel d:libcups2-dev # gnome-control-center
-db4: f:db4-devel d:libdb-dev # evolution-data-server
+libdb: d:libdb-dev # evolution-data-server - see below for Fedora
 icu: f:libicu-devel d:libicu-dev # WebKit
 libacl: f:libacl-devel d:libacl1-dev # gudev
 libcurl: f:libcurl-devel # liboauth. See below for Debian
@@ -210,6 +210,14 @@ if test "x$system" = xFedora ; then
       reqd="$reqd gettext-autopoint"
   elif expr $version \>= 15 > /dev/null ; then
       reqd="$reqd gettext-devel"
+  fi
+
+  # For evolution-data-server:
+  # /usr/include/db.h moved packages in Fedora 18
+  if expr $version \>= 18 > /dev/null ; then
+      reqd="$reqd libdb-devel"
+  else
+      reqd="$reqd db4-devel"
   fi
 
   echo -n "Computing packages to install ... "
