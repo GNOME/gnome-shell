@@ -25,6 +25,7 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
+const Meta = imports.gi.Meta;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 const Signals = imports.signals;
@@ -207,7 +208,13 @@ const UserList = new Lang.Class({
         if (global.stage.get_key_focus() != this.actor)
             return;
 
-        this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+        let focusSet = this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+        if (!focusSet) {
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+                this._moveFocusToItems();
+                return false;
+            }));
+        }
     },
 
     _showItem: function(item) {
