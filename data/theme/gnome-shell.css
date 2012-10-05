@@ -2102,6 +2102,7 @@ StScrollBar StButton#vhandle:active {
     padding-top: 1em;
 }
 
+.login-dialog-not-listed-button:focus .login-dialog-not-listed-label,
 .login-dialog-not-listed-button:hover .login-dialog-not-listed-label {
     color: #E8E8E8;
 }
@@ -2184,11 +2185,21 @@ StScrollBar StButton#vhandle:active {
     padding: 3px 18px;
 }
 
+.login-dialog .modal-dialog-button:focus {
+    padding: 2px 17px;
+    border: 2px solid #8b8b8b;
+}
+
 .login-dialog .modal-dialog-button:default {
     background-gradient-start: #6793c4;
     background-gradient-end: #335d8f;
     background-gradient-direction: vertical;
+    padding: 2px 17px;
     border: 2px solid #16335d;
+}
+
+.login-dialog .modal-dialog-button:default:focus {
+    border: 2px solid #377fe7;
 }
 
 .login-dialog .modal-dialog-button:default:hover {
