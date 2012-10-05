@@ -339,7 +339,7 @@ old="`readlink $HOME/bin/git-bz`"
 new="`readlink $HOME/bin/git-bz`"
 echo "done"
 
-if test "$old" != "$new" ; then
+if test "$old" != "$new" -a "$old" != "" ; then
     echo "WARNING: $HOME/bin/git-bz was changed from '$old' to '$new'"
 fi
 
