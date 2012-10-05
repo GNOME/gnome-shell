@@ -120,11 +120,6 @@ function createExtensionObject(uuid, dir, type) {
         }
     }
 
-    // Encourage people to add this
-    if (!meta.url) {
-        log('Warning: Missing "url" property in %s/metadata.json'.format(uuid));
-    }
-
     if (uuid != meta.uuid) {
         throw new Error('uuid "' + meta.uuid + '" from metadata.json does not match directory name "' + uuid + '"');
     }
