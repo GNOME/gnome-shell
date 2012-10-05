@@ -2700,6 +2700,27 @@ _clutter_process_event_details (ClutterActor        *stage,
            */
           if (event->any.source == NULL)
             {
+              /* same as the mouse events above, emulate the X11 implicit
+               * soft grab */
+              if (is_off_stage (stage, x, y))
+                {
+                  CLUTTER_NOTE (EVENT,
+                                "Touch %s off stage received at %.2f, %.2f",
+                                event->type == CLUTTER_TOUCH_UPDATE ? "Touch update" :
+                                event->type == CLUTTER_TOUCH_END ? "Touch end" :
+                                event->type == CLUTTER_TOUCH_CANCEL ? "Touch cancel" :
+                                "?", x, y);
+
+                  event->button.source = stage;
+
+                  emit_touch_event (event, device);
+
+                  if (event->type == CLUTTER_TOUCH_END)
+                    _clutter_input_device_remove_event_sequence (device, event);
+
+                  break;
+                }
+
               if (device != NULL)
                 actor = _clutter_input_device_update (device, sequence, TRUE);
               else
