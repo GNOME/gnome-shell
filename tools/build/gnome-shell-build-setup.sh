@@ -304,11 +304,13 @@ WARNING:
   The old source and install directory '$HOME/gnome-shell' exists, but
   '$HOME/gnome' doesn't. An empty $HOME/gnome will be created.
 
-  To avoid starting again from scratch you should remove the empty directory
-  and move your old '$HOME/gnome-shell' to '$HOME/gnome':
+  To avoid starting again from scratch you should remove the empty directory,
+  move your old '$HOME/gnome-shell' to '$HOME/gnome', and delete the old
+  install directory:
 
     rm -rf $HOME/gnome
     mv $HOME/gnome-shell $HOME/gnome
+    rm -rf $HOME/gnome/install
 EOF
 fi
 
