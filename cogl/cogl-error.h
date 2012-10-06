@@ -37,7 +37,7 @@
  * As a general rule Cogl shields non-recoverable errors from
  * developers, such as most heap allocation failures (unless for
  * exceptionally large resources which we might reasonably expect to
- * fail) and this reduces the burdon on developers.
+ * fail) and this reduces the burden on developers.
  *
  * There are some Cogl apis though that can fail for exceptional
  * reasons that can also potentially be recovered from at runtime
