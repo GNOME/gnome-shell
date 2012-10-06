@@ -116,8 +116,8 @@ const NotificationDaemon = new Lang.Class({
         this._busProxy = new Bus();
 
         this._trayManager = new Shell.TrayManager();
-        this._trayManager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
-        this._trayManager.connect('tray-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
+        this._trayIconAddedId = this._trayManager.connect('tray-icon-added', Lang.bind(this, this._onTrayIconAdded));
+        this._trayIconRemovedId = this._trayManager.connect('tray-icon-removed', Lang.bind(this, this._onTrayIconRemoved));
 
         Shell.WindowTracker.get_default().connect('notify::focus-app',
             Lang.bind(this, this._onFocusAppChanged));
