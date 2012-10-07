@@ -129,13 +129,10 @@ clutter_actor_unset_flags
 clutter_actor_get_flags
 clutter_actor_set_name
 clutter_actor_get_name
-clutter_actor_get_gid
 
 <SUBSECTION>
 clutter_actor_show
-clutter_actor_show_all
 clutter_actor_hide
-clutter_actor_hide_all
 clutter_actor_realize
 clutter_actor_unrealize
 clutter_actor_paint
@@ -157,7 +154,6 @@ clutter_actor_allocate_available_size
 clutter_actor_allocate_align_fill
 clutter_actor_set_allocation
 clutter_actor_get_allocation_box
-clutter_actor_get_allocation_geometry
 clutter_actor_get_allocation_vertices
 clutter_actor_get_preferred_size
 clutter_actor_get_preferred_width
@@ -197,8 +193,6 @@ clutter_actor_set_background_color
 clutter_actor_get_background_color
 
 <SUBSECTION>
-clutter_actor_set_geometry
-clutter_actor_get_geometry
 clutter_actor_set_size
 clutter_actor_get_size
 clutter_actor_set_position
@@ -225,6 +219,7 @@ clutter_actor_get_scale
 clutter_actor_set_scale_z
 clutter_actor_get_scale_z
 clutter_actor_is_scaled
+ClutterRotateAxis
 clutter_actor_set_rotation_angle
 clutter_actor_get_rotation_angle
 clutter_actor_is_rotated
@@ -389,7 +384,6 @@ clutter_stage_get_actor_at_pos
 clutter_stage_ensure_current
 clutter_stage_ensure_viewport
 clutter_stage_ensure_redraw
-clutter_stage_queue_redraw
 clutter_actor_queue_redraw_with_clip
 clutter_stage_event
 clutter_stage_set_key_focus
@@ -444,7 +438,6 @@ clutter_stage_add
 ClutterTimeline
 ClutterTimelineClass
 clutter_timeline_new
-clutter_timeline_clone
 
 <SUBSECTION>
 clutter_timeline_set_duration
@@ -776,7 +769,6 @@ clutter_input_device_get_axis_value
 
 <SUBSECTION>
 clutter_input_device_get_coords
-clutter_input_device_get_device_coords
 clutter_input_device_get_pointer_actor
 clutter_input_device_get_pointer_stage
 
@@ -815,9 +807,6 @@ clutter_device_manager_peek_devices
 clutter_device_manager_get_device
 clutter_device_manager_get_core_device
 
-<SUBSECTION>
-clutter_get_input_device_for_id
-
 <SUBSECTION Standard>
 CLUTTER_TYPE_DEVICE_MANAGER
 CLUTTER_DEVICE_MANAGER
@@ -849,18 +838,6 @@ clutter_main_quit
 clutter_main_level
 
 <SUBSECTION>
-clutter_get_debug_enabled
-clutter_get_show_fps
-clutter_get_timestamp
-clutter_get_actor_by_gid
-clutter_set_default_frame_rate
-clutter_get_default_frame_rate
-clutter_set_motion_events_enabled
-clutter_get_motion_events_enabled
-clutter_clear_glyph_cache
-ClutterFontFlags
-clutter_set_font_flags
-clutter_get_font_flags
 clutter_get_font_map
 ClutterTextDirection
 clutter_get_default_text_direction
@@ -869,15 +846,10 @@ clutter_disable_accessibility
 
 <SUBSECTION>
 clutter_threads_set_lock_functions
-clutter_threads_init
-clutter_threads_enter
-clutter_threads_leave
 clutter_threads_add_idle
 clutter_threads_add_idle_full
 clutter_threads_add_timeout
 clutter_threads_add_timeout_full
-clutter_threads_add_frame_source
-clutter_threads_add_frame_source_full
 clutter_threads_add_repaint_func
 ClutterRepaintFlags
 clutter_threads_add_repaint_func_full
@@ -890,8 +862,6 @@ clutter_grab_keyboard
 clutter_grab_pointer
 clutter_ungrab_keyboard
 clutter_ungrab_pointer
-clutter_grab_pointer_for_device
-clutter_ungrab_pointer_for_device
 
 <SUBSECTION>
 clutter_do_event
@@ -919,7 +889,6 @@ clutter_x11_handle_event
 clutter_x11_get_default_display
 clutter_x11_get_default_screen
 clutter_x11_get_root_window
-clutter_x11_get_stage_visual
 clutter_x11_get_stage_window
 clutter_x11_set_stage_foreign
 clutter_x11_trap_x_errors
@@ -937,7 +906,6 @@ clutter_x11_add_filter
 clutter_x11_remove_filter
 
 <SUBSECTION>
-clutter_x11_get_input_devices
 clutter_x11_has_xinput
 clutter_x11_enable_xinput
 clutter_x11_event_get_key_group
@@ -946,56 +914,6 @@ clutter_x11_event_sequence_get_touch_detail
 <SUBSECTION Private>
 ClutterX11XInputDevice
 ClutterX11XInputEventTypes
-</SECTION>
-
-<SECTION>
-<FILE>clutter-x11-texture-pixmap</FILE>
-ClutterX11TexturePixmap
-ClutterX11TexturePixmapClass
-clutter_x11_texture_pixmap_new
-clutter_x11_texture_pixmap_new_with_pixmap
-clutter_x11_texture_pixmap_new_with_window
-clutter_x11_texture_pixmap_set_pixmap
-clutter_x11_texture_pixmap_set_window
-clutter_x11_texture_pixmap_sync_window
-clutter_x11_texture_pixmap_update_area
-clutter_x11_texture_pixmap_set_automatic
-
-<SUBSECTION Standard>
-CLUTTER_X11_TYPE_TEXTURE_PIXMAP
-CLUTTER_X11_TEXTURE_PIXMAP
-CLUTTER_X11_IS_TEXTURE_PIXMAP
-CLUTTER_X11_TEXTURE_PIXMAP_CLASS
-CLUTTER_X11_IS_TEXTURE_PIXMAP_CLASS
-CLUTTER_X11_TEXTURE_PIXMAP_GET_CLASS
-clutter_x11_texture_pixmap_get_type
-
-<SUBSECTION Private>
-ClutterX11TexturePixmapPrivate
-</SECTION>
-
-<SECTION>
-<FILE>clutter-glx-texture-pixmap</FILE>
-ClutterGLXTexturePixmap
-ClutterGLXTexturePixmapClass
-clutter_glx_texture_pixmap_new
-clutter_glx_texture_pixmap_new_with_pixmap
-clutter_glx_texture_pixmap_new_with_window
-
-<SUBSECTION>
-clutter_glx_texture_pixmap_using_extension
-
-<SUBSECTION Standard>
-CLUTTER_GLX_TYPE_TEXTURE_PIXMAP
-CLUTTER_GLX_TEXTURE_PIXMAP
-CLUTTER_GLX_IS_TEXTURE_PIXMAP
-CLUTTER_GLX_TEXTURE_PIXMAP_CLASS
-CLUTTER_GLX_IS_TEXTURE_PIXMAP_CLASS
-CLUTTER_GLX_TEXTURE_PIXMAP_GET_CLASS
-
-<SUBSECTION Private>
-ClutterGLXTexturePixmapPrivate
-clutter_glx_texture_pixmap_get_type
 </SECTION>
 
 <SECTION>
@@ -1057,25 +975,11 @@ CLUTTER_MINOR_VERSION
 CLUTTER_MICRO_VERSION
 CLUTTER_VERSION
 CLUTTER_VERSION_S
-CLUTTER_VERSION_HEX
 
 <SUBSECTION>
 CLUTTER_CHECK_VERSION
 
 <SUBSECTION>
-CLUTTER_FLAVOUR
-CLUTTER_COGL
-CLUTTER_NO_FPU
-
-<SUBSECTION>
-CLUTTER_VERSION_1_0
-CLUTTER_VERSION_1_2
-CLUTTER_VERSION_1_4
-CLUTTER_VERSION_1_6
-CLUTTER_VERSION_1_8
-CLUTTER_VERSION_1_10
-CLUTTER_VERSION_1_12
-CLUTTER_VERSION_1_14
 CLUTTER_VERSION_MAX_ALLOWED
 CLUTTER_VERSION_MIN_REQUIRED
 
@@ -1086,26 +990,10 @@ clutter_check_version
 CLUTTER_VERSION_CUR_STABLE
 CLUTTER_VERSION_PREV_STABLE
 CLUTTER_UNAVAILABLE
-</SECTION>
-
-<SECTION>
-<FILE>clutter-behaviour-depth</FILE>
-<TITLE>ClutterBehaviourDepth</TITLE>
-ClutterBehaviourDepth
-ClutterBehaviourDepthClass
-clutter_behaviour_depth_new
-clutter_behaviour_depth_set_bounds
-clutter_behaviour_depth_get_bounds
-<SUBSECTION Standard>
-CLUTTER_BEHAVIOUR_DEPTH
-CLUTTER_IS_BEHAVIOUR_DEPTH
-CLUTTER_TYPE_BEHAVIOUR_DEPTH
-CLUTTER_BEHAVIOUR_DEPTH_CLASS
-CLUTTER_IS_BEHAVIOUR_DEPTH_CLASS
-CLUTTER_BEHAVIOUR_DEPTH_GET_CLASS
-<SUBSECTION Private>
-ClutterBehaviourDepthPrivate
-clutter_behaviour_depth_get_type
+CLUTTER_VERSION_2_0
+CLUTTER_AVAILABLE_IN_2_0
+CLUTTER_DEPRECATED_IN_2_0
+CLUTTER_DEPRECATED_IN_2_0_FOR
 </SECTION>
 
 <SECTION>
@@ -1132,8 +1020,6 @@ clutter_script_list_objects
 ClutterScriptConnectFunc
 clutter_script_connect_signals
 clutter_script_connect_signals_full
-clutter_script_add_states
-clutter_script_get_states
 
 <SUBSECTION>
 clutter_script_get_type_from_name
@@ -1284,153 +1170,6 @@ clutter_list_model_get_type
 </SECTION>
 
 <SECTION>
-<FILE>clutter-score</FILE>
-<TITLE>ClutterScore</TITLE>
-ClutterScore
-ClutterScoreClass
-clutter_score_new
-clutter_score_set_loop
-clutter_score_get_loop
-
-<SUBSECTION>
-clutter_score_append
-clutter_score_append_at_marker
-clutter_score_remove
-clutter_score_remove_all
-clutter_score_get_timeline
-clutter_score_list_timelines
-
-<SUBSECTION>
-clutter_score_start
-clutter_score_pause
-clutter_score_stop
-clutter_score_is_playing
-clutter_score_rewind
-
-<SUBSECTION Standard>
-CLUTTER_IS_SCORE
-CLUTTER_IS_SCORE_CLASS
-CLUTTER_SCORE
-CLUTTER_SCORE_CLASS
-CLUTTER_SCORE_GET_CLASS
-CLUTTER_TYPE_SCORE
-
-<SUBSECTION Private>
-ClutterScorePrivate
-clutter_score_get_type
-</SECTION>
-
-<SECTION>
-<FILE>clutter-shader</FILE>
-<TITLE>Shaders</TITLE>
-ClutterShaderError
-ClutterShader
-ClutterShaderClass
-clutter_shader_new
-clutter_shader_set_vertex_source
-clutter_shader_get_vertex_source
-clutter_shader_set_fragment_source
-clutter_shader_get_fragment_source
-clutter_shader_compile
-clutter_shader_release
-clutter_shader_is_compiled
-clutter_shader_set_is_enabled
-clutter_shader_get_is_enabled
-
-<SUBSECTION>
-clutter_shader_set_uniform
-clutter_shader_get_cogl_program
-clutter_shader_get_cogl_fragment_shader
-clutter_shader_get_cogl_vertex_shader
-
-<SUBSECTION>
-CLUTTER_VALUE_HOLDS_SHADER_FLOAT
-clutter_value_set_shader_float
-clutter_value_get_shader_float
-CLUTTER_VALUE_HOLDS_SHADER_INT
-clutter_value_set_shader_int
-clutter_value_get_shader_int
-CLUTTER_VALUE_HOLDS_SHADER_MATRIX
-clutter_value_set_shader_matrix
-clutter_value_get_shader_matrix
-
-<SUBSECTION Standard>
-CLUTTER_IS_SHADER
-CLUTTER_IS_SHADER_CLASS
-CLUTTER_SHADER
-CLUTTER_SHADER_CLASS
-CLUTTER_SHADER_ERROR
-CLUTTER_SHADER_GET_CLASS
-CLUTTER_TYPE_SHADER
-CLUTTER_TYPE_SHADER_FLOAT
-CLUTTER_TYPE_SHADER_INT
-CLUTTER_TYPE_SHADER_MATRIX
-
-<SUBSECTION Private>
-ClutterShaderPrivate
-clutter_shader_get_type
-ClutterShaderFloat
-clutter_shader_float_get_type
-ClutterShaderInt
-clutter_shader_int_get_type
-ClutterShaderMatrix
-clutter_shader_matrix_get_type
-clutter_shader_error_quark
-</SECTION>
-
-<SECTION>
-<TITLE>Implicit Animations</TITLE>
-<FILE>clutter-animation</FILE>
-ClutterAnimation
-ClutterAnimationClass
-clutter_animation_new
-clutter_animation_set_object
-clutter_animation_get_object
-clutter_animation_set_mode
-clutter_animation_get_mode
-clutter_animation_set_duration
-clutter_animation_get_duration
-clutter_animation_set_loop
-clutter_animation_get_loop
-clutter_animation_set_timeline
-clutter_animation_get_timeline
-clutter_animation_set_alpha
-clutter_animation_get_alpha
-clutter_animation_completed
-
-<SUBSECTION>
-clutter_animation_bind
-clutter_animation_bind_interval
-clutter_animation_update
-clutter_animation_update_interval
-clutter_animation_has_property
-clutter_animation_unbind_property
-clutter_animation_get_interval
-
-<SUBSECTION>
-clutter_actor_animate
-clutter_actor_animate_with_timeline
-clutter_actor_animate_with_alpha
-clutter_actor_animatev
-clutter_actor_animate_with_timelinev
-clutter_actor_animate_with_alphav
-clutter_actor_get_animation
-clutter_actor_detach_animation
-
-<SUBSECTION Standard>
-CLUTTER_TYPE_ANIMATION
-CLUTTER_ANIMATION
-CLUTTER_ANIMATION_CLASS
-CLUTTER_IS_ANIMATION
-CLUTTER_IS_ANIMATION_CLASS
-CLUTTER_ANIMATION_GET_CLASS
-
-<SUBSECTION Private>
-ClutterAnimationPrivate
-clutter_animation_get_type
-</SECTION>
-
-<SECTION>
 <TITLE>Value intervals</TITLE>
 <FILE>clutter-interval</FILE>
 ClutterInterval
@@ -1478,39 +1217,6 @@ clutter_interval_get_type
 CLUTTER_CAIRO_FORMAT_ARGB32
 clutter_cairo_clear
 clutter_cairo_set_source_color
-</SECTION>
-
-<SECTION>
-<FILE>clutter-cairo-texture</FILE>
-<TITLE>ClutterCairoTexture</TITLE>
-ClutterCairoTexture
-ClutterCairoTextureClass
-clutter_cairo_texture_new
-clutter_cairo_texture_set_surface_size
-clutter_cairo_texture_get_surface_size
-clutter_cairo_texture_set_auto_resize
-clutter_cairo_texture_get_auto_resize
-
-<SUBSECTION>
-clutter_cairo_texture_create
-clutter_cairo_texture_create_region
-
-<SUBSECTION>
-clutter_cairo_texture_invalidate_rectangle
-clutter_cairo_texture_invalidate
-clutter_cairo_texture_clear
-
-<SUBSECTION Standard>
-CLUTTER_TYPE_CAIRO_TEXTURE
-CLUTTER_CAIRO_TEXTURE
-CLUTTER_IS_CAIRO_TEXTURE
-CLUTTER_CAIRO_TEXTURE_CLASS
-CLUTTER_IS_CAIRO_TEXTURE_CLASS
-CLUTTER_CAIRO_TEXTURE_GET_CLASS
-
-<SUBSECTION Private>
-ClutterCairoTexturePrivate
-clutter_cairo_texture_get_type
 </SECTION>
 
 <SECTION>
@@ -1612,7 +1318,6 @@ clutter_text_get_type
 <TITLE>ClutterAnimatable</TITLE>
 ClutterAnimatable
 ClutterAnimatableIface
-clutter_animatable_animate_property
 clutter_animatable_find_property
 clutter_animatable_get_initial_state
 clutter_animatable_set_final_state
@@ -1685,7 +1390,6 @@ clutter_cex100_get_egl_display
 ClutterStageManager
 ClutterStageManagerClass
 clutter_stage_manager_get_default
-clutter_stage_manager_set_default_stage
 clutter_stage_manager_get_default_stage
 clutter_stage_manager_list_stages
 clutter_stage_manager_peek_stages
@@ -1724,11 +1428,6 @@ clutter_layout_manager_child_get_property
 clutter_layout_manager_find_child_property
 clutter_layout_manager_list_child_properties
 
-<SUBSECTION>
-clutter_layout_manager_begin_animation
-clutter_layout_manager_end_animation
-clutter_layout_manager_get_animation_progress
-
 <SUBSECTION Standard>
 CLUTTER_TYPE_LAYOUT_MANAGER
 CLUTTER_LAYOUT_MANAGER
@@ -1764,13 +1463,9 @@ clutter_fixed_layout_get_type
 <SECTION>
 <TITLE>ClutterBinLayout</TITLE>
 <FILE>clutter-bin-layout</FILE>
-ClutterBinAlignment
 ClutterBinLayout
 ClutterBinLayoutClass
 clutter_bin_layout_new
-clutter_bin_layout_set_alignment
-clutter_bin_layout_get_alignment
-clutter_bin_layout_add
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_BIN_LAYOUT
@@ -1783,37 +1478,6 @@ CLUTTER_BIN_LAYOUT_GET_CLASS
 <SUBSECTION Private>
 ClutterBinLayoutPrivate
 clutter_bin_layout_get_type
-</SECTION>
-
-<SECTION>
-<TITLE>ClutterBox</TITLE>
-<FILE>clutter-box</FILE>
-ClutterBox
-ClutterBoxClass
-clutter_box_new
-clutter_box_set_layout_manager
-clutter_box_get_layout_manager
-clutter_box_set_color
-clutter_box_get_color
-
-<SUBSECTION>
-clutter_box_pack
-clutter_box_packv
-clutter_box_pack_after
-clutter_box_pack_before
-clutter_box_pack_at
-
-<SUBSECTION Standard>
-CLUTTER_TYPE_BOX
-CLUTTER_BOX
-CLUTTER_BOX_CLASS
-CLUTTER_IS_BOX
-CLUTTER_IS_BOX_CLASS
-CLUTTER_BOX_GET_CLASS
-
-<SUBSECTION Private>
-ClutterBoxPrivate
-clutter_box_get_type
 </SECTION>
 
 <SECTION>
@@ -1911,7 +1575,6 @@ clutter_grid_layout_get_type
 <SECTION>
 <TITLE>ClutterBoxLayout</TITLE>
 <FILE>clutter-box-layout</FILE>
-ClutterBoxAlignment
 ClutterBoxLayout
 ClutterBoxLayoutClass
 clutter_box_layout_new
@@ -1924,27 +1587,6 @@ clutter_box_layout_get_homogeneous
 ClutterOrientation
 clutter_box_layout_get_orientation
 clutter_box_layout_set_orientation
-clutter_box_layout_set_vertical
-clutter_box_layout_get_vertical
-
-<SUBSECTION>
-clutter_box_layout_pack
-
-<SUBSECTION>
-clutter_box_layout_set_alignment
-clutter_box_layout_get_alignment
-clutter_box_layout_set_expand
-clutter_box_layout_get_expand
-clutter_box_layout_set_fill
-clutter_box_layout_get_fill
-
-<SUBSECTION>
-clutter_box_layout_set_use_animations
-clutter_box_layout_get_use_animations
-clutter_box_layout_set_easing_duration
-clutter_box_layout_get_easing_duration
-clutter_box_layout_set_easing_mode
-clutter_box_layout_get_easing_mode
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_BOX_LAYOUT
@@ -1961,7 +1603,6 @@ clutter_box_layout_get_type
 
 <SECTION>
 <FILE>clutter-table-layout</FILE>
-ClutterTableAlignment
 ClutterTableLayout
 ClutterTableLayoutClass
 clutter_table_layout_new
@@ -1976,22 +1617,8 @@ clutter_table_layout_get_column_count
 clutter_table_layout_pack
 
 <SUBSECTION>
-clutter_table_layout_set_alignment
-clutter_table_layout_get_alignment
-clutter_table_layout_set_expand
-clutter_table_layout_get_expand
-clutter_table_layout_set_fill
-clutter_table_layout_get_fill
 clutter_table_layout_get_span
 clutter_table_layout_set_span
-
-<SUBSECTION>
-clutter_table_layout_set_use_animations
-clutter_table_layout_get_use_animations
-clutter_table_layout_set_easing_duration
-clutter_table_layout_get_easing_duration
-clutter_table_layout_set_easing_mode
-clutter_table_layout_get_easing_mode
 
 <SUBSECTION Standard>
 CLUTTER_TYPE_TABLE_LAYOUT
@@ -2004,56 +1631,6 @@ CLUTTER_TABLE_LAYOUT_GET_CLASS
 <SUBSECTION Private>
 ClutterTableLayoutPrivate
 clutter_table_layout_get_type
-</SECTION>
-
-<SECTION>
-<FILE>clutter-animator</FILE>
-<TITLE>ClutterAnimator</TITLE>
-ClutterAnimator
-ClutterAnimatorClass
-clutter_animator_new
-clutter_animator_set
-clutter_animator_set_key
-clutter_animator_remove_key
-clutter_animator_get_keys
-clutter_animator_start
-clutter_animator_compute_value
-
-<SUBSECTION>
-clutter_animator_set_timeline
-clutter_animator_get_timeline
-clutter_animator_set_duration
-clutter_animator_get_duration
-
-<SUBSECTION>
-clutter_animator_property_set_ease_in
-clutter_animator_property_get_ease_in
-ClutterInterpolation
-clutter_animator_property_set_interpolation
-clutter_animator_property_get_interpolation
-
-<SUBSECTION>
-ClutterAnimatorKey
-clutter_animator_key_get_object
-clutter_animator_key_get_property_name
-clutter_animator_key_get_property_type
-clutter_animator_key_get_mode
-clutter_animator_key_get_progress
-clutter_animator_key_get_value
-
-<SUBSECTION Standard>
-CLUTTER_TYPE_ANIMATOR
-CLUTTER_TYPE_ANIMATOR_KEY
-CLUTTER_ANIMATOR
-CLUTTER_ANIMATOR_CLASS
-CLUTTER_IS_ANIMATOR
-CLUTTER_IS_ANIMATOR_CLASS
-CLUTTER_ANIMATOR_GET_CLASS
-
-<SUBSECTION Private>
-clutter_animator_get_type
-clutter_animator_key_get_type
-ClutterAnimatorPrivate
 </SECTION>
 
 <SECTION>
@@ -2192,53 +1769,6 @@ clutter_align_constraint_get_type
 </SECTION>
 
 <SECTION>
-<FILE>clutter-state</FILE>
-<TITLE>ClutterState</TITLE>
-ClutterState
-ClutterStateClass
-clutter_state_new
-clutter_state_set_state
-clutter_state_get_state
-clutter_state_warp_to_state
-clutter_state_set
-clutter_state_set_key
-clutter_state_set_duration
-clutter_state_get_duration
-clutter_state_get_states
-clutter_state_get_keys
-clutter_state_remove_key
-clutter_state_get_timeline
-clutter_state_set_animator
-clutter_state_get_animator
-
-<SUBSECTION>
-ClutterStateKey
-clutter_state_key_get_source_state_name
-clutter_state_key_get_target_state_name
-clutter_state_key_get_object
-clutter_state_key_get_property_name
-clutter_state_key_get_mode
-clutter_state_key_get_value
-clutter_state_key_get_property_type
-clutter_state_key_get_pre_delay
-clutter_state_key_get_post_delay
-
-<SUBSECTION Standard>
-CLUTTER_TYPE_STATE
-CLUTTER_TYPE_STATE_KEY
-CLUTTER_STATE
-CLUTTER_STATE_CLASS
-CLUTTER_IS_STATE
-CLUTTER_IS_STATE_CLASS
-CLUTTER_STATE_GET_CLASS
-clutter_state_get_type
-clutter_state_key_get_type
-
-<SUBSECTION Private>
-ClutterStatePrivate
-</SECTION>
-
-<SECTION>
 <FILE>clutter-click-action</FILE>
 <TITLE>ClutterClickAction</TITLE>
 ClutterClickAction
@@ -2321,6 +1851,17 @@ clutter_shader_effect_set_uniform_value
 clutter_shader_effect_set_shader_source
 clutter_shader_effect_get_program
 clutter_shader_effect_get_shader
+<SUBSECTION>
+CLUTTER_VALUE_HOLDS_SHADER_FLOAT
+clutter_value_set_shader_float
+clutter_value_get_shader_float
+CLUTTER_VALUE_HOLDS_SHADER_INT
+clutter_value_set_shader_int
+clutter_value_get_shader_int
+CLUTTER_VALUE_HOLDS_SHADER_MATRIX
+clutter_value_set_shader_matrix
+clutter_value_get_shader_matrix
+
 <SUBSECTION Standard>
 CLUTTER_TYPE_SHADER_EFFECT
 CLUTTER_SHADER_EFFECT
@@ -2328,9 +1869,18 @@ CLUTTER_SHADER_EFFECT_CLASS
 CLUTTER_IS_SHADER_EFFECT
 CLUTTER_IS_SHADER_EFFECT_CLASS
 CLUTTER_SHADER_EFFECT_GET_CLASS
+CLUTTER_TYPE_SHADER_FLOAT
+CLUTTER_TYPE_SHADER_INT
+CLUTTER_TYPE_SHADER_MATRIX
 <SUBSECTION Private>
 ClutterShaderEffectPrivate
+ClutterShaderFloat
+ClutterShaderInt
+ClutterShaderMatrix
 clutter_shader_effect_get_type
+clutter_shader_float_get_type
+clutter_shader_int_get_type
+clutter_shader_matrix_get_type
 </SECTION>
 
 <SECTION>
