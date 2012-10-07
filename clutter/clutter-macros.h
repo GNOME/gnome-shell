@@ -78,7 +78,7 @@
  * clutter.h header.
  *
  * The definition should be one of the predefined Clutter version macros,
- * such as: %CLUTTER_VERSION_1_0, %CLUTTER_VERSION_1_2, ...
+ * such as: %CLUTTER_VERSION_2_0, %CLUTTER_VERSION_2_2, ...
  *
  * This macro defines the lower bound for the Clutter API to be used.
  *
@@ -89,7 +89,11 @@
  *
  */
 #ifndef CLUTTER_VERSION_MIN_REQUIRED
-# define CLUTTER_VERSION_MIN_REQUIRED   (CLUTTER_VERSION_CUR_STABLE)
+# if CLUTTER_MAJOR_VERSION < 2
+#   define CLUTTER_VERSION_MIN_REQUIRED (G_ENCODE_VERSION (2, 0))
+# else
+#   define CLUTTER_VERSION_MIN_REQUIRED (CLUTTER_VERSION_CUR_STABLE)
+# endif
 #endif
 
 /**
@@ -99,7 +103,7 @@
  * clutter.h header.
  *
  * The definition should be one of the predefined Clutter version macros,
- * such as: %CLUTTER_VERSION_1_0, %CLUTTER_VERSION_1_2, ...
+ * such as: %CLUTTER_VERSION_2_0, %CLUTTER_VERSION_2_2, ...
  *
  * This macro defines the upper bound for the Clutter API to be used.
  *
@@ -121,8 +125,8 @@
 #if CLUTTER_VERSION_MAX_ALLOWED < CLUTTER_VERSION_MIN_REQUIRED
 # error "CLUTTER_VERSION_MAX_ALLOWED must be >= CLUTTER_VERSION_MIN_REQUIRED"
 #endif
-#if CLUTTER_VERSION_MIN_REQUIRED < CLUTTER_VERSION_1_0
-# error "CLUTTER_VERSION_MIN_REQUIRED must be >= CLUTTER_VERSION_1_0"
+#if CLUTTER_VERSION_MIN_REQUIRED < CLUTTER_VERSION_2_0
+# error "CLUTTER_VERSION_MIN_REQUIRED must be >= CLUTTER_VERSION_2_0"
 #endif
 
 /* XXX: Every new stable minor release should add a set of macros here */
