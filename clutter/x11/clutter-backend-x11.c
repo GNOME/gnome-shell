@@ -94,7 +94,7 @@ static const gchar *atom_names[] = {
 
 /* various flags corresponding to pre init setup calls */
 static gboolean _no_xevent_retrieval = FALSE;
-static gboolean clutter_enable_xinput = FALSE;
+static gboolean clutter_enable_xinput = TRUE;
 static gboolean clutter_enable_argb = FALSE;
 static Display  *_foreign_dpy = NULL;
 
@@ -336,10 +336,10 @@ clutter_backend_x11_pre_parse (ClutterBackend  *backend,
       env_string = NULL;
     }
 
-  env_string = g_getenv ("CLUTTER_ENABLE_XINPUT");
+  env_string = g_getenv ("CLUTTER_DISABLE_XINPUT");
   if (env_string)
     {
-      clutter_enable_xinput = TRUE;
+      clutter_enable_xinput = FALSE;
       env_string = NULL;
     }
 
@@ -528,10 +528,10 @@ static const GOptionEntry entries[] =
   },
 #if defined(HAVE_XINPUT) || defined(HAVE_XINPUT_2)
   {
-    "enable-xinput", 0,
-    0,
+    "disable-xinput", 0,
+    G_OPTION_FLAG_REVERSE,
     G_OPTION_ARG_NONE, &clutter_enable_xinput,
-    N_("Enable XInput support"), NULL
+    N_("Disable XInput support"), NULL
   },
 #endif /* HAVE_XINPUT */
   { NULL }
@@ -943,18 +943,15 @@ clutter_x11_set_display (Display *xdpy)
  * want to use clutter_x11_has_xinput() to see if support was enabled.
  *
  * Since: 0.8
+ *
+ * Deprecated: 1.14: This function does not do anything; XInput support
+ *   is enabled by default in Clutter. Use the CLUTTER_DISABLE_XINPUT
+ *   environment variable to disable XInput support and use Xlib core
+ *   events instead.
  */
 void
 clutter_x11_enable_xinput (void)
 {
-  if (_clutter_context_is_initialized ())
-    {
-      g_warning ("%s() can only be used before calling clutter_init()",
-                 G_STRFUNC);
-      return;
-    }
-
-  clutter_enable_xinput = TRUE;
 }
 
 /**
