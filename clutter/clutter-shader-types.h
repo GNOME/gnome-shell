@@ -45,8 +45,6 @@ typedef struct _ClutterShaderMatrix   ClutterShaderMatrix;
  * @x: a #GValue
  *
  * Evaluates to %TRUE if @x holds a #ClutterShaderFloat.
- *
- *
  */
 #define CLUTTER_VALUE_HOLDS_SHADER_FLOAT(x) (G_VALUE_HOLDS ((x), CLUTTER_TYPE_SHADER_FLOAT))
 
@@ -55,8 +53,6 @@ typedef struct _ClutterShaderMatrix   ClutterShaderMatrix;
  * @x: a #GValue
  *
  * Evaluates to %TRUE if @x holds a #ClutterShaderInt.
- *
- *
  */
 #define CLUTTER_VALUE_HOLDS_SHADER_INT(x) (G_VALUE_HOLDS ((x), CLUTTER_TYPE_SHADER_INT))
 
@@ -65,8 +61,6 @@ typedef struct _ClutterShaderMatrix   ClutterShaderMatrix;
  * @x: a #GValue
  *
  * Evaluates to %TRUE if @x holds a #ClutterShaderMatrix.
- *
- *
  */
 #define CLUTTER_VALUE_HOLDS_SHADER_MATRIX(x) (G_VALUE_HOLDS ((x), CLUTTER_TYPE_SHADER_MATRIX))
 

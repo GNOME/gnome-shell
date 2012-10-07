@@ -23,13 +23,6 @@
  *
  */
 
-/**
- * SECTION:clutter-util
- * @short_description: Utility functions
- *
- * Various miscellaneous utilility functions.
- */
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
