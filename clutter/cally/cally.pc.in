@@ -10,4 +10,4 @@ Description: Clutter Accessibility Implementation Library
 Version: @VERSION@
 Libs: -L${libdir} -lclutter-${apiversion}
 Cflags: -I${includedir}/clutter-${apiversion}
-Requires: atk clutter-1.0
+Requires: atk clutter-${apiversion}

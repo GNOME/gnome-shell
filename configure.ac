@@ -1127,7 +1127,7 @@ dnl === I18N ==================================================================
 AM_GNU_GETTEXT_VERSION([0.17])
 AM_GNU_GETTEXT([external])
 
-GETTEXT_PACKAGE="clutter-1.0"
+GETTEXT_PACKAGE="clutter-2.0"
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
                    ["$GETTEXT_PACKAGE"],

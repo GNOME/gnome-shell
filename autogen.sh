@@ -18,7 +18,7 @@ test $TEST_TYPE $FILE || {
 
 # GNU gettext automake support doesn't get along with git.
 # https://bugzilla.gnome.org/show_bug.cgi?id=661128
-touch -t 200001010000 po/clutter-1.0.pot
+touch -t 200001010000 po/clutter-2.0.pot
 
 GTKDOCIZE=`which gtkdocize`
 if test -z $GTKDOCIZE; then

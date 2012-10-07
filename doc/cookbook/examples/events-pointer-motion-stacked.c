@@ -7,8 +7,6 @@
  *
  * but when the pointer is over the overlap between red and green,
  * signals are emitted by green
- *
- * gcc -g -O0 -o stacked-actors-and-events stacked-actors-and-events.c `pkg-config --libs --cflags clutter-1.0 glib-2.0` -lm
  */
 #include <clutter/clutter.h>
 

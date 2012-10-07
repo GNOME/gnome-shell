@@ -129,7 +129,7 @@ ui_data = \
 	$(srcdir)/script-ui.json			\
 	$(NULL)
 
-examplesdir = $(datadir)/clutter-1.0/cookbook/examples
+examplesdir = $(datadir)/clutter-2.0/cookbook/examples
 examples_DATA = $(uidata) $(srcdir)/*.c $(srcdir)/*.h
 
 -include $(top_srcdir)/build/autotools/Makefile.am.gitignore

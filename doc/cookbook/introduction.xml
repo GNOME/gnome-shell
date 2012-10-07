@@ -84,7 +84,7 @@
       <title>Compiling the examples</title>
 
       <para>This document comes with full examples, usually stored
-      on disk in <filename><emphasis>datadir</emphasis>/clutter-1.0/cookbook/examples</filename>
+      on disk in <filename><emphasis>datadir</emphasis>/clutter-2.0/cookbook/examples</filename>
       directory.</para>
 
       <para>Each example can be compiled using:</para>
@@ -92,9 +92,9 @@
       <informalexample>
         <programlisting>
 cc \
-  `pkg-config --cflags clutter-1.0` \
+  `pkg-config --cflags clutter-2.0` \
   -o <emphasis>example</emphasis> <emphasis>example</emphasis>.c \
-  `pkg-config --libs clutter-1.0`
+  `pkg-config --libs clutter-2.0`
         </programlisting>
       </informalexample>
 

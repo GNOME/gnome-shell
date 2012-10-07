@@ -243,8 +243,8 @@
       <title>Configuration File</title>
 
       <para>Clutter will look for files named <filename>settings.ini</filename>
-      located in the <filename>/etc/clutter-1.0</filename> and
-      <filename>$XDG_CONFIG_HOME/clutter-1.0</filename> directories. These files
+      located in the <filename>/etc/clutter-2.0</filename> and
+      <filename>$XDG_CONFIG_HOME/clutter-2.0</filename> directories. These files
       must be valid key files (see #GKeyFile in the GLib documentation) and may
       have three sections:</para>
 
