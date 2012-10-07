@@ -266,21 +266,6 @@ typedef enum {
 } ClutterAnimationMode;
 
 /**
- * ClutterFontFlags:
- * @CLUTTER_FONT_MIPMAPPING: Set to use mipmaps for the glyph cache textures.
- * @CLUTTER_FONT_HINTING: Set to enable hinting on the glyphs.
- *
- * Runtime flags to change the font quality. To be used with
- * clutter_set_font_flags().
- *
- *
- */
-typedef enum { /*< prefix=CLUTTER_FONT >*/
-  CLUTTER_FONT_MIPMAPPING = (1 << 0),
-  CLUTTER_FONT_HINTING    = (1 << 1)
-} ClutterFontFlags;
-
-/**
  * ClutterTextDirection:
  * @CLUTTER_TEXT_DIRECTION_DEFAULT: Use the default setting, as returned
  *   by clutter_get_default_text_direction()
@@ -288,8 +273,6 @@ typedef enum { /*< prefix=CLUTTER_FONT >*/
  * @CLUTTER_TEXT_DIRECTION_RTL: Use right-to-left text direction
  *
  * The text direction to be used by #ClutterActor<!-- -->s
- *
- *
  */
 typedef enum {
   CLUTTER_TEXT_DIRECTION_DEFAULT,
@@ -522,24 +505,6 @@ typedef enum { /*< prefix=CLUTTER_BIND >*/
 typedef enum { /*< prefix=CLUTTER_EFFECT_PAINT >*/
   CLUTTER_EFFECT_PAINT_ACTOR_DIRTY = (1 << 0)
 } ClutterEffectPaintFlags;
-
-/**
- * ClutterBoxAlignment:
- * @CLUTTER_BOX_ALIGNMENT_START: Align the child to the top or to
- *   to the left, depending on the used axis
- * @CLUTTER_BOX_ALIGNMENT_CENTER: Align the child to the center
- * @CLUTTER_BOX_ALIGNMENT_END: Align the child to the bottom or to
- *   the right, depending on the used axis
- *
- * The alignment policies available on each axis of the #ClutterBoxLayout
- *
- *
- */
-typedef enum {
-  CLUTTER_BOX_ALIGNMENT_START,
-  CLUTTER_BOX_ALIGNMENT_END,
-  CLUTTER_BOX_ALIGNMENT_CENTER
-} ClutterBoxAlignment;
 
 /**
  * ClutterLongPressState:
