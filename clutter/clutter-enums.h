@@ -37,8 +37,6 @@ G_BEGIN_DECLS
  * @CLUTTER_Z_AXIS: Rotate around the Z axis
  *
  * Axis of a rotation.
- *
- *
  */
 typedef enum { /*< prefix=CLUTTER >*/
   CLUTTER_X_AXIS,
@@ -47,27 +45,11 @@ typedef enum { /*< prefix=CLUTTER >*/
 } ClutterRotateAxis;
 
 /**
- * ClutterRotateDirection:
- * @CLUTTER_ROTATE_CW: Clockwise rotation
- * @CLUTTER_ROTATE_CCW: Counter-clockwise rotation
- *
- * Direction of a rotation.
- *
- *
- */
-typedef enum { /*< prefix=CLUTTER_ROTATE >*/
-  CLUTTER_ROTATE_CW,
-  CLUTTER_ROTATE_CCW
-} ClutterRotateDirection;
-
-/**
  * ClutterRequestMode:
  * @CLUTTER_REQUEST_HEIGHT_FOR_WIDTH: Height for width requests
  * @CLUTTER_REQUEST_WIDTH_FOR_HEIGHT: Width for height requests
  *
  * Specifies the type of requests for a #ClutterActor.
- *
- *
  */
 typedef enum { /*< prefix=CLUTTER_REQUEST >*/
   CLUTTER_REQUEST_HEIGHT_FOR_WIDTH,
