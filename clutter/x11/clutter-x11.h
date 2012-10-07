@@ -39,7 +39,12 @@
 
 #include <glib.h>
 
+/* Include clutter-types.h conditionally; users including clutter-x11.h will
+ * have to include clutter.h as well.
+ */
+#ifdef CLUTTER_COMPILATION
 #include <clutter/clutter-types.h>
+#endif
 
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
