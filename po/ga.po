@@ -1,14 +1,14 @@
 # Irish translations for gnome-shell package.
 # Copyright (C) 2009-2011 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
-# Seán de Búrca <leftmostcat@gmail.com>, 2009-2011, 2012.
+# Seán de Búrca <leftmostcat@gmail.com>, 2009-2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-24 16:13-0700\n"
-"PO-Revision-Date: 2012-01-24 16:39-0700\n"
+"POT-Creation-Date: 2012-10-07 14:03-0600\n"
+"PO-Revision-Date: 2012-10-07 15:25-0600\n"
 "Last-Translator: Seán de Búrca <leftmostcat@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
 "Language: ga\n"
@@ -18,6 +18,22 @@ msgstr ""
 "Plural-Forms: nplurals=5; plural=n==1 ? 0 : (n%10==1 || n%10==2) ? 1 : (n"
 "%10>=3 && n%10<= 6) ? 2 : ((n%10>=7 && n%10<=9) || n==10) ? 3 : 4;\n"
 
+#: ../data/50-gnome-shell-screenshot.xml.in.h:1
+msgid "Screenshots"
+msgstr ""
+
+#: ../data/50-gnome-shell-screenshot.xml.in.h:2
+msgid "Record a screencast"
+msgstr ""
+
+#: ../data/50-gnome-shell-system.xml.in.h:1
+msgid "System"
+msgstr "Córas"
+
+#: ../data/50-gnome-shell-system.xml.in.h:2
+msgid "Show the message tray"
+msgstr ""
+
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
 msgstr "Blaosc GNOME"
@@ -26,21 +42,30 @@ msgstr "Blaosc GNOME"
 msgid "Window management and application launching"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:1
+#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
+#: ../js/extensionPrefs/main.js:152
+msgid "GNOME Shell Extension Preferences"
+msgstr ""
+
+#: ../data/gnome-shell-extension-prefs.desktop.in.in.h:2
+msgid "Configure GNOME Shell Extensions"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:2
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:2
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:3
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "Uuids of extensions to enable"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:4
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:4
 msgid ""
 "GNOME Shell extensions have a uuid property; this key lists extensions which "
 "should be loaded. Any extension that wants to be loaded needs to be in this "
@@ -48,11 +73,11 @@ msgid ""
 "DisableExtension DBus methods on org.gnome.Shell."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:5
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "Whether to collect stats about applications usage"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:6
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
 msgid ""
 "The shell normally monitors active applications in order to present the most "
 "used ones (e.g. in launchers). While this data will be kept private, you may "
@@ -60,75 +85,91 @@ msgid ""
 "remove already saved data."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:7
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:9
-msgid "disabled OpenSearch providers"
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "History for command (Alt-F2) dialog"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid "History for the looking glass dialog"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
+msgid ""
+"Internally used to store the last IM presence explicitly set by the user. "
+"The value here is from the TpConnectionPresenceType enumeration."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+msgid ""
+"Internally used to store the last session presence status for the user. The "
+"value here is from the GsmPresenceStatus enumeration."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "Show the week date in the calendar"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid "If true, display the ISO week date in the calendar."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+msgid "Keybinding to open the application menu"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+msgid "Keybinding to open the application menu."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+msgid "Keybinding to toggle the visibility of the message tray"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+msgid "Keybinding to toggle the visibility of the message tray."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+msgid "Keybinding to toggle the screen recorder"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+msgid "Keybinding to start/stop the builtin screen recorder."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Which keyboard to use"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid "The type of keyboard to use."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:16
-msgid "Show time with seconds"
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:17
-msgid "If true, display seconds in time."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:18
-msgid "Show date in clock"
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:19
-msgid "If true, display date in the clock, in addition to time."
-msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Framerate used for recording screencasts."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -138,71 +179,100 @@ msgid ""
 "pipeline can also take care of its own output - this might be used to send "
 "the output to an icecast server via shout2send or similar. When unset or set "
 "to an empty value, the default pipeline will be used. This is currently "
-"'videorate ! vp8enc quality=10 speed=2 threads=%T ! queue ! webmmux' and "
-"records to WEBM using the VP8 codec. %T is used as a placeholder for a guess "
-"at the optimal thread count on the system."
+"'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
+"threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is "
+"used as a placeholder for a guess at the optimal thread count on the system."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "File extension used for storing the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
 
-#: ../js/gdm/loginDialog.js:624
+#: ../js/extensionPrefs/main.js:124
+#, c-format
+msgid "There was an error loading the preferences dialog for %s:"
+msgstr ""
+
+#: ../js/extensionPrefs/main.js:164
+msgid "Extension"
+msgstr ""
+
+#: ../js/extensionPrefs/main.js:188
+msgid "Select an extension to configure using the combobox above."
+msgstr ""
+
+#: ../js/gdm/loginDialog.js:535
 msgid "Session..."
 msgstr "Seisiún..."
 
-#: ../js/gdm/loginDialog.js:786
+#: ../js/gdm/loginDialog.js:683
 msgctxt "title"
 msgid "Sign In"
 msgstr "Logáil Isteach"
 
-#. Translators: this message is shown below the password entry field
-#. to indicate the user can swipe their finger instead
-#: ../js/gdm/loginDialog.js:831
-msgid "(or swipe finger)"
-msgstr ""
-
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:852
+#: ../js/gdm/loginDialog.js:750
 msgid "Not listed?"
-msgstr ""
+msgstr "Gan liostáil?"
 
-#: ../js/gdm/loginDialog.js:1020 ../js/ui/endSessionDialog.js:419
-#: ../js/ui/extensionSystem.js:516 ../js/ui/networkAgent.js:145
-#: ../js/ui/polkitAuthenticationAgent.js:175 ../js/ui/status/bluetooth.js:462
+#: ../js/gdm/loginDialog.js:903 ../js/ui/components/networkAgent.js:137
+#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
+#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "Cealaigh"
 
-#: ../js/gdm/loginDialog.js:1025
+#: ../js/gdm/loginDialog.js:908
 msgctxt "button"
 msgid "Sign In"
 msgstr "Logáil Isteach"
 
-#: ../js/gdm/loginDialog.js:1377
+#: ../js/gdm/loginDialog.js:1233
 msgid "Login Window"
 msgstr "Fuinneog Logála Isteach"
 
-#: ../js/gdm/powerMenu.js:113 ../js/ui/userMenu.js:579
-#: ../js/ui/userMenu.js:581 ../js/ui/userMenu.js:650
+#. Translators: accessible name of the power menu in the login screen
+#: ../js/gdm/powerMenu.js:35
+msgid "Power"
+msgstr "Cumhacht"
+
+#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:664
+#: ../js/ui/userMenu.js:775
 msgid "Suspend"
 msgstr "Cuir ar Fionraí"
 
-#: ../js/gdm/powerMenu.js:118
+#: ../js/gdm/powerMenu.js:94
 msgid "Restart"
 msgstr "Atosaigh"
 
-#: ../js/gdm/powerMenu.js:123
+#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:662 ../js/ui/userMenu.js:664
+#: ../js/ui/userMenu.js:774
 msgid "Power Off"
 msgstr "Múch"
+
+#: ../js/gdm/util.js:148
+msgid "Authentication error"
+msgstr "Earráid fhíordheimhnithe"
+
+#. Translators: this message is shown below the password entry field
+#. to indicate the user can swipe their finger instead
+#: ../js/gdm/util.js:265
+msgid "(or swipe finger)"
+msgstr ""
+
+#: ../js/gdm/util.js:290
+#, c-format
+msgid "(e.g., user or %s)"
+msgstr ""
 
 #: ../js/misc/util.js:92
 msgid "Command not found"
@@ -210,17 +280,17 @@ msgstr "Ordú gan aimsiú"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:119
+#: ../js/misc/util.js:125
 msgid "Could not parse command:"
 msgstr "Níorbh fhéidir ordú a pharsáil:"
 
-#: ../js/misc/util.js:127
+#: ../js/misc/util.js:133
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr ""
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:251
+#: ../js/ui/appDisplay.js:252
 msgid "All"
 msgstr "Gach Feidhmchlár"
 
@@ -228,19 +298,19 @@ msgstr "Gach Feidhmchlár"
 msgid "APPLICATIONS"
 msgstr "FEIDHMCHLÁIR"
 
-#: ../js/ui/appDisplay.js:366
+#: ../js/ui/appDisplay.js:370
 msgid "SETTINGS"
 msgstr "SOCRUITHE"
 
-#: ../js/ui/appDisplay.js:666
+#: ../js/ui/appDisplay.js:675
 msgid "New Window"
 msgstr "Fuinneog Nua"
 
-#: ../js/ui/appDisplay.js:669
+#: ../js/ui/appDisplay.js:678 ../js/ui/dash.js:290
 msgid "Remove from Favorites"
 msgstr "Bain ó na Ceanáin"
 
-#: ../js/ui/appDisplay.js:670
+#: ../js/ui/appDisplay.js:679
 msgid "Add to Favorites"
 msgstr "Cuir Leis na Ceanáin"
 
@@ -253,19 +323,6 @@ msgstr "Cuireadh %s leis na ceanáin."
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "Baineadh %s ó na ceanáin."
-
-#: ../js/ui/autorunManager.js:265
-msgid "Removable Devices"
-msgstr "Gléasanna Inbhainte"
-
-#: ../js/ui/autorunManager.js:560
-#, c-format
-msgid "Open with %s"
-msgstr "Oscail le %s"
-
-#: ../js/ui/autorunManager.js:586
-msgid "Eject"
-msgstr "Díchuir"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
@@ -381,125 +438,433 @@ msgid "S"
 msgstr "S"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:681
+#: ../js/ui/calendar.js:699
 msgid "Nothing Scheduled"
 msgstr "Faic Sceidealta"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:697
+#: ../js/ui/calendar.js:715
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:700
+#: ../js/ui/calendar.js:718
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B, %Y"
 
-#: ../js/ui/calendar.js:710
+#: ../js/ui/calendar.js:728
 msgid "Today"
 msgstr "Inniu"
 
-#: ../js/ui/calendar.js:714
+#: ../js/ui/calendar.js:732
 msgid "Tomorrow"
 msgstr "Amárach"
 
-#: ../js/ui/calendar.js:723
+#: ../js/ui/calendar.js:743
 msgid "This week"
 msgstr "An tseachtain seo"
 
-#: ../js/ui/calendar.js:731
+#: ../js/ui/calendar.js:751
 msgid "Next week"
 msgstr "An tseachtain seo chugainn"
 
-#: ../js/ui/contactDisplay.js:63 ../js/ui/notificationDaemon.js:486
-#: ../js/ui/status/power.js:215 ../src/shell-app.c:371
-msgid "Unknown"
-msgstr "Anaithnid"
+#: ../js/ui/components/autorunManager.js:297
+msgid "Removable Devices"
+msgstr "Gléasanna Inbhainte"
 
-#: ../js/ui/contactDisplay.js:84 ../js/ui/userMenu.js:127
-msgid "Available"
-msgstr "Ar Fáil"
+#: ../js/ui/components/autorunManager.js:594
+#, c-format
+msgid "Open with %s"
+msgstr "Oscail le %s"
 
-#: ../js/ui/contactDisplay.js:89 ../js/ui/userMenu.js:136
-msgid "Away"
-msgstr "Amuigh"
+#: ../js/ui/components/autorunManager.js:620
+msgid "Eject"
+msgstr "Díchuir"
 
-#: ../js/ui/contactDisplay.js:93 ../js/ui/userMenu.js:130
-msgid "Busy"
-msgstr "Gnóthach"
+#: ../js/ui/components/keyring.js:86 ../js/ui/components/polkitAgent.js:260
+msgid "Password:"
+msgstr "Focal faire:"
 
-#: ../js/ui/contactDisplay.js:97
-msgid "Offline"
-msgstr "As Líne"
+#: ../js/ui/components/keyring.js:105
+msgid "Type again:"
+msgstr "Clóscríobh arís:"
 
-#: ../js/ui/contactDisplay.js:141
-msgid "CONTACTS"
-msgstr "TEAGMHÁLACHA"
+#: ../js/ui/components/networkAgent.js:132
+msgid "Connect"
+msgstr "Ceangal"
 
-#: ../js/ui/dash.js:229 ../js/ui/messageTray.js:1204
-msgid "Remove"
-msgstr "Bain"
+#. Cisco LEAP
+#: ../js/ui/components/networkAgent.js:223
+#: ../js/ui/components/networkAgent.js:235
+#: ../js/ui/components/networkAgent.js:262
+#: ../js/ui/components/networkAgent.js:282
+#: ../js/ui/components/networkAgent.js:292
+msgid "Password: "
+msgstr "Focal faire: "
 
-#: ../js/ui/dateMenu.js:96
+#. static WEP
+#: ../js/ui/components/networkAgent.js:228
+msgid "Key: "
+msgstr "Eochair:"
+
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: ../js/ui/components/networkAgent.js:260
+#: ../js/ui/components/networkAgent.js:278
+msgid "Username: "
+msgstr "Ainm úsáideora: "
+
+#: ../js/ui/components/networkAgent.js:266
+msgid "Identity: "
+msgstr "Aitheantas:"
+
+#: ../js/ui/components/networkAgent.js:268
+msgid "Private key password: "
+msgstr ""
+
+#: ../js/ui/components/networkAgent.js:280
+msgid "Service: "
+msgstr "Seirbhís:"
+
+#: ../js/ui/components/networkAgent.js:309
+#, fuzzy
+msgid "Authentication required by wireless network"
+msgstr "fíordheimhniú de dhíth"
+
+#: ../js/ui/components/networkAgent.js:310
+#, c-format
+msgid ""
+"Passwords or encryption keys are required to access the wireless network "
+"'%s'."
+msgstr ""
+
+#: ../js/ui/components/networkAgent.js:314
+msgid "Wired 802.1X authentication"
+msgstr ""
+
+#: ../js/ui/components/networkAgent.js:316
+msgid "Network name: "
+msgstr "Ainm líonra: "
+
+#: ../js/ui/components/networkAgent.js:321
+msgid "DSL authentication"
+msgstr "Fíordheimhniú DSL"
+
+#: ../js/ui/components/networkAgent.js:328
+msgid "PIN code required"
+msgstr "UAP de dhíth"
+
+#: ../js/ui/components/networkAgent.js:329
+msgid "PIN code is needed for the mobile broadband device"
+msgstr ""
+
+#: ../js/ui/components/networkAgent.js:330
+msgid "PIN: "
+msgstr "UAP: "
+
+#: ../js/ui/components/networkAgent.js:336
+#, fuzzy
+msgid "Mobile broadband network password"
+msgstr "Leathanbhanda móibíleach"
+
+#: ../js/ui/components/networkAgent.js:337
+#, fuzzy, c-format
+msgid "A password is required to connect to '%s'."
+msgstr "Tá tú ceangailte le '%s' anois"
+
+#: ../js/ui/components/polkitAgent.js:55
+msgid "Authentication Required"
+msgstr "Fíordheimhniú de Dhíth"
+
+#: ../js/ui/components/polkitAgent.js:93
+msgid "Administrator"
+msgstr "Riarthóir"
+
+#: ../js/ui/components/polkitAgent.js:166
+msgid "Authenticate"
+msgstr "Fíordheimhnigh"
+
+#. Translators: "that didn't work" refers to the fact that the
+#. * requested authentication was not gained; this can happen
+#. * because of an authentication error (like invalid password),
+#. * for instance.
+#: ../js/ui/components/polkitAgent.js:248 ../js/ui/shellMountOperation.js:381
+msgid "Sorry, that didn't work. Please try again."
+msgstr "Tá brón orm, theip sé sin. Bain triail eile as, le do thoil."
+
+#. Translators: this is a filename used for screencast recording
+#: ../js/ui/components/recorder.js:44
+#, no-c-format
+msgid "Screencast from %d %t"
+msgstr ""
+
+#. FIXME: We don't have a 'chat room' icon (bgo #653737) use
+#. system-users for now as Empathy does.
+#: ../js/ui/components/telepathyClient.js:237
+msgid "Invitation"
+msgstr "Cuireadh"
+
+#. We got the TpContact
+#: ../js/ui/components/telepathyClient.js:297
+msgid "Call"
+msgstr "Glaoch"
+
+#. We got the TpContact
+#: ../js/ui/components/telepathyClient.js:313
+msgid "File Transfer"
+msgstr "Aistriú Comhad"
+
+#: ../js/ui/components/telepathyClient.js:394
+msgid "Subscription request"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:430
+msgid "Connection error"
+msgstr "Earráid ceangail"
+
+#: ../js/ui/components/telepathyClient.js:491
+msgid "Unmute"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:491
+msgid "Mute"
+msgstr ""
+
+#. Translators: this is a time format string followed by a date.
+#. If applicable, replace %X with a strftime format valid for your
+#. locale, without seconds.
+#: ../js/ui/components/telepathyClient.js:948
+#, no-c-format
+msgid "Sent at <b>%X</b> on <b>%A</b>"
+msgstr "Seoladh ag <b>%X</b> ar <b>%A</b>"
+
+#. Translators: this is a time format in the style of "Wednesday, May 25",
+#. shown when you get a chat message in the same year.
+#: ../js/ui/components/telepathyClient.js:954
+#, no-c-format
+msgid "Sent on <b>%A</b>, <b>%B %d</b>"
+msgstr "Seoladh ar <b>%A</b>, <b>%d %B</b>"
+
+#. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
+#. shown when you get a chat message in a different year.
+#: ../js/ui/components/telepathyClient.js:959
+#, no-c-format
+msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
+msgstr "Seoladh ar <b>%A</b>, <b>%d %B</b>, %Y"
+
+#. Translators: this is the other person changing their old IM name to their new
+#. IM name.
+#: ../js/ui/components/telepathyClient.js:988
+#, c-format
+msgid "%s is now known as %s"
+msgstr ""
+
+#. translators: argument is a room name like
+#. * room@jabber.org for example.
+#: ../js/ui/components/telepathyClient.js:1088
+#, c-format
+msgid "Invitation to %s"
+msgstr ""
+
+#. translators: first argument is the name of a contact and the second
+#. * one the name of a room. "Alice is inviting you to join room@jabber.org
+#. * for example.
+#: ../js/ui/components/telepathyClient.js:1096
+#, c-format
+msgid "%s is inviting you to join %s"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1098
+#: ../js/ui/components/telepathyClient.js:1177
+#: ../js/ui/components/telepathyClient.js:1240
+msgid "Decline"
+msgstr "Diúltaigh"
+
+#: ../js/ui/components/telepathyClient.js:1099
+#: ../js/ui/components/telepathyClient.js:1178
+#: ../js/ui/components/telepathyClient.js:1241
+msgid "Accept"
+msgstr "Glac Leis"
+
+#. translators: argument is a contact name like Alice for example.
+#: ../js/ui/components/telepathyClient.js:1129
+#, c-format
+msgid "Video call from %s"
+msgstr "Glaoch físe ó %s"
+
+#. translators: argument is a contact name like Alice for example.
+#: ../js/ui/components/telepathyClient.js:1132
+#, c-format
+msgid "Call from %s"
+msgstr "Glaoch ó %s"
+
+#: ../js/ui/components/telepathyClient.js:1137
+#: ../js/ui/status/bluetooth.js:346
+msgid "Reject"
+msgstr ""
+
+#. translators: this is a button label (verb), not a noun
+#: ../js/ui/components/telepathyClient.js:1139
+msgid "Answer"
+msgstr ""
+
+#. To translators: The first parameter is
+#. * the contact's alias and the second one is the
+#. * file name. The string will be something
+#. * like: "Alice is sending you test.ogg"
+#.
+#: ../js/ui/components/telepathyClient.js:1171
+#, c-format
+msgid "%s is sending you %s"
+msgstr ""
+
+#. To translators: The parameter is the contact's alias
+#: ../js/ui/components/telepathyClient.js:1206
+#, c-format
+msgid "%s would like permission to see when you are online"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1298
+msgid "Network error"
+msgstr "Earráid líonra"
+
+#: ../js/ui/components/telepathyClient.js:1300
+msgid "Authentication failed"
+msgstr "Theip ar fhíordheimhniú"
+
+#: ../js/ui/components/telepathyClient.js:1302
+msgid "Encryption error"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1304
+msgid "Certificate not provided"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1306
+msgid "Certificate untrusted"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1308
+msgid "Certificate expired"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1310
+msgid "Certificate not activated"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1312
+msgid "Certificate hostname mismatch"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1314
+msgid "Certificate fingerprint mismatch"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1316
+msgid "Certificate self-signed"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1318
+#, fuzzy
+msgid "Status is set to offline"
+msgstr "Tá %s ar líne."
+
+#: ../js/ui/components/telepathyClient.js:1320
+msgid "Encryption is not available"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1322
+msgid "Certificate is invalid"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1324
+msgid "Connection has been refused"
+msgstr "Diúltaíodh an ceangal"
+
+#: ../js/ui/components/telepathyClient.js:1326
+msgid "Connection can't be established"
+msgstr "Ní féidir an ceangal a bhunú"
+
+#: ../js/ui/components/telepathyClient.js:1328
+msgid "Connection has been lost"
+msgstr "Cailleadh an ceangal"
+
+#: ../js/ui/components/telepathyClient.js:1330
+msgid "This account is already connected to the server"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1332
+msgid ""
+"Connection has been replaced by a new connection using the same resource"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1334
+msgid "The account already exists on the server"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1336
+msgid "Server is currently too busy to handle the connection"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1338
+msgid "Certificate has been revoked"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1340
+msgid ""
+"Certificate uses an insecure cipher algorithm or is cryptographically weak"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1342
+msgid ""
+"The length of the server certificate, or the depth of the server certificate "
+"chain, exceed the limits imposed by the cryptography library"
+msgstr ""
+
+#: ../js/ui/components/telepathyClient.js:1344
+msgid "Internal error"
+msgstr "Earráid inmheánach"
+
+#. translators: argument is the account name, like
+#. * name@jabber.org for example.
+#: ../js/ui/components/telepathyClient.js:1354
+#, c-format
+msgid "Connection to %s failed"
+msgstr "Theip an ceangal le %s"
+
+#: ../js/ui/components/telepathyClient.js:1363
+msgid "Reconnect"
+msgstr "Athcheangail"
+
+#: ../js/ui/components/telepathyClient.js:1364
+msgid "Edit account"
+msgstr "Cuir cuntas in eagar"
+
+#: ../js/ui/components/telepathyClient.js:1409
+msgid "Unknown reason"
+msgstr "Cúis anaithnid"
+
+#: ../js/ui/dash.js:253 ../js/ui/dash.js:292
+msgid "Show Applications"
+msgstr "Taispeáin Feidhmchláir"
+
+#: ../js/ui/dateMenu.js:86
 msgid "Date and Time Settings"
 msgstr "Socruithe Dáta agus Ama"
 
-#: ../js/ui/dateMenu.js:122
+#: ../js/ui/dateMenu.js:109
 msgid "Open Calendar"
 msgstr "Oscail an Féilire"
-
-#. Translators: This is the time format with date used
-#. in 24-hour mode.
-#: ../js/ui/dateMenu.js:180
-msgid "%a %b %e, %R:%S"
-msgstr "%a %e %b, %R:%S"
-
-#: ../js/ui/dateMenu.js:181
-msgid "%a %b %e, %R"
-msgstr "%a %e %b, %R"
-
-#. Translators: This is the time format without date used
-#. in 24-hour mode.
-#: ../js/ui/dateMenu.js:185
-msgid "%a %R:%S"
-msgstr "%a %R:%S"
-
-#: ../js/ui/dateMenu.js:186
-msgid "%a %R"
-msgstr "%a %R"
-
-#. Translators: This is a time format with date used
-#. for AM/PM.
-#: ../js/ui/dateMenu.js:193
-msgid "%a %b %e, %l:%M:%S %p"
-msgstr "%a %e %b, %l:%M:%S %p"
-
-#: ../js/ui/dateMenu.js:194
-msgid "%a %b %e, %l:%M %p"
-msgstr "%a %e %b, %l:%M %p"
-
-#. Translators: This is a time format without date used
-#. for AM/PM.
-#: ../js/ui/dateMenu.js:198
-msgid "%a %l:%M:%S %p"
-msgstr "%a %l:%M:%S %p"
-
-#: ../js/ui/dateMenu.js:199
-msgid "%a %l:%M %p"
-msgstr "%a %l:%M %p"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:210
+#: ../js/ui/dateMenu.js:175
 msgid "%A %B %e, %Y"
 msgstr "%A %e %B, %Y"
-
-#: ../js/ui/docDisplay.js:13
-msgid "RECENT ITEMS"
-msgstr "MÍREANNA LE DÉANAÍ"
 
 #: ../js/ui/endSessionDialog.js:61
 #, c-format
@@ -605,188 +970,112 @@ msgstr[4] "Atosófar an córas go huathoibríoch i gceann %d soicind."
 msgid "Restarting the system."
 msgstr "Córas á atosú."
 
-#: ../js/ui/extensionSystem.js:520
+#: ../js/ui/extensionDownloader.js:199
 msgid "Install"
-msgstr ""
+msgstr "Suiteáil"
 
-#: ../js/ui/extensionSystem.js:524
+#: ../js/ui/extensionDownloader.js:204
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr ""
 
-#: ../js/ui/keyboard.js:322
+#: ../js/ui/keyboard.js:337
 msgid "tray"
 msgstr ""
 
-#: ../js/ui/keyboard.js:539 ../js/ui/status/power.js:203
+#: ../js/ui/keyboard.js:584 ../js/ui/status/keyboard.js:195
+#: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "Méarchlár"
 
-#: ../js/ui/lookingGlass.js:724
+#: ../js/ui/lookingGlass.js:691
 msgid "No extensions installed"
 msgstr ""
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:779
+#: ../js/ui/lookingGlass.js:745
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr ""
 
-#: ../js/ui/lookingGlass.js:785
-#, fuzzy
+#: ../js/ui/lookingGlass.js:751
 msgid "Hide Errors"
-msgstr "Earráid"
+msgstr "Folaigh Earráidí"
 
-#: ../js/ui/lookingGlass.js:789 ../js/ui/lookingGlass.js:840
-#, fuzzy
+#: ../js/ui/lookingGlass.js:755 ../js/ui/lookingGlass.js:815
 msgid "Show Errors"
-msgstr "Earráid"
+msgstr "Taispeáin Earráidí"
 
-#: ../js/ui/lookingGlass.js:798
+#: ../js/ui/lookingGlass.js:764
 msgid "Enabled"
 msgstr "Cumasaithe"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:801 ../src/gvc/gvc-mixer-control.c:1093
+#: ../js/ui/lookingGlass.js:767 ../src/gvc/gvc-mixer-control.c:1082
 msgid "Disabled"
 msgstr "Díchumasaithe"
 
-#: ../js/ui/lookingGlass.js:803
+#: ../js/ui/lookingGlass.js:769
 msgid "Error"
 msgstr "Earráid"
 
-#: ../js/ui/lookingGlass.js:805
+#: ../js/ui/lookingGlass.js:771
 msgid "Out of date"
 msgstr "As dáta"
 
-#: ../js/ui/lookingGlass.js:807
+#: ../js/ui/lookingGlass.js:773
 msgid "Downloading"
 msgstr ""
 
-#: ../js/ui/lookingGlass.js:828
+#: ../js/ui/lookingGlass.js:797
 msgid "View Source"
 msgstr "Féach Foinse"
 
-#: ../js/ui/lookingGlass.js:834
+#: ../js/ui/lookingGlass.js:806
 msgid "Web Page"
 msgstr "Suíomh Gréasáin"
 
-#: ../js/ui/messageTray.js:1197
+#: ../js/ui/messageTray.js:1081
 msgid "Open"
 msgstr "Oscail"
 
-#: ../js/ui/messageTray.js:1214
-msgid "Unmute"
+#: ../js/ui/messageTray.js:1088
+msgid "Remove"
+msgstr "Bain"
+
+#: ../js/ui/messageTray.js:1533
+msgid "Message Tray"
 msgstr ""
 
-#: ../js/ui/messageTray.js:1214
-msgid "Mute"
-msgstr ""
-
-#: ../js/ui/messageTray.js:2444
+#: ../js/ui/messageTray.js:2536
 msgid "System Information"
 msgstr "Eolas an Chórais"
 
-#: ../js/ui/networkAgent.js:140
-msgid "Connect"
-msgstr "Ceangal"
+#: ../js/ui/notificationDaemon.js:506 ../src/shell-app.c:373
+msgctxt "program"
+msgid "Unknown"
+msgstr "Anaithnid"
 
-#. Cisco LEAP
-#: ../js/ui/networkAgent.js:235 ../js/ui/networkAgent.js:247
-#: ../js/ui/networkAgent.js:274 ../js/ui/networkAgent.js:294
-#: ../js/ui/networkAgent.js:304
-#, fuzzy
-msgid "Password: "
-msgstr "Focal faire:"
-
-#. static WEP
-#: ../js/ui/networkAgent.js:240
-msgid "Key: "
-msgstr ""
-
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
-#: ../js/ui/networkAgent.js:272 ../js/ui/networkAgent.js:290
-msgid "Username: "
-msgstr ""
-
-#: ../js/ui/networkAgent.js:278
-msgid "Identity: "
-msgstr ""
-
-#: ../js/ui/networkAgent.js:280
-msgid "Private key password: "
-msgstr ""
-
-#: ../js/ui/networkAgent.js:292
-msgid "Service: "
-msgstr ""
-
-#: ../js/ui/networkAgent.js:321
-#, fuzzy
-msgid "Authentication required by wireless network"
-msgstr "fíordheimhniú de dhíth"
-
-#: ../js/ui/networkAgent.js:322
-#, c-format
-msgid ""
-"Passwords or encryption keys are required to access the wireless network "
-"'%s'."
-msgstr ""
-
-#: ../js/ui/networkAgent.js:326
-msgid "Wired 802.1X authentication"
-msgstr ""
-
-#: ../js/ui/networkAgent.js:328
-#, fuzzy
-msgid "Network name: "
-msgstr "Bainisteoir Líonra"
-
-#: ../js/ui/networkAgent.js:333
-#, fuzzy
-msgid "DSL authentication"
-msgstr "fíordheimhniú de dhíth"
-
-#: ../js/ui/networkAgent.js:340
-msgid "PIN code required"
-msgstr ""
-
-#: ../js/ui/networkAgent.js:341
-msgid "PIN code is needed for the mobile broadband device"
-msgstr ""
-
-#: ../js/ui/networkAgent.js:342
-msgid "PIN: "
-msgstr ""
-
-#: ../js/ui/networkAgent.js:348
-#, fuzzy
-msgid "Mobile broadband network password"
-msgstr "Leathanbhanda móibíleach"
-
-#: ../js/ui/networkAgent.js:349
-#, fuzzy, c-format
-msgid "A password is required to connect to '%s'."
-msgstr "Tá tú ceangailte le '%s' anois"
-
-#: ../js/ui/overview.js:90
+#: ../js/ui/overview.js:82
 msgid "Undo"
 msgstr "Cealaigh"
 
-#: ../js/ui/overview.js:199
-msgid "Windows"
-msgstr "Fuinneoga"
+#: ../js/ui/overview.js:127
+msgid "Overview"
+msgstr ""
 
-#: ../js/ui/overview.js:202
-msgid "Applications"
-msgstr "Feidhmchláir"
+#. Translators: this is the text displayed
+#. in the search entry when no search is
+#. active; it should not exceed ~30
+#. characters.
+#: ../js/ui/overview.js:201
+msgid "Type to search..."
+msgstr "Cuardaigh..."
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:226
+#: ../js/ui/overview.js:222
 msgid "Dash"
 msgstr "Deais"
 
@@ -796,61 +1085,20 @@ msgstr "Scoir"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:598
+#: ../js/ui/panel.js:599
 msgid "Activities"
 msgstr "Gníomhartha"
 
-#: ../js/ui/panel.js:985
+#: ../js/ui/panel.js:965
 msgid "Top Bar"
 msgstr ""
-
-#: ../js/ui/placeDisplay.js:115
-#, c-format
-msgid "Failed to unmount '%s'"
-msgstr ""
-
-#: ../js/ui/placeDisplay.js:118
-msgid "Retry"
-msgstr ""
-
-#: ../js/ui/placeDisplay.js:156
-msgid "Connect to..."
-msgstr "Ceangail le..."
-
-#: ../js/ui/placeDisplay.js:367
-msgid "PLACES & DEVICES"
-msgstr "ÁITEANNA & GLÉASANNA"
-
-#: ../js/ui/polkitAuthenticationAgent.js:71
-msgid "Authentication Required"
-msgstr "Fíordheimhniú de Dhíth"
-
-#: ../js/ui/polkitAuthenticationAgent.js:109
-msgid "Administrator"
-msgstr "Riarthóir"
-
-#: ../js/ui/polkitAuthenticationAgent.js:179
-msgid "Authenticate"
-msgstr "Fíordheimhnigh"
-
-#. Translators: "that didn't work" refers to the fact that the
-#. * requested authentication was not gained; this can happen
-#. * because of an authentication error (like invalid password),
-#. * for instance.
-#: ../js/ui/polkitAuthenticationAgent.js:260
-msgid "Sorry, that didn't work. Please try again."
-msgstr "Tá brón orm, theip sé sin. Bain triail eile as, le do thoil."
-
-#: ../js/ui/polkitAuthenticationAgent.js:272
-msgid "Password:"
-msgstr "Focal faire:"
 
 #. Translators: this MUST be either "toggle-switch-us"
 #. (for toggle switches containing the English words
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:719
+#: ../js/ui/popupMenu.js:731
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -858,343 +1106,386 @@ msgstr "toggle-switch-intl"
 msgid "Please enter a command:"
 msgstr "Iontráil ordú, le do thoil:"
 
-#: ../js/ui/searchDisplay.js:333
+#. Translators: This is a time format for a date in
+#. long format
+#: ../js/ui/screenShield.js:79
+msgid "%A, %B %d"
+msgstr "%A, %d %B"
+
+#: ../js/ui/screenShield.js:144
+#, c-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+
+#: ../js/ui/screenShield.js:146
+#, fuzzy, c-format
+msgid "%d new notification"
+msgid_plural "%d new notifications"
+msgstr[0] "Fógairt"
+msgstr[1] "Fógairt"
+msgstr[2] "Fógairt"
+msgstr[3] "Fógairt"
+msgstr[4] "Fógairt"
+
+#: ../js/ui/searchDisplay.js:275
 msgid "Searching..."
 msgstr "Á chuardach..."
 
-#: ../js/ui/searchDisplay.js:356
-msgid "No matching results."
-msgstr "Gan torthaí comhoiriúnaigh."
+#: ../js/ui/searchDisplay.js:323
+msgid "No results."
+msgstr "Gan torthaí."
 
 #: ../js/ui/shellEntry.js:26
 msgid "Copy"
-msgstr ""
+msgstr "Cóipeáil"
 
 #: ../js/ui/shellEntry.js:31
 msgid "Paste"
-msgstr ""
+msgstr "Greamaigh"
 
-#: ../js/ui/shellEntry.js:77
+#: ../js/ui/shellEntry.js:102
 msgid "Show Text"
-msgstr ""
+msgstr "Taispeáin Téacs"
 
-#: ../js/ui/shellEntry.js:79
-#, fuzzy
+#: ../js/ui/shellEntry.js:104
 msgid "Hide Text"
-msgstr "Téacs Mór"
+msgstr "Folaigh Téacs"
 
-#: ../js/ui/shellMountOperation.js:269
-msgid "Wrong password, please try again"
-msgstr ""
+#: ../js/ui/shellMountOperation.js:368
+msgid "Password"
+msgstr "Focal Faire"
 
-#: ../js/ui/status/accessibility.js:52
+#: ../js/ui/shellMountOperation.js:389
+msgid "Remember Password"
+msgstr "Meabhraigh Focal Faire"
+
+#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:169
+msgid "Unlock"
+msgstr "Díghlasáil"
+
+#: ../js/ui/status/accessibility.js:39
+msgid "Accessibility"
+msgstr "Inrochtaineacht"
+
+#: ../js/ui/status/accessibility.js:44
 msgid "Zoom"
 msgstr "Súmáil"
 
-#. let screenReader = this._buildItem(_("Screen Reader"), APPLICATIONS_SCHEMA,
-#. 'screen-reader-enabled');
-#. this.menu.addMenuItem(screenReader);
-#: ../js/ui/status/accessibility.js:63
+#: ../js/ui/status/accessibility.js:51
+msgid "Screen Reader"
+msgstr "Léitheoir Scáileáin"
+
+#: ../js/ui/status/accessibility.js:55
 msgid "Screen Keyboard"
 msgstr "Méarchlár Scáileáin"
 
-#: ../js/ui/status/accessibility.js:67
+#: ../js/ui/status/accessibility.js:59
 msgid "Visual Alerts"
 msgstr "Foláirimh Amhairc"
 
-#: ../js/ui/status/accessibility.js:70
+#: ../js/ui/status/accessibility.js:62
 msgid "Sticky Keys"
 msgstr "Eochracha Greamaitheacha"
 
-#: ../js/ui/status/accessibility.js:73
+#: ../js/ui/status/accessibility.js:65
 msgid "Slow Keys"
 msgstr "Eochracha Malla"
 
-#: ../js/ui/status/accessibility.js:76
+#: ../js/ui/status/accessibility.js:68
 msgid "Bounce Keys"
 msgstr "Eochracha Preabtha"
 
-#: ../js/ui/status/accessibility.js:79
+#: ../js/ui/status/accessibility.js:71
 msgid "Mouse Keys"
 msgstr "Eochracha Luiche"
 
-#: ../js/ui/status/accessibility.js:83
+#: ../js/ui/status/accessibility.js:75
 msgid "Universal Access Settings"
 msgstr "Socruithe Rochtana Uilíche"
 
-#: ../js/ui/status/accessibility.js:117
+#: ../js/ui/status/accessibility.js:109
 msgid "High Contrast"
 msgstr "Ardchodarsnacht"
 
-#: ../js/ui/status/accessibility.js:154
+#: ../js/ui/status/accessibility.js:146
 msgid "Large Text"
 msgstr "Téacs Mór"
 
-#: ../js/ui/status/bluetooth.js:35 ../js/ui/status/bluetooth.js:258
-#: ../js/ui/status/bluetooth.js:341 ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:407 ../js/ui/status/bluetooth.js:436
-#: ../js/ui/status/network.js:892
+#: ../js/ui/status/bluetooth.js:27 ../js/ui/status/bluetooth.js:31
+#: ../js/ui/status/bluetooth.js:251 ../js/ui/status/bluetooth.js:304
+#: ../js/ui/status/bluetooth.js:335 ../js/ui/status/bluetooth.js:371
+#: ../js/ui/status/bluetooth.js:400 ../js/ui/status/network.js:867
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:48
+#: ../js/ui/status/bluetooth.js:44
 msgid "Visibility"
 msgstr "Infheictheacht"
 
-#: ../js/ui/status/bluetooth.js:62
+#: ../js/ui/status/bluetooth.js:58
 msgid "Send Files to Device..."
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:63
+#: ../js/ui/status/bluetooth.js:59
 msgid "Set up a New Device..."
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:87
+#: ../js/ui/status/bluetooth.js:83
 msgid "Bluetooth Settings"
 msgstr "Socruithe Bluetooth"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:107 ../js/ui/status/network.js:255
+#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:208
 #, fuzzy
 msgid "hardware disabled"
 msgstr "díchumasaithe"
 
-#: ../js/ui/status/bluetooth.js:203
+#: ../js/ui/status/bluetooth.js:196
 msgid "Connection"
 msgstr "Ceangal"
 
-#: ../js/ui/status/bluetooth.js:214 ../js/ui/status/network.js:490
+#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:458
 msgid "disconnecting..."
 msgstr "á dhícheangal..."
 
-#: ../js/ui/status/bluetooth.js:227 ../js/ui/status/network.js:496
+#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:464
+#: ../js/ui/status/network.js:934
 msgid "connecting..."
 msgstr "á cheangal..."
 
-#: ../js/ui/status/bluetooth.js:245
+#: ../js/ui/status/bluetooth.js:238
 msgid "Send Files..."
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:250
+#: ../js/ui/status/bluetooth.js:243
 msgid "Browse Files..."
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:259
+#: ../js/ui/status/bluetooth.js:252
 msgid "Error browsing device"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:260
+#: ../js/ui/status/bluetooth.js:253
 #, c-format
 msgid "The requested device cannot be browsed, error is '%s'"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:268
+#: ../js/ui/status/bluetooth.js:261
 msgid "Keyboard Settings"
 msgstr "Socruithe Méarchláir"
 
-#: ../js/ui/status/bluetooth.js:271
+#: ../js/ui/status/bluetooth.js:264
 msgid "Mouse Settings"
 msgstr "Socruithe Luiche"
 
-#: ../js/ui/status/bluetooth.js:276 ../js/ui/status/volume.js:58
+#: ../js/ui/status/bluetooth.js:269 ../js/ui/status/volume.js:234
 msgid "Sound Settings"
 msgstr "Socruithe Fuaime"
 
-#: ../js/ui/status/bluetooth.js:372
+#: ../js/ui/status/bluetooth.js:336
 #, c-format
 msgid "Authorization request from %s"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:378
+#: ../js/ui/status/bluetooth.js:342
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:380
+#: ../js/ui/status/bluetooth.js:344
 msgid "Always grant access"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:381
+#: ../js/ui/status/bluetooth.js:345
 msgid "Grant this time only"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:382 ../js/ui/telepathyClient.js:1098
-msgid "Reject"
-msgstr ""
-
-#: ../js/ui/status/bluetooth.js:408
+#: ../js/ui/status/bluetooth.js:372
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:444
+#: ../js/ui/status/bluetooth.js:378 ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:415
+#: ../js/ui/status/bluetooth.js:379
 #, c-format
-msgid "Please confirm whether the PIN '%s' matches the one on the device."
+msgid "Please confirm whether the PIN '%06d' matches the one on the device."
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:417
+#: ../js/ui/status/bluetooth.js:381
 msgid "Matches"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:418
+#: ../js/ui/status/bluetooth.js:382
 msgid "Does not match"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:437
+#: ../js/ui/status/bluetooth.js:401
 #, c-format
 msgid "Pairing request for %s"
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:445
+#: ../js/ui/status/bluetooth.js:409
 msgid "Please enter the PIN mentioned on the device."
 msgstr ""
 
-#: ../js/ui/status/bluetooth.js:461
+#: ../js/ui/status/bluetooth.js:426
 msgid "OK"
 msgstr "Tá go Maith"
 
-#: ../js/ui/status/keyboard.js:68
+#: ../js/ui/status/keyboard.js:228
 msgid "Show Keyboard Layout"
 msgstr "Taispeáin Leagan Amach an Mhéarchláir"
 
-#: ../js/ui/status/keyboard.js:73
+#: ../js/ui/status/keyboard.js:233
 msgid "Region and Language Settings"
 msgstr "Socruithe Réigiúin agus Teanga"
 
-#: ../js/ui/status/network.js:96
+#: ../js/ui/status/lockScreenMenu.js:18
+msgid "Volume, network, battery"
+msgstr ""
+
+#: ../js/ui/status/network.js:94
 msgid "<unknown>"
 msgstr "<anaithnid>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:277
+#: ../js/ui/status/network.js:230
 msgid "disabled"
 msgstr "díchumasaithe"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:488
+#: ../js/ui/status/network.js:456
 msgid "unmanaged"
 msgstr "gan bhainistiú"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:499
+#: ../js/ui/status/network.js:467 ../js/ui/status/network.js:937
 msgid "authentication required"
 msgstr "fíordheimhniú de dhíth"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:509
+#: ../js/ui/status/network.js:477
 msgid "firmware missing"
 msgstr "dochtearraí ar iarraidh"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:516
+#: ../js/ui/status/network.js:484
 msgid "cable unplugged"
 msgstr "cábla díphlugáilte"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:521
+#: ../js/ui/status/network.js:489
 msgid "unavailable"
 msgstr "níl ar fáil"
 
-#: ../js/ui/status/network.js:523
+#: ../js/ui/status/network.js:491 ../js/ui/status/network.js:939
 msgid "connection failed"
 msgstr "theip an ceangal"
 
-#: ../js/ui/status/network.js:584 ../js/ui/status/network.js:1504
+#: ../js/ui/status/network.js:552 ../js/ui/status/network.js:1529
 msgid "More..."
 msgstr "Tuilleadh..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:620 ../js/ui/status/network.js:1439
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1459
 msgid "Connected (private)"
 msgstr "Ceangailte (príobháideach)"
 
-#: ../js/ui/status/network.js:695
+#: ../js/ui/status/network.js:663
 msgid "Auto Ethernet"
 msgstr "Ethernet uathoibríoch"
 
-#: ../js/ui/status/network.js:756
+#: ../js/ui/status/network.js:721
 msgid "Auto broadband"
 msgstr "Leathanbhanda uathoibríoch"
 
-#: ../js/ui/status/network.js:759
+#: ../js/ui/status/network.js:724
 msgid "Auto dial-up"
 msgstr "Ceangal diailithe uathoibríoch"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:878 ../js/ui/status/network.js:1451
+#: ../js/ui/status/network.js:853 ../js/ui/status/network.js:1476
 #, c-format
 msgid "Auto %s"
 msgstr "%s uathoibríoch"
 
-#: ../js/ui/status/network.js:880
+#: ../js/ui/status/network.js:855
 msgid "Auto bluetooth"
 msgstr "Bluetooth uathoibríoch"
 
-#: ../js/ui/status/network.js:1453
+#: ../js/ui/status/network.js:1478
 msgid "Auto wireless"
 msgstr "Gan sreang uathoibríoch"
 
-#: ../js/ui/status/network.js:1547
+#: ../js/ui/status/network.js:1575
 msgid "Enable networking"
 msgstr "Cumasaigh líonrú"
 
-#: ../js/ui/status/network.js:1559
+#: ../js/ui/status/network.js:1597
 msgid "Wired"
 msgstr "Sreangaithe"
 
-#: ../js/ui/status/network.js:1570
+#: ../js/ui/status/network.js:1608
 msgid "Wireless"
 msgstr "Gan sreang"
 
-#: ../js/ui/status/network.js:1580
+#: ../js/ui/status/network.js:1618
 msgid "Mobile broadband"
 msgstr "Leathanbhanda móibíleach"
 
-#: ../js/ui/status/network.js:1590
+#: ../js/ui/status/network.js:1628
 msgid "VPN Connections"
 msgstr "Ceangail VPN"
 
-#: ../js/ui/status/network.js:1601
+#: ../js/ui/status/network.js:1635
 msgid "Network Settings"
 msgstr "Socruithe Líonra"
 
-#: ../js/ui/status/network.js:1738
+#: ../js/ui/status/network.js:1679
+msgid "Network Manager"
+msgstr "Bainisteoir Líonra"
+
+#: ../js/ui/status/network.js:1769
 msgid "Connection failed"
 msgstr "Theip an ceangal"
 
-#: ../js/ui/status/network.js:1739
+#: ../js/ui/status/network.js:1770
 #, fuzzy
 msgid "Activation of network connection failed"
 msgstr "theip an ceangal"
 
-#: ../js/ui/status/network.js:1992
+#: ../js/ui/status/network.js:2065
 msgid "Networking is disabled"
 msgstr "Tá líonrú díchumasaithe"
 
-#: ../js/ui/status/network.js:2116
-msgid "Network Manager"
-msgstr "Bainisteoir Líonra"
+#: ../js/ui/status/power.js:55
+msgid "Battery"
+msgstr "Cadhnra"
 
-#: ../js/ui/status/power.js:77
+#: ../js/ui/status/power.js:72
 msgid "Power Settings"
 msgstr "Socruithe Cumhachta"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:98
+#: ../js/ui/status/power.js:94
 msgid "Estimating..."
 msgstr "Á mheasúnú..."
 
-#: ../js/ui/status/power.js:105
+#: ../js/ui/status/power.js:101
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -1205,12 +1496,12 @@ msgstr[3] "%d n-uaire fágtha"
 msgstr[4] "%d uair fágtha"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:108
+#: ../js/ui/status/power.js:104
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s fágtha"
 
-#: ../js/ui/status/power.js:110
+#: ../js/ui/status/power.js:106
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "uair"
@@ -1219,7 +1510,7 @@ msgstr[2] "uaire"
 msgstr[3] "n-uaire"
 msgstr[4] "uair"
 
-#: ../js/ui/status/power.js:110
+#: ../js/ui/status/power.js:106
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "nóiméad"
@@ -1228,7 +1519,7 @@ msgstr[2] "nóiméad"
 msgstr[3] "nóiméad"
 msgstr[4] "nóiméad"
 
-#: ../js/ui/status/power.js:113
+#: ../js/ui/status/power.js:109
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
@@ -1238,397 +1529,168 @@ msgstr[2] "%d nóiméad fágtha"
 msgstr[3] "%d nóiméad fágtha"
 msgstr[4] "%d nóiméad fágtha"
 
-#: ../js/ui/status/power.js:116 ../js/ui/status/power.js:186
+#: ../js/ui/status/power.js:112 ../js/ui/status/power.js:186
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../js/ui/status/power.js:193
+#: ../js/ui/status/power.js:195
 msgid "AC adapter"
 msgstr "Cuibheoir SA"
 
-#: ../js/ui/status/power.js:195
+#: ../js/ui/status/power.js:197
 msgid "Laptop battery"
 msgstr "Cadhnra ríomhaire glúine"
 
-#: ../js/ui/status/power.js:197
+#: ../js/ui/status/power.js:199
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:199
+#: ../js/ui/status/power.js:201
 msgid "Monitor"
 msgstr "Scáileán"
 
-#: ../js/ui/status/power.js:201
+#: ../js/ui/status/power.js:203
 msgid "Mouse"
 msgstr "Luch"
 
-#: ../js/ui/status/power.js:205
+#: ../js/ui/status/power.js:207
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:207
+#: ../js/ui/status/power.js:209
 msgid "Cell phone"
 msgstr "Fón póca"
 
-#: ../js/ui/status/power.js:209
+#: ../js/ui/status/power.js:211
 msgid "Media player"
 msgstr "Seinnteoir meán"
 
-#: ../js/ui/status/power.js:211
+#: ../js/ui/status/power.js:213
 msgid "Tablet"
 msgstr "Táibléad"
 
-#: ../js/ui/status/power.js:213
+#: ../js/ui/status/power.js:215
 msgid "Computer"
 msgstr "Ríomhaire"
 
-#: ../js/ui/status/volume.js:38
+#: ../js/ui/status/power.js:217
+msgctxt "device"
+msgid "Unknown"
+msgstr "Anaithnid"
+
+#. Translators: This is the label for audio volume
+#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "Airde"
 
-#: ../js/ui/status/volume.js:50
+#: ../js/ui/status/volume.js:59
 msgid "Microphone"
 msgstr "Micreafón"
 
-#. FIXME: We don't have a 'chat room' icon (bgo #653737) use
-#. system-users for now as Empathy does.
-#: ../js/ui/telepathyClient.js:225
-msgid "Invitation"
-msgstr ""
+#: ../js/ui/unlockDialog.js:176
+msgid "Log in as another user"
+msgstr "Logáil isteach mar úsáideoir eile"
 
-#. We got the TpContact
-#: ../js/ui/telepathyClient.js:278
-msgid "Call"
-msgstr ""
+#: ../js/ui/userMenu.js:180
+msgid "Available"
+msgstr "Ar Fáil"
 
-#. We got the TpContact
-#: ../js/ui/telepathyClient.js:294
-msgid "File Transfer"
-msgstr ""
+#: ../js/ui/userMenu.js:183
+msgid "Busy"
+msgstr "Gnóthach"
 
-#: ../js/ui/telepathyClient.js:376
-msgid "Subscription request"
-msgstr ""
+#: ../js/ui/userMenu.js:186
+msgid "Invisible"
+msgstr "Dofheicthe"
 
-#: ../js/ui/telepathyClient.js:412
-msgid "Connection error"
-msgstr "Earráid ceangail"
+#: ../js/ui/userMenu.js:189
+msgid "Away"
+msgstr "Amuigh"
 
-#: ../js/ui/telepathyClient.js:670
-#, c-format
-msgid "%s is online."
-msgstr "Tá %s ar líne."
-
-#: ../js/ui/telepathyClient.js:674
-#, c-format
-msgid "%s is offline."
-msgstr "Tá %s as líne."
-
-#: ../js/ui/telepathyClient.js:678
-#, c-format
-msgid "%s is away."
-msgstr "Tá %s amuigh."
-
-#: ../js/ui/telepathyClient.js:681
-#, c-format
-msgid "%s is busy."
-msgstr "Tá %s gnóthach."
-
-#. Translators: this is a time format string followed by a date.
-#. If applicable, replace %X with a strftime format valid for your
-#. locale, without seconds.
-#: ../js/ui/telepathyClient.js:894
-#, no-c-format
-msgid "Sent at <b>%X</b> on <b>%A</b>"
-msgstr "Seoladh ag <b>%X</b> ar <b>%A</b>"
-
-#. Translators: this is a time format in the style of "Wednesday, May 25",
-#. shown when you get a chat message in the same year.
-#: ../js/ui/telepathyClient.js:900
-#, no-c-format
-msgid "Sent on <b>%A</b>, <b>%B %d</b>"
-msgstr "Seoladh ar <b>%A</b>, <b>%d %B</b>"
-
-#. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
-#. shown when you get a chat message in a different year.
-#: ../js/ui/telepathyClient.js:905
-#, no-c-format
-msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-msgstr "Seoladh ar <b>%A</b>, <b>%d %B</b>, %Y"
-
-#. Translators: this is the other person changing their old IM name to their new
-#. IM name.
-#: ../js/ui/telepathyClient.js:947
-#, c-format
-msgid "%s is now known as %s"
-msgstr ""
-
-#. translators: argument is a room name like
-#. * room@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1049
-#, c-format
-msgid "Invitation to %s"
-msgstr ""
-
-#. translators: first argument is the name of a contact and the second
-#. * one the name of a room. "Alice is inviting you to join room@jabber.org
-#. * for example.
-#: ../js/ui/telepathyClient.js:1057
-#, c-format
-msgid "%s is inviting you to join %s"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1059 ../js/ui/telepathyClient.js:1139
-#: ../js/ui/telepathyClient.js:1237
-msgid "Decline"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1060 ../js/ui/telepathyClient.js:1140
-#: ../js/ui/telepathyClient.js:1238
-msgid "Accept"
-msgstr ""
-
-#. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1090
-#, c-format
-msgid "Video call from %s"
-msgstr ""
-
-#. translators: argument is a contact name like Alice for example.
-#: ../js/ui/telepathyClient.js:1093
-#, c-format
-msgid "Call from %s"
-msgstr ""
-
-#. translators: this is a button label (verb), not a noun
-#: ../js/ui/telepathyClient.js:1100
-msgid "Answer"
-msgstr ""
-
-#. To translators: The first parameter is
-#. * the contact's alias and the second one is the
-#. * file name. The string will be something
-#. * like: "Alice is sending you test.ogg"
-#.
-#: ../js/ui/telepathyClient.js:1133
-#, c-format
-msgid "%s is sending you %s"
-msgstr ""
-
-#. To translators: The parameter is the contact's alias
-#: ../js/ui/telepathyClient.js:1202
-#, c-format
-msgid "%s would like permission to see when you are online"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1295
-msgid "Network error"
-msgstr "Earráid líonra"
-
-#: ../js/ui/telepathyClient.js:1297
-#, fuzzy
-msgid "Authentication failed"
-msgstr "Fíordheimhniú de Dhíth"
-
-#: ../js/ui/telepathyClient.js:1299
-msgid "Encryption error"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1301
-msgid "Certificate not provided"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1303
-msgid "Certificate untrusted"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1305
-msgid "Certificate expired"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1307
-msgid "Certificate not activated"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1309
-msgid "Certificate hostname mismatch"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1311
-msgid "Certificate fingerprint mismatch"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1313
-msgid "Certificate self-signed"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1315
-#, fuzzy
-msgid "Status is set to offline"
-msgstr "Tá %s ar líne."
-
-#: ../js/ui/telepathyClient.js:1317
-msgid "Encryption is not available"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1319
-msgid "Certificate is invalid"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1321
-#, fuzzy
-msgid "Connection has been refused"
-msgstr "Bunaíodh ceangal"
-
-#: ../js/ui/telepathyClient.js:1323
-#, fuzzy
-msgid "Connection can't be established"
-msgstr "Bunaíodh ceangal"
-
-#: ../js/ui/telepathyClient.js:1325
-#, fuzzy
-msgid "Connection has been lost"
-msgstr "Bunaíodh ceangal"
-
-#: ../js/ui/telepathyClient.js:1327
-msgid "This resource is already connected to the server"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1329
-msgid ""
-"Connection has been replaced by a new connection using the same resource"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1331
-msgid "The account already exists on the server"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1333
-msgid "Server is currently too busy to handle the connection"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1335
-msgid "Certificate has been revoked"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1337
-msgid ""
-"Certificate uses an insecure cipher algorithm or is cryptographically weak"
-msgstr ""
-
-#: ../js/ui/telepathyClient.js:1339
-msgid ""
-"The length of the server certificate, or the depth of the server certificate "
-"chain, exceed the limits imposed by the cryptography library"
-msgstr ""
-
-#. translators: argument is the account name, like
-#. * name@jabber.org for example.
-#: ../js/ui/telepathyClient.js:1349
-#, c-format
-msgid "Connection to %s failed"
-msgstr "Theip an ceangal le %s"
-
-#: ../js/ui/telepathyClient.js:1358
-msgid "Reconnect"
-msgstr "Athcheangail"
-
-#: ../js/ui/telepathyClient.js:1359
-msgid "Edit account"
-msgstr "Cuir cuntas in eagar"
-
-#: ../js/ui/telepathyClient.js:1405
-msgid "Unknown reason"
-msgstr "Cúis anaithnid"
-
-#: ../js/ui/userMenu.js:133
-msgid "Hidden"
-msgstr "Folaithe"
-
-#: ../js/ui/userMenu.js:139
+#: ../js/ui/userMenu.js:192
 msgid "Idle"
 msgstr "Díomhaoin"
 
-#: ../js/ui/userMenu.js:142
+#: ../js/ui/userMenu.js:195
 msgid "Unavailable"
 msgstr "Níl ar Fáil"
 
-#: ../js/ui/userMenu.js:577 ../js/ui/userMenu.js:581 ../js/ui/userMenu.js:651
-msgid "Power Off..."
-msgstr "Múch..."
-
-#: ../js/ui/userMenu.js:613
+#: ../js/ui/userMenu.js:740
 msgid "Notifications"
 msgstr "Fógairt"
 
-#: ../js/ui/userMenu.js:621
-msgid "Online Accounts"
-msgstr "Cuntais ar Líne"
-
-#: ../js/ui/userMenu.js:625
+#: ../js/ui/userMenu.js:748
 msgid "System Settings"
 msgstr "Socruithe an Chórais"
 
-#: ../js/ui/userMenu.js:632
-msgid "Lock Screen"
-msgstr "Cuir Scáileán Faoi Ghlas"
-
-#: ../js/ui/userMenu.js:637
+#: ../js/ui/userMenu.js:756
 msgid "Switch User"
 msgstr "Athraigh Úsáideoir"
 
-#: ../js/ui/userMenu.js:642
-msgid "Log Out..."
-msgstr "Logáil Amach..."
+#: ../js/ui/userMenu.js:761
+msgid "Log Out"
+msgstr "Logáil Amach"
 
-#: ../js/ui/userMenu.js:670
+#: ../js/ui/userMenu.js:766
+msgid "Lock"
+msgstr "Cuir Faoi Ghlas"
+
+#: ../js/ui/userMenu.js:781
+msgid "Install Updates & Restart"
+msgstr "Suiteáil Nuashonruithe & Atosaigh"
+
+#: ../js/ui/userMenu.js:799
 msgid "Your chat status will be set to busy"
 msgstr ""
 
-#: ../js/ui/userMenu.js:671
+#: ../js/ui/userMenu.js:800
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
 msgstr ""
 
-#. Translators: this is the text displayed
-#. in the search entry when no search is
-#. active; it should not exceed ~30
-#. characters.
-#: ../js/ui/viewSelector.js:113
-msgid "Type to search..."
-msgstr "Cuardaigh..."
+#: ../js/ui/viewSelector.js:85
+msgid "Windows"
+msgstr "Fuinneoga"
 
-#: ../js/ui/viewSelector.js:131 ../src/shell-util.c:244
+#: ../js/ui/viewSelector.js:89
+msgid "Applications"
+msgstr "Feidhmchláir"
+
+#: ../js/ui/viewSelector.js:93
 msgid "Search"
 msgstr "Cuardaigh"
 
-#: ../js/ui/wanda.js:124
+#: ../js/ui/wanda.js:117
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
 "%s"
 msgstr ""
 
-#: ../js/ui/wanda.js:128
+#: ../js/ui/wanda.js:121
 #, c-format
 msgid "%s the Oracle says"
 msgstr ""
 
-#: ../js/ui/wanda.js:168
+#: ../js/ui/wanda.js:162
 msgid "Your favorite Easter Egg"
 msgstr ""
 
-#: ../js/ui/windowAttentionHandler.js:33
+#: ../js/ui/windowAttentionHandler.js:19
 #, c-format
 msgid "'%s' is ready"
 msgstr "Tá '%s' réidh"
 
+#: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
+msgid "Evolution Calendar"
+msgstr "Féilire Evolution"
+
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1100
+#: ../src/gvc/gvc-mixer-control.c:1089
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1640,7 +1702,7 @@ msgstr[4] ""
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1110
+#: ../src/gvc/gvc-mixer-control.c:1099
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
@@ -1650,22 +1712,38 @@ msgstr[2] ""
 msgstr[3] ""
 msgstr[4] ""
 
-#: ../src/gvc/gvc-mixer-control.c:1408
+#: ../src/gvc/gvc-mixer-control.c:1397
 msgid "System Sounds"
 msgstr "Fuaimeanna Córais"
 
-#: ../src/main.c:262
+#: ../src/main.c:330
 msgid "Print version"
 msgstr "Taispeáin leagan"
 
-#: ../src/main.c:268
+#: ../src/main.c:336
 msgid "Mode used by GDM for login screen"
 msgstr ""
 
-#: ../src/shell-app.c:616
+#: ../src/main.c:342
+msgid "Use a specific mode, e.g. \"gdm\" for login screen"
+msgstr ""
+
+#: ../src/main.c:348
+msgid "List possible modes"
+msgstr ""
+
+#: ../src/shell-app.c:621
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "Theip ar luchtú '%s'"
+
+#: ../src/shell-keyring-prompt.c:708
+msgid "Passwords do not match."
+msgstr ""
+
+#: ../src/shell-keyring-prompt.c:716
+msgid "Password cannot be blank"
+msgstr ""
 
 #: ../src/shell-mobile-providers.c:80
 msgid "United Kingdom"
@@ -1675,28 +1753,6 @@ msgstr "An Ríocht Aontaithe"
 msgid "Default"
 msgstr "Réamhshocrú"
 
-#: ../src/shell-polkit-authentication-agent.c:334
+#: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr ""
-
-#. Translators: this is the same string as the one found in
-#. * nautilus
-#: ../src/shell-util.c:89
-msgid "Home"
-msgstr "Baile"
-
-#. Translators: this is the same string as the one found in
-#. * nautilus
-#: ../src/shell-util.c:98
-msgid "File System"
-msgstr "Córas Comhad"
-
-#. Translators: the first string is the name of a gvfs
-#. * method, and the second string is a path. For
-#. * example, "Trash: some-directory". It means that the
-#. * directory called "some-directory" is in the trash.
-#.
-#: ../src/shell-util.c:294
-#, c-format
-msgid "%1$s: %2$s"
-msgstr "%1$s: %2$s"
