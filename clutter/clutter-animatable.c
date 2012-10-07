@@ -174,8 +174,6 @@ clutter_animatable_set_final_state (ClutterAnimatable *animatable,
  * This function should be used for every property animation
  * involving #ClutterAnimatable<!-- -->s.
  *
- * This function replaces clutter_animatable_animate_property().
- *
  * Return value: %TRUE if the interpolation was successful,
  *   and %FALSE otherwise
  *
