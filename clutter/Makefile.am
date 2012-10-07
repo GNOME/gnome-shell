@@ -86,7 +86,6 @@ source_h =					\
 	$(srcdir)/clutter-flow-layout.h		\
 	$(srcdir)/clutter-gesture-action.h 	\
 	$(srcdir)/clutter-grid-layout.h 	\
-	$(srcdir)/clutter-group.h 		\
 	$(srcdir)/clutter-image.h		\
 	$(srcdir)/clutter-input-device.h	\
         $(srcdir)/clutter-interval.h            \
@@ -119,7 +118,6 @@ source_h =					\
 	$(srcdir)/clutter-stage-manager.h	\
 	$(srcdir)/clutter-table-layout.h	\
 	$(srcdir)/clutter-tap-action.h		\
-	$(srcdir)/clutter-texture.h 		\
 	$(srcdir)/clutter-text.h		\
 	$(srcdir)/clutter-text-buffer.h		\
 	$(srcdir)/clutter-timeline.h 		\
