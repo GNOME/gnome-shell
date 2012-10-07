@@ -16,66 +16,27 @@ units_sources =
 
 # animation tests
 units_sources += \
-	animator.c			\
-	behaviours.c			\
-	score.c				\
-	state.c				\
 	timeline.c			\
 	timeline-interpolate.c 		\
 	timeline-progress.c		\
 	timeline-rewind.c 		\
 	$(NULL)
 
-# cogl tests
-units_sources += \
-	test-cogl-fixed.c 			\
-	test-cogl-materials.c			\
-	test-cogl-viewport.c			\
-	test-cogl-multitexture.c        	\
-	test-cogl-npot-texture.c        	\
-	test-cogl-object.c			\
-	test-cogl-premult.c			\
-	test-cogl-readpixels.c			\
-	test-cogl-texture-get-set-data.c 	\
-	test-cogl-texture-mipmaps.c     	\
-	test-cogl-texture-pixmap-x11.c  	\
-	test-cogl-texture-rectangle.c   	\
-	test-cogl-atlas-migration.c		\
-	test-cogl-vertex-buffer-contiguous.c 	\
-	test-cogl-vertex-buffer-interleved.c 	\
-	test-cogl-vertex-buffer-mutability.c 	\
-	$(NULL)
-
 # actors tests
 units_sources += \
-	actor-anchors.c                	\
 	actor-graph.c			\
-	actor-destroy.c			\
 	actor-invariants.c 		\
 	actor-iter.c			\
-	actor-layout.c			\
-	actor-offscreen-redirect.c	\
-	actor-paint-opacity.c 		\
-	actor-pick.c 			\
-	actor-shader-effect.c		\
 	actor-size.c			\
 	binding-pool.c			\
-	cairo-texture.c    		\
-	group.c				\
 	interval.c			\
 	path.c 				\
-	rectangle.c 			\
-	texture-fbo.c			\
-	texture.c			\
-        text-cache.c               	\
         text.c             		\
 	$(NULL)
 
 # objects tests
 units_sources += \
 	color.c				\
-	model.c				\
-	script-parser.c			\
 	units.c				\
         $(NULL)
 

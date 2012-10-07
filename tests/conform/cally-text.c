@@ -286,7 +286,7 @@ cally_text (void)
 
   data.label = clutter_text_new_with_text (TEST_FONT, "Lorem ipsum dolor sit amet");
 
-  clutter_container_add (CLUTTER_CONTAINER (data.stage), data.label, NULL);
+  clutter_actor_add_child (data.stage, data.label);
   data.offset = 6;
   data.extents_x = 64;
   data.extents_y = 99;
@@ -304,7 +304,7 @@ cally_text (void)
   data1.label = clutter_text_new_with_text (TEST_FONT, "");
   clutter_text_set_markup (CLUTTER_TEXT(data1.label), "<span fgcolor=\"#FFFF00\" bgcolor=\"#00FF00\"><s>Lorem ipsum dolor sit amet</s></span>");
 
-  clutter_container_add (CLUTTER_CONTAINER (data1.stage), data1.label, NULL);
+  clutter_actor_add_child (data1.stage, data1.label);
   data1.offset = 10;
   data1.extents_x = 90;
   data1.extents_y = 199;

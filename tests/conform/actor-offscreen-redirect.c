@@ -281,7 +281,7 @@ timeout_cb (gpointer user_data)
 
   /* Modifying the transformation on the parent should cause a
      redraw */
-  clutter_actor_set_anchor_point (data->parent_container, 0, 1);
+  clutter_actor_set_pivot_point (data->parent_container, 0, 1);
   verify_redraw (data, 1);
 
   /* Redrawing an unrelated actor shouldn't cause a redraw */
@@ -303,31 +303,31 @@ actor_offscreen_redirect (TestConformSimpleFixture *fixture,
 
       data.stage = clutter_stage_new ();
 
-      data.parent_container = clutter_group_new ();
+      data.parent_container = clutter_actor_new ();
 
       data.container = g_object_new (foo_group_get_type (), NULL);
 
       data.foo_actor = g_object_new (foo_actor_get_type (), NULL);
       clutter_actor_set_size (CLUTTER_ACTOR (data.foo_actor), 100, 100);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (data.container),
-                                   CLUTTER_ACTOR (data.foo_actor));
+      clutter_actor_add_child (data.container,
+                               CLUTTER_ACTOR (data.foo_actor));
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (data.parent_container),
-                                   data.container);
+      clutter_actor_add_child (data.parent_container,
+                               data.container);
 
-      clutter_container_add_actor (CLUTTER_CONTAINER (data.stage),
-                                   data.parent_container);
+      clutter_actor_add_child (data.stage,
+                               data.parent_container);
 
-      data.child = clutter_rectangle_new ();
+      data.child = clutter_actor_new ();
       clutter_actor_set_size (data.child, 1, 1);
-      clutter_container_add_actor (CLUTTER_CONTAINER (data.container),
-                                   data.child);
+      clutter_actor_add_child (data.container,
+                               data.child);
 
-      data.unrelated_actor = clutter_rectangle_new ();
+      data.unrelated_actor = clutter_actor_new ();
       clutter_actor_set_size (data.child, 1, 1);
-      clutter_container_add_actor (CLUTTER_CONTAINER (data.stage),
-                                   data.unrelated_actor);
+      clutter_actor_add_child (data.stage,
+                               data.unrelated_actor);
 
       clutter_actor_show (data.stage);
 
@@ -345,4 +345,3 @@ actor_offscreen_redirect (TestConformSimpleFixture *fixture,
   else if (g_test_verbose ())
     g_print ("Skipping\n");
 }
-

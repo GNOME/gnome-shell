@@ -234,7 +234,7 @@ actor_basic_layout (TestConformSimpleFixture *fixture,
   clutter_actor_set_name (flower[2], "Green Flower");
   clutter_actor_add_child (vase, flower[2]);
 
-  clutter_actor_show_all (stage);
+  clutter_actor_show (stage);
 
   state = test_state_new ();
   test_state_set_stage (state, stage);
@@ -282,7 +282,7 @@ actor_margin_layout (TestConformSimpleFixture *fixture,
   clutter_actor_set_margin_bottom (flower[2], 6);
   clutter_actor_add_child (vase, flower[2]);
 
-  clutter_actor_show_all (stage);
+  clutter_actor_show (stage);
 
   state = test_state_new ();
   test_state_set_stage (state, stage);

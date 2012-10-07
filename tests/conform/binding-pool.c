@@ -18,20 +18,20 @@ typedef struct _KeyGroupClass   KeyGroupClass;
 
 struct _KeyGroup
 {
-  ClutterGroup parent_instance;
+  ClutterActor parent_instance;
 
   gint selected_index;
 };
 
 struct _KeyGroupClass
 {
-  ClutterGroupClass parent_class;
+  ClutterActorClass parent_class;
 
   void (* activate) (KeyGroup     *group,
                      ClutterActor *child);
 };
 
-G_DEFINE_TYPE (KeyGroup, key_group, CLUTTER_TYPE_GROUP);
+G_DEFINE_TYPE (KeyGroup, key_group, CLUTTER_TYPE_ACTOR)
 
 enum
 {
@@ -53,7 +53,7 @@ key_group_action_move_left (KeyGroup            *self,
   g_assert_cmpstr (action_name, ==, "move-left");
   g_assert_cmpint (key_val, ==, CLUTTER_KEY_Left);
 
-  n_children = clutter_group_get_n_children (CLUTTER_GROUP (self));
+  n_children = clutter_actor_get_n_children (CLUTTER_ACTOR (self));
 
   self->selected_index -= 1;
 
@@ -74,7 +74,7 @@ key_group_action_move_right (KeyGroup            *self,
   g_assert_cmpstr (action_name, ==, "move-right");
   g_assert_cmpint (key_val, ==, CLUTTER_KEY_Right);
 
-  n_children = clutter_group_get_n_children (CLUTTER_GROUP (self));
+  n_children = clutter_actor_get_n_children (CLUTTER_ACTOR (self));
 
   self->selected_index += 1;
 
@@ -100,8 +100,8 @@ key_group_action_activate (KeyGroup            *self,
   if (self->selected_index == -1)
     return FALSE;
 
-  child = clutter_group_get_nth_child (CLUTTER_GROUP (self),
-                                       self->selected_index);
+  child = clutter_actor_get_child_at_index (CLUTTER_ACTOR (self),
+                                            self->selected_index);
 
   if (child)
     {
@@ -138,14 +138,13 @@ static void
 key_group_paint (ClutterActor *actor)
 {
   KeyGroup *self = KEY_GROUP (actor);
-  GList *children, *l;
+  ClutterActorIter iter;
+  ClutterActor *child;
   gint i;
 
-  children = clutter_container_get_children (CLUTTER_CONTAINER (self));
-
-  for (l = children, i = 0; l != NULL; l = l->next, i++)
+  clutter_actor_iter_init (&iter, actor);
+  while (clutter_actor_iter_next (&iter, &child))
     {
-      ClutterActor *child = l->data;
 
       /* paint the selection rectangle */
       if (i == self->selected_index)
@@ -165,8 +164,6 @@ key_group_paint (ClutterActor *actor)
 
       clutter_actor_paint (child);
     }
-
-  g_list_free (children);
 }
 
 static void
@@ -267,23 +264,24 @@ binding_pool (TestConformSimpleFixture *fixture,
 {
   KeyGroup *key_group = g_object_new (TYPE_KEY_GROUP, NULL);
 
-  clutter_container_add (CLUTTER_CONTAINER (key_group),
-                         g_object_new (CLUTTER_TYPE_RECTANGLE,
-                                       "width", 50.0,
-                                       "height", 50.0,
-                                       "x", 0.0, "y", 0.0,
-                                       NULL),
-                         g_object_new (CLUTTER_TYPE_RECTANGLE,
-                                       "width", 50.0,
-                                       "height", 50.0,
-                                       "x", 75.0, "y", 0.0,
-                                       NULL),
-                         g_object_new (CLUTTER_TYPE_RECTANGLE,
-                                       "width", 50.0,
-                                       "height", 50.0,
-                                       "x", 150.0, "y", 0.0,
-                                       NULL),
-                         NULL);
+  clutter_actor_add_child (CLUTTER_ACTOR (key_group),
+                           g_object_new (CLUTTER_TYPE_ACTOR,
+                                         "width", 50.0,
+                                         "height", 50.0,
+                                         "x", 0.0, "y", 0.0,
+                                         NULL));
+  clutter_actor_add_child (CLUTTER_ACTOR (key_group),
+                           g_object_new (CLUTTER_TYPE_ACTOR,
+                                         "width", 50.0,
+                                         "height", 50.0,
+                                         "x", 75.0, "y", 0.0,
+                                         NULL));
+  clutter_actor_add_child (CLUTTER_ACTOR (key_group),
+                           g_object_new (CLUTTER_TYPE_ACTOR,
+                                         "width", 50.0,
+                                         "height", 50.0,
+                                         "x", 150.0, "y", 0.0,
+                                         NULL));
 
   g_assert_cmpint (key_group->selected_index, ==, -1);
 

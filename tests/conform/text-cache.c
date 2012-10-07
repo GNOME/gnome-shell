@@ -271,7 +271,7 @@ text_cache (void)
 
   g_signal_connect (data.stage, "paint", G_CALLBACK (on_paint), &data);
 
-  clutter_container_add (CLUTTER_CONTAINER (data.stage), data.label, NULL);
+  clutter_actor_add_child (data.stage, data.label);
 
   clutter_actor_show (data.stage);
 
