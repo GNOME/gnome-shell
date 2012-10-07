@@ -467,6 +467,14 @@ _clutter_context_get_show_fps (void)
   return context->show_fps;
 }
 
+guint
+_clutter_context_get_frame_rate (void)
+{
+  ClutterMainContext *context = _clutter_context_get_default ();
+
+  return context->frame_rate;
+}
+
 /**
  * clutter_get_accessibility_enabled:
  *
@@ -2633,25 +2641,6 @@ clutter_base_init (void)
       /* initialise the Big Clutter Lock™ if necessary */
       clutter_threads_init_default ();
     }
-}
-
-/**
- * clutter_get_default_frame_rate:
- *
- * Retrieves the default frame rate. See clutter_set_default_frame_rate().
- *
- * Return value: the default frame rate
- *
- *
- */
-guint
-clutter_get_default_frame_rate (void)
-{
-  ClutterMainContext *context;
-
-  context = _clutter_context_get_default ();
-
-  return context->frame_rate;
 }
 
 static void

@@ -31,38 +31,6 @@
 G_BEGIN_DECLS
 
 /**
- * ClutterGravity:
- * @CLUTTER_GRAVITY_NONE: Do not apply any gravity
- * @CLUTTER_GRAVITY_NORTH: Scale from topmost downwards
- * @CLUTTER_GRAVITY_NORTH_EAST: Scale from the top right corner
- * @CLUTTER_GRAVITY_EAST: Scale from the right side
- * @CLUTTER_GRAVITY_SOUTH_EAST: Scale from the bottom right corner
- * @CLUTTER_GRAVITY_SOUTH: Scale from the bottom upwards
- * @CLUTTER_GRAVITY_SOUTH_WEST: Scale from the bottom left corner
- * @CLUTTER_GRAVITY_WEST: Scale from the left side
- * @CLUTTER_GRAVITY_NORTH_WEST: Scale from the top left corner
- * @CLUTTER_GRAVITY_CENTER: Scale from the center.
- *
- * Gravity of the scaling operations. When a gravity different than
- * %CLUTTER_GRAVITY_NONE is used, an actor is scaled keeping the position
- * of the specified portion at the same coordinates.
- *
- *
- */
-typedef enum { /*< prefix=CLUTTER_GRAVITY >*/
-  CLUTTER_GRAVITY_NONE       = 0,
-  CLUTTER_GRAVITY_NORTH,
-  CLUTTER_GRAVITY_NORTH_EAST,
-  CLUTTER_GRAVITY_EAST,
-  CLUTTER_GRAVITY_SOUTH_EAST,
-  CLUTTER_GRAVITY_SOUTH,
-  CLUTTER_GRAVITY_SOUTH_WEST,
-  CLUTTER_GRAVITY_WEST,
-  CLUTTER_GRAVITY_NORTH_WEST,
-  CLUTTER_GRAVITY_CENTER
-} ClutterGravity;
-
-/**
  * ClutterRotateAxis:
  * @CLUTTER_X_AXIS: Rotate around the X axis
  * @CLUTTER_Y_AXIS: Rotate around the Y axis
@@ -161,37 +129,31 @@ typedef enum { /*< prefix=CLUTTER_REQUEST >*/
  * @CLUTTER_EASE_IN_OUT_BOUNCE: exponentially decaying parabolic (bounce)
  *   tweening, with bounce on both ends
  * @CLUTTER_STEPS: parametrized step function; see clutter_timeline_set_step_progress()
- *   for further details. (Since 1.12)
+ *   for further details.
  * @CLUTTER_STEP_START: equivalent to %CLUTTER_STEPS with a number of steps
- *   equal to 1, and a step mode of %CLUTTER_STEP_MODE_START. (Since 1.12)
+ *   equal to 1, and a step mode of %CLUTTER_STEP_MODE_START.
  * @CLUTTER_STEP_END: equivalent to %CLUTTER_STEPS with a number of steps
- *   equal to 1, and a step mode of %CLUTTER_STEP_MODE_END. (Since 1.12)
+ *   equal to 1, and a step mode of %CLUTTER_STEP_MODE_END.
  * @CLUTTER_CUBIC_BEZIER: cubic bezier between (0, 0) and (1, 1) with two
- *   control points; see clutter_timeline_set_cubic_bezier_progress(). (Since 1.12)
+ *   control points; see clutter_timeline_set_cubic_bezier_progress().
  * @CLUTTER_EASE: equivalent to %CLUTTER_CUBIC_BEZIER with control points
- *   in (0.25, 0.1) and (0.25, 1.0). (Since 1.12)
+ *   in (0.25, 0.1) and (0.25, 1.0).
  * @CLUTTER_EASE_IN: equivalent to %CLUTTER_CUBIC_BEZIER with control points
- *   in (0.42, 0) and (1.0, 1.0). (Since 1.12)
+ *   in (0.42, 0) and (1.0, 1.0).
  * @CLUTTER_EASE_OUT: equivalent to %CLUTTER_CUBIC_BEZIER with control points
- *   in (0, 0) and (0.58, 1.0). (Since 1.12)
+ *   in (0, 0) and (0.58, 1.0).
  * @CLUTTER_EASE_IN_OUT: equivalent to %CLUTTER_CUBIC_BEZIER with control points
- *   in (0.42, 0) and (0.58, 1.0). (Since 1.12)
- * @CLUTTER_ANIMATION_LAST: last animation mode, used as a guard for
- *   registered global alpha functions
+ *   in (0.42, 0) and (0.58, 1.0).
+ * @CLUTTER_ANIMATION_LAST: last animation mode, used as a guard when enumerating
  *
- * The animation modes used by #ClutterAlpha and #ClutterAnimation. This
- * enumeration can be expanded in later versions of Clutter.
+ * The animation modes used by #ClutterTimeline.
+ *
+ * This enumeration can be expanded in later versions of Clutter.
  *
  * <figure id="easing-modes">
  *   <title>Easing modes provided by Clutter</title>
  *   <graphic fileref="easing-modes.png" format="PNG"/>
  * </figure>
- *
- * Every global alpha function registered using clutter_alpha_register_func()
- * or clutter_alpha_register_closure() will have a logical id greater than
- * %CLUTTER_ANIMATION_LAST.
- *
- *
  */
 typedef enum {
   CLUTTER_CUSTOM_MODE = 0,
@@ -261,7 +223,7 @@ typedef enum {
   CLUTTER_EASE_OUT,
   CLUTTER_EASE_IN_OUT,
 
-  /* guard, before registered alpha functions */
+  /* guard */
   CLUTTER_ANIMATION_LAST
 } ClutterAnimationMode;
 
@@ -451,20 +413,6 @@ typedef enum { /*< prefix=CLUTTER_ALIGN >*/
   CLUTTER_ALIGN_Y_AXIS,
   CLUTTER_ALIGN_BOTH
 } ClutterAlignAxis;
-
-/**
- * ClutterInterpolation:
- * @CLUTTER_INTERPOLATION_LINEAR: linear interpolation
- * @CLUTTER_INTERPOLATION_CUBIC: cubic interpolation
- *
- * The mode of interpolation between key frames
- *
- *
- */
-typedef enum {
-  CLUTTER_INTERPOLATION_LINEAR,
-  CLUTTER_INTERPOLATION_CUBIC
-} ClutterInterpolation;
 
 /**
  * ClutterBindCoordinate:

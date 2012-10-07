@@ -141,8 +141,6 @@ PangoFontMap *          clutter_get_font_map                    (void);
 
 ClutterTextDirection    clutter_get_default_text_direction      (void);
 
-guint                   clutter_get_default_frame_rate          (void);
-
 G_END_DECLS
 
 #endif /* _CLUTTER_MAIN_H__ */

@@ -211,6 +211,7 @@ guint32                 _clutter_context_acquire_id                     (gpointe
 void                    _clutter_context_release_id                     (guint32       id_);
 gboolean                _clutter_context_get_motion_events_enabled      (void);
 gboolean                _clutter_context_get_show_fps                   (void);
+guint                   _clutter_context_get_frame_rate                 (void);
 
 const gchar *_clutter_gettext (const gchar *str);
 

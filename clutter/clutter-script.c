@@ -131,11 +131,8 @@
 #include <glib-object.h>
 #include <gmodule.h>
 
-#define CLUTTER_DISABLE_DEPRECATION_WARNINGS
-
 #include "clutter-actor.h"
 #include "clutter-stage.h"
-#include "clutter-texture.h"
 
 #include "clutter-script.h"
 #include "clutter-script-private.h"

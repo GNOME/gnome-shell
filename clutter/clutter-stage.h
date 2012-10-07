@@ -29,7 +29,7 @@
 #define __CLUTTER_STAGE_H__
 
 #include <clutter/clutter-types.h>
-#include <clutter/clutter-group.h>
+#include <clutter/clutter-actor.h>
 
 G_BEGIN_DECLS
 

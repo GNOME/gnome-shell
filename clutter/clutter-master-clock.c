@@ -326,12 +326,12 @@ master_clock_next_frame_delay (ClutterMasterClock *master_clock)
       return 0;
     }
 
-  next += (1000000L / clutter_get_default_frame_rate ());
+  next += (1000000L / _clutter_context_get_frame_rate ());
 
   if (next <= now)
     {
       CLUTTER_NOTE (SCHEDULER, "Less than %lu microsecs",
-                    1000000L / (gulong) clutter_get_default_frame_rate ());
+                    1000000L / (gulong) _clutter_context_get_frame_rate ());
 
       return 0;
     }

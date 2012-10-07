@@ -513,7 +513,6 @@ clutter_get_accessibility_enabled
 clutter_get_current_event
 clutter_get_current_event_time
 clutter_get_default_backend
-clutter_get_default_frame_rate
 clutter_get_default_text_direction
 clutter_get_font_map
 clutter_get_keyboard_grab
@@ -523,7 +522,6 @@ clutter_get_pointer_grab
 clutter_get_script_id
 clutter_grab_keyboard
 clutter_grab_pointer
-clutter_gravity_get_type
 clutter_grid_child_get_type
 clutter_grid_layout_get_type
 clutter_grid_layout_new
@@ -556,7 +554,6 @@ clutter_init
 clutter_init_error_get_type
 clutter_init_error_quark
 clutter_init_with_args
-clutter_interpolation_get_type
 clutter_interval_clone
 clutter_interval_compute
 clutter_interval_compute_value
@@ -1185,10 +1182,8 @@ clutter_x11_filter_return_get_type
 clutter_x11_get_current_event_time
 clutter_x11_get_default_display
 clutter_x11_get_default_screen
-clutter_x11_get_input_devices
 clutter_x11_get_root_window
 clutter_x11_get_stage_from_window
-clutter_x11_get_stage_visual
 clutter_x11_get_stage_window
 clutter_x11_get_use_argb_visual
 clutter_x11_get_visual_info

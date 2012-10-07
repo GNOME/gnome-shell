@@ -62,6 +62,7 @@
 #include <cogl/cogl-xlib.h>
 
 #include "clutter-backend.h"
+#include "clutter-color.h"
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
 #include "clutter-event-private.h"
@@ -1147,39 +1148,12 @@ clutter_x11_remove_filter (ClutterX11FilterFunc func,
 }
 
 /**
- * clutter_x11_get_input_devices:
- *
- * Retrieves a pointer to the list of input devices
- *
- * Deprecated: 1.2: Use clutter_device_manager_peek_devices() instead
- *
- *
- *
- * Return value: (transfer none) (element-type Clutter.InputDevice): a
- *   pointer to the internal list of input devices; the returned list is
- *   owned by Clutter and should not be modified or freed
- */
-const GSList *
-clutter_x11_get_input_devices (void)
-{
-  ClutterDeviceManager *manager;
-
-  manager = clutter_device_manager_get_default ();
-  if (manager == NULL)
-    return NULL;
-
-  return clutter_device_manager_peek_devices (manager);
-}
-
-/**
  * clutter_x11_has_xinput:
  *
  * Gets whether Clutter has XInput support.
  *
  * Return value: %TRUE if Clutter was compiled with XInput support
  *   and XInput support is available at run time.
- *
- *
  */
 gboolean
 clutter_x11_has_xinput (void)

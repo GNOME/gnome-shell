@@ -85,11 +85,6 @@ typedef struct _ClutterRect                     ClutterRect;
 typedef struct _ClutterSize                     ClutterSize;
 typedef struct _ClutterVertex                   ClutterVertex;
 
-typedef struct _ClutterAlpha            	ClutterAlpha;
-typedef struct _ClutterAnimation                ClutterAnimation;
-typedef struct _ClutterAnimator         	ClutterAnimator;
-typedef struct _ClutterState            	ClutterState;
-
 typedef struct _ClutterInputDevice              ClutterInputDevice;
 
 typedef CoglMatrix                              ClutterMatrix;
@@ -105,10 +100,6 @@ typedef union _ClutterEvent                     ClutterEvent;
  *
  */
 typedef struct _ClutterEventSequence            ClutterEventSequence;
-
-typedef struct _ClutterFog                      ClutterFog; /* deprecated */
-typedef struct _ClutterBehaviour                ClutterBehaviour; /* deprecated */
-typedef struct _ClutterShader                   ClutterShader; /* deprecated */
 
 /**
  * ClutterPaintVolume:

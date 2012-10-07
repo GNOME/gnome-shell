@@ -22,10 +22,7 @@
 #ifndef __CLUTTER_STAGE_X11_H__
 #define __CLUTTER_STAGE_X11_H__
 
-#include <clutter/clutter-group.h>
 #include <clutter/clutter-stage.h>
-#include <X11/Xlib.h>
-#include <X11/Xatom.h>
 
 #include "clutter-backend-x11.h"
 #include "cogl/clutter-stage-cogl.h"
