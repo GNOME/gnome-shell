@@ -31,7 +31,6 @@ libglib_la_SOURCES =		\
 	ghook.c			\
 	ghook.h			\
 	gi18n-lib.h		\
-	glibconfig.h		\
 	glibintl.h		\
 	glib.h			\
 	glib-object.h		\

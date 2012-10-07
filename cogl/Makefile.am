@@ -138,7 +138,6 @@ cogl_nodist_experimental_h = \
 
 # nop driver
 cogl_driver_sources = \
-	$(srcdir)/driver/nop/cogl-driver-nop-private.h \
 	$(srcdir)/driver/nop/cogl-driver-nop.c \
 	$(srcdir)/driver/nop/cogl-framebuffer-nop-private.h \
 	$(srcdir)/driver/nop/cogl-framebuffer-nop.c \
@@ -160,6 +159,7 @@ cogl_gl_prototypes_h = \
 	$(NULL)
 
 cogl_driver_sources += \
+	$(srcdir)/driver/gl/cogl-framebuffer-gl-private.h \
 	$(srcdir)/driver/gl/cogl-framebuffer-gl.c \
 	$(srcdir)/driver/gl/cogl-texture-2d-gl-private.h \
 	$(srcdir)/driver/gl/cogl-texture-2d-gl.c \
