@@ -248,16 +248,10 @@ clutter_bin_layout_init (ClutterBinLayout *self)
 
 /**
  * clutter_bin_layout_new:
- * @x_align: the default alignment policy to be used on the
- *   horizontal axis
- * @y_align: the default alignment policy to be used on the
- *   vertical axis
  *
  * Creates a new #ClutterBinLayout layout manager
  *
  * Return value: the newly created layout manager
- *
- *
  */
 ClutterLayoutManager *
 clutter_bin_layout_new (void)
