@@ -174,7 +174,7 @@ const Application = new Lang.Class({
         let renderer = new Gtk.CellRendererText();
         this._extensionSelector.pack_start(renderer, true);
         this._extensionSelector.add_attribute(renderer, 'text', 1);
-        this._extensionSelector.set_cell_data_func(renderer, Lang.bind(this, this._setExtensionInsensitive), null);
+        this._extensionSelector.set_cell_data_func(renderer, Lang.bind(this, this._setExtensionInsensitive));
         this._extensionSelector.connect('changed', Lang.bind(this, this._extensionSelected));
 
         toolitem = new Gtk.ToolItem({ child: this._extensionSelector });
