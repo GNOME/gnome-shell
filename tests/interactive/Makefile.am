@@ -9,7 +9,7 @@ SHEXT = $(EXEEXT)
 endif
 
 # For convenience, this provides a way to easily run individual unit tests:
-wrappers: stamp-test-interactive $(top_builddir)/build/win32/test-interactive-clutter.bat
+wrappers: stamp-test-interactive
 	@true
 
 stamp-test-interactive: Makefile
