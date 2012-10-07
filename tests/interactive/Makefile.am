@@ -1,64 +1,6 @@
 include $(top_srcdir)/build/autotools/Makefile.am.silent
 
-UNIT_TESTS = \
-	test-texture-slicing.c \
-	test-texture-async.c \
-	test-texture-material.c \
-	test-events.c \
-	test-scale.c \
-        test-actors.c \
-	test-shader-effects.c \
-	test-script.c \
-	test-grab.c \
-	test-cogl-shader-arbfp.c \
-	test-cogl-shader-glsl.c \
-	test-animator.c \
-	test-state.c \
-	test-state-animator.c \
-	test-fbo.c \
-	test-multistage.c \
-	test-cogl-primitives.c \
-	test-cogl-tex-tile.c \
-	test-cogl-tex-convert.c \
-	test-cogl-tex-foreign.c \
-	test-cogl-tex-getset.c \
-	test-cogl-offscreen.c \
-	test-cogl-tex-polygon.c \
-	test-cogl-multitexture.c \
-	test-stage-read-pixels.c \
-	test-clip.c \
-	test-paint-wrapper.c \
-	test-texture-quality.c \
-	test-layout.c \
-        test-animation.c \
-        test-easing.c \
-        test-binding-pool.c \
-        test-text.c \
-        test-text-field.c \
-	test-cairo-clock.c \
-	test-cairo-flowers.c \
-	test-cogl-vertex-buffer.c \
-	test-stage-sizing.c \
-	test-scrolling.c \
-	test-swipe-action.c \
-	test-cogl-point-sprites.c \
-	test-table-layout.c \
-	test-path-constraint.c \
-	test-state-script.c \
-	test-devices.c \
-	test-content.c \
-	test-keyframe-transition.c \
-	test-bind-constraint.c \
-	test-touch-events.c
-
-if X11_TESTS
-UNIT_TESTS += test-pixmap.c
-endif
-
-if PIXBUF_TESTS
-UNIT_TESTS += \
-	test-image.c
-endif
+UNIT_TESTS =
 
 if OS_WIN32
 SHEXT =
