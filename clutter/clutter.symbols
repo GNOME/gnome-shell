@@ -834,7 +834,6 @@ clutter_request_mode_get_type
 clutter_rotate_action_get_type
 clutter_rotate_action_new
 clutter_rotate_axis_get_type
-clutter_rotate_direction_get_type
 clutter_scaling_filter_get_type
 clutter_scriptable_get_id
 clutter_scriptable_get_type
