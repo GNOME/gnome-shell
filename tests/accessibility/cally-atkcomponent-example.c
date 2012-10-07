@@ -48,43 +48,47 @@ main (int argc, char *argv[])
   stage = clutter_stage_new ();
 
   clutter_stage_set_title (CLUTTER_STAGE (stage), "Cally - AtkComponent Test");
-  clutter_stage_set_color (CLUTTER_STAGE (stage), CLUTTER_COLOR_White);
+  clutter_actor_set_background_color (stage, CLUTTER_COLOR_White);
   clutter_actor_set_size (stage, WIDTH, HEIGHT);
 
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
 
-  button1 = clutter_rectangle_new_with_color (CLUTTER_COLOR_Yellow);
+  button1 = clutter_actor_new ();
+  clutter_actor_set_background_color (button1, CLUTTER_COLOR_Yellow);
   clutter_actor_set_size (button1, SIZE, SIZE);
 
-  button2 = clutter_rectangle_new_with_color (CLUTTER_COLOR_Green);
+  button2 = clutter_actor_new ();
+  clutter_actor_set_background_color (button2, CLUTTER_COLOR_Green);
   clutter_actor_set_position (button2, 2 * SIZE, 0);
   clutter_actor_set_size (button2, SIZE, SIZE);
 
-  button3 = clutter_rectangle_new_with_color (CLUTTER_COLOR_Blue);
+  button3 = clutter_actor_new ();
+  clutter_actor_set_background_color (button3, CLUTTER_COLOR_Blue);
   clutter_actor_set_position (button3, 0, 2 * SIZE);
   clutter_actor_set_size (button3, SIZE, SIZE);
-  clutter_actor_set_depth( button3, DEPTH);
+  clutter_actor_set_z_position (button3, DEPTH);
 
   /* a nested hierarchy, to check that the relative positions are
      computed properly */
-  button4 = clutter_rectangle_new_with_color (CLUTTER_COLOR_Magenta);
+  button4 = clutter_actor_new ();
+  clutter_actor_set_background_color (button4, CLUTTER_COLOR_Magenta);
   clutter_actor_set_position (button4, SIZE / 2, SIZE / 2);
   clutter_actor_set_size (button4, SIZE, SIZE);
 
   for (i = 0; i < 4; i++) {
-    group[i] = clutter_group_new ();
+    group[i] = clutter_actor_new ();
     clutter_actor_set_position (group[i], SIZE / 2, SIZE / 2);
     clutter_actor_set_size (group[i], SIZE, SIZE);
 
     if (i > 0)
-      clutter_container_add_actor (CLUTTER_CONTAINER (group[i]), group [i - 1]);
+      clutter_actor_add_child (group[i], group[i - 1]);
   }
 
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), button1);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), button2);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), button3);
-  clutter_container_add_actor (CLUTTER_CONTAINER (stage), group[3]);
-  clutter_container_add_actor (CLUTTER_CONTAINER (group[0]), button4);
+  clutter_actor_add_child (stage, button1);
+  clutter_actor_add_child (stage, button2);
+  clutter_actor_add_child (stage, button3);
+  clutter_actor_add_child (stage, group[3]);
+  clutter_actor_add_child (group[0], button4);
 
   clutter_actor_show (stage);
 
