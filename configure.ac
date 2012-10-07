@@ -44,6 +44,7 @@ m4_define([clutter_version], [clutter_major_version.clutter_minor_version.clutte
 
 # change this only when breaking the API
 m4_define([clutter_api_version], [2.0])
+m4_define([clutter_api_version_am], [2_0])
 
 AC_PREREQ([2.63])
 
@@ -66,7 +67,7 @@ AC_SUBST([CLUTTER_MINOR_VERSION],  [clutter_minor_version])
 AC_SUBST([CLUTTER_MICRO_VERSION],  [clutter_micro_version])
 AC_SUBST([CLUTTER_VERSION],        [clutter_version])
 AC_SUBST([CLUTTER_API_VERSION],    [clutter_api_version])
-AC_SUBST([CLUTTER_API_VERSION_AM], [$CLUTTER_MAJOR_VERSION\_0])
+AC_SUBST([CLUTTER_API_VERSION_AM], [clutter_api_version_am])
 AC_SUBST([CLUTTER_RELEASE_STATUS], [clutter_release_status])
 
 m4_define([lt_current],  [m4_eval(100 * clutter_minor_version + clutter_micro_version - clutter_interface_age)])
