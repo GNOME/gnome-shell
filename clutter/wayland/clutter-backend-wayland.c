@@ -48,6 +48,7 @@
 #include "cogl/clutter-stage-cogl.h"
 
 #include <wayland-client.h>
+#include <wayland-cursor.h>
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <cogl/cogl.h>
@@ -74,6 +75,12 @@ clutter_backend_wayland_dispose (GObject *gobject)
     {
       wl_buffer_destroy (backend_wayland->cursor_buffer);
       backend_wayland->cursor_buffer = NULL;
+    }
+
+  if (backend_wayland->cursor_theme)
+    {
+      wl_cursor_theme_destroy (backend_wayland->cursor_theme);
+      backend_wayland->cursor_theme = NULL;
     }
 
   G_OBJECT_CLASS (clutter_backend_wayland_parent_class)->dispose (gobject);
@@ -277,175 +284,30 @@ clutter_backend_wayland_class_init (ClutterBackendWaylandClass *klass)
   backend_class->get_display = clutter_backend_wayland_get_display;
 }
 
-/*
- * clutter_backend_wayland_load_cursor and the two functions below were copied
- * from GTK+ and adapted for clutter
- */
-static void
-set_pixbuf (GdkPixbuf     *pixbuf,
-            unsigned char *map,
-            int            width,
-            int            height)
-{
-  int stride, i, n_channels;
-  unsigned char *pixels, *end, *argb_pixels, *s, *d;
-
-  stride = gdk_pixbuf_get_rowstride (pixbuf);
-  pixels = gdk_pixbuf_get_pixels (pixbuf);
-  n_channels = gdk_pixbuf_get_n_channels (pixbuf);
-  argb_pixels = map;
-
-#define MULT(_d,c,a,t) \
-  do { t = c * a + 0x7f; _d = ((t >> 8) + t) >> 8; } while (0)
-
-  if (n_channels == 4)
-    {
-      for (i = 0; i < height; i++)
-        {
-          s = pixels + i * stride;
-          end = s + width * 4;
-          d = argb_pixels + i * width * 4;
-          while (s < end)
-            {
-              unsigned int t;
-
-              MULT(d[0], s[2], s[3], t);
-              MULT(d[1], s[1], s[3], t);
-              MULT(d[2], s[0], s[3], t);
-              d[3] = s[3];
-              s += 4;
-              d += 4;
-            }
-        }
-    }
-  else if (n_channels == 3)
-    {
-      for (i = 0; i < height; i++)
-        {
-          s = pixels + i * stride;
-          end = s + width * 3;
-          d = argb_pixels + i * width * 4;
-          while (s < end)
-            {
-              d[0] = s[2];
-              d[1] = s[1];
-              d[2] = s[0];
-              d[3] = 0xff;
-              s += 3;
-              d += 4;
-            }
-        }
-    }
-}
-
-static struct wl_buffer *
-create_cursor (ClutterBackendWayland *backend_wayland,
-               GdkPixbuf             *pixbuf)
-{
-  int stride, fd;
-  char *filename;
-  GError *error = NULL;
-  struct wl_shm_pool *pool;
-  struct wl_buffer *buffer;
-  gint width, height;
-  gsize size;
-  unsigned char *map;
-
-  width = gdk_pixbuf_get_width (pixbuf);
-  height = gdk_pixbuf_get_height (pixbuf);
-  stride = width * 4;
-  size = stride * height;
-
-  fd = g_file_open_tmp ("wayland-shm-XXXXXX", &filename, &error);
-  if (fd < 0)
-    {
-      g_critical (G_STRLOC ": Opening temporary file failed: %s", error->message);
-      g_error_free (error);
-      return NULL;
-    }
-
-  unlink (filename);
-  g_free (filename);
-
-  if (ftruncate (fd, size) < 0)
-    {
-      g_critical (G_STRLOC ": Setting the size of temporary file failed: %s", g_strerror (errno));
-      close (fd);
-      return NULL;
-    }
-
-  map = mmap (NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-
-  if (map == MAP_FAILED)
-    {
-      g_critical (G_STRLOC ": Memory mapping file failed: %s", g_strerror (errno));
-      close (fd);
-      return NULL;
-   }
-
-  set_pixbuf (pixbuf, map, width, height);
-
-  pool = wl_shm_create_pool (backend_wayland->wayland_shm, fd, size);
-  close (fd);
-  buffer = wl_shm_pool_create_buffer (pool,
-                                      0,
-                                      width,
-                                      height,
-                                      stride,
-                                      WL_SHM_FORMAT_ARGB8888);
-  wl_shm_pool_destroy (pool);
-  munmap (map, size);
-
-  return buffer;
-}
-
 static void
 clutter_backend_wayland_load_cursor (ClutterBackendWayland *backend_wayland)
 {
-  const gchar * const *directories;
-  gint j;
-  GdkPixbuf *pixbuf = NULL;
-  GError *error = NULL;
+  struct wl_cursor *cursor;
 
-  directories = g_get_system_data_dirs();
+  backend_wayland->cursor_theme =
+    wl_cursor_theme_load (NULL, /* default */
+                          32,
+                          backend_wayland->wayland_shm);
 
-  for (j = 0; directories[j] != NULL; j++)
-    {
-      gchar *filename;
-      filename = g_build_filename (directories[j],
-                                   "weston",
-                                   "left_ptr.png",
-                                   NULL);
-      if (g_file_test (filename, G_FILE_TEST_EXISTS))
-        {
-          pixbuf = gdk_pixbuf_new_from_file (filename, &error);
+  cursor = wl_cursor_theme_get_cursor (backend_wayland->cursor_theme,
+                                       "left_ptr");
 
-          if (error != NULL)
-            {
-              g_warning ("Failed to load cursor: %s: %s",
-                         filename, error->message);
-              g_error_free (error);
-              return;
-            }
-          break;
-        }
-    }
-
-  if (!pixbuf)
-    return;
-
-  backend_wayland->cursor_buffer = create_cursor (backend_wayland, pixbuf);
+  backend_wayland->cursor_buffer =
+    wl_cursor_image_get_buffer (cursor->images[0]);
 
   if (backend_wayland->cursor_buffer)
     {
-      backend_wayland->cursor_x = 0;
-      backend_wayland->cursor_y = 0;
+      backend_wayland->cursor_x = cursor->images[0]->hotspot_x;
+      backend_wayland->cursor_y = cursor->images[0]->hotspot_y;
     }
 
   backend_wayland->cursor_surface =
     wl_compositor_create_surface (backend_wayland->wayland_compositor);
-
-  g_object_unref (pixbuf);
 }
 
 static void

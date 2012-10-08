@@ -32,6 +32,9 @@
 #include <clutter/clutter-backend.h>
 #include <clutter/clutter-device-manager.h>
 
+#include <wayland-client.h>
+#include <wayland-cursor.h>
+
 #include "clutter-backend-private.h"
 
 G_BEGIN_DECLS
@@ -59,6 +62,7 @@ struct _ClutterBackendWayland
   struct wl_surface *cursor_surface;
   struct wl_buffer *cursor_buffer;
   struct wl_output *wayland_output;
+  struct wl_cursor_theme *cursor_theme;
 
   gint cursor_x, cursor_y;
   gint output_width, output_height;
