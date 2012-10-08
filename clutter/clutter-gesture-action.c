@@ -103,6 +103,7 @@ typedef struct
 {
   ClutterInputDevice *device;
   ClutterEventSequence *sequence;
+  ClutterEvent *last_event;
 
   gfloat press_x, press_y;
   gint64 last_motion_time;
@@ -153,6 +154,7 @@ gesture_register_point (ClutterGestureAction *action, ClutterEvent *event)
   g_array_set_size (priv->points, priv->points->len + 1);
   point = &g_array_index (priv->points, GesturePoint, priv->points->len - 1);
 
+  point->last_event = clutter_event_copy (event);
   point->device = clutter_event_get_device (event);
 
   clutter_event_get_coords (event, &point->press_x, &point->press_y);
@@ -218,6 +220,12 @@ gesture_get_threshold (ClutterGestureAction *action)
   ClutterSettings *settings = clutter_settings_get_default ();
   g_object_get (settings, "dnd-drag-threshold", &threshold, NULL);
   return threshold;
+}
+
+static void
+gesture_point_unset (GesturePoint *point)
+{
+  clutter_event_free (point->last_event);
 }
 
 static void
@@ -331,6 +339,9 @@ stage_captured_event_cb (ClutterActor       *stage,
             return CLUTTER_EVENT_PROPAGATE;
         }
 
+      clutter_event_free (point->last_event);
+      point->last_event = clutter_event_copy (event);
+
       point->last_delta_x = motion_x - point->last_motion_x;
       point->last_delta_y = motion_y - point->last_motion_y;
       point->last_motion_x = motion_x;
@@ -363,6 +374,9 @@ stage_captured_event_cb (ClutterActor       *stage,
     case CLUTTER_TOUCH_END:
       {
         clutter_event_get_coords (event, &point->release_x, &point->release_y);
+
+        clutter_event_free (point->last_event);
+        point->last_event = clutter_event_copy (event);
 
         if (priv->in_gesture &&
             ((priv->points->len - 1) < priv->requested_nb_points))
@@ -618,6 +632,8 @@ clutter_gesture_action_init (ClutterGestureAction *self)
                                             ClutterGestureActionPrivate);
 
   self->priv->points = g_array_sized_new (FALSE, TRUE, sizeof (GesturePoint), 3);
+  g_array_set_clear_func (self->priv->points, (GDestroyNotify) gesture_point_unset);
+
   self->priv->requested_nb_points = 1;
   self->priv->edge = CLUTTER_GESTURE_TRIGGER_EDGE_AFTER;
 }
@@ -953,6 +969,32 @@ clutter_gesture_action_get_device (ClutterGestureAction *action,
   g_return_val_if_fail (action->priv->points->len > point, NULL);
 
   return g_array_index (action->priv->points, GesturePoint, point).device;
+}
+
+/**
+ * clutter_gesture_action_get_last_event:
+ * @action: a #ClutterGestureAction
+ * @point: index of a point currently active
+ *
+ * Retrieves a reference to the last #ClutterEvent for a touch point. Call
+ * clutter_event_copy() if you need to store the reference somewhere.
+ *
+ * Return value: (transfer none): the last #ClutterEvent for a touch point.
+ *
+ * Since: 1.14
+ */
+const ClutterEvent *
+clutter_gesture_action_get_last_event (ClutterGestureAction *action,
+                                       guint                 point)
+{
+  GesturePoint *gesture_point;
+
+  g_return_val_if_fail (CLUTTER_IS_GESTURE_ACTION (action), NULL);
+  g_return_val_if_fail (action->priv->points->len > point, NULL);
+
+  gesture_point = &g_array_index (action->priv->points, GesturePoint, point);
+
+  return gesture_point->last_event;
 }
 
 /**

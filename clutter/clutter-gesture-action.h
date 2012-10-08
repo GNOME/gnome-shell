@@ -142,6 +142,10 @@ CLUTTER_AVAILABLE_IN_1_12
 ClutterInputDevice *   clutter_gesture_action_get_device           (ClutterGestureAction *action,
                                                                     guint                 point);
 
+CLUTTER_AVAILABLE_IN_1_14
+const ClutterEvent *   clutter_gesture_action_get_last_event       (ClutterGestureAction *action,
+                                                                    guint                 point);
+
 CLUTTER_AVAILABLE_IN_1_12
 void                   clutter_gesture_action_cancel               (ClutterGestureAction *action);
 

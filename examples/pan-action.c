@@ -42,13 +42,22 @@ on_pan (ClutterPanAction *action,
         gpointer         *user_data)
 {
   gfloat delta_x, delta_y;
+  const ClutterEvent *event = NULL;
 
   if (is_interpolated)
     clutter_pan_action_get_interpolated_delta (action, &delta_x, &delta_y);
   else
-    clutter_gesture_action_get_motion_delta (CLUTTER_GESTURE_ACTION (action), 0, &delta_x, &delta_y);
+    {
+      clutter_gesture_action_get_motion_delta (CLUTTER_GESTURE_ACTION (action), 0, &delta_x, &delta_y);
+      event = clutter_gesture_action_get_last_event (CLUTTER_GESTURE_ACTION (action), 0);
+    }
 
-  g_print ("panning dx:%.2f dy:%.2f\n", delta_x, delta_y);
+  g_print ("[%s] panning dx:%.2f dy:%.2f\n",
+           event == NULL ? "INTERPOLATED" :
+           event->type == CLUTTER_MOTION ? "MOTION" :
+           event->type == CLUTTER_TOUCH_UPDATE ? "TOUCH UPDATE" :
+           "?",
+           delta_x, delta_y);
 
   return TRUE;
 }
