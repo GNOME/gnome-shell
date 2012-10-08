@@ -446,6 +446,7 @@ const Dash = new Lang.Class({
 
     _endDrag: function() {
         this._clearDragPlaceholder();
+        this._showAppsIcon.setDragApp(null);
         DND.removeDragMonitor(this._dragMonitor);
     },
 
