@@ -508,7 +508,7 @@ clutter_pan_action_class_init (ClutterPanActionClass *klass)
                                       pan_props);
 
   /**
-   * ClutterPanAction:pan:
+   * ClutterPanAction::pan:
    * @action: the #ClutterPanAction that emitted the signal
    * @actor: the #ClutterActor attached to the @action
    * @is_interpolated: if the event is the result of interpolating
@@ -536,7 +536,7 @@ clutter_pan_action_class_init (ClutterPanActionClass *klass)
                   G_TYPE_BOOLEAN);
 
   /**
-   * ClutterPanAction:pan-stopped:
+   * ClutterPanAction::pan-stopped:
    * @action: the #ClutterPanAction that emitted the signal
    * @actor: the #ClutterActor attached to the @action
    *
