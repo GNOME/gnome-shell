@@ -11695,7 +11695,7 @@ clutter_actor_get_pivot_point (ClutterActor *self,
   info = _clutter_actor_get_transform_info_or_defaults (self);
 
   if (pivot_x != NULL)
-    *pivot_y = info->pivot.x;
+    *pivot_x = info->pivot.x;
 
   if (pivot_y != NULL)
     *pivot_y = info->pivot.y;
