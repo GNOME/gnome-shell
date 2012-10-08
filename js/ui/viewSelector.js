@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -19,6 +20,7 @@ const Tweener = imports.ui.tweener;
 const Wanda = imports.ui.wanda;
 const WorkspacesView = imports.ui.workspacesView;
 
+const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 
 const FocusTrap = new Lang.Class({
     Name: 'FocusTrap',
@@ -141,6 +143,16 @@ const ViewSelector = new Lang.Class({
         // accessing the properties.
         this.constrainHeight = new Clutter.BindConstraint({ source: this._pageArea,
                                                             coordinate: Clutter.BindCoordinate.HEIGHT });
+
+        global.display.add_keybinding('toggle-application-view',
+                                      new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
+                                      Meta.KeyBindingFlags.NONE,
+                                      Lang.bind(this, this._showWithAppsPage));
+    },
+
+    _showWithAppsPage: function() {
+        Main.overview.show();
+        this._showAppsButton.set_checked(true);
     },
 
     show: function() {

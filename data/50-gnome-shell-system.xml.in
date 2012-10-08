@@ -8,5 +8,8 @@
 	<KeyListEntry name="toggle-message-tray"
                       _description="Show the message tray"/>
 
+	<KeyListEntry name="toggle-application-view"
+                      _description="Show all applications"/>
+
 </KeyListEntries>
 
