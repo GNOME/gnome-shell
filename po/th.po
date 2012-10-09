@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-19 11:02+0000\n"
-"PO-Revision-Date: 2012-09-20 16:21+0700\n"
+"POT-Creation-Date: 2012-10-04 06:59+0000\n"
+"PO-Revision-Date: 2012-10-09 18:31+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "Language: th\n"
@@ -234,11 +234,11 @@ msgstr "ส่วนขยาย"
 msgid "Select an extension to configure using the combobox above."
 msgstr "เลือกส่วนขยายที่จะตั้งค่าโดยใช้กล่องคอมโบด้านบน"
 
-#: ../js/gdm/loginDialog.js:526
+#: ../js/gdm/loginDialog.js:528
 msgid "Session..."
 msgstr "วาระ..."
 
-#: ../js/gdm/loginDialog.js:674
+#: ../js/gdm/loginDialog.js:676
 msgctxt "title"
 msgid "Sign In"
 msgstr "เข้าระบบ"
@@ -246,37 +246,42 @@ msgstr "เข้าระบบ"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:741
+#: ../js/gdm/loginDialog.js:743
 msgid "Not listed?"
 msgstr "ไม่มีชื่อของคุณงั้นหรือ?"
 
-#: ../js/gdm/loginDialog.js:894 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:896 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
 #: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "ยกเลิก"
 
-#: ../js/gdm/loginDialog.js:899
+#: ../js/gdm/loginDialog.js:901
 msgctxt "button"
 msgid "Sign In"
 msgstr "เข้าระบบ"
 
-#: ../js/gdm/loginDialog.js:1238
+#: ../js/gdm/loginDialog.js:1240
 msgid "Login Window"
 msgstr "หน้าต่างเข้าระบบ"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:658 ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:773
+#. Translators: accessible name of the power menu in the login screen
+#: ../js/gdm/powerMenu.js:35
+msgid "Power"
+msgstr "เปิด/ปิด"
+
+#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:664
+#: ../js/ui/userMenu.js:775
 msgid "Suspend"
 msgstr "พักเครื่อง"
 
-#: ../js/gdm/powerMenu.js:93
+#: ../js/gdm/powerMenu.js:94
 msgid "Restart"
 msgstr "เปิดเครื่องใหม่"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:772
+#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:662 ../js/ui/userMenu.js:664
+#: ../js/ui/userMenu.js:774
 msgid "Power Off"
 msgstr "ปิดเครื่อง"
 
@@ -491,16 +496,16 @@ msgstr "สัปดาห์นี้"
 msgid "Next week"
 msgstr "สัปดาห์หน้า"
 
-#: ../js/ui/components/autorunManager.js:278
+#: ../js/ui/components/autorunManager.js:297
 msgid "Removable Devices"
 msgstr "อุปกรณ์ถอดเสียบ"
 
-#: ../js/ui/components/autorunManager.js:575
+#: ../js/ui/components/autorunManager.js:594
 #, c-format
 msgid "Open with %s"
 msgstr "เปิดด้วย %s"
 
-#: ../js/ui/components/autorunManager.js:601
+#: ../js/ui/components/autorunManager.js:620
 msgid "Eject"
 msgstr "เอาสื่อออก"
 
@@ -979,11 +984,11 @@ msgstr "ติดตั้ง"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "จะดาวน์โหลดและติดตั้ง '%s' จาก extensions.gnome.org หรือไม่?"
 
-#: ../js/ui/keyboard.js:327
+#: ../js/ui/keyboard.js:337
 msgid "tray"
 msgstr "ถาด"
 
-#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:194
+#: ../js/ui/keyboard.js:584 ../js/ui/status/keyboard.js:195
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "แป้นพิมพ์"
@@ -1036,19 +1041,19 @@ msgstr "ดูซอร์ส"
 msgid "Web Page"
 msgstr "หน้าเว็บ"
 
-#: ../js/ui/messageTray.js:1080
+#: ../js/ui/messageTray.js:1081
 msgid "Open"
 msgstr "เปิด"
 
-#: ../js/ui/messageTray.js:1087
+#: ../js/ui/messageTray.js:1088
 msgid "Remove"
 msgstr "ลบ"
 
-#: ../js/ui/messageTray.js:2052
+#: ../js/ui/messageTray.js:1533
 msgid "Message Tray"
 msgstr "ถาดข้อความ"
 
-#: ../js/ui/messageTray.js:2508
+#: ../js/ui/messageTray.js:2544
 msgid "System Information"
 msgstr "ข้อมูลระบบ"
 
@@ -1274,7 +1279,7 @@ msgstr "ตั้งค่าแป้นพิมพ์"
 msgid "Mouse Settings"
 msgstr "ตั้งค่าเมาส์"
 
-#: ../js/ui/status/bluetooth.js:269 ../js/ui/status/volume.js:236
+#: ../js/ui/status/bluetooth.js:269 ../js/ui/status/volume.js:234
 msgid "Sound Settings"
 msgstr "ตั้งค่าเสียง"
 
@@ -1332,11 +1337,11 @@ msgstr "กรุณาป้อนรหัส PIN ที่ระบุบน�
 msgid "OK"
 msgstr "ตกลง"
 
-#: ../js/ui/status/keyboard.js:227
+#: ../js/ui/status/keyboard.js:228
 msgid "Show Keyboard Layout"
 msgstr "แสดงผังแป้นพิมพ์"
 
-#: ../js/ui/status/keyboard.js:232
+#: ../js/ui/status/keyboard.js:233
 msgid "Region and Language Settings"
 msgstr "ตั้งค่าท้องที่และภาษา"
 
@@ -1555,7 +1560,7 @@ msgid "Unknown"
 msgstr "ไม่ทราบ"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:223
+#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "ความดังเสียง"
 
@@ -1567,63 +1572,59 @@ msgstr "ไมโครโฟน"
 msgid "Log in as another user"
 msgstr "เข้าระบบในนามผู้ใช้อื่น"
 
-#: ../js/ui/userMenu.js:175
+#: ../js/ui/userMenu.js:180
 msgid "Available"
 msgstr "อยู่"
 
-#: ../js/ui/userMenu.js:178
+#: ../js/ui/userMenu.js:183
 msgid "Busy"
 msgstr "ไม่ว่าง"
 
-#: ../js/ui/userMenu.js:181
+#: ../js/ui/userMenu.js:186
 msgid "Invisible"
 msgstr "ซ่อนตัว"
 
-#: ../js/ui/userMenu.js:184
+#: ../js/ui/userMenu.js:189
 msgid "Away"
 msgstr "ไม่อยู่"
 
-#: ../js/ui/userMenu.js:187
+#: ../js/ui/userMenu.js:192
 msgid "Idle"
 msgstr "ไม่มีกิจกรรม"
 
-#: ../js/ui/userMenu.js:190
+#: ../js/ui/userMenu.js:195
 msgid "Unavailable"
 msgstr "ออฟไลน์"
 
-#: ../js/ui/userMenu.js:613 ../js/ui/userMenu.js:754
-msgid "Switch User"
-msgstr "สลับผู้ใช้"
-
-#: ../js/ui/userMenu.js:614
-msgid "Switch Session"
-msgstr "สลับวาระ"
-
-#: ../js/ui/userMenu.js:738
+#: ../js/ui/userMenu.js:740
 msgid "Notifications"
 msgstr "การแจ้งเหตุ"
 
-#: ../js/ui/userMenu.js:746
+#: ../js/ui/userMenu.js:748
 msgid "System Settings"
 msgstr "ตั้งค่าระบบ"
 
-#: ../js/ui/userMenu.js:759
+#: ../js/ui/userMenu.js:756
+msgid "Switch User"
+msgstr "สลับผู้ใช้"
+
+#: ../js/ui/userMenu.js:761
 msgid "Log Out"
 msgstr "ออกจากระบบ"
 
-#: ../js/ui/userMenu.js:764
+#: ../js/ui/userMenu.js:766
 msgid "Lock"
 msgstr "ล็อค"
 
-#: ../js/ui/userMenu.js:779
+#: ../js/ui/userMenu.js:781
 msgid "Install Updates & Restart"
 msgstr "ติดตั้งรายการปรับรุ่น & เปิดเครื่องใหม่"
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:799
 msgid "Your chat status will be set to busy"
 msgstr "จะกำหนดสถานะการสนทนาของคุณเป็นไม่ว่าง"
 
-#: ../js/ui/userMenu.js:798
+#: ../js/ui/userMenu.js:800
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1643,7 +1644,7 @@ msgstr "โปรแกรม"
 msgid "Search"
 msgstr "ค้นหา"
 
-#: ../js/ui/wanda.js:119
+#: ../js/ui/wanda.js:117
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1652,12 +1653,12 @@ msgstr ""
 "เสียใจด้วย วันนี้ไม่มีคำคมสำหรับคุณ:\n"
 "%s"
 
-#: ../js/ui/wanda.js:123
+#: ../js/ui/wanda.js:121
 #, c-format
 msgid "%s the Oracle says"
 msgstr "หมอดู %s กล่าว"
 
-#: ../js/ui/wanda.js:164
+#: ../js/ui/wanda.js:162
 msgid "Your favorite Easter Egg"
 msgstr "ไข่อีสเตอร์สุดโปรดของคุณ"
 
@@ -1730,6 +1731,9 @@ msgstr "ปริยาย"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "กล่องโต้ตอบยืนยันตัวบุคคลถูกผู้ใช้ปิดทิ้ง"
+
+#~ msgid "Switch Session"
+#~ msgstr "สลับวาระ"
 
 #~ msgid "Failed to unmount '%s'"
 #~ msgstr "เลิกเมานท์ '%s' ไม่สำเร็จ"
