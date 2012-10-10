@@ -726,7 +726,8 @@ const ScreenShield = new Lang.Class({
                                                          y_align: Clutter.ActorAlign.CENTER,
                                                          x_expand: true,
                                                          y_expand: true,
-                                                         vertical: true });
+                                                         vertical: true,
+                                                         style_class: 'screen-shield-contents-box' });
         this._clock = new Clock();
         this._lockScreenContentsBox.add(this._clock.actor, { x_fill: true,
                                                              y_fill: true });
