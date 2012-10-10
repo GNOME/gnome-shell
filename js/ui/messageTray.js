@@ -1514,7 +1514,7 @@ const MessageTray = new Lang.Class({
                 this._updateState();
             }));
 
-        Main.sessionMode.connect('updated', Lang.bind(this, this._updateState));
+        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
 
         global.display.add_keybinding('toggle-message-tray',
                                       new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
@@ -1530,9 +1530,17 @@ const MessageTray = new Lang.Class({
         this._trayDwelling = false;
         this._trayDwellUserTime = 0;
 
-        Main.ctrlAltTabManager.addGroup(this._summary, _("Message Tray"), 'start-here-symbolic',
-                                        { focusCallback: Lang.bind(this, this.toggleAndNavigate),
-                                          sortGroup: CtrlAltTab.SortGroup.BOTTOM });
+        this._sessionUpdated();
+    },
+
+    _sessionUpdated: function() {
+        if (Main.sessionMode.isLocked || Main.sessionMode.isGreeter)
+            Main.ctrlAltTabManager.removeGroup(this._summary);
+        else
+            Main.ctrlAltTabManager.addGroup(this._summary, _("Message Tray"), 'start-here-symbolic',
+                                            { focusCallback: Lang.bind(this, this.toggleAndNavigate),
+                                              sortGroup: CtrlAltTab.SortGroup.BOTTOM });
+        this._updateState();
     },
 
     _checkTrayDwell: function(x, y) {
