@@ -1211,7 +1211,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _onOpened: function() {
-        Main.ctrlAltTabManager.addGroup(this.contentLayout,
+        Main.ctrlAltTabManager.addGroup(this.dialogLayout,
                                         _("Login Window"),
                                         'dialog-password',
                                         { sortGroup: CtrlAltTab.SortGroup.MIDDLE });
