@@ -95,13 +95,13 @@ const NotificationsBox = new Lang.Class({
 
         this._residentNotificationBox = new St.BoxLayout({ vertical: true,
                                                            style_class: 'screen-shield-notifications-box' });
-        let scrollView = new St.ScrollView({ x_fill: false, x_align: St.Align.MIDDLE });
+        let scrollView = new St.ScrollView({ x_fill: false, x_align: St.Align.START });
         this._persistentNotificationBox = new St.BoxLayout({ vertical: true,
                                                              style_class: 'screen-shield-notifications-box' });
         scrollView.add_actor(this._persistentNotificationBox);
 
         this.actor.add(this._residentNotificationBox, { x_fill: true });
-        this.actor.add(scrollView, { x_fill: true, x_align: St.Align.MIDDLE });
+        this.actor.add(scrollView, { x_fill: true, x_align: St.Align.START });
 
         this._items = [];
         Main.messageTray.getSummaryItems().forEach(Lang.bind(this, function(item) {
@@ -153,7 +153,7 @@ const NotificationsBox = new Lang.Class({
         box.add(sourceActor.actor, { y_fill: true });
 
         let textBox = new St.BoxLayout({ vertical: true });
-        box.add(textBox);
+        box.add(textBox, { y_fill: false, y_align: St.Align.START });
 
         let label = new St.Label({ text: source.title,
                                    style_class: 'screen-shield-notification-label' });
@@ -190,7 +190,7 @@ const NotificationsBox = new Lang.Class({
             item.prepareNotificationStackForShowing();
         } else {
             [obj.sourceBox, obj.countLabel] = this._makeNotificationSource(item.source);
-            this._persistentNotificationBox.add(obj.sourceBox, { x_fill: false, x_align: St.Align.MIDDLE });
+            this._persistentNotificationBox.add(obj.sourceBox, { x_fill: false, x_align: St.Align.START });
         }
 
         obj.contentUpdatedId = item.connect('content-updated', Lang.bind(this, this._onItemContentUpdated));
@@ -236,7 +236,7 @@ const NotificationsBox = new Lang.Class({
             this._residentNotificationBox.remove_actor(obj.item.notificationStackWidget);
 
             [obj.sourceBox, obj.countLabel] = this._makeNotificationSource(obj.source);
-            this._persistentNotificationBox.add(obj.sourceBox);
+            this._persistentNotificationBox.add(obj.sourceBox, { x_fill: false, x_align: St.Align.START });
         } else if (itemShouldBeResident && !obj.resident) {
             // make into a resident item
             obj.sourceBox.destroy();
