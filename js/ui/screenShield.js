@@ -126,13 +126,12 @@ const NotificationsBox = new Lang.Class({
     },
 
     _updateVisibility: function() {
-        if (this._residentNotificationBox.get_n_children() > 0) {
-            this.actor.show();
-            return;
-        }
+        this._residentNotificationBox.visible = this._residentNotificationBox.get_n_children() > 0;
+        this._persistentNotificationBox.visible = this._persistentNotificationBox.get_children().some(function(a) {
+            return a.visible;
+        });
 
-        let children = this._persistentNotificationBox.get_children();
-        this.actor.visible = children.some(function(a) { return a.visible; });
+        this.actor.visible = this._residentNotificationBox.visible || this._persistentNotificationBox.visible;
     },
 
     _sourceIsResident: function(source) {
