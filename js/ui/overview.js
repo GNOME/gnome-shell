@@ -298,9 +298,11 @@ const Overview = new Lang.Class({
         if (!this.visible || this.animationInProgress)
             return;
 
+        let appsActive = this._viewSelector.getAppsActive();
         let searchActive = this._viewSelector.getSearchActive();
+
         let dashVisible = !searchActive || inDrag;
-        let thumbnailsVisible = !searchActive || inDrag;
+        let thumbnailsVisible = (!searchActive && !appsActive) || inDrag;
         let trayVisible = !searchActive;
 
         if (dashVisible)

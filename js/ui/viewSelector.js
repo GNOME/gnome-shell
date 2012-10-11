@@ -455,6 +455,10 @@ const ViewSelector = new Lang.Class({
         RemoteSearch.loadRemoteSearchProviders(Lang.bind(this, this.addSearchProvider));
     },
 
+    getAppsActive: function() {
+        return this._showAppsButton.checked;
+    },
+
     addSearchProvider: function(provider) {
         if (!this._shouldUseSearchProvider(provider))
             return;
