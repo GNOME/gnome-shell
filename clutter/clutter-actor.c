@@ -3953,9 +3953,14 @@ _clutter_actor_stop_transitions (ClutterActor *self)
     {
       TransitionClosure *closure = value;
 
-      /* if the transition is implicit we just remove it now */
-      if (closure->is_implicit)
-        g_hash_table_iter_remove (&iter);
+      /* implicit transitions, and automatically managed explicit ones,
+       * should be removed at this point
+       */
+      if (closure->is_implicit ||
+          clutter_transition_get_remove_on_complete (closure->transition))
+        {
+          g_hash_table_iter_remove (&iter);
+        }
       else
         {
           /* otherwise we stop it, and the transition will be removed
@@ -18525,7 +18530,8 @@ on_transition_stopped (ClutterTransition *transition,
   t_quark = g_quark_from_string (clos->name);
   t_name = g_strdup (clos->name);
 
-  if (clos->is_implicit)
+  if (clos->is_implicit ||
+      clutter_transition_get_remove_on_complete (transition))
     {
       /* we take a reference here because removing the closure
        * will release the reference on the transition, and we
