@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-07-17 07:18+0000\n"
-"PO-Revision-Date: 2012-07-19 09:58+0100\n"
+"POT-Creation-Date: 2012-10-11 14:45+0000\n"
+"PO-Revision-Date: 2012-10-11 19:56+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -51,39 +51,39 @@ msgstr "Dogodek zvonjenja"
 msgid "Unknown window information request: %d"
 msgstr "Zahteva izpisa podrobnosti neznanega okna: %d"
 
-#: ../src/core/delete.c:114
+#: ../src/core/delete.c:113
 #, c-format
 msgid "%s is not responding."
 msgstr "Program %s se ne odziva."
 
-#: ../src/core/delete.c:118
+#: ../src/core/delete.c:117
 msgid "Application is not responding."
 msgstr "Program se ne odziva."
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:122
 msgid "You may choose to wait a short while for it to continue or force the application to quit entirely."
 msgstr "Lahko še malo počakate, če program morda spet začne delovati, ali pa vsilite končanje delovanja."
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:129
 msgid "_Wait"
 msgstr "_Počakaj"
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:129
 msgid "_Force Quit"
 msgstr "_Vsili konec"
 
-#: ../src/core/display.c:380
+#: ../src/core/display.c:396
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Manjka razširitev %s, ki je ključna za sestavljanje"
 
-#: ../src/core/display.c:446
+#: ../src/core/display.c:492
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Ni mogoče odpreti zaslona '%s' okenskega sistema X\n"
 
 # G:1 K:0 O:0
-#: ../src/core/keybindings.c:844
+#: ../src/core/keybindings.c:853
 #, c-format
 msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
 msgstr "Tipko %s s spremenilnikom %x uporablja že nek drug program\n"
@@ -143,27 +143,27 @@ msgstr "Izpiši različico"
 msgid "Mutter plugin to use"
 msgstr "Vstavek Mutter za uporabo"
 
-#: ../src/core/prefs.c:1065
+#: ../src/core/prefs.c:1079
 msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
 msgstr "Obhodi za pokvarjene programe so onemogočeni. Nekateri programi se morda ne bodo odzivali na pričakovan način.\n"
 
-#: ../src/core/prefs.c:1140
+#: ../src/core/prefs.c:1154
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Ni mogoče razčleniti opisa pisave \"%s\" iz ključa GSettings %s\n"
 
-#: ../src/core/prefs.c:1206
+#: ../src/core/prefs.c:1220
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 msgstr "\"%s\", najden v podatkovni zbirki nastavitev, ni veljaven spremenilnik za miškine gumbe.\n"
 
-#: ../src/core/prefs.c:1724
+#: ../src/core/prefs.c:1747
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 msgstr "\"%s\", najden v podatkovni zbirki nastavitev, ni veljaven ključ za tipkovno bližnjico \"%s\"\n"
 
 # G:1 K:0 O:0
-#: ../src/core/prefs.c:1821
+#: ../src/core/prefs.c:1844
 #, c-format
 msgid "Workspace %d"
 msgstr "Delovna površina %d"
@@ -288,7 +288,7 @@ msgid "Window manager error: "
 msgstr "Napaka upravljalnika oken: "
 
 #. first time through
-#: ../src/core/window.c:7234
+#: ../src/core/window.c:7237
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LEADER kot je zavedeno v ICCCM.\n"
@@ -300,27 +300,27 @@ msgstr "Okno %s nastavi svoj SM_CLIENT_ID, namesto, da bi nastavilo WM_CLIENT_LE
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7899
+#: ../src/core/window.c:7902
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Okno %s določi namig MWM, ki pove, da ni mogoče spremeniti velikosti, hkrati pa določi najmanjšo velikost na %d x %d in največjo na %d x %d; vrednost ni smiselna.\n"
 
-#: ../src/core/window-props.c:310
+#: ../src/core/window-props.c:274
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Program je nastavil pokvarjen _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:429
+#: ../src/core/window-props.c:393
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
 
-#: ../src/core/window-props.c:1484
+#: ../src/core/window-props.c:1448
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Neveljaven WM_TRANSIENT_FOR za okno 0x%lx naveden za %s.\n"
 
-#: ../src/core/window-props.c:1495
+#: ../src/core/window-props.c:1459
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "Predmet WM_TRANSIENT_FOR okna 0x%lx za %s lahko ustvari zanko.\n"
@@ -404,18 +404,26 @@ msgid "Determines whether the use of popup and highlight frame should be disable
 msgstr "Določa ali naj bo uporaba pojavnih zavihkov in poudarjanja onemogočena med kroženjem oken."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "Zamakni spremembe žarišča, dokler se kazalnik še premika"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then the focus will not be changed immediately when entering a window, but only after the pointer stops moving."
+msgstr "Izbrana možnost omogoča, da se žarišče, v kolikor je izbran način \"sloppy\" ali \"miška\", ne spremeni takoj ob izbiri okna. Žarišče se spremeni, ko se kazalnik preneha premikati."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
 msgstr "Prilagodljiva obroba pravokotnika"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid "The amount of total draggable borders. If the theme's visible borders are not enough, invisible borders will be added to meet this value."
 msgstr "Delež skupne prilagodljive obrobe. V kolikor vidni robovi teme niso dovolj, so dodane nevidne obrobe, za dodatno prilagajanje."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Select window from tab popup"
 msgstr "Izbor okna iz pojavnega zavihka"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid "Cancel tab popup"
 msgstr "Prekliči pojavni zavihek"
 
