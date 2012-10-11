@@ -170,7 +170,16 @@ shell_screen_grabber_grab (ShellScreenGrabber *grabber,
        * top-left */
       glGetIntegerv (GL_VIEWPORT, vp_size);
       y = vp_size[3] - (y + height);
+
+      /* the "big-endian" version actually works for both, but the litle-endian
+       * version has been better tested with a range of drivers, so we'll
+       * keep on using it on little-endian.
+       */
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
       glReadPixels (x, y, width, height, GL_BGRA, GL_UNSIGNED_BYTE, 0);
+#else
+      glReadPixels (x, y, width, height, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, 0);
+#endif
 
       mapped_data = pf_glMapBufferARB (GL_PIXEL_PACK_BUFFER_ARB, GL_READ_ONLY_ARB);
 
