@@ -142,6 +142,7 @@ const Overview = new Lang.Class({
         this.animationInProgress = false;
         this._hideInProgress = false;
         this.searchActive = false;
+        this.appsActive = false;
 
         // During transitions, we raise this to the top to avoid having the overview
         // area be reactive; it causes too many issues such as double clicks on
@@ -259,6 +260,19 @@ const Overview = new Lang.Class({
                 if (this.visible && !this.animationInProgress)
                     Main.messageTray.show();
             }));
+        this._viewSelector.connect('apps-button-checked', Lang.bind(this,
+            function() {
+                this.appsActive = true;
+                this._thumbnailsBox.hide();
+                Main.messageTray.hide();
+            }));
+        this._viewSelector.connect('apps-button-unchecked', Lang.bind(this,
+            function() {
+                this.appsActive = false;
+                this._thumbnailsBox.show();
+                if (this.visible && !this.animationInProgress)
+                    Main.messageTray.show();
+            }));
 
         this.connect('app-drag-begin',
                               Lang.bind(this, function () {
@@ -270,12 +284,16 @@ const Overview = new Lang.Class({
                                   if (this.searchActive) {
                                       this._dash.hide();
                                       this._thumbnailsBox.hide();
+                                  } else if (this.appsActive) {
+                                      this._thumbnailsBox.hide();
                                   }
                               }));
         this.connect('app-drag-end',
                               Lang.bind(this, function () {
                                   if (this.searchActive) {
                                       this._dash.hide();
+                                      this._thumbnailsBox.hide();
+                                  } else if (this.appsActive) {
                                       this._thumbnailsBox.hide();
                                   }
                               }));

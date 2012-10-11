@@ -216,6 +216,11 @@ const ViewSelector = new Lang.Class({
     },
 
     _onShowAppsButtonToggled: function() {
+        if(this._showAppsButton.checked)
+            this.emit('apps-button-checked');
+        else
+            this.emit('apps-button-unchecked');
+
         if (this.entryNonEmpty)
             this.reset();
         else
