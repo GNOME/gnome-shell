@@ -11,5 +11,8 @@
 	<KeyListEntry name="toggle-application-view"
                       _description="Show all applications"/>
 
+	<KeyListEntry name="open-application-menu"
+                      _description="Open the application menu"/>
+
 </KeyListEntries>
 
