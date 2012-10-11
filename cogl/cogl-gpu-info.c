@@ -540,14 +540,12 @@ probed:
 
   /* Determine the driver bugs */
 
-  /* In Mesa < 8.0.2 the glReadPixels implementation is really slow
-     because it converts each pixel to a floating point representation
-     and back even if the data could just be memcpy'd. The Intel
+  /* In Mesa the glReadPixels implementation is really slow
+     when using the Intel driver. The Intel
      driver has a fast blit path when reading into a PBO. Reading into
      a temporary PBO and then memcpying back out to the application's
      memory is faster than a regular glReadPixels in this case */
   if (gpu->vendor == COGL_GPU_INFO_VENDOR_INTEL &&
-      gpu->driver_package == COGL_GPU_INFO_DRIVER_PACKAGE_MESA &&
-      gpu->driver_package_version < COGL_VERSION_ENCODE (8, 0, 2))
+      gpu->driver_package == COGL_GPU_INFO_DRIVER_PACKAGE_MESA)
     gpu->driver_bugs |= COGL_GPU_INFO_DRIVER_BUG_MESA_46631_SLOW_READ_PIXELS;
 }
