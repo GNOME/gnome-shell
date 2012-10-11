@@ -1498,7 +1498,7 @@ const MessageTray = new Lang.Class({
                 this._overviewVisible = true;
                 this._grabHelper.ungrab(); // drop modal grab if necessary
                 this.actor.add_style_pseudo_class('overview');
-                this._updateState();
+                this.show();
             }));
         Main.overview.connect('hiding', Lang.bind(this,
             function() {
