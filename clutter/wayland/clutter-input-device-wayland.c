@@ -518,6 +518,7 @@ clutter_input_device_wayland_class_init (ClutterInputDeviceWaylandClass *klass)
 static void
 clutter_input_device_wayland_init (ClutterInputDeviceWayland *self)
 {
+  self->repeat_key = XKB_KEYCODE_INVALID;
 }
 
 /**
