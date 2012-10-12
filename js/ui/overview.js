@@ -10,6 +10,7 @@ const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 const Gdk = imports.gi.Gdk;
 
+const CenterLayout = imports.ui.centerLayout;
 const Dash = imports.ui.dash;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
@@ -124,7 +125,10 @@ const Overview = new Lang.Class({
                                             vertical: true });
         this._overview._delegate = this;
 
-        this._group = new St.BoxLayout({ name: 'overview-group' });
+        let layout = new CenterLayout.CenterLayout();
+        CenterLayout.connectSpacing(layout);
+        this._group = new St.Widget({ name: 'overview-group',
+                                      layout_manager: layout });
 
         this._scrollDirection = SwipeScrollDirection.NONE;
         this._scrollAdjustment = null;
