@@ -57,7 +57,7 @@ const ScreenSaverIface = <interface name="org.gnome.ScreenSaver">
     <arg name="active" direction="out" type="b" />
 </method>
 <method name="SetActive">
-    <arg name="value" direction="in" type="u" />
+    <arg name="value" direction="in" type="b" />
 </method>
 <signal name="ActiveChanged">
     <arg name="new_value" type="b" />
