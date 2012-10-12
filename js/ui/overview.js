@@ -495,7 +495,7 @@ const Overview = new Lang.Class({
         let contentY = Main.panel.actor.height;
         let contentHeight = primary.height - contentY - Main.messageTray.actor.height;
 
-        this._overview.set_x(primary.x);
+        this._overview.set_position(primary.x, primary.y);
         this._overview.set_size(primary.width, primary.height);
 
         this._coverPane.set_position(0, contentY);
