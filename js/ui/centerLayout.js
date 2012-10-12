@@ -2,6 +2,39 @@
 
 const Lang = imports.lang;
 const Clutter = imports.gi.Clutter;
+const St = imports.gi.St;
+
+function connectLayoutManager(layoutManager, styleChanged) {
+    let widget, styleChangedId;
+
+    function _styleChanged() {
+        let themeNode = widget.get_theme_node();
+        styleChanged(themeNode, widget);
+    }
+
+    function actorChanged() {
+        if (widget) {
+            widget.disconnect(styleChangedId);
+            styleChangedId = 0;
+        }
+
+        let actor = layoutManager.get_actor();
+        if (actor && actor instanceof St.Widget) {
+            widget = actor;
+            styleChangedId = widget.connect('style-changed', _styleChanged);
+            _styleChanged();
+        }
+    }
+
+    layoutManager.connect('notify::actor', actorChanged);
+    return layoutManager;
+}
+
+function connectSpacing(layoutManager) {
+    return connectLayoutManager(layoutManager, function(themeNode, widget) {
+        layoutManager.spacing = themeNode.get_length('spacing');
+    });
+}
 
 const CenterLayout = new Lang.Class({
     Name: 'CenterLayout',
