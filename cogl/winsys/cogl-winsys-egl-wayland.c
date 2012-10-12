@@ -48,6 +48,7 @@ typedef struct _CoglRendererWayland
   struct wl_display *wayland_display;
   struct wl_compositor *wayland_compositor;
   struct wl_shell *wayland_shell;
+  struct wl_registry *wayland_registry;
 } CoglRendererWayland;
 
 typedef struct _CoglDisplayWayland
@@ -73,21 +74,21 @@ typedef struct _CoglOnscreenWayland
 } CoglOnscreenWayland;
 
 static void
-display_handle_global_cb (struct wl_display *display,
-                          uint32_t id,
-                          const char *interface,
-                          uint32_t version,
-                          void *data)
+registry_handle_global_cb (void *data,
+                           struct wl_registry *registry,
+                           uint32_t id,
+                           const char *interface,
+                           uint32_t version)
 {
   CoglRendererEGL *egl_renderer = (CoglRendererEGL *)data;
   CoglRendererWayland *wayland_renderer = egl_renderer->platform;
 
   if (strcmp (interface, "wl_compositor") == 0)
     wayland_renderer->wayland_compositor =
-      wl_display_bind (display, id, &wl_compositor_interface);
+      wl_registry_bind (registry, id, &wl_compositor_interface, 1);
   else if (strcmp(interface, "wl_shell") == 0)
     wayland_renderer->wayland_shell =
-      wl_display_bind (display, id, &wl_shell_interface);
+      wl_registry_bind (registry, id, &wl_shell_interface, 1);
 }
 
 static void
@@ -100,6 +101,10 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
   g_slice_free (CoglRendererWayland, egl_renderer->platform);
   g_slice_free (CoglRendererEGL, egl_renderer);
 }
+
+static const struct wl_registry_listener registry_listener = {
+  registry_handle_global_cb,
+};
 
 static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
@@ -145,9 +150,12 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
           goto error;
         }
 
-      wl_display_add_global_listener (wayland_renderer->wayland_display,
-                                      display_handle_global_cb,
-                                      egl_renderer);
+      wayland_renderer->wayland_registry =
+        wl_display_get_registry (wayland_renderer->wayland_display);
+
+      wl_registry_add_listener (wayland_renderer->wayland_registry,
+                                &registry_listener,
+                                egl_renderer);
     }
 
   /*
