@@ -15,6 +15,7 @@ const Signals = imports.signals;
 const Atk = imports.gi.Atk;
 
 
+const CenterLayout = imports.ui.centerLayout;
 const Config = imports.misc.config;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const DND = imports.ui.dnd;
@@ -937,12 +938,47 @@ try {
     log('NMApplet is not supported. It is possible that your NetworkManager version is too old');
 }
 
+const PanelLayout = new Lang.Class({
+    Name: 'PanelLayout',
+    Extends: CenterLayout.CenterLayout,
+
+    vfunc_allocate: function(container, box, flags) {
+        this.parent(container, box, flags);
+
+        let availWidth = box.x2 - box.x1;
+        let availHeight = box.y2 - box.y1;
+
+        let [left, center, right, leftCorner, rightCorner] = container.get_children();
+        let childBox = new Clutter.ActorBox();
+
+        let cornerMinWidth, cornerMinHeight;
+        let cornerWidth, cornerHeight;
+
+        [cornerMinWidth, cornerWidth] = leftCorner.get_preferred_width(-1);
+        [cornerMinHeight, cornerHeight] = leftCorner.get_preferred_height(-1);
+        childBox.x1 = 0;
+        childBox.x2 = cornerWidth;
+        childBox.y1 = availHeight;
+        childBox.y2 = availHeight + cornerHeight;
+        leftCorner.allocate(childBox, flags);
+
+        [cornerMinWidth, cornerWidth] = rightCorner.get_preferred_width(-1);
+        [cornerMinHeight, cornerHeight] = rightCorner.get_preferred_height(-1);
+        childBox.x1 = availWidth - cornerWidth;
+        childBox.x2 = availWidth;
+        childBox.y1 = availHeight;
+        childBox.y2 = availHeight + cornerHeight;
+        rightCorner.allocate(childBox, flags);
+    }
+});
+
 const Panel = new Lang.Class({
     Name: 'Panel',
 
     _init : function() {
-        this.actor = new Shell.GenericContainer({ name: 'panel',
-                                                  reactive: true });
+        this.actor = new St.Widget({ name: 'panel',
+                                     reactive: true,
+                                     layoutManager: new PanelLayout() });
         this.actor._delegate = this;
 
         this._sessionStyle = null;
@@ -962,7 +998,6 @@ const Panel = new Lang.Class({
             this._leftCorner = new PanelCorner(this._rightBox, St.Side.LEFT);
         else
             this._leftCorner = new PanelCorner(this._leftBox, St.Side.LEFT);
-
         this.actor.add_actor(this._leftCorner.actor);
 
         if (this.actor.get_text_direction() == Clutter.TextDirection.RTL)
@@ -971,9 +1006,6 @@ const Panel = new Lang.Class({
             this._rightCorner = new PanelCorner(this._rightBox, St.Side.RIGHT);
         this.actor.add_actor(this._rightCorner.actor);
 
-        this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
-        this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
-        this.actor.connect('allocate', Lang.bind(this, this._allocate));
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
 
         Main.layoutManager.panelBox.add(this.actor);
@@ -982,83 +1014,6 @@ const Panel = new Lang.Class({
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._updatePanel));
         this._updatePanel();
-    },
-
-    _getPreferredWidth: function(actor, forHeight, alloc) {
-        alloc.min_size = -1;
-        alloc.natural_size = Main.layoutManager.primaryMonitor.width;
-    },
-
-    _getPreferredHeight: function(actor, forWidth, alloc) {
-        // We don't need to implement this; it's forced by the CSS
-        alloc.min_size = -1;
-        alloc.natural_size = -1;
-    },
-
-    _allocate: function(actor, box, flags) {
-        let allocWidth = box.x2 - box.x1;
-        let allocHeight = box.y2 - box.y1;
-
-        let [leftMinWidth, leftNaturalWidth] = this._leftBox.get_preferred_width(-1);
-        let [centerMinWidth, centerNaturalWidth] = this._centerBox.get_preferred_width(-1);
-        let [rightMinWidth, rightNaturalWidth] = this._rightBox.get_preferred_width(-1);
-
-        let sideWidth, centerWidth;
-        centerWidth = centerNaturalWidth;
-        sideWidth = (allocWidth - centerWidth) / 2;
-
-        let childBox = new Clutter.ActorBox();
-
-        childBox.y1 = 0;
-        childBox.y2 = allocHeight;
-        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL) {
-            childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth),
-                                                leftNaturalWidth);
-            childBox.x2 = allocWidth;
-        } else {
-            childBox.x1 = 0;
-            childBox.x2 = Math.min(Math.floor(sideWidth),
-                                   leftNaturalWidth);
-        }
-        this._leftBox.allocate(childBox, flags);
-
-        childBox.x1 = Math.ceil(sideWidth);
-        childBox.y1 = 0;
-        childBox.x2 = childBox.x1 + centerWidth;
-        childBox.y2 = allocHeight;
-        this._centerBox.allocate(childBox, flags);
-
-        childBox.y1 = 0;
-        childBox.y2 = allocHeight;
-        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL) {
-            childBox.x1 = 0;
-            childBox.x2 = Math.min(Math.floor(sideWidth),
-                                   rightNaturalWidth);
-        } else {
-            childBox.x1 = allocWidth - Math.min(Math.floor(sideWidth),
-                                                rightNaturalWidth);
-            childBox.x2 = allocWidth;
-        }
-        this._rightBox.allocate(childBox, flags);
-
-        let cornerMinWidth, cornerMinHeight;
-        let cornerWidth, cornerHeight;
-
-        [cornerMinWidth, cornerWidth] = this._leftCorner.actor.get_preferred_width(-1);
-        [cornerMinHeight, cornerHeight] = this._leftCorner.actor.get_preferred_height(-1);
-        childBox.x1 = 0;
-        childBox.x2 = cornerWidth;
-        childBox.y1 = allocHeight;
-        childBox.y2 = allocHeight + cornerHeight;
-        this._leftCorner.actor.allocate(childBox, flags);
-
-        [cornerMinWidth, cornerWidth] = this._rightCorner.actor.get_preferred_width(-1);
-        [cornerMinHeight, cornerHeight] = this._rightCorner.actor.get_preferred_height(-1);
-        childBox.x1 = allocWidth - cornerWidth;
-        childBox.x2 = allocWidth;
-        childBox.y1 = allocHeight;
-        childBox.y2 = allocHeight + cornerHeight;
-        this._rightCorner.actor.allocate(childBox, flags);
     },
 
     _onButtonPress: function(actor, event) {
