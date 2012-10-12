@@ -6,22 +6,23 @@
 # Raivis Dejus <orvils@gmail.com>, 2006, 2007, 2009.
 # Rudolfs <rudolfs.mazurs@gmail.com>, 2011.
 # Rūdofls Mazurs <rudolfs.mazurs@gmail.com>, 2011, 2012.
+# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2012.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: lv\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-06 23:35+0000\n"
-"PO-Revision-Date: 2012-09-22 00:16+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-12 22:25+0300\n"
+"PO-Revision-Date: 2012-10-12 22:31+0300\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
-"Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
+"Language-Team: Latviešu <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Gtranslator 2.91.5\n"
 
 #: ../src/50-mutter-windows.xml.in.h:1
 msgid "Windows"
@@ -53,43 +54,42 @@ msgstr "Zvana notikums"
 msgid "Unknown window information request: %d"
 msgstr "Nezināms logu informācijas pieprasījums — %d"
 
-#: ../src/core/delete.c:114
+#: ../src/core/delete.c:113
 #, c-format
-#| msgid "<tt>%s</tt> is not responding."
 msgid "%s is not responding."
 msgstr "%s nereaģē."
 
-#: ../src/core/delete.c:118
+#: ../src/core/delete.c:117
 msgid "Application is not responding."
 msgstr "Lietotne nereaģē."
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:122
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr ""
-"Var uzgaidīt neilgu brīdi, līdz tā atgūstas, vai arī aizvērt to "
-"piespiedu kārtā."
+"Var uzgaidīt neilgu brīdi, līdz tā atgūstas, vai arī aizvērt to piespiedu "
+"kārtā."
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:129
 msgid "_Wait"
 msgstr "_Gaidīt"
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:129
 msgid "_Force Quit"
 msgstr "Aizvērt _piespiedu kārtā"
 
-#: ../src/core/display.c:380
+#: ../src/core/display.c:396
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Trūkst %s paplašinājuma, kas nepieciešams kompozicionēšanai"
 
-#: ../src/core/display.c:446
+#: ../src/core/display.c:492
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Neizdevās atvērt X logu sistēmas displeju “%s”\n"
 
-#: ../src/core/keybindings.c:844
+#: ../src/core/keybindings.c:853
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -157,7 +157,7 @@ msgstr "Parādīt versiju"
 msgid "Mutter plugin to use"
 msgstr "Izmantojamais mutter spraudnis"
 
-#: ../src/core/prefs.c:1065
+#: ../src/core/prefs.c:1079
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -165,12 +165,12 @@ msgstr ""
 "Apvedceļi bojātām lietotnēm ir deaktivēti. Dažas lietotnes var neuzvesties "
 "pareizi.\n"
 
-#: ../src/core/prefs.c:1140
+#: ../src/core/prefs.c:1154
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Neizdevās parsēt fonta aprakstu “%s” no GSettings atslēgas %s\n"
 
-#: ../src/core/prefs.c:1206
+#: ../src/core/prefs.c:1220
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -179,7 +179,7 @@ msgstr ""
 "“%s”, kas atrasta konfigurācijas datubāzē, nav derīga vērtība peles pogas "
 "modifikatoram\n"
 
-#: ../src/core/prefs.c:1724
+#: ../src/core/prefs.c:1747
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -188,7 +188,7 @@ msgstr ""
 "“%s”, kas atrasta konfigurācijas datubāzē, nav derīga vērtība "
 "taustiņsasaistei “%s”\n"
 
-#: ../src/core/prefs.c:1821
+#: ../src/core/prefs.c:1844
 #, c-format
 msgid "Workspace %d"
 msgstr "Darbvieta %d"
@@ -204,8 +204,8 @@ msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"Ekrāna %d displejam “%s” jau ir logu pārvaldnieks; mēģiniet lietot --"
-"replace iespēju, lai aizvietotu pašreizējo logu pārvaldnieku.\n"
+"Ekrāna %d displejam “%s” jau ir logu pārvaldnieks; mēģiniet lietot --replace "
+"iespēju, lai aizvietotu pašreizējo logu pārvaldnieku.\n"
 
 #: ../src/core/screen.c:695
 #, c-format
@@ -275,8 +275,8 @@ msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
 msgstr ""
-"Šie logi neatbalsta “saglabāt pašreizējos iestatījumus” un būs "
-"jāpārstartē pašrocīgi nākamreiz, kad ierakstīsities."
+"Šie logi neatbalsta “saglabāt pašreizējos iestatījumus” un būs jāpārstartē "
+"pašrocīgi nākamreiz, kad ierakstīsities."
 
 #: ../src/core/util.c:80
 #, c-format
@@ -315,7 +315,7 @@ msgid "Window manager error: "
 msgstr "Logu pārvaldnieka kļūda: "
 
 #. first time through
-#: ../src/core/window.c:7234
+#: ../src/core/window.c:7237
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -331,7 +331,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7899
+#: ../src/core/window.c:7902
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -340,22 +340,22 @@ msgstr ""
 "Logs %s iestata MWM norādi, ka tā izmērs nav maināms, bet iestata minimālo "
 "izmēru %d x %d un maksimālo izmēru %d x %d; tas ir diezgan dīvaini.\n"
 
-#: ../src/core/window-props.c:310
+#: ../src/core/window-props.c:274
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Lietotne iestatīja neīstu _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:429
+#: ../src/core/window-props.c:393
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (uz %s)"
 
-#: ../src/core/window-props.c:1484
+#: ../src/core/window-props.c:1448
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Nederīgs WM_TRANSIENT_FOR logs 0x%lx norādīts %s.\n"
 
-#: ../src/core/window-props.c:1495
+#: ../src/core/window-props.c:1459
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR logs 0x%lx priekš %s veidotu ciklu.\n"
@@ -404,8 +404,8 @@ msgid ""
 msgstr ""
 "Šis taustiņš inicializēs “pārklāšanu”, kas ir kombināciju loga pārskats un "
 "lietotnes palaišanas sistēma. Noklusētais parasti ir “Windows taustiņš” uz "
-"PC aparatūras. Tiek sagaidīts, ka šī sasaite ir vai nu noklusējuma, vai tukša "
-"virkne."
+"PC aparatūras. Tiek sagaidīts, ka šī sasaite ir vai nu noklusējuma, vai "
+"tukša virkne."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid "Attach modal dialogs"
@@ -418,9 +418,8 @@ msgid ""
 "the parent window."
 msgstr ""
 "Ja patiess, tā vietā, lai būtu neatkarīgas virsraksta joslas, modālais "
-"dialogs "
-"būs piesaistīts virsraksta joslai vecāka logam un tiks pārvietots kopā ar "
-"vecāka logu."
+"dialogs būs piesaistīts virsraksta joslai vecāka logam un tiks pārvietots "
+"kopā ar vecāka logu."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:5
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -434,8 +433,7 @@ msgid ""
 msgstr ""
 "Ja aktivēts, logi, kas nomesti uz ekrāna labās vai kreisās malas, tiks "
 "izklāti pa visu ekrāna augstumu pusē no pieejamā platuma, bet tie, kas "
-"nomesti uz "
-"augšējās malas, tiks izklāti pa visu ekrānu."
+"nomesti uz augšējās malas, tiks izklāti pa visu ekrānu."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Workspaces are managed dynamically"
@@ -476,10 +474,24 @@ msgstr ""
 "notiek pārslēgšanās starp logiem ar tabulatora vai tildes taustiņiem."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "Aizkavēt fokusa izmaiņas, līdz rādītājs pārstāj kustēties"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focus will not be changed immediately when entering a window, but only "
+"after the pointer stops moving."
+msgstr ""
+"Ja patiess un fokusēšanas režīms ir vai nu \"sloppy\" (paviršs) vai \"mouse"
+"\" (pele), tad fokuss nemainīsies uzreiz pēc ieiešanas logā, bet tikai pēc "
+"tam, kad rādītājs beidzis kustēties."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
 msgstr "Velkams malas platums"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -487,11 +499,11 @@ msgstr ""
 "Kopējo velkamo malu apjoms. Ja motīva redzamās robežas nav pietiekamas, tiks "
 "pievienotas neredzamas robežas, lai iegūtu šo vērtību."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Select window from tab popup"
 msgstr "Izvēlēties logu no tabulatora izvēlnes"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid "Cancel tab popup"
 msgstr "Atcelt logu rādīšanu"
 
@@ -764,8 +776,8 @@ msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
 "fit the format"
 msgstr ""
-"Gtk:custom formāts ir “gtk:custom(color_name,fallback)”, “%s” "
-"neiekļaujas formātā"
+"Gtk:custom formāts ir “gtk:custom(color_name,fallback)”, “%s” neiekļaujas "
+"formātā"
 
 #: ../src/ui/theme.c:1276
 #, c-format
@@ -773,9 +785,8 @@ msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"GTK krāsas specifikācijā ir jābūt stāvoklim iekavās, piemēram, "
-"gtk:fg[NORMAL], "
-"kur NORMAL ir stāvoklis; neizdevās parsēt “%s”"
+"GTK krāsas specifikācijā ir jābūt stāvoklim iekavās, piemēram, gtk:fg"
+"[NORMAL], kur NORMAL ir stāvoklis; neizdevās parsēt “%s”"
 
 #: ../src/ui/theme.c:1290
 #, c-format
@@ -783,8 +794,8 @@ msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"GTK krāsas specifikācijā ir jābūt kvadrātiekavām pēc stāvokļa, piemēram, "
-"gtk:fg[NORMAL], kur NORMAL ir stāvoklis; neizdevās parsēt “%s”"
+"GTK krāsas specifikācijā ir jābūt kvadrātiekavām pēc stāvokļa, piemēram, gtk:"
+"fg[NORMAL], kur NORMAL ir stāvoklis; neizdevās parsēt “%s”"
 
 #: ../src/ui/theme.c:1301
 #, c-format
@@ -967,8 +978,8 @@ msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"Nav rāmja stila kopas loga tipam “%s” motīvā “%s”; pievienojiet <window "
-"type=\"%s\" style_set=\"jebkas\"/> elementu"
+"Nav rāmja stila kopas loga tipam “%s” motīvā “%s”; pievienojiet <window type="
+"\"%s\" style_set=\"jebkas\"/> elementu"
 
 #: ../src/ui/theme.c:5650 ../src/ui/theme.c:5712 ../src/ui/theme.c:5775
 #, c-format
@@ -1051,8 +1062,8 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"Nederīgs virsraksta mērogs “%s” (var būt xx-small,x-small,small,medium,"
-"large,x-large,xx-large)\n"
+"Nederīgs virsraksta mērogs “%s” (var būt xx-small,x-small,small,medium,large,"
+"x-large,xx-large)\n"
 
 #: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
 #: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
@@ -1110,8 +1121,7 @@ msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
 msgstr ""
-"Nevar norādīt gan “button_width” / “button_height”, gan “aspect_ratio” "
-"pogām"
+"Nevar norādīt gan “button_width” / “button_height”, gan “aspect_ratio” pogām"
 
 #: ../src/ui/theme-parser.c:1450
 #, c-format
@@ -1263,8 +1273,7 @@ msgid ""
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
 "Nevar būt divi draw_ops <piece> elementam (motīvs noteica draw_ops atribūtu "
-"un "
-"arī <draw_ops> elementu, vai noteica divus elementus)"
+"un arī <draw_ops> elementu, vai noteica divus elementus)"
 
 #: ../src/ui/theme-parser.c:3332
 msgid ""
@@ -2061,18 +2070,6 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 
 #~ msgid "Enable Visual Bell"
 #~ msgstr "Aktivizēt vizuālo zvanu"
-
-#~ msgid ""
-#~ "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-#~ "the focused window will be automatically raised after a delay specified "
-#~ "by the auto_raise_delay key. This is not related to clicking on a window "
-#~ "to raise it, nor to entering a window during drag-and-drop."
-#~ msgstr ""
-#~ "Ja patiess un fokusēšanas režīms ir vai nu \"paviršs\" vai \"pele\", tad "
-#~ "fokusetais logs tiks automātiski aktivizēts pēc aiztures (aizture tiek "
-#~ "noteikta ar auto_raise_delay taustiņu). Tas nebūs saistīts ar loga "
-#~ "aktivizēšanu pēc tam, kad uz to tiek uzklikšķināts vai arī ja tajā tiek "
-#~ "kaut kas ievilkts."
 
 #~ msgid ""
 #~ "If true, ignore the titlebar_font option, and use the standard "
