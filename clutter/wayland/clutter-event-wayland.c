@@ -42,7 +42,6 @@ typedef struct _ClutterEventSourceWayland
 {
   GSource source;
   GPollFD pfd;
-  uint32_t mask;
   struct wl_display *display;
 } ClutterEventSourceWayland;
 
@@ -95,7 +94,7 @@ clutter_event_source_wayland_dispatch (GSource *base,
 
   if (source->pfd.revents)
     {
-      wl_display_iterate (source->display, WL_DISPLAY_READABLE);
+      wl_display_dispatch (source->display);
       source->pfd.revents = 0;
     }
 
@@ -120,15 +119,6 @@ static GSourceFuncs clutter_event_source_wayland_funcs = {
     NULL
 };
 
-static int
-clutter_event_source_wayland_update (uint32_t mask, void *data)
-{
-  ClutterEventSourceWayland *source = data;
-
-  source->mask = mask;
-
-  return 0;
-}
 
 GSource *
 _clutter_event_source_wayland_new (struct wl_display *display)
@@ -140,8 +130,7 @@ _clutter_event_source_wayland_new (struct wl_display *display)
                   sizeof (ClutterEventSourceWayland));
   source->display = display;
   source->pfd.fd =
-    wl_display_get_fd (display,
-                       clutter_event_source_wayland_update, source);
+    wl_display_get_fd (display);
   source->pfd.events = G_IO_IN | G_IO_ERR;
   g_source_add_poll (&source->source, &source->pfd);
 

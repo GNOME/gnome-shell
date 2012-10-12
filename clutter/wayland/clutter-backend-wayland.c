@@ -126,17 +126,17 @@ static const struct wl_output_listener wayland_output_listener = {
 
 
 static void
-display_handle_global (struct wl_display *display,
-                       uint32_t id,
-                       const char *interface,
-                       uint32_t version,
-                       void *data)
+registry_handle_global (void *data,
+                        struct wl_registry *registry,
+                        uint32_t id,
+                        const char *interface,
+                        uint32_t version)
 {
   ClutterBackendWayland *backend_wayland = data;
 
   if (strcmp (interface, "wl_compositor") == 0)
     backend_wayland->wayland_compositor =
-      wl_display_bind (display, id, &wl_compositor_interface);
+      wl_registry_bind (registry, id, &wl_compositor_interface, 1);
   else if (strcmp (interface, "wl_seat") == 0)
     {
       ClutterDeviceManager *device_manager = backend_wayland->device_manager;
@@ -145,23 +145,27 @@ display_handle_global (struct wl_display *display,
   else if (strcmp (interface, "wl_shell") == 0)
     {
       backend_wayland->wayland_shell =
-        wl_display_bind (display, id, &wl_shell_interface);
+        wl_registry_bind (registry, id, &wl_shell_interface, 1);
     }
   else if (strcmp (interface, "wl_shm") == 0)
     {
       backend_wayland->wayland_shm =
-        wl_display_bind (display, id, &wl_shm_interface);
+        wl_registry_bind (registry, id, &wl_shm_interface, 1);
     }
   else if (strcmp (interface, "wl_output") == 0)
     {
       /* FIXME: Support multiple outputs */
       backend_wayland->wayland_output =
-        wl_display_bind (display, id, &wl_output_interface);
+        wl_registry_bind (registry, id, &wl_output_interface, 1);
       wl_output_add_listener (backend_wayland->wayland_output,
                               &wayland_output_listener,
                               backend_wayland);
     }
 }
+
+static const struct wl_registry_listener wayland_registry_listener = {
+  registry_handle_global,
+};
 
 static gboolean
 clutter_backend_wayland_post_parse (ClutterBackend  *backend,
@@ -178,6 +182,9 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
                   "Failed to open Wayland display socket");
       return FALSE;
     }
+
+  backend_wayland->wayland_registry =
+    wl_display_get_registry (backend_wayland->wayland_display);
 
   backend_wayland->wayland_source =
     _clutter_event_source_wayland_new (backend_wayland->wayland_display);
@@ -200,9 +207,9 @@ clutter_backend_wayland_post_parse (ClutterBackend  *backend,
     _clutter_device_manager_wayland_new (backend);
 
   /* Set up listener so we'll catch all events. */
-  wl_display_add_global_listener (backend_wayland->wayland_display,
-                                  display_handle_global,
-                                  backend_wayland);
+  wl_registry_add_listener (backend_wayland->wayland_registry,
+                            &wayland_registry_listener,
+                            backend_wayland);
 
   /* Wait until we have been notified about the compositor and shell objects */
   while (!(backend_wayland->wayland_compositor &&

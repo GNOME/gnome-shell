@@ -365,6 +365,8 @@ clutter_wayland_handle_pointer_enter (void *data,
                      0,
                      32, /* XXX: FFS */
                      32);
+
+  wl_surface_commit (backend_wayland->cursor_surface);
 }
 
 static void

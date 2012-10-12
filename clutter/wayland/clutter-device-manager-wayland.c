@@ -162,8 +162,8 @@ _clutter_device_manager_wayland_add_input_group (ClutterDeviceManager *manager,
                          NULL);
 
   device->input_device =
-    wl_display_bind (backend_wayland->wayland_display, id,
-                     &wl_seat_interface);
+    wl_registry_bind (backend_wayland->wayland_registry, id,
+                      &wl_seat_interface, 1);
   wl_seat_add_listener (device->input_device,
                         &_clutter_seat_wayland_listener,
                         device);

@@ -56,6 +56,7 @@ struct _ClutterBackendWayland
   ClutterDeviceManager *device_manager;
 
   struct wl_display *wayland_display;
+  struct wl_registry *wayland_registry;
   struct wl_compositor *wayland_compositor;
   struct wl_shell *wayland_shell;
   struct wl_shm *wayland_shm;
