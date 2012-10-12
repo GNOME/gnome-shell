@@ -754,18 +754,15 @@ StScrollBar StButton#vhandle:active {
 /* Search Results */
 
 #searchResults {
-    padding: 20px 10px 10px 10px;
     spacing: 18px;
 }
 
 #searchResultsContent {
-    padding-right: 20px;
     spacing: 16px;
-}
 
-#searchResultsContent:rtl {
-    padding-right: 0px;
+    /* for scrollbars */
     padding-left: 20px;
+    padding-right: 20px;
 }
 
 .search-section {
@@ -835,13 +832,8 @@ StScrollBar StButton#vhandle:active {
 }
 
 .all-app {
-    padding: 16px 25px 16px 16px;
+    padding: 16px;
     spacing: 20px;
-}
-
-.all-app:rtl {
-    padding-right: 16px;
-    padding-left: 25px;
 }
 
 .app-filter {

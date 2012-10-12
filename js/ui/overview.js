@@ -10,6 +10,7 @@ const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 const Gdk = imports.gi.Gdk;
 
+const CenterLayout = imports.ui.centerLayout;
 const Dash = imports.ui.dash;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
@@ -141,8 +142,11 @@ const Overview = new Lang.Class({
                                             vertical: true });
         this._overview._delegate = this;
 
+        let layout = new CenterLayout.CenterLayout();
+        this._group = new St.Widget({ name: 'overview-group',
+                                      layout_manager: layout });
+
         this._spacing = 0;
-        this._group = new St.BoxLayout({ name: 'overview-group' });
         this._group.connect('style-changed',
             Lang.bind(this, function() {
                 let node = this._group.get_theme_node();
