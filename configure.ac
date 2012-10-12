@@ -311,9 +311,9 @@ AS_IF([test "x$enable_wayland" = "xyes"],
 
         SUPPORT_WAYLAND=1
 
-        PKG_CHECK_EXISTS([wayland-client xkbcommon gdk-pixbuf-2.0],
+        PKG_CHECK_EXISTS([wayland-client wayland-cursor xkbcommon gdk-pixbuf-2.0],
                          [
-                            BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-client xkbcommon"
+                            BACKEND_PC_FILES="$BACKEND_PC_FILES wayland-cursor wayland-client xkbcommon"
                             BACKEND_PC_FILES_PRIVATE="$BACKEND_PC_FILES_PRIVATE gdk-pixbuf-2.0"
                          ],
                          [])
