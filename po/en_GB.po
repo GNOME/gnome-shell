@@ -3,14 +3,16 @@
 # This file is distributed under the same license as the gnome-shell package.
 # Philip Withnall <philip@tecnocode.co.uk>, 2009, 2010.
 # Bruce Cowan <bruce@bcowan.me.uk>, 2010, 2011, 2012.
+# Chris Leonard <cjlhomeaddress@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-22 11:16+0100\n"
-"PO-Revision-Date: 2012-09-22 11:18+0100\n"
-"Last-Translator: Bruce Cowan <bruce@bcowan.me.uk>\n"
-"Language-Team: British English <en@li.org>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-10-11 15:26+0000\n"
+"PO-Revision-Date: 2012-09-27 23:56-0400\n"
+"Last-Translator: Chris Leonard <cjlhomeaddress@gmail.com>\n"
+"Language-Team: Sugar Labs\n"
 "Language: en_GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -211,8 +213,7 @@ msgstr ""
 "to an empty value, the default pipeline will be used. This is currently "
 "'vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 "
 "threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is "
-"used as a placeholder for a guess at the optimal thread count on the "
-"system."
+"used as a placeholder for a guess at the optimal thread count on the system."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "File extension used for storing the screencast"
@@ -241,11 +242,11 @@ msgstr "Extension"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Select an extension to configure using the combobox above."
 
-#: ../js/gdm/loginDialog.js:526
+#: ../js/gdm/loginDialog.js:529
 msgid "Session..."
 msgstr "Session…"
 
-#: ../js/gdm/loginDialog.js:674
+#: ../js/gdm/loginDialog.js:677
 msgctxt "title"
 msgid "Sign In"
 msgstr "Sign In"
@@ -253,37 +254,42 @@ msgstr "Sign In"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:741
+#: ../js/gdm/loginDialog.js:736
 msgid "Not listed?"
 msgstr "Not listed?"
 
-#: ../js/gdm/loginDialog.js:894 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:889 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
 #: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "Cancel"
 
-#: ../js/gdm/loginDialog.js:899
+#: ../js/gdm/loginDialog.js:894
 msgctxt "button"
 msgid "Sign In"
 msgstr "Sign In"
 
-#: ../js/gdm/loginDialog.js:1238
+#: ../js/gdm/loginDialog.js:1215
 msgid "Login Window"
 msgstr "Login Window"
 
-#: ../js/gdm/powerMenu.js:88 ../js/ui/userMenu.js:658 ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:773
+#. Translators: accessible name of the power menu in the login screen
+#: ../js/gdm/powerMenu.js:35
+msgid "Power"
+msgstr "Power"
+
+#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:664
+#: ../js/ui/userMenu.js:775
 msgid "Suspend"
 msgstr "Suspend"
 
-#: ../js/gdm/powerMenu.js:93
+#: ../js/gdm/powerMenu.js:94
 msgid "Restart"
 msgstr "Restart"
 
-#: ../js/gdm/powerMenu.js:98 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:662
-#: ../js/ui/userMenu.js:772
+#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:662 ../js/ui/userMenu.js:664
+#: ../js/ui/userMenu.js:774
 msgid "Power Off"
 msgstr "Power Off"
 
@@ -334,7 +340,7 @@ msgstr "SETTINGS"
 msgid "New Window"
 msgstr "New Window"
 
-#: ../js/ui/appDisplay.js:678 ../js/ui/dash.js:271
+#: ../js/ui/appDisplay.js:678 ../js/ui/dash.js:290
 msgid "Remove from Favorites"
 msgstr "Remove from Favourites"
 
@@ -498,16 +504,16 @@ msgstr "This week"
 msgid "Next week"
 msgstr "Next week"
 
-#: ../js/ui/components/autorunManager.js:278
+#: ../js/ui/components/autorunManager.js:297
 msgid "Removable Devices"
 msgstr "Removable Devices"
 
-#: ../js/ui/components/autorunManager.js:575
+#: ../js/ui/components/autorunManager.js:594
 #, c-format
 msgid "Open with %s"
 msgstr "Open with %s"
 
-#: ../js/ui/components/autorunManager.js:601
+#: ../js/ui/components/autorunManager.js:620
 msgid "Eject"
 msgstr "Eject"
 
@@ -878,7 +884,7 @@ msgstr "Edit account"
 msgid "Unknown reason"
 msgstr "Unknown reason"
 
-#: ../js/ui/dash.js:245 ../js/ui/dash.js:273
+#: ../js/ui/dash.js:253 ../js/ui/dash.js:292
 msgid "Show Applications"
 msgstr "Show Applications"
 
@@ -886,14 +892,14 @@ msgstr "Show Applications"
 msgid "Date and Time Settings"
 msgstr "Date and Time Settings"
 
-#: ../js/ui/dateMenu.js:109
+#: ../js/ui/dateMenu.js:111
 msgid "Open Calendar"
 msgstr "Open Calendar"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:175
+#: ../js/ui/dateMenu.js:190
 msgid "%A %B %e, %Y"
 msgstr "%A %e %B, %Y"
 
@@ -994,11 +1000,11 @@ msgstr "Install"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Download and install '%s' from extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:327
+#: ../js/ui/keyboard.js:337
 msgid "tray"
 msgstr "tray"
 
-#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:195
+#: ../js/ui/keyboard.js:584 ../js/ui/status/keyboard.js:195
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "Keyboard"
@@ -1051,19 +1057,19 @@ msgstr "View Source"
 msgid "Web Page"
 msgstr "Web Page"
 
-#: ../js/ui/messageTray.js:1080
+#: ../js/ui/messageTray.js:1081
 msgid "Open"
 msgstr "Open"
 
-#: ../js/ui/messageTray.js:1087
+#: ../js/ui/messageTray.js:1088
 msgid "Remove"
 msgstr "Remove"
 
-#: ../js/ui/messageTray.js:2050
+#: ../js/ui/messageTray.js:1540
 msgid "Message Tray"
 msgstr "Message Tray"
 
-#: ../js/ui/messageTray.js:2506
+#: ../js/ui/messageTray.js:2547
 msgid "System Information"
 msgstr "System Information"
 
@@ -1127,14 +1133,14 @@ msgstr "Please enter a command:"
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
-#: ../js/ui/screenShield.js:144
+#: ../js/ui/screenShield.js:143
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d new message"
 msgstr[1] "%d new messages"
 
-#: ../js/ui/screenShield.js:146
+#: ../js/ui/screenShield.js:145
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1291,7 +1297,7 @@ msgstr "Keyboard Settings"
 msgid "Mouse Settings"
 msgstr "Mouse Settings"
 
-#: ../js/ui/status/bluetooth.js:269 ../js/ui/status/volume.js:236
+#: ../js/ui/status/bluetooth.js:269 ../js/ui/status/volume.js:234
 msgid "Sound Settings"
 msgstr "Sound Settings"
 
@@ -1576,7 +1582,7 @@ msgid "Unknown"
 msgstr "Unknown"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:223
+#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "Volume"
 
@@ -1588,63 +1594,59 @@ msgstr "Microphone"
 msgid "Log in as another user"
 msgstr "Log in as another user"
 
-#: ../js/ui/userMenu.js:175
+#: ../js/ui/userMenu.js:180
 msgid "Available"
 msgstr "Available"
 
-#: ../js/ui/userMenu.js:178
+#: ../js/ui/userMenu.js:183
 msgid "Busy"
 msgstr "Busy"
 
-#: ../js/ui/userMenu.js:181
+#: ../js/ui/userMenu.js:186
 msgid "Invisible"
 msgstr "Invisible"
 
-#: ../js/ui/userMenu.js:184
+#: ../js/ui/userMenu.js:189
 msgid "Away"
 msgstr "Away"
 
-#: ../js/ui/userMenu.js:187
+#: ../js/ui/userMenu.js:192
 msgid "Idle"
 msgstr "Idle"
 
-#: ../js/ui/userMenu.js:190
+#: ../js/ui/userMenu.js:195
 msgid "Unavailable"
 msgstr "Unavailable"
 
-#: ../js/ui/userMenu.js:613 ../js/ui/userMenu.js:754
-msgid "Switch User"
-msgstr "Switch User"
-
-#: ../js/ui/userMenu.js:614
-msgid "Switch Session"
-msgstr "Switch Session"
-
-#: ../js/ui/userMenu.js:738
+#: ../js/ui/userMenu.js:740
 msgid "Notifications"
 msgstr "Notifications"
 
-#: ../js/ui/userMenu.js:746
+#: ../js/ui/userMenu.js:748
 msgid "System Settings"
 msgstr "System Settings"
 
-#: ../js/ui/userMenu.js:759
+#: ../js/ui/userMenu.js:756
+msgid "Switch User"
+msgstr "Switch User"
+
+#: ../js/ui/userMenu.js:761
 msgid "Log Out"
 msgstr "Log Out"
 
-#: ../js/ui/userMenu.js:764
+#: ../js/ui/userMenu.js:766
 msgid "Lock"
 msgstr "Lock"
 
-#: ../js/ui/userMenu.js:779
+#: ../js/ui/userMenu.js:781
 msgid "Install Updates & Restart"
 msgstr "Install Updates & Restart"
 
-#: ../js/ui/userMenu.js:797
+#: ../js/ui/userMenu.js:799
 msgid "Your chat status will be set to busy"
 msgstr "Your chat status will be set to busy"
 
-#: ../js/ui/userMenu.js:798
+#: ../js/ui/userMenu.js:800
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1664,7 +1666,7 @@ msgstr "Applications"
 msgid "Search"
 msgstr "Search"
 
-#: ../js/ui/wanda.js:119
+#: ../js/ui/wanda.js:117
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1673,12 +1675,12 @@ msgstr ""
 "Sorry, no wisdom for you today:\n"
 "%s"
 
-#: ../js/ui/wanda.js:123
+#: ../js/ui/wanda.js:121
 #, c-format
 msgid "%s the Oracle says"
 msgstr "%s the Oracle says"
 
-#: ../js/ui/wanda.js:164
+#: ../js/ui/wanda.js:162
 msgid "Your favorite Easter Egg"
 msgstr "Your favourite Easter Egg"
 
@@ -1713,19 +1715,19 @@ msgstr[1] "%u Inputs"
 msgid "System Sounds"
 msgstr "System Sounds"
 
-#: ../src/main.c:330
+#: ../src/main.c:332
 msgid "Print version"
 msgstr "Print version"
 
-#: ../src/main.c:336
+#: ../src/main.c:338
 msgid "Mode used by GDM for login screen"
 msgstr "Mode used by GDM for login screen"
 
-#: ../src/main.c:342
+#: ../src/main.c:344
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Use a specific mode, e.g. \"gdm\" for login screen"
 
-#: ../src/main.c:348
+#: ../src/main.c:350
 msgid "List possible modes"
 msgstr "List possible modes"
 
@@ -1753,6 +1755,9 @@ msgstr "Default"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Authentication dialogue was dismissed by the user"
+
+#~ msgid "Switch Session"
+#~ msgstr "Switch Session"
 
 #~ msgid "disabled OpenSearch providers"
 #~ msgstr "disabled OpenSearch providers"
