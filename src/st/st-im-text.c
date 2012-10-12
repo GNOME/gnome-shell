@@ -68,9 +68,9 @@ st_im_text_dispose (GObject *object)
 {
   StIMTextPrivate *priv = ST_IM_TEXT (object)->priv;
 
-  g_clear_object (&priv->im_context);
-
   G_OBJECT_CLASS (st_im_text_parent_class)->dispose (object);
+
+  g_clear_object (&priv->im_context);
 }
 
 static void
