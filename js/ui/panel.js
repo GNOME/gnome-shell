@@ -1026,16 +1026,19 @@ const Panel = new Lang.Class({
         }
         this._rightBox.allocate(childBox, flags);
 
-        let [cornerMinWidth, cornerWidth] = this._leftCorner.actor.get_preferred_width(-1);
-        let [cornerMinHeight, cornerHeight] = this._leftCorner.actor.get_preferred_width(-1);
+        let cornerMinWidth, cornerMinHeight;
+        let cornerWidth, cornerHeight;
+
+        [cornerMinWidth, cornerWidth] = this._leftCorner.actor.get_preferred_width(-1);
+        [cornerMinHeight, cornerHeight] = this._leftCorner.actor.get_preferred_height(-1);
         childBox.x1 = 0;
         childBox.x2 = cornerWidth;
         childBox.y1 = allocHeight;
         childBox.y2 = allocHeight + cornerHeight;
         this._leftCorner.actor.allocate(childBox, flags);
 
-        let [cornerMinWidth, cornerWidth] = this._rightCorner.actor.get_preferred_width(-1);
-        let [cornerMinHeight, cornerHeight] = this._rightCorner.actor.get_preferred_width(-1);
+        [cornerMinWidth, cornerWidth] = this._rightCorner.actor.get_preferred_width(-1);
+        [cornerMinHeight, cornerHeight] = this._rightCorner.actor.get_preferred_height(-1);
         childBox.x1 = allocWidth - cornerWidth;
         childBox.x2 = allocWidth;
         childBox.y1 = allocHeight;
