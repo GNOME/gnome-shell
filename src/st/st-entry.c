@@ -242,7 +242,7 @@ st_entry_style_changed (StWidget *self)
   StThemeNode *theme_node;
   ClutterColor color;
   const PangoFontDescription *font;
-  gchar *font_string;
+  gchar *font_string, *font_name;
   gdouble size;
 
   theme_node = st_widget_get_theme_node (self);
@@ -264,8 +264,12 @@ st_entry_style_changed (StWidget *self)
 
   font = st_theme_node_get_font (theme_node);
   font_string = pango_font_description_to_string (font);
+  font_name = g_strdup (clutter_text_get_font_name (CLUTTER_TEXT (priv->entry)));
   clutter_text_set_font_name (CLUTTER_TEXT (priv->entry), font_string);
+  if (strcmp (clutter_text_get_font_name (CLUTTER_TEXT (priv->entry)), font_name) != 0)
+    clutter_actor_queue_relayout (priv->entry);
   g_free (font_string);
+  g_free (font_name);
 
   ST_WIDGET_CLASS (st_entry_parent_class)->style_changed (self);
 }
