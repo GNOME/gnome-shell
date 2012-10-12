@@ -113,6 +113,11 @@ const DateMenuButton = new Lang.Class({
         this._openCalendarItem.actor.can_focus = false;
         vbox.add(this._openCalendarItem.actor, {y_align: St.Align.END, expand: true, y_fill: false});
 
+        this._calendarSettings = new Gio.Settings({ schema: 'org.gnome.desktop.default-applications.office.calendar' });
+        this._calendarSettings.connect('changed::exec',
+                                       Lang.bind(this, this._calendarSettingsChanged));
+        this._calendarSettingsChanged();
+
         // Whenever the menu is opened, select today
         this.menu.connect('open-state-changed', Lang.bind(this, function(menu, isOpen) {
             if (isOpen) {
@@ -144,6 +149,12 @@ const DateMenuButton = new Lang.Class({
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
         this._sessionUpdated();
+    },
+
+    _calendarSettingsChanged: function() {
+        let exec = this._calendarSettings.get_string('exec');
+        let fullExec = GLib.find_program_in_path(exec);
+        this._openCalendarItem.actor.visible = fullExec != null;
     },
 
     _setEventsVisibility: function(visible) {
@@ -194,14 +205,13 @@ const DateMenuButton = new Lang.Class({
 
     _onOpenCalendarActivate: function() {
         this.menu.close();
-        let calendarSettings = new Gio.Settings({ schema: 'org.gnome.desktop.default-applications.office.calendar' });
-        let tool = calendarSettings.get_string('exec');
+        let tool = this._calendarSettings.get_string('exec');
         if (tool.length == 0 || tool.substr(0, 9) == 'evolution') {
             // TODO: pass the selected day
             let app = Shell.AppSystem.get_default().lookup_app('evolution-calendar.desktop');
             app.activate();
         } else {
-            let needTerm = calendarSettings.get_boolean('needs-term');
+            let needTerm = this._calendarSettings.get_boolean('needs-term');
             if (needTerm) {
                 let terminalSettings = new Gio.Settings({ schema: 'org.gnome.desktop.default-applications.terminal' });
                 let term = terminalSettings.get_string('exec');
