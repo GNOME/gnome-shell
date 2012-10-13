@@ -410,7 +410,7 @@ const AutorunResidentNotification = new Lang.Class({
                                 expand: true });
 
         let ejectIcon = 
-            new St.Icon({ icon_name: 'media-eject',
+            new St.Icon({ icon_name: 'media-eject-symbolic',
                           style_class: 'hotplug-resident-eject-icon' });
 
         let ejectButton =
@@ -611,7 +611,7 @@ const AutorunTransientNotification = new Lang.Class({
 
     _buttonForEject: function() {
         let box = new St.BoxLayout();
-        let icon = new St.Icon({ icon_name: 'media-eject',
+        let icon = new St.Icon({ icon_name: 'media-eject-symbolic',
                                  style_class: 'hotplug-notification-item-icon' });
         box.add(icon);
 
