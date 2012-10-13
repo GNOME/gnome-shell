@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-06 23:35+0000\n"
-"PO-Revision-Date: 2012-09-01 22:57+0300\n"
+"POT-Creation-Date: 2012-10-11 14:32+0000\n"
+"PO-Revision-Date: 2012-10-13 22:54+0300\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -48,39 +48,38 @@ msgstr "Skambučio įvykis"
 msgid "Unknown window information request: %d"
 msgstr "Nežinoma langų informacijos užklausa: %d"
 
-#: ../src/core/delete.c:114
+#: ../src/core/delete.c:113
 #, c-format
-#| msgid "<tt>%s</tt> is not responding."
 msgid "%s is not responding."
 msgstr "%s neatsiliepia į komandas."
 
-#: ../src/core/delete.c:118
+#: ../src/core/delete.c:117
 msgid "Application is not responding."
 msgstr "Programa neatsiliepia į komandas."
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:122
 msgid "You may choose to wait a short while for it to continue or force the application to quit entirely."
 msgstr "Galite šiek tiek palaukti arba priverstinai uždaryti programą."
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:129
 msgid "_Wait"
 msgstr "_Laukti"
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:129
 msgid "_Force Quit"
 msgstr "_Priverstinai išeiti"
 
-#: ../src/core/display.c:380
+#: ../src/core/display.c:396
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Trūksta %s priedo, reikalingo komponavimui"
 
-#: ../src/core/display.c:446
+#: ../src/core/display.c:492
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nepavyko atverti X Window sistemos ekrano „%s“\n"
 
-#: ../src/core/keybindings.c:844
+#: ../src/core/keybindings.c:853
 #, c-format
 msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
 msgstr "Kažkokia kita programa jau naudoja %s klavišą su modifikatoriais %x kaip susiejimą\n"
@@ -139,30 +138,29 @@ msgid "Print version"
 msgstr "Parodyti versiją"
 
 #: ../src/core/mutter.c:60
-#| msgid "Clutter Plugins"
 msgid "Mutter plugin to use"
 msgstr "Naudojamas Mutter įskiepis"
 
-#: ../src/core/prefs.c:1065
+#: ../src/core/prefs.c:1079
 msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
 msgstr "Apsauga nuo sugadintų programų atjungta. Kai kurios programos gali pradėti keistai elgtis.\n"
 
-#: ../src/core/prefs.c:1140
+#: ../src/core/prefs.c:1154
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Nepavyko perskaityti šrifto aprašymo „%s“ saugomo GSettings rakte %s\n"
 
-#: ../src/core/prefs.c:1206
+#: ../src/core/prefs.c:1220
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 msgstr "„%s“ reikšmė rasta nustatymų duomenų bazėje yra netinkama pelės mygtuko keitiklio aprašymui\n"
 
-#: ../src/core/prefs.c:1724
+#: ../src/core/prefs.c:1747
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 msgstr "„%s“ reikšmė rasta konfiguracijos duomenų bazė yra netinkama klavišų kombinacijai „%s“\n"
 
-#: ../src/core/prefs.c:1821
+#: ../src/core/prefs.c:1844
 #, c-format
 msgid "Workspace %d"
 msgstr "Darbalaukis %d"
@@ -284,7 +282,7 @@ msgid "Window manager error: "
 msgstr "Langų valdyklės klaida:"
 
 #. first time through
-#: ../src/core/window.c:7234
+#: ../src/core/window.c:7237
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Langas %s nustatė SM_CLIENT_ID kintamajį į save patį vietoj to, kad nustatytų jį į WM_CLIENT_LEADER langą kaip nurodo ICCCM..\n"
@@ -296,27 +294,27 @@ msgstr "Langas %s nustatė SM_CLIENT_ID kintamajį į save patį vietoj to, kad 
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7899
+#: ../src/core/window.c:7902
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Langas %s nustatė MWM požymį teigdamas, kad jo dydis nėra kintamas, tačiau tuo pat metu nustatė ir leistinas mažiausio dydžio %d x %d bei didžiausio dydžio %d x %d reikšmes; tai yra beprasmiška.\n"
 
-#: ../src/core/window-props.c:310
+#: ../src/core/window-props.c:274
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Programa nustatė netinkamą _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:429
+#: ../src/core/window-props.c:393
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (kompiuteryje %s)"
 
-#: ../src/core/window-props.c:1484
+#: ../src/core/window-props.c:1448
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Nekorektiškas WM_TRANSIENT_FOR langas 0x%lx nurodytas %s.\n"
 
-#: ../src/core/window-props.c:1495
+#: ../src/core/window-props.c:1459
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR langas 0x%lx nurodytas %s sukurtų ciklą.\n"
@@ -400,18 +398,26 @@ msgid "Determines whether the use of popup and highlight frame should be disable
 msgstr "Nusako, ar iššokančio lango ir rėmelio paryškinimo naudojimas turėtų būti išjungtas langų perėjime."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "Atidėti aktyvavimo pakeitimus iki žymiklis nustaja judėti"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then the focus will not be changed immediately when entering a window, but only after the pointer stops moving."
+msgstr "Jei nustatytas teigiamai ir aktyvavimo veiksena yra „sloppy“ arba „mouse“, tuomet aktyvavimas nebus pakeistas nedelsiant įėjus į langą, bet tik pelės žymikliui nustojus judėti."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
 msgstr "Tempiamos paraštės prolis"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid "The amount of total draggable borders. If the theme's visible borders are not enough, invisible borders will be added to meet this value."
 msgstr "Bendros tempiamos paraštės dydis. Jei temos matomos paraštės yra nepakankamos, bus pridėtos nematomos paraštės."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Select window from tab popup"
 msgstr "Pasirinkti langą iš tab iššokimo"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid "Cancel tab popup"
 msgstr "Atšaukti tab iššokimą"
 
