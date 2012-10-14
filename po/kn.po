@@ -8,19 +8,18 @@ msgstr ""
 "Project-Id-Version: metacity.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-03-15 21:29+0000\n"
-"PO-Revision-Date: 2012-04-03 15:42+0530\n"
-"Last-Translator: s\n"
+"POT-Creation-Date: 2012-08-06 23:35+0000\n"
+"PO-Revision-Date: 2012-10-05 17:14+0530\n"
+"Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <en@li.org>\n"
+"Language: kn\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.2\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
-"Language: kn\n"
 
 #: ../src/50-mutter-windows.xml.in.h:1
-#| msgid "_Windows"
 msgid "Windows"
 msgstr "ಕಿಟಕಿಗಳು"
 
@@ -43,7 +42,7 @@ msgstr ""
 "ಬೇರೊಂದು ಕಂಪೋಸಿಟಿಂಗ್ ವ್ಯವಸ್ಥಾಪಕವು ಈಗಾಗಲೆ %i ತೆರೆಯಲ್ಲಿನ \"%s \" ಪ್ರದರ್ಶಕದಲ್ಲಿ "
 "ಚಾಲನೆಯಲ್ಲಿದೆ."
 
-#: ../src/core/bell.c:307
+#: ../src/core/bell.c:320
 msgid "Bell event"
 msgstr "ಘಂಟೆಯ ಶಬ್ಧ"
 
@@ -52,17 +51,17 @@ msgstr "ಘಂಟೆಯ ಶಬ್ಧ"
 msgid "Unknown window information request: %d"
 msgstr "ಗೊತ್ತಿರದ ವಿಂಡೊ ಮಾಹಿತಿಯ ಮನವಿ: %d"
 
-#: ../src/core/delete.c:111
-#, c-format
-msgid "<tt>%s</tt> is not responding."
+#: ../src/core/delete.c:114
+#, fuzzy, c-format
+#| msgid "<tt>%s</tt> is not responding."
+msgid "%s is not responding."
 msgstr "<tt>%s</tt> ಪ್ರತಿಕ್ರಿಯಿಸುತ್ತಿಲ್ಲ."
 
-#: ../src/core/delete.c:114
-#| msgid "<tt>%s</tt> is not responding."
+#: ../src/core/delete.c:118
 msgid "Application is not responding."
 msgstr "ಅನ್ವಯವು ಪ್ರತಿಕ್ರಿಯಿಸುತ್ತಿಲ್ಲ."
 
-#: ../src/core/delete.c:119
+#: ../src/core/delete.c:123
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -70,61 +69,63 @@ msgstr ""
 "ಅನ್ವಯವು ಮುಂದುವರೆಯುವ ವರೆಗೆ ಕೊಂಚ ಸಮಯ ನೀವು ಕಾಯಬಹುದು ಅಥವ ಅದು ಸಂಪೂರ್ಣವಾಗಿ ಮುಚ್ಚಿ "
 "ಹೋಗುವಂತೆ ಒತ್ತಾಯಿಸಬಹುದು."
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Wait"
 msgstr "ನಿರೀಕ್ಷಿಸು(_W)"
 
-#: ../src/core/delete.c:126
+#: ../src/core/delete.c:130
 msgid "_Force Quit"
 msgstr "ಬಲವಂತವಾಗಿ ಮುಚ್ಚು(_F)"
 
-#: ../src/core/display.c:387
+#: ../src/core/display.c:380
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "ಕಂಪೋಸಿಟಿಂಗ್ ಮಾಡಲು ಅಗತ್ಯವಿರುವ %s ವಿಸ್ತರಣೆಯು ಕಾಣಿಸುತ್ತಿಲ್ಲ"
 
-#: ../src/core/display.c:453
+#: ../src/core/display.c:446
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X ವಿಂಡೊ ಗಣಕ ಪ್ರದರ್ಶಕ '%s' ಅನ್ನು ತೆರೆಯುವಲ್ಲಿ ವಿಫಲತೆ\n"
 
-#: ../src/core/keybindings.c:852
+#: ../src/core/keybindings.c:844
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
+"ಬೇರೊಂದಿ ಪ್ರೊಗ್ರಾಂ, ಕೀಲಿ %s ಅನ್ನು ಮಾರ್ಪಡಕಗಳಾದ %x ದೊಂದಿಗೆ ಬೈಂಡಿಂಗ್ ಆಗಿ ಈಗಾಗಲೆ "
+"ಬಳಸುತ್ತಿದೆ\n"
 
-#: ../src/core/main.c:206
+#: ../src/core/main.c:196
 msgid "Disable connection to session manager"
 msgstr "ಅಧಿವೇಶನ ನಿರ್ವಾಹಕದೊಂದಿಗೆ ಸಂಪರ್ಕವನ್ನು ಅಶಕ್ತಗೊಳಿಸು"
 
-#: ../src/core/main.c:212
+#: ../src/core/main.c:202
 msgid "Replace the running window manager"
 msgstr "ಚಲಾಯಿತಗೊಳ್ಳುತ್ತಿರುವ ವಿಂಡೊ ವ್ಯವಸ್ಥಾಪಕವನ್ನು ಬದಲಾಯಿಸಿ"
 
-#: ../src/core/main.c:218
+#: ../src/core/main.c:208
 msgid "Specify session management ID"
 msgstr "ಅಧಿವೇಶನ ನಿರ್ವಹಣಾ ಐಡಿಯನ್ನು ಸೂಚಿಸಿ"
 
-#: ../src/core/main.c:223
+#: ../src/core/main.c:213
 msgid "X Display to use"
 msgstr "ಬಳಕೆಗಾಗಿ X ಪ್ರದರ್ಶಕ"
 
-#: ../src/core/main.c:229
+#: ../src/core/main.c:219
 msgid "Initialize session from savefile"
 msgstr "ಉಳಿಸಿದ ಕಡತದಿಂದ ಅಧಿವೇಶನವನ್ನು ಆರಂಭಿಸಿ"
 
-#: ../src/core/main.c:235
+#: ../src/core/main.c:225
 msgid "Make X calls synchronous"
 msgstr "X ಕರೆಗಳನ್ನು ಮೇಳೈಸುವಂತೆ ಮಾಡಿ"
 
-#: ../src/core/main.c:504
+#: ../src/core/main.c:494
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "ಥೀಮ್‍ಗಳನ್ನು ಶೋಧಿಸುವಲ್ಲಿ ಕೋಶವನ್ನು ವಿಫಲಗೊಂಡಿದೆ: %s\n"
 
-#: ../src/core/main.c:520
+#: ../src/core/main.c:510
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -153,35 +154,36 @@ msgid "Print version"
 msgstr "ಮುದ್ರಿಸಬಹುದಾದ ಆವೃತ್ತಿ"
 
 #: ../src/core/mutter.c:60
-msgid "Comma-separated list of compositor plugins"
+msgid "Mutter plugin to use"
 msgstr ""
 
-#: ../src/core/prefs.c:1077
+#: ../src/core/prefs.c:1065
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
 msgstr ""
 "ಹಾಳಾದ ಅನ್ವಯಗಳಿಗಾಗಿನ ಪರ್ಯಾಯ ಮಾರ್ಗಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ. ಕೆಲವು ಅನ್ವಯಗಳು "
-"ಸರಿಯಾಗಿ ಕೆಲಸ ಮಾಡದೆ ಇರಬಹುದು.\n"
+"ಸರಿಯಾಗಿ "
+"ಕೆಲಸ ಮಾಡದೆ ಇರಬಹುದು.\n"
 
-#: ../src/core/prefs.c:1152
+#: ../src/core/prefs.c:1140
 #, c-format
-#| msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "\"%s\" ಎಂಬ ಅಕ್ಷರಶೈಲಿ ವಿವರಣೆಯನ್ನು  %s ಎಂಬ GSettings ಕೀಲಿಯಿಂದ ಇಂದ ಪಾರ್ಸ್ "
 "ಮಾಡಲಾಗಿಲ್ಲ\n"
 
-#: ../src/core/prefs.c:1218
+#: ../src/core/prefs.c:1206
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr ""
 "ಸಂರಚನಾ ದತ್ತಸಂಚಯದಲ್ಲಿ ಕಂಡುಬಂದಂತಹ \"%s\" ಮೌಸ್ ಗುಂಡಿಯ ಮಾರ್ಪಡಕಕ್ಕಾಗಿ ಒಂದು "
-"ಮಾನ್ಯವಾದ ಮೌಲ್ಯವಲ್ಲ\n"
+"ಮಾನ್ಯವಾದ "
+"ಮೌಲ್ಯವಲ್ಲ\n"
 
-#: ../src/core/prefs.c:1739
+#: ../src/core/prefs.c:1724
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -190,38 +192,45 @@ msgstr ""
 "ಸಂರಚನಾ ದತ್ತಸಂಚಯದಲ್ಲಿ ಕಂಡುಬಂದಂತಹ \"%s\" ಕೀಲಿಬೈಂಡಿಂಗ್ \"%s\" ಗೆ ಒಂದು ಮಾನ್ಯವಾದ "
 "ಮೌಲ್ಯವಲ್ಲ\n"
 
-#: ../src/core/prefs.c:1836
+#: ../src/core/prefs.c:1821
 #, c-format
 msgid "Workspace %d"
 msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ %d"
 
-#: ../src/core/screen.c:730
+#: ../src/core/screen.c:652
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "%d ತೆರೆಯು ಅಮಾನ್ಯವಾಗಿದೆ ( '%s' ಪ್ರದರ್ಶಕದಲ್ಲಿನ)\n"
 
-#: ../src/core/screen.c:746
+#: ../src/core/screen.c:668
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
+"ತೆರೆ %d ಯು (ಪ್ರದರ್ಶಕ \"%s\" ದಲ್ಲಿನ) ಈಗಾಗಲೆ ಒಂದು ವಿಂಡೋ ವ್ಯವಸ್ಥಾಪಕವನ್ನು "
+"ಹೊಂದಿದೆ; --"
+"replace ಅನ್ನು ಬಳಸಿಕೊಂಡು ಪ್ರಸಕ್ತ ವಿಂಡೋ ವ್ಯವಸ್ಥಾಪಕವನ್ನು ಬದಲಾಯಿಸಿ.\n"
 
-#: ../src/core/screen.c:773
+#: ../src/core/screen.c:695
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
+"ತೆರೆ %d ಯಲ್ಲಿನ ಪ್ರದರ್ಶಕ \"%s\" ದಲ್ಲಿನ ವಿಂಡೊ ವ್ಯವಸ್ಥಾಪಕದ ಆಯ್ಕೆಯನ್ನು "
+"ಪಡೆಯಲಾಗಲಿಲ್ಲ\n"
 
-#: ../src/core/screen.c:828
+#: ../src/core/screen.c:750
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
+"ತೆರೆ %d ಯು (ಪ್ರದರ್ಶಕ \"%s\" ದಲ್ಲಿನ) ಈಗಾಗಲೆ ಒಂದು ವಿಂಡೋ ವ್ಯವಸ್ಥಾಪಕವನ್ನು "
+"ಹೊಂದಿದೆ\n"
 
-#: ../src/core/screen.c:1013
+#: ../src/core/screen.c:935
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
-msgstr ""
+msgstr "ತೆರೆ %d ಯನ್ನು (ಪ್ರದರ್ಶಕ \"%s\" ದಲ್ಲಿನ) ಬಿಡುಗಡೆಗೊಳಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ\n"
 
 #: ../src/core/session.c:843 ../src/core/session.c:850
 #, c-format
@@ -252,6 +261,8 @@ msgstr "ಉಳಿಸಲಾದ ಅಧಿವೇಶನ ಕಡತವನ್ನು ಪ
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr ""
+"<mutter_session> ಗುಣ ವಿಶೇಷವು ಕಾಣಿಸಿಕೊಂಡಿದೆ ಆದರೆ ನಾವು ಅಧಿವೇಶನ ID ಅನ್ನು "
+"ಹೊಂದಿದ್ದೇನೆ"
 
 #: ../src/core/session.c:1198 ../src/core/session.c:1273
 #: ../src/core/session.c:1305 ../src/core/session.c:1377
@@ -263,7 +274,7 @@ msgstr "ಗೊತ್ತಿರದ ಗುಣವಿಶೇಷ %s, <%s> ಘಟಕದ�
 #: ../src/core/session.c:1215
 #, c-format
 msgid "nested <window> tag"
-msgstr ""
+msgstr "ನೆಸ್ಟ್ ಮಾಡಲಾದ <window> ಟ್ಯಾಗ್"
 
 #: ../src/core/session.c:1457
 #, c-format
@@ -275,50 +286,55 @@ msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
 msgstr ""
+"ಈ ವಿಂಡೊಗಳು &quot;ಪ್ರಸಕ್ತ ಸಿದ್ಧತೆಗಳನ್ನು ಉಳಿಸು&quot;ವುದನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ "
+"ಹಾಗು "
+"ನೀವು ಮುಂದಿನ ಬಾರಿ ಪ್ರವೇಶಿಸಿದಾಗ ಕೈಯಾರೆ ಅದನ್ನು ಮರಳಿ ಆರಂಭಿಸಬೇಕಾಗುತ್ತದೆ."
 
-#: ../src/core/util.c:111
+#: ../src/core/util.c:80
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "ದೋಷ ನಿವಾರಣಾ ದಾಖಲೆಯನ್ನು ತೆರೆಯಲು ವಿಫಲಗೊಂಡಿದೆ: %s\n"
 
-#: ../src/core/util.c:121
+#: ../src/core/util.c:90
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "ದಾಖಲೆ ಕಡತವನ್ನು %s fdopen() ಮಾಡುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ: %s\n"
 
-#: ../src/core/util.c:127
+#: ../src/core/util.c:96
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "ದಾಖಲೆ ಕಡತ %s ಅನ್ನು ತೆರೆಯಲಾಗಿದೆ\n"
 
-#: ../src/core/util.c:146 ../src/tools/mutter-message.c:149
+#: ../src/core/util.c:115 ../src/tools/mutter-message.c:149
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr ""
 
-#: ../src/core/util.c:290
+#: ../src/core/util.c:259
 msgid "Window manager: "
 msgstr "ವಿಂಡೊ ವ್ಯವಸ್ಥಾಪಕ: "
 
-#: ../src/core/util.c:438
+#: ../src/core/util.c:407
 msgid "Bug in window manager: "
 msgstr "ವಿಂಡೊ ವ್ಯವಸ್ಥಾಪಕದಲ್ಲಿ ಒಂದು ತೊಂದರೆ: "
 
-#: ../src/core/util.c:471
+#: ../src/core/util.c:438
 msgid "Window manager warning: "
 msgstr "ವಿಂಡೊ ವ್ಯವಸ್ಥಾಪಕ ಎಚ್ಚರಿಕೆ: "
 
-#: ../src/core/util.c:499
+#: ../src/core/util.c:466
 msgid "Window manager error: "
 msgstr "ವಿಂಡೊ ವ್ಯವಸ್ಥಾಪಕ ದೋಷ: "
 
 #. first time through
-#: ../src/core/window.c:7269
+#: ../src/core/window.c:7234
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
 msgstr ""
+"ICCCM ಇಂದ ಸೂಚಿಸಲಾದ WM_CLIENT_LEADER ವಿಂಡೋದ ಬದಲಿಗೆ ವಿಂಡೊ %s ತಾನೆ ಸ್ವತಃ "
+"SM_CLIENT_ID ಅನ್ನು ಸಿದ್ಧಗೊಳಿಸುತ್ತದೆ.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -327,29 +343,34 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7932
+#: ../src/core/window.c:7899
 #, c-format
 msgid ""
-"Window %s sets an MWM hint indicating it isn't resizable, but sets min size %"
-"d x %d and max size %d x %d; this doesn't make much sense.\n"
+"Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
+"%d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
+"ವಿಂಡೋ s ಗಾತ್ರವನ್ನು ಬದಲಾಯಿಸಲಾಗುವುದಿಲ್ಲ ಎಂದು ಸೂಚಿಸಲು ಒಂದು MWM ಸುಳಿವನ್ನು "
+"ನೀಡುತ್ತದೆ, "
+"ಆದರೆ ಕನಿಷ್ಟ ಗಾತ್ರ %d  x %d ಹಾಗು ಗರಿಷ್ಟ ಗಾತ್ರ %d x %d ಅನ್ನು ಹೊಂದಿಸುತ್ತದೆ; "
+"ಇದಕ್ಕೆ "
+"ಯಾವುದೆ ಅರ್ಥವಿರುವುದಿಲ್ಲ.\n"
 
-#: ../src/core/window-props.c:309
+#: ../src/core/window-props.c:310
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
-msgstr ""
+msgstr "ಅನ್ವಯವು ಒಂದು ಬೋಗಸ್ _NET_WM_PID %lu ಅನ್ನು ಸಿದ್ಧಗೊಳಿಸಿದೆ\n"
 
-#: ../src/core/window-props.c:426
+#: ../src/core/window-props.c:429
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (%s ನಲ್ಲಿ)"
 
-#: ../src/core/window-props.c:1481
+#: ../src/core/window-props.c:1484
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
-msgstr ""
+msgstr "ಅಮಾನ್ಯವಾದ WM_TRANSIENT_FOR ವಿಂಡೋ 0x%lx ಅನ್ನು %s ಗಾಗಿ ಸೂಚಿಸಲಾಗಿದೆ.\n"
 
-#: ../src/core/window-props.c:1492
+#: ../src/core/window-props.c:1495
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr ""
@@ -367,13 +388,16 @@ msgstr ""
 #: ../src/core/xprops.c:411
 #, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
-msgstr ""
+msgstr "ಗುಣ %s ವು (ವಿಂಡೋ 0x%lx ದಲ್ಲಿನ) ಅಮಾನ್ಯವಾದ UTF-8 ಅನ್ನು ಹೊಂದಿದೆ\n"
 
 #: ../src/core/xprops.c:494
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
+"ಗುಣ %s ವು (ವಿಂಡೋ 0x%lx ದಲ್ಲಿನ) ಪಟ್ಟಿಯಲ್ಲಿನ ಅಂಶ %d ಕ್ಕಾಗಿ ಅಮಾನ್ಯವಾದ UTF-8 "
+"ಅನ್ನು "
+"ಹೊಂದಿದೆ\n"
 
 #: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
@@ -403,73 +427,62 @@ msgid ""
 msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:5
-msgid "Live Hidden Windows"
-msgstr ""
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:6
-msgid ""
-"Determines whether hidden windows (i.e., minimized windows and windows on "
-"other workspaces than the current one) should be kept alive."
-msgstr ""
-
-#: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:8
+#: ../src/org.gnome.mutter.gschema.xml.in.h:6
 msgid ""
 "If enabled, dropping windows on vertical screen edges maximizes them "
 "vertically and resizes them horizontally to cover half of the available "
 "area. Dropping windows on the top screen edge maximizes them completely."
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:9
+#: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Workspaces are managed dynamically"
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:10
+#: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid ""
 "Determines whether workspaces are managed dynamically or whether there's a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:11
+#: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Workspaces only on primary"
 msgstr "ಪ್ರಾಥಮಿಕದಲ್ಲಿ ಇರುವ ಕಾರ್ಯಕ್ಷೇತ್ರಗಳು ಮಾತ್ರ"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:12
+#: ../src/org.gnome.mutter.gschema.xml.in.h:10
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:13
+#: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "No tab popup"
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:12
 msgid ""
 "Determines whether the use of popup and highlight frame should be disabled "
 "for window cycling."
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "Draggable border width"
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:17
-#| msgid "Remove Window From Top"
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Select window from tab popup"
 msgstr "ಟ್ಯಾಬ್ ಪುಟಿಕೆಯಿಂದ ಕಿಟಕಿಯನ್ನು ಆರಿಸು"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid "Cancel tab popup"
 msgstr "ಟ್ಯಾಬ್ ಪುಟಿಕೆಯನ್ನು ರದ್ದುಗೊಳಿಸು"
 
@@ -677,224 +690,267 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:253
+#: ../src/ui/theme.c:234
 msgid "top"
 msgstr "ಮೇಲ್ಭಾಗ"
 
-#: ../src/ui/theme.c:255
+#: ../src/ui/theme.c:236
 msgid "bottom"
 msgstr "ಕೆಳಭಾಗ"
 
-#: ../src/ui/theme.c:257
+#: ../src/ui/theme.c:238
 msgid "left"
 msgstr "ಎಡಭಾಗ"
 
-#: ../src/ui/theme.c:259
+#: ../src/ui/theme.c:240
 msgid "right"
 msgstr "ಬಲಭಾಗ"
 
-#: ../src/ui/theme.c:286
+#: ../src/ui/theme.c:268
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "ಚೌಕಟ್ಟಿನ ಜ್ಯಾಮಿತಿಯು \"%s\" ಆಯಾಮವನ್ನು ಸೂಚಿಸುವುದಿಲ್ಲ"
 
-#: ../src/ui/theme.c:305
+#: ../src/ui/theme.c:287
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "ಚೌಕಟ್ಟಿನ ಜ್ಯಾಮಿತಿಯು \"%s\" ಆಯಾಮವನ್ನು \"%s\" ಅಂಚಿಗಾಗಿ ಸೂಚಿಸುವುದಿಲ್ಲ"
 
-#: ../src/ui/theme.c:342
+#: ../src/ui/theme.c:324
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr ""
+msgstr "ಗುಂಡಿಯ ಆಕಾರ ಅನುಪಾತ %g ಯು ಸೂಕ್ತವಾಗಿಲ್ಲ"
 
-#: ../src/ui/theme.c:354
+#: ../src/ui/theme.c:336
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "ಚೌಕಟ್ಟಿನ ಜ್ಯಾಮಿತಿಯು ಗುಂಡಿಗಳ ಗಾತ್ರವನ್ನು ಸೂಚಿಸುವುದಿಲ್ಲ"
 
-#: ../src/ui/theme.c:1067
+#: ../src/ui/theme.c:1049
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "ಏರಿಳಿತ ಪ್ರಮಾಣಗಳನ್ನು ಕನಿಷ್ಟ ಎರಡು ಬಣ್ಣಗಳನ್ನು ಹೊಂದಿರಬೇಕು"
 
-#: ../src/ui/theme.c:1219
+#: ../src/ui/theme.c:1201
 #, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
 "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
 msgstr ""
 
-#: ../src/ui/theme.c:1235
+#: ../src/ui/theme.c:1217
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
 "_ are valid"
 msgstr ""
 
-#: ../src/ui/theme.c:1249
+#: ../src/ui/theme.c:1231
 #, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
 "fit the format"
 msgstr ""
 
-#: ../src/ui/theme.c:1294
+#: ../src/ui/theme.c:1276
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"GTK ಬಣ್ಣವನ್ನು ಸೂಚಿಸುವಿಕೆಗಾಗಿ ಸ್ಥಿತಿಯಲ್ಲಿ ಆವರಣ ಚಿಹ್ನೆಯು ಇರಬೇಕು, ಉದಾ. gtk:fg"
+"[NORMAL] ಆಗಿರುತ್ತದೆ, ಇಲ್ಲಿ NORMAL ಸ್ಥಿತಿಯನ್ನು ಸೂಚಿಸುತ್ತದೆ; \"%s\" ಅನ್ನು "
+"ಪಾರ್ಸ್ ಮಾಡಲು "
+"ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/ui/theme.c:1308
+#: ../src/ui/theme.c:1290
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
+"GTK ಬಣ್ಣವನ್ನು ಸೂಚಿಸುವಿಕೆಗಾಗಿ ಸ್ಥಿತಿಯ ನಂತರ ಮುಚ್ಚಲಾದ ಒಂದು ಆವರಣ ಚಿಹ್ನೆಯನ್ನು "
+"ಸೂಚಿಸಬೇಕು, ಉದಾ. gtk:fg[NORMAL] ಆಗಿರುತ್ತದೆ, ಇಲ್ಲಿ NORMAL ಸ್ಥಿತಿಯನ್ನು "
+"ಸೂಚಿಸುತ್ತದೆ; "
+"\"%s\" ಅನ್ನು ಪಾರ್ಸ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/ui/theme.c:1319
+#: ../src/ui/theme.c:1301
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr ""
+msgstr "ಬಣ್ಣ ವಿವರಣೆಯಲ್ಲಿನ ಸ್ಥಿತಿ \"%s\" ಅನ್ನು ಅರ್ಥ ಮಾಡಿಕೊಳ್ಳಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/ui/theme.c:1332
+#: ../src/ui/theme.c:1314
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr ""
+msgstr "ಬಣ್ಣ ವಿವರಣೆಯಲ್ಲಿನ ಬಣ್ಣದ ಘಟಕ \"%s\" ಅನ್ನು ಅರ್ಥ ಮಾಡಿಕೊಳ್ಳಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/ui/theme.c:1361
+#: ../src/ui/theme.c:1343
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
 "format"
 msgstr ""
+"ಮಿಶ್ರಗೊಳಿಕಾ ವಿನ್ಯಾಸ \"blend/bg_color/fg_color/alpha\", \"%s\" ವಿನ್ಯಾಸಕ್ಕೆ "
+"ಹೊಂದಿಕೆಯಾಗುತ್ತಿಲ್ಲ"
 
-#: ../src/ui/theme.c:1372
+#: ../src/ui/theme.c:1354
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr ""
+"ಮಿಶ್ರಗೊಳಿಸಲಾದ ಬಣ್ಣದಲ್ಲಿ ಆಲ್ಫಾ ಮೌಲ್ಯ \"%s\" ಅನ್ನು ಪಾರ್ಸ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/ui/theme.c:1382
+#: ../src/ui/theme.c:1364
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr ""
+"ಮಿಶ್ರ ಮಾಡಲಾದ ಬಣ್ಣದ ಆಲ್ಫಾ ಮೌಲ್ಯವು \"%s\" ವು 0.0 ಹಾಗು 1.0 ಯ ನಡುವಿನಲ್ಲಿ ಇಲ್ಲ"
 
-#: ../src/ui/theme.c:1429
+#: ../src/ui/theme.c:1411
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
+"ಮಬ್ಬು ವಿನ್ಯಾಸ \"shade/base_color/factor\", \"%s\" ವಿನ್ಯಾಸಕ್ಕೆ ಸರಿಹೊಂದುತ್ತಿಲ್ಲ"
 
-#: ../src/ui/theme.c:1440
+#: ../src/ui/theme.c:1422
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
-msgstr ""
+msgstr "ಮಬ್ಬುಗೊಳಿಸಲಾದ ಬಣ್ಣದ ಮಬ್ಬುಗೊಳಿಕಾ ಅಂಶ \"%s\" ಅನ್ನು ಪಾರ್ಸ್ ಮಾಡಲಾಗಿಲ್ಲ"
 
-#: ../src/ui/theme.c:1450
+#: ../src/ui/theme.c:1432
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr ""
+msgstr "ಮಬ್ಬುಗೊಳಿಸಲಾದ ಬಣ್ಣದಲ್ಲಿನ ಮಬ್ಬುಗೊಳಿಸುವ ಅಂಶ \"%s\" ಋಣಾತ್ಮಕವಾಗಿದೆ"
 
-#: ../src/ui/theme.c:1479
+#: ../src/ui/theme.c:1461
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "\"%s\" ಬಣ್ಣವನ್ನು ಪಾರ್ಸ್ ಮಾಡಲಾಗಿಲ್ಲ"
 
-#: ../src/ui/theme.c:1790
+#: ../src/ui/theme.c:1778
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr ""
+"ಅನುಮತಿ ಇರದೆ ಇರುವಂತಹ ಅಕ್ಷರವನ್ನು '%s' ಅನ್ನು ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಹೊಂದಿದೆ"
 
-#: ../src/ui/theme.c:1817
+#: ../src/ui/theme.c:1805
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr ""
+"ಪಾರ್ಸ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗದೆ ಇರುವಂತಹ ತೇಲುವ ಬಿಂದು (ಫ್ಲೋಟಿಂಗ್ ಪಾಯಿಂಟ್‌) ಸಂಖ್ಯೆ '%s' "
+"ಅನ್ನು "
+"ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಹೊಂದಿದೆ"
 
-#: ../src/ui/theme.c:1831
+#: ../src/ui/theme.c:1819
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
+"ಪಾರ್ಸ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗದೆ ಇರುವಂತಹ ಪೂರ್ಣಾಂಕ '%s' ಅನ್ನು ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ "
+"ಹೊಂದಿದೆ"
 
-#: ../src/ui/theme.c:1953
+#: ../src/ui/theme.c:1940
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
+"ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ನಲ್ಲಿನ ಪಠ್ಯದ ಆರಂಭದಲ್ಲಿ ಗೊತ್ತಿರದ ಆಪರೇಟರ್ ಅನ್ನು ಹೊಂದಿದೆ: "
+"\"%s\""
 
-#: ../src/ui/theme.c:2010
+#: ../src/ui/theme.c:1997
 #, c-format
 msgid "Coordinate expression was empty or not understood"
-msgstr ""
+msgstr "ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಖಾಲಿ ಇದೆ ಅಥವ ಅರ್ಥ ಮಾಡಿಕೊಳ್ಳಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/ui/theme.c:2121 ../src/ui/theme.c:2131 ../src/ui/theme.c:2165
+#: ../src/ui/theme.c:2110 ../src/ui/theme.c:2120 ../src/ui/theme.c:2154
 #, c-format
 msgid "Coordinate expression results in division by zero"
-msgstr ""
+msgstr "ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್ ಶೂನ್ಯದಿಂದ ಭಾಗಾಕಾರಕ್ಕೆ ಕಾರಣವಾಗಿದೆ"
 
-#: ../src/ui/theme.c:2173
+#: ../src/ui/theme.c:2162
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
+"ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಒಂದು ತೇಲುವ-ಬಿಂದು ಸಂಖ್ಯೆಯಲ್ಲಿ mod ಆಪರೇಟರ್ ಅನ್ನು ಬಳಸಲು "
+"ಪ್ರಯತ್ನಿಸಿದೆ"
 
-#: ../src/ui/theme.c:2229
+#: ../src/ui/theme.c:2218
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
+"ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ನಲ್ಲಿ ಎಲ್ಲಿ operand ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತೊ ಅಲ್ಲಿ ಒಂದು "
+"ಆಪರೇಟರ್ \"%s"
+"\" ಇದೆ"
 
-#: ../src/ui/theme.c:2238
+#: ../src/ui/theme.c:2227
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
+"ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ನಲ್ಲಿ ಎಲ್ಲಿ ಆಪರೇಟರ್ ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತೊ ಅಲ್ಲಿ ಒಂದು "
+"operand ಇದೆ"
 
-#: ../src/ui/theme.c:2246
+#: ../src/ui/theme.c:2235
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr ""
+msgstr "ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್ ಒಂದು operand ಬದಲಿಗೆ ಆಪರೇಟರಿನೊಂದಿಗೆ ಅಂತ್ಯಗೊಂಡಿದೆ"
 
-#: ../src/ui/theme.c:2256
+#: ../src/ui/theme.c:2245
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
+"ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಆಪೇರೇಟರ್ \"%c\" ಹಾಗು ಅಪರೇಟರ್ \"%c\" ಅನ್ನು ಹೊಂದಿದೆ ಆದರೆ "
+"ನಡುವೆ "
+"ಯಾವುದೆ operand ಅನ್ನು ಹೊಂದಿಲ್ಲ"
 
-#: ../src/ui/theme.c:2407 ../src/ui/theme.c:2452
+#: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
+"ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್ ಯಾವುದೆ ಗೊತ್ತಿರದ ಚರ ಮೌಲ್ಯ ಅಥವ ಸ್ಥಿರ ಮೌಲ್ಯ \"%s\" ಅನ್ನು "
+"ಹೊಂದಿದೆ"
 
-#: ../src/ui/theme.c:2506
+#: ../src/ui/theme.c:2495
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
-msgstr ""
+msgstr "ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್ ಪಾರ್ಸರ್ ತನ್ನ ಬಫರಿನ ಮಿತಿಯನ್ನು ಮೀರಿದೆ."
 
-#: ../src/ui/theme.c:2535
+#: ../src/ui/theme.c:2524
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
+"ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಯಾವುದೆ ತೆರೆದ ಆವರಣ ಚಿಹ್ನೆ ಇರದೆ ಕೇವಲ ಮುಚ್ಚಲ್ಪಟ್ಟ ಆವರಣ "
+"ಚಿಹ್ನೆಯನ್ನು "
+"ಹೊಂದಿದೆ"
 
-#: ../src/ui/theme.c:2599
+#: ../src/ui/theme.c:2588
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
+"ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಯಾವುದೆ ಮುಚ್ಚಲ್ಪಟ್ಟ ಆವರಣ ಚಿಹ್ನೆ ಇರದೆ ಕೇವಲ ತೆರೆದ ಆವರಣ "
+"ಚಿಹ್ನೆಯನ್ನು "
+"ಹೊಂದಿದೆ"
 
-#: ../src/ui/theme.c:2610
+#: ../src/ui/theme.c:2599
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
+"ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಯಾವುದೆ ಬಗೆಯ ಆಪರೇಟರುಗಳನ್ನು ಅಥವ ಆಪರಾಂಡ್‌ಗಳನ್ನು "
+"(operands) "
+"ಹೊಂದಿರುವಂತೆ ತೋರುತ್ತಿಲ್ಲ"
 
-#: ../src/ui/theme.c:2822 ../src/ui/theme.c:2842 ../src/ui/theme.c:2862
+#: ../src/ui/theme.c:2812 ../src/ui/theme.c:2832 ../src/ui/theme.c:2852
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr ""
+"ಒಂದು ದೋಷಕ್ಕೆ ಕಾರಣವಾದಂತಹ ಒಂದು ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಪರಿಸರವಿನ್ಯಾಸದಲ್ಲಿ ಕಂಡುಬಂದಿದೆ: %s\n"
 
-#: ../src/ui/theme.c:4533
+#: ../src/ui/theme.c:4498
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -903,7 +959,7 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> ವು ಈ ಚೌಕಟ್ಟಿನ "
 "ಶೈಲಿಗೆ ಸೂಚಿತಗೊಳ್ಳಬೇಕು"
 
-#: ../src/ui/theme.c:5066 ../src/ui/theme.c:5091
+#: ../src/ui/theme.c:5009 ../src/ui/theme.c:5034
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -911,25 +967,28 @@ msgstr ""
 "<frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/> "
 "ಕಾಣುತ್ತಿಲ್ಲ"
 
-#: ../src/ui/theme.c:5139
+#: ../src/ui/theme.c:5082
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "\"%s\" ಥೀಮನ್ನು ಲೋಡ್‍ ಮಾಡಲು ವಿಫಲಗೊಂಡಿದೆ: %s\n"
 
-#: ../src/ui/theme.c:5275 ../src/ui/theme.c:5282 ../src/ui/theme.c:5289
-#: ../src/ui/theme.c:5296 ../src/ui/theme.c:5303
+#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
+#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr ""
 
-#: ../src/ui/theme.c:5311
+#: ../src/ui/theme.c:5254
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
+"ಬಗೆ \"%s\" ಗಾಗಿ \"%s\" ಪರಿಸರವಿನ್ಯಾಸದಲ್ಲಿ ಯಾವುದೆ ಚೌಕಟ್ಟು ಶೈಲಿ ಇಲ್ಲ, ಒಂದು <"
+"window "
+"type=\"%s\" style_set=\"whatever\"/> ಘಟಕವನ್ನು ಸೇರಿಸಿ"
 
-#: ../src/ui/theme.c:5709 ../src/ui/theme.c:5771 ../src/ui/theme.c:5834
+#: ../src/ui/theme.c:5650 ../src/ui/theme.c:5712 ../src/ui/theme.c:5775
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -938,7 +997,7 @@ msgstr ""
 "s\" "
 "ಹೊಂದಿಲ್ಲ"
 
-#: ../src/ui/theme.c:5717 ../src/ui/theme.c:5779 ../src/ui/theme.c:5842
+#: ../src/ui/theme.c:5658 ../src/ui/theme.c:5720 ../src/ui/theme.c:5783
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "\"%s\" ಸ್ತಿರಾಂಕವು ಈಗಾಗಲೆ ಸೂಚಿತಗೊಂಡಿದೆ"
@@ -959,12 +1018,12 @@ msgstr "ಸಾಲು %d ಅಕ್ಷರ %d: %s"
 #: ../src/ui/theme-parser.c:479
 #, c-format
 msgid "Attribute \"%s\" repeated twice on the same <%s> element"
-msgstr ""
+msgstr "ವೈಶಿಷ್ಟ್ಯ \"%s\" ವು <%s> ಘಟಕದಲ್ಲಿ ಎರಡು ಬಾರಿ ಪುನರಾವರ್ತಿತವಾಗಿದೆ"
 
 #: ../src/ui/theme-parser.c:503 ../src/ui/theme-parser.c:552
 #, c-format
 msgid "Attribute \"%s\" is invalid on <%s> element in this context"
-msgstr ""
+msgstr "ಗುಣವಿಶೇಷ \"%s\" ವು ಈ ಸನ್ನಿವೇಶದಲ್ಲಿನ <%s> ಅಂಶದಲ್ಲಿ ಅಮಾನ್ಯವಾಗಿದೆ"
 
 #: ../src/ui/theme-parser.c:594
 #, c-format
@@ -975,6 +1034,7 @@ msgstr "\"%s\" ಅನ್ನು ಒಂದು ಪೂರ್ಣಾಂಕವಾಗಿ
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
 msgstr ""
+"\"%s\" ಹಿಂದಿರುವ ಅಕ್ಷರಗಳನ್ನು (ವಾಕ್ಯ \"%s\" ದಲ್ಲಿ) ಅರ್ಥ ಮಾಡಿಕೊಳ್ಳಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:613
 #, c-format
@@ -990,11 +1050,13 @@ msgstr "%ld ಪೂರ್ಣಾಂಕವು ಬಹಳ ದೊಡ್ಡದಾಗಿ
 #, c-format
 msgid "Could not parse \"%s\" as a floating point number"
 msgstr ""
+"\"%s\" ಅನ್ನು ಒಂದು ತೇಲುವ ಬಿಂದು (ಫ್ಲೋಟಿಂಗ್ ಪಾಯಿಂಟ್‌) ಸಂಖ್ಯೆಯಾಗಿ ಪಾರ್ಸ್ ಮಾಡಲು "
+"ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:680 ../src/ui/theme-parser.c:708
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
+msgstr "ಬೂಲಿಯನ್ ಮೌಲ್ಯಗಳು \"true\" ಅಥವ \"false\" ಆಗಿರಬೇಕೆ ಹೊರತು \"%s\" ಅಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:735
 #, c-format
@@ -1004,7 +1066,7 @@ msgstr "ಕೋನವು 0.0 ಹಾಗು 360.0 ನಡುವೆ ಇರಬೇಕ�
 #: ../src/ui/theme-parser.c:798
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
+msgstr "ಆಲ್ಫಾವು 0.0 (ಅಗೋಚರ) ಹಾಗು 1.0 (ಸಂಪೂರ್ಣ ಅಪಾರದರ್ಶಕ), %g ಆಗಿಲ್ಲ\n"
 
 #: ../src/ui/theme-parser.c:863
 #, c-format
@@ -1012,6 +1074,8 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
+"ಅಮಾನ್ಯವಾದ ಶೀರ್ಷಿಕೆ ಅಳತೆ \"%s\" (ಇದು xx-small,x-small,small,medium,large,x-"
+"large,xx-large ಗಳಲ್ಲಿ ಒಂದನ್ನು ಹೊಂದಿರಬೇಕು)\n"
 
 #: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
 #: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
@@ -1034,10 +1098,13 @@ msgstr "<%s> ಜ್ಯಾಮಿತಿಯು \"%s\" ಸೂಚಿತಗೊಂಡ�
 #, c-format
 msgid "<%s> must specify either a geometry or a parent that has a geometry"
 msgstr ""
+"<%s> ಯು ಒಂದೋ ಜ್ಯಾಮಿತಿಯನ್ನು ಅಥವ ಒಂದು ಜ್ಯಾಮಿತಿಯನ್ನು ಹೊಂದಿರುವ ಮೂಲವನ್ನು ಸೂಚಿಸಬೇಕು"
 
 #: ../src/ui/theme-parser.c:1196
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr ""
+"ಒಂದು ಆಲ್ಫಾ ಮೌಲ್ಯವು ಅರ್ಥಬದ್ಧವಾಗಿರಬೇಕೆಂದರೆ ನೀವು ಅದಕ್ಕಾಗಿ ಒಂದು ಹಿನ್ನಲೆಯನ್ನು "
+"ಸೂಚಿಸಬೇಕು"
 
 #: ../src/ui/theme-parser.c:1264
 #, c-format
@@ -1052,7 +1119,7 @@ msgstr "ಗೊತ್ತಿರದ style_set \"%s\", <%s> ಘಟಕದಲ್ಲಿ
 #: ../src/ui/theme-parser.c:1283
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr ""
+msgstr "ವಿಂಡೋ ಬಗೆ \"%s\" ಈಗಾಗಲೆ ಶೈಲಿ ಜೋಡಿಯನ್ನು ನಿಯೋಜಿಸಿದೆ"
 
 #: ../src/ui/theme-parser.c:1313 ../src/ui/theme-parser.c:1377
 #: ../src/ui/theme-parser.c:1603 ../src/ui/theme-parser.c:2838
@@ -1061,7 +1128,7 @@ msgstr ""
 #: ../src/ui/theme-parser.c:3349 ../src/ui/theme-parser.c:3387
 #, c-format
 msgid "Element <%s> is not allowed below <%s>"
-msgstr ""
+msgstr "ಅಂಶ <%s> ವು <%s> ನ ಕೆಳಗೆ ಅನುಮತಿ ಇಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:1427 ../src/ui/theme-parser.c:1441
 #: ../src/ui/theme-parser.c:1486
@@ -1069,6 +1136,8 @@ msgid ""
 "Cannot specify both \"button_width\"/\"button_height\" and \"aspect_ratio\" "
 "for buttons"
 msgstr ""
+"ಗುಂಡಿಗಳಿಗಾಗಿ \"button_width\"/\"button_height\" ಹಾಗು \"aspect_ratio\" "
+"ಇವೆರಡನ್ನೂ ಸೂಚಿಸಲಾಗಿಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:1450
 #, c-format
@@ -1088,17 +1157,17 @@ msgstr "ಗೊತ್ತಿರದ \"%s\" ಅಂಚು"
 #: ../src/ui/theme-parser.c:1868
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> ಘಟಕದಲ್ಲಿ ಯಾವುದೆ \"start_angle\" ಅಥವ \"from\" ಗುಣವಿಶೇಷವು ಇಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:1875
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-msgstr ""
+msgstr "<%s> ಘಟಕದಲ್ಲಿ ಯಾವುದೆ \"extent_angle\" ಅಥವ \"to\" ಗುಣವಿಶೇಷವು ಇಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:2115
 #, c-format
 msgid "Did not understand value \"%s\" for type of gradient"
-msgstr ""
+msgstr "ಗ್ರೇಡಿಯಂಟ್‌ನ ಬಗೆಗೆ ಮೌಲ್ಯ \"%s\" ವು ಅರ್ಥವಾಗಿಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:2193 ../src/ui/theme-parser.c:2568
 #, c-format
@@ -1124,27 +1193,29 @@ msgstr "\"%s\" ಬಾಣದ ಗುರುತನ್ನು <%s> ಘಟಕಕ್ಕ�
 #: ../src/ui/theme-parser.c:2694 ../src/ui/theme-parser.c:2790
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr ""
+msgstr "ಯಾವುದೆ <draw_ops> ಕರೆ \"%s\" ಅನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:2706 ../src/ui/theme-parser.c:2802
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr ""
+"ಇಲ್ಲಿ draw_ops \"%s\" ಅನ್ನು ಸೇರಿಸುವುದರಿಂದ ಒಂದು ವೃತ್ತಾಕಾರದ ಉಲ್ಲೇಖವನ್ನು "
+"ನಿರ್ಮಿಸುತ್ತದೆ"
 
 #: ../src/ui/theme-parser.c:2917
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr ""
+msgstr "ಚೌಕಟ್ಟು ಅಂಶಕ್ಕಾಗಿ ತಿಳಿಯದ ಸ್ಥಾನ \"%s\""
 
 #: ../src/ui/theme-parser.c:2925
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr ""
+msgstr "%s ಸ್ಥಾನದಲ್ಲಿ ಚೌಕಟ್ಟು ಶೈಲಿಯು ಈಗಾಗಲೆ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ"
 
 #: ../src/ui/theme-parser.c:2942 ../src/ui/theme-parser.c:3019
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr ""
+msgstr "\"%s\" ಹೆಸರಿನ ಯಾವುದೆ <draw_ops> ಆಯ್ಕೆಯನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:2972
 #, c-format
@@ -1154,7 +1225,7 @@ msgstr "\"%s\" ಗುಂಡಿಗಾಗಿ ಅಜ್ಞಾತ ಕ್ರಿಯೆ
 #: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
-msgstr ""
+msgstr "ಈ ಆವೃತ್ತಿಯಲ್ಲಿ ಗುಂಡಿ ಕ್ರಿಯೆ \"%s\" ಯು ಲಭ್ಯವಿಲ್ಲ (%d, %d ಅಗತ್ಯವಿದೆ)"
 
 #: ../src/ui/theme-parser.c:2994
 #, c-format
@@ -1165,16 +1236,17 @@ msgstr "\"%s\" ಗುಂಡಿಗಾಗಿ ಗೊತ್ತಿರದ ಸ್ಥಿ
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr ""
+"ಸ್ಥಿತಿ %s ಗಮನ %s ಕ್ಕಾಗಿ ಚೌಕಟ್ಟು ಶೈಲಿಯಲ್ಲಿ ಒಂದು ಗುಂಡಿಯನ್ನು ಈಗಾಗಲೆ ಸೂಚಿಸಲಾಗಿದೆ"
 
 #: ../src/ui/theme-parser.c:3073
 #, c-format
 msgid "\"%s\" is not a valid value for focus attribute"
-msgstr ""
+msgstr "\"%s\" ಯು ಗಮನ ಗುಣ ವಿಶೇಷಕ್ಕೆ ಒಂದು ಮಾನ್ಯವಾ ಮೌಲ್ಯವಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:3082
 #, c-format
 msgid "\"%s\" is not a valid value for state attribute"
-msgstr ""
+msgstr "\"%s\" ಯು ಸ್ಥಿತಿ ಗುಣ ವಿಶೇಷಕ್ಕೆ ಒಂದು ಮಾನ್ಯವಾ ಮೌಲ್ಯವಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:3092
 #, c-format
@@ -1184,7 +1256,7 @@ msgstr "\"%s\" ಎಂದು ಕರೆಯಲ್ಪಡುವ ಒಂದು ಶೈ�
 #: ../src/ui/theme-parser.c:3113 ../src/ui/theme-parser.c:3136
 #, c-format
 msgid "\"%s\" is not a valid value for resize attribute"
-msgstr ""
+msgstr "\"%s\" ಯು ಗಾತ್ರ ಬದಲಾವಣೆ ಗುಣ ವಿಶೇಷಕ್ಕೆ ಒಂದು ಮಾನ್ಯವಾ ಮೌಲ್ಯವಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:3147
 #, c-format
@@ -1192,42 +1264,55 @@ msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr ""
+"ಗರಿಷ್ಟಗೊಳಿಸಲಾದ/ಮಬ್ಬುಗೊಳಿಸಲಾದ ಸ್ಥಿತಿಗಳಿಗಾಗಿ <%s> ಅಂಶದಲ್ಲಿ \"resize\" "
+"ಗುಣವಿಶೇಷವು "
+"ಇರುವಂತಿಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:3161
 #, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
 msgstr ""
+"ಗರಿಷ್ಟಗೊಳಿಸಲಾದ ಸ್ಥಿತಿಗಳಿಗಾಗಿ <%s> ಅಂಶದಲ್ಲಿ \"resize\" ಗುಣವಿಶೇಷವು ಇರುವಂತಿಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:3175 ../src/ui/theme-parser.c:3222
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
-msgstr ""
+msgstr "ಸ್ಥಿತಿ %s ಗಾತ್ರ ಬದಲಾವಣೆ %s ಗಮನ %s ಕ್ಕಾಗಿ ಶೈಲಿಯನ್ನು ಈಗಾಗಲೆ ಸೂಚಿಸಲಾಗಿದೆ"
 
 #: ../src/ui/theme-parser.c:3186 ../src/ui/theme-parser.c:3197
 #: ../src/ui/theme-parser.c:3208 ../src/ui/theme-parser.c:3233
 #: ../src/ui/theme-parser.c:3244 ../src/ui/theme-parser.c:3255
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr ""
+msgstr "ಸ್ಥಿತಿ %s ಗಮನ %s ಕ್ಕಾಗಿ ಶೈಲಿಯನ್ನು ಈಗಾಗಲೆ ಸೂಚಿಸಲಾಗಿದೆ"
 
 #: ../src/ui/theme-parser.c:3294
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"ಒಂದು <piece> ಘಟಕದಲ್ಲಿ ಎರಡು draw_ops ಇರುವಂತಿಲ್ಲ (ಪರಿಸರವಿನ್ಯಾಸವು ಒಂದು draw_ops "
+"ಗುಣವಿಶೇಷವನ್ನು ಹಾಗು ಒಂದು <draw_ops> ಘಟಕವನ್ನೂ ಸಹ ಸೂಚಿಸಿದೆ, ಅಥವ ಎರಡು ಘಟಕಗಳನ್ನು "
+"ಸೂಚಿಸಿದೆ)"
 
 #: ../src/ui/theme-parser.c:3332
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"ಒಂದು <button> ಘಟಕದಲ್ಲಿ ಎರಡು draw_ops ಇರುವಂತಿಲ್ಲ (ಪರಿಸರವಿನ್ಯಾಸವು ಒಂದು draw_ops "
+"ಗುಣವಿಶೇಷವನ್ನು ಹಾಗು ಒಂದು <draw_ops> ಘಟಕವನ್ನೂ ಸಹ ಸೂಚಿಸಿದೆ, ಅಥವ ಎರಡು ಘಟಕಗಳನ್ನು "
+"ಸೂಚಿಸಿದೆ)"
 
 #: ../src/ui/theme-parser.c:3370
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
+"ಒಂದು <menu_icon> ಘಟಕದಲ್ಲಿ ಎರಡು draw_ops ಇರುವಂತಿಲ್ಲ (ಪರಿಸರವಿನ್ಯಾಸವು ಒಂದು "
+"draw_ops ಗುಣವಿಶೇಷವನ್ನು ಹಾಗು ಒಂದು <draw_ops> ಘಟಕವನ್ನೂ ಸಹ ಸೂಚಿಸಿದೆ, ಅಥವ ಎರಡು "
+"ಘಟಕಗಳನ್ನು ಸೂಚಿಸಿದೆ)"
 
 #: ../src/ui/theme-parser.c:3434
 #, c-format
@@ -1248,7 +1333,7 @@ msgstr ""
 #: ../src/ui/theme-parser.c:3562
 #, c-format
 msgid "Outermost element in theme must be <metacity_theme> not <%s>"
-msgstr ""
+msgstr "ಅತ್ಯಂತ ಹೊರಗಿನ ಪರಿಸರವಿನ್ಯಾಸವು <metacity_theme> ಆಗಿರಬೇಕೆ ಹೊರತು <%s> ಅಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:3582
 #, c-format
@@ -1266,11 +1351,12 @@ msgstr "<%s> ಘಟಕಕ್ಕೆ ಒಂದು <constant> ಘಟಕದ ಒಳ�
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
+"ಒಂದು ದೂರ/ಅಂಚು/ಆಕಾರ ಅನುಪಾತ(aspect_ratio) ಘಟಕದ ಒಳಗೆ ಘಟಕ <%s> ಕ್ಕೆ ಅನುಮತಿ ಇಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:3621
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
+msgstr "ಒಂದು ಎಳೆಯುವಿಕೆ ಕಾರ್ಯದ ಒಳಗೆ ಘಟಕ <%s> ಕ್ಕೆ ಅನುಮತಿ ಇಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:3631 ../src/ui/theme-parser.c:3661
 #: ../src/ui/theme-parser.c:3666 ../src/ui/theme-parser.c:3671
@@ -1280,7 +1366,7 @@ msgstr "<%s> ಘಟಕಕ್ಕೆ ಒಂದು <%s> ಘಟಕದ ಒಳಗೆ �
 
 #: ../src/ui/theme-parser.c:3899
 msgid "No draw_ops provided for frame piece"
-msgstr ""
+msgstr "ಚೌಕಟ್ಟಿನ ಅಂಶಕ್ಕಾಗಿ ಯಾವುದೆ draw_ops ಅನ್ನು ಒದಗಿಸಲಾಗಿಲ್ಲ"
 
 #: ../src/ui/theme-parser.c:3914
 msgid "No draw_ops provided for button"
@@ -1298,7 +1384,7 @@ msgstr "<%s> ಘಟಕದ ಒಳಗೆ ಯಾವುದೆ ಪಠ್ಯಕ್ಕ�
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> ಈ ಪರಿಸರವಿನ್ಯಾಸ ಎರಡು ಬಾರಿ ಸೂಚಿಸಲ್ಪಟ್ಟಿದೆ"
 
-#: ../src/ui/theme-parser.c:4348
+#: ../src/ui/theme-parser.c:4334
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "%s ಥೀಮ್‍ಗೆ ಒಂದು ಮಾನ್ಯವಾದ ಕಡತವನ್ನು ಪತ್ತೆ ಮಾಡುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ\n"
@@ -1412,7 +1498,7 @@ msgstr "ಗುಂಡಿ ಲೇಔಟ್ ಪರೀಕ್ಷೆ %d"
 #: ../src/ui/theme-viewer.c:768
 #, c-format
 msgid "%g milliseconds to draw one window frame"
-msgstr ""
+msgstr "ಒಂದು ವಿಂಡೋ ಚೌಕಟ್ಟನ್ನು ಚಿತ್ರಿಸಲು ಸಮಯ %g ಮಿಲಿಸೆಕೆಂಡುಗಳು"
 
 #: ../src/ui/theme-viewer.c:813
 #, c-format
@@ -1460,14 +1546,23 @@ msgid ""
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
 msgstr ""
+"%d ಚೌಕಟ್ಟುಗಳನ್ನು %g ಕ್ಲೈಟ್‌-ಬದಿಯ ಸೆಕೆಂಡುಗಳಲ್ಲಿ (ಪ್ರತಿ ಚೌಕಟ್ಟಿಗೂ %g "
+"ಮಿಲಿಸೆಕೆಂಡುಗಳು) "
+"ಹಾಗು X ಪರಿಚಾರಕ ಸಂಪನ್ಮೂನಗಳನ್ನೂ ಸಹ ಒಳಗೊಂಡು %g ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಗೋಡೆ ಗಡಿಯಾರದ "
+"ಸಮಯದಲ್ಲಿ "
+"(ಪ್ರತಿ ಚೌಕಟ್ಟಿಗೂ %g ಮಿಲಿಸೆಕೆಂಡುಗಳು)\n"
 
 #: ../src/ui/theme-viewer.c:1266
 msgid "position expression test returned TRUE but set error"
 msgstr ""
+"ಸ್ಥಾನದ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಪರೀಕ್ಷೆಯು TRUE ಅನ್ನು ಮರಳಿಸಿದೆ ಆದರೆ ಅದು ದೋಷವನ್ನು "
+"ಸೂಚಿಸಿಲ್ಲ"
 
 #: ../src/ui/theme-viewer.c:1268
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
+"ಸ್ಥಾನದ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ ಪರೀಕ್ಷೆಯು FALSE ಅನ್ನು ಮರಳಿಸಿದೆ ಆದರೆ ಅದು ದೋಷವನ್ನು "
+"ಸೂಚಿಸಿಲ್ಲ"
 
 #: ../src/ui/theme-viewer.c:1272
 msgid "Error was expected but none given"
@@ -1481,7 +1576,7 @@ msgstr "ದೋಷ %d ಅನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ�
 #: ../src/ui/theme-viewer.c:1280
 #, c-format
 msgid "Error not expected but one was returned: %s"
-msgstr ""
+msgstr "ದೋಷವನ್ನು ನಿರೀಕ್ಷಿಸಿರಲಿಲ್ಲ ಆದರೆ ಒಂದು ದೋಷವು ಕಂಡು ಬಂದಿದೆ: %s"
 
 #: ../src/ui/theme-viewer.c:1284
 #, c-format
@@ -1497,6 +1592,8 @@ msgstr "y ಮೌಲ್ಯವು %d ಆಗಿದೆ, %d ಅನ್ನು ನಿರ
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
+"%d ಅಕ್ಷಾಂಶ ಎಕ್ಸ್‌ಪ್ರೆಶನ್‌ಗಳನ್ನು %g ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಪಾರ್ಸ್ ಮಾಡಲಾಗಿದೆ (ಸರಾಸರಿ %g "
+"ಸೆಕೆಂಡುಗಳು)\n"
 
 #~ msgid "Switch to workspace 1"
 #~ msgstr "ಕಾರ್ಯಕ್ಷೇತ್ರ 1 ಕ್ಕೆ ಬದಲಾಯಿಸು"
@@ -2944,10 +3041,10 @@ msgstr ""
 #, fuzzy
 #~ msgid ""
 #~ "This keybinding moves a window into the east (right) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-#~ "\". The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
+#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1\". The parser is fairly liberal and allows lower or upper case, and "
+#~ "also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+#~ "set the option to the special string \"disabled\", then there will be no "
 #~ "keybinding for this action."
 #~ msgstr ""
 #~ "ವಿಂಡೊ ರೈಟ್&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; "
@@ -3016,10 +3113,10 @@ msgstr ""
 #, fuzzy
 #~ msgid ""
 #~ "This keybinding moves a window into the west (left) side of the screen. "
-#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;F1"
-#~ "\". The parser is fairly liberal and allows lower or upper case, and also "
-#~ "abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you set "
-#~ "the option to the special string \"disabled\", then there will be no "
+#~ "The format looks like \"&lt;Control&gt;a\" or \"&lt;Shift&gt;&lt;Alt&gt;"
+#~ "F1\". The parser is fairly liberal and allows lower or upper case, and "
+#~ "also abbreviations such as \"&lt;Ctl&gt;\" and \"&lt;Ctrl&gt;\". If you "
+#~ "set the option to the special string \"disabled\", then there will be no "
 #~ "keybinding for this action."
 #~ msgstr ""
 #~ "ವಿಂಡೊ ಲೆಫ್ಟ್‍&lt; ನಿಯಂತ್ರಣ&gt;&lt; Shift&gt;&lt; Alt&gt; F1  &lt;&gt;&lt; "
