@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-19 20:36+0300\n"
-"PO-Revision-Date: 2012-09-19 20:35+0300\n"
+"POT-Creation-Date: 2012-10-14 17:31+0300\n"
+"PO-Revision-Date: 2012-10-14 17:31+0300\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -76,12 +76,12 @@ msgstr "Из_чакване"
 msgid "_Force Quit"
 msgstr "_Принудително спиране"
 
-#: ../src/core/display.c:386
+#: ../src/core/display.c:396
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Липсва разширението „%s“, необходимо за наслагване"
 
-#: ../src/core/display.c:482
+#: ../src/core/display.c:492
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Неуспех при отварянето на дисплея на X Window „%s“\n"
@@ -156,7 +156,7 @@ msgstr "Отпечатване на версията на програмата"
 msgid "Mutter plugin to use"
 msgstr "Приставка, която да се ползва"
 
-#: ../src/core/prefs.c:1071
+#: ../src/core/prefs.c:1079
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -164,14 +164,14 @@ msgstr ""
 "Триковете за развалените програми са изключени. Някои програми могат да са с "
 "неправилно поведение.\n"
 
-#: ../src/core/prefs.c:1146
+#: ../src/core/prefs.c:1154
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "Описанието на шрифт „%s“ от ключа на GSettings — %s, не може да бъде "
 "анализирано\n"
 
-#: ../src/core/prefs.c:1212
+#: ../src/core/prefs.c:1220
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -180,7 +180,7 @@ msgstr ""
 "„%s“, който е открит в базата от данни с настройките, не е валиден "
 "модификатор на бутон на мишката\n"
 
-#: ../src/core/prefs.c:1736
+#: ../src/core/prefs.c:1747
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -189,7 +189,7 @@ msgstr ""
 "Низът „%s“ открит в базата от данни с настройки е невалиден за стойност на "
 "клавишната комбинация „%s“\n"
 
-#: ../src/core/prefs.c:1833
+#: ../src/core/prefs.c:1844
 #, c-format
 msgid "Workspace %d"
 msgstr "Работен плот %d"
@@ -319,7 +319,7 @@ msgid "Window manager error: "
 msgstr "Грешка от мениджъра на прозорци: "
 
 #. first time through
-#: ../src/core/window.c:7234
+#: ../src/core/window.c:7237
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -335,7 +335,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7899
+#: ../src/core/window.c:7902
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -345,22 +345,22 @@ msgstr ""
 "променя, но едновременно с това указва минимален размер %d x %d и максимален "
 "размер %d x %d. Това не е смислено.\n"
 
-#: ../src/core/window-props.c:310
+#: ../src/core/window-props.c:274
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Приложението зададе неверен _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:429
+#: ../src/core/window-props.c:393
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (от %s)"
 
-#: ../src/core/window-props.c:1484
+#: ../src/core/window-props.c:1448
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "За %2$s е указан неправилен WM_TRANSIENT_FOR, прозорец 0x%1$lx.\n"
 
-#: ../src/core/window-props.c:1495
+#: ../src/core/window-props.c:1459
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR за прозорец 0x%lx за %s ще зацикли.\n"
@@ -483,10 +483,24 @@ msgstr ""
 "прозорците да се изключат."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "Смяната на фокуса да изчака спирането на показалеца"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focus will not be changed immediately when entering a window, but only "
+"after the pointer stops moving."
+msgstr ""
+"Ако е зададено като истина и начинът за фокусиране е „sloppy“ или „mouse“, "
+"тогава фокусът няма да се предава веднага при навлизането в прозорец, а едва "
+"след като показалецът спре да се движи."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
 msgstr "Широчина на границата за влачене"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -494,11 +508,11 @@ msgstr ""
 "Общ размер на границите за влачене. Ако видимите граници на темата са по-"
 "малки, се добавят невидими граници, за да се достигне тази величина."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Select window from tab popup"
 msgstr "Избиране при обхождане чрез изскачащ прозорец"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid "Cancel tab popup"
 msgstr "Без изскачащ прозорец при обхождане"
 
