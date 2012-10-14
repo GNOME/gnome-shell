@@ -43,6 +43,8 @@ const MonitorConstraint = new Lang.Class({
     },
 
     set primary(v) {
+        if (v)
+            this._index = -1;
         this._primary = v;
         if (this.actor)
             this.actor.queue_relayout();
@@ -54,6 +56,7 @@ const MonitorConstraint = new Lang.Class({
     },
 
     set index(v) {
+        this._primary = false;
         this._index = v;
         if (this.actor)
             this.actor.queue_relayout();

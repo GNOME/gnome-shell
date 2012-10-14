@@ -453,7 +453,7 @@ const ScreenShield = new Lang.Class({
         if (symbol == Clutter.KEY_Escape ||
             symbol == Clutter.KEY_Return ||
             symbol == Clutter.KEY_KP_Enter) {
-            this._ensureUnlockDialog();
+            this._ensureUnlockDialog(true);
             this._hideLockScreen(true);
             return true;
         }
@@ -476,7 +476,7 @@ const ScreenShield = new Lang.Class({
 
         // 7 standard scrolls to lift up
         if (this._lockScreenScrollCounter > 35) {
-            this._ensureUnlockDialog();
+            this._ensureUnlockDialog(false);
             this._hideLockScreen(true);
         }
 
@@ -508,7 +508,7 @@ const ScreenShield = new Lang.Class({
     _onDragBegin: function() {
         Tweener.removeTweens(this._lockScreenGroup);
         this._lockScreenState = MessageTray.State.HIDING;
-        this._ensureUnlockDialog();
+        this._ensureUnlockDialog(false);
     },
 
     _onDragEnd: function(action, actor, eventX, eventY, modifiers) {
@@ -585,7 +585,7 @@ const ScreenShield = new Lang.Class({
 
         this.actor.show();
         this._isGreeter = Main.sessionMode.isGreeter;
-        this._ensureUnlockDialog();
+        this._ensureUnlockDialog(true);
         this._hideLockScreen(false);
     },
 
@@ -632,7 +632,7 @@ const ScreenShield = new Lang.Class({
             Main.sessionMode.popMode('lock-screen');
     },
 
-    _ensureUnlockDialog: function() {
+    _ensureUnlockDialog: function(onPrimary) {
         if (!this._dialog) {
             let constructor = Main.sessionMode.unlockDialog;
             this._dialog = new constructor(this._lockDialogGroup);
@@ -642,8 +642,9 @@ const ScreenShield = new Lang.Class({
                 return;
             }
 
+            let time = global.get_current_time();
             this._dialog.connect('loaded', Lang.bind(this, function() {
-                if (!this._dialog.open()) {
+                if (!this._dialog.open(time, onPrimary)) {
                     log('Could not open login dialog: failed to acquire grab');
                     this.unlock();
                 }

@@ -202,8 +202,11 @@ const ModalDialog = new Lang.Class({
         this.emit('destroy');
     },
 
-    _fadeOpen: function() {
-        this._monitorConstraint.index = global.screen.get_current_monitor();
+    _fadeOpen: function(onPrimary) {
+        if (onPrimary)
+            this._monitorConstraint.primary = true;
+        else
+            this._monitorConstraint.index = global.screen.get_current_monitor();
 
         this.state = State.OPENING;
 
@@ -236,14 +239,14 @@ const ModalDialog = new Lang.Class({
         }));
     },
 
-    open: function(timestamp) {
+    open: function(timestamp, onPrimary) {
         if (this.state == State.OPENED || this.state == State.OPENING)
             return true;
 
         if (!this.pushModal(timestamp))
             return false;
 
-        this._fadeOpen();
+        this._fadeOpen(onPrimary);
         return true;
     },
 
