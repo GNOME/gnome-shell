@@ -2878,6 +2878,22 @@ meta_screen_resize (MetaScreen *screen,
   reload_monitor_infos (screen);
   set_desktop_geometry_hint (screen);
 
+  /* Resize the guard window to fill the screen again. */
+  if (screen->guard_window != None)
+    {
+      XWindowChanges changes;
+
+      changes.x = 0;
+      changes.y = 0;
+      changes.width = width;
+      changes.height = height;
+
+      XConfigureWindow(screen->display->xdisplay,
+                       screen->guard_window,
+                       CWX | CWY | CWWidth | CWHeight,
+                       &changes);
+    }
+
   if (screen->display->compositor)
     meta_compositor_sync_screen_size (screen->display->compositor,
 				      screen, width, height);
