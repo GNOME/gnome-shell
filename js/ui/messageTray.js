@@ -1471,6 +1471,7 @@ const MessageTray = new Lang.Class({
         this._pointerInTray = false;
         this._pointerInKeyboard = false;
         this._keyboardVisible = false;
+        this._keyboardUnderMessageTray = false;
         this._summaryState = State.HIDDEN;
         this._pointerInSummary = false;
         this._notificationClosed = false;
@@ -1924,12 +1925,15 @@ const MessageTray = new Lang.Class({
     },
 
     _onKeyboardVisibleChanged: function(layoutManager, keyboardVisible) {
-        if (this._keyboardVisible == keyboardVisible)
+        let keyboardUnderMessageTray = layoutManager.keyboardIndex == layoutManager.bottomIndex;
+        if (this._keyboardVisible == keyboardVisible &&
+            this._keyboardUnderMesssageTray == keyboardUnderMessageTray)
             return;
 
         this._keyboardVisible = keyboardVisible;
+        this._keyboardUnderMessageTray = keyboardUnderMessageTray;
 
-        if (keyboardVisible)
+        if (keyboardVisible && keyboardUnderMessageTray)
             this.actor.add_style_pseudo_class('keyboard');
         else
             this.actor.remove_style_pseudo_class('keyboard');
@@ -2086,12 +2090,12 @@ const MessageTray = new Lang.Class({
                                      this._desktopCloneState == State.SHOWN);
         let desktopCloneShouldBeVisible = (trayShouldBeVisible &&
                                            !this._overviewVisible &&
-                                           !this._keyboardVisible);
+                                           (!this._keyboardVisible || !this._keyboardUnderMessageTray));
 
         if (!desktopCloneIsVisible && desktopCloneShouldBeVisible) {
             this._showDesktopClone();
         } else if (desktopCloneIsVisible && !desktopCloneShouldBeVisible) {
-            this._hideDesktopClone (this._keyboardVisible);
+            this._hideDesktopClone (this._keyboardVisible && this._keyboardUnderMessageTray);
         }
     },
 

@@ -251,7 +251,7 @@ const Keyboard = new Lang.Class({
         this._focusNotifyId = global.stage.connect('notify::key-focus', Lang.bind(this, this._onKeyFocusChanged));
 
         if (show)
-            this.show();
+            this.show(Main.layoutManager.focusIndex);
         else
             this._createSource();
     },
@@ -375,7 +375,7 @@ const Keyboard = new Lang.Class({
         if (!this._enableKeyboard)
             return;
 
-        let monitor = Main.layoutManager.bottomMonitor;
+        let monitor = Main.layoutManager.keyboardMonitor;
         let maxHeight = monitor.height / 3;
         this.actor.width = monitor.width;
 
@@ -462,9 +462,9 @@ const Keyboard = new Lang.Class({
                actor._extended_keys || actor.extended_key;
     },
 
-    show: function () {
+    show: function (monitor) {
+        Main.layoutManager.keyboardIndex = monitor;
         this._redraw();
-
         Main.layoutManager.showKeyboard();
         this._destroySource();
     },
@@ -512,7 +512,7 @@ const Keyboard = new Lang.Class({
 
         if (timestamp != Clutter.CURRENT_TIME)
             this._timestamp = timestamp;
-        this.show();
+        this.show(Main.layoutManager.focusIndex);
     },
 
     Hide: function(timestamp) {
@@ -566,6 +566,7 @@ const KeyboardSource = new Lang.Class({
     },
 
     open: function() {
-        this._keyboard.show();
+        // Show the OSK below the message tray
+        this._keyboard.show(Main.layoutManager.bottomIndex);
     }
 });

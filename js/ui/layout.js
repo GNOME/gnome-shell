@@ -103,6 +103,7 @@ const LayoutManager = new Lang.Class({
         this.monitors = [];
         this.primaryMonitor = null;
         this.primaryIndex = -1;
+        this._keyboardIndex = -1;
         this._hotCorners = [];
         this._background = null;
         this._leftPanelBarrier = 0;
@@ -240,9 +241,8 @@ const LayoutManager = new Lang.Class({
         this.panelBox.set_position(this.primaryMonitor.x, this.primaryMonitor.y);
         this.panelBox.set_size(this.primaryMonitor.width, -1);
 
-        this.keyboardBox.set_position(this.bottomMonitor.x,
-                                      this.bottomMonitor.y + this.bottomMonitor.height);
-        this.keyboardBox.set_size(this.bottomMonitor.width, -1);
+        if (this.keyboardIndex < 0)
+            this.keyboardIndex = this.primaryIndex;
 
         this.trayBox.set_position(this.bottomMonitor.x,
                                   this.bottomMonitor.y + this.bottomMonitor.height);
@@ -305,6 +305,42 @@ const LayoutManager = new Lang.Class({
         return this.monitors[index];
     },
 
+    get keyboardMonitor() {
+        return this.monitors[this.keyboardIndex];
+    },
+
+    get focusIndex() {
+        let i = Main.layoutManager.primaryIndex;
+
+        if (global.stage_input_mode == Shell.StageInputMode.FOCUSED ||
+            global.stage_input_mode == Shell.StageInputMode.FULLSCREEN) {
+            let focusActor = global.stage.key_focus;
+            if (focusActor)
+                i = this._chrome.findIndexForActor(focusActor);
+        } else {
+            let focusWindow = global.display.focus_window;
+            if (focusWindow)
+                i = this._chrome.findIndexForWindow(focusWindow.get_compositor_private());
+        }
+
+        return i;
+    },
+
+    get focusMonitor() {
+        return this.monitors[this.focusIndex];
+    },
+
+    set keyboardIndex(v) {
+        this._keyboardIndex = v;
+        this.keyboardBox.set_position(this.keyboardMonitor.x,
+                                      this.keyboardMonitor.y + this.keyboardMonitor.height);
+        this.keyboardBox.set_size(this.keyboardMonitor.width, -1);
+    },
+
+    get keyboardIndex() {
+        return this._keyboardIndex;
+    },
+
     _startupAnimation: function() {
         this.panelBox.anchor_y = this.panelBox.height;
 
@@ -363,11 +399,14 @@ const LayoutManager = new Lang.Class({
                            onComplete: this._showKeyboardComplete,
                            onCompleteScope: this
                          });
-        Tweener.addTween(this.trayBox,
-                         { anchor_y: this.keyboardBox.height,
-                           time: KEYBOARD_ANIMATION_TIME,
-                           transition: 'easeOutQuad'
-                         });
+
+        if (this.keyboardIndex == this.bottomIndex) {
+            Tweener.addTween(this.trayBox,
+                             { anchor_y: this.keyboardBox.height,
+                               time: KEYBOARD_ANIMATION_TIME,
+                               transition: 'easeOutQuad'
+                             });
+        }
 
         this.emit('keyboard-visible-changed', true);
     },
@@ -379,7 +418,8 @@ const LayoutManager = new Lang.Class({
 
         this._keyboardHeightNotifyId = this.keyboardBox.connect('notify::height', Lang.bind(this, function () {
             this.keyboardBox.anchor_y = this.keyboardBox.height;
-            this.trayBox.anchor_y = this.keyboardBox.height;
+            if (this.keyboardIndex == this.bottomIndex)
+                this.trayBox.anchor_y = this.keyboardBox.height;
         }));
     },
 
@@ -395,11 +435,14 @@ const LayoutManager = new Lang.Class({
                            onComplete: this._hideKeyboardComplete,
                            onCompleteScope: this
                          });
-        Tweener.addTween(this.trayBox,
-                         { anchor_y: 0,
-                           time: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
-                           transition: 'easeOutQuad'
-                         });
+
+        if (this.keyboardIndex == this.bottomIndex) {
+            Tweener.addTween(this.trayBox,
+                             { anchor_y: 0,
+                               time: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
+                               transition: 'easeOutQuad'
+                             });
+        }
 
         this.emit('keyboard-visible-changed', false);
     },
@@ -463,7 +506,7 @@ const LayoutManager = new Lang.Class({
     },
 
     findMonitorForActor: function(actor) {
-        return this._chrome.findMonitorForActor(actor);
+        return this.monitors[this._chrome.findIndexForActor(actor)];
     }
 });
 Signals.addSignalMethods(LayoutManager.prototype);
@@ -812,6 +855,7 @@ const Chrome = new Lang.Class({
 
     _relayout: function() {
         this._monitors = this._layoutManager.monitors;
+        this._primaryIndex = this._layoutManager.primaryIndex;
         this._primaryMonitor = this._layoutManager.primaryMonitor;
 
         this._updateFullscreen();
@@ -827,32 +871,47 @@ const Chrome = new Lang.Class({
             let monitor = this._monitors[i];
             if (cx >= monitor.x && cx < monitor.x + monitor.width &&
                 cy >= monitor.y && cy < monitor.y + monitor.height)
-                return monitor;
+                return i;
         }
         // If the center is not on a monitor, return the first overlapping monitor
         for (let i = 0; i < this._monitors.length; i++) {
             let monitor = this._monitors[i];
             if (x + w > monitor.x && x < monitor.x + monitor.width &&
                 y + h > monitor.y && y < monitor.y + monitor.height)
-                return monitor;
+                return i;
         }
         // otherwise on no monitor
-        return null;
+        return -1;
     },
 
-    _findMonitorForWindow: function(window) {
-        return this._findMonitorForRect(window.x, window.y, window.width, window.height);
+    findIndexForWindow: function(window) {
+        let i = this._findMonitorForRect(window.x, window.y, window.width, window.height);
+        if (i >= 0)
+            return i;
+        return this._primaryIndex; // Not on any monitor, pretend its on the primary
     },
 
     // This call guarantees that we return some monitor to simplify usage of it
     // In practice all tracked actors should be visible on some monitor anyway
-    findMonitorForActor: function(actor) {
+    findIndexForActor: function(actor) {
         let [x, y] = actor.get_transformed_position();
         let [w, h] = actor.get_transformed_size();
-        let monitor = this._findMonitorForRect(x, y, w, h);
-        if (monitor)
-            return monitor;
-        return this._primaryMonitor; // Not on any monitor, pretend its on the primary
+        let i = this._findMonitorForRect(x, y, w, h);
+        if (i >= 0)
+            return i;
+        return this._primaryIndex; // Not on any monitor, pretend its on the primary
+    },
+
+    findMonitorForWindow: function(window) {
+        let i = this._findMonitorForRect(window.x, window.y, window.width, window.height);
+        if (i >= 0)
+            return this._monitors[i];
+        else
+            return null;
+    },
+
+    findMonitorForActor: function(actor) {
+        return this._monitors[this.findIndexForActor(actor)];
     },
 
     _queueUpdateRegions: function() {
@@ -900,7 +959,7 @@ const Chrome = new Lang.Class({
                 continue;
 
             if (layer == Meta.StackLayer.FULLSCREEN) {
-                let monitor = this._findMonitorForWindow(window);
+                let monitor = this.findMonitorForWindow(window);
                 if (monitor)
                     monitor.inFullscreen = true;
             }
@@ -917,7 +976,7 @@ const Chrome = new Lang.Class({
                 }
 
                 // Or whether it is monitor sized
-                let monitor = this._findMonitorForWindow(window);
+                let monitor = this.findMonitorForWindow(window);
                 if (monitor &&
                     window.x <= monitor.x &&
                     window.x + window.width >= monitor.x + monitor.width &&
