@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-07-15 00:47+0000\n"
-"PO-Revision-Date: 2012-09-07 19:45+0700\n"
+"POT-Creation-Date: 2012-10-11 14:32+0000\n"
+"PO-Revision-Date: 2012-10-15 15:15+0700\n"
 "Last-Translator: Theppitak Karoonboonyanan <thep@linux.thai.net>\n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "Language: th\n"
@@ -52,40 +52,40 @@ msgstr "เหตุการณ์กระดิ่ง"
 msgid "Unknown window information request: %d"
 msgstr "คำร้องขอข้อมูลหน้าต่างที่ไม่รู้จัก: %d"
 
-#: ../src/core/delete.c:114
+#: ../src/core/delete.c:113
 #, c-format
 msgid "%s is not responding."
 msgstr "%s ไม่ตอบสนอง"
 
-#: ../src/core/delete.c:118
+#: ../src/core/delete.c:117
 msgid "Application is not responding."
 msgstr "โปรแกรมไม่ตอบสนอง"
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:122
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr "คุณอาจเลือกที่จะรอสักครู่ เพื่อให้โปรแกรมทำงานต่อ หรือจะบังคับโปรแกรมออกทันทีเลยก็ได้"
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:129
 msgid "_Wait"
 msgstr "_รอ"
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:129
 msgid "_Force Quit"
 msgstr "_บังคับออก"
 
-#: ../src/core/display.c:380
+#: ../src/core/display.c:396
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "ไม่มีส่วนขยาย %s ซึ่งจำเป็นต่อการทำ composite"
 
-#: ../src/core/display.c:446
+#: ../src/core/display.c:492
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "ไม่สามารถเปิดดิสเพลย์ '%s' ของระบบ X Window\n"
 
-#: ../src/core/keybindings.c:844
+#: ../src/core/keybindings.c:853
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -151,7 +151,7 @@ msgstr "แสดงเลขรุ่น"
 msgid "Mutter plugin to use"
 msgstr "ปลั๊กอินของ mutter ที่จะใช้"
 
-#: ../src/core/prefs.c:1065
+#: ../src/core/prefs.c:1079
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -159,26 +159,26 @@ msgstr ""
 "ปิดการแก้ขัดที่เตรียมไว้สำหรับโปรแกรมเสียๆ บางโปรแกรมแล้ว "
 "ซึ่งอาจทำให้โปรแกรมเหล่านี้ทำงานไม่ปกติ\n"
 
-#: ../src/core/prefs.c:1140
+#: ../src/core/prefs.c:1154
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "ไม่สามารถแจงคำบรรยายแบบอักษร \"%s\" จากคีย์ %s ของ GSettings\n"
 
-#: ../src/core/prefs.c:1206
+#: ../src/core/prefs.c:1220
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
 "modifier\n"
 msgstr "\"%s\" ที่พบในฐานข้อมูลข้อปรับแต่ง ใช้เป็นปุ่มใช้ร่วมสำหรับเมาส์ไม่ได้\n"
 
-#: ../src/core/prefs.c:1724
+#: ../src/core/prefs.c:1747
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "\"%s\" ที่พบในฐานข้อมูลค่าปรับแต่ง ไม่สามารถใช้เป็นปุ่มลัด \"%s\"\n"
 
-#: ../src/core/prefs.c:1821
+#: ../src/core/prefs.c:1844
 #, c-format
 msgid "Workspace %d"
 msgstr "พื้นที่ทำงาน %d"
@@ -330,22 +330,22 @@ msgstr ""
 "หน้าต่าง %s ตั้งค่า MWM hint ไว้ว่าเป็นหน้าต่างที่เปลี่ยนขนาดไม่ได้ แต่กลับตั้งค่าขนาดต่ำสุด %d x "
 "%d และขนาดสูงสุด %d x %d ไว้ ซึ่งไม่สมเหตุสมผลเท่าไรนัก\n"
 
-#: ../src/core/window-props.c:310
+#: ../src/core/window-props.c:274
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "โปรแกรมประยุกต์ตั้งค่า _NET_WM_PID เป็น %lu ซึ่งไม่มีอยู่จริง\n"
 
-#: ../src/core/window-props.c:429
+#: ../src/core/window-props.c:393
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (ที่เครื่อง %s)"
 
-#: ../src/core/window-props.c:1484
+#: ../src/core/window-props.c:1448
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "หน้าต่าง WM_TRANSIENT_FOR 0x%lx ที่กำหนดให้กับ %s เป็นค่าที่ใช้ไม่ได้\n"
 
-#: ../src/core/window-props.c:1495
+#: ../src/core/window-props.c:1459
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "หน้าต่าง WM_TRANSIENT_FOR 0x%lx สำหรับ %s จะทำให้เกิดวงวน\n"
@@ -459,10 +459,23 @@ msgid ""
 msgstr "กำหนดว่าจะปิดการใช้กล่องผุดขึ้นและการเน้นกรอบหน้าต่างสำหรับการสลับหน้าต่างหรือไม่"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "ชะลอการย้ายโฟกัสจนกว่าเคอร์เซอร์เมาส์จะหยุดเคลื่อน"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focus will not be changed immediately when entering a window, but only "
+"after the pointer stops moving."
+msgstr ""
+"ถ้ามีค่าเป็นจริง และโหมดโฟกัสเป็น \"sloppy\" หรือ \"mouse\" อย่างใดอย่างหนึ่งแล้ว "
+"ก็จะไม่ย้ายโฟกัสหน้าต่างทันทีทันใดเมื่อเข้าสู่หน้าต่าง จนกว่าเคอร์เซอร์เมาส์จะหยุดเคลื่อนที่"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
 msgstr "ความกว้างของขอบหน้าต่างส่วนที่ลากได้"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -470,11 +483,11 @@ msgstr ""
 "ขนาดของขอบหน้าต่างส่วนที่ลากได้ ถ้าขอบหน้าต่างส่วนที่ปรากฏของชุดตกแต่งกว้างไม่พอ "
 "ก็จะเพิ่มขอบส่วนที่มองไม่เห็นเพื่อให้ได้เท่ากับความกว้างนี้"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Select window from tab popup"
 msgstr "เลือกหน้าต่างจากกล่องผุดขึ้นของปุ่มแท็บ"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid "Cancel tab popup"
 msgstr "ยกเลิกกล่องผุดขึ้นของปุ่มแท็บ"
 
@@ -1933,17 +1946,6 @@ msgstr "แจงค่านิพจน์พิกัดทั้งหมด
 
 #~ msgid "Enable Visual Bell"
 #~ msgstr "ใช้ระฆังภาพ"
-
-#~ msgid ""
-#~ "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-#~ "the focused window will be automatically raised after a delay specified "
-#~ "by the auto_raise_delay key. This is not related to clicking on a window "
-#~ "to raise it, nor to entering a window during drag-and-drop."
-#~ msgstr ""
-#~ "ถ้ามีค่าเป็นจริง และโหมดโฟกัสเป็น \"sloppy\" หรือ \"mouse\" อย่างใดอย่างหนึ่งแล้ว "
-#~ "จะยกหน้าต่างที่ได้โฟกัสขึ้นมาโดยอัตโนมัติ หลังจากหน่วงเวลาเป็นระยะเวลาตามที่ระบุในคีย์ "
-#~ "auto_raise_delay  การยกหน้าต่างดังกล่าว ไม่เกี่ยวกับการคลิกบนหน้าต่างเพื่อยกหน้าต่างขึ้น "
-#~ "หรือการเลื่อนเมาส์เข้าสู่หน้าต่างระหว่างการลากวางแต่อย่างใด"
 
 #~ msgid ""
 #~ "If true, ignore the titlebar_font option, and use the standard "
