@@ -18,8 +18,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-16 13:35+0200\n"
-"PO-Revision-Date: 2012-09-16 01:15+0200\n"
+"POT-Creation-Date: 2012-10-15 06:38+0200\n"
+"PO-Revision-Date: 2012-10-12 17:24+0200\n"
 "Last-Translator: Joe Hansen <joedalton2@yahoo.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -58,16 +58,16 @@ msgstr "Bip-hændelse"
 msgid "Unknown window information request: %d"
 msgstr "Ukendt forespørgsel efter vinduesinformation: %d"
 
-#: ../src/core/delete.c:114
+#: ../src/core/delete.c:113
 #, c-format
 msgid "%s is not responding."
 msgstr "%s svarer ikke."
 
-#: ../src/core/delete.c:118
+#: ../src/core/delete.c:117
 msgid "Application is not responding."
 msgstr "Program svarer ikke."
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:122
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -75,20 +75,20 @@ msgstr ""
 "Du kan vælge at vente et lille stykke tid på at programmet fortsætter, eller "
 "du kan tvinge programmet til at afslutte fuldstændigt."
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:129
 msgid "_Wait"
 msgstr "_Vent"
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:129
 msgid "_Force Quit"
 msgstr "_Tving til at afslutte"
 
-#: ../src/core/display.c:380
+#: ../src/core/display.c:396
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Manglende %s-udvidelse som kræves til komposition"
 
-#: ../src/core/display.c:446
+#: ../src/core/display.c:492
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Kunne ikke åbne X Window System-terminalen \"%s\"\n"
@@ -161,7 +161,7 @@ msgstr "Vis version"
 msgid "Mutter plugin to use"
 msgstr "Mutter-udvidelsesmodul der skal bruges"
 
-#: ../src/core/prefs.c:1071
+#: ../src/core/prefs.c:1079
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -169,13 +169,13 @@ msgstr ""
 "Omgåelser for ødelagte programmer deaktiveret. Nogle programmer opfører sig "
 "måske ikke korrekt.\n"
 
-#: ../src/core/prefs.c:1146
+#: ../src/core/prefs.c:1154
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "Kunne ikke fortolke skrifttypebeskrivelsen \"%s\" fra GSettings-nøglen %s\n"
 
-#: ../src/core/prefs.c:1212
+#: ../src/core/prefs.c:1220
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -184,7 +184,7 @@ msgstr ""
 "\"%s\" fundet i konfigurationsdatabasen er ikke en gyldig værdi som "
 "museknapsmodifikation\n"
 
-#: ../src/core/prefs.c:1736
+#: ../src/core/prefs.c:1747
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -193,7 +193,7 @@ msgstr ""
 "\"%s\" fundet i konfigurationsdatabasen er ikke en gyldig værdi for "
 "tastebindingen \"%s\"\n"
 
-#: ../src/core/prefs.c:1833
+#: ../src/core/prefs.c:1844
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbejdsområde %d"
@@ -323,7 +323,7 @@ msgid "Window manager error: "
 msgstr "Vindueshåndteringsfejl: "
 
 #. first time through
-#: ../src/core/window.c:7234
+#: ../src/core/window.c:7237
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -339,7 +339,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7899
+#: ../src/core/window.c:7902
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -349,23 +349,23 @@ msgstr ""
 "ændres, men angiver den mindste størrelse %d x %d og den maksimale størrelse "
 "%d x %d; dette giver ikke mening.\n"
 
-#: ../src/core/window-props.c:310
+#: ../src/core/window-props.c:274
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Program angav en ugyldig _NET_WM_PID %lu\n"
 
 # Lad os håbe dette er rigtigt
-#: ../src/core/window-props.c:429
+#: ../src/core/window-props.c:393
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (på %s)"
 
-#: ../src/core/window-props.c:1484
+#: ../src/core/window-props.c:1448
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Ugyldig WM_TRANSIENT_FOR vindue 0x%lx specificeret for %s.\n"
 
-#: ../src/core/window-props.c:1495
+#: ../src/core/window-props.c:1459
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR vindue 0x%lx for %s vil oprette løkke.\n"
@@ -488,10 +488,24 @@ msgstr ""
 "vinduesskifte."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "Lad fokusændringer vente indtil markøren holder op med at bevæge sig"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focus will not be changed immediately when entering a window, but only "
+"after the pointer stops moving."
+msgstr ""
+"Hvis sat til sand, og fokustilstanden er enten \"sloppy\" eller \"mouse\", "
+"vil fokus ikke blive ændret omgående når man går ind i et nyt vindue, men "
+"først efter markøren holder op med at bevæge sig."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
 msgstr "Bredde af den trækbare kant"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -499,11 +513,11 @@ msgstr ""
 "Samlet mængde kant der kan trækkes. Hvis temaets synlige grænser ikke er "
 "nok, så vil usynlige kanter blive tilføjet for at møde denne værdi."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Select window from tab popup"
 msgstr "Vælg vindue fra tab-pop-op"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid "Cancel tab popup"
 msgstr "Annullér faneblads-pop-op"
 
