@@ -87,7 +87,7 @@
 #include "config.h"
 #endif
 
-#include "clutter-gesture-action.h"
+#include "clutter-gesture-action-private.h"
 
 #include "clutter-debug.h"
 #include "clutter-enum-types.h"
@@ -121,6 +121,8 @@ struct _ClutterGestureActionPrivate
 
   guint actor_capture_id;
   gulong stage_capture_id;
+
+  ClutterGestureTriggerEdge edge;
 
   guint in_gesture : 1;
 };
@@ -209,6 +211,15 @@ gesture_unregister_point (ClutterGestureAction *action, gint position)
   g_array_remove_index (priv->points, position);
 }
 
+static gint
+gesture_get_threshold (ClutterGestureAction *action)
+{
+  gint threshold;
+  ClutterSettings *settings = clutter_settings_get_default ();
+  g_object_get (settings, "dnd-drag-threshold", &threshold, NULL);
+  return threshold;
+}
+
 static void
 cancel_gesture (ClutterGestureAction *action)
 {
@@ -228,13 +239,45 @@ cancel_gesture (ClutterGestureAction *action)
 }
 
 static gboolean
+begin_gesture (ClutterGestureAction *action,
+               ClutterActor         *actor)
+{
+  ClutterGestureActionPrivate *priv = action->priv;
+  gboolean return_value;
+
+  priv->in_gesture = TRUE;
+
+  if (!CLUTTER_GESTURE_ACTION_GET_CLASS (action)->gesture_prepare (action, actor))
+    {
+      cancel_gesture (action);
+      return FALSE;
+    }
+
+  /* clutter_gesture_action_cancel() may have been called during
+   * gesture_prepare(), check that the gesture is still active. */
+  if (!priv->in_gesture)
+    return FALSE;
+
+  g_signal_emit (action, gesture_signals[GESTURE_BEGIN], 0, actor,
+                 &return_value);
+
+  if (!return_value)
+    {
+      cancel_gesture (action);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
 stage_captured_event_cb (ClutterActor       *stage,
                          ClutterEvent       *event,
                          ClutterGestureAction *action)
 {
   ClutterGestureActionPrivate *priv = action->priv;
   ClutterActor *actor;
-  gint position;
+  gint position, drag_threshold;
   gboolean return_value;
   GesturePoint *point;
   gfloat motion_x, motion_y;
@@ -272,40 +315,18 @@ stage_captured_event_cb (ClutterActor       *stage,
       if (priv->points->len < priv->requested_nb_points)
         return CLUTTER_EVENT_PROPAGATE;
 
+      drag_threshold = gesture_get_threshold (action);
+
       if (!priv->in_gesture)
         {
-          gint drag_threshold;
-          ClutterSettings *settings = clutter_settings_get_default ();
+          /* Wait until the drag threshold has been exceeded
+           * before starting _TRIGGER_EDGE_AFTER gestures. */
+          if (priv->edge == CLUTTER_GESTURE_TRIGGER_EDGE_AFTER &&
+              (fabsf (point->press_y - motion_y) < drag_threshold) &&
+              (fabsf (point->press_x - motion_x) < drag_threshold))
+            return CLUTTER_EVENT_PROPAGATE;
 
-          g_object_get (settings,
-                        "dnd-drag-threshold", &drag_threshold,
-                        NULL);
-
-          if ((ABS (point->press_y - motion_y) >= drag_threshold) ||
-              (ABS (point->press_x - motion_x) >= drag_threshold))
-            {
-              priv->in_gesture = TRUE;
-
-              if (!CLUTTER_GESTURE_ACTION_GET_CLASS (action)->gesture_prepare (action, actor))
-                {
-                  cancel_gesture (action);
-                  return CLUTTER_EVENT_PROPAGATE;
-                }
-
-              /* clutter_gesture_action_cancel() may have been called during
-               * gesture_prepare(), check that the gesture is still active. */
-              if (!priv->in_gesture)
-                return CLUTTER_EVENT_PROPAGATE;
-
-              g_signal_emit (action, gesture_signals[GESTURE_BEGIN], 0, actor,
-                             &return_value);
-              if (!return_value)
-                {
-                  cancel_gesture (action);
-                  return CLUTTER_EVENT_PROPAGATE;
-                }
-            }
-          else
+          if (!begin_gesture(action, actor))
             return CLUTTER_EVENT_PROPAGATE;
         }
 
@@ -321,6 +342,16 @@ stage_captured_event_cb (ClutterActor       *stage,
       g_signal_emit (action, gesture_signals[GESTURE_PROGRESS], 0, actor,
                      &return_value);
       if (!return_value)
+        {
+          cancel_gesture (action);
+          return CLUTTER_EVENT_PROPAGATE;
+        }
+
+      /* Check if a _TRIGGER_EDGE_BEFORE gesture needs to be cancelled because
+       * the drag threshold has been exceeded. */
+      if (priv->edge == CLUTTER_GESTURE_TRIGGER_EDGE_BEFORE &&
+          ((fabsf (point->press_y - motion_y) > drag_threshold) ||
+           (fabsf (point->press_x - motion_x) > drag_threshold)))
         {
           cancel_gesture (action);
           return CLUTTER_EVENT_PROPAGATE;
@@ -400,6 +431,11 @@ actor_captured_event_cb (ClutterActor *actor,
                               G_CALLBACK (stage_captured_event_cb),
                               action);
 
+  /* Start the gesture immediately if the gesture has no
+   * _TRIGGER_EDGE_AFTER drag threshold. */
+  if (priv->edge != CLUTTER_GESTURE_TRIGGER_EDGE_AFTER)
+    begin_gesture (action, actor);
+
   return CLUTTER_EVENT_PROPAGATE;
 }
 
@@ -446,6 +482,26 @@ default_event_handler (ClutterGestureAction *action,
                        ClutterActor *actor)
 {
   return TRUE;
+}
+
+
+/*< private >
+ * _clutter_gesture_action_set_threshold_trigger_edge:
+ * @action: a #ClutterGestureAction
+ * @edge: the %ClutterGestureTriggerEdge
+ *
+ * Sets the edge trigger for the gesture drag threshold, if any.
+ *
+ * This function can be called by #ClutterGestureAction subclasses that needs
+ * to change the %CLUTTER_GESTURE_TRIGGER_EDGE_AFTER default.
+ *
+ * Since: 1.14
+ */
+void
+_clutter_gesture_action_set_threshold_trigger_edge  (ClutterGestureAction     *action,
+                                                     ClutterGestureTriggerEdge edge)
+{
+  action->priv->edge = edge;
 }
 
 static void
@@ -562,6 +618,7 @@ clutter_gesture_action_init (ClutterGestureAction *self)
 
   self->priv->points = g_array_sized_new (FALSE, TRUE, sizeof (GesturePoint), 3);
   self->priv->requested_nb_points = 1;
+  self->priv->edge = CLUTTER_GESTURE_TRIGGER_EDGE_AFTER;
 }
 
 /**
@@ -812,18 +869,15 @@ clutter_gesture_action_set_n_touch_points (ClutterGestureAction *action,
       if (priv->points->len < priv->requested_nb_points)
         cancel_gesture (action);
     }
-  else
+  else if (priv->edge == CLUTTER_GESTURE_TRIGGER_EDGE_AFTER)
     {
       if (priv->points->len >= priv->requested_nb_points)
         {
           ClutterActor *actor =
             clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
-          ClutterSettings *settings = clutter_settings_get_default ();
           gint i, drag_threshold;
 
-          g_object_get (settings,
-                        "dnd-drag-threshold", &drag_threshold,
-                        NULL);
+          drag_threshold = gesture_get_threshold (action);
 
           for (i = 0; i < priv->points->len; i++)
             {
@@ -832,16 +886,7 @@ clutter_gesture_action_set_n_touch_points (ClutterGestureAction *action,
               if ((ABS (point->press_y - point->last_motion_y) >= drag_threshold) ||
                   (ABS (point->press_x - point->last_motion_x) >= drag_threshold))
                 {
-                  gboolean return_value;
-
-                  priv->in_gesture = TRUE;
-
-                  g_signal_emit (action, gesture_signals[GESTURE_BEGIN], 0, actor,
-                                 &return_value);
-
-                  if (!return_value)
-                    cancel_gesture (action);
-
+                  begin_gesture (action, actor);
                   break;
                 }
             }
