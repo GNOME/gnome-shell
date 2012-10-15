@@ -1,3 +1,26 @@
+3.6.1
+=====
+* Fix crash when opening large popup menus [Jasper; #681676]
+* window: Don't move the desktop window after monitor hotplug [Jasper; #681159]
+* Expose MetaPlugin to introspection [Evan; #671098]
+* Optionally delay focus changes in focus-follows-mouse mode [Florian; #678169]
+* Resize the guard window when the X screen is resized [Benjamin; #670396]
+* display: Only manage the default X screen [Jürg; #648156]
+* Misc cleanups: [Owen; #587255]
+
+Contributors:
+  Benjamin Berg, Jürg Billeter, Evan Broder, Florian Müllner, Jasper St. Pierre,
+  Owen Taylor
+
+Translations:
+  Alexandre Franke [fr], Theppitak Karoonboonyanan [th], Sayak Sarkar [bn_IN],
+  Sandeep Sheshrao Shedmake [mr], Ask H. Larsen [da], Shankar Prasad [kn],
+  Alexander Shopov [bg], Aurimas Černius [lt], Ihar Hrachyshka [be],
+  Kjartan Maraas [nb], Daniel Mustieles [es], Changwoo Ryu [ko],
+  Yuri Myasoedov [ru], Tom Tryfonidis [el], Rūdolfs Mazurs [lv],
+  Chris Leonard [en_GB], Piotr Drąg [pl], Fran Diéguez [gl], Gil Forcada [ca],
+  Matej Urbančič [sl], Andika Triwidada [id], Carles Ferrando [ca]
+
 3.6.0
 =====
 
