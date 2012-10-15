@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-27 22:54+0200\n"
-"PO-Revision-Date: 2012-09-25 09:19+0200\n"
+"POT-Creation-Date: 2012-10-15 06:36+0200\n"
+"PO-Revision-Date: 2012-10-12 17:27+0200\n"
 "Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -253,11 +253,11 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Vælg en udvidelse at konfigurere ved hjælp af kombinationsboksen ovenfor."
 
-#: ../js/gdm/loginDialog.js:528
+#: ../js/gdm/loginDialog.js:529
 msgid "Session..."
 msgstr "Session..."
 
-#: ../js/gdm/loginDialog.js:676
+#: ../js/gdm/loginDialog.js:677
 msgctxt "title"
 msgid "Sign In"
 msgstr "Log ind"
@@ -265,34 +265,33 @@ msgstr "Log ind"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:743
+#: ../js/gdm/loginDialog.js:736
 msgid "Not listed?"
 msgstr "Ikke listet?"
 
-#: ../js/gdm/loginDialog.js:896 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:889 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
-#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
+#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:167
 msgid "Cancel"
 msgstr "Annullér"
 
-#: ../js/gdm/loginDialog.js:901
+#: ../js/gdm/loginDialog.js:894
 msgctxt "button"
 msgid "Sign In"
 msgstr "Log ind"
 
-#: ../js/gdm/loginDialog.js:1240
+#: ../js/gdm/loginDialog.js:1215
 msgid "Login Window"
 msgstr "Indlogningsvindue"
 
 #. Translators: accessible name of the power menu in the login screen
 #: ../js/gdm/powerMenu.js:35
-#, fuzzy
 msgid "Power"
-msgstr "Sluk"
+msgstr "Strøm"
 
-#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:663 ../js/ui/userMenu.js:667
-#: ../js/ui/userMenu.js:778
+#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:664
+#: ../js/ui/userMenu.js:775
 msgid "Suspend"
 msgstr "Hviletilstand"
 
@@ -300,8 +299,8 @@ msgstr "Hviletilstand"
 msgid "Restart"
 msgstr "Genstart"
 
-#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:665 ../js/ui/userMenu.js:667
-#: ../js/ui/userMenu.js:777
+#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:662 ../js/ui/userMenu.js:664
+#: ../js/ui/userMenu.js:774
 msgid "Power Off"
 msgstr "Sluk"
 
@@ -352,7 +351,7 @@ msgstr "INDSTILLINGER"
 msgid "New Window"
 msgstr "Nyt vindue"
 
-#: ../js/ui/appDisplay.js:678 ../js/ui/dash.js:271
+#: ../js/ui/appDisplay.js:678 ../js/ui/dash.js:290
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
@@ -516,16 +515,16 @@ msgstr "Denne uge"
 msgid "Next week"
 msgstr "Næste uge"
 
-#: ../js/ui/components/autorunManager.js:278
+#: ../js/ui/components/autorunManager.js:297
 msgid "Removable Devices"
 msgstr "Flytbare enheder"
 
-#: ../js/ui/components/autorunManager.js:575
+#: ../js/ui/components/autorunManager.js:594
 #, c-format
 msgid "Open with %s"
 msgstr "Åbn med %s"
 
-#: ../js/ui/components/autorunManager.js:601
+#: ../js/ui/components/autorunManager.js:620
 msgid "Eject"
 msgstr "Skub ud"
 
@@ -897,7 +896,7 @@ msgstr "Redigér konto"
 msgid "Unknown reason"
 msgstr "Ukendt årsag"
 
-#: ../js/ui/dash.js:245 ../js/ui/dash.js:273
+#: ../js/ui/dash.js:253 ../js/ui/dash.js:292
 msgid "Show Applications"
 msgstr "Vis programmer"
 
@@ -905,14 +904,14 @@ msgstr "Vis programmer"
 msgid "Date and Time Settings"
 msgstr "Indstillinger for dato og tid"
 
-#: ../js/ui/dateMenu.js:109
+#: ../js/ui/dateMenu.js:111
 msgid "Open Calendar"
 msgstr "Åbn kalender"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:175
+#: ../js/ui/dateMenu.js:201
 msgid "%A %B %e, %Y"
 msgstr "%A, %e. %B %Y"
 
@@ -1078,11 +1077,11 @@ msgstr "Åbn"
 msgid "Remove"
 msgstr "Fjern"
 
-#: ../js/ui/messageTray.js:2088
+#: ../js/ui/messageTray.js:1540
 msgid "Message Tray"
 msgstr "Besked-statusfelt"
 
-#: ../js/ui/messageTray.js:2551
+#: ../js/ui/messageTray.js:2547
 msgid "System Information"
 msgstr "Systeminformation"
 
@@ -1146,14 +1145,14 @@ msgstr "Indtast en kommando:"
 msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
-#: ../js/ui/screenShield.js:144
+#: ../js/ui/screenShield.js:143
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d ny besked"
 msgstr[1] "%d nye beskeder"
 
-#: ../js/ui/screenShield.js:146
+#: ../js/ui/screenShield.js:145
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1192,7 +1191,7 @@ msgstr "Adgangskode"
 msgid "Remember Password"
 msgstr "Husk adgangskode"
 
-#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:169
+#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:170
 msgid "Unlock"
 msgstr "Lås op"
 
@@ -1604,7 +1603,7 @@ msgstr "Lydstyrke"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/unlockDialog.js:176
+#: ../js/ui/unlockDialog.js:177
 msgid "Log in as another user"
 msgstr "Log ind som en anden bruger"
 
@@ -1632,39 +1631,35 @@ msgstr "Tomgang"
 msgid "Unavailable"
 msgstr "Utilgængelig"
 
-#: ../js/ui/userMenu.js:618 ../js/ui/userMenu.js:759
-msgid "Switch User"
-msgstr "Skift bruger"
-
-#: ../js/ui/userMenu.js:619
-msgid "Switch Session"
-msgstr "Skift session"
-
-#: ../js/ui/userMenu.js:743
+#: ../js/ui/userMenu.js:740
 msgid "Notifications"
 msgstr "Beskeder"
 
-#: ../js/ui/userMenu.js:751
+#: ../js/ui/userMenu.js:748
 msgid "System Settings"
 msgstr "Systemindstillinger"
 
-#: ../js/ui/userMenu.js:764
+#: ../js/ui/userMenu.js:756
+msgid "Switch User"
+msgstr "Skift bruger"
+
+#: ../js/ui/userMenu.js:761
 msgid "Log Out"
 msgstr "Log ud"
 
-#: ../js/ui/userMenu.js:769
+#: ../js/ui/userMenu.js:766
 msgid "Lock"
 msgstr "Lås"
 
-#: ../js/ui/userMenu.js:784
+#: ../js/ui/userMenu.js:781
 msgid "Install Updates & Restart"
 msgstr "Installér opdateringer og genstart"
 
-#: ../js/ui/userMenu.js:802
+#: ../js/ui/userMenu.js:799
 msgid "Your chat status will be set to busy"
 msgstr "Din chat-status vil blive angivet som optaget"
 
-#: ../js/ui/userMenu.js:803
+#: ../js/ui/userMenu.js:800
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1685,7 +1680,7 @@ msgstr "Programmer"
 msgid "Search"
 msgstr "Søg"
 
-#: ../js/ui/wanda.js:119
+#: ../js/ui/wanda.js:117
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1694,12 +1689,12 @@ msgstr ""
 "Beklager, ingen visdom til dig i dag:\n"
 "%s"
 
-#: ../js/ui/wanda.js:123
+#: ../js/ui/wanda.js:121
 #, c-format
 msgid "%s the Oracle says"
 msgstr "Oraklet %s siger"
 
-#: ../js/ui/wanda.js:164
+#: ../js/ui/wanda.js:162
 msgid "Your favorite Easter Egg"
 msgstr "Dit yndlingspåskeæg"
 
@@ -1734,19 +1729,19 @@ msgstr[1] "%u inputs"
 msgid "System Sounds"
 msgstr "Systemlyde"
 
-#: ../src/main.c:330
+#: ../src/main.c:332
 msgid "Print version"
 msgstr "Udskriv version"
 
-#: ../src/main.c:336
+#: ../src/main.c:338
 msgid "Mode used by GDM for login screen"
 msgstr "Tilstand brugt af GDM til indlogningskærm"
 
-#: ../src/main.c:342
+#: ../src/main.c:344
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Brug en specifik tilstand, f.eks. \"gdm\" til logind-skærm"
 
-#: ../src/main.c:348
+#: ../src/main.c:350
 msgid "List possible modes"
 msgstr "Vis mulige tilstande"
 
@@ -1774,6 +1769,9 @@ msgstr "Standard"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Godkendelsesdialogen blev afvist af brugeren"
+
+#~ msgid "Switch Session"
+#~ msgstr "Skift session"
 
 #~ msgid "Failed to unmount '%s'"
 #~ msgstr "Kunne ikke afmontere \"%s\""
