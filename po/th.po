@@ -1,0 +1,362 @@
+# Thai translation for cogl.
+# Copyright (C) 2012 Free Software Foundation, Inc.
+# This file is distributed under the same license as the cogl package.
+# Unticha Pramgoed <unticha@gmail.com>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: cogl cogl-1.12\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=cogl&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-10-02 17:52+0000\n"
+"PO-Revision-Date: 2012-10-15 13:01+0700\n"
+"Last-Translator: Unticha Pramgoed <unticha@gmail.com>\n"
+"Language-Team: Thai <thai-l10n@googlegroups.com>\n"
+"Language: th\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.3\n"
+
+#: ../cogl/cogl-debug.c:174
+msgid "Supported debug values:"
+msgstr "ค่าดีบั๊กที่รองรับ:"
+
+#: ../cogl/cogl-debug.c:179
+msgid "Special debug values:"
+msgstr "ค่าดีบั๊กพิเศษ:"
+
+#: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
+msgid "Enables all non-behavioural debug options"
+msgstr "เปิดใช้ตัวเลือกดีบั๊กที่ไม่เกี่ยวกับพฤติกรรมทั้งหมด"
+
+#: ../cogl/cogl-debug.c:190
+msgid "Additional environment variables:"
+msgstr "ตัวแปรสภาวะแวดล้อมเพิ่มเติม:"
+
+#: ../cogl/cogl-debug.c:191
+msgid "Comma-separated list of GL extensions to pretend are disabled"
+msgstr "รายชื่อคั่นด้วยจุลภาคของส่วนขยาย GL ที่จะทำทีว่าปิดใช้งาน"
+
+#: ../cogl/cogl-debug.c:193
+msgid "Override the GL version that Cogl will assume the driver supports"
+msgstr "ทับค่ารุ่นของ GL ที่ Cogl จะถือว่าไดรเวอร์รองรับ"
+
+#: ../cogl/cogl-debug.c:237
+msgid "Cogl debugging flags to set"
+msgstr "แฟล็กดีบั๊กของ Cogl ที่จะเปิดใช้"
+
+#: ../cogl/cogl-debug.c:239
+msgid "Cogl debugging flags to unset"
+msgstr "แฟล็กดีบั๊กของ Cogl ที่จะปิด"
+
+#: ../cogl/cogl-debug.c:288
+msgid "Cogl Options"
+msgstr "ตัวเลือกของ Cogl"
+
+#: ../cogl/cogl-debug.c:289
+msgid "Show Cogl options"
+msgstr "แสดงตัวเลือกของ Cogl"
+
+#: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
+#: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
+#: ../cogl/cogl-debug-options.h:45 ../cogl/cogl-debug-options.h:50
+#: ../cogl/cogl-debug-options.h:55 ../cogl/cogl-debug-options.h:61
+#: ../cogl/cogl-debug-options.h:66 ../cogl/cogl-debug-options.h:71
+#: ../cogl/cogl-debug-options.h:158 ../cogl/cogl-debug-options.h:163
+#: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
+#: ../cogl/cogl-debug-options.h:189
+msgid "Cogl Tracing"
+msgstr "การแกะรอย Cogl"
+
+#: ../cogl/cogl-debug-options.h:27
+msgid "CoglObject references"
+msgstr "การอ้าง CoglObject"
+
+#: ../cogl/cogl-debug-options.h:28
+msgid "Debug ref counting issues for CoglObjects"
+msgstr "ดีบั๊กเรื่องจำนวนการอ้างสำหรับ CoglObject"
+
+#: ../cogl/cogl-debug-options.h:32
+msgid "Trace Texture Slicing"
+msgstr "แกะรอยการซอยเนื้อวัสดุ"
+
+#: ../cogl/cogl-debug-options.h:33
+msgid "debug the creation of texture slices"
+msgstr "ดีบั๊กการสร้างแผ่นซอยของเนื้อวัสดุ"
+
+#: ../cogl/cogl-debug-options.h:37
+msgid "Trace Atlas Textures"
+msgstr "แกะรอยเนื้อวัสดุแบบแอตลาส"
+
+#: ../cogl/cogl-debug-options.h:38
+msgid "Debug texture atlas management"
+msgstr "ดีบั๊กการจัดการเนื้อวัสดุแบบแอตลาส"
+
+#: ../cogl/cogl-debug-options.h:42
+msgid "Trace Blend Strings"
+msgstr "แกะรอยข้อความบรรยายการเกลี่ย"
+
+#: ../cogl/cogl-debug-options.h:43
+msgid "Debug CoglBlendString parsing"
+msgstr "ดีบั๊กการแจง CoglBlendString"
+
+#: ../cogl/cogl-debug-options.h:47
+msgid "Trace Journal"
+msgstr "แกะรอยใบจดคำสั่ง"
+
+#: ../cogl/cogl-debug-options.h:48
+msgid "View all the geometry passing through the journal"
+msgstr "ดูคำสั่งเรขาคณิตทั้งหมดที่ส่งผ่านใบจดคำสั่ง"
+
+#: ../cogl/cogl-debug-options.h:52
+msgid "Trace Batching"
+msgstr "แกะรอยการสร้างชุดคำสั่ง"
+
+#: ../cogl/cogl-debug-options.h:53
+msgid "Show how geometry is being batched in the journal"
+msgstr "แสดงการสะสมคำสั่งเรขาคณิตเป็นชุดในใบจดคำสั่ง"
+
+#: ../cogl/cogl-debug-options.h:57
+msgid "Trace matrices"
+msgstr "แกะรอยเมทริกซ์"
+
+#: ../cogl/cogl-debug-options.h:58
+msgid "Trace all matrix manipulation"
+msgstr "แกะรอยการกระทำเมทริกซ์ทั้งหมด"
+
+#: ../cogl/cogl-debug-options.h:63
+msgid "Trace Misc Drawing"
+msgstr "แกะรอยการวาดจิปาถะ"
+
+#: ../cogl/cogl-debug-options.h:64
+msgid "Trace some misc drawing operations"
+msgstr "แกะรอยการกระทำบางอย่างที่เกี่ยวกับการวาดจิปาถะ"
+
+#: ../cogl/cogl-debug-options.h:68
+msgid "Trace Pango Renderer"
+msgstr "แกะรอยตัววาด Pango"
+
+#: ../cogl/cogl-debug-options.h:69
+msgid "Trace the Cogl Pango renderer"
+msgstr "แกะรอยตัววาด Pango ของ Cogl"
+
+#: ../cogl/cogl-debug-options.h:73
+msgid "Trace CoglTexturePixmap backend"
+msgstr "แกะรอยแบ็กเอนด์ CoglTexturePixmap"
+
+#: ../cogl/cogl-debug-options.h:74
+msgid "Trace the Cogl texture pixmap backend"
+msgstr "แกะรอยแบ็กเอนด์ภาพเนื้อวัสดุแบบบิตแมปของ Cogl"
+
+#: ../cogl/cogl-debug-options.h:76 ../cogl/cogl-debug-options.h:81
+msgid "Visualize"
+msgstr "การแสดงวัตถุ"
+
+#: ../cogl/cogl-debug-options.h:78
+msgid "Outline rectangles"
+msgstr "ตีเส้นโครงสี่เหลี่ยม"
+
+#: ../cogl/cogl-debug-options.h:79
+msgid "Add wire outlines for all rectangular geometry"
+msgstr "เพิ่มเส้นโครงของวัตถุเรขาคณิตรูปสี่เหลี่ยมผืนผ้าทั้งหมด"
+
+#: ../cogl/cogl-debug-options.h:83
+msgid "Show wireframes"
+msgstr "แสดงโครงลวด"
+
+#: ../cogl/cogl-debug-options.h:84
+msgid "Add wire outlines for all geometry"
+msgstr "เพิ่มเส้นโครงลวดของวัตถุเรขาคณิตทั้งหมด"
+
+#: ../cogl/cogl-debug-options.h:86 ../cogl/cogl-debug-options.h:91
+#: ../cogl/cogl-debug-options.h:96 ../cogl/cogl-debug-options.h:101
+#: ../cogl/cogl-debug-options.h:111 ../cogl/cogl-debug-options.h:116
+#: ../cogl/cogl-debug-options.h:122 ../cogl/cogl-debug-options.h:127
+#: ../cogl/cogl-debug-options.h:132 ../cogl/cogl-debug-options.h:137
+#: ../cogl/cogl-debug-options.h:142 ../cogl/cogl-debug-options.h:147
+#: ../cogl/cogl-debug-options.h:153 ../cogl/cogl-debug-options.h:173
+#: ../cogl/cogl-debug-options.h:178
+msgid "Root Cause"
+msgstr "การจัดแจงระดับราก"
+
+#: ../cogl/cogl-debug-options.h:88
+msgid "Disable Journal batching"
+msgstr "ปิดการสะสมคำสั่งเป็นชุดในใบจดคำสั่ง"
+
+#: ../cogl/cogl-debug-options.h:89
+msgid "Disable batching of geometry in the Cogl Journal."
+msgstr "ปิดการสะสมคำสั่งเรขาคณิตเป็นชุดในใบจดคำสั่งของ Cogl"
+
+#: ../cogl/cogl-debug-options.h:93
+msgid "Disable GL Vertex Buffers"
+msgstr "ปิดบัฟเฟอร์จุดยอดของ GL"
+
+#: ../cogl/cogl-debug-options.h:94
+msgid "Disable use of OpenGL vertex buffer objects"
+msgstr "ปิดการใช้วัตถุบัฟเฟอร์จุดยอดของ OpenGL"
+
+#: ../cogl/cogl-debug-options.h:98
+msgid "Disable GL Pixel Buffers"
+msgstr "ปิดบัฟเฟอร์พิกเซลของ GL"
+
+#: ../cogl/cogl-debug-options.h:99
+msgid "Disable use of OpenGL pixel buffer objects"
+msgstr "ปิดการใช้วัตถุบัฟเฟอร์พิกเซลของ OpenGL"
+
+#: ../cogl/cogl-debug-options.h:103
+msgid "Disable software rect transform"
+msgstr "ปิดการแปลงสี่เหลี่ยมด้วยซอฟต์แวร์"
+
+#: ../cogl/cogl-debug-options.h:104
+msgid "Use the GPU to transform rectangular geometry"
+msgstr "ใช้ GPU ในการแปลงเรขาคณิตสี่เหลี่ยมผืนผ้า"
+
+#: ../cogl/cogl-debug-options.h:106
+msgid "Cogl Specialist"
+msgstr "ผู้ชำนาญเฉพาะ Cogl"
+
+#: ../cogl/cogl-debug-options.h:108
+msgid "Dump atlas images"
+msgstr "ดัมป์ภาพแอตลาส"
+
+#: ../cogl/cogl-debug-options.h:109
+msgid "Dump texture atlas changes to an image file"
+msgstr "ดัมป์การเปลี่ยนแปลงในแอตลาสของเนื้อวัสดุออกเป็นแฟ้มรูปภาพ"
+
+#: ../cogl/cogl-debug-options.h:113
+msgid "Disable texture atlasing"
+msgstr "ปิดการทำแอตลาสกับเนื้อวัสดุ"
+
+#: ../cogl/cogl-debug-options.h:114
+msgid "Disable use of texture atlasing"
+msgstr "ปิดการทำแอตลาสกับเนื้อวัสดุ"
+
+#: ../cogl/cogl-debug-options.h:118
+msgid "Disable sharing the texture atlas between text and images"
+msgstr "ปิดการใช้แอตลาสเนื้อวัสดุร่วมกันระหว่างข้อความและรูปภาพ"
+
+#: ../cogl/cogl-debug-options.h:119
+msgid ""
+"When this is set the glyph cache will always use a separate texture for its "
+"atlas. Otherwise it will try to share the atlas with images."
+msgstr ""
+"เมื่อกำหนดค่านี้ แคชของ glyph จะใช้เนื้อวัสดุต่างหากในแอตลาสที่ใช้เสมอ มิฉะนั้น "
+"ก็จะพยายามใช้แอตลาสร่วมกับรูปภาพต่างๆ"
+
+#: ../cogl/cogl-debug-options.h:124
+msgid "Disable texturing"
+msgstr "ปิดการใส่เนื้อวัสดุ"
+
+#: ../cogl/cogl-debug-options.h:125
+msgid "Disable texturing any primitives"
+msgstr "ปิดการใส่เนื้อวัสดุกับวัตถุมูลฐานใดๆ"
+
+#: ../cogl/cogl-debug-options.h:129
+msgid "Disable arbfp"
+msgstr "ปิดการใช้ arbfp"
+
+#: ../cogl/cogl-debug-options.h:130
+msgid "Disable use of ARB fragment programs"
+msgstr "ปิดการใช้โปรแกรมคำนวณชิ้นส่วนแบบ ARB"
+
+#: ../cogl/cogl-debug-options.h:134
+msgid "Disable fixed"
+msgstr "ปิดฟังก์ชันตายตัว"
+
+#: ../cogl/cogl-debug-options.h:135
+msgid "Disable use of the fixed function pipeline backend"
+msgstr "ปิดการใช้แบ็กเอนด์ของไปป์ไลน์แบบฟังก์ชันตายตัว"
+
+#: ../cogl/cogl-debug-options.h:139
+msgid "Disable GLSL"
+msgstr "ปิดการใช้ GLSL"
+
+#: ../cogl/cogl-debug-options.h:140
+msgid "Disable use of GLSL"
+msgstr "ปิดการใช้งาน GLSL"
+
+#: ../cogl/cogl-debug-options.h:144
+msgid "Disable blending"
+msgstr "ปิดการเกลี่ย"
+
+#: ../cogl/cogl-debug-options.h:145
+msgid "Disable use of blending"
+msgstr "ปิดใช้งานการเกลี่ย"
+
+#: ../cogl/cogl-debug-options.h:149
+msgid "Disable non-power-of-two textures"
+msgstr "ปิดการใช้เนื้อวัสดุที่ไม่ใช่กำลังของสอง"
+
+#: ../cogl/cogl-debug-options.h:150
+msgid ""
+"Makes Cogl think that the GL driver doesn't support NPOT textures so that it "
+"will create sliced textures or textures with waste instead."
+msgstr ""
+"กำหนดให้ Cogl คิดว่าไดรเวอร์ GL ไม่รองรับข้อมูลเนื้อวัสดุแบบ NPOT (ไม่ใช่กำลังของสอง) เพื่อให้ "
+"Cogl สร้างเนื้อวัสดุแบบซอยหรือเนื้อวัสดุที่เป็นขยะแทน"
+
+#: ../cogl/cogl-debug-options.h:155
+msgid "Disable software clipping"
+msgstr "ปิดการขริบด้วยซอฟต์แวร์"
+
+#: ../cogl/cogl-debug-options.h:156
+msgid "Disables Cogl's attempts to clip some rectangles in software."
+msgstr "ปิดไม่ให้ Cogl พยายามขริบสี่เหลี่ยมผืนผ้าด้วยซอฟต์แวร์"
+
+#: ../cogl/cogl-debug-options.h:160
+msgid "Show source"
+msgstr "แสดงซอร์ส"
+
+#: ../cogl/cogl-debug-options.h:161
+msgid "Show generated ARBfp/GLSL source code"
+msgstr "แสดงซอร์ดโค้ด ARBfp/GLSL ที่สร้าง"
+
+#: ../cogl/cogl-debug-options.h:165
+msgid "Trace some OpenGL"
+msgstr "แกะรอย OpenGL"
+
+#: ../cogl/cogl-debug-options.h:166
+msgid "Traces some select OpenGL calls"
+msgstr "แกะรอยการเรียก OpenGL ที่เลือก"
+
+#: ../cogl/cogl-debug-options.h:170
+msgid "Trace offscreen support"
+msgstr "แกะรอยการรองรับการวาดนอกจอ"
+
+#: ../cogl/cogl-debug-options.h:171
+msgid "Debug offscreen support"
+msgstr "ดีบั๊กการรองรับการวาดนอกจอ"
+
+#: ../cogl/cogl-debug-options.h:175
+msgid "Disable program caches"
+msgstr "ปิดการใช้แคชของโปรแกรม"
+
+#: ../cogl/cogl-debug-options.h:176
+msgid "Disable fallback caches for arbfp and glsl programs"
+msgstr "ปิดการใช้แคชสำรองสำหรับโปรแกรม arbfp และ glsl "
+
+#: ../cogl/cogl-debug-options.h:180
+msgid "Disable read pixel optimization"
+msgstr "ปิดการปรับประสิทธิภาพการอ่านพิกเซล"
+
+#: ../cogl/cogl-debug-options.h:181
+msgid ""
+"Disable optimization for reading 1px for simple scenes of opaque rectangles"
+msgstr "ปิดการปรับประสิทธิภาพของการอ่าน 1px สำหรับกรณีอย่างง่ายของสี่เหลี่ยมทึบ"
+
+#: ../cogl/cogl-debug-options.h:186
+msgid "Trace clipping"
+msgstr "แกะรอยการขริบ"
+
+#: ../cogl/cogl-debug-options.h:187
+msgid "Logs information about how Cogl is implementing clipping"
+msgstr "เก็บปูมข้อมูลเกี่ยวกับการทำงานของ Cogl ในการขริบ"
+
+#: ../cogl/cogl-debug-options.h:191
+msgid "Trace performance concerns"
+msgstr "แกะรอยเกี่ยวกับประสิทธิภาพ"
+
+#: ../cogl/cogl-debug-options.h:192
+msgid "Tries to highlight sub-optimal Cogl usage."
+msgstr "พยายามชี้การใช้งาน Cogl ที่ด้อยประสิทธิภาพ"
