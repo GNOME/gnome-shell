@@ -7,18 +7,19 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-25 10:39+0300\n"
-"PO-Revision-Date: 2012-09-25 10:44+0300\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-10-04 06:59+0000\n"
+"PO-Revision-Date: 2012-10-15 17:52+0300\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
-"Language-Team: Latvian <lata-l18n@googlegroups.com>\n"
+"Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.5\n"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:1
 msgid "Screenshots"
@@ -243,11 +244,11 @@ msgstr "Paplašinājums"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Izvēlieties konfigurējamo paplašinājumu no saraksta."
 
-#: ../js/gdm/loginDialog.js:527
+#: ../js/gdm/loginDialog.js:528
 msgid "Session..."
 msgstr "Sesija..."
 
-#: ../js/gdm/loginDialog.js:675
+#: ../js/gdm/loginDialog.js:676
 msgctxt "title"
 msgid "Sign In"
 msgstr "Ierakstīties"
@@ -255,23 +256,23 @@ msgstr "Ierakstīties"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:742
+#: ../js/gdm/loginDialog.js:743
 msgid "Not listed?"
 msgstr "Nav sarakstā?"
 
-#: ../js/gdm/loginDialog.js:895 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:896 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
 #: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
 msgid "Cancel"
 msgstr "Atcelt"
 
-#: ../js/gdm/loginDialog.js:900
+#: ../js/gdm/loginDialog.js:901
 msgctxt "button"
 msgid "Sign In"
 msgstr "Ierakstīties"
 
-#: ../js/gdm/loginDialog.js:1239
+#: ../js/gdm/loginDialog.js:1240
 msgid "Login Window"
 msgstr "Ierakstīšanās logs"
 
@@ -280,8 +281,8 @@ msgstr "Ierakstīšanās logs"
 msgid "Power"
 msgstr "Barošana"
 
-#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:663 ../js/ui/userMenu.js:667
-#: ../js/ui/userMenu.js:778
+#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:660 ../js/ui/userMenu.js:664
+#: ../js/ui/userMenu.js:775
 msgid "Suspend"
 msgstr "Iesnaudināt"
 
@@ -289,8 +290,8 @@ msgstr "Iesnaudināt"
 msgid "Restart"
 msgstr "Pārstartēt"
 
-#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:665 ../js/ui/userMenu.js:667
-#: ../js/ui/userMenu.js:777
+#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:662 ../js/ui/userMenu.js:664
+#: ../js/ui/userMenu.js:774
 msgid "Power Off"
 msgstr "Izslēgt"
 
@@ -481,7 +482,7 @@ msgstr "Nekas nav ieplānots"
 #: ../js/ui/calendar.js:715
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr "%A, %d %B"
+msgstr "%A, %d. %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:718
@@ -505,16 +506,16 @@ msgstr "Šonedēļ"
 msgid "Next week"
 msgstr "Nākamnedēļ"
 
-#: ../js/ui/components/autorunManager.js:278
+#: ../js/ui/components/autorunManager.js:297
 msgid "Removable Devices"
 msgstr "Izņemamās ierīces"
 
-#: ../js/ui/components/autorunManager.js:575
+#: ../js/ui/components/autorunManager.js:594
 #, c-format
 msgid "Open with %s"
 msgstr "Atvērt ar %s"
 
-#: ../js/ui/components/autorunManager.js:601
+#: ../js/ui/components/autorunManager.js:620
 msgid "Eject"
 msgstr "Izgrūst"
 
@@ -1075,11 +1076,11 @@ msgstr "Atvērt"
 msgid "Remove"
 msgstr "Izņemt"
 
-#: ../js/ui/messageTray.js:2088
+#: ../js/ui/messageTray.js:1533
 msgid "Message Tray"
 msgstr "Ziņojumu paplāte"
 
-#: ../js/ui/messageTray.js:2551
+#: ../js/ui/messageTray.js:2544
 msgid "System Information"
 msgstr "Sistēmas informācija"
 
@@ -1141,7 +1142,7 @@ msgstr "Lūdzu, ievadiet komandu:"
 #. long format
 #: ../js/ui/screenShield.js:79
 msgid "%A, %B %d"
-msgstr "%A, %d %B"
+msgstr "%A, %d. %B"
 
 #: ../js/ui/screenShield.js:144
 #, c-format
@@ -1309,7 +1310,7 @@ msgstr "Tastatūras iestatījumi"
 msgid "Mouse Settings"
 msgstr "Peles iestatījumi"
 
-#: ../js/ui/status/bluetooth.js:269 ../js/ui/status/volume.js:236
+#: ../js/ui/status/bluetooth.js:269 ../js/ui/status/volume.js:234
 msgid "Sound Settings"
 msgstr "Skaņas iestatījumi"
 
@@ -1598,7 +1599,7 @@ msgid "Unknown"
 msgstr "Nezināma"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:223
+#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "Skaļums"
 
@@ -1634,39 +1635,35 @@ msgstr "Dīkstāvē"
 msgid "Unavailable"
 msgstr "Nav pieejams"
 
-#: ../js/ui/userMenu.js:618 ../js/ui/userMenu.js:759
-msgid "Switch User"
-msgstr "Mainīt lietotāju"
-
-#: ../js/ui/userMenu.js:619
-msgid "Switch Session"
-msgstr "Mainīt sesiju"
-
-#: ../js/ui/userMenu.js:743
+#: ../js/ui/userMenu.js:740
 msgid "Notifications"
 msgstr "Paziņojumi"
 
-#: ../js/ui/userMenu.js:751
+#: ../js/ui/userMenu.js:748
 msgid "System Settings"
 msgstr "Sistēmas iestatījumi"
 
-#: ../js/ui/userMenu.js:764
+#: ../js/ui/userMenu.js:756
+msgid "Switch User"
+msgstr "Mainīt lietotāju"
+
+#: ../js/ui/userMenu.js:761
 msgid "Log Out"
 msgstr "Izrakstīties"
 
-#: ../js/ui/userMenu.js:769
+#: ../js/ui/userMenu.js:766
 msgid "Lock"
 msgstr "Bloķēt"
 
-#: ../js/ui/userMenu.js:784
+#: ../js/ui/userMenu.js:781
 msgid "Install Updates & Restart"
 msgstr "Instalēt atjauninājumus un pārstartēt"
 
-#: ../js/ui/userMenu.js:802
+#: ../js/ui/userMenu.js:799
 msgid "Your chat status will be set to busy"
 msgstr "Tērzēšanas status tiks iestatīts uz “aizņemts”"
 
-#: ../js/ui/userMenu.js:803
+#: ../js/ui/userMenu.js:800
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1687,7 +1684,7 @@ msgstr "Lietotnes"
 msgid "Search"
 msgstr "Meklēt"
 
-#: ../js/ui/wanda.js:119
+#: ../js/ui/wanda.js:117
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1696,12 +1693,12 @@ msgstr ""
 "Piedod, bet šodien nebūs nekādu gudrību:\n"
 "%s"
 
-#: ../js/ui/wanda.js:123
+#: ../js/ui/wanda.js:121
 #, c-format
 msgid "%s the Oracle says"
 msgstr "%s saka Orākuls"
 
-#: ../js/ui/wanda.js:164
+#: ../js/ui/wanda.js:162
 msgid "Your favorite Easter Egg"
 msgstr "Jūsu mīļākā Lieldienu ola"
 
@@ -1778,6 +1775,9 @@ msgstr "Noklusētais"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Lietotājs noraidīja autentifikācijas dialoglodziņu"
+
+#~ msgid "Switch Session"
+#~ msgstr "Mainīt sesiju"
 
 #~ msgid "disabled OpenSearch providers"
 #~ msgstr "deaktivētie OpenSearch piegādātāji"
