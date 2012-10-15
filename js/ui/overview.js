@@ -261,17 +261,16 @@ const Overview = new Lang.Class({
                     Main.messageTray.show();
             }));
         this._viewSelector.connect('apps-button-checked', Lang.bind(this,
-            function() {
-                this.appsActive = true;
-                this._thumbnailsBox.hide();
-                Main.messageTray.hide();
-            }));
-        this._viewSelector.connect('apps-button-unchecked', Lang.bind(this,
-            function() {
-                this.appsActive = false;
-                this._thumbnailsBox.show();
-                if (this.visible && !this.animationInProgress)
-                    Main.messageTray.show();
+            function(vs, checked) {
+                this.appsActive = checked;
+                if (checked) {
+                    this._thumbnailsBox.hide();
+                    Main.messageTray.hide();
+                } else {
+                    this._thumbnailsBox.show();
+                    if (this.visible && !this.animationInProgress)
+                        Main.messageTray.show();
+                }
             }));
 
         this.connect('app-drag-begin',
