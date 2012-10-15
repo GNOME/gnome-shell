@@ -1,3 +1,56 @@
+3.6.1
+=====
+* dash: Make padding even on the top/bottom of the dash [Jasper; #684619]
+* Fix a crash when dragging search results [Jasper; #684888]
+* workspaceThumbnail: Fix dragging with static workspaces [Jasper; #684641]
+* Really hide 'Show Keyboard Layout' on the lock screen [Matthias]
+* Misc. improvements to jhbuild setup [Owen; #685352, #685353, #685354, #685355]
+* Show message tray in Ctrl+Alt+Tab outside of the overview [Jasper, Florian;
+  #684633, #685914]
+* Disable hotplug sniffer on remote filesystems [Jasper; #684093]
+* userMenu: Remove 'Switch Session' item [Florian; #685062]
+* unlockDialog: Make prompt entry insensitive while logging in [Jasper; #685444]
+* messageTray: Don't animate desktop clone for failed grabs [Jasper; #685342]
+* Fix crash on dragging windows between workspaces [Ryan; #681399]
+* userMenu: Ignore 'lock-enabled' setting for user switching [Florian; #685536]
+* gdm: Fix key-focus on first user [Adel; #684650]
+* Make grid button insensitive when dragging non-favorites [Jasper; #685313]
+* Calendar: hide all actions when on the login screen [Matthias; #685142]
+* Adapt unlock dialog layout for the login screen [Florian; #685201]
+* Make focus-follows-mouse work better with Shell UI [Florian; #678169]
+* Improve look of screen shield [Jasper; #685919]
+* Fix keynav in the login screen [Florian; #684730]
+* dateMenu: Hide "Open Calendar" item if calendar unavailable [Florian; #686050]
+* unlockDialog: Reset UI on verification failure [Giovanni; #685441]
+* Show unlock dialog on primary monitor when using keynav [Giovanni; #685855]
+* Fix height changes of entries when entering text [Florian; #685534]
+* Fix show-apps label after successful drags [Florian; #684627]
+* Misc. bugfixes and cleanups [Jasper, Olivier, Florian, Owen, Adel, Tanner, Tim, Matthias; #685434, #685511, #685466, #685341, #685156, #681159, #673189, #686016, 684869, #686079, #686063
+
+Contributors:
+Jasper St. Pierre
+Matthias Clasen
+Owen Taylor
+Olivier Blin
+Florian Müllner
+Ryan Lortie
+Adel Gadllah
+Tanner Doshier
+Tim Lunn
+Giovanni Campagna
+
+Translations:
+  Tobias Endrigkeit [de], Rudolfs Mazurs [lv], Ask H. Larsen [da],
+  Shankar Prasad [kn], Changwoo Ryu [ko], Chris Leonard [en_GB],
+  Arash Mousavi [fa], Theppitak Karoonboonyanan [th], Seán de Búrca [ga],
+  Yaron Shahrabani [he], Alexander Shopov [bg], Žygimantas Beručka [lt],
+  Milo Casagrande [it], Kjartan Maraas [nb], Kris Thomsen [da],
+  Aurimas Černius [lt], Yuri Myasoedov [ru], Мирослав Николић [sr],
+  Marek Černocký [cs], Gabor Kelemen [hu], Ihar Hrachyshka [be],
+  Chao-Hsiung Liao [zh_HK, zh_TW], Eleanor Chen [zh_CN],
+  Carles Ferrando [ca@valencia], Vicent Cubells [ca], Daniel Korostil [uk],
+  Alexandre Franke [fr], Piotr Drąg [pl]
+
 3.6.0
 =====
 * keyboard: Make input source items accessible [Florian; #684462]
