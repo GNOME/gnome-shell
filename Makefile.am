@@ -13,6 +13,7 @@ EXTRA_DIST =		\
 DIST_EXCLUDE =					\
 	.gitignore				\
 	gnome-shell.doap			\
+	HACKING					\
 	MAINTAINERS				\
 	tools/build/*
 
