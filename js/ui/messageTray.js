@@ -141,14 +141,9 @@ const URLHighlighter = new Lang.Class({
                 let url = this._urls[urlId].url;
                 if (url.indexOf(':') == -1)
                     url = 'http://' + url;
-                try {
-                    Gio.app_info_launch_default_for_uri(url, global.create_app_launch_context());
-                    return true;
-                } catch (e) {
-                    // TODO: remove this after gnome 3 release
-                    Util.spawn(['gvfs-open', url]);
-                    return true;
-                }
+
+                Gio.app_info_launch_default_for_uri(url, global.create_app_launch_context());
+                return true;
             }
             return false;
         }));
