@@ -18,11 +18,13 @@
  * 02111-1307, USA.
  */
 
+const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const UPowerGlib = imports.gi.UPowerGlib;
 
 const LoginManager = imports.misc.loginManager;
 
+const GdmUtil = imports.gdm.util;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
@@ -36,6 +38,10 @@ const PowerMenuButton = new Lang.Class({
         this._upClient = new UPowerGlib.Client();
 
         this._loginManager = LoginManager.getLoginManager();
+
+        this._settings = new Gio.Settings({ schema: GdmUtil.LOGIN_SCREEN_SCHEMA });
+        this._settings.connect('changed::disable-restart-buttons',
+                               Lang.bind(this, this._updateVisibility));
 
         this._createSubMenu();
 
@@ -58,7 +64,7 @@ const PowerMenuButton = new Lang.Class({
 
     _updateVisibility: function() {
         let shouldBeVisible = (this._haveSuspend || this._haveShutdown || this._haveRestart);
-        this.actor.visible = shouldBeVisible;
+        this.actor.visible = shouldBeVisible && !this._settings.get_boolean('disable-restart-buttons');
     },
 
     _updateHaveShutdown: function() {
