@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-11 21:44+0200\n"
-"PO-Revision-Date: 2012-10-11 22:02+0200\n"
+"POT-Creation-Date: 2012-10-16 17:05+0200\n"
+"PO-Revision-Date: 2012-10-16 17:06+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -57,16 +57,16 @@ msgstr "Evento de campá"
 msgid "Unknown window information request: %d"
 msgstr "Petición de información de xanela descoñecida: %d"
 
-#: ../src/core/delete.c:113
+#: ../src/core/delete.c:111
 #, c-format
-msgid "%s is not responding."
-msgstr "%s non está respondendo."
+msgid "“%s” is not responding."
+msgstr "«%s» non está respondendo."
 
-#: ../src/core/delete.c:117
+#: ../src/core/delete.c:113
 msgid "Application is not responding."
 msgstr "O Aplicativo non está respondendo."
 
-#: ../src/core/delete.c:122
+#: ../src/core/delete.c:118
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -74,11 +74,11 @@ msgstr ""
 "Pode elixir esperar un momento para ver se continúa ou forzar ao aplicativo "
 "a pechar completamente."
 
-#: ../src/core/delete.c:129
+#: ../src/core/delete.c:125
 msgid "_Wait"
 msgstr "Espe_rar"
 
-#: ../src/core/delete.c:129
+#: ../src/core/delete.c:125
 msgid "_Force Quit"
 msgstr "_Forzar a saída"
 
@@ -87,7 +87,7 @@ msgstr "_Forzar a saída"
 msgid "Missing %s extension required for compositing"
 msgstr "Falta a extensión %s que se require para a composición"
 
-#: ../src/core/display.c:492
+#: ../src/core/display.c:493
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Produciuse un erro ao abrir a visualización do X Window System «%s»\n"
