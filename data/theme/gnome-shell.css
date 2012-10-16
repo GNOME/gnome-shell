@@ -633,7 +633,7 @@ StScrollBar StButton#vhandle:active {
      * adjust down 8px */
 
     -shell-close-overlap-x: 15px;
-    -shell-close-overlap-y: 12px;
+    -shell-close-overlap-y: -12px;
 }
 
 .window-close:rtl {

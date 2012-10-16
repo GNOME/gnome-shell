@@ -236,9 +236,7 @@ function makeCloseButton() {
     closeButton.connect('style-changed', function() {
         let themeNode = closeButton.get_theme_node();
         closeButton.translation_x = themeNode.get_length('-shell-close-overlap-x');
-
-        // libcroco doesn't support negative units
-        closeButton.translation_y = -themeNode.get_length('-shell-close-overlap-y');
+        closeButton.translation_y = themeNode.get_length('-shell-close-overlap-y');
     });
 
     return closeButton;

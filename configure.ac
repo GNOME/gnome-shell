@@ -120,7 +120,7 @@ CFLAGS=$saved_CFLAGS
 LIBS=$saved_LIBS
 
 PKG_CHECK_MODULES(GNOME_SHELL_JS, gio-2.0 gjs-internals-1.0 >= $GJS_MIN_VERSION)
-PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-3.0 libcroco-0.6 >= 0.6.2 x11)
+PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-3.0 libcroco-0.6 >= 0.6.8 x11)
 PKG_CHECK_MODULES(TRAY, gtk+-3.0)
 PKG_CHECK_MODULES(GVC, libpulse libpulse-mainloop-glib gobject-2.0)
 PKG_CHECK_MODULES(DESKTOP_SCHEMAS, gsettings-desktop-schemas >= 3.5.4)
