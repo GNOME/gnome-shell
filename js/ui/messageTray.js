@@ -248,6 +248,32 @@ function strHasSuffix(string, suffix) {
     return string.substr(-suffix.length) == suffix;
 }
 
+// NotificationPolicy:
+// An object that holds all bits of configurable policy related to a notification
+// source, such as whether to play sound or honour the critical bit.
+//
+// A notification without a policy object will inherit the default one.
+const NotificationPolicy = new Lang.Class({
+    Name: 'NotificationPolicy',
+
+    _init: function(params) {
+        params = Params.parse(params, { enable: true,
+                                        enableSound: true,
+                                        showBanners: true,
+                                        forceExpanded: false,
+                                        showInLockScreen: true,
+                                        detailsInLockScreen: false
+                                      });
+        Lang.copyProperties(params, this);
+    },
+
+    // Do nothing for the default policy. These methods are only useful for the
+    // GSettings policy.
+    store: function() { },
+    destroy: function() { }
+});
+Signals.addSignalMethods(NotificationPolicy.prototype);
+
 // Notification:
 // @source: the notification's Source
 // @title: the title
@@ -1089,10 +1115,11 @@ const Source = new Lang.Class({
         this.isTransient = false;
         this.isChat = false;
         this.isMuted = false;
-        this.showInLockScreen = true;
         this.keepTrayOnSummaryClick = false;
 
         this.notifications = [];
+
+        this.policy = this._createPolicy();
     },
 
     get count() {
@@ -1109,6 +1136,10 @@ const Source = new Lang.Class({
 
     countUpdated: function() {
         this.emit('count-updated');
+    },
+
+    _createPolicy: function() {
+        return new NotificationPolicy();
     },
 
     buildRightClickMenu: function() {
@@ -1200,11 +1231,13 @@ const Source = new Lang.Class({
     notify: function(notification) {
         notification.acknowledged = false;
         this.pushNotification(notification);
-        if (!this.isMuted)
-             this.emit('notify', notification);
+
+        if (!this.isMuted && this.policy.showBanners)
+            this.emit('notify', notification);
     },
 
     destroy: function(reason) {
+        this.policy.destroy();
         this.emit('destroy', reason);
     },
 
@@ -1298,6 +1331,14 @@ const SummaryItem = new Lang.Class({
         this.rightClickMenu = source.buildRightClickMenu();
         if (this.rightClickMenu)
             global.focus_manager.add_group(this.rightClickMenu);
+    },
+
+    destroy: function() {
+        // remove the actor from the summary item so it doesn't get destroyed
+        // with us
+        this._sourceBox.remove_actor(this._sourceIcon);
+
+        this.actor.destroy();
     },
 
     _onKeyPress: function(actor, event) {
@@ -1682,7 +1723,12 @@ const MessageTray = new Lang.Class({
             return;
         }
 
-        this._addSource(source);
+        // Register that we got a notification for this source
+        source.policy.store();
+
+        source.policy.connect('enable-changed', Lang.bind(this, this._onSourceEnableChanged, source));
+        source.policy.connect('policy-changed', Lang.bind(this, this._updateState));
+        this._onSourceEnableChanged(source.policy, source);
     },
 
     _addSource: function(source) {
@@ -1771,6 +1817,18 @@ const MessageTray = new Lang.Class({
         return this._sources.values().map(function(v) {
             return v.summaryItem;
         });
+    },
+
+    _onSourceEnableChanged: function(policy, source) {
+        let wasEnabled = this.contains(source);
+        let shouldBeEnabled = policy.enable;
+
+        if (wasEnabled != shouldBeEnabled) {
+            if (shouldBeEnabled)
+                this._addSource(source);
+            else
+                this._removeSource(source);
+        }
     },
 
     _onSourceDestroy: function(source) {
@@ -2303,8 +2361,10 @@ const MessageTray = new Lang.Class({
     _updateShowingNotification: function() {
         this._notification.acknowledged = true;
 
-        // We auto-expand notifications with CRITICAL urgency.
-        if (this._notification.urgency == Urgency.CRITICAL)
+        // We auto-expand notifications with CRITICAL urgency, or for which the relevant setting
+        // is on in the control center.
+        if (this._notification.urgency == Urgency.CRITICAL ||
+            this._notification.source.policy.forceExpanded)
             this._expandNotification(true);
 
         // We tween all notifications to full opacity. This ensures that both new notifications and

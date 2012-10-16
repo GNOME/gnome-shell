@@ -851,12 +851,10 @@ const ScreenShield = new Lang.Class({
 
         this._lockScreenContents.add_actor(this._lockScreenContentsBox);
 
-        if (this._settings.get_boolean('show-notifications')) {
-            this._notificationsBox = new NotificationsBox();
-            this._lockScreenContentsBox.add(this._notificationsBox.actor, { x_fill: true,
-                                                                            y_fill: true,
-                                                                            expand: true });
-        }
+        this._notificationsBox = new NotificationsBox();
+        this._lockScreenContentsBox.add(this._notificationsBox.actor, { x_fill: true,
+                                                                        y_fill: true,
+                                                                        expand: true });
 
         this._hasLockScreen = true;
     },

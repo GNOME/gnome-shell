@@ -293,12 +293,15 @@ const AutorunResidentSource = new Lang.Class({
 
     _init: function(manager) {
         this.parent(_("Removable Devices"), 'media-removable');
-        this.showInLockScreen = false;
 
         this._mounts = [];
 
         this._manager = manager;
         this._notification = new AutorunResidentNotification(this._manager, this);
+    },
+
+    _createPolicy: function() {
+        return new MessageTray.NotificationPolicy({ showInLockScreen: false });
     },
 
     buildRightClickMenu: function() {
