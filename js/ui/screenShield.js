@@ -429,6 +429,7 @@ const ScreenShield = new Lang.Class({
         this._isGreeter = false;
         this._isActive = false;
         this._inUnlockAnimation = false;
+        this._activationTime = 0;
 
         this._lightbox = new Lightbox.Lightbox(Main.uiGroup,
                                                { inhibitEvents: true,
@@ -556,8 +557,12 @@ const ScreenShield = new Lang.Class({
                 this._isModal = true;
             }
 
-            if (!this._isActive)
+            if (!this._isActive) {
                 this._lightbox.show();
+
+                if (this._activationTime == 0)
+                    this._activationTime = GLib.get_monotonic_time();
+            }
         } else {
             let lightboxWasShown = this._lightbox.shown;
             this._lightbox.hide();
@@ -774,6 +779,10 @@ const ScreenShield = new Lang.Class({
         return this._isActive;
     },
 
+    get activationTime() {
+        return this._activationTime;
+    },
+
     _tweenUnlocked: function() {
         this._inUnlockAnimation = true;
         this.unlock();
@@ -818,6 +827,7 @@ const ScreenShield = new Lang.Class({
         if (Main.sessionMode.currentMode == 'unlock-dialog')
             Main.sessionMode.popMode('unlock-dialog');
 
+        this._activationTime = 0;
         this._isActive = false;
         this.emit('lock-status-changed');
     },
@@ -827,6 +837,9 @@ const ScreenShield = new Lang.Class({
             Main.pushModal(this.actor);
             this._isModal = true;
         }
+
+        if (this._activationTime == 0)
+            this._activationTime = GLib.get_monotonic_time();
 
         this.actor.show();
 

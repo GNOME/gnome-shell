@@ -59,6 +59,9 @@ const ScreenSaverIface = <interface name="org.gnome.ScreenSaver">
 <method name="SetActive">
     <arg name="value" direction="in" type="b" />
 </method>
+<method name="GetActiveTime">
+    <arg name="value" direction="out" type="u" />
+</method>
 <signal name="ActiveChanged">
     <arg name="new_value" type="b" />
 </signal>
@@ -373,5 +376,13 @@ const ScreenSaverDBus = new Lang.Class({
 
     GetActive: function() {
         return this._screenShield.locked;
-    }
+    },
+
+    GetActiveTime: function() {
+        let started = this._screenShield.activationTime;
+        if (started > 0)
+            return Math.floor((GLib.get_monotonic_time() - started) / 1000000);
+        else
+            return 0;
+    },
 });
