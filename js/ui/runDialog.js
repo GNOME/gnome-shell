@@ -219,7 +219,9 @@ const RunDialog = new Lang.Class({
 
         this.contentLayout.add(this._errorBox, { expand: true });
 
-        let errorIcon = new St.Icon({ icon_name: 'dialog-error', icon_size: 24, style_class: 'run-dialog-error-icon' });
+        let errorIcon = new St.Icon({ icon_name: 'dialog-error-symbolic',
+                                      icon_size: 24,
+                                      style_class: 'run-dialog-error-icon' });
 
         this._errorBox.add(errorIcon, { y_align: St.Align.MIDDLE });
 
