@@ -45,14 +45,12 @@ function isMountRootHidden(root) {
 }
 
 function isMountNonLocal(mount) {
-    // If the mount doesn't have an associated volume, that means it could
-    // be a remote filesystem. For certain kinds of local filesystems,
-    // like digital cameras and music players, there's no associated
-    // gvfs volume, so err on the side of caution and assume it's a local
-    // filesystem to allow the prompt.
+    // If the mount doesn't have an associated volume, that means it's
+    // an uninteresting filesystem. Most devices that we care about will
+    // have a mount, like media players and USB sticks.
     let volume = mount.get_volume();
     if (volume == null)
-        return false;
+        return true;
 
     return (volume.get_identifier("class") == "network");
 }
