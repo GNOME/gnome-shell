@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-10-11 14:45+0000\n"
-"PO-Revision-Date: 2012-10-11 19:56+0100\n"
+"POT-Creation-Date: 2012-10-16 12:48+0000\n"
+"PO-Revision-Date: 2012-10-16 14:57+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -51,24 +51,24 @@ msgstr "Dogodek zvonjenja"
 msgid "Unknown window information request: %d"
 msgstr "Zahteva izpisa podrobnosti neznanega okna: %d"
 
-#: ../src/core/delete.c:113
+#: ../src/core/delete.c:111
 #, c-format
-msgid "%s is not responding."
-msgstr "Program %s se ne odziva."
+msgid "“%s” is not responding."
+msgstr "“%s” se ne odziva."
 
-#: ../src/core/delete.c:117
+#: ../src/core/delete.c:113
 msgid "Application is not responding."
 msgstr "Program se ne odziva."
 
-#: ../src/core/delete.c:122
+#: ../src/core/delete.c:118
 msgid "You may choose to wait a short while for it to continue or force the application to quit entirely."
 msgstr "Lahko še malo počakate, če program morda spet začne delovati, ali pa vsilite končanje delovanja."
 
-#: ../src/core/delete.c:129
+#: ../src/core/delete.c:125
 msgid "_Wait"
 msgstr "_Počakaj"
 
-#: ../src/core/delete.c:129
+#: ../src/core/delete.c:125
 msgid "_Force Quit"
 msgstr "_Vsili konec"
 
@@ -77,7 +77,7 @@ msgstr "_Vsili konec"
 msgid "Missing %s extension required for compositing"
 msgstr "Manjka razširitev %s, ki je ključna za sestavljanje"
 
-#: ../src/core/display.c:492
+#: ../src/core/display.c:493
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Ni mogoče odpreti zaslona '%s' okenskega sistema X\n"
