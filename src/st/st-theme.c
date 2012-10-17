@@ -1018,6 +1018,7 @@ _st_theme_resolve_url (StTheme      *theme,
   const char *base_filename = NULL;
   char *dirname;
   char *filename;
+  char *canonicalized_path;
 
   /* Handle absolute file:/ URLs */
   if (g_str_has_prefix (url, "file:") ||
@@ -1050,7 +1051,19 @@ _st_theme_resolve_url (StTheme      *theme,
   /* Assume anything else is a relative URL, and "resolve" it
    */
   if (url[0] == '/')
-    return g_strdup (url);
+    {
+      canonicalized_path = realpath (url, NULL);
+      if (g_mem_is_system_malloc ())
+        {
+          filename = canonicalized_path;
+        }
+      else
+        {
+          filename = g_strdup (canonicalized_path);
+          free (canonicalized_path);
+        }
+      return filename;
+    }
 
   base_filename = g_hash_table_lookup (theme->filenames_by_stylesheet, base_stylesheet);
 
@@ -1062,7 +1075,19 @@ _st_theme_resolve_url (StTheme      *theme,
 
   dirname = g_path_get_dirname (base_filename);
   filename = g_build_filename (dirname, url, NULL);
+  canonicalized_path = realpath (filename, NULL);
   g_free (dirname);
+  g_free (filename);
+
+  if (g_mem_is_system_malloc ())
+    {
+      filename = canonicalized_path;
+    }
+  else
+    {
+      filename = g_strdup (canonicalized_path);
+      free (canonicalized_path);
+    }
 
   return filename;
 }
