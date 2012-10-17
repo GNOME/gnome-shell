@@ -92,7 +92,6 @@ main(int argc, char **argv)
     g_error ("option parsing failed: %s", error->message);
 
   setlocale (LC_ALL, "");
-  g_type_init ();
 
   _shell_global_init (NULL);
   global = shell_global_get ();

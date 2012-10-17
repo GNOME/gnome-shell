@@ -153,8 +153,6 @@ NP_Initialize(NPNetscapeFuncs *pfuncs, NPPluginFuncs *plugin)
   /* global initialization routine, called once when plugin
      is loaded */
 
-  g_type_init ();
-
   g_debug ("plugin loaded");
 
   memcpy (&funcs, pfuncs, sizeof (funcs));
