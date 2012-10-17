@@ -58,6 +58,7 @@ test_sources = \
 	test-euler-quaternion.c \
 	test-layer-remove.c \
 	test-alpha-test.c \
+	test-map-buffer-range.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
