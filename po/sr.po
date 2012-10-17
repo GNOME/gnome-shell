@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
 "&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-07-15 00:47+0000\n"
-"PO-Revision-Date: 2012-07-22 09:20+0200\n"
+"POT-Creation-Date: 2012-10-16 12:48+0000\n"
+"PO-Revision-Date: 2012-10-16 20:28+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n"
-"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
+"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 
 #: ../src/50-mutter-windows.xml.in.h:1
@@ -53,16 +53,17 @@ msgstr "Звонца"
 msgid "Unknown window information request: %d"
 msgstr "Захтевана је непозната информација о прозору: %d"
 
-#: ../src/core/delete.c:114
+#: ../src/core/delete.c:111
 #, c-format
-msgid "%s is not responding."
+#| msgid "%s is not responding."
+msgid "“%s” is not responding."
 msgstr "„%s“ не даје одзив."
 
-#: ../src/core/delete.c:118
+#: ../src/core/delete.c:113
 msgid "Application is not responding."
 msgstr "Програм не даје одзив."
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:118
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -70,25 +71,25 @@ msgstr ""
 "Можете мало сачекати док се програм не сабере или приморати програм да "
 "комплетно прекине са радом."
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:125
 msgid "_Wait"
 msgstr "_Сачекај"
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:125
 msgid "_Force Quit"
 msgstr "_Приморај излаз"
 
-#: ../src/core/display.c:380
+#: ../src/core/display.c:396
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Недостаје потребан композитни додатак %s"
 
-#: ../src/core/display.c:446
+#: ../src/core/display.c:493
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Нисам успео да отворим екран „%s“ Икс система прозора\n"
 
-#: ../src/core/keybindings.c:844
+#: ../src/core/keybindings.c:853
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -157,7 +158,7 @@ msgstr "Исписује издање"
 msgid "Mutter plugin to use"
 msgstr "Прикључци Матера за коришћење"
 
-#: ../src/core/prefs.c:1065
+#: ../src/core/prefs.c:1079
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -165,12 +166,12 @@ msgstr ""
 "Решења за оштећене програме су искључена. Неке апликације се могу понашати "
 "чудно.\n"
 
-#: ../src/core/prefs.c:1140
+#: ../src/core/prefs.c:1154
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Не могу да обрадим опис „%s“ из кључа „%s“ у Гномовим подешавањима\n"
 
-#: ../src/core/prefs.c:1206
+#: ../src/core/prefs.c:1220
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -179,14 +180,14 @@ msgstr ""
 "„%s“ је пронађен у бази подешавања што није исправна вредност која мења "
 "понашање тастера миша\n"
 
-#: ../src/core/prefs.c:1724
+#: ../src/core/prefs.c:1747
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
 "\"%s\"\n"
 msgstr "„%s“ из базе са подешавањима није исправна комбинација тастера „%s“\n"
 
-#: ../src/core/prefs.c:1821
+#: ../src/core/prefs.c:1844
 #, c-format
 msgid "Workspace %d"
 msgstr "%d. радни простор"
@@ -336,25 +337,25 @@ msgid ""
 "%d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr ""
 "Прозор „%s“ је поставио „MWM“ што наговештава да није променљиве величине, "
-"али је поставио најмању величину %d x %d и највећу величину %d x %d што "
-"нема много смисла.\n"
+"али је поставио најмању величину %d x %d и највећу величину %d x %d што нема "
+"много смисла.\n"
 
-#: ../src/core/window-props.c:310
+#: ../src/core/window-props.c:274
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Програм је поставио нетачан _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:429
+#: ../src/core/window-props.c:393
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (на %s)"
 
-#: ../src/core/window-props.c:1484
+#: ../src/core/window-props.c:1448
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Неисправан прозор 0x%lx наведен као WM_TRANSIENT_FOR за %s.\n"
 
-#: ../src/core/window-props.c:1495
+#: ../src/core/window-props.c:1459
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR прозор 0x%lx за %s ће направити петљу.\n"
@@ -474,10 +475,24 @@ msgstr ""
 "кретање по прозорима."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "Застој првог плана се мења док се показивач не заустави"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focus will not be changed immediately when entering a window, but only "
+"after the pointer stops moving."
+msgstr ""
+"Ако је изабрано, а режим првог плана је или „sloppy“ или „mouse“ онда први "
+"план неће бити мењан одмах по уласку у прозор, већ само након што показивач "
+"престане да се помера."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
 msgstr "Ширина ивице за превлачење"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -485,11 +500,11 @@ msgstr ""
 "Износ укупне ивице за превлачење. Ако видљиве ивице теме нису довољне, биће "
 "додате невидљиве ивице за достизање ове вредности."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Select window from tab popup"
 msgstr "Бира прозор из језичка искакања"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid "Cancel tab popup"
 msgstr "Отказивање језичка искакања"
 
@@ -937,8 +952,8 @@ msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
-"<button function=„%s“ state=„%s“ draw_ops=\"whatever\"/> мора бити наведен за "
-"овај стил оквира"
+"<button function=„%s“ state=„%s“ draw_ops=\"whatever\"/> мора бити наведен "
+"за овај стил оквира"
 
 #: ../src/ui/theme.c:5009 ../src/ui/theme.c:5034
 #, c-format
