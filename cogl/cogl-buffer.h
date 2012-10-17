@@ -161,7 +161,13 @@ typedef enum { /*< prefix=COGL_BUFFER_ACCESS >*/
 /**
  * CoglBufferMapHint:
  * @COGL_BUFFER_MAP_HINT_DISCARD: Tells Cogl that you plan to replace
- *    all the buffer's contents.
+ *    all the buffer's contents. When this flag is used to map a
+ *    buffer, the entire contents of the buffer become undefined, even
+ *    if only a subregion of the buffer is mapped.
+ * @COGL_BUFFER_MAP_HINT_DISCARD_RANGE: Tells Cogl that you plan to
+ *    replace all the contents of the mapped region. The contents of
+ *    the region specified are undefined after this flag is used to
+ *    map a buffer.
  *
  * Hints to Cogl about how you are planning to modify the data once it
  * is mapped.
@@ -170,7 +176,8 @@ typedef enum { /*< prefix=COGL_BUFFER_ACCESS >*/
  * Stability: unstable
  */
 typedef enum { /*< prefix=COGL_BUFFER_MAP_HINT >*/
-  COGL_BUFFER_MAP_HINT_DISCARD = 1 << 0
+  COGL_BUFFER_MAP_HINT_DISCARD = 1 << 0,
+  COGL_BUFFER_MAP_HINT_DISCARD_RANGE = 1 << 1
 } CoglBufferMapHint;
 
 /**
@@ -180,7 +187,9 @@ typedef enum { /*< prefix=COGL_BUFFER_MAP_HINT >*/
  * @hints: A mask of #CoglBufferMapHint<!-- -->s that tell Cogl how
  *   the data will be modified once mapped.
  *
- * Maps the buffer into the application address space for direct access.
+ * Maps the buffer into the application address space for direct
+ * access. This is equivalent to calling cogl_buffer_map_range() with
+ * zero as the offset and the size of the entire buffer as the size.
  *
  * It is strongly recommended that you pass
  * %COGL_BUFFER_MAP_HINT_DISCARD as a hint if you are going to replace
@@ -202,6 +211,43 @@ void *
 cogl_buffer_map (CoglBuffer        *buffer,
                  CoglBufferAccess   access,
                  CoglBufferMapHint  hints);
+
+/**
+ * cogl_buffer_map_range:
+ * @buffer: a buffer object
+ * @offset: Offset within the buffer to start the mapping
+ * @size: The size of data to map
+ * @access: how the mapped buffer will be used by the application
+ * @hints: A mask of #CoglBufferMapHint<!-- -->s that tell Cogl how
+ *   the data will be modified once mapped.
+ *
+ * Maps a sub-region of the buffer into the application's address space
+ * for direct access.
+ *
+ * It is strongly recommended that you pass
+ * %COGL_BUFFER_MAP_HINT_DISCARD as a hint if you are going to replace
+ * all the buffer's data. This way if the buffer is currently being
+ * used by the GPU then the driver won't have to stall the CPU and
+ * wait for the hardware to finish because it can instead allocate a
+ * new buffer to map. You can pass
+ * %COGL_BUFFER_MAP_HINT_DISCARD_REGION instead if you want the
+ * regions outside of the mapping to be retained.
+ *
+ * The behaviour is undefined if you access the buffer in a way
+ * conflicting with the @access mask you pass. It is also an error to
+ * release your last reference while the buffer is mapped.
+ *
+ * Return value: A pointer to the mapped memory or %NULL is the call fails
+ *
+ * Since: 2.0
+ * Stability: unstable
+ */
+void *
+cogl_buffer_map_range (CoglBuffer *buffer,
+                       size_t offset,
+                       size_t size,
+                       CoglBufferAccess access,
+                       CoglBufferMapHint hints);
 
 /**
  * cogl_buffer_unmap:

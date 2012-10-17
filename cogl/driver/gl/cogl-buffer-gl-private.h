@@ -40,9 +40,11 @@ void
 _cogl_buffer_gl_destroy (CoglBuffer *buffer);
 
 void *
-_cogl_buffer_gl_map (CoglBuffer *buffer,
-                     CoglBufferAccess  access,
-                     CoglBufferMapHint hints);
+_cogl_buffer_gl_map_range (CoglBuffer *buffer,
+                           size_t offset,
+                           size_t size,
+                           CoglBufferAccess access,
+                           CoglBufferMapHint hints);
 
 void
 _cogl_buffer_gl_unmap (CoglBuffer *buffer);

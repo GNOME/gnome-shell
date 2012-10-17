@@ -57,7 +57,18 @@
 #ifndef GL_READ_WRITE
 #define GL_READ_WRITE 0x88BA
 #endif
-
+#ifndef GL_MAP_READ_BIT
+#define GL_MAP_READ_BIT 0x0001
+#endif
+#ifndef GL_MAP_WRITE_BIT
+#define GL_MAP_WRITE_BIT 0x0002
+#endif
+#ifndef GL_MAP_INVALIDATE_RANGE_BIT
+#define GL_MAP_INVALIDATE_RANGE_BIT 0x0004
+#endif
+#ifndef GL_MAP_INVALIDATE_BUFFER_BIT
+#define GL_MAP_INVALIDATE_BUFFER_BIT 0x0008
+#endif
 
 void
 _cogl_buffer_gl_create (CoglBuffer *buffer)
@@ -173,9 +184,11 @@ _cogl_buffer_bind_no_create (CoglBuffer *buffer,
 }
 
 void *
-_cogl_buffer_gl_map (CoglBuffer *buffer,
-                     CoglBufferAccess  access,
-                     CoglBufferMapHint hints)
+_cogl_buffer_gl_map_range (CoglBuffer *buffer,
+                           size_t offset,
+                           size_t size,
+                           CoglBufferAccess access,
+                           CoglBufferMapHint hints)
 {
   uint8_t *data;
   CoglBufferBindTarget target;
@@ -194,14 +207,54 @@ _cogl_buffer_gl_map (CoglBuffer *buffer,
 
   gl_target = convert_bind_target_to_gl_target (target);
 
-  /* create an empty store if we don't have one yet. creating the store
-   * lazily allows the user of the CoglBuffer to set a hint before the
-   * store is created. */
-  if (!buffer->store_created || (hints & COGL_BUFFER_MAP_HINT_DISCARD))
-    recreate_store (buffer);
+  /* If the map buffer range extension is supported then we will
+   * always use it even if we are mapping the full range because the
+   * normal mapping function doesn't support passing the discard
+   * hints */
+  if (ctx->glMapBufferRange)
+    {
+      GLbitfield gl_access = 0;
 
-  GE_RET( data, ctx, glMapBuffer (gl_target,
-                                  _cogl_buffer_access_to_gl_enum (access)) );
+      if ((access & COGL_BUFFER_ACCESS_READ))
+        gl_access |= GL_MAP_READ_BIT;
+      if ((access & COGL_BUFFER_ACCESS_WRITE))
+        gl_access |= GL_MAP_WRITE_BIT;
+
+      if ((hints & COGL_BUFFER_MAP_HINT_DISCARD))
+        gl_access |= GL_MAP_INVALIDATE_BUFFER_BIT;
+      if ((hints & COGL_BUFFER_MAP_HINT_DISCARD_RANGE))
+        gl_access |= GL_MAP_INVALIDATE_RANGE_BIT;
+
+      if (!buffer->store_created)
+        recreate_store (buffer);
+
+      GE_RET( data,
+              ctx,
+              glMapBufferRange (gl_target,
+                                offset,
+                                size,
+                                gl_access) );
+    }
+  else
+    {
+      /* create an empty store if we don't have one yet. creating the store
+       * lazily allows the user of the CoglBuffer to set a hint before the
+       * store is created. */
+      if (!buffer->store_created ||
+          (hints & COGL_BUFFER_MAP_HINT_DISCARD) ||
+          ((hints & COGL_BUFFER_MAP_HINT_DISCARD_RANGE) &&
+           offset == 0 && size >= buffer->size))
+        recreate_store (buffer);
+
+      GE_RET( data,
+              ctx,
+              glMapBuffer (gl_target,
+                           _cogl_buffer_access_to_gl_enum (access)) );
+
+      if (data)
+        data += offset;
+    }
+
   if (data)
     buffer->flags |= COGL_BUFFER_FLAG_MAPPED;
 

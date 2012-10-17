@@ -618,7 +618,7 @@ _cogl_driver_gl =
     _cogl_clip_stack_gl_flush,
     _cogl_buffer_gl_create,
     _cogl_buffer_gl_destroy,
-    _cogl_buffer_gl_map,
+    _cogl_buffer_gl_map_range,
     _cogl_buffer_gl_unmap,
     _cogl_buffer_gl_set_data,
   };

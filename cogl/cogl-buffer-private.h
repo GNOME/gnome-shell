@@ -41,9 +41,11 @@ typedef struct _CoglBufferVtable CoglBufferVtable;
 
 struct _CoglBufferVtable
 {
-  void * (* map) (CoglBuffer       *buffer,
-                  CoglBufferAccess  access,
-                  CoglBufferMapHint hints);
+  void * (* map_range) (CoglBuffer *buffer,
+                        size_t offset,
+                        size_t size,
+                        CoglBufferAccess access,
+                        CoglBufferMapHint hints);
 
   void (* unmap) (CoglBuffer *buffer);
 

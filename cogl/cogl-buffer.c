@@ -79,12 +79,14 @@ cogl_is_buffer (void *object)
  */
 
 static void *
-malloc_map (CoglBuffer       *buffer,
-            CoglBufferAccess  access,
-            CoglBufferMapHint hints)
+malloc_map_range (CoglBuffer *buffer,
+                  size_t offset,
+                  size_t size,
+                  CoglBufferAccess access,
+                  CoglBufferMapHint hints)
 {
   buffer->flags |= COGL_BUFFER_FLAG_MAPPED;
-  return buffer->data;
+  return buffer->data + offset;
 }
 
 static void
@@ -138,7 +140,7 @@ _cogl_buffer_initialize (CoglBuffer *buffer,
 
   if (use_malloc)
     {
-      buffer->vtable.map = malloc_map;
+      buffer->vtable.map_range = malloc_map_range;
       buffer->vtable.unmap = malloc_unmap;
       buffer->vtable.set_data = malloc_set_data;
 
@@ -146,7 +148,7 @@ _cogl_buffer_initialize (CoglBuffer *buffer,
     }
   else
     {
-      buffer->vtable.map = ctx->driver_vtable->buffer_map;
+      buffer->vtable.map_range = ctx->driver_vtable->buffer_map_range;
       buffer->vtable.unmap = ctx->driver_vtable->buffer_unmap;
       buffer->vtable.set_data = ctx->driver_vtable->buffer_set_data;
 
@@ -218,13 +220,30 @@ cogl_buffer_map (CoglBuffer        *buffer,
 {
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_buffer (buffer), NULL);
 
+  return cogl_buffer_map_range (buffer, 0, buffer->size, access, hints);
+}
+
+void *
+cogl_buffer_map_range (CoglBuffer *buffer,
+                       size_t offset,
+                       size_t size,
+                       CoglBufferAccess access,
+                       CoglBufferMapHint hints)
+{
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_buffer (buffer), NULL);
+
   if (G_UNLIKELY (buffer->immutable_ref))
     warn_about_midscene_changes ();
 
   if (buffer->flags & COGL_BUFFER_FLAG_MAPPED)
     return buffer->data;
 
-  buffer->data = buffer->vtable.map (buffer, access, hints);
+  buffer->data = buffer->vtable.map_range (buffer,
+                                           offset,
+                                           size,
+                                           access,
+                                           hints);
+
   return buffer->data;
 }
 

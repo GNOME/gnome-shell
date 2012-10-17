@@ -240,9 +240,11 @@ struct _CoglDriverVtable
 
   /* Maps a buffer into the CPU */
   void *
-  (* buffer_map) (CoglBuffer *buffer,
-                  CoglBufferAccess  access,
-                  CoglBufferMapHint hints);
+  (* buffer_map_range) (CoglBuffer *buffer,
+                        size_t offset,
+                        size_t size,
+                        CoglBufferAccess access,
+                        CoglBufferMapHint hints);
 
   /* Unmaps a buffer */
   void

@@ -731,6 +731,7 @@ cogl_buffer_set_update_hint
 cogl_buffer_get_update_hint
 CoglBufferAccess
 cogl_buffer_map
+cogl_buffer_map_range
 cogl_buffer_unmap
 cogl_buffer_set_data
 
