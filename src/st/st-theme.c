@@ -1034,7 +1034,7 @@ _st_theme_resolve_url (StTheme      *theme,
           g_error_free (error);
         }
 
-      return NULL;
+      return filename;
     }
 
   /* Guard against http:/ URLs */
