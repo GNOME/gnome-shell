@@ -1464,7 +1464,30 @@ update_num_workspaces (MetaScreen *screen,
   MetaWorkspace *last_remaining;
   gboolean need_change_space;
   
-  new_num = meta_prefs_get_num_workspaces ();
+  if (meta_prefs_get_dynamic_workspaces ())
+    {
+      int n_items;
+      gulong *list;
+
+      n_items = 0;
+      list = NULL;
+
+      if (meta_prop_get_cardinal_list (screen->display, screen->xroot,
+                                       screen->display->atom__NET_NUMBER_OF_DESKTOPS,
+                                       &list, &n_items))
+        {
+          new_num = list[0];
+          meta_XFree (list);
+        }
+      else
+        {
+          new_num = 1;
+        }
+    }
+  else
+    {
+      new_num = meta_prefs_get_num_workspaces ();
+    }
 
   g_assert (new_num > 0);
 
