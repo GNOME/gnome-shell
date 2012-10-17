@@ -39,7 +39,7 @@ const _modes = {
         unlockDialog: imports.gdm.loginDialog.LoginDialog,
         components: ['polkitAgent'],
         panel: {
-            left: [],
+            left: ['logo'],
             center: ['dateMenu'],
             right: ['a11y', 'display', 'keyboard',
                     'volume', 'battery', 'powerMenu']

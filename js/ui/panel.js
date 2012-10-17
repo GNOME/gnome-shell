@@ -901,6 +901,7 @@ const PANEL_ITEM_IMPLEMENTATIONS = {
     'volume': imports.ui.status.volume.Indicator,
     'battery': imports.ui.status.power.Indicator,
     'lockScreen': imports.ui.status.lockScreenMenu.Indicator,
+    'logo': imports.gdm.loginDialog.LogoMenuButton,
     'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
     'powerMenu': imports.gdm.powerMenu.PowerMenuButton,
     'userMenu': imports.ui.userMenu.UserMenuButton

@@ -39,13 +39,14 @@ const GdmUtil = imports.gdm.util;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
+const PanelMenu = imports.ui.panelMenu;
 const Tweener = imports.ui.tweener;
 const UserMenu = imports.ui.userMenu;
 
 const _RESIZE_ANIMATION_TIME = 0.25;
 const _SCROLL_ANIMATION_TIME = 0.5;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
-const _LOGO_ICON_NAME_SIZE = 48;
+const _LOGO_ICON_HEIGHT = 16;
 
 let _loginDialog = null;
 
@@ -81,6 +82,36 @@ function _smoothlyResizeActor(actor, width, height) {
                      });
     return hold;
 }
+
+const LogoMenuButton = new Lang.Class({
+    Name: 'LogoMenuButton',
+    Extends: PanelMenu.Button,
+
+    _init: function() {
+        this.parent(0.0, null, true);
+
+        this._settings = new Gio.Settings({ schema: GdmUtil.LOGIN_SCREEN_SCHEMA });
+        this._settings.connect('changed::' + GdmUtil.LOGO_KEY,
+                               Lang.bind(this, this._updateLogo));
+
+        this._iconBin = new St.Bin();
+        this.actor.add_actor(this._iconBin);
+
+        this._updateLogo();
+    },
+
+    _updateLogo: function() {
+        let path = this._settings.get_string(GdmUtil.LOGO_KEY);
+        let icon = null;
+
+        if (path) {
+            let file = Gio.file_new_for_path(path);
+            let cache = St.TextureCache.get_default();
+            icon = cache.load_uri_async(file.get_uri(), -1, _LOGO_ICON_HEIGHT);
+        }
+        this._iconBin.set_child(icon);
+    }
+});
 
 const UserListItem = new Lang.Class({
     Name: 'UserListItem',
@@ -659,16 +690,10 @@ const LoginDialog = new Lang.Class({
 
         this._settings = new Gio.Settings({ schema: GdmUtil.LOGIN_SCREEN_SCHEMA });
 
-        this._settings.connect('changed::' + GdmUtil.LOGO_KEY,
-                               Lang.bind(this, this._updateLogo));
         this._settings.connect('changed::' + GdmUtil.BANNER_MESSAGE_KEY,
                                Lang.bind(this, this._updateBanner));
         this._settings.connect('changed::' + GdmUtil.BANNER_MESSAGE_TEXT_KEY,
                                Lang.bind(this, this._updateBanner));
-
-        this._logoBox = new St.Bin({ style_class: 'login-dialog-logo-box' });
-        this.contentLayout.add(this._logoBox);
-        this._updateLogo();
 
         this._bannerLabel = new St.Label({ style_class: 'login-dialog-banner',
                                            text: '' });
@@ -770,20 +795,6 @@ const LoginDialog = new Lang.Class({
 
    },
 
-    _updateLogo: function() {
-        this._logoBox.child = null;
-        let path = this._settings.get_string(GdmUtil.LOGO_KEY);
-
-        if (path) {
-            let file = Gio.file_new_for_path(path);
-            let uri = file.get_uri();
-
-            let textureCache = St.TextureCache.get_default();
-            this._logoBox.child = textureCache.load_uri_async(uri, -1, _LOGO_ICON_NAME_SIZE);
-        }
-
-    },
-
     _updateBanner: function() {
         let enabled = this._settings.get_boolean(GdmUtil.BANNER_MESSAGE_KEY);
         let text = this._settings.get_string(GdmUtil.BANNER_MESSAGE_TEXT_KEY);
@@ -802,8 +813,7 @@ const LoginDialog = new Lang.Class({
         let tasks = [this._hidePrompt,
 
                      new Batch.ConcurrentBatch(this, [this._fadeInTitleLabel,
-                                                      this._fadeInNotListedButton,
-                                                      this._fadeInLogo]),
+                                                      this._fadeInNotListedButton]),
 
                      function() {
                          this._sessionList.close();
@@ -1089,8 +1099,7 @@ const LoginDialog = new Lang.Class({
                      },
 
                      new Batch.ConcurrentBatch(this, [this._fadeOutTitleLabel,
-                                                      this._fadeOutNotListedButton,
-                                                      this._fadeOutLogo]),
+                                                      this._fadeOutNotListedButton]),
 
                      function() {
                          let hold = new Batch.Hold();
@@ -1101,14 +1110,6 @@ const LoginDialog = new Lang.Class({
 
         let batch = new Batch.ConsecutiveBatch(this, tasks);
         batch.run();
-    },
-
-    _fadeInLogo: function() {
-        return GdmUtil.fadeInActor(this._logoBox);
-    },
-
-    _fadeOutLogo: function() {
-        return GdmUtil.fadeOutActor(this._logoBox);
     },
 
     _fadeInBanner: function() {
@@ -1159,8 +1160,7 @@ const LoginDialog = new Lang.Class({
                      },
 
                      new Batch.ConcurrentBatch(this, [this._fadeOutTitleLabel,
-                                                      this._fadeOutNotListedButton,
-                                                      this._fadeOutLogo]),
+                                                      this._fadeOutNotListedButton]),
 
                      function() {
                          return this._userList.shrinkToNaturalHeight();
