@@ -137,12 +137,16 @@ _cogl_buffer_immutable_ref (CoglBuffer *buffer);
 void
 _cogl_buffer_immutable_unref (CoglBuffer *buffer);
 
-/* This is a wrapper around cogl_buffer_map for internal use when we
-   want to map the buffer for write only to replace the entire
+/* This is a wrapper around cogl_buffer_map_range for internal use
+   when we want to map the buffer for write only to replace the entire
    contents. If the map fails then it will fallback to writing to a
    temporary buffer. When _cogl_buffer_unmap_for_fill_or_fallback is
    called the temporary buffer will be copied into the array. Note
    that these calls share a global array so they can not be nested. */
+void *
+_cogl_buffer_map_range_for_fill_or_fallback (CoglBuffer *buffer,
+                                             size_t offset,
+                                             size_t size);
 void *
 _cogl_buffer_map_for_fill_or_fallback (CoglBuffer *buffer);
 

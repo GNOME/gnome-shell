@@ -262,6 +262,14 @@ cogl_buffer_unmap (CoglBuffer *buffer)
 void *
 _cogl_buffer_map_for_fill_or_fallback (CoglBuffer *buffer)
 {
+  return _cogl_buffer_map_range_for_fill_or_fallback (buffer, 0, buffer->size);
+}
+
+void *
+_cogl_buffer_map_range_for_fill_or_fallback (CoglBuffer *buffer,
+                                             size_t offset,
+                                             size_t size)
+{
   CoglContext *ctx = buffer->context;
   void *ret;
 
@@ -269,9 +277,11 @@ _cogl_buffer_map_for_fill_or_fallback (CoglBuffer *buffer)
 
   ctx->buffer_map_fallback_in_use = TRUE;
 
-  ret = cogl_buffer_map (buffer,
-                         COGL_BUFFER_ACCESS_WRITE,
-                         COGL_BUFFER_MAP_HINT_DISCARD);
+  ret = cogl_buffer_map_range (buffer,
+                               offset,
+                               size,
+                               COGL_BUFFER_ACCESS_WRITE,
+                               COGL_BUFFER_MAP_HINT_DISCARD);
 
   if (ret)
     return ret;
@@ -281,7 +291,8 @@ _cogl_buffer_map_for_fill_or_fallback (CoglBuffer *buffer)
          the data and then upload it using cogl_buffer_set_data when
          the buffer is unmapped. The temporary buffer is shared to
          avoid reallocating it every time */
-      g_byte_array_set_size (ctx->buffer_map_fallback_array, buffer->size);
+      g_byte_array_set_size (ctx->buffer_map_fallback_array, size);
+      ctx->buffer_map_fallback_offset = offset;
 
       buffer->flags |= COGL_BUFFER_FLAG_MAPPED_FALLBACK;
 
@@ -300,9 +311,10 @@ _cogl_buffer_unmap_for_fill_or_fallback (CoglBuffer *buffer)
 
   if ((buffer->flags & COGL_BUFFER_FLAG_MAPPED_FALLBACK))
     {
-      cogl_buffer_set_data (buffer, 0,
+      cogl_buffer_set_data (buffer,
+                            ctx->buffer_map_fallback_offset,
                             ctx->buffer_map_fallback_array->data,
-                            buffer->size);
+                            ctx->buffer_map_fallback_array->len);
       buffer->flags &= ~COGL_BUFFER_FLAG_MAPPED_FALLBACK;
     }
   else

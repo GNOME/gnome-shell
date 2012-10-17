@@ -1079,7 +1079,9 @@ upload_vertices (CoglJournal *journal,
   buffer = COGL_BUFFER (attribute_buffer);
   cogl_buffer_set_update_hint (buffer, COGL_BUFFER_UPDATE_HINT_STATIC);
 
-  vout = _cogl_buffer_map_for_fill_or_fallback (buffer);
+  vout = _cogl_buffer_map_range_for_fill_or_fallback (buffer,
+                                                      0, /* offset */
+                                                      needed_vbo_len * 4);
   vin = &g_array_index (vertices, float, 0);
 
   /* Expand the number of vertices from 2 to 4 while uploading */

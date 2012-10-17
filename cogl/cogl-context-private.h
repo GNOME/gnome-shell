@@ -269,6 +269,7 @@ struct _CoglContext
      data */
   GByteArray       *buffer_map_fallback_array;
   CoglBool          buffer_map_fallback_in_use;
+  size_t            buffer_map_fallback_offset;
 
   CoglWinsysRectangleState rectangle_state;
 
