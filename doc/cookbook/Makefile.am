@@ -8,15 +8,15 @@ HTML_DIR = $(datadir)/gtk-doc/html
 TARGET_DIR = $(HTML_DIR)/clutter-cookbook
 
 XML_FILES = \
-	$(srcdir)/actors.xml		\
-	$(srcdir)/animations.xml	\
-	$(srcdir)/events.xml		\
-	$(srcdir)/introduction.xml	\
-	$(srcdir)/text.xml		\
-	$(srcdir)/textures.xml		\
-	$(srcdir)/layouts.xml		\
-	$(srcdir)/script.xml		\
-	$(srcdir)/effects.xml		\
+	$(top_srcdir)/doc/cookbook/actors.xml		\
+	$(top_srcdir)/doc/cookbook/animations.xml	\
+	$(top_srcdir)/doc/cookbook/events.xml		\
+	$(top_srcdir)/doc/cookbook/introduction.xml	\
+	$(top_srcdir)/doc/cookbook/text.xml		\
+	$(top_srcdir)/doc/cookbook/textures.xml		\
+	$(top_srcdir)/doc/cookbook/layouts.xml		\
+	$(top_srcdir)/doc/cookbook/script.xml		\
+	$(top_srcdir)/doc/cookbook/effects.xml		\
 	$(NULL)
 
 XSLTOPTS = \
@@ -28,6 +28,7 @@ XSLTOPTS = \
 	--stringparam gtkdoc.version @CLUTTER_API_VERSION@ 	\
 	--stringparam callout.graphics 0			\
 	--path $(top_srcdir)/doc/common				\
+	--path $(top_srcdir)/doc/cookbook			\
 	--xinclude
 
 XSL_BASE_URI  = http://docbook.sourceforge.net/release/xsl/current
