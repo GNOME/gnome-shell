@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
+const Gio = imports.gi.Gio;
 const Gvc = imports.gi.Gvc;
 const St = imports.gi.St;
 
@@ -31,6 +32,8 @@ const VolumeMenu = new Lang.Class({
 
     _init: function(control) {
         this.parent();
+
+        this.hasHeadphones = false;
 
         this._control = control;
         this._control.connect('state-changed', Lang.bind(this, this._onControlStateChanged));
@@ -98,20 +101,47 @@ const VolumeMenu = new Lang.Class({
         }
     },
 
+    _findHeadphones: function(sink) {
+        // This only works for external headphones (e.g. bluetooth)
+        if (sink.get_form_factor() == 'headset' ||
+            sink.get_form_factor() == 'headphone')
+            return true;
+
+        // a bit hackish, but ALSA/PulseAudio have a number
+        // of different identifiers for headphones, and I could
+        // not find the complete list
+        let port = sink.get_port();
+        if (port)
+            return port.port.indexOf('headphone') >= 0;
+
+        return false;
+    },
+
+    _portChanged: function() {
+        this.hasHeadphones = this._findHeadphones(this._output);
+        this.emit('headphones-changed');
+    },
+
     _readOutput: function() {
         if (this._outputVolumeId) {
             this._output.disconnect(this._outputVolumeId);
             this._output.disconnect(this._outputMutedId);
+            this._output.disconnect(this._outputPortId);
             this._outputVolumeId = 0;
             this._outputMutedId = 0;
+            this._outputPortId = 0;
         }
         this._output = this._control.get_default_sink();
         if (this._output) {
             this._outputMutedId = this._output.connect('notify::is-muted', Lang.bind(this, this._mutedChanged, '_output'));
             this._outputVolumeId = this._output.connect('notify::volume', Lang.bind(this, this._volumeChanged, '_output'));
-            this._mutedChanged (null, null, '_output');
-            this._volumeChanged (null, null, '_output');
+            this._outputPortId = this._output.connect('notify::port', Lang.bind(this, this._portChanged));
+
+            this._mutedChanged(null, null, '_output');
+            this._volumeChanged(null, null, '_output');
+            this._portChanged();
         } else {
+            this.hasHeadphones = false;
             this._outputSlider.setValue(0);
             this.emit('icon-changed', 'audio-volume-muted-symbolic');
         }
@@ -227,6 +257,12 @@ const Indicator = new Lang.Class({
             this.setIcon(icon);
             this._syncVisibility();
         }));
+        this._volumeMenu.connect('headphones-changed', Lang.bind(this, function() {
+            this._syncVisibility();
+        }));
+
+        this._headphoneIcon = this.addIcon(new Gio.ThemedIcon({ name: 'headphones-symbolic' }));
+        this._headphoneIcon.visible = false;
 
         this.menu.addMenuItem(this._volumeMenu);
 
@@ -239,6 +275,7 @@ const Indicator = new Lang.Class({
     _syncVisibility: function() {
         this.actor.visible = this._hasPulseAudio;
         this.mainIcon.visible = this._hasPulseAudio;
+        this._headphoneIcon.visible = this._hasPulseAudio && this._volumeMenu.hasHeadphones;
     },
 
     _onScrollEvent: function(actor, event) {
