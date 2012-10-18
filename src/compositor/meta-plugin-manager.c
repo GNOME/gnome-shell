@@ -305,8 +305,8 @@ meta_plugin_manager_xevent_filter (MetaPluginManager *plugin_mgr,
    * of that plugin to pass events to Clutter. Otherwise, we send the
    * event directly to Clutter ourselves.
    */
-  if (klass->xevent_filter && klass->xevent_filter (plugin, xev))
-    return TRUE;
+  if (klass->xevent_filter)
+    return klass->xevent_filter (plugin, xev);
   else
     return clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE;
 }
