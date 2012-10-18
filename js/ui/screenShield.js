@@ -21,6 +21,7 @@ const Overview = imports.ui.overview;
 const MessageTray = imports.ui.messageTray;
 const ShellDBus = imports.ui.shellDBus;
 const Tweener = imports.ui.tweener;
+const Util = imports.misc.util;
 
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const LOCK_ENABLED_KEY = 'lock-enabled';
@@ -865,6 +866,8 @@ const ScreenShieldFallback = new Lang.Class({
     Name: 'ScreenShieldFallback',
 
     _init: function() {
+        Util.spawn(['gnome-screensaver']);
+
         this._proxy = new Gio.DBusProxy({ g_connection: Gio.DBus.session,
                                           g_name: 'org.gnome.ScreenSaver',
                                           g_object_path: '/org/gnome/ScreenSaver',
