@@ -849,6 +849,7 @@ const UserMenuButton = new Lang.Class({
                     this._upClient.suspend_sync(null);
                 }));
 
+                this.menu.close(BoxPointer.PopupAnimation.NONE);
                 Main.screenShield.lock(true);
             } else {
                 this._upClient.suspend_sync(null);
