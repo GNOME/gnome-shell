@@ -939,9 +939,10 @@ const WorkspacesDisplay = new Lang.Class({
                 // Assume workspaces are only added at the end
                 for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
                     let metaWorkspace = global.screen.get_workspace_by_index(w);
-                    this._workspaces[m++][w] =
+                    this._workspaces[m][w] =
                         new Workspace.Workspace(metaWorkspace, i);
                 }
+                m++;
             }
 
             this._thumbnailsBox.addThumbnails(oldNumWorkspaces, newNumWorkspaces - oldNumWorkspaces);
