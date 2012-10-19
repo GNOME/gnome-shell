@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-22 22:24+0000\n"
-"PO-Revision-Date: 2012-09-23 08:48+0300\n"
+"POT-Creation-Date: 2012-10-17 17:06+0000\n"
+"PO-Revision-Date: 2012-10-18 00:49+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <>\n"
 "Language: et\n"
@@ -223,10 +223,14 @@ msgstr "Katkesta"
 
 msgctxt "button"
 msgid "Sign In"
-msgstr "Logi sisse"
+msgstr "Sisselogimine"
 
 msgid "Login Window"
 msgstr "Sisselogimisaken"
+
+#. Translators: accessible name of the power menu in the login screen
+msgid "Power"
+msgstr "Vool"
 
 msgid "Suspend"
 msgstr "Uinak"
@@ -332,7 +336,7 @@ msgstr "K"
 #. Translators: Calendar grid abbreviation for Thursday
 msgctxt "grid thursday"
 msgid "T"
-msgstr "N"
+msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Friday
 msgctxt "grid friday"
@@ -342,7 +346,7 @@ msgstr "R"
 #. Translators: Calendar grid abbreviation for Saturday
 msgctxt "grid saturday"
 msgid "S"
-msgstr "L"
+msgstr "P"
 
 #. Translators: Event list abbreviation for Sunday.
 #. *
@@ -382,7 +386,7 @@ msgstr "R"
 #. Translators: Event list abbreviation for Saturday
 msgctxt "list saturday"
 msgid "S"
-msgstr "L"
+msgstr "P"
 
 #. Translators: Text to show if there are no events
 msgid "Nothing Scheduled"
@@ -538,19 +542,19 @@ msgstr "Heli maha"
 #. locale, without seconds.
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
-msgstr "Saadetud: <b>%A</b>, <b>%X</b>"
+msgstr "Saadeti: <b>%a</b>, <b>%X</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
-msgstr "Saadeti <b>%A</b>, <b>%B %d</b>"
+msgstr "Saadeti: <b>%a</b>, <b>d. %B</b>"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-msgstr "Saadeti <b>%A</b>, <b>%B %d</b>, %Y"
+msgstr "Saadeti: <b>%a</b>, <b>d. %B</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -748,11 +752,11 @@ msgstr "Süsteemist väljalogimine"
 
 msgctxt "button"
 msgid "Log Out"
-msgstr "Logi välja"
+msgstr "Väljalogimine"
 
 msgctxt "title"
 msgid "Power Off"
-msgstr "Väljalülitamine"
+msgstr "Lülita välja"
 
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
@@ -778,7 +782,7 @@ msgstr "Lülita välja"
 
 msgctxt "title"
 msgid "Restart"
-msgstr "Taaskäivitamine"
+msgstr "Taaskäivita"
 
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
@@ -1277,20 +1281,17 @@ msgstr "Jõude"
 msgid "Unavailable"
 msgstr "Pole saadaval"
 
-msgid "Switch User"
-msgstr "Vaheta kasutajat"
-
-msgid "Switch Session"
-msgstr "Vaheta seanssi"
-
 msgid "Notifications"
 msgstr "Märguanded"
 
 msgid "System Settings"
 msgstr "Süsteemi sätted"
 
+msgid "Switch User"
+msgstr "Vaheta kasutajat"
+
 msgid "Log Out"
-msgstr "Logi välja"
+msgstr "Väljalogimine"
 
 msgid "Lock"
 msgstr "Lukusta"
@@ -1388,6 +1389,27 @@ msgstr "Vaikimisi"
 
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Kasutaja katkestas autentimisdialoogi"
+
+#, fuzzy
+#~ msgid "Show all applications"
+#~ msgstr "Rakenduste kuvamine"
+
+#, fuzzy
+#~ msgid "Open the application menu"
+#~ msgstr "Rakenduste menüü avamise kiirklahv"
+
+#, fuzzy
+#~ msgid "Keybinding to open the \"Show Applications\" view"
+#~ msgstr "Rakenduste menüü avamise kiirklahv"
+
+#, fuzzy
+#~ msgid ""
+#~ "Keybinding to open the \"Show Applications\" view of the Activities "
+#~ "Overview."
+#~ msgstr "Kiirklahv  rakenduste menüü avamiseks."
+
+#~ msgid "Switch Session"
+#~ msgstr "Vaheta seanssi"
 
 #~ msgid "disabled OpenSearch providers"
 #~ msgstr "keelatud OpenSearch pakkujad"
