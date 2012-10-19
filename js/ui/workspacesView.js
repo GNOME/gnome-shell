@@ -541,6 +541,16 @@ const WorkspacesDisplay = new Lang.Class({
         this._notifyOpacityId = 0;
         this._swipeScrollBeginId = 0;
         this._swipeScrollEndId = 0;
+
+        this._settings = new Gio.Settings({ schema: OVERRIDE_SCHEMA });
+        this._settings.connect('changed::dynamic-workspaces',
+            Lang.bind(this, this._updateSwitcherVisibility));
+    },
+
+    _updateSwitcherVisibility: function() {
+        this._thumbnailsBox.actor.visible =
+            this._settings.get_boolean('dynamic-workspaces') ||
+                global.screen.n_workspaces > 1;
     },
 
     show: function() {
@@ -563,6 +573,7 @@ const WorkspacesDisplay = new Lang.Class({
 
         this._controls.show();
         this._thumbnailsBox.show();
+        this._updateSwitcherVisibility();
 
         this._updateWorkspacesViews();
 
@@ -974,6 +985,7 @@ const WorkspacesDisplay = new Lang.Class({
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].updateWorkspaces(oldNumWorkspaces,
                                                       newNumWorkspaces);
+        this._updateSwitcherVisibility();
     },
 
     _updateZoom : function() {
