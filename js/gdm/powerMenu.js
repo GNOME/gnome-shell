@@ -20,7 +20,6 @@
 
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
-const UPowerGlib = imports.gi.UPowerGlib;
 
 const LoginManager = imports.misc.loginManager;
 
@@ -35,7 +34,6 @@ const PowerMenuButton = new Lang.Class({
     _init: function() {
         /* Translators: accessible name of the power menu in the login screen */
         this.parent('system-shutdown-symbolic', _("Power"));
-        this._upClient = new UPowerGlib.Client();
 
         this._loginManager = LoginManager.getLoginManager();
 
@@ -45,10 +43,6 @@ const PowerMenuButton = new Lang.Class({
 
         this._createSubMenu();
 
-        this._upClient.connect('notify::can-suspend',
-                               Lang.bind(this, this._updateHaveSuspend));
-        this._updateHaveSuspend();
-
         // ConsoleKit doesn't send notifications when shutdown/reboot
         // are disabled, so we update the menu item each time the menu opens
         this.menu.connect('open-state-changed', Lang.bind(this,
@@ -56,10 +50,12 @@ const PowerMenuButton = new Lang.Class({
                 if (open) {
                     this._updateHaveShutdown();
                     this._updateHaveRestart();
+                    this._updateHaveSuspend();
                 }
             }));
         this._updateHaveShutdown();
         this._updateHaveRestart();
+        this._updateHaveSuspend();
     },
 
     _updateVisibility: function() {
@@ -84,9 +80,11 @@ const PowerMenuButton = new Lang.Class({
     },
 
     _updateHaveSuspend: function() {
-        this._haveSuspend = this._upClient.get_can_suspend();
-        this._suspendItem.actor.visible = this._haveSuspend;
-        this._updateVisibility();
+        this._loginManager.canSuspend(Lang.bind(this, function(result) {
+            this._haveSuspend = result;
+            this._suspendItem.actor.visible = this._haveSuspend;
+            this._updateVisibility();
+        }));
     },
 
     _createSubMenu: function() {
@@ -109,8 +107,10 @@ const PowerMenuButton = new Lang.Class({
     },
 
     _onActivateSuspend: function() {
-        if (this._haveSuspend)
-            this._upClient.suspend_sync(null);
+        if (!this._haveSuspend)
+            return;
+
+        this._loginManager.suspend();
     },
 
     _onActivateRestart: function() {
