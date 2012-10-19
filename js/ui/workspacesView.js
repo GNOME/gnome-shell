@@ -928,7 +928,7 @@ const WorkspacesDisplay = new Lang.Class({
             let monitors = Main.layoutManager.monitors;
             let m = 0;
             for (let i = 0; i < monitors.length; i++) {
-                if (this._workspacesOnlyOnPrimaryChanged &&
+                if (this._workspacesOnlyOnPrimary &&
                     i != this._primaryIndex)
                     continue;
 
