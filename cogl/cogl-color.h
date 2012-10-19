@@ -169,7 +169,7 @@ cogl_color_set_from_4f (CoglColor *color,
  */
 void
 cogl_color_init_from_4fv (CoglColor *color,
-                          float *color_array);
+                          const float *color_array);
 
 /**
  * cogl_color_get_red_byte:
