@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: clutter master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-25 08:16+0000\n"
-"PO-Revision-Date: 2012-09-28 19:03+0900\n"
-"Last-Translator: Nishio Futoshi <fut_nis@d3.dion.ne.jp>\n"
+"POT-Creation-Date: 2012-10-03 17:48+0000\n"
+"PO-Revision-Date: 2012-10-16 20:54+0900\n"
+"Last-Translator: OKANO Takayoshi <kano@na.rim.or.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -2582,7 +2582,7 @@ msgstr "YUV2形式のテクスチャーはサポートしていません"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:159
 msgid "sysfs Path"
-msgstr "sysfgのパス"
+msgstr "sysfsのパス"
 
 #: ../clutter/evdev/clutter-input-device-evdev.c:160
 msgid "Path of the device in sysfs"
