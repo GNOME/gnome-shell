@@ -159,6 +159,24 @@ const WindowClone = new Lang.Class({
         this._selected = false;
     },
 
+    get slot() {
+        let x, y, w, h;
+
+        if (this.inDrag) {
+            x = this.dragOrigX;
+            y = this.dragOrigY;
+            w = this.actor.width * this.dragOrigScale;
+            h = this.actor.height * this.dragOrigScale;
+        } else {
+            x = this.actor.x;
+            y = this.actor.y;
+            w = this.actor.width * this.actor.scale_x;
+            h = this.actor.height * this.actor.scale_y;
+        }
+
+        return [x, y, w, h];
+    },
+
     setStackAbove: function (actor) {
         this._stackAbove = actor;
         if (this.inDrag || this._zooming)
@@ -435,6 +453,11 @@ const WindowOverlay = new Lang.Class({
         this._updateCaptionId = metaWindow.connect('notify::title',
             Lang.bind(this, function(w) {
                 this.title.text = w.title;
+                // we need this for the next call to get_preferred_width
+                // to return useful results
+                this.title.set_size(-1, -1);
+
+                this._repositionSelf();
             }));
 
         let button = new St.Button({ style_class: 'window-close' });
@@ -501,6 +524,11 @@ const WindowOverlay = new Lang.Class({
                 this.title.height + this.title._spacing];
     },
 
+    _repositionSelf: function() {
+        let [cloneX, cloneY, cloneWidth, cloneHeight] = this._windowClone.slot;
+        this.updatePositions(cloneX, cloneY, cloneWidth, cloneHeight, false);
+    },
+
     /**
      * @cloneX: x position of windowClone
      * @cloneY: y position of windowClone
@@ -538,9 +566,8 @@ const WindowOverlay = new Lang.Class({
         else
             button.set_position(Math.floor(buttonX), Math.floor(buttonY));
 
-        if (!title.fullWidth)
-            title.fullWidth = title.width;
-        let titleWidth = Math.min(title.fullWidth, cloneWidth);
+        let [titleMinWidth, titleNatWidth] = title.get_preferred_width(-1);
+        let titleWidth = Math.max(titleMinWidth, Math.min(titleNatWidth, cloneWidth));
 
         let titleX = cloneX + (cloneWidth - titleWidth) / 2;
         let titleY = cloneY + cloneHeight + title._spacing;
