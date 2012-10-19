@@ -445,6 +445,8 @@ const WindowOverlay = new Lang.Class({
         this._parentActor = parentActor;
         this._hidden = false;
 
+        this._settings = new Gio.Settings({ schema: BUTTON_LAYOUT_SCHEMA });
+
         this.borderSize = 0;
         this.border = new St.Bin({ style_class: 'window-clone-border' });
 
@@ -554,8 +556,7 @@ const WindowOverlay = new Lang.Class({
         let button = this.closeButton;
         let title = this.title;
 
-        let settings = new Gio.Settings({ schema: BUTTON_LAYOUT_SCHEMA });
-        let layout = settings.get_string(BUTTON_LAYOUT_KEY);
+        let layout = this._settings.get_string(BUTTON_LAYOUT_KEY);
         let rtl = Clutter.get_default_text_direction() == Clutter.TextDirection.RTL;
 
         let split = layout.split(":");
@@ -1184,8 +1185,8 @@ const Workspace = new Lang.Class({
             let slot = slots[i];
             let clone = clones[i];
             let metaWindow = clone.metaWindow;
-            let mainIndex = this._lookupIndex(metaWindow);
-            let overlay = this._windowOverlays[mainIndex];
+            let overlay = clone.overlay;
+            clone.slotId = i;
 
             // Positioning a window currently being dragged must be avoided;
             // we'll just leave a blank spot in the layout for it.
@@ -1569,6 +1570,7 @@ const Workspace = new Lang.Class({
     _addWindowClone : function(win) {
         let clone = new WindowClone(win, this);
         let overlay = new WindowOverlay(clone, this._windowOverlaysGroup);
+        clone.overlay = overlay;
 
         clone.connect('selected',
                       Lang.bind(this, this._onCloneSelected));
