@@ -3,7 +3,9 @@
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
+const UPowerGlib = imports.gi.UPowerGlib;
 
 const SystemdLoginManagerIface = <interface name='org.freedesktop.login1.Manager'>
 <method name='PowerOff'>
@@ -12,10 +14,16 @@ const SystemdLoginManagerIface = <interface name='org.freedesktop.login1.Manager
 <method name='Reboot'>
     <arg type='b' direction='in'/>
 </method>
+<method name='Suspend'>
+    <arg type='b' direction='in'/>
+</method>
 <method name='CanPowerOff'>
     <arg type='s' direction='out'/>
 </method>
 <method name='CanReboot'>
+    <arg type='s' direction='out'/>
+</method>
+<method name='CanSuspend'>
     <arg type='s' direction='out'/>
 </method>
 </interface>;
@@ -123,12 +131,25 @@ const LoginManagerSystemd = new Lang.Class({
         });
     },
 
+    canSuspend: function(asyncCallback) {
+        this._proxy.CanSuspendRemote(function(result, error) {
+            if (error)
+                asyncCallback(false);
+            else
+                asyncCallback(result[0] != 'no');
+        });
+    },
+
     powerOff: function() {
         this._proxy.PowerOffRemote(true);
     },
 
     reboot: function() {
         this._proxy.RebootRemote(true);
+    },
+
+    suspend: function() {
+        this._proxy.SuspendRemote(true);
     }
 });
 
@@ -139,6 +160,7 @@ const LoginManagerConsoleKit = new Lang.Class({
         this._proxy = new ConsoleKitManager(Gio.DBus.system,
                                             'org.freedesktop.ConsoleKit',
                                             '/org/freedesktop/ConsoleKit/Manager');
+        this._upClient = new UPowerGlib.Client();
     },
 
     // Having this function is a bit of a hack since the Systemd and ConsoleKit
@@ -186,12 +208,22 @@ const LoginManagerConsoleKit = new Lang.Class({
         });
     },
 
+    canSuspend: function(asyncCallback) {
+        Mainloop.idle_add(Lang.bind(this, function() {
+            asyncCallback(this._upClient.get_can_suspend());
+            return false;
+        }));
+    },
+
     powerOff: function() {
         this._proxy.StopRemote();
     },
 
     reboot: function() {
         this._proxy.RestartRemote();
+    },
+
+    suspend: function() {
+        this._upClient.suspend_sync(null);
     }
-            
 });
