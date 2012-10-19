@@ -8,6 +8,8 @@ noinst_LTLIBRARIES =
 noinst_PROGRAMS =
 service_in_files =
 
+SUBDIRS = gvc
+
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
 INTROSPECTION_SCANNER_ARGS = --warn-all --warn-error --add-include-path=$(srcdir)
@@ -79,7 +81,6 @@ CLEANFILES += gnome-shell $(bin_SCRIPTS)
 
 include Makefile-st.am
 include Makefile-tray.am
-include Makefile-gvc.am
 include Makefile-calendar-server.am
 include Makefile-hotplug-sniffer.am
 
@@ -284,7 +285,7 @@ libgnome_shell_la_LIBADD =		\
 	$(BLUETOOTH_LIBS)	\
 	libst-1.0.la       	\
 	libtray.la		\
-	libgvc.la		\
+	gvc/libgvc.la		\
 	$(NULL)
 
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)

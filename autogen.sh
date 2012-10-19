@@ -13,6 +13,14 @@ PKG_NAME="gnome-shell"
     exit 1
 }
 
+# Fetch submodules if needed
+if test ! -f src/gvc/Makefile.am;
+then
+  echo "+ Setting up submodules"
+  git submodule init
+fi
+git submodule update
+
 which gnome-autogen.sh || {
     echo "You need to install gnome-common from GNOME Git (or from"
     echo "your OS vendor's package manager)."

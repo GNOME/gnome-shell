@@ -269,6 +269,7 @@ AC_CONFIG_FILES([
   js/Makefile
   src/calendar-server/evolution-calendar.desktop.in
   src/Makefile
+  src/gvc/Makefile
   browser-plugin/Makefile
   tests/Makefile
   po/Makefile.in
