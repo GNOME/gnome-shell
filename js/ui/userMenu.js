@@ -9,11 +9,11 @@ const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Tp = imports.gi.TelepathyGLib;
-const UPowerGlib = imports.gi.UPowerGlib;
 const Atk = imports.gi.Atk;
 
 const BoxPointer = imports.ui.boxpointer;
 const GnomeSession = imports.misc.gnomeSession;
+const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
@@ -482,10 +482,11 @@ const UserMenuButton = new Lang.Class({
         this._presence = new GnomeSession.Presence();
         this._session = new GnomeSession.SessionManager();
         this._haveShutdown = true;
+        this._haveSuspend = true;
 
         this._accountMgr = Tp.AccountManager.dup();
 
-        this._upClient = new UPowerGlib.Client();
+        this._loginManager = LoginManager.getLoginManager();
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._iconBox = new St.Bin();
@@ -565,13 +566,14 @@ const UserMenuButton = new Lang.Class({
         // the lockdown setting changes, which should be close enough.
         this.menu.connect('open-state-changed', Lang.bind(this,
             function(menu, open) {
-                if (open)
-                    this._updateHaveShutdown();
+                if (!open)
+                    return;
+
+                this._updateHaveShutdown();
+                this._updateHaveSuspend();
             }));
         this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
                                        Lang.bind(this, this._updateHaveShutdown));
-
-        this._upClient.connect('notify::can-suspend', Lang.bind(this, this._updateSuspendOrPowerOff));
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
         this._sessionUpdated();
@@ -641,9 +643,15 @@ const UserMenuButton = new Lang.Class({
             }));
     },
 
-    _updateSuspendOrPowerOff: function() {
-        this._haveSuspend = this._upClient.get_can_suspend();
+    _updateHaveSuspend: function() {
+        this._loginManager.canSuspend(Lang.bind(this,
+            function(result) {
+                this._haveSuspend = result;
+                this._updateSuspendOrPowerOff();
+        }));
+    },
 
+    _updateSuspendOrPowerOff: function() {
         if (!this._suspendOrPowerOffItem)
             return;
 
@@ -846,13 +854,13 @@ const UserMenuButton = new Lang.Class({
                 let tmpId = Main.screenShield.connect('lock-screen-shown', Lang.bind(this, function() {
                     Main.screenShield.disconnect(tmpId);
 
-                    this._upClient.suspend_sync(null);
+                    this._loginManager.suspend();
                 }));
 
                 this.menu.close(BoxPointer.PopupAnimation.NONE);
                 Main.screenShield.lock(true);
             } else {
-                this._upClient.suspend_sync(null);
+                this._loginManager.suspend();
             }
         }
     }
