@@ -141,6 +141,7 @@ const BoxPointer = new Lang.Class({
 
         this._muteInput();
 
+        Tweener.removeTweens(this);
         Tweener.addTween(this, { opacity: fade ? 0 : 255,
                                  xOffset: xOffset,
                                  yOffset: yOffset,

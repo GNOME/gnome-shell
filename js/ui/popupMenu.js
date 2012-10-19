@@ -1269,13 +1269,14 @@ const PopupMenu = new Lang.Class({
     },
 
     close: function(animate) {
-        if (!this.isOpen)
-            return;
-
         if (this._activeMenuItem)
             this._activeMenuItem.setActive(false);
 
-        this._boxPointer.hide(animate);
+        if (this._boxPointer.actor.visible)
+            this._boxPointer.hide(animate);
+
+        if (!this.isOpen)
+            return;
 
         this.isOpen = false;
         this.emit('open-state-changed', false);
