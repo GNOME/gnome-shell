@@ -46,6 +46,7 @@ clutter/clutter-stage.c
 clutter/clutter-stage-window.c
 clutter/clutter-swipe-action.c
 clutter/clutter-table-layout.c
+clutter/clutter-tap-action.c
 clutter/clutter-text-buffer.c
 clutter/clutter-text.c
 clutter/clutter-timeline.c
