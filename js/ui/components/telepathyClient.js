@@ -771,16 +771,18 @@ const ChatNotification = new Lang.Class({
             this.emit('unfocused');
         }));
 
-        this._oldMaxScrollAdjustment = 0;
         this._createScrollArea();
         this._lastGroup = null;
         this._lastGroupActor = null;
 
+        // Keep track of the bottom position for the current adjustment and
+        // force a scroll to the bottom if things change while we were at the
+        // bottom
+        this._oldMaxScrollValue = this._scrollArea.vscroll.adjustment.value;
         this._scrollArea.vscroll.adjustment.connect('changed', Lang.bind(this, function(adjustment) {
-            let currentValue = adjustment.value + adjustment.page_size;
-            if (currentValue == this._oldMaxScrollAdjustment)
+            if (adjustment.value == this._oldMaxScrollValue)
                 this.scrollTo(St.Side.BOTTOM);
-            this._oldMaxScrollAdjustment = adjustment.upper;
+            this._oldMaxScrollValue = Math.max(adjustment.lower, adjustment.upper - adjustment.page_size);
         }));
 
         this._inputHistory = new History.HistoryManager({ entry: this._responseEntry.clutter_text });
