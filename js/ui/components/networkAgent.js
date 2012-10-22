@@ -408,7 +408,10 @@ const VPNRequestHandler = new Lang.Class({
         }
     },
 
-    cancel: function() {
+    cancel: function(respond) {
+        if (respond)
+            this._agent.respond(this._requestId, Shell.NetworkAgentResponse.USER_CANCELED);
+
         if (this._newStylePlugin && this._shellDialog) {
             this._shellDialog.close(global.get_current_time());
             this._shellDialog.destroy();
@@ -599,6 +602,16 @@ const NetworkAgent = new Lang.Class({
     },
 
     disable: function() {
+        let requestId;
+
+        for (requestId in this._dialogs)
+            this._dialogs[requestId].cancel();
+        this._dialogs = { };
+
+        for (requestId in this._vpnRequests)
+            this._vpnRequests[requestId].cancel(true);
+        this._vpnRequests = { };
+
         this._native.unregister();
     },
 
@@ -622,7 +635,7 @@ const NetworkAgent = new Lang.Class({
             this._dialogs[requestId].destroy();
             delete this._dialogs[requestId];
         } else if (this._vpnRequests[requestId]) {
-            this._vpnRequests[requestId].cancel();
+            this._vpnRequests[requestId].cancel(false);
             delete this._vpnRequests[requestId];
         }
     },
