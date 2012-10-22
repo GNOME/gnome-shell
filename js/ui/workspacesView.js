@@ -28,7 +28,8 @@ const WorkspacesView = new Lang.Class({
     Name: 'WorkspacesView',
 
     _init: function(workspaces) {
-        this.actor = new St.Widget({ style_class: 'workspaces-view' });
+        this.actor = new St.Widget({ style_class: 'workspaces-view',
+                                     reactive: true });
 
         // The actor itself isn't a drop target, so we don't want to pick on its area
         this.actor.set_size(0, 0);
@@ -475,6 +476,7 @@ const WorkspacesDisplay = new Lang.Class({
         this._notifyOpacityId = 0;
         this._swipeScrollBeginId = 0;
         this._swipeScrollEndId = 0;
+        this._scrollEventId = 0;
     },
 
     _onPan: function(action) {
@@ -490,6 +492,8 @@ const WorkspacesDisplay = new Lang.Class({
         this._restackedNotifyId =
             Main.overview.connect('windows-restacked',
                                   Lang.bind(this, this._onRestacked));
+        if (this._scrollEventId == 0)
+            this._scrollEventId = Main.overview.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
     },
 
     zoomFromOverview: function() {
@@ -502,6 +506,10 @@ const WorkspacesDisplay = new Lang.Class({
         if (this._restackedNotifyId > 0){
             Main.overview.disconnect(this._restackedNotifyId);
             this._restackedNotifyId = 0;
+        }
+        if (this._scrollEventId > 0) {
+            Main.overview.disconnect(this._scrollEventId);
+            this._scrollEventId = 0;
         }
 
         for (let i = 0; i < this._workspacesViews.length; i++)
@@ -548,6 +556,7 @@ const WorkspacesDisplay = new Lang.Class({
             this._workspaces.push(monitorWorkspaces);
 
             let view = new WorkspacesView(monitorWorkspaces);
+            view.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
             if (this._workspacesOnlyOnPrimary || i == this._primaryIndex) {
                 this._scrollAdjustment = view.scrollAdjustment;
                 this._scrollAdjustment.connect('notify::value',
@@ -703,6 +712,20 @@ const WorkspacesDisplay = new Lang.Class({
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].updateWorkspaces(oldNumWorkspaces,
                                                       newNumWorkspaces);
+    },
+
+    _onScrollEvent: function(actor, event) {
+        if (!this.actor.mapped)
+            return false;
+        switch (event.get_scroll_direction()) {
+        case Clutter.ScrollDirection.UP:
+            Main.wm.actionMoveWorkspace(Meta.MotionDirection.UP);
+            return true;
+        case Clutter.ScrollDirection.DOWN:
+            Main.wm.actionMoveWorkspace(Meta.MotionDirection.DOWN);
+            return true;
+        }
+        return false;
     }
 });
 Signals.addSignalMethods(WorkspacesDisplay.prototype);
