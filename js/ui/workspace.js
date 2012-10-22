@@ -41,46 +41,6 @@ function _interpolate(start, end, step) {
     return start + (end - start) * step;
 }
 
-function _clamp(value, min, max) {
-    return Math.max(min, Math.min(max, value));
-}
-
-
-const ScaledPoint = new Lang.Class({
-    Name: 'ScaledPoint',
-
-    _init: function(x, y, scaleX, scaleY) {
-        [this.x, this.y, this.scaleX, this.scaleY] = arguments;
-    },
-
-    getPosition : function() {
-        return [this.x, this.y];
-    },
-
-    getScale : function() {
-        return [this.scaleX, this.scaleY];
-    },
-
-    setPosition : function(x, y) {
-        [this.x, this.y] = arguments;
-    },
-
-    setScale : function(scaleX, scaleY) {
-        [this.scaleX, this.scaleY] = arguments;
-    },
-
-    interpPosition : function(other, step) {
-        return [_interpolate(this.x, other.x, step),
-                _interpolate(this.y, other.y, step)];
-    },
-
-    interpScale : function(other, step) {
-        return [_interpolate(this.scaleX, other.scaleX, step),
-                _interpolate(this.scaleY, other.scaleY, step)];
-    }
-});
-
-
 const WindowClone = new Lang.Class({
     Name: 'WindowClone',
 
@@ -135,12 +95,7 @@ const WindowClone = new Lang.Class({
 
         this.actor.add_action(clickAction);
 
-        this.actor.connect('scroll-event',
-                           Lang.bind(this, this._onScroll));
-
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-        this.actor.connect('leave-event',
-                           Lang.bind(this, this._onLeave));
 
         this._draggable = DND.makeDraggable(this.actor,
                                             { restoreOnSuccess: true,
@@ -152,8 +107,6 @@ const WindowClone = new Lang.Class({
         this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));
         this.inDrag = false;
 
-        this._windowIsZooming = false;
-        this._zooming = false;
         this._selected = false;
     },
 
@@ -170,8 +123,8 @@ const WindowClone = new Lang.Class({
 
     setStackAbove: function (actor) {
         this._stackAbove = actor;
-        if (this.inDrag || this._zooming)
-            // We'll fix up the stack after the drag/zooming
+        if (this.inDrag)
+            // We'll fix up the stack after the drag
             return;
         if (this._stackAbove == null)
             this.actor.lower_bottom();
@@ -181,20 +134,6 @@ const WindowClone = new Lang.Class({
 
     destroy: function () {
         this.actor.destroy();
-    },
-
-    zoomFromOverview: function() {
-        if (this._zooming) {
-            // If the user clicked on the zoomed window, or we are
-            // returning there anyways, then we can zoom right to the
-            // window, but if we are going to some other window, then
-            // we need to cancel the zoom before animating, or it
-            // will look funny.
-
-            if (!this._selected &&
-                this.metaWindow != global.display.focus_window)
-                this._zoomEnd();
-        }
     },
 
     _disconnectRealWindowSignals: function() {
@@ -238,8 +177,6 @@ const WindowClone = new Lang.Class({
 
         this.metaWindow._delegate = null;
         this.actor._delegate = null;
-        if (this._zoomLightbox)
-            this._zoomLightbox.destroy();
 
         if (this.inDrag) {
             this.emit('drag-end');
@@ -247,116 +184,6 @@ const WindowClone = new Lang.Class({
         }
 
         this.disconnectAll();
-    },
-
-    _onLeave: function (actor, event) {
-        if (this._zoomStep)
-            this._zoomEnd();
-    },
-
-    _onScroll : function (actor, event) {
-        let direction = event.get_scroll_direction();
-        let delta;
-
-        if (event.is_pointer_emulated())
-            return;
-
-        if (direction == Clutter.ScrollDirection.DOWN) {
-            delta = -SCROLL_SCALE_AMOUNT;
-        } else if (direction == Clutter.ScrollDirection.UP) {
-            delta = +SCROLL_SCALE_AMOUNT;
-        } else if (direction == Clutter.ScrollDirection.SMOOTH) {
-            let [dx, dy] = event.get_scroll_delta();
-            delta = -dy * 10;
-        }
-
-        if (delta > 0) {
-            if (this._zoomStep == undefined)
-                this._zoomStart();
-            if (this._zoomStep < 100) {
-                this._zoomStep += delta;
-                this._zoomStep = Math.min(100, this._zoomStep);
-                this._zoomUpdate();
-            }
-        } else if (delta < 0) {
-            if (this._zoomStep > 0) {
-                this._zoomStep += delta;
-                this._zoomStep = Math.max(0, this._zoomStep);
-                this._zoomUpdate();
-            }
-            if (this._zoomStep <= 0.0)
-                this._zoomEnd();
-        }
-    },
-
-    _zoomUpdate : function () {
-        [this.actor.x, this.actor.y] = this._zoomGlobalOrig.interpPosition(this._zoomTarget, this._zoomStep / 100);
-        [this.actor.scale_x, this.actor.scale_y] = this._zoomGlobalOrig.interpScale(this._zoomTarget, this._zoomStep / 100);
-
-        let [width, height] = this.actor.get_transformed_size();
-
-        let availArea = this.metaWindow.get_work_area_current_monitor();
-        this.actor.x = _clamp(this.actor.x, availArea.x, availArea.x + availArea.width - width);
-        this.actor.y = _clamp(this.actor.y, availArea.y, availArea.y + availArea.height - height);
-    },
-
-    _zoomStart : function () {
-        this._zooming = true;
-        this.emit('zoom-start');
-
-        if (!this._zoomLightbox)
-            this._zoomLightbox = new Lightbox.Lightbox(Main.uiGroup,
-                                                       { fadeInTime: LIGHTBOX_FADE_TIME,
-                                                         fadeOutTime: LIGHTBOX_FADE_TIME });
-        this._zoomLightbox.show();
-
-        this._zoomLocalOrig  = new ScaledPoint(this.actor.x, this.actor.y, this.actor.scale_x, this.actor.scale_y);
-        this._zoomGlobalOrig = new ScaledPoint();
-        let parent = this._origParent = this.actor.get_parent();
-        let [width, height] = this.actor.get_transformed_size();
-        this._zoomGlobalOrig.setPosition.apply(this._zoomGlobalOrig, this.actor.get_transformed_position());
-        this._zoomGlobalOrig.setScale(width / this.actor.width, height / this.actor.height);
-
-        this.actor.reparent(Main.uiGroup);
-        this._zoomLightbox.highlight(this.actor);
-
-        [this.actor.x, this.actor.y]             = this._zoomGlobalOrig.getPosition();
-        [this.actor.scale_x, this.actor.scale_y] = this._zoomGlobalOrig.getScale();
-
-        this.actor.raise_top();
-
-        this._zoomTarget = new ScaledPoint(0, 0, 1.0, 1.0);
-        this._zoomTarget.setPosition(this.actor.x - (this.actor.width - width) / 2, this.actor.y - (this.actor.height - height) / 2);
-        this._zoomStep = 0;
-
-        this._zoomUpdate();
-    },
-
-    _zoomEnd : function () {
-        this._zooming = false;
-        this.emit('zoom-end');
-
-        this.actor.reparent(this._origParent);
-        if (this._stackAbove == null)
-            this.actor.lower_bottom();
-        // If the workspace has been destroyed while we were reparented to
-        // the stage, _stackAbove will be unparented and we can't raise our
-        // actor above it - as we are bound to be destroyed anyway in that
-        // case, we can skip that step
-        else if (this._stackAbove.get_parent())
-            this.actor.raise(this._stackAbove);
-
-        [this.actor.x, this.actor.y]             = this._zoomLocalOrig.getPosition();
-        [this.actor.scale_x, this.actor.scale_y] = this._zoomLocalOrig.getScale();
-
-        this._zoomLightbox.hide();
-
-        this._zoomLocalPosition  = undefined;
-        this._zoomLocalScale     = undefined;
-        this._zoomGlobalPosition = undefined;
-        this._zoomGlobalScale    = undefined;
-        this._zoomTargetPosition = undefined;
-        this._zoomStep           = undefined;
     },
 
     _onClicked: function(action, actor) {
@@ -384,9 +211,6 @@ const WindowClone = new Lang.Class({
     },
 
     _onDragBegin : function (draggable, time) {
-        if (this._zooming)
-            this._zoomEnd();
-
         this._dragSlot = this._slot;
         [this.dragOrigX, this.dragOrigY] = this.actor.get_position();
         this.dragOrigScale = this.actor.scale_x;
@@ -468,8 +292,6 @@ const WindowOverlay = new Lang.Class({
                                   Lang.bind(this, this._onLeave));
 
         this._windowAddedId = 0;
-        windowClone.connect('zoom-start', Lang.bind(this, this.hide));
-        windowClone.connect('zoom-end', Lang.bind(this, this.show));
 
         button.hide();
 
@@ -1224,9 +1046,6 @@ const Workspace = new Lang.Class({
     },
 
     _delayedWindowRepositioning: function() {
-        if (this._windowIsZooming)
-            return true;
-
         let [x, y, mask] = global.get_pointer();
 
         let pointerHasMoved = (this._cursorX != x && this._cursorY != y);
@@ -1432,8 +1251,6 @@ const Workspace = new Lang.Class({
             if (overlay)
                 overlay.hide();
 
-            clone.zoomFromOverview();
-
             if (clone.metaWindow.showing_on_its_workspace()) {
                 Tweener.addTween(clone.actor,
                                  { x: clone.origX,
@@ -1480,13 +1297,6 @@ const Workspace = new Lang.Class({
 
         if (this._positionWindowsId > 0)
             Meta.later_remove(this._positionWindowsId);
-
-        // Usually, the windows will be destroyed automatically with
-        // their parent (this.actor), but we might have a zoomed window
-        // which has been reparented to the stage - _windows[0] holds
-        // the desktop window, which is never reparented
-        for (let w = 0; w < this._windows.length; w++)
-            this._windows[w].destroy();
         this._windows = [];
     },
 
@@ -1529,14 +1339,6 @@ const Workspace = new Lang.Class({
                       Lang.bind(this, function(clone) {
                           Main.overview.endWindowDrag();
                           overlay.show();
-                      }));
-        clone.connect('zoom-start',
-                      Lang.bind(this, function() {
-                          this._windowIsZooming = true;
-                      }));
-        clone.connect('zoom-end',
-                      Lang.bind(this, function() {
-                          this._windowIsZooming = false;
                       }));
         clone.connect('size-changed',
                       Lang.bind(this, function() {
