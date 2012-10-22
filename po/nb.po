@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter 3.6.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-13 12:51+0200\n"
-"PO-Revision-Date: 2012-10-13 12:51+0200\n"
+"POT-Creation-Date: 2012-10-22 19:51+0200\n"
+"PO-Revision-Date: 2012-10-22 19:52+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "Language: \n"
@@ -45,16 +45,16 @@ msgstr "Klokkehendelse"
 msgid "Unknown window information request: %d"
 msgstr "Ukjent forespørsel om vindusinformasjon: %d"
 
-#: ../src/core/delete.c:113
+#: ../src/core/delete.c:111
 #, c-format
-msgid "%s is not responding."
-msgstr "%s svarer ikke."
+msgid "“%s” is not responding."
+msgstr "«%s» svarer ikke."
 
-#: ../src/core/delete.c:117
+#: ../src/core/delete.c:113
 msgid "Application is not responding."
 msgstr "Programmet svarer ikke."
 
-#: ../src/core/delete.c:122
+#: ../src/core/delete.c:118
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -62,11 +62,11 @@ msgstr ""
 "Du kan velge å vente en kort stund for å se om det fortsetter eller tvinge "
 "programmet til å avslutte helt."
 
-#: ../src/core/delete.c:129
+#: ../src/core/delete.c:125
 msgid "_Wait"
 msgstr "_Vent"
 
-#: ../src/core/delete.c:129
+#: ../src/core/delete.c:125
 msgid "_Force Quit"
 msgstr "_Tvungen nedstenging"
 
@@ -75,7 +75,7 @@ msgstr "_Tvungen nedstenging"
 msgid "Missing %s extension required for compositing"
 msgstr "Mangler utvidelsen %s som kreves for komposittfunksjon"
 
-#: ../src/core/display.c:492
+#: ../src/core/display.c:493
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Feil under åpning av X Window System skjerm «%s»\n"
@@ -470,7 +470,7 @@ msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "Delay focus changes until the pointer stops moving"
-msgstr ""
+msgstr "Utsett fokusendringer til pekeren slutter å bevege seg"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:14
 msgid ""
