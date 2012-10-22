@@ -125,6 +125,7 @@ const Overview = new Lang.Class({
         this._overview._delegate = this;
 
         this._group = new St.BoxLayout({ name: 'overview-group',
+                                         reactive: true,
                                          clip_to_allocation: true });
 
         this._backgroundGroup = new Meta.BackgroundGroup();
@@ -164,6 +165,7 @@ const Overview = new Lang.Class({
         Main.xdndHandler.connect('drag-end', Lang.bind(this, this._onDragEnd));
 
         global.screen.connect('restacked', Lang.bind(this, this._onRestacked));
+        this._group.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
 
         this._windowSwitchTimeoutId = 0;
         this._windowSwitchTimestamp = 0;
@@ -377,6 +379,10 @@ const Overview = new Lang.Class({
         }
 
         return DND.DragMotionResult.CONTINUE;
+    },
+
+    _onScrollEvent: function(actor, event) {
+        this.emit('scroll-event', event);
     },
 
     addAction: function(action) {
