@@ -526,7 +526,12 @@ const ScreenShield = new Lang.Class({
 
         this._screenSaverDBus = new ShellDBus.ScreenSaverDBus(this);
 
+        this._inhibitor = null;
         this._loginManager = LoginManager.getLoginManager();
+        this._loginManager.connect('prepare-for-sleep',
+                                   Lang.bind(this, this._prepareForSleep));
+        this._inhibitSuspend();
+
         this._loginSession = this._loginManager.getCurrentSessionProxy();
         this._loginSession.connectSignal('Lock', Lang.bind(this, function() { this.lock(false); }));
         this._loginSession.connectSignal('Unlock', Lang.bind(this, function() { this.deactivate(false); }));
@@ -604,6 +609,31 @@ const ScreenShield = new Lang.Class({
         }
 
         return true;
+    },
+
+    _inhibitSuspend: function() {
+        this._loginManager.inhibit(_("GNOME needs to lock the screen"),
+                                   Lang.bind(this, function(inhibitor) {
+                                       this._inhibitor = inhibitor;
+                                   }));
+    },
+
+    _uninhibitSuspend: function() {
+        if (this._inhibitor)
+            this._inhibitor.close(null);
+        this._inhibitor = null;
+    },
+
+    _prepareForSleep: function(loginManager, aboutToSuspend) {
+        if (aboutToSuspend) {
+            if (!this._settings.get_boolean(LOCK_ENABLED_KEY)) {
+                this._uninhibitSuspend();
+                return;
+            }
+            this.lock(true);
+        } else {
+            this._inhibitSuspend();
+        }
     },
 
     _animateArrows: function() {
@@ -959,6 +989,8 @@ const ScreenShield = new Lang.Class({
 
         if (prevIsActive != this._isActive)
             this.emit('active-changed');
+
+        this._uninhibitSuspend();
 
         this.emit('lock-screen-shown');
     },
