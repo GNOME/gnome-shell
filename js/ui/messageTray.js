@@ -2101,9 +2101,8 @@ const MessageTray = new Lang.Class({
                       transition: 'easeOutQuad'
                     });
 
-        if (this._overviewVisible) {
+        if (!this._overviewVisible)
             this._lightbox.show();
-        }
 
         return true;
     },
