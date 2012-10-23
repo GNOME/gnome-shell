@@ -351,12 +351,12 @@ msgstr "הוספה למועדפים"
 #: ../js/ui/appFavorites.js:87
 #, c-format
 msgid "%s has been added to your favorites."
-msgstr "%s נוסף למועדפים שלך."
+msgstr "‏%s נוסף למועדפים שלך."
 
 #: ../js/ui/appFavorites.js:118
 #, c-format
 msgid "%s has been removed from your favorites."
-msgstr "%s הוסר מהמועדפים שלך."
+msgstr "‏%s הוסר מהמועדפים שלך."
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
@@ -751,13 +751,13 @@ msgstr "מענה"
 #: ../js/ui/components/telepathyClient.js:1171
 #, c-format
 msgid "%s is sending you %s"
-msgstr "%s שולח/ת אליך %s"
+msgstr "‏%s שולח/ת אליך %s"
 
 #. To translators: The parameter is the contact's alias
 #: ../js/ui/components/telepathyClient.js:1206
 #, c-format
 msgid "%s would like permission to see when you are online"
-msgstr "%s רוצה לקבל הרשאות כדי לראות מתי מצבך הוא מקוון"
+msgstr "‏%s רוצה לקבל הרשאות כדי לראות מתי מצבך הוא מקוון"
 
 #: ../js/ui/components/telepathyClient.js:1298
 msgid "Network error"
@@ -1017,7 +1017,7 @@ msgstr "לא מותקנות הרחבות"
 #: ../js/ui/lookingGlass.js:745
 #, c-format
 msgid "%s has not emitted any errors."
-msgstr "%s לא העלה שגיאות כלשהן."
+msgstr "‏%s לא העלה שגיאות כלשהן."
 
 #: ../js/ui/lookingGlass.js:751
 msgid "Hide Errors"
@@ -1436,7 +1436,7 @@ msgstr "חיוג אוטומטי"
 #: ../js/ui/status/network.js:853 ../js/ui/status/network.js:1476
 #, c-format
 msgid "Auto %s"
-msgstr "%s אוטומטי"
+msgstr "‏%s אוטומטי"
 
 #: ../js/ui/status/network.js:855
 msgid "Auto bluetooth"
@@ -1688,7 +1688,7 @@ msgstr ""
 #: ../js/ui/wanda.js:123
 #, c-format
 msgid "%s the Oracle says"
-msgstr "%s, כה אמרה האוראקל"
+msgstr "‏%s, כה אמרה האוראקל"
 
 #: ../js/ui/wanda.js:164
 msgid "Your favorite Easter Egg"
@@ -1697,7 +1697,7 @@ msgstr "ביצת הפסחא האהובה עליך"
 #: ../js/ui/windowAttentionHandler.js:19
 #, c-format
 msgid "'%s' is ready"
-msgstr "'%s' מוכן"
+msgstr "‏'%s' מוכן"
 
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
@@ -1845,16 +1845,16 @@ msgstr "המשתמש בחר להתעלם מתיבת דו־שיח האימות"
 #~ msgstr "רשת"
 
 #~ msgid "%s is online."
-#~ msgstr "%s התחבר/ה."
+#~ msgstr "‏%s התחבר/ה."
 
 #~ msgid "%s is offline."
-#~ msgstr "%s התנתק/ה."
+#~ msgstr "‏%s התנתק/ה."
 
 #~ msgid "%s is away."
-#~ msgstr "'%s' מרוחק/ת."
+#~ msgstr "‏'%s' מרוחק/ת."
 
 #~ msgid "%s is busy."
-#~ msgstr "%s עסוק/ה."
+#~ msgstr "‏%s עסוק/ה."
 
 #~ msgid "Hidden"
 #~ msgstr "מוסתר"
@@ -1887,7 +1887,7 @@ msgstr "המשתמש בחר להתעלם מתיבת דו־שיח האימות"
 #~ msgstr "הצגת ססמה"
 
 #~ msgid "%s has finished starting"
-#~ msgstr "%s סיים את תהליך ההתחלה"
+#~ msgstr "‏%s סיים את תהליך ההתחלה"
 
 #~ msgid "Home Folder"
 #~ msgstr "תיקיית הבית"
