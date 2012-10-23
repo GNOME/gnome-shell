@@ -168,6 +168,7 @@ const EmptyEventSource = new Lang.Class({
     Name: 'EmptyEventSource',
 
     _init: function() {
+        this.isLoading = false;
     },
 
     requestRange: function(begin, end) {
@@ -229,6 +230,7 @@ const DBusEventSource = new Lang.Class({
 
     _init: function() {
         this._resetCache();
+        this.isLoading = false;
 
         this._initialized = false;
         this._dbusProxy = new CalendarServer();
@@ -293,6 +295,7 @@ const DBusEventSource = new Lang.Class({
         }
 
         this._events = newEvents;
+        this.isLoading = false;
         this.emit('changed');
     },
 
@@ -315,6 +318,7 @@ const DBusEventSource = new Lang.Class({
 
     requestRange: function(begin, end, forceReload) {
         if (forceReload || !(_datesEqual(begin, this._lastRequestBegin) && _datesEqual(end, this._lastRequestEnd))) {
+            this.isLoading = true;
             this._lastRequestBegin = begin;
             this._lastRequestEnd = end;
             this._curRequestBegin = begin;
@@ -776,6 +780,9 @@ const EventsList = new Lang.Class({
     },
 
     _update: function() {
+        if (this._eventSource.isLoading)
+            return;
+
         let today = new Date();
         if (_sameDay (this._date, today)) {
             this._showToday();
