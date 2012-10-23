@@ -26,7 +26,6 @@ const PRIVACY_SCHEMA = 'org.gnome.desktop.privacy'
 const DISABLE_USER_SWITCH_KEY = 'disable-user-switching';
 const DISABLE_LOCK_SCREEN_KEY = 'disable-lock-screen';
 const DISABLE_LOG_OUT_KEY = 'disable-log-out';
-const LOCK_ENABLED_KEY = 'lock-enabled';
 const ALWAYS_SHOW_LOG_OUT_KEY = 'always-show-log-out';
 const SHOW_FULL_NAME_IN_TOP_BAR_KEY = 'show-full-name-in-top-bar';
 
@@ -872,18 +871,8 @@ const UserMenuButton = new Lang.Class({
             this._suspendOrPowerOffItem.state == PopupMenu.PopupAlternatingMenuItemState.DEFAULT) {
             this._session.ShutdownRemote();
         } else {
-            if (this._screenSaverSettings.get_boolean(LOCK_ENABLED_KEY)) {
-                let tmpId = Main.screenShield.connect('lock-screen-shown', Lang.bind(this, function() {
-                    Main.screenShield.disconnect(tmpId);
-
-                    this._loginManager.suspend();
-                }));
-
-                this.menu.close(BoxPointer.PopupAnimation.NONE);
-                Main.screenShield.lock(true);
-            } else {
-                this._loginManager.suspend();
-            }
+            this.menu.close(BoxPointer.PopupAnimation.NONE);
+            this._loginManager.suspend();
         }
     }
 });
