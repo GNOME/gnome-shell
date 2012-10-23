@@ -270,8 +270,9 @@ const DBusEventSource = new Lang.Class({
         this._loadEvents(false);
     },
 
-    _onEventsReceived: function([appointments]) {
+    _onEventsReceived: function(results, error) {
         let newEvents = [];
+        let appointments = results ? results[0] : null;
         if (appointments != null) {
             for (let n = 0; n < appointments.length; n++) {
                 let a = appointments[n];
