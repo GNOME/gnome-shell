@@ -1,3 +1,33 @@
+3.7.1
+=====
+* Add shortcut to open application view directly [Jeremy; #685738]
+* Expose '<Super>F10' shortcut in System Settings [Florian; #672909]
+* Clean up timestamp format in chat notifications [Carlos; #680989]
+* loginScreen: Add support for 'disable-restart-buttons' [Florian; #686247]
+* Update textures automatically on file changes [Florian; #679268]
+* Implement org.gnome.ScreenSaver.GetActiveTime [Giovanni; #686064]
+* Add missing translations for GSetting schema [Giovanni; #686413]
+* Hide workspace switcher completely when it's not necessary [Seif; #686483]
+* Explicitly load gnome-screensaver when not running GDM [Tim; #683060]
+* Port to GnomeIdleMonitor [Jasper; #682224]
+* Set Empathy as preferred handler when delegating channels [Xavier; #686296]
+* Allow testing GDM login dialog from the session [Giovanni; #683725]
+* Use all available space for windows in window picker [Jasper, Pierre-Eric;
+  #582650]
+* Use logind for suspend if available [Florian; #686482]
+* Misc. fixes and cleanups [Jasper, Florian, Adel, Rui; #677426, #680426,
+  #686233, #686241, #686318, #686240, #686484, #686002, #684650, #686487]
+
+Contributors:
+  Jeremy Bicha, Giovanni Campagna, Xavier Claessens, Adel Gadllah, Seif Lotfy,
+  Tim Lunn, Rui Matos, Florian Müllner, Pierre-Eric Pelloux-Prayer,
+  Carlos Soriano, Jasper St. Pierre
+
+Translations:
+  Andika Triwidada [id], Matej Urbančič [sl], Ihar Hrachyshka [be],
+  Daniel Mustieles [es], Fran Diéguez [gl], Takayuki KUSANO [ja],
+  Мирослав Николић [sr, sr@latin], Dušan Kazik [sk], Tom Tryfonidis [el]
+
 3.6.1
 =====
 * dash: Make padding even on the top/bottom of the dash [Jasper; #684619]
