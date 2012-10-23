@@ -5,6 +5,7 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
+const Signals = imports.signals;
 
 const SystemdLoginManagerIface = <interface name='org.freedesktop.login1.Manager'>
 <method name='PowerOff'>
@@ -25,6 +26,16 @@ const SystemdLoginManagerIface = <interface name='org.freedesktop.login1.Manager
 <method name='CanSuspend'>
     <arg type='s' direction='out'/>
 </method>
+<method name='Inhibit'>
+    <arg type='s' direction='in'/>
+    <arg type='s' direction='in'/>
+    <arg type='s' direction='in'/>
+    <arg type='s' direction='in'/>
+    <arg type='h' direction='out'/>
+</method>
+<signal name='PrepareForSleep'>
+    <arg type='b' direction='out'/>
+</signal>
 </interface>;
 
 const SystemdLoginSessionIface = <interface name='org.freedesktop.login1.Session'>
@@ -86,6 +97,8 @@ const LoginManagerSystemd = new Lang.Class({
         this._proxy = new SystemdLoginManager(Gio.DBus.system,
                                               'org.freedesktop.login1',
                                               '/org/freedesktop/login1');
+        this._proxy.connectSignal('PrepareForSleep',
+                                  Lang.bind(this, this._prepareForSleep));
     },
 
     // Having this function is a bit of a hack since the Systemd and ConsoleKit
@@ -139,8 +152,33 @@ const LoginManagerSystemd = new Lang.Class({
 
     suspend: function() {
         this._proxy.SuspendRemote(true);
+    },
+
+    inhibit: function(reason, callback) {
+        let inVariant = GLib.Variant.new('(ssss)',
+                                         ['sleep',
+                                          'GNOME Shell',
+                                          reason,
+                                          'delay']);
+        this._proxy.call_with_unix_fd_list('Inhibit', inVariant, 0, -1, null, null,
+            Lang.bind(this, function(proxy, result) {
+                let fd = -1;
+                try {
+                    let [outVariant, fdList] = proxy.call_with_unix_fd_list_finish(result);
+                    fd = fdList.steal_fds(outVariant.deep_unpack())[0];
+                    callback(new Gio.UnixInputStream({ fd: fd }));
+                } catch(e) {
+                    logError(e, "Error getting systemd inhibitor");
+                    callback(null);
+                }
+            }));
+    },
+
+    _prepareForSleep: function(proxy, sender, [aboutToSuspend]) {
+        this.emit('prepare-for-sleep', aboutToSuspend);
     }
 });
+Signals.addSignalMethods(LoginManagerSystemd.prototype);
 
 const LoginManagerConsoleKit = new Lang.Class({
     Name: 'LoginManagerConsoleKit',
@@ -196,5 +234,12 @@ const LoginManagerConsoleKit = new Lang.Class({
     },
 
     suspend: function() {
+        this.emit('prepare-for-sleep', true);
+        this.emit('prepare-for-sleep', false);
+    },
+
+    inhibit: function(reason, callback) {
+        callback(null);
     }
 });
+Signals.addSignalMethods(LoginManagerConsoleKit.prototype);
