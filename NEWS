@@ -1,3 +1,15 @@
+3.7.1
+=====
+* screen: Ignore num-workspaces when using dynamic workspaces [Florian; #685439]
+
+Contributors:
+  Florian Müllner
+
+Translations:
+  Mattias Põldaru [et], Kjartan Maraas [nb], Мирослав Николић [sr, sr@latin],
+  Marek Černocký [cs], Andika Triwidada [id], Daniel Mustieles [es],
+  Fran Diéguez [gl], Matej Urbančič [sl]
+
 3.6.1
 =====
 * Fix crash when opening large popup menus [Jasper; #681676]
