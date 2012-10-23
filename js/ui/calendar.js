@@ -538,16 +538,40 @@ const Calendar = new Lang.Class({
             children[i].destroy();
 
         // Start at the beginning of the week before the start of the month
+        //
+        // We want to show always 6 weeks (to keep the calendar menu at the same
+        // height if there are no events), so we pad it according to the following
+        // policy:
+        //
+        // 1 - If a month has 6 weeks, we place no padding (example: Dec 2012)
+        // 2 - If a month has 5 weeks and it starts on week start, we pad one week
+        //     before it (example: Apr 2012)
+        // 3 - If a month has 5 weeks and it starts on any other day, we pad one week
+        //     after it (example: Nov 2012)
+        // 4 - If a month has 4 weeks, we pad one week before and one after it
+        //     (example: Feb 2010)
+        //
+        // Actually computing the number of weeks is complex, but we know that the
+        // problematic categories (2 and 4) always start on week start, and that
+        // all months at the end have 6 weeks.
+
         let beginDate = new Date(this._selectedDate);
         beginDate.setDate(1);
         beginDate.setSeconds(0);
         beginDate.setHours(12);
+        let year = beginDate.getYear();
+
         let daysToWeekStart = (7 + beginDate.getDay() - this._weekStart) % 7;
-        beginDate.setTime(beginDate.getTime() - daysToWeekStart * MSECS_IN_DAY);
+        let startsOnWeekStart = daysToWeekStart == 0;
+        let weekPadding = startsOnWeekStart ? 7 : 0;
+
+        beginDate.setTime(beginDate.getTime() - (weekPadding + daysToWeekStart) * MSECS_IN_DAY);
 
         let iter = new Date(beginDate);
         let row = 2;
-        while (true) {
+        // nRows here means 6 weeks + one header + one navbar
+        let nRows = 8;
+        while (row < 8) {
             let button = new St.Button({ label: iter.getDate().toString() });
             let rtl = button.get_text_direction() == Clutter.TextDirection.RTL;
 
@@ -562,6 +586,7 @@ const Calendar = new Lang.Class({
 
             let hasEvents = this._eventSource && this._eventSource.hasEvents(iter);
             let styleClass = 'calendar-day-base calendar-day';
+
             if (_isWorkDay(iter))
                 styleClass += ' calendar-work-day'
             else
@@ -601,12 +626,9 @@ const Calendar = new Lang.Class({
             }
 
             iter.setTime(iter.getTime() + MSECS_IN_DAY);
-            if (iter.getDay() == this._weekStart) {
-                // We stop on the first "first day of the week" after the month we are displaying
-                if (iter.getMonth() > this._selectedDate.getMonth() || iter.getYear() > this._selectedDate.getYear())
-                    break;
+
+            if (iter.getDay() == this._weekStart)
                 row++;
-            }
         }
         // Signal to the event source that we are interested in events
         // only from this date range
