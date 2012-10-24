@@ -218,12 +218,12 @@ msgstr "يىغقۇچقا قوش"
 #: ../js/ui/appFavorites.js:91
 #, c-format
 msgid "%s has been added to your favorites."
-msgstr "%s يىغقۇچىڭىزغا قوشۇلدى."
+msgstr "‏%s يىغقۇچىڭىزغا قوشۇلدى."
 
 #: ../js/ui/appFavorites.js:122
 #, c-format
 msgid "%s has been removed from your favorites."
-msgstr "%s يىغقۇچىڭىزدىن چىقىرىۋېتىلىدۇ."
+msgstr "‏%s يىغقۇچىڭىزدىن چىقىرىۋېتىلىدۇ."
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
@@ -437,7 +437,7 @@ msgstr "يېقىنقى تۈرلەر"
 #: ../js/ui/endSessionDialog.js:63
 #, c-format
 msgid "Log Out %s"
-msgstr "%s تىزىمدىن چىقىش"
+msgstr "‏%s تىزىمدىن چىقىش"
 
 #: ../js/ui/endSessionDialog.js:64 ../js/ui/endSessionDialog.js:70
 msgid "Log Out"
@@ -452,7 +452,7 @@ msgstr ""
 #: ../js/ui/endSessionDialog.js:66
 #, c-format
 msgid "%s will be logged out automatically in %d seconds."
-msgstr "%s تىزىمدىن %d سېكۇنتتىن كېيىن ئۆزلۈكىدىن چىقىسىز."
+msgstr "‏%s تىزىمدىن %d سېكۇنتتىن كېيىن ئۆزلۈكىدىن چىقىسىز."
 
 #: ../js/ui/endSessionDialog.js:67
 #, c-format
@@ -566,7 +566,7 @@ msgstr "سىزىقچە"
 #: ../js/ui/panel.js:533
 #, c-format
 msgid "Quit %s"
-msgstr "%s چېكىن"
+msgstr "‏%s چېكىن"
 
 #. Button on the left side of the panel.
 #. Translators: If there is no suitable word for "Activities" in your language, you can use the word for "Overview".
@@ -799,7 +799,7 @@ msgstr "رەت قىل"
 #: ../js/ui/status/bluetooth.js:408
 #, c-format
 msgid "Pairing confirmation for %s"
-msgstr "%s نىڭ جەزملىشىنى جۈپلەشتۈرۈۋاتىدۇ"
+msgstr "‏%s نىڭ جەزملىشىنى جۈپلەشتۈرۈۋاتىدۇ"
 
 #: ../js/ui/status/bluetooth.js:414 ../js/ui/status/bluetooth.js:448
 #, c-format
@@ -823,7 +823,7 @@ msgstr "ماسلاشمىدى"
 #: ../js/ui/status/bluetooth.js:441
 #, c-format
 msgid "Pairing request for %s"
-msgstr "%s دىن كەلگەن جۈپلەش ئىلتىماسى"
+msgstr "‏%s دىن كەلگەن جۈپلەش ئىلتىماسى"
 
 #: ../js/ui/status/bluetooth.js:449
 msgid "Please enter the PIN mentioned on the device."
@@ -1074,22 +1074,22 @@ msgstr "مىكروفون"
 #: ../js/ui/telepathyClient.js:335
 #, c-format
 msgid "%s is online."
-msgstr "%s توردا."
+msgstr "‏%s توردا."
 
 #: ../js/ui/telepathyClient.js:340
 #, c-format
 msgid "%s is offline."
-msgstr "%s توردا يوق."
+msgstr "‏%s توردا يوق."
 
 #: ../js/ui/telepathyClient.js:343
 #, c-format
 msgid "%s is away."
-msgstr "%s يوق."
+msgstr "‏%s يوق."
 
 #: ../js/ui/telepathyClient.js:346
 #, c-format
 msgid "%s is busy."
-msgstr "%s ئالدىراش."
+msgstr "‏%s ئالدىراش."
 
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
@@ -1114,7 +1114,7 @@ msgstr "ئىزدە"
 #: ../js/ui/windowAttentionHandler.js:42
 #, c-format
 msgid "%s has finished starting"
-msgstr "%s باشلاشنى تاماملىدى"
+msgstr "‏%s باشلاشنى تاماملىدى"
 
 #: ../js/ui/windowAttentionHandler.js:44
 #, c-format

@@ -708,7 +708,7 @@ msgstr "ارسال در <b>%A</b>, <b>%B %d</b>, %Y"
 #: ../js/ui/components/telepathyClient.js:988
 #, c-format
 msgid "%s is now known as %s"
-msgstr "%s با عنوان %s شناخته می‌شود"
+msgstr "‏%s با عنوان %s شناخته می‌شود"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
@@ -723,7 +723,7 @@ msgstr "دعوتنامه به %s"
 #: ../js/ui/components/telepathyClient.js:1096
 #, c-format
 msgid "%s is inviting you to join %s"
-msgstr "%s از شما دعوت می‌کند که به %s بپیوندید"
+msgstr "‏%s از شما دعوت می‌کند که به %s بپیوندید"
 
 #: ../js/ui/components/telepathyClient.js:1098
 #: ../js/ui/components/telepathyClient.js:1177
@@ -767,13 +767,13 @@ msgstr "پاسخگویی"
 #: ../js/ui/components/telepathyClient.js:1171
 #, c-format
 msgid "%s is sending you %s"
-msgstr "%s در حال ارسال %s به شما است"
+msgstr "‏%s در حال ارسال %s به شما است"
 
 #. To translators: The parameter is the contact's alias
 #: ../js/ui/components/telepathyClient.js:1206
 #, c-format
 msgid "%s would like permission to see when you are online"
-msgstr "%s اجازه دسترسی برای دیدن زمان‌هایی که شما برخط هستید را دارد"
+msgstr "‏%s اجازه دسترسی برای دیدن زمان‌هایی که شما برخط هستید را دارد"
 
 #: ../js/ui/components/telepathyClient.js:1298
 msgid "Network error"
@@ -938,8 +938,8 @@ msgstr ""
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
-msgstr[0] "%s به طور خودکار در مدت %Id ثانیه از سیستم خارج خواهد شد."
-msgstr[1] "%s به طور خودکار در مدت %Id ثانیه از سیستم خارج خواهد شد."
+msgstr[0] "‏%s به طور خودکار در مدت %Id ثانیه از سیستم خارج خواهد شد."
+msgstr[1] "‏%s به طور خودکار در مدت %Id ثانیه از سیستم خارج خواهد شد."
 
 #: ../js/ui/endSessionDialog.js:70
 #, c-format
@@ -1698,7 +1698,7 @@ msgstr ""
 #: ../js/ui/wanda.js:121
 #, c-format
 msgid "%s the Oracle says"
-msgstr "%s پیشگو می‌گوید"
+msgstr "‏%s پیشگو می‌گوید"
 
 #: ../js/ui/wanda.js:162
 msgid "Your favorite Easter Egg"
@@ -1852,16 +1852,16 @@ msgstr "محاوره تایید هویت از طرف کاربر رد شد"
 #~ msgstr "شبکه"
 
 #~ msgid "%s is online."
-#~ msgstr "%s بر خط است."
+#~ msgstr "‏%s بر خط است."
 
 #~ msgid "%s is offline."
-#~ msgstr "%s برون خط است."
+#~ msgstr "‏%s برون خط است."
 
 #~ msgid "%s is away."
-#~ msgstr "%s غایب است."
+#~ msgstr "‏%s غایب است."
 
 #~ msgid "%s is busy."
-#~ msgstr "%s مشغول است."
+#~ msgstr "‏%s مشغول است."
 
 #~ msgid "Hidden"
 #~ msgstr "نامرئی"
