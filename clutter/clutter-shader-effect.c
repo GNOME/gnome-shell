@@ -519,7 +519,7 @@ clutter_shader_effect_init (ClutterShaderEffect *effect)
  * The effect will be empty until clutter_shader_effect_set_shader_source()
  * is called.
  *
- * Return value: (transfer full): the newly created #ClutterShaderEffect.
+ * Return value: the newly created #ClutterShaderEffect.
  *   Use g_object_unref() when done.
  *
  * Since: 1.8

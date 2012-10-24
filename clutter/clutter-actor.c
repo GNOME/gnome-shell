@@ -8338,7 +8338,7 @@ clutter_actor_init (ClutterActor *self)
  * A newly created actor has a floating reference, which will be sunk
  * when it is added to another actor.
  *
- * Return value: (transfer full): the newly created #ClutterActor
+ * Return value: the newly created #ClutterActor
  *
  * Since: 1.10
  */

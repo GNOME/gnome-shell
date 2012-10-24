@@ -344,7 +344,7 @@ clutter_animatable_iface_init (ClutterAnimatableIface *iface)
  *
  * Creates a new #ClutterScrollActor.
  *
- * Return value: (transfer full): The newly created #ClutterScrollActor
+ * Return value: The newly created #ClutterScrollActor
  *   instance.
  *
  * Since: 1.12

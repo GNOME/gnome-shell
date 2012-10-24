@@ -278,7 +278,7 @@ clutter_path_constraint_init (ClutterPathConstraint *self)
  *
  * Creates a new #ClutterPathConstraint with the given @path and @offset
  *
- * Return value: (transfer full): the newly created #ClutterPathConstraint
+ * Return value: the newly created #ClutterPathConstraint
  *
  * Since: 1.6
  */
