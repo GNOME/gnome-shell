@@ -142,6 +142,7 @@ const DashItemContainer = new Lang.Class({
 
     setLabelText: function(text) {
         this._labelText = text;
+        this.child.accessible_name = text;
     },
 
     hideLabel: function () {
@@ -259,7 +260,6 @@ const ShowAppsIcon = new Lang.Class({
 
         this.setChild(this.toggleButton);
         this.setDragApp(null);
-        this.toggleButton.label_actor = this.label;
     },
 
     _createIcon: function(size) {
@@ -507,9 +507,11 @@ const Dash = new Lang.Class({
         let item = new DashItemContainer();
         item.setChild(display.actor);
 
+        // Override default AppWellIcon label_actor, now the
+        // accessible_name is set at DashItemContainer.setLabelText
+        display.actor.label_actor = null;
         item.setLabelText(app.get_name());
-        // Override default AppWellIcon label_actor
-        display.actor.label_actor = item.label;
+
         display.icon.setIconSize(this.iconSize);
         this._hookUpLabel(item);
 
