@@ -502,7 +502,7 @@ const ScreenShield = new Lang.Class({
         if (symbol == Clutter.KEY_Escape ||
             symbol == Clutter.KEY_Return ||
             symbol == Clutter.KEY_KP_Enter) {
-            this._ensureUnlockDialog(true);
+            this._ensureUnlockDialog(true, true);
             this._hideLockScreen(true, 0);
             return true;
         }
@@ -525,7 +525,7 @@ const ScreenShield = new Lang.Class({
 
         // 7 standard scrolls to lift up
         if (this._lockScreenScrollCounter > 35) {
-            this._ensureUnlockDialog(false);
+            this._ensureUnlockDialog(false, true);
             this._hideLockScreen(true, 0);
         }
 
@@ -557,7 +557,7 @@ const ScreenShield = new Lang.Class({
     _onDragBegin: function() {
         Tweener.removeTweens(this._lockScreenGroup);
         this._lockScreenState = MessageTray.State.HIDING;
-        this._ensureUnlockDialog(false);
+        this._ensureUnlockDialog(false, false);
 
         return true;
     },
@@ -579,6 +579,7 @@ const ScreenShield = new Lang.Class({
             // Complete motion automatically
 	    let [velocity, velocityX, velocityY] = this._dragAction.get_velocity(0);
 	    this._hideLockScreen(true, -velocityY);
+            this._ensureUnlockDialog(false, true);
         } else {
             // restore the lock screen to its original place
             // try to use the same speed as the normal animation
@@ -661,7 +662,7 @@ const ScreenShield = new Lang.Class({
 
         this.actor.show();
         this._isGreeter = Main.sessionMode.isGreeter;
-        this._ensureUnlockDialog(true);
+        this._ensureUnlockDialog(true, true);
         this._hideLockScreen(false, 0);
     },
 
@@ -717,7 +718,7 @@ const ScreenShield = new Lang.Class({
             Main.sessionMode.popMode('lock-screen');
     },
 
-    _ensureUnlockDialog: function(onPrimary) {
+    _ensureUnlockDialog: function(onPrimary, allowCancel) {
         if (!this._dialog) {
             let constructor = Main.sessionMode.unlockDialog;
             if (!constructor) {
@@ -740,6 +741,8 @@ const ScreenShield = new Lang.Class({
             this._dialog.connect('failed', Lang.bind(this, this._onUnlockFailed));
             this._dialog.connect('unlocked', Lang.bind(this, this._onUnlockSucceded));
         }
+
+        this._dialog.allowCancel = allowCancel;
     },
 
     _onUnlockFailed: function() {

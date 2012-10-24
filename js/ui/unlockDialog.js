@@ -174,6 +174,7 @@ const UnlockDialog = new Lang.Class({
         this._workSpinner.actor.opacity = 0;
         this._workSpinner.actor.show();
 
+        this.allowCancel = false;
         this.buttonLayout.visible = true;
         this.addButton({ label: _("Cancel"),
                          action: Lang.bind(this, this._escape),
@@ -349,8 +350,10 @@ const UnlockDialog = new Lang.Class({
     },
 
     _escape: function() {
-        this._userVerifier.cancel();
-        this.emit('failed');
+        if (this.allowCancel) {
+            this._userVerifier.cancel();
+            this.emit('failed');
+        }
     },
 
     _otherUserClicked: function(button, event) {
