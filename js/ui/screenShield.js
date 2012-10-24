@@ -26,7 +26,7 @@ const Util = imports.misc.util;
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const LOCK_ENABLED_KEY = 'lock-enabled';
 
-const CURTAIN_SLIDE_TIME = 0.5;
+const CURTAIN_SLIDE_TIME = 0.3;
 // fraction of screen height the arrow must reach before completing
 // the slide up automatically
 const ARROW_DRAG_THRESHOLD = 0.1;
@@ -47,7 +47,7 @@ const SUMMARY_ICON_SIZE = 48;
 // STANDARD_FADE_TIME is used when the session goes idle, while
 // SHORT_FADE_TIME is used when requesting lock explicitly from the user menu
 const STANDARD_FADE_TIME = 10;
-const SHORT_FADE_TIME = 0.8;
+const SHORT_FADE_TIME = 0.3;
 
 const Clock = new Lang.Class({
     Name: 'ScreenShieldClock',
@@ -526,7 +526,7 @@ const ScreenShield = new Lang.Class({
             Tweener.addTween(this._lockScreenGroup,
                              { y: 0,
                                time: time,
-                               transition: 'linear',
+                               transition: 'easeInQuad',
                                onComplete: function() {
                                    this._lockScreenGroup.fixed_position_set = false;
                                    this._lockScreenState = MessageTray.State.SHOWN;
@@ -622,7 +622,7 @@ const ScreenShield = new Lang.Class({
             Tweener.addTween(this._lockScreenGroup,
                              { y: -h,
                                time: time,
-                               transition: 'linear',
+                               transition: 'easeInQuad',
                                onComplete: function() {
                                    this._lockScreenState = MessageTray.State.HIDDEN;
                                    this._lockScreenGroup.hide();
@@ -683,7 +683,7 @@ const ScreenShield = new Lang.Class({
             Tweener.addTween(this._lockScreenGroup,
                              { y: 0,
                                time: SHORT_FADE_TIME,
-                               transition: 'linear',
+                               transition: 'easeOutQuad',
                                onComplete: function() {
                                    this._lockScreenShown();
                                },
