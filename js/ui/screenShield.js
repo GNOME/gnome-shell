@@ -580,14 +580,13 @@ const ScreenShield = new Lang.Class({
     showDialog: function() {
         // Ensure that the stage window is mapped, before taking a grab
         // otherwise X errors out
-        let actorShownId = 0;
-        actorShownId = this.actor.connect('show', Lang.bind(this, function() {
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
             if (!this._isModal) {
                 Main.pushModal(this.actor);
                 this._isModal = true;
             }
 
-            this.actor.disconnect(actorShownId);
+            return false;
         }));
 
         this.actor.show();
