@@ -3,6 +3,7 @@
 #define GST_USE_UNSTABLE_API
 #include "shell-recorder.h"
 #include <clutter/clutter.h>
+#include <gtk/gtk.h>
 #include <gst/gst.h>
 
 /* Very simple test of the ShellRecorder class; shows some text strings
@@ -57,6 +58,7 @@ int main (int argc, char **argv)
   ClutterAnimation *animation;
   ClutterColor red, green, blue;
 
+  gtk_init (&argc, &argv);
   gst_init (&argc, &argv);
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
     return 1;

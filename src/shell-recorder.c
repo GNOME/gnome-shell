@@ -11,6 +11,8 @@
 #define GST_USE_UNSTABLE_API
 #include <gst/gst.h>
 
+#include <gtk/gtk.h>
+
 #include "shell-recorder-src.h"
 #include "shell-recorder.h"
 #include "shell-screen-grabber.h"
@@ -90,6 +92,7 @@ struct _RecorderPipeline
   GstElement *pipeline;
   GstElement *src;
   int outfile;
+  char *filename;
 };
 
 static void recorder_set_stage    (ShellRecorder *recorder,
@@ -1137,7 +1140,8 @@ get_absolute_path (char *maybe_relative)
  * be opened.
  */
 static int
-recorder_open_outfile (ShellRecorder *recorder)
+recorder_open_outfile (ShellRecorder  *recorder,
+                       char          **outfilename)
 {
   const char *pattern;
   int flags;
@@ -1218,8 +1222,12 @@ recorder_open_outfile (ShellRecorder *recorder)
         {
           g_printerr ("Recording to %s\n", path);
 
+          if (outfilename != NULL)
+            *outfilename = path;
+          else
+            g_free (path);
           g_string_free (filename, TRUE);
-          g_free (path);
+
           goto out;
         }
 
@@ -1257,7 +1265,8 @@ recorder_pipeline_add_sink (RecorderPipeline *pipeline)
       return TRUE;
     }
 
-  pipeline->outfile = recorder_open_outfile (pipeline->recorder);
+  pipeline->outfile = recorder_open_outfile (pipeline->recorder,
+                                             &pipeline->filename);
   if (pipeline->outfile == -1)
     goto out;
 
@@ -1332,6 +1341,8 @@ recorder_pipeline_free (RecorderPipeline *pipeline)
   if (pipeline->outfile != -1)
     close (pipeline->outfile);
 
+  g_free (pipeline->filename);
+
   g_clear_object (&pipeline->recorder);
 
   g_free (pipeline);
@@ -1383,6 +1394,10 @@ recorder_pipeline_closed (RecorderPipeline *pipeline)
 
   if (pipeline->recorder)
     {
+      GtkRecentManager *recent_manager;
+      GFile *file;
+      char *uri;
+
       ShellRecorder *recorder = pipeline->recorder;
       if (pipeline == recorder->current_pipeline)
         {
@@ -1390,6 +1405,15 @@ recorder_pipeline_closed (RecorderPipeline *pipeline)
           recorder->current_pipeline = NULL;
           shell_recorder_close (recorder);
         }
+
+      recent_manager = gtk_recent_manager_get_default ();
+
+      file = g_file_new_for_path (pipeline->filename);
+      uri = g_file_get_uri (file);
+      gtk_recent_manager_add_item (recent_manager,
+                                   uri);
+      g_free (uri);
+      g_object_unref (file);
 
       recorder->pipelines = g_slist_remove (recorder->pipelines, pipeline);
     }
