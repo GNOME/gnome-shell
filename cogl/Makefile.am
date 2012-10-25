@@ -159,6 +159,8 @@ cogl_gl_prototypes_h = \
 	$(NULL)
 
 cogl_driver_sources += \
+	$(srcdir)/driver/gl/cogl-util-gl-private.h \
+	$(srcdir)/driver/gl/cogl-util-gl.c \
 	$(srcdir)/driver/gl/cogl-framebuffer-gl-private.h \
 	$(srcdir)/driver/gl/cogl-framebuffer-gl.c \
 	$(srcdir)/driver/gl/cogl-texture-2d-gl-private.h \

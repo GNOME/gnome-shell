@@ -37,6 +37,7 @@
 #include "cogl-texture-2d-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-error-private.h"
+#include "cogl-util-gl-private.h"
 
 void
 _cogl_texture_2d_gl_free (CoglTexture2D *tex_2d)
@@ -97,6 +98,7 @@ _cogl_texture_2d_gl_new_with_size (CoglContext *ctx,
   GLenum gl_intformat;
   GLenum gl_format;
   GLenum gl_type;
+  GLenum gl_error;
 
   internal_format = ctx->driver_vtable->pixel_format_to_gl (ctx,
                                                             internal_format,
@@ -113,8 +115,19 @@ _cogl_texture_2d_gl_new_with_size (CoglContext *ctx,
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    tex_2d->gl_texture,
                                    tex_2d->is_foreign);
-  GE( ctx, glTexImage2D (GL_TEXTURE_2D, 0, gl_intformat,
-                         width, height, 0, gl_format, gl_type, NULL) );
+
+  /* Clear any GL errors */
+  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
+    ;
+
+  ctx->glTexImage2D (GL_TEXTURE_2D, 0, gl_intformat,
+                     width, height, 0, gl_format, gl_type, NULL);
+
+  if (_cogl_gl_util_catch_out_of_memory (ctx, error))
+    {
+      cogl_object_unref (tex_2d);
+      return NULL;
+    }
 
   return tex_2d;
 }
