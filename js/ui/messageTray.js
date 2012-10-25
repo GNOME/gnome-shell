@@ -2125,6 +2125,10 @@ const MessageTray = new Lang.Class({
     },
 
     _hideTray: function() {
+        // Having the summary item animate out while sliding down the tray
+        // is distracting, so hide it immediately in case it was visible.
+        this._summaryBoxPointer.actor.hide();
+
         this._tween(this.actor, '_trayState', State.HIDDEN,
                     { y: 0,
                       time: ANIMATION_TIME,
