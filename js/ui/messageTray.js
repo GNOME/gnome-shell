@@ -404,11 +404,6 @@ const Notification = new Lang.Class({
         this._soundFile = null;
         this._soundPlayed = false;
 
-        source.connect('destroy', Lang.bind(this,
-            function (source, reason) {
-                this.destroy(reason);
-            }));
-
         this.actor = new St.Button({ accessible_role: Atk.Role.NOTIFICATION });
         this.actor.add_style_class_name('notification-unexpanded');
         this.actor._delegate = this;
@@ -1337,6 +1332,13 @@ const Source = new Lang.Class({
 
     destroy: function(reason) {
         this.policy.destroy();
+
+        let notifications = this.notifications;
+        this.notifications = [];
+
+        for (let i = 0; i < notifications.length; i++)
+            notifications[i].destroy(reason);
+
         this.emit('destroy', reason);
     },
 
