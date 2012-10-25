@@ -636,6 +636,13 @@ StScrollBar StButton#vhandle:active {
     -shell-close-overlap-y: -12px;
 }
 
+.notification-close:rtl {
+    /* as above, but starting out in the top left of the
+     * notification. */
+
+    -shell-close-overlap-x: -14px;
+}
+
 .window-close:rtl {
     -st-background-image-shadow: 2px 2px 6px rgba(0,0,0,0.5);
 }
