@@ -627,12 +627,12 @@ StScrollBar StButton#vhandle:active {
     /* we start out in the top right of the
      * notification, inset.
      *
-     * center is 32px/2 = 17px
+     * center is 32px/2 = 16px
      *
      * adjust left 2px
      * adjust down 8px */
 
-    -shell-close-overlap-x: 15px;
+    -shell-close-overlap-x: 14px;
     -shell-close-overlap-y: 12px;
 }
 
