@@ -1588,6 +1588,7 @@ const MessageTray = new Lang.Class({
 
     _onCloseClicked: function() {
         if (this._notificationState == State.SHOWN) {
+            this._closeButton.hide();
             this._notificationClosed = true;
             this._updateState();
             this._notificationClosed = false;
