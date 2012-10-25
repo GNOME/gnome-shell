@@ -38,6 +38,7 @@
 #include "cogl-pipeline-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-error-private.h"
+#include "cogl-util-gl-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -137,7 +138,7 @@ _cogl_texture_3d_create_base (CoglContext *ctx,
 
   tex_3d->format = internal_format;
 
-  return tex_3d;
+  return _cogl_texture_3d_object_new (tex_3d);
 }
 
 static CoglBool
@@ -209,10 +210,11 @@ cogl_texture_3d_new_with_size (CoglContext *ctx,
                                CoglPixelFormat internal_format,
                                CoglError **error)
 {
-  CoglTexture3D         *tex_3d;
-  GLenum                 gl_intformat;
-  GLenum                 gl_format;
-  GLenum                 gl_type;
+  CoglTexture3D *tex_3d;
+  GLenum gl_intformat;
+  GLenum gl_format;
+  GLenum gl_type;
+  GLenum gl_error;
 
   /* Since no data, we need some internal format */
   if (internal_format == COGL_PIXEL_FORMAT_ANY)
@@ -239,10 +241,20 @@ cogl_texture_3d_new_with_size (CoglContext *ctx,
   _cogl_bind_gl_texture_transient (GL_TEXTURE_3D,
                                    tex_3d->gl_texture,
                                    FALSE);
-  GE( ctx, glTexImage3D (GL_TEXTURE_3D, 0, gl_intformat,
-                         width, height, depth, 0, gl_format, gl_type, NULL) );
+  /* Clear any GL errors */
+  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
+    ;
 
-  return _cogl_texture_3d_object_new (tex_3d);
+  ctx->glTexImage3D (GL_TEXTURE_3D, 0, gl_intformat,
+                     width, height, depth, 0, gl_format, gl_type, NULL);
+
+  if (_cogl_gl_util_catch_out_of_memory (ctx, error))
+    {
+      cogl_object_unref (tex_3d);
+      return NULL;
+    }
+
+  return tex_3d;
 }
 
 CoglTexture3D *
@@ -327,7 +339,7 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
 
   cogl_object_unref (dst_bmp);
 
-  return _cogl_texture_3d_object_new (tex_3d);
+  return tex_3d;
 }
 
 CoglTexture3D *
