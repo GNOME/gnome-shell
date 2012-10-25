@@ -614,9 +614,9 @@ StScrollBar StButton#vhandle:active {
 
 .window-close, .notification-close {
     background-image: url("close-window.svg");
-    background-size: 34px;
-    height: 34px;
-    width: 34px;
+    background-size: 32px;
+    height: 32px;
+    width: 32px;
 }
 
 .window-close {
