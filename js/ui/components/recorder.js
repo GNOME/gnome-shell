@@ -41,7 +41,7 @@ const Recorder = new Lang.Class({
             recorder.set_framerate(this._recorderSettings.get_int('framerate'));
             /* Translators: this is a filename used for screencast recording */
             // xgettext:no-c-format
-            recorder.set_filename(_("Screencast from %d %t") + '.' + this._recorderSettings.get_string('file-extension'));
+            recorder.set_file_template(_("Screencast from %d %t") + '.' + this._recorderSettings.get_string('file-extension'));
             let pipeline = this._recorderSettings.get_string('pipeline');
 
             if (!pipeline.match(/^\s*$/))

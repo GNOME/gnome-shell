@@ -32,8 +32,8 @@ ShellRecorder     *shell_recorder_new (ClutterStage  *stage);
 
 void               shell_recorder_set_framerate (ShellRecorder *recorder,
                                                  int framerate);
-void               shell_recorder_set_filename (ShellRecorder *recorder,
-						const char    *filename);
+void               shell_recorder_set_file_template (ShellRecorder *recorder,
+                                                     const char    *file_template);
 void               shell_recorder_set_pipeline (ShellRecorder *recorder,
 						const char    *pipeline);
 gboolean           shell_recorder_record       (ShellRecorder *recorder);

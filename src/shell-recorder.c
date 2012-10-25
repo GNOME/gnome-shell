@@ -65,7 +65,7 @@ struct _ShellRecorder {
 
   int framerate;
   char *pipeline_description;
-  char *filename;
+  char *file_template;
 
   /* We might have multiple pipelines that are finishing encoding
    * to go along with the current pipeline where we are recording.
@@ -98,8 +98,8 @@ static void recorder_set_framerate (ShellRecorder *recorder,
                                     int framerate);
 static void recorder_set_pipeline (ShellRecorder *recorder,
                                    const char    *pipeline);
-static void recorder_set_filename (ShellRecorder *recorder,
-                                   const char    *filename);
+static void recorder_set_file_template (ShellRecorder *recorder,
+                                        const char    *file_template);
 
 static void recorder_pipeline_set_caps (RecorderPipeline *pipeline);
 static void recorder_pipeline_closed   (RecorderPipeline *pipeline);
@@ -109,7 +109,7 @@ enum {
   PROP_STAGE,
   PROP_FRAMERATE,
   PROP_PIPELINE,
-  PROP_FILENAME
+  PROP_FILE_TEMPLATE
 };
 
 G_DEFINE_TYPE(ShellRecorder, shell_recorder, G_TYPE_OBJECT);
@@ -278,7 +278,7 @@ shell_recorder_finalize (GObject  *object)
 
   recorder_set_stage (recorder, NULL);
   recorder_set_pipeline (recorder, NULL);
-  recorder_set_filename (recorder, NULL);
+  recorder_set_file_template (recorder, NULL);
 
   g_object_unref (recorder->grabber);
 
@@ -905,22 +905,22 @@ recorder_set_pipeline (ShellRecorder *recorder,
 }
 
 static void
-recorder_set_filename (ShellRecorder *recorder,
-                       const char    *filename)
+recorder_set_file_template (ShellRecorder *recorder,
+                            const char    *file_template)
 {
-  if (filename == recorder->filename ||
-      (filename && recorder->filename && strcmp (recorder->filename, filename) == 0))
+  if (file_template == recorder->file_template ||
+      (file_template && recorder->file_template && strcmp (recorder->file_template, file_template) == 0))
     return;
 
   if (recorder->current_pipeline)
     shell_recorder_close (recorder);
 
-  if (recorder->filename)
-    g_free (recorder->filename);
+  if (recorder->file_template)
+    g_free (recorder->file_template);
 
-  recorder->filename = g_strdup (filename);
+  recorder->file_template = g_strdup (file_template);
 
-  g_object_notify (G_OBJECT (recorder), "filename");
+  g_object_notify (G_OBJECT (recorder), "file-template");
 }
 
 static void
@@ -942,8 +942,8 @@ shell_recorder_set_property (GObject      *object,
     case PROP_PIPELINE:
       recorder_set_pipeline (recorder, g_value_get_string (value));
       break;
-    case PROP_FILENAME:
-      recorder_set_filename (recorder, g_value_get_string (value));
+    case PROP_FILE_TEMPLATE:
+      recorder_set_file_template (recorder, g_value_get_string (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -970,8 +970,8 @@ shell_recorder_get_property (GObject         *object,
     case PROP_PIPELINE:
       g_value_set_string (value, recorder->pipeline_description);
       break;
-    case PROP_FILENAME:
-      g_value_set_string (value, recorder->filename);
+    case PROP_FILE_TEMPLATE:
+      g_value_set_string (value, recorder->file_template);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1015,9 +1015,9 @@ shell_recorder_class_init (ShellRecorderClass *klass)
                                                         G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class,
-                                   PROP_FILENAME,
-                                   g_param_spec_string ("filename",
-                                                        "Filename",
+                                   PROP_FILE_TEMPLATE,
+                                   g_param_spec_string ("file-template",
+                                                        "File Template",
                                                         "The filename template to use for output files",
                                                         NULL,
                                                         G_PARAM_READWRITE));
@@ -1143,7 +1143,7 @@ recorder_open_outfile (ShellRecorder *recorder)
   int flags;
   int outfile = -1;
 
-  pattern = recorder->filename;
+  pattern = recorder->file_template;
   if (!pattern)
     return -1;
 
@@ -1545,10 +1545,10 @@ shell_recorder_set_framerate (ShellRecorder *recorder,
 }
 
 /**
- * shell_recorder_set_filename:
+ * shell_recorder_set_file_template:
  * @recorder: the #ShellRecorder
- * @filename: the filename template to use for output files,
- *            or %NULL for the defalt value.
+ * @file_template: the filename template to use for output files,
+ *                 or %NULL for the defalt value.
  *
  * Sets the filename that will be used when creating output
  * files. This is only used if the configured pipeline has an
@@ -1563,12 +1563,12 @@ shell_recorder_set_framerate (ShellRecorder *recorder,
  * The default value is 'shell-%d%u-%c.ogg'.
  */
 void
-shell_recorder_set_filename (ShellRecorder *recorder,
-                             const char    *filename)
+shell_recorder_set_file_template (ShellRecorder *recorder,
+                                  const char    *file_template)
 {
   g_return_if_fail (SHELL_IS_RECORDER (recorder));
 
-  recorder_set_filename (recorder, filename);
+  recorder_set_file_template (recorder, file_template);
 
 }
 
@@ -1583,7 +1583,7 @@ shell_recorder_set_filename (ShellRecorder *recorder,
  * should have an unconnected sink pad where the recorded
  * video is recorded. It will normally have a unconnected
  * source pad; output from that pad will be written into the
- * output file. (See shell_recorder_set_filename().) However
+ * output file. (See shell_recorder_set_file_template().) However
  * the pipeline can also take care of its own output - this
  * might be used to send the output to an icecast server
  * via shout2send or similar.
