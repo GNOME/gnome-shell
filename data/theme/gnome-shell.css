@@ -1200,7 +1200,6 @@ StScrollBar StButton#vhandle:active {
     background: #2e3436 url(message-tray-background.png);
     background-repeat: repeat;
     transition-duration: 250;
-    height: 72px;
 }
 
 #message-tray:keyboard {
@@ -1210,7 +1209,7 @@ StScrollBar StButton#vhandle:active {
 
 #message-tray:overview {
     background: rgba(0, 0, 0, 0.1);
-    border-top: 1px solid rgba(128, 128, 128, 0.3);
+    outline: 1px solid rgba(128, 128, 128, 0.3);
 }
 
 .notification {
@@ -1432,28 +1431,34 @@ StScrollBar StButton#vhandle:active {
 }
 
 #summary-mode {
-    padding: 0px 6px 0px 6px; /* same as the values in .summary-source */
-    height: 60px;
-    spacing: 10px;
+    height: 72px;
 }
 
 .summary-source-button {
-    border-radius: 4px;
-    transition-duration: 100;
+    padding: 6px 3px 6px 3px;
 }
 
-.summary-source-button:hover {
+.summary-source-button:last-child:ltr {
+    padding-right: 6px;
+}
+
+.summary-source-button:last-child:rtl {
+    padding-left: 6px;
+}
+
+.summary-source-button:hover .summary-source {
     background-color: rgba(255,255,255,0.1);
 }
 
-.summary-source-button:focus,
-.summary-source-button:selected {
+.summary-source-button:focus .summary-source,
+.summary-source-button:selected .summary-source {
     background-color: rgba(255,255,255,0.33);
 }
 
 .summary-source {
-    padding-right: 6px;
-    padding-left: 6px;
+    border-radius: 4px;
+    padding: 0 6px 0 6px;
+    transition-duration: 100;
 }
 
 .summary-source-counter {
