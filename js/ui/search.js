@@ -2,6 +2,7 @@
 
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
@@ -75,6 +76,8 @@ const SearchProvider = new Lang.Class({
     Name: 'SearchProvider',
 
     _init: function(title) {
+        this.parent();
+
         this.title = title;
         this.searchSystem = null;
     },

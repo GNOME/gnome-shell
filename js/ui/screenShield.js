@@ -418,10 +418,11 @@ const ScreenShield = new Lang.Class({
 
         this._screenSaverDBus = new ShellDBus.ScreenSaverDBus(this);
 
-        this._loginManager = LoginManager.getLoginManager();
-        this._loginSession = this._loginManager.getCurrentSessionProxy();
-        this._loginSession.connectSignal('Lock', Lang.bind(this, function() { this.lock(false); }));
-        this._loginSession.connectSignal('Unlock', Lang.bind(this, function() { this.unlock(); }));
+        LoginManager.getLoginManager(Lang.bind(this, function(manager) {
+            this._loginSession = manager.getCurrentSessionProxy();
+            this._loginSession.connectSignal('Lock', Lang.bind(this, function() { this.lock(false); }));
+            this._loginSession.connectSignal('Unlock', Lang.bind(this, function() { this.unlock(); }));
+        }));
 
         this._settings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
 
@@ -875,6 +876,7 @@ const ScreenShieldFallback = new Lang.Class({
                                           g_flags: (Gio.DBusProxyFlags.DO_NOT_AUTO_START |
                                                     Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES),
                                         });
+        // This is synchronous but it is the fallback case.
         this._proxy.init(null);
 
         this._proxy.connect('g-signal', Lang.bind(this, this._onSignal));

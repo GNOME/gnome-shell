@@ -239,14 +239,17 @@ const DBusEventSource = new Lang.Class({
         this._resetCache();
 
         this._dbusProxy = new CalendarServer();
-        this._dbusProxy.init(null);
         this._dbusProxy.connectSignal('Changed', Lang.bind(this, this._onChanged));
 
-        this._dbusProxy.connect('notify::g-name-owner', Lang.bind(this, function() {
-            if (this._dbusProxy.g_name_owner)
-                this._onNameAppeared();
-            else
-                this._onNameVanished();
+        this._dbusProxy.init_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(proxy, result) {
+            try {
+                proxy.init_finish(result);
+            } catch(e) {
+                return;
+            }
+
+            this._resetCache();
+            this.emit('changed');
         }));
     },
 
@@ -254,16 +257,6 @@ const DBusEventSource = new Lang.Class({
         this._events = [];
         this._lastRequestBegin = null;
         this._lastRequestEnd = null;
-    },
-
-    _onNameAppeared: function(owner) {
-        this._resetCache();
-        this._loadEvents(true);
-    },
-
-    _onNameVanished: function(oldOwner) {
-        this._resetCache();
-        this.emit('changed');
     },
 
     _onChanged: function() {
@@ -404,7 +397,6 @@ const Calendar = new Lang.Class({
             this._eventSourceChangedId = this._eventSource.connect('changed', Lang.bind(this, function() {
                 this._update(false);
             }));
-            this._update(true);
         }
     },
 

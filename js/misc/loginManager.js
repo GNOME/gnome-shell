@@ -2,6 +2,7 @@
 
 const GLib = imports.gi.GLib;
 const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
@@ -105,41 +106,102 @@ function haveSystemd() {
 }
 
 let _loginManager = null;
+let _pendingAsyncCallbacks = [];
 
 /**
  * LoginManager:
  * An abstraction over systemd/logind and ConsoleKit.
  *
  */
-function getLoginManager() {
+function getLoginManager(asyncCallback) {
     if (_loginManager == null) {
-        if (haveSystemd())
-            _loginManager = new LoginManagerSystemd();
-        else
-            _loginManager = new LoginManagerConsoleKit();
-    }
+        if (_pendingAsyncCallbacks.length == 0) {
+            let manager;
 
-    return _loginManager;
+            if (haveSystemd())
+                manager = new LoginManagerSystemd();
+            else
+                manager = new LoginManagerConsoleKit();
+
+            manager.initAsync(null, function(obj, result) {
+                obj.initFinish(result);
+
+                _loginManager = manager;
+
+                _pendingAsyncCallbacks.forEach(function (f) { f(obj) });
+                _pendingAsyncCallbacks = [];
+            });
+
+            _pendingAsyncCallbacks = [asyncCallback];
+        } else {
+            _pendingAsyncCallbacks.push(asyncCallback);
+        }
+    } else {
+        GLib.idle_add(GLib.PRIORITY_DEFAULT, function() {
+            asyncCallback(_loginManager);
+        });
+    }
 }
 
 const LoginManagerSystemd = new Lang.Class({
     Name: 'LoginManagerSystemd',
+    Extends: GObject.Object,
 
     _init: function() {
+        this.parent();
+
         this._proxy = new SystemdLoginManager();
-        this._proxy.init(null);
+    },
+
+    initAsync: function(cancellable, asyncCallback) {
+        let simpleResult = Gio.SimpleAsyncResult.new(this, asyncCallback, null);
+        simpleResult.set_check_cancellable(cancellable);
+
+        this._proxy.init_async(GLib.PRIORITY_DEFAULT, cancellable, Lang.bind(this, function(proxy, result) {
+            try {
+                proxy.init_finish(result);
+
+                if (cancellable && cancellable.is_cancelled())
+                    return;
+
+                this._fetchCurrentSession(cancellable, simpleResult);
+            } catch(e if e instanceof GLib.Error) {
+                simpleResult.set_from_error(e);
+                simpleResult.complete();
+            }
+        }));
+    },
+
+    initFinish: function(simpleResult) {
+        if (!simpleResult.propagate_error())
+            return simpleResult.get_op_res_gboolean();
+
+        return true;
+    },
+
+    _fetchCurrentSession: function(cancellable, simpleResult) {
+        this._currentSession = new SystemdLoginSession('/org/freedesktop/login1/session/' +
+                                                       GLib.getenv('XDG_SESSION_ID'));
+
+        this._currentSession.init_async(GLib.PRIORITY_DEFAULT, cancellable, Lang.bind(this, function(proxy, result) {
+            try {
+                proxy.init_finish(result);
+
+                simpleResult.set_op_res_gboolean(true);
+            } catch(e if e instanceof GLib.Error) {
+                simpleResult.set_from_error(e);
+            }
+
+            simpleResult.complete();
+        }));
     },
 
     // Having this function is a bit of a hack since the Systemd and ConsoleKit
     // session objects have different interfaces - but in both cases there are
     // Lock/Unlock signals, and that's all we count upon at the moment.
+    //
+    // This is only valid after async initialization
     getCurrentSessionProxy: function() {
-        if (!this._currentSession) {
-            this._currentSession = new SystemdLoginSession('/org/freedesktop/login1/session/' +
-                                                           GLib.getenv('XDG_SESSION_ID'));
-            this._currentSession.init(null);
-        }
-
         return this._currentSession;
     },
 
@@ -198,24 +260,76 @@ const LoginManagerSystemd = new Lang.Class({
 
 const LoginManagerConsoleKit = new Lang.Class({
     Name: 'LoginManagerConsoleKit',
+    Extends: GObject.Object,
 
     _init: function() {
-        this._proxy = new ConsoleKitManager();
-        this._proxy.init(null);
+        this.parent();
 
+        this._proxy = new ConsoleKitManager();
         this._upClient = new UPowerGlib.Client();
+    },
+
+    initAsync: function(cancellable, asyncCallback) {
+        let simpleResult = Gio.SimpleAsyncResult.new(this, asyncCallback, null);
+        simpleResult.set_check_cancellable(cancellable);
+
+        this._proxy.init_async(GLib.PRIORITY_DEFAULT, cancellable, Lang.bind(this, function(proxy, result) {
+            try {
+                proxy.init_finish(result);
+
+                if (cancellable && cancellable.is_cancelled())
+                    return;
+
+                this._fetchCurrentSession(cancellable, simpleResult);
+            } catch(e if e instanceof GLib.Error) {
+                simpleResult.set_from_error(e);
+                simpleResult.complete();
+            }
+        }));
+    },
+
+    initFinish: function(simpleResult) {
+        if (!simpleResult.propagate_error())
+            return simpleResult.get_op_res_gboolean();
+
+        return true;
+    },
+
+    _fetchCurrentSession: function(cancellable, simpleResult) {
+        this._proxy.GetCurrentSessionRemote(cancellable, Lang.bind(this, function(proxy, result) {
+            try {
+                let [currentSessionId] = proxy.GetCurrentSessionFinish(result);
+
+                if (cancellable && cancellable.is_cancelled())
+                    return;
+
+                this._createSessionProxy(currentSessionId, cancellable, simpleResult);
+            } catch(e if e instanceof GLib.Error) {
+                simpleResult.set_from_error(e);
+                simpleResult.complete();
+            }
+        }));
+    },
+
+    _createSessionProxy: function(currentSessionId, cancellable, simpleResult) {
+        this._currentSession = new ConsoleKitSession(currentSessionId);
+        this._currentSession.init_async(GLib.PRIORITY_DEFAULT, cancellable, Lang.bind(this, function(proxy, result) {
+            try {
+                proxy.init_finish(result);
+
+                simpleResult.set_op_res_gboolean(true);
+            } catch(e if e instanceof GLib.Error) {
+                simpleResult.set_from_error(e);
+            }
+
+            simpleResult.complete();
+        }));
     },
 
     // Having this function is a bit of a hack since the Systemd and ConsoleKit
     // session objects have different interfaces - but in both cases there are
     // Lock/Unlock signals, and that's all we count upon at the moment.
     getCurrentSessionProxy: function() {
-        if (!this._currentSession) {
-            let [currentSessionId] = this._proxy.GetCurrentSessionSync(null);
-            this._currentSession = new ConsoleKitSession(currentSessionId);
-            this._currentSession.init(null);
-        }
-
         return this._currentSession;
     },
 

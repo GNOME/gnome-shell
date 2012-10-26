@@ -171,7 +171,9 @@ const AutorunManager = new Lang.Class({
     Name: 'AutorunManager',
 
     _init: function() {
-        this._loginManager = LoginManager.getLoginManager();
+        LoginManager.getLoginManager(Lang.bind(this, function(manager) {
+            this._loginManager = manager;
+        }));
 
         this._volumeMonitor = Gio.VolumeMonitor.get();
 
@@ -224,7 +226,7 @@ const AutorunManager = new Lang.Class({
     _onMountAdded: function(monitor, mount) {
         // don't do anything if our session is not the currently
         // active one
-        if (!this._loginManager.sessionActive)
+        if (!this._loginManager || !this._loginManager.sessionActive)
             return;
 
         this._processMount(mount, true);

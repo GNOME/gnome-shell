@@ -86,7 +86,6 @@ const Manager = new Lang.Class({
 
     _init: function(parentActor) {
         this._aggregateProvider = new Provider();
-        this._aggregateProvider.init(null);
         this._realms = {};
 
         this._aggregateProvider.connect('g-properties-changed',
@@ -94,6 +93,16 @@ const Manager = new Lang.Class({
                                             if ('Realms' in properties.deep_unpack())
                                                 this._reloadRealms();
                                         }));
+
+        this._aggregateProvider.init_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(proxy, result) {
+            try {
+                proxy.init_finish(result);
+            } catch(e) {
+                return;
+            }
+
+            this._reloadRealms();
+        }));
     },
 
     _reloadRealms: function() {

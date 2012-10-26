@@ -32,7 +32,10 @@ const Bus = new Gio.DBusProxyClass({
     _init: function() {
         this.parent({ g_bus_type: Gio.BusType.SESSION,
                       g_name: 'org.freedesktop.DBus',
-                      g_object_path: '/org/freedesktop/DBus' });
+                      g_object_path: '/org/freedesktop/DBus',
+                      g_flags: (Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES |
+                                Gio.DBusProxyFlags.DO_NOT_CONNECT_SIGNALS |
+                                Gio.DBusProxyFlags.DO_NOT_AUTO_START) });
     }
 });
 
@@ -121,6 +124,7 @@ const NotificationDaemon = new Gio.DBusImplementerClass({
         this._senderToPid = {};
         this._notifications = {};
         this._busProxy = new Bus();
+        // This is synchronous but fast because of the flags we use.
         this._busProxy.init(null);
 
         this._trayManager = new Shell.TrayManager();

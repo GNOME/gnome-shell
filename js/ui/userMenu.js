@@ -495,14 +495,22 @@ const UserMenuButton = new Lang.Class({
             }));
         }));
 
-        this._session = new GnomeSession.SessionManager();
-        this._session.init(null);
+        let session = new GnomeSession.SessionManager();
+        session.init_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(proxy, result) {
+            // This should never fail.
+            proxy.init_finish(result);
+
+            this._session = proxy;
+            this._updateHaveShutdown();
+        }));
         this._haveShutdown = true;
         this._haveSuspend = true;
 
         this._accountMgr = Tp.AccountManager.dup();
 
-        this._loginManager = LoginManager.getLoginManager();
+        LoginManager.getLoginManager(Lang.bind(this, function(manager) {
+            this._loginManager = manager;
+        }));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._iconBox = new St.Bin();
@@ -647,6 +655,11 @@ const UserMenuButton = new Lang.Class({
     },
 
     _updateHaveShutdown: function() {
+        if (!this._session) {
+            this._haveShutdown = false;
+            return;
+        }
+
         this._session.CanShutdownRemote(null, Lang.bind(this, function(proxy, result) {
             try {
                 [this._haveShutdown] = proxy.CanShutdownFinish(result);
@@ -660,6 +673,11 @@ const UserMenuButton = new Lang.Class({
     },
 
     _updateHaveSuspend: function() {
+        if (!this._loginManager) {
+            this._haveSuspend = false;
+            return;
+        }
+
         this._loginManager.canSuspend(Lang.bind(this,
             function(result) {
                 this._haveSuspend = result;
@@ -849,14 +867,17 @@ const UserMenuButton = new Lang.Class({
 
     _onQuitSessionActivate: function() {
         Main.overview.hide();
-        this._session.LogoutRemote(0, null, null);
+
+        if (this._session)
+            this._session.LogoutRemote(0, null, null);
     },
 
     _onInstallUpdatesActivate: function() {
         Main.overview.hide();
         Util.spawn(['pkexec', '/usr/libexec/pk-trigger-offline-update']);
 
-        this._session.RebootRemote();
+        if (this._haveShutdown)
+            this._session.RebootRemote(null, null);
     },
 
     _onSuspendOrPowerOffActivate: function() {
@@ -865,7 +886,7 @@ const UserMenuButton = new Lang.Class({
         if (this._haveShutdown &&
             this._suspendOrPowerOffItem.state == PopupMenu.PopupAlternatingMenuItemState.DEFAULT) {
             this._session.ShutdownRemote(null, null);
-        } else {
+        } else if (this._haveSuspend) {
             if (this._screenSaverSettings.get_boolean(LOCK_ENABLED_KEY)) {
                 let tmpId = Main.screenShield.connect('lock-screen-shown', Lang.bind(this, function() {
                     Main.screenShield.disconnect(tmpId);

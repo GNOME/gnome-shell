@@ -35,7 +35,13 @@ const PowerMenuButton = new Lang.Class({
         /* Translators: accessible name of the power menu in the login screen */
         this.parent('system-shutdown-symbolic', _("Power"));
 
-        this._loginManager = LoginManager.getLoginManager();
+        LoginManager.getLoginManager(Lang.bind(this, function(manager) {
+            this._loginManager = manager;
+
+            this._updateHaveShutdown();
+            this._updateHaveRestart();
+            this._updateHaveSuspend();
+        }));
 
         this._settings = new Gio.Settings({ schema: GdmUtil.LOGIN_SCREEN_SCHEMA });
         this._settings.connect('changed::disable-restart-buttons',
@@ -64,6 +70,12 @@ const PowerMenuButton = new Lang.Class({
     },
 
     _updateHaveShutdown: function() {
+        if (!this._loginManager) {
+            this._haveShutdown = false;
+            this._powerOffItem.actor.visible = false;
+            return;
+        }
+
         this._loginManager.canPowerOff(Lang.bind(this, function(result) {
             this._haveShutdown = result;
             this._powerOffItem.actor.visible = this._haveShutdown;
@@ -72,6 +84,12 @@ const PowerMenuButton = new Lang.Class({
     },
 
     _updateHaveRestart: function() {
+        if (!this._loginManager) {
+            this._haveRestart = false;
+            this._restartItem.actor.visible = false;
+            return;
+        }
+
         this._loginManager.canReboot(Lang.bind(this, function(result) {
             this._haveRestart = result;
             this._restartItem.actor.visible = this._haveRestart;
@@ -80,6 +98,12 @@ const PowerMenuButton = new Lang.Class({
     },
 
     _updateHaveSuspend: function() {
+        if (!this._loginManager) {
+            this._haveSuspend = false;
+            this._suspendItem.actor.visible = false;
+            return;
+        }
+
         this._loginManager.canSuspend(Lang.bind(this, function(result) {
             this._haveSuspend = result;
             this._suspendItem.actor.visible = this._haveSuspend;

@@ -97,13 +97,22 @@ function loadRemoteSearchProvidersFromDir(dir, loadedProviders, addProviderCallb
                                                           icon,
                                                           busName,
                                                           objectPath);
+                remoteProvider.initAsync(null, function(obj, result) {
+                    try {
+                        remoteProvider.initFinish(result);
+                    } catch(e) {
+                        log('Failed to add search provider "%s": %s'.format(title, e.toString()));
+                        return;
+                    }
+
+                    addProviderCallback(remoteProvider);
+                });
+
                 loadedProviders[objectPath] = remoteProvider;
             } catch(e) {
                 log('Failed to add search provider "%s": %s'.format(title, e.toString()));
                 continue;
             }
-
-            addProviderCallback(remoteProvider);
         }
     }));
 
@@ -114,12 +123,39 @@ const RemoteSearchProvider = new Lang.Class({
     Extends: Search.SearchProvider,
 
     _init: function(title, icon, dbusName, dbusPath) {
+        this.parent(title.toUpperCase());
+
         this._proxy = new SearchProviderProxy({ g_name: dbusName,
                                                 g_object_path: dbusPath });
-        this._proxy.init(null);
-
-        this.parent(title.toUpperCase());
         this._cancellable = new Gio.Cancellable();
+    },
+
+    initAsync: function(cancellable, asyncCallback) {
+        // Can't pass "this" as source object, because RemoteSearchProvider
+        // is not a GObject.Object (and in gjs you can't inherit from a JS
+        // type that in turn inherits from GObject)
+
+        let simpleResult = Gio.SimpleAsyncResult.new(null, asyncCallback, null);
+        simpleResult.set_check_cancellable(cancellable);
+
+        this._proxy.init_async(GLib.PRIORITY_DEFAULT, cancellable, Lang.bind(this, function(proxy, result) {
+            try {
+                proxy.init_finish(result);
+
+                simpleResult.set_op_res_gboolean(true);
+            } catch(e if e instanceof GLib.Error) {
+                simpleResult.set_from_error(e);
+            }
+
+            simpleResult.complete();
+        }));
+    },
+
+    initFinish: function(simpleResult) {
+        if (!simpleResult.propagate_error())
+            return simpleResult.get_op_res_gboolean();
+
+        return false;
     },
 
     createIcon: function(size, meta) {
