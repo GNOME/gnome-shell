@@ -136,8 +136,6 @@ void     shell_global_reexec_self               (ShellGlobal  *global);
 
 const char *     shell_global_get_session_mode  (ShellGlobal  *global);
 
-ClutterActor * shell_global_create_xrootpmap_texture (ShellGlobal *global);
-
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */

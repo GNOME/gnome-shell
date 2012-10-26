@@ -104,7 +104,7 @@ const LayoutManager = new Lang.Class({
         this.primaryMonitor = null;
         this.primaryIndex = -1;
         this._hotCorners = [];
-        this._rootPixmap = null;
+        this._background = null;
         this._leftPanelBarrier = 0;
         this._rightPanelBarrier = 0;
         this._trayBarrier = 0;
@@ -333,30 +333,30 @@ const LayoutManager = new Lang.Class({
         // to the greeter. Otherwise, we'll just animate the panel,
         // as usual.
         if (Main.sessionMode.isGreeter) {
-            this._rootPixmap = global.create_xrootpmap_texture();
-            if (this._rootPixmap != null) {
-                Main.uiGroup.add_actor(this._rootPixmap);
-                Tweener.addTween(this._rootPixmap,
+            this._background = Meta.BackgroundActor.new_for_screen(global.screen);
+            if (this._background != null) {
+                Main.uiGroup.add_actor(this._background);
+                Tweener.addTween(this._background,
                                  { opacity: 0,
                                    time: PLYMOUTH_TRANSITION_TIME,
                                    transition: 'linear',
-                                   onComplete: this._fadeRootpmapComplete,
+                                   onComplete: this._fadeBackgroundComplete,
                                    onCompleteScope: this });
                 plymouthTransitionRunning = true;
             }
         }
 
         if (!plymouthTransitionRunning)
-            this._fadeRootpmapComplete();
+            this._fadeBackgroundComplete();
     },
 
-    _fadeRootpmapComplete: function() {
+    _fadeBackgroundComplete: function() {
         // Don't animate the strut
         this._chrome.freezeUpdateRegions();
 
-        if (this._rootPixmap != null) {
-            this._rootPixmap.destroy();
-            this._rootPixmap = null;
+        if (this._background != null) {
+            this._background.destroy();
+            this._background = null;
         }
 
         Tweener.addTween(this.panelBox,
