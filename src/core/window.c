@@ -3304,8 +3304,11 @@ meta_window_hide (MetaWindow *window)
        * active workspace; when it is not, we need to pass in NULL, so as to
        * focus the default window for the active workspace (this scenario
        * arises when we are switching workspaces).
+       * We also pass in NULL if we are in the process of hiding all non-desktop
+       * windows to avoid unexpected changes to the stacking order.
        */
-      if (my_workspace == window->screen->active_workspace)
+      if (my_workspace == window->screen->active_workspace &&
+          !my_workspace->showing_desktop)
         not_this_one = window;
 
       meta_workspace_focus_default_window (window->screen->active_workspace,
