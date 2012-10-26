@@ -777,16 +777,19 @@ const LayoutStrategy = new Lang.Class({
     // Computes and returns a fancy scale for @window using the
     // base scale, @scale.
     _computeWindowScale: function(window, scale) {
-        let width = window.actor.width;
-        let height = window.actor.height;
-        let ratio;
+        // Since we align windows next to each other, the height of the
+        // thumbnails is much more important to preserve than the width of
+        // them, so two windows with equal height, but maybe differering
+        // widths line up.
+        let ratio = window.actor.height / this._monitor.height;
 
-        if (width > height)
-            ratio = width / this._monitor.width;
-        else
-            ratio = height / this._monitor.height;
+        // The purpose of this manipulation here is to prevent windows
+        // from getting too small. For something like a calculator window,
+        // we need to bump up the size just a bit to make sure it looks
+        // good. We'll use a multiplier of 1.5 for this.
 
-        let fancyScale = (2 / (1 + ratio)) * scale;
+        // Map from [0, 1] to [1.5, 1]
+        let fancyScale = _interpolate(1.5, 1, ratio) * scale;
         return fancyScale;
     },
 
