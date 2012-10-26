@@ -214,7 +214,8 @@ const Button = new Lang.Class({
     destroy: function() {
         this.actor._delegate = null;
 
-        this.menu.destroy();
+        if (this.menu)
+            this.menu.destroy();
         this.actor.destroy();
 
         this.emit('destroy');
