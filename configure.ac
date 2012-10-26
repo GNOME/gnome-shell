@@ -97,8 +97,7 @@ PKG_CHECK_MODULES(GNOME_SHELL, gio-unix-2.0 >= $GIO_MIN_VERSION
                                telepathy-logger-0.2 >= $TELEPATHY_LOGGER_MIN_VERSION
                                polkit-agent-1 >= $POLKIT_MIN_VERSION xfixes
                                libnm-glib libnm-util gnome-keyring-1
-                               gcr-3 >= $GCR_MIN_VERSION
-                               gnome-desktop-3.0 >= $GNOME_DESKTOP_REQUIRED_VERSION)
+                               gcr-3 >= $GCR_MIN_VERSION)
 
 PKG_CHECK_MODULES(SHELL_PERF_HELPER, gtk+-3.0 gio-2.0)
 
