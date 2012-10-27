@@ -445,6 +445,9 @@ const WindowOverlay = new Lang.Class({
         this._parentActor = parentActor;
         this._hidden = false;
 
+        this.borderSize = 0;
+        this.border = new St.Bin({ style_class: 'window-clone-border' });
+
         let title = new St.Label({ style_class: 'window-caption',
                                    text: metaWindow.title });
         title.clutter_text.ellipsize = Pango.EllipsizeMode.END;
@@ -482,11 +485,13 @@ const WindowOverlay = new Lang.Class({
         this.closeButton = button;
 
         parentActor.add_actor(this.title);
+        parentActor.add_actor(this.border);
         parentActor.add_actor(this.closeButton);
         title.connect('style-changed',
                       Lang.bind(this, this._onStyleChanged));
         button.connect('style-changed',
                        Lang.bind(this, this._onStyleChanged));
+        this.border.connect('style-changed', Lang.bind(this, this._onStyleChanged));
         // force a style change if we are already on a stage - otherwise
         // the signal will be emitted normally when we are added
         if (parentActor.get_stage())
@@ -497,13 +502,17 @@ const WindowOverlay = new Lang.Class({
         this._hidden = true;
         this.closeButton.hide();
         this.title.hide();
+        this.title.remove_style_pseudo_class('hover');
+
+        this.border.hide();
     },
 
     show: function() {
         this._hidden = false;
-        if (this._windowClone.actor.has_pointer)
-            this.closeButton.show();
+
         this.title.show();
+        if (this._windowClone.actor.has_pointer)
+            this._animateVisible();
     },
 
     fadeIn: function() {
@@ -520,8 +529,12 @@ const WindowOverlay = new Lang.Class({
     },
 
     chromeHeights: function () {
-        return [this.closeButton.height - this.closeButton._overlap,
+        return [Math.max(this.borderSize, this.closeButton.height - this.closeButton._overlap),
                 this.title.height + this.title._spacing];
+    },
+
+    chromeWidths: function () {
+        return [this.borderSize, this.borderSize];
     },
 
     _repositionSelf: function() {
@@ -578,16 +591,32 @@ const WindowOverlay = new Lang.Class({
             title.width = titleWidth;
             title.set_position(Math.floor(titleX), Math.floor(titleY));
         }
+
+        let borderX = cloneX - this.borderSize;
+        let borderY = cloneY - this.borderSize;
+        let borderWidth = cloneWidth + 2 * this.borderSize;
+        let borderHeight = cloneHeight + 2 * this.borderSize;
+
+        if (animate) {
+            this._animateOverlayActor(this.border, borderX, borderY,
+                                      borderWidth, borderHeight);
+        } else {
+            this.border.set_position(borderX, borderY);
+            this.border.set_size(borderWidth, borderHeight);
+        }
     },
 
-    _animateOverlayActor: function(actor, x, y, width) {
-        Tweener.addTween(actor,
-                         { x: x,
-                           y: y,
-                           width: width,
-                           time: Overview.ANIMATION_TIME,
-                           transition: 'easeOutQuad'
-                         });
+    _animateOverlayActor: function(actor, x, y, width, height) {
+        let params = { x: x,
+                       y: y,
+                       width: width,
+                       time: Overview.ANIMATION_TIME,
+                       transition: 'easeOutQuad' };
+
+        if (height !== undefined)
+            params.height = height;
+
+        Tweener.addTween(actor, params);
     },
 
     _closeWindow: function(actor) {
@@ -630,6 +659,21 @@ const WindowOverlay = new Lang.Class({
         this._windowClone.metaWindow.disconnect(this._updateCaptionId);
         this.title.destroy();
         this.closeButton.destroy();
+        this.border.destroy();
+    },
+
+    _animateVisible: function() {
+        this._parentActor.raise_top();
+        this.closeButton.show();
+
+        this.border.show();
+        this.border.opacity = 0;
+        Tweener.addTween(this.border,
+                         { opacity: 255,
+                           time: CLOSE_BUTTON_FADE_TIME,
+                           transition: 'easeOutQuad' });
+
+        this.title.add_style_pseudo_class('hover');
     },
 
     _onEnter: function() {
@@ -639,8 +683,8 @@ const WindowOverlay = new Lang.Class({
         // are shown again
         if (this._hidden)
             return;
-        this._parentActor.raise_top();
-        this.closeButton.show();
+
+        this._animateVisible();
         this.emit('show-close-button');
     },
 
@@ -652,8 +696,17 @@ const WindowOverlay = new Lang.Class({
     _idleToggleCloseButton: function() {
         this._idleToggleCloseId = 0;
         if (!this._windowClone.actor.has_pointer &&
-            !this.closeButton.has_pointer)
+            !this.closeButton.has_pointer) {
             this.closeButton.hide();
+
+            this.border.opacity = 255;
+            Tweener.addTween(this.border,
+                             { opacity: 0,
+                               time: CLOSE_BUTTON_FADE_TIME,
+                               transition: 'easeInQuad' });
+
+            this.title.remove_style_pseudo_class('hover');
+        }
 
         return false;
     },
@@ -664,6 +717,8 @@ const WindowOverlay = new Lang.Class({
             this._idleToggleCloseId = 0;
         }
         this.closeButton.hide();
+        this.border.hide();
+        this.title.remove_style_pseudo_class('hover');
     },
 
     _onStyleChanged: function() {
@@ -672,6 +727,9 @@ const WindowOverlay = new Lang.Class({
 
         let closeNode = this.closeButton.get_theme_node();
         this.closeButton._overlap = closeNode.get_length('-shell-close-overlap');
+
+        let borderNode = this.border.get_theme_node();
+        this.borderSize = borderNode.get_border_width(St.Side.TOP);
 
         this._parentActor.queue_relayout();
     }
@@ -1623,20 +1681,25 @@ const Workspace = new Lang.Class({
             return [];
 
         let closeButtonHeight, captionHeight;
+        let leftBorder, rightBorder;
         if (this._windowOverlays.length) {
             // All of the overlays have the same chrome sizes,
             // so just pick the first one.
             let overlay = this._windowOverlays[0];
             [closeButtonHeight, captionHeight] = overlay.chromeHeights();
+            [leftBorder, rightBorder] = overlay.chromeWidths();
         } else {
             [closeButtonHeight, captionHeight] = [0, 0];
         }
 
         rowSpacing += captionHeight;
+        columnSpacing += rightBorder;
 
         let area = { x: this._x, y: this._y, width: this._width, height: this._height };
         area.y += closeButtonHeight;
         area.height -= closeButtonHeight;
+        area.x += leftBorder;
+        area.width -= leftBorder;
 
         if (!this._currentLayout)
             this._currentLayout = this._computeLayout(windows, area, rowSpacing, columnSpacing, captionHeight);
