@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-10-27 16:22+0000\n"
-"PO-Revision-Date: 2012-10-28 16:59+0000\n"
+"PO-Revision-Date: 2012-10-28 19:49+0000\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -801,13 +801,13 @@ msgstr "Prijať"
 #: ../js/ui/components/telepathyClient.js:1128
 #, c-format
 msgid "Video call from %s"
-msgstr "Videohovor od používateľa %s"
+msgstr "Videohovor od kontaktu %s"
 
 #. translators: argument is a contact name like Alice for example.
 #: ../js/ui/components/telepathyClient.js:1131
 #, c-format
 msgid "Call from %s"
-msgstr "Hovor od používateľa %s"
+msgstr "Hovor od kontaktu %s"
 
 #: ../js/ui/components/telepathyClient.js:1136
 #: ../js/ui/status/bluetooth.js:346
