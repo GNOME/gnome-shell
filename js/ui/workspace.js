@@ -774,13 +774,9 @@ const LayoutStrategy = new Lang.Class({
                  windows: [] };
     },
 
-    // Compute the size and fancy scale for @window using the
+    // Computes and returns a fancy scale for @window using the
     // base scale, @scale.
-    //
-    // Returns a list structure: [ scaledWidth, scaledHeight, fancyScale ]
-    // where scaledWidth and scaledHeight are the window's
-    // width and height, scaled by fancyScale for convenience.
-    _computeWindowSizeAndScale: function(window, scale) {
+    _computeWindowScale: function(window, scale) {
         let width = window.actor.width;
         let height = window.actor.height;
         let ratio;
@@ -791,7 +787,7 @@ const LayoutStrategy = new Lang.Class({
             ratio = height / this._monitor.height;
 
         let fancyScale = (2 / (1 + ratio)) * scale;
-        return [width * fancyScale, height * fancyScale, fancyScale];
+        return fancyScale;
     },
 
     // Compute the size of each row, by assigning to the properties
@@ -873,7 +869,10 @@ const LayoutStrategy = new Lang.Class({
             for (let j = 0; j < row.windows.length; j++) {
                 let window = row.windows[j];
 
-                let [width, height, s] = this._computeWindowSizeAndScale(window, scale);
+                let s = this._computeWindowScale(window, scale);
+                s = Math.min(s, WINDOW_CLONE_MAXIMUM_SCALE);
+                let width = window.actor.width * s;
+                let height = window.actor.height * s;
                 let y = row.y + row.height - height;
 
                 let x = baseX;
@@ -934,7 +933,9 @@ const UnalignedLayoutStrategy = new Lang.Class({
 
             for (; windowIdx < windows.length; windowIdx++) {
                 let window = windows[windowIdx];
-                let [width, height] = this._computeWindowSizeAndScale(window, 1);
+                let s = this._computeWindowScale(window, 1);
+                let width = window.actor.width * s;
+                let height = window.actor.height * s;
                 row.fullHeight = Math.max(row.fullHeight, height);
 
                 // either new width is < idealWidth or new width is nearer from idealWidth then oldWidth
@@ -1000,9 +1001,9 @@ const GridLayoutStrategy = new Lang.Class({
                 let window = windows[windowIdx];
                 row.windows.push(window);
 
-                let [width, height] = this._computeWindowSizeAndScale(window, 1);
-                maxWindowWidth = Math.max(maxWindowWidth, width);
-                maxWindowHeight = Math.max(maxWindowHeight, height);
+                let s = this._computeWindowScale(window, 1);
+                maxWindowWidth = Math.max(maxWindowWidth, window.actor.width * s);
+                maxWindowHeight = Math.max(maxWindowHeight, window.actor.height * s);
             }
         }
 
