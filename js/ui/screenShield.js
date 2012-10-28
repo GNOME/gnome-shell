@@ -9,6 +9,7 @@ const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Signals = imports.signals;
+const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const TweenerEquations = imports.tweener.equations;
 
@@ -436,6 +437,8 @@ const ScreenShield = new Lang.Class({
                                                { inhibitEvents: true,
                                                  fadeInTime: STANDARD_FADE_TIME,
                                                  fadeFactor: 1 });
+
+        this.idleMonitor = Shell.IdleMonitor.get();
     },
 
     _onLockScreenKeyRelease: function(actor, event) {
@@ -545,35 +548,49 @@ const ScreenShield = new Lang.Class({
     },
 
     _onStatusChanged: function(status) {
-        if (status == GnomeSession.PresenceStatus.IDLE) {
-            if (this._dialog) {
-                this._dialog.cancel();
-                if (!this._isGreeter) {
-                    this._dialog = null;
+        if (status != GnomeSession.PresenceStatus.IDLE)
+            return;
+
+        if (this._dialog) {
+            this._dialog.cancel();
+            if (!this._isGreeter) {
+                this._dialog = null;
+            }
+        }
+
+        if (!this._isModal) {
+            Main.pushModal(this.actor);
+            this._isModal = true;
+        }
+
+        if (!this._isActive) {
+            this._lightbox.show();
+
+            if (this._activationTime == 0)
+                this._activationTime = GLib.get_monotonic_time();
+
+            // What we want is a negative transition to 0, so we install a watch for
+            // 1 second and trigger it if the idle_time becomes lower than that
+            // The correct fix will come in GNOME 3.8 with GnomeDesktop.IdleMonitor
+            this._becameActiveId = this.idleMonitor.add_watch(1000, Lang.bind(this, function() {
+                if (this.idleMonitor.get_idletime() >= 1000)
+                    return;
+
+                this.idleMonitor.remove_watch(this._becameActiveId);
+
+                let lightboxWasShown = this._lightbox.shown;
+                this._lightbox.hide();
+
+                let shouldLock = lightboxWasShown && this._settings.get_boolean(LOCK_ENABLED_KEY);
+                if (shouldLock || this._isLocked) {
+                    this.lock(false);
+                } else if (this._isActive) {
+                    this.unlock();
                 }
-            }
+            }));
 
-            if (!this._isModal) {
-                Main.pushModal(this.actor);
-                this._isModal = true;
-            }
-
-            if (!this._isActive) {
-                this._lightbox.show();
-
-                if (this._activationTime == 0)
-                    this._activationTime = GLib.get_monotonic_time();
-            }
-        } else {
-            let lightboxWasShown = this._lightbox.shown;
-            this._lightbox.hide();
-
-            let shouldLock = lightboxWasShown && this._settings.get_boolean(LOCK_ENABLED_KEY);
-            if (shouldLock || this._isActive) {
-                this.lock(false);
-            } else if (this._isModal) {
-                this.unlock();
-            }
+            this._isActive = true;
+            this.emit('lock-status-changed');
         }
     },
 
@@ -830,6 +847,7 @@ const ScreenShield = new Lang.Class({
 
         this._activationTime = 0;
         this._isActive = false;
+        this._isLocked = false;
         this.emit('lock-status-changed');
     },
 
@@ -854,6 +872,7 @@ const ScreenShield = new Lang.Class({
         this._resetLockScreen(animate, animate);
 
         this._isActive = true;
+        this._isLocked = true;
         this.emit('lock-status-changed');
     },
 });
