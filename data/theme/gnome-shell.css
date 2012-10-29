@@ -375,6 +375,12 @@ StScrollBar StButton#vhandle:active {
 }
 
 #searchEntry {
+    border-color: rgba(245,245,245,0.3);
+    color: rgb(192, 192, 192);
+    caret-color: rgb(192, 192, 192);
+}
+
+#searchEntry:hover {
     color: rgb(128, 128, 128);
     caret-color: rgb(128, 128, 128);
 }
@@ -688,6 +694,11 @@ StScrollBar StButton#vhandle:active {
 
 .search-entry-icon {
     icon-size: 1em;
+    color: #c0c0c0;
+}
+
+#searchEntry:hover .search-entry-icon,
+#searchEntry:focus .search-entry-icon {
     color: #8d8f8a;
 }
 
