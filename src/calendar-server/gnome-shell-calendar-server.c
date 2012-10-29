@@ -57,6 +57,7 @@ static const gchar introspection_xml[] =
   "    <signal name='Changed'/>"
   "    <property name='Since' type='x' access='read'/>"
   "    <property name='Until' type='x' access='read'/>"
+  "    <property name='HasCalendars' type='b' access='read'/>"
   "  </interface>"
   "</node>";
 static GDBusNodeInfo *introspection_data = NULL;
@@ -726,6 +727,12 @@ app_load_events (App *app)
   app->cache_invalid = FALSE;
 }
 
+static gboolean
+app_has_calendars (App *app)
+{
+  return calendar_sources_has_sources (app->sources);
+}
+
 static void
 on_appointment_sources_changed (CalendarSources *sources,
                                 gpointer         user_data)
@@ -734,6 +741,26 @@ on_appointment_sources_changed (CalendarSources *sources,
 
   print_debug ("Sources changed\n");
   app_load_events (app);
+
+  /* Notify the HasCalendars property */
+  {
+    GVariantBuilder dict_builder;
+
+    g_variant_builder_init (&dict_builder, G_VARIANT_TYPE ("a{sv}"));
+    g_variant_builder_add (&dict_builder, "{sv}", "HasCalendars",
+                           g_variant_new_boolean (app_has_calendars (app)));
+
+    g_dbus_connection_emit_signal (g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL),
+                                   NULL,
+                                   "/org/gnome/Shell/CalendarServer",
+                                   "org.freedesktop.DBus.Properties",
+                                   "PropertiesChanged",
+                                   g_variant_new ("(sa{sv}as)",
+                                                  "org.gnome.Shell.CalendarServer",
+                                                  &dict_builder,
+                                                  NULL),
+                                   NULL);
+  }
 }
 
 static App *
@@ -932,6 +959,10 @@ handle_get_property (GDBusConnection *connection,
   else if (g_strcmp0 (property_name, "Until") == 0)
     {
       ret = g_variant_new_int64 (app->until);
+    }
+  else if (g_strcmp0 (property_name, "HasCalendars") == 0)
+    {
+      ret = g_variant_new_boolean (app_has_calendars (app));
     }
   else
     {

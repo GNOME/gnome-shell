@@ -61,6 +61,8 @@ CalendarSources *calendar_sources_get                     (void);
 GList           *calendar_sources_get_appointment_clients (CalendarSources *sources);
 GList           *calendar_sources_get_task_clients        (CalendarSources *sources);
 
+gboolean         calendar_sources_has_sources             (CalendarSources *sources);
+
 G_END_DECLS
 
 #endif /* __CALENDAR_SOURCES_H__ */

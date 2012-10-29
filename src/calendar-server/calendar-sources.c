@@ -490,6 +490,17 @@ calendar_sources_registry_source_removed_cb (ESourceRegistry *registry,
     }
 }
 
+static void
+ensure_appointment_sources (CalendarSources *sources)
+{
+  if (!sources->priv->appointment_sources.loaded)
+    {
+      calendar_sources_load_esource_list (sources->priv->registry,
+                                          &sources->priv->appointment_sources);
+      sources->priv->appointment_sources.loaded = TRUE;
+    }
+}
+
 GList *
 calendar_sources_get_appointment_clients (CalendarSources *sources)
 {
@@ -497,12 +508,7 @@ calendar_sources_get_appointment_clients (CalendarSources *sources)
 
   g_return_val_if_fail (CALENDAR_IS_SOURCES (sources), NULL);
 
-  if (!sources->priv->appointment_sources.loaded)
-    {
-      calendar_sources_load_esource_list (sources->priv->registry,
-                                          &sources->priv->appointment_sources);
-      sources->priv->appointment_sources.loaded = TRUE;
-    }
+  ensure_appointment_sources (sources);
 
   list = g_hash_table_get_values (sources->priv->appointment_sources.clients);
 
@@ -512,6 +518,17 @@ calendar_sources_get_appointment_clients (CalendarSources *sources)
   return list;
 }
 
+static void
+ensure_task_sources (CalendarSources *sources)
+{
+  if (!sources->priv->task_sources.loaded)
+    {
+      calendar_sources_load_esource_list (sources->priv->registry,
+                                          &sources->priv->task_sources);
+      sources->priv->task_sources.loaded = TRUE;
+    }
+}
+
 GList *
 calendar_sources_get_task_clients (CalendarSources *sources)
 {
@@ -519,12 +536,7 @@ calendar_sources_get_task_clients (CalendarSources *sources)
 
   g_return_val_if_fail (CALENDAR_IS_SOURCES (sources), NULL);
 
-  if (!sources->priv->task_sources.loaded)
-    {
-      calendar_sources_load_esource_list (sources->priv->registry,
-                                          &sources->priv->task_sources);
-      sources->priv->task_sources.loaded = TRUE;
-    }
+  ensure_task_sources (sources);
 
   list = g_hash_table_get_values (sources->priv->task_sources.clients);
 
@@ -532,4 +544,16 @@ calendar_sources_get_task_clients (CalendarSources *sources)
     link->data = ((ClientData *) link->data)->client;
 
   return list;
+}
+
+gboolean
+calendar_sources_has_sources (CalendarSources *sources)
+{
+  g_return_val_if_fail (CALENDAR_IS_SOURCES (sources), FALSE);
+
+  ensure_appointment_sources (sources);
+  ensure_task_sources (sources);
+
+  return g_hash_table_size (sources->priv->appointment_sources.clients) > 0 ||
+    g_hash_table_size (sources->priv->task_sources.clients) > 0;
 }

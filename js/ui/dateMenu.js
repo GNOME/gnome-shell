@@ -161,8 +161,10 @@ const DateMenuButton = new Lang.Class({
         this._openClocksItem.actor.visible = app !== null;
     },
 
-    _setEventsVisibility: function(visible) {
+    _updateEventsVisibility: function() {
+        let visible = this._eventSource.hasCalendars;
         this._openCalendarItem.actor.visible = visible;
+        this._openClocksItem.actor.visible = visible;
         this._separator.visible = visible;
         if (visible) {
           let alignment = 0.25;
@@ -184,6 +186,9 @@ const DateMenuButton = new Lang.Class({
         this._eventList.setEventSource(eventSource);
 
         this._eventSource = eventSource;
+        this._eventSource.connect('notify::has-calendars', Lang.bind(this, function() {
+            this._updateEventsVisibility();
+        }));
     },
 
     _sessionUpdated: function() {
@@ -195,7 +200,7 @@ const DateMenuButton = new Lang.Class({
             eventSource = new Calendar.EmptyEventSource();
         }
         this._setEventSource(eventSource);
-        this._setEventsVisibility(showEvents);
+        this._updateEventsVisibility();
 
         // This needs to be handled manually, as the code to
         // autohide separators doesn't work across the vbox
