@@ -839,9 +839,13 @@ const LoginDialog = new Lang.Class({
     },
 
     _showMessage: function(userVerifier, message, styleClass) {
-        this._promptMessage.text = message;
-        this._promptMessage.styleClass = styleClass;
-        GdmUtil.fadeInActor(this._promptMessage);
+        if (message) {
+            this._promptMessage.text = message;
+            this._promptMessage.styleClass = styleClass;
+            GdmUtil.fadeInActor(this._promptMessage);
+        } else {
+            GdmUtil.fadeOutActor(this._promptMessage);
+        }
     },
 
     _showLoginHint: function(verifier, message) {
