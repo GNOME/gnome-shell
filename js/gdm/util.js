@@ -125,6 +125,9 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     answerQuery: function(serviceName, answer) {
+        // Clear any previous message
+        this.emit('show-message', null, null);
+
         this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
     },
 
