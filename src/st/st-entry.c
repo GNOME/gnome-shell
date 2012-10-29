@@ -65,6 +65,10 @@
 #include "st-clipboard.h"
 #include "st-private.h"
 
+#include <clutter/x11/clutter-x11.h>
+#include <X11/Xlib.h>
+#include <X11/cursorfont.h>
+
 #include "st-widget-accessible.h"
 
 #define HAS_FOCUS(actor) (clutter_actor_get_stage (actor) && clutter_stage_get_key_focus ((ClutterStage *) clutter_actor_get_stage (actor)) == actor)
@@ -614,6 +618,38 @@ st_entry_key_focus_in (ClutterActor *actor)
 }
 
 static void
+st_entry_set_cursor (StEntry  *entry,
+                     gboolean  use_ibeam)
+{
+  Display *dpy;
+  ClutterActor *stage, *actor = CLUTTER_ACTOR (entry);
+  Window wid;
+  static Cursor ibeam = None;
+
+  dpy = clutter_x11_get_default_display ();
+  stage = clutter_actor_get_stage (actor);
+  wid = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
+
+  if (ibeam == None)
+    ibeam = XCreateFontCursor (dpy, XC_xterm);
+
+  if (use_ibeam)
+    XDefineCursor (dpy, wid, ibeam);
+  else
+    XUndefineCursor (dpy, wid);
+}
+
+static gboolean
+st_entry_crossing_event (ClutterActor         *actor,
+                         ClutterCrossingEvent *event)
+{
+  if (event->source == ST_ENTRY (actor)->priv->entry && event->related != NULL)
+    st_entry_set_cursor (ST_ENTRY (actor), (event->type == CLUTTER_ENTER));
+
+  return FALSE;
+}
+
+static void
 st_entry_class_init (StEntryClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -634,6 +670,9 @@ st_entry_class_init (StEntryClass *klass)
 
   actor_class->key_press_event = st_entry_key_press_event;
   actor_class->key_focus_in = st_entry_key_focus_in;
+
+  actor_class->enter_event = st_entry_crossing_event;
+  actor_class->leave_event = st_entry_crossing_event;
 
   widget_class->style_changed = st_entry_style_changed;
   widget_class->navigate_focus = st_entry_navigate_focus;
