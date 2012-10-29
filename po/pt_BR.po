@@ -10,16 +10,17 @@
 # Rodrigo Flores <rodrigomarquesflores@gmail.com>, 2007.
 # Djavan Fagundes <djavanf@gnome.org>, 2008, 2009, 2011.
 # Vladimir Melo <vmelo@gnome.org>, 2009.
-# Antonio Fernandes C. Neto <fernandes@pelivre.org>, 2010.
+# Antonio Fernandes C. Neto <fernandesn@gnome.org>, 2010.
 # Rodrigo Padula de Oliveira <contato@rodrigopadula.com>, 2011.
 # Enrico Nicoletto <liverig@gmail.com>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-17 16:25-0400\n"
-"PO-Revision-Date: 2012-09-12 09:45-0300\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=mutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-10-26 13:53+0000\n"
+"PO-Revision-Date: 2012-10-12 23:18-0300\n"
 "Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -60,16 +61,16 @@ msgstr "Evento de som"
 msgid "Unknown window information request: %d"
 msgstr "Informação solicitada de janela desconhecida: %d"
 
-#: ../src/core/delete.c:114
+#: ../src/core/delete.c:111
 #, c-format
-msgid "%s is not responding."
-msgstr "%s não está respondendo."
+msgid "“%s” is not responding."
+msgstr "\"%s\" não está respondendo."
 
-#: ../src/core/delete.c:118
+#: ../src/core/delete.c:113
 msgid "Application is not responding."
 msgstr "O aplicativo não está respondendo."
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:118
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -77,20 +78,20 @@ msgstr ""
 "Você pode escolher aguardar um pouco e continuar ou forçar o aplicativo a "
 "sair completamente."
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:125
 msgid "_Wait"
 msgstr "_Esperar"
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:125
 msgid "_Force Quit"
 msgstr "_Forçar sair"
 
-#: ../src/core/display.c:380
+#: ../src/core/display.c:396
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Faltando extensão %s necessária para composição"
 
-#: ../src/core/display.c:446
+#: ../src/core/display.c:493
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Falha ao abrir a exibição \"%s\" do X Window System\n"
@@ -165,7 +166,7 @@ msgstr "Versão impressa"
 msgid "Mutter plugin to use"
 msgstr "Plug-in do Mutter para usar"
 
-#: ../src/core/prefs.c:1071
+#: ../src/core/prefs.c:1079
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -173,14 +174,14 @@ msgstr ""
 "As alternativas para aplicativos quebrados estão desabilitadas. É possível "
 "que alguns aplicativos não funcionem de maneira adequada.\n"
 
-#: ../src/core/prefs.c:1146
+#: ../src/core/prefs.c:1154
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "Não foi possível analisar a descrição da fonte \"%s\" a partir da chave "
 "GSettings %s\n"
 
-#: ../src/core/prefs.c:1212
+#: ../src/core/prefs.c:1220
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -189,7 +190,7 @@ msgstr ""
 "\"%s\" localizado no banco de dados de configurações não é um valor válido "
 "para o modificador de botão do mouse\n"
 
-#: ../src/core/prefs.c:1736
+#: ../src/core/prefs.c:1747
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -198,7 +199,7 @@ msgstr ""
 "\"%s\" localizado no banco de dados de configurações não é um valor válido "
 "para a tecla de atalho \"%s\"\n"
 
-#: ../src/core/prefs.c:1833
+#: ../src/core/prefs.c:1844
 #, c-format
 msgid "Workspace %d"
 msgstr "Espaço de trabalho %d"
@@ -328,7 +329,7 @@ msgid "Window manager error: "
 msgstr "Erro do gerenciador de janelas: "
 
 #. first time through
-#: ../src/core/window.c:7234
+#: ../src/core/window.c:7240
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -344,7 +345,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7899
+#: ../src/core/window.c:7905
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -354,22 +355,22 @@ msgstr ""
 "define o tamanho mínimo %d x %d e máximo %d x %d; isso não faz muito "
 "sentido.\n"
 
-#: ../src/core/window-props.c:310
+#: ../src/core/window-props.c:274
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "O aplicativo definiu um _NET_WM_PID %lu inválido\n"
 
-#: ../src/core/window-props.c:429
+#: ../src/core/window-props.c:393
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (em %s)"
 
-#: ../src/core/window-props.c:1484
+#: ../src/core/window-props.c:1448
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Janela WM_TRANSIENT_FOR inválida 0x%lx especificada para %s.\n"
 
-#: ../src/core/window-props.c:1495
+#: ../src/core/window-props.c:1459
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "Janela WM_TRANSIENT_FOR 0x%lx especificada para %s iriar criar loop.\n"
@@ -493,10 +494,24 @@ msgstr ""
 "desabilitados na alternância de janelas."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "Atrasar a alteração do foco até o ponteiro parar de mover"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focus will not be changed immediately when entering a window, but only "
+"after the pointer stops moving."
+msgstr ""
+"Se verdadeiro, e o modo de foco for \"sloppy\" ou \"mouse\", o foco não será "
+"alterado imediatamente ao entrar em uma janela, e sim somente após o "
+"ponteiro parar de mover."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
 msgstr "Largura da borda arrastável"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -505,11 +520,11 @@ msgstr ""
 "não são suficientes, as bordas invisíveis serão adicionadas para encontrar "
 "este valor."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Select window from tab popup"
 msgstr "Selecione a janela a partir da aba instantânea"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid "Cancel tab popup"
 msgstr "Cancelar aba instantânea"
 
@@ -2171,18 +2186,6 @@ msgstr ""
 
 #~ msgid "Enable Visual Bell"
 #~ msgstr "Habilitar campainha visual"
-
-#~ msgid ""
-#~ "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-#~ "the focused window will be automatically raised after a delay specified "
-#~ "by the auto_raise_delay key. This is not related to clicking on a window "
-#~ "to raise it, nor to entering a window during drag-and-drop."
-#~ msgstr ""
-#~ "Se verdadeiro, e o modo de foco for \"sloppy\" ou \"mouse\", a janela "
-#~ "focada será automaticamente elevada após um atraso especificado pela "
-#~ "chave auto_raise_delay. Isso não tem relação alguma com clicar em uma "
-#~ "janela para elevá-la, ou alcançar uma janela durante uma ação de arrastar-"
-#~ "e-soltar."
 
 #~ msgid ""
 #~ "If true, ignore the titlebar_font option, and use the standard "
