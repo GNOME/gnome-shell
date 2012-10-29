@@ -26,6 +26,7 @@ const DISABLE_USER_SWITCH_KEY = 'disable-user-switching';
 const DISABLE_LOCK_SCREEN_KEY = 'disable-lock-screen';
 const DISABLE_LOG_OUT_KEY = 'disable-log-out';
 const LOCK_ENABLED_KEY = 'lock-enabled';
+const ALWAYS_SHOW_LOG_OUT_KEY = 'always-show-log-out';
 
 const DIALOG_ICON_SIZE = 64;
 
@@ -616,12 +617,13 @@ const UserMenuButton = new Lang.Class({
 
     _updateLogout: function() {
         let allowLogout = !this._lockdownSettings.get_boolean(DISABLE_LOG_OUT_KEY);
+        let alwaysShow = global.settings.get_boolean(ALWAYS_SHOW_LOG_OUT_KEY);
         let systemAccount = this._user.system_account;
         let localAccount = this._user.local_account;
         let multiUser = this._userManager.has_multiple_users;
         let multiSession = Gdm.get_session_ids().length > 1;
 
-        this._logoutItem.actor.visible = allowLogout && (multiUser || multiSession || systemAccount || !localAccount);
+        this._logoutItem.actor.visible = allowLogout && (alwaysShow || multiUser || multiSession || systemAccount || !localAccount);
     },
 
     _updateLockScreen: function() {
