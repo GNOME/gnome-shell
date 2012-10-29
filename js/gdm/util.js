@@ -333,12 +333,11 @@ const ShellUserVerifier = new Lang.Class({
         // Otherwise, we allow ALLOWED_FAILURES attempts. After that, we
         // go back to the welcome screen.
 
+        this._failCounter++;
         let canRetry = retry && this._userName &&
             this._failCounter < this._settings.get_int(ALLOWED_FAILURES_KEY);
 
         if (canRetry) {
-            this._failCounter++;
-
             this.clear();
             this.begin(this._userName, new Batch.Hold());
         } else {
