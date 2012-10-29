@@ -39,7 +39,6 @@ stage {
 /* small */
 .app-well-menu,
 .contact-details-status,
-.run-dialog-label,
 .run-dialog-error-label {
     font-size: 9pt;
 }
@@ -335,8 +334,7 @@ StScrollBar StButton#vhandle:active {
 
 #searchEntry,
 .notification StEntry,
-.login-dialog-prompt-entry,
-.prompt-dialog-password-entry {
+.modal-dialog StEntry {
     color: rgb(64, 64, 64);
     caret-color: rgb(64, 64, 64);
     font-size: 12pt;
@@ -346,6 +344,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 #searchEntry,
+.run-dialog-entry,
 .notification StEntry {
     border: 2px solid rgba(245,245,245,0.2);
     background-gradient-start: rgba(5,5,6,0.1);
@@ -358,8 +357,7 @@ StScrollBar StButton#vhandle:active {
 #searchEntry:focus,
 #searchEntry:hover,
 .notification StEntry:focus,
-.login-dialog-prompt-entry,
-.prompt-dialog-password-entry {
+.modal-dialog StEntry {
     border: 2px solid rgb(136,138,133);
     background-gradient-start: rgb(200,200,200);
     background-gradient-end: white;
@@ -368,8 +366,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .notification StEntry:focus,
-.prompt-dialog-password-entry:focus,
-.login-dialog-prompt-entry:focus {
+.modal-dialog StEntry:focus {
     border: 2px solid #3465a4;
 }
 
@@ -386,8 +383,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .notification StEntry,
-.prompt-dialog-password-entry,
-.login-dialog-prompt-entry {
+.modal-dialog StEntry {
     border-radius: 5px;
     padding: 4px 4px;
 }
@@ -1646,25 +1642,23 @@ StScrollBar StButton#vhandle:active {
 
 /* Run Dialog */
 
+.run-dialog-label {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #666666;
+    padding-bottom: .5em;
+}
+
 .run-dialog-error-box {
     padding-top: 15px;
     spacing: 5px;
 }
 
-.run-dialog-entry {
+.modal-dialog .run-dialog-entry {
+    font-size: 9pt;
     font-weight: bold;
     width: 23em;
-    selection-background-color: white;
-    selected-color: black;
-}
-
-.run-dialog {
-    border-radius: 16px;
-
-    padding-right: 21px;
-    padding-left: 21px;
-    padding-bottom: 15px;
-    padding-top: 15px;
+    selection-background-color: #333333;
 }
 
 .lightbox {

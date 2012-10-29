@@ -202,7 +202,7 @@ const RunDialog = new Lang.Class({
 
 
         let label = new St.Label({ style_class: 'run-dialog-label',
-                                   text: _("Please enter a command:") });
+                                   text: _("Enter a Command") });
 
         this.contentLayout.add(label, { y_align: St.Align.START });
 
@@ -236,6 +236,16 @@ const RunDialog = new Lang.Class({
 
         this._errorBox.hide();
 
+        this.setButtons([{ action: Lang.bind(this, this.close),
+                           label: _("Cancel"),
+                           key: Clutter.Escape },
+                         { action: Lang.bind(this,
+                               function() {
+                                   this._activate(false);
+                               }),
+                           label: _("Run"),
+                           isDefault: true }]);
+
         this._pathCompleter = new Gio.FilenameCompleter();
         this._commandCompleter = new CommandCompleter();
         this._group.connect('notify::visible', Lang.bind(this._commandCompleter, this._commandCompleter.update));
@@ -245,21 +255,7 @@ const RunDialog = new Lang.Class({
         this._entryText.connect('key-press-event', Lang.bind(this, function(o, e) {
             let symbol = e.get_key_symbol();
             if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
-                this.popModal();
-                if (e.get_state() & Clutter.ModifierType.CONTROL_MASK)
-                    this._run(o.get_text(), true);
-                else
-                    this._run(o.get_text(), false);
-                if (!this._commandError)
-                    this.close();
-                else {
-                    if (!this.pushModal())
-                        this.close();
-                }
-                return true;
-            }
-            if (symbol == Clutter.Escape) {
-                this.close();
+                this._activate(e.get_state() & Clutter.ModifierType.CONTROL_MASK);
                 return true;
             }
             if (symbol == Clutter.slash) {
@@ -292,6 +288,14 @@ const RunDialog = new Lang.Class({
             }
             return false;
         }));
+    },
+
+    _activate: function(inTerminal) {
+        this.popModal();
+        this._run(this._entryText.get_text(), inTerminal);
+        if (!this._commandError ||
+            !this.pushModal())
+            this.close();
     },
 
     _getCompletion : function(text) {
