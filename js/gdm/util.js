@@ -23,6 +23,7 @@ const BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
 const ALLOWED_FAILURES_KEY = 'allowed-failures';
 
 const LOGO_KEY = 'logo';
+const DISABLE_USER_LIST_KEY = 'disable-user-list';
 
 function fadeInActor(actor) {
     if (actor.opacity == 255 && actor.visible)
