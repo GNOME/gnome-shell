@@ -383,23 +383,10 @@ const TelepathyClient = new Lang.Class({
         }
 
         /* Display notification to ask user to accept/reject request */
-        let source = this._ensureSubscriptionSource();
+        let source = this._ensureAppSource();
 
         let notif = new SubscriptionRequestNotification(source, contact);
         source.notify(notif);
-    },
-
-    _ensureSubscriptionSource: function() {
-        if (this._subscriptionSource == null) {
-            this._subscriptionSource = new MessageTray.Source(_("Subscription request"),
-                                                              'gtk-dialog-question');
-            Main.messageTray.add(this._subscriptionSource);
-            this._subscriptionSource.connect('destroy', Lang.bind(this, function () {
-                this._subscriptionSource = null;
-            }));
-        }
-
-        return this._subscriptionSource;
     },
 
     _accountConnectionStatusNotifyCb: function(account) {
@@ -415,7 +402,7 @@ const TelepathyClient = new Lang.Class({
             return;
 
         /* Display notification that account failed to connect */
-        let source = this._ensureAccountSource();
+        let source = this._ensureAppSource();
 
         notif = new AccountNotification(source, account, connectionError);
         this._accountNotifications[account.get_object_path()] = notif;
@@ -425,17 +412,16 @@ const TelepathyClient = new Lang.Class({
         source.notify(notif);
     },
 
-    _ensureAccountSource: function() {
-        if (this._accountSource == null) {
-            this._accountSource = new MessageTray.Source(_("Connection error"),
-                                                         'gtk-dialog-error');
-            Main.messageTray.add(this._accountSource);
-            this._accountSource.connect('destroy', Lang.bind(this, function () {
-                this._accountSource = null;
+    _ensureAppSource: function() {
+        if (this._appSource == null) {
+            this._appSource = new MessageTray.Source(_("Chat"), 'empathy');
+            Main.messageTray.add(this._appSource);
+            this._appSource.connect('destroy', Lang.bind(this, function () {
+                this._appSource = null;
             }));
         }
 
-        return this._accountSource;
+        return this._appSource;
     }
 });
 
@@ -1353,26 +1339,16 @@ const AccountNotification = new Lang.Class({
         this.parent(source,
                     /* translators: argument is the account name, like
                      * name@jabber.org for example. */
-                    _("Connection to %s failed").format(account.get_display_name()),
-                    null, { customContent: true });
-
-        this._label = new St.Label();
-        this.addActor(this._label);
-        this._updateMessage(connectionError);
+                    _("Unable to connect to %s").format(account.get_display_name()),
+                    this._getMessage(connectionError));
 
         this._account = account;
 
-        this.addButton('reconnect', _("Reconnect"));
-        this.addButton('edit', _("Edit account"));
+        this.addButton('view', _("View account"));
 
         this.connect('action-invoked', Lang.bind(this, function(self, action) {
             switch (action) {
-            case 'reconnect':
-                // If it fails again, a new notification should pop up with the
-                // new error.
-                account.reconnect_async(null);
-                break;
-            case 'edit':
+            case 'view':
                 let cmd = '/usr/bin/empathy-accounts'
                         + ' --select-account=%s'
                         .format(account.get_path_suffix());
@@ -1398,19 +1374,19 @@ const AccountNotification = new Lang.Class({
                 if (status == Tp.ConnectionStatus.CONNECTED) {
                     this.destroy();
                 } else if (status == Tp.ConnectionStatus.DISCONNECTED) {
-                    this._updateMessage(account.connection_error);
+                    this.update(this.title, this._getMessage(account.connection_error));
                 }
             }));
     },
 
-    _updateMessage: function(connectionError) {
+    _getMessage: function(connectionError) {
         let message;
         if (connectionError in _connectionErrorMessages) {
             message = _connectionErrorMessages[connectionError];
         } else {
             message = _("Unknown reason");
         }
-        this._label.set_text(message);
+        return message;
     },
 
     destroy: function() {
