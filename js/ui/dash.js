@@ -621,8 +621,10 @@ const Dash = new Lang.Class({
             icon.setIconSize(this.iconSize);
 
             // Don't animate the icon size change when the overview
-            // is not visible or when initially filling the dash
-            if (!Main.overview.visible || !this._shownInitially)
+            // is transitioning, not visible or when initially filling
+            // the dash
+            if (!Main.overview.visible || Main.overview.animationInProgress ||
+                !this._shownInitially)
                 continue;
 
             let [targetWidth, targetHeight] = icon.icon.get_size();
@@ -746,8 +748,9 @@ const Dash = new Lang.Class({
         for (let i = 0; i < removedActors.length; i++) {
             let item = removedActors[i]._delegate;
 
-            // Don't animate item removal when the overview is hidden
-            if (Main.overview.visible)
+            // Don't animate item removal when the overview is transitioning
+            // or hidden
+            if (Main.overview.visible && !Main.overview.animationInProgress)
                 item.animateOutAndDestroy();
             else
                 item.destroy();
@@ -762,8 +765,9 @@ const Dash = new Lang.Class({
             return;
         }
 
-        // Don't animate item addition when the overview is hidden
-        if (!Main.overview.visible)
+        // Don't animate item addition when the overview is transitioning
+        // or hidden
+        if (!Main.overview.visible || Main.overview.animationInProgress)
             return;
 
         for (let i = 0; i < addedItems.length; i++)
