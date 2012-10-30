@@ -187,7 +187,7 @@ const IMStatusChooserItem = new Lang.Class({
         item = new IMStatusItem(_("Idle"), 'user-idle-symbolic');
         this._combo.addMenuItem(item, IMStatus.IDLE);
 
-        item = new IMStatusItem(_("Unavailable"), 'user-offline-symbolic');
+        item = new IMStatusItem(_("Offline"), 'user-offline-symbolic');
         this._combo.addMenuItem(item, IMStatus.OFFLINE);
 
         this._combo.connect('active-item-changed',
