@@ -34,7 +34,6 @@
 #include <unistd.h>
 
 #include <gio/gio.h>
-#include <gtk/gtk.h>
 
 #define HANDLE_LIBICAL_MEMORY
 #include <libecal/libecal.h>
@@ -985,9 +984,11 @@ on_name_lost (GDBusConnection *connection,
               const gchar     *name,
               gpointer         user_data)
 {
+  GMainLoop *main_loop = user_data;
+
   g_print ("gnome-shell-calendar-server[%d]: Lost (or failed to acquire) the name " BUS_NAME " - exiting\n",
            (gint) getpid ());
-  gtk_main_quit ();
+  g_main_loop_quit (main_loop);
 }
 
 static void
@@ -1003,11 +1004,13 @@ stdin_channel_io_func (GIOChannel *source,
                        GIOCondition condition,
                        gpointer data)
 {
+  GMainLoop *main_loop = data;
+
   if (condition & G_IO_HUP)
     {
       g_debug ("gnome-shell-calendar-server[%d]: Got HUP on stdin - exiting\n",
                (gint) getpid ());
-      gtk_main_quit ();
+      g_main_loop_quit (main_loop);
     }
   else
     {
@@ -1022,6 +1025,7 @@ main (int    argc,
 {
   GError *error;
   GOptionContext *opt_context;
+  GMainLoop *main_loop;
   gint ret;
   guint name_owner_id;
   GIOChannel *stdin_channel;
@@ -1031,9 +1035,7 @@ main (int    argc,
   name_owner_id = 0;
   stdin_channel = NULL;
 
-  /* We need to initialize GTK+ since evolution-data-server may decide to use
-   * GTK+ to pop up a dialog box */
-  gtk_init (&argc, &argv);
+  g_type_init ();
 
   introspection_data = g_dbus_node_info_new_for_xml (introspection_xml, NULL);
   g_assert (introspection_data != NULL);
@@ -1048,11 +1050,15 @@ main (int    argc,
       goto out;
     }
 
+  main_loop = g_main_loop_new (NULL, FALSE);
+
   stdin_channel = g_io_channel_unix_new (STDIN_FILENO);
-  g_io_add_watch (stdin_channel,
-                  G_IO_HUP,
-                  stdin_channel_io_func,
-                  NULL);
+  g_io_add_watch_full (stdin_channel,
+                       G_PRIORITY_DEFAULT,
+                       G_IO_HUP,
+                       stdin_channel_io_func,
+                       g_main_loop_ref (main_loop),
+                       (GDestroyNotify) g_main_loop_unref);
 
   name_owner_id = g_bus_own_name (G_BUS_TYPE_SESSION,
                                   BUS_NAME,
@@ -1061,10 +1067,12 @@ main (int    argc,
                                   on_bus_acquired,
                                   on_name_acquired,
                                   on_name_lost,
-                                  NULL,
-                                  NULL);
+                                  g_main_loop_ref (main_loop),
+                                  (GDestroyNotify) g_main_loop_unref);
 
-  gtk_main ();
+  g_main_loop_run (main_loop);
+
+  g_main_loop_unref (main_loop);
 
   ret = 0;
 
