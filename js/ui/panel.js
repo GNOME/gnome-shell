@@ -247,6 +247,10 @@ const AppMenuButton = new Lang.Class({
         this._container.connect('get-preferred-height', Lang.bind(this, this._getContentPreferredHeight));
         this._container.connect('allocate', Lang.bind(this, this._contentAllocate));
 
+        let textureCache = St.TextureCache.get_default();
+        textureCache.connect('icon-theme-changed',
+                             Lang.bind(this, this._onIconThemeChanged));
+
         this._iconBox = new Shell.Slicer({ name: 'appMenuIcon' });
         this._iconBox.connect('style-changed',
                               Lang.bind(this, this._onIconBoxStyleChanged));
@@ -330,6 +334,15 @@ const AppMenuButton = new Lang.Class({
         let node = this._iconBox.get_theme_node();
         this._iconBottomClip = node.get_length('app-icon-bottom-clip');
         this._updateIconBoxClip();
+    },
+
+    _onIconThemeChanged: function() {
+        if (this._iconBox.child == null)
+            return;
+
+        this._iconBox.child.destroy();
+        let icon = this._targetApp.get_faded_icon(2 * PANEL_ICON_SIZE);
+        this._iconBox.set_child(icon);
     },
 
     _updateIconBoxClip: function() {
