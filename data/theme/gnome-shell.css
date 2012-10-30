@@ -310,7 +310,7 @@ StScrollBar StButton#vhandle:active {
 .notification-icon-button:focus,
 .hotplug-notification-item:focus,
 .modal-dialog-button:focus {
-    border: 2px solid #8b8b8b;
+    border-width: 2px;
 }
 
 .dash-search-button:active,
@@ -325,9 +325,13 @@ StScrollBar StButton#vhandle:active {
     background-gradient-end: rgba(255, 255, 255, 0.2);
 }
 
+.notification-button:insensitive,
 .notification-icon-button:insensitive,
-.notification-button:insensitive {
+.modal-dialog-button:insensitive {
+    border-color: #666666;
     color: #9f9f9f;
+    background-gradient-direction: none;
+    background-color: rgba(102, 102, 102, 0.15);
 }
 
 /* Entries */
@@ -1632,10 +1636,6 @@ StScrollBar StButton#vhandle:active {
     padding: 4px 32px 5px;
 }
 
-.modal-dialog-button:insensitive {
-    color: rgb(60, 60, 60);
-}
-
 .modal-dialog-button:focus {
     padding: 3px 31px 4px;
 }
@@ -2184,24 +2184,20 @@ StScrollBar StButton#vhandle:active {
     height: .75em;
 }
 
-
 .login-dialog .modal-dialog-button {
-    border: 1px solid #666666;
     border-radius: 5px;
     padding: 3px 18px;
 }
 
 .login-dialog .modal-dialog-button:focus {
     padding: 2px 17px;
-    border: 2px solid #8b8b8b;
 }
 
 .login-dialog .modal-dialog-button:default {
     background-gradient-start: #6793c4;
     background-gradient-end: #335d8f;
     background-gradient-direction: vertical;
-    padding: 2px 17px;
-    border: 2px solid #16335d;
+    border-color: #16335d;
 }
 
 .login-dialog .modal-dialog-button:default:focus {
@@ -2217,6 +2213,13 @@ StScrollBar StButton#vhandle:active {
 .login-dialog .modal-dialog-button:default:pressed {
     background-gradient-start: #436d9f;
     background-gradient-end: #74a0d0;
+}
+
+.login-dialog .modal-dialog-button:default:insensitive {
+    border-color: #666666;
+    color: #9f9f9f;
+    background-gradient-direction: none;
+    background-color: rgba(102, 102, 102, 0.15);
 }
 
 .login-dialog-message-warning {
