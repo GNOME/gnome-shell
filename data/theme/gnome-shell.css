@@ -551,7 +551,6 @@ StScrollBar StButton#vhandle:active {
 }
 
 .status-chooser-combo.popup-combo-menu {
-    background-color: rgba(0,0,0,0.7);
     padding: .4em 0em;
     border-radius: 4px;
     border: 1px solid #5f5f5f;
