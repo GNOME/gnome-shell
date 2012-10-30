@@ -949,6 +949,23 @@ const LoginDialog = new Lang.Class({
         return batch.run();
     },
 
+    _askForUsernameAndLogIn: function() {
+        this._promptLabel.set_text(_("Username: "));
+        this._promptEntry.set_text('');
+        this._promptEntry.clutter_text.set_password_char('');
+
+        let tasks = [this._showPrompt,
+
+                     function() {
+                         let userName = this._promptEntry.get_text();
+                         this._promptEntry.reactive = false;
+                         return this._beginVerificationForUser(userName);
+                     }];
+
+        let batch = new Batch.ConsecutiveBatch(this, tasks);
+        return batch.run();
+    },
+
     _onSessionOpened: function(client, serviceName) {
         this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
     },
@@ -1095,10 +1112,7 @@ const LoginDialog = new Lang.Class({
                                                       this._fadeOutLogo]),
 
                      function() {
-                         let hold = new Batch.Hold();
-
-                         this._userVerifier.begin(null, hold);
-                         return hold;
+                         return this._askForUsernameAndLogIn();
                      }];
 
         let batch = new Batch.ConsecutiveBatch(this, tasks);
