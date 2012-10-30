@@ -651,7 +651,7 @@ const LoginDialog = new Lang.Class({
         this._userVerifier = new GdmUtil.ShellUserVerifier(this._greeterClient);
         this._userVerifier.connect('ask-question', Lang.bind(this, this._askQuestion));
         this._userVerifier.connect('show-message', Lang.bind(this, this._showMessage));
-        this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
+        this._userVerifier.connect('reset', Lang.bind(this, this._reset));
         this._userVerifier.connect('show-login-hint', Lang.bind(this, this._showLoginHint));
         this._userVerifier.connect('hide-login-hint', Lang.bind(this, this._hideLoginHint));
         this._verifyingUser = false;
@@ -664,6 +664,8 @@ const LoginDialog = new Lang.Class({
                                Lang.bind(this, this._updateBanner));
         this._settings.connect('changed::' + GdmUtil.BANNER_MESSAGE_TEXT_KEY,
                                Lang.bind(this, this._updateBanner));
+        this._settings.connect('changed::' + GdmUtil.DISABLE_USER_LIST_KEY,
+                               Lang.bind(this, this._updateDisableUserList));
 
         this._logoBox = new St.Bin({ style_class: 'login-dialog-logo-box' });
         this.contentLayout.add(this._logoBox);
@@ -675,7 +677,8 @@ const LoginDialog = new Lang.Class({
         this._updateBanner();
 
         this._titleLabel = new St.Label({ style_class: 'login-dialog-title',
-                                          text: C_("title", "Sign In") });
+                                          text: C_("title", "Sign In"),
+                                          visible: false });
 
         this.contentLayout.add(this._titleLabel,
                               { y_fill: false,
@@ -743,7 +746,7 @@ const LoginDialog = new Lang.Class({
                                                 x_align: St.Align.START,
                                                 x_fill: true });
 
-        this._notListedButton.connect('clicked', Lang.bind(this, this._onNotListedClicked));
+        this._notListedButton.connect('clicked', Lang.bind(this, this._hideUserListAndLogIn));
 
         this.contentLayout.add(this._notListedButton,
                                { expand: false,
@@ -767,6 +770,21 @@ const LoginDialog = new Lang.Class({
                                    this._onUserListActivated(item);
                                }));
 
+   },
+
+    _updateDisableUserList: function() {
+        let disableUserList = this._settings.get_boolean(GdmUtil.DISABLE_USER_LIST_KEY);
+
+        // If this is the first time around, set initial focus
+        if (this._disableUserList == undefined && disableUserList)
+            this.setInitialKeyFocus(this._promptEntry);
+
+        if (disableUserList != this._disableUserList) {
+            this._disableUserList = disableUserList;
+
+            if (!this._verifyingUser)
+               this._reset();
+        }
    },
 
     _updateLogo: function() {
@@ -795,33 +813,15 @@ const LoginDialog = new Lang.Class({
         }
     },
 
-    _onReset: function(client, serviceName) {
+    _reset: function() {
         this._promptMessage.hide();
-
-        let tasks = [this._hidePrompt,
-
-                     new Batch.ConcurrentBatch(this, [this._fadeInTitleLabel,
-                                                      this._fadeInNotListedButton,
-                                                      this._fadeInLogo]),
-
-                     function() {
-                         this._sessionList.close();
-                         this._promptLoginHint.hide();
-                         this._userList.actor.show();
-                         this._userList.actor.opacity = 255;
-                         return this._userList.showItems();
-                     },
-
-                     function() {
-                         this._userList.actor.reactive = true;
-                         this._userList.actor.grab_key_focus();
-                     }];
-
         this._user = null;
         this._verifyingUser = false;
 
-        let batch = new Batch.ConsecutiveBatch(this, tasks);
-        batch.run();
+        if (this._disableUserList)
+            this._hideUserListAndLogIn();
+        else
+            this._showUserList();
     },
 
     _onDefaultSessionChanged: function(client, sessionId) {
@@ -894,14 +894,18 @@ const LoginDialog = new Lang.Class({
     _showPrompt: function() {
         let hold = new Batch.Hold();
 
-        let buttons = [{ action: Lang.bind(this, this.cancel),
-                         label: _("Cancel"),
-                         key: Clutter.Escape },
-                       { action: Lang.bind(this, function() {
-                                     hold.release();
-                                 }),
-                         label: C_("button", "Sign In"),
-                         default: true }];
+        let cancelButtonInfo = { action: Lang.bind(this, this.cancel),
+                                 label: _("Cancel"),
+                                 key: Clutter.Escape };
+        let okButtonInfo = { action: Lang.bind(this, function() {
+                                         hold.release();
+                                     }),
+                             label: C_("button", "Sign In"),
+                             default: true };
+        let buttons = [];
+        if (!this._disableUserList || this._verifyingUser)
+            buttons.push(cancelButtonInfo);
+        buttons.push(okButtonInfo);
 
         let tasks = [function() {
                          return this._fadeInPrompt();
@@ -1099,7 +1103,7 @@ const LoginDialog = new Lang.Class({
                              }));
     },
 
-    _onNotListedClicked: function(user) {
+    _hideUserListAndLogIn: function() {
         let tasks = [function() {
                          return this._userList.hideItems();
                      },
@@ -1130,6 +1134,30 @@ const LoginDialog = new Lang.Class({
 
     _fadeOutLogo: function() {
         return GdmUtil.fadeOutActor(this._logoBox);
+    },
+
+    _showUserList: function() {
+        let tasks = [this._hidePrompt,
+
+                     new Batch.ConcurrentBatch(this, [this._fadeInTitleLabel,
+                                                      this._fadeInNotListedButton,
+                                                      this._fadeInLogo]),
+
+                     function() {
+                         this._sessionList.close();
+                         this._promptLoginHint.hide();
+                         this._userList.actor.show();
+                         this._userList.actor.opacity = 255;
+                         return this._userList.showItems();
+                     },
+
+                     function() {
+                         this._userList.actor.reactive = true;
+                         this._userList.actor.grab_key_focus();
+                     }];
+
+        let batch = new Batch.ConsecutiveBatch(this, tasks);
+        batch.run();
     },
 
     _fadeInBanner: function() {
@@ -1213,6 +1241,8 @@ const LoginDialog = new Lang.Class({
         for (let i = 0; i < users.length; i++) {
             this._userList.addUser(users[i]);
         }
+
+        this._updateDisableUserList();
 
         this._userManager.connect('user-added',
                                   Lang.bind(this, function(userManager, user) {
