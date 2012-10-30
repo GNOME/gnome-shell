@@ -182,6 +182,8 @@ const Keyboard = new Lang.Class({
         this._a11yApplicationsSettings = new Gio.Settings({ schema: A11Y_APPLICATIONS_SCHEMA });
         this._a11yApplicationsSettings.connect('changed', Lang.bind(this, this._settingsChanged));
         this._settingsChanged();
+
+        this._showIdleId = 0;
     },
 
     init: function () {
@@ -273,10 +275,14 @@ const Keyboard = new Lang.Class({
             return;
 
         let time = global.get_current_time();
-        if (focus instanceof Clutter.Text)
-            this.Show(time);
-        else
+        if (!(focus instanceof Clutter.Text)) {
             this.Hide(time);
+            return;
+        }
+
+        if (!this._showIdleId)
+            this._showIdleId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE,
+                                             Lang.bind(this, function() { this.Show(time); }));
     },
 
     _addKeys: function () {
@@ -502,6 +508,13 @@ const Keyboard = new Lang.Class({
         return one - two;
     },
 
+    _clearShowIdle: function() {
+        if (!this._showIdleId)
+            return;
+        GLib.source_remove(this._showIdleId);
+        this._showIdleId = 0;
+    },
+
     // D-Bus methods
     Show: function(timestamp) {
         if (!this._enableKeyboard)
@@ -509,6 +522,8 @@ const Keyboard = new Lang.Class({
 
         if (this._compareTimestamp(timestamp, this._timestamp) < 0)
             return;
+
+        this._clearShowIdle();
 
         if (timestamp != Clutter.CURRENT_TIME)
             this._timestamp = timestamp;
@@ -521,6 +536,8 @@ const Keyboard = new Lang.Class({
 
         if (this._compareTimestamp(timestamp, this._timestamp) < 0)
             return;
+
+        this._clearShowIdle();
 
         if (timestamp != Clutter.CURRENT_TIME)
             this._timestamp = timestamp;
