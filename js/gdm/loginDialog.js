@@ -654,6 +654,7 @@ const LoginDialog = new Lang.Class({
         this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
         this._userVerifier.connect('show-login-hint', Lang.bind(this, this._showLoginHint));
         this._userVerifier.connect('hide-login-hint', Lang.bind(this, this._hideLoginHint));
+        this._verifyingUser = false;
 
         this._settings = new Gio.Settings({ schema: GdmUtil.LOGIN_SCREEN_SCHEMA });
 
@@ -817,6 +818,7 @@ const LoginDialog = new Lang.Class({
                      }];
 
         this._user = null;
+        this._verifyingUser = false;
 
         let batch = new Batch.ConsecutiveBatch(this, tasks);
         batch.run();
@@ -872,6 +874,9 @@ const LoginDialog = new Lang.Class({
 
                      function() {
                          if (this._user && this._user.is_logged_in())
+                             return null;
+
+                         if (!this._verifyingUser)
                              return null;
 
                          return GdmUtil.fadeInActor(this._sessionList.actor);
@@ -1155,6 +1160,7 @@ const LoginDialog = new Lang.Class({
         let hold = new Batch.Hold();
 
         this._userVerifier.begin(userName, hold);
+        this._verifyingUser = true;
         return hold;
     },
 
