@@ -20,25 +20,6 @@ const KEYBOARD_TYPE = 'keyboard-type';
 const A11Y_APPLICATIONS_SCHEMA = 'org.gnome.desktop.a11y.applications';
 const SHOW_KEYBOARD = 'screen-keyboard-enabled';
 
-// Key constants taken from Antler
-// FIXME: ought to be moved into libcaribou
-const PRETTY_KEYS = {
-    'BackSpace': '\u232b',
-    'space': ' ',
-    'Return': '\u23ce',
-    'Caribou_Prefs': '\u2328',
-    'Caribou_ShiftUp': '\u2b06',
-    'Caribou_ShiftDown': '\u2b07',
-    'Caribou_Emoticons': '\u263a',
-    'Caribou_Symbols': '123',
-    'Caribou_Symbols_More': '{#*',
-    'Caribou_Alpha': 'Abc',
-    'Tab': 'Tab',
-    'Escape': 'Esc',
-    'Control_L': 'Ctrl',
-    'Alt_L': 'Alt'
-};
-
 const CaribouKeyboardIface = <interface name='org.gnome.Caribou.Keyboard'>
 <method name='Show'>
     <arg type='u' direction='in' />
@@ -98,17 +79,7 @@ const Key = new Lang.Class({
     },
 
     _makeKey: function () {
-        let label = this._key.name;
-
-        if (label.length > 1) {
-            let pretty = PRETTY_KEYS[label];
-            if (pretty)
-                label = pretty;
-            else
-                label = this._getUnichar(this._key);
-        }
-
-        label = GLib.markup_escape_text(label, -1);
+        let label = GLib.markup_escape_text(this._key.label, -1);
         let button = new St.Button ({ label: label,
                                       style_class: 'keyboard-key' });
 
