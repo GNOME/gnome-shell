@@ -28,7 +28,7 @@ def show_version(option, opt_str, value, parser):
 def wait_for_dbus_name(wait_name):
     loop = GLib.MainLoop()
 
-    def on_name_appeared(connection, name, name_owner, *args):
+    def on_name_appeared(connection, name, new_owner, *args):
         if not (name == wait_name and new_owner != ''):
             return
         loop.quit()
@@ -60,13 +60,18 @@ def start_perf_helper():
     wait_for_dbus_name (PERF_HELPER_NAME)
 
 def stop_perf_helper():
-    proxy = Gio.DBusProxy(g_bus_type=Gio.BusType.SESSION,
-                          g_name=PERF_HELPER_NAME,
-                          g_interface=PERF_HELPER_IFACE,
-                          g_object_path=PERF_HELPER_PATH)
+    bus = Gio.bus_get_sync(Gio.BusType.SESSION, None)
+
+    proxy = Gio.DBusProxy.new_sync(bus,
+                                   Gio.DBusProxyFlags.NONE,
+                                   None,
+                                   PERF_HELPER_NAME,
+                                   PERF_HELPER_PATH,
+                                   PERF_HELPER_IFACE,
+                                   None)
     proxy.Exit()
 
-def start_shell(extra_args, perf_output=None):
+def start_shell(perf_output=None):
     # Set up environment
     env = dict(os.environ)
     env['SHELL_PERF_MODULE'] = options.perf
@@ -76,19 +81,21 @@ def start_shell(extra_args, perf_output=None):
         env['SHELL_PERF_OUTPUT'] = perf_output
 
     self_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+    args = []
     args.append(os.path.join(self_dir, 'gnome-shell'))
-    # pass on any additional arguments
-    args += extra_args
+
+    if options.replace:
+        args.append('--replace')
 
     return subprocess.Popen(args, env=env)
 
-def run_shell(args, perf_output=None):
+def run_shell(perf_output=None):
     # we do no additional supervision of gnome-shell,
     # beyond that of wait
     # in particular, we don't kill the shell upon
     # receving a KeyboardInterrupt, as we expect to be
     # in the same process group
-    shell = start_shell(extra_args, perf_output=perf_output)
+    shell = start_shell(perf_output=perf_output)
     shell.wait()
     return shell.returncode == 0
 
@@ -173,7 +180,7 @@ def upload_performance_report(report_text):
         print "Performance report upload failed with status %d" % response.status
         print response.read()
 
-def run_performance_test(args):
+def run_performance_test():
     iters = options.perf_iters
     if options.perf_warmup:
         iters += 1
@@ -192,7 +199,7 @@ def run_performance_test(args):
         # Run the performance test and collect the output as JSON
         normal_exit = False
         try:
-            normal_exit = run_shell(args, perf_output=output_file)
+            normal_exit = run_shell(perf_output=output_file)
         except:
             stop_perf_helper()
             raise
@@ -288,7 +295,8 @@ def run_performance_test(args):
 
 parser = optparse.OptionParser()
 parser.add_option("", "--perf", metavar="PERF_MODULE",
-		  help="Specify the name of a performance module to run")
+		  help="Specify the name of a performance module to run",
+                  default="core")
 parser.add_option("", "--perf-iters", type="int", metavar="ITERS",
 		  help="Numbers of iterations of performance module to run",
                   default=1)
@@ -301,9 +309,16 @@ parser.add_option("", "--perf-upload", action="store_true",
 parser.add_option("", "--version", action="callback", callback=show_version,
                   help="Display version and exit")
 
+parser.add_option("-r", "--replace", action="store_true",
+                  help="Replace the running window manager")
+
 options, args = parser.parse_args()
 
-normal_exit = run_performance_test(args)
+if args:
+    parser.print_usage()
+    sys.exit(1)
+
+normal_exit = run_performance_test()
 if normal_exit:
     sys.exit(0)
 else:
