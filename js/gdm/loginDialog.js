@@ -1089,7 +1089,7 @@ const LoginDialog = new Lang.Class({
                              }));
     },
 
-    _onNotListedClicked: function(user) {
+    _onNotListedClicked: function() {
         let tasks = [function() {
                          return this._userList.hideItems();
                      },
