@@ -96,6 +96,7 @@ const ViewSelector = new Lang.Class({
 
         this._searchSettings = new Gio.Settings({ schema: Search.SEARCH_PROVIDERS_SCHEMA });
         this._searchSettings.connect('changed::disabled', Lang.bind(this, this._reloadRemoteProviders));
+        this._searchSettings.connect('changed::sort-order', Lang.bind(this, this._reloadRemoteProviders));
 
         // Default search providers
         // Wanda comes obviously first

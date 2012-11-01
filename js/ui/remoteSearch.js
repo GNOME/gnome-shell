@@ -116,6 +116,46 @@ function remoteProvidersDirLoaded(loadState) {
     if (loadState.numLoading > 0)
         return;
 
+    let searchSettings = new Gio.Settings({ schema: Search.SEARCH_PROVIDERS_SCHEMA });
+    let sortOrder = searchSettings.get_strv('sort-order');
+    let numSorted = sortOrder.length;
+
+    loadState.loadedProviders.sort(
+        function(providerA, providerB) {
+            let idxA, idxB;
+            let appIdA, appIdB;
+
+            appIdA = providerA.appInfo.get_id();
+            appIdB = providerB.appInfo.get_id();
+
+            idxA = sortOrder.indexOf(appIdA);
+            idxB = sortOrder.indexOf(appIdB);
+
+            // if no provider is found in the order, use alphabetical order
+            if ((idxA == -1) && (idxB == -1))
+                return GLib.utf8_collate(providerA.title, providerB.title);
+
+            if (numSorted > 1) {
+                // if providerA is the last, it goes after everything
+                if ((idxA + 1) == numSorted)
+                    return 1;
+                // if providerB is the last, it goes after everything
+                else if ((idxB + 1) == numSorted)
+                    return -1;
+            }
+
+            // if providerA isn't found, it's sorted after providerB
+            if (idxA == -1)
+                return 1;
+
+            // if providerB isn't found, it's sorted after providerA
+            if (idxB == -1)
+                return -1;
+
+            // finally, if both providers are found, return their order in the list
+            return (idxA - idxB);
+        });
+
     loadState.loadedProviders.forEach(
         function(provider) {
             loadState.addProviderCallback(provider);
