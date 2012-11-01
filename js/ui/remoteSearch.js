@@ -60,7 +60,7 @@ function loadRemoteSearchProvidersFromDir(dir, loadedProviders, addProviderCallb
             if (!keyfile.has_group(KEY_FILE_GROUP))
                 continue;
 
-            let remoteProvider, title;
+            let remoteProvider;
             try {
                 let group = KEY_FILE_GROUP;
                 let busName = keyfile.get_string(group, 'BusName');
@@ -74,25 +74,17 @@ function loadRemoteSearchProvidersFromDir(dir, loadedProviders, addProviderCallb
                     let desktopId = keyfile.get_string(group, 'DesktopId');
                     appInfo = Gio.DesktopAppInfo.new(desktopId);
                 } catch (e) {
+                    log('Ignoring search provider ' + path + ': missing DesktopId');
+                    continue;
                 }
 
-                let icon;
-                if (appInfo) {
-                    icon = appInfo.get_icon();
-                    title = appInfo.get_name();
-                } else {
-                    let iconName = keyfile.get_string(group, 'Icon');
-                    icon = new Gio.ThemedIcon({ name: iconName });
-                    title = keyfile.get_locale_string(group, 'Title', null);
-                }
-
-                remoteProvider = new RemoteSearchProvider(title,
-                                                          icon,
+                remoteProvider = new RemoteSearchProvider(appInfo.get_name(),
+                                                          appInfo.get_icon(),
                                                           busName,
                                                           objectPath);
                 loadedProviders[objectPath] = remoteProvider;
             } catch(e) {
-                log('Failed to add search provider "%s": %s'.format(title, e.toString()));
+                log('Failed to add search provider %s: %s'.format(path, e.toString()));
                 continue;
             }
 
