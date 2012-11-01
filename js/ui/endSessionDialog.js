@@ -105,7 +105,7 @@ const restartDialogContent = {
     endDescription: _("Restarting the system."),
     confirmButtons: [{ signal: 'ConfirmedReboot',
                        label:  C_("button", "Restart") }],
-    iconName: 'system-shutdown-symbolic',
+    iconName: 'view-refresh-symbolic',
     iconStyleClass: 'end-session-dialog-shutdown-icon'
 };
 
