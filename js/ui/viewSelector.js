@@ -96,6 +96,7 @@ const ViewSelector = new Lang.Class({
 
         this._searchSettings = new Gio.Settings({ schema: Search.SEARCH_PROVIDERS_SCHEMA });
         this._searchSettings.connect('changed::disabled', Lang.bind(this, this._reloadRemoteProviders));
+        this._searchSettings.connect('changed::disable-external', Lang.bind(this, this._reloadRemoteProviders));
         this._searchSettings.connect('changed::sort-order', Lang.bind(this, this._reloadRemoteProviders));
 
         // Default search providers
@@ -440,8 +441,12 @@ const ViewSelector = new Lang.Class({
     },
 
     _shouldUseSearchProvider: function(provider) {
+        // the disable-external GSetting only affects remote providers
         if (!provider.isRemoteProvider)
             return true;
+
+        if (this._searchSettings.get_boolean('disable-external'))
+            return false;
 
         let appId = provider.appInfo.get_id();
         let disable = this._searchSettings.get_strv('disabled');
