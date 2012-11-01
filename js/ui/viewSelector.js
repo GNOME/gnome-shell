@@ -196,7 +196,7 @@ const ViewSelector = new Lang.Class({
                                                   })
                                             });;
         this._pageArea.add_actor(page);
-        return page
+        return page;
     },
 
     _showPage: function(page) {
