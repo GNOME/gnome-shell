@@ -731,6 +731,7 @@ const LoginDialog = new Lang.Class({
                               x_align: St.Align.START });
         this._promptEntry = new St.Entry({ style_class: 'login-dialog-prompt-entry',
                                            can_focus: true });
+        this._promptEntryTextChangedId = 0;
         this._promptBox.add(this._promptEntry,
                             { expand: true,
                               x_fill: true,
@@ -901,21 +902,31 @@ const LoginDialog = new Lang.Class({
     _showPrompt: function() {
         let hold = new Batch.Hold();
 
-        let buttons = [{ action: Lang.bind(this, this.cancel),
-                         label: _("Cancel"),
-                         key: Clutter.Escape },
-                       { action: Lang.bind(this, function() {
-                                     hold.release();
-                                 }),
-                         label: C_("button", "Sign In"),
-                         default: true }];
+        let cancelButtonInfo = { action: Lang.bind(this, this.cancel),
+                                 label: _("Cancel"),
+                                 key: Clutter.Escape };
+        let okButtonInfo = { action: Lang.bind(this, function() {
+                                         hold.release();
+                                     }),
+                             label: C_("button", "Sign In"),
+                             default: true };
 
         let tasks = [function() {
                          return this._fadeInPrompt();
                      },
 
                      function() {
-                         this.setButtons(buttons);
+                         this.setButtons([cancelButtonInfo, okButtonInfo]);
+
+                         let updateOkButtonEnabled = Lang.bind(this, function() {
+                             let sensitive = this._promptEntry.text.length > 0;
+                             okButtonInfo.button.reactive = sensitive;
+                             okButtonInfo.button.can_focus = sensitive;
+                         });
+
+                         updateOkButtonEnabled();
+
+                         this._promptEntryTextChangedId = this._promptEntry.clutter_text.connect('text-changed', updateOkButtonEnabled);
                      },
 
                      hold];
@@ -927,6 +938,11 @@ const LoginDialog = new Lang.Class({
 
     _hidePrompt: function() {
         this.setButtons([]);
+
+        if (this._promptEntryTextChangedId > 0) {
+            this._promptEntry.clutter_text.disconnect(this._promptEntryTextChangedId);
+            this._promptEntryTextChangedId = 0;
+        }
 
         let tasks = [function() {
                          return GdmUtil.fadeOutActor(this._promptBox);

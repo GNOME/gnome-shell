@@ -151,6 +151,9 @@ const UnlockDialog = new Lang.Class({
         ShellEntry.addContextMenu(this._promptEntry, { isPassword: true });
         this.setInitialKeyFocus(this._promptEntry);
         this._promptEntry.clutter_text.connect('activate', Lang.bind(this, this._doUnlock));
+        this._promptEntry.clutter_text.connect('text-changed', Lang.bind(this, function() {
+            this._updateOkButtonSensitivity(this._promptEntry.text.length > 0);
+        }));
 
         this._promptLayout.add(this._promptEntry,
                                { expand: true,
@@ -203,6 +206,10 @@ const UnlockDialog = new Lang.Class({
     _updateSensitivity: function(sensitive) {
         this._promptEntry.reactive = sensitive;
         this._promptEntry.clutter_text.editable = sensitive;
+        this._updateOkButtonSensitivity(sensitive && this._promptEntry.text.length > 0);
+    },
+
+    _updateOkButtonSensitivity: function(sensitive) {
         this._okButton.button.reactive = sensitive;
         this._okButton.button.can_focus = sensitive;
     },
