@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<!-- -*- Mode: XML; tab-width: 2; indent-tabs-mode: t; c-basic-offset: 2 -*- -->
+
+<!DOCTYPE serviceproviders SYSTEM "serviceproviders.2.dtd">
+
+<serviceproviders format="2.0">
+
+  <!-- United States -->
+  <country code="us">
+    <provider>
+      <name>AT&amp;T</name>
+      <gsm>
+	<network-id mcc="310" mnc="038"/>
+	<network-id mcc="310" mnc="090"/>
+	<network-id mcc="310" mnc="150"/>
+      </gsm>
+    </provider>
+    <provider>
+      <name>Verizon</name>
+      <gsm>
+	<network-id mcc="310" mnc="995"/>
+	<network-id mcc="311" mnc="480"/>
+      </gsm>
+      <cdma>
+	<sid value="2"/>
+	<sid value="4"/>
+	<sid value="5"/>
+      </cdma>
+    </provider>
+  </country>
+
+  <!-- Spain -->
+  <country code="es">
+    <provider>
+      <name>Movistar (Telefónica)</name>
+      <gsm>
+	<network-id mcc="214" mnc="05"/>
+	<network-id mcc="214" mnc="07"/>
+      </gsm>
+    </provider>
+  </country>
+
+</serviceproviders>

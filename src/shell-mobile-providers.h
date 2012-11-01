@@ -76,10 +76,19 @@ typedef struct {
     gint refs;
 } ShellMobileProvider;
 
+typedef struct {
+    char *country_code;
+    char *country_name;
+    GSList *providers;
+
+    gint refs;
+} ShellCountryMobileProvider;
+
 
 GType shell_gsm_mcc_mnc_get_type (void); /* added in porting */
-GType shell_mobile_provider_get_type (void);
 GType shell_mobile_access_method_get_type (void);
+GType shell_mobile_provider_get_type (void);
+GType shell_country_mobile_provider_get_type (void);
 
 ShellMobileProvider *shell_mobile_provider_ref   (ShellMobileProvider *provider);
 void                 shell_mobile_provider_unref (ShellMobileProvider *provider);
@@ -89,8 +98,14 @@ GSList *             shell_mobile_provider_get_cdma_sid (ShellMobileProvider *pr
 ShellMobileAccessMethod *shell_mobile_access_method_ref   (ShellMobileAccessMethod *method);
 void                     shell_mobile_access_method_unref (ShellMobileAccessMethod *method);
 
-GHashTable *shell_mobile_providers_parse (GHashTable **out_ccs);
+ShellCountryMobileProvider *shell_country_mobile_provider_ref              (ShellCountryMobileProvider *country_provider);
+void                        shell_country_mobile_provider_unref            (ShellCountryMobileProvider *country_provider);
+const gchar                *shell_country_mobile_provider_get_country_code (ShellCountryMobileProvider *country_provider);
+const gchar                *shell_country_mobile_provider_get_country_name (ShellCountryMobileProvider *country_provider);
+GSList                     *shell_country_mobile_provider_get_providers    (ShellCountryMobileProvider *country_provider);
 
-void shell_mobile_providers_dump (GHashTable *providers);
+GHashTable *shell_mobile_providers_parse (const gchar *country_codes,
+                                          const gchar *service_providers);
+void        shell_mobile_providers_dump  (GHashTable *country_providers);
 
 #endif /* SHELL_MOBILE_PROVIDERS_H */

@@ -46,8 +46,70 @@ let _providersTable;
 function _getProvidersTable() {
     if (_providersTable)
         return _providersTable;
-    let [providers, countryCodes] = Shell.mobile_providers_parse();
-    return _providersTable = providers;
+    return _providersTable = Shell.mobile_providers_parse(null,null);
+}
+
+function findProviderForMCCMNC(table, needle) {
+    let needlemcc = needle.substring(0, 3);
+    let needlemnc = needle.substring(3, needle.length);
+
+    let name2, name3;
+    for (let iter in table) {
+        let country = table[iter];
+        let providers = country.get_providers();
+
+        // Search through each country's providers
+        for (let i = 0; i < providers.length; i++) {
+            let provider = providers[i];
+
+            // Search through MCC/MNC list
+            let list = provider.get_gsm_mcc_mnc();
+            for (let j = 0; j < list.length; j++) {
+                let mccmnc = list[j];
+
+                // Match both 2-digit and 3-digit MNC; prefer a
+                // 3-digit match if found, otherwise a 2-digit one.
+                if (mccmnc.mcc != needlemcc)
+                    continue;  // MCC was wrong
+
+                if (!name3 && needle.length == 6 && needlemnc == mccmnc.mnc)
+                    name3 = provider.name;
+
+                if (!name2 && needlemnc.substring(0, 2) == mccmnc.mnc.substring(0, 2))
+                    name2 = provider.name;
+
+                if (name2 && name3)
+                    break;
+            }
+        }
+    }
+
+    return name3 || name2 || null;
+}
+
+function findProviderForSid(table, sid) {
+    if (sid == 0)
+        return null;
+
+    // Search through each country
+    for (let iter in table) {
+        let country = table[iter];
+        let providers = country.get_providers();
+
+        // Search through each country's providers
+        for (let i = 0; i < providers.length; i++) {
+            let provider = providers[i];
+            let cdma_sid = provider.get_cdma_sid();
+
+            // Search through CDMA SID list
+            for (let j = 0; j < cdma_sid.length; j++) {
+                if (cdma_sid[j] == sid)
+                    return provider.name;
+            }
+        }
+    }
+
+    return null;
 }
 
 const ModemGsm = new Lang.Class({
@@ -91,64 +153,29 @@ const ModemGsm = new Lang.Class({
     },
 
     _findOperatorName: function(name, opCode) {
-        if (name.length != 0 && (name.length > 6 || name.length < 5)) {
-            // this looks like a valid name, i.e. not an MCCMNC (that some
-            // devices return when not yet connected
-            return name;
-        }
-        if (isNaN(parseInt(name))) {
-            // name is definitely not a MCCMNC, so it may be a name
-            // after all; return that
-            return name;
+        if (name) {
+            if (name && name.length != 0 && (name.length > 6 || name.length < 5)) {
+                // this looks like a valid name, i.e. not an MCCMNC (that some
+                // devices return when not yet connected
+                return name;
+            }
+            if (isNaN(parseInt(name))) {
+                // name is definitely not a MCCMNC, so it may be a name
+                // after all; return that
+                return name;
+            }
         }
 
         let needle;
-        if (name.length == 0 && opCode)
+        if ((name == null || name.length == 0) && opCode)
             needle = opCode;
         else if (name.length == 6 || name.length == 5)
             needle = name;
         else // nothing to search
             return null;
 
-        return this._findProviderForMCCMNC(needle);
-    },
-
-    _findProviderForMCCMNC: function(needle) {
         let table = _getProvidersTable();
-        let needlemcc = needle.substring(0, 3);
-        let needlemnc = needle.substring(3, needle.length);
-
-        let name2, name3;
-        for (let iter in table) {
-            let providers = table[iter];
-
-            // Search through each country's providers
-            for (let i = 0; i < providers.length; i++) {
-                let provider = providers[i];
-
-                // Search through MCC/MNC list
-                let list = provider.get_gsm_mcc_mnc();
-                for (let j = 0; j < list.length; j++) {
-                    let mccmnc = list[j];
-
-                    // Match both 2-digit and 3-digit MNC; prefer a
-                    // 3-digit match if found, otherwise a 2-digit one.
-                    if (mccmnc.mcc != needlemcc)
-                        continue;  // MCC was wrong
-
-                    if (!name3 && needle.length == 6 && needlemnc == mccmnc.mnc)
-                        name3 = provider.name;
-
-                    if (!name2 && needlemnc.substring(0, 2) == mccmnc.mnc.substring(0, 2))
-                        name2 = provider.name;
-
-                    if (name2 && name3)
-                        break;
-                }
-            }
-        }
-
-        return name3 || name2 || null;
+        return findProviderForMCCMNC(table, needle);
     }
 });
 Signals.addSignalMethods(ModemGsm.prototype);
@@ -189,39 +216,14 @@ const ModemCdma = new Lang.Class({
                 this.operator_name = null;
             } else {
                 let [bandClass, band, id] = result;
-                if (name.length > 0)
-                    this.operator_name = this._findProviderForSid(id);
-                else
+                if (name.length > 0) {
+                    let table = _getProvidersTable();
+                    this.operator_name = findProviderForSid(table, id);
+                } else
                     this.operator_name = null;
             }
             this.emit('notify::operator-name');
         }));
-    },
-
-    _findProviderForSid: function(sid) {
-        if (sid == 0)
-            return null;
-
-        let table = _getProvidersTable();
-
-        // Search through each country
-        for (let iter in table) {
-            let providers = table[iter];
-
-            // Search through each country's providers
-            for (let i = 0; i < providers.length; i++) {
-                let provider = providers[i];
-                let cdma_sid = provider.get_cdma_sid();
-
-                // Search through CDMA SID list
-                for (let j = 0; j < cdma_sid.length; j++) {
-                    if (cdma_sid[j] == sid)
-                        return provider.name;
-                }
-            }
-        }
-
-        return null;
     }
 });
 Signals.addSignalMethods(ModemCdma.prototype);
