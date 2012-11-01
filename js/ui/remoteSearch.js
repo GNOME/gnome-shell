@@ -113,10 +113,14 @@ const RemoteSearchProvider = new Lang.Class({
 
     _init: function(title, icon, dbusName, dbusPath) {
         this._proxy = new SearchProviderProxy(Gio.DBus.session,
-                                              dbusName, dbusPath);
+            dbusName, dbusPath, Lang.bind(this, this._onProxyConstructed));
 
         this.parent(title.toUpperCase());
         this._cancellable = new Gio.Cancellable();
+    },
+
+    _onProxyConstructed: function(proxy) {
+        // Do nothing
     },
 
     createIcon: function(size, meta) {
