@@ -91,8 +91,7 @@ function loadRemoteSearchProvidersFromDir(dir, loadedProviders, addProviderCallb
                     continue;
                 }
 
-                remoteProvider = new RemoteSearchProvider(appInfo.get_name(),
-                                                          appInfo.get_icon(),
+                remoteProvider = new RemoteSearchProvider(appInfo,
                                                           busName,
                                                           objectPath);
                 loadedProviders[objectPath] = remoteProvider;
@@ -111,11 +110,11 @@ const RemoteSearchProvider = new Lang.Class({
     Name: 'RemoteSearchProvider',
     Extends: Search.SearchProvider,
 
-    _init: function(title, icon, dbusName, dbusPath) {
+    _init: function(appInfo, dbusName, dbusPath) {
         this._proxy = new SearchProviderProxy(Gio.DBus.session,
             dbusName, dbusPath, Lang.bind(this, this._onProxyConstructed));
 
-        this.parent(title.toUpperCase());
+        this.parent(appInfo.get_name().toUpperCase(), appInfo);
         this._cancellable = new Gio.Cancellable();
     },
 

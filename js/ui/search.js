@@ -74,8 +74,9 @@ const SearchResultDisplay = new Lang.Class({
 const SearchProvider = new Lang.Class({
     Name: 'SearchProvider',
 
-    _init: function(title) {
+    _init: function(title, appInfo) {
         this.title = title;
+        this.appInfo = appInfo;
         this.searchSystem = null;
     },
 
