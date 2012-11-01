@@ -31,10 +31,13 @@ const SearchProviderIface = <interface name="org.gnome.Shell.SearchProvider">
 
 var SearchProviderProxy = Gio.DBusProxy.makeProxyWrapper(SearchProviderIface);
 
-
 function loadRemoteSearchProviders(addProviderCallback) {
+    let loadState = { loadedProviders: [],
+                      objectPaths: {},
+                      numLoading: 0,
+                      addProviderCallback: addProviderCallback };
+
     let dataDirs = GLib.get_system_data_dirs();
-    let loadedProviders = {};
     for (let i = 0; i < dataDirs.length; i++) {
         let path = GLib.build_filenamev([dataDirs[i], 'gnome-shell', 'search-providers']);
         let dir = Gio.file_new_for_path(path);
@@ -52,12 +55,13 @@ function loadRemoteSearchProviders(addProviderCallback) {
                     if (!exists)
                         return;
 
-                    loadRemoteSearchProvidersFromDir(dir, loadedProviders, addProviderCallback);
+                    loadState.numLoading++;
+                    loadRemoteSearchProvidersFromDir(dir, loadState);
                 });
     }
 };
 
-function loadRemoteSearchProvidersFromDir(dir, loadedProviders, addProviderCallback) {
+function loadRemoteSearchProvidersFromDir(dir, loadState) {
     let dirPath = dir.get_path();
     FileUtils.listDirAsync(dir, Lang.bind(this, function(files) {
         for (let i = 0; i < files.length; i++) {
@@ -79,7 +83,7 @@ function loadRemoteSearchProvidersFromDir(dir, loadedProviders, addProviderCallb
                 let busName = keyfile.get_string(group, 'BusName');
                 let objectPath = keyfile.get_string(group, 'ObjectPath');
 
-                if (loadedProviders[objectPath])
+                if (loadState.objectPaths[objectPath])
                     continue;
 
                 let appInfo = null;
@@ -94,17 +98,29 @@ function loadRemoteSearchProvidersFromDir(dir, loadedProviders, addProviderCallb
                 remoteProvider = new RemoteSearchProvider(appInfo,
                                                           busName,
                                                           objectPath);
-                loadedProviders[objectPath] = remoteProvider;
+                loadState.objectPaths[objectPath] = remoteProvider;
+                loadState.loadedProviders.push(remoteProvider);
             } catch(e) {
                 log('Failed to add search provider %s: %s'.format(path, e.toString()));
                 continue;
             }
-
-            addProviderCallback(remoteProvider);
         }
+
+        remoteProvidersDirLoaded(loadState);
     }));
 
 };
+
+function remoteProvidersDirLoaded(loadState) {
+    loadState.numLoading--;
+    if (loadState.numLoading > 0)
+        return;
+
+    loadState.loadedProviders.forEach(
+        function(provider) {
+            loadState.addProviderCallback(provider);
+        });
+}
 
 const RemoteSearchProvider = new Lang.Class({
     Name: 'RemoteSearchProvider',
