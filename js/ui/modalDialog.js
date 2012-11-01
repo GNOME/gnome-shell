@@ -95,10 +95,10 @@ const ModalDialog = new Lang.Class({
                                 x_align: St.Align.MIDDLE,
                                 y_align: St.Align.START });
 
-        this._buttonLayout = new St.BoxLayout({ style_class: 'modal-dialog-button-box',
+        this.buttonLayout = new St.BoxLayout({ style_class: 'modal-dialog-button-box',
                                                 visible:     false,
                                                 vertical:    false });
-        this.dialogLayout.add(this._buttonLayout,
+        this.dialogLayout.add(this.buttonLayout,
                               { expand:  true,
                                 x_align: St.Align.MIDDLE,
                                 y_align: St.Align.END });
@@ -117,31 +117,17 @@ const ModalDialog = new Lang.Class({
         this._actionKeys[key] = action;
     },
 
-    setButtons: function(buttons) {
-        this._buttonLayout.destroy_all_children();
+    clearButtons: function() {
+        this.buttonLayout.destroy_all_children();
         this._actionKeys = {};
+    },
 
-        this._buttonLayout.visible = (buttons.length > 0);
+    setButtons: function(buttons) {
+        this.clearButtons();
+        this.buttonLayout.visible = (buttons.length > 0);
 
         for (let i = 0; i < buttons.length; i++) {
             let buttonInfo = buttons[i];
-            let label = buttonInfo['label'];
-            let action = buttonInfo['action'];
-            let key = buttonInfo['key'];
-            let isDefault = buttonInfo['default'];
-
-            if (isDefault && !key) {
-                this._actionKeys[Clutter.KEY_KP_Enter] = action;
-                this._actionKeys[Clutter.KEY_ISO_Enter] = action;
-                key = Clutter.KEY_Return;
-            }
-
-            buttonInfo.button = new St.Button({ style_class: 'modal-dialog-button',
-                                                reactive:    true,
-                                                can_focus:   true,
-                                                label:       label });
-            if (isDefault)
-                buttonInfo.button.add_style_pseudo_class('default');
 
             let x_alignment;
             if (buttons.length == 1)
@@ -153,22 +139,46 @@ const ModalDialog = new Lang.Class({
             else
                 x_alignment = St.Align.MIDDLE;
 
-            if (!this._initialKeyFocusDestroyId)
-                this._initialKeyFocus = buttonInfo.button;
-            this._buttonLayout.add(buttonInfo.button,
-                                   { expand: true,
-                                     x_fill: false,
-                                     y_fill: false,
-                                     x_align: x_alignment,
-                                     y_align: St.Align.MIDDLE });
+            let button = this.addButton(buttonInfo, { expand: true,
+                                                      x_fill: false,
+                                                      y_fill: false,
+                                                      x_align: x_alignment,
+                                                      y_align: St.Align.MIDDLE });
+            buttonInfo.button = button;
+        }
+    },
 
-            buttonInfo.button.connect('clicked', action);
+    addButton: function(buttonInfo, layoutInfo) {
+        let label = buttonInfo['label'];
+        let action = buttonInfo['action'];
+        let key = buttonInfo['key'];
+        let isDefault = buttonInfo['default'];
 
-            if (key)
-                this._actionKeys[key] = action;
+        if (isDefault && !key) {
+            this._actionKeys[Clutter.KEY_KP_Enter] = action;
+            this._actionKeys[Clutter.KEY_ISO_Enter] = action;
+            key = Clutter.KEY_Return;
         }
 
-        this.emit('buttons-set');
+        let button = new St.Button({ style_class: 'modal-dialog-button',
+                                     reactive:    true,
+                                     can_focus:   true,
+                                     label:       label });
+
+        button.connect('clicked', action);
+
+        if (isDefault)
+            button.add_style_pseudo_class('default');
+
+        if (!this._initialKeyFocusDestroyId)
+            this._initialKeyFocus = button;
+
+        if (key)
+            this._actionKeys[key] = action;
+
+        this.buttonLayout.add(button, layoutInfo);
+
+        return button;
     },
 
     _onKeyReleaseEvent: function(object, event) {
