@@ -10,6 +10,8 @@ const Util = imports.misc.util;
 const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
 
+const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
+
 // Not currently referenced by the search API, but
 // this enumeration can be useful for provider
 // implementations.
