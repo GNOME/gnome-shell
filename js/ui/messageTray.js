@@ -40,11 +40,6 @@ const LONGER_HIDE_TIMEOUT = 0.6;
 // range from the point where it left the tray.
 const MOUSE_LEFT_ACTOR_THRESHOLD = 20;
 
-// Time the user needs to leave the mouse on the bottom pixel row to open the tray
-const TRAY_DWELL_TIME = 1000; // ms
-// Time resolution when tracking the mouse to catch the open tray dwell
-const TRAY_DWELL_CHECK_INTERVAL = 100; // ms
-
 const IDLE_TIME = 1000;
 
 const State = {
@@ -1536,12 +1531,6 @@ const MessageTray = new Lang.Class({
         this._summaryItems = [];
         this._chatSummaryItemsCount = 0;
 
-        let pointerWatcher = PointerWatcher.getPointerWatcher();
-        pointerWatcher.addWatch(TRAY_DWELL_CHECK_INTERVAL, Lang.bind(this, this._checkTrayDwell));
-        this._trayDwellTimeoutId = 0;
-        this._trayDwelling = false;
-        this._trayDwellUserTime = 0;
-
         this._sessionUpdated();
         this._updateNoMessagesLabel();
     },
@@ -1569,55 +1558,6 @@ const MessageTray = new Lang.Class({
                                             { focusCallback: Lang.bind(this, this.toggleAndNavigate),
                                               sortGroup: CtrlAltTab.SortGroup.BOTTOM });
         this._updateState();
-    },
-
-    _checkTrayDwell: function(x, y) {
-        let monitor = Main.layoutManager.bottomMonitor;
-        let shouldDwell = (x >= monitor.x && x <= monitor.x + monitor.width &&
-                           y == monitor.y + monitor.height - 1);
-        if (shouldDwell) {
-            // We only set up dwell timeout when the user is not hovering over the tray
-            // (!this.actor.hover). This avoids bringing up the message tray after the
-            // user clicks on a notification with the pointer on the bottom pixel
-            // of the monitor. The _trayDwelling variable is used so that we only try to
-            // fire off one tray dwell - if it fails (because, say, the user has the mouse down),
-            // we don't try again until the user moves the mouse up and down again.
-            if (!this._trayDwelling && !this.actor.hover && this._trayDwellTimeoutId == 0) {
-                // Save the interaction timestamp so we can detect user input
-                let focusWindow = global.display.focus_window;
-                this._trayDwellUserTime = focusWindow ? focusWindow.user_time : 0;
-
-                this._trayDwellTimeoutId = Mainloop.timeout_add(TRAY_DWELL_TIME,
-                                                                Lang.bind(this, this._trayDwellTimeout));
-            }
-            this._trayDwelling = true;
-        } else {
-            this._cancelTrayDwell();
-            this._trayDwelling = false;
-        }
-    },
-
-    _cancelTrayDwell: function() {
-        if (this._trayDwellTimeoutId != 0) {
-            Mainloop.source_remove(this._trayDwellTimeoutId);
-            this._trayDwellTimeoutId = 0;
-        }
-    },
-
-    _trayDwellTimeout: function() {
-        this._trayDwellTimeoutId = 0;
-
-        if (Main.modalCount > 0)
-            return false;
-
-        // If the user interacted with the focus window since we started the tray
-        // dwell (by clicking or typing), don't activate the message tray
-        let focusWindow = global.display.focus_window;
-        let currentUserTime = focusWindow ? focusWindow.user_time : 0;
-        if (currentUserTime != this._trayDwellUserTime)
-            return false;
-
-        this.openTray();
     },
 
     openTray: function() {
@@ -1852,9 +1792,6 @@ const MessageTray = new Lang.Class({
 
     _onTrayHoverChanged: function() {
         if (this.actor.hover) {
-            // No dwell inside notifications at the bottom of the screen
-            this._cancelTrayDwell();
-
             // Don't do anything if the one pixel area at the bottom is hovered over while the tray is hidden.
             if (this._trayState == State.HIDDEN && this._notificationState == State.HIDDEN)
                 return;
