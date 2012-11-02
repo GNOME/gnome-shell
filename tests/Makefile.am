@@ -18,6 +18,7 @@ TEST_JS =					\
 	interactive/scrolling.js		\
 	interactive/scroll-view-sizing.js	\
 	interactive/table.js			\
+	interactive/test-title.js		\
 	interactive/transitions.js		\
 	testcommon/100-200.svg			\
 	testcommon/200-100.svg			\
