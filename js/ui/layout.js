@@ -128,8 +128,6 @@ const LayoutManager = new Lang.Class({
         this.trayBox = new St.Widget({ name: 'trayBox',
                                        layout_manager: new Clutter.BinLayout() }); 
         this.addChrome(this.trayBox);
-        this.trayBox.connect('allocation-changed',
-                             Lang.bind(this, this._updateTrayBarrier));
 
         this.keyboardBox = new St.BoxLayout({ name: 'keyboardBox',
                                               reactive: true,
@@ -277,22 +275,6 @@ const LayoutManager = new Lang.Class({
         } else {
             this._leftPanelBarrier = 0;
             this._rightPanelBarrier = 0;
-        }
-    },
-
-    _updateTrayBarrier: function() {
-        let monitor = this.bottomMonitor;
-
-        if (this._trayBarrier)
-            global.destroy_pointer_barrier(this._trayBarrier);
-
-        if (Main.messageTray) {
-            this._trayBarrier =
-                global.create_pointer_barrier(monitor.x + monitor.width, monitor.y + monitor.height - Main.messageTray.actor.height,
-                                              monitor.x + monitor.width, monitor.y + monitor.height,
-                                              4 /* BarrierNegativeX */);
-        } else {
-            this._trayBarrier = 0;
         }
     },
 
