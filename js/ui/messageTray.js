@@ -314,6 +314,7 @@ const Notification = new Lang.Class({
         this.resident = false;
         // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
         this.isTransient = false;
+        this.forFeedback = false;
         this.expanded = false;
         this.focused = false;
         this.acknowledged = false;
@@ -711,6 +712,10 @@ const Notification = new Lang.Class({
 
     setTransient: function(isTransient) {
         this.isTransient = isTransient;
+    },
+
+    setForFeedback: function(forFeedback) {
+        this.forFeedback = forFeedback;
     },
 
     setUseActionIcons: function(useIcons) {
@@ -1949,8 +1954,9 @@ const MessageTray = new Lang.Class({
         // Notifications
         let notificationQueue = this._notificationQueue;
         let notificationUrgent = notificationQueue.length > 0 && notificationQueue[0].urgency == Urgency.CRITICAL;
+        let notificationForFeedback = notificationQueue.length > 0 && notificationQueue[0].forFeedback;
         let notificationsLimited = this._busy || this._inFullscreen;
-        let notificationsPending = notificationQueue.length > 0 && (!notificationsLimited || notificationUrgent) && Main.sessionMode.hasNotifications;
+        let notificationsPending = notificationQueue.length > 0 && (!notificationsLimited || notificationUrgent || notificationForFeedback) && Main.sessionMode.hasNotifications;
         let nextNotification = notificationQueue.length > 0 ? notificationQueue[0] : null;
         let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;
         let notificationExpanded = this._notification && this._notification.expanded;

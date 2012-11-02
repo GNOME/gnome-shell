@@ -57,7 +57,14 @@ const ShellInfo = new Lang.Class({
             this._source.destroy();
     },
 
-    setMessage: function(text, undoCallback, undoLabel) {
+    setMessage: function(text, options) {
+        options = Params.parse(options, { undoCallback: null,
+                                          forFeedback: false
+                                        });
+
+        let undoCallback = options.undoCallback;
+        let forFeedback = options.forFeedback;
+
         if (this._source == null) {
             this._source = new MessageTray.SystemNotificationSource();
             this._source.connect('destroy', Lang.bind(this,
@@ -71,6 +78,7 @@ const ShellInfo = new Lang.Class({
         if (this._source.notifications.length == 0) {
             notification = new MessageTray.Notification(this._source, text, null);
             notification.setTransient(true);
+            notification.setForFeedback(forFeedback);
         } else {
             notification = this._source.notifications[0];
             notification.update(text, null, { clear: true });
@@ -78,10 +86,8 @@ const ShellInfo = new Lang.Class({
 
         this._undoCallback = undoCallback;
         if (undoCallback) {
-            notification.addButton('system-undo',
-                                   undoLabel ? undoLabel : _("Undo"));
-            notification.connect('action-invoked',
-                                 Lang.bind(this, this._onUndoClicked));
+            notification.addButton('system-undo', _("Undo"));
+            notification.connect('action-invoked', Lang.bind(this, this._onUndoClicked));
         }
 
         this._source.notify(notification);
@@ -233,11 +239,16 @@ const Overview = new Lang.Class({
         this._viewSelector.removeSearchProvider(provider);
     },
 
-    setMessage: function(text, undoCallback, undoLabel) {
+    //
+    // options:
+    //  - undoCallback (function): the callback to be called if undo support is needed
+    //  - forFeedback (boolean): whether the message is for direct feedback of a user action
+    //
+    setMessage: function(text, options) {
         if (this.isDummy)
             return;
 
-        this._shellInfo.setMessage(text, undoCallback, undoLabel);
+        this._shellInfo.setMessage(text, options);
     },
 
     _onDragBegin: function() {

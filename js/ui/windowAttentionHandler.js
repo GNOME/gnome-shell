@@ -39,6 +39,8 @@ const WindowAttentionHandler = new Lang.Class({
         let [title, banner] = this._getTitleAndBanner(app, window);
 
         let notification = new MessageTray.Notification(source, title, banner);
+        notification.setForFeedback(true);
+
         source.notify(notification);
 
         source.signalIDs.push(window.connect('notify::title', Lang.bind(this, function() {
