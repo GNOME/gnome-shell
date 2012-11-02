@@ -180,6 +180,7 @@ void
 shell_tray_icon_click (ShellTrayIcon *icon,
                        ClutterEvent  *event)
 {
+  XKeyEvent xkevent;
   XButtonEvent xbevent;
   XCrossingEvent xcevent;
   GdkWindow *remote_window;
@@ -187,8 +188,10 @@ shell_tray_icon_click (ShellTrayIcon *icon,
   int x_root, y_root;
   Display *xdisplay;
   Window xwindow, xrootwindow;
+  ClutterEventType event_type = clutter_event_type (event);
 
-  g_return_if_fail (clutter_event_type (event) == CLUTTER_BUTTON_RELEASE);
+  g_return_if_fail (event_type == CLUTTER_BUTTON_RELEASE ||
+                    event_type == CLUTTER_KEY_RELEASE);
 
   gdk_error_trap_push ();
 
@@ -215,22 +218,44 @@ shell_tray_icon_click (ShellTrayIcon *icon,
   XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xcevent);
 
   /* Now do the click */
-  xbevent.type = ButtonPress;
-  xbevent.window = xwindow;
-  xbevent.root = xrootwindow;
-  xbevent.subwindow = None;
-  xbevent.time = xcevent.time;
-  xbevent.x = xcevent.x;
-  xbevent.y = xcevent.y;
-  xbevent.x_root = xcevent.x_root;
-  xbevent.y_root = xcevent.y_root;
-  xbevent.state = clutter_event_get_state (event);
-  xbevent.button = clutter_event_get_button (event);
-  xbevent.same_screen = True;
-  XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xbevent);
+  if (event_type == CLUTTER_BUTTON_RELEASE)
+    {
+      xbevent.window = xwindow;
+      xbevent.root = xrootwindow;
+      xbevent.subwindow = None;
+      xbevent.time = xcevent.time;
+      xbevent.x = xcevent.x;
+      xbevent.y = xcevent.y;
+      xbevent.x_root = xcevent.x_root;
+      xbevent.y_root = xcevent.y_root;
+      xbevent.state = clutter_event_get_state (event);
+      xbevent.same_screen = True;
+      xbevent.type = ButtonPress;
+      xbevent.button = clutter_event_get_button (event);
+      XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xbevent);
 
-  xbevent.type = ButtonRelease;
-  XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xbevent);
+      xbevent.type = ButtonRelease;
+      XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xbevent);
+    }
+  else
+    {
+      xkevent.window = xwindow;
+      xkevent.root = xrootwindow;
+      xkevent.subwindow = None;
+      xkevent.time = xcevent.time;
+      xkevent.x = xcevent.x;
+      xkevent.y = xcevent.y;
+      xkevent.x_root = xcevent.x_root;
+      xkevent.y_root = xcevent.y_root;
+      xkevent.state = clutter_event_get_state (event);
+      xkevent.same_screen = True;
+      xkevent.type = KeyPress;
+      xkevent.keycode = clutter_event_get_key_code (event);
+      XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xkevent);
+
+      xkevent.type = KeyRelease;
+      XSendEvent (xdisplay, xwindow, False, 0, (XEvent *)&xkevent);
+    }
 
   /* And move the pointer back out */
   xcevent.type = LeaveNotify;

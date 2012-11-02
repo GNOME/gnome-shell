@@ -565,19 +565,17 @@ const Source = new Lang.Class({
             this.notify(notification);
     },
 
-    handleSummaryClick: function() {
+    handleSummaryClick: function(button) {
         if (!this.trayIcon)
             return false;
 
         let event = Clutter.get_current_event();
-        if (event.type() != Clutter.EventType.BUTTON_RELEASE)
-            return false;
 
         // Left clicks are passed through only where there aren't unacknowledged
         // notifications, so it possible to open them in summary mode; right
         // clicks are always forwarded, as the right click menu is not useful for
         // tray icons
-        if (event.get_button() == 1 &&
+        if (button == 1 &&
             this.notifications.length > 0)
             return false;
 

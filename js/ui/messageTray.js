@@ -1831,7 +1831,7 @@ const MessageTray = new Lang.Class({
     },
 
     _onSummaryItemClicked: function(summaryItem, button) {
-        if (summaryItem.source.handleSummaryClick()) {
+        if (summaryItem.source.handleSummaryClick(button)) {
             if (summaryItem.source.keepTrayOnSummaryClick)
                 this._setClickedSummaryItem(null);
             else
