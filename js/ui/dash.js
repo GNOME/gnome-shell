@@ -503,6 +503,10 @@ const Dash = new Lang.Class({
                                    Lang.bind(this, function() {
                                        display.actor.opacity = 255;
                                    }));
+        display.connect('menu-state-changed',
+                        Lang.bind(this, function(display, opened) {
+                            this._itemMenuStateChanged(item, opened);
+                        }));
 
         let item = new DashItemContainer();
         item.setChild(display.actor);
@@ -518,8 +522,21 @@ const Dash = new Lang.Class({
         return item;
     },
 
+    _itemMenuStateChanged: function(item, opened) {
+        // When the menu closes, it calls sync_hover, which means
+        // that the notify::hover handler does everything we need to.
+        if (opened) {
+            if (this._showLabelTimeoutId > 0) {
+                Mainloop.source_remove(this._showLabelTimeoutId);
+                this._showLabelTimeoutId = 0;
+            }
+
+            item.hideLabel();
+        }
+    },
+
     _onHover: function (item) {
-        if (item.child.get_hover() && !item.child._delegate.isMenuUp) {
+        if (item.child.get_hover()) {
             if (this._showLabelTimeoutId == 0) {
                 let timeout = this._labelShowing ? 0 : DASH_ITEM_HOVER_TIMEOUT;
                 this._showLabelTimeoutId = Mainloop.timeout_add(timeout,

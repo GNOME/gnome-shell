@@ -479,7 +479,6 @@ const AppWellIcon = new Lang.Class({
                                                 Lang.bind(this,
                                                           this._onStateChanged));
         this._onStateChanged();
-        this.isMenuUp = false;
     },
 
     _onDestroy: function() {
@@ -561,7 +560,8 @@ const AppWellIcon = new Lang.Class({
             this._menuManager.addMenu(this._menu);
         }
 
-        this.isMenuUp = true;
+        this.emit('menu-state-changed', true);
+
         this.actor.set_hover(true);
         this._menu.popup();
 
@@ -578,7 +578,7 @@ const AppWellIcon = new Lang.Class({
 
     _onMenuPoppedDown: function() {
         this.actor.sync_hover();
-        this.isMenuUp = false;
+        this.emit('menu-state-changed', false);
     },
 
     _onActivate: function (event) {
