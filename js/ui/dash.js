@@ -492,31 +492,31 @@ const Dash = new Lang.Class({
     },
 
     _createAppItem: function(app) {
-        let display = new AppDisplay.AppWellIcon(app,
+        let appIcon = new AppDisplay.AppWellIcon(app,
                                                  { setSizeManually: true,
                                                    showLabel: false });
-        display._draggable.connect('drag-begin',
+        appIcon._draggable.connect('drag-begin',
                                    Lang.bind(this, function() {
-                                       display.actor.opacity = 50;
+                                       appIcon.actor.opacity = 50;
                                    }));
-        display._draggable.connect('drag-end',
+        appIcon._draggable.connect('drag-end',
                                    Lang.bind(this, function() {
-                                       display.actor.opacity = 255;
+                                       appIcon.actor.opacity = 255;
                                    }));
-        display.connect('menu-state-changed',
-                        Lang.bind(this, function(display, opened) {
+        appIcon.connect('menu-state-changed',
+                        Lang.bind(this, function(appIcon, opened) {
                             this._itemMenuStateChanged(item, opened);
                         }));
 
         let item = new DashItemContainer();
-        item.setChild(display.actor);
+        item.setChild(appIcon.actor);
 
         // Override default AppWellIcon label_actor, now the
         // accessible_name is set at DashItemContainer.setLabelText
-        display.actor.label_actor = null;
+        appIcon.actor.label_actor = null;
         item.setLabelText(app.get_name());
 
-        display.icon.setIconSize(this.iconSize);
+        appIcon.icon.setIconSize(this.iconSize);
         this._hookUpLabel(item);
 
         return item;
