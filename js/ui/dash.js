@@ -23,8 +23,7 @@ const DASH_ITEM_HOVER_TIMEOUT = 300;
 
 function getAppFromSource(source) {
     if (source instanceof AppDisplay.AppWellIcon) {
-        let appSystem = Shell.AppSystem.get_default();
-        return appSystem.lookup_app(source.getId());
+        return source.app;
     } else if (source.metaWindow) {
         let tracker = Shell.WindowTracker.get_default();
         return tracker.get_window_app(source.metaWindow);
