@@ -791,7 +791,7 @@ clutter_interval_new_with_values (GType         gtype,
  *
  * Creates a copy of @interval.
  *
- * Return value: the newly created #ClutterInterval
+ * Return value: (transfer full): the newly created #ClutterInterval
  *
  * Since: 1.0
  */
