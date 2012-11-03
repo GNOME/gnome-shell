@@ -3131,7 +3131,10 @@ meta_spew_event (MetaDisplay *display,
   if (event->type == Expose || event->type == MotionNotify ||
       event->type == NoExpose)
     return;
-      
+
+  if (event->type == (display->damage_event_base + XDamageNotify))
+    return;
+
   switch (event->type)
     {
     case KeyPress:
