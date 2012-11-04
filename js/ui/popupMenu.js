@@ -638,14 +638,23 @@ const PopupSliderMenuItem = new Lang.Class({
 
     _onScrollEvent: function (actor, event) {
         let direction = event.get_scroll_direction();
+        let delta;
+
+        if (event.is_pointer_emulated())
+            return;
 
         if (direction == Clutter.ScrollDirection.DOWN) {
-            this._value = Math.max(0, this._value - SLIDER_SCROLL_STEP);
-        }
-        else if (direction == Clutter.ScrollDirection.UP) {
-            this._value = Math.min(1, this._value + SLIDER_SCROLL_STEP);
+            delta = -SLIDER_SCROLL_STEP;
+        } else if (direction == Clutter.ScrollDirection.UP) {
+            delta = +SLIDER_SCROLL_STEP;
+        } else if (direction == Clutter.ScrollDirection.SMOOTH) {
+            let [dx, dy] = event.get_scroll_delta();
+            // Even though the slider is horizontal, use dy to match
+            // the UP/DOWN above.
+            delta = -dy / 10;
         }
 
+        this._value = Math.min(Math.max(0, this._value + delta), 1);
         this._slider.queue_repaint();
         this.emit('value-changed', this._value);
     },
