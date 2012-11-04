@@ -13,6 +13,7 @@ const Tp = imports.gi.TelepathyGLib;
 const History = imports.misc.history;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
+const NotificationDaemon = imports.ui.notificationDaemon;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
 
@@ -415,6 +416,8 @@ const TelepathyClient = new Lang.Class({
     _ensureAppSource: function() {
         if (this._appSource == null) {
             this._appSource = new MessageTray.Source(_("Chat"), 'empathy');
+            this._appSource.policy = new NotificationDaemon.NotificationApplicationPolicy('empathy');
+
             Main.messageTray.add(this._appSource);
             this._appSource.connect('destroy', Lang.bind(this, function () {
                 this._appSource = null;
@@ -482,6 +485,10 @@ const ChatSource = new Lang.Class({
         }));
         rightClickMenu.add(item.actor);
         return rightClickMenu;
+    },
+
+    _createPolicy: function() {
+        return new NotificationDaemon.NotificationApplicationPolicy('empathy');
     },
 
     _updateAlias: function() {
@@ -1046,6 +1053,10 @@ const ApproverSource = new Lang.Class({
                                              Lang.bind(this, function(domain, code, msg) {
             this.destroy();
         }));
+    },
+
+    _createPolicy: function() {
+        return new NotificationDaemon.NotificationApplicationPolicy('empathy');
     },
 
     destroy: function() {
