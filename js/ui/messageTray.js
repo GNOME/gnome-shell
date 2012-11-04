@@ -18,6 +18,7 @@ const BoxPointer = imports.ui.boxpointer;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const GnomeSession = imports.misc.gnomeSession;
 const GrabHelper = imports.ui.grabHelper;
+const Hash = imports.misc.hash;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const PointerWatcher = imports.ui.pointerWatcher;
@@ -1563,7 +1564,7 @@ const MessageTray = new Lang.Class({
                               Main.KeybindingMode.OVERVIEW,
                               Lang.bind(this, this._expandActiveNotification));
 
-        this._summaryItems = [];
+        this._sources = new Hash.Map();
         this._chatSummaryItemsCount = 0;
 
         let pointerWatcher = PointerWatcher.getPointerWatcher();
@@ -1573,22 +1574,19 @@ const MessageTray = new Lang.Class({
         this._trayDwellUserTime = 0;
 
         this._sessionUpdated();
+
+        this._noMessages = new St.Label({ text: _("No Messages"),
+                                          style_class: 'no-messages-label',
+                                          x_align: Clutter.ActorAlign.CENTER,
+                                          x_expand: true,
+                                          y_align: Clutter.ActorAlign.CENTER,
+                                          y_expand: true });
+        this.actor.add_actor(this._noMessages);
         this._updateNoMessagesLabel();
     },
 
     _updateNoMessagesLabel: function() {
-        if (this._summaryItems.length == 0 && !this._noMessages) {
-            this._noMessages = new St.Label({ text: _("No Messages"),
-                                              style_class: 'no-messages-label',
-                                              x_align: Clutter.ActorAlign.CENTER,
-                                              x_expand: true,
-                                              y_align: Clutter.ActorAlign.CENTER,
-                                              y_expand: true });
-            this.actor.add_actor(this._noMessages);
-        } else if (this._summaryItems.length > 0 && this._noMessages) {
-            this._noMessages.destroy();
-            this._noMessages = null;
-        }
+        this._noMessages.visible = this._sources.size() == 0;
     },
 
     _sessionUpdated: function() {
@@ -1675,15 +1673,7 @@ const MessageTray = new Lang.Class({
     },
 
     contains: function(source) {
-        return this._getIndexOfSummaryItemForSource(source) >= 0;
-    },
-
-    _getIndexOfSummaryItemForSource: function(source) {
-        for (let i = 0; i < this._summaryItems.length; i++) {
-            if (this._summaryItems[i].source == source)
-                return i;
-        }
-        return -1;
+        return this._sources.has(source);
     },
 
     add: function(source) {
@@ -1692,7 +1682,18 @@ const MessageTray = new Lang.Class({
             return;
         }
 
-        let summaryItem = new SummaryItem(source);
+        this._addSource(source);
+    },
+
+    _addSource: function(source) {
+        let obj = {
+            source: source,
+            summaryItem: new SummaryItem(source),
+            notifyId: 0,
+            destroyId: 0,
+            mutedChangedId: 0
+        };
+        let summaryItem = obj.summaryItem;
 
         if (source.isChat) {
             this._summary.insert_child_at_index(summaryItem.actor, 0);
@@ -1701,11 +1702,11 @@ const MessageTray = new Lang.Class({
             this._summary.insert_child_at_index(summaryItem.actor, this._chatSummaryItemsCount);
         }
 
-        this._summaryItems.push(summaryItem);
+        this._sources.set(source, obj);
 
-        source.connect('notify', Lang.bind(this, this._onNotify));
-
-        source.connect('muted-changed', Lang.bind(this,
+        obj.notifyId = source.connect('notify', Lang.bind(this, this._onNotify));
+        obj.destroyId = source.connect('destroy', Lang.bind(this, this._onSourceDestroy));
+        obj.mutedChangedId = source.connect('muted-changed', Lang.bind(this,
             function () {
                 if (source.isMuted)
                     this._notificationQueue = this._notificationQueue.filter(function(notification) {
@@ -1724,8 +1725,6 @@ const MessageTray = new Lang.Class({
                 this._onSummaryItemClicked(summaryItem, 3);
             }));
 
-        source.connect('destroy', Lang.bind(this, this._onSourceDestroy));
-
         // We need to display the newly-added summary item, but if the
         // caller is about to post a notification, we want to show that
         // *first* and not show the summary item until after it hides.
@@ -1737,21 +1736,16 @@ const MessageTray = new Lang.Class({
         this._updateNoMessagesLabel();
     },
 
-    getSummaryItems: function() {
-        return this._summaryItems;
-    },
-
-    _onSourceDestroy: function(source) {
-        let index = this._getIndexOfSummaryItemForSource(source);
-        if (index == -1)
-            return;
-
-        let summaryItemToRemove = this._summaryItems[index];
-
-        this._summaryItems.splice(index, 1);
+    _removeSource: function(source) {
+        let [, obj] = this._sources.delete(source);
+        let summaryItem = obj.summaryItem;
 
         if (source.isChat)
             this._chatSummaryItemsCount--;
+
+        source.disconnect(obj.notifyId);
+        source.disconnect(obj.destroyId);
+        source.disconnect(obj.mutedChangedId);
 
         let needUpdate = false;
 
@@ -1760,17 +1754,27 @@ const MessageTray = new Lang.Class({
             this._notificationRemoved = true;
             needUpdate = true;
         }
-        if (this._clickedSummaryItem == summaryItemToRemove) {
+        if (this._clickedSummaryItem == summaryItem) {
             this._setClickedSummaryItem(null);
             needUpdate = true;
         }
 
-        summaryItemToRemove.actor.destroy();
+        summaryItem.destroy();
 
         this._updateNoMessagesLabel();
 
         if (needUpdate)
             this._updateState();
+    },
+
+    getSummaryItems: function() {
+        return this._sources.values().map(function(v) {
+            return v.summaryItem;
+        });
+    },
+
+    _onSourceDestroy: function(source) {
+        this._removeSource(source);
     },
 
     _onNotificationDestroy: function(notification) {
