@@ -473,7 +473,7 @@ function getWindowActorsForWorkspace(workspaceIndex) {
 function _globalKeyPressHandler(actor, event) {
     if (modalCount == 0)
         return false;
-    if (event.type() != Clutter.EventType.KEY_PRESS)
+    if (event.type() != Clutter.EventType.KEY_PRESS && event.type() != Clutter.EventType.KEY_RELEASE)
         return false;
 
     if (!sessionMode.allowKeybindingsWhenModal) {
@@ -489,51 +489,57 @@ function _globalKeyPressHandler(actor, event) {
     // This relies on the fact that Clutter.ModifierType is the same as Gdk.ModifierType
     let action = global.display.get_keybinding_action(keyCode, modifierState);
 
-    if (action == Meta.KeyBindingAction.SWITCH_PANELS) {
-        ctrlAltTabManager.popup(modifierState & Clutter.ModifierType.SHIFT_MASK,
-                                modifierState);
-        return true;
-    }
-
-    switch (action) {
-        // left/right would effectively act as synonyms for up/down if we enabled them;
-        // but that could be considered confusing; we also disable them in the main view.
-        //
-        // case Meta.KeyBindingAction.WORKSPACE_LEFT:
-        //  if (!sessionMode.hasWorkspaces)
-        //      return false;
-        //
-        //     wm.actionMoveWorkspaceLeft();
-        //     return true;
-        // case Meta.KeyBindingAction.WORKSPACE_RIGHT:
-        //  if (!sessionMode.hasWorkspaces)
-        //      return false;
-        //
-        //     wm.actionMoveWorkspaceRight();
-        //     return true;
-        case Meta.KeyBindingAction.WORKSPACE_UP:
-            if (!sessionMode.hasWorkspaces)
-                return false;
-
-            wm.actionMoveWorkspace(Meta.MotionDirection.UP);
+    if (event.type() == Clutter.EventType.KEY_PRESS) {
+        if (action == Meta.KeyBindingAction.SWITCH_PANELS) {
+            ctrlAltTabManager.popup(modifierState & Clutter.ModifierType.SHIFT_MASK,
+                                    modifierState);
             return true;
-        case Meta.KeyBindingAction.WORKSPACE_DOWN:
-            if (!sessionMode.hasWorkspaces)
-                return false;
+        }
 
-            wm.actionMoveWorkspace(Meta.MotionDirection.DOWN);
-            return true;
-        case Meta.KeyBindingAction.PANEL_RUN_DIALOG:
-        case Meta.KeyBindingAction.COMMAND_2:
-            if (!sessionMode.hasRunDialog)
-                return false;
+        switch (action) {
+            // left/right would effectively act as synonyms for up/down if we enabled them;
+            // but that could be considered confusing; we also disable them in the main view.
+            //
+            // case Meta.KeyBindingAction.WORKSPACE_LEFT:
+            //  if (!sessionMode.hasWorkspaces)
+            //      return false;
+            //
+            //     wm.actionMoveWorkspaceLeft();
+            //     return true;
+            // case Meta.KeyBindingAction.WORKSPACE_RIGHT:
+            //  if (!sessionMode.hasWorkspaces)
+            //      return false;
+            //
+            //     wm.actionMoveWorkspaceRight();
+            //     return true;
+            case Meta.KeyBindingAction.WORKSPACE_UP:
+                if (!sessionMode.hasWorkspaces)
+                    return false;
 
-            openRunDialog();
-            return true;
-        case Meta.KeyBindingAction.PANEL_MAIN_MENU:
-        case Meta.KeyBindingAction.OVERLAY_KEY:
+                wm.actionMoveWorkspace(Meta.MotionDirection.UP);
+                return true;
+            case Meta.KeyBindingAction.WORKSPACE_DOWN:
+                if (!sessionMode.hasWorkspaces)
+                    return false;
+
+                wm.actionMoveWorkspace(Meta.MotionDirection.DOWN);
+                return true;
+            case Meta.KeyBindingAction.PANEL_RUN_DIALOG:
+            case Meta.KeyBindingAction.COMMAND_2:
+                if (!sessionMode.hasRunDialog)
+                    return false;
+
+                openRunDialog();
+                return true;
+            case Meta.KeyBindingAction.PANEL_MAIN_MENU:
+                overview.hide();
+                return true;
+        }
+    } else if (event.type() == Clutter.EventType.KEY_RELEASE) {
+        if (action == Meta.KeyBindingAction.OVERLAY_KEY) {
             overview.hide();
             return true;
+        }
     }
 
     return false;
