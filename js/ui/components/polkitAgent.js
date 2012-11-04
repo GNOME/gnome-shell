@@ -335,11 +335,19 @@ const AuthenticationAgent = new Lang.Class({
     },
 
     enable: function() {
-        this._native.register();
+        try {
+            this._native.register();
+        } catch(e) {
+            log('Failed to register AuthenticationAgent');
+        }
     },
 
     disable: function() {
-        this._native.unregister();
+        try {
+            this._native.unregister();
+        } catch(e) {
+            log('Failed to unregister AuthenticationAgent');
+        }
     },
 
     _onInitiate: function(nativeAgent, actionId, message, iconName, cookie, userNames) {
