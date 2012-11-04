@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-25 00:06+0000\n"
-"PO-Revision-Date: 2012-09-25 06:45+0530\n"
+"POT-Creation-Date: 2012-10-31 16:48+0000\n"
+"PO-Revision-Date: 2012-11-04 09:23+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "Language: pa\n"
@@ -137,50 +137,63 @@ msgstr ""
 "GsmPresenceStatus ਤੋਂ ਇੱਥੇ ਮੁੱਲ।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
+msgid "Always show the 'Log out' menuitem in the user menu."
+msgstr "ਯੂਜ਼ਰ ਮੇਨੂ ਵਿੱਚ \"ਲਾਗ ਆਉਟ\" ਆਈਟਮ ਹਮੇਸ਼ਾ ਵੇਖਾਉ।"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+msgid ""
+"This key overrides the automatic hiding of the 'Log out' menuitem in single-"
+"user, single-session situations."
+msgstr ""
+"ਇਹ ਕੁੰਜੀ ਇੱਕਲੇ-ਯੂਜ਼ਰ, ਇੱਕਲੇ-ਸ਼ੈਸ਼ਨ ਹਾਲਤਾਂ ਵਿੱਚ 'ਲਾਗਆਉਟ' ਆਈਟਮ ਨੂੰ ਆਪਣੇ-ਆਪ ਓਹਲੇ "
+"ਰੱਖਣ ਨੂੰ "
+"ਅਣਡਿੱਠਾ ਕਰਦੀ ਹੈ।"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid "Show the week date in the calendar"
 msgstr "ਕੈਲੰਡਰ ਵਿੱਚ ਹਫ਼ਤਾ ਮਿਤੀ ਵੇਖੋ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid "If true, display the ISO week date in the calendar."
 msgstr "ਜੇ ਚੋਣ ਕੀਤੀ ਤਾਂ ਕੈਲੰਡਰ ਵਿੱਚ ISO ਹਫਤਾ ਮਿਤੀ ਵੇਖਾਈ ਜਾਵੇਗੀ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Keybinding to open the application menu"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਮੇਨੂ ਖੋਲ੍ਹਣ ਲਈ ਕੀਬਾਈਡਿੰਗ ਹੈ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "Keybinding to open the application menu."
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਮੇਨੂ ਖੋਲ੍ਹਣ ਲਈ ਕੀਬਾਈਡਿੰਗ ਹੈ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr "ਸੁਨੇਹਾ ਟਰੇ ਦੀ ਦਿੱਖਣ ਨੂੰ ਬਦਲਣ ਲਈ ਕੀਬਾਈਡਿੰਗ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "ਸੁਨੇਹਾ ਟਰੇ ਦੀ ਦਿੱਖਣ ਨੂੰ ਬਦਲਣ ਲਈ ਕੀਬਾਈਡਿੰਗ ਹੈ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to toggle the screen recorder"
 msgstr "ਸਕਰੀਨ ਰਿਕਾਡਰ ਨੂੰ ਬਦਲਣ ਲਈ ਕੀਬਾਈਡਿੰਗ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid "Keybinding to start/stop the builtin screen recorder."
 msgstr "ਬਿਲਟ-ਇਨ ਸਕਰੀਨ ਰਿਕਾਰਡ ਨੂੰ ਸ਼ੁਰੂ ਕਰਨ/ਰੋਕਣ ਲਈ ਕੀਬਾਈਡਿੰਗ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Which keyboard to use"
 msgstr "ਕਿਹੜਾ ਕੀਬੋਰਡ ਵਰਤਣਾ ਹੈ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "The type of keyboard to use."
 msgstr "ਵਰਤਣ ਲਈ ਕੀਬੋਰਡ ਦੀ ਕਿਸਮ ਹੈ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Framerate used for recording screencasts."
 msgstr "ਸਕਰੀਨਕਾਸਟ ਰਿਕਾਰਡ ਕਰਨ ਲਈ ਫਰੇਮਰੇਟ ਹੈ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -189,11 +202,11 @@ msgstr ""
 "ਫਰੇਮ ਪ੍ਰਤੀ "
 "ਸਕਿੰਟ 'ਚ ਹੈ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "ਸਕਰੀਨਕਾਸਟ ਇੰਕੋਡ ਕਰਨ ਲਈ ਵਰਤਣ ਵਾਸਤੇ ਜੀਸਟਰੀਮਰ ਪਾਇਪਲਾਇਨ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -226,11 +239,11 @@ msgstr ""
 "ਲਗਾਉਣ ਲਈ "
 "ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "File extension used for storing the screencast"
 msgstr "ਸਕਰੀਨਕਾਸਟ ਸੰਭਾਲਣ ਲਈ ਵਰਤਣ ਵਾਸਤੇ ਫਾਇਲ ਇਕਟੈਨਸ਼ਨ"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -255,11 +268,11 @@ msgstr "ਇਕਸਟੈਸ਼ਨ"
 msgid "Select an extension to configure using the combobox above."
 msgstr "ਉੱਤੇ ਦਿੱਤੇ ਕੰਬੋਬਾਕਸ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਇਕਸਟੈਸ਼ਨ ਦੀ ਸੰਰਚਨਾ ਕਰਨ ਲਈ ਚੋਣ ਕਰੋ।"
 
-#: ../js/gdm/loginDialog.js:527
+#: ../js/gdm/loginDialog.js:529
 msgid "Session..."
 msgstr "ਸ਼ੈਸ਼ਨ..."
 
-#: ../js/gdm/loginDialog.js:675
+#: ../js/gdm/loginDialog.js:677
 msgctxt "title"
 msgid "Sign In"
 msgstr "ਸਾਇਨ ਇਨ"
@@ -267,34 +280,33 @@ msgstr "ਸਾਇਨ ਇਨ"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:742
+#: ../js/gdm/loginDialog.js:736
 msgid "Not listed?"
 msgstr "ਲਿਸਟ ਵਿੱਚ ਨਹੀਂ ਹੈ?"
 
-#: ../js/gdm/loginDialog.js:895 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:889 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
-#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
+#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:167
 msgid "Cancel"
 msgstr "ਰੱਦ ਕਰੋ"
 
-#: ../js/gdm/loginDialog.js:900
+#: ../js/gdm/loginDialog.js:894
 msgctxt "button"
 msgid "Sign In"
 msgstr "ਸਾਇਨ ਇਨ"
 
-#: ../js/gdm/loginDialog.js:1239
+#: ../js/gdm/loginDialog.js:1215
 msgid "Login Window"
 msgstr "ਲਾਗਇਨ ਵਿੰਡੋ"
 
 #. Translators: accessible name of the power menu in the login screen
 #: ../js/gdm/powerMenu.js:35
-#| msgid "Power Off"
 msgid "Power"
 msgstr "ਪਾਵਰ"
 
-#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:663 ../js/ui/userMenu.js:667
-#: ../js/ui/userMenu.js:778
+#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:664 ../js/ui/userMenu.js:668
+#: ../js/ui/userMenu.js:779
 msgid "Suspend"
 msgstr "ਸਸਪੈਂਡ"
 
@@ -302,8 +314,8 @@ msgstr "ਸਸਪੈਂਡ"
 msgid "Restart"
 msgstr "ਮੁੜ-ਚਾਲੂ ਕਰੋ"
 
-#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:665 ../js/ui/userMenu.js:667
-#: ../js/ui/userMenu.js:777
+#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:666 ../js/ui/userMenu.js:668
+#: ../js/ui/userMenu.js:778
 msgid "Power Off"
 msgstr "ਬੰਦ ਕਰੋ"
 
@@ -354,7 +366,7 @@ msgstr "ਸੈਟਿੰਗ"
 msgid "New Window"
 msgstr "ਨਵੀਂ ਵਿੰਡੋ"
 
-#: ../js/ui/appDisplay.js:678 ../js/ui/dash.js:271
+#: ../js/ui/appDisplay.js:678 ../js/ui/dash.js:290
 msgid "Remove from Favorites"
 msgstr "ਪਸੰਦ ਵਿੱਚੋਂ ਹਟਾਓ"
 
@@ -518,16 +530,16 @@ msgstr "ਇਹ ਹਫ਼ਤਾ"
 msgid "Next week"
 msgstr "ਹਫ਼ਤਾ ਅੱਗੇ"
 
-#: ../js/ui/components/autorunManager.js:278
+#: ../js/ui/components/autorunManager.js:297
 msgid "Removable Devices"
 msgstr "ਹਟਾਉਣਯੋਗ ਜੰਤਰ"
 
-#: ../js/ui/components/autorunManager.js:575
+#: ../js/ui/components/autorunManager.js:594
 #, c-format
 msgid "Open with %s"
 msgstr "%s ਨਾਲ ਖੋਲ੍ਹੋ"
 
-#: ../js/ui/components/autorunManager.js:601
+#: ../js/ui/components/autorunManager.js:620
 msgid "Eject"
 msgstr "ਬਾਹਰ ਕੱਢੋ"
 
@@ -682,35 +694,35 @@ msgstr "ਚੁੱਪ"
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
 #. locale, without seconds.
-#: ../js/ui/components/telepathyClient.js:948
+#: ../js/ui/components/telepathyClient.js:950
 #, no-c-format
 msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgstr "<b>%2$A</b> ਨੂੰ <b>%1$X</b> ਵਜੇ ਭੇਜਿਆ"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25",
 #. shown when you get a chat message in the same year.
-#: ../js/ui/components/telepathyClient.js:954
+#: ../js/ui/components/telepathyClient.js:956
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgstr " <b>%A</b> ਨੂੰ <b>%B %d</b> ਵਜੇ ਭੇਜਿਆ"
 
 #. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year.
-#: ../js/ui/components/telepathyClient.js:959
+#: ../js/ui/components/telepathyClient.js:961
 #, no-c-format
 msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgstr "<b>%A</b> <b>%B %d</b>, %Y ਨੂੰ ਭੇਜਿਆ"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:988
+#: ../js/ui/components/telepathyClient.js:990
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s ਨੂੰ ਹੁਣ %s ਵਜੋਂ ਜਾਣਿਆ ਜਾਵੇਗਾ"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1088
+#: ../js/ui/components/telepathyClient.js:1090
 #, c-format
 msgid "Invitation to %s"
 msgstr "%s ਲਈ ਸੱਦਾ"
@@ -718,42 +730,42 @@ msgstr "%s ਲਈ ਸੱਦਾ"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/components/telepathyClient.js:1096
+#: ../js/ui/components/telepathyClient.js:1098
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s ਤੁਹਾਨੂੰ %s ਜੁਆਇੰਨ ਕਰਨ ਲਈ ਸੱਦ ਰਿਹਾ ਹੈ"
 
-#: ../js/ui/components/telepathyClient.js:1098
-#: ../js/ui/components/telepathyClient.js:1177
-#: ../js/ui/components/telepathyClient.js:1240
+#: ../js/ui/components/telepathyClient.js:1100
+#: ../js/ui/components/telepathyClient.js:1179
+#: ../js/ui/components/telepathyClient.js:1242
 msgid "Decline"
 msgstr "ਇਨਕਾਰ"
 
-#: ../js/ui/components/telepathyClient.js:1099
-#: ../js/ui/components/telepathyClient.js:1178
-#: ../js/ui/components/telepathyClient.js:1241
+#: ../js/ui/components/telepathyClient.js:1101
+#: ../js/ui/components/telepathyClient.js:1180
+#: ../js/ui/components/telepathyClient.js:1243
 msgid "Accept"
 msgstr "ਮਨਜ਼ੂਰ"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1129
+#: ../js/ui/components/telepathyClient.js:1131
 #, c-format
 msgid "Video call from %s"
 msgstr "%s ਵਲੋਂ ਵਿਡੀਓ ਕਾਲ"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1132
+#: ../js/ui/components/telepathyClient.js:1134
 #, c-format
 msgid "Call from %s"
 msgstr "%s ਵਲੋਂ ਕਾਲ"
 
-#: ../js/ui/components/telepathyClient.js:1137
+#: ../js/ui/components/telepathyClient.js:1139
 #: ../js/ui/status/bluetooth.js:346
 msgid "Reject"
 msgstr "ਨਾ-ਮਨਜ਼ੂਰ"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1139
+#: ../js/ui/components/telepathyClient.js:1141
 msgid "Answer"
 msgstr "ਜਵਾਬ ਦਿਓ"
 
@@ -762,110 +774,110 @@ msgstr "ਜਵਾਬ ਦਿਓ"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/components/telepathyClient.js:1171
+#: ../js/ui/components/telepathyClient.js:1173
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s ਤੁਹਾਨੂੰ %s ਭੇਜ ਰਿਹਾ/ਰਹੀ ਹੈ"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1206
+#: ../js/ui/components/telepathyClient.js:1208
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr ""
 "%s ਤੁਹਾਨੂੰ ਵੇਖਣ ਦਾ ਅਧਿਕਾਰ ਚਾਹੁੰਦਾ/ਚਾਹੁੰਦੀ ਹੈ, ਜਦੋਂ ਵੀ ਤੁਸੀਂ ਆਨਲਾਈਨ ਹੋਵੋ"
 
-#: ../js/ui/components/telepathyClient.js:1298
+#: ../js/ui/components/telepathyClient.js:1300
 msgid "Network error"
 msgstr "ਨੈੱਟਵਰਕ ਗਲਤੀ"
 
-#: ../js/ui/components/telepathyClient.js:1300
+#: ../js/ui/components/telepathyClient.js:1302
 msgid "Authentication failed"
 msgstr "ਪਰਮਾਣਕਿਤਾ ਫੇਲ੍ਹ ਹੋਈ"
 
-#: ../js/ui/components/telepathyClient.js:1302
+#: ../js/ui/components/telepathyClient.js:1304
 msgid "Encryption error"
 msgstr "ਇੰਕ੍ਰਿਪਸ਼ਨ ਗਲਤੀ"
 
-#: ../js/ui/components/telepathyClient.js:1304
+#: ../js/ui/components/telepathyClient.js:1306
 msgid "Certificate not provided"
 msgstr "ਸਰਟੀਫਿਕੇਟ ਨਹੀਂ ਦਿੱਤਾ"
 
-#: ../js/ui/components/telepathyClient.js:1306
+#: ../js/ui/components/telepathyClient.js:1308
 msgid "Certificate untrusted"
 msgstr "ਸਰਟੀਫਿਕੇਟ ਬੇਭਰੋਸੇਯੋਗ"
 
-#: ../js/ui/components/telepathyClient.js:1308
+#: ../js/ui/components/telepathyClient.js:1310
 msgid "Certificate expired"
 msgstr "ਸਰਟੀਫਿਕੇਟ ਦੀ ਮਿਆਦ ਪੁੱਗੀ"
 
-#: ../js/ui/components/telepathyClient.js:1310
+#: ../js/ui/components/telepathyClient.js:1312
 msgid "Certificate not activated"
 msgstr "ਸਰਟੀਫਿਕੇਟ ਸਰਗਰਮ ਨਹੀਂ ਹੈ"
 
-#: ../js/ui/components/telepathyClient.js:1312
+#: ../js/ui/components/telepathyClient.js:1314
 msgid "Certificate hostname mismatch"
 msgstr "ਸਰਟੀਫਿਕੇਟ ਹੋਸਟ-ਨਾਂ ਨਹੀਂ ਮਿਲਦਾ"
 
-#: ../js/ui/components/telepathyClient.js:1314
+#: ../js/ui/components/telepathyClient.js:1316
 msgid "Certificate fingerprint mismatch"
 msgstr "ਸਰਟੀਫਿਕੇਟ ਫਿੰਗਰ-ਪਰਿੰਟ ਮਿਲਦਾ ਨਹੀਂ"
 
-#: ../js/ui/components/telepathyClient.js:1316
+#: ../js/ui/components/telepathyClient.js:1318
 msgid "Certificate self-signed"
 msgstr "ਸਰਟੀਫਿਕੇਟ ਖੁਦ-ਦਸਤਖਤੀ ਹੈ"
 
-#: ../js/ui/components/telepathyClient.js:1318
+#: ../js/ui/components/telepathyClient.js:1320
 msgid "Status is set to offline"
 msgstr "ਹਾਲਤ ਆਫਲਾਈਨ ਸੈੱਟ ਕੀਤੀ ਗਈ ਹੈ"
 
-#: ../js/ui/components/telepathyClient.js:1320
+#: ../js/ui/components/telepathyClient.js:1322
 msgid "Encryption is not available"
 msgstr "ਇੰਕ੍ਰਿਪਸ਼ਨ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ"
 
-#: ../js/ui/components/telepathyClient.js:1322
+#: ../js/ui/components/telepathyClient.js:1324
 msgid "Certificate is invalid"
 msgstr "ਸਰਟੀਫਿਕੇਟ ਗਲਤ ਹੈ"
 
-#: ../js/ui/components/telepathyClient.js:1324
+#: ../js/ui/components/telepathyClient.js:1326
 msgid "Connection has been refused"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਤੋਂ ਇਨਕਾਰ ਕੀਤਾ ਗਿਆ"
 
-#: ../js/ui/components/telepathyClient.js:1326
+#: ../js/ui/components/telepathyClient.js:1328
 msgid "Connection can't be established"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਬਣਾਇਆ ਨਹੀਂ ਜਾ ਸਕਦਾ"
 
-#: ../js/ui/components/telepathyClient.js:1328
+#: ../js/ui/components/telepathyClient.js:1330
 msgid "Connection has been lost"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਖਤਮ ਹੋ ਗਿਆ"
 
-#: ../js/ui/components/telepathyClient.js:1330
+#: ../js/ui/components/telepathyClient.js:1332
 msgid "This account is already connected to the server"
 msgstr "ਇਹ ਅਕਾਊਂਟ ਪਹਿਲਾਂ ਹੀ ਸਰਵਰ ਨਾਲ ਕੁਨੈਕਟ ਹੈ"
 
-#: ../js/ui/components/telepathyClient.js:1332
+#: ../js/ui/components/telepathyClient.js:1334
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "ਉਸੇ ਸਰੋਤ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਕੁਨੈਕਸ਼ਨ ਨੂੰ ਨਵੇਂ ਕੁਨੈਕਸ਼ਨ ਨਾਲ ਬਦਲ ਦਿੱਤਾ ਗਿਆ ਹੈ"
 
-#: ../js/ui/components/telepathyClient.js:1334
+#: ../js/ui/components/telepathyClient.js:1336
 msgid "The account already exists on the server"
 msgstr "ਅਕਾਊਂਟ ਸਰਵਰ ਉੱਤੇ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ"
 
-#: ../js/ui/components/telepathyClient.js:1336
+#: ../js/ui/components/telepathyClient.js:1338
 msgid "Server is currently too busy to handle the connection"
 msgstr "ਸਰਵਰ ਇਸ ਵੇਲੇ ਐਨਾ ਰੁੱਝਿਆ ਹੋਇਆ ਹੈ ਕਿ ਕੁਨੈਕਸ਼ਨ ਸੰਭਾਲ ਨਹੀਂ ਸਕਦਾ"
 
-#: ../js/ui/components/telepathyClient.js:1338
+#: ../js/ui/components/telepathyClient.js:1340
 msgid "Certificate has been revoked"
 msgstr "ਸਰਟੀਫਿਕੇਟ ਮਨਸੂਖ ਕੀਤਾ ਜਾ ਚੁੱਕਾ ਹੈ"
 
-#: ../js/ui/components/telepathyClient.js:1340
+#: ../js/ui/components/telepathyClient.js:1342
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "ਸਰਟੀਫਿਕੇਟ ਅਸੁਰੱਖਿਅਤ ਸੀਫ਼ਰ ਐਲਗੋਰਿਥਮ ਵਰਤਦਾ ਹੈ ਜਾਂ ਕਮਜ਼ੋਰ ਕ੍ਰਿਪਟੋਗਰਾਫਿਕਲ ਵਰਤਦਾ ਹੈ"
 
-#: ../js/ui/components/telepathyClient.js:1342
+#: ../js/ui/components/telepathyClient.js:1344
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -874,30 +886,30 @@ msgstr ""
 "ਲਾਇਬਰੇਰੀ ਵਲੋਂ ਰੱਖੀ "
 "ਗਈ ਲਿਮਟ ਤੋਂ ਵੱਧ ਗਈ ਹੈ।"
 
-#: ../js/ui/components/telepathyClient.js:1344
+#: ../js/ui/components/telepathyClient.js:1346
 msgid "Internal error"
 msgstr "ਅੰਦਰੂਨੀ ਗਲਤੀ"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1354
+#: ../js/ui/components/telepathyClient.js:1356
 #, c-format
 msgid "Connection to %s failed"
 msgstr "%s ਲਈ ਕੁਨੈਕਸ਼ਨ ਫੇਲ੍ਹ ਹੈ"
 
-#: ../js/ui/components/telepathyClient.js:1363
+#: ../js/ui/components/telepathyClient.js:1365
 msgid "Reconnect"
 msgstr "ਮੁੜ-ਕੁਨੈਕਟ ਕਰੋ"
 
-#: ../js/ui/components/telepathyClient.js:1364
+#: ../js/ui/components/telepathyClient.js:1366
 msgid "Edit account"
 msgstr "ਅਕਾਊਂਟ ਸੋਧ"
 
-#: ../js/ui/components/telepathyClient.js:1409
+#: ../js/ui/components/telepathyClient.js:1411
 msgid "Unknown reason"
 msgstr "ਅਣਜਾਣ ਕਾਰਨ"
 
-#: ../js/ui/dash.js:245 ../js/ui/dash.js:273
+#: ../js/ui/dash.js:253 ../js/ui/dash.js:292
 msgid "Show Applications"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਵੇਖੋ"
 
@@ -905,14 +917,14 @@ msgstr "ਐਪਲੀਕੇਸ਼ਨ ਵੇਖੋ"
 msgid "Date and Time Settings"
 msgstr "ਮਿਤੀ ਤੇ ਸਮਾਂ ਸੈਟਿੰਗ"
 
-#: ../js/ui/dateMenu.js:109
+#: ../js/ui/dateMenu.js:111
 msgid "Open Calendar"
 msgstr "ਕੈਲੰਡਰ ਖੋਲ੍ਹੋ"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:175
+#: ../js/ui/dateMenu.js:201
 msgid "%A %B %e, %Y"
 msgstr "%A, %e %B %Y"
 
@@ -1015,11 +1027,11 @@ msgstr "ਇੰਸਟਾਲ ਕਰੋ"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "ਕੀ extensions.gnome.org ਤੋਂ '%s' ਡਾਊਨਲੋਡ ਅਤੇ ਇੰਸਟਾਲ ਕਰਨੀ ਹੈ?"
 
-#: ../js/ui/keyboard.js:327
+#: ../js/ui/keyboard.js:337
 msgid "tray"
 msgstr "ਟਰੇ"
 
-#: ../js/ui/keyboard.js:561 ../js/ui/status/keyboard.js:195
+#: ../js/ui/keyboard.js:584 ../js/ui/status/keyboard.js:195
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "ਕੀਬੋਰਡ"
@@ -1072,23 +1084,23 @@ msgstr "ਸਰੋਤ ਵੇਖੋ"
 msgid "Web Page"
 msgstr "ਵੈੱਬ ਪੇਜ਼"
 
-#: ../js/ui/messageTray.js:1080
+#: ../js/ui/messageTray.js:1084
 msgid "Open"
 msgstr "ਖੋਲ੍ਹੋ"
 
-#: ../js/ui/messageTray.js:1087
+#: ../js/ui/messageTray.js:1091
 msgid "Remove"
 msgstr "ਹਟਾਓ"
 
-#: ../js/ui/messageTray.js:2055
+#: ../js/ui/messageTray.js:1543
 msgid "Message Tray"
 msgstr "ਸੁਨੇਹਾ ਟਰੇ"
 
-#: ../js/ui/messageTray.js:2511
+#: ../js/ui/messageTray.js:2549
 msgid "System Information"
 msgstr "ਸਿਸਟਮ ਜਾਣਕਾਰੀ"
 
-#: ../js/ui/notificationDaemon.js:506 ../src/shell-app.c:373
+#: ../js/ui/notificationDaemon.js:506 ../src/shell-app.c:374
 msgctxt "program"
 msgid "Unknown"
 msgstr "ਅਣਜਾਣ"
@@ -1144,7 +1156,7 @@ msgstr "ਕਮਾਂਡ ਦਿਓ ਜੀ:"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:79
+#: ../js/ui/screenShield.js:80
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
@@ -1194,7 +1206,7 @@ msgstr "ਪਾਸਵਰਡ"
 msgid "Remember Password"
 msgstr "ਪਾਸਵਰਡ ਯਾਦ ਰੱਖੋ"
 
-#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:169
+#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:170
 msgid "Unlock"
 msgstr "ਅਣ-ਲਾਕ"
 
@@ -1312,7 +1324,7 @@ msgstr "ਕੀਬੋਰਡ ਸੈਟਿੰਗ"
 msgid "Mouse Settings"
 msgstr "ਮਾਊਸ ਸੈਟਿੰਗ"
 
-#: ../js/ui/status/bluetooth.js:269 ../js/ui/status/volume.js:236
+#: ../js/ui/status/bluetooth.js:269 ../js/ui/status/volume.js:234
 msgid "Sound Settings"
 msgstr "ਸਾਊਂਡ ਸੈਟਿੰਗ"
 
@@ -1597,7 +1609,7 @@ msgid "Unknown"
 msgstr "ਅਣਜਾਣ"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:223
+#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:221
 msgid "Volume"
 msgstr "ਆਵਾਜ਼"
 
@@ -1605,67 +1617,63 @@ msgstr "ਆਵਾਜ਼"
 msgid "Microphone"
 msgstr "ਮਾਈਕਰੋਫੋਨ"
 
-#: ../js/ui/unlockDialog.js:176
+#: ../js/ui/unlockDialog.js:177
 msgid "Log in as another user"
 msgstr "ਹੋਰ ਯੂਜ਼ਰ ਵਜੋਂ ਲਾਗਇਨ"
 
-#: ../js/ui/userMenu.js:180
+#: ../js/ui/userMenu.js:181
 msgid "Available"
 msgstr "ਉਪਲੱਬਧ"
 
-#: ../js/ui/userMenu.js:183
+#: ../js/ui/userMenu.js:184
 msgid "Busy"
 msgstr "ਰੁਝਿਆ"
 
-#: ../js/ui/userMenu.js:186
+#: ../js/ui/userMenu.js:187
 msgid "Invisible"
 msgstr "ਅਦਿੱਖ"
 
-#: ../js/ui/userMenu.js:189
+#: ../js/ui/userMenu.js:190
 msgid "Away"
 msgstr "ਦੂਰ"
 
-#: ../js/ui/userMenu.js:192
+#: ../js/ui/userMenu.js:193
 msgid "Idle"
 msgstr "ਵੇਹਲਾ"
 
-#: ../js/ui/userMenu.js:195
+#: ../js/ui/userMenu.js:196
 msgid "Unavailable"
 msgstr "ਨਾ ਉਪਲੱਬਧ"
 
-#: ../js/ui/userMenu.js:618 ../js/ui/userMenu.js:759
-msgid "Switch User"
-msgstr "ਯੂਜ਼ਰ ਬਦਲੋ"
-
-#: ../js/ui/userMenu.js:619
-msgid "Switch Session"
-msgstr "ਸ਼ੈਸ਼ਨ ਬਦਲੋ"
-
-#: ../js/ui/userMenu.js:743
+#: ../js/ui/userMenu.js:744
 msgid "Notifications"
 msgstr "ਨੋਟੀਫਿਕੇਸ਼ਨ"
 
-#: ../js/ui/userMenu.js:751
+#: ../js/ui/userMenu.js:752
 msgid "System Settings"
 msgstr "ਸਿਸਟਮ ਸੈਟਿੰਗ"
 
-#: ../js/ui/userMenu.js:764
+#: ../js/ui/userMenu.js:760
+msgid "Switch User"
+msgstr "ਯੂਜ਼ਰ ਬਦਲੋ"
+
+#: ../js/ui/userMenu.js:765
 msgid "Log Out"
 msgstr "ਲਾਗ ਆਉਟ"
 
-#: ../js/ui/userMenu.js:769
+#: ../js/ui/userMenu.js:770
 msgid "Lock"
 msgstr "ਲਾਕ"
 
-#: ../js/ui/userMenu.js:784
+#: ../js/ui/userMenu.js:785
 msgid "Install Updates & Restart"
 msgstr "ਅੱਪਡੇਟ ਇੰਸਟਾਲ ਕਰੋ ਅਤੇ ਮੁੜ-ਚਾਲੂ"
 
-#: ../js/ui/userMenu.js:802
+#: ../js/ui/userMenu.js:803
 msgid "Your chat status will be set to busy"
 msgstr "ਤੁਹਾਡੀ ਚੈਟ ਹਾਲਤ ਰੁੱਝੇ ਵਜੋਂ ਸੈੱਟ ਕੀਤੀ ਜਾਵੇਗੀ"
 
-#: ../js/ui/userMenu.js:803
+#: ../js/ui/userMenu.js:804
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1687,7 +1695,7 @@ msgstr "ਐਪਲੀਕੇਸ਼ਨ"
 msgid "Search"
 msgstr "ਖੋਜ"
 
-#: ../js/ui/wanda.js:119
+#: ../js/ui/wanda.js:117
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1696,12 +1704,12 @@ msgstr ""
 "ਅਫਸੋਸ, ਅੱਜ ਤੁਹਾਡੇ ਲਈ ਕੋਈ ਨਸੀਹਤ ਨਹੀਂ:\n"
 "%s "
 
-#: ../js/ui/wanda.js:123
+#: ../js/ui/wanda.js:121
 #, c-format
 msgid "%s the Oracle says"
 msgstr "%s ਓਰੇਕਲ ਨੇ ਕਿਹਾ"
 
-#: ../js/ui/wanda.js:164
+#: ../js/ui/wanda.js:162
 msgid "Your favorite Easter Egg"
 msgstr "ਤੁਹਾਡਾ ਪਸੰਦੀਦਾ ਈਸਟਰ ਅੰਡਾ"
 
@@ -1736,23 +1744,23 @@ msgstr[1] "%u ਇੰਪੁੱਟ"
 msgid "System Sounds"
 msgstr "ਸਿਸਟਮ ਸਾਊਂਡ"
 
-#: ../src/main.c:330
+#: ../src/main.c:332
 msgid "Print version"
 msgstr "ਵਰਜਨ ਛਾਪੋ"
 
-#: ../src/main.c:336
+#: ../src/main.c:338
 msgid "Mode used by GDM for login screen"
 msgstr "ਲਾਗਇਨ ਸਕਰੀਨ ਲਈ GDM ਵਲੋਂ ਵਰਤਿਆ ਮੋਡ"
 
-#: ../src/main.c:342
+#: ../src/main.c:344
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "ਲਾਗਇਨ ਸਕਰੀਨ ਉੱਤੇ ਖਾਸ ਮੋਡ ਜਿਵੇਂ ਕਿ \"gdm\" ਵਰਤੋਂ"
 
-#: ../src/main.c:348
+#: ../src/main.c:350
 msgid "List possible modes"
 msgstr "ਸੰਭਵ ਮੋਡ ਵੇਖਾਓ"
 
-#: ../src/shell-app.c:621
+#: ../src/shell-app.c:622
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "'%s' ਚਲਾਉਣ ਲਈ ਫੇਲ੍ਹ"
@@ -1776,6 +1784,9 @@ msgstr "ਡਿਫਾਲਟ"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "ਪਰਮਾਣਕਿਤਾ ਡਾਈਲਾਗ ਯੂਜ਼ਰ ਵਲੋਂ ਰੱਦ ਕੀਤਾ"
+
+#~ msgid "Switch Session"
+#~ msgstr "ਸ਼ੈਸ਼ਨ ਬਦਲੋ"
 
 #~ msgid "disabled OpenSearch providers"
 #~ msgstr "ਓਪਨਸਰਚ ਉਪਲੱਬਧ ਕਰਵਾਉਣ ਵਾਲੇ ਬੰਦ ਹਨ"
