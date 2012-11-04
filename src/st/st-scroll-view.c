@@ -666,6 +666,30 @@ st_scroll_view_allocate (ClutterActor          *actor,
 }
 
 static void
+adjust_with_direction (StAdjustment           *adj,
+                       ClutterScrollDirection  direction)
+{
+  gdouble delta;
+
+  switch (direction)
+    {
+    case CLUTTER_SCROLL_UP:
+    case CLUTTER_SCROLL_LEFT:
+      delta = -1.0;
+      break;
+    case CLUTTER_SCROLL_RIGHT:
+    case CLUTTER_SCROLL_DOWN:
+      delta = 1.0;
+      break;
+    case CLUTTER_SCROLL_SMOOTH:
+      g_assert_not_reached ();
+      break;
+    }
+
+  st_adjustment_adjust_for_scroll_event (adj, delta);
+}
+
+static void
 st_scroll_view_style_changed (StWidget *widget)
 {
   StScrollView *self = ST_SCROLL_VIEW (widget);
@@ -687,57 +711,31 @@ st_scroll_view_scroll_event (ClutterActor       *self,
                              ClutterScrollEvent *event)
 {
   StScrollViewPrivate *priv = ST_SCROLL_VIEW (self)->priv;
-  gdouble value, step, hvalue, vvalue, delta_x, delta_y;
 
   /* don't handle scroll events if requested not to */
   if (!priv->mouse_scroll)
     return FALSE;
 
-  switch (event->direction)
-    {
-    case CLUTTER_SCROLL_SMOOTH:
-      clutter_event_get_scroll_delta ((ClutterEvent *)event,
-                                      &delta_x, &delta_y);
-      g_object_get (priv->hadjustment,
-                    "value", &hvalue,
-                    NULL);
-      g_object_get (priv->vadjustment,
-                    "value", &vvalue,
-                    NULL);
-      break;
-    case CLUTTER_SCROLL_UP:
-    case CLUTTER_SCROLL_DOWN:
-      g_object_get (priv->vadjustment,
-                    "step-increment", &step,
-                    "value", &value,
-                    NULL);
-      break;
-    case CLUTTER_SCROLL_LEFT:
-    case CLUTTER_SCROLL_RIGHT:
-      g_object_get (priv->hadjustment,
-                    "step-increment", &step,
-                    "value", &value,
-                    NULL);
-      break;
-    }
+  if (clutter_event_is_pointer_emulated ((ClutterEvent *) event))
+    return TRUE;
 
   switch (event->direction)
     {
     case CLUTTER_SCROLL_SMOOTH:
-      st_adjustment_set_value (priv->hadjustment, hvalue + delta_x);
-      st_adjustment_set_value (priv->vadjustment, vvalue + delta_y);
+      {
+        gdouble delta_x, delta_y;
+        clutter_event_get_scroll_delta ((ClutterEvent *)event, &delta_x, &delta_y);
+        st_adjustment_adjust_for_scroll_event (priv->hadjustment, delta_x);
+        st_adjustment_adjust_for_scroll_event (priv->vadjustment, delta_y);
+      }
       break;
     case CLUTTER_SCROLL_UP:
-      st_adjustment_set_value (priv->vadjustment, value - step);
-      break;
     case CLUTTER_SCROLL_DOWN:
-      st_adjustment_set_value (priv->vadjustment, value + step);
+      adjust_with_direction (priv->vadjustment, event->direction);
       break;
     case CLUTTER_SCROLL_LEFT:
-      st_adjustment_set_value (priv->hadjustment, value - step);
-      break;
     case CLUTTER_SCROLL_RIGHT:
-      st_adjustment_set_value (priv->hadjustment, value + step);
+      adjust_with_direction (priv->hadjustment, event->direction);
       break;
     }
 

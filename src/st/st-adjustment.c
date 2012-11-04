@@ -566,3 +566,31 @@ st_adjustment_get_values (StAdjustment *adjustment,
     *page_size = priv->page_size;
 }
 
+/**
+ * st_adjustment_adjust_for_scroll_event:
+ * @adjustment: An #StAdjustment
+ * @delta: A delta, retrieved directly from clutter_event_get_scroll_delta()
+ *   or similar.
+ *
+ * Adjusts the adjustment using delta values from a scroll event.
+ * You should use this instead of using st_adjustment_set_value()
+ * as this method will tweak the values directly using the same
+ * math as GTK+, to ensure that scrolling is consistent across
+ * the environment.
+ */
+void
+st_adjustment_adjust_for_scroll_event (StAdjustment *adjustment,
+                                       gdouble       delta)
+{
+  StAdjustmentPrivate *priv;
+  gdouble new_value, scroll_unit;
+
+  g_return_if_fail (ST_IS_ADJUSTMENT (adjustment));
+
+  priv = adjustment->priv;
+
+  scroll_unit = pow (priv->page_size, 2.0 / 3.0);
+
+  new_value = priv->value + delta * scroll_unit;
+  st_adjustment_set_value (adjustment, new_value);
+}
