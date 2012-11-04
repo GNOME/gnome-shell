@@ -265,23 +265,37 @@ const WindowClone = new Lang.Class({
 
     _onScroll : function (actor, event) {
         let direction = event.get_scroll_direction();
-        if (direction == Clutter.ScrollDirection.UP) {
+        let delta;
+
+        if (event.is_pointer_emulated())
+            return;
+
+        if (direction == Clutter.ScrollDirection.DOWN) {
+            delta = -SCROLL_SCALE_AMOUNT;
+        } else if (direction == Clutter.ScrollDirection.UP) {
+            delta = +SCROLL_SCALE_AMOUNT;
+        } else if (direction == Clutter.ScrollDirection.SMOOTH) {
+            let [dx, dy] = event.get_scroll_delta();
+            delta = -dy * 10;
+        }
+
+        if (delta > 0) {
             if (this._zoomStep == undefined)
                 this._zoomStart();
             if (this._zoomStep < 100) {
-                this._zoomStep += SCROLL_SCALE_AMOUNT;
+                this._zoomStep += delta;
+                this._zoomStep = Math.min(100, this._zoomStep);
                 this._zoomUpdate();
             }
-        } else if (direction == Clutter.ScrollDirection.DOWN) {
+        } else if (delta < 0) {
             if (this._zoomStep > 0) {
-                this._zoomStep -= SCROLL_SCALE_AMOUNT;
+                this._zoomStep += delta;
                 this._zoomStep = Math.max(0, this._zoomStep);
                 this._zoomUpdate();
             }
             if (this._zoomStep <= 0.0)
                 this._zoomEnd();
         }
-
     },
 
     _zoomUpdate : function () {
