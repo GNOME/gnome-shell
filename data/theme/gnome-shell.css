@@ -1432,6 +1432,10 @@ StScrollBar StButton#vhandle:active {
     padding-right: 4px;
 }
 
+.chat-notification-scrollview{
+	max-height: 22em;
+}
+
 .subscription-message {
     font-style: italic;
 }

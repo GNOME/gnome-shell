@@ -779,6 +779,7 @@ const ChatNotification = new Lang.Class({
         // force a scroll to the bottom if things change while we were at the
         // bottom
         this._oldMaxScrollValue = this._scrollArea.vscroll.adjustment.value;
+        this._scrollArea.add_style_class_name('chat-notification-scrollview');
         this._scrollArea.vscroll.adjustment.connect('changed', Lang.bind(this, function(adjustment) {
             if (adjustment.value == this._oldMaxScrollValue)
                 this.scrollTo(St.Side.BOTTOM);
