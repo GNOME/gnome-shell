@@ -28,6 +28,7 @@ nobase_dist_js_DATA = 	\
 	misc/extensionUtils.js	\
 	misc/fileUtils.js	\
 	misc/gnomeSession.js	\
+	misc/hash.js		\
 	misc/history.js		\
 	misc/jsParse.js		\
 	misc/loginManager.js	\
