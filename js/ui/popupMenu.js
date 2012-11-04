@@ -636,7 +636,7 @@ const PopupSliderMenuItem = new Lang.Class({
         return true;
     },
 
-    _onScrollEvent: function (actor, event) {
+    scroll: function(event) {
         let direction = event.get_scroll_direction();
         let delta;
 
@@ -655,8 +655,13 @@ const PopupSliderMenuItem = new Lang.Class({
         }
 
         this._value = Math.min(Math.max(0, this._value + delta), 1);
+
         this._slider.queue_repaint();
         this.emit('value-changed', this._value);
+    },
+
+    _onScrollEvent: function(actor, event) {
+        this.scroll(event);
     },
 
     _motionEvent: function(actor, event) {
