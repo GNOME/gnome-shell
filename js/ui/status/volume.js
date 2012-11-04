@@ -119,7 +119,10 @@ const StreamSlider = new Lang.Class({
 
     _notifyVolumeChange: function() {
         global.cancel_theme_sound(VOLUME_NOTIFY_ID);
-        global.play_theme_sound(VOLUME_NOTIFY_ID, 'audio-volume-change');
+        global.play_theme_sound(VOLUME_NOTIFY_ID,
+                                'audio-volume-change',
+                                _("Volume changed"),
+                                Clutter.get_current_event ());
     },
 
     _updateVolume: function() {

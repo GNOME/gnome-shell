@@ -93,7 +93,7 @@ PKG_CHECK_MODULES(GNOME_SHELL, gio-unix-2.0 >= $GIO_MIN_VERSION
 			       clutter-glx-1.0 >= $CLUTTER_MIN_VERSION
                                libstartup-notification-1.0 >= $STARTUP_NOTIFICATION_MIN_VERSION
                                gobject-introspection-1.0 >= $GOBJECT_INTROSPECTION_MIN_VERSION
-			       libcanberra
+			       libcanberra libcanberra-gtk3
                                telepathy-glib >= $TELEPATHY_GLIB_MIN_VERSION
                                telepathy-logger-0.2 >= $TELEPATHY_LOGGER_MIN_VERSION
                                polkit-agent-1 >= $POLKIT_MIN_VERSION xfixes

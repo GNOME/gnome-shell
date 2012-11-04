@@ -121,9 +121,18 @@ void     shell_global_sync_pointer              (ShellGlobal  *global);
 GAppLaunchContext *
          shell_global_create_app_launch_context (ShellGlobal  *global);
 
-void     shell_global_play_theme_sound          (ShellGlobal  *global,
+void     shell_global_play_theme_sound          (ShellGlobal *global,
+                                                 guint        id,
+                                                 const char   *name,
+                                                 const char   *description,
+                                                 ClutterEvent *for_event);
+void     shell_global_play_theme_sound_full     (ShellGlobal  *global,
                                                  guint         id,
-                                                 const char   *name);
+                                                 const char   *name,
+                                                 const char   *description,
+                                                 ClutterEvent *for_event,
+                                                 const char   *application_id,
+                                                 const char   *application_name);
 void     shell_global_cancel_theme_sound        (ShellGlobal  *global,
                                                  guint         id);
 

@@ -88,7 +88,9 @@ const AutomountManager = new Lang.Class({
         if (!this._loginManager.sessionActive)
             return;
 
-        global.play_theme_sound(0, 'device-added-media');
+        global.play_theme_sound(0, 'device-added-media',
+                                _("External drive connected"),
+                                null);
     },
 
     _onDriveDisconnected: function() {
@@ -97,7 +99,9 @@ const AutomountManager = new Lang.Class({
         if (!this._loginManager.sessionActive)
             return;
 
-        global.play_theme_sound(0, 'device-removed-media');        
+        global.play_theme_sound(0, 'device-removed-media',
+                                _("External drive disconnected"),
+                                null);
     },
 
     _onDriveEjectButton: function(monitor, drive) {
