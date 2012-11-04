@@ -731,6 +731,9 @@ st_scroll_view_scroll_event (ClutterActor       *self,
   if (!priv->mouse_scroll)
     return FALSE;
 
+  /* throw away this garbage event. we want smooth scrolling. */
+  if (clutter_event_is_pointer_emulated ((ClutterEvent *) event))
+    return TRUE;
 
   switch (event->direction)
     {
