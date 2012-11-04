@@ -66,24 +66,32 @@ const VolumeMenu = new Lang.Class({
         this._onControlStateChanged();
     },
 
-    scroll: function(direction) {
+    scroll: function(event) {
+        let direction = event.get_scroll_direction();
         let currentVolume = this._output.volume;
+        let delta;
+
+        if (event.is_pointer_emulated())
+            return;
 
         if (direction == Clutter.ScrollDirection.DOWN) {
-            let prev_muted = this._output.is_muted;
-            this._output.volume = Math.max(0, currentVolume - this._volumeMax * VOLUME_ADJUSTMENT_STEP);
-            if (this._output.volume < 1) {
-                this._output.volume = 0;
-                if (!prev_muted)
-                    this._output.change_is_muted(true);
-            }
-            this._output.push_volume();
+            delta = -VOLUME_ADJUSTMENT_STEP;
+        } else if (direction == Clutter.ScrollDirection.UP) {
+            delta = +VOLUME_ADJUSTMENT_STEP;
+        } else if (direction == Clutter.ScrollDirection.SMOOTH) {
+            let [dx, dy] = event.get_scroll_delta();
+            // Use the same math as in the slider.
+            delta = -dy / 10;
         }
-        else if (direction == Clutter.ScrollDirection.UP) {
-            this._output.volume = Math.min(this._volumeMax, currentVolume + this._volumeMax * VOLUME_ADJUSTMENT_STEP);
-            this._output.change_is_muted(false);
-            this._output.push_volume();
+
+        let prev_muted = this._output.is_muted;
+        this._output.volume = Math.max(0, currentVolume + this._volumeMax * delta);
+        if (this._output.volume < 1) {
+            this._output.volume = 0;
+            if (!prev_muted)
+                this._output.change_is_muted(true);
         }
+        this._output.push_volume();
 
         this._notifyVolumeChange();
     },
@@ -242,6 +250,6 @@ const Indicator = new Lang.Class({
     },
 
     _onScrollEvent: function(actor, event) {
-        this._volumeMenu.scroll(event.get_scroll_direction());
+        this._volumeMenu.scroll(event);
     }
 });
