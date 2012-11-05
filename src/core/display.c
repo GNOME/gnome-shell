@@ -167,9 +167,7 @@ static guint display_signals [LAST_SIGNAL] = { 0 };
 static MetaDisplay *the_display = NULL;
 
 
-/* By default, the GNOME keybindings capplet should include both the Mutter
- * and Metacity keybindings */
-static const char *gnome_wm_keybindings = "Mutter,Metacity";
+static const char *gnome_wm_keybindings = "Mutter";
 static const char *net_wm_name = "Mutter";
 
 #ifdef WITH_VERBOSE_MODE

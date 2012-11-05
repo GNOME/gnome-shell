@@ -259,6 +259,8 @@ wmproperties_DATA = $(wmproperties_files)
 
 xmldir       = @GNOME_KEYBINDINGS_KEYSDIR@
 xml_in_files = \
+        50-mutter-navigation.xml.in	\
+        50-mutter-system.xml.in		\
         50-mutter-windows.xml.in
 xml_DATA     = $(xml_in_files:.xml.in=.xml)
 

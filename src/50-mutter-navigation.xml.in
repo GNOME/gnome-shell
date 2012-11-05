@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<KeyListEntries schema="org.gnome.desktop.wm.keybindings"
+                group="system"
+                _name="Navigation"
+                wm_name="Mutter"
+                package="mutter">
+
+	<KeyListEntry name="move-to-workspace-1"
+	              _description="Move window to workspace 1" />
+
+	<KeyListEntry name="move-to-workspace-2"
+	              _description="Move window to workspace 2" />
+
+	<KeyListEntry name="move-to-workspace-3"
+	              _description="Move window to workspace 3" />
+
+	<KeyListEntry name="move-to-workspace-4"
+	              _description="Move window to workspace 4" />
+
+	<KeyListEntry name="move-to-workspace-left"
+	              _description="Move window one workspace to the left" />
+
+	<KeyListEntry name="move-to-workspace-right"
+	              _description="Move window one workspace to the right" />
+
+	<KeyListEntry name="move-to-workspace-up"
+	              _description="Move window one workspace up" />
+
+	<KeyListEntry name="move-to-workspace-down"
+	              _description="Move window one workspace down" />
+
+	<KeyListEntry name="switch-windows"
+	              _description="Switch applications"/>
+
+	<KeyListEntry name="switch-group"
+	              _description="Switch windows of an application"/>
+
+	<KeyListEntry name="switch-panels"
+	              _description="Switch system controls"/>
+
+	<KeyListEntry name="cycle-windows"
+	              _description="Switch windows directly"/>
+
+	<KeyListEntry name="cycle-group"
+	              _description="Switch windows of an app directly"/>
+
+	<KeyListEntry name="cycle-panels"
+	              _description="Switch system controls directly"/>
+
+	<KeyListEntry name="show-desktop"
+	              _description="Hide all normal windows"/>
+
+	<KeyListEntry name="switch-to-workspace-1"
+	              _description="Switch to workspace 1" />
+
+	<KeyListEntry name="switch-to-workspace-2"
+	              _description="Switch to workspace 2" />
+
+	<KeyListEntry name="switch-to-workspace-3"
+	              _description="Switch to workspace 3" />
+
+	<KeyListEntry name="switch-to-workspace-4"
+	              _description="Switch to workspace 4" />
+
+	<KeyListEntry name="switch-to-workspace-left"
+	              _description="Move to workspace left" />
+
+	<KeyListEntry name="switch-to-workspace-right"
+	              _description="Move to workspace right" />
+
+	<KeyListEntry name="switch-to-workspace-up"
+	              _description="Move to workspace above" />
+
+	<KeyListEntry name="switch-to-workspace-down"
+	              _description="Move to workspace below" />
+
+</KeyListEntries>

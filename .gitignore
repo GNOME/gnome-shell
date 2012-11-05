@@ -19,6 +19,8 @@ libtool
 ltmain.sh
 missing
 .deps
+src/50-mutter-navigation.xml
+src/50-mutter-system.xml
 src/50-mutter-windows.xml
 src/mutter-wm.desktop
 src/mutter.desktop

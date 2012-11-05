@@ -1,5 +1,7 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
+src/50-mutter-navigation.xml.in
+src/50-mutter-system.xml.in
 src/50-mutter-windows.xml.in
 src/compositor/compositor.c
 src/core/bell.c
