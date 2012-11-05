@@ -39,11 +39,6 @@ const N_ARROWS = 3;
 const ARROW_ANIMATION_TIME = 0.6;
 const ARROW_ANIMATION_PEAK_OPACITY = 0.4;
 
-// The distance in px that the lock screen will move to when pressing
-// a key that has no effect in the lock screen (bumping it)
-const BUMP_SIZE = 25;
-const BUMP_TIME = 0.3;
-
 const SUMMARY_ICON_SIZE = 48;
 
 // ScreenShield animation time
@@ -592,26 +587,21 @@ const ScreenShield = new Lang.Class({
 
     _onLockScreenKeyPress: function(actor, event) {
         let symbol = event.get_key_symbol();
+        let unichar = event.get_key_unicode();
 
         // Do nothing if the lock screen is not fully shown.
         // This avoids reusing the previous (and stale) unlock
         // dialog if esc is pressed while the curtain is going
         // down after cancel.
-        // Similarly, don't bump if the lock screen is not showing or is
-        // animating, as the bump overrides the animation and would
-        // remove any onComplete handler.
 
         if (this._lockScreenState != MessageTray.State.SHOWN)
             return false;
 
-        if (symbol == Clutter.KEY_Escape ||
-            symbol == Clutter.KEY_Return ||
-            symbol == Clutter.KEY_KP_Enter) {
-            this._liftShield(false, 0);
-            return true;
-        }
+        if (!(GLib.unichar_isprint(unichar) || symbol == Clutter.KEY_Escape))
+            return false;
 
-        this._bumpLockScreen();
+        this._ensureUnlockDialog(true, true);
+        this._liftShield(true, 0);
         return true;
     },
 
@@ -847,21 +837,6 @@ const ScreenShield = new Lang.Class({
         this._isLocked = true;
         this._ensureUnlockDialog(true, true);
         this._hideLockScreen(false, 0);
-    },
-
-    _bumpLockScreen: function() {
-        Tweener.removeTweens(this._lockScreenGroup);
-        Tweener.addTween(this._lockScreenGroup,
-                         { y: -BUMP_SIZE,
-                           time: BUMP_TIME / 2,
-                           transition: 'easeOutQuad',
-                           onComplete: function() {
-                               Tweener.addTween(this,
-                                                { y: 0,
-                                                  time: BUMP_TIME / 2,
-                                                  transition: 'easeInQuad' });
-                           }
-                         });
     },
 
     _hideLockScreenComplete: function() {
