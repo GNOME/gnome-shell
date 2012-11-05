@@ -1073,6 +1073,8 @@ typedef struct {
   gchar *path;
   gint   grid_width, grid_height;
   ClutterActor *actor;
+  GFunc load_callback;
+  gpointer load_callback_data;
 } AsyncImageData;
 
 static void
@@ -1089,6 +1091,7 @@ on_sliced_image_loaded (GObject *source_object,
                         GAsyncResult *res,
                         gpointer user_data)
 {
+  GObject *cache = source_object;
   AsyncImageData *data = (AsyncImageData *)user_data;
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   GList *list;
@@ -1102,6 +1105,9 @@ on_sliced_image_loaded (GObject *source_object,
       clutter_actor_hide (actor);
       clutter_actor_add_child (data->actor, actor);
     }
+
+  if (data->load_callback != NULL)
+    data->load_callback (cache, data->load_callback_data);
 }
 
 static void
@@ -1156,6 +1162,8 @@ load_sliced_image (GSimpleAsyncResult *result,
  * @path: Path to a filename
  * @grid_width: Width in pixels
  * @grid_height: Height in pixels
+ * @load_callback: (scope async) (allow-none): Function called when the image is loaded, or %NULL
+ * @user_data: Data to pass to the load callback
  *
  * This function reads a single image file which contains multiple images internally.
  * The image file will be divided using @grid_width and @grid_height;
@@ -1165,10 +1173,12 @@ load_sliced_image (GSimpleAsyncResult *result,
  * Returns: (transfer none): A new #ClutterActor
  */
 ClutterActor *
-st_texture_cache_load_sliced_image (StTextureCache    *cache,
-                                    const gchar       *path,
-                                    gint               grid_width,
-                                    gint               grid_height)
+st_texture_cache_load_sliced_image (StTextureCache *cache,
+                                    const gchar    *path,
+                                    gint            grid_width,
+                                    gint            grid_height,
+                                    GFunc           load_callback,
+                                    gpointer        user_data)
 {
   AsyncImageData *data;
   GSimpleAsyncResult *result;
@@ -1179,6 +1189,8 @@ st_texture_cache_load_sliced_image (StTextureCache    *cache,
   data->grid_height = grid_height;
   data->path = g_strdup (path);
   data->actor = actor;
+  data->load_callback = load_callback;
+  data->load_callback_data = user_data;
   g_object_ref (G_OBJECT (actor));
 
   result = g_simple_async_result_new (G_OBJECT (cache), on_sliced_image_loaded, data, st_texture_cache_load_sliced_image);

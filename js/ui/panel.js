@@ -82,26 +82,34 @@ const AnimatedIcon = new Lang.Class({
     _init: function(name, size) {
         this.actor = new St.Bin({ visible: false });
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-        this.actor.connect('notify::visible', Lang.bind(this, this._onVisibleNotify));
 
+        this._isLoaded = false;
+        this._isPlaying = false;
         this._timeoutId = 0;
         this._frame = 0;
-        this._animations = St.TextureCache.get_default().load_sliced_image (global.datadir + '/theme/' + name, size, size);
+        this._animations = St.TextureCache.get_default().load_sliced_image (global.datadir + '/theme/' + name, size, size,
+                                                                            Lang.bind(this, this._animationsLoaded));
         this.actor.set_child(this._animations);
     },
 
-    _disconnectTimeout: function() {
+    play: function() {
+        if (this._isLoaded && this._timeoutId == 0) {
+            if (this._frame == 0)
+                this._showFrame(0);
+
+            this._timeoutId = Mainloop.timeout_add(ANIMATED_ICON_UPDATE_TIMEOUT, Lang.bind(this, this._update));
+        }
+
+        this._isPlaying = true;
+    },
+
+    stop: function() {
         if (this._timeoutId > 0) {
             Mainloop.source_remove(this._timeoutId);
             this._timeoutId = 0;
         }
-    },
 
-    _onVisibleNotify: function() {
-        if (this.actor.visible)
-            this._timeoutId = Mainloop.timeout_add(ANIMATED_ICON_UPDATE_TIMEOUT, Lang.bind(this, this._update));
-        else
-            this._disconnectTimeout();
+        this._isPlaying = false;
     },
 
     _showFrame: function(frame) {
@@ -121,8 +129,17 @@ const AnimatedIcon = new Lang.Class({
         return true;
     },
 
+    _animationsLoaded: function() {
+        this._isLoaded = true;
+
+        if (this._isPlaying) {
+            this._showFrame(0);
+            this._timeoutId = Mainloop.timeout_add(ANIMATED_ICON_UPDATE_TIMEOUT, Lang.bind(this, this._update));
+        }
+    },
+
     _onDestroy: function() {
-        this._disconnectTimeout();
+        this.stop();
     }
 });
 
@@ -367,6 +384,7 @@ const AppMenuButton = new Lang.Class({
                            transition: "easeOutQuad",
                            onCompleteScope: this,
                            onComplete: function() {
+                               this._spinner.stop();
                                this._spinner.actor.opacity = 255;
                                this._spinner.actor.hide();
                            }
@@ -376,6 +394,7 @@ const AppMenuButton = new Lang.Class({
     startAnimation: function() {
         this._stop = false;
         this.actor.reactive = false;
+        this._spinner.play();
         this._spinner.actor.show();
     },
 
