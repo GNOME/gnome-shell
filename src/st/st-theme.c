@@ -450,26 +450,26 @@ static gboolean
 string_in_list (GString    *stryng,
                 const char *list)
 {
-  const char *cur;
+  char *cur;
+  char *l = g_strdup (list);
+  char *temp;
+  gboolean found = FALSE;
 
-  for (cur = list; *cur;)
+  cur = strtok_r (l, " \t\f\r\n", &temp);
+  while (cur != NULL)
     {
-      while (*cur && cr_utils_is_white_space (*cur))
-        cur++;
-
-      if (strncmp (cur, stryng->str, stryng->len) == 0)
+      if (!strqcmp (cur, stryng->str, stryng->len))
         {
-          cur +=  stryng->len;
-          if ((!*cur) || cr_utils_is_white_space (*cur))
-            return TRUE;
+          found = TRUE;
+          goto out;
         }
 
-      /*  skip to next whitespace character  */
-      while (*cur && !cr_utils_is_white_space (*cur))
-        cur++;
+      cur = strtok_r (NULL, " \t\f\r\n", &temp);
     }
 
-  return FALSE;
+ out:
+  g_free (l);
+  return found;
 }
 
 static gboolean
