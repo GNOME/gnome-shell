@@ -1493,17 +1493,260 @@ msgstr "Y-valoro estis %d, %d estis atendita"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Ŝalti al laborspaco 1"
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "Ŝalti al laborspaco 1"
 
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Ŝalti al laborspaco 2"
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "Ŝalti al laborspaco 2"
 
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Ŝalti al laborspaco 3"
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "Ŝalti al laborspaco 3"
 
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Ŝalti al laborspaco 4"
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "Ŝalti al laborspaco 4"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "Aktivigi la fenestromenuon"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "Baskuligi tutekranan reĝimon"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window"
+msgstr "Maksimumigi la fenestron"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Restore window"
+msgstr "Restaŭri fenestron"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Minimize window"
+msgstr "Minimumigi fenestron"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Close window"
+msgstr "Fermi la fenestron"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Move window"
+msgstr ""
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi la fenestron\n"
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi fenestron"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr ""
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Ŝanĝi la fenestrograndon\n"
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Ŝanĝi fenestrograndon"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr ""
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi la fenestron al laborspaco 1\n"
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi fenestron al laborspaco 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr ""
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi la fenestron al laborspaco 2\n"
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi fenestron al laborspaco 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr ""
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi la fenestron al laborspaco 3\n"
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi fenestron al laborspaco 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr ""
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi la fenestron al laborspaco 4\n"
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi fenestron al laborspaco 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr ""
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi la fenestron al la maldekstra laborspaco\n"
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi fenestron al la maldekstra laborspaco"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr ""
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi la fenestron al la dekstra laborspaco\n"
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi fenestron al la dekstra laborspaco"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr ""
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi la fenestron al la supra laborspaco\n"
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi fenestron al la supra laborspaco"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr ""
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi la fenestron al la suba laborspaco\n"
+"#-#-#-#-#  eo.po (mutter)  #-#-#-#-#\n"
+"Movi fenestron al la suba laborspaco"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "Vertikale maksimumigi la fenestron"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "Horizontale maksimumigi la fenestron"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Navigation"
+msgstr "Navigado"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Switch applications"
+msgstr ""
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "Ŝalti fenestrojn de aplikaĵo"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Switch system controls"
+msgstr ""
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Switch windows directly"
+msgstr ""
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr ""
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr ""
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "Kaŝi ĉiujn normalajn fenestrojn"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "Movi al la maldekstra laborspaco"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "Movi al la dekstra laborspaco"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "Movi al la supra laborspaco"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "Movi al la malsupra laborspaco"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "System"
+msgstr "Sistemo"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr ""
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "Show the activities overview"
+msgstr ""
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr ""
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr ""
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr ""
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr ""
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr ""
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr ""
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "Ŝalti al laborspaco 5"
@@ -1598,42 +1841,6 @@ msgstr ""
 #~ msgid "Run a terminal"
 #~ msgstr "Ruli terminalon"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "Aktivigi la fenestromenuon"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Baskuligi tutekranan reĝimon"
-
-#~ msgid "Maximize window"
-#~ msgstr "Maksimumigi la fenestron"
-
-#~ msgid "Restore window"
-#~ msgstr "Restaŭri fenestron"
-
-#~ msgid "Minimize window"
-#~ msgstr "Minimumigi fenestron"
-
-#~ msgid "Close window"
-#~ msgstr "Fermi la fenestron"
-
-#~ msgid "Move window"
-#~ msgstr "Movi la fenestron"
-
-#~ msgid "Resize window"
-#~ msgstr "Ŝanĝi la fenestrograndon"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Movi la fenestron al laborspaco 1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Movi la fenestron al laborspaco 2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Movi la fenestron al laborspaco 3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Movi la fenestron al laborspaco 4"
-
 #~ msgid "Move window to workspace 5"
 #~ msgstr "Movi la fenestron al laborspaco 5"
 
@@ -1657,24 +1864,6 @@ msgstr ""
 
 #~ msgid "Move window to workspace 12"
 #~ msgstr "Movi la fenestron al laborspaco 12"
-
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Movi la fenestron al la maldekstra laborspaco"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Movi la fenestron al la dekstra laborspaco"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Movi la fenestron al la supra laborspaco"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Movi la fenestron al la suba laborspaco"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Vertikale maksimumigi la fenestron"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Horizontale maksimumigi la fenestron"
 
 #~ msgid ""
 #~ "There was an error running <tt>%s</tt>:\n"

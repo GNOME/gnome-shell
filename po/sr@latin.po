@@ -22,7 +22,7 @@ msgstr ""
 "n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
 msgid "Windows"
 msgstr "Prozori"
 
@@ -1578,3 +1578,175 @@ msgstr "y vrednost je bila „%d“, a očekivana je „%d“"
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d izraza koordinata je obrađeno za %g sekunde (prosek %g sekunde)\n"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Hide all normal windows"
+msgstr "Skriva sve obične prozore"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+msgid "Move to workspace above"
+msgstr "Premešta na radni prostor iznad"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+msgid "Move to workspace below"
+msgstr "Premešta na radni prostor ispod"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move to workspace left"
+msgstr "Premešta na radni prostor levo"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move to workspace right"
+msgstr "Premešta na radni prostor desno"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+msgid "Move window one workspace down"
+msgstr "Premešta prozor jedan radni prostor na dole"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the left"
+msgstr "Premešta prozor jedan radni prostor ulevo"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace to the right"
+msgstr "Premešta prozor jedan radni prostor udesno"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace up"
+msgstr "Premešta prozor jedan radni prostor na gore"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Move window to workspace 1"
+msgstr "Premešta prozor na radni prostor broj 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Move window to workspace 2"
+msgstr "Premešta prozor na radni prostor broj 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Move window to workspace 3"
+msgstr "Premešta prozor na radni prostor broj 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Move window to workspace 4"
+msgstr "Premešta prozor na radni prostor broj 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Navigation"
+msgstr "Navigacija"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch applications"
+msgstr "Prebacuje programe"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Switch system controls"
+msgstr "Prebacuje kontrole sistema"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+msgid "Switch system controls directly"
+msgstr "Prebacuje kontrole sistema direktno"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+msgid "Switch to workspace 1"
+msgstr "Prebacuje se na radni prostor 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+msgid "Switch to workspace 2"
+msgstr "Prebacuje se na radni prostor 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+msgid "Switch to workspace 3"
+msgstr "Prebacuje se na radni prostor 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+msgid "Switch to workspace 4"
+msgstr "Prebacuje se na radni prostor 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Switch windows directly"
+msgstr "Prebacuje prozore direktno"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Switch windows of an app directly"
+msgstr "Prebacuje prozore programa direktno"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Switch windows of an application"
+msgstr "Prebacuje prozor programa"
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "Show the activities overview"
+msgstr "Prikazuje pregled aktivnosti"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "Prikazuje prompt za pokretanje naredbe"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "System"
+msgstr "Sistem"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+msgid "Activate the window menu"
+msgstr "Aktivira meni prozora"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+msgid "Close window"
+msgstr "Zatvara prozor"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Lower window below other windows"
+msgstr "Spušta prozor ispod ostalih prozora"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+msgid "Maximize window"
+msgstr "Uvećava prozor"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+msgid "Maximize window horizontally"
+msgstr "Uvećava prozor horizontalno"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+msgid "Maximize window vertically"
+msgstr "Uvećava prozor vertikalno"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+msgid "Minimize window"
+msgstr "Umanjuje prozor"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+msgid "Move window"
+msgstr "Premešta prozor"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+msgid "Raise window above other windows"
+msgstr "Izdiže prozor iznad ostalih prozora"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Izdiže prozor ukoliko ga drugi prozor zaklanja, u protivnom ga spušta"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+msgid "Resize window"
+msgstr "Menja veličinu prozora"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+msgid "Restore window"
+msgstr "Vraća veličinu prozora"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+msgid "Toggle fullscreen mode"
+msgstr "Isključuje/uključuje prikaz preko celog ekrana"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+msgid "Toggle maximization state"
+msgstr "Isključuje/uključuje stanje uvećanja"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+msgid "Toggle shaded state"
+msgstr "Isključuje/uključuje stanje zasenčenosti"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Toggle window on all workspaces or one"
+msgstr "Prikazuje prozor na svim radnim prostorima ili samo na jednom"

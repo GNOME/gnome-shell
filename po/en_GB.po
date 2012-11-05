@@ -1575,6 +1575,221 @@ msgstr "y value was %d, %d was expected"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "Switch to workspace 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "Switch to workspace 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "Switch to workspace 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "Switch to workspace 4"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "Activate the window menu"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "Toggle fullscreen mode"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "Toggle maximisation state"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window"
+msgstr "Maximise window"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Restore window"
+msgstr "Restore window"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "Toggle shaded state"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Minimize window"
+msgstr "Minimise window"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Close window"
+msgstr "Close window"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Move window"
+msgstr "Move window"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr "Resize window"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr "Move window to workspace 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr "Move window to workspace 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr "Move window to workspace 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr "Move window to workspace 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "Move window one workspace to the left"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr "Move window one workspace to the right"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr "Move window one workspace up"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "Move window one workspace down"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "Raise window above other windows"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "Lower window below other windows"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "Maximise window vertically"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "Maximise window horizontally"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Navigation"
+msgstr "Navigation"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Switch applications"
+msgstr "Switch applications"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "Switch windows of an application"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Switch system controls"
+msgstr "Switch system controls"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "Switch windows directly"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "Switch windows of an app directly"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "Switch system controls directly"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "Hide all normal windows"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "Move to workspace left"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "Move to workspace right"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "Move to workspace above"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "Move to workspace below"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "System"
+msgstr "System"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "Show the run command prompt"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "Show the activities overview"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr "Toggle window on all workspaces or one"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Raise window if covered, otherwise lower it"
+
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "Comma-separated list of compositor plugins"
 
@@ -1620,18 +1835,6 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 
 #~ msgid "Put Window On Only One Workspace"
 #~ msgstr "Put Window On Only One Workspace"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Switch to workspace 1"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Switch to workspace 2"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Switch to workspace 3"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Switch to workspace 4"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "Switch to workspace 5"
@@ -1728,53 +1931,11 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ msgid "Run a terminal"
 #~ msgstr "Run a terminal"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "Activate the window menu"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Toggle fullscreen mode"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Toggle maximisation state"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr "Toggle whether a window will always be visible over other windows"
 
-#~ msgid "Maximize window"
-#~ msgstr "Maximise window"
-
-#~ msgid "Restore window"
-#~ msgstr "Restore window"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Toggle shaded state"
-
-#~ msgid "Minimize window"
-#~ msgstr "Minimise window"
-
-#~ msgid "Close window"
-#~ msgstr "Close window"
-
-#~ msgid "Move window"
-#~ msgstr "Move window"
-
-#~ msgid "Resize window"
-#~ msgstr "Resize window"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr "Toggle whether window is on all workspaces or just one"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Move window to workspace 1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Move window to workspace 2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Move window to workspace 3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Move window to workspace 4"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "Move window to workspace 5"
@@ -1800,32 +1961,8 @@ msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 #~ msgid "Move window to workspace 12"
 #~ msgstr "Move window to workspace 12"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Move window one workspace to the left"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Move window one workspace to the right"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Move window one workspace up"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Move window one workspace down"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr "Raise window if it's covered by another window, otherwise lower it"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Raise window above other windows"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Lower window below other windows"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Maximise window vertically"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Maximise window horizontally"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "Move window to north-west (top left) corner"

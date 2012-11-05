@@ -30,7 +30,7 @@ msgstr ""
 "\n"
 "\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
 msgid "Windows"
 msgstr "विंडोज़"
 
@@ -1587,6 +1587,239 @@ msgstr "वाई मूल्य था %d, %d वांछित था"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d निर्देशांक एक्सप्रेशन्स पार्स किया %g सेकण्ड्स में (औसतन %g सेकण्ड्स)\n"
 
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "कार्यस्थान 1 पर जाएँ"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "कार्यस्थान 2 पर जाएँ"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "कार्यस्थान 3 पर जाएँ"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "कार्यस्थान 4 पर जाएँ"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+#, fuzzy
+msgid "Activate the window menu"
+msgstr ""
+"#-#-#-#-#  hi.po (metacity.gnome-2-26.hi)  #-#-#-#-#\n"
+"विंडो मेन्यू सक्रिय करें\n"
+"#-#-#-#-#  hi.po (metacity.gnome-2-26.hi)  #-#-#-#-#\n"
+"विंडो मेनू सक्रिय करें"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "पूरा स्क्रीन मोड टॉगल करें"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "अधिकतम स्थिति टॉगल करें"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Maximize window"
+msgstr "विंडो अधिकतम करें"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Restore window"
+msgstr ""
+"#-#-#-#-#  hi.po (metacity.gnome-2-26.hi)  #-#-#-#-#\n"
+"विंडो फिर बहाल करें\n"
+"#-#-#-#-#  hi.po (metacity.gnome-2-26.hi)  #-#-#-#-#\n"
+"विंडो पुनर्बहाल करें"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "आभायुक्त स्थिति टॉगल करें"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Minimize window"
+msgstr "विंडो को न्यूनतम करें"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Close window"
+msgstr "विंडो बंद करें"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Move window"
+msgstr "विंडो खिसकाएँ"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr "विंडो का आकार बदलें"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr "विंडो को कार्यस्थान 1 पर ले जाएँ"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr "विंडो को कार्यस्थान 2 पर ले जाएँ"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr "विंडो को कार्यस्थान 3 पर ले जाएँ"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr "विंडो को कार्यस्थान 4 पर ले जाएँ"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "विंडो को एक कार्यस्थान बाएँ लाएँ"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr "विंडो को एक कार्यस्थान दाएँ लाएँ"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr "विंडो को एक कार्यस्थान ऊपर लाएँ"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "विंडो को एक कार्यस्थान नीचे लाएँ"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "विंडो को अन्य विंडो के ऊपर रखें"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "विंडो को अन्य विंडो के नीचे रखें"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "विंडो खड़ा अधिकतम करें"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "विंडो आड़ा अधिकतम करें"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+#| msgid "Hide all normal windows and set focus to the desktop"
+msgid "Hide all normal windows"
+msgstr "सभी सामान्य विंडो को छुपाएँ "
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+#| msgid "Move to Workspace _Left"
+msgid "Move to workspace above"
+msgstr "ऊपर कार्यस्थान में ले जाएँ"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+#| msgid "Move to Workspace _Down"
+msgid "Move to workspace below"
+msgstr "नीचे कार्यस्थान में ले जाएँ"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+#| msgid "Move to Workspace _Left"
+msgid "Move to workspace left"
+msgstr "बाएँ कार्यस्थान में ले जाएँ"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+#| msgid "Move to Workspace R_ight"
+msgid "Move to workspace right"
+msgstr "दाएँ कार्यस्थान में ले जाएँ"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Navigation"
+msgstr "नेविगेशन"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch applications"
+msgstr "अनुप्रयोगों के बीच स्विच करें"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Switch system controls"
+msgstr "नियंत्रण प्रणाली को स्विच करें "
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "सीधे नियंत्रण प्रणाली को स्विच करें "
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "सीधे विंडोज़ को स्विच करें "
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+#| msgid "Move between windows of an application immediately"
+msgid "Switch windows of an app directly"
+msgstr "तत्काल अनुप्रयोग के विंडो के बीच स्विच करें "
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+#| msgid "Move between windows of an application immediately"
+msgid "Switch windows of an application"
+msgstr "अनुप्रयोग के विंडो के बीच जायें"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "गतिविधियों के अवलोकन दिखाएँ"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+#| msgid "Show the panel's main menu"
+msgid "Show the run command prompt"
+msgstr "चलाए जाने वाले कमांड फ़लक को दिखाएँ"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "System"
+msgstr "तंत्र"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+#| msgid "Raise window if it's covered by another window, otherwise lower it"
+msgid "Raise window if covered, otherwise lower it"
+msgstr "विंडो ऊपर करें यदि यह ढ़ंका है अन्यथा नीचे रखें"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+#| msgid "Toggle whether window is on all workspaces or just one"
+msgid "Toggle window on all workspaces or one"
+msgstr "टॉगल करें कि विंडो सभी कार्यस्थान पर है या केवल एक"
+
 #~ msgid "Window Management"
 #~ msgstr "विंडो प्रबंधन"
 
@@ -1700,18 +1933,6 @@ msgstr "%d निर्देशांक एक्सप्रेशन्स �
 #~ msgid "Metacity"
 #~ msgstr "मेटासिटी"
 
-#~ msgid "Switch to workspace 1"
-#~ msgstr "कार्यस्थान 1 पर जाएँ"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "कार्यस्थान 2 पर जाएँ"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "कार्यस्थान 3 पर जाएँ"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "कार्यस्थान 4 पर जाएँ"
-
 #~ msgid "Switch to workspace 5"
 #~ msgstr "कार्यस्थान 5 पर जाएँ"
 
@@ -1803,53 +2024,11 @@ msgstr "%d निर्देशांक एक्सप्रेशन्स �
 #~ msgid "Run a terminal"
 #~ msgstr "एक टर्मिनल चलायें"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "विंडो मेन्यू सक्रिय करें"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "पूरा स्क्रीन मोड टॉगल करें"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "अधिकतम स्थिति टॉगल करें"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr "टॉगल करें कि क्या दूसरे विंडो के बीच एक विंडो हमेशा दृश्य रहेगा"
 
-#~ msgid "Maximize window"
-#~ msgstr "विंडो अधिकतम करें"
-
-#~ msgid "Restore window"
-#~ msgstr "विंडो फिर बहाल करें"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "आभायुक्त स्थिति टॉगल करें"
-
-#~ msgid "Minimize window"
-#~ msgstr "विंडो को न्यूनतम करें"
-
-#~ msgid "Close window"
-#~ msgstr "विंडो बंद करें"
-
-#~ msgid "Move window"
-#~ msgstr "विंडो खिसकाएँ"
-
-#~ msgid "Resize window"
-#~ msgstr "विंडो का आकार बदलें"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr "टॉगल करें कि विंडो सभी कार्यस्थान पर है या केवल एक पर"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "विंडो को कार्यस्थान 1 पर ले जाएँ"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "विंडो को कार्यस्थान 2 पर ले जाएँ"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "विंडो को कार्यस्थान 3 पर ले जाएँ"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "विंडो को कार्यस्थान 4 पर ले जाएँ"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "विंडो को कार्यस्थान 5 पर ले जाएँ"
@@ -1875,32 +2054,8 @@ msgstr "%d निर्देशांक एक्सप्रेशन्स �
 #~ msgid "Move window to workspace 12"
 #~ msgstr "विंडो को कार्यस्थान 12 पर ले जाएँ"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "विंडो को एक कार्यस्थान बाएँ लाएँ"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "विंडो को एक कार्यस्थान दाएँ लाएँ"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "विंडो को एक कार्यस्थान ऊपर लाएँ"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "विंडो को एक कार्यस्थान नीचे लाएँ"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr "विंडो बढ़ाएँ कि क्या यह दूसरे विंडो द्वारा आच्छादित है, अन्यथा इसे नीचे करें"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "विंडो को अन्य विंडो के ऊपर रखें"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "विंडो को अन्य विंडो के नीचे रखें"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "विंडो खड़ा अधिकतम करें"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "विंडो आड़ा अधिकतम करें"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "विंडो को उत्तर-पश्चिमी (उपरी बाएँ) कोने में ले जाएँ"

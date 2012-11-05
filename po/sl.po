@@ -23,7 +23,7 @@ msgstr ""
 "X-Poedit-Country: SLOVENIA\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
 msgid "Windows"
 msgstr "Okna"
 
@@ -1462,6 +1462,221 @@ msgstr "vrednost y je %d, pričakovana pa je %d"
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d izjav koordinat razčlenjenih v %g sekundah (%g sekund v povprečju)\n"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "Skrij vsa običajna okna"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "Premakni na zgornjo delovno površino"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "Premakni na spodnjo delovno površino"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "Premakni na levo delovno površino"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "Premakni na desno delovno površino"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "Prestavi okno eno delovno površino navzdol"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "Premakni okno eno delovno površino levo"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr "Premakni okno eno delovno površino desno"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr "Premakni okno eno delovno površino navzgor"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr "Premakni okno na delovno površino 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr "Premakni okno na delovno površino 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr "Premakni okno na delovno površino 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr "Premakni okno na delovno površino 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Navigation"
+msgstr "Krmarjenje"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch applications"
+msgstr "Preklopi programe"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Switch system controls"
+msgstr "Preklopi tipkovne bližnjice"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "Preklopi tipkovne bližnjice neposredno"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "Preklopi na delovno površino 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "Preklopi na delovno površino 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "Preklopi na delovno površino 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "Preklopi na delovno površino 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "Preklopi okna neposredno"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "Preklopi okna programa neposredno"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "Preklopi okna programa"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "Pokaži okno pregleda dejavnosti"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "Pokaži možnost zagona ukazne vrstice"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "System"
+msgstr "Sistem"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "Omogoči meni okna"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Close window"
+msgstr "Zapri okno"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "Spusti okno pod druga"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Maximize window"
+msgstr "Razpni okno"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "Razpni okno vodoravno"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "Razpni okno navpično"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Minimize window"
+msgstr "Skrči okno"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Move window"
+msgstr "Premakni okno"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "Dvigni okno nad druga okna"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Dvigni okno, če ga prekriva drugo okno, sicer ga spusti"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr "Spremeni velikost okna"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Restore window"
+msgstr "Obnovi okno"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "Preklopi celozaslonski način"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "Preklopi stanje razpetosti"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "Preklopi stanje senčenja"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr "Preklopi okno na vse delovne površine oziroma le na eno"
 
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "Z vejico ločen seznam vstavkov sestavljanja"

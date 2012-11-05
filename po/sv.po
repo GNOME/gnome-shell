@@ -1429,7 +1429,180 @@ msgstr "y-värdet var %d, %d förväntades"
 #: ../src/ui/theme-viewer.c:1352
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "%d koordinatuttryck tolkades på %g sekunder (%g sekunder i medelvärde)\n"
+msgstr ""
+"%d koordinatuttryck tolkades på %g sekunder (%g sekunder i medelvärde)\n"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+msgid "Switch to workspace 1"
+msgstr "Växla till arbetsyta 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+msgid "Switch to workspace 2"
+msgstr "Växla till arbetsyta 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+msgid "Switch to workspace 3"
+msgstr "Växla till arbetsyta 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+msgid "Switch to workspace 4"
+msgstr "Växla till arbetsyta 4"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+msgid "Activate the window menu"
+msgstr "Aktivera fönstermenyn"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Toggle fullscreen mode"
+msgstr "Växla helskärmsläge"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+msgid "Toggle maximization state"
+msgstr "Växla maximeringstillstånd"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+msgid "Maximize window"
+msgstr "Maximera fönster"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+msgid "Restore window"
+msgstr "Återställ fönster"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+msgid "Toggle shaded state"
+msgstr "Växla upprullat tillstånd"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+msgid "Minimize window"
+msgstr "Minimera fönster"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+msgid "Close window"
+msgstr "Stäng fönster"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Move window"
+msgstr "Flytta fönster"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+msgid "Resize window"
+msgstr "Ändra storlek på fönster"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+msgid "Move window to workspace 1"
+msgstr "Flytta fönster till arbetsyta 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+msgid "Move window to workspace 2"
+msgstr "Flytta fönster till arbetsyta 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move window to workspace 3"
+msgstr "Flytta fönster till arbetsyta 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move window to workspace 4"
+msgstr "Flytta fönster till arbetsyta 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+msgid "Move window one workspace to the left"
+msgstr "Flytta fönster en arbetsyta åt vänster"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the right"
+msgstr "Flytta fönster en arbetsyta åt höger"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace up"
+msgstr "Flytta fönster en arbetsyta uppåt"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace down"
+msgstr "Flytta fönster en arbetsyta nedåt"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+msgid "Raise window above other windows"
+msgstr "Höj fönstret över andra fönster"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+msgid "Lower window below other windows"
+msgstr "Sänk fönster under andra fönster"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Maximize window vertically"
+msgstr "Maximera fönster vertikalt"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+msgid "Maximize window horizontally"
+msgstr "Maximera fönster horisontellt"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Navigation"
+msgstr "Navigation"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Switch applications"
+msgstr "Växla program"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Switch windows of an application"
+msgstr "Växla fönster för ett program"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Switch system controls"
+msgstr "Växla systemkontroller"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Switch windows directly"
+msgstr "Växla fönster direkt"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Switch windows of an app directly"
+msgstr "Växla fönster för ett program direkt"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch system controls directly"
+msgstr "Växla systemkontroller direkt"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Hide all normal windows"
+msgstr "Dölj alla normala fönster"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+msgid "Move to workspace left"
+msgstr "Flytta till arbetsyta till vänster"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Move to workspace right"
+msgstr "Flytta till arbetsyta till höger"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Move to workspace above"
+msgstr "Flytta till arbetsyta ovanför"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Move to workspace below"
+msgstr "Flytta till arbetsyta nedanför"
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "System"
+msgstr "System"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "Visa Kör kommando-dialogen"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "Show the activities overview"
+msgstr "Visa aktivitetsöversikt"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+msgid "Toggle window on all workspaces or one"
+msgstr "Växla fönster på alla arbetsytor eller bara en"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Höj fönstret om det skyms av ett annat fönster, sänk det annars"
 
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "Kommaseparerad lista över compositor-instick"
@@ -1476,18 +1649,6 @@ msgstr "%d koordinatuttryck tolkades på %g sekunder (%g sekunder i medelvärde)
 
 #~ msgid "Put Window On Only One Workspace"
 #~ msgstr "Placera fönstret på endast en arbetsyta"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Växla till arbetsyta 1"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Växla till arbetsyta 2"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Växla till arbetsyta 3"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Växla till arbetsyta 4"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "Växla till arbetsyta 5"
@@ -1587,55 +1748,13 @@ msgstr "%d koordinatuttryck tolkades på %g sekunder (%g sekunder i medelvärde)
 #~ msgid "Run a terminal"
 #~ msgstr "Kör en terminal"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "Aktivera fönstermenyn"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Växla helskärmsläge"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Växla maximeringstillstånd"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr ""
 #~ "Växla huruvida ett fönster alltid kommer att vara synlig över andra "
 #~ "fönster"
 
-#~ msgid "Maximize window"
-#~ msgstr "Maximera fönster"
-
-#~ msgid "Restore window"
-#~ msgstr "Återställ fönster"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Växla upprullat tillstånd"
-
-#~ msgid "Minimize window"
-#~ msgstr "Minimera fönster"
-
-#~ msgid "Close window"
-#~ msgstr "Stäng fönster"
-
-#~ msgid "Move window"
-#~ msgstr "Flytta fönster"
-
-#~ msgid "Resize window"
-#~ msgstr "Ändra storlek på fönster"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr "Växla huruvida fönstret finns på alla arbetsytor eller bara en"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Flytta fönster till arbetsyta 1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Flytta fönster till arbetsyta 2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Flytta fönster till arbetsyta 3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Flytta fönster till arbetsyta 4"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "Flytta fönster till arbetsyta 5"
@@ -1661,32 +1780,8 @@ msgstr "%d koordinatuttryck tolkades på %g sekunder (%g sekunder i medelvärde)
 #~ msgid "Move window to workspace 12"
 #~ msgstr "Flytta fönster till arbetsyta 12"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Flytta fönster en arbetsyta åt vänster"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Flytta fönster en arbetsyta åt höger"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Flytta fönster en arbetsyta uppåt"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Flytta fönster en arbetsyta nedåt"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr "Höj fönstret om det skyms av ett annat fönster, sänk det annars"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Höj fönstret över andra fönster"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Sänk fönster under andra fönster"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Maximera fönster vertikalt"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Maximera fönster horisontellt"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "Flytta fönstret till nordvästra (övre vänstra) hörnet"

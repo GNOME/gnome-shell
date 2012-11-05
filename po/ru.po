@@ -26,7 +26,7 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 "X-Generator: Lokalize 1.0\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
 msgid "Windows"
 msgstr "Окна"
 
@@ -1597,3 +1597,218 @@ msgstr "значение y было %d, а ожидалось %d"
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d координатных выражений разобрано за %g секунд (в среднем %g c)\n"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "Скрыть все обычные окна"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "Переместить на рабочее место вверх"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "Переместить на рабочее место вниз"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "Переместить на рабочее место влево"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "Переместить на рабочее место вправо"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "Переместить окно на одно рабочее место вниз"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "Переместить окно на одно рабочее место влево"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr "Переместить окно на одно рабочее место вправо"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr "Переместить окно на одно рабочее место вверх"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr "Переместить окно на рабочее место 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr "Переместить окно на рабочее место 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr "Переместить окно на рабочее место 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr "Переместить окно на рабочее место 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Navigation"
+msgstr "Перемещение"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch applications"
+msgstr "Переключить приложение"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Switch system controls"
+msgstr "Переключить элемент управления"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "Немедленно переключить элемент управления"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "Переключиться на рабочее место 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "Переключиться на рабочее место 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "Переключиться на рабочее место 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "Переключиться на рабочее место 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "Немедленно переключить окно"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "Немедленно переключить окно приложения"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "Переключить окно приложения"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "Показать действия"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "Показать диалог запуска команды"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "System"
+msgstr "Система"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "Активировать меню окна"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Close window"
+msgstr "Закрыть окно"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "Поместить окно под другими окнами"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Maximize window"
+msgstr "Развернуть окно на весь экран"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "Развернуть окно на весь экран горизонтально"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "Развернуть окно на весь экран вертикально"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Minimize window"
+msgstr "Свернуть окно"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Move window"
+msgstr "Переместить окно"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "Поднять окно на передний план"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Поднять окно на передний план, если оно перекрыто другим окном, иначе — опустить"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr "Изменить размер окна"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Restore window"
+msgstr "Восстановить окно"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "Переключить полноэкранный режим"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "Переключить состояние развёрнутости на весь экран"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "Переключить состояние скрученности в полоску"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr "Поместить окно на все рабочие места или на одно"

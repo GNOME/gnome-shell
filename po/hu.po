@@ -22,7 +22,7 @@ msgstr ""
 "X-Generator: Lokalize 1.4\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
 msgid "Windows"
 msgstr "Ablakok"
 
@@ -1592,6 +1592,221 @@ msgstr ""
 "A %d koordináta kifejezések %g másodperc alatt lettek feldolgozva (átlagosan "
 "%g másodperc)\n"
 
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "Átváltás az 1. munkaterületre"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "Átváltás a 2. munkaterületre"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "Átváltás a 3. munkaterületre"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "Átváltás a 4. munkaterületre"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "Ablakmenü aktiválása"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "Teljes képernyős üzemmód"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "Maximalizált állapot átváltása"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Maximize window"
+msgstr "Ablak maximalizálása"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Restore window"
+msgstr "Ablak visszaállítása"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "Felgördített állapot átváltása"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Minimize window"
+msgstr "Ablak minimalizálása"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Close window"
+msgstr "Ablak bezárása"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Move window"
+msgstr "Ablak áthelyezése"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr "Ablak átméretezése"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr "Ablak áthelyezése az 1. munkaterületre"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr "Ablak áthelyezése a 2. munkaterületre"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr "Ablak áthelyezése a 3. munkaterületre"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr "Ablak áthelyezése a 4. munkaterületre"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "Ablak áthelyezése a balra lévő munkaterületre"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr "Ablak áthelyezése a jobbra lévő munkaterületre"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr "Ablak áthelyezése egy munkaterülettel feljebb"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "Ablak áthelyezése egy munkaterülettel lejjebb"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "Ablak más ablakok elé hozása"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "Ablak más ablakok mögé küldése"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "Ablak függőleges maximalizálása"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "Ablak vízszintes maximalizálása"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "Minden normál ablak elrejtése"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "Áthelyezés a felső munkaterületre"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "Áthelyezés az alsó munkaterületre"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "Áthelyezés a bal oldali munkaterületre"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "Áthelyezés a jobb oldali munkaterületre"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Navigation"
+msgstr "Navigáció"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch applications"
+msgstr "Váltás az alkalmazások között"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Switch system controls"
+msgstr "Váltás a rendszer vezérlői közt"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "Váltás a rendszer vezérlői közt közvetlenül"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "Váltás az ablakok közt közvetlenül"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "Váltás egy alkalmazás ablakai között közvetlenül"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "Váltás egy alkalmazás ablakai között"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "A tevékenységek áttekintés megjelenítése"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "A parancs futtatása ablak megjelenítése"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "System"
+msgstr "Rendszer"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Fedett ablak előtérbe hozása, egyébként háttérbe küldése"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr "Ablak megjelenítése minden munkaterületen vagy csak az egyiken"
+
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "Kompozitáló bővítmények vesszőkkel elválasztott listája"
 
@@ -1637,18 +1852,6 @@ msgstr ""
 
 #~ msgid "Put Window On Only One Workspace"
 #~ msgstr "Ablak kirakása csak egy munkaterületre"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Átváltás az 1. munkaterületre"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Átváltás a 2. munkaterületre"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Átváltás a 3. munkaterületre"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Átváltás a 4. munkaterületre"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "Átváltás az 5. munkaterületre"
@@ -1744,53 +1947,11 @@ msgstr ""
 #~ msgid "Run a terminal"
 #~ msgstr "Terminál nyitása"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "Ablakmenü aktiválása"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Teljes képernyős üzemmód"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Maximalizált állapot átváltása"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr "Az ablak mindig látható lesz más ablakok fölött"
 
-#~ msgid "Maximize window"
-#~ msgstr "Ablak maximalizálása"
-
-#~ msgid "Restore window"
-#~ msgstr "Ablak visszaállítása"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Felgördített állapot átváltása"
-
-#~ msgid "Minimize window"
-#~ msgstr "Ablak minimalizálása"
-
-#~ msgid "Close window"
-#~ msgstr "Ablak bezárása"
-
-#~ msgid "Move window"
-#~ msgstr "Ablak áthelyezése"
-
-#~ msgid "Resize window"
-#~ msgstr "Ablak átméretezése"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr "Ablak megjelenítése minden munkaterületen vagy csak az egyiken"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Ablak áthelyezése az 1. munkaterületre"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Ablak áthelyezése a 2. munkaterületre"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Ablak áthelyezése a 3. munkaterületre"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Ablak áthelyezése a 4. munkaterületre"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "Ablak áthelyezése az 5. munkaterületre"
@@ -1816,32 +1977,8 @@ msgstr ""
 #~ msgid "Move window to workspace 12"
 #~ msgstr "Ablak áthelyezése a 12. munkaterületre"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Ablak áthelyezése a balra lévő munkaterületre"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Ablak áthelyezése a jobbra lévő munkaterületre"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Ablak áthelyezése egy munkaterülettel feljebb"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Ablak áthelyezése egy munkaterülettel lejjebb"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr "Fedett ablak előtérbe hozása, egyébként háttérbe küldése"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Ablak más ablakok elé hozása"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Ablak más ablakok mögé küldése"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Ablak függőleges maximalizálása"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Ablak vízszintes maximalizálása"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "Ablak áthelyezése az északnyugati (bal felső) sarokba"

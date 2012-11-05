@@ -1653,3 +1653,220 @@ msgstr "valore y era %d, era atteso %d"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d espressioni di coordinate analizzate in %g secondi (%g secondi in media)\n"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Navigation"
+msgstr "Navigazione"
+
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr "Sposta la finestra sullo spazio di lavoro 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr "Sposta la finestra sullo spazio di lavoro 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr "Sposta la finestra sullo spazio di lavoro 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr "Sposta la finestra sullo spazio di lavoro 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "Sposta la finestra sullo spazio di lavoro a sinistra"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr "Sposta la finestra sullo spazio di lavoro a destra"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr "Sposta la finestra sullo spazio di lavoro in alto"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "Sposta la finestra sullo spazio di lavoro in basso"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Switch applications"
+msgstr "Evidenzia le applicazioni"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "Evidenzia le finestre di un'applicazione"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Switch system controls"
+msgstr "Evidenzia i controlli di sistema"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "Evidenzia direttamente le finestre"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "Evidenzia direttamente le finestre di una applicazione"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "Evidenzia direttamente i controlli di sistema"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "Nasconde tutte le finestre normali"
+
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "Passa allo spazio di lavoro 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "Passa allo spazio di lavoro 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "Passa allo spazio di lavoro 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "Passa allo spazio di lavoro 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "Sposta su spazio di lavoro a sinistra"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "Sposta su spazio di lavoro a destra"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "Sposta su spazio di lavoro in alto"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "Sposta su spazio di lavoro in basso"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "System"
+msgstr "Sistema"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "Mostra il prompt esegui comando"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "Mostra la panoramica delle attività"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "Attiva il menù della finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "Commuta la modalità schermo intero"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "Commuta lo stato massimizzazione"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window"
+msgstr "Massimizza la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Restore window"
+msgstr "Ripristina la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "Commuta lo stato arrotolato"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Close window"
+msgstr "Chiudi la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Minimize window"
+msgstr "Minimizza la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Move window"
+msgstr "Muovi la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr "Ridimensiona la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr "Commuta la stato «su tutti gli spazi di lavoro» per la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Solleva la finestra è coperta, in caso contrario l'abbassa"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "Solleva la finestra sopra le altre finestre"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "Abbassa la finestra sotto le altre"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "Massimizza verticalmente la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "Massimizza orizzontalmente la finestra"

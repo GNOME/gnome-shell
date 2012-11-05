@@ -31,7 +31,7 @@ msgstr "Ikusi zatia ezkerrean"
 msgid "View split on right"
 msgstr "Ikusi zatia eskuinean"
 
-#: ../src/50-mutter-windows.xml.in.h:3
+#: ../src/50-mutter-windows.xml.in.h:3 ../src/50-mutter-windows.xml.in.h:17
 msgid "Windows"
 msgstr "Leihoak"
 
@@ -1630,17 +1630,224 @@ msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d koordenada adierazpen analizatua %g segundotan (%g segundo batazbesteko)\n"
 
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Aldatu 1. laneko areara"
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "Aldatu 1. laneko areara"
 
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Aldatu 2. laneko areara"
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "Aldatu 2. laneko areara"
 
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Aldatu 3. laneko areara"
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "Aldatu 3. laneko areara"
 
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Aldatu 4. laneko areara"
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "Aldatu 4. laneko areara"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "Aktibatu leiho-menua"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "Txandakatu pantaila osoaren modua"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "Txandakatu maximizatze-egoera"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Maximize window"
+msgstr "Maximizatu leihoa"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Restore window"
+msgstr "Leheneratu leihoa"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "Txandakatu bildutako egoera"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Minimize window"
+msgstr ""
+"#-#-#-#-#  eu.po (eu)  #-#-#-#-#\n"
+"Ikonotu leihoa\n"
+"#-#-#-#-#  eu.po (eu)  #-#-#-#-#\n"
+"Minimizatu leihoa"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Close window"
+msgstr "Itxi leihoa"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Move window"
+msgstr "Lekuz aldatu leihoa"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr "Aldatu leihoaren tamaina"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr "Eraman leihoa 1. laneko areara"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr "Eraman leihoa 2. laneko areara"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr "Eraman leihoa 3. laneko areara"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr "Eraman leihoa 4. laneko areara"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "Eraman leihoa laneko area bat ezkerrera"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr "Eraman leihoa laneko area bat eskuinera"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr "Eraman leihoa laneko area bat gora"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "Eraman leihoa laneko area bat behera"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "Goratu leihoa beste leihoen gainera"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "Beheratu leihoa beste leihoen azpira"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "Maximizatu leihoa bertikalki"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "Maximizatu leihoa horizontalki"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "Ezkutatu leiho arrunt guztiak"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "Eraman gaineko laneko areara"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "Eraman azpiko laneko areara"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "Eraman ezkerreko laneko areara"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "Eraman eskuineko laneko areara"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Navigation"
+msgstr "Nabigazioa"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch applications"
+msgstr "Aldatu aplikazioz"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Switch system controls"
+msgstr "Aldatu sistemaren kontrolak"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "Aldatu sistemaren kontrolak zuzenean"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "Aldatu leihoa zuzenean"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "Aldatu aplikazio baten leihoa zuzenean"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "Aldatu aplikazio baten leihoen artean"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "Erakutsi jardueren aurkezpen orokorra"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "Erakutsi gonbitea komandoa exekutatzeko"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "System"
+msgstr "Sistema"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Goratu leihoa beste leiho batek estaltzen badu, bestela beheratu"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr "Txandakatu leihoa laneko area guztietan edo bakar batean egotea"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "Aldatu 5. laneko areara"
@@ -1738,54 +1945,12 @@ msgstr ""
 #~ msgid "Run a terminal"
 #~ msgstr "Exekutatu terminala"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "Aktibatu leiho-menua"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Txandakatu pantaila osoaren modua"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Txandakatu maximizatze-egoera"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr ""
 #~ "Txandakatu leiho bat beste leiho guztien gainean ikusgai egongo den edo ez"
 
-#~ msgid "Maximize window"
-#~ msgstr "Maximizatu leihoa"
-
-#~ msgid "Restore window"
-#~ msgstr "Leheneratu leihoa"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Txandakatu bildutako egoera"
-
-#~ msgid "Minimize window"
-#~ msgstr "Ikonotu leihoa"
-
-#~ msgid "Close window"
-#~ msgstr "Itxi leihoa"
-
-#~ msgid "Move window"
-#~ msgstr "Lekuz aldatu leihoa"
-
-#~ msgid "Resize window"
-#~ msgstr "Aldatu leihoaren tamaina"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr "Txandakatu leihoa laneko area guztietan edo bakar batean egotea"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Eraman leihoa 1. laneko areara"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Eraman leihoa 2. laneko areara"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Eraman leihoa 3. laneko areara"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Eraman leihoa 4. laneko areara"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "Eraman leihoa 5. laneko areara"
@@ -1811,32 +1976,8 @@ msgstr ""
 #~ msgid "Move window to workspace 12"
 #~ msgstr "Eraman leihoa 12. laneko areara"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Eraman leihoa laneko area bat ezkerrera"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Eraman leihoa laneko area bat eskuinera"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Eraman leihoa laneko area bat gora"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Eraman leihoa laneko area bat behera"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr "Goratu leihoa beste leiho batek estaltzen badu, bestela beheratu"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Goratu leihoa beste leihoen gainera"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Beheratu leihoa beste leihoen azpira"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Maximizatu leihoa bertikalki"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Maximizatu leihoa horizontalki"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "Eraman leihoa ipar-mendebaldeko (goi-ezkerreko) ertzera"

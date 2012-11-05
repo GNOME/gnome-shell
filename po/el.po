@@ -28,7 +28,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
 msgid "Windows"
 msgstr "Παράθυρα"
 
@@ -1645,9 +1645,223 @@ msgstr "η τιμή y ήταν %d, αναμενόταν %d"
 #: ../src/ui/theme-viewer.c:1352
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+msgstr "οι εκφράσεις συντεταγμένης %d αναλύθηκαν σε %g δευτερόλεπτα (%g δευτερόλεπτα μέσος όρος)\n"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "Απόκρυψη όλων των κανονικών παραθύρων"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "Μετακίνηση στο χώρο εργασίας επάνω"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "Μετακίνηση στο χώρο εργασίας κάτω"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "Μετακίνηση στο χώρο εργασίας αριστερά"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "Μετακίνηση στο χώρο εργασίας δεξιά"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "Μετακίνηση του παραθύρου ένα χώρο εργασίας κάτω"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "Μετακίνηση του παραθύρου ένα χώρο εργασίας αριστερά"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr "Μετακίνηση του παραθύρου ένα χώρο εργασίας δεξιά"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr "Μετακίνηση του παραθύρου ένα χώρο εργασίας πάνω"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Navigation"
+msgstr "Πλοήγηση"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch applications"
+msgstr "Εναλλαγή εφαρμογών"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Switch system controls"
+msgstr "Εναλλαγή ελέγχων συστήματος"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "Αναστροφή άμεση εναλλαγή ελέγχων συστήματος"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "Αλλαγή στο χώρο εργασίας 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "Αλλαγή στο χώρο εργασίας 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "Αλλαγή στο χώρο εργασίας 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "Αλλαγή στο χώρο εργασίας 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "Απευθείας εναλλαγή παραθύρων"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "Άμεση εναλλαγή μεταξύ παραθύρων μιας εφαρμογής"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "Άμεση εναλλαγή μεταξύ παραθύρων μιας εφαρμογής"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "Εμφάνιση της επισκόπησης των δραστηριοτήτων"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "Εμφάνιση της ειδοποίησης της εντολής run"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "System"
+msgstr "Σύστημα"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "Ενεργοποίηση του μενού του παραθύρου"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Close window"
+msgstr "Κλείσιμο παραθύρου"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "Χαμήλωμα παραθύρου κάτω από τα άλλα παράθυρα"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Maximize window"
+msgstr "Μεγιστοποίηση παραθύρου"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "Μεγιστοποίηση ενός παραθύρου οριζόντια"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "Μεγιστοποίηση ενός παραθύρου κάθετα"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Minimize window"
+msgstr "Ελαχιστοποίηση παραθύρου"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Move window"
+msgstr "Μετακίνηση παραθύρου"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "Ανασήκωση παραθύρου πάνω από τα άλλα παράθυρα"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
 msgstr ""
-"οι εκφράσεις συντεταγμένης %d αναλύθηκαν σε %g δευτερόλεπτα (%g δευτερόλεπτα "
-"μέσος όρος)\n"
+"Ανασήκωση παραθύρου αν καλύπτεται από άλλο παράθυρο, αλλιώς χαμήλωμα του"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr "Αλλαγή μεγέθους παραθύρου"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Restore window"
+msgstr "Επαναφορά παραθύρου"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "Εναλλαγή κατάστασης πλήρους οθόνης"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "Εναλλαγή κατάστασης μεγιστοποίησης"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "Εναλλαγή σκιασμένης κατάστασης"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr "Εναλλαγή παραθύρου σε όλες τις επιφάνειες εργασίας ή σε μία"
 
 #~ msgid ""
 #~ "There was an error running <tt>%s</tt>:\n"

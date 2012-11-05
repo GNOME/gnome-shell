@@ -1612,6 +1612,221 @@ msgstr ""
 "%d expresións de coordenadas interpretadas en %g segundos (%g segundos de "
 "media)\n"
 
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "Cambiar ao espazo de traballo 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "Cambiar ao espazo de traballo 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "Cambiar ao espazo de traballo 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "Cambiar ao espazo de traballo 4"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "Activar o menú da xanela"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "Alternar o modo de pantalla completa"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "Alternar o estado maximizado"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window"
+msgstr "Maximizar a xanela"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Restore window"
+msgstr "Restaurar a xanela"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "Alternar o estado ensombrecido"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Minimize window"
+msgstr "Minimizar a xanela"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Close window"
+msgstr "Pechar a xanela"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Move window"
+msgstr "Mover a xanela"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr "Redimensionar a xanela"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr "Mover a xanela ao espazo de traballo 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr "Mover a xanela ao espazo de traballo 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr "Mover a xanela ao espazo de traballo 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr "Mover a xanela ao espazo de traballo 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "Mover a xanela un espazo de traballo cara á esquerda"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr "Mover a xanela un espazo de traballo cara á dereita"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr "Mover a xanela un espazo de traballo cara a arriba"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "Mover a xanela un espazo de traballo cara a abaixo"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "Subir a xanela por enriba doutras xanelas"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "Baixar unha xanela debaixo doutras xanelas"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "Maximizar a xanela verticalmente"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "Maximizar a xanela horizontalmente"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Navigation"
+msgstr "Navegación"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Switch applications"
+msgstr "Cambiar entre aplicativos"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "Cambiar entre as xanelas dun aplicativo"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Switch system controls"
+msgstr "Cambiar entre os controles do sistema"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "Cambiar xanelas directamente"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "Moverse entre as xanelas dun aplicativo directamente"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "Moverse entre os controles do sistema directamente"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "Agochar todas as xanelas normais"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "Mover ao espazo da esquerda"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "Mover ao espazo da dereita"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "Mover ao espazo de arriba"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "Mover ao espazo de abaixo"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "System"
+msgstr "Sistema"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "Mostrar o diálogo de executar orde"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "Mostrar a vista previa das actividades"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr "Trocar que a xanela apareza en tódolos espazos de traballo ou nun"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Elevar a xanela se está cuberta por outra, en caso contrario baixala"
+
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "Lista de separadas por comas dos complementos do compositor"
 
@@ -1657,18 +1872,6 @@ msgstr ""
 
 #~ msgid "Put Window On Only One Workspace"
 #~ msgstr "Pór a xanela nun só espazo de traballo"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Cambiar ao espazo de traballo 1"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Cambiar ao espazo de traballo 2"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Cambiar ao espazo de traballo 3"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Cambiar ao espazo de traballo 4"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "Cambiar ao espazo de traballo 5"
@@ -1768,57 +1971,15 @@ msgstr ""
 #~ msgid "Run a terminal"
 #~ msgstr "Executar nun terminal"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "Activar o menú da xanela"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Alternar o modo de pantalla completa"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Alternar o estado maximizado"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr ""
 #~ "Alternar entre se unha xanela será visíbel sempre sobre outras xanelas ou "
 #~ "non"
 
-#~ msgid "Maximize window"
-#~ msgstr "Maximizar a xanela"
-
-#~ msgid "Restore window"
-#~ msgstr "Restaurar a xanela"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Alternar o estado ensombrecido"
-
-#~ msgid "Minimize window"
-#~ msgstr "Minimizar a xanela"
-
-#~ msgid "Close window"
-#~ msgstr "Pechar a xanela"
-
-#~ msgid "Move window"
-#~ msgstr "Mover a xanela"
-
-#~ msgid "Resize window"
-#~ msgstr "Redimensionar a xanela"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr ""
 #~ "Alternar entre se unha xanela está en todos os espazos de traballo ou só "
 #~ "nun"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Mover a xanela ao espazo de traballo 1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Mover a xanela ao espazo de traballo 2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Mover a xanela ao espazo de traballo 3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Mover a xanela ao espazo de traballo 4"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "Mover a xanela ao espazo de traballo 5"
@@ -1844,33 +2005,9 @@ msgstr ""
 #~ msgid "Move window to workspace 12"
 #~ msgstr "Mover a xanela ao espazo de traballo 12"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Mover a xanela un espazo de traballo cara á esquerda"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Mover a xanela un espazo de traballo cara á dereita"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Mover a xanela un espazo de traballo cara a arriba"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Mover a xanela un espazo de traballo cara a abaixo"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr ""
 #~ "Elevar unha xanela se está cuberta por outra, en caso contrario baixala"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Subir a xanela por enriba doutras xanelas"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Baixar unha xanela debaixo doutras xanelas"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Maximizar a xanela verticalmente"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Maximizar a xanela horizontalmente"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "Mover a xanela á esquina noroeste (arriba á esquerda)"

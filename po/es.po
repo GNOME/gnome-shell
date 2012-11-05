@@ -25,7 +25,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Gtranslator 2.91.5\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-metacity-windows.xml.in.h:1
 msgid "Windows"
 msgstr "Ventanas"
 
@@ -1630,6 +1630,229 @@ msgstr ""
 "%d expresiones de coordenadas interpretadas en %g segundos (%g segundos de "
 "media)\n"
 
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "Cambiar al área de trabajo 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "Cambiar al área de trabajo 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "Cambiar al área de trabajo 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "Cambiar al área de trabajo 4"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "Activar el menú de la ventana"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "Cambiar a modo de pantalla completa"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "Cambiar el estado de maximización"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window"
+msgstr "Maximizar la ventana"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Restore window"
+msgstr ""
+"#-#-#-#-#  es.po (mutter.master)  #-#-#-#-#\n"
+"Restablecer la ventana\n"
+"#-#-#-#-#  es.po (mutter.master)  #-#-#-#-#\n"
+"Restaurar la ventana"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "Cambiar el estado de enrollado"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Minimize window"
+msgstr "Minimizar la ventana"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Close window"
+msgstr "Cerrar la ventana"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Move window"
+msgstr "Mover la ventana"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr ""
+"#-#-#-#-#  es.po (mutter.master)  #-#-#-#-#\n"
+"Redimensiona la ventana\n"
+"#-#-#-#-#  es.po (mutter.master)  #-#-#-#-#\n"
+"Redimensionar la ventana"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr "Mover la ventana al área de trabajo 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr "Mover la ventana al área de trabajo 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr "Mover la ventana al área de trabajo 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr "Mover la ventana al área de trabajo 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "Mover la ventana un área de trabajo a la izquierda"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr "Mover la ventana un área de trabajo a la derecha"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr "Subir la ventana un área de trabajo"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "Bajar la ventana un área de trabajo"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "Levanta la ventana por encima de otras ventanas"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "Bajar la ventana por debajo de otras ventanas"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "Maximizar la ventana verticalmente"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "Maximizar la ventana horizontalmente"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Navigation"
+msgstr "Navegación"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Switch applications"
+msgstr "Moverse entre aplicaciones"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "Moverse entre las ventanas de una aplicación"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Switch system controls"
+msgstr "Cambiar entre controles del sistema"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "Cambiar ventanas directamente"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "Moverse entre las ventanas de una aplicación directamente"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "Moverse entre los controles del sistema directamente"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "Ocultar todas las ventanas normales"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "Mover al área de trabajo de la izquierda"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "Mover al área de trabajo de la derecha"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "Mover al área de trabajo de la arriba"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "Mover al área de trabajo de abajo"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "System"
+msgstr "Sistema"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "Mostrar el elemento «ejecutar comando»"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "Mostrar el resumen de actividades"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr "Conmutar la ventana en todas las áreas de trabajo o sólo en una"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Levantar la ventana si está cubierta, minimizarla en otro caso"
+
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "Lista de complementos del compositor separados por comas"
 
@@ -1675,18 +1898,6 @@ msgstr ""
 
 #~ msgid "Put Window On Only One Workspace"
 #~ msgstr "Poner la ventana sólo en un área de trabajo"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Cambiar al área de trabajo 1"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Cambiar al área de trabajo 2"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Cambiar al área de trabajo 3"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Cambiar al área de trabajo 4"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "Cambiar al área de trabajo 5"
@@ -1788,54 +1999,12 @@ msgstr ""
 #~ msgid "Run a terminal"
 #~ msgstr "Ejecutar en un terminal"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "Activar el menú de la ventana"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Cambiar a modo de pantalla completa"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Cambiar el estado de maximización"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr "Conmutar si una ventana siempre se verá encima de otras ventanas"
-
-#~ msgid "Maximize window"
-#~ msgstr "Maximizar la ventana"
-
-#~ msgid "Restore window"
-#~ msgstr "Restablecer la ventana"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Cambiar el estado de enrollado"
-
-#~ msgid "Minimize window"
-#~ msgstr "Minimizar la ventana"
-
-#~ msgid "Close window"
-#~ msgstr "Cerrar la ventana"
-
-#~ msgid "Move window"
-#~ msgstr "Mover la ventana"
-
-#~ msgid "Resize window"
-#~ msgstr "Redimensiona la ventana"
 
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr ""
 #~ "Conmutar si la ventana aparece en todas las áreas de trabajo o sólo en una"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Mover la ventana al área de trabajo 1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Mover la ventana al área de trabajo 2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Mover la ventana al área de trabajo 3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Mover la ventana al área de trabajo 4"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "Mover la ventana al área de trabajo 5"
@@ -1861,34 +2030,10 @@ msgstr ""
 #~ msgid "Move window to workspace 12"
 #~ msgstr "Mover la ventana al área de trabajo 12"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Mover la ventana un área de trabajo a la izquierda"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Mover la ventana un área de trabajo a la derecha"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Subir la ventana un área de trabajo"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Bajar la ventana un área de trabajo"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr ""
 #~ "Levantar la ventana si está cubierta por otra ventana, minimizarla en "
 #~ "otro caso"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Levanta la ventana por encima de otras ventanas"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Bajar la ventana por debajo de otras ventanas"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Maximizar la ventana verticalmente"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Maximizar la ventana horizontalmente"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "Mover la ventana a la esquina noroeste (arriba a la izquierda)"

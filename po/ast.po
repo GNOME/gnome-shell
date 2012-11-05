@@ -37,7 +37,6 @@ msgstr "Petición d'información ventana desconocida: %d"
 #. Translators: %s is a window title
 #: ../src/core/delete.c:95
 #, c-format
-#, c-format
 msgid "<tt>%s</tt> is not responding."
 msgstr "<tt>%s</tt> nun ta respondiendo."
 
@@ -121,7 +120,6 @@ msgid "No terminal command has been defined.\n"
 msgstr "Comandu de terminal nun definíu.\n"
 
 #: ../src/core/main.c:130
-#, c-format
 #, c-format
 msgid ""
 "mutter %s\n"
@@ -261,7 +259,6 @@ msgstr "Error axustando númberu d'arees de trabayu a %d: %s\n"
 
 #: ../src/core/prefs.c:2028 ../src/core/prefs.c:2531
 #, c-format
-#, c-format
 msgid "Workspace %d"
 msgstr "Espaciu de Trabayu %d"
 
@@ -275,7 +272,6 @@ msgstr "\"%s\" atopau na base de datos de configuración nun ye un valor válidu
 
 #: ../src/core/prefs.c:2612
 #, c-format
-#, c-format
 msgid "Error setting name for workspace %d to \"%s\": %s\n"
 msgstr "Fallu al afitar nome pal espaciu de trabayu %d a \"%s\": %s\n"
 
@@ -286,18 +282,15 @@ msgstr "Fallu al afitar l'estáu del compositor: %s\n"
 
 #: ../src/core/prefs.c:2845
 #, c-format
-#, c-format
 msgid "Error setting clutter plugin list: %s\n"
 msgstr "Fallu al afitar la llista desordenada de plugin: %s\n"
 
 #: ../src/core/prefs.c:2889
 #, c-format
-#, c-format
 msgid "Error setting live hidden windows status status: %s\n"
 msgstr "Fallu al afitar l'estáu de les ventanes anubríes: %s\n"
 
 #: ../src/core/prefs.c:2917
-#, c-format
 #, c-format
 msgid "Error setting no tab popup status: %s\n"
 msgstr "Fallu al afitar l'estáu de les llingüetes emerxentes: %s\n"
@@ -358,7 +351,6 @@ msgstr "Falló analizar ficheru de sesión guardáu: %s\n"
 
 #: ../src/core/session.c:1198
 #, c-format
-#, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr "Vióse l'atributu <mutter_session> pero yá tenemos la ID de sesión"
 
@@ -403,7 +395,6 @@ msgid "Opened log file %s\n"
 msgstr "Abiertu archivu log %s\n"
 
 #: ../src/core/util.c:139 ../src/tools/mutter-message.c:176
-#, c-format
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "Mutter compilose ensin sofitu pal mou testu\n"
@@ -499,19 +490,19 @@ msgid ""
 msgstr "La propiedá %s del ventanu 0x%lx contien un códigu UTF-8 non válidu pal "
 "elementu %d na llista\n"
 
-#: ../src/include/all-keybindings.h:88
+#: ../src/include/all-keybindings.h:88 ../src/50-mutter-navigation.xml.in.h:18
 msgid "Switch to workspace 1"
 msgstr "Cambiar a espaciu de trabayu 1"
 
-#: ../src/include/all-keybindings.h:90
+#: ../src/include/all-keybindings.h:90 ../src/50-mutter-navigation.xml.in.h:19
 msgid "Switch to workspace 2"
 msgstr "Cambiar a espaciu de trabayu 2"
 
-#: ../src/include/all-keybindings.h:92
+#: ../src/include/all-keybindings.h:92 ../src/50-mutter-navigation.xml.in.h:20
 msgid "Switch to workspace 3"
 msgstr "Cambiar a espaciu de trabayu 3"
 
-#: ../src/include/all-keybindings.h:94
+#: ../src/include/all-keybindings.h:94 ../src/50-mutter-navigation.xml.in.h:21
 msgid "Switch to workspace 4"
 msgstr "Cambiar a espaciu de trabayu 4"
 
@@ -640,47 +631,57 @@ msgstr "Saca una semeya d'una ventana"
 msgid "Run a terminal"
 msgstr "Executar una terminal"
 
-#: ../src/include/all-keybindings.h:271
+#: ../src/include/all-keybindings.h:271 ../src/50-mutter-windows.xml.in.h:1
 msgid "Activate the window menu"
 msgstr "Activar el menú de la ventana"
 
-#: ../src/include/all-keybindings.h:274
+#: ../src/include/all-keybindings.h:274 ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
 msgid "Toggle fullscreen mode"
-msgstr "Camudar a modu pantalla completa"
+msgstr ""
+"#-#-#-#-#  ast.po (metacity)  #-#-#-#-#\n"
+"Camudar a modu pantalla completa\n"
+"#-#-#-#-#  ast.po (metacity)  #-#-#-#-#\n"
+"Camudar a mou pantalla completa"
 
-#: ../src/include/all-keybindings.h:276
+#: ../src/include/all-keybindings.h:276 ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
 msgid "Toggle maximization state"
-msgstr "Camudar a estáu maximizáu"
+msgstr ""
+"#-#-#-#-#  ast.po (metacity)  #-#-#-#-#\n"
+"Camudar a estáu maximizáu\n"
+"#-#-#-#-#  ast.po (metacity)  #-#-#-#-#\n"
+"Conmutar l'estáu maximizáu"
 
 #: ../src/include/all-keybindings.h:278
 msgid "Toggle whether a window will always be visible over other windows"
 msgstr "Conmutar si una ventana siempres se verá encima d'otres ventanes"
 
-#: ../src/include/all-keybindings.h:280
+#: ../src/include/all-keybindings.h:280 ../src/50-mutter-windows.xml.in.h:4
 msgid "Maximize window"
 msgstr "Maximizar ventana"
 
-#: ../src/include/all-keybindings.h:282
+#: ../src/include/all-keybindings.h:282 ../src/50-mutter-windows.xml.in.h:12
 msgid "Restore window"
 msgstr "Restaurar la ventana"
 
-#: ../src/include/all-keybindings.h:284
+#: ../src/include/all-keybindings.h:284 ../src/50-mutter-windows.xml.in.h:15
 msgid "Toggle shaded state"
 msgstr "Activa estáu endolcáu"
 
-#: ../src/include/all-keybindings.h:286
+#: ../src/include/all-keybindings.h:286 ../src/50-mutter-windows.xml.in.h:7
 msgid "Minimize window"
 msgstr "Minimizar ventana"
 
-#: ../src/include/all-keybindings.h:288
+#: ../src/include/all-keybindings.h:288 ../src/50-mutter-windows.xml.in.h:2
 msgid "Close window"
 msgstr "Zarrar ventana"
 
-#: ../src/include/all-keybindings.h:290
+#: ../src/include/all-keybindings.h:290 ../src/50-mutter-windows.xml.in.h:8
 msgid "Move window"
 msgstr "Mover ventana"
 
-#: ../src/include/all-keybindings.h:292
+#: ../src/include/all-keybindings.h:292 ../src/50-mutter-windows.xml.in.h:11
 msgid "Resize window"
 msgstr "Cambiar el tamañu la ventana"
 
@@ -689,18 +690,22 @@ msgid "Toggle whether window is on all workspaces or just one"
 msgstr "Conmutar si la ventana apaez en toles árees de trabayu o namái nuna"
 
 #: ../src/include/all-keybindings.h:299
+#: ../src/50-mutter-navigation.xml.in.h:10
 msgid "Move window to workspace 1"
 msgstr "Mover ventana al espaciu de trabayu 1"
 
 #: ../src/include/all-keybindings.h:302
+#: ../src/50-mutter-navigation.xml.in.h:11
 msgid "Move window to workspace 2"
 msgstr "Mover ventana al espaciu de trabayu 2"
 
 #: ../src/include/all-keybindings.h:305
+#: ../src/50-mutter-navigation.xml.in.h:12
 msgid "Move window to workspace 3"
 msgstr "Mover ventana al espaciu de trabayu 3"
 
 #: ../src/include/all-keybindings.h:308
+#: ../src/50-mutter-navigation.xml.in.h:13
 msgid "Move window to workspace 4"
 msgstr "Mover ventana al espaciu de trabayu 4"
 
@@ -736,19 +741,24 @@ msgstr "Mover ventana al espaciu de trabayu 11"
 msgid "Move window to workspace 12"
 msgstr "Mover ventana al espaciu de trabayu 12"
 
-#: ../src/include/all-keybindings.h:344
+#: ../src/include/all-keybindings.h:344 ../src/50-mutter-navigation.xml.in.h:7
 msgid "Move window one workspace to the left"
 msgstr "Mover ventana un espaciu de trabayu a manzorga"
 
-#: ../src/include/all-keybindings.h:347
+#: ../src/include/all-keybindings.h:347 ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
 msgid "Move window one workspace to the right"
-msgstr "Mover ventana un espaciu de trabayu a derecha"
+msgstr ""
+"#-#-#-#-#  ast.po (metacity)  #-#-#-#-#\n"
+"Mover ventana un espaciu de trabayu a derecha\n"
+"#-#-#-#-#  ast.po (metacity)  #-#-#-#-#\n"
+"Mover ventana un espaciu de trabayu a madrecha"
 
-#: ../src/include/all-keybindings.h:350
+#: ../src/include/all-keybindings.h:350 ../src/50-mutter-navigation.xml.in.h:9
 msgid "Move window one workspace up"
 msgstr "Mover ventana un espaciu de trabayu p'arriba"
 
-#: ../src/include/all-keybindings.h:353
+#: ../src/include/all-keybindings.h:353 ../src/50-mutter-navigation.xml.in.h:6
 msgid "Move window one workspace down"
 msgstr "Mover ventana un espaciu de trabayu p'abaxo"
 
@@ -757,19 +767,29 @@ msgid "Raise window if it's covered by another window, otherwise lower it"
 msgstr ""
 "Llevantar la ventana si ta cubierta por otra ventana, minimizala n'otru casu"
 
-#: ../src/include/all-keybindings.h:358
+#: ../src/include/all-keybindings.h:358 ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
 msgid "Raise window above other windows"
-msgstr "Poner el ventanu en primer planu"
+msgstr ""
+"#-#-#-#-#  ast.po (metacity)  #-#-#-#-#\n"
+"Poner el ventanu en primer planu\n"
+"#-#-#-#-#  ast.po (metacity)  #-#-#-#-#\n"
+"Poner la ventana en primer planu"
 
-#: ../src/include/all-keybindings.h:360
+#: ../src/include/all-keybindings.h:360 ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
 msgid "Lower window below other windows"
-msgstr "Ventanu más baxu per debaxo d'otros ventanos"
+msgstr ""
+"#-#-#-#-#  ast.po (metacity)  #-#-#-#-#\n"
+"Ventanu más baxu per debaxo d'otros ventanos\n"
+"#-#-#-#-#  ast.po (metacity)  #-#-#-#-#\n"
+"Ventana más baxa per debaxo d'otres ventanes"
 
-#: ../src/include/all-keybindings.h:364
+#: ../src/include/all-keybindings.h:364 ../src/50-mutter-windows.xml.in.h:6
 msgid "Maximize window vertically"
 msgstr "Maximizar ventana verticalmente"
 
-#: ../src/include/all-keybindings.h:368
+#: ../src/include/all-keybindings.h:368 ../src/50-mutter-windows.xml.in.h:5
 msgid "Maximize window horizontally"
 msgstr "Maximizar ventana horizontalmente"
 
@@ -982,7 +1002,6 @@ msgid "Workspace %d%n"
 msgstr "Espaciu de Trabayu %d%n"
 
 #: ../src/ui/menu.c:213
-#, c-format
 #, c-format
 msgid "Workspace 1_0"
 msgstr "Espaciu de Trabayu 1_0"
@@ -1724,7 +1743,6 @@ msgstr "Nun se permite testu dientro del elementu <%s>"
 #: ../src/ui/theme-parser.c:3748 ../src/ui/theme-parser.c:3760
 #: ../src/ui/theme-parser.c:3772
 #, c-format
-#, c-format
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> especificáu dos vegaes pa esti tema"
 
@@ -1935,6 +1953,96 @@ msgstr "el valor y yera %d, esperábase %d"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d espresiones de coordenaes interpretaes en %g segundos (%g segundos de "
 "media)\n"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "Anubrir toles ventanes normales"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "Mover al área de trabayu d'arriba"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "Mover al área de trabayu d'abaxo"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "Mover al área de trabayu de la izquierda"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "Mover al área de trabayu de la derecha"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Navigation"
+msgstr "Navegación"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch applications"
+msgstr "Movese ente aplicaciones"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Switch system controls"
+msgstr "Cambiar ente controles del sistema"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "Movese ente los controles del sistema direutamente"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "Cambiar ventanes direutamente"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "Movese ente les ventanes d'una aplicación direutamente"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "Movese ente les ventanes d'una aplicación"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "Amosar el resume d'actividaes"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "Amosar l'elementu «executar comando»"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "System"
+msgstr "Sistema"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Llevantar la ventana si ta cubierta, minimizala n'otru casu"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr "Conmutar la ventana en toles árees de trabayu o namái nuna"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+#, fuzzy
+msgid "Windows"
+msgstr "Ventanes"
 
 #~ msgid "Desktop"
 #~ msgstr "Escritoriu"

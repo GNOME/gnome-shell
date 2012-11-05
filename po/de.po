@@ -24,7 +24,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Gtranslator 2.91.5\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
 msgid "Windows"
 msgstr "Fenster"
 
@@ -1635,6 +1635,222 @@ msgstr ""
 "%d Koordinatenausdrücke in %g Sekunden verarbeitet (im Durchschnitt %g pro "
 "Sekunde)\n"
 
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "Zur Arbeitsfläche 1 wechseln"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "Zur Arbeitsfläche 2 wechseln"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "Zur Arbeitsfläche 3 wechseln"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "Zur Arbeitsfläche 4 wechseln"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "Das Fenstermenü aktivieren"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "Vollbildmodus ein-/ausschalten"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "Maximierungszustand ein-/ausschalten"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Maximize window"
+msgstr "Fenster maximieren"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Restore window"
+msgstr "Fenstergröße wiederherstellen"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "Fenster ein-/ausrollen"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Minimize window"
+msgstr "Fenster minimieren"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Close window"
+msgstr "Fenster schließen"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Move window"
+msgstr "Fenster verschieben"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr "Fenstergröße ändern"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr "Fenster auf Arbeitsfläche 1 verschieben"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr "Fenster auf Arbeitsfläche 2 verschieben"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr "Fenster auf Arbeitsfläche 3 verschieben"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr "Fenster auf Arbeitsfläche 4 verschieben"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "Fenster eine Arbeitsfläche nach links verschieben"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr "Fenster eine Arbeitsfläche nach rechts verschieben"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr "Fenster eine Arbeitsfläche nach oben verschieben"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "Fenster eine Arbeitsfläche nach unten verschieben"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "Fenster vor die anderen Fenster anheben"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "Fenster hinter die anderen Fenster absenken"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "Fenster vertikal maximieren"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "Fenster horizontal maximieren"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "Alle normalen Fenster verbergen"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "Auf Arbeitsfläche darüber verschieben"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "Auf Arbeitsfläche darunter verschieben"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "Auf Arbeitsfläche links verschieben"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "Auf Arbeitsfläche rechts verschieben"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Navigation"
+msgstr "Navigation"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch applications"
+msgstr "Anwendungen wechseln"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Switch system controls"
+msgstr "Systemsteuerungen umschalten"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "Systemsteuerungen sofort umschalten"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "Fenster sofort wechseln"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "Sofort zwischen den Fenstern einer Anwendung wechseln"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "Zwischen den Fenstern einer Anwendung wechseln"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "Übersicht der Aktivitäten anzeigen"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "Den »Befehl ausführen«-Dialog anzeigen"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "System"
+msgstr "System"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Fenster anheben, falls es verdeckt ist, andernfalls absenken"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr ""
+"Festlegen, ob das Fenster auf allen oder nur einer Arbeitsfläche sichtbar ist"
+
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "Eine durch Kommata getrennte Liste von Plugins für den Compositor"
 
@@ -1647,18 +1863,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Legt fest, ob verborgene Fenster (d.h. minimierte Fenster und Fenster auf "
 #~ "anderen Arbeitsflächen) erhalten bleiben sollen."
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Zur Arbeitsfläche 1 wechseln"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Zur Arbeitsfläche 2 wechseln"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Zur Arbeitsfläche 3 wechseln"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Zur Arbeitsfläche 4 wechseln"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "Zur Arbeitsfläche 5 wechseln"
@@ -1766,53 +1970,11 @@ msgstr ""
 #~ msgid "Run a terminal"
 #~ msgstr "Ein Terminal starten"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "Das Fenstermenü aktivieren"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Vollbildmodus ein-/ausschalten"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Maximierungszustand ein-/ausschalten"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr "Fenster ständig im Vordergrund ein-/ausschalten"
 
-#~ msgid "Maximize window"
-#~ msgstr "Fenster maximieren"
-
-#~ msgid "Restore window"
-#~ msgstr "Fenstergröße wiederherstellen"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Fenster ein-/ausrollen"
-
-#~ msgid "Minimize window"
-#~ msgstr "Fenster minimieren"
-
-#~ msgid "Close window"
-#~ msgstr "Fenster schließen"
-
-#~ msgid "Move window"
-#~ msgstr "Fenster verschieben"
-
-#~ msgid "Resize window"
-#~ msgstr "Fenstergröße ändern"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr "Fenster sichtbar auf allen Arbeitsflächen ein-/ausschalten"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Fenster auf Arbeitsfläche 1 verschieben"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Fenster auf Arbeitsfläche 2 verschieben"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Fenster auf Arbeitsfläche 3 verschieben"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Fenster auf Arbeitsfläche 4 verschieben"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "Fenster auf Arbeitsfläche 5 verschieben"
@@ -1838,32 +2000,8 @@ msgstr ""
 #~ msgid "Move window to workspace 12"
 #~ msgstr "Fenster auf Arbeitsfläche 12 verschieben"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Fenster eine Arbeitsfläche nach links verschieben"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Fenster eine Arbeitsfläche nach rechts verschieben"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Fenster eine Arbeitsfläche nach oben verschieben"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Fenster eine Arbeitsfläche nach unten verschieben"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr "Fenster anheben falls überdeckt, sonst absenken"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Fenster vor die anderen Fenster anheben"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Fenster hinter die anderen Fenster absenken"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Fenster vertikal maximieren"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Fenster horizontal maximieren"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "Fenster in linke obere Ecke des Bildschirms verschieben"

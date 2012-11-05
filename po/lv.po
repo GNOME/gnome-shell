@@ -1567,6 +1567,229 @@ msgstr "y vērtība bija %d, tika gaidīta %d"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)\n"
 
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "Pārslēgties uz 1. darbvietu"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "Pārslēgties uz 2. darbvietu"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "Pārslēgties uz 3. darbvietu"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "Pārslēgties uz 4. darbvietu"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "Aktivizēt loga izvēlni"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "Pārslēgt pilnekrāna režīmu"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "Pārslēgt maksimizācijas stāvokli"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window"
+msgstr "Maksimizēt logu"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Restore window"
+msgstr "Atjaunot logu"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "Pārslēgt ēnoto stāvokli"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Minimize window"
+msgstr "Minimizēt logu"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Close window"
+msgstr "Aizvērt logu"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Move window"
+msgstr "Pārvietot logu"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr "Mainīt loga izmēru"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr "Pārvietot logu uz 1. darbvietu"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr "Pārvietot logu uz 2. darbvietu"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr "Pārvietot logu uz 3. darbvietu"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr "Pārvietot logu uz 4. darbvietu"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "Pārvietot logu vienu darbvietu pa kreisi"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr ""
+"#-#-#-#-#  lv.po (lv)  #-#-#-#-#\n"
+"Pārvietot logu vienu darbvietu pa labi\n"
+"#-#-#-#-#  lv.po (lv)  #-#-#-#-#\n"
+"Pārvietot logu uz darbvietu pa labi"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr ""
+"#-#-#-#-#  lv.po (lv)  #-#-#-#-#\n"
+"Pārvietot logu vienu darbvietu augšup\n"
+"#-#-#-#-#  lv.po (lv)  #-#-#-#-#\n"
+"Pārvietot logu uz darbvietu augšup"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "Pārvietot logu vienu darbvietu lejup"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "Pacelt logu virs citiem logiem"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "Pazemināt logu zem citiem logiem"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "Maksimizēt logu vertikāli"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "Maksimizēt logu horizontāli"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Navigation"
+msgstr "Navigācija"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Switch applications"
+msgstr "Pārslēgt lietotnes"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "Pārslēgt lietotnes logus"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Switch system controls"
+msgstr "Pārslēgt sistēmas vadīklas"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "Pārslēgt logu tieši"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "Pārslēgt lietotnes logu tieši"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "Pārslēgt sistēmas vadīklas tieši"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "Slēpt visus parastos logus"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "Pārvietot uz darbvietu pa kreisi"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "Pārvietot uz darbvietu pa labi"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "Pārvietot uz darbvietu uz augšu"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "Pārvietot uz darbvietu zemāk"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "System"
+msgstr "Sistēma"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "Rādīt palaišanas komandrindu"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "Rādīt aktivitāšu pārskatu"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr "Pārslēgt loga redzamību visās darbvirsmās vai tikai vienā"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Pacelt logu, ja to aizsedz, citādi pazemināt"
+
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "Ar komatu atdalīts kompozīcijas spraudņu saraksts"
 
@@ -1612,18 +1835,6 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 
 #~ msgid "Put Window On Only One Workspace"
 #~ msgstr "Turēt logu tikai vienā darbvietā"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Pārslēgties uz 1. darbvietu"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Pārslēgties uz 2. darbvietu"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Pārslēgties uz 3. darbvietu"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Pārslēgties uz 4. darbvietu"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "Pārslēgties uz 5. darbvietu"
@@ -1720,53 +1931,11 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ msgid "Run a terminal"
 #~ msgstr "Palaist termināli"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "Aktivizēt loga izvēlni"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Pārslēgt pilnekrāna režīmu"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Pārslēgt maksimizācijas stāvokli"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr "Pārslēdz to, vai logs vienmēr redzams virs citiem logiem"
 
-#~ msgid "Maximize window"
-#~ msgstr "Maksimizēt logu"
-
-#~ msgid "Restore window"
-#~ msgstr "Atjaunot logu"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Pārslēgt ēnoto stāvokli"
-
-#~ msgid "Minimize window"
-#~ msgstr "Minimizēt logu"
-
-#~ msgid "Close window"
-#~ msgstr "Aizvērt logu"
-
-#~ msgid "Move window"
-#~ msgstr "Pārvietot logu"
-
-#~ msgid "Resize window"
-#~ msgstr "Mainīt loga izmēru"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr "Pārslēgt, vai logs ir redzams visās darbvirsmās vai tikai vienā"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Pārvietot logu uz 1. darbvietu"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Pārvietot logu uz 2. darbvietu"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Pārvietot logu uz 3. darbvietu"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Pārvietot logu uz 4. darbvietu"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "Pārvietot logu uz 5. darbvietu"
@@ -1792,32 +1961,8 @@ msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)
 #~ msgid "Move window to workspace 12"
 #~ msgstr "Pārvietot logu uz 12. darbvietu"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Pārvietot logu vienu darbvietu pa kreisi"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Pārvietot logu vienu darbvietu pa labi"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Pārvietot logu vienu darbvietu augšup"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Pārvietot logu vienu darbvietu lejup"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr "Pacelt logu, ja to aizsedz kāds cits, citādi pazemināt"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Pacelt logu virs citiem logiem"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Pazemināt logu zem citiem logiem"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Maksimizēt logu vertikāli"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Maksimizēt logu horizontāli"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "Pārvietot logu uz ekrāna ziemeļrietumu (augšējo kreiso) stūri"

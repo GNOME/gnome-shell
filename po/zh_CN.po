@@ -25,7 +25,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bits\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
 msgid "Windows"
 msgstr "窗口"
 
@@ -1530,17 +1530,177 @@ msgstr "y 值为 %d，但应该为 %d "
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 
-#~ msgid "Switch to workspace 1"
-#~ msgstr "切换到工作区 1"
+#: ../src/50-mutter-navigation.xml.in.h:18
+msgid "Switch to workspace 1"
+msgstr "切换到工作区 1"
 
-#~ msgid "Switch to workspace 2"
-#~ msgstr "切换到工作区 2"
+#: ../src/50-mutter-navigation.xml.in.h:19
+msgid "Switch to workspace 2"
+msgstr "切换到工作区 2"
 
-#~ msgid "Switch to workspace 3"
-#~ msgstr "切换到工作区 3"
+#: ../src/50-mutter-navigation.xml.in.h:20
+msgid "Switch to workspace 3"
+msgstr "切换到工作区 3"
 
-#~ msgid "Switch to workspace 4"
-#~ msgstr "切换到工作区 4"
+#: ../src/50-mutter-navigation.xml.in.h:21
+msgid "Switch to workspace 4"
+msgstr "切换到工作区 4"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+msgid "Activate the window menu"
+msgstr "激活窗口菜单"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+msgid "Toggle fullscreen mode"
+msgstr "切换全屏模式"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+msgid "Toggle maximization state"
+msgstr "切换最大化状态"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+msgid "Maximize window"
+msgstr "最大化窗口"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+msgid "Restore window"
+msgstr "恢复窗口"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+msgid "Toggle shaded state"
+msgstr "切换卷起状态"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+msgid "Minimize window"
+msgstr "最小化窗口"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+msgid "Close window"
+msgstr "关闭窗口"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+msgid "Move window"
+msgstr "移动窗口"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+msgid "Resize window"
+msgstr "改变窗口大小"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Move window to workspace 1"
+msgstr "将窗口移到工作区 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Move window to workspace 2"
+msgstr "将窗口移到工作区 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Move window to workspace 3"
+msgstr "将窗口移到工作区 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Move window to workspace 4"
+msgstr "将窗口移到工作区 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the left"
+msgstr "将窗口左移一个工作区"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace to the right"
+msgstr "将窗口右移一个工作区"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace up"
+msgstr "将窗口上移一个工作区"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+msgid "Move window one workspace down"
+msgstr "将窗口下移一个工作区"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+msgid "Raise window above other windows"
+msgstr "将窗口提升到其它窗口之上"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Lower window below other windows"
+msgstr "将窗口降低到其它窗口之下"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+msgid "Maximize window vertically"
+msgstr "垂直最大化窗口"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+msgid "Maximize window horizontally"
+msgstr "水平最大化窗口"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Hide all normal windows"
+msgstr "隐藏所有正常窗口"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+msgid "Move to workspace above"
+msgstr "移动到上层工作区"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+msgid "Move to workspace below"
+msgstr "移动到下层工作区"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move to workspace left"
+msgstr "移动到左侧工作区"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move to workspace right"
+msgstr "移动到右侧工作区"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Navigation"
+msgstr "导航"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch applications"
+msgstr "切换应用程序"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Switch system controls"
+msgstr "切换系统控制"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+msgid "Switch system controls directly"
+msgstr "直接切换系统控制"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Switch windows directly"
+msgstr "直接切换窗口"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Switch windows of an app directly"
+msgstr "在应用程序窗口间直接移动焦点"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Switch windows of an application"
+msgstr "在应用程序的窗口之间切换窗口"
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "Show the activities overview"
+msgstr "显示活动大纲"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "显示运行命令提示符"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "System"
+msgstr "系统"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Raise window if covered, otherwise lower it"
+msgstr "如果窗口被其他窗口遮盖，则提升它，否则降低它"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Toggle window on all workspaces or one"
+msgstr "在位于所有或仅一个工作区的窗口间切换"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "切换到工作区 5"
@@ -1636,53 +1796,11 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ msgid "Run a terminal"
 #~ msgstr "运行终端"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "激活窗口菜单"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "切换全屏模式"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "切换最大化状态"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr "在窗口是否永远可见于其它窗口之上间切换"
 
-#~ msgid "Maximize window"
-#~ msgstr "最大化窗口"
-
-#~ msgid "Restore window"
-#~ msgstr "恢复窗口"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "切换卷起状态"
-
-#~ msgid "Minimize window"
-#~ msgstr "最小化窗口"
-
-#~ msgid "Close window"
-#~ msgstr "关闭窗口"
-
-#~ msgid "Move window"
-#~ msgstr "移动窗口"
-
-#~ msgid "Resize window"
-#~ msgstr "改变窗口大小"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr "在窗口位于所有或仅一个工作区间切换"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "将窗口移到工作区 1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "将窗口移到工作区 2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "将窗口移到工作区 3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "将窗口移到工作区 4"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "将窗口移到工作区 5"
@@ -1708,32 +1826,8 @@ msgstr "在 %2$g 秒内处理了 %1$d 个坐标表达式(平均 %3$g 秒)\n"
 #~ msgid "Move window to workspace 12"
 #~ msgstr "将窗口移到工作区 12"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "将窗口左移一个工作区"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "将窗口右移一个工作区"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "将窗口上移一个工作区"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "将窗口下移一个工作区"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr "如果窗口被其他窗口遮盖，则提升它，否则降低它"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "将窗口提升到其它窗口之上"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "将窗口降低到其它窗口之下"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "垂直最大化窗口"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "水平最大化窗口"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "将窗口移到西北(左上)角"

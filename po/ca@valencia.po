@@ -1612,6 +1612,221 @@ msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d expressions de coordenades analitzades en %g segons (%g segons de mitja)\n"
 
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "Canvia a l'espai de treball 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "Canvia a l'espai de treball 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "Canvia a l'espai de treball 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "Canvia a l'espai de treball 4"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "Activa el menú de finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "Si s'utilitza el mode a pantalla completa"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "Canvia l'estat de maximització"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window"
+msgstr "Maximitza la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Restore window"
+msgstr "Restaura la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "Canvia l'estat d'ombrejat"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Minimize window"
+msgstr "Minimitza la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Close window"
+msgstr "Tanca la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Move window"
+msgstr "Mou la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr "Redimensiona la finestra"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr "Mou la finestra a l'espai de treball 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr "Mou la finestra a l'espai de treball 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr "Mou la finestra a l'espai de treball 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr "Mou la finestra a l'espai de treball 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "Mou la finestra un espai de treball a l'esquerra"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr "Mou la finestra un espai de treball a la dreta"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr "Mou la finestra un espai de treball amunt"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "Mou la finestra un espai de treball avall"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "Alça una finestra per damunt de les altres"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "Baixa la finestra sota les altres"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "Maximitza la finestra verticalment"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "Maximitza la finestra horitzontalment"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Navigation"
+msgstr "Navegació"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Switch applications"
+msgstr "Commutació d'aplicacions"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "Commutació de les finestres d'una aplicació"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Switch system controls"
+msgstr "Commutació de controls del sistema"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "Commutació immediata de finestres"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "Commutació immediata de les finestres d'una aplicació"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "Commutació directa dels controls del sistema"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "Oculta totes les finestres normals"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "Mou a l'espai de treball de l'esquerra"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "Mou a l'espai de treball de la dreta"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "Mou a l'espai de treball de sobre"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "Mou a l'espai de treball de sota"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "System"
+msgstr "Sistema"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "Mostra l'indicador d'execució d'aplicacions"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "Mostra el resum d'activitats"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr "Commuta la funció que fa que la finestra estiga en tots els espais de "
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Alça una finestra coberta per una altra, o sinó baixa-la"
+
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "Llista separada per comes de connectors de composició"
 
@@ -1657,18 +1872,6 @@ msgstr ""
 
 #~ msgid "Put Window On Only One Workspace"
 #~ msgstr "Posa la finestra només a un espai de treball"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Canvia a l'espai de treball 1"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Canvia a l'espai de treball 2"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Canvia a l'espai de treball 3"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Canvia a l'espai de treball 4"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "Canvia a l'espai de treball 5"
@@ -1766,57 +1969,15 @@ msgstr ""
 #~ msgid "Run a terminal"
 #~ msgstr "Executa un terminal"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "Activa el menú de finestra"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Si s'utilitza el mode a pantalla completa"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Canvia l'estat de maximització"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr ""
 #~ "Commuta la funció que fa que una finestra sempre serà visible per sobre "
 #~ "de les altres"
 
-#~ msgid "Maximize window"
-#~ msgstr "Maximitza la finestra"
-
-#~ msgid "Restore window"
-#~ msgstr "Restaura la finestra"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Canvia l'estat d'ombrejat"
-
-#~ msgid "Minimize window"
-#~ msgstr "Minimitza la finestra"
-
-#~ msgid "Close window"
-#~ msgstr "Tanca la finestra"
-
-#~ msgid "Move window"
-#~ msgstr "Mou la finestra"
-
-#~ msgid "Resize window"
-#~ msgstr "Redimensiona la finestra"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr ""
 #~ "Commuta la funció que fa que la finestra estigui en tots els espais de "
 #~ "treball o només en un"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Mou la finestra a l'espai de treball 1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Mou la finestra a l'espai de treball 2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Mou la finestra a l'espai de treball 3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Mou la finestra a l'espai de treball 4"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "Mou la finestra a l'espai de treball 5"
@@ -1842,32 +2003,8 @@ msgstr ""
 #~ msgid "Move window to workspace 12"
 #~ msgstr "Mou la finestra a l'espai de treball 12"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Mou la finestra un espai de treball a l'esquerra"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Mou la finestra un espai de treball a la dreta"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Mou la finestra un espai de treball amunt"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Mou la finestra un espai de treball avall"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr "Alça una finestra coberta per una altra, o sinó la baixa"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Alça una finestra per damunt de les altres"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Baixa la finestra sota les altres"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Maximitza la finestra verticalment"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Maximitza la finestra horitzontalment"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "Mou la finestra a la cantonada nord-oest (part superior esquerra)"

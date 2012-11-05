@@ -1383,27 +1383,256 @@ msgstr "yの値は %d でした (期待値: %d)"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d個の座標式を %g秒 (平均 %g秒) で解析しました\n"
 
+# #-#-#-#-#  ja.po (mutter master)  #-#-#-#-#
+# ｢キーボード・ショートカット｣のアプレット (gnome-control-center) で表示するメッセージ
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "ワークスペース 1 へ切り替える"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "ワークスペース 2 へ切り替える"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "ワークスペース 3 へ切り替える"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "ワークスペース 4 へ切り替える"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Activate the window menu"
+msgstr ""
+"#-#-#-#-#  ja.po (mutter master)  #-#-#-#-#\n"
+"ウィンドウ・メニューを開く\n"
+"#-#-#-#-#  ja.po (mutter master)  #-#-#-#-#\n"
+"ウィンドウ・メニューをアクティブにする"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr ""
+"#-#-#-#-#  ja.po (mutter master)  #-#-#-#-#\n"
+"フル・スクリーン表示を切り替える\n"
+"#-#-#-#-#  ja.po (mutter master)  #-#-#-#-#\n"
+"フルスクリーンモードを切り替える"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "最大化/最小化の状態を切り替える"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window"
+msgstr "ウィンドウを最大化する"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Restore window"
+msgstr ""
+"#-#-#-#-#  ja.po (mutter master)  #-#-#-#-#\n"
+"ウィンドウの状態を元に戻す\n"
+"#-#-#-#-#  ja.po (mutter master)  #-#-#-#-#\n"
+"ウィンドウを戻す"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "シェードの状態を切り替える"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Minimize window"
+msgstr "ウィンドウを最小化する"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Close window"
+msgstr "ウィンドウを閉じる"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Move window"
+msgstr "ウィンドウを移動する"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr "ウィンドウ・サイズを変更する"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr "ウィンドウをワークスペース 1 へ移動する"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr "ウィンドウをワークスペース 2 へ移動する"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr "ウィンドウをワークスペース 3 へ移動する"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr "ウィンドウをワークスペース 4 へ移動する"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "ウィンドウを左側のワークスペースへ移動する"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr "ウィンドウを右側のワークスペースへ移動する"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr "ウィンドウを上側のワークスペースへ移動する"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "ウィンドウを下側のワークスペースへ移動する"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr ""
+"#-#-#-#-#  ja.po (mutter master)  #-#-#-#-#\n"
+"ウィンドウを前面に表示する\n"
+"#-#-#-#-#  ja.po (mutter master)  #-#-#-#-#\n"
+"ウィンドウを最前面に移動する"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr ""
+"#-#-#-#-#  ja.po (mutter master)  #-#-#-#-#\n"
+"ウィンドウを一番奥に移動する\n"
+"#-#-#-#-#  ja.po (mutter master)  #-#-#-#-#\n"
+"ウィンドウを最背面に移動する"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "ウィンドウを垂直方向に最大化する"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "ウィンドウを水平方向に最大化する"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Navigation"
+msgstr "ナビゲーション"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Switch applications"
+msgstr "アプリケーションを切り替える"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "ひとつのアプリケーション内のウィンドウを切り替える"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Switch system controls"
+msgstr "システムのコントロールを切り替える"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "ウィンドウを直接切り替える"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "ひとつのアプリケーション内のウィンドウを直接切り替える"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "システムのコントロールを直接切り替える"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "すべての通常のウィンドウを隠す"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "左側のワークスペースへ移動する"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "右側のワークスペースへ移動する"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "上側のワークスペースへ移動する"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "下側のワークスペースへ移動する"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "System"
+msgstr "システム"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "コマンド実行プロンプトを表示する"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "アクティビティを表示する"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr "ウィンドウをすべてのワークスペースに固定するかどうかを切り替える"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr "ウィンドウが覆われていれば最前面に、そうでなければ最背面に移動する"
+
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "画像の合成プラグインを指定する (複数ある時はカンマ ',' で区切る)"
 
 #~ msgid "Live Hidden Windows"
 #~ msgstr "表示されていないウィンドウをそのままにしておくかどうか"
 
-#~ msgid "Determines whether hidden windows (i.e., minimized windows and windows on other workspaces than the current one) should be kept alive."
-#~ msgstr "現在表示されていないウィンドウ (すなわち、最小化したウィンドウや現在のワークスペースにはないウィンドウなど) を (表示させずに) そのままの状態にしておくかどうかです。"
-
-# ｢キーボード・ショートカット｣のアプレット (gnome-control-center) で表示するメッセージ
-#~ msgid "Switch to workspace 1"
-#~ msgstr "ワークスペース 1 へ切り替える"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "ワークスペース 2 へ切り替える"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "ワークスペース 3 へ切り替える"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "ワークスペース 4 へ切り替える"
+#~ msgid ""
+#~ "Determines whether hidden windows (i.e., minimized windows and windows on "
+#~ "other workspaces than the current one) should be kept alive."
+#~ msgstr ""
+#~ "現在表示されていないウィンドウ (すなわち、最小化したウィンドウや現在のワー"
+#~ "クスペースにはないウィンドウなど) を (表示させずに) そのままの状態にしてお"
+#~ "くかどうかです。"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "ワークスペース 5 へ切り替える"
@@ -1498,53 +1727,11 @@ msgstr "%d個の座標式を %g秒 (平均 %g秒) で解析しました\n"
 #~ msgid "Run a terminal"
 #~ msgstr "端末を起動する"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "ウィンドウ・メニューを開く"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "フル・スクリーン表示を切り替える"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "最大化/最小化の状態を切り替える"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr "ウィンドウを常に前面に表示するかどうかの設定を切り替える"
 
-#~ msgid "Maximize window"
-#~ msgstr "ウィンドウを最大化する"
-
-#~ msgid "Restore window"
-#~ msgstr "ウィンドウの状態を元に戻す"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "シェードの状態を切り替える"
-
-#~ msgid "Minimize window"
-#~ msgstr "ウィンドウを最小化する"
-
-#~ msgid "Close window"
-#~ msgstr "ウィンドウを閉じる"
-
-#~ msgid "Move window"
-#~ msgstr "ウィンドウを移動する"
-
-#~ msgid "Resize window"
-#~ msgstr "ウィンドウ・サイズを変更する"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr "ウィンドウを全てのワークスペースに配置するか切り替える"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "ウィンドウをワークスペース 1 へ移動する"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "ウィンドウをワークスペース 2 へ移動する"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "ウィンドウをワークスペース 3 へ移動する"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "ウィンドウをワークスペース 4 へ移動する"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "ウィンドウをワークスペース 5 へ移動する"
@@ -1570,32 +1757,8 @@ msgstr "%d個の座標式を %g秒 (平均 %g秒) で解析しました\n"
 #~ msgid "Move window to workspace 12"
 #~ msgstr "ウィンドウをワークスペース 12 へ移動する"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "ウィンドウを左側のワークスペースへ移動する"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "ウィンドウを右側のワークスペースへ移動する"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "ウィンドウを上側のワークスペースへ移動する"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "ウィンドウを下側のワークスペースへ移動する"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr "隠れているウィンドウを前面に表示する"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "ウィンドウを前面に表示する"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "ウィンドウを一番奥に移動する"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "ウィンドウを垂直方向に最大化する"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "ウィンドウを水平方向に最大化する"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "ウィンドウを画面の左上隅へ移動する"

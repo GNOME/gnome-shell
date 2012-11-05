@@ -20,8 +20,7 @@ msgstr ""
 "X-Poedit-Country: IRAN, ISLAMIC REPUBLIC OF\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
-#| msgid "/_Windows"
+#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
 msgid "Windows"
 msgstr "پنجره‌ها"
 
@@ -1486,6 +1485,291 @@ msgstr "مقدار y %Id بود، %Id انتظار می‌رفت"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%Id عبارت مختصاتی در %Ig ثانیه تجزیه شد (متوسط %Ig ثانیه)\n"
 
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Close window"
+msgstr "بستن پنجره"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "پایین بردن پنجره زیر پنجره‌های دیگر"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Maximize window"
+msgstr ""
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"حداکثر کردن پنجره\n"
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"بیشینه کردن پنجره"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "حداکثر کردن افقی پنجره"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "حداکثر کردن عمودی پنجره"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Minimize window"
+msgstr ""
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"حداقل کردن پنجره\n"
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"کمینه کردن پنجره"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Move window"
+msgstr "جابه‌جایی پنجره"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr ""
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"جابه‌جایی پنجره به فضای کاری پایینی\n"
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"جابه‌جایی پنجره به فضای‌کاری پایینی"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr ""
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"جابه‌جایی پنجره به فضای کاری چپ \n"
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"جابه‌جایی پنجره به فضای‌کاری چپ "
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr ""
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"جابه‌جایی پنجره به فضای کاری راست\n"
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"جابه‌جایی پنجره به فضای‌کاری راست"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr ""
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"جابه‌جایی پنجره به فضای کاری بالایی\n"
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"جابه‌جایی پنجره به فضای‌کاری بالایی"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr ""
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"جابه‌جایی پنجره به فضای کاری ۱\n"
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"جابه‌جایی پنجره به فضای‌کاری ۱"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr ""
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"جابه‌جایی پنجره به فضای کاری ۲\n"
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"جابه‌جایی پنجره به فضای‌کاری ۲"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr ""
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"نقل‌مکان پنجره به فضای کاری ۳\n"
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"جابه‌جایی پنجره به فضای‌کاری ۳"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr ""
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"جابه‌جایی پنجره به فضای کاری ۴\n"
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"جابه‌جایی پنجره به فضای‌کاری ۴"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "پیش آوردن پنجره روی همه‌ی پنجره‌ها"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr "تغییر اندازه‌ی پنجره"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr ""
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"تعویض به فضای کاری ۱\n"
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"رفتن به فضای‌کاری ۱"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr ""
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"تعویض به فضای کاری ۲\n"
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"رفتن به فضای‌کاری ۲"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr ""
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"تعویض به فضای کاری ۳\n"
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"رفتن به فضای‌کاری ۳"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr ""
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"تعویض به فضای کاری ۴\n"
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"رفتن به فضای‌کاری ۴"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "ضامن حالت تمام صفحه"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr ""
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"ضامن همیشه در وضیعت حداکثر\n"
+"#-#-#-#-#  fa.po (metacity HEAD)  #-#-#-#-#\n"
+"ضامن همیشه در وضعیت حداکثر"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "ضامن وضعیت سایه خورده"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+#| msgid "Hide all normal windows and set focus to the desktop"
+msgid "Hide all normal windows"
+msgstr "مخفی کردن همه‌ی پنجره‌های معمول"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+#| msgid "Move to Workspace _Left"
+msgid "Move to workspace above"
+msgstr "جابه‌جایی به فضای‌کاری _چپ"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+#| msgid "Move to Workspace _Down"
+msgid "Move to workspace below"
+msgstr "جابه‌جایی به فضای‌کاری پایین"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+#| msgid "Move to Workspace _Left"
+msgid "Move to workspace left"
+msgstr "جابه‌جایی به فضای‌کاری سمت چپ"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+#| msgid "Move to Workspace R_ight"
+msgid "Move to workspace right"
+msgstr "جابه‌جایی به فضای‌کاری سمت راست"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Navigation"
+msgstr "جابه‌جایی"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch applications"
+msgstr "تعویض برنامه‌ها"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Switch system controls"
+msgstr "تعویض کنترل‌های سیستم"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "تعویض مستقیمِ کنترل‌های سیستم"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "تعویض مستیقیم پنجره‌ها"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+#| msgid "Move between windows of an application immediately"
+msgid "Switch windows of an app directly"
+msgstr "تعویض مستقیمِ پنجره‌های یک برنامه"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+#| msgid "Move between windows of an application immediately"
+msgid "Switch windows of an application"
+msgstr "تعویض پنجره‌های یک برنامه"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "نمایش نمای‌کلی فعالیت‌ها"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+#| msgid "Show the panel's main menu"
+msgid "Show the run command prompt"
+msgstr "نمایش خط فرمان اجرا"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "System"
+msgstr "سیستم"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "فعال کردن منوی پنجره"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+#| msgid "Raise window if it's covered by another window, otherwise lower it"
+msgid "Raise window if covered, otherwise lower it"
+msgstr "بالا آوردن پنجره در صورتی که پوشیده شده است، در غیر اینصورت پایین برود"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Restore window"
+msgstr "بازگرداندن پنجره"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+#| msgid "Toggle whether window is on all workspaces or just one"
+msgid "Toggle window on all workspaces or one"
+msgstr "تغییر حالت پنجره در یک یا تمام فضاهای‌کاری"
+
 #~ msgid "Failed to parse message \"%s\" from dialog process\n"
 #~ msgstr "شکست در تجزیه پیغام «%s» از پردازش محاوره\n"
 
@@ -1622,9 +1906,6 @@ msgstr "%Id عبارت مختصاتی در %Ig ثانیه تجزیه شد (مت�
 #~ "(کلیک راست) می‌شود. تغییردهنده به صورت مثلاً«&lt;Alt&gt;» یا «&lt;Super&gt;» "
 #~ "نمایش داده می‌شود."
 
-#~ msgid "Close window"
-#~ msgstr "بستن پنجره"
-
 #~ msgid "Commands to run in response to keybindings"
 #~ msgstr "فرمان‌هایی که در پاسخ به کلیدهای مقید اجرا می‌شوند"
 
@@ -1703,21 +1984,6 @@ msgstr "%Id عبارت مختصاتی در %Ig ثانیه تجزیه شد (مت�
 #~ msgstr ""
 #~ "اگر درست بود از قابلیت کاربری در قبال استفاده‌ی کمتر از منابع صرف نظر شود"
 
-#~ msgid "Lower window below other windows"
-#~ msgstr "پایین بردن پنجره زیر پنجره‌های دیگر"
-
-#~ msgid "Maximize window"
-#~ msgstr "حداکثر کردن پنجره"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "حداکثر کردن افقی پنجره"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "حداکثر کردن عمودی پنجره"
-
-#~ msgid "Minimize window"
-#~ msgstr "حداقل کردن پنجره"
-
 #~ msgid "Move backward between panels and the desktop immediately"
 #~ msgstr "جابه‌جایی آنی به عقب بین تابلو و رومیزی"
 
@@ -1739,24 +2005,6 @@ msgstr "%Id عبارت مختصاتی در %Ig ثانیه تجزیه شد (مت�
 #~ msgid "Move focus backwards between windows using popup display"
 #~ msgstr "انتقال تمرکز به عقب بین پنجره‌ها با نمایش واشو"
 
-#~ msgid "Move window"
-#~ msgstr "جابه‌جایی پنجره"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "جابه‌جایی پنجره به فضای کاری پایینی"
-
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "جابه‌جایی پنجره به فضای کاری چپ "
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "جابه‌جایی پنجره به فضای کاری راست"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "جابه‌جایی پنجره به فضای کاری بالایی"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "جابه‌جایی پنجره به فضای کاری ۱"
-
 #~ msgid "Move window to workspace 10"
 #~ msgstr "جابه‌جایی پنجره به فضای کاری ۱۰"
 
@@ -1765,15 +2013,6 @@ msgstr "%Id عبارت مختصاتی در %Ig ثانیه تجزیه شد (مت�
 
 #~ msgid "Move window to workspace 12"
 #~ msgstr "جابه‌جایی پنجره به فضای کاری ۱۲"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "جابه‌جایی پنجره به فضای کاری ۲"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "نقل‌مکان پنجره به فضای کاری ۳"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "جابه‌جایی پنجره به فضای کاری ۴"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "جابه‌جایی پنجره به فضای کاری ۵"
@@ -1803,12 +2042,6 @@ msgstr "%Id عبارت مختصاتی در %Ig ثانیه تجزیه شد (مت�
 #~ msgstr ""
 #~ "تعداد فضاهای کاری. باید بیش از صفر باشد و حداکثر مشخصی دارد (برای این که "
 #~ "اتفاقی رومیزی‌تان را با درخواست ۳۴ میلیون فضای کاری از بین نبرید)."
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "پیش آوردن پنجره روی همه‌ی پنجره‌ها"
-
-#~ msgid "Resize window"
-#~ msgstr "تغییر اندازه‌ی پنجره"
 
 #~ msgid "Run a defined command"
 #~ msgstr "اجرای یک فرمان تعریف شده"
@@ -1850,9 +2083,6 @@ msgstr "%Id عبارت مختصاتی در %Ig ثانیه تجزیه شد (مت�
 #~ "بعضی از دور زدن‌ها دورزدن کمبودهای خود قواعد جزئی هستند، بنابراین بعضی "
 #~ "وقت‌ها اشکال در حالت دور زدن بدون دستکاری قواعد قبل رفع نیست."
 
-#~ msgid "Switch to workspace 1"
-#~ msgstr "تعویض به فضای کاری ۱"
-
 #~ msgid "Switch to workspace 10"
 #~ msgstr "تعویض به فضای کاری ۱۰"
 
@@ -1861,15 +2091,6 @@ msgstr "%Id عبارت مختصاتی در %Ig ثانیه تجزیه شد (مت�
 
 #~ msgid "Switch to workspace 12"
 #~ msgstr "تعویض به فضای کاری ۱۲"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "تعویض به فضای کاری ۲"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "تعویض به فضای کاری ۳"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "تعویض به فضای کاری ۴"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "تعویض به فضای کاری ۵"
@@ -2924,15 +3145,6 @@ msgstr "%Id عبارت مختصاتی در %Ig ثانیه تجزیه شد (مت�
 
 #~ msgid "Toggle always on top state"
 #~ msgstr "ضامن همیشه در وضعیت بالایی"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "ضامن حالت تمام صفحه"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "ضامن همیشه در وضیعت حداکثر"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "ضامن وضعیت سایه خورده"
 
 #~ msgid "Toggle window on all workspaces"
 #~ msgstr "ضامن پنجره در تمام فضاهای کاری"

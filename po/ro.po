@@ -1944,6 +1944,33 @@ msgstr ""
 "Expresiile pentru coordonate %d parsate în %g secunde (o medie de %g "
 "secunde)\n"
 
+#: ../src/50-mutter-launchers.xml.in.h:1
+#, fuzzy
+msgid "Launchers"
+msgstr "Lansatori"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Navigation"
+msgstr "Navigare"
+
+#: ../src/50-mutter-screenshot.xml.in.h:1
+#, fuzzy
+#| msgid "Take a screenshot"
+msgid "Screenshots"
+msgstr "Capturi de ecran"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "System"
+msgstr "Sistem"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+#, fuzzy
+#| msgid "/_Windows"
+msgid "Windows"
+msgstr "Ferestre"
+
 #~ msgid "Window Management"
 #~ msgstr "Administrare ferestre"
 

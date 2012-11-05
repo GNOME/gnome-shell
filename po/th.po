@@ -1543,8 +1543,177 @@ msgstr "ค่าของ y เป็น %d แต่ที่คาดหว�
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "แจงค่านิพจน์พิกัดทั้งหมด %d นิพจน์ ในเวลา %g วินาที (%g วินาทีโดยเฉลี่ย)\n"
 
-#~ msgid "Switch to workspace 1"
-#~ msgstr "สลับไปพื้นที่ทำงาน 1"
+#: ../src/50-mutter-navigation.xml.in.h:17
+msgid "Switch to workspace 1"
+msgstr "สลับไปพื้นที่ทำงาน 1"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+msgid "Activate the window menu"
+msgstr "เปิดเมนูหน้าต่าง"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Toggle fullscreen mode"
+msgstr "สลับโหมดเต็มหน้าจอ"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+msgid "Toggle maximization state"
+msgstr "สลับสถานะขยายแผ่"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+msgid "Maximize window"
+msgstr "ขยายแผ่หน้าต่างเต็มพื้นโต๊ะ"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+msgid "Restore window"
+msgstr "คืนขนาดหน้าต่าง"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+msgid "Toggle shaded state"
+msgstr "ม้วน/คลี่หน้าต่าง"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+msgid "Minimize window"
+msgstr "ย่อเก็บหน้าต่าง"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+msgid "Close window"
+msgstr "ปิดหน้าต่าง"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Move window"
+msgstr "ย้ายหน้าต่าง"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+msgid "Resize window"
+msgstr "ปรับขนาดหน้าต่าง"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+msgid "Move window one workspace to the left"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านซ้าย"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the right"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านขวา"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace up"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านบน"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace down"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านล่าง"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+msgid "Raise window above other windows"
+msgstr "ยกหน้าต่างขึ้นมาไว้หน้าหน้าต่างอื่นๆ"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+msgid "Lower window below other windows"
+msgstr "ถอยหน้าต่างลงไปใว้หลังหน้าต่างอื่น"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Maximize window vertically"
+msgstr "ขยายแผ่หน้าต่างเต็มด้านสูง"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+msgid "Maximize window horizontally"
+msgstr "ขยายแผ่หน้าต่างเต็มด้านกว้าง"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Navigation"
+msgstr "ท่องย้าย"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+msgid "Move window to workspace 1"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+msgid "Move window to workspace 2"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move window to workspace 3"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move window to workspace 4"
+msgstr "ย้ายหน้าต่างไปพื้นที่ทำงาน 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Switch applications"
+msgstr "สลับโปรแกรม"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Switch windows of an application"
+msgstr "สลับหน้าต่างภายในโปรแกรม"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Switch system controls"
+msgstr "สลับส่วนควบคุมระบบ"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Switch windows directly"
+msgstr "สลับหน้าต่างโดยตรง"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Switch windows of an app directly"
+msgstr "สลับหน้าต่างภายในโปรแกรมโดยตรง"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch system controls directly"
+msgstr "สลับส่วนควบคุมระบบโดยตรง"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Hide all normal windows"
+msgstr "ซ่อนหน้าต่างทั้งหมด"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+msgid "Switch to workspace 2"
+msgstr "สลับไปพื้นที่ทำงาน 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+msgid "Switch to workspace 3"
+msgstr "สลับไปพื้นที่ทำงาน 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+msgid "Switch to workspace 4"
+msgstr "สลับไปพื้นที่ทำงาน 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+msgid "Move to workspace left"
+msgstr "ย้ายไปพื้นที่ทำงานซ้าย"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Move to workspace right"
+msgstr "ย้ายไปพื้นที่ทำงานขวา"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Move to workspace above"
+msgstr "ย้ายไปพื้นที่ทำงานซ้าย"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Move to workspace below"
+msgstr "ย้ายไปพื้นที่ทำงานล่าง"
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "System"
+msgstr "ระบบ"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "แสดงกล่องเรียกคำสั่ง"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "Show the activities overview"
+msgstr "แสดงภาพรวมของกิจกรรมต่างๆ"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+msgid "Toggle window on all workspaces or one"
+msgstr "สลับการแสดงหน้าต่างบนทุกพื้นที่ทำงานกับบนพื้นที่เดียว"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+msgid "Raise window if covered, otherwise lower it"
+msgstr "ยกหน้าต่างขึ้นถ้าถูกบัง มิฉะนั้นก็เอาลงด้านหลัง"
 
 #~ msgid "Switch to workspace on the left of the current workspace"
 #~ msgstr "สลับไปพื้นที่ทำงานด้านซ้ายของพื้นที่ทำงานปัจจุบัน"
@@ -1616,68 +1785,14 @@ msgstr "แจงค่านิพจน์พิกัดทั้งหมด
 #~ msgid "Run a terminal"
 #~ msgstr "เปิดเทอร์มินัล"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "เปิดเมนูหน้าต่าง"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "สลับโหมดเต็มหน้าจอ"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "สลับสถานะขยายแผ่"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr "สลับสถานะหน้าต่าง ว่าค้างอยู่บนสุดเหนือหน้าต่างอื่นหรือไม่"
-
-#~ msgid "Maximize window"
-#~ msgstr "ขยายแผ่หน้าต่างเต็มพื้นโต๊ะ"
-
-#~ msgid "Restore window"
-#~ msgstr "คืนขนาดหน้าต่าง"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "ม้วน/คลี่หน้าต่าง"
-
-#~ msgid "Minimize window"
-#~ msgstr "ย่อเก็บหน้าต่าง"
-
-#~ msgid "Close window"
-#~ msgstr "ปิดหน้าต่าง"
-
-#~ msgid "Move window"
-#~ msgstr "ย้ายหน้าต่าง"
-
-#~ msgid "Resize window"
-#~ msgstr "ปรับขนาดหน้าต่าง"
 
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr "สลับสถานะหน้าต่าง ว่าแสดงบนทุกพื้นที่ทำงาน หรือแค่พื้นที่ทำงานเดียว"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านซ้าย"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านขวา"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านบน"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "ย้ายหน้าต่างไปพื้นที่ทำงานด้านล่าง"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr "ยกหน้าต่างขึ้นถ้าถูกบัง มิฉะนั้นก็เอาลงด้านหลัง"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "ยกหน้าต่างขึ้นมาไว้หน้าหน้าต่างอื่นๆ"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "ถอยหน้าต่างลงไปใว้หลังหน้าต่างอื่น"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "ขยายแผ่หน้าต่างเต็มด้านสูง"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "ขยายแผ่หน้าต่างเต็มด้านกว้าง"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "ย้ายหน้าต่างไปที่มุมบนซ้ายของหน้าจอ"

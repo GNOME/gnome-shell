@@ -23,7 +23,7 @@ msgstr ""
 "X-Generator: Lokalize 1.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
 msgid "Windows"
 msgstr "కిటికీలు"
 
@@ -1619,8 +1619,309 @@ msgstr "y విలువ %d అని ఉండెడది, %d ఊహించ
 #: ../src/ui/theme-viewer.c:1352
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+msgstr "%d అనుకరించు వైఖరిలను %g సెకన్‌లలో పార్స్ చేయబడినవి(సగటుగా %g సెకన్‌లు)\n"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 1"
 msgstr ""
-"%d అనుకరించు వైఖరిలను %g సెకన్‌లలో పార్స్ చేయబడినవి(సగటుగా %g సెకన్‌లు)\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"పనిప్రదేశము 1 కి మారుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కార్యక్షేత్రం 1కు మారు"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"పనిప్రదేశము 2 కి మారుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కార్యక్షేత్రం 2కు మారు"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"పనిప్రదేశము 3 కి మారుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కార్యక్షేత్రం 3కు మారు"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"పనిప్రదేశము 4 కి మారుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కార్యక్షేత్రం 4కు మారు"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+#, fuzzy
+msgid "Activate the window menu"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండో జాబితాను క్రియాశీలపరుచుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీ మెనూను క్రియాశీలముచేయి"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"పూర్తితెర సంవిధానమును మార్చుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"పూర్తితెర రీతిని మార్చు"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"పెద్దదిగాచేయు స్థితిని మార్చుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"గరిష్ట స్థితికి మార్చుము"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Maximize window"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండోని పెద్దదిగా చేయుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీ పెద్దదిచేయి"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Restore window"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండోని పునఃస్ధాపించు\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీ పూర్వస్థితికి వుంచు"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"మూసివున్న స్ధితిని మార్చుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"షేడెడ్ స్థితిని మార్చుము"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Minimize window"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండోని చిన్నదిగా చేయుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీ చిన్నదిచేయి"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Close window"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"గవాక్షమును మూయుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీను మూసివేయి"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Move window"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండోని జరుపుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీను కదుపు"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండోని పునఃపరిమాణించుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీ పూర్వస్థితికి వుంచు"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండోని పనిప్రదేశము 1 నకు జరుపుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీను కార్యక్షేత్రం 1కు తరలించు"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండోని పనిప్రదేశము 2 నకు జరుపుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీను కార్యక్షేత్రం 2కు తరలించు"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండోని పనిప్రదేశము 3 నకు  జరుపుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీను కార్యక్షేత్రం 3కు తరలించు"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండోని పనిప్రదేశము 4 నకు  జరుపుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీను కార్యక్షేత్రం 4కు తరలించు"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండో ఒక పనిప్రదేశమును ఎడమ భాగమునకు జరుపుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీను వొక కార్యక్షేత్రం ఎడమనకు తరలించు"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండో ఒక పనిప్రదేశమును కుడి భాగమునకు జరుపుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీను వొక కార్యక్షేత్రం కుడికు తరలించు"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండో ఒక పనిప్రదేశమును పై భాగమునకు జరుపుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీను వొక కార్యక్షేత్రం పైనకు తరలించు"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండో ఒక పనిప్రదేశమును క్రింది భాగమునకు జరుపుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీను వొక కార్యక్షేత్రం క్రిందనకు తరలించు"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండోని ఇతర విండోల వెలుపలికి తీసుకొనిరమ్ము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీను యితర కిటికీలపైన వృద్దిచేయి"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండోని ఇతర విండోల లోపలికి తీసుకొనివెళ్ళుమ్ము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీను క్రింది యితర కిటికీలకు తగ్గించు"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండోని నిలువుగా పెద్దది చేయుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీను నిలువుగా పెద్దదిచేయి"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr ""
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"విండోని అడ్డంగా పెద్దది చేయుము\n"
+"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"కిటికీను అడ్డముగా పెద్దదిచేయి"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Hide all normal windows"
+msgstr "అన్ని సాధారణ కిటికీలను దాయి"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+msgid "Move to workspace above"
+msgstr "కార్యక్షేత్రం నుండి ఎడమవైపుకు కదులు"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+msgid "Move to workspace below"
+msgstr "కార్యక్షేత్రం నుండి కదులు "
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move to workspace left"
+msgstr "కార్యక్షేత్రం నుండి ఎడమవైపుకు కదులు "
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move to workspace right"
+msgstr "కార్యక్షేత్రం నుండి కుడివైపుకు కదులు "
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Navigation"
+msgstr "విహారణ"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch applications"
+msgstr "అనువర్తనాలను మార్చు"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Switch system controls"
+msgstr "వ్యవస్థ నియంత్రణల మీట"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+msgid "Switch system controls directly"
+msgstr "సూటిగా వ్యవస్థ నియంత్రణకు మీట"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Switch windows directly"
+msgstr "సూటిగా కిటికీకు మీట"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Switch windows of an app directly"
+msgstr "అనువర్తనము యొక్క కిటికీలమద్య సూటిగా కదులుము"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Switch windows of an application"
+msgstr "అనువర్తనము యొక్క కిటికీల మధ్య మారు"
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "Show the activities overview"
+msgstr "కార్యకలాపాల పై పై పరిశీలనను చూపించు"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "రన్ కమాండు మెనూను చూపించు"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "System"
+msgstr "వ్యవస్థ"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Raise window if covered, otherwise lower it"
+msgstr "ఒక కిటికీ  కప్పివుంటే దానిని వృద్దిచేయుము, లేదా దానిని తగ్గించు"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Toggle window on all workspaces or one"
+msgstr "కిటికీ అన్ని కార్యక్షేత్రంలపై వన్నా లేక వొకటి  వున్నా మార్చుము"
 
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "కామ-కూర్పుచేయు ప్లగ్ - ఇన్‌ల వేరుచేయబడిన జాబిత"
@@ -1634,18 +1935,6 @@ msgstr ""
 #~ msgstr ""
 #~ "దాగివున్న కిటికీలను (అనగా చిన్నవిగా చేసిన కిటికీలు మరియువేరొక కార్యక్షేత్రముల పైనున్న కిటికీలు) వెలికి "
 #~ "తీయవలయునోలేదో వివరిస్తుంది."
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "పనిప్రదేశము 1 కి మారుము"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "పనిప్రదేశము 2 కి మారుము"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "పనిప్రదేశము 3 కి మారుము"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "పనిప్రదేశము 4 కి మారుము"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "పనిప్రదేశము 5 కి మారుము"
@@ -1741,53 +2030,11 @@ msgstr ""
 #~ msgid "Run a terminal"
 #~ msgstr "అగ్రమును నడుపుము"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "విండో జాబితాను క్రియాశీలపరుచుము"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "పూర్తితెర సంవిధానమును మార్చుము"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "పెద్దదిగాచేయు స్థితిని మార్చుము"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr "ఒక విండో ఇతర విండోలపై గోచరించునో లేదో మార్చి చూడుము"
 
-#~ msgid "Maximize window"
-#~ msgstr "విండోని పెద్దదిగా చేయుము"
-
-#~ msgid "Restore window"
-#~ msgstr "విండోని పునఃస్ధాపించు"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "మూసివున్న స్ధితిని మార్చుము"
-
-#~ msgid "Minimize window"
-#~ msgstr "విండోని చిన్నదిగా చేయుము"
-
-#~ msgid "Close window"
-#~ msgstr "గవాక్షమును మూయుము"
-
-#~ msgid "Move window"
-#~ msgstr "విండోని జరుపుము"
-
-#~ msgid "Resize window"
-#~ msgstr "విండోని పునఃపరిమాణించుము"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr "విండో అన్ని పనిప్రదేశములపైన లేక ఒకదానిపైన మాత్రమే ఉన్నదా లేదా మార్చి చుడుము"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "విండోని పనిప్రదేశము 1 నకు జరుపుము"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "విండోని పనిప్రదేశము 2 నకు జరుపుము"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "విండోని పనిప్రదేశము 3 నకు  జరుపుము"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "విండోని పనిప్రదేశము 4 నకు  జరుపుము"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "విండోని పనిప్రదేశము 5 నకు జరుపుము"
@@ -1813,33 +2060,9 @@ msgstr ""
 #~ msgid "Move window to workspace 12"
 #~ msgstr "విండోని పనిప్రదేశము 12 నకు  జరుపుము"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "విండో ఒక పనిప్రదేశమును ఎడమ భాగమునకు జరుపుము"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "విండో ఒక పనిప్రదేశమును కుడి భాగమునకు జరుపుము"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "విండో ఒక పనిప్రదేశమును పై భాగమునకు జరుపుము"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "విండో ఒక పనిప్రదేశమును క్రింది భాగమునకు జరుపుము"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr ""
 #~ "ఒకవేళ విండోను వేరొక విండో చేత  మూసివున్నచో దానిని వెలుపలికి తీసుకురమ్ము లేనిచో లోనికి తీసుకువెళ్ళుము"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "విండోని ఇతర విండోల వెలుపలికి తీసుకొనిరమ్ము"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "విండోని ఇతర విండోల లోపలికి తీసుకొనివెళ్ళుమ్ము"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "విండోని నిలువుగా పెద్దది చేయుము"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "విండోని అడ్డంగా పెద్దది చేయుము"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "విండోని ఉత్తర-పడమర (ఎడమ పైభాగము)పు మూలలోనికి జరుపుము"

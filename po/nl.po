@@ -21,7 +21,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
 msgid "Windows"
 msgstr "Vensters"
 
@@ -1589,17 +1589,220 @@ msgstr ""
 "%d coördinatenexpressies verwerkt in %g seconden (gemiddelde van %g "
 "seconden)\n"
 
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Schakelen naar werkblad 1"
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "Schakelen naar werkblad 1"
 
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Schakelen naar werkblad 2"
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "Schakelen naar werkblad 2"
 
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Schakelen naar werkblad 3"
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "Schakelen naar werkblad 3"
 
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Schakelen naar werkblad 4"
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "Schakelen naar werkblad 4"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "Venstermenu activeren"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "Volledig scherm-modus omschakelen"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "Maximalisatie in- of uitschakelen"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Maximize window"
+msgstr "Venster maximaliseren"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Restore window"
+msgstr "Venster herstellen"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "Oprollen in- of uitschakelen"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Minimize window"
+msgstr "Venster minimaliseren"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Close window"
+msgstr "Venster sluiten"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Move window"
+msgstr "Venster verplaatsen"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr "Vensterafmetingen veranderen"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr "Venster verplaatsen naar werkblad 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr "Venster verplaatsen naar werkblad 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr "Venster verplaatsen naar werkblad 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr "Venster verplaatsen naar werkblad 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "Venster één werkblad naar links verplaatsen"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr "Venster één werkblad naar rechts verplaatsen"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr "Venster één werkblad naar boven verplaatsen"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "Venster één werkblad naar beneden verplaatsen"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "Venster voor andere vensters brengen"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "Venster achter andere vensters brengen"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "Een venster verticaal maximaliseren"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "Een venster horizontaal maximaliseren"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "Alle normale vensters verbergen"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "Verplaatsen naar werkblad hierboven"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "Verplaatsen naar werkblad hieronder"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "Verplaatsen naar werkblad links"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "Verplaatsen naar werkblad rechts"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Navigation"
+msgstr "Navigatie"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch applications"
+msgstr "Tussen toepassingen schakelen"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Switch system controls"
+msgstr "Systeemschermen wisselen"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "Direct tussen systeemschermen schakelen"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "Direct tussen vensters schakelen"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "Direct wisselen van venster binnen een toepassing"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "Wisselen van venster binnen een toepassing"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "Het activiteitenoverzicht tonen"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "Het opdrachtregelvenster tonen"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "System"
+msgstr "Systeem"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Deels bedekte vensters naar voren halen of anders naar achter halen"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr "‘Venster is op alle werkbladen zichtbaar’ in- of uitschakelen"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "Schakelen naar werkblad 5"
@@ -1699,53 +1902,11 @@ msgstr ""
 #~ msgid "Run a terminal"
 #~ msgstr "Een terminal opstarten"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "Venstermenu activeren"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Volledig scherm-modus omschakelen"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Maximalisatie in- of uitschakelen"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr "‘Altijd bovenop’-instelling omschakelen"
 
-#~ msgid "Maximize window"
-#~ msgstr "Venster maximaliseren"
-
-#~ msgid "Restore window"
-#~ msgstr "Venster herstellen"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Oprollen in- of uitschakelen"
-
-#~ msgid "Minimize window"
-#~ msgstr "Venster minimaliseren"
-
-#~ msgid "Close window"
-#~ msgstr "Venster sluiten"
-
-#~ msgid "Move window"
-#~ msgstr "Venster verplaatsen"
-
-#~ msgid "Resize window"
-#~ msgstr "Vensterafmetingen veranderen"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr "‘Venster is op alle werkbladen zichtbaar’ omschakelen"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Venster verplaatsen naar werkblad 1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Venster verplaatsen naar werkblad 2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Venster verplaatsen naar werkblad 3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Venster verplaatsen naar werkblad 4"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "Venster verplaatsen naar werkblad 5"
@@ -1771,34 +1932,10 @@ msgstr ""
 #~ msgid "Move window to workspace 12"
 #~ msgstr "Venster verplaatsen naar werkblad 12"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Venster één werkblad naar links verplaatsen"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Venster één werkblad naar rechts verplaatsen"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Venster één werkblad naar boven verplaatsen"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Venster één werkblad naar beneden verplaatsen"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr ""
 #~ "Venster naar boven halen indien overlapt door een ander venster, anders "
 #~ "naar beneden halen"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Venster voor andere vensters brengen"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Venster achter andere vensters brengen"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Een venster verticaal maximaliseren"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Een venster horizontaal maximaliseren"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "Venster verplaatsen naar de noordwest-hoek (linksboven)"

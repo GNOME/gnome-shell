@@ -28,9 +28,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
+#, fuzzy
 msgid "Windows"
-msgstr "ਵਿੰਡੋ"
+msgstr ""
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਿੰਡੋ\n"
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਿੰਡੋਜ਼"
 
 #: ../src/50-mutter-windows.xml.in.h:2
 msgid "View split on left"
@@ -1581,6 +1586,261 @@ msgstr "y ਕੀਮਤ %d ਸੀ, %d ਦੀ ਉਮੀਦ ਸੀ"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d ਕੋਆਰਡੀਨੇਟਰ ਸਮੀਕਰਨ ਪਾਰਸ %g ਸਕਿੰਟਾਂ ਵਿੱਚ ਕੀਤੀ (ਔਸਤਨ %g ਸਕਿੰਟ)\n"
 
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr ""
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਰਕਸਪੇਸ ੧ ਵਿੱਚ ਜਾਓ\n"
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਰਕਸਪੇਸ 1 ਵਿੱਚ ਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr ""
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਰਕਸਪੇਸ ੨ ਵਿੱਚ ਜਾਓ\n"
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਰਕਸਪੇਸ 2 ਵਿੱਚ ਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr ""
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਰਕਸਪੇਸ ੩ ਵਿੱਚ ਜਾਓ\n"
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਰਕਸਪੇਸ 3 ਵਿੱਚ ਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr ""
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਰਕਸਪੇਸ ੪ ਵਿੱਚ ਜਾਓ\n"
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਰਕਸਪੇਸ 4 ਵਿੱਚ ਜਾਓ"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+#, fuzzy
+msgid "Activate the window menu"
+msgstr ""
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਿੰਡੋ ਮੇਨੂ ਐਕਟੀਵੇਟ\n"
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਐਕਟਿਵ ਵਿੰਡੋ ਮੇਨੂ"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "ਪੂਰੀ ਸਕਰੀਨ ਕਰੋ"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "ਅਧਿਕਤਮ ਸਥਿਤੀ ਕਰੋ"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Maximize window"
+msgstr "ਵਿੰਡੋ ਅਧਿਕਤਮ"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Restore window"
+msgstr "ਵਿੰਡੋ ਮੁੜ-ਸਟੋਰ"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "ਰੰਗਤ ਸਥਿਤੀ ਕਰੋ"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Minimize window"
+msgstr ""
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਿੰਡੋ ਘੱਟੋ-ਘੱਟ\n"
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਿੰਡੋ ਅਲਪੀਕਰਨ"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Close window"
+msgstr "ਵਿੰਡੋ ਬੰਦ ਕਰੋ"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Move window"
+msgstr "ਵਿੰਡੋ ਹਿਲਾਓ"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr "ਵਿੰਡੋ ਮੁੜ-ਅਕਾਰ"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr ""
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੧ ਵਿੱਚ ਲਿਜਾਓ\n"
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ 1 ਵਿੱਚ ਲਿਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr ""
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੨ ਵਿੱਚ ਲਿਜਾਓ\n"
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ 2 ਵਿੱਚ ਲਿਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr ""
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੩ ਵਿੱਚ ਲਿਜਾਓ\n"
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ 3 ਵਿੱਚ ਲਿਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr ""
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੪ ਵਿੱਚ ਲਿਜਾਓ\n"
+"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+"ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ 4 ਵਿੱਚ ਲਿਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "ਵਿੰਡੋ ਨੂੰ ਇੱਕ ਵਰਕਸਪੇਸ ਖੱਬੇ ਵੱਲ ਲਿਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr "ਵਿੰਡੋ ਨੂੰ ਇੱਕ ਵਰਕਸਪੇਸ ਸੱਜੇ ਵੱਲ ਲਿਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr "ਵਿੰਡੋ ਨੂੰ ਇੱਕ ਵਰਕਸਪੇਸ ਉੱਤੇ ਲਿਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "ਵਿੰਡੋ ਨੂੰ ਇੱਕ ਵਰਕਸਪੇਸ ਹੇਠਾਂ ਲਿਜਾਓ"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "ਹੋਰ ਵਿੰਡੋ ਤੋਂ ਉੱਪਰਲੀ ਵਿੰਡੋ ਉਠਾਓ"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "ਹੋਰ ਵਿੰਡੋ ਹੇਠਾਂ ਥੱਲੇ ਵਾਲੀ ਵਿੰਡੋ"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "ਵਿੰਡੋ ਲੰਬਕਾਰੀ ਅਧਿਕਤਮ"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "ਵਿੰਡੋ ਖਿਤਿਜੀ ਅਧਿਕਤਮ"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "ਸਭ ਸਧਾਰਨ ਵਿੰਡੋਜ਼ ਓਹਲੇ ਕਰੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "ਉੱਤੇ ਵਰਕਸਪੇਸ 'ਚ ਭੇਜੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "ਹੇਠਾਂ ਵਰਕਸਪੇਸ 'ਚ ਭੇਜੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "ਖੱਬੇ ਵਰਕਸਪੇਸ 'ਚ ਭੇਜੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "ਸੱਜੇ ਵਰਕਸਪੇਸ 'ਚ ਭੇਜੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Navigation"
+msgstr "ਨੇਵੀਗੇਸ਼ਨ"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch applications"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ ਬਦਲੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Switch system controls"
+msgstr "ਸਿਸਟਮ ਕੰਟਰੋਲ ਬਦਲੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "ਸਿਸਟਮ ਕੰਟਰੋਲ ਸਿੱਧੇ ਬਦਲੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "ਵਿੰਡੋਜ਼ ਸਿੱਧੀਆਂ ਬਦਲੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ ਦੀ ਵਿੰਡੋ ਸਿੱਧੀ ਬਦਲੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ ਦੀ ਵਿੰਡੋਜ਼ ਬਦਲੋ"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "ਸਰਗਰਮੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ ਵੇਖੋ"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "ਕਮਾਂਡ ਚਲਾਉ ਪਰੋਉਟ ਵੇਖੋ"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "System"
+msgstr "ਸਿਸਟਮ"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr "ਵਿੰਡੋ ਉਭਾਰੋ, ਜੇ ਢੱਕੀ ਹੈ, ਨਹੀਂ ਤਾਂ ਹੇਠਾਂ ਭੇਜੋ"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr "ਵਿੰਡੋ ਸਭ ਵਰਕਸਪੇਸ ਜਾਂ ਇੱਕ ਵਿੱਚ ਬਦਲੋ"
+
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "ਕਾਮਿਆਂ ਨਾਲ ਵੱਖ ਕੀਤੀ ਕੰਪੋਜ਼ਿਤਰ ਪਲੱਗਇਨ ਦੀ ਲਿਸਟ"
 
@@ -1626,18 +1886,6 @@ msgstr "%d ਕੋਆਰਡੀਨੇਟਰ ਸਮੀਕਰਨ ਪਾਰਸ %g ਸ
 
 #~ msgid "Put Window On Only One Workspace"
 #~ msgstr "ਵਿੰਡੋ ਨੂੰ ਸਿਰਫ਼ ਇੱਕ ਵਰਕਸਪੇਸ ਉੱਤੇ ਰੱਖੋ"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "ਵਰਕਸਪੇਸ ੧ ਵਿੱਚ ਜਾਓ"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "ਵਰਕਸਪੇਸ ੨ ਵਿੱਚ ਜਾਓ"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "ਵਰਕਸਪੇਸ ੩ ਵਿੱਚ ਜਾਓ"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "ਵਰਕਸਪੇਸ ੪ ਵਿੱਚ ਜਾਓ"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "ਵਰਕਸਪੇਸ ੫ ਵਿੱਚ ਜਾਓ"
@@ -1733,53 +1981,11 @@ msgstr "%d ਕੋਆਰਡੀਨੇਟਰ ਸਮੀਕਰਨ ਪਾਰਸ %g ਸ
 #~ msgid "Run a terminal"
 #~ msgstr "ਟਰਮੀਨਲ ਚਲਾਓ"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "ਵਿੰਡੋ ਮੇਨੂ ਐਕਟੀਵੇਟ"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "ਪੂਰੀ ਸਕਰੀਨ ਕਰੋ"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "ਅਧਿਕਤਮ ਸਥਿਤੀ ਕਰੋ"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr "ਬਦਲੋ ਕਿ ਕੀ ਵਿੰਡੋ ਹਮੇਸ਼ਾ ਦੂਜੀਆਂ ਵਿੰਡੋਜ਼ ਦੇ ਉੱਤੇ ਵੇਖਾਈ ਦੇਵੇ"
 
-#~ msgid "Maximize window"
-#~ msgstr "ਵਿੰਡੋ ਅਧਿਕਤਮ"
-
-#~ msgid "Restore window"
-#~ msgstr "ਵਿੰਡੋ ਮੁੜ-ਸਟੋਰ"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "ਰੰਗਤ ਸਥਿਤੀ ਕਰੋ"
-
-#~ msgid "Minimize window"
-#~ msgstr "ਵਿੰਡੋ ਘੱਟੋ-ਘੱਟ"
-
-#~ msgid "Close window"
-#~ msgstr "ਵਿੰਡੋ ਬੰਦ ਕਰੋ"
-
-#~ msgid "Move window"
-#~ msgstr "ਵਿੰਡੋ ਹਿਲਾਓ"
-
-#~ msgid "Resize window"
-#~ msgstr "ਵਿੰਡੋ ਮੁੜ-ਅਕਾਰ"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr "ਕੀ ਵਿੰਡੋ ਸਭ ਵਰਕਸਪੇਸ ਵਿੱਚ ਵੇਖਾਈ ਦੇਵੇ ਜਾਂ ਕੇਵਲ ਇੱਕ ਵਿੱਚ"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੧ ਵਿੱਚ ਲਿਜਾਓ"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੨ ਵਿੱਚ ਲਿਜਾਓ"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੩ ਵਿੱਚ ਲਿਜਾਓ"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੪ ਵਿੱਚ ਲਿਜਾਓ"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੫ ਵਿੱਚ ਲਿਜਾਓ"
@@ -1805,32 +2011,8 @@ msgstr "%d ਕੋਆਰਡੀਨੇਟਰ ਸਮੀਕਰਨ ਪਾਰਸ %g ਸ
 #~ msgid "Move window to workspace 12"
 #~ msgstr "ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੧੨ ਵਿੱਚ ਲਿਜਾਓ"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "ਵਿੰਡੋ ਨੂੰ ਇੱਕ ਵਰਕਸਪੇਸ ਖੱਬੇ ਵੱਲ ਲਿਜਾਓ"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "ਵਿੰਡੋ ਨੂੰ ਇੱਕ ਵਰਕਸਪੇਸ ਸੱਜੇ ਵੱਲ ਲਿਜਾਓ"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "ਵਿੰਡੋ ਨੂੰ ਇੱਕ ਵਰਕਸਪੇਸ ਉੱਤੇ ਲਿਜਾਓ"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "ਵਿੰਡੋ ਨੂੰ ਇੱਕ ਵਰਕਸਪੇਸ ਹੇਠਾਂ ਲਿਜਾਓ"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr "ਵਿੰਡੋ ਉਭਾਰੋ, ਜੇ ਇਹ ਹੋਰ ਵਿੰਡੋ ਨਾਲ ਢੱਕੀ ਹੈ ਜਾਂ ਇਸ ਨੂੰ ਹੇਠਾਂ ਕਰੋ"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "ਹੋਰ ਵਿੰਡੋ ਤੋਂ ਉੱਪਰਲੀ ਵਿੰਡੋ ਉਠਾਓ"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "ਹੋਰ ਵਿੰਡੋ ਹੇਠਾਂ ਥੱਲੇ ਵਾਲੀ ਵਿੰਡੋ"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "ਵਿੰਡੋ ਲੰਬਕਾਰੀ ਅਧਿਕਤਮ"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "ਵਿੰਡੋ ਖਿਤਿਜੀ ਅਧਿਕਤਮ"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "ਵਿੰਡੋ ਉੱਤਰੀ-ਪੱਛਮੀ (ਉੱਤੇ ਖੱਬੇ) ਕੋਨੇ 'ਚ ਭੇਜੋ"

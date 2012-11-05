@@ -21,7 +21,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
 msgid "Windows"
 msgstr "पटल"
 
@@ -1597,8 +1597,309 @@ msgstr "वाय किंमत होती %d, %d ही हवी होत
 #: ../src/ui/theme-viewer.c:1352
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
+msgstr "%d सेकंदात निबंधक वाक्यरचना वर्णन पार्स %g झाले (%g  सेकंदाची सरासरी)\n"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "कार्यक्षेत्र १ वर जा"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "कार्यक्षेत्र २ वर जा"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "कार्यक्षेत्र ३ वर जा"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "कार्यक्षेत्र ४ वर जा"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+#, fuzzy
+msgid "Activate the window menu"
 msgstr ""
-"%d सेकंदात निबंधक वाक्यरचना वर्णन पार्स %g झाले (%g  सेकंदाची सरासरी)\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"खिडकी मेन्यू सक्रीय करा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल मेन्यू सक्रीय करा"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "पूर्ण पडदा पध्दती टॉगल करा"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "जास्तीत जास्त स्थितीत टॉगल करा"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+#, fuzzy
+msgid "Maximize window"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"चौकट मोठी करा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल मोठी करा"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+#, fuzzy
+msgid "Restore window"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"खिडकी पूर्वस्थितीत आणा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल पूर्वस्थितीत आणा"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "सावलीतील स्थितीत टॉगल करा"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+#, fuzzy
+msgid "Minimize window"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"चौकट लहान करा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल लहान करा"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+#, fuzzy
+msgid "Close window"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"चौकट बंद करा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल बंद करा"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+#, fuzzy
+msgid "Move window"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"चौकट हलवा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल हलवा"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"चौकट पुनःआकार करा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल पुनःआकार करा"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"चौकट कार्यक्षेत्र १ वर हलवा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल कार्यक्षेत्र १ वर हलवा"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"चौकट कार्यक्षेत्र २ वर हलवा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल कार्यक्षेत्र २ वर हलवा"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"चौकट कार्यक्षेत्र ३ वर हलवा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल कार्यक्षेत्र ३ वर हलवा"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"चौकट कार्यक्षेत्र ४ वर हलवा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल कार्यक्षेत्र ४ वर हलवा"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"चौकट एक कार्यक्षेत्र डावीकडे हलवा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल एक कार्यक्षेत्र डावीकडे हलवा"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"चौकट एक कार्यक्षेत्र उजवीकडे हलवा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल एक कार्यक्षेत्र उजवीकडे हलवा"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"चौकट एक कार्यक्षेत्र वर हलवा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल एक कार्यक्षेत्र वर हलवा"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"चौकट एक कार्यक्षेत्र खाली हलवा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल एक कार्यक्षेत्र खाली हलवा"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"इतर चौकटवर चौकट प्राधान्यकृत करा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"इतर पटलवर पटल प्राधान्यकृत करा"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"इतर खिडक्यांच्या खाली तळाची चौकट\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"इतर खिडक्यांच्या खाली तळाची पटल"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"चौकट उभी मोठी करा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल उभी मोठी करा"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr ""
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"चौकट आडवी मोठी करा\n"
+"#-#-#-#-#  mr.po (metacity.gnome-2-26.mr)  #-#-#-#-#\n"
+"पटल आडवी मोठी करा"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+#, fuzzy
+#| msgid "Hide all normal windows and set focus to the desktop"
+msgid "Hide all normal windows"
+msgstr "साधारण पटलांना लपवा"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+#| msgid "Move to Workspace _Left"
+msgid "Move to workspace above"
+msgstr "वरील कार्यक्षेत्रावर जा"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+#| msgid "Move to Workspace _Down"
+msgid "Move to workspace below"
+msgstr "खालिल कार्यक्षेत्रावर जा"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+#, fuzzy
+#| msgid "Move to Workspace _Left"
+msgid "Move to workspace left"
+msgstr "डाव्या कार्यक्षेत्रावर जा"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+#, fuzzy
+#| msgid "Move to Workspace R_ight"
+msgid "Move to workspace right"
+msgstr "उजव्या कार्यक्षेत्रावर जा"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+#, fuzzy
+msgid "Navigation"
+msgstr "संचारन"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch applications"
+msgstr "ॲप्लिकेशन्स् बदला"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+#, fuzzy
+msgid "Switch system controls"
+msgstr "सिस्टम कंट्रोल्स् बदला"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "सिस्टम कंट्रोल्स् प्रत्यक्षरित्या बदला"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "पटलांना प्रत्यक्षरित्या बदला"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+#, fuzzy
+#| msgid "Move between windows of an application immediately"
+msgid "Switch windows of an app directly"
+msgstr "पटलांना ॲप्लिकेशनकरीता प्रत्यक्षरित्या बदला"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+#, fuzzy
+#| msgid "Move between windows of an application immediately"
+msgid "Switch windows of an application"
+msgstr "ॲप्लिकेशनच्या पटलांना बदला"
+
+#: ../src/50-mutter-system.xml.in.h:1
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "कार्यांचे अवलोकन दाखवा"
+
+#: ../src/50-mutter-system.xml.in.h:2
+#, fuzzy
+#| msgid "Show the panel's main menu"
+msgid "Show the run command prompt"
+msgstr "रन कमांड प्रॉम्प्ट दाखवा"
+
+#: ../src/50-mutter-system.xml.in.h:3
+#, fuzzy
+msgid "System"
+msgstr "प्रणाली"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+#, fuzzy
+#| msgid "Raise window if it's covered by another window, otherwise lower it"
+msgid "Raise window if covered, otherwise lower it"
+msgstr "कवर केले असल्यास पटल ऊंचवा, नाहीतर खाली करा"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+#, fuzzy
+#| msgid "Toggle whether window is on all workspaces or just one"
+msgid "Toggle window on all workspaces or one"
+msgstr "पटलास सर्व कार्यक्षेत्र किंवा एका कार्यक्षेत्राचा वापर करा"
 
 #~ msgid "Window Management"
 #~ msgstr "चौकट व्यवस्थापन"
@@ -1738,18 +2039,6 @@ msgstr ""
 #~ msgid "Metacity"
 #~ msgstr "Metacity"
 
-#~ msgid "Switch to workspace 1"
-#~ msgstr "कार्यक्षेत्र १ वर जा"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "कार्यक्षेत्र २ वर जा"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "कार्यक्षेत्र ३ वर जा"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "कार्यक्षेत्र ४ वर जा"
-
 #~ msgid "Switch to workspace 5"
 #~ msgstr "कार्यक्षेत्र ५ वर जा"
 
@@ -1856,57 +2145,13 @@ msgstr ""
 #~ msgid "Run a terminal"
 #~ msgstr "टर्मिनल चालवा"
 
-#~| msgid "Activate window menu"
-#~ msgid "Activate the window menu"
-#~ msgstr "खिडकी मेन्यू सक्रीय करा"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "पूर्ण पडदा पध्दती टॉगल करा"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "जास्तीत जास्त स्थितीत टॉगल करा"
-
 #~| msgid "Lower window below other windows"
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr "खिडकी इतर खिडकींवर नेहमी दृष्यास्पद होईल का त्याकरीता टॉगल करा"
 
-#~ msgid "Maximize window"
-#~ msgstr "चौकट मोठी करा"
-
-#~| msgid "Resize window"
-#~ msgid "Restore window"
-#~ msgstr "खिडकी पूर्वस्थितीत आणा"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "सावलीतील स्थितीत टॉगल करा"
-
-#~ msgid "Minimize window"
-#~ msgstr "चौकट लहान करा"
-
-#~ msgid "Close window"
-#~ msgstr "चौकट बंद करा"
-
-#~ msgid "Move window"
-#~ msgstr "चौकट हलवा"
-
-#~ msgid "Resize window"
-#~ msgstr "चौकट पुनःआकार करा"
-
 #~| msgid "Toggle window on all workspaces"
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr "सर्व किंवा फक्त एकच वर्कस्पेस वर खिडकी स्थित आहे त्याकरीता टॉगल करा"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "चौकट कार्यक्षेत्र १ वर हलवा"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "चौकट कार्यक्षेत्र २ वर हलवा"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "चौकट कार्यक्षेत्र ३ वर हलवा"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "चौकट कार्यक्षेत्र ४ वर हलवा"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "चौकट कार्यक्षेत्र ५ वर हलवा"
@@ -1932,33 +2177,9 @@ msgstr ""
 #~ msgid "Move window to workspace 12"
 #~ msgstr "चौकट कार्यक्षेत्र १२ वर हलवा"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "चौकट एक कार्यक्षेत्र डावीकडे हलवा"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "चौकट एक कार्यक्षेत्र उजवीकडे हलवा"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "चौकट एक कार्यक्षेत्र वर हलवा"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "चौकट एक कार्यक्षेत्र खाली हलवा"
-
 #~| msgid "Raise obscured window, otherwise lower"
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr "इतर खिडकी द्वारे झाकलेले असल्यावर खिडकी उंचावा, नाहीतर खाली सरकवा"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "इतर चौकटवर चौकट प्राधान्यकृत करा"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "इतर खिडक्यांच्या खाली तळाची चौकट"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "चौकट उभी मोठी करा"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "चौकट आडवी मोठी करा"
 
 #~| msgid "Move window to north-west corner"
 #~ msgid "Move window to north-west (top left) corner"

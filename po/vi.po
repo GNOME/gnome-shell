@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: LocFactoryEditor 1.8\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
 msgid "Windows"
 msgstr "Cửa sổ"
 
@@ -1581,6 +1581,198 @@ msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "phân tích \"%d\" biểu thức tọa độ trong vòng %g giây (%g giây trung bình).\n"
 
+#: ../src/50-mutter-navigation.xml.in.h:18
+msgid "Switch to workspace 1"
+msgstr "Chuyển sang vùng làm việc 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+msgid "Switch to workspace 2"
+msgstr "Chuyển sang vùng làm việc 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+msgid "Switch to workspace 3"
+msgstr "Chuyển sang vùng làm việc 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+msgid "Switch to workspace 4"
+msgstr "Chuyển sang vùng làm việc 4"
+
+#: ../src/50-mutter-windows.xml.in.h:1
+msgid "Activate the window menu"
+msgstr "Kích hoạt trình đơn cửa sổ"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr ""
+"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
+"Bật/Tắt Chế độ Toàn màn hình\n"
+"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
+"Bật/Tắt toàn màn hình"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+msgid "Toggle maximization state"
+msgstr "Bật tắt trạng thái phóng to"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+msgid "Maximize window"
+msgstr "Phóng to cửa sổ"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+msgid "Restore window"
+msgstr "Phục hồi cửa sổ"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+msgid "Toggle shaded state"
+msgstr "Bật tắt trạng thái đánh bóng"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+msgid "Minimize window"
+msgstr "Thu nhỏ cửa sổ"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+msgid "Close window"
+msgstr "Đóng cửa sổ"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+msgid "Move window"
+msgstr "Di chuyển cửa sổ"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr ""
+"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
+"Co giãn cửa sổ\n"
+"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
+"Đổi cỡ cửa sổ"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Move window to workspace 1"
+msgstr "Chuyển cửa sổ sang vùng làm việc 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Move window to workspace 2"
+msgstr "Chuyển cửa sổ sang vùng làm việc 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Move window to workspace 3"
+msgstr "Chuyển cửa sổ sang vùng làm việc 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Move window to workspace 4"
+msgstr "Chuyển cửa sổ sang vùng làm việc 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the left"
+msgstr "Chuyển cửa sổ sang vùng làm việc bên trái"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace to the right"
+msgstr "Chuyển cửa sổ sang vùng làm việc bên phải"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace up"
+msgstr "Chuyển cửa sổ lên vùng làm việc trên"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+msgid "Move window one workspace down"
+msgstr "Chuyển cửa sổ xuống vùng làm việc dưới"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr ""
+"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
+"Nâng cửa sổ lên trên các cửa sổ khác\n"
+"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
+"Nâng cửa sổ trên các cửa sổ khác"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr ""
+"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
+"Hạ thấp cửa sổ xuống dưới các cửa sổ khác\n"
+"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
+"Hạ cửa sổ dưới các cửa sổ khác"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+msgid "Maximize window vertically"
+msgstr "Phóng to cửa sổ theo chiều dọc"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+msgid "Maximize window horizontally"
+msgstr "Phóng to cửa sổ theo chiều ngang"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Hide all normal windows"
+msgstr "Ẩn mọi cửa sổ thường"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+msgid "Move to workspace above"
+msgstr "Chuyển sang vùng làm việc trên"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+msgid "Move to workspace below"
+msgstr "Chuyển sang vùng làm việc dưới"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move to workspace left"
+msgstr "Chuyển sang vùng làm việc trái"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move to workspace right"
+msgstr "Chuyển sang vùng làm việc phải"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Navigation"
+msgstr "Di chuyển"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch applications"
+msgstr "Chuyển ứng dụng"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Switch system controls"
+msgstr "Chuyển điều khiển hệ thống"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+msgid "Switch system controls directly"
+msgstr "Chuyển điều khiển hệ thống trực tiếp"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Switch windows directly"
+msgstr "Chuyển cửa sổ trực tiếp"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Switch windows of an app directly"
+msgstr "Chuyển trực tiếp cửa sổ cùng ứng dụng"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Switch windows of an application"
+msgstr "Chuyển cửa sổ cùng ứng dụng"
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "Show the activities overview"
+msgstr "Hiện tổng quan hoạt động"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "Hiện dấu nhắc dòng lệnh"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "System"
+msgstr "Hệ thống"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Nâng cửa sổ nếu bị che, không thì hạ xuống"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Toggle window on all workspaces or one"
+msgstr "Bật/Tắt cửa sổ trên mọi vùng làm việc"
+
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "Danh sách phần bổ sung tổng hợp cách nhau bằng dấu phẩy"
 
@@ -1626,18 +1818,6 @@ msgstr ""
 
 #~ msgid "Put Window On Only One Workspace"
 #~ msgstr "Đặt cửa sổ trên chỉ một vùng làm việc"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Chuyển sang vùng làm việc 1"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Chuyển sang vùng làm việc 2"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Chuyển sang vùng làm việc 3"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Chuyển sang vùng làm việc 4"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "Chuyển sang vùng làm việc 5"
@@ -1735,55 +1915,13 @@ msgstr ""
 #~ msgid "Run a terminal"
 #~ msgstr "Chạy thiết bị cuối"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "Kích hoạt trình đơn cửa sổ"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Bật/Tắt Chế độ Toàn màn hình"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Bật tắt trạng thái phóng to"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr ""
 #~ "Bật/tắt nếu một cửa sổ nào đó lúc nào cũng hiển thị phía trước các cửa sổ "
 #~ "khác"
 
-#~ msgid "Maximize window"
-#~ msgstr "Phóng to cửa sổ"
-
-#~ msgid "Restore window"
-#~ msgstr "Phục hồi cửa sổ"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Bật tắt trạng thái đánh bóng"
-
-#~ msgid "Minimize window"
-#~ msgstr "Thu nhỏ cửa sổ"
-
-#~ msgid "Close window"
-#~ msgstr "Đóng cửa sổ"
-
-#~ msgid "Move window"
-#~ msgstr "Di chuyển cửa sổ"
-
-#~ msgid "Resize window"
-#~ msgstr "Co giãn cửa sổ"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr "Bật/tắt nếu cửa sổ nằm trên mọi vùng làm việc, hay chỉ trên một"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Chuyển cửa sổ sang vùng làm việc 1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Chuyển cửa sổ sang vùng làm việc 2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Chuyển cửa sổ sang vùng làm việc 3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Chuyển cửa sổ sang vùng làm việc 4"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "Chuyển cửa sổ sang vùng làm việc 5"
@@ -1809,32 +1947,8 @@ msgstr ""
 #~ msgid "Move window to workspace 12"
 #~ msgstr "Chuyển cửa sổ sang vùng làm việc 12"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Chuyển cửa sổ sang vùng làm việc bên trái"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Chuyển cửa sổ sang vùng làm việc bên phải"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Chuyển cửa sổ lên vùng làm việc trên"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Chuyển cửa sổ xuống vùng làm việc dưới"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr "Nâng cửa sổ bị cửa sổ khác lấp,  không bị lấp thì hạ nó xuống"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Nâng cửa sổ lên trên các cửa sổ khác"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Hạ thấp cửa sổ xuống dưới các cửa sổ khác"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Phóng to cửa sổ theo chiều dọc"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Phóng to cửa sổ theo chiều ngang"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "Chuyển cửa sổ sang góc tây bắc (trái trên)"

@@ -1568,6 +1568,224 @@ msgstr ""
 "%d координатних виразів проаналізовано за %g секунд (середнє значення: %g "
 "секунд)\n"
 
+#: ../src/50-mutter-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr ""
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Перейти на робочий простір 1\n"
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Перейти до робочого простору 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr ""
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Перейти на робочий простір 2\n"
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Перейти до робочого простору 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr ""
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Перейти на робочий простір 3\n"
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Перейти до робочого простору 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr ""
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Перейти на робочий простір 4\n"
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Перейти до робочого простору 4"
+
+#: ../src/50-mutter-windows.xml.in.h:2
+msgid "Activate the window menu"
+msgstr "Активувати меню вікна"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Toggle fullscreen mode"
+msgstr "Перемикання повноекранного режиму"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr ""
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Перемикання стану розгортання\n"
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Перемикання стану розгортання вікна на весь екран"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window"
+msgstr ""
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Розгорнути вікно\n"
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Розгорнути вікно на весь екран"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+msgid "Restore window"
+msgstr "Відновити вікно"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+msgid "Toggle shaded state"
+msgstr "Перемикання стану згорнутості"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+msgid "Minimize window"
+msgstr "Згорнути вікно"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+msgid "Close window"
+msgstr "Закрити вікно"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Move window"
+msgstr "Перемістити вікно"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr ""
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Змінити розмір вікна\n"
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Змінити розміри вікна"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+msgid "Move window to workspace 1"
+msgstr "Перемістити вікно на робочий простір 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+msgid "Move window to workspace 2"
+msgstr "Перемістити вікно на робочий простір 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move window to workspace 3"
+msgstr "Перемістити вікно на робочий простір 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move window to workspace 4"
+msgstr "Перемістити вікно на робочий простір 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr ""
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Перемістити вікно у робочий простір ліворуч\n"
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Перемістити вікно на робочий простір ліворуч"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr ""
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Перемістити вікно у робочий простір праворуч\n"
+"#-#-#-#-#  uk.po (metacity)  #-#-#-#-#\n"
+"Перемістити вікно на робочий простір праворуч"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace up"
+msgstr "Перемістити вікно на робочий простір вище"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace down"
+msgstr "Перемістити вікно на робочий простір нижче"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+msgid "Raise window above other windows"
+msgstr "Підняти вікно над іншими"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+msgid "Lower window below other windows"
+msgstr "Перемістити вікна нижче усіх вікон"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Maximize window vertically"
+msgstr "Розгорнути вікно на весь екран вертикально"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+msgid "Maximize window horizontally"
+msgstr "Розгорнути вікно на весь екран горизонтально"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Navigation"
+msgstr "Навігація"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Switch applications"
+msgstr "Перемкнути програми"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Switch windows of an application"
+msgstr "Перемкнути вікна програм"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Switch system controls"
+msgstr "Перемкнути системні керування"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Switch windows directly"
+msgstr "Перемкнути вікна напряму"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Switch windows of an app directly"
+msgstr "Перемкнути вікна програм напряму"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch system controls directly"
+msgstr "Перемкнути системні керування напряму"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Hide all normal windows"
+msgstr "Сховати всі звичайні вікна"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+msgid "Move to workspace left"
+msgstr "Перейти до робочого простору ліворуч"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Move to workspace right"
+msgstr "Перейти до робочого простору праворуч"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Move to workspace above"
+msgstr "Перейти до робочого простору вище"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Move to workspace below"
+msgstr "Перейти до робочого простору знизу"
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "System"
+msgstr "Система"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "Показати запуск командного рядка"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "Show the activities overview"
+msgstr "Показати огляд активності"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+msgid "Toggle window on all workspaces or one"
+msgstr "Перемикання вікна на всі робочі простори або один"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+msgid "Raise window if covered, otherwise lower it"
+msgstr ""
+"Підняти вікно на передній план, якщо воно прикрите іншим, інакше опустити "
+
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "Список композитних додатків розділених комою"
 
@@ -1613,18 +1831,6 @@ msgstr ""
 
 #~ msgid "Put Window On Only One Workspace"
 #~ msgstr "Розміщувати вікно лише на одному робочому просторі"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Перейти на робочий простір 1"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Перейти на робочий простір 2"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Перейти на робочий простір 3"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Перейти на робочий простір 4"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "Перейти на робочий простір 5"
@@ -1723,53 +1929,11 @@ msgstr ""
 #~ msgid "Run a terminal"
 #~ msgstr "Запустити термінал"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "Активувати меню вікна"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Перемикання повноекранного режиму"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Перемикання стану розгортання"
-
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr "Перемикання видимості вікна над усіма іншими вікнами назавжди"
 
-#~ msgid "Maximize window"
-#~ msgstr "Розгорнути вікно"
-
-#~ msgid "Restore window"
-#~ msgstr "Відновити вікно"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Перемикання стану згорнутості"
-
-#~ msgid "Minimize window"
-#~ msgstr "Згорнути вікно"
-
-#~ msgid "Close window"
-#~ msgstr "Закрити вікно"
-
-#~ msgid "Move window"
-#~ msgstr "Перемістити вікно"
-
-#~ msgid "Resize window"
-#~ msgstr "Змінити розмір вікна"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr "Перемикання розміщення вікна всіх робочих просторах або одному "
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Перемістити вікно на робочий простір 1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Перемістити вікно на робочий простір 2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Перемістити вікно на робочий простір 3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Перемістити вікно на робочий простір 4"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "Перемістити вікно на робочий простір 5"
@@ -1795,32 +1959,8 @@ msgstr ""
 #~ msgid "Move window to workspace 12"
 #~ msgstr "Перемістити вікно на робочий простір 12"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Перемістити вікно у робочий простір ліворуч"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Перемістити вікно у робочий простір праворуч"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Перемістити вікно на робочий простір вище"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Перемістити вікно на робочий простір нижче"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr "Підняти вікно, якщо його покрито іншим, інакше опустити його"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Підняти вікно над іншими"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Перемістити вікна нижче усіх вікон"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Розгорнути вікно на весь екран вертикально"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Розгорнути вікно на весь екран горизонтально"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "Перемістити вікно у верхній лівий край"

@@ -27,7 +27,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1
+#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-metacity-windows.xml.in.h:17
+#: ../src/50-mutter-windows.xml.in.h:17
 msgid "Windows"
 msgstr "Vinduer"
 
@@ -1592,6 +1593,222 @@ msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d koordinatudtryk fortolket på %g sekunder (%g sekunder i gennemsnit)\n"
 
+#: ../src/50-metacity-navigation.xml.in.h:18
+#, fuzzy
+msgid "Switch to workspace 1"
+msgstr "Skift til arbejdsområde 1"
+
+#: ../src/50-metacity-navigation.xml.in.h:19
+#, fuzzy
+msgid "Switch to workspace 2"
+msgstr "Skift til arbejdsområde 2"
+
+#: ../src/50-metacity-navigation.xml.in.h:20
+#, fuzzy
+msgid "Switch to workspace 3"
+msgstr "Skift til arbejdsområde 3"
+
+#: ../src/50-metacity-navigation.xml.in.h:21
+#, fuzzy
+msgid "Switch to workspace 4"
+msgstr "Skift til arbejdsområde 4"
+
+#: ../src/50-metacity-windows.xml.in.h:1
+#, fuzzy
+msgid "Activate the window menu"
+msgstr "Aktivér vinduesmenuen"
+
+#: ../src/50-metacity-windows.xml.in.h:13
+#, fuzzy
+msgid "Toggle fullscreen mode"
+msgstr "Skift fuldskærmstilstand"
+
+#: ../src/50-metacity-windows.xml.in.h:14
+#, fuzzy
+msgid "Toggle maximization state"
+msgstr "Skift maksimeringstilstand"
+
+#: ../src/50-metacity-windows.xml.in.h:4
+#, fuzzy
+msgid "Maximize window"
+msgstr "Maksimér vindue"
+
+#: ../src/50-metacity-windows.xml.in.h:12
+#, fuzzy
+msgid "Restore window"
+msgstr "Gendan vindue"
+
+#: ../src/50-metacity-windows.xml.in.h:15
+#, fuzzy
+msgid "Toggle shaded state"
+msgstr "Skift oprullethed"
+
+#: ../src/50-metacity-windows.xml.in.h:7
+#, fuzzy
+msgid "Minimize window"
+msgstr "Minimér vindue"
+
+#: ../src/50-metacity-windows.xml.in.h:2
+#, fuzzy
+msgid "Close window"
+msgstr "Luk vindue"
+
+#: ../src/50-metacity-windows.xml.in.h:8
+#, fuzzy
+msgid "Move window"
+msgstr "Flyt vindue"
+
+#: ../src/50-metacity-windows.xml.in.h:11
+#, fuzzy
+msgid "Resize window"
+msgstr ""
+"Ændr størrelsen på vindue"
+
+#: ../src/50-metacity-navigation.xml.in.h:10
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr "Flyt vindue til arbejdsområde 1"
+
+#: ../src/50-metacity-navigation.xml.in.h:11
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr "Flyt vindue til arbejdsområde 2"
+
+#: ../src/50-metacity-navigation.xml.in.h:12
+#, fuzzy
+msgid "Move window to workspace 3"
+msgstr "Flyt vindue til arbejdsområde 3"
+
+#: ../src/50-metacity-navigation.xml.in.h:13
+#, fuzzy
+msgid "Move window to workspace 4"
+msgstr "Flyt vindue til arbejdsområde 4"
+
+#: ../src/50-metacity-navigation.xml.in.h:7
+#, fuzzy
+msgid "Move window one workspace to the left"
+msgstr "Flyt vindue et arbejdsområde til venstre"
+
+#: ../src/50-metacity-navigation.xml.in.h:8
+#, fuzzy
+msgid "Move window one workspace to the right"
+msgstr "Flyt vindue et arbejdsområde til højre"
+
+#: ../src/50-metacity-navigation.xml.in.h:9
+#, fuzzy
+msgid "Move window one workspace up"
+msgstr "Flyt vindue et arbejdsområde op"
+
+#: ../src/50-metacity-navigation.xml.in.h:6
+#, fuzzy
+msgid "Move window one workspace down"
+msgstr "Flyt vindue et arbejdsområde ned"
+
+#: ../src/50-metacity-windows.xml.in.h:9
+#, fuzzy
+msgid "Raise window above other windows"
+msgstr "Hæv vindue over andre vinduer"
+
+#: ../src/50-metacity-windows.xml.in.h:3
+#, fuzzy
+msgid "Lower window below other windows"
+msgstr "Sænk vindue under andre vinduer"
+
+#: ../src/50-metacity-windows.xml.in.h:6
+#, fuzzy
+msgid "Maximize window vertically"
+msgstr "Maksimér et vindue lodret"
+
+#: ../src/50-metacity-windows.xml.in.h:5
+#, fuzzy
+msgid "Maximize window horizontally"
+msgstr "Maksimér et vindue vandret"
+
+#: ../src/50-metacity-navigation.xml.in.h:1
+#, fuzzy
+msgid "Hide all normal windows"
+msgstr "Skjul alle normale vinduer"
+
+#: ../src/50-metacity-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move to workspace above"
+msgstr "Flyt til arbejdsområdet over"
+
+#: ../src/50-metacity-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move to workspace below"
+msgstr "Flyt til arbejdsområdet under"
+
+#: ../src/50-metacity-navigation.xml.in.h:4
+#, fuzzy
+msgid "Move to workspace left"
+msgstr "Flyt til arbejdsområdet til venstre"
+
+#: ../src/50-metacity-navigation.xml.in.h:5
+#, fuzzy
+msgid "Move to workspace right"
+msgstr "Flyt til arbejdsområdet til højre"
+
+#: ../src/50-metacity-navigation.xml.in.h:14
+#, fuzzy
+msgid "Navigation"
+msgstr "Navigation"
+
+#: ../src/50-metacity-navigation.xml.in.h:15
+#, fuzzy
+msgid "Switch applications"
+msgstr "Skift mellem programmer"
+
+#: ../src/50-metacity-navigation.xml.in.h:16
+#, fuzzy
+msgid "Switch system controls"
+msgstr "Skift mellem systemkontroller"
+
+#: ../src/50-metacity-navigation.xml.in.h:17
+#, fuzzy
+msgid "Switch system controls directly"
+msgstr "Skift direkte mellem systemkontroller"
+
+#: ../src/50-metacity-navigation.xml.in.h:22
+#, fuzzy
+msgid "Switch windows directly"
+msgstr "Skift direkte mellem vinduer"
+
+#: ../src/50-metacity-navigation.xml.in.h:23
+#, fuzzy
+msgid "Switch windows of an app directly"
+msgstr "Skift direkte mellem vinduer i et program"
+
+#: ../src/50-metacity-navigation.xml.in.h:24
+#, fuzzy
+msgid "Switch windows of an application"
+msgstr "Skift mellem vinduer i et program"
+
+#: ../src/50-metacity-system.xml.in.h:1
+#, fuzzy
+msgid "Show the activities overview"
+msgstr "Vis aktivitetsoversigten"
+
+#: ../src/50-metacity-system.xml.in.h:2
+#, fuzzy
+msgid "Show the run command prompt"
+msgstr "Vis kør-kommandoprompten"
+
+#: ../src/50-metacity-system.xml.in.h:3
+#, fuzzy
+msgid "System"
+msgstr "System"
+
+#: ../src/50-metacity-windows.xml.in.h:10
+#, fuzzy
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Hæv vindue hvis det er dækket, ellers sænk det"
+
+#: ../src/50-metacity-windows.xml.in.h:16
+#, fuzzy
+msgid "Toggle window on all workspaces or one"
+msgstr "Skift mellem visning af vindue på alle eller kun et arbejdsområde"
+
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "Kommaadskilt liste af komposit-udvidelsesmoduler"
 
@@ -1638,18 +1855,6 @@ msgstr ""
 
 #~ msgid "Put Window On Only One Workspace"
 #~ msgstr "Vis vindue på kun ét arbejdsområde"
-
-#~ msgid "Switch to workspace 1"
-#~ msgstr "Skift til arbejdsområde 1"
-
-#~ msgid "Switch to workspace 2"
-#~ msgstr "Skift til arbejdsområde 2"
-
-#~ msgid "Switch to workspace 3"
-#~ msgstr "Skift til arbejdsområde 3"
-
-#~ msgid "Switch to workspace 4"
-#~ msgstr "Skift til arbejdsområde 4"
 
 #~ msgid "Switch to workspace 5"
 #~ msgstr "Skift til arbejdsområde 5"
@@ -1745,57 +1950,15 @@ msgstr ""
 #~ msgid "Run a terminal"
 #~ msgstr "Start en terminal"
 
-#~ msgid "Activate the window menu"
-#~ msgstr "Aktivér vinduesmenuen"
-
-#~ msgid "Toggle fullscreen mode"
-#~ msgstr "Skift fuldskærmstilstand"
-
-#~ msgid "Toggle maximization state"
-#~ msgstr "Skift maksimeringstilstand"
-
 # Nogen bedre forslag?
 #~ msgid "Toggle whether a window will always be visible over other windows"
 #~ msgstr ""
 #~ "Slå til eller fra hvorvidt et vindue altid vil være synligt over andre "
 #~ "vinduer"
 
-#~ msgid "Maximize window"
-#~ msgstr "Maksimér vindue"
-
-#~ msgid "Restore window"
-#~ msgstr "Gendan vindue"
-
-#~ msgid "Toggle shaded state"
-#~ msgstr "Skift oprullethed"
-
-#~ msgid "Minimize window"
-#~ msgstr "Minimér vindue"
-
-#~ msgid "Close window"
-#~ msgstr "Luk vindue"
-
-#~ msgid "Move window"
-#~ msgstr "Flyt vindue"
-
-#~ msgid "Resize window"
-#~ msgstr "Ændre størrelsen på vindue"
-
 #~ msgid "Toggle whether window is on all workspaces or just one"
 #~ msgstr ""
 #~ "Skift mellem hvorvidt vinduet vises på alle arbejdsområder eller kun et"
-
-#~ msgid "Move window to workspace 1"
-#~ msgstr "Flyt vindue til arbejdsområde 1"
-
-#~ msgid "Move window to workspace 2"
-#~ msgstr "Flyt vindue til arbejdsområde 2"
-
-#~ msgid "Move window to workspace 3"
-#~ msgstr "Flyt vindue til arbejdsområde 3"
-
-#~ msgid "Move window to workspace 4"
-#~ msgstr "Flyt vindue til arbejdsområde 4"
 
 #~ msgid "Move window to workspace 5"
 #~ msgstr "Flyt vindue til arbejdsområde 5"
@@ -1821,32 +1984,8 @@ msgstr ""
 #~ msgid "Move window to workspace 12"
 #~ msgstr "Flyt vindue til arbejdsområde 12"
 
-#~ msgid "Move window one workspace to the left"
-#~ msgstr "Flyt vindue et arbejdsområde til venstre"
-
-#~ msgid "Move window one workspace to the right"
-#~ msgstr "Flyt vindue et arbejdsområde til højre"
-
-#~ msgid "Move window one workspace up"
-#~ msgstr "Flyt vindue et arbejdsområde op"
-
-#~ msgid "Move window one workspace down"
-#~ msgstr "Flyt vindue et arbejdsområde ned"
-
 #~ msgid "Raise window if it's covered by another window, otherwise lower it"
 #~ msgstr "Hæv vindue hvis det er dækket af et andet vindue, ellers sænk det"
-
-#~ msgid "Raise window above other windows"
-#~ msgstr "Hæv vindue over andre vinduer"
-
-#~ msgid "Lower window below other windows"
-#~ msgstr "Sænk vindue under andre vinduer"
-
-#~ msgid "Maximize window vertically"
-#~ msgstr "Maksimér et vindue lodret"
-
-#~ msgid "Maximize window horizontally"
-#~ msgstr "Maksimér et vindue vandret"
 
 #~ msgid "Move window to north-west (top left) corner"
 #~ msgstr "Flyt vindue til det nordvestlige (øverste venstre) hjørne"
