@@ -1135,7 +1135,7 @@ const AudioVideoNotification = new Lang.Class({
         this.parent(source, title, null, { customContent: true });
         this.setResident(true);
 
-        this.addButton('reject', _("Reject"));
+        this.addButton('reject', _("Decline"));
         /* translators: this is a button label (verb), not a noun */
         this.addButton('answer', _("Answer"));
 
