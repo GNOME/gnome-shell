@@ -395,10 +395,6 @@ clutter_backend_x11_post_parse (ClutterBackend  *backend,
 
   settings = clutter_settings_get_default ();
 
-  /* Cogl needs to know the Xlib display connection for
-     CoglTexturePixmapX11 */
-  cogl_xlib_set_display (backend_x11->xdpy);
-
   /* add event filter for Cogl events */
   clutter_x11_add_filter (cogl_xlib_filter, NULL);
 

@@ -167,15 +167,6 @@ _clutter_backend_gdk_post_parse (ClutterBackend  *backend,
 
   g_assert (backend_gdk->display != NULL);
 
-#ifdef GDK_WINDOWING_X11
-  if (GDK_IS_X11_DISPLAY (backend_gdk->display))
-    {
-      /* Cogl needs to know the Xlib display connection for
-	 CoglTexturePixmapX11 */
-      cogl_xlib_set_display (gdk_x11_display_get_xdisplay (backend_gdk->display));
-    }
-#endif
-
   backend_gdk->screen = gdk_display_get_default_screen (backend_gdk->display);
 
   /* add event filter for Cogl events */
