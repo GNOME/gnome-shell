@@ -86,13 +86,13 @@ void
 _cogl_xlib_query_damage_extension (void)
 {
   int damage_error;
+  Display *display;
 
   _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
 
   /* Check whether damage events are supported on this display */
-  if (!XDamageQueryExtension (cogl_xlib_get_display (),
-                              &ctxt->damage_base,
-                              &damage_error))
+  display = cogl_xlib_renderer_get_display (ctxt->display->renderer);
+  if (!XDamageQueryExtension (display, &ctxt->damage_base, &damage_error))
     ctxt->damage_base = -1;
 }
 

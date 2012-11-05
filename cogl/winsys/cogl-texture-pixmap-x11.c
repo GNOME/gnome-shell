@@ -132,7 +132,7 @@ process_damage_event (CoglTexturePixmapX11 *tex_pixmap,
 
   _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
 
-  display = cogl_xlib_get_display ();
+  display = cogl_xlib_renderer_get_display (ctxt->display->renderer);
 
   COGL_NOTE (TEXTURE_PIXMAP, "Damage event received for %p", tex_pixmap);
 
@@ -250,6 +250,8 @@ set_damage_object_internal (CoglContext *ctx,
                             Damage damage,
                             CoglTexturePixmapX11ReportLevel report_level)
 {
+  Display *display = cogl_xlib_renderer_get_display (ctx->display->renderer);
+
   if (tex_pixmap->damage)
     {
       cogl_xlib_renderer_remove_filter (ctx->display->renderer,
@@ -258,7 +260,7 @@ set_damage_object_internal (CoglContext *ctx,
 
       if (tex_pixmap->damage_owned)
         {
-          XDamageDestroy (cogl_xlib_get_display (), tex_pixmap->damage);
+          XDamageDestroy (display, tex_pixmap->damage);
           tex_pixmap->damage_owned = FALSE;
         }
     }
@@ -279,7 +281,7 @@ cogl_texture_pixmap_x11_new (CoglContext *ctxt,
                              CoglError **error)
 {
   CoglTexturePixmapX11 *tex_pixmap = g_new (CoglTexturePixmapX11, 1);
-  Display *display = cogl_xlib_get_display ();
+  Display *display = cogl_xlib_renderer_get_display (ctxt->display->renderer);
   Window pixmap_root_window;
   int pixmap_x, pixmap_y;
   unsigned int pixmap_border_width;
@@ -368,7 +370,9 @@ try_alloc_shm (CoglTexturePixmapX11 *tex_pixmap)
   XImage *dummy_image;
   Display *display;
 
-  display = cogl_xlib_get_display ();
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  display = cogl_xlib_renderer_get_display (ctx->display->renderer);
 
   if (!XShmQueryExtension (display))
     return;
@@ -486,7 +490,9 @@ _cogl_texture_pixmap_x11_update_image_texture (CoglTexturePixmapX11 *tex_pixmap)
   int offset;
   CoglError *ignore = NULL;
 
-  display = cogl_xlib_get_display ();
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  display = cogl_xlib_renderer_get_display (ctx->display->renderer);
   visual = tex_pixmap->visual;
 
   /* If the damage region is empty then there's nothing to do */
@@ -971,7 +977,11 @@ _cogl_texture_pixmap_x11_get_type (CoglTexture *tex)
 static void
 _cogl_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
 {
+  Display *display;
+
   _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
+
+  display = cogl_xlib_renderer_get_display (ctxt->display->renderer);
 
   set_damage_object_internal (ctxt, tex_pixmap, 0, 0);
 
@@ -980,7 +990,7 @@ _cogl_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
 
   if (tex_pixmap->shm_info.shmid != -1)
     {
-      XShmDetach (cogl_xlib_get_display (), &tex_pixmap->shm_info);
+      XShmDetach (display, &tex_pixmap->shm_info);
       shmdt (tex_pixmap->shm_info.shmaddr);
       shmctl (tex_pixmap->shm_info.shmid, IPC_RMID, 0);
     }
