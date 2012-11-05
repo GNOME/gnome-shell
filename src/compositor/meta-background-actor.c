@@ -659,8 +659,8 @@ meta_background_actor_add_glsl_snippet (MetaBackgroundActor *actor,
       snippet = cogl_snippet_new (hook, declarations, code);
     }
 
-  if (hook == COGL_SNIPPET_HOOK_VERTEX ||
-      hook == COGL_SNIPPET_HOOK_FRAGMENT)
+  if (hook == META_SNIPPET_HOOK_VERTEX ||
+      hook == META_SNIPPET_HOOK_FRAGMENT)
     cogl_pipeline_add_snippet (priv->pipeline, snippet);
   else
     cogl_pipeline_add_layer_snippet (priv->pipeline, 0, snippet);
