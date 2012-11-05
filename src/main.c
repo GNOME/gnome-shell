@@ -38,7 +38,7 @@ extern GType gnome_shell_plugin_get_type (void);
 #define OVERRIDES_SCHEMA "org.gnome.shell.overrides"
 
 #define WM_NAME "GNOME Shell"
-#define GNOME_WM_KEYBINDINGS "Metacity,Mutter,GNOME Shell"
+#define GNOME_WM_KEYBINDINGS "Mutter,GNOME Shell"
 
 static gboolean is_gdm_mode = FALSE;
 static char *session_mode = NULL;
