@@ -527,7 +527,9 @@ const NotificationDaemon = new Lang.Class({
 
         notification.update(summary, body, { gicon: gicon,
                                              bannerMarkup: true,
-                                             clear: true });
+                                             clear: true,
+                                             soundFile: hints['sound-file'],
+                                             soundName: hints['sound-name'] });
         notification.setImage(image);
 
         if (actions.length) {
@@ -582,7 +584,7 @@ const NotificationDaemon = new Lang.Class({
             // 'icon-multi',
             'icon-static',
             'persistence',
-            // 'sound',
+            'sound',
         ];
     },
 

@@ -331,6 +331,10 @@ Signals.addSignalMethods(NotificationPolicy.prototype);
 // the content and the action area of the notification will be cleared.
 // The content area is also always cleared if 'customContent' is false
 // because it might contain the @banner that didn't fit in the banner mode.
+//
+// If @params contains 'soundName' or 'soundFile', the corresponding
+// event sound is played when the notification is shown (if the policy for
+// @source allows playing sounds).
 const Notification = new Lang.Class({
     Name: 'Notification',
 
@@ -360,6 +364,9 @@ const Notification = new Lang.Class({
         this._spacing = 0;
         this._scrollPolicy = Gtk.PolicyType.AUTOMATIC;
         this._imageBin = null;
+        this._soundName = null;
+        this._soundFile = null;
+        this._soundPlayed = false;
 
         source.connect('destroy', Lang.bind(this,
             function (source, reason) {
@@ -426,7 +433,9 @@ const Notification = new Lang.Class({
                                         titleMarkup: false,
                                         bannerMarkup: false,
                                         bodyMarkup: false,
-                                        clear: false });
+                                        clear: false,
+                                        soundName: null,
+                                        soundFile: null });
 
         this._customContent = params.customContent;
 
@@ -524,6 +533,14 @@ const Notification = new Lang.Class({
 
         if (params.body)
             this.addBody(params.body, params.bodyMarkup);
+
+        if (this._soundName != params.soundName ||
+            this._soundFile != params.soundFile) {
+            this._soundName = params.soundName;
+            this._soundFile = params.soundFile;
+            this._soundPlayed = false;
+        }
+
         this.updated();
     },
 
@@ -884,6 +901,38 @@ const Notification = new Lang.Class({
                (!this._titleFitsInBannerMode && !this._table.has_style_class_name('multi-line-notification'));
     },
 
+    playSound: function() {
+        if (this._soundPlayed)
+            return;
+
+        if (!this.source.policy.enableSound) {
+            this._soundPlayed = true;
+            return;
+        }
+
+        if (this._soundName) {
+            if (this.source.app) {
+                let app = this.source.app;
+
+                global.play_theme_sound_full(0, this._soundName,
+                                             this.title, null,
+                                             app.get_id(), app.get_name());
+            } else {
+                global.play_theme_sound(0, this._soundName, this.title, null);
+            }
+        } else if (this._soundFile) {
+            if (this.source.app) {
+                let app = this.source.app;
+
+                global.play_sound_file_full(0, this._soundFile,
+                                            this.title, null,
+                                            app.get_id(), app.get_name());
+            } else {
+                global.play_sound_file(0, this._soundFile, this.title, null);
+            }
+        }
+    },
+
     updated: function() {
         if (this.expanded)
             this.expand(false);
@@ -1233,8 +1282,16 @@ const Source = new Lang.Class({
         notification.acknowledged = false;
         this.pushNotification(notification);
 
-        if (!this.isMuted && this.policy.showBanners)
-            this.emit('notify', notification);
+        if (!this.isMuted) {
+            // Play the sound now, if banners are disabled.
+            // Otherwise, it will be played when the notification
+            // is next shown.
+            if (this.policy.showBanners) {
+                this.emit('notify', notification);
+            } else {
+                notification.playSound();
+            }
+        }
     },
 
     destroy: function(reason) {
@@ -1998,9 +2055,10 @@ const MessageTray = new Lang.Class({
             } else {
                 // The summary box pointer is showing or shown (otherwise,
                 // this._summaryBoxPointerItem would be null)
-                // Immediately mark the notification as acknowledged, as it's
-                // not going into the queue
+                // Immediately mark the notification as acknowledged and play its
+                // sound, as it's not going into the queue
                 notification.acknowledged = true;
+                notification.playSound();
             }
 
             return;
@@ -2434,6 +2492,7 @@ const MessageTray = new Lang.Class({
 
     _updateShowingNotification: function() {
         this._notification.acknowledged = true;
+        this._notification.playSound();
 
         // We auto-expand notifications with CRITICAL urgency, or for which the relevant setting
         // is on in the control center.
