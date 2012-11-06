@@ -1,7 +1,11 @@
 # Point to our macro directory and pick up user flags from the environment
 ACLOCAL_AMFLAGS  = -I m4 ${ACLOCAL_FLAGS}
 
-SUBDIRS = data js src browser-plugin tests po man docs
+SUBDIRS = data js src browser-plugin tests po docs
+
+if ENABLE_MAN
+SUBDIRS += man
+endif
 
 EXTRA_DIST =		\
 	.project	\
@@ -21,4 +25,4 @@ distcheck-hook:
 	@echo "Checking disted files against files in git"
 	@$(srcdir)/tools/check-for-missing.py $(srcdir) $(distdir) $(DIST_EXCLUDE)
 
-DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
+DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-man
