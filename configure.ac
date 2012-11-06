@@ -210,6 +210,18 @@ AC_SUBST(TYPELIBDIR)
 
 GTK_DOC_CHECK([1.15], [--flavour no-tmpl])
 
+AC_ARG_ENABLE(man,
+              [AS_HELP_STRING([--enable-man],
+                              [generate man pages [default=yes]])],,
+              enable_man=yes)
+if test "$enable_man" != no; then
+  AC_PATH_PROG([XSLTPROC], [xsltproc])
+  if test -z "$XSLTPROC"; then
+    AC_MSG_ERROR([xsltproc is required for --enable-man])
+  fi
+fi
+AM_CONDITIONAL(ENABLE_MAN, test "$enable_man" != no)
+
 # Stay command-line compatible with the gnome-common configure option. Here
 # minimum/yes/maximum are the same, however.
 AC_ARG_ENABLE(compile_warnings,
