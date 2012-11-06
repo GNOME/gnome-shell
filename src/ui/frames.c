@@ -209,7 +209,7 @@ create_style_context (MetaFrames  *frames,
       provider = gtk_css_provider_get_named (theme_name, variant);
       gtk_style_context_add_provider (style,
                                       GTK_STYLE_PROVIDER (provider),
-                                      GTK_STYLE_PROVIDER_PRIORITY_THEME);
+                                      GTK_STYLE_PROVIDER_PRIORITY_SETTINGS);
     }
 
   g_free (theme_name);
