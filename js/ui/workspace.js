@@ -27,11 +27,8 @@ const WINDOW_CLONE_MAXIMUM_SCALE = 0.7;
 
 const LIGHTBOX_FADE_TIME = 0.1;
 const CLOSE_BUTTON_FADE_TIME = 0.1;
-const DIMMED_WINDOW_FADE_IN_TIME = 0.2;
-const DIMMED_WINDOW_FADE_OUT_TIME = 0.15;
 
 const DRAGGING_WINDOW_OPACITY = 100;
-const DIMMED_WINDOW_OPACITY = 100;
 
 const BUTTON_LAYOUT_SCHEMA = 'org.gnome.shell.overrides';
 const BUTTON_LAYOUT_KEY = 'button-layout';
@@ -193,16 +190,6 @@ const WindowClone = new Lang.Class({
 
     destroy: function () {
         this.actor.destroy();
-    },
-
-    setDimmed: function(dimmed, withAnimation) {
-        let opacity = dimmed ? DIMMED_WINDOW_OPACITY : 255;
-        let time = dimmed ? DIMMED_WINDOW_FADE_IN_TIME : DIMMED_WINDOW_FADE_OUT_TIME;
-
-        Tweener.addTween(this.actor,
-                         { opacity: opacity,
-                           time: withAnimation ? time : 0,
-                           transition: 'easeOutQuad' });
     },
 
     zoomFromOverview: function() {
@@ -1014,9 +1001,6 @@ const Workspace = new Lang.Class({
             }
         }
 
-        this._hoveredAppChangedId = Main.overview.connect('hovered-app-changed',
-                                                          Lang.bind(this, this._hoveredAppChanged));
-
         // Track window changes
         if (this.metaWorkspace) {
             this._windowAddedId = this.metaWorkspace.connect('window-added',
@@ -1362,8 +1346,6 @@ const Workspace = new Lang.Class({
 
         this._currentLayout = null;
         this.positionWindows(WindowPositionFlags.ANIMATE);
-
-        this._updateCloneDimmed(clone, Main.overview.hoveredApp, Main.overview.primaryAction, false);
     },
 
     _windowAdded : function(metaWorkspace, metaWin) {
@@ -1473,8 +1455,6 @@ const Workspace = new Lang.Class({
             this._overviewHiddenId = 0;
         }
         Tweener.removeTweens(actor);
-
-        Main.overview.disconnect(this._hoveredAppChangedId);
 
         if (this.metaWorkspace) {
             this.metaWorkspace.disconnect(this._windowAddedId);
@@ -1677,22 +1657,6 @@ const Workspace = new Lang.Class({
         if (this.metaWorkspace)
             wsIndex = this.metaWorkspace.index();
         Main.activateWindow(clone.metaWindow, time, wsIndex);
-    },
-
-    _hoveredAppChanged: function(overview, hoveredApp, primaryAction) {
-        for (let i = 0; i < this._windows.length; i++) {
-            this._updateCloneDimmed(this._windows[i], hoveredApp, primaryAction, true);
-        }
-    },
-
-    _updateCloneDimmed: function(clone, hoveredApp, primaryAction, withAnimation) {
-        let app = Shell.WindowTracker.get_default().get_window_app(clone.metaWindow);
-        let dimmed = (hoveredApp != null && app != hoveredApp);
-
-        if (primaryAction)
-            dimmed = dimmed && (hoveredApp.state != Shell.AppState.STOPPED);
-
-        clone.setDimmed(dimmed, withAnimation);
     },
 
     // Draggable target interface

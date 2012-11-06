@@ -20,7 +20,6 @@ const DASH_ANIMATION_TIME = 0.2;
 const DASH_ITEM_LABEL_SHOW_TIME = 0.15;
 const DASH_ITEM_LABEL_HIDE_TIME = 0.1;
 const DASH_ITEM_HOVER_TIMEOUT = 300;
-const HOVERED_APP_NOTIFICATION_TIMEOUT = 20;
 
 function getAppFromSource(source) {
     if (source instanceof AppDisplay.AppWellIcon) {
@@ -58,7 +57,6 @@ const DashItemContainer = new Lang.Class({
         this._childScale = 1;
         this._childOpacity = 255;
         this.animatingOut = false;
-        this.appIcon = null;
     },
 
     _allocate: function(actor, box, flags) {
@@ -377,12 +375,9 @@ const Dash = new Lang.Class({
         this._dragPlaceholder = null;
         this._dragPlaceholderPos = -1;
         this._animatingPlaceholdersCount = 0;
-        this._setHoverTimeoutId = 0;
+        this._showLabelTimeoutId = 0;
         this._resetHoverTimeoutId = 0;
-        this._userAlreadyHovering = false;
-        this._hoveredItem = null;
-        this._hoveredAppTimeoutId = 0;
-        this._primaryAction = true;
+        this._labelShowing = false;
 
         this._container = new DashActor();
         this._box = new St.BoxLayout({ vertical: true,
@@ -392,7 +387,7 @@ const Dash = new Lang.Class({
 
         this._showAppsIcon = new ShowAppsIcon();
         this._showAppsIcon.icon.setIconSize(this.iconSize);
-        this._hookUpItem(this._showAppsIcon);
+        this._hookUpLabel(this._showAppsIcon);
 
         this.showAppsButton = this._showAppsIcon.toggleButton;
 
@@ -426,19 +421,6 @@ const Dash = new Lang.Class({
                               Lang.bind(this, this._onDragCancelled));
         Main.overview.connect('window-drag-end',
                               Lang.bind(this, this._onDragEnd));
-
-        Main.overview.connect('hiding',
-                               Lang.bind(this, function() {
-                                                   this._userAlreadyHovering = false;
-
-                                                   if (this._hoveredItem)
-                                                       this._hoveredItem.hideLabel();
-
-                                                   this._setHoveredItem(null, this._primaryAction);
-                                               }));
-
-        global.stage.connect('captured-event',
-                              Lang.bind(this, this._onCapturedEvent));
     },
 
     _onDragBegin: function() {
@@ -486,13 +468,25 @@ const Dash = new Lang.Class({
         return DND.DragMotionResult.CONTINUE;
     },
 
+    _appIdListToHash: function(apps) {
+        let ids = {};
+        for (let i = 0; i < apps.length; i++)
+            ids[apps[i].get_id()] = apps[i];
+        return ids;
+    },
+
     _queueRedisplay: function () {
         Main.queueDeferredWork(this._workId);
     },
 
-    _hookUpItem: function(item) {
+    _hookUpLabel: function(item) {
         item.child.connect('notify::hover', Lang.bind(this, function() {
             this._onHover(item);
+        }));
+
+        Main.overview.connect('hiding', Lang.bind(this, function() {
+            this._labelShowing = false;
+            item.hideLabel();
         }));
     },
 
@@ -514,7 +508,6 @@ const Dash = new Lang.Class({
                         }));
 
         let item = new DashItemContainer();
-        item.appIcon = appIcon;
         item.setChild(appIcon.actor);
 
         // Override default AppWellIcon label_actor, now the
@@ -523,7 +516,7 @@ const Dash = new Lang.Class({
         item.setLabelText(app.get_name());
 
         appIcon.icon.setIconSize(this.iconSize);
-        this._hookUpItem(item);
+        this._hookUpLabel(item);
 
         return item;
     },
@@ -532,9 +525,9 @@ const Dash = new Lang.Class({
         // When the menu closes, it calls sync_hover, which means
         // that the notify::hover handler does everything we need to.
         if (opened) {
-            if (this._setHoverTimeoutId > 0) {
-                Mainloop.source_remove(this._setHoverTimeoutId);
-                this._setHoverTimeoutId = 0;
+            if (this._showLabelTimeoutId > 0) {
+                Mainloop.source_remove(this._showLabelTimeoutId);
+                this._showLabelTimeoutId = 0;
             }
 
             item.hideLabel();
@@ -543,82 +536,32 @@ const Dash = new Lang.Class({
 
     _onHover: function (item) {
         if (item.child.get_hover()) {
-            if (this._setHoverTimeoutId == 0) {
-                let timeout = this._userAlreadyHovering ? 0 : DASH_ITEM_HOVER_TIMEOUT;
-
-                this._setHoverTimeoutId = Mainloop.timeout_add(timeout,
+            if (this._showLabelTimeoutId == 0) {
+                let timeout = this._labelShowing ? 0 : DASH_ITEM_HOVER_TIMEOUT;
+                this._showLabelTimeoutId = Mainloop.timeout_add(timeout,
                     Lang.bind(this, function() {
+                        this._labelShowing = true;
                         item.showLabel();
-                        this._setHoveredItem(item, this._primaryAction);
-                        this._userAlreadyHovering = true;
                         return false;
                     }));
-
                 if (this._resetHoverTimeoutId > 0) {
                     Mainloop.source_remove(this._resetHoverTimeoutId);
                     this._resetHoverTimeoutId = 0;
                 }
             }
         } else {
-            if (this._setHoverTimeoutId > 0)
-                Mainloop.source_remove(this._setHoverTimeoutId);
-            this._setHoverTimeoutId = 0;
-
+            if (this._showLabelTimeoutId > 0)
+                Mainloop.source_remove(this._showLabelTimeoutId);
+            this._showLabelTimeoutId = 0;
             item.hideLabel();
-            this._setHoveredItem(null, this._primaryAction);
-
-            if (this._userAlreadyHovering)
+            if (this._labelShowing) {
                 this._resetHoverTimeoutId = Mainloop.timeout_add(DASH_ITEM_HOVER_TIMEOUT,
                     Lang.bind(this, function() {
-                        this._userAlreadyHovering = false;
+                        this._labelShowing = false;
                         return false;
                     }));
             }
-    },
-
-    _setHoveredItem: function(item, primaryAction) {
-        if (this._hoveredItem == item && this._primaryAction == primaryAction)
-            return;
-
-        this._hoveredItem = item;
-        this._primaryAction = primaryAction;
-
-        let app = null;
-
-        if (item != null && item.appIcon != null)
-            app = getAppFromSource(item.appIcon);
-
-        // The leave and enter events will both be dispatched before we tick into the next
-        // frame, so the _setHoverItem(null) should have no immediate effect.
-        if (this._hoveredAppTimeoutId > 0)
-            Mainloop.source_remove(this._hoveredAppTimeoutId);
-
-        this._hoveredAppTimeoutId = Mainloop.timeout_add(HOVERED_APP_NOTIFICATION_TIMEOUT,
-                                                         Lang.bind(this, function() {
-                                                             this._hoveredAppTimeoutId = 0;
-                                                             this.emit('hovered-app-changed', app, primaryAction);
-                                                             return false;
-                                                         }));
-    },
-
-    _onCapturedEvent: function(actor, event) {
-        let keyPress = (event.type() == Clutter.EventType.KEY_PRESS);
-        let keyRelease = (event.type() == Clutter.EventType.KEY_RELEASE);
-
-        if (!keyPress && !keyRelease)
-            return false;
-
-        let key = event.get_key_symbol();
-
-        if (key == Clutter.KEY_Alt_L || key == Clutter.KEY_Alt_R) {
-            let primaryAction = !keyPress;
-
-            if (this._primaryAction != primaryAction) {
-                this._setHoveredItem(this._hoveredItem, primaryAction);
-            }
         }
-
-        return false;
     },
 
     _adjustIconSize: function() {

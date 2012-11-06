@@ -20,9 +20,6 @@ let MAX_THUMBNAIL_SCALE = 1/8.;
 const RESCALE_ANIMATION_TIME = 0.2;
 const SLIDE_ANIMATION_TIME = 0.2;
 
-// the window opacity is very low as windows can be layered, contrary to the view selector
-const DIMMED_WINDOW_OPACITY = 50;
-
 // When we create workspaces by dragging, we add a "cut" into the top and
 // bottom of each workspace so that the user doesn't have to hit the
 // placeholder exactly.
@@ -59,16 +56,6 @@ const WindowClone = new Lang.Class({
         this._draggable.connect('drag-cancelled', Lang.bind(this, this._onDragCancelled));
         this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));
         this.inDrag = false;
-    },
-
-    setDimmed: function(dimmed, withAnimation) {
-        let opacity = dimmed ? DIMMED_WINDOW_OPACITY : 255;
-        let time = dimmed ? Workspace.DIMMED_WINDOW_FADE_IN_TIME : Workspace.DIMMED_WINDOW_FADE_OUT_TIME;
-
-        Tweener.addTween(this.actor,
-                         { opacity: opacity,
-                           time: withAnimation ? time : 0,
-                           transition: 'easeOutQuad' });
     },
 
     setStackAbove: function (actor) {
@@ -205,9 +192,6 @@ const WorkspaceThumbnail = new Lang.Class({
             }
         }
 
-        this._hoveredAppChangedId = Main.overview.connect('hovered-app-changed',
-                                                          Lang.bind(this, this._hoveredAppChanged));
-
         // Track window changes
         this._windowAddedId = this.metaWorkspace.connect('window-added',
                                                           Lang.bind(this, this._windowAdded));
@@ -328,8 +312,6 @@ const WorkspaceThumbnail = new Lang.Class({
             return;
 
         let clone = this._addWindowClone(win);
-
-        this._updateCloneDimmed(clone, Main.overview.hoveredApp, Main.overview.primaryAction, false);
     },
 
     _windowAdded : function(metaWorkspace, metaWin) {
@@ -386,8 +368,6 @@ const WorkspaceThumbnail = new Lang.Class({
     },
 
     _onDestroy: function(actor) {
-        Main.overview.disconnect(this._hoveredAppChangedId);
-
         this.workspaceRemoved();
 
         this._windows = [];
@@ -454,23 +434,6 @@ const WorkspaceThumbnail = new Lang.Class({
         else
             this.metaWorkspace.activate(time);
     },
-
-    _hoveredAppChanged: function(overview, hoveredApp, primaryAction) {
-        for (let i = 0; i < this._windows.length; i++) {
-            this._updateCloneDimmed(this._windows[i], hoveredApp, primaryAction, true);
-        }
-    },
-
-    _updateCloneDimmed: function(clone, hoveredApp, primaryAction, withAnimation) {
-        let app = Shell.WindowTracker.get_default().get_window_app(clone.metaWindow);
-        let dimmed = (hoveredApp != null && app != hoveredApp);
-
-        if (primaryAction)
-            dimmed = dimmed && (hoveredApp.state != Shell.AppState.STOPPED);
-
-        clone.setDimmed(dimmed, withAnimation);
-    },
-
 
     // Draggable target interface used only by ThumbnailsBox
     handleDragOverInternal : function(source, time) {

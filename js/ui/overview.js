@@ -176,8 +176,6 @@ const Overview = new Lang.Class({
         this._modal = false;            // have a modal grab
         this.animationInProgress = false;
         this._hideInProgress = false;
-        this.hoveredApp = null;
-        this.primaryAction = false;
 
         // During transitions, we raise this to the top to avoid having the overview
         // area be reactive; it causes too many issues such as double clicks on
@@ -234,9 +232,6 @@ const Overview = new Lang.Class({
         this._group.add_actor(this._searchEntry);
 
         this._dash = new Dash.Dash();
-        this._dash.connect('hovered-app-changed',
-                            Lang.bind(this, this._hoveredAppChanged));
-
         this._viewSelector = new ViewSelector.ViewSelector(this._searchEntry,
                                                            this._dash.showAppsButton);
         this._group.add_actor(this._viewSelector.actor);
@@ -559,12 +554,6 @@ const Overview = new Lang.Class({
         this._dash.actor.set_position(dashX, dashY);
         this._viewSelector.actor.set_position(viewX, viewY);
         this._viewSelector.actor.set_size(viewWidth, viewHeight);
-    },
-
-    _hoveredAppChanged: function(dash, app, primaryAction) {
-        this.hoveredApp = app;
-        this.primaryAction = primaryAction;
-        this.emit('hovered-app-changed', app, primaryAction);
     },
 
     //// Public methods ////
