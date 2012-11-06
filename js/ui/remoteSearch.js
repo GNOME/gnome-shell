@@ -38,9 +38,22 @@ function loadRemoteSearchProviders(addProviderCallback) {
     for (let i = 0; i < dataDirs.length; i++) {
         let path = GLib.build_filenamev([dataDirs[i], 'gnome-shell', 'search-providers']);
         let dir = Gio.file_new_for_path(path);
-        if (!dir.query_exists(null))
-            continue;
-        loadRemoteSearchProvidersFromDir(dir, loadedProviders, addProviderCallback);
+
+        dir.query_info_async('standard:type', Gio.FileQueryInfoFlags.NONE,
+            GLib.PRIORITY_DEFAULT, null,
+                function(object, res) {
+                    let exists = false;
+                    try {
+                        object.query_info_finish(res);
+                        exists = true;
+                    } catch (e) {
+                    }
+
+                    if (!exists)
+                        return;
+
+                    loadRemoteSearchProvidersFromDir(dir, loadedProviders, addProviderCallback);
+                });
     }
 };
 
