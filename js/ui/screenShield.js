@@ -713,12 +713,14 @@ const ScreenShield = new Lang.Class({
     _ensureUnlockDialog: function(onPrimary) {
         if (!this._dialog) {
             let constructor = Main.sessionMode.unlockDialog;
-            this._dialog = new constructor(this._lockDialogGroup);
-            if (!this._dialog) {
+            if (!constructor) {
                 // This session mode has no locking capabilities
                 this.unlock();
                 return;
             }
+
+            this._dialog = new constructor(this._lockDialogGroup);
+
 
             let time = global.get_current_time();
             this._dialog.connect('loaded', Lang.bind(this, function() {
