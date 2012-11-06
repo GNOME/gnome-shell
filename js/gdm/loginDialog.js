@@ -905,7 +905,7 @@ const LoginDialog = new Lang.Class({
         return batch.run();
     },
 
-    _showPrompt: function() {
+    _showPrompt: function(forSecret) {
         let hold = new Batch.Hold();
 
         let cancelButtonInfo = { action: Lang.bind(this, this.cancel),
@@ -914,7 +914,7 @@ const LoginDialog = new Lang.Class({
         let okButtonInfo = { action: Lang.bind(this, function() {
                                          hold.release();
                                      }),
-                             label: C_("button", "Sign In"),
+                             label: forSecret ? C_("button", "Sign In") : _("Next"),
                              default: true };
         let buttons = [];
         if (!this._disableUserList || this._verifyingUser)
@@ -975,7 +975,9 @@ const LoginDialog = new Lang.Class({
         this._promptEntry.set_text('');
         this._promptEntry.clutter_text.set_password_char(passwordChar);
 
-        let tasks = [this._showPrompt,
+        let tasks = [function() {
+                         return this._showPrompt(!!passwordChar);
+                     },
 
                      function() {
                          let _text = this._promptEntry.get_text();
