@@ -409,7 +409,7 @@ const ScreenShield = new Lang.Class({
                                          GLSL_BLUR_EFFECT_CODE,
                                          true);
         this._background = new St.Bin({ style_class: 'screen-shield-background',
-                                        child: Meta.BackgroundActor.new_for_screen(global.screen) });
+                                        child: backgroundActor });
         this._lockScreenGroup.add_actor(this._background);
         this._lockScreenGroup.add_actor(this._lockScreenContents);
 
