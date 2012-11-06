@@ -71,7 +71,7 @@ msgstr "Höhe des Akteurs"
 
 #: ../clutter/clutter-actor.c:6226
 msgid "Size"
-msgstr "Größe"
+msgstr "Größe"
 
 #: ../clutter/clutter-actor.c:6227
 msgid "The size of the actor"
