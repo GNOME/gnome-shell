@@ -74,10 +74,11 @@ const SearchResultDisplay = new Lang.Class({
 const SearchProvider = new Lang.Class({
     Name: 'SearchProvider',
 
-    _init: function(title, appInfo) {
+    _init: function(title, appInfo, isRemoteProvider) {
         this.title = title;
         this.appInfo = appInfo;
         this.searchSystem = null;
+        this.isRemoteProvider = !!isRemoteProvider;
     },
 
     /**
@@ -173,12 +174,16 @@ const SearchSystem = new Lang.Class({
 
     _init: function() {
         this._providers = [];
+        this._remoteProviders = [];
         this.reset();
     },
 
     registerProvider: function (provider) {
         provider.searchSystem = this;
         this._providers.push(provider);
+
+        if (provider.isRemoteProvider)
+            this._remoteProviders.push(provider);
     },
 
     unregisterProvider: function (provider) {
@@ -187,10 +192,18 @@ const SearchSystem = new Lang.Class({
             return;
         provider.searchSystem = null;
         this._providers.splice(index, 1);
+
+        let remoteIndex = this._remoteProviders.indexOf(provider);
+        if (remoteIndex != -1)
+            this._remoteProviders.splice(index, 1);
     },
 
     getProviders: function() {
         return this._providers;
+    },
+
+    getRemoteProviders: function() {
+        return this._remoteProviders;
     },
 
     getTerms: function() {

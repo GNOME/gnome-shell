@@ -114,7 +114,7 @@ const RemoteSearchProvider = new Lang.Class({
         this._proxy = new SearchProviderProxy(Gio.DBus.session,
             dbusName, dbusPath, Lang.bind(this, this._onProxyConstructed));
 
-        this.parent(appInfo.get_name().toUpperCase(), appInfo);
+        this.parent(appInfo.get_name().toUpperCase(), appInfo, true);
         this._cancellable = new Gio.Cancellable();
     },
 
