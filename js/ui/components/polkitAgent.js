@@ -49,7 +49,7 @@ const AuthenticationDialog = new Lang.Class({
         let messageBox = new St.BoxLayout({ style_class: 'prompt-dialog-message-layout',
                                             vertical: true });
         mainContentBox.add(messageBox,
-                           { y_align: St.Align.START });
+                           { expand: true, y_align: St.Align.START });
 
         this._subjectLabel = new St.Label({ style_class: 'prompt-dialog-headline',
                                             text: _("Authentication Required") });
