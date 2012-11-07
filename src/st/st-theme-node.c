@@ -97,7 +97,9 @@ st_theme_node_finalize (GObject *object)
 
   g_free (node->element_id);
   g_free (node->element_class);
+  g_strfreev (node->element_classes);
   g_free (node->pseudo_class);
+  g_strfreev (node->pseudo_classes);
   g_free (node->inline_style);
 
   if (node->properties)
@@ -143,6 +145,33 @@ st_theme_node_finalize (GObject *object)
   _st_theme_node_free_drawing_state (node);
 
   G_OBJECT_CLASS (st_theme_node_parent_class)->finalize (object);
+}
+
+static GStrv
+split_on_whitespace (const gchar *s)
+{
+  gchar *cur;
+  gchar *l;
+  gchar *temp;
+  GPtrArray *arr;
+
+  if (s == NULL)
+    return NULL;
+
+  arr = g_ptr_array_new ();
+  l = g_strdup (s);
+
+  cur = strtok_r (l, " \t\f\r\n", &temp);
+
+  while (cur != NULL)
+    {
+      g_ptr_array_add (arr, g_strdup (cur));
+      cur = strtok_r (NULL, " \t\f\r\n", &temp);
+    }
+
+  g_free (l);
+  g_ptr_array_add (arr, NULL);
+  return (GStrv) g_ptr_array_free (arr, FALSE);
 }
 
 /**
@@ -202,7 +231,9 @@ st_theme_node_new (StThemeContext    *context,
   node->element_type = element_type;
   node->element_id = g_strdup (element_id);
   node->element_class = g_strdup (element_class);
+  node->element_classes = split_on_whitespace (element_class);
   node->pseudo_class = g_strdup (pseudo_class);
+  node->pseudo_classes = split_on_whitespace (pseudo_class);
   node->inline_style = g_strdup (inline_style);
 
   return node;
@@ -265,12 +296,38 @@ st_theme_node_get_element_class (StThemeNode *node)
   return node->element_class;
 }
 
+/**
+ * st_theme_node_get_element_classes:
+ *
+ * Returns: (transfer none): the element's classes
+ */
+GStrv
+st_theme_node_get_element_classes (StThemeNode *node)
+{
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), NULL);
+
+  return node->element_classes;
+}
+
 const char *
 st_theme_node_get_pseudo_class (StThemeNode *node)
 {
   g_return_val_if_fail (ST_IS_THEME_NODE (node), NULL);
 
   return node->pseudo_class;
+}
+
+/**
+ * st_theme_node_get_pseudo_classes:
+ *
+ * Returns: (transfer none): the element's pseudo-classes
+ */
+GStrv
+st_theme_node_get_pseudo_classes (StThemeNode *node)
+{
+  g_return_val_if_fail (ST_IS_THEME_NODE (node), NULL);
+
+  return node->pseudo_classes;
 }
 
 /**

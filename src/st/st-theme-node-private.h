@@ -78,7 +78,9 @@ struct _StThemeNode {
   GType element_type;
   char *element_id;
   char *element_class;
+  GStrv element_classes;
   char *pseudo_class;
+  GStrv pseudo_classes;
   char *inline_style;
 
   CRDeclaration **properties;
