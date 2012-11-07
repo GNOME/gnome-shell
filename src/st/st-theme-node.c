@@ -363,14 +363,51 @@ st_theme_node_equal (StThemeNode *node_a, StThemeNode *node_b)
   g_return_val_if_fail (ST_IS_THEME_NODE (node_a), FALSE);
   g_return_val_if_fail (ST_IS_THEME_NODE (node_b), FALSE);
 
-  return node_a->parent_node == node_b->parent_node &&
-         node_a->context == node_b->context &&
-         node_a->theme == node_b->theme &&
-         node_a->element_type == node_b->element_type &&
-         !g_strcmp0 (node_a->element_id, node_b->element_id) &&
-         !g_strcmp0 (node_a->element_class, node_b->element_class) &&
-         !g_strcmp0 (node_a->pseudo_class, node_b->pseudo_class) &&
-         !g_strcmp0 (node_a->inline_style, node_b->inline_style);
+  if (node_a->parent_node != node_b->parent_node ||
+      node_a->context != node_b->context ||
+      node_a->theme != node_b->theme ||
+      node_a->element_type != node_b->element_type ||
+      g_strcmp0 (node_a->element_id, node_b->element_id) ||
+      g_strcmp0 (node_a->inline_style, node_b->inline_style))
+    return FALSE;
+
+  if ((node_a->element_classes == NULL) != (node_b->element_classes == NULL))
+    return FALSE;
+
+  if ((node_a->pseudo_classes == NULL) != (node_b->pseudo_classes == NULL))
+    return FALSE;
+
+  if (node_a->element_classes != NULL)
+    {
+      int i;
+
+      for (i = 0; ; i++)
+        {
+          if (g_strcmp0 (node_a->element_classes[i],
+                         node_b->element_classes[i]))
+            return FALSE;
+
+          if (node_a->element_classes[i] == NULL)
+            break;
+        }
+    }
+
+  if (node_a->pseudo_classes != NULL)
+    {
+      int i;
+
+      for (i = 0; ; i++)
+        {
+          if (g_strcmp0 (node_a->pseudo_classes[i],
+                         node_b->pseudo_classes[i]))
+            return FALSE;
+
+          if (node_a->pseudo_classes[i] == NULL)
+            break;
+        }
+    }
+
+  return TRUE;
 }
 
 static void
