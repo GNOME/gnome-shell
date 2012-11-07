@@ -96,9 +96,7 @@ st_theme_node_finalize (GObject *object)
   StThemeNode *node = ST_THEME_NODE (object);
 
   g_free (node->element_id);
-  g_free (node->element_class);
   g_strfreev (node->element_classes);
-  g_free (node->pseudo_class);
   g_strfreev (node->pseudo_classes);
   g_free (node->inline_style);
 
@@ -230,9 +228,7 @@ st_theme_node_new (StThemeContext    *context,
 
   node->element_type = element_type;
   node->element_id = g_strdup (element_id);
-  node->element_class = g_strdup (element_class);
   node->element_classes = split_on_whitespace (element_class);
-  node->pseudo_class = g_strdup (pseudo_class);
   node->pseudo_classes = split_on_whitespace (pseudo_class);
   node->inline_style = g_strdup (inline_style);
 
@@ -288,14 +284,6 @@ st_theme_node_get_element_id (StThemeNode *node)
   return node->element_id;
 }
 
-const char *
-st_theme_node_get_element_class (StThemeNode *node)
-{
-  g_return_val_if_fail (ST_IS_THEME_NODE (node), NULL);
-
-  return node->element_class;
-}
-
 /**
  * st_theme_node_get_element_classes:
  *
@@ -307,14 +295,6 @@ st_theme_node_get_element_classes (StThemeNode *node)
   g_return_val_if_fail (ST_IS_THEME_NODE (node), NULL);
 
   return node->element_classes;
-}
-
-const char *
-st_theme_node_get_pseudo_class (StThemeNode *node)
-{
-  g_return_val_if_fail (ST_IS_THEME_NODE (node), NULL);
-
-  return node->pseudo_class;
 }
 
 /**
