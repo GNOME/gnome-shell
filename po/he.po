@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-24 22:26+0300\n"
-"PO-Revision-Date: 2012-07-24 22:26+0200\n"
+"POT-Creation-Date: 2012-11-07 18:40+0200\n"
+"PO-Revision-Date: 2012-11-07 18:40+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "Language: he\n"
@@ -47,38 +47,38 @@ msgstr "אירוע פעמון"
 msgid "Unknown window information request: %d"
 msgstr "Unknown window information request: %d"
 
-#: ../src/core/delete.c:114
+#: ../src/core/delete.c:111
 #, c-format
-msgid "%s is not responding."
-msgstr "%s אינו מגיב"
+msgid "“%s” is not responding."
+msgstr "„%s“ אינו מגיב."
 
-#: ../src/core/delete.c:118
+#: ../src/core/delete.c:113
 msgid "Application is not responding."
 msgstr "היישום אינו מגיב."
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:118
 msgid "You may choose to wait a short while for it to continue or force the application to quit entirely."
 msgstr "באפשרותך להמתין זמן קצר ולתת ליישום להמשיך או להכריח את היישום להסתיים."
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:125
 msgid "_Wait"
 msgstr "ה_מתנה"
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:125
 msgid "_Force Quit"
 msgstr "_אילוץ סגירה"
 
-#: ../src/core/display.c:380
+#: ../src/core/display.c:399
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Missing %s extension required for compositing"
 
-#: ../src/core/display.c:446
+#: ../src/core/display.c:496
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Failed to open X Window System display '%s'\n"
 
-#: ../src/core/keybindings.c:844
+#: ../src/core/keybindings.c:853
 #, c-format
 msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
 msgstr "תוכנית אחרת כבר משתמשת במקש %s עם המקש %x כצירוף\n"
@@ -138,26 +138,26 @@ msgstr "Print version"
 msgid "Mutter plugin to use"
 msgstr "תוסף ה־mutter לשימוש"
 
-#: ../src/core/prefs.c:1065
+#: ../src/core/prefs.c:1079
 msgid "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
 msgstr "Workarounds for broken applications disabled. Some applications may not behave properly.\n"
 
-#: ../src/core/prefs.c:1140
+#: ../src/core/prefs.c:1154
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Could not parse font description \"%s\" from GSettings key %s\n"
 
-#: ../src/core/prefs.c:1206
+#: ../src/core/prefs.c:1220
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 msgstr "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 
-#: ../src/core/prefs.c:1724
+#: ../src/core/prefs.c:1747
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 msgstr "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 
-#: ../src/core/prefs.c:1821
+#: ../src/core/prefs.c:1844
 #, c-format
 msgid "Workspace %d"
 msgstr "סביבת עבודה %d"
@@ -279,7 +279,7 @@ msgid "Window manager error: "
 msgstr "Window manager error: "
 
 #. first time through
-#: ../src/core/window.c:7234
+#: ../src/core/window.c:7240
 #, c-format
 msgid "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
 msgstr "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER window as specified in the ICCCM.\n"
@@ -291,27 +291,27 @@ msgstr "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADE
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7899
+#: ../src/core/window.c:7905
 #, c-format
 msgid "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "Window %s sets an MWM hint indicating it isn't resizable, but sets min size %d x %d and max size %d x %d; this doesn't make much sense.\n"
 
-#: ../src/core/window-props.c:310
+#: ../src/core/window-props.c:274
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Application set a bogus _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:429
+#: ../src/core/window-props.c:393
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (מעל %s)"
 
-#: ../src/core/window-props.c:1484
+#: ../src/core/window-props.c:1448
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 
-#: ../src/core/window-props.c:1495
+#: ../src/core/window-props.c:1459
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
@@ -395,18 +395,26 @@ msgid "Determines whether the use of popup and highlight frame should be disable
 msgstr "Determines whether the use of popup and highlight frame should be disabled for window cycling."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "Delay focus changes until the pointer stops moving"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then the focus will not be changed immediately when entering a window, but only after the pointer stops moving."
+msgstr "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then the focus will not be changed immediately when entering a window, but only after the pointer stops moving."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
 msgstr "Draggable border width"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid "The amount of total draggable borders. If the theme's visible borders are not enough, invisible borders will be added to meet this value."
 msgstr "The amount of total draggable borders. If the theme's visible borders are not enough, invisible borders will be added to meet this value."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Select window from tab popup"
 msgstr "Select window from tab popup"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid "Cancel tab popup"
 msgstr "Cancel tab popup"
 
