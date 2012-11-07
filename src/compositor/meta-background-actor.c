@@ -668,3 +668,38 @@ meta_background_actor_add_glsl_snippet (MetaBackgroundActor *actor,
   cogl_object_unref (snippet);
 }
 
+/**
+ * meta_background_actor_set_uniform_float:
+ * @actor: a #MetaBackgroundActor
+ * @uniform_name:
+ * @n_components: number of components (for vector uniforms)
+ * @count: number of uniforms (for array uniforms)
+ * @uniform: (array length=uniform_length): the float values to set
+ * @uniform_length: the length of @uniform. Must be exactly @n_components x @count,
+ *                  and is provided mainly for language bindings.
+ *
+ * Sets a new GLSL uniform to the provided value. This is mostly
+ * useful in congiunction with meta_background_actor_add_glsl_snippet().
+ */
+
+void
+meta_background_actor_set_uniform_float (MetaBackgroundActor *actor,
+                                         const char          *uniform_name,
+                                         int                  n_components,
+                                         int                  count,
+                                         const float         *uniform,
+                                         int                  uniform_length)
+{
+  MetaBackgroundActorPrivate *priv;
+
+  g_return_if_fail (META_IS_BACKGROUND_ACTOR (actor));
+  g_return_if_fail (uniform_length == n_components * count);
+
+  priv = actor->priv;
+
+  cogl_pipeline_set_uniform_float (priv->pipeline,
+                                   cogl_pipeline_get_uniform_location (priv->pipeline,
+                                                                       uniform_name),
+                                   n_components, count, uniform);
+}
+

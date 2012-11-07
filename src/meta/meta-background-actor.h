@@ -90,4 +90,11 @@ void meta_background_actor_add_glsl_snippet (MetaBackgroundActor *actor,
                                              const char          *code,
                                              gboolean             is_replace);
 
+void meta_background_actor_set_uniform_float (MetaBackgroundActor *actor,
+                                              const char          *uniform_name,
+                                              int                  n_components,
+                                              int                  count,
+                                              const float         *uniform,
+                                              int                  uniform_length);
+
 #endif /* META_BACKGROUND_ACTOR_H */
