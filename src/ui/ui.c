@@ -66,9 +66,7 @@ meta_ui_init (void)
    * GDK will no longer generate the core XEvents we process.
    * So at least for now, enforce the previous behavior.
    */
-#if GTK_CHECK_VERSION(2, 91, 7)
   gdk_disable_multidevice ();
-#endif
 
   if (!gtk_init_check (NULL, NULL))
     meta_fatal ("Unable to open X display %s\n", XDisplayName (NULL));
