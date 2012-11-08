@@ -210,17 +210,6 @@ GLenum
 _cogl_texture_get_gl_format (CoglTexture *texture);
 
 void
-_cogl_texture_gl_flush_legacy_texobj_wrap_modes (CoglTexture *texture,
-                                                 GLenum wrap_mode_s,
-                                                 GLenum wrap_mode_t,
-                                                 GLenum wrap_mode_p);
-
-void
-_cogl_texture_gl_flush_legacy_texobj_filters (CoglTexture *texture,
-                                              GLenum min_filter,
-                                              GLenum mag_filter);
-
-void
 _cogl_texture_pre_paint (CoglTexture *texture, CoglTexturePrePaintFlags flags);
 
 void
@@ -247,14 +236,6 @@ _cogl_texture_prepare_for_upload (CoglBitmap *src_bmp,
                                   GLenum *out_glformat,
                                   GLenum *out_gltype,
                                   CoglError **error);
-
-void
-_cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride);
-
-void
-_cogl_texture_prep_gl_alignment_for_pixels_download (int bpp,
-                                                     int width,
-                                                     int rowstride);
 
 CoglBool
 _cogl_texture_is_foreign (CoglTexture *texture);

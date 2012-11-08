@@ -38,6 +38,7 @@
 #include "cogl-texture-driver.h"
 #include "cogl-texture-rectangle-private.h"
 #include "cogl-texture-2d.h"
+#include "cogl-texture-gl-private.h"
 
 #include <string.h>
 #include <math.h>

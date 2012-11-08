@@ -36,6 +36,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-offscreen.h"
+#include "cogl-texture-gl-private.h"
 
 #include "cogl-pipeline-progend-glsl-private.h"
 

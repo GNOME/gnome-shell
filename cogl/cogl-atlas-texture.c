@@ -45,6 +45,7 @@
 #include "cogl1-context.h"
 #include "cogl-sub-texture.h"
 #include "cogl-error-private.h"
+#include "cogl-texture-gl-private.h"
 
 #include <stdlib.h>
 

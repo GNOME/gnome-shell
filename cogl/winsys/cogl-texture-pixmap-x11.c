@@ -48,6 +48,7 @@
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-xlib.h"
 #include "cogl-error-private.h"
+#include "cogl-texture-gl-private.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>

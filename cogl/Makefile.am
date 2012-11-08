@@ -163,6 +163,8 @@ cogl_driver_sources += \
 	$(srcdir)/driver/gl/cogl-util-gl.c \
 	$(srcdir)/driver/gl/cogl-framebuffer-gl-private.h \
 	$(srcdir)/driver/gl/cogl-framebuffer-gl.c \
+	$(srcdir)/driver/gl/cogl-texture-gl-private.h \
+	$(srcdir)/driver/gl/cogl-texture-gl.c \
 	$(srcdir)/driver/gl/cogl-texture-2d-gl-private.h \
 	$(srcdir)/driver/gl/cogl-texture-2d-gl.c \
 	$(srcdir)/driver/gl/cogl-attribute-gl-private.h \

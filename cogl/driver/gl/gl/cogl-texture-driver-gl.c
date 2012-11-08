@@ -42,6 +42,7 @@
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-util-gl-private.h"
 #include "cogl-error-private.h"
+#include "cogl-texture-gl-private.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -117,7 +118,7 @@ prep_gl_for_pixels_upload_full (CoglContext *ctx,
   if (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_3D))
     GE( ctx, glPixelStorei (GL_UNPACK_IMAGE_HEIGHT, image_height) );
 
-  _cogl_texture_prep_gl_alignment_for_pixels_upload (pixels_rowstride);
+  _cogl_texture_gl_prep_alignment_for_pixels_upload (ctx, pixels_rowstride);
 }
 
 static void
@@ -147,7 +148,8 @@ prep_gl_for_pixels_download_full (CoglContext *ctx,
   if (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_3D))
     GE( ctx, glPixelStorei (GL_PACK_IMAGE_HEIGHT, image_height) );
 
-  _cogl_texture_prep_gl_alignment_for_pixels_download (pixels_bpp,
+  _cogl_texture_gl_prep_alignment_for_pixels_download (ctx,
+                                                       pixels_bpp,
                                                        image_width,
                                                        pixels_rowstride);
 }

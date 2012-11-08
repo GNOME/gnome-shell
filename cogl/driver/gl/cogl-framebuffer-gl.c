@@ -31,6 +31,7 @@
 #include "cogl-framebuffer-gl-private.h"
 #include "cogl-buffer-gl-private.h"
 #include "cogl-error-private.h"
+#include "cogl-texture-gl-private.h"
 
 #include <glib.h>
 

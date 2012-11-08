@@ -269,49 +269,6 @@ _cogl_texture_prepare_for_upload (CoglBitmap *src_bmp,
   return dst_bmp;
 }
 
-static inline int
-calculate_alignment (int rowstride)
-{
-  int alignment = 1 << (_cogl_util_ffs (rowstride) - 1);
-
-  return MIN (alignment, 8);
-}
-
-void
-_cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  GE( ctx, glPixelStorei (GL_UNPACK_ALIGNMENT,
-                          calculate_alignment (pixels_rowstride)) );
-}
-
-void
-_cogl_texture_prep_gl_alignment_for_pixels_download (int bpp,
-                                                     int width,
-                                                     int rowstride)
-{
-  int alignment;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  /* If no padding is needed then we can always use an alignment of 1.
-   * We want to do this even though it is equivalent to the alignment
-   * of the rowstride because the Intel driver in Mesa currently has
-   * an optimisation when reading data into a PBO that only works if
-   * the alignment is exactly 1.
-   *
-   * https://bugs.freedesktop.org/show_bug.cgi?id=46632
-   */
-
-  if (rowstride == bpp * width)
-    alignment = 1;
-  else
-    alignment = calculate_alignment (rowstride);
-
-  GE( ctx, glPixelStorei (GL_PACK_ALIGNMENT, alignment) );
-}
-
 CoglBool
 _cogl_texture_is_foreign (CoglTexture *texture)
 {
@@ -1375,25 +1332,4 @@ _cogl_texture_spans_foreach_in_region (CoglSpan *x_spans,
                     user_data);
 	}
     }
-}
-
-void
-_cogl_texture_gl_flush_legacy_texobj_wrap_modes (CoglTexture *texture,
-                                                 GLenum wrap_mode_s,
-                                                 GLenum wrap_mode_t,
-                                                 GLenum wrap_mode_p)
-{
-  texture->vtable->gl_flush_legacy_texobj_wrap_modes (texture,
-                                                      wrap_mode_s,
-                                                      wrap_mode_t,
-                                                      wrap_mode_p);
-}
-
-void
-_cogl_texture_gl_flush_legacy_texobj_filters (CoglTexture *texture,
-                                              GLenum min_filter,
-                                              GLenum mag_filter)
-{
-  texture->vtable->gl_flush_legacy_texobj_filters (texture,
-                                                   min_filter, mag_filter);
 }
