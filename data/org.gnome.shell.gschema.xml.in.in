@@ -106,6 +106,13 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
         Keybinding to toggle the visibility of the message tray.
       </_description>
     </key>
+    <key name="focus-active-notification" type="as">
+      <default>["&lt;Super&gt;n"]</default>
+      <_summary>Keybinding to focus the active notification</_summary>
+      <_description>
+        Keybinding to focus the active notification.
+      </_description>
+    </key>
     <key name="toggle-recording" type="as">
       <default><![CDATA[['<Control><Shift><Alt>r']]]></default>
       <_summary>Keybinding to toggle the screen recorder</_summary>

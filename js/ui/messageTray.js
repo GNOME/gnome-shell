@@ -1519,6 +1519,10 @@ const MessageTray = new Lang.Class({
                                       new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
                                       Meta.KeyBindingFlags.NONE,
                                       Lang.bind(this, this.toggleAndNavigate));
+        global.display.add_keybinding('focus-active-notification',
+                                      new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
+                                      Meta.KeyBindingFlags.NONE,
+                                      Lang.bind(this, this._expandActiveNotification));
 
         this._summaryItems = [];
         this._chatSummaryItemsCount = 0;
@@ -2336,6 +2340,13 @@ const MessageTray = new Lang.Class({
         this._notification = null;
         if (notification.isTransient)
             notification.destroy(NotificationDestroyedReason.EXPIRED);
+    },
+
+    _expandActiveNotification: function() {
+        if (!this._notification)
+            return;
+
+        this._expandNotification(false);
     },
 
     _expandNotification: function(autoExpanding) {
