@@ -279,6 +279,7 @@ _cogl_atlas_create_texture (CoglAtlas *atlas,
                             int height)
 {
   CoglTexture2D *tex;
+  CoglError *ignore_error = NULL;
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
@@ -299,7 +300,7 @@ _cogl_atlas_create_texture (CoglAtlas *atlas,
 
       tex = cogl_texture_2d_new_from_bitmap (clear_bmp,
                                              atlas->texture_format,
-                                             NULL);
+                                             &ignore_error);
       cogl_object_unref (clear_bmp);
 
       g_free (clear_data);
@@ -309,8 +310,11 @@ _cogl_atlas_create_texture (CoglAtlas *atlas,
       tex = cogl_texture_2d_new_with_size (ctx,
                                            width, height,
                                            atlas->texture_format,
-                                           NULL);
+                                           &ignore_error);
     }
+
+  if (!tex)
+    cogl_error_free (ignore_error);
 
   return tex;
 }
