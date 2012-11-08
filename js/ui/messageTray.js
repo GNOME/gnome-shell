@@ -1394,6 +1394,8 @@ const MessageTray = new Lang.Class({
                                                    y_expand: true,
                                                    x_expand: true,
                                                    layout_manager: new Clutter.BinLayout() });
+        this._notificationWidget.connect('key-release-event', Lang.bind(this, this._onNotificationKeyRelease));
+
         this.actor.add_actor(this._notificationWidget);
 
         this._notificationBin = new St.Bin({ y_expand: true });
@@ -1443,7 +1445,7 @@ const MessageTray = new Lang.Class({
 
         this._closeButton = makeCloseButton();
         this._closeButton.hide();
-        this._closeButton.connect('clicked', Lang.bind(this, this._onCloseClicked));
+        this._closeButton.connect('clicked', Lang.bind(this, this._closeNotification));
         this._notificationWidget.add_actor(this._closeButton);
 
         this._idleMonitorBecameActiveId = 0;
@@ -1598,7 +1600,19 @@ const MessageTray = new Lang.Class({
         return false;
     },
 
-    _onCloseClicked: function() {
+    _onNotificationKeyRelease: function(actor, event) {
+        let ignoredModifiers = global.display.get_ignored_modifier_mask();
+        let modifierState = event.get_state() & ~ignoredModifiers;
+
+        if (event.get_key_symbol() == Clutter.KEY_Escape && modifierState == 0) {
+            this._closeNotification();
+            return true;
+        }
+
+        return false;
+    },
+
+    _closeNotification: function() {
         if (this._notificationState == State.SHOWN) {
             this._closeButton.hide();
             this._notificationClosed = true;
