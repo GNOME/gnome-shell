@@ -448,28 +448,20 @@ st_theme_new (const char       *application_stylesheet,
 
 static gboolean
 string_in_list (GString    *stryng,
-                const char *list)
+                GStrv       list)
 {
-  char *cur;
-  char *l = g_strdup (list);
-  char *temp;
-  gboolean found = FALSE;
+  gchar **it;
 
-  cur = strtok_r (l, " \t\f\r\n", &temp);
-  while (cur != NULL)
+  if (list == NULL)
+    return FALSE;
+
+  for (it = list; *it != NULL; it++)
     {
-      if (!strqcmp (cur, stryng->str, stryng->len))
-        {
-          found = TRUE;
-          goto out;
-        }
-
-      cur = strtok_r (NULL, " \t\f\r\n", &temp);
+      if (!strqcmp (*it, stryng->str, stryng->len))
+        return TRUE;
     }
 
- out:
-  g_free (l);
-  return found;
+  return FALSE;
 }
 
 static gboolean
@@ -477,7 +469,7 @@ pseudo_class_add_sel_matches_style (StTheme         *a_this,
                                     CRAdditionalSel *a_add_sel,
                                     StThemeNode     *a_node)
 {
-  const char *node_pseudo_class;
+  GStrv node_pseudo_classes;
 
   g_return_val_if_fail (a_this
                         && a_add_sel
@@ -487,12 +479,10 @@ pseudo_class_add_sel_matches_style (StTheme         *a_this,
                         && a_add_sel->content.pseudo->name->stryng->str
                         && a_node, FALSE);
 
-  node_pseudo_class = st_theme_node_get_pseudo_class (a_node);
+  node_pseudo_classes = st_theme_node_get_pseudo_classes (a_node);
 
-  if (node_pseudo_class == NULL)
-    return FALSE;
-
-  return string_in_list (a_add_sel->content.pseudo->name->stryng, node_pseudo_class);
+  return string_in_list (a_add_sel->content.pseudo->name->stryng,
+                         node_pseudo_classes);
 }
 
 /**
@@ -507,7 +497,7 @@ static gboolean
 class_add_sel_matches_style (CRAdditionalSel *a_add_sel,
                              StThemeNode     *a_node)
 {
-  const char *element_class;
+  GStrv element_classes;
 
   g_return_val_if_fail (a_add_sel
                         && a_add_sel->type == CLASS_ADD_SELECTOR
@@ -516,11 +506,10 @@ class_add_sel_matches_style (CRAdditionalSel *a_add_sel,
                         && a_add_sel->content.class_name->stryng->str
                         && a_node, FALSE);
 
-  element_class = st_theme_node_get_element_class (a_node);
-  if (element_class == NULL)
-    return FALSE;
+  element_classes = st_theme_node_get_element_classes (a_node);
 
-  return string_in_list (a_add_sel->content.class_name->stryng, element_class);
+  return string_in_list (a_add_sel->content.class_name->stryng,
+                         element_classes);
 }
 
 /*
