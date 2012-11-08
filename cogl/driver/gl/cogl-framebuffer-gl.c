@@ -1067,7 +1067,14 @@ _cogl_framebuffer_gl_draw_indexed_attributes (CoglFramebuffer *framebuffer,
                                 attributes, n_attributes);
 
   buffer = COGL_BUFFER (cogl_indices_get_buffer (indices));
-  base = _cogl_buffer_gl_bind (buffer, COGL_BUFFER_BIND_TARGET_INDEX_BUFFER);
+
+  /* Note: we don't try and catch errors with binding the index buffer
+   * here since OOM errors at this point indicate that nothing has yet
+   * been uploaded to the indices buffer which we consider to be a
+   * programmer error.
+   */
+  base = _cogl_buffer_gl_bind (buffer,
+                               COGL_BUFFER_BIND_TARGET_INDEX_BUFFER, NULL);
   buffer_offset = cogl_indices_get_offset (indices);
   index_size = sizeof_index_type (cogl_indices_get_type (indices));
 

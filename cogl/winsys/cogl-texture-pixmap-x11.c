@@ -677,17 +677,22 @@ _cogl_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
 }
 
 static CoglBool
-_cogl_texture_pixmap_x11_set_region (CoglTexture     *tex,
-                                     int              src_x,
-                                     int              src_y,
-                                     int              dst_x,
-                                     int              dst_y,
-                                     unsigned int     dst_width,
-                                     unsigned int     dst_height,
-                                     CoglBitmap      *bmp)
+_cogl_texture_pixmap_x11_set_region (CoglTexture *tex,
+                                     int src_x,
+                                     int src_y,
+                                     int dst_x,
+                                     int dst_y,
+                                     int dst_width,
+                                     int dst_height,
+                                     CoglBitmap *bmp,
+                                     CoglError **error)
 {
   /* This doesn't make much sense for texture from pixmap so it's not
      supported */
+  _cogl_set_error (error,
+                   COGL_SYSTEM_ERROR,
+                   COGL_SYSTEM_ERROR_UNSUPPORTED,
+                   "Explicitly setting a region of a TFP texture unsupported");
   return FALSE;
 }
 

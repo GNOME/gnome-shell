@@ -1426,9 +1426,9 @@ _cogl_path_build_stroke_attribute_buffer (CoglPath *path)
     return;
 
   data->stroke_attribute_buffer =
-    cogl_attribute_buffer_new (data->context,
-                               data->path_nodes->len * sizeof (floatVec2),
-                               NULL);
+    cogl_attribute_buffer_new_with_size (data->context,
+                                         data->path_nodes->len *
+                                         sizeof (floatVec2));
 
   buffer = COGL_BUFFER (data->stroke_attribute_buffer);
   buffer_p = _cogl_buffer_map_for_fill_or_fallback (buffer);

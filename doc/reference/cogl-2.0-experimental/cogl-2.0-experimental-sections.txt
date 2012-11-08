@@ -749,6 +749,7 @@ cogl_buffer_usage_hint_get_type
 <FILE>cogl-attribute-buffer</FILE>
 <TITLE>CoglAttributeBuffer: Buffers of vertex attributes</TITLE>
 CoglAttributeBuffer
+cogl_attribute_buffer_new_with_size
 cogl_attribute_buffer_new
 cogl_is_attribute_buffer
 </SECTION>

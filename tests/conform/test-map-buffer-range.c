@@ -65,7 +65,8 @@ test_map_buffer_range (void)
                                 sizeof (vertex_data[0]) * 2,
                                 sizeof (vertex_data[0]),
                                 COGL_BUFFER_ACCESS_WRITE,
-                                COGL_BUFFER_MAP_HINT_DISCARD_RANGE);
+                                COGL_BUFFER_MAP_HINT_DISCARD_RANGE,
+                                NULL); /* don't catch errors */
   g_assert (data != NULL);
 
   data->x = vertex_data[2].x;

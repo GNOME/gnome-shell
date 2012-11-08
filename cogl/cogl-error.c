@@ -99,11 +99,18 @@ _cogl_set_error_literal (CoglError **error,
 }
 
 void
-_cogl_propogate_gerror (CoglError **dest,
-                        GError *src)
+_cogl_propogate_error (CoglError **dest,
+                       CoglError *src)
 {
   _COGL_RETURN_IF_FAIL (src != NULL);
 
   _cogl_set_error_literal (dest, src->domain, src->code, src->message);
-  g_error_free (src);
+  cogl_error_free (src);
+}
+
+void
+_cogl_propogate_gerror (CoglError **dest,
+                        GError *src)
+{
+  _cogl_propogate_error (dest, (CoglError *)src);
 }

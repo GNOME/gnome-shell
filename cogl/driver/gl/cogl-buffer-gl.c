@@ -31,6 +31,8 @@
 
 #include "cogl-context-private.h"
 #include "cogl-buffer-gl-private.h"
+#include "cogl-error-private.h"
+#include "cogl-util-gl-private.h"
 
 /*
  * GL/GLES compatibility defines for the buffer API:
@@ -126,22 +128,34 @@ convert_bind_target_to_gl_target (CoglBufferBindTarget target)
     }
 }
 
-static void
-recreate_store (CoglBuffer *buffer)
+static CoglBool
+recreate_store (CoglBuffer *buffer,
+                CoglError **error)
 {
+  CoglContext *ctx = buffer->context;
   GLenum gl_target;
   GLenum gl_enum;
+  GLenum gl_error;
 
   /* This assumes the buffer is already bound */
 
   gl_target = convert_bind_target_to_gl_target (buffer->last_target);
   gl_enum = update_hints_to_gl_enum (buffer);
 
-  GE( buffer->context, glBufferData (gl_target,
-                                     buffer->size,
-                                     NULL,
-                                     gl_enum) );
+  /* Clear any GL errors */
+  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
+    ;
+
+  ctx->glBufferData (gl_target,
+                     buffer->size,
+                     NULL,
+                     gl_enum);
+
+  if (_cogl_gl_util_catch_out_of_memory (ctx, error))
+    return FALSE;
+
   buffer->store_created = TRUE;
+  return TRUE;
 }
 
 GLenum
@@ -188,19 +202,26 @@ _cogl_buffer_gl_map_range (CoglBuffer *buffer,
                            size_t offset,
                            size_t size,
                            CoglBufferAccess access,
-                           CoglBufferMapHint hints)
+                           CoglBufferMapHint hints,
+                           CoglError **error)
 {
   uint8_t *data;
   CoglBufferBindTarget target;
   GLenum gl_target;
   CoglContext *ctx = buffer->context;
+  GLenum gl_error;
 
-  if ((access & COGL_BUFFER_ACCESS_READ) &&
-      !cogl_has_feature (ctx, COGL_FEATURE_ID_MAP_BUFFER_FOR_READ))
-    return NULL;
-  if ((access & COGL_BUFFER_ACCESS_WRITE) &&
-      !cogl_has_feature (ctx, COGL_FEATURE_ID_MAP_BUFFER_FOR_WRITE))
-    return NULL;
+  if (((access & COGL_BUFFER_ACCESS_READ) &&
+       !cogl_has_feature (ctx, COGL_FEATURE_ID_MAP_BUFFER_FOR_READ)) ||
+      ((access & COGL_BUFFER_ACCESS_WRITE) &&
+       !cogl_has_feature (ctx, COGL_FEATURE_ID_MAP_BUFFER_FOR_WRITE)))
+    {
+      _cogl_set_error (error,
+                       COGL_SYSTEM_ERROR,
+                       COGL_SYSTEM_ERROR_UNSUPPORTED,
+                       "Tried to map a buffer with unsupported access mode");
+      return NULL;
+    }
 
   target = buffer->last_target;
   _cogl_buffer_bind_no_create (buffer, target);
@@ -226,14 +247,30 @@ _cogl_buffer_gl_map_range (CoglBuffer *buffer,
         gl_access |= GL_MAP_INVALIDATE_RANGE_BIT;
 
       if (!buffer->store_created)
-        recreate_store (buffer);
+        {
+          if (!recreate_store (buffer, error))
+            {
+              _cogl_buffer_gl_unbind (buffer);
+              return NULL;
+            }
+        }
 
-      GE_RET( data,
-              ctx,
-              glMapBufferRange (gl_target,
-                                offset,
-                                size,
-                                gl_access) );
+      /* Clear any GL errors */
+      while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
+        ;
+
+      data = ctx->glMapBufferRange (gl_target,
+                                    offset,
+                                    size,
+                                    gl_access);
+
+      if (_cogl_gl_util_catch_out_of_memory (ctx, error))
+        {
+          _cogl_buffer_gl_unbind (buffer);
+          return NULL;
+        }
+
+      _COGL_RETURN_VAL_IF_FAIL (data != NULL, NULL);
     }
   else
     {
@@ -244,15 +281,30 @@ _cogl_buffer_gl_map_range (CoglBuffer *buffer,
           (hints & COGL_BUFFER_MAP_HINT_DISCARD) ||
           ((hints & COGL_BUFFER_MAP_HINT_DISCARD_RANGE) &&
            offset == 0 && size >= buffer->size))
-        recreate_store (buffer);
+        {
+          if (!recreate_store (buffer, error))
+            {
+              _cogl_buffer_gl_unbind (buffer);
+              return NULL;
+            }
+        }
 
-      GE_RET( data,
-              ctx,
-              glMapBuffer (gl_target,
-                           _cogl_buffer_access_to_gl_enum (access)) );
+      /* Clear any GL errors */
+      while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
+        ;
 
-      if (data)
-        data += offset;
+      data = ctx->glMapBuffer (gl_target,
+                               _cogl_buffer_access_to_gl_enum (access));
+
+      if (_cogl_gl_util_catch_out_of_memory (ctx, error))
+        {
+          _cogl_buffer_gl_unbind (buffer);
+          return NULL;
+        }
+
+      _COGL_RETURN_VAL_IF_FAIL (data != NULL, NULL);
+
+      data += offset;
     }
 
   if (data)
@@ -281,26 +333,50 @@ CoglBool
 _cogl_buffer_gl_set_data (CoglBuffer *buffer,
                           unsigned int offset,
                           const void *data,
-                          unsigned int size)
+                          unsigned int size,
+                          CoglError **error)
 {
   CoglBufferBindTarget target;
   GLenum gl_target;
   CoglContext *ctx = buffer->context;
+  GLenum gl_error;
+  CoglBool status = TRUE;
+  CoglError *internal_error = NULL;
 
   target = buffer->last_target;
-  _cogl_buffer_gl_bind (buffer, target);
+
+  _cogl_buffer_gl_bind (buffer, target, &internal_error);
+
+  /* NB: _cogl_buffer_gl_bind() may return NULL in non-error
+   * conditions so we have to explicity check internal_error
+   * to see if an exception was thrown.
+   */
+  if (internal_error)
+    {
+      _cogl_propogate_error (error, internal_error);
+      return FALSE;
+    }
 
   gl_target = convert_bind_target_to_gl_target (target);
 
-  GE( ctx, glBufferSubData (gl_target, offset, size, data) );
+  /* Clear any GL errors */
+  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
+    ;
+
+  ctx->glBufferSubData (gl_target, offset, size, data);
+
+  if (_cogl_gl_util_catch_out_of_memory (ctx, error))
+    status = FALSE;
 
   _cogl_buffer_gl_unbind (buffer);
 
-  return TRUE;
+  return status;
 }
 
 void *
-_cogl_buffer_gl_bind (CoglBuffer *buffer, CoglBufferBindTarget target)
+_cogl_buffer_gl_bind (CoglBuffer *buffer,
+                      CoglBufferBindTarget target,
+                      CoglError **error)
 {
   void *ret;
 
@@ -311,7 +387,13 @@ _cogl_buffer_gl_bind (CoglBuffer *buffer, CoglBufferBindTarget target)
    * store is created. */
   if ((buffer->flags & COGL_BUFFER_FLAG_BUFFER_OBJECT) &&
       !buffer->store_created)
-    recreate_store (buffer);
+    {
+      if (!recreate_store (buffer, error))
+        {
+          _cogl_buffer_gl_unbind (buffer);
+          return NULL;
+        }
+    }
 
   return ret;
 }

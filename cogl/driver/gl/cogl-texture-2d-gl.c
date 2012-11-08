@@ -143,20 +143,16 @@ _cogl_texture_2d_gl_new_from_bitmap (CoglBitmap *bmp,
   GLenum gl_intformat;
   GLenum gl_format;
   GLenum gl_type;
-  uint8_t *data;
 
-  if ((dst_bmp = _cogl_texture_prepare_for_upload (bmp,
-                                                   internal_format,
-                                                   &internal_format,
-                                                   &gl_intformat,
-                                                   &gl_format,
-                                                   &gl_type)) == NULL)
-    {
-      _cogl_set_error (error, COGL_TEXTURE_ERROR,
-                       COGL_TEXTURE_ERROR_FORMAT,
-                       "Failed to prepare texture upload due to format");
-      return NULL;
-    }
+  dst_bmp = _cogl_texture_prepare_for_upload (bmp,
+                                              internal_format,
+                                              &internal_format,
+                                              &gl_intformat,
+                                              &gl_format,
+                                              &gl_type,
+                                              error);
+  if (!dst_bmp)
+    return NULL;
 
   tex_2d = _cogl_texture_2d_create_base (ctx,
                                          cogl_bitmap_get_width (bmp),
@@ -165,29 +161,49 @@ _cogl_texture_2d_gl_new_from_bitmap (CoglBitmap *bmp,
 
   /* Keep a copy of the first pixel so that if glGenerateMipmap isn't
      supported we can fallback to using GL_GENERATE_MIPMAP */
-  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN) &&
-      (data = _cogl_bitmap_map (dst_bmp,
-                                COGL_BUFFER_ACCESS_READ, 0)))
+  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
     {
+      CoglError *ignore = NULL;
+      uint8_t *data = _cogl_bitmap_map (dst_bmp,
+                                        COGL_BUFFER_ACCESS_READ, 0,
+                                        &ignore);
       CoglPixelFormat format = cogl_bitmap_get_format (dst_bmp);
+
       tex_2d->first_pixel.gl_format = gl_format;
       tex_2d->first_pixel.gl_type = gl_type;
-      memcpy (tex_2d->first_pixel.data, data,
-              _cogl_pixel_format_get_bytes_per_pixel (format));
 
-      _cogl_bitmap_unmap (dst_bmp);
+      if (data)
+        {
+          memcpy (tex_2d->first_pixel.data, data,
+                  _cogl_pixel_format_get_bytes_per_pixel (format));
+          _cogl_bitmap_unmap (dst_bmp);
+        }
+      else
+        {
+          g_warning ("Failed to read first pixel of bitmap for "
+                     "glGenerateMipmap fallback");
+          cogl_error_free (ignore);
+          memset (tex_2d->first_pixel.data, 0,
+                  _cogl_pixel_format_get_bytes_per_pixel (format));
+        }
     }
 
   tex_2d->gl_texture =
     ctx->texture_driver->gen (ctx, GL_TEXTURE_2D, internal_format);
-  ctx->texture_driver->upload_to_gl (ctx,
-                                     GL_TEXTURE_2D,
-                                     tex_2d->gl_texture,
-                                     FALSE,
-                                     dst_bmp,
-                                     gl_intformat,
-                                     gl_format,
-                                     gl_type);
+  if (!ctx->texture_driver->upload_to_gl (ctx,
+                                          GL_TEXTURE_2D,
+                                          tex_2d->gl_texture,
+                                          FALSE,
+                                          dst_bmp,
+                                          gl_intformat,
+                                          gl_format,
+                                          gl_type,
+                                          error))
+    {
+      cogl_object_unref (dst_bmp);
+      cogl_object_unref (tex_2d);
+      return NULL;
+    }
 
   tex_2d->gl_format = gl_intformat;
 
@@ -502,7 +518,7 @@ _cogl_texture_2d_gl_generate_mipmap (CoglTexture2D *tex_2d)
 #endif
 }
 
-void
+CoglBool
 _cogl_texture_2d_gl_copy_from_bitmap (CoglTexture2D *tex_2d,
                                       CoglBitmap *bmp,
                                       int dst_x,
@@ -510,50 +526,70 @@ _cogl_texture_2d_gl_copy_from_bitmap (CoglTexture2D *tex_2d,
                                       int src_x,
                                       int src_y,
                                       int width,
-                                      int height)
+                                      int height,
+                                      CoglError **error)
 {
   CoglTexture *tex = COGL_TEXTURE (tex_2d);
   CoglContext *ctx = tex->context;
   GLenum gl_format;
   GLenum gl_type;
-  uint8_t *data;
+  CoglBool status = TRUE;
 
   bmp = _cogl_texture_prepare_for_upload (bmp,
                                           cogl_texture_get_format (tex),
                                           NULL,
                                           NULL,
                                           &gl_format,
-                                          &gl_type);
+                                          &gl_type,
+                                          error);
+  if (!bmp)
+    return FALSE;
 
   /* If this touches the first pixel then we'll update our copy */
   if (dst_x == 0 && dst_y == 0 &&
-      !cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN) &&
-      (data = _cogl_bitmap_map (bmp, COGL_BUFFER_ACCESS_READ, 0)))
+      !cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
     {
+      CoglError *ignore = NULL;
+      uint8_t *data =
+        _cogl_bitmap_map (bmp, COGL_BUFFER_ACCESS_READ, 0, &ignore);
       CoglPixelFormat bpp =
         _cogl_pixel_format_get_bytes_per_pixel (cogl_bitmap_get_format (bmp));
+
       tex_2d->first_pixel.gl_format = gl_format;
       tex_2d->first_pixel.gl_type = gl_type;
-      memcpy (tex_2d->first_pixel.data,
-              data + cogl_bitmap_get_rowstride (bmp) * src_y + bpp * src_x,
-              bpp);
 
-      _cogl_bitmap_unmap (bmp);
+      if (data)
+        {
+          memcpy (tex_2d->first_pixel.data,
+                  data + cogl_bitmap_get_rowstride (bmp) * src_y + bpp * src_x,
+                  bpp);
+          _cogl_bitmap_unmap (bmp);
+        }
+      else
+        {
+          g_warning ("Failed to read first bitmap pixel for "
+                     "glGenerateMipmap fallback");
+          cogl_error_free (ignore);
+          memset (tex_2d->first_pixel.data, 0, bpp);
+        }
     }
 
   /* Send data to GL */
-  ctx->texture_driver->upload_subregion_to_gl (ctx,
-                                               GL_TEXTURE_2D,
-                                               tex_2d->gl_texture,
-                                               FALSE,
-                                               src_x, src_y,
-                                               dst_x, dst_y,
-                                               width, height,
-                                               bmp,
-                                               gl_format,
-                                               gl_type);
+  status = ctx->texture_driver->upload_subregion_to_gl (ctx,
+                                                        GL_TEXTURE_2D,
+                                                        tex_2d->gl_texture,
+                                                        FALSE,
+                                                        src_x, src_y,
+                                                        dst_x, dst_y,
+                                                        width, height,
+                                                        bmp,
+                                                        gl_format,
+                                                        gl_type,
+                                                        error);
 
   cogl_object_unref (bmp);
+
+  return status;
 }
 
 void

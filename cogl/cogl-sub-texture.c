@@ -366,23 +366,25 @@ _cogl_sub_texture_ensure_non_quad_rendering (CoglTexture *tex)
 }
 
 static CoglBool
-_cogl_sub_texture_set_region (CoglTexture    *tex,
-                              int             src_x,
-                              int             src_y,
-                              int             dst_x,
-                              int             dst_y,
-                              unsigned int    dst_width,
-                              unsigned int    dst_height,
-                              CoglBitmap     *bmp)
+_cogl_sub_texture_set_region (CoglTexture *tex,
+                              int src_x,
+                              int src_y,
+                              int dst_x,
+                              int dst_y,
+                              int dst_width,
+                              int dst_height,
+                              CoglBitmap *bmp,
+                              CoglError **error)
 {
   CoglSubTexture  *sub_tex = COGL_SUB_TEXTURE (tex);
 
-  return cogl_texture_set_region_from_bitmap (sub_tex->full_texture,
-                                              src_x, src_y,
-                                              dst_x + sub_tex->sub_x,
-                                              dst_y + sub_tex->sub_y,
-                                              dst_width, dst_height,
-                                              bmp);
+  return _cogl_texture_set_region_from_bitmap (sub_tex->full_texture,
+                                               src_x, src_y,
+                                               dst_x + sub_tex->sub_x,
+                                               dst_y + sub_tex->sub_y,
+                                               dst_width, dst_height,
+                                               bmp,
+                                               error);
 }
 
 static CoglPixelFormat

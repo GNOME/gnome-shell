@@ -348,7 +348,8 @@ _cogl_bitmap_needs_short_temp_buffer (CoglPixelFormat format)
 
 CoglBool
 _cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
-                                  CoglBitmap *dst_bmp)
+                                  CoglBitmap *dst_bmp,
+                                  CoglError **error)
 {
   uint8_t *src_data;
   uint8_t *dst_data;
@@ -388,19 +389,20 @@ _cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
       if (!_cogl_bitmap_copy_subregion (src_bmp, dst_bmp,
                                         0, 0, /* src_x / src_y */
                                         0, 0, /* dst_x / dst_y */
-                                        width, height))
+                                        width, height,
+                                        error))
         return FALSE;
 
       if (need_premult)
         {
           if ((dst_format & COGL_PREMULT_BIT))
             {
-              if (!_cogl_bitmap_premult (dst_bmp))
+              if (!_cogl_bitmap_premult (dst_bmp, error))
                 return FALSE;
             }
           else
             {
-              if (!_cogl_bitmap_unpremult (dst_bmp))
+              if (!_cogl_bitmap_unpremult (dst_bmp, error))
                 return FALSE;
             }
         }
@@ -408,12 +410,13 @@ _cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
       return TRUE;
     }
 
-  src_data = _cogl_bitmap_map (src_bmp, COGL_BUFFER_ACCESS_READ, 0);
+  src_data = _cogl_bitmap_map (src_bmp, COGL_BUFFER_ACCESS_READ, 0, error);
   if (src_data == NULL)
     return FALSE;
   dst_data = _cogl_bitmap_map (dst_bmp,
                                COGL_BUFFER_ACCESS_WRITE,
-                               COGL_BUFFER_MAP_HINT_DISCARD);
+                               COGL_BUFFER_MAP_HINT_DISCARD,
+                               error);
   if (dst_data == NULL)
     {
       _cogl_bitmap_unmap (src_bmp);
@@ -472,7 +475,8 @@ _cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
 
 CoglBitmap *
 _cogl_bitmap_convert (CoglBitmap *src_bmp,
-                      CoglPixelFormat dst_format)
+                      CoglPixelFormat dst_format,
+                      CoglError **error)
 {
   CoglBitmap *dst_bmp;
   int width, height;
@@ -486,7 +490,7 @@ _cogl_bitmap_convert (CoglBitmap *src_bmp,
                                                  width, height,
                                                  dst_format);
 
-  if (!_cogl_bitmap_convert_into_bitmap (src_bmp, dst_bmp))
+  if (!_cogl_bitmap_convert_into_bitmap (src_bmp, dst_bmp, error))
     {
       cogl_object_unref (dst_bmp);
       return NULL;
@@ -496,7 +500,8 @@ _cogl_bitmap_convert (CoglBitmap *src_bmp,
 }
 
 CoglBool
-_cogl_bitmap_unpremult (CoglBitmap *bmp)
+_cogl_bitmap_unpremult (CoglBitmap *bmp,
+                        CoglError **error)
 {
   uint8_t *p, *data;
   uint16_t *tmp_row;
@@ -513,12 +518,13 @@ _cogl_bitmap_unpremult (CoglBitmap *bmp)
   if ((data = _cogl_bitmap_map (bmp,
                                 COGL_BUFFER_ACCESS_READ |
                                 COGL_BUFFER_ACCESS_WRITE,
-                                0)) == NULL)
+                                0,
+                                error)) == NULL)
     return FALSE;
 
   /* If we can't directly unpremult the data inline then we'll
      allocate a temporary row and unpack the data. This assumes if we
-     can fast premult then we can also fast unpremult */
+      can fast premult then we can also fast unpremult */
   if (_cogl_bitmap_can_fast_premult (format))
     tmp_row = NULL;
   else
@@ -562,7 +568,8 @@ _cogl_bitmap_unpremult (CoglBitmap *bmp)
 }
 
 CoglBool
-_cogl_bitmap_premult (CoglBitmap *bmp)
+_cogl_bitmap_premult (CoglBitmap *bmp,
+                      CoglError **error)
 {
   uint8_t *p, *data;
   uint16_t *tmp_row;
@@ -579,7 +586,8 @@ _cogl_bitmap_premult (CoglBitmap *bmp)
   if ((data = _cogl_bitmap_map (bmp,
                                 COGL_BUFFER_ACCESS_READ |
                                 COGL_BUFFER_ACCESS_WRITE,
-                                0)) == NULL)
+                                0,
+                                error)) == NULL)
     return FALSE;
 
   /* If we can't directly premult the data inline then we'll allocate

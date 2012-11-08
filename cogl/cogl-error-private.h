@@ -40,6 +40,10 @@ _cogl_set_error_literal (CoglError **error,
                          const char *message);
 
 void
+_cogl_propogate_error (CoglError **dest,
+                       CoglError *src);
+
+void
 _cogl_propogate_gerror (CoglError **dest,
                         GError *src);
 

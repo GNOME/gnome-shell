@@ -40,6 +40,8 @@
 #include "cogl-object-private.h"
 #include "cogl-primitives.h"
 #include "cogl-pipeline-opengl-private.h"
+#include "cogl-util-gl-private.h"
+#include "cogl-error-private.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -164,26 +166,39 @@ _cogl_texture_driver_prep_gl_for_pixels_download (CoglContext *ctx,
                                     pixels_bpp);
 }
 
-static void
+static CoglBool
 _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
-                                             GLenum       gl_target,
-                                             GLuint       gl_handle,
-                                             CoglBool     is_foreign,
-                                             int          src_x,
-                                             int          src_y,
-                                             int          dst_x,
-                                             int          dst_y,
-                                             int          width,
-                                             int          height,
+                                             GLenum gl_target,
+                                             GLuint gl_handle,
+                                             CoglBool is_foreign,
+                                             int src_x,
+                                             int src_y,
+                                             int dst_x,
+                                             int dst_y,
+                                             int width,
+                                             int height,
                                              CoglBitmap  *source_bmp,
-				             GLuint       source_gl_format,
-				             GLuint       source_gl_type)
+				             GLuint source_gl_format,
+				             GLuint source_gl_type,
+                                             CoglError **error)
 {
   uint8_t *data;
   CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
+  GLenum gl_error;
+  CoglBool status = TRUE;
+  CoglError *internal_error = NULL;
 
-  data = _cogl_bitmap_gl_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0);
+  data = _cogl_bitmap_gl_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0, &internal_error);
+
+  /* NB: _cogl_bitmap_gl_bind() may return NULL when successfull so we
+   * have to explicitly check the cogl error pointer to catch
+   * problems... */
+  if (internal_error)
+    {
+      _cogl_propogate_error (error, internal_error);
+      return FALSE;
+    }
 
   /* Setup gl alignment to match rowstride and top-left corner */
   prep_gl_for_pixels_upload_full (ctx,
@@ -195,31 +210,45 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
 
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
-  GE( ctx, glTexSubImage2D (gl_target, 0,
-                            dst_x, dst_y,
-                            width, height,
-                            source_gl_format,
-                            source_gl_type,
-                            data) );
+  /* Clear any GL errors */
+  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
+    ;
+
+  ctx->glTexSubImage2D (gl_target, 0,
+                        dst_x, dst_y,
+                        width, height,
+                        source_gl_format,
+                        source_gl_type,
+                        data);
+
+  if (_cogl_gl_util_catch_out_of_memory (ctx, error))
+    status = FALSE;
 
   _cogl_bitmap_gl_unbind (source_bmp);
+
+  return status;
 }
 
-static void
+static CoglBool
 _cogl_texture_driver_upload_to_gl (CoglContext *ctx,
-                                   GLenum       gl_target,
-                                   GLuint       gl_handle,
-                                   CoglBool     is_foreign,
-                                   CoglBitmap  *source_bmp,
-                                   GLint        internal_gl_format,
-                                   GLuint       source_gl_format,
-                                   GLuint       source_gl_type)
+                                   GLenum gl_target,
+                                   GLuint gl_handle,
+                                   CoglBool is_foreign,
+                                   CoglBitmap *source_bmp,
+                                   GLint internal_gl_format,
+                                   GLuint source_gl_format,
+                                   GLuint source_gl_type,
+                                   CoglError **error)
 {
   uint8_t *data;
   CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
+  GLenum gl_error;
+  CoglBool status = TRUE;
 
-  data = _cogl_bitmap_gl_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0);
+  data = _cogl_bitmap_gl_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0, error);
+  if (!data)
+    return FALSE;
 
   /* Setup gl alignment to match rowstride and top-left corner */
   prep_gl_for_pixels_upload_full (ctx,
@@ -228,35 +257,49 @@ _cogl_texture_driver_upload_to_gl (CoglContext *ctx,
 
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
-  GE( ctx, glTexImage2D (gl_target, 0,
-                         internal_gl_format,
-                         cogl_bitmap_get_width (source_bmp),
-                         cogl_bitmap_get_height (source_bmp),
-                         0,
-                         source_gl_format,
-                         source_gl_type,
-                         data) );
+  /* Clear any GL errors */
+  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
+    ;
+
+  ctx->glTexImage2D (gl_target, 0,
+                     internal_gl_format,
+                     cogl_bitmap_get_width (source_bmp),
+                     cogl_bitmap_get_height (source_bmp),
+                     0,
+                     source_gl_format,
+                     source_gl_type,
+                     data);
+
+  if (_cogl_gl_util_catch_out_of_memory (ctx, error))
+    status = FALSE;
 
   _cogl_bitmap_gl_unbind (source_bmp);
+
+  return status;
 }
 
-static void
+static CoglBool
 _cogl_texture_driver_upload_to_gl_3d (CoglContext *ctx,
-                                      GLenum       gl_target,
-                                      GLuint       gl_handle,
-                                      CoglBool     is_foreign,
-                                      GLint        height,
-                                      GLint        depth,
-                                      CoglBitmap  *source_bmp,
-                                      GLint        internal_gl_format,
-                                      GLuint       source_gl_format,
-                                      GLuint       source_gl_type)
+                                      GLenum gl_target,
+                                      GLuint gl_handle,
+                                      CoglBool is_foreign,
+                                      GLint height,
+                                      GLint depth,
+                                      CoglBitmap *source_bmp,
+                                      GLint internal_gl_format,
+                                      GLuint source_gl_format,
+                                      GLuint source_gl_type,
+                                      CoglError **error)
 {
   uint8_t *data;
   CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
+  GLenum gl_error;
+  CoglBool status = TRUE;
 
-  data = _cogl_bitmap_gl_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0);
+  data = _cogl_bitmap_gl_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0, error);
+  if (!data)
+    return FALSE;
 
   /* Setup gl alignment to match rowstride and top-left corner */
   prep_gl_for_pixels_upload_full (ctx,
@@ -267,18 +310,27 @@ _cogl_texture_driver_upload_to_gl_3d (CoglContext *ctx,
 
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
-  GE( ctx, glTexImage3D (gl_target,
-                         0, /* level */
-                         internal_gl_format,
-                         cogl_bitmap_get_width (source_bmp),
-                         height,
-                         depth,
-                         0,
-                         source_gl_format,
-                         source_gl_type,
-                         data) );
+  /* Clear any GL errors */
+  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
+    ;
+
+  ctx->glTexImage3D (gl_target,
+                     0, /* level */
+                     internal_gl_format,
+                     cogl_bitmap_get_width (source_bmp),
+                     height,
+                     depth,
+                     0,
+                     source_gl_format,
+                     source_gl_type,
+                     data);
+
+  if (_cogl_gl_util_catch_out_of_memory (ctx, error))
+    status = FALSE;
 
   _cogl_bitmap_gl_unbind (source_bmp);
+
+  return status;
 }
 
 static CoglBool

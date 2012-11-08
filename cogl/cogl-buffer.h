@@ -33,6 +33,7 @@
 #define __COGL_BUFFER_H__
 
 #include <cogl/cogl-types.h>
+#include <cogl/cogl-error.h>
 
 COGL_BEGIN_DECLS
 
@@ -61,6 +62,25 @@ COGL_BEGIN_DECLS
 #define COGL_BUFFER(buffer)     ((CoglBuffer *)(buffer))
 
 typedef struct _CoglBuffer CoglBuffer;
+
+#define COGL_BUFFER_ERROR (_cogl_buffer_error_domain ())
+
+/**
+ * CoglBufferError:
+ * @COGL_BUFFER_ERROR_MAP: A buffer could not be mapped either
+ *    because the feature isn't supported or because a system
+ *    limitation was hit.
+ *
+ * Error enumeration for #CoglBuffer
+ *
+ * Stability: unstable
+ */
+typedef enum { /*< prefix=COGL_BUFFER_ERROR >*/
+  COGL_BUFFER_ERROR_MAP,
+} CoglBufferError;
+
+uint32_t
+_cogl_buffer_error_domain (void);
 
 /**
  * cogl_is_buffer:
@@ -207,9 +227,9 @@ typedef enum { /*< prefix=COGL_BUFFER_MAP_HINT >*/
  * Stability: unstable
  */
 void *
-cogl_buffer_map (CoglBuffer        *buffer,
-                 CoglBufferAccess   access,
-                 CoglBufferMapHint  hints);
+cogl_buffer_map (CoglBuffer *buffer,
+                 CoglBufferAccess access,
+                 CoglBufferMapHint hints);
 
 /**
  * cogl_buffer_map_range:
@@ -219,6 +239,7 @@ cogl_buffer_map (CoglBuffer        *buffer,
  * @access: how the mapped buffer will be used by the application
  * @hints: A mask of #CoglBufferMapHint<!-- -->s that tell Cogl how
  *   the data will be modified once mapped.
+ * @error: A #CoglError for catching exceptional errors
  *
  * Maps a sub-region of the buffer into the application's address space
  * for direct access.
@@ -246,7 +267,8 @@ cogl_buffer_map_range (CoglBuffer *buffer,
                        size_t offset,
                        size_t size,
                        CoglBufferAccess access,
-                       CoglBufferMapHint hints);
+                       CoglBufferMapHint hints,
+                       CoglError **error);
 
 /**
  * cogl_buffer_unmap:

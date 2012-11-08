@@ -292,6 +292,7 @@ _cogl_blit_get_tex_data_blit (CoglBlitData *data,
                            data->format,
                            data->src_width * data->bpp,
                            data->image_data);
+  /* TODO: support chaining up errors during the blit */
 }
 
 static void

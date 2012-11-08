@@ -58,9 +58,10 @@ struct _CoglAtlasTexture
 };
 
 CoglAtlasTexture *
-_cogl_atlas_texture_new_from_bitmap (CoglBitmap      *bmp,
+_cogl_atlas_texture_new_from_bitmap (CoglBitmap *bmp,
                                      CoglTextureFlags flags,
-                                     CoglPixelFormat  internal_format);
+                                     CoglPixelFormat internal_format,
+                                     CoglError **error);
 
 CoglAtlasTexture *
 _cogl_atlas_texture_new_with_size (unsigned int     width,

@@ -65,14 +65,15 @@ struct _CoglTextureVtable
      before being passed so the implementation is expected to call
      _cogl_texture_prepare_for_upload with a suitable destination
      format before uploading */
-  CoglBool (* set_region) (CoglTexture    *tex,
-                           int             src_x,
-                           int             src_y,
-                           int             dst_x,
-                           int             dst_y,
-                           unsigned int    dst_width,
-                           unsigned int    dst_height,
-                           CoglBitmap     *bitmap);
+  CoglBool (* set_region) (CoglTexture *tex,
+                           int src_x,
+                           int src_y,
+                           int dst_x,
+                           int dst_y,
+                           int dst_width,
+                           int dst_height,
+                           CoglBitmap *bitmap,
+                           CoglError **error);
 
   /* This should copy the image data of the texture into @data. The
      requested format will have been first passed through
@@ -233,17 +234,19 @@ _cogl_texture_determine_internal_format (CoglPixelFormat src_format,
                                          CoglPixelFormat dst_format);
 
 /* Utility function to help uploading a bitmap. If the bitmap needs
-   premult conversion then it will be copied and *copied_bitmap will
-   be set to TRUE. Otherwise dst_bmp will be set to a shallow copy of
-   src_bmp. The GLenums needed for uploading are returned */
-
+ * premult conversion then a converted copy will be returned,
+ * otherwise a reference to the original source will be returned.
+ *
+ * The GLenums needed for uploading are returned
+ */
 CoglBitmap *
-_cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
-                                  CoglPixelFormat  dst_format,
+_cogl_texture_prepare_for_upload (CoglBitmap *src_bmp,
+                                  CoglPixelFormat dst_format,
                                   CoglPixelFormat *dst_format_out,
-                                  GLenum          *out_glintformat,
-                                  GLenum          *out_glformat,
-                                  GLenum          *out_gltype);
+                                  GLenum *out_glintformat,
+                                  GLenum *out_glformat,
+                                  GLenum *out_gltype,
+                                  CoglError **error);
 
 void
 _cogl_texture_prep_gl_alignment_for_pixels_upload (int pixels_rowstride);
@@ -252,15 +255,6 @@ void
 _cogl_texture_prep_gl_alignment_for_pixels_download (int bpp,
                                                      int width,
                                                      int rowstride);
-
-/* Utility function to use as a fallback for getting the data of any
-   texture via the framebuffer */
-
-CoglBool
-_cogl_texture_draw_and_read (CoglTexture *texture,
-                             CoglBitmap  *target_bmp,
-                             GLuint       target_gl_format,
-                             GLuint       target_gl_type);
 
 CoglBool
 _cogl_texture_is_foreign (CoglTexture *texture);
@@ -300,5 +294,22 @@ _cogl_texture_spans_foreach_in_region (CoglSpan *x_spans,
  */
 CoglTextureType
 _cogl_texture_get_type (CoglTexture *texture);
+
+CoglTexture *
+_cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
+                               CoglTextureFlags flags,
+                               CoglPixelFormat internal_format,
+                               CoglError **error);
+
+CoglBool
+_cogl_texture_set_region_from_bitmap (CoglTexture *texture,
+                                      int src_x,
+                                      int src_y,
+                                      int dst_x,
+                                      int dst_y,
+                                      unsigned int dst_width,
+                                      unsigned int dst_height,
+                                      CoglBitmap *bmp,
+                                      CoglError **error);
 
 #endif /* __COGL_TEXTURE_PRIVATE_H */

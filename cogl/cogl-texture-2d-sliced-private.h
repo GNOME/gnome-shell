@@ -53,8 +53,9 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
                                           CoglPixelFormat  format);
 
 CoglTexture2DSliced *
-_cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap      *bmp,
+_cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap *bmp,
                                          CoglTextureFlags flags,
-                                         CoglPixelFormat  internal_format);
+                                         CoglPixelFormat internal_format,
+                                         CoglError **error);
 
 #endif /* __COGL_TEXTURE_2D_SLICED_PRIVATE_H */

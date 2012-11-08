@@ -38,6 +38,7 @@
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-error-private.h"
+#include "cogl-util-gl-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -185,7 +186,7 @@ _cogl_texture_rectangle_create_base (CoglContext *ctx,
 
   tex_rect->format = internal_format;
 
-  return tex_rect;
+  return _cogl_texture_rectangle_object_new (tex_rect);
 }
 
 CoglTextureRectangle *
@@ -196,9 +197,10 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
                                       CoglError **error)
 {
   CoglTextureRectangle *tex_rect;
-  GLenum                gl_intformat;
-  GLenum                gl_format;
-  GLenum                gl_type;
+  GLenum gl_intformat;
+  GLenum gl_format;
+  GLenum gl_type;
+  GLenum gl_error;
 
   /* Since no data, we need some internal format */
   if (internal_format == COGL_PIXEL_FORMAT_ANY)
@@ -226,10 +228,21 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
   _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB,
                                    tex_rect->gl_texture,
                                    tex_rect->is_foreign);
-  GE( ctx, glTexImage2D (GL_TEXTURE_RECTANGLE_ARB, 0, gl_intformat,
-                         width, height, 0, gl_format, gl_type, NULL) );
 
-  return _cogl_texture_rectangle_object_new (tex_rect);
+  /* Clear any GL errors */
+  while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
+    ;
+
+  ctx->glTexImage2D (GL_TEXTURE_RECTANGLE_ARB, 0, gl_intformat,
+                     width, height, 0, gl_format, gl_type, NULL);
+
+  if (_cogl_gl_util_catch_out_of_memory (ctx, error))
+    {
+      cogl_object_unref (tex_rect);
+      return NULL;
+    }
+
+  return tex_rect;
 }
 
 CoglTextureRectangle *
@@ -264,7 +277,8 @@ cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bmp,
                                               &internal_format,
                                               &gl_intformat,
                                               &gl_format,
-                                              &gl_type);
+                                              &gl_type,
+                                              error);
 
   if (dst_bmp == NULL)
     return NULL;
@@ -278,20 +292,26 @@ cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bmp,
     ctx->texture_driver->gen (ctx,
                               GL_TEXTURE_RECTANGLE_ARB,
                               internal_format);
-  ctx->texture_driver->upload_to_gl (ctx,
-                                     GL_TEXTURE_RECTANGLE_ARB,
-                                     tex_rect->gl_texture,
-                                     FALSE,
-                                     dst_bmp,
-                                     gl_intformat,
-                                     gl_format,
-                                     gl_type);
+  if (!ctx->texture_driver->upload_to_gl (ctx,
+                                          GL_TEXTURE_RECTANGLE_ARB,
+                                          tex_rect->gl_texture,
+                                          FALSE,
+                                          dst_bmp,
+                                          gl_intformat,
+                                          gl_format,
+                                          gl_type,
+                                          error))
+    {
+      cogl_object_unref (dst_bmp);
+      cogl_object_unref (tex_rect);
+      return NULL;
+    }
 
   tex_rect->gl_format = gl_intformat;
 
   cogl_object_unref (dst_bmp);
 
-  return _cogl_texture_rectangle_object_new (tex_rect);
+  return tex_rect;
 }
 
 CoglTextureRectangle *
@@ -416,7 +436,7 @@ cogl_texture_rectangle_new_from_foreign (CoglContext *ctx,
   tex_rect->gl_legacy_texobj_min_filter = GL_FALSE;
   tex_rect->gl_legacy_texobj_mag_filter = GL_FALSE;
 
-  return _cogl_texture_rectangle_object_new (tex_rect);
+  return tex_rect;
 }
 
 static int
@@ -527,42 +547,49 @@ _cogl_texture_rectangle_ensure_non_quad_rendering (CoglTexture *tex)
 }
 
 static CoglBool
-_cogl_texture_rectangle_set_region (CoglTexture    *tex,
-                                    int             src_x,
-                                    int             src_y,
-                                    int             dst_x,
-                                    int             dst_y,
-                                    unsigned int    dst_width,
-                                    unsigned int    dst_height,
-                                    CoglBitmap     *bmp)
+_cogl_texture_rectangle_set_region (CoglTexture *tex,
+                                    int src_x,
+                                    int src_y,
+                                    int dst_x,
+                                    int dst_y,
+                                    int dst_width,
+                                    int dst_height,
+                                    CoglBitmap *bmp,
+                                    CoglError **error)
 {
   CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
   GLenum gl_format;
   GLenum gl_type;
   CoglContext *ctx = tex->context;
+  CoglBool status;
 
   bmp = _cogl_texture_prepare_for_upload (bmp,
                                           cogl_texture_get_format (tex),
                                           NULL,
                                           NULL,
                                           &gl_format,
-                                          &gl_type);
+                                          &gl_type,
+                                          error);
+  if (!bmp)
+    return FALSE;
 
   /* Send data to GL */
-  ctx->texture_driver->upload_subregion_to_gl (ctx,
-                                               GL_TEXTURE_RECTANGLE_ARB,
-                                               tex_rect->gl_texture,
-                                               FALSE,
-                                               src_x, src_y,
-                                               dst_x, dst_y,
-                                               dst_width, dst_height,
-                                               bmp,
-                                               gl_format,
-                                               gl_type);
+  status =
+    ctx->texture_driver->upload_subregion_to_gl (ctx,
+                                                 GL_TEXTURE_RECTANGLE_ARB,
+                                                 tex_rect->gl_texture,
+                                                 FALSE,
+                                                 src_x, src_y,
+                                                 dst_x, dst_y,
+                                                 dst_width, dst_height,
+                                                 bmp,
+                                                 gl_format,
+                                                 gl_type,
+                                                 error);
 
   cogl_object_unref (bmp);
 
-  return TRUE;
+  return status;
 }
 
 static CoglBool

@@ -93,7 +93,7 @@ _cogl_texture_2d_gl_get_gl_handle (CoglTexture2D *tex_2d);
 void
 _cogl_texture_2d_gl_generate_mipmap (CoglTexture2D *tex_2d);
 
-void
+CoglBool
 _cogl_texture_2d_gl_copy_from_bitmap (CoglTexture2D *tex_2d,
                                       CoglBitmap *bitmap,
                                       int dst_x,
@@ -101,7 +101,8 @@ _cogl_texture_2d_gl_copy_from_bitmap (CoglTexture2D *tex_2d,
                                       int src_x,
                                       int src_y,
                                       int width,
-                                      int height);
+                                      int height,
+                                      CoglError **error);
 
 void
 _cogl_texture_2d_gl_get_data (CoglTexture2D *tex_2d,

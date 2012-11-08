@@ -453,5 +453,12 @@ _cogl_framebuffer_get_projection_entry (CoglFramebuffer *framebuffer)
   return projection_stack->last_entry;
 }
 
+CoglBool
+_cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
+                                           int x,
+                                           int y,
+                                           CoglReadPixelsFlags source,
+                                           CoglBitmap *bitmap,
+                                           CoglError **error);
 
 #endif /* __COGL_FRAMEBUFFER_PRIVATE_H */

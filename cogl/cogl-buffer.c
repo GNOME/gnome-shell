@@ -83,7 +83,8 @@ malloc_map_range (CoglBuffer *buffer,
                   size_t offset,
                   size_t size,
                   CoglBufferAccess access,
-                  CoglBufferMapHint hints)
+                  CoglBufferMapHint hints,
+                  CoglError **error)
 {
   buffer->flags |= COGL_BUFFER_FLAG_MAPPED;
   return buffer->data + offset;
@@ -96,10 +97,11 @@ malloc_unmap (CoglBuffer *buffer)
 }
 
 static CoglBool
-malloc_set_data (CoglBuffer   *buffer,
-                 unsigned int  offset,
-                 const void   *data,
-                 unsigned int  size)
+malloc_set_data (CoglBuffer *buffer,
+                 unsigned int offset,
+                 const void *data,
+                 unsigned int size,
+                 CoglError **error)
 {
   memcpy (buffer->data + offset, data, size);
   return TRUE;
@@ -214,13 +216,28 @@ warn_about_midscene_changes (void)
 }
 
 void *
-cogl_buffer_map (CoglBuffer        *buffer,
-                 CoglBufferAccess   access,
-                 CoglBufferMapHint  hints)
+_cogl_buffer_map (CoglBuffer *buffer,
+                  CoglBufferAccess access,
+                  CoglBufferMapHint hints,
+                  CoglError **error)
 {
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_buffer (buffer), NULL);
 
-  return cogl_buffer_map_range (buffer, 0, buffer->size, access, hints);
+  return cogl_buffer_map_range (buffer, 0, buffer->size, access, hints, error);
+}
+
+void *
+cogl_buffer_map (CoglBuffer *buffer,
+                 CoglBufferAccess access,
+                 CoglBufferMapHint hints)
+{
+  CoglError *ignore_error = NULL;
+  void *ptr =
+    cogl_buffer_map_range (buffer, 0, buffer->size, access, hints,
+                           &ignore_error);
+  if (!ptr)
+    cogl_error_free (ignore_error);
+  return ptr;
 }
 
 void *
@@ -228,21 +245,21 @@ cogl_buffer_map_range (CoglBuffer *buffer,
                        size_t offset,
                        size_t size,
                        CoglBufferAccess access,
-                       CoglBufferMapHint hints)
+                       CoglBufferMapHint hints,
+                       CoglError **error)
 {
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_buffer (buffer), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (!(buffer->flags & COGL_BUFFER_FLAG_MAPPED), NULL);
 
   if (G_UNLIKELY (buffer->immutable_ref))
     warn_about_midscene_changes ();
-
-  if (buffer->flags & COGL_BUFFER_FLAG_MAPPED)
-    return buffer->data;
 
   buffer->data = buffer->vtable.map_range (buffer,
                                            offset,
                                            size,
                                            access,
-                                           hints);
+                                           hints,
+                                           error);
 
   return buffer->data;
 }
@@ -272,6 +289,7 @@ _cogl_buffer_map_range_for_fill_or_fallback (CoglBuffer *buffer,
 {
   CoglContext *ctx = buffer->context;
   void *ret;
+  CoglError *ignore_error = NULL;
 
   _COGL_RETURN_VAL_IF_FAIL (!ctx->buffer_map_fallback_in_use, NULL);
 
@@ -281,23 +299,24 @@ _cogl_buffer_map_range_for_fill_or_fallback (CoglBuffer *buffer,
                                offset,
                                size,
                                COGL_BUFFER_ACCESS_WRITE,
-                               COGL_BUFFER_MAP_HINT_DISCARD);
+                               COGL_BUFFER_MAP_HINT_DISCARD,
+                               &ignore_error);
 
   if (ret)
     return ret;
-  else
-    {
-      /* If the map fails then we'll use a temporary buffer to fill
-         the data and then upload it using cogl_buffer_set_data when
-         the buffer is unmapped. The temporary buffer is shared to
-         avoid reallocating it every time */
-      g_byte_array_set_size (ctx->buffer_map_fallback_array, size);
-      ctx->buffer_map_fallback_offset = offset;
 
-      buffer->flags |= COGL_BUFFER_FLAG_MAPPED_FALLBACK;
+  cogl_error_free (ignore_error);
 
-      return ctx->buffer_map_fallback_array->data;
-    }
+  /* If the map fails then we'll use a temporary buffer to fill
+     the data and then upload it using cogl_buffer_set_data when
+     the buffer is unmapped. The temporary buffer is shared to
+     avoid reallocating it every time */
+  g_byte_array_set_size (ctx->buffer_map_fallback_array, size);
+  ctx->buffer_map_fallback_offset = offset;
+
+  buffer->flags |= COGL_BUFFER_FLAG_MAPPED_FALLBACK;
+
+  return ctx->buffer_map_fallback_array->data;
 }
 
 void
@@ -311,14 +330,45 @@ _cogl_buffer_unmap_for_fill_or_fallback (CoglBuffer *buffer)
 
   if ((buffer->flags & COGL_BUFFER_FLAG_MAPPED_FALLBACK))
     {
-      cogl_buffer_set_data (buffer,
-                            ctx->buffer_map_fallback_offset,
-                            ctx->buffer_map_fallback_array->data,
-                            ctx->buffer_map_fallback_array->len);
+      /* Note: don't try to catch OOM errors here since the use cases
+       * we currently have for this api (the journal and path stroke
+       * tesselator) don't have anything particularly sensible they
+       * can do in response to a failure anyway so it seems better to
+       * simply abort instead.
+       *
+       * If we find this is a problem for real world applications
+       * then in the path tesselation case we could potentially add an
+       * explicit cogl_path_tesselate_stroke() api that can throw an
+       * error for the app to cache. For the journal we could
+       * potentially flush the journal in smaller batches so we use
+       * smaller buffers, though that would probably not help for
+       * deferred renderers.
+       */
+      _cogl_buffer_set_data (buffer,
+                             ctx->buffer_map_fallback_offset,
+                             ctx->buffer_map_fallback_array->data,
+                             ctx->buffer_map_fallback_array->len,
+                             NULL);
       buffer->flags &= ~COGL_BUFFER_FLAG_MAPPED_FALLBACK;
     }
   else
     cogl_buffer_unmap (buffer);
+}
+
+CoglBool
+_cogl_buffer_set_data (CoglBuffer *buffer,
+                       size_t offset,
+                       const void *data,
+                       size_t size,
+                       CoglError **error)
+{
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_buffer (buffer), FALSE);
+  _COGL_RETURN_VAL_IF_FAIL ((offset + size) <= buffer->size, FALSE);
+
+  if (G_UNLIKELY (buffer->immutable_ref))
+    warn_about_midscene_changes ();
+
+  return buffer->vtable.set_data (buffer, offset, data, size, error);
 }
 
 CoglBool
@@ -327,13 +377,12 @@ cogl_buffer_set_data (CoglBuffer *buffer,
                       const void *data,
                       size_t size)
 {
-  _COGL_RETURN_VAL_IF_FAIL (cogl_is_buffer (buffer), FALSE);
-  _COGL_RETURN_VAL_IF_FAIL ((offset + size) <= buffer->size, FALSE);
-
-  if (G_UNLIKELY (buffer->immutable_ref))
-    warn_about_midscene_changes ();
-
-  return buffer->vtable.set_data (buffer, offset, data, size);
+  CoglError *ignore_error = NULL;
+  CoglBool status =
+    _cogl_buffer_set_data (buffer, offset, data, size, &ignore_error);
+  if (!status)
+    cogl_error_free (ignore_error);
+  return status;
 }
 
 CoglBuffer *

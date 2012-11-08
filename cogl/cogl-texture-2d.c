@@ -476,26 +476,31 @@ _cogl_texture_2d_ensure_non_quad_rendering (CoglTexture *tex)
 }
 
 static CoglBool
-_cogl_texture_2d_set_region (CoglTexture    *tex,
-                             int             src_x,
-                             int             src_y,
-                             int             dst_x,
-                             int             dst_y,
-                             unsigned int    width,
-                             unsigned int    height,
-                             CoglBitmap     *bmp)
+_cogl_texture_2d_set_region (CoglTexture *tex,
+                             int src_x,
+                             int src_y,
+                             int dst_x,
+                             int dst_y,
+                             int width,
+                             int height,
+                             CoglBitmap *bmp,
+                             CoglError **error)
 {
   CoglContext *ctx = tex->context;
   CoglTexture2D *tex_2d = COGL_TEXTURE_2D (tex);
 
-  ctx->driver_vtable->texture_2d_copy_from_bitmap (tex_2d,
-                                                   bmp,
-                                                   dst_x,
-                                                   dst_y,
-                                                   src_x,
-                                                   src_y,
-                                                   width,
-                                                   height);
+  if (!ctx->driver_vtable->texture_2d_copy_from_bitmap (tex_2d,
+                                                        bmp,
+                                                        dst_x,
+                                                        dst_y,
+                                                        src_x,
+                                                        src_y,
+                                                        width,
+                                                        height,
+                                                        error))
+    {
+      return FALSE;
+    }
 
   tex_2d->mipmaps_dirty = TRUE;
 

@@ -66,10 +66,11 @@ _cogl_pixel_buffer_free (CoglPixelBuffer *buffer);
 
 COGL_BUFFER_DEFINE (PixelBuffer, pixel_buffer)
 
-CoglPixelBuffer *
-cogl_pixel_buffer_new (CoglContext *context,
-                       size_t size,
-                       const void *data)
+static CoglPixelBuffer *
+_cogl_pixel_buffer_new (CoglContext *context,
+                        size_t size,
+                        const void *data,
+                        CoglError **error)
 {
   CoglPixelBuffer *pixel_buffer = g_slice_new0 (CoglPixelBuffer);
   CoglBuffer *buffer = COGL_BUFFER (pixel_buffer);
@@ -85,12 +86,32 @@ cogl_pixel_buffer_new (CoglContext *context,
   _cogl_pixel_buffer_object_new (pixel_buffer);
 
   if (data)
-    cogl_buffer_set_data (COGL_BUFFER (pixel_buffer),
-                          0,
-                          data,
-                          size);
+    {
+      if (!_cogl_buffer_set_data (COGL_BUFFER (pixel_buffer),
+                                  0,
+                                  data,
+                                  size,
+                                  error))
+        {
+          cogl_object_unref (pixel_buffer);
+          return NULL;
+        }
+    }
 
   return pixel_buffer;
+}
+
+CoglPixelBuffer *
+cogl_pixel_buffer_new (CoglContext *context,
+                       size_t size,
+                       const void *data)
+{
+  CoglError *ignore_error = NULL;
+  CoglPixelBuffer *buffer =
+    _cogl_pixel_buffer_new (context, size, data, &ignore_error);
+  if (!buffer)
+    cogl_error_free (ignore_error);
+  return buffer;
 }
 
 static void

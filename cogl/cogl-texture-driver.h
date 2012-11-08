@@ -63,7 +63,7 @@ struct _CoglTextureDriver
    *
    * XXX: sorry for the ridiculous number of arguments :-(
    */
-  void
+  CoglBool
   (* upload_subregion_to_gl) (CoglContext *ctx,
                               GLenum gl_target,
                               GLuint gl_handle,
@@ -76,7 +76,8 @@ struct _CoglTextureDriver
                               int height,
                               CoglBitmap *source_bmp,
                               GLuint source_gl_format,
-                              GLuint source_gl_type);
+                              GLuint source_gl_type,
+                              CoglError **error);
 
   /*
    * Replaces the contents of the GL texture with the entire bitmap. On
@@ -84,7 +85,7 @@ struct _CoglTextureDriver
    * to copy the bitmap if the rowstride is not a multiple of a possible
    * alignment value because there is no GL_UNPACK_ROW_LENGTH
    */
-  void
+  CoglBool
   (* upload_to_gl) (CoglContext *ctx,
                     GLenum gl_target,
                     GLuint gl_handle,
@@ -92,7 +93,8 @@ struct _CoglTextureDriver
                     CoglBitmap *source_bmp,
                     GLint internal_gl_format,
                     GLuint source_gl_format,
-                    GLuint source_gl_type);
+                    GLuint source_gl_type,
+                    CoglError **error);
 
   /*
    * Replaces the contents of the GL texture with the entire bitmap. The
@@ -101,7 +103,7 @@ struct _CoglTextureDriver
    * is the number of rows between images) is inferred by dividing the
    * height of the bitmap by the depth.
    */
-  void
+  CoglBool
   (* upload_to_gl_3d) (CoglContext *ctx,
                        GLenum gl_target,
                        GLuint gl_handle,
@@ -111,7 +113,8 @@ struct _CoglTextureDriver
                        CoglBitmap *source_bmp,
                        GLint internal_gl_format,
                        GLuint source_gl_format,
-                       GLuint source_gl_type);
+                       GLuint source_gl_type,
+                       CoglError **error);
 
   /*
    * This sets up the glPixelStore state for an download to a destination with

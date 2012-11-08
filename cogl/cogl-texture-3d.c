@@ -271,7 +271,6 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
   GLenum gl_intformat;
   GLenum gl_format;
   GLenum gl_type;
-  uint8_t *data;
   CoglContext *ctx;
 
   ctx = _cogl_bitmap_get_context (bmp);
@@ -293,14 +292,10 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
                                               &internal_format,
                                               &gl_intformat,
                                               &gl_format,
-                                              &gl_type);
-
+                                              &gl_type,
+                                              error);
   if (dst_bmp == NULL)
-    {
-      _cogl_set_error (error, COGL_BITMAP_ERROR, COGL_BITMAP_ERROR_FAILED,
-                       "Bitmap conversion failed");
-      return NULL;
-    }
+    return NULL;
 
   tex_3d = _cogl_texture_3d_create_base (ctx,
                                          bmp_width, height, depth,
@@ -308,32 +303,53 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
 
   /* Keep a copy of the first pixel so that if glGenerateMipmap isn't
      supported we can fallback to using GL_GENERATE_MIPMAP */
-  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN) &&
-      (data = _cogl_bitmap_map (dst_bmp,
-                                COGL_BUFFER_ACCESS_READ, 0)))
+  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
     {
+      CoglError *ignore = NULL;
+      uint8_t *data = _cogl_bitmap_map (dst_bmp,
+                                        COGL_BUFFER_ACCESS_READ, 0,
+                                        &ignore);
+
       CoglPixelFormat format = cogl_bitmap_get_format (dst_bmp);
+
       tex_3d->first_pixel.gl_format = gl_format;
       tex_3d->first_pixel.gl_type = gl_type;
-      memcpy (tex_3d->first_pixel.data, data,
-              _cogl_pixel_format_get_bytes_per_pixel (format));
 
-      _cogl_bitmap_unmap (dst_bmp);
+      if (data)
+        {
+          memcpy (tex_3d->first_pixel.data, data,
+                  _cogl_pixel_format_get_bytes_per_pixel (format));
+          _cogl_bitmap_unmap (dst_bmp);
+        }
+      else
+        {
+          g_warning ("Failed to read first pixel of bitmap for "
+                     "glGenerateMipmap fallback");
+          cogl_error_free (ignore);
+          memset (tex_3d->first_pixel.data, 0,
+                  _cogl_pixel_format_get_bytes_per_pixel (format));
+        }
     }
 
   tex_3d->gl_texture =
     ctx->texture_driver->gen (ctx, GL_TEXTURE_3D, internal_format);
 
-  ctx->texture_driver->upload_to_gl_3d (ctx,
-                                        GL_TEXTURE_3D,
-                                        tex_3d->gl_texture,
-                                        FALSE, /* is_foreign */
-                                        height,
-                                        depth,
-                                        dst_bmp,
-                                        gl_intformat,
-                                        gl_format,
-                                        gl_type);
+  if (!ctx->texture_driver->upload_to_gl_3d (ctx,
+                                             GL_TEXTURE_3D,
+                                             tex_3d->gl_texture,
+                                             FALSE, /* is_foreign */
+                                             height,
+                                             depth,
+                                             dst_bmp,
+                                             gl_intformat,
+                                             gl_format,
+                                             gl_type,
+                                             error))
+    {
+      cogl_object_unref (dst_bmp);
+      cogl_object_unref (tex_3d);
+      return NULL;
+    }
 
   tex_3d->gl_format = gl_intformat;
 
@@ -393,7 +409,8 @@ cogl_texture_3d_new_from_data (CoglContext *context,
 
       bmp_data = _cogl_bitmap_map (bitmap,
                                    COGL_BUFFER_ACCESS_WRITE,
-                                   COGL_BUFFER_MAP_HINT_DISCARD);
+                                   COGL_BUFFER_MAP_HINT_DISCARD,
+                                   error);
 
       if (bmp_data == NULL)
         {
@@ -569,17 +586,24 @@ _cogl_texture_3d_ensure_non_quad_rendering (CoglTexture *tex)
 }
 
 static CoglBool
-_cogl_texture_3d_set_region (CoglTexture    *tex,
-                             int             src_x,
-                             int             src_y,
-                             int             dst_x,
-                             int             dst_y,
-                             unsigned int    dst_width,
-                             unsigned int    dst_height,
-                             CoglBitmap     *bmp)
+_cogl_texture_3d_set_region (CoglTexture *tex,
+                             int src_x,
+                             int src_y,
+                             int dst_x,
+                             int dst_y,
+                             int dst_width,
+                             int dst_height,
+                             CoglBitmap *bmp,
+                             CoglError **error)
 {
   /* This function doesn't really make sense for 3D textures because
      it can't specify which image to upload to */
+  _cogl_set_error (error,
+                   COGL_SYSTEM_ERROR,
+                   COGL_SYSTEM_ERROR_UNSUPPORTED,
+                   "Setting a 2D region on a 3D texture isn't "
+                   "currently supported");
+
   return FALSE;
 }
 

@@ -467,8 +467,16 @@ _cogl_gl_flush_attributes_state (CoglFramebuffer *framebuffer,
         {
           attribute_buffer = cogl_attribute_get_buffer (attribute);
           buffer = COGL_BUFFER (attribute_buffer);
-          base = _cogl_buffer_gl_bind (buffer,
-                                       COGL_BUFFER_BIND_TARGET_ATTRIBUTE_BUFFER);
+
+          /* Note: we don't try and catch errors with binding buffers
+           * here since OOM errors at this point indicate that nothing
+           * has yet been uploaded to attribute buffer which we
+           * consider to be a programmer error.
+           */
+          base =
+            _cogl_buffer_gl_bind (buffer,
+                                  COGL_BUFFER_BIND_TARGET_ATTRIBUTE_BUFFER,
+                                  NULL);
 
           if (pipeline->progend == COGL_PIPELINE_PROGEND_GLSL)
             setup_generic_buffered_attribute (ctx, pipeline, attribute, base);

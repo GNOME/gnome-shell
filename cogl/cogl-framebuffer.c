@@ -1333,6 +1333,7 @@ _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
       y < framebuffer->clear_clip_y1)
     {
       uint8_t *pixel;
+      CoglError *ignore_error = NULL;
 
       /* we currently only care about cases where the premultiplied or
        * unpremultipled colors are equivalent... */
@@ -1341,9 +1342,13 @@ _cogl_framebuffer_try_fast_read_pixel (CoglFramebuffer *framebuffer,
 
       pixel = _cogl_bitmap_map (bitmap,
                                 COGL_BUFFER_ACCESS_WRITE,
-                                COGL_BUFFER_MAP_HINT_DISCARD);
+                                COGL_BUFFER_MAP_HINT_DISCARD,
+                                &ignore_error);
       if (pixel == NULL)
-        return FALSE;
+        {
+          cogl_error_free (ignore_error);
+          return FALSE;
+        }
 
       pixel[0] = framebuffer->clear_color_red * 255.0;
       pixel[1] = framebuffer->clear_color_green * 255.0;
@@ -1363,7 +1368,8 @@ _cogl_framebuffer_slow_read_pixels_workaround (CoglFramebuffer *framebuffer,
                                                int x,
                                                int y,
                                                CoglReadPixelsFlags source,
-                                               CoglBitmap *bitmap)
+                                               CoglBitmap *bitmap,
+                                               CoglError **error)
 {
   CoglContext *ctx;
   CoglPixelFormat format;
@@ -1371,6 +1377,8 @@ _cogl_framebuffer_slow_read_pixels_workaround (CoglFramebuffer *framebuffer,
   int width;
   int height;
   CoglBool res;
+  uint8_t *dst;
+  const uint8_t *src;
 
   _COGL_RETURN_VAL_IF_FAIL (source & COGL_READ_PIXELS_COLOR_BUFFER, FALSE);
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_framebuffer (framebuffer), FALSE);
@@ -1382,67 +1390,66 @@ _cogl_framebuffer_slow_read_pixels_workaround (CoglFramebuffer *framebuffer,
   format = cogl_bitmap_get_format (bitmap);
 
   pbo = cogl_bitmap_new_with_size (ctx, width, height, format);
-  if (pbo == NULL)
-    return FALSE;
 
   /* Read into the pbo. We need to disable the flipping because the
      blit fast path in the driver does not work with
      GL_PACK_INVERT_MESA is set */
-  res = cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
-                                                  x, y,
-                                                  source |
-                                                  COGL_READ_PIXELS_NO_FLIP,
-                                                  pbo);
-
-  if (res)
+  res = _cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
+                                                   x, y,
+                                                   source |
+                                                   COGL_READ_PIXELS_NO_FLIP,
+                                                   pbo,
+                                                   error);
+  if (!res)
     {
-      uint8_t *dst;
-
-      /* Copy the pixels back into application's buffer */
-      dst = _cogl_bitmap_map (bitmap,
-                              COGL_BUFFER_ACCESS_WRITE,
-                              COGL_BUFFER_MAP_HINT_DISCARD);
-
-      if (dst == NULL)
-        res = FALSE;
-      else
-        {
-          const uint8_t *src;
-
-          src = _cogl_bitmap_map (pbo,
-                                  COGL_BUFFER_ACCESS_READ,
-                                  0 /* hints */);
-          if (src == NULL)
-            res = FALSE;
-          else
-            {
-              int src_rowstride = cogl_bitmap_get_rowstride (pbo);
-              int dst_rowstride = cogl_bitmap_get_rowstride (bitmap);
-              int to_copy =
-                _cogl_pixel_format_get_bytes_per_pixel (format) * width;
-              int y;
-
-              /* If the framebuffer is onscreen we need to flip the
-                 data while copying */
-              if (!cogl_is_offscreen (framebuffer))
-                {
-                  src += src_rowstride * (height - 1);
-                  src_rowstride = -src_rowstride;
-                }
-
-              for (y = 0; y < height; y++)
-                {
-                  memcpy (dst, src, to_copy);
-                  dst += dst_rowstride;
-                  src += src_rowstride;
-                }
-
-              _cogl_bitmap_unmap (pbo);
-            }
-
-          _cogl_bitmap_unmap (bitmap);
-        }
+      cogl_object_unref (pbo);
+      return FALSE;
     }
+
+  /* Copy the pixels back into application's buffer */
+  dst = _cogl_bitmap_map (bitmap,
+                          COGL_BUFFER_ACCESS_WRITE,
+                          COGL_BUFFER_MAP_HINT_DISCARD,
+                          error);
+  if (!dst)
+    {
+      cogl_object_unref (pbo);
+      return FALSE;
+    }
+
+  src = _cogl_bitmap_map (pbo,
+                          COGL_BUFFER_ACCESS_READ,
+                          0, /* hints */
+                          error);
+  if (src)
+    {
+      int src_rowstride = cogl_bitmap_get_rowstride (pbo);
+      int dst_rowstride = cogl_bitmap_get_rowstride (bitmap);
+      int to_copy =
+        _cogl_pixel_format_get_bytes_per_pixel (format) * width;
+      int y;
+
+      /* If the framebuffer is onscreen we need to flip the
+         data while copying */
+      if (!cogl_is_offscreen (framebuffer))
+        {
+          src += src_rowstride * (height - 1);
+          src_rowstride = -src_rowstride;
+        }
+
+      for (y = 0; y < height; y++)
+        {
+          memcpy (dst, src, to_copy);
+          dst += dst_rowstride;
+          src += src_rowstride;
+        }
+
+      _cogl_bitmap_unmap (pbo);
+    }
+  else
+    res = FALSE;
+
+  _cogl_bitmap_unmap (bitmap);
 
   cogl_object_unref (pbo);
 
@@ -1450,11 +1457,12 @@ _cogl_framebuffer_slow_read_pixels_workaround (CoglFramebuffer *framebuffer,
 }
 
 CoglBool
-cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
-                                          int x,
-                                          int y,
-                                          CoglReadPixelsFlags source,
-                                          CoglBitmap *bitmap)
+_cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
+                                           int x,
+                                           int y,
+                                           CoglReadPixelsFlags source,
+                                           CoglBitmap *bitmap,
+                                           CoglError **error)
 {
   CoglContext *ctx;
   int framebuffer_height;
@@ -1466,11 +1474,13 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
   CoglBool pack_invert_set;
   int width;
   int height;
+  int status = FALSE;
+  CoglError *ignore_error = NULL;
 
   _COGL_RETURN_VAL_IF_FAIL (source & COGL_READ_PIXELS_COLOR_BUFFER, FALSE);
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_framebuffer (framebuffer), FALSE);
 
-  if (!cogl_framebuffer_allocate (framebuffer, NULL))
+  if (!cogl_framebuffer_allocate (framebuffer, error))
     return FALSE;
 
   ctx = cogl_framebuffer_get_context (framebuffer);
@@ -1515,10 +1525,17 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
       (width > 8 || height > 8) &&
       (format & ~COGL_PREMULT_BIT) == COGL_PIXEL_FORMAT_BGRA_8888 &&
       cogl_bitmap_get_buffer (bitmap) == NULL)
-    return _cogl_framebuffer_slow_read_pixels_workaround (framebuffer,
-                                                          x, y,
-                                                          source,
-                                                          bitmap);
+    {
+
+      if (_cogl_framebuffer_slow_read_pixels_workaround (framebuffer,
+                                                         x, y,
+                                                         source,
+                                                         bitmap,
+                                                         &ignore_error))
+        return TRUE;
+      else
+        cogl_error_free (ignore_error);
+    }
 
   /* make sure any batched primitives get emitted to the GL driver
    * before issuing our read pixels...
@@ -1578,7 +1595,7 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
       CoglPixelFormat read_format;
       int bpp, rowstride;
       uint8_t *tmp_data;
-      int succeeded;
+      CoglBool succeeded;
 
       if ((ctx->private_feature_flags &
            COGL_PRIVATE_FEATURE_READ_PIXELS_ANY_FORMAT))
@@ -1605,9 +1622,13 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
                                                         width,
                                                         bpp);
 
+      /* Note: we don't worry about catching errors here since we know
+       * we won't be lazily allocating storage for this buffer so it
+       * won't fail due to lack of memory. */
       tmp_data = _cogl_bitmap_gl_bind (tmp_bmp,
                                        COGL_BUFFER_ACCESS_WRITE,
-                                       COGL_BUFFER_MAP_HINT_DISCARD);
+                                       COGL_BUFFER_MAP_HINT_DISCARD,
+                                       NULL);
 
       GE( ctx, glReadPixels (x, y, width, height,
                              gl_format, gl_type,
@@ -1615,12 +1636,12 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
 
       _cogl_bitmap_gl_unbind (tmp_bmp);
 
-      succeeded = _cogl_bitmap_convert_into_bitmap (tmp_bmp, bitmap);
+      succeeded = _cogl_bitmap_convert_into_bitmap (tmp_bmp, bitmap, error);
 
       cogl_object_unref (tmp_bmp);
 
       if (!succeeded)
-        return FALSE;
+        goto EXIT;
     }
   else
     {
@@ -1629,6 +1650,7 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
       int bpp, rowstride;
       CoglBool succeeded = FALSE;
       uint8_t *pixels;
+      CoglError *internal_error = NULL;
 
       rowstride = cogl_bitmap_get_rowstride (bitmap);
 
@@ -1658,7 +1680,17 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
 
       pixels = _cogl_bitmap_gl_bind (shared_bmp,
                                      COGL_BUFFER_ACCESS_WRITE,
-                                     0 /* hints */);
+                                     0, /* hints */
+                                     &internal_error);
+      /* NB: _cogl_bitmap_gl_bind() can return NULL in sucessfull
+       * cases so we have to explicitly check the cogl error pointer
+       * to know if there was a problem */
+      if (internal_error)
+        {
+          cogl_object_unref (shared_bmp);
+          _cogl_propogate_error (error, internal_error);
+          goto EXIT;
+        }
 
       GE( ctx, glReadPixels (x, y,
                              width, height,
@@ -1670,20 +1702,14 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
       /* Convert to the premult format specified by the caller
          in-place. This will do nothing if the premult status is already
          correct. */
-      if (_cogl_bitmap_convert_premult_status (shared_bmp, format))
+      if (_cogl_bitmap_convert_premult_status (shared_bmp, format, error))
         succeeded = TRUE;
 
       cogl_object_unref (shared_bmp);
 
       if (!succeeded)
-        return FALSE;
+        goto EXIT;
     }
-
-  /* Currently this function owns the pack_invert state and we don't want this
-   * to interfere with other Cogl components so all other code can assume that
-   * we leave the pack_invert state off. */
-  if (pack_invert_set)
-    GE (ctx, glPixelStorei (GL_PACK_INVERT_MESA, FALSE));
 
   /* NB: All offscreen rendering is done upside down so there is no need
    * to flip in this case... */
@@ -1699,10 +1725,11 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
       pixels = _cogl_bitmap_map (bitmap,
                                  COGL_BUFFER_ACCESS_READ |
                                  COGL_BUFFER_ACCESS_WRITE,
-                                 0 /* hints */);
+                                 0, /* hints */
+                                 error);
 
       if (pixels == NULL)
-        return FALSE;
+        goto EXIT;
 
       temprow = g_alloca (rowstride * sizeof (uint8_t));
 
@@ -1724,7 +1751,34 @@ cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
       _cogl_bitmap_unmap (bitmap);
     }
 
-  return TRUE;
+  status = TRUE;
+
+EXIT:
+
+  /* Currently this function owns the pack_invert state and we don't want this
+   * to interfere with other Cogl components so all other code can assume that
+   * we leave the pack_invert state off. */
+  if (pack_invert_set)
+    GE (ctx, glPixelStorei (GL_PACK_INVERT_MESA, FALSE));
+
+  return status;
+}
+
+CoglBool
+cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
+                                          int x,
+                                          int y,
+                                          CoglReadPixelsFlags source,
+                                          CoglBitmap *bitmap)
+{
+  CoglError *ignore_error = NULL;
+  CoglBool status =
+    _cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
+                                               x, y, source, bitmap,
+                                               &ignore_error);
+  if (!status)
+    cogl_error_free (ignore_error);
+  return status;
 }
 
 CoglBool
@@ -1745,10 +1799,17 @@ cogl_framebuffer_read_pixels (CoglFramebuffer *framebuffer,
                                      format,
                                      bpp * width, /* rowstride */
                                      pixels);
-  ret = cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
-                                                  x, y,
-                                                  COGL_READ_PIXELS_COLOR_BUFFER,
-                                                  bitmap);
+
+  /* Note: we don't try and catch errors here since we created the
+   * bitmap storage up-front and can assume we wont hit an
+   * out-of-memory error which should be the only exception
+   * this api throws.
+   */
+  ret = _cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
+                                                   x, y,
+                                                   COGL_READ_PIXELS_COLOR_BUFFER,
+                                                   bitmap,
+                                                   NULL);
   cogl_object_unref (bitmap);
 
   return ret;
@@ -2378,8 +2439,9 @@ get_wire_line_indices (CoglContext *ctx,
   if (user_indices)
     {
       index_buffer = cogl_indices_get_buffer (user_indices);
-      indices = cogl_buffer_map (COGL_BUFFER (index_buffer),
-                                 COGL_BUFFER_ACCESS_READ, 0);
+      indices = _cogl_buffer_map (COGL_BUFFER (index_buffer),
+                                  COGL_BUFFER_ACCESS_READ, 0,
+                                  NULL);
       indices_type = cogl_indices_get_type (user_indices);
     }
   else

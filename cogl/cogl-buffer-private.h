@@ -45,14 +45,16 @@ struct _CoglBufferVtable
                         size_t offset,
                         size_t size,
                         CoglBufferAccess access,
-                        CoglBufferMapHint hints);
+                        CoglBufferMapHint hints,
+                        CoglError **error);
 
   void (* unmap) (CoglBuffer *buffer);
 
-  CoglBool (* set_data) (CoglBuffer   *buffer,
-                         unsigned int  offset,
-                         const void   *data,
-                         unsigned int  size);
+  CoglBool (* set_data) (CoglBuffer *buffer,
+                         unsigned int offset,
+                         const void *data,
+                         unsigned int size,
+                         CoglError **error);
 };
 
 typedef enum _CoglBufferFlags
@@ -136,6 +138,19 @@ _cogl_buffer_immutable_ref (CoglBuffer *buffer);
 
 void
 _cogl_buffer_immutable_unref (CoglBuffer *buffer);
+
+CoglBool
+_cogl_buffer_set_data (CoglBuffer *buffer,
+                       size_t offset,
+                       const void *data,
+                       size_t size,
+                       CoglError **error);
+
+void *
+_cogl_buffer_map (CoglBuffer *buffer,
+                  CoglBufferAccess access,
+                  CoglBufferMapHint hints,
+                  CoglError **error);
 
 /* This is a wrapper around cogl_buffer_map_range for internal use
    when we want to map the buffer for write only to replace the entire

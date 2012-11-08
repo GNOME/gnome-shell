@@ -190,8 +190,11 @@ struct _CoglDriverVtable
 
   /* Initialize the specified region of storage of the given texture
    * with the contents of the specified bitmap region
+   *
+   * Since this may need to create the underlying storage first
+   * it may throw a NO_MEMORY error.
    */
-  void
+  CoglBool
   (* texture_2d_copy_from_bitmap) (CoglTexture2D *tex_2d,
                                    CoglBitmap *bitmap,
                                    int dst_x,
@@ -199,7 +202,8 @@ struct _CoglDriverVtable
                                    int src_x,
                                    int src_y,
                                    int width,
-                                   int height);
+                                   int height,
+                                   CoglError **error);
 
   /* Reads back the full contents of the given texture and write it to
    * @data in the given @format and with the given @rowstride.
@@ -244,7 +248,8 @@ struct _CoglDriverVtable
                         size_t offset,
                         size_t size,
                         CoglBufferAccess access,
-                        CoglBufferMapHint hints);
+                        CoglBufferMapHint hints,
+                        CoglError **error);
 
   /* Unmaps a buffer */
   void
@@ -256,7 +261,8 @@ struct _CoglDriverVtable
   (* buffer_set_data) (CoglBuffer *buffer,
                        unsigned int offset,
                        const void *data,
-                       unsigned int size);
+                       unsigned int size,
+                       CoglError **error);
 };
 
 #endif /* __COGL_DRIVER_H */

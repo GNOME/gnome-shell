@@ -173,13 +173,13 @@ cogl_texture_new_from_file (const char       *filename,
  * Since: 0.8
  */
 CoglTexture *
-cogl_texture_new_from_data (unsigned int      width,
-                            unsigned int      height,
-                            CoglTextureFlags  flags,
-                            CoglPixelFormat   format,
-                            CoglPixelFormat   internal_format,
-                            unsigned int      rowstride,
-                            const uint8_t     *data);
+cogl_texture_new_from_data (int width,
+                            int height,
+                            CoglTextureFlags flags,
+                            CoglPixelFormat format,
+                            CoglPixelFormat internal_format,
+                            int rowstride,
+                            const uint8_t *data);
 
 /**
  * cogl_texture_new_from_foreign:

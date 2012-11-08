@@ -100,11 +100,13 @@ _cogl_bitmap_new_shared (CoglBitmap      *shared_bmp,
 
 CoglBitmap *
 _cogl_bitmap_convert (CoglBitmap *bmp,
-		      CoglPixelFormat   dst_format);
+		      CoglPixelFormat dst_format,
+                      CoglError **error);
 
 CoglBool
 _cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
-                                  CoglBitmap *dst_bmp);
+                                  CoglBitmap *dst_bmp,
+                                  CoglError **error);
 
 CoglBitmap *
 _cogl_bitmap_from_file (CoglContext *ctx,
@@ -120,28 +122,33 @@ _cogl_android_bitmap_new_from_asset (CoglContext *ctx,
 #endif
 
 CoglBool
-_cogl_bitmap_unpremult (CoglBitmap *dst_bmp);
+_cogl_bitmap_unpremult (CoglBitmap *dst_bmp,
+                        CoglError **error);
 
 CoglBool
-_cogl_bitmap_premult (CoglBitmap *dst_bmp);
+_cogl_bitmap_premult (CoglBitmap *dst_bmp,
+                      CoglError **error);
 
 CoglBool
-_cogl_bitmap_convert_premult_status (CoglBitmap      *bmp,
-                                     CoglPixelFormat  dst_format);
+_cogl_bitmap_convert_premult_status (CoglBitmap *bmp,
+                                     CoglPixelFormat dst_format,
+                                     CoglError **error);
 
 CoglBool
 _cogl_bitmap_copy_subregion (CoglBitmap *src,
 			     CoglBitmap *dst,
-			     int         src_x,
-			     int         src_y,
-			     int         dst_x,
-			     int         dst_y,
-			     int         width,
-			     int         height);
+			     int src_x,
+			     int src_y,
+			     int dst_x,
+			     int dst_y,
+			     int width,
+			     int height,
+                             CoglError **error);
 
 /* Creates a deep copy of the source bitmap */
 CoglBitmap *
-_cogl_bitmap_copy (CoglBitmap *src_bmp);
+_cogl_bitmap_copy (CoglBitmap *src_bmp,
+                   CoglError **error);
 
 CoglBool
 _cogl_bitmap_get_size_from_file (const char *filename,
@@ -163,7 +170,8 @@ _cogl_bitmap_set_format (CoglBitmap *bitmap,
 uint8_t *
 _cogl_bitmap_map (CoglBitmap *bitmap,
                   CoglBufferAccess access,
-                  CoglBufferMapHint hints);
+                  CoglBufferMapHint hints,
+                  CoglError **error);
 
 void
 _cogl_bitmap_unmap (CoglBitmap *bitmap);
@@ -180,7 +188,8 @@ _cogl_bitmap_unmap (CoglBitmap *bitmap);
 uint8_t *
 _cogl_bitmap_gl_bind (CoglBitmap *bitmap,
                       CoglBufferAccess access,
-                      CoglBufferMapHint hints);
+                      CoglBufferMapHint hints,
+                      CoglError **error);
 
 void
 _cogl_bitmap_gl_unbind (CoglBitmap *bitmap);

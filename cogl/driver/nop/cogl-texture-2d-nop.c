@@ -135,7 +135,7 @@ _cogl_texture_2d_nop_generate_mipmap (CoglTexture2D *tex_2d)
 {
 }
 
-void
+CoglBool
 _cogl_texture_2d_nop_copy_from_bitmap (CoglTexture2D *tex_2d,
                                        CoglBitmap *bitmap,
                                        int dst_x,
@@ -143,8 +143,10 @@ _cogl_texture_2d_nop_copy_from_bitmap (CoglTexture2D *tex_2d,
                                        int src_x,
                                        int src_y,
                                        int width,
-                                       int height)
+                                       int height,
+                                       CoglError **error)
 {
+  return TRUE;
 }
 
 void
