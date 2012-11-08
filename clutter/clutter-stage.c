@@ -50,6 +50,7 @@
 #include <cairo.h>
 
 #define CLUTTER_DISABLE_DEPRECATION_WARNINGS
+#define CLUTTER_ENABLE_EXPERIMENTAL_API
 
 #include "clutter-stage.h"
 #include "deprecated/clutter-stage.h"
@@ -144,6 +145,8 @@ struct _ClutterStagePrivate
   ClutterPickMode pick_buffer_mode;
 
   CoglFramebuffer *active_framebuffer;
+
+  gint sync_delay;
 
   GTimer *fps_timer;
   gint32 timer_n_frames;
@@ -930,6 +933,7 @@ _clutter_stage_queue_event (ClutterStage *stage,
     {
       ClutterMasterClock *master_clock = _clutter_master_clock_get_default ();
       _clutter_master_clock_start_running (master_clock);
+      _clutter_stage_schedule_update (stage);
     }
 
   /* if needed, update the state of the input device of the event.
@@ -1250,7 +1254,11 @@ clutter_stage_real_queue_relayout (ClutterActor *self)
   ClutterStagePrivate *priv = stage->priv;
   ClutterActorClass *parent_class;
 
-  priv->relayout_pending = TRUE;
+  if (!priv->relayout_pending)
+    {
+      _clutter_stage_schedule_update (stage);
+      priv->relayout_pending = TRUE;
+    }
 
   /* chain up */
   parent_class = CLUTTER_ACTOR_CLASS (clutter_stage_parent_class);
@@ -2273,6 +2281,7 @@ clutter_stage_init (ClutterStage *self)
   priv->use_fog = FALSE;
   priv->throttle_motion_events = TRUE;
   priv->min_size_changed = FALSE;
+  priv->sync_delay = -1;
 
   /* XXX - we need to keep the invariant that calling
    * clutter_set_motion_event_enabled() before the stage creation
@@ -3584,6 +3593,10 @@ clutter_stage_ensure_redraw (ClutterStage *stage)
   g_return_if_fail (CLUTTER_IS_STAGE (stage));
 
   priv = stage->priv;
+
+  if (!priv->relayout_pending && !priv->redraw_pending)
+    _clutter_stage_schedule_update (stage);
+
   priv->relayout_pending = TRUE;
   priv->redraw_pending = TRUE;
 
@@ -3851,9 +3864,25 @@ clutter_stage_get_minimum_size (ClutterStage *stage,
     *height_p = (guint) height;
 }
 
-/* Returns the number of swap buffers pending completion for the stage */
-int
-_clutter_stage_get_pending_swaps (ClutterStage *stage)
+void
+_clutter_stage_schedule_update (ClutterStage *stage)
+{
+  ClutterStageWindow *stage_window;
+
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (stage))
+    return;
+
+  stage_window = _clutter_stage_get_window (stage);
+  if (stage_window == NULL)
+    return;
+
+  return _clutter_stage_window_schedule_update (stage_window,
+                                                stage->priv->sync_delay);
+}
+
+/* Returns the earliest time the stage is ready to update */
+gint64
+_clutter_stage_get_update_time (ClutterStage *stage)
 {
   ClutterStageWindow *stage_window;
 
@@ -3864,7 +3893,17 @@ _clutter_stage_get_pending_swaps (ClutterStage *stage)
   if (stage_window == NULL)
     return 0;
 
-  return _clutter_stage_window_get_pending_swaps (stage_window);
+  return _clutter_stage_window_get_update_time (stage_window);
+}
+
+void
+_clutter_stage_clear_update_time (ClutterStage *stage)
+{
+  ClutterStageWindow *stage_window;
+
+  stage_window = _clutter_stage_get_window (stage);
+  if (stage_window)
+    _clutter_stage_window_clear_update_time (stage_window);
 }
 
 /**
@@ -3998,6 +4037,7 @@ _clutter_stage_queue_actor_redraw (ClutterStage *stage,
 
       CLUTTER_NOTE (PAINT, "First redraw request");
 
+      _clutter_stage_schedule_update (stage);
       priv->redraw_pending = TRUE;
 
       master_clock = _clutter_master_clock_get_default ();
@@ -4486,4 +4526,59 @@ _clutter_stage_update_state (ClutterStage      *stage,
   _clutter_event_push (event, FALSE);
 
   return TRUE;
+}
+
+/**
+ * clutter_stage_set_sync_delay:
+ * @stage: a #ClutterStage
+ * @sync_delay: number of milliseconds after frame presentation to wait
+ *   before painting the next frame. If less than zero, restores the
+ *   default behavior where redraw is throttled to the refresh rate but
+ *   not synchronized to it.
+ *
+ * This function enables an alternate behavior where Clutter draws at
+ * a fixed point in time after the frame presentation time (also known
+ * as the VBlank time). This is most useful when the application
+ * wants to show incoming data with predictable latency. (The primary
+ * example of this would be a window system compositor.) By synchronizing
+ * to provide new data before Clutter redraws, an external source of
+ * updates (in the compositor, an application) can get a reliable latency.
+ *
+ * The appropriate value of @sync_delay depends on the complexity of
+ * drawing the stage's scene graph - in general a value of between 0
+ * and 8 ms (up to one-half of a typical 60hz frame rate) is appropriate.
+ * using a larger value will reduce latency but risks skipping a frame if
+ * drawing the stage takes too long.
+ *
+ * Since: 1.14
+ * Stability: unstable
+ */
+void
+clutter_stage_set_sync_delay (ClutterStage *stage,
+                              gint          sync_delay)
+{
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  stage->priv->sync_delay = sync_delay;
+}
+
+/**
+ * clutter_stage_skip_sync_delay:
+ * @stage: a #ClutterStage
+ *
+ * Causes the next frame for the stage to be drawn as quickly as
+ * possible, ignoring any delay that clutter_stage_set_sync_delay()
+ * would normally cause.
+ *
+ * Since: 1.14
+ * Stability: unstable
+ */
+void
+clutter_stage_skip_sync_delay (ClutterStage *stage)
+{
+  ClutterStageWindow *stage_window;
+
+  stage_window = _clutter_stage_get_window (stage);
+  if (stage_window)
+    _clutter_stage_window_schedule_update (stage_window, -1);
 }

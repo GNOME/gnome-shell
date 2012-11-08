@@ -71,28 +71,53 @@ clutter_stage_cogl_unrealize (ClutterStageWindow *stage_window)
 
   if (stage_cogl->onscreen != NULL)
     {
+      cogl_onscreen_remove_frame_callback (stage_cogl->onscreen,
+                                           stage_cogl->frame_closure);
+      stage_cogl->frame_closure = NULL;
+
       cogl_object_unref (stage_cogl->onscreen);
       stage_cogl->onscreen = NULL;
     }
 }
 
 static void
-handle_swap_complete_cb (CoglFramebuffer *framebuffer,
-                         void *user_data)
+frame_cb (CoglOnscreen  *onscreen,
+          CoglFrameEvent event,
+          CoglFrameInfo *info,
+          void          *user_data)
 {
   ClutterStageCogl *stage_cogl = user_data;
 
-  /* Early versions of the swap_event implementation in Mesa
-   * deliver BufferSwapComplete event when not selected for,
-   * so if we get a swap event we aren't expecting, just ignore it.
-   *
-   * https://bugs.freedesktop.org/show_bug.cgi?id=27962
-   *
-   * FIXME: This issue can be hidden inside Cogl so we shouldn't
-   * need to care about this bug here.
-   */
-  if (stage_cogl->pending_swaps > 0)
-    stage_cogl->pending_swaps--;
+  if (event == COGL_FRAME_EVENT_SYNC)
+    {
+      /* Early versions of the swap_event implementation in Mesa
+       * deliver BufferSwapComplete event when not selected for,
+       * so if we get a swap event we aren't expecting, just ignore it.
+       *
+       * https://bugs.freedesktop.org/show_bug.cgi?id=27962
+       *
+       * FIXME: This issue can be hidden inside Cogl so we shouldn't
+       * need to care about this bug here.
+       */
+      if (stage_cogl->pending_swaps > 0)
+        stage_cogl->pending_swaps--;
+    }
+  else if (event == COGL_FRAME_EVENT_COMPLETE)
+    {
+      gint64 presentation_time_cogl = cogl_frame_info_get_presentation_time (info);
+
+      if (presentation_time_cogl != 0)
+        {
+          CoglContext *context = cogl_framebuffer_get_context (COGL_FRAMEBUFFER (onscreen));
+          gint64 current_time_cogl = cogl_get_clock_time (context);
+          gint64 now = g_get_monotonic_time ();
+
+          stage_cogl->last_presentation_time =
+            now + (presentation_time_cogl - current_time_cogl) / 1000;
+        }
+
+      stage_cogl->refresh_rate = cogl_frame_info_get_refresh_rate (info);
+    }
 }
 
 static gboolean
@@ -134,23 +159,77 @@ clutter_stage_cogl_realize (ClutterStageWindow *stage_window)
    * will be ignored, so we need to make sure the stage size is
    * updated to this size. */
 
-  if (cogl_clutter_winsys_has_feature (COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT))
-    {
-      stage_cogl->swap_callback_id =
-        cogl_onscreen_add_swap_buffers_callback (stage_cogl->onscreen,
-                                                 handle_swap_complete_cb,
-                                                 stage_cogl);
-    }
-
+  stage_cogl->frame_closure =
+          cogl_onscreen_add_frame_callback (stage_cogl->onscreen,
+                                            frame_cb,
+                                            stage_cogl,
+                                            NULL);
   return TRUE;
 }
 
-static int
-clutter_stage_cogl_get_pending_swaps (ClutterStageWindow *stage_window)
+static void
+clutter_stage_cogl_schedule_update (ClutterStageWindow *stage_window,
+                                    gint                sync_delay)
+{
+  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+  gint64 now;
+  float refresh_rate;
+  gint64 refresh_interval;
+
+  if (stage_cogl->update_time != -1)
+    return;
+
+  now = g_get_monotonic_time ();
+
+  if (sync_delay < 0)
+    {
+      stage_cogl->update_time = now;
+      return;
+    }
+
+  /* We only extrapolate presentation times for 150ms  - this is somewhat
+   * arbitrary. The reasons it might not be accurate for larger times are
+   * that the refresh interval might be wrong or the vertical refresh
+   * might be downclocked if nothing is going on onscreen.
+   */
+  if (stage_cogl->last_presentation_time == 0||
+      stage_cogl->last_presentation_time < now - 150000)
+    {
+      stage_cogl->update_time = now;
+      return;
+    }
+
+  refresh_rate = stage_cogl->refresh_rate;
+  if (refresh_rate == 0.0)
+    refresh_rate = 60.0;
+
+  refresh_interval = (gint64) (0.5 + 1000000 / refresh_rate);
+  if (refresh_interval == 0)
+    refresh_interval = 16667; /* 1/60th second */
+
+  stage_cogl->update_time = stage_cogl->last_presentation_time + 1000 * sync_delay;
+
+  while (stage_cogl->update_time < now)
+    stage_cogl->update_time += refresh_interval;
+}
+
+static gint64
+clutter_stage_cogl_get_update_time (ClutterStageWindow *stage_window)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
 
-  return stage_cogl->pending_swaps;
+  if (stage_cogl->pending_swaps)
+    return -1; /* in the future, indefinite */
+
+  return stage_cogl->update_time;
+}
+
+static void
+clutter_stage_cogl_clear_update_time (ClutterStageWindow *stage_window)
+{
+  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+
+  stage_cogl->update_time = -1;
 }
 
 static ClutterActor *
@@ -620,7 +699,9 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->resize = clutter_stage_cogl_resize;
   iface->show = clutter_stage_cogl_show;
   iface->hide = clutter_stage_cogl_hide;
-  iface->get_pending_swaps = clutter_stage_cogl_get_pending_swaps;
+  iface->schedule_update = clutter_stage_cogl_schedule_update;
+  iface->get_update_time = clutter_stage_cogl_get_update_time;
+  iface->clear_update_time = clutter_stage_cogl_clear_update_time;
   iface->add_redraw_clip = clutter_stage_cogl_add_redraw_clip;
   iface->has_redraw_clips = clutter_stage_cogl_has_redraw_clips;
   iface->ignoring_redraw_clips = clutter_stage_cogl_ignoring_redraw_clips;
@@ -669,4 +750,8 @@ _clutter_stage_cogl_class_init (ClutterStageCoglClass *klass)
 static void
 _clutter_stage_cogl_init (ClutterStageCogl *stage)
 {
+  stage->last_presentation_time = 0;
+  stage->refresh_rate = 0.0;
+
+  stage->update_time = -1;
 }

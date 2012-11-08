@@ -139,23 +139,8 @@ master_clock_is_running (ClutterMasterClock *master_clock)
 {
   ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
   const GSList *stages, *l;
-  gboolean stage_free = FALSE;
 
   stages = clutter_stage_manager_peek_stages (stage_manager);
-
-  /* If all of the stages are busy waiting for a swap-buffers to complete
-   * then we stop the master clock... */
-  for (l = stages; l != NULL; l = l->next)
-    {
-      if (_clutter_stage_get_pending_swaps (l->data) == 0)
-        {
-          stage_free = TRUE;
-          break;
-        }
-    }
-
-  if (!stage_free)
-    return FALSE;
 
   if (master_clock->timelines)
     return TRUE;
@@ -176,6 +161,103 @@ master_clock_is_running (ClutterMasterClock *master_clock)
   return FALSE;
 }
 
+static gint
+master_clock_get_swap_wait_time (ClutterMasterClock *master_clock)
+{
+  ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
+  const GSList *stages, *l;
+  gint64 min_update_time = -1;
+
+  stages = clutter_stage_manager_peek_stages (stage_manager);
+
+  for (l = stages; l != NULL; l = l->next)
+    {
+      gint64 update_time = _clutter_stage_get_update_time (l->data);
+      if (min_update_time == -1 ||
+          (update_time != -1 && update_time < min_update_time))
+        min_update_time = update_time;
+    }
+
+  if (min_update_time == -1)
+    {
+      return -1;
+    }
+  else
+    {
+      gint64 now = g_source_get_time (master_clock->source);
+      if (min_update_time < now)
+        {
+          return 0;
+        }
+      else
+        {
+          gint64 delay_us = min_update_time - now;
+          return (delay_us + 999) / 1000;
+        }
+    }
+}
+
+static void
+master_clock_schedule_stage_updates (ClutterMasterClock *master_clock)
+{
+  ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
+  const GSList *stages, *l;
+
+  stages = clutter_stage_manager_peek_stages (stage_manager);
+
+  for (l = stages; l != NULL; l = l->next)
+    _clutter_stage_schedule_update (l->data);
+}
+
+static GSList *
+master_clock_list_ready_stages (ClutterMasterClock *master_clock)
+{
+  ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
+  const GSList *stages, *l;
+  GSList *result;
+
+  stages = clutter_stage_manager_peek_stages (stage_manager);
+
+  result = NULL;
+  for (l = stages; l != NULL; l = l->next)
+    {
+      gint64 update_time = _clutter_stage_get_update_time (l->data);
+
+      /* If a stage has a swap-buffers pending we don't want to draw to it
+       * in case the driver may block the CPU while it waits for the next
+       * backbuffer to become available.
+       *
+       * TODO: We should be able to identify if we are running triple or N
+       * buffered and in these cases we can still draw if there is 1 swap
+       * pending so we can hopefully always be ready to swap for the next
+       * vblank and really match the vsync frequency.
+       */
+      if (update_time != -1 && update_time <= master_clock->cur_tick)
+        result = g_slist_prepend (result, g_object_ref (l->data));
+    }
+
+  return g_slist_reverse (result);
+}
+
+static void
+master_clock_reschedule_stage_updates (ClutterMasterClock *master_clock,
+                                       GSList             *stages)
+{
+  const GSList *l;
+
+  for (l = stages; l != NULL; l = l->next)
+    {
+      /* Clear the old update time */
+      _clutter_stage_clear_update_time (l->data);
+
+      /* And if there is still work to be done, schedule a new one */
+      if (master_clock->timelines ||
+          _clutter_stage_has_queued_events (l->data) ||
+          _clutter_stage_needs_update (l->data))
+        _clutter_stage_schedule_update (l->data);
+    }
+}
+
 /*
  * master_clock_next_frame_delay:
  * @master_clock: a #ClutterMasterClock
@@ -189,9 +271,16 @@ static gint
 master_clock_next_frame_delay (ClutterMasterClock *master_clock)
 {
   gint64 now, next;
+  gint swap_delay;
 
   if (!master_clock_is_running (master_clock))
     return -1;
+
+  /* If all of the stages are busy waiting for a swap-buffers to complete
+   * then we wait for one to be ready.. */
+  swap_delay = master_clock_get_swap_wait_time (master_clock);
+  if (swap_delay != 0)
+    return swap_delay;
 
   /* When we have sync-to-vblank, we count on swap-buffer requests (or
    * swap-buffer-complete events if supported in the backend) to throttle our
@@ -274,14 +363,7 @@ master_clock_process_events (ClutterMasterClock *master_clock,
 
   /* Process queued events */
   for (l = stages; l != NULL; l = l->next)
-    {
-      /* NB: If a stage is busy waiting for a swap-buffers completion then
-       * we don't process its events so we can maximize the benefits of
-       * motion compression, and avoid multiple picks per frame.
-       */
-      if (_clutter_stage_get_pending_swaps (l->data) == 0)
-        _clutter_stage_process_queued_events (l->data);
-    }
+    _clutter_stage_process_queued_events (l->data);
 
   CLUTTER_TIMER_STOP (_clutter_uprof_context, master_event_process);
 
@@ -372,19 +454,7 @@ master_clock_update_stages (ClutterMasterClock *master_clock,
    * is advanced.
    */
   for (l = stages; l != NULL; l = l->next)
-    {
-      /* If a stage has a swap-buffers pending we don't want to draw to it
-       * in case the driver may block the CPU while it waits for the next
-       * backbuffer to become available.
-       *
-       * TODO: We should be able to identify if we are running triple or N
-       * buffered and in these cases we can still draw if there is 1 swap
-       * pending so we can hopefully always be ready to swap for the next
-       * vblank and really match the vsync frequency.
-       */
-      if (_clutter_stage_get_pending_swaps (l->data) == 0)
-        stages_updated |= _clutter_stage_do_update (l->data);
-    }
+    stages_updated |= _clutter_stage_do_update (l->data);
 
   _clutter_run_repaint_functions (CLUTTER_REPAINT_FLAGS_POST_PAINT);
 
@@ -474,7 +544,6 @@ clutter_clock_dispatch (GSource     *source,
 {
   ClutterClockSource *clock_source = (ClutterClockSource *) source;
   ClutterMasterClock *master_clock = clock_source->master_clock;
-  ClutterStageManager *stage_manager = clutter_stage_manager_get_default ();
   gboolean stages_updated = FALSE;
   GSList *stages;
 
@@ -498,10 +567,10 @@ clutter_clock_dispatch (GSource     *source,
 #endif
 
   /* We need to protect ourselves against stages being destroyed during
-   * event handling
+   * event handling - master_clock_list_ready_stages() returns a
+   * list of referenced that we'll unref afterwards.
    */
-  stages = clutter_stage_manager_list_stages (stage_manager);
-  g_slist_foreach (stages, (GFunc) g_object_ref, NULL);
+  stages = master_clock_list_ready_stages (master_clock);
 
   master_clock->idle = FALSE;
 
@@ -523,6 +592,8 @@ clutter_clock_dispatch (GSource     *source,
    * to polling for timeline progressions... */
   if (!stages_updated)
     master_clock->idle = TRUE;
+
+  master_clock_reschedule_stage_updates (master_clock, stages);
 
   g_slist_foreach (stages, (GFunc) g_object_unref, NULL);
   g_slist_free (stages);
@@ -617,7 +688,10 @@ _clutter_master_clock_add_timeline (ClutterMasterClock *master_clock,
                                              timeline);
 
   if (is_first)
-    _clutter_master_clock_start_running (master_clock);
+    {
+      master_clock_schedule_stage_updates (master_clock);
+      _clutter_master_clock_start_running (master_clock);
+    }
 }
 
 /*

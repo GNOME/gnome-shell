@@ -66,7 +66,9 @@ void     _clutter_stage_queue_event                       (ClutterStage *stage,
 gboolean _clutter_stage_has_queued_events                 (ClutterStage *stage);
 void     _clutter_stage_process_queued_events             (ClutterStage *stage);
 void     _clutter_stage_update_input_devices              (ClutterStage *stage);
-int      _clutter_stage_get_pending_swaps                 (ClutterStage *stage);
+void     _clutter_stage_schedule_update                   (ClutterStage *stage);
+gint64    _clutter_stage_get_update_time                  (ClutterStage *stage);
+void     _clutter_stage_clear_update_time                 (ClutterStage *stage);
 gboolean _clutter_stage_has_full_redraw_queued            (ClutterStage *stage);
 
 ClutterActor *_clutter_stage_do_pick (ClutterStage    *stage,

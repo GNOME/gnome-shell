@@ -202,6 +202,14 @@ void            clutter_stage_ensure_current                    (ClutterStage   
 void            clutter_stage_ensure_viewport                   (ClutterStage          *stage);
 void            clutter_stage_ensure_redraw                     (ClutterStage          *stage);
 
+#ifdef CLUTTER_ENABLE_EXPERIMENTAL_API
+CLUTTER_AVAILABLE_IN_1_14
+void            clutter_stage_set_sync_delay                    (ClutterStage          *stage,
+                                                                 gint                   sync_delay);
+CLUTTER_AVAILABLE_IN_1_14
+void            clutter_stage_skip_sync_delay                   (ClutterStage          *stage);
+#endif
+
 G_END_DECLS
 
 #endif /* __CLUTTER_STAGE_H__ */

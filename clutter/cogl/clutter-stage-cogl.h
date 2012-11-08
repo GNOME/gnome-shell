@@ -35,8 +35,12 @@ struct _ClutterStageCogl
 
   CoglOnscreen *onscreen;
 
+  gint64 last_presentation_time;
+  float refresh_rate;
+
+  gint64 update_time;
   gint pending_swaps;
-  unsigned int swap_callback_id;
+  CoglFrameClosure *frame_closure;
 
   /* We only enable clipped redraws after 2 frames, since we've seen
    * a lot of drivers can struggle to get going and may output some
