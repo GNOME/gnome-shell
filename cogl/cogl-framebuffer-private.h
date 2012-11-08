@@ -325,6 +325,8 @@ _cogl_push_framebuffers (CoglFramebuffer *draw_buffer,
 
 /*
  * _cogl_blit_framebuffer:
+ * @src: The source #CoglFramebuffer
+ * @dest: The destination #CoglFramebuffer
  * @src_x: Source x position
  * @src_y: Source y position
  * @dst_x: Destination x position
@@ -369,12 +371,14 @@ _cogl_push_framebuffers (CoglFramebuffer *draw_buffer,
  * a separate function to copy the entire buffer for a given mask.
  */
 void
-_cogl_blit_framebuffer (unsigned int src_x,
-                        unsigned int src_y,
-                        unsigned int dst_x,
-                        unsigned int dst_y,
-                        unsigned int width,
-                        unsigned int height);
+_cogl_blit_framebuffer (CoglFramebuffer *src,
+                        CoglFramebuffer *dest,
+                        int src_x,
+                        int src_y,
+                        int dst_x,
+                        int dst_y,
+                        int width,
+                        int height);
 
 void
 _cogl_framebuffer_push_projection (CoglFramebuffer *framebuffer);

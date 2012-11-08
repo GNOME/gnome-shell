@@ -98,6 +98,7 @@ _cogl_texture_2d_externally_modified (CoglTexture *texture);
 /*
  * _cogl_texture_2d_copy_from_framebuffer:
  * @texture: A #CoglTexture2D pointer
+ * @src_fb: A source #CoglFramebuffer to copy from
  * @dst_x: X-position to store the image within the texture
  * @dst_y: Y-position to store the image within the texture
  * @src_x: X-position to within the framebuffer to read from
@@ -105,11 +106,12 @@ _cogl_texture_2d_externally_modified (CoglTexture *texture);
  * @width: width of the rectangle to copy
  * @height: height of the rectangle to copy
  *
- * This copies a portion of the current read framebuffer into the
+ * This copies a portion of the given @src_fb into the
  * texture.
  */
 void
 _cogl_texture_2d_copy_from_framebuffer (CoglTexture2D *texture,
+                                        CoglFramebuffer *src_fb,
                                         int dst_x,
                                         int dst_y,
                                         int src_x,

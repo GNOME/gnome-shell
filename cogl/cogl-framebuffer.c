@@ -1820,38 +1820,32 @@ cogl_framebuffer_read_pixels (CoglFramebuffer *framebuffer,
 }
 
 void
-_cogl_blit_framebuffer (unsigned int src_x,
-                        unsigned int src_y,
-                        unsigned int dst_x,
-                        unsigned int dst_y,
-                        unsigned int width,
-                        unsigned int height)
+_cogl_blit_framebuffer (CoglFramebuffer *src,
+                        CoglFramebuffer *dest,
+                        int src_x,
+                        int src_y,
+                        int dst_x,
+                        int dst_y,
+                        int width,
+                        int height)
 {
-  CoglFramebuffer *draw_buffer;
-  CoglFramebuffer *read_buffer;
-  CoglContext *ctx;
-
-  /* FIXME: this function should take explit src and dst framebuffer
-   * arguments. */
-  draw_buffer = cogl_get_draw_framebuffer ();
-  read_buffer = _cogl_get_read_framebuffer ();
-  ctx = draw_buffer->context;
+  CoglContext *ctx = src->context;
 
   _COGL_RETURN_IF_FAIL (ctx->private_feature_flags &
-                    COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT);
+                        COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT);
 
   /* We can only support blitting between offscreen buffers because
      otherwise we would need to mirror the image and GLES2.0 doesn't
      support this */
-  _COGL_RETURN_IF_FAIL (cogl_is_offscreen (draw_buffer));
-  _COGL_RETURN_IF_FAIL (cogl_is_offscreen (read_buffer));
+  _COGL_RETURN_IF_FAIL (cogl_is_offscreen (src));
+  _COGL_RETURN_IF_FAIL (cogl_is_offscreen (dest));
   /* The buffers must be the same format */
-  _COGL_RETURN_IF_FAIL (draw_buffer->format == read_buffer->format);
+  _COGL_RETURN_IF_FAIL (src->format == dest->format);
 
   /* Make sure the current framebuffers are bound. We explicitly avoid
      flushing the clip state so we can bind our own empty state */
-  _cogl_framebuffer_flush_state (cogl_get_draw_framebuffer (),
-                                 _cogl_get_read_framebuffer (),
+  _cogl_framebuffer_flush_state (dest,
+                                 src,
                                  COGL_FRAMEBUFFER_STATE_ALL &
                                  ~COGL_FRAMEBUFFER_STATE_CLIP);
 
@@ -1859,7 +1853,7 @@ _cogl_blit_framebuffer (unsigned int src_x,
      by the scissor and we want to hide this feature for the Cogl API
      because it's not obvious to an app how the clip state will affect
      the scissor */
-  _cogl_clip_stack_flush (NULL, draw_buffer);
+  _cogl_clip_stack_flush (NULL, dest);
 
   /* XXX: Because we are manually flushing clip state here we need to
    * make sure that the clip state gets updated the next time we flush
@@ -1868,11 +1862,11 @@ _cogl_blit_framebuffer (unsigned int src_x,
   ctx->current_draw_buffer_changes |= COGL_FRAMEBUFFER_STATE_CLIP;
 
   ctx->glBlitFramebuffer (src_x, src_y,
-                     src_x + width, src_y + height,
-                     dst_x, dst_y,
-                     dst_x + width, dst_y + height,
-                     GL_COLOR_BUFFER_BIT,
-                     GL_NEAREST);
+                          src_x + width, src_y + height,
+                          dst_x, dst_y,
+                          dst_x + width, dst_y + height,
+                          GL_COLOR_BUFFER_BIT,
+                          GL_NEAREST);
 }
 
 void

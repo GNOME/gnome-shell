@@ -343,6 +343,7 @@ _cogl_texture_2d_externally_modified (CoglTexture *texture)
 
 void
 _cogl_texture_2d_copy_from_framebuffer (CoglTexture2D *tex_2d,
+                                        CoglFramebuffer *src_fb,
                                         int dst_x,
                                         int dst_y,
                                         int src_x,
@@ -350,15 +351,10 @@ _cogl_texture_2d_copy_from_framebuffer (CoglTexture2D *tex_2d,
                                         int width,
                                         int height)
 {
-  CoglContext *ctx;
-  CoglFramebuffer *read_fb = _cogl_get_read_framebuffer ();
-
-  _COGL_RETURN_IF_FAIL (cogl_is_texture_2d (tex_2d));
-
-  ctx = COGL_TEXTURE (tex_2d)->context;
+  CoglContext *ctx = COGL_TEXTURE (tex_2d)->context;
 
   ctx->driver_vtable->texture_2d_copy_from_framebuffer (tex_2d,
-                                                        read_fb,
+                                                        src_fb,
                                                         dst_x,
                                                         dst_y,
                                                         src_x,

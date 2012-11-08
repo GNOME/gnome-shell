@@ -63,7 +63,7 @@ _cogl_blit_texture_render_begin (CoglBlitData *data)
       return FALSE;
     }
 
-  data->fb = fb;
+  data->dest_fb = fb;
 
   dst_width = cogl_texture_get_width (data->dst_tex);
   dst_height = cogl_texture_get_height (data->dst_tex);
@@ -103,14 +103,14 @@ _cogl_blit_texture_render_begin (CoglBlitData *data)
 
 static void
 _cogl_blit_texture_render_blit (CoglBlitData *data,
-                                unsigned int src_x,
-                                unsigned int src_y,
-                                unsigned int dst_x,
-                                unsigned int dst_y,
-                                unsigned int width,
-                                unsigned int height)
+                                int src_x,
+                                int src_y,
+                                int dst_x,
+                                int dst_y,
+                                int width,
+                                int height)
 {
-  cogl_framebuffer_draw_textured_rectangle (data->fb,
+  cogl_framebuffer_draw_textured_rectangle (data->dest_fb,
                                             data->pipeline,
                                             dst_x, dst_y,
                                             dst_x + width,
@@ -139,7 +139,7 @@ _cogl_blit_texture_render_end (CoglBlitData *data)
   cogl_pipeline_set_layer_texture (ctx->blit_texture_pipeline, 0,
                                    data->dst_tex);
 
-  cogl_object_unref (data->fb);
+  cogl_object_unref (data->dest_fb);
 }
 
 static CoglBool
@@ -177,7 +177,8 @@ _cogl_blit_framebuffer_begin (CoglBlitData *data)
   if (!cogl_framebuffer_allocate (src_fb, NULL))
     goto error;
 
-  _cogl_push_framebuffers (dst_fb, src_fb);
+  data->src_fb = src_fb;
+  data->dest_fb = dst_fb;
 
   return TRUE;
 
@@ -193,14 +194,16 @@ error:
 
 static void
 _cogl_blit_framebuffer_blit (CoglBlitData *data,
-                             unsigned int src_x,
-                             unsigned int src_y,
-                             unsigned int dst_x,
-                             unsigned int dst_y,
-                             unsigned int width,
-                             unsigned int height)
+                             int src_x,
+                             int src_y,
+                             int dst_x,
+                             int dst_y,
+                             int width,
+                             int height)
 {
-  _cogl_blit_framebuffer (src_x, src_y,
+  _cogl_blit_framebuffer (data->src_fb,
+                          data->dest_fb,
+                          src_x, src_y,
                           dst_x, dst_y,
                           width, height);
 }
@@ -208,7 +211,8 @@ _cogl_blit_framebuffer_blit (CoglBlitData *data,
 static void
 _cogl_blit_framebuffer_end (CoglBlitData *data)
 {
-  cogl_pop_framebuffer ();
+  cogl_object_unref (data->src_fb);
+  cogl_object_unref (data->dest_fb);
 }
 
 static CoglBool
@@ -234,22 +238,22 @@ _cogl_blit_copy_tex_sub_image_begin (CoglBlitData *data)
       return FALSE;
     }
 
-  cogl_push_framebuffer (fb);
-  cogl_object_unref (fb);
+  data->src_fb = fb;
 
   return TRUE;
 }
 
 static void
 _cogl_blit_copy_tex_sub_image_blit (CoglBlitData *data,
-                                    unsigned int src_x,
-                                    unsigned int src_y,
-                                    unsigned int dst_x,
-                                    unsigned int dst_y,
-                                    unsigned int width,
-                                    unsigned int height)
+                                    int src_x,
+                                    int src_y,
+                                    int dst_x,
+                                    int dst_y,
+                                    int width,
+                                    int height)
 {
   _cogl_texture_2d_copy_from_framebuffer (COGL_TEXTURE_2D (data->dst_tex),
+                                          data->src_fb,
                                           dst_x, dst_y,
                                           src_x, src_y,
                                           width, height);
@@ -258,7 +262,7 @@ _cogl_blit_copy_tex_sub_image_blit (CoglBlitData *data,
 static void
 _cogl_blit_copy_tex_sub_image_end (CoglBlitData *data)
 {
-  cogl_pop_framebuffer ();
+  cogl_object_unref (data->src_fb);
 }
 
 static CoglBool
@@ -277,12 +281,12 @@ _cogl_blit_get_tex_data_begin (CoglBlitData *data)
 
 static void
 _cogl_blit_get_tex_data_blit (CoglBlitData *data,
-                              unsigned int src_x,
-                              unsigned int src_y,
-                              unsigned int dst_x,
-                              unsigned int dst_y,
-                              unsigned int width,
-                              unsigned int height)
+                              int src_x,
+                              int src_y,
+                              int dst_x,
+                              int dst_y,
+                              int width,
+                              int height)
 {
   cogl_texture_set_region (data->dst_tex,
                            src_x, src_y,
@@ -368,6 +372,8 @@ _cogl_blit_begin (CoglBlitData *data,
         _cogl_blit_default_mode = _cogl_blit_modes;
     }
 
+  memset (data, 0, sizeof (CoglBlitData));
+
   data->dst_tex = dst_tex;
   data->src_tex = src_tex;
 
@@ -405,12 +411,12 @@ _cogl_blit_begin (CoglBlitData *data,
 
 void
 _cogl_blit (CoglBlitData *data,
-            unsigned int src_x,
-            unsigned int src_y,
-            unsigned int dst_x,
-            unsigned int dst_y,
-            unsigned int width,
-            unsigned int height)
+            int src_x,
+            int src_y,
+            int dst_x,
+            int dst_y,
+            int width,
+            int height)
 {
   data->blit_mode->blit_func (data, src_x, src_y, dst_x, dst_y, width, height);
 }

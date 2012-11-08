@@ -40,12 +40,12 @@ typedef CoglBool (* CoglBlitBeginFunc) (CoglBlitData *data);
 typedef void (* CoglBlitEndFunc) (CoglBlitData *data);
 
 typedef void (* CoglBlitFunc) (CoglBlitData *data,
-                               unsigned int src_x,
-                               unsigned int src_y,
-                               unsigned int dst_x,
-                               unsigned int dst_y,
-                               unsigned int width,
-                               unsigned int height);
+                               int src_x,
+                               int src_y,
+                               int dst_x,
+                               int dst_y,
+                               int width,
+                               int height);
 
 typedef struct
 {
@@ -71,7 +71,8 @@ struct _CoglBlitData
 
   int bpp;
 
-  CoglFramebuffer *fb;
+  CoglFramebuffer *src_fb;
+  CoglFramebuffer *dest_fb;
   CoglPipeline *pipeline;
 };
 
@@ -82,12 +83,12 @@ _cogl_blit_begin (CoglBlitData *data,
 
 void
 _cogl_blit (CoglBlitData *data,
-            unsigned int src_x,
-            unsigned int src_y,
-            unsigned int dst_x,
-            unsigned int dst_y,
-            unsigned int width,
-            unsigned int height);
+            int src_x,
+            int src_y,
+            int dst_x,
+            int dst_y,
+            int width,
+            int height);
 
 void
 _cogl_blit_end (CoglBlitData *data);
