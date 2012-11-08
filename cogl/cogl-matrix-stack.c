@@ -1134,6 +1134,7 @@ _cogl_matrix_entry_cache_init (CoglMatrixEntryCache *cache)
 {
   cache->entry = NULL;
   cache->flushed_identity = FALSE;
+  cache->flipped = FALSE;
 }
 
 /* NB: This function can report false negatives since it never does a
