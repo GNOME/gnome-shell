@@ -76,6 +76,11 @@ COGL_BEGIN_DECLS
  *    <listitem>"cogl_tex_coord0_in", "cogl_tex_coord1", ...
  * (used for vertex texture coordinates)</listitem>
  *    <listitem>"cogl_normal_in" (used for vertex normals)</listitem>
+ *    <listitem>"cogl_point_size_in" (used to set the size of points
+ *    per-vertex. Note this can only be used if
+ *    %COGL_FEATURE_ID_POINT_SIZE_ATTRIBUTE is advertised and
+ *    cogl_pipeline_set_per_vertex_point_size() is called on the pipeline.
+ *    </listitem>
  *  </itemizedlist>
  *
  * The attribute values corresponding to different vertices can either

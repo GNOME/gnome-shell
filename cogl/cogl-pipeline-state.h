@@ -517,6 +517,50 @@ float
 cogl_pipeline_get_point_size (CoglPipeline *pipeline);
 
 /**
+ * cogl_pipeline_set_per_vertex_point_size:
+ * @pipeline: a #CoglPipeline pointer
+ * @enable: whether to enable per-vertex point size
+ * @error: a location to store a #CoglError if the change failed
+ *
+ * Sets whether to use a per-vertex point size or to use the value set
+ * by cogl_pipeline_set_point_size(). If per-vertex point size is
+ * enabled then the point size can be set for an individual point
+ * either by drawing with a #CoglAttribute with the name
+ * ‘cogl_point_size_in’ or by writing to the GLSL builtin
+ * ‘cogl_point_size_out’ from a vertex shader snippet.
+ *
+ * If per-vertex point size is enabled and this attribute is not used
+ * and cogl_point_size_out is not written to then the results are
+ * undefined.
+ *
+ * Note that enabling this will only work if the
+ * %COGL_FEATURE_ID_PER_VERTEX_POINT_SIZE feature is available. If
+ * this is not available then the function will return %FALSE and set
+ * a #CoglError.
+ *
+ * Since: 2.0
+ * Stability: Unstable
+ * Return value: %TRUE if the change suceeded or %FALSE otherwise
+ */
+CoglBool
+cogl_pipeline_set_per_vertex_point_size (CoglPipeline *pipeline,
+                                         CoglBool enable,
+                                         CoglError **error);
+
+/**
+ * cogl_pipeline_get_per_vertex_point_size:
+ * @pipeline: a #CoglPipeline pointer
+ *
+ * Since: 2.0
+ * Stability: Unstable
+ * Return value: %TRUE if the pipeline has per-vertex point size
+ *   enabled or %FALSE otherwise. The per-vertex point size can be
+ *   enabled with cogl_pipeline_set_per_vertex_point_size().
+ */
+CoglBool
+cogl_pipeline_get_per_vertex_point_size (CoglPipeline *pipeline);
+
+/**
  * cogl_pipeline_get_color_mask:
  * @pipeline: a #CoglPipeline object.
  *

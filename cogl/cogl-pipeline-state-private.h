@@ -78,6 +78,9 @@ _cogl_pipeline_fog_state_equal (CoglPipeline *authority0,
 CoglBool
 _cogl_pipeline_point_size_equal (CoglPipeline *authority0,
                                  CoglPipeline *authority1);
+CoglBool
+_cogl_pipeline_per_vertex_point_size_equal (CoglPipeline *authority0,
+                                            CoglPipeline *authority1);
 
 CoglBool
 _cogl_pipeline_logic_ops_state_equal (CoglPipeline *authority0,
@@ -146,6 +149,10 @@ _cogl_pipeline_hash_fog_state (CoglPipeline *authority,
 void
 _cogl_pipeline_hash_point_size_state (CoglPipeline *authority,
                                       CoglPipelineHashState *state);
+
+void
+_cogl_pipeline_hash_per_vertex_point_size_state (CoglPipeline *authority,
+                                                 CoglPipelineHashState *state);
 
 void
 _cogl_pipeline_hash_logic_ops_state (CoglPipeline *authority,

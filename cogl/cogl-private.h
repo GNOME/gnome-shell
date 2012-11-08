@@ -61,7 +61,8 @@ typedef enum
   /* If this is set then the winsys is responsible for queueing dirty
    * events. Otherwise a dirty event will be queued when the onscreen
    * is first allocated or when it is shown or resized */
-  COGL_PRIVATE_FEATURE_DIRTY_EVENTS = 1L<<25
+  COGL_PRIVATE_FEATURE_DIRTY_EVENTS = 1L<<25,
+  COGL_PRIVATE_FEATURE_ENABLE_PROGRAM_POINT_SIZE = 1L<<26
 } CoglPrivateFeatureFlags;
 
 /* Sometimes when evaluating pipelines, either during comparisons or

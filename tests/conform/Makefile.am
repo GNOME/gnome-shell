@@ -48,6 +48,7 @@ test_sources = \
 	test-read-texture-formats.c \
 	test-write-texture-formats.c \
 	test-point-size.c \
+	test-point-size-attribute.c \
 	test-point-sprite.c \
 	test-no-gl-header.c \
 	test-version.c \

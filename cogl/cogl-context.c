@@ -95,6 +95,9 @@ _cogl_init_feature_overrides (CoglContext *ctx)
     {
       ctx->feature_flags &= ~COGL_FEATURE_SHADERS_GLSL;
       COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_GLSL, FALSE);
+      COGL_FLAGS_SET (ctx->features,
+                      COGL_FEATURE_ID_PER_VERTEX_POINT_SIZE,
+                      FALSE);
     }
 
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_NPOT_TEXTURES)))

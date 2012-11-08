@@ -101,6 +101,8 @@ validate_cogl_attribute_name (const char *name,
       *name_id = COGL_ATTRIBUTE_NAME_ID_NORMAL_ARRAY;
       *normalized = TRUE;
     }
+  else if (strcmp (name, "point_size_in") == 0)
+    *name_id = COGL_ATTRIBUTE_NAME_ID_POINT_SIZE_ARRAY;
   else
     {
       g_warning ("Unknown cogl_* attribute name cogl_%s\n", name);
@@ -190,6 +192,14 @@ validate_n_components (const CoglAttributeNameState *name_state,
           g_critical ("glNormalPointer expects 3 component normals so we "
                       "currently only support \"cogl_normal\" attributes "
                       "where n_components == 3");
+          return FALSE;
+        }
+      break;
+    case COGL_ATTRIBUTE_NAME_ID_POINT_SIZE_ARRAY:
+      if (G_UNLIKELY (n_components != 1))
+        {
+          g_critical ("The point size attribute can only have one "
+                      "component");
           return FALSE;
         }
       break;

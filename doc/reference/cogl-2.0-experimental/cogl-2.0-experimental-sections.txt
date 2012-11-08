@@ -834,6 +834,8 @@ cogl_pipeline_set_blend
 cogl_pipeline_set_blend_constant
 cogl_pipeline_set_point_size
 cogl_pipeline_get_point_size
+cogl_pipeline_set_per_vertex_point_size
+cogl_pipeline_get_per_vertex_point_size
 
 cogl_pipeline_get_color_mask
 cogl_pipeline_set_color_mask

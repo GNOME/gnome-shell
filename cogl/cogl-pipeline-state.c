@@ -197,6 +197,14 @@ _cogl_pipeline_point_size_equal (CoglPipeline *authority0,
 }
 
 CoglBool
+_cogl_pipeline_per_vertex_point_size_equal (CoglPipeline *authority0,
+                                            CoglPipeline *authority1)
+{
+  return (authority0->big_state->per_vertex_point_size ==
+          authority1->big_state->per_vertex_point_size);
+}
+
+CoglBool
 _cogl_pipeline_logic_ops_state_equal (CoglPipeline *authority0,
                                       CoglPipeline *authority1)
 {
@@ -1398,6 +1406,63 @@ cogl_pipeline_set_point_size (CoglPipeline *pipeline,
                                    _cogl_pipeline_point_size_equal);
 }
 
+CoglBool
+cogl_pipeline_set_per_vertex_point_size (CoglPipeline *pipeline,
+                                         CoglBool enable,
+                                         CoglError **error)
+{
+  CoglPipelineState state = COGL_PIPELINE_STATE_PER_VERTEX_POINT_SIZE;
+  CoglPipeline *authority;
+
+  _COGL_GET_CONTEXT (ctx, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_pipeline (pipeline), FALSE);
+
+  authority = _cogl_pipeline_get_authority (pipeline, state);
+
+  enable = !!enable;
+
+  if (authority->big_state->per_vertex_point_size == enable)
+    return TRUE;
+
+  if (enable && !cogl_has_feature (ctx, COGL_FEATURE_ID_PER_VERTEX_POINT_SIZE))
+    {
+      _cogl_set_error (error,
+                       COGL_SYSTEM_ERROR,
+                       COGL_SYSTEM_ERROR_UNSUPPORTED,
+                       "Per-vertex point size is not supported");
+
+      return FALSE;
+    }
+
+  /* - Flush journal primitives referencing the current state.
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
+   *   changed, then initialize that state from the current authority.
+   */
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
+
+  pipeline->big_state->per_vertex_point_size = enable;
+
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_point_size_equal);
+
+  return TRUE;
+}
+
+CoglBool
+cogl_pipeline_get_per_vertex_point_size (CoglPipeline *pipeline)
+{
+  CoglPipeline *authority;
+
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_pipeline (pipeline), FALSE);
+
+  authority =
+    _cogl_pipeline_get_authority (pipeline,
+                                  COGL_PIPELINE_STATE_PER_VERTEX_POINT_SIZE);
+
+  return authority->big_state->per_vertex_point_size;
+}
+
 static CoglBoxedValue *
 _cogl_pipeline_override_uniform (CoglPipeline *pipeline,
                                  int location)
@@ -1830,6 +1895,16 @@ _cogl_pipeline_hash_point_size_state (CoglPipeline *authority,
   float point_size = authority->big_state->point_size;
   state->hash = _cogl_util_one_at_a_time_hash (state->hash, &point_size,
                                                sizeof (point_size));
+}
+
+void
+_cogl_pipeline_hash_per_vertex_point_size_state (CoglPipeline *authority,
+                                                 CoglPipelineHashState *state)
+{
+  CoglBool per_vertex_point_size = authority->big_state->per_vertex_point_size;
+  state->hash = _cogl_util_one_at_a_time_hash (state->hash,
+                                               &per_vertex_point_size,
+                                               sizeof (per_vertex_point_size));
 }
 
 void

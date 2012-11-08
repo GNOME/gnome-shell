@@ -256,6 +256,8 @@ _cogl_driver_update_features (CoglContext *context,
       COGL_FLAGS_SET (context->features, COGL_FEATURE_ID_DEPTH_RANGE, TRUE);
       COGL_FLAGS_SET (context->features,
                       COGL_FEATURE_ID_MIRRORED_REPEAT, TRUE);
+      COGL_FLAGS_SET (context->features,
+                      COGL_FEATURE_ID_PER_VERTEX_POINT_SIZE, TRUE);
 
       private_flags |= COGL_PRIVATE_FEATURE_BLEND_CONSTANT;
     }

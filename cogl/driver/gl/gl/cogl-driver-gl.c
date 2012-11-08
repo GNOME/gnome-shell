@@ -569,10 +569,22 @@ _cogl_driver_update_features (CoglContext *ctx,
   if (ctx->glGenSamplers)
     private_flags |= COGL_PRIVATE_FEATURE_SAMPLER_OBJECTS;
 
+
   if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 3, 3) ||
       _cogl_check_extension ("GL_ARB_texture_swizzle", gl_extensions) ||
       _cogl_check_extension ("GL_EXT_texture_swizzle", gl_extensions))
     private_flags |= COGL_PRIVATE_FEATURE_TEXTURE_SWIZZLE;
+
+  /* The per-vertex point size is only available via GLSL with the
+   * gl_PointSize builtin. This is only available in GL 2.0 (not the
+   * GLSL extensions) */
+  if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 2, 0))
+    {
+      COGL_FLAGS_SET (ctx->features,
+                      COGL_FEATURE_ID_PER_VERTEX_POINT_SIZE,
+                      TRUE);
+      private_flags |= COGL_PRIVATE_FEATURE_ENABLE_PROGRAM_POINT_SIZE;
+    }
 
   if (ctx->driver == COGL_DRIVER_GL)
     {

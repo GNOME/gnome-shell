@@ -102,6 +102,11 @@ main (int argc, char **argv)
             0);
 
   ADD_TEST (test_point_size, 0, 0);
+  ADD_TEST (test_point_size_attribute,
+            TEST_REQUIREMENT_PER_VERTEX_POINT_SIZE, 0);
+  ADD_TEST (test_point_size_attribute_snippet,
+            TEST_REQUIREMENT_PER_VERTEX_POINT_SIZE |
+            TEST_REQUIREMENT_GLSL, 0);
   ADD_TEST (test_point_sprite,
             TEST_REQUIREMENT_POINT_SPRITE,
             0);

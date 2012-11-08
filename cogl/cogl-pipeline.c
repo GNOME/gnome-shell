@@ -1051,6 +1051,9 @@ _cogl_pipeline_copy_differences (CoglPipeline *dest,
   if (differences & COGL_PIPELINE_STATE_POINT_SIZE)
     big_state->point_size = src->big_state->point_size;
 
+  if (differences & COGL_PIPELINE_STATE_PER_VERTEX_POINT_SIZE)
+    big_state->per_vertex_point_size = src->big_state->per_vertex_point_size;
+
   if (differences & COGL_PIPELINE_STATE_LOGIC_OPS)
     {
       memcpy (&big_state->logic_ops_state,
@@ -1134,6 +1137,7 @@ _cogl_pipeline_init_multi_property_sparse_state (CoglPipeline *pipeline,
     case COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE:
     case COGL_PIPELINE_STATE_POINT_SIZE:
     case COGL_PIPELINE_STATE_USER_SHADER:
+    case COGL_PIPELINE_STATE_PER_VERTEX_POINT_SIZE:
     case COGL_PIPELINE_STATE_REAL_BLEND_ENABLE:
       g_return_if_reached ();
 
@@ -2319,6 +2323,11 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
                                                 authorities1[bit]))
             goto done;
           break;
+        case COGL_PIPELINE_STATE_PER_VERTEX_POINT_SIZE_INDEX:
+          if (!_cogl_pipeline_per_vertex_point_size_equal (authorities0[bit],
+                                                           authorities1[bit]))
+            goto done;
+          break;
         case COGL_PIPELINE_STATE_LOGIC_OPS_INDEX:
           if (!_cogl_pipeline_logic_ops_state_equal (authorities0[bit],
                                                      authorities1[bit]))
@@ -2768,6 +2777,8 @@ _cogl_pipeline_init_state_hash_functions (void)
     _cogl_pipeline_hash_cull_face_state;
   state_hash_functions[COGL_PIPELINE_STATE_POINT_SIZE_INDEX] =
     _cogl_pipeline_hash_point_size_state;
+  state_hash_functions[COGL_PIPELINE_STATE_PER_VERTEX_POINT_SIZE_INDEX] =
+    _cogl_pipeline_hash_per_vertex_point_size_state;
   state_hash_functions[COGL_PIPELINE_STATE_LOGIC_OPS_INDEX] =
     _cogl_pipeline_hash_logic_ops_state;
   state_hash_functions[COGL_PIPELINE_STATE_UNIFORMS_INDEX] =
@@ -2779,7 +2790,7 @@ _cogl_pipeline_init_state_hash_functions (void)
 
   {
   /* So we get a big error if we forget to update this code! */
-  _COGL_STATIC_ASSERT (COGL_PIPELINE_STATE_SPARSE_COUNT == 16,
+  _COGL_STATIC_ASSERT (COGL_PIPELINE_STATE_SPARSE_COUNT == 17,
                        "Make sure to install a hash function for "
                        "newly added pipeline state and update assert "
                        "in _cogl_pipeline_init_state_hash_functions");

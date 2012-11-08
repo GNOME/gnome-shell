@@ -115,6 +115,12 @@ struct {
     "Depth Textures",
     "CoglFramebuffers can be configured to render their depth buffer into "
     "a texture"
+  },
+  {
+    COGL_FEATURE_ID_PER_VERTEX_POINT_SIZE,
+    "Per-vertex point size",
+    "cogl_point_size_in can be used as an attribute to specify a per-vertex "
+    "point size"
   }
 };
 

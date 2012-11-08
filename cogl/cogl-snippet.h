@@ -203,6 +203,16 @@ COGL_BEGIN_DECLS
  *  </glossentry>
  *  <glossentry>
  *   <glossterm>float
+ *         <emphasis>cogl_point_size_in</emphasis></glossterm>
+ *   <glossdef><para>
+ *    The incoming point size from the cogl_point_size_in attribute.
+ *    This is only available if
+ *    cogl_pipeline_set_per_vertex_point_size() is set on the
+ *    pipeline.
+ *   </para></glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>float
  *         <emphasis>cogl_point_size_out</emphasis></glossterm>
  *   <glossdef><para>
  *    The calculated size of a point. This is equivalent to #gl_PointSize.
@@ -321,6 +331,10 @@ typedef struct _CoglSnippet CoglSnippet;
  * @COGL_SNIPPET_HOOK_VERTEX: A hook for the entire vertex processing
  *   stage of the pipeline.
  * @COGL_SNIPPET_HOOK_VERTEX_TRANSFORM: A hook for the vertex transformation.
+ * @COGL_SNIPPET_HOOK_POINT_SIZE: A hook for manipulating the point
+ *   size of a vertex. This is only used if
+ *   cogl_pipeline_set_per_vertex_point_size() is enabled on the
+ *   pipeline.
  * @COGL_SNIPPET_HOOK_FRAGMENT: A hook for the entire fragment
  *   processing stage of the pipeline.
  * @COGL_SNIPPET_HOOK_TEXTURE_COORD_TRANSFORM: A hook for applying the
@@ -418,6 +432,39 @@ typedef struct _CoglSnippet CoglSnippet;
  * The ‘post’ string in @snippet will be inserted after all of the
  * standard vertex transformation is done. This can be used to modify the
  * cogl_position_out in addition to the default processing.
+ * </para>
+ *   </glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>%COGL_SNIPPET_HOOK_POINT_SIZE</glossterm>
+ *   <glossdef>
+ * <para>
+ * Adds a shader snippet that will hook on to the point size
+ * calculation step within the vertex shader stage. The snippet should
+ * write to the builtin cogl_point_size_out with the new point size.
+ * The snippet can either read cogl_point_size_in directly and write a
+ * new value or first read an existing value in cogl_point_size_out
+ * that would be set by a previous snippet. Note that this hook is
+ * only used if cogl_pipeline_set_per_vertex_point_size() is enabled
+ * on the pipeline.
+ * </para>
+ * <para>
+ * The ‘declarations’ string in @snippet will be inserted in the
+ * global scope of the shader. Use this to declare any uniforms,
+ * attributes or functions that the snippet requires.
+ * </para>
+ * <para>
+ * The ‘pre’ string in @snippet will be inserted just before
+ * calculating the point size.
+ * </para>
+ * <para>
+ * The ‘replace’ string in @snippet will be used instead of the
+ * generated point size calculation if it is present.
+ * </para>
+ * <para>
+ * The ‘post’ string in @snippet will be inserted after the
+ * standard point size calculation is done. This can be used to modify
+ * cogl_point_size_out in addition to the default processing.
  * </para>
  *   </glossdef>
  *  </glossentry>
@@ -583,6 +630,7 @@ typedef enum {
   COGL_SNIPPET_HOOK_VERTEX = 0,
   COGL_SNIPPET_HOOK_VERTEX_TRANSFORM,
   COGL_SNIPPET_HOOK_VERTEX_GLOBALS,
+  COGL_SNIPPET_HOOK_POINT_SIZE,
 
   /* Per pipeline fragment hooks */
   COGL_SNIPPET_HOOK_FRAGMENT = 2048,

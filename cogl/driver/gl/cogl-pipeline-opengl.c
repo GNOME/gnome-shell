@@ -58,7 +58,9 @@
 #ifndef GL_CLAMP_TO_BORDER
 #define GL_CLAMP_TO_BORDER 0x812d
 #endif
-
+#ifndef GL_PROGRAM_POINT_SIZE
+#define GL_PROGRAM_POINT_SIZE 0x8642
+#endif
 
 static void
 texture_unit_init (CoglContext *ctx,
@@ -683,6 +685,21 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
             }
         }
     }
+
+#ifdef HAVE_COGL_GL
+  if ((ctx->private_feature_flags &
+       COGL_PRIVATE_FEATURE_ENABLE_PROGRAM_POINT_SIZE) &&
+      (pipelines_difference & COGL_PIPELINE_STATE_PER_VERTEX_POINT_SIZE))
+    {
+      unsigned long state = COGL_PIPELINE_STATE_PER_VERTEX_POINT_SIZE;
+      CoglPipeline *authority = _cogl_pipeline_get_authority (pipeline, state);
+
+      if (authority->big_state->per_vertex_point_size)
+        GE( ctx, glEnable (GL_PROGRAM_POINT_SIZE) );
+      else
+        GE( ctx, glDisable (GL_PROGRAM_POINT_SIZE) );
+    }
+#endif
 
   if (pipeline->real_blend_enable != ctx->gl_blend_enable_cache)
     {

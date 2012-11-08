@@ -290,12 +290,20 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
                    "cogl_generated_source ()\n"
                    "{\n");
 
-  if (!(ctx->private_feature_flags &
-        COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM))
-    /* There is no builtin uniform for the pointsize on GLES2 so we need
-       to copy it from the custom uniform in the vertex shader */
-    g_string_append (shader_state->source,
-                     "  cogl_point_size_out = cogl_point_size_in;\n");
+  if (cogl_pipeline_get_per_vertex_point_size (pipeline))
+    g_string_append (shader_state->header,
+                     "attribute float cogl_point_size_in;\n");
+  else if (!(ctx->private_feature_flags &
+            COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM))
+    {
+      /* There is no builtin uniform for the point size on GLES2 so we
+         need to copy it from the custom uniform in the vertex shader if
+         we're not using per-vertex point sizes */
+      g_string_append (shader_state->header,
+                       "uniform float cogl_point_size_in;\n");
+      g_string_append (shader_state->source,
+                       "  cogl_point_size_out = cogl_point_size_in;\n");
+    }
 }
 
 static CoglBool
@@ -389,6 +397,8 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
       GLuint shader;
       CoglPipelineSnippetData snippet_data;
       CoglPipelineSnippetList *vertex_snippets;
+      CoglBool has_per_vertex_point_size =
+        cogl_pipeline_get_per_vertex_point_size (pipeline);
 
       COGL_STATIC_COUNTER (vertend_glsl_compile_counter,
                            "glsl vertex compile counter",
@@ -407,7 +417,21 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
                        "}\n");
 
       g_string_append (shader_state->source,
-                       "  cogl_vertex_transform ();\n"
+                       "  cogl_vertex_transform ();\n");
+
+      if (has_per_vertex_point_size)
+        {
+          g_string_append (shader_state->header,
+                           "void\n"
+                           "cogl_real_point_size_calculation ()\n"
+                           "{\n"
+                           "  cogl_point_size_out = cogl_point_size_in;\n"
+                           "}\n");
+          g_string_append (shader_state->source,
+                           "  cogl_point_size_calculation ();\n");
+        }
+
+      g_string_append (shader_state->source,
                        "  cogl_color_out = cogl_color_in;\n"
                        "}\n");
 
@@ -422,6 +446,19 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
       snippet_data.function_prefix = "cogl_vertex_transform";
       snippet_data.source_buf = shader_state->header;
       _cogl_pipeline_snippet_generate_code (&snippet_data);
+
+      /* Add hooks for the point size calculation part */
+      if (has_per_vertex_point_size)
+        {
+          memset (&snippet_data, 0, sizeof (snippet_data));
+          snippet_data.snippets = vertex_snippets;
+          snippet_data.hook = COGL_SNIPPET_HOOK_POINT_SIZE;
+          snippet_data.chain_function = "cogl_real_point_size_calculation";
+          snippet_data.final_name = "cogl_point_size_calculation";
+          snippet_data.function_prefix = "cogl_point_size_calculation";
+          snippet_data.source_buf = shader_state->header;
+          _cogl_pipeline_snippet_generate_code (&snippet_data);
+        }
 
       /* Add all of the hooks for vertex processing */
       memset (&snippet_data, 0, sizeof (snippet_data));
@@ -487,6 +524,7 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
       shader_state->gl_shader = shader;
     }
 
+#ifdef HAVE_COGL_GL
   if ((ctx->private_feature_flags &
        COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM) &&
       (pipelines_difference & COGL_PIPELINE_STATE_POINT_SIZE))
@@ -496,6 +534,7 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
 
       GE( ctx, glPointSize (authority->big_state->point_size) );
     }
+#endif /* HAVE_COGL_GL */
 
   return TRUE;
 }

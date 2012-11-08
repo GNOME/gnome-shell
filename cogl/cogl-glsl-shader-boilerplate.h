@@ -32,8 +32,7 @@
   "\n" \
   "uniform mat4 cogl_modelview_matrix;\n" \
   "uniform mat4 cogl_modelview_projection_matrix;\n"  \
-  "uniform mat4 cogl_projection_matrix;\n" \
-  "uniform float cogl_point_size_in;\n"
+  "uniform mat4 cogl_projection_matrix;\n"
 
 /* This declares all of the variables that we might need. This is
  * working on the assumption that the compiler will optimise them out
