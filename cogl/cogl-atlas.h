@@ -75,13 +75,13 @@ _cogl_atlas_remove (CoglAtlas *atlas,
                     const CoglRectangleMapEntry *rectangle);
 
 CoglTexture *
-_cogl_atlas_copy_rectangle (CoglAtlas        *atlas,
-                            unsigned int      x,
-                            unsigned int      y,
-                            unsigned int      width,
-                            unsigned int      height,
-                            CoglTextureFlags  flags,
-                            CoglPixelFormat   format);
+_cogl_atlas_copy_rectangle (CoglAtlas *atlas,
+                            int x,
+                            int y,
+                            int width,
+                            int height,
+                            CoglTextureFlags flags,
+                            CoglPixelFormat format);
 
 void
 _cogl_atlas_add_reorganize_callback (CoglAtlas            *atlas,

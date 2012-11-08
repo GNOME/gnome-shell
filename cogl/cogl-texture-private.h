@@ -312,4 +312,8 @@ _cogl_texture_set_region_from_bitmap (CoglTexture *texture,
                                       CoglBitmap *bmp,
                                       CoglError **error);
 
+CoglBool
+_cogl_texture_needs_premult_conversion (CoglPixelFormat src_format,
+                                        CoglPixelFormat dst_format);
+
 #endif /* __COGL_TEXTURE_PRIVATE_H */

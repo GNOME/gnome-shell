@@ -44,13 +44,15 @@ struct _CoglTexture2DSliced
 };
 
 CoglTexture2DSliced *
-_cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
-                                          GLenum           gl_target,
-                                          GLuint           width,
-                                          GLuint           height,
-                                          GLuint           x_pot_waste,
-                                          GLuint           y_pot_waste,
-                                          CoglPixelFormat  format);
+_cogl_texture_2d_sliced_new_from_foreign (CoglContext *context,
+                                          unsigned int gl_handle,
+                                          unsigned int gl_target,
+                                          int width,
+                                          int height,
+                                          int x_pot_waste,
+                                          int y_pot_waste,
+                                          CoglPixelFormat  format,
+                                          CoglError **error);
 
 CoglTexture2DSliced *
 _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap *bmp,

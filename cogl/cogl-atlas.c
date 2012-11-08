@@ -537,16 +537,18 @@ _cogl_atlas_remove (CoglAtlas *atlas,
 };
 
 CoglTexture *
-_cogl_atlas_copy_rectangle (CoglAtlas        *atlas,
-                            unsigned int      x,
-                            unsigned int      y,
-                            unsigned int      width,
-                            unsigned int      height,
-                            CoglTextureFlags  flags,
-                            CoglPixelFormat   format)
+_cogl_atlas_copy_rectangle (CoglAtlas *atlas,
+                            int x,
+                            int y,
+                            int width,
+                            int height,
+                            CoglTextureFlags flags,
+                            CoglPixelFormat format)
 {
   CoglTexture *tex;
   CoglBlitData blit_data;
+
+  _COGL_GET_CONTEXT (ctx, NULL);
 
   /* Create a new texture at the right size */
   tex = cogl_texture_new_with_size (width, height, flags, format);

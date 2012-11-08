@@ -388,6 +388,15 @@ _cogl_atlas_texture_migrate_out_of_atlas (CoglAtlasTexture *atlas_tex)
                                     atlas_tex->rectangle.height - 2,
                                     COGL_TEXTURE_NO_ATLAS,
                                     atlas_tex->format);
+      /* Note: we simply silently ignore failures to migrate a texture
+       * out (most likely due to lack of memory) and hope for the
+       * best.
+       *
+       * Maybe we should find a way to report the problem back to the
+       * app.
+       */
+      if (!standalone_tex)
+        return;
 
       /* Notify cogl-pipeline.c that the texture's underlying GL texture
        * storage is changing so it knows it may need to bind a new texture

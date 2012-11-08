@@ -992,32 +992,32 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap *bmp,
 }
 
 CoglTexture2DSliced *
-_cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
-                                          GLenum           gl_target,
-                                          GLuint           width,
-                                          GLuint           height,
-                                          GLuint           x_pot_waste,
-                                          GLuint           y_pot_waste,
-                                          CoglPixelFormat  format)
+_cogl_texture_2d_sliced_new_from_foreign (CoglContext *ctx,
+                                          unsigned int gl_handle,
+                                          unsigned int gl_target,
+                                          int width,
+                                          int height,
+                                          int x_pot_waste,
+                                          int y_pot_waste,
+                                          CoglPixelFormat format,
+                                          CoglError **error)
 {
   /* NOTE: width, height and internal format are not queriable
    * in GLES, hence such a function prototype.
    */
 
-  GLint                gl_width = 0;
-  GLint                gl_height = 0;
+  int gl_width = 0;
+  int gl_height = 0;
   CoglTexture2DSliced *tex_2ds;
-  CoglTexture         *tex;
-  CoglSpan             x_span;
-  CoglSpan             y_span;
-  CoglTexture2D       *tex_2d;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
+  CoglTexture *tex;
+  CoglSpan x_span;
+  CoglSpan y_span;
+  CoglTexture2D *tex_2d;
 
   /* This should only be called when the texture target is 2D. If a
      rectangle texture is used then _cogl_texture_new_from_foreign
      will create a cogl_texture_rectangle instead */
-  g_assert (gl_target == GL_TEXTURE_2D);
+  _COGL_RETURN_VAL_IF_FAIL (gl_target == GL_TEXTURE_2D, NULL);
 
   gl_width = width + x_pot_waste;
   gl_height = height + y_pot_waste;
@@ -1032,7 +1032,7 @@ _cogl_texture_2d_sliced_new_from_foreign (GLuint           gl_handle,
                                              gl_width,
                                              gl_height,
                                              format,
-                                             NULL);
+                                             error);
 
   if (!tex_2d)
     return NULL;

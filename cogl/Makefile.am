@@ -361,6 +361,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-texture-driver.h			\
 	$(srcdir)/cogl-sub-texture.c                    \
 	$(srcdir)/cogl-texture.c			\
+	$(srcdir)/cogl-auto-texture.c			\
 	$(srcdir)/cogl-texture-2d.c                     \
 	$(srcdir)/cogl-texture-2d-sliced.c		\
 	$(srcdir)/cogl-texture-3d.c                     \
