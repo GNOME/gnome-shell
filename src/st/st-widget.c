@@ -589,6 +589,8 @@ st_widget_get_theme_node (StWidget *widget)
 
   if (priv->theme_node == NULL)
     {
+      StThemeContext *context;
+      StThemeNode *tmp_node;
       StThemeNode *parent_node = NULL;
       ClutterStage *stage = NULL;
       ClutterActor *parent;
@@ -629,16 +631,20 @@ st_widget_get_theme_node (StWidget *widget)
       else
         pseudo_class = direction_pseudo_class;
 
-      priv->theme_node = st_theme_node_new (st_theme_context_get_for_stage (stage),
-                                            parent_node, priv->theme,
-                                            G_OBJECT_TYPE (widget),
-                                            clutter_actor_get_name (CLUTTER_ACTOR (widget)),
-                                            priv->style_class,
-                                            pseudo_class,
-                                            priv->inline_style);
+      context = st_theme_context_get_for_stage (stage);
+      tmp_node = st_theme_node_new (context, parent_node, priv->theme,
+                                    G_OBJECT_TYPE (widget),
+                                    clutter_actor_get_name (CLUTTER_ACTOR (widget)),
+                                    priv->style_class,
+                                    pseudo_class,
+                                    priv->inline_style);
 
       if (pseudo_class != direction_pseudo_class)
         g_free (pseudo_class);
+
+      priv->theme_node = g_object_ref (st_theme_context_intern_node (context,
+                                                                     tmp_node));
+      g_object_unref (tmp_node);
     }
 
   return priv->theme_node;

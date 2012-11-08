@@ -390,6 +390,40 @@ st_theme_node_equal (StThemeNode *node_a, StThemeNode *node_b)
   return TRUE;
 }
 
+guint
+st_theme_node_hash (StThemeNode *node)
+{
+  guint hash = GPOINTER_TO_UINT (node->parent_node);
+
+  hash = hash * 33 + GPOINTER_TO_UINT (node->context);
+  hash = hash * 33 + GPOINTER_TO_UINT (node->theme);
+  hash = hash * 33 + ((guint) node->element_type);
+
+  if (node->element_id != NULL)
+    hash = hash * 33 + g_str_hash (node->element_id);
+
+  if (node->inline_style != NULL)
+    hash = hash * 33 + g_str_hash (node->inline_style);
+
+  if (node->element_classes != NULL)
+    {
+      gchar **it;
+
+      for (it = node->element_classes; *it != NULL; it++)
+        hash = hash * 33 + g_str_hash (*it) + 1;
+    }
+
+  if (node->pseudo_classes != NULL)
+    {
+      gchar **it;
+
+      for (it = node->pseudo_classes; *it != NULL; it++)
+        hash = hash * 33 + g_str_hash (*it) + 1;
+    }
+
+  return hash;
+}
+
 static void
 ensure_properties (StThemeNode *node)
 {
