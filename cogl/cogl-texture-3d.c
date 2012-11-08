@@ -405,7 +405,10 @@ cogl_texture_3d_new_from_data (CoglContext *context,
       bitmap = _cogl_bitmap_new_with_malloc_buffer (context,
                                                     width,
                                                     depth * height,
-                                                    format);
+                                                    format,
+                                                    error);
+      if (!bitmap)
+        return NULL;
 
       bmp_data = _cogl_bitmap_map (bitmap,
                                    COGL_BUFFER_ACCESS_WRITE,

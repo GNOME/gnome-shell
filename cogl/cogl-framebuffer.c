@@ -1613,7 +1613,11 @@ _cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
 
       tmp_bmp = _cogl_bitmap_new_with_malloc_buffer (ctx,
                                                      width, height,
-                                                     read_format);
+                                                     read_format,
+                                                     error);
+      if (!tmp_bmp)
+        goto EXIT;
+
       bpp = _cogl_pixel_format_get_bytes_per_pixel (read_format);
       rowstride = cogl_bitmap_get_rowstride (tmp_bmp);
 

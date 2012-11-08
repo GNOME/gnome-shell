@@ -89,7 +89,10 @@ _cogl_bitmap_copy (CoglBitmap *src_bmp,
   dst_bmp =
     _cogl_bitmap_new_with_malloc_buffer (src_bmp->context,
                                          width, height,
-                                         src_format);
+                                         src_format,
+                                         error);
+  if (!dst_bmp)
+    return NULL;
 
   if (!_cogl_bitmap_copy_subregion (src_bmp,
                                     dst_bmp,
@@ -194,13 +197,23 @@ CoglBitmap *
 _cogl_bitmap_new_with_malloc_buffer (CoglContext *context,
                                      unsigned int width,
                                      unsigned int height,
-                                     CoglPixelFormat format)
+                                     CoglPixelFormat format,
+                                     CoglError **error)
 {
   static CoglUserDataKey bitmap_free_key;
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (format);
   int rowstride = ((width * bpp) + 3) & ~3;
-  uint8_t *data = g_malloc (rowstride * height);
+  uint8_t *data = g_try_malloc (rowstride * height);
   CoglBitmap *bitmap;
+
+  if (!data)
+    {
+      _cogl_set_error (error,
+                       COGL_SYSTEM_ERROR,
+                       COGL_SYSTEM_ERROR_NO_MEMORY,
+                       "Failed to allocate memory for bitmap");
+      return NULL;
+    }
 
   bitmap = cogl_bitmap_new_for_data (context,
                                      width, height,

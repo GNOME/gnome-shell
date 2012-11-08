@@ -488,7 +488,10 @@ _cogl_bitmap_convert (CoglBitmap *src_bmp,
 
   dst_bmp = _cogl_bitmap_new_with_malloc_buffer (ctx,
                                                  width, height,
-                                                 dst_format);
+                                                 dst_format,
+                                                 error);
+  if (!dst_bmp)
+    return NULL;
 
   if (!_cogl_bitmap_convert_into_bitmap (src_bmp, dst_bmp, error))
     {

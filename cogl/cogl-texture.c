@@ -659,7 +659,10 @@ do_texture_draw_and_read (CoglFramebuffer *fb,
           rect_bmp = _cogl_bitmap_new_with_malloc_buffer
                                               (ctx,
                                                width, height,
-                                               COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+                                               COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                               error);
+          if (!rect_bmp)
+            return FALSE;
 
           if (!_cogl_framebuffer_read_pixels_into_bitmap
                                                (fb,
@@ -787,7 +790,14 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
         _cogl_bitmap_new_with_malloc_buffer (ctx,
                                              target_width,
                                              target_height,
-                                             COGL_PIXEL_FORMAT_RGBA_8888);
+                                             COGL_PIXEL_FORMAT_RGBA_8888,
+                                             error);
+      if (!alpha_bmp)
+        {
+          _cogl_bitmap_unmap (target_bmp);
+          goto EXIT;
+        }
+
 
       /* Draw alpha values into RGB channels */
       cogl_pipeline_set_layer_combine (ctx->texture_download_pipeline,
@@ -1112,9 +1122,17 @@ cogl_texture_get_data (CoglTexture *texture,
                                            rowstride,
                                            data);
   else
-    target_bmp = _cogl_bitmap_new_with_malloc_buffer (ctx,
-                                                      tex_width, tex_height,
-                                                      closest_format);
+    {
+      target_bmp = _cogl_bitmap_new_with_malloc_buffer (ctx,
+                                                        tex_width, tex_height,
+                                                        closest_format,
+                                                        &ignore_error);
+      if (!target_bmp)
+        {
+          cogl_error_free (ignore_error);
+          return 0;
+        }
+    }
 
   tg_data.target_bits = _cogl_bitmap_map (target_bmp, COGL_BUFFER_ACCESS_WRITE,
                                           COGL_BUFFER_MAP_HINT_DISCARD,

@@ -69,6 +69,7 @@ struct _CoglBitmap
  * @width: width of the bitmap in pixels
  * @height: height of the bitmap in pixels
  * @format: the format of the pixels the array will store
+ * @error: A #CoglError for catching exceptional errors or %NULL
  *
  * This is equivalent to cogl_bitmap_new_with_size() except that it
  * allocated the buffer using g_malloc() instead of creating a
@@ -84,7 +85,8 @@ CoglBitmap *
 _cogl_bitmap_new_with_malloc_buffer (CoglContext *context,
                                      unsigned int width,
                                      unsigned int height,
-                                     CoglPixelFormat format);
+                                     CoglPixelFormat format,
+                                     CoglError **error);
 
 /* The idea of this function is that it will create a bitmap that
    shares the actual data with another bitmap. This is needed for the
