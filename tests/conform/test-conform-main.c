@@ -63,7 +63,7 @@ main (int argc, char **argv)
 
   ADD_TEST (test_sparse_pipeline, 0);
 
-  UNPORTED_TEST (test_npot_texture);
+  ADD_TEST (test_npot_texture, TEST_REQUIREMENT_NPOT);
   UNPORTED_TEST (test_multitexture);
   UNPORTED_TEST (test_texture_mipmaps);
   ADD_TEST (test_sub_texture, 0);

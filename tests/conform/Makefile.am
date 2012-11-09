@@ -59,6 +59,7 @@ test_sources = \
 	test-layer-remove.c \
 	test-alpha-test.c \
 	test-map-buffer-range.c \
+	test-npot-texture.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
