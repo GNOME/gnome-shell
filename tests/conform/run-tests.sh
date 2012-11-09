@@ -10,7 +10,8 @@ trap "" SIGFPE
 trap "" SIGSEGV
 
 EXIT=0
-WARNING="WARNING: Missing required feature";
+MISSING_FEATURE="WARNING: Missing required feature";
+KNOWN_FAILURE="WARNING: Test is known to fail";
 
 if test -f ./test-conformance; then
   TEST_CONFORMANCE=./test-conformance
@@ -20,6 +21,7 @@ fi
 
 echo "Key:"
 echo "ok = Test passed"
+echo "n/a = Driver is missing a feature required for the test"
 echo "FAIL = Unexpected failure"
 echo "fail = Test failed, but it was an expected failure"
 echo "PASS! = Unexpected pass"
@@ -38,6 +40,10 @@ get_status()
       400)
       echo -n 'PASS!';;
 
+      # Special value to indicate the test is missing a required feature
+      500)
+      echo -n "n/a";;
+
       0)
       echo -n "ok";;
 
@@ -52,7 +58,13 @@ run_test()
   TMP=$?
   var_name=$2_result
   eval $var_name=$TMP
-  if grep -q "$WARNING" .log; then
+  if grep -q "$MISSING_FEATURE" .log; then
+    if test $TMP -ne 0; then
+      eval $var_name=500
+    else
+      eval $var_name=400
+    fi
+  elif grep -q "$KNOWN_FAILURE" .log; then
     if test $TMP -ne 0; then
       eval $var_name=300
     else

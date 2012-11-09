@@ -12,15 +12,72 @@ static CoglBool cogl_test_is_verbose;
 CoglContext *test_ctx;
 CoglFramebuffer *test_fb;
 
+static CoglBool
+check_flags (TestFlags flags,
+             CoglRenderer *renderer)
+{
+  if (flags & TEST_REQUIREMENT_GL &&
+      cogl_renderer_get_driver (renderer) != COGL_DRIVER_GL &&
+      cogl_renderer_get_driver (renderer) != COGL_DRIVER_GL3)
+    {
+      return FALSE;
+    }
+
+  if (flags & TEST_REQUIREMENT_NPOT &&
+      !cogl_has_feature (test_ctx, COGL_FEATURE_ID_TEXTURE_NPOT))
+    {
+      return FALSE;
+    }
+
+  if (flags & TEST_REQUIREMENT_TEXTURE_3D &&
+      !cogl_has_feature (test_ctx, COGL_FEATURE_ID_TEXTURE_3D))
+    {
+      return FALSE;
+    }
+
+  if (flags & TEST_REQUIREMENT_POINT_SPRITE &&
+      !cogl_has_feature (test_ctx, COGL_FEATURE_ID_POINT_SPRITE))
+    {
+      return FALSE;
+    }
+
+  if (flags & TEST_REQUIREMENT_GLES2_CONTEXT &&
+      !cogl_has_feature (test_ctx, COGL_FEATURE_ID_GLES2_CONTEXT))
+    {
+      return FALSE;
+    }
+
+  if (flags & TEST_REQUIREMENT_MAP_WRITE &&
+      !cogl_has_feature (test_ctx, COGL_FEATURE_ID_MAP_BUFFER_FOR_WRITE))
+    {
+      return FALSE;
+    }
+
+  if (flags & TEST_REQUIREMENT_GLSL &&
+      !cogl_has_feature (test_ctx, COGL_FEATURE_ID_GLSL))
+    {
+      return FALSE;
+    }
+
+  if (flags & TEST_KNOWN_FAILURE)
+    {
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
 void
-test_utils_init (TestFlags flags)
+test_utils_init (TestFlags requirement_flags,
+                 TestFlags known_failure_flags)
 {
   static int counter = 0;
   CoglError *error = NULL;
   CoglOnscreen *onscreen = NULL;
   CoglDisplay *display;
   CoglRenderer *renderer;
-  CoglBool missing_requirement = FALSE;
+  CoglBool missing_requirement;
+  CoglBool known_failure;
 
   if (counter != 0)
     g_critical ("We don't support running more than one test at a time\n"
@@ -52,53 +109,8 @@ test_utils_init (TestFlags flags)
   display = cogl_context_get_display (test_ctx);
   renderer = cogl_display_get_renderer (display);
 
-  if (flags & TEST_REQUIREMENT_GL &&
-      cogl_renderer_get_driver (renderer) != COGL_DRIVER_GL &&
-      cogl_renderer_get_driver (renderer) != COGL_DRIVER_GL3)
-    {
-      missing_requirement = TRUE;
-    }
-
-  if (flags & TEST_REQUIREMENT_NPOT &&
-      !cogl_has_feature (test_ctx, COGL_FEATURE_ID_TEXTURE_NPOT))
-    {
-      missing_requirement = TRUE;
-    }
-
-  if (flags & TEST_REQUIREMENT_TEXTURE_3D &&
-      !cogl_has_feature (test_ctx, COGL_FEATURE_ID_TEXTURE_3D))
-    {
-      missing_requirement = TRUE;
-    }
-
-  if (flags & TEST_REQUIREMENT_POINT_SPRITE &&
-      !cogl_has_feature (test_ctx, COGL_FEATURE_ID_POINT_SPRITE))
-    {
-      missing_requirement = TRUE;
-    }
-
-  if (flags & TEST_REQUIREMENT_GLES2_CONTEXT &&
-      !cogl_has_feature (test_ctx, COGL_FEATURE_ID_GLES2_CONTEXT))
-    {
-      missing_requirement = TRUE;
-    }
-
-  if (flags & TEST_REQUIREMENT_MAP_WRITE &&
-      !cogl_has_feature (test_ctx, COGL_FEATURE_ID_MAP_BUFFER_FOR_WRITE))
-    {
-      missing_requirement = TRUE;
-    }
-
-  if (flags & TEST_REQUIREMENT_GLSL &&
-      !cogl_has_feature (test_ctx, COGL_FEATURE_ID_GLSL))
-    {
-      missing_requirement = TRUE;
-    }
-
-  if (flags & TEST_KNOWN_FAILURE)
-    {
-      missing_requirement = TRUE;
-    }
+  missing_requirement = !check_flags (requirement_flags, renderer);
+  known_failure = !check_flags (known_failure_flags, renderer);
 
   if (getenv  ("COGL_TEST_ONSCREEN"))
     {
@@ -133,6 +145,8 @@ test_utils_init (TestFlags flags)
 
   if (missing_requirement)
     g_print ("WARNING: Missing required feature[s] for this test\n");
+  else if (known_failure)
+    g_print ("WARNING: Test is known to fail\n");
 }
 
 void

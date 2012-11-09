@@ -25,7 +25,8 @@ extern CoglContext *test_ctx;
 extern CoglFramebuffer *test_fb;
 
 void
-test_utils_init (TestFlags flags);
+test_utils_init (TestFlags requirement_flags,
+                 TestFlags known_failure_flags);
 
 void
 test_utils_fini (void);
