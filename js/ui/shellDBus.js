@@ -111,7 +111,7 @@ const GnomeShell = new Lang.Class({
     },
 
     _onScreenshotComplete: function(obj, result, area, flash, invocation) {
-        if (flash) {
+        if (flash && result) {
             let flashspot = new Flashspot.Flashspot(area);
             flashspot.fire();
         }
