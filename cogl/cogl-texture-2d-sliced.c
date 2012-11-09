@@ -48,6 +48,7 @@
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-primitive-texture.h"
 #include "cogl-error-private.h"
+#include "cogl-texture-gl-private.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -238,15 +239,16 @@ _cogl_texture_2d_sliced_set_waste (CoglTexture2DSliced *tex_2ds,
           if (!_cogl_texture_set_region_from_bitmap (COGL_TEXTURE (slice_tex),
                                                      0, /* src_x */
                                                      0, /* src_y */
+                                                     x_span->waste, /* width */
+                                                     /* height */
+                                                     y_iter->intersect_end -
+                                                     y_iter->intersect_start,
+                                                     waste_bmp,
                                                      /* dst_x */
                                                      x_span->size - x_span->waste,
                                                      y_iter->intersect_start -
                                                      y_span->start, /* dst_y */
-                                                     x_span->waste, /* dst_width */
-                                                     /* dst_height */
-                                                     y_iter->intersect_end -
-                                                     y_iter->intersect_start,
-                                                     waste_bmp,
+                                                     0, /* level */
                                                      error))
             {
               cogl_object_unref (waste_bmp);
@@ -298,14 +300,15 @@ _cogl_texture_2d_sliced_set_waste (CoglTexture2DSliced *tex_2ds,
           if (!_cogl_texture_set_region_from_bitmap (COGL_TEXTURE (slice_tex),
                                                      0, /* src_x */
                                                      0, /* src_y */
+                                                     copy_width, /* width */
+                                                     y_span->waste, /* height */
+                                                     waste_bmp,
                                                      /* dst_x */
                                                      x_iter->intersect_start -
                                                      x_iter->pos,
                                                      /* dst_y */
                                                      y_span->size - y_span->waste,
-                                                     copy_width, /* dst_width */
-                                                     y_span->waste, /* dst_height */
-                                                     waste_bmp,
+                                                     0, /* level */
                                                      error))
             {
               cogl_object_unref (waste_bmp);
@@ -359,13 +362,14 @@ _cogl_texture_2d_sliced_upload_to_gl (CoglTexture2DSliced *tex_2ds,
           if (!_cogl_texture_set_region_from_bitmap (COGL_TEXTURE (slice_tex),
                                                      x_span->start, /* src x */
                                                      y_span->start, /* src y */
-                                                     0, /* dst x */
-                                                     0, /* dst y */
                                                      x_span->size -
                                                      x_span->waste, /* width */
                                                      y_span->size -
                                                      y_span->waste, /* height */
                                                      bmp,
+                                                     0, /* dst x */
+                                                     0, /* dst y */
+                                                     0, /* level */
                                                      error))
             {
               if (waste_buf)
@@ -495,11 +499,12 @@ _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
           if (!_cogl_texture_set_region_from_bitmap (COGL_TEXTURE (slice_tex),
                                                      source_x,
                                                      source_y,
-                                                     local_x, /* dst x */
-                                                     local_y, /* dst y */
                                                      inter_w, /* width */
                                                      inter_h, /* height */
                                                      source_bmp,
+                                                     local_x, /* dst x */
+                                                     local_y, /* dst y */
+                                                     0, /* level */
                                                      error))
             {
               if (waste_buf)
@@ -1286,6 +1291,7 @@ _cogl_texture_2d_sliced_set_region (CoglTexture *tex,
                                     int dst_y,
                                     int dst_width,
                                     int dst_height,
+                                    int level,
                                     CoglBitmap *bmp,
                                     CoglError **error)
 {

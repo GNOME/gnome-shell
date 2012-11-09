@@ -51,7 +51,7 @@ struct _CoglTexture2D
    * of driver private state. */
 
   /* The internal format of the GL texture represented as a GL enum */
-  GLenum gl_format;
+  GLenum gl_internal_format;
   /* The texture object number */
   GLuint gl_texture;
   GLenum gl_legacy_texobj_min_filter;
@@ -98,25 +98,27 @@ _cogl_texture_2d_externally_modified (CoglTexture *texture);
 /*
  * _cogl_texture_2d_copy_from_framebuffer:
  * @texture: A #CoglTexture2D pointer
- * @src_fb: A source #CoglFramebuffer to copy from
- * @dst_x: X-position to store the image within the texture
- * @dst_y: Y-position to store the image within the texture
  * @src_x: X-position to within the framebuffer to read from
  * @src_y: Y-position to within the framebuffer to read from
  * @width: width of the rectangle to copy
  * @height: height of the rectangle to copy
+ * @src_fb: A source #CoglFramebuffer to copy from
+ * @dst_x: X-position to store the image within the texture
+ * @dst_y: Y-position to store the image within the texture
+ * @level: The mipmap level of @texture to copy too
  *
  * This copies a portion of the given @src_fb into the
  * texture.
  */
 void
 _cogl_texture_2d_copy_from_framebuffer (CoglTexture2D *texture,
-                                        CoglFramebuffer *src_fb,
-                                        int dst_x,
-                                        int dst_y,
                                         int src_x,
                                         int src_y,
                                         int width,
-                                        int height);
+                                        int height,
+                                        CoglFramebuffer *src_fb,
+                                        int dst_x,
+                                        int dst_y,
+                                        int level);
 
 #endif /* __COGL_TEXTURE_2D_PRIVATE_H */

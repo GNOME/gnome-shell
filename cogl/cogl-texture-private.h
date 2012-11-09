@@ -72,6 +72,7 @@ struct _CoglTextureVtable
                            int dst_y,
                            int dst_width,
                            int dst_height,
+                           int level,
                            CoglBitmap *bitmap,
                            CoglError **error);
 
@@ -142,6 +143,7 @@ struct _CoglTexture
   CoglObject _parent;
   CoglContext *context;
   GList *framebuffers;
+  int max_level;
   const CoglTextureVtable *vtable;
 };
 
@@ -276,6 +278,18 @@ _cogl_texture_spans_foreach_in_region (CoglSpan *x_spans,
 CoglTextureType
 _cogl_texture_get_type (CoglTexture *texture);
 
+CoglBool
+_cogl_texture_set_region (CoglTexture *texture,
+                          int width,
+                          int height,
+                          CoglPixelFormat format,
+                          int rowstride,
+                          const uint8_t *data,
+                          int dst_x,
+                          int dst_y,
+                          int level,
+                          CoglError **error);
+
 CoglTexture *
 _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
                                CoglTextureFlags flags,
@@ -286,15 +300,26 @@ CoglBool
 _cogl_texture_set_region_from_bitmap (CoglTexture *texture,
                                       int src_x,
                                       int src_y,
+                                      int width,
+                                      int height,
+                                      CoglBitmap *bmp,
                                       int dst_x,
                                       int dst_y,
-                                      unsigned int dst_width,
-                                      unsigned int dst_height,
-                                      CoglBitmap *bmp,
+                                      int level,
                                       CoglError **error);
 
 CoglBool
 _cogl_texture_needs_premult_conversion (CoglPixelFormat src_format,
                                         CoglPixelFormat dst_format);
+
+int
+_cogl_texture_get_n_levels (CoglTexture *texture);
+
+void
+_cogl_texture_get_level_size (CoglTexture *texture,
+                              int level,
+                              int *width,
+                              int *height,
+                              int *depth);
 
 #endif /* __COGL_TEXTURE_PRIVATE_H */

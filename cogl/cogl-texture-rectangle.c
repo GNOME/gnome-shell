@@ -554,10 +554,10 @@ _cogl_texture_rectangle_set_region (CoglTexture *tex,
                                     int dst_y,
                                     int dst_width,
                                     int dst_height,
+                                    int level,
                                     CoglBitmap *bmp,
                                     CoglError **error)
 {
-  CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
   GLenum gl_format;
   GLenum gl_type;
   CoglContext *ctx = tex->context;
@@ -576,12 +576,12 @@ _cogl_texture_rectangle_set_region (CoglTexture *tex,
   /* Send data to GL */
   status =
     ctx->texture_driver->upload_subregion_to_gl (ctx,
-                                                 GL_TEXTURE_RECTANGLE_ARB,
-                                                 tex_rect->gl_texture,
+                                                 tex,
                                                  FALSE,
                                                  src_x, src_y,
                                                  dst_x, dst_y,
                                                  dst_width, dst_height,
+                                                 level,
                                                  bmp,
                                                  gl_format,
                                                  gl_type,

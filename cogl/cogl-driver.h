@@ -168,13 +168,14 @@ struct _CoglDriverVtable
    */
   void
   (* texture_2d_copy_from_framebuffer) (CoglTexture2D *tex_2d,
-                                        CoglFramebuffer *src_fb,
-                                        int dst_x,
-                                        int dst_y,
                                         int src_x,
                                         int src_y,
                                         int width,
-                                        int height);
+                                        int height,
+                                        CoglFramebuffer *src_fb,
+                                        int dst_x,
+                                        int dst_y,
+                                        int level);
 
   /* If the given texture has a corresponding OpenGL texture handle
    * then return that.
@@ -196,13 +197,14 @@ struct _CoglDriverVtable
    */
   CoglBool
   (* texture_2d_copy_from_bitmap) (CoglTexture2D *tex_2d,
-                                   CoglBitmap *bitmap,
-                                   int dst_x,
-                                   int dst_y,
                                    int src_x,
                                    int src_y,
                                    int width,
                                    int height,
+                                   CoglBitmap *bitmap,
+                                   int dst_x,
+                                   int dst_y,
+                                   int level,
                                    CoglError **error);
 
   /* Reads back the full contents of the given texture and write it to

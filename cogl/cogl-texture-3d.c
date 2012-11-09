@@ -31,6 +31,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-texture-3d-private.h"
 #include "cogl-texture-3d.h"
+#include "cogl-texture-gl-private.h"
 #include "cogl-texture-driver.h"
 #include "cogl-context-private.h"
 #include "cogl-object-private.h"
@@ -547,17 +548,18 @@ _cogl_texture_3d_pre_paint (CoglTexture *tex, CoglTexturePrePaintFlags flags)
   if ((flags & COGL_TEXTURE_NEEDS_MIPMAP) &&
       tex_3d->auto_mipmap && tex_3d->mipmaps_dirty)
     {
-      _cogl_bind_gl_texture_transient (GL_TEXTURE_3D,
-                                       tex_3d->gl_texture,
-                                       FALSE);
       /* glGenerateMipmap is defined in the FBO extension. If it's not
          available we'll fallback to temporarily enabling
          GL_GENERATE_MIPMAP and reuploading the first pixel */
       if (cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
-        ctx->texture_driver->gl_generate_mipmaps (ctx, GL_TEXTURE_3D);
+        _cogl_texture_gl_generate_mipmaps (tex);
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
       else if (ctx->driver != COGL_DRIVER_GLES2)
         {
+          _cogl_bind_gl_texture_transient (GL_TEXTURE_3D,
+                                           tex_3d->gl_texture,
+                                           FALSE);
+
           GE( ctx, glTexParameteri (GL_TEXTURE_3D,
                                     GL_GENERATE_MIPMAP,
                                     GL_TRUE) );
@@ -596,6 +598,7 @@ _cogl_texture_3d_set_region (CoglTexture *tex,
                              int dst_y,
                              int dst_width,
                              int dst_height,
+                             int level,
                              CoglBitmap *bmp,
                              CoglError **error)
 {

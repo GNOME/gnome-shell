@@ -343,24 +343,26 @@ _cogl_texture_2d_externally_modified (CoglTexture *texture)
 
 void
 _cogl_texture_2d_copy_from_framebuffer (CoglTexture2D *tex_2d,
-                                        CoglFramebuffer *src_fb,
-                                        int dst_x,
-                                        int dst_y,
                                         int src_x,
                                         int src_y,
                                         int width,
-                                        int height)
+                                        int height,
+                                        CoglFramebuffer *src_fb,
+                                        int dst_x,
+                                        int dst_y,
+                                        int level)
 {
   CoglContext *ctx = COGL_TEXTURE (tex_2d)->context;
 
   ctx->driver_vtable->texture_2d_copy_from_framebuffer (tex_2d,
-                                                        src_fb,
-                                                        dst_x,
-                                                        dst_y,
                                                         src_x,
                                                         src_y,
                                                         width,
-                                                        height);
+                                                        height,
+                                                        src_fb,
+                                                        dst_x,
+                                                        dst_y,
+                                                        level);
 
   tex_2d->mipmaps_dirty = TRUE;
 }
@@ -479,6 +481,7 @@ _cogl_texture_2d_set_region (CoglTexture *tex,
                              int dst_y,
                              int width,
                              int height,
+                             int level,
                              CoglBitmap *bmp,
                              CoglError **error)
 {
@@ -486,13 +489,14 @@ _cogl_texture_2d_set_region (CoglTexture *tex,
   CoglTexture2D *tex_2d = COGL_TEXTURE_2D (tex);
 
   if (!ctx->driver_vtable->texture_2d_copy_from_bitmap (tex_2d,
-                                                        bmp,
-                                                        dst_x,
-                                                        dst_y,
                                                         src_x,
                                                         src_y,
                                                         width,
                                                         height,
+                                                        bmp,
+                                                        dst_x,
+                                                        dst_y,
+                                                        level,
                                                         error))
     {
       return FALSE;
@@ -530,7 +534,7 @@ _cogl_texture_2d_get_format (CoglTexture *tex)
 static GLenum
 _cogl_texture_2d_get_gl_format (CoglTexture *tex)
 {
-  return COGL_TEXTURE_2D (tex)->gl_format;
+  return COGL_TEXTURE_2D (tex)->gl_internal_format;
 }
 
 static int

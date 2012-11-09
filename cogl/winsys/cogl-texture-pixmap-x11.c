@@ -49,6 +49,7 @@
 #include "cogl-xlib.h"
 #include "cogl-error-private.h"
 #include "cogl-texture-gl-private.h"
+#include "cogl-private.h"
 
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -481,6 +482,9 @@ _cogl_texture_pixmap_x11_update_image_texture (CoglTexturePixmapX11 *tex_pixmap)
   XImage *image;
   int src_x, src_y;
   int x, y, width, height;
+  int bpp;
+  int offset;
+  CoglError *ignore = NULL;
 
   display = cogl_xlib_get_display ();
   visual = tex_pixmap->visual;
@@ -585,14 +589,18 @@ _cogl_texture_pixmap_x11_update_image_texture (CoglTexturePixmapX11 *tex_pixmap)
                                         image->bits_per_pixel,
                                         image->byte_order == LSBFirst);
 
-  cogl_texture_set_region (tex_pixmap->tex,
-                           src_x, src_y,
-                           x, y, width, height,
-                           image->width,
-                           image->height,
-                           image_format,
-                           image->bytes_per_line,
-                           (const uint8_t *) image->data);
+  bpp = _cogl_pixel_format_get_bytes_per_pixel (image_format);
+  offset = image->bytes_per_line * src_y + bpp * src_x;
+
+  _cogl_texture_set_region (tex_pixmap->tex,
+                            width,
+                            height,
+                            image_format,
+                            image->bytes_per_line,
+                            ((const uint8_t *) image->data) + offset,
+                            x, y,
+                            0, /* level */
+                            &ignore);
 
   /* If we have a shared memory segment then the XImage would be a
      temporary one with no data allocated so we can just XFree it */
@@ -685,6 +693,7 @@ _cogl_texture_pixmap_x11_set_region (CoglTexture *tex,
                                      int dst_y,
                                      int dst_width,
                                      int dst_height,
+                                     int level,
                                      CoglBitmap *bmp,
                                      CoglError **error)
 {

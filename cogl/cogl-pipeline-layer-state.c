@@ -1595,6 +1595,9 @@ cogl_pipeline_set_layer_filters (CoglPipeline      *pipeline,
 
   _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
 
+  _COGL_RETURN_IF_FAIL (mag_filter == COGL_PIPELINE_FILTER_NEAREST ||
+                        mag_filter == COGL_PIPELINE_FILTER_LINEAR);
+
   /* Note: this will ensure that the layer exists, creating one if it
    * doesn't already.
    *

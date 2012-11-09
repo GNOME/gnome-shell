@@ -29,7 +29,9 @@
 #include "cogl-internal.h"
 #include "cogl-context-private.h"
 #include "cogl-texture-gl-private.h"
+#include "cogl-texture-3d-private.h"
 #include "cogl-util.h"
+#include "cogl-pipeline-opengl-private.h"
 
 static inline int
 calculate_alignment (int rowstride)
@@ -91,4 +93,45 @@ _cogl_texture_gl_flush_legacy_texobj_filters (CoglTexture *texture,
 {
   texture->vtable->gl_flush_legacy_texobj_filters (texture,
                                                    min_filter, mag_filter);
+}
+
+void
+_cogl_texture_gl_maybe_update_max_level (CoglTexture *texture,
+                                         int max_level)
+{
+  if (texture->max_level < max_level)
+    {
+      CoglContext *ctx = texture->context;
+      GLuint gl_handle;
+      GLenum gl_target;
+
+      cogl_texture_get_gl_texture (texture, &gl_handle, &gl_target);
+
+      texture->max_level = max_level;
+
+      _cogl_bind_gl_texture_transient (gl_target,
+                                       gl_handle,
+                                       _cogl_texture_is_foreign (texture));
+
+      GE( ctx, glTexParameteri (gl_target,
+                                GL_TEXTURE_MAX_LEVEL, texture->max_level));
+    }
+}
+
+void
+_cogl_texture_gl_generate_mipmaps (CoglTexture *texture)
+{
+  CoglContext *ctx = texture->context;
+  int n_levels = _cogl_texture_get_n_levels (texture);
+  GLuint gl_handle;
+  GLenum gl_target;
+
+  _cogl_texture_gl_maybe_update_max_level (texture, n_levels - 1);
+
+  cogl_texture_get_gl_texture (texture, &gl_handle, &gl_target);
+
+  _cogl_bind_gl_texture_transient (gl_target,
+                                   gl_handle,
+                                   _cogl_texture_is_foreign (texture));
+  GE( ctx, glGenerateMipmap (gl_target) );
 }

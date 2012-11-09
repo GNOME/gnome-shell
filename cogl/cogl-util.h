@@ -124,6 +124,7 @@ _cogl_util_one_at_a_time_mix (unsigned int hash);
 #if __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
 #define COGL_UTIL_HAVE_BUILTIN_FFSL
 #define COGL_UTIL_HAVE_BUILTIN_POPCOUNTL
+#define COGL_UTIL_HAVE_BUILTIN_CLZ
 #endif
 
 /* The 'ffs' function is part of C99 so it isn't always available */
@@ -147,6 +148,24 @@ _cogl_util_ffs (int num);
 int
 _cogl_util_ffsl_wrapper (long int num);
 #endif /* COGL_UTIL_HAVE_BUILTIN_FFSL */
+
+static inline unsigned int
+_cogl_util_fls (unsigned int n)
+{
+#ifdef COGL_UTIL_HAVE_BUILTIN_CLZ
+   return n == 0 ? 0 : sizeof (unsigned int) * 8 - __builtin_clz (n);
+#else
+   unsigned int v = 1;
+
+   if (n == 0)
+      return 0;
+
+   while (n >>= 1)
+       v++;
+
+   return v;
+#endif
+}
 
 #ifdef COGL_UTIL_HAVE_BUILTIN_POPCOUNTL
 #define _cogl_util_popcountl __builtin_popcountl

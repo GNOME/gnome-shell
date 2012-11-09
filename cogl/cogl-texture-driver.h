@@ -65,8 +65,7 @@ struct _CoglTextureDriver
    */
   CoglBool
   (* upload_subregion_to_gl) (CoglContext *ctx,
-                              GLenum gl_target,
-                              GLuint gl_handle,
+                              CoglTexture *texture,
                               CoglBool is_foreign,
                               int src_x,
                               int src_y,
@@ -74,6 +73,7 @@ struct _CoglTextureDriver
                               int dst_y,
                               int width,
                               int height,
+                              int level,
                               CoglBitmap *source_bmp,
                               GLuint source_gl_format,
                               GLuint source_gl_type,
@@ -181,15 +181,6 @@ struct _CoglTextureDriver
   CoglBool
   (* allows_foreign_gl_target) (CoglContext *ctx,
                                 GLenum gl_target);
-
-  /*
-   * glGenerateMipmap semantics may need to be emulated for some
-   * drivers. E.g. by enabling auto mipmap generation an re-loading a
-   * number of known texels.
-   */
-  void
-  (* gl_generate_mipmaps) (CoglContext *ctx,
-                           GLenum texture_target);
 
   /*
    * The driver may impose constraints on what formats can be used to store

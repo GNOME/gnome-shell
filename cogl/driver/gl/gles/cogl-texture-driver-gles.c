@@ -82,6 +82,14 @@ _cogl_texture_driver_gen (CoglContext *ctx,
     {
     case GL_TEXTURE_2D:
     case GL_TEXTURE_3D:
+      /* In case automatic mipmap generation gets disabled for this
+       * texture but a minification filter depending on mipmap
+       * interpolation is selected then we initialize the max mipmap
+       * level to 0 so OpenGL will consider the texture storage to be
+       * "complete".
+       */
+      GE( ctx, glTexParameteri (gl_target, GL_TEXTURE_MAX_LEVEL, 0));
+
       /* GL_TEXTURE_MAG_FILTER defaults to GL_LINEAR, no need to set it */
       GE( ctx, glTexParameteri (gl_target,
                                 GL_TEXTURE_MIN_FILTER,
@@ -173,8 +181,7 @@ prepare_bitmap_alignment_for_upload (CoglContext *ctx,
 
 static CoglBool
 _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
-                                             GLenum gl_target,
-                                             GLuint gl_handle,
+                                             CoglTexture *texture,
                                              CoglBool is_foreign,
                                              int src_x,
                                              int src_y,
@@ -182,11 +189,14 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
                                              int dst_y,
                                              int width,
                                              int height,
+                                             int level,
                                              CoglBitmap *source_bmp,
 				             GLuint source_gl_format,
 				             GLuint source_gl_type,
                                              CoglError **error)
 {
+  GLenum gl_target;
+  GLuint gl_handle;
   uint8_t *data;
   CoglPixelFormat source_format = cogl_bitmap_get_format (source_bmp);
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
@@ -195,6 +205,10 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
   GLenum gl_error;
   CoglBool status = TRUE;
   CoglError *internal_error = NULL;
+  int level_width;
+  int level_height;
+
+  cogl_texture_get_gl_texture (texture, &gl_handle, &gl_target);
 
   /* If we have the GL_EXT_unpack_subimage extension then we can
      upload from subregions directly. Otherwise we may need to copy
@@ -255,12 +269,57 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
   while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
     ;
 
-  ctx->glTexSubImage2D (gl_target, 0,
-                        dst_x, dst_y,
-                        width, height,
-                        source_gl_format,
-                        source_gl_type,
-                        data);
+  _cogl_texture_get_level_size (texture,
+                                level,
+                                &level_width,
+                                &level_height,
+                                NULL);
+
+  if (level_width == width && level_height == height)
+    {
+      /* GL gets upset if you use glTexSubImage2D to define the
+       * contents of a mipmap level so we make sure to use
+       * glTexImage2D if we are uploading a full mipmap level.
+       */
+      ctx->glTexImage2D (gl_target,
+                         level,
+                         _cogl_texture_get_gl_format (texture),
+                         width,
+                         height,
+                         0,
+                         source_gl_format,
+                         source_gl_type,
+                         data);
+    }
+  else
+    {
+      /* GL gets upset if you use glTexSubImage2D to initialize the
+       * contents of a mipmap level so if this is the first time
+       * we've seen a request to upload to this level we call
+       * glTexImage2D first to assert that the storage for this
+       * level exists.
+       */
+      if (texture->max_level < level)
+        {
+          ctx->glTexImage2D (gl_target,
+                             level,
+                             _cogl_texture_get_gl_format (texture),
+                             level_width,
+                             level_height,
+                             0,
+                             source_gl_format,
+                             source_gl_type,
+                             NULL);
+        }
+
+      ctx->glTexSubImage2D (gl_target,
+                            level,
+                            dst_x, dst_y,
+                            width, height,
+                            source_gl_format,
+                            source_gl_type,
+                            data);
+    }
 
   if (_cogl_gl_util_catch_out_of_memory (ctx, error))
     status = FALSE;
@@ -552,14 +611,6 @@ _cogl_texture_driver_allows_foreign_gl_target (CoglContext *ctx,
   return TRUE;
 }
 
-static void
-_cogl_texture_driver_gl_generate_mipmaps (CoglContext *ctx,
-                                          GLenum gl_target)
-{
-  if (ctx->driver == COGL_DRIVER_GLES2)
-    GE( ctx, glGenerateMipmap (gl_target) );
-}
-
 static CoglPixelFormat
 _cogl_texture_driver_find_best_gl_get_data_format
                                             (CoglContext *context,
@@ -589,6 +640,5 @@ _cogl_texture_driver_gles =
     _cogl_texture_driver_size_supported_3d,
     _cogl_texture_driver_try_setting_gl_border_color,
     _cogl_texture_driver_allows_foreign_gl_target,
-    _cogl_texture_driver_gl_generate_mipmaps,
     _cogl_texture_driver_find_best_gl_get_data_format
   };

@@ -114,13 +114,14 @@ _cogl_texture_2d_nop_flush_legacy_texobj_wrap_modes (CoglTexture *tex,
 
 void
 _cogl_texture_2d_nop_copy_from_framebuffer (CoglTexture2D *tex_2d,
-                                            CoglFramebuffer *src_fb,
-                                            int dst_x,
-                                            int dst_y,
                                             int src_x,
                                             int src_y,
                                             int width,
-                                            int height)
+                                            int height,
+                                            CoglFramebuffer *src_fb,
+                                            int dst_x,
+                                            int dst_y,
+                                            int level)
 {
 }
 
@@ -137,13 +138,14 @@ _cogl_texture_2d_nop_generate_mipmap (CoglTexture2D *tex_2d)
 
 CoglBool
 _cogl_texture_2d_nop_copy_from_bitmap (CoglTexture2D *tex_2d,
-                                       CoglBitmap *bitmap,
-                                       int dst_x,
-                                       int dst_y,
                                        int src_x,
                                        int src_y,
                                        int width,
                                        int height,
+                                       CoglBitmap *bitmap,
+                                       int dst_x,
+                                       int dst_y,
+                                       int level,
                                        CoglError **error)
 {
   return TRUE;

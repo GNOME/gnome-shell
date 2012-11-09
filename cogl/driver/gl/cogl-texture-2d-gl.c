@@ -35,6 +35,7 @@
 #include "cogl-texture-2d-gl.h"
 #include "cogl-texture-2d-gl-private.h"
 #include "cogl-texture-2d-private.h"
+#include "cogl-texture-gl-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-error-private.h"
 #include "cogl-util-gl-private.h"
@@ -112,6 +113,9 @@ _cogl_texture_2d_gl_new_with_size (CoglContext *ctx,
 
   tex_2d->gl_texture =
     ctx->texture_driver->gen (ctx, GL_TEXTURE_2D, internal_format);
+
+  tex_2d->gl_internal_format = gl_intformat;
+
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    tex_2d->gl_texture,
                                    tex_2d->is_foreign);
@@ -205,7 +209,7 @@ _cogl_texture_2d_gl_new_from_bitmap (CoglBitmap *bmp,
       return NULL;
     }
 
-  tex_2d->gl_format = gl_intformat;
+  tex_2d->gl_internal_format = gl_intformat;
 
   cogl_object_unref (dst_bmp);
 
@@ -441,7 +445,7 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
   tex_2d->format = format;
 
   tex_2d->gl_texture = gl_handle;
-  tex_2d->gl_format = gl_int_format;
+  tex_2d->gl_internal_format = gl_int_format;
 
   /* Unknown filter */
   tex_2d->gl_legacy_texobj_min_filter = GL_FALSE;
@@ -452,13 +456,14 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
 
 void
 _cogl_texture_2d_gl_copy_from_framebuffer (CoglTexture2D *tex_2d,
-                                           CoglFramebuffer *src_fb,
-                                           int dst_x,
-                                           int dst_y,
                                            int src_x,
                                            int src_y,
                                            int width,
-                                           int height)
+                                           int height,
+                                           CoglFramebuffer *src_fb,
+                                           int dst_x,
+                                           int dst_y,
+                                           int level)
 {
   CoglContext *ctx = COGL_TEXTURE (tex_2d)->context;
 
@@ -492,18 +497,18 @@ _cogl_texture_2d_gl_generate_mipmap (CoglTexture2D *tex_2d)
 {
   CoglContext *ctx = COGL_TEXTURE (tex_2d)->context;
 
-  _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
-                                   tex_2d->gl_texture,
-                                   tex_2d->is_foreign);
-
   /* glGenerateMipmap is defined in the FBO extension. If it's not
      available we'll fallback to temporarily enabling
      GL_GENERATE_MIPMAP and reuploading the first pixel */
   if (cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
-    ctx->texture_driver->gl_generate_mipmaps (ctx, GL_TEXTURE_2D);
+    _cogl_texture_gl_generate_mipmaps (COGL_TEXTURE (tex_2d));
 #if defined(HAVE_COGL_GLES) || defined(HAVE_COGL_GL)
   else
     {
+      _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
+                                       tex_2d->gl_texture,
+                                       tex_2d->is_foreign);
+
       GE( ctx, glTexParameteri (GL_TEXTURE_2D,
                                 GL_GENERATE_MIPMAP,
                                 GL_TRUE) );
@@ -520,13 +525,14 @@ _cogl_texture_2d_gl_generate_mipmap (CoglTexture2D *tex_2d)
 
 CoglBool
 _cogl_texture_2d_gl_copy_from_bitmap (CoglTexture2D *tex_2d,
-                                      CoglBitmap *bmp,
-                                      int dst_x,
-                                      int dst_y,
                                       int src_x,
                                       int src_y,
                                       int width,
                                       int height,
+                                      CoglBitmap *bmp,
+                                      int dst_x,
+                                      int dst_y,
+                                      int level,
                                       CoglError **error)
 {
   CoglTexture *tex = COGL_TEXTURE (tex_2d);
@@ -574,20 +580,21 @@ _cogl_texture_2d_gl_copy_from_bitmap (CoglTexture2D *tex_2d,
         }
     }
 
-  /* Send data to GL */
   status = ctx->texture_driver->upload_subregion_to_gl (ctx,
-                                                        GL_TEXTURE_2D,
-                                                        tex_2d->gl_texture,
+                                                        tex,
                                                         FALSE,
                                                         src_x, src_y,
                                                         dst_x, dst_y,
                                                         width, height,
+                                                        level,
                                                         bmp,
                                                         gl_format,
                                                         gl_type,
                                                         error);
 
   cogl_object_unref (bmp);
+
+  _cogl_texture_gl_maybe_update_max_level (tex, level);
 
   return status;
 }

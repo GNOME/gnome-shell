@@ -253,10 +253,11 @@ _cogl_blit_copy_tex_sub_image_blit (CoglBlitData *data,
                                     int height)
 {
   _cogl_texture_2d_copy_from_framebuffer (COGL_TEXTURE_2D (data->dst_tex),
+                                          src_x, src_y,
+                                          width, height,
                                           data->src_fb,
                                           dst_x, dst_y,
-                                          src_x, src_y,
-                                          width, height);
+                                          0); /* level */
 }
 
 static void
@@ -288,14 +289,18 @@ _cogl_blit_get_tex_data_blit (CoglBlitData *data,
                               int width,
                               int height)
 {
-  cogl_texture_set_region (data->dst_tex,
-                           src_x, src_y,
-                           dst_x, dst_y,
-                           width, height,
-                           data->src_width, data->src_height,
-                           data->format,
-                           data->src_width * data->bpp,
-                           data->image_data);
+  CoglError *ignore = NULL;
+  int rowstride = data->src_width * data->bpp;
+  int offset = rowstride * src_y + src_x * data->bpp;
+
+  _cogl_texture_set_region (data->dst_tex,
+                            width, height,
+                            data->format,
+                            rowstride,
+                            data->image_data + offset,
+                            dst_x, dst_y,
+                            0, /* level */
+                            &ignore);
   /* TODO: support chaining up errors during the blit */
 }
 

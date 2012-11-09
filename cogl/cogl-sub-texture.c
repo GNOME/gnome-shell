@@ -374,17 +374,32 @@ _cogl_sub_texture_set_region (CoglTexture *tex,
                               int dst_y,
                               int dst_width,
                               int dst_height,
+                              int level,
                               CoglBitmap *bmp,
                               CoglError **error)
 {
   CoglSubTexture  *sub_tex = COGL_SUB_TEXTURE (tex);
 
+  if (level != 0)
+    {
+      int full_width = cogl_texture_get_width (sub_tex->full_texture);
+      int full_height = cogl_texture_get_width (sub_tex->full_texture);
+
+      _COGL_RETURN_VAL_IF_FAIL (sub_tex->sub_x == 0 &&
+                                cogl_texture_get_width (tex) == full_width,
+                                FALSE);
+      _COGL_RETURN_VAL_IF_FAIL (sub_tex->sub_y == 0 &&
+                                cogl_texture_get_height (tex) == full_height,
+                                FALSE);
+    }
+
   return _cogl_texture_set_region_from_bitmap (sub_tex->full_texture,
                                                src_x, src_y,
-                                               dst_x + sub_tex->sub_x,
-                                               dst_y + sub_tex->sub_y,
                                                dst_width, dst_height,
                                                bmp,
+                                               dst_x + sub_tex->sub_x,
+                                               dst_y + sub_tex->sub_y,
+                                               level,
                                                error);
 }
 

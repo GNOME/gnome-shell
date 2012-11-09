@@ -359,6 +359,11 @@ cogl_pipeline_get_n_layers (CoglPipeline *pipeline);
  * Changes the decimation and interpolation filters used when a texture is
  * drawn at other scales than 100%.
  *
+ * <note>It is an error to pass anything other than
+ * %COGL_PIPELINE_FILTER_NEAREST or %COGL_PIPELINE_FILTER_LINEAR as
+ * magnification filters since magnification doesn't ever need to
+ * reference values stored in the mipmap chain.</note>
+ *
  * Since: 1.10
  * Stability: unstable
  */
