@@ -1168,11 +1168,9 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
 }
 
 static void
-_cogl_winsys_wait_for_vblank (void)
+_cogl_winsys_wait_for_vblank (CoglContext *ctx)
 {
   CoglGLXRenderer *glx_renderer;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   glx_renderer = ctx->display->renderer->winsys;
 
@@ -1188,12 +1186,10 @@ _cogl_winsys_wait_for_vblank (void)
 }
 
 static uint32_t
-_cogl_winsys_get_vsync_counter (void)
+_cogl_winsys_get_vsync_counter (CoglContext *ctx)
 {
   uint32_t video_sync_count;
   CoglGLXRenderer *glx_renderer;
-
-  _COGL_GET_CONTEXT (ctx, 0);
 
   glx_renderer = ctx->display->renderer->winsys;
 
@@ -1298,17 +1294,17 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
 
   if (blit_sub_buffer_is_synchronized && have_counter && can_wait)
     {
-      end_frame_vsync_counter = _cogl_winsys_get_vsync_counter ();
+      end_frame_vsync_counter = _cogl_winsys_get_vsync_counter (context);
 
       /* If we have the GLX_SGI_video_sync extension then we can
        * be a bit smarter about how we throttle blits by avoiding
        * any waits if we can see that the video sync count has
        * already progressed. */
       if (glx_onscreen->last_swap_vsync_counter == end_frame_vsync_counter)
-        _cogl_winsys_wait_for_vblank ();
+        _cogl_winsys_wait_for_vblank (context);
     }
   else if (can_wait)
-    _cogl_winsys_wait_for_vblank ();
+    _cogl_winsys_wait_for_vblank (context);
 
   if (glx_renderer->pf_glXCopySubBuffer)
     {
@@ -1402,7 +1398,7 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
        * the vsync counter for each swap request so we can manually
        * throttle swap_region requests. */
       if (have_counter)
-        end_frame_vsync_counter = _cogl_winsys_get_vsync_counter ();
+        end_frame_vsync_counter = _cogl_winsys_get_vsync_counter (context);
 
       if (!glx_renderer->pf_glXSwapInterval)
         {
@@ -1431,10 +1427,10 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
             {
               if (glx_onscreen->last_swap_vsync_counter ==
                   end_frame_vsync_counter)
-                _cogl_winsys_wait_for_vblank ();
+                _cogl_winsys_wait_for_vblank (context);
             }
           else if (can_wait)
-            _cogl_winsys_wait_for_vblank ();
+            _cogl_winsys_wait_for_vblank (context);
         }
     }
   else
@@ -1443,7 +1439,8 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
   glx_renderer->glXSwapBuffers (xlib_renderer->xdpy, drawable);
 
   if (have_counter)
-    glx_onscreen->last_swap_vsync_counter = _cogl_winsys_get_vsync_counter ();
+    glx_onscreen->last_swap_vsync_counter =
+      _cogl_winsys_get_vsync_counter (context);
 }
 
 static uint32_t
@@ -1836,10 +1833,7 @@ static CoglBool
 _cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap)
 {
   CoglTexturePixmapGLX *glx_tex_pixmap;
-
-  /* FIXME: It should be possible to get to a CoglContext from any
-   * CoglTexture pointer. */
-  _COGL_GET_CONTEXT (ctx, FALSE);
+  CoglContext *ctx = COGL_TEXTURE (tex_pixmap)->context;
 
   if (!_cogl_winsys_has_feature (COGL_WINSYS_FEATURE_TEXTURE_FROM_PIXMAP))
     {
@@ -1919,16 +1913,12 @@ _cogl_winsys_texture_pixmap_x11_free (CoglTexturePixmapX11 *tex_pixmap)
 {
   CoglTexturePixmapGLX *glx_tex_pixmap;
 
-  /* FIXME: It should be possible to get to a CoglContext from any
-   * CoglTexture pointer. */
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   if (!tex_pixmap->winsys)
     return;
 
   glx_tex_pixmap = tex_pixmap->winsys;
 
-  free_glx_pixmap (ctx, glx_tex_pixmap);
+  free_glx_pixmap (COGL_TEXTURE (tex_pixmap)->context, glx_tex_pixmap);
 
   if (glx_tex_pixmap->glx_tex)
     cogl_object_unref (glx_tex_pixmap->glx_tex);
@@ -1941,12 +1931,9 @@ static CoglBool
 _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
                                         CoglBool needs_mipmap)
 {
+  CoglContext *ctx = COGL_TEXTURE (tex_pixmap)->context;
   CoglTexturePixmapGLX *glx_tex_pixmap = tex_pixmap->winsys;
   CoglGLXRenderer *glx_renderer;
-
-  /* FIXME: It should be possible to get to a CoglContext from any CoglTexture
-   * pointer. */
-  _COGL_GET_CONTEXT (ctx, FALSE);
 
   /* If we don't have a GLX pixmap then fallback */
   if (glx_tex_pixmap->glx_pixmap == None)
