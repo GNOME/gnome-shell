@@ -36,6 +36,8 @@ typedef struct _CoglPangoGlyphCacheKey     CoglPangoGlyphCacheKey;
 
 struct _CoglPangoGlyphCache
 {
+  CoglContext *ctx;
+
   /* Hash table to quickly check whether a particular glyph in a
      particular font is already cached */
   GHashTable       *hash_table;
@@ -111,11 +113,16 @@ cogl_pango_glyph_cache_equal_func (const void *a, const void *b)
 }
 
 CoglPangoGlyphCache *
-cogl_pango_glyph_cache_new (CoglBool use_mipmapping)
+cogl_pango_glyph_cache_new (CoglContext *ctx,
+                            CoglBool use_mipmapping)
 {
   CoglPangoGlyphCache *cache;
 
   cache = g_malloc (sizeof (CoglPangoGlyphCache));
+
+  /* Note: as a rule we don't take references to a CoglContext
+   * internally since */
+  cache->ctx = ctx;
 
   cache->hash_table = g_hash_table_new_full
     (cogl_pango_glyph_cache_hash_func,
@@ -158,8 +165,11 @@ void
 cogl_pango_glyph_cache_free (CoglPangoGlyphCache *cache)
 {
   if (cache->using_global_atlas)
-    _cogl_atlas_texture_remove_reorganize_callback
-      (cogl_pango_glyph_cache_reorganize_cb, cache);
+    {
+      _cogl_atlas_texture_remove_reorganize_callback (
+                                  cache->ctx,
+                                  cogl_pango_glyph_cache_reorganize_cb, cache);
+    }
 
   cogl_pango_glyph_cache_clear (cache);
 
@@ -213,7 +223,8 @@ cogl_pango_glyph_cache_add_to_global_atlas (CoglPangoGlyphCache *cache,
   if (cache->use_mipmapping)
     return FALSE;
 
-  texture = _cogl_atlas_texture_new_with_size (value->draw_width,
+  texture = _cogl_atlas_texture_new_with_size (cache->ctx,
+                                               value->draw_width,
                                                value->draw_height,
                                                COGL_TEXTURE_NONE,
                                                COGL_PIXEL_FORMAT_RGBA_8888_PRE);
@@ -236,7 +247,8 @@ cogl_pango_glyph_cache_add_to_global_atlas (CoglPangoGlyphCache *cache,
   if (!cache->using_global_atlas)
     {
       _cogl_atlas_texture_add_reorganize_callback
-        (cogl_pango_glyph_cache_reorganize_cb, cache);
+        (cache->ctx,
+         cogl_pango_glyph_cache_reorganize_cb, cache);
       cache->using_global_atlas = TRUE;
     }
 

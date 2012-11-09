@@ -214,8 +214,10 @@ _cogl_pango_renderer_constructed (GObject *gobject)
   renderer->mipmap_caches.pipeline_cache =
     _cogl_pango_pipeline_cache_new (ctx, TRUE);
 
-  renderer->no_mipmap_caches.glyph_cache = cogl_pango_glyph_cache_new (FALSE);
-  renderer->mipmap_caches.glyph_cache = cogl_pango_glyph_cache_new (TRUE);
+  renderer->no_mipmap_caches.glyph_cache =
+    cogl_pango_glyph_cache_new (ctx, FALSE);
+  renderer->mipmap_caches.glyph_cache =
+    cogl_pango_glyph_cache_new (ctx, TRUE);
 
   _cogl_pango_renderer_set_use_mipmapping (renderer, FALSE);
 

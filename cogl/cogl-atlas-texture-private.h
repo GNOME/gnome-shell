@@ -64,17 +64,20 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap *bmp,
                                      CoglError **error);
 
 CoglAtlasTexture *
-_cogl_atlas_texture_new_with_size (unsigned int     width,
-                                   unsigned int     height,
+_cogl_atlas_texture_new_with_size (CoglContext *ctx,
+                                   int width,
+                                   int height,
                                    CoglTextureFlags flags,
-                                   CoglPixelFormat  internal_format);
+                                   CoglPixelFormat internal_format);
 
 void
-_cogl_atlas_texture_add_reorganize_callback (GHookFunc callback,
+_cogl_atlas_texture_add_reorganize_callback (CoglContext *ctx,
+                                             GHookFunc callback,
                                              void *user_data);
 
 void
-_cogl_atlas_texture_remove_reorganize_callback (GHookFunc callback,
+_cogl_atlas_texture_remove_reorganize_callback (CoglContext *ctx,
+                                                GHookFunc callback,
                                                 void *user_data);
 
 CoglBool

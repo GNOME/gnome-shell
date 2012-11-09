@@ -59,9 +59,9 @@ static CoglSubTexture *
 _cogl_atlas_texture_create_sub_texture (CoglTexture *full_texture,
                                         const CoglRectangleMapEntry *rectangle)
 {
+  CoglContext *ctx = full_texture->context;
   /* Create a subtexture for the given rectangle not including the
      1-pixel border */
-  _COGL_GET_CONTEXT (ctx, NULL);
   return cogl_sub_texture_new (ctx,
                                full_texture,
                                rectangle->x + 1,
@@ -193,17 +193,13 @@ _cogl_atlas_texture_atlas_destroyed_cb (void *user_data)
 }
 
 static CoglAtlas *
-_cogl_atlas_texture_create_atlas (void)
+_cogl_atlas_texture_create_atlas (CoglContext *ctx)
 {
   static CoglUserDataKey atlas_private_key;
 
-  CoglAtlas *atlas;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
-
-  atlas = _cogl_atlas_new (COGL_PIXEL_FORMAT_RGBA_8888,
-                           0,
-                           _cogl_atlas_texture_update_position_cb);
+  CoglAtlas *atlas = _cogl_atlas_new (COGL_PIXEL_FORMAT_RGBA_8888,
+                                      0,
+                                      _cogl_atlas_texture_update_position_cb);
 
   _cogl_atlas_add_reorganize_callback (atlas,
                                        _cogl_atlas_texture_pre_reorganize_cb,
@@ -364,55 +360,58 @@ _cogl_atlas_texture_gl_flush_legacy_texobj_filters (CoglTexture *tex,
 static void
 _cogl_atlas_texture_migrate_out_of_atlas (CoglAtlasTexture *atlas_tex)
 {
+  CoglTexture *standalone_tex;
+  CoglContext *ctx;
+
   /* Make sure this texture is not in the atlas */
-  if (atlas_tex->atlas)
-    {
-      CoglTexture *standalone_tex;
+  if (!atlas_tex->atlas)
+    return;
 
-      COGL_NOTE (ATLAS, "Migrating texture out of the atlas");
+  ctx = COGL_TEXTURE (atlas_tex)->context;
 
-      /* We don't know if any journal entries currently depend on
-       * OpenGL texture coordinates that would be invalidated by
-       * migrating textures in this atlas so we flush all journals
-       * before migrating.
-       *
-       * We are assuming that texture atlas migration never happens
-       * during a flush so we don't have to consider recursion here.
-       */
-      cogl_flush ();
+  COGL_NOTE (ATLAS, "Migrating texture out of the atlas");
 
-      standalone_tex =
-        _cogl_atlas_copy_rectangle (atlas_tex->atlas,
-                                    atlas_tex->rectangle.x + 1,
-                                    atlas_tex->rectangle.y + 1,
-                                    atlas_tex->rectangle.width - 2,
-                                    atlas_tex->rectangle.height - 2,
-                                    COGL_TEXTURE_NO_ATLAS,
-                                    atlas_tex->format);
-      /* Note: we simply silently ignore failures to migrate a texture
-       * out (most likely due to lack of memory) and hope for the
-       * best.
-       *
-       * Maybe we should find a way to report the problem back to the
-       * app.
-       */
-      if (!standalone_tex)
-        return;
+  /* We don't know if any journal entries currently depend on
+   * OpenGL texture coordinates that would be invalidated by
+   * migrating textures in this atlas so we flush all journals
+   * before migrating.
+   *
+   * We are assuming that texture atlas migration never happens
+   * during a flush so we don't have to consider recursion here.
+   */
+  cogl_flush ();
 
-      /* Notify cogl-pipeline.c that the texture's underlying GL texture
-       * storage is changing so it knows it may need to bind a new texture
-       * if the CoglTexture is reused with the same texture unit. */
-      _cogl_pipeline_texture_storage_change_notify (COGL_TEXTURE (atlas_tex));
+  standalone_tex =
+    _cogl_atlas_copy_rectangle (atlas_tex->atlas,
+                                atlas_tex->rectangle.x + 1,
+                                atlas_tex->rectangle.y + 1,
+                                atlas_tex->rectangle.width - 2,
+                                atlas_tex->rectangle.height - 2,
+                                COGL_TEXTURE_NO_ATLAS,
+                                atlas_tex->format);
+  /* Note: we simply silently ignore failures to migrate a texture
+   * out (most likely due to lack of memory) and hope for the
+   * best.
+   *
+   * Maybe we should find a way to report the problem back to the
+   * app.
+   */
+  if (!standalone_tex)
+    return;
 
-      /* We need to unref the sub texture after doing the copy because
-         the copy can involve rendering which might cause the texture
-         to be used if it is used from a layer that is left in a
-         texture unit */
-      cogl_object_unref (atlas_tex->sub_texture);
-      atlas_tex->sub_texture = standalone_tex;
+  /* Notify cogl-pipeline.c that the texture's underlying GL texture
+   * storage is changing so it knows it may need to bind a new texture
+   * if the CoglTexture is reused with the same texture unit. */
+  _cogl_pipeline_texture_storage_change_notify (COGL_TEXTURE (atlas_tex));
 
-      _cogl_atlas_texture_remove_from_atlas (atlas_tex);
-    }
+  /* We need to unref the sub texture after doing the copy because
+     the copy can involve rendering which might cause the texture
+     to be used if it is used from a layer that is left in a
+     texture unit */
+  cogl_object_unref (atlas_tex->sub_texture);
+  atlas_tex->sub_texture = standalone_tex;
+
+  _cogl_atlas_texture_remove_from_atlas (atlas_tex);
 }
 
 static void
@@ -660,16 +659,15 @@ _cogl_atlas_texture_can_use_format (CoglPixelFormat format)
 }
 
 CoglAtlasTexture *
-_cogl_atlas_texture_new_with_size (unsigned int width,
-                                   unsigned int height,
+_cogl_atlas_texture_new_with_size (CoglContext *ctx,
+                                   int width,
+                                   int height,
                                    CoglTextureFlags flags,
                                    CoglPixelFormat internal_format)
 {
   CoglAtlasTexture *atlas_tex;
-  CoglAtlas        *atlas;
-  GSList           *l;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
+  CoglAtlas *atlas;
+  GSList *l;
 
   /* Don't put textures in the atlas if the user has explicitly
      requested to disable it */
@@ -731,7 +729,7 @@ _cogl_atlas_texture_new_with_size (unsigned int width,
   /* If we couldn't find a suitable atlas then start another */
   if (l == NULL)
     {
-      atlas = _cogl_atlas_texture_create_atlas ();
+      atlas = _cogl_atlas_texture_create_atlas (ctx);
       COGL_NOTE (ATLAS, "Created new atlas for textures: %p", atlas);
       if (!_cogl_atlas_reserve_space (atlas,
                                       /* Add two pixels for the border */
@@ -757,6 +755,7 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap *bmp,
                                      CoglPixelFormat internal_format,
                                      CoglError **error)
 {
+  CoglContext *ctx = _cogl_bitmap_get_context (bmp);
   CoglAtlasTexture *atlas_tex;
   CoglBitmap *dst_bmp;
   int bmp_width;
@@ -772,7 +771,8 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap *bmp,
   internal_format = _cogl_texture_determine_internal_format (bmp_format,
                                                              internal_format);
 
-  atlas_tex = _cogl_atlas_texture_new_with_size (bmp_width, bmp_height,
+  atlas_tex = _cogl_atlas_texture_new_with_size (ctx,
+                                                 bmp_width, bmp_height,
                                                  flags, internal_format);
 
   if (atlas_tex == NULL)
@@ -816,31 +816,25 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap *bmp,
 }
 
 void
-_cogl_atlas_texture_add_reorganize_callback (GHookFunc callback,
+_cogl_atlas_texture_add_reorganize_callback (CoglContext *ctx,
+                                             GHookFunc callback,
                                              void *user_data)
 {
-  GHook *hook;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  hook = g_hook_alloc (&ctx->atlas_reorganize_callbacks);
+  GHook *hook = g_hook_alloc (&ctx->atlas_reorganize_callbacks);
   hook->func = callback;
   hook->data = user_data;
   g_hook_prepend (&ctx->atlas_reorganize_callbacks, hook);
 }
 
 void
-_cogl_atlas_texture_remove_reorganize_callback (GHookFunc callback,
+_cogl_atlas_texture_remove_reorganize_callback (CoglContext *ctx,
+                                                GHookFunc callback,
                                                 void *user_data)
 {
-  GHook *hook;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  hook = g_hook_find_func_data (&ctx->atlas_reorganize_callbacks,
-                                FALSE,
-                                callback,
-                                user_data);
+  GHook *hook = g_hook_find_func_data (&ctx->atlas_reorganize_callbacks,
+                                       FALSE,
+                                       callback,
+                                       user_data);
 
   if (hook)
     g_hook_destroy_link (&ctx->atlas_reorganize_callbacks, hook);
