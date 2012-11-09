@@ -572,14 +572,13 @@ _cogl_offscreen_new_to_texture_full (CoglTexture *texture,
                                      CoglOffscreenFlags create_flags,
                                      unsigned int level)
 {
+  CoglContext *ctx = texture->context;
   CoglOffscreen *offscreen;
   CoglFramebuffer *fb;
   int level_width;
   int level_height;
   int i;
   CoglOffscreen *ret;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
 
   if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
     return NULL;
