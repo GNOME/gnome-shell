@@ -96,7 +96,7 @@ const Indicator = new Lang.Class({
                     let minutes = time % 60;
                     let hours = Math.floor(time / 60);
                     let timestring;
-                    if (time > 60) {
+                    if (time >= 60) {
                         if (minutes == 0) {
                             timestring = ngettext("%d hour remaining", "%d hours remaining", hours).format(hours);
                         } else {
