@@ -270,33 +270,27 @@ paint (TestState *state)
 void
 test_custom_attributes (void)
 {
-  /* If shaders aren't supported then we can't run the test */
-  if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
-    {
-      CoglSnippet *snippet;
-      TestState state;
+  CoglSnippet *snippet;
+  TestState state;
 
-      cogl_framebuffer_orthographic (test_fb,
-                                     0, 0,
-                                     cogl_framebuffer_get_width (test_fb),
-                                     cogl_framebuffer_get_height (test_fb),
-                                     -1,
-                                     100);
+  cogl_framebuffer_orthographic (test_fb,
+                                 0, 0,
+                                 cogl_framebuffer_get_width (test_fb),
+                                 cogl_framebuffer_get_height (test_fb),
+                                 -1,
+                                 100);
 
-      state.pipeline = cogl_pipeline_new (test_ctx);
-      snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX,
-                                  "attribute vec4 color;",
-                                  "cogl_color_out = color;");
-      cogl_pipeline_add_snippet (state.pipeline, snippet);
+  state.pipeline = cogl_pipeline_new (test_ctx);
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX,
+                              "attribute vec4 color;",
+                              "cogl_color_out = color;");
+  cogl_pipeline_add_snippet (state.pipeline, snippet);
 
-      paint (&state);
+  paint (&state);
 
-      cogl_object_unref (state.pipeline);
-      cogl_object_unref (snippet);
+  cogl_object_unref (state.pipeline);
+  cogl_object_unref (snippet);
 
-      if (cogl_test_verbose ())
-        g_print ("OK\n");
-    }
-  else if (cogl_test_verbose ())
-    g_print ("Skipping\n");
+  if (cogl_test_verbose ())
+    g_print ("OK\n");
 }

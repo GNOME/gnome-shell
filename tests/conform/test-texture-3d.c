@@ -256,30 +256,22 @@ test_multi_texture (TestState *state)
 void
 test_texture_3d (void)
 {
-  /* Check whether GL supports the rectangle extension. If not we'll
-     just assume the test passes */
-  if (cogl_has_feature (test_ctx, COGL_FEATURE_ID_TEXTURE_3D))
-    {
-      TestState state;
+  TestState state;
 
-      state.fb_width = cogl_framebuffer_get_width (test_fb);
-      state.fb_height = cogl_framebuffer_get_height (test_fb);
+  state.fb_width = cogl_framebuffer_get_width (test_fb);
+  state.fb_height = cogl_framebuffer_get_height (test_fb);
 
-      cogl_framebuffer_orthographic (test_fb,
-                                     0, 0, /* x_1, y_1 */
-                                     state.fb_width, /* x_2 */
-                                     state.fb_height /* y_2 */,
-                                     -1, 100 /* near/far */);
+  cogl_framebuffer_orthographic (test_fb,
+                                 0, 0, /* x_1, y_1 */
+                                 state.fb_width, /* x_2 */
+                                 state.fb_height /* y_2 */,
+                                 -1, 100 /* near/far */);
 
-      draw_frame (&state);
-      validate_result ();
+  draw_frame (&state);
+  validate_result ();
 
-      test_multi_texture (&state);
+  test_multi_texture (&state);
 
-      if (cogl_test_verbose ())
-        g_print ("OK\n");
-    }
-  else if (cogl_test_verbose ())
-    g_print ("Skipping\n");
+  if (cogl_test_verbose ())
+    g_print ("OK\n");
 }
-

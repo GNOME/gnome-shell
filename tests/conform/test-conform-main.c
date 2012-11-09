@@ -69,7 +69,7 @@ main (int argc, char **argv)
   ADD_TEST (test_sub_texture, 0);
   ADD_TEST (test_pixel_buffer, 0);
   UNPORTED_TEST (test_texture_rectangle);
-  ADD_TEST (test_texture_3d, 0);
+  ADD_TEST (test_texture_3d, TEST_REQUIREMENT_TEXTURE_3D);
   ADD_TEST (test_wrap_modes, 0);
   UNPORTED_TEST (test_texture_pixmap_x11);
   UNPORTED_TEST (test_texture_get_set_data);
@@ -83,10 +83,10 @@ main (int argc, char **argv)
 
   ADD_TEST (test_primitive, 0);
 
-  ADD_TEST (test_just_vertex_shader, 0);
-  ADD_TEST (test_pipeline_uniforms, 0);
-  ADD_TEST (test_snippets, 0);
-  ADD_TEST (test_custom_attributes, 0);
+  ADD_TEST (test_just_vertex_shader, TEST_REQUIREMENT_GLSL);
+  ADD_TEST (test_pipeline_uniforms, TEST_REQUIREMENT_GLSL);
+  ADD_TEST (test_snippets, TEST_REQUIREMENT_GLSL);
+  ADD_TEST (test_custom_attributes, TEST_REQUIREMENT_GLSL);
 
   ADD_TEST (test_bitmask, 0);
 

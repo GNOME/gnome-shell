@@ -383,39 +383,33 @@ validate_long_pipeline_result (void)
 void
 test_pipeline_uniforms (void)
 {
-  /* If shaders aren't supported then we can't run the test */
-  if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
-    {
-      TestState state;
+  TestState state;
 
-      init_state (&state);
+  init_state (&state);
 
-      cogl_framebuffer_orthographic (test_fb,
-                                     0, 0,
-                                     cogl_framebuffer_get_width (test_fb),
-                                     cogl_framebuffer_get_height (test_fb),
-                                     -1,
-                                     100);
+  cogl_framebuffer_orthographic (test_fb,
+                                 0, 0,
+                                 cogl_framebuffer_get_width (test_fb),
+                                 cogl_framebuffer_get_height (test_fb),
+                                 -1,
+                                 100);
 
-      paint (&state);
-      validate_result ();
+  paint (&state);
+  validate_result ();
 
-      /* Try the test again after querying the location of a large
-         number of uniforms. This should verify that the bitmasks
-         still work even if they have to allocate a separate array to
-         store the bits */
+  /* Try the test again after querying the location of a large
+     number of uniforms. This should verify that the bitmasks
+     still work even if they have to allocate a separate array to
+     store the bits */
 
-      init_long_pipeline_state (&state);
-      paint (&state);
-      paint_long_pipeline (&state);
-      validate_result ();
-      validate_long_pipeline_result ();
+  init_long_pipeline_state (&state);
+  paint (&state);
+  paint_long_pipeline (&state);
+  validate_result ();
+  validate_long_pipeline_result ();
 
-      destroy_state (&state);
+  destroy_state (&state);
 
-      if (cogl_test_verbose ())
-        g_print ("OK\n");
-    }
-  else if (cogl_test_verbose ())
-    g_print ("Skipping\n");
+  if (cogl_test_verbose ())
+    g_print ("OK\n");
 }

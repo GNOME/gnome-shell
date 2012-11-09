@@ -186,25 +186,18 @@ test_just_vertex_shader (void)
                                  -1,
                                  100);
 
-  /* If shaders aren't supported then we can't run the test */
-  if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
-    {
-      /* XXX: we have to push/pop a framebuffer since this test currently
-       * uses the legacy cogl_rectangle() api. */
-      cogl_push_framebuffer (test_fb);
+  /* XXX: we have to push/pop a framebuffer since this test currently
+   * uses the legacy cogl_rectangle() api. */
+  cogl_push_framebuffer (test_fb);
 
-      paint_legacy (&state);
-      validate_result (test_fb);
+  paint_legacy (&state);
+  validate_result (test_fb);
 
-      paint (&state);
-      validate_result (test_fb);
+  paint (&state);
+  validate_result (test_fb);
 
-      cogl_pop_framebuffer ();
+  cogl_pop_framebuffer ();
 
-      if (cogl_test_verbose ())
-        g_print ("OK\n");
-    }
-  else if (cogl_test_verbose ())
-    g_print ("Skipping\n");
+  if (cogl_test_verbose ())
+    g_print ("OK\n");
 }
-

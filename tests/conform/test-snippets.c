@@ -691,23 +691,17 @@ run_tests (TestState *state)
 void
 test_snippets (void)
 {
-  /* If shaders aren't supported then we can't run the test */
-  if (cogl_features_available (COGL_FEATURE_SHADERS_GLSL))
-    {
-      TestState state;
+  TestState state;
 
-      cogl_framebuffer_orthographic (test_fb,
-                                     0, 0,
-                                     cogl_framebuffer_get_width (test_fb),
-                                     cogl_framebuffer_get_height (test_fb),
-                                     -1,
-                                     100);
+  cogl_framebuffer_orthographic (test_fb,
+                                 0, 0,
+                                 cogl_framebuffer_get_width (test_fb),
+                                 cogl_framebuffer_get_height (test_fb),
+                                 -1,
+                                 100);
 
-      run_tests (&state);
+  run_tests (&state);
 
-      if (cogl_test_verbose ())
-        g_print ("OK\n");
-    }
-  else if (cogl_test_verbose ())
-    g_print ("Skipping\n");
+  if (cogl_test_verbose ())
+    g_print ("OK\n");
 }

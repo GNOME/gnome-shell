@@ -17,7 +17,8 @@ typedef enum _TestFlags
   TEST_REQUIREMENT_TEXTURE_3D    = 1<<3,
   TEST_REQUIREMENT_POINT_SPRITE  = 1<<4,
   TEST_REQUIREMENT_GLES2_CONTEXT = 1<<5,
-  TEST_REQUIREMENT_MAP_WRITE     = 1<<6
+  TEST_REQUIREMENT_MAP_WRITE     = 1<<6,
+  TEST_REQUIREMENT_GLSL          = 1<<7
 } TestFlags;
 
 extern CoglContext *test_ctx;
