@@ -72,17 +72,106 @@ on_screenshot_written (GObject *source,
   g_free (screenshot_data);
 }
 
+/* called in an I/O thread */
+static GOutputStream *
+get_stream_for_path (const gchar *path,
+                     const gchar *filename)
+{
+  GOutputStream *stream;
+  GFile *file;
+  gchar *real_path, *real_filename, *name, *ptr;
+
+  ptr = g_strrstr (filename, ".png");
+
+  if (ptr != NULL)
+    real_filename = g_strndup (filename, ptr - filename);
+  else
+    real_filename = g_strdup (filename);
+
+  name = g_strdup_printf ("%s.png", real_filename);
+  real_path = g_build_filename (path, name, NULL);
+  g_free (name);
+  g_free (real_filename);
+
+  file = g_file_new_for_path (real_path);
+  stream = G_OUTPUT_STREAM (g_file_create (file, G_FILE_CREATE_NONE, NULL, NULL));
+  g_free (real_path);
+  g_object_unref (file);
+
+  return stream;
+}
+
+/* called in an I/O thread */
+static GOutputStream *
+get_stream_for_filename (const gchar *filename)
+{
+  const gchar *path;
+
+  path = g_get_user_special_dir (G_USER_DIRECTORY_PICTURES);
+  if (!g_file_test (path, G_FILE_TEST_EXISTS))
+    {
+      path = g_get_home_dir ();
+      if (!g_file_test (path, G_FILE_TEST_EXISTS))
+        return NULL;
+    }
+
+  return get_stream_for_path (path, filename);
+}
+
+static GOutputStream *
+prepare_write_stream (const gchar *filename)
+{
+  GOutputStream *stream;
+  GFile *file;
+
+  if (g_path_is_absolute (filename))
+    {
+      file = g_file_new_for_path (filename);
+      stream = G_OUTPUT_STREAM (g_file_create (file, G_FILE_CREATE_NONE, NULL, NULL));
+      g_object_unref (file);
+    }
+  else
+    {
+      stream = get_stream_for_filename (filename);
+    }
+
+  return stream;
+}
+
+static cairo_status_t
+do_write_to_stream (void *closure,
+                    const guchar *data,
+                    guint length)
+{
+  GOutputStream *stream = closure;
+  gboolean res;
+
+  res = g_output_stream_write_all (stream, data, length, NULL, NULL, NULL);
+
+  return res ? CAIRO_STATUS_SUCCESS : CAIRO_STATUS_WRITE_ERROR;
+}
+
 static void
 write_screenshot_thread (GSimpleAsyncResult *result,
                          GObject *object,
                          GCancellable *cancellable)
 {
   cairo_status_t status;
+  GOutputStream *stream;
   _screenshot_data *screenshot_data = g_async_result_get_user_data (G_ASYNC_RESULT (result));
+
   g_assert (screenshot_data != NULL);
 
-  status = cairo_surface_write_to_png (screenshot_data->image, screenshot_data->filename);
+  stream = prepare_write_stream (screenshot_data->filename);
+
+  if (stream == NULL)
+    status = CAIRO_STATUS_FILE_NOT_FOUND;
+  else
+    status = cairo_surface_write_to_png_stream (screenshot_data->image, do_write_to_stream, stream);
+
   g_simple_async_result_set_op_res_gboolean (result, status == CAIRO_STATUS_SUCCESS);
+
+  g_clear_object (&stream);
 }
 
 static void

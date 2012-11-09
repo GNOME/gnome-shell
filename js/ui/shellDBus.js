@@ -140,6 +140,9 @@ const GnomeShell = new Lang.Class({
      * Takes a screenshot of the passed in area and saves it
      * in @filename as png image, it returns a boolean
      * indicating whether the operation was successful or not.
+     * @filename can either be an absolute path or a basename, in
+     * which case the screenshot will be saved in the $XDG_PICTURES_DIR
+     * or the home directory if it doesn't exist.
      *
      */
     ScreenshotAreaAsync : function (params, invocation) {
@@ -160,6 +163,9 @@ const GnomeShell = new Lang.Class({
      * Takes a screenshot of the focused window (optionally omitting the frame)
      * and saves it in @filename as png image, it returns a boolean
      * indicating whether the operation was successful or not.
+     * @filename can either be an absolute path or a basename, in
+     * which case the screenshot will be saved in the $XDG_PICTURES_DIR
+     * or the home directory if it doesn't exist.
      *
      */
     ScreenshotWindowAsync : function (params, invocation) {
@@ -179,6 +185,9 @@ const GnomeShell = new Lang.Class({
      * Takes a screenshot of the whole screen and saves it
      * in @filename as png image, it returns a boolean
      * indicating whether the operation was successful or not.
+     * @filename can either be an absolute path or a basename, in
+     * which case the screenshot will be saved in the $XDG_PICTURES_DIR
+     * or the home directory if it doesn't exist.
      *
      */
     ScreenshotAsync : function (params, invocation) {
