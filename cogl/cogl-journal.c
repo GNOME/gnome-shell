@@ -94,6 +94,8 @@
 
 typedef struct _CoglJournalFlushState
 {
+  CoglContext *ctx;
+
   CoglJournal *journal;
 
   CoglAttributeBuffer *attribute_buffer;
@@ -162,8 +164,6 @@ _cogl_journal_dump_logged_quad (uint8_t *data, int n_layers)
   size_t stride = GET_JOURNAL_ARRAY_STRIDE_FOR_N_LAYERS (n_layers);
   int i;
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   g_print ("n_layers = %d; rgba=0x%02X%02X%02X%02X\n",
            n_layers, data[0], data[1], data[2], data[3]);
 
@@ -190,8 +190,6 @@ _cogl_journal_dump_quad_vertices (uint8_t *data, int n_layers)
 {
   size_t stride = GET_JOURNAL_VB_STRIDE_FOR_N_LAYERS (n_layers);
   int i;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   g_print ("n_layers = %d; stride = %d; pos stride = %d; color stride = %d; "
            "tex stride = %d; stride in bytes = %d\n",
@@ -273,6 +271,7 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
                                            void             *data)
 {
   CoglJournalFlushState *state = data;
+  CoglContext *ctx = state->ctx;
   CoglFramebuffer *framebuffer = state->journal->framebuffer;
   CoglAttribute **attributes;
   CoglDrawFlags draw_flags = (COGL_DRAW_SKIP_JOURNAL_FLUSH |
@@ -285,8 +284,6 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
                      "flush: modelview+entries",
                      "The time spent flushing modelview + entries",
                      0 /* no application private data */);
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   COGL_TIMER_START (_cogl_uprof_context, time_flush_modelview_and_entries);
 
@@ -356,10 +353,8 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
       int i;
       CoglAttribute *loop_attributes[1];
 
-      _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
-
       if (outline == NULL)
-        outline = cogl_pipeline_new (ctxt);
+        outline = cogl_pipeline_new (ctx);
 
       /* The least significant three bits represent the three
          components so that the order of colours goes red, green,
@@ -368,13 +363,13 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
          in the order 0xff, 0xcc, 0x99, and 0x66. This gives a total
          of 24 colours. If there are more than 24 batches on the stage
          then it will wrap around */
-      color_intensity = 0xff - 0x33 * (ctxt->journal_rectangles_color >> 3);
+      color_intensity = 0xff - 0x33 * (ctx->journal_rectangles_color >> 3);
       cogl_pipeline_set_color4ub (outline,
-                                  (ctxt->journal_rectangles_color & 1) ?
+                                  (ctx->journal_rectangles_color & 1) ?
                                   color_intensity : 0,
-                                  (ctxt->journal_rectangles_color & 2) ?
+                                  (ctx->journal_rectangles_color & 2) ?
                                   color_intensity : 0,
-                                  (ctxt->journal_rectangles_color & 4) ?
+                                  (ctx->journal_rectangles_color & 4) ?
                                   color_intensity : 0,
                                   0xff);
 
@@ -390,11 +385,11 @@ _cogl_journal_flush_modelview_and_entries (CoglJournalEntry *batch_start,
 
       /* Go to the next color */
       do
-        ctxt->journal_rectangles_color = ((ctxt->journal_rectangles_color + 1) &
-                                          ((1 << 5) - 1));
+        ctx->journal_rectangles_color = ((ctx->journal_rectangles_color + 1) &
+                                         ((1 << 5) - 1));
       /* We don't want to use black or white */
-      while ((ctxt->journal_rectangles_color & 0x07) == 0
-             || (ctxt->journal_rectangles_color & 0x07) == 0x07);
+      while ((ctx->journal_rectangles_color & 0x07) == 0
+             || (ctx->journal_rectangles_color & 0x07) == 0x07);
     }
 
   state->current_vertex += (4 * batch_len);
@@ -423,8 +418,6 @@ _cogl_journal_flush_pipeline_and_entries (CoglJournalEntry *batch_start,
                      "flush: pipeline+entries",
                      "The time spent flushing pipeline + entries",
                      0 /* no application private data */);
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   COGL_TIMER_START (_cogl_uprof_context, time_flush_pipeline_entries);
 
@@ -544,8 +537,6 @@ _cogl_journal_flush_texcoord_vbo_offsets_and_entries (
                      "The time spent flushing texcoord offsets + pipeline "
                      "+ entries",
                      0 /* no application private data */);
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   COGL_TIMER_START (_cogl_uprof_context, time_flush_texcoord_pipeline_entries);
 
@@ -948,11 +939,10 @@ maybe_software_clip_entries (CoglJournalEntry      *batch_start,
                              int                    batch_len,
                              CoglJournalFlushState *state)
 {
-  CoglJournal *journal = state->journal;
+  CoglContext *ctx;
+  CoglJournal *journal;
   CoglClipStack *clip_stack, *clip_entry;
   int entry_num;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* This tries to find cases where the entry is logged with a clip
      but it would be faster to modify the vertex and texture
@@ -974,6 +964,9 @@ maybe_software_clip_entries (CoglJournalEntry      *batch_start,
   for (clip_entry = clip_stack; clip_entry; clip_entry = clip_entry->parent)
     if (clip_entry->type != COGL_CLIP_STACK_RECT)
       return;
+
+  ctx = state->ctx;
+  journal = state->journal;
 
   /* This scratch buffer is used to store the translation for each
      entry in the journal. We store it in a separate buffer because
@@ -1029,8 +1022,6 @@ _cogl_journal_maybe_software_clip_entries (CoglJournalEntry *batch_start,
                      "Time spent software clipping",
                      0 /* no application private data */);
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   COGL_TIMER_START (_cogl_uprof_context,
                     time_check_software_clip);
 
@@ -1053,8 +1044,7 @@ create_attribute_buffer (CoglJournal *journal,
                          size_t n_bytes)
 {
   CoglAttributeBuffer *vbo;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
+  CoglContext *ctx = journal->framebuffer->context;
 
   /* If CoglBuffers are being emulated with malloc then there's not
      really any point in using the pool so we'll just allocate the
@@ -1327,6 +1317,7 @@ _cogl_journal_flush (CoglJournal *journal)
                                  ~(COGL_FRAMEBUFFER_STATE_MODELVIEW |
                                    COGL_FRAMEBUFFER_STATE_CLIP));
 
+  state.ctx = ctx;
   state.journal = journal;
 
   state.attributes = ctx->journal_flush_attributes_array;
