@@ -11,6 +11,7 @@ const ExtensionDownloader = imports.ui.extensionDownloader;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Flashspot = imports.ui.flashspot;
 const Main = imports.ui.main;
+const SelectArea = imports.ui.selectArea;
 
 const GnomeShellIface = <interface name="org.gnome.Shell">
 <method name="Eval">
@@ -39,6 +40,12 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
     <arg type="b" direction="in" name="flash"/>
     <arg type="s" direction="in" name="filename"/>
     <arg type="b" direction="out" name="success"/>
+</method>
+<method name="SelectArea">
+    <arg type="i" direction="out" name="x"/>
+    <arg type="i" direction="out" name="y"/>
+    <arg type="i" direction="out" name="width"/>
+    <arg type="i" direction="out" name="height"/>
 </method>
 <method name="FlashArea">
     <arg type="i" direction="in" name="x"/>
@@ -180,6 +187,23 @@ const GnomeShell = new Lang.Class({
         screenshot.screenshot(include_cursor, filename,
                           Lang.bind(this, this._onScreenshotComplete,
                                     flash, invocation));
+    },
+
+    SelectAreaAsync: function (params, invocation) {
+        let selectArea = new SelectArea.SelectArea();
+        selectArea.show();
+        selectArea.connect('finished', Lang.bind(this,
+            function(selectArea, areaRectangle) {
+                if (areaRectangle) {
+                    let retval = GLib.Variant.new('(iiii)',
+                        [areaRectangle.x, areaRectangle.y,
+                         areaRectangle.width, areaRectangle.height]);
+                    invocation.return_value(retval);
+                } else {
+                    invocation.return_error_literal(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
+                        "Operation was cancelled");
+                }
+            }));
     },
 
     FlashArea: function(x, y, width, height) {

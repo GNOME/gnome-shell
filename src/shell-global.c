@@ -616,6 +616,9 @@ shell_global_set_cursor (ShellGlobal *global,
     case SHELL_CURSOR_POINTING_HAND:
       name = "hand";
       break;
+    case SHELL_CURSOR_CROSSHAIR:
+      name = "crosshair";
+      break;
     default:
       g_return_if_reached ();
     }
@@ -637,6 +640,9 @@ shell_global_set_cursor (ShellGlobal *global,
           break;
         case SHELL_CURSOR_POINTING_HAND:
           cursor_type = GDK_HAND2;
+          break;
+        case SHELL_CURSOR_CROSSHAIR:
+          cursor_type = GDK_CROSSHAIR;
           break;
         case SHELL_CURSOR_DND_UNSUPPORTED_TARGET:
           cursor_type = GDK_X_CURSOR;
