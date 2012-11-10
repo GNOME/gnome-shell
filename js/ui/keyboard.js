@@ -7,6 +7,7 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Shell = imports.gi.Shell;
+const Signals = imports.signals;
 const St = imports.gi.St;
 
 const BoxPointer = imports.ui.boxpointer;
@@ -61,8 +62,6 @@ const Key = new Lang.Class({
                                                     { this.actor.checked = false; }));
 
         if (this._extended_keys.length > 0) {
-            this._grabbed = false;
-            this._eventCaptureId = 0;
             this._key.connect('notify::show-subkeys', Lang.bind(this, this._onShowSubkeysChanged));
             this._boxPointer = new BoxPointer.BoxPointer(St.Side.BOTTOM,
                                                          { x_fill: true,
@@ -114,52 +113,23 @@ const Key = new Lang.Class({
         this._boxPointer.bin.add_actor(this._extended_keyboard);
     },
 
-    _onEventCapture: function (actor, event) {
-        let source = event.get_source();
-        let type = event.type();
-
-        if ((type == Clutter.EventType.BUTTON_PRESS ||
-             type == Clutter.EventType.BUTTON_RELEASE) &&
-            this._extended_keyboard.contains(source)) {
-            source.extended_key.press();
-            source.extended_key.release();
-            return false;
-        }
-        if (type == Clutter.EventType.BUTTON_PRESS) {
-            this._boxPointer.actor.hide();
-            this._ungrab();
-            return true;
-        }
-        return false;
-    },
-
-    _ungrab: function () {
-        global.stage.disconnect(this._eventCaptureId);
-        this._eventCaptureId = 0;
-        this._grabbed = false;
-        Main.popModal(this.actor);
+    get subkeys() {
+        return this._boxPointer;
     },
 
     _onShowSubkeysChanged: function () {
         if (this._key.show_subkeys) {
-            this.actor.fake_release();
             this._boxPointer.actor.raise_top();
             this._boxPointer.setPosition(this.actor, 0.5);
-            this._boxPointer.show(BoxPointer.PopupAnimation.FULL);
+            this.emit('show-subkeys');
+            this.actor.fake_release();
             this.actor.set_hover(false);
-            if (!this._grabbed) {
-                 Main.pushModal(this.actor);
-                 this._eventCaptureId = global.stage.connect('captured-event', Lang.bind(this, this._onEventCapture));
-                 this._grabbed = true;
-            }
-            this._key.release();
         } else {
-            if (this._grabbed)
-                this._ungrab();
-            this._boxPointer.hide(BoxPointer.PopupAnimation.FULL);
+            this.emit('hide-subkeys');
         }
     }
 });
+Signals.addSignalMethods(Key.prototype);
 
 const Keyboard = new Lang.Class({
     // HACK: we can't set Name, because it collides with Name dbus property
@@ -183,6 +153,9 @@ const Keyboard = new Lang.Class({
         this._settingsChanged();
 
         this._showIdleId = 0;
+        this._subkeysBoxPointer = null;
+        this._capturedEventId = 0;
+        this._capturedPress = false;
     },
 
     init: function () {
@@ -336,6 +309,19 @@ const Keyboard = new Lang.Class({
         return trayButton;
     },
 
+    _onCapturedEvent: function(actor, event) {
+        let type = event.type();
+        let press = type == Clutter.EventType.BUTTON_PRESS;
+        let release = type == Clutter.EventType.BUTTON_RELEASE;
+
+        if (press)
+            this._capturedPress = true;
+        else if (release && this._capturedPress)
+            this._hideSubkeys();
+
+        return true;
+    },
+
     _addRows : function (keys, layout) {
         let keyboard_row = new St.BoxLayout();
         for (let i = 0; i < keys.length; ++i) {
@@ -358,6 +344,19 @@ const Keyboard = new Lang.Class({
                     // Add new key for hiding message tray
                     right_box.add(this._getTrayIcon());
                 }
+
+                button.connect('show-subkeys', Lang.bind(this, function() {
+                    if (this._subkeysBoxPointer)
+                        this._subkeysBoxPointer.hide(BoxPointer.PopupAnimation.FULL);
+                    this._subkeysBoxPointer = button.subkeys;
+                    this._subkeysBoxPointer.show(BoxPointer.PopupAnimation.FULL);
+                    if (!this._capturedEventId)
+                        this._capturedEventId = this.actor.connect('captured-event',
+                                                                   Lang.bind(this, this._onCapturedEvent));
+                }));
+                button.connect('hide-subkeys', Lang.bind(this, function() {
+                    this._hideSubkeys();
+                }));
             }
             keyboard_row.add(left_box, { expand: true, x_fill: false, x_align: St.Align.START });
             keyboard_row.add(right_box, { expand: true, x_fill: false, x_align: St.Align.END });
@@ -475,8 +474,21 @@ const Keyboard = new Lang.Class({
     },
 
     hide: function () {
+        this._hideSubkeys();
         Main.layoutManager.hideKeyboard();
         this._createSource();
+    },
+
+    _hideSubkeys: function() {
+        if (this._subkeysBoxPointer) {
+            this._subkeysBoxPointer.hide(BoxPointer.PopupAnimation.FULL);
+            this._subkeysBoxPointer = null;
+        }
+        if (this._capturedEventId) {
+            this.actor.disconnect(this._capturedEventId);
+            this._capturedEventId = 0;
+        }
+        this._capturedPress = false;
     },
 
     _moveTemporarily: function () {
