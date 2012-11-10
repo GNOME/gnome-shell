@@ -102,31 +102,31 @@ const WindowManager = new Lang.Class({
         this._shellwm.connect('destroy', Lang.bind(this, this._destroyWindow));
 
         this._workspaceSwitcherPopup = null;
-        Meta.keybindings_set_custom_handler('switch-to-workspace-left',
+        Meta.keybindings_set_custom_handler('internal-keybinding-switch-to-workspace-left',
                                             Util.wrapKeybinding(Lang.bind(this, this._showWorkspaceSwitcher), true));
-        Meta.keybindings_set_custom_handler('switch-to-workspace-right',
+        Meta.keybindings_set_custom_handler('internal-keybinding-switch-to-workspace-right',
                                             Util.wrapKeybinding(Lang.bind(this, this._showWorkspaceSwitcher), true));
-        Meta.keybindings_set_custom_handler('switch-to-workspace-up',
+        Meta.keybindings_set_custom_handler('internal-keybinding-switch-to-workspace-up',
                                             Util.wrapKeybinding(Lang.bind(this, this._showWorkspaceSwitcher), true));
-        Meta.keybindings_set_custom_handler('switch-to-workspace-down',
+        Meta.keybindings_set_custom_handler('internal-keybinding-switch-to-workspace-down',
                                             Util.wrapKeybinding(Lang.bind(this, this._showWorkspaceSwitcher), true));
-        Meta.keybindings_set_custom_handler('move-to-workspace-left',
+        Meta.keybindings_set_custom_handler('internal-keybinding-move-to-workspace-left',
                                             Lang.bind(this, this._showWorkspaceSwitcher));
-        Meta.keybindings_set_custom_handler('move-to-workspace-right',
+        Meta.keybindings_set_custom_handler('internal-keybinding-move-to-workspace-right',
                                             Lang.bind(this, this._showWorkspaceSwitcher));
-        Meta.keybindings_set_custom_handler('move-to-workspace-up',
+        Meta.keybindings_set_custom_handler('internal-keybinding-move-to-workspace-up',
                                             Lang.bind(this, this._showWorkspaceSwitcher));
-        Meta.keybindings_set_custom_handler('move-to-workspace-down',
+        Meta.keybindings_set_custom_handler('internal-keybinding-move-to-workspace-down',
                                             Lang.bind(this, this._showWorkspaceSwitcher));
-        Meta.keybindings_set_custom_handler('switch-windows',
+        Meta.keybindings_set_custom_handler('internal-keybinding-switch-windows',
                                             Lang.bind(this, this._startAppSwitcher));
-        Meta.keybindings_set_custom_handler('switch-group',
+        Meta.keybindings_set_custom_handler('internal-keybinding-switch-group',
                                             Lang.bind(this, this._startAppSwitcher));
-        Meta.keybindings_set_custom_handler('switch-windows-backward',
+        Meta.keybindings_set_custom_handler('internal-keybinding-switch-windows-backward',
                                             Lang.bind(this, this._startAppSwitcher));
-        Meta.keybindings_set_custom_handler('switch-group-backward',
+        Meta.keybindings_set_custom_handler('internal-keybinding-switch-group-backward',
                                             Lang.bind(this, this._startAppSwitcher));
-        Meta.keybindings_set_custom_handler('switch-panels',
+        Meta.keybindings_set_custom_handler('internal-keybinding-switch-panels',
                                             Util.wrapKeybinding(Lang.bind(this, this._startA11ySwitcher), true));
         global.display.add_keybinding('open-application-menu',
                                       new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
@@ -572,7 +572,7 @@ const WindowManager = new Lang.Class({
         if (screen.n_workspaces == 1)
             return false;
 
-        let [action,,,direction] = binding.get_name().split('-');
+        let [,,action,,,direction] = binding.get_name().split('-');
         let direction = Meta.MotionDirection[direction.toUpperCase()];
         let newWs;
 

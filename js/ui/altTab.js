@@ -199,7 +199,7 @@ const AltTabPopup = new Lang.Class({
         this.actor.get_allocation_box();
 
         // Make the initial selection
-        if (binding == 'switch-group') {
+        if (binding == 'internal-keybinding-switch-group') {
             if (backward) {
                 this._select(0, this._appIcons[0].cachedWindows.length - 1);
             } else {
@@ -208,9 +208,9 @@ const AltTabPopup = new Lang.Class({
                 else
                     this._select(0, 0);
             }
-        } else if (binding == 'switch-group-backward') {
+        } else if (binding == 'internal-keybinding-switch-group-backward') {
             this._select(0, this._appIcons[0].cachedWindows.length - 1);
-        } else if (binding == 'switch-windows-backward') {
+        } else if (binding == 'internal-keybinding-switch-windows-backward') {
             this._select(this._appIcons.length - 1);
         } else if (this._appIcons.length == 1) {
             this._select(0);
