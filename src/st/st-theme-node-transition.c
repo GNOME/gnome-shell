@@ -41,7 +41,6 @@ struct _StThemeNodeTransitionPrivate {
 
   CoglHandle material;
 
-  ClutterAlpha    *alpha;
   ClutterTimeline *timeline;
 
   guint timeline_completed_id;
@@ -91,7 +90,6 @@ st_theme_node_transition_new (StThemeNode *from_node,
   transition->priv->old_theme_node = g_object_ref (from_node);
   transition->priv->new_theme_node = g_object_ref (to_node);
 
-  transition->priv->alpha = clutter_alpha_new ();
   transition->priv->timeline = clutter_timeline_new (duration);
 
   transition->priv->timeline_completed_id =
@@ -101,9 +99,7 @@ st_theme_node_transition_new (StThemeNode *from_node,
     g_signal_connect (transition->priv->timeline, "new-frame",
                       G_CALLBACK (on_timeline_new_frame), transition);
 
-  clutter_alpha_set_mode (transition->priv->alpha, CLUTTER_EASE_IN_OUT_QUAD);
-  clutter_alpha_set_timeline (transition->priv->alpha,
-                              transition->priv->timeline);
+  clutter_timeline_set_progress_mode (transition->priv->timeline, CLUTTER_EASE_IN_OUT_QUAD);
 
   clutter_timeline_start (transition->priv->timeline);
 
@@ -334,7 +330,7 @@ st_theme_node_transition_paint (StThemeNodeTransition *transition,
     }
 
   cogl_color_set_from_4f (&constant, 0., 0., 0.,
-                          clutter_alpha_get_alpha (priv->alpha));
+                          clutter_timeline_get_progress (priv->timeline));
   cogl_material_set_layer_combine_constant (priv->material, 1, &constant);
 
   cogl_material_set_color4ub (priv->material,
@@ -412,12 +408,6 @@ st_theme_node_transition_dispose (GObject *object)
   priv->timeline_completed_id = 0;
   priv->timeline_new_frame_id = 0;
 
-  if (priv->alpha)
-    {
-      g_object_unref (priv->alpha);
-      priv->alpha = NULL;
-    }
-
   G_OBJECT_CLASS (st_theme_node_transition_parent_class)->dispose (object);
 }
 
@@ -436,8 +426,6 @@ st_theme_node_transition_init (StThemeNodeTransition *transition)
   transition->priv->new_offscreen = NULL;
 
   transition->priv->needs_setup = TRUE;
-
-  transition->priv->alpha = NULL;
 }
 
 static void
