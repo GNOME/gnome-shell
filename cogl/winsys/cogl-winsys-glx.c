@@ -71,7 +71,9 @@ typedef struct _CoglContextGLX
 typedef struct _CoglOnscreenXlib
 {
   Window xwin;
+  int x, y;
   CoglBool is_foreign_xwin;
+  CoglOutput *output;
 } CoglOnscreenXlib;
 
 typedef struct _CoglOnscreenGLX
@@ -189,29 +191,84 @@ notify_swap_buffers (CoglContext *context, GLXDrawable drawable)
 }
 
 static void
-notify_resize (CoglContext *context,
-               GLXDrawable drawable,
-               int width,
-               int height)
+update_output (CoglOnscreen *onscreen)
 {
-  CoglOnscreen *onscreen = find_onscreen_for_xid (context, drawable);
+  CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  CoglContext *context = framebuffer->context;
+  CoglDisplay *display = context->display;
+  CoglOutput *output;
+  int width, height;
+
+  width = cogl_framebuffer_get_width (framebuffer);
+  height = cogl_framebuffer_get_height (framebuffer);
+  output = _cogl_xlib_renderer_output_for_rectangle (display->renderer,
+                                                     xlib_onscreen->x,
+                                                     xlib_onscreen->y,
+                                                     width, height);
+  if (xlib_onscreen->output != output)
+    {
+      if (xlib_onscreen->output)
+        cogl_object_unref (xlib_onscreen->output);
+
+      xlib_onscreen->output = output;
+
+      if (output)
+        cogl_object_ref (xlib_onscreen->output);
+    }
+}
+
+static void
+notify_resize (CoglContext *context,
+               XConfigureEvent *configure_event)
+{
+  CoglOnscreen *onscreen = find_onscreen_for_xid (context,
+                                                  configure_event->window);
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglDisplay *display = context->display;
   CoglGLXDisplay *glx_display = display->winsys;
   CoglOnscreenGLX *glx_onscreen;
+  CoglOnscreenXlib *xlib_onscreen;
 
   if (!onscreen)
     return;
 
   glx_onscreen = onscreen->winsys;
+  xlib_onscreen = onscreen->winsys;
 
-  _cogl_framebuffer_winsys_update_size (framebuffer, width, height);
+  _cogl_framebuffer_winsys_update_size (framebuffer,
+                                        configure_event->width,
+                                        configure_event->height);
 
   /* We only want to notify that a resize happened when the
      application calls cogl_context_dispatch so instead of immediately
      notifying we'll set a flag to remember to notify later */
   glx_display->pending_resize_notify = TRUE;
   glx_onscreen->pending_resize_notify = TRUE;
+
+  if (!xlib_onscreen->is_foreign_xwin)
+    {
+      int x, y;
+
+      if (configure_event->send_event)
+        {
+          x = configure_event->x;
+          y = configure_event->y;
+        }
+      else
+        {
+          Window child;
+          XTranslateCoordinates (configure_event->display,
+                                 configure_event->window,
+                                 DefaultRootWindow (configure_event->display),
+                                 0, 0, &x, &y, &child);
+        }
+
+      xlib_onscreen->x = x;
+      xlib_onscreen->y = y;
+
+      update_output (onscreen);
+    }
 }
 
 static CoglFilterReturn
@@ -225,9 +282,7 @@ glx_event_filter_cb (XEvent *xevent, void *data)
   if (xevent->type == ConfigureNotify)
     {
       notify_resize (context,
-                     xevent->xconfigure.window,
-                     xevent->xconfigure.width,
-                     xevent->xconfigure.height);
+                     &xevent->xconfigure);
 
       /* we let ConfigureNotify pass through */
       return COGL_FILTER_CONTINUE;
@@ -261,6 +316,38 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
     g_module_close (glx_renderer->libgl_module);
 
   g_slice_free (CoglGLXRenderer, renderer->winsys);
+}
+
+static CoglBool
+update_all_outputs (CoglRenderer *renderer)
+{
+  GList *l;
+
+  _COGL_GET_CONTEXT (context, FALSE);
+
+  if (context->display == NULL) /* during connection */
+    return FALSE;
+
+  if (context->display->renderer != renderer)
+    return FALSE;
+
+  for (l = context->framebuffers; l; l = l->next)
+    {
+      CoglFramebuffer *framebuffer = l->data;
+
+      if (framebuffer->type != COGL_FRAMEBUFFER_TYPE_ONSCREEN)
+        continue;
+
+      update_output (COGL_ONSCREEN (framebuffer));
+    }
+
+  return TRUE;
+}
+
+static void
+_cogl_winsys_renderer_outputs_changed (CoglRenderer *renderer)
+{
+  update_all_outputs (renderer);
 }
 
 static CoglBool
@@ -1059,6 +1146,12 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   /* If we never successfully allocated then there's nothing to do */
   if (glx_onscreen == NULL)
     return;
+
+  if (xlib_onscreen->output != NULL)
+    {
+      cogl_object_unref (xlib_onscreen->output);
+      xlib_onscreen->output = NULL;
+    }
 
   _cogl_xlib_renderer_trap_errors (context->display->renderer, &old_state);
 
@@ -2206,6 +2299,7 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .renderer_get_proc_address = _cogl_winsys_renderer_get_proc_address,
     .renderer_connect = _cogl_winsys_renderer_connect,
     .renderer_disconnect = _cogl_winsys_renderer_disconnect,
+    .renderer_outputs_changed = _cogl_winsys_renderer_outputs_changed,
     .display_setup = _cogl_winsys_display_setup,
     .display_destroy = _cogl_winsys_display_destroy,
     .context_init = _cogl_winsys_context_init,

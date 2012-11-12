@@ -83,6 +83,9 @@ typedef struct _CoglWinsysVtable
   void
   (*renderer_disconnect) (CoglRenderer *renderer);
 
+  void
+  (*renderer_outputs_changed) (CoglRenderer *renderer);
+
   CoglBool
   (*display_setup) (CoglDisplay *display, CoglError **error);
 

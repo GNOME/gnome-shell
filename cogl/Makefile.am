@@ -114,6 +114,7 @@ cogl_experimental_h = \
 	$(srcdir)/cogl-onscreen.h		\
 	$(srcdir)/cogl-vector.h 		\
 	$(srcdir)/cogl-euler.h 			\
+	$(srcdir)/cogl-output.h			\
 	$(srcdir)/cogl-quaternion.h 		\
 	$(srcdir)/cogl-matrix-stack.h		\
 	$(srcdir)/cogl-poll.h			\
@@ -387,6 +388,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-framebuffer.c 			\
 	$(srcdir)/cogl-onscreen-private.h		\
 	$(srcdir)/cogl-onscreen.c 			\
+	$(srcdir)/cogl-output-private.h			\
+	$(srcdir)/cogl-output.c				\
 	$(srcdir)/cogl-profile.h 			\
 	$(srcdir)/cogl-profile.c 			\
 	$(srcdir)/cogl-flags.h				\

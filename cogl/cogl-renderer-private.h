@@ -50,6 +50,8 @@ struct _CoglRenderer
   CoglWinsysID winsys_id_override;
   GList *constraints;
 
+  GList *outputs;
+
 #ifdef COGL_HAS_XLIB_SUPPORT
   Display *foreign_xdpy;
   CoglBool xlib_enable_event_retrieval;

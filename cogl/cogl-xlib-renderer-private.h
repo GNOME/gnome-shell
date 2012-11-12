@@ -28,6 +28,7 @@
 #include "cogl-xlib-private.h"
 #include "cogl-x11-renderer-private.h"
 #include "cogl-context.h"
+#include "cogl-output.h"
 
 typedef struct _CoglXlibRenderer
 {
@@ -41,6 +42,8 @@ typedef struct _CoglXlibRenderer
 
   /* A poll FD for handling event retrieval within Cogl */
   CoglPollFD poll_fd;
+
+  unsigned long outputs_update_serial;
 } CoglXlibRenderer;
 
 CoglBool
@@ -91,5 +94,12 @@ void
 _cogl_xlib_renderer_poll_dispatch (CoglRenderer *renderer,
                                    const CoglPollFD *poll_fds,
                                    int n_poll_fds);
+
+CoglOutput *
+_cogl_xlib_renderer_output_for_rectangle (CoglRenderer *renderer,
+                                          int x,
+                                          int y,
+                                          int width,
+                                          int height);
 
 #endif /* __COGL_RENDERER_XLIB_PRIVATE_H */

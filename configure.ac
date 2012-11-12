@@ -90,6 +90,7 @@ m4_define([uprof_req_version],          [0.3])
 m4_define([gtk_doc_req_version],        [1.13])
 m4_define([xfixes_req_version],         [3])
 m4_define([xcomposite_req_version],     [0.4])
+m4_define([xrandr_req_version],         [1.2])
 m4_define([cairo_req_version],          [1.10])
 
 dnl These variables get copied into the generated README
@@ -1073,7 +1074,7 @@ dnl         Check X11 dependencies if required
 dnl         ========================================================
 AS_IF([test "x$NEED_XLIB" = "xyes"],
       [
-        X11_MODULES="x11 xext xfixes >= xfixes_req_version xdamage xcomposite >= xcomposite_req_version"
+        X11_MODULES="x11 xext xfixes >= xfixes_req_version xdamage xcomposite >= xcomposite_req_version xrandr >= xrandr_req_version"
         PKG_CHECK_MODULES(DUMMY, [$X11_MODULES],
                           [COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES $X11_MODULES"])
         SUPPORT_X11=yes
