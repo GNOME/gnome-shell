@@ -29,6 +29,9 @@ void meta_window_actor_process_damage (MetaWindowActor    *self,
 
 void meta_window_actor_pre_paint      (MetaWindowActor    *self);
 void meta_window_actor_post_paint     (MetaWindowActor    *self);
+void meta_window_actor_frame_complete (MetaWindowActor    *self,
+                                       CoglFrameInfo      *frame_info,
+                                       gint64              presentation_time);
 
 void meta_window_actor_invalidate_shadow (MetaWindowActor *self);
 
