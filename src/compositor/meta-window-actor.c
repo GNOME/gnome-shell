@@ -10,7 +10,6 @@
 #include <X11/extensions/Xrender.h>
 
 #include <clutter/x11/clutter-x11.h>
-#define COGL_ENABLE_EXPERIMENTAL_API
 #include <cogl/cogl-texture-pixmap-x11.h>
 #include <gdk/gdk.h> /* for gdk_rectangle_union() */
 #include <string.h>

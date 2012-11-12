@@ -6,6 +6,8 @@ lib_LTLIBRARIES = libmutter.la
 SUBDIRS=wm-tester tools compositor/plugins
 
 INCLUDES=								\
+	-DCLUTTER_ENABLE_EXPERIMENTAL_API				\
+	-DCOGL_ENABLE_EXPERIMENTAL_API					\
 	$(MUTTER_CFLAGS)						\
 	-I$(srcdir)							\
 	-I$(srcdir)/core						\
