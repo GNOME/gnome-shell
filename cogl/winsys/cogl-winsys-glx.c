@@ -434,7 +434,8 @@ update_base_winsys_features (CoglRenderer *renderer)
                   COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
                   TRUE);
 
-  if (glx_renderer->glXWaitVideoSync)
+  if (glx_renderer->pf_glXWaitVideoSync ||
+      glx_renderer->pf_glXWaitForMsc)
     COGL_FLAGS_SET (glx_renderer->base_winsys_features,
                     COGL_WINSYS_FEATURE_VBLANK_WAIT,
                     TRUE);
@@ -1285,14 +1286,32 @@ _cogl_winsys_wait_for_vblank (CoglContext *ctx)
 
   glx_renderer = ctx->display->renderer->winsys;
 
-  if (glx_renderer->glXGetVideoSync)
+  if (glx_renderer->glXWaitForMsc ||
+      glx_renderer->glXGetVideoSync)
     {
-      uint32_t current_count;
+      if (glx_renderer->glXWaitForMsc)
+        {
+          CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
+          Drawable drawable = glx_onscreen->glxwin;
+          int64_t ust;
+          int64_t msc;
+          int64_t sbc;
 
-      glx_renderer->glXGetVideoSync (&current_count);
-      glx_renderer->glXWaitVideoSync (2,
-                                      (current_count + 1) % 2,
-                                      &current_count);
+          glx_renderer->glXGetSyncValues (xlib_renderer->xdpy, drawable,
+                                          &ust, &msc, &sbc);
+          glx_renderer->glXWaitForMsc (xlib_renderer->xdpy, drawable,
+                                       0, 2, (msc + 1) % 2,
+                                       &ust, &msc, &sbc);
+        }
+      else
+        {
+          uint32_t current_count;
+
+          glx_renderer->glXGetVideoSync (&current_count);
+          glx_renderer->glXWaitVideoSync (2,
+                                          (current_count + 1) % 2,
+                                          &current_count);
+        }
     }
 }
 

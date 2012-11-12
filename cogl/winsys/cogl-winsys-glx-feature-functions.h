@@ -130,6 +130,29 @@ COGL_WINSYS_FEATURE_FUNCTION (int, glXSwapInterval,
 COGL_WINSYS_FEATURE_END ()
 
 COGL_WINSYS_FEATURE_BEGIN (255, 255,
+                           sync_control,
+                           "OML\0",
+                           "sync_control\0",
+                           0,
+                           0)
+COGL_WINSYS_FEATURE_FUNCTION (Bool, glXGetSyncValues,
+                              (Display* dpy,
+                               GLXDrawable drawable,
+                               int64_t* ust,
+                               int64_t* msc,
+                               int64_t* sbc))
+COGL_WINSYS_FEATURE_FUNCTION (Bool, glXWaitForMsc,
+                              (Display* dpy,
+                               GLXDrawable drawable,
+                               int64_t target_msc,
+                               int64_t divisor,
+                               int64_t remainder,
+                               int64_t* ust,
+                               int64_t* msc,
+                               int64_t* sbc))
+COGL_WINSYS_FEATURE_END ()
+
+COGL_WINSYS_FEATURE_BEGIN (255, 255,
                            copy_sub_buffer,
                            "MESA\0",
                            "copy_sub_buffer\0",
