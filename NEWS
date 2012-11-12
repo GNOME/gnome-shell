@@ -1,3 +1,35 @@
+3.6.2
+=====
+* Implement org.gnome.ScreenSaver.GetActiveTime [Giovanni; #686064]
+* Explicitly load gnome-screensaver when not running GDM [Tim; #683060]
+* Set Empathy as preferred handler when delegating channels [Xavier; #686296]
+* Tweak screenShield animations [Rui; #686745]
+* Restore Fittsability of summary items in message tray [Florian; #686474]
+* App search: Match GenericName too [Matthias; #687121]
+* Add setting to force log out menuitem [Matthias; #686057]
+* Fix auto-scroll to bottom in chat notifications [Sjoerd; #686571]
+* Update man page [Matthias; #680601]
+* Hide notifications when closed button is clicked [Jasper, Florian; #682237]
+* Fix screenshots on Big Endian [Owen; #685915]
+* Implement 'disable-user-list' in login screen [Ray; #660660]
+* Misc bugfixes [Jasper, Florian, Giovanni, Matthew, Matthias, Alejandro,
+  Sebastian; #686233, #686484, #686487, #686630, #686728, #686574, #686574,
+  #686574, #686879, #686763, #685239, #687189, #686736, #686583, #687132,
+  #687958, #687020, #687708, #686888, #686530, #684810, #688181]
+
+Contributors:
+  Matthew Barnes, Giovanni Campagna, Xavier Claessens, Matthias Clasen,
+  Sebastian Keller, Tim Lunn, Rui Matos, Florian Müllner, Alejandro Piñeiro,
+  Sjoerd Simons, Jasper St. Pierre, Ray Strode, Owen Taylor
+
+Translations:
+  Takayuki KUSANO [ja], Dušan Kazik [sk], Mattias Põldaru [et],
+  Tom Tryfonidis [el], Sweta Kothari [gu], Matej Urbančič [sl], Piotr Drąg [pl],
+  Fran Diéguez [gl], Aurimas Černius [lt], Kjartan Maraas [nb],
+  Ihar Hrachyshka [be], Мирослав Николић [sr, sr@latin], Gil Forcada [ca],
+  A S Alam [pa], Yuri Myasoedov [ru], Marek Černocký [cs], Sweta Kothari [gu],
+  Wolfgang Stöggl [de], Daniel Mustieles [es]
+
 3.6.1
 =====
 * dash: Make padding even on the top/bottom of the dash [Jasper; #684619]
