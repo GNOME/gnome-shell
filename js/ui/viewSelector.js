@@ -249,6 +249,11 @@ const ViewSelector = new Lang.Class({
     },
 
     _onStageKeyPress: function(actor, event) {
+        // Ignore events while anything but the overview has
+        // pushed a modal (system modals, looking glass, ...)
+        if (Main.modalCount > 1)
+            return false;
+
         let modifiers = event.get_state();
         let symbol = event.get_key_symbol();
 
