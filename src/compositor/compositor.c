@@ -552,6 +552,9 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   g_signal_connect_after (info->stage, "paint",
                           G_CALLBACK (after_stage_paint), info);
 
+  /* Wait 2ms after vblank before starting to draw next frame */
+  clutter_stage_set_sync_delay (CLUTTER_STAGE (info->stage), 2);
+
   meta_screen_get_size (screen, &width, &height);
   clutter_actor_realize (info->stage);
 
