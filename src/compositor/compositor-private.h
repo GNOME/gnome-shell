@@ -25,6 +25,10 @@ struct _MetaCompositor
 
   MetaPlugin     *modal_plugin;
 
+  gint64          server_time_query_time;
+  gint64          server_time_offset;
+
+  guint           server_time_is_monotonic_time : 1;
   guint           show_redraw : 1;
   guint           debug       : 1;
   guint           no_mipmaps  : 1;
@@ -64,6 +68,9 @@ gboolean meta_begin_modal_for_plugin (MetaScreen       *screen,
 void     meta_end_modal_for_plugin   (MetaScreen       *screen,
                                       MetaPlugin       *plugin,
                                       guint32           timestamp);
+
+gint64 meta_compositor_monotonic_time_to_server_time (MetaDisplay *display,
+                                                      gint64       monotonic_time);
 
 void meta_check_end_modal (MetaScreen *screen);
 

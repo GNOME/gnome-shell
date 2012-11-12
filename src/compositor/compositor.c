@@ -1419,3 +1419,51 @@ meta_compositor_flash_screen (MetaCompositor *compositor,
                          "signal-after::completed", flash_in_completed, flash,
                          NULL);
 }
+
+/**
+ * meta_compositor_monotonic_time_to_server_time:
+ * @display: a #MetaDisplay
+ * @monotonic_time: time in the units of g_get_monotonic_time()
+ *
+ * _NET_WM_FRAME_DRAWN and _NET_WM_FRAME_TIMINGS messages represent time
+ * as a "high resolution server time" - this is the server time interpolated
+ * to microsecond resolution. The advantage of this time representation
+ * is that if  X server is running on the same computer as a client, and
+ * the Xserver uses 'clock_gettime(CLOCK_MONOTONIC, ...)' for the server
+ * time, the client can detect this, and all such clients will share a
+ * a time representation with high accuracy. If there is not a common
+ * time source, then the time synchronization will be less accurate.
+ */
+gint64
+meta_compositor_monotonic_time_to_server_time (MetaDisplay *display,
+                                               gint64       monotonic_time)
+{
+  MetaCompositor *compositor = display->compositor;
+
+  if (compositor->server_time_query_time == 0 ||
+      (!compositor->server_time_is_monotonic_time &&
+       monotonic_time > compositor->server_time_query_time + 10*1000*1000)) /* 10 seconds */
+    {
+      guint32 server_time = meta_display_get_current_time_roundtrip (display);
+      gint64 server_time_usec = (gint64)server_time * 1000;
+      gint64 current_monotonic_time = g_get_monotonic_time ();
+      compositor->server_time_query_time = current_monotonic_time;
+
+      /* If the server time is within a second of the monotonic time,
+       * we assume that they are identical. This seems like a big margin,
+       * but we want to be as robust as possible even if the system
+       * is under load and our processing of the server response is
+       * delayed.
+       */
+      if (server_time_usec > current_monotonic_time - 1000*1000 &&
+          server_time_usec < current_monotonic_time + 1000*1000)
+        compositor->server_time_is_monotonic_time = TRUE;
+
+      compositor->server_time_offset = server_time_usec - current_monotonic_time;
+    }
+
+  if (compositor->server_time_is_monotonic_time)
+    return monotonic_time;
+  else
+    return monotonic_time + compositor->server_time_offset;
+}
