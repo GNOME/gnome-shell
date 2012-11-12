@@ -24,6 +24,7 @@
 #ifndef __COGL_ONSCREEN_PRIVATE_H
 #define __COGL_ONSCREEN_PRIVATE_H
 
+#include "cogl-onscreen.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-queue.h"
 
@@ -33,17 +34,16 @@
 #include <windows.h>
 #endif
 
-typedef struct _CoglSwapBuffersNotifyEntry CoglSwapBuffersNotifyEntry;
+COGL_TAILQ_HEAD (CoglFrameCallbackList, CoglFrameClosure);
 
-COGL_TAILQ_HEAD (CoglSwapBuffersNotifyList, CoglSwapBuffersNotifyEntry);
-
-struct _CoglSwapBuffersNotifyEntry
+struct _CoglFrameClosure
 {
-  COGL_TAILQ_ENTRY (CoglSwapBuffersNotifyEntry) list_node;
+  COGL_TAILQ_ENTRY (CoglFrameClosure) list_node;
 
-  CoglSwapBuffersNotify callback;
+  CoglFrameCallback callback;
+
   void *user_data;
-  unsigned int id;
+  CoglUserDataDestroyCallback destroy;
 };
 
 typedef struct _CoglResizeNotifyEntry CoglResizeNotifyEntry;
@@ -57,6 +57,19 @@ struct _CoglResizeNotifyEntry
   CoglOnscreenResizeCallback callback;
   void *user_data;
   unsigned int id;
+};
+
+typedef struct _CoglOnscreenEvent CoglOnscreenEvent;
+
+COGL_TAILQ_HEAD (CoglOnscreenEventList, CoglOnscreenEvent);
+
+struct _CoglOnscreenEvent
+{
+  COGL_TAILQ_ENTRY (CoglOnscreenEvent) list_node;
+
+  CoglOnscreen *onscreen;
+  CoglFrameInfo *info;
+  CoglFrameEvent type;
 };
 
 struct _CoglOnscreen
@@ -75,10 +88,16 @@ struct _CoglOnscreen
 
   CoglBool swap_throttled;
 
-  CoglSwapBuffersNotifyList swap_callbacks;
+  CoglFrameCallbackList frame_closures;
 
   CoglBool resizable;
   CoglResizeNotifyList resize_callbacks;
+
+  int64_t frame_counter;
+  int64_t swap_frame_counter; /* frame counter at last all to
+                               * cogl_onscreen_swap_region() or
+                               * cogl_onscreen_swap_buffers() */
+  GQueue pending_frame_infos;
 
   void *winsys;
 };
@@ -91,9 +110,15 @@ _cogl_framebuffer_winsys_update_size (CoglFramebuffer *framebuffer,
                                       int width, int height);
 
 void
-_cogl_onscreen_notify_swap_buffers (CoglOnscreen *onscreen);
+_cogl_onscreen_notify_frame_sync (CoglOnscreen *onscreen, CoglFrameInfo *info);
+
+void
+_cogl_onscreen_notify_complete (CoglOnscreen *onscreen, CoglFrameInfo *info);
 
 void
 _cogl_onscreen_notify_resize (CoglOnscreen *onscreen);
+
+void
+_cogl_dispatch_onscreen_events (CoglContext *context);
 
 #endif /* __COGL_ONSCREEN_PRIVATE_H */

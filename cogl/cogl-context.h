@@ -208,6 +208,8 @@ cogl_is_context (void *object);
  *    suported.
  * @COGL_FEATURE_ID_DEPTH_TEXTURE: Whether #CoglFramebuffer support rendering
  *     the depth buffer to a texture.
+ * @COGL_FEATURE_ID_PRESENTATION_TIME: Whether frame presentation
+ *    time stamps will be recorded in #CoglFrameInfo objects.
  *
  * All the capabilities that can vary between different GPUs supported
  * by Cogl. Applications that depend on any of these features should explicitly
@@ -237,6 +239,7 @@ typedef enum _CoglFeatureID
   COGL_FEATURE_ID_SWAP_BUFFERS_EVENT,
   COGL_FEATURE_ID_GLES2_CONTEXT,
   COGL_FEATURE_ID_DEPTH_TEXTURE,
+  COGL_FEATURE_ID_PRESENTATION_TIME,
 
   /*< private >*/
   _COGL_N_FEATURE_IDS   /*< skip >*/

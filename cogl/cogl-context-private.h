@@ -50,6 +50,7 @@
 #include "cogl-gpu-info-private.h"
 #include "cogl-gl-header.h"
 #include "cogl-framebuffer-private.h"
+#include "cogl-onscreen-private.h"
 
 typedef struct
 {
@@ -189,6 +190,11 @@ struct _CoglContext
 
   gboolean have_last_offscreen_allocate_flags;
   CoglOffscreenAllocateFlags last_offscreen_allocate_flags;
+
+  GHashTable *swap_callback_closures;
+  int next_swap_callback_id;
+
+  CoglOnscreenEventList onscreen_events_queue;
 
   CoglGLES2Context *current_gles2_context;
   GQueue gles2_context_stack;

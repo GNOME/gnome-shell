@@ -312,6 +312,11 @@ cogl_context_new (CoglDisplay *display,
   context->current_draw_buffer_state_flushed = 0;
   context->current_draw_buffer_changes = COGL_FRAMEBUFFER_STATE_ALL;
 
+  context->swap_callback_closures =
+    g_hash_table_new (g_direct_hash, g_direct_equal);
+
+  COGL_TAILQ_INIT (&context->onscreen_events_queue);
+
   g_queue_init (&context->gles2_context_stack);
 
   context->journal_flush_attributes_array =
@@ -506,6 +511,9 @@ _cogl_context_free (CoglContext *context)
 
   if (context->blit_texture_pipeline)
     cogl_object_unref (context->blit_texture_pipeline);
+
+  if (context->swap_callback_closures)
+    g_hash_table_destroy (context->swap_callback_closures);
 
   g_warn_if_fail (context->gles2_context_stack.length == 0);
 

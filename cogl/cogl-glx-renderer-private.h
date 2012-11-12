@@ -42,6 +42,15 @@ typedef struct _CoglGLXRenderer
   /* Vblank stuff */
   int dri_fd;
 
+  /* enumeration with relatioship between OML_sync_control
+   * UST (unadjusted-system-time) and the system clock */
+  enum {
+    COGL_GLX_UST_IS_UNKNOWN,
+    COGL_GLX_UST_IS_GETTIMEOFDAY,
+    COGL_GLX_UST_IS_MONOTONIC_TIME,
+    COGL_GLX_UST_IS_OTHER
+  } ust_type;
+
   /* GModule pointing to libGL which we use to get glX functions out of */
   GModule *libgl_module;
 

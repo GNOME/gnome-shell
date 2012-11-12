@@ -832,6 +832,9 @@ typedef enum _CoglWinsysFeature
   /* Avaiable if the age of the back buffer can be queried */
   COGL_WINSYS_FEATURE_BUFFER_AGE,
 
+  /* Avaiable if the winsys directly handles _SYNC and _COMPLETE events */
+  COGL_WINSYS_FEATURE_SYNC_AND_COMPLETE_EVENT,
+
   COGL_WINSYS_FEATURE_N_FEATURES
 } CoglWinsysFeature;
 

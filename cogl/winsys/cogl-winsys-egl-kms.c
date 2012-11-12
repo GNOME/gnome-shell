@@ -754,8 +754,12 @@ _cogl_winsys_egl_context_init (CoglContext *context,
 {
   COGL_FLAGS_SET (context->features,
                   COGL_FEATURE_ID_SWAP_BUFFERS_EVENT, TRUE);
+  /* TODO: remove this deprecated feature */
   COGL_FLAGS_SET (context->winsys_features,
                   COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT,
+                  TRUE);
+  COGL_FLAGS_SET (context->winsys_features,
+                  COGL_WINSYS_FEATURE_SYNC_AND_COMPLETE_EVENT,
                   TRUE);
 
   return TRUE;
@@ -894,8 +898,13 @@ flush_pending_swap_notify_cb (void *data,
 
       if (kms_onscreen->pending_swap_notify)
         {
-          _cogl_onscreen_notify_swap_buffers (onscreen);
+          CoglFrameInfo *info = g_queue_pop_head (&onscreen->pending_frame_infos);
+
+          _cogl_onscreen_notify_frame_sync (onscreen, info);
+          _cogl_onscreen_notify_complete (onscreen, info);
           kms_onscreen->pending_swap_notify = FALSE;
+
+          cogl_object_unref (info);
         }
     }
 }

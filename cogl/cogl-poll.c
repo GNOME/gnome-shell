@@ -44,6 +44,13 @@ cogl_poll_get_info (CoglContext *context,
   _COGL_RETURN_IF_FAIL (n_poll_fds != NULL);
   _COGL_RETURN_IF_FAIL (timeout != NULL);
 
+  if (!COGL_TAILQ_EMPTY (&context->onscreen_events_queue))
+    {
+      *n_poll_fds = 0;
+      *timeout = 0;
+      return;
+    }
+
   winsys = _cogl_context_get_winsys (context);
 
   if (winsys->poll_get_info)
@@ -69,6 +76,9 @@ cogl_poll_dispatch (CoglContext *context,
   const CoglWinsysVtable *winsys;
 
   _COGL_RETURN_IF_FAIL (cogl_is_context (context));
+
+  if (!COGL_TAILQ_EMPTY (&context->onscreen_events_queue))
+    _cogl_dispatch_onscreen_events (context);
 
   winsys = _cogl_context_get_winsys (context);
 

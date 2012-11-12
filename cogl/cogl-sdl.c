@@ -83,5 +83,5 @@ cogl_sdl_handle_event (CoglContext *context, SDL_Event *event)
 void
 cogl_sdl_idle (CoglContext *context)
 {
-  /* NOP since Cogl doesn't currently need to do anything when idle */
+  _cogl_dispatch_onscreen_events (context);
 }

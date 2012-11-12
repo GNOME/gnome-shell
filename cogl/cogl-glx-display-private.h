@@ -50,7 +50,8 @@ typedef struct _CoglGLXDisplay
   GLXContext glx_context;
   GLXWindow dummy_glxwin;
   Window dummy_xwin;
-  CoglBool pending_swap_notify;
+  CoglBool pending_sync_notify;
+  CoglBool pending_complete_notify;
   CoglBool pending_resize_notify;
 } CoglGLXDisplay;
 

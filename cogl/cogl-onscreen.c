@@ -27,6 +27,7 @@
 
 #include "cogl-util.h"
 #include "cogl-onscreen-private.h"
+#include "cogl-frame-info-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-onscreen-template-private.h"
 #include "cogl-context-private.h"
@@ -45,7 +46,7 @@ _cogl_onscreen_init_from_template (CoglOnscreen *onscreen,
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
 
-  COGL_TAILQ_INIT (&onscreen->swap_callbacks);
+  COGL_TAILQ_INIT (&onscreen->frame_closures);
   COGL_TAILQ_INIT (&onscreen->resize_callbacks);
 
   framebuffer->config = onscreen_template->config;
@@ -115,7 +116,8 @@ _cogl_onscreen_free (CoglOnscreen *onscreen)
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
   CoglResizeNotifyEntry *resize_entry;
-  CoglSwapBuffersNotifyEntry *swap_entry;
+  CoglFrameClosure *frame_closure;
+  CoglFrameInfo *frame_info;
 
   while ((resize_entry = COGL_TAILQ_FIRST (&onscreen->resize_callbacks)))
     {
@@ -123,11 +125,19 @@ _cogl_onscreen_free (CoglOnscreen *onscreen)
       g_slice_free (CoglResizeNotifyEntry, resize_entry);
     }
 
-  while ((swap_entry = COGL_TAILQ_FIRST (&onscreen->swap_callbacks)))
+  while ((frame_closure = COGL_TAILQ_FIRST (&onscreen->frame_closures)))
     {
-      COGL_TAILQ_REMOVE (&onscreen->swap_callbacks, swap_entry, list_node);
-      g_slice_free (CoglSwapBuffersNotifyEntry, swap_entry);
+      COGL_TAILQ_REMOVE (&onscreen->frame_closures, frame_closure, list_node);
+
+      if (frame_closure->destroy)
+        frame_closure->destroy (frame_closure->user_data);
+
+      g_slice_free (CoglFrameClosure, frame_closure);
     }
+
+  while ((frame_info = g_queue_pop_tail (&onscreen->pending_frame_infos)))
+    cogl_object_unref (frame_info);
+  g_queue_clear (&onscreen->pending_frame_infos);
 
   if (framebuffer->context->window_buffer == COGL_FRAMEBUFFER (onscreen))
     framebuffer->context->window_buffer = NULL;
@@ -141,22 +151,60 @@ _cogl_onscreen_free (CoglOnscreen *onscreen)
   g_free (onscreen);
 }
 
+static void
+_cogl_onscreen_queue_event (CoglOnscreen *onscreen,
+                            CoglFrameEvent type,
+                            CoglFrameInfo *info)
+{
+  CoglContext *ctx = COGL_FRAMEBUFFER (onscreen)->context;
+
+  CoglOnscreenEvent *event = g_slice_new (CoglOnscreenEvent);
+
+  event->onscreen = cogl_object_ref (onscreen);
+  event->info = cogl_object_ref (info);
+  event->type = type;
+
+  COGL_TAILQ_INSERT_TAIL (&ctx->onscreen_events_queue, event, list_node);
+}
+
 void
 cogl_onscreen_swap_buffers (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   const CoglWinsysVtable *winsys;
+  CoglFrameInfo *info;
 
   _COGL_RETURN_IF_FAIL  (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN);
 
+  info = _cogl_frame_info_new ();
+  info->frame_counter = onscreen->frame_counter;
+  g_queue_push_tail (&onscreen->pending_frame_infos, info);
+
   /* FIXME: we shouldn't need to flush *all* journals here! */
   cogl_flush ();
+
   winsys = _cogl_framebuffer_get_winsys (framebuffer);
   winsys->onscreen_swap_buffers (COGL_ONSCREEN (framebuffer));
   cogl_framebuffer_discard_buffers (framebuffer,
                                     COGL_BUFFER_BIT_COLOR |
                                     COGL_BUFFER_BIT_DEPTH |
                                     COGL_BUFFER_BIT_STENCIL);
+
+  if (!_cogl_winsys_has_feature (COGL_WINSYS_FEATURE_SYNC_AND_COMPLETE_EVENT))
+    {
+      CoglFrameInfo *info;
+
+      g_warn_if_fail (onscreen->pending_frame_infos.length == 1);
+
+      info = g_queue_pop_tail (&onscreen->pending_frame_infos);
+
+      _cogl_onscreen_queue_event (onscreen, COGL_FRAME_EVENT_SYNC, info);
+      _cogl_onscreen_queue_event (onscreen, COGL_FRAME_EVENT_COMPLETE, info);
+
+      cogl_object_unref (info);
+    }
+
+  onscreen->frame_counter++;
 }
 
 void
@@ -166,8 +214,13 @@ cogl_onscreen_swap_region (CoglOnscreen *onscreen,
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   const CoglWinsysVtable *winsys;
+  CoglFrameInfo *info;
 
   _COGL_RETURN_IF_FAIL  (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN);
+
+  info = _cogl_frame_info_new ();
+  info->frame_counter = onscreen->frame_counter;
+  g_queue_push_tail (&onscreen->pending_frame_infos, info);
 
   /* FIXME: we shouldn't need to flush *all* journals here! */
   cogl_flush ();
@@ -186,6 +239,22 @@ cogl_onscreen_swap_region (CoglOnscreen *onscreen,
                                     COGL_BUFFER_BIT_COLOR |
                                     COGL_BUFFER_BIT_DEPTH |
                                     COGL_BUFFER_BIT_STENCIL);
+
+  if (!_cogl_winsys_has_feature (COGL_WINSYS_FEATURE_SYNC_AND_COMPLETE_EVENT))
+    {
+      CoglFrameInfo *info;
+
+      g_warn_if_fail (onscreen->pending_frame_infos.length == 1);
+
+      info = g_queue_pop_tail (&onscreen->pending_frame_infos);
+
+      _cogl_onscreen_queue_event (onscreen, COGL_FRAME_EVENT_SYNC, info);
+      _cogl_onscreen_queue_event (onscreen, COGL_FRAME_EVENT_COMPLETE, info);
+
+      cogl_object_unref (info);
+    }
+
+  onscreen->frame_counter++;
 }
 
 int
@@ -286,38 +355,107 @@ cogl_win32_onscreen_get_window (CoglOnscreen *onscreen)
 
 #endif /* COGL_HAS_WIN32_SUPPORT */
 
+CoglFrameClosure *
+cogl_onscreen_add_frame_callback (CoglOnscreen *onscreen,
+                                  CoglFrameCallback callback,
+                                  void *user_data,
+                                  CoglUserDataDestroyCallback destroy)
+{
+  CoglFrameClosure *closure = g_slice_new0 (CoglFrameClosure);
+
+  closure->callback = callback;
+  closure->user_data = user_data;
+  closure->destroy = destroy;
+
+  COGL_TAILQ_INSERT_TAIL (&onscreen->frame_closures, closure, list_node);
+
+  return closure;
+}
+
+void
+cogl_onscreen_remove_frame_callback (CoglOnscreen *onscreen,
+                                     CoglFrameClosure *closure)
+{
+  _COGL_RETURN_IF_FAIL (closure);
+
+  if (closure->destroy)
+    closure->destroy (closure->user_data);
+
+  COGL_TAILQ_REMOVE (&onscreen->frame_closures, closure, list_node);
+
+  g_slice_free (CoglFrameClosure, closure);
+}
+
+typedef struct _SwapBufferCallbackState
+{
+  CoglSwapBuffersNotify callback;
+  void *user_data;
+} SwapBufferCallbackState;
+
+static void
+destroy_swap_buffers_callback_state (void *user_data)
+{
+  g_slice_free (SwapBufferCallbackState, user_data);
+}
+
+static void
+shim_swap_buffers_callback (CoglOnscreen *onscreen,
+                            CoglFrameEvent event,
+                            CoglFrameInfo *info,
+                            void *user_data)
+{
+  SwapBufferCallbackState *state = user_data;
+
+  /* XXX: Note that technically it is a change in semantics for this
+   * interface to forward _SYNC events here and also makes the api
+   * name somewhat missleading.
+   *
+   * In practice though this interface is currently used by
+   * applications for throttling, not because they are strictly
+   * interested in knowing when a frame has been presented and so
+   * forwarding _SYNC events should serve them better.
+   */
+  if (event == COGL_FRAME_EVENT_SYNC)
+    state->callback (COGL_FRAMEBUFFER (onscreen), state->user_data);
+}
+
 unsigned int
 cogl_onscreen_add_swap_buffers_callback (CoglOnscreen *onscreen,
                                          CoglSwapBuffersNotify callback,
                                          void *user_data)
 {
-  CoglSwapBuffersNotifyEntry *entry = g_slice_new0 (CoglSwapBuffersNotifyEntry);
-  static int next_swap_buffers_callback_id = 0;
+  CoglContext *ctx = COGL_FRAMEBUFFER (onscreen)->context;
+  SwapBufferCallbackState *state = g_slice_new (SwapBufferCallbackState);
+  CoglFrameClosure *closure;
+  unsigned int id = ctx->next_swap_callback_id++;
 
-  entry->callback = callback;
-  entry->user_data = user_data;
-  entry->id = next_swap_buffers_callback_id++;
+  state->callback = callback;
+  state->user_data = user_data;
 
-  COGL_TAILQ_INSERT_TAIL (&onscreen->swap_callbacks, entry, list_node);
+  closure =
+    cogl_onscreen_add_frame_callback (onscreen,
+                                      shim_swap_buffers_callback,
+                                      state,
+                                      destroy_swap_buffers_callback_state);
 
-  return entry->id;
+  g_hash_table_insert (ctx->swap_callback_closures,
+                       GINT_TO_POINTER (id),
+                       closure);
+
+  return id;
 }
 
 void
 cogl_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
                                             unsigned int id)
 {
-  CoglSwapBuffersNotifyEntry *entry;
+  CoglContext *ctx = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglFrameClosure *closure = g_hash_table_lookup (ctx->swap_callback_closures,
+                                                   GINT_TO_POINTER (id));
 
-  COGL_TAILQ_FOREACH (entry, &onscreen->swap_callbacks, list_node)
-    {
-      if (entry->id == id)
-        {
-          COGL_TAILQ_REMOVE (&onscreen->swap_callbacks, entry, list_node);
-          g_slice_free (CoglSwapBuffersNotifyEntry, entry);
-          break;
-        }
-    }
+  _COGL_RETURN_IF_FAIL (closure);
+
+  cogl_onscreen_remove_frame_callback (onscreen, closure);
 }
 
 void
@@ -365,16 +503,56 @@ cogl_onscreen_hide (CoglOnscreen *onscreen)
     }
 }
 
-void
-_cogl_onscreen_notify_swap_buffers (CoglOnscreen *onscreen)
+static void
+notify_event (CoglOnscreen *onscreen,
+              CoglFrameEvent event,
+              CoglFrameInfo *info)
 {
-  CoglSwapBuffersNotifyEntry *entry, *tmp;
+  CoglFrameClosure *entry, *tmp;
 
   COGL_TAILQ_FOREACH_SAFE (entry,
-                           &onscreen->swap_callbacks,
+                           &onscreen->frame_closures,
                            list_node,
                            tmp)
-    entry->callback (COGL_FRAMEBUFFER (onscreen), entry->user_data);
+    {
+      entry->callback (onscreen, event, info,
+                       entry->user_data);
+    }
+}
+
+void
+_cogl_dispatch_onscreen_events (CoglContext *context)
+{
+  CoglOnscreenEvent *event, *tmp;
+
+  COGL_TAILQ_FOREACH_SAFE (event,
+                           &context->onscreen_events_queue,
+                           list_node,
+                           tmp)
+    {
+      CoglOnscreen *onscreen = event->onscreen;
+      CoglFrameInfo *info = event->info;
+
+      notify_event (onscreen, event->type, info);
+
+      cogl_object_unref (onscreen);
+      cogl_object_unref (info);
+
+      COGL_TAILQ_REMOVE (&context->onscreen_events_queue, event, list_node);
+      g_slice_free (CoglOnscreenEvent, event);
+    }
+}
+
+void
+_cogl_onscreen_notify_frame_sync (CoglOnscreen *onscreen, CoglFrameInfo *info)
+{
+  notify_event (onscreen, COGL_FRAME_EVENT_SYNC, info);
+}
+
+void
+_cogl_onscreen_notify_complete (CoglOnscreen *onscreen, CoglFrameInfo *info)
+{
+  notify_event (onscreen, COGL_FRAME_EVENT_COMPLETE, info);
 }
 
 void
@@ -468,3 +646,8 @@ cogl_onscreen_remove_resize_handler (CoglOnscreen *onscreen,
     }
 }
 
+int64_t
+cogl_onscreen_get_frame_counter (CoglOnscreen *onscreen)
+{
+  return onscreen->frame_counter;
+}
