@@ -15,7 +15,6 @@
 
 #include "shell-recorder-src.h"
 #include "shell-recorder.h"
-#include "shell-screen-grabber.h"
 
 #include <clutter/x11/clutter-x11.h>
 #include <X11/extensions/Xfixes.h>
@@ -47,8 +46,6 @@ struct _ShellRecorder {
   ClutterStage *stage;
   int stage_width;
   int stage_height;
-
-  ShellScreenGrabber *grabber;
 
   gboolean have_pointer;
   int pointer_x;
@@ -262,8 +259,6 @@ shell_recorder_init (ShellRecorder *recorder)
   recorder->recording_icon = create_recording_icon ();
   recorder->memory_target = get_memory_target();
 
-  recorder->grabber = shell_screen_grabber_new ();
-
   recorder->state = RECORDER_STATE_CLOSED;
   recorder->framerate = DEFAULT_FRAMES_PER_SECOND;
 }
@@ -282,8 +277,6 @@ shell_recorder_finalize (GObject  *object)
   recorder_set_stage (recorder, NULL);
   recorder_set_pipeline (recorder, NULL);
   recorder_set_file_template (recorder, NULL);
-
-  g_object_unref (recorder->grabber);
 
   cogl_handle_unref (recorder->recording_icon);
 
@@ -533,8 +526,13 @@ recorder_record_frame (ShellRecorder *recorder)
 
   size = recorder->stage_width * recorder->stage_height * 4;
 
-  data = shell_screen_grabber_grab (recorder->grabber,
-                                    0, 0, recorder->stage_width, recorder->stage_height);
+  data = g_malloc (recorder->stage_width * 4 * recorder->stage_height);
+  cogl_read_pixels (0, 0, /* x/y */
+                    recorder->stage_width,
+                    recorder->stage_height,
+                    COGL_READ_PIXELS_COLOR_BUFFER,
+                    CLUTTER_CAIRO_FORMAT_ARGB32,
+                    data);
 
   buffer = gst_buffer_new();
   gst_buffer_insert_memory (buffer, -1,
