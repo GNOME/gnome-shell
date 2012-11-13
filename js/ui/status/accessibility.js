@@ -27,6 +27,7 @@ const KEY_VISUAL_BELL      = 'visual-bell';
 const DESKTOP_INTERFACE_SCHEMA = 'org.gnome.desktop.interface';
 const KEY_GTK_THEME      = 'gtk-theme';
 const KEY_ICON_THEME     = 'icon-theme';
+const KEY_WM_THEME       = 'theme';
 const KEY_TEXT_SCALING_FACTOR = 'text-scaling-factor';
 
 const HIGH_CONTRAST_THEME = 'HighContrast';
@@ -101,28 +102,35 @@ const ATIndicator = new Lang.Class({
     },
 
     _buildHCItem: function() {
-        let settings = new Gio.Settings({ schema: DESKTOP_INTERFACE_SCHEMA });
-        let gtkTheme = settings.get_string(KEY_GTK_THEME);
-        let iconTheme = settings.get_string(KEY_ICON_THEME);
+        let interfaceSettings = new Gio.Settings({ schema: DESKTOP_INTERFACE_SCHEMA });
+        let wmSettings = new Gio.Settings({ schema: WM_SCHEMA });
+        let gtkTheme = interfaceSettings.get_string(KEY_GTK_THEME);
+        let iconTheme = interfaceSettings.get_string(KEY_ICON_THEME);
+        let wmTheme = wmSettings.get_string(KEY_WM_THEME);
         let hasHC = (gtkTheme == HIGH_CONTRAST_THEME);
         let highContrast = this._buildItemExtended(
             _("High Contrast"),
             hasHC,
-            settings.is_writable(KEY_GTK_THEME) && settings.is_writable(KEY_ICON_THEME),
+            interfaceSettings.is_writable(KEY_GTK_THEME) &&
+            interfaceSettings.is_writable(KEY_ICON_THEME) &&
+            wmSettings.is_writable(KEY_WM_THEME),
             function (enabled) {
                 if (enabled) {
-                    settings.set_string(KEY_GTK_THEME, HIGH_CONTRAST_THEME);
-                    settings.set_string(KEY_ICON_THEME, HIGH_CONTRAST_THEME);
+                    interfaceSettings.set_string(KEY_GTK_THEME, HIGH_CONTRAST_THEME);
+                    interfaceSettings.set_string(KEY_ICON_THEME, HIGH_CONTRAST_THEME);
+                    wmSettings.set_string(KEY_WM_THEME, HIGH_CONTRAST_THEME);
                 } else if(!hasHC) {
-                    settings.set_string(KEY_GTK_THEME, gtkTheme);
-                    settings.set_string(KEY_ICON_THEME, iconTheme);
+                    interfaceSettings.set_string(KEY_GTK_THEME, gtkTheme);
+                    interfaceSettings.set_string(KEY_ICON_THEME, iconTheme);
+                    wmSettings.set_string(KEY_WM_THEME, wmTheme);
                 } else {
-                    settings.reset(KEY_GTK_THEME);
-                    settings.reset(KEY_ICON_THEME);
+                    interfaceSettings.reset(KEY_GTK_THEME);
+                    interfaceSettings.reset(KEY_ICON_THEME);
+                    wmSettings.reset(KEY_WM_THEME);
                 }
             });
-        settings.connect('changed::' + KEY_GTK_THEME, function() {
-            let value = settings.get_string(KEY_GTK_THEME);
+        interfaceSettings.connect('changed::' + KEY_GTK_THEME, function() {
+            let value = interfaceSettings.get_string(KEY_GTK_THEME);
             if (value == HIGH_CONTRAST_THEME) {
                 highContrast.setToggleState(true);
             } else {
@@ -130,10 +138,15 @@ const ATIndicator = new Lang.Class({
                 gtkTheme = value;
             }
         });
-        settings.connect('changed::' + KEY_ICON_THEME, function() {
-            let value = settings.get_string(KEY_ICON_THEME);
+        interfaceSettings.connect('changed::' + KEY_ICON_THEME, function() {
+            let value = interfaceSettings.get_string(KEY_ICON_THEME);
             if (value != HIGH_CONTRAST_THEME)
                 iconTheme = value;
+        });
+        wmSettings.connect('changed::' + KEY_WM_THEME, function() {
+            let value = wmSettings.get_string(KEY_WM_THEME);
+            if (value != HIGH_CONTRAST_THEME)
+                wmTheme = value;
         });
         return highContrast;
     },
