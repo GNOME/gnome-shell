@@ -134,8 +134,9 @@ set_gl_attribs_from_framebuffer_config (CoglFramebufferConfig *config)
   SDL_GL_SetAttribute (SDL_GL_STENCIL_SIZE,
                        config->need_stencil ? 1 : 0);
 
-  SDL_GL_SetAttribute (SDL_GL_DOUBLEBUFFER,
-                       config->swap_chain->length > 1 ? 1 : 0);
+  if (config->swap_chain->length >= 0)
+    SDL_GL_SetAttribute (SDL_GL_DOUBLEBUFFER,
+                         config->swap_chain->length > 1 ? 1 : 0);
 
   SDL_GL_SetAttribute (SDL_GL_ALPHA_SIZE,
                        config->swap_chain->has_alpha ? 1 : 0);
