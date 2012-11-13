@@ -1543,6 +1543,22 @@ const MessageTray = new Lang.Class({
         this._trayDwellUserTime = 0;
 
         this._sessionUpdated();
+        this._updateNoMessagesLabel();
+    },
+
+    _updateNoMessagesLabel: function() {
+        if (this._summaryItems.length == 0 && !this._noMessages) {
+            this._noMessages = new St.Label({ text: _("No Messages"),
+                                              style_class: 'no-messages-label',
+                                              x_align: Clutter.ActorAlign.CENTER,
+                                              x_expand: true,
+                                              y_align: Clutter.ActorAlign.CENTER,
+                                              y_expand: true });
+            this.actor.add_actor(this._noMessages);
+        } else if (this._summaryItems.length > 0 && this._noMessages) {
+            this._noMessages.destroy();
+            this._noMessages = null;
+        }
     },
 
     _sessionUpdated: function() {
@@ -1687,6 +1703,8 @@ const MessageTray = new Lang.Class({
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() { this._updateState(); return false; }));
 
         this.emit('summary-item-added', summaryItem);
+
+        this._updateNoMessagesLabel();
     },
 
     getSummaryItems: function() {
@@ -1718,6 +1736,8 @@ const MessageTray = new Lang.Class({
         }
 
         summaryItemToRemove.actor.destroy();
+
+        this._updateNoMessagesLabel();
 
         if (needUpdate)
             this._updateState();

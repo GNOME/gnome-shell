@@ -1222,6 +1222,12 @@ StScrollBar StButton#vhandle:active {
     outline: 1px solid rgba(128, 128, 128, 0.3);
 }
 
+.no-messages-label {
+    font-family: cantarell, sans-serif;
+    font-size: 11pt;
+    color: #999999;
+}
+
 .notification {
     border-radius: 10px 10px 0px 0px;
     background: rgba(0,0,0,0.8);
