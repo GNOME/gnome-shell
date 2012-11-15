@@ -1532,6 +1532,12 @@ st_widget_recompute_style (StWidget    *widget,
   int transition_duration;
   gboolean paint_equal;
 
+  if (new_theme_node == old_theme_node)
+    {
+      widget->priv->is_style_dirty = FALSE;
+      return;
+    }
+
   if (!old_theme_node ||
       !st_theme_node_geometry_equal (old_theme_node, new_theme_node))
     clutter_actor_queue_relayout ((ClutterActor *) widget);
