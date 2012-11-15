@@ -2355,6 +2355,12 @@ meta_window_actor_handle_updates (MetaWindowActor *self)
       priv->frames = g_list_prepend (priv->frames, frame);
 
       priv->window->needs_frame_drawn = FALSE;
+
+      if (priv->window->no_delay_frame)
+        {
+          ClutterActor *stage = clutter_actor_get_stage (CLUTTER_ACTOR (self));
+          clutter_stage_skip_sync_delay (CLUTTER_STAGE (stage));
+        }
     }
 }
 

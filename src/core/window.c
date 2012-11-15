@@ -9509,8 +9509,12 @@ void
 meta_window_update_sync_request_counter (MetaWindow *window,
                                          gint64      new_counter_value)
 {
-  if (window->extended_sync_request_counter)
-    window->needs_frame_drawn = TRUE;
+  if (window->extended_sync_request_counter &&
+      new_counter_value % 2 == 0)
+    {
+      window->needs_frame_drawn = TRUE;
+      window->no_delay_frame = new_counter_value == window->sync_request_serial + 1;
+    }
 
   window->sync_request_serial = new_counter_value;
   meta_compositor_set_updates_frozen (window->display->compositor, window,
