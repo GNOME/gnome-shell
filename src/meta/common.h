@@ -30,6 +30,8 @@
 
 /* Don't include core headers here */
 #include <X11/Xlib.h>
+#include <X11/extensions/XInput.h>
+#include <X11/extensions/XInput2.h>
 #include <glib.h>
 #include <gtk/gtk.h>
 
