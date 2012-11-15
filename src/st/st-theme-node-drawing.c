@@ -2060,6 +2060,9 @@ st_theme_node_copy_cached_paint_state (StThemeNode *node,
   g_return_if_fail (ST_IS_THEME_NODE (node));
   g_return_if_fail (ST_IS_THEME_NODE (other));
 
+  if (node == other)
+    return;
+
   /* Check omitted for speed: */
   /* g_return_if_fail (st_theme_node_paint_equal (node, other)); */
 
