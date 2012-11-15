@@ -19,6 +19,8 @@ const ShellEntry = imports.ui.shellEntry;
 
 const LIST_ITEM_ICON_SIZE = 48;
 
+const REMEMBER_MOUNT_PASSWORD_KEY = 'remember-mount-password';
+
 /* ------ Common Utils ------- */
 function _setLabelText(label, text) {
     if (text) {
@@ -387,7 +389,8 @@ const ShellMountPasswordDialog = new Lang.Class({
         if (flags & Gio.AskPasswordFlags.SAVING_SUPPORTED) {
             this._rememberChoice = new CheckBox.CheckBox();
             this._rememberChoice.getLabelActor().text = _("Remember Password");
-            this._rememberChoice.actor.checked = true;
+            this._rememberChoice.actor.checked =
+                global.settings.get_boolean(REMEMBER_MOUNT_PASSWORD_KEY);
             this._messageBox.add(this._rememberChoice.actor);
         } else {
             this._rememberChoice = null;
@@ -419,6 +422,8 @@ const ShellMountPasswordDialog = new Lang.Class({
     },
 
     _onEntryActivate: function() {
+        global.settings.set_boolean(REMEMBER_MOUNT_PASSWORD_KEY,
+            this._rememberChoice && this._rememberChoice.actor.checked);
         this.emit('response', 1,
             this._passwordEntry.get_text(),
             this._rememberChoice &&

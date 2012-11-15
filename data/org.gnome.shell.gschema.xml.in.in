@@ -70,6 +70,16 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
       <_summary>Show full name in the user menu</_summary>
       <_description>Whether the users full name is shown in the user menu or not.</_description>
     </key>
+    <key name="remember-mount-password" type="b">
+      <default>false</default>
+      <_summary>Whether to remember password for mounting encrypted or remote filesystems</_summary>
+      <_description>
+        The shell will request a password when an encrypted device or a
+        remote filesystem is mounted.  If the password can be saved for
+        future use a 'Remember Password' checkbox will be present.
+        This key sets the default state of the checkbox.
+      </_description>
+    </key>
     <child name="calendar" schema="org.gnome.shell.calendar"/>
     <child name="recorder" schema="org.gnome.shell.recorder"/>
     <child name="keybindings" schema="org.gnome.shell.keybindings"/>
