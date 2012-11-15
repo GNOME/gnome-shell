@@ -16,7 +16,7 @@ const Tweener = imports.ui.tweener;
 
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 const STARTUP_ANIMATION_TIME = 0.2;
-const KEYBOARD_ANIMATION_TIME = 0.5;
+const KEYBOARD_ANIMATION_TIME = 0.15;
 const PLYMOUTH_TRANSITION_TIME = 1;
 
 const MonitorConstraint = new Lang.Class({
@@ -437,7 +437,7 @@ const LayoutManager = new Lang.Class({
         Tweener.addTween(this.keyboardBox,
                          { anchor_y: 0,
                            time: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
-                           transition: 'easeOutQuad',
+                           transition: 'easeInQuad',
                            onComplete: this._hideKeyboardComplete,
                            onCompleteScope: this
                          });
