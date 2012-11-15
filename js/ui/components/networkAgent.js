@@ -598,7 +598,7 @@ const NetworkAgent = new Lang.Class({
     },
 
     enable: function() {
-        this._native.register();
+        this._native.auto_register = true;
     },
 
     disable: function() {
@@ -612,6 +612,7 @@ const NetworkAgent = new Lang.Class({
             this._vpnRequests[requestId].cancel(true);
         this._vpnRequests = { };
 
+        this._native.auto_register = false;
         this._native.unregister();
     },
 
