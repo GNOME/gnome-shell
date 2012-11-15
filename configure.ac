@@ -72,7 +72,7 @@ MUTTER_PC_MODULES="
    pango >= 1.2.0
    cairo >= 1.10.0
    gsettings-desktop-schemas >= 3.3.0
-   xcomposite >= 0.2 xfixes xrender xdamage
+   xcomposite >= 0.2 xfixes xrender xdamage xi >= 1.6.0
    $CLUTTER_PACKAGE >= 1.9.10
    cogl-1.0 >= 1.9.6
 "
