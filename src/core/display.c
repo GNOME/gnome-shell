@@ -2236,13 +2236,6 @@ event_callback (XEvent   *event,
           if (display->grab_op == META_GRAB_OP_COMPOSITOR)
             break;
 
-          if (display->grab_window == window &&
-              grab_op_is_mouse (display->grab_op))
-            {
-              meta_window_handle_mouse_grab_op_event (window, event);
-              break;
-            }
-
           /* If the mouse switches screens, active the default window on the new
            * screen; this will make keybindings and workspace-launched items
            * actually appear on the right screen.
@@ -2305,10 +2298,7 @@ event_callback (XEvent   *event,
           if (display->grab_op == META_GRAB_OP_COMPOSITOR)
             break;
 
-          if (display->grab_window == window &&
-              grab_op_is_mouse (display->grab_op))
-            meta_window_handle_mouse_grab_op_event (window, event);
-          else if (window != NULL)
+          if (window != NULL)
             {
               if (window->type == META_WINDOW_DOCK &&
                   event->xcrossing.mode != NotifyGrab &&
