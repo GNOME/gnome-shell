@@ -38,7 +38,7 @@ gboolean meta_keybindings_set_custom_handler (const gchar        *name,
 void meta_keybindings_switch_window (MetaDisplay    *display,
 				     MetaScreen     *screen,
 				     MetaWindow     *event_window,
-				     XEvent         *event,
+                                     XIDeviceEvent  *event,
 				     MetaKeyBinding *binding);
 
 
