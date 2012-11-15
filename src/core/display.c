@@ -1295,8 +1295,8 @@ grab_op_is_mouse_only (MetaGrabOp op)
     }
 }
 
-static gboolean
-grab_op_is_mouse (MetaGrabOp op)
+gboolean
+meta_grab_op_is_mouse (MetaGrabOp op)
 {
   switch (op)
     {
@@ -1922,12 +1922,11 @@ event_callback (XEvent   *event,
       event->type == (display->xsync_event_base + XSyncAlarmNotify) &&
       ((XSyncAlarmNotifyEvent*)event)->alarm == display->grab_sync_request_alarm)
     {
+      XSyncValue value = ((XSyncAlarmNotifyEvent*)event)->counter_value;
+      guint64 new_counter_value;
+      new_counter_value = XSyncValueLow32 (value) + ((gint64)XSyncValueHigh32 (value) << 32);
+      meta_window_update_sync_request_counter (display->grab_window, new_counter_value);
       filter_out_event = TRUE; /* GTK doesn't want to see this really */
-      
-      if (display->grab_op != META_GRAB_OP_NONE &&
-          display->grab_window != NULL &&
-          grab_op_is_mouse (display->grab_op))
-	meta_window_handle_mouse_grab_op_event (display->grab_window, event);
     }
 #endif /* HAVE_XSYNC */
 
@@ -2026,7 +2025,7 @@ event_callback (XEvent   *event,
             break;
 
           if ((window &&
-               grab_op_is_mouse (display->grab_op) &&
+               meta_grab_op_is_mouse (display->grab_op) &&
                display->grab_button != (int) event->xbutton.button &&
                display->grab_window == window) ||
               grab_op_is_keyboard (display->grab_op))
@@ -2221,7 +2220,7 @@ event_callback (XEvent   *event,
           display->overlay_key_only_pressed = FALSE;
 
           if (display->grab_window == window &&
-              grab_op_is_mouse (display->grab_op))
+              meta_grab_op_is_mouse (display->grab_op))
             meta_window_handle_mouse_grab_op_event (window, event);
           break;
         case MotionNotify:
@@ -2229,7 +2228,7 @@ event_callback (XEvent   *event,
             break;
 
           if (display->grab_window == window &&
-              grab_op_is_mouse (display->grab_op))
+              meta_grab_op_is_mouse (display->grab_op))
             meta_window_handle_mouse_grab_op_event (window, event);
           break;
         case EnterNotify:

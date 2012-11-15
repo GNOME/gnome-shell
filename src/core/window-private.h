@@ -580,6 +580,11 @@ void     meta_window_shove_titlebar_onscreen (MetaWindow *window);
 void meta_window_set_gravity (MetaWindow *window,
                               int         gravity);
 
+#ifdef HAVE_XSYNC
+void meta_window_update_sync_request_counter (MetaWindow *window,
+                                              guint64     new_counter_value);
+#endif /* HAVE_XSYNC */
+
 void meta_window_handle_mouse_grab_op_event (MetaWindow *window,
                                              XEvent     *event);
 
