@@ -779,7 +779,26 @@ meta_display_open (void)
                   the_display->xfixes_error_base, 
                   the_display->xfixes_event_base);
   }
-      
+
+  {
+    int major = 2, minor = 2;
+    gboolean has_xi = FALSE;
+
+    if (XQueryExtension (the_display->xdisplay,
+                         "XInputExtension",
+                         &the_display->xinput_opcode,
+                         &the_display->xinput_error_base,
+                         &the_display->xinput_event_base))
+      {
+        if (XIQueryVersion (the_display->xdisplay, &major, &minor) == Success)
+          if (((major * 10) + minor) >= 22)
+            has_xi = TRUE;
+      }
+
+    if (!has_xi)
+      meta_fatal ("X server doesn't have the XInput extension, version 2.2 or newer\n");
+  }
+
 #ifdef HAVE_XCURSOR
   {
     XcursorSetTheme (the_display->xdisplay, meta_prefs_get_cursor_theme ());
