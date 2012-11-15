@@ -926,26 +926,24 @@ const ChatNotification = new Lang.Class({
         }
         // Show the word "Yesterday" and time if date is on yesterday
         else if(daysAgo <2){
-            /* Translators: this is a time format string followed by the word "Yesterday". i.e. "14:30 on Yesterday"*/
+            /* Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"*/
             // xgettext:no-c-format
-            format = _("<b>%H:%M</b> on Yesterday");
+            format = _("<b>Yesterday</b>, <b>%H:%M</b>");
         }
         // Show a week day and time if date is in the last week
         else if (daysAgo < 7) {
-            /* Translators: this is a time format string followed by a week day name. i.e. "14:30 on Monday*/
+            /* Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30*/
             // xgettext:no-c-format
-            format = _("<b>%H:%M</b> on <b>%A</b>");
+            format = _("<b>%A</b>, <b>%H:%M</b>");
 
         } else if (date.getYear() == now.getYear()) {
-            /* Translators: this is a time format in the style of "14:30 on Wednesday, May 25",
-             shown when you get a chat message in the same year */
+            /* Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"*/
             // xgettext:no-c-format
-            format = _("<b>%H:%M</b> on <b>%A</b>, <b>%B</b> <b>%d</b>");
+            format = _("<b>%B</b> <b>%d</b>, <b>%H:%M</b>");
         } else {
-            /* Translators: this is a time format in the style of "14:30 on Wednesday, May 25, 2012",
-             shown when you get a chat message in a different year */
+            /* Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"*/
             // xgettext:no-c-format
-            format = _("<b>%H:%M</b> on <b>%A</b>, <b>%B</b> <b>%d</b>, %Y");
+            format = _("<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> ");
         }
 
         return date.toLocaleFormat(format);
