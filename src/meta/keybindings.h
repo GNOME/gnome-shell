@@ -28,6 +28,7 @@
 const char          *meta_key_binding_get_name      (MetaKeyBinding *binding);
 MetaVirtualModifier  meta_key_binding_get_modifiers (MetaKeyBinding *binding);
 guint                meta_key_binding_get_mask      (MetaKeyBinding *binding);
+gboolean             meta_key_binding_is_builtin    (MetaKeyBinding *binding);
 
 gboolean meta_keybindings_set_custom_handler (const gchar        *name,
 					      MetaKeyHandlerFunc  handler,

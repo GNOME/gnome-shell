@@ -95,6 +95,12 @@ meta_key_binding_get_mask (MetaKeyBinding *binding)
   return binding->mask;
 }
 
+gboolean
+meta_key_binding_is_builtin (MetaKeyBinding *binding)
+{
+  return binding->handler->flags & META_KEY_BINDING_BUILTIN;
+}
+
 /* These can't be bound to anything, but they are used to handle
  * various other events.  TODO: Possibly we should include them as event
  * handler functions and have some kind of flag to say they're unbindable.
