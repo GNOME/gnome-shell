@@ -12,6 +12,7 @@
 #include <gst/gst.h>
 
 #include <gtk/gtk.h>
+#include <gdk/gdk.h>
 
 #include "shell-recorder-src.h"
 #include "shell-recorder.h"
@@ -46,6 +47,8 @@ struct _ShellRecorder {
   ClutterStage *stage;
   int stage_width;
   int stage_height;
+
+  GdkScreen *gdk_screen;
 
   gboolean have_pointer;
   int pointer_x;
@@ -256,6 +259,8 @@ shell_recorder_init (ShellRecorder *recorder)
 
   shell_recorder_src_register ();
 
+  recorder->gdk_screen = gdk_screen_get_default ();
+
   recorder->recording_icon = create_recording_icon ();
   recorder->memory_target = get_memory_target();
 
@@ -455,6 +460,12 @@ static void
 recorder_draw_buffer_meter (ShellRecorder *recorder)
 {
   int fill_level;
+  GdkRectangle primary_monitor;
+  float rects[16];
+
+  gdk_screen_get_monitor_geometry (recorder->gdk_screen,
+                                   gdk_screen_get_primary_monitor (recorder->gdk_screen),
+                                   &primary_monitor);
 
   recorder_update_memory_used (recorder, FALSE);
 
@@ -469,14 +480,27 @@ recorder_draw_buffer_meter (ShellRecorder *recorder)
   fill_level = MIN (60, (recorder->memory_used * 60) / recorder->memory_target);
 
   /* A hollow rectangle filled from the left to fill_level */
-  cogl_rectangle (recorder->stage_width - 64, recorder->stage_height - 10,
-                  recorder->stage_width - 2,  recorder->stage_height - 9);
-  cogl_rectangle (recorder->stage_width - 64, recorder->stage_height - 9,
-                  recorder->stage_width - (63 - fill_level), recorder->stage_height - 3);
-  cogl_rectangle (recorder->stage_width - 3,  recorder->stage_height - 9,
-                  recorder->stage_width - 2,  recorder->stage_height - 3);
-  cogl_rectangle (recorder->stage_width - 64, recorder->stage_height - 3,
-                  recorder->stage_width - 2,  recorder->stage_height - 2);
+  rects[0] = primary_monitor.x + primary_monitor.width - 64;
+  rects[1] = primary_monitor.y + primary_monitor.height - 10;
+  rects[2] = primary_monitor.x + primary_monitor.width - 2;
+  rects[3] = primary_monitor.y + primary_monitor.height - 9;
+
+  rects[4] = primary_monitor.x + primary_monitor.width - 64;
+  rects[5] = primary_monitor.y + primary_monitor.height - 9;
+  rects[6] = primary_monitor.x + primary_monitor.width - (63 - fill_level);
+  rects[7] = primary_monitor.y + primary_monitor.height - 3;
+
+  rects[8] = primary_monitor.x + primary_monitor.width - 3;
+  rects[9] = primary_monitor.y + primary_monitor.height - 9;
+  rects[10] = primary_monitor.x + primary_monitor.width - 2;
+  rects[11] = primary_monitor.y + primary_monitor.height - 3;
+
+  rects[12] = primary_monitor.x + primary_monitor.width - 64;
+  rects[13] = primary_monitor.y + primary_monitor.height - 3;
+  rects[14] = primary_monitor.x + primary_monitor.width - 2;
+  rects[15] = primary_monitor.y + primary_monitor.height - 2;
+
+  cogl_rectangles (rects, 4);
 }
 
 /* We want to time-stamp each frame based on the actual time it was
@@ -560,12 +584,17 @@ recorder_on_stage_paint (ClutterActor  *actor,
 {
   if (recorder->state == RECORDER_STATE_RECORDING)
     {
+      GdkRectangle primary_monitor;
+
+      gdk_screen_get_monitor_geometry (recorder->gdk_screen,
+                                       gdk_screen_get_primary_monitor (recorder->gdk_screen),
+                                       &primary_monitor);
       if (!recorder->only_paint)
         recorder_record_frame (recorder);
 
       cogl_set_source_texture (recorder->recording_icon);
-      cogl_rectangle (recorder->stage_width - 32, recorder->stage_height - 42,
-                      recorder->stage_width,      recorder->stage_height - 10);
+      cogl_rectangle (primary_monitor.x + primary_monitor.width - 32, primary_monitor.y + primary_monitor.height - 42,
+                      primary_monitor.x + primary_monitor.width,      primary_monitor.y + primary_monitor.height - 10);
     }
 
   if (recorder->state == RECORDER_STATE_RECORDING || recorder->memory_used != 0)
