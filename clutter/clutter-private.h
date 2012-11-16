@@ -163,8 +163,8 @@ struct _ClutterMainContext
   PangoContext *pango_context;  /* Global Pango context */
   CoglPangoFontMap *font_map;   /* Global font map */
 
-  ClutterEvent *current_event;
-  guint32 last_event_time;
+  /* stack of #ClutterEvent */
+  GSList *current_event;
 
   /* list of repaint functions installed through
    * clutter_threads_add_repaint_func()

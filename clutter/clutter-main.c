@@ -2792,16 +2792,15 @@ _clutter_process_event (ClutterEvent *event)
       return;
     }
 
-  /* keep a pointer to the event and time, so that we don't need to
+  /* push events on a stack, so that we don't need to
    * add an event parameter to all signals that can be emitted within
    * an event chain
    */
-  context->last_event_time = clutter_event_get_time (event);
-  context->current_event = event;
+  context->current_event = g_slist_prepend (context->current_event, event);
 
   _clutter_process_event_details (stage, context, event);
 
-  context->current_event = NULL;
+  context->current_event = g_slist_delete_link (context->current_event, context->current_event);
 }
 
 /**

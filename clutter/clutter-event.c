@@ -1369,12 +1369,12 @@ clutter_events_pending (void)
 guint32
 clutter_get_current_event_time (void)
 {
-  ClutterMainContext *context = _clutter_context_get_default ();
+  const ClutterEvent* event;
 
-  g_return_val_if_fail (context != NULL, FALSE);
+  event = clutter_get_current_event ();
 
-  if (context->last_event_time != 0)
-    return context->last_event_time;
+  if (event != NULL)
+    return clutter_event_get_time (event);
 
   return CLUTTER_CURRENT_TIME;
 }
@@ -1399,7 +1399,7 @@ clutter_get_current_event (void)
 
   g_return_val_if_fail (context != NULL, NULL);
 
-  return context->current_event;
+  return context->current_event != NULL ? context->current_event->data : NULL;
 }
 
 /**
