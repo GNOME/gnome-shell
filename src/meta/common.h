@@ -87,7 +87,7 @@ typedef void (* MetaWindowMenuFunc) (MetaWindowMenu *menu,
                                      guint32         timestamp,
                                      MetaMenuOp      op,
                                      int             workspace,
-                                     gpointer        data);
+                                     gpointer        user_data);
 
 /* when changing this enum, there are various switch statements
  * you have to update

@@ -696,13 +696,13 @@ handle_preference_update_int (GSettings *settings,
  */
 void
 meta_prefs_add_listener (MetaPrefsChangedFunc func,
-                         gpointer             data)
+                         gpointer             user_data)
 {
   MetaPrefsListener *l;
 
   l = g_new (MetaPrefsListener, 1);
   l->func = func;
-  l->data = data;
+  l->data = user_data;
 
   listeners = g_list_prepend (listeners, l);
 }
@@ -713,7 +713,7 @@ meta_prefs_add_listener (MetaPrefsChangedFunc func,
  */
 void
 meta_prefs_remove_listener (MetaPrefsChangedFunc func,
-                            gpointer             data)
+                            gpointer             user_data)
 {
   GList *tmp;
 
@@ -723,7 +723,7 @@ meta_prefs_remove_listener (MetaPrefsChangedFunc func,
       MetaPrefsListener *l = tmp->data;
 
       if (l->func == func &&
-          l->data == data)
+          l->data == user_data)
         {
           g_free (l);
           listeners = g_list_delete_link (listeners, tmp);

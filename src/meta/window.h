@@ -128,7 +128,7 @@ gboolean meta_window_is_ancestor_of_transient (MetaWindow            *window,
                                                MetaWindow            *transient);
 
 typedef gboolean (*MetaWindowForeachFunc) (MetaWindow *window,
-                                           void       *data);
+                                           void       *user_data);
 
 void     meta_window_foreach_transient        (MetaWindow            *window,
                                                MetaWindowForeachFunc  func,

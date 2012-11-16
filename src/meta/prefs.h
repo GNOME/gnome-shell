@@ -71,12 +71,12 @@ typedef enum
 } MetaPreference;
 
 typedef void (* MetaPrefsChangedFunc) (MetaPreference pref,
-                                       gpointer       data);
+                                       gpointer       user_data);
 
 void meta_prefs_add_listener    (MetaPrefsChangedFunc func,
-                                 gpointer             data);
+                                 gpointer             user_data);
 void meta_prefs_remove_listener (MetaPrefsChangedFunc func,
-                                 gpointer             data);
+                                 gpointer             user_data);
 
 void meta_prefs_init (void);
 
