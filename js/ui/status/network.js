@@ -611,12 +611,11 @@ const NMDevice = new Lang.Class({
     }
 });
 
-const NMDeviceWired = new Lang.Class({
-    Name: 'NMDeviceWired',
+const NMDeviceSimple = new Lang.Class({
+    Name: 'NMDeviceSimple',
     Extends: NMDevice,
 
     _init: function(client, device, connections) {
-        this._autoConnectionName = _("Auto Ethernet");
         this.category = NMConnectionCategory.WIRED;
 
         this.parent(client, device, connections);
@@ -631,6 +630,18 @@ const NMDeviceWired = new Lang.Class({
         // we can do it here because addConnection and removeConnection
         // both call _createSection at some point
         this.section.actor.visible = this._connections.length > 1;
+    }
+});
+
+const NMDeviceWired = new Lang.Class({
+    Name: 'NMDeviceWired',
+    Extends: NMDeviceSimple,
+
+    _init: function(client, device, connections) {
+        this._autoConnectionName = _("Auto Ethernet");
+        this.category = NMConnectionCategory.WIRED;
+
+        this.parent(client, device, connections);
     },
 
     _createAutomaticConnection: function() {
@@ -1640,6 +1651,7 @@ const NMApplet = new Lang.Class({
         this._dtypes[NetworkManager.DeviceType.WIFI] = NMDeviceWireless;
         this._dtypes[NetworkManager.DeviceType.MODEM] = NMDeviceModem;
         this._dtypes[NetworkManager.DeviceType.BT] = NMDeviceBluetooth;
+        this._dtypes[NetworkManager.DeviceType.INFINIBAND] = NMDeviceSimple;
         // TODO: WiMax support
 
         // Connection types
@@ -1651,6 +1663,7 @@ const NMApplet = new Lang.Class({
         this._ctypes[NetworkManager.SETTING_BLUETOOTH_SETTING_NAME] = NMConnectionCategory.WWAN;
         this._ctypes[NetworkManager.SETTING_CDMA_SETTING_NAME] = NMConnectionCategory.WWAN;
         this._ctypes[NetworkManager.SETTING_GSM_SETTING_NAME] = NMConnectionCategory.WWAN;
+        this._ctypes[NetworkManager.SETTING_INFINIBAND_SETTING_NAME] = NMConnectionCategory.WIRED;
         this._ctypes[NetworkManager.SETTING_VPN_SETTING_NAME] = NMConnectionCategory.VPN;
 
         this._settings = NMClient.RemoteSettings.new(null);
