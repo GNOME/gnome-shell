@@ -1689,9 +1689,6 @@ shell_recorder_close (ShellRecorder *recorder)
       recorder->repaint_hook_id = 0;
     }
 
-  recorder_remove_redraw_timeout (recorder);
-  recorder_close_pipeline (recorder);
-
   recorder->state = RECORDER_STATE_CLOSED;
 
   /* Release the refcount we took when we started recording */
