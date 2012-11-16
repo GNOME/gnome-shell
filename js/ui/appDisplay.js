@@ -216,6 +216,16 @@ const ViewByCategories = new Lang.Class({
     },
 
     _addCategory: function(name, index, dir) {
+        let apps;
+
+        if (dir != null) {
+            apps = [];
+            this._loadCategory(dir, apps);
+
+            if (apps.length == 0)
+                return;
+        }
+
         let button = new St.Button({ label: GLib.markup_escape_text (name, -1),
                                      style_class: 'app-filter',
                                      x_align: St.Align.START,
@@ -225,12 +235,9 @@ const ViewByCategories = new Lang.Class({
             this._selectCategory(index);
         }));
 
-        var apps;
         if (dir == null) {
             this._allCategoryButton = button;
         } else {
-            apps = [];
-            this._loadCategory(dir, apps);
             this._categories.push({ apps: apps,
                                     name: name,
                                     button: button });
