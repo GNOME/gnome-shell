@@ -56,11 +56,6 @@ const Key = new Lang.Class({
         if (this._key.name == 'Control_L' || this._key.name == 'Alt_L')
             this._key.latch = true;
 
-        this._key.connect('key-pressed', Lang.bind(this, function ()
-                                                   { this.actor.checked = true }));
-        this._key.connect('key-released', Lang.bind(this, function ()
-                                                    { this.actor.checked = false; }));
-
         if (this._extended_keys.length > 0) {
             this._key.connect('notify::show-subkeys', Lang.bind(this, this._onShowSubkeysChanged));
             this._boxPointer = new BoxPointer.BoxPointer(St.Side.BOTTOM,
