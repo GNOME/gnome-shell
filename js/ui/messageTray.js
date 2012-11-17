@@ -1521,12 +1521,14 @@ const MessageTray = new Lang.Class({
         Main.wm.addKeybinding('toggle-message-tray',
                               new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
                               Meta.KeyBindingFlags.NONE,
+                              Main.KeybindingMode.NORMAL |
                               Main.KeybindingMode.MESSAGE_TRAY |
                               Main.KeybindingMode.OVERVIEW,
                               Lang.bind(this, this.toggleAndNavigate));
         Main.wm.addKeybinding('focus-active-notification',
                               new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
                               Meta.KeyBindingFlags.NONE,
+                              Main.KeybindingMode.NORMAL |
                               Main.KeybindingMode.MESSAGE_TRAY |
                               Main.KeybindingMode.OVERVIEW,
                               Lang.bind(this, this._expandActiveNotification));
