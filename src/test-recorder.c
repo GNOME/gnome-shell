@@ -47,7 +47,7 @@ on_stage_realized (ClutterActor *stage,
                    gpointer      data)
 {
   recorder = shell_recorder_new (CLUTTER_STAGE (stage));
-  shell_recorder_set_file_template (recorder, "test-recorder.ogg");
+  shell_recorder_set_file_template (recorder, "test-recorder.webm");
   shell_recorder_record (recorder);
 }
 
