@@ -2129,7 +2129,7 @@ StScrollBar StButton#vhandle:active {
     font-weight: bold;
     text-align: left;
     padding-left: 15px;
-    text-shadow: black 4px 4px 3px 0px;
+    text-shadow: black 0px 4px 3px 0px;
 }
 
 .login-dialog-prompt-layout {
