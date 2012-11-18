@@ -58,7 +58,7 @@ const ModalDialog = new Lang.Class({
 
         this._group.connect('destroy', Lang.bind(this, this._onGroupDestroy));
 
-        this._actionKeys = {};
+        this._buttonKeys = {};
         this._group.connect('key-release-event', Lang.bind(this, this._onKeyReleaseEvent));
 
         this._backgroundBin = new St.Bin();
@@ -113,13 +113,9 @@ const ModalDialog = new Lang.Class({
         this._group.destroy();
     },
 
-    setActionKey: function(key, action) {
-        this._actionKeys[key] = action;
-    },
-
     clearButtons: function() {
         this.buttonLayout.destroy_all_children();
-        this._actionKeys = {};
+        this._buttonKeys = {};
     },
 
     setButtons: function(buttons) {
@@ -139,12 +135,11 @@ const ModalDialog = new Lang.Class({
             else
                 x_alignment = St.Align.MIDDLE;
 
-            let button = this.addButton(buttonInfo, { expand: true,
-                                                      x_fill: false,
-                                                      y_fill: false,
-                                                      x_align: x_alignment,
-                                                      y_align: St.Align.MIDDLE });
-            buttonInfo.button = button;
+            this.addButton(buttonInfo, { expand: true,
+                                         x_fill: false,
+                                         y_fill: false,
+                                         x_align: x_alignment,
+                                         y_align: St.Align.MIDDLE });
         }
     },
 
@@ -154,18 +149,22 @@ const ModalDialog = new Lang.Class({
         let key = buttonInfo['key'];
         let isDefault = buttonInfo['default'];
 
-        if (isDefault && !key) {
-            this._actionKeys[Clutter.KEY_KP_Enter] = action;
-            this._actionKeys[Clutter.KEY_ISO_Enter] = action;
-            key = Clutter.KEY_Return;
-        }
+        let keys;
+
+        if (key)
+            keys = [key];
+        else if (isDefault)
+            keys = [Clutter.KEY_Return, Clutter.KEY_KP_Enter, Clutter.KEY_ISO_Enter];
+        else
+            keys = [];
 
         let button = new St.Button({ style_class: 'modal-dialog-button',
                                      reactive:    true,
                                      can_focus:   true,
                                      label:       label });
-
         button.connect('clicked', action);
+
+        buttonInfo['button'] = button;
 
         if (isDefault)
             button.add_style_pseudo_class('default');
@@ -173,8 +172,8 @@ const ModalDialog = new Lang.Class({
         if (!this._initialKeyFocusDestroyId)
             this._initialKeyFocus = button;
 
-        if (key)
-            this._actionKeys[key] = action;
+        for (let i in keys)
+            this._buttonKeys[keys[i]] = buttonInfo;
 
         this.buttonLayout.add(button, layoutInfo);
 
@@ -183,9 +182,15 @@ const ModalDialog = new Lang.Class({
 
     _onKeyReleaseEvent: function(object, event) {
         let symbol = event.get_key_symbol();
-        let action = this._actionKeys[symbol];
+        let buttonInfo = this._buttonKeys[symbol];
 
-        if (action) {
+        if (!buttonInfo)
+            return false;
+
+        let button = buttonInfo['button'];
+        let action = buttonInfo['action'];
+
+        if (action && button.reactive) {
             action();
             return true;
         }
