@@ -14,12 +14,14 @@ const St = imports.gi.St;
 
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
+const Panel = imports.ui.panel;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 const UserMenu = imports.ui.userMenu;
 
 const Batch = imports.gdm.batch;
 const GdmUtil = imports.gdm.util;
+const LoginDialog = imports.gdm.loginDialog;
 
 // The timeout before going back automatically to the lock screen (in seconds)
 const IDLE_TIMEOUT = 2 * 60;
@@ -168,13 +170,33 @@ const UnlockDialog = new Lang.Class({
         this._promptLoginHint.hide();
         this.contentLayout.add_actor(this._promptLoginHint);
 
-        let cancelButton = { label: _("Cancel"),
-                             action: Lang.bind(this, this._escape),
-                             key: Clutter.KEY_Escape };
-        this._okButton = { label: _("Unlock"),
-                           action: Lang.bind(this, this._doUnlock),
-                           default: true };
-        this.setButtons([cancelButton, this._okButton]);
+        this._workSpinner = new Panel.AnimatedIcon('process-working.svg', LoginDialog.WORK_SPINNER_ICON_SIZE);
+        this._workSpinner.actor.opacity = 0;
+        this._workSpinner.actor.show();
+
+        this.buttonLayout.visible = true;
+        this.addButton({ label: _("Cancel"),
+                         action: Lang.bind(this, this._escape),
+                         key: Clutter.KEY_Escape },
+                       { expand: true,
+                         x_fill: false,
+                         y_fill: false,
+                         x_align: St.Align.START,
+                         y_align: St.Align.MIDDLE });
+        this.buttonLayout.add(this._workSpinner.actor,
+                              { expand: false,
+                                x_fill: false,
+                                y_fill: false,
+                                x_align: St.Align.END,
+                                y_align: St.Align.MIDDLE });
+        this._okButton = this.addButton({ label: _("Unlock"),
+                                          action: Lang.bind(this, this._doUnlock),
+                                          default: true },
+                                        { expand: false,
+                                          x_fill: false,
+                                          y_fill: false,
+                                          x_align: St.Align.END,
+                                          y_align: St.Align.MIDDLE });
 
         let otherUserLabel = new St.Label({ text: _("Log in as another user"),
                                             style_class: 'login-dialog-not-listed-label' });
@@ -214,8 +236,30 @@ const UnlockDialog = new Lang.Class({
     },
 
     _updateOkButtonSensitivity: function(sensitive) {
-        this._okButton.button.reactive = sensitive;
-        this._okButton.button.can_focus = sensitive;
+        this._okButton.reactive = sensitive;
+        this._okButton.can_focus = sensitive;
+    },
+
+    _setWorking: function(working) {
+        if (working) {
+            this._workSpinner.play();
+            Tweener.addTween(this._workSpinner.actor,
+                             { opacity: 255,
+                               delay: LoginDialog.WORK_SPINNER_ANIMATION_DELAY,
+                               time: LoginDialog.WORK_SPINNER_ANIMATION_TIME,
+                               transition: 'linear'
+                             });
+        } else {
+            Tweener.addTween(this._workSpinner.actor,
+                             { opacity: 0,
+                               time: LoginDialog.WORK_SPINNER_ANIMATION_TIME,
+                               transition: 'linear',
+                               onCompleteScope: this,
+                               onComplete: function() {
+                                   this._workSpinner.stop();
+                               }
+                             });
+        }
     },
 
     _showMessage: function(userVerifier, message, styleClass) {
@@ -248,6 +292,7 @@ const UnlockDialog = new Lang.Class({
 
         this._currentQuery = serviceName;
         this._updateSensitivity(true);
+        this._setWorking(false);
     },
 
     _showLoginHint: function(verifier, message) {
@@ -266,6 +311,7 @@ const UnlockDialog = new Lang.Class({
             // the actual reply to GDM will be sent as soon as asked
             this._firstQuestionAnswer = this._promptEntry.text;
             this._updateSensitivity(false);
+            this._setWorking(true);
             return;
         }
 
@@ -276,6 +322,7 @@ const UnlockDialog = new Lang.Class({
         this._currentQuery = null;
 
         this._updateSensitivity(false);
+        this._setWorking(true);
 
         this._userVerifier.answerQuery(query, this._promptEntry.text);
     },
@@ -296,6 +343,7 @@ const UnlockDialog = new Lang.Class({
         this._promptEntry.text = '';
 
         this._updateSensitivity(false);
+        this._setWorking(false);
     },
 
     _escape: function() {
