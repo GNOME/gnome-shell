@@ -11,8 +11,11 @@ const Signals = imports.signals;
 const St = imports.gi.St;
 
 const BoxPointer = imports.ui.boxpointer;
+const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
+
+const KEYBOARD_REST_TIME = Layout.KEYBOARD_ANIMATION_TIME * 2 * 1000;
 
 const KEYBOARD_SCHEMA = 'org.gnome.shell.keyboard';
 const KEYBOARD_TYPE = 'keyboard-type';
@@ -151,6 +154,13 @@ const Keyboard = new Lang.Class({
         this._subkeysBoxPointer = null;
         this._capturedEventId = 0;
         this._capturedPress = false;
+
+        this._keyboardVisible = false;
+        Main.layoutManager.connect('keyboard-visible-changed', Lang.bind(this, function(o, visible) {
+            this._keyboardVisible = visible;
+        }));
+        this._keyboardRequested = false;
+        this._keyboardRestingId = 0;
     },
 
     init: function () {
@@ -461,7 +471,37 @@ const Keyboard = new Lang.Class({
                actor._extended_keys || actor.extended_key;
     },
 
+    _clearKeyboardRestTimer: function() {
+        if (!this._keyboardRestingId)
+            return;
+        GLib.source_remove(this._keyboardRestingId);
+        this._keyboardRestingId = 0;
+    },
+
     show: function (monitor) {
+        this._keyboardRequested = true;
+
+        if (this._keyboardVisible) {
+            if (monitor != Main.layoutManager.keyboardIndex) {
+                Main.layoutManager.keyboardIndex = monitor;
+                this._redraw();
+            }
+            return;
+        }
+
+        this._clearKeyboardRestTimer();
+        this._keyboardRestingId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+                                                   KEYBOARD_REST_TIME,
+                                                   Lang.bind(this, function() {
+                                                       this._clearKeyboardRestTimer();
+                                                       this._show(monitor);
+                                                   }));
+    },
+
+    _show: function(monitor) {
+        if (!this._keyboardRequested)
+            return;
+
         Main.layoutManager.keyboardIndex = monitor;
         this._redraw();
         Main.layoutManager.showKeyboard();
@@ -469,6 +509,24 @@ const Keyboard = new Lang.Class({
     },
 
     hide: function () {
+        this._keyboardRequested = false;
+
+        if (!this._keyboardVisible)
+            return;
+
+        this._clearKeyboardRestTimer();
+        this._keyboardRestingId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+                                                   KEYBOARD_REST_TIME,
+                                                   Lang.bind(this, function() {
+                                                       this._clearKeyboardRestTimer();
+                                                       this._hide();
+                                                   }));
+    },
+
+    _hide: function() {
+        if (this._keyboardRequested)
+            return;
+
         this._hideSubkeys();
         Main.layoutManager.hideKeyboard();
         this._createSource();
