@@ -562,7 +562,7 @@ const Overview = new Lang.Class({
         if (this.isDummy)
             return;
 
-        if (this._shown)
+        if (this.visible)
             this.hide();
         else
             this.show();
