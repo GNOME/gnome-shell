@@ -176,8 +176,6 @@ const UnlockDialog = new Lang.Class({
                            default: true };
         this.setButtons([cancelButton, this._okButton]);
 
-        this._updateSensitivity(true);
-
         let otherUserLabel = new St.Label({ text: _("Log in as another user"),
                                             style_class: 'login-dialog-not-listed-label' });
         this._otherUserButton = new St.Button({ style_class: 'login-dialog-not-listed-button',
@@ -190,6 +188,8 @@ const UnlockDialog = new Lang.Class({
         this.dialogLayout.add(this._otherUserButton,
                               { x_align: St.Align.START,
                                 x_fill: false });
+
+        this._updateSensitivity(true);
 
         let batch = new Batch.Hold();
         this._userVerifier.begin(this._userName, batch);
@@ -209,6 +209,8 @@ const UnlockDialog = new Lang.Class({
         this._promptEntry.reactive = sensitive;
         this._promptEntry.clutter_text.editable = sensitive;
         this._updateOkButtonSensitivity(sensitive && this._promptEntry.text.length > 0);
+        this._otherUserButton.reactive = sensitive;
+        this._otherUserButton.can_focus = sensitive;
     },
 
     _updateOkButtonSensitivity: function(sensitive) {
@@ -292,8 +294,6 @@ const UnlockDialog = new Lang.Class({
         this._firstQuestion = true;
 
         this._promptEntry.text = '';
-        this._promptEntry.clutter_text.set_password_char('\u25cf');
-        this._promptEntry.menu.isPassword = true;
 
         this._updateSensitivity(false);
     },

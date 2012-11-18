@@ -604,6 +604,14 @@ const SessionList = new Lang.Class({
             this.close();
     },
 
+    updateSensitivity: function(sensitive) {
+        this._button.reactive = sensitive;
+        this._button.can_focus = sensitive;
+
+        for (let id in this._items)
+            this._items[id].actor.reactive = sensitive;
+    },
+
     setActiveSession: function(sessionId) {
          if (sessionId == this._activeSessionId)
              return;
@@ -685,6 +693,7 @@ const LoginDialog = new Lang.Class({
         this._userVerifier = new GdmUtil.ShellUserVerifier(this._greeterClient);
         this._userVerifier.connect('ask-question', Lang.bind(this, this._askQuestion));
         this._userVerifier.connect('show-message', Lang.bind(this, this._showMessage));
+        this._userVerifier.connect('verification-failed', Lang.bind(this, this._verificationFailed));
         this._userVerifier.connect('reset', Lang.bind(this, this._reset));
         this._userVerifier.connect('show-login-hint', Lang.bind(this, this._showLoginHint));
         this._userVerifier.connect('hide-login-hint', Lang.bind(this, this._hideLoginHint));
@@ -749,6 +758,8 @@ const LoginDialog = new Lang.Class({
         this._promptLoginHint = new St.Label({ style_class: 'login-dialog-prompt-login-hint-message' });
         this._promptLoginHint.hide();
         this._promptBox.add(this._promptLoginHint);
+
+        this._signInButton = null;
 
         this._sessionList = new SessionList();
         this._sessionList.connect('session-activated',
@@ -829,6 +840,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _reset: function() {
+        this._updateSensitivity(true);
         this._promptMessage.hide();
         this._user = null;
         this._verifyingUser = false;
@@ -837,6 +849,12 @@ const LoginDialog = new Lang.Class({
             this._hideUserListAndLogIn();
         else
             this._showUserList();
+    },
+
+    _verificationFailed: function() {
+        this._promptEntry.text = '';
+
+        this._updateSensitivity(true);
     },
 
     _onDefaultSessionChanged: function(client, sessionId) {
@@ -928,16 +946,15 @@ const LoginDialog = new Lang.Class({
 
                      function() {
                          this.setButtons(buttons);
+                         this._signInButton = okButtonInfo.button;
 
-                         let updateOkButtonEnabled = Lang.bind(this, function() {
-                             let sensitive = this._promptEntry.text.length > 0;
-                             okButtonInfo.button.reactive = sensitive;
-                             okButtonInfo.button.can_focus = sensitive;
-                         });
+                         this._updateSignInButtonSensitivity(this._promptEntry.text.length > 0);
 
-                         updateOkButtonEnabled();
-
-                         this._promptEntryTextChangedId = this._promptEntry.clutter_text.connect('text-changed', updateOkButtonEnabled);
+                         this._promptEntryTextChangedId =
+                             this._promptEntry.clutter_text.connect('text-changed',
+                                                                    Lang.bind(this, function() {
+                                                                        this._updateSignInButtonSensitivity(this._promptEntry.text.length > 0);
+                                                                    }));
                      },
 
                      hold];
@@ -945,6 +962,20 @@ const LoginDialog = new Lang.Class({
         let batch = new Batch.ConcurrentBatch(this, tasks);
 
         return batch.run();
+    },
+
+    _updateSensitivity: function(sensitive) {
+        this._promptEntry.reactive = sensitive;
+        this._promptEntry.clutter_text.editable = sensitive;
+        this._sessionList.updateSensitivity(sensitive);
+        this._updateSignInButtonSensitivity(sensitive);
+    },
+
+    _updateSignInButtonSensitivity: function(sensitive) {
+        if (this._signInButton) {
+            this._signInButton.reactive = sensitive;
+            this._signInButton.can_focus = sensitive;
+        }
     },
 
     _hidePrompt: function() {
@@ -961,8 +992,11 @@ const LoginDialog = new Lang.Class({
 
                      function() {
                          this._promptLoginHint.hide();
-                         this._promptEntry.reactive = true;
+
+                         this._updateSensitivity(true);
                          this._promptEntry.set_text('');
+
+                         this._signInButton = null;
                      }];
 
         let batch = new Batch.ConsecutiveBatch(this, tasks);
@@ -981,9 +1015,9 @@ const LoginDialog = new Lang.Class({
                      },
 
                      function() {
-                         let _text = this._promptEntry.get_text();
-                         this._promptEntry.reactive = false;
-                         this._userVerifier.answerQuery(serviceName, _text);
+                         let text = this._promptEntry.get_text();
+                         this._updateSensitivity(false);
+                         this._userVerifier.answerQuery(serviceName, text);
                      }];
 
         let batch = new Batch.ConsecutiveBatch(this, tasks);
