@@ -27,6 +27,7 @@ const DISABLE_LOCK_SCREEN_KEY = 'disable-lock-screen';
 const DISABLE_LOG_OUT_KEY = 'disable-log-out';
 const LOCK_ENABLED_KEY = 'lock-enabled';
 const ALWAYS_SHOW_LOG_OUT_KEY = 'always-show-log-out';
+const SHOW_FULL_NAME_KEY = 'show-full-name';
 
 const DIALOG_ICON_SIZE = 64;
 
@@ -550,9 +551,12 @@ const UserMenuButton = new Lang.Class({
                                        Lang.bind(this, this._updateSwitchUser));
         this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
                                        Lang.bind(this, this._updateLogout));
-
         this._lockdownSettings.connect('changed::' + DISABLE_LOCK_SCREEN_KEY,
                                        Lang.bind(this, this._updateLockScreen));
+        this._screenSaverSettings.connect('changed::' + SHOW_FULL_NAME_KEY,
+                                           Lang.bind(this, this._updateUserName));
+        global.settings.connect('changed::' + SHOW_FULL_NAME_KEY,
+                                Lang.bind(this, this._updateUserName));
         this._updateSwitchUser();
         this._updateLogout();
         this._updateLockScreen();
@@ -597,7 +601,10 @@ const UserMenuButton = new Lang.Class({
     },
 
     _updateUserName: function() {
-        if (this._user.is_loaded)
+        let settings = global.settings;
+        if (Main.sessionMode.isLocked)
+            settings = this._screenSaverSettings;
+        if (this._user.is_loaded && settings.get_boolean(SHOW_FULL_NAME_KEY))
             this._name.set_text(this._user.get_real_name());
         else
             this._name.set_text("");
