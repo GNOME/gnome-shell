@@ -2013,8 +2013,7 @@ const MessageTray = new Lang.Class({
         let summaryPinned = this._pointerInTray || summarySummoned || this._locked;
         let summaryHovered = this._pointerInTray || this._pointerInSummary;
 
-        let notificationsVisible = (this._notificationState == State.SHOWING ||
-                                    this._notificationState == State.SHOWN);
+        let notificationsVisible = this._notificationState != State.HIDDEN;
         let notificationsDone = !notificationsVisible && !notificationsPending;
 
         let summaryOptionalInOverview = this._overviewVisible && !this._locked && !summaryHovered;
