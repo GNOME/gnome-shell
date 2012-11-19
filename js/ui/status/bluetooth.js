@@ -353,6 +353,7 @@ const ConfirmNotification = new Lang.Class({
     _init: function(source, applet, device_path, name, long_name, pin) {
         this.parent(source,
                     _("Bluetooth"),
+                    /* Translators: argument is the device short name */
                     _("Pairing confirmation for %s").format(name),
                     { customContent: true });
         this.setResident(true);
@@ -362,6 +363,7 @@ const ConfirmNotification = new Lang.Class({
         this.addBody(_("Device %s wants to pair with this computer").format(long_name));
         this.addBody(_("Please confirm whether the PIN '%06d' matches the one on the device.").format(pin));
 
+        /* Translators: this is the verb, not the noun */
         this.addButton('matches', _("Matches"));
         this.addButton('does-not-match', _("Does not match"));
 
