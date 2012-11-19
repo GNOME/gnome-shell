@@ -1,3 +1,66 @@
+3.7.2
+=====
+* Enforce RTL in he for messages that might end up as LTR [Florian; #686630]
+* gdm: Move logo into the panel [Florian; #685852]
+* Hide notifications when closed button is clicked [Jasper, Florian; #682237]
+* Tweak screenShield animations [Rui; #686745]
+* Restore Fittsability of summary items in message tray [Florian; #686474]
+* Save screencasts as recent item [Ray; #680647]
+* overview: Resize window captions on content change [Giovanni, Alex; #620874]
+* App search: Match GenericName too [Matthias; #687121]
+* runDialog: Better match style of other modal dialogs [Florian, Allan; #687127]
+* Improve the button insensitive style [Stéphane; #687110]
+* network: Don't use a global switch for all VPN connections [Giovanni; #682929]
+* appMenu: Update on icon theme changes [Florian; #687224]
+* Show 'Log out' in more situations [Matthias; #686736]
+* Add a setting to force the 'Log out' menuitem [Matthias; #686057]
+* overview: Improve styling of search box [Stéphane; #686479]
+* Implement 'disable-user-list' in login screen [Ray; #660660]
+* Fix auto-scroll to bottom in chat notifications [Sjoerd; #686571]
+* Show feedback notifications when user is busy [Stéphane; #662900]
+* Disable login button when there is no input [Stéphane; #687112]
+* Use non-linear overview shade for background [Giovanni, Pierre-Eric; #669798]
+* Reduce blocking in compositor thread [Simon, Jasper; #687465]
+* network: new country-specific type to gather providers [Aleksander; #687356]
+* Update man page [Matthias; #680601]
+* st-entry: Change the pointer cursor on enter/leave events [Thomas; #687130]
+* screenShield: Blur and desaturate the background [Giovanni, Cosimo; #682536]
+* Change height of chat notifications to have more context [Carlos; #665255]
+* screenShield: Account for motion velocity when hiding [Giovanni; #682537]
+* screenShield: hide the cursor while the lock screen is on [Giovanni; #682535]
+* Support remote search provider settings [Cosimo; #687491]
+* unlockDialog: Improve label of confirmation button [Stéphane; #687656]
+* userMenu: Rename "System Settings" item to "Settings" [Elad; #687738]
+* messageTray: Add keybinding to focus current notification [Stéphane; #652082]
+* Remove shell-screen-grabber [Neil; #685915]
+* main: Stop using Metacity's keybinding files [Florian; #687672]
+* Bluetooth: Remove ObexFTP functionality [Bastien; #688160]
+* a11y: Also set WM theme when HighContrast is switched on [Cosimo; #688256]
+* network: Rework multiple NIC support [Giovanni; #677142]
+* Rework keybindings to allow selective blocking/processing [Florian; #688202]
+* recorder: Show indicator on primary monitor [Adel; #688470]
+* recorder: Set frame duration to fix broken video headers [Adel; #688487]
+* Misc. bugfixes and cleanups [Florian, Jasper, Giovanni, Matthew, Stéphane,
+  Allan, Daiki, Owen, Alejandro, Jean-François, Cosimo, Sebastian, Adel, Alban;
+  #686484, #686728, #686805, #686574, #686763, #682428, #687132, #685239,
+  #687189, #687226, #658091, #670687, #687457, #687242, #687287, #687020,
+  #686583, #661194, #687491, #657315, #687958, #683986, #688089, #687708,
+  #686530, #684810, #688181, #688475, #688557, #688507, #638351]
+
+Contributors:
+  Elad Alfassa, Matthew Barnes, Alban Browaeys, Giovanni Campagna,
+  Cosimo Cecchi, Matthias Clasen, Allan Day, Stéphane Démurget,
+  Jean-François Fortin Tam, Adel Gadllah, Alex Hultman, Sebastian Keller,
+  Rui Matos, Simon McVittie, Aleksander Morgado, Florian Müllner,
+  Bastien Nocera, Pierre-Eric Pelloux-Prayer, Alejandro Piñeiro, Neil Roberts,
+  Sjoerd Simons, Carlos Soriano Sánchez, Jasper St. Pierre, Ray Strode,
+  Owen Taylor, Daiki Ueno, Thomas Wood
+
+Translations:
+  Dušan Kazik [sk], Pavol Klačanský [sk], Piotr Drąg [pl], Yuri Myasoedov [ru],
+  Marek Černocký [cs], Kjartan Maraas [nb], Wolfgang Stöggl [de],
+  Yaron Shahrabani [he], Fran Diéguez [gl], Mattias Põldaru [et]
+
 3.7.1
 =====
 * Add shortcut to open application view directly [Jeremy; #685738]
