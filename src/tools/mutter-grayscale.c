@@ -81,8 +81,6 @@ main (int argc, char **argv)
       return 1;
     }
 
-  g_type_init ();
-  
   err = NULL;
   pixbuf = gdk_pixbuf_new_from_file (argv[1], &err);
   if (err != NULL)
