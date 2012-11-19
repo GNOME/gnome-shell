@@ -77,6 +77,7 @@ main (int argc, char **argv)
   ADD_TEST (test_atlas_migration, 0, 0);
   ADD_TEST (test_read_texture_formats, 0, 0);
   ADD_TEST (test_write_texture_formats, 0, 0);
+  ADD_TEST (test_alpha_textures, 0, 0);
 
   UNPORTED_TEST (test_vertex_buffer_contiguous);
   UNPORTED_TEST (test_vertex_buffer_interleved);

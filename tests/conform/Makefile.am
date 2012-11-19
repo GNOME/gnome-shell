@@ -60,6 +60,7 @@ test_sources = \
 	test-alpha-test.c \
 	test-map-buffer-range.c \
 	test-npot-texture.c \
+	test-alpha-textures.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
