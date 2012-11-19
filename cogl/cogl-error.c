@@ -99,7 +99,7 @@ _cogl_set_error_literal (CoglError **error,
 }
 
 void
-_cogl_propogate_error (CoglError **dest,
+_cogl_propagate_error (CoglError **dest,
                        CoglError *src)
 {
   _COGL_RETURN_IF_FAIL (src != NULL);
@@ -109,8 +109,8 @@ _cogl_propogate_error (CoglError **dest,
 }
 
 void
-_cogl_propogate_gerror (CoglError **dest,
+_cogl_propagate_gerror (CoglError **dest,
                         GError *src)
 {
-  _cogl_propogate_error (dest, (CoglError *)src);
+  _cogl_propagate_error (dest, (CoglError *)src);
 }

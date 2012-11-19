@@ -40,11 +40,11 @@ _cogl_set_error_literal (CoglError **error,
                          const char *message);
 
 void
-_cogl_propogate_error (CoglError **dest,
+_cogl_propagate_error (CoglError **dest,
                        CoglError *src);
 
 void
-_cogl_propogate_gerror (CoglError **dest,
+_cogl_propagate_gerror (CoglError **dest,
                         GError *src);
 
 #define _cogl_clear_error(X) g_clear_error ((GError **)X)

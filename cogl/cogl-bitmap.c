@@ -484,7 +484,7 @@ _cogl_bitmap_gl_bind (CoglBitmap *bitmap,
    * if an exception was thrown */
   if (internal_error)
     {
-      _cogl_propogate_error (error, internal_error);
+      _cogl_propagate_error (error, internal_error);
       return NULL;
     }
 

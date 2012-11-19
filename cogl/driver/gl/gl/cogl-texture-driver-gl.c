@@ -198,7 +198,7 @@ _cogl_texture_driver_upload_subregion_to_gl (CoglContext *ctx,
    * problems... */
   if (internal_error)
     {
-      _cogl_propogate_error (error, internal_error);
+      _cogl_propagate_error (error, internal_error);
       return FALSE;
     }
 

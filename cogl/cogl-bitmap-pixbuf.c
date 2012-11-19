@@ -194,7 +194,7 @@ _cogl_bitmap_from_file (CoglContext *ctx,
   pixbuf = gdk_pixbuf_new_from_file (filename, &glib_error);
   if (pixbuf == NULL)
     {
-      _cogl_propogate_gerror (error, glib_error);
+      _cogl_propagate_gerror (error, glib_error);
       return FALSE;
     }
 

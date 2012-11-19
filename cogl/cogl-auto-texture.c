@@ -173,7 +173,7 @@ _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
                           COGL_SYSTEM_ERROR,
                           COGL_SYSTEM_ERROR_NO_MEMORY))
     {
-      _cogl_propogate_error (error, internal_error);
+      _cogl_propagate_error (error, internal_error);
       return NULL;
     }
 
@@ -194,7 +194,7 @@ _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
                               COGL_SYSTEM_ERROR,
                               COGL_SYSTEM_ERROR_NO_MEMORY))
         {
-          _cogl_propogate_error (error, internal_error);
+          _cogl_propagate_error (error, internal_error);
           return NULL;
         }
 

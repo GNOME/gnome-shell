@@ -353,7 +353,7 @@ _cogl_buffer_gl_set_data (CoglBuffer *buffer,
    */
   if (internal_error)
     {
-      _cogl_propogate_error (error, internal_error);
+      _cogl_propagate_error (error, internal_error);
       return FALSE;
     }
 

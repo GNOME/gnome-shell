@@ -1692,7 +1692,7 @@ _cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
       if (internal_error)
         {
           cogl_object_unref (shared_bmp);
-          _cogl_propogate_error (error, internal_error);
+          _cogl_propagate_error (error, internal_error);
           goto EXIT;
         }
 
