@@ -1310,7 +1310,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .summary-boxpointer {
-    -arrow-border-radius: 8px;
+    -arrow-border-radius: 15px;
     -arrow-background-color: rgba(0,0,0,0.8);
     -arrow-base: 36px;
     -arrow-rise: 18px;
@@ -1331,8 +1331,8 @@ StScrollBar StButton#vhandle:active {
 
 .summary-notification-stack-scrollview {
     max-height: 18em;
-    padding-top: 6px;
-    padding-bottom: 6px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 .summary-notification-stack-scrollview:ltr {
