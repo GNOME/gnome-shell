@@ -1,3 +1,21 @@
+3.7.2
+=====
+* Fix spurious focus changes when showing desktop [Florian; #686928]
+* MetaPluginManager: don't send events to Clutter twice [Owen; #686406]
+* Add the ability to add shader hooks to MetaBackgroundActor [Giovanni; #669798]
+* Only process keyboard mapping events for the core X keyboard [Rui; #674859]
+* Import keybinding files from Metacity [Florian; #687672]
+* Add compositor hook to process keybindings selectively [Florian; #688202]
+* MetaBackgroundActor: add a setter for GLSL uniforms [Giovanni; #682536]
+* Misc. fixes and cleanups [Jasper, Rui, Florian, Rico; #688182]
+
+Contributors:
+  Giovanni Campagna, Rui Matos, Florian Müllner, Jasper St. Pierre,
+  Owen Taylor, Rico Tzschichholz
+
+Translations:
+  Rafael Ferreira [pt_BR], Tobias Endrigkeit [de], Yaron Shahrabani [he]
+
 3.7.1
 =====
 * screen: Ignore num-workspaces when using dynamic workspaces [Florian; #685439]
