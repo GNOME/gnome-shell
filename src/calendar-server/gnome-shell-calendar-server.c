@@ -1035,8 +1035,6 @@ main (int    argc,
   name_owner_id = 0;
   stdin_channel = NULL;
 
-  g_type_init ();
-
   introspection_data = g_dbus_node_info_new_for_xml (introspection_xml, NULL);
   g_assert (introspection_data != NULL);
 
