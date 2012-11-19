@@ -54,6 +54,10 @@ _cogl_driver_pixel_format_from_gl_internal (CoglContext *context,
     {
     case GL_ALPHA: case GL_ALPHA4: case GL_ALPHA8:
     case GL_ALPHA12: case GL_ALPHA16:
+      /* Cogl only supports one single-component texture so if we have
+       * ended up with a red texture then it is probably being used as
+       * a component-alpha texture */
+    case GL_RED:
 
       *out_format = COGL_PIXEL_FORMAT_A_8;
       return TRUE;
@@ -98,8 +102,20 @@ _cogl_driver_pixel_format_to_gl (CoglContext *context,
   switch (format)
     {
     case COGL_PIXEL_FORMAT_A_8:
-      glintformat = GL_ALPHA;
-      glformat = GL_ALPHA;
+      /* If the driver doesn't natively support alpha textures then we
+       * will use a red component texture with a swizzle to implement
+       * the texture */
+      if ((context->private_feature_flags &
+           COGL_PRIVATE_FEATURE_ALPHA_TEXTURES) == 0)
+        {
+          glintformat = GL_RED;
+          glformat = GL_RED;
+        }
+      else
+        {
+          glintformat = GL_ALPHA;
+          glformat = GL_ALPHA;
+        }
       gltype = GL_UNSIGNED_BYTE;
       break;
     case COGL_PIXEL_FORMAT_G_8:
@@ -564,11 +580,17 @@ _cogl_driver_update_features (CoglContext *ctx,
   if (ctx->glGenSamplers)
     private_flags |= COGL_PRIVATE_FEATURE_SAMPLER_OBJECTS;
 
+  if (COGL_CHECK_GL_VERSION (gl_major, gl_minor, 3, 3) ||
+      _cogl_check_extension ("GL_ARB_texture_swizzle", gl_extensions) ||
+      _cogl_check_extension ("GL_EXT_texture_swizzle", gl_extensions))
+    private_flags |= COGL_PRIVATE_FEATURE_TEXTURE_SWIZZLE;
+
   if (ctx->driver == COGL_DRIVER_GL)
     /* Features which are not available in GL 3 */
     private_flags |= (COGL_PRIVATE_FEATURE_FIXED_FUNCTION |
                       COGL_PRIVATE_FEATURE_ALPHA_TEST |
-                      COGL_PRIVATE_FEATURE_QUADS);
+                      COGL_PRIVATE_FEATURE_QUADS |
+                      COGL_PRIVATE_FEATURE_ALPHA_TEXTURES);
 
   private_flags |= (COGL_PRIVATE_FEATURE_READ_PIXELS_ANY_FORMAT |
                     COGL_PRIVATE_FEATURE_ANY_GL |
@@ -582,6 +604,17 @@ _cogl_driver_update_features (CoglContext *ctx,
   ctx->feature_flags |= flags;
 
   g_strfreev (gl_extensions);
+
+  if ((private_flags & (COGL_PRIVATE_FEATURE_ALPHA_TEXTURES |
+                        COGL_PRIVATE_FEATURE_TEXTURE_SWIZZLE)) == 0)
+    {
+      _cogl_set_error (error,
+                       COGL_DRIVER_ERROR,
+                       COGL_DRIVER_ERROR_NO_SUITABLE_DRIVER_FOUND,
+                       "The GL_ARB_texture_swizzle extension is required "
+                       "to use the GL3 driver");
+      return FALSE;
+    }
 
   return TRUE;
 }

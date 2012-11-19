@@ -108,7 +108,8 @@ _cogl_texture_2d_gl_new_with_size (CoglContext *ctx,
                                          width, height,
                                          internal_format);
 
-  ctx->texture_driver->gen (ctx, GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
+  tex_2d->gl_texture =
+    ctx->texture_driver->gen (ctx, GL_TEXTURE_2D, internal_format);
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    tex_2d->gl_texture,
                                    tex_2d->is_foreign);
@@ -164,7 +165,8 @@ _cogl_texture_2d_gl_new_from_bitmap (CoglBitmap *bmp,
       _cogl_bitmap_unmap (dst_bmp);
     }
 
-  ctx->texture_driver->gen (ctx, GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
+  tex_2d->gl_texture =
+    ctx->texture_driver->gen (ctx, GL_TEXTURE_2D, internal_format);
   ctx->texture_driver->upload_to_gl (ctx,
                                      GL_TEXTURE_2D,
                                      tex_2d->gl_texture,
@@ -198,7 +200,8 @@ _cogl_egl_texture_2d_gl_new_from_image (CoglContext *ctx,
                                          width, height,
                                          format);
 
-  ctx->texture_driver->gen (ctx, GL_TEXTURE_2D, 1, &tex_2d->gl_texture);
+  tex_2d->gl_texture =
+    ctx->texture_driver->gen (ctx, GL_TEXTURE_2D, format);
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
                                    tex_2d->gl_texture,
                                    FALSE);

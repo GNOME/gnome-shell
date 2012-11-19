@@ -33,11 +33,10 @@ struct _CoglTextureDriver
    * non-mipmap filters when creating textures. This is to save some memory as
    * the driver will not allocate room for the mipmap tree.
    */
-  void
+  GLuint
   (* gen) (CoglContext *ctx,
            GLenum gl_target,
-           GLsizei n,
-           GLuint *textures);
+           CoglPixelFormat internal_format);
 
   /*
    * This sets up the glPixelStore state for an upload to a destination with

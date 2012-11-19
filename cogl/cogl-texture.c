@@ -206,7 +206,15 @@ _cogl_texture_prepare_for_upload (CoglBitmap      *src_bmp,
      limited number of formats so we must convert using the Cogl
      bitmap code instead */
 
-  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_FORMAT_CONVERSION))
+  /* If the driver doesn't natively support alpha textures then it
+   * won't work correctly to convert to/from component-alpha
+   * textures */
+
+  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_FORMAT_CONVERSION) &&
+      ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_ALPHA_TEXTURES) ||
+       (src_format != COGL_PIXEL_FORMAT_A_8 &&
+        dst_format != COGL_PIXEL_FORMAT_A_8) ||
+       src_format == dst_format))
     {
       /* If the source format does not have the same premult flag as the
          dst format then we need to copy and convert it */
@@ -1201,6 +1209,34 @@ cogl_texture_get_data (CoglTexture *texture,
   if (COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (closest_format))
     closest_format = ((closest_format & ~COGL_PREMULT_BIT) |
                       (texture_format & COGL_PREMULT_BIT));
+
+  /* If the application is requesting a conversion from a
+   * component-alpha texture and the driver doesn't support them
+   * natively then we can only read into an alpha-format buffer. In
+   * this case the driver will be faking the alpha textures with a
+   * red-component texture and it won't swizzle to the correct format
+   * while reading */
+  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_ALPHA_TEXTURES) == 0)
+    {
+      if (texture_format == COGL_PIXEL_FORMAT_A_8)
+        {
+          closest_format = COGL_PIXEL_FORMAT_A_8;
+          closest_gl_format = GL_RED;
+          closest_gl_type = GL_UNSIGNED_BYTE;
+        }
+      else if (format == COGL_PIXEL_FORMAT_A_8)
+        {
+          /* If we are converting to a component-alpha texture then we
+           * need to read all of the components to a temporary buffer
+           * because there is no way to get just the 4th component.
+           * Note: it doesn't matter whether the texture is
+           * pre-multiplied here because we're only going to look at
+           * the alpha component */
+          closest_format = COGL_PIXEL_FORMAT_RGBA_8888;
+          closest_gl_format = GL_RGBA;
+          closest_gl_type = GL_UNSIGNED_BYTE;
+        }
+    }
 
   /* Is the requested format supported? */
   if (closest_format == format)

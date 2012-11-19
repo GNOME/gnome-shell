@@ -234,7 +234,8 @@ cogl_texture_3d_new_with_size (CoglContext *ctx,
                                          width, height, depth,
                                          internal_format);
 
-  ctx->texture_driver->gen (ctx, GL_TEXTURE_3D, 1, &tex_3d->gl_texture);
+  tex_3d->gl_texture =
+    ctx->texture_driver->gen (ctx, GL_TEXTURE_3D, internal_format);
   _cogl_bind_gl_texture_transient (GL_TEXTURE_3D,
                                    tex_3d->gl_texture,
                                    FALSE);
@@ -308,7 +309,8 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
       _cogl_bitmap_unmap (dst_bmp);
     }
 
-  ctx->texture_driver->gen (ctx, GL_TEXTURE_3D, 1, &tex_3d->gl_texture);
+  tex_3d->gl_texture =
+    ctx->texture_driver->gen (ctx, GL_TEXTURE_3D, internal_format);
 
   ctx->texture_driver->upload_to_gl_3d (ctx,
                                         GL_TEXTURE_3D,

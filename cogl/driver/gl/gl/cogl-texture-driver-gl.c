@@ -45,41 +45,55 @@
 #include <stdlib.h>
 #include <math.h>
 
-static void
+#ifndef GL_TEXTURE_SWIZZLE_RGBA
+#define GL_TEXTURE_SWIZZLE_RGBA 0x8E46
+#endif
+
+static GLuint
 _cogl_texture_driver_gen (CoglContext *ctx,
                           GLenum gl_target,
-                          GLsizei n,
-                          GLuint *textures)
+                          CoglPixelFormat internal_format)
 {
-  unsigned int i;
+  GLuint tex;
 
-  GE (ctx, glGenTextures (n, textures));
+  GE (ctx, glGenTextures (1, &tex));
 
-  for (i = 0; i < n; i++)
+  _cogl_bind_gl_texture_transient (gl_target, tex, FALSE);
+
+  switch (gl_target)
     {
-      _cogl_bind_gl_texture_transient (gl_target,
-                                       textures[i],
-                                       FALSE);
+    case GL_TEXTURE_2D:
+    case GL_TEXTURE_3D:
+      /* GL_TEXTURE_MAG_FILTER defaults to GL_LINEAR, no need to set it */
+      GE( ctx, glTexParameteri (gl_target,
+                                GL_TEXTURE_MIN_FILTER,
+                                GL_LINEAR) );
+      break;
 
-      switch (gl_target)
-        {
-        case GL_TEXTURE_2D:
-        case GL_TEXTURE_3D:
-          /* GL_TEXTURE_MAG_FILTER defaults to GL_LINEAR, no need to set it */
-          GE( ctx, glTexParameteri (gl_target,
-                                    GL_TEXTURE_MIN_FILTER,
-                                    GL_LINEAR) );
-          break;
+    case GL_TEXTURE_RECTANGLE_ARB:
+      /* Texture rectangles already default to GL_LINEAR so nothing
+         needs to be done */
+      break;
 
-        case GL_TEXTURE_RECTANGLE_ARB:
-          /* Texture rectangles already default to GL_LINEAR so nothing
-             needs to be done */
-          break;
-
-        default:
-          g_assert_not_reached();
-        }
+    default:
+      g_assert_not_reached();
     }
+
+  /* If the driver doesn't support alpha textures directly then we'll
+   * fake them by setting the swizzle parameters */
+  if (internal_format == COGL_PIXEL_FORMAT_A_8 &&
+      (ctx->private_feature_flags & (COGL_PRIVATE_FEATURE_ALPHA_TEXTURES |
+                                     COGL_PRIVATE_FEATURE_TEXTURE_SWIZZLE)) ==
+      COGL_PRIVATE_FEATURE_TEXTURE_SWIZZLE)
+    {
+      static const GLint red_swizzle[] = { GL_ZERO, GL_ZERO, GL_ZERO, GL_RED };
+
+      GE( ctx, glTexParameteriv (gl_target,
+                                 GL_TEXTURE_SWIZZLE_RGBA,
+                                 red_swizzle) );
+    }
+
+  return tex;
 }
 
 /* OpenGL - unlike GLES - can upload a sub region of pixel data from a larger

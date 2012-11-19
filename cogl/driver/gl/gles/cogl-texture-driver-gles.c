@@ -64,34 +64,32 @@
 #define GL_UNPACK_SKIP_PIXELS 0x0CF4
 #endif
 
-static void
+static GLuint
 _cogl_texture_driver_gen (CoglContext *ctx,
                           GLenum gl_target,
-                          GLsizei n,
-                          GLuint *textures)
+                          CoglPixelFormat internal_format)
 {
-  unsigned int i;
+  GLuint tex;
 
-  GE (ctx, glGenTextures (n, textures));
+  GE (ctx, glGenTextures (1, &tex));
 
-  for (i = 0; i < n; i++)
+  _cogl_bind_gl_texture_transient (gl_target, tex, FALSE);
+
+  switch (gl_target)
     {
-      _cogl_bind_gl_texture_transient (gl_target, textures[i], FALSE);
+    case GL_TEXTURE_2D:
+    case GL_TEXTURE_3D:
+      /* GL_TEXTURE_MAG_FILTER defaults to GL_LINEAR, no need to set it */
+      GE( ctx, glTexParameteri (gl_target,
+                                GL_TEXTURE_MIN_FILTER,
+                                GL_LINEAR) );
+      break;
 
-      switch (gl_target)
-        {
-        case GL_TEXTURE_2D:
-        case GL_TEXTURE_3D:
-          /* GL_TEXTURE_MAG_FILTER defaults to GL_LINEAR, no need to set it */
-          GE( ctx, glTexParameteri (gl_target,
-                                    GL_TEXTURE_MIN_FILTER,
-                                    GL_LINEAR) );
-          break;
-
-        default:
-          g_assert_not_reached();
-        }
+    default:
+      g_assert_not_reached();
     }
+
+  return tex;
 }
 
 static void
