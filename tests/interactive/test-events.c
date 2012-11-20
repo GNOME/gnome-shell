@@ -330,6 +330,14 @@ input_cb (ClutterActor *actor,
                position.x, position.y,
                device_id, source_device_id, state);
       break;
+    case CLUTTER_TOUCH_CANCEL:
+      clutter_event_get_position (event, &position);
+      g_print ("[%s] TOUCH CANCEL (seq:%p coords:%.02f,%.02f device:%d/%d state:%s)",
+               clutter_actor_get_name (source_actor),
+               clutter_event_get_event_sequence (event),
+               position.x, position.y,
+               device_id, source_device_id, state);
+      break;
     case CLUTTER_SCROLL:
       {
         ClutterScrollDirection dir = clutter_event_get_scroll_direction (event);
