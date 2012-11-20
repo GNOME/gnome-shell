@@ -341,6 +341,8 @@ const UnlockDialog = new Lang.Class({
         this._firstQuestion = true;
 
         this._promptEntry.text = '';
+        this._promptEntry.clutter_text.set_password_char('\u25cf');
+        this._promptEntry.menu.isPassword = true;
 
         this._updateSensitivity(false);
         this._setWorking(false);
