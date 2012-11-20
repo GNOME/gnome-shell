@@ -308,22 +308,25 @@ input_cb (ClutterActor *actor,
       break;
     case CLUTTER_TOUCH_BEGIN:
       clutter_event_get_position (event, &position);
-      g_print ("[%s] TOUCH BEGIN (coords:%.02f,%.02f device:%d/%d state:%s)",
+      g_print ("[%s] TOUCH BEGIN (seq:%p coords:%.02f,%.02f device:%d/%d state:%s)",
                clutter_actor_get_name (source_actor),
+               clutter_event_get_event_sequence (event),
                position.x, position.y,
                device_id, source_device_id, state);
       break;
     case CLUTTER_TOUCH_UPDATE:
       clutter_event_get_position (event, &position);
-      g_print ("[%s] TOUCH UPDATE (coords:%.02f,%.02f device:%d/%d state:%s)",
+      g_print ("[%s] TOUCH UPDATE (seq:%p coords:%.02f,%.02f device:%d/%d state:%s)",
                clutter_actor_get_name (source_actor),
+               clutter_event_get_event_sequence (event),
                position.x, position.y,
                device_id, source_device_id, state);
       break;
     case CLUTTER_TOUCH_END:
       clutter_event_get_position (event, &position);
-      g_print ("[%s] TOUCH END (coords:%.02f,%.02f device:%d/%d state:%s)",
+      g_print ("[%s] TOUCH END (seq:%p coords:%.02f,%.02f device:%d/%d state:%s)",
                clutter_actor_get_name (source_actor),
+               clutter_event_get_event_sequence (event),
                position.x, position.y,
                device_id, source_device_id, state);
       break;
