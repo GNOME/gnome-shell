@@ -1055,22 +1055,32 @@ grab_keyboard (MetaDisplay *display,
 {
   int result;
   int grab_status;
-  
+
+  unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+  XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
+
+  XISetMask (mask.mask, XI_KeyPress);
+  XISetMask (mask.mask, XI_KeyRelease);
+
   /* Grab the keyboard, so we get key releases and all key
    * presses
    */
   meta_error_trap_push_with_return (display);
 
-  grab_status = XGrabKeyboard (display->xdisplay,
-                               xwindow, True,
-                               GrabModeAsync, GrabModeAsync,
-                               timestamp);
-  
-  if (grab_status != GrabSuccess)
+  grab_status = XIGrabDevice (display->xdisplay,
+                              META_VIRTUAL_CORE_KEYBOARD_ID,
+                              xwindow,
+                              timestamp,
+                              None,
+                              XIGrabModeAsync, XIGrabModeAsync,
+                              True, /* owner_events */
+                              &mask);
+
+  if (grab_status != Success)
     {
       meta_error_trap_pop_with_return (display);
       meta_topic (META_DEBUG_KEYBINDINGS,
-                  "XGrabKeyboard() returned failure status %s time %u\n",
+                  "XIGrabDevice() returned failure status %s time %u\n",
                   grab_status_to_string (grab_status),
                   timestamp);
       return FALSE;
@@ -1081,7 +1091,7 @@ grab_keyboard (MetaDisplay *display,
       if (result != Success)
         {
           meta_topic (META_DEBUG_KEYBINDINGS,
-                      "XGrabKeyboard() resulted in an error\n");
+                      "XIGrabDevice() resulted in an error\n");
           return FALSE;
         }
     }
@@ -1099,7 +1109,7 @@ ungrab_keyboard (MetaDisplay *display, guint32 timestamp)
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Ungrabbing keyboard with timestamp %u\n",
               timestamp);
-  XUngrabKeyboard (display->xdisplay, timestamp);
+  XIUngrabDevice (display->xdisplay, META_VIRTUAL_CORE_KEYBOARD_ID, timestamp);
   meta_error_trap_pop (display);
 }
 
