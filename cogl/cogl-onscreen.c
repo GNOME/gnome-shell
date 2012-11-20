@@ -387,17 +387,7 @@ _cogl_framebuffer_winsys_update_size (CoglFramebuffer *framebuffer,
   framebuffer->width = width;
   framebuffer->height = height;
 
-  framebuffer->viewport_x = 0;
-  framebuffer->viewport_y = 0;
-  framebuffer->viewport_width = width;
-  framebuffer->viewport_height = height;
-
-  /* If the framebuffer being updated is the current framebuffer we
-   * mark the viewport state as changed so it will be updated the next
-   * time _cogl_framebuffer_flush_state() is called. */
-  if (framebuffer->context->current_draw_buffer == framebuffer)
-    framebuffer->context->current_draw_buffer_changes |=
-      COGL_FRAMEBUFFER_STATE_VIEWPORT;
+  cogl_framebuffer_set_viewport (framebuffer, 0, 0, width, height);
 }
 
 void

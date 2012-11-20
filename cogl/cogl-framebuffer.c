@@ -449,6 +449,8 @@ cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
                                float width,
                                float height)
 {
+  CoglContext *context = framebuffer->context;
+
   _COGL_RETURN_IF_FAIL (width > 0 && height > 0);
 
   if (framebuffer->viewport_x == x &&
@@ -465,9 +467,13 @@ cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
   framebuffer->viewport_height = height;
   framebuffer->viewport_age++;
 
-  if (framebuffer->context->current_draw_buffer == framebuffer)
-    framebuffer->context->current_draw_buffer_changes |=
-      COGL_FRAMEBUFFER_STATE_VIEWPORT;
+  if (context->current_draw_buffer == framebuffer)
+    {
+      context->current_draw_buffer_changes |= COGL_FRAMEBUFFER_STATE_VIEWPORT;
+
+      if (context->needs_viewport_scissor_workaround)
+        context->current_draw_buffer_changes |= COGL_FRAMEBUFFER_STATE_CLIP;
+    }
 }
 
 float
