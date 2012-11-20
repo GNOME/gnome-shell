@@ -2706,9 +2706,9 @@ _clutter_process_event_details (ClutterActor        *stage,
                 {
                   CLUTTER_NOTE (EVENT,
                                 "Touch %s off stage received at %.2f, %.2f",
-                                event->type == CLUTTER_TOUCH_UPDATE ? "Touch update" :
-                                event->type == CLUTTER_TOUCH_END ? "Touch end" :
-                                event->type == CLUTTER_TOUCH_CANCEL ? "Touch cancel" :
+                                event->type == CLUTTER_TOUCH_UPDATE ? "update" :
+                                event->type == CLUTTER_TOUCH_END ? "end" :
+                                event->type == CLUTTER_TOUCH_CANCEL ? "cancel" :
                                 "?", x, y);
 
                   event->touch.source = stage;
@@ -2724,9 +2724,13 @@ _clutter_process_event_details (ClutterActor        *stage,
               if (device != NULL)
                 actor = _clutter_input_device_update (device, sequence, TRUE);
               else
-                actor = _clutter_stage_do_pick (CLUTTER_STAGE (stage),
-                                                x, y,
-                                                CLUTTER_PICK_REACTIVE);
+                {
+                  CLUTTER_NOTE (EVENT, "No device found: picking");
+
+                  actor = _clutter_stage_do_pick (CLUTTER_STAGE (stage),
+                                                  x, y,
+                                                  CLUTTER_PICK_REACTIVE);
+                }
 
               if (actor == NULL)
                 break;
@@ -2784,7 +2788,7 @@ _clutter_process_event (ClutterEvent *event)
   stage = CLUTTER_ACTOR (event->any.stage);
   if (stage == NULL)
     {
-      CLUTTER_NOTE (EVENT, "Discarding event withou a stage set");
+      CLUTTER_NOTE (EVENT, "Discarding event without a stage set");
       return;
     }
 
