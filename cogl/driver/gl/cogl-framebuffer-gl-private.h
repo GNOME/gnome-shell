@@ -86,6 +86,14 @@ _cogl_framebuffer_gl_draw_indexed_attributes (CoglFramebuffer *framebuffer,
                                               int n_attributes,
                                               CoglDrawFlags flags);
 
+CoglBool
+_cogl_framebuffer_gl_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
+                                              int x,
+                                              int y,
+                                              CoglReadPixelsFlags source,
+                                              CoglBitmap *bitmap,
+                                              CoglError **error);
+
 #endif /* __COGL_FRAMEBUFFER_GL_PRIVATE_H__ */
 
 

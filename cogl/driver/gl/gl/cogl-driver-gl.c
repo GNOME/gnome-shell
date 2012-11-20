@@ -634,6 +634,7 @@ _cogl_driver_gl =
     _cogl_framebuffer_gl_discard_buffers,
     _cogl_framebuffer_gl_draw_attributes,
     _cogl_framebuffer_gl_draw_indexed_attributes,
+    _cogl_framebuffer_gl_read_pixels_into_bitmap,
     _cogl_texture_2d_gl_free,
     _cogl_texture_2d_gl_can_create,
     _cogl_texture_2d_gl_init,

@@ -108,6 +108,14 @@ struct _CoglDriverVtable
                                            int n_attributes,
                                            CoglDrawFlags flags);
 
+  CoglBool
+  (* framebuffer_read_pixels_into_bitmap) (CoglFramebuffer *framebuffer,
+                                           int x,
+                                           int y,
+                                           CoglReadPixelsFlags source,
+                                           CoglBitmap *bitmap,
+                                           CoglError **error);
+
   /* Destroys any driver specific resources associated with the given
    * 2D texture. */
   void

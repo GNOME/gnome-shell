@@ -108,3 +108,14 @@ _cogl_framebuffer_nop_draw_indexed_attributes (CoglFramebuffer *framebuffer,
                                                CoglDrawFlags flags)
 {
 }
+
+CoglBool
+_cogl_framebuffer_nop_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
+                                               int x,
+                                               int y,
+                                               CoglReadPixelsFlags source,
+                                               CoglBitmap *bitmap,
+                                               CoglError **error)
+{
+  return TRUE;
+}

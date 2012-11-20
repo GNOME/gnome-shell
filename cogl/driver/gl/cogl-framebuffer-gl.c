@@ -35,6 +35,7 @@
 #include "cogl-texture-gl-private.h"
 
 #include <glib.h>
+#include <string.h>
 
 #ifndef GL_FRAMEBUFFER
 #define GL_FRAMEBUFFER		0x8D40
@@ -1100,4 +1101,372 @@ _cogl_framebuffer_gl_draw_indexed_attributes (CoglFramebuffer *framebuffer,
                       base + buffer_offset + index_size * first_vertex));
 
   _cogl_buffer_gl_unbind (buffer);
+}
+
+static CoglBool
+mesa_46631_slow_read_pixels_workaround (CoglFramebuffer *framebuffer,
+                                        int x,
+                                        int y,
+                                        CoglReadPixelsFlags source,
+                                        CoglBitmap *bitmap,
+                                        CoglError **error)
+{
+  CoglContext *ctx;
+  CoglPixelFormat format;
+  CoglBitmap *pbo;
+  int width;
+  int height;
+  CoglBool res;
+  uint8_t *dst;
+  const uint8_t *src;
+
+  ctx = cogl_framebuffer_get_context (framebuffer);
+
+  width = cogl_bitmap_get_width (bitmap);
+  height = cogl_bitmap_get_height (bitmap);
+  format = cogl_bitmap_get_format (bitmap);
+
+  pbo = cogl_bitmap_new_with_size (ctx, width, height, format);
+
+  /* Read into the pbo. We need to disable the flipping because the
+     blit fast path in the driver does not work with
+     GL_PACK_INVERT_MESA is set */
+  res = _cogl_framebuffer_read_pixels_into_bitmap (framebuffer,
+                                                   x, y,
+                                                   source |
+                                                   COGL_READ_PIXELS_NO_FLIP,
+                                                   pbo,
+                                                   error);
+  if (!res)
+    {
+      cogl_object_unref (pbo);
+      return FALSE;
+    }
+
+  /* Copy the pixels back into application's buffer */
+  dst = _cogl_bitmap_map (bitmap,
+                          COGL_BUFFER_ACCESS_WRITE,
+                          COGL_BUFFER_MAP_HINT_DISCARD,
+                          error);
+  if (!dst)
+    {
+      cogl_object_unref (pbo);
+      return FALSE;
+    }
+
+  src = _cogl_bitmap_map (pbo,
+                          COGL_BUFFER_ACCESS_READ,
+                          0, /* hints */
+                          error);
+  if (src)
+    {
+      int src_rowstride = cogl_bitmap_get_rowstride (pbo);
+      int dst_rowstride = cogl_bitmap_get_rowstride (bitmap);
+      int to_copy =
+        _cogl_pixel_format_get_bytes_per_pixel (format) * width;
+      int y;
+
+      /* If the framebuffer is onscreen we need to flip the
+         data while copying */
+      if (!cogl_is_offscreen (framebuffer))
+        {
+          src += src_rowstride * (height - 1);
+          src_rowstride = -src_rowstride;
+        }
+
+      for (y = 0; y < height; y++)
+        {
+          memcpy (dst, src, to_copy);
+          dst += dst_rowstride;
+          src += src_rowstride;
+        }
+
+      _cogl_bitmap_unmap (pbo);
+    }
+  else
+    res = FALSE;
+
+  _cogl_bitmap_unmap (bitmap);
+
+  cogl_object_unref (pbo);
+
+  return res;
+}
+
+CoglBool
+_cogl_framebuffer_gl_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
+                                              int x,
+                                              int y,
+                                              CoglReadPixelsFlags source,
+                                              CoglBitmap *bitmap,
+                                              CoglError **error)
+{
+  CoglContext *ctx = framebuffer->context;
+  int framebuffer_height = cogl_framebuffer_get_height (framebuffer);
+  int width = cogl_bitmap_get_width (bitmap);
+  int height = cogl_bitmap_get_height (bitmap);
+  CoglPixelFormat format = cogl_bitmap_get_format (bitmap);
+  CoglPixelFormat required_format;
+  GLenum gl_intformat;
+  GLenum gl_format;
+  GLenum gl_type;
+  CoglBool pack_invert_set;
+  int status = FALSE;
+
+  /* Workaround for cases where its faster to read into a temporary
+   * PBO. This is only worth doing if:
+   *
+   * • The GPU is an Intel GPU. In that case there is a known
+   *   fast-path when reading into a PBO that will use the blitter
+   *   instead of the Mesa fallback code. The driver bug will only be
+   *   set if this is the case.
+   * • We're not already reading into a PBO.
+   * • The target format is BGRA. The fast-path blit does not get hit
+   *   otherwise.
+   * • The size of the data is not trivially small. This isn't a
+   *   requirement to hit the fast-path blit but intuitively it feels
+   *   like if the amount of data is too small then the cost of
+   *   allocating a PBO will outweigh the cost of temporarily
+   *   converting the data to floats.
+   */
+  if ((ctx->gpu.driver_bugs &
+       COGL_GPU_INFO_DRIVER_BUG_MESA_46631_SLOW_READ_PIXELS) &&
+      (width > 8 || height > 8) &&
+      (format & ~COGL_PREMULT_BIT) == COGL_PIXEL_FORMAT_BGRA_8888 &&
+      cogl_bitmap_get_buffer (bitmap) == NULL)
+    {
+      CoglError *ignore_error = NULL;
+
+      if (mesa_46631_slow_read_pixels_workaround (framebuffer,
+                                                  x, y,
+                                                  source,
+                                                  bitmap,
+                                                  &ignore_error))
+        return TRUE;
+      else
+        cogl_error_free (ignore_error);
+    }
+
+  _cogl_framebuffer_flush_state (framebuffer,
+                                 framebuffer,
+                                 COGL_FRAMEBUFFER_STATE_BIND);
+
+  /* The y co-ordinate should be given in OpenGL's coordinate system
+   * so 0 is the bottom row
+   *
+   * NB: all offscreen rendering is done upside down so no conversion
+   * is necissary in this case.
+   */
+  if (!cogl_is_offscreen (framebuffer))
+    y = framebuffer_height - y - height;
+
+  required_format = ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                                            format,
+                                                            &gl_intformat,
+                                                            &gl_format,
+                                                            &gl_type);
+
+  /* NB: All offscreen rendering is done upside down so there is no need
+   * to flip in this case... */
+  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_MESA_PACK_INVERT) &&
+      (source & COGL_READ_PIXELS_NO_FLIP) == 0 &&
+      !cogl_is_offscreen (framebuffer))
+    {
+      GE (ctx, glPixelStorei (GL_PACK_INVERT_MESA, TRUE));
+      pack_invert_set = TRUE;
+    }
+  else
+    pack_invert_set = FALSE;
+
+  /* Under GLES only GL_RGBA with GL_UNSIGNED_BYTE as well as an
+     implementation specific format under
+     GL_IMPLEMENTATION_COLOR_READ_FORMAT_OES and
+     GL_IMPLEMENTATION_COLOR_READ_TYPE_OES is supported. We could try
+     to be more clever and check if the requested type matches that
+     but we would need some reliable functions to convert from GL
+     types to Cogl types. For now, lets just always read in
+     GL_RGBA/GL_UNSIGNED_BYTE and convert if necessary. We also need
+     to use this intermediate buffer if the rowstride has padding
+     because GLES does not support setting GL_ROW_LENGTH */
+  if ((!(ctx->private_feature_flags &
+         COGL_PRIVATE_FEATURE_READ_PIXELS_ANY_FORMAT) &&
+       (gl_format != GL_RGBA || gl_type != GL_UNSIGNED_BYTE ||
+        cogl_bitmap_get_rowstride (bitmap) != 4 * width)) ||
+      (required_format & ~COGL_PREMULT_BIT) != (format & ~COGL_PREMULT_BIT))
+    {
+      CoglBitmap *tmp_bmp;
+      CoglPixelFormat read_format;
+      int bpp, rowstride;
+      uint8_t *tmp_data;
+      CoglBool succeeded;
+
+      if ((ctx->private_feature_flags &
+           COGL_PRIVATE_FEATURE_READ_PIXELS_ANY_FORMAT))
+        read_format = required_format;
+      else
+        {
+          read_format = COGL_PIXEL_FORMAT_RGBA_8888;
+          gl_format = GL_RGBA;
+          gl_type = GL_UNSIGNED_BYTE;
+        }
+
+      if (COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (read_format))
+        read_format = ((read_format & ~COGL_PREMULT_BIT) |
+                       (framebuffer->format & COGL_PREMULT_BIT));
+
+      tmp_bmp = _cogl_bitmap_new_with_malloc_buffer (ctx,
+                                                     width, height,
+                                                     read_format,
+                                                     error);
+      if (!tmp_bmp)
+        goto EXIT;
+
+      bpp = _cogl_pixel_format_get_bytes_per_pixel (read_format);
+      rowstride = cogl_bitmap_get_rowstride (tmp_bmp);
+
+      ctx->texture_driver->prep_gl_for_pixels_download (ctx,
+                                                        rowstride,
+                                                        width,
+                                                        bpp);
+
+      /* Note: we don't worry about catching errors here since we know
+       * we won't be lazily allocating storage for this buffer so it
+       * won't fail due to lack of memory. */
+      tmp_data = _cogl_bitmap_gl_bind (tmp_bmp,
+                                       COGL_BUFFER_ACCESS_WRITE,
+                                       COGL_BUFFER_MAP_HINT_DISCARD,
+                                       NULL);
+
+      GE( ctx, glReadPixels (x, y, width, height,
+                             gl_format, gl_type,
+                             tmp_data) );
+
+      _cogl_bitmap_gl_unbind (tmp_bmp);
+
+      succeeded = _cogl_bitmap_convert_into_bitmap (tmp_bmp, bitmap, error);
+
+      cogl_object_unref (tmp_bmp);
+
+      if (!succeeded)
+        goto EXIT;
+    }
+  else
+    {
+      CoglBitmap *shared_bmp;
+      CoglPixelFormat bmp_format;
+      int bpp, rowstride;
+      CoglBool succeeded = FALSE;
+      uint8_t *pixels;
+      CoglError *internal_error = NULL;
+
+      rowstride = cogl_bitmap_get_rowstride (bitmap);
+
+      /* We match the premultiplied state of the target buffer to the
+       * premultiplied state of the framebuffer so that it will get
+       * converted to the right format below */
+      if (COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (format))
+        bmp_format = ((format & ~COGL_PREMULT_BIT) |
+                      (framebuffer->format & COGL_PREMULT_BIT));
+      else
+        bmp_format = format;
+
+      if (bmp_format != format)
+        shared_bmp = _cogl_bitmap_new_shared (bitmap,
+                                              bmp_format,
+                                              width, height,
+                                              rowstride);
+      else
+        shared_bmp = cogl_object_ref (bitmap);
+
+      bpp = _cogl_pixel_format_get_bytes_per_pixel (bmp_format);
+
+      ctx->texture_driver->prep_gl_for_pixels_download (ctx,
+                                                        rowstride,
+                                                        width,
+                                                        bpp);
+
+      pixels = _cogl_bitmap_gl_bind (shared_bmp,
+                                     COGL_BUFFER_ACCESS_WRITE,
+                                     0, /* hints */
+                                     &internal_error);
+      /* NB: _cogl_bitmap_gl_bind() can return NULL in sucessfull
+       * cases so we have to explicitly check the cogl error pointer
+       * to know if there was a problem */
+      if (internal_error)
+        {
+          cogl_object_unref (shared_bmp);
+          _cogl_propagate_error (error, internal_error);
+          goto EXIT;
+        }
+
+      GE( ctx, glReadPixels (x, y,
+                             width, height,
+                             gl_format, gl_type,
+                             pixels) );
+
+      _cogl_bitmap_gl_unbind (shared_bmp);
+
+      /* Convert to the premult format specified by the caller
+         in-place. This will do nothing if the premult status is already
+         correct. */
+      if (_cogl_bitmap_convert_premult_status (shared_bmp, format, error))
+        succeeded = TRUE;
+
+      cogl_object_unref (shared_bmp);
+
+      if (!succeeded)
+        goto EXIT;
+    }
+
+  /* NB: All offscreen rendering is done upside down so there is no need
+   * to flip in this case... */
+  if (!cogl_is_offscreen (framebuffer) &&
+      (source & COGL_READ_PIXELS_NO_FLIP) == 0 &&
+      !pack_invert_set)
+    {
+      uint8_t *temprow;
+      int rowstride;
+      uint8_t *pixels;
+
+      rowstride = cogl_bitmap_get_rowstride (bitmap);
+      pixels = _cogl_bitmap_map (bitmap,
+                                 COGL_BUFFER_ACCESS_READ |
+                                 COGL_BUFFER_ACCESS_WRITE,
+                                 0, /* hints */
+                                 error);
+
+      if (pixels == NULL)
+        goto EXIT;
+
+      temprow = g_alloca (rowstride * sizeof (uint8_t));
+
+      /* vertically flip the buffer in-place */
+      for (y = 0; y < height / 2; y++)
+        {
+          if (y != height - y - 1) /* skip center row */
+            {
+              memcpy (temprow,
+                      pixels + y * rowstride, rowstride);
+              memcpy (pixels + y * rowstride,
+                      pixels + (height - y - 1) * rowstride, rowstride);
+              memcpy (pixels + (height - y - 1) * rowstride,
+                      temprow,
+                      rowstride);
+            }
+        }
+
+      _cogl_bitmap_unmap (bitmap);
+    }
+
+  status = TRUE;
+
+EXIT:
+
+  /* Currently this function owns the pack_invert state and we don't want this
+   * to interfere with other Cogl components so all other code can assume that
+   * we leave the pack_invert state off. */
+  if (pack_invert_set)
+    GE (ctx, glPixelStorei (GL_PACK_INVERT_MESA, FALSE));
+
+  return status;
 }
