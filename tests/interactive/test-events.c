@@ -50,6 +50,55 @@ get_event_type_name (const ClutterEvent *event)
     }
 }
 
+static gchar *
+get_event_state_string (const ClutterEvent *event)
+{
+  gchar *mods[18];
+  int i = 0;
+  ClutterModifierType state = clutter_event_get_state (event);
+
+  if (state & CLUTTER_SHIFT_MASK)
+    mods[i++] = "shift";
+  if (state & CLUTTER_LOCK_MASK)
+    mods[i++] = "lock";
+  if (state & CLUTTER_CONTROL_MASK)
+    mods[i++] = "ctrl";
+  if (state & CLUTTER_MOD1_MASK)
+    mods[i++] = "mod1";
+  if (state & CLUTTER_MOD2_MASK)
+    mods[i++] = "mod2";
+  if (state & CLUTTER_MOD3_MASK)
+    mods[i++] = "mod3";
+  if (state & CLUTTER_MOD4_MASK)
+    mods[i++] = "mod4";
+  if (state & CLUTTER_MOD5_MASK)
+    mods[i++] = "mod5";
+  if (state & CLUTTER_BUTTON1_MASK)
+    mods[i++] = "btn1";
+  if (state & CLUTTER_BUTTON2_MASK)
+    mods[i++] = "btn2";
+  if (state & CLUTTER_BUTTON3_MASK)
+    mods[i++] = "btn3";
+  if (state & CLUTTER_BUTTON4_MASK)
+    mods[i++] = "btn4";
+  if (state & CLUTTER_BUTTON5_MASK)
+    mods[i++] = "btn5";
+  if (state & CLUTTER_SUPER_MASK)
+    mods[i++] = "super";
+  if (state & CLUTTER_HYPER_MASK)
+    mods[i++] = "hyper";
+  if (state & CLUTTER_META_MASK)
+    mods[i++] = "meta";
+  if (state & CLUTTER_RELEASE_MASK)
+    mods[i++] = "release";
+
+  if (i == 0)
+    mods[i++] = "-";
+
+  mods[i] = NULL;
+  return g_strjoinv (",", mods);
+}
+
 static void
 stage_state_cb (ClutterStage    *stage,
 		gpointer         data)
@@ -186,6 +235,7 @@ input_cb (ClutterActor *actor,
   ClutterActor *stage = clutter_actor_get_stage (actor); 
   ClutterActor *source_actor = clutter_event_get_source (event);
   ClutterPoint position;
+  gchar *state;
   gchar keybuf[128];
   gint device_id;
   gint source_device_id = 0;
@@ -193,6 +243,8 @@ input_cb (ClutterActor *actor,
   device_id = clutter_event_get_device_id (event);
   if (clutter_event_get_source_device (event) != NULL)
     source_device_id = clutter_input_device_get_device_id (clutter_event_get_source_device (event));
+
+  state = get_event_state_string (event);
 
   switch (event->type)
     {
@@ -210,43 +262,43 @@ input_cb (ClutterActor *actor,
       break;
     case CLUTTER_MOTION:
       clutter_event_get_position (event, &position);
-      g_print ("[%s] MOTION (coords:%.02f,%.02f device:%d/%d)",
+      g_print ("[%s] MOTION (coords:%.02f,%.02f device:%d/%d state:%s)",
                clutter_actor_get_name (source_actor), position.x, position.y,
-               device_id, source_device_id);
+               device_id, source_device_id, state);
       break;
     case CLUTTER_ENTER:
-      g_print ("[%s] ENTER (from:%s device:%d/%d)",
+      g_print ("[%s] ENTER (from:%s device:%d/%d state:%s)",
                clutter_actor_get_name (source_actor),
                clutter_event_get_related (event) != NULL
                  ? clutter_actor_get_name (clutter_event_get_related (event))
                  : "<out of stage>",
-               device_id, source_device_id);
+               device_id, source_device_id, state);
       break;
     case CLUTTER_LEAVE:
-      g_print ("[%s] LEAVE (to:%s device:%d/%d)",
+      g_print ("[%s] LEAVE (to:%s device:%d/%d state:%s)",
                clutter_actor_get_name (source_actor),
                clutter_event_get_related (event) != NULL
                  ? clutter_actor_get_name (clutter_event_get_related (event))
                  : "<out of stage>",
-               device_id, source_device_id);
+               device_id, source_device_id, state);
       break;
     case CLUTTER_BUTTON_PRESS:
       clutter_event_get_position (event, &position);
-      g_print ("[%s] BUTTON PRESS (button:%i, click count:%i coords:%.02f,%.02f device:%d/%d)",
+      g_print ("[%s] BUTTON PRESS (button:%i, click count:%i coords:%.02f,%.02f device:%d/%d, state:%s)",
                clutter_actor_get_name (source_actor),
                clutter_event_get_button (event),
                clutter_event_get_click_count (event),
                position.x, position.y,
-               device_id, source_device_id);
+               device_id, source_device_id, state);
       break;
     case CLUTTER_BUTTON_RELEASE:
       clutter_event_get_position (event, &position);
-      g_print ("[%s] BUTTON RELEASE (button:%i, click count:%i coords:%.02f,%.02f device:%d/%d)",
+      g_print ("[%s] BUTTON RELEASE (button:%i, click count:%i coords:%.02f,%.02f device:%d/%d state:%s)",
                clutter_actor_get_name (source_actor),
                clutter_event_get_button (event),
                clutter_event_get_click_count (event),
                position.x, position.y,
-               device_id, source_device_id);
+               device_id, source_device_id, state);
 
       if (source_actor == stage)
         clutter_stage_set_key_focus (CLUTTER_STAGE (stage), NULL);
@@ -256,24 +308,24 @@ input_cb (ClutterActor *actor,
       break;
     case CLUTTER_TOUCH_BEGIN:
       clutter_event_get_position (event, &position);
-      g_print ("[%s] TOUCH BEGIN (coords:%.02f,%.02f device:%d/%d)",
+      g_print ("[%s] TOUCH BEGIN (coords:%.02f,%.02f device:%d/%d state:%s)",
                clutter_actor_get_name (source_actor),
                position.x, position.y,
-               device_id, source_device_id);
+               device_id, source_device_id, state);
       break;
     case CLUTTER_TOUCH_UPDATE:
       clutter_event_get_position (event, &position);
-      g_print ("[%s] TOUCH UPDATE (coords:%.02f,%.02f device:%d/%d)",
+      g_print ("[%s] TOUCH UPDATE (coords:%.02f,%.02f device:%d/%d state:%s)",
                clutter_actor_get_name (source_actor),
                position.x, position.y,
-               device_id, source_device_id);
+               device_id, source_device_id, state);
       break;
     case CLUTTER_TOUCH_END:
       clutter_event_get_position (event, &position);
-      g_print ("[%s] TOUCH END (coords:%.02f,%.02f device:%d/%d)",
-	       clutter_actor_get_name (source_actor),
-           position.x, position.y,
-           device_id, source_device_id);
+      g_print ("[%s] TOUCH END (coords:%.02f,%.02f device:%d/%d state:%s)",
+               clutter_actor_get_name (source_actor),
+               position.x, position.y,
+               device_id, source_device_id, state);
       break;
     case CLUTTER_SCROLL:
       {
@@ -283,16 +335,17 @@ input_cb (ClutterActor *actor,
           {
             gdouble dx, dy;
             clutter_event_get_scroll_delta (event, &dx, &dy);
-            g_print ("[%s] BUTTON SCROLL (direction:smooth %.02f,%.02f)",
-                     clutter_actor_get_name (source_actor), dx, dy);
+            g_print ("[%s] BUTTON SCROLL (direction:smooth %.02f,%.02f state:%s)",
+                     clutter_actor_get_name (source_actor), dx, dy, state);
           }
         else
-          g_print ("[%s] BUTTON SCROLL (direction:%s)",
+          g_print ("[%s] BUTTON SCROLL (direction:%s state:%s)",
                    clutter_actor_get_name (source_actor),
                    dir == CLUTTER_SCROLL_UP ? "up" :
                    dir == CLUTTER_SCROLL_DOWN ? "down" :
                    dir == CLUTTER_SCROLL_LEFT ? "left" :
-                   dir == CLUTTER_SCROLL_RIGHT ? "right" : "?");
+                   dir == CLUTTER_SCROLL_RIGHT ? "right" : "?",
+                   state);
       }
       break;
     case CLUTTER_STAGE_STATE:
@@ -310,6 +363,8 @@ input_cb (ClutterActor *actor,
     case CLUTTER_NOTHING:
       return FALSE;
     }
+
+  g_free (state);
 
   if (source_actor == actor)
     g_print (" *source*");
