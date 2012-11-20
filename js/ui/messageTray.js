@@ -1606,6 +1606,8 @@ const MessageTray = new Lang.Class({
     },
 
     _trayDwellTimeout: function() {
+        this._trayDwellTimeoutId = 0;
+
         if (Main.modalCount > 0)
             return false;
 
@@ -1615,8 +1617,6 @@ const MessageTray = new Lang.Class({
         let currentUserTime = focusWindow ? focusWindow.user_time : 0;
         if (currentUserTime != this._trayDwellUserTime)
             return false;
-
-        this._trayDwellTimeoutId = 0;
 
         this._traySummoned = true;
         this._updateState();
