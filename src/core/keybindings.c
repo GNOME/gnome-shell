@@ -809,6 +809,12 @@ meta_change_keygrab (MetaDisplay *display,
 {
   unsigned int ignored_mask;
 
+  unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+  XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
+
+  XISetMask (mask.mask, XI_KeyPress);
+  XISetMask (mask.mask, XI_KeyRelease);
+
   /* Grab keycode/modmask, together with
    * all combinations of ignored modifiers.
    * X provides no better way to do this.
@@ -826,6 +832,8 @@ meta_change_keygrab (MetaDisplay *display,
   ignored_mask = 0;
   while (ignored_mask <= display->ignored_modifier_mask)
     {
+      XIGrabModifiers mods;
+
       if (ignored_mask & ~(display->ignored_modifier_mask))
         {
           /* Not a combination of ignored modifiers
@@ -835,18 +843,20 @@ meta_change_keygrab (MetaDisplay *display,
           continue;
         }
 
+      mods = (XIGrabModifiers) { modmask | ignored_mask, 0 };
+
       if (meta_is_debugging ())
         meta_error_trap_push_with_return (display);
       if (grab)
-        XGrabKey (display->xdisplay, keycode,
-                  modmask | ignored_mask,
-                  xwindow,
-                  True,
-                  GrabModeAsync, GrabModeSync);
+        XIGrabKeycode (display->xdisplay,
+                       META_VIRTUAL_CORE_KEYBOARD_ID,
+                       keycode, xwindow,
+                       XIGrabModeSync, XIGrabModeAsync,
+                       False, &mask, 1, &mods);
       else
-        XUngrabKey (display->xdisplay, keycode,
-                    modmask | ignored_mask,
-                    xwindow);
+        XIUngrabKeycode (display->xdisplay,
+                         META_VIRTUAL_CORE_KEYBOARD_ID,
+                         keycode, xwindow, 1, &mods);
 
       if (meta_is_debugging ())
         {
