@@ -3678,66 +3678,43 @@ void
 meta_display_set_grab_op_cursor (MetaDisplay *display,
                                  MetaScreen  *screen,
                                  MetaGrabOp   op,
-                                 gboolean     change_pointer,
                                  Window       grab_xwindow,
                                  guint32      timestamp)
 {
-  Cursor cursor;
+  Cursor cursor = xcursor_for_op (display, op);
+  unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+  XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
 
-  cursor = xcursor_for_op (display, op);
+  XISetMask (mask.mask, XI_ButtonPress);
+  XISetMask (mask.mask, XI_ButtonRelease);
+  XISetMask (mask.mask, XI_Enter);
+  XISetMask (mask.mask, XI_Leave);
+  XISetMask (mask.mask, XI_Motion);
 
-#define GRAB_MASK (PointerMotionMask |                          \
-                   ButtonPressMask | ButtonReleaseMask |        \
-		   EnterWindowMask | LeaveWindowMask)
+  g_assert (screen != NULL);
 
-  if (change_pointer)
+  meta_error_trap_push (display);
+  if (XIGrabDevice (display->xdisplay,
+                    META_VIRTUAL_CORE_POINTER_ID,
+                    grab_xwindow,
+                    timestamp,
+                    cursor,
+                    GrabModeAsync, GrabModeAsync,
+                    False, /* owner_events */
+                    &mask) == Success)
     {
-      meta_error_trap_push_with_return (display);
-      XChangeActivePointerGrab (display->xdisplay,
-                                GRAB_MASK,
-                                cursor,
-                                timestamp);
-
+      display->grab_have_pointer = TRUE;
       meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Changed pointer with XChangeActivePointerGrab()\n");
-
-      if (meta_error_trap_pop_with_return (display) != Success)
-        {
-          meta_topic (META_DEBUG_WINDOW_OPS,
-                      "Error trapped from XChangeActivePointerGrab()\n");
-          if (display->grab_have_pointer)
-            display->grab_have_pointer = FALSE;
-        }
+                  "XIGrabDevice() returned GrabSuccess time %u\n",
+                  timestamp);
     }
   else
     {
-      g_assert (screen != NULL);
-
-      meta_error_trap_push (display);
-      if (XGrabPointer (display->xdisplay,
-                        grab_xwindow,
-                        False,
-                        GRAB_MASK,
-                        GrabModeAsync, GrabModeAsync,
-                        screen->xroot,
-                        cursor,
-                        timestamp) == GrabSuccess)
-        {
-          display->grab_have_pointer = TRUE;
-          meta_topic (META_DEBUG_WINDOW_OPS,
-                      "XGrabPointer() returned GrabSuccess time %u\n",
-                      timestamp);
-        }
-      else
-        {
-          meta_topic (META_DEBUG_WINDOW_OPS,
-                      "XGrabPointer() failed time %u\n",
-                      timestamp);
-        }
-      meta_error_trap_pop (display);
+      meta_topic (META_DEBUG_WINDOW_OPS,
+                  "XIGrabDevice() failed time %u\n",
+                  timestamp);
     }
-
-#undef GRAB_MASK
+  meta_error_trap_pop (display);
   
   if (cursor != None)
     XFreeCursor (display->xdisplay, cursor);
@@ -3812,13 +3789,12 @@ meta_display_begin_grab_op (MetaDisplay *display,
   if (pointer_already_grabbed)
     display->grab_have_pointer = TRUE;
   
-  meta_display_set_grab_op_cursor (display, screen, op, FALSE, grab_xwindow,
-                                   timestamp);
+  meta_display_set_grab_op_cursor (display, screen, op, grab_xwindow, timestamp);
 
   if (!display->grab_have_pointer && !grab_op_is_keyboard (op))
     {
       meta_topic (META_DEBUG_WINDOW_OPS,
-                  "XGrabPointer() failed\n");
+                  "XIGrabDevice() failed\n");
       return FALSE;
     }
 
@@ -3837,7 +3813,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
         {
           meta_topic (META_DEBUG_WINDOW_OPS,
                       "grabbing all keys failed, ungrabbing pointer\n");
-          XUngrabPointer (display->xdisplay, timestamp);
+          XIUngrabDevice (display->xdisplay, META_VIRTUAL_CORE_POINTER_ID, timestamp);
           display->grab_have_pointer = FALSE;
           return FALSE;
         }
@@ -4037,7 +4013,7 @@ meta_display_end_grab_op (MetaDisplay *display,
     {
       meta_topic (META_DEBUG_WINDOW_OPS,
                   "Ungrabbing pointer with timestamp %u\n", timestamp);
-      XUngrabPointer (display->xdisplay, timestamp);
+      XIUngrabDevice (display->xdisplay, META_VIRTUAL_CORE_POINTER_ID, timestamp);
     }
 
   if (display->grab_have_keyboard)

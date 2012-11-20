@@ -385,7 +385,6 @@ Cursor         meta_display_create_x_cursor (MetaDisplay *display,
 void     meta_display_set_grab_op_cursor (MetaDisplay *display,
                                           MetaScreen  *screen,
                                           MetaGrabOp   op,
-                                          gboolean     change_pointer,
                                           Window       grab_xwindow,
                                           guint32      timestamp);
 
