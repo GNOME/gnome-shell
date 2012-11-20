@@ -74,10 +74,6 @@
 #include <string.h>
 #include <unistd.h>
 
-/* This is set in stone and also hard-coded in GDK. */
-#define VIRTUAL_CORE_POINTER_ID 2
-#define VIRTUAL_CORE_KEYBOARD_ID 3
-
 #define GRAB_OP_IS_WINDOW_SWITCH(g)                     \
         (g == META_GRAB_OP_KEYBOARD_TABBING_NORMAL  ||  \
          g == META_GRAB_OP_KEYBOARD_TABBING_DOCK    ||  \
@@ -1816,19 +1812,19 @@ get_input_event (MetaDisplay *display,
         case XI_Motion:
         case XI_ButtonPress:
         case XI_ButtonRelease:
-          if (((XIDeviceEvent *) input_event)->deviceid == VIRTUAL_CORE_POINTER_ID)
+          if (((XIDeviceEvent *) input_event)->deviceid == META_VIRTUAL_CORE_POINTER_ID)
             return input_event;
         case XI_KeyPress:
         case XI_KeyRelease:
-          if (((XIDeviceEvent *) input_event)->deviceid == VIRTUAL_CORE_KEYBOARD_ID)
+          if (((XIDeviceEvent *) input_event)->deviceid == META_VIRTUAL_CORE_KEYBOARD_ID)
             return input_event;
         case XI_FocusIn:
         case XI_FocusOut:
-          if (((XIEnterEvent *) input_event)->deviceid == VIRTUAL_CORE_KEYBOARD_ID)
+          if (((XIEnterEvent *) input_event)->deviceid == META_VIRTUAL_CORE_KEYBOARD_ID)
             return input_event;
         case XI_Enter:
         case XI_Leave:
-          if (((XIEnterEvent *) input_event)->deviceid == VIRTUAL_CORE_POINTER_ID)
+          if (((XIEnterEvent *) input_event)->deviceid == META_VIRTUAL_CORE_POINTER_ID)
             return input_event;
         default:
           break;
@@ -2877,7 +2873,7 @@ event_callback (XEvent   *event,
                   break;
                 case XkbNewKeyboardNotify:
                 case XkbMapNotify:
-                  if (xkb_ev->device == VIRTUAL_CORE_KEYBOARD_ID)
+                  if (xkb_ev->device == META_VIRTUAL_CORE_KEYBOARD_ID)
                     meta_display_process_mapping_event (display, event);
                   break;
                 }

@@ -35,6 +35,10 @@
 #include <glib.h>
 #include <gtk/gtk.h>
 
+/* This is set in stone and also hard-coded in GDK. */
+#define META_VIRTUAL_CORE_POINTER_ID 2
+#define META_VIRTUAL_CORE_KEYBOARD_ID 3
+
 typedef struct _MetaResizePopup MetaResizePopup;
 
 typedef enum
