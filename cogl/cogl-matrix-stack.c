@@ -59,7 +59,9 @@ _cogl_matrix_stack_push_entry (CoglMatrixStack *stack,
   entry->op = operation;
   entry->parent = stack->last_entry;
 
+#ifdef COGL_DEBUG_ENABLED
   entry->composite_gets = 0;
+#endif
 
   stack->last_entry = entry;
 
@@ -103,7 +105,9 @@ _cogl_matrix_entry_identity_init (CoglMatrixEntry *entry)
   entry->ref_count = 1;
   entry->op = COGL_MATRIX_OP_LOAD_IDENTITY;
   entry->parent = NULL;
+#ifdef COGL_DEBUG_ENABLED
   entry->composite_gets = 0;
+#endif
 }
 
 void
@@ -507,9 +511,9 @@ initialized:
       g_warning ("Inconsistent matrix stack");
       return NULL;
     }
-#endif
 
   entry->composite_gets++;
+#endif
 
   children = g_alloca (sizeof (CoglMatrixEntry) * depth);
 
@@ -524,12 +528,14 @@ initialized:
       children[i] = current;
     }
 
+#ifdef COGL_ENABLE_DEBUG
   if (COGL_DEBUG_ENABLED (COGL_DEBUG_PERFORMANCE) &&
       entry->composite_gets >= 2)
     {
       COGL_NOTE (PERFORMANCE,
                  "Re-composing a matrix stack entry multiple times");
     }
+#endif
 
   for (i = 0; i < depth; i++)
     {

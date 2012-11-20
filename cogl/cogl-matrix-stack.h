@@ -55,8 +55,10 @@ struct _CoglMatrixEntry
   CoglMatrixOp op;
   unsigned int ref_count;
 
+#ifdef COGL_ENABLE_DEBUG
   /* used for performance tracing */
   int composite_gets;
+#endif
 };
 
 typedef struct _CoglMatrixEntryTranslate
