@@ -3699,7 +3699,7 @@ meta_display_set_grab_op_cursor (MetaDisplay *display,
                     grab_xwindow,
                     timestamp,
                     cursor,
-                    GrabModeAsync, GrabModeAsync,
+                    XIGrabModeAsync, XIGrabModeAsync,
                     False, /* owner_events */
                     &mask) == Success)
     {
@@ -4096,6 +4096,13 @@ meta_change_button_grab (MetaDisplay *display,
 {
   unsigned int ignored_mask;
 
+  unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+  XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
+
+  XISetMask (mask.mask, XI_ButtonPress);
+  XISetMask (mask.mask, XI_ButtonRelease);
+  XISetMask (mask.mask, XI_Motion);
+
   meta_verbose ("%s 0x%lx sync = %d button = %d modmask 0x%x\n",
                 grab ? "Grabbing" : "Ungrabbing",
                 xwindow,
@@ -4106,6 +4113,8 @@ meta_change_button_grab (MetaDisplay *display,
   ignored_mask = 0;
   while (ignored_mask <= display->ignored_modifier_mask)
     {
+      XIGrabModifiers mods;
+
       if (ignored_mask & ~(display->ignored_modifier_mask))
         {
           /* Not a combination of ignored modifiers
@@ -4115,22 +4124,24 @@ meta_change_button_grab (MetaDisplay *display,
           continue;
         }
 
+      mods = (XIGrabModifiers) { modmask | ignored_mask, 0 };
+
       if (meta_is_debugging ())
         meta_error_trap_push_with_return (display);
 
       /* GrabModeSync means freeze until XAllowEvents */
       
       if (grab)
-        XGrabButton (display->xdisplay, button, modmask | ignored_mask,
-                     xwindow, False,
-                     ButtonPressMask | ButtonReleaseMask |    
-                     PointerMotionMask | PointerMotionHintMask,
-                     sync ? GrabModeSync : GrabModeAsync,
-                     GrabModeAsync,
-                     False, None);
+        XIGrabButton (display->xdisplay,
+                      META_VIRTUAL_CORE_POINTER_ID,
+                      button, xwindow, None,
+                      sync ? XIGrabModeSync : XIGrabModeAsync,
+                      XIGrabModeAsync, False,
+                      &mask, 1, &mods);
       else
-        XUngrabButton (display->xdisplay, button, modmask | ignored_mask,
-                       xwindow);
+        XIUngrabButton (display->xdisplay,
+                        META_VIRTUAL_CORE_POINTER_ID,
+                        button, xwindow, 1, &mods);
 
       if (meta_is_debugging ())
         {
