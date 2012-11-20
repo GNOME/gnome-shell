@@ -995,7 +995,7 @@ const Panel = new Lang.Class({
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
 
         Main.layoutManager.panelBox.add(this.actor);
-        Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'start-here-symbolic',
+        Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'emblem-system-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._updatePanel));

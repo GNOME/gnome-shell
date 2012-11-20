@@ -1565,7 +1565,7 @@ const MessageTray = new Lang.Class({
         if (Main.sessionMode.isLocked || Main.sessionMode.isGreeter)
             Main.ctrlAltTabManager.removeGroup(this._summary);
         else
-            Main.ctrlAltTabManager.addGroup(this._summary, _("Message Tray"), 'start-here-symbolic',
+            Main.ctrlAltTabManager.addGroup(this._summary, _("Message Tray"), 'user-available-symbolic',
                                             { focusCallback: Lang.bind(this, this.toggleAndNavigate),
                                               sortGroup: CtrlAltTab.SortGroup.BOTTOM });
         this._updateState();

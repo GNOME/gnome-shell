@@ -84,11 +84,11 @@ const ViewSelector = new Lang.Class({
 
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay();
         this._workspacesPage = this._addPage(this._workspacesDisplay.actor, null,
-                                             _("Windows"), 'text-x-generic-symbolic');
+                                             _("Windows"), 'emblem-documents-symbolic');
 
         this._appDisplay = new AppDisplay.AllAppDisplay();
         this._appsPage = this._addPage(this._appDisplay.actor, null,
-                                       _("Applications"), 'system-run-symbolic');
+                                       _("Applications"), 'view-grid-symbolic');
 
         this._searchResults = new SearchDisplay.SearchResults(this._searchSystem);
         this._searchPage = this._addPage(this._searchResults.actor, this._entry,
