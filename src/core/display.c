@@ -3181,24 +3181,109 @@ alarm_state_to_string (XSyncAlarmState state)
 
 #ifdef WITH_VERBOSE_MODE
 static void
-meta_spew_event (MetaDisplay *display,
-                 XEvent      *event)
+meta_spew_xi2_event (MetaDisplay *display,
+                     XIEvent     *input_event,
+                     const char **name_p,
+                     char       **extra_p)
 {
   const char *name = NULL;
   char *extra = NULL;
-  char *winname;
-  MetaScreen *screen;
 
-  if (!meta_is_verbose())
-    return;
+  XIDeviceEvent *device_event = (XIDeviceEvent *) input_event;
+  XIEnterEvent *enter_event = (XIEnterEvent *) enter_event;
+
+  switch (input_event->evtype)
+    {
+    case XI_Motion:
+      name = "XI_Motion";
+      break;
+    case XI_ButtonPress:
+      name = "XI_ButtonPress";
+      break;
+    case XI_ButtonRelease:
+      name = "XI_ButtonRelease";
+      break;
+    case XI_KeyPress:
+      name = "XI_KeyPress";
+      break;
+    case XI_KeyRelease:
+      name = "XI_KeyRelease";
+      break;
+    case XI_FocusIn:
+      name = "XI_FocusIn";
+      break;
+    case XI_FocusOut:
+      name = "XI_FocusOut";
+      break;
+    case XI_Enter:
+      name = "XI_Enter";
+      break;
+    case XI_Leave:
+      name = "XI_Leave";
+      break;
+    }
+
+  switch (input_event->evtype)
+    {
+    case XI_Motion:
+      extra = g_strdup_printf ("win: 0x%lx x: %g y: %g",
+                               device_event->event,
+                               device_event->root_x,
+                               device_event->root_y);
+      break;
+    case XI_ButtonPress:
+    case XI_ButtonRelease:
+      extra = g_strdup_printf ("button %u x %g y %g root 0x%lx",
+                               device_event->detail,
+                               device_event->root_x,
+                               device_event->root_y,
+                               device_event->root);
+      break;
+    case XI_KeyPress:
+    case XI_KeyRelease:
+      {
+        KeySym keysym;
+        const char *str;
   
-  /* filter overnumerous events */
-  if (event->type == Expose || event->type == MotionNotify ||
-      event->type == NoExpose)
-    return;
+        keysym = XKeycodeToKeysym (display->xdisplay, device_event->detail, 0);
 
-  if (event->type == (display->damage_event_base + XDamageNotify))
-    return;
+        str = XKeysymToString (keysym);
+
+        extra = g_strdup_printf ("Key '%s' state 0x%x",
+                                 str ? str : "none", device_event->mods.effective);
+      }
+      break;
+    case XI_FocusIn:
+    case XI_FocusOut:
+      extra = g_strdup_printf ("detail: %s mode: %s\n",
+                               meta_event_detail_to_string (enter_event->detail),
+                               meta_event_mode_to_string (enter_event->mode));
+      break;
+    case XI_Enter:
+    case XI_Leave:
+      extra = g_strdup_printf ("win: 0x%lx root: 0x%lx mode: %s detail: %s focus: %d x: %g y: %g",
+                               enter_event->event,
+                               enter_event->root,
+                               meta_event_mode_to_string (enter_event->mode),
+                               meta_event_detail_to_string (enter_event->detail),
+                               enter_event->focus,
+                               enter_event->root_x,
+                               enter_event->root_y);
+      break;
+    }
+
+  *name_p = name;
+  *extra_p = extra;
+}
+
+static void
+meta_spew_core_event (MetaDisplay *display,
+                      XEvent      *event,
+                      const char **name_p,
+                      char       **extra_p)
+{
+  const char *name = NULL;
+  char *extra = NULL;
 
   switch (event->type)
     {
@@ -3469,18 +3554,50 @@ meta_spew_event (MetaDisplay *display,
                                sev->kind == ShapeBounding ?
                                "ShapeBounding" :
                                (sev->kind == ShapeClip ?
-                               "ShapeClip" : "(unknown)"),
+                                "ShapeClip" : "(unknown)"),
                                sev->x, sev->y, sev->width, sev->height,
                                sev->shaped);
           }
         else
 #endif /* HAVE_SHAPE */      
-        {
-          name = "(Unknown event)";
-          extra = g_strdup_printf ("type: %d", event->xany.type);
-        }
+          {
+            name = "(Unknown event)";
+            extra = g_strdup_printf ("type: %d", event->xany.type);
+          }
       break;
     }
+
+  *name_p = name;
+  *extra_p = extra;
+}
+
+static void
+meta_spew_event (MetaDisplay *display,
+                 XEvent      *event)
+{
+  const char *name = NULL;
+  char *extra = NULL;
+  char *winname;
+  MetaScreen *screen;
+  XIEvent *input_event;
+
+  if (!meta_is_verbose())
+    return;
+  
+  /* filter overnumerous events */
+  if (event->type == Expose || event->type == MotionNotify ||
+      event->type == NoExpose)
+    return;
+
+  if (event->type == (display->damage_event_base + XDamageNotify))
+    return;
+
+  input_event = get_input_event (display, event);
+
+  if (input_event)
+    meta_spew_xi2_event (display, input_event, &name, &extra);
+  else
+    meta_spew_core_event (display, event, &name, &extra);
 
   screen = meta_display_screen_for_root (display, event->xany.window);
       
@@ -3488,7 +3605,7 @@ meta_spew_event (MetaDisplay *display,
     winname = g_strdup_printf ("root %d", screen->number);
   else
     winname = g_strdup_printf ("0x%lx", event->xany.window);
-      
+
   meta_topic (META_DEBUG_EVENTS,
               "%s on %s%s %s %sserial %lu\n", name, winname,
               extra ? ":" : "", extra ? extra : "",
