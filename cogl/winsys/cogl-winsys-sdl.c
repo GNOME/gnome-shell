@@ -287,6 +287,7 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   CoglContext *context = framebuffer->context;
   CoglDisplay *display = context->display;
   CoglDisplaySdl *sdl_display = display->winsys;
+  CoglBool flags_changed = FALSE;
   int width, height;
 
   if (sdl_display->onscreen)
@@ -300,9 +301,16 @@ _cogl_winsys_onscreen_init (CoglOnscreen *onscreen,
   width = cogl_framebuffer_get_width (framebuffer);
   height = cogl_framebuffer_get_height (framebuffer);
 
+  if (cogl_onscreen_get_resizable (onscreen))
+    {
+      sdl_display->video_mode_flags |= SDL_RESIZABLE;
+      flags_changed = TRUE;
+    }
+
   /* Try to update the video size using the onscreen size */
   if (width != sdl_display->surface->w ||
-      height != sdl_display->surface->h)
+      height != sdl_display->surface->h ||
+      flags_changed)
     {
       sdl_display->surface = SDL_SetVideoMode (width, height,
                                                0, /* bitsperpixel */
