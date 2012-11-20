@@ -2711,7 +2711,7 @@ _clutter_process_event_details (ClutterActor        *stage,
                                 event->type == CLUTTER_TOUCH_CANCEL ? "Touch cancel" :
                                 "?", x, y);
 
-                  event->button.source = stage;
+                  event->touch.source = stage;
 
                   emit_touch_event (event, device);
 
