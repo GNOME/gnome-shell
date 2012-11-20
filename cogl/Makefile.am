@@ -115,6 +115,7 @@ cogl_experimental_h = \
 	$(srcdir)/cogl-vector.h 		\
 	$(srcdir)/cogl-euler.h 			\
 	$(srcdir)/cogl-quaternion.h 		\
+	$(srcdir)/cogl-matrix-stack.h		\
 	$(srcdir)/cogl-poll.h			\
 	$(srcdir)/cogl-texture-3d.h             \
 	$(srcdir)/cogl-texture-2d.h             \
@@ -326,7 +327,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-quaternion.c			\
 	$(srcdir)/cogl-matrix-private.h			\
 	$(srcdir)/cogl-matrix-stack.c			\
-	$(srcdir)/cogl-matrix-stack.h			\
+	$(srcdir)/cogl-matrix-stack-private.h		\
 	$(srcdir)/cogl-depth-state.c			\
 	$(srcdir)/cogl-depth-state-private.h		\
 	$(srcdir)/cogl-node.c				\

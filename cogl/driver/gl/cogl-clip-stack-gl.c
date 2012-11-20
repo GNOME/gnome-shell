@@ -75,27 +75,27 @@ set_clip_plane (CoglFramebuffer *framebuffer,
     _cogl_framebuffer_get_projection_stack (framebuffer);
   CoglMatrix inverse_projection;
 
-  _cogl_matrix_stack_get_inverse (projection_stack, &inverse_projection);
+  cogl_matrix_stack_get_inverse (projection_stack, &inverse_projection);
 
   /* Calculate the angle between the axes and the line crossing the
      two points */
   angle = atan2f (vertex_b[1] - vertex_a[1],
                   vertex_b[0] - vertex_a[0]) * (180.0/G_PI);
 
-  _cogl_matrix_stack_push (modelview_stack);
+  cogl_matrix_stack_push (modelview_stack);
 
   /* Load the inverse of the projection matrix so we can specify the plane
    * in screen coordinates */
-  _cogl_matrix_stack_set (modelview_stack, &inverse_projection);
+  cogl_matrix_stack_set (modelview_stack, &inverse_projection);
 
   /* Rotate about point a */
-  _cogl_matrix_stack_translate (modelview_stack,
-                                vertex_a[0], vertex_a[1], vertex_a[2]);
+  cogl_matrix_stack_translate (modelview_stack,
+                               vertex_a[0], vertex_a[1], vertex_a[2]);
   /* Rotate the plane by the calculated angle so that it will connect
      the two points */
-  _cogl_matrix_stack_rotate (modelview_stack, angle, 0.0f, 0.0f, 1.0f);
-  _cogl_matrix_stack_translate (modelview_stack,
-                                -vertex_a[0], -vertex_a[1], -vertex_a[2]);
+  cogl_matrix_stack_rotate (modelview_stack, angle, 0.0f, 0.0f, 1.0f);
+  cogl_matrix_stack_translate (modelview_stack,
+                               -vertex_a[0], -vertex_a[1], -vertex_a[2]);
 
   /* Clip planes can only be used when a fixed function backend is in
      use so we know we can directly push this matrix to the builtin
@@ -131,7 +131,7 @@ set_clip_plane (CoglFramebuffer *framebuffer,
       break;
     }
 
-  _cogl_matrix_stack_pop (modelview_stack);
+  cogl_matrix_stack_pop (modelview_stack);
 }
 
 static void
@@ -154,8 +154,8 @@ set_clip_planes (CoglFramebuffer *framebuffer,
   float vertex_bl[4] = { x_1, y_2, 0, 1.0 };
   float vertex_br[4] = { x_2, y_2, 0, 1.0 };
 
-  _cogl_matrix_stack_get (projection_stack, &projection_matrix);
-  _cogl_matrix_entry_get (modelview_entry, &modelview_matrix);
+  cogl_matrix_stack_get (projection_stack, &projection_matrix);
+  cogl_matrix_entry_get (modelview_entry, &modelview_matrix);
 
   cogl_matrix_multiply (&modelview_projection,
                         &projection_matrix,

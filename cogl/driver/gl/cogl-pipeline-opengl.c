@@ -60,7 +60,9 @@
 
 
 static void
-texture_unit_init (CoglTextureUnit *unit, int index_)
+texture_unit_init (CoglContext *ctx,
+                   CoglTextureUnit *unit,
+                   int index_)
 {
   unit->index = index_;
   unit->enabled_gl_target = 0;
@@ -68,7 +70,7 @@ texture_unit_init (CoglTextureUnit *unit, int index_)
   unit->gl_target = 0;
   unit->is_foreign = FALSE;
   unit->dirty_gl_texture = FALSE;
-  unit->matrix_stack = _cogl_matrix_stack_new ();
+  unit->matrix_stack = cogl_matrix_stack_new (ctx);
 
   unit->layer = NULL;
   unit->layer_changes_since_flush = 0;
@@ -98,7 +100,7 @@ _cogl_get_texture_unit (int index_)
           CoglTextureUnit *unit =
             &g_array_index (ctx->texture_units, CoglTextureUnit, i);
 
-          texture_unit_init (unit, i);
+          texture_unit_init (ctx, unit, i);
         }
     }
 

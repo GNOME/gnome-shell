@@ -69,8 +69,8 @@ _cogl_pipeline_vertend_fixed_add_layer (CoglPipeline *pipeline,
         _cogl_pipeline_layer_get_authority (layer, state);
       CoglMatrixEntry *matrix_entry;
 
-      _cogl_matrix_stack_set (unit->matrix_stack,
-                              &authority->big_state->matrix);
+      cogl_matrix_stack_set (unit->matrix_stack,
+                             &authority->big_state->matrix);
 
       _cogl_set_active_texture_unit (unit_index);
 

@@ -41,7 +41,7 @@ COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-matrix
- * @short_description: Fuctions for initializing and manipulating 4x4 matrices
+ * @short_description: Functions for initializing and manipulating 4x4 matrices
  *
  * Matrices are used in Cogl to describe affine model-view transforms, texture
  * transforms, and projective transforms. This exposes a utility API that can

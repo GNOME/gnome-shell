@@ -949,19 +949,19 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline,
         }
 
       if (need_modelview)
-        _cogl_matrix_entry_get (modelview_entry, &modelview);
+        cogl_matrix_entry_get (modelview_entry, &modelview);
       if (need_projection)
         {
           if (needs_flip && program_state->flip_uniform == -1)
             {
               CoglMatrix tmp_matrix;
-              _cogl_matrix_entry_get (projection_entry, &tmp_matrix);
+              cogl_matrix_entry_get (projection_entry, &tmp_matrix);
               cogl_matrix_multiply (&projection,
                                     &ctx->y_flip_matrix,
                                     &tmp_matrix);
             }
           else
-            _cogl_matrix_entry_get (projection_entry, &projection);
+            cogl_matrix_entry_get (projection_entry, &projection);
         }
 
       if (projection_changed && program_state->projection_uniform != -1)
@@ -981,7 +981,7 @@ _cogl_pipeline_progend_glsl_pre_paint (CoglPipeline *pipeline,
           /* The journal usually uses an identity matrix for the
              modelview so we can optimise this common case by
              avoiding the matrix multiplication */
-          if (_cogl_matrix_entry_has_identity_flag (modelview_entry))
+          if (cogl_matrix_entry_is_identity (modelview_entry))
             {
               GE (ctx,
                   glUniformMatrix4fv (program_state->mvp_uniform,

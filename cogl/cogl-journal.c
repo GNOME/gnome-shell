@@ -803,7 +803,7 @@ can_software_clip_entry (CoglJournalEntry *journal_entry,
       clip_rect = (CoglClipStackRect *) clip_entry;
 
       modelview_entry = journal_entry->modelview_entry;
-      if (!_cogl_matrix_entry_calculate_translation (clip_rect->matrix_entry,
+      if (!cogl_matrix_entry_calculate_translation (clip_rect->matrix_entry,
                                                      modelview_entry,
                                                      &tx, &ty, &tz))
         return FALSE;
@@ -1138,7 +1138,7 @@ upload_vertices (CoglJournal *journal,
           v[7] = vin[1];
 
           if (entry->modelview_entry != last_modelview_entry)
-            _cogl_matrix_entry_get (entry->modelview_entry, &modelview);
+            cogl_matrix_entry_get (entry->modelview_entry, &modelview);
           cogl_matrix_transform_points (&modelview,
                                         2, /* n_components */
                                         sizeof (float) * 2, /* stride_in */
@@ -1186,7 +1186,7 @@ _cogl_journal_discard (CoglJournal *journal)
       CoglJournalEntry *entry =
         &g_array_index (journal->entries, CoglJournalEntry, i);
       _cogl_pipeline_journal_unref (entry->pipeline);
-      _cogl_matrix_entry_unref (entry->modelview_entry);
+      cogl_matrix_entry_unref (entry->modelview_entry);
       _cogl_clip_stack_unref (entry->clip_stack);
     }
 
@@ -1524,7 +1524,7 @@ _cogl_journal_log_quad (CoglJournal  *journal,
 
   modelview_stack =
     _cogl_framebuffer_get_modelview_stack (framebuffer);
-  entry->modelview_entry = _cogl_matrix_entry_ref (modelview_stack->last_entry);
+  entry->modelview_entry = cogl_matrix_entry_ref (modelview_stack->last_entry);
 
   _cogl_pipeline_foreach_layer_internal (pipeline,
                                          add_framebuffer_deps_cb,
@@ -1574,7 +1574,7 @@ entry_to_screen_polygon (CoglFramebuffer *framebuffer,
    * _cogl_transform_points utility...
    */
 
-  _cogl_matrix_entry_get (entry->modelview_entry, &modelview);
+  cogl_matrix_entry_get (entry->modelview_entry, &modelview);
   cogl_matrix_transform_points (&modelview,
                                 2, /* n_components */
                                 sizeof (float) * 4, /* stride_in */
@@ -1586,7 +1586,7 @@ entry_to_screen_polygon (CoglFramebuffer *framebuffer,
 
   projection_stack =
     _cogl_framebuffer_get_projection_stack (framebuffer);
-  _cogl_matrix_stack_get (projection_stack, &projection);
+  cogl_matrix_stack_get (projection_stack, &projection);
 
   cogl_matrix_project_points (&projection,
                               3, /* n_components */

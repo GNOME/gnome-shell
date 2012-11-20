@@ -583,6 +583,36 @@ cogl_matrix_is_identity
 </SECTION>
 
 <SECTION>
+<FILE>cogl-matrix-stack</FILE>
+<TITLE>Matrix Stacks</TITLE>
+CoglMatrixStack
+CoglMatrixEntry
+cogl_matrix_stack_new
+cogl_matrix_stack_push
+cogl_matrix_stack_pop
+cogl_matrix_stack_load_identity
+cogl_matrix_stack_scale
+cogl_matrix_stack_translate
+cogl_matrix_stack_rotate
+cogl_matrix_stack_rotate_quaternion
+cogl_matrix_stack_rotate_euler
+cogl_matrix_stack_multiply
+cogl_matrix_stack_frustum
+cogl_matrix_stack_perspective
+cogl_matrix_stack_orthographic
+cogl_matrix_stack_get_inverse
+cogl_matrix_stack_get_entry
+cogl_matrix_stack_get
+cogl_matrix_entry_get
+cogl_matrix_stack_set
+cogl_matrix_entry_calculate_translation
+cogl_matrix_entry_is_identity
+cogl_matrix_entry_equal
+cogl_matrix_entry_ref
+cogl_matrix_entry_unref
+</SECTION>
+
+<SECTION>
 <FILE>cogl-euler</FILE>
 <TITLE>Eulers (Rotations)</TITLE>
 CoglEuler

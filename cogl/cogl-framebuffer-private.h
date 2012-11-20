@@ -25,7 +25,7 @@
 #define __COGL_FRAMEBUFFER_PRIVATE_H
 
 #include "cogl-object-private.h"
-#include "cogl-matrix-stack.h"
+#include "cogl-matrix-stack-private.h"
 #include "cogl-clip-state-private.h"
 #include "cogl-journal-private.h"
 #include "cogl-winsys-private.h"

@@ -40,40 +40,62 @@
 
 static void _cogl_matrix_stack_free (CoglMatrixStack *stack);
 
-COGL_OBJECT_INTERNAL_DEFINE (MatrixStack, matrix_stack);
+COGL_OBJECT_DEFINE (MatrixStack, matrix_stack);
 
-static CoglMagazine *_cogl_matrix_stack_magazine;
-static CoglMagazine *_cogl_matrix_stack_matrices_magazine;
+static CoglMagazine *cogl_matrix_stack_magazine;
+static CoglMagazine *cogl_matrix_stack_matrices_magazine;
 
-static void *
-_cogl_matrix_stack_push_entry (CoglMatrixStack *stack,
-                               size_t size,
-                               CoglMatrixOp operation)
+/* XXX: Note: this leaves entry->parent uninitialized! */
+static CoglMatrixEntry *
+_cogl_matrix_entry_new (CoglMatrixOp operation)
 {
   CoglMatrixEntry *entry =
-    _cogl_magazine_chunk_alloc (_cogl_matrix_stack_magazine);
+    _cogl_magazine_chunk_alloc (cogl_matrix_stack_magazine);
 
-  /* The new entry starts with a ref count of 1 because the stack
-     holds a reference to it as it is the top entry */
   entry->ref_count = 1;
   entry->op = operation;
-  entry->parent = stack->last_entry;
 
 #ifdef COGL_DEBUG_ENABLED
   entry->composite_gets = 0;
 #endif
 
+  return entry;
+}
+
+static void *
+_cogl_matrix_stack_push_entry (CoglMatrixStack *stack,
+                               CoglMatrixEntry *entry)
+{
+  /* NB: The initial reference of the entry is transferred to the
+   * stack here.
+   *
+   * The stack only maintains a reference to the top of the stack (the
+   * last entry pushed) and each entry in-turn maintains a reference
+   * to its parent.
+   *
+   * We don't need to take a reference to the parent from the entry
+   * here because the we are stealing the reference that was held by
+   * the stack while that parent was previously the top of the stack.
+   */
+  entry->parent = stack->last_entry;
   stack->last_entry = entry;
 
-  /* We don't need to take a reference to the parent from the entry
-     because the we are stealing the ref in the new stack top */
+  return entry;
+}
+
+static void *
+_cogl_matrix_stack_push_operation (CoglMatrixStack *stack,
+                                   CoglMatrixOp operation)
+{
+  CoglMatrixEntry *entry = _cogl_matrix_entry_new (operation);
+
+  _cogl_matrix_stack_push_entry (stack, entry);
 
   return entry;
 }
 
 static void *
 _cogl_matrix_stack_push_replacement_entry (CoglMatrixStack *stack,
-                                           size_t size,
                                            CoglMatrixOp operation)
 {
   CoglMatrixEntry *old_top = stack->last_entry;
@@ -86,17 +108,17 @@ _cogl_matrix_stack_push_replacement_entry (CoglMatrixStack *stack,
    * instead just perform their own matrix manipulations and load a
    * new stack every frame. If this optimisation isn't done then the
    * stack would just grow endlessly. See the comments
-   * _cogl_matrix_stack_pop for a description of how popping works. */
+   * cogl_matrix_stack_pop for a description of how popping works. */
   for (new_top = old_top;
        new_top->op != COGL_MATRIX_OP_SAVE && new_top->parent;
        new_top = new_top->parent)
     ;
 
-  _cogl_matrix_entry_ref (new_top);
-  _cogl_matrix_entry_unref (old_top);
+  cogl_matrix_entry_ref (new_top);
+  cogl_matrix_entry_unref (old_top);
   stack->last_entry = new_top;
 
-  return _cogl_matrix_stack_push_entry (stack, size, operation);
+  return _cogl_matrix_stack_push_operation (stack, operation);
 }
 
 void
@@ -111,24 +133,21 @@ _cogl_matrix_entry_identity_init (CoglMatrixEntry *entry)
 }
 
 void
-_cogl_matrix_stack_load_identity (CoglMatrixStack *stack)
+cogl_matrix_stack_load_identity (CoglMatrixStack *stack)
 {
   _cogl_matrix_stack_push_replacement_entry (stack,
-                                             sizeof (CoglMatrixEntry),
                                              COGL_MATRIX_OP_LOAD_IDENTITY);
 }
 
 void
-_cogl_matrix_stack_translate (CoglMatrixStack *stack,
+cogl_matrix_stack_translate (CoglMatrixStack *stack,
                               float x,
                               float y,
                               float z)
 {
   CoglMatrixEntryTranslate *entry;
 
-  entry = _cogl_matrix_stack_push_entry (stack,
-                                         sizeof (CoglMatrixEntryTranslate),
-                                         COGL_MATRIX_OP_TRANSLATE);
+  entry = _cogl_matrix_stack_push_operation (stack, COGL_MATRIX_OP_TRANSLATE);
 
   entry->x = x;
   entry->y = y;
@@ -136,7 +155,7 @@ _cogl_matrix_stack_translate (CoglMatrixStack *stack,
 }
 
 void
-_cogl_matrix_stack_rotate (CoglMatrixStack *stack,
+cogl_matrix_stack_rotate (CoglMatrixStack *stack,
                            float angle,
                            float x,
                            float y,
@@ -144,9 +163,7 @@ _cogl_matrix_stack_rotate (CoglMatrixStack *stack,
 {
   CoglMatrixEntryRotate *entry;
 
-  entry = _cogl_matrix_stack_push_entry (stack,
-                                         sizeof (CoglMatrixEntryRotate),
-                                         COGL_MATRIX_OP_ROTATE);
+  entry = _cogl_matrix_stack_push_operation (stack, COGL_MATRIX_OP_ROTATE);
 
   entry->angle = angle;
   entry->x = x;
@@ -155,14 +172,13 @@ _cogl_matrix_stack_rotate (CoglMatrixStack *stack,
 }
 
 void
-_cogl_matrix_stack_rotate_quaternion (CoglMatrixStack *stack,
-                                      const CoglQuaternion *quaternion)
+cogl_matrix_stack_rotate_quaternion (CoglMatrixStack *stack,
+                                     const CoglQuaternion *quaternion)
 {
   CoglMatrixEntryRotateQuaternion *entry;
 
-  entry = _cogl_matrix_stack_push_entry (stack,
-                                         sizeof (CoglMatrixEntryRotate),
-                                         COGL_MATRIX_OP_ROTATE_QUATERNION);
+  entry = _cogl_matrix_stack_push_operation (stack,
+                                             COGL_MATRIX_OP_ROTATE_QUATERNION);
 
   entry->values[0] = quaternion->w;
   entry->values[1] = quaternion->x;
@@ -171,14 +187,13 @@ _cogl_matrix_stack_rotate_quaternion (CoglMatrixStack *stack,
 }
 
 void
-_cogl_matrix_stack_rotate_euler (CoglMatrixStack *stack,
+cogl_matrix_stack_rotate_euler (CoglMatrixStack *stack,
                                  const CoglEuler *euler)
 {
   CoglMatrixEntryRotateEuler *entry;
 
-  entry = _cogl_matrix_stack_push_entry (stack,
-                                         sizeof (CoglMatrixEntryRotate),
-                                         COGL_MATRIX_OP_ROTATE_EULER);
+  entry = _cogl_matrix_stack_push_operation (stack,
+                                             COGL_MATRIX_OP_ROTATE_EULER);
 
   entry->heading = euler->heading;
   entry->pitch = euler->pitch;
@@ -186,16 +201,14 @@ _cogl_matrix_stack_rotate_euler (CoglMatrixStack *stack,
 }
 
 void
-_cogl_matrix_stack_scale (CoglMatrixStack *stack,
+cogl_matrix_stack_scale (CoglMatrixStack *stack,
                           float x,
                           float y,
                           float z)
 {
   CoglMatrixEntryScale *entry;
 
-  entry = _cogl_matrix_stack_push_entry (stack,
-                                         sizeof (CoglMatrixEntryScale),
-                                         COGL_MATRIX_OP_SCALE);
+  entry = _cogl_matrix_stack_push_operation (stack, COGL_MATRIX_OP_SCALE);
 
   entry->x = x;
   entry->y = y;
@@ -203,40 +216,37 @@ _cogl_matrix_stack_scale (CoglMatrixStack *stack,
 }
 
 void
-_cogl_matrix_stack_multiply (CoglMatrixStack *stack,
-                             const CoglMatrix *matrix)
+cogl_matrix_stack_multiply (CoglMatrixStack *stack,
+                            const CoglMatrix *matrix)
 {
   CoglMatrixEntryMultiply *entry;
 
-  entry = _cogl_matrix_stack_push_entry (stack,
-                                         sizeof (CoglMatrixEntryMultiply),
-                                         COGL_MATRIX_OP_MULTIPLY);
+  entry = _cogl_matrix_stack_push_operation (stack, COGL_MATRIX_OP_MULTIPLY);
 
   entry->matrix =
-    _cogl_magazine_chunk_alloc (_cogl_matrix_stack_matrices_magazine);
+    _cogl_magazine_chunk_alloc (cogl_matrix_stack_matrices_magazine);
 
   cogl_matrix_init_from_array (entry->matrix, (float *)matrix);
 }
 
 void
-_cogl_matrix_stack_set (CoglMatrixStack *stack,
-                        const CoglMatrix *matrix)
+cogl_matrix_stack_set (CoglMatrixStack *stack,
+                       const CoglMatrix *matrix)
 {
   CoglMatrixEntryLoad *entry;
 
   entry =
     _cogl_matrix_stack_push_replacement_entry (stack,
-                                               sizeof (CoglMatrixEntryLoad),
                                                COGL_MATRIX_OP_LOAD);
 
   entry->matrix =
-    _cogl_magazine_chunk_alloc (_cogl_matrix_stack_matrices_magazine);
+    _cogl_magazine_chunk_alloc (cogl_matrix_stack_matrices_magazine);
 
   cogl_matrix_init_from_array (entry->matrix, (float *)matrix);
 }
 
 void
-_cogl_matrix_stack_frustum (CoglMatrixStack *stack,
+cogl_matrix_stack_frustum (CoglMatrixStack *stack,
                             float left,
                             float right,
                             float bottom,
@@ -248,11 +258,10 @@ _cogl_matrix_stack_frustum (CoglMatrixStack *stack,
 
   entry =
     _cogl_matrix_stack_push_replacement_entry (stack,
-                                               sizeof (CoglMatrixEntryLoad),
                                                COGL_MATRIX_OP_LOAD);
 
   entry->matrix =
-    _cogl_magazine_chunk_alloc (_cogl_matrix_stack_matrices_magazine);
+    _cogl_magazine_chunk_alloc (cogl_matrix_stack_matrices_magazine);
 
   cogl_matrix_init_identity (entry->matrix);
   cogl_matrix_frustum (entry->matrix,
@@ -261,7 +270,7 @@ _cogl_matrix_stack_frustum (CoglMatrixStack *stack,
 }
 
 void
-_cogl_matrix_stack_perspective (CoglMatrixStack *stack,
+cogl_matrix_stack_perspective (CoglMatrixStack *stack,
                                 float fov_y,
                                 float aspect,
                                 float z_near,
@@ -271,11 +280,10 @@ _cogl_matrix_stack_perspective (CoglMatrixStack *stack,
 
   entry =
     _cogl_matrix_stack_push_replacement_entry (stack,
-                                               sizeof (CoglMatrixEntryLoad),
                                                COGL_MATRIX_OP_LOAD);
 
   entry->matrix =
-    _cogl_magazine_chunk_alloc (_cogl_matrix_stack_matrices_magazine);
+    _cogl_magazine_chunk_alloc (cogl_matrix_stack_matrices_magazine);
 
   cogl_matrix_init_identity (entry->matrix);
   cogl_matrix_perspective (entry->matrix,
@@ -283,7 +291,7 @@ _cogl_matrix_stack_perspective (CoglMatrixStack *stack,
 }
 
 void
-_cogl_matrix_stack_orthographic (CoglMatrixStack *stack,
+cogl_matrix_stack_orthographic (CoglMatrixStack *stack,
                                  float x_1,
                                  float y_1,
                                  float x_2,
@@ -295,11 +303,10 @@ _cogl_matrix_stack_orthographic (CoglMatrixStack *stack,
 
   entry =
     _cogl_matrix_stack_push_replacement_entry (stack,
-                                               sizeof (CoglMatrixEntryLoad),
                                                COGL_MATRIX_OP_LOAD);
 
   entry->matrix =
-    _cogl_magazine_chunk_alloc (_cogl_matrix_stack_matrices_magazine);
+    _cogl_magazine_chunk_alloc (cogl_matrix_stack_matrices_magazine);
 
   cogl_matrix_init_identity (entry->matrix);
   cogl_matrix_orthographic (entry->matrix,
@@ -307,19 +314,17 @@ _cogl_matrix_stack_orthographic (CoglMatrixStack *stack,
 }
 
 void
-_cogl_matrix_stack_push (CoglMatrixStack *stack)
+cogl_matrix_stack_push (CoglMatrixStack *stack)
 {
   CoglMatrixEntrySave *entry;
 
-  entry = _cogl_matrix_stack_push_entry (stack,
-                                         sizeof (CoglMatrixEntrySave),
-                                         COGL_MATRIX_OP_SAVE);
+  entry = _cogl_matrix_stack_push_operation (stack, COGL_MATRIX_OP_SAVE);
 
   entry->cache_valid = FALSE;
 }
 
 CoglMatrixEntry *
-_cogl_matrix_entry_ref (CoglMatrixEntry *entry)
+cogl_matrix_entry_ref (CoglMatrixEntry *entry)
 {
   /* A NULL pointer is considered a valid stack so we should accept
      that as an argument */
@@ -330,7 +335,7 @@ _cogl_matrix_entry_ref (CoglMatrixEntry *entry)
 }
 
 void
-_cogl_matrix_entry_unref (CoglMatrixEntry *entry)
+cogl_matrix_entry_unref (CoglMatrixEntry *entry)
 {
   CoglMatrixEntry *parent;
 
@@ -351,14 +356,14 @@ _cogl_matrix_entry_unref (CoglMatrixEntry *entry)
           {
             CoglMatrixEntryMultiply *multiply =
               (CoglMatrixEntryMultiply *)entry;
-            _cogl_magazine_chunk_free (_cogl_matrix_stack_matrices_magazine,
+            _cogl_magazine_chunk_free (cogl_matrix_stack_matrices_magazine,
                                        multiply->matrix);
             break;
           }
         case COGL_MATRIX_OP_LOAD:
           {
             CoglMatrixEntryLoad *load = (CoglMatrixEntryLoad *)entry;
-            _cogl_magazine_chunk_free (_cogl_matrix_stack_matrices_magazine,
+            _cogl_magazine_chunk_free (cogl_matrix_stack_matrices_magazine,
                                        load->matrix);
             break;
           }
@@ -366,18 +371,18 @@ _cogl_matrix_entry_unref (CoglMatrixEntry *entry)
           {
             CoglMatrixEntrySave *save = (CoglMatrixEntrySave *)entry;
             if (save->cache_valid)
-              _cogl_magazine_chunk_free (_cogl_matrix_stack_matrices_magazine,
+              _cogl_magazine_chunk_free (cogl_matrix_stack_matrices_magazine,
                                          save->cache);
             break;
           }
         }
 
-      _cogl_magazine_chunk_free (_cogl_matrix_stack_magazine, entry);
+      _cogl_magazine_chunk_free (cogl_matrix_stack_magazine, entry);
     }
 }
 
 void
-_cogl_matrix_stack_pop (CoglMatrixStack *stack)
+cogl_matrix_stack_pop (CoglMatrixStack *stack)
 {
   CoglMatrixEntry *old_top;
   CoglMatrixEntry *new_top;
@@ -393,7 +398,7 @@ _cogl_matrix_stack_pop (CoglMatrixStack *stack)
    * previously had a reference to the old top so we need to decrease
    * the ref count on that. We need to ref the new head first in case
    * this stack was the only thing referencing the old top. In that
-   * case the call to _cogl_matrix_entry_unref will unref the parent.
+   * case the call to cogl_matrix_entry_unref will unref the parent.
    */
 
   /* Find the last save operation and remove it */
@@ -406,19 +411,19 @@ _cogl_matrix_stack_pop (CoglMatrixStack *stack)
     ;
 
   new_top = new_top->parent;
-  _cogl_matrix_entry_ref (new_top);
+  cogl_matrix_entry_ref (new_top);
 
-  _cogl_matrix_entry_unref (old_top);
+  cogl_matrix_entry_unref (old_top);
 
   stack->last_entry = new_top;
 }
 
 CoglBool
-_cogl_matrix_stack_get_inverse (CoglMatrixStack *stack,
+cogl_matrix_stack_get_inverse (CoglMatrixStack *stack,
                                 CoglMatrix *inverse)
 {
   CoglMatrix matrix;
-  CoglMatrix *internal = _cogl_matrix_stack_get (stack, &matrix);
+  CoglMatrix *internal = cogl_matrix_stack_get (stack, &matrix);
 
   if (internal)
     return cogl_matrix_get_inverse (internal, inverse);
@@ -432,7 +437,7 @@ _cogl_matrix_stack_get_inverse (CoglMatrixStack *stack,
  * should query from the return matrix so that the result can
  * be cached within the stack. */
 CoglMatrix *
-_cogl_matrix_entry_get (CoglMatrixEntry *entry,
+cogl_matrix_entry_get (CoglMatrixEntry *entry,
                         CoglMatrix *matrix)
 {
   int depth;
@@ -462,9 +467,9 @@ _cogl_matrix_entry_get (CoglMatrixEntry *entry,
             if (!save->cache_valid)
               {
                 CoglMagazine *matrices_magazine =
-                  _cogl_matrix_stack_matrices_magazine;
+                  cogl_matrix_stack_matrices_magazine;
                 save->cache = _cogl_magazine_chunk_alloc (matrices_magazine);
-                _cogl_matrix_entry_get (current->parent, save->cache);
+                cogl_matrix_entry_get (current->parent, save->cache);
                 save->cache_valid = TRUE;
               }
             _cogl_matrix_init_from_matrix_without_inverse (matrix, save->cache);
@@ -613,43 +618,49 @@ initialized:
   return NULL;
 }
 
+CoglMatrixEntry *
+cogl_matrix_stack_get_entry (CoglMatrixStack *stack)
+{
+  return stack->last_entry;
+}
+
 /* In addition to writing the stack matrix into the give @matrix
  * argument this function *may* sometimes also return a pointer
  * to a matrix too so if we are querying the inverse matrix we
  * should query from the return matrix so that the result can
  * be cached within the stack. */
 CoglMatrix *
-_cogl_matrix_stack_get (CoglMatrixStack *stack,
-                        CoglMatrix *matrix)
+cogl_matrix_stack_get (CoglMatrixStack *stack,
+                       CoglMatrix *matrix)
 {
-  return _cogl_matrix_entry_get (stack->last_entry, matrix);
+  return cogl_matrix_entry_get (stack->last_entry, matrix);
 }
 
 static void
 _cogl_matrix_stack_free (CoglMatrixStack *stack)
 {
-  _cogl_matrix_entry_unref (stack->last_entry);
+  cogl_matrix_entry_unref (stack->last_entry);
   g_slice_free (CoglMatrixStack, stack);
 }
 
 CoglMatrixStack *
-_cogl_matrix_stack_new (void)
+cogl_matrix_stack_new (CoglContext *ctx)
 {
   CoglMatrixStack *stack = g_slice_new (CoglMatrixStack);
 
-  if (G_UNLIKELY (_cogl_matrix_stack_magazine == NULL))
+  if (G_UNLIKELY (cogl_matrix_stack_magazine == NULL))
     {
-      _cogl_matrix_stack_magazine =
+      cogl_matrix_stack_magazine =
         _cogl_magazine_new (sizeof (CoglMatrixEntryFull), 20);
-      _cogl_matrix_stack_matrices_magazine =
+      cogl_matrix_stack_matrices_magazine =
         _cogl_magazine_new (sizeof (CoglMatrix), 20);
     }
 
+  stack->context = ctx;
   stack->last_entry = NULL;
 
-  _cogl_matrix_stack_push_entry (stack,
-                                 sizeof (CoglMatrixEntry),
-                                 COGL_MATRIX_OP_LOAD_IDENTITY);
+  cogl_matrix_entry_ref (&ctx->identity_entry);
+  _cogl_matrix_stack_push_entry (stack, &ctx->identity_entry);
 
   return _cogl_matrix_stack_object_new (stack);
 }
@@ -667,11 +678,11 @@ _cogl_matrix_entry_skip_saves (CoglMatrixEntry *entry)
 }
 
 CoglBool
-_cogl_matrix_entry_calculate_translation (CoglMatrixEntry *entry0,
-                                          CoglMatrixEntry *entry1,
-                                          float *x,
-                                          float *y,
-                                          float *z)
+cogl_matrix_entry_calculate_translation (CoglMatrixEntry *entry0,
+                                         CoglMatrixEntry *entry1,
+                                         float *x,
+                                         float *y,
+                                         float *z)
 {
   GSList *head0 = NULL;
   GSList *head1 = NULL;
@@ -794,7 +805,7 @@ _cogl_matrix_entry_calculate_translation (CoglMatrixEntry *entry0,
 }
 
 CoglBool
-_cogl_matrix_entry_has_identity_flag (CoglMatrixEntry *entry)
+cogl_matrix_entry_is_identity (CoglMatrixEntry *entry)
 {
   return entry ? entry->op == COGL_MATRIX_OP_LOAD_IDENTITY : FALSE;
 }
@@ -889,7 +900,7 @@ _cogl_matrix_entry_flush_to_gl_builtins (CoglContext *ctx,
         else
           {
             is_identity = FALSE;
-            _cogl_matrix_entry_get (entry, &matrix);
+            cogl_matrix_entry_get (entry, &matrix);
           }
 
         if (needs_flip)
@@ -921,15 +932,8 @@ _cogl_matrix_entry_flush_to_gl_builtins (CoglContext *ctx,
 }
 
 CoglBool
-_cogl_matrix_entry_fast_equal (CoglMatrixEntry *entry0,
-                               CoglMatrixEntry *entry1)
-{
-  return entry0 == entry1;
-}
-
-CoglBool
-_cogl_matrix_entry_equal (CoglMatrixEntry *entry0,
-                          CoglMatrixEntry *entry1)
+cogl_matrix_entry_equal (CoglMatrixEntry *entry0,
+                         CoglMatrixEntry *entry1)
 {
   for (;
        entry0 && entry1;
@@ -1038,7 +1042,7 @@ _cogl_matrix_entry_equal (CoglMatrixEntry *entry0,
 }
 
 void
-_cogl_matrix_entry_print (CoglMatrixEntry *entry)
+cogl_debug_matrix_entry_print (CoglMatrixEntry *entry)
 {
   int depth;
   CoglMatrixEntry *e;
@@ -1172,9 +1176,9 @@ _cogl_matrix_entry_cache_maybe_update (CoglMatrixEntryCache *cache,
 
   if (cache->entry != entry)
     {
-      _cogl_matrix_entry_ref (entry);
+      cogl_matrix_entry_ref (entry);
       if (cache->entry)
-        _cogl_matrix_entry_unref (cache->entry);
+        cogl_matrix_entry_unref (cache->entry);
       cache->entry = entry;
 
       /* We want to make sure here that if the cache->entry and the
@@ -1192,5 +1196,5 @@ void
 _cogl_matrix_entry_cache_destroy (CoglMatrixEntryCache *cache)
 {
   if (cache->entry)
-    _cogl_matrix_entry_unref (cache->entry);
+    cogl_matrix_entry_unref (cache->entry);
 }

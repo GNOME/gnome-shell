@@ -51,6 +51,7 @@
 #include <cogl/cogl-bitmap.h>
 #include <cogl/cogl-color.h>
 #include <cogl/cogl-matrix.h>
+#include <cogl/cogl-matrix-stack.h>
 #include <cogl/cogl-offscreen.h>
 #include <cogl/cogl-primitives.h>
 #include <cogl/cogl-texture.h>

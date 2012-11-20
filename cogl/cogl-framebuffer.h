@@ -336,10 +336,10 @@ cogl_framebuffer_translate (CoglFramebuffer *framebuffer,
  * @z: Z-component of vertex to rotate around.
  *
  * Multiplies the current model-view matrix by one that rotates the
- * model around the vertex specified by @x, @y and @z. The rotation
- * follows the right-hand thumb rule so for example rotating by 10
- * degrees about the vertex (0, 0, 1) causes a small counter-clockwise
- * rotation.
+ * model around the axis-vector specified by @x, @y and @z. The
+ * rotation follows the right-hand thumb rule so for example rotating
+ * by 10 degrees about the axis-vector (0, 0, 1) causes a small
+ * counter-clockwise rotation.
  *
  * Since: 1.10
  * Stability: unstable
