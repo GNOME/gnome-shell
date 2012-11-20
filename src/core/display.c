@@ -75,6 +75,7 @@
 #include <unistd.h>
 
 /* This is set in stone and also hard-coded in GDK. */
+#define VIRTUAL_CORE_POINTER_ID 2
 #define VIRTUAL_CORE_KEYBOARD_ID 3
 
 #define GRAB_OP_IS_WINDOW_SWITCH(g)                     \
@@ -1815,13 +1816,20 @@ get_input_event (MetaDisplay *display,
         case XI_Motion:
         case XI_ButtonPress:
         case XI_ButtonRelease:
+          if (((XIDeviceEvent *) input_event)->deviceid == VIRTUAL_CORE_POINTER_ID)
+            return input_event;
         case XI_KeyPress:
         case XI_KeyRelease:
+          if (((XIDeviceEvent *) input_event)->deviceid == VIRTUAL_CORE_KEYBOARD_ID)
+            return input_event;
         case XI_FocusIn:
         case XI_FocusOut:
+          if (((XIEnterEvent *) input_event)->deviceid == VIRTUAL_CORE_KEYBOARD_ID)
+            return input_event;
         case XI_Enter:
         case XI_Leave:
-          return input_event;
+          if (((XIEnterEvent *) input_event)->deviceid == VIRTUAL_CORE_POINTER_ID)
+            return input_event;
         default:
           break;
         }
