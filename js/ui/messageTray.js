@@ -2493,6 +2493,7 @@ const MessageTray = new Lang.Class({
             this._summaryBoxPointerItem.prepareNotificationStackForShowing();
         } else if (this._clickedSummaryItemMouseButton == 3) {
             this._summaryBoxPointer.bin.child = this._clickedSummaryItem.rightClickMenu;
+            this._summaryBoxPointerCloseClickedId = 0;
         }
 
         this._grabHelper.grab({ actor: this._summaryBoxPointer.bin.child,
@@ -2599,8 +2600,10 @@ const MessageTray = new Lang.Class({
         this._summaryBoxPointer.bin.child = null;
         this._summaryBoxPointerItem.disconnect(this._summaryBoxPointerContentUpdatedId);
         this._summaryBoxPointerContentUpdatedId = 0;
-        this._summaryBoxPointerItem.closeButton.disconnect(this._summaryBoxPointerCloseClickedId);
-        this._summaryBoxPointerCloseClickedId = 0;
+        if (this._summaryBoxPointerCloseClickedId != 0) {
+            this._summaryBoxPointerItem.closeButton.disconnect(this._summaryBoxPointerCloseClickedId);
+            this._summaryBoxPointerCloseClickedId = 0;
+        }
         this._summaryBoxPointerItem.source.disconnect(this._sourceDoneDisplayingId);
         this._summaryBoxPointerDoneDisplayingId = 0;
 
