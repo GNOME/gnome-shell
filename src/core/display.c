@@ -2937,8 +2937,6 @@ event_get_modified_window (MetaDisplay *display,
     case SelectionNotify:
     case ColormapNotify:
     case ClientMessage:
-    case EnterNotify:
-    case LeaveNotify:
       return event->xany.window;
       
     case CreateNotify:
@@ -3128,23 +3126,6 @@ stack_mode_to_string (int mode)
 }
 #endif /* WITH_VERBOSE_MODE */
 
-#ifdef WITH_VERBOSE_MODE
-static char*
-key_event_description (Display *xdisplay,
-                       XEvent  *event)
-{
-  KeySym keysym;
-  const char *str;
-  
-  keysym = XKeycodeToKeysym (xdisplay, event->xkey.keycode, 0);  
-
-  str = XKeysymToString (keysym);
-  
-  return g_strdup_printf ("Key '%s' state 0x%x", 
-                          str ? str : "none", event->xkey.state);
-}
-#endif /* WITH_VERBOSE_MODE */
-
 #ifdef HAVE_XSYNC
 #ifdef WITH_VERBOSE_MODE
 static gint64
@@ -3287,77 +3268,6 @@ meta_spew_core_event (MetaDisplay *display,
 
   switch (event->type)
     {
-    case KeyPress:
-      name = "KeyPress";
-      extra = key_event_description (display->xdisplay, event);
-      break;
-    case KeyRelease:
-      name = "KeyRelease";
-      extra = key_event_description (display->xdisplay, event);
-      break;
-    case ButtonPress:
-      name = "ButtonPress";
-      extra = g_strdup_printf ("button %u state 0x%x x %d y %d root 0x%lx same_screen %d",
-                               event->xbutton.button,
-                               event->xbutton.state,
-                               event->xbutton.x,
-                               event->xbutton.y,
-                               event->xbutton.root,
-                               event->xbutton.same_screen);
-      break;
-    case ButtonRelease:
-      name = "ButtonRelease";
-      extra = g_strdup_printf ("button %u state 0x%x x %d y %d root 0x%lx same_screen %d",
-                               event->xbutton.button,
-                               event->xbutton.state,
-                               event->xbutton.x,
-                               event->xbutton.y,
-                               event->xbutton.root,
-                               event->xbutton.same_screen);
-      break;
-    case MotionNotify:
-      name = "MotionNotify";
-      extra = g_strdup_printf ("win: 0x%lx x: %d y: %d",
-                               event->xmotion.window,
-                               event->xmotion.x,
-                               event->xmotion.y);
-      break;
-    case EnterNotify:
-      name = "EnterNotify";
-      extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %s detail: %s focus: %d x: %d y: %d",
-                               event->xcrossing.window,
-                               event->xcrossing.root,
-                               event->xcrossing.subwindow,
-                               meta_event_mode_to_string (event->xcrossing.mode),
-                               meta_event_detail_to_string (event->xcrossing.detail),
-                               event->xcrossing.focus,
-                               event->xcrossing.x,
-                               event->xcrossing.y);
-      break;
-    case LeaveNotify:
-      name = "LeaveNotify";
-      extra = g_strdup_printf ("win: 0x%lx root: 0x%lx subwindow: 0x%lx mode: %s detail: %s focus: %d x: %d y: %d",
-                               event->xcrossing.window,
-                               event->xcrossing.root,
-                               event->xcrossing.subwindow,
-                               meta_event_mode_to_string (event->xcrossing.mode),
-                               meta_event_detail_to_string (event->xcrossing.detail),
-                               event->xcrossing.focus,
-                               event->xcrossing.x,
-                               event->xcrossing.y);
-      break;
-    case FocusIn:
-      name = "FocusIn";
-      extra = g_strdup_printf ("detail: %s mode: %s\n",
-                               meta_event_detail_to_string (event->xfocus.detail),
-                               meta_event_mode_to_string (event->xfocus.mode));
-      break;
-    case FocusOut:
-      name = "FocusOut";
-      extra = g_strdup_printf ("detail: %s mode: %s\n",
-                               meta_event_detail_to_string (event->xfocus.detail),
-                               meta_event_mode_to_string (event->xfocus.mode));
-      break;
     case KeymapNotify:
       name = "KeymapNotify";
       break;

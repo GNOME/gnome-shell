@@ -742,18 +742,6 @@ is_grabbed_event (MetaDisplay *display,
         }
     }
 
-  switch (event->type)
-    {
-    case ButtonPress:
-    case ButtonRelease:
-    case EnterNotify:
-    case LeaveNotify:
-    case MotionNotify:
-    case KeyPress:
-    case KeyRelease:
-      return TRUE;
-    }
-
   return FALSE;
 }
 
