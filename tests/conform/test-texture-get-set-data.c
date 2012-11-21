@@ -1,15 +1,16 @@
-#include <clutter/clutter.h>
-#include <glib.h>
+#include <cogl/cogl.h>
+
 #include <string.h>
 
-#include "test-conform-common.h"
+#include "test-utils.h"
 
 static void
 check_texture (int width, int height, CoglTextureFlags flags)
 {
-  CoglHandle tex;
+  CoglTexture *tex;
   uint8_t *data, *p;
   int y, x;
+  int rowstride;
 
   p = data = g_malloc (width * height * 4);
   for (y = 0; y < height; y++)
@@ -30,7 +31,8 @@ check_texture (int width, int height, CoglTextureFlags flags)
 
   /* Replace the bottom right quarter of the data with negated data to
      test set_region */
-  p = data + (height + 1) * width * 2;
+  rowstride = width * 4;
+  p = data + (height / 2) * rowstride + rowstride / 2;
   for (y = 0; y < height / 2; y++)
     {
       for (x = 0; x < width / 2; x++)
@@ -44,16 +46,16 @@ check_texture (int width, int height, CoglTextureFlags flags)
       p += width * 2;
     }
   cogl_texture_set_region (tex,
-                           width / 2, /* src_x */
-                           height / 2, /* src_y */
-                           width / 2, /* dst_x */
-                           height / 2, /* dst_y */
-                           width / 2, /* dst_width */
-                           height / 2, /* dst_height */
-                           width,
-                           height,
+                           width / 2,
+                           height / 2,
+                           width / 2, /* dest x */
+                           height / 2, /* dest y */
+                           width / 2, /* region width */
+                           height / 2, /* region height */
+                           width, /* src width */
+                           height, /* src height */
                            COGL_PIXEL_FORMAT_RGBA_8888,
-                           width * 4, /* rowstride */
+                           rowstride,
                            data);
 
   /* Check passing a NULL pointer and a zero rowstride. The texture
@@ -119,12 +121,12 @@ check_texture (int width, int height, CoglTextureFlags flags)
         p += 4;
       }
 
-  cogl_handle_unref (tex);
+  cogl_object_unref (tex);
   g_free (data);
 }
 
-static void
-paint_cb (void)
+void
+test_texture_get_set_data (void)
 {
   /* First try without atlasing */
   check_texture (256, 256, COGL_TEXTURE_NO_ATLAS);
@@ -136,31 +138,4 @@ paint_cb (void)
   check_texture (4, 5128, COGL_TEXTURE_NO_ATLAS);
   /* And in the other direction. */
   check_texture (5128, 4, COGL_TEXTURE_NO_ATLAS);
-
-  clutter_main_quit ();
-}
-
-void
-test_texture_get_set_data (TestUtilsGTestFixture *fixture,
-                                void *data)
-{
-  ClutterActor *stage;
-  unsigned int paint_handler;
-
-  /* We create a stage even though we don't usually need it so that if
-     the draw-and-read texture fallback is needed then it will have
-     something to draw to */
-  stage = clutter_stage_get_default ();
-
-  paint_handler = g_signal_connect_after (stage, "paint",
-                                          G_CALLBACK (paint_cb), NULL);
-
-  clutter_actor_show (stage);
-
-  clutter_main ();
-
-  g_signal_handler_disconnect (stage, paint_handler);
-
-  if (cogl_test_verbose ())
-    g_print ("OK\n");
 }

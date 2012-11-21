@@ -18,7 +18,6 @@ unported_test_sources = \
 	test-npot-texture.c \
 	test-object.c \
 	test-readpixels.c \
-	test-texture-get-set-data.c \
 	test-texture-mipmaps.c \
 	test-texture-pixmap-x11.c \
 	test-texture-rectangle.c \
@@ -61,6 +60,7 @@ test_sources = \
 	test-map-buffer-range.c \
 	test-npot-texture.c \
 	test-alpha-textures.c \
+	test-texture-get-set-data.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
