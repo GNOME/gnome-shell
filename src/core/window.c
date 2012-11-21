@@ -922,9 +922,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   XAddToSaveSet (display->xdisplay, xwindow);
   meta_error_trap_pop_with_return (display);
 
-  event_mask =
-    PropertyChangeMask | EnterWindowMask | LeaveWindowMask |
-    FocusChangeMask | ColormapChangeMask;
+  event_mask = PropertyChangeMask | ColormapChangeMask;
   if (attrs->override_redirect)
     event_mask |= StructureNotifyMask;
 
@@ -933,6 +931,18 @@ meta_window_new_with_attrs (MetaDisplay       *display,
    * attrs->your_event_mask will be empty at this point.
    */
   XSelectInput (display->xdisplay, xwindow, attrs->your_event_mask | event_mask);
+
+  {
+    unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+    XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
+
+    XISetMask (mask.mask, XI_Enter);
+    XISetMask (mask.mask, XI_Leave);
+    XISetMask (mask.mask, XI_FocusIn);
+    XISetMask (mask.mask, XI_FocusOut);
+
+    XISelectEvents (display->xdisplay, xwindow, &mask, 1);
+  }
 
   has_shape = FALSE;
 #ifdef HAVE_SHAPE
