@@ -714,9 +714,26 @@ meta_compositor_set_updates (MetaCompositor *compositor,
 }
 
 static gboolean
-is_grabbed_event (XEvent *event)
+is_grabbed_event (MetaDisplay *display,
+                  XEvent      *event)
 {
-  switch (event->xany.type)
+  if (event->type == GenericEvent &&
+      event->xcookie.extension == display->xinput_opcode)
+    {
+      XIEvent *xev = (XIEvent *) event->xcookie.data;
+
+      switch (xev->evtype)
+        {
+        case XI_Motion:
+        case XI_ButtonPress:
+        case XI_ButtonRelease:
+        case XI_KeyPress:
+        case XI_KeyRelease:
+          return TRUE;
+        }
+    }
+
+  switch (event->type)
     {
     case ButtonPress:
     case ButtonRelease:
@@ -749,7 +766,7 @@ meta_compositor_process_event (MetaCompositor *compositor,
                                XEvent         *event,
                                MetaWindow     *window)
 {
-  if (compositor->modal_plugin && is_grabbed_event (event))
+  if (compositor->modal_plugin && is_grabbed_event (compositor->display, event))
     {
       MetaPluginClass *klass = META_PLUGIN_GET_CLASS (compositor->modal_plugin);
 
