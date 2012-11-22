@@ -29,10 +29,10 @@ G_BEGIN_DECLS
 GPtrArray *_st_theme_get_matched_properties (StTheme       *theme,
                                              StThemeNode   *node);
 
-/* Resolve an URL from the stylesheet to a filename */
-char *_st_theme_resolve_url (StTheme      *theme,
-                             CRStyleSheet *base_stylesheet,
-                             const char   *url);
+/* Resolve an URL from the stylesheet to a file */
+GFile *_st_theme_resolve_url (StTheme      *theme,
+                              CRStyleSheet *base_stylesheet,
+                              const char   *url);
 
 CRDeclaration *_st_theme_parse_declaration_list (const char *str);
 

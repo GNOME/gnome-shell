@@ -849,9 +849,16 @@ add_matched_properties (StTheme      *a_this,
                 char *filename = NULL;
 
                 if (import_rule->url->stryng && import_rule->url->stryng->str)
-                  filename = _st_theme_resolve_url (a_this,
-                                                    a_nodesheet,
-                                                    import_rule->url->stryng->str);
+                  {
+                    GFile *file;
+
+                    file = _st_theme_resolve_url (a_this,
+                                                  a_nodesheet,
+                                                  import_rule->url->stryng->str);
+                    filename = g_strdup (g_file_get_path (file));
+
+                    g_object_unref (file);
+                  }
 
                 if (filename)
                   import_rule->sheet = parse_stylesheet (filename, NULL);
@@ -999,84 +1006,41 @@ _st_theme_get_matched_properties (StTheme        *theme,
  * local filename, if possible. The resolution here is distinctly lame and
  * will fail on many examples.
  */
-char *
+GFile *
 _st_theme_resolve_url (StTheme      *theme,
                        CRStyleSheet *base_stylesheet,
                        const char   *url)
 {
-  const char *base_filename = NULL;
-  char *dirname;
-  char *filename;
-  char *canonicalized_path;
+  char *scheme;
+  GFile *stylesheet, *resource;
 
-  /* Handle absolute file:/ URLs */
-  if (g_str_has_prefix (url, "file:") ||
-      g_str_has_prefix (url, "File:") ||
-      g_str_has_prefix (url, "FILE:"))
+  if ((scheme = g_uri_parse_scheme (url)))
     {
-      GError *error = NULL;
-      char *filename;
-
-      filename = g_filename_from_uri (url, NULL, &error);
-      if (filename == NULL)
-        {
-          g_warning ("%s", error->message);
-          g_error_free (error);
-        }
-
-      return filename;
+      g_free (scheme);
+      resource = g_file_new_for_uri (url);
     }
-
-  /* Guard against http:/ URLs */
-
-  if (g_str_has_prefix (url, "http:") ||
-      g_str_has_prefix (url, "Http:") ||
-      g_str_has_prefix (url, "HTTP:"))
+  else if (base_stylesheet != NULL)
     {
-      g_warning ("Http URL '%s' in theme stylesheet is not supported", url);
-      return NULL;
-    }
+      const char *base_filename = NULL;
+      char *dirname;
 
-  /* Assume anything else is a relative URL, and "resolve" it
-   */
-  if (url[0] == '/')
-    {
-      canonicalized_path = realpath (url, NULL);
-      if (g_mem_is_system_malloc ())
-        {
-          filename = canonicalized_path;
-        }
-      else
-        {
-          filename = g_strdup (canonicalized_path);
-          free (canonicalized_path);
-        }
-      return filename;
-    }
+      base_filename = g_hash_table_lookup (theme->filenames_by_stylesheet, base_stylesheet);
 
-  base_filename = g_hash_table_lookup (theme->filenames_by_stylesheet, base_stylesheet);
+      /* This is an internal function, if we get here with
+         a bad @base_stylesheet we have a problem. */
+      g_assert (base_filename);
 
-  if (base_filename == NULL)
-    {
-      g_warning ("Can't get base to resolve url '%s'", url);
-      return NULL;
-    }
+      dirname = g_path_get_dirname (base_filename);
+      stylesheet = g_file_new_for_path (dirname);
+      resource = g_file_resolve_relative_path (stylesheet, url);
 
-  dirname = g_path_get_dirname (base_filename);
-  filename = g_build_filename (dirname, url, NULL);
-  canonicalized_path = realpath (filename, NULL);
-  g_free (dirname);
-  g_free (filename);
-
-  if (g_mem_is_system_malloc ())
-    {
-      filename = canonicalized_path;
+      g_object_unref (stylesheet);
+      g_free (dirname);
     }
   else
     {
-      filename = g_strdup (canonicalized_path);
-      free (canonicalized_path);
+      resource = g_file_new_for_path (url);
     }
 
-  return filename;
+  return resource;
 }
