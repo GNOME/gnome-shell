@@ -53,4 +53,7 @@ _cogl_texture_gl_maybe_update_max_level (CoglTexture *texture,
 void
 _cogl_texture_gl_generate_mipmaps (CoglTexture *texture);
 
+GLenum
+_cogl_texture_gl_get_format (CoglTexture *texture);
+
 #endif /* _COGL_TEXTURE_GL_PRIVATE_H_ */

@@ -415,7 +415,7 @@ _cogl_sub_texture_get_gl_format (CoglTexture *tex)
 {
   CoglSubTexture *sub_tex = COGL_SUB_TEXTURE (tex);
 
-  return _cogl_texture_get_gl_format (sub_tex->full_texture);
+  return _cogl_texture_gl_get_format (sub_tex->full_texture);
 }
 
 static int

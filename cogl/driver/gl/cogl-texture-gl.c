@@ -135,3 +135,9 @@ _cogl_texture_gl_generate_mipmaps (CoglTexture *texture)
                                    _cogl_texture_is_foreign (texture));
   GE( ctx, glGenerateMipmap (gl_target) );
 }
+
+GLenum
+_cogl_texture_gl_get_format (CoglTexture *texture)
+{
+  return texture->vtable->get_gl_format (texture);
+}

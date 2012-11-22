@@ -942,7 +942,7 @@ _cogl_texture_pixmap_x11_get_gl_format (CoglTexture *tex)
   CoglTexturePixmapX11 *tex_pixmap = COGL_TEXTURE_PIXMAP_X11 (tex);
   CoglTexture *child_tex = _cogl_texture_pixmap_x11_get_texture (tex_pixmap);
 
-  return _cogl_texture_get_gl_format (child_tex);
+  return _cogl_texture_gl_get_format (child_tex);
 }
 
 static int

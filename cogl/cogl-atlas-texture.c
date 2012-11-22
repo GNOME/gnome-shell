@@ -629,7 +629,7 @@ _cogl_atlas_texture_get_gl_format (CoglTexture *tex)
   CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
 
   /* Forward on to the sub texture */
-  return _cogl_texture_get_gl_format (atlas_tex->sub_texture);
+  return _cogl_texture_gl_get_format (atlas_tex->sub_texture);
 }
 
 static int

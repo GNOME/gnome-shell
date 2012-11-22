@@ -1353,7 +1353,7 @@ _cogl_texture_2d_sliced_get_gl_format (CoglTexture *tex)
 
   /* Pass the call on to the first slice */
   slice_tex = g_array_index (tex_2ds->slice_textures, CoglTexture2D *, 0);
-  return _cogl_texture_get_gl_format (COGL_TEXTURE (slice_tex));
+  return _cogl_texture_gl_get_format (COGL_TEXTURE (slice_tex));
 }
 
 static int

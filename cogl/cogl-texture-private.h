@@ -208,9 +208,6 @@ CoglTransformResult
 _cogl_texture_transform_quad_coords_to_gl (CoglTexture *texture,
                                            float *coords);
 
-GLenum
-_cogl_texture_get_gl_format (CoglTexture *texture);
-
 void
 _cogl_texture_pre_paint (CoglTexture *texture, CoglTexturePrePaintFlags flags);
 

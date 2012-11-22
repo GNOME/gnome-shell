@@ -418,12 +418,6 @@ _cogl_texture_transform_quad_coords_to_gl (CoglTexture *texture,
   return texture->vtable->transform_quad_coords_to_gl (texture, coords);
 }
 
-GLenum
-_cogl_texture_get_gl_format (CoglTexture *texture)
-{
-  return texture->vtable->get_gl_format (texture);
-}
-
 CoglBool
 cogl_texture_get_gl_texture (CoglTexture *texture,
 			     GLuint *out_gl_handle,
