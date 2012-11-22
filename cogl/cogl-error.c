@@ -104,13 +104,24 @@ _cogl_propagate_error (CoglError **dest,
 {
   _COGL_RETURN_IF_FAIL (src != NULL);
 
-  _cogl_set_error_literal (dest, src->domain, src->code, src->message);
-  cogl_error_free (src);
+  if (dest == NULL)
+    cogl_error_free (src);
+  else if (*dest)
+    g_warning (ERROR_OVERWRITTEN_WARNING, src->message);
+  else
+    *dest = src;
 }
 
+/* This function is only used from the gdk-pixbuf image backend so it
+ * should only be called if we are using the system GLib. It would be
+ * difficult to get this to work without the system glib because we
+ * would need to somehow call the same g_error_free function that
+ * gdk-pixbuf is using */
+#ifdef COGL_HAS_GLIB_SUPPORT
 void
 _cogl_propagate_gerror (CoglError **dest,
                         GError *src)
 {
-  _cogl_propagate_error (dest, (CoglError *)src);
+  _cogl_propagate_error (dest, (CoglError *) src);
 }
+#endif /* COGL_HAS_GLIB_SUPPORT */

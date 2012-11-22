@@ -43,9 +43,11 @@ void
 _cogl_propagate_error (CoglError **dest,
                        CoglError *src);
 
+#ifdef COGL_HAS_GLIB_SUPPORT
 void
 _cogl_propagate_gerror (CoglError **dest,
                         GError *src);
+#endif /* COGL_HAS_GLIB_SUPPORT */
 
 #define _cogl_clear_error(X) g_clear_error ((GError **)X)
 
