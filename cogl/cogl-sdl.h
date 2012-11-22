@@ -41,7 +41,7 @@
 #pragma comment (lib, "SDLmain.lib")
 #endif
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-sdl
@@ -219,6 +219,6 @@ cogl_sdl_onscreen_get_window (CoglOnscreen *onscreen);
 
 #endif /* SDL_MAJOR_VERSION */
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_SDL_H__ */

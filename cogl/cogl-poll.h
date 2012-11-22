@@ -31,11 +31,10 @@
 #ifndef __COGL_POLL_H__
 #define __COGL_POLL_H__
 
-#include <glib.h>
 #include <cogl/cogl-defines.h>
 #include <cogl/cogl-context.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-poll
@@ -163,6 +162,6 @@ cogl_poll_dispatch (CoglContext *context,
                     const CoglPollFD *poll_fds,
                     int n_poll_fds);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_POLL_H__ */

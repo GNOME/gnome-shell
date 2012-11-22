@@ -29,12 +29,11 @@
 #define __COGL_XLIB_RENDERER_H__
 
 #include <X11/Xlib.h>
-#include <glib.h>
 
 #define __COGL_H_INSIDE__
 #include <cogl/cogl-renderer.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /*
  * cogl_xlib_renderer_handle_event:
@@ -140,6 +139,6 @@ cogl_xlib_renderer_set_event_retrieval_enabled (CoglRenderer *renderer,
 Display *
 cogl_xlib_renderer_get_display (CoglRenderer *renderer);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_XLIB_RENDERER_H__ */

@@ -29,7 +29,7 @@
 #include <pango/pangocairo.h>
 #include <cogl/cogl.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /* It's too difficult to actually subclass the pango cairo font
  * map. Instead we just make a fake set of macros that actually just
@@ -80,6 +80,6 @@ void cogl_pango_render_layout_line     (PangoLayoutLine *line,
                                         int              y,
                                         const CoglColor *color);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __PANGO_CLUTTER_H__ */

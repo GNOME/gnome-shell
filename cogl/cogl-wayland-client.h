@@ -24,8 +24,6 @@
 #ifndef __COGL_WAYLAND_CLIENT_H
 #define __COGL_WAYLAND_CLIENT_H
 
-#include <glib.h>
-
 #define __COGL_H_INSIDE__
 #include <cogl/cogl-wayland-renderer.h>
 

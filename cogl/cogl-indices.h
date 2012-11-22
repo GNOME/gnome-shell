@@ -38,7 +38,7 @@ typedef struct _CoglIndices CoglIndices;
 
 #include <cogl/cogl-index-buffer.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-index-range
@@ -140,7 +140,7 @@ cogl_get_rectangle_indices (CoglContext *context, int n_rectangles);
 CoglBool
 cogl_is_indices (void *object);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_INDICES_H__ */
 

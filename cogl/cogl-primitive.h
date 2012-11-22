@@ -39,7 +39,7 @@ typedef struct _CoglPrimitive CoglPrimitive;
 #include <cogl/cogl-vertex-buffer.h> /* for CoglVerticesMode */
 #include <cogl/cogl-attribute.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-primitive
@@ -868,7 +868,7 @@ cogl_primitive_foreach_attribute (CoglPrimitive *primitive,
                                   CoglPrimitiveAttributeCallback callback,
                                   void *user_data);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_PRIMITIVE_H__ */
 

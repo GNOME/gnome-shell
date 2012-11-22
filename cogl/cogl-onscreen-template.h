@@ -33,7 +33,7 @@
 
 #include <cogl/cogl-swap-chain.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 typedef struct _CoglOnscreenTemplate	      CoglOnscreenTemplate;
 
@@ -101,6 +101,6 @@ cogl_onscreen_template_set_swap_throttled (
 CoglBool
 cogl_is_onscreen_template (void *object);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_ONSCREEN_TEMPLATE_H__ */

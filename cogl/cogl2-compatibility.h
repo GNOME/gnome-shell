@@ -31,7 +31,7 @@
 #include <cogl/cogl-types.h>
 #include <cogl/cogl2-path.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 #define cogl_clip_push_from_path cogl2_clip_push_from_path
 /**
@@ -49,7 +49,7 @@ G_BEGIN_DECLS
 void
 cogl_clip_push_from_path (CoglPath *path);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL2_COMPATIBILITY_H__ */
 

@@ -32,9 +32,8 @@
 #include <cogl/cogl-color.h>
 #include <cogl/cogl-matrix.h>
 #include <cogl/cogl-texture.h>
-#include <glib.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 
@@ -603,6 +602,6 @@ cogl_pipeline_add_layer_snippet (CoglPipeline *pipeline,
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_PIPELINE_LAYER_STATE_H__ */

@@ -31,9 +31,8 @@
 #include <cogl/cogl-pipeline.h>
 #include <cogl/cogl-color.h>
 #include <cogl/cogl-depth-state.h>
-#include <glib.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 
@@ -915,6 +914,6 @@ cogl_pipeline_add_snippet (CoglPipeline *pipeline,
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_PIPELINE_STATE_H__ */

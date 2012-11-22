@@ -31,7 +31,7 @@
 #include <glib.h>
 #include <cogl/cogl.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 typedef struct _CoglPangoPipelineCache CoglPangoPipelineCache;
 
@@ -48,6 +48,6 @@ _cogl_pango_pipeline_cache_get (CoglPangoPipelineCache *cache,
 void
 _cogl_pango_pipeline_cache_free (CoglPangoPipelineCache *cache);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_PANGO_PIPELINE_CACHE_H__ */

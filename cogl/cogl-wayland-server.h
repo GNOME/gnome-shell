@@ -24,15 +24,13 @@
 #ifndef __COGL_WAYLAND_SERVER_H
 #define __COGL_WAYLAND_SERVER_H
 
-#include <glib.h>
-
 #include <wayland-server.h>
 
 #define __COGL_H_INSIDE__
 #include <cogl/cogl-context.h>
 #include <cogl/cogl-texture-2d.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * cogl_wayland_display_set_compositor_display:
@@ -79,6 +77,6 @@ cogl_wayland_texture_2d_new_from_buffer (CoglContext *ctx,
                                          struct wl_buffer *buffer,
                                          CoglError **error);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_WAYLAND_SERVER_H */

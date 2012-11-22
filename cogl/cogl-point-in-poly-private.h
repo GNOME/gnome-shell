@@ -25,7 +25,7 @@
 
 #include <glib.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 int
 _cogl_util_point_in_screen_poly (float point_x,
@@ -34,7 +34,7 @@ _cogl_util_point_in_screen_poly (float point_x,
                                  size_t stride,
                                  int n_vertices);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_POINT_INT_POLYGON_PRIVATE_H */
 

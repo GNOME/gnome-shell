@@ -33,7 +33,7 @@
 
 #include <wayland-client.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * cogl_wayland_renderer_set_foreign_display:
@@ -159,6 +159,6 @@ cogl_wayland_renderer_set_foreign_shell (CoglRenderer *renderer,
 struct wl_shell *
 cogl_wayland_renderer_get_shell (CoglRenderer *renderer);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_WAYLAND_RENDERER_H__ */

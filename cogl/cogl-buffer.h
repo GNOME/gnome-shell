@@ -32,10 +32,9 @@
 #ifndef __COGL_BUFFER_H__
 #define __COGL_BUFFER_H__
 
-#include <glib.h>
 #include <cogl/cogl-types.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-buffer
@@ -283,6 +282,6 @@ cogl_buffer_set_data (CoglBuffer *buffer,
                       const void *data,
                       size_t size);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_BUFFER_H__ */

@@ -34,9 +34,8 @@
 
 #include <cogl/cogl-context.h>
 #include <cogl/cogl-framebuffer.h>
-#include <glib.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 typedef struct _CoglOnscreen CoglOnscreen;
 #define COGL_ONSCREEN(X) ((CoglOnscreen *)(X))
@@ -532,6 +531,6 @@ cogl_onscreen_remove_resize_handler (CoglOnscreen *onscreen,
 CoglBool
 cogl_is_onscreen (void *object);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_ONSCREEN_H */

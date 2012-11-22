@@ -26,7 +26,7 @@
 
 #include <glib.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /* Draws a rectangle without going through the journal so that it will
    be flushed immediately. This should only be used in situations
@@ -55,6 +55,6 @@ _cogl_framebuffer_draw_multitextured_rectangles (
                                         int n_rects,
                                         CoglBool disable_legacy_state);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_PRIMITIVES_PRIVATE_H */

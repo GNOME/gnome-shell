@@ -1,6 +1,8 @@
 #ifndef _TEST_UTILS_H_
 #define _TEST_UTILS_H_
 
+#include <glib.h>
+
 /* We don't really care about functions that are defined without a
    header for the unit tests so we can just disable it here */
 #ifdef __GNUC__

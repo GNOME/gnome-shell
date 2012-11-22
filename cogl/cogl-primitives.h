@@ -26,7 +26,7 @@
 
 #include <glib.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-primitives
@@ -185,6 +185,6 @@ cogl_polygon (const CoglTextureVertex  *vertices,
               unsigned int              n_vertices,
               CoglBool                  use_color);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_PRIMITIVES_H */

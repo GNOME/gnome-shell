@@ -30,8 +30,6 @@
 #include "cogl-context.h"
 #include "cogl-types.h"
 
-#include <glib.h>
-
 /**
  * SECTION:cogl-texture-2d-sliced
  * @short_description: Functions for creating and manipulating 2D meta

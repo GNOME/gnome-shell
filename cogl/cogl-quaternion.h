@@ -34,7 +34,7 @@
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-vector.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-quaternion
@@ -523,7 +523,7 @@ cogl_get_static_identity_quaternion (void);
 const CoglQuaternion *
 cogl_get_static_zero_quaternion (void);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_QUATERNION_H__ */
 

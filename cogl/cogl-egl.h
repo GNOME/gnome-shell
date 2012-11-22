@@ -28,7 +28,7 @@
 
 #include "cogl-egl-defines.h"
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 #define NativeDisplayType EGLNativeDisplayType
 #define NativeWindowType EGLNativeWindowType
@@ -53,7 +53,7 @@ G_BEGIN_DECLS
 EGLDisplay
 cogl_egl_context_get_egl_display (CoglContext *context);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* COGL_HAS_EGL_SUPPORT */
 

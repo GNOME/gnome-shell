@@ -35,7 +35,7 @@
 #include <cogl/cogl-defines.h>
 #include <cogl/cogl-types.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-vertex-buffer
@@ -404,6 +404,6 @@ cogl_is_vertex_buffer (CoglHandle handle);
 CoglBool
 cogl_is_vertex_buffer_indices (CoglHandle handle);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_VERTEX_BUFFER_H__ */

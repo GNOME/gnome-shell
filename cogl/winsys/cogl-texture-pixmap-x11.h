@@ -26,11 +26,9 @@
 
 #define __COGL_H_INSIDE__
 
-#include <glib.h>
-
 #include <cogl/cogl-context.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 
@@ -187,6 +185,6 @@ cogl_is_texture_pixmap_x11 (void *object);
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_TEXTURE_PIXMAP_X11_H */

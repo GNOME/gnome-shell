@@ -24,6 +24,7 @@
 #ifndef __COGL_RECTANGLE_MAP_H
 #define __COGL_RECTANGLE_MAP_H
 
+#include <glib.h>
 #include "cogl-types.h"
 
 typedef struct _CoglRectangleMap      CoglRectangleMap;

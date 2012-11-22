@@ -31,7 +31,7 @@
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-defines.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-shaders
@@ -649,6 +649,6 @@ cogl_program_uniform_matrix (int          uniform_no,
 
 #endif /* COGL_DISABLE_DEPRECATED */
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_SHADER_H__ */

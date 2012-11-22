@@ -32,7 +32,7 @@
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-display.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * cogl_kms_display_queue_modes_reset:
@@ -54,5 +54,5 @@ G_BEGIN_DECLS
 void
 cogl_kms_display_queue_modes_reset (CoglDisplay *display);
 
-G_END_DECLS
+COGL_END_DECLS
 #endif /* __COGL_KMS_DISPLAY_H__ */

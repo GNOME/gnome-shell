@@ -31,7 +31,7 @@
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-renderer.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * cogl_win32_renderer_handle_event:
@@ -87,6 +87,6 @@ cogl_win32_renderer_remove_filter (CoglRenderer *renderer,
                                    CoglWin32FilterFunc func,
                                    void *data);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_WIN32_RENDERER_H__ */

@@ -31,7 +31,7 @@
 
 #include "cogl-types.h"
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-primitive-texture
@@ -93,6 +93,6 @@ void
 cogl_primitive_texture_set_auto_mipmap (CoglPrimitiveTexture *primitive_texture,
                                         CoglBool value);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_PRIMITIVE_TEXTURE_H__ */

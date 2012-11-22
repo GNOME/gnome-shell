@@ -21,16 +21,10 @@
  *
  */
 
-#if !defined(__COGL_H_INSIDE__) && !defined(COGL_COMPILATION)
-#error "Only <cogl/cogl.h> can be included directly."
-#endif
-
-#include <glib.h>
-
 #ifndef __COGL_MEMORY_STACK__
 #define __COGL_MEMORY_STACK__
 
-G_BEGIN_DECLS
+#include <glib.h>
 
 typedef struct _CoglMemoryStack CoglMemoryStack;
 
@@ -45,7 +39,5 @@ _cogl_memory_stack_rewind (CoglMemoryStack *stack);
 
 void
 _cogl_memory_stack_free (CoglMemoryStack *stack);
-
-G_END_DECLS
 
 #endif /* __COGL_MEMORY_STACK__ */

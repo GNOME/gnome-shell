@@ -28,13 +28,11 @@
 #ifndef __COGL_RENDERER_H__
 #define __COGL_RENDERER_H__
 
-#include <glib.h>
-
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-onscreen-template.h>
 #include <cogl/cogl-error.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-renderer
@@ -385,7 +383,7 @@ cogl_renderer_set_driver (CoglRenderer *renderer,
 CoglDriver
 cogl_renderer_get_driver (CoglRenderer *renderer);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_RENDERER_H__ */
 

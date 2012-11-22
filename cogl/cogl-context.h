@@ -43,7 +43,7 @@ typedef struct _CoglContext CoglContext;
 #include <android/native_window.h>
 #endif
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-context
@@ -318,7 +318,7 @@ cogl_foreach_feature (CoglContext *context,
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_CONTEXT_H__ */
 

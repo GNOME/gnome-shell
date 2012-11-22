@@ -49,7 +49,7 @@
 #include <cogl/cogl-gles2-types.h>
 #endif
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-gles2
@@ -362,7 +362,7 @@ cogl_gles2_texture_get_handle (CoglTexture *texture,
 CoglBool
 cogl_is_gles2_context (void *object);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_GLES2_H__ */
 

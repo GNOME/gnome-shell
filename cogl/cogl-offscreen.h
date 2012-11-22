@@ -31,7 +31,7 @@
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-texture.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-offscreen
@@ -112,6 +112,6 @@ cogl_offscreen_unref (void *offscreen) G_GNUC_DEPRECATED;
 
 #endif /* COGL_DISABLE_DEPRECATED */
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_OFFSCREEN_H__ */

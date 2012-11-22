@@ -31,7 +31,7 @@
 
 #include "cogl-util.h"
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /* These are macros used to implement a fixed-size array of bits. This
    should be used instead of CoglBitmask when the maximum bit number
@@ -119,7 +119,7 @@ G_BEGIN_DECLS
 #define COGL_FLAGS_FOREACH_END \
   } } } G_STMT_END
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_FLAGS_H */
 

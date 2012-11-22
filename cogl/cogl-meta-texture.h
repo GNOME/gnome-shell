@@ -30,9 +30,8 @@
 #define __COGL_META_TEXTURE_H__
 
 #include <cogl/cogl-pipeline-layer-state.h>
-#include <glib.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-meta-texture
@@ -176,6 +175,6 @@ cogl_meta_texture_foreach_in_region (CoglMetaTexture *meta_texture,
                                      CoglMetaTextureCallback callback,
                                      void *user_data);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_META_TEXTURE_H__ */

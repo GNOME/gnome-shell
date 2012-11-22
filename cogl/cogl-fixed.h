@@ -66,7 +66,7 @@
  * The fixed point API is available since COGL 1.0.
  */
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * COGL_FIXED_BITS:
@@ -799,6 +799,6 @@ cogl_double_to_int   (double value);
 unsigned int
 cogl_double_to_uint (double value);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_FIXED_H__ */

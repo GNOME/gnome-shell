@@ -40,7 +40,7 @@
 
 #include <cogl/cogl-types.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * cogl_color_new:
@@ -538,6 +538,6 @@ cogl_color_unpremultiply (CoglColor *color);
 CoglBool
 cogl_color_equal (const void *v1, const void *v2);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_COLOR_H__ */

@@ -34,9 +34,7 @@
 #include "cogl-context.h"
 #include "cogl-bitmap.h"
 
-#include <glib.h>
-
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-texture-2d
@@ -187,6 +185,6 @@ cogl_texture_2d_new_from_bitmap (CoglBitmap *bitmap,
                                  CoglPixelFormat internal_format,
                                  CoglError **error);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_TEXTURE_2D_H */

@@ -34,9 +34,7 @@
 #include "cogl-context.h"
 #include "cogl-texture-2d.h"
 
-#include <glib.h>
-
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * cogl_texture_2d_new_from_foreign:
@@ -70,6 +68,6 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
                                   CoglPixelFormat format,
                                   CoglError **error);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* _COGL_TEXTURE_2D_GL_H_ */

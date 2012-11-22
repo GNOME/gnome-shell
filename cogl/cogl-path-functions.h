@@ -34,7 +34,7 @@
 
 #include <cogl/cogl-types.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * cogl_is_path:
@@ -424,7 +424,7 @@ cogl_set_path (CoglPath *path);
 CoglPath *
 cogl_path_copy (CoglPath *path);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_PATH_FUNCTIONS_H__ */
 

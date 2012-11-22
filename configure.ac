@@ -401,8 +401,11 @@ AS_IF([test "x$enable_glib" = "xyes"],
       [
         AS_GLIBCONFIG([deps/glib])
         COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_srcdir)/deps"
+        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_builddir)/deps"
         COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_srcdir)/deps/glib"
+        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_builddir)/deps/glib"
         COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_srcdir)/deps/gmodule"
+        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_builddir)/deps/gmodule"
         EXPERIMENTAL_CONFIG=yes
         EXPERIMENTAL_OPTIONS="$EXPERIMENTAL_OPTIONS --disable-glib,"
         enable_nls=no

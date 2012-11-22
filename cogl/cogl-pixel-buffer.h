@@ -32,11 +32,10 @@
 #ifndef __COGL_PIXEL_BUFFER_H__
 #define __COGL_PIXEL_BUFFER_H__
 
-#include <glib.h>
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-context.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 #define COGL_PIXEL_BUFFER(buffer) ((CoglPixelBuffer *)(buffer))
 
@@ -110,6 +109,6 @@ cogl_pixel_buffer_set_region (CoglPixelBuffer *buffer,
                               unsigned int dst_y);
 #endif
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_PIXEL_BUFFER_H__ */

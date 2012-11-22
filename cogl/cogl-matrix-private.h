@@ -29,7 +29,7 @@
 
 #include <glib.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 #define _COGL_MATRIX_DEBUG_PRINT(MATRIX) \
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_MATRICES))) \
@@ -45,7 +45,7 @@ void
 _cogl_matrix_init_from_matrix_without_inverse (CoglMatrix *matrix,
                                                const CoglMatrix *src);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_MATRIX_PRIVATE_H */
 

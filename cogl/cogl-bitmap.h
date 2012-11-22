@@ -37,7 +37,7 @@
 #include <android/asset_manager.h>
 #endif
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 typedef struct _CoglBitmap CoglBitmap;
 
@@ -309,6 +309,6 @@ typedef enum {
 
 uint32_t cogl_bitmap_error_quark (void);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_BITMAP_H__ */

@@ -34,7 +34,7 @@
 #include <cogl/cogl-renderer.h>
 #include <cogl/cogl-onscreen-template.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
 #include <libgdl.h>
@@ -185,7 +185,7 @@ cogl_gdl_display_set_plane (CoglDisplay *display,
 CoglBool
 cogl_is_display (void *object);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_DISPLAY_H__ */
 

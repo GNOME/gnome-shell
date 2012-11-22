@@ -37,7 +37,7 @@ typedef struct _CoglPipeline CoglPipeline;
 #include <cogl/cogl-context.h>
 #include <cogl/cogl-snippet.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 
@@ -168,6 +168,6 @@ cogl_pipeline_get_uniform_location (CoglPipeline *pipeline,
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_PIPELINE_H__ */

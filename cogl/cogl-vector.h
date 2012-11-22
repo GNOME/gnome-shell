@@ -31,9 +31,7 @@
 #ifndef __COGL_VECTOR_H
 #define __COGL_VECTOR_H
 
-#include <glib.h>
-
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-vector
@@ -347,7 +345,7 @@ cogl_vector3_dot_product (const float *a, const float *b);
 float
 cogl_vector3_distance (const float *a, const float *b);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_VECTOR_H */
 

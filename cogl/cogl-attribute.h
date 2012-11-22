@@ -39,7 +39,7 @@ typedef struct _CoglAttribute CoglAttribute;
 #include <cogl/cogl-attribute-buffer.h>
 #include <cogl/cogl-indices.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-attribute
@@ -215,7 +215,7 @@ cogl_attribute_set_buffer (CoglAttribute *attribute,
 CoglBool
 cogl_is_attribute (void *object);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_ATTRIBUTE_H__ */
 

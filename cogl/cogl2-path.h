@@ -30,7 +30,7 @@
 
 #include <cogl/cogl-types.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-paths
@@ -500,7 +500,7 @@ cogl_path_fill (CoglPath *path);
 void
 cogl_path_stroke (CoglPath *path);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL2_PATH_H__ */
 

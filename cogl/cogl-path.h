@@ -30,7 +30,7 @@
 
 #include <cogl/cogl-types.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-paths
@@ -97,7 +97,7 @@ typedef enum {
   COGL_PATH_FILL_RULE_EVEN_ODD
 } CoglPathFillRule;
 
-G_END_DECLS
+COGL_END_DECLS
 
 #include "cogl-path-functions.h"
 

@@ -38,7 +38,7 @@ typedef struct _CoglAttributeBuffer CoglAttributeBuffer;
 
 #include <cogl/cogl-context.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-attribute-buffer
@@ -86,7 +86,7 @@ cogl_attribute_buffer_new (CoglContext *context,
 CoglBool
 cogl_is_attribute_buffer (void *object);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_ATTRIBUTE_BUFFER_H__ */
 

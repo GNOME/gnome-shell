@@ -24,16 +24,16 @@
 #ifndef __COGL_XLIB_H__
 #define __COGL_XLIB_H__
 
-#include <glib.h>
-
 #include <X11/Xlib.h>
 
 #define __COGL_XLIB_H_INSIDE__
+#define __COGL_H_INSIDE__
 
+#include <cogl/cogl-types.h>
 #include <cogl/cogl-clutter-xlib.h>
 #include <cogl/cogl-xlib-renderer.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /*
  * cogl_xlib_get_display:

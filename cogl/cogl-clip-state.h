@@ -30,7 +30,7 @@
 
 #include <cogl/cogl-types.h>
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * cogl_clip_push_from_path:
@@ -45,6 +45,6 @@ G_BEGIN_DECLS
 void
 cogl_clip_push_from_path (void);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_CLIP_STATE_H */

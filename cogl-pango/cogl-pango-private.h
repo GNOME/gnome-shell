@@ -26,13 +26,13 @@
 
 #include "cogl-pango.h"
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 void           _cogl_pango_renderer_clear_glyph_cache  (CoglPangoRenderer *renderer);
 void           _cogl_pango_renderer_set_use_mipmapping (CoglPangoRenderer *renderer,
                                                         CoglBool           value);
 CoglBool       _cogl_pango_renderer_get_use_mipmapping (CoglPangoRenderer *renderer);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_PANGO_PRIVATE_H__ */

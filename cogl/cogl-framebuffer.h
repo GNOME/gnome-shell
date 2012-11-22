@@ -28,8 +28,6 @@
 #ifndef __COGL_FRAMEBUFFER_H
 #define __COGL_FRAMEBUFFER_H
 
-#include <glib.h>
-
 #ifdef COGL_HAS_WIN32_SUPPORT
 #include <windows.h>
 #endif /* COGL_HAS_WIN32_SUPPORT */
@@ -49,7 +47,7 @@
 #include <cogl/cogl-texture.h>
 #endif
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-framebuffer
@@ -1141,7 +1139,7 @@ cogl_framebuffer_vdraw_attributes (CoglFramebuffer *framebuffer,
                                    CoglVerticesMode mode,
                                    int first_vertex,
                                    int n_vertices,
-                                   ...) G_GNUC_NULL_TERMINATED;
+                                   ...) COGL_GNUC_NULL_TERMINATED;
 
 /**
  * cogl_framebuffer_draw_attributes:
@@ -1249,7 +1247,7 @@ cogl_framebuffer_vdraw_indexed_attributes (CoglFramebuffer *framebuffer,
                                            int first_vertex,
                                            int n_vertices,
                                            CoglIndices *indices,
-                                           ...) G_GNUC_NULL_TERMINATED;
+                                           ...) COGL_GNUC_NULL_TERMINATED;
 
 /**
  * cogl_framebuffer_draw_indexed_attributes:
@@ -1811,7 +1809,7 @@ typedef enum { /*< prefix=COGL_FRAMEBUFFER_ERROR >*/
 CoglBool
 cogl_is_framebuffer (void *object);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_FRAMEBUFFER_H */
 

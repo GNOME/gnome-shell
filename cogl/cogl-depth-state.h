@@ -31,7 +31,7 @@
 #ifndef __COGL_DEPTH_STATE_H__
 #define __COGL_DEPTH_STATE_H__
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-depth-state
@@ -255,6 +255,6 @@ cogl_depth_state_get_range (CoglDepthState *state,
                             float *near_val,
                             float *far_val);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_DEPTH_STATE_H__ */

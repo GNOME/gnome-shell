@@ -28,7 +28,7 @@
 
 #include "cogl-context.h"
 
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 CoglBool
 _cogl_check_extension (const char *name, char * const *ext);
@@ -96,6 +96,6 @@ _cogl_pixel_format_is_endian_dependant (CoglPixelFormat format);
 #define COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT(format) \
   (((format) & COGL_A_BIT) && (format) != COGL_PIXEL_FORMAT_A_8)
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_PRIVATE_H__ */

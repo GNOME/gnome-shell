@@ -32,9 +32,7 @@
 #ifndef __COGL_SNIPPET_H__
 #define __COGL_SNIPPET_H__
 
-#include <glib.h>
-
-G_BEGIN_DECLS
+COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-snippet
@@ -751,6 +749,6 @@ cogl_snippet_set_post (CoglSnippet *snippet,
 const char *
 cogl_snippet_get_post (CoglSnippet *snippet);
 
-G_END_DECLS
+COGL_END_DECLS
 
 #endif /* __COGL_SNIPPET_H__ */

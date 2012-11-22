@@ -28,6 +28,8 @@
 #ifndef __COGL_PIPELINE_SNIPPET_PRIVATE_H
 #define __COGL_PIPELINE_SNIPPET_PRIVATE_H
 
+#include <glib.h>
+
 #include "cogl-snippet.h"
 #include "cogl-queue.h"
 
