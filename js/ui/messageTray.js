@@ -2365,6 +2365,7 @@ const MessageTray = new Lang.Class({
         }
 
         if (this._notificationRemoved) {
+            Tweener.removeTweens(this._notificationWidget);
             this._notificationWidget.y = this.actor.height;
             this._notificationWidget.opacity = 0;
             this._notificationState = State.HIDDEN;
@@ -2428,10 +2429,10 @@ const MessageTray = new Lang.Class({
         if (this._notificationWidget.y < expandedY) {
             this._notificationWidget.y = expandedY;
         } else if (this._notification.y != expandedY) {
+            // Remove any other tween that could mess with the state machine
+            Tweener.removeTweens(this._notificationWidget);
             // Tween also opacity here, to override a possible tween that's
-            // currently hiding the notification. This will ensure that the
-            // notification is not removed when the onComplete handler for this
-            // one triggers.
+            // currently hiding the notification.
             this._tween(this._notificationWidget, '_notificationState', State.SHOWN,
                         { y: expandedY,
                           opacity: 255,
