@@ -131,10 +131,14 @@ cogl_texture_unref (void *object)
 void
 _cogl_texture_init (CoglTexture *texture,
                     CoglContext *context,
+                    int width,
+                    int height,
                     const CoglTextureVtable *vtable)
 {
   texture->context = context;
   texture->max_level = 0;
+  texture->width = width;
+  texture->height = height;
   texture->vtable = vtable;
   texture->framebuffers = NULL;
 }
@@ -295,13 +299,13 @@ cogl_texture_new_from_sub_texture (CoglTexture *full_texture,
 unsigned int
 cogl_texture_get_width (CoglTexture *texture)
 {
-  return texture->vtable->get_width (texture);
+  return texture->width;
 }
 
 unsigned int
 cogl_texture_get_height (CoglTexture *texture)
 {
-  return texture->vtable->get_height (texture);
+  return texture->height;
 }
 
 CoglPixelFormat

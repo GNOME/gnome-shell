@@ -40,8 +40,6 @@ struct _CoglTexture2D
   /* The internal format of the GL texture represented as a
      CoglPixelFormat */
   CoglPixelFormat format;
-  int width;
-  int height;
 
   CoglBool auto_mipmap;
   CoglBool mipmaps_dirty;

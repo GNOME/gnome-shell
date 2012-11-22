@@ -35,8 +35,6 @@ struct _CoglTextureRectangle
   /* The internal format of the texture represented as a
      CoglPixelFormat */
   CoglPixelFormat format;
-  int width;
-  int height;
 
   /* TODO: factor out these OpenGL specific members into some form
    * of driver private state. */

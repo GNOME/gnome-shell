@@ -607,6 +607,7 @@ _cogl_texture_2d_gl_get_data (CoglTexture2D *tex_2d,
 {
   CoglContext *ctx = COGL_TEXTURE (tex_2d)->context;
   int bpp;
+  int width = COGL_TEXTURE (tex_2d)->width;
   GLenum gl_format;
   GLenum gl_type;
 
@@ -620,7 +621,7 @@ _cogl_texture_2d_gl_get_data (CoglTexture2D *tex_2d,
 
   ctx->texture_driver->prep_gl_for_pixels_download (ctx,
                                                     rowstride,
-                                                    tex_2d->width,
+                                                    width,
                                                     bpp);
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,

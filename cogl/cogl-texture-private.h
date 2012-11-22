@@ -126,8 +126,6 @@ struct _CoglTextureVtable
 
   CoglPixelFormat (* get_format) (CoglTexture *tex);
   GLenum (* get_gl_format) (CoglTexture *tex);
-  int (* get_width) (CoglTexture *tex);
-  int (* get_height) (CoglTexture *tex);
 
   CoglTextureType (* get_type) (CoglTexture *tex);
 
@@ -144,6 +142,8 @@ struct _CoglTexture
   CoglContext *context;
   GList *framebuffers;
   int max_level;
+  int width;
+  int height;
   const CoglTextureVtable *vtable;
 };
 
@@ -177,6 +177,8 @@ struct _CoglTexturePixel
 void
 _cogl_texture_init (CoglTexture *texture,
                     CoglContext *ctx,
+                    int width,
+                    int height,
                     const CoglTextureVtable *vtable);
 
 void

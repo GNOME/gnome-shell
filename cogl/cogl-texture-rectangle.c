@@ -171,10 +171,7 @@ _cogl_texture_rectangle_create_base (CoglContext *ctx,
   CoglTextureRectangle *tex_rect = g_new (CoglTextureRectangle, 1);
   CoglTexture *tex = COGL_TEXTURE (tex_rect);
 
-  _cogl_texture_init (tex, ctx, &cogl_texture_rectangle_vtable);
-
-  tex_rect->width = width;
-  tex_rect->height = height;
+  _cogl_texture_init (tex, ctx, width, height, &cogl_texture_rectangle_vtable);
 
   /* We default to GL_LINEAR for both filters */
   tex_rect->gl_legacy_texobj_min_filter = GL_LINEAR;
@@ -462,17 +459,14 @@ _cogl_texture_rectangle_transform_coords_to_gl (CoglTexture *tex,
                                                 float *s,
                                                 float *t)
 {
-  CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
-
-  *s *= tex_rect->width;
-  *t *= tex_rect->height;
+  *s *= tex->width;
+  *t *= tex->height;
 }
 
 static CoglTransformResult
 _cogl_texture_rectangle_transform_quad_coords_to_gl (CoglTexture *tex,
                                                      float *coords)
 {
-  CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
   CoglBool need_repeat = FALSE;
   int i;
 
@@ -480,7 +474,7 @@ _cogl_texture_rectangle_transform_quad_coords_to_gl (CoglTexture *tex,
     {
       if (coords[i] < 0.0f || coords[i] > 1.0f)
         need_repeat = TRUE;
-      coords[i] *= (i & 1) ? tex_rect->height : tex_rect->width;
+      coords[i] *= (i & 1) ? tex->height : tex->width;
     }
 
   return (need_repeat ? COGL_TRANSFORM_SOFTWARE_REPEAT
@@ -614,7 +608,7 @@ _cogl_texture_rectangle_get_data (CoglTexture *tex,
 
   ctx->texture_driver->prep_gl_for_pixels_download (ctx,
                                                     rowstride,
-                                                    tex_rect->width,
+                                                    tex->width,
                                                     bpp);
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB,
@@ -637,18 +631,6 @@ static GLenum
 _cogl_texture_rectangle_get_gl_format (CoglTexture *tex)
 {
   return COGL_TEXTURE_RECTANGLE (tex)->gl_format;
-}
-
-static int
-_cogl_texture_rectangle_get_width (CoglTexture *tex)
-{
-  return COGL_TEXTURE_RECTANGLE (tex)->width;
-}
-
-static int
-_cogl_texture_rectangle_get_height (CoglTexture *tex)
-{
-  return COGL_TEXTURE_RECTANGLE (tex)->height;
 }
 
 static CoglBool
@@ -682,8 +664,6 @@ cogl_texture_rectangle_vtable =
     _cogl_texture_rectangle_gl_flush_legacy_texobj_wrap_modes,
     _cogl_texture_rectangle_get_format,
     _cogl_texture_rectangle_get_gl_format,
-    _cogl_texture_rectangle_get_width,
-    _cogl_texture_rectangle_get_height,
     _cogl_texture_rectangle_get_type,
     _cogl_texture_rectangle_is_foreign,
     _cogl_texture_rectangle_set_auto_mipmap

@@ -632,24 +632,6 @@ _cogl_atlas_texture_get_gl_format (CoglTexture *tex)
   return _cogl_texture_gl_get_format (atlas_tex->sub_texture);
 }
 
-static int
-_cogl_atlas_texture_get_width (CoglTexture *tex)
-{
-  CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
-
-  /* Forward on to the sub texture */
-  return cogl_texture_get_width (atlas_tex->sub_texture);
-}
-
-static int
-_cogl_atlas_texture_get_height (CoglTexture *tex)
-{
-  CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
-
-  /* Forward on to the sub texture */
-  return cogl_texture_get_height (atlas_tex->sub_texture);
-}
-
 static CoglBool
 _cogl_atlas_texture_can_use_format (CoglPixelFormat format)
 {
@@ -716,6 +698,7 @@ _cogl_atlas_texture_new_with_size (CoglContext *ctx,
 
   _cogl_texture_init (COGL_TEXTURE (atlas_tex),
                       ctx,
+                      width, height,
                       &cogl_atlas_texture_vtable);
 
   atlas_tex->sub_texture = NULL;
@@ -871,8 +854,6 @@ cogl_atlas_texture_vtable =
     _cogl_atlas_texture_gl_flush_legacy_texobj_wrap_modes,
     _cogl_atlas_texture_get_format,
     _cogl_atlas_texture_get_gl_format,
-    _cogl_atlas_texture_get_width,
-    _cogl_atlas_texture_get_height,
     _cogl_atlas_texture_get_type,
     NULL, /* is_foreign */
     NULL /* set_auto_mipmap */

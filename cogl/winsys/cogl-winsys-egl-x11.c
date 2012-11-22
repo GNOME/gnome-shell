@@ -686,14 +686,12 @@ _cogl_winsys_poll_dispatch (CoglContext *context,
 static CoglBool
 _cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap)
 {
+  CoglTexture *tex = COGL_TEXTURE (tex_pixmap);
+  CoglContext *ctx = tex->context;
   CoglTexturePixmapEGL *egl_tex_pixmap;
   EGLint attribs[] = {EGL_IMAGE_PRESERVED_KHR, EGL_TRUE, EGL_NONE};
   CoglPixelFormat texture_format;
   CoglRendererEGL *egl_renderer;
-
-  /* FIXME: It should be possible to get to a CoglContext from any
-   * CoglTexture pointer. */
-  _COGL_GET_CONTEXT (ctx, FALSE);
 
   egl_renderer = ctx->display->renderer->winsys;
 
@@ -725,8 +723,8 @@ _cogl_winsys_texture_pixmap_x11_create (CoglTexturePixmapX11 *tex_pixmap)
 
   egl_tex_pixmap->texture = COGL_TEXTURE (
     _cogl_egl_texture_2d_new_from_image (ctx,
-                                         tex_pixmap->width,
-                                         tex_pixmap->height,
+                                         tex->width,
+                                         tex->height,
                                          texture_format,
                                          egl_tex_pixmap->image,
                                          NULL));

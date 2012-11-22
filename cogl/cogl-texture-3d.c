@@ -120,10 +120,8 @@ _cogl_texture_3d_create_base (CoglContext *ctx,
   CoglTexture3D *tex_3d = g_new (CoglTexture3D, 1);
   CoglTexture *tex = COGL_TEXTURE (tex_3d);
 
-  _cogl_texture_init (tex, ctx, &cogl_texture_3d_vtable);
+  _cogl_texture_init (tex, ctx, width, height, &cogl_texture_3d_vtable);
 
-  tex_3d->width = width;
-  tex_3d->height = height;
   tex_3d->depth = depth;
   tex_3d->mipmaps_dirty = TRUE;
   tex_3d->auto_mipmap = TRUE;
@@ -639,18 +637,6 @@ _cogl_texture_3d_get_gl_format (CoglTexture *tex)
   return COGL_TEXTURE_3D (tex)->gl_format;
 }
 
-static int
-_cogl_texture_3d_get_width (CoglTexture *tex)
-{
-  return COGL_TEXTURE_3D (tex)->width;
-}
-
-static int
-_cogl_texture_3d_get_height (CoglTexture *tex)
-{
-  return COGL_TEXTURE_3D (tex)->height;
-}
-
 static CoglTextureType
 _cogl_texture_3d_get_type (CoglTexture *tex)
 {
@@ -676,8 +662,6 @@ cogl_texture_3d_vtable =
     _cogl_texture_3d_gl_flush_legacy_texobj_wrap_modes,
     _cogl_texture_3d_get_format,
     _cogl_texture_3d_get_gl_format,
-    _cogl_texture_3d_get_width,
-    _cogl_texture_3d_get_height,
     _cogl_texture_3d_get_type,
     NULL, /* is_foreign */
     _cogl_texture_3d_set_auto_mipmap

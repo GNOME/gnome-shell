@@ -112,10 +112,8 @@ _cogl_texture_2d_create_base (CoglContext *ctx,
   CoglTexture2D *tex_2d = g_new (CoglTexture2D, 1);
   CoglTexture *tex = COGL_TEXTURE (tex_2d);
 
-  _cogl_texture_init (tex, ctx, &cogl_texture_2d_vtable);
+  _cogl_texture_init (tex, ctx, width, height, &cogl_texture_2d_vtable);
 
-  tex_2d->width = width;
-  tex_2d->height = height;
   tex_2d->mipmaps_dirty = TRUE;
   tex_2d->auto_mipmap = TRUE;
 
@@ -382,12 +380,11 @@ _cogl_texture_2d_is_sliced (CoglTexture *tex)
 static CoglBool
 _cogl_texture_2d_can_hardware_repeat (CoglTexture *tex)
 {
-  CoglTexture2D *tex_2d = COGL_TEXTURE_2D (tex);
   CoglContext *ctx = tex->context;
 
   if (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_REPEAT) ||
-      (_cogl_util_is_pot (tex_2d->width) &&
-       _cogl_util_is_pot (tex_2d->height)))
+      (_cogl_util_is_pot (tex->width) &&
+       _cogl_util_is_pot (tex->height)))
     return TRUE;
   else
     return FALSE;
@@ -537,18 +534,6 @@ _cogl_texture_2d_get_gl_format (CoglTexture *tex)
   return COGL_TEXTURE_2D (tex)->gl_internal_format;
 }
 
-static int
-_cogl_texture_2d_get_width (CoglTexture *tex)
-{
-  return COGL_TEXTURE_2D (tex)->width;
-}
-
-static int
-_cogl_texture_2d_get_height (CoglTexture *tex)
-{
-  return COGL_TEXTURE_2D (tex)->height;
-}
-
 static CoglBool
 _cogl_texture_2d_is_foreign (CoglTexture *tex)
 {
@@ -580,8 +565,6 @@ cogl_texture_2d_vtable =
     _cogl_texture_2d_gl_flush_legacy_texobj_wrap_modes,
     _cogl_texture_2d_get_format,
     _cogl_texture_2d_get_gl_format,
-    _cogl_texture_2d_get_width,
-    _cogl_texture_2d_get_height,
     _cogl_texture_2d_get_type,
     _cogl_texture_2d_is_foreign,
     _cogl_texture_2d_set_auto_mipmap

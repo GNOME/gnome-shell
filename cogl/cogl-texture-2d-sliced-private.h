@@ -33,14 +33,11 @@
 
 struct _CoglTexture2DSliced
 {
-  CoglTexture       _parent;
-  GArray           *slice_x_spans;
-  GArray           *slice_y_spans;
-  GArray           *slice_textures;
-  int               max_waste;
-
-  int               width;
-  int               height;
+  CoglTexture _parent;
+  GArray *slice_x_spans;
+  GArray *slice_y_spans;
+  GArray *slice_textures;
+  int max_waste;
 };
 
 CoglTexture2DSliced *

@@ -37,8 +37,6 @@ struct _CoglTexture3D
   /* The internal format of the texture represented as a
      CoglPixelFormat */
   CoglPixelFormat format;
-  int width;
-  int height;
   int depth;
   CoglBool auto_mipmap;
   CoglBool mipmaps_dirty;

@@ -57,8 +57,6 @@ struct _CoglTexturePixmapX11
 
   unsigned int depth;
   Visual *visual;
-  unsigned int width;
-  unsigned int height;
 
   XImage *image;
 

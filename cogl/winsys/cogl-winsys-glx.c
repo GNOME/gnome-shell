@@ -1931,6 +1931,7 @@ static CoglBool
 _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
                                         CoglBool needs_mipmap)
 {
+  CoglTexture *tex = COGL_TEXTURE (tex_pixmap);
   CoglContext *ctx = COGL_TEXTURE (tex_pixmap)->context;
   CoglTexturePixmapGLX *glx_tex_pixmap = tex_pixmap->winsys;
   CoglGLXRenderer *glx_renderer;
@@ -1955,8 +1956,8 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
         {
           glx_tex_pixmap->glx_tex = COGL_TEXTURE (
             cogl_texture_rectangle_new_with_size (ctx,
-                                                  tex_pixmap->width,
-                                                  tex_pixmap->height,
+                                                  tex->width,
+                                                  tex->height,
                                                   texture_format,
                                                   &error));
 
@@ -1977,8 +1978,8 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
         {
           glx_tex_pixmap->glx_tex = COGL_TEXTURE (
             cogl_texture_2d_new_with_size (ctx,
-                                           tex_pixmap->width,
-                                           tex_pixmap->height,
+                                           tex->width,
+                                           tex->height,
                                            texture_format,
                                            NULL));
 

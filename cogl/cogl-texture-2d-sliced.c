@@ -112,8 +112,8 @@ _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
 
   data.callback = callback;
   data.user_data = user_data;
-  data.x_normalize_factor = 1.0f / tex_2ds->width;
-  data.y_normalize_factor = 1.0f / tex_2ds->height;
+  data.x_normalize_factor = 1.0f / tex->width;
+  data.y_normalize_factor = 1.0f / tex->height;
 
   un_normalized_coords[0] = virtual_tx_1 * data.x_normalize_factor;
   un_normalized_coords[1] = virtual_ty_1 * data.y_normalize_factor;
@@ -428,6 +428,7 @@ _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
                                                 GLuint source_gl_type,
                                                 CoglError **error)
 {
+  CoglTexture *tex = COGL_TEXTURE (tex_2ds);
   CoglSpan *x_span;
   CoglSpan *y_span;
   CoglSpanIter x_iter;
@@ -449,7 +450,7 @@ _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
        _cogl_span_iter_begin (&y_iter,
                               (CoglSpan *)tex_2ds->slice_y_spans->data,
                               tex_2ds->slice_y_spans->len,
-                              tex_2ds->height,
+                              tex->height,
                               dst_y,
                               dst_y + height,
                               COGL_PIPELINE_WRAP_MODE_REPEAT);
@@ -467,7 +468,7 @@ _cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
            _cogl_span_iter_begin (&x_iter,
                                   (CoglSpan *)tex_2ds->slice_x_spans->data,
                                   tex_2ds->slice_x_spans->len,
-                                  tex_2ds->width,
+                                  tex->width,
                                   dst_x,
                                   dst_x + width,
                                   COGL_PIPELINE_WRAP_MODE_REPEAT);
@@ -866,7 +867,7 @@ _cogl_texture_2d_sliced_init_base (CoglContext *ctx,
 {
   CoglTexture *tex = COGL_TEXTURE (tex_2ds);
 
-  _cogl_texture_init (tex, ctx, &cogl_texture_2d_sliced_vtable);
+  _cogl_texture_init (tex, ctx, width, height, &cogl_texture_2d_sliced_vtable);
 
   tex_2ds->slice_x_spans = NULL;
   tex_2ds->slice_y_spans = NULL;
@@ -879,9 +880,6 @@ _cogl_texture_2d_sliced_init_base (CoglContext *ctx,
                                               height,
                                               internal_format))
     return FALSE;
-
-  tex_2ds->width = width;
-  tex_2ds->height = height;
 
   return TRUE;
 }
@@ -1052,10 +1050,9 @@ _cogl_texture_2d_sliced_new_from_foreign (CoglContext *ctx,
   tex_2ds = g_new0 (CoglTexture2DSliced, 1);
 
   tex = COGL_TEXTURE (tex_2ds);
-  tex->vtable = &cogl_texture_2d_sliced_vtable;
+  _cogl_texture_init (tex, ctx, gl_width, gl_height,
+                      &cogl_texture_2d_sliced_vtable);
 
-  tex_2ds->width = gl_width - x_pot_waste;
-  tex_2ds->height = gl_height - y_pot_waste;
   tex_2ds->max_waste = 0;
 
   /* Create slice arrays */
@@ -1163,8 +1160,8 @@ _cogl_texture_2d_sliced_transform_coords_to_gl (CoglTexture *tex,
   x_span = &g_array_index (tex_2ds->slice_x_spans, CoglSpan, 0);
   y_span = &g_array_index (tex_2ds->slice_y_spans, CoglSpan, 0);
 
-  *s *= tex_2ds->width / (float)x_span->size;
-  *t *= tex_2ds->height / (float)y_span->size;
+  *s *= tex->width / (float)x_span->size;
+  *t *= tex->height / (float)y_span->size;
 
   /* Let the child texture further transform the coords */
   slice_tex = g_array_index (tex_2ds->slice_textures, CoglTexture2D *, 0);
@@ -1356,18 +1353,6 @@ _cogl_texture_2d_sliced_get_gl_format (CoglTexture *tex)
   return _cogl_texture_gl_get_format (COGL_TEXTURE (slice_tex));
 }
 
-static int
-_cogl_texture_2d_sliced_get_width (CoglTexture *tex)
-{
-  return COGL_TEXTURE_2D_SLICED (tex)->width;
-}
-
-static int
-_cogl_texture_2d_sliced_get_height (CoglTexture *tex)
-{
-  return COGL_TEXTURE_2D_SLICED (tex)->height;
-}
-
 static CoglTextureType
 _cogl_texture_2d_sliced_get_type (CoglTexture *tex)
 {
@@ -1393,8 +1378,6 @@ cogl_texture_2d_sliced_vtable =
     _cogl_texture_2d_sliced_gl_flush_legacy_texobj_wrap_modes,
     _cogl_texture_2d_sliced_get_format,
     _cogl_texture_2d_sliced_get_gl_format,
-    _cogl_texture_2d_sliced_get_width,
-    _cogl_texture_2d_sliced_get_height,
     _cogl_texture_2d_sliced_get_type,
     _cogl_texture_2d_sliced_is_foreign,
     NULL /* set_auto_mipmap */

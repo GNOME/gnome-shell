@@ -44,14 +44,12 @@ struct _CoglSubTexture
      is created */
   CoglTexture *full_texture;
 
-  /* The region represented by this sub-texture. This is the region of
-     full_texture which won't necessarily be the same as the region
-     passed to _cogl_sub_texture_new if next_texture is actually
-     already a sub texture */
-  int         sub_x;
-  int         sub_y;
-  int         sub_width;
-  int         sub_height;
+  /* The offset of the region represented by this sub-texture. This is
+   * the offset in full_texture which won't necessarily be the same as
+   * the offset passed to _cogl_sub_texture_new if next_texture is
+   * actually already a sub texture */
+  int sub_x;
+  int sub_y;
 };
 
 #endif /* __COGL_SUB_TEXTURE_PRIVATE_H */

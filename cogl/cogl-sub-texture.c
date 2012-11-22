@@ -52,6 +52,8 @@ static void
 _cogl_sub_texture_unmap_quad (CoglSubTexture *sub_tex,
                               float *coords)
 {
+  CoglTexture *tex = COGL_TEXTURE (sub_tex);
+
   /* NB: coords[] come in as non-normalized if sub_tex->full_texture
    * is a CoglTextureRectangle otherwhise they are normalized. The
    * coordinates we write out though must always be normalized.
@@ -61,19 +63,19 @@ _cogl_sub_texture_unmap_quad (CoglSubTexture *sub_tex,
    */
   if (cogl_is_texture_rectangle (sub_tex->full_texture))
     {
-      coords[0] = (coords[0] - sub_tex->sub_x) / sub_tex->sub_width;
-      coords[1] = (coords[1] - sub_tex->sub_y) / sub_tex->sub_height;
-      coords[2] = (coords[2] - sub_tex->sub_x) / sub_tex->sub_width;
-      coords[3] = (coords[3] - sub_tex->sub_y) / sub_tex->sub_height;
+      coords[0] = (coords[0] - sub_tex->sub_x) / tex->width;
+      coords[1] = (coords[1] - sub_tex->sub_y) / tex->height;
+      coords[2] = (coords[2] - sub_tex->sub_x) / tex->width;
+      coords[3] = (coords[3] - sub_tex->sub_y) / tex->height;
     }
   else
     {
       float width = cogl_texture_get_width (sub_tex->full_texture);
       float height = cogl_texture_get_height (sub_tex->full_texture);
-      coords[0] = (coords[0] * width - sub_tex->sub_x) / sub_tex->sub_width;
-      coords[1] = (coords[1] * height - sub_tex->sub_y) / sub_tex->sub_height;
-      coords[2] = (coords[2] * width - sub_tex->sub_x) / sub_tex->sub_width;
-      coords[3] = (coords[3] * height - sub_tex->sub_y) / sub_tex->sub_height;
+      coords[0] = (coords[0] * width - sub_tex->sub_x) / tex->width;
+      coords[1] = (coords[1] * height - sub_tex->sub_y) / tex->height;
+      coords[2] = (coords[2] * width - sub_tex->sub_x) / tex->width;
+      coords[3] = (coords[3] * height - sub_tex->sub_y) / tex->height;
     }
 }
 
@@ -81,6 +83,8 @@ static void
 _cogl_sub_texture_map_quad (CoglSubTexture *sub_tex,
                             float *coords)
 {
+  CoglTexture *tex = COGL_TEXTURE (sub_tex);
+
   /* NB: coords[] always come in as normalized coordinates but may go
    * out as non-normalized if sub_tex->full_texture is a
    * CoglTextureRectangle.
@@ -91,19 +95,19 @@ _cogl_sub_texture_map_quad (CoglSubTexture *sub_tex,
 
   if (cogl_is_texture_rectangle (sub_tex->full_texture))
     {
-      coords[0] = coords[0] * sub_tex->sub_width + sub_tex->sub_x;
-      coords[1] = coords[1] * sub_tex->sub_height + sub_tex->sub_y;
-      coords[2] = coords[2] * sub_tex->sub_width + sub_tex->sub_x;
-      coords[3] = coords[3] * sub_tex->sub_height + sub_tex->sub_y;
+      coords[0] = coords[0] * tex->width + sub_tex->sub_x;
+      coords[1] = coords[1] * tex->height + sub_tex->sub_y;
+      coords[2] = coords[2] * tex->width + sub_tex->sub_x;
+      coords[3] = coords[3] * tex->height + sub_tex->sub_y;
     }
   else
     {
       float width = cogl_texture_get_width (sub_tex->full_texture);
       float height = cogl_texture_get_height (sub_tex->full_texture);
-      coords[0] = (coords[0] * sub_tex->sub_width + sub_tex->sub_x) / width;
-      coords[1] = (coords[1] * sub_tex->sub_height + sub_tex->sub_y) / height;
-      coords[2] = (coords[2] * sub_tex->sub_width + sub_tex->sub_x) / width;
-      coords[3] = (coords[3] * sub_tex->sub_height + sub_tex->sub_y) / height;
+      coords[0] = (coords[0] * tex->width + sub_tex->sub_x) / width;
+      coords[1] = (coords[1] * tex->height + sub_tex->sub_y) / height;
+      coords[2] = (coords[2] * tex->width + sub_tex->sub_x) / width;
+      coords[3] = (coords[3] * tex->height + sub_tex->sub_y) / height;
     }
 }
 
@@ -230,7 +234,8 @@ cogl_sub_texture_new (CoglContext *ctx,
 
   tex = COGL_TEXTURE (sub_tex);
 
-  _cogl_texture_init (tex, ctx, &cogl_sub_texture_vtable);
+  _cogl_texture_init (tex, ctx, sub_width, sub_height,
+                      &cogl_sub_texture_vtable);
 
   /* If the next texture is also a sub texture we can avoid one level
      of indirection by referencing the full texture of that texture
@@ -250,8 +255,6 @@ cogl_sub_texture_new (CoglContext *ctx,
 
   sub_tex->sub_x = sub_x;
   sub_tex->sub_y = sub_y;
-  sub_tex->sub_width = sub_width;
-  sub_tex->sub_height = sub_height;
 
   return _cogl_sub_texture_object_new (sub_tex);
 }
@@ -285,9 +288,9 @@ _cogl_sub_texture_can_hardware_repeat (CoglTexture *tex)
 
   /* We can hardware repeat if the subtexture actually represents all of the
      of the full texture */
-  return (sub_tex->sub_width ==
+  return (tex->width ==
           cogl_texture_get_width (sub_tex->full_texture) &&
-          sub_tex->sub_height ==
+          tex->height ==
           cogl_texture_get_height (sub_tex->full_texture) &&
           _cogl_texture_can_hardware_repeat (sub_tex->full_texture));
 }
@@ -301,9 +304,9 @@ _cogl_sub_texture_transform_coords_to_gl (CoglTexture *tex,
 
   /* This won't work if the sub texture is not the size of the full
      texture and the coordinates are outside the range [0,1] */
-  *s = ((*s * sub_tex->sub_width + sub_tex->sub_x) /
+  *s = ((*s * tex->width + sub_tex->sub_x) /
         cogl_texture_get_width (sub_tex->full_texture));
-  *t = ((*t * sub_tex->sub_height + sub_tex->sub_y) /
+  *t = ((*t * tex->height + sub_tex->sub_y) /
         cogl_texture_get_height (sub_tex->full_texture));
 
   _cogl_texture_transform_coords_to_gl (sub_tex->full_texture, s, t);
@@ -418,22 +421,6 @@ _cogl_sub_texture_get_gl_format (CoglTexture *tex)
   return _cogl_texture_gl_get_format (sub_tex->full_texture);
 }
 
-static int
-_cogl_sub_texture_get_width (CoglTexture *tex)
-{
-  CoglSubTexture *sub_tex = COGL_SUB_TEXTURE (tex);
-
-  return sub_tex->sub_width;
-}
-
-static int
-_cogl_sub_texture_get_height (CoglTexture *tex)
-{
-  CoglSubTexture *sub_tex = COGL_SUB_TEXTURE (tex);
-
-  return sub_tex->sub_height;
-}
-
 static CoglTextureType
 _cogl_sub_texture_get_type (CoglTexture *tex)
 {
@@ -461,8 +448,6 @@ cogl_sub_texture_vtable =
     _cogl_sub_texture_gl_flush_legacy_texobj_wrap_modes,
     _cogl_sub_texture_get_format,
     _cogl_sub_texture_get_gl_format,
-    _cogl_sub_texture_get_width,
-    _cogl_sub_texture_get_height,
     _cogl_sub_texture_get_type,
     NULL, /* is_foreign */
     NULL /* set_auto_mipmap */
