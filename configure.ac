@@ -370,6 +370,69 @@ AS_CASE([$enable_deprecated],
 # strip leading spaces
 COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS ${DEPRECATED_CFLAGS#*  }"
 
+dnl ================================================================
+dnl Check for dependency packages.
+dnl ================================================================
+
+dnl     ============================================================
+dnl     Should glib be used?
+dnl     ============================================================
+AM_PATH_GLIB_2_0([glib_req_version],
+                 [have_glib=yes], [have_glib=no],
+                 [gobject gthread gmodule-no-export])
+AC_ARG_ENABLE(
+  [glib],
+  [AC_HELP_STRING([--enable-glib=@<:@no/yes@:>@], [Enable glib support @<:@default=yes@:>@])],
+  [],
+  enable_glib=yes
+)
+
+AS_IF([test "x$have_glib" = "xno" && test "x$enable_glib" = "xyes"],
+      [AC_MSG_ERROR([gobject-2.0 is required])])
+
+AM_CONDITIONAL([USE_GLIB], [test "x$enable_glib" = "xyes"])
+
+AS_IF([test "x$enable_glib" = "xyes"],
+      [
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLIB_SUPPORT"
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GTYPE_SUPPORT"
+        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gobject-2.0 gmodule-no-export-2.0"
+      ],
+      [
+        AS_GLIBCONFIG([deps/glib])
+        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_srcdir)/deps"
+        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_srcdir)/deps/glib"
+        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_srcdir)/deps/gmodule"
+        EXPERIMENTAL_CONFIG=yes
+        EXPERIMENTAL_OPTIONS="$EXPERIMENTAL_OPTIONS --disable-glib,"
+        enable_nls=no
+      ]
+)
+
+dnl     ============================================================
+dnl     Should cogl-pango be built?
+dnl     ============================================================
+
+AS_IF([test "x$enable_glib" != "xyes"],
+      [
+        AS_IF([test "x$enable_cogl_pango" = "xyes"],
+              AC_MSG_ERROR([--enable-cogl-pango conflicts with --disable-glib]))
+        enable_cogl_pango=no
+      ]
+)
+
+AC_ARG_ENABLE(
+  [cogl-pango],
+  [AC_HELP_STRING([--enable-cogl-pango=@<:@no/yes@:>@], [Enable pango support @<:@default=yes@:>@])],
+  [],
+  enable_cogl_pango=yes
+)
+AS_IF([test "x$enable_cogl_pango" = "xyes"],
+      [
+	COGL_PANGO_PKG_REQUIRES="$COGL_PANGO_PKG_REQUIRES pangocairo >= pangocairo_req_version"
+      ]
+)
+
 dnl     ============================================================
 dnl     Choose image loading backend
 dnl     ============================================================
@@ -377,13 +440,11 @@ AC_ARG_ENABLE(
   [gdk-pixbuf],
   [AC_HELP_STRING([--enable-gdk-pixbuf=@<:@no/yes@:>@], [Enable image loading via gdk-pixbuf @<:@default=yes@:>@])],
   [],
-  enable_gdk_pixbuf=yes
+  [AS_IF([test "x$enable_glib" = "xyes"],
+         [PKG_CHECK_EXISTS([gdk-pixbuf-2.0 >= gdk_pixbuf_req_version],
+                           [enable_gdk_pixbuf=yes],
+                           [enable_gdk_pixbuf=no])])]
 )
-if test "x$enable_gdk_pixbuf" = "xyes"; then
-  PKG_CHECK_EXISTS([gdk-pixbuf-2.0], [have_gdk_pixbuf=yes], [have_gdk_pixbuf=no])
-else
-  have_gdk_pixbuf=no
-fi
 
 AC_ARG_ENABLE(
   [quartz-image],
@@ -393,8 +454,10 @@ AC_ARG_ENABLE(
 )
 
 AS_IF(
-  [test "x$have_gdk_pixbuf" = "xyes"],
+  [test "x$enable_gdk_pixbuf" = "xyes"],
   [
+    AS_IF([test "x$enable_glib" != "xyes"],
+          [AC_MSG_ERROR([--disable-glib conflicts with --enable-gdk-pixbuf])])
     AC_DEFINE([USE_GDKPIXBUF], 1, [Use GdkPixbuf for loading image data])
     COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gdk-pixbuf-2.0 >= gdk_pixbuf_req_version"
     COGL_IMAGE_BACKEND="gdk-pixbuf"
@@ -1032,70 +1095,6 @@ m4_ifdef([GTK_DOC_CHECK], [
 GTK_DOC_CHECK([gtk_doc_req_version], [--flavour no-tmpl])
 ])
 AM_CONDITIONAL([BUILD_GTK_DOC], [test "x$enable_gtk_doc" = "xyes"])
-
-dnl ================================================================
-dnl Check for dependency packages.
-dnl ================================================================
-
-dnl     ============================================================
-dnl     Should glib be used?
-dnl     ============================================================
-AM_PATH_GLIB_2_0([glib_req_version],
-                 [have_glib=yes], [have_glib=no],
-                 [gobject gthread gmodule-no-export])
-AC_ARG_ENABLE(
-  [glib],
-  [AC_HELP_STRING([--enable-glib=@<:@no/yes@:>@], [Enable glib support @<:@default=yes@:>@])],
-  [],
-  enable_glib=yes
-)
-
-AS_IF([test "x$have_glib" = "xno" && test "x$enable_glib" = "xyes"],
-      [AC_MSG_ERROR([gobject-2.0 is required])])
-
-AM_CONDITIONAL([USE_GLIB], [test "x$enable_glib" = "xyes"])
-
-AS_IF([test "x$enable_glib" = "xyes"],
-      [
-        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GLIB_SUPPORT"
-        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_GTYPE_SUPPORT"
-        COGL_PKG_REQUIRES="$COGL_PKG_REQUIRES gobject-2.0 gmodule-no-export-2.0"
-      ],
-      [
-        AS_GLIBCONFIG([deps/glib])
-        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_srcdir)/deps"
-        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_srcdir)/deps/glib"
-        COGL_EXTRA_CFLAGS="$COGL_EXTRA_CFLAGS -I\$(top_srcdir)/deps/gmodule"
-        EXPERIMENTAL_CONFIG=yes
-        EXPERIMENTAL_OPTIONS="$EXPERIMENTAL_OPTIONS --disable-glib,"
-        enable_nls=no
-      ]
-)
-
-dnl     ============================================================
-dnl     Should cogl-pango be built?
-dnl     ============================================================
-
-AS_IF([test "x$enable_glib" != "xyes"],
-      [
-        AS_IF([test "x$enable_cogl_pango" = "xyes"],
-              AC_MSG_ERROR([--enable-cogl-pango conflicts with --disable-glib]))
-        enable_cogl_pango=no
-      ]
-)
-
-AC_ARG_ENABLE(
-  [cogl-pango],
-  [AC_HELP_STRING([--enable-cogl-pango=@<:@no/yes@:>@], [Enable pango support @<:@default=yes@:>@])],
-  [],
-  enable_cogl_pango=yes
-)
-AS_IF([test "x$enable_cogl_pango" = "xyes"],
-      [
-	COGL_PANGO_PKG_REQUIRES="$COGL_PANGO_PKG_REQUIRES pangocairo >= pangocairo_req_version"
-      ]
-)
-
 
 dnl ================================================================
 dnl I18n stuff.
