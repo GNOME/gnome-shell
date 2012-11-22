@@ -102,7 +102,7 @@ _cogl_texture_rectangle_gl_flush_legacy_texobj_wrap_modes (CoglTexture *tex,
 static void
 _cogl_texture_rectangle_free (CoglTextureRectangle *tex_rect)
 {
-  if (!tex_rect->is_foreign)
+  if (!tex_rect->is_foreign && tex_rect->gl_texture)
     _cogl_delete_gl_texture (tex_rect->gl_texture);
 
   /* Chain up */
@@ -173,6 +173,8 @@ _cogl_texture_rectangle_create_base (CoglContext *ctx,
 
   _cogl_texture_init (tex, ctx, width, height, &cogl_texture_rectangle_vtable);
 
+  tex_rect->gl_texture = 0;
+
   /* We default to GL_LINEAR for both filters */
   tex_rect->gl_legacy_texobj_min_filter = GL_LINEAR;
   tex_rect->gl_legacy_texobj_mag_filter = GL_LINEAR;
@@ -181,7 +183,7 @@ _cogl_texture_rectangle_create_base (CoglContext *ctx,
   tex_rect->gl_legacy_texobj_wrap_mode_s = GL_FALSE;
   tex_rect->gl_legacy_texobj_wrap_mode_t = GL_FALSE;
 
-  tex_rect->format = internal_format;
+  tex_rect->internal_format = internal_format;
 
   return _cogl_texture_rectangle_object_new (tex_rect);
 }
@@ -194,36 +196,59 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
                                       CoglError **error)
 {
   CoglTextureRectangle *tex_rect;
-  GLenum gl_intformat;
-  GLenum gl_format;
-  GLenum gl_type;
-  GLenum gl_error;
 
   /* Since no data, we need some internal format */
   if (internal_format == COGL_PIXEL_FORMAT_ANY)
     internal_format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
 
+  tex_rect =_cogl_texture_rectangle_create_base (ctx,
+                                                 width, height,
+                                                 internal_format);
+
+  /* XXX: This api has been changed for Cogl 2.0 on the master branch
+   * to not take a CoglError to allow the storage to be allocated
+   * lazily but since Mutter uses this api we are currently
+   * maintaining the semantics of immediately allocating the storage
+   */
+  if (!cogl_texture_allocate (COGL_TEXTURE (tex_rect), error))
+    {
+      cogl_object_unref (tex_rect);
+      return NULL;
+    }
+  return tex_rect;
+}
+
+static CoglBool
+_cogl_texture_rectangle_allocate (CoglTexture *tex,
+                                  CoglError **error)
+{
+  CoglContext *ctx = tex->context;
+  CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
+  GLenum gl_intformat;
+  GLenum gl_format;
+  GLenum gl_type;
+  GLenum gl_error;
+  GLenum gl_texture;
+
   if (!_cogl_texture_rectangle_can_create (ctx,
-                                           width, height,
-                                           internal_format, error))
-    return NULL;
+                                           tex->width,
+                                           tex->height,
+                                           tex_rect->internal_format,
+                                           error))
+    return FALSE;
 
-  internal_format = ctx->driver_vtable->pixel_format_to_gl (ctx,
-                                                            internal_format,
-                                                            &gl_intformat,
-                                                            &gl_format,
-                                                            &gl_type);
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          tex_rect->internal_format,
+                                          &gl_intformat,
+                                          &gl_format,
+                                          &gl_type);
 
-  tex_rect = _cogl_texture_rectangle_create_base (ctx,
-                                                  width, height,
-                                                  internal_format);
-
-  tex_rect->gl_texture =
+  gl_texture =
     ctx->texture_driver->gen (ctx,
                               GL_TEXTURE_RECTANGLE_ARB,
-                              internal_format);
+                              tex_rect->internal_format);
   _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB,
-                                   tex_rect->gl_texture,
+                                   gl_texture,
                                    tex_rect->is_foreign);
 
   /* Clear any GL errors */
@@ -231,15 +256,18 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
     ;
 
   ctx->glTexImage2D (GL_TEXTURE_RECTANGLE_ARB, 0, gl_intformat,
-                     width, height, 0, gl_format, gl_type, NULL);
+                     tex->width, tex->height, 0, gl_format, gl_type, NULL);
 
   if (_cogl_gl_util_catch_out_of_memory (ctx, error))
     {
-      cogl_object_unref (tex_rect);
-      return NULL;
+      GE( ctx, glDeleteTextures (1, &gl_texture) );
+      return FALSE;
     }
 
-  return tex_rect;
+  tex_rect->gl_texture = gl_texture;
+  tex_rect->gl_format = gl_intformat;
+
+  return TRUE;
 }
 
 CoglTextureRectangle *
@@ -307,6 +335,8 @@ cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bmp,
   tex_rect->gl_format = gl_intformat;
 
   cogl_object_unref (dst_bmp);
+
+  _cogl_texture_set_allocated (COGL_TEXTURE (tex_rect), TRUE);
 
   return tex_rect;
 }
@@ -424,7 +454,7 @@ cogl_texture_rectangle_new_from_foreign (CoglContext *ctx,
   /* Setup bitmap info */
   tex_rect->is_foreign = TRUE;
 
-  tex_rect->format = format;
+  tex_rect->internal_format = format;
 
   tex_rect->gl_texture = gl_handle;
   tex_rect->gl_format = gl_int_format;
@@ -432,6 +462,8 @@ cogl_texture_rectangle_new_from_foreign (CoglContext *ctx,
   /* Unknown filter */
   tex_rect->gl_legacy_texobj_min_filter = GL_FALSE;
   tex_rect->gl_legacy_texobj_mag_filter = GL_FALSE;
+
+  _cogl_texture_set_allocated (COGL_TEXTURE (tex_rect), TRUE);
 
   return tex_rect;
 }
@@ -624,7 +656,7 @@ _cogl_texture_rectangle_get_data (CoglTexture *tex,
 static CoglPixelFormat
 _cogl_texture_rectangle_get_format (CoglTexture *tex)
 {
-  return COGL_TEXTURE_RECTANGLE (tex)->format;
+  return COGL_TEXTURE_RECTANGLE (tex)->internal_format;
 }
 
 static GLenum
@@ -649,6 +681,7 @@ static const CoglTextureVtable
 cogl_texture_rectangle_vtable =
   {
     TRUE, /* primitive */
+    _cogl_texture_rectangle_allocate,
     _cogl_texture_rectangle_set_region,
     _cogl_texture_rectangle_get_data,
     NULL, /* foreach_sub_texture_in_region */

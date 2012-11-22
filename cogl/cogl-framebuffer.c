@@ -49,6 +49,7 @@
 #include "cogl-primitives-private.h"
 #include "cogl-path-private.h"
 #include "cogl-error-private.h"
+#include "cogl-texture-gl-private.h"
 
 typedef struct _CoglFramebufferStackEntry
 {
@@ -569,48 +570,24 @@ _cogl_framebuffer_flush_dependency_journals (CoglFramebuffer *framebuffer)
 CoglOffscreen *
 _cogl_offscreen_new_to_texture_full (CoglTexture *texture,
                                      CoglOffscreenFlags create_flags,
-                                     unsigned int level)
+                                     int level)
 {
   CoglContext *ctx = texture->context;
   CoglOffscreen *offscreen;
   CoglFramebuffer *fb;
   int level_width;
   int level_height;
-  int i;
   CoglOffscreen *ret;
 
-  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
-    return NULL;
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_texture (texture), NULL);
+  _COGL_RETURN_VAL_IF_FAIL (level < _cogl_texture_get_n_levels (texture),
+                            NULL);
 
-  /* Make texture is a valid texture object */
-  if (!cogl_is_texture (texture))
-    return NULL;
-
-  /* The texture must not be sliced */
-  if (cogl_texture_is_sliced (texture))
-    return NULL;
-
-  /* Calculate the size of the texture at this mipmap level to ensure
-     that it's a valid level */
-  level_width = cogl_texture_get_width (texture);
-  level_height = cogl_texture_get_height (texture);
-
-  for (i = 0; i < level; i++)
-    {
-      /* If neither dimension can be further divided then the level is
-         invalid */
-      if (level_width == 1 && level_height == 1)
-        {
-          g_warning ("Invalid texture level passed to "
-                     "_cogl_offscreen_new_to_texture_full");
-          return NULL;
-        }
-
-      if (level_width > 1)
-        level_width >>= 1;
-      if (level_height > 1)
-        level_height >>= 1;
-    }
+  _cogl_texture_get_level_size (texture,
+                                level,
+                                &level_width,
+                                &level_height,
+                                NULL);
 
   offscreen = g_new0 (CoglOffscreen, 1);
   offscreen->texture = cogl_object_ref (texture);
@@ -688,7 +665,29 @@ cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
   else
     {
       CoglContext *ctx = framebuffer->context;
-      if (!ctx->driver_vtable->offscreen_allocate (COGL_OFFSCREEN (framebuffer), error))
+      CoglOffscreen *offscreen = COGL_OFFSCREEN (framebuffer);
+
+      if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
+        {
+          _cogl_set_error (error, COGL_SYSTEM_ERROR,
+                           COGL_SYSTEM_ERROR_UNSUPPORTED,
+                           "Offscreen framebuffers not supported by system");
+          return FALSE;
+        }
+
+      if (cogl_texture_is_sliced (offscreen->texture))
+        {
+          _cogl_set_error (error, COGL_SYSTEM_ERROR,
+                           COGL_SYSTEM_ERROR_UNSUPPORTED,
+                           "Can't create offscreen framebuffer from "
+                           "sliced texture");
+          return FALSE;
+        }
+
+      if (!cogl_texture_allocate (offscreen->texture, error))
+        return FALSE;
+
+      if (!ctx->driver_vtable->offscreen_allocate (offscreen, error))
         return FALSE;
     }
 

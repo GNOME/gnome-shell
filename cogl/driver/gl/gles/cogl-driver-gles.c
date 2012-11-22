@@ -380,7 +380,7 @@ _cogl_driver_gles =
     _cogl_texture_2d_gl_free,
     _cogl_texture_2d_gl_can_create,
     _cogl_texture_2d_gl_init,
-    _cogl_texture_2d_gl_new_with_size,
+    _cogl_texture_2d_gl_allocate,
     _cogl_texture_2d_gl_new_from_bitmap,
 #if defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base)
     _cogl_egl_texture_2d_gl_new_from_image,

@@ -361,7 +361,16 @@ cogl_texture_pixmap_x11_new (CoglContext *ctxt,
   if (!tex_pixmap->use_winsys_texture)
     tex_pixmap->winsys = NULL;
 
+  _cogl_texture_set_allocated (tex, TRUE);
+
   return _cogl_texture_pixmap_x11_object_new (tex_pixmap);
+}
+
+static CoglBool
+_cogl_texture_pixmap_x11_allocate (CoglTexture *tex,
+                                   CoglError **error)
+{
+  return TRUE;
 }
 
 /* Tries to allocate enough shared mem to handle a full size
@@ -1001,6 +1010,7 @@ static const CoglTextureVtable
 cogl_texture_pixmap_x11_vtable =
   {
     FALSE, /* not primitive */
+    _cogl_texture_pixmap_x11_allocate,
     _cogl_texture_pixmap_x11_set_region,
     _cogl_texture_pixmap_x11_get_data,
     _cogl_texture_pixmap_x11_foreach_sub_texture_in_region,

@@ -306,7 +306,7 @@ _cogl_free_framebuffer_stack (GSList *stack);
 CoglOffscreen *
 _cogl_offscreen_new_to_texture_full (CoglTexture *texture,
                                      CoglOffscreenFlags create_flags,
-                                     unsigned int level);
+                                     int level);
 
 /*
  * _cogl_push_framebuffers:

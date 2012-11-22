@@ -68,7 +68,8 @@ _cogl_atlas_texture_new_with_size (CoglContext *ctx,
                                    int width,
                                    int height,
                                    CoglTextureFlags flags,
-                                   CoglPixelFormat internal_format);
+                                   CoglPixelFormat internal_format,
+                                   CoglError **error);
 
 void
 _cogl_atlas_texture_add_reorganize_callback (CoglContext *ctx,

@@ -38,6 +38,7 @@ struct _CoglTexture2DSliced
   GArray *slice_y_spans;
   GArray *slice_textures;
   int max_waste;
+  CoglPixelFormat internal_format;
 };
 
 CoglTexture2DSliced *

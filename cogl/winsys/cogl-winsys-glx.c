@@ -1980,17 +1980,17 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
             cogl_texture_2d_new_with_size (ctx,
                                            tex->width,
                                            tex->height,
-                                           texture_format,
-                                           NULL));
+                                           texture_format));
 
-          if (glx_tex_pixmap->glx_tex)
+          if (cogl_texture_allocate (glx_tex_pixmap->glx_tex, &error))
             COGL_NOTE (TEXTURE_PIXMAP, "Created a texture 2d for %p",
                        tex_pixmap);
           else
             {
               COGL_NOTE (TEXTURE_PIXMAP, "Falling back for %p because a "
-                         "texture 2d could not be created",
-                         tex_pixmap);
+                         "texture 2d could not be created: %s",
+                         tex_pixmap, error->message);
+              cogl_error_free (error);
               free_glx_pixmap (ctx, glx_tex_pixmap);
               return FALSE;
             }

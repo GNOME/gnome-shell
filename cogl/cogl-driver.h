@@ -138,14 +138,11 @@ struct _CoglDriverVtable
   void
   (* texture_2d_init) (CoglTexture2D *tex_2d);
 
-  /* Instantiates a new CoglTexture2D object with un-initialized
-   * storage for a given size and internal format */
-  CoglTexture2D *
-  (* texture_2d_new_with_size) (CoglContext *ctx,
-                                int width,
-                                int height,
-                                CoglPixelFormat internal_format,
-                                CoglError **error);
+  /* Allocates (uninitialized) storage for the given texture according
+   * to the configured size and format of the texture */
+  CoglBool
+  (* texture_2d_allocate) (CoglTexture *tex,
+                           CoglError **error);
 
   /* Instantiates a new CoglTexture2D object with storage initialized
    * with the contents of the given bitmap, using the specified

@@ -47,12 +47,13 @@
 #include "cogl-texture-2d-gl.h"
 
 CoglTexture *
-cogl_texture_new_with_size (unsigned int     width,
-			    unsigned int     height,
+cogl_texture_new_with_size (unsigned int width,
+			    unsigned int height,
                             CoglTextureFlags flags,
-			    CoglPixelFormat  internal_format)
+			    CoglPixelFormat internal_format)
 {
   CoglTexture *tex;
+  CoglError *skip_error = NULL;
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
@@ -63,8 +64,18 @@ cogl_texture_new_with_size (unsigned int     width,
       /* First try creating a fast-path non-sliced texture */
       tex = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx,
                                                          width, height,
-                                                         internal_format,
-                                                         NULL));
+                                                         internal_format));
+
+      /* TODO: instead of allocating storage here it would be better
+       * if we had some api that let us just check that the size is
+       * supported by the hardware so storage could be allocated
+       * lazily when uploading data. */
+      if (!cogl_texture_allocate (tex, &skip_error))
+        {
+          cogl_error_free (skip_error);
+          cogl_object_unref (tex);
+          tex = NULL;
+        }
     }
   else
     tex = NULL;
@@ -83,8 +94,7 @@ cogl_texture_new_with_size (unsigned int     width,
                                                                 width,
                                                                 height,
                                                                 max_waste,
-                                                                internal_format,
-                                                                NULL));
+                                                                internal_format));
     }
 
   return tex;

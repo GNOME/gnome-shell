@@ -39,7 +39,7 @@ struct _CoglTexture2D
 
   /* The internal format of the GL texture represented as a
      CoglPixelFormat */
-  CoglPixelFormat format;
+  CoglPixelFormat internal_format;
 
   CoglBool auto_mipmap;
   CoglBool mipmaps_dirty;

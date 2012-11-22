@@ -139,6 +139,7 @@ _cogl_texture_init (CoglTexture *texture,
   texture->max_level = 0;
   texture->width = width;
   texture->height = height;
+  texture->allocated = FALSE;
   texture->vtable = vtable;
   texture->framebuffers = NULL;
 }
@@ -440,6 +441,20 @@ _cogl_texture_get_type (CoglTexture *texture)
 void
 _cogl_texture_pre_paint (CoglTexture *texture, CoglTexturePrePaintFlags flags)
 {
+  /* Assert that the storage for the texture exists already if we're
+   * about to reference it for painting.
+   *
+   * Note: we abort on error here since it's a bit late to do anything
+   * about it if we fail to allocate the texture and the app could
+   * have explicitly allocated the texture earlier to handle problems
+   * gracefully.
+   *
+   * XXX: Maybe it could even be considered a programmer error if the
+   * texture hasn't been allocated by this point since it implies we
+   * are abount to paint with undefined texture contents?
+   */
+  cogl_texture_allocate (texture, NULL);
+
   texture->vtable->pre_paint (texture, flags);
 }
 
@@ -465,10 +480,12 @@ _cogl_texture_set_region_from_bitmap (CoglTexture *texture,
                             >= width, FALSE);
   _COGL_RETURN_VAL_IF_FAIL ((cogl_bitmap_get_height (bmp) - src_y)
                             >= height, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (width > 0, FALSE);
+  _COGL_RETURN_VAL_IF_FAIL (height > 0, FALSE);
 
-  /* Shortcut out early if the image is empty */
-  if (width == 0 || height == 0)
-    return TRUE;
+  /* Assert that the storage for this texture has been allocated */
+  if (!cogl_texture_allocate (texture, error))
+    return FALSE;
 
   /* Note that we don't prepare the bitmap for upload here because
      some backends may be internally using a different format for the
@@ -897,10 +914,12 @@ get_texture_bits_via_offscreen (CoglTexture    *texture,
                                        COGL_OFFSCREEN_DISABLE_DEPTH_AND_STENCIL,
                                        0);
 
-  if (offscreen == NULL)
-    return FALSE;
-
   framebuffer = COGL_FRAMEBUFFER (offscreen);
+  if (!cogl_framebuffer_allocate (framebuffer, &ignore_error))
+    {
+      cogl_error_free (ignore_error);
+      return FALSE;
+    }
 
   bitmap = cogl_bitmap_new_for_data (ctx,
                                      width, height,
@@ -1389,4 +1408,23 @@ _cogl_texture_spans_foreach_in_region (CoglSpan *x_spans,
                     user_data);
 	}
     }
+}
+
+void
+_cogl_texture_set_allocated (CoglTexture *texture,
+                             CoglBool allocated)
+{
+  texture->allocated = allocated;
+}
+
+CoglBool
+cogl_texture_allocate (CoglTexture *texture,
+                       CoglError **error)
+{
+  if (texture->allocated)
+    return TRUE;
+
+  texture->allocated = texture->vtable->allocate (texture, error);
+
+  return texture->allocated;
 }

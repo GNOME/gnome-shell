@@ -43,7 +43,7 @@
 void
 _cogl_texture_2d_gl_free (CoglTexture2D *tex_2d)
 {
-  if (!tex_2d->is_foreign)
+  if (!tex_2d->is_foreign && tex_2d->gl_texture)
     _cogl_delete_gl_texture (tex_2d->gl_texture);
 }
 
@@ -79,6 +79,8 @@ _cogl_texture_2d_gl_can_create (CoglContext *ctx,
 void
 _cogl_texture_2d_gl_init (CoglTexture2D *tex_2d)
 {
+  tex_2d->gl_texture = 0;
+
   /* We default to GL_LINEAR for both filters */
   tex_2d->gl_legacy_texobj_min_filter = GL_LINEAR;
   tex_2d->gl_legacy_texobj_mag_filter = GL_LINEAR;
@@ -88,36 +90,43 @@ _cogl_texture_2d_gl_init (CoglTexture2D *tex_2d)
   tex_2d->gl_legacy_texobj_wrap_mode_t = GL_FALSE;
 }
 
-CoglTexture2D *
-_cogl_texture_2d_gl_new_with_size (CoglContext *ctx,
-                                   int width,
-                                   int height,
-                                   CoglPixelFormat internal_format,
-                                   CoglError **error)
+CoglBool
+_cogl_texture_2d_gl_allocate (CoglTexture *tex,
+                              CoglError **error)
 {
-  CoglTexture2D *tex_2d;
+  CoglContext *ctx = tex->context;
+  CoglTexture2D *tex_2d = COGL_TEXTURE_2D (tex);
   GLenum gl_intformat;
   GLenum gl_format;
   GLenum gl_type;
   GLenum gl_error;
+  GLenum gl_texture;
 
-  internal_format = ctx->driver_vtable->pixel_format_to_gl (ctx,
-                                                            internal_format,
-                                                            &gl_intformat,
-                                                            &gl_format,
-                                                            &gl_type);
+  if (!_cogl_texture_2d_gl_can_create (ctx,
+                                       tex->width,
+                                       tex->height,
+                                       tex_2d->internal_format))
+    {
+      _cogl_set_error (error, COGL_TEXTURE_ERROR,
+                       COGL_TEXTURE_ERROR_SIZE,
+                       "Failed to create texture 2d due to size/format"
+                       " constraints");
+      return FALSE;
+    }
 
-  tex_2d = _cogl_texture_2d_create_base (ctx,
-                                         width, height,
-                                         internal_format);
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          tex_2d->internal_format,
+                                          &gl_intformat,
+                                          &gl_format,
+                                          &gl_type);
 
-  tex_2d->gl_texture =
-    ctx->texture_driver->gen (ctx, GL_TEXTURE_2D, internal_format);
+  gl_texture =
+    ctx->texture_driver->gen (ctx, GL_TEXTURE_2D, tex_2d->internal_format);
 
   tex_2d->gl_internal_format = gl_intformat;
 
   _cogl_bind_gl_texture_transient (GL_TEXTURE_2D,
-                                   tex_2d->gl_texture,
+                                   gl_texture,
                                    tex_2d->is_foreign);
 
   /* Clear any GL errors */
@@ -125,15 +134,18 @@ _cogl_texture_2d_gl_new_with_size (CoglContext *ctx,
     ;
 
   ctx->glTexImage2D (GL_TEXTURE_2D, 0, gl_intformat,
-                     width, height, 0, gl_format, gl_type, NULL);
+                     tex->width, tex->height, 0, gl_format, gl_type, NULL);
 
   if (_cogl_gl_util_catch_out_of_memory (ctx, error))
     {
-      cogl_object_unref (tex_2d);
-      return NULL;
+      GE( ctx, glDeleteTextures (1, &gl_texture) );
+      return FALSE;
     }
 
-  return tex_2d;
+  tex_2d->gl_texture = gl_texture;
+  tex_2d->gl_internal_format = gl_intformat;
+
+  return TRUE;
 }
 
 CoglTexture2D *
@@ -213,6 +225,8 @@ _cogl_texture_2d_gl_new_from_bitmap (CoglBitmap *bmp,
 
   cogl_object_unref (dst_bmp);
 
+  _cogl_texture_set_allocated (COGL_TEXTURE (tex_2d), TRUE);
+
   return tex_2d;
 
 }
@@ -249,8 +263,11 @@ _cogl_egl_texture_2d_gl_new_from_image (CoglContext *ctx,
                        COGL_TEXTURE_ERROR_BAD_PARAMETER,
                        "Could not create a CoglTexture2D from a given "
                        "EGLImage");
+      cogl_object_unref (tex_2d);
       return NULL;
     }
+
+  _cogl_texture_set_allocated (COGL_TEXTURE (tex_2d), TRUE);
 
   return tex_2d;
 }
@@ -442,14 +459,14 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
   tex_2d->is_foreign = TRUE;
   tex_2d->mipmaps_dirty = TRUE;
 
-  tex_2d->format = format;
-
   tex_2d->gl_texture = gl_handle;
   tex_2d->gl_internal_format = gl_int_format;
 
   /* Unknown filter */
   tex_2d->gl_legacy_texobj_min_filter = GL_FALSE;
   tex_2d->gl_legacy_texobj_mag_filter = GL_FALSE;
+
+  _cogl_texture_set_allocated (COGL_TEXTURE (tex_2d), TRUE);
 
   return tex_2d;
 }
@@ -465,7 +482,8 @@ _cogl_texture_2d_gl_copy_from_framebuffer (CoglTexture2D *tex_2d,
                                            int dst_y,
                                            int level)
 {
-  CoglContext *ctx = COGL_TEXTURE (tex_2d)->context;
+  CoglTexture *tex = COGL_TEXTURE (tex_2d);
+  CoglContext *ctx = tex->context;
 
   /* Make sure the current framebuffers are bound, though we don't need to
    * flush the clip state here since we aren't going to draw to the

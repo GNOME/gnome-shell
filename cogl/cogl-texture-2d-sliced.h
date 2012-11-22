@@ -70,32 +70,48 @@ typedef struct _CoglTexture2DSliced CoglTexture2DSliced;
  * @width: The virtual width of your sliced texture.
  * @height: The virtual height of your sliced texture.
  * @max_waste: The threshold of how wide a strip of wasted texels
- *             are allowed in the non-power-of-two textures before
- *             they must be sliced to reduce the amount of waste.
+ *             are allowed along the right and bottom textures before
+ *             they must be sliced to reduce the amount of waste. A
+ *             negative can be passed to disable slicing.
  * @internal_format: The format of the texture
- * @error: A #CoglError for exceptions.
  *
  * Creates a #CoglTexture2DSliced that may internally be comprised of
- * 1 or more #CoglTexture2D textures with power-of-two sizes.
- * @max_waste is used as a threshold for recursively slicing the
- * right-most or bottom-most slices into smaller power-of-two sizes
- * until the wasted padding at the bottom and right of the
- * power-of-two textures is less than specified.
+ * 1 or more #CoglTexture2D textures depending on GPU limitations.
+ * For example if the GPU only supports power-of-two sized textures
+ * then a sliced texture will turn a non-power-of-two size into a
+ * combination of smaller power-of-two sized textures. If the
+ * requested texture size is larger than is supported by the hardware
+ * then the texture will be sliced into smaller textures that can be
+ * accessed by the hardware.
  *
- * Returns: A newly allocated #CoglTexture2DSliced or if there was
- *          an error allocating any of the internal slices %NULL is
- *          returned and @error is updated.
+ * @max_waste is used as a threshold for recursively slicing the
+ * right-most or bottom-most slices into smaller sizes until the
+ * wasted padding at the bottom and right of the textures is less than
+ * specified. A negative @max_waste will disable slicing.
+ *
+ * The storage for the texture is not allocated before this function
+ * returns. You can call cogl_texture_allocate() to explicitly
+ * allocate the underlying storage or let Cogl automatically allocate
+ * storage lazily.
+ *
+ * <note>It's possible for the allocation of a sliced texture to fail
+ * later due to impossible slicing constraints if a negative
+ * @max_waste value is given. If the given virtual texture size size
+ * is larger than is supported by the hardware but slicing is disabled
+ * the texture size would be too large to handle.</note>
+ *
+ * Returns: A new #CoglTexture2DSliced object with no storage
+ *          allocated yet.
  *
  * Since: 1.10
  * Stability: unstable
  */
 CoglTexture2DSliced *
 cogl_texture_2d_sliced_new_with_size (CoglContext *ctx,
-                                      unsigned int width,
-                                      unsigned int height,
+                                      int width,
+                                      int height,
                                       int max_waste,
-                                      CoglPixelFormat internal_format,
-                                      CoglError **error);
+                                      CoglPixelFormat internal_format);
 
 /**
  * cogl_is_texture_2d_sliced:

@@ -74,7 +74,6 @@ cogl_is_texture_2d (void *object);
  * @width: Width of the texture to allocate
  * @height: Height of the texture to allocate
  * @internal_format: The format of the texture
- * @error: A #CoglError for exceptions
  *
  * Allocates a low-level #CoglTexture2D texture that your GPU can
  * texture from directly. This is unlike sliced textures for example
@@ -82,15 +81,18 @@ cogl_is_texture_2d (void *object);
  * textures where Cogl has to modify texture coordinates before they
  * may be used by the GPU.
  *
+ * The storage for the texture is not allocated before this function
+ * returns. You can call cogl_texture_allocate() to explicitly
+ * allocate the underlying storage or preferably let Cogl
+ * automatically allocate storage lazily when it may know more about
+ * how the texture is being used and can optimize how it is allocated.
+ *
  * <note>Many GPUs only support power of two sizes for #CoglTexture2D
  * textures. You can check support for non power of two textures by
  * checking for the %COGL_FEATURE_ID_TEXTURE_NPOT feature via
  * cogl_has_feature().</note>
  *
- * Returns: A newly allocated #CoglTexture2D, or if the size is not
- *          supported (because it is too large or a non-power-of-two
- *          size that the hardware doesn't support) it will return
- *          %NULL and set @error.
+ * Returns: A new #CoglTexture2D object with no storage yet allocated.
  *
  * Since: 2.0
  */
@@ -98,8 +100,7 @@ CoglTexture2D *
 cogl_texture_2d_new_with_size (CoglContext *ctx,
                                int width,
                                int height,
-                               CoglPixelFormat internal_format,
-                               CoglError **error);
+                               CoglPixelFormat internal_format);
 
 /**
  * cogl_texture_2d_new_from_data:

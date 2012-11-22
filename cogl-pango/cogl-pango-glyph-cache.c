@@ -214,6 +214,7 @@ cogl_pango_glyph_cache_add_to_global_atlas (CoglPangoGlyphCache *cache,
                                             CoglPangoGlyphCacheValue *value)
 {
   CoglAtlasTexture *texture;
+  CoglError *ignore_error = NULL;
 
   if (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_SHARED_ATLAS))
     return FALSE;
@@ -227,10 +228,14 @@ cogl_pango_glyph_cache_add_to_global_atlas (CoglPangoGlyphCache *cache,
                                                value->draw_width,
                                                value->draw_height,
                                                COGL_TEXTURE_NONE,
-                                               COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+                                               COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                               &ignore_error);
 
   if (texture == NULL)
-    return FALSE;
+    {
+      cogl_error_free (ignore_error);
+      return FALSE;
+    }
 
   value->texture = COGL_TEXTURE (texture);
   value->tx1 = 0;

@@ -119,7 +119,7 @@ _cogl_texture_2d_create_base (CoglContext *ctx,
 
   tex_2d->is_foreign = FALSE;
 
-  tex_2d->format = internal_format;
+  tex_2d->internal_format = internal_format;
 
   ctx->driver_vtable->texture_2d_init (tex_2d);
 
@@ -130,27 +130,23 @@ CoglTexture2D *
 cogl_texture_2d_new_with_size (CoglContext *ctx,
                                int width,
                                int height,
-                               CoglPixelFormat internal_format,
-                               CoglError **error)
+                               CoglPixelFormat internal_format)
 {
   /* Since no data, we need some internal format */
   if (internal_format == COGL_PIXEL_FORMAT_ANY)
     internal_format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
 
-  if (!_cogl_texture_2d_can_create (ctx, width, height, internal_format))
-    {
-      _cogl_set_error (error, COGL_TEXTURE_ERROR,
-                       COGL_TEXTURE_ERROR_SIZE,
-                       "Failed to create texture 2d due to size/format"
-                       " constraints");
-      return NULL;
-    }
+  return  _cogl_texture_2d_create_base (ctx,
+                                        width, height,
+                                        internal_format);
+}
 
-  return ctx->driver_vtable->texture_2d_new_with_size (ctx,
-                                                       width,
-                                                       height,
-                                                       internal_format,
-                                                       error);
+static CoglBool
+_cogl_texture_2d_allocate (CoglTexture *tex,
+                           CoglError **error)
+{
+  CoglContext *ctx = tex->context;
+  return ctx->driver_vtable->texture_2d_allocate (tex, error);
 }
 
 CoglTexture2D *
@@ -178,7 +174,6 @@ cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp,
                        "Failed to create texture 2d due to size/format"
                        " constraints");
       return NULL;
-
     }
 
   return ctx->driver_vtable->texture_2d_new_from_bitmap (bmp,
@@ -350,7 +345,11 @@ _cogl_texture_2d_copy_from_framebuffer (CoglTexture2D *tex_2d,
                                         int dst_y,
                                         int level)
 {
-  CoglContext *ctx = COGL_TEXTURE (tex_2d)->context;
+  CoglTexture *tex = COGL_TEXTURE (tex_2d);
+  CoglContext *ctx = tex->context;
+
+  /* Assert that the storage for this texture has been allocated */
+  cogl_texture_allocate (tex, NULL); /* (abort on error) */
 
   ctx->driver_vtable->texture_2d_copy_from_framebuffer (tex_2d,
                                                         src_x,
@@ -525,7 +524,7 @@ _cogl_texture_2d_get_data (CoglTexture *tex,
 static CoglPixelFormat
 _cogl_texture_2d_get_format (CoglTexture *tex)
 {
-  return COGL_TEXTURE_2D (tex)->format;
+  return COGL_TEXTURE_2D (tex)->internal_format;
 }
 
 static GLenum
@@ -550,6 +549,7 @@ static const CoglTextureVtable
 cogl_texture_2d_vtable =
   {
     TRUE, /* primitive */
+    _cogl_texture_2d_allocate,
     _cogl_texture_2d_set_region,
     _cogl_texture_2d_get_data,
     NULL, /* foreach_sub_texture_in_region */

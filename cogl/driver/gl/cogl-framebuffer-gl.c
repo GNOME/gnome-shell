@@ -382,8 +382,7 @@ create_depth_texture (CoglContext *ctx,
 
   depth_texture =  cogl_texture_2d_new_with_size (ctx,
                                                   width, height,
-                                                  format,
-                                                  NULL);
+                                                  format);
 
   return COGL_TEXTURE (depth_texture);
 }
@@ -712,14 +711,14 @@ _cogl_offscreen_gl_allocate (CoglOffscreen *offscreen,
                               offscreen->texture_level_width,
                               offscreen->texture_level_height);
 
-      if (offscreen->depth_texture)
-        _cogl_texture_associate_framebuffer (offscreen->depth_texture, fb);
-      else
+      if (!cogl_texture_allocate (offscreen->depth_texture, error))
         {
-          _cogl_set_error (error, COGL_FRAMEBUFFER_ERROR,
-                           COGL_FRAMEBUFFER_ERROR_ALLOCATE,
-                           "Failed to allocate depth texture for framebuffer");
+          cogl_object_unref (offscreen->depth_texture);
+          offscreen->depth_texture = NULL;
+          return FALSE;
         }
+
+      _cogl_texture_associate_framebuffer (offscreen->depth_texture, fb);
     }
 
   /* XXX: The framebuffer_object spec isn't clear in defining whether attaching

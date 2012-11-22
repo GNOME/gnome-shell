@@ -60,6 +60,9 @@ struct _CoglTextureVtable
 
   CoglBool is_primitive;
 
+  CoglBool (* allocate) (CoglTexture *tex,
+                         CoglError **error);
+
   /* This should update the specified sub region of the texture with a
      sub region of the given bitmap. The bitmap is not converted
      before being passed so the implementation is expected to call
@@ -144,6 +147,7 @@ struct _CoglTexture
   int max_level;
   int width;
   int height;
+  CoglBool allocated;
   const CoglTextureVtable *vtable;
 };
 
@@ -320,5 +324,9 @@ _cogl_texture_get_level_size (CoglTexture *texture,
                               int *width,
                               int *height,
                               int *depth);
+
+void
+_cogl_texture_set_allocated (CoglTexture *texture,
+                             CoglBool allocated);
 
 #endif /* __COGL_TEXTURE_PRIVATE_H */

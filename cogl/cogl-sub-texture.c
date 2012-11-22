@@ -259,6 +259,15 @@ cogl_sub_texture_new (CoglContext *ctx,
   return _cogl_sub_texture_object_new (sub_tex);
 }
 
+static CoglBool
+_cogl_sub_texture_allocate (CoglTexture *tex,
+                            CoglError **error)
+{
+  CoglSubTexture *sub_tex = COGL_SUB_TEXTURE (tex);
+
+  return cogl_texture_allocate (sub_tex->full_texture, error);
+}
+
 CoglTexture *
 cogl_sub_texture_get_parent (CoglSubTexture *sub_texture)
 {
@@ -433,6 +442,7 @@ static const CoglTextureVtable
 cogl_sub_texture_vtable =
   {
     FALSE, /* not primitive */
+    _cogl_sub_texture_allocate,
     _cogl_sub_texture_set_region,
     NULL, /* get_data */
     _cogl_sub_texture_foreach_sub_texture_in_region,

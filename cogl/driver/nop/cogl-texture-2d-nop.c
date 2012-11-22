@@ -55,16 +55,11 @@ _cogl_texture_2d_nop_init (CoglTexture2D *tex_2d)
 {
 }
 
-CoglTexture2D *
-_cogl_texture_2d_nop_new_with_size (CoglContext *ctx,
-                                    int width,
-                                    int height,
-                                    CoglPixelFormat internal_format,
-                                    CoglError **error)
+CoglBool
+_cogl_texture_2d_nop_allocate (CoglTexture *tex,
+                               CoglError **error)
 {
-  return _cogl_texture_2d_create_base (ctx,
-                                       width, height,
-                                       internal_format);
+  return TRUE;
 }
 
 CoglTexture2D *
@@ -72,11 +67,10 @@ _cogl_texture_2d_nop_new_from_bitmap (CoglBitmap *bmp,
                                       CoglPixelFormat internal_format,
                                       CoglError **error)
 {
-  return _cogl_texture_2d_nop_new_with_size (_cogl_bitmap_get_context (bmp),
-                                             cogl_bitmap_get_width (bmp),
-                                             cogl_bitmap_get_height (bmp),
-                                             internal_format,
-                                             error);
+  return _cogl_texture_2d_create_base (_cogl_bitmap_get_context (bmp),
+                                       cogl_bitmap_get_width (bmp),
+                                       cogl_bitmap_get_height (bmp),
+                                       internal_format);
 }
 
 #if defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base)

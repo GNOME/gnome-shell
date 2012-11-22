@@ -55,18 +55,23 @@ typedef struct _CoglTexture3D CoglTexture3D;
  * @depth: depth of the texture in pixels.
  * @internal_format: the #CoglPixelFormat to use for the GPU
  *    storage of the texture.
- * @error: A CoglError return location.
  *
- * Creates a new Cogl 3D texture with the specified dimensions and
- * pixel format.
+ * Creates a new #CoglTexture3D texture with the specified dimensions
+ * and pixel format.
  *
- * Note that this function will throw a #CoglError if
- * %COGL_FEATURE_ID_TEXTURE_3D is not advertised. It can also fail if the
- * requested dimensions are not supported by the GPU.
+ * The storage for the texture is not allocated before this function
+ * returns. You can call cogl_texture_allocate() to explicitly
+ * allocate the underlying storage or preferably let Cogl
+ * automatically allocate storage lazily when it may know more about
+ * how the texture is going to be used and can optimize how it is
+ * allocated.
  *
- * Return value: a new #CoglTexture3D object or
- *               %NULL on failure and an exception will be returned
- *               in @error.
+ * <note>This texture will fail to allocate later if
+ * %COGL_FEATURE_ID_TEXTURE_3D is not advertised. Allocation can also
+ * fail if the requested dimensions are not supported by the
+ * GPU.</note>
+ *
+ * Returns: A new #CoglTexture3D object with no storage yet allocated.
  * Since: 1.10
  * Stability: Unstable
  */
@@ -75,8 +80,7 @@ cogl_texture_3d_new_with_size (CoglContext *context,
                                int width,
                                int height,
                                int depth,
-                               CoglPixelFormat  internal_format,
-                               CoglError **error);
+                               CoglPixelFormat internal_format);
 
 /**
  * cogl_texture_3d_new_from_data:

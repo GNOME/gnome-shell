@@ -651,32 +651,60 @@ _cogl_atlas_texture_new_with_size (CoglContext *ctx,
                                    int width,
                                    int height,
                                    CoglTextureFlags flags,
-                                   CoglPixelFormat internal_format)
+                                   CoglPixelFormat internal_format,
+                                   CoglError **error)
 {
   CoglAtlasTexture *atlas_tex;
-  CoglAtlas *atlas;
-  GSList *l;
 
   /* Don't put textures in the atlas if the user has explicitly
      requested to disable it */
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_ATLAS)))
-    return NULL;
+    {
+      _cogl_set_error (error,
+                       COGL_SYSTEM_ERROR,
+                       COGL_SYSTEM_ERROR_UNSUPPORTED,
+                       "Atlasing disabled");
+      return NULL;
+    }
 
   /* We can't put the texture in the atlas if there are any special
      flags. This precludes textures with COGL_TEXTURE_NO_ATLAS and
      COGL_TEXTURE_NO_SLICING from being atlased */
   if (flags)
-    return NULL;
+    {
+      /* XXX: This is a bit of an odd error; if we make this api
+       * public then this should probably be dealt with at a higher
+       * level, in cogl-auto-texture.c:cogl_texture_new_with_size().
+       */
+      _cogl_set_error (error,
+                       COGL_SYSTEM_ERROR,
+                       COGL_SYSTEM_ERROR_UNSUPPORTED,
+                       "Usage constraints preclude atlasing texture");
+      return NULL;
+    }
 
   /* We can't atlas zero-sized textures because it breaks the atlas
      data structure */
   if (width < 1 || height < 1)
-    return NULL;
+    {
+      _cogl_set_error (error,
+                       COGL_TEXTURE_ERROR,
+                       COGL_TEXTURE_ERROR_SIZE,
+                       "1x1 atlas textures not supported");
+      return NULL;
+    }
 
   /* If we can't use FBOs then it will be too slow to migrate textures
      and we shouldn't use the atlas */
   if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
-    return NULL;
+    {
+      _cogl_set_error (error,
+                       COGL_SYSTEM_ERROR,
+                       COGL_SYSTEM_ERROR_UNSUPPORTED,
+                       "Atlasing disabled because migrations "
+                       "would be too slow");
+      return NULL;
+    }
 
   COGL_NOTE (ATLAS, "Adding texture of size %ix%i", width, height);
 
@@ -685,7 +713,10 @@ _cogl_atlas_texture_new_with_size (CoglContext *ctx,
     {
       COGL_NOTE (ATLAS, "Texture can not be added because the "
                  "format is unsupported");
-
+      _cogl_set_error (error,
+                       COGL_TEXTURE_ERROR,
+                       COGL_TEXTURE_ERROR_FORMAT,
+                       "Texture format unsuitable for atlasing");
       return NULL;
     }
 
@@ -703,12 +734,27 @@ _cogl_atlas_texture_new_with_size (CoglContext *ctx,
 
   atlas_tex->sub_texture = NULL;
 
+  atlas_tex->format = internal_format;
+  atlas_tex->atlas = NULL;
+
+  return _cogl_atlas_texture_object_new (atlas_tex);
+}
+
+static CoglBool
+_cogl_atlas_texture_allocate (CoglTexture *tex,
+                              CoglError **error)
+{
+  CoglContext *ctx = tex->context;
+  CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
+  CoglAtlas *atlas;
+  GSList *l;
+
   /* Look for an existing atlas that can hold the texture */
   for (l = ctx->atlases; l; l = l->next)
     /* Try to make some space in the atlas for the texture */
     if (_cogl_atlas_reserve_space (atlas = l->data,
                                    /* Add two pixels for the border */
-                                   width + 2, height + 2,
+                                   tex->width + 2, tex->height + 2,
                                    atlas_tex))
       {
         cogl_object_ref (atlas);
@@ -722,20 +768,23 @@ _cogl_atlas_texture_new_with_size (CoglContext *ctx,
       COGL_NOTE (ATLAS, "Created new atlas for textures: %p", atlas);
       if (!_cogl_atlas_reserve_space (atlas,
                                       /* Add two pixels for the border */
-                                      width + 2, height + 2,
+                                      tex->width + 2, tex->height + 2,
                                       atlas_tex))
         {
           /* Ok, this means we really can't add it to the atlas */
           cogl_object_unref (atlas);
-          g_free (atlas_tex);
-          return NULL;
+
+          _cogl_set_error (error,
+                           COGL_SYSTEM_ERROR,
+                           COGL_SYSTEM_ERROR_NO_MEMORY,
+                           "Not enough memory to atlas texture");
+          return FALSE;
         }
     }
 
-  atlas_tex->format = internal_format;
   atlas_tex->atlas = atlas;
 
-  return _cogl_atlas_texture_object_new (atlas_tex);
+  return TRUE;
 }
 
 CoglAtlasTexture *
@@ -762,14 +811,14 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap *bmp,
 
   atlas_tex = _cogl_atlas_texture_new_with_size (ctx,
                                                  bmp_width, bmp_height,
-                                                 flags, internal_format);
+                                                 flags, internal_format,
+                                                 error);
+  if (!atlas_tex)
+    return NULL;
 
-  if (atlas_tex == NULL)
+  if (!cogl_texture_allocate (COGL_TEXTURE (atlas_tex), error))
     {
-      _cogl_set_error (error,
-                       COGL_SYSTEM_ERROR,
-                       COGL_SYSTEM_ERROR_UNSUPPORTED,
-                       "Texture type not compatible with atlas");
+      cogl_object_unref (atlas_tex);
       return NULL;
     }
 
@@ -839,6 +888,7 @@ static const CoglTextureVtable
 cogl_atlas_texture_vtable =
   {
     FALSE, /* not primitive */
+    _cogl_atlas_texture_allocate,
     _cogl_atlas_texture_set_region,
     NULL, /* get_data */
     _cogl_atlas_texture_foreach_sub_texture_in_region,
