@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-09 11:32+0200\n"
-"PO-Revision-Date: 2012-11-09 11:36+0200\n"
+"POT-Creation-Date: 2012-11-23 10:13+0200\n"
+"PO-Revision-Date: 2012-11-23 10:14+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <sh.yaron@gmail.com>\n"
 "Language: he\n"
@@ -244,11 +244,11 @@ msgstr "הרחבה"
 msgid "Select an extension to configure using the combobox above."
 msgstr "יש לבחור את ההרחבה להגדרה באמצעות תיבת הבחירה המשולבת שלהלן."
 
-#: ../js/gdm/loginDialog.js:560
+#: ../js/gdm/loginDialog.js:565
 msgid "Session..."
 msgstr "הפעלה..."
 
-#: ../js/gdm/loginDialog.js:707
+#: ../js/gdm/loginDialog.js:722
 msgctxt "title"
 msgid "Sign In"
 msgstr "כניסה"
@@ -256,40 +256,40 @@ msgstr "כניסה"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:768
+#: ../js/gdm/loginDialog.js:786
 msgid "Not listed?"
 msgstr "לא רשום?"
 
-#: ../js/gdm/loginDialog.js:912
+#: ../js/gdm/loginDialog.js:962
 #: ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162
 #: ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195
 #: ../js/ui/shellMountOperation.js:396
-#: ../js/ui/status/bluetooth.js:427
-#: ../js/ui/unlockDialog.js:171
+#: ../js/ui/status/bluetooth.js:413
+#: ../js/ui/unlockDialog.js:179
 msgid "Cancel"
 msgstr "ביטול"
 
-#: ../js/gdm/loginDialog.js:917
+#: ../js/gdm/loginDialog.js:978
 msgctxt "button"
 msgid "Sign In"
 msgstr "כניסה"
 
-#: ../js/gdm/loginDialog.js:917
+#: ../js/gdm/loginDialog.js:978
 msgid "Next"
 msgstr "הבא"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:993
+#: ../js/gdm/loginDialog.js:1086
 #: ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "שם משתמש:"
 
-#: ../js/gdm/loginDialog.js:1289
+#: ../js/gdm/loginDialog.js:1382
 msgid "Login Window"
 msgstr "חלון כניסה"
 
@@ -347,28 +347,28 @@ msgid "Execution of '%s' failed:"
 msgstr "ההרצה של '%s' נכשלה:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:252
+#: ../js/ui/appDisplay.js:259
 msgid "All"
 msgstr "הכול"
 
-#: ../js/ui/appDisplay.js:310
+#: ../js/ui/appDisplay.js:317
 msgid "APPLICATIONS"
 msgstr "יישומים"
 
-#: ../js/ui/appDisplay.js:370
+#: ../js/ui/appDisplay.js:377
 msgid "SETTINGS"
 msgstr "הגדרות"
 
-#: ../js/ui/appDisplay.js:675
+#: ../js/ui/appDisplay.js:682
 msgid "New Window"
 msgstr "חלון חדש"
 
-#: ../js/ui/appDisplay.js:678
+#: ../js/ui/appDisplay.js:685
 #: ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "הסרה מהמועדפים"
 
-#: ../js/ui/appDisplay.js:679
+#: ../js/ui/appDisplay.js:686
 msgid "Add to Favorites"
 msgstr "הוספה למועדפים"
 
@@ -644,7 +644,7 @@ msgid "Sorry, that didn't work. Please try again."
 msgstr "פעולה זו לא הצליחה, נא לנסות שוב. עמך הסליחה."
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/components/recorder.js:44
+#: ../js/ui/components/recorder.js:48
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "צילום מסך מהקובץ %d %t"
@@ -1080,11 +1080,15 @@ msgstr "פתיחה"
 msgid "Remove"
 msgstr "הסרה"
 
-#: ../js/ui/messageTray.js:1545
+#: ../js/ui/messageTray.js:1552
+msgid "No Messages"
+msgstr "אין הודעות"
+
+#: ../js/ui/messageTray.js:1569
 msgid "Message Tray"
 msgstr "אזור דיווח ההודעות"
 
-#: ../js/ui/messageTray.js:2588
+#: ../js/ui/messageTray.js:2639
 msgid "System Information"
 msgstr "פרטי המערכת"
 
@@ -1116,17 +1120,17 @@ msgstr "יש להקליד כדי לחפש..."
 msgid "Dash"
 msgstr "חלונית"
 
-#: ../js/ui/panel.js:580
+#: ../js/ui/panel.js:599
 msgid "Quit"
 msgstr "יציאה"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:612
+#: ../js/ui/panel.js:631
 msgid "Activities"
 msgstr "פעילויות"
 
-#: ../js/ui/panel.js:979
+#: ../js/ui/panel.js:999
 msgid "Top Bar"
 msgstr "הסרגל העליון"
 
@@ -1169,6 +1173,11 @@ msgstr[0] "התרעה אחת"
 msgstr[1] "%d התרעות"
 msgstr[2] "2 התרעות"
 
+#: ../js/ui/screenShield.js:401
+#: ../js/ui/userMenu.js:773
+msgid "Lock"
+msgstr "נעילה"
+
 #: ../js/ui/searchDisplay.js:275
 msgid "Searching..."
 msgstr "בחיפוש..."
@@ -1202,66 +1211,64 @@ msgid "Remember Password"
 msgstr "שמירת הססמה"
 
 #: ../js/ui/shellMountOperation.js:400
-#: ../js/ui/unlockDialog.js:174
+#: ../js/ui/unlockDialog.js:193
 msgid "Unlock"
 msgstr "שחרור"
 
-#: ../js/ui/status/accessibility.js:39
+#: ../js/ui/status/accessibility.js:40
 msgid "Accessibility"
 msgstr "נגישות"
 
-#: ../js/ui/status/accessibility.js:44
+#: ../js/ui/status/accessibility.js:45
 msgid "Zoom"
 msgstr "תקריב"
 
-#: ../js/ui/status/accessibility.js:51
+#: ../js/ui/status/accessibility.js:52
 msgid "Screen Reader"
 msgstr "מקריא מסך"
 
-#: ../js/ui/status/accessibility.js:55
+#: ../js/ui/status/accessibility.js:56
 msgid "Screen Keyboard"
 msgstr "מקלדת מסך"
 
-#: ../js/ui/status/accessibility.js:59
+#: ../js/ui/status/accessibility.js:60
 msgid "Visual Alerts"
 msgstr "התראות חזותיות"
 
-#: ../js/ui/status/accessibility.js:62
+#: ../js/ui/status/accessibility.js:63
 msgid "Sticky Keys"
 msgstr "מקשים דביקים"
 
-#: ../js/ui/status/accessibility.js:65
+#: ../js/ui/status/accessibility.js:66
 msgid "Slow Keys"
 msgstr "מקשים אטיים"
 
-#: ../js/ui/status/accessibility.js:68
+#: ../js/ui/status/accessibility.js:69
 msgid "Bounce Keys"
 msgstr "מקשים קופצים"
 
-#: ../js/ui/status/accessibility.js:71
+#: ../js/ui/status/accessibility.js:72
 msgid "Mouse Keys"
 msgstr "מקשי עכבר"
 
-#: ../js/ui/status/accessibility.js:75
+#: ../js/ui/status/accessibility.js:76
 msgid "Universal Access Settings"
 msgstr "הגדרות גישה אוניברסלית"
 
-#: ../js/ui/status/accessibility.js:109
+#: ../js/ui/status/accessibility.js:112
 msgid "High Contrast"
 msgstr "ניגודיות גבוהה"
 
-#: ../js/ui/status/accessibility.js:146
+#: ../js/ui/status/accessibility.js:159
 msgid "Large Text"
 msgstr "טקסט גדול"
 
 #: ../js/ui/status/bluetooth.js:27
 #: ../js/ui/status/bluetooth.js:31
-#: ../js/ui/status/bluetooth.js:251
-#: ../js/ui/status/bluetooth.js:304
-#: ../js/ui/status/bluetooth.js:335
-#: ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:400
-#: ../js/ui/status/network.js:873
+#: ../js/ui/status/bluetooth.js:288
+#: ../js/ui/status/bluetooth.js:319
+#: ../js/ui/status/bluetooth.js:355
+#: ../js/ui/status/bluetooth.js:386
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1283,7 +1290,7 @@ msgstr "הגדרות Bluetooth"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
 #: ../js/ui/status/bluetooth.js:103
-#: ../js/ui/status/network.js:208
+#: ../js/ui/status/network.js:169
 msgid "hardware disabled"
 msgstr "מנוטרל חומרתית"
 
@@ -1292,13 +1299,13 @@ msgid "Connection"
 msgstr "חיבור"
 
 #: ../js/ui/status/bluetooth.js:207
-#: ../js/ui/status/network.js:475
+#: ../js/ui/status/network.js:436
 msgid "disconnecting..."
 msgstr "בהליכי ניתוק..."
 
 #: ../js/ui/status/bluetooth.js:220
-#: ../js/ui/status/network.js:481
-#: ../js/ui/status/network.js:1507
+#: ../js/ui/status/network.js:442
+#: ../js/ui/status/network.js:1449
 msgid "connecting..."
 msgstr "בהתחברות..."
 
@@ -1306,88 +1313,77 @@ msgstr "בהתחברות..."
 msgid "Send Files..."
 msgstr "שליחת קבצים..."
 
-#: ../js/ui/status/bluetooth.js:243
-msgid "Browse Files..."
-msgstr "עיון בקבצים..."
-
-#: ../js/ui/status/bluetooth.js:252
-msgid "Error browsing device"
-msgstr "שגיאה בעיון בהתקן"
-
-#: ../js/ui/status/bluetooth.js:253
-#, c-format
-msgid "The requested device cannot be browsed, error is '%s'"
-msgstr "לא ניתן לעיין בהתקן הנבחר, השגיאה היא '%s'"
-
-#: ../js/ui/status/bluetooth.js:261
+#: ../js/ui/status/bluetooth.js:245
 msgid "Keyboard Settings"
 msgstr "הגדרות מקלדת"
 
-#: ../js/ui/status/bluetooth.js:264
+#: ../js/ui/status/bluetooth.js:248
 msgid "Mouse Settings"
 msgstr "הגדרות עכבר"
 
-#: ../js/ui/status/bluetooth.js:269
+#: ../js/ui/status/bluetooth.js:253
 #: ../js/ui/status/volume.js:234
 msgid "Sound Settings"
 msgstr "הגדרות שמע"
 
-#: ../js/ui/status/bluetooth.js:336
+#: ../js/ui/status/bluetooth.js:320
 #, c-format
 msgid "Authorization request from %s"
 msgstr "בקשת אישור מאת %s"
 
-#: ../js/ui/status/bluetooth.js:342
+#: ../js/ui/status/bluetooth.js:326
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "ההתקן %s מעוניין לגשת אל השירות '%s'"
 
-#: ../js/ui/status/bluetooth.js:344
+#: ../js/ui/status/bluetooth.js:328
 msgid "Always grant access"
 msgstr "תמיד להעניק גישה"
 
-#: ../js/ui/status/bluetooth.js:345
+#: ../js/ui/status/bluetooth.js:329
 msgid "Grant this time only"
 msgstr "הענקת גישה הפעם בלבד"
 
-#: ../js/ui/status/bluetooth.js:346
+#: ../js/ui/status/bluetooth.js:330
 msgid "Reject"
 msgstr "סירוב"
 
-#: ../js/ui/status/bluetooth.js:372
+#. Translators: argument is the device short name
+#: ../js/ui/status/bluetooth.js:357
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "אישור צימוד עבור %s"
 
-#: ../js/ui/status/bluetooth.js:378
-#: ../js/ui/status/bluetooth.js:408
+#: ../js/ui/status/bluetooth.js:363
+#: ../js/ui/status/bluetooth.js:394
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "ההתקן %s מעוניין בצימוד עם מחשב זה"
 
-#: ../js/ui/status/bluetooth.js:379
+#: ../js/ui/status/bluetooth.js:364
 #, c-format
 msgid "Please confirm whether the PIN '%06d' matches the one on the device."
 msgstr "נא לאשר האם קוד ה־PIN‏ '%06d' תואם את זה שמופיע בהתקן."
 
-#: ../js/ui/status/bluetooth.js:381
+#. Translators: this is the verb, not the noun
+#: ../js/ui/status/bluetooth.js:367
 msgid "Matches"
 msgstr "התאמות"
 
-#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/status/bluetooth.js:368
 msgid "Does not match"
 msgstr "אינו תואם"
 
-#: ../js/ui/status/bluetooth.js:401
+#: ../js/ui/status/bluetooth.js:387
 #, c-format
 msgid "Pairing request for %s"
 msgstr "בקשת צימוד עבור %s"
 
-#: ../js/ui/status/bluetooth.js:409
+#: ../js/ui/status/bluetooth.js:395
 msgid "Please enter the PIN mentioned on the device."
 msgstr "נא להזין את קוד ה־PIN המוזכר בהתקן."
 
-#: ../js/ui/status/bluetooth.js:426
+#: ../js/ui/status/bluetooth.js:412
 msgid "OK"
 msgstr "אישור"
 
@@ -1403,122 +1399,114 @@ msgstr "הגדרות אזור ושפה"
 msgid "Volume, network, battery"
 msgstr "עצמת שמע, רשת, סוללה"
 
-#: ../js/ui/status/network.js:94
+#: ../js/ui/status/network.js:95
 msgid "<unknown>"
 msgstr "<לא ידוע>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:230
+#: ../js/ui/status/network.js:191
 msgid "disabled"
 msgstr "מנוטרל"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:473
+#: ../js/ui/status/network.js:434
 msgid "unmanaged"
 msgstr "לא מנוהל"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:484
-#: ../js/ui/status/network.js:1510
+#: ../js/ui/status/network.js:445
+#: ../js/ui/status/network.js:1452
 msgid "authentication required"
 msgstr "נדרש אימות"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:494
+#: ../js/ui/status/network.js:455
 msgid "firmware missing"
 msgstr "הקושחה חסרה"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:501
+#: ../js/ui/status/network.js:462
 msgid "cable unplugged"
 msgstr "הכבל מנותק"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:506
+#: ../js/ui/status/network.js:467
 msgid "unavailable"
 msgstr "לא זמין"
 
-#: ../js/ui/status/network.js:508
-#: ../js/ui/status/network.js:1512
+#: ../js/ui/status/network.js:469
+#: ../js/ui/status/network.js:1454
 msgid "connection failed"
 msgstr "החיבור נכשל"
 
-#: ../js/ui/status/network.js:560
-#: ../js/ui/status/network.js:1446
-#: ../js/ui/status/network.js:1588
+#: ../js/ui/status/network.js:525
+#: ../js/ui/status/network.js:1388
+#: ../js/ui/status/network.js:1530
 msgid "More..."
 msgstr "עוד..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:596
-#: ../js/ui/status/network.js:1376
+#: ../js/ui/status/network.js:561
+#: ../js/ui/status/network.js:1318
 msgid "Connected (private)"
 msgstr "מחובר (פרטי)"
 
-#: ../js/ui/status/network.js:669
+#: ../js/ui/status/network.js:615
 msgid "Auto Ethernet"
 msgstr "אתרנט אוטומטי"
 
-#: ../js/ui/status/network.js:727
+#: ../js/ui/status/network.js:673
 msgid "Auto broadband"
 msgstr "פס רחב אוטומטי"
 
-#: ../js/ui/status/network.js:730
+#: ../js/ui/status/network.js:676
 msgid "Auto dial-up"
 msgstr "חיוג אוטומטי"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:859
-#: ../js/ui/status/network.js:1393
+#: ../js/ui/status/network.js:805
+#: ../js/ui/status/network.js:1335
 #, c-format
 msgid "Auto %s"
 msgstr "‏%s אוטומטי"
 
-#: ../js/ui/status/network.js:861
+#: ../js/ui/status/network.js:807
 msgid "Auto bluetooth"
 msgstr "Bluetooth אוטומטי"
 
-#: ../js/ui/status/network.js:1395
+#: ../js/ui/status/network.js:1337
 msgid "Auto wireless"
 msgstr "אלחוטי אוטומטי"
 
-#: ../js/ui/status/network.js:1637
+#: ../js/ui/status/network.js:1579
 msgid "Enable networking"
 msgstr "הפעלת תכונת הרשת"
 
-#: ../js/ui/status/network.js:1659
-msgid "Wired"
-msgstr "קווי"
+#: ../js/ui/status/network.js:1611
+msgid "Wi-Fi"
+msgstr "רשת אלחוטית"
 
-#: ../js/ui/status/network.js:1670
-msgid "Wireless"
-msgstr "אלחוטי"
-
-#: ../js/ui/status/network.js:1680
-msgid "Mobile broadband"
-msgstr "פס־רחב נייד"
-
-#: ../js/ui/status/network.js:1691
+#: ../js/ui/status/network.js:1630
 msgid "Network Settings"
 msgstr "הגדרות הרשת"
 
-#: ../js/ui/status/network.js:1735
+#: ../js/ui/status/network.js:1674
 msgid "Network Manager"
 msgstr "מנהל הרשתות"
 
-#: ../js/ui/status/network.js:1809
+#: ../js/ui/status/network.js:1756
 msgid "Connection failed"
 msgstr "ההתחברות נכשל"
 
-#: ../js/ui/status/network.js:1810
+#: ../js/ui/status/network.js:1757
 msgid "Activation of network connection failed"
 msgstr "הפעלת חיבור הרשת נכשלה"
 
-#: ../js/ui/status/network.js:2108
+#: ../js/ui/status/network.js:2074
 msgid "Networking is disabled"
 msgstr "תכונת הרשת מנוטרלת"
 
@@ -1634,9 +1622,13 @@ msgstr "עצמה"
 msgid "Microphone"
 msgstr "מיקרופון"
 
-#: ../js/ui/unlockDialog.js:181
+#: ../js/ui/unlockDialog.js:202
 msgid "Log in as another user"
 msgstr "כניסה בתור משתמש אחר"
+
+#: ../js/ui/unlockDialog.js:225
+msgid "Unlock Window"
+msgstr "שחרור החלון"
 
 #: ../js/ui/userMenu.js:176
 msgid "Available"
@@ -1677,10 +1669,6 @@ msgstr "החלפת משתמש"
 #: ../js/ui/userMenu.js:768
 msgid "Log Out"
 msgstr "יציאה"
-
-#: ../js/ui/userMenu.js:773
-msgid "Lock"
-msgstr "נעילה"
 
 #: ../js/ui/userMenu.js:788
 msgid "Install Updates & Restart"
@@ -1797,6 +1785,24 @@ msgstr "בררת מחדל"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "המשתמש בחר להתעלם מתיבת דו־שיח האימות"
+
+#~ msgid "Browse Files..."
+#~ msgstr "עיון בקבצים..."
+
+#~ msgid "Error browsing device"
+#~ msgstr "שגיאה בעיון בהתקן"
+
+#~ msgid "The requested device cannot be browsed, error is '%s'"
+#~ msgstr "לא ניתן לעיין בהתקן הנבחר, השגיאה היא '%s'"
+
+#~ msgid "Wired"
+#~ msgstr "קווי"
+
+#~ msgid "Wireless"
+#~ msgstr "אלחוטי"
+
+#~ msgid "Mobile broadband"
+#~ msgstr "פס־רחב נייד"
 
 #~ msgid "VPN Connections"
 #~ msgstr "חיבורי VPN"
