@@ -1597,7 +1597,7 @@ cogl_gles2_context_new (CoglContext *ctx, GError **error)
                        extension_suffixes, extension_names)
 
 #define COGL_EXT_FUNCTION(ret, name, args) \
-  gles2_ctx->vtable->name = ctx->name;
+  gles2_ctx->vtable->name = (void *) ctx->name;
 
 #define COGL_EXT_END()
 
@@ -1607,10 +1607,15 @@ cogl_gles2_context_new (CoglContext *ctx, GError **error)
 #undef COGL_EXT_FUNCTION
 #undef COGL_EXT_END
 
-  gles2_ctx->vtable->glBindFramebuffer = gl_bind_framebuffer_wrapper;
-  gles2_ctx->vtable->glReadPixels = gl_read_pixels_wrapper;
-  gles2_ctx->vtable->glCopyTexImage2D = gl_copy_tex_image_2d_wrapper;
-  gles2_ctx->vtable->glCopyTexSubImage2D = gl_copy_tex_sub_image_2d_wrapper;
+  gles2_ctx->vtable->glBindFramebuffer =
+    (void *) gl_bind_framebuffer_wrapper;
+  gles2_ctx->vtable->glReadPixels =
+    (void *) gl_read_pixels_wrapper;
+  gles2_ctx->vtable->glCopyTexImage2D =
+    (void *) gl_copy_tex_image_2d_wrapper;
+  gles2_ctx->vtable->glCopyTexSubImage2D =
+    (void *) gl_copy_tex_sub_image_2d_wrapper;
+
   gles2_ctx->vtable->glCreateShader = gl_create_shader_wrapper;
   gles2_ctx->vtable->glDeleteShader = gl_delete_shader_wrapper;
   gles2_ctx->vtable->glCreateProgram = gl_create_program_wrapper;
