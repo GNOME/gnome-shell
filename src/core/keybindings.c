@@ -2317,8 +2317,10 @@ process_tab_grab (MetaDisplay *display,
         case META_KEYBINDING_ACTION_CYCLE_WINDOWS_BACKWARD:
         case META_KEYBINDING_ACTION_SWITCH_PANELS:
         case META_KEYBINDING_ACTION_SWITCH_WINDOWS:
+        case META_KEYBINDING_ACTION_SWITCH_APPLICATIONS:
         case META_KEYBINDING_ACTION_SWITCH_PANELS_BACKWARD:
         case META_KEYBINDING_ACTION_SWITCH_WINDOWS_BACKWARD:
+        case META_KEYBINDING_ACTION_SWITCH_APPLICATIONS_BACKWARD:
         case META_KEYBINDING_ACTION_CYCLE_GROUP:
         case META_KEYBINDING_ACTION_CYCLE_GROUP_BACKWARD:
         case META_KEYBINDING_ACTION_SWITCH_GROUP:
@@ -2425,8 +2427,10 @@ process_tab_grab (MetaDisplay *display,
        break;
     case META_KEYBINDING_ACTION_SWITCH_PANELS:
     case META_KEYBINDING_ACTION_SWITCH_WINDOWS:
+    case META_KEYBINDING_ACTION_SWITCH_APPLICATIONS:
     case META_KEYBINDING_ACTION_SWITCH_PANELS_BACKWARD:
     case META_KEYBINDING_ACTION_SWITCH_WINDOWS_BACKWARD:
+    case META_KEYBINDING_ACTION_SWITCH_APPLICATIONS_BACKWARD:
       /* SWITCH_* are traditionally Tab-based actions,
        * and should cancel traditionally Escape-based ones.
        */
@@ -2497,11 +2501,13 @@ process_tab_grab (MetaDisplay *display,
       break;
     case META_KEYBINDING_ACTION_SWITCH_PANELS:
     case META_KEYBINDING_ACTION_SWITCH_WINDOWS:
+    case META_KEYBINDING_ACTION_SWITCH_APPLICATIONS:
     case META_KEYBINDING_ACTION_SWITCH_GROUP:
       key_used = TRUE;
       break;
     case META_KEYBINDING_ACTION_SWITCH_PANELS_BACKWARD:
     case META_KEYBINDING_ACTION_SWITCH_WINDOWS_BACKWARD:
+    case META_KEYBINDING_ACTION_SWITCH_APPLICATIONS_BACKWARD:
     case META_KEYBINDING_ACTION_SWITCH_GROUP_BACKWARD:
       key_used = TRUE;
       backward = TRUE;
@@ -3795,6 +3801,20 @@ init_builtin_key_bindings (MetaDisplay *display)
                           REVERSES_AND_REVERSED,
                           META_KEYBINDING_ACTION_SWITCH_GROUP_BACKWARD,
                           handle_switch, META_TAB_LIST_GROUP);
+
+  add_builtin_keybinding (display,
+                          "switch-applications",
+                          common_keybindings,
+                          META_KEY_BINDING_REVERSES,
+                          META_KEYBINDING_ACTION_SWITCH_APPLICATIONS,
+                          handle_switch, META_TAB_LIST_NORMAL);
+
+  add_builtin_keybinding (display,
+                          "switch-applications-backward",
+                          common_keybindings,
+                          REVERSES_AND_REVERSED,
+                          META_KEYBINDING_ACTION_SWITCH_APPLICATIONS_BACKWARD,
+                          handle_switch, META_TAB_LIST_NORMAL);
 
   add_builtin_keybinding (display,
                           "switch-windows",

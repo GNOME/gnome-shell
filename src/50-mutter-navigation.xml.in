@@ -29,8 +29,11 @@
 	<KeyListEntry name="move-to-workspace-down"
 	              _description="Move window one workspace down" />
 
-	<KeyListEntry name="switch-windows"
+	<KeyListEntry name="switch-applications"
 	              _description="Switch applications"/>
+
+	<KeyListEntry name="switch-windows"
+	              _description="Switch windows"/>
 
 	<KeyListEntry name="switch-group"
 	              _description="Switch windows of an application"/>
