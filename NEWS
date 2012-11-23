@@ -1,3 +1,7 @@
+3.7.2.1
+=======
+* Revert 490206b to not depend on NMGTK-0.9.7, which hasn't been released yet
+
 3.7.2
 =====
 * Enforce RTL in he for messages that might end up as LTR [Florian; #686630]
