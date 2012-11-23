@@ -349,17 +349,13 @@ const AltTabPopup = new Lang.Class({
     _appActivated : function(appSwitcher, n) {
         // If the user clicks on the selected app, activate the
         // selected window; otherwise (eg, they click on an app while
-        // !mouseActive) activate the the clicked-on app.
-        if (n == this._currentApp) {
-            let window;
-            if (this._currentWindow >= 0)
-                window = this._appIcons[this._currentApp].cachedWindows[this._currentWindow];
-            else
-                window = null;
-            this._appIcons[this._currentApp].app.activate_window(window, global.get_current_time());
-        } else {
-            this._appIcons[n].app.activate_window(null, global.get_current_time());
-        }
+        // !mouseActive) activate the clicked-on app.
+        let window;
+        if (n == this._currentApp && this._currentWindow >= 0)
+            window = this._appIcons[n].cachedWindows[this._currentWindow];
+        else
+            window = null;
+        this._appIcons[n].app.activate_window(window, global.get_current_time());
         this.destroy();
     },
 
