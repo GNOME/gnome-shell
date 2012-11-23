@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -18,7 +19,17 @@ const THUMBNAIL_DEFAULT_SIZE = 256;
 const THUMBNAIL_POPUP_TIME = 500; // milliseconds
 const THUMBNAIL_FADE_TIME = 0.1; // seconds
 
+const WINDOW_PREVIEW_SIZE = 128;
+const APP_ICON_SIZE = 96;
+const APP_ICON_SIZE_SMALL = 48;
+
 const iconSizes = [96, 64, 48, 32, 22];
+
+const AppIconMode = {
+    THUMBNAIL_ONLY: 1,
+    APP_ICON_ONLY: 2,
+    BOTH: 3,
+};
 
 function _createWindowClone(window, size) {
     let windowTexture = window.get_texture();
@@ -372,6 +383,58 @@ const AppSwitcherPopup = new Lang.Class({
     }
 });
 
+const WindowSwitcherPopup = new Lang.Class({
+    Name: 'WindowSwitcherPopup',
+    Extends: SwitcherPopup.SwitcherPopup,
+
+    _getWindowList: function() {
+        let settings = new Gio.Settings({ schema: 'org.gnome.shell.window-switcher' });
+        let workspace = settings.get_boolean('current-workspace-only') ? global.screen.get_active_workspace()
+                                                                       : null;
+        return global.display.get_tab_list(Meta.TabList.NORMAL, global.screen, workspace);
+    },
+
+    _createSwitcher: function() {
+        let windows = this._getWindowList();
+
+        if (windows.length == 0)
+            return false;
+
+        this._switcherList = new WindowList(windows);
+        this._items = this._switcherList.icons;
+
+        return true;
+    },
+
+    _initialSelection: function(backward, binding) {
+        if (binding == 'switch-windows-backward' || backward)
+            this._select(this._items.length - 1);
+        else if (this._items.length == 1)
+            this._select(0);
+        else
+            this._select(1);
+    },
+
+    _keyPressHandler: function(keysym, backwards, action) {
+        if (action == Meta.KeyBindingAction.SWITCH_WINDOWS) {
+            this._select(backwards ? this._previous() : this._next());
+        } else if (action == Meta.KeyBindingAction.SWITCH_WINDOWS_BACKWARD) {
+            this._select(this._previous());
+        } else {
+            if (keysym == Clutter.Left)
+                this._select(this._previous());
+            else if (keysym == Clutter.Right)
+                this._select(this._next());
+        }
+    },
+
+    _finish: function() {
+        this.parent();
+
+        Main.activateWindow(this._items[this._selectedIndex].window);
+    }
+});
+
 const AppIcon = new Lang.Class({
     Name: 'AppIcon',
 
@@ -646,3 +709,110 @@ const ThumbnailList = new Lang.Class({
     }
 });
 
+const WindowIcon = new Lang.Class({
+    Name: 'WindowIcon',
+
+    _init: function(window) {
+        this.window = window;
+
+        this.actor = new St.BoxLayout({ style_class: 'alt-tab-app',
+                                        vertical: true });
+        this._icon = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+
+        this.actor.add(this._icon, { x_fill: false, y_fill: false } );
+        this.label = new St.Label({ text: window.get_title() });
+
+        let tracker = Shell.WindowTracker.get_default();
+        this.app = tracker.get_window_app(window);
+
+        let mutterWindow = this.window.get_compositor_private();
+        let size;
+
+        this._icon.destroy_all_children();
+
+        let settings = new Gio.Settings({ schema: 'org.gnome.shell.window-switcher' });
+        switch (settings.get_enum('app-icon-mode')) {
+            case AppIconMode.THUMBNAIL_ONLY:
+                size = WINDOW_PREVIEW_SIZE;
+                this._icon.add_actor(_createWindowClone(mutterWindow, WINDOW_PREVIEW_SIZE));
+                break;
+
+            case AppIconMode.BOTH:
+                size = WINDOW_PREVIEW_SIZE;
+                this._icon.add_actor(_createWindowClone(mutterWindow, WINDOW_PREVIEW_SIZE));
+
+                if (this.app)
+                    this._icon.add_actor(this._createAppIcon(this.app,
+                                                             APP_ICON_SIZE_SMALL));
+                break;
+
+            case AppIconMode.APP_ICON_ONLY:
+                size = APP_ICON_SIZE;
+                this._icon.add_actor(this._createAppIcon(this.app, size));
+        }
+
+        this._icon.set_size(size, size);
+    },
+
+    _createAppIcon: function(app, size) {
+        let appIcon = app ? app.create_icon_texture(size)
+                          : new St.Icon({ icon_name: 'icon-missing',
+                                          icon_size: size });
+        appIcon.x_expand = appIcon.y_expand = true;
+        appIcon.x_align = appIcon.y_align = Clutter.ActorAlign.END;
+
+        return appIcon;
+    }
+});
+
+const WindowList = new Lang.Class({
+    Name: 'WindowList',
+    Extends: SwitcherPopup.SwitcherList,
+
+    _init : function(windows) {
+        this.parent(true);
+
+        this._label = new St.Label({ x_align: Clutter.ActorAlign.CENTER,
+                                     y_align: Clutter.ActorAlign.CENTER });
+        this.actor.add_actor(this._label);
+
+        this.windows = windows;
+        this.icons = [];
+
+        for (let i = 0; i < windows.length; i++) {
+            let win = windows[i];
+            let icon = new WindowIcon(win);
+
+            this.addItem(icon.actor, icon.label);
+            this.icons.push(icon);
+        }
+    },
+
+    _getPreferredHeight: function(actor, forWidth, alloc) {
+        this.parent(actor, forWidth, alloc);
+
+        let spacing = this.actor.get_theme_node().get_padding(St.Side.BOTTOM);
+        let [labelMin, labelNat] = this._label.get_preferred_height(-1);
+        alloc.min_size += labelMin + spacing;
+        alloc.natural_size += labelNat + spacing;
+    },
+
+    _allocateTop: function(actor, box, flags) {
+        let childBox = new Clutter.ActorBox();
+        childBox.x1 = box.x1;
+        childBox.x2 = box.x2;
+        childBox.y2 = box.y2;
+        childBox.y1 = childBox.y2 - this._label.height;
+        this._label.allocate(childBox, flags);
+
+        let spacing = this.actor.get_theme_node().get_padding(St.Side.BOTTOM);
+        box.y2 -= this._label.height + spacing;
+        this.parent(actor, box, flags);
+    },
+
+    highlight: function(index, justOutline) {
+        this.parent(index, justOutline);
+
+        this._label.set_text(index == -1 ? '' : this.icons[index].label.text);
+    }
+});

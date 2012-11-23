@@ -186,6 +186,33 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
     </key>
   </schema>
 
+  <enum id="org.gnome.shell.window-switcher.AppIconMode">
+    <value value="1" nick="thumbnail-only"/>
+    <value value="2" nick="app-icon-only"/>
+    <value value="3" nick="both"/>
+  </enum>
+  <schema id="org.gnome.shell.window-switcher"
+          path="/org/gnome/shell/window-switcher/"
+          gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="app-icon-mode" enum="org.gnome.shell.window-switcher.AppIconMode">
+      <default>'both'</default>
+      <_summary>The application icon mode.</_summary>
+      <_description>
+	Configures how the windows are shown in the switcher. Valid possibilities
+	are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-only'
+	(shows only the application icon) or 'both'.
+      </_description>
+    </key>
+    <key type="b" name="current-workspace-only">
+      <default>false</default>
+      <summary>Limit switcher to current workspace.</summary>
+      <description>
+	If true, only windows from the current workspace are shown in the switcher.
+	Otherwise, all windows are included.
+      </description>
+    </key>
+  </schema>
+
   <schema id="org.gnome.shell.overrides" path="/org/gnome/shell/overrides/"
 	  gettext-domain="@GETTEXT_PACKAGE@">
     <key name="attach-modal-dialogs" type="b">

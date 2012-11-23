@@ -148,6 +148,12 @@ const WindowManager = new Lang.Class({
         this.setCustomKeybindingHandler('switch-group-backward',
                                         Main.KeybindingMode.NORMAL,
                                         Lang.bind(this, this._startAppSwitcher));
+        this.setCustomKeybindingHandler('switch-windows',
+                                        Main.KeybindingMode.NORMAL,
+                                        Lang.bind(this, this._startWindowSwitcher));
+        this.setCustomKeybindingHandler('switch-windows-backward',
+                                        Main.KeybindingMode.NORMAL,
+                                        Lang.bind(this, this._startWindowSwitcher));
         this.setCustomKeybindingHandler('switch-panels',
                                         Main.KeybindingMode.NORMAL |
                                         Main.KeybindingMode.OVERVIEW |
@@ -618,6 +624,19 @@ const WindowManager = new Lang.Class({
             this._workspaceSwitcherPopup.destroy();
 
         let tabPopup = new AltTab.AppSwitcherPopup();
+
+        let modifiers = binding.get_modifiers();
+        let backwards = modifiers & Meta.VirtualModifier.SHIFT_MASK;
+        if (!tabPopup.show(backwards, binding.get_name(), binding.get_mask()))
+            tabPopup.destroy();
+    },
+
+    _startWindowSwitcher : function(display, screen, window, binding) {
+        /* prevent a corner case where both popups show up at once */
+        if (this._workspaceSwitcherPopup != null)
+            this._workspaceSwitcherPopup.destroy();
+
+        let tabPopup = new AltTab.WindowSwitcherPopup();
 
         let modifiers = binding.get_modifiers();
         let backwards = modifiers & Meta.VirtualModifier.SHIFT_MASK;
