@@ -127,7 +127,7 @@ const AltTabPopup = new Lang.Class({
             }
         } else if (binding == 'switch-group-backward') {
             this._select(0, this._items[0].cachedWindows.length - 1);
-        } else if (binding == 'switch-windows-backward') {
+        } else if (binding == 'switch-applications-backward') {
             this._select(this._items.length - 1);
         } else if (this._items.length == 1) {
             this._select(0);
@@ -158,9 +158,9 @@ const AltTabPopup = new Lang.Class({
             this._select(this._selectedIndex, backwards ? this._previousWindow() : this._nextWindow());
         } else if (action == Meta.KeyBindingAction.SWITCH_GROUP_BACKWARD) {
             this._select(this._selectedIndex, this._previousWindow());
-        } else if (action == Meta.KeyBindingAction.SWITCH_WINDOWS) {
+        } else if (action == Meta.KeyBindingAction.SWITCH_APPLICATIONS) {
             this._select(backwards ? this._previous() : this._next());
-        } else if (action == Meta.KeyBindingAction.SWITCH_WINDOWS_BACKWARD) {
+        } else if (action == Meta.KeyBindingAction.SWITCH_APPLICATIONS_BACKWARD) {
             this._select(this._previous());
         } else if (this._thumbnailsFocused) {
             if (keysym == Clutter.Left)

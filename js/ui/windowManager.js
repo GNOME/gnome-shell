@@ -136,13 +136,13 @@ const WindowManager = new Lang.Class({
                                         Main.KeybindingMode.NORMAL |
                                         Main.KeybindingMode.OVERVIEW,
                                         Lang.bind(this, this._showWorkspaceSwitcher));
-        this.setCustomKeybindingHandler('switch-windows',
+        this.setCustomKeybindingHandler('switch-applications',
                                         Main.KeybindingMode.NORMAL,
                                         Lang.bind(this, this._startAppSwitcher));
         this.setCustomKeybindingHandler('switch-group',
                                         Main.KeybindingMode.NORMAL,
                                         Lang.bind(this, this._startAppSwitcher));
-        this.setCustomKeybindingHandler('switch-windows-backward',
+        this.setCustomKeybindingHandler('switch-applications-backward',
                                         Main.KeybindingMode.NORMAL,
                                         Lang.bind(this, this._startAppSwitcher));
         this.setCustomKeybindingHandler('switch-group-backward',
