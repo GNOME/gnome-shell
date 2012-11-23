@@ -115,7 +115,6 @@ shell_public_headers_h =		\
 	shell-global.h			\
 	shell-invert-lightness-effect.h	\
 	shell-keybinding-modes.h	\
-	shell-mobile-providers.h	\
 	shell-mount-operation.h		\
 	shell-network-agent.h		\
 	shell-perf-log.h		\
@@ -160,7 +159,6 @@ libgnome_shell_la_SOURCES =		\
 	shell-invert-lightness-effect.c	\
 	shell-keyring-prompt.h		\
 	shell-keyring-prompt.c		\
-	shell-mobile-providers.c	\
 	shell-mount-operation.c		\
 	shell-network-agent.c		\
 	shell-perf-log.c		\

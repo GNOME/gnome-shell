@@ -2,73 +2,37 @@
 
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
-const Shell = imports.gi.Shell;
+const NMGtk = imports.gi.NMGtk;
 const Signals = imports.signals;
 
-
-// _getProvidersTable:
+// _getMobileProvidersDatabase:
 //
-// Gets the table of references between MCCMNC and operator name
+// Gets the database of mobile providers, with references between MCCMNC/SID and
+// operator name
 //
-let _providersTable;
-function _getProvidersTable() {
-    if (_providersTable)
-        return _providersTable;
-    return _providersTable = Shell.mobile_providers_parse(null,null);
-}
-
-// findProviderForMCCMNC:
-// @table: a table of country code keys and Shell.CountryMobileProvider values
-// @needle: operator code, given as MCCMNC string
-//
-// Tries to find the operator name corresponding to the given MCCMNC
-//
-function findProviderForMCCMNC(table, needle) {
-    let needlemcc = needle.substring(0, 3);
-    let needlemnc = needle.substring(3, needle.length);
-
-    let name2, name3;
-    for (let iter in table) {
-        let country = table[iter];
-        let providers = country.get_providers();
-
-        // Search through each country's providers
-        for (let i = 0; i < providers.length; i++) {
-            let provider = providers[i];
-
-            // Search through MCC/MNC list
-            let list = provider.get_gsm_mcc_mnc();
-            for (let j = 0; j < list.length; j++) {
-                let mccmnc = list[j];
-
-                // Match both 2-digit and 3-digit MNC; prefer a
-                // 3-digit match if found, otherwise a 2-digit one.
-                if (mccmnc.mcc != needlemcc)
-                    continue;  // MCC was wrong
-
-                if (!name3 && needle.length == 6 && needlemnc == mccmnc.mnc)
-                    name3 = provider.name;
-
-                if (!name2 && needlemnc.substring(0, 2) == mccmnc.mnc.substring(0, 2))
-                    name2 = provider.name;
-
-                if (name2 && name3)
-                    break;
-            }
+let _mpd;
+function _getMobileProvidersDatabase() {
+    if (_mpd == null) {
+        try {
+            _mpd = new NMGtk.MobileProvidersDatabase();
+            _mpd.init(null);
+        } catch (e) {
+            log(e.message);
+            _mpd = null;
         }
     }
 
-    return name3 || name2 || null;
+    return _mpd;
 }
 
-// findOperatorName:
+// _findProviderForMccMnc:
 // @operator_name: operator name
 // @operator_code: operator code
 //
 // Given an operator name string (which may not be a real operator name) and an
 // operator code string, tries to find a proper operator name to display.
 //
-function findOperatorName(operator_name, operator_code) {
+function _findProviderForMccMnc(operator_name, operator_code) {
     if (operator_name) {
         if (operator_name.length != 0 &&
             (operator_name.length > 6 || operator_name.length < 5)) {
@@ -92,40 +56,33 @@ function findOperatorName(operator_name, operator_code) {
     else // nothing to search
         return null;
 
-    let table = _getProvidersTable();
-    return findProviderForMCCMNC(table, needle);
+    let mpd = _getMobileProvidersDatabase();
+    if (mpd) {
+        let provider = mpd.lookup_3gpp_mcc_mnc(needle);
+        if (provider)
+            return provider.get_name();
+    }
+    return null;
 }
 
-// findProviderForSid:
-// @table: a table of country code keys and Shell.CountryMobileProvider values
+// _findProviderForSid:
 // @sid: System Identifier of the serving CDMA network
 //
 // Tries to find the operator name corresponding to the given SID
 //
-function findProviderForSid(table, sid) {
+function _findProviderForSid(sid) {
     if (sid == 0)
         return null;
 
-    // Search through each country
-    for (let iter in table) {
-        let country = table[iter];
-        let providers = country.get_providers();
-
-        // Search through each country's providers
-        for (let i = 0; i < providers.length; i++) {
-            let provider = providers[i];
-            let cdma_sid = provider.get_cdma_sid();
-
-            // Search through CDMA SID list
-            for (let j = 0; j < cdma_sid.length; j++) {
-                if (cdma_sid[j] == sid)
-                    return provider.name;
-            }
-        }
+    let mpd = _getMobileProvidersDatabase();
+    if (mpd) {
+        let provider = mpd.lookup_cdma_sid(sid);
+        if (provider)
+            return provider.get_name();
     }
-
     return null;
 }
+
 
 //------------------------------------------------------------------------------
 // Support for the old ModemManager interface (MM < 0.7)
@@ -184,7 +141,7 @@ const ModemGsm = new Lang.Class({
             this.emit('notify::signal-quality');
         }));
         this._proxy.connectSignal('RegistrationInfo', Lang.bind(this, function(proxy, sender, [status, code, name]) {
-            this.operator_name = findOperatorName(name, code);
+            this.operator_name = _findProviderForMccMnc(name, code);
             this.emit('notify::operator-name');
         }));
         this._proxy.GetRegistrationInfoRemote(Lang.bind(this, function([result], err) {
@@ -194,7 +151,7 @@ const ModemGsm = new Lang.Class({
             }
 
             let [status, code, name] = result;
-            this.operator_name = findOperatorName(name, code);
+            this.operator_name = _findProviderForMccMnc(name, code);
             this.emit('notify::operator-name');
         }));
         this._proxy.GetSignalQualityRemote(Lang.bind(this, function(result, err) {
@@ -246,12 +203,9 @@ const ModemCdma = new Lang.Class({
                 // it will return an error if the device is not connected
                 this.operator_name = null;
             } else {
-                let [bandClass, band, id] = result;
-                if (name.length > 0) {
-                    let table = _getProvidersTable();
-                    this.operator_name = findProviderForSid(table, id);
-                } else
-                    this.operator_name = null;
+                let [bandClass, band, sid] = result;
+
+                this.operator_name = _findProviderForSid(sid)
             }
             this.emit('notify::operator-name');
         }));
@@ -334,13 +288,13 @@ const BroadbandModem = new Lang.Class({
     _reload3gppOperatorName: function() {
         let name = this._proxy_3gpp.OperatorName;
         let code = this._proxy_3gpp.OperatorCode;
-        this.operator_name_3gpp = findOperatorName(name, code);
+        this.operator_name_3gpp = _findProviderForMccMnc(name, code);
         this._reloadOperatorName();
     },
 
     _reloadCdmaOperatorName: function() {
         let sid = this._proxy_cdma.Sid;
-        this.operator_name_cdma = findProviderForSid(sid);
+        this.operator_name_cdma = _findProviderForSid(sid);
         this._reloadOperatorName();
     }
 });

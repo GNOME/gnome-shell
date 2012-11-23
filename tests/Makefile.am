@@ -26,14 +26,11 @@ TEST_JS =					\
 	testcommon/border-image.png		\
 	testcommon/face-plain.png		\
 	testcommon/ui.js                        \
-	testcommon/iso3166-test.tab             \
-	testcommon/serviceproviders-test.xml    \
 	unit/format.js				\
 	unit/insertSorted.js			\
 	unit/markup.js				\
 	unit/jsParse.js				\
-	unit/url.js                             \
-	unit/mobileProviders.js
+	unit/url.js
 EXTRA_DIST += $(TEST_JS)
 
 TEST_MISC =					\
