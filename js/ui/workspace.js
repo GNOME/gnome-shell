@@ -500,11 +500,9 @@ const WindowOverlay = new Lang.Class({
 
     hide: function() {
         this._hidden = true;
-        this.closeButton.hide();
         this.title.hide();
-        this.title.remove_style_pseudo_class('hover');
 
-        this.border.hide();
+        this.hideCloseButton();
     },
 
     show: function() {
@@ -664,7 +662,13 @@ const WindowOverlay = new Lang.Class({
 
     _animateVisible: function() {
         this._parentActor.raise_top();
+
         this.closeButton.show();
+        this.closeButton.opacity = 0;
+        Tweener.addTween(this.closeButton,
+                         { opacity: 255,
+                           time: CLOSE_BUTTON_FADE_TIME,
+                           transition: 'easeOutQuad' });
 
         this.border.show();
         this.border.opacity = 0;
@@ -674,6 +678,22 @@ const WindowOverlay = new Lang.Class({
                            transition: 'easeOutQuad' });
 
         this.title.add_style_pseudo_class('hover');
+    },
+
+    _animateInvisible: function() {
+        this.closeButton.opacity = 255;
+        Tweener.addTween(this.closeButton,
+                         { opacity: 0,
+                           time: CLOSE_BUTTON_FADE_TIME,
+                           transition: 'easeInQuad' });
+
+        this.border.opacity = 255;
+        Tweener.addTween(this.border,
+                         { opacity: 0,
+                           time: CLOSE_BUTTON_FADE_TIME,
+                           transition: 'easeInQuad' });
+
+        this.title.remove_style_pseudo_class('hover');
     },
 
     _onEnter: function() {
@@ -695,18 +715,10 @@ const WindowOverlay = new Lang.Class({
 
     _idleToggleCloseButton: function() {
         this._idleToggleCloseId = 0;
+
         if (!this._windowClone.actor.has_pointer &&
-            !this.closeButton.has_pointer) {
-            this.closeButton.hide();
-
-            this.border.opacity = 255;
-            Tweener.addTween(this.border,
-                             { opacity: 0,
-                               time: CLOSE_BUTTON_FADE_TIME,
-                               transition: 'easeInQuad' });
-
-            this.title.remove_style_pseudo_class('hover');
-        }
+            !this.closeButton.has_pointer)
+            this._animateInvisible();
 
         return false;
     },
