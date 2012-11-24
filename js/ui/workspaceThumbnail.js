@@ -14,6 +14,7 @@ const Background = imports.ui.background;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
+const WindowManager = imports.ui.windowManager;
 const Workspace = imports.ui.workspace;
 const WorkspacesView = imports.ui.workspacesView;
 
@@ -32,20 +33,49 @@ const WORKSPACE_KEEP_ALIVE_TIME = 100;
 
 const OVERRIDE_SCHEMA = 'org.gnome.shell.overrides';
 
+/* A layout manager that requests size only for primary_actor, but then allocates
+   all using a fixed layout */
+const PrimaryActorLayout = new Lang.Class({
+    Name: 'PrimaryActorLayout',
+    Extends: Clutter.FixedLayout,
+
+    _init: function(primaryActor) {
+        this.parent();
+
+        this.primaryActor = primaryActor;
+    },
+
+    vfunc_get_preferred_width: function(forHeight) {
+        return this.primaryActor.get_preferred_width(forHeight);
+    },
+
+    vfunc_get_preferred_height: function(forWidth) {
+        return this.primaryActor.get_preferred_height(forWidth);
+    },
+});
+
 const WindowClone = new Lang.Class({
     Name: 'WindowClone',
 
     _init : function(realWindow) {
-        this.actor = new Clutter.Clone({ source: realWindow.get_texture(),
+        this.clone = new Clutter.Clone({ source: realWindow });
+
+        /* Can't use a Shell.GenericContainer because of DND and reparenting... */
+        this.actor = new Clutter.Actor({ layout_manager: new PrimaryActorLayout(this.clone),
                                          reactive: true });
         this.actor._delegate = this;
+        this.actor.add_child(this.clone);
         this.realWindow = realWindow;
         this.metaWindow = realWindow.meta_window;
 
-        this._positionChangedId = this.realWindow.connect('position-changed',
-                                                          Lang.bind(this, this._onPositionChanged));
-        this._realWindowDestroyedId = this.realWindow.connect('destroy',
-                                                              Lang.bind(this, this._disconnectRealWindowSignals));
+        this.clone._updateId = this.realWindow.connect('position-changed',
+                                                       Lang.bind(this, this._onPositionChanged));
+        this.clone._destroyId = this.realWindow.connect('destroy', Lang.bind(this, function() {
+            // First destroy the clone and then destroy everything
+            // This will ensure that we never see it in the _disconnectSignals loop
+            this.clone.destroy();
+            this.destroy();
+        }));
         this._onPositionChanged();
 
         this.actor.connect('button-release-event',
@@ -61,6 +91,24 @@ const WindowClone = new Lang.Class({
         this._draggable.connect('drag-cancelled', Lang.bind(this, this._onDragCancelled));
         this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));
         this.inDrag = false;
+
+        let iter = Lang.bind(this, function(win) {
+            let actor = win.get_compositor_private();
+
+            if (!actor)
+                return false;
+            if (!win.is_attached_dialog())
+                return false;
+
+            this._doAddAttachedDialog(win, actor);
+            win.foreach_transient(iter);
+
+            return true;
+        });
+        this.metaWindow.foreach_transient(iter);
+
+        this._dimmer = new WindowManager.WindowDimmer(this.clone);
+        this._updateDimmer();
     },
 
     // Find the actor just below us, respecting reparenting done
@@ -98,25 +146,57 @@ const WindowClone = new Lang.Class({
         this.actor.destroy();
     },
 
+    addAttachedDialog: function(win) {
+        this._doAddAttachedDialog(win, win.get_compositor_private());
+        this._updateDimmer();
+    },
+
+    _doAddAttachedDialog: function(metaDialog, realDialog) {
+        let clone = new Clutter.Clone({ source: realDialog });
+        this._updateDialogPosition(realDialog, clone);
+
+        clone._updateId = realDialog.connect('position-changed',
+                                             Lang.bind(this, this._updateDialogPosition, clone));
+        clone._destroyId = realDialog.connect('destroy', Lang.bind(this, function() {
+            clone.destroy();
+            this._updateDimmer();
+        }));
+        this.actor.add_child(clone);
+    },
+
+    _updateDimmer: function() {
+        if (this.actor.get_n_children() > 1) {
+            this._dimmer.setEnabled(true);
+            this._dimmer.dimFactor = 1.0;
+        } else {
+            this._dimmer.setEnabled(false);
+        }
+    },
+
+    _updateDialogPosition: function(realDialog, cloneDialog) {
+        let metaDialog = realDialog.meta_window;
+        let dialogRect = metaDialog.get_outer_rect();
+        let rect = this.metaWindow.get_outer_rect();
+
+        cloneDialog.set_position(dialogRect.x - rect.x, dialogRect.y - rect.y);
+    },
+
     _onPositionChanged: function() {
         let rect = this.metaWindow.get_outer_rect();
         this.actor.set_position(this.realWindow.x, this.realWindow.y);
     },
 
-    _disconnectRealWindowSignals: function() {
-        if (this._positionChangedId != 0) {
-            this.realWindow.disconnect(this._positionChangedId);
-            this._positionChangedId = 0;
-        }
+    _disconnectSignals: function() {
+        this.actor.get_children().forEach(function(child) {
+            let realWindow = child.source;
 
-        if (this._realWindowDestroyedId != 0) {
-            this.realWindow.disconnect(this._realWindowDestroyedId);
-            this._realWindowDestroyedId = 0;
-        }
+            realWindow.disconnect(child._updateId);
+            realWindow.disconnect(child._destroyId);
+        });
     },
 
     _onDestroy: function() {
-        this._disconnectRealWindowSignals();
+        this._disconnectSignals();
 
         this.actor._delegate = null;
 
@@ -344,10 +424,26 @@ const WorkspaceThumbnail = new Lang.Class({
         if (this._lookupIndex (metaWin) != -1)
             return;
 
-        if (!this._isMyWindow(win) || !this._isOverviewWindow(win))
+        if (!this._isMyWindow(win))
             return;
 
-        let clone = this._addWindowClone(win);
+        if (this._isOverviewWindow(win)) {
+            this._addWindowClone(win);
+        } else if (metaWin.is_attached_dialog()) {
+            let parent = metaWin.get_transient_for();
+            while (parent.is_attached_dialog())
+                parent = metaWin.get_transient_for();
+
+            let idx = this._lookupIndex (parent);
+            if (idx < 0) {
+                // parent was not created yet, it will take care
+                // of the dialog when created
+                return;
+            }
+
+            let clone = this._windows[idx];
+            clone.addAttachedDialog(metaWin);
+        }
     },
 
     _windowAdded : function(metaWorkspace, metaWin) {
