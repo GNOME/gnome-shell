@@ -484,11 +484,13 @@ const InputSourceIndicator = new Lang.Class({
             }
 
             let item;
-            let type = prop.get_prop_type();
-            if (type == IBus.PropType.MENU) {
+            switch (prop.get_prop_type()) {
+            case IBus.PropType.MENU:
                 item = new PopupMenu.PopupSubMenuMenuItem(prop.get_label().get_text());
                 this._buildPropSubMenu(item.menu, prop.get_sub_props());
-            } else if (type == IBus.PropType.RADIO) {
+                break;
+
+            case IBus.PropType.RADIO:
                 item = new PopupMenu.PopupMenuItem(prop.get_label().get_text());
                 item.prop = prop;
                 radioGroup.push(item);
@@ -513,7 +515,39 @@ const InputSourceIndicator = new Lang.Class({
                         }
                     }
                 }));
-            } else {
+                break;
+
+            case IBus.PropType.TOGGLE:
+                item = new PopupMenu.PopupSwitchMenuItem(prop.get_label().get_text(), prop.get_state() == IBus.PropState.CHECKED);
+                item.prop = prop;
+                item.connect('toggled', Lang.bind(this, function() {
+                    if (item.state) {
+                        item.prop.set_state(IBus.PropState.CHECKED);
+                        this._ibusManager.activateProperty(item.prop.get_key(),
+                                                           IBus.PropState.CHECKED);
+                    } else {
+                        item.prop.set_state(IBus.PropState.UNCHECKED);
+                        this._ibusManager.activateProperty(item.prop.get_key(),
+                                                           IBus.PropState.UNCHECKED);
+                    }
+                }));
+                break;
+
+            case IBus.PropType.NORMAL:
+                item = new PopupMenu.PopupMenuItem(prop.get_label().get_text());
+                item.prop = prop;
+                item.connect('activate', Lang.bind(this, function() {
+                    this._ibusManager.activateProperty(item.prop.get_key(),
+                                                       IBus.PropState.CHECKED);
+                }));
+                break;
+
+            case IBus.PropType.SEPARATOR:
+                item = new PopupMenu.PopupSeparatorMenuItem();
+                break;
+
+            default:
+                log ('IBus property %s has invalid type %d'.format(prop.get_key(), type));
                 continue;
             }
 
