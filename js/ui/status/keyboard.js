@@ -185,12 +185,6 @@ const InputSourceIndicator = new Lang.Class({
     Name: 'InputSourceIndicator',
     Extends: PanelMenu.Button,
 
-    _propertiesWhitelist: [
-        'InputMode',
-        'TypingMode',
-        'DictMode'
-    ],
-
     _init: function() {
         this.parent(0.0, _("Keyboard"));
 
@@ -394,24 +388,12 @@ const InputSourceIndicator = new Lang.Class({
         return String.fromCharCode(0x2328); // keyboard glyph
     },
 
-    _propertyWhitelisted: function(prop) {
-        for (let i = 0; i < this._propertiesWhitelist.length; ++i) {
-            let key = prop.get_key();
-            if (key.substr(0, this._propertiesWhitelist[i].length) == this._propertiesWhitelist[i])
-                return true;
-        }
-        return false;
-    },
-
     _ibusPropertiesRegistered: function(im, props) {
         this._properties = props;
         this._buildPropSection();
     },
 
     _ibusPropertyUpdated: function(im, prop) {
-        if (!this._propertyWhitelisted(prop))
-            return;
-
         if (this._updateSubProperty(this._properties, prop))
             this._buildPropSection();
     },
@@ -468,8 +450,7 @@ const InputSourceIndicator = new Lang.Class({
         for (let i = 0; (p = props.get(i)) != null; ++i) {
             let prop = p;
 
-            if (!this._propertyWhitelisted(prop) ||
-                !prop.get_visible())
+            if (!prop.get_visible())
                 continue;
 
             if (prop.get_key() == 'InputMode') {
