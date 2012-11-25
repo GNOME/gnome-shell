@@ -2051,6 +2051,8 @@ const MessageTray = new Lang.Class({
         params.onCompleteScope = this;
         params.onCompleteParams = [statevar, value, onComplete, onCompleteScope, onCompleteParams];
 
+        // Remove other tweens that could mess with the state machine
+        Tweener.removeTweens(actor);
         Tweener.addTween(actor, params);
 
         let valuing = (value == State.SHOWN) ? State.SHOWING : State.HIDING;
