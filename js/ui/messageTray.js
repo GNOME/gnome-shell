@@ -2108,6 +2108,8 @@ const MessageTray = new Lang.Class({
         params.onCompleteScope = this;
         params.onCompleteParams = [statevar, value, onComplete, onCompleteScope, onCompleteParams];
 
+        // Remove other tweens that could mess with the state machine
+        Tweener.removeTweens(actor);
         Tweener.addTween(actor, params);
 
         let valuing = (value == State.SHOWN) ? State.SHOWING : State.HIDING;
@@ -2429,8 +2431,6 @@ const MessageTray = new Lang.Class({
         if (this._notificationWidget.y < expandedY) {
             this._notificationWidget.y = expandedY;
         } else if (this._notification.y != expandedY) {
-            // Remove any other tween that could mess with the state machine
-            Tweener.removeTweens(this._notificationWidget);
             // Tween also opacity here, to override a possible tween that's
             // currently hiding the notification.
             this._tween(this._notificationWidget, '_notificationState', State.SHOWN,
