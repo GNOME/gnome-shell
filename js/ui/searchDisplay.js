@@ -183,26 +183,20 @@ const SearchResults = new Lang.Class({
         this._content = new St.BoxLayout({ name: 'searchResultsContent',
                                            vertical: true });
 
-        let scrollView = new St.ScrollView({ x_fill: true,
-                                             y_fill: false,
-                                             style_class: 'vfade' });
-        scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        scrollView.add_actor(this._content);
+        this._scrollView = new St.ScrollView({ x_fill: true,
+                                               y_fill: false,
+                                               style_class: 'vfade' });
+        this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        this._scrollView.add_actor(this._content);
+        let action = new Clutter.PanAction({ interpolate: true });
+        action.connect('pan', Lang.bind(this, this._onPan));
+        this._scrollView.add_action(action);
 
-        this.actor.add(scrollView, { x_fill: true,
-                                     y_fill: true,
-                                     expand: true,
-                                     x_align: St.Align.START,
-                                     y_align: St.Align.START });
-        this.actor.connect('notify::mapped', Lang.bind(this,
-            function() {
-                if (!this.actor.mapped)
-                    return;
-
-                let adjustment = scrollView.vscroll.adjustment;
-                let direction = Overview.SwipeScrollDirection.VERTICAL;
-                Main.overview.setScrollAdjustment(adjustment, direction);
-            }));
+        this.actor.add(this._scrollView, { x_fill: true,
+                                           y_fill: true,
+                                           expand: true,
+                                           x_align: St.Align.START,
+                                           y_align: St.Align.START });
 
         this._statusText = new St.Label({ style_class: 'search-statustext' });
         this._statusBin = new St.Bin({ x_align: St.Align.MIDDLE,
@@ -217,6 +211,13 @@ const SearchResults = new Lang.Class({
 
         this._highlightDefault = false;
         this._defaultResult = null;
+    },
+
+    _onPan: function(action) {
+        let [dist, dx, dy] = action.get_motion_delta(0);
+        let adjustment = this._scrollView.vscroll.adjustment;
+        adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
+        return false;
     },
 
     createProviderMeta: function(provider) {
