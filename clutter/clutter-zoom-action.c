@@ -382,8 +382,8 @@ clutter_zoom_action_class_init (ClutterZoomActionClass *klass)
    * this signal and call g_signal_stop_emission_by_name() from within
    * your callback.
    *
-   * Return value: %TRUE if the zoom action has been handled by one of
-   * the listener or %FALSE to continue the emission.
+   * Return value: %TRUE if the zoom should continue, and %FALSE if
+   *   the zoom should be cancelled.
    *
    * Since: 1.12
    */

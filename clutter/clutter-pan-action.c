@@ -522,8 +522,8 @@ clutter_pan_action_class_init (ClutterPanActionClass *klass)
    * interpolation phase of the pan, after the drag has ended and
    * the :interpolate property was set to %TRUE.
    *
-   * Return value: TRUE if the pan action has been handled by one of
-   * the listener or %FALSE to continue the emission.
+   * Return value: %TRUE if the pan should continue, and %FALSE if
+   *   the pan should be cancelled.
    *
    * Since: 1.12
    */
