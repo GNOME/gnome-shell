@@ -431,6 +431,66 @@ cogl_texture_set_region (CoglTexture *texture,
 #if defined (COGL_ENABLE_EXPERIMENTAL_API)
 
 /**
+ * cogl_texture_set_data:
+ * @texture a #CoglTexture.
+ * @format: the #CoglPixelFormat used in the source @data buffer.
+ * @rowstride: rowstride of the source @data buffer (computed from
+ *             the texture width and @format if it equals 0)
+ * @data: the source data, pointing to the first top-left pixel to set
+ * @level: The mipmap level to update (Normally 0 for the largest,
+ *         base texture)
+ * @error: A #CoglError to return exceptional errors
+ *
+ * Sets all the pixels for a given mipmap @level by copying the pixel
+ * data pointed to by the @data argument into the given @texture.
+ *
+ * @data should point to the first pixel to copy corresponding
+ * to the top left of the mipmap @level being set.
+ *
+ * If @rowstride equals 0 then it will be automatically calculated
+ * from the width of the mipmap level and the bytes-per-pixel for the
+ * given @format.
+ *
+ * A mipmap @level of 0 corresponds to the largest, base image of a
+ * texture and @level 1 is half the width and height of level 0. If
+ * dividing any dimension of the previous level by two results in a
+ * fraction then round the number down (floor()), but clamp to 1
+ * something like this:
+ *
+ * |[
+ *  next_width = MAX (1, floor (prev_width));
+ * ]|
+ *
+ * You can determine the number of mipmap levels for a given texture
+ * like this:
+ *
+ * |[
+ *  n_levels = 1 + floor (log2 (max_dimension));
+ * ]|
+ *
+ * Where %max_dimension is the larger of cogl_texture_get_width() and
+ * cogl_texture_get_height().
+ *
+ * It is an error to pass a @level number >= the number of levels that
+ * @texture can have according to the above calculation.
+ *
+ * <note>Since the storage for a #CoglTexture is allocated lazily then
+ * if the given @texture has not previously been allocated then this
+ * api can return %FALSE and throw an exceptional @error if there is
+ * not enough memory to allocate storage for @texture.</note>
+ *
+ * Return value: %TRUE if the data upload was successful, and
+ *               %FALSE otherwise
+ */
+CoglBool
+cogl_texture_set_data (CoglTexture *texture,
+                       CoglPixelFormat format,
+                       int rowstride,
+                       const uint8_t *data,
+                       int level,
+                       CoglError **error);
+
+/**
  * cogl_texture_set_region_from_bitmap:
  * @texture: a #CoglTexture pointer
  * @src_x: upper left coordinate to use from the source bitmap.

@@ -610,6 +610,34 @@ cogl_texture_set_region (CoglTexture *texture,
   return status;
 }
 
+CoglBool
+cogl_texture_set_data (CoglTexture *texture,
+                       CoglPixelFormat format,
+                       int rowstride,
+                       const uint8_t *data,
+                       int level,
+                       CoglError **error)
+{
+  int level_width;
+  int level_height;
+
+  _cogl_texture_get_level_size (texture,
+                                level,
+                                &level_width,
+                                &level_height,
+                                NULL);
+
+  return _cogl_texture_set_region (texture,
+                                   level_width,
+                                   level_height,
+                                   format,
+                                   rowstride,
+                                   data,
+                                   0, 0, /* dest x, y */
+                                   level,
+                                   error);
+}
+
 /* Reads back the contents of a texture by rendering it to the framebuffer
  * and reading back the resulting pixels.
  *
