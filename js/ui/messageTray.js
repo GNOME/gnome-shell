@@ -1515,7 +1515,6 @@ const MessageTray = new Lang.Class({
             function() {
                 this._overviewVisible = false;
                 this._escapeTray();
-                this.actor.remove_style_pseudo_class('overview');
                 this._updateState();
             }));
 
@@ -2190,7 +2189,9 @@ const MessageTray = new Lang.Class({
         this._tween(this.actor, '_trayState', State.HIDDEN,
                     { y: 0,
                       time: ANIMATION_TIME,
-                      transition: 'easeOutQuad'
+                      transition: 'easeOutQuad',
+                      onComplete: this._onTrayHidden,
+                      onCompleteScope: this
                     });
 
         // Note that we might have entered here without a grab,
@@ -2198,6 +2199,11 @@ const MessageTray = new Lang.Class({
         // This is a no-op in that case.
         this._grabHelper.ungrab({ actor: this.actor });
         this._lightbox.hide();
+    },
+
+    _onTrayHidden: function() {
+        if (!this._overviewVisible)
+            this.actor.remove_style_pseudo_class('overview');
     },
 
     _hideDesktopClone: function(now) {
