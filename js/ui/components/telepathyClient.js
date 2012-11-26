@@ -730,8 +730,7 @@ const ChatSource = new Lang.Class({
     _ackMessages: function() {
         // Don't clear our messages here, tp-glib will send a
         // 'pending-message-removed' for each one.
-        this._channel.ack_all_pending_messages_async(Lang.bind(this, function(src, result) {
-            this._channel.ack_all_pending_messages_finish(result);}));
+        this._channel.ack_all_pending_messages_async(null);
     }
 });
 
