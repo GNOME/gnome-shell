@@ -48,18 +48,16 @@ const AlphabeticalView = new Lang.Class({
                                          style_class: 'vfade' });
         this.actor.add_actor(box);
         this.actor.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        this.actor.connect('notify::mapped', Lang.bind(this,
-            function() {
-                if (!this.actor.mapped)
-                    return;
+        let action = new Clutter.PanAction({ interpolate: true });
+        action.connect('pan', Lang.bind(this, this._onPan));
+        this.actor.add_action(action);
+    },
 
-                let adjustment = this.actor.vscroll.adjustment;
-                let direction = Overview.SwipeScrollDirection.VERTICAL;
-                Main.overview.setScrollAdjustment(adjustment, direction);
-
-                // Reset scroll on mapping
-                adjustment.value = 0;
-            }));
+    _onPan: function(action) {
+        let [dist, dx, dy] = action.get_motion_delta(0);
+        let adjustment = this.actor.vscroll.adjustment;
+        adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
+        return false;
     },
 
     removeAll: function() {

@@ -194,15 +194,9 @@ const SearchResults = new Lang.Class({
                                      expand: true,
                                      x_align: St.Align.START,
                                      y_align: St.Align.START });
-        this.actor.connect('notify::mapped', Lang.bind(this,
-            function() {
-                if (!this.actor.mapped)
-                    return;
-
-                let adjustment = scrollView.vscroll.adjustment;
-                let direction = Overview.SwipeScrollDirection.VERTICAL;
-                Main.overview.setScrollAdjustment(adjustment, direction);
-            }));
+        let action = new Clutter.PanAction({ interpolate: true });
+        action.connect('pan', Lang.bind(this, this._onPan));
+        this.actor.add_action(action);
 
         this._statusText = new St.Label({ style_class: 'search-statustext' });
         this._statusBin = new St.Bin({ x_align: St.Align.MIDDLE,
@@ -217,6 +211,13 @@ const SearchResults = new Lang.Class({
 
         this._highlightDefault = false;
         this._defaultResult = null;
+    },
+
+    _onPan: function(action) {
+        let [dist, dx, dy] = action.get_motion_delta(0);
+        let adjustment = this.actor.vscroll.adjustment;
+        adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
+        return false;
     },
 
     createProviderMeta: function(provider) {
