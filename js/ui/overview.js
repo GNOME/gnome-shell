@@ -347,6 +347,13 @@ const Overview = new Lang.Class({
         return DND.DragMotionResult.CONTINUE;
     },
 
+    addAction: function(action) {
+        if (this.isDummy)
+            return;
+
+        this._group.add_action(action);
+    },
+
     setScrollAdjustment: function(adjustment, direction) {
         if (this.isDummy)
             return;

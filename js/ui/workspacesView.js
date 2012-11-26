@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -385,24 +386,11 @@ const WorkspacesView = new Lang.Class({
         this._scrolling = true;
     },
 
-    endSwipeScroll: function(result) {
+    endSwipeScroll: function() {
         this._scrolling = false;
 
-        if (result == Overview.SwipeScrollResult.CLICK) {
-            let [x, y, mod] = global.get_pointer();
-            let actor = global.stage.get_actor_at_pos(Clutter.PickMode.ALL,
-                                                      x, y);
-
-            // Only switch to the workspace when there's no application
-            // windows open. The problem is that it's too easy to miss
-            // an app window and get the wrong one focused.
-            let active = global.screen.get_active_workspace_index();
-            if (this._workspaces[active].isEmpty() &&
-                this.actor.contains(actor))
-                Main.overview.hide();
-        }
-
         // Make sure title captions etc are shown as necessary
+        this._scrollToActive();
         this._updateVisibility();
     },
 
@@ -454,9 +442,21 @@ const WorkspacesDisplay = new Lang.Class({
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
-        this.actor.connect('notify::mapped', Lang.bind(this, this._setupSwipeScrolling));
         this.actor.connect('parent-set', Lang.bind(this, this._parentSet));
         this.actor.set_clip_to_allocation(true);
+        let action = new Clutter.PanAction();
+        action.connect('pan', Lang.bind(this, this._onPan));
+        action.connect('gesture-begin', Lang.bind(this, function() {
+            for (let i = 0; i < this._workspacesViews.length; i++)
+                this._workspacesViews[i].startSwipeScroll();
+            return true;
+        }));
+        action.connect('gesture-end', Lang.bind(this, function() {
+            for (let i = 0; i < this._workspacesViews.length; i++)
+                this._workspacesViews[i].endSwipeScroll();
+        }));
+        Main.overview.addAction(action);
+        this.actor.bind_property('mapped', action, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         let controls = new St.Bin({ style_class: 'workspace-controls',
                                     request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT,
@@ -527,6 +527,13 @@ const WorkspacesDisplay = new Lang.Class({
         this._settings = new Gio.Settings({ schema: OVERRIDE_SCHEMA });
         this._settings.connect('changed::dynamic-workspaces',
             Lang.bind(this, this._updateSwitcherVisibility));
+    },
+
+    _onPan: function(action) {
+        let [dist, dx, dy] = action.get_motion_delta(0);
+        let adjustment = this._scrollAdjustment;
+        adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
+        return false;
     },
 
     _updateSwitcherVisibility: function() {
@@ -638,33 +645,6 @@ const WorkspacesDisplay = new Lang.Class({
             }
     },
 
-    _setupSwipeScrolling: function() {
-        if (this._swipeScrollBeginId)
-            Main.overview.disconnect(this._swipeScrollBeginId);
-        this._swipeScrollBeginId = 0;
-
-        if (this._swipeScrollEndId)
-            Main.overview.disconnect(this._swipeScrollEndId);
-        this._swipeScrollEndId = 0;
-
-        if (!this.actor.mapped)
-            return;
-
-        let direction = Overview.SwipeScrollDirection.VERTICAL;
-        Main.overview.setScrollAdjustment(this._scrollAdjustment,
-                                          direction);
-        this._swipeScrollBeginId = Main.overview.connect('swipe-scroll-begin',
-            Lang.bind(this, function() {
-                for (let i = 0; i < this._workspacesViews.length; i++)
-                    this._workspacesViews[i].startSwipeScroll();
-            }));
-        this._swipeScrollEndId = Main.overview.connect('swipe-scroll-end',
-           Lang.bind(this, function(overview, result) {
-                for (let i = 0; i < this._workspacesViews.length; i++)
-                    this._workspacesViews[i].endSwipeScroll(result);
-           }));
-    },
-
     _workspacesOnlyOnPrimaryChanged: function() {
         this._workspacesOnlyOnPrimary = this._settings.get_boolean('workspaces-only-on-primary');
 
@@ -704,7 +684,6 @@ const WorkspacesDisplay = new Lang.Class({
                 this._scrollAdjustment = view.scrollAdjustment;
                 this._scrollAdjustment.connect('notify::value',
                                                Lang.bind(this, this._scrollValueChanged));
-                this._setupSwipeScrolling();
             }
             this._workspacesViews.push(view);
         }
