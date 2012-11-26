@@ -1441,7 +1441,6 @@ const MessageTray = new Lang.Class({
         this._clickedSummaryItem = null;
         this._clickedSummaryItemMouseButton = -1;
         this._clickedSummaryItemAllocationChangedId = 0;
-        this._pointerBarrier = 0;
 
         this._closeButton = makeCloseButton();
         this._closeButton.hide();
