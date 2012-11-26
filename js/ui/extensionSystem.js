@@ -126,11 +126,7 @@ function logExtensionError(uuid, error) {
 
     let message = '' + error;
 
-    if (error.state)
-        extension.state = error.state;
-    else
-        extension.state = ExtensionState.ERROR;
-
+    extension.state = ExtensionState.ERROR;
     if (!extension.errors)
         extension.errors = [];
 
@@ -145,18 +141,16 @@ function loadExtension(extension) {
     extension.state = ExtensionState.ERROR;
 
     if (ExtensionUtils.isOutOfDate(extension)) {
-        let error = new Error('extension is not compatible with current GNOME Shell and/or GJS version');
-        error.state = ExtensionState.OUT_OF_DATE;
-        throw error;
-    }
-
-    let enabled = enabledExtensions.indexOf(extension.uuid) != -1;
-    if (enabled) {
-        initExtension(extension.uuid);
-        if (extension.state == ExtensionState.DISABLED)
-            enableExtension(extension.uuid);
+        extension.state = ExtensionState.OUT_OF_DATE;
     } else {
-        extension.state = ExtensionState.INITIALIZED;
+        let enabled = enabledExtensions.indexOf(extension.uuid) != -1;
+        if (enabled) {
+            initExtension(extension.uuid);
+            if (extension.state == ExtensionState.DISABLED)
+                enableExtension(extension.uuid);
+        } else {
+            extension.state = ExtensionState.INITIALIZED;
+        }
     }
 
     _signals.emit('extension-state-changed', extension);
