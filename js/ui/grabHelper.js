@@ -43,7 +43,6 @@ const GrabHelper = new Lang.Class({
 
         this._actors = [];
         this._capturedEventId = 0;
-        this._eventId = 0;
         this._keyFocusNotifyId = 0;
         this._focusWindowChangedId = 0;
         this._ignoreRelease = false;
@@ -171,7 +170,6 @@ const GrabHelper = new Lang.Class({
                 return false;
 
             this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
-            this._eventId = global.stage.connect('event', Lang.bind(this, this._onEvent));
         }
 
         this._modalCount++;
@@ -186,11 +184,6 @@ const GrabHelper = new Lang.Class({
         if (this._capturedEventId > 0) {
             global.stage.disconnect(this._capturedEventId);
             this._capturedEventId = 0;
-        }
-
-        if (this._eventId > 0) {
-            global.stage.disconnect(this._eventId);
-            this._eventId = 0;
         }
 
         Main.popModal(this._owner);
@@ -310,6 +303,12 @@ const GrabHelper = new Lang.Class({
         if (!button && this._modalCount == 0)
             return false;
 
+        if (type == Clutter.EventType.KEY_PRESS &&
+            event.get_key_symbol() == Clutter.KEY_Escape) {
+            this.ungrab();
+            return true;
+        }
+
         if (this._isWithinGrabbedActor(event.get_source()))
             return false;
 
@@ -325,18 +324,6 @@ const GrabHelper = new Lang.Class({
         }
 
         return this._modalCount > 0;
-    },
-
-    // We catch 'event' rather than 'key-press-event' so that we get
-    // a chance to run before the overview's own Escape check
-    _onEvent: function(actor, event) {
-        if (event.type() == Clutter.EventType.KEY_PRESS &&
-            event.get_key_symbol() == Clutter.KEY_Escape) {
-            this.ungrab();
-            return true;
-        }
-
-        return false;
     },
 
     _onKeyFocusChanged: function() {
