@@ -211,18 +211,19 @@ const ViewSelector = new Lang.Class({
             return;
 
         if(this._activePage) {
+            let oldPage = this._activePage;
             Tweener.addTween(this._activePage,
                              { opacity: 0,
                                time: 0.1,
                                transition: 'easeOutQuad',
                                onComplete: Lang.bind(this,
                                    function() {
-                                       this._activePage.hide();
-                                       this._activePage = page;
+                                       oldPage.hide();
                                    })
                              });
         }
 
+        this._activePage = page;
         page.show();
         Tweener.addTween(page,
                          { opacity: 255,
