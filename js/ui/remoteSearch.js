@@ -265,6 +265,13 @@ const RemoteSearchProvider = new Lang.Class({
 
     activateResult: function(id) {
         this.proxy.ActivateResultRemote(id);
+    },
+
+    launchSearch: function(terms) {
+        // the provider is not compatible with the new version of the interface, launch
+        // the app itself but warn so we can catch the error in logs
+        log('Search provider ' + this.appInfo.get_id() + ' does not implement LaunchSearch');
+        this.appInfo.launch([], global.create_app_launch_context());
     }
 });
 
@@ -274,9 +281,15 @@ const RemoteSearchProvider2 = new Lang.Class({
 
     _init: function(appInfo, dbusName, dbusPath) {
         this.parent(appInfo, dbusName, dbusPath, SearchProvider2Proxy);
+
+        this.canLaunchSearch = true;
     },
 
     activateResult: function(id) {
         this.proxy.ActivateResultRemote(id, [], 0);
+    },
+
+    launchSearch: function(terms) {
+        this.proxy.LaunchSearchRemote(terms);
     }
 });

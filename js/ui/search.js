@@ -81,6 +81,7 @@ const SearchProvider = new Lang.Class({
         this.appInfo = appInfo;
         this.searchSystem = null;
         this.isRemoteProvider = !!isRemoteProvider;
+        this.canLaunchSearch = false;
     },
 
     /**
@@ -166,6 +167,16 @@ const SearchProvider = new Lang.Class({
      * Called when the user chooses a given result.
      */
     activateResult: function(id) {
+        throw new Error('Not implemented');
+    },
+
+    /**
+     * launchSearch:
+     * @terms: Current search terms
+     *
+     * Called when the user clicks the provider icon.
+     */
+    launchSearch: function(terms) {
         throw new Error('Not implemented');
     }
 });
