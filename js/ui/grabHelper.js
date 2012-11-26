@@ -76,6 +76,18 @@ const GrabHelper = new Lang.Class({
         }
     },
 
+    _actorInGrabStack: function(actor) {
+        while (actor) {
+            for (let i = 0; i < this._grabStack.length; i++) {
+                let grab = this._grabStack[i];
+                if (grab.actor == actor)
+                    return i;
+            }
+            actor = actor.get_parent();
+        }
+        return -1;
+    },
+
     _isWithinGrabbedActor: function(actor) {
        let currentActor = this.currentGrab.actor;
         while (actor) {
@@ -330,7 +342,8 @@ const GrabHelper = new Lang.Class({
             // which should be a release event.
             if (press)
                 this._ignoreRelease = true;
-            this.ungrab({ actor: this._grabStack[0].actor });
+            let i = this._actorInGrabStack(event.get_source()) + 1;
+            this.ungrab({ actor: this._grabStack[i].actor });
         }
 
         return this._modalCount > 0;
