@@ -38,6 +38,7 @@
 #include "cogl-onscreen-private.h"
 #include "cogl-winsys-sdl-private.h"
 #include "cogl-error-private.h"
+#include "cogl-sdl.h"
 
 typedef struct _CoglContextSdl2
 {
@@ -508,6 +509,21 @@ _cogl_winsys_poll_dispatch (CoglContext *context,
                       NULL);
       sdl_display->pending_resize_notify = FALSE;
     }
+}
+
+SDL_Window *
+cogl_sdl_onscreen_get_window (CoglOnscreen *onscreen)
+{
+  CoglOnscreenSdl2 *sdl_onscreen;
+
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_onscreen (onscreen), NULL);
+
+  if (!cogl_framebuffer_allocate (COGL_FRAMEBUFFER (onscreen), NULL))
+    return NULL;
+
+  sdl_onscreen = onscreen->winsys;
+
+  return sdl_onscreen->window;
 }
 
 const CoglWinsysVtable *

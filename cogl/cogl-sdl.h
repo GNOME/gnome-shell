@@ -29,6 +29,7 @@
 #define __COGL_SDL_H__
 
 #include <cogl/cogl-context.h>
+#include <cogl/cogl-onscreen.h>
 #include <SDL.h>
 
 #ifdef _MSC_VER
@@ -201,6 +202,22 @@ cogl_sdl_handle_event (CoglContext *context, SDL_Event *event);
  */
 void
 cogl_sdl_idle (CoglContext *context);
+
+#if SDL_MAJOR_VERSION >= 2
+
+/**
+ * cogl_sdl_onscreen_get_window:
+ * @onscreen: A #CoglOnscreen
+ *
+ * Returns the underlying SDL_Window associated with an onscreen framebuffer.
+ *
+ * Since: 2.0
+ * Stability: unstable
+ */
+SDL_Window *
+cogl_sdl_onscreen_get_window (CoglOnscreen *onscreen);
+
+#endif /* SDL_MAJOR_VERSION */
 
 G_END_DECLS
 

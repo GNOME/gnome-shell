@@ -822,4 +822,5 @@ cogl_sdl_renderer_set_event_type
 cogl_sdl_renderer_get_event_type
 cogl_sdl_handle_event
 cogl_sdl_idle
+cogl_sdl_onscreen_get_window
 </SECTION>
