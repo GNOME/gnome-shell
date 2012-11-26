@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-11-20 09:42+0000\n"
-"PO-Revision-Date: 2012-11-23 17:18+0530\n"
+"POT-Creation-Date: 2012-11-26 09:33+0000\n"
+"PO-Revision-Date: 2012-11-26 15:51+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: as_IN <kde-i18n-doc@kde.org>\n"
 "Language: as_IN\n"
@@ -37,18 +37,14 @@ msgid "Show the message tray"
 msgstr "বাৰ্তা ট্ৰে দেখুৱাওক"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
-#| msgid "%d new notification"
-#| msgid_plural "%d new notifications"
 msgid "Focus the active notification"
 msgstr "সক্ৰিয় অধিসূচনাত ফকাচ কৰক"
 
 #: ../data/50-gnome-shell-system.xml.in.h:4
-#| msgid "Show Applications"
 msgid "Show all applications"
 msgstr "সকলো এপ্লিকেচন দেখুৱাওক"
 
 #: ../data/50-gnome-shell-system.xml.in.h:5
-#| msgid "Keybinding to open the application menu"
 msgid "Open the application menu"
 msgstr "এপ্লিকেচন মেনু খোলক"
 
@@ -166,76 +162,80 @@ msgid ""
 "user, single-session situations."
 msgstr ""
 "এই কি'য়ে এটা-ব্যৱহাৰকাৰী, এটা-অধিবেশন অৱস্থাবোৰত 'Log out' মেনুআইটেম "
-"স্বচালিতভাৱে "
-"লুকুৱা অভাৰৰাইড কৰে।"
+"স্বচালিতভাৱে লুকুৱা অভাৰৰাইড কৰে।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+#| msgid "Always show the 'Log out' menuitem in the user menu."
+msgid "Show full name in the user menu"
+msgstr "ব্যৱহাৰকাৰী মেনুত সম্পূৰ্ণ নাম দেখুৱাওক"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+msgid "Whether the users full name is shown in the user menu or not."
+msgstr "ব্যৱহাৰকাৰী মেনুত ব্যৱহাৰকাৰীসকলৰ সম্পূৰ্ণ নাম দেখুৱা হয় নে নহয়।"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Show the week date in the calendar"
 msgstr "কেলেন্ডাৰত সপ্তাহৰ তাৰিখ দেখুৱাওক"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "If true, display the ISO week date in the calendar."
 msgstr "যদি সত্য, ISO সপ্তাহ তাৰিখক কেলেণ্ডাৰত দেখুৱাওক।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to open the application menu"
 msgstr "এপ্লিকেচন মেনু খোলিবলে Keybinding"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to open the application menu."
 msgstr "এপ্লিকেচন মেনু খোলিবলে Keybinding।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
-#| msgid "Keybinding to open the application menu"
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "\"এপ্লিকেচনসমূহ দেখুৱাওক\" দৰ্শন খোলিবলে কি'বাইণ্ডিং"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
-#| msgid "Keybinding to open the application menu."
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr ""
 "কাৰ্য্যসমূহ অভাৰভিউৰ \"এপ্লিকেচনসমূহ দেখুৱাওক\" দৰ্শন খোলিবলে কি'বাইণ্ডিং।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr "বাৰ্তা ট্ৰেৰ দৃশ্যমানতা টগ'ল কৰিবলে Keybinding"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "বাৰ্তা ট্ৰেৰ দৃশ্যমানতা টগ'ল কৰিবলে Keybinding।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
-#| msgid "Keybinding to open the application menu"
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to focus the active notification"
 msgstr "সক্ৰিয় অধিসূচনা ফকাচ কৰিবলে কি'বাইণ্ডিং"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
-#| msgid "Keybinding to open the application menu."
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to focus the active notification."
 msgstr "সক্ৰিয় অধিসূচনা ফকাচ কৰিবলে কি'বাইণ্ডিং।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to toggle the screen recorder"
 msgstr "পৰ্দা ৰেকৰ্ডাৰ অদল বদল কৰিবলে Keybinding"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "Keybinding to start/stop the builtin screen recorder."
 msgstr "বিল্টইন পৰ্দা ৰেকৰ্ডাৰ আৰম্ভ/বন্ধ কৰিবলে Keybinding।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Which keyboard to use"
 msgstr "কোনটো কিবৰ্ড ব্যৱহাৰ কৰা হব"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "The type of keyboard to use."
 msgstr "ব্যৱহাৰ কৰিব লগিয়া কিবৰ্ডৰ ধৰণ।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Framerate used for recording screencasts."
 msgstr "screencasts ৰেকৰ্ড কৰাৰ কাৰণে ব্যৱহৃত Framerate"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -243,11 +243,11 @@ msgstr ""
 "GNOME শ্বেলৰ screencast ৰেকৰ্ডাৰে ফ্ৰেইম-প্ৰতি ছেকেণ্ডত ৰেকৰ্ড কৰা পৰিণাম "
 "screencast ৰ framerate।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "screencast এনক'ড কৰিবলে ব্যৱহাৰ কৰা gstreamer পাইপলাইন"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -275,11 +275,11 @@ msgstr ""
 "কাওন্টত এটা "
 "অনুমানৰ প্লেইচহল্ডাৰ হিচাপে ব্যৱহাৰ কৰা হয়।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid "File extension used for storing the screencast"
 msgstr "screencast সংৰক্ষণ কৰাৰ কাৰণে লথিপত্ৰ সম্প্ৰসাৰন"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -290,20 +290,20 @@ msgstr ""
 "অন্তৰ্ভুক্তক "
 "বিন্যাসত ৰেকৰ্ড কৰোতে পৰিবৰ্তন কৰিব লাগিব।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "Attach modal dialog to the parent window"
 msgstr "মডাল ডাইলগ উপধায়ক উইন্ডোৰ সৈতে সংলগ্ন কৰক"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr "GNOME শ্বেল চলাওতে এই কি'য়ে org.gnome.mutter ত থকা কি' অভাৰৰাইড কৰে।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "Arrangement of buttons on the titlebar"
 msgstr "শীৰ্ষকবাৰত বুটামসমূহ সজোঁৱা"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
@@ -311,15 +311,15 @@ msgstr ""
 "GNOME শ্বেল চলাওতে এই কি'য়ে org.gnome.desktop.wm.preferences ত থকা কি' "
 "অভাৰৰাইড কৰে।"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "উইন্ডোসমূহক পৰ্দাৰ প্ৰান্তসমূহত এৰোতে প্ৰান্ত টাইলিং সামৰ্থবান কৰক"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid "Workspaces are managed dynamically"
 msgstr "কাৰ্য্যস্থানসমূহক চলমানভাৱে ব্যৱস্থাপনা কৰা হয়"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Workspaces only on primary monitor"
 msgstr "কাৰ্য্যস্থানসমূহ কেৱল প্ৰাথমিক মনিটৰত"
 
@@ -336,11 +336,11 @@ msgstr "প্ৰসাৰন"
 msgid "Select an extension to configure using the combobox above."
 msgstr "উপৰত দিয়া কম্বোবাকচ ব্যৱহাৰ কৰি সংৰূপণ কৰিবলে এটা সম্প্ৰসাৰন বাছক।"
 
-#: ../js/gdm/loginDialog.js:560
+#: ../js/gdm/loginDialog.js:565
 msgid "Session..."
 msgstr "অধিবেশন..."
 
-#: ../js/gdm/loginDialog.js:708
+#: ../js/gdm/loginDialog.js:722
 msgctxt "title"
 msgid "Sign In"
 msgstr "ছাইন ইন কৰক"
@@ -348,36 +348,35 @@ msgstr "ছাইন ইন কৰক"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:769
+#: ../js/gdm/loginDialog.js:786
 msgid "Not listed?"
 msgstr "তালিকাভুক্ত নহয়?"
 
-#: ../js/gdm/loginDialog.js:913 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:962 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
-#: ../js/ui/status/bluetooth.js:413 ../js/ui/unlockDialog.js:172
+#: ../js/ui/status/bluetooth.js:413 ../js/ui/unlockDialog.js:179
 msgid "Cancel"
 msgstr "বাতিল কৰক"
 
-#: ../js/gdm/loginDialog.js:918
+#: ../js/gdm/loginDialog.js:978
 msgctxt "button"
 msgid "Sign In"
 msgstr "ছাইন ইন কৰক"
 
-#: ../js/gdm/loginDialog.js:918
-#| msgid "Next week"
+#: ../js/gdm/loginDialog.js:978
 msgid "Next"
 msgstr "পৰৱৰ্তী"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:994 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:1086 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "ব্যৱহাৰকাৰীৰ নাম: "
 
-#: ../js/gdm/loginDialog.js:1290
+#: ../js/gdm/loginDialog.js:1382
 msgid "Login Window"
 msgstr "লগিন উইন্ডো"
 
@@ -386,8 +385,8 @@ msgstr "লগিন উইন্ডো"
 msgid "Power"
 msgstr "শক্তি"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:667 ../js/ui/userMenu.js:671
-#: ../js/ui/userMenu.js:782
+#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:674 ../js/ui/userMenu.js:678
+#: ../js/ui/userMenu.js:789
 msgid "Suspend"
 msgstr "বাতিল কৰক"
 
@@ -395,8 +394,8 @@ msgstr "বাতিল কৰক"
 msgid "Restart"
 msgstr "পুনৰাম্ভ কৰক"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:669
-#: ../js/ui/userMenu.js:671 ../js/ui/userMenu.js:781
+#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:676
+#: ../js/ui/userMenu.js:678 ../js/ui/userMenu.js:788
 msgid "Power Off"
 msgstr "বন্ধ কৰক"
 
@@ -431,27 +430,27 @@ msgid "Execution of '%s' failed:"
 msgstr "'%s' ৰ প্ৰেৰণ ব্যৰ্থ হল:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:252
+#: ../js/ui/appDisplay.js:259
 msgid "All"
 msgstr "সকলো"
 
-#: ../js/ui/appDisplay.js:310
+#: ../js/ui/appDisplay.js:317
 msgid "APPLICATIONS"
 msgstr "APPLICATIONS"
 
-#: ../js/ui/appDisplay.js:370
+#: ../js/ui/appDisplay.js:377
 msgid "SETTINGS"
 msgstr "SETTINGS"
 
-#: ../js/ui/appDisplay.js:675
+#: ../js/ui/appDisplay.js:682
 msgid "New Window"
 msgstr "নতুন উইন্ডো"
 
-#: ../js/ui/appDisplay.js:678 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:685 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "পছন্দৰ পৰা আতৰাওক"
 
-#: ../js/ui/appDisplay.js:679
+#: ../js/ui/appDisplay.js:686
 msgid "Add to Favorites"
 msgstr "পছন্দলে যোগ কৰক"
 
@@ -775,7 +774,6 @@ msgstr "<b>%H:%M</b> যোৱাকালী"
 #. Translators: this is a time format string followed by a week day name. i.e. "14:30 on Monday
 #: ../js/ui/components/telepathyClient.js:952
 #, no-c-format
-#| msgid "Sent at <b>%X</b> on <b>%A</b>"
 msgid "<b>%H:%M</b> on <b>%A</b>"
 msgstr "<b>%A</b> ত <b>%H:%M</b>"
 
@@ -783,7 +781,6 @@ msgstr "<b>%A</b> ত <b>%H:%M</b>"
 #. shown when you get a chat message in the same year
 #: ../js/ui/components/telepathyClient.js:958
 #, no-c-format
-#| msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgid "<b>%H:%M</b> on <b>%A</b>, <b>%B</b> <b>%d</b>"
 msgstr "<b>%A</b> ত <b>%H:%M</b>, <b>%B</b> <b>%d</b>"
 
@@ -791,7 +788,6 @@ msgstr "<b>%A</b> ত <b>%H:%M</b>, <b>%B</b> <b>%d</b>"
 #. shown when you get a chat message in a different year
 #: ../js/ui/components/telepathyClient.js:963
 #, no-c-format
-#| msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
 msgid "<b>%H:%M</b> on <b>%A</b>, <b>%B</b> <b>%d</b>, %Y"
 msgstr "<b>%A</b> ত <b>%H:%M</b>, <b>%B</b> <b>%d</b>, %Y"
 
@@ -1170,16 +1166,15 @@ msgstr "খোলক"
 msgid "Remove"
 msgstr "আতৰাওক"
 
-#: ../js/ui/messageTray.js:1551
-#| msgid "Message Tray"
+#: ../js/ui/messageTray.js:1552
 msgid "No Messages"
 msgstr "কোনো বাৰ্তা নাই"
 
-#: ../js/ui/messageTray.js:1568
+#: ../js/ui/messageTray.js:1569
 msgid "Message Tray"
 msgstr "বাৰ্তা ট্ৰে"
 
-#: ../js/ui/messageTray.js:2631
+#: ../js/ui/messageTray.js:2639
 msgid "System Information"
 msgstr "চিস্টেম তথ্য"
 
@@ -1220,7 +1215,7 @@ msgstr "প্ৰস্থান কৰক"
 msgid "Activities"
 msgstr "কাৰ্য্যসমূহ"
 
-#: ../js/ui/panel.js:998
+#: ../js/ui/panel.js:999
 msgid "Top Bar"
 msgstr "উপৰৰ বাৰ"
 
@@ -1234,7 +1229,6 @@ msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
 #: ../js/ui/runDialog.js:205
-#| msgid "Please enter a command:"
 msgid "Enter a Command"
 msgstr "এটা কমান্ড সুমুৱাওক"
 
@@ -1262,7 +1256,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d নতুন অধিসূচনা"
 msgstr[1] "%d নতুন অধিসূচনাসমূহ"
 
-#: ../js/ui/screenShield.js:401 ../js/ui/userMenu.js:773
+#: ../js/ui/screenShield.js:401 ../js/ui/userMenu.js:780
 msgid "Lock"
 msgstr "লক কৰক"
 
@@ -1298,7 +1292,7 @@ msgstr "পাছৱাৰ্ড"
 msgid "Remember Password"
 msgstr "পাছৱাৰ্ড মনত ৰাখক"
 
-#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:175
+#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:193
 msgid "Unlock"
 msgstr "আনলক কৰক"
 
@@ -1690,65 +1684,63 @@ msgstr "ভলিউম"
 msgid "Microphone"
 msgstr "মাইক্ৰোফোন"
 
-#: ../js/ui/unlockDialog.js:182
+#: ../js/ui/unlockDialog.js:202
 msgid "Log in as another user"
 msgstr "অন্য ব্যৱহাৰকাৰী হিচাপে লগিন কৰক"
 
-#: ../js/ui/unlockDialog.js:203
-#| msgid "Login Window"
+#: ../js/ui/unlockDialog.js:225
 msgid "Unlock Window"
 msgstr "উইন্ডো আনলক কৰক"
 
-#: ../js/ui/userMenu.js:176
+#: ../js/ui/userMenu.js:177
 msgid "Available"
 msgstr "উপলব্ধ"
 
-#: ../js/ui/userMenu.js:179
+#: ../js/ui/userMenu.js:180
 msgid "Busy"
 msgstr "ব্যস্থ"
 
-#: ../js/ui/userMenu.js:182
+#: ../js/ui/userMenu.js:183
 msgid "Invisible"
 msgstr "অদৃশ্য"
 
-#: ../js/ui/userMenu.js:185
+#: ../js/ui/userMenu.js:186
 msgid "Away"
 msgstr "আতৰত"
 
-#: ../js/ui/userMenu.js:188
+#: ../js/ui/userMenu.js:189
 msgid "Idle"
 msgstr "অলস"
 
-#: ../js/ui/userMenu.js:191
+#: ../js/ui/userMenu.js:192
 msgid "Offline"
 msgstr "অফলাইন"
 
-#: ../js/ui/userMenu.js:747
+#: ../js/ui/userMenu.js:754
 msgid "Notifications"
 msgstr "অধিসূচনাসমূহ"
 
-#: ../js/ui/userMenu.js:755
-#| msgid "Mouse Settings"
+#: ../js/ui/userMenu.js:762
 msgid "Settings"
 msgstr "সংহতিসমূহ"
 
-#: ../js/ui/userMenu.js:763
+#: ../js/ui/userMenu.js:770
 msgid "Switch User"
 msgstr "ব্যৱহাৰকাৰী পৰিবৰ্তন কৰক"
 
-#: ../js/ui/userMenu.js:768
+#: ../js/ui/userMenu.js:775
 msgid "Log Out"
 msgstr "লগ আউট কৰক"
 
-#: ../js/ui/userMenu.js:788
+#: ../js/ui/userMenu.js:795
 msgid "Install Updates & Restart"
 msgstr "আপডেইটসমূহ ইনস্টল কৰক আৰু পুনাৰম্ভ কৰক"
 
-#: ../js/ui/userMenu.js:806
+#: ../js/ui/userMenu.js:813
 msgid "Your chat status will be set to busy"
 msgstr "আপোনাৰ চেট অৱস্থা ব্যস্থলে সংহতি কৰা হব"
 
-#: ../js/ui/userMenu.js:807
+#: ../js/ui/userMenu.js:814
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
