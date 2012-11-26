@@ -300,7 +300,7 @@ const LayoutManager = new Lang.Class({
         if (Main.messageTray) {
             this._trayBarrier = new Meta.Barrier({ display: global.display,
                                                    x1: monitor.x, x2: monitor.x + monitor.width,
-                                                   y1: monitor.y + monitor.height, y2: monitor.y + monitor.height,
+                                                   y1: monitor.y + monitor.height - 1, y2: monitor.y + monitor.height - 1,
                                                    directions: Meta.BarrierDirection.NEGATIVE_Y });
 
             this._trayPressure = new PressureBarrier(this._trayBarrier,
