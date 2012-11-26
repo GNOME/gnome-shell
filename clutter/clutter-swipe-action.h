@@ -83,6 +83,10 @@ struct _ClutterSwipeActionClass
                    ClutterActor          *actor,
                    ClutterSwipeDirection  direction);
 
+  gboolean (* swipe) (ClutterSwipeAction    *action,
+                      ClutterActor          *actor,
+                      ClutterSwipeDirection  direction);
+
   /*< private >*/
   void (* _clutter_swipe_action1) (void);
   void (* _clutter_swipe_action2) (void);
