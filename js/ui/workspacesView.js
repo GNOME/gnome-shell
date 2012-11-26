@@ -205,11 +205,11 @@ const WorkspacesView = new Lang.Class({
             this._workspaces[w].positionWindows(Workspace.WindowPositionFlags.ANIMATE);
     },
 
-    _scrollToActive: function(showAnimation) {
+    _scrollToActive: function() {
         let active = global.screen.get_active_workspace_index();
 
-        this._updateWorkspaceActors(showAnimation);
-        this._updateScrollAdjustment(active, showAnimation);
+        this._updateWorkspaceActors(true);
+        this._updateScrollAdjustment(active);
     },
 
     // Update workspace actors parameters
@@ -267,26 +267,21 @@ const WorkspacesView = new Lang.Class({
         }
     },
 
-    _updateScrollAdjustment: function(index, showAnimation) {
+    _updateScrollAdjustment: function(index) {
         if (this._scrolling)
             return;
 
         this._animatingScroll = true;
 
-        if (showAnimation) {
-            Tweener.addTween(this.scrollAdjustment, {
-               value: index,
-               time: WORKSPACE_SWITCH_TIME,
-               transition: 'easeOutQuad',
-               onComplete: Lang.bind(this,
-                   function() {
-                       this._animatingScroll = false;
-                   })
-            });
-        } else {
-            this.scrollAdjustment.value = index;
-            this._animatingScroll = false;
-        }
+        Tweener.addTween(this.scrollAdjustment, {
+            value: index,
+            time: WORKSPACE_SWITCH_TIME,
+            transition: 'easeOutQuad',
+            onComplete: Lang.bind(this,
+                                  function() {
+                                      this._animatingScroll = false;
+                                  })
+        });
     },
 
     updateWorkspaces: function(oldNumWorkspaces, newNumWorkspaces) {
@@ -313,7 +308,7 @@ const WorkspacesView = new Lang.Class({
         if (this._scrolling)
             return;
 
-        this._scrollToActive(true);
+        this._scrollToActive();
     },
 
     _onDestroy: function() {
