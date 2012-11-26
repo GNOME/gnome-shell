@@ -442,6 +442,20 @@ const ScreenShield = new Lang.Class({
         this.idleMonitor = Shell.IdleMonitor.get();
     },
 
+    _becomeModal: function() {
+        if (this._isModal)
+            return true;
+
+        this._isModal = Main.pushModal(this.actor);
+        if (this._isModal)
+            return true;
+
+        // We failed to get a pointer grab, it means that
+        // something else has it. Try with a keyboard grab only
+        this._isModal = Main.pushModal(this.actor, { options: Meta.ModalOptions.POINTER_ALREADY_GRABBED });
+        return this._isModal;
+    },
+
     _onLockScreenKeyRelease: function(actor, event) {
         let symbol = event.get_key_symbol();
 
@@ -560,9 +574,17 @@ const ScreenShield = new Lang.Class({
             }
         }
 
-        if (!this._isModal) {
-            Main.pushModal(this.actor);
-            this._isModal = true;
+        if (!this._becomeModal()) {
+            // We could not become modal, so we can't activate the
+            // screenshield. The user is probably very upset at this
+            // point, but any application using global grabs is broken
+            // Just tell him to stop using this app
+            //
+            // XXX: another option is to kick the user into the gdm login
+            // screen, where we're not affected by grabs
+            Main.notifyError("Unable to lock",
+                             "Lock was blocked by an application");
+            return;
         }
 
         if (!this._isActive) {
@@ -604,9 +626,10 @@ const ScreenShield = new Lang.Class({
         // Ensure that the stage window is mapped, before taking a grab
         // otherwise X errors out
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
-            if (!this._isModal) {
-                Main.pushModal(this.actor);
-                this._isModal = true;
+            if (!this._becomeModal()) {
+                // In the login screen, this is a hard error. Fail-whale
+                log('Could not acquire modal grab for the login screen. Aborting login process.');
+                Meta.quit(Meta.ExitCode.ERROR);
             }
 
             return false;
@@ -862,9 +885,11 @@ const ScreenShield = new Lang.Class({
     },
 
     lock: function(animate) {
-        if (!this._isModal) {
-            Main.pushModal(this.actor);
-            this._isModal = true;
+        // Warn the user if we can't become modal
+        if (!this._becomeModal()) {
+            Main.notifyError("Unable to lock",
+                             "Lock was blocked by an application");
+            return;
         }
 
         if (this._activationTime == 0)
