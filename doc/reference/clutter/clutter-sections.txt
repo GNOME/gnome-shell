@@ -3477,6 +3477,8 @@ clutter_pan_action_get_acceleration_factor
 <SUBSECTION>
 clutter_pan_action_get_interpolated_coords
 clutter_pan_action_get_interpolated_delta
+clutter_pan_action_get_motion_coords
+clutter_pan_action_get_motion_delta
 <SUBSECTION Standard>
 CLUTTER_IS_PAN_ACTION
 CLUTTER_IS_PAN_ACTION_CLASS

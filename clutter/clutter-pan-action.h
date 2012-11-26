@@ -129,9 +129,19 @@ void            clutter_pan_action_get_interpolated_coords  (ClutterPanAction *s
                                                              gfloat           *interpolated_x,
                                                              gfloat           *interpolated_y);
 CLUTTER_AVAILABLE_IN_1_12
-void            clutter_pan_action_get_interpolated_delta   (ClutterPanAction *self,
+gfloat          clutter_pan_action_get_interpolated_delta   (ClutterPanAction *self,
                                                              gfloat           *delta_x,
                                                              gfloat           *delta_y);
+CLUTTER_AVAILABLE_IN_1_14
+gfloat          clutter_pan_action_get_motion_delta         (ClutterPanAction *self,
+                                                             guint             point,
+                                                             gfloat           *delta_x,
+                                                             gfloat           *delta_y);
+CLUTTER_AVAILABLE_IN_1_14
+void            clutter_pan_action_get_motion_coords        (ClutterPanAction *self,
+                                                             guint             point,
+                                                             gfloat           *motion_x,
+                                                             gfloat           *motion_y);
 G_END_DECLS
 
 #endif /* __CLUTTER_PAN_ACTION_H__ */

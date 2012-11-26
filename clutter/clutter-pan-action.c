@@ -301,10 +301,7 @@ clutter_pan_action_real_pan (ClutterPanAction *self,
   gfloat dx, dy;
   ClutterMatrix transform;
 
-  if (is_interpolated)
-    clutter_pan_action_get_interpolated_delta (self, &dx, &dy);
-  else
-    clutter_gesture_action_get_motion_delta (CLUTTER_GESTURE_ACTION (self), 0, &dx, &dy);
+  clutter_pan_action_get_motion_delta (self, 0, &dx, &dy);
 
   switch (priv->pan_axis)
     {
@@ -804,16 +801,18 @@ clutter_pan_action_get_interpolated_coords (ClutterPanAction *self,
  * Retrieves the delta, in stage space, since the latest interpolated
  * event, analogous to clutter_gesture_action_get_motion_delta().
  *
+ * Return value: the distance since the latest interpolated event
+ *
  * Since: 1.12
  */
-void
+gfloat
 clutter_pan_action_get_interpolated_delta (ClutterPanAction *self,
                                            gfloat           *delta_x,
                                            gfloat           *delta_y)
 {
   ClutterPanActionPrivate *priv;
 
-  g_return_if_fail (CLUTTER_IS_PAN_ACTION (self));
+  g_return_val_if_fail (CLUTTER_IS_PAN_ACTION (self), 0.0f);
 
   priv = self->priv;
 
@@ -822,4 +821,109 @@ clutter_pan_action_get_interpolated_delta (ClutterPanAction *self,
 
   if (delta_y)
     *delta_y = priv->dy;
+
+  return sqrt ((priv->dx * priv->dx) + (priv->dy * priv->dy));
+}
+
+/**
+ * clutter_pan_action_get_motion_delta:
+ * @self: A #ClutterPanAction
+ * @point: the touch point index, with 0 being the first touch
+ *   point received by the action
+ * @delta_x: (out) (allow-none): return location for the X delta
+ * @delta_y: (out) (allow-none): return location for the Y delta
+ *
+ * Retrieves the delta, in stage space, dependent on the current state
+ * of the #ClutterPanAction. If it is inactive, both fields will be
+ * set to 0. If it is panning by user action, the values will be equivalent
+ * to those returned by clutter_gesture_action_get_motion_delta().
+ * If it is interpolating with some form of kinetic scrolling, the values
+ * will be equivalent to those returned by
+ * clutter_pan_action_get_interpolated_delta(). This is a convenience
+ * method designed to be used in replacement "pan" signal handlers.
+ *
+ * Since: 1.14
+ */
+gfloat
+clutter_pan_action_get_motion_delta (ClutterPanAction *self,
+                                     guint             point,
+                                     gfloat           *delta_x,
+                                     gfloat           *delta_y)
+{
+  ClutterPanActionPrivate *priv;
+
+  g_return_val_if_fail (CLUTTER_IS_PAN_ACTION (self), 0.0f);
+
+  priv = self->priv;
+
+  switch (priv->state)
+    {
+    case PAN_STATE_INACTIVE:
+      if (delta_x)
+        *delta_x = 0;
+
+      if (delta_y)
+        *delta_y = 0;
+
+      return 0;
+    case PAN_STATE_PANNING:
+      return clutter_gesture_action_get_motion_delta (CLUTTER_GESTURE_ACTION (self),
+                                                      point, delta_x, delta_y);
+    case PAN_STATE_INTERPOLATING:
+      return clutter_pan_action_get_interpolated_delta (self, delta_x, delta_y);
+    default:
+      g_assert_not_reached ();
+    }
+}
+
+/**
+ * clutter_pan_action_get_motion_coords:
+ * @self: A #ClutterPanAction
+ * @point: the touch point index, with 0 being the first touch
+ *   point received by the action
+ * @motion_x: (out) (allow-none): return location for the X coordinate
+ * @motion_y: (out) (allow-none): return location for the Y coordinate
+ *
+ * Retrieves the coordinates, in stage space, dependent on the current state
+ * of the #ClutterPanAction. If it is inactive, both fields will be
+ * set to 0. If it is panning by user action, the values will be equivalent
+ * to those returned by clutter_gesture_action_get_motion_coords().
+ * If it is interpolating with some form of kinetic scrolling, the values
+ * will be equivalent to those returned by
+ * clutter_pan_action_get_interpolated_coords(). This is a convenience
+ * method designed to be used in replacement "pan" signal handlers.
+ *
+ * Since: 1.14
+ */
+void
+clutter_pan_action_get_motion_coords (ClutterPanAction *self,
+                                      guint             point,
+                                      gfloat           *motion_x,
+                                      gfloat           *motion_y)
+{
+  ClutterPanActionPrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_PAN_ACTION (self));
+
+  priv = self->priv;
+
+  switch (priv->state)
+    {
+    case PAN_STATE_INACTIVE:
+      if (motion_x)
+        *motion_x = 0;
+
+      if (motion_y)
+        *motion_y = 0;
+      break;
+    case PAN_STATE_PANNING:
+      clutter_gesture_action_get_motion_coords (CLUTTER_GESTURE_ACTION (self),
+                                                point, motion_x, motion_y);
+      break;
+    case PAN_STATE_INTERPOLATING:
+      clutter_pan_action_get_interpolated_coords (self, motion_x, motion_y);
+      break;
+    default:
+      g_assert_not_reached ();
+    }
 }
