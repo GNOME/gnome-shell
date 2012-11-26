@@ -15251,7 +15251,15 @@ clutter_actor_allocate_align_fill (ClutterActor           *self,
     }
 
 out:
-  clutter_actor_box_clamp_to_pixel (&allocation);
+
+  child_width = allocation.x2 - allocation.x1;
+  child_height = allocation.y2 - allocation.y1;
+
+  allocation.x1 = floorf (allocation.x1);
+  allocation.y1 = floorf (allocation.y1);
+  allocation.x2 = ceilf (allocation.x1 + child_width);
+  allocation.y2 = ceilf (allocation.y1 + child_height);
+
   clutter_actor_allocate (self, &allocation, flags);
 }
 
