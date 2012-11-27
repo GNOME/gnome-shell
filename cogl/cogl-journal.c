@@ -1050,7 +1050,7 @@ create_attribute_buffer (CoglJournal *journal,
      really any point in using the pool so we'll just allocate the
      buffer directly */
   if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_VBOS))
-    return cogl_attribute_buffer_new (ctx, n_bytes, NULL);
+    return cogl_attribute_buffer_new_with_size (ctx, n_bytes);
 
   vbo = journal->vbo_pool[journal->next_vbo_in_pool];
 
