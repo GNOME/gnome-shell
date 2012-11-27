@@ -21,49 +21,6 @@ const MatchType = {
     PREFIX: 2
 };
 
-const SearchResultDisplay = new Lang.Class({
-    Name: 'SearchResultDisplay',
-
-    _init: function(provider) {
-        this.provider = provider;
-        this.actor = null;
-    },
-
-    /**
-     * renderResults:
-     * @results: List of identifier strings
-     * @terms: List of search term strings
-     *
-     * Display the given search matches which resulted
-     * from the given terms.  It's expected that not
-     * all results will fit in the space for the container
-     * actor; in this case, show as many as makes sense
-     * for your result type.
-     *
-     * The terms are useful for search match highlighting.
-     */
-    renderResults: function(results, terms) {
-        throw new Error('Not implemented');
-    },
-
-    /**
-     * clear:
-     * Remove all results from this display.
-     */
-    clear: function() {
-        this.actor.destroy_all_children();
-    },
-
-    /**
-     * getVisibleResultCount:
-     *
-     * Returns: The number of actors visible.
-     */
-    getVisibleResultCount: function() {
-        throw new Error('Not implemented');
-    },
-});
-
 /**
  * SearchProvider:
  *

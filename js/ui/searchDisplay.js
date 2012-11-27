@@ -159,10 +159,9 @@ const GridSearchResult = new Lang.Class({
 
 const ListSearchResults = new Lang.Class({
     Name: 'ListSearchResults',
-    Extends: Search.SearchResultDisplay,
 
     _init: function(provider) {
-        this.parent(provider);
+        this.provider = provider;
 
         this.actor = new St.BoxLayout({ style_class: 'search-section-content' });
         this.providerIcon = new ProviderIcon(provider);
@@ -231,10 +230,9 @@ const ListSearchResults = new Lang.Class({
 
 const GridSearchResults = new Lang.Class({
     Name: 'GridSearchResults',
-    Extends: Search.SearchResultDisplay,
 
     _init: function(provider, grid) {
-        this.parent(provider);
+        this.provider = provider;
 
         this._grid = grid || new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
                                                      xAlign: St.Align.START });
