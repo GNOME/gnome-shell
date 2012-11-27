@@ -9,6 +9,7 @@ const St = imports.gi.St;
 const IconGrid = imports.ui.iconGrid;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
+const Panel = imports.ui.panel;
 const Search = imports.ui.search;
 
 // we could make these gsettings
@@ -53,21 +54,9 @@ const WandaIcon = new Lang.Class({
                                  icon_size: iconSize });
         }
 
-        this._animations = St.TextureCache.get_default().load_sliced_image(this._imageFile,
-            this._imgWidth, this._imgHeight, Lang.bind(this,
-                function() {
-                    if (this._animations.mapped && !this._timeoutId) {
-                        this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, FISH_SPEED, Lang.bind(this, this._update));
-
-                        this._i = 0;
-                        this._update();
-                    } else if (!this._animations.mapped && this._timeoutId) {
-                        GLib.source_remove(this._timeoutId);
-                        this._timeoutId = 0;
-                    }
-                }));
-
-        return this._animations;
+        this._animations = new Panel.Animation(this._imageFile, this._imgWidth, this._imgHeight, FISH_SPEED);
+        this._animations.play();
+        return this._animations.actor;
     },
 
     _createIconTexture: function(size) {
@@ -75,20 +64,7 @@ const WandaIcon = new Lang.Class({
             return;
 
         this.parent(size);
-    },
-
-    _update: function() {
-        let n = this._animations.get_n_children();
-        if (n == 0) {
-            return true;
-        }
-
-        this._animations.get_child_at_index(this._i).hide();
-        this._i = (this._i + 1) % n;
-        this._animations.get_child_at_index(this._i).show();
-
-        return true;
-    },
+    }
 });
 
 const WandaIconBin = new Lang.Class({
