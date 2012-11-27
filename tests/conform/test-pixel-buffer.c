@@ -247,8 +247,8 @@ test_pixel_buffer_sub_region (void)
                                        BITMAP_SIZE / 2, /* src_y */
                                        BITMAP_SIZE / 2, /* dst_x */
                                        0, /* dst_y */
-                                       BITMAP_SIZE / 2, /* dst_width */
-                                       BITMAP_SIZE / 2, /* dst_height */
+                                       BITMAP_SIZE / 2, /* width */
+                                       BITMAP_SIZE / 2, /* height */
                                        bitmap);
 
   pipeline = create_pipeline_from_texture (texture);

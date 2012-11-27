@@ -307,10 +307,21 @@ _cogl_texture_driver_upload_to_gl (CoglContext *ctx,
   int bpp = _cogl_pixel_format_get_bytes_per_pixel (source_format);
   GLenum gl_error;
   CoglBool status = TRUE;
+  CoglError *internal_error = NULL;
 
-  data = _cogl_bitmap_gl_bind (source_bmp, COGL_BUFFER_ACCESS_READ, 0, error);
-  if (!data)
-    return FALSE;
+  data = _cogl_bitmap_gl_bind (source_bmp,
+                               COGL_BUFFER_ACCESS_READ,
+                               0, /* hints */
+                               &internal_error);
+
+  /* NB: _cogl_bitmap_gl_bind() may return NULL when successful so we
+   * have to explicitly check the cogl error pointer to catch
+   * problems... */
+  if (internal_error)
+    {
+      _cogl_propagate_error (error, internal_error);
+      return FALSE;
+    }
 
   /* Setup gl alignment to match rowstride and top-left corner */
   prep_gl_for_pixels_upload_full (ctx,

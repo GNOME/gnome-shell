@@ -350,6 +350,7 @@ _cogl_texture_driver_upload_to_gl (CoglContext *ctx,
   CoglBitmap *bmp;
   uint8_t *data;
   GLenum gl_error;
+  CoglError *internal_error = NULL;
   CoglBool status = TRUE;
 
   bmp = prepare_bitmap_alignment_for_upload (ctx, source_bmp, error);
@@ -363,10 +364,18 @@ _cogl_texture_driver_upload_to_gl (CoglContext *ctx,
 
   _cogl_bind_gl_texture_transient (gl_target, gl_handle, is_foreign);
 
-  data = _cogl_bitmap_gl_bind (bmp, COGL_BUFFER_ACCESS_READ, 0, error);
-  if (!data)
+  data = _cogl_bitmap_gl_bind (bmp,
+                               COGL_BUFFER_ACCESS_READ,
+                               0, /* hints */
+                               &internal_error);
+
+  /* NB: _cogl_bitmap_gl_bind() may return NULL when successful so we
+   * have to explicitly check the cogl error pointer to catch
+   * problems... */
+  if (internal_error)
     {
       cogl_object_unref (bmp);
+      _cogl_propagate_error (error, internal_error);
       return FALSE;
     }
 
