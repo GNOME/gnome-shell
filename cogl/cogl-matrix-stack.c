@@ -328,8 +328,12 @@ _cogl_matrix_entry_ref (CoglMatrixEntry *entry)
 void
 _cogl_matrix_entry_unref (CoglMatrixEntry *entry)
 {
-  for (; entry && --entry->ref_count <= 0; entry = entry->parent)
+  CoglMatrixEntry *parent;
+
+  for (; entry && --entry->ref_count <= 0; entry = parent)
     {
+      parent = entry->parent;
+
       switch (entry->op)
         {
         case COGL_MATRIX_OP_LOAD_IDENTITY:
