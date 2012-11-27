@@ -132,10 +132,8 @@ const AnimatedIcon = new Lang.Class({
     _animationsLoaded: function() {
         this._isLoaded = true;
 
-        if (this._isPlaying) {
-            this._showFrame(0);
-            this._timeoutId = Mainloop.timeout_add(ANIMATED_ICON_UPDATE_TIMEOUT, Lang.bind(this, this._update));
-        }
+        if (this._isPlaying)
+            this.play();
     },
 
     _onDestroy: function() {
