@@ -53,18 +53,19 @@ const WandaIcon = new Lang.Class({
                                  icon_size: iconSize });
         }
 
-        this._animations = St.TextureCache.get_default().load_sliced_image(this._imageFile, this._imgWidth, this._imgHeight);
-        this._animations.connect('notify::mapped', Lang.bind(this, function() {
-            if (this._animations.mapped && !this._timeoutId) {
-                this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, FISH_SPEED, Lang.bind(this, this._update));
+        this._animations = St.TextureCache.get_default().load_sliced_image(this._imageFile,
+            this._imgWidth, this._imgHeight, Lang.bind(this,
+                function() {
+                    if (this._animations.mapped && !this._timeoutId) {
+                        this._timeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, FISH_SPEED, Lang.bind(this, this._update));
 
-                this._i = 0;
-                this._update();
-            } else if (!this._animations.mapped && this._timeoutId) {
-                GLib.source_remove(this._timeoutId);
-                this._timeoutId = 0;
-            }
-        }));
+                        this._i = 0;
+                        this._update();
+                    } else if (!this._animations.mapped && this._timeoutId) {
+                        GLib.source_remove(this._timeoutId);
+                        this._timeoutId = 0;
+                    }
+                }));
 
         return this._animations;
     },
