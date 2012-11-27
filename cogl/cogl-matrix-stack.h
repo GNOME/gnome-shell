@@ -51,8 +51,8 @@ typedef struct _CoglMatrixEntry CoglMatrixEntry;
 
 struct _CoglMatrixEntry
 {
-  CoglMatrixOp op;
   CoglMatrixEntry *parent;
+  CoglMatrixOp op;
   unsigned int ref_count;
 
   /* used for performance tracing */
