@@ -75,19 +75,19 @@ function _unpremultiply(color) {
                                blue: blue, alpha: color.alpha });
 };
 
+const Animation = new Lang.Class({
+    Name: 'Animation',
 
-const AnimatedIcon = new Lang.Class({
-    Name: 'AnimatedIcon',
-
-    _init: function(name, size) {
+    _init: function(filename, width, height, speed) {
         this.actor = new St.Bin({ visible: false });
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this._speed = speed;
 
         this._isLoaded = false;
         this._isPlaying = false;
         this._timeoutId = 0;
         this._frame = 0;
-        this._animations = St.TextureCache.get_default().load_sliced_image (global.datadir + '/theme/' + name, size, size,
+        this._animations = St.TextureCache.get_default().load_sliced_image (filename, width, height,
                                                                             Lang.bind(this, this._animationsLoaded));
         this.actor.set_child(this._animations);
     },
@@ -97,7 +97,7 @@ const AnimatedIcon = new Lang.Class({
             if (this._frame == 0)
                 this._showFrame(0);
 
-            this._timeoutId = Mainloop.timeout_add(ANIMATED_ICON_UPDATE_TIMEOUT, Lang.bind(this, this._update));
+            this._timeoutId = Mainloop.timeout_add(this._speed, Lang.bind(this, this._update));
         }
 
         this._isPlaying = true;
@@ -138,6 +138,15 @@ const AnimatedIcon = new Lang.Class({
 
     _onDestroy: function() {
         this.stop();
+    }
+});
+
+const AnimatedIcon = new Lang.Class({
+    Name: 'AnimatedIcon',
+    Extends: Animation,
+
+    _init: function(name, size) {
+        this.parent(global.datadir + '/theme/' + name, size, size, ANIMATED_ICON_UPDATE_TIMEOUT);
     }
 });
 
