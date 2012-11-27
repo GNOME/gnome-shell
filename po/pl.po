@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-12 19:01+0200\n"
-"PO-Revision-Date: 2012-10-12 19:05+0200\n"
+"POT-Creation-Date: 2012-11-27 17:30+0100\n"
+"PO-Revision-Date: 2012-11-27 17:32+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -28,15 +28,189 @@ msgstr ""
 "X-Poedit-Language: Polish\n"
 "X-Poedit-Country: Poland\n"
 
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Navigation"
+msgstr "Nawigacja"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+msgid "Move window to workspace 1"
+msgstr "Przeniesienie okna na 1. obszar roboczy"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+msgid "Move window to workspace 2"
+msgstr "Przeniesienie okna na 2. obszar roboczy"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move window to workspace 3"
+msgstr "Przeniesienie okna na 3. obszar roboczy"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move window to workspace 4"
+msgstr "Przeniesienie okna na 4. obszar roboczy"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+msgid "Move window one workspace to the left"
+msgstr "Przeniesienie okna o obszar roboczy w lewo"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the right"
+msgstr "Przeniesienie okna o obszar roboczy w prawo"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace up"
+msgstr "Przeniesienie okna o obszar roboczy w górę"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace down"
+msgstr "Przeniesienie okna o obszar roboczy w dół"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Switch applications"
+msgstr "Przełączenie programów"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Switch windows of an application"
+msgstr "Przełączenie między oknami programu"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Switch system controls"
+msgstr "Przełączenie kontroli systemowej"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Switch windows directly"
+msgstr "Bezpośrednie przełączenie między oknami"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Switch windows of an app directly"
+msgstr "Bezpośrednie przełączenie między oknami programu"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch system controls directly"
+msgstr "Bezpośrednie przełączenie kontroli systemowej"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Hide all normal windows"
+msgstr "Ukrycie wszystkich zwykłych okien"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+msgid "Switch to workspace 1"
+msgstr "Przełączenie na 1. obszar roboczy"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+msgid "Switch to workspace 2"
+msgstr "Przełączenie na 2. obszar roboczy"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+msgid "Switch to workspace 3"
+msgstr "Przełączenie na 3. obszar roboczy"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+msgid "Switch to workspace 4"
+msgstr "Przełączenie na 4. obszar roboczy"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+msgid "Move to workspace left"
+msgstr "Przeniesienie na lewy obszar roboczy"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Move to workspace right"
+msgstr "Przeniesienie na prawy obszar roboczy"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Move to workspace above"
+msgstr "Przeniesienie na górny obszar roboczy"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Move to workspace below"
+msgstr "Przeniesienie na dolny obszar roboczy"
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "System"
+msgstr "System"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "Wyświetlenie okna wykonania polecenia"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "Show the activities overview"
+msgstr "Wyświetlenie podglądu aktywności"
+
 #: ../src/50-mutter-windows.xml.in.h:1
 msgid "Windows"
 msgstr "Okna"
 
 #: ../src/50-mutter-windows.xml.in.h:2
+msgid "Activate the window menu"
+msgstr "Otwarcie menu okna"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Toggle fullscreen mode"
+msgstr "Przełączenie trybu pełnoekranowego"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+msgid "Toggle maximization state"
+msgstr "Przełączenie stanu maksymalizacji"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+msgid "Maximize window"
+msgstr "Maksymalizacja okna"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+msgid "Restore window"
+msgstr "Przywrócenie okna"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+msgid "Toggle shaded state"
+msgstr "Przełączenie trybu zwinięcia"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+msgid "Close window"
+msgstr "Zamknięcie okna"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+msgid "Minimize window"
+msgstr "Minimalizacja okna"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Move window"
+msgstr "Przeniesienie okna"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+msgid "Resize window"
+msgstr "Zmiana rozmiaru okna"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+msgid "Toggle window on all workspaces or one"
+msgstr ""
+"Przełączenie obecności okna na wszystkich obszarach roboczych lub jednym "
+
+#: ../src/50-mutter-windows.xml.in.h:13
+msgid "Raise window if covered, otherwise lower it"
+msgstr ""
+"Wysunięcie okna, jeśli jest zasłonięte, odsunięcie w przeciwnym wypadku"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+msgid "Raise window above other windows"
+msgstr "Wysunięcie okna przed pozostałe"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+msgid "Lower window below other windows"
+msgstr "Odsunięcie okna pod pozostałe"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Maximize window vertically"
+msgstr "Pionowa maksymalizacja okna"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+msgid "Maximize window horizontally"
+msgstr "Pozioma maksymalizacja okna"
+
+#: ../src/50-mutter-windows.xml.in.h:18
 msgid "View split on left"
 msgstr "Podział widoku po lewej"
 
-#: ../src/50-mutter-windows.xml.in.h:3
+#: ../src/50-mutter-windows.xml.in.h:19
 msgid "View split on right"
 msgstr "Podział widoku po prawej"
 
@@ -59,41 +233,41 @@ msgstr "Zdarzenie sygnału dźwiękowego"
 msgid "Unknown window information request: %d"
 msgstr "Żądanie nieznanej informacji okna: %d"
 
-#: ../src/core/delete.c:113
+#: ../src/core/delete.c:111
 #, c-format
-msgid "%s is not responding."
-msgstr "Okno %s nie odpowiada."
+msgid "“%s” is not responding."
+msgstr "Okno \"%s\" nie odpowiada."
 
-#: ../src/core/delete.c:117
+#: ../src/core/delete.c:113
 msgid "Application is not responding."
 msgstr "Program nie odpowiada."
 
-#: ../src/core/delete.c:122
+#: ../src/core/delete.c:118
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
 msgstr "Można poczekać chwilę dłużej lub wymusić zakończenie programu."
 
-#: ../src/core/delete.c:129
+#: ../src/core/delete.c:125
 msgid "_Wait"
 msgstr "_Czekaj"
 
-#: ../src/core/delete.c:129
+#: ../src/core/delete.c:125
 msgid "_Force Quit"
 msgstr "_Zakończ"
 
-#: ../src/core/display.c:396
+#: ../src/core/display.c:397
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Brak rozszerzenia %s, wymaganego przez składanie"
 
-#: ../src/core/display.c:492
+#: ../src/core/display.c:494
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr ""
 "Otwarcie połączenia z ekranem \"%s\" systemu X Window się nie powiodło\n"
 
-#: ../src/core/keybindings.c:853
+#: ../src/core/keybindings.c:860
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -187,7 +361,7 @@ msgstr ""
 "Wartość \"%s\", odnaleziona w bazie danych konfiguracji nie opisuje "
 "prawidłowo modyfikatora przycisku myszy\n"
 
-#: ../src/core/prefs.c:1747
+#: ../src/core/prefs.c:1757
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -196,7 +370,7 @@ msgstr ""
 "Wartość \"%s\", odnaleziona w bazie danych konfiguracji nie opisuje "
 "prawidłowo skrótu klawiszowego \"%s\"\n"
 
-#: ../src/core/prefs.c:1844
+#: ../src/core/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "Obszar roboczy %d"
@@ -328,7 +502,7 @@ msgid "Window manager error: "
 msgstr "Błąd menedżera okien: "
 
 #. first time through
-#: ../src/core/window.c:7237
+#: ../src/core/window.c:7240
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -344,7 +518,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7902
+#: ../src/core/window.c:7905
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -1630,220 +1804,3 @@ msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "Wyrażenia współrzędnych %d zostało przetworzone w %g sekund (średnio %g "
 "sekund)\n"
-
-#: ../src/50-mutter-navigation.xml.in.h:1
-#, fuzzy
-msgid "Navigation"
-msgstr "Nawigacja"
-
-#: ../src/50-mutter-navigation.xml.in.h:2
-#, fuzzy
-msgid "Move window to workspace 1"
-msgstr "Przeniesienie okna na 1. obszar roboczy"
-
-#: ../src/50-mutter-navigation.xml.in.h:3
-#, fuzzy
-msgid "Move window to workspace 2"
-msgstr "Przeniesienie okna na 2. obszar roboczy"
-
-#: ../src/50-mutter-navigation.xml.in.h:4
-#, fuzzy
-msgid "Move window to workspace 3"
-msgstr "Przeniesienie okna na 3. obszar roboczy"
-
-#: ../src/50-mutter-navigation.xml.in.h:5
-#, fuzzy
-msgid "Move window to workspace 4"
-msgstr "Przeniesienie okna na 4. obszar roboczy"
-
-#: ../src/50-mutter-navigation.xml.in.h:6
-#, fuzzy
-msgid "Move window one workspace to the left"
-msgstr "Przeniesienie okna o obszar roboczy w lewo"
-
-#: ../src/50-mutter-navigation.xml.in.h:7
-#, fuzzy
-msgid "Move window one workspace to the right"
-msgstr "Przeniesienie okna o obszar roboczy w prawo"
-
-#: ../src/50-mutter-navigation.xml.in.h:8
-#, fuzzy
-msgid "Move window one workspace up"
-msgstr "Przeniesienie okna o obszar roboczy w górę"
-
-#: ../src/50-mutter-navigation.xml.in.h:9
-#, fuzzy
-msgid "Move window one workspace down"
-msgstr "Przeniesienie okna o obszar roboczy w dół"
-
-#: ../src/50-mutter-navigation.xml.in.h:10
-#, fuzzy
-msgid "Switch applications"
-msgstr "Przełączenie programów"
-
-#: ../src/50-mutter-navigation.xml.in.h:11
-#, fuzzy
-msgid "Switch windows of an application"
-msgstr "Przełączenie między oknami programu"
-
-#: ../src/50-mutter-navigation.xml.in.h:12
-#, fuzzy
-msgid "Switch system controls"
-msgstr "Przełączenie kontroli systemowej"
-
-#: ../src/50-mutter-navigation.xml.in.h:13
-#, fuzzy
-msgid "Switch windows directly"
-msgstr "Bezpośrednie przełączenie między oknami"
-
-#: ../src/50-mutter-navigation.xml.in.h:14
-#, fuzzy
-msgid "Switch windows of an app directly"
-msgstr "Bezpośrednie przełączenie między oknami programu"
-
-#: ../src/50-mutter-navigation.xml.in.h:15
-#, fuzzy
-msgid "Switch system controls directly"
-msgstr "Bezpośrednie przełączenie kontroli systemowej"
-
-#: ../src/50-mutter-navigation.xml.in.h:16
-#, fuzzy
-msgid "Hide all normal windows"
-msgstr "Ukrycie wszystkich zwykłych okien"
-
-#: ../src/50-mutter-navigation.xml.in.h:17
-#, fuzzy
-msgid "Switch to workspace 1"
-msgstr "Przełączenie na 1. obszar roboczy"
-
-#: ../src/50-mutter-navigation.xml.in.h:18
-#, fuzzy
-msgid "Switch to workspace 2"
-msgstr "Przełączenie na 2. obszar roboczy"
-
-#: ../src/50-mutter-navigation.xml.in.h:19
-#, fuzzy
-msgid "Switch to workspace 3"
-msgstr "Przełączenie na 3. obszar roboczy"
-
-#: ../src/50-mutter-navigation.xml.in.h:20
-#, fuzzy
-msgid "Switch to workspace 4"
-msgstr "Przełączenie na 4. obszar roboczy"
-
-#: ../src/50-mutter-navigation.xml.in.h:21
-#, fuzzy
-msgid "Move to workspace left"
-msgstr "Przeniesienie na lewy obszar roboczy"
-
-#: ../src/50-mutter-navigation.xml.in.h:22
-#, fuzzy
-msgid "Move to workspace right"
-msgstr "Przeniesienie na prawy obszar roboczy"
-
-#: ../src/50-mutter-navigation.xml.in.h:23
-#, fuzzy
-msgid "Move to workspace above"
-msgstr "Przeniesienie na górny obszar roboczy"
-
-#: ../src/50-mutter-navigation.xml.in.h:24
-#, fuzzy
-msgid "Move to workspace below"
-msgstr "Przeniesienie na dolny obszar roboczy"
-
-#: ../src/50-mutter-system.xml.in.h:1
-#, fuzzy
-msgid "System"
-msgstr "System"
-
-#: ../src/50-mutter-system.xml.in.h:2
-#, fuzzy
-msgid "Show the run command prompt"
-msgstr "Wyświetlenie okna wykonania polecenia"
-
-#: ../src/50-mutter-system.xml.in.h:3
-#, fuzzy
-msgid "Show the activities overview"
-msgstr "Wyświetlenie podglądu aktywności"
-
-#: ../src/50-mutter-windows.xml.in.h:2
-#, fuzzy
-msgid "Activate the window menu"
-msgstr "Otwarcie menu okna"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-#, fuzzy
-msgid "Toggle fullscreen mode"
-msgstr "Przełączenie trybu pełnoekranowego"
-
-#: ../src/50-mutter-windows.xml.in.h:4
-#, fuzzy
-msgid "Toggle maximization state"
-msgstr "Przełączenie trybu maksymalizacji"
-
-#: ../src/50-mutter-windows.xml.in.h:5
-#, fuzzy
-msgid "Maximize window"
-msgstr "Maksymalizacja okna"
-
-#: ../src/50-mutter-windows.xml.in.h:6
-#, fuzzy
-msgid "Restore window"
-msgstr "Przywrócenie okna"
-
-#: ../src/50-mutter-windows.xml.in.h:7
-#, fuzzy
-msgid "Toggle shaded state"
-msgstr "Przełączenie trybu zwinięcia"
-
-#: ../src/50-mutter-windows.xml.in.h:8
-#, fuzzy
-msgid "Close window"
-msgstr "Zamknięcie okna"
-
-#: ../src/50-mutter-windows.xml.in.h:9
-#, fuzzy
-msgid "Minimize window"
-msgstr "Minimalizacja okna"
-
-#: ../src/50-mutter-windows.xml.in.h:10
-#, fuzzy
-msgid "Move window"
-msgstr "Przeniesienie okna"
-
-#: ../src/50-mutter-windows.xml.in.h:11
-#, fuzzy
-msgid "Resize window"
-msgstr "Zmiana rozmiaru okna"
-
-#: ../src/50-mutter-windows.xml.in.h:12
-#, fuzzy
-msgid "Toggle window on all workspaces or one"
-msgstr ""
-"Przełączenie obecności okna na wszystkich obszarach roboczych lub jednym "
-
-#: ../src/50-mutter-windows.xml.in.h:13
-#, fuzzy
-msgid "Raise window if covered, otherwise lower it"
-msgstr ""
-"Wysunięcie okna, jeśli jest zasłonięte, odsunięcie w przeciwnym wypadku"
-
-#: ../src/50-mutter-windows.xml.in.h:14
-#, fuzzy
-msgid "Raise window above other windows"
-msgstr "Wysunięcie okna przed pozostałe"
-
-#: ../src/50-mutter-windows.xml.in.h:15
-#, fuzzy
-msgid "Lower window below other windows"
-msgstr "Odsunięcie okna pod pozostałe"
-
-#: ../src/50-mutter-windows.xml.in.h:16
-#, fuzzy
-msgid "Maximize window vertically"
-msgstr "Pionowa maksymalizacja okna"
-
-#: ../src/50-mutter-windows.xml.in.h:17
-#, fuzzy
-msgid "Maximize window horizontally"
-msgstr "Pozioma maksymalizacja okna"
