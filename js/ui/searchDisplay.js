@@ -145,7 +145,7 @@ const GridSearchResult = new Lang.Class({
         return this._dragActorSource;
     },
 
-    getDragActor: function(stageX, stageY) {
+    getDragActor: function() {
         return this.metaInfo['createIcon'](Main.overview.dashIconSize);
     },
 
@@ -231,11 +231,11 @@ const ListSearchResults = new Lang.Class({
 const GridSearchResults = new Lang.Class({
     Name: 'GridSearchResults',
 
-    _init: function(provider, grid) {
+    _init: function(provider) {
         this.provider = provider;
 
-        this._grid = grid || new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
-                                                     xAlign: St.Align.START });
+        this._grid = new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
+                                             xAlign: St.Align.START });
         this.actor = new St.Bin({ x_align: St.Align.MIDDLE });
 
         this.actor.set_child(this._grid.actor);
