@@ -128,8 +128,11 @@ const WorkspacesView = new Lang.Class({
                 continue;
 
             let ws = new Workspace.Workspace(null, i);
-            ws.setGeometry(monitors[i].x, monitors[i].y,
-                           monitors[i].width, monitors[i].height);
+            let overviewSpacing = Main.overview._spacing;
+            ws.setGeometry(monitors[i].x + overviewSpacing/2,
+                           monitors[i].y + overviewSpacing/2,
+                           monitors[i].width - overviewSpacing,
+                           monitors[i].height - overviewSpacing);
             global.overlay_group.add_actor(ws.actor);
             this._extraWorkspaces.push(ws);
         }
