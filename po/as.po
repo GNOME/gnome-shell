@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-11-26 09:33+0000\n"
-"PO-Revision-Date: 2012-11-26 15:51+0530\n"
+"POT-Creation-Date: 2012-11-26 14:01+0000\n"
+"PO-Revision-Date: 2012-11-27 14:40+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: as_IN <kde-i18n-doc@kde.org>\n"
 "Language: as_IN\n"
@@ -165,7 +165,6 @@ msgstr ""
 "স্বচালিতভাৱে লুকুৱা অভাৰৰাইড কৰে।"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
-#| msgid "Always show the 'Log out' menuitem in the user menu."
 msgid "Show full name in the user menu"
 msgstr "ব্যৱহাৰকাৰী মেনুত সম্পূৰ্ণ নাম দেখুৱাওক"
 
@@ -749,58 +748,54 @@ msgstr "কল"
 msgid "File Transfer"
 msgstr "ফাইল স্থানান্তৰ"
 
-#: ../js/ui/components/telepathyClient.js:394
-msgid "Subscription request"
-msgstr "স্বাক্ষৰণ অনুৰোধ"
+#: ../js/ui/components/telepathyClient.js:417
+msgid "Chat"
+msgstr "চেট"
 
-#: ../js/ui/components/telepathyClient.js:430
-msgid "Connection error"
-msgstr "সংযোগ ত্ৰুটি"
-
-#: ../js/ui/components/telepathyClient.js:491
+#: ../js/ui/components/telepathyClient.js:477
 msgid "Unmute"
 msgstr "অমৌন কৰক"
 
-#: ../js/ui/components/telepathyClient.js:491
+#: ../js/ui/components/telepathyClient.js:477
 msgid "Mute"
 msgstr "মোন কৰক"
 
 #. Translators: this is a time format string followed by the word "Yesterday". i.e. "14:30 on Yesterday"
-#: ../js/ui/components/telepathyClient.js:946
+#: ../js/ui/components/telepathyClient.js:932
 #, no-c-format
 msgid "<b>%H:%M</b> on Yesterday"
 msgstr "<b>%H:%M</b> যোৱাকালী"
 
 #. Translators: this is a time format string followed by a week day name. i.e. "14:30 on Monday
-#: ../js/ui/components/telepathyClient.js:952
+#: ../js/ui/components/telepathyClient.js:938
 #, no-c-format
 msgid "<b>%H:%M</b> on <b>%A</b>"
 msgstr "<b>%A</b> ত <b>%H:%M</b>"
 
 #. Translators: this is a time format in the style of "14:30 on Wednesday, May 25",
 #. shown when you get a chat message in the same year
-#: ../js/ui/components/telepathyClient.js:958
+#: ../js/ui/components/telepathyClient.js:944
 #, no-c-format
 msgid "<b>%H:%M</b> on <b>%A</b>, <b>%B</b> <b>%d</b>"
 msgstr "<b>%A</b> ত <b>%H:%M</b>, <b>%B</b> <b>%d</b>"
 
 #. Translators: this is a time format in the style of "14:30 on Wednesday, May 25, 2012",
 #. shown when you get a chat message in a different year
-#: ../js/ui/components/telepathyClient.js:963
+#: ../js/ui/components/telepathyClient.js:949
 #, no-c-format
 msgid "<b>%H:%M</b> on <b>%A</b>, <b>%B</b> <b>%d</b>, %Y"
 msgstr "<b>%A</b> ত <b>%H:%M</b>, <b>%B</b> <b>%d</b>, %Y"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:991
+#: ../js/ui/components/telepathyClient.js:977
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s এতিয়া %s হিচাপে জনাজাত"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1090
+#: ../js/ui/components/telepathyClient.js:1076
 #, c-format
 msgid "Invitation to %s"
 msgstr "%s লে নিমন্ত্ৰণ"
@@ -808,38 +803,38 @@ msgstr "%s লে নিমন্ত্ৰণ"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/components/telepathyClient.js:1098
+#: ../js/ui/components/telepathyClient.js:1084
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s এ আপোনাক %s ত অংশগ্ৰহণ কৰিবলে আমন্ত্ৰণ জনাইছে"
 
-#: ../js/ui/components/telepathyClient.js:1100
-#: ../js/ui/components/telepathyClient.js:1139
-#: ../js/ui/components/telepathyClient.js:1179
-#: ../js/ui/components/telepathyClient.js:1242
+#: ../js/ui/components/telepathyClient.js:1086
+#: ../js/ui/components/telepathyClient.js:1125
+#: ../js/ui/components/telepathyClient.js:1165
+#: ../js/ui/components/telepathyClient.js:1228
 msgid "Decline"
 msgstr "নাকচ কৰক"
 
-#: ../js/ui/components/telepathyClient.js:1101
-#: ../js/ui/components/telepathyClient.js:1180
-#: ../js/ui/components/telepathyClient.js:1243
+#: ../js/ui/components/telepathyClient.js:1087
+#: ../js/ui/components/telepathyClient.js:1166
+#: ../js/ui/components/telepathyClient.js:1229
 msgid "Accept"
 msgstr "গ্ৰহন কৰক"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1131
+#: ../js/ui/components/telepathyClient.js:1117
 #, c-format
 msgid "Video call from %s"
 msgstr "%s ৰ পৰা ভিডিঅ' কল"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1134
+#: ../js/ui/components/telepathyClient.js:1120
 #, c-format
 msgid "Call from %s"
 msgstr "%s ৰ পৰা কল"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1141
+#: ../js/ui/components/telepathyClient.js:1127
 msgid "Answer"
 msgstr "উত্তৰ দিয়ক"
 
@@ -848,110 +843,110 @@ msgstr "উত্তৰ দিয়ক"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/components/telepathyClient.js:1173
+#: ../js/ui/components/telepathyClient.js:1159
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s এ আপোনাক %s পঠাই আছে"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1208
+#: ../js/ui/components/telepathyClient.js:1194
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "আপুনি কেতিয়া অনলাইন আছে চাবলে %s এ অনুমতি বিচাৰিব"
 
-#: ../js/ui/components/telepathyClient.js:1300
+#: ../js/ui/components/telepathyClient.js:1286
 msgid "Network error"
 msgstr "নেটৱাৰ্ক ত্ৰুটি"
 
-#: ../js/ui/components/telepathyClient.js:1302
+#: ../js/ui/components/telepathyClient.js:1288
 msgid "Authentication failed"
 msgstr "প্ৰমাণীকৰণ ব্যৰ্থ"
 
-#: ../js/ui/components/telepathyClient.js:1304
+#: ../js/ui/components/telepathyClient.js:1290
 msgid "Encryption error"
 msgstr "ইনক্ৰিপষণ ত্ৰুটি"
 
-#: ../js/ui/components/telepathyClient.js:1306
+#: ../js/ui/components/telepathyClient.js:1292
 msgid "Certificate not provided"
 msgstr "প্ৰমাণপত্ৰ প্ৰদান কৰা হোৱা নাই"
 
-#: ../js/ui/components/telepathyClient.js:1308
+#: ../js/ui/components/telepathyClient.js:1294
 msgid "Certificate untrusted"
 msgstr "প্ৰমাণপত্ৰক ভৰষা কৰিব নোৱাৰি"
 
-#: ../js/ui/components/telepathyClient.js:1310
+#: ../js/ui/components/telepathyClient.js:1296
 msgid "Certificate expired"
 msgstr "প্ৰমাণপত্ৰৰ অৱসান ঘটিছে"
 
-#: ../js/ui/components/telepathyClient.js:1312
+#: ../js/ui/components/telepathyClient.js:1298
 msgid "Certificate not activated"
 msgstr "প্ৰমাণপত্ৰ সক্ৰিয় কৰা হোৱা নাই"
 
-#: ../js/ui/components/telepathyClient.js:1314
+#: ../js/ui/components/telepathyClient.js:1300
 msgid "Certificate hostname mismatch"
 msgstr "প্ৰমাণপত্ৰ হস্টনাম অমিল"
 
-#: ../js/ui/components/telepathyClient.js:1316
+#: ../js/ui/components/telepathyClient.js:1302
 msgid "Certificate fingerprint mismatch"
 msgstr "প্ৰমাণপত্ৰ ফিংগাৰপ্ৰিন্ট অমিল"
 
-#: ../js/ui/components/telepathyClient.js:1318
+#: ../js/ui/components/telepathyClient.js:1304
 msgid "Certificate self-signed"
 msgstr "প্ৰমাণপত্ৰ স্ব-স্বাক্ষৰীত"
 
-#: ../js/ui/components/telepathyClient.js:1320
+#: ../js/ui/components/telepathyClient.js:1306
 msgid "Status is set to offline"
 msgstr "অৱস্থা অফলাইনলে সংহতি কৰা হৈছে"
 
-#: ../js/ui/components/telepathyClient.js:1322
+#: ../js/ui/components/telepathyClient.js:1308
 msgid "Encryption is not available"
 msgstr "ইনক্ৰিপষণ উপলব্ধ নহয়"
 
-#: ../js/ui/components/telepathyClient.js:1324
+#: ../js/ui/components/telepathyClient.js:1310
 msgid "Certificate is invalid"
 msgstr "প্ৰমাণপত্ৰ অবৈধ"
 
-#: ../js/ui/components/telepathyClient.js:1326
+#: ../js/ui/components/telepathyClient.js:1312
 msgid "Connection has been refused"
 msgstr "সংযোগ নাকচ কৰা হৈছে"
 
-#: ../js/ui/components/telepathyClient.js:1328
+#: ../js/ui/components/telepathyClient.js:1314
 msgid "Connection can't be established"
 msgstr "সংযোগ স্থাপন কৰিব নোৱাৰি"
 
-#: ../js/ui/components/telepathyClient.js:1330
+#: ../js/ui/components/telepathyClient.js:1316
 msgid "Connection has been lost"
 msgstr "সংযোগ হেৰাইছে"
 
-#: ../js/ui/components/telepathyClient.js:1332
+#: ../js/ui/components/telepathyClient.js:1318
 msgid "This account is already connected to the server"
 msgstr "এই একাওন্ট ইতিমধ্যে চাৰ্ভাৰৰ সৈতে সংযোগিত"
 
-#: ../js/ui/components/telepathyClient.js:1334
+#: ../js/ui/components/telepathyClient.js:1320
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "সংযোগক একে সম্পদ ব্যৱহাৰ কৰি এটা নতুন সংযোগৰে প্ৰতিস্থাপন কৰা হৈছে"
 
-#: ../js/ui/components/telepathyClient.js:1336
+#: ../js/ui/components/telepathyClient.js:1322
 msgid "The account already exists on the server"
 msgstr "একাওন্ট ইতিমধ্যে চাৰ্ভাৰত উপস্থিত"
 
-#: ../js/ui/components/telepathyClient.js:1338
+#: ../js/ui/components/telepathyClient.js:1324
 msgid "Server is currently too busy to handle the connection"
 msgstr "চাৰ্ভাৰ সংযোগ ব্যৱস্থাপনা কৰিবলে বৰ্তমানে অতি ব্যস্ত"
 
-#: ../js/ui/components/telepathyClient.js:1340
+#: ../js/ui/components/telepathyClient.js:1326
 msgid "Certificate has been revoked"
 msgstr "প্ৰমাণপত্ৰ প্ৰত্যাহাৰ কৰা হৈছে"
 
-#: ../js/ui/components/telepathyClient.js:1342
+#: ../js/ui/components/telepathyClient.js:1328
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "প্ৰমাণপত্ৰয় এটা অসুৰক্ষিত চিফাৰ এলগৰিথম ব্যৱহাৰ কৰে অথবা ক্ৰিপ্টোগ্ৰাফিয়ভাৱে "
 "দুৰ্বল"
 
-#: ../js/ui/components/telepathyClient.js:1344
+#: ../js/ui/components/telepathyClient.js:1330
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -960,26 +955,23 @@ msgstr ""
 "ক্ৰিপ্টোগ্ৰাফী "
 "লাইব্ৰেৰীয়ে প্ৰণয়ন কৰা সীমাসমূহত অতিক্ৰম কৰে"
 
-#: ../js/ui/components/telepathyClient.js:1346
+#: ../js/ui/components/telepathyClient.js:1332
 msgid "Internal error"
 msgstr "অভ্যন্তৰীক ত্ৰুটি"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1356
+#: ../js/ui/components/telepathyClient.js:1342
 #, c-format
-msgid "Connection to %s failed"
-msgstr "%s লে সংযোগ ব্যৰ্থ"
+msgid "Unable to connect to %s"
+msgstr "%s ৰ সৈতে সংযোগ কৰিবলে অক্ষম"
 
-#: ../js/ui/components/telepathyClient.js:1365
-msgid "Reconnect"
-msgstr "পুনৰ সংযোগ কৰক"
+#: ../js/ui/components/telepathyClient.js:1347
+#| msgid "Edit account"
+msgid "View account"
+msgstr "একাওন্ট দৰ্শন কৰক"
 
-#: ../js/ui/components/telepathyClient.js:1366
-msgid "Edit account"
-msgstr "একাওন্ট সম্পাদন কৰক"
-
-#: ../js/ui/components/telepathyClient.js:1411
+#: ../js/ui/components/telepathyClient.js:1387
 msgid "Unknown reason"
 msgstr "অজ্ঞাত কাৰণ"
 
@@ -1851,6 +1843,18 @@ msgstr "অবিকল্পিত"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "প্ৰমাণীকৰণ ডাইলগ ব্যৱহাৰকাৰী দ্বাৰা নাকচ কৰা হৈছিল"
+
+#~ msgid "Subscription request"
+#~ msgstr "স্বাক্ষৰণ অনুৰোধ"
+
+#~ msgid "Connection error"
+#~ msgstr "সংযোগ ত্ৰুটি"
+
+#~ msgid "Connection to %s failed"
+#~ msgstr "%s লে সংযোগ ব্যৰ্থ"
+
+#~ msgid "Reconnect"
+#~ msgstr "পুনৰ সংযোগ কৰক"
 
 #~ msgid "Browse Files..."
 #~ msgstr "ফাইলসমূহ ব্ৰাউছ কৰক..."
