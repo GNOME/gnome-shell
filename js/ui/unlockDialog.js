@@ -172,7 +172,6 @@ const UnlockDialog = new Lang.Class({
 
         this._workSpinner = new Panel.AnimatedIcon('process-working.svg', LoginDialog.WORK_SPINNER_ICON_SIZE);
         this._workSpinner.actor.opacity = 0;
-        this._workSpinner.actor.show();
 
         this.allowCancel = false;
         this.buttonLayout.visible = true;

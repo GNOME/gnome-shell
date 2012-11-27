@@ -79,7 +79,7 @@ const Animation = new Lang.Class({
     Name: 'Animation',
 
     _init: function(filename, width, height, speed) {
-        this.actor = new St.Bin({ visible: false });
+        this.actor = new St.Bin();
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
         this._speed = speed;
 
@@ -301,6 +301,7 @@ const AppMenuButton = new Lang.Class({
         this._spinner = new AnimatedIcon('process-working.svg',
                                          PANEL_ICON_SIZE);
         this._container.add_actor(this._spinner.actor);
+        this._spinner.actor.hide();
         this._spinner.actor.lower_bottom();
 
         let tracker = Shell.WindowTracker.get_default();
