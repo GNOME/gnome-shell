@@ -234,7 +234,7 @@ const _Draggable = new Lang.Class({
         this._dragY = this._dragStartY = stageY;
 
         if (this.actor._delegate && this.actor._delegate.getDragActor) {
-            this._dragActor = this.actor._delegate.getDragActor(this._dragStartX, this._dragStartY);
+            this._dragActor = this.actor._delegate.getDragActor();
             this._dragActor.reparent(Main.uiGroup);
             this._dragActor.raise_top();
             Shell.util_set_hidden_from_pick(this._dragActor, true);
