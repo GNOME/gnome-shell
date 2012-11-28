@@ -1532,13 +1532,13 @@ StScrollBar StButton#vhandle:active {
 
 .summary-source-counter {
     background-image: url("summary-counter.svg");
-    background-size: 2.5em;
+    background-size: 2.4em;
     font-size: 10pt;
     font-weight: bold;
-    height: 2.5em;
-    width: 2.5em;
-    -shell-counter-overlap-x: 4px;
-    -shell-counter-overlap-y: 4px;
+    height: 2.4em;
+    width: 2.4em;
+    -shell-counter-overlap-x: 13px;
+    -shell-counter-overlap-y: 13px;
 }
 
 /* App Switcher */
@@ -2359,14 +2359,19 @@ StScrollBar StButton#vhandle:active {
 }
 
 .screen-shield-notification-source {
-    padding: 0 24px;
+    padding: 13px 24px;
     spacing: 5px;
 }
 
 .screen-shield-notification-label {
     font-size: 1.2em;
     font-weight: bold;
+    padding: 0px 18px;
     color: #babdb6;
+}
+
+.screen-shield-notification-count-text {
+    padding: 0px 18px;
 }
 
 /* Remove background from notifications, otherwise
