@@ -47,6 +47,11 @@ static char *session_mode = NULL;
 #define DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER 1
 #define DBUS_REQUEST_NAME_REPLY_ALREADY_OWNER 4
 
+enum {
+  SHELL_DEBUG_BACKTRACE_WARNINGS = 1,
+};
+static int _shell_debug;
+
 static void
 shell_dbus_acquire_name (GDBusProxy *bus,
                          guint32     request_name_flags,
@@ -270,6 +275,17 @@ shell_a11y_init (void)
 }
 
 static void
+shell_init_debug (const char *debug_env)
+{
+  static const GDebugKey keys[] = {
+    { "backtrace-warnings", SHELL_DEBUG_BACKTRACE_WARNINGS }
+  };
+
+  _shell_debug = g_parse_debug_string (debug_env, keys,
+                                       G_N_ELEMENTS (keys));
+}
+
+static void
 default_log_handler (const char     *log_domain,
                      GLogLevelFlags  log_level,
                      const char     *message,
@@ -286,6 +302,15 @@ default_log_handler (const char     *log_domain,
    * with those. */
   if (!log_domain || !g_str_has_prefix (log_domain, "tp-glib"))
     g_log_default_handler (log_domain, log_level, message, data);
+
+  /* Filter out Gjs logs, those already have the stack */
+  if (log_domain && strcmp (log_domain, "Gjs") == 0)
+    return;
+
+  if ((_shell_debug & SHELL_DEBUG_BACKTRACE_WARNINGS) &&
+      ((log_level & G_LOG_LEVEL_CRITICAL) ||
+       (log_level & G_LOG_LEVEL_WARNING)))
+    gjs_dumpstack ();
 }
 
 static void
@@ -406,6 +431,8 @@ main (int argc, char **argv)
   g_setenv ("GJS_DEBUG_OUTPUT", "stderr", TRUE);
   g_setenv ("GJS_DEBUG_TOPICS", "JS ERROR;JS LOG", TRUE);
 
+  shell_init_debug (g_getenv ("SHELL_DEBUG"));
+
   shell_dbus_init (meta_get_replace_current_wm ());
   shell_a11y_init ();
   shell_perf_log_init ();
@@ -419,6 +446,7 @@ main (int argc, char **argv)
   tp_debug_set_flags ("all");
 
   sender = tp_debug_sender_dup ();
+
   g_log_set_default_handler (default_log_handler, sender);
 
   /* Initialize the global object */
