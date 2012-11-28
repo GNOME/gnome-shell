@@ -1,7 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
-const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
@@ -29,9 +28,6 @@ const LIGHTBOX_FADE_TIME = 0.1;
 const CLOSE_BUTTON_FADE_TIME = 0.1;
 
 const DRAGGING_WINDOW_OPACITY = 100;
-
-const BUTTON_LAYOUT_SCHEMA = 'org.gnome.shell.overrides';
-const BUTTON_LAYOUT_KEY = 'button-layout';
 
 // When calculating a layout, we calculate the scale of windows and the percent
 // of the available area the new layout uses. If the values for the new layout,
@@ -455,8 +451,6 @@ const WindowOverlay = new Lang.Class({
         this._parentActor = parentActor;
         this._hidden = false;
 
-        this._settings = new Gio.Settings({ schema: BUTTON_LAYOUT_SCHEMA });
-
         this.borderSize = 0;
         this.border = new St.Bin({ style_class: 'window-clone-border' });
 
@@ -549,15 +543,8 @@ const WindowOverlay = new Lang.Class({
         let button = this.closeButton;
         let title = this.title;
 
-        let layout = this._settings.get_string(BUTTON_LAYOUT_KEY);
-        let rtl = Clutter.get_default_text_direction() == Clutter.TextDirection.RTL;
-
-        let split = layout.split(":");
-        let side;
-        if (split[0].indexOf("close") > -1)
-            side = rtl ? St.Side.RIGHT : St.Side.LEFT;
-        else
-            side = rtl ? St.Side.LEFT : St.Side.RIGHT;
+        let layout = Meta.prefs_get_button_layout();
+        let side = layout.left_buttons.indexOf(Meta.ButtonFunction.CLOSE) > -1 ? St.Side.LEFT : St.Side.RIGHT;
 
         let buttonX;
         let buttonY = cloneY - (button.height - button._overlap);
