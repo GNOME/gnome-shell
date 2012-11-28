@@ -386,6 +386,7 @@ function test() {
     }
 
     vfade.connect('clicked', function() { toggleFade(vfade); });
+    toggleFade(vfade);
 
     UI.main(stage);
 }
