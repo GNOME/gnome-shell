@@ -1,5 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Signals = imports.signals;
 
@@ -104,8 +106,65 @@ const _modes = {
     }
 };
 
+function _getModes() {
+    let modes = _modes;
+    let dataDirs = GLib.get_system_data_dirs();
+    for (let i = 0; i < dataDirs.length; i++) {
+        let path = GLib.build_filenamev([dataDirs[i], 'gnome-shell', 'modes']);
+        let dir = Gio.file_new_for_path(path);
+
+        try {
+            dir.query_info('standard:type', Gio.FileQueryInfoFlags.NONE, null);
+        } catch (e) {
+            continue;
+        }
+
+        _getModesFromDir(dir, modes);
+    }
+    return modes;
+}
+
+function _getModesFromDir(dir, modes) {
+    let fileEnum;
+    try {
+        fileEnum = dir.enumerate_children('standard::*',
+                                          Gio.FileQueryInfoFlags.NONE, null);
+    } catch(e) {
+        return;
+    }
+
+    let info;
+    while ((info = fileEnum.next_file(null)) != null) {
+        let name = info.get_name();
+        let suffix = name.indexOf('.json');
+        let modeName = suffix == -1 ? name : name.slice(name, suffix);
+
+        if (modes.hasOwnProperty(modeName))
+            continue;
+
+        let file = dir.get_child(name);
+        let fileContent, success, tag, newMode;
+        try {
+            [success, fileContent, tag] = file.load_contents(null);
+            newMode = JSON.parse(fileContent);
+        } catch(e) {
+            continue;
+        }
+
+        modes[modeName] = {};
+        let propBlacklist = ['unlockDialog'];
+        for (let prop in modes[DEFAULT_MODE]) {
+            if (newMode[prop] !== undefined &&
+                propBlacklist.indexOf(prop) == -1)
+                modes[modeName][prop]= newMode[prop];
+        }
+        modes[modeName]['isPrimary'] = true;
+    }
+    fileEnum.close(null);
+}
+
 function listModes() {
-    let modes = Object.getOwnPropertyNames(_modes);
+    let modes = Object.getOwnPropertyNames(_getModes());
     for (let i = 0; i < modes.length; i++)
         if (_modes[modes[i]].isPrimary)
             print(modes[i]);
@@ -116,8 +175,9 @@ const SessionMode = new Lang.Class({
 
     _init: function() {
         global.connect('notify::session-mode', Lang.bind(this, this._sync));
-        let mode = _modes[global.session_mode].isPrimary ? global.session_mode
-                                                         : 'user';
+        this._modes = _getModes();
+        let mode = this._modes[global.session_mode].isPrimary ? global.session_mode
+                                                              : 'user';
         this._modeStack = [mode];
         this._sync();
     },
@@ -146,8 +206,8 @@ const SessionMode = new Lang.Class({
     },
 
     _sync: function() {
-        let params = _modes[this.currentMode];
-        params = Params.parse(params, _modes[DEFAULT_MODE]);
+        let params = this._modes[this.currentMode];
+        params = Params.parse(params, this._modes[DEFAULT_MODE]);
 
         // A simplified version of Lang.copyProperties, handles
         // undefined as a special case for "no change / inherit from previous mode"
