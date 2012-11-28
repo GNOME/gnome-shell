@@ -274,6 +274,14 @@ typedef enum
 
 #define MAX_BUTTONS_PER_CORNER META_BUTTON_FUNCTION_LAST
 
+/* Keep array size in sync with MAX_BUTTONS_PER_CORNER */
+/**
+ * MetaButtonLayout:
+ * @left_buttons: (array fixed-size=10):
+ * @right_buttons: (array fixed-size=10):
+ * @left_buttons_has_spacer: (array fixed-size=10):
+ * @right_buttons_has_spacer: (array fixed-size=10):
+ */
 typedef struct _MetaButtonLayout MetaButtonLayout;
 struct _MetaButtonLayout
 {
