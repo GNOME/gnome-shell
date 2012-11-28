@@ -109,6 +109,8 @@ function start() {
     Gio.DesktopAppInfo.set_desktop_env('GNOME');
 
     sessionMode = new SessionMode.SessionMode();
+    Meta.prefs_override_preference_schema(sessionMode.buttonLayout[0], sessionMode.buttonLayout[1]);
+
     shellDBusService = new ShellDBus.GnomeShell();
     shellMountOpDBusService = new ShellMountOperation.GnomeShellMountOpHandler();
 
