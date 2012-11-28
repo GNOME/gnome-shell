@@ -38,6 +38,13 @@ uniform float hvalue;
  */
 uniform mat2 fade_area;
 
+/*
+ * Scale from [0.0, 1.0] to [1.0, 1.0]. Do this by
+ * changing it to scaling [1.0, 0.0] to [0.0, 0.0]
+ * and then transforming the end result.
+ */
+#define FADE(gradient, factor) (1 - (1 - gradient) * factor)
+
 void main ()
 {
     cogl_color_out = cogl_color_in * texture2D (tex, vec2 (cogl_tex_coord_in[0].xy));
@@ -57,20 +64,22 @@ void main ()
     bool fade_left = x < hfade_offset && hvalue > 0;
     bool fade_right = x > fade_right_start && hvalue < 1;
 
+    float vfade_scale = height / vfade_offset;
     if (fade_top) {
-        ratio *= (y / vfade_offset);
+        ratio *= FADE((y / vfade_offset), min(vvalue * vfade_scale, 1.0));
     }
 
     if (fade_bottom) {
-        ratio *= (fade_area[1][1] - y)/(fade_area[1][1] - fade_bottom_start);
+        ratio *= FADE((fade_area[1][1] - y)/(fade_area[1][1] - fade_bottom_start), min((1.0 - vvalue) * vfade_scale, 1.0));
     }
 
+    float hfade_scale = width / hfade_offset;
     if (fade_left) {
-        ratio *= (x / hfade_offset);
+        ratio *= FADE(x / hfade_offset, min(hvalue * hfade_scale, 1.0));
     }
 
     if (fade_right) {
-        ratio *= (fade_area[1][0] - x)/(fade_area[1][0] - fade_right_start);
+        ratio *= FADE((fade_area[1][0] - x)/(fade_area[1][0] - fade_right_start), min((1.0 - hvalue) * hfade_scale, 1.0));
     }
 
     cogl_color_out *= ratio;
