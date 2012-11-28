@@ -37,61 +37,7 @@ typedef struct _StScrollViewFadeClass  StScrollViewFadeClass;
 
 #define DEFAULT_FADE_OFFSET 68.0f
 
-static const gchar *fade_glsl_shader =
-"uniform sampler2D tex;\n"
-"uniform float height;\n"
-"uniform float width;\n"
-"uniform float offset_bottom;\n"
-"uniform float offset_top;\n"
-"uniform float offset_right;\n"
-"uniform float offset_left;\n"
-/*
- * Used to pass the fade area to the shader
- *
- * [0][0] = x1
- * [0][1] = y1
- * [1][0] = x2
- * [1][1] = y2
- *
- */
-"uniform mat2 fade_area;\n"
-"\n"
-"void main ()\n"
-"{\n"
-" vec4 color = cogl_color_in * texture2D (tex, vec2 (cogl_tex_coord_in[0].xy));\n"
-" float y = height * cogl_tex_coord_in[0].y;\n"
-" float x = width * cogl_tex_coord_in[0].x;\n"
-" float ratio = 1.0;\n"
-" float fade_bottom_start = fade_area[1][1] - offset_bottom;\n"
-" float fade_right_start = fade_area[1][0] - offset_right;\n"
-" float ratio_top = y / offset_top;\n"
-" float ratio_bottom = (fade_area[1][1] - y)/(fade_area[1][1] - fade_bottom_start);\n"
-" float ratio_left = x / offset_left;\n"
-" float ratio_right = (fade_area[1][0] - x)/(fade_area[1][0] - fade_right_start);\n"
-" bool in_scroll_area = fade_area[0][0] <= x && fade_area[1][0] >= x;\n"
-" bool fade_top = y < offset_top && in_scroll_area && (y >= fade_area[0][1]);\n"
-" bool fade_bottom = y > fade_bottom_start && in_scroll_area && (y <= fade_area[1][1]);\n"
-" bool fade_left = x < offset_left && in_scroll_area && (x >= fade_area[0][0]);\n"
-" bool fade_right = x > fade_right_start && in_scroll_area && (x <= fade_area[1][0]);\n"
-"\n"
-" if (fade_top) {\n"
-"  ratio *= ratio_top;\n"
-" }\n"
-"\n"
-" if (fade_bottom) {\n"
-"  ratio *= ratio_bottom;\n"
-" }\n"
-"\n"
-" if (fade_left) {\n"
-"  ratio *= ratio_left;\n"
-" }\n"
-"\n"
-" if (fade_right) {\n"
-"  ratio *= ratio_right;\n"
-" }\n"
-"\n"
-"  cogl_color_out = color * ratio;\n"
-"}";
+#include "st-scroll-view-fade-generated.c"
 
 struct _StScrollViewFade
 {
@@ -549,7 +495,7 @@ st_scroll_view_fade_init (StScrollViewFade *self)
       if (clutter_feature_available (CLUTTER_FEATURE_SHADERS_GLSL))
         {
           shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
-          cogl_shader_source (shader, fade_glsl_shader);
+          cogl_shader_source (shader, (const char *) st_scroll_view_fade_glsl);
           cogl_shader_compile (shader);
           if (!cogl_shader_is_compiled (shader))
             {
