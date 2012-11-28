@@ -30,9 +30,6 @@ const CLOSE_BUTTON_FADE_TIME = 0.1;
 
 const DRAGGING_WINDOW_OPACITY = 100;
 
-const BUTTON_LAYOUT_SCHEMA = 'org.gnome.shell.overrides';
-const BUTTON_LAYOUT_KEY = 'button-layout';
-
 // When calculating a layout, we calculate the scale of windows and the percent
 // of the available area the new layout uses. If the values for the new layout,
 // when weighted with the values as below, are worse than the previous layout's,
@@ -554,8 +551,8 @@ const WindowOverlay = new Lang.Class({
         let button = this.closeButton;
         let title = this.title;
 
-        let settings = new Gio.Settings({ schema: BUTTON_LAYOUT_SCHEMA });
-        let layout = settings.get_string(BUTTON_LAYOUT_KEY);
+        let settings = new Gio.Settings({ schema: Main.sessionMode.buttonLayout[1] });
+        let layout = settings.get_string(Main.sessionMode.buttonLayout[0]);
         let rtl = Clutter.get_default_text_direction() == Clutter.TextDirection.RTL;
 
         let split = layout.split(":");
