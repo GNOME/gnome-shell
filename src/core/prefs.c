@@ -1935,6 +1935,10 @@ meta_prefs_change_workspace_name (int         num,
                         g_variant_builder_end (&builder));
 }
 
+/**
+ * meta_prefs_get_button_layout:
+ * @button_layout: (out):
+ */
 void
 meta_prefs_get_button_layout (MetaButtonLayout *button_layout_p)
 {
