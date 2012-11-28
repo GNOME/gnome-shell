@@ -9650,9 +9650,20 @@ clutter_actor_allocate_internal (ClutterActor           *self,
  * @box: new allocation of the actor, in parent-relative coordinates
  * @flags: flags that control the allocation
  *
- * Called by the parent of an actor to assign the actor its size.
- * Should never be called by applications (except when implementing
- * a container or layout manager).
+ * Assigns the size of a #ClutterActor from the given @box.
+ *
+ * This function should only be called on the children of an actor when
+ * overriding the #ClutterActorClass.allocate() virtual function.
+ *
+ * This function will adjust the stored allocation to take into account
+ * the alignment flags set in the #ClutterActor:x-align and
+ * #ClutterActor:y-align properties, as well as the margin values set in
+ * the #ClutterActor:margin-top, #ClutterActor:margin-right,
+ * #ClutterActor:margin-bottom, and #ClutterActor:margin-left properties.
+ *
+ * This function will respect the easing state of the #ClutterActor and
+ * interpolate between the current allocation and the new one if the
+ * easing state duration is a positive value.
  *
  * Actors can know from their allocation box whether they have moved
  * with respect to their parent actor. The @flags parameter describes
@@ -15101,11 +15112,11 @@ clutter_actor_allocate_available_size (ClutterActor           *self,
  * by fixed layout managers (like #ClutterGroup or so called
  * 'composite actors') inside the ClutterActor::allocate
  * implementation to give each child exactly how much space it
- * requires.
+ * requires, regardless of the size of the parent.
  *
  * This function is not meant to be used by applications. It is also
  * not meant to be used outside the implementation of the
- * ClutterActor::allocate virtual function.
+ * #ClutterActorClass.allocate virtual function.
  *
  * Since: 0.8
  */
@@ -15169,8 +15180,11 @@ clutter_actor_allocate_preferred_size (ClutterActor           *self,
  * This function takes into consideration the geometry request specified by
  * the #ClutterActor:request-mode property, and the text direction.
  *
- * This function is useful for fluid layout managers, like #ClutterBinLayout
- * or #ClutterTableLayout
+ * This function is useful for fluid layout managers using legacy alignment
+ * flags. Newly written layout managers should use the #ClutterActor:x-align
+ * and #ClutterActor:y-align properties, instead, and just call
+ * clutter_actor_allocate() inside their #ClutterActorClass.allocate()
+ * implementation.
  *
  * Since: 1.4
  */
