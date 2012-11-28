@@ -53,10 +53,10 @@ struct _StScrollViewFade
   gint height_uniform;
   gint width_uniform;
   gint fade_area_uniform;
-  gint offset_top_uniform;
-  gint offset_bottom_uniform;
-  gint offset_left_uniform;
-  gint offset_right_uniform;
+  gint vfade_offset_uniform;
+  gint hfade_offset_uniform;
+  gint vvalue_uniform;
+  gint hvalue_uniform;
 
   StAdjustment *vadjustment;
   StAdjustment *hadjustment;
@@ -121,14 +121,14 @@ st_scroll_view_fade_pre_paint (ClutterEffect *effect)
         cogl_program_get_uniform_location (self->program, "width");
       self->fade_area_uniform =
         cogl_program_get_uniform_location (self->program, "fade_area");
-      self->offset_top_uniform =
-        cogl_program_get_uniform_location (self->program, "offset_top");
-      self->offset_bottom_uniform =
-        cogl_program_get_uniform_location (self->program, "offset_bottom");
-      self->offset_left_uniform =
-        cogl_program_get_uniform_location (self->program, "offset_left");
-      self->offset_right_uniform =
-        cogl_program_get_uniform_location (self->program, "offset_right");
+      self->vfade_offset_uniform =
+        cogl_program_get_uniform_location (self->program, "vfade_offset");
+      self->hfade_offset_uniform =
+        cogl_program_get_uniform_location (self->program, "hfade_offset");
+      self->vvalue_uniform =
+        cogl_program_get_uniform_location (self->program, "vvalue");
+      self->hvalue_uniform =
+        cogl_program_get_uniform_location (self->program, "hvalue");
     }
 
   parent_class = CLUTTER_EFFECT_CLASS (st_scroll_view_fade_parent_class);
@@ -207,38 +207,24 @@ st_scroll_view_fade_paint_target (ClutterOffscreenEffect *effect)
   if (h_scroll_visible)
       fade_area[1][1] -= clutter_actor_get_height (hscroll);
 
-  st_adjustment_get_values (self->vadjustment, &value, &lower, &upper, NULL, NULL, &page_size);
+  if (self->vvalue_uniform > -1)
+    {
+      st_adjustment_get_values (self->vadjustment, &value, &lower, &upper, NULL, NULL, &page_size);
+      value = (value - lower) / (upper - page_size - lower);
+      cogl_program_set_uniform_1f (self->program, self->vvalue_uniform, value);
+    }
 
-  if (self->offset_top_uniform > -1) {
-    if (value > lower + 0.1)
-      cogl_program_set_uniform_1f (self->program, self->offset_top_uniform, self->vfade_offset);
-    else
-      cogl_program_set_uniform_1f (self->program, self->offset_top_uniform, 0.0f);
-  }
+  if (self->hvalue_uniform > -1)
+    {
+      st_adjustment_get_values (self->hadjustment, &value, &lower, &upper, NULL, NULL, &page_size);
+      value = (value - lower) / (upper - page_size - lower);
+      cogl_program_set_uniform_1f (self->program, self->hvalue_uniform, value);
+    }
 
-  if (self->offset_bottom_uniform > -1) {
-    if (value < upper - page_size - 0.1)
-      cogl_program_set_uniform_1f (self->program, self->offset_bottom_uniform, self->vfade_offset);
-    else
-      cogl_program_set_uniform_1f (self->program, self->offset_bottom_uniform, 0.0f);
-  }
-
-  st_adjustment_get_values (self->hadjustment, &value, &lower, &upper, NULL, NULL, &page_size);
-
-  if (self->offset_left_uniform > -1) {
-    if (value > lower + 0.1)
-      cogl_program_set_uniform_1f (self->program, self->offset_left_uniform, self->hfade_offset);
-    else
-      cogl_program_set_uniform_1f (self->program, self->offset_left_uniform, 0.0f);
-  }
-
-  if (self->offset_right_uniform > -1) {
-    if (value < upper - page_size - 0.1)
-      cogl_program_set_uniform_1f (self->program, self->offset_right_uniform, self->hfade_offset);
-    else
-      cogl_program_set_uniform_1f (self->program, self->offset_right_uniform, 0.0f);
-  }
-
+  if (self->vfade_offset_uniform > -1)
+    cogl_program_set_uniform_1f (self->program, self->vfade_offset_uniform, self->vfade_offset);
+  if (self->hfade_offset_uniform > -1)
+    cogl_program_set_uniform_1f (self->program, self->hfade_offset_uniform, self->hfade_offset);
   if (self->tex_uniform > -1)
     cogl_program_set_uniform_1i (self->program, self->tex_uniform, 0);
   if (self->height_uniform > -1)
@@ -517,8 +503,10 @@ st_scroll_view_fade_init (StScrollViewFade *self)
   self->height_uniform = -1;
   self->width_uniform = -1;
   self->fade_area_uniform = -1;
-  self->offset_top_uniform = -1;
-  self->offset_bottom_uniform = -1;
+  self->vfade_offset_uniform = -1;
+  self->hfade_offset_uniform = -1;
+  self->vvalue_uniform = -1;
+  self->hvalue_uniform = -1;
   self->vfade_offset = DEFAULT_FADE_OFFSET;
   self->hfade_offset = DEFAULT_FADE_OFFSET;
 

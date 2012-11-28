@@ -22,10 +22,10 @@
 uniform sampler2D tex;
 uniform float height;
 uniform float width;
-uniform float offset_bottom;
-uniform float offset_top;
-uniform float offset_right;
-uniform float offset_left;
+uniform float vfade_offset;
+uniform float hfade_offset;
+uniform float vvalue;
+uniform float hvalue;
 
 /*
  * Used to pass the fade area to the shader
@@ -50,17 +50,16 @@ void main ()
         return;
 
     float ratio = 1.0;
-    float fade_bottom_start = fade_area[1][1] - offset_bottom;
-    float fade_right_start = fade_area[1][0] - offset_right;
-    float ratio_top = y / offset_top;
+    float fade_bottom_start = fade_area[1][1] - vfade_offset;
+    float fade_right_start = fade_area[1][0] - hfade_offset;
+    float ratio_top = y / vfade_offset;
     float ratio_bottom = (fade_area[1][1] - y)/(fade_area[1][1] - fade_bottom_start);
-    float ratio_left = x / offset_left;
+    float ratio_left = x / hfade_offset;
     float ratio_right = (fade_area[1][0] - x)/(fade_area[1][0] - fade_right_start);
-    bool in_scroll_area = fade_area[0][0] <= x && fade_area[1][0] >= x;
-    bool fade_top = y < offset_top;
-    bool fade_bottom = y > fade_bottom_start;
-    bool fade_left = x < offset_left;
-    bool fade_right = x > fade_right_start;
+    bool fade_top = y < vfade_offset && vvalue > 0;
+    bool fade_bottom = y > fade_bottom_start && vvalue < 1;
+    bool fade_left = x < hfade_offset && hvalue > 0;
+    bool fade_right = x > fade_right_start && hvalue < 1;
 
     if (fade_top) {
         ratio *= ratio_top;
