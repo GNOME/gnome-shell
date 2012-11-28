@@ -109,25 +109,25 @@ gint                   clutter_gesture_action_get_n_touch_points   (ClutterGestu
 void                   clutter_gesture_action_set_n_touch_points   (ClutterGestureAction *action,
                                                                     gint                  nb_points);
 void                   clutter_gesture_action_get_press_coords     (ClutterGestureAction *action,
-                                                                    guint                 device,
+                                                                    guint                 point,
                                                                     gfloat               *press_x,
                                                                     gfloat               *press_y);
 void                   clutter_gesture_action_get_motion_coords    (ClutterGestureAction *action,
-                                                                    guint                 device,
+                                                                    guint                 point,
                                                                     gfloat               *motion_x,
                                                                     gfloat               *motion_y);
 CLUTTER_AVAILABLE_IN_1_12
 gfloat                 clutter_gesture_action_get_motion_delta     (ClutterGestureAction *action,
-                                                                    guint                 device,
+                                                                    guint                 point,
                                                                     gfloat               *delta_x,
                                                                     gfloat               *delta_y);
 void                   clutter_gesture_action_get_release_coords   (ClutterGestureAction *action,
-                                                                    guint                 device,
+                                                                    guint                 point,
                                                                     gfloat               *release_x,
                                                                     gfloat               *release_y);
 CLUTTER_AVAILABLE_IN_1_12
 gfloat                 clutter_gesture_action_get_velocity         (ClutterGestureAction *action,
-                                                                    guint                 device,
+                                                                    guint                 point,
                                                                     gfloat               *velocity_x,
                                                                     gfloat               *velocity_y);
 

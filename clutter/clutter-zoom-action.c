@@ -118,10 +118,10 @@ G_DEFINE_TYPE (ClutterZoomAction, clutter_zoom_action, CLUTTER_TYPE_GESTURE_ACTI
 static void
 capture_point_initial_position (ClutterGestureAction *action,
                                 ClutterActor         *actor,
-                                gint                  device,
+                                gint                  index,
                                 ZoomPoint            *point)
 {
-  clutter_gesture_action_get_motion_coords (action, device,
+  clutter_gesture_action_get_motion_coords (action, index,
                                             &point->start_x,
                                             &point->start_y);
 
@@ -138,10 +138,10 @@ capture_point_initial_position (ClutterGestureAction *action,
 static void
 capture_point_update_position (ClutterGestureAction *action,
                                ClutterActor         *actor,
-                               gint                  device,
+                               gint                  index,
                                ZoomPoint            *point)
 {
-  clutter_gesture_action_get_motion_coords (action, device,
+  clutter_gesture_action_get_motion_coords (action, index,
                                             &point->update_x,
                                             &point->update_y);
 
