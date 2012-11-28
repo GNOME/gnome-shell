@@ -21,6 +21,7 @@ const _modes = {
         isLocked: false,
         isGreeter: false,
         isPrimary: false,
+        buttonLayout: ['button-layout', 'org.gnome.shell.overrides'],
         unlockDialog: null,
         components: [],
         panel: {
@@ -92,6 +93,29 @@ const _modes = {
         hasNotifications: true,
         isLocked: false,
         isPrimary: true,
+        unlockDialog: imports.ui.unlockDialog.UnlockDialog,
+        components: ['networkAgent', 'polkitAgent', 'telepathyClient',
+                     'keyring', 'recorder', 'autorunManager', 'automountManager'],
+        panel: {
+            left: ['activities', 'appMenu'],
+            center: ['dateMenu'],
+            right: ['a11y', 'keyboard', 'volume', 'bluetooth',
+                    'network', 'battery', 'userMenu']
+        }
+    },
+
+    'foo': {
+        hasOverview: true,
+        showCalendarEvents: true,
+        allowSettings: true,
+        allowExtensions: true,
+        hasRunDialog: true,
+        hasWorkspaces: true,
+        hasWindows: true,
+        hasNotifications: true,
+        isLocked: false,
+        isPrimary: true,
+        buttonLayout: ['button-layout', 'org.gnome.shell-foo.overrides'],
         unlockDialog: imports.ui.unlockDialog.UnlockDialog,
         components: ['networkAgent', 'polkitAgent', 'telepathyClient',
                      'keyring', 'recorder', 'autorunManager', 'automountManager'],
