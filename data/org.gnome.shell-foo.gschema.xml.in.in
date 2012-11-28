@@ -1,0 +1,13 @@
+<schemalist>
+  <schema id="org.gnome.shell-foo.overrides" path="/org/gnome/shell-foo/overrides/"
+	  gettext-domain="@GETTEXT_PACKAGE@">
+    <key name="button-layout" type="s">
+      <default>":minimize,close"</default>
+      <_summary>Arrangement of buttons on the titlebar</_summary>
+      <_description>
+        This key overrides the key in org.gnome.desktop.wm.preferences when
+        running GNOME Shell in Foo mode.
+      </_description>
+    </key>
+  </schema>
+</schemalist>

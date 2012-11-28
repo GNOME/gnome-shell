@@ -54,7 +54,9 @@ keys_in_files =					\
 	$(NULL)
 keys_DATA = $(keys_in_files:.xml.in=.xml)
 
-gsettings_SCHEMAS = org.gnome.shell.gschema.xml
+gsettings_SCHEMAS =				\
+	org.gnome.shell.gschema.xml		\
+	org.gnome.shell-foo.gschema.xml
 
 @INTLTOOL_XML_NOMERGE_RULE@
 
@@ -81,7 +83,8 @@ EXTRA_DIST =						\
 	$(menu_DATA)					\
 	$(convert_DATA)					\
 	$(keys_in_files)				\
-	org.gnome.shell.gschema.xml.in.in
+	org.gnome.shell.gschema.xml.in.in		\
+	org.gnome.shell-foo.gschema.xml.in.in
 
 CLEANFILES =						\
 	gnome-shell.desktop.in				\
@@ -91,4 +94,6 @@ CLEANFILES =						\
 	$(gsettings_SCHEMAS)				\
 	gschemas.compiled				\
 	org.gnome.shell.gschema.valid			\
-	org.gnome.shell.gschema.xml.in
+	org.gnome.shell.gschema.xml.in			\
+	org.gnome.shell-foo.gschema.valid		\
+	org.gnome.shell-foo.gschema.xml.in
