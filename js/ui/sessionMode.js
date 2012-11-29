@@ -3,8 +3,10 @@
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
+const FileUtils = imports.misc.fileUtils;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 
@@ -106,68 +108,48 @@ const _modes = {
     }
 };
 
-function _getModes() {
-    let modes = _modes;
-    let dataDirs = GLib.get_system_data_dirs();
-    for (let i = 0; i < dataDirs.length; i++) {
-        let path = GLib.build_filenamev([dataDirs[i], 'gnome-shell', 'modes']);
-        let dir = Gio.file_new_for_path(path);
-
-        try {
-            dir.query_info('standard:type', Gio.FileQueryInfoFlags.NONE, null);
-        } catch (e) {
-            continue;
-        }
-
-        _getModesFromDir(dir, modes);
-    }
-    return modes;
+function _getModes(modesLoadedCallback) {
+    FileUtils.collectFromDatadirsAsync('modes',
+                                       { processFile: _loadMode,
+                                         loadedCallback: modesLoadedCallback,
+                                         data: _modes });
 }
 
-function _getModesFromDir(dir, modes) {
-    let fileEnum;
+function _loadMode(file, info, loadedData) {
+    let name = info.get_name();
+    let suffix = name.indexOf('.json');
+    let modeName = suffix == -1 ? name : name.slice(name, suffix);
+
+    if (loadedData.hasOwnProperty(modeName))
+        return;
+
+    let fileContent, success, tag, newMode;
     try {
-        fileEnum = dir.enumerate_children('standard::*',
-                                          Gio.FileQueryInfoFlags.NONE, null);
+        [success, fileContent, tag] = file.load_contents(null);
+        newMode = JSON.parse(fileContent);
     } catch(e) {
         return;
     }
 
-    let info;
-    while ((info = fileEnum.next_file(null)) != null) {
-        let name = info.get_name();
-        let suffix = name.indexOf('.json');
-        let modeName = suffix == -1 ? name : name.slice(name, suffix);
-
-        if (modes.hasOwnProperty(modeName))
-            continue;
-
-        let file = dir.get_child(name);
-        let fileContent, success, tag, newMode;
-        try {
-            [success, fileContent, tag] = file.load_contents(null);
-            newMode = JSON.parse(fileContent);
-        } catch(e) {
-            continue;
-        }
-
-        modes[modeName] = {};
-        let propBlacklist = ['unlockDialog'];
-        for (let prop in modes[DEFAULT_MODE]) {
-            if (newMode[prop] !== undefined &&
-                propBlacklist.indexOf(prop) == -1)
-                modes[modeName][prop]= newMode[prop];
-        }
-        modes[modeName]['isPrimary'] = true;
+    loadedData[modeName] = {};
+    let propBlacklist = ['unlockDialog'];
+    for (let prop in loadedData[DEFAULT_MODE]) {
+        if (newMode[prop] !== undefined &&
+            propBlacklist.indexOf(prop) == -1)
+            loadedData[modeName][prop]= newMode[prop];
     }
-    fileEnum.close(null);
+    loadedData[modeName]['isPrimary'] = true;
 }
 
 function listModes() {
-    let modes = Object.getOwnPropertyNames(_getModes());
-    for (let i = 0; i < modes.length; i++)
-        if (_modes[modes[i]].isPrimary)
-            print(modes[i]);
+    _getModes(function(modes) {
+        let names = Object.getOwnPropertyNames(modes);
+        for (let i = 0; i < names.length; i++)
+            if (_modes[names[i]].isPrimary)
+                print(names[i]);
+        Mainloop.quit('listModes');
+    });
+    Mainloop.run('listModes');
 }
 
 const SessionMode = new Lang.Class({
@@ -175,11 +157,18 @@ const SessionMode = new Lang.Class({
 
     _init: function() {
         global.connect('notify::session-mode', Lang.bind(this, this._sync));
-        this._modes = _getModes();
-        let mode = this._modes[global.session_mode].isPrimary ? global.session_mode
-                                                              : 'user';
-        this._modeStack = [mode];
+        this._modes = _modes;
+        this._modeStack = [DEFAULT_MODE];
         this._sync();
+
+        _getModes(Lang.bind(this, function(modes) {
+            this._modes = modes;
+            let primary = modes[global.session_mode] &&
+                          modes[global.session_mode].isPrimary;
+            let mode = primary ? global.session_mode : 'user';
+            this._modeStack = [mode];
+            this._sync();
+        }));
     },
 
     pushMode: function(mode) {
