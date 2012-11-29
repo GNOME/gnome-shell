@@ -14,6 +14,7 @@ const DEFAULT_MODE = 'restrictive';
 
 const _modes = {
     'restrictive': {
+        parentMode: null,
         hasOverview: false,
         showCalendarEvents: false,
         allowSettings: false,
@@ -197,7 +198,13 @@ const SessionMode = new Lang.Class({
 
     _sync: function() {
         let params = this._modes[this.currentMode];
-        params = Params.parse(params, this._modes[DEFAULT_MODE]);
+        let defaults;
+        if (params.parentMode)
+            defaults = Params.parse(this._modes[params.parentMode],
+                                    this._modes[DEFAULT_MODE]);
+        else
+            defaults = this._modes[DEFAULT_MODE];
+        params = Params.parse(params, defaults);
 
         // A simplified version of Lang.copyProperties, handles
         // undefined as a special case for "no change / inherit from previous mode"
