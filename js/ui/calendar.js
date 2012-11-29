@@ -62,15 +62,18 @@ function _formatEventTime(event, clockFormat) {
     } else {
         switch (clockFormat) {
         case '24h':
-            /* Translators: Shown in calendar event list, if 24h format */
-            ret = event.date.toLocaleFormat(C_("event list time", "%H:%M"));
+            /* Translators: Shown in calendar event list, if 24h format,
+               \u2236 is a ratio character, similar to : */
+            ret = event.date.toLocaleFormat(C_("event list time", "%H\u2236%M"));
             break;
 
         default:
             /* explicit fall-through */
         case '12h':
-            /* Transators: Shown in calendar event list, if 12h format */
-            ret = event.date.toLocaleFormat(C_("event list time", "%l:%M %p"));
+            /* Transators: Shown in calendar event list, if 12h format,
+               \u2236 is a ratio character, similar to : and \u2009 is
+               a thin space */
+            ret = event.date.toLocaleFormat(C_("event list time", "%l\u2236%M\u2009%p"));
             break;
         }
     }
