@@ -211,8 +211,16 @@ function initExtension(uuid) {
     _signals.emit('extension-loaded', uuid);
 }
 
+function getEnabledExtensions() {
+    let extensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
+    if (!Array.isArray(Main.sessionMode.enabledExtensions))
+        return extensions;
+
+    return Main.sessionMode.enabledExtensions.concat(extensions);
+}
+
 function onEnabledExtensionsChanged() {
-    let newEnabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
+    let newEnabledExtensions = getEnabledExtensions();
 
     if (!enabled)
         return;
@@ -246,7 +254,7 @@ function onEnabledExtensionsChanged() {
 
 function _loadExtensions() {
     global.settings.connect('changed::' + ENABLED_EXTENSIONS_KEY, onEnabledExtensionsChanged);
-    enabledExtensions = global.settings.get_strv(ENABLED_EXTENSIONS_KEY);
+    enabledExtensions = getEnabledExtensions();
 
     let finder = new ExtensionUtils.ExtensionFinder();
     finder.connect('extension-found', function(signals, extension) {
@@ -288,10 +296,17 @@ function disableAllExtensions() {
 }
 
 function _sessionUpdated() {
-    if (Main.sessionMode.allowExtensions)
+    // For now sessionMode.allowExtensions controls extensions from both the
+    // 'enabled-extensions' preference and the sessionMode.enabledExtensions
+    // property; it might make sense to make enabledExtensions independent
+    // from allowExtensions in the future
+    if (Main.sessionMode.allowExtensions) {
+        if (initted)
+            onEnabledExtensionsChanged();
         enableAllExtensions();
-    else
+    } else {
         disableAllExtensions();
+    }
 }
 
 function init() {

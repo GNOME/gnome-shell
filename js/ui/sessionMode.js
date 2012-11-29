@@ -18,6 +18,7 @@ const _modes = {
         showCalendarEvents: false,
         allowSettings: false,
         allowExtensions: false,
+        enabledExtensions: [],
         hasRunDialog: false,
         hasWorkspaces: false,
         hasWindows: false,
