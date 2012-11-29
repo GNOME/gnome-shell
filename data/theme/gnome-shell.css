@@ -1453,11 +1453,13 @@ StScrollBar StButton#vhandle:active {
 }
 
 .notification-button {
-    padding: 4px 42px 5px;
+    -st-natural-width: 140px;
+    padding: 4px 4px 5px;
 }
 
 .notification-button:focus {
-    padding: 3px 41px 4px;
+    -st-natural-width: 138px;
+    padding: 3px 4px 4px;
 }
 
 .notification-icon-button {
