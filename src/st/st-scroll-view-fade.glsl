@@ -52,29 +52,25 @@ void main ()
     float ratio = 1.0;
     float fade_bottom_start = fade_area[1][1] - vfade_offset;
     float fade_right_start = fade_area[1][0] - hfade_offset;
-    float ratio_top = y / vfade_offset;
-    float ratio_bottom = (fade_area[1][1] - y)/(fade_area[1][1] - fade_bottom_start);
-    float ratio_left = x / hfade_offset;
-    float ratio_right = (fade_area[1][0] - x)/(fade_area[1][0] - fade_right_start);
     bool fade_top = y < vfade_offset && vvalue > 0;
     bool fade_bottom = y > fade_bottom_start && vvalue < 1;
     bool fade_left = x < hfade_offset && hvalue > 0;
     bool fade_right = x > fade_right_start && hvalue < 1;
 
     if (fade_top) {
-        ratio *= ratio_top;
+        ratio *= (y / vfade_offset);
     }
 
     if (fade_bottom) {
-        ratio *= ratio_bottom;
+        ratio *= (fade_area[1][1] - y)/(fade_area[1][1] - fade_bottom_start);
     }
 
     if (fade_left) {
-        ratio *= ratio_left;
+        ratio *= (x / hfade_offset);
     }
 
     if (fade_right) {
-        ratio *= ratio_right;
+        ratio *= (fade_area[1][0] - x)/(fade_area[1][0] - fade_right_start);
     }
 
     cogl_color_out *= ratio;
