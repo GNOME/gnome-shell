@@ -46,6 +46,7 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
     <arg type="i" direction="in" name="width"/>
     <arg type="i" direction="in" name="height"/>
 </method>
+<property name="Mode" type="s" access="read" />
 <property name="OverviewActive" type="b" access="readwrite" />
 <property name="ShellVersion" type="s" access="read" />
 </interface>;
@@ -185,6 +186,8 @@ const GnomeShell = new Lang.Class({
         let flashspot = new Flashspot.Flashspot({ x : x, y : y, width: width, height: height});
         flashspot.fire();
     },
+
+    Mode: global.session_mode,
 
     get OverviewActive() {
         return Main.overview.visible;
