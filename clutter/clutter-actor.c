@@ -15097,11 +15097,24 @@ clutter_actor_allocate_preferred_size (ClutterActor           *self,
   gfloat actor_x, actor_y;
   gfloat natural_width, natural_height;
   ClutterActorBox actor_box;
+  ClutterActorPrivate *priv;
+  const ClutterLayoutInfo *info;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
 
-  actor_x = clutter_actor_get_x (self);
-  actor_y = clutter_actor_get_y (self);
+  priv = self->priv;
+
+  if (priv->position_set)
+    {
+      info = _clutter_actor_get_layout_info_or_defaults (self);
+      actor_x = info->fixed_pos.x;
+      actor_y = info->fixed_pos.y;
+    }
+  else
+    {
+      actor_x = 0;
+      actor_y = 0;
+    }
 
   clutter_actor_get_preferred_size (self,
                                     NULL, NULL,
