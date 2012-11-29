@@ -288,11 +288,15 @@ StScrollBar StButton#vhandle:active {
 .hotplug-notification-item,
 .hotplug-resident-eject-button,
 .modal-dialog-button {
-    font-weight: bold;
     border: 1px solid #8b8b8b;
     background-gradient-direction: vertical;
     background-gradient-start: rgba(255, 255, 255, 0.2);
     background-gradient-end: rgba(255, 255, 255, 0);
+}
+
+.dash-search-button,
+.modal-dialog-button {
+    font-weight: bold;
 }
 
 .dash-search-button:hover,
@@ -1332,7 +1336,7 @@ StScrollBar StButton#vhandle:active {
     border-radius: 10px 10px 0px 0px;
     background: rgba(0,0,0,0.9);
     padding: 8px 8px 4px 8px;
-    spacing-rows: 10px;
+    spacing-rows: 4px;
     spacing-columns: 10px;
 }
 
@@ -1412,6 +1416,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .notification-actions {
+    padding-top: 18px;
     spacing: 10px;
 }
 
