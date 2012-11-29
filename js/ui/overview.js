@@ -117,6 +117,7 @@ const Overview = new Lang.Class({
 
     _init: function() {
         this._overviewCreated = false;
+        this._initCalled = false;
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
         this._sessionUpdated();
@@ -204,6 +205,9 @@ const Overview = new Lang.Class({
         this._lastActiveWorkspaceIndex = -1;
         this._lastHoveredWindow = null;
         this._needsFakePointerEvent = false;
+
+        if (this._initCalled)
+            this.init();
     },
 
     _sessionUpdated: function() {
@@ -216,6 +220,8 @@ const Overview = new Lang.Class({
     // signal handlers and so forth. So we create them after
     // construction in this init() method.
     init: function() {
+        this._initCalled = true;
+
         if (this.isDummy)
             return;
 
