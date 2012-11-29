@@ -76,6 +76,7 @@ IGNORE_HFILES = \
 	clutter-enum-types.h 		\
 	clutter-event-translator.h	\
 	clutter-flatten-effect.h	\
+	clutter-gesture-action-private.h	\
 	clutter-id-pool.h 		\
 	clutter-keysyms.h 		\
 	clutter-keysyms-compat.h	\
