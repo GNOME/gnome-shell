@@ -304,11 +304,20 @@ const Overview = new Lang.Class({
         let dashVisible = !searchActive || inDrag;
         let thumbnailsVisible = (!searchActive && !appsActive) || inDrag;
         let trayVisible = !searchActive;
+        let trayGhostVisible = trayVisible || dashVisible;
 
-        if (dashVisible)
+        if (dashVisible) {
             this._dash.show();
-        else
+            this._messageTrayGhost.visible = trayGhostVisible;
+        } else {
+            let visibleId = this._dash.actor.connect('notify::visible', Lang.bind(this,
+                function() {
+                    this._dash.actor.disconnect(visibleId);
+                    if (!trayVisible && !this._dash.actor.visible)
+                        this._messageTrayGhost.hide();
+                }));
             this._dash.hide();
+        }
 
         if (thumbnailsVisible)
             this._thumbnailsBox.show();
@@ -543,6 +552,7 @@ const Overview = new Lang.Class({
         // Disable unredirection while in the overview
         Meta.disable_unredirect_for_screen(global.screen);
         global.window_group.hide();
+        this._messageTrayGhost.show();
         this._overview.show();
         this._background.show();
         this._viewSelector.show();
