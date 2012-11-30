@@ -223,7 +223,7 @@ const ViewByCategories = new Lang.Class({
             this._loadCategory(dir, apps);
 
             if (apps.length == 0)
-                return;
+                return false;
         }
 
         let button = new St.Button({ label: GLib.markup_escape_text (name, -1),
@@ -244,6 +244,7 @@ const ViewByCategories = new Lang.Class({
         }
 
         this._categoryBox.add(button, { expand: true, x_fill: true, y_fill: false });
+        return true;
     },
 
     _removeAll: function() {
@@ -269,8 +270,9 @@ const ViewByCategories = new Lang.Class({
                 var dir = iter.get_directory();
                 if (dir.get_is_nodisplay())
                     continue;
-                this._addCategory(dir.get_name(), i, dir);
-                i++;
+
+                if (this._addCategory(dir.get_name(), i, dir))
+                    i++;
             }
         }
 
