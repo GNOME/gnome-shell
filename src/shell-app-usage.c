@@ -785,16 +785,19 @@ shell_app_usage_start_element_handler  (GMarkupParseContext *context,
     }
   else if (strcmp (element_name, "context") == 0)
     {
-      char *context = NULL;
+      char *id = NULL;
       const char **attribute;
       const char **value;
 
       for (attribute = attribute_names, value = attribute_values; *attribute; attribute++, value++)
         {
           if (strcmp (*attribute, "id") == 0)
-            context = g_strdup (*value);
+            {
+              id = g_strdup (*value);
+              break;
+            }
         }
-      if (context < 0)
+      if (!id)
         {
           g_set_error (error,
                        G_MARKUP_ERROR,
@@ -803,7 +806,7 @@ shell_app_usage_start_element_handler  (GMarkupParseContext *context,
                        element_name);
           return;
         }
-      data->context = context;
+      data->context = id;
     }
   else if (strcmp (element_name, "application") == 0)
     {
@@ -816,7 +819,10 @@ shell_app_usage_start_element_handler  (GMarkupParseContext *context,
       for (attribute = attribute_names, value = attribute_values; *attribute; attribute++, value++)
         {
           if (strcmp (*attribute, "id") == 0)
-            appid = g_strdup (*value);
+            {
+              appid = g_strdup (*value);
+              break;
+            }
         }
 
       if (!appid)
