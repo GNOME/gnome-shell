@@ -252,6 +252,10 @@ StScrollBar StButton#vhandle:active {
     icon-size: 1.09em;
 }
 
+.popup-battery-percentage {
+    padding-left: 24px;
+}
+
 /* Switches */
 .toggle-switch {
     width: 65px;

@@ -61,7 +61,7 @@ const Indicator = new Lang.Class({
         this._primaryDeviceId = null;
 
         this._batteryItem = new PopupMenu.PopupMenuItem('', { reactive: false });
-        this._primaryPercentage = new St.Label();
+        this._primaryPercentage = new St.Label({ style_class: 'popup-battery-percentage' });
         this._batteryItem.addActor(this._primaryPercentage, { align: St.Align.END });
         this.menu.addMenuItem(this._batteryItem);
 
@@ -183,7 +183,8 @@ const DeviceItem = new Lang.Class({
         this._box.add_actor(this._label);
         this.addActor(this._box);
 
-        let percentLabel = new St.Label({ text: C_("percent of battery remaining", "%d%%").format(Math.round(percentage)) });
+        let percentLabel = new St.Label({ text: C_("percent of battery remaining", "%d%%").format(Math.round(percentage)),
+                                          style_class: 'popup-battery-percentage' });
         this.addActor(percentLabel, { align: St.Align.END });
         //FIXME: ideally we would like to expose this._label and percentLabel
         this.actor.label_actor = percentLabel;
