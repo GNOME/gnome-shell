@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: metacity.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-07 18:40+0200\n"
-"PO-Revision-Date: 2012-11-07 18:40+0200\n"
+"POT-Creation-Date: 2012-11-30 11:36+0200\n"
+"PO-Revision-Date: 2012-11-30 11:53+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "Language: he\n"
@@ -19,15 +19,197 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.10.2\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Navigation"
+msgstr "ניווט"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+#, fuzzy
+msgid "Move window to workspace 1"
+msgstr ""
+"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
+"Move window to workspace 1\n"
+"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
+"העברה למרחב עבודה 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+#, fuzzy
+msgid "Move window to workspace 2"
+msgstr ""
+"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
+"Move window to workspace 2\n"
+"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
+"העברה למרחב עבודה 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move window to workspace 3"
+msgstr "העברה למרחב עבודה 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move window to workspace 4"
+msgstr "העברה למרחב עבודה 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+msgid "Move window one workspace to the left"
+msgstr "העברת החלון לשולחן העבודה שמשמאל"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the right"
+msgstr "העברת החלון לשולחן העבודה שמימין"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace up"
+msgstr "העברת החלון לשולחן העבודה שמלמעלה"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace down"
+msgstr "העברת החלון לשולחן העבודה שמלמטה"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Switch applications"
+msgstr "החלפה בין יישומים"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Switch windows of an application"
+msgstr "החלפה בין חלונות של יישום"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Switch system controls"
+msgstr "החלפה בין פקדי המערכת"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Switch windows directly"
+msgstr "החלפת החלונות באופן ישיר"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Switch windows of an app directly"
+msgstr "החלפת חלונות של יישום באופן ישיר"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch system controls directly"
+msgstr "החלפת פקדי המערכת באופן ישיר"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Hide all normal windows"
+msgstr "הסתרת כל החלונות הרגילים"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+msgid "Switch to workspace 1"
+msgstr "מעבר למרחב עבודה 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+msgid "Switch to workspace 2"
+msgstr "מעבר למרחב עבודה 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+msgid "Switch to workspace 3"
+msgstr "מעבר למרחב עבודה 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+msgid "Switch to workspace 4"
+msgstr "מעבר למרחב עבודה 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+msgid "Move to workspace left"
+msgstr "העברה למרחב העבודה לשמאל"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Move to workspace right"
+msgstr "העברה למרחב העבודה לימין"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Move to workspace above"
+msgstr "העברה למרחב העבודה שמלמעלה"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Move to workspace below"
+msgstr "העברה למרחב העבודה שמלמטה"
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "System"
+msgstr "מערכת"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "הצגת החלונית להרצת פקודה"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "Show the activities overview"
+msgstr "הצגת סקירת הפעילויות"
+
+#: ../src/50-mutter-windows.xml.in.h:1
 msgid "Windows"
 msgstr "חלונות"
 
 #: ../src/50-mutter-windows.xml.in.h:2
+msgid "Activate the window menu"
+msgstr "הפעלת תפריט החלון"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Toggle fullscreen mode"
+msgstr "הפעלה/כיבוי מצב מסך מלא"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+msgid "Toggle maximization state"
+msgstr "הפעלה/כיבוי מצב הגדלה"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+msgid "Maximize window"
+msgstr "הגדלת חלון"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+msgid "Restore window"
+msgstr "שחזור חלון"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+msgid "Toggle shaded state"
+msgstr "החלפת מצב ההצללה"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+msgid "Close window"
+msgstr "סגירת חלון"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+msgid "Minimize window"
+msgstr "מזעור חלון"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Move window"
+msgstr "הזזת חלון"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+msgid "Resize window"
+msgstr "שינוי גודל חלון"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+msgid "Toggle window on all workspaces or one"
+msgstr "החלפת המצב בין האם החלון מופיע במרחב עבודה אחד או בכולם"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+msgid "Raise window if covered, otherwise lower it"
+msgstr "הגבהת החלון אם הוא מכוסה, אחרת יש להנמיכו"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+msgid "Raise window above other windows"
+msgstr "הגבהת החלון מעל לחלונות אחרים"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+msgid "Lower window below other windows"
+msgstr "הנמכת החלון מתחת לחלונות אחרים"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Maximize window vertically"
+msgstr "הגדלת החלון אנכית"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+msgid "Maximize window horizontally"
+msgstr "הגדלת החלון אופקית"
+
+#: ../src/50-mutter-windows.xml.in.h:18
 msgid "View split on left"
 msgstr "פיצול הצפייה משמאל"
 
-#: ../src/50-mutter-windows.xml.in.h:3
+#: ../src/50-mutter-windows.xml.in.h:19
 msgid "View split on right"
 msgstr "פיצול הצפייה מימין"
 
@@ -36,7 +218,7 @@ msgstr "פיצול הצפייה מימין"
 #: ../src/compositor/compositor.c:492
 #, c-format
 msgid "Another compositing manager is already running on screen %i on display \"%s\"."
-msgstr "מנהל תצוגת חלונות אחר כבר פועל במסך %i בתצוגה \"%s\"."
+msgstr "מנהל תצוגת חלונות אחר כבר פועל במסך %i בתצוגה „%s“."
 
 #: ../src/core/bell.c:320
 msgid "Bell event"
@@ -68,20 +250,20 @@ msgstr "ה_מתנה"
 msgid "_Force Quit"
 msgstr "_אילוץ סגירה"
 
-#: ../src/core/display.c:399
+#: ../src/core/display.c:397
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Missing %s extension required for compositing"
 
-#: ../src/core/display.c:496
+#: ../src/core/display.c:494
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Failed to open X Window System display '%s'\n"
 
-#: ../src/core/keybindings.c:853
+#: ../src/core/keybindings.c:860
 #, c-format
 msgid "Some other program is already using the key %s with modifiers %x as a binding\n"
-msgstr "תוכנית אחרת כבר משתמשת במקש %s עם המקש %x כצירוף\n"
+msgstr "תכנית אחרת כבר משתמשת במקש %s עם המקש %x כצירוף\n"
 
 #: ../src/core/main.c:196
 msgid "Disable connection to session manager"
@@ -152,12 +334,12 @@ msgstr "Could not parse font description \"%s\" from GSettings key %s\n"
 msgid "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 msgstr "\"%s\" found in configuration database is not a valid value for mouse button modifier\n"
 
-#: ../src/core/prefs.c:1747
+#: ../src/core/prefs.c:1757
 #, c-format
 msgid "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 msgstr "\"%s\" found in configuration database is not a valid value for keybinding \"%s\"\n"
 
-#: ../src/core/prefs.c:1844
+#: ../src/core/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "סביבת עבודה %d"
@@ -426,79 +608,79 @@ msgstr "שימוש: %s\n"
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:69
 msgid "Mi_nimize"
-msgstr "_מזער"
+msgstr "מז_עור"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:71
 msgid "Ma_ximize"
-msgstr "ה_גדל"
+msgstr "ה_גדלה"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:73
 msgid "Unma_ximize"
-msgstr "_שחזר"
+msgstr "_שחזור"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:75
 msgid "Roll _Up"
-msgstr "גלול _מעלה"
+msgstr "גלילה למע_לה"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:77
 msgid "_Unroll"
-msgstr "גלול _חזרה"
+msgstr "גלילה ב_חזרה"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:79
 msgid "_Move"
-msgstr "_הזז"
+msgstr "ה_זזה"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:81
 msgid "_Resize"
-msgstr "_שנה גודל"
+msgstr "_שינוי גודל"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:83
 msgid "Move Titlebar On_screen"
-msgstr "הזז את שורת הכותרת אל ה_מסך"
+msgstr "הזזת שורת הכותרת אל המ_סך"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:86
 #: ../src/ui/menu.c:88
 msgid "Always on _Top"
-msgstr "תמיד מ_למעלה"
+msgstr "_תמיד עליון"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:90
 msgid "_Always on Visible Workspace"
-msgstr "_הראה בכל סביבות העבודה"
+msgstr "ה_צגה בכל מרחבי העבודה"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:92
 msgid "_Only on This Workspace"
-msgstr "רק בסביבת עבודה _זו"
+msgstr "_רק במרחב עבודה זה"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:94
 msgid "Move to Workspace _Left"
-msgstr "הזז חלון לסביבת העבודה ה_שמאלית"
+msgstr "הזזת החלון למרחב העבודה ה_שמאלי"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:96
 msgid "Move to Workspace R_ight"
-msgstr "הזז חלון לסביבת העבודה ה_ימנית"
+msgstr "הזזת החלון למרחב העבודה ה_ימני"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:98
 msgid "Move to Workspace _Up"
-msgstr "הזז חלון לסביבת העבודה למעלה"
+msgstr "הזזת החלון למרחב העבודה ש_למעלה"
 
 #. Translators: Translate this string the same way as you do in libwnck!
 #: ../src/ui/menu.c:100
 msgid "Move to Workspace _Down"
-msgstr "הזז חלון לסביבת העבודה למטה"
+msgstr "הזזת החלון למרחב העבודה שלמ_טה"
 
 #. separator
 #. Translators: Translate this string the same way as you do in libwnck!
@@ -509,21 +691,21 @@ msgstr "_סגור"
 #: ../src/ui/menu.c:204
 #, c-format
 msgid "Workspace %d%n"
-msgstr "סביבת עבודה %d%n"
+msgstr "מרחב עבודה %d%n"
 
 #: ../src/ui/menu.c:214
 #, c-format
 msgid "Workspace 1_0"
-msgstr "סביבת עבודה 1_0"
+msgstr "מרחב עבודה 1_0"
 
 #: ../src/ui/menu.c:216
 #, c-format
 msgid "Workspace %s%d"
-msgstr "סביבת עבודה %s%d"
+msgstr "מרחב עבודה %s%d"
 
 #: ../src/ui/menu.c:397
 msgid "Move to Another _Workspace"
-msgstr "הזז חלון לסביבת עבודה אחרת"
+msgstr "הזז חלון למרחב עבודה אחר"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the shift key. If the text on this key isn't typically
@@ -896,13 +1078,13 @@ msgstr "Attribute \"%s\" is invalid on <%s> element in this context"
 #: ../src/ui/theme-parser.c:594
 #, c-format
 msgid "Could not parse \"%s\" as an integer"
-msgstr "לא ניתן להעביר את \"%s\" כמספר שלם"
+msgstr "לא ניתן להעביר את „%s“ כמספר שלם"
 
 #: ../src/ui/theme-parser.c:603
 #: ../src/ui/theme-parser.c:658
 #, c-format
 msgid "Did not understand trailing characters \"%s\" in string \"%s\""
-msgstr "לא ניתן להבין את התוים \"%s\" במחרוזת \"%s\""
+msgstr "לא ניתן להבין את התווים „%s“ במחרוזת „%s“"
 
 #: ../src/ui/theme-parser.c:613
 #, c-format
@@ -1282,74 +1464,74 @@ msgstr "כל ה_מעגנים"
 
 #: ../src/ui/theme-viewer.c:109
 msgid "Des_ktop"
-msgstr "ש_ולחן עבודה"
+msgstr "_שולחן עבודה"
 
 #: ../src/ui/theme-viewer.c:115
 msgid "Open another one of these windows"
-msgstr "Open another one of these windows"
+msgstr "פתיחת חלון נוסף מהסגנון הזה"
 
 #: ../src/ui/theme-viewer.c:117
 msgid "This is a demo button with an 'open' icon"
-msgstr "This is a demo button with an 'open' icon"
+msgstr "זהו לחצן הדגמה עם סמל של „פתיחה“"
 
 #: ../src/ui/theme-viewer.c:119
 msgid "This is a demo button with a 'quit' icon"
-msgstr "This is a demo button with a 'quit' icon"
+msgstr "זהו לחצן הדגמה עם סמל של „יציאה“"
 
 #: ../src/ui/theme-viewer.c:248
 msgid "This is a sample message in a sample dialog"
-msgstr "This is a sample message in a sample dialog"
+msgstr "זוהי הודעת הדגמה בתיבת דו־שיח מדומה"
 
 #: ../src/ui/theme-viewer.c:328
 #, c-format
 msgid "Fake menu item %d\n"
-msgstr "Fake menu item %d\n"
+msgstr "פריט תפריט מדומה %d\n"
 
 #: ../src/ui/theme-viewer.c:363
 msgid "Border-only window"
-msgstr "Border-only window"
+msgstr "חלון עם מסגרת בלבד"
 
 #: ../src/ui/theme-viewer.c:365
 msgid "Bar"
-msgstr "Bar"
+msgstr "סרגל"
 
 #: ../src/ui/theme-viewer.c:382
 msgid "Normal Application Window"
-msgstr "Normal Application Window"
+msgstr "חלון יישום רגיל"
 
 #: ../src/ui/theme-viewer.c:386
 msgid "Dialog Box"
-msgstr "Dialog Box"
+msgstr "תיבת דו־שיח"
 
 #: ../src/ui/theme-viewer.c:390
 msgid "Modal Dialog Box"
-msgstr "Modal Dialog Box"
+msgstr "תיבת דו־שיח חוסמת"
 
 #: ../src/ui/theme-viewer.c:394
 msgid "Utility Palette"
-msgstr "Utility Palette"
+msgstr "פלטת כלי"
 
 #: ../src/ui/theme-viewer.c:398
 msgid "Torn-off Menu"
-msgstr "Torn-off Menu"
+msgstr "תפריט נתלש"
 
 #: ../src/ui/theme-viewer.c:402
 msgid "Border"
-msgstr "Border"
+msgstr "מסגרת"
 
 #: ../src/ui/theme-viewer.c:406
 msgid "Attached Modal Dialog"
-msgstr "Attached Modal Dialog"
+msgstr "חלון חוסם מוצמד"
 
 #: ../src/ui/theme-viewer.c:739
 #, c-format
 msgid "Button layout test %d"
-msgstr "Button layout test %d"
+msgstr "בדיקת פריסת לחצנים %d"
 
 #: ../src/ui/theme-viewer.c:768
 #, c-format
 msgid "%g milliseconds to draw one window frame"
-msgstr "%g milliseconds to draw one window frame"
+msgstr "%g מילישניות לציור של מסגרת חלון אחת"
 
 #: ../src/ui/theme-viewer.c:813
 #, c-format
@@ -1368,27 +1550,27 @@ msgstr "Loaded theme \"%s\" in %g seconds\n"
 
 #: ../src/ui/theme-viewer.c:870
 msgid "Normal Title Font"
-msgstr "Normal Title Font"
+msgstr "גופן כותרת רגילה"
 
 #: ../src/ui/theme-viewer.c:876
 msgid "Small Title Font"
-msgstr "Small Title Font"
+msgstr "גופן כותרת קטנה"
 
 #: ../src/ui/theme-viewer.c:882
 msgid "Large Title Font"
-msgstr "Large Title Font"
+msgstr "גופן כותרת גדולה"
 
 #: ../src/ui/theme-viewer.c:887
 msgid "Button Layouts"
-msgstr "Button Layouts"
+msgstr "פריסת לחצנים"
 
 #: ../src/ui/theme-viewer.c:892
 msgid "Benchmark"
-msgstr "Benchmark"
+msgstr "מדידת ביצועים"
 
 #: ../src/ui/theme-viewer.c:944
 msgid "Window Title Goes Here"
-msgstr "Window Title Goes Here"
+msgstr "כותרת החלון מופיעה כאן"
 
 #: ../src/ui/theme-viewer.c:1047
 #, c-format
@@ -1431,305 +1613,6 @@ msgstr "y value was %d, %d was expected"
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-
-#: ../src/50-mutter-navigation.xml.in.h:18
-#, fuzzy
-msgid "Switch to workspace 1"
-msgstr "מעבר למרחב עבודה 1"
-
-#: ../src/50-mutter-navigation.xml.in.h:19
-#, fuzzy
-msgid "Switch to workspace 2"
-msgstr "מעבר למרחב עבודה 2"
-
-#: ../src/50-mutter-navigation.xml.in.h:20
-#, fuzzy
-msgid "Switch to workspace 3"
-msgstr "מעבר למרחב עבודה 3"
-
-#: ../src/50-mutter-navigation.xml.in.h:21
-#, fuzzy
-msgid "Switch to workspace 4"
-msgstr "מעבר למרחב עבודה 4"
-
-#: ../src/50-mutter-windows.xml.in.h:1
-#, fuzzy
-msgid "Activate the window menu"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"הפעלת תפריט החלון\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"הפעלת החלון הפעיל"
-
-#: ../src/50-mutter-windows.xml.in.h:13
-#, fuzzy
-msgid "Toggle fullscreen mode"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"כניסה למצב מסך מלא\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"הפעלה/כיבוי מצב מסך מלא"
-
-#: ../src/50-mutter-windows.xml.in.h:14
-#, fuzzy
-msgid "Toggle maximization state"
-msgstr "הפעלה/כיבוי מצב הגדלה"
-
-#: ../src/50-mutter-windows.xml.in.h:4
-#, fuzzy
-msgid "Maximize window"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Maximize window\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"הגדלת חלון"
-
-#: ../src/50-mutter-windows.xml.in.h:12
-#, fuzzy
-msgid "Restore window"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Restore window\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"שחזור חלון"
-
-#: ../src/50-mutter-windows.xml.in.h:15
-#, fuzzy
-msgid "Toggle shaded state"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Toggle shaded state\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"החלפת מצב ההצללה"
-
-#: ../src/50-mutter-windows.xml.in.h:7
-#, fuzzy
-msgid "Minimize window"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Minimize window\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"מזעור חלון"
-
-#: ../src/50-mutter-windows.xml.in.h:2
-#, fuzzy
-msgid "Close window"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Close window\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"סגירת חלון"
-
-#: ../src/50-mutter-windows.xml.in.h:8
-#, fuzzy
-msgid "Move window"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Move window\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"הזזת חלון"
-
-#: ../src/50-mutter-windows.xml.in.h:11
-#, fuzzy
-msgid "Resize window"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Resize window\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"שינוי גודל חלון"
-
-#: ../src/50-mutter-navigation.xml.in.h:10
-#, fuzzy
-msgid "Move window to workspace 1"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Move window to workspace 1\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"העברה למרחב עבודה 1"
-
-#: ../src/50-mutter-navigation.xml.in.h:11
-#, fuzzy
-msgid "Move window to workspace 2"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Move window to workspace 2\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"העברה למרחב עבודה 2"
-
-#: ../src/50-mutter-navigation.xml.in.h:12
-#, fuzzy
-msgid "Move window to workspace 3"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Move window to workspace 3\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"העברה למרחב עבודה 3"
-
-#: ../src/50-mutter-navigation.xml.in.h:13
-#, fuzzy
-msgid "Move window to workspace 4"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Move window to workspace 4\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"העברה למרחב עבודה 4"
-
-#: ../src/50-mutter-navigation.xml.in.h:7
-#, fuzzy
-msgid "Move window one workspace to the left"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Move window one workspace to the left\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"העברת החלון לשולחן העבודה שמשמאל"
-
-#: ../src/50-mutter-navigation.xml.in.h:8
-#, fuzzy
-msgid "Move window one workspace to the right"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Move window one workspace to the right\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"העברת החלון לשולחן העבודה שמימין"
-
-#: ../src/50-mutter-navigation.xml.in.h:9
-#, fuzzy
-msgid "Move window one workspace up"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Move window one workspace up\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"העברת החלון לשולחן העבודה שמלמעלה"
-
-#: ../src/50-mutter-navigation.xml.in.h:6
-#, fuzzy
-msgid "Move window one workspace down"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Move window one workspace down\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"העברת החלון לשולחן העבודה שמלמטה"
-
-#: ../src/50-mutter-windows.xml.in.h:9
-#, fuzzy
-msgid "Raise window above other windows"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Raise window above other windows\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"הגבהת החלון מעל לחלונות אחרים"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-#, fuzzy
-msgid "Lower window below other windows"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Lower window below other windows\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"הנמכת החלון מתחת לחלונות אחרים"
-
-#: ../src/50-mutter-windows.xml.in.h:6
-#, fuzzy
-msgid "Maximize window vertically"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Maximize window vertically\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"הגדלת החלון אנכית"
-
-#: ../src/50-mutter-windows.xml.in.h:5
-#, fuzzy
-msgid "Maximize window horizontally"
-msgstr ""
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"Maximize window horizontally\n"
-"#-#-#-#-#  he.po (metacity.HEAD.he)  #-#-#-#-#\n"
-"הגדלת החלון אופקית"
-
-#: ../src/50-mutter-navigation.xml.in.h:1
-#, fuzzy
-msgid "Hide all normal windows"
-msgstr "הסתרת כל החלונות הרגילים"
-
-#: ../src/50-mutter-navigation.xml.in.h:2
-#, fuzzy
-msgid "Move to workspace above"
-msgstr "העברה למרחב העבודה שמלמעלה"
-
-#: ../src/50-mutter-navigation.xml.in.h:3
-#, fuzzy
-msgid "Move to workspace below"
-msgstr "העברה למרחב העבודה שמלמטה"
-
-#: ../src/50-mutter-navigation.xml.in.h:4
-#, fuzzy
-msgid "Move to workspace left"
-msgstr "העברה למרחב העבודה לשמאל"
-
-#: ../src/50-mutter-navigation.xml.in.h:5
-#, fuzzy
-msgid "Move to workspace right"
-msgstr "העברה למרחב העבודה לימין"
-
-#: ../src/50-mutter-navigation.xml.in.h:14
-#, fuzzy
-msgid "Navigation"
-msgstr "ניווט"
-
-#: ../src/50-mutter-navigation.xml.in.h:15
-#, fuzzy
-msgid "Switch applications"
-msgstr "החלפה בין יישומים"
-
-#: ../src/50-mutter-navigation.xml.in.h:16
-#, fuzzy
-msgid "Switch system controls"
-msgstr "החלפה בין פקדי המערכת"
-
-#: ../src/50-mutter-navigation.xml.in.h:17
-#, fuzzy
-msgid "Switch system controls directly"
-msgstr "החלפת פקדי המערכת באופן ישיר"
-
-#: ../src/50-mutter-navigation.xml.in.h:22
-#, fuzzy
-msgid "Switch windows directly"
-msgstr "החלפת החלונות באופן ישיר"
-
-#: ../src/50-mutter-navigation.xml.in.h:23
-#, fuzzy
-msgid "Switch windows of an app directly"
-msgstr "החלפת חלונות של יישום באופן ישיר"
-
-#: ../src/50-mutter-navigation.xml.in.h:24
-#, fuzzy
-msgid "Switch windows of an application"
-msgstr "החלפה בין חלונות של יישום"
-
-#: ../src/50-mutter-system.xml.in.h:1
-#, fuzzy
-msgid "Show the activities overview"
-msgstr "הצגת סקירת הפעילויות"
-
-#: ../src/50-mutter-system.xml.in.h:2
-#, fuzzy
-msgid "Show the run command prompt"
-msgstr "הצגת הבקשה להרצת פקודה"
-
-#: ../src/50-mutter-system.xml.in.h:3
-#, fuzzy
-msgid "System"
-msgstr "מערכת"
-
-#: ../src/50-mutter-windows.xml.in.h:10
-#, fuzzy
-msgid "Raise window if covered, otherwise lower it"
-msgstr "הגבהת החלון אם הוא מכוסה, אחרת יש להנמיכו"
-
-#: ../src/50-mutter-windows.xml.in.h:16
-#, fuzzy
-msgid "Toggle window on all workspaces or one"
-msgstr "החלפת המצב בין האם החלון מופיע במרחב עבודה אחד או בכולם"
 
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "Comma-separated list of compositor plugins"
