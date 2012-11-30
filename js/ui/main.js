@@ -161,13 +161,13 @@ function start() {
     xdndHandler = new XdndHandler.XdndHandler();
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
     overview = new Overview.Overview();
+    wm = new WindowManager.WindowManager();
     magnifier = new Magnifier.Magnifier();
     if (UnlockDialog.isSupported())
         screenShield = new ScreenShield.ScreenShield();
     else
         screenShield = new ScreenShield.ScreenShieldFallback();
     panel = new Panel.Panel();
-    wm = new WindowManager.WindowManager();
     messageTray = new MessageTray.MessageTray();
     keyboard = new Keyboard.Keyboard();
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
