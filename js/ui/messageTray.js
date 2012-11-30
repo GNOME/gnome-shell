@@ -1088,14 +1088,14 @@ const Source = new Lang.Class({
         item = new PopupMenu.PopupMenuItem(_("Open"));
         item.connect('activate', Lang.bind(this, function() {
             this.open();
-            this.emit('done-displaying-content');
+            this.emit('done-displaying-content', true);
         }));
         rightClickMenu.add(item.actor);
 
         item = new PopupMenu.PopupMenuItem(_("Remove"));
         item.connect('activate', Lang.bind(this, function() {
             this.destroy();
-            this.emit('done-displaying-content');
+            this.emit('done-displaying-content', false);
         }));
         rightClickMenu.add(item.actor);
         return rightClickMenu;
@@ -1341,7 +1341,7 @@ const SummaryItem = new Lang.Class({
     },
 
     _notificationDoneDisplaying: function() {
-        this.source.emit('done-displaying-content');
+        this.source.emit('done-displaying-content', true);
     },
 
     _notificationDestroyed: function(notification) {
@@ -2454,12 +2454,21 @@ const MessageTray = new Lang.Class({
                     });
     },
 
+    _onSourceDoneDisplayingContent: function(source, closeTray) {
+        if (closeTray) {
+            this._escapeTray();
+        } else {
+            this._setClickedSummaryItem(null);
+            this._updateState();
+        }
+    },
+
     _showSummaryBoxPointer: function() {
         this._summaryBoxPointerItem = this._clickedSummaryItem;
         this._summaryBoxPointerContentUpdatedId = this._summaryBoxPointerItem.connect('content-updated',
                                                                                       Lang.bind(this, this._onSummaryBoxPointerContentUpdated));
         this._sourceDoneDisplayingId = this._summaryBoxPointerItem.source.connect('done-displaying-content',
-                                                                                  Lang.bind(this, this._escapeTray));
+                                                                                  Lang.bind(this, this._onSourceDoneDisplayingContent));
 
         let hasRightClickMenu = this._summaryBoxPointerItem.rightClickMenu != null;
         if (this._clickedSummaryItemMouseButton == 1 || !hasRightClickMenu) {

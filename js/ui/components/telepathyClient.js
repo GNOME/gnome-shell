@@ -478,7 +478,7 @@ const ChatSource = new Lang.Class({
         }));
         item.connect('activate', Lang.bind(this, function() {
             this.setMuted(!this.isMuted);
-            this.emit('done-displaying-content');
+            this.emit('done-displaying-content', false);
         }));
         rightClickMenu.add(item.actor);
         return rightClickMenu;
