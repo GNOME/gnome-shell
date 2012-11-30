@@ -1554,6 +1554,7 @@ void
 _st_theme_node_ensure_geometry (StThemeNode *node)
 {
   int i, j;
+  int width, height;
 
   if (node->geometry_computed)
     return;
@@ -1571,6 +1572,8 @@ _st_theme_node_ensure_geometry (StThemeNode *node)
   node->outline_width = 0;
   node->outline_color = TRANSPARENT_COLOR;
 
+  width = -1;
+  height = -1;
   node->width = -1;
   node->height = -1;
   node->min_width = -1;
@@ -1590,8 +1593,12 @@ _st_theme_node_ensure_geometry (StThemeNode *node)
       else if (g_str_has_prefix (property_name, "padding"))
         do_padding_property (node, decl);
       else if (strcmp (property_name, "width") == 0)
-        do_size_property (node, decl, &node->width);
+        do_size_property (node, decl, &width);
       else if (strcmp (property_name, "height") == 0)
+        do_size_property (node, decl, &height);
+      else if (strcmp (property_name, "-st-natural-width") == 0)
+        do_size_property (node, decl, &node->width);
+      else if (strcmp (property_name, "-st-natural-height") == 0)
         do_size_property (node, decl, &node->height);
       else if (strcmp (property_name, "min-width") == 0)
         do_size_property (node, decl, &node->min_width);
@@ -1603,29 +1610,43 @@ _st_theme_node_ensure_geometry (StThemeNode *node)
         do_size_property (node, decl, &node->max_height);
     }
 
-  if (node->width != -1)
+  /*
+   * Setting width sets max-width, min-width and -st-natural-width,
+   * unless one of them is set individually.
+   * Setting min-width sets natural width too, so that the minimum
+   * width reported by get_preferred_width() is always not greater
+   * than the natural width.
+   * The natural width in node->width is actually a lower bound, the
+   * actor is allowed to request something greater than that, but
+   * not greater than max-width.
+   * We don't need to clamp node->width to be less than max_width,
+   * that's done by adjust_preferred_width.
+   */
+  if (width != -1)
     {
+      if (node->width == -1)
+        node->width = width;
       if (node->min_width == -1)
-        node->min_width = node->width;
-      else if (node->width < node->min_width)
-        node->width = node->min_width;
+        node->min_width = width;
       if (node->max_width == -1)
-        node->max_width = node->width;
-      else if (node->width > node->max_width)
-        node->width = node->max_width;
+        node->max_width = width;
     }
 
-  if (node->height != -1)
+  if (node->width < node->min_width)
+    node->width = node->min_width;
+
+  if (height != -1)
     {
+      if (node->height == -1)
+        node->height = height;
       if (node->min_height == -1)
-        node->min_height = node->height;
-      else if (node->height < node->min_height)
-        node->height = node->min_height;
+        node->min_height = height;
       if (node->max_height == -1)
-        node->max_height = node->height;
-      else if (node->height > node->max_height)
-        node->height = node->max_height;
+        node->max_height = height;
     }
+
+  if (node->height < node->min_height)
+    node->height = node->min_height;
 }
 
 int
@@ -3425,7 +3446,7 @@ st_theme_node_adjust_preferred_width (StThemeNode  *node,
   if (natural_width_p)
     {
       if (node->width != -1)
-        *natural_width_p = node->width;
+        *natural_width_p = MAX (*natural_width_p, node->width);
       if (node->max_width != -1)
         *natural_width_p = MIN (*natural_width_p, node->max_width);
       *natural_width_p += width_inc;
@@ -3491,7 +3512,7 @@ st_theme_node_adjust_preferred_height (StThemeNode  *node,
   if (natural_height_p)
     {
       if (node->height != -1)
-        *natural_height_p = node->height;
+        *natural_height_p = MAX (*natural_height_p, node->height);
       if (node->max_height != -1)
         *natural_height_p = MIN (*natural_height_p, node->max_height);
       *natural_height_p += height_inc;
