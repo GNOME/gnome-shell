@@ -1542,7 +1542,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 /* App Switcher */
-#altTabPopup {
+.switcher-popup {
     padding: 8px;
     spacing: 16px;
 }

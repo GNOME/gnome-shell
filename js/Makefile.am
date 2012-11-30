@@ -85,6 +85,7 @@ nobase_dist_js_DATA = 	\
 	ui/status/power.js	\
 	ui/status/volume.js	\
 	ui/status/bluetooth.js	\
+	ui/switcherPopup.js	\
 	ui/tweener.js		\
 	ui/unlockDialog.js	\
 	ui/userMenu.js		\

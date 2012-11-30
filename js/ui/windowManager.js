@@ -621,7 +621,7 @@ const WindowManager = new Lang.Class({
     _startA11ySwitcher : function(display, screen, window, binding) {
         let modifiers = binding.get_modifiers();
         let backwards = modifiers & Meta.VirtualModifier.SHIFT_MASK;
-        Main.ctrlAltTabManager.popup(backwards, binding.get_mask());
+        Main.ctrlAltTabManager.popup(backwards, binding.get_name(), binding.get_mask());
     },
 
     _openAppMenu : function(display, screen, window, event, binding) {
