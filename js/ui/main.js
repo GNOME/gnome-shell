@@ -49,7 +49,8 @@ const KeybindingMode = {
     LOGIN_SCREEN:  1 << 4,
     MESSAGE_TRAY:  1 << 5,
     SYSTEM_MODAL:  1 << 6,
-    LOOKING_GLASS: 1 << 7
+    LOOKING_GLASS: 1 << 7,
+    ALL:           ~0,
 };
 
 let componentManager = null;
