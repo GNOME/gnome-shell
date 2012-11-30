@@ -32,90 +32,58 @@ const SearchProviderIface = <interface name="org.gnome.Shell.SearchProvider">
 var SearchProviderProxy = Gio.DBusProxy.makeProxyWrapper(SearchProviderIface);
 
 function loadRemoteSearchProviders(addProviderCallback) {
-    let loadState = { loadedProviders: [],
-                      objectPaths: {},
-                      numLoading: 0,
-                      addProviderCallback: addProviderCallback };
+    let data = { loadedProviders: [],
+                 objectPaths: {},
+                 addProviderCallback: addProviderCallback };
+    FileUtils.collectFromDatadirsAsync('search-providers',
+                                       { loadedCallback: remoteProvidersLoaded,
+                                         processFile: loadRemoteSearchProvider,
+                                         data: data
+                                       });
+}
 
-    let dataDirs = GLib.get_system_data_dirs();
-    for (let i = 0; i < dataDirs.length; i++) {
-        let path = GLib.build_filenamev([dataDirs[i], 'gnome-shell', 'search-providers']);
-        let dir = Gio.file_new_for_path(path);
+function loadRemoteSearchProvider(file, info, data) {
+    let keyfile = new GLib.KeyFile();
+    let path = file.get_path();
 
-        dir.query_info_async('standard:type', Gio.FileQueryInfoFlags.NONE,
-            GLib.PRIORITY_DEFAULT, null,
-                function(object, res) {
-                    let exists = false;
-                    try {
-                        object.query_info_finish(res);
-                        exists = true;
-                    } catch (e) {
-                    }
-
-                    if (!exists)
-                        return;
-
-                    loadState.numLoading++;
-                    loadRemoteSearchProvidersFromDir(dir, loadState);
-                });
+    try {
+        keyfile.load_from_file(path, 0);
+    } catch(e) {
+        return;
     }
-};
 
-function loadRemoteSearchProvidersFromDir(dir, loadState) {
-    let dirPath = dir.get_path();
-    FileUtils.listDirAsync(dir, Lang.bind(this, function(files) {
-        for (let i = 0; i < files.length; i++) {
-            let keyfile = new GLib.KeyFile();
-            let path = GLib.build_filenamev([dirPath, files[i].get_name()]);
-
-            try {
-                keyfile.load_from_file(path, 0);
-            } catch(e) {
-                continue;
-            }
-
-            if (!keyfile.has_group(KEY_FILE_GROUP))
-                continue;
-
-            let remoteProvider;
-            try {
-                let group = KEY_FILE_GROUP;
-                let busName = keyfile.get_string(group, 'BusName');
-                let objectPath = keyfile.get_string(group, 'ObjectPath');
-
-                if (loadState.objectPaths[objectPath])
-                    continue;
-
-                let appInfo = null;
-                try {
-                    let desktopId = keyfile.get_string(group, 'DesktopId');
-                    appInfo = Gio.DesktopAppInfo.new(desktopId);
-                } catch (e) {
-                    log('Ignoring search provider ' + path + ': missing DesktopId');
-                    continue;
-                }
-
-                remoteProvider = new RemoteSearchProvider(appInfo,
-                                                          busName,
-                                                          objectPath);
-                loadState.objectPaths[objectPath] = remoteProvider;
-                loadState.loadedProviders.push(remoteProvider);
-            } catch(e) {
-                log('Failed to add search provider %s: %s'.format(path, e.toString()));
-                continue;
-            }
-        }
-
-        remoteProvidersDirLoaded(loadState);
-    }));
-
-};
-
-function remoteProvidersDirLoaded(loadState) {
-    loadState.numLoading--;
-    if (loadState.numLoading > 0)
+    if (!keyfile.has_group(KEY_FILE_GROUP))
         return;
 
+    let remoteProvider;
+    try {
+        let group = KEY_FILE_GROUP;
+        let busName = keyfile.get_string(group, 'BusName');
+        let objectPath = keyfile.get_string(group, 'ObjectPath');
+
+        if (data.objectPaths[objectPath])
+            return;
+
+        let appInfo = null;
+        try {
+            let desktopId = keyfile.get_string(group, 'DesktopId');
+            appInfo = Gio.DesktopAppInfo.new(desktopId);
+        } catch (e) {
+            log('Ignoring search provider ' + path + ': missing DesktopId');
+            return;
+        }
+
+        remoteProvider = new RemoteSearchProvider(appInfo,
+                                                  busName,
+                                                  objectPath);
+        data.objectPaths[objectPath] = remoteProvider;
+        data.loadedProviders.push(remoteProvider);
+    } catch(e) {
+        log('Failed to add search provider %s: %s'.format(path, e.toString()));
+    }
+}
+
+function remoteProvidersLoaded(loadState) {
     let searchSettings = new Gio.Settings({ schema: Search.SEARCH_PROVIDERS_SCHEMA });
     let sortOrder = searchSettings.get_strv('sort-order');
     let numSorted = sortOrder.length;
