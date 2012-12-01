@@ -444,19 +444,33 @@ const WorkspacesDisplay = new Lang.Class({
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
         this.actor.connect('parent-set', Lang.bind(this, this._parentSet));
         this.actor.set_clip_to_allocation(true);
-        let action = new Clutter.PanAction();
-        action.connect('pan', Lang.bind(this, this._onPan));
-        action.connect('gesture-begin', Lang.bind(this, function() {
+
+        let clickAction = new Clutter.ClickAction()
+        clickAction.connect('clicked', Lang.bind(this, function(action) {
+            // Only switch to the workspace when there's no application
+            // windows open. The problem is that it's too easy to miss
+            // an app window and get the wrong one focused.
+            if (action.get_button() == 1 &&
+                this._getPrimaryView().getActiveWorkspace().isEmpty())
+                Main.overview.hide();
+        }));
+        Main.overview.addAction(clickAction);
+        this.actor.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
+
+        let panAction = new Clutter.PanAction();
+        panAction.connect('pan', Lang.bind(this, this._onPan));
+        panAction.connect('gesture-begin', Lang.bind(this, function() {
             for (let i = 0; i < this._workspacesViews.length; i++)
                 this._workspacesViews[i].startSwipeScroll();
             return true;
         }));
-        action.connect('gesture-end', Lang.bind(this, function() {
+        panAction.connect('gesture-end', Lang.bind(this, function() {
+            clickAction.release();
             for (let i = 0; i < this._workspacesViews.length; i++)
                 this._workspacesViews[i].endSwipeScroll();
         }));
-        Main.overview.addAction(action);
-        this.actor.bind_property('mapped', action, 'enabled', GObject.BindingFlags.SYNC_CREATE);
+        Main.overview.addAction(panAction);
+        this.actor.bind_property('mapped', panAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         let controls = new St.Bin({ style_class: 'workspace-controls',
                                     request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT,
