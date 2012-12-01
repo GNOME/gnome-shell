@@ -182,7 +182,12 @@ clutter_stage_gdk_realize (ClutterStageWindow *stage_window)
   gboolean use_alpha;
   gfloat   width, height;
 
-  if (!stage_gdk->foreign_window)
+  if (stage_gdk->foreign_window)
+    {
+      width = gdk_window_get_width (stage_gdk->window);
+      height = gdk_window_get_height (stage_gdk->window);
+    }
+  else
     {
       if (stage_gdk->window != NULL)
         {
