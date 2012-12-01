@@ -358,10 +358,10 @@ cally_key_snooper (ClutterActor *actor,
       /* func data is inside the hash table */
       consumed = g_hash_table_foreach_steal (new_hash, notify_hf, key_event);
       g_hash_table_destroy (new_hash);
-    }
 
-  g_free (key_event->string);
-  g_free (key_event);
+      g_free (key_event->string);
+      g_free (key_event);
+    }
 
   return (consumed ? 1 : 0);
 }
