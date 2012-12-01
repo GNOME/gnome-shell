@@ -83,8 +83,6 @@ test_coglbox_paint (ClutterActor *self)
   gfloat texcoords[4] = { 0, 0, 1, 1 };
   CoglHandle material;
 
-  priv = TEST_COGLBOX_GET_PRIVATE (self);
-
   cogl_set_source_color4ub (0x66, 0x66, 0xdd, 0xff);
   cogl_rectangle (0, 0, 400, 400);
 

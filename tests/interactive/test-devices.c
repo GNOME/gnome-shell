@@ -41,10 +41,6 @@ device_type_name (ClutterInputDevice *device)
     default:
       return "Unknown";
     }
-
-  g_warn_if_reached ();
-
-  return NULL;
 }
 
 static const gchar *
@@ -73,10 +69,6 @@ axis_type_name (ClutterInputAxis axis)
     default:
       return "Unknown";
     }
-
-  g_warn_if_reached ();
-
-  return NULL;
 }
 
 static gboolean

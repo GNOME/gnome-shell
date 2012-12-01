@@ -711,9 +711,7 @@ clutter_cairo_texture_class_init (ClutterCairoTextureClass *klass)
 static void
 clutter_cairo_texture_init (ClutterCairoTexture *self)
 {
-  ClutterCairoTexturePrivate *priv;
-
-  self->priv = priv = CLUTTER_CAIRO_TEXTURE_GET_PRIVATE (self);
+  self->priv = CLUTTER_CAIRO_TEXTURE_GET_PRIVATE (self);
 
   /* FIXME - we are hardcoding the format; it would be good to have
    * a :surface-format construct-only property for creating

@@ -32,7 +32,7 @@ static ClutterActor *new_rect (gint r,
 {
   GError *error = NULL;
   ClutterColor *color = clutter_color_new (r, g, b, a);
-  ClutterActor *rectangle = clutter_rectangle_new_with_color (color);
+  ClutterActor *rectangle;
 
   gchar *file = g_build_filename (TESTS_DATADIR, "redhand.png", NULL);
   rectangle = clutter_texture_new_from_file (file, &error);
