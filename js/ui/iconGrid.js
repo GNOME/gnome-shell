@@ -23,6 +23,8 @@ const BaseIcon = new Lang.Class({
         this.actor._delegate = this;
         this.actor.connect('style-changed',
                            Lang.bind(this, this._onStyleChanged));
+        this.actor.connect('destroy',
+                           Lang.bind(this, this._onDestroy));
 
         this._spacing = 0;
 
@@ -52,6 +54,9 @@ const BaseIcon = new Lang.Class({
         this._setSizeManually = params.setSizeManually;
 
         this.icon = null;
+
+        let cache = St.TextureCache.get_default();
+        this._iconThemeChangedId = cache.connect('icon-theme-changed', Lang.bind(this, this._onIconThemeChanged));
     },
 
     _allocate: function(actor, box, flags) {
@@ -146,7 +151,22 @@ const BaseIcon = new Lang.Class({
             size = found ? len : ICON_SIZE;
         }
 
+        if (this.iconSize == size && this._iconBin.child)
+            return;
+
         this._createIconTexture(size);
+    },
+
+    _onDestroy: function() {
+        if (this._iconThemeChangedId > 0) {
+            let cache = St.TextureCache.get_default();
+            cache.disconnect(this._iconThemeChangedId);
+            this._iconThemeChangedId = 0;
+        }
+    },
+
+    _onIconThemeChanged: function() {
+        this._createIconTexture(this.iconSize);
     }
 });
 
