@@ -1425,12 +1425,15 @@ clutter_grid_layout_allocate (ClutterLayoutManager   *layout,
                       &y, &height);
       x += allocation->x1;
       y += allocation->y1;
-      clutter_actor_box_set_origin (&child_allocation, x, y);
-      clutter_actor_box_set_size (&child_allocation, width, height);
 
       CLUTTER_NOTE (LAYOUT, "Allocation for %s { %.2f, %.2f - %.2f x %.2f }",
                     _clutter_actor_get_debug_name (child),
                     x, y, width, height);
+
+      child_allocation.x1 = x;
+      child_allocation.y1 = y;
+      child_allocation.x2 = child_allocation.x1 + width;
+      child_allocation.y2 = child_allocation.y1 + height;
 
       clutter_actor_allocate (child, &child_allocation, flags);
     }
