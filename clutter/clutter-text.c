@@ -5008,7 +5008,7 @@ clutter_text_set_font_name (ClutterText *self,
       else
         {
           /* last fallback */
-          default_font_name = g_strdup ("Sans 12");
+          font_name = g_strdup ("Sans 12");
         }
 
       is_default_font = TRUE;
