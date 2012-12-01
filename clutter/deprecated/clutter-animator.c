@@ -1206,6 +1206,10 @@ clutter_animator_set (ClutterAnimator *animator,
 
   object = first_object;
   property_name = first_property_name;
+
+  g_return_if_fail (object);
+  g_return_if_fail (property_name);
+
   mode = first_mode;
   progress = first_progress;
 
@@ -1217,9 +1221,6 @@ clutter_animator_set (ClutterAnimator *animator,
       GObjectClass *klass;
       GValue value = G_VALUE_INIT;
       gchar *error = NULL;
-
-      g_return_if_fail (object);
-      g_return_if_fail (property_name);
 
       klass = G_OBJECT_GET_CLASS (object);
       pspec = g_object_class_find_property (klass, property_name);

@@ -1,4 +1,4 @@
-/*
+g/*
  * Clutter.
  *
  * An OpenGL based 'interactive canvas' library.
@@ -991,10 +991,11 @@ clutter_state_set (ClutterState *state,
 
   property_name = first_property_name;
   mode = first_mode;
-  va_start (args, first_mode);
 
   g_return_if_fail (G_IS_OBJECT (first_object));
   g_return_if_fail (first_property_name);
+
+  va_start (args, first_mode);
 
   while (object != NULL)
     {

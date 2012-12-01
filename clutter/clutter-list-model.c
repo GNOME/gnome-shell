@@ -776,15 +776,16 @@ clutter_list_model_new (guint n_columns,
         {
           g_warning ("%s: Invalid type %s\n", G_STRLOC, g_type_name (type));
           g_object_unref (model);
-          return NULL;
+          model = NULL;
+          goto out;
         }
 
       _clutter_model_set_column_type (model, i, type);
       _clutter_model_set_column_name (model, i, name);
     }
 
+ out:
   va_end (args);
-
   return model;
 }
 
