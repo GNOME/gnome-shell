@@ -571,7 +571,8 @@ clutter_text_set_font_description_internal (ClutterText          *self,
 {
   ClutterTextPrivate *priv = self->priv;
 
-  if (priv->font_desc == desc)
+  if (priv->font_desc == desc ||
+      pango_font_description_equal (priv->font_desc, desc))
     return;
 
   if (priv->font_desc != NULL)
@@ -5422,6 +5423,12 @@ clutter_text_set_attributes (ClutterText   *self,
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
   priv = self->priv;
+
+  /* While we should probably test for equality, Pango doesn't
+   * provide us an easy method to check for AttrList equality.
+   */
+  if (priv->attrs == attrs)
+    return;
 
   if (attrs)
     pango_attr_list_ref (attrs);
