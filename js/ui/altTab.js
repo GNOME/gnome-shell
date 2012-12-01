@@ -417,6 +417,13 @@ const AppSwitcher = new Lang.Class({
         this._iconSize = 0;
         this._altTabPopup = altTabPopup;
         this._mouseTimeOutId = 0;
+
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+    },
+
+    _onDestroy: function() {
+        if (this._mouseTimeOutId != 0)
+            Mainloop.source_remove(this._mouseTimeOutId);
     },
 
     _getPreferredHeight: function (actor, forWidth, alloc) {
