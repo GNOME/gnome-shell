@@ -497,6 +497,7 @@ const ThumbnailsBox = new Lang.Class({
         this.actor = new Shell.GenericContainer({ reactive: true,
                                                   style_class: 'workspace-thumbnails',
                                                   can_focus: true,
+                                                  track_hover: true,
                                                   request_mode: Clutter.RequestMode.WIDTH_FOR_HEIGHT });
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
@@ -525,6 +526,7 @@ const ThumbnailsBox = new Lang.Class({
         this._indicator = indicator;
         this.actor.add_actor(indicator);
 
+        this._inDrag = false;
         this._dropWorkspace = -1;
         this._dropPlaceholderPos = -1;
         this._dropPlaceholder = new St.Bin({ style_class: 'placeholder' });
@@ -550,6 +552,9 @@ const ThumbnailsBox = new Lang.Class({
         this.actor.connect('key-release-event',
                            Lang.bind(this, this._onKeyRelease));
 
+        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._updateTranslation));
+        this.actor.connect('notify::hover', Lang.bind(this, this._updateTranslation));
+
         Main.overview.connect('showing',
                               Lang.bind(this, this._createThumbnails));
         Main.overview.connect('hidden',
@@ -571,6 +576,40 @@ const ThumbnailsBox = new Lang.Class({
         this._settings = new Gio.Settings({ schema: OVERRIDE_SCHEMA });
         this._settings.connect('changed::dynamic-workspaces',
             Lang.bind(this, this._updateSwitcherVisibility));
+    },
+
+    _getInitialTranslation: function() {
+        // Always show the pager when hover, during a drag, or if workspaces are
+        // actually used, e.g. there are windows on more than one
+        let alwaysZoomOut = this.actor.hover || this._inDrag || global.screen.n_workspaces > 2;
+
+        if (!alwaysZoomOut) {
+            let monitors = Main.layoutManager.monitors;
+            let primary = Main.layoutManager.primaryMonitor;
+
+            /* Look for any monitor to the right of the primary, if there is
+             * one, we always keep zoom out, otherwise its hard to reach
+             * the thumbnail area without passing into the next monitor. */
+            for (let i = 0; i < monitors.length; i++) {
+                if (monitors[i].x >= primary.x + primary.width) {
+                    alwaysZoomOut = true;
+                    break;
+                }
+            }
+        }
+
+        if (alwaysZoomOut)
+            return 0;
+
+        let visibleWidth = this.actor.get_theme_node().get_length('visible-width');
+        let rtl = (this.actor.get_text_direction() == Clutter.TextDirection.RTL);
+        return rtl ? (visibleWidth - this.actor.width) : (this.actor.width - visibleWidth);
+    },
+
+    _updateTranslation: function() {
+        Tweener.addTween(this, { slideX: this._getInitialTranslation(),
+                                 time: SLIDE_ANIMATION_TIME,
+                                 transition: 'easeOutQuad' });
     },
 
     _updateSwitcherVisibility: function() {
@@ -596,6 +635,9 @@ const ThumbnailsBox = new Lang.Class({
     },
 
     _onDragBegin: function() {
+        this._inDrag = true;
+        this._updateTranslation();
+
         this._dragCancelled = false;
         this._dragMonitor = {
             dragMotion: Lang.bind(this, this._onDragMotion)
@@ -618,6 +660,8 @@ const ThumbnailsBox = new Lang.Class({
     _endDrag: function() {
         this._clearDragPlaceholder();
         DND.removeDragMonitor(this._dragMonitor);
+        this._inDrag = false;
+        this._updateTranslation();
     },
 
     _onDragMotion: function(dragEvent) {
@@ -776,7 +820,7 @@ const ThumbnailsBox = new Lang.Class({
 
         // reset any translation and make sure the actor is visible when
         // entering the overview
-        this.slideX = 0;
+        this.slideX = this._getInitialTranslation();
         this.actor.show();
 
         this._updateSwitcherVisibility();
@@ -830,10 +874,7 @@ const ThumbnailsBox = new Lang.Class({
 
     show: function() {
         this.actor.show();
-        Tweener.addTween(this, { slideX: 0,
-                                 transition: 'easeOutQuad',
-                                 time: SLIDE_ANIMATION_TIME
-                               });
+        this._updateTranslation();
     },
 
     hide: function() {
