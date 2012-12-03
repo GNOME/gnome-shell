@@ -124,7 +124,7 @@ const LayoutManager = new Lang.Class({
         this.addChrome(this.panelBox, { affectsStruts: true,
                                         trackFullscreen: true });
         this.panelBox.connect('allocation-changed',
-                              Lang.bind(this, this._updatePanelBarriers));
+                              Lang.bind(this, this._panelBoxChanged));
 
         this.trayBox = new St.Widget({ name: 'trayBox',
                                        layout_manager: new Clutter.BinLayout() }); 
@@ -254,6 +254,11 @@ const LayoutManager = new Lang.Class({
         // than any Notification.actor.
         this.trayBox.set_clip(0, -this.bottomMonitor.height,
                               this.bottomMonitor.width, this.bottomMonitor.height);
+    },
+
+    _panelBoxChanged: function() {
+        this.emit('panel-box-changed');
+        this._updatePanelBarriers();
     },
 
     _updatePanelBarriers: function() {
@@ -387,6 +392,7 @@ const LayoutManager = new Lang.Class({
     },
 
     _startupAnimationComplete: function() {
+        this.emit('panel-box-changed');
         this._chrome.thawUpdateRegions();
     },
 

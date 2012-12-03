@@ -655,6 +655,13 @@ const ActivitiesButton = new Lang.Class({
         }));
 
         this._xdndTimeOut = 0;
+
+        // Since the hot corner uses stage coordinates, Clutter won't
+        // queue relayouts for us when the panel moves. Queue a relayout
+        // when that happens.
+        Main.layoutManager.connect('panel-box-changed', Lang.bind(this, function() {
+            container.queue_relayout();
+        }));
     },
 
     _containerGetPreferredWidth: function(actor, forHeight, alloc) {
