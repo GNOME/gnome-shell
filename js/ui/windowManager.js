@@ -617,7 +617,7 @@ const WindowManager = new Lang.Class({
         if (this._workspaceSwitcherPopup != null)
             this._workspaceSwitcherPopup.destroy();
 
-        let tabPopup = new AltTab.AltTabPopup();
+        let tabPopup = new AltTab.AppSwitcherPopup();
 
         let modifiers = binding.get_modifiers();
         let backwards = modifiers & Meta.VirtualModifier.SHIFT_MASK;

@@ -20,8 +20,8 @@ const THUMBNAIL_FADE_TIME = 0.1; // seconds
 
 const iconSizes = [96, 64, 48, 32, 22];
 
-const AltTabPopup = new Lang.Class({
-    Name: 'AltTabPopup',
+const AppSwitcherPopup = new Lang.Class({
+    Name: 'AppSwitcherPopup',
     Extends: SwitcherPopup.SwitcherPopup,
 
     _init : function() {
