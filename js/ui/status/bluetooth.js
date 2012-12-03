@@ -446,10 +446,5 @@ const PinNotification = new Lang.Class({
             return this._entry.clutter_text.text.length == 6;
         else
             return true;
-    },
-
-    grabFocus: function(lockTray) {
-        this.parent(lockTray);
-        global.stage.set_key_focus(this._entry);
     }
 });
