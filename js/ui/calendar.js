@@ -11,7 +11,6 @@ const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
 
 const MSECS_IN_DAY = 24 * 60 * 60 * 1000;
-const WEEKDATE_HEADER_WIDTH_DIGITS = 3;
 const SHOW_WEEKDATE_KEY = 'show-weekdate';
 
 // in org.gnome.desktop.interface
@@ -93,15 +92,6 @@ function _getCalendarWeekForDate(date) {
     let weekNumber = Math.floor(dayNumber / 7) + 1;
 
     return weekNumber;
-}
-
-function _getDigitWidth(actor){
-    let context = actor.get_pango_context();
-    let themeNode = actor.get_theme_node();
-    let font = themeNode.get_font();
-    let metrics = context.get_metrics(font, context.get_language());
-    let width = metrics.get_approximate_digit_width();
-    return width;
 }
 
 function _getCalendarDayAbbreviation(dayNumber) {
@@ -345,8 +335,6 @@ const Calendar = new Lang.Class({
 
     _init: function() {
         this._weekStart = Shell.util_get_week_start();
-        this._weekdate = NaN;
-        this._digitWidth = NaN;
         this._settings = new Gio.Settings({ schema: 'org.gnome.shell.calendar' });
 
         this._settings.connect('changed::' + SHOW_WEEKDATE_KEY, Lang.bind(this, this._onSettingsChange));
@@ -419,8 +407,6 @@ const Calendar = new Lang.Class({
         this.actor.add(this._topBox,
                        { row: 0, col: 0, col_span: offsetCols + 7 });
 
-        this.actor.connect('style-changed', Lang.bind(this, this._onStyleChange));
-
         let back = new St.Button({ style_class: 'calendar-change-month-back' });
         this._topBox.add(back);
         back.connect('clicked', Lang.bind(this, this._onPrevMonthButtonClicked));
@@ -455,18 +441,6 @@ const Calendar = new Lang.Class({
 
         // All the children after this are days, and get removed when we update the calendar
         this._firstDayIndex = this.actor.get_n_children();
-    },
-
-    _onStyleChange: function(actor, event) {
-        // width of a digit in pango units
-        this._digitWidth = _getDigitWidth(this.actor) / Pango.SCALE;
-        this._setWeekdateHeaderWidth();
-    },
-
-    _setWeekdateHeaderWidth: function() {
-        if (this.digitWidth != NaN && this._useWeekdate && this._weekdateHeader) {
-            this._weekdateHeader.set_width (this._digitWidth * WEEKDATE_HEADER_WIDTH_DIGITS);
-        }
     },
 
     _onScroll : function(actor, event) {
