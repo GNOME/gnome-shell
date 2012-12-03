@@ -155,6 +155,13 @@ const WindowManager = new Lang.Class({
                                         Main.KeybindingMode.UNLOCK_SCREEN |
                                         Main.KeybindingMode.LOGIN_SCREEN,
                                         Lang.bind(this, this._startA11ySwitcher));
+        this.setCustomKeybindingHandler('switch-panels-backward',
+                                        Main.KeybindingMode.NORMAL |
+                                        Main.KeybindingMode.OVERVIEW |
+                                        Main.KeybindingMode.LOCK_SCREEN |
+                                        Main.KeybindingMode.UNLOCK_SCREEN |
+                                        Main.KeybindingMode.LOGIN_SCREEN,
+                                        Lang.bind(this, this._startA11ySwitcher));
 
         this.addKeybinding('open-application-menu',
                            new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
