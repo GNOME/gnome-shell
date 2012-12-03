@@ -616,15 +616,12 @@ const AppMenuButton = new Lang.Class({
 
 Signals.addSignalMethods(AppMenuButton.prototype);
 
-// Activities button. Because everything else in the top bar is a
-// PanelMenu.Button, it simplifies some things to make this be one too.
-// We just hack it up to not actually have a menu attached to it.
 const ActivitiesButton = new Lang.Class({
     Name: 'ActivitiesButton',
     Extends: PanelMenu.Button,
 
     _init: function() {
-        this.parent(0.0);
+        this.parent(0.0, null, true);
         this.actor.accessible_role = Atk.Role.TOGGLE_BUTTON;
 
         let container = new Shell.GenericContainer();
@@ -644,23 +641,16 @@ const ActivitiesButton = new Lang.Class({
         this.hotCorner = new Layout.HotCorner();
         container.add_actor(this.hotCorner.actor);
 
-        // Hack up our menu...
-        this.menu.open = Lang.bind(this, this._onMenuOpenRequest);
-        this.menu.close = Lang.bind(this, this._onMenuCloseRequest);
-        this.menu.toggle = Lang.bind(this, this._onMenuToggleRequest);
-
         this.actor.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
         this.actor.connect_after('button-release-event', Lang.bind(this, this._onButtonRelease));
         this.actor.connect_after('key-release-event', Lang.bind(this, this._onKeyRelease));
 
         Main.overview.connect('showing', Lang.bind(this, function() {
             this.actor.add_style_pseudo_class('overview');
-            this._escapeMenuGrab();
             this.actor.add_accessible_state (Atk.StateType.CHECKED);
         }));
         Main.overview.connect('hiding', Lang.bind(this, function() {
             this.actor.remove_style_pseudo_class('overview');
-            this._escapeMenuGrab();
             this.actor.remove_accessible_state (Atk.StateType.CHECKED);
         }));
 
@@ -710,11 +700,6 @@ const ActivitiesButton = new Lang.Class({
         return DND.DragMotionResult.CONTINUE;
     },
 
-    _escapeMenuGrab: function() {
-        if (this.menu.isOpen)
-            this.menu.close();
-    },
-
     _onCapturedEvent: function(actor, event) {
         if (event.type() == Clutter.EventType.BUTTON_PRESS) {
             if (!this.hotCorner.shouldToggleOverviewOnClick())
@@ -723,33 +708,13 @@ const ActivitiesButton = new Lang.Class({
         return false;
     },
 
-    _onMenuOpenRequest: function() {
-        this.menu.isOpen = true;
-        this.menu.emit('open-state-changed', true);
-    },
-
-    _onMenuCloseRequest: function() {
-        this.menu.isOpen = false;
-        this.menu.emit('open-state-changed', false);
-    },
-
-    _onMenuToggleRequest: function() {
-        this.menu.isOpen = !this.menu.isOpen;
-        this.menu.emit('open-state-changed', this.menu.isOpen);
-    },
-
     _onButtonRelease: function() {
-        if (this.menu.isOpen) {
-            this.menu.close();
-            Main.overview.toggle();
-        }
+        Main.overview.toggle();
     },
 
     _onKeyRelease: function(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Return || symbol == Clutter.KEY_space) {
-            if (this.menu.isOpen)
-                this.menu.close();
             Main.overview.toggle();
         }
     },
