@@ -366,7 +366,7 @@ meta_window_class_init (MetaWindowClass *klass)
                                    PROP_ICON,
                                    g_param_spec_object ("icon",
                                                         "Icon",
-                                                        "32 pixel sized icon",
+                                                        "96 pixel sized icon",
                                                         GDK_TYPE_PIXBUF,
                                                         G_PARAM_READABLE));
 

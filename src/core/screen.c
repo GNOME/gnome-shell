@@ -311,13 +311,20 @@ set_wm_icon_size_hint (MetaScreen *screen)
 #define N_VALS 6
   gulong vals[N_VALS];
 
+  /* We've bumped the real icon size up to 96x96, but
+   * we really should not add these sorts of constraints
+   * on clients still using the legacy WM_HINTS interface.
+   */
+#define LEGACY_ICON_SIZE 32
+
   /* min width, min height, max w, max h, width inc, height inc */
-  vals[0] = META_ICON_WIDTH;
-  vals[1] = META_ICON_HEIGHT;
-  vals[2] = META_ICON_WIDTH;
-  vals[3] = META_ICON_HEIGHT;
+  vals[0] = LEGACY_ICON_SIZE;
+  vals[1] = LEGACY_ICON_SIZE;
+  vals[2] = LEGACY_ICON_SIZE;
+  vals[3] = LEGACY_ICON_SIZE;
   vals[4] = 0;
   vals[5] = 0;
+#undef LEGACY_ICON_SIZE
   
   XChangeProperty (screen->display->xdisplay, screen->xroot,
                    screen->display->atom_WM_ICON_SIZE,
