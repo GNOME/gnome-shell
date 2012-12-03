@@ -342,7 +342,7 @@ const LayoutManager = new Lang.Class({
     },
 
     _startupAnimation: function() {
-        this.panelBox.anchor_y = this.panelBox.height;
+        this.panelBox.translation_y = -this.panelBox.height;
 
         let plymouthTransitionRunning = false;
 
@@ -378,7 +378,7 @@ const LayoutManager = new Lang.Class({
         }
 
         Tweener.addTween(this.panelBox,
-                         { anchor_y: 0,
+                         { translation_y: 0,
                            time: STARTUP_ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete: this._startupAnimationComplete,
