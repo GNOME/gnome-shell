@@ -106,14 +106,14 @@ const NotificationsBox = new Lang.Class({
         this._musicBin = new St.Bin({ style_class: 'screen-shield-notifications-box',
                                       visible: false });
 
-        let scrollView = new St.ScrollView({ x_fill: false, x_align: St.Align.START,
-                                             hscrollbar_policy: Gtk.PolicyType.NEVER });
+        this._scrollView = new St.ScrollView({ x_fill: false, x_align: St.Align.START,
+                                               hscrollbar_policy: Gtk.PolicyType.NEVER });
         this._notificationBox = new St.BoxLayout({ vertical: true,
                                                    style_class: 'screen-shield-notifications-box' });
-        scrollView.add_actor(this._notificationBox);
+        this._scrollView.add_actor(this._notificationBox);
 
         this.actor.add(this._musicBin);
-        this.actor.add(scrollView, { x_fill: true, x_align: St.Align.START });
+        this.actor.add(this._scrollView, { x_fill: true, x_align: St.Align.START });
 
         this._sources = new Hash.Map();
         Main.messageTray.getSources().forEach(Lang.bind(this, function(source) {
@@ -239,7 +239,7 @@ const NotificationsBox = new Lang.Class({
             (source.unseenCount > (musicNotification ? 1 : 0));
     },
 
-    _sourceAdded: function(tray, source, dontUpdateVisibility) {
+    _sourceAdded: function(tray, source, initial) {
         // Ignore transient sources
         if (source.isTransient)
             return;
@@ -286,8 +286,27 @@ const NotificationsBox = new Lang.Class({
 
         this._sources.set(source, obj);
 
-        if (!dontUpdateVisibility)
+        if (!initial) {
+            // block scrollbars while animating, if they're not needed now
+            let boxHeight = this._notificationBox.height;
+            if (this._scrollView.height >= boxHeight)
+                this._scrollView.vscrollbar_policy = Gtk.PolicyType.NEVER;
+
+            let widget = obj.sourceBox;
+            let [, natHeight] = widget.get_preferred_height(-1);
+            widget.height = 0;
+            Tweener.addTween(widget,
+                             { height: natHeight,
+                               transition: 'easeOutQuad',
+                               time: 0.25,
+                               onComplete: function() {
+                                   this._scrollView.vscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
+                                   widget.set_height(-1);
+                               },
+                               onCompleteScope: this
+                             });
             this._updateVisibility();
+        }
     },
 
     _titleChanged: function(source, obj) {
