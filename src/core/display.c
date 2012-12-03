@@ -4744,15 +4744,35 @@ find_tab_backward (MetaDisplay   *display,
   return NULL;
 }
 
+static int
+mru_cmp (gconstpointer a,
+         gconstpointer b)
+{
+  guint32 time_a, time_b;
+
+  time_a = meta_window_get_user_time ((MetaWindow *)a);
+  time_b = meta_window_get_user_time ((MetaWindow *)b);
+
+  if (time_a > time_b)
+    return -1;
+  else if (time_a < time_b)
+    return 1;
+  else
+    return 0;
+}
+
 /**
  * meta_display_get_tab_list:
  * @display: a #MetaDisplay
  * @type: type of tab list
  * @screen: a #MetaScreen
- * @workspace: origin workspace
+ * @workspace: (allow-none): origin workspace
  *
  * Determine the list of windows that should be displayed for Alt-TAB
  * functionality.  The windows are returned in most recently used order.
+ * If @workspace is not %NULL, the list only conains windows that are on
+ * @workspace or have the demands-attention hint set; otherwise it contains
+ * all windows on @screen.
  *
  * Returns: (transfer container) (element-type Meta.Window): List of windows
  */
@@ -4763,16 +4783,25 @@ meta_display_get_tab_list (MetaDisplay   *display,
                            MetaWorkspace *workspace)
 {
   GList *tab_list = NULL;
-  GList *tmp;
+  GList *global_mru_list = NULL;
+  GList *mru_list, *tmp;
   GSList *windows = meta_display_list_windows (display, META_LIST_DEFAULT);
   GSList *w;
 
-  g_return_val_if_fail (workspace != NULL, NULL);
+  if (workspace == NULL)
+    {
+      /* Yay for mixing GList and GSList in the API */
+      for (w = windows; w; w = w->next)
+        global_mru_list = g_list_prepend (global_mru_list, w->data);
+      global_mru_list = g_list_sort (global_mru_list, mru_cmp);
+    }
+
+  mru_list = workspace ? workspace->mru_list : global_mru_list;
 
   /* Windows sellout mode - MRU order. Collect unminimized windows
    * then minimized so minimized windows aren't in the way so much.
    */
-  for (tmp = workspace->mru_list; tmp; tmp = tmp->next)
+  for (tmp = mru_list; tmp; tmp = tmp->next)
     {
       MetaWindow *window = tmp->data;
 
@@ -4782,7 +4811,7 @@ meta_display_get_tab_list (MetaDisplay   *display,
         tab_list = g_list_prepend (tab_list, window);
     }
 
-  for (tmp = workspace->mru_list; tmp; tmp = tmp->next)
+  for (tmp = mru_list; tmp; tmp = tmp->next)
     {
       MetaWindow *window = tmp->data;
 
@@ -4794,20 +4823,21 @@ meta_display_get_tab_list (MetaDisplay   *display,
 
   tab_list = g_list_reverse (tab_list);
 
-  for (w = windows; w; w = w->next)
-    {
-      MetaWindow *l_window = w->data;
+  /* If filtering by workspace, include windows from
+   * other workspaces that demand attention
+   */
+  if (workspace)
+    for (w = windows; w; w = w->next)
+      {
+        MetaWindow *l_window = w->data;
 
-      /* Check to see if it demands attention */
-      if (l_window->wm_state_demands_attention &&
-          l_window->workspace != workspace &&
-          IN_TAB_CHAIN (l_window, type))
-        {
-          /* if it does, add it to the popup */
+        if (l_window->wm_state_demands_attention &&
+            l_window->workspace != workspace &&
+            IN_TAB_CHAIN (l_window, type))
           tab_list = g_list_prepend (tab_list, l_window);
-        }
-    }
+      }
 
+  g_list_free (global_mru_list);
   g_slist_free (windows);
   
   return tab_list;
