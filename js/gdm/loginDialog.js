@@ -566,7 +566,7 @@ const SessionList = new Lang.Class({
         box.add_actor(this._triangle);
 
         let label = new St.Label({ style_class: 'login-dialog-session-list-label',
-                                   text: _("Session...") });
+                                   text: _("Session…") });
         box.add_actor(label);
 
         this._button.connect('clicked',

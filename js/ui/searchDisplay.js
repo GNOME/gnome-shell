@@ -428,7 +428,7 @@ const SearchResults = new Lang.Class({
 
     startingSearch: function() {
         this.reset();
-        this._statusText.set_text(_("Searching..."));
+        this._statusText.set_text(_("Searching…"));
         this._statusBin.show();
     },
 

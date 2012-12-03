@@ -56,8 +56,8 @@ const Indicator = new Lang.Class({
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this._fullMenuItems = [new PopupMenu.PopupSeparatorMenuItem(),
-                               new PopupMenu.PopupMenuItem(_("Send Files to Device...")),
-                               new PopupMenu.PopupMenuItem(_("Set Up a New Device...")),
+                               new PopupMenu.PopupMenuItem(_("Send Files to Device…")),
+                               new PopupMenu.PopupMenuItem(_("Set Up a New Device…")),
                                new PopupMenu.PopupSeparatorMenuItem()];
         this._hasDevices = false;
 
@@ -236,7 +236,7 @@ const Indicator = new Lang.Class({
         }
 
         if (device.capabilities & GnomeBluetoothApplet.Capabilities.OBEX_PUSH) {
-            item.menu.addAction(_("Send Files..."), Lang.bind(this, function() {
+            item.menu.addAction(_("Send Files…"), Lang.bind(this, function() {
                 this._applet.send_to_address(device.bdaddr, device.alias);
             }));
         }

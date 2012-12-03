@@ -49,7 +49,7 @@ const NM80211ApFlags = NetworkManager['80211ApFlags'];
 const NM80211ApSecurityFlags = NetworkManager['80211ApSecurityFlags'];
 
 // number of wireless networks that should be visible
-// (the remaining are placed into More...)
+// (the remaining are placed into More…)
 const NUM_VISIBLE_NETWORKS = 5;
 
 function macToArray(string) {
@@ -549,7 +549,7 @@ const NMDevice = new Lang.Class({
 
                 if (j + activeOffset >= NUM_VISIBLE_NETWORKS) {
                     if (!this._overflowItem) {
-                        this._overflowItem = new PopupMenu.PopupSubMenuMenuItem(_("More..."));
+                        this._overflowItem = new PopupMenu.PopupSubMenuMenuItem(_("More…"));
                         this.section.addMenuItem(this._overflowItem);
                     }
                     this._overflowItem.menu.addMenuItem(obj.item);
@@ -1432,7 +1432,7 @@ const NMDeviceWireless = new Lang.Class({
             this.section.addMenuItem(apObj.item, position);
         } else {
             if (!this._overflowItem) {
-                this._overflowItem = new PopupMenu.PopupSubMenuMenuItem(_("More..."));
+                this._overflowItem = new PopupMenu.PopupSubMenuMenuItem(_("More…"));
                 this.section.addMenuItem(this._overflowItem);
             }
             this._overflowItem.menu.addMenuItem(apObj.item, position - NUM_VISIBLE_NETWORKS);
@@ -1624,7 +1624,7 @@ const NMVPNSection = new Lang.Class({
 
                 if (j >= NUM_VISIBLE_NETWORKS) {
                     if (!this._overflowItem) {
-                        this._overflowItem = new PopupMenu.PopupSubMenuMenuItem(_("More..."));
+                        this._overflowItem = new PopupMenu.PopupSubMenuMenuItem(_("More…"));
                         this.section.addMenuItem(this._overflowItem);
                     }
                     this._overflowItem.menu.addMenuItem(obj.item);

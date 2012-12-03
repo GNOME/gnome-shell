@@ -215,7 +215,7 @@ const Overview = new Lang.Class({
                                               in the search entry when no search is
                                               active; it should not exceed ~30
                                               characters. */
-                                           hint_text: _("Type to search..."),
+                                           hint_text: _("Type to search…"),
                                            track_hover: true,
                                            can_focus: true });
         this._searchEntryBin = new St.Bin({ child: this._searchEntry,
