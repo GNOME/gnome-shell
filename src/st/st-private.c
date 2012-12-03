@@ -175,16 +175,13 @@ _st_set_text_from_style (ClutterText *text,
   StTextDecoration decoration;
   PangoAttrList *attribs = NULL;
   const PangoFontDescription *font;
-  gchar *font_string;
   StTextAlign align;
 
   st_theme_node_get_foreground_color (theme_node, &color);
   clutter_text_set_color (text, &color);
 
   font = st_theme_node_get_font (theme_node);
-  font_string = pango_font_description_to_string (font);
-  clutter_text_set_font_name (text, font_string);
-  g_free (font_string);
+  clutter_text_set_font_description (text, (PangoFontDescription *) font);
 
   decoration = st_theme_node_get_text_decoration (theme_node);
   if (decoration)
