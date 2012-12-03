@@ -4762,76 +4762,53 @@ meta_display_get_tab_list (MetaDisplay   *display,
                            MetaScreen    *screen,
                            MetaWorkspace *workspace)
 {
-  GList *tab_list;
+  GList *tab_list = NULL;
+  GList *tmp;
+  GSList *windows = meta_display_list_windows (display, META_LIST_DEFAULT);
+  GSList *w;
 
   g_return_val_if_fail (workspace != NULL, NULL);
 
   /* Windows sellout mode - MRU order. Collect unminimized windows
    * then minimized so minimized windows aren't in the way so much.
    */
-  {
-    GList *tmp;
-    
-    tab_list = NULL;
-    tmp = workspace->mru_list;
-    while (tmp != NULL)
-      {
-        MetaWindow *window = tmp->data;
-        
-        if (!window->minimized &&
-            window->screen == screen &&
-            IN_TAB_CHAIN (window, type))
-          tab_list = g_list_prepend (tab_list, window);
-        
-        tmp = tmp->next;
-      }
-  }
+  for (tmp = workspace->mru_list; tmp; tmp = tmp->next)
+    {
+      MetaWindow *window = tmp->data;
 
-  {
-    GList *tmp;
-    
-    tmp = workspace->mru_list;
-    while (tmp != NULL)
-      {
-        MetaWindow *window = tmp->data;
-        
-        if (window->minimized &&
-            window->screen == screen &&
-            IN_TAB_CHAIN (window, type))
-          tab_list = g_list_prepend (tab_list, window);
-        
-        tmp = tmp->next;
-      }
-  }
+      if (!window->minimized &&
+          window->screen == screen &&
+          IN_TAB_CHAIN (window, type))
+        tab_list = g_list_prepend (tab_list, window);
+    }
+
+  for (tmp = workspace->mru_list; tmp; tmp = tmp->next)
+    {
+      MetaWindow *window = tmp->data;
+
+      if (window->minimized &&
+          window->screen == screen &&
+          IN_TAB_CHAIN (window, type))
+        tab_list = g_list_prepend (tab_list, window);
+    }
 
   tab_list = g_list_reverse (tab_list);
 
-  {
-    GSList *windows, *tmp;
-    MetaWindow *l_window;
+  for (w = windows; w; w = w->next)
+    {
+      MetaWindow *l_window = w->data;
 
-    windows = meta_display_list_windows (display, META_LIST_DEFAULT);
+      /* Check to see if it demands attention */
+      if (l_window->wm_state_demands_attention &&
+          l_window->workspace != workspace &&
+          IN_TAB_CHAIN (l_window, type))
+        {
+          /* if it does, add it to the popup */
+          tab_list = g_list_prepend (tab_list, l_window);
+        }
+    }
 
-    /* Go through all windows */
-    tmp = windows;
-    while (tmp != NULL)
-      {
-        l_window=tmp->data;
-
-        /* Check to see if it demands attention */
-        if (l_window->wm_state_demands_attention && 
-            l_window->workspace!=workspace &&
-            IN_TAB_CHAIN (l_window, type)) 
-          {
-            /* if it does, add it to the popup */
-            tab_list = g_list_prepend (tab_list, l_window);
-          }
-
-        tmp = tmp->next;
-      } /* End while tmp!=NULL */
-
-    g_slist_free (windows);
-  }
+  g_slist_free (windows);
   
   return tab_list;
 }
