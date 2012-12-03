@@ -1,4 +1,4 @@
-g/*
+/*
  * Clutter.
  *
  * An OpenGL based 'interactive canvas' library.
