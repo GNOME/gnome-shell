@@ -151,7 +151,7 @@ const SwitcherPopup = new Lang.Class({
         // selection.)
         let [x, y, mods] = global.get_pointer();
         if (!(mods & this._modifierMask)) {
-            this._finish();
+            this._finish(global.get_current_time());
             return false;
         }
 
@@ -198,7 +198,7 @@ const SwitcherPopup = new Lang.Class({
         let state = mods & this._modifierMask;
 
         if (state == 0)
-            this._finish();
+            this._finish(event.get_time());
 
         return true;
     },
@@ -224,7 +224,7 @@ const SwitcherPopup = new Lang.Class({
 
     _itemActivated: function(switcher, n) {
         this._itemActivatedHandler(n);
-        this._finish();
+        this._finish(global.get_current_time());
     },
 
     _itemEnteredHandler: function(n) {
@@ -274,7 +274,7 @@ const SwitcherPopup = new Lang.Class({
             this.actor.destroy();
     },
 
-    _finish: function() {
+    _finish: function(timestamp) {
         this.destroy();
     },
 

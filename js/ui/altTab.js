@@ -261,7 +261,7 @@ const AppSwitcherPopup = new Lang.Class({
         this._select(this._selectedIndex, n);
     },
 
-    _finish : function() {
+    _finish : function(timestamp) {
         this.parent();
 
         let appIcon = this._items[this._selectedIndex];
@@ -270,7 +270,7 @@ const AppSwitcherPopup = new Lang.Class({
             window = appIcon.cachedWindows[this._currentWindow];
         else
             window = null;
-        appIcon.app.activate_window(window, global.get_current_time());
+        appIcon.app.activate_window(window, timestamp);
     },
 
     _onDestroy : function() {

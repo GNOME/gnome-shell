@@ -52,11 +52,11 @@ const CtrlAltTabManager = new Lang.Class({
         }
     },
 
-    focusGroup: function(item) {
+    focusGroup: function(item, timestamp) {
         if (item.window) {
-            Main.activateWindow(item.window);
+            Main.activateWindow(item.window, timestamp);
         } else if (item.focusCallback) {
-            item.focusCallback();
+            item.focusCallback(timestamp);
         } else {
             if (global.stage_input_mode == Shell.StageInputMode.NONREACTIVE ||
                 global.stage_input_mode == Shell.StageInputMode.NORMAL)
@@ -164,9 +164,9 @@ const CtrlAltTabPopup = new Lang.Class({
             this._select(this._next());
     },
 
-    _finish : function() {
-        this.parent();
-        Main.ctrlAltTabManager.focusGroup(this._items[this._selectedIndex]);
+    _finish : function(time) {
+        this.parent(time);
+        Main.ctrlAltTabManager.focusGroup(this._items[this._selectedIndex], time);
     },
 });
 
