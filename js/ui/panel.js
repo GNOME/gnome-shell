@@ -599,11 +599,12 @@ const AppMenuButton = new Lang.Class({
 
             menu = new PopupMenu.RemoteMenu(this.actor, this._targetApp.menu, this._targetApp.action_group);
         } else {
-            if (this.menu && !(this.menu instanceof PopupMenu.RemoteMenu))
+            if (this.menu && this.menu.isDummyQuitMenu)
                 return;
 
             // fallback to older menu
             menu = new PopupMenu.PopupMenu(this.actor, 0.0, St.Side.TOP, 0);
+            menu.isDummyQuitMenu = true;
             menu.addAction(_("Quit"), Lang.bind(this, function() {
                 this._targetApp.request_quit();
             }));

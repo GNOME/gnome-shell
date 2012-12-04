@@ -1274,6 +1274,27 @@ const PopupMenu = new Lang.Class({
     }
 });
 
+const PopupDummyMenu = new Lang.Class({
+    Name: 'PopupDummyMenu',
+
+    _init: function(sourceActor) {
+        this.sourceActor = sourceActor;
+        this.actor = sourceActor;
+        this.actor._delegate = this;
+    },
+
+    isChildMenu: function() {
+        return false;
+    },
+
+    open: function() { this.emit('open-state-changed', true); },
+    close: function() { this.emit('open-state-changed', false); },
+    destroy: function() {
+        this.emit('destroy');
+    },
+});
+Signals.addSignalMethods(PopupDummyMenu.prototype);
+
 const PopupSubMenu = new Lang.Class({
     Name: 'PopupSubMenu',
     Extends: PopupMenuBase,

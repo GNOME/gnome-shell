@@ -112,7 +112,7 @@ const Button = new Lang.Class({
         this.actor.connect('key-press-event', Lang.bind(this, this._onSourceKeyPress));
 
         if (dontCreateMenu)
-            this.menu = null;
+            this.menu = new PopupMenu.PopupDummyMenu(this.actor);
         else
             this.setMenu(new PopupMenu.PopupMenu(this.actor, menuAlignment, St.Side.TOP, 0));
 
