@@ -50,6 +50,7 @@ const EndSessionDialogIface = <interface name="org.gnome.SessionManager.EndSessi
     <arg type="u" direction="in" />
     <arg type="ao" direction="in" />
 </method>
+<method name="Close" />
 <signal name="ConfirmedLogout" />
 <signal name="ConfirmedReboot" />
 <signal name="ConfirmedShutdown" />
@@ -488,5 +489,9 @@ const EndSessionDialog = new Lang.Class({
                                         invocation.return_value(null);
                                         this.disconnect(signalId);
                                     }));
+    },
+
+    Close: function(parameters, invocation) {
+        this.close();
     }
 });
