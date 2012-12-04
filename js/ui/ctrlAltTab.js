@@ -39,13 +39,16 @@ const CtrlAltTabManager = new Lang.Class({
 
         this._items.push(item);
         root.connect('destroy', Lang.bind(this, function() { this.removeGroup(root); }));
-        global.focus_manager.add_group(root);
+        if (root instanceof St.Widget)
+            global.focus_manager.add_group(root);
     },
 
     removeGroup: function(root) {
-        global.focus_manager.remove_group(root);
+        if (root instanceof St.Widget)
+            global.focus_manager.remove_group(root);
         for (let i = 0; i < this._items.length; i++) {
             if (this._items[i].root == root) {
+                let item = this._items[i];
                 this._items.splice(i, 1);
                 return;
             }
