@@ -198,9 +198,9 @@ const DeviceItem = new Lang.Class({
     _deviceTypeToString: function(type) {
 	switch (type) {
 	case UPDeviceType.AC_POWER:
-            return _("AC adapter");
+            return _("AC Adapter");
         case UPDeviceType.BATTERY:
-            return _("Laptop battery");
+            return _("Laptop Battery");
         case UPDeviceType.UPS:
             return _("UPS");
         case UPDeviceType.MONITOR:
@@ -212,9 +212,9 @@ const DeviceItem = new Lang.Class({
         case UPDeviceType.PDA:
             return _("PDA");
         case UPDeviceType.PHONE:
-            return _("Cell phone");
+            return _("Cell Phone");
         case UPDeviceType.MEDIA_PLAYER:
-            return _("Media player");
+            return _("Media Player");
         case UPDeviceType.TABLET:
             return _("Tablet");
         case UPDeviceType.COMPUTER:
