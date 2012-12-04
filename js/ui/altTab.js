@@ -20,6 +20,20 @@ const THUMBNAIL_FADE_TIME = 0.1; // seconds
 
 const iconSizes = [96, 64, 48, 32, 22];
 
+function _createWindowClone(window, size) {
+    let windowTexture = window.get_texture();
+    let [width, height] = windowTexture.get_size();
+    let scale = Math.min(1.0, size / width, size / height);
+    return new Clutter.Clone({ source: windowTexture,
+                               width: width * scale,
+                               height: height * scale,
+                               x_align: Clutter.ActorAlign.CENTER,
+                               y_align: Clutter.ActorAlign.CENTER,
+                               // usual hack for the usual bug in ClutterBinLayout...
+                               x_expand: true,
+                               y_expand: true });
+};
+
 const AppSwitcherPopup = new Lang.Class({
     Name: 'AppSwitcherPopup',
     Extends: SwitcherPopup.SwitcherPopup,
@@ -621,14 +635,7 @@ const ThumbnailList = new Lang.Class({
             if (!mutterWindow)
                 continue;
 
-            let windowTexture = mutterWindow.get_texture ();
-            let [width, height] = windowTexture.get_size();
-            let scale = Math.min(1.0, THUMBNAIL_DEFAULT_SIZE / width, availHeight / height);
-            let clone = new Clutter.Clone ({ source: windowTexture,
-                                                reactive: true,
-                                                width: width * scale,
-                                                height: height * scale });
-
+            let clone = _createWindowClone(mutterWindow, THUMBNAIL_DEFAULT_SIZE);
             this._thumbnailBins[i].set_height(binHeight);
             this._thumbnailBins[i].add_actor(clone);
             this._clones.push(clone);
