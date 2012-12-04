@@ -26,6 +26,9 @@ const CtrlAltTabManager = new Lang.Class({
 
     _init: function() {
         this._items = [];
+        this.addGroup(global.window_group, _("Windows"),
+                      'emblem-documents-symbolic', { sortGroup: SortGroup.TOP,
+                                                     focusCallback: Lang.bind(this, this._focusWindows) });
     },
 
     addGroup: function(root, name, icon, params) {
@@ -121,6 +124,12 @@ const CtrlAltTabManager = new Lang.Class({
                                           this._popup = null;
                                       }));
         }
+    },
+
+    _focusWindows: function(timestamp) {
+        global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
+        global.stage.key_focus = null;
+        global.screen.focus_default_window(timestamp);
     }
 });
 
