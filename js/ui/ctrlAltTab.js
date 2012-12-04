@@ -53,9 +53,7 @@ const CtrlAltTabManager = new Lang.Class({
     },
 
     focusGroup: function(item, timestamp) {
-        if (item.window) {
-            Main.activateWindow(item.window, timestamp);
-        } else if (item.focusCallback) {
+        if (item.focusCallback) {
             item.focusCallback(timestamp);
         } else {
             if (global.stage_input_mode == Shell.StageInputMode.NONREACTIVE ||
@@ -74,21 +72,11 @@ const CtrlAltTabManager = new Lang.Class({
         if (a.sortGroup != b.sortGroup)
             return a.sortGroup - b.sortGroup;
 
-        let y;
-        if (a.x == undefined) {
-            if (a.window)
-                a.x = a.window.get_compositor_private().x;
-            else
-                [a.x, y] = a.proxy.get_transformed_position();
-        }
-        if (b.x == undefined) {
-            if (b.window)
-                b.x = b.window.get_compositor_private().x;
-            else
-                [b.x, y] = b.proxy.get_transformed_position();
-        }
+        let ax, bx, y;
+        [ax, y] = a.proxy.get_transformed_position();
+        [bx, y] = b.proxy.get_transformed_position();
 
-        return a.x - b.x;
+        return ax - bx;
     },
 
     popup: function(backward, binding, mask) {
