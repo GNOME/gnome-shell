@@ -1050,7 +1050,7 @@ meta_display_close (MetaDisplay *display,
   
   meta_display_remove_autoraise_callback (display);
 
-  if (display->focus_timeout_id);
+  if (display->focus_timeout_id)
     g_source_remove (display->focus_timeout_id);
   display->focus_timeout_id = 0;
 
