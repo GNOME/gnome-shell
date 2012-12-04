@@ -57,7 +57,7 @@ const Indicator = new Lang.Class({
 
         this._fullMenuItems = [new PopupMenu.PopupSeparatorMenuItem(),
                                new PopupMenu.PopupMenuItem(_("Send Files to Device...")),
-                               new PopupMenu.PopupMenuItem(_("Set up a New Device...")),
+                               new PopupMenu.PopupMenuItem(_("Set Up a New Device...")),
                                new PopupMenu.PopupSeparatorMenuItem()];
         this._hasDevices = false;
 
