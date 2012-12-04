@@ -204,16 +204,20 @@ const ViewSelector = new Lang.Class({
                                    function() {
                                        this._activePage.hide();
                                        this._activePage = page;
-                                       this.emit('page-changed');
                                    })
                              });
         }
 
+        this.emit('before-page-change');
         page.show();
         Tweener.addTween(page,
                          { opacity: 255,
                            time: 0.1,
-                           transition: 'easeOutQuad'
+                           transition: 'easeOutQuad',
+                           onComplete: Lang.bind(this,
+                               function() {
+                                   this.emit('after-page-change');
+                               })
                          });
     },
 

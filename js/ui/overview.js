@@ -98,6 +98,13 @@ const ShellInfo = new Lang.Class({
     }
 });
 
+const ControlsChange = {
+    BEFORE_PAGE: 1,
+    AFTER_PAGE: 2,
+    DND_START: 3,
+    DND_END: 4
+};
+
 const Overview = new Lang.Class({
     Name: 'Overview',
 
@@ -268,29 +275,33 @@ const Overview = new Lang.Class({
                                               y_fill: true });
         this._overview.add_actor(this._messageTrayGhost);
 
-        this._viewSelector.connect('page-changed', Lang.bind(this,
+        this._viewSelector.connect('after-page-change', Lang.bind(this,
             function() {
-                this._setSideControlsVisibility(false);
+                this._setSideControlsVisibility(ControlsChange.AFTER_PAGE);
+            }));
+        this._viewSelector.connect('before-page-change', Lang.bind(this,
+            function() {
+                this._setSideControlsVisibility(ControlsChange.BEFORE_PAGE);
             }));
 
         this.connect('item-drag-begin', Lang.bind(this,
             function() {
-                this._setSideControlsVisibility(true);
+                this._setSideControlsVisibility(ControlsChange.DND_START);
             }));
         this.connect('item-drag-cancelled', Lang.bind(this,
             function() {
-                this._setSideControlsVisibility(false);
+                this._setSideControlsVisibility(ControlsChange.DND_END);
             }));
         this.connect('item-drag-end', Lang.bind(this,
             function() {
-                this._setSideControlsVisibility(false);
+                this._setSideControlsVisibility(ControlsChange.DND_END);
             }));
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
         this._relayout();
     },
 
-    _setSideControlsVisibility: function(inDrag) {
+    _setSideControlsVisibility: function(changeType) {
         // Ignore the case when we're leaving the overview, since
         // actors will be made visible again when entering the overview
         // next time, and animating them while doing so is just
@@ -300,34 +311,41 @@ const Overview = new Lang.Class({
 
         let appsActive = this._viewSelector.getAppsActive();
         let searchActive = this._viewSelector.getSearchActive();
-
-        let dashVisible = !searchActive || inDrag;
-        let thumbnailsVisible = (!searchActive && !appsActive) || inDrag;
+        let dashVisible = !searchActive || (changeType == ControlsChange.DND_START);
+        let thumbnailsVisible = (!searchActive && !appsActive) || (changeType == ControlsChange.DND_START);
         let trayVisible = !searchActive;
         let trayGhostVisible = trayVisible || dashVisible;
 
-        if (dashVisible) {
-            this._dash.show();
-            this._messageTrayGhost.visible = trayGhostVisible;
-        } else {
-            let visibleId = this._dash.actor.connect('notify::visible', Lang.bind(this,
-                function() {
-                    this._dash.actor.disconnect(visibleId);
-                    if (!trayVisible && !this._dash.actor.visible)
-                        this._messageTrayGhost.hide();
-                }));
-            this._dash.hide();
+        if ((changeType == ControlsChange.BEFORE_PAGE) ||
+            (changeType == ControlsChange.DND_START)) {
+            if (dashVisible)
+                this._dash.show();
+            if (thumbnailsVisible)
+                this._thumbnailsBox.show();
         }
 
-        if (thumbnailsVisible)
-            this._thumbnailsBox.show();
-        else
-            this._thumbnailsBox.hide();
+        if ((changeType == ControlsChange.BEFORE_PAGE) ||
+            (changeType == ControlsChange.DND_END)) {
+            if (!dashVisible) {
+                this._dash.hide();
+            }
+            if (!thumbnailsVisible)
+                this._thumbnailsBox.hide();
+        }
 
-        if (trayVisible)
-            Main.messageTray.show();
-        else
-            Main.messageTray.hide();
+        if (changeType == ControlsChange.BEFORE_PAGE ||
+            changeType == ControlsChange.DND_START) {
+            if (trayGhostVisible)
+                this._messageTrayGhost.show();
+            if (trayVisible)
+                Main.messageTray.show();
+            else
+                Main.messageTray.hide();
+        } else if (changeType == ControlsChange.AFTER_PAGE ||
+                   changeType == ControlsChange.DND_END) {
+            if (!trayGhostVisible)
+                this._messageTrayGhost.hide();
+        }
     },
 
     addSearchProvider: function(provider) {
