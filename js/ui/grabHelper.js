@@ -204,7 +204,6 @@ const GrabHelper = new Lang.Class({
 
             this._grabbedFromKeynav = hadFocus;
             this._preGrabInputMode = global.stage_input_mode;
-            this._prevFocusedWindow = metaDisplay.focus_window;
 
             if (this._preGrabInputMode == Shell.StageInputMode.NONREACTIVE ||
                 this._preGrabInputMode == Shell.StageInputMode.NORMAL) {
@@ -243,13 +242,7 @@ const GrabHelper = new Lang.Class({
                 global.set_stage_input_mode(Shell.StageInputMode.FOCUSED);
         }
 
-        if (this._prevFocusedWindow) {
-            let metaDisplay = global.screen.get_display();
-            if (!metaDisplay.focus_window) {
-                metaDisplay.set_input_focus_window(this._prevFocusedWindow,
-                                                   false, global.get_current_time());
-            }
-        }
+        global.screen.focus_default_window(global.get_current_time());
     },
 
     // ignoreRelease:
