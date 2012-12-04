@@ -310,7 +310,7 @@ const GrabHelper = new Lang.Class({
 
         if (release && this._ignoreRelease) {
             this._ignoreRelease = false;
-            return false;
+            return true;
         }
 
         if (!button && this._modalCount == 0)
