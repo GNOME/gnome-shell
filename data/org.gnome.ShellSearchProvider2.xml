@@ -4,13 +4,13 @@
 <node>
 
   <!--
-      org.gnome.Shell.SearchProvider:
+      org.gnome.Shell.SearchProvider2:
       @short_description: Search provider interface
 
       The interface used for integrating into GNOME Shell's search
-      interface. This interface is deprecated, and org.gnome.Shell.SearchProvider2 should be used instead.
+      interface (version 2).
   -->
-  <interface name="org.gnome.Shell.SearchProvider">
+  <interface name="org.gnome.Shell.SearchProvider2">
 
     <!--
         GetInitialResultSet:
@@ -46,7 +46,7 @@
     <!--
         GetResultMetas:
         @identifiers: An array of result identifiers as returned by GetInitialResultSet() or GetSubsearchResultSet()
-        @metas: A dictionary describing the given search result, containing 'id' and 'name' (both strings). Optionally, either 'gicon' (a serialized GIcon) or 'icon-data' (raw image data as (iiibiiay) - width, height, rowstride, has-alpha, bits per sample, channels, data) can be specified if the result can be better served with a thumbnail of the content (such as with images).
+        @metas: A dictionary describing the given search result, containing 'id' and 'name' (both strings). Optionally, either 'gicon' (a serialized GIcon) or 'icon-data' (raw image data as (iiibiiay) - width, height, rowstride, has-alpha, bits per sample, channels, data) can be specified if the result can be better served with a thumbnail of the content (such as with images). A 'description' field (string) may also be specified if more context would help the user find the desired result.
 
         Return an array of meta data used to display each given result
     -->
@@ -58,16 +58,28 @@
     <!--
         ActivateResult:
         @identifier: A result identifier as returned by GetInitialResultSet() or GetSubsearchResultSet()
+        @terms: Array of search terms, which the provider should treat as logical AND.
+        @timestamp: A timestamp of the user interaction that triggered this call
 
         Called when the users chooses a given result. The result should
         be displayed in the application associated with the corresponding
-        provider.
-
-        This method is deprecated, and providers should implement ActivateResult2()
-        instead.
+        provider. The provided search terms can be used to allow launching a full search in
+        the application.
     -->
     <method name="ActivateResult">
       <arg type="s" name="identifier" direction="in" />
+      <arg type="as" name="terms" direction="in" />
+      <arg type="u" name="timestamp" direction="in" />
+    </method>
+
+    <!--
+        LaunchSearch:
+        @terms: Array of search terms, which the provider should treat as logical AND.
+
+        Asks the search provider to launch a full search in the application for the provided terms.
+    -->
+    <method name="LaunchSearch">
+      <arg type="as" name="terms" direction="in" />
     </method>
   </interface>
 </node>

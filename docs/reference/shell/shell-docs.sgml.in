@@ -44,6 +44,7 @@
   <chapter>
     <title>Integration helpers and utilities</title>
     <xi:include href="doc-gen-org.gnome.Shell.SearchProvider.xml"/>
+    <xi:include href="doc-gen-org.gnome.Shell.SearchProvider2.xml"/>
     <xi:include href="xml/shell-global.xml"/>
     <xi:include href="xml/shell-wm.xml"/>
     <xi:include href="xml/shell-xfixes-cursor.xml"/>

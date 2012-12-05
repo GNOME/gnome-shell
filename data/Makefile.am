@@ -11,7 +11,9 @@ desktop_DATA = gnome-shell.desktop gnome-shell-extension-prefs.desktop
 @INTLTOOL_DESKTOP_RULE@
 
 introspectiondir = $(datadir)/dbus-1/interfaces
-introspection_DATA = org.gnome.ShellSearchProvider.xml
+introspection_DATA =				\
+	org.gnome.ShellSearchProvider.xml	\
+	org.gnome.ShellSearchProvider2.xml
 
 themedir = $(pkgdatadir)/theme
 dist_theme_DATA =				\
