@@ -29,7 +29,32 @@ const SearchProviderIface = <interface name="org.gnome.Shell.SearchProvider">
 </method>
 </interface>;
 
+const SearchProvider2Iface = <interface name="org.gnome.Shell.SearchProvider2">
+<method name="GetInitialResultSet">
+    <arg type="as" direction="in" />
+    <arg type="as" direction="out" />
+</method>
+<method name="GetSubsearchResultSet">
+    <arg type="as" direction="in" />
+    <arg type="as" direction="in" />
+    <arg type="as" direction="out" />
+</method>
+<method name="GetResultMetas">
+    <arg type="as" direction="in" />
+    <arg type="aa{sv}" direction="out" />
+</method>
+<method name="ActivateResult">
+    <arg type="s" direction="in" />
+    <arg type="as" direction="in" />
+    <arg type="u" direction="in" />
+</method>
+<method name="LaunchSearch">
+    <arg type="as" direction="in" />
+</method>
+</interface>;
+
 var SearchProviderProxy = Gio.DBusProxy.makeProxyWrapper(SearchProviderIface);
+var SearchProvider2Proxy = Gio.DBusProxy.makeProxyWrapper(SearchProvider2Iface);
 
 function loadRemoteSearchProviders(addProviderCallback) {
     let data = { loadedProviders: [],
@@ -73,9 +98,18 @@ function loadRemoteSearchProvider(file, info, data) {
             return;
         }
 
-        remoteProvider = new RemoteSearchProvider(appInfo,
-                                                  busName,
-                                                  objectPath);
+        let version = '1';
+        try {
+            version = keyfile.get_string(group, 'Version');
+        } catch (e) {
+            // ignore error
+        }
+
+        if (version >= 2)
+            remoteProvider = new RemoteSearchProvider2(appInfo, busName, objectPath);
+        else
+            remoteProvider = new RemoteSearchProvider(appInfo, busName, objectPath);
+
         data.objectPaths[objectPath] = remoteProvider;
         data.loadedProviders.push(remoteProvider);
     } catch(e) {
@@ -134,9 +168,12 @@ const RemoteSearchProvider = new Lang.Class({
     Name: 'RemoteSearchProvider',
     Extends: Search.SearchProvider,
 
-    _init: function(appInfo, dbusName, dbusPath) {
-        this._proxy = new SearchProviderProxy(Gio.DBus.session,
-            dbusName, dbusPath, Lang.bind(this, this._onProxyConstructed));
+    _init: function(appInfo, dbusName, dbusPath, proxyType) {
+        if (!proxyType)
+            proxyType = SearchProviderProxy;
+
+        this.proxy = new proxyType(Gio.DBus.session,
+                dbusName, dbusPath, Lang.bind(this, this._onProxyConstructed));
 
         this.parent(appInfo.get_name().toUpperCase(), appInfo, true);
         this._cancellable = new Gio.Cancellable();
@@ -173,9 +210,9 @@ const RemoteSearchProvider = new Lang.Class({
         this._cancellable.cancel();
         this._cancellable.reset();
         try {
-            this._proxy.GetInitialResultSetRemote(terms,
-                                                  Lang.bind(this, this._getResultsFinished),
-                                                  this._cancellable);
+            this.proxy.GetInitialResultSetRemote(terms,
+                                                 Lang.bind(this, this._getResultsFinished),
+                                                 this._cancellable);
         } catch(e) {
             log('Error calling GetInitialResultSet for provider %s: %s'.format( this.title, e.toString()));
             this.searchSystem.pushResults(this, []);
@@ -186,9 +223,9 @@ const RemoteSearchProvider = new Lang.Class({
         this._cancellable.cancel();
         this._cancellable.reset();
         try {
-            this._proxy.GetSubsearchResultSetRemote(previousResults, newTerms,
-                                                    Lang.bind(this, this._getResultsFinished),
-                                                    this._cancellable);
+            this.proxy.GetSubsearchResultSetRemote(previousResults, newTerms,
+                                                   Lang.bind(this, this._getResultsFinished),
+                                                   this._cancellable);
         } catch(e) {
             log('Error calling GetSubsearchResultSet for provider %s: %s'.format(this.title, e.toString()));
             this.searchSystem.pushResults(this, []);
@@ -217,9 +254,9 @@ const RemoteSearchProvider = new Lang.Class({
         this._cancellable.cancel();
         this._cancellable.reset();
         try {
-            this._proxy.GetResultMetasRemote(ids,
-                                             Lang.bind(this, this._getResultMetasFinished, callback),
-                                             this._cancellable);
+            this.proxy.GetResultMetasRemote(ids,
+                                            Lang.bind(this, this._getResultMetasFinished, callback),
+                                            this._cancellable);
         } catch(e) {
             log('Error calling GetResultMetas for provider %s: %s'.format(this.title, e.toString()));
             callback([]);
@@ -227,8 +264,19 @@ const RemoteSearchProvider = new Lang.Class({
     },
 
     activateResult: function(id) {
-        this._proxy.ActivateResultRemote(id);
+        this.proxy.ActivateResultRemote(id);
     }
 });
 
+const RemoteSearchProvider2 = new Lang.Class({
+    Name: 'RemoteSearchProvider2',
+    Extends: RemoteSearchProvider,
 
+    _init: function(appInfo, dbusName, dbusPath) {
+        this.parent(appInfo, dbusName, dbusPath, SearchProvider2Proxy);
+    },
+
+    activateResult: function(id) {
+        this.proxy.ActivateResultRemote(id, [], 0);
+    }
+});
