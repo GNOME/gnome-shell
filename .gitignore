@@ -38,6 +38,7 @@ docs/reference/*/*.txt
 docs/reference/*/*.types
 docs/reference/*/html/
 docs/reference/*/xml/
+docs/reference/shell/doc-gen-*
 gtk-doc.make
 js/misc/config.js
 intltool-extract.in

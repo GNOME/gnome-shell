@@ -76,9 +76,15 @@ endif
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
 HTML_IMAGES=
 
+doc-gen-org.gnome.Shell.SearchProvider.xml: $(top_srcdir)/data/org.gnome.ShellSearchProvider.xml
+	gdbus-codegen 						\
+	--interface-prefix org.gnome.ShellSearchProvider. 	\
+	--generate-docbook doc-gen				\
+	$(top_srcdir)/data/org.gnome.ShellSearchProvider.xml
+
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE).
 # e.g. content_files=running.sgml building.sgml changes-2.0.sgml
-content_files=
+content_files= doc-gen-org.gnome.Shell.SearchProvider.xml
 
 # SGML files where gtk-doc abbrevations (#GtkWidget) are expanded
 # These files must be listed here *and* in content_files
