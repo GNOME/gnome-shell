@@ -340,18 +340,15 @@ const AppSearchProvider = new Lang.Class({
         this.searchSystem.pushResults(this, this._appSys.subsearch(previousResults, terms));
     },
 
-    activateResult: function(app, params) {
-        params = Params.parse(params, { workspace: -1,
-                                        timestamp: 0 });
-
+    activateResult: function(app) {
         let event = Clutter.get_current_event();
         let modifiers = event ? event.get_state() : 0;
         let openNewWindow = modifiers & Clutter.ModifierType.CONTROL_MASK;
 
         if (openNewWindow)
-            app.open_new_window(params.workspace);
+            app.open_new_window(-1);
         else
-            app.activate_full(params.workspace, params.timestamp);
+            app.activate();
     },
 
     dragActivateResult: function(id, params) {
@@ -402,15 +399,8 @@ const SettingsSearchProvider = new Lang.Class({
         this.searchSystem.pushResults(this, this._appSys.search_settings(terms));
     },
 
-    activateResult: function(pref, params) {
-        params = Params.parse(params, { workspace: -1,
-                                        timestamp: 0 });
-
-        pref.activate_full(params.workspace, params.timestamp);
-    },
-
-    dragActivateResult: function(pref, params) {
-        this.activateResult(pref, params);
+    activateResult: function(pref) {
+        pref.activate();
     },
 
     createResultActor: function (resultMeta, terms) {

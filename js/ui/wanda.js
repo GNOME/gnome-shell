@@ -162,7 +162,7 @@ const WandaSearchProvider = new Lang.Class({
         this.getInitialResultSet(terms);
     },
 
-    activateResult: function(fish, params) {
+    activateResult: function(fish) {
         if (this._dialog)
             this._dialog.destroy();
         this._dialog = new FortuneDialog(capitalize(fish), FISH_COMMAND);

@@ -96,7 +96,7 @@ const SearchResult = new Lang.Class({
         if (this.provider.dragActivateResult)
             this.provider.dragActivateResult(this.metaInfo.id, params);
         else
-            this.provider.activateResult(this.metaInfo.id, params);
+            this.provider.activateResult(this.metaInfo.id);
     }
 });
 
