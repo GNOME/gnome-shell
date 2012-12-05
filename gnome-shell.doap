@@ -54,13 +54,6 @@ its dependencies to build from tarballs.</description>
   </maintainer>
   <maintainer>
     <foaf:Person>
-      <foaf:name>Dan Winship</foaf:name>
-      <foaf:mbox rdf:resource="mailto:danw@gnome.org" />
-      <gnome:userid>danw</gnome:userid>
-    </foaf:Person>
-  </maintainer>
-  <maintainer>
-    <foaf:Person>
       <foaf:name>Marina Zhurakhinskaya</foaf:name>
       <foaf:mbox rdf:resource="mailto:marinaz@redhat.com" />
       <gnome:userid>marinaz</gnome:userid>
