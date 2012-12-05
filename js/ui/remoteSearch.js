@@ -285,8 +285,8 @@ const RemoteSearchProvider2 = new Lang.Class({
         this.canLaunchSearch = true;
     },
 
-    activateResult: function(id) {
-        this.proxy.ActivateResultRemote(id, [], 0);
+    activateResult: function(id, terms) {
+        this.proxy.ActivateResultRemote(id, terms, global.get_current_time());
     },
 
     launchSearch: function(terms) {

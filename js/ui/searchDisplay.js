@@ -22,6 +22,7 @@ const SearchResult = new Lang.Class({
     _init: function(provider, metaInfo, terms) {
         this.provider = provider;
         this.metaInfo = metaInfo;
+        this.terms = terms;
         this.actor = new St.Button({ style_class: 'search-result',
                                      reactive: true,
                                      x_align: St.Align.START,
@@ -73,7 +74,7 @@ const SearchResult = new Lang.Class({
     },
 
     activate: function() {
-        this.provider.activateResult(this.metaInfo.id);
+        this.provider.activateResult(this.metaInfo.id, this.terms);
         Main.overview.toggle();
     },
 
@@ -96,7 +97,7 @@ const SearchResult = new Lang.Class({
         if (this.provider.dragActivateResult)
             this.provider.dragActivateResult(this.metaInfo.id, params);
         else
-            this.provider.activateResult(this.metaInfo.id);
+            this.provider.activateResult(this.metaInfo.id, this.terms);
     }
 });
 
