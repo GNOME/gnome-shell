@@ -388,7 +388,18 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
       CoglContextSdl2 *sdl_context = context->winsys;
 
       if (sdl_context->current_window == sdl_onscreen->window)
-        sdl_context->current_window = NULL;
+        {
+          CoglDisplaySdl2 *sdl_display = context->display->winsys;
+
+          /* SDL explicitly unbinds the context when the currently
+           * bound window is destroyed. Cogl always needs a context
+           * bound so that for example it can create texture resources
+           * at any time even without flushing a framebuffer.
+           * Therefore we'll bind the dummy window. */
+          SDL_GL_MakeCurrent (sdl_display->dummy_window,
+                              sdl_display->context);
+          sdl_context->current_window = sdl_display->dummy_window;
+        }
 
       SDL_DestroyWindow (sdl_onscreen->window);
       sdl_onscreen->window = NULL;
