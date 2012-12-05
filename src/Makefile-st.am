@@ -96,6 +96,7 @@ stamp-st-scroll-view-fade-generated.c: $(srcdir)/st/st-scroll-view-fade.glsl $(s
 	echo timestamp > $(@F)
 
 BUILT_SOURCES += st-scroll-view-fade-generated.c
+CLEANFILES += stamp-st-scroll-view-fade-generated.c
 EXTRA_DIST += 					\
 	st/st-scroll-view-fade.glsl		\
 	data-to-c.pl				\
