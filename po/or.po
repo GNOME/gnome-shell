@@ -48,7 +48,8 @@ msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr ""
-"ଅନ୍ୟ ଏକ ମିଶ୍ରିତ ପରିଚାଳକ ପୂର୍ବରୁପ୍ରଦର୍ଶନୀ  \"%s\" ଉପରେ ପରଦା %i ରେ ଚାଲୁଅଛି।"
+"ଅନ୍ୟ ଏକ ମିଶ୍ରିତ ପରିଚାଳକ ପୂର୍ବରୁ ପରଦା %i ଉପରେ ପ୍ରଦର୍ଶନୀ  \"%s"
+"\" ରେ  ଚାଲୁଅଛି।"
 
 #: ../src/core/bell.c:320
 msgid "Bell event"
