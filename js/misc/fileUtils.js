@@ -26,6 +26,13 @@ function listDirAsync(file, callback) {
 }
 
 function _collectFromDirectoryAsync(dir, loadState) {
+    function done() {
+        loadState.numLoading--;
+        if (loadState.loadedCallback &&
+            loadState.numLoading == 0)
+            loadState.loadedCallback(loadState.data);
+    }
+
     dir.query_info_async('standard:type', Gio.FileQueryInfoFlags.NONE,
         GLib.PRIORITY_DEFAULT, null, function(object, res) {
             try {
@@ -33,18 +40,15 @@ function _collectFromDirectoryAsync(dir, loadState) {
             } catch (e) {
                 if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND))
                     log(e.message);
+                done();
                 return;
             }
 
-            loadState.numLoading++;
             listDirAsync(dir, Lang.bind(this, function(infos) {
                 for (let i = 0; i < infos.length; i++)
                     loadState.processFile(dir.get_child(infos[i].get_name()),
                                           infos[i], loadState.data);
-                loadState.numLoading--;
-                if (loadState.loadedCallback &&
-                    loadState.numLoading == 0)
-                    loadState.loadedCallback(loadState.data);
+                done();
             }));
         });
 }
@@ -68,6 +72,7 @@ function collectFromDatadirsAsync(subdir, params) {
     let dataDirs = GLib.get_system_data_dirs();
     if (params.includeUserDir)
         dataDirs.unshift(GLib.get_user_data_dir());
+    loadState.numLoading = dataDirs.length;
 
     for (let i = 0; i < dataDirs.length; i++) {
         let path = GLib.build_filenamev([dataDirs[i], 'gnome-shell', subdir]);
