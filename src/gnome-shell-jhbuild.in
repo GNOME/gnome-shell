@@ -93,6 +93,7 @@ def start_shell():
         args.append('--replace')
     if options.sync:
         args.append('--sync')
+    args += params
     return subprocess.Popen(args, env=env)
 
 def run_shell():
@@ -156,11 +157,7 @@ parser.add_option("", "--sync", action="store_true")
 parser.add_option("", "--version", action="callback", callback=show_version,
                   help="Display version and exit")
 
-options, args = parser.parse_args()
-
-if args:
-    parser.print_usage()
-    sys.exit(1)
+options, params = parser.parse_args()
 
 # Handle ssh logins
 if 'DISPLAY' not in os.environ:
