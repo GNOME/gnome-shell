@@ -10,7 +10,6 @@ const IconGrid = imports.ui.iconGrid;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const Panel = imports.ui.panel;
-const Search = imports.ui.search;
 
 // we could make these gsettings
 const FISH_NAME = 'wanda';
@@ -132,10 +131,8 @@ function capitalize(str) {
 
 const WandaSearchProvider = new Lang.Class({
     Name: 'WandaSearchProvider',
-    Extends: Search.SearchProvider,
 
     _init: function() {
-        this.parent();
         this.id = 'wanda';
     },
 

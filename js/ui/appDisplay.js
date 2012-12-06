@@ -19,7 +19,6 @@ const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
-const Search = imports.ui.search;
 const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
 const Params = imports.misc.params;
@@ -312,10 +311,8 @@ const AllAppDisplay = new Lang.Class({
 
 const AppSearchProvider = new Lang.Class({
     Name: 'AppSearchProvider',
-    Extends: Search.SearchProvider,
 
     _init: function() {
-        this.parent();
         this._appSys = Shell.AppSystem.get_default();
         this.id = 'applications';
     },
@@ -370,10 +367,9 @@ const AppSearchProvider = new Lang.Class({
 
 const SettingsSearchProvider = new Lang.Class({
     Name: 'SettingsSearchProvider',
-    Extends: Search.SearchProvider,
 
     _init: function() {
-        this.parent(Gio.DesktopAppInfo.new('gnome-control-center.desktop'));
+        this.appInfo = Gio.DesktopAppInfo.new('gnome-control-center.desktop');
         this._appSys = Shell.AppSystem.get_default();
     },
 
