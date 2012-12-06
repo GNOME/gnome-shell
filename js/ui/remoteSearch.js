@@ -167,7 +167,6 @@ function remoteProvidersLoaded(loadState) {
 
 const RemoteSearchProvider = new Lang.Class({
     Name: 'RemoteSearchProvider',
-    Extends: Search.SearchProvider,
 
     _init: function(appInfo, dbusName, dbusPath, proxyType) {
         if (!proxyType)
@@ -176,7 +175,10 @@ const RemoteSearchProvider = new Lang.Class({
         this.proxy = new proxyType(Gio.DBus.session,
                 dbusName, dbusPath, Lang.bind(this, this._onProxyConstructed));
 
-        this.parent(appInfo, true);
+        this.appInfo = appInfo;
+        this.id = appInfo.get_id();
+        this.isRemoteProvider = true;
+
         this._cancellable = new Gio.Cancellable();
     },
 
