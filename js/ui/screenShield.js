@@ -308,6 +308,7 @@ const NotificationsBox = new Lang.Class({
         obj.item.disconnect(obj.contentUpdatedId);
         obj.source.disconnect(obj.sourceDestroyId);
         obj.source.disconnect(obj.sourceCountChangedId);
+        obj.source.disconnect(obj.sourceTitleChangedId);
     },
 });
 
