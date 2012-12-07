@@ -516,8 +516,8 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
           if (ctx->glBlendFuncSeparate &&
               (blend_state->blend_src_factor_rgb !=
                blend_state->blend_src_factor_alpha ||
-               (blend_state->blend_src_factor_rgb !=
-                blend_state->blend_src_factor_alpha)))
+               (blend_state->blend_dst_factor_rgb !=
+                blend_state->blend_dst_factor_alpha)))
             GE (ctx, glBlendFuncSeparate (blend_state->blend_src_factor_rgb,
                                           blend_state->blend_dst_factor_rgb,
                                           blend_state->blend_src_factor_alpha,
