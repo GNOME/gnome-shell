@@ -1485,6 +1485,7 @@ const MessageTray = new Lang.Class({
         this._reNotifyAfterHideNotification = null;
         this._inFullscreen = false;
         this._desktopClone = null;
+        this._inCtrlAltTab = false;
 
         this._lightbox = new Lightbox.Lightbox(global.window_group,
                                                { inhibitEvents: true,
@@ -1562,12 +1563,15 @@ const MessageTray = new Lang.Class({
     },
 
     _sessionUpdated: function() {
-        if (Main.sessionMode.isLocked || Main.sessionMode.isGreeter)
+        if ((Main.sessionMode.isLocked || Main.sessionMode.isGreeter) && this._inCtrlAltTab) {
             Main.ctrlAltTabManager.removeGroup(this._summary);
-        else
+            this._inCtrlAltTab = false;
+        } else if (!this._inCtrlAltTab) {
             Main.ctrlAltTabManager.addGroup(this._summary, _("Message Tray"), 'user-available-symbolic',
                                             { focusCallback: Lang.bind(this, this.toggleAndNavigate),
                                               sortGroup: CtrlAltTab.SortGroup.BOTTOM });
+            this._inCtrlAltTab = true;
+        }
         this._updateState();
     },
 
