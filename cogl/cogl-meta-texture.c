@@ -337,7 +337,7 @@ foreach_clamped_region (CoglMetaTexture *meta_texture,
                                                clamp_s_cb,
                                                &clamp_data);
           /* Have we handled everything? */
-          if (tx_2 <= 0)
+          if (*tx_2 <= 0)
             return TRUE;
 
           /* clamp tx_1 since we've handled everything with x < 0 */
@@ -396,7 +396,7 @@ foreach_clamped_region (CoglMetaTexture *meta_texture,
                                                clamp_t_cb,
                                                &clamp_data);
           /* Have we handled everything? */
-          if (tx_2 <= 0)
+          if (*tx_2 <= 0)
             return TRUE;
 
           /* clamp ty_1 since we've handled everything with y < 0 */
