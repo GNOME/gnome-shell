@@ -51,7 +51,6 @@ const CtrlAltTabManager = new Lang.Class({
             global.focus_manager.remove_group(root);
         for (let i = 0; i < this._items.length; i++) {
             if (this._items[i].root == root) {
-                let item = this._items[i];
                 this._items.splice(i, 1);
                 return;
             }
