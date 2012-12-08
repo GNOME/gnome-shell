@@ -7,7 +7,7 @@ const Params = imports.misc.params;
 
 function listDirAsync(file, callback) {
     let allFiles = [];
-    file.enumerate_children_async(Gio.FILE_ATTRIBUTE_STANDARD_NAME,
+    file.enumerate_children_async('standard::name,standard::type',
                                   Gio.FileQueryInfoFlags.NONE,
                                   GLib.PRIORITY_LOW, null, function (obj, res) {
         let enumerator = obj.enumerate_children_finish(res);
@@ -33,7 +33,7 @@ function _collectFromDirectoryAsync(dir, loadState) {
             loadState.loadedCallback(loadState.data);
     }
 
-    dir.query_info_async('standard:type', Gio.FileQueryInfoFlags.NONE,
+    dir.query_info_async('standard::type', Gio.FileQueryInfoFlags.NONE,
         GLib.PRIORITY_DEFAULT, null, function(object, res) {
             try {
                 object.query_info_finish(res);
