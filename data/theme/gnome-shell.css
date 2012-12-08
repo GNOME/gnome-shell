@@ -613,7 +613,7 @@ StScrollBar StButton#vhandle:active {
 /* Overview */
 
 #overview {
-    spacing: 40px;
+    spacing: 24px;
 }
 
 #overview-group {
@@ -706,8 +706,8 @@ StScrollBar StButton#vhandle:active {
 }
 
 .window-picker {
-    -horizontal-spacing: 40px;
-    -vertical-spacing: 40px;
+    -horizontal-spacing: 32px;
+    -vertical-spacing: 32px;
 }
 
 /* Dash */

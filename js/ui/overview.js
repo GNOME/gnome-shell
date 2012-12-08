@@ -30,9 +30,9 @@ const GLSL_DIM_EFFECT_CODE = '\
    vec2 dist = cogl_tex_coord_in[0].xy - vec2(0.5, 0.5); \
    float elipse_radius = 0.5; \
    /* from https://bugzilla.gnome.org/show_bug.cgi?id=669798: \
-      the alpha on the gradient goes from 165 at its darkest to 98 at its most transparent. */ \
-   float y = 165.0 / 255.0; \
-   float x = 98.0 / 255.0; \
+      the alpha on the gradient goes from 250 at its darkest to 180 at its most transparent. */ \
+   float y = 250.0 / 255.0; \
+   float x = 180.0 / 255.0; \
    /* interpolate darkening value, based on distance from screen center */ \
    float val = min(length(dist), elipse_radius); \
    float a = mix(x, y, val / elipse_radius); \
