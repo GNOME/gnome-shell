@@ -1053,7 +1053,7 @@ clutter_rect_intersection (ClutterRect *a,
   clutter_rect_normalize_internal (a);
   clutter_rect_normalize_internal (b);
 
-  x_1 = MAX (a->origin.x, b->origin.y);
+  x_1 = MAX (a->origin.x, b->origin.x);
   y_1 = MAX (a->origin.y, b->origin.y);
   x_2 = MIN (a->origin.x + a->size.width, b->origin.x + b->size.width);
   y_2 = MIN (a->origin.y + a->size.height, b->origin.y + b->size.height);
