@@ -613,7 +613,8 @@ const NetworkAgent = new Lang.Class({
         this._vpnRequests = { };
 
         this._native.auto_register = false;
-        this._native.unregister();
+        if (this._native.registered)
+            this._native.unregister();
     },
 
     _newRequest:  function(agent, requestId, connection, settingName, hints, flags) {
