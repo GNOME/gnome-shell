@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-25 11:04+0200\n"
-"PO-Revision-Date: 2012-09-25 11:05+0200\n"
+"POT-Creation-Date: 2012-12-09 04:45+0200\n"
+"PO-Revision-Date: 2012-12-09 04:52+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
 "Language: ar\n"
@@ -37,6 +37,18 @@ msgstr "النظام"
 #: ../data/50-gnome-shell-system.xml.in.h:2
 msgid "Show the message tray"
 msgstr "أظهر لوحة الرسائل"
+
+#: ../data/50-gnome-shell-system.xml.in.h:3
+msgid "Focus the active notification"
+msgstr "ركّز على التنبيه النشط"
+
+#: ../data/50-gnome-shell-system.xml.in.h:4
+msgid "Show all applications"
+msgstr "أظهر كل التطبيقات"
+
+#: ../data/50-gnome-shell-system.xml.in.h:5
+msgid "Open the application menu"
+msgstr "افتح قائمة التطبيقات"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -122,60 +134,108 @@ msgid ""
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
-msgid "Show the week date in the calendar"
-msgstr "اعرض تاريخ الأسبوع في التقويم"
+msgid "Always show the 'Log out' menuitem in the user menu."
+msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:14
-msgid "If true, display the ISO week date in the calendar."
+msgid ""
+"This key overrides the automatic hiding of the 'Log out' menuitem in single-"
+"user, single-session situations."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
-msgid "Keybinding to open the application menu"
+msgid "Show full name in the user menu"
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
-msgid "Keybinding to open the application menu."
+msgid "Whether the users full name is shown in the user menu or not."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
-msgid "Keybinding to toggle the visibility of the message tray"
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
-msgid "Keybinding to toggle the visibility of the message tray."
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"'Remember Password' checkbox will be present. This key sets the default "
+"state of the checkbox."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
-msgid "Keybinding to toggle the screen recorder"
-msgstr ""
+msgid "Show the week date in the calendar"
+msgstr "اعرض تاريخ الأسبوع في التقويم"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
-msgid "Keybinding to start/stop the builtin screen recorder."
+msgid "If true, display the ISO week date in the calendar."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:21
-msgid "Which keyboard to use"
-msgstr "أي لوحة مفاتيح ترغب باستخدامها"
+msgid "Keybinding to open the application menu"
+msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:22
-msgid "The type of keyboard to use."
-msgstr "نوع لوحة المفاتيح التي ترغب باستخدامها."
+msgid "Keybinding to open the application menu."
+msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
-msgid "Framerate used for recording screencasts."
+msgid "Keybinding to open the \"Show Applications\" view"
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+msgid ""
+"Keybinding to open the \"Show Applications\" view of the Activities Overview."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+msgid "Keybinding to toggle the visibility of the message tray"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+msgid "Keybinding to toggle the visibility of the message tray."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+msgid "Keybinding to focus the active notification"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+msgid "Keybinding to focus the active notification."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+msgid "Keybinding to toggle the screen recorder"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+msgid "Keybinding to start/stop the builtin screen recorder."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+msgid "Which keyboard to use"
+msgstr "أي لوحة مفاتيح ترغب باستخدامها"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+msgid "The type of keyboard to use."
+msgstr "نوع لوحة المفاتيح التي ترغب باستخدامها."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+msgid "Framerate used for recording screencasts."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -190,15 +250,57 @@ msgid ""
 "used as a placeholder for a guess at the optimal thread count on the system."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "File extension used for storing the screencast"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+msgid "The application icon mode."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
+"only' (shows only the application icon) or 'both'."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+msgid "Attach modal dialog to the parent window"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
+msgid ""
+"This key overrides the key in org.gnome.mutter when running GNOME Shell."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
+msgid "Arrangement of buttons on the titlebar"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
+msgid ""
+"This key overrides the key in org.gnome.desktop.wm.preferences when running "
+"GNOME Shell."
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:46
+msgid "Enable edge tiling when dropping windows on screen edges"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:47
+msgid "Workspaces are managed dynamically"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:48
+msgid "Workspaces only on primary monitor"
 msgstr ""
 
 #: ../js/extensionPrefs/main.js:124
@@ -214,11 +316,11 @@ msgstr "امتداد"
 msgid "Select an extension to configure using the combobox above."
 msgstr "اختر امتدادا لضبطه من القائمة أعلاه."
 
-#: ../js/gdm/loginDialog.js:527
+#: ../js/gdm/loginDialog.js:565
 msgid "Session..."
 msgstr "الجلسة..."
 
-#: ../js/gdm/loginDialog.js:675
+#: ../js/gdm/loginDialog.js:722
 msgctxt "title"
 msgid "Sign In"
 msgstr "ادخل"
@@ -226,56 +328,68 @@ msgstr "ادخل"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:742
+#: ../js/gdm/loginDialog.js:786
 msgid "Not listed?"
 msgstr "غير مدرج؟"
 
-#: ../js/gdm/loginDialog.js:895 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:962 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
-#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
-#: ../js/ui/status/bluetooth.js:427 ../js/ui/unlockDialog.js:166
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
+#: ../js/ui/status/bluetooth.js:413 ../js/ui/unlockDialog.js:178
 msgid "Cancel"
 msgstr "ألغِ"
 
-#: ../js/gdm/loginDialog.js:900
+#: ../js/gdm/loginDialog.js:978
 msgctxt "button"
 msgid "Sign In"
 msgstr "ادخل"
 
-#: ../js/gdm/loginDialog.js:1239
+#: ../js/gdm/loginDialog.js:978
+msgid "Next"
+msgstr "التالي"
+
+#. TTLS and PEAP are actually much more complicated, but this complication
+#. is not visible here since we only care about phase2 authentication
+#. (and don't even care of which one)
+#: ../js/gdm/loginDialog.js:1086 ../js/ui/components/networkAgent.js:260
+#: ../js/ui/components/networkAgent.js:278
+msgid "Username: "
+msgstr "اسم المستخدم: "
+
+#: ../js/gdm/loginDialog.js:1382
 msgid "Login Window"
 msgstr "نافذة الولوج"
 
 #. Translators: accessible name of the power menu in the login screen
-#: ../js/gdm/powerMenu.js:35
+#: ../js/gdm/powerMenu.js:36
 msgid "Power"
 msgstr "الطاقة"
 
-#: ../js/gdm/powerMenu.js:89 ../js/ui/userMenu.js:663 ../js/ui/userMenu.js:667
-#: ../js/ui/userMenu.js:778
+#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:674 ../js/ui/userMenu.js:678
+#: ../js/ui/userMenu.js:789
 msgid "Suspend"
 msgstr "علّق"
 
-#: ../js/gdm/powerMenu.js:94
+#: ../js/gdm/powerMenu.js:98
 msgid "Restart"
 msgstr "أعِد التشغيل"
 
-#: ../js/gdm/powerMenu.js:99 ../js/ui/userMenu.js:665 ../js/ui/userMenu.js:667
-#: ../js/ui/userMenu.js:777
+#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:676
+#: ../js/ui/userMenu.js:678 ../js/ui/userMenu.js:788
 msgid "Power Off"
 msgstr "أطفئ الحاسوب"
 
-#: ../js/gdm/util.js:148
+#: ../js/gdm/util.js:152
 msgid "Authentication error"
 msgstr "خطأ في الاستيثاق"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:265
+#: ../js/gdm/util.js:269
 msgid "(or swipe finger)"
 msgstr "(أو مرر إصبع)"
 
-#: ../js/gdm/util.js:290
+#: ../js/gdm/util.js:294
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(مثلا مستخدم أو %s)"
@@ -296,27 +410,27 @@ msgid "Execution of '%s' failed:"
 msgstr "فشل تنفيذ '%s':‏"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:252
+#: ../js/ui/appDisplay.js:259
 msgid "All"
 msgstr "الكل"
 
-#: ../js/ui/appDisplay.js:310
+#: ../js/ui/appDisplay.js:318
 msgid "APPLICATIONS"
 msgstr "التطبيقات"
 
-#: ../js/ui/appDisplay.js:370
+#: ../js/ui/appDisplay.js:375
 msgid "SETTINGS"
 msgstr "الإعدادات"
 
-#: ../js/ui/appDisplay.js:675
+#: ../js/ui/appDisplay.js:679
 msgid "New Window"
 msgstr "نافذة جديدة"
 
-#: ../js/ui/appDisplay.js:678 ../js/ui/dash.js:271
+#: ../js/ui/appDisplay.js:682 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "أزِل من المفضّلة"
 
-#: ../js/ui/appDisplay.js:679
+#: ../js/ui/appDisplay.js:683
 msgid "Add to Favorites"
 msgstr "أضِف إلى المفضّلة"
 
@@ -325,7 +439,7 @@ msgstr "أضِف إلى المفضّلة"
 msgid "%s has been added to your favorites."
 msgstr "أُضيف %s إلى مفضلتك."
 
-#: ../js/ui/appFavorites.js:118
+#: ../js/ui/appFavorites.js:121
 #, c-format
 msgid "%s has been removed from your favorites."
 msgstr "أُزيل %s من مفضّلتك."
@@ -444,48 +558,48 @@ msgid "S"
 msgstr "السبت"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:699
+#: ../js/ui/calendar.js:700
 msgid "Nothing Scheduled"
 msgstr "الجدول خال"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:715
+#: ../js/ui/calendar.js:716
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A %d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:718
+#: ../js/ui/calendar.js:719
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A %d %B %Y"
 
-#: ../js/ui/calendar.js:728
+#: ../js/ui/calendar.js:729
 msgid "Today"
 msgstr "اليوم"
 
-#: ../js/ui/calendar.js:732
+#: ../js/ui/calendar.js:733
 msgid "Tomorrow"
 msgstr "غدا"
 
-#: ../js/ui/calendar.js:743
+#: ../js/ui/calendar.js:744
 msgid "This week"
 msgstr "هذا الأسبوع"
 
-#: ../js/ui/calendar.js:751
+#: ../js/ui/calendar.js:752
 msgid "Next week"
 msgstr "الأسبوع القادم"
 
-#: ../js/ui/components/autorunManager.js:278
+#: ../js/ui/components/autorunManager.js:295
 msgid "Removable Devices"
 msgstr "الأجهزة المنفصلة"
 
-#: ../js/ui/components/autorunManager.js:575
+#: ../js/ui/components/autorunManager.js:591
 #, c-format
 msgid "Open with %s"
 msgstr "افتح باستخدام %s"
 
-#: ../js/ui/components/autorunManager.js:601
+#: ../js/ui/components/autorunManager.js:617
 msgid "Eject"
 msgstr "أخرج"
 
@@ -514,14 +628,6 @@ msgstr "كلمة السرّ: "
 #: ../js/ui/components/networkAgent.js:228
 msgid "Key: "
 msgstr "المفتاح: "
-
-#. TTLS and PEAP are actually much more complicated, but this complication
-#. is not visible here since we only care about phase2 authentication
-#. (and don't even care of which one)
-#: ../js/ui/components/networkAgent.js:260
-#: ../js/ui/components/networkAgent.js:278
-msgid "Username: "
-msgstr "اسم المستخدم: "
 
 #: ../js/ui/components/networkAgent.js:266
 msgid "Identity: "
@@ -595,12 +701,12 @@ msgstr "استوثق"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/components/polkitAgent.js:248 ../js/ui/shellMountOperation.js:381
+#: ../js/ui/components/polkitAgent.js:248 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "للأسف لم يُفلح هذا. أعِد المحاولة."
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/components/recorder.js:44
+#: ../js/ui/components/recorder.js:48
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "تسجيل شاشة من %d %t"
@@ -621,54 +727,52 @@ msgstr "اتصال"
 msgid "File Transfer"
 msgstr "نقل ملفات"
 
-#: ../js/ui/components/telepathyClient.js:394
-msgid "Subscription request"
-msgstr "طلب اشتراك"
+#: ../js/ui/components/telepathyClient.js:417
+msgid "Chat"
+msgstr "دردشة"
 
-#: ../js/ui/components/telepathyClient.js:430
-msgid "Connection error"
-msgstr "خطأ في الاتصال"
-
-#: ../js/ui/components/telepathyClient.js:491
+#: ../js/ui/components/telepathyClient.js:477
 msgid "Unmute"
 msgstr "أطلِق الصوت"
 
-#: ../js/ui/components/telepathyClient.js:491
+#: ../js/ui/components/telepathyClient.js:477
 msgid "Mute"
 msgstr "أصمِت"
 
-#. Translators: this is a time format string followed by a date.
-#. If applicable, replace %X with a strftime format valid for your
-#. locale, without seconds.
-#: ../js/ui/components/telepathyClient.js:948
+#. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"
+#: ../js/ui/components/telepathyClient.js:931
 #, no-c-format
-msgid "Sent at <b>%X</b> on <b>%A</b>"
-msgstr "أُرسلت يوم <b>%A</b> الساعة <b>%l:%M</b>"
+msgid "<b>Yesterday</b>, <b>%H:%M</b>"
+msgstr "<b>بالأمس</b>، <b>%H:%M</b>"
 
-#. Translators: this is a time format in the style of "Wednesday, May 25",
-#. shown when you get a chat message in the same year.
-#: ../js/ui/components/telepathyClient.js:954
+#. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30
+#: ../js/ui/components/telepathyClient.js:937
 #, no-c-format
-msgid "Sent on <b>%A</b>, <b>%B %d</b>"
-msgstr "أُرْسِلت يوم <b>%A %d %B</b>"
+msgid "<b>%A</b>, <b>%H:%M</b>"
+msgstr "<b>%A</b>، <b>%H:%M</b>"
 
-#. Translators: this is a time format in the style of "Wednesday, May 25, 2012",
-#. shown when you get a chat message in a different year.
-#: ../js/ui/components/telepathyClient.js:959
+#. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"
+#: ../js/ui/components/telepathyClient.js:942
 #, no-c-format
-msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-msgstr "أُرْسِلت يوم <b>%A</b>، <b>%d %B</b>، %Y"
+msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
+msgstr "<b>%d</b> <b>%B</b>، <b>%H:%M</b>"
+
+#. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"
+#: ../js/ui/components/telepathyClient.js:946
+#, no-c-format
+msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
+msgstr "<b>%d</b> <b>%B</b> <b>%Y</b>، <b>%H:%M</b> "
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:988
+#: ../js/ui/components/telepathyClient.js:974
 #, c-format
 msgid "%s is now known as %s"
 msgstr "غيّر %s اسمه إلى %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1088
+#: ../js/ui/components/telepathyClient.js:1073
 #, c-format
 msgid "Invitation to %s"
 msgstr "دعوة إلى %s"
@@ -676,42 +780,38 @@ msgstr "دعوة إلى %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/components/telepathyClient.js:1096
+#: ../js/ui/components/telepathyClient.js:1081
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "يدعوك %s للانضمام إلى %s"
 
-#: ../js/ui/components/telepathyClient.js:1098
-#: ../js/ui/components/telepathyClient.js:1177
-#: ../js/ui/components/telepathyClient.js:1240
+#: ../js/ui/components/telepathyClient.js:1083
+#: ../js/ui/components/telepathyClient.js:1122
+#: ../js/ui/components/telepathyClient.js:1162
+#: ../js/ui/components/telepathyClient.js:1225
 msgid "Decline"
 msgstr "أرفُض"
 
-#: ../js/ui/components/telepathyClient.js:1099
-#: ../js/ui/components/telepathyClient.js:1178
-#: ../js/ui/components/telepathyClient.js:1241
+#: ../js/ui/components/telepathyClient.js:1084
+#: ../js/ui/components/telepathyClient.js:1163
+#: ../js/ui/components/telepathyClient.js:1226
 msgid "Accept"
 msgstr "أقْبَل"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1129
+#: ../js/ui/components/telepathyClient.js:1114
 #, c-format
 msgid "Video call from %s"
 msgstr "مكالمة فيديو من %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1132
+#: ../js/ui/components/telepathyClient.js:1117
 #, c-format
 msgid "Call from %s"
 msgstr "مكالمة من %s"
 
-#: ../js/ui/components/telepathyClient.js:1137
-#: ../js/ui/status/bluetooth.js:346
-msgid "Reject"
-msgstr "ارفض"
-
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1139
+#: ../js/ui/components/telepathyClient.js:1124
 msgid "Answer"
 msgstr "أجب"
 
@@ -720,108 +820,108 @@ msgstr "أجب"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/components/telepathyClient.js:1171
+#: ../js/ui/components/telepathyClient.js:1156
 #, c-format
 msgid "%s is sending you %s"
 msgstr "‏%s يرسل لك %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1206
+#: ../js/ui/components/telepathyClient.js:1191
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "يريد %s الإذن ليعرف عندما تكون متصلا"
 
-#: ../js/ui/components/telepathyClient.js:1298
+#: ../js/ui/components/telepathyClient.js:1283
 msgid "Network error"
 msgstr "خطأ في الشبكة"
 
-#: ../js/ui/components/telepathyClient.js:1300
+#: ../js/ui/components/telepathyClient.js:1285
 msgid "Authentication failed"
 msgstr "فشل الاستيثاق"
 
-#: ../js/ui/components/telepathyClient.js:1302
+#: ../js/ui/components/telepathyClient.js:1287
 msgid "Encryption error"
 msgstr "فشل التعمية"
 
-#: ../js/ui/components/telepathyClient.js:1304
+#: ../js/ui/components/telepathyClient.js:1289
 msgid "Certificate not provided"
 msgstr "الشهادة غير متوفرة"
 
-#: ../js/ui/components/telepathyClient.js:1306
+#: ../js/ui/components/telepathyClient.js:1291
 msgid "Certificate untrusted"
 msgstr "الشهادة غير موثوقة"
 
-#: ../js/ui/components/telepathyClient.js:1308
+#: ../js/ui/components/telepathyClient.js:1293
 msgid "Certificate expired"
 msgstr "الشهادة منتهية الصلاحية"
 
-#: ../js/ui/components/telepathyClient.js:1310
+#: ../js/ui/components/telepathyClient.js:1295
 msgid "Certificate not activated"
 msgstr "الشهادة غير مفعلة"
 
-#: ../js/ui/components/telepathyClient.js:1312
+#: ../js/ui/components/telepathyClient.js:1297
 msgid "Certificate hostname mismatch"
 msgstr "الشهادة غير متوافقة مع اسم المستضيف"
 
-#: ../js/ui/components/telepathyClient.js:1314
+#: ../js/ui/components/telepathyClient.js:1299
 msgid "Certificate fingerprint mismatch"
 msgstr "بصمة الشهادة غير متطابقة"
 
-#: ../js/ui/components/telepathyClient.js:1316
+#: ../js/ui/components/telepathyClient.js:1301
 msgid "Certificate self-signed"
 msgstr "الشهادة موقعة ذاتيا"
 
-#: ../js/ui/components/telepathyClient.js:1318
+#: ../js/ui/components/telepathyClient.js:1303
 msgid "Status is set to offline"
 msgstr "الحالة مضبوطة إلى غير متصل"
 
-#: ../js/ui/components/telepathyClient.js:1320
+#: ../js/ui/components/telepathyClient.js:1305
 msgid "Encryption is not available"
 msgstr "التعمية غير متاحة"
 
-#: ../js/ui/components/telepathyClient.js:1322
+#: ../js/ui/components/telepathyClient.js:1307
 msgid "Certificate is invalid"
 msgstr "الشهادة غير صالحة"
 
-#: ../js/ui/components/telepathyClient.js:1324
+#: ../js/ui/components/telepathyClient.js:1309
 msgid "Connection has been refused"
 msgstr "رُفض الاتصال"
 
-#: ../js/ui/components/telepathyClient.js:1326
+#: ../js/ui/components/telepathyClient.js:1311
 msgid "Connection can't be established"
 msgstr "تعذر إنشاء الاتصال"
 
-#: ../js/ui/components/telepathyClient.js:1328
+#: ../js/ui/components/telepathyClient.js:1313
 msgid "Connection has been lost"
 msgstr "فُقد الاتصال"
 
-#: ../js/ui/components/telepathyClient.js:1330
+#: ../js/ui/components/telepathyClient.js:1315
 msgid "This account is already connected to the server"
 msgstr "هذا الحساب متصل بالخادوم بالفعل"
 
-#: ../js/ui/components/telepathyClient.js:1332
+#: ../js/ui/components/telepathyClient.js:1317
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "تم تبديل الاتصال باتصال جديد باستخدام نفس المورد"
 
-#: ../js/ui/components/telepathyClient.js:1334
+#: ../js/ui/components/telepathyClient.js:1319
 msgid "The account already exists on the server"
 msgstr "الحساب موجود بالفعل في الخادوم"
 
-#: ../js/ui/components/telepathyClient.js:1336
+#: ../js/ui/components/telepathyClient.js:1321
 msgid "Server is currently too busy to handle the connection"
 msgstr "الخادوم مشغول للغاية حاليًا ولا يستطيع التعامل مع الاتصال"
 
-#: ../js/ui/components/telepathyClient.js:1338
+#: ../js/ui/components/telepathyClient.js:1323
 msgid "Certificate has been revoked"
 msgstr "نُقِضت الشهادة"
 
-#: ../js/ui/components/telepathyClient.js:1340
+#: ../js/ui/components/telepathyClient.js:1325
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr "تستخدم الشهادة خوارزمية تعمية غير آمنة أو ضعيفة"
 
-#: ../js/ui/components/telepathyClient.js:1342
+#: ../js/ui/components/telepathyClient.js:1327
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -829,30 +929,30 @@ msgstr ""
 "طول شهادة الخادم أو طول سلسلة الشهادات إلى الخادم تجاوز الحد الذي تفرضه "
 "مكتبة التعمية"
 
-#: ../js/ui/components/telepathyClient.js:1344
+#: ../js/ui/components/telepathyClient.js:1329
 msgid "Internal error"
 msgstr "خطأ داخلي"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1354
+#: ../js/ui/components/telepathyClient.js:1339
 #, c-format
-msgid "Connection to %s failed"
-msgstr "فشل الاتصال ب‍ %s"
+msgid "Unable to connect to %s"
+msgstr "تعذّر الاتصال مع %s"
 
-#: ../js/ui/components/telepathyClient.js:1363
-msgid "Reconnect"
-msgstr "أعد الاتصال"
+#: ../js/ui/components/telepathyClient.js:1344
+msgid "View account"
+msgstr "أظهر الحساب"
 
-#: ../js/ui/components/telepathyClient.js:1364
-msgid "Edit account"
-msgstr "عدّل الحساب"
-
-#: ../js/ui/components/telepathyClient.js:1409
+#: ../js/ui/components/telepathyClient.js:1384
 msgid "Unknown reason"
 msgstr "السبب غير معروف"
 
-#: ../js/ui/dash.js:245 ../js/ui/dash.js:273
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:87
+msgid "Windows"
+msgstr "النوافذ"
+
+#: ../js/ui/dash.js:253 ../js/ui/dash.js:291
 msgid "Show Applications"
 msgstr "أظهر التطبيقات"
 
@@ -860,14 +960,14 @@ msgstr "أظهر التطبيقات"
 msgid "Date and Time Settings"
 msgstr "إعدادات الوقت والتّاريخ"
 
-#: ../js/ui/dateMenu.js:109
+#: ../js/ui/dateMenu.js:111
 msgid "Open Calendar"
 msgstr "افتح التقويم"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:175
+#: ../js/ui/dateMenu.js:201
 msgid "%A %B %e, %Y"
 msgstr "%A %e %B، %Y"
 
@@ -984,11 +1084,11 @@ msgstr "ثبت"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "هل تريد تنزيل وتثبيت '%s' من extensions.gnome.org؟"
 
-#: ../js/ui/keyboard.js:337
+#: ../js/ui/keyboard.js:308
 msgid "tray"
 msgstr "لوحة النظام"
 
-#: ../js/ui/keyboard.js:584 ../js/ui/status/keyboard.js:195
+#: ../js/ui/keyboard.js:555 ../js/ui/status/keyboard.js:195
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "لوحة المفاتيح"
@@ -1015,9 +1115,7 @@ msgstr "اظهر الأخطاء"
 msgid "Enabled"
 msgstr "مفعّل"
 
-#. translators:
-#. * The device has been disabled
-#: ../js/ui/lookingGlass.js:767 ../src/gvc/gvc-mixer-control.c:1082
+#: ../js/ui/lookingGlass.js:767
 msgid "Disabled"
 msgstr "معطّل"
 
@@ -1041,32 +1139,36 @@ msgstr "اعرض المصدر"
 msgid "Web Page"
 msgstr "صفحة الوب"
 
-#: ../js/ui/messageTray.js:1081
+#: ../js/ui/messageTray.js:1088
 msgid "Open"
 msgstr "افتح"
 
-#: ../js/ui/messageTray.js:1088
+#: ../js/ui/messageTray.js:1095
 msgid "Remove"
 msgstr "أزِل"
 
-#: ../js/ui/messageTray.js:2088
+#: ../js/ui/messageTray.js:1551
+msgid "No Messages"
+msgstr "لا رسائل"
+
+#: ../js/ui/messageTray.js:1568
 msgid "Message Tray"
 msgstr "لوحة الرسائل"
 
-#: ../js/ui/messageTray.js:2551
+#: ../js/ui/messageTray.js:2635
 msgid "System Information"
 msgstr "معلومات النظام"
 
-#: ../js/ui/notificationDaemon.js:506 ../src/shell-app.c:373
+#: ../js/ui/notificationDaemon.js:504 ../src/shell-app.c:374
 msgctxt "program"
 msgid "Unknown"
 msgstr "غير معروف"
 
-#: ../js/ui/overview.js:82
+#: ../js/ui/overview.js:95
 msgid "Undo"
 msgstr "تراجع"
 
-#: ../js/ui/overview.js:127
+#: ../js/ui/overview.js:144
 msgid "Overview"
 msgstr "نظرة عامة"
 
@@ -1074,27 +1176,27 @@ msgstr "نظرة عامة"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:201
+#: ../js/ui/overview.js:221
 msgid "Type to search..."
 msgstr "اكتب نصا للبحث عنه..."
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:222
+#: ../js/ui/overview.js:242
 msgid "Dash"
 msgstr "الشريط"
 
-#: ../js/ui/panel.js:567
+#: ../js/ui/panel.js:608
 msgid "Quit"
 msgstr "أنْهِ"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:599
+#: ../js/ui/panel.js:637
 msgid "Activities"
 msgstr "الأنشطة"
 
-#: ../js/ui/panel.js:965
+#: ../js/ui/panel.js:980
 msgid "Top Bar"
 msgstr "الشريط العلوي"
 
@@ -1103,21 +1205,25 @@ msgstr "الشريط العلوي"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:731
+#: ../js/ui/popupMenu.js:732
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
 #: ../js/ui/runDialog.js:205
-msgid "Please enter a command:"
-msgstr "من فضلك أدخل أمرًا:"
+msgid "Enter a Command"
+msgstr "اكتب أمرًا"
+
+#: ../js/ui/runDialog.js:241
+msgid "Close"
+msgstr "أغلِق"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:79
+#: ../js/ui/screenShield.js:112
 msgid "%A, %B %d"
 msgstr "%A، %d %B"
 
-#: ../js/ui/screenShield.js:144
+#: ../js/ui/screenShield.js:176
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1128,7 +1234,7 @@ msgstr[3] "%d رسائل جديدة"
 msgstr[4] "%d رسالة جديدة"
 msgstr[5] "%d رسالة جديدة"
 
-#: ../js/ui/screenShield.js:146
+#: ../js/ui/screenShield.js:178
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1139,11 +1245,15 @@ msgstr[3] "%d تنبيهات جديدة"
 msgstr[4] "%d تنبيها جديدا"
 msgstr[5] "%d تنبيه جديد"
 
-#: ../js/ui/searchDisplay.js:275
+#: ../js/ui/screenShield.js:402 ../js/ui/userMenu.js:780
+msgid "Lock"
+msgstr "أوصِد"
+
+#: ../js/ui/searchDisplay.js:277
 msgid "Searching..."
 msgstr "يبحث..."
 
-#: ../js/ui/searchDisplay.js:323
+#: ../js/ui/searchDisplay.js:325
 msgid "No results."
 msgstr "لا نتائج."
 
@@ -1163,70 +1273,69 @@ msgstr "أظهر النص"
 msgid "Hide Text"
 msgstr "أخفِ النص"
 
-#: ../js/ui/shellMountOperation.js:368
+#: ../js/ui/shellMountOperation.js:370
 msgid "Password"
 msgstr "كلمة السر"
 
-#: ../js/ui/shellMountOperation.js:389
+#: ../js/ui/shellMountOperation.js:391
 msgid "Remember Password"
 msgstr "تذكر كلمة السر"
 
-#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:169
+#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:192
 msgid "Unlock"
 msgstr "فك القفل"
 
-#: ../js/ui/status/accessibility.js:39
+#: ../js/ui/status/accessibility.js:40
 msgid "Accessibility"
 msgstr "الإتاحة"
 
-#: ../js/ui/status/accessibility.js:44
+#: ../js/ui/status/accessibility.js:45
 msgid "Zoom"
 msgstr "تقريب"
 
-#: ../js/ui/status/accessibility.js:51
+#: ../js/ui/status/accessibility.js:52
 msgid "Screen Reader"
 msgstr "قارئ الشاشة"
 
-#: ../js/ui/status/accessibility.js:55
+#: ../js/ui/status/accessibility.js:56
 msgid "Screen Keyboard"
 msgstr "لوحة مفاتيح على الشاشة"
 
-#: ../js/ui/status/accessibility.js:59
+#: ../js/ui/status/accessibility.js:60
 msgid "Visual Alerts"
 msgstr "تنبيهات بصرية"
 
-#: ../js/ui/status/accessibility.js:62
+#: ../js/ui/status/accessibility.js:63
 msgid "Sticky Keys"
 msgstr "مفاتيح لاصقة"
 
-#: ../js/ui/status/accessibility.js:65
+#: ../js/ui/status/accessibility.js:66
 msgid "Slow Keys"
 msgstr "مفاتيح بطيئة"
 
-#: ../js/ui/status/accessibility.js:68
+#: ../js/ui/status/accessibility.js:69
 msgid "Bounce Keys"
 msgstr "مفاتيح لها صوت"
 
-#: ../js/ui/status/accessibility.js:71
+#: ../js/ui/status/accessibility.js:72
 msgid "Mouse Keys"
 msgstr "مفاتيح الفأرة"
 
-#: ../js/ui/status/accessibility.js:75
+#: ../js/ui/status/accessibility.js:76
 msgid "Universal Access Settings"
 msgstr "إعدادات الإتاحة"
 
-#: ../js/ui/status/accessibility.js:109
+#: ../js/ui/status/accessibility.js:112
 msgid "High Contrast"
 msgstr "تباين عال"
 
-#: ../js/ui/status/accessibility.js:146
+#: ../js/ui/status/accessibility.js:159
 msgid "Large Text"
 msgstr "نص كبير"
 
 #: ../js/ui/status/bluetooth.js:27 ../js/ui/status/bluetooth.js:31
-#: ../js/ui/status/bluetooth.js:251 ../js/ui/status/bluetooth.js:304
-#: ../js/ui/status/bluetooth.js:335 ../js/ui/status/bluetooth.js:371
-#: ../js/ui/status/bluetooth.js:400 ../js/ui/status/network.js:867
+#: ../js/ui/status/bluetooth.js:288 ../js/ui/status/bluetooth.js:319
+#: ../js/ui/status/bluetooth.js:355 ../js/ui/status/bluetooth.js:386
 msgid "Bluetooth"
 msgstr "بلوتوث"
 
@@ -1247,7 +1356,7 @@ msgid "Bluetooth Settings"
 msgstr "إعدادات بلوتوث"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:208
+#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:169
 msgid "hardware disabled"
 msgstr "العتاد مُعَطَّل"
 
@@ -1255,12 +1364,12 @@ msgstr "العتاد مُعَطَّل"
 msgid "Connection"
 msgstr "الاتصال"
 
-#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:458
+#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:436
 msgid "disconnecting..."
 msgstr "يقطع الاتّصال..."
 
-#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:464
-#: ../js/ui/status/network.js:934
+#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:442
+#: ../js/ui/status/network.js:1453
 msgid "connecting..."
 msgstr "يتّصل..."
 
@@ -1268,82 +1377,75 @@ msgstr "يتّصل..."
 msgid "Send Files..."
 msgstr "أرسل ملفات..."
 
-#: ../js/ui/status/bluetooth.js:243
-msgid "Browse Files..."
-msgstr "تصفح الملفات..."
-
-#: ../js/ui/status/bluetooth.js:252
-msgid "Error browsing device"
-msgstr "حدث عطل أثناء تصفّح الجهاز"
-
-#: ../js/ui/status/bluetooth.js:253
-#, c-format
-msgid "The requested device cannot be browsed, error is '%s'"
-msgstr "تعذّر تصفح الجهاز، رسالة العطل '%s'"
-
-#: ../js/ui/status/bluetooth.js:261
+#: ../js/ui/status/bluetooth.js:245
 msgid "Keyboard Settings"
 msgstr "إعدادات لوحة المفاتيح"
 
-#: ../js/ui/status/bluetooth.js:264
+#: ../js/ui/status/bluetooth.js:248
 msgid "Mouse Settings"
 msgstr "إعدادات الفأرة"
 
-#: ../js/ui/status/bluetooth.js:269 ../js/ui/status/volume.js:236
+#: ../js/ui/status/bluetooth.js:253 ../js/ui/status/volume.js:270
 msgid "Sound Settings"
 msgstr "إعدادات الصوت"
 
-#: ../js/ui/status/bluetooth.js:336
+#: ../js/ui/status/bluetooth.js:320
 #, c-format
 msgid "Authorization request from %s"
 msgstr "طلب تخويل من %s"
 
-#: ../js/ui/status/bluetooth.js:342
+#: ../js/ui/status/bluetooth.js:326
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "يريد الجهاز %s صلاحية الوصول للخدمة '%s'"
 
-#: ../js/ui/status/bluetooth.js:344
+#: ../js/ui/status/bluetooth.js:328
 msgid "Always grant access"
 msgstr "امنح الصلاحية دائما"
 
-#: ../js/ui/status/bluetooth.js:345
+#: ../js/ui/status/bluetooth.js:329
 msgid "Grant this time only"
 msgstr "امنح هذه المرة فقط"
 
-#: ../js/ui/status/bluetooth.js:372
+#: ../js/ui/status/bluetooth.js:330
+msgid "Reject"
+msgstr "ارفض"
+
+#. Translators: argument is the device short name
+#: ../js/ui/status/bluetooth.js:357
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "تأكيد مزاوجة %s"
 
-#: ../js/ui/status/bluetooth.js:378 ../js/ui/status/bluetooth.js:408
+#: ../js/ui/status/bluetooth.js:363 ../js/ui/status/bluetooth.js:394
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "يريد الجهاز %s المزاوجة مع هذا الحاسوب"
 
-#: ../js/ui/status/bluetooth.js:379
+#: ../js/ui/status/bluetooth.js:364
 #, c-format
 msgid "Please confirm whether the PIN '%06d' matches the one on the device."
 msgstr "من فضلك أكد تطابق الرقم '%06d' مع الموجود على الجهاز."
 
-#: ../js/ui/status/bluetooth.js:381
+#. Translators: this is the verb, not the noun
+#: ../js/ui/status/bluetooth.js:367
 msgid "Matches"
 msgstr "مطابق"
 
-#: ../js/ui/status/bluetooth.js:382
+#: ../js/ui/status/bluetooth.js:368
 msgid "Does not match"
 msgstr "غير مطابق"
 
-#: ../js/ui/status/bluetooth.js:401
+#: ../js/ui/status/bluetooth.js:387
 #, c-format
 msgid "Pairing request for %s"
 msgstr "طلب مزاوجة من %s"
 
-#: ../js/ui/status/bluetooth.js:409
+#: ../js/ui/status/bluetooth.js:395
 msgid "Please enter the PIN mentioned on the device."
 msgstr "من فضلك أدخل الرقم المذكور على الجهاز."
 
-#: ../js/ui/status/bluetooth.js:426
+#: ../js/ui/status/bluetooth.js:412
 msgid "OK"
 msgstr "حسنا"
 
@@ -1359,102 +1461,91 @@ msgstr "إعدادات الإقليم واللغة"
 msgid "Volume, network, battery"
 msgstr "الصوت، الشبكة، البطارية"
 
-#: ../js/ui/status/network.js:94
+#: ../js/ui/status/network.js:95
 msgid "<unknown>"
 msgstr "<غير معروفة>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:230
+#: ../js/ui/status/network.js:191
 msgid "disabled"
 msgstr "مُعَطَّل"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:456
+#: ../js/ui/status/network.js:434
 msgid "unmanaged"
 msgstr "غير مُدار"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:467 ../js/ui/status/network.js:937
+#: ../js/ui/status/network.js:445 ../js/ui/status/network.js:1456
 msgid "authentication required"
 msgstr "الاستيثاق مطلوب"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:477
+#: ../js/ui/status/network.js:455
 msgid "firmware missing"
 msgstr "البرمجية الثابتة (Firmware) غير موجودة"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:484
+#: ../js/ui/status/network.js:462
 msgid "cable unplugged"
 msgstr "الكبل مفصول"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:489
+#: ../js/ui/status/network.js:467
 msgid "unavailable"
 msgstr "غير متاح"
 
-#: ../js/ui/status/network.js:491 ../js/ui/status/network.js:939
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1458
 msgid "connection failed"
 msgstr "فشل الاتصال"
 
-#: ../js/ui/status/network.js:552 ../js/ui/status/network.js:1529
+#: ../js/ui/status/network.js:525 ../js/ui/status/network.js:1392
+#: ../js/ui/status/network.js:1534
 msgid "More..."
 msgstr "المزيد..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1459
+#: ../js/ui/status/network.js:561 ../js/ui/status/network.js:1322
 msgid "Connected (private)"
 msgstr "متّصل (شخصي)"
 
-#: ../js/ui/status/network.js:663
+#: ../js/ui/status/network.js:619
 msgid "Auto Ethernet"
 msgstr "إيثرنت تلقائي"
 
-#: ../js/ui/status/network.js:721
+#: ../js/ui/status/network.js:677
 msgid "Auto broadband"
 msgstr "شبكة هاتف محمول تلقائية"
 
-#: ../js/ui/status/network.js:724
+#: ../js/ui/status/network.js:680
 msgid "Auto dial-up"
 msgstr "اتصال هاتفي تلقائي"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:853 ../js/ui/status/network.js:1476
+#: ../js/ui/status/network.js:809 ../js/ui/status/network.js:1339
 #, c-format
 msgid "Auto %s"
 msgstr "‏%s تلقائي"
 
-#: ../js/ui/status/network.js:855
+#: ../js/ui/status/network.js:811
 msgid "Auto bluetooth"
 msgstr "بلوتوث تلقائي"
 
-#: ../js/ui/status/network.js:1478
+#: ../js/ui/status/network.js:1341
 msgid "Auto wireless"
 msgstr "لاسلكي تلقائي"
 
-#: ../js/ui/status/network.js:1575
+#: ../js/ui/status/network.js:1584
 msgid "Enable networking"
 msgstr "فعّل الشبكات"
 
-#: ../js/ui/status/network.js:1597
-msgid "Wired"
-msgstr "سلكي"
-
-#: ../js/ui/status/network.js:1608
-msgid "Wireless"
-msgstr "لاسلكي"
-
-#: ../js/ui/status/network.js:1618
-msgid "Mobile broadband"
-msgstr "شبكة هاتف محمول"
-
-#: ../js/ui/status/network.js:1628
-msgid "VPN Connections"
-msgstr "اتصالات VPN"
+#: ../js/ui/status/network.js:1616
+msgid "Wi-Fi"
+msgstr "واي فاي"
 
 #: ../js/ui/status/network.js:1635
 msgid "Network Settings"
@@ -1464,15 +1555,15 @@ msgstr "إعدادات الشّبكة"
 msgid "Network Manager"
 msgstr "مدير الشبكة"
 
-#: ../js/ui/status/network.js:1769
+#: ../js/ui/status/network.js:1761
 msgid "Connection failed"
 msgstr "فشل الاتصال"
 
-#: ../js/ui/status/network.js:1770
+#: ../js/ui/status/network.js:1762
 msgid "Activation of network connection failed"
 msgstr "فشل تفعيل اتصال الشبكة"
 
-#: ../js/ui/status/network.js:2065
+#: ../js/ui/status/network.js:2079
 msgid "Networking is disabled"
 msgstr "عُطّلت الشبكات"
 
@@ -1590,75 +1681,71 @@ msgid "Unknown"
 msgstr "غير معروف"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:223
+#: ../js/ui/status/volume.js:50 ../js/ui/status/volume.js:251
 msgid "Volume"
 msgstr "شدة الصوت"
 
-#: ../js/ui/status/volume.js:59
+#: ../js/ui/status/volume.js:62
 msgid "Microphone"
 msgstr "ميكروفون"
 
-#: ../js/ui/unlockDialog.js:176
+#: ../js/ui/unlockDialog.js:201
 msgid "Log in as another user"
 msgstr "لِج كمستخدم آخر"
 
-#: ../js/ui/userMenu.js:180
+#: ../js/ui/unlockDialog.js:224
+msgid "Unlock Window"
+msgstr "افتح قفل النافذة"
+
+#: ../js/ui/userMenu.js:177
 msgid "Available"
 msgstr "متفرّغ"
 
-#: ../js/ui/userMenu.js:183
+#: ../js/ui/userMenu.js:180
 msgid "Busy"
 msgstr "مشغول"
 
-#: ../js/ui/userMenu.js:186
+#: ../js/ui/userMenu.js:183
 msgid "Invisible"
 msgstr "خفي"
 
-#: ../js/ui/userMenu.js:189
+#: ../js/ui/userMenu.js:186
 msgid "Away"
 msgstr "غائب"
 
-#: ../js/ui/userMenu.js:192
+#: ../js/ui/userMenu.js:189
 msgid "Idle"
 msgstr "ساكن"
 
-#: ../js/ui/userMenu.js:195
-msgid "Unavailable"
-msgstr "مشغول"
+#: ../js/ui/userMenu.js:192
+msgid "Offline"
+msgstr "غير متصل"
 
-#: ../js/ui/userMenu.js:618 ../js/ui/userMenu.js:759
-msgid "Switch User"
-msgstr "بدّل المستخدم"
-
-#: ../js/ui/userMenu.js:619
-msgid "Switch Session"
-msgstr "بدّل الجلسة"
-
-#: ../js/ui/userMenu.js:743
+#: ../js/ui/userMenu.js:754
 msgid "Notifications"
 msgstr "التنبيهات"
 
-#: ../js/ui/userMenu.js:751
-msgid "System Settings"
-msgstr "إعدادات النظام"
+#: ../js/ui/userMenu.js:762
+msgid "Settings"
+msgstr "الإعدادات"
 
-#: ../js/ui/userMenu.js:764
+#: ../js/ui/userMenu.js:770
+msgid "Switch User"
+msgstr "بدّل المستخدم"
+
+#: ../js/ui/userMenu.js:775
 msgid "Log Out"
 msgstr "اخرج"
 
-#: ../js/ui/userMenu.js:769
-msgid "Lock"
-msgstr "أوصِد"
-
-#: ../js/ui/userMenu.js:784
+#: ../js/ui/userMenu.js:795
 msgid "Install Updates & Restart"
 msgstr "ثبّت التحديثات وأعد التشغيل"
 
-#: ../js/ui/userMenu.js:802
+#: ../js/ui/userMenu.js:813
 msgid "Your chat status will be set to busy"
 msgstr "ستُجعل حالة اتصالك ”مشغول“"
 
-#: ../js/ui/userMenu.js:803
+#: ../js/ui/userMenu.js:814
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1666,19 +1753,15 @@ msgstr ""
 "التنبيهات معطلة الآن، بما فيها رسائل المحادثة. حالة اتصالك تغيرت حتى يعلم "
 "الآخرون أنك قد لا ترى رسائلهم."
 
-#: ../js/ui/viewSelector.js:85
-msgid "Windows"
-msgstr "النوافذ"
-
-#: ../js/ui/viewSelector.js:89
+#: ../js/ui/viewSelector.js:91
 msgid "Applications"
 msgstr "التطبيقات"
 
-#: ../js/ui/viewSelector.js:93
+#: ../js/ui/viewSelector.js:95
 msgid "Search"
 msgstr "ابحث"
 
-#: ../js/ui/wanda.js:119
+#: ../js/ui/wanda.js:94
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1687,12 +1770,12 @@ msgstr ""
 "عذرًا, لا حكمة لك اليوم:\n"
 "%s"
 
-#: ../js/ui/wanda.js:123
+#: ../js/ui/wanda.js:98
 #, c-format
 msgid "%s the Oracle says"
 msgstr "يقول الحكيم %s"
 
-#: ../js/ui/wanda.js:164
+#: ../js/ui/wanda.js:139
 msgid "Your favorite Easter Egg"
 msgstr ""
 
@@ -1705,53 +1788,23 @@ msgstr "‏'%s' جاهز"
 msgid "Evolution Calendar"
 msgstr "تقويم إيفُليوشِن"
 
-#. translators:
-#. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1089
-#, c-format
-msgid "%u Output"
-msgid_plural "%u Outputs"
-msgstr[0] "لا مخرَج"
-msgstr[1] "مخرَج واحد"
-msgstr[2] "مخرَجين"
-msgstr[3] "%u مخارج"
-msgstr[4] "%u مخرجا"
-msgstr[5] "%u مخرج"
-
-#. translators:
-#. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1099
-#, c-format
-msgid "%u Input"
-msgid_plural "%u Inputs"
-msgstr[0] "لا مدخل"
-msgstr[1] "مدخل واحد"
-msgstr[2] "مدخلين"
-msgstr[3] "%u مداخل"
-msgstr[4] "%u مدخلا"
-msgstr[5] "%u مدخل"
-
-#: ../src/gvc/gvc-mixer-control.c:1397
-msgid "System Sounds"
-msgstr "أصوات النظام"
-
-#: ../src/main.c:330
+#: ../src/main.c:332
 msgid "Print version"
 msgstr "اطبع الإصدارة"
 
-#: ../src/main.c:336
+#: ../src/main.c:338
 msgid "Mode used by GDM for login screen"
 msgstr "الوضع الذي يستخدمه مدير ولوج جنوم لشاشة الولوج"
 
-#: ../src/main.c:342
+#: ../src/main.c:344
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "استخدم طورا معينا، مثلا: \"gdm\" لشاشة الولوج"
 
-#: ../src/main.c:348
+#: ../src/main.c:350
 msgid "List possible modes"
 msgstr "اسرد كل الأطوار الممكنة"
 
-#: ../src/shell-app.c:621
+#: ../src/shell-app.c:622
 #, c-format
 msgid "Failed to launch '%s'"
 msgstr "فشل تشغيل '%s'"
@@ -1764,17 +1817,86 @@ msgstr "لا تتطابق كلمتا السر."
 msgid "Password cannot be blank"
 msgstr "لا يمكن أن تكون كلمة السرّ فارغة"
 
-#: ../src/shell-mobile-providers.c:80
+#: ../src/shell-mobile-providers.c:85
 msgid "United Kingdom"
 msgstr "المملكة المتحدة"
 
-#: ../src/shell-mobile-providers.c:526
+#: ../src/shell-mobile-providers.c:619
 msgid "Default"
 msgstr "المبدئي"
 
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "أغلق المستخدم مربع الاستيثاق الحِواري"
+
+#~ msgid "Subscription request"
+#~ msgstr "طلب اشتراك"
+
+#~ msgid "Connection error"
+#~ msgstr "خطأ في الاتصال"
+
+#~ msgid "Sent at <b>%X</b> on <b>%A</b>"
+#~ msgstr "أُرسلت يوم <b>%A</b> الساعة <b>%l:%M</b>"
+
+#~ msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
+#~ msgstr "أُرْسِلت يوم <b>%A</b>، <b>%d %B</b>، %Y"
+
+#~ msgid "Connection to %s failed"
+#~ msgstr "فشل الاتصال ب‍ %s"
+
+#~ msgid "Reconnect"
+#~ msgstr "أعد الاتصال"
+
+#~ msgid "Browse Files..."
+#~ msgstr "تصفح الملفات..."
+
+#~ msgid "Error browsing device"
+#~ msgstr "حدث عطل أثناء تصفّح الجهاز"
+
+#~ msgid "The requested device cannot be browsed, error is '%s'"
+#~ msgstr "تعذّر تصفح الجهاز، رسالة العطل '%s'"
+
+#~ msgid "Wired"
+#~ msgstr "سلكي"
+
+#~ msgid "Wireless"
+#~ msgstr "لاسلكي"
+
+#~ msgid "Mobile broadband"
+#~ msgstr "شبكة هاتف محمول"
+
+#~ msgid "VPN Connections"
+#~ msgstr "اتصالات VPN"
+
+#~ msgid "Unavailable"
+#~ msgstr "مشغول"
+
+#~ msgid "Switch Session"
+#~ msgstr "بدّل الجلسة"
+
+#~ msgid "System Settings"
+#~ msgstr "إعدادات النظام"
+
+#~ msgid "%u Output"
+#~ msgid_plural "%u Outputs"
+#~ msgstr[0] "لا مخرَج"
+#~ msgstr[1] "مخرَج واحد"
+#~ msgstr[2] "مخرَجين"
+#~ msgstr[3] "%u مخارج"
+#~ msgstr[4] "%u مخرجا"
+#~ msgstr[5] "%u مخرج"
+
+#~ msgid "%u Input"
+#~ msgid_plural "%u Inputs"
+#~ msgstr[0] "لا مدخل"
+#~ msgstr[1] "مدخل واحد"
+#~ msgstr[2] "مدخلين"
+#~ msgstr[3] "%u مداخل"
+#~ msgstr[4] "%u مدخلا"
+#~ msgstr[5] "%u مدخل"
+
+#~ msgid "System Sounds"
+#~ msgstr "أصوات النظام"
 
 #~ msgid "Failed to unmount '%s'"
 #~ msgstr "فشل فصْل '%s'"
@@ -1812,9 +1934,6 @@ msgstr "أغلق المستخدم مربع الاستيثاق الحِواري"
 #~ msgctxt "contact"
 #~ msgid "Unknown"
 #~ msgstr "غير معروف"
-
-#~ msgid "Offline"
-#~ msgstr "غير متصل"
 
 #~ msgid "CONTACTS"
 #~ msgstr "المتراسلون"
@@ -1953,9 +2072,6 @@ msgstr "أغلق المستخدم مربع الاستيثاق الحِواري"
 
 #~ msgid "Confirm"
 #~ msgstr "أكّد"
-
-#~ msgid "No such application"
-#~ msgstr "لا تطبيق بهذا الاسم"
 
 #~ msgid "PREFERENCES"
 #~ msgstr "التفضيلات"
