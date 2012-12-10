@@ -28,9 +28,10 @@ const SearchResult = new Lang.Class({
                                      x_align: St.Align.START,
                                      y_fill: true });
         this.actor._delegate = this;
-        this._dragActorSource = null;
 
         let content = provider.createResultActor(metaInfo, terms);
+        let dragSource = null;
+
         if (content == null) {
             content = new St.Bin({ style_class: 'search-result-content',
                                    reactive: true,
@@ -40,11 +41,11 @@ const SearchResult = new Lang.Class({
             let icon = new IconGrid.BaseIcon(this.metaInfo['name'],
                                              { createIcon: this.metaInfo['createIcon'] });
             content.set_child(icon.actor);
-            this._dragActorSource = icon.icon;
             content.label_actor = icon.label;
+            dragSource = icon.icon;
         } else {
             if (content._delegate && content._delegate.getDragActorSource)
-                this._dragActorSource = content._delegate.getDragActorSource();
+                dragSource = content._delegate.getDragActorSource();
         }
         this._content = content;
         this.actor.set_child(content);
@@ -64,6 +65,11 @@ const SearchResult = new Lang.Class({
                           Lang.bind(this, function() {
                               Main.overview.endItemDrag(this);
                           }));
+
+        if (!dragSource)
+            // not exactly right, but alignment problems are hard to notice
+            dragSource = content;
+        this._dragActorSource = dragSource;
     },
 
     setSelected: function(selected) {
@@ -83,10 +89,7 @@ const SearchResult = new Lang.Class({
     },
 
     getDragActorSource: function() {
-        if (this._dragActorSource)
-            return this._dragActorSource;
-        // not exactly right, but alignment problems are hard to notice
-        return this._content;
+        return this._dragActorSource;
     },
 
     getDragActor: function(stageX, stageY) {
