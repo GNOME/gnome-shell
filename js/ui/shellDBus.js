@@ -27,6 +27,7 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
     <arg type="b" direction="in" name="flash"/>
     <arg type="s" direction="in" name="filename"/>
     <arg type="b" direction="out" name="success"/>
+    <arg type="s" direction="out" name="filename_used"/>
 </method>
 <method name="ScreenshotWindow">
     <arg type="b" direction="in" name="include_frame"/>
@@ -34,12 +35,14 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
     <arg type="b" direction="in" name="flash"/>
     <arg type="s" direction="in" name="filename"/>
     <arg type="b" direction="out" name="success"/>
+    <arg type="s" direction="out" name="filename_used"/>
 </method>
 <method name="Screenshot">
     <arg type="b" direction="in" name="include_cursor"/>
     <arg type="b" direction="in" name="flash"/>
     <arg type="s" direction="in" name="filename"/>
     <arg type="b" direction="out" name="success"/>
+    <arg type="s" direction="out" name="filename_used"/>
 </method>
 <method name="SelectArea">
     <arg type="i" direction="out" name="x"/>
@@ -118,13 +121,13 @@ const GnomeShell = new Lang.Class({
         return [success, returnValue];
     },
 
-    _onScreenshotComplete: function(obj, result, area, flash, invocation) {
+    _onScreenshotComplete: function(obj, result, area, filenameUsed, flash, invocation) {
         if (flash && result) {
             let flashspot = new Flashspot.Flashspot(area);
             flashspot.fire();
         }
 
-        let retval = GLib.Variant.new('(b)', [result]);
+        let retval = GLib.Variant.new('(bs)', [result, filenameUsed]);
         invocation.return_value(retval);
     },
 

@@ -32,6 +32,7 @@ typedef struct _screenshot_data {
   ShellScreenshot  *screenshot;
 
   char *filename;
+  char *filename_used;
 
   cairo_surface_t *image;
   cairo_rectangle_int_t screenshot_area;
@@ -64,18 +65,21 @@ on_screenshot_written (GObject *source,
   if (screenshot_data->callback)
     screenshot_data->callback (screenshot_data->screenshot,
                                g_simple_async_result_get_op_res_gboolean (G_SIMPLE_ASYNC_RESULT (result)),
-                               &screenshot_data->screenshot_area);
+                               &screenshot_data->screenshot_area,
+                               screenshot_data->filename_used);
 
   cairo_surface_destroy (screenshot_data->image);
   g_object_unref (screenshot_data->screenshot);
   g_free (screenshot_data->filename);
+  g_free (screenshot_data->filename_used);
   g_free (screenshot_data);
 }
 
 /* called in an I/O thread */
 static GOutputStream *
 get_stream_for_path (const gchar *path,
-                     const gchar *filename)
+                     const gchar *filename,
+                     gchar **filename_used)
 {
   GOutputStream *stream;
   GFile *file;
@@ -95,15 +99,17 @@ get_stream_for_path (const gchar *path,
 
   file = g_file_new_for_path (real_path);
   stream = G_OUTPUT_STREAM (g_file_create (file, G_FILE_CREATE_NONE, NULL, NULL));
-  g_free (real_path);
   g_object_unref (file);
+
+  *filename_used = real_path;
 
   return stream;
 }
 
 /* called in an I/O thread */
 static GOutputStream *
-get_stream_for_filename (const gchar *filename)
+get_stream_for_filename (const gchar *filename,
+                         gchar **filename_used)
 {
   const gchar *path;
 
@@ -115,11 +121,12 @@ get_stream_for_filename (const gchar *filename)
         return NULL;
     }
 
-  return get_stream_for_path (path, filename);
+  return get_stream_for_path (path, filename, filename_used);
 }
 
 static GOutputStream *
-prepare_write_stream (const gchar *filename)
+prepare_write_stream (const gchar *filename,
+                      gchar **filename_used)
 {
   GOutputStream *stream;
   GFile *file;
@@ -127,12 +134,13 @@ prepare_write_stream (const gchar *filename)
   if (g_path_is_absolute (filename))
     {
       file = g_file_new_for_path (filename);
+      *filename_used = g_strdup (filename);
       stream = G_OUTPUT_STREAM (g_file_create (file, G_FILE_CREATE_NONE, NULL, NULL));
       g_object_unref (file);
     }
   else
     {
-      stream = get_stream_for_filename (filename);
+      stream = get_stream_for_filename (filename, filename_used);
     }
 
   return stream;
@@ -162,7 +170,8 @@ write_screenshot_thread (GSimpleAsyncResult *result,
 
   g_assert (screenshot_data != NULL);
 
-  stream = prepare_write_stream (screenshot_data->filename);
+  stream = prepare_write_stream (screenshot_data->filename,
+                                 &screenshot_data->filename_used);
 
   if (stream == NULL)
     status = CAIRO_STATUS_FILE_NOT_FOUND;

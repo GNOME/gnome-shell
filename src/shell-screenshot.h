@@ -26,8 +26,9 @@ GType shell_screenshot_get_type (void) G_GNUC_CONST;
 ShellScreenshot *shell_screenshot_new (void);
 
 typedef void (*ShellScreenshotCallback)  (ShellScreenshot *screenshot,
-                                           gboolean success,
-                                           cairo_rectangle_int_t *screenshot_area);
+                                          gboolean success,
+                                          cairo_rectangle_int_t *screenshot_area,
+                                          const gchar *filename_used);
 
 void    shell_screenshot_screenshot_area      (ShellScreenshot *screenshot,
                                                 int x,
