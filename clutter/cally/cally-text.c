@@ -39,35 +39,6 @@
  *
  */
 
-/*
- * IMPLEMENTATION NOTES:
- *
- * * AtkText: There are still some methods not implemented yet:
- *     atk_text_get_default_attributes
- *     atk_text_get_character_extents
- *     atk_text_get_offset_at_point
- *
- *     See details on bug CB#1733
- *
- * * AtkEditableText: some methods will not be implemented
- *
- *     * atk_editable_text_set_run_attributes: ClutterText has some
- *       properties equivalent to the AtkAttributte, but it doesn't
- *       allow you to define it by
- *
- *     * atk_editable_text_copy: Clutter has no Clipboard support
- *
- *     * atk_editable_text_paste: Clutter has no Clipboard support
- *
- *     * atk_editable_text_cut: Clutter has no Clipboard support. In
- *           this case, as cut is basically a copy&delete combination,
- *           we could have implemented it using the delete, but IMHO,
- *           it would be weird to cut a text, get the text removed and
- *           then not be able to paste the text
- *
- *     See details on bug CB#1734
- */
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -1624,7 +1595,6 @@ cally_text_editable_text_interface_init (AtkEditableTextIface *iface)
   iface->insert_text = cally_text_insert_text;
   iface->delete_text = cally_text_delete_text;
 
-  /* Not implemented, see IMPLEMENTATION NOTES*/
   iface->set_run_attributes = NULL;
   iface->copy_text = NULL;
   iface->cut_text = NULL;
