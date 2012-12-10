@@ -599,7 +599,7 @@ const AppMenuButton = new Lang.Class({
 
             menu = new PopupMenu.RemoteMenu(this.actor, this._targetApp.menu, this._targetApp.action_group);
         } else {
-            if (this.menu && this.menu.isDummyQuitMenu)
+            if (this.menu.isDummyQuitMenu)
                 return;
 
             // fallback to older menu
