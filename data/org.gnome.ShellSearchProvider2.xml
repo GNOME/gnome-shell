@@ -75,11 +75,13 @@
     <!--
         LaunchSearch:
         @terms: Array of search terms, which the provider should treat as logical AND.
+        @timestamp: A timestamp of the user interaction that triggered this call
 
         Asks the search provider to launch a full search in the application for the provided terms.
     -->
     <method name="LaunchSearch">
       <arg type="as" name="terms" direction="in" />
+      <arg type="u" name="timestamp" direction="in" />
     </method>
   </interface>
 </node>

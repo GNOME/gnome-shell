@@ -50,6 +50,7 @@ const SearchProvider2Iface = <interface name="org.gnome.Shell.SearchProvider2">
 </method>
 <method name="LaunchSearch">
     <arg type="as" direction="in" />
+    <arg type="u" direction="in" />
 </method>
 </interface>;
 
@@ -290,6 +291,6 @@ const RemoteSearchProvider2 = new Lang.Class({
     },
 
     launchSearch: function(terms) {
-        this.proxy.LaunchSearchRemote(terms);
+        this.proxy.LaunchSearchRemote(terms, global.get_current_time());
     }
 });
