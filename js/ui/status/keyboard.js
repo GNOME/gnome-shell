@@ -68,6 +68,9 @@ const IBusManager = new Lang.Class({
         this._ready = false;
         this._registerPropertiesId = 0;
         this._currentEngineName = null;
+
+        if (this._readyCallback)
+            this._readyCallback(false);
     },
 
     _onNameAppeared: function() {
@@ -91,12 +94,10 @@ const IBusManager = new Lang.Class({
                 let name = enginesList[i].get_name();
                 this._engines[name] = enginesList[i];
             }
+            this._updateReadiness();
         } else {
             this._clear();
-            return;
         }
-
-        this._updateReadiness();
     },
 
     _initPanelService: function(ibus, result) {
@@ -116,20 +117,18 @@ const IBusManager = new Lang.Class({
                     return;
                 this._engineChanged(this._ibus, engine.get_name());
             }));
+            this._updateReadiness();
         } else {
             this._clear();
-            return;
         }
-
-        this._updateReadiness();
     },
 
     _updateReadiness: function() {
         this._ready = (Object.keys(this._engines).length > 0 &&
                        this._panelService != null);
 
-        if (this._ready && this._readyCallback)
-            this._readyCallback();
+        if (this._readyCallback)
+            this._readyCallback(this._ready);
     },
 
     _engineChanged: function(bus, engineName) {
@@ -252,6 +251,9 @@ const InputSourceIndicator = new Lang.Class({
 
         this._currentSource = null;
 
+        // All valid input sources currently in the gsettings
+        // KEY_INPUT_SOURCES list ordered by most recently used
+        this._mruSources = [];
         this._settings = new Gio.Settings({ schema: DESKTOP_INPUT_SOURCES_SCHEMA });
         this._settings.connect('changed::' + KEY_CURRENT_INPUT_SOURCE, Lang.bind(this, this._currentInputSourceChanged));
         this._settings.connect('changed::' + KEY_INPUT_SOURCES, Lang.bind(this, this._inputSourcesChanged));
@@ -264,7 +266,8 @@ const InputSourceIndicator = new Lang.Class({
         this.menu.addMenuItem(this._propSection);
         this._propSection.actor.hide();
 
-        this._ibusManager = new IBusManager(Lang.bind(this, this._inputSourcesChanged));
+        this._ibusReady = false;
+        this._ibusManager = new IBusManager(Lang.bind(this, this._ibusReadyCallback));
         this._ibusManager.connect('properties-registered', Lang.bind(this, this._ibusPropertiesRegistered));
         this._ibusManager.connect('property-updated', Lang.bind(this, this._ibusPropertyUpdated));
         this._inputSourcesChanged();
@@ -284,6 +287,15 @@ const InputSourceIndicator = new Lang.Class({
         // from shell menus"; we can always add a separate sessionMode
         // option if need arises.
         this._showLayoutItem.actor.visible = Main.sessionMode.allowSettings;
+    },
+
+    _ibusReadyCallback: function(ready) {
+        if (this._ibusReady == ready)
+            return;
+
+        this._ibusReady = ready;
+        this._mruSources = [];
+        this._inputSourcesChanged();
     },
 
     _currentInputSourceChanged: function() {
@@ -317,6 +329,13 @@ const InputSourceIndicator = new Lang.Class({
         this._container.set_skip_paint(newSource.indicatorLabel, false);
 
         this._buildPropSection(newSource.properties);
+
+        for (let i = 1; i < this._mruSources.length; ++i)
+            if (this._mruSources[i] == newSource) {
+                let currentSource = this._mruSources.splice(i, 1);
+                this._mruSources = currentSource.concat(this._mruSources);
+                break;
+            }
     },
 
     _inputSourcesChanged: function() {
@@ -383,6 +402,21 @@ const InputSourceIndicator = new Lang.Class({
             this._container.add_actor(is.indicatorLabel);
             this._container.set_skip_paint(is.indicatorLabel, true);
         }
+
+        let sourcesList = [];
+        for (let i in this._inputSources)
+            sourcesList.push(this._inputSources[i]);
+
+        let mruSources = [];
+        for (let i = 0; i < this._mruSources.length; i++) {
+            for (let j = 0; j < sourcesList.length; j++)
+                if (this._mruSources[i].type == sourcesList[j].type &&
+                    this._mruSources[i].id == sourcesList[j].id) {
+                    mruSources = mruSources.concat(sourcesList.splice(j, 1));
+                    break;
+                }
+        }
+        this._mruSources = mruSources.concat(sourcesList);
 
         this._currentInputSourceChanged();
     },
