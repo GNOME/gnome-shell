@@ -1289,6 +1289,7 @@ const PopupDummyMenu = new Lang.Class({
 
     open: function() { this.emit('open-state-changed', true); },
     close: function() { this.emit('open-state-changed', false); },
+    toggle: function() {},
     destroy: function() {
         this.emit('destroy');
     },
