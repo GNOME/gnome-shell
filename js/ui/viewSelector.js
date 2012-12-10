@@ -138,17 +138,6 @@ const ViewSelector = new Lang.Class({
                 }
             }));
 
-        // Public constraints which may be used to tie actors' height or
-        // vertical position to the current tab's content; as the content's
-        // height and position depend on the view selector's style properties
-        // (e.g. font size, padding, spacing, ...) it would be extremely hard
-        // and ugly to get these from the outside. While it would be possible
-        // to use position and height properties directly, outside code would
-        // need to ensure that the content is properly allocated before
-        // accessing the properties.
-        this.constrainHeight = new Clutter.BindConstraint({ source: this._pageArea,
-                                                            coordinate: Clutter.BindCoordinate.HEIGHT });
-
         Main.wm.addKeybinding('toggle-application-view',
                               new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
                               Meta.KeyBindingFlags.NONE,

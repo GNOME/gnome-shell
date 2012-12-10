@@ -129,11 +129,10 @@ const WorkspacesView = new Lang.Class({
                 continue;
 
             let ws = new Workspace.Workspace(null, i);
-            let overviewSpacing = Main.overview._spacing;
-            ws.setGeometry(monitors[i].x + overviewSpacing/2,
-                           monitors[i].y + overviewSpacing/2,
-                           monitors[i].width - overviewSpacing,
-                           monitors[i].height - overviewSpacing);
+            ws.setGeometry(monitors[i].x,
+                           monitors[i].y,
+                           monitors[i].width,
+                           monitors[i].height);
             global.overlay_group.add_actor(ws.actor);
             this._extraWorkspaces.push(ws);
         }
@@ -854,9 +853,7 @@ const WorkspacesDisplay = new Lang.Class({
         let clipX = rtl ? x + controlsVisible : x;
         let clipY = y + (fullHeight - clipHeight) / 2;
 
-        let overviewSpacing = Main.overview._spacing;
         let widthAdjust = this._zoomOut ? controlsNatural : controlsVisible;
-        widthAdjust += overviewSpacing;
         width -= widthAdjust;
         if (rtl)
             x += widthAdjust;
@@ -874,10 +871,10 @@ const WorkspacesDisplay = new Lang.Class({
                                                      monitors[i].y,
                                                      monitors[i].width,
                                                      monitors[i].height);
-                this._workspacesViews[m].setGeometry(monitors[i].x + overviewSpacing/2,
-                                                     monitors[i].y + overviewSpacing/2,
-                                                     monitors[i].width - overviewSpacing,
-                                                     monitors[i].height - overviewSpacing);
+                this._workspacesViews[m].setGeometry(monitors[i].x,
+                                                     monitors[i].y,
+                                                     monitors[i].width,
+                                                     monitors[i].height);
                 m++;
             }
         }
