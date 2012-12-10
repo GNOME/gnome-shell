@@ -10,10 +10,10 @@ msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-11-16 20:25+0000\n"
-"PO-Revision-Date: 2012-11-23 21:03+0530\n"
+"POT-Creation-Date: 2012-12-10 01:46+0000\n"
+"PO-Revision-Date: 2012-12-10 18:26+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
-"Language-Team: as_IN <kde-i18n-doc@kde.org>\n"
+"Language-Team: Assamese <kde-i18n-doc@kde.org>\n"
 "Language: as_IN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -62,58 +62,63 @@ msgid "Switch applications"
 msgstr "এপ্লিকেচনসমুহ অদল বদল কৰক"
 
 #: ../src/50-mutter-navigation.xml.in.h:11
+#| msgid "Switch windows directly"
+msgid "Switch windows"
+msgstr "উইন্ডোসমূহ চুইচ কৰক"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
 msgid "Switch windows of an application"
 msgstr "এটা এপ্লিকেচনৰ উইন্ডোসমূহ অদল বদল কৰক"
 
-#: ../src/50-mutter-navigation.xml.in.h:12
+#: ../src/50-mutter-navigation.xml.in.h:13
 msgid "Switch system controls"
 msgstr "চিস্টেম নিয়ন্ত্ৰণসমূহ অদল বদল কৰক"
 
-#: ../src/50-mutter-navigation.xml.in.h:13
+#: ../src/50-mutter-navigation.xml.in.h:14
 msgid "Switch windows directly"
 msgstr "উইন্ডোসমূহ প্ৰত্যক্ষভাৱে অদল বদল কৰক"
 
-#: ../src/50-mutter-navigation.xml.in.h:14
+#: ../src/50-mutter-navigation.xml.in.h:15
 msgid "Switch windows of an app directly"
 msgstr "এটা এপ্লিকেচনৰ উইন্ডোসমূহ প্ৰত্যক্ষভাৱে অদল বদল কৰক"
 
-#: ../src/50-mutter-navigation.xml.in.h:15
+#: ../src/50-mutter-navigation.xml.in.h:16
 msgid "Switch system controls directly"
 msgstr "চিস্টেম নিয়ন্ত্ৰণসমূহ প্ৰত্যক্ষভাৱে অদল বদল কৰক"
 
-#: ../src/50-mutter-navigation.xml.in.h:16
+#: ../src/50-mutter-navigation.xml.in.h:17
 msgid "Hide all normal windows"
 msgstr "সকলো স্বাভাৱিক উইন্ডো লুকাওক"
 
-#: ../src/50-mutter-navigation.xml.in.h:17
+#: ../src/50-mutter-navigation.xml.in.h:18
 msgid "Switch to workspace 1"
 msgstr "কৰ্মস্থান ১লে পৰিবৰ্তন কৰক"
 
-#: ../src/50-mutter-navigation.xml.in.h:18
+#: ../src/50-mutter-navigation.xml.in.h:19
 msgid "Switch to workspace 2"
 msgstr "কৰ্মস্থান ২লে পৰিবৰ্তন কৰক"
 
-#: ../src/50-mutter-navigation.xml.in.h:19
+#: ../src/50-mutter-navigation.xml.in.h:20
 msgid "Switch to workspace 3"
 msgstr "কৰ্মস্থান ৩লে পৰিবৰ্তন কৰক"
 
-#: ../src/50-mutter-navigation.xml.in.h:20
+#: ../src/50-mutter-navigation.xml.in.h:21
 msgid "Switch to workspace 4"
 msgstr "কৰ্মস্থান ৪লে পৰিবৰ্তন কৰক"
 
-#: ../src/50-mutter-navigation.xml.in.h:21
+#: ../src/50-mutter-navigation.xml.in.h:22
 msgid "Move to workspace left"
 msgstr "বাওঁফালৰ কৰ্মক্ষেত্ৰলে স্থানান্তৰ কৰক"
 
-#: ../src/50-mutter-navigation.xml.in.h:22
+#: ../src/50-mutter-navigation.xml.in.h:23
 msgid "Move to workspace right"
 msgstr "সোঁফালৰ কৰ্মক্ষেত্ৰলে স্থানান্তৰ কৰক"
 
-#: ../src/50-mutter-navigation.xml.in.h:23
+#: ../src/50-mutter-navigation.xml.in.h:24
 msgid "Move to workspace above"
 msgstr "ওপৰৰ কৰ্মক্ষেত্ৰলে স্থানান্তৰ কৰক"
 
-#: ../src/50-mutter-navigation.xml.in.h:24
+#: ../src/50-mutter-navigation.xml.in.h:25
 msgid "Move to workspace below"
 msgstr "তলৰ কৰ্মক্ষেত্ৰলে স্থানান্তৰ কৰক"
 
@@ -134,6 +139,7 @@ msgid "Windows"
 msgstr "উইন্ডোসমূহ"
 
 # #-#-#-#-#  as.po (as)  #-#-#-#-#: ../src/50-mutter-windows.xml.in.h:2
+#: ../src/50-mutter-windows.xml.in.h:2
 msgid "Activate the window menu"
 msgstr "উইন্ডো মেনু সক্ৰিয় কৰক"
 
@@ -150,6 +156,7 @@ msgid "Maximize window"
 msgstr "উইন্ডো ডাঙৰ কৰক"
 
 # #-#-#-#-#  as.po (as)  #-#-#-#-#: ../src/50-mutter-windows.xml.in.h:6
+#: ../src/50-mutter-windows.xml.in.h:6
 msgid "Restore window"
 msgstr "উইন্ডো পুনৰুদ্ধাৰ কৰক"
 
@@ -225,7 +232,6 @@ msgstr "অজ্ঞাত উইন্ডো তথ্য অনুৰোধ: %
 
 #: ../src/core/delete.c:111
 #, c-format
-#| msgid "%s is not responding."
 msgid "“%s” is not responding."
 msgstr "“%s” এ প্ৰতিক্ৰিয়া কৰা নাই।"
 
@@ -259,7 +265,7 @@ msgstr "মিশ্ৰণৰ বাবে সন্ধানহিন %s সম
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X উইন্ডো চিস্টেম প্ৰদৰ্শন '%s'খোলিব পৰা নগল \n"
 
-#: ../src/core/keybindings.c:853
+#: ../src/core/keybindings.c:860
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -351,7 +357,7 @@ msgid ""
 msgstr ""
 "সংৰূপ ডাটাবেইচত উপস্থিত \"%s\" মাউছ বুটাম পৰিবৰ্তকৰ বাবে বৈধ মানে নহয়\n"
 
-#: ../src/core/prefs.c:1747
+#: ../src/core/prefs.c:1757
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -359,17 +365,17 @@ msgid ""
 msgstr ""
 "সংৰূপ ডাটাবেইচত উপলব্ধ \"%s\", \"%s\" কি-বাইন্ডিং ৰ ক্ষেত্ৰত বৈধ মান নহয়\n"
 
-#: ../src/core/prefs.c:1844
+#: ../src/core/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "কৰ্মস্থান %d"
 
-#: ../src/core/screen.c:652
+#: ../src/core/screen.c:659
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "পৰ্দা %d প্ৰদৰ্শন '%s' ত অবৈধ\n"
 
-#: ../src/core/screen.c:668
+#: ../src/core/screen.c:675
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -379,19 +385,19 @@ msgstr ""
 "উইন্ডো "
 "ব্যৱস্থাপক পৰিবৰ্তন কৰোঁতে --replace বিকল্প প্ৰয়োগ কৰক।\n"
 
-#: ../src/core/screen.c:695
+#: ../src/core/screen.c:702
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "উইন্ডো ব্যৱস্থাপকৰ নিৰ্বাচন গ্ৰহণ কৰোঁতে ব্যৰ্থ পৰ্দা %d প্ৰদৰ্শন \"%s\"\n"
 
-#: ../src/core/screen.c:750
+#: ../src/core/screen.c:757
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "পৰ্দা %d প্ৰদৰ্শন \"%s\" ৰ এটা উইন্ডো ব্যৱস্থাপক ইতিমধ্যে আছে\n"
 
-#: ../src/core/screen.c:935
+#: ../src/core/screen.c:942
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "পৰ্দা %d মুক্ত কৰিব পৰা নগল প্ৰদৰ্শন \"%s\"\n"
@@ -665,8 +671,8 @@ msgid ""
 "after the pointer stops moving."
 msgstr ""
 "যদি true লে সংহতি কৰা হয়, আৰু ফকাচ অৱস্থা হয় \"sloppy\" অথবা \"mouse\" তেন্তে "
-"এটা উইন্ডোত "
-"সুমাওতে ফকাচ তৎক্ষনাত পৰিবৰ্তন নহয়, পইন্টাৰ গমন কৰা বন্ধ কৰাৰ পিছত হয়।"
+"এটা উইন্ডোত সুমাওতে ফকাচ তৎক্ষনাত পৰিবৰ্তন নহয়, পইন্টাৰ গমন কৰা বন্ধ কৰাৰ "
+"পিছত হয়।"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
