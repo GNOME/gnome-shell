@@ -79,6 +79,7 @@ GCR_MIN_VERSION=3.3.90
 GNOME_DESKTOP_REQUIRED_VERSION=3.7.1
 GNOME_MENUS_REQUIRED_VERSION=3.5.3
 NETWORKMANAGER_MIN_VERSION=0.9.7
+PULSE_MIN_VERS=2.0
 
 # Collect more than 20 libraries for a prize!
 PKG_CHECK_MODULES(GNOME_SHELL, gio-unix-2.0 >= $GIO_MIN_VERSION
@@ -125,7 +126,7 @@ LIBS=$saved_LIBS
 PKG_CHECK_MODULES(GNOME_SHELL_JS, gio-2.0 gjs-internals-1.0 >= $GJS_MIN_VERSION)
 PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-3.0 libcroco-0.6 >= 0.6.8 x11)
 PKG_CHECK_MODULES(TRAY, gtk+-3.0)
-PKG_CHECK_MODULES(GVC, libpulse libpulse-mainloop-glib gobject-2.0)
+PKG_CHECK_MODULES(GVC, libpulse >= $PULSE_MIN_VERS libpulse-mainloop-glib gobject-2.0)
 PKG_CHECK_MODULES(DESKTOP_SCHEMAS, gsettings-desktop-schemas >= 3.7.2)
 
 AC_MSG_CHECKING([for bluetooth support])
