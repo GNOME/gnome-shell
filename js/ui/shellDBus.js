@@ -9,52 +9,14 @@ const Config = imports.misc.config;
 const ExtensionSystem = imports.ui.extensionSystem;
 const ExtensionDownloader = imports.ui.extensionDownloader;
 const ExtensionUtils = imports.misc.extensionUtils;
-const Flashspot = imports.ui.flashspot;
 const Main = imports.ui.main;
-const SelectArea = imports.ui.selectArea;
+const Screenshot = imports.ui.screenshot;
 
 const GnomeShellIface = <interface name="org.gnome.Shell">
 <method name="Eval">
     <arg type="s" direction="in" name="script" />
     <arg type="b" direction="out" name="success" />
     <arg type="s" direction="out" name="result" />
-</method>
-<method name="ScreenshotArea">
-    <arg type="i" direction="in" name="x"/>
-    <arg type="i" direction="in" name="y"/>
-    <arg type="i" direction="in" name="width"/>
-    <arg type="i" direction="in" name="height"/>
-    <arg type="b" direction="in" name="flash"/>
-    <arg type="s" direction="in" name="filename"/>
-    <arg type="b" direction="out" name="success"/>
-    <arg type="s" direction="out" name="filename_used"/>
-</method>
-<method name="ScreenshotWindow">
-    <arg type="b" direction="in" name="include_frame"/>
-    <arg type="b" direction="in" name="include_cursor"/>
-    <arg type="b" direction="in" name="flash"/>
-    <arg type="s" direction="in" name="filename"/>
-    <arg type="b" direction="out" name="success"/>
-    <arg type="s" direction="out" name="filename_used"/>
-</method>
-<method name="Screenshot">
-    <arg type="b" direction="in" name="include_cursor"/>
-    <arg type="b" direction="in" name="flash"/>
-    <arg type="s" direction="in" name="filename"/>
-    <arg type="b" direction="out" name="success"/>
-    <arg type="s" direction="out" name="filename_used"/>
-</method>
-<method name="SelectArea">
-    <arg type="i" direction="out" name="x"/>
-    <arg type="i" direction="out" name="y"/>
-    <arg type="i" direction="out" name="width"/>
-    <arg type="i" direction="out" name="height"/>
-</method>
-<method name="FlashArea">
-    <arg type="i" direction="in" name="x"/>
-    <arg type="i" direction="in" name="y"/>
-    <arg type="i" direction="in" name="width"/>
-    <arg type="i" direction="in" name="height"/>
 </method>
 <property name="Mode" type="s" access="read" />
 <property name="OverviewActive" type="b" access="readwrite" />
@@ -86,6 +48,7 @@ const GnomeShell = new Lang.Class({
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
 
         this._extensionsSerivce = new GnomeShellExtensions();
+        this._screenshotService = new Screenshot.ScreenshotService();
     },
 
     /**
@@ -119,108 +82,6 @@ const GnomeShell = new Lang.Class({
             success = false;
         }
         return [success, returnValue];
-    },
-
-    _onScreenshotComplete: function(obj, result, area, filenameUsed, flash, invocation) {
-        if (flash && result) {
-            let flashspot = new Flashspot.Flashspot(area);
-            flashspot.fire();
-        }
-
-        let retval = GLib.Variant.new('(bs)', [result, filenameUsed]);
-        invocation.return_value(retval);
-    },
-
-    /**
-     * ScreenshotArea:
-     * @x: The X coordinate of the area
-     * @y: The Y coordinate of the area
-     * @width: The width of the area
-     * @height: The height of the area
-     * @flash: Whether to flash the area or not
-     * @filename: The filename for the screenshot
-     *
-     * Takes a screenshot of the passed in area and saves it
-     * in @filename as png image, it returns a boolean
-     * indicating whether the operation was successful or not.
-     * @filename can either be an absolute path or a basename, in
-     * which case the screenshot will be saved in the $XDG_PICTURES_DIR
-     * or the home directory if it doesn't exist.
-     *
-     */
-    ScreenshotAreaAsync : function (params, invocation) {
-        let [x, y, width, height, flash, filename, callback] = params;
-        let screenshot = new Shell.Screenshot();
-        screenshot.screenshot_area (x, y, width, height, filename,
-                                Lang.bind(this, this._onScreenshotComplete,
-                                          flash, invocation));
-    },
-
-    /**
-     * ScreenshotWindow:
-     * @include_frame: Whether to include the frame or not
-     * @include_cursor: Whether to include the cursor image or not
-     * @flash: Whether to flash the window area or not
-     * @filename: The filename for the screenshot
-     *
-     * Takes a screenshot of the focused window (optionally omitting the frame)
-     * and saves it in @filename as png image, it returns a boolean
-     * indicating whether the operation was successful or not.
-     * @filename can either be an absolute path or a basename, in
-     * which case the screenshot will be saved in the $XDG_PICTURES_DIR
-     * or the home directory if it doesn't exist.
-     *
-     */
-    ScreenshotWindowAsync : function (params, invocation) {
-        let [include_frame, include_cursor, flash, filename] = params;
-        let screenshot = new Shell.Screenshot();
-        screenshot.screenshot_window (include_frame, include_cursor, filename,
-                                  Lang.bind(this, this._onScreenshotComplete,
-                                            flash, invocation));
-    },
-
-    /**
-     * Screenshot:
-     * @filename: The filename for the screenshot
-     * @include_cursor: Whether to include the cursor image or not
-     * @flash: Whether to flash the screen or not
-     *
-     * Takes a screenshot of the whole screen and saves it
-     * in @filename as png image, it returns a boolean
-     * indicating whether the operation was successful or not.
-     * @filename can either be an absolute path or a basename, in
-     * which case the screenshot will be saved in the $XDG_PICTURES_DIR
-     * or the home directory if it doesn't exist.
-     *
-     */
-    ScreenshotAsync : function (params, invocation) {
-        let [include_cursor, flash, filename] = params;
-        let screenshot = new Shell.Screenshot();
-        screenshot.screenshot(include_cursor, filename,
-                          Lang.bind(this, this._onScreenshotComplete,
-                                    flash, invocation));
-    },
-
-    SelectAreaAsync: function (params, invocation) {
-        let selectArea = new SelectArea.SelectArea();
-        selectArea.show();
-        selectArea.connect('finished', Lang.bind(this,
-            function(selectArea, areaRectangle) {
-                if (areaRectangle) {
-                    let retval = GLib.Variant.new('(iiii)',
-                        [areaRectangle.x, areaRectangle.y,
-                         areaRectangle.width, areaRectangle.height]);
-                    invocation.return_value(retval);
-                } else {
-                    invocation.return_error_literal(Gio.IOErrorEnum, Gio.IOErrorEnum.CANCELLED,
-                        "Operation was cancelled");
-                }
-            }));
-    },
-
-    FlashArea: function(x, y, width, height) {
-        let flashspot = new Flashspot.Flashspot({ x : x, y : y, width: width, height: height});
-        flashspot.fire();
     },
 
     Mode: global.session_mode,

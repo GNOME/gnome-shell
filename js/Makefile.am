@@ -49,7 +49,6 @@ nobase_dist_js_DATA = 	\
 	ui/extensionSystem.js	\
 	ui/extensionDownloader.js \
 	ui/environment.js	\
-	ui/flashspot.js		\
 	ui/ibusCandidatePopup.js\
 	ui/grabHelper.js	\
 	ui/iconGrid.js		\
@@ -74,11 +73,11 @@ nobase_dist_js_DATA = 	\
 	ui/popupMenu.js		\
 	ui/remoteSearch.js	\
 	ui/runDialog.js		\
+	ui/screenshot.js	\
         ui/screenShield.js	\
 	ui/scripting.js		\
 	ui/search.js		\
 	ui/searchDisplay.js	\
-	ui/selectArea.js	\
 	ui/shellDBus.js		\
 	ui/status/accessibility.js	\
 	ui/status/keyboard.js	\
