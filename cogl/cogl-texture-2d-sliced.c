@@ -75,15 +75,18 @@ re_normalize_sub_texture_coords_cb (CoglTexture *sub_texture,
                                     void *user_data)
 {
   ForeachData *data = user_data;
+  /* The coordinates passed to the span iterating code were
+   * un-normalized so we need to renormalize them before passing them
+   * on */
   float re_normalized_coords[4] =
     {
-      sub_texture_coords[0] * data->x_normalize_factor,
-      sub_texture_coords[1] * data->y_normalize_factor,
-      sub_texture_coords[2] * data->x_normalize_factor,
-      sub_texture_coords[3] * data->y_normalize_factor
+      meta_coords[0] * data->x_normalize_factor,
+      meta_coords[1] * data->y_normalize_factor,
+      meta_coords[2] * data->x_normalize_factor,
+      meta_coords[3] * data->y_normalize_factor
     };
 
-  data->callback (sub_texture, re_normalized_coords, meta_coords,
+  data->callback (sub_texture, sub_texture_coords, re_normalized_coords,
                   data->user_data);
 }
 
@@ -115,19 +118,22 @@ _cogl_texture_2d_sliced_foreach_sub_texture_in_region (
   data.x_normalize_factor = 1.0f / tex->width;
   data.y_normalize_factor = 1.0f / tex->height;
 
-  un_normalized_coords[0] = virtual_tx_1 * data.x_normalize_factor;
-  un_normalized_coords[1] = virtual_ty_1 * data.y_normalize_factor;
-  un_normalized_coords[2] = virtual_tx_2 * data.x_normalize_factor;
-  un_normalized_coords[3] = virtual_ty_2 * data.y_normalize_factor;
+  un_normalized_coords[0] = virtual_tx_1 * tex->width;
+  un_normalized_coords[1] = virtual_ty_1 * tex->height;
+  un_normalized_coords[2] = virtual_tx_2 * tex->width;
+  un_normalized_coords[3] = virtual_ty_2 * tex->height;
 
+  /* Note that the normalize factors passed here are the reciprocal of
+   * the factors calculated above because the span iterating code
+   * normalizes by dividing by the factor instead of multiplying */
   _cogl_texture_spans_foreach_in_region (x_spans,
                                          tex_2ds->slice_x_spans->len,
                                          y_spans,
                                          tex_2ds->slice_y_spans->len,
                                          textures,
                                          un_normalized_coords,
-                                         1, /* x_normalize_factor */
-                                         1, /* y_normalize_factor */
+                                         tex->width,
+                                         tex->height,
                                          COGL_PIPELINE_WRAP_MODE_REPEAT,
                                          COGL_PIPELINE_WRAP_MODE_REPEAT,
                                          re_normalize_sub_texture_coords_cb,
