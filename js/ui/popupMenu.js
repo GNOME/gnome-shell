@@ -2173,7 +2173,11 @@ const PopupMenuManager = new Lang.Class({
         return -1;
     },
 
-    _closeMenu: function(menu) {
-        menu.close(BoxPointer.PopupAnimation.FULL);
+    _closeMenu: function(isUser, menu) {
+        // If this isn't a user action, we called close()
+        // on the BoxPointer ourselves, so we shouldn't
+        // reanimate.
+        if (isUser)
+            menu.close(BoxPointer.PopupAnimation.FULL);
     }
 });

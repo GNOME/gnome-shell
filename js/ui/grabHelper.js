@@ -280,7 +280,8 @@ const GrabHelper = new Lang.Class({
     // If the actor that was popped from the grab stack was not the actor
     // That was passed in, this call is ignored.
     ungrab: function(params) {
-        params = Params.parse(params, { actor: this.currentGrab.actor });
+        params = Params.parse(params, { actor: this.currentGrab.actor,
+                                        isUser: false });
 
         let grabStackIndex = this._findStackIndex(params.actor);
         if (grabStackIndex < 0)
@@ -298,7 +299,7 @@ const GrabHelper = new Lang.Class({
             let poppedGrab = poppedGrabs[i];
 
             if (poppedGrab.onUngrab)
-                poppedGrab.onUngrab();
+                poppedGrab.onUngrab(params.isUser);
 
             if (poppedGrab.modal)
                 this._releaseModalGrab();
@@ -329,7 +330,7 @@ const GrabHelper = new Lang.Class({
 
         if (type == Clutter.EventType.KEY_PRESS &&
             event.get_key_symbol() == Clutter.KEY_Escape) {
-            this.ungrab();
+            this.ungrab({ isUser: true });
             return true;
         }
 
@@ -345,7 +346,7 @@ const GrabHelper = new Lang.Class({
             if (press)
                 this._ignoreRelease = true;
             let i = this._actorInGrabStack(event.get_source()) + 1;
-            this.ungrab({ actor: this._grabStack[i].actor });
+            this.ungrab({ actor: this._grabStack[i].actor, isUser: true });
         }
 
         return this._modalCount > 0;
@@ -354,12 +355,12 @@ const GrabHelper = new Lang.Class({
     _onKeyFocusChanged: function() {
         let focus = global.stage.key_focus;
         if (!focus || !this._isWithinGrabbedActor(focus))
-            this.ungrab();
+            this.ungrab({ isUser: true });
     },
 
     _focusWindowChanged: function() {
         let metaDisplay = global.screen.get_display();
         if (metaDisplay.focus_window != null)
-            this.ungrab();
+            this.ungrab({ isUser: true });
     }
 });
