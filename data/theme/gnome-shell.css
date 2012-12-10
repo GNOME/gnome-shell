@@ -2431,3 +2431,8 @@ StScrollBar StButton#vhandle:active {
     padding-bottom: 0px;
 }
 
+.input-source-switcher-symbol {
+   font-size: 42pt;
+   width: 96px;
+   height: 96px;
+}
