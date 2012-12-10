@@ -88,11 +88,18 @@ doc-gen-org.gnome.Shell.SearchProvider2.xml: $(top_srcdir)/data/org.gnome.ShellS
 	--generate-docbook doc-gen				\
 	$(top_srcdir)/data/org.gnome.ShellSearchProvider2.xml
 
+doc-gen-org.gnome.Shell.Screenshot.xml: $(top_srcdir)/data/org.gnome.Shell.Screenshot.xml
+	gdbus-codegen 						\
+	--interface-prefix org.gnome.Shell.Screenshot.		\
+	--generate-docbook doc-gen				\
+	$(top_srcdir)/data/org.gnome.Shell.Screenshot.xml
+
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE).
 # e.g. content_files=running.sgml building.sgml changes-2.0.sgml
 content_files= \
 	doc-gen-org.gnome.Shell.SearchProvider.xml	\
-	doc-gen-org.gnome.Shell.SearchProvider2.xml
+	doc-gen-org.gnome.Shell.SearchProvider2.xml	\
+	doc-gen-org.gnome.Shell.Screenshot.xml
 
 # SGML files where gtk-doc abbrevations (#GtkWidget) are expanded
 # These files must be listed here *and* in content_files
