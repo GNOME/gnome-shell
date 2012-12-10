@@ -434,12 +434,11 @@ const Overview = new Lang.Class({
             return;
         if (this._shown)
             return;
-        // Do this manually instead of using _syncInputMode, to handle failure
-        if (!Main.pushModal(this._group, { keybindingMode: Main.KeybindingMode.OVERVIEW }))
-            return;
-        this._modal = true;
-        this._animateVisible();
         this._shown = true;
+        this._syncInputMode();
+        if (!this._modal)
+            return;
+        this._animateVisible();
     },
 
     fadeInDesktop: function() {
