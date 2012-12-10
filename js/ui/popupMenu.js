@@ -2133,11 +2133,12 @@ const PopupMenuManager = new Lang.Class({
     },
 
     _changeMenu: function(newMenu) {
-        if (this.activeMenu) {
-            this._closeMenu(this.activeMenu);
-            newMenu.open(false);
+        let oldMenu = this.activeMenu;
+        if (oldMenu) {
+            oldMenu.close(BoxPointer.PopupAnimation.FADE);
+            newMenu.open(BoxPointer.PopupAnimation.FADE);
         } else {
-            newMenu.open(true);
+            newMenu.open(BoxPointer.PopupAnimation.FULL);
         }
     },
 
