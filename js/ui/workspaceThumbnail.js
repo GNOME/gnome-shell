@@ -992,8 +992,6 @@ const ThumbnailsBox = new Lang.Class({
         // See comment about this._background in _init()
         let themeNode = this._background.get_theme_node();
 
-        forWidth = themeNode.adjust_for_width(forWidth);
-
         // Note that for getPreferredWidth/Height we cheat a bit and skip propagating
         // the size request to our children because we know how big they are and know
         // that the actors aren't depending on the virtual functions being called.

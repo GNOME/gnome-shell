@@ -14,6 +14,7 @@ const Dash = imports.ui.dash;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
+const OverviewControls = imports.ui.overviewControls;
 const Panel = imports.ui.panel;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
@@ -239,6 +240,10 @@ const Overview = new Lang.Class({
                                                            this._dash.showAppsButton);
         this._group.add(this._viewSelector.actor, { x_fill: true,
                                                     expand: true });
+
+        this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
+        this._thumbnailsSlider = new OverviewControls.ThumbnailsSlider(this._thumbnailsBox);
+        this._group.add_actor(this._thumbnailsSlider.actor);
 
         // Add our same-line elements after the search entry
         this._overview.add(this._group, { y_fill: true,

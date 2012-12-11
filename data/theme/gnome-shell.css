@@ -626,20 +626,8 @@ StScrollBar StButton#vhandle:active {
     spacing: 24px;
 }
 
-#overview-group {
-    spacing: 32px;
-}
-
-.workspaces-display {
-    spacing: 32px; /* needs to be the same value as #overview-group */
-}
-
 .window-caption {
     spacing: 25px;
-}
-
-.workspace-controls {
-    visible-width: 32px; /* Amount visible before hovering */
 }
 
 .workspace-thumbnails-background {
@@ -659,6 +647,7 @@ StScrollBar StButton#vhandle:active {
 
 .workspace-thumbnails {
     spacing: 11px;
+    visible-width: 32px; /* Amount visible before hovering */
 }
 
 .workspace-thumbnail-indicator {
@@ -722,6 +711,8 @@ StScrollBar StButton#vhandle:active {
 .window-picker {
     -horizontal-spacing: 32px;
     -vertical-spacing: 32px;
+    padding-left: 32px;
+    padding-right: 32px;
 }
 
 .window-picker.external-monitor {
@@ -857,13 +848,13 @@ StScrollBar StButton#vhandle:active {
 }
 
 .all-app {
-    padding: 16px 25px 16px 16px;
+    padding: 16px 16px 16px 48px;
     spacing: 20px;
 }
 
 .all-app:rtl {
-    padding-right: 16px;
-    padding-left: 25px;
+    padding-left: 16px;
+    padding-right: 48px;
 }
 
 .app-filter {

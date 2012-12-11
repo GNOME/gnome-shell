@@ -728,6 +728,7 @@ const WindowOverlay = new Lang.Class({
 Signals.addSignalMethods(WindowOverlay.prototype);
 
 const WindowPositionFlags = {
+    NONE: 0,
     INITIAL: 1 << 0,
     ANIMATE: 1 << 1
 };
@@ -1088,7 +1089,7 @@ const Workspace = new Lang.Class({
             return false;
         }));
 
-        this.positionWindows(WindowPositionFlags.ANIMATE);
+        this.positionWindows(WindowPositionFlags.NONE);
     },
 
     _lookupIndex: function (metaWindow) {

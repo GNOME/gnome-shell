@@ -5,6 +5,7 @@ const Lang = imports.lang;
 const St = imports.gi.St;
 
 const Main = imports.ui.main;
+const Tweener = imports.ui.tweener;
 
 const SIDE_CONTROLS_ANIMATION_TIME = 0.2;
 
@@ -140,5 +141,65 @@ const SlidingControl = new Lang.Class({
     slideOut: function() {
         this.visible = false;
         this.updateSlide();
+    }
+});
+
+const ThumbnailsSlider = new Lang.Class({
+    Name: 'ThumbnailsSlider',
+    Extends: SlidingControl,
+
+    _init: function(thumbnailsBox) {
+        this.parent();
+
+        this.layout.slideDirection = SlideDirection.RIGHT;
+
+        this._thumbnailsBox = thumbnailsBox;
+
+        // SlideLayout reads the actor's expand flags to decide
+        // whether to allocate the natural size to its child, or the whole
+        // available allocation
+        this._thumbnailsBox.actor.y_expand = true;
+
+        this.actor.request_mode = Clutter.RequestMode.WIDTH_FOR_HEIGHT;
+        this.actor.reactive = true;
+        this.actor.track_hover = true;
+        this.actor.add_actor(this._thumbnailsBox.actor);
+
+        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this.updateSlide));
+        this.actor.connect('notify::hover', Lang.bind(this, this.updateSlide));
+    },
+
+    getSlide: function() {
+        if (!this.visible)
+            return 0;
+
+        // Always show the pager when hover, during a drag, or if workspaces are
+        // actually used, e.g. there are windows on more than one
+        let alwaysZoomOut = this.actor.hover || this.inDrag || global.screen.n_workspaces > 2;
+
+        if (!alwaysZoomOut) {
+            let monitors = Main.layoutManager.monitors;
+            let primary = Main.layoutManager.primaryMonitor;
+
+            /* Look for any monitor to the right of the primary, if there is
+             * one, we always keep zoom out, otherwise its hard to reach
+             * the thumbnail area without passing into the next monitor. */
+            for (let i = 0; i < monitors.length; i++) {
+                if (monitors[i].x >= primary.x + primary.width) {
+                    alwaysZoomOut = true;
+                    break;
+                }
+            }
+        }
+
+        if (alwaysZoomOut)
+            return 1;
+
+        let child = this.actor.get_first_child();
+        let preferredHeight = child.get_preferred_height(-1)[1];
+        let expandedWidth = child.get_preferred_width(preferredHeight)[1];
+        let visibleWidth = child.get_theme_node().get_length('visible-width');
+
+        return visibleWidth / expandedWidth;
     }
 });
