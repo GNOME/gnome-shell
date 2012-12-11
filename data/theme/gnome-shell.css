@@ -1321,7 +1321,7 @@ StScrollBar StButton#vhandle:active {
 
 .notification {
     border-radius: 10px 10px 0px 0px;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.9);
     padding: 8px 8px 4px 8px;
     spacing-rows: 10px;
     spacing-columns: 10px;
@@ -1353,7 +1353,7 @@ StScrollBar StButton#vhandle:active {
 
 .summary-boxpointer {
     -arrow-border-radius: 15px;
-    -arrow-background-color: rgba(0,0,0,0.8);
+    -arrow-background-color: rgba(0,0,0,0.9);
     -arrow-base: 36px;
     -arrow-rise: 18px;
     color: white;
