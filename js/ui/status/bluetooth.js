@@ -80,7 +80,7 @@ const Indicator = new Lang.Class({
         this._applet.connect('notify::show-full-menu', Lang.bind(this, this._updateFullMenu));
         this._updateFullMenu();
 
-        this.menu.addSettingsAction(_("Bluetooth Settings"), 'bluetooth-properties.desktop');
+        this.menu.addSettingsAction(_("Bluetooth Settings"), 'gnome-bluetooth-panel.desktop');
 
         this._applet.connect('pincode-request', Lang.bind(this, this._pinRequest));
         this._applet.connect('confirm-request', Lang.bind(this, this._confirmRequest));
