@@ -593,6 +593,7 @@ const UserMenuButton = new Lang.Class({
 
         this.setSensitive(!Main.sessionMode.isLocked);
         this._updatePresenceIcon();
+        this._updateUserName();
     },
 
     _onDestroy: function() {
