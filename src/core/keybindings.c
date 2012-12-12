@@ -610,10 +610,10 @@ add_builtin_keybinding (MetaDisplay          *display,
  *
  * Use meta_display_remove_keybinding() to remove the binding.
  *
- * Returns: %TRUE if the keybinding was added successfully,
- *          otherwise %FALSE
+ * Returns: the corresponding keybinding action if the keybinding was
+ *          added successfully, otherwise %META_KEYBINDING_ACTION_NONE
  */
-gboolean
+guint
 meta_display_add_keybinding (MetaDisplay         *display,
                              const char          *name,
                              GSettings           *settings,
@@ -622,9 +622,15 @@ meta_display_add_keybinding (MetaDisplay         *display,
                              gpointer             user_data,
                              GDestroyNotify       free_data)
 {
-  return add_keybinding_internal (display, name, settings, flags,
-                                  META_KEYBINDING_ACTION_NONE,
-                                  handler, 0, user_data, free_data);
+  static guint num_dynamic_bindings = 0;
+  guint new_action = META_KEYBINDING_ACTION_LAST + num_dynamic_bindings;
+
+  if (!add_keybinding_internal (display, name, settings, flags, new_action,
+                                handler, 0, user_data, free_data))
+    return META_KEYBINDING_ACTION_NONE;
+
+  ++num_dynamic_bindings;
+  return new_action;
 }
 
 /**
@@ -656,15 +662,15 @@ meta_display_remove_keybinding (MetaDisplay *display,
  * @keycode: Raw keycode
  * @mask: Event mask
  *
- * Get the #MetaKeyBindingAction bound to %keycode. Only builtin
- * keybindings have an associated #MetaKeyBindingAction, for
- * bindings added dynamically with meta_display_add_keybinding()
- * the function will always return %META_KEYBINDING_ACTION_NONE.
+ * Get the keybinding action bound to @keycode. Builtin keybindings
+ * have a fixed associated #MetaKeyBindingAction, for bindings added
+ * dynamically the function will return the keybinding action
+ * meta_display_add_keybinding() returns on registration.
  *
  * Returns: The action that should be taken for the given key, or
  * %META_KEYBINDING_ACTION_NONE.
  */
-MetaKeyBindingAction
+guint
 meta_display_get_keybinding_action (MetaDisplay  *display,
                                     unsigned int  keycode,
                                     unsigned long mask)
@@ -689,7 +695,7 @@ meta_display_get_keybinding_action (MetaDisplay  *display,
     binding = display_get_keybinding (display, META_KEY_ABOVE_TAB, keycode, mask);
 
   if (binding)
-    return meta_prefs_get_keybinding_action (binding->name);
+    return (guint) meta_prefs_get_keybinding_action (binding->name);
   else
     return META_KEYBINDING_ACTION_NONE;
 }

@@ -127,19 +127,19 @@ void     meta_display_end_grab_op   (MetaDisplay *display,
 
 MetaGrabOp meta_display_get_grab_op (MetaDisplay *display);
 
-gboolean meta_display_add_keybinding    (MetaDisplay         *display,
-                                         const char          *name,
-                                         GSettings           *settings,
-                                         MetaKeyBindingFlags  flags,
-                                         MetaKeyHandlerFunc   handler,
-                                         gpointer             user_data,
-                                         GDestroyNotify       free_data);
+guint meta_display_add_keybinding    (MetaDisplay         *display,
+                                      const char          *name,
+                                      GSettings           *settings,
+                                      MetaKeyBindingFlags  flags,
+                                      MetaKeyHandlerFunc   handler,
+                                      gpointer             user_data,
+                                      GDestroyNotify       free_data);
 gboolean meta_display_remove_keybinding (MetaDisplay         *display,
                                          const char          *name);
 
-MetaKeyBindingAction meta_display_get_keybinding_action (MetaDisplay  *display,
-                                                         unsigned int  keycode,
-                                                         unsigned long mask);
+guint meta_display_get_keybinding_action (MetaDisplay  *display,
+                                          unsigned int  keycode,
+                                          unsigned long mask);
 
 /* meta_display_set_input_focus_window is like XSetInputFocus, except
  * that (a) it can't detect timestamps later than the current time,
