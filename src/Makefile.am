@@ -115,6 +115,7 @@ shell_public_headers_h =		\
 	shell-gtk-embed.h		\
 	shell-global.h			\
 	shell-invert-lightness-effect.h	\
+	shell-keybinding-modes.h	\
 	shell-mobile-providers.h	\
 	shell-mount-operation.h		\
 	shell-network-agent.h		\

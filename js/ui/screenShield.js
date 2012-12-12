@@ -8,6 +8,7 @@ const GnomeDesktop = imports.gi.GnomeDesktop;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
+const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 const TweenerEquations = imports.tweener.equations;
@@ -693,7 +694,7 @@ const ScreenShield = new Lang.Class({
         }
 
         if (!this._isModal) {
-            Main.pushModal(this.actor, { keybindingMode: Main.KeybindingMode.LOCK_SCREEN });
+            Main.pushModal(this.actor, { keybindingMode: Shell.KeyBindingMode.LOCK_SCREEN });
             this._isModal = true;
             }
 
@@ -1101,7 +1102,7 @@ const ScreenShield = new Lang.Class({
 
     lock: function(animate) {
         if (!this._isModal) {
-            Main.pushModal(this.actor, { keybindingMode: Main.KeybindingMode.LOCK_SCREEN });
+            Main.pushModal(this.actor, { keybindingMode: Shell.KeyBindingMode.LOCK_SCREEN });
             this._isModal = true;
         }
 

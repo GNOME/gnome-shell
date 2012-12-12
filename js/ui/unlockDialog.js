@@ -115,7 +115,7 @@ const UnlockDialog = new Lang.Class({
     _init: function(parentActor) {
         this.parent({ shellReactive: true,
                       styleClass: 'login-dialog',
-                      keybindingMode: Main.KeybindingMode.UNLOCK_SCREEN,
+                      keybindingMode: Shell.KeyBindingMode.UNLOCK_SCREEN,
                       parentActor: parentActor
                     });
 

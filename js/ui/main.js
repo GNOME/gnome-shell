@@ -40,19 +40,6 @@ const Util = imports.misc.util;
 const OVERRIDES_SCHEMA = 'org.gnome.shell.overrides';
 const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
-const KeybindingMode = {
-    NONE:          0,       // block all keybindings
-    NORMAL:        1 << 0,  // window mode
-    OVERVIEW:      1 << 1,
-    LOCK_SCREEN:   1 << 2,
-    UNLOCK_SCREEN: 1 << 3,
-    LOGIN_SCREEN:  1 << 4,
-    MESSAGE_TRAY:  1 << 5,
-    SYSTEM_MODAL:  1 << 6,
-    LOOKING_GLASS: 1 << 7,
-    ALL:           ~0,
-};
-
 let componentManager = null;
 let panel = null;
 let overview = null;
@@ -69,7 +56,7 @@ let shellDBusService = null;
 let shellMountOpDBusService = null;
 let screenSaverDBus = null;
 let modalCount = 0;
-let keybindingMode = KeybindingMode.NORMAL;
+let keybindingMode = Shell.KeyBindingMode.NORMAL;
 let modalActorFocusStack = [];
 let uiGroup = null;
 let magnifier = null;
@@ -83,15 +70,15 @@ let _overridesSettings = null;
 
 function _sessionUpdated() {
     wm.setCustomKeybindingHandler('panel-main-menu',
-                                  KeybindingMode.NORMAL |
-                                  KeybindingMode.OVERVIEW,
+                                  Shell.KeyBindingMode.NORMAL |
+                                  Shell.KeyBindingMode.OVERVIEW,
                                   sessionMode.hasOverview ? Lang.bind(overview, overview.toggle) : null);
-    wm.allowKeybinding('overlay-key', KeybindingMode.NORMAL |
-                                      KeybindingMode.OVERVIEW);
+    wm.allowKeybinding('overlay-key', Shell.KeyBindingMode.NORMAL |
+                                      Shell.KeyBindingMode.OVERVIEW);
 
     wm.setCustomKeybindingHandler('panel-run-dialog',
-                                  KeybindingMode.NORMAL |
-                                  KeybindingMode.OVERVIEW,
+                                  Shell.KeyBindingMode.NORMAL |
+                                  Shell.KeyBindingMode.OVERVIEW,
                                   sessionMode.hasRunDialog ? openRunDialog : null);
     if (sessionMode.isGreeter)
         screenShield.showDialog();
@@ -517,7 +504,7 @@ function isInModalStack(actor) {
  *  - options: Meta.ModalOptions flags to indicate that the pointer is
  *             already grabbed
  *
- *  - keybindingMode: used to set the current Main.KeybindingMode to filter
+ *  - keybindingMode: used to set the current Shell.KeyBindingMode to filter
  *                    global keybindings; the default of NONE will filter
  *                    out all keybindings
  *
@@ -526,7 +513,7 @@ function isInModalStack(actor) {
 function pushModal(actor, params) {
     params = Params.parse(params, { timestamp: global.get_current_time(),
                                     options: 0,
-                                    keybindingMode: KeybindingMode.NONE });
+                                    keybindingMode: Shell.KeyBindingMode.NONE });
 
     if (modalCount == 0) {
         if (!global.begin_modal(params.timestamp, params.options)) {
@@ -587,7 +574,7 @@ function popModal(actor, timestamp) {
         global.stage.set_key_focus(null);
         global.end_modal(timestamp);
         global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
-        keybindingMode = KeybindingMode.NORMAL;
+        keybindingMode = Shell.KeyBindingMode.NORMAL;
 
         throw new Error('incorrect pop');
     }
@@ -636,7 +623,7 @@ function popModal(actor, timestamp) {
     global.end_modal(timestamp);
     global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
     Meta.enable_unredirect_for_screen(global.screen);
-    keybindingMode = KeybindingMode.NORMAL;
+    keybindingMode = Shell.KeyBindingMode.NORMAL;
 }
 
 function createLookingGlass() {

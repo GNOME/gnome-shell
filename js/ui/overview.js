@@ -576,7 +576,7 @@ const Overview = new Lang.Class({
         if (this._shown) {
             if (!this._modal) {
                 if (Main.pushModal(this._overview,
-                                   { keybindingMode: Main.KeybindingMode.OVERVIEW }))
+                                   { keybindingMode: Shell.KeyBindingMode.OVERVIEW }))
                     this._modal = true;
                 else
                     this.hide();

@@ -1535,7 +1535,7 @@ const MessageTray = new Lang.Class({
         this.idleMonitor = new GnomeDesktop.IdleMonitor();
 
         this._grabHelper = new GrabHelper.GrabHelper(this.actor,
-                                                     { keybindingMode: Main.KeybindingMode.MESSAGE_TRAY });
+                                                     { keybindingMode: Shell.KeyBindingMode.MESSAGE_TRAY });
         this._grabHelper.addActor(this._summaryBoxPointer.actor);
         this._grabHelper.addActor(this.actor);
         if (Main.panel.statusArea.activities)
@@ -1603,16 +1603,16 @@ const MessageTray = new Lang.Class({
         Main.wm.addKeybinding('toggle-message-tray',
                               new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
                               Meta.KeyBindingFlags.NONE,
-                              Main.KeybindingMode.NORMAL |
-                              Main.KeybindingMode.MESSAGE_TRAY |
-                              Main.KeybindingMode.OVERVIEW,
+                              Shell.KeyBindingMode.NORMAL |
+                              Shell.KeyBindingMode.MESSAGE_TRAY |
+                              Shell.KeyBindingMode.OVERVIEW,
                               Lang.bind(this, this.toggleAndNavigate));
         Main.wm.addKeybinding('focus-active-notification',
                               new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
                               Meta.KeyBindingFlags.NONE,
-                              Main.KeybindingMode.NORMAL |
-                              Main.KeybindingMode.MESSAGE_TRAY |
-                              Main.KeybindingMode.OVERVIEW,
+                              Shell.KeyBindingMode.NORMAL |
+                              Shell.KeyBindingMode.MESSAGE_TRAY |
+                              Shell.KeyBindingMode.OVERVIEW,
                               Lang.bind(this, this._expandActiveNotification));
 
         this._sources = new Hash.Map();

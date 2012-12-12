@@ -136,8 +136,8 @@ const ViewSelector = new Lang.Class({
         Main.wm.addKeybinding('toggle-application-view',
                               new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
                               Meta.KeyBindingFlags.NONE,
-                              Main.KeybindingMode.NORMAL |
-                              Main.KeybindingMode.OVERVIEW,
+                              Shell.KeyBindingMode.NORMAL |
+                              Shell.KeyBindingMode.OVERVIEW,
                               Lang.bind(this, this._toggleAppsPage));
     },
 
