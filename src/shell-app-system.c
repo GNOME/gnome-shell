@@ -738,7 +738,8 @@ normalize_terms (GSList *terms)
   for (iter = terms; iter; iter = iter->next)
     {
       const char *term = iter->data;
-      normalized_terms = g_slist_prepend (normalized_terms, shell_util_normalize_and_casefold (term));
+      normalized_terms = g_slist_prepend (normalized_terms,
+                                          shell_util_normalize_casefold_and_unaccent (term));
     }
   return normalized_terms;
 }

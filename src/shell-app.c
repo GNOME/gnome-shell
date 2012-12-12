@@ -1319,16 +1319,16 @@ shell_app_init_search_data (ShellApp *app)
 
   appinfo = gmenu_tree_entry_get_app_info (app->entry);
   name = g_app_info_get_name (G_APP_INFO (appinfo));
-  app->casefolded_name = shell_util_normalize_and_casefold (name);
+  app->casefolded_name = shell_util_normalize_casefold_and_unaccent (name);
 
   generic_name = g_desktop_app_info_get_generic_name (appinfo);
   if (generic_name)
-    app->casefolded_generic_name = shell_util_normalize_and_casefold (generic_name);
+    app->casefolded_generic_name = shell_util_normalize_casefold_and_unaccent (generic_name);
   else
     app->casefolded_generic_name = NULL;
 
   exec = g_app_info_get_executable (G_APP_INFO (appinfo));
-  normalized_exec = shell_util_normalize_and_casefold (exec);
+  normalized_exec = shell_util_normalize_casefold_and_unaccent (exec);
   app->casefolded_exec = trim_exec_line (normalized_exec);
   g_free (normalized_exec);
 
@@ -1343,7 +1343,7 @@ shell_app_init_search_data (ShellApp *app)
       i = 0;
       while (keywords[i])
         {
-          app->casefolded_keywords[i] = shell_util_normalize_and_casefold (keywords[i]);
+          app->casefolded_keywords[i] = shell_util_normalize_casefold_and_unaccent (keywords[i]);
           ++i;
         }
       app->casefolded_keywords[i] = NULL;
