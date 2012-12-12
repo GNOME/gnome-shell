@@ -54,6 +54,7 @@ keysdir = @GNOME_KEYBINDINGS_KEYSDIR@
 keys_in_files =					\
 	50-gnome-shell-screenshot.xml.in	\
 	50-gnome-shell-system.xml.in		\
+	50-gnome-shell-typing.xml.in		\
 	$(NULL)
 keys_DATA = $(keys_in_files:.xml.in=.xml)
 
