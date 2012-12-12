@@ -98,13 +98,14 @@ typedef struct _CoglTexturePixmapGLX
 
 /* Define a set of arrays containing the functions required from GL
    for each winsys feature */
-#define COGL_WINSYS_FEATURE_BEGIN(name, namespaces, extension_names,    \
-                                  feature_flags, feature_flags_private, \
+#define COGL_WINSYS_FEATURE_BEGIN(major_version, minor_version,         \
+                                  name, namespaces, extension_names,    \
+                                  feature_flags,                        \
                                   winsys_feature)                       \
   static const CoglFeatureFunction                                      \
   cogl_glx_feature_ ## name ## _funcs[] = {
 #define COGL_WINSYS_FEATURE_FUNCTION(ret, name, args)                   \
-  { G_STRINGIFY (name), G_STRUCT_OFFSET (CoglGLXRenderer, pf_ ## name) },
+  { G_STRINGIFY (name), G_STRUCT_OFFSET (CoglGLXRenderer, name) },
 #define COGL_WINSYS_FEATURE_END()               \
   { NULL, 0 },                                  \
     };
@@ -112,11 +113,14 @@ typedef struct _CoglTexturePixmapGLX
 
 /* Define an array of features */
 #undef COGL_WINSYS_FEATURE_BEGIN
-#define COGL_WINSYS_FEATURE_BEGIN(name, namespaces, extension_names,    \
-                                  feature_flags, feature_flags_private, \
+#define COGL_WINSYS_FEATURE_BEGIN(major_version, minor_version,         \
+                                  name, namespaces, extension_names,    \
+                                  feature_flags,                        \
                                   winsys_feature)                       \
-  { 255, 255, 0, namespaces, extension_names,                           \
-      feature_flags, feature_flags_private,                             \
+  { major_version, minor_version,                                       \
+      0, namespaces, extension_names,                                   \
+      feature_flags,                                                    \
+      0,                                                                \
       winsys_feature, \
       cogl_glx_feature_ ## name ## _funcs },
 #undef COGL_WINSYS_FEATURE_FUNCTION
@@ -268,38 +272,10 @@ resolve_core_glx_functions (CoglRenderer *renderer,
 
   glx_renderer = renderer->winsys;
 
-  if (!g_module_symbol (glx_renderer->libgl_module, "glXCreatePixmap",
-                        (void **) &glx_renderer->glXCreatePixmap) ||
-      !g_module_symbol (glx_renderer->libgl_module, "glXDestroyPixmap",
-                        (void **) &glx_renderer->glXDestroyPixmap) ||
-      !g_module_symbol (glx_renderer->libgl_module, "glXChooseFBConfig",
-                        (void **) &glx_renderer->glXChooseFBConfig) ||
-      !g_module_symbol (glx_renderer->libgl_module, "glXCreateNewContext",
-                        (void **) &glx_renderer->glXCreateNewContext) ||
-      !g_module_symbol (glx_renderer->libgl_module, "glXGetFBConfigAttrib",
-                        (void **) &glx_renderer->glXGetFBConfigAttrib) ||
+  if (!g_module_symbol (glx_renderer->libgl_module, "glXQueryExtension",
+                        (void **) &glx_renderer->glXQueryExtension) ||
       !g_module_symbol (glx_renderer->libgl_module, "glXQueryVersion",
                         (void **) &glx_renderer->glXQueryVersion) ||
-      !g_module_symbol (glx_renderer->libgl_module, "glXDestroyContext",
-                        (void **) &glx_renderer->glXDestroyContext) ||
-      !g_module_symbol (glx_renderer->libgl_module, "glXMakeContextCurrent",
-                        (void **) &glx_renderer->glXMakeContextCurrent) ||
-      !g_module_symbol (glx_renderer->libgl_module, "glXSwapBuffers",
-                        (void **) &glx_renderer->glXSwapBuffers) ||
-      !g_module_symbol (glx_renderer->libgl_module, "glXQueryExtension",
-                        (void **) &glx_renderer->glXQueryExtension) ||
-      !g_module_symbol (glx_renderer->libgl_module, "glXIsDirect",
-                        (void **) &glx_renderer->glXIsDirect) ||
-      !g_module_symbol (glx_renderer->libgl_module, "glXGetVisualFromFBConfig",
-                        (void **) &glx_renderer->glXGetVisualFromFBConfig) ||
-      !g_module_symbol (glx_renderer->libgl_module, "glXSelectEvent",
-                        (void **) &glx_renderer->glXSelectEvent) ||
-      !g_module_symbol (glx_renderer->libgl_module, "glXCreateWindow",
-                        (void **) &glx_renderer->glXCreateWindow) ||
-      !g_module_symbol (glx_renderer->libgl_module, "glXGetFBConfigs",
-                        (void **) &glx_renderer->glXGetFBConfigs) ||
-      !g_module_symbol (glx_renderer->libgl_module, "glXDestroyWindow",
-                        (void **) &glx_renderer->glXDestroyWindow) ||
       !g_module_symbol (glx_renderer->libgl_module, "glXQueryExtensionsString",
                         (void **) &glx_renderer->glXQueryExtensionsString) ||
       (!g_module_symbol (glx_renderer->libgl_module, "glXGetProcAddress",
@@ -314,6 +290,66 @@ resolve_core_glx_functions (CoglRenderer *renderer,
     }
 
   return TRUE;
+}
+
+static void
+update_base_winsys_features (CoglRenderer *renderer)
+{
+  CoglGLXRenderer *glx_renderer = renderer->winsys;
+  CoglXlibRenderer *xlib_renderer =
+    _cogl_xlib_renderer_get_data (renderer);
+  const char *glx_extensions;
+  int default_screen;
+  char **split_extensions;
+  int i;
+
+  default_screen = DefaultScreen (xlib_renderer->xdpy);
+  glx_extensions =
+    glx_renderer->glXQueryExtensionsString (xlib_renderer->xdpy,
+                                            default_screen);
+
+  COGL_NOTE (WINSYS, "  GLX Extensions: %s", glx_extensions);
+
+  split_extensions = g_strsplit (glx_extensions, " ", 0 /* max_tokens */);
+
+  for (i = 0; i < G_N_ELEMENTS (winsys_feature_data); i++)
+    if (_cogl_feature_check (renderer,
+                             "GLX", winsys_feature_data + i,
+                             glx_renderer->glx_major,
+                             glx_renderer->glx_minor,
+                             COGL_DRIVER_GL, /* the driver isn't used */
+                             split_extensions,
+                             glx_renderer))
+      {
+        glx_renderer->legacy_feature_flags |=
+          winsys_feature_data[i].feature_flags;
+        if (winsys_feature_data[i].winsys_feature)
+          COGL_FLAGS_SET (glx_renderer->base_winsys_features,
+                          winsys_feature_data[i].winsys_feature,
+                          TRUE);
+      }
+
+  g_strfreev (split_extensions);
+
+  /* Note: the GLX_SGI_video_sync spec explicitly states this extension
+   * only works for direct contexts. */
+  if (!glx_renderer->is_direct)
+    {
+      glx_renderer->glXGetVideoSync = NULL;
+      glx_renderer->glXWaitVideoSync = NULL;
+      COGL_FLAGS_SET (glx_renderer->base_winsys_features,
+                      COGL_WINSYS_FEATURE_VBLANK_COUNTER,
+                      FALSE);
+    }
+
+  COGL_FLAGS_SET (glx_renderer->base_winsys_features,
+                  COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
+                  TRUE);
+
+  if (glx_renderer->glXWaitVideoSync)
+    COGL_FLAGS_SET (glx_renderer->base_winsys_features,
+                    COGL_WINSYS_FEATURE_VBLANK_WAIT,
+                    TRUE);
 }
 
 static CoglBool
@@ -378,6 +414,8 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
       goto error;
     }
 
+  update_base_winsys_features (renderer);
+
   glx_renderer->dri_fd = -1;
 
   return TRUE;
@@ -391,70 +429,24 @@ static CoglBool
 update_winsys_features (CoglContext *context, CoglError **error)
 {
   CoglGLXDisplay *glx_display = context->display->winsys;
-  CoglXlibRenderer *xlib_renderer =
-    _cogl_xlib_renderer_get_data (context->display->renderer);
   CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
-  const char *glx_extensions;
-  char **split_extensions;
-  int default_screen;
-  int i;
 
   _COGL_RETURN_VAL_IF_FAIL (glx_display->glx_context, FALSE);
 
   if (!_cogl_context_update_features (context, error))
     return FALSE;
 
-  memset (context->winsys_features, 0, sizeof (context->winsys_features));
+  memcpy (context->winsys_features,
+          glx_renderer->base_winsys_features,
+          sizeof (context->winsys_features));
 
-  default_screen = DefaultScreen (xlib_renderer->xdpy);
-  glx_extensions =
-    glx_renderer->glXQueryExtensionsString (xlib_renderer->xdpy,
-                                            default_screen);
-
-  COGL_NOTE (WINSYS, "  GLX Extensions: %s", glx_extensions);
+  context->feature_flags |= glx_renderer->legacy_feature_flags;
 
   context->feature_flags |= COGL_FEATURE_ONSCREEN_MULTIPLE;
   COGL_FLAGS_SET (context->features,
                   COGL_FEATURE_ID_ONSCREEN_MULTIPLE, TRUE);
-  COGL_FLAGS_SET (context->winsys_features,
-                  COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
-                  TRUE);
 
-  split_extensions = g_strsplit (glx_extensions, " ", 0 /* max_tokens */);
-
-  for (i = 0; i < G_N_ELEMENTS (winsys_feature_data); i++)
-    if (_cogl_feature_check (context->display->renderer,
-                             "GLX", winsys_feature_data + i, 0, 0,
-                             COGL_DRIVER_GL, /* the driver isn't used */
-                             split_extensions,
-                             glx_renderer))
-      {
-        context->feature_flags |= winsys_feature_data[i].feature_flags;
-        if (winsys_feature_data[i].winsys_feature)
-          COGL_FLAGS_SET (context->winsys_features,
-                          winsys_feature_data[i].winsys_feature,
-                          TRUE);
-      }
-
-  g_strfreev (split_extensions);
-
-  /* Note: the GLX_SGI_video_sync spec explicitly states this extension
-   * only works for direct contexts. */
-  if (!glx_renderer->is_direct)
-    {
-      glx_renderer->pf_glXGetVideoSync = NULL;
-      glx_renderer->pf_glXWaitVideoSync = NULL;
-      COGL_FLAGS_SET (context->winsys_features,
-                      COGL_WINSYS_FEATURE_VBLANK_COUNTER,
-                      FALSE);
-    }
-
-  if (glx_renderer->pf_glXWaitVideoSync)
-    COGL_FLAGS_SET (context->winsys_features,
-                    COGL_WINSYS_FEATURE_VBLANK_WAIT,
-                    TRUE);
-
-  if (glx_renderer->pf_glXCopySubBuffer || context->glBlitFramebuffer)
+  if (glx_renderer->glXCopySubBuffer || context->glBlitFramebuffer)
     {
       CoglGpuInfoArchitecture arch;
 
@@ -633,14 +625,14 @@ create_gl3_context (CoglDisplay *display,
 
   /* Make sure that the display supports the GLX_ARB_create_context
      extension */
-  if (glx_renderer->pf_glXCreateContextAttribs == NULL)
+  if (glx_renderer->glXCreateContextAttribs == NULL)
     return NULL;
 
-  return glx_renderer->pf_glXCreateContextAttribs (xlib_renderer->xdpy,
-                                                   fb_config,
-                                                   NULL /* share_context */,
-                                                   True, /* direct */
-                                                   attrib_list);
+  return glx_renderer->glXCreateContextAttribs (xlib_renderer->xdpy,
+                                                fb_config,
+                                                NULL /* share_context */,
+                                                True, /* direct */
+                                                attrib_list);
 }
 
 static CoglBool
@@ -1143,13 +1135,13 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
    * MESA and SGI extensions which should technically be mutually
    * exclusive.
    */
-  if (glx_renderer->pf_glXSwapInterval)
+  if (glx_renderer->glXSwapInterval)
     {
       CoglFramebuffer *fb = COGL_FRAMEBUFFER (onscreen);
       if (fb->config.swap_throttled)
-        glx_renderer->pf_glXSwapInterval (1);
+        glx_renderer->glXSwapInterval (1);
       else
-        glx_renderer->pf_glXSwapInterval (0);
+        glx_renderer->glXSwapInterval (0);
     }
 
   XSync (xlib_renderer->xdpy, False);
@@ -1174,14 +1166,14 @@ _cogl_winsys_wait_for_vblank (CoglContext *ctx)
 
   glx_renderer = ctx->display->renderer->winsys;
 
-  if (glx_renderer->pf_glXGetVideoSync)
+  if (glx_renderer->glXGetVideoSync)
     {
       uint32_t current_count;
 
-      glx_renderer->pf_glXGetVideoSync (&current_count);
-      glx_renderer->pf_glXWaitVideoSync (2,
-                                         (current_count + 1) % 2,
-                                         &current_count);
+      glx_renderer->glXGetVideoSync (&current_count);
+      glx_renderer->glXWaitVideoSync (2,
+                                      (current_count + 1) % 2,
+                                      &current_count);
     }
 }
 
@@ -1193,7 +1185,7 @@ _cogl_winsys_get_vsync_counter (CoglContext *ctx)
 
   glx_renderer = ctx->display->renderer->winsys;
 
-  glx_renderer->pf_glXGetVideoSync (&video_sync_count);
+  glx_renderer->glXGetVideoSync (&video_sync_count);
 
   return video_sync_count;
 }
@@ -1306,15 +1298,15 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
   else if (can_wait)
     _cogl_winsys_wait_for_vblank (context);
 
-  if (glx_renderer->pf_glXCopySubBuffer)
+  if (glx_renderer->glXCopySubBuffer)
     {
       Display *xdpy = xlib_renderer->xdpy;
       int i;
       for (i = 0; i < n_rectangles; i++)
         {
           int *rect = &rectangles[4 * i];
-          glx_renderer->pf_glXCopySubBuffer (xdpy, drawable,
-                                             rect[0], rect[1], rect[2], rect[3]);
+          glx_renderer->glXCopySubBuffer (xdpy, drawable,
+                                          rect[0], rect[1], rect[2], rect[3]);
         }
     }
   else if (context->glBlitFramebuffer)
@@ -1400,7 +1392,7 @@ _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
       if (have_counter)
         end_frame_vsync_counter = _cogl_winsys_get_vsync_counter (context);
 
-      if (!glx_renderer->pf_glXSwapInterval)
+      if (!glx_renderer->glXSwapInterval)
         {
           CoglBool can_wait =
             _cogl_winsys_has_feature (COGL_WINSYS_FEATURE_VBLANK_WAIT);
@@ -1878,9 +1870,9 @@ free_glx_pixmap (CoglContext *context,
   glx_renderer = renderer->winsys;
 
   if (glx_tex_pixmap->pixmap_bound)
-    glx_renderer->pf_glXReleaseTexImage (xlib_renderer->xdpy,
-                                         glx_tex_pixmap->glx_pixmap,
-                                         GLX_FRONT_LEFT_EXT);
+    glx_renderer->glXReleaseTexImage (xlib_renderer->xdpy,
+                                      glx_tex_pixmap->glx_pixmap,
+                                      GLX_FRONT_LEFT_EXT);
 
   /* FIXME - we need to trap errors and synchronize here because
    * of ordering issues between the XPixmap destruction and the
@@ -2043,14 +2035,14 @@ _cogl_winsys_texture_pixmap_x11_update (CoglTexturePixmapX11 *tex_pixmap,
       _cogl_bind_gl_texture_transient (gl_target, gl_handle, FALSE);
 
       if (glx_tex_pixmap->pixmap_bound)
-        glx_renderer->pf_glXReleaseTexImage (xlib_renderer->xdpy,
-                                             glx_tex_pixmap->glx_pixmap,
-                                             GLX_FRONT_LEFT_EXT);
+        glx_renderer->glXReleaseTexImage (xlib_renderer->xdpy,
+                                          glx_tex_pixmap->glx_pixmap,
+                                          GLX_FRONT_LEFT_EXT);
 
-      glx_renderer->pf_glXBindTexImage (xlib_renderer->xdpy,
-                                        glx_tex_pixmap->glx_pixmap,
-                                        GLX_FRONT_LEFT_EXT,
-                                        NULL);
+      glx_renderer->glXBindTexImage (xlib_renderer->xdpy,
+                                     glx_tex_pixmap->glx_pixmap,
+                                     GLX_FRONT_LEFT_EXT,
+                                     NULL);
 
       /* According to the recommended usage in the spec for
        * GLX_EXT_texture_pixmap we should release the texture after

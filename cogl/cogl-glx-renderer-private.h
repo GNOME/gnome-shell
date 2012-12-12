@@ -45,61 +45,35 @@ typedef struct _CoglGLXRenderer
   /* GModule pointing to libGL which we use to get glX functions out of */
   GModule *libgl_module;
 
+  /* Copy of the winsys features that are based purely on the
+   * information we can get without using a GL context. We want to
+   * determine this before we have a context so that we can use the
+   * function pointers from the extensions earlier. This is necessary
+   * to use the glXCreateContextAttribs function. */
+  unsigned long base_winsys_features
+    [COGL_FLAGS_N_LONGS_FOR_SIZE (COGL_WINSYS_FEATURE_N_FEATURES)];
+
+  CoglFeatureFlags legacy_feature_flags;
+
   /* Function pointers for core GLX functionality. We can't just link
      against these directly because we need to conditionally load
      libGL when we are using GLX so that it won't conflict with a GLES
-     library if we are using EGL + GLES */
-  void
-  (* glXDestroyContext) (Display *dpy, GLXContext ctx);
-  void
-  (* glXSwapBuffers) (Display *dpy, GLXDrawable drawable);
+     library if we are using EGL + GLES. These are just the functions
+     that we want to use before calling glXGetProcAddress */
   Bool
   (* glXQueryExtension) (Display *dpy, int *errorb, int *event);
   const char *
   (* glXQueryExtensionsString) (Display *dpy, int screen);
   Bool
   (* glXQueryVersion) (Display *dpy, int *maj, int *min);
-  Bool
-  (* glXIsDirect) (Display *dpy, GLXContext ctx);
-  int
-  (* glXGetFBConfigAttrib) (Display *dpy, GLXFBConfig config,
-                            int attribute, int *value);
-  GLXWindow
-  (* glXCreateWindow) (Display *dpy, GLXFBConfig config,
-                       Window win, const int *attribList);
-  void
-  (* glXDestroyWindow) (Display *dpy, GLXWindow window);
-  GLXPixmap
-  (* glXCreatePixmap) (Display *dpy, GLXFBConfig config,
-                       Pixmap pixmap, const int *attribList);
-  void
-  (* glXDestroyPixmap) (Display *dpy, GLXPixmap pixmap);
-  GLXContext
-  (* glXCreateNewContext) (Display *dpy, GLXFBConfig config,
-                           int renderType, GLXContext shareList,
-                           Bool direct);
-  Bool
-  (* glXMakeContextCurrent) (Display *dpy, GLXDrawable draw,
-                             GLXDrawable read, GLXContext ctx);
-  void
-  (* glXSelectEvent) (Display *dpy, GLXDrawable drawable,
-                      unsigned long mask);
-  GLXFBConfig *
-  (* glXGetFBConfigs) (Display *dpy, int screen, int *nelements);
-  GLXFBConfig *
-  (* glXChooseFBConfig) (Display *dpy, int screen,
-                         const int *attrib_list, int *nelements);
-  XVisualInfo *
-  (* glXGetVisualFromFBConfig) (Display *dpy, GLXFBConfig config);
-
   void *
   (* glXGetProcAddress) (const GLubyte *procName);
 
   /* Function pointers for GLX specific extensions */
-#define COGL_WINSYS_FEATURE_BEGIN(a, b, c, d, e, f)
+#define COGL_WINSYS_FEATURE_BEGIN(a, b, c, d, e, f, g)
 
 #define COGL_WINSYS_FEATURE_FUNCTION(ret, name, args) \
-  ret (APIENTRY * pf_ ## name) args;
+  ret (APIENTRY * name) args;
 
 #define COGL_WINSYS_FEATURE_END()
 

@@ -27,9 +27,9 @@
  */
 
 /* Macro prototypes:
- * COGL_WINSYS_FEATURE_BEGIN (name, namespaces, extension_names,
+ * COGL_WINSYS_FEATURE_BEGIN (major_glx_version, minor_glx_version,
+ *                            name, namespaces, extension_names,
  *                            implied_public_feature_flags,
- *                            implied_private_feature_flags,
  *                            implied_winsys_feature)
  * COGL_WINSYS_FEATURE_FUNCTION (return_type, function_name,
  *                               (arguments))
@@ -43,10 +43,55 @@
  * XXX: NB: Don't add a trailing semicolon when using these macros
  */
 
-COGL_WINSYS_FEATURE_BEGIN (texture_from_pixmap,
+/* Base functions that we assume are always available */
+COGL_WINSYS_FEATURE_BEGIN (0, 0, /* always available */
+                           base_glx_functions,
+                           "\0",
+                           "\0",
+                           0, /* no implied public feature */
+                           0 /* no winsys feature */)
+COGL_WINSYS_FEATURE_FUNCTION (void, glXDestroyContext,
+                              (Display *dpy, GLXContext ctx))
+COGL_WINSYS_FEATURE_FUNCTION (void, glXSwapBuffers,
+                              (Display *dpy, GLXDrawable drawable))
+COGL_WINSYS_FEATURE_FUNCTION (Bool, glXIsDirect,
+                              (Display *dpy, GLXContext ctx))
+COGL_WINSYS_FEATURE_FUNCTION (int, glXGetFBConfigAttrib,
+                              (Display *dpy, GLXFBConfig config,
+                               int attribute, int *value))
+COGL_WINSYS_FEATURE_FUNCTION (GLXWindow, glXCreateWindow,
+                              (Display *dpy, GLXFBConfig config,
+                               Window win, const int *attribList))
+COGL_WINSYS_FEATURE_FUNCTION (void, glXDestroyWindow,
+                              (Display *dpy, GLXWindow window))
+COGL_WINSYS_FEATURE_FUNCTION (GLXPixmap, glXCreatePixmap,
+                              (Display *dpy, GLXFBConfig config,
+                               Pixmap pixmap, const int *attribList))
+COGL_WINSYS_FEATURE_FUNCTION (void, glXDestroyPixmap,
+                              (Display *dpy, GLXPixmap pixmap))
+COGL_WINSYS_FEATURE_FUNCTION (GLXContext, glXCreateNewContext,
+                              (Display *dpy, GLXFBConfig config,
+                           int renderType, GLXContext shareList,
+                               Bool direct))
+COGL_WINSYS_FEATURE_FUNCTION (Bool, glXMakeContextCurrent,
+                              (Display *dpy, GLXDrawable draw,
+                               GLXDrawable read, GLXContext ctx))
+COGL_WINSYS_FEATURE_FUNCTION (void, glXSelectEvent,
+                              (Display *dpy, GLXDrawable drawable,
+                               unsigned long mask))
+COGL_WINSYS_FEATURE_FUNCTION (GLXFBConfig *, glXGetFBConfigs,
+                              (Display *dpy, int screen, int *nelements))
+COGL_WINSYS_FEATURE_FUNCTION (GLXFBConfig *, glXChooseFBConfig,
+                              (Display *dpy, int screen,
+                               const int *attrib_list, int *nelements))
+COGL_WINSYS_FEATURE_FUNCTION (XVisualInfo *, glXGetVisualFromFBConfig,
+                              (Display *dpy, GLXFBConfig config))
+COGL_WINSYS_FEATURE_END ()
+
+COGL_WINSYS_FEATURE_BEGIN (255, 255,
+                           texture_from_pixmap,
                            "EXT\0",
                            "texture_from_pixmap\0",
-                           0,
                            0,
                            COGL_WINSYS_FEATURE_TEXTURE_FROM_PIXMAP)
 COGL_WINSYS_FEATURE_FUNCTION (void, glXBindTexImage,
@@ -60,10 +105,10 @@ COGL_WINSYS_FEATURE_FUNCTION (void, glXReleaseTexImage,
                                int buffer))
 COGL_WINSYS_FEATURE_END ()
 
-COGL_WINSYS_FEATURE_BEGIN (video_sync,
+COGL_WINSYS_FEATURE_BEGIN (255, 255,
+                           video_sync,
                            "SGI\0",
                            "video_sync\0",
-                           0,
                            0,
                            COGL_WINSYS_FEATURE_VBLANK_COUNTER)
 COGL_WINSYS_FEATURE_FUNCTION (int, glXGetVideoSync,
@@ -74,20 +119,20 @@ COGL_WINSYS_FEATURE_FUNCTION (int, glXWaitVideoSync,
                                unsigned int *count))
 COGL_WINSYS_FEATURE_END ()
 
-COGL_WINSYS_FEATURE_BEGIN (swap_control,
+COGL_WINSYS_FEATURE_BEGIN (255, 255,
+                           swap_control,
                            "SGI\0",
                            "swap_control\0",
-                           0,
                            0,
                            COGL_WINSYS_FEATURE_SWAP_THROTTLE)
 COGL_WINSYS_FEATURE_FUNCTION (int, glXSwapInterval,
                               (int interval))
 COGL_WINSYS_FEATURE_END ()
 
-COGL_WINSYS_FEATURE_BEGIN (copy_sub_buffer,
+COGL_WINSYS_FEATURE_BEGIN (255, 255,
+                           copy_sub_buffer,
                            "MESA\0",
                            "copy_sub_buffer\0",
-                           0,
                            0,
 /* We initially assumed that copy_sub_buffer is synchronized on
  * which is only the case for a subset of GPUs for example it is not
@@ -104,18 +149,18 @@ COGL_WINSYS_FEATURE_FUNCTION (void, glXCopySubBuffer,
                                int x, int y, int width, int height))
 COGL_WINSYS_FEATURE_END ()
 
-COGL_WINSYS_FEATURE_BEGIN (swap_event,
+COGL_WINSYS_FEATURE_BEGIN (255, 255,
+                           swap_event,
                            "INTEL\0",
                            "swap_event\0",
-                           0,
                            0,
                            COGL_WINSYS_FEATURE_SWAP_BUFFERS_EVENT)
 COGL_WINSYS_FEATURE_END ()
 
-COGL_WINSYS_FEATURE_BEGIN (create_context,
+COGL_WINSYS_FEATURE_BEGIN (255, 255,
+                           create_context,
                            "ARB\0",
                            "create_context",
-                           0,
                            0,
                            0)
 COGL_WINSYS_FEATURE_FUNCTION (GLXContext, glXCreateContextAttribs,
