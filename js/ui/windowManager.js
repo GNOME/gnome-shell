@@ -191,8 +191,10 @@ const WindowManager = new Lang.Class({
     },
 
     addKeybinding: function(name, settings, flags, modes, handler) {
-        if (global.display.add_keybinding(name, settings, flags, handler))
+        let action = global.display.add_keybinding(name, settings, flags, handler);
+        if (action != Meta.KeyBindingAction.NONE)
             this.allowKeybinding(name, modes);
+        return action;
     },
 
     removeKeybinding: function(name) {
