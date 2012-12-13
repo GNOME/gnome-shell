@@ -3873,6 +3873,7 @@ meta_display_begin_grab_op (MetaDisplay *display,
 #endif
   display->grab_frame_action = frame_action;
   display->grab_resize_unmaximize = 0;
+  display->grab_timestamp = timestamp;
 
   if (display->grab_resize_timeout_id)
     {
@@ -4058,6 +4059,7 @@ meta_display_end_grab_op (MetaDisplay *display,
     }
 #endif /* HAVE_XSYNC */
   
+  display->grab_timestamp = 0;
   display->grab_window = NULL;
   display->grab_screen = NULL;
   display->grab_xwindow = None;
