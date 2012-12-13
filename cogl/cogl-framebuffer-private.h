@@ -112,6 +112,7 @@ typedef struct
   int green;
   int alpha;
   int depth;
+  int stencil;
 } CoglFramebufferBits;
 
 struct _CoglFramebuffer
@@ -470,5 +471,19 @@ _cogl_framebuffer_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
                                            CoglReadPixelsFlags source,
                                            CoglBitmap *bitmap,
                                            CoglError **error);
+
+/*
+ * _cogl_framebuffer_get_stencil_bits:
+ * @framebuffer: a pointer to a #CoglFramebuffer
+ *
+ * Retrieves the number of stencil bits of @framebuffer
+ *
+ * Return value: the number of bits
+ *
+ * Since: 2.0
+ * Stability: unstable
+ */
+int
+_cogl_framebuffer_get_stencil_bits (CoglFramebuffer *framebuffer);
 
 #endif /* __COGL_FRAMEBUFFER_PRIVATE_H */

@@ -193,7 +193,6 @@ _cogl_driver_update_features (CoglContext *context,
   CoglPrivateFeatureFlags private_flags = 0;
   CoglFeatureFlags flags = 0;
   char **gl_extensions;
-  int num_stencil_bits = 0;
 
   /* We have to special case getting the pointer to the glGetString
      function because we need to use it to determine what functions we
@@ -232,11 +231,6 @@ _cogl_driver_update_features (CoglContext *context,
                                      -1 /* GL major version */,
                                      -1 /* GL minor version */,
                                      gl_extensions);
-
-  GE( context, glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
-  /* We need at least three stencil bits to combine clips */
-  if (num_stencil_bits > 2)
-    private_flags |= COGL_PRIVATE_FEATURE_STENCIL_BUFFER;
 
 #ifdef HAVE_COGL_GLES
   if (context->driver == COGL_DRIVER_GLES1)

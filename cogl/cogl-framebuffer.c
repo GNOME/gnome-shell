@@ -1144,6 +1144,17 @@ cogl_framebuffer_get_depth_bits (CoglFramebuffer *framebuffer)
   return bits.depth;
 }
 
+int
+_cogl_framebuffer_get_stencil_bits (CoglFramebuffer *framebuffer)
+{
+  CoglContext *ctx = framebuffer->context;
+  CoglFramebufferBits bits;
+
+  ctx->driver_vtable->framebuffer_query_bits (framebuffer, &bits);
+
+  return bits.stencil;
+}
+
 CoglColorMask
 cogl_framebuffer_get_color_mask (CoglFramebuffer *framebuffer)
 {

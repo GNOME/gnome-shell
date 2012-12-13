@@ -360,7 +360,6 @@ _cogl_driver_update_features (CoglContext *ctx,
   CoglFeatureFlags flags = 0;
   char **gl_extensions;
   int max_clip_planes = 0;
-  int num_stencil_bits = 0;
   int gl_major = 0, gl_minor = 0;
 
   /* We have to special case getting the pointer to the glGetString*
@@ -449,11 +448,6 @@ _cogl_driver_update_features (CoglContext *ctx,
 
   if (_cogl_check_extension ("GL_MESA_pack_invert", gl_extensions))
     private_flags |= COGL_PRIVATE_FEATURE_MESA_PACK_INVERT;
-
-  GE( ctx, glGetIntegerv (GL_STENCIL_BITS, &num_stencil_bits) );
-  /* We need at least three stencil bits to combine clips */
-  if (num_stencil_bits > 2)
-    private_flags |= COGL_PRIVATE_FEATURE_STENCIL_BUFFER;
 
   GE( ctx, glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
   if (max_clip_planes >= 4)

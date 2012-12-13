@@ -271,8 +271,8 @@ _cogl_path_fill_nodes_with_clipped_rectangle (CoglPath *path,
                                               CoglFramebuffer *framebuffer,
                                               CoglPipeline *pipeline)
 {
-  if (!(path->data->context->private_feature_flags &
-        COGL_PRIVATE_FEATURE_STENCIL_BUFFER))
+  /* We need at least three stencil bits to combine clips */
+  if (_cogl_framebuffer_get_stencil_bits (framebuffer) >= 3)
     {
       static CoglBool seen_warning = FALSE;
 
