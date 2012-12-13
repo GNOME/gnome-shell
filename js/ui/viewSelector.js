@@ -12,6 +12,7 @@ const St = imports.gi.St;
 
 const AppDisplay = imports.ui.appDisplay;
 const Main = imports.ui.main;
+const Params = imports.misc.params;
 const RemoteSearch = imports.ui.remoteSearch;
 const Search = imports.ui.search;
 const SearchDisplay = imports.ui.searchDisplay;
@@ -77,16 +78,17 @@ const ViewSelector = new Lang.Class({
         this._capturedEventId = 0;
 
         this._workspacesDisplay = new WorkspacesView.WorkspacesDisplay();
-        this._workspacesPage = this._addPage(this._workspacesDisplay.actor, null,
+        this._workspacesPage = this._addPage(this._workspacesDisplay.actor,
                                              _("Windows"), 'emblem-documents-symbolic');
 
         this._appDisplay = new AppDisplay.AllAppDisplay();
-        this._appsPage = this._addPage(this._appDisplay.actor, null,
+        this._appsPage = this._addPage(this._appDisplay.actor,
                                        _("Applications"), 'view-grid-symbolic');
 
         this._searchResults = new SearchDisplay.SearchResults(this._searchSystem);
-        this._searchPage = this._addPage(this._searchResults.actor, this._entry,
-                                         _("Search"), 'edit-find-symbolic');
+        this._searchPage = this._addPage(this._searchResults.actor,
+                                         _("Search"), 'edit-find-symbolic',
+                                         { a11yFocus: this._entry });
 
         this._searchSettings = new Gio.Settings({ schema: Search.SEARCH_PROVIDERS_SCHEMA });
         this._searchSettings.connect('changed::disabled', Lang.bind(this, this._reloadRemoteProviders));
@@ -169,14 +171,16 @@ const ViewSelector = new Lang.Class({
         this._workspacesDisplay.hide();
     },
 
-    _addPage: function(actor, a11yFocus, name, a11yIcon) {
+    _addPage: function(actor, name, a11yIcon, params) {
+        params = Params.parse(params, { a11yFocus: null });
+
         let page = new St.Bin({ child: actor,
                                 x_align: St.Align.START,
                                 y_align: St.Align.START,
                                 x_fill: true,
                                 y_fill: true });
-        if (a11yFocus)
-            Main.ctrlAltTabManager.addGroup(a11yFocus, name, a11yIcon);
+        if (params.a11yFocus)
+            Main.ctrlAltTabManager.addGroup(params.a11yFocus, name, a11yIcon);
         else
             Main.ctrlAltTabManager.addGroup(actor, name, a11yIcon,
                                             { proxy: this.actor,
