@@ -948,6 +948,16 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
       GE( ctx, glGetIntegerv (GL_STENCIL_BITS, &framebuffer->bits.stencil) );
     }
 
+  /* If we don't have alpha textures then the alpha bits are actually
+   * stored in the red component */
+  if ((ctx->private_feature_flags &
+       COGL_PRIVATE_FEATURE_ALPHA_TEXTURES) == 0 &&
+      framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN &&
+      framebuffer->format == COGL_PIXEL_FORMAT_A_8)
+    {
+      framebuffer->bits.alpha = framebuffer->bits.red;
+      framebuffer->bits.red = 0;
+    }
 
   COGL_NOTE (OFFSCREEN,
              "RGBA/D/S Bits for framebuffer[%p, %s]: %d, %d, %d, %d, %d, %d",
