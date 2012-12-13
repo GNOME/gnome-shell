@@ -29,7 +29,7 @@
 #include "cogl-framebuffer-nop-private.h"
 
 #include <glib.h>
-
+#include <string.h>
 
 void
 _cogl_framebuffer_nop_flush_state (CoglFramebuffer *draw_buffer,
@@ -62,15 +62,9 @@ _cogl_framebuffer_nop_clear (CoglFramebuffer *framebuffer,
 
 void
 _cogl_framebuffer_nop_query_bits (CoglFramebuffer *framebuffer,
-                                  int *red,
-                                  int *green,
-                                  int *blue,
-                                  int *alpha)
+                                  CoglFramebufferBits *bits)
 {
-  *red = 0;
-  *green = 0;
-  *blue = 0;
-  *alpha = 0;
+  memset (bits, 0, sizeof (CoglFramebufferBits));
 }
 
 void

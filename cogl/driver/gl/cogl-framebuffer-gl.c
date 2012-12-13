@@ -892,54 +892,54 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
 {
   CoglContext *ctx = framebuffer->context;
 
-  cogl_framebuffer_allocate (framebuffer, NULL);
-
   if (G_LIKELY (!framebuffer->dirty_bitmasks))
     return;
+
+  cogl_framebuffer_allocate (framebuffer, NULL);
+
+  _cogl_framebuffer_flush_state (framebuffer,
+                                 framebuffer,
+                                 COGL_FRAMEBUFFER_STATE_BIND);
 
 #ifdef HAVE_COGL_GL
   if ((ctx->private_feature_flags &
        COGL_PRIVATE_FEATURE_QUERY_FRAMEBUFFER_BITS) &&
       framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN)
     {
-      GLenum attachment, pname;
+      static const struct
+      {
+        GLenum attachment, pname;
+        size_t offset;
+      } params[] =
+          {
+            { GL_COLOR_ATTACHMENT0, GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE,
+              offsetof (CoglFramebufferBits, red) },
+            { GL_COLOR_ATTACHMENT0, GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE,
+              offsetof (CoglFramebufferBits, green) },
+            { GL_COLOR_ATTACHMENT0, GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE,
+              offsetof (CoglFramebufferBits, blue) },
+            { GL_COLOR_ATTACHMENT0, GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE,
+              offsetof (CoglFramebufferBits, alpha) },
+          };
+      int i;
 
-      attachment = GL_COLOR_ATTACHMENT0;
-
-      pname = GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE;
-      GE( ctx, glGetFramebufferAttachmentParameteriv (GL_FRAMEBUFFER,
-                                                      attachment,
-                                                      pname,
-                                                      &framebuffer->red_bits) );
-
-      pname = GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE;
-      GE( ctx, glGetFramebufferAttachmentParameteriv (GL_FRAMEBUFFER,
-                                                      attachment,
-                                                      pname,
-                                                      &framebuffer->green_bits)
-          );
-
-      pname = GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE;
-      GE( ctx, glGetFramebufferAttachmentParameteriv (GL_FRAMEBUFFER,
-                                                      attachment,
-                                                      pname,
-                                                      &framebuffer->blue_bits)
-          );
-
-      pname = GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE;
-      GE( ctx, glGetFramebufferAttachmentParameteriv (GL_FRAMEBUFFER,
-                                                      attachment,
-                                                      pname,
-                                                      &framebuffer->alpha_bits)
-          );
+      for (i = 0; i < G_N_ELEMENTS (params); i++)
+        {
+          int *value =
+            (int *) ((uint8_t *) &framebuffer->bits + params[i].offset);
+          GE( ctx, glGetFramebufferAttachmentParameteriv (GL_FRAMEBUFFER,
+                                                          params[i].attachment,
+                                                          params[i].pname,
+                                                          value) );
+        }
     }
   else
 #endif /* HAVE_COGL_GL */
     {
-      GE( ctx, glGetIntegerv (GL_RED_BITS,   &framebuffer->red_bits)   );
-      GE( ctx, glGetIntegerv (GL_GREEN_BITS, &framebuffer->green_bits) );
-      GE( ctx, glGetIntegerv (GL_BLUE_BITS,  &framebuffer->blue_bits)  );
-      GE( ctx, glGetIntegerv (GL_ALPHA_BITS, &framebuffer->alpha_bits) );
+      GE( ctx, glGetIntegerv (GL_RED_BITS,   &framebuffer->bits.red)   );
+      GE( ctx, glGetIntegerv (GL_GREEN_BITS, &framebuffer->bits.green) );
+      GE( ctx, glGetIntegerv (GL_BLUE_BITS,  &framebuffer->bits.blue)  );
+      GE( ctx, glGetIntegerv (GL_ALPHA_BITS, &framebuffer->bits.alpha) );
     }
 
 
@@ -949,29 +949,23 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
              framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN
                ? "offscreen"
                : "onscreen",
-             framebuffer->red_bits,
-             framebuffer->blue_bits,
-             framebuffer->green_bits,
-             framebuffer->alpha_bits);
+             framebuffer->bits.red,
+             framebuffer->bits.blue,
+             framebuffer->bits.green,
+             framebuffer->bits.alpha);
 
   framebuffer->dirty_bitmasks = FALSE;
 }
 
 void
 _cogl_framebuffer_gl_query_bits (CoglFramebuffer *framebuffer,
-                                 int *red,
-                                 int *green,
-                                 int *blue,
-                                 int *alpha)
+                                 CoglFramebufferBits *bits)
 {
   _cogl_framebuffer_init_bits (framebuffer);
 
   /* TODO: cache these in some driver specific location not
    * directly as part of CoglFramebuffer. */
-  *red = framebuffer->red_bits;
-  *green = framebuffer->green_bits;
-  *blue = framebuffer->blue_bits;
-  *alpha = framebuffer->alpha_bits;
+  *bits = framebuffer->bits;
 }
 
 void

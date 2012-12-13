@@ -105,6 +105,14 @@ typedef enum
   COGL_READ_PIXELS_NO_FLIP = 1L << 30
 } CoglPrivateReadPixelsFlags;
 
+typedef struct
+{
+  int red;
+  int blue;
+  int green;
+  int alpha;
+} CoglFramebufferBits;
+
 struct _CoglFramebuffer
 {
   CoglObject          _parent;
@@ -162,10 +170,7 @@ struct _CoglFramebuffer
 
   /* driver specific */
   CoglBool            dirty_bitmasks;
-  int                 red_bits;
-  int                 blue_bits;
-  int                 green_bits;
-  int                 alpha_bits;
+  CoglFramebufferBits bits;
 
   int                 samples_per_pixel;
 };

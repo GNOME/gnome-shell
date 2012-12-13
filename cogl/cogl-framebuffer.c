@@ -1093,47 +1093,44 @@ int
 cogl_framebuffer_get_red_bits (CoglFramebuffer *framebuffer)
 {
   CoglContext *ctx = framebuffer->context;
-  int red, green, blue, alpha;
+  CoglFramebufferBits bits;
 
-  ctx->driver_vtable->framebuffer_query_bits (framebuffer,
-                                              &red, &green, &blue, &alpha);
+  ctx->driver_vtable->framebuffer_query_bits (framebuffer, &bits);
 
-  return red;
+  return bits.red;
 }
+
 int
 cogl_framebuffer_get_green_bits (CoglFramebuffer *framebuffer)
 {
   CoglContext *ctx = framebuffer->context;
-  int red, green, blue, alpha;
+  CoglFramebufferBits bits;
 
-  ctx->driver_vtable->framebuffer_query_bits (framebuffer,
-                                              &red, &green, &blue, &alpha);
+  ctx->driver_vtable->framebuffer_query_bits (framebuffer, &bits);
 
-  return green;
+  return bits.green;
 }
 
 int
 cogl_framebuffer_get_blue_bits (CoglFramebuffer *framebuffer)
 {
   CoglContext *ctx = framebuffer->context;
-  int red, green, blue, alpha;
+  CoglFramebufferBits bits;
 
-  ctx->driver_vtable->framebuffer_query_bits (framebuffer,
-                                              &red, &green, &blue, &alpha);
+  ctx->driver_vtable->framebuffer_query_bits (framebuffer, &bits);
 
-  return blue;
+  return bits.blue;
 }
 
 int
 cogl_framebuffer_get_alpha_bits (CoglFramebuffer *framebuffer)
 {
   CoglContext *ctx = framebuffer->context;
-  int red, green, blue, alpha;
+  CoglFramebufferBits bits;
 
-  ctx->driver_vtable->framebuffer_query_bits (framebuffer,
-                                              &red, &green, &blue, &alpha);
+  ctx->driver_vtable->framebuffer_query_bits (framebuffer, &bits);
 
-  return alpha;
+  return bits.alpha;
 }
 
 CoglColorMask

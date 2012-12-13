@@ -75,10 +75,7 @@ struct _CoglDriverVtable
 
   void
   (* framebuffer_query_bits) (CoglFramebuffer *framebuffer,
-                              int *red,
-                              int *green,
-                              int *blue,
-                              int *alpha);
+                              CoglFramebufferBits *bits);
 
   void
   (* framebuffer_finish) (CoglFramebuffer *framebuffer);

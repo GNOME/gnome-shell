@@ -53,10 +53,7 @@ _cogl_framebuffer_nop_clear (CoglFramebuffer *framebuffer,
 
 void
 _cogl_framebuffer_nop_query_bits (CoglFramebuffer *framebuffer,
-                                 int *red,
-                                 int *green,
-                                 int *blue,
-                                 int *alpha);
+                                  CoglFramebufferBits *bits);
 
 void
 _cogl_framebuffer_nop_finish (CoglFramebuffer *framebuffer);
