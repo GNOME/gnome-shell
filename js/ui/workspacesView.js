@@ -46,10 +46,6 @@ const WorkspacesView = new Lang.Class({
         this._height = 0;
         this._x = 0;
         this._y = 0;
-        this._clipX = 0;
-        this._clipY = 0;
-        this._clipWidth = 0;
-        this._clipHeight = 0;
         this._spacing = 0;
         this._animating = false; // tweening
         this._scrolling = false; // swipe-scrolling
@@ -88,8 +84,8 @@ const WorkspacesView = new Lang.Class({
         this._overviewShownId =
             Main.overview.connect('shown',
                                  Lang.bind(this, function() {
-                this.actor.set_clip(this._clipX, this._clipY,
-                                    this._clipWidth, this._clipHeight);
+                this.actor.set_clip(this._x, this._y,
+                                    this._width, this._height);
         }));
 
         this.scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
@@ -154,13 +150,6 @@ const WorkspacesView = new Lang.Class({
 
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setGeometry(x, y, width, height);
-    },
-
-    setClipRect: function(x, y, width, height) {
-        this._clipX = x;
-        this._clipY = y;
-        this._clipWidth = width;
-        this._clipHeight = height;
     },
 
     _lookupWorkspaceForMetaWindow: function (metaWindow) {
@@ -636,24 +625,13 @@ const WorkspacesDisplay = new Lang.Class({
 
         let rtl = (Clutter.get_default_text_direction () == Clutter.TextDirection.RTL);
 
-        let clipWidth = width;
-        let clipHeight = fullHeight;
-        let clipX = x;
-        let clipY = y + (fullHeight - clipHeight) / 2;
-
         let monitors = Main.layoutManager.monitors;
         let m = 0;
         for (let i = 0; i < monitors.length; i++) {
             if (i == this._primaryIndex) {
-                this._workspacesViews[m].setClipRect(clipX, clipY,
-                                                     clipWidth, clipHeight);
                 this._workspacesViews[m].setGeometry(x, y, width, height);
                 m++;
             } else if (!this._workspacesOnlyOnPrimary) {
-                this._workspacesViews[m].setClipRect(monitors[i].x,
-                                                     monitors[i].y,
-                                                     monitors[i].width,
-                                                     monitors[i].height);
                 this._workspacesViews[m].setGeometry(monitors[i].x,
                                                      monitors[i].y,
                                                      monitors[i].width,
