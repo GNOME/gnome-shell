@@ -577,7 +577,7 @@ const WorkspacesDisplay = new Lang.Class({
         this._updateWorkspacesViews();
 
         this._restackedNotifyId =
-            global.screen.connect('restacked',
+            Main.overview.connect('windows-restacked',
                                   Lang.bind(this, this._onRestacked));
 
         if (this._itemDragBeginId == 0)
@@ -598,8 +598,6 @@ const WorkspacesDisplay = new Lang.Class({
         if (this._windowDragEndId == 0)
             this._windowDragEndId = Main.overview.connect('window-drag-end',
                                                           Lang.bind(this, this._dragEnd));
-
-        this._onRestacked();
     },
 
     zoomFromOverview: function() {
@@ -615,7 +613,7 @@ const WorkspacesDisplay = new Lang.Class({
             this.zoomFraction = 0;
 
         if (this._restackedNotifyId > 0){
-            global.screen.disconnect(this._restackedNotifyId);
+            Main.overview.disconnect(this._restackedNotifyId);
             this._restackedNotifyId = 0;
         }
         if (this._itemDragBeginId > 0) {
@@ -877,19 +875,9 @@ const WorkspacesDisplay = new Lang.Class({
         }
     },
 
-    _onRestacked: function() {
-        let stack = global.get_window_actors();
-        let stackIndices = {};
-
-        for (let i = 0; i < stack.length; i++) {
-            // Use the stable sequence for an integer to use as a hash key
-            stackIndices[stack[i].get_meta_window().get_stable_sequence()] = i;
-        }
-
+    _onRestacked: function(overview, stackIndices) {
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].syncStacking(stackIndices);
-
-        this._thumbnailsBox.syncStacking(stackIndices);
     },
 
     _workspacesChanged: function() {

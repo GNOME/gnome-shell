@@ -174,6 +174,8 @@ const Overview = new Lang.Class({
         Main.xdndHandler.connect('drag-begin', Lang.bind(this, this._onDragBegin));
         Main.xdndHandler.connect('drag-end', Lang.bind(this, this._onDragEnd));
 
+        global.screen.connect('restacked', Lang.bind(this, this._onRestacked));
+
         this._windowSwitchTimeoutId = 0;
         this._windowSwitchTimestamp = 0;
         this._lastActiveWorkspaceIndex = -1;
@@ -381,6 +383,18 @@ const Overview = new Lang.Class({
 
         this._coverPane.set_position(0, contentY);
         this._coverPane.set_size(primary.width, contentHeight);
+    },
+
+    _onRestacked: function() {
+        let stack = global.get_window_actors();
+        let stackIndices = {};
+
+        for (let i = 0; i < stack.length; i++) {
+            // Use the stable sequence for an integer to use as a hash key
+            stackIndices[stack[i].get_meta_window().get_stable_sequence()] = i;
+        }
+
+        this.emit('windows-restacked', stackIndices);
     },
 
     //// Public methods ////
