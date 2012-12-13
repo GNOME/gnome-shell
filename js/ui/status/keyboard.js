@@ -47,6 +47,7 @@ const IBusManager = new Lang.Class({
         this._engines = {};
         this._ready = false;
         this._registerPropertiesId = 0;
+        this._currentEngineName = null;
 
         this._nameWatcherId = Gio.DBus.session.watch_name(IBus.SERVICE_IBUS,
                                                           Gio.BusNameWatcherFlags.NONE,
@@ -66,6 +67,7 @@ const IBusManager = new Lang.Class({
         this._engines = {};
         this._ready = false;
         this._registerPropertiesId = 0;
+        this._currentEngineName = null;
     },
 
     _onNameAppeared: function() {
@@ -105,9 +107,15 @@ const IBusManager = new Lang.Class({
             this._candidatePopup.setPanelService(this._panelService);
             // Need to set this to get 'global-engine-changed' emitions
             this._ibus.set_watch_ibus_signal(true);
-            this._ibus.connect('global-engine-changed', Lang.bind(this, this._resetProperties));
+            this._ibus.connect('global-engine-changed', Lang.bind(this, this._engineChanged));
             this._panelService.connect('update-property', Lang.bind(this, this._updateProperty));
-            this._resetProperties();
+            // If an engine is already active we need to get its properties
+            this._ibus.get_global_engine_async(-1, null, Lang.bind(this, function(i, result) {
+                let engine = this._ibus.get_global_engine_async_finish(result);
+                if (!engine)
+                    return;
+                this._engineChanged(this._ibus, engine.get_name());
+            }));
         } else {
             this._clear();
             return;
@@ -124,8 +132,8 @@ const IBusManager = new Lang.Class({
             this._readyCallback();
     },
 
-    _resetProperties: function() {
-        this.emit('properties-registered', null);
+    _engineChanged: function(bus, engineName) {
+        this._currentEngineName = engineName;
 
         if (this._registerPropertiesId != 0)
             return;
@@ -138,23 +146,16 @@ const IBusManager = new Lang.Class({
                 this._panelService.disconnect(this._registerPropertiesId);
                 this._registerPropertiesId = 0;
 
-                this.emit('properties-registered', props);
+                this.emit('properties-registered', this._currentEngineName, props);
             }));
     },
 
     _updateProperty: function(panel, prop) {
-        this.emit('property-updated', prop);
+        this.emit('property-updated', this._currentEngineName, prop);
     },
 
     activateProperty: function(key, state) {
         this._panelService.property_activate(key, state);
-    },
-
-    hasProperties: function(id) {
-        if (id == 'anthy')
-            return true;
-
-        return false;
     },
 
     getEngineDesc: function(id) {
@@ -194,6 +195,8 @@ const InputSource = new Lang.Class({
         this._menuItem = new LayoutMenuItem(this.displayName, this._shortName);
         this._menuItem.connect('activate', Lang.bind(this, this.activate));
         this._indicatorLabel = new St.Label({ text: this._shortName });
+
+        this.properties = null;
     },
 
     destroy: function() {
@@ -242,6 +245,10 @@ const InputSourceIndicator = new Lang.Class({
         // All valid input sources currently in the gsettings
         // KEY_INPUT_SOURCES list indexed by their index there
         this._inputSources = {};
+        // All valid input sources currently in the gsettings
+        // KEY_INPUT_SOURCES list of type INPUT_SOURCE_TYPE_IBUS
+        // indexed by the IBus ID
+        this._ibusSources = {};
 
         this._currentSource = null;
 
@@ -256,8 +263,6 @@ const InputSourceIndicator = new Lang.Class({
         this._propSection = new PopupMenu.PopupMenuSection();
         this.menu.addMenuItem(this._propSection);
         this._propSection.actor.hide();
-
-        this._properties = null;
 
         this._ibusManager = new IBusManager(Lang.bind(this, this._inputSourcesChanged));
         this._ibusManager.connect('properties-registered', Lang.bind(this, this._ibusPropertiesRegistered));
@@ -285,14 +290,8 @@ const InputSourceIndicator = new Lang.Class({
         let nVisibleSources = Object.keys(this._inputSources).length;
         let newSourceIndex = this._settings.get_uint(KEY_CURRENT_INPUT_SOURCE);
         let newSource = this._inputSources[newSourceIndex];
-        let hasProperties;
 
-        if (newSource)
-            hasProperties = this._ibusManager.hasProperties(newSource.id);
-        else
-            hasProperties = false;
-
-        if (!newSource || (nVisibleSources < 2 && !hasProperties)) {
+        if (!newSource || (nVisibleSources < 2 && !newSource.properties)) {
             // This source index might be invalid if we weren't able
             // to build a menu item for it, so we hide ourselves since
             // we can't fix it here. *shrug*
@@ -314,10 +313,10 @@ const InputSourceIndicator = new Lang.Class({
             this._container.set_skip_paint(oldSource.indicatorLabel, true);
         }
 
-        if (hasProperties)
-            newSource.indicatorLabel.set_text(newSource.shortName);
         newSource.menuItem.setShowDot(true);
         this._container.set_skip_paint(newSource.indicatorLabel, false);
+
+        this._buildPropSection(newSource.properties);
     },
 
     _inputSourcesChanged: function() {
@@ -328,6 +327,7 @@ const InputSourceIndicator = new Lang.Class({
             this._inputSources[i].destroy();
 
         this._inputSources = {};
+        this._ibusSources = {};
 
         let inputSourcesByShortName = {};
 
@@ -365,6 +365,9 @@ const InputSourceIndicator = new Lang.Class({
             inputSourcesByShortName[is.shortName].push(is);
 
             this._inputSources[is.index] = is;
+
+            if (is.type == INPUT_SOURCE_TYPE_IBUS)
+                this._ibusSources[is.id] = is;
         }
 
         let menuIndex = 0;
@@ -423,14 +426,25 @@ const InputSourceIndicator = new Lang.Class({
         return String.fromCharCode(0x2328); // keyboard glyph
     },
 
-    _ibusPropertiesRegistered: function(im, props) {
-        this._properties = props;
-        this._buildPropSection();
+    _ibusPropertiesRegistered: function(im, engineName, props) {
+        let source = this._ibusSources[engineName];
+        if (!source)
+            return;
+
+        source.properties = props;
+
+        if (source == this._currentSource)
+            this._currentInputSourceChanged();
     },
 
-    _ibusPropertyUpdated: function(im, prop) {
-        if (this._updateSubProperty(this._properties, prop))
-            this._buildPropSection();
+    _ibusPropertyUpdated: function(im, engineName, prop) {
+        let source = this._ibusSources[engineName];
+        if (!source)
+            return;
+
+        if (this._updateSubProperty(source.properties, prop) &&
+            source == this._currentSource)
+            this._currentInputSourceChanged();
     },
 
     _updateSubProperty: function(props, prop) {
@@ -450,18 +464,12 @@ const InputSourceIndicator = new Lang.Class({
         return false;
     },
 
-    _updateIndicatorLabel: function(text) {
-        let hasProperties = this._ibusManager.hasProperties(this._currentSource.id);
-        if (hasProperties)
-            this._currentSource.indicatorLabel.set_text(text);
-    },
-
-    _buildPropSection: function() {
+    _buildPropSection: function(properties) {
         this._propSeparator.actor.hide();
         this._propSection.actor.hide();
         this._propSection.removeAll();
 
-        this._buildPropSubMenu(this._propSection, this._properties);
+        this._buildPropSubMenu(this._propSection, properties);
 
         if (!this._propSection.isEmpty()) {
             this._propSection.actor.show();
@@ -489,7 +497,7 @@ const InputSourceIndicator = new Lang.Class({
                     text = prop.get_label().get_text();
 
                 if (text && text.length > 0 && text.length < 3)
-                    this._updateIndicatorLabel(text);
+                    this._currentSource.indicatorLabel.set_text(text);
             }
 
             let item;
