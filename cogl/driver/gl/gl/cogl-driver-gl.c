@@ -359,7 +359,6 @@ _cogl_driver_update_features (CoglContext *ctx,
   CoglPrivateFeatureFlags private_flags = 0;
   CoglFeatureFlags flags = 0;
   char **gl_extensions;
-  int max_clip_planes = 0;
   int gl_major = 0, gl_minor = 0;
 
   /* We have to special case getting the pointer to the glGetString*
@@ -448,10 +447,6 @@ _cogl_driver_update_features (CoglContext *ctx,
 
   if (_cogl_check_extension ("GL_MESA_pack_invert", gl_extensions))
     private_flags |= COGL_PRIVATE_FEATURE_MESA_PACK_INVERT;
-
-  GE( ctx, glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
-  if (max_clip_planes >= 4)
-    private_flags |= COGL_PRIVATE_FEATURE_FOUR_CLIP_PLANES;
 
   if (ctx->glGenRenderbuffers)
     {
@@ -580,11 +575,19 @@ _cogl_driver_update_features (CoglContext *ctx,
     private_flags |= COGL_PRIVATE_FEATURE_TEXTURE_SWIZZLE;
 
   if (ctx->driver == COGL_DRIVER_GL)
-    /* Features which are not available in GL 3 */
-    private_flags |= (COGL_PRIVATE_FEATURE_FIXED_FUNCTION |
-                      COGL_PRIVATE_FEATURE_ALPHA_TEST |
-                      COGL_PRIVATE_FEATURE_QUADS |
-                      COGL_PRIVATE_FEATURE_ALPHA_TEXTURES);
+    {
+      int max_clip_planes = 0;
+
+      /* Features which are not available in GL 3 */
+      private_flags |= (COGL_PRIVATE_FEATURE_FIXED_FUNCTION |
+                        COGL_PRIVATE_FEATURE_ALPHA_TEST |
+                        COGL_PRIVATE_FEATURE_QUADS |
+                        COGL_PRIVATE_FEATURE_ALPHA_TEXTURES);
+
+      GE( ctx, glGetIntegerv (GL_MAX_CLIP_PLANES, &max_clip_planes) );
+      if (max_clip_planes >= 4)
+        private_flags |= COGL_PRIVATE_FEATURE_FOUR_CLIP_PLANES;
+    }
 
   private_flags |= (COGL_PRIVATE_FEATURE_READ_PIXELS_ANY_FORMAT |
                     COGL_PRIVATE_FEATURE_ANY_GL |
