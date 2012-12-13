@@ -243,7 +243,7 @@ const Overview = new Lang.Class({
                                           expand: true });
 
         // Then account for message tray
-        this._messageTrayGhost = new St.Bin({ child: new Clutter.Clone({ source: Main.messageTray.actor }),
+        this._messageTrayGhost = new St.Bin({ style_class: 'message-tray-summary',
                                               reactive: false,
                                               opacity: 0,
                                               x_fill: true,
