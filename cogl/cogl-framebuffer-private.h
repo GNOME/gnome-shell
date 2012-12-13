@@ -111,6 +111,7 @@ typedef struct
   int blue;
   int green;
   int alpha;
+  int depth;
 } CoglFramebufferBits;
 
 struct _CoglFramebuffer

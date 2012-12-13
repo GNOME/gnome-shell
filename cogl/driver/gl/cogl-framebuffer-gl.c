@@ -920,6 +920,8 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
               offsetof (CoglFramebufferBits, blue) },
             { GL_COLOR_ATTACHMENT0, GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE,
               offsetof (CoglFramebufferBits, alpha) },
+            { GL_DEPTH_ATTACHMENT, GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE,
+              offsetof (CoglFramebufferBits, depth) },
           };
       int i;
 
@@ -940,11 +942,12 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
       GE( ctx, glGetIntegerv (GL_GREEN_BITS, &framebuffer->bits.green) );
       GE( ctx, glGetIntegerv (GL_BLUE_BITS,  &framebuffer->bits.blue)  );
       GE( ctx, glGetIntegerv (GL_ALPHA_BITS, &framebuffer->bits.alpha) );
+      GE( ctx, glGetIntegerv (GL_DEPTH_BITS, &framebuffer->bits.depth) );
     }
 
 
   COGL_NOTE (OFFSCREEN,
-             "RGBA Bits for framebuffer[%p, %s]: %d, %d, %d, %d",
+             "RGBA/D Bits for framebuffer[%p, %s]: %d, %d, %d, %d, %d",
              framebuffer,
              framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN
                ? "offscreen"
@@ -952,7 +955,8 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
              framebuffer->bits.red,
              framebuffer->bits.blue,
              framebuffer->bits.green,
-             framebuffer->bits.alpha);
+             framebuffer->bits.alpha,
+             framebuffer->bits.depth);
 
   framebuffer->dirty_bitmasks = FALSE;
 }

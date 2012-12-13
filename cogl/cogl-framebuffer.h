@@ -720,6 +720,20 @@ int
 cogl_framebuffer_get_alpha_bits (CoglFramebuffer *framebuffer);
 
 /**
+ * cogl_framebuffer_get_depth_bits:
+ * @framebuffer: a pointer to a #CoglFramebuffer
+ *
+ * Retrieves the number of depth bits of @framebuffer
+ *
+ * Return value: the number of bits
+ *
+ * Since: 2.0
+ * Stability: unstable
+ */
+int
+cogl_framebuffer_get_depth_bits (CoglFramebuffer *framebuffer);
+
+/**
  * cogl_framebuffer_get_dither_enabled:
  * @framebuffer: a pointer to a #CoglFramebuffer
  *
