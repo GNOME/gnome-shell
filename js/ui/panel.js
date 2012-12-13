@@ -1148,18 +1148,6 @@ const Panel = new Lang.Class({
             this._addStyleClassName(this._sessionStyle);
     },
 
-    _initBox: function(elements, box) {
-        for (let i = 0; i < elements.length; i++) {
-            let role = elements[i];
-            let constructor = PANEL_ITEM_IMPLEMENTATIONS[role];
-            if (!constructor) {
-                // panel icon is not supported (can happen for
-                // bluetooth or network)
-                continue;
-            }
-        }
-    },
-
     _hideIndicators: function() {
         for (let role in PANEL_ITEM_IMPLEMENTATIONS) {
             let indicator = this.statusArea[role];
