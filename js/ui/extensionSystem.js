@@ -129,6 +129,7 @@ function logExtensionError(uuid, error) {
     extension.state = ExtensionState.ERROR;
     if (!extension.errors)
         extension.errors = [];
+    extension.errors.push(message);
 
     log('Extension "%s" had error: %s'.format(uuid, message));
     _signals.emit('extension-state-changed', { uuid: uuid,
