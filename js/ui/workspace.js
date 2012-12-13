@@ -746,11 +746,10 @@ const LayoutStrategy = new Lang.Class({
     Name: 'LayoutStrategy',
     Abstract: true,
 
-    _init: function(monitor, rowSpacing, columnSpacing, bottomPadding) {
+    _init: function(monitor, rowSpacing, columnSpacing) {
         this._monitor = monitor;
         this._rowSpacing = rowSpacing;
         this._columnSpacing = columnSpacing;
-        this._bottomPadding = bottomPadding;
     },
 
     _newRow: function() {
@@ -830,7 +829,7 @@ const LayoutStrategy = new Lang.Class({
         let area = layout.area;
 
         let hspacing = (layout.maxColumns - 1) * this._columnSpacing;
-        let vspacing = (layout.numRows - 1) * this._rowSpacing + this._bottomPadding;
+        let vspacing = (layout.numRows - 1) * this._rowSpacing;
 
         let spacedWidth = area.width - hspacing;
         let spacedHeight = area.height - vspacing;
@@ -864,7 +863,7 @@ const LayoutStrategy = new Lang.Class({
             y += row.height + this._rowSpacing;
         }
 
-        let height = y - this._rowSpacing + this._bottomPadding;
+        let height = y - this._rowSpacing;
         let baseY = (area.height - height) / 2;
 
         for (let i = 0; i < rows.length; i++) {
@@ -1038,6 +1037,8 @@ const Workspace = new Lang.Class({
         this._windowOverlaysGroup.set_size(0, 0);
 
         this.actor = new St.Widget({ style_class: 'window-picker' });
+        if (monitorIndex != Main.layoutManager.primaryIndex)
+            this.actor.add_style_class_name('external-monitor');
         this.actor.set_size(0, 0);
 
         this._dropRect = new Clutter.Rectangle({ opacity: 0 });
@@ -1624,7 +1625,7 @@ const Workspace = new Lang.Class({
         }
     },
 
-    _computeLayout: function(windows, area, rowSpacing, columnSpacing, bottomPadding) {
+    _computeLayout: function(windows, area, rowSpacing, columnSpacing) {
         // We look for the largest scale that allows us to fit the
         // largest row/tallest column on the workspace.
 
@@ -1640,7 +1641,7 @@ const Workspace = new Lang.Class({
                 break;
 
             let strategyClass = numRows > 2 ? GridLayoutStrategy : UnalignedLayoutStrategy;
-            let strategy = new strategyClass(this._monitor, rowSpacing, columnSpacing, bottomPadding);
+            let strategy = new strategyClass(this._monitor, rowSpacing, columnSpacing);
 
             let layout = { area: area, strategy: strategy, numRows: numRows, numColumns: numColumns };
             strategy.computeLayout(windows, layout);
@@ -1672,6 +1673,12 @@ const Workspace = new Lang.Class({
         // Window grid spacing
         let columnSpacing = node.get_length('-horizontal-spacing');
         let rowSpacing = node.get_length('-vertical-spacing');
+        let padding = {
+            left: node.get_padding(St.Side.LEFT),
+            top: node.get_padding(St.Side.TOP),
+            bottom: node.get_padding(St.Side.BOTTOM),
+            right: node.get_padding(St.Side.RIGHT),
+        };
 
         if (!totalWindows)
             return [];
@@ -1686,19 +1693,25 @@ const Workspace = new Lang.Class({
             [leftBorder, rightBorder] = overlay.chromeWidths();
         } else {
             [closeButtonHeight, captionHeight] = [0, 0];
+            [leftBorder, rightBorder] = [0, 0];
         }
 
         rowSpacing += captionHeight;
-        columnSpacing += rightBorder;
+        columnSpacing += (rightBorder + leftBorder) / 2;
+        padding.top += closeButtonHeight;
+        padding.bottom += captionHeight;
+        padding.left += leftBorder;
+        padding.right += rightBorder;
 
-        let area = { x: this._x, y: this._y, width: this._width, height: this._height };
-        area.y += closeButtonHeight;
-        area.height -= closeButtonHeight;
-        area.x += leftBorder;
-        area.width -= leftBorder;
+        let area = {
+            x: this._x + padding.left,
+            y: this._y + padding.top,
+            width: this._width - padding.left - padding.right,
+            height: this._height - padding.top - padding.bottom,
+        };
 
         if (!this._currentLayout)
-            this._currentLayout = this._computeLayout(windows, area, rowSpacing, columnSpacing, captionHeight);
+            this._currentLayout = this._computeLayout(windows, area, rowSpacing, columnSpacing);
 
         let layout = this._currentLayout;
         let strategy = layout.strategy;

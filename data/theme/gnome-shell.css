@@ -727,6 +727,10 @@ StScrollBar StButton#vhandle:active {
     -vertical-spacing: 32px;
 }
 
+.window-picker.external-monitor {
+    padding: 32px;
+}
+
 /* Dash */
 
 #dash {
@@ -749,10 +753,6 @@ StScrollBar StButton#vhandle:active {
     background-image: url("dash-placeholder.svg");
     background-size: contain;
     height: 24px;
-}
-
-#viewSelector {
-    spacing: 1em;
 }
 
 /* Search Box */
