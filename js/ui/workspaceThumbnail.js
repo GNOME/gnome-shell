@@ -546,6 +546,11 @@ const ThumbnailsBox = new Lang.Class({
         this.actor.connect('button-release-event', Lang.bind(this, this._onButtonRelease));
         this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
 
+        Main.overview.connect('showing',
+                              Lang.bind(this, this._createThumbnails));
+        Main.overview.connect('hidden',
+                              Lang.bind(this, this._destroyThumbnails));
+
         Main.overview.connect('item-drag-begin',
                               Lang.bind(this, this._onDragBegin));
         Main.overview.connect('item-drag-end',
@@ -733,7 +738,7 @@ const ThumbnailsBox = new Lang.Class({
         }
     },
 
-    show: function() {
+    _createThumbnails: function() {
         this._switchWorkspaceNotifyId =
             global.window_manager.connect('switch-workspace',
                                           Lang.bind(this, this._activeWorkspaceChanged));
@@ -765,7 +770,7 @@ const ThumbnailsBox = new Lang.Class({
         this._updateSwitcherVisibility();
     },
 
-    hide: function() {
+    _destroyThumbnails: function() {
         if (this._switchWorkspaceNotifyId > 0) {
             global.window_manager.disconnect(this._switchWorkspaceNotifyId);
             this._switchWorkspaceNotifyId = 0;

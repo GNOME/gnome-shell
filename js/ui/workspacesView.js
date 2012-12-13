@@ -573,7 +573,6 @@ const WorkspacesDisplay = new Lang.Class({
         this._updateZoom();
 
         this._controls.show();
-        this._thumbnailsBox.show();
 
         this._updateWorkspacesViews();
 
@@ -611,7 +610,6 @@ const WorkspacesDisplay = new Lang.Class({
 
     hide: function() {
         this._controls.hide();
-        this._thumbnailsBox.hide();
 
         if (!this._alwaysZoomOut)
             this.zoomFraction = 0;
