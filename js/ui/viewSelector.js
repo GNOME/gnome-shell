@@ -39,16 +39,10 @@ const ViewSelector = new Lang.Class({
     Name: 'ViewSelector',
 
     _init : function(searchEntry, showAppsButton) {
-        this.actor = new St.BoxLayout({ name: 'viewSelector',
-                                        vertical: true });
+        this.actor = new Shell.Stack({ name: 'viewSelector' });
 
         this._showAppsButton = showAppsButton;
         this._showAppsButton.connect('notify::checked', Lang.bind(this, this._onShowAppsButtonToggled));
-
-        this._pageArea = new Shell.Stack();
-        this.actor.add(this._pageArea, { x_fill: true,
-                                         y_fill: true,
-                                         expand: true });
 
         this._activePage = null;
 
@@ -191,7 +185,7 @@ const ViewSelector = new Lang.Class({
                                                       this._a11yFocusPage(page);
                                                   })
                                             });;
-        this._pageArea.add_actor(page);
+        this.actor.add_actor(page);
         return page;
     },
 
