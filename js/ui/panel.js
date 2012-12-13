@@ -751,11 +751,8 @@ const ActivitiesButton = new Lang.Class({
 const PanelCorner = new Lang.Class({
     Name: 'PanelCorner',
 
-    _init: function(box, side) {
+    _init: function(side) {
         this._side = side;
-
-        this._box = box;
-        this._box.connect('style-changed', Lang.bind(this, this._boxStyleChanged));
 
         this.actor = new St.DrawingArea({ style_class: 'panel-corner' });
         this.actor.connect('style-changed', Lang.bind(this, this._styleChanged));
@@ -812,12 +809,12 @@ const PanelCorner = new Lang.Class({
         return children[index];
     },
 
-    _boxStyleChanged: function() {
+    setStyleParent: function(box) {
         let side = this._side;
 
-        let rtlAwareContainer = this._box instanceof St.BoxLayout;
+        let rtlAwareContainer = box instanceof St.BoxLayout;
         if (rtlAwareContainer &&
-            this._box.get_text_direction() == Clutter.TextDirection.RTL) {
+            box.get_text_direction() == Clutter.TextDirection.RTL) {
             if (this._side == St.Side.LEFT)
                 side = St.Side.RIGHT;
             else if (this._side == St.Side.RIGHT)
@@ -826,9 +823,9 @@ const PanelCorner = new Lang.Class({
 
         let button;
         if (side == St.Side.LEFT)
-            button = this._findLeftmostButton(this._box);
+            button = this._findLeftmostButton(box);
         else if (side == St.Side.RIGHT)
-            button = this._findRightmostButton(this._box);
+            button = this._findRightmostButton(box);
 
         if (button) {
             if (this._button && this._buttonStyleChangedSignalId) {
@@ -963,17 +960,10 @@ const Panel = new Lang.Class({
         this._rightBox = new St.BoxLayout({ name: 'panelRight' });
         this.actor.add_actor(this._rightBox);
 
-        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL)
-            this._leftCorner = new PanelCorner(this._rightBox, St.Side.LEFT);
-        else
-            this._leftCorner = new PanelCorner(this._leftBox, St.Side.LEFT);
-
+        this._leftCorner = new PanelCorner(St.Side.LEFT);
         this.actor.add_actor(this._leftCorner.actor);
 
-        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL)
-            this._rightCorner = new PanelCorner(this._leftBox, St.Side.RIGHT);
-        else
-            this._rightCorner = new PanelCorner(this._rightBox, St.Side.RIGHT);
+        this._rightCorner = new PanelCorner(St.Side.RIGHT);
         this.actor.add_actor(this._rightCorner.actor);
 
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
@@ -1146,6 +1136,14 @@ const Panel = new Lang.Class({
         this._sessionStyle = Main.sessionMode.panelStyle;
         if (this._sessionStyle)
             this._addStyleClassName(this._sessionStyle);
+
+        if (this.actor.get_text_direction() == Clutter.TextDirection.RTL) {
+            this._leftCorner.setStyleParent(this._rightBox);
+            this._rightCorner.setStyleParent(this._leftBox);
+        } else {
+            this._leftCorner.setStyleParent(this._leftBox);
+            this._rightCorner.setStyleParent(this._rightBox);
+        }
     },
 
     _hideIndicators: function() {
