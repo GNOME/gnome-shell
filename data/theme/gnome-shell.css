@@ -620,6 +620,10 @@ StScrollBar StButton#vhandle:active {
     spacing: 32px;
 }
 
+.workspaces-display {
+    spacing: 32px; /* needs to be the same value as #overview-group */
+}
+
 .window-caption {
     spacing: 25px;
 }

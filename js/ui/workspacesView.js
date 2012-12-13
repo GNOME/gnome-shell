@@ -437,12 +437,23 @@ const WorkspacesDisplay = new Lang.Class({
     Name: 'WorkspacesDisplay',
 
     _init: function() {
-        this.actor = new Shell.GenericContainer();
+        this.actor = new Shell.GenericContainer({ style_class: 'workspaces-display' });
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
         this.actor.connect('parent-set', Lang.bind(this, this._parentSet));
         this.actor.set_clip_to_allocation(true);
+
+        this._spacing = 0;
+        this.actor.connect('style-changed', Lang.bind(this,
+            function() {
+                let node = this.actor.get_theme_node();
+                let spacing = node.get_length('spacing');
+                if (spacing != this._spacing) {
+                    this._spacing = spacing;
+                    this._updateWorkspacesGeometry();
+                }
+            }));
 
         let clickAction = new Clutter.ClickAction()
         clickAction.connect('clicked', Lang.bind(this, function(action) {
@@ -854,6 +865,7 @@ const WorkspacesDisplay = new Lang.Class({
         let clipY = y + (fullHeight - clipHeight) / 2;
 
         let widthAdjust = this._zoomOut ? controlsNatural : controlsVisible;
+        widthAdjust += this._spacing;
         width -= widthAdjust;
         if (rtl)
             x += widthAdjust;
