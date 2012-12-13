@@ -181,6 +181,50 @@ const LayoutMenuItem = new Lang.Class({
     }
 });
 
+const InputSource = new Lang.Class({
+    Name: 'InputSource',
+
+    _init: function(type, id, displayName, shortName, index) {
+        this.type = type;
+        this.id = id;
+        this.displayName = displayName;
+        this._shortName = shortName;
+        this.index = index;
+
+        this._menuItem = new LayoutMenuItem(this.displayName, this._shortName);
+        this._menuItem.connect('activate', Lang.bind(this, this.activate));
+        this._indicatorLabel = new St.Label({ text: this._shortName });
+    },
+
+    destroy: function() {
+        this._menuItem.destroy();
+        this._indicatorLabel.destroy();
+    },
+
+    get shortName() {
+        return this._shortName;
+    },
+
+    set shortName(v) {
+        this._shortName = v;
+        this._menuItem.indicator.set_text(v);
+        this._indicatorLabel.set_text(v);
+    },
+
+    get menuItem() {
+        return this._menuItem;
+    },
+
+    get indicatorLabel() {
+        return this._indicatorLabel;
+    },
+
+    activate: function() {
+        this.emit('activate');
+    },
+});
+Signals.addSignalMethods(InputSource.prototype);
+
 const InputSourceIndicator = new Lang.Class({
     Name: 'InputSourceIndicator',
     Extends: PanelMenu.Button,
@@ -195,14 +239,16 @@ const InputSourceIndicator = new Lang.Class({
         this.actor.add_actor(this._container);
         this.actor.add_style_class_name('panel-status-button');
 
-        this._labelActors = {};
-        this._layoutItems = {};
+        // All valid input sources currently in the gsettings
+        // KEY_INPUT_SOURCES list indexed by their index there
+        this._inputSources = {};
+
+        this._currentSource = null;
 
         this._settings = new Gio.Settings({ schema: DESKTOP_INPUT_SOURCES_SCHEMA });
         this._settings.connect('changed::' + KEY_CURRENT_INPUT_SOURCE, Lang.bind(this, this._currentInputSourceChanged));
         this._settings.connect('changed::' + KEY_INPUT_SOURCES, Lang.bind(this, this._inputSourcesChanged));
 
-        this._currentSourceIndex = this._settings.get_uint(KEY_CURRENT_INPUT_SOURCE);
         this._xkbInfo = new GnomeDesktop.XkbInfo();
 
         this._propSeparator = new PopupMenu.PopupSeparatorMenuItem();
@@ -236,17 +282,17 @@ const InputSourceIndicator = new Lang.Class({
     },
 
     _currentInputSourceChanged: function() {
-        let nVisibleSources = Object.keys(this._layoutItems).length;
-        let newCurrentSourceIndex = this._settings.get_uint(KEY_CURRENT_INPUT_SOURCE);
-        let newLayoutItem = this._layoutItems[newCurrentSourceIndex];
+        let nVisibleSources = Object.keys(this._inputSources).length;
+        let newSourceIndex = this._settings.get_uint(KEY_CURRENT_INPUT_SOURCE);
+        let newSource = this._inputSources[newSourceIndex];
         let hasProperties;
 
-        if (newLayoutItem)
-            hasProperties = this._ibusManager.hasProperties(newLayoutItem.ibusEngineId);
+        if (newSource)
+            hasProperties = this._ibusManager.hasProperties(newSource.id);
         else
             hasProperties = false;
 
-        if (!newLayoutItem || (nVisibleSources < 2 && !hasProperties)) {
+        if (!newSource || (nVisibleSources < 2 && !hasProperties)) {
             // This source index might be invalid if we weren't able
             // to build a menu item for it, so we hide ourselves since
             // we can't fix it here. *shrug*
@@ -260,88 +306,79 @@ const InputSourceIndicator = new Lang.Class({
 
         this.actor.show();
 
-        if (this._layoutItems[this._currentSourceIndex]) {
-            this._layoutItems[this._currentSourceIndex].setShowDot(false);
-            this._container.set_skip_paint(this._labelActors[this._currentSourceIndex], true);
+        let oldSource;
+        [oldSource, this._currentSource] = [this._currentSource, newSource];
+
+        if (oldSource) {
+            oldSource.menuItem.setShowDot(false);
+            this._container.set_skip_paint(oldSource.indicatorLabel, true);
         }
 
-        newLayoutItem.setShowDot(true);
-
-        let newLabelActor = this._labelActors[newCurrentSourceIndex];
-        this._container.set_skip_paint(newLabelActor, false);
-
         if (hasProperties)
-            newLabelActor.set_text(newLayoutItem.indicator.get_text());
-
-        this._currentSourceIndex = newCurrentSourceIndex;
+            newSource.indicatorLabel.set_text(newSource.shortName);
+        newSource.menuItem.setShowDot(true);
+        this._container.set_skip_paint(newSource.indicatorLabel, false);
     },
 
     _inputSourcesChanged: function() {
         let sources = this._settings.get_value(KEY_INPUT_SOURCES);
         let nSources = sources.n_children();
 
-        for (let i in this._layoutItems)
-            this._layoutItems[i].destroy();
+        for (let i in this._inputSources)
+            this._inputSources[i].destroy();
 
-        for (let i in this._labelActors)
-            this._labelActors[i].destroy();
+        this._inputSources = {};
 
-        this._layoutItems = {};
-        this._labelActors = {};
-
-        let infos = [];
-        let infosByShortName = {};
+        let inputSourcesByShortName = {};
 
         for (let i = 0; i < nSources; i++) {
-            let info = { exists: false };
+            let displayName;
+            let shortName;
             let [type, id] = sources.get_child_value(i).deep_unpack();
+            let exists = false;
 
             if (type == INPUT_SOURCE_TYPE_XKB) {
-                [info.exists, info.displayName, info.shortName, , ] =
+                [exists, displayName, shortName, , ] =
                     this._xkbInfo.get_layout_info(id);
             } else if (type == INPUT_SOURCE_TYPE_IBUS) {
                 let engineDesc = this._ibusManager.getEngineDesc(id);
                 if (engineDesc) {
                     let language = IBus.get_language_name(engineDesc.get_language());
-
-                    info.exists = true;
-                    info.displayName = language + ' (' + engineDesc.get_longname() + ')';
-                    info.shortName = this._makeEngineShortName(engineDesc);
-                    info.ibusEngineId = id;
+                    exists = true;
+                    displayName = language + ' (' + engineDesc.get_longname() + ')';
+                    shortName = this._makeEngineShortName(engineDesc);
                 }
             }
 
-            if (!info.exists)
+            if (!exists)
                 continue;
 
-            info.sourceIndex = i;
+            let is = new InputSource(type, id, displayName, shortName, i);
 
-            if (!(info.shortName in infosByShortName))
-                infosByShortName[info.shortName] = [];
-            infosByShortName[info.shortName].push(info);
-            infos.push(info);
-        }
-
-        for (let i = 0; i < infos.length; i++) {
-            let info = infos[i];
-            if (infosByShortName[info.shortName].length > 1) {
-                let sub = infosByShortName[info.shortName].indexOf(info) + 1;
-                info.shortName += String.fromCharCode(0x2080 + sub);
-            }
-
-            let item = new LayoutMenuItem(info.displayName, info.shortName);
-            item.ibusEngineId = info.ibusEngineId;
-            this._layoutItems[info.sourceIndex] = item;
-            this.menu.addMenuItem(item, i);
-            item.connect('activate', Lang.bind(this, function() {
+            is.connect('activate', Lang.bind(this, function() {
                 this._settings.set_value(KEY_CURRENT_INPUT_SOURCE,
-                                         GLib.Variant.new_uint32(info.sourceIndex));
+                                         GLib.Variant.new_uint32(is.index));
             }));
 
-            let shortLabel = new St.Label({ text: info.shortName });
-            this._labelActors[info.sourceIndex] = shortLabel;
-            this._container.add_actor(shortLabel);
-            this._container.set_skip_paint(shortLabel, true);
+            if (!(is.shortName in inputSourcesByShortName))
+                inputSourcesByShortName[is.shortName] = [];
+            inputSourcesByShortName[is.shortName].push(is);
+
+            this._inputSources[is.index] = is;
+        }
+
+        let menuIndex = 0;
+        for (let i in this._inputSources) {
+            let is = this._inputSources[i];
+            if (inputSourcesByShortName[is.shortName].length > 1) {
+                let sub = inputSourcesByShortName[is.shortName].indexOf(is) + 1;
+                is.shortName += String.fromCharCode(0x2080 + sub);
+            }
+
+            this.menu.addMenuItem(is.menuItem, menuIndex++);
+
+            this._container.add_actor(is.indicatorLabel);
+            this._container.set_skip_paint(is.indicatorLabel, true);
         }
 
         this._currentInputSourceChanged();
@@ -350,16 +387,14 @@ const InputSourceIndicator = new Lang.Class({
     _showLayout: function() {
         Main.overview.hide();
 
-        let sources = this._settings.get_value(KEY_INPUT_SOURCES);
-        let current = this._settings.get_uint(KEY_CURRENT_INPUT_SOURCE);
-        let [type, id] = sources.get_child_value(current).deep_unpack();
+        let source = this._currentSource;
         let xkbLayout = '';
         let xkbVariant = '';
 
-        if (type == INPUT_SOURCE_TYPE_XKB) {
-            [, , , xkbLayout, xkbVariant] = this._xkbInfo.get_layout_info(id);
-        } else if (type == INPUT_SOURCE_TYPE_IBUS) {
-            let engineDesc = this._ibusManager.getEngineDesc(id);
+        if (source.type == INPUT_SOURCE_TYPE_XKB) {
+            [, , , xkbLayout, xkbVariant] = this._xkbInfo.get_layout_info(source.id);
+        } else if (source.type == INPUT_SOURCE_TYPE_IBUS) {
+            let engineDesc = this._ibusManager.getEngineDesc(source.id);
             if (engineDesc) {
                 xkbLayout = engineDesc.get_layout();
                 xkbVariant = '';
@@ -416,16 +451,9 @@ const InputSourceIndicator = new Lang.Class({
     },
 
     _updateIndicatorLabel: function(text) {
-        let layoutItem = this._layoutItems[this._currentSourceIndex];
-        let hasProperties;
-
-        if (layoutItem)
-            hasProperties = this._ibusManager.hasProperties(layoutItem.ibusEngineId);
-        else
-            hasProperties = false;
-
+        let hasProperties = this._ibusManager.hasProperties(this._currentSource.id);
         if (hasProperties)
-            this._labelActors[this._currentSourceIndex].set_text(text);
+            this._currentSource.indicatorLabel.set_text(text);
     },
 
     _buildPropSection: function() {
@@ -543,8 +571,9 @@ const InputSourceIndicator = new Lang.Class({
         // for those we don't actually display.
         let max_min_width = 0, max_natural_width = 0;
 
-        for (let i in this._labelActors) {
-            let [min_width, natural_width] = this._labelActors[i].get_preferred_width(for_height);
+        for (let i in this._inputSources) {
+            let is = this._inputSources[i];
+            let [min_width, natural_width] = is.indicatorLabel.get_preferred_width(for_height);
             max_min_width = Math.max(max_min_width, min_width);
             max_natural_width = Math.max(max_natural_width, natural_width);
         }
@@ -556,8 +585,9 @@ const InputSourceIndicator = new Lang.Class({
     _containerGetPreferredHeight: function(container, for_width, alloc) {
         let max_min_height = 0, max_natural_height = 0;
 
-        for (let i in this._labelActors) {
-            let [min_height, natural_height] = this._labelActors[i].get_preferred_height(for_width);
+        for (let i in this._inputSources) {
+            let is = this._inputSources[i];
+            let [min_height, natural_height] = is.indicatorLabel.get_preferred_height(for_width);
             max_min_height = Math.max(max_min_height, min_height);
             max_natural_height = Math.max(max_natural_height, natural_height);
         }
@@ -573,7 +603,9 @@ const InputSourceIndicator = new Lang.Class({
         box.y2 -= box.y1;
         box.y1 = 0;
 
-        for (let i in this._labelActors)
-            this._labelActors[i].allocate_align_fill(box, 0.5, 0, false, false, flags);
+        for (let i in this._inputSources) {
+            let is = this._inputSources[i];
+            is.indicatorLabel.allocate_align_fill(box, 0.5, 0, false, false, flags);
+        }
     }
 });
