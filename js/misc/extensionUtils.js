@@ -132,7 +132,6 @@ function createExtensionObject(uuid, dir, type) {
     extension.type = type;
     extension.dir = dir;
     extension.path = dir.get_path();
-    extension.error = '';
     extension.hasPrefs = dir.get_child('prefs.js').query_exists(null);
 
     extensions[uuid] = extension;
