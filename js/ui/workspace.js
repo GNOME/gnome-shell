@@ -524,7 +524,8 @@ const WindowOverlay = new Lang.Class({
     },
 
     chromeWidths: function () {
-        return [this.borderSize, this.borderSize];
+        return [this.borderSize,
+                Math.max(this.borderSize, this.closeButton.width - this.closeButton._overlap)];
     },
 
     relayout: function(animate) {
