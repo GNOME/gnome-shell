@@ -98,6 +98,9 @@ main (int argc, char **argv)
   ADD_TEST (test_bitmask, 0, 0);
 
   ADD_TEST (test_offscreen, 0, 0);
+  ADD_TEST (test_framebuffer_get_bits,
+            TEST_REQUIREMENT_OFFSCREEN,
+            TEST_KNOWN_FAILURE);
 
   ADD_TEST (test_point_size, 0, 0);
   ADD_TEST (test_point_sprite,

@@ -62,6 +62,7 @@ test_sources = \
 	test-alpha-textures.c \
 	test-wrap-rectangle-textures.c \
 	test-texture-get-set-data.c \
+	test-framebuffer-get-bits.c \
 	$(NULL)
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
