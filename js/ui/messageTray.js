@@ -1412,7 +1412,7 @@ const MessageTray = new Lang.Class({
             actor.grab_key_focus();
         }));
         global.focus_manager.add_group(this.actor);
-        this._summary = new St.BoxLayout({ name: 'summary-mode',
+        this._summary = new St.BoxLayout({ style_class: 'message-tray-summary',
                                            reactive: true,
                                            track_hover: true,
                                            x_align: Clutter.ActorAlign.END,
