@@ -151,7 +151,7 @@ clutter_rotate_action_gesture_progress (ClutterGestureAction *action,
         angle = -angle;
 
       /* Convert radians to degrees */
-      angle = angle * 180.0 / M_PI;
+      angle = angle * 180.0 / G_PI;
 
       g_signal_emit (action, rotate_signals[ROTATE], 0,
                      actor, angle,
