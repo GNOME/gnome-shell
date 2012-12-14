@@ -127,6 +127,9 @@ typedef struct _CoglWinsysVtable
   void
   (*onscreen_set_resizable) (CoglOnscreen *onscreen, CoglBool resizable);
 
+  int
+  (*onscreen_get_buffer_age) (CoglOnscreen *onscreen);
+
 #ifdef COGL_HAS_EGL_SUPPORT
   EGLDisplay
   (*context_egl_get_egl_display) (CoglContext *context);

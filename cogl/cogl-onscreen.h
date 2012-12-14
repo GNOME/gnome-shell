@@ -307,6 +307,54 @@ cogl_onscreen_hide (CoglOnscreen *onscreen);
 void
 cogl_onscreen_swap_buffers (CoglOnscreen *onscreen);
 
+
+/**
+ * cogl_onscreen_get_buffer_age:
+ * @onscreen: A #CoglOnscreen framebuffer
+ *
+ * Gets the current age of the buffer contents.
+ *
+ * This function allows applications to query the age of the current
+ * back buffer contents for a #CoglOnscreen as the number of frames
+ * elapsed since the contents were most recently defined.
+ *
+ * These age values exposes enough information to applications about
+ * how Cogl internally manages back buffers to allow applications to
+ * re-use the contents of old frames and minimize how much must be
+ * redrawn for the next frame.
+ *
+ * The back buffer contents can either be reported as invalid (has an
+ * age of 0) or it may be reported to be the same contents as from n
+ * frames prior to the current frame.
+ *
+ * The queried value remains valid until the next buffer swap.
+ *
+ * <note>One caveat is that under X11 the buffer age does not reflect
+ * changes to buffer contents caused by the window systems. X11
+ * applications must track Expose events to determine what buffer
+ * regions need to additionally be repaired each frame.</note>
+ *
+ * The recommended way to take advantage of this buffer age api is to
+ * build up a circular buffer of length 3 for tracking damage regions
+ * over the last 3 frames and when starting a new frame look at the
+ * age of the buffer and combine the damage regions for the current
+ * frame with the damage regions of previous @age frames so you know
+ * everything that must be redrawn to update the old contents for the
+ * new frame.
+ *
+ * <note>If the system doesn't not support being able to track the age
+ * of back buffers then this function will always return 0 which
+ * implies that the contents are undefined.</note>
+ *
+ * Return value: The age of the buffer contents or 0 when the buffer
+ *               contents are undefined.
+ *
+ * Since: 1.14
+ * Stability: stable
+ */
+int
+cogl_onscreen_get_buffer_age (CoglOnscreen *onscreen);
+
 /**
  * cogl_onscreen_swap_region:
  * @onscreen: A #CoglOnscreen framebuffer

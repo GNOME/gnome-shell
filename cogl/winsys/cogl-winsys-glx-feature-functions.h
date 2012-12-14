@@ -170,3 +170,11 @@ COGL_WINSYS_FEATURE_FUNCTION (GLXContext, glXCreateContextAttribs,
                                Bool direct,
                                const int *attrib_list))
 COGL_WINSYS_FEATURE_END ()
+
+COGL_WINSYS_FEATURE_BEGIN (255, 255,
+                           buffer_age,
+                           "EXT\0",
+                           "buffer_age\0",
+                           0,
+                           COGL_WINSYS_FEATURE_BUFFER_AGE)
+COGL_WINSYS_FEATURE_END ()

@@ -69,6 +69,10 @@ typedef struct _CoglGLXRenderer
   void *
   (* glXGetProcAddress) (const GLubyte *procName);
 
+  int
+  (* glXQueryDrawable) (Display *dpy, GLXDrawable drawable,
+                        int attribute, unsigned int *value);
+
   /* Function pointers for GLX specific extensions */
 #define COGL_WINSYS_FEATURE_BEGIN(a, b, c, d, e, f, g)
 

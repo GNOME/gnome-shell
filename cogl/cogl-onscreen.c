@@ -188,6 +188,22 @@ cogl_onscreen_swap_region (CoglOnscreen *onscreen,
                                     COGL_BUFFER_BIT_STENCIL);
 }
 
+int
+cogl_onscreen_get_buffer_age (CoglOnscreen *onscreen)
+{
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  const CoglWinsysVtable *winsys;
+
+  _COGL_RETURN_VAL_IF_FAIL  (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN, 0);
+
+  winsys = _cogl_framebuffer_get_winsys (framebuffer);
+
+  if (!winsys->onscreen_get_buffer_age)
+    return 0;
+
+  return winsys->onscreen_get_buffer_age (onscreen);
+}
+
 #ifdef COGL_HAS_X11_SUPPORT
 void
 cogl_x11_onscreen_set_foreign_window_xid (CoglOnscreen *onscreen,

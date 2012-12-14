@@ -280,7 +280,9 @@ resolve_core_glx_functions (CoglRenderer *renderer,
       (!g_module_symbol (glx_renderer->libgl_module, "glXGetProcAddress",
                          (void **) &glx_renderer->glXGetProcAddress) &&
        !g_module_symbol (glx_renderer->libgl_module, "glXGetProcAddressARB",
-                         (void **) &glx_renderer->glXGetProcAddress)))
+                         (void **) &glx_renderer->glXGetProcAddress)) ||
+       !g_module_symbol (glx_renderer->libgl_module, "glXQueryDrawable",
+                         (void **) &glx_renderer->glXQueryDrawable))
     {
       _cogl_set_error (error, COGL_WINSYS_ERROR,
                    COGL_WINSYS_ERROR_INIT,
@@ -1187,6 +1189,30 @@ _cogl_winsys_get_vsync_counter (CoglContext *ctx)
   glx_renderer->glXGetVideoSync (&video_sync_count);
 
   return video_sync_count;
+}
+
+#ifndef GLX_BACK_BUFFER_AGE_EXT
+#define GLX_BACK_BUFFER_AGE_EXT 0x20F4
+#endif
+
+static int
+_cogl_winsys_onscreen_get_buffer_age (CoglOnscreen *onscreen)
+{
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  CoglContext *context = framebuffer->context;
+  CoglXlibRenderer *xlib_renderer = _cogl_xlib_renderer_get_data (context->display->renderer);
+  CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
+  CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
+  CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
+  GLXDrawable drawable = glx_onscreen->glxwin ? glx_onscreen->glxwin : xlib_onscreen->xwin;
+  unsigned int age;
+
+  if (!_cogl_winsys_has_feature (COGL_WINSYS_FEATURE_BUFFER_AGE))
+    return 0;
+
+  glx_renderer->glXQueryDrawable (xlib_renderer->xdpy, drawable, GLX_BACK_BUFFER_AGE_EXT, &age);
+
+  return age;
 }
 
 static void
@@ -2165,6 +2191,7 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .onscreen_bind = _cogl_winsys_onscreen_bind,
     .onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers,
     .onscreen_swap_region = _cogl_winsys_onscreen_swap_region,
+    .onscreen_get_buffer_age = _cogl_winsys_onscreen_get_buffer_age,
     .onscreen_update_swap_throttled =
       _cogl_winsys_onscreen_update_swap_throttled,
     .onscreen_x11_get_window_xid =

@@ -829,6 +829,9 @@ typedef enum _CoglWinsysFeature
    * only needs to be throttled to the framerate */
   COGL_WINSYS_FEATURE_SWAP_REGION_SYNCHRONIZED,
 
+  /* Avaiable if the age of the back buffer can be queried */
+  COGL_WINSYS_FEATURE_BUFFER_AGE,
+
   COGL_WINSYS_FEATURE_N_FEATURES
 } CoglWinsysFeature;
 
