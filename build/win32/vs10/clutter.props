@@ -3,7 +3,7 @@
   <PropertyGroup Label="UserMacros">
     <GlibEtcInstallRoot>..\..\..\..\vs10\$(Platform)</GlibEtcInstallRoot>
     <GlibMkEnumsPath>..\..\..\vs10\$(Platform)</GlibMkEnumsPath>
-	<GlibGenMarshalPath>..\..\..\vs10\$(Platform)</GlibGenMarshalPath>
+    <GlibGenMarshalPath>..\..\vs10\$(Platform)</GlibGenMarshalPath>
     <ClutterApiVersion>1.0</ClutterApiVersion>
     <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
     <DefDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</DefDir>
@@ -78,7 +78,7 @@ cd ..\build\win32\vs10
 
 cd ..
 
-gen-enums.bat $(GlibEtcInstallRoot)
+gen-enums.bat $(GlibMkEnumsPath)
 
 cd .\vs10
 
