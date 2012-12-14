@@ -4,7 +4,7 @@
 	Version="9.00"
 	Name="install"
 	ProjectGUID="{35B2A4AC-7235-4FC7-995D-469D59195041}"
-	RootNamespace="install"
+	RootNamespace="install_sdl"
 	TargetFrameworkVersion="196613"
 	>
 	<Platforms>
@@ -27,7 +27,10 @@
 			>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="$(CoglDoInstall)"
+				CommandLine="
+$(CoglDoInstall)
+$(CoglDoInstallSDL)
+				            "
 			/>
 		</Configuration>
 		<Configuration
@@ -39,8 +42,11 @@
 			DeleteExtensionsOnClean=""
 			>
 			<Tool
-				Name="VCPreBuildEventTool"
-				CommandLine="$(CoglDoInstall)"
+				Name="VCPostBuildEventTool"
+				CommandLine="
+$(CoglDoInstall)
+$(CoglDoInstallSDL)
+				            "
 			/>
 		</Configuration>
 		<Configuration
@@ -53,7 +59,10 @@
 			>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="$(CoglDoInstall)"
+				CommandLine="
+$(CoglDoInstall)
+$(CoglDoInstallSDL)
+				            "
 			/>
 		</Configuration>
 		<Configuration
@@ -63,11 +72,13 @@
 			ConfigurationType="10"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
-			DeleteExtensionsOnClean=""
 			>
 			<Tool
-				Name="VCPreBuildEventTool"
-				CommandLine="$(CoglDoInstall)"
+				Name="VCPostBuildEventTool"
+				CommandLine="
+$(CoglDoInstall)
+$(CoglDoInstallSDL)
+				            "
 			/>
 		</Configuration>
 	</Configurations>
