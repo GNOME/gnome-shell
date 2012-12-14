@@ -86,7 +86,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib gdk-win32-3.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
+				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib gdk-3.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="$(IntDir)\clutter.def"
@@ -163,7 +163,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib gdk-win32-3.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
+				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib gdk-3.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="$(IntDir)\clutter.def"
@@ -244,7 +244,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib gdk-win32-3.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
+				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib gdk-3.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="$(IntDir)\clutter.def"
@@ -319,7 +319,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib gdk-win32-3.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
+				AdditionalDependencies="opengl32.lib winmm.lib intl.lib json-glib-1.0.lib gdk-3.0.lib pangocairo-1.0.lib pango-1.0.lib cairo-gobject.lib cairo.lib atk-1.0.lib gmodule-2.0.lib gio-2.0.lib"
 				OutputFile="$(OutDir)\$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile="$(IntDir)\clutter.def"

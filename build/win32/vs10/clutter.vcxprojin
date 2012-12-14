@@ -173,7 +173,7 @@
       <Command>$(GenerateClutterGDKDef)</Command>
     </PreLinkEvent>
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;gdk-win32-3.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;gdk-3.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>$(IntDir)\clutter.def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ClutterApiVersion).lib</ImportLibrary>
@@ -231,7 +231,7 @@
       <Command>$(GenerateClutterGDKDef)</Command>
     </PreLinkEvent>
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;gdk-win32-3.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;gdk-3.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>$(IntDir)\clutter.def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ClutterApiVersion).lib</ImportLibrary>
@@ -291,7 +291,7 @@
       <Command>$(GenerateClutterGDKDef)</Command>
     </PreLinkEvent>
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;gdk-win32-3.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;gdk-3.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>$(IntDir)\clutter.def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ClutterApiVersion).lib</ImportLibrary>
@@ -347,7 +347,7 @@
       <Command>$(GenerateClutterGDKDef)</Command>
     </PreLinkEvent>
     <Link>
-      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;gdk-win32-3.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;winmm.lib;intl.lib;json-glib-1.0.lib;gdk-3.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo-gobject.lib;cairo.lib;atk-1.0.lib;gmodule-2.0.lib;gio-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(ClutterDllPrefix)$(ProjectName)$(ClutterDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>$(IntDir)\clutter.def</ModuleDefinitionFile>
       <ImportLibrary>$(TargetDir)$(ProjectName)-$(ClutterApiVersion).lib</ImportLibrary>
