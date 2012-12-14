@@ -3072,11 +3072,11 @@ clutter_actor_real_apply_transform (ClutterActor  *self,
           cogl_matrix_translate (transform, -x, -y, -z);
         }
 
+out:
       /* roll back the pivot translation */
       if (pivot_x != 0.f || pivot_y != 0.f || info->pivot_z != 0.f)
         cogl_matrix_translate (transform, -pivot_x, -pivot_y, -info->pivot_z);
 
-out:
       priv->transform_valid = TRUE;
     }
 

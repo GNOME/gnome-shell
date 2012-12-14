@@ -162,6 +162,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/actor/invariants", clone_no_map);
   TEST_CONFORM_SIMPLE ("/actor/invariants", actor_contains);
   TEST_CONFORM_SIMPLE ("/actor/invariants", default_stage);
+  TEST_CONFORM_SIMPLE ("/actor/invariants", actor_pivot_transformation);
 
   TEST_CONFORM_SIMPLE ("/actor/opacity", opacity_label);
   TEST_CONFORM_SIMPLE ("/actor/opacity", opacity_rectangle);

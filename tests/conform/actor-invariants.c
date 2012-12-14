@@ -442,3 +442,43 @@ default_stage (TestConformSimpleFixture *fixture,
 
   g_assert (CLUTTER_ACTOR_IS_REALIZED (def_stage));
 }
+
+void
+actor_pivot_transformation (TestConformSimpleFixture *fixture,
+                            gconstpointer             data)
+{
+  ClutterActor *stage, *actor_implicit, *actor_explicit;
+  ClutterMatrix transform, result_implicit, result_explicit;
+  ClutterActorBox allocation = CLUTTER_ACTOR_BOX_INIT (0, 0, 90, 30);
+  gfloat angle = 30;
+
+  stage = clutter_stage_new ();
+
+  actor_implicit = clutter_actor_new ();
+  actor_explicit = clutter_actor_new ();
+
+  clutter_actor_add_child (stage, actor_implicit);
+  clutter_actor_add_child (stage, actor_explicit);
+
+  /* Fake allocation or pivot-point will not have any effect */
+  clutter_actor_allocate (actor_implicit, &allocation, CLUTTER_ALLOCATION_NONE);
+  clutter_actor_allocate (actor_explicit, &allocation, CLUTTER_ALLOCATION_NONE);
+
+  clutter_actor_set_pivot_point (actor_implicit, 0.5, 0.5);
+  clutter_actor_set_pivot_point (actor_explicit, 0.5, 0.5);
+
+  /* Implict transformation */
+  clutter_actor_set_rotation_angle (actor_implicit, CLUTTER_Z_AXIS, angle);
+
+  /* Explict transformation */
+  clutter_matrix_init_identity(&transform);
+  cogl_matrix_rotate (&transform, angle, 0, 0, 1.0);
+  clutter_actor_set_transform (actor_explicit, &transform);
+
+  clutter_actor_get_transform (actor_implicit, &result_implicit);
+  clutter_actor_get_transform (actor_explicit, &result_explicit);
+
+  clutter_actor_destroy (stage);
+
+  g_assert (cogl_matrix_equal (&result_implicit, &result_explicit));
+}
