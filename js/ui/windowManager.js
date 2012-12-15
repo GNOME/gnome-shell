@@ -219,7 +219,9 @@ const WindowManager = new Lang.Class({
     _shouldAnimateActor: function(actor) {
         if (!this._shouldAnimate())
             return false;
-        return actor.meta_window.get_window_type() == Meta.WindowType.NORMAL;
+        let windowType = actor.meta_window.get_window_type();
+        return windowType == Meta.WindowType.NORMAL ||
+            windowType == Meta.WindowType.MODAL_DIALOG;
     },
 
     _removeEffect : function(list, actor) {
@@ -369,51 +371,49 @@ const WindowManager = new Lang.Class({
 
             actor._windowType = type;
         }));
-        if (actor.meta_window.is_attached_dialog()) {
-            this._checkDimming(actor.get_meta_window().get_transient_for());
-            if (this._shouldAnimate()) {
-                actor.set_scale(1.0, 0.0);
-                actor.scale_gravity = Clutter.Gravity.CENTER;
-                actor.show();
-                this._mapping.push(actor);
 
-                Tweener.addTween(actor,
-                                 { scale_y: 1,
-                                   time: WINDOW_ANIMATION_TIME,
-                                   transition: "easeOutQuad",
-                                   onComplete: this._mapWindowDone,
-                                   onCompleteScope: this,
-                                   onCompleteParams: [shellwm, actor],
-                                   onOverwrite: this._mapWindowOverwrite,
-                                   onOverwriteScope: this,
-                                   onOverwriteParams: [shellwm, actor]
-                                 });
-                return;
-            }
-            shellwm.completed_map(actor);
-            return;
-        }
         if (!this._shouldAnimateActor(actor)) {
             shellwm.completed_map(actor);
             return;
         }
 
-        actor.opacity = 0;
-        actor.show();
+        if (actor.meta_window.is_attached_dialog()) {
+            /* Scale the window from the center of the parent */
+            this._checkDimming(actor.get_meta_window().get_transient_for());
+            actor.set_scale(1.0, 0.0);
+            actor.scale_gravity = Clutter.Gravity.CENTER;
+            actor.show();
+            this._mapping.push(actor);
 
-        /* Fade window in */
-        this._mapping.push(actor);
-        Tweener.addTween(actor,
-                         { opacity: 255,
-                           time: WINDOW_ANIMATION_TIME,
-                           transition: 'easeOutQuad',
-                           onComplete: this._mapWindowDone,
-                           onCompleteScope: this,
-                           onCompleteParams: [shellwm, actor],
-                           onOverwrite: this._mapWindowOverwrite,
-                           onOverwriteScope: this,
-                           onOverwriteParams: [shellwm, actor]
-                         });
+            Tweener.addTween(actor,
+                             { scale_y: 1,
+                               time: WINDOW_ANIMATION_TIME,
+                               transition: "easeOutQuad",
+                               onComplete: this._mapWindowDone,
+                               onCompleteScope: this,
+                               onCompleteParams: [shellwm, actor],
+                               onOverwrite: this._mapWindowOverwrite,
+                               onOverwriteScope: this,
+                               onOverwriteParams: [shellwm, actor]
+                             });
+        } else {
+            /* Fade window in */
+            actor.opacity = 0;
+            actor.show();
+            this._mapping.push(actor);
+
+            Tweener.addTween(actor,
+                             { opacity: 255,
+                               time: WINDOW_ANIMATION_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: this._mapWindowDone,
+                               onCompleteScope: this,
+                               onCompleteParams: [shellwm, actor],
+                               onOverwrite: this._mapWindowOverwrite,
+                               onOverwriteScope: this,
+                               onOverwriteParams: [shellwm, actor]
+                             });
+        }
     },
 
     _mapWindowDone : function(shellwm, actor) {
@@ -441,18 +441,21 @@ const WindowManager = new Lang.Class({
                                                                  return win != window;
                                                              });
         }
+
+        if (!this._shouldAnimateActor(actor)) {
+            shellwm.completed_destroy(actor);
+            return;
+        }
+
+        this._destroying.push(actor);
+
         if (window.is_attached_dialog()) {
             let parent = window.get_transient_for();
             this._checkDimming(parent, window);
-            if (!this._shouldAnimate()) {
-                shellwm.completed_destroy(actor);
-                return;
-            }
 
             actor.set_scale(1.0, 1.0);
             actor.scale_gravity = Clutter.Gravity.CENTER;
             actor.show();
-            this._destroying.push(actor);
 
             actor._parentDestroyId = parent.connect('unmanaged', Lang.bind(this, function () {
                 Tweener.removeTweens(actor);
