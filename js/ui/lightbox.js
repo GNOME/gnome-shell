@@ -5,11 +5,37 @@ const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Signals = imports.signals;
 const St = imports.gi.St;
+const Shell = imports.gi.Shell;
 
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
 const DEFAULT_FADE_FACTOR = 0.4;
+
+const GLSL_DIM_EFFECT_DECLARATIONS = '\
+float compute_dim_factor (const vec2 coords) {\
+   vec2 dist = coords - vec2(0.5, 0.5); \
+   float elipse_radius = 0.5; \
+   /* interpolate darkening value, based on distance from screen center */ \
+   float val = min(length(dist), elipse_radius); \
+   return mix(0.3, 1.0, val / elipse_radius) * 0.4; \
+}';
+const GLSL_DIM_EFFECT_CODE = '\
+   float a = compute_dim_factor (cogl_tex_coord0_in.xy);\
+   cogl_color_out = vec4(0, 0, 0, cogl_color_in.a * a);'
+;
+
+const RadialShaderQuad = new Lang.Class({
+    Name: 'RadialShaderQuad',
+    Extends: Shell.GLSLQuad,
+
+    vfunc_build_pipeline: function() {
+        this.add_glsl_snippet(Shell.SnippetHook.FRAGMENT,
+                              GLSL_DIM_EFFECT_DECLARATIONS,
+                              GLSL_DIM_EFFECT_CODE,
+                              true);
+    },
+});
 
 /**
  * Lightbox:
@@ -43,15 +69,21 @@ const Lightbox = new Lang.Class({
                                         width: null,
                                         height: null,
                                         fadeFactor: DEFAULT_FADE_FACTOR,
+                                        radialEffect: false,
                                       });
 
         this._container = container;
         this._children = container.get_children();
         this._fadeFactor = params.fadeFactor;
-        this.actor = new St.Bin({ x: 0,
-                                  y: 0,
-                                  style_class: 'lightbox',
-                                  reactive: params.inhibitEvents });
+        if (params.radialEffect)
+            this.actor = new RadialShaderQuad({ x: 0,
+                                                y: 0,
+                                                reactive: params.inhibitEvents });
+        else
+            this.actor = new St.Bin({ x: 0,
+                                      y: 0,
+                                      style_class: 'lightbox',
+                                      reactive: params.inhibitEvents });
 
         container.add_actor(this.actor);
         this.actor.raise_top();

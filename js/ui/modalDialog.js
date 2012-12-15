@@ -89,7 +89,8 @@ const ModalDialog = new Lang.Class({
 
         if (!this._shellReactive) {
             this._lightbox = new Lightbox.Lightbox(this._group,
-                                                   { inhibitEvents: true });
+                                                   { inhibitEvents: true,
+                                                     radialEffect: true });
             this._lightbox.highlight(this._backgroundBin);
 
             this._eventBlocker = new Clutter.Actor({ reactive: true });

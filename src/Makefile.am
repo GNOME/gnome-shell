@@ -92,6 +92,7 @@ shell_public_headers_h =		\
 	shell-app-usage.h		\
 	shell-embedded-window.h		\
 	shell-generic-container.h	\
+	shell-glsl-quad.h		\
 	shell-gtk-embed.h		\
 	shell-global.h			\
 	shell-invert-lightness-effect.h	\
@@ -128,6 +129,7 @@ libgnome_shell_base_la_SOURCES = 	\
 	shell-embedded-window-private.h	\
 	shell-embedded-window.c		\
 	shell-generic-container.c	\
+	shell-glsl-quad.c		\
 	shell-invert-lightness-effect.c	\
 	shell-keyring-prompt.h		\
 	shell-keyring-prompt.c		\
