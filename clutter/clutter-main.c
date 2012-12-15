@@ -2835,8 +2835,10 @@ clutter_base_init (void)
       bindtextdomain (GETTEXT_PACKAGE, CLUTTER_LOCALEDIR);
       bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 
+#if !GLIB_CHECK_VERSION (2, 35, 1)
       /* initialise GLib type system */
       g_type_init ();
+#endif
 
       /* initialise the Big Clutter Lock™ if necessary */
       clutter_threads_init_default ();
