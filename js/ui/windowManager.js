@@ -247,16 +247,17 @@ const WindowManager = new Lang.Class({
          */
         this._minimizing.push(actor);
 
-        let primary = Main.layoutManager.primaryMonitor;
-        let xDest = primary.x;
+        let monitor = Main.layoutManager.findMonitorForWindow(actor.meta_window);
+        let xDest = monitor.x;
+        let yDest = monitor.y;
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
-            xDest += primary.width;
+            xDest += monitor.width;
 
         Tweener.addTween(actor,
                          { scale_x: 0.0,
                            scale_y: 0.0,
                            x: xDest,
-                           y: 0,
+                           y: yDest,
                            time: WINDOW_ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete: this._minimizeWindowDone,
