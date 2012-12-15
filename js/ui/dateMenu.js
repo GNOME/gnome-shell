@@ -93,6 +93,15 @@ const DateMenuButton = new Lang.Class({
         this._openCalendarItem.actor.can_focus = false;
         vbox.add(this._openCalendarItem.actor, {y_align: St.Align.END, expand: true, y_fill: false});
 
+        this._openClocksItem = new PopupMenu.PopupMenuItem(_("Open Clocks"));
+        this._openClocksItem.connect('activate', Lang.bind(this, this._onOpenClocksActivate));
+        this._openClocksItem.actor.can_focus = false;
+        vbox.add(this._openClocksItem.actor, {y_align: St.Align.END, expand: true, y_fill: false});
+
+        Shell.AppSystem.get_default().connect('installed-changed',
+                                              Lang.bind(this, this._appInstalledChanged));
+        this._appInstalledChanged();
+
         item = this.menu.addSettingsAction(_("Date and Time Settings"), 'gnome-datetime-panel.desktop');
         if (item) {
             item.actor.show_on_set_parent = false;
@@ -147,6 +156,11 @@ const DateMenuButton = new Lang.Class({
         this._sessionUpdated();
     },
 
+    _appInstalledChanged: function() {
+        let app = Shell.AppSystem.get_default().lookup_app('gnome-clocks.desktop');
+        this._openClocksItem.actor.visible = app !== null;
+    },
+
     _setEventsVisibility: function(visible) {
         this._openCalendarItem.actor.visible = visible;
         this._separator.visible = visible;
@@ -198,5 +212,11 @@ const DateMenuButton = new Lang.Class({
 
         let app = Gio.AppInfo.get_default_for_type('text/calendar', false);
         app.launch([], global.create_app_launch_context());
+    },
+
+    _onOpenClocksActivate: function() {
+        this.menu.close();
+        let app = Shell.AppSystem.get_default().lookup_app('gnome-clocks.desktop');
+        app.activate();
     }
 });
