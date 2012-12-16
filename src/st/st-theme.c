@@ -855,7 +855,7 @@ add_matched_properties (StTheme      *a_this,
                     file = _st_theme_resolve_url (a_this,
                                                   a_nodesheet,
                                                   import_rule->url->stryng->str);
-                    filename = g_strdup (g_file_get_path (file));
+                    filename = g_file_get_path (file);
 
                     g_object_unref (file);
                   }

@@ -1749,7 +1749,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
                                                 base_stylesheet,
                                                 term->content.str->stryng->str);
 
-                  node->background_image = g_strdup (g_file_get_path (file));
+                  node->background_image = g_file_get_path (file);
                   g_object_unref (file);
                 }
             }
@@ -1859,7 +1859,7 @@ _st_theme_node_ensure_background (StThemeNode *node)
                                             base_stylesheet,
                                             decl->value->content.str->stryng->str);
 
-              node->background_image = g_strdup (g_file_get_path (file));
+              node->background_image = g_file_get_path (file);
               g_object_unref (file);
             }
           else if (term_is_inherit (decl->value))
@@ -2756,7 +2756,7 @@ st_theme_node_get_border_image (StThemeNode *node)
             base_stylesheet = NULL;
 
           file = _st_theme_resolve_url (node->theme, base_stylesheet, url);
-          filename = g_strdup (g_file_get_path (file));
+          filename = g_file_get_path (file);
           g_object_unref (file);
 
           if (filename == NULL)
