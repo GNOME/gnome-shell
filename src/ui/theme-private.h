@@ -1022,6 +1022,9 @@ double meta_theme_get_title_scale (MetaTheme     *theme,
                                    MetaFrameType  type,
                                    MetaFrameFlags flags);
 
+GtkStyleContext * meta_theme_create_style_context (GdkScreen   *screen,
+                                                   const gchar *variant);
+
 void meta_theme_draw_frame (MetaTheme              *theme,
                             GtkStyleContext        *style_gtk,
                             cairo_t                *cr,
