@@ -5841,7 +5841,7 @@ meta_gtk_widget_get_font_desc (GtkWidget *widget,
   g_return_val_if_fail (gtk_widget_get_realized (widget), NULL);
 
   style = gtk_widget_get_style_context (widget);
-  font_desc = pango_font_description_copy (gtk_style_context_get_font (style, 0));
+  gtk_style_context_get (style, GTK_STATE_FLAG_NORMAL, "font", &font_desc, NULL);
 
   if (override)
     pango_font_description_merge (font_desc, override, TRUE);
