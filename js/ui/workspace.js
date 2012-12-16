@@ -124,6 +124,8 @@ const WindowClone = new Lang.Class({
 
         this.actor._delegate = this;
 
+        this._slot = [0, 0, 0, 0];
+        this._dragSlot = [0, 0, 0, 0];
         this._stackAbove = null;
 
         this._sizeChangedId = this.realWindow.connect('size-changed',
@@ -159,22 +161,15 @@ const WindowClone = new Lang.Class({
         this._selected = false;
     },
 
+    set slot(slot) {
+        this._slot = slot;
+    },
+
     get slot() {
-        let x, y, w, h;
-
-        if (this.inDrag) {
-            x = this.dragOrigX;
-            y = this.dragOrigY;
-            w = this.actor.width * this.dragOrigScale;
-            h = this.actor.height * this.dragOrigScale;
-        } else {
-            x = this.actor.x;
-            y = this.actor.y;
-            w = this.actor.width * this.actor.scale_x;
-            h = this.actor.height * this.actor.scale_y;
-        }
-
-        return [x, y, w, h];
+        if (this.inDrag)
+            return this._dragSlot;
+        else
+            return this._slot;
     },
 
     setStackAbove: function (actor) {
@@ -392,6 +387,7 @@ const WindowClone = new Lang.Class({
         if (this._zooming)
             this._zoomEnd();
 
+        this._dragSlot = this._slot;
         [this.dragOrigX, this.dragOrigY] = this.actor.get_position();
         this.dragOrigScale = this.actor.scale_x;
         this.inDrag = true;
@@ -458,11 +454,7 @@ const WindowOverlay = new Lang.Class({
         this._updateCaptionId = metaWindow.connect('notify::title',
             Lang.bind(this, function(w) {
                 this.title.text = w.title;
-                // we need this for the next call to get_preferred_width
-                // to return useful results
-                this.title.set_size(-1, -1);
-
-                this._repositionSelf();
+                this.relayout(false);
             }));
 
         let button = new St.Button({ style_class: 'window-close' });
@@ -537,22 +529,9 @@ const WindowOverlay = new Lang.Class({
         return [this.borderSize, this.borderSize];
     },
 
-    _repositionSelf: function() {
+    relayout: function(animate) {
         let [cloneX, cloneY, cloneWidth, cloneHeight] = this._windowClone.slot;
-        this.updatePositions(cloneX, cloneY, cloneWidth, cloneHeight, false);
-    },
 
-    /**
-     * @cloneX: x position of windowClone
-     * @cloneY: y position of windowClone
-     * @cloneWidth: width of windowClone
-     * @cloneHeight height of windowClone
-     */
-    // These parameters are not the values retrieved with
-    // get_transformed_position() and get_transformed_size(),
-    // as windowClone might be moving.
-    // See Workspace._showWindowOverlay
-    updatePositions: function(cloneX, cloneY, cloneWidth, cloneHeight, animate) {
         let button = this.closeButton;
         let title = this.title;
 
@@ -1194,6 +1173,7 @@ const Workspace = new Lang.Class({
                 continue;
 
             let [x, y, scale] = slot;
+            clone.slot = [x, y, clone.actor.width * scale, clone.actor.height * scale];
 
             if (overlay && initialPositioning)
                 overlay.hide();
@@ -1225,7 +1205,7 @@ const Workspace = new Lang.Class({
                 Tweener.removeTweens(clone.actor);
                 clone.actor.set_position(x, y);
                 clone.actor.set_scale(scale, scale);
-                this._updateWindowOverlayPositions(clone, overlay, x, y, scale, false);
+                clone.overlay.relayout(false);
                 this._showWindowOverlay(clone, overlay, isOnCurrentWorkspace);
             }
         }
@@ -1260,15 +1240,7 @@ const Workspace = new Lang.Class({
                            })
                          });
 
-        this._updateWindowOverlayPositions(clone, overlay, x, y, scale, true);
-    },
-
-    _updateWindowOverlayPositions: function(clone, overlay, x, y, scale, animate) {
-        if (!overlay)
-            return;
-
-        let [cloneWidth, cloneHeight] = clone.actor.get_size();
-        overlay.updatePositions(x, y, cloneWidth * scale, cloneHeight * scale, animate);
+        clone.overlay.relayout(true);
     },
 
     _showWindowOverlay: function(clone, overlay, fade) {
@@ -1403,9 +1375,10 @@ const Workspace = new Lang.Class({
             let scale = win._overviewHint.scale;
             delete win._overviewHint;
 
+            clone.slot = [x, y, clone.actor.width * scale, clone.actor.height * scale];
             clone.actor.set_position (x, y);
             clone.actor.set_scale (scale, scale);
-            this._updateWindowOverlayPositions(clone, overlay, x, y, scale, false);
+            clone.overlay.relayout(false);
         } else {
             // Position new windows at the top corner of the workspace rather
             // than where they were placed for real to avoid the window
