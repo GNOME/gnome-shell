@@ -325,7 +325,7 @@ const LayoutManager = new Lang.Class({
         } else {
             let focusWindow = global.display.focus_window;
             if (focusWindow)
-                i = this._chrome.findIndexForWindow(focusWindow.get_compositor_private());
+                i = this._chrome.findIndexForWindow(focusWindow);
         }
 
         return i;
@@ -513,7 +513,11 @@ const LayoutManager = new Lang.Class({
 
     findMonitorForActor: function(actor) {
         return this.monitors[this._chrome.findIndexForActor(actor)];
-    }
+    },
+
+    findMonitorForWindow: function(window) {
+        return this.monitors[this._chrome.findIndexForWindow(window)];
+    },
 });
 Signals.addSignalMethods(LayoutManager.prototype);
 
@@ -891,7 +895,8 @@ const Chrome = new Lang.Class({
     },
 
     findIndexForWindow: function(window) {
-        let i = this._findMonitorForRect(window.x, window.y, window.width, window.height);
+        let rect = window.get_input_rect();
+        let i = this._findMonitorForRect(rect.x, rect.y, rect.width, rect.height);
         if (i >= 0)
             return i;
         return this._primaryIndex; // Not on any monitor, pretend its on the primary
@@ -909,7 +914,8 @@ const Chrome = new Lang.Class({
     },
 
     findMonitorForWindow: function(window) {
-        let i = this._findMonitorForRect(window.x, window.y, window.width, window.height);
+        let rect = window.get_input_rect();
+        let i = this._findMonitorForRect(rect.x, rect.y, rect.width, rect.height);
         if (i >= 0)
             return this._monitors[i];
         else
@@ -958,14 +964,15 @@ const Chrome = new Lang.Class({
 
         for (let i = windows.length - 1; i > -1; i--) {
             let window = windows[i];
-            let layer = window.get_meta_window().get_layer();
+            let metaWindow = window.meta_window;
+            let layer = metaWindow.get_layer();
 
             // Skip minimized windows
             if (!window.showing_on_its_workspace())
                 continue;
 
             if (layer == Meta.StackLayer.FULLSCREEN) {
-                let monitor = this.findMonitorForWindow(window);
+                let monitor = this.findMonitorForWindow(metaWindow);
                 if (monitor)
                     monitor.inFullscreen = true;
             }
@@ -982,7 +989,7 @@ const Chrome = new Lang.Class({
                 }
 
                 // Or whether it is monitor sized
-                let monitor = this.findMonitorForWindow(window);
+                let monitor = this.findMonitorForWindow(metaWindow);
                 if (monitor &&
                     window.x <= monitor.x &&
                     window.x + window.width >= monitor.x + monitor.width &&
