@@ -499,7 +499,8 @@ const WorkspacesDisplay = new Lang.Class({
         this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
         controls.add_actor(this._thumbnailsBox.actor);
 
-        this._workspacesViews = null;
+        this._workspacesViews = [];
+        this._workspaces = [];
         this._primaryScrollAdjustment = null;
 
         this._settings = new Gio.Settings({ schema: OVERRIDE_SCHEMA });
@@ -643,7 +644,7 @@ const WorkspacesDisplay = new Lang.Class({
 
         for (let i = 0; i < this._workspacesViews.length; i++)
             this._workspacesViews[i].destroy();
-        this._workspacesViews = null;
+        this._workspacesViews = [];
 
         for (let i = 0; i < this._workspaces.length; i++)
             for (let w = 0; w < this._workspaces[i].length; w++) {
@@ -662,14 +663,12 @@ const WorkspacesDisplay = new Lang.Class({
     },
 
     _updateWorkspacesViews: function() {
-        if (this._workspacesViews)
-            for (let i = 0; i < this._workspacesViews.length; i++)
-                this._workspacesViews[i].destroy();
+        for (let i = 0; i < this._workspacesViews.length; i++)
+            this._workspacesViews[i].destroy();
 
-        if (this._workspaces)
-            for (let i = 0; i < this._workspaces.length; i++)
-                for (let w = 0; w < this._workspaces[i].length; w++)
-                    this._workspaces[i][w].destroy();
+        for (let i = 0; i < this._workspaces.length; i++)
+            for (let w = 0; w < this._workspaces[i].length; w++)
+                this._workspaces[i][w].destroy();
 
         this._workspacesViews = [];
         this._workspaces = [];
@@ -717,7 +716,7 @@ const WorkspacesDisplay = new Lang.Class({
     },
 
     _getPrimaryView: function() {
-        if (!this._workspacesViews)
+        if (!this._workspacesViews.length)
             return null;
         if (this._workspacesOnlyOnPrimary)
             return this._workspacesViews[0];
@@ -826,7 +825,7 @@ const WorkspacesDisplay = new Lang.Class({
     },
 
     _updateWorkspacesGeometry: function() {
-        if (!this._workspacesViews)
+        if (!this._workspacesViews.length)
             return;
 
         let fullWidth = this.actor.allocation.x2 - this.actor.allocation.x1;
@@ -884,7 +883,7 @@ const WorkspacesDisplay = new Lang.Class({
         this._updateAlwaysZoom();
         this._updateZoom();
 
-        if (this._workspacesViews == null)
+        if (!this._workspacesViews.length)
             return;
 
         let oldNumWorkspaces = this._workspaces[0].length;
@@ -946,7 +945,7 @@ const WorkspacesDisplay = new Lang.Class({
             this._zoomOut = shouldZoom;
             this._updateWorkspacesGeometry();
 
-            if (!this._workspacesViews)
+            if (!this._workspacesViews.length)
                 return;
 
             Tweener.addTween(this,
