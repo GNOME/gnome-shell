@@ -558,6 +558,7 @@ const ThumbnailsBox = new Lang.Class({
         this._dropPlaceholderPos = -1;
         this._dropPlaceholder = new St.Bin({ style_class: 'placeholder' });
         this.actor.add_actor(this._dropPlaceholder);
+        this._spliceIndex = -1;
 
         this._targetScale = 0;
         this._scale = 0;
@@ -740,6 +741,8 @@ const ThumbnailsBox = new Lang.Class({
                     return win.get_workspace() >= newWorkspaceIndex;
             });
 
+            this._spliceIndex = newWorkspaceIndex;
+
             // ... move them down one.
             windows.forEach(function(win) {
                 win.meta_window.change_workspace_by_index(win.get_workspace() + 1,
@@ -760,6 +763,14 @@ const ThumbnailsBox = new Lang.Class({
                 Main.keepWorkspaceAlive(global.screen.get_workspace_by_index(newWorkspaceIndex),
                                         WORKSPACE_KEEP_ALIVE_TIME);
             }
+
+            // Start the animation on the workspace (which is actually
+            // an old one which just became empty)
+            let thumbnail = this._thumbnails[newWorkspaceIndex];
+            this._setThumbnailState(thumbnail, ThumbnailState.NEW);
+            thumbnail.slidePosition = 1;
+
+            this._queueUpdateStates();
 
             return true;
         } else {
@@ -848,7 +859,8 @@ const ThumbnailsBox = new Lang.Class({
             this._thumbnails.push(thumbnail);
             this.actor.add_actor(thumbnail.actor);
 
-            if (start > 0) { // not the initial fill
+            if (start > 0 && this._spliceIndex == -1) {
+                // not the initial fill, and not splicing via DND
                 thumbnail.state = ThumbnailState.NEW;
                 thumbnail.slidePosition = 1; // start slid out
                 this._haveNewThumbnails = true;
@@ -863,6 +875,9 @@ const ThumbnailsBox = new Lang.Class({
 
         // The thumbnails indicator actually needs to be on top of the thumbnails
         this._indicator.raise_top();
+
+        // Clear the splice index, we got the message
+        this._spliceIndex = -1;
     },
 
     removeThumbnails: function(start, count) {
