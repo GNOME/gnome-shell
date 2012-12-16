@@ -69,7 +69,7 @@ const WorkspacesView = new Lang.Class({
 
         // Add workspace actors
         for (let w = 0; w < global.screen.n_workspaces; w++)
-            this._workspaces[w].actor.reparent(this.actor);
+            this.actor.add_actor(this._workspaces[w].actor);
         this._workspaces[activeWorkspaceIndex].actor.raise_top();
 
         this._extraWorkspaces = [];
