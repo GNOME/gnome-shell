@@ -2011,17 +2011,17 @@ meta_frames_paint (MetaFrames   *frames,
 
   meta_prefs_get_button_layout (&button_layout);
 
-  meta_theme_draw_frame_with_style (meta_theme_get_current (),
-                                    frame->style,
-                                    cr,
-                                    type,
-                                    flags,
-                                    w, h,
-                                    frame->layout,
-                                    frame->text_height,
-                                    &button_layout,
-                                    button_states,
-                                    mini_icon, icon);
+  meta_theme_draw_frame (meta_theme_get_current (),
+                         frame->style,
+                         cr,
+                         type,
+                         flags,
+                         w, h,
+                         frame->layout,
+                         frame->text_height,
+                         &button_layout,
+                         button_states,
+                         mini_icon, icon);
 }
 
 static void

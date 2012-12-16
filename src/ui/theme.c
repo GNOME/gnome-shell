@@ -5439,19 +5439,19 @@ meta_theme_get_title_scale (MetaTheme     *theme,
 }
 
 void
-meta_theme_draw_frame_with_style (MetaTheme              *theme,
-                                  GtkStyleContext        *style_gtk,
-                                  cairo_t                *cr,
-                                  MetaFrameType           type,
-                                  MetaFrameFlags          flags,
-                                  int                     client_width,
-                                  int                     client_height,
-                                  PangoLayout            *title_layout,
-                                  int                     text_height,
-                                  const MetaButtonLayout *button_layout,
-                                  MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
-                                  GdkPixbuf              *mini_icon,
-                                  GdkPixbuf              *icon)
+meta_theme_draw_frame (MetaTheme              *theme,
+                       GtkStyleContext        *style_gtk,
+                       cairo_t                *cr,
+                       MetaFrameType           type,
+                       MetaFrameFlags          flags,
+                       int                     client_width,
+                       int                     client_height,
+                       PangoLayout            *title_layout,
+                       int                     text_height,
+                       const MetaButtonLayout *button_layout,
+                       MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
+                       GdkPixbuf              *mini_icon,
+                       GdkPixbuf              *icon)
 {
   MetaFrameGeometry fgeom;
   MetaFrameStyle *style;
@@ -5481,29 +5481,6 @@ meta_theme_draw_frame_with_style (MetaTheme              *theme,
                                     title_layout,
                                     text_height,
                                     button_states,
-                                    mini_icon, icon);
-}
-
-void
-meta_theme_draw_frame (MetaTheme              *theme,
-                       GtkWidget              *widget,
-                       cairo_t                *cr,
-                       MetaFrameType           type,
-                       MetaFrameFlags          flags,
-                       int                     client_width,
-                       int                     client_height,
-                       PangoLayout            *title_layout,
-                       int                     text_height,
-                       const MetaButtonLayout *button_layout,
-                       MetaButtonState         button_states[META_BUTTON_TYPE_LAST],
-                       GdkPixbuf              *mini_icon,
-                       GdkPixbuf              *icon)
-{
-  meta_theme_draw_frame_with_style (theme, gtk_widget_get_style_context (widget),
-                                    cr, type,flags,
-                                    client_width, client_height,
-                                    title_layout, text_height,
-                                    button_layout, button_states,
                                     mini_icon, icon);
 }
 

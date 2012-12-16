@@ -212,7 +212,7 @@ meta_preview_draw (GtkWidget *widget,
         client_height = 1;  
       
       meta_theme_draw_frame (preview->theme,
-                             widget,
+                             gtk_widget_get_style_context (widget),
                              cr,
                              preview->type,
                              preview->flags,
