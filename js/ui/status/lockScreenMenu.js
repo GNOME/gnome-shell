@@ -16,6 +16,7 @@ const Indicator = new Lang.Class({
 
     _init: function() {
         this.parent(null, _("Volume, network, battery"));
+        this._box.style_class = 'lock-screen-status-button-box';
 
         this._volume = Main.panel.statusArea.volume;
         if (this._volume) {
