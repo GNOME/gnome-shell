@@ -2962,124 +2962,138 @@ clutter_actor_real_apply_transform (ClutterActor  *self,
                                     ClutterMatrix *matrix)
 {
   ClutterActorPrivate *priv = self->priv;
+  CoglMatrix *transform = &priv->transform;
+  const ClutterTransformInfo *info;
+  float pivot_x = 0.f, pivot_y = 0.f;
 
-  if (!priv->transform_valid)
+  /* we already have a cached transformation */
+  if (priv->transform_valid)
+    goto multiply_and_return;
+
+  info = _clutter_actor_get_transform_info_or_defaults (self);
+
+  /* compute the pivot point given the allocated size */
+  pivot_x = (priv->allocation.x2 - priv->allocation.x1)
+          * info->pivot.x;
+  pivot_y = (priv->allocation.y2 - priv->allocation.y1)
+          * info->pivot.y;
+
+  CLUTTER_NOTE (PAINT,
+                "Allocation: (%.2f, %2.f), "
+                "pivot: (%.2f, %.2f), "
+                "translation: (%.2f, %.2f) -> "
+                "new origin: (%.2f, %.2f)",
+                priv->allocation.x1, priv->allocation.y1,
+                info->pivot.x, info->pivot.y,
+                info->translation.x, info->translation.y,
+                priv->allocation.x1 + pivot_x + info->translation.x,
+                priv->allocation.y1 + pivot_y + info->translation.y);
+
+  /* we apply the :child-transform from the parent actor, if we have one */
+  if (priv->parent != NULL)
     {
-      CoglMatrix *transform = &priv->transform;
-      const ClutterTransformInfo *info;
-      float pivot_x = 0.f, pivot_y = 0.f;
+      const ClutterTransformInfo *parent_info;
 
-      info = _clutter_actor_get_transform_info_or_defaults (self);
+      parent_info = _clutter_actor_get_transform_info_or_defaults (priv->parent);
+      clutter_matrix_init_from_matrix (transform, &(parent_info->child_transform));
+    }
+  else
+    clutter_matrix_init_identity (transform);
 
-      /* compute the pivot point given the allocated size */
-      pivot_x = (priv->allocation.x2 - priv->allocation.x1)
-              * info->pivot.x;
-      pivot_y = (priv->allocation.y2 - priv->allocation.y1)
-              * info->pivot.y;
-
-      CLUTTER_NOTE (PAINT,
-                    "Allocation: (%.2f, %2.f), "
-                    "pivot: (%.2f, %.2f), "
-                    "translation: (%.2f, %.2f) -> "
-                    "new origin: (%.2f, %.2f)",
-                    priv->allocation.x1, priv->allocation.y1,
-                    info->pivot.x, info->pivot.y,
-                    info->translation.x, info->translation.y,
-                    priv->allocation.x1 + pivot_x + info->translation.x,
-                    priv->allocation.y1 + pivot_y + info->translation.y);
-
-        {
-          const ClutterTransformInfo *parent_info;
-
-          parent_info = _clutter_actor_get_transform_info_or_defaults (priv->parent);
-          clutter_matrix_init_from_matrix (transform, &(parent_info->child_transform));
-        }
-
-      /* if we have an overriding transformation, we use that, and get out */
-      if (info->transform_set)
-        {
-          cogl_matrix_translate (transform,
-                                 priv->allocation.x1 + pivot_x,
-                                 priv->allocation.y1 + pivot_y,
-                                 info->pivot_z);
-          cogl_matrix_multiply (transform, transform, &info->transform);
-          goto out;
-        }
-
-      /* basic translation: :allocation's origin and :z-position; instead
-       * of decomposing the pivot and translation info separate operations,
-       * we just compose everything into a single translation
+  /* if we have an overriding transformation, we use that, and get out */
+  if (info->transform_set)
+    {
+      /* we still need to apply the :allocation's origin and :pivot-point
+       * translations, since :transform is relative to the actor's coordinate
+       * space, and to the pivot point
        */
       cogl_matrix_translate (transform,
-                             priv->allocation.x1 + pivot_x + info->translation.x,
-                             priv->allocation.y1 + pivot_y + info->translation.y,
-                             info->z_position + info->pivot_z + info->translation.z);
-
-      /*
-       * because the rotation involves translations, we must scale
-       * before applying the rotations (if we apply the scale after
-       * the rotations, the translations included in the rotation are
-       * not scaled and so the entire object will move on the screen
-       * as a result of rotating it).
-       */
-      if (info->scale_x != 1.0 || info->scale_y != 1.0)
-        {
-          /* XXX:2.0 remove anchor coord */
-          TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
-                                        &info->scale_center,
-                                        cogl_matrix_scale (transform,
-                                                           info->scale_x,
-                                                           info->scale_y,
-                                                           info->scale_z));
-        }
-
-      if (info->rz_angle)
-        {
-          /* XXX:2.0 remove anchor coord */
-          TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
-                                        &info->rz_center,
-                                        cogl_matrix_rotate (transform,
-                                                            info->rz_angle,
-                                                            0, 0, 1.0));
-        }
-
-      if (info->ry_angle)
-        {
-          /* XXX:2.0 remove anchor coord */
-          TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
-                                        &info->ry_center,
-                                        cogl_matrix_rotate (transform,
-                                                            info->ry_angle,
-                                                            0, 1.0, 0));
-        }
-
-      if (info->rx_angle)
-        {
-          /* XXX:2.0 remove anchor coord */
-          TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
-                                        &info->rx_center,
-                                        cogl_matrix_rotate (transform,
-                                                            info->rx_angle,
-                                                            1.0, 0, 0));
-        }
-
-      /* XXX:2.0 remove */
-      if (!clutter_anchor_coord_is_zero (&info->anchor))
-        {
-          gfloat x, y, z;
-
-          clutter_anchor_coord_get_units (self, &info->anchor, &x, &y, &z);
-          cogl_matrix_translate (transform, -x, -y, -z);
-        }
-
-out:
-      /* roll back the pivot translation */
-      if (pivot_x != 0.f || pivot_y != 0.f || info->pivot_z != 0.f)
-        cogl_matrix_translate (transform, -pivot_x, -pivot_y, -info->pivot_z);
-
-      priv->transform_valid = TRUE;
+                             priv->allocation.x1 + pivot_x,
+                             priv->allocation.y1 + pivot_y,
+                             info->pivot_z);
+      cogl_matrix_multiply (transform, transform, &info->transform);
+      goto roll_back_pivot;
     }
 
+  /* basic translation: :allocation's origin and :z-position; instead
+   * of decomposing the pivot and translation info separate operations,
+   * we just compose everything into a single translation
+   */
+  cogl_matrix_translate (transform,
+                         priv->allocation.x1 + pivot_x + info->translation.x,
+                         priv->allocation.y1 + pivot_y + info->translation.y,
+                         info->z_position + info->pivot_z + info->translation.z);
+
+  /* because the rotation involves translations, we must scale
+   * before applying the rotations (if we apply the scale after
+   * the rotations, the translations included in the rotation are
+   * not scaled and so the entire object will move on the screen
+   * as a result of rotating it).
+   *
+   * XXX:2.0 the comment has to be reworded once we remove the
+   * per-transformation centers; we also may want to apply rotation
+   * first and scaling after, to match the matrix decomposition
+   * code we use when interpolating transformations
+   */
+  if (info->scale_x != 1.0 || info->scale_y != 1.0 || info->scale_z != 1.0)
+    {
+      /* XXX:2.0 remove anchor coord */
+      TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
+                                    &info->scale_center,
+                                    cogl_matrix_scale (transform,
+                                                       info->scale_x,
+                                                       info->scale_y,
+                                                       info->scale_z));
+    }
+
+  if (info->rz_angle)
+    {
+      /* XXX:2.0 remove anchor coord */
+      TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
+                                    &info->rz_center,
+                                    cogl_matrix_rotate (transform,
+                                                        info->rz_angle,
+                                                        0, 0, 1.0));
+    }
+
+  if (info->ry_angle)
+    {
+      /* XXX:2.0 remove anchor coord */
+      TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
+                                    &info->ry_center,
+                                    cogl_matrix_rotate (transform,
+                                                        info->ry_angle,
+                                                        0, 1.0, 0));
+    }
+
+  if (info->rx_angle)
+    {
+      /* XXX:2.0 remove anchor coord */
+      TRANSFORM_ABOUT_ANCHOR_COORD (self, transform,
+                                    &info->rx_center,
+                                    cogl_matrix_rotate (transform,
+                                                        info->rx_angle,
+                                                        1.0, 0, 0));
+    }
+
+  /* XXX:2.0 remove anchor point translation */
+  if (!clutter_anchor_coord_is_zero (&info->anchor))
+    {
+      gfloat x, y, z;
+
+      clutter_anchor_coord_get_units (self, &info->anchor, &x, &y, &z);
+      cogl_matrix_translate (transform, -x, -y, -z);
+    }
+
+roll_back_pivot:
+  /* roll back the pivot translation */
+  if (pivot_x != 0.f || pivot_y != 0.f || info->pivot_z != 0.f)
+    cogl_matrix_translate (transform, -pivot_x, -pivot_y, -info->pivot_z);
+
+  /* we have a valid modelview */
+  priv->transform_valid = TRUE;
+
+multiply_and_return:
   cogl_matrix_multiply (matrix, matrix, &priv->transform);
 }
 
