@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-27 17:30+0100\n"
-"PO-Revision-Date: 2012-11-27 17:32+0100\n"
+"POT-Creation-Date: 2012-12-16 02:49+0100\n"
+"PO-Revision-Date: 2012-12-16 02:50+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -69,58 +69,62 @@ msgid "Switch applications"
 msgstr "Przełączenie programów"
 
 #: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Switch windows"
+msgstr "Przełączenie okien"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
 msgid "Switch windows of an application"
 msgstr "Przełączenie między oknami programu"
 
-#: ../src/50-mutter-navigation.xml.in.h:12
+#: ../src/50-mutter-navigation.xml.in.h:13
 msgid "Switch system controls"
 msgstr "Przełączenie kontroli systemowej"
 
-#: ../src/50-mutter-navigation.xml.in.h:13
+#: ../src/50-mutter-navigation.xml.in.h:14
 msgid "Switch windows directly"
 msgstr "Bezpośrednie przełączenie między oknami"
 
-#: ../src/50-mutter-navigation.xml.in.h:14
+#: ../src/50-mutter-navigation.xml.in.h:15
 msgid "Switch windows of an app directly"
 msgstr "Bezpośrednie przełączenie między oknami programu"
 
-#: ../src/50-mutter-navigation.xml.in.h:15
+#: ../src/50-mutter-navigation.xml.in.h:16
 msgid "Switch system controls directly"
 msgstr "Bezpośrednie przełączenie kontroli systemowej"
 
-#: ../src/50-mutter-navigation.xml.in.h:16
+#: ../src/50-mutter-navigation.xml.in.h:17
 msgid "Hide all normal windows"
 msgstr "Ukrycie wszystkich zwykłych okien"
 
-#: ../src/50-mutter-navigation.xml.in.h:17
+#: ../src/50-mutter-navigation.xml.in.h:18
 msgid "Switch to workspace 1"
 msgstr "Przełączenie na 1. obszar roboczy"
 
-#: ../src/50-mutter-navigation.xml.in.h:18
+#: ../src/50-mutter-navigation.xml.in.h:19
 msgid "Switch to workspace 2"
 msgstr "Przełączenie na 2. obszar roboczy"
 
-#: ../src/50-mutter-navigation.xml.in.h:19
+#: ../src/50-mutter-navigation.xml.in.h:20
 msgid "Switch to workspace 3"
 msgstr "Przełączenie na 3. obszar roboczy"
 
-#: ../src/50-mutter-navigation.xml.in.h:20
+#: ../src/50-mutter-navigation.xml.in.h:21
 msgid "Switch to workspace 4"
 msgstr "Przełączenie na 4. obszar roboczy"
 
-#: ../src/50-mutter-navigation.xml.in.h:21
+#: ../src/50-mutter-navigation.xml.in.h:22
 msgid "Move to workspace left"
 msgstr "Przeniesienie na lewy obszar roboczy"
 
-#: ../src/50-mutter-navigation.xml.in.h:22
+#: ../src/50-mutter-navigation.xml.in.h:23
 msgid "Move to workspace right"
 msgstr "Przeniesienie na prawy obszar roboczy"
 
-#: ../src/50-mutter-navigation.xml.in.h:23
+#: ../src/50-mutter-navigation.xml.in.h:24
 msgid "Move to workspace above"
 msgstr "Przeniesienie na górny obszar roboczy"
 
-#: ../src/50-mutter-navigation.xml.in.h:24
+#: ../src/50-mutter-navigation.xml.in.h:25
 msgid "Move to workspace below"
 msgstr "Przeniesienie na dolny obszar roboczy"
 
@@ -216,7 +220,7 @@ msgstr "Podział widoku po prawej"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:492
+#: ../src/compositor/compositor.c:512
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -256,18 +260,18 @@ msgstr "_Czekaj"
 msgid "_Force Quit"
 msgstr "_Zakończ"
 
-#: ../src/core/display.c:397
+#: ../src/core/display.c:394
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Brak rozszerzenia %s, wymaganego przez składanie"
 
-#: ../src/core/display.c:494
+#: ../src/core/display.c:491
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr ""
 "Otwarcie połączenia z ekranem \"%s\" systemu X Window się nie powiodło\n"
 
-#: ../src/core/keybindings.c:860
+#: ../src/core/keybindings.c:870
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -300,12 +304,12 @@ msgstr "Inicjuje sesję z zapisanego pliku"
 msgid "Make X calls synchronous"
 msgstr "Synchroniczne wywołania X"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:496
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Przejrzenie katalogu z motywami się nie powiodło: %s\n"
 
-#: ../src/core/main.c:510
+#: ../src/core/main.c:512
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -375,12 +379,12 @@ msgstr ""
 msgid "Workspace %d"
 msgstr "Obszar roboczy %d"
 
-#: ../src/core/screen.c:652
+#: ../src/core/screen.c:658
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Podekran %d ekranu \"%s\" jest nieprawidłowy\n"
 
-#: ../src/core/screen.c:668
+#: ../src/core/screen.c:674
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -389,7 +393,7 @@ msgstr ""
 "Na podekranie %d ekranu \"%s\" działa już menedżer okien. Aby zastąpić "
 "działającego menedżera okien, proszę spróbować użyć opcji --replace.\n"
 
-#: ../src/core/screen.c:695
+#: ../src/core/screen.c:701
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -397,12 +401,12 @@ msgstr ""
 "Nie można uzyskać zaznaczenia menedżera okien na podekranie %d ekranu \"%s"
 "\"\n"
 
-#: ../src/core/screen.c:750
+#: ../src/core/screen.c:770
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Na podekranie %d ekranu \"%s\" działa już menedżer okien\n"
 
-#: ../src/core/screen.c:935
+#: ../src/core/screen.c:955
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nie można zwolnić podekranu %d ekranu \"%s\"\n"
@@ -502,7 +506,7 @@ msgid "Window manager error: "
 msgstr "Błąd menedżera okien: "
 
 #. first time through
-#: ../src/core/window.c:7240
+#: ../src/core/window.c:7253
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -518,7 +522,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7905
+#: ../src/core/window.c:7918
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
