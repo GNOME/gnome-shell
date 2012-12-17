@@ -408,15 +408,16 @@ clutter_text_ensure_effective_attributes (ClutterText *self)
   if (priv->effective_attrs != NULL)
     return;
 
-  /* same as if we don't have any attribute at all */
-  if (priv->attrs == NULL && priv->markup_attrs == NULL)
+  /* Same as if we don't have any attribute at all.
+   * We also ignore markup attributes for editable. */
+  if (priv->attrs == NULL && (priv->editable || priv->markup_attrs == NULL))
     return;
 
   if (priv->attrs != NULL)
     {
-      /* If there are no markup attributes then we can just use
-         these attributes directly */
-      if (priv->markup_attrs == NULL)
+      /* If there are no markup attributes, or if this is editable (in which
+       * case we ignore markup), then we can just use these attrs directly */
+      if (priv->editable || priv->markup_attrs == NULL)
         priv->effective_attrs = pango_attr_list_ref (priv->attrs);
       else
         {
@@ -507,15 +508,12 @@ clutter_text_create_layout_no_cache (ClutterText       *text,
   else
     pango_layout_set_text (layout, contents, contents_len);
 
-  if (!priv->editable)
-    {
-      /* This will merge the markup attributes and the attributes
-         property if needed */
-      clutter_text_ensure_effective_attributes (text);
+  /* This will merge the markup attributes and the attributes
+   * property if needed */
+  clutter_text_ensure_effective_attributes (text);
 
-      if (priv->effective_attrs != NULL)
-        pango_layout_set_attributes (layout, priv->effective_attrs);
-    }
+  if (priv->effective_attrs != NULL)
+    pango_layout_set_attributes (layout, priv->effective_attrs);
 
   pango_layout_set_alignment (layout, priv->alignment);
   pango_layout_set_single_paragraph_mode (layout, priv->single_line_mode);
