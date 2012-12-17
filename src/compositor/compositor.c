@@ -590,7 +590,6 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   info->window_group = meta_window_group_new (screen);
   info->background_actor = meta_background_actor_new_for_screen (screen);
   info->overlay_group = clutter_group_new ();
-  info->hidden_group = clutter_group_new ();
 
   clutter_container_add (CLUTTER_CONTAINER (info->window_group),
                          info->background_actor,
@@ -599,10 +598,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   clutter_container_add (CLUTTER_CONTAINER (info->stage),
                          info->window_group,
                          info->overlay_group,
-			 info->hidden_group,
                          NULL);
-
-  clutter_actor_hide (info->hidden_group);
 
   info->plugin_mgr = meta_plugin_manager_new (screen);
 
