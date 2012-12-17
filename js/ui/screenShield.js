@@ -52,36 +52,16 @@ const SUMMARY_ICON_SIZE = 48;
 const STANDARD_FADE_TIME = 10;
 const SHORT_FADE_TIME = 0.3;
 
-function sample(offx, offy) {
-    return 'texel += texture2D (sampler, tex_coord.st + pixel_step * ' +
-        'vec2 (' + offx + ',' + offy + '));\n'
-}
-const GLSL_BLUR_EFFECT_DECLARATIONS = ' \
-uniform vec2 pixel_step;\n \
-uniform float desaturation;\n \
-vec4 apply_blur(in sampler2D sampler, in vec2 tex_coord) {\n \
-  vec4 texel;\n \
-  texel = texture2D (sampler, tex_coord.st);\n'
-  + sample(-1.0, -1.0)
-  + sample( 0.0, -1.0)
-  + sample(+1.0, -1.0)
-  + sample(-1.0,  0.0)
-  + sample(+1.0,  0.0)
-  + sample(-1.0, +1.0)
-  + sample( 0.0, +1.0)
-  + sample(+1.0, +1.0) + ' \
-   texel /= 9.0;\n \
-   return texel;\n \
-}\n \
+const GLSL_EFFECT_DECLARATIONS = ' \
+uniform float desaturation; \n \
 vec3 desaturate (const vec3 color)\n \
 {\n \
    const vec3 gray_conv = vec3 (0.299, 0.587, 0.114);\n \
    vec3 gray = vec3 (dot (gray_conv, color));\n \
    return vec3 (mix (color.rgb, gray, desaturation));\n \
 }';
-const GLSL_BLUR_EFFECT_CODE = ' \
-cogl_texel = apply_blur(cogl_sampler, cogl_tex_coord.st);\n \
-cogl_texel.rgb = desaturate(cogl_texel.rgb);\n';
+const GLSL_EFFECT_CODE = ' \
+cogl_color_out.rgb = desaturate(cogl_color_out.rgb);\n';
 
 
 const Clock = new Lang.Class({
@@ -471,15 +451,12 @@ const ScreenShield = new Lang.Class({
 
         let backgroundActor = new Meta.BackgroundActor({ screen: global.screen,
                                                          settings: this._settings });
-        backgroundActor.add_glsl_snippet(Meta.SnippetHook.TEXTURE_LOOKUP,
-                                         GLSL_BLUR_EFFECT_DECLARATIONS,
-                                         GLSL_BLUR_EFFECT_CODE,
-                                         true);
+        backgroundActor.add_glsl_snippet(Meta.SnippetHook.FRAGMENT,
+                                         GLSL_EFFECT_DECLARATIONS,
+                                         GLSL_EFFECT_CODE,
+                                         false);
         backgroundActor.set_uniform_float('desaturation',
                                           1, 1, [0.6]);
-        backgroundActor.connect('notify::size', function(actor) {
-            actor.set_uniform_float('pixel_step', 2, 1, [1/actor.width, 1/actor.height]);
-        });
 
         this._background = new St.Bin({ style_class: 'screen-shield-background',
                                         child: backgroundActor });
