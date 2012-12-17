@@ -1648,9 +1648,11 @@ window_focus_on_pointer_rest_callback (gpointer data) {
   MetaScreen *screen;
   MetaWindow *window;
   Window root, child;
-  int root_x, root_y, x, y;
+  double root_x, root_y, x, y;
   guint32 timestamp;
-  guint mask;
+  XIButtonState buttons;
+  XIModifierState mods;
+  XIGroupState group;
 
   focus_data = data;
   display = focus_data->display;
@@ -1660,10 +1662,12 @@ window_focus_on_pointer_rest_callback (gpointer data) {
     goto out;
 
   meta_error_trap_push (display);
-  XQueryPointer (display->xdisplay,
-                 screen->xroot,
-                 &root, &child,
-                 &root_x, &root_y, &x, &y, &mask);
+  XIQueryPointer (display->xdisplay,
+                  META_VIRTUAL_CORE_POINTER_ID,
+                  screen->xroot,
+                  &root, &child,
+                  &root_x, &root_y, &x, &y,
+                  &buttons, &mods, &group);
   meta_error_trap_pop (display);
 
   if (root_x != focus_data->pointer_x ||

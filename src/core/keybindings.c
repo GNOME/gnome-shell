@@ -1350,9 +1350,11 @@ primary_modifier_still_pressed (MetaDisplay *display,
                                 unsigned int entire_binding_mask)
 {
   unsigned int primary_modifier;
-  int x, y, root_x, root_y;
+  double x, y, root_x, root_y;
   Window root, child;
-  guint mask;
+  XIButtonState buttons;
+  XIModifierState mods;
+  XIGroupState group;
   MetaScreen *random_screen;
   Window      random_xwindow;
 
@@ -1360,18 +1362,19 @@ primary_modifier_still_pressed (MetaDisplay *display,
 
   random_screen = display->screens->data;
   random_xwindow = random_screen->no_focus_window;
-  XQueryPointer (display->xdisplay,
-                 random_xwindow, /* some random window */
-                 &root, &child,
-                 &root_x, &root_y,
-                 &x, &y,
-                 &mask);
+  XIQueryPointer (display->xdisplay,
+                  META_VIRTUAL_CORE_POINTER_ID,
+                  random_xwindow, /* some random window */
+                  &root, &child,
+                  &root_x, &root_y,
+                  &x, &y,
+                  &buttons, &mods, &group);
 
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Primary modifier 0x%x full grab mask 0x%x current state 0x%x\n",
-              primary_modifier, entire_binding_mask, mask);
+              primary_modifier, entire_binding_mask, mods.effective);
 
-  if ((mask & primary_modifier) == 0)
+  if ((mods.effective & primary_modifier) == 0)
     return FALSE;
   else
     return TRUE;

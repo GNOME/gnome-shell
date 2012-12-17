@@ -1963,24 +1963,29 @@ meta_screen_get_mouse_window (MetaScreen  *screen,
 {
   MetaWindow *window;
   Window root_return, child_return;
-  int root_x_return, root_y_return;
-  int win_x_return, win_y_return;
-  unsigned int mask_return;
-  
+  double root_x_return, root_y_return;
+  double win_x_return, win_y_return;
+  XIButtonState buttons;
+  XIModifierState mods;
+  XIGroupState group;
+
   if (not_this_one)
     meta_topic (META_DEBUG_FOCUS,
                 "Focusing mouse window excluding %s\n", not_this_one->desc);
 
   meta_error_trap_push (screen->display);
-  XQueryPointer (screen->display->xdisplay,
-                 screen->xroot,
-                 &root_return,
-                 &child_return,
-                 &root_x_return,
-                 &root_y_return,
-                 &win_x_return,
-                 &win_y_return,
-                 &mask_return);
+  XIQueryPointer (screen->display->xdisplay,
+                  META_VIRTUAL_CORE_POINTER_ID,
+                  screen->xroot,
+                  &root_return,
+                  &child_return,
+                  &root_x_return,
+                  &root_y_return,
+                  &win_x_return,
+                  &win_y_return,
+                  &buttons,
+                  &mods,
+                  &group);
   meta_error_trap_pop (screen->display);
 
   window = meta_stack_get_default_focus_window_at_point (screen->stack,
@@ -2191,23 +2196,32 @@ meta_screen_get_current_monitor (MetaScreen *screen)
   if (screen->display->monitor_cache_invalidated)
     {
       Window root_return, child_return;
-      int win_x_return, win_y_return;
-      unsigned int mask_return;
+      double win_x_return, win_y_return;
+      double root_x_return, root_y_return;
+      XIButtonState buttons;
+      XIModifierState mods;
+      XIGroupState group;
       int i;
       MetaRectangle pointer_position;
-      
+
       screen->display->monitor_cache_invalidated = FALSE;
       
+      XIQueryPointer (screen->display->xdisplay,
+                      META_VIRTUAL_CORE_POINTER_ID,
+                      screen->xroot,
+                      &root_return,
+                      &child_return,
+                      &root_x_return,
+                      &root_y_return,
+                      &win_x_return,
+                      &win_y_return,
+                      &buttons,
+                      &mods,
+                      &group);
+
+      pointer_position.x = root_x_return;
+      pointer_position.y = root_y_return;
       pointer_position.width = pointer_position.height = 1;
-      XQueryPointer (screen->display->xdisplay,
-                     screen->xroot,
-                     &root_return,
-                     &child_return,
-                     &pointer_position.x,
-                     &pointer_position.y,
-                     &win_x_return,
-                     &win_y_return,
-                     &mask_return);
 
       screen->last_monitor_index = 0;
       for (i = 0; i < screen->n_monitor_infos; i++)
