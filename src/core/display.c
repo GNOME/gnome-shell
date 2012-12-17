@@ -1894,7 +1894,7 @@ event_callback (XEvent   *event,
     }
   else if (input_event &&
            input_event->evtype == XI_Leave &&
-           ((XILeaveEvent *)input_event)->mode == NotifyUngrab &&
+           ((XILeaveEvent *)input_event)->mode == XINotifyUngrab &&
            modified == display->ungrab_should_not_cause_focus_window)
     {
       meta_display_add_ignored_crossing_serial (display, event->xany.serial);
@@ -2273,9 +2273,9 @@ event_callback (XEvent   *event,
            * avoid races.
            */
           if (window && !crossing_serial_is_ignored (display, event->xany.serial) &&
-              enter_event->mode != NotifyGrab && 
-              enter_event->mode != NotifyUngrab &&
-              enter_event->detail != NotifyInferior &&
+              enter_event->mode != XINotifyGrab && 
+              enter_event->mode != XINotifyUngrab &&
+              enter_event->detail != XINotifyInferior &&
               meta_display_focus_sentinel_clear (display))
             {
               switch (meta_prefs_get_focus_mode ())
@@ -2320,8 +2320,8 @@ event_callback (XEvent   *event,
           if (window != NULL)
             {
               if (window->type == META_WINDOW_DOCK &&
-                  enter_event->mode != NotifyGrab &&
-                  enter_event->mode != NotifyUngrab &&
+                  enter_event->mode != XINotifyGrab &&
+                  enter_event->mode != XINotifyUngrab &&
                   !window->has_focus)
                 meta_window_lower (window);
             }
@@ -2364,7 +2364,7 @@ event_callback (XEvent   *event,
                           meta_event_detail_to_string (enter_event->detail));
           
               if (enter_event->evtype == XI_FocusIn &&
-                  enter_event->mode == NotifyDetailNone)
+                  enter_event->mode == XINotifyDetailNone)
                 {
                   meta_topic (META_DEBUG_FOCUS, 
                               "Focus got set to None, probably due to "
@@ -2375,8 +2375,8 @@ event_callback (XEvent   *event,
                                                        meta_display_get_current_time_roundtrip (display));
                 }
               else if (enter_event->evtype == XI_FocusIn &&
-                       enter_event->mode == NotifyNormal &&
-                       enter_event->detail == NotifyInferior)
+                       enter_event->mode == XINotifyNormal &&
+                       enter_event->detail == XINotifyInferior)
                 {
                   meta_topic (META_DEBUG_FOCUS,
                               "Focus got set to root window, probably due to "
@@ -3041,29 +3041,29 @@ meta_event_detail_to_string (int d)
   switch (d)
     {
       /* We are an ancestor in the A<->B focus change relationship */
-    case NotifyAncestor:
+    case XINotifyAncestor:
       detail = "NotifyAncestor";
       break;
-    case NotifyDetailNone:
+    case XINotifyDetailNone:
       detail = "NotifyDetailNone";
       break;
       /* We are a descendant in the A<->B focus change relationship */
-    case NotifyInferior:
+    case XINotifyInferior:
       detail = "NotifyInferior";
       break;
-    case NotifyNonlinear:
+    case XINotifyNonlinear:
       detail = "NotifyNonlinear";
       break;
-    case NotifyNonlinearVirtual:
+    case XINotifyNonlinearVirtual:
       detail = "NotifyNonlinearVirtual";
       break;
-    case NotifyPointer:
+    case XINotifyPointer:
       detail = "NotifyPointer";
       break;
-    case NotifyPointerRoot:
+    case XINotifyPointerRoot:
       detail = "NotifyPointerRoot";
       break;
-    case NotifyVirtual:
+    case XINotifyVirtual:
       detail = "NotifyVirtual";
       break;
     }
@@ -3079,23 +3079,18 @@ meta_event_mode_to_string (int m)
   const char *mode = "???";
   switch (m)
     {
-    case NotifyNormal:
+    case XINotifyNormal:
       mode = "NotifyNormal";
       break;
-    case NotifyGrab:
+    case XINotifyGrab:
       mode = "NotifyGrab";
       break;
-    case NotifyUngrab:
+    case XINotifyUngrab:
       mode = "NotifyUngrab";
       break;
-      /* not sure any X implementations are missing this, but
-       * it seems to be absent from some docs.
-       */
-#ifdef NotifyWhileGrabbed
-    case NotifyWhileGrabbed:
+    case XINotifyWhileGrabbed:
       mode = "NotifyWhileGrabbed";
       break;
-#endif
     }
 
   return mode;
