@@ -1258,13 +1258,13 @@ StScrollBar StButton#vhandle:active {
     font-weight: bold;
 }
 
-.calendar-other-month-day {
-    color: #333333;
-}
-
 .calendar-day-with-events {
     font-weight: bold;
     color: white;
+}
+
+.calendar-other-month-day {
+    color: #333333;
 }
 
 .events-header-vbox {
