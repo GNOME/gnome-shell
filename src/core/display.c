@@ -3008,8 +3008,6 @@ event_get_time (MetaDisplay *display,
     case SelectionNotify:
       return event->xselection.time;
 
-    case FocusIn:
-    case FocusOut:
     case KeymapNotify:      
     case Expose:
     case GraphicsExpose:
