@@ -24,7 +24,7 @@
 			InheritedPropertySheets=".\clutter.vsprops"
 			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\test-interactive"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -89,7 +89,7 @@
 			InheritedPropertySheets=".\clutter.vsprops"
 			IntermediateDirectory="$(SolutionDir)$(ConfigurationName)\$(PlatformName)\obj\test-interactive"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
 			<Tool
