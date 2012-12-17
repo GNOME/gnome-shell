@@ -86,8 +86,8 @@ void meta_prefs_override_preference_schema (const char *key,
 const char* meta_preference_to_string (MetaPreference pref);
 
 MetaVirtualModifier         meta_prefs_get_mouse_button_mods  (void);
-guint                       meta_prefs_get_mouse_button_resize (void);
-guint                       meta_prefs_get_mouse_button_menu  (void);
+gint                        meta_prefs_get_mouse_button_resize (void);
+gint                        meta_prefs_get_mouse_button_menu  (void);
 GDesktopFocusMode           meta_prefs_get_focus_mode         (void);
 GDesktopFocusNewWindows     meta_prefs_get_focus_new_windows  (void);
 gboolean                    meta_prefs_get_attach_modal_dialogs (void);

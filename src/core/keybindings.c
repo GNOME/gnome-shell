@@ -1491,7 +1491,7 @@ process_overlay_key (MetaDisplay *display,
 {
   if (display->overlay_key_only_pressed)
     {
-      if (event->detail != display->overlay_key_combo.keycode)
+      if (event->detail != (int)display->overlay_key_combo.keycode)
         {
           display->overlay_key_only_pressed = FALSE;
 
@@ -1552,7 +1552,7 @@ process_overlay_key (MetaDisplay *display,
       return TRUE;
     }
   else if (event->evtype == XI_KeyPress &&
-           event->detail == display->overlay_key_combo.keycode)
+           event->detail == (int)display->overlay_key_combo.keycode)
     {
       display->overlay_key_only_pressed = TRUE;
       /* We keep the keyboard frozen - this allows us to use ReplayKeyboard

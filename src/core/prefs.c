@@ -2137,13 +2137,13 @@ meta_prefs_get_window_binding (const char          *name,
   g_assert_not_reached ();
 }
 
-guint
+gint
 meta_prefs_get_mouse_button_resize (void)
 {
   return resize_with_right_button ? 3: 2;
 }
 
-guint
+gint
 meta_prefs_get_mouse_button_menu (void)
 {
   return resize_with_right_button ? 2: 3;

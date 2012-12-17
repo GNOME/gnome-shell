@@ -50,7 +50,7 @@ struct _MetaUI
   MetaFrames *frames;
 
   /* For double-click tracking */
-  guint button_click_number;
+  gint button_click_number;
   Window button_click_window;
   int button_click_x;
   int button_click_y;
