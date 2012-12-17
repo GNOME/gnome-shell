@@ -170,7 +170,8 @@ const WorkspaceThumbnail = new Lang.Class({
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
-        this._background = Meta.BackgroundActor.new_for_screen(global.screen);
+        this._background = new Meta.BackgroundActor({ screen: global.screen,
+                                                      settings: Main.background });
         this._contents.add_actor(this._background);
 
         let monitor = Main.layoutManager.primaryMonitor;

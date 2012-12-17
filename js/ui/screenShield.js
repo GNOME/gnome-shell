@@ -467,7 +467,8 @@ const ScreenShield = new Lang.Class({
                                                    name: 'lockScreenContents' });
         this._lockScreenContents.add_constraint(new Layout.MonitorConstraint({ primary: true }));
 
-        let backgroundActor = Meta.BackgroundActor.new_for_screen(global.screen);
+        let backgroundActor = new Meta.BackgroundActor({ screen: global.screen,
+                                                         settings: Main.background });
         backgroundActor.add_glsl_snippet(Meta.SnippetHook.TEXTURE_LOOKUP,
                                          GLSL_BLUR_EFFECT_DECLARATIONS,
                                          GLSL_BLUR_EFFECT_CODE,

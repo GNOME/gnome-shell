@@ -122,7 +122,8 @@ const Overview = new Lang.Class({
         // one. Instances of this class share a single CoglTexture behind the
         // scenes which allows us to show the background with different
         // rendering options without duplicating the texture data.
-        this._background = Meta.BackgroundActor.new_for_screen(global.screen);
+        this._background = new Meta.BackgroundActor({ screen: global.screen,
+                                                      settings: Main.background });
         this._background.add_glsl_snippet(Meta.SnippetHook.FRAGMENT,
                                           GLSL_DIM_EFFECT_DECLARATIONS,
                                           GLSL_DIM_EFFECT_CODE,

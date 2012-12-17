@@ -63,6 +63,7 @@ let magnifier = null;
 let xdndHandler = null;
 let keyboard = null;
 let layoutManager = null;
+let background = null;
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
@@ -141,6 +142,9 @@ function start() {
     global.window_group.reparent(uiGroup);
     global.overlay_group.reparent(uiGroup);
     global.stage.add_actor(uiGroup);
+
+    let backgroundActor = global.window_group.background;
+    background = backgroundActor.settings;
 
     layoutManager = new Layout.LayoutManager();
     xdndHandler = new XdndHandler.XdndHandler();
