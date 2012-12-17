@@ -111,7 +111,6 @@ const LayoutManager = new Lang.Class({
         this.primaryIndex = -1;
         this._keyboardIndex = -1;
         this._hotCorners = [];
-        this._background = null;
         this._leftPanelBarrier = 0;
         this._rightPanelBarrier = 0;
 
@@ -379,37 +378,7 @@ const LayoutManager = new Lang.Class({
     _startupAnimation: function() {
         this.panelBox.translation_y = -this.panelBox.height;
 
-        let plymouthTransitionRunning = false;
-
-        // If we're the greeter, put up the xrootpmap actor
-        // and fade it out to have a nice transition from plymouth
-        // to the greeter. Otherwise, we'll just animate the panel,
-        // as usual.
-        if (Main.sessionMode.isGreeter) {
-            this._background = Meta.BackgroundActor.new_for_screen(global.screen);
-            if (this._background != null) {
-                Main.uiGroup.add_actor(this._background);
-                Tweener.addTween(this._background,
-                                 { opacity: 0,
-                                   time: PLYMOUTH_TRANSITION_TIME,
-                                   transition: 'linear',
-                                   onComplete: this._fadeBackgroundComplete,
-                                   onCompleteScope: this });
-                plymouthTransitionRunning = true;
-            }
-        }
-
-        if (!plymouthTransitionRunning)
-            this._fadeBackgroundComplete();
-    },
-
-    _fadeBackgroundComplete: function() {
         this._freezeUpdateRegions();
-
-        if (this._background != null) {
-            this._background.destroy();
-            this._background = null;
-        }
 
         Tweener.addTween(this.panelBox,
                          { translation_y: 0,
