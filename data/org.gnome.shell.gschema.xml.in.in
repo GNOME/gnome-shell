@@ -135,16 +135,6 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
         Keybinding to start/stop the builtin screen recorder.
       </_description>
     </key>
-    <key name="switch-input-source" type="as">
-      <default>["&lt;Super&gt;space"]</default>
-      <_summary>Switch input source</_summary>
-      <_description>Binding to select the next input source</_description>
-    </key>
-    <key name="switch-input-source-backward" type="as">
-      <default>[]</default>
-      <_summary>Switch input source backward</_summary>
-      <_description>Binding to select the previous input source</_description>
-    </key>
   </schema>
 
   <schema id="org.gnome.shell.keyboard" path="/org/gnome/shell/keyboard/"

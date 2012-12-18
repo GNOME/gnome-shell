@@ -330,13 +330,13 @@ const InputSourceIndicator = new Lang.Class({
         this._mruSources = [];
         this._keybindingAction =
             Main.wm.addKeybinding('switch-input-source',
-                                  new Gio.Settings({ schema: "org.gnome.shell.keybindings" }),
+                                  new Gio.Settings({ schema: "org.gnome.desktop.wm.keybindings" }),
                                   Meta.KeyBindingFlags.REVERSES,
                                   Main.KeybindingMode.ALL,
                                   Lang.bind(this, this._switchInputSource));
         this._keybindingActionBackward =
             Main.wm.addKeybinding('switch-input-source-backward',
-                                  new Gio.Settings({ schema: "org.gnome.shell.keybindings" }),
+                                  new Gio.Settings({ schema: "org.gnome.desktop.wm.keybindings" }),
                                   Meta.KeyBindingFlags.REVERSES |
                                   Meta.KeyBindingFlags.REVERSED,
                                   Main.KeybindingMode.ALL,
