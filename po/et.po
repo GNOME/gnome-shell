@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-11-16 18:27+0000\n"
-"PO-Revision-Date: 2012-11-16 20:40+0300\n"
+"POT-Creation-Date: 2012-12-09 13:03+0000\n"
+"PO-Revision-Date: 2012-12-18 17:13+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <>\n"
 "Language: et\n"
@@ -135,6 +135,28 @@ msgstr ""
 "See võti keelab automaatse 'Logi välja' menüükirje peitmise, kui arvutis on "
 "üks kasutaja ning avatud üks seanss."
 
+msgid "Show full name in the user menu"
+msgstr "Kasutajamenüüs näidatakse kasutaja tervet nime"
+
+msgid "Whether the users full name is shown in the user menu or not."
+msgstr "Kas kasutajamenüüs näidatakse kasutaja kogu nime või mitte."
+
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+"Kas pidada meeles krüpteeritud või kaugfailisüsteemide haakimise paroole."
+
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"'Remember Password' checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr ""
+"Shell küsib parooli, kui haagitakse krüpteeritud seade või kaugfailisüsteem. "
+"Kui parooli on võimalik salvestada järgmise kasutuse jaoks, näidatakse "
+"\"Jäta parool meelde\" märkeruutu. See võti määrab märkeruudu vaikimisi "
+"oleku."
+
 msgid "Show the week date in the calendar"
 msgstr "Kalendris näidatakse kuupäeva nädalavormingus"
 
@@ -226,6 +248,18 @@ msgstr ""
 "salvestamise kuupäeva ja ka käesoleva võtmega määratud laiendit. Mõnda teise "
 "konteinervormingusse salvestades tuleks ka sellele vormingule vastav laiend "
 "määrata."
+
+msgid "The application icon mode."
+msgstr "Rakenduste ikooni režiim."
+
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
+"only' (shows only the application icon) or 'both'."
+msgstr ""
+"Seadistab, kuidas aknaid akendevahetajas kuvatakse. Sobivad väärtused on "
+"'thumbnail-only' (näidatakse ainult pisipilti), 'app-icon-only' (näidatakse "
+"ainult rakenduse ikooni) või 'both' (näidatakse mõlemaid)."
 
 msgid "Attach modal dialog to the parent window"
 msgstr "Modaaldialoog kuulub vanemakna juurde"
@@ -588,11 +622,8 @@ msgstr "Helista"
 msgid "File Transfer"
 msgstr "Failiülekanne"
 
-msgid "Subscription request"
-msgstr "Tellimuse päring"
-
-msgid "Connection error"
-msgstr "Ühenduse viga"
+msgid "Chat"
+msgstr "Vestlus"
 
 msgid "Unmute"
 msgstr "Heli peale"
@@ -600,27 +631,25 @@ msgstr "Heli peale"
 msgid "Mute"
 msgstr "Heli maha"
 
-#. Translators: this is a time format string followed by the word "Yesterday". i.e. "14:30 on Yesterday"
+#. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"
 #, no-c-format
-msgid "<b>%H:%M</b> on Yesterday"
-msgstr "Eile <b>%H:%M</b>"
+msgid "<b>Yesterday</b>, <b>%H:%M</b>"
+msgstr "<b>Eile</b> <b>%H:%M</b>"
 
-#. Translators: this is a time format string followed by a week day name. i.e. "14:30 on Monday
+#. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30
 #, no-c-format
-msgid "<b>%H:%M</b> on <b>%A</b>"
-msgstr "<b>%H:%M</b>, <b>%A</b>"
+msgid "<b>%A</b>, <b>%H:%M</b>"
+msgstr "<b>%A</b>, <b>%H:%M</b>"
 
-#. Translators: this is a time format in the style of "14:30 on Wednesday, May 25",
-#. shown when you get a chat message in the same year
+#. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"
 #, no-c-format
-msgid "<b>%H:%M</b> on <b>%A</b>, <b>%B</b> <b>%d</b>"
-msgstr "<b>%H:%M</b>, <b>%A</b>, <b>%d. %B</b>"
+msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
+msgstr "<b>%d. %B</b>, <b>%H:%M</b>"
 
-#. Translators: this is a time format in the style of "14:30 on Wednesday, May 25, 2012",
-#. shown when you get a chat message in a different year
+#. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"
 #, no-c-format
-msgid "<b>%H:%M</b> on <b>%A</b>, <b>%B</b> <b>%d</b>, %Y"
-msgstr "<b>%H:%M</b>, <b>%A</b>, <b>%d. %B</b> %Y"
+msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
+msgstr "<b>%d. %B %Y</b>, <b>%H:%M</b>"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -757,17 +786,17 @@ msgstr "Sisemine viga"
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
 #, c-format
-msgid "Connection to %s failed"
-msgstr "Ühendus %s nurjus"
+msgid "Unable to connect to %s"
+msgstr "Pole võimalik ühenduda võrguga %s"
 
-msgid "Reconnect"
-msgstr "Ühendu uuesti"
-
-msgid "Edit account"
-msgstr "Konto muutmine"
+msgid "View account"
+msgstr "Konto kuvamine"
 
 msgid "Unknown reason"
 msgstr "Põhjus teadmata"
+
+msgid "Windows"
+msgstr "Aknad"
 
 msgid "Show Applications"
 msgstr "Rakenduste kuvamine"
@@ -891,8 +920,6 @@ msgstr "Näita vigu"
 msgid "Enabled"
 msgstr "Lubatud"
 
-#. translators:
-#. * The device has been disabled
 msgid "Disabled"
 msgstr "Keelatud"
 
@@ -916,6 +943,9 @@ msgstr "Ava"
 
 msgid "Remove"
 msgstr "Eemalda"
+
+msgid "No Messages"
+msgstr "Teateid pole"
 
 msgid "Message Tray"
 msgstr "Teateala"
@@ -986,6 +1016,9 @@ msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d uus märguanne"
 msgstr[1] "%d uut märguannet"
+
+msgid "Lock"
+msgstr "Lukusta"
 
 msgid "Searching..."
 msgstr "Otsimine..."
@@ -1107,6 +1140,7 @@ msgstr "Luba ainult seekord"
 msgid "Reject"
 msgstr "Lükka tagasi"
 
+#. Translators: argument is the device short name
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Paardumise kinnitus seadmele %s"
@@ -1119,6 +1153,7 @@ msgstr "Seade '%s' tahab selle arvutiga paarduda"
 msgid "Please confirm whether the PIN '%06d' matches the one on the device."
 msgstr "Palun kontrolli, kas PIN-kood '%06d' kattub seadme parooliga."
 
+#. Translators: this is the verb, not the noun
 msgid "Matches"
 msgstr "Kattub"
 
@@ -1208,14 +1243,8 @@ msgstr "Automaatne juhtmeta ühendus"
 msgid "Enable networking"
 msgstr "Luba võrguühendused"
 
-msgid "Wired"
-msgstr "Juhtmega"
-
-msgid "Wireless"
-msgstr "Juhtmeta"
-
-msgid "Mobile broadband"
-msgstr "Mobiiliühendus"
+msgid "Wi-Fi"
+msgstr "Wi-Fi"
 
 msgid "Network Settings"
 msgstr "Võrgusätted"
@@ -1319,6 +1348,9 @@ msgstr "Mikrofon"
 msgid "Log in as another user"
 msgstr "Logi sisse teise kasutajana"
 
+msgid "Unlock Window"
+msgstr "Võta aken lukust lahti"
+
 msgid "Available"
 msgstr "Saadaval"
 
@@ -1349,9 +1381,6 @@ msgstr "Vaheta kasutajat"
 msgid "Log Out"
 msgstr "Logi välja"
 
-msgid "Lock"
-msgstr "Lukusta"
-
 msgid "Install Updates & Restart"
 msgstr "Paigalda uuendused ja taaskäivita"
 
@@ -1364,9 +1393,6 @@ msgid ""
 msgstr ""
 "Märguanded on nüüd keelatud, sealhulgas vestlusteated. Sinu netiolekut "
 "muudeti, et teised teaksid, et sa ei pruugi nende teateid näha."
-
-msgid "Windows"
-msgstr "Aknad"
 
 msgid "Applications"
 msgstr "Rakendused"
@@ -1395,25 +1421,6 @@ msgstr "'%s' on valmis"
 
 msgid "Evolution Calendar"
 msgstr "Evolutioni kalender"
-
-#. translators:
-#. * The number of sound outputs on a particular device
-#, c-format
-msgid "%u Output"
-msgid_plural "%u Outputs"
-msgstr[0] "%u väljund"
-msgstr[1] "%u väljundit"
-
-#. translators:
-#. * The number of sound inputs on a particular device
-#, c-format
-msgid "%u Input"
-msgid_plural "%u Inputs"
-msgstr[0] "%u sisend"
-msgstr[1] "%u sisendit"
-
-msgid "System Sounds"
-msgstr "Süsteemi helid"
 
 msgid "Print version"
 msgstr "Printimise versioon"
@@ -1445,6 +1452,46 @@ msgstr "Vaikimisi"
 
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Kasutaja katkestas autentimisdialoogi"
+
+#~ msgid "Subscription request"
+#~ msgstr "Tellimuse päring"
+
+#~ msgid "Connection error"
+#~ msgstr "Ühenduse viga"
+
+#~ msgid "<b>%H:%M</b> on Yesterday"
+#~ msgstr "Eile <b>%H:%M</b>"
+
+#~ msgid "<b>%H:%M</b> on <b>%A</b>, <b>%B</b> <b>%d</b>, %Y"
+#~ msgstr "<b>%H:%M</b>, <b>%A</b>, <b>%d. %B</b> %Y"
+
+#~ msgid "Connection to %s failed"
+#~ msgstr "Ühendus %s nurjus"
+
+#~ msgid "Reconnect"
+#~ msgstr "Ühendu uuesti"
+
+#~ msgid "Wired"
+#~ msgstr "Juhtmega"
+
+#~ msgid "Wireless"
+#~ msgstr "Juhtmeta"
+
+#~ msgid "Mobile broadband"
+#~ msgstr "Mobiiliühendus"
+
+#~ msgid "%u Output"
+#~ msgid_plural "%u Outputs"
+#~ msgstr[0] "%u väljund"
+#~ msgstr[1] "%u väljundit"
+
+#~ msgid "%u Input"
+#~ msgid_plural "%u Inputs"
+#~ msgstr[0] "%u sisend"
+#~ msgstr[1] "%u sisendit"
+
+#~ msgid "System Sounds"
+#~ msgstr "Süsteemi helid"
 
 #~ msgid "disabled OpenSearch providers"
 #~ msgstr "keelatud OpenSearch pakkujad"
