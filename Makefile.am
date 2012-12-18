@@ -16,6 +16,7 @@ EXTRA_DIST =		\
 # These are files checked into Git that we don't want to distribute
 DIST_EXCLUDE =					\
 	.gitignore				\
+	.gitmodules				\
 	gnome-shell.doap			\
 	HACKING					\
 	MAINTAINERS				\
