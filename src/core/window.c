@@ -7792,6 +7792,7 @@ recalc_window_type (MetaWindow *window)
       gboolean old_decorated = window->decorated;
       GObject  *object = G_OBJECT (window);
 
+      window->attached = meta_window_should_attach_to_parent (window);
       recalc_window_features (window);
 
       if (!window->override_redirect)
