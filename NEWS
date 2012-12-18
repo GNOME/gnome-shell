@@ -1,3 +1,60 @@
+3.7.3
+=====
+* Add 'No Messages' label when message tray is empty [Victoria; #686738]
+* Use better icons in Ctrl-Alt-Tab popup [Stéphane; #641303]
+* Show the OSK on the monitor where the focused window lives [Giovanni; #685856]
+* Highlight window clone and caption when hovered [Giovanni, Marc; #665310]
+* Improve login process indication [Stéphane; #687113]
+* Omit empty categories in apps view [Stéphane; #687970]
+* Style panel differently according to mode [Florian; #684573]
+* Make it possible to hide the user name [Matthias; #688577]
+* Consolidate and improve chat connection notifications [Giovanni; #687213]
+* Improve notification scrollbar appearance [Carlos; #688393]
+* Fade scroll view fade near scrolling edges [Jasper; #689249]
+* Add a read-only org.gnome.Shell.Mode property [Debarshi; #689300]
+* Don't close message tray after using context menus [Giovanni; #689296]
+* Port swipe-scrolling to ClutterPanAction [Jasper, Florian; #689062, #689552]
+* Remember state of 'Remember Password' checkbox [Ron; #688039]
+* Improve timestamp format in chat notifications [Carlos; #680989]
+* Improve style of missed-messages counter [Carlos; #686472]
+* Omit connection failure notifications if cancelled by user [Giovanni; #684823]
+* Add window-based Alt-Tab popup [Florian; #688913]
+* Support external session mode definitions [Florian; #689304]
+* Support session-mode-specific extensions [Florian; #689305]
+* Support 'parentMode' property in session modes [Florian; #689308]
+* Support a new org.gnome.ShellSearchProvider2 DBus interface
+  [Cosimo; #689735, #690009]
+* Add "windows" to Ctrl-Alt-Tab popup [Jasper; #689653]
+* Port PopupMenu to GrabHelper [Jasper; #689109, #689954]
+* Show headphone icon when headphones are plugged in [Giovanni; #675902]
+* Display (non-app) search results as list [Tanner, Cosimo; #681797]
+* Skip diacritical marks in search terms [Aleksander; #648587]
+* Expose all engine options in input sources [Giovanni, Rui; #682318]
+* Add input source switcher popup [Rui; #682315]
+* Add minimal support for InfiniBand in network menu [Dan; #677150]
+* Misc bug fixes and cleanups [Sebastian, Aleksander, Giovanni, Tim, Cosimo,
+  Florian, Matthias, Rui, Lionel, Colin, Piotr, Guillaume, Bastien, Tanner,
+  Carlos, Stéphane, Jakub; #688422, #688379, #688750, #688771, #686800,
+  #688133, #688895, #688966, #683986, #688004, #689108, #689029, #683449,
+  #688196, #689304, #689243, #689295, #689325, #689400, #679168, #689568,
+  #689537, #689528, #689749, #689789, #689353, #689820, #689868, #689778,
+  #689959, #688589, #688589, #689955, #687250, #689965, #690046, #690049,
+  #689884, #682286, #690173, #690174, #672941, #689876, #687881, #690171,
+  #690241, #690312, #690175, #687955, #650843, #688234, #690427
+
+Contributors:
+  Giovanni Campagna, Cosimo Cecchi, Matthias Clasen, Stéphane Démurget,
+  Guillaume Desmottes, Tanner Doshier, Piotr Drąg, Sebastian Keller,
+  Lionel Landwerlin, Tim Lunn, Victoria Martínez de la Cruz, Aleksander Morgado,
+  Florian Müllner, Bastien Nocera, Marc Plano-Lesay, Carlos Soriano Sánchez,
+  Jakub Steiner, Jasper St. Pierre, Colin Walters, Dan Winship, Ron Yorston
+
+Translations:
+  Yuri Myasoedov [ru], Wouter Bolsterlee [nl], Yaron Shahrabani [he],
+  Nilamdyuti Goswami [as], Ani Peter [ml], Kjartan Maraas [nb],
+  Dr.T.Vasudevan [ta], A S Alam [pa], Shankar Prasad [kn], Khaled Hosny [ar],
+  Daniel Mustieles [es], Dušan Kazik [sk]
+
 3.7.2
 =====
 * Enforce RTL in he for messages that might end up as LTR [Florian; #686630]
