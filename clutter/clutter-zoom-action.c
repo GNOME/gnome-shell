@@ -28,7 +28,8 @@
  * @Short_Description: Action enabling zooming on actors
  *
  * #ClutterZoomAction is a sub-class of #ClutterGestureAction that
- * implements all the necessary logic for zooming actors.
+ * implements all the necessary logic for zooming actors using a "pinch"
+ * gesture between two touch points.
  *
  * The simplest usage of #ClutterZoomAction consists in adding it to
  * a #ClutterActor and setting it as reactive; for instance, the following
@@ -40,7 +41,7 @@
  * ]|
  *
  * will automatically result in the actor to be scale according to the
- * distance between 2 touch points.
+ * distance between two touch points.
  *
  * Since: 1.12
  */
@@ -364,23 +365,17 @@ clutter_zoom_action_class_init (ClutterZoomActionClass *klass)
    * ClutterZoomAction::zoom:
    * @action: the #ClutterZoomAction that emitted the signal
    * @actor: the #ClutterActor attached to the action
-   * @distance: the initial distance between the 2 touch points
+   * @focal_point: the focal point of the zoom
+   * @factor: the initial distance between the 2 touch points
    *
-   * The ::zoom signal is emitted for each touch event after the
-   * #ClutterZoomAction::zoom-begin signal has been emitted.
-   *
-   * The components of the distance between the touch begin event and
-   * the latest touch update event are computed in the actor's
-   * coordinate space, to take into account eventual transformations.
-   * If you want the stage coordinates of the latest motion event you
-   * can use clutter_zoom_action_get_motion_coords().
+   * The ::zoom signal is emitted for each series of touch events that
+   * change the distance and focal point between the touch points.
    *
    * The default handler of the signal will call
    * clutter_actor_set_scale() on @actor using the ratio of the first
-   * distance between the 2 touch points and the current distance. If
-   * you want to override the default behaviour, you can connect to
-   * this signal and call g_signal_stop_emission_by_name() from within
-   * your callback.
+   * distance between the touch points and the current distance. To
+   * override the default behaviour, connect to this signal and return
+   * %FALSE.
    *
    * Return value: %TRUE if the zoom should continue, and %FALSE if
    *   the zoom should be cancelled.
