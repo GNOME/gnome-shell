@@ -1,3 +1,20 @@
+3.7.3
+=====
+* Fix maximized windows jumping to other monitors [Alban; #556696]
+* Add 'switch-applications' keybinding [Florian; #688913]
+* Add a convenience method to focus the default window [Jasper; #689652]
+* Increase typical icon size to 96 [Jasper; #689651]
+* Port to XInput2 [Jasper; #688779]
+* Give dynamic keybindings a keybinding action [Florian; #682315]
+* Misc. fixes and cleanups [Jasper, Rui; #688777]
+
+Contributors:
+  Alban Crequy, Rui Matos, Florian Müllner, Jasper St. Pierre
+
+Translations:
+  Nilamdyuti Goswami [as], Piotr Drąg [pl], Yaron Shahrabani [he],
+  Dr.T.Vasudevan [ta], ManojKumar Giri [or], Shankar Prasad [kn]
+
 3.7.2
 =====
 * Fix spurious focus changes when showing desktop [Florian; #686928]
