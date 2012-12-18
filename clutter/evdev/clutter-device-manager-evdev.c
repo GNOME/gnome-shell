@@ -111,6 +111,7 @@ struct _ClutterEventSource
   GPollFD event_poll_fd;              /* file descriptor of the /dev node */
   struct xkb_state *xkb;              /* XKB state object */
   gint x, y;                          /* last x, y position for pointers */
+  guint32 modifier_state;             /* key modifiers */
 };
 
 static gboolean
@@ -289,7 +290,7 @@ notify_button (ClutterEventSource *source,
   else
     event = clutter_event_new (CLUTTER_BUTTON_RELEASE);
 
-  /* Update the modfiers */
+  /* Update the modifiers */
   if (state)
     source->modifier_state |= maskmap[button - BTN_LEFT];
   else
