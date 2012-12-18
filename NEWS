@@ -1,3 +1,60 @@
+Clutter 1.13.2                                                       2012-12-18
+===============================================================================
+
+  • List of changes since Clutter 1.12
+
+    - Add ClutterTapAction, a gesture recogniser for single touch taps.
+
+    - Add ClutterSwipeAction::swipe
+    This new signal has a boolean return value, and brings the SwipeAction in
+    line with the rest of the GestureAction sub-classes. The ::swept signal
+    has also been deprecated.
+
+    - Enable XInput 2.x support by default
+    Instead of using Xlib core events. The clutter_x11_enable_xinput() function
+    now does not do anything; it's possible to disable XInput support by using
+    the CLUTTER_DISABLE_XINPUT environment variable.
+
+    - Documentation fixes
+
+  • List of bugs fixed since 1.12
+
+    #679439 - Single-threaded clutter programs fail on platforms which don't
+              permit unlocking an already unlocked mutex
+    #685589 - Off-stage touch events are not delivered
+    #685554 - Assertion failure when trying to cancel an already started gesture
+    #685028 - Let users and subclasses set a custom threshold on GestureAction
+    #685221 - Points get stuck in th tracking array when returning FALSE from
+              ::gesture-progress
+    #683948 - Add TapAction as subclass of GestureAction to deprecate
+              ClickAction
+    #685737 - Export the last event for each touch point on GestureAction
+    #686776 - Shouldn't annotate constructor of GInitiallyUnowned subclasses
+    #689073 - Fix clutter_actor_allocate_align_fill() with actors exactly
+              between 2 pixels
+    #685186 - tests: Print touch sequences in test-events
+    #689258 - xi2: Reset the correct scroll axes on DeviceChanged
+    #689061 - Some fixes and API additions for ClutterPanAction
+    #689316 - Strange issues with margins
+    #689399 - text: Prevent a relayout if font descriptions or attrs are equal
+    #689496 - Fixes for Coverity
+    #690214 - clutter_actor_apply_transform() fails to rollback the pivot
+              translation if an explicit transform has been set
+    #673838 - Enable XInput support by default
+    #686692 - Clutter 1.12.2 compilation fails in evdev backend
+    #685982 - ClutterActor::transitions-completed isn't called for implicit
+              transitions
+    #688457 - clutter_get_current_event() returns NULL on TOUCH_BEGIN
+    #689392 - swipe-action: Introduce new ::swipe signal
+
+Many thanks to:
+
+  Emanuele Aina, Jasper St. Pierre, Emmanuele Bassi, Daniel Stone, Chun-wei
+  Fan, Rob Bradford, Tomeu Vizoso, Wolfgang Stöggl, Alejandro Piñeiro,
+  Christian Kirbach, Guillaume Desmottes, Lionel Landwerlin, Marek Černocký,
+  Milo Casagrande, Nishio Futoshi, OKANO Takayoshi, Piotr Drąg, Rūdolfs Mazurs,
+  Tristan Van Berkom.
+
 Clutter 1.12.0                                                       2012-09-24
 ===============================================================================
 
