@@ -19,7 +19,7 @@
 
 	<KeyListEntry name="close" _description="Close window"/>
 
-	<KeyListEntry name="minimize" _description="Minimize window"/>
+	<KeyListEntry name="minimize" _description="Hide window"/>
 
 	<KeyListEntry name="begin-move" _description="Move window"/>
 
