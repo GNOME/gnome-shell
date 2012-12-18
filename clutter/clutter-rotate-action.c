@@ -28,7 +28,7 @@
  * @Short_Description: Action to rotate an actor
  *
  * #ClutterRotateAction is a sub-class of #ClutterGestureAction that implements
- * the logic for recognizing rotate gestures.
+ * the logic for recognizing rotate gestures using two touch points.
  *
  * Since: 1.12
  */
