@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.7.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-09 14:01+0100\n"
-"PO-Revision-Date: 2012-12-09 14:02+0100\n"
+"POT-Creation-Date: 2012-12-19 15:43+0100\n"
+"PO-Revision-Date: 2012-12-19 15:44+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -379,8 +379,8 @@ msgstr "Innloggingsvindu"
 msgid "Power"
 msgstr "Strøm"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:674 ../js/ui/userMenu.js:678
-#: ../js/ui/userMenu.js:789
+#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:675 ../js/ui/userMenu.js:679
+#: ../js/ui/userMenu.js:790
 msgid "Suspend"
 msgstr "Hvilemodus"
 
@@ -388,8 +388,8 @@ msgstr "Hvilemodus"
 msgid "Restart"
 msgstr "Start på nytt"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:676
-#: ../js/ui/userMenu.js:678 ../js/ui/userMenu.js:788
+#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:677
+#: ../js/ui/userMenu.js:679 ../js/ui/userMenu.js:789
 msgid "Power Off"
 msgstr "Slå av"
 
@@ -424,27 +424,19 @@ msgid "Execution of '%s' failed:"
 msgstr "Kjøring av «%s» feilet:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:259
+#: ../js/ui/appDisplay.js:258
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:318
-msgid "APPLICATIONS"
-msgstr "PROGRAMMER"
-
-#: ../js/ui/appDisplay.js:375
-msgid "SETTINGS"
-msgstr "INNSTILLINGER"
-
-#: ../js/ui/appDisplay.js:679
+#: ../js/ui/appDisplay.js:666
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:682 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:669 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:683
+#: ../js/ui/appDisplay.js:670
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
@@ -461,19 +453,19 @@ msgstr "%s ble fjernet fra dine favoritter."
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:62
+#: ../js/ui/calendar.js:61
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Hele dagen"
 
 #. Translators: Shown in calendar event list, if 24h format
-#: ../js/ui/calendar.js:67
+#: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H.%M"
 
 #. Transators: Shown in calendar event list, if 12h format
-#: ../js/ui/calendar.js:74
+#: ../js/ui/calendar.js:73
 msgctxt "event list time"
 msgid "%l:%M %p"
 msgstr "%l.%M %p"
@@ -483,43 +475,43 @@ msgstr "%l.%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:114
+#: ../js/ui/calendar.js:104
 msgctxt "grid sunday"
 msgid "S"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:116
+#: ../js/ui/calendar.js:106
 msgctxt "grid monday"
 msgid "M"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:118
+#: ../js/ui/calendar.js:108
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:120
+#: ../js/ui/calendar.js:110
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "O"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:122
+#: ../js/ui/calendar.js:112
 msgctxt "grid thursday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:124
+#: ../js/ui/calendar.js:114
 msgctxt "grid friday"
 msgid "F"
 msgstr "F"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:126
+#: ../js/ui/calendar.js:116
 msgctxt "grid saturday"
 msgid "S"
 msgstr "L"
@@ -530,77 +522,77 @@ msgstr "L"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:139
+#: ../js/ui/calendar.js:129
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Sø"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:141
+#: ../js/ui/calendar.js:131
 msgctxt "list monday"
 msgid "M"
 msgstr "Ma"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:143
+#: ../js/ui/calendar.js:133
 msgctxt "list tuesday"
 msgid "T"
 msgstr "Ti"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:145
+#: ../js/ui/calendar.js:135
 msgctxt "list wednesday"
 msgid "W"
 msgstr "On"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:147
+#: ../js/ui/calendar.js:137
 msgctxt "list thursday"
 msgid "Th"
 msgstr "To"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:149
+#: ../js/ui/calendar.js:139
 msgctxt "list friday"
 msgid "F"
 msgstr "Fr"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:151
+#: ../js/ui/calendar.js:141
 msgctxt "list saturday"
 msgid "S"
 msgstr "Lø"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:700
+#: ../js/ui/calendar.js:674
 msgid "Nothing Scheduled"
 msgstr "Ingenting planlagt"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:716
+#: ../js/ui/calendar.js:690
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:719
+#: ../js/ui/calendar.js:693
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A %B %d, %Y"
 
-#: ../js/ui/calendar.js:729
+#: ../js/ui/calendar.js:703
 msgid "Today"
 msgstr "I dag"
 
-#: ../js/ui/calendar.js:733
+#: ../js/ui/calendar.js:707
 msgid "Tomorrow"
 msgstr "I morgen"
 
-#: ../js/ui/calendar.js:744
+#: ../js/ui/calendar.js:718
 msgid "This week"
 msgstr "Denne uken"
 
-#: ../js/ui/calendar.js:752
+#: ../js/ui/calendar.js:726
 msgid "Next week"
 msgstr "Neste uke"
 
@@ -966,7 +958,7 @@ msgstr "Vis konto"
 msgid "Unknown reason"
 msgstr "Ukjent årsak"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:87
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:81
 msgid "Windows"
 msgstr "Vinduer"
 
@@ -1094,7 +1086,7 @@ msgstr "Last ned og installer «%s» fra extensions.gnome.org?"
 msgid "tray"
 msgstr "varslingsområde"
 
-#: ../js/ui/keyboard.js:555 ../js/ui/status/keyboard.js:195
+#: ../js/ui/keyboard.js:555 ../js/ui/status/keyboard.js:309
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "Tastatur"
@@ -1153,15 +1145,15 @@ msgstr "Åpne"
 msgid "Remove"
 msgstr "Fjern"
 
-#: ../js/ui/messageTray.js:1551
+#: ../js/ui/messageTray.js:1552
 msgid "No Messages"
 msgstr "Ingen meldinger"
 
-#: ../js/ui/messageTray.js:1568
+#: ../js/ui/messageTray.js:1570
 msgid "Message Tray"
 msgstr "Meldingstrau"
 
-#: ../js/ui/messageTray.js:2635
+#: ../js/ui/messageTray.js:2639
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -1170,11 +1162,11 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: ../js/ui/overview.js:95
+#: ../js/ui/overview.js:92
 msgid "Undo"
 msgstr "Angre"
 
-#: ../js/ui/overview.js:144
+#: ../js/ui/overview.js:139
 msgid "Overview"
 msgstr "Oversikt"
 
@@ -1182,13 +1174,13 @@ msgstr "Oversikt"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:221
+#: ../js/ui/overview.js:218
 msgid "Type to search..."
 msgstr "Skriv for å søke …"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:242
+#: ../js/ui/overview.js:236
 msgid "Dash"
 msgstr "Favoritter"
 
@@ -1211,7 +1203,7 @@ msgstr "Topp-panel"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:732
+#: ../js/ui/popupMenu.js:711
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1243,15 +1235,15 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d ny varsling"
 msgstr[1] "%d nye varslinger"
 
-#: ../js/ui/screenShield.js:402 ../js/ui/userMenu.js:780
+#: ../js/ui/screenShield.js:402 ../js/ui/userMenu.js:781
 msgid "Lock"
 msgstr "Lås"
 
-#: ../js/ui/searchDisplay.js:277
+#: ../js/ui/searchDisplay.js:403
 msgid "Searching..."
 msgstr "Søker …"
 
-#: ../js/ui/searchDisplay.js:325
+#: ../js/ui/searchDisplay.js:451
 msgid "No results."
 msgstr "Ingen resultater."
 
@@ -1367,7 +1359,7 @@ msgid "disconnecting..."
 msgstr "kobler fra …"
 
 #: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:442
-#: ../js/ui/status/network.js:1453
+#: ../js/ui/status/network.js:1464
 msgid "connecting..."
 msgstr "kobler til …"
 
@@ -1447,11 +1439,11 @@ msgstr "Vennligst oppgi PIN som oppgitt på enheten."
 msgid "OK"
 msgstr "OK"
 
-#: ../js/ui/status/keyboard.js:228
+#: ../js/ui/status/keyboard.js:363
 msgid "Show Keyboard Layout"
 msgstr "Vis tastaturutforming"
 
-#: ../js/ui/status/keyboard.js:233
+#: ../js/ui/status/keyboard.js:368
 msgid "Region and Language Settings"
 msgstr "Innstillinger for region og språk"
 
@@ -1475,7 +1467,7 @@ msgid "unmanaged"
 msgstr "ikke håndtert"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:445 ../js/ui/status/network.js:1456
+#: ../js/ui/status/network.js:445 ../js/ui/status/network.js:1467
 msgid "authentication required"
 msgstr "autentisering kreves"
 
@@ -1496,72 +1488,72 @@ msgstr "kabel koblet fra"
 msgid "unavailable"
 msgstr "ikke tilgjengelig"
 
-#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1458
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1469
 msgid "connection failed"
 msgstr "tilkobling feilet"
 
-#: ../js/ui/status/network.js:525 ../js/ui/status/network.js:1392
-#: ../js/ui/status/network.js:1534
+#: ../js/ui/status/network.js:525 ../js/ui/status/network.js:1403
+#: ../js/ui/status/network.js:1545
 msgid "More..."
 msgstr "Mer …"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:561 ../js/ui/status/network.js:1322
+#: ../js/ui/status/network.js:561 ../js/ui/status/network.js:1333
 msgid "Connected (private)"
 msgstr "Tilkoblet (privat)"
 
-#: ../js/ui/status/network.js:619
+#: ../js/ui/status/network.js:641
 msgid "Auto Ethernet"
 msgstr "Automatisk Ethernet"
 
-#: ../js/ui/status/network.js:677
+#: ../js/ui/status/network.js:688
 msgid "Auto broadband"
 msgstr "Automatisk bredbånd"
 
-#: ../js/ui/status/network.js:680
+#: ../js/ui/status/network.js:691
 msgid "Auto dial-up"
 msgstr "Automatisk oppringt"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:809 ../js/ui/status/network.js:1339
+#: ../js/ui/status/network.js:820 ../js/ui/status/network.js:1350
 #, c-format
 msgid "Auto %s"
 msgstr "Automatisk %s"
 
-#: ../js/ui/status/network.js:811
+#: ../js/ui/status/network.js:822
 msgid "Auto bluetooth"
 msgstr "Automatisk Bluetooth"
 
-#: ../js/ui/status/network.js:1341
+#: ../js/ui/status/network.js:1352
 msgid "Auto wireless"
 msgstr "Automatisk trådløst"
 
-#: ../js/ui/status/network.js:1584
+#: ../js/ui/status/network.js:1595
 msgid "Enable networking"
 msgstr "Slå på nettverk"
 
-#: ../js/ui/status/network.js:1616
+#: ../js/ui/status/network.js:1627
 msgid "Wi-Fi"
 msgstr "Wi-Fi"
 
-#: ../js/ui/status/network.js:1635
+#: ../js/ui/status/network.js:1646
 msgid "Network Settings"
 msgstr "Innstillinger for nettverk"
 
-#: ../js/ui/status/network.js:1679
+#: ../js/ui/status/network.js:1692
 msgid "Network Manager"
 msgstr "Nettverkshåndtering"
 
-#: ../js/ui/status/network.js:1761
+#: ../js/ui/status/network.js:1774
 msgid "Connection failed"
 msgstr "Tilkobling feilet"
 
-#: ../js/ui/status/network.js:1762
+#: ../js/ui/status/network.js:1775
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nettverkstilkobling feilet"
 
-#: ../js/ui/status/network.js:2079
+#: ../js/ui/status/network.js:2092
 msgid "Networking is disabled"
 msgstr "Nettverk er slått av"
 
@@ -1703,31 +1695,31 @@ msgstr "Ledig"
 msgid "Offline"
 msgstr "Frakoblet"
 
-#: ../js/ui/userMenu.js:754
+#: ../js/ui/userMenu.js:755
 msgid "Notifications"
 msgstr "Varslinger"
 
-#: ../js/ui/userMenu.js:762
+#: ../js/ui/userMenu.js:763
 msgid "Settings"
 msgstr "Innstillinger"
 
-#: ../js/ui/userMenu.js:770
+#: ../js/ui/userMenu.js:771
 msgid "Switch User"
 msgstr "Bytt bruker"
 
-#: ../js/ui/userMenu.js:775
+#: ../js/ui/userMenu.js:776
 msgid "Log Out"
 msgstr "Logg ut"
 
-#: ../js/ui/userMenu.js:795
+#: ../js/ui/userMenu.js:796
 msgid "Install Updates & Restart"
 msgstr "Installer oppdateringer og start på nytt"
 
-#: ../js/ui/userMenu.js:813
+#: ../js/ui/userMenu.js:814
 msgid "Your chat status will be set to busy"
 msgstr "Din pratestatus vil bli satt til opptatt"
 
-#: ../js/ui/userMenu.js:814
+#: ../js/ui/userMenu.js:815
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1736,15 +1728,15 @@ msgstr ""
 "tilkoblingsstatus er justert for å la andre vite at du kanskje ikke ser "
 "deres meldinger."
 
-#: ../js/ui/viewSelector.js:91
+#: ../js/ui/viewSelector.js:85
 msgid "Applications"
 msgstr "Programmer"
 
-#: ../js/ui/viewSelector.js:95
+#: ../js/ui/viewSelector.js:89
 msgid "Search"
 msgstr "Søk"
 
-#: ../js/ui/wanda.js:94
+#: ../js/ui/wanda.js:92
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1753,14 +1745,10 @@ msgstr ""
 "Beklager, ingen visdom til deg i dag:\n"
 "%s"
 
-#: ../js/ui/wanda.js:98
+#: ../js/ui/wanda.js:96
 #, c-format
 msgid "%s the Oracle says"
 msgstr "Orakelet sier %s"
-
-#: ../js/ui/wanda.js:139
-msgid "Your favorite Easter Egg"
-msgstr "Favorittpåskeegget ditt"
 
 #: ../js/ui/windowAttentionHandler.js:19
 #, c-format
