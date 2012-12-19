@@ -67,6 +67,7 @@ struct _ClutterStageX11
   guint viewport_initialized  : 1;
   guint accept_focus          : 1;
   guint fullscreen_on_realize : 1;
+  guint cursor_hidden_xfixes  : 1;
 };
 
 struct _ClutterStageX11Class
