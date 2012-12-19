@@ -977,17 +977,10 @@ AS_IF([test "x$enable_wayland_egl_server" = "xyes"],
                          ],
                          [AC_MSG_ERROR([Unable to locate required wayland-server library])])
 
-        WAYLAND_SERVER_VERSION=`$PKG_CONFIG --modversion gbm`
-        WAYLAND_SERVER_MAJOR=`echo $WAYLAND_SERVER_VERSION | cut -d'.' -f1`
-        WAYLAND_SERVER_MINOR=`echo $WAYLAND_SERVER_VERSION | cut -d'.' -f2`
-        WAYLAND_SERVER_MICRO=`echo $WAYLAND_SERVER_VERSION | cut -d'.' -f3`
-
         COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT"
       ])
 AM_CONDITIONAL(SUPPORT_WAYLAND_EGL_SERVER,
                [test "x$enable_wayland_egl_server" = "xyes"])
-AM_CONDITIONAL(WAYLAND_0_85_X_SERVER,
-               [test "x$WAYLAND_SERVER_MAJOR" = "x1" -a "x$WAYLAND_SERVER_MINOR" = "x85"])
 
 dnl Android EGL platform
 AC_ARG_ENABLE(
