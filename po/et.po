@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: mutter MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-10-17 20:44+0000\n"
-"PO-Revision-Date: 2012-10-21 20:48+0300\n"
+"POT-Creation-Date: 2012-12-18 22:30+0000\n"
+"PO-Revision-Date: 2012-12-19 18:06+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <>\n"
 "Language: et\n"
@@ -24,8 +24,140 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
+msgid "Navigation"
+msgstr "Navigeerimine"
+
+msgid "Move window to workspace 1"
+msgstr "Akna liigutamine 1. tööalale"
+
+msgid "Move window to workspace 2"
+msgstr "Akna liigutamine 2. tööalale"
+
+msgid "Move window to workspace 3"
+msgstr "Akna liigutamine 3. tööalale"
+
+msgid "Move window to workspace 4"
+msgstr "Akna liigutamine 4. tööalale"
+
+msgid "Move window one workspace to the left"
+msgstr "Akna tõstmine vasakpoolsele tööalale"
+
+msgid "Move window one workspace to the right"
+msgstr "Akna tõstmine parempoolsele tööalale"
+
+msgid "Move window one workspace up"
+msgstr "Akna tõstmine ülemisele tööalale"
+
+msgid "Move window one workspace down"
+msgstr "Akna tõstmine alumisele tööalale"
+
+msgid "Switch applications"
+msgstr "Rakenduste vahetamine"
+
+msgid "Switch windows"
+msgstr "Akende vahetamine"
+
+msgid "Switch windows of an application"
+msgstr "Rakenduse akende vahetamine"
+
+msgid "Switch system controls"
+msgstr "Süsteemi juhtalade vahetamine"
+
+msgid "Switch windows directly"
+msgstr "Akende kohene vahetamine"
+
+msgid "Switch windows of an app directly"
+msgstr "Rakenduse akende kohene vahetamine"
+
+msgid "Switch system controls directly"
+msgstr "Süsteemi juhtalade kohene vahetamine"
+
+msgid "Hide all normal windows"
+msgstr "Kõigi tavaliste akende peitmine"
+
+msgid "Switch to workspace 1"
+msgstr "1. tööalale liikumine"
+
+msgid "Switch to workspace 2"
+msgstr "2. tööalale liikumine"
+
+msgid "Switch to workspace 3"
+msgstr "3. tööalale liikumine"
+
+msgid "Switch to workspace 4"
+msgstr "4. tööalale liikumine"
+
+msgid "Move to workspace left"
+msgstr "Vasakpoolsele tööalale liikumine"
+
+msgid "Move to workspace right"
+msgstr "Parempoolsele tööalale liikumine"
+
+msgid "Move to workspace above"
+msgstr "Ülemisele tööalale liikumine"
+
+msgid "Move to workspace below"
+msgstr "Alumisele tööalale liikumine"
+
+msgid "System"
+msgstr "Süsteem"
+
+msgid "Show the run command prompt"
+msgstr "Käsuviiba kuvamine"
+
+msgid "Show the activities overview"
+msgstr "Tegevuste ülevaate avamine"
+
 msgid "Windows"
 msgstr "Aknad"
+
+msgid "Activate the window menu"
+msgstr "Aknamenüü avamine"
+
+msgid "Toggle fullscreen mode"
+msgstr "Täisekraanoleku vahetamine"
+
+msgid "Toggle maximization state"
+msgstr "Maksimeeritud oleku vahetamine"
+
+msgid "Maximize window"
+msgstr "Akna maksimeerimine"
+
+msgid "Restore window"
+msgstr "Akna taastamine"
+
+msgid "Toggle shaded state"
+msgstr "Varjatud oleku vahetamine"
+
+msgid "Close window"
+msgstr "Akna sulgemine"
+
+msgid "Minimize window"
+msgstr "Akna minimeerimine"
+
+msgid "Move window"
+msgstr "Akna liigutamine"
+
+msgid "Resize window"
+msgstr "Akna suuruse muutmine"
+
+msgid "Toggle window on all workspaces or one"
+msgstr "Akna kõigil või ühel tööalal olemise vahetamine"
+
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Akna tõstmine, kui see on kaetud, muul juhul langetamine"
+
+msgid "Raise window above other windows"
+msgstr "Akna tõstmine teiste kohale"
+
+msgid "Lower window below other windows"
+msgstr "Akna langetamine teiste taha"
+
+msgid "Maximize window vertically"
+msgstr "Akna vertikaalne maksimeerimine"
+
+msgid "Maximize window horizontally"
+msgstr "Akna horisontaalne maksimeerimine"
 
 msgid "View split on left"
 msgstr "Vaade poolitatakse vasakult"
