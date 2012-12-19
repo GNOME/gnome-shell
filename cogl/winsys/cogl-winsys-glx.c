@@ -1285,6 +1285,15 @@ _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
       int i;
       /* XXX: checkout how this state interacts with the code to use
        * glBlitFramebuffer in Neil's texture atlasing branch */
+
+      /* glBlitFramebuffer is affected by the scissor so we need to
+       * ensure we have flushed an empty clip stack to get rid of it.
+       * We also mark that the clip state is dirty so that it will be
+       * flushed to the correct state the next time something is
+       * drawn */
+      _cogl_clip_stack_flush (NULL, framebuffer);
+      context->current_draw_buffer_changes |= COGL_FRAMEBUFFER_STATE_CLIP;
+
       context->glDrawBuffer (GL_FRONT);
       for (i = 0; i < n_rectangles; i++)
         {
