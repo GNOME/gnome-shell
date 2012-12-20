@@ -79,7 +79,7 @@ const VolumeMenu = new Lang.Class({
             this._readInput();
             this._maybeShowInput();
         } else {
-            this.emit('icon-changed', null);
+            this.emit('icon-changed');
         }
     },
 
@@ -125,7 +125,7 @@ const VolumeMenu = new Lang.Class({
         } else {
             this.hasHeadphones = false;
             this._outputSlider.setValue(0);
-            this.emit('icon-changed', 'audio-volume-muted-symbolic');
+            this.emit('icon-changed');
         }
     },
 
@@ -169,19 +169,6 @@ const VolumeMenu = new Lang.Class({
         this._inputSlider.actor.visible = showInput;
     },
 
-    _volumeToIcon: function(volume) {
-        if (volume <= 0) {
-            return 'audio-volume-muted-symbolic';
-        } else {
-            let n = Math.floor(3 * volume / this._volumeMax) + 1;
-            if (n < 2)
-                return 'audio-volume-low-symbolic';
-            if (n >= 3)
-                return 'audio-volume-high-symbolic';
-            return 'audio-volume-medium-symbolic';
-        }
-    },
-
     _sliderChanged: function(slider, value, property) {
         if (this[property] == null) {
             log ('Volume slider changed for %s, but %s does not exist'.format(property, property));
@@ -206,22 +193,35 @@ const VolumeMenu = new Lang.Class({
         global.play_theme_sound(VOLUME_NOTIFY_ID, 'audio-volume-change');
     },
 
+    getIcon: function() {
+        if (!this._output)
+            return null;
+
+        let volume = this._output.volume;
+        if (this._output.is_muted || volume <= 0) {
+            return 'audio-volume-muted-symbolic';
+        } else {
+            let n = Math.floor(3 * volume / this._volumeMax) + 1;
+            if (n < 2)
+                return 'audio-volume-low-symbolic';
+            if (n >= 3)
+                return 'audio-volume-high-symbolic';
+            return 'audio-volume-medium-symbolic';
+        }
+    },
+
     _mutedChanged: function(object, param_spec, property) {
         let muted = this[property].is_muted;
         let slider = this[property+'Slider'];
         slider.setValue(muted ? 0 : (this[property].volume / this._volumeMax));
-        if (property == '_output') {
-            if (muted)
-                this.emit('icon-changed', 'audio-volume-muted-symbolic');
-            else
-                this.emit('icon-changed', this._volumeToIcon(this._output.volume));
-        }
+        if (property == '_output')
+            this.emit('icon-changed');
     },
 
     _volumeChanged: function(object, param_spec, property) {
         this[property+'Slider'].setValue(this[property].volume / this._volumeMax);
-        if (property == '_output' && !this._output.is_muted)
-            this.emit('icon-changed', this._volumeToIcon(this._output.volume));
+        if (property == '_output')
+            this.emit('icon-changed');
     }
 });
 
@@ -234,8 +234,9 @@ const Indicator = new Lang.Class({
 
         this._control = getMixerControl();
         this._volumeMenu = new VolumeMenu(this._control);
-        this._volumeMenu.connect('icon-changed', Lang.bind(this, function(menu, icon) {
-            this._hasPulseAudio = (icon != null);
+        this._volumeMenu.connect('icon-changed', Lang.bind(this, function(menu) {
+            let icon = this._volumeMenu.getIcon();
+            this._hasPulseAudio = icon != null;
             this.setIcon(icon);
             this._syncVisibility();
         }));
