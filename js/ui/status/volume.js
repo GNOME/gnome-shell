@@ -228,12 +228,11 @@ const Indicator = new Lang.Class({
         this._volumeMenu = new VolumeMenu(this._control);
         this._volumeMenu.connect('icon-changed', Lang.bind(this, function(menu) {
             let icon = this._volumeMenu.getIcon();
-            this._hasPulseAudio = icon != null;
+            this.actor.visible = (icon != null);
             this.setIcon(icon);
-            this._syncVisibility();
         }));
         this._volumeMenu.connect('headphones-changed', Lang.bind(this, function() {
-            this._syncVisibility();
+            this._headphoneIcon.visible = this._volumeMenu.hasHeadphones;
         }));
 
         this._headphoneIcon = this.addIcon(new Gio.ThemedIcon({ name: 'headphones-symbolic' }));
@@ -245,11 +244,6 @@ const Indicator = new Lang.Class({
         this.menu.addSettingsAction(_("Sound Settings"), 'gnome-sound-panel.desktop');
 
         this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
-    },
-
-    _syncVisibility: function() {
-        this.actor.visible = this._hasPulseAudio;
-        this._headphoneIcon.visible = this._volumeMenu.hasHeadphones;
     },
 
     _onScrollEvent: function(actor, event) {
