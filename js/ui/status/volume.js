@@ -33,7 +33,7 @@ const VolumeMenu = new Lang.Class({
     _init: function(control) {
         this.parent();
 
-        this.hasHeadphones = false;
+        this._hasHeadphones = false;
 
         this._control = control;
         this._control.connect('state-changed', Lang.bind(this, this._onControlStateChanged));
@@ -100,8 +100,8 @@ const VolumeMenu = new Lang.Class({
     },
 
     _portChanged: function() {
-        this.hasHeadphones = this._findHeadphones(this._output);
-        this.emit('headphones-changed');
+        this._hasHeadphones = this._findHeadphones(this._output);
+        this.emit('headphones-changed', this._hasHeadphones);
     },
 
     _readOutput: function() {
@@ -231,8 +231,8 @@ const Indicator = new Lang.Class({
             this.actor.visible = (icon != null);
             this.setIcon(icon);
         }));
-        this._volumeMenu.connect('headphones-changed', Lang.bind(this, function() {
-            this._headphoneIcon.visible = this._volumeMenu.hasHeadphones;
+        this._volumeMenu.connect('headphones-changed', Lang.bind(this, function(menu, value) {
+            this._headphoneIcon.visible = value;
         }));
 
         this._headphoneIcon = this.addIcon(new Gio.ThemedIcon({ name: 'headphones-symbolic' }));
