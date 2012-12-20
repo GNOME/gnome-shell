@@ -249,8 +249,7 @@ const Indicator = new Lang.Class({
 
     _syncVisibility: function() {
         this.actor.visible = this._hasPulseAudio;
-        this.mainIcon.visible = this._hasPulseAudio;
-        this._headphoneIcon.visible = this._hasPulseAudio && this._volumeMenu.hasHeadphones;
+        this._headphoneIcon.visible = this._volumeMenu.hasHeadphones;
     },
 
     _onScrollEvent: function(actor, event) {
