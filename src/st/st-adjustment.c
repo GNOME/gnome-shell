@@ -32,6 +32,7 @@
 
 #include <glib-object.h>
 #include <clutter/clutter.h>
+#include <math.h>
 
 #include "st-adjustment.h"
 #include "st-private.h"
