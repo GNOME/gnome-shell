@@ -115,12 +115,11 @@ const VolumeMenu = new Lang.Class({
         }
         this._output = this._control.get_default_sink();
         if (this._output) {
-            this._outputMutedId = this._output.connect('notify::is-muted', Lang.bind(this, this._mutedChanged, '_output'));
-            this._outputVolumeId = this._output.connect('notify::volume', Lang.bind(this, this._volumeChanged, '_output'));
+            this._outputMutedId = this._output.connect('notify::is-muted', Lang.bind(this, this._updateVolume, '_output'));
+            this._outputVolumeId = this._output.connect('notify::volume', Lang.bind(this, this._updateVolume, '_output'));
             this._outputPortId = this._output.connect('notify::port', Lang.bind(this, this._portChanged));
 
-            this._mutedChanged(null, null, '_output');
-            this._volumeChanged(null, null, '_output');
+            this._updateVolume(null, null, '_output');
             this._portChanged();
         } else {
             this.hasHeadphones = false;
@@ -138,10 +137,9 @@ const VolumeMenu = new Lang.Class({
         }
         this._input = this._control.get_default_source();
         if (this._input) {
-            this._inputMutedId = this._input.connect('notify::is-muted', Lang.bind(this, this._mutedChanged, '_input'));
-            this._inputVolumeId = this._input.connect('notify::volume', Lang.bind(this, this._volumeChanged, '_input'));
-            this._mutedChanged (null, null, '_input');
-            this._volumeChanged (null, null, '_input');
+            this._inputMutedId = this._input.connect('notify::is-muted', Lang.bind(this, this._updateVolume, '_input'));
+            this._inputVolumeId = this._input.connect('notify::volume', Lang.bind(this, this._updateVolume, '_input'));
+            this._updateVolume(null, null, '_input');
         } else {
             this._inputTitle.actor.hide();
             this._inputSlider.actor.hide();
@@ -210,16 +208,10 @@ const VolumeMenu = new Lang.Class({
         }
     },
 
-    _mutedChanged: function(object, param_spec, property) {
+    _updateVolume: function(object, param_spec, property) {
         let muted = this[property].is_muted;
         let slider = this[property+'Slider'];
         slider.setValue(muted ? 0 : (this[property].volume / this._volumeMax));
-        if (property == '_output')
-            this.emit('icon-changed');
-    },
-
-    _volumeChanged: function(object, param_spec, property) {
-        this[property+'Slider'].setValue(this[property].volume / this._volumeMax);
         if (property == '_output')
             this.emit('icon-changed');
     }
