@@ -682,6 +682,7 @@ adjust_with_direction (StAdjustment           *adj,
       delta = 1.0;
       break;
     case CLUTTER_SCROLL_SMOOTH:
+    default:
       g_assert_not_reached ();
       break;
     }
