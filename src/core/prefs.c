@@ -1007,7 +1007,7 @@ settings_changed (GSettings *settings,
   /* String array, handled separately */
   if (strcmp (key, KEY_WORKSPACE_NAMES) == 0)
     {
-      if (update_workspace_names ());
+      if (update_workspace_names ())
         queue_changed (META_PREF_WORKSPACE_NAMES);
       return;
     }
