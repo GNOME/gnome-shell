@@ -142,6 +142,14 @@ const KeyringDialog = new Lang.Class({
         this._messageBox.add(table, { x_fill: true, y_fill: true });
     },
 
+    _updateSensitivity: function(sensitive) {
+        this._passwordEntry.reactive = sensitive;
+        this._passwordEntry.clutter_text.editable = sensitive;
+
+        this._okButton.can_focus = sensitive;
+        this._okButton.reactive = sensitive;
+    },
+
     _ensureOpen: function() {
         // NOTE: ModalDialog.open() is safe to call if the dialog is
         // already open - it just returns true without side-effects
@@ -177,10 +185,12 @@ const KeyringDialog = new Lang.Class({
     },
 
     _onPasswordActivate: function() {
-        if (this.prompt.confirm_visible)
+        if (this.prompt.confirm_visible) {
+            this._updateSensitivity(true);
             this._confirmEntry.grab_key_focus();
-        else
+        } else {
             this._onContinueButton();
+        }
     },
 
     _onConfirmActivate: function() {
@@ -188,6 +198,7 @@ const KeyringDialog = new Lang.Class({
     },
 
     _onContinueButton: function() {
+        this._updateSensitivity(false);
         this.prompt.complete();
     },
 
