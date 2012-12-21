@@ -582,7 +582,10 @@ const BoxPointer = new Lang.Class({
         if (this._arrowSide != arrowSide) {
             this._arrowSide = arrowSide;
             this._reposition();
-            this._container.queue_relayout();
+            Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+                this._container.queue_relayout();
+                return false;
+            }));
         }
     },
 
