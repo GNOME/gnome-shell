@@ -221,24 +221,7 @@ const BoxPointer = new Lang.Class({
 
         if (this._sourceActor && this._sourceActor.mapped) {
             this._reposition();
-
-            if (this._shouldFlip()) {
-                switch (this._arrowSide) {
-                case St.Side.TOP:
-                    this._arrowSide = St.Side.BOTTOM;
-                    break;
-                case St.Side.BOTTOM:
-                    this._arrowSide = St.Side.TOP;
-                    break;
-                case St.Side.LEFT:
-                    this._arrowSide = St.Side.RIGHT;
-                    break;
-                case St.Side.RIGHT:
-                    this._arrowSide = St.Side.LEFT;
-                    break;
-                }
-                this._reposition();
-            }
+            this._updateFlip();
         }
     },
 
@@ -408,8 +391,6 @@ const BoxPointer = new Lang.Class({
     },
 
     setPosition: function(sourceActor, alignment) {
-        this._arrowSide = this._userArrowSide;
-
         // We need to show it now to force an allocation,
         // so that we can query the correct size.
         this.actor.show();
@@ -418,6 +399,7 @@ const BoxPointer = new Lang.Class({
         this._arrowAlignment = alignment;
 
         this._reposition();
+        this._updateFlip();
     },
 
     setSourceAlignment: function(alignment) {
@@ -564,37 +546,46 @@ const BoxPointer = new Lang.Class({
                                     -(this._yPosition + this._yOffset));
     },
 
-    _shouldFlip: function() {
+    _calculateArrowSide: function(arrowSide) {
         let sourceAllocation = Shell.util_get_transformed_allocation(this._sourceActor);
         let boxAllocation = Shell.util_get_transformed_allocation(this.actor);
         let boxWidth = boxAllocation.x2 - boxAllocation.x1;
         let boxHeight = boxAllocation.y2 - boxAllocation.y1;
         let monitor = Main.layoutManager.findMonitorForActor(this.actor);
 
-        switch (this._arrowSide) {
+        switch (arrowSide) {
         case St.Side.TOP:
             if (boxAllocation.y2 > monitor.y + monitor.height &&
                 boxHeight < sourceAllocation.y1 - monitor.y)
-                return true;
+                return St.Side.BOTTOM;
             break;
         case St.Side.BOTTOM:
             if (boxAllocation.y1 < monitor.y &&
                 boxHeight < monitor.y + monitor.height - sourceAllocation.y2)
-                return true;
+                return St.Side.TOP;
             break;
         case St.Side.LEFT:
             if (boxAllocation.x2 > monitor.x + monitor.width &&
                 boxWidth < sourceAllocation.x1 - monitor.x)
-                return true;
+                return St.Side.RIGHT;
             break;
         case St.Side.RIGHT:
             if (boxAllocation.x1 < monitor.x &&
                 boxWidth < monitor.x + monitor.width - sourceAllocation.x2)
-                return true;
+                return St.Side.LEFT;
             break;
         }
 
-        return false;
+        return arrowSide;
+    },
+
+    _updateFlip: function() {
+        let arrowSide = this._calculateArrowSide(this._userArrowSide);
+        if (this._arrowSide != arrowSide) {
+            this._arrowSide = arrowSide;
+            this._reposition();
+            this._container.queue_relayout();
+        }
     },
 
     set xOffset(offset) {
