@@ -38,7 +38,6 @@ const StreamSlider = new Lang.Class({
         this._title = new PopupMenu.PopupMenuItem(title, { reactive: false });
         this._slider = new PopupMenu.PopupSliderMenuItem(0);
         this._slider.connect('value-changed', Lang.bind(this, this._sliderChanged));
-        this._slider.connect('drag-end', Lang.bind(this, this._notifyVolumeChange));
 
         this.item.addMenuItem(this._title);
         this.item.addMenuItem(this._slider);
@@ -117,11 +116,6 @@ const StreamSlider = new Lang.Class({
         this._stream.push_volume();
     },
 
-    _notifyVolumeChange: function() {
-        global.cancel_theme_sound(VOLUME_NOTIFY_ID);
-        global.play_theme_sound(VOLUME_NOTIFY_ID, 'audio-volume-change');
-    },
-
     _updateVolume: function() {
         let muted = this._stream.is_muted;
         this._slider.setValue(muted ? 0 : (this._stream.volume / this._control.get_vol_max_norm()));
@@ -151,6 +145,11 @@ const OutputStreamSlider = new Lang.Class({
     Name: 'OutputStreamSlider',
     Extends: StreamSlider,
 
+    _init: function(control, title) {
+        this.parent(control, title);
+        this._slider.connect('drag-end', Lang.bind(this, this._notifyVolumeChange));
+    },
+
     _connectStream: function(stream) {
         this.parent(stream);
         this._portChangedId = stream.connect('notify::port', Lang.bind(this, this._portChanged));
@@ -177,6 +176,11 @@ const OutputStreamSlider = new Lang.Class({
         this.parent(stream);
         stream.disconnect(this._portChangedId);
         this._portChangedId = 0;
+    },
+
+    _notifyVolumeChange: function() {
+        global.cancel_theme_sound(VOLUME_NOTIFY_ID);
+        global.play_theme_sound(VOLUME_NOTIFY_ID, 'audio-volume-change');
     },
 
     _portChanged: function() {
