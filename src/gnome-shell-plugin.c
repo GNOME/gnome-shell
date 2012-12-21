@@ -285,32 +285,13 @@ gnome_shell_plugin_kill_switch_workspace (MetaPlugin         *plugin)
 }
 
 static gboolean
-gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
-                                  XEvent     *xev)
+ignore_crossing_event (MetaPlugin   *plugin,
+                       XEvent       *xev)
 {
   MetaScreen *screen = meta_plugin_get_screen (plugin);
   ClutterStage *stage = CLUTTER_STAGE (meta_get_stage_for_screen (screen));
 
-  GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
-#ifdef GLX_INTEL_swap_event
-  if (shell_plugin->have_swap_event &&
-      xev->type == (shell_plugin->glx_event_base + GLX_BufferSwapComplete))
-    {
-      GLXBufferSwapComplete *swap_complete_event;
-      swap_complete_event = (GLXBufferSwapComplete *)xev;
-
-      /* Buggy early versions of the INTEL_swap_event implementation in Mesa
-       * can send this with a ust of 0. Simplify life for consumers
-       * by ignoring such events */
-      if (swap_complete_event->ust != 0)
-        shell_perf_log_event_x (shell_perf_log_get_default (),
-                                "glx.swapComplete",
-                                swap_complete_event->ust);
-    }
-#endif
-
-  if ((xev->xany.type == EnterNotify || xev->xany.type == LeaveNotify)
-      && xev->xcrossing.window == clutter_x11_get_stage_window (stage))
+  if (xev->xcrossing.window == clutter_x11_get_stage_window (stage))
     {
       /* If the pointer enters a child of the stage window (eg, a
        * trayicon), we want to consider it to still be in the stage,
@@ -331,6 +312,38 @@ gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
            xev->xcrossing.detail == NotifyNonlinearVirtual))
         return TRUE;
     }
+
+  return FALSE;
+}
+
+static gboolean
+gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
+                                  XEvent     *xev)
+{
+  GnomeShellPlugin *shell_plugin = GNOME_SHELL_PLUGIN (plugin);
+#ifdef GLX_INTEL_swap_event
+  if (shell_plugin->have_swap_event &&
+      xev->type == (shell_plugin->glx_event_base + GLX_BufferSwapComplete))
+    {
+      GLXBufferSwapComplete *swap_complete_event;
+      swap_complete_event = (GLXBufferSwapComplete *)xev;
+
+      /* Buggy early versions of the INTEL_swap_event implementation in Mesa
+       * can send this with a ust of 0. Simplify life for consumers
+       * by ignoring such events */
+      if (swap_complete_event->ust != 0)
+        shell_perf_log_event_x (shell_perf_log_get_default (),
+                                "glx.swapComplete",
+                                swap_complete_event->ust);
+    }
+#endif
+
+  /* Make sure that Clutter doesn't see certain focus change events,
+   * so that when we're moving into something like a tray icon, we
+   * don't unfocus the container. */
+  if ((xev->xany.type == EnterNotify || xev->xany.type == LeaveNotify) &&
+      ignore_crossing_event (plugin, xev))
+    return TRUE;
 
   /*
    * Pass the event to shell-global
