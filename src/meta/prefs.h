@@ -145,7 +145,7 @@ void     meta_prefs_set_ignore_request_hide_titlebar (gboolean whether);
  */
 typedef enum _MetaKeyBindingAction
 {
-  META_KEYBINDING_ACTION_NONE = -1,
+  META_KEYBINDING_ACTION_NONE,
   META_KEYBINDING_ACTION_WORKSPACE_1,
   META_KEYBINDING_ACTION_WORKSPACE_2,
   META_KEYBINDING_ACTION_WORKSPACE_3,
