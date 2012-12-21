@@ -581,7 +581,10 @@ reload_monitor_infos (MetaScreen *screen)
 /* The guard window allows us to leave minimized windows mapped so
  * that compositor code may provide live previews of them.
  * Instead of being unmapped/withdrawn, they get pushed underneath
- * the guard window. */
+ * the guard window. We also select events on the guard window, which
+ * should effectively be forwarded to events on the background actor,
+ * providing that the scene graph is set up correctly.
+ */
 static Window
 create_guard_window (Display *xdisplay, MetaScreen *screen)
 {
@@ -609,6 +612,17 @@ create_guard_window (Display *xdisplay, MetaScreen *screen)
 		   CopyFromParent, /* visual */
 		   CWEventMask|CWOverrideRedirect|CWBackPixel,
 		   &attributes);
+
+  {
+    unsigned char mask_bits[XIMaskLen (XI_LASTEVENT)] = { 0 };
+    XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
+
+    XISetMask (mask.mask, XI_ButtonPress);
+    XISetMask (mask.mask, XI_ButtonRelease);
+    XISetMask (mask.mask, XI_Motion);
+    XISelectEvents (xdisplay, guard_window, &mask, 1);
+  }
+
   meta_stack_tracker_record_add (screen->stack_tracker,
                                  guard_window,
                                  create_serial);
