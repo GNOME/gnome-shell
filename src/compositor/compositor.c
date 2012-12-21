@@ -812,6 +812,52 @@ meta_compositor_window_shape_changed (MetaCompositor *compositor,
   meta_window_actor_update_shape (window_actor);
 }
 
+/* Clutter makes the assumption that there is only one X window
+ * per stage, which is a valid assumption to make for a generic
+ * application toolkit. As such, it will ignore any events sent
+ * to the a stage that isn't its X window.
+ *
+ * When a user clicks on what she thinks is the wallpaper, she
+ * is actually clicking on the guard window, which is an entirely
+ * separate top-level override-redirect window in the hierarchy.
+ * We want to recieve events on this guard window so that users
+ * can right-click on the background actor. We do this by telling
+ * Clutter a little white lie, by transforming clicks on the guard
+ * window to become clicks on the stage window, allowing Clutter
+ * to process the event normally.
+ */
+static void
+maybe_spoof_guard_window_event_as_stage_event (MetaCompScreen *info,
+                                               XEvent         *event)
+{
+  MetaDisplay *display = meta_screen_get_display (info->screen);
+
+  if (event->type == GenericEvent &&
+      event->xcookie.extension == display->xinput_opcode)
+    {
+      XIEvent *input_event = (XIEvent *) event->xcookie.data;
+
+      /* Only care about pointer events for now. */
+      switch (input_event->evtype)
+        {
+        case XI_Motion:
+        case XI_ButtonPress:
+        case XI_ButtonRelease:
+          {
+            XIDeviceEvent *device_event = ((XIDeviceEvent *) input_event);
+            if (device_event->event == info->screen->guard_window)
+              {
+                Window xwin = clutter_x11_get_stage_window (CLUTTER_STAGE (info->stage));
+                device_event->event = xwin;
+              }
+          }
+          break;
+        default:
+          break;
+        }
+    }
+}
+
 /**
  * meta_compositor_process_event: (skip)
  *
@@ -859,6 +905,8 @@ meta_compositor_process_event (MetaCompositor *compositor,
 	  MetaCompScreen *info;
 
 	  info = meta_screen_get_compositor_data (screen);
+
+          maybe_spoof_guard_window_event_as_stage_event (info, event);
 
 	  if (meta_plugin_manager_xevent_filter (info->plugin_mgr, event))
 	    {
