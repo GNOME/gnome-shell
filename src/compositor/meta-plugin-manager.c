@@ -309,9 +309,6 @@ meta_plugin_manager_xevent_filter (MetaPluginManager *plugin_mgr,
   MetaPlugin *plugin = plugin_mgr->plugin;
   MetaPluginClass *klass = META_PLUGIN_GET_CLASS (plugin);
 
-  if (!plugin_mgr)
-    return FALSE;
-
   /* We need to make sure that clutter gets certain events, like
    * ConfigureNotify on the stage window. If there is a plugin that
    * provides an xevent_filter function, then it's the responsibility
