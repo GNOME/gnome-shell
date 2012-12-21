@@ -548,29 +548,27 @@ const BoxPointer = new Lang.Class({
 
     _calculateArrowSide: function(arrowSide) {
         let sourceAllocation = Shell.util_get_transformed_allocation(this._sourceActor);
-        let boxAllocation = Shell.util_get_transformed_allocation(this.actor);
-        let boxWidth = boxAllocation.x2 - boxAllocation.x1;
-        let boxHeight = boxAllocation.y2 - boxAllocation.y1;
+        let [minWidth, minHeight, boxWidth, boxHeight] = this._container.get_preferred_size();
         let monitor = Main.layoutManager.findMonitorForActor(this.actor);
 
         switch (arrowSide) {
         case St.Side.TOP:
-            if (boxAllocation.y2 > monitor.y + monitor.height &&
+            if (sourceAllocation.y2 + boxHeight > monitor.y + monitor.height &&
                 boxHeight < sourceAllocation.y1 - monitor.y)
                 return St.Side.BOTTOM;
             break;
         case St.Side.BOTTOM:
-            if (boxAllocation.y1 < monitor.y &&
+            if (sourceAllocation.y1 - boxHeight < monitor.y &&
                 boxHeight < monitor.y + monitor.height - sourceAllocation.y2)
                 return St.Side.TOP;
             break;
         case St.Side.LEFT:
-            if (boxAllocation.x2 > monitor.x + monitor.width &&
+            if (sourceAllocation.y2 + boxWidth > monitor.x + monitor.width &&
                 boxWidth < sourceAllocation.x1 - monitor.x)
                 return St.Side.RIGHT;
             break;
         case St.Side.RIGHT:
-            if (boxAllocation.x1 < monitor.x &&
+            if (sourceAllocation.y1 - boxWidth < monitor.x &&
                 boxWidth < monitor.x + monitor.width - sourceAllocation.x2)
                 return St.Side.LEFT;
             break;
