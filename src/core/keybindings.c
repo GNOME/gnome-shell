@@ -542,6 +542,12 @@ display_get_keybinding (MetaDisplay  *display,
   return NULL;
 }
 
+static guint
+next_dynamic_keybinding_action () {
+  static guint num_dynamic_bindings = 0;
+  return META_KEYBINDING_ACTION_LAST + (++num_dynamic_bindings);
+}
+
 static gboolean
 add_keybinding_internal (MetaDisplay          *display,
                          const char           *name,
@@ -622,14 +628,12 @@ meta_display_add_keybinding (MetaDisplay         *display,
                              gpointer             user_data,
                              GDestroyNotify       free_data)
 {
-  static guint num_dynamic_bindings = 0;
-  guint new_action = META_KEYBINDING_ACTION_LAST + num_dynamic_bindings;
+  guint new_action = next_dynamic_keybinding_action ();
 
   if (!add_keybinding_internal (display, name, settings, flags, new_action,
                                 handler, 0, user_data, free_data))
     return META_KEYBINDING_ACTION_NONE;
 
-  ++num_dynamic_bindings;
   return new_action;
 }
 
