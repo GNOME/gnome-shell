@@ -220,7 +220,7 @@ const BoxPointer = new Lang.Class({
         this.bin.allocate(childBox, flags);
 
         if (this._sourceActor && this._sourceActor.mapped) {
-            this._reposition(this._sourceActor, this._arrowAlignment);
+            this._reposition();
 
             if (this._shouldFlip()) {
                 switch (this._arrowSide) {
@@ -237,7 +237,7 @@ const BoxPointer = new Lang.Class({
                     this._arrowSide = St.Side.LEFT;
                     break;
                 }
-                this._reposition(this._sourceActor, this._arrowAlignment);
+                this._reposition();
             }
         }
     },
@@ -417,7 +417,7 @@ const BoxPointer = new Lang.Class({
         this._sourceActor = sourceActor;
         this._arrowAlignment = alignment;
 
-        this._reposition(sourceActor, alignment);
+        this._reposition();
     },
 
     setSourceAlignment: function(alignment) {
@@ -429,7 +429,10 @@ const BoxPointer = new Lang.Class({
         this.setPosition(this._sourceActor, this._arrowAlignment);
     },
 
-    _reposition: function(sourceActor, alignment) {
+    _reposition: function() {
+        let sourceActor = this._sourceActor;
+        let alignment = this._arrowAlignment;
+
         // Position correctly relative to the sourceActor
         let sourceNode = sourceActor.get_theme_node();
         let sourceContentBox = sourceNode.get_content_box(sourceActor.get_allocation_box());
