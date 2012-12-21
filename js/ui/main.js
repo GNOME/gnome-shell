@@ -81,8 +81,6 @@ let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
 let _overridesSettings = null;
 
-let background = null;
-
 function _sessionUpdated() {
     wm.setCustomKeybindingHandler('panel-main-menu',
                                   KeybindingMode.NORMAL |
