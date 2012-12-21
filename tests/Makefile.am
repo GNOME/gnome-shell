@@ -8,6 +8,7 @@ TEST_JS =					\
 	interactive/border-radius.js		\
 	interactive/border-width.js		\
 	interactive/box-layout.js		\
+	interactive/box-shadow-animated.js	\
 	interactive/box-shadows.js		\
 	interactive/calendar.js			\
 	interactive/css-fonts.js		\
