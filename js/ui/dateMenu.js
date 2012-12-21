@@ -84,12 +84,17 @@ const DateMenuButton = new Lang.Class({
                                }));
         vbox.add(this._calendar.actor);
 
+        let separator = new PopupMenu.PopupSeparatorMenuItem();
+        separator.setColumnWidths(1);
+        vbox.add(separator.actor, {y_align: St.Align.END, expand: true, y_fill: false});
+
+        this._openCalendarItem = new PopupMenu.PopupMenuItem(_("Open Calendar"));
+        this._openCalendarItem.connect('activate', Lang.bind(this, this._onOpenCalendarActivate));
+        this._openCalendarItem.actor.can_focus = false;
+        vbox.add(this._openCalendarItem.actor, {y_align: St.Align.END, expand: true, y_fill: false});
+
         item = this.menu.addSettingsAction(_("Date and Time Settings"), 'gnome-datetime-panel.desktop');
         if (item) {
-            let separator = new PopupMenu.PopupSeparatorMenuItem();
-            separator.setColumnWidths(1);
-            vbox.add(separator.actor, {y_align: St.Align.END, expand: true, y_fill: false});
-
             item.actor.show_on_set_parent = false;
             item.actor.can_focus = false;
             item.actor.reparent(vbox);
@@ -108,11 +113,6 @@ const DateMenuButton = new Lang.Class({
 
         // Event list
         vbox.add(this._eventList.actor, { expand: true });
-
-        this._openCalendarItem = new PopupMenu.PopupMenuItem(_("Open Calendar"));
-        this._openCalendarItem.connect('activate', Lang.bind(this, this._onOpenCalendarActivate));
-        this._openCalendarItem.actor.can_focus = false;
-        vbox.add(this._openCalendarItem.actor, {y_align: St.Align.END, expand: true, y_fill: false});
 
         // Whenever the menu is opened, select today
         this.menu.connect('open-state-changed', Lang.bind(this, function(menu, isOpen) {
