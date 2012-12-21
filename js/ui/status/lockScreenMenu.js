@@ -10,6 +10,31 @@ const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const VolumeMenu = imports.ui.status.volume;
 
+const FakeStatusIcon = new Lang.Class({
+    Name: 'FakeStatusIcon',
+
+    _init: function(button) {
+        this.actor = new St.BoxLayout({ style_class: 'panel-status-button-box' });
+        this._button = button;
+        this._button.connect('icons-updated', Lang.bind(this, this._reconstructIcons));
+        this._button.actor.bind_property('visible', this.actor, 'visible',
+                                         GObject.BindingFlags.SYNC_CREATE);
+        this._reconstructIcons();
+    },
+
+    _reconstructIcons: function() {
+        this.actor.destroy_all_children();
+        this._button.icons.forEach(Lang.bind(this, function(icon) {
+            let newIcon = new St.Icon({ style_class: 'system-status-icon' });
+            icon.bind_property('gicon', newIcon, 'gicon',
+                               GObject.BindingFlags.SYNC_CREATE);
+            icon.bind_property('visible', newIcon, 'visible',
+                               GObject.BindingFlags.SYNC_CREATE);
+            this.actor.add_actor(newIcon);
+        }));
+    }
+});
+
 const Indicator = new Lang.Class({
     Name: 'LockScreenMenuIndicator',
     Extends: PanelMenu.SystemStatusButton,
@@ -18,41 +43,20 @@ const Indicator = new Lang.Class({
         this.parent(null, _("Volume, network, battery"));
         this._box.style_class = 'lock-screen-status-button-box';
 
-        this._volume = Main.panel.statusArea.volume;
-        if (this._volume) {
-            this._volumeIcon = this.addIcon(null);
-            this._volume.mainIcon.bind_property('gicon', this._volumeIcon, 'gicon',
-                                                GObject.BindingFlags.SYNC_CREATE);
-            this._volume.mainIcon.bind_property('visible', this._volumeIcon, 'visible',
-                                                GObject.BindingFlags.SYNC_CREATE);
+        this._volumeControl = VolumeMenu.getMixerControl();
+        this._volumeMenu = new VolumeMenu.VolumeMenu(this._volumeControl);
+        this.menu.addMenuItem(this._volumeMenu);
 
-            this._volumeControl = VolumeMenu.getMixerControl();
-            this._volumeMenu = new VolumeMenu.VolumeMenu(this._volumeControl);
-            this.menu.addMenuItem(this._volumeMenu);
+        this._volume = new FakeStatusIcon(Main.panel.statusArea.volume);
+        this._box.add_child(this._volume.actor);
+
+        // Network may not exist if the user doesn't have NetworkManager
+        if (Main.panel.statusArea.network) {
+            this._network = new FakeStatusIcon(Main.panel.statusArea.network);
+            this._box.add_child(this._network.actor);
         }
 
-        this._network = Main.panel.statusArea.network;
-        if (this._network) {
-            this._networkIcon = this.addIcon(null);
-            this._network.mainIcon.bind_property('gicon', this._networkIcon, 'gicon',
-                                                 GObject.BindingFlags.SYNC_CREATE);
-            this._network.mainIcon.bind_property('visible', this._networkIcon, 'visible',
-                                                 GObject.BindingFlags.SYNC_CREATE);
-
-            this._networkSecondaryIcon = this.addIcon(null);
-            this._network.secondaryIcon.bind_property('gicon', this._networkSecondaryIcon, 'gicon',
-                                                      GObject.BindingFlags.SYNC_CREATE);
-            this._network.secondaryIcon.bind_property('visible', this._networkSecondaryIcon, 'visible',
-                                                      GObject.BindingFlags.SYNC_CREATE);
-        }
-
-        this._battery = Main.panel.statusArea.battery;
-        if (this._battery) {
-            this._batteryIcon = this.addIcon(null);
-            this._battery.mainIcon.bind_property('gicon', this._batteryIcon, 'gicon',
-                                                 GObject.BindingFlags.SYNC_CREATE);
-            this._battery.mainIcon.bind_property('visible', this._batteryIcon, 'visible',
-                                                 GObject.BindingFlags.SYNC_CREATE);
-        }
+        this._battery = new FakeStatusIcon(Main.panel.statusArea.battery);
+        this._box.add_child(this._battery.actor);
     }
 });

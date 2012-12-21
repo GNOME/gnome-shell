@@ -244,10 +244,16 @@ const SystemStatusButton = new Lang.Class({
             this.setIcon(iconName);
     },
 
+    get icons() {
+        return this._box.get_children();
+    },
+
     addIcon: function(gicon) {
         let icon = new St.Icon({ gicon: gicon,
                                  style_class: 'system-status-icon' });
         this._box.add_actor(icon);
+
+        this.emit('icons-changed');
 
         return icon;
     },
