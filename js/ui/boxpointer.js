@@ -538,7 +538,7 @@ const BoxPointer = new Lang.Class({
     _shiftActor : function() {
         // Since the position of the BoxPointer depends on the allocated size
         // of the BoxPointer and the position of the source actor, trying
-        // to position the BoxPoiner via the x/y properties will result in
+        // to position the BoxPointer via the x/y properties will result in
         // allocation loops and warnings. Instead we do the positioning via
         // the anchor point, which is independent of allocation, and leave
         // x == y == 0.
