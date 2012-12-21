@@ -10,6 +10,7 @@ const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 
+const BackgroundMenu = imports.ui.backgroundMenu;
 const Components = imports.ui.components;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const EndSessionDialog = imports.ui.endSessionDialog;
@@ -140,6 +141,8 @@ function start() {
     notificationDaemon = new NotificationDaemon.NotificationDaemon();
     windowAttentionHandler = new WindowAttentionHandler.WindowAttentionHandler();
     componentManager = new Components.ComponentManager();
+
+    BackgroundMenu.addBackgroundMenu(global.background_actor);
 
     layoutManager.init();
     overview.init();
