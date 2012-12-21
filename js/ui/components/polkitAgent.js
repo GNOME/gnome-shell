@@ -159,14 +159,13 @@ const AuthenticationDialog = new Lang.Class({
         messageBox.add(this._nullMessageLabel);
         this._nullMessageLabel.show();
 
-        this.setButtons([{ label: _("Cancel"),
-                           action: Lang.bind(this, this.cancel),
-                           key:    Clutter.Escape
-                         },
-                         { label:  _("Authenticate"),
-                           action: Lang.bind(this, this._onAuthenticateButtonPressed),
-                           default: true
-                         }]);
+        this._cancelButton = this.addButton({ label: _("Cancel"),
+                                              action: Lang.bind(this, this.cancel),
+                                              key: Clutter.Escape });
+        this._okButton = this.addButton({ label:  _("Authenticate"),
+                                          action: Lang.bind(this, this._onAuthenticateButtonPressed),
+                                          default: true },
+                                        { expand: true, x_fill: false, x_align: St.Align.END });
 
         this._doneEmitted = false;
 
