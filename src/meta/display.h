@@ -67,6 +67,7 @@ typedef enum
 void meta_display_get_compositor_version (MetaDisplay *display,
                                           int         *major,
                                           int         *minor);
+int meta_display_get_xinput_opcode (MetaDisplay *display);
 Display *meta_display_get_xdisplay (MetaDisplay *display);
 MetaCompositor *meta_display_get_compositor (MetaDisplay *display);
 GSList *meta_display_get_screens (MetaDisplay *display);

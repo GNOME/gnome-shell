@@ -5678,6 +5678,16 @@ meta_display_get_compositor_version (MetaDisplay *display,
 }
 
 /**
+ * meta_display_get_xinput_opcode: (skip)
+ *
+ */
+int
+meta_display_get_xinput_opcode (MetaDisplay *display)
+{
+  return display->xinput_opcode;
+}
+
+/**
  * meta_display_get_xdisplay: (skip)
  *
  */
