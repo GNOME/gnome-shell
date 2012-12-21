@@ -253,9 +253,6 @@ const SystemStatusButton = new Lang.Class({
     },
 
     setIcon: function(iconName) {
-        // Need to first add a NULL GIcon and then set icon_name, to ensure
-        // compatibility with -symbolic fallbacks
-
         if (!this.mainIcon)
             this.mainIcon = this.addIcon(null);
         this.mainIcon.icon_name = iconName;
