@@ -60,18 +60,14 @@ const KeyringDialog = new Lang.Class({
 
         this._controlTable = null;
 
-        let buttons = [{ label: '',
-                         action: Lang.bind(this, this._onCancelButton),
-                         key:    Clutter.Escape
-                       },
-                       { label: '',
-                         action: Lang.bind(this, this._onContinueButton),
-                         default: true
-                       }]
 
-        this.setButtons(buttons);
-        this._cancelButton = buttons[0].button;
-        this._continueButton = buttons[1].button;
+        this._cancelButton = this.addButton({ label: '',
+                                              action: Lang.bind(this, this._onCancelButton),
+                                              key: Clutter.Escape });
+        this._continueButton = this.addButton({ label: '',
+                                                action: Lang.bind(this, this._onContinueButton),
+                                                default: true },
+                                              { expand: true, x_fill: false, x_align: St.Align.END });
 
         this.prompt.bind_property('cancel-label', this._cancelButton, 'label', GObject.BindingFlags.SYNC_CREATE);
         this.prompt.bind_property('continue-label', this._continueButton, 'label', GObject.BindingFlags.SYNC_CREATE);
