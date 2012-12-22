@@ -45,8 +45,8 @@ const DashItemContainer = new Lang.Class({
         this.label_actor = this.label;
 
         this.child = null;
-        this._childScale = 1;
-        this._childOpacity = 255;
+        this._childScale = 0;
+        this._childOpacity = 0;
         this.animatingOut = false;
     },
 
@@ -156,18 +156,21 @@ const DashItemContainer = new Lang.Class({
 
         this.child = actor;
         this.add_actor(this.child);
+
+        this.child.set_scale_with_gravity(this._childScale, this._childScale,
+                                          Clutter.Gravity.CENTER);
+        this.child.set_opacity(this._childOpacity);
     },
 
-    animateIn: function() {
+    show: function(animate) {
         if (this.child == null)
             return;
 
-        this.childScale = 0;
-        this.childOpacity = 0;
+        let time = animate ? DASH_ANIMATION_TIME : 0;
         Tweener.addTween(this,
                          { childScale: 1.0,
                            childOpacity: 255,
-                           time: DASH_ANIMATION_TIME,
+                           time: time,
                            transition: 'easeOutQuad'
                          });
     },
@@ -189,7 +192,6 @@ const DashItemContainer = new Lang.Class({
         }
 
         this.animatingOut = true;
-        this.childScale = 1.0;
         Tweener.addTween(this,
                          { childScale: 0.0,
                            childOpacity: 0,
@@ -396,6 +398,8 @@ const Dash = new Lang.Class({
         this._container.add_actor(this._box);
 
         this._showAppsIcon = new ShowAppsIcon();
+        this._showAppsIcon.childScale = 1;
+        this._showAppsIcon.childOpacity = 255;
         this._showAppsIcon.icon.setIconSize(this.iconSize);
         this._hookUpLabel(this._showAppsIcon);
 
@@ -597,23 +601,18 @@ const Dash = new Lang.Class({
         let availHeight = maxContent.y2 - maxContent.y1;
         let spacing = themeNode.get_length('spacing');
 
-
-        let firstIcon = iconChildren[0].child._delegate.icon;
+        let firstButton = iconChildren[0].child;
+        let firstIcon = firstButton._delegate.icon;
 
         let minHeight, natHeight;
 
-        // Enforce the current icon size during the size request if
-        // the icon is animating
-        if (firstIcon._animating) {
-            let [currentWidth, currentHeight] = firstIcon.icon.get_size();
+        // Enforce the current icon size during the size request
+        let [currentWidth, currentHeight] = firstIcon.icon.get_size();
 
-            firstIcon.icon.set_size(this.iconSize, this.iconSize);
-            [minHeight, natHeight] = iconChildren[0].get_preferred_height(-1);
+        firstIcon.icon.set_size(this.iconSize, this.iconSize);
+        [minHeight, natHeight] = firstButton.get_preferred_height(-1);
 
-            firstIcon.icon.set_size(currentWidth, currentHeight);
-        } else {
-            [minHeight, natHeight] = iconChildren[0].get_preferred_height(-1);
-        }
+        firstIcon.icon.set_size(currentWidth, currentHeight);
 
         // Subtract icon padding and box spacing from the available height
         availHeight -= iconChildren.length * (natHeight - this.iconSize) +
@@ -658,15 +657,11 @@ const Dash = new Lang.Class({
             icon.icon.set_size(icon.icon.width * scale,
                                icon.icon.height * scale);
 
-            icon._animating = true;
             Tweener.addTween(icon.icon,
                              { width: targetWidth,
                                height: targetHeight,
                                time: DASH_ANIMATION_TIME,
                                transition: 'easeOutQuad',
-                               onComplete: function() {
-                                   icon._animating = false;
-                               }
                              });
         }
     },
@@ -784,18 +779,16 @@ const Dash = new Lang.Class({
 
         // Skip animations on first run when adding the initial set
         // of items, to avoid all items zooming in at once
-        if (!this._shownInitially) {
+
+        let animate = this._shownInitially && Main.overview.visible &&
+            !Main.overview.animationInProgress;
+
+        if (!this._shownInitially)
             this._shownInitially = true;
-            return;
+
+        for (let i = 0; i < addedItems.length; i++) {
+            addedItems[i].item.show(animate);
         }
-
-        // Don't animate item addition when the overview is transitioning
-        // or hidden
-        if (!Main.overview.visible || Main.overview.animationInProgress)
-            return;
-
-        for (let i = 0; i < addedItems.length; i++)
-            addedItems[i].item.animateIn();
     },
 
     _clearDragPlaceholder: function() {
@@ -866,8 +859,7 @@ const Dash = new Lang.Class({
             this._dragPlaceholder.child.set_height (this.iconSize / 2);
             this._box.insert_child_at_index(this._dragPlaceholder,
                                             this._dragPlaceholderPos);
-            if (fadeIn)
-                this._dragPlaceholder.animateIn();
+            this._dragPlaceholder.show(fadeIn);
         }
 
         // Remove the drag placeholder if we are not in the
