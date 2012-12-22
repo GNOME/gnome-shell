@@ -2270,7 +2270,7 @@ const MessageTray = new Lang.Class({
 
         this._notificationClickedId = this._notification.connect('done-displaying',
                                                                  Lang.bind(this, this._escapeTray));
-        this._notification.connect('unfocused', Lang.bind(this, function() {
+        this._notificationUnfocusedId = this._notification.connect('unfocused', Lang.bind(this, function() {
             this._updateState();
         }));
         this._notificationBin.child = this._notification.actor;
@@ -2410,19 +2410,22 @@ const MessageTray = new Lang.Class({
     },
 
     _hideNotificationCompleted: function() {
-        this._notificationRemoved = false;
-        this._notificationWidget.hide();
-        this._closeButton.hide();
-        this._pointerInTray = false;
-        this.actor.hover = false; // Clutter doesn't emit notify::hover when actors move
-        this._notificationBin.child = null;
         this._notification.collapseCompleted();
         this._notification.disconnect(this._notificationClickedId);
         this._notificationClickedId = 0;
+        this._notification.disconnect(this._notificationUnfocusedId);
+        this._notificationUnfocusedId = 0;
         let notification = this._notification;
         this._notification = null;
         if (notification.isTransient)
             notification.destroy(NotificationDestroyedReason.EXPIRED);
+
+        this._notificationRemoved = false;
+        this._closeButton.hide();
+        this._pointerInTray = false;
+        this.actor.hover = false; // Clutter doesn't emit notify::hover when actors move
+        this._notificationBin.child = null;
+        this._notificationWidget.hide();
     },
 
     _expandActiveNotification: function() {
