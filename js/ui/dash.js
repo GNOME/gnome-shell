@@ -354,6 +354,23 @@ const DashActor = new Lang.Class({
         childBox.y1 = contentBox.y2 - showAppsNatHeight;
         childBox.y2 = contentBox.y2;
         showAppsButton.allocate(childBox, flags);
+    },
+
+    vfunc_get_preferred_height: function(forWidth) {
+        // We want to request the natural height of all our children
+        // as our natural height, so we chain up to StWidget (which
+        // then calls BoxLayout), but we only request the showApps
+        // button as the minimum size
+
+        let [, natHeight] = this.parent(forWidth);
+
+        let themeNode = this.get_theme_node();
+        let adjustedForWidth = themeNode.adjust_for_width(forWidth);
+        let [, showAppsButton] = this.get_children();
+        let [minHeight, ] = showAppsButton.get_preferred_height(adjustedForWidth);
+        [minHeight, ] = themeNode.adjust_preferred_height(minHeight, natHeight);
+
+        return [minHeight, natHeight];
     }
 });
 
