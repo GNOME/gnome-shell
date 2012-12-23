@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <cogl-pango/cogl-pango.h>
 #include <clutter/clutter.h>
 #include <clutter/x11/clutter-x11.h>
 #include <gdk/gdk.h>
@@ -192,6 +193,20 @@ shell_introspection_init (void)
   g_irepository_prepend_search_path (BLUETOOTH_DIR);
 #endif
 
+}
+
+static void
+shell_fonts_init (void)
+{
+  CoglPangoFontMap *fontmap;
+
+  /* Disable text mipmapping; it causes problems on pre-GEM Intel
+   * drivers and we should just be rendering text at the right
+   * size rather than scaling it. If we do effects where we dynamically
+   * zoom labels, then we might want to reconsider.
+   */
+  fontmap = COGL_PANGO_FONT_MAP (clutter_get_font_map ());
+  cogl_pango_font_map_set_use_mipmapping (fontmap, FALSE);
 }
 
 static void
@@ -396,6 +411,7 @@ main (int argc, char **argv)
   shell_perf_log_init ();
   shell_prefs_init ();
   shell_introspection_init ();
+  shell_fonts_init ();
 
   /* Turn on telepathy-glib debugging but filter it out in
    * default_log_handler. This handler also exposes all the logs over D-Bus

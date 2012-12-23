@@ -15,7 +15,6 @@
 #endif
 
 #include <X11/extensions/Xfixes.h>
-#include <cogl-pango/cogl-pango.h>
 #include <canberra.h>
 #include <clutter/glx/clutter-glx.h>
 #include <clutter/x11/clutter-x11.h>
@@ -811,20 +810,6 @@ global_stage_after_paint (ClutterStage *stage,
                         "clutter.stagePaintDone");
 }
 
-static void
-shell_fonts_init (ClutterStage *stage)
-{
-  CoglPangoFontMap *fontmap;
-
-  /* Disable text mipmapping; it causes problems on pre-GEM Intel
-   * drivers and we should just be rendering text at the right
-   * size rather than scaling it. If we do effects where we dynamically
-   * zoom labels, then we might want to reconsider.
-   */
-  fontmap = COGL_PANGO_FONT_MAP (clutter_get_font_map ());
-  cogl_pango_font_map_set_use_mipmapping (fontmap, FALSE);
-}
-
 /* This is an IBus workaround. The flow of events with IBus is that every time
  * it gets gets a key event, it:
  *
@@ -962,8 +947,6 @@ _shell_global_set_plugin (ShellGlobal *global,
 
   g_signal_connect (global->meta_display, "notify::focus-window",
                     G_CALLBACK (focus_window_changed), global);
-
-  shell_fonts_init (global->stage);
 
   gdk_event_handler_set (gnome_shell_gdk_event_handler, global->stage, NULL);
 
