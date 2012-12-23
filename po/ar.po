@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-09 04:45+0200\n"
+"POT-Creation-Date: 2012-12-23 18:34+0200\n"
 "PO-Revision-Date: 2012-12-09 04:52+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -365,8 +365,8 @@ msgstr "نافذة الولوج"
 msgid "Power"
 msgstr "الطاقة"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:674 ../js/ui/userMenu.js:678
-#: ../js/ui/userMenu.js:789
+#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:675 ../js/ui/userMenu.js:679
+#: ../js/ui/userMenu.js:790
 msgid "Suspend"
 msgstr "علّق"
 
@@ -374,8 +374,8 @@ msgstr "علّق"
 msgid "Restart"
 msgstr "أعِد التشغيل"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:676
-#: ../js/ui/userMenu.js:678 ../js/ui/userMenu.js:788
+#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:677
+#: ../js/ui/userMenu.js:679 ../js/ui/userMenu.js:789
 msgid "Power Off"
 msgstr "أطفئ الحاسوب"
 
@@ -410,27 +410,19 @@ msgid "Execution of '%s' failed:"
 msgstr "فشل تنفيذ '%s':‏"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:259
+#: ../js/ui/appDisplay.js:258
 msgid "All"
 msgstr "الكل"
 
-#: ../js/ui/appDisplay.js:318
-msgid "APPLICATIONS"
-msgstr "التطبيقات"
-
-#: ../js/ui/appDisplay.js:375
-msgid "SETTINGS"
-msgstr "الإعدادات"
-
-#: ../js/ui/appDisplay.js:679
+#: ../js/ui/appDisplay.js:666
 msgid "New Window"
 msgstr "نافذة جديدة"
 
-#: ../js/ui/appDisplay.js:682 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:669 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "أزِل من المفضّلة"
 
-#: ../js/ui/appDisplay.js:683
+#: ../js/ui/appDisplay.js:670
 msgid "Add to Favorites"
 msgstr "أضِف إلى المفضّلة"
 
@@ -447,19 +439,19 @@ msgstr "أُزيل %s من مفضّلتك."
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:62
+#: ../js/ui/calendar.js:61
 msgctxt "event list time"
 msgid "All Day"
 msgstr "طوال اليوم"
 
 #. Translators: Shown in calendar event list, if 24h format
-#: ../js/ui/calendar.js:67
+#: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
-#: ../js/ui/calendar.js:74
+#: ../js/ui/calendar.js:73
 msgctxt "event list time"
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
@@ -469,43 +461,43 @@ msgstr "%l:%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:114
+#: ../js/ui/calendar.js:104
 msgctxt "grid sunday"
 msgid "S"
 msgstr "ح"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:116
+#: ../js/ui/calendar.js:106
 msgctxt "grid monday"
 msgid "M"
 msgstr "ن"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:118
+#: ../js/ui/calendar.js:108
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "ث"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:120
+#: ../js/ui/calendar.js:110
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "ر"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:122
+#: ../js/ui/calendar.js:112
 msgctxt "grid thursday"
 msgid "T"
 msgstr "خ"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:124
+#: ../js/ui/calendar.js:114
 msgctxt "grid friday"
 msgid "F"
 msgstr "ج"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:126
+#: ../js/ui/calendar.js:116
 msgctxt "grid saturday"
 msgid "S"
 msgstr "س"
@@ -516,77 +508,77 @@ msgstr "س"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:139
+#: ../js/ui/calendar.js:129
 msgctxt "list sunday"
 msgid "Su"
 msgstr "الأحد"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:141
+#: ../js/ui/calendar.js:131
 msgctxt "list monday"
 msgid "M"
 msgstr "الاثنين"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:143
+#: ../js/ui/calendar.js:133
 msgctxt "list tuesday"
 msgid "T"
 msgstr "الثلاثاء"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:145
+#: ../js/ui/calendar.js:135
 msgctxt "list wednesday"
 msgid "W"
 msgstr "الأربعاء"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:147
+#: ../js/ui/calendar.js:137
 msgctxt "list thursday"
 msgid "Th"
 msgstr "الخميس"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:149
+#: ../js/ui/calendar.js:139
 msgctxt "list friday"
 msgid "F"
 msgstr "الجمعة"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:151
+#: ../js/ui/calendar.js:141
 msgctxt "list saturday"
 msgid "S"
 msgstr "السبت"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:700
+#: ../js/ui/calendar.js:674
 msgid "Nothing Scheduled"
 msgstr "الجدول خال"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:716
+#: ../js/ui/calendar.js:690
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A %d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:719
+#: ../js/ui/calendar.js:693
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A %d %B %Y"
 
-#: ../js/ui/calendar.js:729
+#: ../js/ui/calendar.js:703
 msgid "Today"
 msgstr "اليوم"
 
-#: ../js/ui/calendar.js:733
+#: ../js/ui/calendar.js:707
 msgid "Tomorrow"
 msgstr "غدا"
 
-#: ../js/ui/calendar.js:744
+#: ../js/ui/calendar.js:718
 msgid "This week"
 msgstr "هذا الأسبوع"
 
-#: ../js/ui/calendar.js:752
+#: ../js/ui/calendar.js:726
 msgid "Next week"
 msgstr "الأسبوع القادم"
 
@@ -948,7 +940,7 @@ msgstr "أظهر الحساب"
 msgid "Unknown reason"
 msgstr "السبب غير معروف"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:87
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:81
 msgid "Windows"
 msgstr "النوافذ"
 
@@ -1088,7 +1080,7 @@ msgstr "هل تريد تنزيل وتثبيت '%s' من extensions.gnome.org؟"
 msgid "tray"
 msgstr "لوحة النظام"
 
-#: ../js/ui/keyboard.js:555 ../js/ui/status/keyboard.js:195
+#: ../js/ui/keyboard.js:555 ../js/ui/status/keyboard.js:309
 #: ../js/ui/status/power.js:205
 msgid "Keyboard"
 msgstr "لوحة المفاتيح"
@@ -1115,7 +1107,9 @@ msgstr "اظهر الأخطاء"
 msgid "Enabled"
 msgstr "مفعّل"
 
-#: ../js/ui/lookingGlass.js:767
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:767 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "معطّل"
 
@@ -1147,15 +1141,15 @@ msgstr "افتح"
 msgid "Remove"
 msgstr "أزِل"
 
-#: ../js/ui/messageTray.js:1551
+#: ../js/ui/messageTray.js:1552
 msgid "No Messages"
 msgstr "لا رسائل"
 
-#: ../js/ui/messageTray.js:1568
+#: ../js/ui/messageTray.js:1570
 msgid "Message Tray"
 msgstr "لوحة الرسائل"
 
-#: ../js/ui/messageTray.js:2635
+#: ../js/ui/messageTray.js:2639
 msgid "System Information"
 msgstr "معلومات النظام"
 
@@ -1164,11 +1158,11 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "غير معروف"
 
-#: ../js/ui/overview.js:95
+#: ../js/ui/overview.js:92
 msgid "Undo"
 msgstr "تراجع"
 
-#: ../js/ui/overview.js:144
+#: ../js/ui/overview.js:139
 msgid "Overview"
 msgstr "نظرة عامة"
 
@@ -1176,13 +1170,13 @@ msgstr "نظرة عامة"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:221
+#: ../js/ui/overview.js:218
 msgid "Type to search..."
 msgstr "اكتب نصا للبحث عنه..."
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:242
+#: ../js/ui/overview.js:236
 msgid "Dash"
 msgstr "الشريط"
 
@@ -1205,7 +1199,7 @@ msgstr "الشريط العلوي"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:732
+#: ../js/ui/popupMenu.js:725
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1245,15 +1239,15 @@ msgstr[3] "%d تنبيهات جديدة"
 msgstr[4] "%d تنبيها جديدا"
 msgstr[5] "%d تنبيه جديد"
 
-#: ../js/ui/screenShield.js:402 ../js/ui/userMenu.js:780
+#: ../js/ui/screenShield.js:402 ../js/ui/userMenu.js:781
 msgid "Lock"
 msgstr "أوصِد"
 
-#: ../js/ui/searchDisplay.js:277
+#: ../js/ui/searchDisplay.js:403
 msgid "Searching..."
 msgstr "يبحث..."
 
-#: ../js/ui/searchDisplay.js:325
+#: ../js/ui/searchDisplay.js:451
 msgid "No results."
 msgstr "لا نتائج."
 
@@ -1369,7 +1363,7 @@ msgid "disconnecting..."
 msgstr "يقطع الاتّصال..."
 
 #: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:442
-#: ../js/ui/status/network.js:1453
+#: ../js/ui/status/network.js:1464
 msgid "connecting..."
 msgstr "يتّصل..."
 
@@ -1385,7 +1379,7 @@ msgstr "إعدادات لوحة المفاتيح"
 msgid "Mouse Settings"
 msgstr "إعدادات الفأرة"
 
-#: ../js/ui/status/bluetooth.js:253 ../js/ui/status/volume.js:270
+#: ../js/ui/status/bluetooth.js:253 ../js/ui/status/volume.js:314
 msgid "Sound Settings"
 msgstr "إعدادات الصوت"
 
@@ -1449,15 +1443,15 @@ msgstr "من فضلك أدخل الرقم المذكور على الجهاز."
 msgid "OK"
 msgstr "حسنا"
 
-#: ../js/ui/status/keyboard.js:228
+#: ../js/ui/status/keyboard.js:363
 msgid "Show Keyboard Layout"
 msgstr "أظهر تخطيط لوحة المفاتيح"
 
-#: ../js/ui/status/keyboard.js:233
+#: ../js/ui/status/keyboard.js:368
 msgid "Region and Language Settings"
 msgstr "إعدادات الإقليم واللغة"
 
-#: ../js/ui/status/lockScreenMenu.js:18
+#: ../js/ui/status/lockScreenMenu.js:43
 msgid "Volume, network, battery"
 msgstr "الصوت، الشبكة، البطارية"
 
@@ -1477,7 +1471,7 @@ msgid "unmanaged"
 msgstr "غير مُدار"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:445 ../js/ui/status/network.js:1456
+#: ../js/ui/status/network.js:445 ../js/ui/status/network.js:1467
 msgid "authentication required"
 msgstr "الاستيثاق مطلوب"
 
@@ -1498,72 +1492,72 @@ msgstr "الكبل مفصول"
 msgid "unavailable"
 msgstr "غير متاح"
 
-#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1458
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1469
 msgid "connection failed"
 msgstr "فشل الاتصال"
 
-#: ../js/ui/status/network.js:525 ../js/ui/status/network.js:1392
-#: ../js/ui/status/network.js:1534
+#: ../js/ui/status/network.js:525 ../js/ui/status/network.js:1403
+#: ../js/ui/status/network.js:1545
 msgid "More..."
 msgstr "المزيد..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:561 ../js/ui/status/network.js:1322
+#: ../js/ui/status/network.js:561 ../js/ui/status/network.js:1333
 msgid "Connected (private)"
 msgstr "متّصل (شخصي)"
 
-#: ../js/ui/status/network.js:619
+#: ../js/ui/status/network.js:641
 msgid "Auto Ethernet"
 msgstr "إيثرنت تلقائي"
 
-#: ../js/ui/status/network.js:677
+#: ../js/ui/status/network.js:688
 msgid "Auto broadband"
 msgstr "شبكة هاتف محمول تلقائية"
 
-#: ../js/ui/status/network.js:680
+#: ../js/ui/status/network.js:691
 msgid "Auto dial-up"
 msgstr "اتصال هاتفي تلقائي"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:809 ../js/ui/status/network.js:1339
+#: ../js/ui/status/network.js:820 ../js/ui/status/network.js:1350
 #, c-format
 msgid "Auto %s"
 msgstr "‏%s تلقائي"
 
-#: ../js/ui/status/network.js:811
+#: ../js/ui/status/network.js:822
 msgid "Auto bluetooth"
 msgstr "بلوتوث تلقائي"
 
-#: ../js/ui/status/network.js:1341
+#: ../js/ui/status/network.js:1352
 msgid "Auto wireless"
 msgstr "لاسلكي تلقائي"
 
-#: ../js/ui/status/network.js:1584
+#: ../js/ui/status/network.js:1595
 msgid "Enable networking"
 msgstr "فعّل الشبكات"
 
-#: ../js/ui/status/network.js:1616
+#: ../js/ui/status/network.js:1627
 msgid "Wi-Fi"
 msgstr "واي فاي"
 
-#: ../js/ui/status/network.js:1635
+#: ../js/ui/status/network.js:1646
 msgid "Network Settings"
 msgstr "إعدادات الشّبكة"
 
-#: ../js/ui/status/network.js:1679
+#: ../js/ui/status/network.js:1692
 msgid "Network Manager"
 msgstr "مدير الشبكة"
 
-#: ../js/ui/status/network.js:1761
+#: ../js/ui/status/network.js:1774
 msgid "Connection failed"
 msgstr "فشل الاتصال"
 
-#: ../js/ui/status/network.js:1762
+#: ../js/ui/status/network.js:1775
 msgid "Activation of network connection failed"
 msgstr "فشل تفعيل اتصال الشبكة"
 
-#: ../js/ui/status/network.js:2079
+#: ../js/ui/status/network.js:2092
 msgid "Networking is disabled"
 msgstr "عُطّلت الشبكات"
 
@@ -1681,11 +1675,11 @@ msgid "Unknown"
 msgstr "غير معروف"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:50 ../js/ui/status/volume.js:251
+#: ../js/ui/status/volume.js:247 ../js/ui/status/volume.js:295
 msgid "Volume"
 msgstr "شدة الصوت"
 
-#: ../js/ui/status/volume.js:62
+#: ../js/ui/status/volume.js:256
 msgid "Microphone"
 msgstr "ميكروفون"
 
@@ -1721,31 +1715,31 @@ msgstr "ساكن"
 msgid "Offline"
 msgstr "غير متصل"
 
-#: ../js/ui/userMenu.js:754
+#: ../js/ui/userMenu.js:755
 msgid "Notifications"
 msgstr "التنبيهات"
 
-#: ../js/ui/userMenu.js:762
+#: ../js/ui/userMenu.js:763
 msgid "Settings"
 msgstr "الإعدادات"
 
-#: ../js/ui/userMenu.js:770
+#: ../js/ui/userMenu.js:771
 msgid "Switch User"
 msgstr "بدّل المستخدم"
 
-#: ../js/ui/userMenu.js:775
+#: ../js/ui/userMenu.js:776
 msgid "Log Out"
 msgstr "اخرج"
 
-#: ../js/ui/userMenu.js:795
+#: ../js/ui/userMenu.js:796
 msgid "Install Updates & Restart"
 msgstr "ثبّت التحديثات وأعد التشغيل"
 
-#: ../js/ui/userMenu.js:813
+#: ../js/ui/userMenu.js:814
 msgid "Your chat status will be set to busy"
 msgstr "ستُجعل حالة اتصالك ”مشغول“"
 
-#: ../js/ui/userMenu.js:814
+#: ../js/ui/userMenu.js:815
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1753,15 +1747,15 @@ msgstr ""
 "التنبيهات معطلة الآن، بما فيها رسائل المحادثة. حالة اتصالك تغيرت حتى يعلم "
 "الآخرون أنك قد لا ترى رسائلهم."
 
-#: ../js/ui/viewSelector.js:91
+#: ../js/ui/viewSelector.js:85
 msgid "Applications"
 msgstr "التطبيقات"
 
-#: ../js/ui/viewSelector.js:95
+#: ../js/ui/viewSelector.js:89
 msgid "Search"
 msgstr "ابحث"
 
-#: ../js/ui/wanda.js:94
+#: ../js/ui/wanda.js:92
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1770,14 +1764,10 @@ msgstr ""
 "عذرًا, لا حكمة لك اليوم:\n"
 "%s"
 
-#: ../js/ui/wanda.js:98
+#: ../js/ui/wanda.js:96
 #, c-format
 msgid "%s the Oracle says"
 msgstr "يقول الحكيم %s"
-
-#: ../js/ui/wanda.js:139
-msgid "Your favorite Easter Egg"
-msgstr ""
 
 #: ../js/ui/windowAttentionHandler.js:19
 #, c-format
@@ -1787,6 +1777,36 @@ msgstr "‏'%s' جاهز"
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
 msgstr "تقويم إيفُليوشِن"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1837
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "لا مخرَج"
+msgstr[1] "مخرَج واحد"
+msgstr[2] "مخرَجين"
+msgstr[3] "%u مخارج"
+msgstr[4] "%u مخرجا"
+msgstr[5] "%u مخرج"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1847
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "لا مدخل"
+msgstr[1] "مدخل واحد"
+msgstr[2] "مدخلين"
+msgstr[3] "%u مداخل"
+msgstr[4] "%u مدخلا"
+msgstr[5] "%u مدخل"
+
+#: ../src/gvc/gvc-mixer-control.c:2371
+msgid "System Sounds"
+msgstr "أصوات النظام"
 
 #: ../src/main.c:332
 msgid "Print version"
@@ -1828,6 +1848,12 @@ msgstr "المبدئي"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "أغلق المستخدم مربع الاستيثاق الحِواري"
+
+#~ msgid "APPLICATIONS"
+#~ msgstr "التطبيقات"
+
+#~ msgid "SETTINGS"
+#~ msgstr "الإعدادات"
 
 #~ msgid "Subscription request"
 #~ msgstr "طلب اشتراك"
@@ -1876,27 +1902,6 @@ msgstr "أغلق المستخدم مربع الاستيثاق الحِواري"
 
 #~ msgid "System Settings"
 #~ msgstr "إعدادات النظام"
-
-#~ msgid "%u Output"
-#~ msgid_plural "%u Outputs"
-#~ msgstr[0] "لا مخرَج"
-#~ msgstr[1] "مخرَج واحد"
-#~ msgstr[2] "مخرَجين"
-#~ msgstr[3] "%u مخارج"
-#~ msgstr[4] "%u مخرجا"
-#~ msgstr[5] "%u مخرج"
-
-#~ msgid "%u Input"
-#~ msgid_plural "%u Inputs"
-#~ msgstr[0] "لا مدخل"
-#~ msgstr[1] "مدخل واحد"
-#~ msgstr[2] "مدخلين"
-#~ msgstr[3] "%u مداخل"
-#~ msgstr[4] "%u مدخلا"
-#~ msgstr[5] "%u مدخل"
-
-#~ msgid "System Sounds"
-#~ msgstr "أصوات النظام"
 
 #~ msgid "Failed to unmount '%s'"
 #~ msgstr "فشل فصْل '%s'"
