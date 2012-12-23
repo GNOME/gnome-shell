@@ -1630,10 +1630,7 @@ const MessageTray = new Lang.Class({
     },
 
     _onNotificationKeyRelease: function(actor, event) {
-        let ignoredModifiers = global.display.get_ignored_modifier_mask();
-        let modifierState = event.get_state() & ~ignoredModifiers;
-
-        if (event.get_key_symbol() == Clutter.KEY_Escape && modifierState == 0) {
+        if (event.get_key_symbol() == Clutter.KEY_Escape && event.get_state() == 0) {
             this._closeNotification();
             return true;
         }
