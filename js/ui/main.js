@@ -159,8 +159,6 @@ function _initializeUI() {
 
     _a11ySettings = new Gio.Settings({ schema: A11Y_SCHEMA });
 
-    global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
-                                            false, -1, 1);
     global.display.connect('overlay-key', Lang.bind(overview, function () {
         if (!_a11ySettings.get_boolean (STICKY_KEYS_ENABLE))
             overview.toggle();

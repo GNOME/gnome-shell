@@ -474,6 +474,9 @@ const WindowManager = new Lang.Class({
         }));
 
         this._workspaceTracker = new WorkspaceTracker(this);
+
+        global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
+                                                false, -1, 1);
     },
 
     setCustomKeybindingHandler: function(name, modes, handler) {
