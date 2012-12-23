@@ -1092,7 +1092,7 @@ const Chrome = new Lang.Class({
             } else if (y1 <= primary.y && y2 >= primary.y + primary.height) {
                 if (x1 <= 0)
                     side = Meta.Side.LEFT;
-                else if (x2 >= global.screen_width)
+                else if (x2 >= primary.x + primary.width)
                     side = Meta.Side.RIGHT;
                 else
                     continue;
