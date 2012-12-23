@@ -75,9 +75,8 @@ def start_shell():
         if 'GI_TYPELIB_PATH' in os.environ:
             typelib_dir += ':%s' % (os.environ['GI_TYPELIB_PATH'],)
 
-        env.update({'GNOME_SHELL_JS'       : os.path.join(top_dir, "js"),
-                    'GNOME_SHELL_BINDIR'   : self_dir,
-                    'GI_TYPELIB_PATH'      : typelib_dir,
+        env.update({'GI_TYPELIB_PATH'      : typelib_dir,
+                    'GNOME_SHELL_JS'       : os.path.join(top_dir, "js"),
                     'GNOME_SHELL_DATADIR'  : os.path.join(top_dir, "data"),
                     'GSETTINGS_SCHEMA_DIR' : os.path.join(top_dir, "data") })
 
