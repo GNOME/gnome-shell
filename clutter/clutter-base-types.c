@@ -1259,7 +1259,7 @@ clutter_rect_progress (const GValue *a,
   const ClutterRect *rect_b = g_value_get_boxed (b);
   ClutterRect res = CLUTTER_RECT_INIT_ZERO;
 
-#define INTERPOLATE(r_a,r_b,member,field,factor)     ((r_a)->member.field + (((r_b)->member.field - ((r_b)->member.field)) * (factor)))
+#define INTERPOLATE(r_a,r_b,member,field,factor)     ((r_a)->member.field + (((r_b)->member.field - ((r_a)->member.field)) * (factor)))
 
   res.origin.x = INTERPOLATE (rect_a, rect_b, origin, x, progress);
   res.origin.y = INTERPOLATE (rect_a, rect_b, origin, y, progress);
@@ -1268,8 +1268,6 @@ clutter_rect_progress (const GValue *a,
   res.size.height = INTERPOLATE (rect_a, rect_b, size, height, progress);
 
 #undef INTERPOLATE
-
-  clutter_rect_normalize_internal (&res);
 
   g_value_set_boxed (retval, &res);
 
