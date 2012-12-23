@@ -38,7 +38,6 @@ const Magnifier = imports.ui.magnifier;
 const XdndHandler = imports.ui.xdndHandler;
 const Util = imports.misc.util;
 
-const OVERRIDES_SCHEMA = 'org.gnome.shell.overrides';
 const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
 const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
@@ -71,7 +70,6 @@ let layoutManager = null;
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
-let _overridesSettings = null;
 let _a11ySettings = null;
 
 function _sessionUpdated() {
@@ -127,10 +125,8 @@ function _initializeUI() {
     // and recalculate application associations, so to avoid
     // races for now we initialize it here.  It's better to
     // be predictable anyways.
-    let tracker = Shell.WindowTracker.get_default();
+    Shell.WindowTracker.get_default();
     Shell.AppUsage.get_default();
-
-    tracker.connect('startup-sequence-changed', _queueCheckWorkspaces);
 
     _loadDefaultStylesheet();
 
@@ -188,17 +184,6 @@ function _initializeUI() {
         Scripting.runPerfScript(module, perfOutput);
     }
 
-    _overridesSettings = new Gio.Settings({ schema: OVERRIDES_SCHEMA });
-    _overridesSettings.connect('changed::dynamic-workspaces', _queueCheckWorkspaces);
-
-    global.screen.connect('notify::n-workspaces', _nWorkspacesChanged);
-
-    global.screen.connect('window-entered-monitor', _windowEnteredMonitor);
-    global.screen.connect('window-left-monitor', _windowLeftMonitor);
-    global.screen.connect('restacked', _windowsRestacked);
-
-    _nWorkspacesChanged();
-
     ExtensionDownloader.init();
     ExtensionSystem.init();
 
@@ -213,187 +198,6 @@ function _initializeUI() {
                                   keybindingMode = Shell.KeyBindingMode.NORMAL;
                               }
                           });
-}
-
-let _workspaces = [];
-let _checkWorkspacesId = 0;
-
-/*
- * When the last window closed on a workspace is a dialog or splash
- * screen, we assume that it might be an initial window shown before
- * the main window of an application, and give the app a grace period
- * where it can map another window before we remove the workspace.
- */
-const LAST_WINDOW_GRACE_TIME = 1000;
-
-function _checkWorkspaces() {
-    let i;
-    let emptyWorkspaces = [];
-
-    if (!Meta.prefs_get_dynamic_workspaces()) {
-        _checkWorkspacesId = 0;
-        return false;
-    }
-
-    for (i = 0; i < _workspaces.length; i++) {
-        let lastRemoved = _workspaces[i]._lastRemovedWindow;
-        if ((lastRemoved &&
-             (lastRemoved.get_window_type() == Meta.WindowType.SPLASHSCREEN ||
-              lastRemoved.get_window_type() == Meta.WindowType.DIALOG ||
-              lastRemoved.get_window_type() == Meta.WindowType.MODAL_DIALOG)) ||
-            _workspaces[i]._keepAliveId)
-                emptyWorkspaces[i] = false;
-        else
-            emptyWorkspaces[i] = true;
-    }
-
-    let sequences = Shell.WindowTracker.get_default().get_startup_sequences();
-    for (i = 0; i < sequences.length; i++) {
-        let index = sequences[i].get_workspace();
-        if (index >= 0 && index <= global.screen.n_workspaces)
-            emptyWorkspaces[index] = false;
-    }
-
-    let windows = global.get_window_actors();
-    for (i = 0; i < windows.length; i++) {
-        let win = windows[i];
-
-        if (win.get_meta_window().is_on_all_workspaces())
-            continue;
-
-        let workspaceIndex = win.get_workspace();
-        emptyWorkspaces[workspaceIndex] = false;
-    }
-
-    // If we don't have an empty workspace at the end, add one
-    if (!emptyWorkspaces[emptyWorkspaces.length -1]) {
-        global.screen.append_new_workspace(false, global.get_current_time());
-        emptyWorkspaces.push(false);
-    }
-
-    let activeWorkspaceIndex = global.screen.get_active_workspace_index();
-    let removingCurrentWorkspace = (emptyWorkspaces[activeWorkspaceIndex] &&
-                                    activeWorkspaceIndex < emptyWorkspaces.length - 1);
-    // Don't enter the overview when removing multiple empty workspaces at startup
-    let showOverview  = (removingCurrentWorkspace &&
-                         !emptyWorkspaces.every(function(x) { return x; }));
-
-    if (removingCurrentWorkspace) {
-        // "Merge" the empty workspace we are removing with the one at the end
-        wm.blockAnimations();
-    }
-
-    // Delete other empty workspaces; do it from the end to avoid index changes
-    for (i = emptyWorkspaces.length - 2; i >= 0; i--) {
-        if (emptyWorkspaces[i])
-            global.screen.remove_workspace(_workspaces[i], global.get_current_time());
-    }
-
-    if (removingCurrentWorkspace) {
-        global.screen.get_workspace_by_index(global.screen.n_workspaces - 1).activate(global.get_current_time());
-        wm.unblockAnimations();
-
-        if (!overview.visible && showOverview)
-            overview.show();
-    }
-
-    _checkWorkspacesId = 0;
-    return false;
-}
-
-function keepWorkspaceAlive(workspace, duration) {
-    if (workspace._keepAliveId)
-        Mainloop.source_remove(workspace._keepAliveId);
-
-    workspace._keepAliveId = Mainloop.timeout_add(duration, function() {
-        workspace._keepAliveId = 0;
-        _queueCheckWorkspaces();
-        return false;
-    });
-}
-
-function _windowRemoved(workspace, window) {
-    workspace._lastRemovedWindow = window;
-    _queueCheckWorkspaces();
-    Mainloop.timeout_add(LAST_WINDOW_GRACE_TIME, function() {
-        if (workspace._lastRemovedWindow == window) {
-            workspace._lastRemovedWindow = null;
-            _queueCheckWorkspaces();
-        }
-        return false;
-    });
-}
-
-function _windowLeftMonitor(metaScreen, monitorIndex, metaWin) {
-    // If the window left the primary monitor, that
-    // might make that workspace empty
-    if (monitorIndex == layoutManager.primaryIndex)
-        _queueCheckWorkspaces();
-}
-
-function _windowEnteredMonitor(metaScreen, monitorIndex, metaWin) {
-    // If the window entered the primary monitor, that
-    // might make that workspace non-empty
-    if (monitorIndex == layoutManager.primaryIndex)
-        _queueCheckWorkspaces();
-}
-
-function _windowsRestacked() {
-    // Figure out where the pointer is in case we lost track of
-    // it during a grab. (In particular, if a trayicon popup menu
-    // is dismissed, see if we need to close the message tray.)
-    global.sync_pointer();
-}
-
-function _queueCheckWorkspaces() {
-    if (_checkWorkspacesId == 0)
-        _checkWorkspacesId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, _checkWorkspaces);
-}
-
-function _nWorkspacesChanged() {
-    let oldNumWorkspaces = _workspaces.length;
-    let newNumWorkspaces = global.screen.n_workspaces;
-
-    if (oldNumWorkspaces == newNumWorkspaces)
-        return false;
-
-    let lostWorkspaces = [];
-    if (newNumWorkspaces > oldNumWorkspaces) {
-        let w;
-
-        // Assume workspaces are only added at the end
-        for (w = oldNumWorkspaces; w < newNumWorkspaces; w++)
-            _workspaces[w] = global.screen.get_workspace_by_index(w);
-
-        for (w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
-            let workspace = _workspaces[w];
-            workspace._windowAddedId = workspace.connect('window-added', _queueCheckWorkspaces);
-            workspace._windowRemovedId = workspace.connect('window-removed', _windowRemoved);
-        }
-
-    } else {
-        // Assume workspaces are only removed sequentially
-        // (e.g. 2,3,4 - not 2,4,7)
-        let removedIndex;
-        let removedNum = oldNumWorkspaces - newNumWorkspaces;
-        for (let w = 0; w < oldNumWorkspaces; w++) {
-            let workspace = global.screen.get_workspace_by_index(w);
-            if (_workspaces[w] != workspace) {
-                removedIndex = w;
-                break;
-            }
-        }
-
-        let lostWorkspaces = _workspaces.splice(removedIndex, removedNum);
-        lostWorkspaces.forEach(function(workspace) {
-                                   workspace.disconnect(workspace._windowAddedId);
-                                   workspace.disconnect(workspace._windowRemovedId);
-                               });
-    }
-
-    _queueCheckWorkspaces();
-
-    return false;
 }
 
 function _loadDefaultStylesheet() {
