@@ -772,7 +772,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         event->key.keyval =
           _clutter_keymap_x11_translate_key_state (backend_x11->keymap,
                                                    event->key.hardware_keycode,
-                                                   event->key.modifier_state,
+                                                   &event->key.modifier_state,
                                                    NULL);
 
         /* KeyEvents have platform specific data associated to them */

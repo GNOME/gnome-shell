@@ -43,7 +43,7 @@ gboolean _clutter_keymap_x11_get_num_lock_state  (ClutterKeymapX11    *keymap);
 gboolean _clutter_keymap_x11_get_caps_lock_state (ClutterKeymapX11    *keymap);
 gint     _clutter_keymap_x11_translate_key_state (ClutterKeymapX11    *keymap,
                                                   guint                hardware_keycode,
-                                                  ClutterModifierType  modifier_state,
+                                                  ClutterModifierType *modifier_state_p,
                                                   ClutterModifierType *mods_p);
 gboolean _clutter_keymap_x11_get_is_modifier     (ClutterKeymapX11    *keymap,
                                                   gint                 keycode);

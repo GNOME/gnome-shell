@@ -298,6 +298,12 @@ Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (see NEWS for general information on new
 features).
 
+Release Notes for Clutter 1.14
+-------------------------------------------------------------------------------
+
+• The X11 backend (both core X events and XInput 2 backends) now mask out
+  scroll lock and num lock modifiers from the event state.
+
 Release Notes for Clutter 1.12
 -------------------------------------------------------------------------------
 

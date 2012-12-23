@@ -50,6 +50,7 @@ struct _ClutterKeymapX11
   ClutterModifierType modmap[8];
 
   ClutterModifierType num_lock_mask;
+  ClutterModifierType scroll_lock_mask;
 
 #ifdef HAVE_XKB
   XkbDescPtr xkb_desc;
@@ -179,6 +180,10 @@ get_xkb (ClutterKeymapX11 *keymap_x11)
   if (keymap_x11->num_lock_mask == 0)
     keymap_x11->num_lock_mask = XkbKeysymToModifiers (backend_x11->xdpy,
                                                       XK_Num_Lock);
+
+  if (keymap_x11->scroll_lock_mask == 0)
+    keymap_x11->scroll_lock_mask = XkbKeysymToModifiers (backend_x11->xdpy,
+                                                         XK_Scroll_Lock);
 
   return keymap_x11->xkb_desc;
 }
@@ -435,11 +440,12 @@ G_GNUC_END_IGNORE_DEPRECATIONS
 gint
 _clutter_keymap_x11_translate_key_state (ClutterKeymapX11    *keymap,
                                          guint                hardware_keycode,
-                                         ClutterModifierType  modifier_state,
+                                         ClutterModifierType *modifier_state_p,
                                          ClutterModifierType *mods_p)
 {
   ClutterBackendX11 *backend_x11;
   ClutterModifierType unconsumed_modifiers = 0;
+  ClutterModifierType modifier_state = *modifier_state_p;
   gint retval;
 
   g_return_val_if_fail (CLUTTER_IS_KEYMAP_X11 (keymap), 0);
@@ -467,6 +473,10 @@ _clutter_keymap_x11_translate_key_state (ClutterKeymapX11    *keymap,
 
   if (mods_p)
     *mods_p = unconsumed_modifiers;
+
+  *modifier_state_p = modifier_state & ~(keymap->num_lock_mask |
+                                         keymap->scroll_lock_mask |
+                                         LockMask);
 
   return retval;
 }

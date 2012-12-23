@@ -236,7 +236,7 @@ translate_key_event (ClutterBackendX11       *backend_x11,
   event->key.keyval =
     _clutter_keymap_x11_translate_key_state (backend_x11->keymap,
                                              event->key.hardware_keycode,
-                                             event->key.modifier_state,
+                                             &event->key.modifier_state,
                                              NULL);
 
   event_x11->key_group =
