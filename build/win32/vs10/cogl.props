@@ -10,7 +10,7 @@
     <DebugLibBuildDefines>_DEBUG;$(LibBuildDefines);COGL_GL_DEBUG;COGL_OBJECT_DEBUG;COGL_HANDLE_DEBUG</DebugLibBuildDefines>
     <CoglBuildDefines>G_LOG_DOMAIN="Cogl";COGL_HAS_WIN32_SUPPORT;COGL_BUILD_EXP;COGL_GL_LIBNAME="";COGL_LOCALEDIR="/some/random/dir"</CoglBuildDefines>
     <CoglPangoBuildDefines>G_LOG_DOMAIN="Cogl-Pango"</CoglPangoBuildDefines>
-    <TestProgDef>COGL_COMPILATION;TESTS_DATADIR="../share/cogl-$(CoglApiVersion)/tests"</TestProgDef>
+    <TestProgDef>COGL_COMPILATION</TestProgDef>
     <CopyDir>$(GlibEtcInstallRoot)</CopyDir>
     <DefDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</DefDir>
     <DoDefinesSDL>

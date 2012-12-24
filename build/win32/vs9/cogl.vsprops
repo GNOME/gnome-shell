@@ -63,7 +63,7 @@
 	/>
 	<UserMacro
 		Name="TestProgDef"
-		Value="COGL_COMPILATION;TESTS_DATADIR=\&quot;../share/cogl-$(CoglApiVersion)/tests\&quot;"
+		Value="COGL_COMPILATION"
 	/>
 	<UserMacro
 		Name="DoDefinesSDL"
