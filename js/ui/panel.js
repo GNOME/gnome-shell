@@ -598,6 +598,11 @@ const AppMenuButton = new Lang.Class({
                 return;
 
             menu = new PopupMenu.RemoteMenu(this.actor, this._targetApp.menu, this._targetApp.action_group);
+            menu.connect('activate', Lang.bind(this, function() {
+                let win = this._targetApp.get_windows()[0];
+                win.check_alive(global.get_current_time());
+            }));
+
         } else {
             if (this.menu.isDummyQuitMenu)
                 return;
