@@ -19119,6 +19119,10 @@ clutter_actor_get_easing_delay (ClutterActor *self)
  * will call the <function>on_transition_stopped</function> callback when
  * the transition is finished.
  *
+ * If you just want to get notifications of the completion of a transition,
+ * you should use the #ClutterActor::transition-stopped signal, using the
+ * transition name as the signal detail.
+ *
  * Return value: (transfer none): a #ClutterTransition, or %NULL is none
  *   was found to match the passed name; the returned instance is owned
  *   by Clutter and it should not be freed
@@ -19152,6 +19156,10 @@ clutter_actor_get_transition (ClutterActor *self,
  *
  * Saves the current easing state for animatable properties, and creates
  * a new state with the default values for easing mode and duration.
+ *
+ * New transitions created after calling this function will inherit the
+ * duration, easing mode, and delay of the new easing state; this also
+ * applies to transitions modified in flight.
  *
  * Since: 1.10
  */
@@ -19198,7 +19206,7 @@ clutter_actor_restore_easing_state (ClutterActor *self)
   if (info->states == NULL)
     {
       g_critical ("The function clutter_actor_restore_easing_state() has "
-                  "called without a previous call to "
+                  "been called without a previous call to "
                   "clutter_actor_save_easing_state().");
       return;
     }
