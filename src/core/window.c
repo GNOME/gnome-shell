@@ -4247,6 +4247,8 @@ window_activate (MetaWindow     *window,
               "Focusing window %s due to activation\n",
               window->desc);
   meta_window_focus (window, timestamp);
+
+  meta_window_check_alive (window, timestamp);
 }
 
 /* This function exists since most of the functionality in window_activate
