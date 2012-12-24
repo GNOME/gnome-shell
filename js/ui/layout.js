@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const ClutterX11 = imports.gi.ClutterX11;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -15,9 +16,8 @@ const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
-const STARTUP_ANIMATION_TIME = 0.2;
+const STARTUP_ANIMATION_TIME = 1;
 const KEYBOARD_ANIMATION_TIME = 0.15;
-const PLYMOUTH_TRANSITION_TIME = 1;
 const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
 const MonitorConstraint = new Lang.Class({
@@ -171,7 +171,7 @@ const LayoutManager = new Lang.Class({
                               Lang.bind(this, this._panelBoxChanged));
 
         this.trayBox = new St.Widget({ name: 'trayBox',
-                                       layout_manager: new Clutter.BinLayout() }); 
+                                       layout_manager: new Clutter.BinLayout() });
         this.addChrome(this.trayBox);
 
         this.keyboardBox = new St.BoxLayout({ name: 'keyboardBox',
@@ -197,7 +197,8 @@ const LayoutManager = new Lang.Class({
         Main.overview.connect('showing', Lang.bind(this, this._overviewShowing));
         Main.overview.connect('hidden', Lang.bind(this, this._overviewHidden));
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
-        this._startupAnimation();
+
+        this._prepareStartupAnimation();
     },
 
     _overviewShowing: function() {
@@ -412,21 +413,106 @@ const LayoutManager = new Lang.Class({
         return this._keyboardIndex;
     },
 
-    _startupAnimation: function() {
-        this.panelBox.translation_y = -this.panelBox.height;
+    _acquireRootBackground: function() {
+        let rootpmap = Shell.util_get_root_background();
+        let texture = ClutterX11.TexturePixmap.new_with_pixmap(rootpmap);
+        // The texture size might not match the screen size, for example
+        // if the session has a different XRandR configuration than the greeter
+        texture.x = 0;
+        texture.y = 0;
+        texture.width = global.screen_width;
+        texture.height = global.screen_height;
+        texture.set_automatic(true);
 
+        this._rootTexture = texture;
+    },
+
+    // Startup Animations
+    //
+    // We have two different animations, depending on whether we're a greeter
+    // or a normal session.
+    //
+    // In the greeter, we want to animate the panel from the top, and smoothly
+    // fade the login dialog on top of whatever plymouth left on screen, which we
+    // grab as a X11 texture_from_pixmap.
+    // Here we just have the code to animate the panel, the login dialog animation
+    // is handled by modalDialog.js
+    //
+    // In a normal session, we want to take the root background, which now holds
+    // the final frame of the GDM greeter, and slide it from the bottom, while
+    // at the same time scaling the UI contents of the new shell on top of the
+    // stage background.
+    //
+    // Usually, we don't want to paint the stage background color because the
+    // MetaBackgroundActor inside global.window_group covers the entirety of the
+    // screen. So, we set no_clear_hint at the end of the animation.
+
+    _prepareStartupAnimation: function() {
+        // Set ourselves to FULLSCREEN input mode while the animation is running
+        // so events don't get delivered to X11 windows (which are distorted by the animation)
+        global.stage_input_mode = Shell.StageInputMode.FULLSCREEN;
+
+        this._acquireRootBackground();
+
+        if (Main.sessionMode.isGreeter) {
+            global.stage.insert_child_below(this._rootTexture, null);
+
+            this._panelBox.translation_y = -this._panelBox.height;
+        } else {
+            global.stage.insert_child_above(this._rootTexture, null);
+
+            this.uiGroup.set_pivot_point(0.5, 0.5);
+            this.uiGroup.scale_x = this.uiGroup.scale_y = 0;
+        }
+    },
+
+    startupAnimation: function() {
+        if (Main.sessionMode.isGreeter)
+            this._startupAnimationGreeter();
+        else
+            this._startupAnimationSession();
+    },
+
+    _startupAnimationGreeter: function() {
+        // Don't animate the strut
         this._freezeUpdateRegions();
 
-        Tweener.addTween(this.panelBox,
+        Tweener.addTween(this._panelBox,
                          { translation_y: 0,
                            time: STARTUP_ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete: this._startupAnimationComplete,
-                           onCompleteScope: this
-                         });
+                           onCompleteScope: this });
+    },
+
+    _startupAnimationSession: function() {
+        // Don't animate the strut
+        this._freezeUpdateRegions();
+
+        Tweener.addTween(this._rootTexture,
+                         { translation_y: -global.screen_height,
+                           time: STARTUP_ANIMATION_TIME,
+                           transition: 'linear' });
+
+        Tweener.addTween(this.uiGroup,
+                         { scale_x: 1,
+                           scale_y: 1,
+                           time: STARTUP_ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: this._startupAnimationComplete,
+                           onCompleteScope: this });
     },
 
     _startupAnimationComplete: function() {
+        // At this point, the UI group is covering everything, so
+        // we no longer need to clear the stage
+        global.stage.no_clear_hint = true;
+
+        global.stage_input_mode = Shell.StageInputMode.NORMAL;
+
+        this._rootTexture.destroy();
+        this._rootTexture = null;
+
         this.emit('panel-box-changed');
         this._thawUpdateRegions();
     },
