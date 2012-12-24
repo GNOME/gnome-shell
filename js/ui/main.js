@@ -38,7 +38,6 @@ const XdndHandler = imports.ui.xdndHandler;
 const Util = imports.misc.util;
 
 const OVERRIDES_SCHEMA = 'org.gnome.shell.overrides';
-const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
 let componentManager = null;
 let panel = null;
@@ -112,41 +111,17 @@ function start() {
 
     tracker.connect('startup-sequence-changed', _queueCheckWorkspaces);
 
-    // The stage is always covered so Clutter doesn't need to clear it; however
-    // the color is used as the default contents for the Mutter root background
-    // actor so set it anyways.
-    global.stage.color = DEFAULT_BACKGROUND_COLOR;
-    global.stage.no_clear_hint = true;
-
-    _defaultCssStylesheet = global.datadir + '/theme/gnome-shell.css';
-    loadTheme();
-
-    // Set up stage hierarchy to group all UI actors under one container.
-    uiGroup = new Shell.GenericContainer({ name: 'uiGroup' });
-    uiGroup.connect('allocate',
-                    function (actor, box, flags) {
-                        let children = uiGroup.get_children();
-                        for (let i = 0; i < children.length; i++)
-                            children[i].allocate_preferred_size(flags);
-                    });
-    uiGroup.connect('get-preferred-width',
-                    function(actor, forHeight, alloc) {
-                        let width = global.stage.width;
-                        [alloc.min_size, alloc.natural_size] = [width, width];
-                    });
-    uiGroup.connect('get-preferred-height',
-                    function(actor, forWidth, alloc) {
-                        let height = global.stage.height;
-                        [alloc.min_size, alloc.natural_size] = [height, height];
-                    });
-    global.window_group.reparent(uiGroup);
-    global.overlay_group.reparent(uiGroup);
-    global.stage.add_actor(uiGroup);
+    // Setup the stage hierarchy early
+    layoutManager = new Layout.LayoutManager();
+    // For backward compatibility
+    uiGroup = layoutManager.uiGroup;
 
     let backgroundActor = global.window_group.background;
     background = backgroundActor.settings;
 
-    layoutManager = new Layout.LayoutManager();
+    _defaultCssStylesheet = global.datadir + '/theme/gnome-shell.css';
+    loadTheme();
+
     xdndHandler = new XdndHandler.XdndHandler();
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
     overview = new Overview.Overview();
