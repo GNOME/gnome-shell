@@ -13,6 +13,7 @@ const Signals = imports.signals;
 const St = imports.gi.St;
 const TweenerEquations = imports.tweener.equations;
 
+const Background = imports.ui.background;
 const GnomeSession = imports.misc.gnomeSession;
 const Hash = imports.misc.hash;
 const Layout = imports.ui.layout;
@@ -49,44 +50,14 @@ const SUMMARY_ICON_SIZE = 48;
 // - STANDARD_FADE_TIME is used when the session goes idle
 // - MANUAL_FADE_TIME is used for lowering the shield when asked by the user,
 //   or when cancelling the dialog
+// - BACKGROUND_FADE_TIME is used when the background changes to crossfade to new background
 // - CURTAIN_SLIDE_TIME is used when raising the shield before unlocking
 // - INITIAL_FADE_IN_TIME is used for the initial fade in at startup
 const STANDARD_FADE_TIME = 10;
 const MANUAL_FADE_TIME = 0.8;
+const BACKGROUND_FADE_TIME = 1.0;
 const CURTAIN_SLIDE_TIME = 0.3;
 const INITIAL_FADE_IN_TIME = 0.25;
-
-function sample(offx, offy) {
-    return 'texel += texture2D (sampler, tex_coord.st + pixel_step * ' +
-        'vec2 (' + offx + ',' + offy + '));\n'
-}
-const GLSL_BLUR_EFFECT_DECLARATIONS = ' \
-uniform vec2 pixel_step;\n \
-uniform float desaturation;\n \
-vec4 apply_blur(in sampler2D sampler, in vec2 tex_coord) {\n \
-  vec4 texel;\n \
-  texel = texture2D (sampler, tex_coord.st);\n'
-  + sample(-1.0, -1.0)
-  + sample( 0.0, -1.0)
-  + sample(+1.0, -1.0)
-  + sample(-1.0,  0.0)
-  + sample(+1.0,  0.0)
-  + sample(-1.0, +1.0)
-  + sample( 0.0, +1.0)
-  + sample(+1.0, +1.0) + ' \
-   texel /= 9.0;\n \
-   return texel;\n \
-}\n \
-vec3 desaturate (const vec3 color)\n \
-{\n \
-   const vec3 gray_conv = vec3 (0.299, 0.587, 0.114);\n \
-   vec3 gray = vec3 (dot (gray_conv, color));\n \
-   return vec3 (mix (color.rgb, gray, desaturation));\n \
-}';
-const GLSL_BLUR_EFFECT_CODE = ' \
-cogl_texel = apply_blur(cogl_sampler, cogl_tex_coord.st);\n \
-cogl_texel.rgb = desaturate(cogl_texel.rgb);\n';
-
 
 const Clock = new Lang.Class({
     Name: 'ScreenShieldClock',
@@ -474,21 +445,16 @@ const ScreenShield = new Lang.Class({
                                                    name: 'lockScreenContents' });
         this._lockScreenContents.add_constraint(new Layout.MonitorConstraint({ primary: true }));
 
-        let backgroundActor = Meta.BackgroundActor.new_for_screen(global.screen);
-        backgroundActor.add_glsl_snippet(Meta.SnippetHook.TEXTURE_LOOKUP,
-                                         GLSL_BLUR_EFFECT_DECLARATIONS,
-                                         GLSL_BLUR_EFFECT_CODE,
-                                         true);
-        backgroundActor.set_uniform_float('desaturation',
-                                          1, 1, [0.6]);
-        backgroundActor.connect('notify::size', function(actor) {
-            actor.set_uniform_float('pixel_step', 2, 1, [1/actor.width, 1/actor.height]);
-        });
-
-        this._background = new St.Bin({ style_class: 'screen-shield-background',
-                                        child: backgroundActor });
-        this._lockScreenGroup.add_actor(this._background);
         this._lockScreenGroup.add_actor(this._lockScreenContents);
+
+        this._backgroundGroup = new Meta.BackgroundGroup();
+
+        this._lockScreenGroup.add_actor(this._backgroundGroup);
+        this._backgroundGroup.lower_bottom();
+        this._bgManagers = [];
+
+        this._updateBackgrounds();
+        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._updateBackgrounds));
 
         this._arrowContainer = new St.BoxLayout({ style_class: 'screen-shield-arrows',
                                                   vertical: true,
@@ -569,6 +535,31 @@ const ScreenShield = new Lang.Class({
         this._lightbox.connect('shown', Lang.bind(this, this._onLightboxShown));
 
         this.idleMonitor = new GnomeDesktop.IdleMonitor();
+    },
+
+    _createBackground: function(monitorIndex) {
+        let bin = new St.Bin({ style_class: 'screen-shield-background' });
+
+        let bgManager = new Background.BackgroundManager({ container: bin,
+                                                           monitorIndex: monitorIndex,
+                                                           effects: Meta.BackgroundEffects.BLUR | Meta.BackgroundEffects.DESATURATE });
+
+        bgManager.background.saturation = 0.6;
+
+        this._bgManagers.push(bgManager);
+
+        this._backgroundGroup.add_child(bin);
+        bin.lower_bottom();
+    },
+
+    _updateBackgrounds: function() {
+        for (let i = 0; i < this._bgManagers.length; i++)
+            this._bgManagers[i].destroy();
+
+        this._bgManagers = [];
+
+        for (let i = 0; i < Main.layoutManager.monitors.length; i++)
+            this._createBackground(i);
     },
 
     _liftShield: function(onPrimary, velocity) {

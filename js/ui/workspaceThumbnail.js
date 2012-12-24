@@ -9,6 +9,7 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
+const Background = imports.ui.background;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
@@ -170,8 +171,7 @@ const WorkspaceThumbnail = new Lang.Class({
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
-        this._background = Meta.BackgroundActor.new_for_screen(global.screen);
-        this._contents.add_actor(this._background);
+        this._createBackground();
 
         let monitor = Main.layoutManager.primaryMonitor;
         this.setPorthole(monitor.x, monitor.y, monitor.width, monitor.height);
@@ -213,6 +213,12 @@ const WorkspaceThumbnail = new Lang.Class({
         this._collapseFraction = 0; // Not collapsed
     },
 
+    _createBackground: function() {
+        this._bgManager = new Background.BackgroundManager({ monitorIndex: Main.layoutManager.primaryIndex,
+                                                             container: this._contents,
+                                                             effects: Meta.BackgroundEffects.NONE });
+    },
+
     setPorthole: function(x, y, width, height) {
         this._portholeX = x;
         this._portholeY = y;
@@ -236,7 +242,7 @@ const WorkspaceThumbnail = new Lang.Class({
             let clone = this._windows[i];
             let metaWindow = clone.metaWindow;
             if (i == 0) {
-                clone.setStackAbove(this._background);
+                clone.setStackAbove(this._bgManager.background.actor);
             } else {
                 let previousClone = this._windows[i - 1];
                 clone.setStackAbove(previousClone.actor);
@@ -356,6 +362,8 @@ const WorkspaceThumbnail = new Lang.Class({
 
     destroy : function() {
         this.actor.destroy();
+        this._bgManager.destroy();
+        this._bgManager = null;
     },
 
     workspaceRemoved : function() {
@@ -417,7 +425,7 @@ const WorkspaceThumbnail = new Lang.Class({
         this._contents.add_actor(clone.actor);
 
         if (this._windows.length == 0)
-            clone.setStackAbove(this._background);
+            clone.setStackAbove(this._bgManager.actor);
         else
             clone.setStackAbove(this._windows[this._windows.length - 1].actor);
 

@@ -9,15 +9,17 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
+const Background = imports.ui.background;
+const BackgroundMenu = imports.ui.backgroundMenu;
+
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
-const STARTUP_ANIMATION_TIME = 0.2;
+const STARTUP_ANIMATION_TIME = 0.5;
 const KEYBOARD_ANIMATION_TIME = 0.15;
-const PLYMOUTH_TRANSITION_TIME = 1;
 const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
 // The message tray takes this much pressure
@@ -128,7 +130,6 @@ const LayoutManager = new Lang.Class({
         this.primaryIndex = -1;
         this._keyboardIndex = -1;
         this._hotCorners = [];
-        this._background = null;
         this._leftPanelBarrier = null;
         this._rightPanelBarrier = null;
         this._trayBarrier = null;
@@ -207,6 +208,14 @@ const LayoutManager = new Lang.Class({
         global.stage.remove_actor(global.top_window_group);
         this.uiGroup.add_actor(global.top_window_group);
 
+        this._consoleBackgroundGroup = new Meta.BackgroundGroup();
+        global.stage.insert_child_below(this._consoleBackgroundGroup, null);
+
+        this._backgroundGroup = new Meta.BackgroundGroup();
+        global.window_group.add_child(this._backgroundGroup);
+        this._backgroundGroup.lower_bottom();
+        this._bgManagers = [];
+
         // This blocks the XDND picks from finding the activities button
         // and we never attempt to pick anything from it anyway so make
         // it invisible from picks
@@ -220,6 +229,7 @@ const LayoutManager = new Lang.Class({
         global.screen.connect('monitors-changed',
                               Lang.bind(this, this._monitorsChanged));
         this._monitorsChanged();
+        this._prepareStartupAnimation();
     },
 
     // This is called by Main after everything else is constructed;
@@ -328,6 +338,56 @@ const LayoutManager = new Lang.Class({
         }
     },
 
+    _createBackground: function(monitorIndex) {
+        let bgManager = new Background.BackgroundManager({ container: this._backgroundGroup,
+                                                           layoutManager: this,
+                                                           monitorIndex: monitorIndex });
+
+        bgManager.connect('changed', Lang.bind(this, function() {
+                              BackgroundMenu.addBackgroundMenu(bgManager.background.actor);
+                          }));
+
+        this._bgManagers.push(bgManager);
+
+        return bgManager.background;
+    },
+
+    _createSecondaryBackgrounds: function() {
+        for (let i = 0; i < this.monitors.length; i++) {
+            if (i != this.primaryIndex) {
+                let background = this._createBackground(i);
+
+                background.actor.opacity = 0;
+                Tweener.addTween(background.actor,
+                                 { opacity: 255,
+                                   time: BACKGROUND_FADE_ANIMATION_TIME,
+                                   transition: 'easeOutQuad' });
+            }
+        }
+    },
+
+    _createPrimaryBackground: function() {
+        this._createBackground(this.primaryIndex);
+    },
+
+    _updateBackgrounds: function() {
+        let i;
+        for (i = 0; i < this._bgManagers.length; i++)
+            this._bgManagers[i].destroy();
+
+        this._bgManagers = [];
+
+        if (Main.sessionMode.isGreeter)
+            return;
+
+        if (this._startingUp)
+            return;
+
+        for (let i = 0; i < this.monitors.length; i++) {
+            this._createBackground(i);
+        }
+    },
+
     _updateBoxes: function() {
         this.screenShieldGroup.set_position(0, 0);
         this.screenShieldGroup.set_size(global.screen_width, global.screen_height);
@@ -402,6 +462,7 @@ const LayoutManager = new Lang.Class({
         this._updateBoxes();
         this._updateTrayBarrier();
         this._updateHotCorners();
+        this._updateBackgrounds();
         this._updateFullscreen();
         this._updateVisibility();
         this._queueUpdateRegions();
@@ -464,53 +525,95 @@ const LayoutManager = new Lang.Class({
         return this._keyboardIndex;
     },
 
-    prepareStartupAnimation: function() {
-        this.panelBox.translation_y = -this.panelBox.height;
+    // Startup Animations
+    //
+    // We have two different animations, depending on whether we're a greeter
+    // or a normal session.
+    //
+    // In the greeter, we want to animate the panel from the top, and smoothly
+    // fade the login dialog on top of whatever plymouth left on screen which
+    // we get as a still frame background before drawing anything else.
+    //
+    // Here we just have the code to animate the panel, and fade up the background.
+    // The login dialog animation is handled by modalDialog.js
+    //
+    // When starting a normal user session, we want to grow it out of the middle
+    // of the screen.
+    //
+    // Usually, we don't want to paint the stage background color because the
+    // MetaBackgroundActor inside global.window_group covers the entirety of the
+    // screen. So, we set no_clear_hint at the end of the animation.
+
+    _prepareStartupAnimation: function() {
+        // Set ourselves to FULLSCREEN input mode while the animation is running
+        // so events don't get delivered to X11 windows (which are distorted by the animation)
+        global.stage_input_mode = Shell.StageInputMode.FULLSCREEN;
+
+        // build new backgrounds
+        for (let i = 0; i < this.monitors.length; i++) {
+            let monitor = this.monitors[i];
+
+            let stillFrame = new Background.StillFrame(i);
+            this._consoleBackgroundGroup.add_child(stillFrame.actor);
+
+            stillFrame.actor.set_size(this.monitors[i].width, this.monitors[i].height);
+            stillFrame.actor.set_position(this.monitors[i].x, this.monitors[i].y);
+        }
+
+        if (Main.sessionMode.isGreeter) {
+            this.panelBox.translation_y = -this.panelBox.height;
+        } else {
+            let monitor = this.primaryMonitor;
+            let x = monitor.x + monitor.width / 2.0;
+            let y = monitor.y + monitor.height / 2.0;
+
+            this.uiGroup.set_pivot_point(x / global.screen_width,
+                                         y / global.screen_height);
+            this.uiGroup.scale_x = this.uiGroup.scale_y = 0;
+        }
     },
 
     startupAnimation: function() {
-        let plymouthTransitionRunning = false;
-
-        // If we're the greeter, put up the xrootpmap actor
-        // and fade it out to have a nice transition from plymouth
-        // to the greeter. Otherwise, we'll just animate the panel,
-        // as usual.
-        if (Main.sessionMode.isGreeter) {
-            this._background = Meta.BackgroundActor.new_for_screen(global.screen);
-            if (this._background != null) {
-                this.uiGroup.add_actor(this._background);
-                Tweener.addTween(this._background,
-                                 { opacity: 0,
-                                   time: PLYMOUTH_TRANSITION_TIME,
-                                   transition: 'linear',
-                                   onComplete: this._fadeBackgroundComplete,
-                                   onCompleteScope: this });
-                plymouthTransitionRunning = true;
-            }
-        }
-
-        if (!plymouthTransitionRunning)
-            this._fadeBackgroundComplete();
+        if (Main.sessionMode.isGreeter)
+            this._startupAnimationGreeter();
+        else
+            this._startupAnimationSession();
     },
 
-    _fadeBackgroundComplete: function() {
+    _startupAnimationGreeter: function() {
+         this._freezeUpdateRegions();
+         Tweener.addTween(this.panelBox,
+                          { translation_y: 0,
+                            time: STARTUP_ANIMATION_TIME,
+                            transition: 'easeOutQuad',
+                            onComplete: this._startupAnimationComplete,
+                            onCompleteScope: this });
+    },
+
+    _startupAnimationSession: function() {
         this._freezeUpdateRegions();
-
-        if (this._background != null) {
-            this._background.destroy();
-            this._background = null;
-        }
-
-        Tweener.addTween(this.panelBox,
-                         { translation_y: 0,
+        this._createPrimaryBackground();
+        Tweener.addTween(this.uiGroup,
+                         { scale_x: 1,
+                           scale_y: 1,
                            time: STARTUP_ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete: this._startupAnimationComplete,
-                           onCompleteScope: this
-                         });
+                           onCompleteScope: this });
     },
 
     _startupAnimationComplete: function() {
+        // At this point, the UI group is covering everything, so
+        // we no longer need to clear the stage
+        global.stage.no_clear_hint = true;
+
+        global.stage_input_mode = Shell.StageInputMode.NORMAL;
+
+        this._consoleBackgroundGroup.destroy();
+
+        if (Main.sessionMode.isGreeter)
+            this._createSecondaryBackgrounds();
+
         this.emit('panel-box-changed');
         this._thawUpdateRegions();
     },

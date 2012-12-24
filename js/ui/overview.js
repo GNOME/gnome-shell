@@ -10,6 +10,7 @@ const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 const Gdk = imports.gi.Gdk;
 
+const Background = imports.ui.background;
 const Dash = imports.ui.dash;
 const DND = imports.ui.dnd;
 const Main = imports.ui.main;
@@ -24,25 +25,12 @@ const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 // Time for initial animation going into Overview mode
 const ANIMATION_TIME = 0.25;
 
-const DND_WINDOW_SWITCH_TIMEOUT = 1250;
+// Must be less than ANIMATION_TIME, since we switch to
+// or from the overview completely after ANIMATION_TIME,
+// and don't want the shading animation to get cut off
+const SHADE_ANIMATION_TIME = .20;
 
-const GLSL_DIM_EFFECT_DECLARATIONS = '';
-const GLSL_DIM_EFFECT_CODE = '\
-   vec2 dist = cogl_tex_coord_in[0].xy - vec2(0.5, 0.5); \
-   float elipse_radius = 0.5; \
-   /* from https://bugzilla.gnome.org/show_bug.cgi?id=669798: \
-      the alpha on the gradient goes from 250 at its darkest to 180 at its most transparent. */ \
-   float y = 250.0 / 255.0; \
-   float x = 180.0 / 255.0; \
-   /* interpolate darkening value, based on distance from screen center */ \
-   float val = min(length(dist), elipse_radius); \
-   float a = mix(x, y, val / elipse_radius); \
-   /* dim_factor varies from [1.0 -> 0.5] when overview is showing \
-      We use it to smooth value, then we clamp it to valid color interval */ \
-   a = clamp(a - cogl_color_in.r + 0.5, 0.0, 1.0); \
-   /* We\'re blending between: color and black color (obviously omitted in the equation) */ \
-   cogl_color_out.xyz = cogl_color_out.xyz * (1.0 - a); \
-   cogl_color_out.a = 1.0;';
+const DND_WINDOW_SWITCH_TIMEOUT = 1250;
 
 const ShellInfo = new Lang.Class({
     Name: 'ShellInfo',
@@ -118,18 +106,12 @@ const Overview = new Lang.Class({
 
         this._overviewCreated = true;
 
-        // The main BackgroundActor is inside global.window_group which is
+        // The main Background actors are inside global.window_group which are
         // hidden when displaying the overview, so we create a new
         // one. Instances of this class share a single CoglTexture behind the
         // scenes which allows us to show the background with different
         // rendering options without duplicating the texture data.
-        this._background = Meta.BackgroundActor.new_for_screen(global.screen);
-        this._background.add_glsl_snippet(Meta.SnippetHook.FRAGMENT,
-                                          GLSL_DIM_EFFECT_DECLARATIONS,
-                                          GLSL_DIM_EFFECT_CODE,
-                                          false);
-        this._background.hide();
-        global.overlay_group.add_actor(this._background);
+        let monitor = Main.layoutManager.primaryMonitor;
 
         this._desktopFade = new St.Bin();
         global.overlay_group.add_actor(this._desktopFade);
@@ -144,6 +126,11 @@ const Overview = new Lang.Class({
 
         this._group = new St.BoxLayout({ name: 'overview-group',
                                          clip_to_allocation: true });
+
+        this._backgroundGroup = new Meta.BackgroundGroup();
+        global.overlay_group.add_child(this._backgroundGroup);
+        this._backgroundGroup.hide();
+        this._bgManagers = [];
 
         this._capturedEventId = 0;
         this._buttonPressId = 0;
@@ -186,6 +173,56 @@ const Overview = new Lang.Class({
 
         if (this._initCalled)
             this.init();
+    },
+
+    _updateBackgrounds: function() {
+        for (let i = 0; i < this._bgManagers.length; i++)
+            this._bgManagers[i].destroy();
+
+        this._bgManagers = [];
+
+        for (let i = 0; i < Main.layoutManager.monitors.length; i++) {
+            let bgManager = new Background.BackgroundManager({ container: this._backgroundGroup,
+                                                               monitorIndex: i,
+                                                               effects: Meta.BackgroundEffects.VIGNETTE });
+            this._bgManagers.push(bgManager);
+        }
+    },
+
+    _unshadeBackgrounds: function() {
+        let backgrounds = this._backgroundGroup.get_children();
+        for (let i = 0; i < backgrounds.length; i++) {
+            let background = backgrounds[i]._delegate;
+
+            Tweener.addTween(background,
+                             { brightness: 1.0,
+                               time: SHADE_ANIMATION_TIME,
+                               transition: 'easeOutQuad'
+                             });
+            Tweener.addTween(background,
+                             { vignetteSharpness: 0.0,
+                               time: SHADE_ANIMATION_TIME,
+                               transition: 'easeOutQuad'
+                             });
+        }
+    },
+
+    _shadeBackgrounds: function() {
+        let backgrounds = this._backgroundGroup.get_children();
+        for (let i = 0; i < backgrounds.length; i++) {
+            let background = backgrounds[i]._delegate;
+
+            Tweener.addTween(background,
+                             { brightness: 0.8,
+                               time: SHADE_ANIMATION_TIME,
+                               transition: 'easeOutQuad'
+                             });
+            Tweener.addTween(background,
+                             { vignetteSharpness: 0.7,
+                               time: SHADE_ANIMATION_TIME,
+                               transition: 'easeOutQuad'
+                             });
+        }
     },
 
     _sessionUpdated: function() {
@@ -379,6 +416,8 @@ const Overview = new Lang.Class({
 
         this._coverPane.set_position(0, workArea.y);
         this._coverPane.set_size(workArea.width, workArea.height);
+
+        this._updateBackgrounds();
     },
 
     _onRestacked: function() {
@@ -477,7 +516,7 @@ const Overview = new Lang.Class({
         global.window_group.hide();
         global.top_window_group.hide();
         this._overview.show();
-        this._background.show();
+        this._backgroundGroup.show();
         this._viewSelector.show();
 
         this._overview.opacity = 0;
@@ -488,12 +527,7 @@ const Overview = new Lang.Class({
                            onComplete: this._showDone,
                            onCompleteScope: this
                          });
-
-        Tweener.addTween(this._background,
-                         { dim_factor: 0.8,
-                           time: ANIMATION_TIME,
-                           transition: 'easeOutQuad'
-                         });
+        this._shadeBackgrounds();
 
         this._coverPane.raise_top();
         this._coverPane.show();
@@ -612,12 +646,7 @@ const Overview = new Lang.Class({
                            onComplete: this._hideDone,
                            onCompleteScope: this
                          });
-
-        Tweener.addTween(this._background,
-                         { dim_factor: 1.0,
-                           time: ANIMATION_TIME,
-                           transition: 'easeOutQuad'
-                         });
+        this._unshadeBackgrounds();
 
         this._coverPane.raise_top();
         this._coverPane.show();
@@ -647,7 +676,7 @@ const Overview = new Lang.Class({
 
         this._viewSelector.hide();
         this._desktopFade.hide();
-        this._background.hide();
+        this._backgroundGroup.hide();
         this._overview.hide();
 
         this.visible = false;
