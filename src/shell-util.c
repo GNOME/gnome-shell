@@ -9,6 +9,8 @@
 #include <glib/gi18n-lib.h>
 #include <gtk/gtk.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gdk/gdkx.h>
+#include <X11/Xatom.h>
 
 #ifdef HAVE__NL_TIME_FIRST_WEEKDAY
 #include <langinfo.h>
@@ -430,3 +432,56 @@ shell_util_create_pixbuf_from_data (const guchar      *data,
                                    bits_per_sample, width, height, rowstride,
                                    (GdkPixbufDestroyNotify) g_free, NULL);
 }
+
+Pixmap
+shell_util_get_root_background (void)
+{
+  Display *display;
+  Pixmap pixmap;
+  Window rootwin;
+  Atom xrootpmap;
+  Atom actual_type;
+  int actual_format;
+  unsigned long n_items;
+  unsigned long bytes_after;
+  unsigned char *buffer;
+
+  display = gdk_x11_get_default_xdisplay ();
+
+  xrootpmap = gdk_x11_atom_to_xatom (gdk_atom_intern_static_string ("_XROOTPMAP_ID"));
+  rootwin = gdk_x11_get_default_root_xwindow ();
+
+  gdk_error_trap_push ();
+  actual_type = None;
+  buffer = NULL;
+  if (XGetWindowProperty (display, rootwin, xrootpmap,
+                          0, G_MAXLONG,
+                          False, XA_PIXMAP, &actual_type, &actual_format,
+                          &n_items,
+                          &bytes_after,
+                          &buffer) != Success ||
+      actual_type == None)
+    {
+      if (buffer)
+        XFree (buffer);
+      gdk_error_trap_pop_ignored ();
+      return FALSE;
+    }
+
+  if (gdk_error_trap_pop () != Success ||
+      n_items == 0 ||
+      actual_type != XA_PIXMAP ||
+      actual_format != 32)
+    {
+      if (buffer)
+        XFree (buffer);
+      return FALSE;
+    }
+
+  pixmap = *((Pixmap*) buffer);
+
+  XFree (buffer);
+  return pixmap;
+}
+
+

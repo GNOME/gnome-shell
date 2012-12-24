@@ -7,6 +7,7 @@
 #include <clutter/clutter.h>
 #include <libsoup/soup.h>
 #include <gdk-pixbuf/gdk-pixbuf.h>
+#include <gdk/gdkx.h>
 
 G_BEGIN_DECLS
 
@@ -45,6 +46,8 @@ GdkPixbuf *shell_util_create_pixbuf_from_data (const guchar      *data,
                                                int                width,
                                                int                height,
                                                int                rowstride);
+
+Pixmap  shell_util_get_root_background        (void);
 
 G_END_DECLS
 
