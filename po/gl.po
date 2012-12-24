@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-16 17:05+0200\n"
-"PO-Revision-Date: 2012-10-16 17:06+0200\n"
+"POT-Creation-Date: 2012-12-24 22:58+0100\n"
+"PO-Revision-Date: 2012-12-24 23:03+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -25,21 +25,197 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.7.1\n"
 
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Navigation"
+msgstr "Navegación"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+msgid "Move window to workspace 1"
+msgstr "Mover xanela ao espazo de traballo 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+msgid "Move window to workspace 2"
+msgstr "Mover xanela ao espazo de traballo 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move window to workspace 3"
+msgstr "Mover xanela ao espazo de traballo 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move window to workspace 4"
+msgstr "Mover xanela ao espazo de traballo 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+msgid "Move window one workspace to the left"
+msgstr "Mover xanela un espazo de traballo cara á esquerda"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the right"
+msgstr "Mover xanela un espazo de traballo cara á dereita"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace up"
+msgstr "Mover xanela un espazo de traballo cara a arriba"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace down"
+msgstr "Mover xanela un espazo de traballo cara a abaixo"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Switch applications"
+msgstr "Cambiar entre aplicativos"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Switch windows"
+msgstr "Cambiar xanelas"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Switch windows of an application"
+msgstr "Cambiar entre as xanelas dun aplicativo"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Switch system controls"
+msgstr "Cambiar entre os controles do sistema"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Switch windows directly"
+msgstr "Cambiar xanelas directamente"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch windows of an app directly"
+msgstr "Cambiar entre as xanelas dun aplicativo directamente"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Switch system controls directly"
+msgstr "Cambiar entre os controles do sistema directamente"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+msgid "Hide all normal windows"
+msgstr "Ocultar todas as xanelas normais"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+msgid "Switch to workspace 1"
+msgstr "Cambiar ao espazo de traballo 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+msgid "Switch to workspace 2"
+msgstr "Cambiar ao espazo de traballo 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+msgid "Switch to workspace 3"
+msgstr "Cambiar ao espazo de traballo 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+msgid "Switch to workspace 4"
+msgstr "Cambiar ao espazo de traballo 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Move to workspace left"
+msgstr "Mover ao espazo da esquerda"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Move to workspace right"
+msgstr "Mover ao espazo da dereita"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Move to workspace above"
+msgstr "Mover ao espazo de arriba"
+
+#: ../src/50-mutter-navigation.xml.in.h:25
+msgid "Move to workspace below"
+msgstr "Mover ao espazo de traballo de abaixo"
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "System"
+msgstr "Sistema"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "Mostrar o diálogo de executar orde"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "Show the activities overview"
+msgstr "Mostrar a vista xeral de actividades"
+
 #: ../src/50-mutter-windows.xml.in.h:1
 msgid "Windows"
 msgstr "Xanelas"
 
 #: ../src/50-mutter-windows.xml.in.h:2
-msgid "View split on left"
-msgstr "Ver división á esquerda"
+msgid "Activate the window menu"
+msgstr "Activar o menú da xanela"
 
 #: ../src/50-mutter-windows.xml.in.h:3
+msgid "Toggle fullscreen mode"
+msgstr "Trocar modo de pantalla completa"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+msgid "Toggle maximization state"
+msgstr "Trocar o estado maximizado"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+msgid "Maximize window"
+msgstr "Maximizar xanela"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+msgid "Restore window"
+msgstr "Restaurar xanela"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+msgid "Toggle shaded state"
+msgstr "Trocar o estado ensombrecido"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+msgid "Close window"
+msgstr "Pechar xanela"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+msgid "Minimize window"
+msgstr "Minimizar xanela"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Move window"
+msgstr "Mover xanela"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+msgid "Resize window"
+msgstr "Redimensionar xanela"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+msgid "Toggle window on all workspaces or one"
+msgstr "Trocar que a xanela apareza en tódolos espazos de traballo ou nun"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Elevar a xanela se está cuberta por outra, en caso contrario baixala"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+msgid "Raise window above other windows"
+msgstr "Subir a xanela por enriba doutras xanelas"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+msgid "Lower window below other windows"
+msgstr "Baixar xanela debaixo doutras xanelas"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Maximize window vertically"
+msgstr "Maximizar xanela verticalmente"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+msgid "Maximize window horizontally"
+msgstr "Maximizar xanela horizontalmente"
+
+#: ../src/50-mutter-windows.xml.in.h:18
+msgid "View split on left"
+msgstr "Dividir vista á esquerda"
+
+#: ../src/50-mutter-windows.xml.in.h:19
 msgid "View split on right"
-msgstr "Ver división á dereita"
+msgstr "Dividir vista á dereita"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:492
+#: ../src/compositor/compositor.c:512
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -82,17 +258,17 @@ msgstr "Espe_rar"
 msgid "_Force Quit"
 msgstr "_Forzar a saída"
 
-#: ../src/core/display.c:396
+#: ../src/core/display.c:394
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Falta a extensión %s que se require para a composición"
 
-#: ../src/core/display.c:493
+#: ../src/core/display.c:491
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Produciuse un erro ao abrir a visualización do X Window System «%s»\n"
 
-#: ../src/core/keybindings.c:853
+#: ../src/core/keybindings.c:876
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -125,12 +301,12 @@ msgstr "Inicializar sesión desde o ficheiro de salvagarda"
 msgid "Make X calls synchronous"
 msgstr "Facer que as chamadas a X sexan sincrónicas"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:496
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Produciuse un erro ao dixitalizar o directorio de temas: %s\n"
 
-#: ../src/core/main.c:510
+#: ../src/core/main.c:512
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -185,7 +361,7 @@ msgstr ""
 "«%s» atopados na base de datos de configuración non é un valor correcto para "
 "o modificador do botón do rato\n"
 
-#: ../src/core/prefs.c:1747
+#: ../src/core/prefs.c:1757
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -194,17 +370,17 @@ msgstr ""
 "«%s» atopados na base de datos de configuración non é un valor correcto para "
 "a combinación de teclas «%s»\n"
 
-#: ../src/core/prefs.c:1844
+#: ../src/core/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "Espazo de traballo %d"
 
-#: ../src/core/screen.c:652
+#: ../src/core/screen.c:658
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "A pantalla %d na visualización «%s» non é válida\n"
 
-#: ../src/core/screen.c:668
+#: ../src/core/screen.c:674
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -213,7 +389,7 @@ msgstr ""
 "A visualización %d na pantalla «%s» ten xa un xestor de xanelas, tente usar "
 "a opción --replace para substituír o xestor de xanelas.\n"
 
-#: ../src/core/screen.c:695
+#: ../src/core/screen.c:701
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -221,12 +397,12 @@ msgstr ""
 "Non foi posíbel obter a selección do xestor de xanelas na pantalla %d na "
 "visualización «%s»\n"
 
-#: ../src/core/screen.c:750
+#: ../src/core/screen.c:770
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "A visualización %d na pantalla «%s» ten xa un xestor de xanelas\n"
 
-#: ../src/core/screen.c:935
+#: ../src/core/screen.c:955
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Non foi posíbel liberar a visualización %d na pantalla «%s»\n"
@@ -323,7 +499,7 @@ msgid "Window manager error: "
 msgstr "Erro do xestor de xanelas: "
 
 #. first time through
-#: ../src/core/window.c:7237
+#: ../src/core/window.c:7275
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -339,7 +515,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7902
+#: ../src/core/window.c:7941
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -1556,11 +1732,11 @@ msgstr "Disposición dos botóns"
 msgid "Benchmark"
 msgstr "Banco de probas"
 
-#: ../src/ui/theme-viewer.c:944
+#: ../src/ui/theme-viewer.c:949
 msgid "Window Title Goes Here"
 msgstr "O título da xanela vai aquí"
 
-#: ../src/ui/theme-viewer.c:1047
+#: ../src/ui/theme-viewer.c:1052
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1571,261 +1747,46 @@ msgstr ""
 "marco) e %g segundos de tempo estándar incluíndo recursos do servidor X (%g "
 "milisegundos por marco)\n"
 
-#: ../src/ui/theme-viewer.c:1266
+#: ../src/ui/theme-viewer.c:1271
 msgid "position expression test returned TRUE but set error"
 msgstr ""
 "a proba de expresión da posición devolveu TRUE mais estabeleceu un erro"
 
-#: ../src/ui/theme-viewer.c:1268
+#: ../src/ui/theme-viewer.c:1273
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 "a proba de expresión da posición devolveu FALSE mais estabeleceu un erro"
 
-#: ../src/ui/theme-viewer.c:1272
+#: ../src/ui/theme-viewer.c:1277
 msgid "Error was expected but none given"
 msgstr "Esperábase un erro, mais non se deu ningún"
 
-#: ../src/ui/theme-viewer.c:1274
+#: ../src/ui/theme-viewer.c:1279
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Esperábase un erro %d mais deuse %d"
 
-#: ../src/ui/theme-viewer.c:1280
+#: ../src/ui/theme-viewer.c:1285
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Non se esperaba ningún erro mais devolveuse un: %s"
 
-#: ../src/ui/theme-viewer.c:1284
+#: ../src/ui/theme-viewer.c:1289
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "o valor x era %d, esperábase %d"
 
-#: ../src/ui/theme-viewer.c:1287
+#: ../src/ui/theme-viewer.c:1292
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "o valor y era %d, esperábase %d"
 
-#: ../src/ui/theme-viewer.c:1352
+#: ../src/ui/theme-viewer.c:1357
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d expresións de coordenadas interpretadas en %g segundos (%g segundos de "
 "media)\n"
-
-#: ../src/50-mutter-navigation.xml.in.h:17
-#, fuzzy
-msgid "Switch to workspace 1"
-msgstr "Cambiar ao espazo de traballo 1"
-
-#: ../src/50-mutter-navigation.xml.in.h:18
-#, fuzzy
-msgid "Switch to workspace 2"
-msgstr "Cambiar ao espazo de traballo 2"
-
-#: ../src/50-mutter-navigation.xml.in.h:19
-#, fuzzy
-msgid "Switch to workspace 3"
-msgstr "Cambiar ao espazo de traballo 3"
-
-#: ../src/50-mutter-navigation.xml.in.h:20
-#, fuzzy
-msgid "Switch to workspace 4"
-msgstr "Cambiar ao espazo de traballo 4"
-
-#: ../src/50-mutter-windows.xml.in.h:2
-#, fuzzy
-msgid "Activate the window menu"
-msgstr "Activar o menú da xanela"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-#, fuzzy
-msgid "Toggle fullscreen mode"
-msgstr "Alternar o modo de pantalla completa"
-
-#: ../src/50-mutter-windows.xml.in.h:4
-#, fuzzy
-msgid "Toggle maximization state"
-msgstr "Alternar o estado maximizado"
-
-#: ../src/50-mutter-windows.xml.in.h:5
-#, fuzzy
-msgid "Maximize window"
-msgstr "Maximizar a xanela"
-
-#: ../src/50-mutter-windows.xml.in.h:6
-#, fuzzy
-msgid "Restore window"
-msgstr "Restaurar a xanela"
-
-#: ../src/50-mutter-windows.xml.in.h:7
-#, fuzzy
-msgid "Toggle shaded state"
-msgstr "Alternar o estado ensombrecido"
-
-#: ../src/50-mutter-windows.xml.in.h:9
-#, fuzzy
-msgid "Minimize window"
-msgstr "Minimizar a xanela"
-
-#: ../src/50-mutter-windows.xml.in.h:8
-#, fuzzy
-msgid "Close window"
-msgstr "Pechar a xanela"
-
-#: ../src/50-mutter-windows.xml.in.h:10
-#, fuzzy
-msgid "Move window"
-msgstr "Mover a xanela"
-
-#: ../src/50-mutter-windows.xml.in.h:11
-#, fuzzy
-msgid "Resize window"
-msgstr "Redimensionar a xanela"
-
-#: ../src/50-mutter-navigation.xml.in.h:2
-#, fuzzy
-msgid "Move window to workspace 1"
-msgstr "Mover a xanela ao espazo de traballo 1"
-
-#: ../src/50-mutter-navigation.xml.in.h:3
-#, fuzzy
-msgid "Move window to workspace 2"
-msgstr "Mover a xanela ao espazo de traballo 2"
-
-#: ../src/50-mutter-navigation.xml.in.h:4
-#, fuzzy
-msgid "Move window to workspace 3"
-msgstr "Mover a xanela ao espazo de traballo 3"
-
-#: ../src/50-mutter-navigation.xml.in.h:5
-#, fuzzy
-msgid "Move window to workspace 4"
-msgstr "Mover a xanela ao espazo de traballo 4"
-
-#: ../src/50-mutter-navigation.xml.in.h:6
-#, fuzzy
-msgid "Move window one workspace to the left"
-msgstr "Mover a xanela un espazo de traballo cara á esquerda"
-
-#: ../src/50-mutter-navigation.xml.in.h:7
-#, fuzzy
-msgid "Move window one workspace to the right"
-msgstr "Mover a xanela un espazo de traballo cara á dereita"
-
-#: ../src/50-mutter-navigation.xml.in.h:8
-#, fuzzy
-msgid "Move window one workspace up"
-msgstr "Mover a xanela un espazo de traballo cara a arriba"
-
-#: ../src/50-mutter-navigation.xml.in.h:9
-#, fuzzy
-msgid "Move window one workspace down"
-msgstr "Mover a xanela un espazo de traballo cara a abaixo"
-
-#: ../src/50-mutter-windows.xml.in.h:14
-#, fuzzy
-msgid "Raise window above other windows"
-msgstr "Subir a xanela por enriba doutras xanelas"
-
-#: ../src/50-mutter-windows.xml.in.h:15
-#, fuzzy
-msgid "Lower window below other windows"
-msgstr "Baixar unha xanela debaixo doutras xanelas"
-
-#: ../src/50-mutter-windows.xml.in.h:16
-#, fuzzy
-msgid "Maximize window vertically"
-msgstr "Maximizar a xanela verticalmente"
-
-#: ../src/50-mutter-windows.xml.in.h:17
-#, fuzzy
-msgid "Maximize window horizontally"
-msgstr "Maximizar a xanela horizontalmente"
-
-#: ../src/50-mutter-navigation.xml.in.h:1
-#, fuzzy
-msgid "Navigation"
-msgstr "Navegación"
-
-#: ../src/50-mutter-navigation.xml.in.h:10
-#, fuzzy
-msgid "Switch applications"
-msgstr "Cambiar entre aplicativos"
-
-#: ../src/50-mutter-navigation.xml.in.h:11
-#, fuzzy
-msgid "Switch windows of an application"
-msgstr "Cambiar entre as xanelas dun aplicativo"
-
-#: ../src/50-mutter-navigation.xml.in.h:12
-#, fuzzy
-msgid "Switch system controls"
-msgstr "Cambiar entre os controles do sistema"
-
-#: ../src/50-mutter-navigation.xml.in.h:13
-#, fuzzy
-msgid "Switch windows directly"
-msgstr "Cambiar xanelas directamente"
-
-#: ../src/50-mutter-navigation.xml.in.h:14
-#, fuzzy
-msgid "Switch windows of an app directly"
-msgstr "Moverse entre as xanelas dun aplicativo directamente"
-
-#: ../src/50-mutter-navigation.xml.in.h:15
-#, fuzzy
-msgid "Switch system controls directly"
-msgstr "Moverse entre os controles do sistema directamente"
-
-#: ../src/50-mutter-navigation.xml.in.h:16
-#, fuzzy
-msgid "Hide all normal windows"
-msgstr "Agochar todas as xanelas normais"
-
-#: ../src/50-mutter-navigation.xml.in.h:21
-#, fuzzy
-msgid "Move to workspace left"
-msgstr "Mover ao espazo da esquerda"
-
-#: ../src/50-mutter-navigation.xml.in.h:22
-#, fuzzy
-msgid "Move to workspace right"
-msgstr "Mover ao espazo da dereita"
-
-#: ../src/50-mutter-navigation.xml.in.h:23
-#, fuzzy
-msgid "Move to workspace above"
-msgstr "Mover ao espazo de arriba"
-
-#: ../src/50-mutter-navigation.xml.in.h:24
-#, fuzzy
-msgid "Move to workspace below"
-msgstr "Mover ao espazo de abaixo"
-
-#: ../src/50-mutter-system.xml.in.h:1
-#, fuzzy
-msgid "System"
-msgstr "Sistema"
-
-#: ../src/50-mutter-system.xml.in.h:2
-#, fuzzy
-msgid "Show the run command prompt"
-msgstr "Mostrar o diálogo de executar orde"
-
-#: ../src/50-mutter-system.xml.in.h:3
-#, fuzzy
-msgid "Show the activities overview"
-msgstr "Mostrar a vista previa das actividades"
-
-#: ../src/50-mutter-windows.xml.in.h:12
-#, fuzzy
-msgid "Toggle window on all workspaces or one"
-msgstr "Trocar que a xanela apareza en tódolos espazos de traballo ou nun"
-
-#: ../src/50-mutter-windows.xml.in.h:13
-#, fuzzy
-msgid "Raise window if covered, otherwise lower it"
-msgstr "Elevar a xanela se está cuberta por outra, en caso contrario baixala"
 
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "Lista de separadas por comas dos complementos do compositor"
