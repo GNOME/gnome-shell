@@ -16,32 +16,203 @@ msgstr ""
 "Project-Id-Version: metacity.gnome-2-26\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-06 23:35+0000\n"
-"PO-Revision-Date: 2012-08-22 08:59+0530\n"
+"POT-Creation-Date: 2012-12-13 21:38+0000\n"
+"PO-Revision-Date: 2012-12-25 08:50+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "Language: pa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
-#, fuzzy
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Navigation"
+msgstr "ਨੇਵੀਗੇਸ਼ਨ"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+msgid "Move window to workspace 1"
+msgstr "ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੧ ਵਿੱਚ ਲਿਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+msgid "Move window to workspace 2"
+msgstr "ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੨ ਵਿੱਚ ਲਿਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move window to workspace 3"
+msgstr "ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੩ ਵਿੱਚ ਲਿਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move window to workspace 4"
+msgstr "ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੪ ਵਿੱਚ ਲਿਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+msgid "Move window one workspace to the left"
+msgstr "ਵਿੰਡੋ ਨੂੰ ਇੱਕ ਵਰਕਸਪੇਸ ਖੱਬੇ ਵੱਲ ਲਿਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the right"
+msgstr "ਵਿੰਡੋ ਨੂੰ ਇੱਕ ਵਰਕਸਪੇਸ ਸੱਜੇ ਵੱਲ ਲਿਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace up"
+msgstr "ਵਿੰਡੋ ਨੂੰ ਇੱਕ ਵਰਕਸਪੇਸ ਉੱਤੇ ਲਿਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace down"
+msgstr "ਵਿੰਡੋ ਨੂੰ ਇੱਕ ਵਰਕਸਪੇਸ ਹੇਠਾਂ ਲਿਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Switch applications"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ ਬਦਲੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Switch windows"
+msgstr "ਵਿੰਡੋਜ਼ ਬਦਲੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Switch windows of an application"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ ਦੀਆਂ ਵਿੰਡੋਜ਼ ਬਦਲੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Switch system controls"
+msgstr "ਸਿਸਟਮ ਕੰਟਰੋਲ ਬਦਲੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Switch windows directly"
+msgstr "ਵਿੰਡੋਜ਼ ਸਿੱਧੀਆਂ ਬਦਲੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch windows of an app directly"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ ਦੀ ਵਿੰਡੋਜ਼ ਸਿੱਧੀ ਬਦਲੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Switch system controls directly"
+msgstr "ਸਿਸਟਮ ਕੰਟਰੋਲ ਸਿੱਧੇ ਬਦਲੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+msgid "Hide all normal windows"
+msgstr "ਸਭ ਸਧਾਰਨ ਵਿੰਡੋਜ਼ ਓਹਲੇ ਕਰੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+msgid "Switch to workspace 1"
+msgstr "ਵਰਕਸਪੇਸ ੧ ਵਿੱਚ ਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+msgid "Switch to workspace 2"
+msgstr "ਵਰਕਸਪੇਸ ੨ ਵਿੱਚ ਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+msgid "Switch to workspace 3"
+msgstr "ਵਰਕਸਪੇਸ ੩ ਵਿੱਚ ਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+msgid "Switch to workspace 4"
+msgstr "ਵਰਕਸਪੇਸ ੪ ਵਿੱਚ ਜਾਓ"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Move to workspace left"
+msgstr "ਖੱਬੇ ਵਰਕਸਪੇਸ 'ਚ ਭੇਜੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Move to workspace right"
+msgstr "ਸੱਜੇ ਵਰਕਸਪੇਸ 'ਚ ਭੇਜੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Move to workspace above"
+msgstr "ਉੱਤੇ ਵਰਕਸਪੇਸ 'ਚ ਭੇਜੋ"
+
+#: ../src/50-mutter-navigation.xml.in.h:25
+msgid "Move to workspace below"
+msgstr "ਹੇਠਾਂ ਵਰਕਸਪੇਸ 'ਚ ਭੇਜੋ"
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "System"
+msgstr "ਸਿਸਟਮ"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "ਕਮਾਂਡ ਚਲਾਉ ਪਰੋਉਟ ਵੇਖੋ"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "Show the activities overview"
+msgstr "ਸਰਗਰਮੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ ਵੇਖੋ"
+
+#: ../src/50-mutter-windows.xml.in.h:1
 msgid "Windows"
-msgstr ""
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਿੰਡੋ\n"
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਿੰਡੋਜ਼"
+msgstr "ਵਿੰਡੋਜ਼"
 
 #: ../src/50-mutter-windows.xml.in.h:2
+msgid "Activate the window menu"
+msgstr "ਐਕਟਿਵੇਟ ਵਿੰਡੋ ਮੇਨੂ"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Toggle fullscreen mode"
+msgstr "ਪੂਰੀ ਸਕਰੀਨ ਮੋਡ ਬਦਲੋ"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+msgid "Toggle maximization state"
+msgstr "ਅਧਿਕਤਮ ਸਥਿਤੀ ਬਦਲੋ"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+msgid "Maximize window"
+msgstr "ਵਿੰਡੋ ਵੱਧੋ-ਵੱਧ"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+msgid "Restore window"
+msgstr "ਵਿੰਡੋ ਮੁੜ-ਸਟੋਰ"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+msgid "Toggle shaded state"
+msgstr "ਰੰਗਤ ਸਥਿਤੀ ਬਦਲੋ"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+msgid "Close window"
+msgstr "ਵਿੰਡੋ ਬੰਦ ਕਰੋ"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+msgid "Minimize window"
+msgstr "ਵਿੰਡੋ ਘੱਟੋ-ਘੱਟ"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Move window"
+msgstr "ਵਿੰਡੋ ਹਿਲਾਓ"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+msgid "Resize window"
+msgstr "ਵਿੰਡੋ ਮੁੜ-ਅਕਾਰ"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+msgid "Toggle window on all workspaces or one"
+msgstr "ਵਿੰਡੋ ਸਭ ਵਰਕਸਪੇਸ ਜਾਂ ਇੱਕ ਵਿੱਚ ਬਦਲੋ"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+msgid "Raise window if covered, otherwise lower it"
+msgstr "ਵਿੰਡੋ ਉਭਾਰੋ, ਜੇ ਢੱਕੀ ਹੈ, ਨਹੀਂ ਤਾਂ ਹੇਠਾਂ ਭੇਜੋ"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+msgid "Raise window above other windows"
+msgstr "ਵਿੰਡੋ ਨੂੰ ਹੋਰ ਵਿੰਡੋਜ਼ ਤੋਂ ਉੱਤੇ ਲਿਆਓ"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+msgid "Lower window below other windows"
+msgstr "ਵਿੰਡੋ ਨੂੰ ਹੋਰ ਵਿੰਡੋ ਤੋਂ ਹੇਠਾਂ ਲੈ ਜਾਉ"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Maximize window vertically"
+msgstr "ਵਿੰਡੋ ਖੜਵੇਂ ਰੂਪ ਵਿੱਚ ਵੱਧੋ-ਵੱਧ"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+msgid "Maximize window horizontally"
+msgstr "ਵਿੰਡੋ ਲੇਟਵੇਂ ਰੂਪ ਵਿੱਚ ਵੱਧੋ-ਵੱਧ"
+
+#: ../src/50-mutter-windows.xml.in.h:18
 msgid "View split on left"
 msgstr "ਖੱਬੇ ਪਾਸੇ ਵੰਡ ਵੇਖੋ"
 
-#: ../src/50-mutter-windows.xml.in.h:3
+#: ../src/50-mutter-windows.xml.in.h:19
 msgid "View split on right"
 msgstr "ਸੱਜੇ ਪਾਸੇ ਵੰਡ ਵੇਖੋ"
 
@@ -65,17 +236,17 @@ msgstr "ਘੰਟੀ ਈਵੈਂਟ"
 msgid "Unknown window information request: %d"
 msgstr "ਅਣਜਾਣ ਵਿੰਡੋ ਜਾਣਕਾਰੀ ਮੰਗ: %d"
 
-#: ../src/core/delete.c:114
+#: ../src/core/delete.c:111
 #, c-format
-#| msgid "<tt>%s</tt> is not responding."
-msgid "%s is not responding."
-msgstr "%s ਜਵਾਬ ਨਹੀਂ ਦੇ ਰਹੀ ਹੈ।"
+#| msgid "%s is not responding."
+msgid "“%s” is not responding."
+msgstr "\"%s\" ਜਵਾਬ ਨਹੀਂ ਦੇ ਰਹੀ ਹੈ।"
 
-#: ../src/core/delete.c:118
+#: ../src/core/delete.c:113
 msgid "Application is not responding."
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਜਵਾਬ ਨਹੀਂ ਦੇ ਰਹੀ ਹੈ।"
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:118
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -83,25 +254,25 @@ msgstr ""
 "ਤੁਸੀਂ ਇਸ ਲਈ ਕੁਝ ਸਮੇਂ ਵਾਸਤੇ ਉਡੀਕ ਕਰ ਸਕਦੇ ਹੋ ਜਾਂ ਕਾਰਜ ਨੂੰ ਧੱਕੇ ਨਾਲ ਬੰਦ ਕਰ ਸਕਦੇ "
 "ਹੋ।"
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:125
 msgid "_Wait"
 msgstr "ਉਡੀਕੋ(_W)"
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:125
 msgid "_Force Quit"
 msgstr "ਧੱਕੇ ਨਾਲ ਬੰਦ(_F)"
 
-#: ../src/core/display.c:380
+#: ../src/core/display.c:397
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "ਕੰਪੋਜ਼ਿਸ਼ਨਿੰਗ ਲਈ %s ਐਕਸਟੈਨਸ਼ਨ ਗੁੰਮ ਹੈ"
 
-#: ../src/core/display.c:446
+#: ../src/core/display.c:494
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X ਵਿੰਡੋ ਸਿਸਟਮ ਡਿਸਪਲੇਅ '%s' ਨੂੰ ਖੋਲਣ ਵਿੱਚ ਅਸਮਰਥ\n"
 
-#: ../src/core/keybindings.c:844
+#: ../src/core/keybindings.c:860
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -164,11 +335,10 @@ msgid "Print version"
 msgstr "ਵਰਜਨ ਛਾਪੋ"
 
 #: ../src/core/mutter.c:60
-#| msgid "Clutter Plugins"
 msgid "Mutter plugin to use"
 msgstr "ਵਰਤਣ ਲਈ ਮੁੱਟਰ ਪਲੱਗਇਨ"
 
-#: ../src/core/prefs.c:1065
+#: ../src/core/prefs.c:1079
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -176,13 +346,13 @@ msgstr ""
 "ਖਰਾਬ ਐਪਲੀਕੇਸ਼ਨ ਲਈ ਜੁਗਾੜ ਬੰਦ ਕੀਤਾ ਹੈ। ਕੁਝ ਐਪਲੀਕੇਸ਼ਨ ਚੰਗੀ ਤਰਾਂ ਕੰਮ ਨਹੀਂ ਕਰ ਸਕਦੇ "
 "ਹਨ।\n"
 
-#: ../src/core/prefs.c:1140
+#: ../src/core/prefs.c:1154
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "GSettings ਸਵਿੱਚ \"%2$s\" ਤੋਂ ਫੋਂਟ ਵੇਰਵੇ \"%1$s\" ਨੂੰ ਪਾਰਸ ਨਹੀਂ ਕਰ ਸਕਿਆ\n"
 
-#: ../src/core/prefs.c:1206
+#: ../src/core/prefs.c:1220
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -190,7 +360,7 @@ msgid ""
 msgstr ""
 "ਸੰਰਚਨਾ ਡਾਟਾਬੇਸ ਵਿੱਚ ਲੱਭੀ ਹੋਈ \"%s\" ਮਾਊਸ ਬਟਨ ਸੋਧਕ ਲਈ ਯੋਗ ਕੀਮਤ ਨਹੀਂ ਹੈ\n"
 
-#: ../src/core/prefs.c:1724
+#: ../src/core/prefs.c:1757
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -199,17 +369,17 @@ msgstr ""
 "ਸੰਰਚਨਾ ਡਾਟਾਬੇਸ ਵਿੱਚ  ਲੱਭੀ ਹੋਈ \"%s\" ਸਵਿੱਚ-ਬਾਈਡਿੰਗ \"%s\" ਲਈ ਯੋਗ ਕੀਮਤ ਨਹੀਂ "
 "ਹੈ\n"
 
-#: ../src/core/prefs.c:1821
+#: ../src/core/prefs.c:1854
 #, c-format
 msgid "Workspace %d"
 msgstr "ਵਰਕਸਪੇਸ %d"
 
-#: ../src/core/screen.c:652
+#: ../src/core/screen.c:659
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "ਡਿਸਪਲੇਅ '%2$s' ਉੱਤੇ ਸਕਰੀਨ %1$d ਗਲਤ ਹੈ\n"
 
-#: ../src/core/screen.c:668
+#: ../src/core/screen.c:675
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -219,18 +389,18 @@ msgstr ""
 "--replace "
 "ਮੌਜੂਦਾ ਵਿੰਡੋ ਮੈਨੇਜਰ ਵਰਤੋਂ।\n"
 
-#: ../src/core/screen.c:695
+#: ../src/core/screen.c:702
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "ਡਿਸਪਲੇਅ \"%2$s\" %1$d ਸਕਰੀਨ ਉੱਤੇ ਵਿੰਡੋ ਮੈਨੇਜਰ ਚੋਣ ਉਪਲੱਬਧ ਨਹੀਂ ਹੋ ਸਕੀ\n"
 
-#: ../src/core/screen.c:750
+#: ../src/core/screen.c:757
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "ਡਿਸਪਲੇਅ \"%2$s\" ਉੱਤੇ ਸਕਰੀਨ %1$d ਕੋਲ ਪਹਿਲਾਂ ਹੀ ਵਿੰਡੋ ਮੈਨੇਜਰ ਹੈ\n"
 
-#: ../src/core/screen.c:935
+#: ../src/core/screen.c:942
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "ਡਿਸਪਲੇਅ \"%2$s\" ਉੱਤੇ ਸਕਰੀਨ %1$d ਰੀਲਿਜ਼ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਿਆ\n"
@@ -328,7 +498,7 @@ msgid "Window manager error: "
 msgstr "ਵਿੰਡੋ ਮੈਨੇਜਰ ਗਲਤੀ: "
 
 #. first time through
-#: ../src/core/window.c:7234
+#: ../src/core/window.c:7240
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -344,7 +514,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7899
+#: ../src/core/window.c:7905
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -354,22 +524,22 @@ msgstr ""
 "ਆਕਾਰ %d x %d ਅਤੇ "
 "ਵੱਧ ਤੋਂ ਵੱਧ ਆਕਾਰ %d x %d ਸੈੱਟ ਕਰਦਾ ਹੈ, ਪਰ ਇਹ ਦਾ ਜ਼ਿਆਦਾ ਮਤਲਬ ਨਹੀਂ ਹੈ।\n"
 
-#: ../src/core/window-props.c:310
+#: ../src/core/window-props.c:274
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ ਨੇ ਇੱਕ ਫਰਜ਼ੀ _NET_WM_PID %lu ਦਿੱਤਾ ਹੈ\n"
 
-#: ../src/core/window-props.c:429
+#: ../src/core/window-props.c:393
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (%s ਉੱਤੇ)"
 
-#: ../src/core/window-props.c:1484
+#: ../src/core/window-props.c:1448
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "ਗਲਤ WM_TRANSIENT_FOR ਵਿੰਡੋ 0x%lx %s ਲਈ ਦਿੱਤਾ ਗਿਆ ਹੈ।\n"
 
-#: ../src/core/window-props.c:1495
+#: ../src/core/window-props.c:1459
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR ਵਿੰਡੋ 0x%lx %s ਲੂਪ ਬਣਾਏਗਾ।\n"
@@ -491,10 +661,29 @@ msgstr ""
 "ਕਰਨਾ ਹੈ।"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "ਪੁਆਇੰਟਰ ਦੇ ਰੁਕਣ ਤੱਕ ਫੋਕਸ ਬਦਲਣ ਨੂੰ ਰੋਕੋ"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#| msgid ""
+#| "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+#| "the focused window will be automatically raised after a delay specified "
+#| "by the auto_raise_delay key. This is not related to clicking on a window "
+#| "to raise it, nor to entering a window during drag-and-drop."
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focus will not be changed immediately when entering a window, but only "
+"after the pointer stops moving."
+msgstr ""
+"ਜੇ ਇਹ ਸਹੀਂ ਹੋਵੇ ਤਾਂ ਫੋਕਸ ਢੰਗ ਜਾਂ ਤਾਂ \"ਸਲੋਪੀ\" ਜਾਂ \"ਮਾਊਂਸ\" ਹੁੰਦਾ ਹੈ ਤਾਂ "
+"ਫੋਕਸ ਹੋਇਆ ਵਿੰਡੋ "
+"auto_raise_delay ਕੁੰਜੀ ਵਲੋਂ ਦਿੱਤੇ ਇੱਕ ਅੰਤਰਾਲ ਬਾਅਦ ਆਟੋਮੈਟਿਕ ਹੀ ਉਭਾਰਿਆ ਜਾਵੇਗਾ।"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
 msgstr "ਡਰੈਗ ਹੋਣ ਯੋਗ ਬਾਰਡਰ ਚੌੜਾਈ"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -503,11 +692,11 @@ msgstr ""
 "ਅਦਿੱਖ ਬਾਰਡਰ "
 "ਨੂੰ ਇਹ ਮੁੱਲ ਦੇ ਬਰਾਬਰ ਕਰਨ ਲਈ ਵਧਾਇਆ ਜਾਵੇਗਾ।"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Select window from tab popup"
 msgstr "ਟੈਬ ਪੋਪਅੱਪ ਤੋਂ ਵਿੰਡੋ ਚੁਣੋ"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid "Cancel tab popup"
 msgstr "ਟੈਬ ਪੋਪਅੱਪ ਰੱਦ ਕਰੋ"
 
@@ -1586,261 +1775,6 @@ msgstr "y ਕੀਮਤ %d ਸੀ, %d ਦੀ ਉਮੀਦ ਸੀ"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d ਕੋਆਰਡੀਨੇਟਰ ਸਮੀਕਰਨ ਪਾਰਸ %g ਸਕਿੰਟਾਂ ਵਿੱਚ ਕੀਤੀ (ਔਸਤਨ %g ਸਕਿੰਟ)\n"
 
-#: ../src/50-mutter-navigation.xml.in.h:18
-#, fuzzy
-msgid "Switch to workspace 1"
-msgstr ""
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਰਕਸਪੇਸ ੧ ਵਿੱਚ ਜਾਓ\n"
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਰਕਸਪੇਸ 1 ਵਿੱਚ ਜਾਓ"
-
-#: ../src/50-mutter-navigation.xml.in.h:19
-#, fuzzy
-msgid "Switch to workspace 2"
-msgstr ""
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਰਕਸਪੇਸ ੨ ਵਿੱਚ ਜਾਓ\n"
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਰਕਸਪੇਸ 2 ਵਿੱਚ ਜਾਓ"
-
-#: ../src/50-mutter-navigation.xml.in.h:20
-#, fuzzy
-msgid "Switch to workspace 3"
-msgstr ""
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਰਕਸਪੇਸ ੩ ਵਿੱਚ ਜਾਓ\n"
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਰਕਸਪੇਸ 3 ਵਿੱਚ ਜਾਓ"
-
-#: ../src/50-mutter-navigation.xml.in.h:21
-#, fuzzy
-msgid "Switch to workspace 4"
-msgstr ""
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਰਕਸਪੇਸ ੪ ਵਿੱਚ ਜਾਓ\n"
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਰਕਸਪੇਸ 4 ਵਿੱਚ ਜਾਓ"
-
-#: ../src/50-mutter-windows.xml.in.h:1
-#, fuzzy
-msgid "Activate the window menu"
-msgstr ""
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਿੰਡੋ ਮੇਨੂ ਐਕਟੀਵੇਟ\n"
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਐਕਟਿਵ ਵਿੰਡੋ ਮੇਨੂ"
-
-#: ../src/50-mutter-windows.xml.in.h:13
-#, fuzzy
-msgid "Toggle fullscreen mode"
-msgstr "ਪੂਰੀ ਸਕਰੀਨ ਕਰੋ"
-
-#: ../src/50-mutter-windows.xml.in.h:14
-#, fuzzy
-msgid "Toggle maximization state"
-msgstr "ਅਧਿਕਤਮ ਸਥਿਤੀ ਕਰੋ"
-
-#: ../src/50-mutter-windows.xml.in.h:4
-#, fuzzy
-msgid "Maximize window"
-msgstr "ਵਿੰਡੋ ਅਧਿਕਤਮ"
-
-#: ../src/50-mutter-windows.xml.in.h:12
-#, fuzzy
-msgid "Restore window"
-msgstr "ਵਿੰਡੋ ਮੁੜ-ਸਟੋਰ"
-
-#: ../src/50-mutter-windows.xml.in.h:15
-#, fuzzy
-msgid "Toggle shaded state"
-msgstr "ਰੰਗਤ ਸਥਿਤੀ ਕਰੋ"
-
-#: ../src/50-mutter-windows.xml.in.h:7
-#, fuzzy
-msgid "Minimize window"
-msgstr ""
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਿੰਡੋ ਘੱਟੋ-ਘੱਟ\n"
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਿੰਡੋ ਅਲਪੀਕਰਨ"
-
-#: ../src/50-mutter-windows.xml.in.h:2
-#, fuzzy
-msgid "Close window"
-msgstr "ਵਿੰਡੋ ਬੰਦ ਕਰੋ"
-
-#: ../src/50-mutter-windows.xml.in.h:8
-#, fuzzy
-msgid "Move window"
-msgstr "ਵਿੰਡੋ ਹਿਲਾਓ"
-
-#: ../src/50-mutter-windows.xml.in.h:11
-#, fuzzy
-msgid "Resize window"
-msgstr "ਵਿੰਡੋ ਮੁੜ-ਅਕਾਰ"
-
-#: ../src/50-mutter-navigation.xml.in.h:10
-#, fuzzy
-msgid "Move window to workspace 1"
-msgstr ""
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੧ ਵਿੱਚ ਲਿਜਾਓ\n"
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ 1 ਵਿੱਚ ਲਿਜਾਓ"
-
-#: ../src/50-mutter-navigation.xml.in.h:11
-#, fuzzy
-msgid "Move window to workspace 2"
-msgstr ""
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੨ ਵਿੱਚ ਲਿਜਾਓ\n"
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ 2 ਵਿੱਚ ਲਿਜਾਓ"
-
-#: ../src/50-mutter-navigation.xml.in.h:12
-#, fuzzy
-msgid "Move window to workspace 3"
-msgstr ""
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੩ ਵਿੱਚ ਲਿਜਾਓ\n"
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ 3 ਵਿੱਚ ਲਿਜਾਓ"
-
-#: ../src/50-mutter-navigation.xml.in.h:13
-#, fuzzy
-msgid "Move window to workspace 4"
-msgstr ""
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ ੪ ਵਿੱਚ ਲਿਜਾਓ\n"
-"#-#-#-#-#  pa.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"ਵਿੰਡੋ ਨੂੰ ਵਰਕਸਪੇਸ 4 ਵਿੱਚ ਲਿਜਾਓ"
-
-#: ../src/50-mutter-navigation.xml.in.h:7
-#, fuzzy
-msgid "Move window one workspace to the left"
-msgstr "ਵਿੰਡੋ ਨੂੰ ਇੱਕ ਵਰਕਸਪੇਸ ਖੱਬੇ ਵੱਲ ਲਿਜਾਓ"
-
-#: ../src/50-mutter-navigation.xml.in.h:8
-#, fuzzy
-msgid "Move window one workspace to the right"
-msgstr "ਵਿੰਡੋ ਨੂੰ ਇੱਕ ਵਰਕਸਪੇਸ ਸੱਜੇ ਵੱਲ ਲਿਜਾਓ"
-
-#: ../src/50-mutter-navigation.xml.in.h:9
-#, fuzzy
-msgid "Move window one workspace up"
-msgstr "ਵਿੰਡੋ ਨੂੰ ਇੱਕ ਵਰਕਸਪੇਸ ਉੱਤੇ ਲਿਜਾਓ"
-
-#: ../src/50-mutter-navigation.xml.in.h:6
-#, fuzzy
-msgid "Move window one workspace down"
-msgstr "ਵਿੰਡੋ ਨੂੰ ਇੱਕ ਵਰਕਸਪੇਸ ਹੇਠਾਂ ਲਿਜਾਓ"
-
-#: ../src/50-mutter-windows.xml.in.h:9
-#, fuzzy
-msgid "Raise window above other windows"
-msgstr "ਹੋਰ ਵਿੰਡੋ ਤੋਂ ਉੱਪਰਲੀ ਵਿੰਡੋ ਉਠਾਓ"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-#, fuzzy
-msgid "Lower window below other windows"
-msgstr "ਹੋਰ ਵਿੰਡੋ ਹੇਠਾਂ ਥੱਲੇ ਵਾਲੀ ਵਿੰਡੋ"
-
-#: ../src/50-mutter-windows.xml.in.h:6
-#, fuzzy
-msgid "Maximize window vertically"
-msgstr "ਵਿੰਡੋ ਲੰਬਕਾਰੀ ਅਧਿਕਤਮ"
-
-#: ../src/50-mutter-windows.xml.in.h:5
-#, fuzzy
-msgid "Maximize window horizontally"
-msgstr "ਵਿੰਡੋ ਖਿਤਿਜੀ ਅਧਿਕਤਮ"
-
-#: ../src/50-mutter-navigation.xml.in.h:1
-#, fuzzy
-msgid "Hide all normal windows"
-msgstr "ਸਭ ਸਧਾਰਨ ਵਿੰਡੋਜ਼ ਓਹਲੇ ਕਰੋ"
-
-#: ../src/50-mutter-navigation.xml.in.h:2
-#, fuzzy
-msgid "Move to workspace above"
-msgstr "ਉੱਤੇ ਵਰਕਸਪੇਸ 'ਚ ਭੇਜੋ"
-
-#: ../src/50-mutter-navigation.xml.in.h:3
-#, fuzzy
-msgid "Move to workspace below"
-msgstr "ਹੇਠਾਂ ਵਰਕਸਪੇਸ 'ਚ ਭੇਜੋ"
-
-#: ../src/50-mutter-navigation.xml.in.h:4
-#, fuzzy
-msgid "Move to workspace left"
-msgstr "ਖੱਬੇ ਵਰਕਸਪੇਸ 'ਚ ਭੇਜੋ"
-
-#: ../src/50-mutter-navigation.xml.in.h:5
-#, fuzzy
-msgid "Move to workspace right"
-msgstr "ਸੱਜੇ ਵਰਕਸਪੇਸ 'ਚ ਭੇਜੋ"
-
-#: ../src/50-mutter-navigation.xml.in.h:14
-#, fuzzy
-msgid "Navigation"
-msgstr "ਨੇਵੀਗੇਸ਼ਨ"
-
-#: ../src/50-mutter-navigation.xml.in.h:15
-#, fuzzy
-msgid "Switch applications"
-msgstr "ਐਪਲੀਕੇਸ਼ਨ ਬਦਲੋ"
-
-#: ../src/50-mutter-navigation.xml.in.h:16
-#, fuzzy
-msgid "Switch system controls"
-msgstr "ਸਿਸਟਮ ਕੰਟਰੋਲ ਬਦਲੋ"
-
-#: ../src/50-mutter-navigation.xml.in.h:17
-#, fuzzy
-msgid "Switch system controls directly"
-msgstr "ਸਿਸਟਮ ਕੰਟਰੋਲ ਸਿੱਧੇ ਬਦਲੋ"
-
-#: ../src/50-mutter-navigation.xml.in.h:22
-#, fuzzy
-msgid "Switch windows directly"
-msgstr "ਵਿੰਡੋਜ਼ ਸਿੱਧੀਆਂ ਬਦਲੋ"
-
-#: ../src/50-mutter-navigation.xml.in.h:23
-#, fuzzy
-msgid "Switch windows of an app directly"
-msgstr "ਐਪਲੀਕੇਸ਼ਨ ਦੀ ਵਿੰਡੋ ਸਿੱਧੀ ਬਦਲੋ"
-
-#: ../src/50-mutter-navigation.xml.in.h:24
-#, fuzzy
-msgid "Switch windows of an application"
-msgstr "ਐਪਲੀਕੇਸ਼ਨ ਦੀ ਵਿੰਡੋਜ਼ ਬਦਲੋ"
-
-#: ../src/50-mutter-system.xml.in.h:1
-#, fuzzy
-msgid "Show the activities overview"
-msgstr "ਸਰਗਰਮੀ ਸੰਖੇਪ ਜਾਣਕਾਰੀ ਵੇਖੋ"
-
-#: ../src/50-mutter-system.xml.in.h:2
-#, fuzzy
-msgid "Show the run command prompt"
-msgstr "ਕਮਾਂਡ ਚਲਾਉ ਪਰੋਉਟ ਵੇਖੋ"
-
-#: ../src/50-mutter-system.xml.in.h:3
-#, fuzzy
-msgid "System"
-msgstr "ਸਿਸਟਮ"
-
-#: ../src/50-mutter-windows.xml.in.h:10
-#, fuzzy
-msgid "Raise window if covered, otherwise lower it"
-msgstr "ਵਿੰਡੋ ਉਭਾਰੋ, ਜੇ ਢੱਕੀ ਹੈ, ਨਹੀਂ ਤਾਂ ਹੇਠਾਂ ਭੇਜੋ"
-
-#: ../src/50-mutter-windows.xml.in.h:16
-#, fuzzy
-msgid "Toggle window on all workspaces or one"
-msgstr "ਵਿੰਡੋ ਸਭ ਵਰਕਸਪੇਸ ਜਾਂ ਇੱਕ ਵਿੱਚ ਬਦਲੋ"
-
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "ਕਾਮਿਆਂ ਨਾਲ ਵੱਖ ਕੀਤੀ ਕੰਪੋਜ਼ਿਤਰ ਪਲੱਗਇਨ ਦੀ ਲਿਸਟ"
 
@@ -2279,16 +2213,6 @@ msgstr "ਵਿੰਡੋ ਸਭ ਵਰਕਸਪੇਸ ਜਾਂ ਇੱਕ ਵਿ�
 
 #~ msgid "Enable Visual Bell"
 #~ msgstr "ਦਿੱਖ ਘੰਟੀ ਯੋਗ ਕਰੋ"
-
-#~ msgid ""
-#~ "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-#~ "the focused window will be automatically raised after a delay specified "
-#~ "by the auto_raise_delay key. This is not related to clicking on a window "
-#~ "to raise it, nor to entering a window during drag-and-drop."
-#~ msgstr ""
-#~ "ਜੇ ਇਹ ਸਹੀਂ ਹੋਵੇ ਤਾਂ ਫੋਕਸ ਢੰਗ ਜਾਂ ਤਾਂ \"ਸਲੋਪੀ\" ਜਾਂ \"ਮਾਊਂਸ\" ਹੁੰਦਾ ਹੈ ਤਾਂ ਫੋਕਸ ਹੋਇਆ ਵਿੰਡੋ "
-#~ "auto_raise_delay ਕੁੰਜੀ ਵਲੋਂ ਦਿੱਤੇ ਇੱਕ ਅੰਤਰਾਲ ਬਾਅਦ ਆਟੋਮੈਟਿਕ ਹੀ ਉਭਾਰਿਆ ਜਾਵੇਗਾ। ਇਹ "
-#~ "ਉਭਾਰਨ ਲਈ ਵਿੰਡੋ ਉੱਤੇ ਨਿਰਭਰ ਨਹੀਂ ਹੈ ਅਤੇ ਨਾ ਹੀ ਚੁੱਕਣ ਅਤੇ ਸੁੱਟਣ ਸਮੇਂ ਇੱਕ ਵਿੰਡੋ ਉੱਤੇ ਵੀ ਨਹੀਂ।"
 
 #~ msgid ""
 #~ "If true, ignore the titlebar_font option, and use the standard "
