@@ -26,6 +26,7 @@ const Util = imports.misc.util;
 
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const LOCK_ENABLED_KEY = 'lock-enabled';
+const LOCK_DELAY_KEY = 'lock-delay';
 
 const CURTAIN_SLIDE_TIME = 0.3;
 // fraction of screen height the arrow must reach before completing
@@ -582,7 +583,11 @@ const ScreenShield = new Lang.Class({
                 let lightboxWasShown = this._lightbox.shown;
                 this._lightbox.hide();
 
-                let shouldLock = lightboxWasShown && this._settings.get_boolean(LOCK_ENABLED_KEY);
+                // GLib.get_monotonic_time() returns microseconds, convert to seconds
+                let elapsedTime = (GLib.get_monotonic_time() - this._activationTime) / 1000000;
+                let shouldLock = lightboxWasShown &&
+                    this._settings.get_boolean(LOCK_ENABLED_KEY) &&
+                    (elapsedTime >= this._settings.get_boolean(LOCK_DELAY_KEY));
                 if (shouldLock || this._isLocked) {
                     this.lock(false);
                 } else if (this._isActive) {
