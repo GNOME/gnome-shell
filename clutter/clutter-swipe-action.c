@@ -169,6 +169,15 @@ gesture_end (ClutterGestureAction *action,
     g_signal_emit (action, swipe_signals[SWEPT], 0, actor, direction);
 }
 
+/* XXX:2.0 remove */
+static gboolean
+clutter_swipe_action_real_swipe (ClutterSwipeAction    *action,
+                                 ClutterActor          *actor,
+                                 ClutterSwipeDirection  direction)
+{
+  return TRUE;
+}
+
 static void
 clutter_swipe_action_class_init (ClutterSwipeActionClass *klass)
 {
@@ -180,6 +189,9 @@ clutter_swipe_action_class_init (ClutterSwipeActionClass *klass)
   gesture_class->gesture_begin = gesture_begin;
   gesture_class->gesture_progress = gesture_progress;
   gesture_class->gesture_end = gesture_end;
+
+  /* XXX:2.0 remove */
+  klass->swipe = clutter_swipe_action_real_swipe;
 
   /**
    * ClutterSwipeAction::swept:
