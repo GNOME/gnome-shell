@@ -39,6 +39,7 @@ var commandHeader = 'const Clutter = imports.gi.Clutter; ' +
                      * in the shell core code too. */
                     'const stage = global.stage; ' +
                     /* Special lookingGlass functions */
+                    'const inspect = Lang.bind(Main.lookingGlass, Main.lookingGlass.inspect); ' +
                     'const it = Main.lookingGlass.getIt(); ' +
                     'const r = Lang.bind(Main.lookingGlass, Main.lookingGlass.getResult); ';
 
@@ -871,8 +872,7 @@ const LookingGlass = new Lang.Class({
         inspectIcon.connect('button-press-event', Lang.bind(this, function () {
             let inspector = new Inspector(this);
             inspector.connect('target', Lang.bind(this, function(i, target, stageX, stageY) {
-                this._pushResult('<inspect x:' + stageX + ' y:' + stageY + '>',
-                                 target);
+                this._pushResult('inspect(' + Math.round(stageX) + ', ' + Math.round(stageY) + ')', target);
             }));
             inspector.connect('closed', Lang.bind(this, function() {
                 this.actor.show();
@@ -1055,6 +1055,10 @@ const LookingGlass = new Lang.Class({
 
         this._pushResult(command, resultObj);
         this._entry.text = '';
+    },
+
+    inspect: function(x, y) {
+        return global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
     },
 
     getIt: function () {
