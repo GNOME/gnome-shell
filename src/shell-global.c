@@ -1404,7 +1404,6 @@ guint32
 shell_global_get_current_time (ShellGlobal *global)
 {
   guint32 time;
-  const ClutterEvent *clutter_event;
 
   /* In case we have a xdnd timestamp use it */
   if (global->xdnd_timestamp != 0)
