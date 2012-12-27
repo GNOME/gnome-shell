@@ -238,6 +238,23 @@ meta_get_window_group_for_screen (MetaScreen *screen)
 }
 
 /**
+ * meta_get_top_window_group_for_screen:
+ * @screen: a #MetaScreen
+ *
+ * Returns: (transfer none): The top window group corresponding to @screen
+ */
+ClutterActor *
+meta_get_top_window_group_for_screen (MetaScreen *screen)
+{
+  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
+
+  if (!info)
+    return NULL;
+
+  return info->top_window_group;
+}
+
+/**
  * meta_get_background_actor_for_screen:
  * @screen: a #MetaScreen
  *
@@ -588,6 +605,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   }
 
   info->window_group = meta_window_group_new (screen);
+  info->top_window_group = meta_window_group_new (screen);
   info->background_actor = meta_background_actor_new_for_screen (screen);
   info->overlay_group = clutter_group_new ();
 
@@ -597,6 +615,7 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
 
   clutter_container_add (CLUTTER_CONTAINER (info->stage),
                          info->window_group,
+                         info->top_window_group,
                          info->overlay_group,
                          NULL);
 
