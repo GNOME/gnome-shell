@@ -171,12 +171,14 @@ const KeyringDialog = new Lang.Class({
     _onShowPassword: function(prompt) {
         this._buildControlTable();
         this._ensureOpen();
+        this._updateSensitivity(true);
         this._passwordEntry.grab_key_focus();
     },
 
     _onShowConfirm: function(prompt) {
         this._buildControlTable();
         this._ensureOpen();
+        this._updateSensitivity(true);
         this._continueButton.grab_key_focus();
     },
 
@@ -185,12 +187,10 @@ const KeyringDialog = new Lang.Class({
     },
 
     _onPasswordActivate: function() {
-        if (this.prompt.confirm_visible) {
-            this._updateSensitivity(true);
+        if (this.prompt.confirm_visible)
             this._confirmEntry.grab_key_focus();
-        } else {
+        else
             this._onContinueButton();
-        }
     },
 
     _onConfirmActivate: function() {
