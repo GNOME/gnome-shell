@@ -39,6 +39,11 @@
 
 #include "cogl/cogl.h"
 
+/* prototype decleration for DllMain to satisfy compiler checking in 
+ * maintainer mode build.
+ */
+BOOL WINAPI DllMain (HINSTANCE hinst, DWORD reason, LPVOID reserved);
+
 G_DEFINE_TYPE (ClutterBackendWin32, clutter_backend_win32,
 	       CLUTTER_TYPE_BACKEND);
 
