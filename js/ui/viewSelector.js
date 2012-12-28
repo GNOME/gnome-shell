@@ -114,7 +114,6 @@ const ViewSelector = new Lang.Class({
         // Wanda comes obviously first
         this.addSearchProvider(new Wanda.WandaSearchProvider());
         this.addSearchProvider(new AppDisplay.AppSearchProvider());
-        this.addSearchProvider(new AppDisplay.SettingsSearchProvider());
 
         // Load remote search providers provided by applications
         RemoteSearch.loadRemoteSearchProviders(Lang.bind(this, this.addSearchProvider));

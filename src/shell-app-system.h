@@ -60,7 +60,4 @@ GSList         *shell_app_system_subsearch                 (ShellAppSystem  *sys
                                                             GSList          *previous_results,
                                                             GSList          *terms);
 
-GSList         *shell_app_system_search_settings           (ShellAppSystem *system,
-                                                            GSList         *terms);
-
 #endif /* __SHELL_APP_SYSTEM_H__ */

@@ -123,6 +123,10 @@ function loadRemoteSearchProvider(file, info, data) {
 function remoteProvidersLoaded(loadState) {
     let searchSettings = new Gio.Settings({ schema: Search.SEARCH_PROVIDERS_SCHEMA });
     let sortOrder = searchSettings.get_strv('sort-order');
+
+    // Special case gnome-control-center to be always active and always first
+    sortOrder.unshift('gnome-control-center.desktop');
+
     let numSorted = sortOrder.length;
 
     loadState.loadedProviders.sort(

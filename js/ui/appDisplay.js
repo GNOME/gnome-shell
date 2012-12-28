@@ -366,44 +366,6 @@ const AppSearchProvider = new Lang.Class({
     }
 });
 
-const SettingsSearchProvider = new Lang.Class({
-    Name: 'SettingsSearchProvider',
-
-    _init: function() {
-        this.appInfo = Gio.DesktopAppInfo.new('gnome-control-center.desktop');
-        this._appSys = Shell.AppSystem.get_default();
-    },
-
-    getResultMetas: function(prefs, callback) {
-        let metas = [];
-        for (let i = 0; i < prefs.length; i++) {
-            let pref = prefs[i];
-            metas.push({ 'id': pref,
-                         'name': pref.get_name(),
-                         'createIcon': function() { return null; }
-                       });
-        }
-        callback(metas);
-    },
-
-    getInitialResultSet: function(terms) {
-        this.searchSystem.pushResults(this, this._appSys.search_settings(terms));
-    },
-
-    getSubsearchResultSet: function(previousResults, terms) {
-        this.searchSystem.pushResults(this, this._appSys.search_settings(terms));
-    },
-
-    activateResult: function(pref) {
-        pref.activate();
-    },
-
-    launchSearch: function(terms) {
-        // FIXME: this should be a remote search provider
-        this.appInfo.launch([], global.create_app_launch_context());
-    }
-});
-
 const AppIcon = new Lang.Class({
     Name: 'AppIcon',
     Extends: IconGrid.BaseIcon,

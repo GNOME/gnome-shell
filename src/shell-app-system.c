@@ -45,14 +45,10 @@ struct _ShellAppSystemPrivate {
   GHashTable *id_to_app;
 
   GSList *known_vendor_prefixes;
-
-  GMenuTree *settings_tree;
-  GHashTable *setting_id_to_app;
 };
 
 static void shell_app_system_finalize (GObject *object);
 static void on_apps_tree_changed_cb (GMenuTree *tree, gpointer user_data);
-static void on_settings_tree_changed_cb (GMenuTree *tree, gpointer user_data);
 
 G_DEFINE_TYPE(ShellAppSystem, shell_app_system, G_TYPE_OBJECT);
 
@@ -97,20 +93,12 @@ shell_app_system_init (ShellAppSystem *self)
   /* All the objects in this hash table are owned by id_to_app */
   priv->visible_id_to_app = g_hash_table_new (g_str_hash, g_str_equal);
 
-  priv->setting_id_to_app = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                   NULL,
-                                                   (GDestroyNotify)g_object_unref);
-
   /* We want to track NoDisplay apps, so we add INCLUDE_NODISPLAY. We'll
    * filter NoDisplay apps out when showing them to the user. */
   priv->apps_tree = gmenu_tree_new ("applications.menu", GMENU_TREE_FLAGS_INCLUDE_NODISPLAY);
   g_signal_connect (priv->apps_tree, "changed", G_CALLBACK (on_apps_tree_changed_cb), self);
 
-  priv->settings_tree = gmenu_tree_new ("gnomecc.menu", 0);
-  g_signal_connect (priv->settings_tree, "changed", G_CALLBACK (on_settings_tree_changed_cb), self);
-
   on_apps_tree_changed_cb (priv->apps_tree, self);
-  on_settings_tree_changed_cb (priv->settings_tree, self);
 }
 
 static void
@@ -120,12 +108,10 @@ shell_app_system_finalize (GObject *object)
   ShellAppSystemPrivate *priv = self->priv;
 
   g_object_unref (priv->apps_tree);
-  g_object_unref (priv->settings_tree);
 
   g_hash_table_destroy (priv->running_apps);
   g_hash_table_destroy (priv->id_to_app);
   g_hash_table_destroy (priv->visible_id_to_app);
-  g_hash_table_destroy (priv->setting_id_to_app);
 
   g_slist_free_full (priv->known_vendor_prefixes, g_free);
   priv->known_vendor_prefixes = NULL;
@@ -402,48 +388,6 @@ on_apps_tree_changed_cb (GMenuTree *tree,
   g_hash_table_destroy (new_apps);
 
   g_signal_emit (self, signals[INSTALLED_CHANGED], 0);
-}
-
-static void
-on_settings_tree_changed_cb (GMenuTree *tree,
-                             gpointer   user_data)
-{
-  ShellAppSystem *self = SHELL_APP_SYSTEM (user_data);
-  GError *error = NULL;
-  GHashTable *new_settings;
-  GHashTableIter iter;
-  gpointer key, value;
-
-  g_assert (tree == self->priv->settings_tree);
-
-  g_hash_table_remove_all (self->priv->setting_id_to_app);
-  if (!gmenu_tree_load_sync (self->priv->settings_tree, &error))
-    {
-      if (error)
-        {
-          g_warning ("Failed to load apps: %s", error->message);
-          g_error_free (error);
-        }
-      else
-        {
-          g_warning ("Failed to load apps");
-        }
-      return;
-    }
-
-  new_settings = get_flattened_entries_from_tree (tree);
-
-  g_hash_table_iter_init (&iter, new_settings);
-  while (g_hash_table_iter_next (&iter, &key, &value))
-    {
-      const char *id = key;
-      GMenuTreeEntry *entry = value;
-      ShellApp *app;
-
-      app = _shell_app_new (entry);
-      g_hash_table_replace (self->priv->setting_id_to_app, (char*)id, app);
-    }
-  g_hash_table_destroy (new_settings);
 }
 
 /**
@@ -798,18 +742,3 @@ shell_app_system_subsearch (ShellAppSystem   *system,
   return sort_and_concat_results (system, prefix_results, substring_results);
 }
 
-/**
- * shell_app_system_search_settings:
- * @system: A #ShellAppSystem
- * @terms: (element-type utf8): List of terms, logical AND
- *
- * Search through settings for the given search terms.
- *
- * Returns: (transfer container) (element-type ShellApp): List of setting applications
- */
-GSList *
-shell_app_system_search_settings (ShellAppSystem  *self,
-                                  GSList          *terms)
-{
-  return search_tree (self, terms, self->priv->setting_id_to_app);
-}
