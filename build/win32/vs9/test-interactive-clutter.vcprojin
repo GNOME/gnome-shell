@@ -31,7 +31,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".."
+				AdditionalIncludeDirectories="..;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0"
 				Optimization="0"
 				PreprocessorDefinitions="_DEBUG;$(TestProgDef)"
 				MinimalRebuild="true"
@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".."
+				AdditionalIncludeDirectories="..;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0"
 				Optimization="0"
 				PreprocessorDefinitions="_DEBUG;$(TestProgDef)"
 				MinimalRebuild="true"
@@ -97,7 +97,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".."
+				AdditionalIncludeDirectories="..;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="$(TestProgDef)"
@@ -131,7 +131,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".."
+				AdditionalIncludeDirectories="..;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0"
 				PreprocessorDefinitions="$(TestProgDef)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
