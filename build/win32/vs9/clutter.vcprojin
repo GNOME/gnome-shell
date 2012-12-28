@@ -71,7 +71,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0"
+				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0"
 				PreprocessorDefinitions="$(DebugLibBuildDefines);$(ClutterBuildDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -148,7 +148,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0"
+				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0"
 				PreprocessorDefinitions="$(DebugLibBuildDefines);$(ClutterBuildDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -230,7 +230,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0"
+				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0"
 				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(ClutterBuildDefines)"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -306,7 +306,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0"
+				AdditionalIncludeDirectories="..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0"
 				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(ClutterBuildDefines)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"

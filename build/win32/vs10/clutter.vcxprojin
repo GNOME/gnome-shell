@@ -159,7 +159,7 @@
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(DebugLibBuildDefines);$(ClutterBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -217,7 +217,7 @@
     </PreBuildEvent>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(DebugLibBuildDefines);$(ClutterBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -278,7 +278,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(ReleaseLibBuildDefines);$(ClutterBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -335,7 +335,7 @@
       <Command>$(PreBuildGDK)$(PreBuildCmd2)</Command>
     </PreBuildEvent>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\clutter;..\..\..\clutter\win32;..\..\..\clutter\deprecated;..\..\..\clutter\cally;$(GlibEtcInstallRoot)\include\gtk-3.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>$(ReleaseLibBuildDefines);$(ClutterBuildDefines);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>
