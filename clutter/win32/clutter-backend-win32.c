@@ -37,8 +37,6 @@
 #include "clutter-private.h"
 #include "clutter-stage-private.h"
 
-#include "clutter-shader.h"
-
 #include "cogl/cogl.h"
 
 G_DEFINE_TYPE (ClutterBackendWin32, clutter_backend_win32,
