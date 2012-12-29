@@ -783,7 +783,7 @@ cogl_debug_matrix_print (const CoglMatrix *matrix);
 /**
  * cogl_gtype_matrix_get_type:
  *
- * Returns the GType for the registered "CoglMatrix" boxed type. This
+ * Returns: the GType for the registered "CoglMatrix" boxed type. This
  * can be used for example to define GObject properties that accept a
  * #CoglMatrix value.
  */

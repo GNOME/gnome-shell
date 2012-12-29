@@ -209,7 +209,7 @@ cogl_sdl_idle (CoglContext *context);
  * cogl_sdl_onscreen_get_window:
  * @onscreen: A #CoglOnscreen
  *
- * Returns the underlying SDL_Window associated with an onscreen framebuffer.
+ * Returns: the underlying SDL_Window associated with an onscreen framebuffer.
  *
  * Since: 2.0
  * Stability: unstable
