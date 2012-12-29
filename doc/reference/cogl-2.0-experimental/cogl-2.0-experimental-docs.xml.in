@@ -61,9 +61,16 @@
 
     </section>
 
-    <xi:include href="xml/cogl-object.xml"/>
-    <xi:include href="xml/cogl-error.xml"/>
-    <xi:include href="xml/cogl-context.xml"/>
+    <section id="cogl-general-apis">
+      <title>General API concepts</title>
+      <xi:include href="xml/cogl-object.xml"/>
+      <xi:include href="xml/cogl-error.xml"/>
+    </section>
+
+    <section id="cogl-context-apis">
+      <title>Setting Up A Drawing Context</title>
+      <xi:include href="xml/cogl-context.xml"/>
+    </section>
 
     <section id="cogl-pipeline-apis">
       <title>Setting Up A GPU Pipeline</title>
