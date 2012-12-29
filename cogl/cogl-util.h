@@ -194,7 +194,7 @@ _cogl_util_popcountl (unsigned long num)
 #define _COGL_RETURN_IF_FAIL(EXPR) g_return_if_fail(EXPR)
 #define _COGL_RETURN_VAL_IF_FAIL(EXPR, VAL) g_return_val_if_fail(EXPR, VAL)
 #else
-#if COGL_ENABLE_DEBUG
+#ifdef COGL_ENABLE_DEBUG
 #define _COGL_RETURN_START do {
 #define _COGL_RETURN_END } while (0)
 #else /* COGL_ENABLE_DEBUG */

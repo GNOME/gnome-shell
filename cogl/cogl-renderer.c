@@ -73,7 +73,7 @@
 #include "cogl-winsys-sdl-private.h"
 #endif
 
-#if COGL_HAS_XLIB_SUPPORT
+#ifdef COGL_HAS_XLIB_SUPPORT
 #include "cogl-xlib-renderer.h"
 #endif
 
@@ -188,7 +188,7 @@ cogl_renderer_new (void)
   return _cogl_renderer_object_new (renderer);
 }
 
-#if COGL_HAS_XLIB_SUPPORT
+#ifdef COGL_HAS_XLIB_SUPPORT
 void
 cogl_xlib_renderer_set_foreign_display (CoglRenderer *renderer,
                                         Display *xdisplay)
