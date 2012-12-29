@@ -1223,7 +1223,7 @@ for x in $COGL_DEFINES_SYMBOLS; do
 #define $x 1"
 done;
 AC_SUBST(COGL_DEFINES)
-
+AM_SUBST_NOTMAKE(COGL_DEFINES)
 
 AS_IF([test "x$cogl_gl_headers" = "x"],
       [AC_MSG_ERROR([Internal error: no GL header set])])
@@ -1236,6 +1236,7 @@ for x in $cogl_gl_headers; do
 #include <$x>"
 done;
 AC_SUBST(COGL_GL_HEADER_INCLUDES)
+AM_SUBST_NOTMAKE(COGL_GL_HEADER_INCLUDES)
 
 AC_DEFINE([COGL_ENABLE_EXPERIMENTAL_2_0_API], [1],
           [Can use Cogl 2.0 API internally])
