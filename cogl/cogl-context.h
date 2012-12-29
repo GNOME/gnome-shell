@@ -67,7 +67,7 @@ G_BEGIN_DECLS
  * that can all access the same GPU without having to worry about
  * what state other components have left you with.
  *
- * <note>Cogl does not maintain internal references to the context for
+ * <note><para>Cogl does not maintain internal references to the context for
  * resources that depend on the context so applications. This is to
  * help applications control the lifetime a context without us needing to
  * introduce special api to handle the breakup of internal circular
@@ -84,7 +84,7 @@ G_BEGIN_DECLS
  * times throughout their lifetime (such as Android applications) they
  * should be careful to destroy all context dependant resources, such as
  * framebuffers or textures etc before unrefing and destroying the
- * context.<note>
+ * context.</para></note>
  */
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
