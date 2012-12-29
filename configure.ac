@@ -310,7 +310,7 @@ AC_ARG_ENABLE(
 
 MAINTAINER_COMPILER_FLAGS="-Wall -Wcast-align -Wuninitialized
                            -Wno-strict-aliasing -Wempty-body -Wformat
-                           -Wformat-security -Winit-self
+                           -Wformat-security -Winit-self -Wundef
                            -Wdeclaration-after-statement -Wvla
                            -Wpointer-arith -Wmissing-declarations"
 
