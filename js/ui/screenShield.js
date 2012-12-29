@@ -38,6 +38,7 @@ const ARROW_DRAG_THRESHOLD = 0.1;
 const N_ARROWS = 3;
 const ARROW_ANIMATION_TIME = 0.6;
 const ARROW_ANIMATION_PEAK_OPACITY = 0.4;
+const ARROW_IDLE_TIME = 30000; // ms
 
 const SUMMARY_ICON_SIZE = 48;
 
@@ -451,6 +452,9 @@ const ScreenShield = new Lang.Class({
         this._updateBackgrounds();
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._updateBackgrounds));
 
+        this._arrowAnimationId = 0;
+        this._arrowWatchId = 0;
+        this._arrowActiveWatchId = 0;
         this._arrowContainer = new St.BoxLayout({ style_class: 'screen-shield-arrows',
                                                   vertical: true,
                                                   x_align: Clutter.ActorAlign.CENTER,
@@ -971,16 +975,60 @@ const ScreenShield = new Lang.Class({
             Main.sessionMode.pushMode('lock-screen');
     },
 
+    _startArrowAnimation: function() {
+        this._arrowActiveWatchId = 0;
+
+        if (!this._arrowAnimationId) {
+            this._arrowAnimationId = Mainloop.timeout_add(6000, Lang.bind(this, this._animateArrows));
+            this._animateArrows();
+        }
+
+        if (!this._arrowWatchId)
+            this._arrowWatchId = this.idleMonitor.add_idle_watch(ARROW_IDLE_TIME,
+                                                                 Lang.bind(this, this._pauseArrowAnimation));
+    },
+
+    _pauseArrowAnimation: function() {
+        if (this._arrowAnimationId) {
+            Mainloop.source_remove(this._arrowAnimationId);
+            this._arrowAnimationId = 0;
+        }
+
+        if (!this._arrowActiveWatchId)
+            this._arrowActiveWatchId = this.idleMonitor.add_user_active_watch(Lang.bind(this, this._startArrowAnimation));
+    },
+
+    _stopArrowAnimation: function() {
+        if (this._arrowAnimationId) {
+            Mainloop.source_remove(this._arrowAnimationId);
+            this._arrowAnimationId = 0;
+        }
+        if (this._arrowActiveWatchId) {
+            this.idleMonitor.remove_watch(this._arrowActiveWatchId);
+            this._arrowActiveWatchId = 0;
+        }
+        if (this._arrowWatchId) {
+            this.idleMonitor.remove_watch(this._arrowWatchId);
+            this._arrowWatchId = 0;
+        }
+    },
+
+    _checkArrowAnimation: function() {
+        let idleTime = this.idleMonitor.get_idletime();
+
+        if (idleTime < ARROW_IDLE_TIME)
+            this._startArrowAnimation();
+        else
+            this._pauseArrowAnimation();
+    },
+
     _lockScreenShown: function() {
         if (this._dialog && !this._isGreeter) {
             this._dialog.destroy();
             this._dialog = null;
         }
 
-        if (this._arrowAnimationId)
-            Mainloop.source_remove(this._arrowAnimationId);
-        this._arrowAnimationId = Mainloop.timeout_add(6000, Lang.bind(this, this._animateArrows));
-        this._animateArrows();
+        this._checkArrowAnimation();
 
         let motionId = global.stage.connect('captured-event', function(stage, event) {
             if (event.type() == Clutter.EventType.MOTION) {
@@ -1043,12 +1091,9 @@ const ScreenShield = new Lang.Class({
             this._notificationsBox = null;
         }
 
-        this._lockScreenContentsBox.destroy();
+        this._stopArrowAnimation();
 
-        if (this._arrowAnimationId) {
-            Mainloop.source_remove(this._arrowAnimationId);
-            this._arrowAnimationId = 0;
-        }
+        this._lockScreenContentsBox.destroy();
 
         this._hasLockScreen = false;
     },
