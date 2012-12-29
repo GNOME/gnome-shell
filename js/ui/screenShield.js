@@ -760,6 +760,10 @@ const ScreenShield = new Lang.Class({
     },
 
     _resetLockScreen: function(animateLockScreen, animateLockDialog) {
+        if (this._lockScreenState == MessageTray.State.SHOWING ||
+            this._lockScreenState == MessageTray.State.SHOWN)
+            return;
+
         this._ensureLockScreen();
         this._lockDialogGroup.scale_x = 1;
         this._lockDialogGroup.scale_y = 1;
