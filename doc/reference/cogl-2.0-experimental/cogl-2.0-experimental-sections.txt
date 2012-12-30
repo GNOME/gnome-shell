@@ -299,6 +299,33 @@ cogl_path_get_fill_rule
 </SECTION>
 
 <SECTION>
+<FILE>cogl-bitmap</FILE>
+<TITLE>Bitmap</TITLE>
+
+<SUBSECTION>
+CoglBitmap
+cogl_is_bitmap
+
+<SUBSECTION>
+cogl_bitmap_new_from_file
+cogl_bitmap_new_from_buffer
+cogl_bitmap_new_with_size
+cogl_bitmap_new_for_data
+
+<SUBSECTION>
+cogl_bitmap_get_format
+cogl_bitmap_get_width
+cogl_bitmap_get_height
+cogl_bitmap_get_rowstride
+cogl_bitmap_get_buffer
+cogl_bitmap_get_size_from_file
+
+<SUBSECTION>
+COGL_BITMAP_ERROR
+CoglBitmapError
+</SECTION>
+
+<SECTION>
 <FILE>cogl-texture</FILE>
 <TITLE>The Texture Interface</TITLE>
 CoglTexture
