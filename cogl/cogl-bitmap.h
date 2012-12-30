@@ -43,7 +43,7 @@ typedef struct _CoglBitmap CoglBitmap;
 
 /**
  * SECTION:cogl-bitmap
- * @short_description: Fuctions for loading images
+ * @short_description: Functions for loading images
  *
  * Cogl allows loading image data into memory as CoglBitmaps without
  * loading them immediately into GPU textures.
