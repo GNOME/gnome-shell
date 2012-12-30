@@ -147,6 +147,7 @@
       <xi:include href="xml/cogl-sdl.xml"/>
       <xi:include href="xml/cogl-poll.xml"/>
       <xi:include href="xml/cogl-gtype.xml"/>
+      <xi:include href="xml/cogl-gles2.xml"/>
     </section>
 
   </chapter>

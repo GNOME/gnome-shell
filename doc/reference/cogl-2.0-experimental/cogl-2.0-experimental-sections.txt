@@ -855,3 +855,26 @@ cogl_sdl_handle_event
 cogl_sdl_idle
 cogl_sdl_onscreen_get_window
 </SECTION>
+
+<SECTION>
+<FILE>cogl-gles2</FILE>
+<TITLE>GLES 2.0 context</TITLE>
+
+<SUBSECTION>
+CoglGLES2Context
+CoglGLES2Vtable
+COGL_GLES2_CONTEXT_ERROR
+CoglGLES2ContextError
+cogl_gles2_context_new
+cogl_is_gles2_context
+
+<SUBSECTION>
+cogl_gles2_context_get_vtable
+cogl_push_gles2_context
+cogl_pop_gles2_context
+cogl_gles2_get_current_vtable
+
+<SUBSECTION>
+cogl_gles2_texture_2d_new_from_handle
+cogl_gles2_texture_get_handle
+</SECTION>

@@ -107,6 +107,7 @@ typedef struct _CoglGLES2Vtable CoglGLES2Vtable;
 
 struct _CoglGLES2Vtable
 {
+  /*< private >*/
 #define COGL_EXT_BEGIN(name, \
                        min_gl_major, min_gl_minor, \
                        gles_availability, \
