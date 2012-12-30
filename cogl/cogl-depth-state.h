@@ -39,8 +39,13 @@ COGL_BEGIN_DECLS
  *                     state of your GPU.
  */
 
-typedef struct
-{
+/**
+ * CoglDepthState
+ *
+ * Since: 2.0
+ */
+typedef struct {
+  /*< private >*/
   uint32_t COGL_PRIVATE (magic);
 
   CoglBool COGL_PRIVATE (test_enabled);
@@ -59,7 +64,6 @@ typedef struct
   uint32_t COGL_PRIVATE (padding7);
   uint32_t COGL_PRIVATE (padding8);
   uint32_t COGL_PRIVATE (padding9);
-
 } CoglDepthState;
 
 /**
@@ -91,7 +95,7 @@ cogl_depth_state_init (CoglDepthState *state);
  * value stored in the current depth buffer, and if the test passes
  * then the fragments depth value is used to update the depth buffer.
  * (unless you have disabled depth writing via
- * cogl_pipeline_set_depth_writing_enabled ())
+ * cogl_pipeline_set_depth_write_enabled())
  *
  * By default depth testing is disabled.
  *
@@ -149,7 +153,7 @@ cogl_depth_state_set_write_enabled (CoglDepthState *state,
  * @state: A #CoglDepthState struct
  *
  * Gets the depth writing enable state as set by the corresponding
- * cogl_pipeline_set_depth_writing_enabled.
+ * cogl_pipeline_set_depth_write_enabled().
  *
  * Returns: The current depth writing enable state
  * Since: 2.0

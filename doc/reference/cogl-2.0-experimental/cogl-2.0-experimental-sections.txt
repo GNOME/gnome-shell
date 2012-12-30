@@ -774,14 +774,15 @@ cogl_blend_string_error_domain
 
 <SECTION>
 <FILE>cogl-depth-state</FILE>
+<TITLE>Depth State</TITLE>
 CoglDepthState
 cogl_depth_state_init
 cogl_depth_state_set_test_enabled
 cogl_depth_state_get_test_enabled
 cogl_depth_state_set_test_function
 cogl_depth_state_get_test_function
-cogl_depth_state_set_writing_enabled
-cogl_depth_state_get_writing_enabled
+cogl_depth_state_set_write_enabled
+cogl_depth_state_get_write_enabled
 cogl_depth_state_set_range
 cogl_depth_state_get_range
 </SECTION>

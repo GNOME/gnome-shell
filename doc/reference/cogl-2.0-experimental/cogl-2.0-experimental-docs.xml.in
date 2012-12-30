@@ -80,6 +80,7 @@
       <title>Setting Up A GPU Pipeline</title>
       <xi:include href="blend-strings.xml"/>
       <xi:include href="xml/cogl-pipeline.xml"/>
+      <xi:include href="xml/cogl-depth-state.xml"/>
       <xi:include href="xml/cogl-snippet.xml"/>
     </section>
 
