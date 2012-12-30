@@ -44,7 +44,7 @@ COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-texture
- * @short_description: Fuctions for creating and manipulating textures
+ * @short_description: Functions for creating and manipulating textures
  *
  * Cogl allows creating and manipulating textures using a uniform
  * API that tries to hide all the various complexities of creating,

@@ -35,7 +35,7 @@ COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-offscreen
- * @short_description: Fuctions for creating and manipulating offscreen
+ * @short_description: Functions for creating and manipulating offscreen
  *                     framebuffers.
  *
  * Cogl allows creating and operating on offscreen framebuffers.

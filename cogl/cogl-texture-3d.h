@@ -35,7 +35,7 @@ COGL_BEGIN_DECLS
 
 /**
  * SECTION:cogl-texture-3d
- * @short_description: Fuctions for creating and manipulating 3D textures
+ * @short_description: Functions for creating and manipulating 3D textures
  *
  * These functions allow 3D textures to be used. 3D textures can be
  * thought of as layers of 2D images arranged into a cuboid
