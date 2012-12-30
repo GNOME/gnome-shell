@@ -435,7 +435,7 @@ const NotificationDaemon = new Lang.Class({
         // of the 'transient' hint with hints['transient'] rather than hints.transient
         notification.setTransient(hints['transient'] == true);
 
-        let sourceGIcon = source.useNotificationIcon ? this._iconForNotificationData(icon, hints) : null;
+        let sourceGIcon = source.useNotificationIcon ? gicon : null;
         source.processNotification(notification, sourceGIcon);
     },
 
