@@ -184,13 +184,6 @@ cogl_glib_source_new
 </SECTION>
 
 <SECTION>
-<FILE>cogl-index-array</FILE>
-<TITLE>Index Arrays</TITLE>
-cogl_index_array_new
-cogl_is_index_array
-</SECTION>
-
-<SECTION>
 <FILE>cogl-attribute</FILE>
 <TITLE>Vertex Attributes</TITLE>
 cogl_attribute_new
