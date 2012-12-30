@@ -183,6 +183,9 @@ const GrabHelper = new Lang.Class({
         else if (hadFocus || params.grabFocus)
             _navigateActor(newFocus);
 
+        if ((params.grabFocus || params.modal) && !this._capturedEventId)
+            this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
+
         this._grabStack.push(params);
         return true;
     },
@@ -192,8 +195,6 @@ const GrabHelper = new Lang.Class({
         if (firstGrab) {
             if (!Main.pushModal(this._owner, this._modalParams))
                 return false;
-
-            this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
         }
 
         this._modalCount++;
@@ -204,11 +205,6 @@ const GrabHelper = new Lang.Class({
         this._modalCount--;
         if (this._modalCount > 0)
             return;
-
-        if (this._capturedEventId > 0) {
-            global.stage.disconnect(this._capturedEventId);
-            this._capturedEventId = 0;
-        }
 
         Main.popModal(this._owner);
         global.sync_pointer();
@@ -308,6 +304,11 @@ const GrabHelper = new Lang.Class({
                 this._releaseFocusGrab();
         }
 
+        if (!this.grabbed && this._capturedEventId > 0) {
+            global.stage.disconnect(this._capturedEventId);
+            this._capturedEventId = 0;
+        }
+
         if (hadFocus) {
             let poppedGrab = poppedGrabs[0];
             _navigateActor(poppedGrab.savedFocus);
@@ -316,6 +317,13 @@ const GrabHelper = new Lang.Class({
 
     _onCapturedEvent: function(actor, event) {
         let type = event.type();
+
+        if (type == Clutter.EventType.KEY_PRESS &&
+            event.get_key_symbol() == Clutter.KEY_Escape) {
+            this.ungrab({ isUser: true });
+            return true;
+        }
+
         let press = type == Clutter.EventType.BUTTON_PRESS;
         let release = type == Clutter.EventType.BUTTON_RELEASE;
         let button = press || release;
@@ -327,12 +335,6 @@ const GrabHelper = new Lang.Class({
 
         if (!button && this._modalCount == 0)
             return false;
-
-        if (type == Clutter.EventType.KEY_PRESS &&
-            event.get_key_symbol() == Clutter.KEY_Escape) {
-            this.ungrab({ isUser: true });
-            return true;
-        }
 
         if (this._isWithinGrabbedActor(event.get_source()))
             return false;
