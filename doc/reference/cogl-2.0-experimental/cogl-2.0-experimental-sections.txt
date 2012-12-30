@@ -197,8 +197,14 @@ cogl_attribute_set_buffer
 <SECTION>
 <FILE>cogl-indices</FILE>
 <TITLE>Indices</TITLE>
-cogl_indices_new
+
+<SUBSECTION>
+CoglIndices
 cogl_is_indices
+
+<SUBSECTION>
+cogl_indices_new
+
 </SECTION>
 
 <SECTION>
