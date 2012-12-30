@@ -463,10 +463,6 @@ cogl_framebuffer_stroke_path
 cogl_framebuffer_fill_path
 
 <SUBSECTION>
-cogl_framebuffer_swap_buffers
-cogl_framebuffer_swap_region
-cogl_framebuffer_add_swap_buffers_callback
-cogl_framebuffer_remove_swap_buffers_callback
 cogl_framebuffer_finish
 
 <SUBSECTION>
@@ -505,17 +501,33 @@ cogl_pop_framebuffer
 <SECTION>
 <FILE>cogl-onscreen</FILE>
 <TITLE>CoglOnscreen: The Onscreen Framebuffer Interface</TITLE>
+<SUBSECTION>
 CoglOnscreen
+cogl_is_onscreen
 COGL_ONSCREEN
+
+<SUBSECTION>
 cogl_onscreen_new
+
+<SUBSECTION>
 cogl_x11_onscreen_set_foreign_window_xid
 cogl_x11_onscreen_get_window_xid
 cogl_x11_onscreen_get_visual_xid
+
+<SUBSECTION>
 cogl_win32_onscreen_set_foreign_window
 cogl_win32_onscreen_get_window
-cogl_onscreen_set_swap_throttled
+
+<SUBSECTION>
 cogl_onscreen_show
 cogl_onscreen_hide
+
+<SUBSECTION>
+cogl_onscreen_swap_buffers
+cogl_onscreen_swap_region
+cogl_onscreen_set_swap_throttled
+cogl_onscreen_add_swap_buffers_callback
+cogl_onscreen_remove_swap_buffers_callback
 </SECTION>
 
 <SECTION>
