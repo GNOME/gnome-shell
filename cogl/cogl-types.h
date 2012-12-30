@@ -470,6 +470,10 @@ typedef enum
 
 /**
  * CoglColor:
+ * @red: amount of red
+ * @green: amount of green
+ * @blue: amount of green
+ * @alpha: alpha
  *
  * A structure for holding a color definition. The contents of
  * the CoglColor structure are private and should never by accessed
