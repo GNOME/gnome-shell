@@ -45,9 +45,11 @@ COGL_BEGIN_DECLS
  * rotations and have some nice properties when compared with other
  * representation such as (roll,pitch,yaw) Euler angles. They can be
  * used to interpolate between different rotations and they don't
- * suffer from a problem called "Gimbal lock" where two of the axis of
- * rotation may become aligned and you loose a degree of freedom.
- * (<ulink url="http://en.wikipedia.org/wiki/Gimbal_lock"/>).
+ * suffer from a problem called
+ * <ulink url="http://en.wikipedia.org/wiki/Gimbal_lock">"Gimbal lock"</ulink>
+ * where two of the axis of rotation may become aligned and you loose a
+ * degree of freedom.
+ * .
  */
 #include <cogl/cogl-vector.h>
 #include <cogl/cogl-euler.h>
