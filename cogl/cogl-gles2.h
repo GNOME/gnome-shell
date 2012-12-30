@@ -283,6 +283,10 @@ cogl_gles2_get_current_vtable (void);
  *             cogl_gles2_context_new()
  * @handle: An OpenGL ES 2.0 texture handle created with
  *          glGenTextures()
+ * @width: Width of the texture to allocate
+ * @height: Height of the texture to allocate
+ * @internal_format: The format of the texture
+ * @error: A #CoglError for exceptions
  *
  * Creates a #CoglTexture2D from an OpenGL ES 2.0 texture handle that
  * was created within the given @gles2_ctx via glGenTextures(). The
@@ -311,6 +315,7 @@ cogl_gles2_texture_2d_new_from_handle (CoglContext *ctx,
 
 /**
  * cogl_gles2_texture_get_handle:
+ * @texture: A #CoglTexture
  * @handle: A return location for an OpenGL ES 2.0 texture handle
  * @target: A return location for an OpenGL ES 2.0 texture target
  *

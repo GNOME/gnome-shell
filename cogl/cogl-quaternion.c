@@ -633,10 +633,6 @@ cogl_quaternion_nlerp (CoglQuaternion *result,
   cogl_quaternion_normalize (result);
 }
 
-/**
- * cogl_quaternion_squad:
- *
- */
 void
 cogl_quaternion_squad (CoglQuaternion *result,
                        const CoglQuaternion *prev,

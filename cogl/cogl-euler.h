@@ -204,7 +204,7 @@ cogl_euler_init_from_quaternion (CoglEuler *euler,
 /**
  * cogl_euler_equal:
  * @v1: The first euler angle to compare
- * @v1: The second euler angle to compare
+ * @v2: The second euler angle to compare
  *
  * Compares the two given euler angles @v1 and @v1 and it they are
  * equal returns %TRUE else %FALSE.

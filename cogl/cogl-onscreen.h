@@ -69,6 +69,7 @@ typedef void (*CoglOnscreenX11MaskCallback) (CoglOnscreen *onscreen,
  * @xid: The XID of an existing X window
  * @update: A callback that notifies of updates to what Cogl requires
  *          to be in the core X protocol event mask.
+ * @user_data: user data passed to @update
  *
  * Ideally we would recommend that you let Cogl be responsible for
  * creating any X window required to back an onscreen framebuffer but

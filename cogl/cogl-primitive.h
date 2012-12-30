@@ -218,7 +218,7 @@ typedef struct
  * cogl_primitive_new:
  * @mode: A #CoglVerticesMode defining how to draw the vertices
  * @n_vertices: The number of vertices to process when drawing
- * @Varargs: A %NULL terminated list of attributes
+ * @...: A %NULL terminated list of attributes
  *
  * Combines a set of #CoglAttribute<!-- -->s with a specific draw @mode
  * and defines a vertex count so a #CoglPrimitive object can be retained and
@@ -744,8 +744,8 @@ cogl_primitive_set_mode (CoglPrimitive *primitive,
 /**
  * cogl_primitive_set_attributes:
  * @primitive: A #CoglPrimitive object
- * @attributes: A %NULL terminated array of #CoglAttribute
- *              pointers
+ * @attributes: an array of #CoglAttribute pointers
+ * @n_attributes: the number of elements in @attributes
  *
  * Replaces all the attributes of the given #CoglPrimitive object.
  *

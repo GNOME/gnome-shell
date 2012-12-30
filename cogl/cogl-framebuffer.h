@@ -620,11 +620,9 @@ cogl_framebuffer_push_path_clip (CoglFramebuffer *framebuffer,
  *             bounds
  * @bounds_y1: y coordinate for the top-left corner of the primitives
  *             bounds
- * @bounds_x2: x coordinate for the top-left corner of the primitives
- *             bounds
- * @bounds_y2: x coordinate for the bottom-right corner of the
+ * @bounds_x2: x coordinate for the bottom-right corner of the
  *             primitives bounds.
- * @bounds_x1: y coordinate for the bottom-right corner of the
+ * @bounds_y2: y coordinate for the bottom-right corner of the
  *             primitives bounds.
  *
  * Sets a new clipping area using a 2D shaped described with a
@@ -1525,8 +1523,8 @@ cogl_framebuffer_draw_multitextured_rectangle (CoglFramebuffer *framebuffer,
 void
 cogl_framebuffer_draw_rectangles (CoglFramebuffer *framebuffer,
                                   CoglPipeline *pipeline,
-                                  const float *verts,
-                                  unsigned int n_rects);
+                                  const float *coordinates,
+                                  unsigned int n_rectangles);
 
 /**
  * cogl_framebuffer_draw_textured_rectangles:

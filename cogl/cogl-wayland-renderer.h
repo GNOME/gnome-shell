@@ -63,7 +63,6 @@ cogl_wayland_renderer_set_foreign_display (CoglRenderer *renderer,
 /**
  * cogl_wayland_renderer_get_display:
  * @renderer: A #CoglRenderer
- * @display: A Wayland display
  *
  * Retrieves the Wayland display that Cogl is using. If a foreign
  * display has been specified using

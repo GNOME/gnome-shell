@@ -49,7 +49,7 @@ typedef struct _CoglSubTexture CoglSubTexture;
 
 /**
  * cogl_sub_texture_new:
- * @context: A #CoglContext pointer
+ * @ctx: A #CoglContext pointer
  * @parent_texture: The full texture containing a sub-region you want
  *                  to make a #CoglSubTexture from.
  * @sub_x: The top-left x coordinate of the parent region to make

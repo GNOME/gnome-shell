@@ -78,7 +78,7 @@ cogl_is_texture_rectangle (void *object);
 
 /**
  * cogl_texture_rectangle_new_with_size:
- * @context: A #CoglContext pointer
+ * @ctx: A #CoglContext pointer
  * @width: The texture width to allocate
  * @height: The texture height to allocate
  * @internal_format: The desired internal texture format

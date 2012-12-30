@@ -160,6 +160,7 @@ cogl_display_setup (CoglDisplay *display,
 /**
  * cogl_gdl_display_set_plane:
  * @display: a #CoglDisplay
+ * @plane: the GDL plane id
  *
  * Request that Cogl output to a specific GDL overlay @plane.
  *

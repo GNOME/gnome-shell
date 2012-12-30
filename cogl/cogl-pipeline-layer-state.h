@@ -172,7 +172,7 @@ cogl_pipeline_set_layer_texture (CoglPipeline *pipeline,
 void
 cogl_pipeline_set_layer_null_texture (CoglPipeline *pipeline,
                                       int layer_index,
-                                      CoglTextureType texure_type);
+                                      CoglTextureType texture_type);
 
 /**
  * cogl_pipeline_get_layer_texture:

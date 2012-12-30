@@ -712,6 +712,8 @@ cogl_pipeline_get_cull_face_mode (CoglPipeline *pipeline);
 
 /**
  * cogl_pipeline_set_front_face_winding:
+ * @pipeline: a #CoglPipeline
+ * @front_winding: the winding order
  *
  * The order of the vertices within a primitive specifies whether it
  * is considered to be front or back facing. This function specifies
@@ -729,7 +731,8 @@ cogl_pipeline_set_front_face_winding (CoglPipeline *pipeline,
                                       CoglWinding front_winding);
 
 /**
- * cogl_pipeline_set_front_face_winding:
+ * cogl_pipeline_get_front_face_winding:
+ * @pipeline: a #CoglPipeline
  *
  * The order of the vertices within a primitive specifies whether it
  * is considered to be front or back facing. This function specifies
@@ -738,6 +741,8 @@ cogl_pipeline_set_front_face_winding (CoglPipeline *pipeline,
  * primitives with vertices in a counter-clockwise order and
  * %COGL_WINDING_CLOCKWISE sets them to be clockwise. The default is
  * %COGL_WINDING_COUNTER_CLOCKWISE.
+ *
+ * Returns: The @pipeline front face winding
  *
  * Status: Unstable
  * Since: 2.0

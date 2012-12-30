@@ -165,6 +165,7 @@ cogl_quaternion_init (CoglQuaternion *quaternion,
 /**
  * cogl_quaternion_init_from_angle_vector:
  * @quaternion: An uninitialized #CoglQuaternion
+ * @angle: The angle to rotate around @axis3f
  * @axis3f: your 3 component axis vector about which you want to rotate.
  *
  * Initializes a quaternion that rotates @angle degrees around the
@@ -343,7 +344,7 @@ cogl_quaternion_get_rotation_angle (const CoglQuaternion *quaternion);
 /**
  * cogl_quaternion_get_rotation_axis:
  * @quaternion: A #CoglQuaternion
- *
+ * @vector3: (out): an allocated 3-float array
  *
  * Since: 2.0
  */
@@ -407,6 +408,7 @@ cogl_quaternion_multiply (CoglQuaternion *result,
 /**
  * cogl_quaternion_pow:
  * @quaternion: A #CoglQuaternion
+ * @exponent: the exponent
  *
  *
  * Since: 2.0
@@ -416,6 +418,11 @@ cogl_quaternion_pow (CoglQuaternion *quaternion, float exponent);
 
 /**
  * cogl_quaternion_slerp:
+ * @result: The destination #CoglQuaternion
+ * @a: The first #CoglQuaternion
+ * @b: The second #CoglQuaternion
+ * @t: The factor in the range [0,1] used to interpolate between
+ * quaternion @a and @b.
  *
  * Performs a spherical linear interpolation between two quaternions.
  *
@@ -483,6 +490,13 @@ cogl_quaternion_nlerp (CoglQuaternion *result,
                        float t);
 /**
  * cogl_quaternion_squad:
+ * @result: The destination #CoglQuaternion
+ * @prev: A #CoglQuaternion used before @a
+ * @a: The first #CoglQuaternion
+ * @b: The second #CoglQuaternion
+ * @next: A #CoglQuaternion that will be used after @b
+ * @t: The factor in the range [0,1] used to interpolate between
+ * quaternion @a and @b.
  *
  *
  * Since: 2.0
