@@ -41,9 +41,8 @@ typedef struct _CoglIndices CoglIndices;
 COGL_BEGIN_DECLS
 
 /**
- * SECTION:cogl-index-range
- * @short_description: Fuctions for declaring a range of vertex indices
- *   stored in a #CoglIndexBuffer.
+ * SECTION:cogl-indices
+ * @short_description: Describe vertex indices stored in a #CoglIndexBuffer.
  *
  * Indices allow you to avoid duplicating vertices in your vertex data
  * by virtualizing your data and instead providing a sequence of index
