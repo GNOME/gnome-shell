@@ -165,7 +165,7 @@ typedef struct _CoglMatrixEntry CoglMatrixEntry;
 
 /**
  * cogl_matrix_stack_new:
- * @context: A #CoglContext
+ * @ctx: A #CoglContext
  *
  * Allocates a new #CoglMatrixStack that can be used to build up
  * transformations relating to objects in a scenegraph like hierarchy.
