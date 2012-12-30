@@ -127,6 +127,18 @@ const NotificationDaemon = new Lang.Class({
         this._trayManager.manage_stage(global.stage, Main.messageTray.actor);
     },
 
+    _imageForNotificationData: function(hints) {
+        if (hints['image-data']) {
+            let [width, height, rowStride, hasAlpha,
+                 bitsPerSample, nChannels, data] = hints['image-data'];
+            return Shell.util_create_pixbuf_from_data(data, GdkPixbuf.Colorspace.RGB, hasAlpha,
+                                                      bitsPerSample, width, height, rowStride);
+        } else if (hints['image-path']) {
+            return new Gio.FileIcon({ file: Gio.File.new_for_path(hints['image-path']) });
+        }
+        return null;
+    },
+
     _iconForNotificationData: function(icon, hints) {
         // If an icon is not specified, we use 'image-data' or 'image-path' hint for an icon
         // and don't show a large image. There are currently many applications that use
@@ -143,13 +155,8 @@ const NotificationDaemon = new Lang.Class({
                 return new Gio.FileIcon({ file: Gio.File.new_for_path(icon) });
             else
                 return new Gio.ThemedIcon({ name: icon });
-        } else if (hints['image-data']) {
-            let [width, height, rowStride, hasAlpha,
-                 bitsPerSample, nChannels, data] = hints['image-data'];
-            return Shell.util_create_pixbuf_from_data(data, GdkPixbuf.Colorspace.RGB, hasAlpha,
-                                                      bitsPerSample, width, height, rowStride);
-        } else if (hints['image-path']) {
-            return new Gio.FileIcon({ file: Gio.File.new_for_path(hints['image-path']) });
+        } else if (hints['image-data'] || hints['image-path']) {
+            return this._imageForNotificationData(hints);
         } else {
             let stockIcon;
             switch (hints.urgency) {
@@ -388,19 +395,11 @@ const NotificationDaemon = new Lang.Class({
                                              clear: true });
 
         // We only display a large image if an icon is also specified.
-        let image = null;
-        if (icon && (hints['image-data'] || hints['image-path'])) {
-            if (hints['image-data']) {
-                let [width, height, rowStride, hasAlpha,
-                 bitsPerSample, nChannels, data] = hints['image-data'];
-                image = St.TextureCache.get_default().load_from_raw(data, hasAlpha,
-                                                                    width, height, rowStride, notification.IMAGE_SIZE);
-            } else if (hints['image-path']) {
-                image = St.TextureCache.get_default().load_uri_async(GLib.filename_to_uri(hints['image-path'], null),
-                                                                     notification.IMAGE_SIZE,
-                                                                     notification.IMAGE_SIZE);
-            }
-        }
+        let image;
+        if (icon && (hints['image-data'] || hints['image-path']))
+            image = new St.Icon({ gicon: this._imageForNotificationData(hints) });
+        else
+            image = null;
         notification.setImage(image);
 
         if (actions.length) {
