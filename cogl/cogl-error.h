@@ -146,8 +146,10 @@ cogl_error_copy (CoglError *error);
 /**
  * cogl_error_matches:
  * @error: A #CoglError thrown by the Cogl api or %NULL
+ * @domain: The error domain
+ * @code: The error code
  *
- * Returns %TRUE if error matches domain and code, %FALSE otherwise.
+ * Returns %TRUE if error matches @domain and @code, %FALSE otherwise.
  * In particular, when error is %NULL, FALSE will be returned.
  *
  * Return value: whether the @error corresponds to the given @domain
