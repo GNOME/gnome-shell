@@ -52,6 +52,13 @@ COGL_BEGIN_DECLS
 
 /**
  * CoglPollFDEvent:
+ * @COGL_POLL_FD_EVENT_IN: there is data to read
+ * @COGL_POLL_FD_EVENT_PRI: data can be written (without blocking)
+ * @COGL_POLL_FD_EVENT_OUT: there is urgent data to read.
+ * @COGL_POLL_FD_EVENT_ERR: error condition
+ * @COGL_POLL_FD_EVENT_HUP: hung up (the connection has been broken, usually
+ *                          for pipes and sockets).
+ * @COGL_POLL_FD_EVENT_NVAL: invalid request. The file descriptor is not open.
  *
  * A bitmask of events that Cogl may need to wake on for a file
  * descriptor. Note that these all have the same values as the
