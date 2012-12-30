@@ -139,15 +139,21 @@ const NotificationDaemon = new Lang.Class({
         return null;
     },
 
-    _iconForNotificationData: function(icon, hints) {
-        // If an icon is not specified, we use 'image-data' or 'image-path' hint for an icon
-        // and don't show a large image. There are currently many applications that use
-        // notify_notification_set_icon_from_pixbuf() from libnotify, which in turn sets
-        // the 'image-data' hint. These applications don't typically pass in 'app_icon'
-        // argument to Notify() and actually expect the pixbuf to be shown as an icon.
-        // So the logic here does the right thing for this case. If both an icon and either
-        // one of 'image-data' or 'image-path' are specified, we show both an icon and
-        // a large image.
+    _fallbackIconForNotificationData: function(hints) {
+        let stockIcon;
+        switch (hints.urgency) {
+            case Urgency.LOW:
+            case Urgency.NORMAL:
+                stockIcon = 'gtk-dialog-info';
+                break;
+            case Urgency.CRITICAL:
+                stockIcon = 'gtk-dialog-error';
+                break;
+        }
+        return new Gio.ThemedIcon({ name: stockIcon });
+    },
+
+    _iconForNotificationData: function(icon) {
         if (icon) {
             if (icon.substr(0, 7) == 'file://')
                 return new Gio.FileIcon({ file: Gio.File.new_for_uri(icon) });
@@ -155,21 +161,8 @@ const NotificationDaemon = new Lang.Class({
                 return new Gio.FileIcon({ file: Gio.File.new_for_path(icon) });
             else
                 return new Gio.ThemedIcon({ name: icon });
-        } else if (hints['image-data'] || hints['image-path']) {
-            return this._imageForNotificationData(hints);
-        } else {
-            let stockIcon;
-            switch (hints.urgency) {
-                case Urgency.LOW:
-                case Urgency.NORMAL:
-                    stockIcon = 'gtk-dialog-info';
-                    break;
-                case Urgency.CRITICAL:
-                    stockIcon = 'gtk-dialog-error';
-                    break;
-            }
-            return new Gio.ThemedIcon({ name: stockIcon });
         }
+        return null;
     },
 
     _lookupSource: function(title, pid, trayIcon) {
@@ -362,8 +355,6 @@ const NotificationDaemon = new Lang.Class({
             [ndata.id, ndata.icon, ndata.summary, ndata.body,
              ndata.actions, ndata.hints, ndata.notification];
 
-        let gicon = this._iconForNotificationData(icon, hints);
-
         if (notification == null) {
             notification = new MessageTray.Notification(source);
             ndata.notification = notification;
@@ -390,17 +381,31 @@ const NotificationDaemon = new Lang.Class({
                 }));
         }
 
+        let gicon = this._iconForNotificationData(icon, hints);
+        let gimage = this._imageForNotificationData(hints);
+
+        let image = null;
+
+        // If an icon is not specified, we use 'image-data' or 'image-path' hint for an icon
+        // and don't show a large image. There are currently many applications that use
+        // notify_notification_set_icon_from_pixbuf() from libnotify, which in turn sets
+        // the 'image-data' hint. These applications don't typically pass in 'app_icon'
+        // argument to Notify() and actually expect the pixbuf to be shown as an icon.
+        // So the logic here does the right thing for this case. If both an icon and either
+        // one of 'image-data' or 'image-path' are specified, we show both an icon and
+        // a large image.
+        if (gicon && gimage)
+            image = new St.Icon({ gicon: gimage });
+        else if (!gicon && gimage)
+            gicon = gimage;
+        else if (!gicon)
+            gicon = this._fallbackIconForNotificationData(hints);
+
+        notification.setImage(image);
+
         notification.update(summary, body, { gicon: gicon,
                                              bannerMarkup: true,
                                              clear: true });
-
-        // We only display a large image if an icon is also specified.
-        let image;
-        if (icon && (hints['image-data'] || hints['image-path']))
-            image = new St.Icon({ gicon: this._imageForNotificationData(hints) });
-        else
-            image = null;
-        notification.setImage(image);
 
         if (actions.length) {
             notification.setUseActionIcons(hints['action-icons'] == true);
