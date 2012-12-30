@@ -388,8 +388,8 @@ const NotificationDaemon = new Lang.Class({
                                              clear: true });
 
         // We only display a large image if an icon is also specified.
+        let image = null;
         if (icon && (hints['image-data'] || hints['image-path'])) {
-            let image = null;
             if (hints['image-data']) {
                 let [width, height, rowStride, hasAlpha,
                  bitsPerSample, nChannels, data] = hints['image-data'];
@@ -400,10 +400,8 @@ const NotificationDaemon = new Lang.Class({
                                                                      notification.IMAGE_SIZE,
                                                                      notification.IMAGE_SIZE);
             }
-            notification.setImage(image);
-        } else {
-            notification.unsetImage();
         }
+        notification.setImage(image);
 
         if (actions.length) {
             notification.setUseActionIcons(hints['action-icons'] == true);

@@ -611,6 +611,8 @@ const Notification = new Lang.Class({
     setImage: function(image) {
         if (this._imageBin)
             this.unsetImage();
+        if (!image)
+            return;
         this._imageBin = new St.Bin();
         this._imageBin.child = image;
         this._imageBin.opacity = 230;
