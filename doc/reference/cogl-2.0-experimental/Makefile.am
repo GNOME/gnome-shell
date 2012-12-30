@@ -52,54 +52,16 @@ CFILE_GLOB=$(top_srcdir)/cogl/*.c
 
 # Header files to ignore when scanning.
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h
+cogl_private_headers := \
+	$(shell cd $(top_srcdir)/cogl && echo *-private.h && cd - && \
+	cd $(top_srcdir)/cogl/winsys && echo *-private.h && cd -)
+
 IGNORE_HFILES=\
+	$(cogl_private_headers)			\
 	cogl-atlas.h				\
-	cogl-atlas-texture-private.h		\
-	cogl-bitmap-private.h			\
-	cogl-buffer-private.h			\
-	cogl-color-private.h			\
-	cogl-feature-private.h			\
-	cogl-framebuffer-private.h		\
-	cogl-onscreen-private.h			\
-	cogl-gtype-private.h			\
-	cogl-index-array-private.h		\
-	cogl-indices-private.h			\
-	cogl-journal-private.h			\
-	cogl-material-compat.h			\
-	cogl-matrix-private.h			\
-	cogl-object-private.h			\
 	cogl-path.h				\
-	cogl-path-private.h			\
-	cogl-depth-state-private.h		\
-	cogl-pipeline-fragend-arbfp-private.h	\
-	cogl-pipeline-fragend-fixed-private.h	\
-	cogl-pipeline-fragend-glsl-private.h	\
-	cogl-pipeline-opengl-private.h		\
-	cogl-pipeline-private.h			\
-	cogl-pipeline-state-private.h		\
-	cogl-pipeline-layer-state-private.h	\
-	cogl-pipeline-progend-glsl-private.h	\
-	cogl-pipeline-vertend-fixed-private.h	\
-	cogl-pipeline-vertend-glsl-private.h	\
-	cogl-pixel-array-private.h		\
-	cogl-primitive-private.h		\
-	cogl-primitives-private.h		\
-	cogl-private.h				\
-	cogl-program-private.h			\
 	cogl-program.h				\
-	cogl-shader-private.h			\
 	cogl-shader.h				\
-	cogl-snippet-private.h			\
-	cogl-sub-texture-private.h		\
-	cogl-texture-2d-private.h		\
-	cogl-texture-2d-sliced-private.h	\
-	cogl-texture-3d-private.h		\
-	cogl-texture-private.h			\
-	cogl-texture-rectangle-private.h	\
-	cogl-vertex-buffer.h			\
-	cogl-vertex-array-private.h		\
-	cogl-vertex-attribute-private.h		\
-	cogl-vertex-buffer-private.h		\
 	cogl-blend-string.h 			\
 	cogl-clip-stack.h 			\
 	cogl-debug.h 				\
