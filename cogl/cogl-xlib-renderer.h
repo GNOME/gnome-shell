@@ -37,6 +37,7 @@ COGL_BEGIN_DECLS
 
 /*
  * cogl_xlib_renderer_handle_event:
+ * @renderer: a #CoglRenderer
  * @event: pointer to an XEvent structure
  *
  * This function processes a single event; it can be used to hook into
@@ -56,7 +57,7 @@ cogl_xlib_renderer_handle_event (CoglRenderer *renderer,
 /*
  * CoglXlibFilterFunc:
  * @event: pointer to an XEvent structure
- * @data: The data that was given when the filter was added
+ * @data: the data that was given when the filter was added
  *
  * A callback function that can be registered with
  * cogl_xlib_renderer_add_filter(). The function should return
@@ -68,6 +69,9 @@ typedef CoglFilterReturn (* CoglXlibFilterFunc) (XEvent *event,
 
 /*
  * cogl_xlib_renderer_add_filter:
+ * @renderer: a #CoglRenderer
+ * @func: the callback function
+ * @data: user data passed to @func when called
  *
  * Adds a callback function that will receive all native events. The
  * function can stop further processing of the event by return
@@ -80,6 +84,9 @@ cogl_xlib_renderer_add_filter (CoglRenderer *renderer,
 
 /*
  * cogl_xlib_renderer_remove_filter:
+ * @renderer: a #CoglRenderer
+ * @func: the callback function
+ * @data: user data given when the callback was installed
  *
  * Removes a callback that was previously added with
  * cogl_xlib_renderer_add_filter().
@@ -91,6 +98,7 @@ cogl_xlib_renderer_remove_filter (CoglRenderer *renderer,
 
 /*
  * cogl_xlib_renderer_get_foreign_display:
+ * @renderer: a #CoglRenderer
  *
  * Return value: the foreign Xlib display that will be used by any Xlib based
  * winsys backend. The display needs to be set with
@@ -101,6 +109,7 @@ cogl_xlib_renderer_get_foreign_display (CoglRenderer *renderer);
 
 /*
  * cogl_xlib_renderer_set_foreign_display:
+ * @renderer: a #CoglRenderer
  *
  * Sets a foreign Xlib display that Cogl will use for and Xlib based winsys
  * backend.
@@ -117,7 +126,7 @@ cogl_xlib_renderer_set_foreign_display (CoglRenderer *renderer,
 
 /**
  * cogl_xlib_renderer_set_event_retrieval_enabled:
- * @renderer: A #CoglRenderer
+ * @renderer: a #CoglRenderer
  * @enable: The new value
  *
  * Sets whether Cogl should automatically retrieve events from the X

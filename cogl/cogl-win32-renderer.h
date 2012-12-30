@@ -35,6 +35,7 @@ COGL_BEGIN_DECLS
 
 /**
  * cogl_win32_renderer_handle_event:
+ * @renderer: a #CoglRenderer
  * @message: A pointer to a win32 MSG struct
  *
  * This function processes a single event; it can be used to hook into
@@ -66,6 +67,9 @@ typedef CoglFilterReturn (* CoglWin32FilterFunc) (MSG *message,
 
 /**
  * cogl_win32_renderer_add_filter:
+ * @renderer: a #CoglRenderer
+ * @func: the callback function
+ * @data: user data passed to @func when called
  *
  * Adds a callback function that will receive all native events. The
  * function can stop further processing of the event by return
@@ -78,6 +82,9 @@ cogl_win32_renderer_add_filter (CoglRenderer *renderer,
 
 /**
  * cogl_win32_renderer_remove_filter:
+ * @renderer: a #CoglRenderer
+ * @func: the callback function
+ * @data: user data given when the callback was installed
  *
  * Removes a callback that was previously added with
  * cogl_win32_renderer_add_filter().
