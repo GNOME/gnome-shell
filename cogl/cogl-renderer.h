@@ -239,7 +239,7 @@ cogl_renderer_check_onscreen_template (CoglRenderer *renderer,
 /**
  * cogl_renderer_connect:
  * @renderer: An unconnected #CoglRenderer
- * @error a pointer to a #CoglError for reporting exceptions
+ * @error: a pointer to a #CoglError for reporting exceptions
  *
  * Connects the configured @renderer. Renderer connection isn't a
  * very active process, it basically just means validating that

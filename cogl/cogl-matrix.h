@@ -132,9 +132,9 @@ cogl_matrix_init_identity (CoglMatrix *matrix);
 /**
  * cogl_matrix_init_translation:
  * @matrix: A 4x4 transformation matrix
- * @tx x coordinate of the translation vector
- * @ty y coordinate of the translation vector
- * @tz z coordinate of the translation vector
+ * @tx: x coordinate of the translation vector
+ * @ty: y coordinate of the translation vector
+ * @tz: z coordinate of the translation vector
  *
  * Resets matrix to the (tx, ty, tz) translation matrix:
  *
