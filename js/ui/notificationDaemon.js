@@ -358,9 +358,7 @@ const NotificationDaemon = new Lang.Class({
         let gicon = this._iconForNotificationData(icon, hints);
 
         if (notification == null) {
-            notification = new MessageTray.Notification(source, summary, body,
-                                                        { gicon: gicon,
-                                                          bannerMarkup: true });
+            notification = new MessageTray.Notification(source);
             ndata.notification = notification;
             notification.connect('destroy', Lang.bind(this,
                 function(n, reason) {
@@ -383,11 +381,11 @@ const NotificationDaemon = new Lang.Class({
                 function(n, actionId) {
                     this._emitActionInvoked(ndata.id, actionId);
                 }));
-        } else {
-            notification.update(summary, body, { gicon: gicon,
-                                                 bannerMarkup: true,
-                                                 clear: true });
         }
+
+        notification.update(summary, body, { gicon: gicon,
+                                             bannerMarkup: true,
+                                             clear: true });
 
         // We only display a large image if an icon is also specified.
         if (icon && (hints['image-data'] || hints['image-path'])) {
