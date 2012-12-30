@@ -139,9 +139,9 @@ const NotificationDaemon = new Lang.Class({
         if (icon) {
             if (icon.substr(0, 7) == 'file://')
                 return new Gio.FileIcon({ file: Gio.File.new_for_uri(icon) });
-            else if (icon[0] == '/') {
+            else if (icon[0] == '/')
                 return new Gio.FileIcon({ file: Gio.File.new_for_path(icon) });
-            } else
+            else
                 return new Gio.ThemedIcon({ name: icon });
         } else if (hints['image-data']) {
             let [width, height, rowStride, hasAlpha,
