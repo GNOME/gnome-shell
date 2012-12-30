@@ -146,8 +146,8 @@ const KeyringDialog = new Lang.Class({
         this._passwordEntry.reactive = sensitive;
         this._passwordEntry.clutter_text.editable = sensitive;
 
-        this._okButton.can_focus = sensitive;
-        this._okButton.reactive = sensitive;
+        this._continueButton.can_focus = sensitive;
+        this._continueButton.reactive = sensitive;
     },
 
     _ensureOpen: function() {
