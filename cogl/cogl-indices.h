@@ -48,7 +48,7 @@ COGL_BEGIN_DECLS
  * by virtualizing your data and instead providing a sequence of index
  * values that tell the GPU which data should be used for each vertex.
  *
- * If the GPU is given a squence of indices it doesn't simply walk
+ * If the GPU is given a sequence of indices it doesn't simply walk
  * through each vertex of your data in order it will instead walk
  * through the indices which can provide random access to the
  * underlying data.
