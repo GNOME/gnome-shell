@@ -217,7 +217,7 @@ typedef struct {
  * drawn later with no addition information required.
  *
  * The value passed as @n_vertices will simply update the
- * #CoglPrimitive::n_vertices property as if
+ * #CoglPrimitive <structfield>n_vertices</structfield> property as if
  * cogl_primitive_set_n_vertices() were called. This property defines
  * the number of vertices to read when drawing.
  *
@@ -265,7 +265,7 @@ cogl_primitive_new_with_attributes (CoglVerticesMode mode,
  *
  * The value passed as @n_vertices is initially used to determine how
  * much can be read from @data but it will also be used to update the
- * #CoglPrimitive::n_vertices property as if
+ * #CoglPrimitive <structfield>n_vertices</structfield> property as if
  * cogl_primitive_set_n_vertices() were called. This property defines
  * the number of vertices to read when drawing.
 
@@ -318,7 +318,7 @@ cogl_primitive_new_p2 (CoglContext *context,
  *
  * The value passed as @n_vertices is initially used to determine how
  * much can be read from @data but it will also be used to update the
- * #CoglPrimitive::n_vertices property as if
+ * #CoglPrimitive <structfield>n_vertices</structfield> property as if
  * cogl_primitive_set_n_vertices() were called. This property defines
  * the number of vertices to read when drawing.
 
@@ -373,7 +373,7 @@ cogl_primitive_new_p3 (CoglContext *context,
  *
  * The value passed as @n_vertices is initially used to determine how
  * much can be read from @data but it will also be used to update the
- * #CoglPrimitive::n_vertices property as if
+ * #CoglPrimitive <structfield>n_vertices</structfield> property as if
  * cogl_primitive_set_n_vertices() were called. This property defines
  * the number of vertices to read when drawing.
 
@@ -428,7 +428,7 @@ cogl_primitive_new_p2c4 (CoglContext *context,
  *
  * The value passed as @n_vertices is initially used to determine how
  * much can be read from @data but it will also be used to update the
- * #CoglPrimitive::n_vertices property as if
+ * #CoglPrimitive <structfield>n_vertices</structfield> property as if
  * cogl_primitive_set_n_vertices() were called. This property defines
  * the number of vertices to read when drawing.
 
@@ -483,7 +483,7 @@ cogl_primitive_new_p3c4 (CoglContext *context,
  *
  * The value passed as @n_vertices is initially used to determine how
  * much can be read from @data but it will also be used to update the
- * #CoglPrimitive::n_vertices property as if
+ * #CoglPrimitive <structfield>n_vertices</structfield> property as if
  * cogl_primitive_set_n_vertices() were called. This property defines
  * the number of vertices to read when drawing.
 
@@ -538,7 +538,7 @@ cogl_primitive_new_p2t2 (CoglContext *context,
  *
  * The value passed as @n_vertices is initially used to determine how
  * much can be read from @data but it will also be used to update the
- * #CoglPrimitive::n_vertices property as if
+ * #CoglPrimitive <structfield>n_vertices</structfield> property as if
  * cogl_primitive_set_n_vertices() were called. This property defines
  * the number of vertices to read when drawing.
 
@@ -593,7 +593,7 @@ cogl_primitive_new_p3t2 (CoglContext *context,
  *
  * The value passed as @n_vertices is initially used to determine how
  * much can be read from @data but it will also be used to update the
- * #CoglPrimitive::n_vertices property as if
+ * #CoglPrimitive <structfield>n_vertices</structfield> property as if
  * cogl_primitive_set_n_vertices() were called. This property defines
  * the number of vertices to read when drawing.
 
@@ -648,7 +648,7 @@ cogl_primitive_new_p2t2c4 (CoglContext *context,
  *
  * The value passed as @n_vertices is initially used to determine how
  * much can be read from @data but it will also be used to update the
- * #CoglPrimitive::n_vertices property as if
+ * #CoglPrimitive <structfield>n_vertices</structfield> property as if
  * cogl_primitive_set_n_vertices() were called. This property defines
  * the number of vertices to read when drawing.
 
@@ -765,14 +765,14 @@ cogl_primitive_set_attributes (CoglPrimitive *primitive,
  * shared data multiple times instead of duplicating the data.
  *
  * The value passed as @n_indices will simply update the
- * #CoglPrimitive::n_vertices property as if
+ * #CoglPrimitive <structfield>n_vertices</structfield> property as if
  * cogl_primitive_set_n_vertices() were called. This property defines
  * the number of vertices to draw or, put another way, how many
  * indices should be read from @indices when drawing.
  *
- * <note>The #CoglPrimitive::first_vertex property also affects
- * drawing with indices by defining the first entry of the indices to
- * start drawing from.</note>
+ * <note>The #CoglPrimitive <structfield>first_vertex</structfield> property
+ * also affects drawing with indices by defining the first entry of the
+ * indices to start drawing from.</note>
  *
  * Since: 1.10
  * Stability: unstable
