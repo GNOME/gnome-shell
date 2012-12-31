@@ -60,8 +60,7 @@ COGL_BEGIN_DECLS
  * Since: 1.6
  * Stability: Unstable
  */
-typedef struct
-{
+typedef struct {
    float x, y;
 } CoglVertexP2;
 
@@ -77,8 +76,7 @@ typedef struct
  * Since: 1.6
  * Stability: Unstable
  */
-typedef struct
-{
+typedef struct {
    float x, y, z;
 } CoglVertexP3;
 
@@ -97,8 +95,7 @@ typedef struct
  * Since: 1.6
  * Stability: Unstable
  */
-typedef struct
-{
+typedef struct {
    float x, y;
    uint8_t r, g, b, a;
 } CoglVertexP2C4;
@@ -119,8 +116,7 @@ typedef struct
  * Since: 1.6
  * Stability: Unstable
  */
-typedef struct
-{
+typedef struct {
    float x, y, z;
    uint8_t r, g, b, a;
 } CoglVertexP3C4;
@@ -138,8 +134,7 @@ typedef struct
  * Since: 1.6
  * Stability: Unstable
  */
-typedef struct
-{
+typedef struct {
    float x, y;
    float s, t;
 } CoglVertexP2T2;
@@ -158,8 +153,7 @@ typedef struct
  * Since: 1.6
  * Stability: Unstable
  */
-typedef struct
-{
+typedef struct {
    float x, y, z;
    float s, t;
 } CoglVertexP3T2;
@@ -182,8 +176,7 @@ typedef struct
  * Since: 1.6
  * Stability: Unstable
  */
-typedef struct
-{
+typedef struct {
    float x, y;
    float s, t;
    uint8_t r, g, b, a;
@@ -207,8 +200,7 @@ typedef struct
  * Since: 1.6
  * Stability: Unstable
  */
-typedef struct
-{
+typedef struct {
    float x, y, z;
    float s, t;
    uint8_t r, g, b, a;

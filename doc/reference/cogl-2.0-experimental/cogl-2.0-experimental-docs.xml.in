@@ -65,6 +65,7 @@
       <title>General API concepts</title>
       <xi:include href="xml/cogl-object.xml"/>
       <xi:include href="xml/cogl-error.xml"/>
+      <xi:include href="xml/cogl-types.xml"/>
     </section>
 
     <section id="cogl-context-apis">
@@ -140,7 +141,6 @@
       <xi:include href="xml/cogl-vector.xml"/>
       <xi:include href="xml/cogl-euler.xml"/>
       <xi:include href="xml/cogl-quaternion.xml"/>
-      <xi:include href="xml/cogl-types.xml"/>
       <xi:include href="xml/cogl-version.xml"/>
     </section>
 

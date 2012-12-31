@@ -49,6 +49,13 @@
 COGL_BEGIN_DECLS
 
 /**
+ * SECTION:cogl-types
+ * @short_description: Types used throughout the library
+ *
+ * General types used by various Cogl functions.
+*/
+
+/**
  * CoglBool:
  *
  * A boolean data type used throughout the Cogl C api. This should be

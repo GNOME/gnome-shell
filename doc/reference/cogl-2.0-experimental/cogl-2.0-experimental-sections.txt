@@ -21,6 +21,32 @@ COGL_GLIB_ERROR
 </SECTION>
 
 <SECTION>
+<FILE>cogl-types</FILE>
+<TITLE>Common Types</TITLE>
+<SUBSECTION>
+CoglVertexP2
+CoglVertexP3
+CoglVertexP2C4
+CoglVertexP3C4
+CoglVertexP2T2
+CoglVertexP3T2
+CoglVertexP2T2C4
+CoglVertexP3T2C4
+CoglVerticesMode
+
+<SUBSECTION>
+CoglFuncPtr
+CoglPixelFormat
+CoglBufferTarget
+CoglBufferBit
+CoglAttributeType
+CoglColorMask
+
+<SUBSECTION>
+CoglBool
+</SECTION>
+
+<SECTION>
 <FILE>cogl-renderer</FILE>
 <TITLE>CoglRenderer: Connect to a backend renderer</TITLE>
 cogl_renderer_new
@@ -869,17 +895,6 @@ COGL_VERSION_CHECK
 COGL_VERSION_GET_MAJOR
 COGL_VERSION_GET_MINOR
 COGL_VERSION_GET_MICRO
-</SECTION>
-
-<SECTION>
-<FILE>cogl-types</FILE>
-<TITLE>Common Types</TITLE>
-CoglFuncPtr
-CoglPixelFormat
-CoglBufferTarget
-CoglBufferBit
-CoglAttributeType
-CoglColorMask
 </SECTION>
 
 <SECTION>
