@@ -66,13 +66,14 @@
  * Compared to using the #CoglMatrix api directly to track many
  * related transforms, these can be some advantages to using a
  * #CoglMatrixStack:
- * <ul>
- *   <li>Faster equality comparisons of transformations</li>
- *   <li>Efficient comparisons of the differences between arbitrary
- *   transformations</li>
- *   <li>Avoid redundant arithmetic related to common transforms</li>
- *   <li>Can be more space efficient (not always though)</li>
- * </ul>
+ * <itemizedlist>
+ *   <listitem>Faster equality comparisons of transformations</listitem>
+ *   <listitem>Efficient comparisons of the differences between arbitrary
+ *   transformations</listitem>
+ *   <listitem>Avoid redundant arithmetic related to common transforms
+ *   </listitem>
+ *   <listitem>Can be more space efficient (not always though)</listitem>
+ * </itemizedlist>
  *
  * For reference (to give an idea of when a #CoglMatrixStack can
  * provide a space saving) a #CoglMatrix can be expected to take 72
