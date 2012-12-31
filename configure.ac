@@ -1099,6 +1099,11 @@ GTK_DOC_CHECK([gtk_doc_req_version], [--flavour no-tmpl])
 ])
 AM_CONDITIONAL([BUILD_GTK_DOC], [test "x$enable_gtk_doc" = "xyes"])
 
+GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
+GDKPIXBUF_PREFIX="`$PKG_CONFIG --variable=prefix gdk-pixbuf-2.0`"
+AC_SUBST(GLIB_PREFIX)
+AC_SUBST(GDKPIXBUF_PREFIX)
+
 dnl ================================================================
 dnl I18n stuff.
 dnl ================================================================
