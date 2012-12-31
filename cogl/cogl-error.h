@@ -113,8 +113,7 @@
  * @code: A specific error code within a specified domain
  * @message: A human readable error message
  */
-typedef struct _CoglError
-{
+typedef struct _CoglError {
   uint32_t domain;
   int code;
   char *message;

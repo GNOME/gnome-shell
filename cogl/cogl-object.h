@@ -83,8 +83,7 @@ cogl_object_unref (void *object);
  *
  * Since: 1.4
  */
-typedef struct
-{
+typedef struct {
   int unused;
 } CoglUserDataKey;
 
@@ -114,8 +113,7 @@ typedef void (*CoglUserDataDestroyCallback) (void *user_data);
  * Since: 1.8
  * Stability: unstable
  */
-typedef struct
-{
+typedef struct {
   const char *name;
   unsigned long instance_count;
 } CoglDebugObjectTypeInfo;
