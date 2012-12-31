@@ -98,8 +98,8 @@ COGL_BEGIN_DECLS
 
 /**
  * cogl_sdl_context_new:
- * @type: An SDL user event type between %SDL_USEREVENT and
- *        %SDL_NUMEVENTS - %1
+ * @type: An SDL user event type between <constant>SDL_USEREVENT</constant> and
+ *        <constant>SDL_NUMEVENTS</constant> - 1
  * @error: A CoglError return location.
  *
  * This is a convenience function for creating a new #CoglContext for
@@ -138,8 +138,8 @@ cogl_sdl_context_new (int type, CoglError **error);
 /**
  * cogl_sdl_renderer_set_event_type:
  * @renderer: A #CoglRenderer
- * @type: An SDL user event type between %SDL_USEREVENT and
- *        %SDL_NUMEVENTS - %1
+ * @type: An SDL user event type between <constant>SDL_USEREVENT</constant> and
+ *        <constant>SDL_NUMEVENTS</constant> - 1
  *
  * Tells Cogl what SDL user event type it can use as a way to
  * interrupt SDL_WaitEvent() to ensure that cogl_sdl_handle_event()

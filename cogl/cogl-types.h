@@ -700,13 +700,18 @@ typedef enum {
 
 /**
  * CoglVerticesMode:
- * @COGL_VERTICES_MODE_POINTS: FIXME, equivalent to %GL_POINTS
- * @COGL_VERTICES_MODE_LINES: FIXME, equivalent to %GL_LINES
- * @COGL_VERTICES_MODE_LINE_LOOP: FIXME, equivalent to %GL_LINE_LOOP
- * @COGL_VERTICES_MODE_LINE_STRIP: FIXME, equivalent to %GL_LINE_STRIP
- * @COGL_VERTICES_MODE_TRIANGLES: FIXME, equivalent to %GL_TRIANGLES
- * @COGL_VERTICES_MODE_TRIANGLE_STRIP: FIXME, equivalent to %GL_TRIANGLE_STRIP
- * @COGL_VERTICES_MODE_TRIANGLE_FAN: FIXME, equivalent to %GL_TRIANGLE_FAN
+ * @COGL_VERTICES_MODE_POINTS: FIXME, equivalent to
+ * <constant>GL_POINTS</constant>
+ * @COGL_VERTICES_MODE_LINES: FIXME, equivalent to <constant>GL_LINES</constant>
+ * @COGL_VERTICES_MODE_LINE_LOOP: FIXME, equivalent to
+ * <constant>GL_LINE_LOOP</constant>
+ * @COGL_VERTICES_MODE_LINE_STRIP: FIXME, equivalent to
+ * <constant>GL_LINE_STRIP</constant>
+ * @COGL_VERTICES_MODE_TRIANGLES: FIXME, equivalent to
+ * <constant>GL_TRIANGLES</constant>
+ * @COGL_VERTICES_MODE_TRIANGLE_STRIP: FIXME, equivalent to
+ * <constant>GL_TRIANGLE_STRIP</constant>
+ * @COGL_VERTICES_MODE_TRIANGLE_FAN: FIXME, equivalent to <constant>GL_TRIANGLE_FAN</constant>
  *
  * Different ways of interpreting vertices when drawing.
  *
