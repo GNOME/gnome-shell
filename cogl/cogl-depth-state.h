@@ -90,12 +90,12 @@ cogl_depth_state_init (CoglDepthState *state);
  * @enable.
  *
  * If depth testing is enable then the #CoglDepthTestFunction set
- * using cogl_pipeline_set_depth_test_function() us used to evaluate
+ * using cogl_depth_state_set_test_function() us used to evaluate
  * the depth value of incoming fragments against the corresponding
  * value stored in the current depth buffer, and if the test passes
  * then the fragments depth value is used to update the depth buffer.
  * (unless you have disabled depth writing via
- * cogl_pipeline_set_depth_write_enabled())
+ * cogl_depth_state_set_write_enabled())
  *
  * By default depth testing is disabled.
  *
@@ -153,7 +153,7 @@ cogl_depth_state_set_write_enabled (CoglDepthState *state,
  * @state: A #CoglDepthState struct
  *
  * Gets the depth writing enable state as set by the corresponding
- * cogl_pipeline_set_depth_write_enabled().
+ * cogl_depth_state_set_write_enabled().
  *
  * Returns: The current depth writing enable state
  * Since: 2.0
@@ -189,7 +189,7 @@ cogl_depth_state_set_test_function (CoglDepthState *state,
  * @state: A #CoglDepthState struct
  *
  * Gets the current depth test enable state as previously set via
- * cogl_pipeline_set_depth_test_enabled().
+ * cogl_depth_state_set_test_enabled().
  *
  * Returns: The current depth test enable state.
  * Since: 2.0
@@ -249,7 +249,7 @@ cogl_depth_state_set_range (CoglDepthState *state,
  *
  * Gets the current range to which normalized depth values are mapped
  * before writing to the depth buffer. This corresponds to the range
- * set with cogl_pipeline_set_depth_range().
+ * set with cogl_depth_state_set_range().
  *
  * Since: 2.0
  * Stability: Unstable

@@ -729,6 +729,9 @@ cogl_pipeline_get_point_size
 cogl_pipeline_get_color_mask
 cogl_pipeline_set_color_mask
 
+cogl_pipeline_set_depth_state
+cogl_pipeline_get_depth_state
+
 CoglPipelineCullFaceMode
 cogl_pipeline_set_cull_face_mode
 CoglWinding
@@ -776,6 +779,7 @@ cogl_blend_string_error_domain
 <FILE>cogl-depth-state</FILE>
 <TITLE>Depth State</TITLE>
 CoglDepthState
+CoglDepthTestFunction
 cogl_depth_state_init
 cogl_depth_state_set_test_enabled
 cogl_depth_state_get_test_enabled

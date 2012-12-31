@@ -642,7 +642,7 @@ cogl_pipeline_set_depth_state (CoglPipeline *pipeline,
 /**
  * cogl_pipeline_get_depth_state
  * @pipeline: A #CoglPipeline object
- * @state: A destination #CoglDepthState struct
+ * @state_out: (out): A destination #CoglDepthState struct
  *
  * Retrieves the current depth state configuration for the given
  * @pipeline as previously set using cogl_pipeline_set_depth_state().

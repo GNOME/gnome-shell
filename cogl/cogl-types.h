@@ -742,13 +742,12 @@ typedef enum {
  * When using depth testing one of these functions is used to compare
  * the depth of an incoming fragment against the depth value currently
  * stored in the depth buffer. The function is changed using
- * cogl_material_set_depth_test_function().
+ * cogl_depth_state_set_test_function().
  *
  * The test is only done when depth testing is explicitly enabled. (See
- * cogl_material_set_depth_test_enabled())
+ * cogl_depth_state_set_test_enabled())
  */
-typedef enum
-{
+typedef enum {
   COGL_DEPTH_TEST_FUNCTION_NEVER    = 0x0200,
   COGL_DEPTH_TEST_FUNCTION_LESS     = 0x0201,
   COGL_DEPTH_TEST_FUNCTION_EQUAL    = 0x0202,
