@@ -57,23 +57,38 @@ cogl_private_headers := \
 	cd $(top_srcdir)/cogl/winsys && echo *-private.h && cd -)
 
 IGNORE_HFILES=\
+	driver					\
+       	tesselator                              \
+       	cogl.h                                  \
 	$(cogl_private_headers)			\
 	cogl-atlas.h				\
 	cogl-path.h				\
 	cogl-program.h				\
 	cogl-shader.h				\
+        cogl-bitmap-packing.h                   \
+        cogl-bitmask.h                          \
 	cogl-blend-string.h 			\
+        cogl-blit.h                             \
+        cogl-boxed-value.h                      \
 	cogl-clip-stack.h 			\
 	cogl-debug.h 				\
+        cogl-debug-options.h                    \
 	cogl-defines.h 				\
+        cogl-driver.h                           \
+        cogl-enum-types.h                       \
+        cogl-flags.h                            \
+        cogl-gles2-types.h                      \
+        cogl-gl-header.h                        \
+        cogl-glsl-shader-boilerplate.h          \
 	cogl-deprecated.h 			\
 	cogl-internal.h 			\
-	cogl-matrix-mesa.h 			\
-	cogl-spans.h 				\
 	cogl-profile.h				\
+        cogl-queue.h                            \
+        cogl-rectangle-map.h                    \
+        cogl-spans.h                            \
+        cogl-texture-driver.h                   \
 	cogl-util.h 				\
-	driver 					\
-	tesselator
+        $(NULL)
 
 EXTRA_HFILES=
 
