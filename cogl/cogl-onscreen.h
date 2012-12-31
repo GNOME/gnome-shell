@@ -228,7 +228,7 @@ cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
  * @throttled: Whether swap throttling is wanted or not.
  *
  * Requests that the given @onscreen framebuffer should have swap buffer
- * requests (made using cogl_framebuffer_swap_buffers()) throttled either by a
+ * requests (made using cogl_onscreen_swap_buffers()) throttled either by a
  * displays vblank period or perhaps some other mechanism in a composited
  * environment.
  *
@@ -319,7 +319,7 @@ cogl_onscreen_swap_buffers (CoglOnscreen *onscreen);
  * defined by 4 sequential (x, y, width, height) integers.
  *
  * This function also implicitly discards the contents of the color, depth and
- * stencil buffers as if cogl_onscreen_discard_buffers() were used. The
+ * stencil buffers as if cogl_framebuffer_discard_buffers() were used. The
  * significance of the discard is that you should not expect to be able to
  * start a new frame that incrementally builds on the contents of the previous
  * frame.

@@ -66,17 +66,18 @@ COGL_BEGIN_DECLS
  * Cogl doesn't aim to pretend that meta-textures are just like real
  * textures because it would get extremely complex to try and emulate
  * low-level GPU semantics transparently for these textures.  The low
- * level drawing APIs of Cogl, such as cogl_draw_attributes() don't
- * actually know anything about the #CoglMetaTexture interface and its
- * the developer's responsibility to resolve all textures referenced by
- * a #CoglPipeline to low-level textures before drawing.
+ * level drawing APIs of Cogl, such as cogl_framebuffer_draw_attributes()
+ * don't actually know anything about the #CoglMetaTexture interface and its
+ * the developer's responsibility to resolve all textures referenced by a
+ * #CoglPipeline to low-level textures before drawing.
  *
- * If you want to develop custom primitive APIs like cogl_rectangle()
- * and you want to support drawing with #CoglAtlasTexture<!-- -->s
- * or #CoglSubTexture<!-- -->s for example, then you will need to use
- * this #CoglMetaTexture interface to be able to resolve high-level
- * textures into low-level textures before drawing with Cogl's
- * low-level drawing APIs such as cogl_draw_attributes().
+ * If you want to develop custom primitive APIs like
+ * cogl_framebuffer_draw_rectangle() and you want to support drawing
+ * with #CoglAtlasTexture<!-- -->s or #CoglSubTexture<!-- -->s for
+ * example, then you will need to use this #CoglMetaTexture interface
+ * to be able to resolve high-level textures into low-level textures
+ * before drawing with Cogl's low-level drawing APIs such as
+ * cogl_framebuffer_draw_attributes().
  *
  * <note>Most developers won't need to use this interface directly
  * but still it is worth understanding the distinction between
@@ -152,7 +153,7 @@ typedef void (*CoglMetaTextureCallback) (CoglTexture *sub_texture,
  * internally use this API to resolve the low level textures of any
  * meta textures you have associated with CoglPipeline layers.
  *
- * <note>The low level drawing APIs such as cogl_draw_attributes()
+ * <note>The low level drawing APIs such as cogl_framebuffer_draw_attributes()
  * don't understand the #CoglMetaTexture interface and so it is your
  * responsibility to use this API to resolve all CoglPipeline
  * textures into low-level textures before drawing.</note>

@@ -255,7 +255,7 @@ cogl_pipeline_remove_layer (CoglPipeline *pipeline,
  *   <varlistentry>
  *     <term>CONSTANT</term>
  *     <listitem>Use the color from the constant given with
- *     cogl_pipeline_set_layer_constant()</listitem>
+ *     cogl_pipeline_set_layer_combine_constant()</listitem>
  *   </varlistentry>
  *   <varlistentry>
  *     <term>PRIMARY</term>
@@ -278,7 +278,8 @@ cogl_pipeline_remove_layer (CoglPipeline *pipeline,
  *   </programlisting></informalexample>
  *   <para>This could be used to cross-fade between two images, using
  *   the alpha component of a constant as the interpolator. The constant
- *   color is given by calling cogl_pipeline_set_layer_constant.</para>
+ *   color is given by calling
+ *   cogl_pipeline_set_layer_combine_constant().</para>
  *   <informalexample><programlisting>
  *   RGBA = INTERPOLATE (PREVIOUS, TEXTURE, CONSTANT[A])
  *   </programlisting></informalexample>
@@ -429,7 +430,7 @@ cogl_pipeline_get_layer_mag_filter (CoglPipeline *pipeline,
  * have 1.0,1.0. If @enable is %FALSE then the coordinates will be
  * fixed for the entire point.
  *
- * This function will only work if %COGL_FEATURE_POINT_SPRITE is
+ * This function will only work if %COGL_FEATURE_ID_POINT_SPRITE is
  * available. If the feature is not available then the function will
  * return %FALSE and set @error.
  *

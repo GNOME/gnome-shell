@@ -103,7 +103,7 @@ cogl_is_renderer (void *object);
  *
  * While the renderer is unconnected it can be configured so that
  * applications may specify backend constraints, such as "must use
- * x11" for example via cogl_renderer_add_criteria().
+ * x11" for example via cogl_renderer_add_constraint().
  *
  * There are also some platform specific configuration apis such
  * as cogl_xlib_renderer_set_foreign_display() that may also be

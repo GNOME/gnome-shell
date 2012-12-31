@@ -250,7 +250,7 @@ cogl_buffer_map (CoglBuffer *buffer,
  * used by the GPU then the driver won't have to stall the CPU and
  * wait for the hardware to finish because it can instead allocate a
  * new buffer to map. You can pass
- * %COGL_BUFFER_MAP_HINT_DISCARD_REGION instead if you want the
+ * %COGL_BUFFER_MAP_HINT_DISCARD_RANGE instead if you want the
  * regions outside of the mapping to be retained.
  *
  * The behaviour is undefined if you access the buffer in a way

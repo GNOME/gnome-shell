@@ -61,7 +61,7 @@ typedef struct _CoglTexture3D CoglTexture3D;
  * pixel format.
  *
  * Note that this function will throw a #CoglError if
- * %COGL_FEATURE_TEXTURE_3D is not advertised. It can also fail if the
+ * %COGL_FEATURE_ID_TEXTURE_3D is not advertised. It can also fail if the
  * requested dimensions are not supported by the GPU.
  *
  * Return value: a new #CoglTexture3D object or
@@ -108,7 +108,7 @@ cogl_texture_3d_new_with_size (CoglContext *context,
  * between the images using @image_stride.
  *
  * Note that this function will throw a #CoglError if
- * %COGL_FEATURE_TEXTURE_3D is not advertised. It can also fail if the
+ * %COGL_FEATURE_ID_TEXTURE_3D is not advertised. It can also fail if the
  * requested dimensions are not supported by the GPU.
  *
  * Return value: the newly created #CoglTexture3D or %NULL if

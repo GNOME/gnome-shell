@@ -142,7 +142,7 @@ cogl_vector3_copy (const float *vector);
  * @vector: The 3 component you want to free
  *
  * Frees a 3 component vector that was previously allocated with
- * cogl_vector_copy()
+ * cogl_vector3_copy()
  *
  * Since: 1.4
  * Stability: Unstable

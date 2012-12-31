@@ -132,7 +132,7 @@ cogl_bitmap_new_from_buffer (CoglBuffer *buffer,
  *
  * The data for the bitmap will be stored in a newly created
  * #CoglPixelBuffer. You can get a pointer to the pixel buffer using
- * cogl_bitmap_get_pixel_buffer(). The #CoglBuffer API can then be
+ * cogl_bitmap_get_buffer(). The #CoglBuffer API can then be
  * used to fill the bitmap with data.
  *
  * <note>Cogl will try its best to provide a hardware array you can

@@ -184,7 +184,7 @@ cogl_framebuffer_set_viewport (CoglFramebuffer *framebuffer,
  * @framebuffer: A #CoglFramebuffer
  *
  * Queries the x coordinate of the viewport origin as set using cogl_framebuffer_set_viewport()
- * or the default value which is %0.
+ * or the default value which is 0.
  *
  * Return value: The x coordinate of the viewport origin.
  * Since: 1.8
@@ -198,7 +198,7 @@ cogl_framebuffer_get_viewport_x (CoglFramebuffer *framebuffer);
  * @framebuffer: A #CoglFramebuffer
  *
  * Queries the y coordinate of the viewport origin as set using cogl_framebuffer_set_viewport()
- * or the default value which is %0.
+ * or the default value which is 0.
  *
  * Return value: The y coordinate of the viewport origin.
  * Since: 1.8
@@ -654,7 +654,8 @@ cogl_framebuffer_push_primitive_clip (CoglFramebuffer *framebuffer,
  * @framebuffer: A #CoglFramebuffer pointer
  *
  * Reverts the clipping region to the state before the last call to
- * cogl_framebuffer_push_clip().
+ * cogl_framebuffer_push_scissor_clip(), cogl_framebuffer_push_rectangle_clip()
+ * cogl_framebuffer_push_path_clip(), or cogl_framebuffer_push_primitive_clip().
  *
  * Since: 1.10
  * Stability: unstable
@@ -1386,7 +1387,7 @@ cogl_framebuffer_draw_rectangle (CoglFramebuffer *framebuffer,
  * The given texture coordinates should always be normalized such that
  * (0, 0) corresponds to the top left and (1, 1) corresponds to the
  * bottom right. To map an entire texture across the rectangle pass
- * in @s_1=%0, @t_1=%0, @s_2=%1, @t_2=%1.
+ * in @s_1=0, @t_1=0, @s_2=1, @t_2=1.
  *
  * <note>Even if you have associated a #CoglTextureRectangle texture
  * with one of your @pipeline layers which normally implies working
@@ -1460,8 +1461,8 @@ cogl_framebuffer_draw_textured_rectangle (CoglFramebuffer *framebuffer,
  * The given texture coordinates should always be normalized such that
  * (0, 0) corresponds to the top left and (1, 1) corresponds to the
  * bottom right. To map an entire texture across the rectangle pass
- * in tex_coords[0]=%0, tex_coords[1]=%0, tex_coords[2]=%1,
- * tex_coords[3]=%1.
+ * in tex_coords[0]=0, tex_coords[1]=0, tex_coords[2]=1,
+ * tex_coords[3]=1.
  *
  * <note>Even if you have associated a #CoglTextureRectangle texture
  * which normally implies working with non-normalized texture
@@ -1570,8 +1571,8 @@ cogl_framebuffer_draw_rectangles (CoglFramebuffer *framebuffer,
  * The given texture coordinates should always be normalized such that
  * (0, 0) corresponds to the top left and (1, 1) corresponds to the
  * bottom right. To map an entire texture across the rectangle pass
- * in tex_coords[0]=%0, tex_coords[1]=%0, tex_coords[2]=%1,
- * tex_coords[3]=%1.
+ * in tex_coords[0]=0, tex_coords[1]=0, tex_coords[2]=1,
+ * tex_coords[3]=1.
  *
  * <note>Even if you have associated a #CoglTextureRectangle texture
  * which normally implies working with non-normalized texture

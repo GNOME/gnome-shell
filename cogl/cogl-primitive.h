@@ -55,7 +55,7 @@ COGL_BEGIN_DECLS
  * @y: The y component of a position attribute
  *
  * A convenience vertex definition that can be used with
- * cogl_primitive_new_with_v2_attributes().
+ * cogl_primitive_new_p2().
  *
  * Since: 1.6
  * Stability: Unstable
@@ -71,7 +71,7 @@ typedef struct {
  * @z: The z component of a position attribute
  *
  * A convenience vertex definition that can be used with
- * cogl_primitive_new_with_v3_attributes().
+ * cogl_primitive_new_p3().
  *
  * Since: 1.6
  * Stability: Unstable
@@ -90,7 +90,7 @@ typedef struct {
  * @a: The alpha component of a color attribute
  *
  * A convenience vertex definition that can be used with
- * cogl_primitive_new_with_v2c4_attributes().
+ * cogl_primitive_new_p2c4().
  *
  * Since: 1.6
  * Stability: Unstable
@@ -111,7 +111,7 @@ typedef struct {
  * @a: The alpha component of a color attribute
  *
  * A convenience vertex definition that can be used with
- * cogl_primitive_new_with_v3c4_attributes().
+ * cogl_primitive_new_p3c4().
  *
  * Since: 1.6
  * Stability: Unstable
@@ -129,7 +129,7 @@ typedef struct {
  * @t: The t component of a texture coordinate attribute
  *
  * A convenience vertex definition that can be used with
- * cogl_primitive_new_with_v2t2_attributes().
+ * cogl_primitive_new_p2t2().
  *
  * Since: 1.6
  * Stability: Unstable
@@ -148,7 +148,7 @@ typedef struct {
  * @t: The t component of a texture coordinate attribute
  *
  * A convenience vertex definition that can be used with
- * cogl_primitive_new_with_v3t2_attributes().
+ * cogl_primitive_new_p3t2().
  *
  * Since: 1.6
  * Stability: Unstable
@@ -171,7 +171,7 @@ typedef struct {
  * @a: The alpha component of a color attribute
  *
  * A convenience vertex definition that can be used with
- * cogl_primitive_new_with_v3t2c4_attributes().
+ * cogl_primitive_new_p3t2c4().
  *
  * Since: 1.6
  * Stability: Unstable
@@ -195,7 +195,7 @@ typedef struct {
  * @a: The alpha component of a color attribute
  *
  * A convenience vertex definition that can be used with
- * cogl_primitive_new_with_v3t2c4_attributes().
+ * cogl_primitive_new_p3t2c4().
  *
  * Since: 1.6
  * Stability: Unstable

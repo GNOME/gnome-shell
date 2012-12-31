@@ -43,6 +43,9 @@ CoglAttributeType
 CoglColorMask
 
 <SUBSECTION>
+CoglTextureFlags
+
+<SUBSECTION>
 CoglBool
 </SECTION>
 
@@ -57,6 +60,14 @@ cogl_is_renderer
 cogl_renderer_new
 cogl_renderer_get_n_fragment_texture_units
 cogl_renderer_connect
+
+<SUBSECTION>
+CoglWinsysID
+cogl_renderer_set_winsys_id
+cogl_renderer_get_winsys_id
+CoglRendererConstraint
+cogl_renderer_add_constraint
+cogl_renderer_remove_constraint
 
 <SUBSECTION>
 cogl_xlib_renderer_set_foreign_display
@@ -80,6 +91,8 @@ cogl_wayland_renderer_set_foreign_display
 cogl_wayland_renderer_get_display
 cogl_wayland_renderer_set_foreign_compositor
 cogl_wayland_renderer_get_compositor
+cogl_wayland_renderer_set_foreign_shell
+cogl_wayland_renderer_get_shell
 </SECTION>
 
 <SECTION>
@@ -255,6 +268,8 @@ cogl_is_indices
 CoglIndicesType
 cogl_indices_new
 
+<SUBSECTION>
+cogl_get_rectangle_indices
 </SECTION>
 
 <SECTION>
@@ -369,6 +384,9 @@ cogl_bitmap_get_height
 cogl_bitmap_get_rowstride
 cogl_bitmap_get_buffer
 cogl_bitmap_get_size_from_file
+
+<SUBSECTION>
+cogl_texture_new_from_bitmap
 
 <SUBSECTION>
 COGL_BITMAP_ERROR
@@ -521,6 +539,7 @@ cogl_framebuffer_stroke_path
 cogl_framebuffer_fill_path
 
 <SUBSECTION>
+cogl_framebuffer_discard_buffers
 cogl_framebuffer_finish
 
 <SUBSECTION>
@@ -546,6 +565,7 @@ cogl_framebuffer_set_projection_matrix
 <SUBSECTION>
 cogl_framebuffer_push_scissor_clip
 cogl_framebuffer_push_rectangle_clip
+cogl_framebuffer_push_path_clip
 cogl_framebuffer_push_primitive_clip
 cogl_framebuffer_pop_clip
 

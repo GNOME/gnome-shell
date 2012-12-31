@@ -687,7 +687,7 @@ typedef enum {
  * reduce the demand on memory bandwidth.
  *
  * Note that %COGL_INDICES_TYPE_UNSIGNED_INT is only supported if the
- * %COGL_FEATURE_UNSIGNED_INT_INDICES feature is available. This
+ * %COGL_FEATURE_ID_UNSIGNED_INT_INDICES feature is available. This
  * should always be available on OpenGL but on OpenGL ES it will only
  * be available if the GL_OES_element_index_uint extension is
  * advertized.
@@ -782,7 +782,7 @@ typedef enum { /*< prefix=COGL_RENDERER_ERROR >*/
  *                        processing
  * @COGL_FILTER_REMOVE: Remove the event, stops the processing
  *
- * Return values for the #CoglFilterFunc function.
+ * Return values for the #CoglXlibFilterFunc and #CoglWin32FilterFunc functions.
  *
  * Stability: Unstable
  */
@@ -893,7 +893,7 @@ typedef enum {
  * CoglReadPixelsFlags:
  * @COGL_READ_PIXELS_COLOR_BUFFER: Read from the color buffer
  *
- * Flags for cogl_read_pixels()
+ * Flags for cogl_framebuffer_read_pixels_into_bitmap()
  *
  * Since: 1.0
  */

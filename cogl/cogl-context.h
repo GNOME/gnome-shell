@@ -169,11 +169,11 @@ cogl_is_context (void *object);
  *     %COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP and %COGL_FEATURE_ID_TEXTURE_NPOT_REPEAT
  *     features to know if the hardware supports npot texture mipmaps
  *     or repeat modes other than
- *     %COGL_RENDERER_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE respectively.
+ *     %COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE respectively.
  * @COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP: Mipmapping is supported in
  *     conjuntion with non power of two textures.
  * @COGL_FEATURE_ID_TEXTURE_NPOT_REPEAT: Repeat modes other than
- *     %COGL_RENDERER_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE are supported by the
+ *     %COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE are supported by the
  *     hardware.
  * @COGL_FEATURE_ID_TEXTURE_NPOT: Non power of two textures are supported
  *    by the hardware. This is a equivalent to the
@@ -190,7 +190,7 @@ cogl_is_context (void *object);
  * @COGL_FEATURE_ID_GLSL: GLSL support
  * @COGL_FEATURE_ID_ARBFP: ARBFP support
  * @COGL_FEATURE_ID_UNSIGNED_INT_INDICES: Set if
- *     %COGL_RENDERER_INDICES_TYPE_UNSIGNED_INT is supported in
+ *     %COGL_INDICES_TYPE_UNSIGNED_INT is supported in
  *     cogl_indices_new().
  * @COGL_FEATURE_ID_DEPTH_RANGE: cogl_pipeline_set_depth_range() support
  * @COGL_FEATURE_ID_POINT_SPRITE: Whether
