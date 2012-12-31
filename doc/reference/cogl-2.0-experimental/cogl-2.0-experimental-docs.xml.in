@@ -130,6 +130,7 @@
     <section id="cogl-framebuffer-apis">
       <title>Framebuffers</title>
       <xi:include href="xml/cogl-framebuffer.xml"/>
+      <xi:include href="xml/cogl-onscreen.xml"/>
       <xi:include href="xml/cogl-offscreen.xml"/>
     </section>
 
