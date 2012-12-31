@@ -81,7 +81,7 @@ typedef int CoglBool;
 #endif
 
 /**
- * TRUE:
+ * FALSE:
  *
  * A constant to be used with #CoglBool types to indicate a boolean in
  * the "false" state.
