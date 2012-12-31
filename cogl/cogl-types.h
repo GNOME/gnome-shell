@@ -771,7 +771,7 @@ typedef enum { /*< prefix=COGL_RENDERER_ERROR >*/
   COGL_RENDERER_ERROR_BAD_CONSTRAINT
 } CoglRendererError;
 
-/*
+/**
  * CoglFilterReturn:
  * @COGL_FILTER_CONTINUE: The event was not handled, continues the
  *                        processing
