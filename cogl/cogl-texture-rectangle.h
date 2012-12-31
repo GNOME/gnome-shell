@@ -102,7 +102,7 @@ cogl_is_texture_rectangle (void *object);
  * first check for the %COGL_FEATURE_ID_TEXTURE_RECTANGLE feature
  * using cogl_has_feature().</note>
  *
- * Returns: A pointer to a newly allocated #CoglRectangle texture
+ * Returns: A pointer to a newly allocated #CoglTextureRectangle texture
  *          or if the size was too large or there wasn't enough memory
  *          %NULL is returned and @error set.
  *
@@ -143,7 +143,7 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
  * first check for the %COGL_FEATURE_ID_TEXTURE_RECTANGLE feature
  * using cogl_has_feature().</note>
  *
- * Returns: A pointer to a newly allocated #CoglRectangle texture
+ * Returns: A pointer to a newly allocated #CoglTextureRectangle texture
  *          or if the size was too large or there wasn't enough memory
  *          %NULL is returned and @error set.
  * Since: 2.0

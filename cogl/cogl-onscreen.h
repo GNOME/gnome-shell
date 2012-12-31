@@ -224,7 +224,7 @@ cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
 
 /**
  * cogl_onscreen_set_swap_throttled:
- * @onscreen: A #CoglOncsreen framebuffer
+ * @onscreen: A #CoglOnscreen framebuffer
  * @throttled: Whether swap throttling is wanted or not.
  *
  * Requests that the given @onscreen framebuffer should have swap buffer

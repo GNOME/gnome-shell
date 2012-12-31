@@ -1,4 +1,3 @@
-
 <SECTION>
 <FILE>cogl-object</FILE>
 <TITLE>The Object Interface</TITLE>
@@ -6,6 +5,7 @@ CoglObject
 cogl_object_ref
 cogl_object_unref
 CoglUserDataKey
+CoglUserDataDestroyCallback
 cogl_object_get_user_data
 cogl_object_set_user_data
 </SECTION>
@@ -49,6 +49,11 @@ CoglBool
 <SECTION>
 <FILE>cogl-renderer</FILE>
 <TITLE>CoglRenderer: Connect to a backend renderer</TITLE>
+<SUBSECTION>
+CoglRenderer
+cogl_is_renderer
+
+<SUBSECTION>
 cogl_renderer_new
 cogl_renderer_get_n_fragment_texture_units
 cogl_renderer_connect
@@ -59,6 +64,7 @@ cogl_xlib_renderer_get_foreign_display
 
 <SUBSECTION>
 CoglXlibFilterFunc
+CoglFilterReturn
 cogl_xlib_renderer_add_filter
 cogl_xlib_renderer_remove_filter
 cogl_xlib_renderer_handle_event
@@ -79,6 +85,11 @@ cogl_wayland_renderer_get_compositor
 <SECTION>
 <FILE>cogl-swap-chain</FILE>
 <TITLE>CoglSwapChain: Describe a set of back buffers for flipping between</TITLE>
+<SUBSECTION>
+CoglSwapChain
+cogl_is_swap_chain
+
+<SUBSECTION>
 cogl_swap_chain_new
 cogl_swap_chain_set_has_alpha
 cogl_swap_chain_set_length
@@ -87,12 +98,22 @@ cogl_swap_chain_set_length
 <SECTION>
 <FILE>cogl-onscreen-template</FILE>
 <TITLE>CoglOnscreenTemplate: Describe a template for onscreen framebuffers</TITLE>
+<SUBSECTION>
+CoglOnscreenTemplate
+cogl_is_onscreen_template
+
+<SUBSECTION>
 cogl_onscreen_template_new
 </SECTION>
 
 <SECTION>
 <FILE>cogl-display</FILE>
 <TITLE>CoglDisplay: Setup a display pipeline</TITLE>
+<SUBSECTION>
+CoglDisplay
+cogl_is_display
+
+<SUBSECTION>
 cogl_display_new
 cogl_display_get_renderer
 cogl_display_setup
@@ -109,8 +130,9 @@ cogl_wayland_display_set_compositor_display
 <TITLE>The Top-Level Context</TITLE>
 
 <SUBSECTION>
-cogl_context_new
+CoglContext
 cogl_is_context
+cogl_context_new
 cogl_context_get_display
 
 <SUBSECTION>
@@ -212,6 +234,7 @@ cogl_glib_source_new
 <SECTION>
 <FILE>cogl-attribute</FILE>
 <TITLE>Vertex Attributes</TITLE>
+CoglAttribute
 cogl_attribute_new
 cogl_is_attribute
 cogl_attribute_set_normalized
@@ -229,6 +252,7 @@ CoglIndices
 cogl_is_indices
 
 <SUBSECTION>
+CoglIndicesType
 cogl_indices_new
 
 </SECTION>
@@ -299,6 +323,7 @@ cogl_polygon
 <SECTION>
 <FILE>cogl-paths</FILE>
 <TITLE>Path Primitives</TITLE>
+CoglPath
 cogl_is_path
 cogl_path_new
 cogl_path_copy
@@ -434,11 +459,18 @@ cogl_is_texture_2d_sliced
 <SECTION>
 <FILE>cogl-texture-pixmap-x11</FILE>
 <TITLE>X11 Texture From Pixmap</TITLE>
+<SUBSECTION>
+CoglTexturePixmapX11
+cogl_is_texture_pixmap_x11
+
+<SUBSECTION>
 cogl_texture_pixmap_x11_new
+
+<SUBSECTION>
 cogl_texture_pixmap_x11_update_area
 cogl_texture_pixmap_x11_is_using_tfp_extension
+CoglTexturePixmapX11ReportLevel
 cogl_texture_pixmap_x11_set_damage_object
-cogl_is_texture_pixmap_x11
 </SECTION>
 
 <SECTION>
@@ -536,6 +568,7 @@ COGL_ONSCREEN
 cogl_onscreen_new
 
 <SUBSECTION>
+CoglOnscreenX11MaskCallback
 cogl_x11_onscreen_set_foreign_window_xid
 cogl_x11_onscreen_get_window_xid
 cogl_x11_onscreen_get_visual_xid
@@ -552,6 +585,7 @@ cogl_onscreen_hide
 cogl_onscreen_swap_buffers
 cogl_onscreen_swap_region
 cogl_onscreen_set_swap_throttled
+CoglSwapBuffersNotify
 cogl_onscreen_add_swap_buffers_callback
 cogl_onscreen_remove_swap_buffers_callback
 </SECTION>
@@ -559,8 +593,12 @@ cogl_onscreen_remove_swap_buffers_callback
 <SECTION>
 <FILE>cogl-offscreen</FILE>
 <TITLE>Offscreen Framebuffers</TITLE>
-cogl_offscreen_new_to_texture
+<SUBSECTION>
+CoglOffscreen
 cogl_is_offscreen
+
+<SUBSECTION>
+cogl_offscreen_new_to_texture
 </SECTION>
 
 <SECTION>
@@ -721,6 +759,7 @@ cogl_get_static_zero_quaternion
 <SECTION>
 <FILE>cogl-pipeline</FILE>
 <TITLE>Pipeline</TITLE>
+CoglPipeline
 cogl_pipeline_new
 cogl_pipeline_copy
 cogl_is_pipeline
@@ -784,6 +823,7 @@ cogl_pipeline_get_layer_point_sprite_coords_enabled
 cogl_pipeline_remove_layer
 
 cogl_pipeline_get_n_layers
+CoglPipelineLayerCallback
 cogl_pipeline_foreach_layer
 
 cogl_pipeline_get_uniform_location
@@ -820,6 +860,7 @@ cogl_depth_state_get_range
 <SECTION>
 <FILE>cogl-buffer</FILE>
 <TITLE>CoglBuffer: The Buffer Interface</TITLE>
+CoglBuffer
 cogl_is_buffer
 cogl_buffer_get_size
 CoglBufferUsageHint
@@ -829,12 +870,14 @@ CoglBufferUpdateHint
 cogl_buffer_set_update_hint
 cogl_buffer_get_update_hint
 CoglBufferAccess
+CoglBufferMapHint
 cogl_buffer_map
 cogl_buffer_map_range
 cogl_buffer_unmap
 cogl_buffer_set_data
 
 <SUBSECTION>
+CoglPixelBuffer
 cogl_pixel_buffer_new
 cogl_is_pixel_buffer
 
