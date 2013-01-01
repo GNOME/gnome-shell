@@ -29,10 +29,10 @@
 typedef struct _CoglPipelineCache CoglPipelineCache;
 
 CoglPipelineCache *
-cogl_pipeline_cache_new (void);
+_cogl_pipeline_cache_new (void);
 
 void
-cogl_pipeline_cache_free (CoglPipelineCache *cache);
+_cogl_pipeline_cache_free (CoglPipelineCache *cache);
 
 /*
  * Gets a pipeline from the cache that has the same state as

@@ -143,7 +143,7 @@ pipeline_combined_equal (const void *a, const void *b)
 }
 
 CoglPipelineCache *
-cogl_pipeline_cache_new (void)
+_cogl_pipeline_cache_new (void)
 {
   CoglPipelineCache *cache = g_new (CoglPipelineCache, 1);
 
@@ -164,7 +164,7 @@ cogl_pipeline_cache_new (void)
 }
 
 void
-cogl_pipeline_cache_free (CoglPipelineCache *cache)
+_cogl_pipeline_cache_free (CoglPipelineCache *cache)
 {
   g_hash_table_destroy (cache->fragment_hash);
   g_hash_table_destroy (cache->vertex_hash);

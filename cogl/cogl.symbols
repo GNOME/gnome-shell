@@ -516,8 +516,6 @@ cogl_perspective
 
 cogl_pipeline_add_layer_snippet
 cogl_pipeline_add_snippet
-cogl_pipeline_cache_free
-cogl_pipeline_cache_new
 cogl_pipeline_copy
 cogl_pipeline_foreach_layer
 cogl_pipeline_get_alpha_test_function
