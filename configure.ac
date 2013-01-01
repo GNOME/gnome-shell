@@ -361,9 +361,6 @@ if test "x$enable_debug" = "xyes"; then
 	CFLAGS="$CFLAGS -g -O"
 fi
 
-# For fix-meta-rectangle.py
-AM_PATH_PYTHON([2.5])
-
 #### Warnings (last since -Werror can disturb other tests)
 
 # Stay command-line compatible with the gnome-common configure option. Here
