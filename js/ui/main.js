@@ -606,6 +606,21 @@ function popModal(actor, timestamp) {
         keybindingMode = record.keybindingMode;
         global.stage.set_key_focus(record.prevFocus);
     } else {
+        // If we have:
+        //     global.stage.set_focus(a);
+        //     Main.pushModal(b);
+        //     Main.pushModal(c);
+        //     Main.pushModal(d);
+        //
+        // then we have the stack:
+        //     [{ prevFocus: a, actor: b },
+        //      { prevFocus: b, actor: c },
+        //      { prevFocus: c, actor: d }]
+        //
+        // When actor c is destroyed/popped, if we only simply remove the
+        // record, then the focus stack will be [a, c], rather than the correct
+        // [a, b]. Shift the focus stack up before removing the record to ensure
+        // that we get the correct result.
         let t = modalActorFocusStack[modalActorFocusStack.length - 1];
         if (t.prevFocus)
             t.prevFocus.disconnect(t.prevFocusDestroyId);
