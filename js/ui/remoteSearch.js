@@ -4,6 +4,7 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const St = imports.gi.St;
+const Shell = imports.gi.Shell;
 
 const FileUtils = imports.misc.fileUtils;
 const Search = imports.ui.search;
@@ -187,18 +188,18 @@ const RemoteSearchProvider = new Lang.Class({
     },
 
     createIcon: function(size, meta) {
+        let gicon;
         if (meta['gicon']) {
-            return new St.Icon({ gicon: Gio.icon_new_for_string(meta['gicon']),
-                                 icon_size: size });
+            gicon = Gio.icon_new_for_string(meta['gicon']);
         } else if (meta['icon-data']) {
             let [width, height, rowStride, hasAlpha,
                  bitsPerSample, nChannels, data] = meta['icon-data'];
-            let textureCache = St.TextureCache.get_default();
-            return textureCache.load_from_raw(data, hasAlpha,
-                                              width, height, rowStride, size);
+            gicon = Shell.util_create_pixbuf_from_data(data, GdkPixbuf.Colorspace.RGB, hasAlpha,
+                                                       bitsPerSample, width, height, rowStride);
         }
 
-        return null;
+        return new St.Icon({ gicon: Gio.icon_new_for_string(meta['gicon']),
+                             icon_size: size });
     },
 
     _getResultsFinished: function(results, error) {
