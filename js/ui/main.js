@@ -553,7 +553,7 @@ function pushModal(actor, params) {
         curFocusDestroyId = curFocus.connect('destroy', function() {
             let index = _findModal(actor);
             if (index >= 0)
-                modalActorFocusStack[index].actor = null;
+                modalActorFocusStack[index].focus = null;
         });
     }
     modalActorFocusStack.push({ actor: actor,
