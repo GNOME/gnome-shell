@@ -2768,17 +2768,14 @@ const MessageTray = new Lang.Class({
         this._summaryBoxPointerState = State.HIDDEN;
         this._summaryBoxPointer.bin.child = null;
 
-        let sourceNotificationStackDoneShowing = null;
         if (doneShowingNotificationStack) {
+            let source = this._summaryBoxPointerItem.source;
+
             this._summaryBoxPointerItem.doneShowingNotificationStack();
-            sourceNotificationStackDoneShowing = this._summaryBoxPointerItem.source;
-        }
+            this._summaryBoxPointerItem = null;
 
-        this._summaryBoxPointerItem = null;
-
-        if (sourceNotificationStackDoneShowing) {
-            if (sourceNotificationStackDoneShowing.isTransient && !this._reNotifyAfterHideNotification)
-                sourceNotificationStackDoneShowing.destroy(NotificationDestroyedReason.EXPIRED);
+            if (source.isTransient && !this._reNotifyAfterHideNotification)
+                source.destroy(NotificationDestroyedReason.EXPIRED);
             if (this._reNotifyAfterHideNotification) {
                 this._onNotify(this._reNotifyAfterHideNotification.source, this._reNotifyAfterHideNotification);
                 this._reNotifyAfterHideNotification = null;
