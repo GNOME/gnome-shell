@@ -2090,17 +2090,35 @@ StScrollBar StButton#vhandle:active {
 }
 
 /* IBus Candidate Popup */
+.candidate-popup-boxpointer {
+    -arrow-border-radius: 8px;
+    -arrow-background-color: #707070;
+    -arrow-border-width: 0px;
+    -arrow-base: 24px;
+    -arrow-rise: 11px;
+}
+
+.candidate-popup-content {
+    padding: 0.5em;
+    spacing: 0.3em;
+}
+
+.candidate-popup-text {
+    font-size: 9pt;
+}
+
 .candidate-index {
-    padding: 0.5em 0.5em 0.5em 0.5em;
+    padding: 0 0.5em 0 0;
+    color: #cccccc;
 }
 
-.candidate-label {
-    padding: 0.5em 0.5em 0.5em 0.5em;
+.candidate-box {
+    padding: 0.3em 0.5em 0.3em 0.5em;
 }
 
-.candidate-label:selected {
+.candidate-box:selected {
     border-radius: 4px;
-    background-color: rgba(255,255,255,0.33);
+    background-color: rgba(255,255,255,0.2);
 }
 
 /* Login Dialog */

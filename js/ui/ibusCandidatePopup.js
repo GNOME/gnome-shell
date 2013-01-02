@@ -7,30 +7,24 @@ const St = imports.gi.St;
 
 const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
 
 const MAX_CANDIDATES_PER_PAGE = 16;
 
 const CandidateArea = new Lang.Class({
     Name: 'CandidateArea',
-    Extends: PopupMenu.PopupBaseMenuItem,
 
     _init: function() {
-        this.parent({ reactive: false });
-
-        // St.Table exhibits some sizing problems so let's go with a
-        // clutter layout manager for now.
-        this._table = new Clutter.Actor();
-        this.addActor(this._table);
-
-        this._tableLayout = new Clutter.TableLayout();
-        this._table.set_layout_manager(this._tableLayout);
-
-        this._indexLabels = [];
-        this._candidateLabels = [];
+        this.actor = new St.BoxLayout({ vertical: true,
+                                        visible: false });
+        this._candidateBoxes = [];
         for (let i = 0; i < MAX_CANDIDATES_PER_PAGE; ++i) {
-            this._indexLabels.push(new St.Label({ style_class: 'candidate-index' }));
-            this._candidateLabels.push(new St.Label({ style_class: 'candidate-label' }));
+            let box = new St.BoxLayout({ style_class: 'candidate-box' });
+            box._indexLabel = new St.Label({ style_class: 'candidate-index' });
+            box._candidateLabel = new St.Label({ style_class: 'candidate-label' });
+            box.add(box._indexLabel, { y_fill: false });
+            box.add(box._candidateLabel, { y_fill: false });
+            this._candidateBoxes.push(box);
+            this.actor.add(box);
         }
 
         this._orientation = -1;
@@ -43,18 +37,10 @@ const CandidateArea = new Lang.Class({
 
         this._orientation = orientation;
 
-        this._table.remove_all_children();
-
         if (this._orientation == IBus.Orientation.HORIZONTAL)
-            for (let i = 0; i < MAX_CANDIDATES_PER_PAGE; ++i) {
-                this._tableLayout.pack(this._indexLabels[i], i*2, 0);
-                this._tableLayout.pack(this._candidateLabels[i], i*2 + 1, 0);
-            }
+            this.actor.vertical = false;
         else                    // VERTICAL || SYSTEM
-            for (let i = 0; i < MAX_CANDIDATES_PER_PAGE; ++i) {
-                this._tableLayout.pack(this._indexLabels[i], 0, i);
-                this._tableLayout.pack(this._candidateLabels[i], 1, i);
-            }
+            this.actor.vertical = true;
     },
 
     setCandidates: function(indexes, candidates, orientation, cursorPosition, cursorVisible) {
@@ -62,48 +48,49 @@ const CandidateArea = new Lang.Class({
 
         for (let i = 0; i < MAX_CANDIDATES_PER_PAGE; ++i) {
             let visible = i < candidates.length;
-            this._indexLabels[i].visible = visible;
-            this._candidateLabels[i].visible = visible;
+            let box = this._candidateBoxes[i];
+            box.visible = visible;
 
             if (!visible)
                 continue;
 
-            this._indexLabels[i].text = ((indexes && indexes[i]) ? indexes[i] : '%x.'.format(i + 1));
-            this._candidateLabels[i].text = candidates[i];
+            box._indexLabel.text = ((indexes && indexes[i]) ? indexes[i] : '%x'.format(i + 1));
+            box._candidateLabel.text = candidates[i];
         }
 
-        this._candidateLabels[this._cursorPosition].remove_style_pseudo_class('selected');
+        this._candidateBoxes[this._cursorPosition].remove_style_pseudo_class('selected');
         this._cursorPosition = cursorPosition;
         if (cursorVisible)
-            this._candidateLabels[cursorPosition].add_style_pseudo_class('selected');
+            this._candidateBoxes[cursorPosition].add_style_pseudo_class('selected');
     },
 });
 
 const CandidatePopup = new Lang.Class({
     Name: 'CandidatePopup',
-    Extends: PopupMenu.PopupMenu,
 
     _init: function() {
         this._cursor = new St.Bin({ opacity: 0 });
         Main.uiGroup.add_actor(this._cursor);
 
-        this.parent(this._cursor, 0, St.Side.TOP);
-        this.actor.hide();
-        Main.uiGroup.add_actor(this.actor);
+        this._boxPointer = new BoxPointer.BoxPointer(St.Side.TOP);
+        this._boxPointer.actor.visible = false;
+        this._boxPointer.actor.style_class = 'candidate-popup-boxpointer';
+        Main.uiGroup.add_actor(this._boxPointer.actor);
 
-        this._preeditTextItem = new PopupMenu.PopupMenuItem('', { reactive: false });
-        this._preeditTextItem.actor.hide();
-        this.addMenuItem(this._preeditTextItem);
+        let box = new St.BoxLayout({ style_class: 'candidate-popup-content',
+                                     vertical: true });
+        this._boxPointer.bin.set_child(box);
 
-        this._auxTextItem = new PopupMenu.PopupMenuItem('', { reactive: false });
-        this._auxTextItem.actor.hide();
-        this.addMenuItem(this._auxTextItem);
+        this._preeditText = new St.Label({ style_class: 'candidate-popup-text',
+                                           visible: false });
+        box.add(this._preeditText);
 
-        this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this._auxText = new St.Label({ style_class: 'candidate-popup-text',
+                                       visible: false });
+        box.add(this._auxText);
 
-        this._lookupTableItem = new CandidateArea();
-        this._lookupTableItem.actor.hide();
-        this.addMenuItem(this._lookupTableItem);
+        this._candidateArea = new CandidateArea();
+        box.add(this._candidateArea.actor);
 
         this._panelService = null;
     },
@@ -120,55 +107,46 @@ const CandidatePopup = new Lang.Class({
                              }));
         panelService.connect('update-preedit-text',
                              Lang.bind(this, function(ps, text, cursorPosition, visible) {
-                                 if (visible)
-                                     this._preeditTextItem.actor.show();
-                                 else
-                                     this._preeditTextItem.actor.hide();
+                                 this._preeditText.visible = visible;
                                  this._updateVisibility();
 
-                                 this._preeditTextItem.actor.label_actor.text = text.get_text();
+                                 this._preeditText.text = text.get_text();
 
                                  let attrs = text.get_attributes();
                                  if (attrs)
-                                     this._setTextAttributes(this._preeditTextItem.actor.label_actor.clutter_text,
+                                     this._setTextAttributes(this._preeditText.clutter_text,
                                                              attrs);
                              }));
         panelService.connect('show-preedit-text',
                              Lang.bind(this, function(ps) {
-                                 this._preeditTextItem.actor.show();
+                                 this._preeditText.show();
                                  this._updateVisibility();
                              }));
         panelService.connect('hide-preedit-text',
                              Lang.bind(this, function(ps) {
-                                 this._preeditTextItem.actor.hide();
+                                 this._preeditText.hide();
                                  this._updateVisibility();
                              }));
         panelService.connect('update-auxiliary-text',
                              Lang.bind(this, function(ps, text, visible) {
-                                 if (visible)
-                                     this._auxTextItem.actor.show();
-                                 else
-                                     this._auxTextItem.actor.hide();
+                                 this._auxText.visible = visible;
                                  this._updateVisibility();
 
-                                 this._auxTextItem.actor.label_actor.text = text.get_text();
+                                 this._auxText.text = text.get_text();
                              }));
         panelService.connect('show-auxiliary-text',
                              Lang.bind(this, function(ps) {
-                                 this._auxTextItem.actor.show();
+                                 this._auxText.show();
                                  this._updateVisibility();
                              }));
         panelService.connect('hide-auxiliary-text',
                              Lang.bind(this, function(ps) {
-                                 this._auxTextItem.actor.hide();
+                                 this._auxText.hide();
                                  this._updateVisibility();
                              }));
         panelService.connect('update-lookup-table',
                              Lang.bind(this, function(ps, lookupTable, visible) {
-                                 if (visible)
-                                     this._lookupTableItem.actor.show();
-                                 else
-                                     this._lookupTableItem.actor.hide();
+                                 this._candidateArea.actor.visible = visible;
                                  this._updateVisibility();
 
                                  let cursorPos = lookupTable.get_cursor_pos();
@@ -186,37 +164,40 @@ const CandidatePopup = new Lang.Class({
                                  for (let i = startIndex; i < endIndex; ++i)
                                      candidates.push(lookupTable.get_candidate(i).get_text());
 
-                                 this._lookupTableItem.setCandidates(indexes,
-                                                                     candidates,
-                                                                     lookupTable.get_orientation(),
-                                                                     cursorPos % pageSize,
-                                                                     lookupTable.is_cursor_visible());
+                                 this._candidateArea.setCandidates(indexes,
+                                                                   candidates,
+                                                                   lookupTable.get_orientation(),
+                                                                   cursorPos % pageSize,
+                                                                   lookupTable.is_cursor_visible());
                              }));
         panelService.connect('show-lookup-table',
                              Lang.bind(this, function(ps) {
-                                 this._lookupTableItem.actor.show();
+                                 this._candidateArea.actor.show();
                                  this._updateVisibility();
                              }));
         panelService.connect('hide-lookup-table',
                              Lang.bind(this, function(ps) {
-                                 this._lookupTableItem.actor.hide();
+                                 this._candidateArea.actor.hide();
                                  this._updateVisibility();
                              }));
         panelService.connect('focus-out',
                              Lang.bind(this, function(ps) {
-                                 this.close(BoxPointer.PopupAnimation.NONE);
+                                 this._boxPointer.hide(BoxPointer.PopupAnimation.NONE);
                              }));
     },
 
     _updateVisibility: function() {
-        let isVisible = (this._preeditTextItem.actor.visible ||
-                         this._auxTextItem.actor.visible ||
-                         this._lookupTableItem.actor.visible);
+        let isVisible = (this._preeditText.visible ||
+                         this._auxText.visible ||
+                         this._candidateArea.actor.visible);
 
-        if (isVisible)
-            this.open(BoxPointer.PopupAnimation.NONE);
-        else
-            this.close(BoxPointer.PopupAnimation.NONE);
+        if (isVisible) {
+            this._boxPointer.setPosition(this._cursor, 0);
+            this._boxPointer.show(BoxPointer.PopupAnimation.NONE);
+            this._boxPointer.actor.raise_top();
+        } else {
+            this._boxPointer.hide(BoxPointer.PopupAnimation.NONE);
+        }
     },
 
     _setTextAttributes: function(clutterText, ibusAttrList) {
