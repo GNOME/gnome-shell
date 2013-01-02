@@ -547,19 +547,20 @@ function pushModal(actor, params) {
         if (index >= 0)
             popModal(actor);
     });
-    let curFocus = global.stage.get_key_focus();
-    let curFocusDestroyId;
-    if (curFocus != null) {
-        curFocusDestroyId = curFocus.connect('destroy', function() {
+
+    let prevFocus = global.stage.get_key_focus();
+    let prevFocusDestroyId;
+    if (prevFocus != null) {
+        prevFocusDestroyId = prevFocus.connect('destroy', function() {
             let index = _findModal(actor);
             if (index >= 0)
-                modalActorFocusStack[index].focus = null;
+                modalActorFocusStack[index].prevFocus = null;
         });
     }
     modalActorFocusStack.push({ actor: actor,
-                                focus: curFocus,
                                 destroyId: actorDestroyId,
-                                focusDestroyId: curFocusDestroyId,
+                                prevFocus: prevFocus,
+                                prevFocusDestroyId: prevFocusDestroyId,
                                 keybindingMode: keybindingMode });
 
     keybindingMode = params.keybindingMode;
@@ -600,18 +601,18 @@ function popModal(actor, timestamp) {
     record.actor.disconnect(record.destroyId);
 
     if (focusIndex == modalActorFocusStack.length - 1) {
-        if (record.focus)
-            record.focus.disconnect(record.focusDestroyId);
+        if (record.prevFocus)
+            record.prevFocus.disconnect(record.prevFocusDestroyId);
         keybindingMode = record.keybindingMode;
-        global.stage.set_key_focus(record.focus);
+        global.stage.set_key_focus(record.prevFocus);
     } else {
         let t = modalActorFocusStack[modalActorFocusStack.length - 1];
-        if (t.focus)
-            t.focus.disconnect(t.focusDestroyId);
+        if (t.prevFocus)
+            t.prevFocus.disconnect(t.prevFocusDestroyId);
         // Remove from the middle, shift the focus chain up
         for (let i = modalActorFocusStack.length - 1; i > focusIndex; i--) {
-            modalActorFocusStack[i].focus = modalActorFocusStack[i - 1].focus;
-            modalActorFocusStack[i].focusDestroyId = modalActorFocusStack[i - 1].focusDestroyId;
+            modalActorFocusStack[i].prevFocus = modalActorFocusStack[i - 1].prevFocus;
+            modalActorFocusStack[i].prevFocusDestroyId = modalActorFocusStack[i - 1].prevFocusDestroyId;
             modalActorFocusStack[i].keybindingMode = modalActorFocusStack[i - 1].keybindingMode;
         }
     }
