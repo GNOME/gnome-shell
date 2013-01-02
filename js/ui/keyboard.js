@@ -2,7 +2,6 @@
 
 const Caribou = imports.gi.Caribou;
 const Clutter = imports.gi.Clutter;
-const DBus = imports.dbus;
 const Gdk = imports.gi.Gdk;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
