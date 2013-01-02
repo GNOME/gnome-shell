@@ -77,13 +77,14 @@ on_screenshot_written (GObject *source,
 
 /* called in an I/O thread */
 static GOutputStream *
-get_stream_for_path (const gchar *path,
-                     const gchar *filename,
-                     gchar **filename_used)
+get_stream_for_unique_path (const gchar *path,
+                            const gchar *filename,
+                            gchar **filename_used)
 {
   GOutputStream *stream;
   GFile *file;
   gchar *real_path, *real_filename, *name, *ptr;
+  gint idx;
 
   ptr = g_strrstr (filename, ".png");
 
@@ -92,16 +93,33 @@ get_stream_for_path (const gchar *path,
   else
     real_filename = g_strdup (filename);
 
-  name = g_strdup_printf ("%s.png", real_filename);
-  real_path = g_build_filename (path, name, NULL);
-  g_free (name);
+  idx = 0;
+  real_path = NULL;
+
+  do
+    {
+      if (idx == 0)
+        name = g_strdup_printf ("%s.png", real_filename);
+      else
+        name = g_strdup_printf ("%s - %d.png", real_filename, idx);
+
+      real_path = g_build_filename (path, name, NULL);
+      g_free (name);
+
+      file = g_file_new_for_path (real_path);
+      stream = G_OUTPUT_STREAM (g_file_create (file, G_FILE_CREATE_NONE, NULL, NULL));
+      g_object_unref (file);
+
+      if (stream != NULL)
+        *filename_used = real_path;
+      else
+        g_free (real_path);
+
+      idx++;
+    }
+  while (stream == NULL);
+
   g_free (real_filename);
-
-  file = g_file_new_for_path (real_path);
-  stream = G_OUTPUT_STREAM (g_file_create (file, G_FILE_CREATE_NONE, NULL, NULL));
-  g_object_unref (file);
-
-  *filename_used = real_path;
 
   return stream;
 }
@@ -121,7 +139,7 @@ get_stream_for_filename (const gchar *filename,
         return NULL;
     }
 
-  return get_stream_for_path (path, filename, filename_used);
+  return get_stream_for_unique_path (path, filename, filename_used);
 }
 
 static GOutputStream *
