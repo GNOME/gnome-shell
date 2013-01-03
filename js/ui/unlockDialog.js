@@ -198,18 +198,23 @@ const UnlockDialog = new Lang.Class({
                                           x_align: St.Align.END,
                                           y_align: St.Align.MIDDLE });
 
-        let otherUserLabel = new St.Label({ text: _("Log in as another user"),
-                                            style_class: 'login-dialog-not-listed-label' });
-        this._otherUserButton = new St.Button({ style_class: 'login-dialog-not-listed-button',
-                                                can_focus: true,
-                                                child: otherUserLabel,
-                                                reactive: true,
-                                                x_align: St.Align.START,
-                                                x_fill: true });
-        this._otherUserButton.connect('clicked', Lang.bind(this, this._otherUserClicked));
-        this.dialogLayout.add(this._otherUserButton,
-                              { x_align: St.Align.START,
-                                x_fill: false });
+        let screenSaverSettings = new Gio.Settings({ schema: 'org.gnome.desktop.screensaver' });
+        if (screenSaverSettings.get_boolean('user-switch-enabled')) {
+            let otherUserLabel = new St.Label({ text: _("Log in as another user"),
+                                                style_class: 'login-dialog-not-listed-label' });
+            this._otherUserButton = new St.Button({ style_class: 'login-dialog-not-listed-button',
+                                                    can_focus: true,
+                                                    child: otherUserLabel,
+                                                    reactive: true,
+                                                    x_align: St.Align.START,
+                                                    x_fill: true });
+            this._otherUserButton.connect('clicked', Lang.bind(this, this._otherUserClicked));
+            this.dialogLayout.add(this._otherUserButton,
+                                  { x_align: St.Align.START,
+                                    x_fill: false });
+        } else {
+            this._otherUserButton = null;
+        }
 
         this._updateSensitivity(true);
 
@@ -231,8 +236,10 @@ const UnlockDialog = new Lang.Class({
         this._promptEntry.reactive = sensitive;
         this._promptEntry.clutter_text.editable = sensitive;
         this._updateOkButtonSensitivity(sensitive && this._promptEntry.text.length > 0);
-        this._otherUserButton.reactive = sensitive;
-        this._otherUserButton.can_focus = sensitive;
+        if (this._otherUserButton) {
+            this._otherUserButton.reactive = sensitive;
+            this._otherUserButton.can_focus = sensitive;
+        }
     },
 
     _updateOkButtonSensitivity: function(sensitive) {
