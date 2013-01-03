@@ -116,8 +116,8 @@ maybe_redirect_mouse_event (XEvent *xevent)
   GdkWindow *gdk_window;
   Window window;
   XIEvent *xev;
-  XIDeviceEvent *xev_d;
-  XIEnterEvent *xev_e;
+  XIDeviceEvent *xev_d = NULL;
+  XIEnterEvent *xev_e = NULL;
 
   if (!is_input_event (xevent))
     return FALSE;
