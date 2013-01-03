@@ -153,7 +153,7 @@ prepare_write_stream (const gchar *filename,
     {
       file = g_file_new_for_path (filename);
       *filename_used = g_strdup (filename);
-      stream = G_OUTPUT_STREAM (g_file_create (file, G_FILE_CREATE_NONE, NULL, NULL));
+      stream = G_OUTPUT_STREAM (g_file_replace (file, NULL, FALSE, G_FILE_CREATE_NONE, NULL, NULL));
       g_object_unref (file);
     }
   else
