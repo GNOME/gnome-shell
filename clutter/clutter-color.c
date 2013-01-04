@@ -984,7 +984,7 @@ clutter_color_new (guint8 red,
 }
 
 /**
- * clutter_color_alloc:
+ * clutter_color_alloc: (constructor)
  *
  * Allocates a new, transparent black #ClutterColor.
  *
