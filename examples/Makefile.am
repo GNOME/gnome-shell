@@ -50,9 +50,12 @@ cogl_x11_tfp_LDADD = $(common_ldadd)
 endif
 
 if SUPPORT_WAYLAND_EGL_SERVER
+# Note: Cogland currently only builds for Wayland 0.85
+if WAYLAND_0_85_X_SERVER
 programs += cogland
 cogland_SOURCES = cogland.c
 cogland_LDADD = $(common_ldadd)
+endif
 endif
 
 if SUPPORT_SDL
