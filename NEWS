@@ -1,3 +1,40 @@
+Cogl 1.12.2                                                        2013-01-04
+
+  • List of changes since Cogl 1.12.0
+
+  » Lots of MSVC build updates
+  » Fix GL_ARB_shader_objects terminator mitigating potential crash
+  » Fix to only allow CoglGLES2 context creation with GLES2 driver
+  » Use right context when pushing a CoglGLES2 context to an onscreen
+  » Port to new Wayland 1.0 protocol
+  » Don't set SDL_GL_DOUBLEBUFFER when the swap chain has no pref
+
+  • Bugzilla bugs closed since Cogl 1.12.0
+
+  #682071 - MSVC: Link to SDL when apps are built
+  #684917 - winsys-glx: Don'T attempt to query the vblank counter when
+            using indirect rendering
+  #689850 - [PATCH] Fix call to BlendFuncSeparate
+
+Many thanks to:
+
+  Chun-wei Fan
+  Neil Roberts
+  Robert Bragg
+  Andika Triwidada
+  Adam Jackson
+  Alexander Shopov
+  Aurimas Černius
+  Ihar Hrachyshka
+  Marek Černocký
+  Milo Casagrande
+  Rafael Ferreira
+  Rob Bradford
+  Rūdolfs Mazurs
+  Tom Tryfonidis
+  Unticha Pramgoed
+  Мирослав Николић
+
 Cogl 1.12.0                                                        2012-09-24
 
   • List of changes since Cogl 1.11.4
