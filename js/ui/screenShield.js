@@ -641,7 +641,7 @@ const ScreenShield = new Lang.Class({
                 let elapsedTime = (GLib.get_monotonic_time() - this._activationTime) / 1000000;
                 let shouldLock = lightboxWasShown &&
                     this._settings.get_boolean(LOCK_ENABLED_KEY) &&
-                    (elapsedTime >= this._settings.get_boolean(LOCK_DELAY_KEY));
+                    (elapsedTime >= this._settings.get_int(LOCK_DELAY_KEY));
                 if (shouldLock || this._isLocked) {
                     this.lock(false);
                 } else if (this._isActive) {
