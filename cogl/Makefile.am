@@ -336,6 +336,9 @@ cogl_sources_c = \
 	$(srcdir)/cogl-pipeline-layer-state.c		\
 	$(srcdir)/cogl-pipeline-state-private.h		\
 	$(srcdir)/cogl-pipeline-debug.c			\
+        $(srcdir)/cogl-glsl-shader.c                    \
+        $(srcdir)/cogl-glsl-shader-private.h            \
+        $(srcdir)/cogl-glsl-shader-boilerplate.h        \
 	$(srcdir)/cogl-pipeline-snippet-private.h	\
 	$(srcdir)/cogl-pipeline-snippet.c		\
 	$(srcdir)/cogl-pipeline-cache.h			\
@@ -384,7 +387,6 @@ cogl_sources_c = \
 	$(srcdir)/cogl-flags.h				\
 	$(srcdir)/cogl-bitmask.h                        \
 	$(srcdir)/cogl-bitmask.c                        \
-	$(srcdir)/cogl-shader-boilerplate.h		\
 	$(srcdir)/cogl-shader-private.h			\
 	$(srcdir)/cogl-shader.c                        	\
 	$(srcdir)/cogl-gtype-private.h                  \

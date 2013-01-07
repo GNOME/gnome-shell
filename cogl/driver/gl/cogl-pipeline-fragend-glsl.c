@@ -47,6 +47,7 @@
 #include "cogl-program-private.h"
 #include "cogl-pipeline-cache.h"
 #include "cogl-pipeline-fragend-glsl-private.h"
+#include "cogl-glsl-shader-private.h"
 
 #include <glib.h>
 
@@ -1074,11 +1075,12 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       lengths[1] = shader_state->source->len;
       source_strings[1] = shader_state->source->str;
 
-      _cogl_shader_set_source_with_boilerplate (shader, GL_FRAGMENT_SHADER,
-                                                shader_state
-                                                ->n_tex_coord_attribs,
-                                                2, /* count */
-                                                source_strings, lengths);
+      _cogl_glsl_shader_set_source_with_boilerplate (ctx,
+                                                     shader, GL_FRAGMENT_SHADER,
+                                                     shader_state
+                                                     ->n_tex_coord_attribs,
+                                                     2, /* count */
+                                                     source_strings, lengths);
 
       GE( ctx, glCompileShader (shader) );
       GE( ctx, glGetShaderiv (shader, GL_COMPILE_STATUS, &compile_status) );
