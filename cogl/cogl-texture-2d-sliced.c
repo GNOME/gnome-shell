@@ -939,8 +939,6 @@ _cogl_texture_2d_sliced_allocate (CoglTexture *tex,
                                                sizeof (CoglTexture2D *),
                                                n_slices);
 
-  g_array_set_size (tex_2ds->slice_textures, n_slices);
-
   /* Allocate each slice */
   for (y = 0; y < n_y_slices; ++y)
     {
