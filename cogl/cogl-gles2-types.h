@@ -35,7 +35,7 @@ typedef float            GLclampf;
 typedef int32_t          GLfixed;
 
 /* GL types for handling large vertex buffer objects */
-typedef intptr_t         GLintptr;
+typedef signed long int  GLintptr;
 typedef long             GLsizeiptr;
 
 /* OpenGL ES core versions */
