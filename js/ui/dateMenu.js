@@ -32,6 +32,7 @@ function _onVertSepRepaint (area)
     cr.setDash([1, 3], 1); // Hard-code for now
     cr.setLineWidth(stippleWidth);
     cr.stroke();
+    cr.$dispose();
 };
 
 const DateMenuButton = new Lang.Class({

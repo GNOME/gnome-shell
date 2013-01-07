@@ -865,8 +865,8 @@ const PanelCorner = new Lang.Class({
         let backgroundColor = node.get_color('-panel-corner-background-color');
         let borderColor = node.get_color('-panel-corner-border-color');
 
-        let noOverlap = borderColor.alpha == 0;
-        let offsetY = noOverlap ? borderWidth : 0;
+        let overlap = borderColor.alpha != 0;
+        let offsetY = overlap ? 0 : borderWidth;
 
         let cr = this.actor.get_context();
         cr.setOperator(Cairo.Operator.SOURCE);
@@ -890,17 +890,18 @@ const PanelCorner = new Lang.Class({
         Clutter.cairo_set_source_color(cr, over);
         cr.fill();
 
-        if (noOverlap)
-            return;
+        if (overlap) {
+            let offset = borderWidth;
+            Clutter.cairo_set_source_color(cr, backgroundColor);
 
-        let offset = borderWidth;
-        Clutter.cairo_set_source_color(cr, backgroundColor);
+            cr.save();
+            cr.translate(xOffsetDirection * offset, - offset);
+            cr.appendPath(savedPath);
+            cr.fill();
+            cr.restore();
+        }
 
-        cr.save();
-        cr.translate(xOffsetDirection * offset, - offset);
-        cr.appendPath(savedPath);
-        cr.fill();
-        cr.restore();
+        cr.$dispose();
     },
 
     _styleChanged: function() {

@@ -388,6 +388,8 @@ const BoxPointer = new Lang.Class({
             cr.setLineWidth(borderWidth);
             cr.stroke();
         }
+
+        cr.$dispose();
     },
 
     setPosition: function(sourceActor, alignment) {

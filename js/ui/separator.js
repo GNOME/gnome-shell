@@ -30,5 +30,6 @@ const HorizontalSeparator = new Lang.Class({
         cr.setSource(pattern);
         cr.rectangle(margin, gradientOffset, gradientWidth, gradientHeight);
         cr.fill();
+        cr.$dispose();
     }
 });

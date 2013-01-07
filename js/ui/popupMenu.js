@@ -207,6 +207,7 @@ const PopupBaseMenuItem = new Lang.Class({
             color.alpha / 255);
         cr.arc(width / 2, height / 2, width / 3, 0, 2 * Math.PI);
         cr.fill();
+        cr.$dispose();
     },
 
     // This returns column widths in logical order (i.e. from the dot
@@ -604,6 +605,7 @@ const PopupSliderMenuItem = new Lang.Class({
             color.alpha / 255);
         cr.arc(handleX, handleY, handleRadius, 0, 2 * Math.PI);
         cr.fill();
+        cr.$dispose();
     },
 
     _startDragging: function(actor, event) {
