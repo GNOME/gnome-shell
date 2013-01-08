@@ -301,8 +301,6 @@ static GSourceFuncs event_funcs = {
 static void
 meta_clutter_init (void)
 {
-  clutter_x11_enable_xinput ();
-
   clutter_x11_set_display (GDK_DISPLAY_XDISPLAY (gdk_display_get_default ()));
   clutter_x11_disable_event_retrieval ();
 
