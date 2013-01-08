@@ -1270,7 +1270,6 @@ meta_compositor_new (MetaDisplay *display)
 {
   char *atom_names[] = {
     "_XROOTPMAP_ID",
-    "_XSETROOT_ID",
     "_NET_WM_WINDOW_OPACITY",
   };
   Atom                   atoms[G_N_ELEMENTS(atom_names)];
@@ -1297,8 +1296,7 @@ meta_compositor_new (MetaDisplay *display)
                     compositor);
 
   compositor->atom_x_root_pixmap = atoms[0];
-  compositor->atom_x_set_root = atoms[1];
-  compositor->atom_net_wm_window_opacity = atoms[2];
+  compositor->atom_net_wm_window_opacity = atoms[1];
 
   compositor->repaint_func_id = clutter_threads_add_repaint_func (meta_repaint_func,
                                                                   compositor,
