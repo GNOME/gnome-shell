@@ -50,6 +50,15 @@
 
 #include "st-im-text.h"
 
+/* properties */
+enum
+{
+  PROP_0,
+
+  PROP_INPUT_PURPOSE,
+  PROP_INPUT_HINTS,
+};
+
 #define ST_IM_TEXT_GET_PRIVATE(obj)    \
         (G_TYPE_INSTANCE_GET_PRIVATE ((obj), ST_TYPE_IM_TEXT, StIMTextPrivate))
 
@@ -405,15 +414,66 @@ st_im_text_key_focus_out (ClutterActor *actor)
 }
 
 static void
+st_im_text_set_property (GObject      *gobject,
+                         guint         prop_id,
+                         const GValue *value,
+                         GParamSpec   *pspec)
+{
+  StIMText *imtext = ST_IM_TEXT (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_INPUT_PURPOSE:
+      st_im_text_set_input_purpose (imtext, g_value_get_enum (value));
+      break;
+
+    case PROP_INPUT_HINTS:
+      st_im_text_set_input_hints (imtext, g_value_get_flags (value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+st_im_text_get_property (GObject    *gobject,
+                         guint       prop_id,
+                         GValue     *value,
+                         GParamSpec *pspec)
+{
+  StIMText *imtext = ST_IM_TEXT (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_INPUT_PURPOSE:
+      g_value_set_enum (value, st_im_text_get_input_purpose (imtext));
+      break;
+
+    case PROP_INPUT_HINTS:
+      g_value_set_flags (value, st_im_text_get_input_hints (imtext));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
 st_im_text_class_init (StIMTextClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
   ClutterTextClass *text_class = CLUTTER_TEXT_CLASS (klass);
+  GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (StIMTextPrivate));
 
   object_class->dispose = st_im_text_dispose;
+  object_class->set_property = st_im_text_set_property;
+  object_class->get_property = st_im_text_get_property;
 
   actor_class->get_paint_volume = st_im_text_get_paint_volume;
   actor_class->realize = st_im_text_realize;
@@ -425,6 +485,26 @@ st_im_text_class_init (StIMTextClass *klass)
   actor_class->key_focus_out = st_im_text_key_focus_out;
 
   text_class->cursor_event = st_im_text_cursor_event;
+
+  pspec = g_param_spec_enum ("input-purpose",
+                             "Purpose",
+                             "Purpose of the text field",
+                             GTK_TYPE_INPUT_PURPOSE,
+                             GTK_INPUT_PURPOSE_FREE_FORM,
+                             G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  g_object_class_install_property (object_class,
+                                   PROP_INPUT_PURPOSE,
+                                   pspec);
+
+  pspec = g_param_spec_flags ("input-hints",
+                              "hints",
+                              "Hints for the text field behaviour",
+                              GTK_TYPE_INPUT_HINTS,
+                              GTK_INPUT_HINT_NONE,
+                              G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  g_object_class_install_property (object_class,
+                                   PROP_INPUT_HINTS,
+                                   pspec);
 }
 
 static void
@@ -459,4 +539,97 @@ st_im_text_new (const gchar *text)
   return g_object_new (ST_TYPE_IM_TEXT,
                        "text", text,
                        NULL);
+}
+
+/**
+ * st_im_text_set_input_purpose:
+ * @imtext: a #StIMText
+ * @purpose: the purpose
+ *
+ * Sets the #StIMText:input-purpose property which
+ * can be used by on-screen keyboards and other input
+ * methods to adjust their behaviour.
+ */
+void
+st_im_text_set_input_purpose (StIMText       *imtext,
+                              GtkInputPurpose purpose)
+{
+  g_return_if_fail (ST_IS_IM_TEXT (imtext));
+
+  if (st_im_text_get_input_purpose (imtext) != purpose)
+    {
+      g_object_set (G_OBJECT (imtext->priv->im_context),
+                    "input-purpose", purpose,
+                    NULL);
+
+      g_object_get (G_OBJECT (imtext->priv->im_context),
+                    "input-purpose", &purpose,
+                    NULL);
+
+      g_object_notify (G_OBJECT (imtext), "input-purpose");
+    }
+}
+
+/**
+ * st_im_text_get_input_purpose:
+ * @imtext: a #StIMText
+ *
+ * Gets the value of the #StIMText:input-purpose property.
+ */
+GtkInputPurpose
+st_im_text_get_input_purpose (StIMText *imtext)
+{
+  GtkInputPurpose purpose;
+
+  g_return_val_if_fail (ST_IS_IM_TEXT (imtext), GTK_INPUT_PURPOSE_FREE_FORM);
+
+  g_object_get (G_OBJECT (imtext->priv->im_context),
+                "input-purpose", &purpose,
+                NULL);
+
+  return purpose;
+}
+
+/**
+ * st_im_text_set_input_hints:
+ * @imtext: a #StIMText
+ * @hints: the hints
+ *
+ * Sets the #StIMText:input-hints property, which
+ * allows input methods to fine-tune their behaviour.
+ */
+void
+st_im_text_set_input_hints (StIMText     *imtext,
+                            GtkInputHints hints)
+{
+  g_return_if_fail (ST_IS_IM_TEXT (imtext));
+
+  if (st_im_text_get_input_hints (imtext) != hints)
+    {
+      g_object_set (G_OBJECT (imtext->priv->im_context),
+                    "input-hints", hints,
+                    NULL);
+
+      g_object_notify (G_OBJECT (imtext), "input-hints");
+    }
+}
+
+/**
+ * st_im_text_get_input_hints:
+ * @imtext: a #StIMText
+ *
+ * Gets the value of the #StIMText:input-hints property.
+ */
+GtkInputHints
+st_im_text_get_input_hints (StIMText *imtext)
+{
+  GtkInputHints hints;
+
+  g_return_val_if_fail (ST_IS_IM_TEXT (imtext), GTK_INPUT_HINT_NONE);
+
+  g_object_get (G_OBJECT (imtext->priv->im_context),
+                "input-hints", &hints,
+                NULL);
+
+  return hints;
 }
