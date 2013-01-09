@@ -6736,7 +6736,7 @@ clutter_actor_class_init (ClutterActorClass *klass)
    *
    * The default pivot point is located at (0, 0).
    *
-   * The #ClutterActor:pivot property is animatable.
+   * The #ClutterActor:pivot-point property is animatable.
    *
    * Since: 1.12
    */
