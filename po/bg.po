@@ -1,7 +1,7 @@
 # Bulgarian translation of mutter po-file.
 # Copyright (C) 2002, 2004, 2006, 2007, 2008 Free Software Foundation, Inc.
-# Copyright (C) 2009, 2010, 2011, 2012 Free Software Foundation, Inc.
-# Alexander Shopov <ash@kambanaria.org>, 2002, 2006, 2007, 2009, 2010, 2011, 2012.
+# Copyright (C) 2009, 2010, 2011, 2012, 2013 Free Software Foundation, Inc.
+# Alexander Shopov <ash@kambanaria.org>, 2002, 2006, 2007, 2009, 2010, 2011, 2012, 2013.
 # Vladimir Petkov <kaladan@gmail.com>, 2004. 
 # Rostislav Raykov <zbrox@i-space.org>, 2004.
 # Yavor Doganov <yavor@gnu.org>, 2008.
@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-14 17:31+0300\n"
-"PO-Revision-Date: 2012-10-14 17:31+0300\n"
+"POT-Creation-Date: 2013-01-09 06:14+0200\n"
+"PO-Revision-Date: 2013-01-09 06:14+0200\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -21,21 +21,197 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Navigation"
+msgstr "Навигация"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+msgid "Move window to workspace 1"
+msgstr "Преместване на прозореца в работен плот 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+msgid "Move window to workspace 2"
+msgstr "Преместване на прозореца в работен плот 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move window to workspace 3"
+msgstr "Преместване на прозореца в работен плот 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move window to workspace 4"
+msgstr "Преместване на прозореца в работен плот 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+msgid "Move window one workspace to the left"
+msgstr "Преместване на прозореца един работен плот наляво"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the right"
+msgstr "Преместване на прозореца един работен плот надясно"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace up"
+msgstr "Преместване на прозореца един работен плот нагоре"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace down"
+msgstr "Преместване на прозореца един работен плот надолу"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Switch applications"
+msgstr "Преместване на фокуса между програмите"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Switch windows"
+msgstr "Преместване на фокуса между прозорците"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Switch windows of an application"
+msgstr "Преместване на фокуса между прозорците на едно приложение"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Switch system controls"
+msgstr "Преместване на фокуса между служебните обекти"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Switch windows directly"
+msgstr "Незабавно преместване на фокуса между прозорците"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch windows of an app directly"
+msgstr "Незабавно преместване на фокуса между прозорците на едно приложение"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Switch system controls directly"
+msgstr "Незабавно преместване на фокуса между служебните обекти"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+msgid "Hide all normal windows"
+msgstr "Скриване на всички обикновени прозорци"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+msgid "Switch to workspace 1"
+msgstr "Превключване към работен плот 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+msgid "Switch to workspace 2"
+msgstr "Превключване към работен плот 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+msgid "Switch to workspace 3"
+msgstr "Превключване към работен плот 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+msgid "Switch to workspace 4"
+msgstr "Превключване към работен плот 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Move to workspace left"
+msgstr "Преместване на левия работен плот"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Move to workspace right"
+msgstr "Преместване на десния работен плот"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Move to workspace above"
+msgstr "Преместване на горния работен плот"
+
+#: ../src/50-mutter-navigation.xml.in.h:25
+msgid "Move to workspace below"
+msgstr "Преместване на долния работен плот"
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "System"
+msgstr "Система"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "Показване на прозореца за стартиране на команда"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "Show the activities overview"
+msgstr "Преглед на дейностите"
+
+#: ../src/50-mutter-windows.xml.in.h:1
 msgid "Windows"
 msgstr "Прозорци"
 
 #: ../src/50-mutter-windows.xml.in.h:2
+msgid "Activate the window menu"
+msgstr "Задействане на менюто за прозорците"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Toggle fullscreen mode"
+msgstr "Превключване на режима за цял екран"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+msgid "Toggle maximization state"
+msgstr "Превключване на състоянието на максимизиране"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+msgid "Maximize window"
+msgstr "Максимизиране на прозорец"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+msgid "Restore window"
+msgstr "Възстановяване на прозорец"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+msgid "Toggle shaded state"
+msgstr "Превключване на състоянието на навиване"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+msgid "Close window"
+msgstr "Затваряне на прозореца"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+msgid "Minimize window"
+msgstr "Минимизиране на прозореца"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Move window"
+msgstr "Преместване на прозорец"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+msgid "Resize window"
+msgstr "Оразмеряване на прозорец"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+msgid "Toggle window on all workspaces or one"
+msgstr "Превключване на появата на прозореца на всички работни места"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Ако прозорецът е под друг, го издига, иначе го понижава"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+msgid "Raise window above other windows"
+msgstr "Издигане на прозореца над другите"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+msgid "Lower window below other windows"
+msgstr "Понижаване на прозореца под другите прозорци"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Maximize window vertically"
+msgstr "Максимизиране на прозореца вертикално"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+msgid "Maximize window horizontally"
+msgstr "Максимизиране на прозореца хоризонтално"
+
+#: ../src/50-mutter-windows.xml.in.h:18
 msgid "View split on left"
 msgstr "Изглед разделен отляво"
 
-#: ../src/50-mutter-windows.xml.in.h:3
+#: ../src/50-mutter-windows.xml.in.h:19
 msgid "View split on right"
 msgstr "Изглед разделен отдясно"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:492
+#: ../src/compositor/compositor.c:512
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -51,16 +227,16 @@ msgstr "Събитие за звънец"
 msgid "Unknown window information request: %d"
 msgstr "Неизвестна заявка за информация за прозорец: %d"
 
-#: ../src/core/delete.c:113
+#: ../src/core/delete.c:111
 #, c-format
-msgid "%s is not responding."
-msgstr "%s не отговаря на съобщенията."
+msgid "“%s” is not responding."
+msgstr "„%s“ не отговаря на съобщенията."
 
-#: ../src/core/delete.c:117
+#: ../src/core/delete.c:113
 msgid "Application is not responding."
 msgstr "Програмата не отговаря на съобщенията."
 
-#: ../src/core/delete.c:122
+#: ../src/core/delete.c:118
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -68,25 +244,25 @@ msgstr ""
 "Можете да изчакате малко преди изрично да накарате приложението да спре "
 "работата си."
 
-#: ../src/core/delete.c:129
+#: ../src/core/delete.c:125
 msgid "_Wait"
 msgstr "Из_чакване"
 
-#: ../src/core/delete.c:129
+#: ../src/core/delete.c:125
 msgid "_Force Quit"
 msgstr "_Принудително спиране"
 
-#: ../src/core/display.c:396
+#: ../src/core/display.c:394
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Липсва разширението „%s“, необходимо за наслагване"
 
-#: ../src/core/display.c:492
+#: ../src/core/display.c:491
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Неуспех при отварянето на дисплея на X Window „%s“\n"
 
-#: ../src/core/keybindings.c:853
+#: ../src/core/keybindings.c:876
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -156,7 +332,7 @@ msgstr "Отпечатване на версията на програмата"
 msgid "Mutter plugin to use"
 msgstr "Приставка, която да се ползва"
 
-#: ../src/core/prefs.c:1079
+#: ../src/core/prefs.c:1087
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -164,14 +340,14 @@ msgstr ""
 "Триковете за развалените програми са изключени. Някои програми могат да са с "
 "неправилно поведение.\n"
 
-#: ../src/core/prefs.c:1154
+#: ../src/core/prefs.c:1162
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "Описанието на шрифт „%s“ от ключа на GSettings — %s, не може да бъде "
 "анализирано\n"
 
-#: ../src/core/prefs.c:1220
+#: ../src/core/prefs.c:1228
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -180,7 +356,7 @@ msgstr ""
 "„%s“, който е открит в базата от данни с настройките, не е валиден "
 "модификатор на бутон на мишката\n"
 
-#: ../src/core/prefs.c:1747
+#: ../src/core/prefs.c:1768
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -189,17 +365,17 @@ msgstr ""
 "Низът „%s“ открит в базата от данни с настройки е невалиден за стойност на "
 "клавишната комбинация „%s“\n"
 
-#: ../src/core/prefs.c:1844
+#: ../src/core/prefs.c:1865
 #, c-format
 msgid "Workspace %d"
 msgstr "Работен плот %d"
 
-#: ../src/core/screen.c:652
+#: ../src/core/screen.c:658
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Екранът %d на дисплей „%s“ е невалиден\n"
 
-#: ../src/core/screen.c:668
+#: ../src/core/screen.c:674
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -208,7 +384,7 @@ msgstr ""
 "Екранът %d на дисплей „%s“ вече има мениджър на прозорци; пробвайте да го "
 "замените с опцията --replace.\n"
 
-#: ../src/core/screen.c:695
+#: ../src/core/screen.c:701
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -216,12 +392,12 @@ msgstr ""
 "Неуспех при получаването на избрания мениджър за прозорци на екран %d, "
 "дисплей „%s“\n"
 
-#: ../src/core/screen.c:750
+#: ../src/core/screen.c:770
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Екран %d на дисплей „%s“ вече има мениджър за прозорци\n"
 
-#: ../src/core/screen.c:935
+#: ../src/core/screen.c:955
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Неуспех при отстъпването на екран %d на дисплей „%s“\n"
@@ -319,7 +495,7 @@ msgid "Window manager error: "
 msgstr "Грешка от мениджъра на прозорци: "
 
 #. first time through
-#: ../src/core/window.c:7237
+#: ../src/core/window.c:7279
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -335,7 +511,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7902
+#: ../src/core/window.c:7945
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -442,7 +618,7 @@ msgstr ""
 "Ако е включено, прозорците ще се максимизират по вертикала и ще заемат "
 "половината площ по хоризонтала при поставянето им край вертикалните граници "
 "на екрана. При поставянето им край горната граница прозорците ще се "
-"максимзират изцяло."
+"максимизират изцяло."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Workspaces are managed dynamically"
@@ -509,10 +685,23 @@ msgstr ""
 "малки, се добавят невидими граници, за да се достигне тази величина."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Auto maximize nearly monitor sized windows"
+msgstr ""
+"Автоматично максимизиране на прозорци с размер близък до този на монитора"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+msgid ""
+"If enabled, monitor nearly monitor sized windows automatically get maximized "
+"when mapped."
+msgstr ""
+"Ако е включено, прозорците, чийто размер е близък на този на монитора, "
+"автоматично ще се максимизират, когато получат фокуса."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:19
 msgid "Select window from tab popup"
 msgstr "Избиране при обхождане чрез изскачащ прозорец"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+#: ../src/org.gnome.mutter.gschema.xml.in.h:20
 msgid "Cancel tab popup"
 msgstr "Без изскачащ прозорец при обхождане"
 
@@ -1540,11 +1729,11 @@ msgstr "Изглед на бутоните"
 msgid "Benchmark"
 msgstr "Статистика"
 
-#: ../src/ui/theme-viewer.c:944
+#: ../src/ui/theme-viewer.c:949
 msgid "Window Title Goes Here"
 msgstr "Тук се поставя заглавието на прозорците"
 
-#: ../src/ui/theme-viewer.c:1047
+#: ../src/ui/theme-viewer.c:1052
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1555,258 +1744,43 @@ msgstr ""
 "на кадър) и %g секунди нормално време, което включва ресурси от страна на "
 "сървъра X (по %g милисекунди на кадър)\n"
 
-#: ../src/ui/theme-viewer.c:1266
+#: ../src/ui/theme-viewer.c:1271
 msgid "position expression test returned TRUE but set error"
 msgstr ""
 "изразът за проверка на разположението върна TRUE, но зададе състояние за "
 "грешка"
 
-#: ../src/ui/theme-viewer.c:1268
+#: ../src/ui/theme-viewer.c:1273
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 "изразът за проверка на разположението върна FALSE, но не зададе състояние за "
 "грешка"
 
-#: ../src/ui/theme-viewer.c:1272
+#: ../src/ui/theme-viewer.c:1277
 msgid "Error was expected but none given"
 msgstr "Очакваше се грешка, но не беше дадена никаква"
 
-#: ../src/ui/theme-viewer.c:1274
+#: ../src/ui/theme-viewer.c:1279
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Очакваше се грешка %d, но беше дадена %d"
 
-#: ../src/ui/theme-viewer.c:1280
+#: ../src/ui/theme-viewer.c:1285
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Не се очакваше грешка, но беше върната една: %s"
 
-#: ../src/ui/theme-viewer.c:1284
+#: ../src/ui/theme-viewer.c:1289
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "стойността на x бе %d, а се очакваше %d"
 
-#: ../src/ui/theme-viewer.c:1287
+#: ../src/ui/theme-viewer.c:1292
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "стойността y бе %d, а се очакваше %d"
 
-#: ../src/ui/theme-viewer.c:1352
+#: ../src/ui/theme-viewer.c:1357
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d координатен израз обработен за %g секунди (%g секунди средно)\n"
-
-#: ../src/50-mutter-navigation.xml.in.h:1
-#, fuzzy
-msgid "Hide all normal windows"
-msgstr "Скриване на всички обикновен прозорци"
-
-#: ../src/50-mutter-navigation.xml.in.h:2
-#, fuzzy
-msgid "Move to workspace above"
-msgstr "Преместване на горния работен плот"
-
-#: ../src/50-mutter-navigation.xml.in.h:3
-#, fuzzy
-msgid "Move to workspace below"
-msgstr "Преместване на долния работен плот"
-
-#: ../src/50-mutter-navigation.xml.in.h:4
-#, fuzzy
-msgid "Move to workspace left"
-msgstr "Преместване на левия работен плот"
-
-#: ../src/50-mutter-navigation.xml.in.h:5
-#, fuzzy
-msgid "Move to workspace right"
-msgstr "Преместване на десния работен плот"
-
-#: ../src/50-mutter-navigation.xml.in.h:6
-#, fuzzy
-msgid "Move window one workspace down"
-msgstr "Преместване на прозореца един работен плот надолу"
-
-#: ../src/50-mutter-navigation.xml.in.h:7
-#, fuzzy
-msgid "Move window one workspace to the left"
-msgstr "Преместване на прозореца един работен плот наляво"
-
-#: ../src/50-mutter-navigation.xml.in.h:8
-#, fuzzy
-msgid "Move window one workspace to the right"
-msgstr "Преместване на прозореца един работен плот надясно"
-
-#: ../src/50-mutter-navigation.xml.in.h:9
-#, fuzzy
-msgid "Move window one workspace up"
-msgstr "Преместване на прозореца един работен плот нагоре"
-
-#: ../src/50-mutter-navigation.xml.in.h:10
-#, fuzzy
-msgid "Move window to workspace 1"
-msgstr "Преместване на прозореца в работен плот 1"
-
-#: ../src/50-mutter-navigation.xml.in.h:11
-#, fuzzy
-msgid "Move window to workspace 2"
-msgstr "Преместване на прозореца в работен плот 2"
-
-#: ../src/50-mutter-navigation.xml.in.h:12
-#, fuzzy
-msgid "Move window to workspace 3"
-msgstr "Преместване на прозореца в работен плот 3"
-
-#: ../src/50-mutter-navigation.xml.in.h:13
-#, fuzzy
-msgid "Move window to workspace 4"
-msgstr "Преместване на прозореца в работен плот 4"
-
-#: ../src/50-mutter-navigation.xml.in.h:14
-#, fuzzy
-msgid "Navigation"
-msgstr "Навигация"
-
-#: ../src/50-mutter-navigation.xml.in.h:15
-#, fuzzy
-msgid "Switch applications"
-msgstr "Преместване на фокуса между програмите"
-
-#: ../src/50-mutter-navigation.xml.in.h:16
-#, fuzzy
-msgid "Switch system controls"
-msgstr "Преместване на фокуса между служебните обекти"
-
-#: ../src/50-mutter-navigation.xml.in.h:17
-#, fuzzy
-msgid "Switch system controls directly"
-msgstr "Незабавно преместване на фокуса между служебните обекти"
-
-#: ../src/50-mutter-navigation.xml.in.h:18
-#, fuzzy
-msgid "Switch to workspace 1"
-msgstr "Превключване към работен плот 1"
-
-#: ../src/50-mutter-navigation.xml.in.h:19
-#, fuzzy
-msgid "Switch to workspace 2"
-msgstr "Превключване към работен плот 2"
-
-#: ../src/50-mutter-navigation.xml.in.h:20
-#, fuzzy
-msgid "Switch to workspace 3"
-msgstr "Превключване към работен плот 3"
-
-#: ../src/50-mutter-navigation.xml.in.h:21
-#, fuzzy
-msgid "Switch to workspace 4"
-msgstr "Превключване към работен плот 4"
-
-#: ../src/50-mutter-navigation.xml.in.h:22
-#, fuzzy
-msgid "Switch windows directly"
-msgstr "Незабавно преместване на фокуса между програмите"
-
-#: ../src/50-mutter-navigation.xml.in.h:23
-#, fuzzy
-msgid "Switch windows of an app directly"
-msgstr "Незабавно преместване на фокуса между прозорците на едно приложение"
-
-#: ../src/50-mutter-navigation.xml.in.h:24
-#, fuzzy
-msgid "Switch windows of an application"
-msgstr "Преместване на фокуса между прозорците на едно приложение"
-
-#: ../src/50-mutter-system.xml.in.h:1
-#, fuzzy
-msgid "Show the activities overview"
-msgstr "Преглед на дейностите"
-
-#: ../src/50-mutter-system.xml.in.h:2
-#, fuzzy
-msgid "Show the run command prompt"
-msgstr "Показване на прозореца за стартиране на команда"
-
-#: ../src/50-mutter-system.xml.in.h:3
-#, fuzzy
-msgid "System"
-msgstr "Система"
-
-#: ../src/50-mutter-windows.xml.in.h:1
-#, fuzzy
-msgid "Activate the window menu"
-msgstr "Активиране на менюто за прозорците"
-
-#: ../src/50-mutter-windows.xml.in.h:2
-#, fuzzy
-msgid "Close window"
-msgstr "Затваряне на прозореца"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-#, fuzzy
-msgid "Lower window below other windows"
-msgstr "Понижаване на прозореца под другите прозорци"
-
-#: ../src/50-mutter-windows.xml.in.h:4
-#, fuzzy
-msgid "Maximize window"
-msgstr "Максимизиране на прозорец"
-
-#: ../src/50-mutter-windows.xml.in.h:5
-#, fuzzy
-msgid "Maximize window horizontally"
-msgstr "Максимизиране на прозореца хоризонтално"
-
-#: ../src/50-mutter-windows.xml.in.h:6
-#, fuzzy
-msgid "Maximize window vertically"
-msgstr "Максимизиране прозореца вертикално"
-
-#: ../src/50-mutter-windows.xml.in.h:7
-#, fuzzy
-msgid "Minimize window"
-msgstr "Минимизиране на прозореца"
-
-#: ../src/50-mutter-windows.xml.in.h:8
-#, fuzzy
-msgid "Move window"
-msgstr "Преместване на прозорец"
-
-#: ../src/50-mutter-windows.xml.in.h:9
-#, fuzzy
-msgid "Raise window above other windows"
-msgstr "Издигане на прозореца над другите"
-
-#: ../src/50-mutter-windows.xml.in.h:10
-#, fuzzy
-msgid "Raise window if covered, otherwise lower it"
-msgstr "Ако прозорецът е под друг, го издига, иначе го понижава"
-
-#: ../src/50-mutter-windows.xml.in.h:11
-#, fuzzy
-msgid "Resize window"
-msgstr "Оразмеряване на прозорец"
-
-#: ../src/50-mutter-windows.xml.in.h:12
-#, fuzzy
-msgid "Restore window"
-msgstr "Възстановяване на прозорец"
-
-#: ../src/50-mutter-windows.xml.in.h:13
-#, fuzzy
-msgid "Toggle fullscreen mode"
-msgstr "Превключване на режима за цял екран"
-
-#: ../src/50-mutter-windows.xml.in.h:14
-#, fuzzy
-msgid "Toggle maximization state"
-msgstr "Превключване на състоянието на максимизиране"
-
-#: ../src/50-mutter-windows.xml.in.h:15
-#, fuzzy
-msgid "Toggle shaded state"
-msgstr "Превключване на състоянието на навиване"
-
-#: ../src/50-mutter-windows.xml.in.h:16
-#, fuzzy
-msgid "Toggle window on all workspaces or one"
-msgstr "Превключване на появата на прозореца на всички работни места"
