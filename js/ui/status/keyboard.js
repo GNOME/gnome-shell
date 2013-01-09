@@ -366,6 +366,13 @@ const InputSourceIndicator = new Lang.Class({
         this._sessionUpdated();
 
         this.menu.addSettingsAction(_("Region and Language Settings"), 'gnome-region-panel.desktop');
+
+        this._sourcesPerWindow = false;
+        this._focusWindowNotifyId = 0;
+        this._overviewShowingId = 0;
+        this._overviewHiddenId = 0;
+        this._settings.connect('changed::per-window', Lang.bind(this, this._sourcesPerWindowChanged));
+        this._sourcesPerWindowChanged();
     },
 
     _sessionUpdated: function() {
@@ -431,6 +438,8 @@ const InputSourceIndicator = new Lang.Class({
                 this._mruSources = currentSource.concat(this._mruSources);
                 break;
             }
+
+        this._changePerWindowSource();
     },
 
     _inputSourcesChanged: function() {
@@ -702,6 +711,82 @@ const InputSourceIndicator = new Lang.Class({
             item.setSensitive(prop.get_sensitive());
             menu.addMenuItem(item);
         }
+    },
+
+    _getNewInputSource: function(current) {
+        for (let i in this._inputSources) {
+            let is = this._inputSources[i];
+            if (is.type == current.type &&
+                is.id == current.id)
+                return is;
+        }
+        return this._currentSource;
+    },
+
+    _getCurrentWindow: function() {
+        if (Main.overview.visible)
+            return Main.overview;
+        else
+            return global.display.focus_window;
+    },
+
+    _setPerWindowInputSource: function() {
+        let window = this._getCurrentWindow();
+        if (!window)
+            return;
+
+        if (!window._inputSources) {
+            window._inputSources = this._inputSources;
+            window._currentSource = this._currentSource;
+        } else if (window._inputSources == this._inputSources) {
+            window._currentSource.activate();
+        } else {
+            window._inputSources = this._inputSources;
+            window._currentSource = this._getNewInputSource(window._currentSource);
+            window._currentSource.activate();
+        }
+    },
+
+    _sourcesPerWindowChanged: function() {
+        this._sourcesPerWindow = this._settings.get_boolean('per-window');
+
+        if (this._sourcesPerWindow && this._focusWindowNotifyId == 0) {
+            this._focusWindowNotifyId = global.display.connect('notify::focus-window',
+                                                               Lang.bind(this, this._setPerWindowInputSource));
+            this._overviewShowingId = Main.overview.connect('showing',
+                                                            Lang.bind(this, this._setPerWindowInputSource));
+            this._overviewHiddenId = Main.overview.connect('hidden',
+                                                           Lang.bind(this, this._setPerWindowInputSource));
+        } else if (!this._sourcesPerWindow && this._focusWindowNotifyId != 0) {
+            global.display.disconnect(this._focusWindowNotifyId);
+            this._focusWindowNotifyId = 0;
+            Main.overview.disconnect(this._overviewShowingId);
+            this._overviewShowingId = 0;
+            Main.overview.disconnect(this._overviewHiddenId);
+            this._overviewHiddenId = 0;
+
+            let windows = global.get_window_actors().map(function(w) {
+                return w.meta_window;
+            });
+            for (let i = 0; i < windows.length; ++i) {
+                delete windows[i]._inputSources;
+                delete windows[i]._currentSource;
+            }
+            delete Main.overview._inputSources;
+            delete Main.overview._currentSource;
+        }
+    },
+
+    _changePerWindowSource: function() {
+        if (!this._sourcesPerWindow)
+            return;
+
+        let window = this._getCurrentWindow();
+        if (!window)
+            return;
+
+        window._inputSources = this._inputSources;
+        window._currentSource = this._currentSource;
     },
 
     _containerGetPreferredWidth: function(container, for_height, alloc) {
