@@ -61,8 +61,6 @@ struct _StIMTextClass
 GType st_im_text_get_type (void) G_GNUC_CONST;
 
 ClutterActor *st_im_text_new             (const gchar *text);
-void          st_im_text_set_autoshow_im (StIMText    *self,
-                                          gboolean     autoshow);
 
 G_END_DECLS
 
