@@ -64,20 +64,27 @@ struct _StEntryClass
 
 GType st_entry_get_type (void) G_GNUC_CONST;
 
-StWidget *            st_entry_new              (const gchar *text);
-const gchar *         st_entry_get_text         (StEntry     *entry);
-void                  st_entry_set_text         (StEntry     *entry,
-                                                 const gchar *text);
-ClutterActor*         st_entry_get_clutter_text (StEntry     *entry);
+StWidget       *st_entry_new                (const gchar    *text);
+const gchar    *st_entry_get_text           (StEntry        *entry);
+void            st_entry_set_text           (StEntry        *entry,
+                                             const gchar    *text);
+ClutterActor   *st_entry_get_clutter_text   (StEntry        *entry);
 
-void                  st_entry_set_hint_text    (StEntry     *entry,
-                                                 const gchar *text);
-const gchar *         st_entry_get_hint_text    (StEntry     *entry);
+void            st_entry_set_hint_text      (StEntry        *entry,
+                                             const gchar    *text);
+const gchar    *st_entry_get_hint_text      (StEntry        *entry);
 
-void st_entry_set_primary_icon             (StEntry      *entry,
-                                            ClutterActor *icon);
-void st_entry_set_secondary_icon           (StEntry      *entry,
-                                            ClutterActor *icon);
+void            st_entry_set_input_purpose  (StEntry        *entry,
+                                             GtkInputPurpose purpose);
+GtkInputPurpose st_entry_get_input_purpose  (StEntry        *entry);
+void            st_entry_set_input_hints    (StEntry        *entry,
+                                             GtkInputHints   hints);
+GtkInputHints   st_entry_get_input_hints    (StEntry        *entry);
+
+void            st_entry_set_primary_icon   (StEntry        *entry,
+                                             ClutterActor   *icon);
+void            st_entry_set_secondary_icon (StEntry        *entry,
+                                             ClutterActor   *icon);
 
 G_END_DECLS
 

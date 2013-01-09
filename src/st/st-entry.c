@@ -82,6 +82,8 @@ enum
   PROP_CLUTTER_TEXT,
   PROP_HINT_TEXT,
   PROP_TEXT,
+  PROP_INPUT_PURPOSE,
+  PROP_INPUT_HINTS,
 };
 
 /* signals */
@@ -136,6 +138,14 @@ st_entry_set_property (GObject      *gobject,
       st_entry_set_text (entry, g_value_get_string (value));
       break;
 
+    case PROP_INPUT_PURPOSE:
+      st_entry_set_input_purpose (entry, g_value_get_enum (value));
+      break;
+
+    case PROP_INPUT_HINTS:
+      st_entry_set_input_hints (entry, g_value_get_flags (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -162,6 +172,14 @@ st_entry_get_property (GObject    *gobject,
 
     case PROP_TEXT:
       g_value_set_string (value, clutter_text_get_text (CLUTTER_TEXT (priv->entry)));
+      break;
+
+    case PROP_INPUT_PURPOSE:
+      g_value_set_enum (value, st_im_text_get_input_purpose (ST_IM_TEXT (priv->entry)));
+      break;
+
+    case PROP_INPUT_HINTS:
+      g_value_set_flags (value, st_im_text_get_input_hints (ST_IM_TEXT (priv->entry)));
       break;
 
     default:
@@ -759,6 +777,26 @@ st_entry_class_init (StEntryClass *klass)
                                NULL, G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class, PROP_TEXT, pspec);
 
+  pspec = g_param_spec_enum ("input-purpose",
+                             "Purpose",
+                             "Purpose of the text field",
+                             GTK_TYPE_INPUT_PURPOSE,
+                             GTK_INPUT_PURPOSE_FREE_FORM,
+                             G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  g_object_class_install_property (gobject_class,
+                                   PROP_INPUT_PURPOSE,
+                                   pspec);
+
+  pspec = g_param_spec_flags ("input-hints",
+                              "hints",
+                              "Hints for the text field behaviour",
+                              GTK_TYPE_INPUT_HINTS,
+                              GTK_INPUT_HINT_NONE,
+                              G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  g_object_class_install_property (gobject_class,
+                                   PROP_INPUT_HINTS,
+                                   pspec);
+
   /* signals */
   /**
    * StEntry::primary-icon-clicked:
@@ -964,6 +1002,87 @@ st_entry_get_hint_text (StEntry *entry)
   g_return_val_if_fail (ST_IS_ENTRY (entry), NULL);
 
   return entry->priv->hint;
+}
+
+/**
+ * st_entry_set_input_purpose:
+ * @entry: a #StEntry
+ * @purpose: the purpose
+ *
+ * Sets the #StEntry:input-purpose property which
+ * can be used by on-screen keyboards and other input
+ * methods to adjust their behaviour.
+ */
+void
+st_entry_set_input_purpose (StEntry        *entry,
+                            GtkInputPurpose purpose)
+{
+  StIMText *imtext;
+
+  g_return_if_fail (ST_IS_ENTRY (entry));
+
+  imtext = ST_IM_TEXT (entry->priv->entry);
+
+  if (st_im_text_get_input_purpose (imtext) != purpose)
+    {
+      st_im_text_set_input_purpose (imtext, purpose);
+
+      g_object_notify (G_OBJECT (entry), "input-purpose");
+    }
+}
+
+/**
+ * st_entry_get_input_purpose:
+ * @entry: a #StEntry
+ *
+ * Gets the value of the #StEntry:input-purpose property.
+ */
+GtkInputPurpose
+st_entry_get_input_purpose (StEntry *entry)
+{
+  g_return_val_if_fail (ST_IS_ENTRY (entry), GTK_INPUT_PURPOSE_FREE_FORM);
+
+  return st_im_text_get_input_purpose (ST_IM_TEXT (entry->priv->entry));
+}
+
+/**
+ * st_entry_set_input_hints:
+ * @entry: a #StEntry
+ * @hints: the hints
+ *
+ * Sets the #StEntry:input-hints property, which
+ * allows input methods to fine-tune their behaviour.
+ */
+void
+st_entry_set_input_hints (StEntry      *entry,
+                          GtkInputHints hints)
+{
+  StIMText *imtext;
+
+  g_return_if_fail (ST_IS_ENTRY (entry));
+
+  imtext = ST_IM_TEXT (entry->priv->entry);
+
+  if (st_im_text_get_input_hints (imtext) != hints)
+    {
+      st_im_text_set_input_hints (imtext, hints);
+
+      g_object_notify (G_OBJECT (entry), "input-hints");
+    }
+}
+
+/**
+ * st_entry_get_input_hints:
+ * @entry: a #StEntry
+ *
+ * Gets the value of the #StEntry:input-hints property.
+ */
+GtkInputHints
+st_entry_get_input_hints (StEntry *entry)
+{
+  g_return_val_if_fail (ST_IS_ENTRY (entry), GTK_INPUT_HINT_NONE);
+
+  return st_im_text_get_input_hints (ST_IM_TEXT (entry->priv->entry));
 }
 
 static gboolean
