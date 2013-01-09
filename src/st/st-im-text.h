@@ -60,7 +60,13 @@ struct _StIMTextClass
 
 GType st_im_text_get_type (void) G_GNUC_CONST;
 
-ClutterActor *st_im_text_new             (const gchar *text);
+ClutterActor   *st_im_text_new               (const gchar    *text);
+void            st_im_text_set_input_purpose (StIMText       *imtext,
+                                              GtkInputPurpose purpose);
+GtkInputPurpose st_im_text_get_input_purpose (StIMText       *imtext);
+void            st_im_text_set_input_hints   (StIMText       *imtext,
+                                              GtkInputHints   hints);
+GtkInputHints   st_im_text_get_input_hints   (StIMText       *imtext);
 
 G_END_DECLS
 
