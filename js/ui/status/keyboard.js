@@ -470,6 +470,8 @@ const InputSourceIndicator = new Lang.Class({
             let is = new InputSource(type, id, displayName, shortName, i);
 
             is.connect('activate', Lang.bind(this, function() {
+                if (this._currentSource.index == is.index)
+                    return;
                 this._settings.set_value(KEY_CURRENT_INPUT_SOURCE,
                                          GLib.Variant.new_uint32(is.index));
             }));
