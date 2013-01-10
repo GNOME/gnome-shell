@@ -2,15 +2,15 @@
 # Copyright (C) 2006 Free Software Foundation, Inc.
 # This file is distributed under the same license as the gnome-shell package.
 #
-# Matej Urbančič <mateju@svn.gnome.org>, 2009 - 2012.
+# Matej Urbančič <mateju@svn.gnome.org>, 2009 - 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-09 13:03+0000\n"
-"PO-Revision-Date: 2012-12-19 11:37+0100\n"
+"POT-Creation-Date: 2013-01-08 22:40+0000\n"
+"PO-Revision-Date: 2013-01-10 21:36+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -170,6 +170,8 @@ msgstr ""
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
+"Ali naj se geslo za priklapljanje šifriranih in oddaljenih datotečnih "
+"sistemov shrani"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid ""
@@ -313,6 +315,7 @@ msgstr "Pripni modalno pogovorno okno na glavno okno"
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
+"Ključ prepiše vrednost v org.gnome.mutter med zaganjanjem lupine GNOME."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Arrangement of buttons on the titlebar"
@@ -323,18 +326,20 @@ msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
 msgstr ""
+"Ključ prepiše vrednost v org.gnome.desktop.wm.preferences med zaganjanjem "
+"lupine GNOME."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:46
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
+msgstr "Omogoči utripanje črte med spuščanjem okna na robove zaslona"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:47
 msgid "Workspaces are managed dynamically"
-msgstr ""
+msgstr "Delovne površine se obravnavajo dinamično"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:48
 msgid "Workspaces only on primary monitor"
-msgstr ""
+msgstr "Delovne površine so le na osnovnem zaslonu"
 
 #: ../js/extensionPrefs/main.js:124
 #, c-format
@@ -350,11 +355,11 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Razširitev za nastavljanje je mogoče izbrati iz spustnega seznama zgoraj."
 
-#: ../js/gdm/loginDialog.js:565
+#: ../js/gdm/loginDialog.js:566
 msgid "Session..."
 msgstr "Seja ..."
 
-#: ../js/gdm/loginDialog.js:722
+#: ../js/gdm/loginDialog.js:723
 msgctxt "title"
 msgid "Sign In"
 msgstr "Prijava"
@@ -362,35 +367,35 @@ msgstr "Prijava"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:786
+#: ../js/gdm/loginDialog.js:787
 msgid "Not listed?"
 msgstr "Ali je ni na seznamu?"
 
-#: ../js/gdm/loginDialog.js:962 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:963 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:413 ../js/ui/unlockDialog.js:178
 msgid "Cancel"
 msgstr "Prekliči"
 
-#: ../js/gdm/loginDialog.js:978
+#: ../js/gdm/loginDialog.js:979
 msgctxt "button"
 msgid "Sign In"
 msgstr "Prijava"
 
-#: ../js/gdm/loginDialog.js:978
+#: ../js/gdm/loginDialog.js:979
 msgid "Next"
 msgstr "Naslednji"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:1086 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:1087 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Uporabniško ime: "
 
-#: ../js/gdm/loginDialog.js:1382
+#: ../js/gdm/loginDialog.js:1383
 msgid "Login Window"
 msgstr "Prijavno okno"
 
@@ -399,8 +404,8 @@ msgstr "Prijavno okno"
 msgid "Power"
 msgstr "Napajanje"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:674 ../js/ui/userMenu.js:678
-#: ../js/ui/userMenu.js:789
+#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:675 ../js/ui/userMenu.js:679
+#: ../js/ui/userMenu.js:790
 msgid "Suspend"
 msgstr "Zaustavi"
 
@@ -408,8 +413,8 @@ msgstr "Zaustavi"
 msgid "Restart"
 msgstr "Zaženi znova"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:676
-#: ../js/ui/userMenu.js:678 ../js/ui/userMenu.js:788
+#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:677
+#: ../js/ui/userMenu.js:679 ../js/ui/userMenu.js:789
 msgid "Power Off"
 msgstr "Izklop"
 
@@ -444,27 +449,19 @@ msgid "Execution of '%s' failed:"
 msgstr "Izvedba '%s' je spodletela:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:259
+#: ../js/ui/appDisplay.js:258
 msgid "All"
 msgstr "Vse"
 
-#: ../js/ui/appDisplay.js:318
-msgid "APPLICATIONS"
-msgstr "Programi"
-
-#: ../js/ui/appDisplay.js:375
-msgid "SETTINGS"
-msgstr "NASTAVITVE"
-
-#: ../js/ui/appDisplay.js:679
+#: ../js/ui/appDisplay.js:666
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:682 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:669 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:683
+#: ../js/ui/appDisplay.js:670
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
@@ -481,19 +478,19 @@ msgstr "Program \"%s\" je odstranjen iz priljubljenih."
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:62
+#: ../js/ui/calendar.js:61
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Celodnevno"
 
 #. Translators: Shown in calendar event list, if 24h format
-#: ../js/ui/calendar.js:67
+#: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
-#: ../js/ui/calendar.js:74
+#: ../js/ui/calendar.js:73
 msgctxt "event list time"
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
@@ -503,43 +500,43 @@ msgstr "%l:%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:114
+#: ../js/ui/calendar.js:104
 msgctxt "grid sunday"
 msgid "S"
 msgstr "N"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:116
+#: ../js/ui/calendar.js:106
 msgctxt "grid monday"
 msgid "M"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:118
+#: ../js/ui/calendar.js:108
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:120
+#: ../js/ui/calendar.js:110
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "S"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:122
+#: ../js/ui/calendar.js:112
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Č"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:124
+#: ../js/ui/calendar.js:114
 msgctxt "grid friday"
 msgid "F"
 msgstr "P"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:126
+#: ../js/ui/calendar.js:116
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -550,77 +547,77 @@ msgstr "S"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:139
+#: ../js/ui/calendar.js:129
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Ne"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:141
+#: ../js/ui/calendar.js:131
 msgctxt "list monday"
 msgid "M"
 msgstr "P"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:143
+#: ../js/ui/calendar.js:133
 msgctxt "list tuesday"
 msgid "T"
 msgstr "T"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:145
+#: ../js/ui/calendar.js:135
 msgctxt "list wednesday"
 msgid "W"
 msgstr "S"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:147
+#: ../js/ui/calendar.js:137
 msgctxt "list thursday"
 msgid "Th"
 msgstr "Če"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:149
+#: ../js/ui/calendar.js:139
 msgctxt "list friday"
 msgid "F"
 msgstr "Pe"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:151
+#: ../js/ui/calendar.js:141
 msgctxt "list saturday"
 msgid "S"
 msgstr "S"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:700
+#: ../js/ui/calendar.js:674
 msgid "Nothing Scheduled"
 msgstr "Nič ni razporejeno"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:716
+#: ../js/ui/calendar.js:690
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %m."
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:719
+#: ../js/ui/calendar.js:693
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B %Y"
 
-#: ../js/ui/calendar.js:729
+#: ../js/ui/calendar.js:703
 msgid "Today"
 msgstr "Danes"
 
-#: ../js/ui/calendar.js:733
+#: ../js/ui/calendar.js:707
 msgid "Tomorrow"
 msgstr "Jutri"
 
-#: ../js/ui/calendar.js:744
+#: ../js/ui/calendar.js:718
 msgid "This week"
 msgstr "Ta teden"
 
-#: ../js/ui/calendar.js:752
+#: ../js/ui/calendar.js:726
 msgid "Next week"
 msgstr "Naslednji teden"
 
@@ -637,11 +634,11 @@ msgstr "Odpri s programom %s"
 msgid "Eject"
 msgstr "Izvrzi"
 
-#: ../js/ui/components/keyring.js:86 ../js/ui/components/polkitAgent.js:260
+#: ../js/ui/components/keyring.js:82 ../js/ui/components/polkitAgent.js:268
 msgid "Password:"
 msgstr "Geslo:"
 
-#: ../js/ui/components/keyring.js:105
+#: ../js/ui/components/keyring.js:101
 msgid "Type again:"
 msgstr "Vpišite znova:"
 
@@ -729,7 +726,7 @@ msgstr "Zahtevana je overitev"
 msgid "Administrator"
 msgstr "Skrbnik"
 
-#: ../js/ui/components/polkitAgent.js:166
+#: ../js/ui/components/polkitAgent.js:165
 msgid "Authenticate"
 msgstr "Overi"
 
@@ -737,7 +734,7 @@ msgstr "Overi"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/components/polkitAgent.js:248 ../js/ui/shellMountOperation.js:383
+#: ../js/ui/components/polkitAgent.js:256 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Dejanje je spodletelo. Poskusite znova."
 
@@ -985,7 +982,7 @@ msgstr "Poglej račun"
 msgid "Unknown reason"
 msgstr "Neznan vzrok"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:87
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:81
 msgid "Windows"
 msgstr "Okna"
 
@@ -993,18 +990,18 @@ msgstr "Okna"
 msgid "Show Applications"
 msgstr "Pokaži programe"
 
-#: ../js/ui/dateMenu.js:86
+#: ../js/ui/dateMenu.js:87
 msgid "Date and Time Settings"
 msgstr "Nastavitve časa in datuma"
 
-#: ../js/ui/dateMenu.js:111
+#: ../js/ui/dateMenu.js:112
 msgid "Open Calendar"
 msgstr "Odpri koledar"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:201
+#: ../js/ui/dateMenu.js:191
 msgid "%A %B %e, %Y"
 msgstr "%a, %e. %b., %R"
 
@@ -1116,78 +1113,78 @@ msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr ""
 "Ali naj se razširitev '%s'  namesti preko povezave z extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:308
+#: ../js/ui/keyboard.js:291
 msgid "tray"
 msgstr "sistemska vrstica"
 
-#: ../js/ui/keyboard.js:555 ../js/ui/status/keyboard.js:195
-#: ../js/ui/status/power.js:205
+#: ../js/ui/keyboard.js:636 ../js/ui/status/keyboard.js:309
+#: ../js/ui/status/power.js:206
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
-#: ../js/ui/lookingGlass.js:691
+#: ../js/ui/lookingGlass.js:692
 msgid "No extensions installed"
 msgstr "Ni nameščenih razširitev"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:745
+#: ../js/ui/lookingGlass.js:746
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s ni javil napak."
 
-#: ../js/ui/lookingGlass.js:751
+#: ../js/ui/lookingGlass.js:752
 msgid "Hide Errors"
 msgstr "Skrij napake"
 
-#: ../js/ui/lookingGlass.js:755 ../js/ui/lookingGlass.js:815
+#: ../js/ui/lookingGlass.js:756 ../js/ui/lookingGlass.js:816
 msgid "Show Errors"
 msgstr "Pokaži napake"
 
-#: ../js/ui/lookingGlass.js:764
+#: ../js/ui/lookingGlass.js:765
 msgid "Enabled"
 msgstr "Omogočeno"
 
-#: ../js/ui/lookingGlass.js:767
+#: ../js/ui/lookingGlass.js:768
 msgid "Disabled"
 msgstr "Onemogočeno"
 
-#: ../js/ui/lookingGlass.js:769
+#: ../js/ui/lookingGlass.js:770
 msgid "Error"
 msgstr "Napaka"
 
-#: ../js/ui/lookingGlass.js:771
+#: ../js/ui/lookingGlass.js:772
 msgid "Out of date"
 msgstr "Zastarelo"
 
-#: ../js/ui/lookingGlass.js:773
+#: ../js/ui/lookingGlass.js:774
 msgid "Downloading"
 msgstr "Prejemanje"
 
-#: ../js/ui/lookingGlass.js:797
+#: ../js/ui/lookingGlass.js:798
 msgid "View Source"
 msgstr "Poglej vir"
 
-#: ../js/ui/lookingGlass.js:806
+#: ../js/ui/lookingGlass.js:807
 msgid "Web Page"
 msgstr "Spletna stran"
 
-#: ../js/ui/messageTray.js:1088
+#: ../js/ui/messageTray.js:1090
 msgid "Open"
 msgstr "Odpri"
 
-#: ../js/ui/messageTray.js:1095
+#: ../js/ui/messageTray.js:1097
 msgid "Remove"
 msgstr "Odstrani"
 
-#: ../js/ui/messageTray.js:1551
+#: ../js/ui/messageTray.js:1554
 msgid "No Messages"
 msgstr "Ni sporočil"
 
-#: ../js/ui/messageTray.js:1568
+#: ../js/ui/messageTray.js:1572
 msgid "Message Tray"
 msgstr "Vrstica sporočanja"
 
-#: ../js/ui/messageTray.js:2635
+#: ../js/ui/messageTray.js:2641
 msgid "System Information"
 msgstr "Podrobnosti sistema"
 
@@ -1196,11 +1193,11 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Neznano"
 
-#: ../js/ui/overview.js:95
+#: ../js/ui/overview.js:92
 msgid "Undo"
 msgstr "Razveljavi"
 
-#: ../js/ui/overview.js:144
+#: ../js/ui/overview.js:139
 msgid "Overview"
 msgstr "Pregled"
 
@@ -1208,27 +1205,27 @@ msgstr "Pregled"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:221
+#: ../js/ui/overview.js:218
 msgid "Type to search..."
 msgstr "Vtipkajte za iskanje ..."
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:242
+#: ../js/ui/overview.js:236
 msgid "Dash"
 msgstr "Pregledna plošča"
 
-#: ../js/ui/panel.js:608
+#: ../js/ui/panel.js:613
 msgid "Quit"
 msgstr "Končaj"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:637
+#: ../js/ui/panel.js:642
 msgid "Activities"
 msgstr "Dejavnosti"
 
-#: ../js/ui/panel.js:980
+#: ../js/ui/panel.js:976
 msgid "Top Bar"
 msgstr "Vrhnja vrstica"
 
@@ -1237,7 +1234,7 @@ msgstr "Vrhnja vrstica"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:732
+#: ../js/ui/popupMenu.js:727
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1251,11 +1248,11 @@ msgstr "Zapri"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:112
+#: ../js/ui/screenShield.js:113
 msgid "%A, %B %d"
 msgstr "%A, %d. %m."
 
-#: ../js/ui/screenShield.js:176
+#: ../js/ui/screenShield.js:177
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1264,7 +1261,7 @@ msgstr[1] "%d novo sporočilo"
 msgstr[2] "%d novi sporočili"
 msgstr[3] "%d nova sporočila"
 
-#: ../js/ui/screenShield.js:178
+#: ../js/ui/screenShield.js:179
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1273,15 +1270,15 @@ msgstr[1] "%d novo obvestilo"
 msgstr[2] "%d novi obvestili"
 msgstr[3] "%d nova obvestila"
 
-#: ../js/ui/screenShield.js:402 ../js/ui/userMenu.js:780
+#: ../js/ui/screenShield.js:403 ../js/ui/userMenu.js:781
 msgid "Lock"
 msgstr "Zakleni"
 
-#: ../js/ui/searchDisplay.js:277
+#: ../js/ui/searchDisplay.js:403
 msgid "Searching..."
 msgstr "Iskanje ..."
 
-#: ../js/ui/searchDisplay.js:325
+#: ../js/ui/searchDisplay.js:451
 msgid "No results."
 msgstr "Ni najdenih zadetkov."
 
@@ -1397,7 +1394,7 @@ msgid "disconnecting..."
 msgstr "prekinjanje povezave ..."
 
 #: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:442
-#: ../js/ui/status/network.js:1453
+#: ../js/ui/status/network.js:1464
 msgid "connecting..."
 msgstr "povezovanje ..."
 
@@ -1413,7 +1410,7 @@ msgstr "Nastavitve tipkovnice"
 msgid "Mouse Settings"
 msgstr "Nastavitve miške"
 
-#: ../js/ui/status/bluetooth.js:253 ../js/ui/status/volume.js:270
+#: ../js/ui/status/bluetooth.js:253 ../js/ui/status/volume.js:314
 msgid "Sound Settings"
 msgstr "Nastavitve zvoka"
 
@@ -1477,15 +1474,15 @@ msgstr "Vnesite PIN, ki je naveden na napravi."
 msgid "OK"
 msgstr "V redu"
 
-#: ../js/ui/status/keyboard.js:228
+#: ../js/ui/status/keyboard.js:363
 msgid "Show Keyboard Layout"
 msgstr "Pokaži razporeditev tipkovnice"
 
-#: ../js/ui/status/keyboard.js:233
+#: ../js/ui/status/keyboard.js:368
 msgid "Region and Language Settings"
 msgstr "Nastavitve območja in jezika"
 
-#: ../js/ui/status/lockScreenMenu.js:18
+#: ../js/ui/status/lockScreenMenu.js:43
 msgid "Volume, network, battery"
 msgstr "Nosilec, omrežje, baterija"
 
@@ -1505,7 +1502,7 @@ msgid "unmanaged"
 msgstr "neupravljano"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:445 ../js/ui/status/network.js:1456
+#: ../js/ui/status/network.js:445 ../js/ui/status/network.js:1467
 msgid "authentication required"
 msgstr "zahtevana je overitev"
 
@@ -1526,72 +1523,72 @@ msgstr "kabel ni priklopljen"
 msgid "unavailable"
 msgstr "ni na voljo"
 
-#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1458
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1469
 msgid "connection failed"
 msgstr "povezovanje je spodletelo"
 
-#: ../js/ui/status/network.js:525 ../js/ui/status/network.js:1392
-#: ../js/ui/status/network.js:1534
+#: ../js/ui/status/network.js:525 ../js/ui/status/network.js:1403
+#: ../js/ui/status/network.js:1545
 msgid "More..."
 msgstr "Več ..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:561 ../js/ui/status/network.js:1322
+#: ../js/ui/status/network.js:561 ../js/ui/status/network.js:1333
 msgid "Connected (private)"
 msgstr "Povezano (zasebna povezava)"
 
-#: ../js/ui/status/network.js:619
+#: ../js/ui/status/network.js:641
 msgid "Auto Ethernet"
 msgstr "Samodejni eternet"
 
-#: ../js/ui/status/network.js:677
+#: ../js/ui/status/network.js:688
 msgid "Auto broadband"
 msgstr "Samodejni širokopasovni dostop"
 
-#: ../js/ui/status/network.js:680
+#: ../js/ui/status/network.js:691
 msgid "Auto dial-up"
 msgstr "Samodejni klicni dostop"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:809 ../js/ui/status/network.js:1339
+#: ../js/ui/status/network.js:820 ../js/ui/status/network.js:1350
 #, c-format
 msgid "Auto %s"
 msgstr "Samodejna povezava z %s"
 
-#: ../js/ui/status/network.js:811
+#: ../js/ui/status/network.js:822
 msgid "Auto bluetooth"
 msgstr "Samodejna povezava z Bluetooth"
 
-#: ../js/ui/status/network.js:1341
+#: ../js/ui/status/network.js:1352
 msgid "Auto wireless"
 msgstr "Samodejni brezžični dostop"
 
-#: ../js/ui/status/network.js:1584
+#: ../js/ui/status/network.js:1595
 msgid "Enable networking"
 msgstr "Omogoči omrežje"
 
-#: ../js/ui/status/network.js:1616
+#: ../js/ui/status/network.js:1627
 msgid "Wi-Fi"
 msgstr "Wi-Fi"
 
-#: ../js/ui/status/network.js:1635
+#: ../js/ui/status/network.js:1646
 msgid "Network Settings"
 msgstr "Omrežne nastavitve"
 
-#: ../js/ui/status/network.js:1679
+#: ../js/ui/status/network.js:1692
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
-#: ../js/ui/status/network.js:1761
+#: ../js/ui/status/network.js:1774
 msgid "Connection failed"
 msgstr "Povezava je spodletela"
 
-#: ../js/ui/status/network.js:1762
+#: ../js/ui/status/network.js:1775
 msgid "Activation of network connection failed"
 msgstr "Omogočanje omrežne povezave je spodletelo."
 
-#: ../js/ui/status/network.js:2079
+#: ../js/ui/status/network.js:2092
 msgid "Networking is disabled"
 msgstr "Omrežje je onemogočeno"
 
@@ -1655,65 +1652,65 @@ msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../js/ui/status/power.js:195
+#: ../js/ui/status/power.js:196
 msgid "AC adapter"
 msgstr "Električni prilagodilnik"
 
-#: ../js/ui/status/power.js:197
+#: ../js/ui/status/power.js:198
 msgid "Laptop battery"
 msgstr "Baterija prenosnika"
 
-#: ../js/ui/status/power.js:199
+#: ../js/ui/status/power.js:200
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:201
+#: ../js/ui/status/power.js:202
 msgid "Monitor"
 msgstr "Zaslon"
 
-#: ../js/ui/status/power.js:203
+#: ../js/ui/status/power.js:204
 msgid "Mouse"
 msgstr "Miška"
 
-#: ../js/ui/status/power.js:207
+#: ../js/ui/status/power.js:208
 msgid "PDA"
 msgstr "Dlančnik"
 
-#: ../js/ui/status/power.js:209
+#: ../js/ui/status/power.js:210
 msgid "Cell phone"
 msgstr "Mobilni telefon"
 
-#: ../js/ui/status/power.js:211
+#: ../js/ui/status/power.js:212
 msgid "Media player"
 msgstr "Predstavni predvajalnik"
 
-#: ../js/ui/status/power.js:213
+#: ../js/ui/status/power.js:214
 msgid "Tablet"
 msgstr "Tablični računalnik"
 
-#: ../js/ui/status/power.js:215
+#: ../js/ui/status/power.js:216
 msgid "Computer"
 msgstr "Računalnik"
 
-#: ../js/ui/status/power.js:217
+#: ../js/ui/status/power.js:218
 msgctxt "device"
 msgid "Unknown"
 msgstr "Neznano"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:50 ../js/ui/status/volume.js:251
+#: ../js/ui/status/volume.js:247 ../js/ui/status/volume.js:295
 msgid "Volume"
 msgstr "Glasnost"
 
-#: ../js/ui/status/volume.js:62
+#: ../js/ui/status/volume.js:256
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/unlockDialog.js:201
+#: ../js/ui/unlockDialog.js:203
 msgid "Log in as another user"
 msgstr "Prijava kot drug uporabnik"
 
-#: ../js/ui/unlockDialog.js:224
+#: ../js/ui/unlockDialog.js:229
 msgid "Unlock Window"
 msgstr "Odkleni okno"
 
@@ -1741,31 +1738,31 @@ msgstr "Nedejavno"
 msgid "Offline"
 msgstr "Nepovezano"
 
-#: ../js/ui/userMenu.js:754
+#: ../js/ui/userMenu.js:755
 msgid "Notifications"
 msgstr "Obvestila"
 
-#: ../js/ui/userMenu.js:762
+#: ../js/ui/userMenu.js:763
 msgid "Settings"
 msgstr "Nastavitve"
 
-#: ../js/ui/userMenu.js:770
+#: ../js/ui/userMenu.js:771
 msgid "Switch User"
 msgstr "Preklopi uporabnika"
 
-#: ../js/ui/userMenu.js:775
+#: ../js/ui/userMenu.js:776
 msgid "Log Out"
 msgstr "Odjava"
 
-#: ../js/ui/userMenu.js:795
+#: ../js/ui/userMenu.js:796
 msgid "Install Updates & Restart"
 msgstr "Namesti posodobitve in ponovno zaženi"
 
-#: ../js/ui/userMenu.js:813
+#: ../js/ui/userMenu.js:814
 msgid "Your chat status will be set to busy"
 msgstr "Stanje vašega klepeta bo nastavljeno na zasedeno"
 
-#: ../js/ui/userMenu.js:814
+#: ../js/ui/userMenu.js:815
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1774,15 +1771,15 @@ msgstr ""
 "povezanosti se je prilagodilo, da bodo drugi vedeli, da njihovih sporočil "
 "morda ne boste opazili."
 
-#: ../js/ui/viewSelector.js:91
+#: ../js/ui/viewSelector.js:85
 msgid "Applications"
 msgstr "Programi"
 
-#: ../js/ui/viewSelector.js:95
+#: ../js/ui/viewSelector.js:89
 msgid "Search"
 msgstr "Poišči"
 
-#: ../js/ui/wanda.js:94
+#: ../js/ui/wanda.js:92
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1791,14 +1788,10 @@ msgstr ""
 "Za danes ni modrosti:\n"
 "%s"
 
-#: ../js/ui/wanda.js:98
+#: ../js/ui/wanda.js:96
 #, c-format
 msgid "%s the Oracle says"
 msgstr "Riba %s pravi"
-
-#: ../js/ui/wanda.js:139
-msgid "Your favorite Easter Egg"
-msgstr "Vaše priljubljeno velikonočno jajce"
 
 #: ../js/ui/windowAttentionHandler.js:19
 #, c-format
@@ -1849,6 +1842,15 @@ msgstr "Privzeto"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Uporabnik je zavrnil pogovorno okno overitve"
+
+#~ msgid "APPLICATIONS"
+#~ msgstr "Programi"
+
+#~ msgid "SETTINGS"
+#~ msgstr "NASTAVITVE"
+
+#~ msgid "Your favorite Easter Egg"
+#~ msgstr "Vaše priljubljeno velikonočno jajce"
 
 #~ msgid "Subscription request"
 #~ msgstr "Zahteva po naročilu"
