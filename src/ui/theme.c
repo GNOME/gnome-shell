@@ -5912,34 +5912,6 @@ meta_color_component_from_string (const char *str)
     return META_GTK_COLOR_LAST;
 }
 
-const char*
-meta_color_component_to_string (MetaGtkColorComponent component)
-{
-  switch (component)
-    {
-    case META_GTK_COLOR_FG:
-      return "fg";
-    case META_GTK_COLOR_BG:
-      return "bg";
-    case META_GTK_COLOR_LIGHT:
-      return "light";
-    case META_GTK_COLOR_DARK:
-      return "dark";
-    case META_GTK_COLOR_MID:
-      return "mid";
-    case META_GTK_COLOR_TEXT:
-      return "text";
-    case META_GTK_COLOR_BASE:
-      return "base";
-    case META_GTK_COLOR_TEXT_AA:
-      return "text_aa";
-    case META_GTK_COLOR_LAST:
-      break;
-    }
-
-  return "<unknown>";
-}
-
 MetaButtonState
 meta_button_state_from_string (const char *str)
 {
@@ -6095,42 +6067,6 @@ meta_frame_piece_from_string (const char *str)
     return META_FRAME_PIECE_OVERLAY;
   else
     return META_FRAME_PIECE_LAST;
-}
-
-const char*
-meta_frame_piece_to_string (MetaFramePiece piece)
-{
-  switch (piece)
-    {
-    case META_FRAME_PIECE_ENTIRE_BACKGROUND:
-      return "entire_background";
-    case META_FRAME_PIECE_TITLEBAR:
-      return "titlebar";
-    case META_FRAME_PIECE_TITLEBAR_MIDDLE:
-      return "titlebar_middle";
-    case META_FRAME_PIECE_LEFT_TITLEBAR_EDGE:
-      return "left_titlebar_edge";
-    case META_FRAME_PIECE_RIGHT_TITLEBAR_EDGE:
-      return "right_titlebar_edge";
-    case META_FRAME_PIECE_TOP_TITLEBAR_EDGE:
-      return "top_titlebar_edge";
-    case META_FRAME_PIECE_BOTTOM_TITLEBAR_EDGE:
-      return "bottom_titlebar_edge";
-    case META_FRAME_PIECE_TITLE:
-      return "title";
-    case META_FRAME_PIECE_LEFT_EDGE:
-      return "left_edge";
-    case META_FRAME_PIECE_RIGHT_EDGE:
-      return "right_edge";
-    case META_FRAME_PIECE_BOTTOM_EDGE:
-      return "bottom_edge";
-    case META_FRAME_PIECE_OVERLAY:
-      return "overlay";
-    case META_FRAME_PIECE_LAST:
-      break;
-    }
-
-  return "<unknown>";
 }
 
 MetaFrameState
@@ -6322,24 +6258,6 @@ meta_gradient_type_from_string (const char *str)
     return META_GRADIENT_LAST;
 }
 
-const char*
-meta_gradient_type_to_string (MetaGradientType type)
-{
-  switch (type)
-    {
-    case META_GRADIENT_VERTICAL:
-      return "vertical";
-    case META_GRADIENT_HORIZONTAL:
-      return "horizontal";
-    case META_GRADIENT_DIAGONAL:
-      return "diagonal";
-    case META_GRADIENT_LAST:
-      break;
-    }
-
-  return "<unknown>";
-}
-
 GtkStateFlags
 meta_gtk_state_from_string (const char *str)
 {
@@ -6363,32 +6281,6 @@ meta_gtk_state_from_string (const char *str)
     return -1; /* hack */
 }
 
-const char*
-meta_gtk_state_to_string (GtkStateFlags state)
-{
-  switch (state)
-    {
-    case GTK_STATE_FLAG_NORMAL:
-      return "NORMAL";
-    case GTK_STATE_FLAG_PRELIGHT:
-      return "PRELIGHT";
-    case GTK_STATE_FLAG_ACTIVE:
-      return "ACTIVE";
-    case GTK_STATE_FLAG_SELECTED:
-      return "SELECTED";
-    case GTK_STATE_FLAG_INSENSITIVE:
-      return "INSENSITIVE";
-    case GTK_STATE_FLAG_INCONSISTENT:
-      return "INCONSISTENT";
-    case GTK_STATE_FLAG_FOCUSED:
-      return "FOCUSED";
-    case GTK_STATE_FLAG_BACKDROP:
-      return "BACKDROP";
-    }
-
-  return "<unknown>";
-}
-
 GtkShadowType
 meta_gtk_shadow_from_string (const char *str)
 {
@@ -6406,26 +6298,6 @@ meta_gtk_shadow_from_string (const char *str)
     return -1;
 }
 
-const char*
-meta_gtk_shadow_to_string (GtkShadowType shadow)
-{
-  switch (shadow)
-    {
-    case GTK_SHADOW_NONE:
-      return "none";
-    case GTK_SHADOW_IN:
-      return "in";
-    case GTK_SHADOW_OUT:
-      return "out";
-    case GTK_SHADOW_ETCHED_IN:
-      return "etched_in";
-    case GTK_SHADOW_ETCHED_OUT:
-      return "etched_out";
-    }
-
-  return "<unknown>";
-}
-
 GtkArrowType
 meta_gtk_arrow_from_string (const char *str)
 {
@@ -6441,26 +6313,6 @@ meta_gtk_arrow_from_string (const char *str)
     return GTK_ARROW_NONE;
   else
     return -1;
-}
-
-const char*
-meta_gtk_arrow_to_string (GtkArrowType arrow)
-{
-  switch (arrow)
-    {
-    case GTK_ARROW_UP:
-      return "up";
-    case GTK_ARROW_DOWN:
-      return "down";
-    case GTK_ARROW_LEFT:
-      return "left";
-    case GTK_ARROW_RIGHT:
-      return "right";
-    case GTK_ARROW_NONE:
-      return "none";
-    }
-
-  return "<unknown>";
 }
 
 /**
@@ -6481,29 +6333,6 @@ meta_image_fill_type_from_string (const char *str)
     return META_IMAGE_FILL_SCALE;
   else
     return -1;
-}
-
-/**
- * meta_image_fill_type_to_string:
- * @fill_type: the fill type
- *
- * Returns a string representation of a fill_type.  The inverse of
- * meta_image_fill_type_from_string().
- *
- * Returns: a string representing that type
- */
-const char*
-meta_image_fill_type_to_string (MetaImageFillType fill_type)
-{
-  switch (fill_type)
-    {
-    case META_IMAGE_FILL_TILE:
-      return "tile";
-    case META_IMAGE_FILL_SCALE:
-      return "scale";
-    }
-  
-  return "<unknown>";
 }
 
 /**

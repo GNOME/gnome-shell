@@ -1113,14 +1113,12 @@ int                   meta_pango_font_desc_get_text_height (const PangoFontDescr
 
 /* Enum converters */
 MetaGtkColorComponent meta_color_component_from_string (const char            *str);
-const char*           meta_color_component_to_string   (MetaGtkColorComponent  component);
 MetaButtonState       meta_button_state_from_string    (const char            *str);
 const char*           meta_button_state_to_string      (MetaButtonState        state);
 MetaButtonType        meta_button_type_from_string     (const char            *str,
                                                         MetaTheme             *theme);
 const char*           meta_button_type_to_string       (MetaButtonType         type);
 MetaFramePiece        meta_frame_piece_from_string     (const char            *str);
-const char*           meta_frame_piece_to_string       (MetaFramePiece         piece);
 MetaFrameState        meta_frame_state_from_string     (const char            *str);
 const char*           meta_frame_state_to_string       (MetaFrameState         state);
 MetaFrameResize       meta_frame_resize_from_string    (const char            *str);
@@ -1129,15 +1127,10 @@ MetaFrameFocus        meta_frame_focus_from_string     (const char            *s
 const char*           meta_frame_focus_to_string       (MetaFrameFocus         focus);
 MetaFrameType         meta_frame_type_from_string      (const char            *str);
 MetaGradientType      meta_gradient_type_from_string   (const char            *str);
-const char*           meta_gradient_type_to_string     (MetaGradientType       type);
 GtkStateFlags         meta_gtk_state_from_string       (const char            *str);
-const char*           meta_gtk_state_to_string         (GtkStateFlags          state);
 GtkShadowType         meta_gtk_shadow_from_string      (const char            *str);
-const char*           meta_gtk_shadow_to_string        (GtkShadowType          shadow);
 GtkArrowType          meta_gtk_arrow_from_string       (const char            *str);
-const char*           meta_gtk_arrow_to_string         (GtkArrowType           arrow);
 MetaImageFillType     meta_image_fill_type_from_string (const char            *str);
-const char*           meta_image_fill_type_to_string   (MetaImageFillType      fill_type);
 
 void                  meta_gtk_style_get_light_color   (GtkStyleContext      *style,
                                                         GtkStateFlags         state,
