@@ -644,7 +644,7 @@ const ActivitiesButton = new Lang.Class({
 
         this.actor.label_actor = this._label;
 
-        this.hotCorner = new Layout.HotCorner();
+        this.hotCorner = new Layout.HotCorner(Main.layoutManager);
         container.add_actor(this.hotCorner.actor);
 
         this.actor.connect('captured-event', Lang.bind(this, this._onCapturedEvent));

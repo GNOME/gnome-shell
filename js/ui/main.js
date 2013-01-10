@@ -113,37 +113,15 @@ function start() {
 
     tracker.connect('startup-sequence-changed', _queueCheckWorkspaces);
 
-    // The stage is always covered so Clutter doesn't need to clear it; however
-    // the color is used as the default contents for the Mutter root background
-    // actor so set it anyways.
-    global.stage.color = DEFAULT_BACKGROUND_COLOR;
-    global.stage.no_clear_hint = true;
-
     _loadDefaultStylesheet();
 
-    // Set up stage hierarchy to group all UI actors under one container.
-    uiGroup = new Shell.GenericContainer({ name: 'uiGroup' });
-    uiGroup.connect('allocate',
-                    function (actor, box, flags) {
-                        let children = uiGroup.get_children();
-                        for (let i = 0; i < children.length; i++)
-                            children[i].allocate_preferred_size(flags);
-                    });
-    uiGroup.connect('get-preferred-width',
-                    function(actor, forHeight, alloc) {
-                        let width = global.stage.width;
-                        [alloc.min_size, alloc.natural_size] = [width, width];
-                    });
-    uiGroup.connect('get-preferred-height',
-                    function(actor, forWidth, alloc) {
-                        let height = global.stage.height;
-                        [alloc.min_size, alloc.natural_size] = [height, height];
-                    });
-    global.window_group.reparent(uiGroup);
-    global.overlay_group.reparent(uiGroup);
-    global.stage.add_actor(uiGroup);
-
+    // Setup the stage hierarchy early
     layoutManager = new Layout.LayoutManager();
+    // Various parts of the codebase still refers to Main.uiGroup
+    // instead using the layoutManager.  This keeps that code
+    // working until it's updated.
+    uiGroup = layoutManager.uiGroup;
+
     xdndHandler = new XdndHandler.XdndHandler();
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
     overview = new Overview.Overview();

@@ -18,6 +18,7 @@ const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 const STARTUP_ANIMATION_TIME = 0.2;
 const KEYBOARD_ANIMATION_TIME = 0.15;
 const PLYMOUTH_TRANSITION_TIME = 1;
+const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
 // The message tray takes this much pressure
 // in the pressure barrier at once to release it.
@@ -125,6 +126,42 @@ const LayoutManager = new Lang.Class({
         this._updateRegionIdle = 0;
 
         this._trackedActors = [];
+
+        // Normally, the stage is always covered so Clutter doesn't need to clear
+        // it; however it becomes visible during the startup animation
+        // See the comment below for a longer explanation
+        global.stage.color = DEFAULT_BACKGROUND_COLOR;
+
+        // Set up stage hierarchy to group all UI actors under one container.
+        this.uiGroup = new Shell.GenericContainer({ name: 'uiGroup' });
+        this.uiGroup.connect('allocate',
+                        function (actor, box, flags) {
+                            let children = actor.get_children();
+                            for (let i = 0; i < children.length; i++)
+                                children[i].allocate_preferred_size(flags);
+                        });
+        this.uiGroup.connect('get-preferred-width',
+                        function(actor, forHeight, alloc) {
+                            let width = global.stage.width;
+                            [alloc.min_size, alloc.natural_size] = [width, width];
+                        });
+        this.uiGroup.connect('get-preferred-height',
+                        function(actor, forWidth, alloc) {
+                            let height = global.stage.height;
+                            [alloc.min_size, alloc.natural_size] = [height, height];
+                        });
+
+        global.window_group.reparent(this.uiGroup);
+
+        // Now, you might wonder why we went through all the hoops to implement
+        // the GDM greeter inside an X11 compositor, to do this at the end...
+        // However, hiding this is necessary to avoid showing the background during
+        // the initial animation, before Gdm.LoginDialog covers everything
+        if (Main.sessionMode.isGreeter)
+            global.window_group.hide();
+
+        global.overlay_group.reparent(this.uiGroup);
+        global.stage.add_child(this.uiGroup);
 
         this.screenShieldGroup = new St.Widget({ name: 'screenShieldGroup',
                                                  visible: false,
@@ -260,7 +297,7 @@ const LayoutManager = new Lang.Class({
             if (!haveTopLeftCorner)
                 continue;
 
-            let corner = new HotCorner();
+            let corner = new HotCorner(this);
             this._hotCorners.push(corner);
             corner.actor.set_position(cornerX, cornerY);
             this.addChrome(corner.actor);
@@ -422,7 +459,7 @@ const LayoutManager = new Lang.Class({
         if (Main.sessionMode.isGreeter) {
             this._background = Meta.BackgroundActor.new_for_screen(global.screen);
             if (this._background != null) {
-                Main.uiGroup.add_actor(this._background);
+                this.uiGroup.add_actor(this._background);
                 Tweener.addTween(this._background,
                                  { opacity: 0,
                                    time: PLYMOUTH_TRANSITION_TIME,
@@ -540,7 +577,7 @@ const LayoutManager = new Lang.Class({
     // monitor (it will be hidden whenever a fullscreen window is visible,
     // and shown otherwise)
     addChrome: function(actor, params) {
-        Main.uiGroup.add_actor(actor);
+        this.uiGroup.add_actor(actor);
         this._trackActor(actor, params);
     },
 
@@ -591,7 +628,7 @@ const LayoutManager = new Lang.Class({
     //
     // Removes @actor from the chrome
     removeChrome: function(actor) {
-        Main.uiGroup.remove_actor(actor);
+        this.uiGroup.remove_actor(actor);
         this._untrackActor(actor);
     },
 
@@ -610,7 +647,7 @@ const LayoutManager = new Lang.Class({
 
         let actorData = Params.parse(params, defaultParams);
         actorData.actor = actor;
-        actorData.isToplevel = actor.get_parent() == Main.uiGroup;
+        actorData.isToplevel = actor.get_parent() == this.uiGroup;
         actorData.visibleId = actor.connect('notify::visible',
                                             Lang.bind(this, this._queueUpdateRegions));
         actorData.allocationId = actor.connect('notify::allocation',
@@ -646,7 +683,7 @@ const LayoutManager = new Lang.Class({
         } else {
             let i = this._findActor(actor);
             let actorData = this._trackedActors[i];
-            actorData.isToplevel = (newParent == Main.uiGroup);
+            actorData.isToplevel = (newParent == this.uiGroup);
         }
     },
 
@@ -820,7 +857,7 @@ const LayoutManager = new Lang.Class({
 
             if (actorData.affectsInputRegion &&
                 actorData.actor.get_paint_visibility() &&
-                !Main.uiGroup.get_skip_paint(actorData.actor))
+                !this.uiGroup.get_skip_paint(actorData.actor))
                 rects.push(rect);
 
             if (!actorData.affectsStruts)
@@ -919,7 +956,7 @@ Signals.addSignalMethods(LayoutManager.prototype);
 const HotCorner = new Lang.Class({
     Name: 'HotCorner',
 
-    _init : function() {
+    _init : function(layoutManager) {
         // We use this flag to mark the case where the user has entered the
         // hot corner and has not left both the hot corner and a surrounding
         // guard area (the "environs"). This avoids triggering the hot corner
@@ -973,9 +1010,9 @@ const HotCorner = new Lang.Class({
         this._ripple2 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0, visible: false });
         this._ripple3 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0, visible: false });
 
-        Main.uiGroup.add_actor(this._ripple1);
-        Main.uiGroup.add_actor(this._ripple2);
-        Main.uiGroup.add_actor(this._ripple3);
+        layoutManager.uiGroup.add_actor(this._ripple1);
+        layoutManager.uiGroup.add_actor(this._ripple2);
+        layoutManager.uiGroup.add_actor(this._ripple3);
     },
 
     destroy: function() {
