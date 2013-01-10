@@ -36,10 +36,10 @@ struct _CoglPrimitive
 {
   CoglObject _parent;
 
+  CoglIndices *indices;
   CoglVerticesMode mode;
   int first_vertex;
   int n_vertices;
-  CoglIndices *indices;
 
   int immutable_ref;
 

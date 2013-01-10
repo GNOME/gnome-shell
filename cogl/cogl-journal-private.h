@@ -66,11 +66,11 @@ typedef struct _CoglJournal
 typedef struct _CoglJournalEntry
 {
   CoglPipeline            *pipeline;
-  int                      n_layers;
   CoglMatrixEntry         *modelview_entry;
   CoglClipStack           *clip_stack;
   /* Offset into ctx->logged_vertices */
   size_t                   array_offset;
+  int                      n_layers;
 } CoglJournalEntry;
 
 CoglJournal *

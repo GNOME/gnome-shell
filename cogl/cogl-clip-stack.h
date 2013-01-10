@@ -92,11 +92,11 @@ typedef enum
 
 struct _CoglClipStack
 {
-  CoglClipStackType  type;
-
   /* This will be null if there is no parent. If it is not null then
      this node must be holding a reference to the parent */
   CoglClipStack     *parent;
+
+  CoglClipStackType  type;
 
   /* All clip entries have a window-space bounding box which we can
      use to calculate a scissor. The scissor limits the clip so that
@@ -121,6 +121,9 @@ struct _CoglClipStackRect
   float x1;
   float y1;
 
+  /* The matrix that was current when the clip was set */
+  CoglMatrixEntry *matrix_entry;
+
   /* If this is true then the clip for this rectangle is entirely
      described by the scissor bounds. This implies that the rectangle
      is screen aligned and we don't need to use the stencil buffer to
@@ -130,9 +133,6 @@ struct _CoglClipStackRect
      journal. In that case we can use the original clip coordinates
      and modify the rectangle instead. */
   CoglBool can_be_scissor;
-
-  /* The matrix that was current when the clip was set */
-  CoglMatrixEntry *matrix_entry;
 };
 
 struct _CoglClipStackWindowRect

@@ -382,11 +382,6 @@ struct _CoglPipeline
    * type to track the tree heirachy so we can share code... */
   CoglNode _parent;
 
-  /* We need to track if a pipeline is referenced in the journal
-   * because we can't allow modification to these pipelines without
-   * flushing the journal first */
-  unsigned long    journal_ref_count;
-
   /* When weak pipelines are destroyed the user is notified via this
    * callback */
   CoglPipelineDestroyCallback destroy_callback;
@@ -395,28 +390,33 @@ struct _CoglPipeline
    * private data is passed to the above callback */
   void *destroy_data;
 
+  /* We need to track if a pipeline is referenced in the journal
+   * because we can't allow modification to these pipelines without
+   * flushing the journal first */
+  unsigned int journal_ref_count;
+
   /* A mask of which sparse state groups are different in this
    * pipeline in comparison to its parent. */
-  unsigned long    differences;
+  unsigned int differences;
 
   /* Whenever a pipeline is modified we increment the age. There's no
    * guarantee that it won't wrap but it can nevertheless be a
    * convenient mechanism to determine when a pipeline has been
    * changed to you can invalidate some some associated cache that
    * depends on the old state. */
-  unsigned long    age;
+  unsigned int age;
 
   /* This is the primary color of the pipeline.
    *
    * This is a sparse property, ref COGL_PIPELINE_STATE_COLOR */
-  CoglColor        color;
+  CoglColor color;
 
   /* A pipeline may be made up with multiple layers used to combine
    * textures together.
    *
    * This is sparse state, ref COGL_PIPELINE_STATE_LAYERS */
-  GList	          *layer_differences;
   unsigned int     n_layers;
+  GList	          *layer_differences;
 
   /* As a basic way to reduce memory usage we divide the pipeline
    * state into two groups; the minimal state modified in 90% of

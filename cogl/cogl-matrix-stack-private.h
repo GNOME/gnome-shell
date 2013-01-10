@@ -130,8 +130,8 @@ typedef struct _CoglMatrixEntrySave
 {
   CoglMatrixEntry _parent_data;
 
-  CoglBool cache_valid;
   CoglMatrix *cache;
+  CoglBool cache_valid;
 
 } CoglMatrixEntrySave;
 
