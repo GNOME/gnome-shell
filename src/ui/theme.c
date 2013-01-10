@@ -5454,6 +5454,7 @@ meta_theme_create_style_context (GdkScreen   *screen,
   style = gtk_style_context_new ();
   path = gtk_widget_path_new ();
   gtk_widget_path_append_type (path, META_TYPE_FRAMES);
+  gtk_widget_path_iter_add_class (path, -1, GTK_STYLE_CLASS_BACKGROUND);
   gtk_style_context_set_path (style, path);
   gtk_widget_path_unref (path);
 
