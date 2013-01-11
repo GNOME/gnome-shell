@@ -1207,7 +1207,7 @@ const Workspace = new Lang.Class({
 
                     // Make the window slightly transparent to indicate it's hidden
                     Tweener.addTween(clone.actor,
-                                     { opacity: 255,
+                                     { opacity: 128,
                                        time: Overview.ANIMATION_TIME,
                                        transition: 'easeInQuad'
                                      });
