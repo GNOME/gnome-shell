@@ -114,7 +114,6 @@ const LayoutManager = new Lang.Class({
         this._background = null;
         this._leftPanelBarrier = 0;
         this._rightPanelBarrier = 0;
-        this._trayBarrier = 0;
 
         this._inOverview = false;
         this._updateRegionIdle = 0;
