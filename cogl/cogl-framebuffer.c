@@ -171,6 +171,8 @@ _cogl_framebuffer_free (CoglFramebuffer *framebuffer)
 {
   CoglContext *ctx = framebuffer->context;
 
+  _cogl_fence_cancel_fences_for_framebuffer (framebuffer);
+
   _cogl_clip_state_destroy (&framebuffer->clip_state);
 
   cogl_object_unref (framebuffer->modelview_stack);

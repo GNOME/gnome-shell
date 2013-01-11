@@ -346,6 +346,12 @@ _cogl_driver_update_features (CoglContext *context,
   if (_cogl_check_extension ("GL_EXT_unpack_subimage", gl_extensions))
     private_flags |= COGL_PRIVATE_FEATURE_UNPACK_SUBIMAGE;
 
+  /* A nameless vendor implemented the extension, but got the case wrong
+   * per the spec. */
+  if (_cogl_check_extension ("GL_OES_EGL_sync", gl_extensions) ||
+      _cogl_check_extension ("GL_OES_egl_sync", gl_extensions))
+    private_flags |= COGL_PRIVATE_FEATURE_OES_EGL_SYNC;
+
   /* Cache features */
   context->private_feature_flags |= private_flags;
   context->feature_flags |= flags;

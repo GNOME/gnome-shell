@@ -143,6 +143,7 @@
       <xi:include href="xml/cogl-vector.xml"/>
       <xi:include href="xml/cogl-euler.xml"/>
       <xi:include href="xml/cogl-quaternion.xml"/>
+      <xi:include href="xml/cogl-fence.xml"/>
       <xi:include href="xml/cogl-version.xml"/>
     </section>
 

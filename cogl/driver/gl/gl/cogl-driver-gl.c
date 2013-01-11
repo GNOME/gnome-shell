@@ -597,6 +597,9 @@ _cogl_driver_update_features (CoglContext *ctx,
                     COGL_PRIVATE_FEATURE_QUERY_TEXTURE_PARAMETERS |
                     COGL_PRIVATE_FEATURE_TEXTURE_MAX_LEVEL);
 
+  if (ctx->glFenceSync)
+    COGL_FLAGS_SET (ctx->features, COGL_FEATURE_ID_FENCE, TRUE);
+
   /* Cache features */
   ctx->private_feature_flags |= private_flags;
   ctx->feature_flags |= flags;

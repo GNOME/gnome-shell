@@ -297,3 +297,15 @@ COGL_EXT_FUNCTION (GLvoid *, glMapBufferRange,
                     GLsizeiptr length,
                     GLbitfield access))
 COGL_EXT_END ()
+
+COGL_EXT_BEGIN (sync, 3, 2,
+                0, /* not in either GLES */
+                "ARB:\0",
+                "sync\0")
+COGL_EXT_FUNCTION (GLsync, glFenceSync,
+                   (GLenum condition, GLbitfield flags))
+COGL_EXT_FUNCTION (GLenum, glClientWaitSync,
+                   (GLsync sync, GLbitfield flags, GLuint64 timeout))
+COGL_EXT_FUNCTION (void, glDeleteSync,
+                   (GLsync sync))
+COGL_EXT_END ()

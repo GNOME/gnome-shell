@@ -981,3 +981,7 @@ _cogl_atlas_texture_new_with_size
 _cogl_atlas_texture_remove_reorganize_callback
 _cogl_context_get_default
 #endif
+
+cogl_fence_closure_get_user_data
+cogl_framebuffer_add_fence_callback
+cogl_framebuffer_cancel_fence_callback

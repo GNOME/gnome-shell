@@ -112,3 +112,23 @@ COGL_WINSYS_FEATURE_FUNCTION (EGLBoolean, eglSwapBuffersWithDamage,
                                const EGLint *rects,
                                EGLint n_rects))
 COGL_WINSYS_FEATURE_END ()
+
+#if defined(EGL_KHR_fence_sync) || defined(EGL_KHR_reusable_sync)
+COGL_WINSYS_FEATURE_BEGIN (fence_sync,
+                           "KHR\0",
+                           "fence_sync\0",
+                           COGL_EGL_WINSYS_FEATURE_FENCE_SYNC)
+COGL_WINSYS_FEATURE_FUNCTION (EGLSyncKHR, eglCreateSync,
+                              (EGLDisplay dpy,
+                               EGLenum type,
+                               const EGLint *attrib_list))
+COGL_WINSYS_FEATURE_FUNCTION (EGLint, eglClientWaitSync,
+                              (EGLDisplay dpy,
+                               EGLSyncKHR sync,
+                               EGLint flags,
+                               EGLTimeKHR timeout))
+COGL_WINSYS_FEATURE_FUNCTION (EGLBoolean, eglDestroySync,
+                              (EGLDisplay dpy,
+                               EGLSyncKHR sync))
+COGL_WINSYS_FEATURE_END ()
+#endif

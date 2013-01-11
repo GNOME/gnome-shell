@@ -27,6 +27,7 @@
 #include "cogl-texture.h"
 #include "cogl-object-private.h"
 #include "cogl-clip-stack.h"
+#include "cogl-fence-private.h"
 
 #define COGL_JOURNAL_VBO_POOL_SIZE 8
 
@@ -57,6 +58,8 @@ typedef struct _CoglJournal
   unsigned int next_vbo_in_pool;
 
   int fast_read_pixel_count;
+
+  CoglFenceList pending_fences;
 
 } CoglJournal;
 

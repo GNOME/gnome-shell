@@ -71,6 +71,12 @@ check_flags (TestFlags flags,
       return FALSE;
     }
 
+  if (flags & TEST_REQUIREMENT_FENCE &&
+      !cogl_has_feature (test_ctx, COGL_FEATURE_ID_FENCE))
+    {
+      return FALSE;
+    }
+
   if (flags & TEST_KNOWN_FAILURE)
     {
       return FALSE;

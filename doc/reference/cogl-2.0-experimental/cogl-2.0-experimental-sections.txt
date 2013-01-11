@@ -962,6 +962,17 @@ cogl_vector3_distance
 </SECTION>
 
 <SECTION>
+<FILE>cogl-fence</FILE>
+<TITLE>GPU synchronisation fences</TITLE>
+CoglFence
+CoglFenceCallback
+CoglFenceClosure
+cogl_fence_closure_get_user_data
+cogl_framebuffer_add_fence_callback
+cogl_framebuffer_cancel_fence_callback
+</SECTION>
+
+<SECTION>
 <FILE>cogl-version</FILE>
 <TITLE>Versioning utility macros</TITLE>
 COGL_VERSION_MAJOR

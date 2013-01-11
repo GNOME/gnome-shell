@@ -477,6 +477,8 @@ cogl_context_new (CoglDisplay *display,
       cogl_has_feature (context, COGL_FEATURE_ID_POINT_SPRITE))
     GE (context, glEnable (GL_POINT_SPRITE));
 
+  COGL_TAILQ_INIT (&context->fences);
+
   return context;
 }
 

@@ -185,6 +185,15 @@ typedef struct _CoglWinsysVtable
   void
   (*destroy_gles2_context) (CoglGLES2Context *gles2_ctx);
 
+  void *
+  (*fence_add) (CoglContext *ctx);
+
+  CoglBool
+  (*fence_is_complete) (CoglContext *ctx, void *fence);
+
+  void
+  (*fence_destroy) (CoglContext *ctx, void *fence);
+
 } CoglWinsysVtable;
 
 CoglBool

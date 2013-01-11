@@ -109,6 +109,7 @@
 #include <cogl/cogl-onscreen.h>
 #include <cogl/cogl-frame-info.h>
 #include <cogl/cogl-poll.h>
+#include <cogl/cogl-fence.h>
 #if defined (COGL_HAS_EGL_PLATFORM_KMS_SUPPORT)
 #include <cogl/cogl-kms-renderer.h>
 #include <cogl/cogl-kms-display.h>

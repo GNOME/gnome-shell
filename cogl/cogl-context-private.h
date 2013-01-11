@@ -51,6 +51,8 @@
 #include "cogl-gl-header.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-onscreen-private.h"
+#include "cogl-fence-private.h"
+#include "cogl-poll-private.h"
 
 typedef struct
 {
@@ -305,6 +307,9 @@ struct _CoglContext
      the uniform location cast to a pointer. */
   GHashTable *uniform_name_hash;
   int n_uniform_names;
+
+  CoglPollSource *fences_poll_source;
+  CoglFenceList fences;
 
   /* This defines a list of function pointers that Cogl uses from
      either GL or GLES. All functions are accessed indirectly through

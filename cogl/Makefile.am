@@ -133,6 +133,7 @@ cogl_experimental_h = \
 	$(srcdir)/cogl2-experimental.h		\
 	$(srcdir)/cogl2-compatibility.h		\
 	$(srcdir)/cogl-macros.h			\
+	$(srcdir)/cogl-fence.h       		\
 	$(srcdir)/cogl-version.h		\
 	$(srcdir)/cogl-error.h			\
 	$(NULL)
@@ -437,6 +438,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-error.c				\
 	$(srcdir)/cogl-closure-list-private.h		\
 	$(srcdir)/cogl-closure-list.c			\
+	$(srcdir)/cogl-fence.c				\
+	$(srcdir)/cogl-fence-private.h			\
 	$(NULL)
 
 if USE_GLIB

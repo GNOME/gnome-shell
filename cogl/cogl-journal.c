@@ -154,6 +154,8 @@ _cogl_journal_new (CoglFramebuffer *framebuffer)
   journal->entries = g_array_new (FALSE, FALSE, sizeof (CoglJournalEntry));
   journal->vertices = g_array_new (FALSE, FALSE, sizeof (float));
 
+  COGL_TAILQ_INIT (&journal->pending_fences);
+
   return _cogl_journal_object_new (journal);
 }
 
@@ -1267,6 +1269,18 @@ _cogl_journal_all_entries_within_bounds (CoglJournal *journal,
   return TRUE;
 }
 
+static void
+post_fences (CoglJournal *journal)
+{
+  CoglFenceClosure *fence, *next;
+
+  COGL_TAILQ_FOREACH_SAFE (fence, &journal->pending_fences, list, next)
+    {
+      COGL_TAILQ_REMOVE (&journal->pending_fences, fence, list);
+      _cogl_fence_submit (fence);
+    }
+}
+
 /* XXX NB: When _cogl_journal_flush() returns all state relating
  * to pipelines, all glEnable flags and current matrix state
  * is undefined.
@@ -1290,7 +1304,10 @@ _cogl_journal_flush (CoglJournal *journal)
                      0 /* no application private data */);
 
   if (journal->entries->len == 0)
-    return;
+    {
+      post_fences (journal);
+      return;
+    }
 
   framebuffer = journal->framebuffer;
   ctx = framebuffer->context;
@@ -1387,6 +1404,8 @@ _cogl_journal_flush (CoglJournal *journal)
   COGL_TIMER_START (_cogl_uprof_context, discard_timer);
   _cogl_journal_discard (journal);
   COGL_TIMER_STOP (_cogl_uprof_context, discard_timer);
+
+  post_fences (journal);
 
   COGL_TIMER_STOP (_cogl_uprof_context, flush_timer);
 }

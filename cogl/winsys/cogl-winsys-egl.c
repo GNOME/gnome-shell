@@ -504,6 +504,10 @@ _cogl_winsys_context_init (CoglContext *context, CoglError **error)
                       COGL_WINSYS_FEATURE_SWAP_REGION_THROTTLE, TRUE);
     }
 
+  if ((egl_renderer->private_features & COGL_EGL_WINSYS_FEATURE_FENCE_SYNC) &&
+      (context->private_feature_flags & COGL_PRIVATE_FEATURE_OES_EGL_SYNC))
+    COGL_FLAGS_SET (context->features, COGL_FEATURE_ID_FENCE, TRUE);
+
   /* NB: We currently only support creating standalone GLES2 contexts
    * for offscreen rendering and so we need a dummy (non-visible)
    * surface to be able to bind those contexts */
@@ -902,6 +906,45 @@ _cogl_winsys_restore_context (CoglContext *ctx)
                                  egl_display->egl_context);
 }
 
+#if defined(EGL_KHR_fence_sync) || defined(EGL_KHR_reusable_sync)
+static void *
+_cogl_winsys_fence_add (CoglContext *context)
+{
+  CoglRendererEGL *renderer = context->display->renderer->winsys;
+  void *ret;
+
+  if (renderer->pf_eglCreateSync)
+    ret = renderer->pf_eglCreateSync (renderer->edpy,
+                                      EGL_SYNC_FENCE_KHR,
+                                      NULL);
+  else
+    ret = NULL;
+
+  return ret;
+}
+
+static CoglBool
+_cogl_winsys_fence_is_complete (CoglContext *context, void *fence)
+{
+  CoglRendererEGL *renderer = context->display->renderer->winsys;
+  EGLint ret;
+
+  ret = renderer->pf_eglClientWaitSync (renderer->edpy,
+                                        fence,
+                                        EGL_SYNC_FLUSH_COMMANDS_BIT_KHR,
+                                        0);
+  return (ret == EGL_CONDITION_SATISFIED_KHR);
+}
+
+static void
+_cogl_winsys_fence_destroy (CoglContext *context, void *fence)
+{
+  CoglRendererEGL *renderer = context->display->renderer->winsys;
+
+  renderer->pf_eglDestroySync (renderer->edpy, fence);
+}
+#endif
+
 static CoglWinsysVtable _cogl_winsys_vtable =
   {
     .constraints = COGL_RENDERER_CONSTRAINT_USES_EGL |
@@ -936,6 +979,12 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .save_context = _cogl_winsys_save_context,
     .set_gles2_context = _cogl_winsys_set_gles2_context,
     .restore_context = _cogl_winsys_restore_context,
+
+#if defined(EGL_KHR_fence_sync) || defined(EGL_KHR_reusable_sync)
+    .fence_add = _cogl_winsys_fence_add,
+    .fence_is_complete = _cogl_winsys_fence_is_complete,
+    .fence_destroy = _cogl_winsys_fence_destroy,
+#endif
   };
 
 /* XXX: we use a function because no doubt someone will complain
