@@ -128,6 +128,7 @@ const UserListItem = new Lang.Class({
 
         let layout = new St.BoxLayout({ vertical: false });
         this.actor = new St.Button({ style_class: 'login-dialog-user-list-item',
+                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
                                      can_focus: true,
                                      child: layout,
                                      reactive: true,
@@ -492,6 +493,7 @@ const SessionListItem = new Lang.Class({
         this.id = id;
 
         this.actor = new St.Button({ style_class: 'login-dialog-session-list-item',
+                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
                                      can_focus: true,
                                      reactive: true,
                                      x_fill: true,
@@ -552,6 +554,7 @@ const SessionList = new Lang.Class({
         this.actor.child = this._box;
 
         this._button = new St.Button({ style_class: 'login-dialog-session-list-button',
+                                       button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
                                        can_focus: true,
                                        x_fill: true,
                                        y_fill: true });
@@ -787,6 +790,7 @@ const LoginDialog = new Lang.Class({
         let notListedLabel = new St.Label({ text: _("Not listed?"),
                                             style_class: 'login-dialog-not-listed-label' });
         this._notListedButton = new St.Button({ style_class: 'login-dialog-not-listed-button',
+                                                button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
                                                 can_focus: true,
                                                 child: notListedLabel,
                                                 reactive: true,

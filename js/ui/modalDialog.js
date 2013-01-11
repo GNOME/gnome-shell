@@ -157,6 +157,7 @@ const ModalDialog = new Lang.Class({
             keys = [];
 
         let button = new St.Button({ style_class: 'modal-dialog-button',
+                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
                                      reactive:    true,
                                      can_focus:   true,
                                      label:       label });
