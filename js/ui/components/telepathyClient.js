@@ -1346,9 +1346,8 @@ const AccountNotification = new Lang.Class({
         this.connect('action-invoked', Lang.bind(this, function(self, action) {
             switch (action) {
             case 'view':
-                let cmd = '/usr/bin/empathy-accounts'
-                        + ' --select-account=%s'
-                        .format(account.get_path_suffix());
+                let cmd = 'empathy-accounts --select-account=' +
+                          account.get_path_suffix();
                 let app_info = Gio.app_info_create_from_commandline(cmd, null, 0);
                 app_info.launch([], global.create_app_launch_context());
                 break;
