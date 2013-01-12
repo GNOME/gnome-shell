@@ -852,7 +852,7 @@ const PanelCorner = new Lang.Class({
 
             // The corner doesn't support theme transitions, so override
             // the .panel-button default
-            button.style = 'transition-duration: 0';
+            button.style = 'transition-duration: 0ms';
         }
     },
 

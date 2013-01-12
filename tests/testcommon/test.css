@@ -98,7 +98,7 @@ stage {
     background-color: #333;
     border: 2px solid black;
     border-radius: 8px;
-    transition-duration: 1000; /* One second */
+    transition-duration: 1s;
 }
 
 #transition-container:hover .transition-label {
