@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-01-08 22:40+0000\n"
-"PO-Revision-Date: 2013-01-10 21:36+0100\n"
+"PO-Revision-Date: 2013-01-12 22:48+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -157,6 +157,8 @@ msgid ""
 "This key overrides the automatic hiding of the 'Log out' menuitem in single-"
 "user, single-session situations."
 msgstr ""
+"Ključ prepiše možnost samodejnega skrivanja predmeta menija 'Odjava' na "
+"enouporabniški in enosejni namestitvi."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid "Show full name in the user menu"
@@ -164,7 +166,7 @@ msgstr "Pokaži polno ime v meniju uporabnika"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid "Whether the users full name is shown in the user menu or not."
-msgstr ""
+msgstr "Ali naj bo prikazano uporabnikovo polno ime v meniju uporabnika."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid ""
@@ -180,6 +182,9 @@ msgid ""
 "'Remember Password' checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
+"Za dostop do oddaljenega datotečnega sistema ali šifrirane naprave bo po "
+"izbiri možnosti zahtevano geslo. Na pogovornem oknu bo prikazana možnost "
+"'Shrani geslo'. S tem bo nastavljeno privzeto stanje za uporabo."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Show the week date in the calendar"
@@ -306,6 +311,9 @@ msgid ""
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
 "only' (shows only the application icon) or 'both'."
 msgstr ""
+"Določa, kako naj bodo prikazana okna v preklopniku. Veljavne možnosti so 'le "
+"sličice' (pokaže le sličice oken), 'le ikona' (pokaže ikono programa) in pa "
+"možnost 'oboje'."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Attach modal dialog to the parent window"
