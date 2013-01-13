@@ -734,7 +734,7 @@ typedef enum { /*< flags prefix=CLUTTER_EVENT >*/
  * @CLUTTER_BUTTON_PRESS: Pointer button press event
  * @CLUTTER_BUTTON_RELEASE: Pointer button release event
  * @CLUTTER_SCROLL: Pointer scroll event
- * @CLUTTER_STAGE_STATE: Stage stage change event
+ * @CLUTTER_STAGE_STATE: Stage state change event
  * @CLUTTER_DESTROY_NOTIFY: Destroy notification event
  * @CLUTTER_CLIENT_MESSAGE: Client message event
  * @CLUTTER_DELETE: Stage delete event
