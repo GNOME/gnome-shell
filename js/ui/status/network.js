@@ -5,9 +5,16 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const NetworkManager = imports.gi.NetworkManager;
 const NMClient = imports.gi.NMClient;
-const NMGtk = imports.gi.NMGtk;
 const Signals = imports.signals;
 const St = imports.gi.St;
+
+// Some of the new code depends on as-yet-unreleased NM
+var NMGtk;
+try {
+    NMGtk = imports.gi.NMGtk;
+} catch(e) {
+    NMGtk = null;
+}
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -474,7 +481,8 @@ const NMDevice = new Lang.Class({
     },
 
     syncDescription: function() {
-        this.statusItem.label.text = this.device._description;
+        if (this.device._description)
+            this.statusItem.label.text = this.device._description;
     },
 
     // protected
@@ -638,6 +646,7 @@ const NMDeviceWired = new Lang.Class({
     Extends: NMDeviceSimple,
 
     _init: function(client, device, connections) {
+        device._description = _("Wired");
         this._autoConnectionName = _("Auto Ethernet");
         this.category = NMConnectionCategory.WIRED;
 
@@ -665,6 +674,7 @@ const NMDeviceModem = new Lang.Class({
     _init: function(client, device, connections) {
         let is_wwan = false;
 
+        device._description = _("Mobile broadband");
         this._enabled = true;
         this.mobileDevice = null;
         this._connectionType = 'ppp';
@@ -783,6 +793,7 @@ const NMDeviceBluetooth = new Lang.Class({
     Extends: NMDevice,
 
     _init: function(client, device, connections) {
+        device._description = _("Bluetooth");
         this._autoConnectionName = this._makeConnectionName(device);
         device.connect('notify::name', Lang.bind(this, this._updateAutoConnectionName));
 
@@ -1794,11 +1805,16 @@ const NMApplet = new Lang.Class({
     },
 
     _syncDeviceNames: function() {
-        let names = NMGtk.utils_disambiguate_device_names(this._nmDevices);
-        for (let i = 0; i < this._nmDevices.length; i++) {
-            let device = this._nmDevices[i];
-            if (device._description != names[i]) {
+        if (NMGtk) {
+            let names = NMGtk.utils_disambiguate_device_names(this._nmDevices);
+            for (let i = 0; i < this._nmDevices.length; i++) {
+                let device = this._nmDevices[i];
                 device._description = names[i];
+                device._delegate.syncDescription();
+            }
+        } else {
+            for (let i = 0; i < this._nmDevices.length; i++) {
+                let device = this._nmDevices[i];
                 device._delegate.syncDescription();
             }
         }
