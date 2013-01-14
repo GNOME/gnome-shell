@@ -472,14 +472,6 @@ function notifyError(msg, details) {
     notify(msg, details);
 }
 
-function getWindowActorsForWorkspace(workspaceIndex) {
-    let workspace = global.screen.get_workspace_by_index(workspaceIndex);
-    return global.get_window_actors().filter(function (actor) {
-        let win = actor.meta_window;
-        return win.located_on_workspace(workspace);
-    });
-}
-
 function _findModal(actor) {
     for (let i = 0; i < modalActorFocusStack.length; i++) {
         if (modalActorFocusStack[i].actor == actor)

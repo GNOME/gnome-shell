@@ -671,8 +671,15 @@ const LayoutManager = new Lang.Class({
         this._queueUpdateRegions();
     },
 
+    _getWindowActorsForWorkspace: function(workspace) {
+        return global.get_window_actors().filter(function (actor) {
+            let win = actor.meta_window;
+            return win.located_on_workspace(workspace);
+        });
+    },
+
     _updateFullscreen: function() {
-        let windows = Main.getWindowActorsForWorkspace(global.screen.get_active_workspace_index());
+        let windows = this._getWindowActorsForWorkspace(global.screen.get_active_workspace());
 
         // Reset all monitors to not fullscreen
         for (let i = 0; i < this.monitors.length; i++)
