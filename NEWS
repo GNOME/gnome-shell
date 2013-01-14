@@ -1,3 +1,40 @@
+3.7.4
+=====
+* Make menu separators crisp [Giovanni, Allan; #641745]
+* power: Update for new D-Bus name [Bastien; #690506]
+* Add smooth scrolling support [Jasper; #687573]
+* Tweak notification layout [Allan; #688506]
+* Ping the active window when using the app menu [Giovanni; #684340]
+* Make password entries insensitive after submission [Jasper; #690594, #690895]
+* Honor lock-delay GSettings key [Giovanni, Matthias; #690766, #691170]
+* Use text/calendar preferred app as the calendar app [Giovanni; #690767]
+* lookingGlass: Move to an inspect() function [Jasper; #690726]
+* Make OSK animation quicker, snappier [Rui; #688642]
+* Allow to close chat notifications with Escape [Jasper; #690897]
+* Honor org.gnome.desktop.screensaver.user-switch-enabled [Giovanni; #691042]
+* Add a SelectArea() DBus method [Cosimo; #687954]
+* Support non-absolute paths when saving screenshots [Cosimo; #688004]
+* OSK: Fix extended keys popups [Rui; #674955]
+* Don't hide or show the keyboard immediately [Rui; #688646]
+* Improve padding in power menu [Giovanni; #689297]
+* Add per-window input source switching [Rui; #691414]
+* Misc bug fixes and cleanups [Rico, Jasper, Giovanni, Rui, Florian, Dan;
+  #690608, #690589, #690539, #687081, #690667, #690665, #690666, #685856,
+  #690858, #690895, #680414, #690965, #691019, #690590, #681376, #690180,
+  #685513, #689263, #691553, #691720, #691743, #691750]
+
+Contributors:
+  Giovanni Campagna, Cosimo Cecchi, Matthias Clasen, Allan Day, Rui Matos,
+  Florian Müllner, Bastien Nocera, Jasper St. Pierre, Rico Tzschichholz,
+  Dan Winship
+
+Translations:
+  Matej Urbančič [sl], Kjartan Maraas [nb], Mattias Põldaru [et],
+  Yaron Shahrabani [he], Aurimas Černius [lt], Khaled Hosny [ar],
+  Fran Diéguez [gl], Daniel Mustieles [es], Piotr Drąg [pl], Balázs Úr [hu],
+  Baurzhan Muftakhidinov [kk], Tobias Endrigkeit [de], Dušan Kazik [sk],
+  Aron Xu [zh_CN], Gheyret Kenji [ug]
+
 3.7.3
 =====
 * Add 'No Messages' label when message tray is empty [Victoria; #686738]
