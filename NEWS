@@ -1,3 +1,24 @@
+3.7.4
+=====
+* Add support for bypass compositor hints [Adel; #683020]
+* Make automaximization optional [Adel; #680990]
+* Add method for checking if the application is responding [Giovanni; #684340]
+* Expose the xinput opcode [Jasper; #690590]
+* Rebrand "minimize" as "hide" [Florian; #682887]
+* Misc bug fixes and cleanups [Giovanni, Ray, Jasper, Matthias, Debarshi,
+  Florian, Rui; #690454, #690573, #690593, #690956, #691363, #690609, #690317,
+  #689263]
+
+Contributors:
+  Giovanni Campagna, Matthias Clasen, Adel Gadllah, Rui Matos, Florian Müllner,
+  Debarshi Ray, Jasper St. Pierre, Ray Strode
+
+Translations:
+  Mattias Põldaru [et], Yaron Shahrabani [he], Daniel Mustieles [es],
+  Khaled Hosny [ar], Fran Diéguez [gl], A S Alam [pa], Piotr Drąg [pl],
+  Rafael Ferreira [pt_BR], Nilamdyuti Goswami [as], Alexander Shopov [bg],
+  Matej Urbančič [sl]
+
 3.7.3
 =====
 * Fix maximized windows jumping to other monitors [Alban; #556696]
