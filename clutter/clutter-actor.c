@@ -13456,7 +13456,7 @@ clutter_actor_lower_bottom (ClutterActor *self)
  * clutter_actor_event:
  * @actor: a #ClutterActor
  * @event: a #ClutterEvent
- * @capture: TRUE if event in in capture phase, FALSE otherwise.
+ * @capture: %TRUE if event in in capture phase, %FALSE otherwise.
  *
  * This function is used to emit an event on the main stage.
  * You should rarely need to use this function, except for
