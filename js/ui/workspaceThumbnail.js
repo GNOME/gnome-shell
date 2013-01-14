@@ -380,11 +380,11 @@ const WorkspaceThumbnail = new Lang.Class({
         this.actor = null;
     },
 
-    // Tests if @win belongs to this workspace and monitor
+    // Tests if @actor belongs to this workspace and monitor
     _isMyWindow : function (actor) {
         let win = actor.meta_window;
         return win.located_on_workspace(this.metaWorkspace) &&
-            (!win.get_monitor() == this.monitorIndex);
+            (win.get_monitor() == this.monitorIndex);
     },
 
     // Tests if @win should be shown in the Overview

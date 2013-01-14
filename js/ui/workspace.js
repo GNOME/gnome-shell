@@ -1531,11 +1531,11 @@ const Workspace = new Lang.Class({
         this.leavingOverview = false;
     },
 
-    // Tests if @win belongs to this workspaces and monitor
+    // Tests if @actor belongs to this workspaces and monitor
     _isMyWindow : function (actor) {
         let win = actor.meta_window;
         return (this.metaWorkspace == null || win.located_on_workspace(this.metaWorkspace)) &&
-            (!win.get_monitor() == this.monitorIndex);
+            (win.get_monitor() == this.monitorIndex);
     },
 
     // Tests if @win should be shown in the Overview
