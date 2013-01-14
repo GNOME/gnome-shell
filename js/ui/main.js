@@ -472,14 +472,11 @@ function notifyError(msg, details) {
     notify(msg, details);
 }
 
-function isWindowActorDisplayedOnWorkspace(win, workspaceIndex) {
-    return win.get_workspace() == workspaceIndex ||
-        (win.get_meta_window() && win.get_meta_window().is_on_all_workspaces());
-}
-
 function getWindowActorsForWorkspace(workspaceIndex) {
-    return global.get_window_actors().filter(function (win) {
-        return isWindowActorDisplayedOnWorkspace(win, workspaceIndex);
+    let workspace = global.screen.get_workspace_by_index(workspaceIndex);
+    return global.get_window_actors().filter(function (actor) {
+        let win = actor.meta_window;
+        return win.located_on_workspace(workspace);
     });
 }
 

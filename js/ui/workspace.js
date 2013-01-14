@@ -1532,9 +1532,10 @@ const Workspace = new Lang.Class({
     },
 
     // Tests if @win belongs to this workspaces and monitor
-    _isMyWindow : function (win) {
-        return (this.metaWorkspace == null || Main.isWindowActorDisplayedOnWorkspace(win, this.metaWorkspace.index())) &&
-            (!win.get_meta_window() || win.get_meta_window().get_monitor() == this.monitorIndex);
+    _isMyWindow : function (actor) {
+        let win = actor.meta_window;
+        return (this.metaWorkspace == null || win.located_on_workspace(this.metaWorkspace)) &&
+            (!win.get_monitor() == this.monitorIndex);
     },
 
     // Tests if @win should be shown in the Overview

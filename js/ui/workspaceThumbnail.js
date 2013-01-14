@@ -176,7 +176,9 @@ const WorkspaceThumbnail = new Lang.Class({
         let monitor = Main.layoutManager.primaryMonitor;
         this.setPorthole(monitor.x, monitor.y, monitor.width, monitor.height);
 
-        let windows = global.get_window_actors().filter(this._isWorkspaceWindow, this);
+        let windows = global.get_window_actors().filter(Lang.bind(this, function(win) {
+            return win.located_on_workspace(metaWorkspace);
+        }));
 
         // Create clones for windows that should be visible in the Overview
         this._windows = [];
@@ -377,15 +379,11 @@ const WorkspaceThumbnail = new Lang.Class({
         this.actor = null;
     },
 
-    // Tests if @win belongs to this workspace
-    _isWorkspaceWindow : function (win) {
-        return Main.isWindowActorDisplayedOnWorkspace(win, this.metaWorkspace.index());
-    },
-
     // Tests if @win belongs to this workspace and monitor
-    _isMyWindow : function (win) {
-        return this._isWorkspaceWindow(win) &&
-            (!win.get_meta_window() || win.get_meta_window().get_monitor() == this.monitorIndex);
+    _isMyWindow : function (actor) {
+        let win = actor.meta_window;
+        return win.located_on_workspace(this.metaWorkspace) &&
+            (!win.get_monitor() == this.monitorIndex);
     },
 
     // Tests if @win should be shown in the Overview
