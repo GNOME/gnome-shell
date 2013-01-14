@@ -242,7 +242,7 @@ const SelectArea = new Lang.Class({
 });
 Signals.addSignalMethods(SelectArea.prototype);
 
-const FLASHSPOT_ANIMATION_TIME = 0.25; // seconds
+const FLASHSPOT_ANIMATION_OUT_TIME = 0.5; // seconds
 
 const Flashspot = new Lang.Class({
     Name: 'Flashspot',
@@ -258,21 +258,12 @@ const Flashspot = new Lang.Class({
     },
 
     fire: function() {
-        this.actor.opacity = 0;
-        Tweener.addTween(this.actor,
-                         { opacity: 255,
-                           time: FLASHSPOT_ANIMATION_TIME,
-                           transition: 'linear',
-                           onComplete: Lang.bind(this, this._onFireShowComplete)
-                         });
         this.actor.show();
-    },
-
-    _onFireShowComplete: function() {
+        this.actor.opacity = 255;
         Tweener.addTween(this.actor,
                          { opacity: 0,
-                           time: FLASHSPOT_ANIMATION_TIME,
-                           transition: 'linear',
+                           time: FLASHSPOT_ANIMATION_OUT_TIME,
+                           transition: 'easeOutQuad',
                            onComplete: Lang.bind(this, function() {
                                this.destroy();
                            })
