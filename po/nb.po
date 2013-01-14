@@ -2,14 +2,14 @@
 # Copyright (C) 2009 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
 #
-# Kjartan Maraas <kmaraas@gnome.org>, 2009-2012.
+# Kjartan Maraas <kmaraas@gnome.org>, 2009-2013.
 # Torstein Adolf Winterseth <kvikende@fsfe.org>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.7.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-07 11:26+0100\n"
-"PO-Revision-Date: 2013-01-07 11:28+0100\n"
+"POT-Creation-Date: 2013-01-14 11:20+0100\n"
+"PO-Revision-Date: 2013-01-14 11:21+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -330,11 +330,11 @@ msgstr "Utvidelse"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Velg en utvidelse som skal konfigureres med komboboksen over."
 
-#: ../js/gdm/loginDialog.js:565
+#: ../js/gdm/loginDialog.js:566
 msgid "Session..."
 msgstr "Økt …"
 
-#: ../js/gdm/loginDialog.js:722
+#: ../js/gdm/loginDialog.js:723
 msgctxt "title"
 msgid "Sign In"
 msgstr "Logg inn"
@@ -342,35 +342,35 @@ msgstr "Logg inn"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:786
+#: ../js/gdm/loginDialog.js:787
 msgid "Not listed?"
 msgstr "Ikke listet?"
 
-#: ../js/gdm/loginDialog.js:962 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:963 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:413 ../js/ui/unlockDialog.js:178
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ../js/gdm/loginDialog.js:978
+#: ../js/gdm/loginDialog.js:979
 msgctxt "button"
 msgid "Sign In"
 msgstr "Logg inn"
 
-#: ../js/gdm/loginDialog.js:978
+#: ../js/gdm/loginDialog.js:979
 msgid "Next"
 msgstr "Neste"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:1086 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:1087 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Brukernavn: "
 
-#: ../js/gdm/loginDialog.js:1382
+#: ../js/gdm/loginDialog.js:1383
 msgid "Login Window"
 msgstr "Innloggingsvindu"
 
@@ -954,7 +954,7 @@ msgstr "Kan ikke koble til %s"
 msgid "View account"
 msgstr "Vis konto"
 
-#: ../js/ui/components/telepathyClient.js:1384
+#: ../js/ui/components/telepathyClient.js:1383
 msgid "Unknown reason"
 msgstr "Ukjent årsak"
 
@@ -966,18 +966,18 @@ msgstr "Vinduer"
 msgid "Show Applications"
 msgstr "Vis programmer"
 
-#: ../js/ui/dateMenu.js:86
+#: ../js/ui/dateMenu.js:87
 msgid "Date and Time Settings"
 msgstr "Innstillinger for dato og klokkeslett"
 
-#: ../js/ui/dateMenu.js:111
+#: ../js/ui/dateMenu.js:112
 msgid "Open Calendar"
 msgstr "Åpne kalender"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:190
+#: ../js/ui/dateMenu.js:191
 msgid "%A %B %e, %Y"
 msgstr "%a %e %B, %Y"
 
@@ -1087,7 +1087,7 @@ msgid "tray"
 msgstr "varslingsområde"
 
 #: ../js/ui/keyboard.js:636 ../js/ui/status/keyboard.js:309
-#: ../js/ui/status/power.js:205
+#: ../js/ui/status/power.js:206
 msgid "Keyboard"
 msgstr "Tastatur"
 
@@ -1196,7 +1196,7 @@ msgstr "Avslutt"
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:975
+#: ../js/ui/panel.js:976
 msgid "Top Bar"
 msgstr "Topp-panel"
 
@@ -1205,7 +1205,7 @@ msgstr "Topp-panel"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:725
+#: ../js/ui/popupMenu.js:727
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1611,47 +1611,47 @@ msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../js/ui/status/power.js:195
+#: ../js/ui/status/power.js:196
 msgid "AC adapter"
 msgstr "Strømadapter"
 
-#: ../js/ui/status/power.js:197
+#: ../js/ui/status/power.js:198
 msgid "Laptop battery"
 msgstr "Batteri på bærbar"
 
-#: ../js/ui/status/power.js:199
+#: ../js/ui/status/power.js:200
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:201
+#: ../js/ui/status/power.js:202
 msgid "Monitor"
 msgstr "Skjerm"
 
-#: ../js/ui/status/power.js:203
+#: ../js/ui/status/power.js:204
 msgid "Mouse"
 msgstr "Mus"
 
-#: ../js/ui/status/power.js:207
+#: ../js/ui/status/power.js:208
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:209
+#: ../js/ui/status/power.js:210
 msgid "Cell phone"
 msgstr "Mobiltelefon"
 
-#: ../js/ui/status/power.js:211
+#: ../js/ui/status/power.js:212
 msgid "Media player"
 msgstr "Medieavspiller"
 
-#: ../js/ui/status/power.js:213
+#: ../js/ui/status/power.js:214
 msgid "Tablet"
 msgstr "Nettbrett"
 
-#: ../js/ui/status/power.js:215
+#: ../js/ui/status/power.js:216
 msgid "Computer"
 msgstr "Datamaskin"
 
-#: ../js/ui/status/power.js:217
+#: ../js/ui/status/power.js:218
 msgctxt "device"
 msgid "Unknown"
 msgstr "Ukjent"
