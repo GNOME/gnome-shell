@@ -2109,6 +2109,14 @@ set_net_wm_state (MetaWindow *window)
     }
 }
 
+/**
+ * meta_window_located_on_workspace:
+ * @window: a #MetaWindow
+ * @workspace: a #MetaWorkspace
+ *
+ * Returns whether @window is displayed on @workspace, or whether it
+ * will be displayed on all workspaces.
+ */
 gboolean
 meta_window_located_on_workspace (MetaWindow    *window,
                                   MetaWorkspace *workspace)

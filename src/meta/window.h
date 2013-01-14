@@ -85,6 +85,8 @@ Atom meta_window_get_window_type_atom (MetaWindow *window);
 MetaWorkspace *meta_window_get_workspace (MetaWindow *window);
 int      meta_window_get_monitor (MetaWindow *window);
 gboolean meta_window_is_on_all_workspaces (MetaWindow *window);
+gboolean meta_window_located_on_workspace (MetaWindow    *window,
+                                           MetaWorkspace *workspace);
 gboolean meta_window_is_hidden (MetaWindow *window);
 void     meta_window_activate  (MetaWindow *window,guint32 current_time);
 void     meta_window_activate_with_workspace (MetaWindow    *window,
