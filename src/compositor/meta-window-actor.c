@@ -68,7 +68,7 @@ struct _MetaWindowActorPrivate
 
   gchar *           desc;
 
-  /* If the window is shaped, a region that matches the shape */
+  /* A region that matches the shape of the window, including frame bounds */
   cairo_region_t   *shape_region;
   /* A rectangular region with the visible extents of the window */
   cairo_region_t   *bounding_region;
@@ -154,6 +154,8 @@ static gboolean meta_window_actor_get_paint_volume (ClutterActor       *actor,
 
 static void     meta_window_actor_detach     (MetaWindowActor *self);
 static gboolean meta_window_actor_has_shadow (MetaWindowActor *self);
+
+static void check_needs_reshape (MetaWindowActor *self);
 
 G_DEFINE_TYPE (MetaWindowActor, meta_window_actor, CLUTTER_TYPE_GROUP);
 
@@ -359,7 +361,10 @@ meta_window_actor_constructed (GObject *object)
     }
 
   meta_window_actor_update_opacity (self);
+
+  /* Force a reshape to ensure that we always have a set shape_region. */
   meta_window_actor_update_shape (self);
+  check_needs_reshape (self);
 }
 
 static void
@@ -555,16 +560,7 @@ meta_window_actor_get_shape_bounds (MetaWindowActor       *self,
 {
   MetaWindowActorPrivate *priv = self->priv;
 
-  /* We need to be defensive here because there are corner cases
-   * where getting the shape fails on a window being destroyed
-   * and similar.
-   */
-  if (priv->shape_region)
-    cairo_region_get_extents (priv->shape_region, bounds);
-  else if (priv->bounding_region)
-    cairo_region_get_extents (priv->bounding_region, bounds);
-  else
-    bounds->x = bounds->y = bounds->width = bounds->height = 0;
+  cairo_region_get_extents (priv->shape_region, bounds);
 }
 
 static void
@@ -1608,12 +1604,7 @@ meta_window_actor_get_obscured_region (MetaWindowActor *self)
   MetaWindowActorPrivate *priv = self->priv;
 
   if (!priv->argb32 && priv->opacity == 0xff && priv->back_pixmap)
-    {
-      if (priv->shape_region)
-        return priv->shape_region;
-      else
-        return priv->bounding_region;
-    }
+    return priv->shape_region;
   else
     return NULL;
 }
@@ -1862,25 +1853,17 @@ check_needs_shadow (MetaWindowActor *self)
   if (*shadow_location == NULL && should_have_shadow)
     {
       if (priv->shadow_shape == NULL)
-        {
-          if (priv->shape_region)
-            priv->shadow_shape = meta_window_shape_new (priv->shape_region);
-          else if (priv->bounding_region)
-            priv->shadow_shape = meta_window_shape_new (priv->bounding_region);
-        }
+        priv->shadow_shape = meta_window_shape_new (priv->shape_region);
 
-      if (priv->shadow_shape != NULL)
-        {
-          MetaShadowFactory *factory = meta_shadow_factory_get_default ();
-          const char *shadow_class = meta_window_actor_get_shadow_class (self);
-          cairo_rectangle_int_t shape_bounds;
+      MetaShadowFactory *factory = meta_shadow_factory_get_default ();
+      const char *shadow_class = meta_window_actor_get_shadow_class (self);
+      cairo_rectangle_int_t shape_bounds;
 
-          meta_window_actor_get_shape_bounds (self, &shape_bounds);
-          *shadow_location = meta_shadow_factory_get_shadow (factory,
-                                                             priv->shadow_shape,
-                                                             shape_bounds.width, shape_bounds.height,
-                                                             shadow_class, appears_focused);
-        }
+      meta_window_actor_get_shape_bounds (self, &shape_bounds);
+      *shadow_location = meta_shadow_factory_get_shadow (factory,
+                                                         priv->shadow_shape,
+                                                         shape_bounds.width, shape_bounds.height,
+                                                         shadow_class, appears_focused);
     }
 
   if (old_shadow != NULL)
