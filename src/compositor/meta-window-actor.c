@@ -151,10 +151,6 @@ static gboolean meta_window_actor_get_paint_volume (ClutterActor       *actor,
 static void     meta_window_actor_detach     (MetaWindowActor *self);
 static gboolean meta_window_actor_has_shadow (MetaWindowActor *self);
 
-static void meta_window_actor_clear_shape_region    (MetaWindowActor *self);
-static void meta_window_actor_clear_bounding_region (MetaWindowActor *self);
-static void meta_window_actor_clear_shadow_clip     (MetaWindowActor *self);
-
 G_DEFINE_TYPE (MetaWindowActor, meta_window_actor, CLUTTER_TYPE_GROUP);
 
 static void
@@ -384,9 +380,9 @@ meta_window_actor_dispose (GObject *object)
 
   meta_window_actor_detach (self);
 
-  meta_window_actor_clear_shape_region (self);
-  meta_window_actor_clear_bounding_region (self);
-  meta_window_actor_clear_shadow_clip (self);
+  g_clear_pointer (&priv->shape_region, cairo_region_destroy);
+  g_clear_pointer (&priv->bounding_region, cairo_region_destroy);
+  g_clear_pointer (&priv->shadow_clip, cairo_region_destroy);
 
   g_clear_pointer (&priv->shadow_class, g_free);
   g_clear_pointer (&priv->focused_shadow, meta_shadow_unref);
@@ -1533,42 +1529,6 @@ meta_window_actor_unmapped (MetaWindowActor *self)
 }
 
 static void
-meta_window_actor_clear_shape_region (MetaWindowActor *self)
-{
-  MetaWindowActorPrivate *priv = self->priv;
-
-  if (priv->shape_region)
-    {
-      cairo_region_destroy (priv->shape_region);
-      priv->shape_region = NULL;
-    }
-}
-
-static void
-meta_window_actor_clear_bounding_region (MetaWindowActor *self)
-{
-  MetaWindowActorPrivate *priv = self->priv;
-
-  if (priv->bounding_region)
-    {
-      cairo_region_destroy (priv->bounding_region);
-      priv->bounding_region = NULL;
-    }
-}
-
-static void
-meta_window_actor_clear_shadow_clip (MetaWindowActor *self)
-{
-  MetaWindowActorPrivate *priv = self->priv;
-
-  if (priv->shadow_clip)
-    {
-      cairo_region_destroy (priv->shadow_clip);
-      priv->shadow_clip = NULL;
-    }
-}
-
-static void
 meta_window_actor_update_bounding_region_and_borders (MetaWindowActor *self,
                                                       int              width,
                                                       int              height)
@@ -1608,7 +1568,7 @@ meta_window_actor_update_bounding_region_and_borders (MetaWindowActor *self,
 
   priv->last_borders = borders;
 
-  meta_window_actor_clear_bounding_region (self);
+  g_clear_pointer (&priv->bounding_region, cairo_region_destroy);
 
   priv->bounding_region = cairo_region_create_rectangle (&bounding_rectangle);
 
@@ -1623,7 +1583,7 @@ meta_window_actor_update_shape_region (MetaWindowActor *self,
 {
   MetaWindowActorPrivate *priv = self->priv;
 
-  meta_window_actor_clear_shape_region (self);
+  g_clear_pointer (&priv->shape_region, cairo_region_destroy);
 
   /* region must be non-null */
   priv->shape_region = region;
@@ -1752,7 +1712,7 @@ meta_window_actor_set_visible_region_beneath (MetaWindowActor *self,
 
   if (appears_focused ? priv->focused_shadow : priv->unfocused_shadow)
     {
-      meta_window_actor_clear_shadow_clip (self);
+      g_clear_pointer (&priv->shadow_clip, cairo_region_destroy);
       priv->shadow_clip = cairo_region_copy (beneath_region);
 
       if (clip_shadow_under_window (self))
@@ -1777,7 +1737,7 @@ meta_window_actor_reset_visible_regions (MetaWindowActor *self)
 
   meta_shaped_texture_set_clip_region (META_SHAPED_TEXTURE (priv->actor),
                                        NULL);
-  meta_window_actor_clear_shadow_clip (self);
+  g_clear_pointer (&priv->shadow_clip, cairo_region_destroy);
 }
 
 static void
@@ -2216,7 +2176,7 @@ check_needs_reshape (MetaWindowActor *self)
   client_area.height = priv->window->rect.height;
 
   meta_shaped_texture_set_mask_texture (META_SHAPED_TEXTURE (priv->actor), COGL_INVALID_HANDLE);
-  meta_window_actor_clear_shape_region (self);
+  g_clear_pointer (&priv->shape_region, cairo_region_destroy);
 
 #ifdef HAVE_SHAPE
   if (priv->window->has_shape)
