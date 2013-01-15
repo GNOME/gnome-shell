@@ -22,12 +22,13 @@ const Util = imports.misc.util;
 
 const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
 const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
+const PRIVACY_SCHEMA = 'org.gnome.desktop.privacy'
 const DISABLE_USER_SWITCH_KEY = 'disable-user-switching';
 const DISABLE_LOCK_SCREEN_KEY = 'disable-lock-screen';
 const DISABLE_LOG_OUT_KEY = 'disable-log-out';
 const LOCK_ENABLED_KEY = 'lock-enabled';
 const ALWAYS_SHOW_LOG_OUT_KEY = 'always-show-log-out';
-const SHOW_FULL_NAME_KEY = 'show-full-name';
+const SHOW_FULL_NAME_IN_TOP_BAR_KEY = 'show-full-name-in-top-bar';
 
 const DIALOG_ICON_SIZE = 64;
 
@@ -477,6 +478,7 @@ const UserMenuButton = new Lang.Class({
 
         this._screenSaverSettings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
         this._lockdownSettings = new Gio.Settings({ schema: LOCKDOWN_SCHEMA });
+        this._privacySettings = new Gio.Settings({ schema: PRIVACY_SCHEMA });
 
         this._userManager = AccountsService.UserManager.get_default();
 
@@ -553,10 +555,10 @@ const UserMenuButton = new Lang.Class({
                                        Lang.bind(this, this._updateLogout));
         this._lockdownSettings.connect('changed::' + DISABLE_LOCK_SCREEN_KEY,
                                        Lang.bind(this, this._updateLockScreen));
-        this._screenSaverSettings.connect('changed::' + SHOW_FULL_NAME_KEY,
+        this._screenSaverSettings.connect('changed::' + SHOW_FULL_NAME_IN_TOP_BAR_KEY,
                                            Lang.bind(this, this._updateUserName));
-        global.settings.connect('changed::' + SHOW_FULL_NAME_KEY,
-                                Lang.bind(this, this._updateUserName));
+        this._privacySettings.connect('changed::' + SHOW_FULL_NAME_IN_TOP_BAR_KEY,
+                                      Lang.bind(this, this._updateUserName));
         this._updateSwitchUser();
         this._updateLogout();
         this._updateLockScreen();
@@ -602,10 +604,10 @@ const UserMenuButton = new Lang.Class({
     },
 
     _updateUserName: function() {
-        let settings = global.settings;
+        let settings = this._privacySettings;
         if (Main.sessionMode.isLocked)
             settings = this._screenSaverSettings;
-        if (this._user.is_loaded && settings.get_boolean(SHOW_FULL_NAME_KEY))
+        if (this._user.is_loaded && settings.get_boolean(SHOW_FULL_NAME_IN_TOP_BAR_KEY))
             this._name.set_text(this._user.get_real_name());
         else
             this._name.set_text("");
