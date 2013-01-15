@@ -199,7 +199,7 @@ const RemoteSearchProvider = new Lang.Class({
                                                        bitsPerSample, width, height, rowStride);
         }
 
-        return new St.Icon({ gicon: Gio.icon_new_for_string(meta['gicon']),
+        return new St.Icon({ gicon: gicon,
                              icon_size: size });
     },
 
