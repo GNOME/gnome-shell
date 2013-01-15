@@ -388,29 +388,10 @@ meta_window_actor_dispose (GObject *object)
   meta_window_actor_clear_bounding_region (self);
   meta_window_actor_clear_shadow_clip (self);
 
-  if (priv->shadow_class != NULL)
-    {
-      g_free (priv->shadow_class);
-      priv->shadow_class = NULL;
-    }
-
-  if (priv->focused_shadow != NULL)
-    {
-      meta_shadow_unref (priv->focused_shadow);
-      priv->focused_shadow = NULL;
-    }
-
-  if (priv->unfocused_shadow != NULL)
-    {
-      meta_shadow_unref (priv->unfocused_shadow);
-      priv->unfocused_shadow = NULL;
-    }
-
-  if (priv->shadow_shape != NULL)
-    {
-      meta_window_shape_unref (priv->shadow_shape);
-      priv->shadow_shape = NULL;
-    }
+  g_clear_pointer (&priv->shadow_class, g_free);
+  g_clear_pointer (&priv->focused_shadow, meta_shadow_unref);
+  g_clear_pointer (&priv->unfocused_shadow, meta_shadow_unref);
+  g_clear_pointer (&priv->shadow_shape, meta_window_shape_unref);
 
   if (priv->damage != None)
     {
@@ -423,17 +404,12 @@ meta_window_actor_dispose (GObject *object)
 
   info->windows = g_list_remove (info->windows, (gconstpointer) self);
 
-  if (priv->window)
-    {
-      g_object_unref (priv->window);
-      priv->window = NULL;
-    }
+  g_clear_object (&priv->window);
 
   /*
    * Release the extra reference we took on the actor.
    */
-  g_object_unref (priv->actor);
-  priv->actor = NULL;
+  g_clear_object (&priv->actor);
 
   G_OBJECT_CLASS (meta_window_actor_parent_class)->dispose (object);
 }
