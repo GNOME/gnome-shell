@@ -65,11 +65,6 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
         menuitem in single-user, single-session situations.
       </_description>
     </key>
-    <key name="show-full-name" type="b">
-      <default>true</default>
-      <_summary>Show full name in the user menu</_summary>
-      <_description>Whether the users full name is shown in the user menu or not.</_description>
-    </key>
     <key name="remember-mount-password" type="b">
       <default>false</default>
       <_summary>Whether to remember password for mounting encrypted or remote filesystems</_summary>
