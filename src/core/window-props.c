@@ -521,6 +521,14 @@ reload_wm_name (MetaWindow    *window,
 }
 
 static void
+reload_opaque_region (MetaWindow    *window,
+                      MetaPropValue *value,
+                      gboolean       initial)
+{
+  meta_window_update_opaque_region (window);
+}
+
+static void
 reload_mutter_hints (MetaWindow    *window,
                      MetaPropValue *value,
                      gboolean       initial)
@@ -1706,6 +1714,7 @@ meta_display_init_window_prop_hooks (MetaDisplay *display)
     { display->atom__NET_WM_PID,       META_PROP_VALUE_CARDINAL, reload_net_wm_pid,        TRUE,  TRUE },
     { XA_WM_NAME,                      META_PROP_VALUE_TEXT_PROPERTY, reload_wm_name,      TRUE,  TRUE },
     { display->atom__MUTTER_HINTS,     META_PROP_VALUE_TEXT_PROPERTY, reload_mutter_hints, TRUE,  TRUE },
+    { display->atom__NET_WM_OPAQUE_REGION, META_PROP_VALUE_CARDINAL_LIST, reload_opaque_region, TRUE, TRUE },
     { display->atom__NET_WM_ICON_NAME, META_PROP_VALUE_UTF8,     reload_net_wm_icon_name,  TRUE,  FALSE },
     { XA_WM_ICON_NAME,                 META_PROP_VALUE_TEXT_PROPERTY, reload_wm_icon_name, TRUE,  FALSE },
     { display->atom__NET_WM_DESKTOP,   META_PROP_VALUE_CARDINAL, reload_net_wm_desktop,    TRUE,  FALSE },

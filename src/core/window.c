@@ -226,6 +226,9 @@ meta_window_finalize (GObject *object)
   if (window->frame_bounds)
     cairo_region_destroy (window->frame_bounds);
 
+  if (window->opaque_region)
+    cairo_region_destroy (window->opaque_region);
+
   meta_icon_cache_free (&window->icon_cache);
 
   g_free (window->sm_client_id);
@@ -7386,6 +7389,64 @@ meta_window_update_net_wm_type (MetaWindow *window)
     }
 
   meta_window_recalc_window_type (window);
+}
+
+void
+meta_window_update_opaque_region (MetaWindow *window)
+{
+  cairo_region_t *opaque_region = NULL;
+  gulong *region = NULL;
+  int nitems;
+
+  g_clear_pointer (&window->opaque_region, cairo_region_destroy);
+
+  if (meta_prop_get_cardinal_list (window->display,
+                                   window->xwindow,
+                                   window->display->atom__NET_WM_OPAQUE_REGION,
+                                   &region, &nitems))
+    {
+      cairo_rectangle_int_t *rects;
+      int i, rect_index, nrects;
+
+      if (nitems % 4 != 0)
+        {
+          meta_verbose ("_NET_WM_OPAQUE_REGION does not have a list of 4-tuples.");
+          goto out;
+        }
+
+      /* empty region */
+      if (nitems == 0)
+        goto out;
+
+      nrects = nitems / 4;
+
+      rects = g_new (cairo_rectangle_int_t, nrects);
+
+      rect_index = 0;
+      i = 0;
+      while (i < nitems)
+        {
+          cairo_rectangle_int_t *rect = &rects[rect_index];
+
+          rect->x = region[i++];
+          rect->y = region[i++];
+          rect->width = region[i++];
+          rect->height = region[i++];
+
+          rect_index++;
+        }
+
+      opaque_region = cairo_region_create_rectangles (rects, nrects);
+
+      g_free (rects);
+    }
+
+ out:
+  window->opaque_region = opaque_region;
+  meta_XFree (region);
+
+  if (window->display->compositor)
+    meta_compositor_window_shape_changed (window->display->compositor, window);
 }
 
 static void
