@@ -2117,7 +2117,7 @@ scan_visible_region (guchar         *mask_data,
               while (mask_data[y * stride + x2] == 255 && x2 < (rect.x + rect.width))
                 x2++;
 
-              if (x2 > 0)
+              if (x2 > x)
                 {
                   meta_region_builder_add_rectangle (&builder, x, y, x2 - x, 1);
                   x = x2;
