@@ -2126,6 +2126,10 @@ StScrollBar StButton#vhandle:active {
     background-color: rgba(255,255,255,0.2);
 }
 
+.candidate-box:hover {
+    border-radius: 4px;
+    background-color: rgba(255,255,255,0.1);
+}
 .candidate-page-button-box {
     height: 2em;
     width: 80px;

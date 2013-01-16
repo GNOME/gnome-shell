@@ -19,13 +19,20 @@ const CandidateArea = new Lang.Class({
                                         visible: false });
         this._candidateBoxes = [];
         for (let i = 0; i < MAX_CANDIDATES_PER_PAGE; ++i) {
-            let box = new St.BoxLayout({ style_class: 'candidate-box' });
+            let box = new St.BoxLayout({ style_class: 'candidate-box',
+                                         reactive: true,
+                                         track_hover: true });
             box._indexLabel = new St.Label({ style_class: 'candidate-index' });
             box._candidateLabel = new St.Label({ style_class: 'candidate-label' });
             box.add(box._indexLabel, { y_fill: false });
             box.add(box._candidateLabel, { y_fill: false });
             this._candidateBoxes.push(box);
             this.actor.add(box);
+
+            let j = i;
+            box.connect('button-release-event', Lang.bind(this, function(actor, event) {
+                this.emit('candidate-clicked', j, event.get_button(), event.get_state());
+            }));
         }
 
         this._buttonBox = new St.BoxLayout({ style_class: 'candidate-page-button-box' });
@@ -135,6 +142,9 @@ const CandidatePopup = new Lang.Class({
         }));
         this._candidateArea.connect('next-page', Lang.bind(this, function() {
             this._panelService.page_down();
+        }));
+        this._candidateArea.connect('candidate-clicked', Lang.bind(this, function(ca, index, button, state) {
+            this._panelService.candidate_clicked(index, button, state);
         }));
 
         this._panelService = null;
