@@ -155,6 +155,8 @@ static gboolean meta_window_actor_get_paint_volume (ClutterActor       *actor,
 static void     meta_window_actor_detach     (MetaWindowActor *self);
 static gboolean meta_window_actor_has_shadow (MetaWindowActor *self);
 
+static void check_needs_reshape (MetaWindowActor *self);
+
 G_DEFINE_TYPE (MetaWindowActor, meta_window_actor, CLUTTER_TYPE_GROUP);
 
 static void
@@ -359,7 +361,10 @@ meta_window_actor_constructed (GObject *object)
     }
 
   meta_window_actor_update_opacity (self);
+
+  /* Force a reshape to ensure that we always have a set shape_region. */
   meta_window_actor_update_shape (self);
+  check_needs_reshape (self);
 }
 
 static void
