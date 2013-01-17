@@ -46,7 +46,8 @@ const SwitcherPopup = new Lang.Class({
         this._selectedIndex = 0;
 
         this.actor = new Shell.GenericContainer({ style_class: 'switcher-popup',
-                                                  reactive: true });
+                                                  reactive: true,
+                                                  visible: false });
         this.actor.connect('get-preferred-width', Lang.bind(this, this._getPreferredWidth));
         this.actor.connect('get-preferred-height', Lang.bind(this, this._getPreferredHeight));
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
