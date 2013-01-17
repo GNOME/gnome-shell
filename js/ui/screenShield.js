@@ -30,6 +30,7 @@ const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const LOCK_ENABLED_KEY = 'lock-enabled';
 const LOCK_DELAY_KEY = 'lock-delay';
 
+const LOCKED_STATE_STR = 'screenShield.locked';
 // fraction of screen height the arrow must reach before completing
 // the slide up automatically
 const ARROW_DRAG_THRESHOLD = 0.1;
@@ -1175,6 +1176,7 @@ const ScreenShield = new Lang.Class({
         this._isLocked = false;
         this.emit('active-changed');
         this.emit('locked-changed');
+        global.set_runtime_state(LOCKED_STATE_STR, null);
     },
 
     activate: function(animate) {
@@ -1191,6 +1193,7 @@ const ScreenShield = new Lang.Class({
         }
 
         this._resetLockScreen(animate, animate);
+        global.set_runtime_state(LOCKED_STATE_STR, GLib.Variant.new('b', true));
 
         // We used to set isActive and emit active-changed here,
         // but now we do that from lockScreenShown, which means
@@ -1217,5 +1220,15 @@ const ScreenShield = new Lang.Class({
 
         this.emit('locked-changed');
     },
+
+    // If the previous shell crashed, and gnome-session restarted us, then re-lock
+    lockIfWasLocked: function() {
+        let wasLocked = global.get_runtime_state('b', LOCKED_STATE_STR);
+        if (wasLocked === null)
+            return;
+        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+            this.lock(false);
+        }));
+    }
 });
 Signals.addSignalMethods(ScreenShield.prototype);

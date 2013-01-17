@@ -149,6 +149,14 @@ void     shell_global_reexec_self               (ShellGlobal  *global);
 
 const char *     shell_global_get_session_mode  (ShellGlobal  *global);
 
+void     shell_global_set_runtime_state      (ShellGlobal  *global,
+                                              const char   *property_name,
+                                              GVariant     *variant);
+GVariant * shell_global_get_runtime_state       (ShellGlobal  *global,
+                                                 const char   *property_type,
+                                                 const char   *property_name);
+
+
 G_END_DECLS
 
 #endif /* __SHELL_GLOBAL_H__ */
