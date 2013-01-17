@@ -101,6 +101,7 @@ const Lightbox = new Lang.Class({
     },
 
     show: function() {
+        Tweener.removeTweens(this.actor);
         if (this._fadeInTime) {
             this.shown = false;
             this.actor.opacity = 0;
@@ -110,17 +111,20 @@ const Lightbox = new Lang.Class({
                                transition: 'easeOutQuad',
                                onComplete: Lang.bind(this, function() {
                                    this.shown = true;
+                                   this.emit('shown');
                                })
                              });
         } else {
             this.actor.opacity = 255 * this._fadeFactor;
             this.shown = true;
+            this.emit('shown');
         }
         this.actor.show();
     },
 
     hide: function() {
         this.shown = false;
+        Tweener.removeTweens(this.actor);
         if (this._fadeOutTime) {
             Tweener.addTween(this.actor,
                              { opacity: 0,
@@ -197,3 +201,4 @@ const Lightbox = new Lang.Class({
         this.highlight(null);
     }
 });
+Signals.addSignalMethods(Lightbox.prototype);

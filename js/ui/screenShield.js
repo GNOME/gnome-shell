@@ -537,11 +537,13 @@ const ScreenShield = new Lang.Class({
         this._isActive = false;
         this._inUnlockAnimation = false;
         this._activationTime = 0;
+        this._becameActiveId = 0;
 
         this._lightbox = new Lightbox.Lightbox(Main.uiGroup,
                                                { inhibitEvents: true,
                                                  fadeInTime: STANDARD_FADE_TIME,
                                                  fadeFactor: 1 });
+        this._lightbox.connect('shown', Lang.bind(this, this._onLightboxShown));
 
         this.idleMonitor = new GnomeDesktop.IdleMonitor();
     },
@@ -682,35 +684,73 @@ const ScreenShield = new Lang.Class({
         if (!this._isModal) {
             Main.pushModal(this.actor, { keybindingMode: Main.KeybindingMode.LOCK_SCREEN });
             this._isModal = true;
+            }
+
+        if (this._lightbox.actor.visible ||
+            this._isActive) {
+            // We're either shown and active, or in the process of
+            // showing.
+            // The latter is a very unlikely condition (it requires
+            // idle-delay < 20), but in any case we have nothing
+            // to do at this point: either isActive is true, or
+            // it will soon be.
+            // isActive can also be true if the lightbox is hidden,
+            // in case the shield is down and the user hasn't unlocked yet
+            return;
         }
 
-        if (!this._isActive) {
-            this._lightbox.show();
+        this._lightbox.show();
 
-            if (this._activationTime == 0)
-                this._activationTime = GLib.get_monotonic_time();
+        if (this._activationTime == 0)
+            this._activationTime = GLib.get_monotonic_time();
 
-            this._becameActiveId = this.idleMonitor.connect('became-active', Lang.bind(this, function() {
-                this.idleMonitor.disconnect(this._becameActiveId);
+        if (this._becameActiveId == 0)
+            this._becameActiveId = this.idleMonitor.connect('became-active',
+                                                            Lang.bind(this, this._onUserBecameActive));
+    },
 
-                let lightboxWasShown = this._lightbox.shown;
-                this._lightbox.hide();
+    _onUserBecameActive: function() {
+        // This function gets called here when the user becomes active
+        // after gnome-session changed the status to IDLE
+        // There are four possibilities here:
+        // - we're called when already locked; isActive and isLocked are true,
+        //   we just go back to the lock screen curtain
+        // - we're called before the lightbox is fully shown; at this point
+        //   isActive is false, so we just hide the ligthbox, reset the activationTime
+        //   and go back to the unlocked desktop
+        // - we're called after showing the lightbox, but before the lock
+        //   delay; this is mostly like the case above, but isActive is true now
+        //   so we need to notify gnome-settings-daemon to go back to the normal
+        //   policies for blanking
+        //   (they're handled by the same code, and we emit one extra ActiveChanged
+        //   signal in the case above)
+        // - we're called after showing the lightbox and after lock-delay; the
+        //   session is effectivelly locked now, it's time to build and show
+        //   the lock screen
 
-                // GLib.get_monotonic_time() returns microseconds, convert to seconds
-                let elapsedTime = (GLib.get_monotonic_time() - this._activationTime) / 1000000;
-                let shouldLock = lightboxWasShown &&
-                    this._settings.get_boolean(LOCK_ENABLED_KEY) &&
-                    (elapsedTime >= this._settings.get_uint(LOCK_DELAY_KEY));
-                if (shouldLock || this._isLocked) {
-                    this.lock(false);
-                } else if (this._isActive) {
-                    this.unlock();
-                }
-            }));
+        this.idleMonitor.disconnect(this._becameActiveId);
+        this._becameActiveId = 0;
 
-            this._isActive = true;
-            this.emit('lock-status-changed');
+        let lightboxWasShown = this._lightbox.shown;
+        this._lightbox.hide();
+
+        // GLib.get_monotonic_time() returns microseconds, convert to seconds
+        let elapsedTime = (GLib.get_monotonic_time() - this._activationTime) / 1000000;
+        let shouldLock = lightboxWasShown && this._settings.get_boolean(LOCK_ENABLED_KEY) &&
+            (elapsedTime >= this._settings.get_uint(LOCK_DELAY_KEY));
+
+        if (this._isLocked || shouldLock) {
+            this.lock(false);
+        } else {
+            // We're not really locked here, but unlock() will do what we need
+            // and ensure we reset all state
+            this.unlock();
         }
+    },
+
+    _onLightboxShown: function() {
+        this._isActive = true;
+        this.emit('lock-status-changed');
     },
 
     showDialog: function() {
@@ -988,6 +1028,11 @@ const ScreenShield = new Lang.Class({
             Main.sessionMode.popMode('lock-screen');
         if (Main.sessionMode.currentMode == 'unlock-dialog')
             Main.sessionMode.popMode('unlock-dialog');
+
+        if (this._becameActiveId != 0) {
+            this.idleMonitor.disconnect(this._becameActiveId);
+            this._becameActiveId = 0;
+        }
 
         this._activationTime = 0;
         this._isActive = false;
