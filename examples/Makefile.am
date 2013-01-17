@@ -1,10 +1,10 @@
 include $(top_srcdir)/build/autotools/Makefile.am.silent
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)
 
 if !USE_GLIB
-INCLUDES += -I$(top_builddir)/deps/glib
+AM_CPPFLAGS += -I$(top_builddir)/deps/glib
 endif
 
 AM_CFLAGS = \

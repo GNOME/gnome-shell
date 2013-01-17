@@ -114,15 +114,15 @@ BUILT_SOURCES = wrappers
 # The include of the $(buildir)/cogl directory here is to make it so
 # that tests that directly include Cogl source code for whitebox
 # testing (such as test-bitmask) will still compile
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir) \
 	-I$(top_builddir)/cogl
 
 if !USE_GLIB
-INCLUDES += -I$(top_builddir)/deps/glib
+AM_CPPFLAGS += -I$(top_builddir)/deps/glib
 endif
 
-test_conformance_CPPFLAGS = \
+AM_CPPFLAGS += \
 	-DCOGL_ENABLE_EXPERIMENTAL_API \
 	-DCOGL_DISABLE_DEPRECATED \
 	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\" \

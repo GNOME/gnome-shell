@@ -2,7 +2,7 @@ include $(top_srcdir)/build/autotools/Makefile.am.silent
 
 NULL =
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)
 
 test_conformance_CPPFLAGS = \

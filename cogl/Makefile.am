@@ -15,7 +15,7 @@ DISTCLEANFILES =
 noinst_LTLIBRARIES =
 lib_LTLIBRARIES =
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	-I$(top_srcdir)				\
 	-I$(top_builddir)			\
 	-I$(srcdir)/tesselator			\
@@ -26,10 +26,10 @@ INCLUDES = \
 	$(NULL)
 
 if !USE_GLIB
-	INCLUDES += -I$(top_builddir)/deps/glib
+	AM_CPPFLAGS += -I$(top_builddir)/deps/glib
 endif
 
-AM_CPPFLAGS = \
+AM_CPPFLAGS += \
 	-DG_LOG_DOMAIN=\"Cogl\" 	\
 	-DCOGL_COMPILATION		\
 	-DCOGL_GL_LIBNAME=\"$(COGL_GL_LIBNAME)\" \
@@ -678,7 +678,7 @@ Cogl_1_0_gir_NAMESPACE = Cogl
 Cogl_1_0_gir_VERSION = 1.0
 Cogl_1_0_gir_LIBS = libcogl.la
 Cogl_1_0_gir_FILES = $(cogl_1_public_h) cogl-enum-types.h
-Cogl_1_0_gir_CFLAGS = $(INCLUDES) $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) -UCOGL_ENABLE_EXPERIMENTAL_API -UCOGL_ENABLE_EXPERIMENTAL_2_0_API
+Cogl_1_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) -UCOGL_ENABLE_EXPERIMENTAL_API -UCOGL_ENABLE_EXPERIMENTAL_2_0_API
 Cogl_1_0_gir_INCLUDES = GL-1.0 GObject-2.0
 Cogl_1_0_gir_EXPORT_PACKAGES = cogl-1.0
 Cogl_1_0_gir_SCANNERFLAGS = --warn-all --c-include='cogl/cogl.h'
