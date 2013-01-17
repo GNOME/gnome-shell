@@ -1,3 +1,17 @@
+3.7.4.1
+=======
+* userMenu: Use show-full-name-in-top-bar setting [Bastien; #689561]
+* dateMenu: Add "Open Clocks" entry [Mathieu; #644390]
+* screenshot: Immediately show the flash spot [Jasper; #691875]
+* Misc. bug fixes [Rico, Jeremy]
+
+Contributors:
+  Jeremy Bicha, Mathieu Bridon, Bastien Nocera, Jasper St. Pierre,
+  Rico Tzschichholz
+
+Translations:
+  Ihar Hrachyshka [be]
+
 3.7.4
 =====
 * Make menu separators crisp [Giovanni, Allan; #641745]
