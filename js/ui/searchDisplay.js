@@ -178,7 +178,7 @@ const ListSearchResults = new Lang.Class({
 
         this._content = new St.BoxLayout({ style_class: 'list-search-results',
                                            vertical: true });
-        this.actor.add_actor(this._content);
+        this.actor.add(this._content, { expand: true });
 
         this._notDisplayedResult = [];
         this._terms = [];
