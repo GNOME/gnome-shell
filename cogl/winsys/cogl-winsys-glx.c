@@ -57,7 +57,6 @@
 
 #include <glib/gi18n-lib.h>
 
-#include <dlfcn.h>
 #include <GL/glx.h>
 #include <X11/Xlib.h>
 

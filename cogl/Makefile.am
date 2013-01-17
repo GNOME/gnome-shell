@@ -547,9 +547,6 @@ include $(top_srcdir)/build/autotools/Makefile.am.enums
 lib_LTLIBRARIES += libcogl.la
 
 libcogl_la_LIBADD = -lm $(COGL_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
-if SUPPORT_GLX
-libcogl_la_LIBADD += -ldl
-endif
 if !USE_GLIB
 libcogl_la_LIBADD += $(top_builddir)/deps/glib/libglib.la
 libcogl_la_LIBADD += $(top_builddir)/deps/gmodule/libgmodule.la
