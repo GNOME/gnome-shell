@@ -63,8 +63,7 @@ _cogl_blit_texture_render_begin (CoglBlitData *data)
       return FALSE;
     }
 
-  cogl_push_framebuffer (fb);
-  cogl_object_unref (fb);
+  data->fb = fb;
 
   dst_width = cogl_texture_get_width (data->dst_tex);
   dst_height = cogl_texture_get_height (data->dst_tex);
@@ -97,7 +96,7 @@ _cogl_blit_texture_render_begin (CoglBlitData *data)
 
   cogl_pipeline_set_layer_texture (pipeline, 0, data->src_tex);
 
-  _cogl_push_source (pipeline, FALSE);
+  data->pipeline = pipeline;
 
   return TRUE;
 }
@@ -111,24 +110,23 @@ _cogl_blit_texture_render_blit (CoglBlitData *data,
                                 unsigned int width,
                                 unsigned int height)
 {
-  cogl_rectangle_with_texture_coords (dst_x, dst_y,
-                                      dst_x + width,
-                                      dst_y + height,
-                                      src_x / (float) data->src_width,
-                                      src_y / (float) data->src_height,
-                                      (src_x + width) /
-                                      (float) data->src_width,
-                                      (src_y + height) /
-                                      (float) data->src_height);
+  cogl_framebuffer_draw_textured_rectangle (data->fb,
+                                            data->pipeline,
+                                            dst_x, dst_y,
+                                            dst_x + width,
+                                            dst_y + height,
+                                            src_x / (float) data->src_width,
+                                            src_y / (float) data->src_height,
+                                            (src_x + width) /
+                                            (float) data->src_width,
+                                            (src_y + height) /
+                                            (float) data->src_height);
 }
 
 static void
 _cogl_blit_texture_render_end (CoglBlitData *data)
 {
   CoglContext *ctx = data->src_tex->context;
-
-  cogl_pop_source ();
-  cogl_pop_framebuffer ();
 
   /* Attach the target texture to the texture render pipeline so that
      we don't keep a reference to the source texture forever. This is
@@ -140,6 +138,8 @@ _cogl_blit_texture_render_end (CoglBlitData *data)
      hash table key such as for the ARBfp program cache. */
   cogl_pipeline_set_layer_texture (ctx->blit_texture_pipeline, 0,
                                    data->dst_tex);
+
+  cogl_object_unref (data->fb);
 }
 
 static CoglBool

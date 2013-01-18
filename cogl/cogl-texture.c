@@ -761,19 +761,20 @@ cogl_texture_set_region (CoglTexture *texture,
  * glGetTexImage, but may be used as a fallback in some circumstances.
  */
 static void
-do_texture_draw_and_read (CoglTexture *texture,
-                          CoglBitmap  *target_bmp,
-                          float       *viewport)
+do_texture_draw_and_read (CoglFramebuffer *fb,
+                          CoglPipeline *pipeline,
+                          CoglTexture *texture,
+                          CoglBitmap *target_bmp,
+                          float *viewport)
 {
-  float       rx1, ry1;
-  float       rx2, ry2;
-  float       tx1, ty1;
-  float       tx2, ty2;
-  int         bw,  bh;
-  CoglBitmap  *rect_bmp;
-  unsigned int  tex_width, tex_height;
-
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  float rx1, ry1;
+  float rx2, ry2;
+  float tx1, ty1;
+  float tx2, ty2;
+  int bw,  bh;
+  CoglBitmap *rect_bmp;
+  unsigned int tex_width, tex_height;
+  CoglContext *ctx = fb->context;
 
   tex_width = cogl_texture_get_width (texture);
   tex_height = cogl_texture_get_height (texture);
@@ -813,11 +814,13 @@ do_texture_draw_and_read (CoglTexture *texture,
           tx2 = (rx2 / (float) tex_width);
 
           /* Draw a portion of texture */
-          cogl_rectangle_with_texture_coords (0, 0,
-                                              rx2 - rx1,
-                                              ry2 - ry1,
-                                              tx1, ty1,
-                                              tx2, ty2);
+          cogl_framebuffer_draw_textured_rectangle (fb,
+                                                    pipeline,
+                                                    0, 0,
+                                                    rx2 - rx1,
+                                                    ry2 - ry1,
+                                                    tx1, ty1,
+                                                    tx2, ty2);
 
           /* Read into a temporary bitmap */
           rect_bmp = _cogl_bitmap_new_with_malloc_buffer
@@ -826,7 +829,7 @@ do_texture_draw_and_read (CoglTexture *texture,
                                                COGL_PIXEL_FORMAT_RGBA_8888_PRE);
 
           cogl_framebuffer_read_pixels_into_bitmap
-                                   (cogl_get_draw_framebuffer (),
+                                   (fb,
                                     viewport[0], viewport[1],
                                     COGL_READ_PIXELS_COLOR_BUFFER,
                                     rect_bmp);
@@ -853,23 +856,21 @@ do_texture_draw_and_read (CoglTexture *texture,
  */
 CoglBool
 _cogl_texture_draw_and_read (CoglTexture *texture,
-                             CoglBitmap  *target_bmp,
-                             GLuint       target_gl_format,
-                             GLuint       target_gl_type)
+                             CoglBitmap *target_bmp,
+                             GLuint target_gl_format,
+                             GLuint target_gl_type)
 {
-  int        bpp;
-  CoglFramebuffer *framebuffer;
+  int bpp;
+  CoglFramebuffer *framebuffer = cogl_get_draw_framebuffer ();
   float viewport[4];
   CoglBitmap *alpha_bmp;
   int target_width = cogl_bitmap_get_width (target_bmp);
   int target_height = cogl_bitmap_get_height (target_bmp);
   int target_rowstride = cogl_bitmap_get_rowstride (target_bmp);
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
+  CoglContext *ctx = framebuffer->context;
 
   bpp = _cogl_pixel_format_get_bytes_per_pixel (COGL_PIXEL_FORMAT_RGBA_8888);
 
-  framebuffer = cogl_get_draw_framebuffer ();
   /* Viewport needs to have some size and be inside the window for this */
   cogl_framebuffer_get_viewport4fv (framebuffer, viewport);
   if (viewport[0] <  0 || viewport[1] <  0 ||
@@ -900,8 +901,6 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
                                NULL);
     }
 
-  _cogl_push_source (ctx->texture_download_pipeline, FALSE);
-
   cogl_pipeline_set_layer_texture (ctx->texture_download_pipeline, 0, texture);
 
   cogl_pipeline_set_layer_combine (ctx->texture_download_pipeline,
@@ -913,7 +912,9 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
                                    COGL_PIPELINE_FILTER_NEAREST,
                                    COGL_PIPELINE_FILTER_NEAREST);
 
-  do_texture_draw_and_read (texture, target_bmp, viewport);
+  do_texture_draw_and_read (framebuffer,
+                            ctx->texture_download_pipeline,
+                            texture, target_bmp, viewport);
 
   /* Check whether texture has alpha and framebuffer not */
   /* FIXME: For some reason even if ALPHA_BITS is 8, the framebuffer
@@ -955,7 +956,9 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
                                        "RGBA = REPLACE (TEXTURE[A])",
                                        NULL);
 
-      do_texture_draw_and_read (texture, alpha_bmp, viewport);
+      do_texture_draw_and_read (framebuffer,
+                                ctx->texture_download_pipeline,
+                                texture, alpha_bmp, viewport);
 
       /* Copy temp R to target A */
 
@@ -985,9 +988,6 @@ _cogl_texture_draw_and_read (CoglTexture *texture,
   /* Restore old state */
   cogl_framebuffer_pop_matrix (framebuffer);
   _cogl_framebuffer_pop_projection (framebuffer);
-
-  /* restore the original pipeline */
-  cogl_pop_source ();
 
   return TRUE;
 }

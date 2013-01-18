@@ -27,6 +27,7 @@
 #include <glib.h>
 #include "cogl-object-private.h"
 #include "cogl-texture.h"
+#include "cogl-framebuffer.h"
 
 /* This structures and functions are used when a series of blits needs
    to be performed between two textures. In this case there are
@@ -67,7 +68,11 @@ struct _CoglBlitData
      complete texture data in */
   unsigned char *image_data;
   CoglPixelFormat format;
+
   int bpp;
+
+  CoglFramebuffer *fb;
+  CoglPipeline *pipeline;
 };
 
 void
