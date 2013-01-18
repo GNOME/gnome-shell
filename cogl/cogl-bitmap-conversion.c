@@ -32,6 +32,7 @@
 #include <string.h>
 
 #define component_type uint8_t
+#define component_size 8
 /* We want to specially optimise the packing when we are converting
    to/from an 8-bit type so that it won't do anything. That way for
    example if we are just doing a swizzle conversion then the inner
@@ -42,14 +43,17 @@
 #undef PACK_BYTE
 #undef UNPACK_BYTE
 #undef component_type
+#undef component_size
 
 #define component_type uint16_t
+#define component_size 16
 #define UNPACK_BYTE(b) (((b) * 65535 + 127) / 255)
 #define PACK_BYTE(b) (((b) * 255 + 32767) / 65535)
 #include "cogl-bitmap-packing.h"
 #undef PACK_BYTE
 #undef UNPACK_BYTE
 #undef component_type
+#undef component_size
 
 /* (Un)Premultiplication */
 
@@ -205,8 +209,8 @@ _cogl_premult_alpha_last_four_pixels_sse2 (uint8_t *p)
 #endif /* COGL_USE_PREMULT_SSE2 */
 
 static void
-_cogl_bitmap_premult_unpacked_span_uint8_t (uint8_t *data,
-                                           int width)
+_cogl_bitmap_premult_unpacked_span_8 (uint8_t *data,
+                                      int width)
 {
 #ifdef COGL_USE_PREMULT_SSE2
 
@@ -231,8 +235,8 @@ _cogl_bitmap_premult_unpacked_span_uint8_t (uint8_t *data,
 }
 
 static void
-_cogl_bitmap_unpremult_unpacked_span_uint8_t (uint8_t *data,
-                                             int width)
+_cogl_bitmap_unpremult_unpacked_span_8 (uint8_t *data,
+                                        int width)
 {
   int x;
 
@@ -247,8 +251,8 @@ _cogl_bitmap_unpremult_unpacked_span_uint8_t (uint8_t *data,
 }
 
 static void
-_cogl_bitmap_unpremult_unpacked_span_uint16_t (uint16_t *data,
-                                              int width)
+_cogl_bitmap_unpremult_unpacked_span_16 (uint16_t *data,
+                                         int width)
 {
   while (width-- > 0)
     {
@@ -266,8 +270,8 @@ _cogl_bitmap_unpremult_unpacked_span_uint16_t (uint16_t *data,
 }
 
 static void
-_cogl_bitmap_premult_unpacked_span_uint16_t (uint16_t *data,
-                                            int width)
+_cogl_bitmap_premult_unpacked_span_16 (uint16_t *data,
+                                       int width)
 {
   while (width-- > 0)
     {
@@ -436,9 +440,9 @@ _cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
       dst = dst_data + y * dst_rowstride;
 
       if (use_16)
-        _cogl_unpack_uint16_t (src_format, src, tmp_row, width);
+        _cogl_unpack_16 (src_format, src, tmp_row, width);
       else
-        _cogl_unpack_uint8_t (src_format, src, tmp_row, width);
+        _cogl_unpack_8 (src_format, src, tmp_row, width);
 
       /* Handle premultiplication */
       if (need_premult)
@@ -446,23 +450,23 @@ _cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
           if (dst_format & COGL_PREMULT_BIT)
             {
               if (use_16)
-                _cogl_bitmap_premult_unpacked_span_uint16_t (tmp_row, width);
+                _cogl_bitmap_premult_unpacked_span_16 (tmp_row, width);
               else
-                _cogl_bitmap_premult_unpacked_span_uint8_t (tmp_row, width);
+                _cogl_bitmap_premult_unpacked_span_8 (tmp_row, width);
             }
           else
             {
               if (use_16)
-                _cogl_bitmap_unpremult_unpacked_span_uint16_t (tmp_row, width);
+                _cogl_bitmap_unpremult_unpacked_span_16 (tmp_row, width);
               else
-                _cogl_bitmap_unpremult_unpacked_span_uint8_t (tmp_row, width);
+                _cogl_bitmap_unpremult_unpacked_span_8 (tmp_row, width);
             }
         }
 
       if (use_16)
-        _cogl_pack_uint16_t (dst_format, tmp_row, dst, width);
+        _cogl_pack_16 (dst_format, tmp_row, dst, width);
       else
-        _cogl_pack_uint8_t (dst_format, tmp_row, dst, width);
+        _cogl_pack_8 (dst_format, tmp_row, dst, width);
     }
 
   _cogl_bitmap_unmap (src_bmp);
@@ -539,9 +543,9 @@ _cogl_bitmap_unpremult (CoglBitmap *bmp,
 
       if (tmp_row)
         {
-          _cogl_unpack_uint16_t (format, p, tmp_row, width);
-          _cogl_bitmap_unpremult_unpacked_span_uint16_t (tmp_row, width);
-          _cogl_pack_uint16_t (format, tmp_row, p, width);
+          _cogl_unpack_16 (format, p, tmp_row, width);
+          _cogl_bitmap_unpremult_unpacked_span_16 (tmp_row, width);
+          _cogl_pack_16 (format, tmp_row, p, width);
         }
       else
         {
@@ -557,7 +561,7 @@ _cogl_bitmap_unpremult (CoglBitmap *bmp,
                 }
             }
           else
-            _cogl_bitmap_unpremult_unpacked_span_uint8_t (p, width);
+            _cogl_bitmap_unpremult_unpacked_span_8 (p, width);
         }
     }
 
@@ -606,9 +610,9 @@ _cogl_bitmap_premult (CoglBitmap *bmp,
 
       if (tmp_row)
         {
-          _cogl_unpack_uint16_t (format, p, tmp_row, width);
-          _cogl_bitmap_premult_unpacked_span_uint16_t (tmp_row, width);
-          _cogl_pack_uint16_t (format, tmp_row, p, width);
+          _cogl_unpack_16 (format, p, tmp_row, width);
+          _cogl_bitmap_premult_unpacked_span_16 (tmp_row, width);
+          _cogl_pack_16 (format, tmp_row, p, width);
         }
       else
         {
@@ -621,7 +625,7 @@ _cogl_bitmap_premult (CoglBitmap *bmp,
                 }
             }
           else
-            _cogl_bitmap_premult_unpacked_span_uint8_t (p, width);
+            _cogl_bitmap_premult_unpacked_span_8 (p, width);
         }
     }
 
