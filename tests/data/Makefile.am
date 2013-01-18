@@ -18,6 +18,7 @@ json_files = \
 	test-state-1.json			\
 	test-script-timeline-markers.json	\
 	test-script-margin.json 		\
+	test-script-interval.json		\
 	$(NULL)
 
 EXTRA_DIST += $(json_files)

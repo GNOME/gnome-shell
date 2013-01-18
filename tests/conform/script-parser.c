@@ -442,3 +442,38 @@ script_margin (TestConformSimpleFixture *fixture,
   g_object_unref (script);
   g_free (test_file);
 }
+
+void
+script_interval (TestConformSimpleFixture *fixture,
+                 gpointer                  dummy)
+{
+  ClutterScript *script = clutter_script_new ();
+  ClutterInterval *interval;
+  gchar *test_file;
+  GError *error = NULL;
+  GValue *initial, *final;
+
+  test_file = clutter_test_get_data_file ("test-script-interval.json");
+  clutter_script_load_from_file (script, test_file, &error);
+  if (g_test_verbose () && error)
+    g_print ("Error: %s", error->message);
+
+  g_assert_no_error (error);
+
+  interval = CLUTTER_INTERVAL (clutter_script_get_object (script, "int-1"));
+  initial = clutter_interval_peek_initial_value (interval);
+  g_assert (G_VALUE_HOLDS (initial, G_TYPE_FLOAT));
+  g_assert_cmpfloat (g_value_get_float (initial), ==, 23.3f);
+  final = clutter_interval_peek_final_value (interval);
+  g_assert (G_VALUE_HOLDS (final, G_TYPE_FLOAT));
+  g_assert_cmpfloat (g_value_get_float (final), ==, 42.2f);
+
+  interval = CLUTTER_INTERVAL (clutter_script_get_object (script, "int-2"));
+  initial = clutter_interval_peek_initial_value (interval);
+  g_assert (G_VALUE_HOLDS (initial, CLUTTER_TYPE_COLOR));
+  final = clutter_interval_peek_final_value (interval);
+  g_assert (G_VALUE_HOLDS (final, CLUTTER_TYPE_COLOR));
+
+  g_object_unref (script);
+  g_free (test_file);
+}
