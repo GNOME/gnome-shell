@@ -21,8 +21,8 @@ tex_data[3 * 2 * 2] =
 static void
 do_test (CoglBool check_orientation)
 {
-  int fb_width = cogl_framebuffer_get_width (fb);
-  int fb_height = cogl_framebuffer_get_height (fb);
+  int fb_width = cogl_framebuffer_get_width (test_fb);
+  int fb_height = cogl_framebuffer_get_height (test_fb);
   CoglPrimitive *prim;
   CoglError *error = NULL;
   CoglTexture2D *tex_2d;
@@ -30,13 +30,13 @@ do_test (CoglBool check_orientation)
   CoglBool res;
   int tex_height;
 
-  cogl_framebuffer_orthographic (fb,
+  cogl_framebuffer_orthographic (test_fb,
                                  0, 0, /* x_1, y_1 */
                                  fb_width, /* x_2 */
                                  fb_height /* y_2 */,
                                  -1, 100 /* near/far */);
 
-  cogl_framebuffer_clear4f (fb,
+  cogl_framebuffer_clear4f (test_fb,
                             COGL_BUFFER_BIT_COLOR,
                             1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -48,7 +48,7 @@ do_test (CoglBool check_orientation)
   else
     tex_height = 1;
 
-  tex_2d = cogl_texture_2d_new_from_data (ctx,
+  tex_2d = cogl_texture_2d_new_from_data (test_ctx,
                                           2, tex_height, /* width/height */
                                           COGL_PIXEL_FORMAT_RGB_888,
                                           COGL_PIXEL_FORMAT_ANY,
@@ -58,7 +58,7 @@ do_test (CoglBool check_orientation)
   g_assert (tex_2d != NULL);
   g_assert (error == NULL);
 
-  pipeline = cogl_pipeline_new (ctx);
+  pipeline = cogl_pipeline_new (test_ctx);
   cogl_pipeline_set_layer_texture (pipeline, 0, COGL_TEXTURE (tex_2d));
 
   res = cogl_pipeline_set_layer_point_sprite_coords_enabled (pipeline,
@@ -76,12 +76,12 @@ do_test (CoglBool check_orientation)
                                    COGL_PIPELINE_FILTER_NEAREST);
   cogl_pipeline_set_point_size (pipeline, POINT_SIZE);
 
-  prim = cogl_primitive_new_p2t2 (ctx,
+  prim = cogl_primitive_new_p2t2 (test_ctx,
                                   COGL_VERTICES_MODE_POINTS,
                                   1, /* n_vertices */
                                   &point);
 
-  cogl_framebuffer_draw_primitive (fb,
+  cogl_framebuffer_draw_primitive (test_fb,
                                    pipeline,
                                    prim);
 
@@ -94,36 +94,36 @@ do_test (CoglBool check_orientation)
                                                        /* enable */
                                                        FALSE,
                                                        &error);
-  cogl_framebuffer_push_matrix (fb);
-  cogl_framebuffer_translate (fb,
+  cogl_framebuffer_push_matrix (test_fb);
+  cogl_framebuffer_translate (test_fb,
                               POINT_SIZE * 2, /* x */
                               0.0f, /* y */
                               0.0f /* z */);
-  cogl_framebuffer_draw_primitive (fb,
+  cogl_framebuffer_draw_primitive (test_fb,
                                    solid_pipeline,
                                    prim);
-  cogl_framebuffer_pop_matrix (fb);
+  cogl_framebuffer_pop_matrix (test_fb);
 
   cogl_object_unref (prim);
   cogl_object_unref (solid_pipeline);
   cogl_object_unref (pipeline);
   cogl_object_unref (tex_2d);
 
-  test_utils_check_pixel (fb,
+  test_utils_check_pixel (test_fb,
                           POINT_SIZE - POINT_SIZE / 4,
                           POINT_SIZE - POINT_SIZE / 4,
                           0x0000ffff);
-  test_utils_check_pixel (fb,
+  test_utils_check_pixel (test_fb,
                           POINT_SIZE + POINT_SIZE / 4,
                           POINT_SIZE - POINT_SIZE / 4,
                           0x00ff00ff);
-  test_utils_check_pixel (fb,
+  test_utils_check_pixel (test_fb,
                           POINT_SIZE - POINT_SIZE / 4,
                           POINT_SIZE + POINT_SIZE / 4,
                           check_orientation ?
                           0x00ffffff :
                           0x0000ffff);
-  test_utils_check_pixel (fb,
+  test_utils_check_pixel (test_fb,
                           POINT_SIZE + POINT_SIZE / 4,
                           POINT_SIZE + POINT_SIZE / 4,
                           check_orientation ?
@@ -133,7 +133,7 @@ do_test (CoglBool check_orientation)
   /* When rendering without the point sprites all of the texture
      coordinates should be 0,0 so it should get the top-left texel
      which is blue */
-  test_utils_check_region (fb,
+  test_utils_check_region (test_fb,
                            POINT_SIZE * 3 - POINT_SIZE / 2 + 1,
                            POINT_SIZE - POINT_SIZE / 2 + 1,
                            POINT_SIZE - 2, POINT_SIZE - 2,

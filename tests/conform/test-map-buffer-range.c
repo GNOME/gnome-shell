@@ -33,7 +33,7 @@ test_map_buffer_range (void)
   CoglAttribute *pos_attribute;
   CoglAttribute *tex_coord_attribute;
 
-  tex = cogl_texture_2d_new_from_data (ctx,
+  tex = cogl_texture_2d_new_from_data (test_ctx,
                                        2, 2, /* width/height */
                                        COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                        COGL_PIXEL_FORMAT_ANY,
@@ -41,7 +41,7 @@ test_map_buffer_range (void)
                                        tex_data,
                                        NULL /* error */);
 
-  pipeline = cogl_pipeline_new (ctx);
+  pipeline = cogl_pipeline_new (test_ctx);
 
   cogl_pipeline_set_layer_texture (pipeline, 0, COGL_TEXTURE (tex));
   cogl_pipeline_set_layer_filters (pipeline,
@@ -52,10 +52,10 @@ test_map_buffer_range (void)
                                      0, /* layer */
                                      COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE);
 
-  fb_width = cogl_framebuffer_get_width (fb);
-  fb_height = cogl_framebuffer_get_height (fb);
+  fb_width = cogl_framebuffer_get_width (test_fb);
+  fb_height = cogl_framebuffer_get_height (test_fb);
 
-  buffer = cogl_attribute_buffer_new (ctx,
+  buffer = cogl_attribute_buffer_new (test_ctx,
                                       sizeof (vertex_data),
                                       vertex_data);
 
@@ -90,11 +90,11 @@ test_map_buffer_range (void)
                         2, /* n_components */
                         COGL_ATTRIBUTE_TYPE_FLOAT);
 
-  cogl_framebuffer_clear4f (fb,
+  cogl_framebuffer_clear4f (test_fb,
                             COGL_BUFFER_BIT_COLOR,
                             0, 0, 0, 1);
 
-  cogl_framebuffer_vdraw_attributes (fb,
+  cogl_framebuffer_vdraw_attributes (test_fb,
                                      pipeline,
                                      COGL_VERTICES_MODE_TRIANGLE_STRIP,
                                      0, /* first_vertex */
@@ -104,11 +104,11 @@ test_map_buffer_range (void)
                                      NULL);
 
   /* Top left pixel should be the one that is replaced to be green */
-  test_utils_check_pixel (fb, 1, 1, 0x00ff00ff);
+  test_utils_check_pixel (test_fb, 1, 1, 0x00ff00ff);
   /* The other three corners should be left as red */
-  test_utils_check_pixel (fb, fb_width - 2, 1, 0xff0000ff);
-  test_utils_check_pixel (fb, 1, fb_height - 2, 0xff0000ff);
-  test_utils_check_pixel (fb, fb_width - 2, fb_height - 2, 0xff0000ff);
+  test_utils_check_pixel (test_fb, fb_width - 2, 1, 0xff0000ff);
+  test_utils_check_pixel (test_fb, 1, fb_height - 2, 0xff0000ff);
+  test_utils_check_pixel (test_fb, fb_width - 2, fb_height - 2, 0xff0000ff);
 
   cogl_object_unref (buffer);
   cogl_object_unref (pos_attribute);

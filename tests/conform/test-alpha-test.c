@@ -24,10 +24,10 @@ create_texture (CoglContext *context)
 void
 test_alpha_test (void)
 {
-  CoglTexture *tex = COGL_TEXTURE (create_texture (ctx));
-  CoglPipeline *pipeline = cogl_pipeline_new (ctx);
-  int fb_width = cogl_framebuffer_get_width (fb);
-  int fb_height = cogl_framebuffer_get_height (fb);
+  CoglTexture *tex = COGL_TEXTURE (create_texture (test_ctx));
+  CoglPipeline *pipeline = cogl_pipeline_new (test_ctx);
+  int fb_width = cogl_framebuffer_get_width (test_fb);
+  int fb_height = cogl_framebuffer_get_height (test_fb);
   CoglColor clear_color;
 
   cogl_pipeline_set_layer_texture (pipeline, 0, tex);
@@ -39,11 +39,11 @@ test_alpha_test (void)
                                          254 / 255.0f /* alpha reference */);
 
   cogl_color_init_from_4ub (&clear_color, 0x00, 0x00, 0xff, 0xff);
-  cogl_framebuffer_clear (fb,
+  cogl_framebuffer_clear (test_fb,
                           COGL_BUFFER_BIT_COLOR,
                           &clear_color);
 
-  cogl_framebuffer_draw_rectangle (fb,
+  cogl_framebuffer_draw_rectangle (test_fb,
                                    pipeline,
                                    -1, -1,
                                    1, 1);
@@ -53,7 +53,7 @@ test_alpha_test (void)
 
   /* The left side of the framebuffer should use the first pixel from
    * the texture which is red */
-  test_utils_check_region (fb,
+  test_utils_check_region (test_fb,
                            2, 2,
                            fb_width / 2 - 4,
                            fb_height - 4,
@@ -61,7 +61,7 @@ test_alpha_test (void)
   /* The right side of the framebuffer should use the clear color
    * because the second pixel from the texture is clipped from the
    * alpha test */
-  test_utils_check_region (fb,
+  test_utils_check_region (test_fb,
                            fb_width / 2 + 2,
                            2,
                            fb_width / 2 - 4,

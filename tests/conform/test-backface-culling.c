@@ -48,7 +48,7 @@ paint_test_backface_culling (TestState *state,
                              CoglFramebuffer *framebuffer)
 {
   int draw_num;
-  CoglPipeline *base_pipeline = cogl_pipeline_new (ctx);
+  CoglPipeline *base_pipeline = cogl_pipeline_new (test_ctx);
 
   cogl_framebuffer_orthographic (framebuffer,
                                  0, 0,
@@ -223,7 +223,7 @@ paint (TestState *state)
 {
   CoglPipeline *pipeline;
 
-  paint_test_backface_culling (state, fb);
+  paint_test_backface_culling (state, test_fb);
 
   /*
    * Now repeat the test but rendered to an offscreen
@@ -235,17 +235,17 @@ paint (TestState *state)
 
   /* Copy the result of the offscreen rendering for validation and
    * also so we can have visual feedback. */
-  pipeline = cogl_pipeline_new (ctx);
+  pipeline = cogl_pipeline_new (test_ctx);
   cogl_pipeline_set_layer_texture (pipeline, 0, state->offscreen_tex);
-  cogl_framebuffer_draw_rectangle (fb,
+  cogl_framebuffer_draw_rectangle (test_fb,
                                    pipeline,
                                    0, TEXTURE_RENDER_SIZE * 16,
                                    state->width,
                                    state->height + TEXTURE_RENDER_SIZE * 16);
   cogl_object_unref (pipeline);
 
-  validate_result (fb, 0);
-  validate_result (fb, 16);
+  validate_result (test_fb, 0);
+  validate_result (test_fb, 16);
 }
 
 static CoglTexture *
@@ -283,8 +283,8 @@ test_backface_culling (void)
   TestState state;
   CoglTexture *tex;
 
-  state.width = cogl_framebuffer_get_width (fb);
-  state.height = cogl_framebuffer_get_height (fb);
+  state.width = cogl_framebuffer_get_width (test_fb);
+  state.height = cogl_framebuffer_get_height (test_fb);
 
   state.offscreen = NULL;
 

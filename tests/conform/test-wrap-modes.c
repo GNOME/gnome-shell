@@ -45,7 +45,7 @@ create_pipeline (TestState *state,
 {
   CoglPipeline *pipeline;
 
-  pipeline = cogl_pipeline_new (ctx);
+  pipeline = cogl_pipeline_new (test_ctx);
   cogl_pipeline_set_layer_texture (pipeline, 0, state->texture);
   cogl_pipeline_set_layer_filters (pipeline, 0,
                                    COGL_PIPELINE_FILTER_NEAREST,
@@ -94,7 +94,7 @@ draw_tests (TestState *state)
       wrap_mode_t = wrap_modes[i + 1];
       pipeline = create_pipeline (state, wrap_mode_s, wrap_mode_t);
       /* Render the pipeline at four times the size of the texture */
-      cogl_framebuffer_draw_textured_rectangle (fb,
+      cogl_framebuffer_draw_textured_rectangle (test_fb,
                                                 pipeline,
                                                 i * TEX_SIZE,
                                                 0,
@@ -186,7 +186,7 @@ validate_set (TestState *state, int offset)
       wrap_mode_s = wrap_modes[i];
       wrap_mode_t = wrap_modes[i + 1];
 
-      cogl_framebuffer_read_pixels (fb, i * TEX_SIZE, offset * TEX_SIZE * 2,
+      cogl_framebuffer_read_pixels (test_fb, i * TEX_SIZE, offset * TEX_SIZE * 2,
                                     TEX_SIZE * 2, TEX_SIZE * 2,
                                     COGL_PIXEL_FORMAT_RGBA_8888,
                                     data);
@@ -273,10 +273,10 @@ test_wrap_modes (void)
 {
   TestState state;
 
-  state.width = cogl_framebuffer_get_width (fb);
-  state.height = cogl_framebuffer_get_height (fb);
+  state.width = cogl_framebuffer_get_width (test_fb);
+  state.height = cogl_framebuffer_get_height (test_fb);
 
-  cogl_framebuffer_orthographic (fb,
+  cogl_framebuffer_orthographic (test_fb,
                                  0, 0,
                                  state.width,
                                  state.height,
@@ -285,7 +285,7 @@ test_wrap_modes (void)
 
   /* XXX: we have to push/pop a framebuffer since this test currently
    * uses the legacy cogl_vertex_buffer_draw() api. */
-  cogl_push_framebuffer (fb);
+  cogl_push_framebuffer (test_fb);
   paint (&state);
   cogl_pop_framebuffer ();
 

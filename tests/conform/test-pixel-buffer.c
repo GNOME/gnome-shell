@@ -188,9 +188,9 @@ draw_frame (TestState *state)
   /* Paint the textures */
   for (i = 0; i < NB_TILES; i++)
     {
-      CoglPipeline *pipeline = cogl_pipeline_new (ctx);
+      CoglPipeline *pipeline = cogl_pipeline_new (test_ctx);
       cogl_pipeline_set_layer_texture (pipeline, 0, state->tiles[i].texture);
-      cogl_framebuffer_draw_rectangle (fb,
+      cogl_framebuffer_draw_rectangle (test_fb,
                                        pipeline,
                                        state->tiles[i].x,
                                        state->tiles[i].y,
@@ -205,7 +205,7 @@ static void
 validate_tile (TestState *state,
                TestTile  *tile)
 {
-  test_utils_check_region (fb,
+  test_utils_check_region (test_fb,
                            tile->x, tile->y,
                            TILE_SIZE, TILE_SIZE,
                            (tile->color[0] << 24) |
@@ -242,20 +242,20 @@ test_pixel_buffer (void)
         { { 0x7e, 0xff, 0x7e, 0xff }, 0.0f, TILE_SIZE, NULL, NULL }
     };
 
-  state.width = cogl_framebuffer_get_width (fb);
-  state.height = cogl_framebuffer_get_height (fb);
-  cogl_framebuffer_orthographic (fb,
+  state.width = cogl_framebuffer_get_width (test_fb);
+  state.height = cogl_framebuffer_get_height (test_fb);
+  cogl_framebuffer_orthographic (test_fb,
                                  0, 0,
                                  state.width,
                                  state.height,
                                  -1,
                                  100);
 
-  create_map_tile (ctx, &tiles[TILE_MAP]);
+  create_map_tile (test_ctx, &tiles[TILE_MAP]);
 #if 0
   create_set_region_tile (shared_state->ctx, &tiles[TILE_SET_REGION]);
 #endif
-  create_set_data_tile (ctx, &tiles[TILE_SET_DATA]);
+  create_set_data_tile (test_ctx, &tiles[TILE_SET_DATA]);
 
   state.tiles = tiles;
 

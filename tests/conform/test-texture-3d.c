@@ -73,8 +73,8 @@ create_texture_3d (CoglContext *context)
 static void
 draw_frame (TestState *state)
 {
-  CoglTexture *tex = COGL_TEXTURE (create_texture_3d (ctx));
-  CoglPipeline *pipeline = cogl_pipeline_new (ctx);
+  CoglTexture *tex = COGL_TEXTURE (create_texture_3d (test_ctx));
+  CoglPipeline *pipeline = cogl_pipeline_new (test_ctx);
   typedef struct { float x, y, s, t, r; } Vert;
   CoglPrimitive *primitive;
   CoglAttributeBuffer *attribute_buffer;
@@ -91,7 +91,7 @@ draw_frame (TestState *state)
   /* Render the texture repeated horizontally twice using a regular
      cogl rectangle. This should end up with the r texture coordinates
      as zero */
-  cogl_framebuffer_draw_textured_rectangle (fb, pipeline,
+  cogl_framebuffer_draw_textured_rectangle (test_fb, pipeline,
                                             0.0f, 0.0f, TEX_WIDTH * 2, TEX_HEIGHT,
                                             0.0f, 0.0f, 2.0f, 1.0f);
 
@@ -131,7 +131,7 @@ draw_frame (TestState *state)
       v++;
     }
 
-  attribute_buffer = cogl_attribute_buffer_new (ctx,
+  attribute_buffer = cogl_attribute_buffer_new (test_ctx,
                                                 4 * TEX_DEPTH * sizeof (Vert),
                                                 verts);
   attributes[0] = cogl_attribute_new (attribute_buffer,
@@ -152,11 +152,11 @@ draw_frame (TestState *state)
                                                   2 /* n_attributes */);
 
   cogl_primitive_set_indices (primitive,
-                              cogl_get_rectangle_indices (ctx,
+                              cogl_get_rectangle_indices (test_ctx,
                                                           TEX_DEPTH),
                               6 * TEX_DEPTH);
 
-  cogl_framebuffer_draw_primitive (fb, pipeline, primitive);
+  cogl_framebuffer_draw_primitive (test_fb, pipeline, primitive);
 
   g_free (verts);
 
@@ -174,7 +174,7 @@ validate_block (int block_x, int block_y, int z)
 
   for (y = 0; y < TEX_HEIGHT; y++)
     for (x = 0; x < TEX_WIDTH; x++)
-      test_utils_check_pixel_rgb (fb,
+      test_utils_check_pixel_rgb (test_fb,
                                   block_x * TEX_WIDTH + x,
                                   block_y * TEX_HEIGHT + y,
                                   255 - x * 8,
@@ -201,20 +201,20 @@ test_multi_texture (TestState *state)
   CoglTexture2D *tex_2d;
   uint8_t tex_data[4];
 
-  cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
+  cogl_framebuffer_clear4f (test_fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
 
   /* Tests a pipeline that is using multi-texturing to combine a 3D
      texture with a 2D texture. The texture from another layer is
      sampled with TEXTURE_? just to pick up a specific bug that was
      happening with the ARBfp fragend */
 
-  pipeline = cogl_pipeline_new (ctx);
+  pipeline = cogl_pipeline_new (test_ctx);
 
   tex_data[0] = 0xff;
   tex_data[1] = 0x00;
   tex_data[2] = 0x00;
   tex_data[3] = 0xff;
-  tex_2d = cogl_texture_2d_new_from_data (ctx,
+  tex_2d = cogl_texture_2d_new_from_data (test_ctx,
                                           1, 1, /* width/height */
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
@@ -227,7 +227,7 @@ test_multi_texture (TestState *state)
   tex_data[1] = 0xff;
   tex_data[2] = 0x00;
   tex_data[3] = 0xff;
-  tex_3d = cogl_texture_3d_new_from_data (ctx,
+  tex_3d = cogl_texture_3d_new_from_data (test_ctx,
                                           1, 1, 1, /* width/height/depth */
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
@@ -244,9 +244,9 @@ test_multi_texture (TestState *state)
                                    "RGBA = ADD(TEXTURE_0, TEXTURE_1)",
                                    NULL);
 
-  cogl_framebuffer_draw_rectangle (fb, pipeline, 0, 0, 10, 10);
+  cogl_framebuffer_draw_rectangle (test_fb, pipeline, 0, 0, 10, 10);
 
-  test_utils_check_pixel (fb, 5, 5, 0xffff00ff);
+  test_utils_check_pixel (test_fb, 5, 5, 0xffff00ff);
 
   cogl_object_unref (tex_2d);
   cogl_object_unref (tex_3d);
@@ -258,14 +258,14 @@ test_texture_3d (void)
 {
   /* Check whether GL supports the rectangle extension. If not we'll
      just assume the test passes */
-  if (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_3D))
+  if (cogl_has_feature (test_ctx, COGL_FEATURE_ID_TEXTURE_3D))
     {
       TestState state;
 
-      state.fb_width = cogl_framebuffer_get_width (fb);
-      state.fb_height = cogl_framebuffer_get_height (fb);
+      state.fb_width = cogl_framebuffer_get_width (test_fb);
+      state.fb_height = cogl_framebuffer_get_height (test_fb);
 
-      cogl_framebuffer_orthographic (fb,
+      cogl_framebuffer_orthographic (test_fb,
                                      0, 0, /* x_1, y_1 */
                                      state.fb_width, /* x_2 */
                                      state.fb_height /* y_2 */,

@@ -97,7 +97,7 @@ paint_legacy (TestState *state)
 static void
 paint (TestState *state)
 {
-  CoglPipeline *pipeline = cogl_pipeline_new (ctx);
+  CoglPipeline *pipeline = cogl_pipeline_new (test_ctx);
   CoglTexture *tex;
   CoglColor color;
   CoglError *error = NULL;
@@ -179,10 +179,10 @@ test_just_vertex_shader (void)
 {
   TestState state;
 
-  cogl_framebuffer_orthographic (fb,
+  cogl_framebuffer_orthographic (test_fb,
                                  0, 0,
-                                 cogl_framebuffer_get_width (fb),
-                                 cogl_framebuffer_get_height (fb),
+                                 cogl_framebuffer_get_width (test_fb),
+                                 cogl_framebuffer_get_height (test_fb),
                                  -1,
                                  100);
 
@@ -191,13 +191,13 @@ test_just_vertex_shader (void)
     {
       /* XXX: we have to push/pop a framebuffer since this test currently
        * uses the legacy cogl_rectangle() api. */
-      cogl_push_framebuffer (fb);
+      cogl_push_framebuffer (test_fb);
 
       paint_legacy (&state);
-      validate_result (fb);
+      validate_result (test_fb);
 
       paint (&state);
-      validate_result (fb);
+      validate_result (test_fb);
 
       cogl_pop_framebuffer ();
 

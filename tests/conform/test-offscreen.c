@@ -32,7 +32,7 @@ check_quadrant (TestState *state,
   width -= 4;
   height -= 4;
 
-  test_utils_check_region (fb, x, y, width, height, expected_rgba);
+  test_utils_check_region (test_fb, x, y, width, height, expected_rgba);
 }
 
 static void
@@ -42,7 +42,7 @@ test_paint (TestState *state)
   CoglTexture *tex;
   CoglOffscreen *offscreen;
 
-  tex_2d = cogl_texture_2d_new_with_size (ctx,
+  tex_2d = cogl_texture_2d_new_with_size (test_ctx,
                                           state->fb_width,
                                           state->fb_height,
                                           COGL_PIXEL_FORMAT_RGBA_8888_PRE,
@@ -125,7 +125,7 @@ test_flush (TestState *state)
          the contents of the texture will automatically flush the
          journal */
 
-      tex_2d = cogl_texture_2d_new_with_size (ctx,
+      tex_2d = cogl_texture_2d_new_with_size (test_ctx,
                                               16, 16, /* width/height */
                                               COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                               NULL);
@@ -169,7 +169,7 @@ test_flush (TestState *state)
           /* Third time try drawing the texture to the screen */
           cogl_set_source_texture (tex);
           cogl_rectangle (-1, -1, 1, 1);
-          test_utils_check_region (fb,
+          test_utils_check_region (test_fb,
                                    2, 2, /* x/y */
                                    state->fb_width - 4,
                                    state->fb_height - 4,
@@ -186,12 +186,12 @@ test_offscreen (void)
 {
   TestState state;
 
-  state.fb_width = cogl_framebuffer_get_width (fb);
-  state.fb_height = cogl_framebuffer_get_height (fb);
+  state.fb_width = cogl_framebuffer_get_width (test_fb);
+  state.fb_height = cogl_framebuffer_get_height (test_fb);
 
   /* XXX: we have to push/pop a framebuffer since this test currently
    * uses the legacy cogl_rectangle() api. */
-  cogl_push_framebuffer (fb);
+  cogl_push_framebuffer (test_fb);
   test_paint (&state);
   test_flush (&state);
   cogl_pop_framebuffer ();

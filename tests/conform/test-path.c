@@ -17,12 +17,12 @@ typedef struct _TestState
 static void
 draw_path_at (CoglPath *path, CoglPipeline *pipeline, int x, int y)
 {
-  cogl_framebuffer_push_matrix (fb);
-  cogl_framebuffer_translate (fb, x * BLOCK_SIZE, y * BLOCK_SIZE, 0.0f);
+  cogl_framebuffer_push_matrix (test_fb);
+  cogl_framebuffer_translate (test_fb, x * BLOCK_SIZE, y * BLOCK_SIZE, 0.0f);
 
-  cogl_framebuffer_fill_path (fb, pipeline, path);
+  cogl_framebuffer_fill_path (test_fb, pipeline, path);
 
-  cogl_framebuffer_pop_matrix (fb);
+  cogl_framebuffer_pop_matrix (test_fb);
 }
 
 static void
@@ -35,7 +35,7 @@ check_block (int block_x, int block_y, int block_mask)
      filled. The bits from 0->3 represent the top left, top right,
      bottom left and bottom right respectively */
 
-  cogl_framebuffer_read_pixels (fb,
+  cogl_framebuffer_read_pixels (test_fb,
                                 block_x * BLOCK_SIZE,
                                 block_y * BLOCK_SIZE,
                                 BLOCK_SIZE, BLOCK_SIZE,
@@ -67,7 +67,7 @@ static void
 paint (TestState *state)
 {
   CoglPath *path_a, *path_b, *path_c;
-  CoglPipeline *white = cogl_pipeline_new (ctx);
+  CoglPipeline *white = cogl_pipeline_new (test_ctx);
 
   cogl_pipeline_set_color4f (white, 1, 1, 1, 1);
 
@@ -200,10 +200,10 @@ test_path (void)
 {
   TestState state;
 
-  cogl_framebuffer_orthographic (fb,
+  cogl_framebuffer_orthographic (test_fb,
                                  0, 0,
-                                 cogl_framebuffer_get_width (fb),
-                                 cogl_framebuffer_get_height (fb),
+                                 cogl_framebuffer_get_width (test_fb),
+                                 cogl_framebuffer_get_height (test_fb),
                                  -1,
                                  100);
 

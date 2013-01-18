@@ -7,7 +7,7 @@
 static CoglPipeline *
 create_two_layer_pipeline (void)
 {
-  CoglPipeline *pipeline = cogl_pipeline_new (ctx);
+  CoglPipeline *pipeline = cogl_pipeline_new (test_ctx);
   CoglColor color;
 
   /* The pipeline is initially black */
@@ -37,13 +37,13 @@ test_color (CoglPipeline *pipeline,
             uint32_t color,
             int pos)
 {
-  cogl_framebuffer_draw_rectangle (fb,
+  cogl_framebuffer_draw_rectangle (test_fb,
                                    pipeline,
                                    pos * TEST_SQUARE_SIZE,
                                    0,
                                    pos * TEST_SQUARE_SIZE + TEST_SQUARE_SIZE,
                                    TEST_SQUARE_SIZE);
-  test_utils_check_pixel (fb,
+  test_utils_check_pixel (test_fb,
                           pos * TEST_SQUARE_SIZE + TEST_SQUARE_SIZE / 2,
                           TEST_SQUARE_SIZE / 2,
                           color);
@@ -56,10 +56,10 @@ test_layer_remove (void)
   CoglColor color;
   int pos = 0;
 
-  cogl_framebuffer_orthographic (fb,
+  cogl_framebuffer_orthographic (test_fb,
                                  0, 0,
-                                 cogl_framebuffer_get_width (fb),
-                                 cogl_framebuffer_get_height (fb),
+                                 cogl_framebuffer_get_width (test_fb),
+                                 cogl_framebuffer_get_height (test_fb),
                                  -1,
                                  100);
 

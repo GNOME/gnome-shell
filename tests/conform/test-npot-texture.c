@@ -33,7 +33,7 @@ validate_part (int xnum,
                int ynum,
                uint32_t color)
 {
-  test_utils_check_region (fb,
+  test_utils_check_region (test_fb,
                            xnum * PART_RENDER_SIZE + TEST_INSET,
                            ynum * PART_RENDER_SIZE + TEST_INSET,
                            PART_RENDER_SIZE - TEST_INSET * 2,
@@ -106,7 +106,7 @@ make_texture (void)
     }
 
   /* The texture should be sliced unless NPOTs are supported */
-  g_assert (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT)
+  g_assert (cogl_has_feature (test_ctx, COGL_FEATURE_ID_TEXTURE_NPOT)
             ? !cogl_texture_is_sliced (tex)
             : cogl_texture_is_sliced (tex));
 
@@ -116,7 +116,7 @@ make_texture (void)
 static void
 paint (void)
 {
-  CoglPipeline *pipeline = cogl_pipeline_new (ctx);
+  CoglPipeline *pipeline = cogl_pipeline_new (test_ctx);
   CoglTexture *texture = make_texture ();
   int y, x;
 
@@ -126,7 +126,7 @@ paint (void)
   /* Render the texture using four separate rectangles */
   for (y = 0; y < 2; y++)
     for (x = 0; x < 2; x++)
-      cogl_framebuffer_draw_textured_rectangle (fb,
+      cogl_framebuffer_draw_textured_rectangle (test_fb,
                                                 pipeline,
                                                 x * TEXTURE_RENDER_SIZE / 2,
                                                 y * TEXTURE_RENDER_SIZE / 2,
@@ -148,16 +148,16 @@ test_npot_texture (void)
 {
   if (cogl_test_verbose ())
     {
-      if (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT))
+      if (cogl_has_feature (test_ctx, COGL_FEATURE_ID_TEXTURE_NPOT))
         g_print ("NPOT textures are supported\n");
       else
         g_print ("NPOT textures are not supported\n");
     }
 
-  cogl_framebuffer_orthographic (fb,
+  cogl_framebuffer_orthographic (test_fb,
                                  0, 0,
-                                 cogl_framebuffer_get_width (fb),
-                                 cogl_framebuffer_get_height (fb),
+                                 cogl_framebuffer_get_width (test_fb),
+                                 cogl_framebuffer_get_height (test_fb),
                                  -1,
                                  100);
 

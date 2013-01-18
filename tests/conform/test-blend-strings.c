@@ -60,7 +60,7 @@ test_blend (TestState *state,
   int x_off;
 
   /* First write out the destination color without any blending... */
-  pipeline = cogl_pipeline_new (ctx);
+  pipeline = cogl_pipeline_new (test_ctx);
   cogl_pipeline_set_color4ub (pipeline, Dr, Dg, Db, Da);
   cogl_pipeline_set_blend (pipeline, "RGBA = ADD (SRC_COLOR, 0)", NULL);
   cogl_set_source (pipeline);
@@ -74,7 +74,7 @@ test_blend (TestState *state,
    * Now blend a rectangle over our well defined destination:
    */
 
-  pipeline = cogl_pipeline_new (ctx);
+  pipeline = cogl_pipeline_new (test_ctx);
   cogl_pipeline_set_color4ub (pipeline, Sr, Sg, Sb, Sa);
 
   status = cogl_pipeline_set_blend (pipeline, blend_string, &error);
@@ -118,7 +118,7 @@ test_blend (TestState *state,
         g_print ("  blend constant = UNUSED\n");
     }
 
-  test_utils_check_pixel (fb, x_off, y_off, expected_result);
+  test_utils_check_pixel (test_fb, x_off, y_off, expected_result);
 
 
   /*
@@ -171,7 +171,7 @@ test_blend (TestState *state,
 
   /* See what we got... */
 
-  test_utils_check_pixel (fb, x_off, y_off, expected_result);
+  test_utils_check_pixel (test_fb, x_off, y_off, expected_result);
 }
 
 static CoglTexture *
@@ -288,7 +288,7 @@ test_tex_combine (TestState *state,
         g_print ("  combine constant = UNUSED\n");
     }
 
-  test_utils_check_pixel (fb, x_off, y_off, expected_result);
+  test_utils_check_pixel (test_fb, x_off, y_off, expected_result);
 }
 
 static void
@@ -412,15 +412,15 @@ test_blend_strings (void)
 {
   TestState state;
 
-  cogl_framebuffer_orthographic (fb, 0, 0,
-                                 cogl_framebuffer_get_width (fb),
-                                 cogl_framebuffer_get_height (fb),
+  cogl_framebuffer_orthographic (test_fb, 0, 0,
+                                 cogl_framebuffer_get_width (test_fb),
+                                 cogl_framebuffer_get_height (test_fb),
                                  -1,
                                  100);
 
   /* XXX: we have to push/pop a framebuffer since this test currently
    * uses the legacy cogl_rectangle() api. */
-  cogl_push_framebuffer (fb);
+  cogl_push_framebuffer (test_fb);
   paint (&state);
   cogl_pop_framebuffer ();
 

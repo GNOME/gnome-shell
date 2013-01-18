@@ -23,7 +23,7 @@ test_prim_p2 (CoglContext *ctx, uint32_t *expected_color)
   static const CoglVertexP2 verts[] =
     { { 0, 0 }, { 0, 10 }, { 10, 0 } };
 
-  return cogl_primitive_new_p2 (ctx,
+  return cogl_primitive_new_p2 (test_ctx,
                                 COGL_VERTICES_MODE_TRIANGLES,
                                 3, /* n_vertices */
                                 verts);
@@ -35,7 +35,7 @@ test_prim_p3 (CoglContext *ctx, uint32_t *expected_color)
   static const CoglVertexP3 verts[] =
     { { 0, 0, 0 }, { 0, 10, 0 }, { 10, 0, 0 } };
 
-  return cogl_primitive_new_p3 (ctx,
+  return cogl_primitive_new_p3 (test_ctx,
                                 COGL_VERTICES_MODE_TRIANGLES,
                                 3, /* n_vertices */
                                 verts);
@@ -51,7 +51,7 @@ test_prim_p2c4 (CoglContext *ctx, uint32_t *expected_color)
 
   *expected_color = 0xffff00ff;
 
-  return cogl_primitive_new_p2c4 (ctx,
+  return cogl_primitive_new_p2c4 (test_ctx,
                                   COGL_VERTICES_MODE_TRIANGLES,
                                   3, /* n_vertices */
                                   verts);
@@ -67,7 +67,7 @@ test_prim_p3c4 (CoglContext *ctx, uint32_t *expected_color)
 
   *expected_color = 0xffff00ff;
 
-  return cogl_primitive_new_p3c4 (ctx,
+  return cogl_primitive_new_p3c4 (test_ctx,
                                   COGL_VERTICES_MODE_TRIANGLES,
                                   3, /* n_vertices */
                                   verts);
@@ -83,7 +83,7 @@ test_prim_p2t2 (CoglContext *ctx, uint32_t *expected_color)
 
   *expected_color = TEX_COLOR;
 
-  return cogl_primitive_new_p2t2 (ctx,
+  return cogl_primitive_new_p2t2 (test_ctx,
                                   COGL_VERTICES_MODE_TRIANGLES,
                                   3, /* n_vertices */
                                   verts);
@@ -99,7 +99,7 @@ test_prim_p3t2 (CoglContext *ctx, uint32_t *expected_color)
 
   *expected_color = TEX_COLOR;
 
-  return cogl_primitive_new_p3t2 (ctx,
+  return cogl_primitive_new_p3t2 (test_ctx,
                                   COGL_VERTICES_MODE_TRIANGLES,
                                   3, /* n_vertices */
                                   verts);
@@ -116,7 +116,7 @@ test_prim_p2t2c4 (CoglContext *ctx, uint32_t *expected_color)
   /* The blue component of the texture color should be replaced with 0xf0 */
   *expected_color = (TEX_COLOR & 0xffff00ff) | 0x0000f000;
 
-  return cogl_primitive_new_p2t2c4 (ctx,
+  return cogl_primitive_new_p2t2c4 (test_ctx,
                                     COGL_VERTICES_MODE_TRIANGLES,
                                     3, /* n_vertices */
                                     verts);
@@ -133,7 +133,7 @@ test_prim_p3t2c4 (CoglContext *ctx, uint32_t *expected_color)
   /* The blue component of the texture color should be replaced with 0xf0 */
   *expected_color = (TEX_COLOR & 0xffff00ff) | 0x0000f000;
 
-  return cogl_primitive_new_p3t2c4 (ctx,
+  return cogl_primitive_new_p3t2c4 (test_ctx,
                                     COGL_VERTICES_MODE_TRIANGLES,
                                     3, /* n_vertices */
                                     verts);
@@ -176,7 +176,7 @@ test_paint (TestState *state)
                                     COGL_PIXEL_FORMAT_ANY,
                                     6, /* rowstride */
                                     tex_data);
-  pipeline = cogl_pipeline_new (ctx);
+  pipeline = cogl_pipeline_new (test_ctx);
   cogl_pipeline_set_color4ub (pipeline,
                               (PRIM_COLOR >> 24) & 0xff,
                               (PRIM_COLOR >> 16) & 0xff,
@@ -190,14 +190,14 @@ test_paint (TestState *state)
       CoglPrimitive *prim;
       uint32_t expected_color = PRIM_COLOR;
 
-      prim = test_prim_funcs[i] (ctx, &expected_color);
+      prim = test_prim_funcs[i] (test_ctx, &expected_color);
 
-      cogl_framebuffer_push_matrix (fb);
-      cogl_framebuffer_translate (fb, i * 10, 0, 0);
-      cogl_framebuffer_draw_primitive (fb, pipeline, prim);
-      cogl_framebuffer_pop_matrix (fb);
+      cogl_framebuffer_push_matrix (test_fb);
+      cogl_framebuffer_translate (test_fb, i * 10, 0, 0);
+      cogl_framebuffer_draw_primitive (test_fb, pipeline, prim);
+      cogl_framebuffer_pop_matrix (test_fb);
 
-      test_utils_check_pixel (fb, i * 10 + 2, 2, expected_color);
+      test_utils_check_pixel (test_fb, i * 10 + 2, 2, expected_color);
 
       cogl_object_unref (prim);
     }
@@ -234,7 +234,7 @@ test_copy (TestState *state)
 {
   static const uint16_t indices_data[2] = { 1, 2 };
   CoglAttributeBuffer *buffer =
-    cogl_attribute_buffer_new (ctx, 100, NULL);
+    cogl_attribute_buffer_new (test_ctx, 100, NULL);
   CoglAttribute *attributes[N_ATTRIBS];
   CoglAttribute *attributes_a[N_ATTRIBS], *attributes_b[N_ATTRIBS];
   CoglAttribute **p;
@@ -259,7 +259,7 @@ test_copy (TestState *state)
                                                attributes,
                                                N_ATTRIBS);
 
-  indices = cogl_indices_new (ctx,
+  indices = cogl_indices_new (test_ctx,
                               COGL_INDICES_TYPE_UNSIGNED_SHORT,
                               indices_data,
                               2 /* n_indices */);
@@ -316,10 +316,10 @@ test_primitive (void)
 {
   TestState state;
 
-  state.fb_width = cogl_framebuffer_get_width (fb);
-  state.fb_height = cogl_framebuffer_get_height (fb);
+  state.fb_width = cogl_framebuffer_get_width (test_fb);
+  state.fb_height = cogl_framebuffer_get_height (test_fb);
 
-  cogl_framebuffer_orthographic (fb,
+  cogl_framebuffer_orthographic (test_fb,
                                  0, 0,
                                  state.fb_width,
                                  state.fb_height,

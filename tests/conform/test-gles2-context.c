@@ -24,17 +24,17 @@ test_push_pop_single_context (void)
   CoglError *error = NULL;
 
   offscreen_texture = COGL_TEXTURE (
-    cogl_texture_2d_new_with_size (ctx,
-                                   cogl_framebuffer_get_width (fb),
-                                   cogl_framebuffer_get_height (fb),
+    cogl_texture_2d_new_with_size (test_ctx,
+                                   cogl_framebuffer_get_width (test_fb),
+                                   cogl_framebuffer_get_height (test_fb),
                                    COGL_PIXEL_FORMAT_ANY,
                                    NULL));
   offscreen = cogl_offscreen_new_to_texture (offscreen_texture);
 
-  pipeline = cogl_pipeline_new (ctx);
+  pipeline = cogl_pipeline_new (test_ctx);
   cogl_pipeline_set_layer_texture (pipeline, 0, offscreen_texture);
 
-  gles2_ctx = cogl_gles2_context_new (ctx, &error);
+  gles2_ctx = cogl_gles2_context_new (test_ctx, &error);
   if (!gles2_ctx)
     g_error ("Failed to create GLES2 context: %s\n", error->message);
 
@@ -42,10 +42,10 @@ test_push_pop_single_context (void)
 
   /* Clear onscreen to 0xffff00 using GLES2 */
 
-  if (!cogl_push_gles2_context (ctx,
+  if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx,
-                                fb,
-                                fb,
+                                test_fb,
+                                test_fb,
                                 &error))
     {
       g_error ("Failed to push gles2 context: %s\n", error->message);
@@ -54,9 +54,9 @@ test_push_pop_single_context (void)
   gles2->glClearColor (1, 1, 0, 1);
   gles2->glClear (GL_COLOR_BUFFER_BIT);
 
-  cogl_pop_gles2_context (ctx);
+  cogl_pop_gles2_context (test_ctx);
 
-  test_utils_check_pixel (fb, 0, 0, 0xffff00ff);
+  test_utils_check_pixel (test_fb, 0, 0, 0xffff00ff);
 
   /* Clear offscreen to 0xff0000 using GLES2 and then copy the result
    * onscreen.
@@ -66,7 +66,7 @@ test_push_pop_single_context (void)
    * instead.
    */
 
-  if (!cogl_push_gles2_context (ctx,
+  if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx,
                                 COGL_FRAMEBUFFER (offscreen),
                                 COGL_FRAMEBUFFER (offscreen),
@@ -78,9 +78,9 @@ test_push_pop_single_context (void)
   gles2->glClearColor (1, 0, 0, 1);
   gles2->glClear (GL_COLOR_BUFFER_BIT);
 
-  cogl_pop_gles2_context (ctx);
+  cogl_pop_gles2_context (test_ctx);
 
-  cogl_framebuffer_draw_rectangle (fb,
+  cogl_framebuffer_draw_rectangle (test_fb,
                                    pipeline,
                                    -1, 1, 1, -1);
   /* NB: Cogl doesn't automatically support mid-scene modifications
@@ -93,7 +93,7 @@ test_push_pop_single_context (void)
    * reading back from the onscreen framebuffer in case we mistakenly
    * read from the offscreen framebuffer and get a false positive
    */
-  if (!cogl_push_gles2_context (ctx,
+  if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx,
                                 COGL_FRAMEBUFFER (offscreen),
                                 COGL_FRAMEBUFFER (offscreen),
@@ -105,22 +105,22 @@ test_push_pop_single_context (void)
   gles2->glClearColor (0, 0, 1, 1);
   gles2->glClear (GL_COLOR_BUFFER_BIT);
 
-  cogl_pop_gles2_context (ctx);
+  cogl_pop_gles2_context (test_ctx);
 
-  test_utils_check_pixel (fb, 0, 0, 0xff0000ff);
+  test_utils_check_pixel (test_fb, 0, 0, 0xff0000ff);
 
   /* Now copy the offscreen blue clear to the onscreen framebufer and
    * check that too */
-  cogl_framebuffer_draw_rectangle (fb,
+  cogl_framebuffer_draw_rectangle (test_fb,
                                    pipeline,
                                    -1, 1, 1, -1);
 
-  test_utils_check_pixel (fb, 0, 0, 0x0000ffff);
+  test_utils_check_pixel (test_fb, 0, 0, 0x0000ffff);
 
-  if (!cogl_push_gles2_context (ctx,
+  if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx,
-                                fb,
-                                fb,
+                                test_fb,
+                                test_fb,
                                 &error))
     {
       g_error ("Failed to push gles2 context: %s\n", error->message);
@@ -129,9 +129,9 @@ test_push_pop_single_context (void)
   gles2->glClearColor (1, 0, 1, 1);
   gles2->glClear (GL_COLOR_BUFFER_BIT);
 
-  cogl_pop_gles2_context (ctx);
+  cogl_pop_gles2_context (test_ctx);
 
-  test_utils_check_pixel (fb, 0, 0, 0xff00ffff);
+  test_utils_check_pixel (test_fb, 0, 0, 0xff00ffff);
 
 
   cogl_object_unref (gles2_ctx);
@@ -149,17 +149,17 @@ create_gles2_context (CoglTexture **offscreen_texture,
   CoglError *error = NULL;
 
   *offscreen_texture = COGL_TEXTURE (
-    cogl_texture_2d_new_with_size (ctx,
-                                   cogl_framebuffer_get_width (fb),
-                                   cogl_framebuffer_get_height (fb),
+    cogl_texture_2d_new_with_size (test_ctx,
+                                   cogl_framebuffer_get_width (test_fb),
+                                   cogl_framebuffer_get_height (test_fb),
                                    COGL_PIXEL_FORMAT_ANY,
                                    NULL));
   *offscreen = cogl_offscreen_new_to_texture (*offscreen_texture);
 
-  *pipeline = cogl_pipeline_new (ctx);
+  *pipeline = cogl_pipeline_new (test_ctx);
   cogl_pipeline_set_layer_texture (*pipeline, 0, *offscreen_texture);
 
-  *gles2_ctx = cogl_gles2_context_new (ctx, &error);
+  *gles2_ctx = cogl_gles2_context_new (test_ctx, &error);
   if (!*gles2_ctx)
     g_error ("Failed to create GLES2 context: %s\n", error->message);
 
@@ -193,9 +193,9 @@ test_push_pop_multi_context (void)
                         &gles2_ctx1,
                         &gles21);
 
-  cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 1, 1, 1, 1);
+  cogl_framebuffer_clear4f (test_fb, COGL_BUFFER_BIT_COLOR, 1, 1, 1, 1);
 
-  if (!cogl_push_gles2_context (ctx,
+  if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx0,
                                 COGL_FRAMEBUFFER (offscreen0),
                                 COGL_FRAMEBUFFER (offscreen0),
@@ -207,7 +207,7 @@ test_push_pop_multi_context (void)
   gles20->glClearColor (1, 0, 0, 1);
   gles20->glClear (GL_COLOR_BUFFER_BIT);
 
-  if (!cogl_push_gles2_context (ctx,
+  if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx1,
                                 COGL_FRAMEBUFFER (offscreen1),
                                 COGL_FRAMEBUFFER (offscreen1),
@@ -219,22 +219,22 @@ test_push_pop_multi_context (void)
   gles21->glClearColor (0, 1, 0, 1);
   gles21->glClear (GL_COLOR_BUFFER_BIT);
 
-  cogl_pop_gles2_context (ctx);
-  cogl_pop_gles2_context (ctx);
+  cogl_pop_gles2_context (test_ctx);
+  cogl_pop_gles2_context (test_ctx);
 
-  test_utils_check_pixel (fb, 0, 0, 0xffffffff);
+  test_utils_check_pixel (test_fb, 0, 0, 0xffffffff);
 
-  cogl_framebuffer_draw_rectangle (fb,
+  cogl_framebuffer_draw_rectangle (test_fb,
                                    pipeline0,
                                    -1, 1, 1, -1);
 
-  test_utils_check_pixel (fb, 0, 0, 0xff0000ff);
+  test_utils_check_pixel (test_fb, 0, 0, 0xff0000ff);
 
-  cogl_framebuffer_draw_rectangle (fb,
+  cogl_framebuffer_draw_rectangle (test_fb,
                                    pipeline1,
                                    -1, 1, 1, -1);
 
-  test_utils_check_pixel (fb, 0, 0, 0x00ff00ff);
+  test_utils_check_pixel (test_fb, 0, 0, 0x00ff00ff);
 }
 
 static GLuint
@@ -288,9 +288,9 @@ test_gles2_read_pixels (void)
                         &gles2_ctx,
                         &gles2);
 
-  cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 1, 1, 1, 1);
+  cogl_framebuffer_clear4f (test_fb, COGL_BUFFER_BIT_COLOR, 1, 1, 1, 1);
 
-  if (!cogl_push_gles2_context (ctx,
+  if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx,
                                 COGL_FRAMEBUFFER (offscreen),
                                 COGL_FRAMEBUFFER (offscreen),
@@ -329,15 +329,15 @@ test_gles2_read_pixels (void)
   g_assert (pixel[1] == 0xff);
   g_assert (pixel[2] == 0xff);
 
-  cogl_pop_gles2_context (ctx);
+  cogl_pop_gles2_context (test_ctx);
 
-  test_utils_check_pixel (fb, 0, 0, 0xffffffff);
+  test_utils_check_pixel (test_fb, 0, 0, 0xffffffff);
 
   /* Bind different read and write buffers */
-  if (!cogl_push_gles2_context (ctx,
+  if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx,
                                 COGL_FRAMEBUFFER (offscreen),
-                                fb,
+                                test_fb,
                                 &error))
     {
       g_error ("Failed to push gles2 context: %s\n", error->message);
@@ -349,16 +349,16 @@ test_gles2_read_pixels (void)
   g_assert (pixel[1] == 0xff);
   g_assert (pixel[2] == 0xff);
 
-  cogl_pop_gles2_context (ctx);
+  cogl_pop_gles2_context (test_ctx);
 
-  test_utils_check_pixel (fb, 0, 0, 0xffffffff);
+  test_utils_check_pixel (test_fb, 0, 0, 0xffffffff);
 
   /* Bind different read and write buffers (the other way around from
    * before so when we test with COGL_TEST_ONSCREEN=1 we will read
    * from an onscreen framebuffer) */
-  if (!cogl_push_gles2_context (ctx,
+  if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx,
-                                fb,
+                                test_fb,
                                 COGL_FRAMEBUFFER (offscreen),
                                 &error))
     {
@@ -371,7 +371,7 @@ test_gles2_read_pixels (void)
   g_assert (pixel[1] == 0xff);
   g_assert (pixel[2] == 0xff);
 
-  cogl_pop_gles2_context (ctx);
+  cogl_pop_gles2_context (test_ctx);
 }
 
 void
@@ -674,8 +674,8 @@ test_gles2_context_fbo (void)
   int i;
   PaintData data;
 
-  data.fb_width = cogl_framebuffer_get_width (fb);
-  data.fb_height = cogl_framebuffer_get_height (fb);
+  data.fb_width = cogl_framebuffer_get_width (test_fb);
+  data.fb_height = cogl_framebuffer_get_height (test_fb);
 
   for (i = 0; i < G_N_ELEMENTS (paint_methods); i++)
     {
@@ -692,7 +692,7 @@ test_gles2_context_fbo (void)
                             &gles2_ctx,
                             &data.gles2);
 
-      if (!cogl_push_gles2_context (ctx,
+      if (!cogl_push_gles2_context (test_ctx,
                                     gles2_ctx,
                                     COGL_FRAMEBUFFER (offscreen),
                                     COGL_FRAMEBUFFER (offscreen),
@@ -720,12 +720,12 @@ test_gles2_context_fbo (void)
 
       verify_read_pixels (&data);
 
-      cogl_pop_gles2_context (ctx);
+      cogl_pop_gles2_context (test_ctx);
 
       cogl_object_unref (offscreen);
       cogl_object_unref (gles2_ctx);
 
-      cogl_framebuffer_draw_rectangle (fb,
+      cogl_framebuffer_draw_rectangle (test_fb,
                                        pipeline,
                                        -1.0f, 1.0f,
                                        1.0f, -1.0f);
@@ -734,11 +734,11 @@ test_gles2_context_fbo (void)
       cogl_object_unref (offscreen_texture);
 
       /* Top half of the framebuffer should be red */
-      test_utils_check_pixel (fb,
+      test_utils_check_pixel (test_fb,
                               data.fb_width / 2, data.fb_height / 4,
                               0xff0000ff);
       /* Bottom half should be blue */
-      test_utils_check_pixel (fb,
+      test_utils_check_pixel (test_fb,
                               data.fb_width / 2, data.fb_height * 3 / 4,
                               0x0000ffff);
     }
@@ -807,8 +807,8 @@ test_gles2_context_copy_tex_image (void)
       -1.0f, 1.0f, 0.0f, 1.0f,
       1.0f, 1.0f, 1.0f, 1.0f
     };
-  int fb_width = cogl_framebuffer_get_width (fb);
-  int fb_height = cogl_framebuffer_get_height (fb);
+  int fb_width = cogl_framebuffer_get_width (test_fb);
+  int fb_height = cogl_framebuffer_get_height (test_fb);
   CoglTexture *offscreen_texture;
   CoglOffscreen *offscreen;
   CoglPipeline *pipeline;
@@ -827,7 +827,7 @@ test_gles2_context_copy_tex_image (void)
                         &gles2_ctx,
                         &gles2);
 
-  if (!cogl_push_gles2_context (ctx,
+  if (!cogl_push_gles2_context (test_ctx,
                                 gles2_ctx,
                                 COGL_FRAMEBUFFER (offscreen),
                                 COGL_FRAMEBUFFER (offscreen),
@@ -967,7 +967,7 @@ test_gles2_context_copy_tex_image (void)
                  RECTANGLE_HEIGHT / 2,
                  0x0000ffff);
 
-  cogl_pop_gles2_context (ctx);
+  cogl_pop_gles2_context (test_ctx);
 
   cogl_object_unref (offscreen);
   cogl_object_unref (gles2_ctx);

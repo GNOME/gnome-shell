@@ -45,9 +45,9 @@ paint (TestState *state)
   /* Render all of the textures to the screen */
   for (i = 0; i < NUM_FBOS; i++)
     {
-      CoglPipeline *pipeline = cogl_pipeline_new (ctx);
+      CoglPipeline *pipeline = cogl_pipeline_new (test_ctx);
       cogl_pipeline_set_layer_texture (pipeline, 0, state->tex[i]);
-      cogl_framebuffer_draw_rectangle (fb, pipeline,
+      cogl_framebuffer_draw_rectangle (test_fb, pipeline,
                                        2.0f / NUM_FBOS * i - 1.0f, -1.0f,
                                        2.0f / NUM_FBOS * (i + 1) - 1.0f, 1.0f);
       cogl_object_unref (pipeline);
@@ -61,7 +61,7 @@ paint (TestState *state)
           { 0x00, 0xff, 0x00, 0xff },
           { 0x00, 0x00, 0xff, 0xff } };
 
-      test_utils_check_pixel_rgb (fb,
+      test_utils_check_pixel_rgb (test_fb,
                                   state->width * (i + 0.5f) / NUM_FBOS,
                                   state->height / 2,
                                   expected_colors[i][0],
@@ -76,8 +76,8 @@ test_color_mask (void)
   TestState state;
   int i;
 
-  state.width = cogl_framebuffer_get_width (fb);
-  state.height = cogl_framebuffer_get_height (fb);
+  state.width = cogl_framebuffer_get_width (test_fb);
+  state.height = cogl_framebuffer_get_height (test_fb);
 
   for (i = 0; i < NUM_FBOS; i++)
     {
@@ -101,7 +101,7 @@ test_color_mask (void)
 
   /* XXX: we have to push/pop a framebuffer since this test currently
    * uses the legacy cogl_rectangle() api. */
-  cogl_push_framebuffer (fb);
+  cogl_push_framebuffer (test_fb);
   paint (&state);
   cogl_pop_framebuffer ();
 

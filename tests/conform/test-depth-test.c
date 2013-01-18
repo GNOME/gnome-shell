@@ -54,7 +54,7 @@ draw_rectangle (TestState *state,
                               rect_state->range_near,
                               rect_state->range_far);
 
-  pipeline = cogl_pipeline_new (ctx);
+  pipeline = cogl_pipeline_new (test_ctx);
   if (!cogl_pipeline_set_depth_state (pipeline, &depth_state, NULL))
     {
       cogl_object_unref (pipeline);
@@ -65,19 +65,19 @@ draw_rectangle (TestState *state,
     {
       cogl_pipeline_set_color4ub (pipeline, Cr, Cg, Cb, Ca);
 
-      cogl_framebuffer_push_matrix (fb);
-      cogl_framebuffer_translate (fb, 0, 0, rect_state->depth);
-      cogl_framebuffer_draw_rectangle (fb,
+      cogl_framebuffer_push_matrix (test_fb);
+      cogl_framebuffer_translate (test_fb, 0, 0, rect_state->depth);
+      cogl_framebuffer_draw_rectangle (test_fb,
                                        pipeline,
                                        x * QUAD_WIDTH,
                                        y * QUAD_WIDTH,
                                        x * QUAD_WIDTH + QUAD_WIDTH,
                                        y * QUAD_WIDTH + QUAD_WIDTH);
-      cogl_framebuffer_pop_matrix (fb);
+      cogl_framebuffer_pop_matrix (test_fb);
     }
   else
     {
-      cogl_push_framebuffer (fb);
+      cogl_push_framebuffer (test_fb);
       cogl_push_matrix ();
       cogl_set_source_color4ub (Cr, Cg, Cb, Ca);
       cogl_translate (0, 0, rect_state->depth);
@@ -118,7 +118,7 @@ test_depth (TestState *state,
   if (missing_feature)
     return;
 
-  test_utils_check_pixel (fb,
+  test_utils_check_pixel (test_fb,
                           x * QUAD_WIDTH + (QUAD_WIDTH / 2),
                           y * QUAD_WIDTH + (QUAD_WIDTH / 2),
                           expected_result);
@@ -260,9 +260,9 @@ test_depth_test (void)
 {
   TestState state;
 
-  cogl_framebuffer_orthographic (fb, 0, 0,
-                                 cogl_framebuffer_get_width (fb),
-                                 cogl_framebuffer_get_height (fb),
+  cogl_framebuffer_orthographic (test_fb, 0, 0,
+                                 cogl_framebuffer_get_width (test_fb),
+                                 cogl_framebuffer_get_height (test_fb),
                                  -1,
                                  100);
 

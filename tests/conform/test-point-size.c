@@ -24,7 +24,7 @@ calc_coord_offset (int pos, int pos_index, int point_size)
 }
 
 static void
-verify_point_size (CoglFramebuffer *fb,
+verify_point_size (CoglFramebuffer *test_fb,
                    int x_pos,
                    int y_pos,
                    int point_size)
@@ -37,7 +37,7 @@ verify_point_size (CoglFramebuffer *fb,
         CoglBool in_point = x >= 1 && x <= 2 && y >= 1 && y <= 2;
         uint32_t expected_pixel = in_point ? 0x00ff00ff : 0xff0000ff;
 
-        test_utils_check_pixel (fb,
+        test_utils_check_pixel (test_fb,
                                 calc_coord_offset (x_pos, x, point_size),
                                 calc_coord_offset (y_pos, y, point_size),
                                 expected_pixel);
@@ -47,18 +47,18 @@ verify_point_size (CoglFramebuffer *fb,
 void
 test_point_size (void)
 {
-  int fb_width = cogl_framebuffer_get_width (fb);
-  int fb_height = cogl_framebuffer_get_height (fb);
+  int fb_width = cogl_framebuffer_get_width (test_fb);
+  int fb_height = cogl_framebuffer_get_height (test_fb);
   int point_size;
   int x_pos;
 
-  cogl_framebuffer_orthographic (fb,
+  cogl_framebuffer_orthographic (test_fb,
                                  0, 0, /* x_1, y_1 */
                                  fb_width, /* x_2 */
                                  fb_height /* y_2 */,
                                  -1, 100 /* near/far */);
 
-  cogl_framebuffer_clear4f (fb,
+  cogl_framebuffer_clear4f (test_fb,
                             COGL_BUFFER_BIT_COLOR,
                             1.0f, 0.0f, 0.0f, 1.0f);
 
@@ -68,18 +68,18 @@ test_point_size (void)
        point_size >= 4;
        x_pos += POINT_BOX_SIZE, point_size /= 2)
     {
-      CoglPipeline *pipeline = cogl_pipeline_new (ctx);
+      CoglPipeline *pipeline = cogl_pipeline_new (test_ctx);
       CoglVertexP2 point = { x_pos + POINT_BOX_SIZE / 2,
                              POINT_BOX_SIZE / 2 };
       CoglPrimitive *prim =
-        cogl_primitive_new_p2 (ctx,
+        cogl_primitive_new_p2 (test_ctx,
                                COGL_VERTICES_MODE_POINTS,
                                1, /* n_vertices */
                                &point);
 
       cogl_pipeline_set_point_size (pipeline, point_size);
       cogl_pipeline_set_color4ub (pipeline, 0, 255, 0, 255);
-      cogl_framebuffer_draw_primitive (fb,
+      cogl_framebuffer_draw_primitive (test_fb,
                                        pipeline,
                                        prim);
 
@@ -91,7 +91,7 @@ test_point_size (void)
   for (x_pos = 0, point_size = MAX_POINT_SIZE;
        point_size >= 4;
        x_pos += POINT_BOX_SIZE, point_size /= 2)
-    verify_point_size (fb,
+    verify_point_size (test_fb,
                        x_pos + POINT_BOX_SIZE / 2,
                        POINT_BOX_SIZE / 2,
                        point_size);

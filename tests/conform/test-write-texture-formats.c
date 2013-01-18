@@ -141,43 +141,43 @@ test_write_int (CoglContext *context,
 void
 test_write_texture_formats (void)
 {
-  test_write_byte (ctx, COGL_PIXEL_FORMAT_A_8, 0x34, 0x00000034);
+  test_write_byte (test_ctx, COGL_PIXEL_FORMAT_A_8, 0x34, 0x00000034);
 #if 0
   /* I'm not sure what's the right value to put here because Nvidia
      and Mesa seem to behave differently so one of them must be
      wrong. */
-  test_write_byte (ctx, COGL_PIXEL_FORMAT_G_8, 0x34, 0x340000ff);
+  test_write_byte (test_ctx, COGL_PIXEL_FORMAT_G_8, 0x34, 0x340000ff);
 #endif
 
-  test_write_short (ctx, COGL_PIXEL_FORMAT_RGB_565, 0x0843, 0x080819ff);
-  test_write_short (ctx, COGL_PIXEL_FORMAT_RGBA_4444_PRE, 0x1234, 0x11223344);
-  test_write_short (ctx, COGL_PIXEL_FORMAT_RGBA_5551_PRE, 0x0887, 0x081019ff);
+  test_write_short (test_ctx, COGL_PIXEL_FORMAT_RGB_565, 0x0843, 0x080819ff);
+  test_write_short (test_ctx, COGL_PIXEL_FORMAT_RGBA_4444_PRE, 0x1234, 0x11223344);
+  test_write_short (test_ctx, COGL_PIXEL_FORMAT_RGBA_5551_PRE, 0x0887, 0x081019ff);
 
-  test_write_bytes (ctx, COGL_PIXEL_FORMAT_RGB_888, 0x123456ff, 0x123456ff);
-  test_write_bytes (ctx, COGL_PIXEL_FORMAT_BGR_888, 0x563412ff, 0x123456ff);
+  test_write_bytes (test_ctx, COGL_PIXEL_FORMAT_RGB_888, 0x123456ff, 0x123456ff);
+  test_write_bytes (test_ctx, COGL_PIXEL_FORMAT_BGR_888, 0x563412ff, 0x123456ff);
 
-  test_write_bytes (ctx, COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+  test_write_bytes (test_ctx, COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                     0x12345678, 0x12345678);
-  test_write_bytes (ctx, COGL_PIXEL_FORMAT_BGRA_8888_PRE,
+  test_write_bytes (test_ctx, COGL_PIXEL_FORMAT_BGRA_8888_PRE,
                     0x56341278, 0x12345678);
-  test_write_bytes (ctx, COGL_PIXEL_FORMAT_ARGB_8888_PRE,
+  test_write_bytes (test_ctx, COGL_PIXEL_FORMAT_ARGB_8888_PRE,
                     0x78123456, 0x12345678);
-  test_write_bytes (ctx, COGL_PIXEL_FORMAT_ABGR_8888_PRE,
+  test_write_bytes (test_ctx, COGL_PIXEL_FORMAT_ABGR_8888_PRE,
                     0x78563412, 0x12345678);
 
-  test_write_int (ctx, COGL_PIXEL_FORMAT_RGBA_1010102_PRE,
+  test_write_int (test_ctx, COGL_PIXEL_FORMAT_RGBA_1010102_PRE,
                   0x123456ff,
                   10, 0x12, 10, 0x34, 10, 0x56, 2, 0xff,
                   -1);
-  test_write_int (ctx, COGL_PIXEL_FORMAT_BGRA_1010102_PRE,
+  test_write_int (test_ctx, COGL_PIXEL_FORMAT_BGRA_1010102_PRE,
                   0x123456ff,
                   10, 0x56, 10, 0x34, 10, 0x12, 2, 0xff,
                   -1);
-  test_write_int (ctx, COGL_PIXEL_FORMAT_ARGB_2101010_PRE,
+  test_write_int (test_ctx, COGL_PIXEL_FORMAT_ARGB_2101010_PRE,
                   0x123456ff,
                   2, 0xff, 10, 0x12, 10, 0x34, 10, 0x56,
                   -1);
-  test_write_int (ctx, COGL_PIXEL_FORMAT_ABGR_2101010_PRE,
+  test_write_int (test_ctx, COGL_PIXEL_FORMAT_ABGR_2101010_PRE,
                   0x123456ff,
                   2, 0xff, 10, 0x56, 10, 0x34, 10, 0x12,
                   -1);

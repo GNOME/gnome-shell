@@ -61,17 +61,17 @@ test_euler_quaternion (void)
   COMPARE_MATRICES (&matrix_a, &matrix_b);
 
   /* Try applying the rotation from a euler to a framebuffer */
-  cogl_framebuffer_identity_matrix (fb);
-  cogl_framebuffer_rotate_euler (fb, &euler);
+  cogl_framebuffer_identity_matrix (test_fb);
+  cogl_framebuffer_rotate_euler (test_fb, &euler);
   memset (&matrix_b, 0, sizeof (matrix_b));
-  cogl_framebuffer_get_modelview_matrix (fb, &matrix_b);
+  cogl_framebuffer_get_modelview_matrix (test_fb, &matrix_b);
   COMPARE_MATRICES (&matrix_a, &matrix_b);
 
   /* And again with a quaternion */
-  cogl_framebuffer_identity_matrix (fb);
-  cogl_framebuffer_rotate_quaternion (fb, &quaternion);
+  cogl_framebuffer_identity_matrix (test_fb);
+  cogl_framebuffer_rotate_quaternion (test_fb, &quaternion);
   memset (&matrix_b, 0, sizeof (matrix_b));
-  cogl_framebuffer_get_modelview_matrix (fb, &matrix_b);
+  cogl_framebuffer_get_modelview_matrix (test_fb, &matrix_b);
   COMPARE_MATRICES (&matrix_a, &matrix_b);
 
   /* FIXME: This needs a lot more tests! */

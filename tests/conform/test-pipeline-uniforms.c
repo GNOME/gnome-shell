@@ -90,7 +90,7 @@ create_pipeline_for_shader (TestState *state, const char *shader_source)
   CoglHandle shader;
   CoglHandle program;
 
-  pipeline = cogl_pipeline_new (ctx);
+  pipeline = cogl_pipeline_new (test_ctx);
 
   shader = cogl_create_shader (COGL_SHADER_TYPE_FRAGMENT);
   cogl_shader_source (shader, shader_source);
@@ -177,7 +177,7 @@ destroy_state (TestState *state)
 static void
 paint_pipeline (CoglPipeline *pipeline, int pos)
 {
-  cogl_framebuffer_draw_rectangle (fb, pipeline,
+  cogl_framebuffer_draw_rectangle (test_fb, pipeline,
                                    pos * 10, 0, pos * 10 + 10, 10);
 }
 
@@ -340,7 +340,7 @@ paint_long_pipeline (TestState *state)
 static void
 paint (TestState *state)
 {
-  cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
+  cogl_framebuffer_clear4f (test_fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
 
   paint_color_pipelines (state);
   paint_matrix_pipeline (state->matrix_pipeline);
@@ -351,7 +351,7 @@ paint (TestState *state)
 static void
 check_pos (int pos, uint32_t color)
 {
-  test_utils_check_pixel (fb, pos * 10 + 5, 5, color);
+  test_utils_check_pixel (test_fb, pos * 10 + 5, 5, color);
 }
 
 static void
@@ -390,10 +390,10 @@ test_pipeline_uniforms (void)
 
       init_state (&state);
 
-      cogl_framebuffer_orthographic (fb,
+      cogl_framebuffer_orthographic (test_fb,
                                      0, 0,
-                                     cogl_framebuffer_get_width (fb),
-                                     cogl_framebuffer_get_height (fb),
+                                     cogl_framebuffer_get_width (test_fb),
+                                     cogl_framebuffer_get_height (test_fb),
                                      -1,
                                      100);
 

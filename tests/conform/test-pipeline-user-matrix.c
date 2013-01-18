@@ -22,7 +22,7 @@ validate_result (TestState *state)
      verify this by reading back the entire stage */
   pixels = g_malloc (state->width * state->height * 4);
 
-  cogl_framebuffer_read_pixels (fb, 0, 0, state->width, state->height,
+  cogl_framebuffer_read_pixels (test_fb, 0, 0, state->width, state->height,
                                 COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                 (uint8_t *)pixels);
 
@@ -56,17 +56,17 @@ paint (TestState *state)
   CoglMatrix matrix;
   CoglError *error = NULL;
 
-  cogl_framebuffer_orthographic (fb,
+  cogl_framebuffer_orthographic (test_fb,
                                  0, 0,
                                  state->width,
                                  state->height,
                                  -1,
                                  100);
 
-  cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
+  cogl_framebuffer_clear4f (test_fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
 
   cogl_matrix_init_identity (&matrix);
-  cogl_framebuffer_set_modelview_matrix (fb, &matrix);
+  cogl_framebuffer_set_modelview_matrix (test_fb, &matrix);
 
   tex0 = cogl_texture_new_from_data (2, 2,
                                      COGL_TEXTURE_NO_ATLAS,
@@ -81,7 +81,7 @@ paint (TestState *state)
                                      6,
                                      data1);
 
-  pipeline = cogl_pipeline_new (ctx);
+  pipeline = cogl_pipeline_new (test_ctx);
 
   /* Set the two textures as layers */
   cogl_pipeline_set_layer_texture (pipeline, 0, tex0);
@@ -114,7 +114,7 @@ paint (TestState *state)
   cogl_matrix_scale (&matrix, -1.0f, 1.0f, 1.0f);
   cogl_pipeline_set_layer_matrix (pipeline, 1, &matrix);
 
-  cogl_framebuffer_draw_rectangle (fb,
+  cogl_framebuffer_draw_rectangle (test_fb,
                                    pipeline,
                                    0, 0,
                                    state->width, state->height);
@@ -129,8 +129,8 @@ test_pipeline_user_matrix (void)
 {
   TestState state;
 
-  state.width = cogl_framebuffer_get_width (fb);
-  state.height = cogl_framebuffer_get_height (fb);
+  state.width = cogl_framebuffer_get_width (test_fb);
+  state.height = cogl_framebuffer_get_height (test_fb);
 
   paint (&state);
   validate_result (&state);

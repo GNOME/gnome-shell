@@ -20,8 +20,8 @@ typedef enum _TestFlags
   TEST_REQUIREMENT_MAP_WRITE     = 1<<6
 } TestFlags;
 
-extern CoglContext *ctx;
-extern CoglFramebuffer *fb;
+extern CoglContext *test_ctx;
+extern CoglFramebuffer *test_fb;
 
 void
 test_utils_init (TestFlags flags);
