@@ -42,8 +42,7 @@ const PointerWatcher = new Lang.Class({
 
     _init: function() {
         this._idleMonitor = new GnomeDesktop.IdleMonitor();
-        this._idleMonitor.connect('became-active', Lang.bind(this, this._onIdleMonitorBecameActive));
-        this._idleMonitor.add_watch(IDLE_TIME, Lang.bind(this, this._onIdleMonitorBecameIdle));
+        this._idleMonitor.add_idle_watch(IDLE_TIME, Lang.bind(this, this._onIdleMonitorBecameIdle));
         this._idle = this._idleMonitor.get_idletime() > IDLE_TIME;
         this._watches = [];
         this.pointerX = null;
@@ -87,6 +86,7 @@ const PointerWatcher = new Lang.Class({
 
     _onIdleMonitorBecameIdle: function(monitor) {
         this._idle = true;
+        this._idleMonitor.add_user_active_watch(Lang.bind(this, this._onIdleMonitorBecameActive));
         this._updateTimeout();
     },
 

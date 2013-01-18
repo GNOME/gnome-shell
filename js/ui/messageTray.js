@@ -1642,7 +1642,6 @@ const MessageTray = new Lang.Class({
         this._closeButton.connect('clicked', Lang.bind(this, this._closeNotification));
         this._notificationWidget.add_actor(this._closeButton);
 
-        this._idleMonitorBecameActiveId = 0;
         this._userActiveWhileNotificationShown = false;
 
         this.idleMonitor = new GnomeDesktop.IdleMonitor();
@@ -2443,9 +2442,6 @@ const MessageTray = new Lang.Class({
     },
 
     _onIdleMonitorBecameActive: function() {
-        this.idleMonitor.disconnect(this._idleMonitorBecameActiveId);
-        this._idleMonitorBecameActiveId = 0;
-
         this._userActiveWhileNotificationShown = true;
         this._updateNotificationTimeout(2000);
         this._updateState();
@@ -2454,12 +2450,11 @@ const MessageTray = new Lang.Class({
     _showNotification: function() {
         this._notification = this._notificationQueue.shift();
 
-        let userIdle = this.idleMonitor.get_idletime() > IDLE_TIME;
-        if (userIdle) {
-            this._userActiveWhileNotificationShown = false;
-            this._idleMonitorBecameActiveId = this.idleMonitor.connect('became-active', Lang.bind(this, this._onIdleMonitorBecameActive));
-        } else {
-            this._userActiveWhileNotificationShown = true;
+        this._userActiveWhileNotificationShown = this.idleMonitor.get_idletime() > IDLE_TIME;
+        if (!this._userActiveWhileNotificationShown) {
+            // If the user isn't active, set up a watch to let us know
+            // when the user becomes active.
+            this.idleMonitor.add_user_active_watch(Lang.bind(this, this._onIdleMonitorBecameActive));
         }
 
         this._notificationClickedId = this._notification.connect('done-displaying',
@@ -2577,10 +2572,6 @@ const MessageTray = new Lang.Class({
 
         this._grabHelper.ungrab({ actor: this._notification.actor });
 
-        if (this._idleMonitorBecameActiveId) {
-            this.idleMonitor.disconnect(this._idleMonitorBecameActiveId);
-            this._idleMonitorBecameActiveId = 0;
-        }
         if (this._notificationExpandedId) {
             this._notification.disconnect(this._notificationExpandedId);
             this._notificationExpandedId = 0;

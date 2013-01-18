@@ -771,9 +771,7 @@ const ScreenShield = new Lang.Class({
         if (this._activationTime == 0)
             this._activationTime = GLib.get_monotonic_time();
 
-        if (this._becameActiveId == 0)
-            this._becameActiveId = this.idleMonitor.connect('became-active',
-                                                            Lang.bind(this, this._onUserBecameActive));
+        this._becameActiveId = this.idleMonitor.add_user_active_watch(this._onUserBecameActive);
 
         let shouldLock = this._settings.get_boolean(LOCK_ENABLED_KEY) && !this._isLocked;
 
@@ -807,7 +805,7 @@ const ScreenShield = new Lang.Class({
         //   session is effectivelly locked now, it's time to build and show
         //   the lock screen
 
-        this.idleMonitor.disconnect(this._becameActiveId);
+        this.idleMonitor.remove_watch(this._becameActiveId);
         this._becameActiveId = 0;
 
         let lightboxWasShown = this._lightbox.shown;
@@ -1115,7 +1113,7 @@ const ScreenShield = new Lang.Class({
         this.actor.hide();
 
         if (this._becameActiveId != 0) {
-            this.idleMonitor.disconnect(this._becameActiveId);
+            this.idleMonitor.remove_watch(this._becameActiveId);
             this._becameActiveId = 0;
         }
 
