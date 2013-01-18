@@ -847,10 +847,9 @@ meta_window_place (MetaWindow        *window,
       {
         MetaWindow *w = tmp->data;
 
-        if (meta_window_showing_on_its_workspace (w) &&
-            w != window && 
-            (window->workspace == w->workspace ||
-             window->on_all_workspaces || w->on_all_workspaces))
+        if (w != window &&
+            meta_window_showing_on_its_workspace (w) &&
+            meta_window_located_on_workspace (w, window->workspace))
           windows = g_list_prepend (windows, w);
 
         tmp = tmp->next;

@@ -10129,9 +10129,7 @@ meta_window_set_demands_attention (MetaWindow *window)
           other_window = stack->data;
           stack = stack->next;
 
-          if (other_window->on_all_workspaces ||
-              window->on_all_workspaces ||
-              other_window->workspace == window->workspace)
+          if (meta_window_located_on_workspace (other_window, window->workspace))
             {
               meta_window_get_outer_rect (other_window, &other_rect);
 

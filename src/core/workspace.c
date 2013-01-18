@@ -1292,8 +1292,7 @@ focus_ancestor_or_top_window (MetaWorkspace *workspace,
       ancestor = NULL;
       meta_window_foreach_ancestor (not_this_one, record_ancestor, &ancestor);
       if (ancestor != NULL &&
-          (ancestor->on_all_workspaces ||
-           ancestor->workspace == workspace) &&
+          meta_window_located_on_workspace (ancestor, workspace) &&
           meta_window_showing_on_its_workspace (ancestor))
         {
           meta_topic (META_DEBUG_FOCUS,
