@@ -223,32 +223,7 @@ if test "$enable_man" != no; then
 fi
 AM_CONDITIONAL(ENABLE_MAN, test "$enable_man" != no)
 
-# Stay command-line compatible with the gnome-common configure option. Here
-# minimum/yes/maximum are the same, however.
-AC_ARG_ENABLE(compile_warnings,
-  AS_HELP_STRING([--enable-compile-warnings=@<:@no/minimum/yes/maximum/error@:>@],[Turn on compiler warnings]),,
-  enable_compile_warnings=error)
-
-changequote(,)dnl
-if test "$enable_compile_warnings" != no ; then
-  if test "x$GCC" = "xyes"; then
-    case " $CFLAGS " in
-    *[\ \	]-Wall[\ \	]*) ;;
-    *) CFLAGS="$CFLAGS -Wall" ;;
-    esac
-    case " $CFLAGS " in
-    *[\ \	]-Wmissing-prototypes[\ \	]*) ;;
-    *) CFLAGS="$CFLAGS -Wmissing-prototypes" ;;
-    esac
-    if test "$enable_compile_warnings" = error ; then
-      case " $CFLAGS " in
-      *[\ \	]-Werror[\ \	]*) ;;
-      *) CFLAGS="$CFLAGS -Werror -Wno-error=deprecated-declarations" ;;
-      esac
-    fi
-  fi
-fi
-changequote([,])dnl
+GNOME_COMPILE_WARNINGS([error])
 
 AC_ARG_ENABLE(jhbuild-wrapper-script,
   AS_HELP_STRING([--enable-jhbuild-wrapper-script],[Make "gnome-shell" script work for jhbuild]),,enable_jhbuild_wrapper_script=no)
