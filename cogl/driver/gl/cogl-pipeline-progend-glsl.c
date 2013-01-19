@@ -377,7 +377,7 @@ get_uniform_cb (CoglPipeline *pipeline,
 
   g_string_set_size (ctx->codegen_source_buffer, 0);
   g_string_append_printf (ctx->codegen_source_buffer,
-                          "cogl_texture_matrix%i", layer_index);
+                          "cogl_texture_matrix[%i]", layer_index);
 
   GE_RET( uniform_location,
           ctx, glGetUniformLocation (state->gl_program,
@@ -725,7 +725,7 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
             {
               CoglShader *shader = l->data;
 
-              _cogl_shader_compile_real (shader, 4);
+              _cogl_shader_compile_real (shader, pipeline);
 
               g_assert (shader->language == COGL_SHADER_LANGUAGE_GLSL);
 

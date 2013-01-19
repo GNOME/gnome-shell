@@ -27,6 +27,7 @@
 #include "cogl-object-private.h"
 #include "cogl-shader.h"
 #include "cogl-gl-header.h"
+#include "cogl-pipeline.h"
 
 typedef struct _CoglShader CoglShader;
 
@@ -38,16 +39,17 @@ typedef enum
 
 struct _CoglShader
 {
-  CoglHandleObject   _parent;
-  GLuint             gl_handle;
-  int                n_tex_coord_attribs;
-  CoglShaderType     type;
+  CoglHandleObject _parent;
+  GLuint gl_handle;
+  CoglPipeline *compilation_pipeline;
+  CoglShaderType type;
   CoglShaderLanguage language;
-  char              *source;
+  char *source;
 };
 
 void
-_cogl_shader_compile_real (CoglHandle handle, int n_tex_coord_attribs);
+_cogl_shader_compile_real (CoglHandle handle,
+                           CoglPipeline *pipeline);
 
 CoglShaderLanguage
 _cogl_program_get_language (CoglHandle handle);

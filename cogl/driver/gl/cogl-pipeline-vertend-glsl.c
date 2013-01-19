@@ -54,12 +54,6 @@ typedef struct
   GLuint gl_shader;
   GString *header, *source;
 
-  /* Age of the user program that was current when the shader was
-     generated. We need to keep track of this because if the user
-     program changes then we may need to redecide whether to generate
-     a shader at all */
-  unsigned int user_program_age;
-
 } CoglPipelineShaderState;
 
 static CoglUserDataKey shader_state_key;
@@ -210,34 +204,27 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
         }
     }
 
-  if (shader_state->gl_shader)
+  if (user_program)
     {
-      /* If we already have a valid GLSL shader then we don't need to
-       * generate a new one. However if there's a user program and it
-       * has changed since the last link then we do need a new shader.
-       */
-      if (user_program == NULL ||
-          shader_state->user_program_age == user_program->age)
-        return;
-
-      /* We need to recreate the shader so destroy the existing one */
-      GE( ctx, glDeleteShader (shader_state->gl_shader) );
-      shader_state->gl_shader = 0;
+      /* If the user program contains a vertex shader then we don't need
+         to generate one */
+      if (_cogl_program_has_vertex_shader (user_program))
+        {
+          if (shader_state->gl_shader)
+            {
+              GE( ctx, glDeleteShader (shader_state->gl_shader) );
+              shader_state->gl_shader = 0;
+            }
+          return;
+        }
     }
+
+  if (shader_state->gl_shader)
+    return;
 
   /* If we make it here then we have a shader_state struct without a gl_shader
      either because this is the first time we've encountered it or
      because the user program has changed */
-
-  if (user_program)
-    {
-      shader_state->user_program_age = user_program->age;
-
-      /* If the user program contains a vertex shader then we don't need
-         to generate one */
-      if (_cogl_program_has_vertex_shader (user_program))
-        return;
-    }
 
   /* We reuse two grow-only GStrings for code-gen. One string
      contains the uniform and attribute declarations while the
@@ -278,17 +265,6 @@ _cogl_pipeline_vertend_glsl_add_layer (CoglPipeline *pipeline,
 
   if (shader_state->source == NULL)
     return TRUE;
-
-  g_string_append_printf (shader_state->header,
-                          "uniform mat4 cogl_texture_matrix%i;\n"
-                          "attribute vec4 cogl_tex_coord%i_in;\n"
-                          "varying vec4 _cogl_tex_coord%i;\n"
-                          "#define cogl_tex_coord%i_out _cogl_tex_coord%i\n",
-                          layer_index,
-                          layer_index,
-                          layer_index,
-                          layer_index,
-                          layer_index);
 
   /* Transform the texture coordinates by the layer's user matrix.
    *
@@ -439,6 +415,7 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
       _cogl_glsl_shader_set_source_with_boilerplate (ctx,
                                                      NULL,
                                                      shader, GL_VERTEX_SHADER,
+                                                     pipeline,
                                                      2, /* count */
                                                      source_strings, lengths);
 

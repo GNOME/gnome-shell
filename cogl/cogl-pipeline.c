@@ -646,6 +646,41 @@ _cogl_pipeline_layer_numbers_equal (CoglPipeline *pipeline0,
   return TRUE;
 }
 
+CoglBool
+_cogl_pipeline_layer_and_unit_numbers_equal (CoglPipeline *pipeline0,
+                                             CoglPipeline *pipeline1)
+{
+  CoglPipeline *authority0 =
+    _cogl_pipeline_get_authority (pipeline0, COGL_PIPELINE_STATE_LAYERS);
+  CoglPipeline *authority1 =
+    _cogl_pipeline_get_authority (pipeline1, COGL_PIPELINE_STATE_LAYERS);
+  int n_layers = authority0->n_layers;
+  int i;
+
+  if (authority1->n_layers != n_layers)
+    return FALSE;
+
+  _cogl_pipeline_update_layers_cache (authority0);
+  _cogl_pipeline_update_layers_cache (authority1);
+
+  for (i = 0; i < n_layers; i++)
+    {
+      CoglPipelineLayer *layer0 = authority0->layers_cache[i];
+      CoglPipelineLayer *layer1 = authority1->layers_cache[i];
+      int unit0, unit1;
+
+      if (layer0->index != layer1->index)
+        return FALSE;
+
+      unit0 = _cogl_pipeline_layer_get_unit_index (layer0);
+      unit1 = _cogl_pipeline_layer_get_unit_index (layer1);
+      if (unit0 != unit1)
+        return FALSE;
+    }
+
+  return TRUE;
+}
+
 typedef struct
 {
   int i;

@@ -140,6 +140,7 @@ struct _CoglContext
   CoglPipeline     *texture_pipeline; /* used for set_source_texture */
   GString          *codegen_header_buffer;
   GString          *codegen_source_buffer;
+  GString          *codegen_boilerplate_buffer;
   GList            *source_stack;
 
   int               legacy_state_set;

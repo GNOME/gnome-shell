@@ -44,6 +44,7 @@
   _COGL_COMMON_SHADER_BOILERPLATE \
   "#define cogl_color_out _cogl_color\n" \
   "varying vec4 _cogl_color;\n" \
+  "#define cogl_tex_coord_out _cogl_tex_coord\n" \
   "#define cogl_position_out gl_Position\n" \
   "#define cogl_point_size_out gl_PointSize\n" \
   "\n" \
@@ -61,6 +62,7 @@
   "varying vec4 _cogl_color;\n" \
   "\n" \
   "#define cogl_color_in _cogl_color\n" \
+  "#define cogl_tex_coord_in _cogl_tex_coord\n" \
   "\n" \
   "#define cogl_color_out gl_FragColor\n" \
   "#define cogl_depth_out gl_FragDepth\n" \

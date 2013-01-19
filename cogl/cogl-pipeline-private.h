@@ -930,6 +930,10 @@ _cogl_pipeline_layer_numbers_equal (CoglPipeline *pipeline0,
                                     CoglPipeline *pipeline1);
 
 CoglBool
+_cogl_pipeline_layer_and_unit_numbers_equal (CoglPipeline *pipeline0,
+                                             CoglPipeline *pipeline1);
+
+CoglBool
 _cogl_pipeline_need_texture_combine_separate
                                     (CoglPipelineLayer *combine_authority);
 

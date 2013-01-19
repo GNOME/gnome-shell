@@ -39,11 +39,42 @@
 
 #include <glib.h>
 
+static CoglBool
+add_layer_vertex_boilerplate_cb (CoglPipelineLayer *layer,
+                                 void *user_data)
+{
+  GString *layer_declarations = user_data;
+  int unit_index = _cogl_pipeline_layer_get_unit_index (layer);
+  g_string_append_printf (layer_declarations,
+                          "attribute vec4 cogl_tex_coord%d_in;\n"
+                          "#define cogl_texture_matrix%i cogl_texture_matrix[%i]\n"
+                          "#define cogl_tex_coord%i_out _cogl_tex_coord[%i]\n",
+                          layer->index,
+                          layer->index,
+                          unit_index,
+                          layer->index,
+                          unit_index);
+  return TRUE;
+}
+
+static CoglBool
+add_layer_fragment_boilerplate_cb (CoglPipelineLayer *layer,
+                                   void *user_data)
+{
+  GString *layer_declarations = user_data;
+  g_string_append_printf (layer_declarations,
+                          "#define cogl_tex_coord%i_in _cogl_tex_coord[%i]\n",
+                          layer->index,
+                          _cogl_pipeline_layer_get_unit_index (layer));
+  return TRUE;
+}
+
 void
 _cogl_glsl_shader_set_source_with_boilerplate (CoglContext *ctx,
                                                const char *version_string,
                                                GLuint shader_gl_handle,
                                                GLenum shader_gl_type,
+                                               CoglPipeline *pipeline,
                                                GLsizei count_in,
                                                const char **strings_in,
                                                const GLint *lengths_in)
@@ -54,7 +85,8 @@ _cogl_glsl_shader_set_source_with_boilerplate (CoglContext *ctx,
   const char **strings = g_alloca (sizeof (char *) * (count_in + 4));
   GLint *lengths = g_alloca (sizeof (GLint) * (count_in + 4));
   int count = 0;
-  char *tex_coord_declarations = NULL;
+
+  int n_layers;
 
   vertex_boilerplate = _COGL_VERTEX_SHADER_BOILERPLATE;
   fragment_boilerplate = _COGL_FRAGMENT_SHADER_BOILERPLATE;
@@ -83,6 +115,37 @@ _cogl_glsl_shader_set_source_with_boilerplate (CoglContext *ctx,
     {
       strings[count] = fragment_boilerplate;
       lengths[count++] = strlen (fragment_boilerplate);
+    }
+
+  n_layers = cogl_pipeline_get_n_layers (pipeline);
+  if (n_layers)
+    {
+      GString *layer_declarations = ctx->codegen_boilerplate_buffer;
+      g_string_set_size (layer_declarations, 0);
+
+      g_string_append_printf (layer_declarations,
+                              "varying vec4 _cogl_tex_coord[%d];\n",
+                              n_layers);
+
+      if (shader_gl_type == GL_VERTEX_SHADER)
+        {
+          g_string_append_printf (layer_declarations,
+                                  "uniform mat4 cogl_texture_matrix[%d];\n",
+                                  n_layers);
+
+          _cogl_pipeline_foreach_layer_internal (pipeline,
+                                                 add_layer_vertex_boilerplate_cb,
+                                                 layer_declarations);
+        }
+      else if (shader_gl_type == GL_FRAGMENT_SHADER)
+        {
+          _cogl_pipeline_foreach_layer_internal (pipeline,
+                                                 add_layer_fragment_boilerplate_cb,
+                                                 layer_declarations);
+        }
+
+      strings[count] = layer_declarations->str;
+      lengths[count++] = -1; /* null terminated */
     }
 
   memcpy (strings + count, strings_in, sizeof (char *) * count_in);
@@ -119,6 +182,4 @@ _cogl_glsl_shader_set_source_with_boilerplate (CoglContext *ctx,
 
   GE( ctx, glShaderSource (shader_gl_handle, count,
                            (const char **) strings, lengths) );
-
-  g_free (tex_coord_declarations);
 }

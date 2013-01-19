@@ -90,7 +90,7 @@ cogl_create_shader (CoglShaderType type)
   shader = g_slice_new (CoglShader);
   shader->language = COGL_SHADER_LANGUAGE_GLSL;
   shader->gl_handle = 0;
-  shader->n_tex_coord_attribs = 0;
+  shader->compilation_pipeline = NULL;
   shader->type = type;
 
   return _cogl_shader_handle_new (shader);
@@ -115,6 +115,12 @@ delete_shader (CoglShader *shader)
     }
 
   shader->gl_handle = 0;
+
+  if (shader->compilation_pipeline)
+    {
+      cogl_object_unref (shader->compilation_pipeline);
+      shader->compilation_pipeline = NULL;
+    }
 }
 
 void
@@ -151,14 +157,22 @@ cogl_shader_source (CoglHandle   handle,
 void
 cogl_shader_compile (CoglHandle handle)
 {
+  CoglShader *shader;
+
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   if (!cogl_is_shader (handle))
     return;
 
-  /* XXX: We don't actually compile anything until the shader gets
-   * used so we have an opportunity to add some boilerplate to the
-   * shader.
+#ifdef HAVE_COGL_GL
+  shader = handle;
+  if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)
+    _cogl_shader_compile_real (handle, NULL);
+#endif
+
+  /* XXX: For GLSL we don't actually compile anything until the shader
+   * gets used so we have an opportunity to add some boilerplate to
+   * the shader.
    *
    * At the end of the day this is obviously a badly designed API
    * given that we are having to lie to the user. It was a mistake to
@@ -168,7 +182,7 @@ cogl_shader_compile (CoglHandle handle)
 
 void
 _cogl_shader_compile_real (CoglHandle handle,
-                           int n_tex_coord_attribs)
+                           CoglPipeline *pipeline)
 {
   CoglShader *shader = handle;
   const char *version;
@@ -216,10 +230,20 @@ _cogl_shader_compile_real (CoglHandle handle,
 #endif
     {
       GLenum gl_type;
+      GLint status;
 
-      if (shader->gl_handle &&
-          shader->n_tex_coord_attribs == n_tex_coord_attribs)
-        return;
+      if (shader->gl_handle)
+        {
+          CoglPipeline *prev = shader->compilation_pipeline;
+
+          /* XXX: currently the only things that will affect the
+           * boilerplate for user shaders, apart from driver features,
+           * are the pipeline layer-indices and texture-unit-indices
+           */
+          if (pipeline == prev ||
+              _cogl_pipeline_layer_and_unit_numbers_equal (prev, pipeline))
+            return;
+        }
 
       if (shader->gl_handle)
         delete_shader (shader);
@@ -253,6 +277,7 @@ _cogl_shader_compile_real (CoglHandle handle,
                                                      version,
                                                      shader->gl_handle,
                                                      gl_type,
+                                                     pipeline,
                                                      1,
                                                      (const char **)
                                                       &shader->source,
@@ -260,67 +285,51 @@ _cogl_shader_compile_real (CoglHandle handle,
 
       GE (ctx, glCompileShader (shader->gl_handle));
 
-      shader->n_tex_coord_attribs = n_tex_coord_attribs;
+      shader->compilation_pipeline = cogl_object_ref (pipeline);
 
-#ifdef COGL_GL_DEBUG
-      if (!cogl_shader_is_compiled (handle))
+      GE (ctx, glGetShaderiv (shader->gl_handle, GL_COMPILE_STATUS, &status));
+      if (!status)
         {
-          char *log = cogl_shader_get_info_log (handle);
-          g_warning ("Failed to compile GLSL program:\nsrc:\n%s\nerror:\n%s\n",
+          char buffer[512];
+          int len = 0;
+
+          ctx->glGetShaderInfoLog (shader->gl_handle, 511, &len, buffer);
+          buffer[len] = '\0';
+
+          g_warning ("Failed to compile GLSL program:\n"
+                     "src:\n%s\n"
+                     "error:\n%s\n",
                      shader->source,
-                     log);
-          g_free (log);
+                     buffer);
         }
-#endif
     }
 }
 
 char *
 cogl_shader_get_info_log (CoglHandle handle)
 {
-  CoglShader *shader;
-
-  _COGL_GET_CONTEXT (ctx, NULL);
-
   if (!cogl_is_shader (handle))
     return NULL;
 
-  shader = handle;
+  /* XXX: This API doesn't really do anything!
+   *
+   * This API is purely for compatibility
+   *
+   * The reason we don't do anything is because a shader needs to
+   * be associated with a CoglPipeline for Cogl to be able to
+   * compile and link anything.
+   *
+   * The way this API was originally designed as a very thin wrapper
+   * over the GL api was a mistake and it's now very difficult to
+   * make the API work in a meaningful way given how the rest of Cogl
+   * has evolved.
+   *
+   * The CoglShader API is mostly deprecated by CoglSnippets and so
+   * these days we do the bare minimum to support the existing users
+   * of it until they are able to migrate to the snippets api.
+   */
 
-#ifdef HAVE_COGL_GL
-  if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)
-    {
-      /* ARBfp exposes a program error string, but since cogl_program
-       * doesn't have any API to query an error log it is not currently
-       * exposed. */
-      return g_strdup ("");
-    }
-  else
-#endif
-    {
-      char buffer[512];
-      int len = 0;
-
-      /* We don't normally compile the shader when the user calls
-       * cogl_shader_compile() because we want to be able to add
-       * boilerplate code that depends on how it ends up finally being
-       * used.
-       *
-       * Here we force an early compile if the user is interested in
-       * log information to increase the chance that the log will be
-       * useful! We have to guess the number of texture coordinate
-       * attributes that may be used since that affects the
-       * boilerplate. We use four so that the shader will still
-       * compile if the user is using more than one
-       * layer. Unfortunately this is likely to end up causing it to
-       * be compiled again when we know the actual number of layers */
-      if (!shader->gl_handle)
-        _cogl_shader_compile_real (handle, 4);
-
-      ctx->glGetShaderInfoLog (shader->gl_handle, 511, &len, buffer);
-      buffer[len] = '\0';
-      return g_strdup (buffer);
-    }
+  return g_strdup ("");
 }
 
 CoglShaderType
@@ -344,46 +353,29 @@ CoglBool
 cogl_shader_is_compiled (CoglHandle handle)
 {
 #if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES2)
-  GLint status;
-  CoglShader *shader;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
-
   if (!cogl_is_shader (handle))
     return FALSE;
 
-  shader = handle;
+  /* XXX: This API doesn't really do anything!
+   *
+   * This API is purely for compatibility and blatantly lies to the
+   * user about whether their shader has been compiled.
+   *
+   * I suppose we could say we're stretching the definition of
+   * "compile" and are deferring any related errors to be "linker"
+   * errors.
+   *
+   * The reason we don't do anything is because a shader needs to
+   * be associated with a CoglPipeline for Cogl to be able to
+   * compile and link anything.
+   *
+   * The CoglShader API is mostly deprecated by CoglSnippets and so
+   * these days we do the bare minimum to support the existing users
+   * of it until they are able to migrate to the snippets api.
+   */
 
-#ifdef HAVE_COGL_GL
-  if (shader->language == COGL_SHADER_LANGUAGE_ARBFP)
-    return TRUE;
-  else
-#endif
-    {
-      /* FIXME: We currently have an arbitrary limit of 4 texture
-       * coordinate attributes since our API means we have to add
-       * some boilerplate to the users GLSL program (for GLES2)
-       * before we actually know how many attributes are in use.
-       *
-       * 4 will probably be enough (or at least that limitation should
-       * be enough until we can replace this API with the pipeline
-       * snippets API) but if it isn't then the shader won't compile,
-       * through no fault of the user.
-       *
-       * To some extent this is just a symptom of bad API design; it
-       * was a mistake for Cogl to so thinly wrap the OpenGL shader
-       * API. Eventually we plan for this whole API will be deprecated
-       * by the pipeline snippets framework.
-       */
-      if (!shader->gl_handle)
-        _cogl_shader_compile_real (handle, 4);
+  return TRUE;
 
-      GE (ctx, glGetShaderiv (shader->gl_handle, GL_COMPILE_STATUS, &status));
-      if (status == GL_TRUE)
-        return TRUE;
-      else
-        return FALSE;
-    }
 #else
   return FALSE;
 #endif
