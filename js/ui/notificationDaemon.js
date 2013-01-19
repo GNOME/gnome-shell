@@ -395,17 +395,17 @@ const NotificationDaemon = new Lang.Class({
         // one of 'image-data' or 'image-path' are specified, we show both an icon and
         // a large image.
         if (gicon && gimage)
-            image = new St.Icon({ gicon: gimage });
+            image = new St.Icon({ gicon: gimage,
+                                  icon_size: notification.IMAGE_SIZE });
         else if (!gicon && gimage)
             gicon = gimage;
         else if (!gicon)
             gicon = this._fallbackIconForNotificationData(hints);
 
-        notification.setImage(image);
-
         notification.update(summary, body, { gicon: gicon,
                                              bannerMarkup: true,
                                              clear: true });
+        notification.setImage(image);
 
         if (actions.length) {
             notification.setUseActionIcons(hints['action-icons'] == true);
