@@ -511,7 +511,8 @@ const Notification = new Lang.Class({
         this._table.add_style_class_name('multi-line-notification');
         this._scrollArea = new St.ScrollView({ style_class: 'notification-scrollview',
                                                vscrollbar_policy: this._scrollPolicy,
-                                               hscrollbar_policy: Gtk.PolicyType.NEVER });
+                                               hscrollbar_policy: Gtk.PolicyType.NEVER,
+                                               visible: this.expanded });
         this._table.add(this._scrollArea, { row: 1,
                                             col: 2 });
         this._updateLastColumnSettings();
@@ -587,6 +588,7 @@ const Notification = new Lang.Class({
             this._addBannerBody();
         }
         this._actionArea = actor;
+        this._actionArea.visible = this.expanded;
 
         if (!props)
             props = {};
@@ -615,7 +617,8 @@ const Notification = new Lang.Class({
             return;
 
         this._imageBin = new St.Bin({ opacity: 230,
-                                      child: image });
+                                      child: image,
+                                      visible: this.expanded });
 
         this._table.add_style_class_name('multi-line-notification');
         this._table.add_style_class_name('notification-with-image');
@@ -857,6 +860,14 @@ const Notification = new Lang.Class({
         this.expanded = true;
         this.actor.remove_style_class_name('notification-unexpanded');
 
+        // Show additional content that we keep hidden in banner mode
+        if (this._imageBin)
+            this._imageBin.show();
+        if (this._actionArea)
+            this._actionArea.show();
+        if (this._scrollArea)
+            this._scrollArea.show();
+
         // The banner is never shown when the title did not fit, so this
         // can be an if-else statement.
         if (!this._titleFitsInBannerMode) {
@@ -888,12 +899,23 @@ const Notification = new Lang.Class({
         if (this._destroyed)
             return;
         this.expanded = false;
+
+        // Hide additional content that we keep hidden in banner mode
+        if (this._imageBin)
+            this._imageBin.hide();
+        if (this._actionArea)
+            this._actionArea.hide();
+        if (this._scrollArea)
+            this._scrollArea.hide();
+
         // Make sure we don't line wrap the title, and ellipsize it instead.
         this._titleLabel.clutter_text.line_wrap = false;
         this._titleLabel.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+
         // Restore banner opacity in case the notification is shown in the
         // banner mode again on update.
         this._bannerLabel.opacity = 255;
+
         // Restore height requisition
         this.actor.add_style_class_name('notification-unexpanded');
         this.emit('collapsed');
