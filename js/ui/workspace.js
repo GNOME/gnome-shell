@@ -121,15 +121,33 @@ const WindowClone = new Lang.Class({
             return this._slot;
     },
 
+    // Find the actor just below us, respecting reparenting done
+    // by DND code
+    getActualStackAbove: function() {
+        if (this._stackAbove == null)
+            return null;
+
+        if (this.inDrag || this._zooming) {
+            if (this._stackAbove._delegate)
+                return this._stackAbove._delegate.getActualStackAbove();
+            else
+                return null;
+        } else {
+            return this._stackAbove;
+        }
+    },
+
     setStackAbove: function (actor) {
         this._stackAbove = actor;
         if (this.inDrag)
             // We'll fix up the stack after the drag
             return;
-        if (this._stackAbove == null)
+
+        let actualAbove = this.getActualStackAbove();
+        if (actualAbove == null)
             this.actor.lower_bottom();
         else
-            this.actor.raise(this._stackAbove);
+            this.actor.raise(actualAbove);
     },
 
     destroy: function () {

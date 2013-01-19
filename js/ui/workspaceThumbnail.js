@@ -62,12 +62,35 @@ const WindowClone = new Lang.Class({
         this.inDrag = false;
     },
 
+    // Find the actor just below us, respecting reparenting done
+    // by DND code
+    getActualStackAbove: function() {
+        if (this._stackAbove == null)
+            return null;
+
+        if (this.inDrag) {
+            if (this._stackAbove._delegate)
+                return this._stackAbove._delegate.getActualStackAbove();
+            else
+                return null;
+        } else {
+            return this._stackAbove;
+        }
+    },
+
     setStackAbove: function (actor) {
         this._stackAbove = actor;
-        if (this._stackAbove == null)
+
+        // Don't apply the new stacking now, it will be applied
+        // when dragging ends and window are stacked again
+        if (actor.inDrag)
+            return;
+
+        let actualAbove = this.getActualStackAbove();
+        if (actualAbove == null)
             this.actor.lower_bottom();
         else
-            this.actor.raise(this._stackAbove);
+            this.actor.raise(actualAbove);
     },
 
     destroy: function () {
