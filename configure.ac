@@ -103,27 +103,11 @@ PKG_CHECK_MODULES(GNOME_SHELL, gio-unix-2.0 >= $GIO_MIN_VERSION
                                libnm-gtk >= $NETWORKMANAGER_MIN_VERSION
                                gnome-keyring-1 gcr-3 >= $GCR_MIN_VERSION)
 
-PKG_CHECK_MODULES(SHELL_PERF_HELPER, gtk+-3.0 gio-2.0)
-
-PKG_CHECK_MODULES(SHELL_HOTPLUG_SNIFFER, gio-2.0 gdk-pixbuf-2.0)
-
-PKG_CHECK_MODULES(BROWSER_PLUGIN, gio-2.0 >= $GIO_MIN_VERSION json-glib-1.0 >= 0.13.2)
-
-GNOME_KEYBINDINGS_KEYSDIR=`$PKG_CONFIG --variable keysdir gnome-keybindings`
-AC_SUBST([GNOME_KEYBINDINGS_KEYSDIR])
-
-GOBJECT_INTROSPECTION_CHECK([$GOBJECT_INTROSPECTION_MIN_VERSION])
-
-saved_CFLAGS=$CFLAGS
-saved_LIBS=$LIBS
-CFLAGS=$GNOME_SHELL_CFLAGS
-LIBS=$GNOME_SHELL_LIBS
-AC_CHECK_FUNCS(XFixesCreatePointerBarrier)
-CFLAGS=$saved_CFLAGS
-LIBS=$saved_LIBS
-
 PKG_CHECK_MODULES(GNOME_SHELL_JS, gio-2.0 gjs-internals-1.0 >= $GJS_MIN_VERSION)
 PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-3.0 libcroco-0.6 >= 0.6.8 x11)
+PKG_CHECK_MODULES(SHELL_PERF_HELPER, gtk+-3.0 gio-2.0)
+PKG_CHECK_MODULES(SHELL_HOTPLUG_SNIFFER, gio-2.0 gdk-pixbuf-2.0)
+PKG_CHECK_MODULES(BROWSER_PLUGIN, gio-2.0 >= $GIO_MIN_VERSION json-glib-1.0 >= 0.13.2)
 PKG_CHECK_MODULES(TRAY, gtk+-3.0)
 PKG_CHECK_MODULES(GVC, libpulse >= $PULSE_MIN_VERS libpulse-mainloop-glib gobject-2.0)
 PKG_CHECK_MODULES(DESKTOP_SCHEMAS, gsettings-desktop-schemas >= 3.7.4)
@@ -172,6 +156,19 @@ if test "x$use_systemd" = "xyes"; then
 
         AC_DEFINE(WITH_SYSTEMD, 1, [systemd support])
 fi
+
+GNOME_KEYBINDINGS_KEYSDIR=`$PKG_CONFIG --variable keysdir gnome-keybindings`
+AC_SUBST([GNOME_KEYBINDINGS_KEYSDIR])
+
+GOBJECT_INTROSPECTION_CHECK([$GOBJECT_INTROSPECTION_MIN_VERSION])
+
+saved_CFLAGS=$CFLAGS
+saved_LIBS=$LIBS
+CFLAGS=$GNOME_SHELL_CFLAGS
+LIBS=$GNOME_SHELL_LIBS
+AC_CHECK_FUNCS(XFixesCreatePointerBarrier)
+CFLAGS=$saved_CFLAGS
+LIBS=$saved_LIBS
 
 MUTTER_GIR_DIR=`$PKG_CONFIG --variable=girdir libmutter`
 MUTTER_TYPELIB_DIR=`$PKG_CONFIG --variable=typelibdir libmutter`
