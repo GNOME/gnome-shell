@@ -389,6 +389,15 @@ const WorkspacesView = new Lang.Class({
         let current = Math.round(adj.value);
 
         if (active != current) {
+            if (!this._workspaces[current]) {
+                // The current workspace was destroyed. This could happen
+                // when you are on the last empty workspace, and consolidate
+                // windows using the thumbnail bar.
+                // In that case, the intended behavior is to stay on the empty
+                // workspace, which is the last one, so pick it.
+                current = this._workspaces.length - 1;
+            }
+
             let metaWorkspace = this._workspaces[current].metaWorkspace;
             metaWorkspace.activate(global.get_current_time());
         }
