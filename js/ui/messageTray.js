@@ -243,6 +243,10 @@ function makeCloseButton() {
     return closeButton;
 }
 
+function strHasSuffix(string, suffix) {
+    return string.substr(-suffix.length) == suffix;
+}
+
 // Notification:
 // @source: the notification's Source
 // @title: the title
@@ -669,9 +673,10 @@ const Notification = new Lang.Class({
         let button = new St.Button({ can_focus: true });
         button._actionId = id;
 
-        if (this._useActionIcons && Gtk.IconTheme.get_default().has_icon(id)) {
+        let iconName = strHasSuffix(id, '-symbolic') ? id : id + '-symbolic';
+        if (this._useActionIcons && Gtk.IconTheme.get_default().has_icon(iconName)) {
             button.add_style_class_name('notification-icon-button');
-            button.child = new St.Icon({ icon_name: id });
+            button.child = new St.Icon({ icon_name: iconName });
         } else {
             button.add_style_class_name('notification-button');
             button.label = label;
