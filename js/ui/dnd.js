@@ -85,11 +85,13 @@ const _Draggable = new Lang.Class({
 
         this.actor.connect('destroy', Lang.bind(this, function() {
             this._actorDestroyed = true;
+
             // If the drag actor is destroyed and we were going to fix
             // up its hover state, fix up the parent hover state instead
             if (this.actor == this._firstLeaveActor)
                 this._firstLeaveActor = this._dragOrigParent;
-            if (this._dragInProgress)
+
+            if (this._dragInProgress && this._dragCancellable)
                 this._cancelDrag(global.get_current_time());
             this.disconnectAll();
         }));
@@ -102,6 +104,7 @@ const _Draggable = new Lang.Class({
         this._buttonDown = false; // The mouse button has been pressed and has not yet been released.
         this._dragInProgress = false; // The drag has been started, and has not been dropped or cancelled yet.
         this._animationInProgress = false; // The drag is over and the item is in the process of animating to its original position (snapping back or reverting).
+        this._dragCancellable = true;
 
         // During the drag, we eat enter/leave events so that actors don't prelight.
         // But we remember the actors that we first left/last entered so we can
@@ -439,6 +442,11 @@ const _Draggable = new Lang.Class({
                 }
         }
 
+        // At this point it is too late to cancel a drag by destroying
+        // the actor, the fate of which is decided by acceptDrop and its
+        // side-effects
+        this._dragCancellable = false;
+
         while (target) {
             if (target._delegate && target._delegate.acceptDrop) {
                 let [r, targX, targY] = target.transform_stage_point(dropX, dropY);
@@ -447,8 +455,6 @@ const _Draggable = new Lang.Class({
                                                 targX,
                                                 targY,
                                                 event.get_time())) {
-                    if (this._actorDestroyed)
-                        return true;
                     // If it accepted the drop without taking the actor,
                     // handle it ourselves.
                     if (this._dragActor.get_parent() == Main.uiGroup) {
