@@ -118,7 +118,7 @@ saved_CFLAGS=$CFLAGS
 saved_LIBS=$LIBS
 CFLAGS=$GNOME_SHELL_CFLAGS
 LIBS=$GNOME_SHELL_LIBS
-AC_CHECK_FUNCS(JS_NewGlobalObject XFixesCreatePointerBarrier)
+AC_CHECK_FUNCS(XFixesCreatePointerBarrier)
 CFLAGS=$saved_CFLAGS
 LIBS=$saved_LIBS
 
