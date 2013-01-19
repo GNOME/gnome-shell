@@ -429,7 +429,7 @@ const Notification = new Lang.Class({
             this._actionArea = null;
             this._buttonBox = null;
         }
-        if (this._imageBin && params.clear)
+        if (params.clear)
             this.unsetImage();
 
         if (!this._scrollArea && !this._actionArea && !this._imageBin)
@@ -609,13 +609,14 @@ const Notification = new Lang.Class({
     },
 
     setImage: function(image) {
-        if (this._imageBin)
-            this.unsetImage();
+        this.unsetImage();
+
         if (!image)
             return;
-        this._imageBin = new St.Bin();
-        this._imageBin.child = image;
-        this._imageBin.opacity = 230;
+
+        this._imageBin = new St.Bin({ opacity: 230,
+                                      child: image });
+
         this._table.add_style_class_name('multi-line-notification');
         this._table.add_style_class_name('notification-with-image');
         this._addBannerBody();
