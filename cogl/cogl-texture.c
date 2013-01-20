@@ -31,7 +31,6 @@
 #include "config.h"
 #endif
 
-#include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-bitmap.h"
 #include "cogl-bitmap-private.h"

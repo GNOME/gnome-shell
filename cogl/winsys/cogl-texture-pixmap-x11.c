@@ -31,7 +31,6 @@
 #endif
 
 #include "cogl-debug.h"
-#include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-texture-pixmap-x11.h"
 #include "cogl-texture-pixmap-x11-private.h"

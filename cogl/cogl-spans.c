@@ -28,7 +28,6 @@
 #include "math.h"
 
 #include "cogl-util.h"
-#include "cogl-internal.h"
 #include "cogl-spans.h"
 
 void

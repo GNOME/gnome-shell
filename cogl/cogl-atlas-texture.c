@@ -29,7 +29,6 @@
 #endif
 
 #include "cogl-debug.h"
-#include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-texture-private.h"
 #include "cogl-atlas-texture-private.h"

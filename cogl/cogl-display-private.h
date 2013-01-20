@@ -29,7 +29,6 @@
 #include "cogl-display.h"
 #include "cogl-renderer.h"
 #include "cogl-onscreen-template.h"
-#include "cogl-internal.h"
 #ifdef COGL_HAS_WAYLAND_EGL_SERVER_SUPPORT
 #include <wayland-server.h>
 #endif

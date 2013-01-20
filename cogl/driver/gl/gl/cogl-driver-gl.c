@@ -28,8 +28,8 @@
 #include <string.h>
 
 #include "cogl-private.h"
-#include "cogl-internal.h"
 #include "cogl-context-private.h"
+#include "cogl-util-gl-private.h"
 #include "cogl-feature-private.h"
 #include "cogl-renderer-private.h"
 #include "cogl-error-private.h"

@@ -81,7 +81,6 @@ IGNORE_HFILES=\
         cogl-gl-header.h                        \
         cogl-glsl-shader-boilerplate.h          \
 	cogl-deprecated.h 			\
-	cogl-internal.h 			\
 	cogl-profile.h				\
         cogl-queue.h                            \
         cogl-rectangle-map.h                    \

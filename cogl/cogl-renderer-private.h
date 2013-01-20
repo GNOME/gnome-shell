@@ -28,7 +28,6 @@
 
 #include "cogl-object-private.h"
 #include "cogl-winsys-private.h"
-#include "cogl-internal.h"
 #include "cogl-driver.h"
 #include "cogl-texture-driver.h"
 

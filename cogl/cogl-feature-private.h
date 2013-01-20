@@ -26,7 +26,6 @@
 
 #include <glib.h>
 
-#include "cogl-internal.h"
 
 #define COGL_CHECK_GL_VERSION(driver_major, driver_minor, \
                               target_major, target_minor) \

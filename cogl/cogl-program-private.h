@@ -25,7 +25,6 @@
 #define __COGL_PROGRAM_H
 
 #include "cogl-object-private.h"
-#include "cogl-internal.h"
 #include "cogl-shader-private.h"
 
 typedef struct _CoglProgram CoglProgram;

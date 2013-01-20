@@ -27,7 +27,7 @@
 
 
 #include "cogl-util.h"
-#include "cogl-internal.h"
+#include "cogl-util-gl-private.h"
 #include "cogl-context-private.h"
 #include "cogl-object-private.h"
 

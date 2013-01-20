@@ -29,8 +29,8 @@
 #include <string.h>
 
 #include "cogl-debug.h"
-#include "cogl-internal.h"
 #include "cogl-context-private.h"
+#include "cogl-util-gl-private.h"
 #include "cogl-display-private.h"
 #include "cogl-renderer-private.h"
 #include "cogl-object-private.h"

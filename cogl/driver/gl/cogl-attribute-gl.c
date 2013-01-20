@@ -32,6 +32,7 @@
 #include <string.h>
 
 #include "cogl-private.h"
+#include "cogl-util-gl-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-error-private.h"
 #include "cogl-context-private.h"

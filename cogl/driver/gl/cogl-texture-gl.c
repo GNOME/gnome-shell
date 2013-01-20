@@ -26,8 +26,8 @@
 
 #include <strings.h>
 
-#include "cogl-internal.h"
 #include "cogl-context-private.h"
+#include "cogl-util-gl-private.h"
 #include "cogl-texture-gl-private.h"
 #include "cogl-texture-3d-private.h"
 #include "cogl-util.h"

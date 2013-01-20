@@ -26,13 +26,13 @@
 #endif
 
 #include "cogl-object.h"
-#include "cogl-internal.h"
 #include "cogl-private.h"
 #include "cogl-winsys-private.h"
 #include "winsys/cogl-winsys-stub-private.h"
 #include "cogl-profile.h"
 #include "cogl-util.h"
 #include "cogl-context-private.h"
+#include "cogl-util-gl-private.h"
 #include "cogl-display-private.h"
 #include "cogl-renderer-private.h"
 #include "cogl-journal-private.h"

@@ -31,7 +31,6 @@
 #include <glib/gi18n-lib.h>
 
 #include "cogl-debug.h"
-#include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-context-private.h"
 #include "cogl-pipeline-private.h"
@@ -52,44 +51,6 @@
 #include "cogl-offscreen.h"
 #include "cogl-attribute-gl-private.h"
 #include "cogl-clutter.h"
-
-#ifdef COGL_GL_DEBUG
-/* GL error to string conversion */
-static const struct {
-  GLuint error_code;
-  const char *error_string;
-} gl_errors[] = {
-  { GL_NO_ERROR,          "No error" },
-  { GL_INVALID_ENUM,      "Invalid enumeration value" },
-  { GL_INVALID_VALUE,     "Invalid value" },
-  { GL_INVALID_OPERATION, "Invalid operation" },
-#ifdef HAVE_COGL_GL
-  { GL_STACK_OVERFLOW,    "Stack overflow" },
-  { GL_STACK_UNDERFLOW,   "Stack underflow" },
-#endif
-  { GL_OUT_OF_MEMORY,     "Out of memory" },
-
-#ifdef GL_INVALID_FRAMEBUFFER_OPERATION_EXT
-  { GL_INVALID_FRAMEBUFFER_OPERATION_EXT, "Invalid framebuffer operation" }
-#endif
-};
-
-static const unsigned int n_gl_errors = G_N_ELEMENTS (gl_errors);
-
-const char *
-_cogl_gl_error_to_string (GLenum error_code)
-{
-  int i;
-
-  for (i = 0; i < n_gl_errors; i++)
-    {
-      if (gl_errors[i].error_code == error_code)
-        return gl_errors[i].error_string;
-    }
-
-  return "Unknown GL error";
-}
-#endif /* COGL_GL_DEBUG */
 
 CoglFuncPtr
 cogl_get_proc_address (const char* name)

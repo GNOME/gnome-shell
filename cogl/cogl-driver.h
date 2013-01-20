@@ -267,5 +267,17 @@ struct _CoglDriverVtable
                        CoglError **error);
 };
 
+#define COGL_DRIVER_ERROR (_cogl_driver_error_quark ())
+
+typedef enum { /*< prefix=COGL_DRIVER_ERROR >*/
+  COGL_DRIVER_ERROR_UNKNOWN_VERSION,
+  COGL_DRIVER_ERROR_INVALID_VERSION,
+  COGL_DRIVER_ERROR_NO_SUITABLE_DRIVER_FOUND,
+  COGL_DRIVER_ERROR_FAILED_TO_LOAD_LIBRARY
+} CoglDriverError;
+
+uint32_t
+_cogl_driver_error_quark (void);
+
 #endif /* __COGL_DRIVER_H */
 

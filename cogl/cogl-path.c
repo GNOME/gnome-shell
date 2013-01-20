@@ -28,7 +28,7 @@
 #endif
 
 #include "cogl-util.h"
-#include "cogl-internal.h"
+#include "cogl-object.h"
 #include "cogl-context-private.h"
 #include "cogl2-path.h"
 

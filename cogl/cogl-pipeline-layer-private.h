@@ -28,12 +28,12 @@
 #ifndef __COGL_PIPELINE_LAYER_PRIVATE_H
 #define __COGL_PIPELINE_LAYER_PRIVATE_H
 
+#include "cogl-private.h"
 #include "cogl-pipeline.h"
 #include "cogl-node-private.h"
 #include "cogl-texture.h"
 #include "cogl-matrix.h"
 #include "cogl-pipeline-layer-state.h"
-#include "cogl-internal.h"
 #include "cogl-pipeline-snippet-private.h"
 #include "cogl-sampler-cache-private.h"
 

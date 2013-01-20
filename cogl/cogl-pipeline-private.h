@@ -35,11 +35,11 @@
 #include "cogl-object-private.h"
 #include "cogl-profile.h"
 #include "cogl-queue.h"
-#include "cogl-internal.h"
 #include "cogl-boxed-value.h"
 #include "cogl-pipeline-snippet-private.h"
 #include "cogl-pipeline-state.h"
 #include "cogl-framebuffer.h"
+#include "cogl-bitmask.h"
 
 #include <glib.h>
 

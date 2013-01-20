@@ -30,6 +30,7 @@
 #endif
 
 #include "cogl-context-private.h"
+#include "cogl-util-gl-private.h"
 #include "cogl-primitives-private.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-path-private.h"

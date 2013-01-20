@@ -32,7 +32,6 @@
 
 #include "cogl-util.h"
 #include "cogl-object.h"
-#include "cogl-internal.h"
 #include "cogl-context-private.h"
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-private.h"

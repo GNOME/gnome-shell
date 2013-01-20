@@ -30,7 +30,7 @@
 #endif
 
 #include "cogl-context-private.h"
-#include "cogl-internal.h"
+#include "cogl-util-gl-private.h"
 #include "cogl-matrix-stack.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-object-private.h"

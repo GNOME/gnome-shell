@@ -31,13 +31,13 @@
 
 #include "cogl-debug.h"
 #include "cogl-context-private.h"
+#include "cogl-util-gl-private.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-pipeline-state-private.h"
 #include "cogl-pipeline-layer-private.h"
 
 #ifdef COGL_PIPELINE_FRAGEND_ARBFP
 
-#include "cogl-internal.h"
 #include "cogl-context-private.h"
 #include "cogl-object-private.h"
 

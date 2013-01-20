@@ -32,10 +32,10 @@
 #include <string.h>
 
 #include "cogl-util.h"
-#include "cogl-internal.h"
 #include "cogl-private.h"
 #include "cogl-object.h"
 #include "cogl-context-private.h"
+#include "cogl-util-gl-private.h"
 
 #include "cogl-renderer.h"
 #include "cogl-renderer-private.h"

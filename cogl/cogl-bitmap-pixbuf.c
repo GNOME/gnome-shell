@@ -26,7 +26,6 @@
 #endif
 
 #include "cogl-util.h"
-#include "cogl-internal.h"
 #include "cogl-bitmap-private.h"
 #include "cogl-context-private.h"
 #include "cogl-private.h"

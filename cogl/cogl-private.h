@@ -28,7 +28,51 @@
 
 #include "cogl-context.h"
 
+
 COGL_BEGIN_DECLS
+
+typedef enum
+{
+  COGL_PRIVATE_FEATURE_TEXTURE_2D_FROM_EGL_IMAGE = 1L<<0,
+  COGL_PRIVATE_FEATURE_MESA_PACK_INVERT = 1L<<1,
+  COGL_PRIVATE_FEATURE_STENCIL_BUFFER = 1L<<2,
+  COGL_PRIVATE_FEATURE_OFFSCREEN_BLIT = 1L<<3,
+  COGL_PRIVATE_FEATURE_FOUR_CLIP_PLANES = 1L<<4,
+  COGL_PRIVATE_FEATURE_PBOS = 1L<<5,
+  COGL_PRIVATE_FEATURE_VBOS = 1L<<6,
+  COGL_PRIVATE_FEATURE_EXT_PACKED_DEPTH_STENCIL = 1L<<7,
+  COGL_PRIVATE_FEATURE_OES_PACKED_DEPTH_STENCIL = 1L<<8,
+  COGL_PRIVATE_FEATURE_TEXTURE_FORMAT_BGRA8888 = 1L<<9,
+  COGL_PRIVATE_FEATURE_UNPACK_SUBIMAGE = 1L<<10,
+  COGL_PRIVATE_FEATURE_SAMPLER_OBJECTS = 1L<<11,
+  COGL_PRIVATE_FEATURE_FIXED_FUNCTION = 1L<<12,
+  COGL_PRIVATE_FEATURE_READ_PIXELS_ANY_FORMAT = 1L<<13,
+  COGL_PRIVATE_FEATURE_ANY_GL = 1L<<14,
+  COGL_PRIVATE_FEATURE_ALPHA_TEST = 1L<<15,
+  COGL_PRIVATE_FEATURE_FORMAT_CONVERSION = 1L<<16,
+  COGL_PRIVATE_FEATURE_QUADS = 1L<<17,
+  COGL_PRIVATE_FEATURE_BLEND_CONSTANT = 1L<<18,
+  COGL_PRIVATE_FEATURE_QUERY_FRAMEBUFFER_BITS = 1L<<19,
+  COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM = 1L<<20,
+  COGL_PRIVATE_FEATURE_QUERY_TEXTURE_PARAMETERS = 1L<<21,
+  COGL_PRIVATE_FEATURE_ALPHA_TEXTURES = 1L<<22,
+  COGL_PRIVATE_FEATURE_TEXTURE_SWIZZLE = 1L<<23
+} CoglPrivateFeatureFlags;
+
+/* Sometimes when evaluating pipelines, either during comparisons or
+ * if calculating a hash value we need to tweak the evaluation
+ * semantics */
+typedef enum _CoglPipelineEvalFlags
+{
+  COGL_PIPELINE_EVAL_FLAG_NONE = 0
+} CoglPipelineEvalFlags;
+
+void
+_cogl_transform_point (const CoglMatrix *matrix_mv,
+                       const CoglMatrix *matrix_p,
+                       const float *viewport,
+                       float *x,
+                       float *y);
 
 CoglBool
 _cogl_check_extension (const char *name, char * const *ext);

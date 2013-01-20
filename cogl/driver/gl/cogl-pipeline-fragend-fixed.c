@@ -30,13 +30,13 @@
 #endif
 
 #include "cogl-context-private.h"
+#include "cogl-util-gl-private.h"
 #include "cogl-pipeline-private.h"
 #include "cogl-pipeline-state-private.h"
 #include "cogl-pipeline-opengl-private.h"
 
 #ifdef COGL_PIPELINE_FRAGEND_FIXED
 
-#include "cogl-internal.h"
 #include "cogl-context-private.h"
 #include "cogl-object-private.h"
 

@@ -33,7 +33,6 @@
 
 #include <glib.h>
 
-#include "cogl-internal.h"
 #include "cogl-context-private.h"
 #include "cogl-debug.h"
 #include "cogl-blend-string.h"

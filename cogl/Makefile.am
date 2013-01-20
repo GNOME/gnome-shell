@@ -272,7 +272,6 @@ cogl_sources_c = \
 	$(srcdir)/cogl-display-private.h		\
 	$(srcdir)/cogl-display.h			\
 	$(srcdir)/cogl-display.c			\
-	$(srcdir)/cogl-internal.h			\
 	$(srcdir)/cogl-driver.h				\
 	$(srcdir)/cogl.c				\
 	$(srcdir)/cogl-object-private.h			\

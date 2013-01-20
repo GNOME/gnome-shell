@@ -27,6 +27,7 @@
 #endif
 
 #include "cogl-context-private.h"
+#include "cogl-util-gl-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-framebuffer-gl-private.h"
 #include "cogl-buffer-gl-private.h"

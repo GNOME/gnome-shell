@@ -24,7 +24,6 @@
 #ifndef __COGL_CONTEXT_PRIVATE_H
 #define __COGL_CONTEXT_PRIVATE_H
 
-#include "cogl-internal.h"
 #include "cogl-context.h"
 #include "cogl-winsys-private.h"
 #include "cogl-flags.h"

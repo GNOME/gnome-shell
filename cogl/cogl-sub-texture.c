@@ -28,7 +28,6 @@
 #include "config.h"
 #endif
 
-#include "cogl-internal.h"
 #include "cogl-util.h"
 #include "cogl-texture-private.h"
 #include "cogl-sub-texture-private.h"
