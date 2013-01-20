@@ -7144,13 +7144,10 @@ send_configure_notify (MetaWindow *window)
   meta_error_trap_pop (window->display);
 }
 
-/* FIXME: @rect should be marked (out), but gjs doesn't currently support
- * this. See also http://bugzilla.gnome.org/show_bug.cgi?id=573314
- */
 /**
  * meta_window_get_icon_geometry:
  * @window: a #MetaWindow
- * @rect: rectangle into which to store the returned geometry.
+ * @rect: (out): rectangle into which to store the returned geometry.
  *
  * Gets the location of the icon corresponding to the window. The location
  * will be provided set by the task bar or other user interface element
