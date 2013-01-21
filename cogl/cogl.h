@@ -77,6 +77,7 @@
 #if defined (COGL_ENABLE_EXPERIMENTAL_API)
 #include <cogl/cogl-swap-chain.h>
 #include <cogl/cogl-renderer.h>
+#include <cogl/cogl-output.h>
 #include <cogl/cogl-display.h>
 #include <cogl/cogl-context.h>
 #include <cogl/cogl-buffer.h>

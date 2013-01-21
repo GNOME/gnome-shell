@@ -164,6 +164,58 @@ feature_cb (CoglFeatureID feature, void *user_data)
   printf (" » Unknown feature %d\n", feature);
 }
 
+typedef struct _OutputState
+{
+  int id;
+} OutputState;
+
+static void
+output_cb (CoglOutput *output, void *user_data)
+{
+  OutputState *state = user_data;
+  const char *order;
+  float refresh;
+
+  printf (" Output%d:\n", state->id++);
+  printf ("  » position = (%d, %d)\n",
+          cogl_output_get_x (output),
+          cogl_output_get_y (output));
+  printf ("  » resolution = %d x %d\n",
+          cogl_output_get_width (output),
+          cogl_output_get_height (output));
+  printf ("  » physical size = %dmm x %dmm\n",
+          cogl_output_get_mm_width (output),
+          cogl_output_get_mm_height (output));
+  switch (cogl_output_get_subpixel_order (output))
+    {
+    case COGL_SUBPIXEL_ORDER_UNKNOWN:
+      order = "unknown";
+      break;
+    case COGL_SUBPIXEL_ORDER_NONE:
+      order = "non-standard";
+      break;
+    case COGL_SUBPIXEL_ORDER_HORIZONTAL_RGB:
+      order = "horizontal,rgb";
+      break;
+    case COGL_SUBPIXEL_ORDER_HORIZONTAL_BGR:
+      order = "horizontal,bgr";
+      break;
+    case COGL_SUBPIXEL_ORDER_VERTICAL_RGB:
+      order = "vertical,rgb";
+      break;
+    case COGL_SUBPIXEL_ORDER_VERTICAL_BGR:
+      order = "vertical,bgr";
+      break;
+    }
+  printf ("  » sub pixel order = %s\n", order);
+
+  refresh = cogl_output_get_refresh_rate (output);
+  if (refresh)
+    printf ("  » refresh = %f Hz\n", refresh);
+  else
+    printf ("  » refresh = unknown\n");
+}
+
 int
 main (int argc, char **argv)
 {
@@ -173,6 +225,7 @@ main (int argc, char **argv)
   CoglError *error = NULL;
   CoglWinsysID winsys_id;
   const char *winsys_name;
+  OutputState output_state;
 
   ctx = cogl_context_new (NULL, &error);
   if (!ctx) {
@@ -188,6 +241,12 @@ main (int argc, char **argv)
 
   g_print ("Features:\n");
   cogl_foreach_feature (ctx, feature_cb, NULL);
+
+  g_print ("Outputs:\n");
+  output_state.id = 0;
+  cogl_renderer_foreach_output (renderer, output_cb, &output_state);
+  if (output_state.id == 0)
+    printf (" Unknown\n");
 
   return 0;
 }

@@ -631,3 +631,17 @@ cogl_renderer_get_driver (CoglRenderer *renderer)
 
   return renderer->driver;
 }
+
+void
+cogl_renderer_foreach_output (CoglRenderer *renderer,
+                              CoglOutputCallback callback,
+                              void *user_data)
+{
+  GList *l;
+
+  _COGL_RETURN_IF_FAIL (renderer->connected);
+  _COGL_RETURN_IF_FAIL (callback != NULL);
+
+  for (l = renderer->outputs; l; l = l->next)
+    callback (l->data, user_data);
+}
