@@ -242,22 +242,30 @@ const WindowManager = new Lang.Class({
         }
 
         actor.set_scale(1.0, 1.0);
-        actor.move_anchor_point_from_gravity(Clutter.Gravity.CENTER);
 
-        /* scale window down to 0x0.
-         * maybe TODO: get icon geometry passed through and move the window towards it?
-         */
         this._minimizing.push(actor);
 
-        let monitor = Main.layoutManager.findMonitorForWindow(actor.meta_window);
-        let xDest = monitor.x;
-        let yDest = monitor.y;
-        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
-            xDest += monitor.width;
+        let xDest, yDest, xScale, yScale;
+        let [success, geom] = actor.meta_window.get_icon_geometry();
+        if (success) {
+            xDest = geom.x;
+            yDest = geom.y;
+            xScale = geom.width / actor.width;
+            yScale = geom.height / actor.height;
+        } else {
+            /* scale window down to 0x0.  */
+            let monitor = Main.layoutManager.findMonitorForWindow(actor.meta_window);
+            xDest = monitor.x;
+            yDest = monitor.y;
+            xScale = 0.0;
+            yScale = 0.0;
+            if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
+                xDest += monitor.width;
+        }
 
         Tweener.addTween(actor,
-                         { scale_x: 0.0,
-                           scale_y: 0.0,
+                         { scale_x: xScale,
+                           scale_y: yScale,
                            x: xDest,
                            y: yDest,
                            time: WINDOW_ANIMATION_TIME,
