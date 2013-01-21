@@ -244,11 +244,13 @@ cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
                           float blue,
                           float alpha)
 {
+  CoglContext *ctx = framebuffer->context;
   CoglClipStack *clip_stack = _cogl_framebuffer_get_clip_stack (framebuffer);
   int scissor_x0;
   int scissor_y0;
   int scissor_x1;
   int scissor_y1;
+  CoglBool saved_viewport_scissor_workaround;
 
   _cogl_clip_stack_get_bounds (clip_stack,
                                &scissor_x0, &scissor_y0,
@@ -336,6 +338,31 @@ cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
 
   _cogl_framebuffer_flush_journal (framebuffer);
 
+  /* XXX: ONGOING BUG: Intel viewport scissor
+   *
+   * The semantics of cogl_framebuffer_clear() are that it should not
+   * be affected by the current viewport and so if we are currently
+   * applying a workaround for viewport scissoring we need to
+   * temporarily disable the workaround before clearing so any
+   * special scissoring for the workaround will be removed first.
+   *
+   * Note: we only need to disable the workaround if the current
+   * viewport doesn't match the framebuffer's size since otherwise
+   * the workaround wont affect clearing anyway.
+   */
+  if (ctx->needs_viewport_scissor_workaround &&
+      (framebuffer->viewport_x != 0 ||
+       framebuffer->viewport_y != 0 ||
+       framebuffer->viewport_width != framebuffer->width ||
+       framebuffer->viewport_height != framebuffer->height))
+    {
+      saved_viewport_scissor_workaround = TRUE;
+      ctx->needs_viewport_scissor_workaround = FALSE;
+      ctx->current_draw_buffer_changes |= COGL_FRAMEBUFFER_STATE_CLIP;
+    }
+  else
+    saved_viewport_scissor_workaround = FALSE;
+
   /* NB: _cogl_framebuffer_flush_state may disrupt various state (such
    * as the pipeline state) when flushing the clip stack, so should
    * always be done first when preparing to draw. */
@@ -344,6 +371,16 @@ cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
 
   _cogl_framebuffer_clear_without_flush4f (framebuffer, buffers,
                                            red, green, blue, alpha);
+
+  /* XXX: ONGOING BUG: Intel viewport scissor
+   *
+   * See comment about temporarily disabling this workaround above
+   */
+  if (saved_viewport_scissor_workaround)
+    {
+      ctx->needs_viewport_scissor_workaround = TRUE;
+      ctx->current_draw_buffer_changes |= COGL_FRAMEBUFFER_STATE_CLIP;
+    }
 
   /* This is a debugging variable used to visually display the quad
    * batches from the journal. It is reset here to increase the
