@@ -1,3 +1,45 @@
+Cogl 1.13.2                                                        2013-01-21
+
+  • List of changes since Cogl 1.12.2
+
+  » Adds support for texture based depth buffers
+  » Lots of internal re-working to enable non-GL based drivers
+  » Added a stub, NOP driver that can be useful for profiling
+  » cogl_texture_rectangle_new_from_foreign() make public
+  » cogl_debug_matrix_print() debug api added
+  » Added support for building Cogl without a Glib dependency
+    (we'd like to support Cogl with emscripten/NaCl with minimal
+     dependencies)
+  » Unified a lot of gles 2.0 and gl driver support
+  » Added OpenGL 3.1 core profile support
+  » Lots of gtk-doc annotation fixes
+  » cogl_buffer_map_range() api added
+  » Improved SDL 2 support
+  » Added cogl_sdl_onscreen_get_window() api
+  » Much improved out-of-memory error reporting
+  » Added support for constant attributes
+  » Lots of internal work to avoid referencing a global context
+  » Added a new CoglMatrixStack api
+  » Enabled lazy texture storage allocation
+  » Added cogl_texture_allocate() for optional explicit allocation
+  » Add cogl_texture_set_data() convenience api
+  » Various fixes for handling sliced texture
+  » Added cogl_framebuffer_get_depth_bits() api
+
+  • Bugzilla bugs closed since Cogl 1.12.2
+
+  #685915 - Screenshot API is broken on big-endian
+  #690891 - Support Automake 1.13
+  #691945 - _cogl_unpack_uint{8,16}_t
+
+Many thanks to:
+
+  Damien Lespiau
+  Robert Bragg
+  Neil Roberts
+  Adel Gadllah
+  Rico Tzschichholz
+
 Cogl 1.12.2                                                        2013-01-04
 
   • List of changes since Cogl 1.12.0
@@ -41,7 +83,7 @@ Cogl 1.12.0                                                        2012-09-24
 
   » MSVC build updates to fix building with SDL support
   » Lots of translation updates
-  
+
   • List of bugs fixed since Cogl 1.11.6
 
     #682071 - Fix Visual C++ build when using the SDL winsys
