@@ -12,22 +12,14 @@ static void
 test_color (CoglTexture *texture,
             uint32_t expected_pixel)
 {
-  uint32_t received_pixel;
-  char *received_value_str;
-  char *expected_value_str;
+  uint8_t received_pixel[4];
 
   cogl_texture_get_data (texture,
                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                          4, /* rowstride */
-                         (uint8_t *) &received_pixel);
+                         received_pixel);
 
-  received_pixel = GUINT32_FROM_BE (received_pixel);
-
-  received_value_str = g_strdup_printf ("0x%08x", received_pixel);
-  expected_value_str = g_strdup_printf ("0x%08x", expected_pixel);
-  g_assert_cmpstr (received_value_str, ==, expected_value_str);
-  g_free (received_value_str);
-  g_free (expected_value_str);
+  test_utils_compare_pixel_and_alpha (received_pixel, expected_pixel);
 }
 
 static void

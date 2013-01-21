@@ -174,6 +174,29 @@ compare_component (int a, int b)
 }
 
 void
+test_utils_compare_pixel_and_alpha (const uint8_t *screen_pixel,
+                                    uint32_t expected_pixel)
+{
+  /* Compare each component with a small fuzz factor */
+  if (!compare_component (screen_pixel[0], expected_pixel >> 24) ||
+      !compare_component (screen_pixel[1], (expected_pixel >> 16) & 0xff) ||
+      !compare_component (screen_pixel[2], (expected_pixel >> 8) & 0xff) ||
+      !compare_component (screen_pixel[3], (expected_pixel >> 0) & 0xff))
+    {
+      uint32_t screen_pixel_num = GUINT32_FROM_BE (*(uint32_t *) screen_pixel);
+      char *screen_pixel_string =
+        g_strdup_printf ("#%08x", screen_pixel_num);
+      char *expected_pixel_string =
+        g_strdup_printf ("#%08x", expected_pixel);
+
+      g_assert_cmpstr (screen_pixel_string, ==, expected_pixel_string);
+
+      g_free (screen_pixel_string);
+      g_free (expected_pixel_string);
+    }
+}
+
+void
 test_utils_compare_pixel (const uint8_t *screen_pixel, uint32_t expected_pixel)
 {
   /* Compare each component with a small fuzz factor */

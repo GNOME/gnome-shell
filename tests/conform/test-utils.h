@@ -103,6 +103,19 @@ void
 test_utils_compare_pixel (const uint8_t *screen_pixel, uint32_t expected_pixel);
 
 /*
+ * test_utils_compare_pixel_and_alpha:
+ * @screen_pixel: A pixel stored in memory
+ * @expected_pixel: The expected RGBA value
+ *
+ * Compares a pixel from a buffer to an expected value. This is
+ * similar to test_utils_compare_pixel() except that it doesn't ignore
+ * the alpha component.
+ */
+void
+test_utils_compare_pixel_and_alpha (const uint8_t *screen_pixel,
+                                    uint32_t expected_pixel);
+
+/*
  * test_utils_create_color_texture:
  * @context: A #CoglContext
  * @color: A color to put in the texture
