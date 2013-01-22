@@ -11,6 +11,7 @@ js/misc/util.js
 js/ui/appDisplay.js
 js/ui/appFavorites.js
 js/ui/calendar.js
+js/ui/components/automountManager.js
 js/ui/components/autorunManager.js
 js/ui/components/keyring.js
 js/ui/components/networkAgent.js
