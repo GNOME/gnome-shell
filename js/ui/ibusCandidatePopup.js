@@ -159,6 +159,8 @@ const CandidatePopup = new Lang.Class({
                              Lang.bind(this, function(ps, x, y, w, h) {
                                  this._cursor.set_position(x, y);
                                  this._cursor.set_size(w, h);
+                                 if (this._boxPointer.actor.visible)
+                                     this._boxPointer.setPosition(this._cursor, 0);
                              }));
         panelService.connect('update-preedit-text',
                              Lang.bind(this, function(ps, text, cursorPosition, visible) {
