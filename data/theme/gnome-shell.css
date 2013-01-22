@@ -959,7 +959,8 @@ StScrollBar StButton#vhandle:active {
     color: white;
 }
 
-.show-apps:checked > .overview-icon {
+.show-apps:checked > .overview-icon,
+.show-apps:active > .overview-icon {
     background-gradient-start: rgba(255, 255, 255, .05);
     background-gradient-end: rgba(255, 255, 255, .15);
     background-gradient-direction: vertical;
