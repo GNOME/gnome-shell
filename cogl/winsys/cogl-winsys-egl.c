@@ -689,6 +689,28 @@ _cogl_winsys_onscreen_bind (CoglOnscreen *onscreen)
   bind_onscreen (onscreen);
 }
 
+#ifndef EGL_BUFFER_AGE_EXT
+#define EGL_BUFFER_AGE_EXT 0x313D
+#endif
+
+static int
+_cogl_winsys_onscreen_get_buffer_age (CoglOnscreen *onscreen)
+{
+  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglRenderer *renderer = context->display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  EGLSurface surface = egl_onscreen->egl_surface;
+  int age;
+
+  if (!(egl_renderer->private_features & COGL_EGL_WINSYS_FEATURE_BUFFER_AGE))
+    return 0;
+
+  eglQuerySurface (egl_renderer->edpy, surface, EGL_BUFFER_AGE_EXT, &age);
+
+  return age;
+}
+
 static void
 _cogl_winsys_onscreen_swap_region (CoglOnscreen *onscreen,
                                    const int *user_rectangles,
@@ -848,6 +870,7 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .onscreen_bind = _cogl_winsys_onscreen_bind,
     .onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers,
     .onscreen_swap_region = _cogl_winsys_onscreen_swap_region,
+    .onscreen_get_buffer_age = _cogl_winsys_onscreen_get_buffer_age,
     .onscreen_update_swap_throttled =
       _cogl_winsys_onscreen_update_swap_throttled,
 

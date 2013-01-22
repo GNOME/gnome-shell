@@ -94,4 +94,10 @@ COGL_WINSYS_FEATURE_BEGIN (create_context,
                            COGL_EGL_WINSYS_FEATURE_CREATE_CONTEXT)
 COGL_WINSYS_FEATURE_END ()
 
+COGL_WINSYS_FEATURE_BEGIN (buffer_age,
+                           "EXT\0",
+                           "buffer_age\0",
+                           COGL_EGL_WINSYS_FEATURE_BUFFER_AGE)
+COGL_WINSYS_FEATURE_END ()
+
 #endif
