@@ -149,6 +149,8 @@ gboolean meta_window_is_mapped (MetaWindow  *window);
 gboolean meta_window_toplevel_is_mapped (MetaWindow  *window);
 gboolean meta_window_get_icon_geometry (MetaWindow    *window,
                                         MetaRectangle *rect);
+void meta_window_set_icon_geometry (MetaWindow    *window,
+                                    MetaRectangle *rect);
 void meta_window_maximize   (MetaWindow        *window,
                              MetaMaximizeFlags  directions);
 void meta_window_unmaximize (MetaWindow        *window,

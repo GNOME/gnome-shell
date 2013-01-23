@@ -259,16 +259,19 @@ reload_icon_geometry (MetaWindow    *window,
         }
       else
         {
-          window->icon_geometry.x = (int)value->v.cardinal_list.cardinals[0];
-          window->icon_geometry.y = (int)value->v.cardinal_list.cardinals[1];
-          window->icon_geometry.width = (int)value->v.cardinal_list.cardinals[2];
-          window->icon_geometry.height = (int)value->v.cardinal_list.cardinals[3];
-          window->icon_geometry_set = TRUE;
+          MetaRectangle geometry;
+
+          geometry.x = (int)value->v.cardinal_list.cardinals[0];
+          geometry.y = (int)value->v.cardinal_list.cardinals[1];
+          geometry.width = (int)value->v.cardinal_list.cardinals[2];
+          geometry.height = (int)value->v.cardinal_list.cardinals[3];
+
+          meta_window_set_icon_geometry (window, &geometry);
         }
     }
   else
     {
-      window->icon_geometry_set = FALSE;
+      meta_window_set_icon_geometry (window, NULL);
     }
 }
 
