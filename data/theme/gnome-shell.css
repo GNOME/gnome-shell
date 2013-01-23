@@ -779,6 +779,10 @@ StScrollBar StButton#vhandle:active {
     spacing: 18px;
 }
 
+#searchResultsBin {
+    max-width: 1000px;
+}
+
 #searchResultsContent {
     padding-right: 20px;
     spacing: 16px;

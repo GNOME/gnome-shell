@@ -17,6 +17,26 @@ const Search = imports.ui.search;
 const MAX_LIST_SEARCH_RESULTS_ROWS = 3;
 const MAX_GRID_SEARCH_RESULTS_ROWS = 1;
 
+const MaxWidthBin = new Lang.Class({
+    Name: 'MaxWidthBin',
+    Extends: St.Bin,
+
+    vfunc_allocate: function(box, flags) {
+        let themeNode = this.get_theme_node();
+        let maxWidth = themeNode.get_max_width();
+        let availWidth = box.x2 - box.x1;
+        let adjustedBox = box;
+
+        if (availWidth > maxWidth) {
+            let excessWidth = availWidth - maxWidth;
+            adjustedBox.x1 += Math.floor(excessWidth / 2);
+            adjustedBox.x2 -= Math.floor(excessWidth / 2);
+        }
+
+        this.parent(adjustedBox, flags);
+    }
+});
+
 const SearchResult = new Lang.Class({
     Name: 'SearchResult',
 
@@ -301,12 +321,19 @@ const SearchResults = new Lang.Class({
 
         this._content = new St.BoxLayout({ name: 'searchResultsContent',
                                            vertical: true });
+        this._contentBin = new MaxWidthBin({ name: 'searchResultsBin',
+                                             x_fill: true,
+                                             y_fill: true,
+                                             child: this._content });
+
+        let scrollChild = new St.BoxLayout();
+        scrollChild.add(this._contentBin, { expand: true });
 
         this._scrollView = new St.ScrollView({ x_fill: true,
                                                y_fill: false,
                                                style_class: 'vfade' });
         this._scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        this._scrollView.add_actor(this._content);
+        this._scrollView.add_actor(scrollChild);
         let action = new Clutter.PanAction({ interpolate: true });
         action.connect('pan', Lang.bind(this, this._onPan));
         this._scrollView.add_action(action);
