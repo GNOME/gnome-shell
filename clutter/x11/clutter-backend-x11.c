@@ -239,12 +239,7 @@ clutter_backend_x11_create_device_manager (ClutterBackendX11 *backend_x11)
             {
 #ifdef HAVE_XINPUT_2
               int major = 2;
-
-#ifdef HAVE_XINPUT_2_2
               int minor = 2;
-#else
-              int minor = 0;
-#endif /* HAVE_XINPUT_2_2 */
 
               if (XIQueryVersion (backend_x11->xdpy, &major, &minor) != BadRequest)
                 {
