@@ -44,7 +44,6 @@ ClutterActor *meta_get_top_window_group_for_screen (MetaScreen *screen);
 void        meta_disable_unredirect_for_screen  (MetaScreen *screen);
 void        meta_enable_unredirect_for_screen   (MetaScreen *screen);
 
-ClutterActor *meta_get_background_actor_for_screen (MetaScreen *screen);
 void meta_set_stage_input_region     (MetaScreen    *screen,
                                       XserverRegion  region);
 void meta_empty_stage_input_region   (MetaScreen    *screen);

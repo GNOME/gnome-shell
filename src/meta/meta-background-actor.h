@@ -24,8 +24,12 @@
 #define META_BACKGROUND_ACTOR_H
 
 #include <clutter/clutter.h>
+#include <cogl/cogl.h>
 
+#include <meta/gradient.h>
 #include <meta/screen.h>
+
+#include <gsettings-desktop-schemas/gdesktop-enums.h>
 
 /**
  * MetaBackgroundActor:
@@ -60,41 +64,6 @@ struct _MetaBackgroundActor
 
 GType meta_background_actor_get_type (void);
 
-ClutterActor *meta_background_actor_new_for_screen (MetaScreen *screen);
-
-/**
- * MetaSnippetHook:
- * Temporary hack to work around Cogl not exporting CoglSnippetHook in
- * the 1.0 API. Don't use.
- */
-typedef enum {
-  /* Per pipeline vertex hooks */
-  META_SNIPPET_HOOK_VERTEX = 0,
-  META_SNIPPET_HOOK_VERTEX_TRANSFORM,
-
-  /* Per pipeline fragment hooks */
-  META_SNIPPET_HOOK_FRAGMENT = 2048,
-
-  /* Per layer vertex hooks */
-  META_SNIPPET_HOOK_TEXTURE_COORD_TRANSFORM = 4096,
-
-  /* Per layer fragment hooks */
-  META_SNIPPET_HOOK_LAYER_FRAGMENT = 6144,
-  META_SNIPPET_HOOK_TEXTURE_LOOKUP
-} MetaSnippetHook;
-
-
-void meta_background_actor_add_glsl_snippet (MetaBackgroundActor *actor,
-                                             MetaSnippetHook      hook,
-                                             const char          *declarations,
-                                             const char          *code,
-                                             gboolean             is_replace);
-
-void meta_background_actor_set_uniform_float (MetaBackgroundActor *actor,
-                                              const char          *uniform_name,
-                                              int                  n_components,
-                                              int                  count,
-                                              const float         *uniform,
-                                              int                  uniform_length);
+ClutterActor *meta_background_actor_new (void);
 
 #endif /* META_BACKGROUND_ACTOR_H */

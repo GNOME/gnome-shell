@@ -7,11 +7,12 @@
 
 #include <gdk/gdk.h> /* for gdk_rectangle_intersect() */
 
+#include "clutter-utils.h"
 #include "compositor-private.h"
 #include "meta-window-actor-private.h"
 #include "meta-window-group.h"
 #include "meta-background-actor-private.h"
-#include "clutter-utils.h"
+#include "meta-background-group-private.h"
 
 struct _MetaWindowGroupClass
 {
@@ -203,9 +204,10 @@ meta_window_group_paint (ClutterActor *actor)
           meta_window_actor_set_visible_region_beneath (window_actor, visible_region);
           cairo_region_translate (visible_region, x, y);
         }
-      else if (META_IS_BACKGROUND_ACTOR (l->data))
+      else if (META_IS_BACKGROUND_ACTOR (l->data) ||
+               META_IS_BACKGROUND_GROUP (l->data))
         {
-          MetaBackgroundActor *background_actor = l->data;
+          ClutterActor *background_actor = l->data;
           int x, y;
 
           if (!meta_actor_is_untransformed (CLUTTER_ACTOR (background_actor), &x, &y))
@@ -215,7 +217,11 @@ meta_window_group_paint (ClutterActor *actor)
           y += paint_y_offset;
 
           cairo_region_translate (visible_region, - x, - y);
-          meta_background_actor_set_visible_region (background_actor, visible_region);
+
+          if (META_IS_BACKGROUND_GROUP (background_actor))
+            meta_background_group_set_visible_region (META_BACKGROUND_GROUP (background_actor), visible_region);
+          else
+            meta_background_actor_set_visible_region (META_BACKGROUND_ACTOR (background_actor), visible_region);
           cairo_region_translate (visible_region, x, y);
         }
     }
