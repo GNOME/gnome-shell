@@ -300,7 +300,7 @@ cogl_texture_new_from_foreign (GLuint           gl_handle,
 {
   _COGL_GET_CONTEXT (ctx, NULL);
 
-#if HAVE_COGL_GL
+#ifdef HAVE_COGL_GL
   if (gl_target == GL_TEXTURE_RECTANGLE_ARB)
     {
       CoglTextureRectangle *texture_rectangle;

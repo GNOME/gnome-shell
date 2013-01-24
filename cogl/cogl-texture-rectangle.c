@@ -388,7 +388,7 @@ cogl_texture_rectangle_new_from_foreign (CoglContext *ctx,
 
   /* Obtain texture parameters */
 
-#if HAVE_COGL_GL
+#ifdef HAVE_COGL_GL
   if (ctx->driver == COGL_DRIVER_GL)
     {
       GLint val;

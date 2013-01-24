@@ -375,7 +375,7 @@ cogl_texture_2d_new_from_foreign (CoglContext *ctx,
   /* Obtain texture parameters
      (only level 0 we are interested in) */
 
-#if HAVE_COGL_GL
+#ifdef HAVE_COGL_GL
   if ((ctx->private_feature_flags &
        COGL_PRIVATE_FEATURE_QUERY_TEXTURE_PARAMETERS))
     {
