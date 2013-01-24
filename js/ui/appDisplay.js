@@ -153,6 +153,7 @@ const ViewByCategories = new Lang.Class({
                                                    y_fill: false,
                                                    style_class: 'vfade' });
         this._categoryScroll.add_actor(this._categoryBox);
+        this._categoryScroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.actor.add(this._view.actor, { expand: true, x_fill: true, y_fill: true });
         this.actor.add(this._categoryScroll, { expand: false, y_fill: false, y_align: St.Align.START });
 
