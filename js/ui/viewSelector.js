@@ -201,24 +201,27 @@ const ViewSelector = new Lang.Class({
     },
 
     _showPage: function(page) {
-        if(page == this._activePage)
+        if (page == this._activePage)
             return;
 
-        if(this._activePage) {
-            Tweener.addTween(this._activePage,
+        let oldPage = this._activePage;
+        if (oldPage) {
+            Tweener.addTween(oldPage,
                              { opacity: 0,
                                time: 0.1,
                                transition: 'easeOutQuad',
                                onComplete: Lang.bind(this,
                                    function() {
-                                       this._activePage.hide();
-                                       this._activePage = page;
+                                       oldPage.hide();
                                    })
                              });
         }
 
-        page.show();
-        Tweener.addTween(page,
+        this._activePage = page;
+        this._activePage.show();
+        this.emit('page-changed');
+
+        Tweener.addTween(this._activePage,
                          { opacity: 255,
                            time: 0.1,
                            transition: 'easeOutQuad'
