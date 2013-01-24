@@ -61,6 +61,11 @@
 #include <stdlib.h>
 #include <math.h>
 
+/* This isn't defined in the GLES headers */
+#ifndef GL_RED
+#define GL_RED 0x1903
+#endif
+
 uint32_t
 cogl_texture_error_quark (void)
 {

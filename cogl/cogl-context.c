@@ -58,9 +58,13 @@
 #include "cogl-pipeline-fragend-arbfp-private.h"
 #endif
 
-/* This isn't defined in the GLES headers */
+/* These aren't defined in the GLES headers */
 #ifndef GL_POINT_SPRITE
 #define GL_POINT_SPRITE 0x8861
+#endif
+
+#ifndef GL_NUM_EXTENSIONS
+#define GL_NUM_EXTENSIONS 0x821D
 #endif
 
 static void _cogl_context_free (CoglContext *context);
@@ -649,6 +653,7 @@ _cogl_context_get_gl_extensions (CoglContext *context)
 
   /* In GL 3, querying GL_EXTENSIONS is deprecated so we have to build
    * the array using glGetStringi instead */
+#ifdef HAVE_COGL_GL
   if (context->driver == COGL_DRIVER_GL3)
     {
       int num_extensions, i;
@@ -667,6 +672,7 @@ _cogl_context_get_gl_extensions (CoglContext *context)
       ret[num_extensions] = NULL;
     }
   else
+#endif
     {
       const char *all_extensions =
         (const char *) context->glGetString (GL_EXTENSIONS);
