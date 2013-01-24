@@ -277,7 +277,14 @@ const Overview = new Lang.Class({
             return;
 
         let activePage = this._viewSelector.getActivePage();
+        let dashVisible = (activePage == ViewSelector.ViewPage.WINDOWS ||
+                           activePage == ViewSelector.ViewPage.APPS);
         let thumbnailsVisible = (activePage == ViewSelector.ViewPage.WINDOWS);
+
+        if (dashVisible)
+            this._dashSlider.slideIn();
+        else
+            this._dashSlider.slideOut();
 
         if (thumbnailsVisible)
             this._thumbnailsSlider.slideIn();
