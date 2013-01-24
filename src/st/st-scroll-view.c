@@ -50,8 +50,8 @@
  *
  * The second simplification that we make that allows us to implement
  * a straighforward height-for-width negotiation without multiple
- * allocate passes is that when the vertical scrollbar policy is
- * AUTO, we always reserve space for the vertical scrollbar in the
+ * allocate passes is that when the scrollbar policy is
+ * AUTO, we always reserve space for the scrollbar in the
  * reported minimum and natural size.
  *
  * See https://bugzilla.gnome.org/show_bug.cgi?id=611740 for a more
@@ -451,7 +451,11 @@ st_scroll_view_get_preferred_height (ClutterActor *actor,
       account_for_hscrollbar = TRUE;
       break;
     case GTK_POLICY_AUTOMATIC:
-      account_for_hscrollbar = for_width < child_min_width;
+      /* For automatic scrollbars, we always request space for the horizontal
+       * scrollbar; we won't know whether we actually need one until our
+       * width is assigned in allocate().
+       */
+      account_for_hscrollbar = TRUE;
       break;
     }
 
@@ -622,12 +626,14 @@ st_scroll_view_allocate (ClutterActor          *actor,
       clutter_actor_allocate (priv->hscroll, &child_box, flags);
     }
 
-  /* Now fold visibility into the scrollbar sizes to simplify the rest
-   * of the computations.
+  /* In case the scrollbar policy is NEVER, we don't trim the content
+   * box allocation by the scrollbar size.
+   * Fold this into the scrollbar sizes to simplify the rest of the
+   * computations.
    */
-  if (!hscrollbar_visible)
+  if (priv->hscrollbar_policy == GTK_POLICY_NEVER)
     sb_height = 0;
-  if (!vscrollbar_visible)
+  if (priv->vscrollbar_policy == GTK_POLICY_NEVER)
     sb_width = 0;
 
   /* Child */
