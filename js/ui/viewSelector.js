@@ -12,6 +12,7 @@ const St = imports.gi.St;
 
 const AppDisplay = imports.ui.appDisplay;
 const Main = imports.ui.main;
+const OverviewControls = imports.ui.overviewControls;
 const Params = imports.misc.params;
 const RemoteSearch = imports.ui.remoteSearch;
 const Search = imports.ui.search;
@@ -203,32 +204,36 @@ const ViewSelector = new Lang.Class({
         return page;
     },
 
+    _fadePageIn: function() {
+        this._activePage.show();
+        Tweener.addTween(this._activePage,
+            { opacity: 255,
+              time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
+              transition: 'easeOutQuad'
+            });
+    },
+
     _showPage: function(page) {
         if (page == this._activePage)
             return;
 
         let oldPage = this._activePage;
-        if (oldPage) {
+        this._activePage = page;
+        this.emit('page-changed');
+
+        if (oldPage)
             Tweener.addTween(oldPage,
                              { opacity: 0,
-                               time: 0.1,
+                               time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
                                transition: 'easeOutQuad',
                                onComplete: Lang.bind(this,
                                    function() {
                                        oldPage.hide();
+                                       this._fadePageIn();
                                    })
                              });
-        }
-
-        this._activePage = page;
-        this._activePage.show();
-        this.emit('page-changed');
-
-        Tweener.addTween(this._activePage,
-                         { opacity: 255,
-                           time: 0.1,
-                           transition: 'easeOutQuad'
-                         });
+        else
+            this._fadePageIn();
     },
 
     _a11yFocusPage: function(page) {
