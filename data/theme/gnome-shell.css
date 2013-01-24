@@ -772,13 +772,9 @@ StScrollBar StButton#vhandle:active {
 }
 
 #searchResultsContent {
+    padding-left: 20px;
     padding-right: 20px;
     spacing: 16px;
-}
-
-#searchResultsContent:rtl {
-    padding-right: 0px;
-    padding-left: 20px;
 }
 
 .search-section {

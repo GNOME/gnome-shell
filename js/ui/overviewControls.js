@@ -203,3 +203,32 @@ const ThumbnailsSlider = new Lang.Class({
         return visibleWidth / expandedWidth;
     }
 });
+
+const DashSlider = new Lang.Class({
+    Name: 'DashSlider',
+    Extends: SlidingControl,
+
+    _init: function(dash) {
+        this.parent();
+
+        this.layout.slideDirection = SlideDirection.LEFT;
+
+        this.dash = dash;
+
+        // SlideLayout reads the actor's expand flags to decide
+        // whether to allocate the natural size to its child, or the whole
+        // available allocation
+        dash.actor.x_expand = true;
+        dash.actor.y_expand = true;
+        this.actor.add_actor(this.dash.actor);
+
+        this.dash.connect('icon-size-changed', Lang.bind(this, this.updateSlide));
+    },
+
+    getSlide: function() {
+        if (this.visible || this.inDrag)
+            return 1;
+        else
+            return 0;
+    }
+});

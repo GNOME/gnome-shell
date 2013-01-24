@@ -225,12 +225,14 @@ const Overview = new Lang.Class({
 
         // TODO - recalculate everything when desktop size changes
         this._dash = new Dash.Dash();
-        this._group.add_actor(this._dash.actor);
         this.dashIconSize = this._dash.iconSize;
         this._dash.connect('icon-size-changed',
                            Lang.bind(this, function() {
                                this.dashIconSize = this._dash.iconSize;
                            }));
+
+        this._dashSlider = new OverviewControls.DashSlider(this._dash);
+        this._group.add_actor(this._dashSlider.actor);
 
         // Translators: this is the name of the dock/favorites area on
         // the left of the overview
