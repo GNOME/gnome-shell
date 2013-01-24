@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2007,2008,2009,2010,2011 Intel Corporation.
+ * Copyright (C) 2007,2008,2009,2010,2011,2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -1046,18 +1046,43 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   CoglContext *context = framebuffer->context;
+  CoglContextGLX *glx_context = context->winsys;
+  CoglGLXDisplay *glx_display = context->display->winsys;
   CoglXlibRenderer *xlib_renderer =
     _cogl_xlib_renderer_get_data (context->display->renderer);
   CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
   CoglXlibTrapState old_state;
   CoglOnscreenXlib *xlib_onscreen = onscreen->winsys;
   CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
+  GLXDrawable drawable;
 
   /* If we never successfully allocated then there's nothing to do */
   if (glx_onscreen == NULL)
     return;
 
   _cogl_xlib_renderer_trap_errors (context->display->renderer, &old_state);
+
+  drawable =
+    glx_onscreen->glxwin == None ? xlib_onscreen->xwin : glx_onscreen->glxwin;
+
+  /* Cogl always needs a valid context bound to something so if we are
+   * destroying the onscreen that is currently bound we'll switch back
+   * to the dummy drawable. Although the documentation for
+   * glXDestroyWindow states that a currently bound window won't
+   * actually be destroyed until it is unbound, it looks like this
+   * doesn't work if the X window itself is destroyed */
+  if (drawable == glx_context->current_drawable)
+    {
+      GLXDrawable dummy_drawable = (glx_display->dummy_glxwin == None ?
+                                    glx_display->dummy_xwin :
+                                    glx_display->dummy_glxwin);
+
+      glx_renderer->glXMakeContextCurrent (xlib_renderer->xdpy,
+                                           dummy_drawable,
+                                           dummy_drawable,
+                                           glx_display->glx_context);
+      glx_context->current_drawable = dummy_drawable;
+    }
 
   if (glx_onscreen->glxwin != None)
     {
