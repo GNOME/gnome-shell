@@ -889,7 +889,7 @@ const PopupMenuBase = new Lang.Class({
 
     addSettingsAction: function(title, desktopFile) {
         let menuItem = this.addAction(title, function() {
-                           let app = Shell.AppSystem.get_default().lookup_setting(desktopFile);
+                           let app = Shell.AppSystem.get_default().lookup_app(desktopFile);
 
                            if (!app) {
                                log('Settings panel for desktop file ' + desktopFile + ' could not be loaded!');

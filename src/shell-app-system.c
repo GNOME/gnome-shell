@@ -458,27 +458,6 @@ shell_app_system_get_tree (ShellAppSystem *self)
 }
 
 /**
- * shell_app_system_lookup_setting:
- * @system:
- * @id: desktop file id
- *
- * Returns: (transfer none): Application in gnomecc.menu, or %NULL if none
- */
-ShellApp *
-shell_app_system_lookup_setting (ShellAppSystem *self,
-                                 const char     *id)
-{
-  ShellApp *app;
-
-  /* Actually defer to the main app set if there's overlap */
-  app = shell_app_system_lookup_app (self, id);
-  if (app != NULL)
-    return app;
-
-  return g_hash_table_lookup (self->priv->setting_id_to_app, id);
-}
-
-/**
  * shell_app_system_get_default:
  *
  * Return Value: (transfer none): The global #ShellAppSystem singleton

@@ -63,8 +63,4 @@ GSList         *shell_app_system_subsearch                 (ShellAppSystem  *sys
 GSList         *shell_app_system_search_settings           (ShellAppSystem *system,
                                                             GSList         *terms);
 
-ShellApp       *shell_app_system_lookup_setting            (ShellAppSystem *system,
-                                                            const char     *id);
-
-
 #endif /* __SHELL_APP_SYSTEM_H__ */
