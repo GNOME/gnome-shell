@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
+const Meta = imports.gi.Meta;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
@@ -248,7 +249,7 @@ const ThumbnailsSlider = new Lang.Class({
     _getAlwaysZoomOut: function() {
         // Always show the pager when hover, during a drag, or if workspaces are
         // actually used, e.g. there are windows on more than one
-        let alwaysZoomOut = this.actor.hover || this.inDrag || global.screen.n_workspaces > 2;
+        let alwaysZoomOut = this.actor.hover || this.inDrag || !Meta.prefs_get_dynamic_workspaces() || global.screen.n_workspaces > 2;
 
         if (!alwaysZoomOut) {
             let monitors = Main.layoutManager.monitors;
