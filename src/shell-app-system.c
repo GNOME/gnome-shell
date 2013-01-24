@@ -458,17 +458,6 @@ shell_app_system_get_tree (ShellAppSystem *self)
 }
 
 /**
- * shell_app_system_get_settings_tree:
- *
- * Return Value: (transfer none): The #GMenuTree for apps
- */
-GMenuTree *
-shell_app_system_get_settings_tree (ShellAppSystem *self)
-{
-  return self->priv->settings_tree;
-}
-
-/**
  * shell_app_system_lookup_setting:
  * @system:
  * @id: desktop file id

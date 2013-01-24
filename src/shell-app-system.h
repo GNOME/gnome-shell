@@ -60,8 +60,6 @@ GSList         *shell_app_system_subsearch                 (ShellAppSystem  *sys
                                                             GSList          *previous_results,
                                                             GSList          *terms);
 
-GMenuTree      *shell_app_system_get_settings_tree         (ShellAppSystem *system);
-
 GSList         *shell_app_system_search_settings           (ShellAppSystem *system,
                                                             GSList         *terms);
 
