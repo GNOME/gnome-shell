@@ -82,14 +82,6 @@ _cogl_texture_driver_gen (CoglContext *ctx,
     {
     case GL_TEXTURE_2D:
     case GL_TEXTURE_3D:
-      /* In case automatic mipmap generation gets disabled for this
-       * texture but a minification filter depending on mipmap
-       * interpolation is selected then we initialize the max mipmap
-       * level to 0 so OpenGL will consider the texture storage to be
-       * "complete".
-       */
-      GE( ctx, glTexParameteri (gl_target, GL_TEXTURE_MAX_LEVEL, 0));
-
       /* GL_TEXTURE_MAG_FILTER defaults to GL_LINEAR, no need to set it */
       GE( ctx, glTexParameteri (gl_target,
                                 GL_TEXTURE_MIN_FILTER,

@@ -73,7 +73,10 @@ _cogl_texture_driver_gen (CoglContext *ctx,
        * level to 0 so OpenGL will consider the texture storage to be
        * "complete".
        */
-      GE( ctx, glTexParameteri (gl_target, GL_TEXTURE_MAX_LEVEL, 0));
+#ifdef HAVE_COGL_GL
+      if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_TEXTURE_MAX_LEVEL))
+        GE( ctx, glTexParameteri (gl_target, GL_TEXTURE_MAX_LEVEL, 0));
+#endif
 
       /* GL_TEXTURE_MAG_FILTER defaults to GL_LINEAR, no need to set it */
       GE( ctx, glTexParameteri (gl_target,

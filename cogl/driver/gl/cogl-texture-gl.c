@@ -99,7 +99,12 @@ void
 _cogl_texture_gl_maybe_update_max_level (CoglTexture *texture,
                                          int max_level)
 {
-  if (texture->max_level < max_level)
+  /* This isn't supported on GLES */
+#ifdef HAVE_COGL_GL
+  CoglContext *ctx = texture->context;
+
+  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_TEXTURE_MAX_LEVEL) &&
+      texture->max_level < max_level)
     {
       CoglContext *ctx = texture->context;
       GLuint gl_handle;
@@ -116,6 +121,7 @@ _cogl_texture_gl_maybe_update_max_level (CoglTexture *texture,
       GE( ctx, glTexParameteri (gl_target,
                                 GL_TEXTURE_MAX_LEVEL, texture->max_level));
     }
+#endif /* HAVE_COGL_GL */
 }
 
 void

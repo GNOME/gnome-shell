@@ -594,7 +594,8 @@ _cogl_driver_update_features (CoglContext *ctx,
                     COGL_PRIVATE_FEATURE_FORMAT_CONVERSION |
                     COGL_PRIVATE_FEATURE_BLEND_CONSTANT |
                     COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM |
-                    COGL_PRIVATE_FEATURE_QUERY_TEXTURE_PARAMETERS);
+                    COGL_PRIVATE_FEATURE_QUERY_TEXTURE_PARAMETERS |
+                    COGL_PRIVATE_FEATURE_TEXTURE_MAX_LEVEL);
 
   /* Cache features */
   ctx->private_feature_flags |= private_flags;
