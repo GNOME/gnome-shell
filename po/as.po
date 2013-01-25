@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-18 00:02+0000\n"
-"PO-Revision-Date: 2013-01-21 19:42+0530\n"
+"POT-Creation-Date: 2013-01-22 15:41+0000\n"
+"PO-Revision-Date: 2013-01-25 17:41+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: Assamese <kde-i18n-doc@kde.org>\n"
 "Language: as_IN\n"
@@ -629,6 +629,14 @@ msgstr "এই সপ্তাহ"
 msgid "Next week"
 msgstr "অহা সপ্তাহ"
 
+#: ../js/ui/components/automountManager.js:92
+msgid "External drive connected"
+msgstr "বহিৰ্তম ড্ৰাইভ সংযোগ কৰা হৈছে"
+
+#: ../js/ui/components/automountManager.js:103
+msgid "External drive disconnected"
+msgstr "বহিৰ্তম ড্ৰাইভ বিচ্ছিন্ন কৰা হৈছে"
+
 #: ../js/ui/components/autorunManager.js:295
 msgid "Removable Devices"
 msgstr "আতৰাব পৰা ডিভাইচসমূহ"
@@ -992,7 +1000,7 @@ msgstr "একাওন্ট দৰ্শন কৰক"
 msgid "Unknown reason"
 msgstr "অজ্ঞাত কাৰণ"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:81
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:82
 msgid "Windows"
 msgstr "উইন্ডোসমূহ"
 
@@ -1175,23 +1183,23 @@ msgstr "উৎস দৰ্শন কৰক"
 msgid "Web Page"
 msgstr "ৱেব পৃষ্ঠা"
 
-#: ../js/ui/messageTray.js:1090
+#: ../js/ui/messageTray.js:1118
 msgid "Open"
 msgstr "খোলক"
 
-#: ../js/ui/messageTray.js:1097
+#: ../js/ui/messageTray.js:1125
 msgid "Remove"
 msgstr "আতৰাওক"
 
-#: ../js/ui/messageTray.js:1554
+#: ../js/ui/messageTray.js:1581
 msgid "No Messages"
 msgstr "কোনো বাৰ্তা নাই"
 
-#: ../js/ui/messageTray.js:1572
+#: ../js/ui/messageTray.js:1599
 msgid "Message Tray"
 msgstr "বাৰ্তা ট্ৰে"
 
-#: ../js/ui/messageTray.js:2641
+#: ../js/ui/messageTray.js:2672
 msgid "System Information"
 msgstr "চিস্টেম তথ্য"
 
@@ -1364,7 +1372,7 @@ msgstr "ডাঙৰ লিখনী"
 #: ../js/ui/status/bluetooth.js:27 ../js/ui/status/bluetooth.js:31
 #: ../js/ui/status/bluetooth.js:288 ../js/ui/status/bluetooth.js:319
 #: ../js/ui/status/bluetooth.js:355 ../js/ui/status/bluetooth.js:386
-#: ../js/ui/status/network.js:796
+#: ../js/ui/status/network.js:813
 msgid "Bluetooth"
 msgstr "ব্লুটুথ"
 
@@ -1385,7 +1393,7 @@ msgid "Bluetooth Settings"
 msgstr "ব্লুটুথ সংহতিসমূহ"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:176
+#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:177
 msgid "hardware disabled"
 msgstr "হাৰ্ডৱেৰ অসামৰ্থবান কৰা আছে"
 
@@ -1393,12 +1401,12 @@ msgstr "হাৰ্ডৱেৰ অসামৰ্থবান কৰা আছ
 msgid "Connection"
 msgstr "সংযোগ"
 
-#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:443
+#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:459
 msgid "disconnecting..."
 msgstr "বিচ্ছিনিত কৰা হৈছে..."
 
-#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:449
-#: ../js/ui/status/network.js:1475
+#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:465
+#: ../js/ui/status/network.js:1533
 msgid "connecting..."
 msgstr "সংযোগ কৰা হৈছে..."
 
@@ -1414,7 +1422,7 @@ msgstr "কিবৰ্ড সংহতিসমূহ"
 msgid "Mouse Settings"
 msgstr "মাউছ আৰু টাচপেড সংহতিসমূহ"
 
-#: ../js/ui/status/bluetooth.js:253 ../js/ui/status/volume.js:314
+#: ../js/ui/status/bluetooth.js:253 ../js/ui/status/volume.js:317
 msgid "Sound Settings"
 msgstr "শব্দ সংহতিসমূহ"
 
@@ -1490,117 +1498,117 @@ msgstr "অঞ্চল আৰু ভাষা সংহতিসমূহ"
 msgid "Volume, network, battery"
 msgstr "ভলিউম, নেটৱাৰ্ক, বেটাৰি"
 
-#: ../js/ui/status/network.js:102
+#: ../js/ui/status/network.js:103
 msgid "<unknown>"
 msgstr "<unknown>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:198
+#: ../js/ui/status/network.js:199
 msgid "disabled"
 msgstr "অসামৰ্থবান"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:441
+#: ../js/ui/status/network.js:457
 msgid "unmanaged"
 msgstr "অব্যৱস্থাপিত"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:452 ../js/ui/status/network.js:1478
+#: ../js/ui/status/network.js:468 ../js/ui/status/network.js:1536
 msgid "authentication required"
 msgstr "প্ৰমাণীকৰণৰ প্ৰয়োজন"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:462
+#: ../js/ui/status/network.js:478
 msgid "firmware missing"
 msgstr "ফাৰ্মৱেৰ সন্ধানহীন"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:469
+#: ../js/ui/status/network.js:485
 msgid "cable unplugged"
 msgstr "কেবুল আনপ্লাগ্গড"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:474
+#: ../js/ui/status/network.js:490
 msgid "unavailable"
 msgstr "উপলব্ধ নাই"
 
-#: ../js/ui/status/network.js:476 ../js/ui/status/network.js:1480
+#: ../js/ui/status/network.js:492 ../js/ui/status/network.js:1538
 msgid "connection failed"
 msgstr "সংযোগ ব্যৰ্থ"
 
-#: ../js/ui/status/network.js:533 ../js/ui/status/network.js:1414
-#: ../js/ui/status/network.js:1556
+#: ../js/ui/status/network.js:551 ../js/ui/status/network.js:1422
+#: ../js/ui/status/network.js:1614
 msgid "More..."
 msgstr "অধিক..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:569 ../js/ui/status/network.js:1344
+#: ../js/ui/status/network.js:587 ../js/ui/status/network.js:1352
 msgid "Connected (private)"
 msgstr "সংযোগিত (ব্যক্তিগত)"
 
-#: ../js/ui/status/network.js:649
+#: ../js/ui/status/network.js:666
 msgid "Wired"
 msgstr "তাৰঁযুক্ত"
 
-#: ../js/ui/status/network.js:650
+#: ../js/ui/status/network.js:667
 msgid "Auto Ethernet"
 msgstr "স্বচালিত ইথাৰনেট"
 
-#: ../js/ui/status/network.js:677
+#: ../js/ui/status/network.js:694
 msgid "Mobile broadband"
 msgstr "মবাইল ব্ৰডবেণ্ড"
 
-#: ../js/ui/status/network.js:698
+#: ../js/ui/status/network.js:715
 msgid "Auto broadband"
 msgstr "স্বচালিত ব্ৰডবেণ্ড"
 
-#: ../js/ui/status/network.js:701
+#: ../js/ui/status/network.js:718
 msgid "Auto dial-up"
 msgstr "স্বচালিত ডায়েল-আপ"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:831 ../js/ui/status/network.js:1361
+#: ../js/ui/status/network.js:848 ../js/ui/status/network.js:1369
 #, c-format
 msgid "Auto %s"
 msgstr "স্বচালিত %s"
 
-#: ../js/ui/status/network.js:833
+#: ../js/ui/status/network.js:850
 msgid "Auto bluetooth"
 msgstr "স্বচালিত ব্লুটুথ"
 
-#: ../js/ui/status/network.js:1363
+#: ../js/ui/status/network.js:1371
 msgid "Auto wireless"
 msgstr "স্বচালিত বেতাঁৰ"
 
-#: ../js/ui/status/network.js:1606
+#: ../js/ui/status/network.js:1664
 msgid "Enable networking"
 msgstr "নেটৱাৰ্কিং সামৰ্থবান কৰক"
 
-#: ../js/ui/status/network.js:1638
+#: ../js/ui/status/network.js:1706
 msgid "Wi-Fi"
 msgstr "Wi-Fi"
 
-#: ../js/ui/status/network.js:1657
+#: ../js/ui/status/network.js:1725
 msgid "Network Settings"
 msgstr "নেটৱাৰ্ক সংহতিসমূহ"
 
-#: ../js/ui/status/network.js:1703
+#: ../js/ui/status/network.js:1784
 msgid "Network Manager"
 msgstr "নেটৱাৰ্ক ব্যৱস্থাপক"
 
-#: ../js/ui/status/network.js:1785
+#: ../js/ui/status/network.js:1873
 msgid "Connection failed"
 msgstr "সংযোগ ব্যৰ্থ"
 
-#: ../js/ui/status/network.js:1786
+#: ../js/ui/status/network.js:1874
 msgid "Activation of network connection failed"
 msgstr "নেটৱাৰ্ক সংযোগ সক্ৰিয়কৰণ ব্যৰ্থ হল"
 
-#: ../js/ui/status/network.js:2108
+#: ../js/ui/status/network.js:2252
 msgid "Networking is disabled"
 msgstr "নেটৱাৰ্কিং অসামৰ্থবান কৰা আছে"
 
@@ -1701,12 +1709,17 @@ msgctxt "device"
 msgid "Unknown"
 msgstr "অজ্ঞাত"
 
+#: ../js/ui/status/volume.js:124
+#| msgid "Volume"
+msgid "Volume changed"
+msgstr "ভলিউম পৰিবৰ্তন কৰা হৈছে"
+
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:247 ../js/ui/status/volume.js:295
+#: ../js/ui/status/volume.js:250 ../js/ui/status/volume.js:298
 msgid "Volume"
 msgstr "ভলিউম"
 
-#: ../js/ui/status/volume.js:256
+#: ../js/ui/status/volume.js:259
 msgid "Microphone"
 msgstr "মাইক্ৰোফোন"
 
@@ -1776,11 +1789,11 @@ msgstr ""
 "অনলাইন অৱস্থা ঠিক কৰা হৈছে যাতে আনে জানিব পাৰে যে আপুনি সিহতৰ বাৰ্তা চাব "
 "নোৱাৰিবও পাৰে।"
 
-#: ../js/ui/viewSelector.js:85
+#: ../js/ui/viewSelector.js:86
 msgid "Applications"
 msgstr "এপ্লিকেচনসমূহ"
 
-#: ../js/ui/viewSelector.js:89
+#: ../js/ui/viewSelector.js:90
 msgid "Search"
 msgstr "সন্ধান কৰক"
 
@@ -1829,19 +1842,19 @@ msgstr[1] "%u ইনপুটসমূহ"
 msgid "System Sounds"
 msgstr "চিস্টেম শব্দসমূহ"
 
-#: ../src/main.c:332
+#: ../src/main.c:347
 msgid "Print version"
 msgstr "প্ৰিন্ট সংস্কৰণ"
 
-#: ../src/main.c:338
+#: ../src/main.c:353
 msgid "Mode used by GDM for login screen"
 msgstr "লগিন স্ক্ৰিনৰ বাবে GDM দ্বাৰা ব্যৱহাৰ কৰা অৱস্থা"
 
-#: ../src/main.c:344
+#: ../src/main.c:359
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "লগিন পৰ্দাৰ বাবে এটা বিশেষ অৱস্থা, উদাহৰণস্বৰূপ \"gdm\" ব্যৱহাৰ কৰক"
 
-#: ../src/main.c:350
+#: ../src/main.c:365
 msgid "List possible modes"
 msgstr "সম্ভাব্য অৱস্থাসমূহ তালিকাভুক্ত কৰক"
 
