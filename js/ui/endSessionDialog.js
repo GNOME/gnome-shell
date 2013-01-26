@@ -19,6 +19,7 @@
  */
 
 const Lang = imports.lang;
+const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
 const AccountsService = imports.gi.AccountsService;
@@ -409,22 +410,34 @@ const EndSessionDialog = new Lang.Class({
     },
 
     _startTimer: function() {
+        let startTime = GLib.get_monotonic_time();
         this._secondsLeft = this._totalSecondsToStayOpen;
-        Tweener.addTween(this,
-                         { _secondsLeft: 0,
-                           time: this._secondsLeft,
-                           transition: 'linear',
-                           onUpdate: Lang.bind(this, this._updateDescription),
-                           onComplete: Lang.bind(this, function() {
-                                           let dialogContent = DialogContent[this._type];
-                                           let button = dialogContent.confirmButtons[dialogContent.confirmButtons.length - 1];
-                                           this._confirm(button.signal);
-                                       }),
-                         });
+
+        this._timerId = Mainloop.timeout_add_seconds(1, Lang.bind(this,
+            function() {
+                let currentTime = GLib.get_monotonic_time();
+                let secondsElapsed = ((currentTime - startTime) / 1000000);
+
+                this._secondsLeft = this._totalSecondsToStayOpen - secondsElapsed;
+                if (this._secondsLeft > 0) {
+                    this._updateDescription();
+                    return true;
+                }
+
+                let dialogContent = DialogContent[this._type];
+                let button = dialogContent.confirmButtons[dialogContent.confirmButtons.length - 1];
+                this._confirm(button.signal);
+
+                return false;
+            }));
     },
 
     _stopTimer: function() {
-        Tweener.removeTweens(this);
+        if (this._timerId != 0) {
+            Mainloop.source_remove(this._timerId);
+            this._timerId = 0;
+        }
+
         this._secondsLeft = 0;
     },
 
