@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -44,9 +45,12 @@ const Tweener = imports.tweener.tweener;
 // calls any of these is almost certainly wrong anyway, because they
 // affect the entire application.)
 
+let animationSettings = null;
+
 // Called from Main.start
 function init() {
     Tweener.setFrameTicker(new ClutterFrameTicker());
+    animationSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
 }
 
 
@@ -72,6 +76,9 @@ function _wrapTweening(target, tweeningParameters) {
             state.destroyedId = target.actor.connect('destroy', function() { _actorDestroyed(target); });
         }
     }
+
+    if (!animationSettings.get_boolean('enable-animations'))
+        tweeningParameters['time'] = 0.000001;
 
     _addHandler(target, tweeningParameters, 'onStart', _tweenStarted);
     _addHandler(target, tweeningParameters, 'onComplete', _tweenCompleted);
