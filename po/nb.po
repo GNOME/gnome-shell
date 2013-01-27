@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.7.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-20 21:45+0100\n"
-"PO-Revision-Date: 2013-01-20 21:46+0100\n"
+"POT-Creation-Date: 2013-01-27 12:50+0100\n"
+"PO-Revision-Date: 2013-01-27 12:54+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -289,7 +289,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Arrangement of buttons on the titlebar"
-msgstr ""
+msgstr "Plassering av knappene på tittellinjen"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid ""
@@ -322,11 +322,11 @@ msgstr "Utvidelse"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Velg en utvidelse som skal konfigureres med komboboksen over."
 
-#: ../js/gdm/loginDialog.js:566
+#: ../js/gdm/loginDialog.js:569
 msgid "Session..."
 msgstr "Økt …"
 
-#: ../js/gdm/loginDialog.js:723
+#: ../js/gdm/loginDialog.js:726
 msgctxt "title"
 msgid "Sign In"
 msgstr "Logg inn"
@@ -334,35 +334,35 @@ msgstr "Logg inn"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:787
+#: ../js/gdm/loginDialog.js:790
 msgid "Not listed?"
 msgstr "Ikke listet?"
 
-#: ../js/gdm/loginDialog.js:963 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:967 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:413 ../js/ui/unlockDialog.js:178
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ../js/gdm/loginDialog.js:979
+#: ../js/gdm/loginDialog.js:983
 msgctxt "button"
 msgid "Sign In"
 msgstr "Logg inn"
 
-#: ../js/gdm/loginDialog.js:979
+#: ../js/gdm/loginDialog.js:983
 msgid "Next"
 msgstr "Neste"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:1087 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:1091 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Brukernavn: "
 
-#: ../js/gdm/loginDialog.js:1383
+#: ../js/gdm/loginDialog.js:1387
 msgid "Login Window"
 msgstr "Innloggingsvindu"
 
@@ -416,19 +416,19 @@ msgid "Execution of '%s' failed:"
 msgstr "Kjøring av «%s» feilet:"
 
 #. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:258
+#: ../js/ui/appDisplay.js:259
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:666
+#: ../js/ui/appDisplay.js:667
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:669 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:670 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:670
+#: ../js/ui/appDisplay.js:671
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
@@ -587,6 +587,14 @@ msgstr "Denne uken"
 #: ../js/ui/calendar.js:726
 msgid "Next week"
 msgstr "Neste uke"
+
+#: ../js/ui/components/automountManager.js:92
+msgid "External drive connected"
+msgstr "Ekstern stasjon koblet til"
+
+#: ../js/ui/components/automountManager.js:103
+msgid "External drive disconnected"
+msgstr "Ekstern stasjon koblet fra"
 
 #: ../js/ui/components/autorunManager.js:295
 msgid "Removable Devices"
@@ -753,15 +761,15 @@ msgstr "<b>%A</b>, <b>%H.%M</b>"
 
 #. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"
 #: ../js/ui/components/telepathyClient.js:942
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
-msgstr "<b>%H.%M</b>, <b>%A</b>, <b>%B</b> <b>%d</b>"
+msgstr "<b>%d</b>, <b>%B</b>, <b>%H.%M</b>"
 
 #. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"
 #: ../js/ui/components/telepathyClient.js:946
-#, fuzzy, no-c-format
+#, no-c-format
 msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
-msgstr "<b>%H.%M</b>, <b>%A</b>, <b>%B</b> <b>%d</b>"
+msgstr "<b>%d</b> <b>%B</b> <b>%Y</b>, <b>%H.%M</b> "
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -950,7 +958,7 @@ msgstr "Vis konto"
 msgid "Unknown reason"
 msgstr "Ukjent årsak"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:82
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:81
 msgid "Windows"
 msgstr "Vinduer"
 
@@ -1237,11 +1245,11 @@ msgstr[1] "%d nye varslinger"
 msgid "Lock"
 msgstr "Lås"
 
-#: ../js/ui/searchDisplay.js:403
+#: ../js/ui/searchDisplay.js:430
 msgid "Searching..."
 msgstr "Søker …"
 
-#: ../js/ui/searchDisplay.js:451
+#: ../js/ui/searchDisplay.js:478
 msgid "No results."
 msgstr "Ingen resultater."
 
@@ -1324,7 +1332,7 @@ msgstr "Stor tekst"
 #: ../js/ui/status/bluetooth.js:27 ../js/ui/status/bluetooth.js:31
 #: ../js/ui/status/bluetooth.js:288 ../js/ui/status/bluetooth.js:319
 #: ../js/ui/status/bluetooth.js:355 ../js/ui/status/bluetooth.js:386
-#: ../js/ui/status/network.js:802
+#: ../js/ui/status/network.js:813
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1345,7 +1353,7 @@ msgid "Bluetooth Settings"
 msgstr "Innstillinger for Bluetooth"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:176
+#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:177
 msgid "hardware disabled"
 msgstr "maskinvare slått av"
 
@@ -1353,12 +1361,12 @@ msgstr "maskinvare slått av"
 msgid "Connection"
 msgstr "Tilkobling"
 
-#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:448
+#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:459
 msgid "disconnecting..."
 msgstr "kobler fra …"
 
-#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:454
-#: ../js/ui/status/network.js:1472
+#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:465
+#: ../js/ui/status/network.js:1533
 msgid "connecting..."
 msgstr "kobler til …"
 
@@ -1374,7 +1382,7 @@ msgstr "Innstillinger for tastatur"
 msgid "Mouse Settings"
 msgstr "Innstillinger for mus"
 
-#: ../js/ui/status/bluetooth.js:253 ../js/ui/status/volume.js:314
+#: ../js/ui/status/bluetooth.js:253 ../js/ui/status/volume.js:317
 msgid "Sound Settings"
 msgstr "Innstillinger for lyd"
 
@@ -1450,117 +1458,117 @@ msgstr "Innstillinger for region og språk"
 msgid "Volume, network, battery"
 msgstr "Volum, nettverk, batteri"
 
-#: ../js/ui/status/network.js:102
+#: ../js/ui/status/network.js:103
 msgid "<unknown>"
 msgstr "<ukjent>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:198
+#: ../js/ui/status/network.js:199
 msgid "disabled"
 msgstr "slått av"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:446
+#: ../js/ui/status/network.js:457
 msgid "unmanaged"
 msgstr "ikke håndtert"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:457 ../js/ui/status/network.js:1475
+#: ../js/ui/status/network.js:468 ../js/ui/status/network.js:1536
 msgid "authentication required"
 msgstr "autentisering kreves"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:467
+#: ../js/ui/status/network.js:478
 msgid "firmware missing"
 msgstr "fastvare mangler"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:474
+#: ../js/ui/status/network.js:485
 msgid "cable unplugged"
 msgstr "kabel koblet fra"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:479
+#: ../js/ui/status/network.js:490
 msgid "unavailable"
 msgstr "ikke tilgjengelig"
 
-#: ../js/ui/status/network.js:481 ../js/ui/status/network.js:1477
+#: ../js/ui/status/network.js:492 ../js/ui/status/network.js:1538
 msgid "connection failed"
 msgstr "tilkobling feilet"
 
-#: ../js/ui/status/network.js:540 ../js/ui/status/network.js:1411
-#: ../js/ui/status/network.js:1553
+#: ../js/ui/status/network.js:551 ../js/ui/status/network.js:1422
+#: ../js/ui/status/network.js:1614
 msgid "More..."
 msgstr "Mer …"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:576 ../js/ui/status/network.js:1341
+#: ../js/ui/status/network.js:587 ../js/ui/status/network.js:1352
 msgid "Connected (private)"
 msgstr "Tilkoblet (privat)"
 
-#: ../js/ui/status/network.js:655
+#: ../js/ui/status/network.js:666
 msgid "Wired"
 msgstr "Kablet"
 
-#: ../js/ui/status/network.js:656
+#: ../js/ui/status/network.js:667
 msgid "Auto Ethernet"
 msgstr "Automatisk Ethernet"
 
-#: ../js/ui/status/network.js:683
+#: ../js/ui/status/network.js:694
 msgid "Mobile broadband"
 msgstr "Mobilt bredbånd"
 
-#: ../js/ui/status/network.js:704
+#: ../js/ui/status/network.js:715
 msgid "Auto broadband"
 msgstr "Automatisk bredbånd"
 
-#: ../js/ui/status/network.js:707
+#: ../js/ui/status/network.js:718
 msgid "Auto dial-up"
 msgstr "Automatisk oppringt"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:837 ../js/ui/status/network.js:1358
+#: ../js/ui/status/network.js:848 ../js/ui/status/network.js:1369
 #, c-format
 msgid "Auto %s"
 msgstr "Automatisk %s"
 
-#: ../js/ui/status/network.js:839
+#: ../js/ui/status/network.js:850
 msgid "Auto bluetooth"
 msgstr "Automatisk Bluetooth"
 
-#: ../js/ui/status/network.js:1360
+#: ../js/ui/status/network.js:1371
 msgid "Auto wireless"
 msgstr "Automatisk trådløst"
 
-#: ../js/ui/status/network.js:1603
+#: ../js/ui/status/network.js:1664
 msgid "Enable networking"
 msgstr "Slå på nettverk"
 
-#: ../js/ui/status/network.js:1635
+#: ../js/ui/status/network.js:1706
 msgid "Wi-Fi"
 msgstr "Wi-Fi"
 
-#: ../js/ui/status/network.js:1654
+#: ../js/ui/status/network.js:1725
 msgid "Network Settings"
 msgstr "Innstillinger for nettverk"
 
-#: ../js/ui/status/network.js:1700
+#: ../js/ui/status/network.js:1784
 msgid "Network Manager"
 msgstr "Nettverkshåndtering"
 
-#: ../js/ui/status/network.js:1782
+#: ../js/ui/status/network.js:1873
 msgid "Connection failed"
 msgstr "Tilkobling feilet"
 
-#: ../js/ui/status/network.js:1783
+#: ../js/ui/status/network.js:1874
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nettverkstilkobling feilet"
 
-#: ../js/ui/status/network.js:2105
+#: ../js/ui/status/network.js:2252
 msgid "Networking is disabled"
 msgstr "Nettverk er slått av"
 
@@ -1661,12 +1669,16 @@ msgctxt "device"
 msgid "Unknown"
 msgstr "Ukjent"
 
+#: ../js/ui/status/volume.js:124
+msgid "Volume changed"
+msgstr "Volum endret"
+
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:247 ../js/ui/status/volume.js:295
+#: ../js/ui/status/volume.js:250 ../js/ui/status/volume.js:298
 msgid "Volume"
 msgstr "Volum"
 
-#: ../js/ui/status/volume.js:256
+#: ../js/ui/status/volume.js:259
 msgid "Microphone"
 msgstr "Mikrofon"
 
@@ -1735,11 +1747,11 @@ msgstr ""
 "tilkoblingsstatus er justert for å la andre vite at du kanskje ikke ser "
 "deres meldinger."
 
-#: ../js/ui/viewSelector.js:86
+#: ../js/ui/viewSelector.js:85
 msgid "Applications"
 msgstr "Programmer"
 
-#: ../js/ui/viewSelector.js:90
+#: ../js/ui/viewSelector.js:89
 msgid "Search"
 msgstr "Søk"
 
@@ -1828,6 +1840,3 @@ msgstr "Forvalg"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Autentiseringsdialogen ble lukket av brukeren"
-
-#~ msgid "Show full name in the user menu"
-#~ msgstr "Vis fullt navn i brukermenyen"
