@@ -527,7 +527,7 @@ const ScreenShield = new Lang.Class({
         this._loginManager = LoginManager.getLoginManager();
         this._loginSession = this._loginManager.getCurrentSessionProxy();
         this._loginSession.connectSignal('Lock', Lang.bind(this, function() { this.lock(false); }));
-        this._loginSession.connectSignal('Unlock', Lang.bind(this, function() { this.unlock(); }));
+        this._loginSession.connectSignal('Unlock', Lang.bind(this, function() { this.deactivate(false); }));
 
         this._settings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
 
@@ -538,6 +538,7 @@ const ScreenShield = new Lang.Class({
         this._inUnlockAnimation = false;
         this._activationTime = 0;
         this._becameActiveId = 0;
+        this._lockTimeoutId = 0;
 
         this._lightbox = new Lightbox.Lightbox(Main.uiGroup,
                                                { inhibitEvents: true,
@@ -546,6 +547,15 @@ const ScreenShield = new Lang.Class({
         this._lightbox.connect('shown', Lang.bind(this, this._onLightboxShown));
 
         this.idleMonitor = new GnomeDesktop.IdleMonitor();
+    },
+
+    _liftShield: function(onPrimary, velocity) {
+        if (this._isLocked) {
+            this._ensureUnlockDialog(onPrimary, true /* allowCancel */);
+            this._hideLockScreen(true /* animate */, velocity);
+        } else {
+            this.deactivate(true /* animate */);
+        }
     },
 
     _onLockScreenKeyRelease: function(actor, event) {
@@ -565,8 +575,7 @@ const ScreenShield = new Lang.Class({
         if (symbol == Clutter.KEY_Escape ||
             symbol == Clutter.KEY_Return ||
             symbol == Clutter.KEY_KP_Enter) {
-            this._ensureUnlockDialog(true, true);
-            this._hideLockScreen(true, 0);
+            this._liftShield(false, 0);
             return true;
         }
 
@@ -588,8 +597,7 @@ const ScreenShield = new Lang.Class({
 
         // 7 standard scrolls to lift up
         if (this._lockScreenScrollCounter > 35) {
-            this._ensureUnlockDialog(false, true);
-            this._hideLockScreen(true, 0);
+            this._liftShield(true, 0);
         }
 
         return true;
@@ -620,7 +628,9 @@ const ScreenShield = new Lang.Class({
     _onDragBegin: function() {
         Tweener.removeTweens(this._lockScreenGroup);
         this._lockScreenState = MessageTray.State.HIDING;
-        this._ensureUnlockDialog(false, false);
+
+        if (this._isLocked)
+            this._ensureUnlockDialog(false, false);
 
         return true;
     },
@@ -641,8 +651,7 @@ const ScreenShield = new Lang.Class({
         if (this._lockScreenGroup.y < -(ARROW_DRAG_THRESHOLD * global.stage.height)) {
             // Complete motion automatically
 	    let [velocity, velocityX, velocityY] = this._dragAction.get_velocity(0);
-	    this._hideLockScreen(true, -velocityY);
-            this._ensureUnlockDialog(false, true);
+            this._liftShield(true, -velocityY);
         } else {
             // restore the lock screen to its original place
             // try to use the same speed as the normal animation
@@ -707,6 +716,18 @@ const ScreenShield = new Lang.Class({
         if (this._becameActiveId == 0)
             this._becameActiveId = this.idleMonitor.connect('became-active',
                                                             Lang.bind(this, this._onUserBecameActive));
+
+        let shouldLock = this._settings.get_boolean(LOCK_ENABLED_KEY) && !this._isLocked;
+
+        if (shouldLock) {
+            let lockTimeout = Math.max(STANDARD_FADE_TIME, this._settings.get_uint(LOCK_DELAY_KEY));
+            this._lockTimeoutId = Mainloop.timeout_add(lockTimeout * 1000,
+                                                       Lang.bind(this, function() {
+                                                           this._lockTimeoutId = 0;
+                                                           this.lock(true);
+                                                           return false;
+                                                       }));
+        }
     },
 
     _onUserBecameActive: function() {
@@ -734,23 +755,15 @@ const ScreenShield = new Lang.Class({
         let lightboxWasShown = this._lightbox.shown;
         this._lightbox.hide();
 
-        // GLib.get_monotonic_time() returns microseconds, convert to seconds
-        let elapsedTime = (GLib.get_monotonic_time() - this._activationTime) / 1000000;
-        let shouldLock = lightboxWasShown && this._settings.get_boolean(LOCK_ENABLED_KEY) &&
-            (elapsedTime >= this._settings.get_uint(LOCK_DELAY_KEY));
-
-        if (this._isLocked || shouldLock) {
-            this.lock(false);
-        } else {
-            // We're not really locked here, but unlock() will do what we need
-            // and ensure we reset all state
-            this.unlock();
+        // Shortcircuit in case the mouse was moved before the fade completed
+        if (!lightboxWasShown) {
+            this.deactivate(false);
+            return;
         }
     },
 
     _onLightboxShown: function() {
-        this._isActive = true;
-        this.emit('lock-status-changed');
+        this.activate(false);
     },
 
     showDialog: function() {
@@ -767,6 +780,7 @@ const ScreenShield = new Lang.Class({
 
         this.actor.show();
         this._isGreeter = Main.sessionMode.isGreeter;
+        this._isLocked = true;
         this._ensureUnlockDialog(true, true);
         this._hideLockScreen(false, 0);
     },
@@ -787,6 +801,9 @@ const ScreenShield = new Lang.Class({
     },
 
     _hideLockScreen: function(animate, velocity) {
+        if (this._lockScreenState == MessageTray.State.HIDDEN)
+            return;
+
         this._lockScreenState = MessageTray.State.HIDING;
 
         if (animate) {
@@ -828,7 +845,7 @@ const ScreenShield = new Lang.Class({
             let constructor = Main.sessionMode.unlockDialog;
             if (!constructor) {
                 // This session mode has no locking capabilities
-                this.unlock();
+                this.deactivate(true);
                 return;
             }
 
@@ -838,8 +855,10 @@ const ScreenShield = new Lang.Class({
             let time = global.get_current_time();
             this._dialog.connect('loaded', Lang.bind(this, function() {
                 if (!this._dialog.open(time, onPrimary)) {
+                    // This is kind of an impossible error: we're already modal
+                    // by the time we reach this...
                     log('Could not open login dialog: failed to acquire grab');
-                    this.unlock();
+                    this.deactivate(true);
                 }
             }));
 
@@ -855,12 +874,15 @@ const ScreenShield = new Lang.Class({
     },
 
     _onUnlockSucceded: function() {
-        this._tweenUnlocked();
+        this.deactivate(true);
     },
 
     _resetLockScreen: function(animateLockScreen, animateLockDialog) {
-        if (this._lockScreenState == MessageTray.State.SHOWING ||
-            this._lockScreenState == MessageTray.State.SHOWN)
+        // Don't reset the lock screen unless it is completely hidden
+        // This prevents the shield going down if the lock-delay timeout
+        // fires while the user is dragging (which has the potential
+        // to confuse our state)
+        if (this._lockScreenState != MessageTray.State.HIDDEN)
             return;
 
         this._ensureLockScreen();
@@ -978,6 +1000,10 @@ const ScreenShield = new Lang.Class({
     },
 
     get locked() {
+        return this._isLocked;
+    },
+
+    get active() {
         return this._isActive;
     },
 
@@ -985,27 +1011,20 @@ const ScreenShield = new Lang.Class({
         return this._activationTime;
     },
 
-    _tweenUnlocked: function() {
-        this._inUnlockAnimation = true;
-        this.unlock();
+    deactivate: function(animate) {
+        this._hideLockScreen(animate, 0);
+
         Tweener.addTween(this._lockDialogGroup, {
             scale_x: 0,
             scale_y: 0,
-            time: Overview.ANIMATION_TIME,
+            time: animate ? Overview.ANIMATION_TIME : 0,
             transition: 'easeOutQuad',
-            onComplete: function() {
-                if (this._dialog) {
-                    this._dialog.destroy();
-                    this._dialog = null;
-                }
-                this.actor.hide();
-                this._inUnlockAnimation = false;
-            },
+            onComplete: Lang.bind(this, this._completeDeactivate),
             onCompleteScope: this
         });
     },
 
-    unlock: function() {
+    _completeDeactivate: function() {
         if (this._hasLockScreen)
             this._clearLockScreen();
 
@@ -1021,8 +1040,7 @@ const ScreenShield = new Lang.Class({
             this._isModal = false;
         }
 
-        if (!this._inUnlockAnimation)
-            this.actor.hide();
+        this.actor.hide();
 
         if (Main.sessionMode.currentMode == 'lock-screen')
             Main.sessionMode.popMode('lock-screen');
@@ -1034,18 +1052,18 @@ const ScreenShield = new Lang.Class({
             this._becameActiveId = 0;
         }
 
+        if (this._lockTimeoutId != 0) {
+            Mainloop.source_remove(this._lockTimeoutId);
+            this._lockTimeoutId = 0;
+        }
+
         this._activationTime = 0;
         this._isActive = false;
         this._isLocked = false;
         this.emit('lock-status-changed');
     },
 
-    lock: function(animate) {
-        if (!this._isModal) {
-            Main.pushModal(this.actor, { keybindingMode: Main.KeybindingMode.LOCK_SCREEN });
-            this._isModal = true;
-        }
-
+    activate: function(animate) {
         if (this._activationTime == 0)
             this._activationTime = GLib.get_monotonic_time();
 
@@ -1061,8 +1079,17 @@ const ScreenShield = new Lang.Class({
         this._resetLockScreen(animate, animate);
 
         this._isActive = true;
-        this._isLocked = true;
         this.emit('lock-status-changed');
+    },
+
+    lock: function(animate) {
+        if (!this._isModal) {
+            Main.pushModal(this.actor, { keybindingMode: Main.KeybindingMode.LOCK_SCREEN });
+            this._isModal = true;
+        }
+
+        this._isLocked = true;
+        this.activate(animate);
     },
 });
 Signals.addSignalMethods(ScreenShield.prototype);

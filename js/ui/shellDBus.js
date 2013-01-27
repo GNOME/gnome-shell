@@ -269,13 +269,13 @@ const ScreenSaverDBus = new Lang.Class({
 
     SetActive: function(active) {
         if (active)
-            this._screenShield.lock(true);
+            this._screenShield.activate(true);
         else
-            this._screenShield.unlock();
+            this._screenShield.unlock(false);
     },
 
     GetActive: function() {
-        return this._screenShield.locked;
+        return this._screenShield.active;
     },
 
     GetActiveTime: function() {
