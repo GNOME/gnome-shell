@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2013-01-25 16:36+0100\n"
-"PO-Revision-Date: 2013-01-25 16:37+0100\n"
+"POT-Creation-Date: 2013-01-27 18:16+0100\n"
+"PO-Revision-Date: 2013-01-27 18:17+0100\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -2679,7 +2679,6 @@ msgid "Make X calls synchronous"
 msgstr "Rende le chiamate a X sincrone"
 
 #: ../clutter/x11/clutter-backend-x11.c:534
-#, fuzzy
 msgid "Disable XInput support"
 msgstr "Disabilita il supporto a XInput"
 
