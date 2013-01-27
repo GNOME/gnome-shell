@@ -368,15 +368,6 @@ const ViewSelector = new Lang.Class({
                 this.reset();
                 return true;
             }
-        } else if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
-            // We can't connect to 'activate' here because search providers
-            // might want to do something with the modifiers in activateDefault.
-            if (this._searchTimeoutId > 0) {
-                Mainloop.source_remove(this._searchTimeoutId);
-                this._doSearch();
-            }
-            this._searchResults.activateDefault();
-            return true;
         } else if (this._searchActive) {
             let arrowNext, nextDirection;
             if (entry.get_text_direction() == Clutter.TextDirection.RTL) {
@@ -400,6 +391,15 @@ const ViewSelector = new Lang.Class({
                 return true;
             } else if (symbol == arrowNext && this._text.position == -1) {
                 this._searchResults.navigateFocus(nextDirection);
+                return true;
+            } else if (symbol == Clutter.Return || symbol == Clutter.KP_Enter) {
+                // We can't connect to 'activate' here because search providers
+                // might want to do something with the modifiers in activateDefault.
+                if (this._searchTimeoutId > 0) {
+                    Mainloop.source_remove(this._searchTimeoutId);
+                    this._doSearch();
+                }
+                this._searchResults.activateDefault();
                 return true;
             }
         }
