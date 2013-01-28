@@ -84,7 +84,7 @@ ensure_size_window (MetaResizePopup *popup)
                             TRUE);
   
   popup->size_label = gtk_label_new ("");
-  gtk_misc_set_padding (GTK_MISC (popup->size_label), 3, 3);
+  g_object_set (popup->size_label, "margin", 6, NULL);
 
   gtk_container_add (GTK_CONTAINER (popup->size_window), popup->size_label);
 
