@@ -295,17 +295,7 @@ const WindowClone = new Lang.Class({
 
         let [width, height] = this.actor.get_transformed_size();
 
-        let monitorIndex = this.metaWindow.get_monitor();
-        let monitor = Main.layoutManager.monitors[monitorIndex];
-        let availArea = new Meta.Rectangle({ x: monitor.x,
-                                             y: monitor.y,
-                                             width: monitor.width,
-                                             height: monitor.height });
-        if (monitorIndex == Main.layoutManager.primaryIndex) {
-            availArea.y += Main.panel.actor.height;
-            availArea.height -= Main.panel.actor.height;
-        }
-
+        let availArea = this.metaWindow.get_work_area_current_monitor();
         this.actor.x = _clamp(this.actor.x, availArea.x, availArea.x + availArea.width - width);
         this.actor.y = _clamp(this.actor.y, availArea.y, availArea.y + availArea.height - height);
     },
