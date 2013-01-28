@@ -2613,6 +2613,20 @@ const MessageTray = new Lang.Class({
 
     _onSummaryBoxPointerUngrabbed: function() {
         this._summaryBoxPointerState = State.HIDING;
+
+        if (this._summaryBoxPointerContentUpdatedId) {
+            this._summaryBoxPointerItem.disconnect(this._summaryBoxPointerContentUpdatedId);
+            this._summaryBoxPointerContentUpdatedId = 0;
+        }
+        if (this._summaryBoxPointerCloseClickedId != 0) {
+            this._summaryBoxPointerItem.closeButton.disconnect(this._summaryBoxPointerCloseClickedId);
+            this._summaryBoxPointerCloseClickedId = 0;
+        }
+        if (this._sourceDoneDisplayingId) {
+            this._summaryBoxPointerItem.source.disconnect(this._sourceDoneDisplayingId);
+            this._sourceDoneDisplayingId = 0;
+        }
+
         this._unlock();
 
         if (this._summaryBoxPointerItem.source.notifications.length == 0) {
@@ -2635,14 +2649,6 @@ const MessageTray = new Lang.Class({
 
         this._summaryBoxPointerState = State.HIDDEN;
         this._summaryBoxPointer.bin.child = null;
-        this._summaryBoxPointerItem.disconnect(this._summaryBoxPointerContentUpdatedId);
-        this._summaryBoxPointerContentUpdatedId = 0;
-        if (this._summaryBoxPointerCloseClickedId != 0) {
-            this._summaryBoxPointerItem.closeButton.disconnect(this._summaryBoxPointerCloseClickedId);
-            this._summaryBoxPointerCloseClickedId = 0;
-        }
-        this._summaryBoxPointerItem.source.disconnect(this._sourceDoneDisplayingId);
-        this._summaryBoxPointerDoneDisplayingId = 0;
 
         let sourceNotificationStackDoneShowing = null;
         if (doneShowingNotificationStack) {
