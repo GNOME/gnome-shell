@@ -54,7 +54,16 @@ const Indicator = new Lang.Class({
     _init: function() {
         this.parent('battery-missing-symbolic', _("Battery"));
 
-        this._proxy = new PowerManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH);
+        this._proxy = new PowerManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
+                                           Lang.bind(this, function(proxy, error) {
+                                               if (error) {
+                                                   log(error.message);
+                                                   return;
+                                               }
+                                               this._proxy.connect('g-properties-changed',
+                                                                   Lang.bind(this, this._devicesChanged));
+                                               this._devicesChanged();
+                                           }));
 
         this._deviceItems = [ ];
         this._hasPrimary = false;
@@ -70,10 +79,6 @@ const Indicator = new Lang.Class({
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addSettingsAction(_("Power Settings"), 'gnome-power-panel.desktop');
-
-        this._proxy.connect('g-properties-changed',
-                            Lang.bind(this, this._devicesChanged));
-        this._devicesChanged();
     },
 
     _readPrimaryDevice: function() {
