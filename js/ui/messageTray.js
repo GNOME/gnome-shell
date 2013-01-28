@@ -2384,10 +2384,17 @@ const MessageTray = new Lang.Class({
             this.idleMonitor.disconnect(this._idleMonitorBecameActiveId);
             this._idleMonitorBecameActiveId = 0;
         }
-
         if (this._notificationExpandedId) {
             this._notification.disconnect(this._notificationExpandedId);
             this._notificationExpandedId = 0;
+        }
+        if (this._notificationClickedId) {
+            this._notification.disconnect(this._notificationClickedId);
+            this._notificationClickedId = 0;
+        }
+        if (this._notificationUnfocusedId) {
+            this._notification.disconnect(this._notificationUnfocusedId);
+            this._notificationUnfocusedId = 0;
         }
 
         if (this._notificationRemoved) {
@@ -2411,10 +2418,7 @@ const MessageTray = new Lang.Class({
 
     _hideNotificationCompleted: function() {
         this._notification.collapseCompleted();
-        this._notification.disconnect(this._notificationClickedId);
-        this._notificationClickedId = 0;
-        this._notification.disconnect(this._notificationUnfocusedId);
-        this._notificationUnfocusedId = 0;
+
         let notification = this._notification;
         this._notification = null;
         if (notification.isTransient)
