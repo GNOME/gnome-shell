@@ -55,10 +55,9 @@ const WorkspaceSwitcherPopup = new Lang.Class({
 
     _getPreferredHeight : function (actor, forWidth, alloc) {
         let children = this._list.get_children();
-        let primary = Main.layoutManager.primaryMonitor;
+        let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
 
-        let availHeight = primary.height;
-        availHeight -= Main.panel.actor.height;
+        let availHeight = workArea.height;
         availHeight -= this.actor.get_theme_node().get_vertical_padding();
         availHeight -= this._container.get_theme_node().get_vertical_padding();
         availHeight -= this._list.get_theme_node().get_vertical_padding();
@@ -67,7 +66,7 @@ const WorkspaceSwitcherPopup = new Lang.Class({
         for (let i = 0; i < children.length; i++) {
             let [childMinHeight, childNaturalHeight] = children[i].get_preferred_height(-1);
             let [childMinWidth, childNaturalWidth] = children[i].get_preferred_width(childNaturalHeight);
-            height += childNaturalHeight * primary.width / primary.height;
+            height += childNaturalHeight * workArea.width / workArea.height;
         }
 
         let spacing = this._itemSpacing * (global.screen.n_workspaces - 1);
@@ -81,8 +80,8 @@ const WorkspaceSwitcherPopup = new Lang.Class({
     },
 
     _getPreferredWidth : function (actor, forHeight, alloc) {
-        let primary = Main.layoutManager.primaryMonitor;
-        this._childWidth = Math.round(this._childHeight * primary.width / primary.height);
+        let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
+        this._childWidth = Math.round(this._childHeight * workArea.width / workArea.height);
 
         alloc.min_size = this._childWidth;
         alloc.natural_size = this._childWidth;
@@ -122,12 +121,11 @@ const WorkspaceSwitcherPopup = new Lang.Class({
 
         }
 
-        let primary = Main.layoutManager.primaryMonitor;
+        let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
         let [containerMinHeight, containerNatHeight] = this._container.get_preferred_height(global.screen_width);
         let [containerMinWidth, containerNatWidth] = this._container.get_preferred_width(containerNatHeight);
-        this._container.x = primary.x + Math.floor((primary.width - containerNatWidth) / 2);
-        this._container.y = primary.y + Main.panel.actor.height +
-                            Math.floor(((primary.height - Main.panel.actor.height) - containerNatHeight) / 2);
+        this._container.x = workArea.x + Math.floor((workArea.width - containerNatWidth) / 2);
+        this._container.y = workArea.y + Math.floor((workArea.height - containerNatHeight) / 2);
     },
 
     _show : function() {

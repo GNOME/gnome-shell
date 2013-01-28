@@ -634,6 +634,13 @@ const LayoutManager = new Lang.Class({
         }
     },
 
+    getWorkAreaForMonitor: function(monitorIndex) {
+        // Assume that all workspaces will have the same
+        // struts and pick the first one.
+        let ws = global.screen.get_workspace_by_index(0);
+        return ws.get_work_area_for_monitor(monitorIndex);
+    },
+
     // This call guarantees that we return some monitor to simplify usage of it
     // In practice all tracked actors should be visible on some monitor anyway
     findIndexForActor: function(actor) {

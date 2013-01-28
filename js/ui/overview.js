@@ -374,15 +374,13 @@ const Overview = new Lang.Class({
         this.hide();
 
         let primary = Main.layoutManager.primaryMonitor;
-
-        let contentY = Main.panel.actor.height;
-        let contentHeight = primary.height - contentY - Main.messageTray.actor.height;
+        let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
 
         this._overview.set_position(primary.x, primary.y);
         this._overview.set_size(primary.width, primary.height);
 
-        this._coverPane.set_position(0, contentY);
-        this._coverPane.set_size(primary.width, contentHeight);
+        this._coverPane.set_position(0, workArea.y);
+        this._coverPane.set_size(workArea.width, workArea.height);
     },
 
     _onRestacked: function() {

@@ -205,10 +205,8 @@ const Button = new Lang.Class({
         // Setting the max-height won't do any good if the minimum height of the
         // menu is higher then the screen; it's useful if part of the menu is
         // scrollable so the minimum height is smaller than the natural height
-        let monitor = Main.layoutManager.primaryMonitor;
-        this.menu.actor.style = ('max-height: ' +
-                                 Math.round(monitor.height - Main.panel.actor.height) +
-                                 'px;');
+        let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
+        this.menu.actor.style = ('max-height: ' + Math.round(workArea.height) + 'px;');
     },
 
     destroy: function() {
