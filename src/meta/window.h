@@ -197,6 +197,14 @@ void        meta_window_focus              (MetaWindow  *window,
 void        meta_window_check_alive        (MetaWindow  *window,
                                             guint32      timestamp);
 
+void meta_window_get_work_area_current_monitor (MetaWindow    *window,
+                                                MetaRectangle *area);
+void meta_window_get_work_area_for_monitor     (MetaWindow    *window,
+                                                int            which_monitor,
+                                                MetaRectangle *area);
+void meta_window_get_work_area_all_monitors    (MetaWindow    *window,
+                                                MetaRectangle *area);
+
 void meta_window_begin_grab_op (MetaWindow *window,
                                 MetaGrabOp  op,
                                 gboolean    frame_action,
