@@ -253,12 +253,9 @@ const WindowManager = new Lang.Class({
             xScale = geom.width / actor.width;
             yScale = geom.height / actor.height;
         } else {
-            /* scale window down to 0x0.  */
-            let monitor = Main.layoutManager.findMonitorForWindow(actor.meta_window);
-            xDest = monitor.x;
-            yDest = monitor.y;
-            xScale = 0.0;
-            yScale = 0.0;
+            let monitor = Main.layoutManager.monitors[actor.meta_window.get_monitor()];
+            let xDest = monitor.x;
+            let yDest = monitor.y;
             if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
                 xDest += monitor.width;
         }

@@ -355,7 +355,7 @@ const LayoutManager = new Lang.Class({
         } else {
             let focusWindow = global.display.focus_window;
             if (focusWindow)
-                i = this.findIndexForWindow(focusWindow);
+                i = focusWindow.get_monitor();
         }
 
         return i;
@@ -655,14 +655,6 @@ const LayoutManager = new Lang.Class({
         return -1;
     },
 
-    findIndexForWindow: function(window) {
-        let rect = window.get_input_rect();
-        let i = this._findMonitorForRect(rect.x, rect.y, rect.width, rect.height);
-        if (i >= 0)
-            return i;
-        return this.primaryIndex; // Not on any monitor, pretend its on the primary
-    },
-
     // This call guarantees that we return some monitor to simplify usage of it
     // In practice all tracked actors should be visible on some monitor anyway
     findIndexForActor: function(actor) {
@@ -672,15 +664,6 @@ const LayoutManager = new Lang.Class({
         if (i >= 0)
             return i;
         return this.primaryIndex; // Not on any monitor, pretend its on the primary
-    },
-
-    findMonitorForWindow: function(window) {
-        let rect = window.get_input_rect();
-        let i = this._findMonitorForRect(rect.x, rect.y, rect.width, rect.height);
-        if (i >= 0)
-            return this.monitors[i];
-        else
-            return null;
     },
 
     findMonitorForActor: function(actor) {
@@ -733,7 +716,7 @@ const LayoutManager = new Lang.Class({
                 continue;
 
             if (layer == Meta.StackLayer.FULLSCREEN) {
-                let monitor = this.findMonitorForWindow(metaWindow);
+                let monitor = this.monitors[metaWindow.get_monitor()];
                 if (monitor)
                     monitor.inFullscreen = true;
             }
@@ -750,7 +733,7 @@ const LayoutManager = new Lang.Class({
                 }
 
                 // Or whether it is monitor sized
-                let monitor = this.findMonitorForWindow(metaWindow);
+                let monitor = this.monitors[metaWindow.get_monitor()];
                 if (monitor &&
                     window.x <= monitor.x &&
                     window.x + window.width >= monitor.x + monitor.width &&
