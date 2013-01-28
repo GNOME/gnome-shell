@@ -319,6 +319,29 @@ cogl_foreach_feature (CoglContext *context,
                       CoglFeatureCallback callback,
                       void *user_data);
 
+/**
+ * cogl_get_clock_time:
+ * @context: a #CoglContext pointer
+ *
+ * Returns the current time value from Cogl's internal clock. This
+ * clock is used for measuring times such as the presentation time
+ * in a #CoglFrameInfo.
+ *
+ * This method is meant for converting timestamps retrieved from Cogl
+ * to other time systems, and is not meant to be used as a standalone
+ * timing system. For that reason, if this function is called without
+ * having retrieved a valid (non-zero) timestamp from Cogl first, it
+ * may return 0 to indicate that Cogl has no active internal clock.
+ *
+ * Return value: the time value for the Cogl clock, in nanoseconds
+ *  from an arbitrary point in time, or 0 if Cogl doesn't have an
+ *  active internal clock.
+ * Since: 1.14
+ * Stability: unstable
+ */
+int64_t
+cogl_get_clock_time (CoglContext *context);
+
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
 
 COGL_END_DECLS

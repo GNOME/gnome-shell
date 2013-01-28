@@ -756,4 +756,16 @@ _cogl_context_get_gl_version (CoglContext *context)
     return _cogl_config_override_gl_version;
   else
     return (const char *) context->glGetString (GL_VERSION);
+
+}
+
+int64_t
+cogl_get_clock_time (CoglContext *context)
+{
+  const CoglWinsysVtable *winsys = _cogl_context_get_winsys (context);
+
+  if (winsys->context_get_clock_time)
+    return winsys->context_get_clock_time (context);
+  else
+    return 0;
 }

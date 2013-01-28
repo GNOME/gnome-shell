@@ -267,6 +267,42 @@ ust_to_nanoseconds (CoglRenderer *renderer,
   return 0;
 }
 
+static int64_t
+_cogl_winsys_get_clock_time (CoglContext *context)
+{
+  CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
+
+  /* We don't call ensure_ust_type() because we don't have a drawable
+   * to work with. cogl_get_clock_time() is documented to only work
+   * once a valid, non-zero, timestamp has been retrieved from Cogl.
+   */
+
+  switch (glx_renderer->ust_type)
+    {
+    case COGL_GLX_UST_IS_UNKNOWN:
+    case COGL_GLX_UST_IS_OTHER:
+      return 0;
+    case COGL_GLX_UST_IS_GETTIMEOFDAY:
+      {
+        struct timeval tv;
+
+        gettimeofday(&tv, NULL);
+        return tv.tv_sec * G_GINT64_CONSTANT (1000000000) +
+          tv.tv_usec * G_GINT64_CONSTANT (1000);
+      }
+    case COGL_GLX_UST_IS_MONOTONIC_TIME:
+      {
+        struct timespec ts;
+
+        clock_gettime (CLOCK_MONOTONIC, &ts);
+        return ts.tv_sec * G_GINT64_CONSTANT (1000000000) + ts.tv_nsec;
+      }
+    }
+
+  g_assert_not_reached();
+  return 0;
+}
+
 static void
 set_sync_pending (CoglOnscreen *onscreen)
 {
@@ -2563,6 +2599,7 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .display_destroy = _cogl_winsys_display_destroy,
     .context_init = _cogl_winsys_context_init,
     .context_deinit = _cogl_winsys_context_deinit,
+    .context_get_clock_time = _cogl_winsys_get_clock_time,
     .xlib_get_visual_info = _cogl_winsys_xlib_get_visual_info,
     .onscreen_init = _cogl_winsys_onscreen_init,
     .onscreen_deinit = _cogl_winsys_onscreen_deinit,

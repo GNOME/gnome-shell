@@ -122,6 +122,9 @@ typedef struct _CoglWinsysVtable
 
   /* Optional functions */
 
+  int64_t
+  (*context_get_clock_time) (CoglContext *context);
+
   void
   (*onscreen_swap_region) (CoglOnscreen *onscreen,
                            const int *rectangles,
