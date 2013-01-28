@@ -634,36 +634,13 @@ const LayoutManager = new Lang.Class({
         }
     },
 
-    _findMonitorForRect: function(x, y, w, h) {
-        // First look at what monitor the center of the rectangle is at
-        let cx = x + w/2;
-        let cy = y + h/2;
-        for (let i = 0; i < this.monitors.length; i++) {
-            let monitor = this.monitors[i];
-            if (cx >= monitor.x && cx < monitor.x + monitor.width &&
-                cy >= monitor.y && cy < monitor.y + monitor.height)
-                return i;
-        }
-        // If the center is not on a monitor, return the first overlapping monitor
-        for (let i = 0; i < this.monitors.length; i++) {
-            let monitor = this.monitors[i];
-            if (x + w > monitor.x && x < monitor.x + monitor.width &&
-                y + h > monitor.y && y < monitor.y + monitor.height)
-                return i;
-        }
-        // otherwise on no monitor
-        return -1;
-    },
-
     // This call guarantees that we return some monitor to simplify usage of it
     // In practice all tracked actors should be visible on some monitor anyway
     findIndexForActor: function(actor) {
         let [x, y] = actor.get_transformed_position();
         let [w, h] = actor.get_transformed_size();
-        let i = this._findMonitorForRect(x, y, w, h);
-        if (i >= 0)
-            return i;
-        return this.primaryIndex; // Not on any monitor, pretend its on the primary
+        let rect = new Meta.Rectangle({ x: x, y: y, width: w, height: h });
+        return global.screen.get_monitor_index_for_rect(rect);
     },
 
     findMonitorForActor: function(actor) {
