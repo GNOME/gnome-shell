@@ -61,6 +61,14 @@ st_theme_node_class_init (StThemeNodeClass *klass)
   object_class->finalize = st_theme_node_finalize;
 }
 
+static void
+on_custom_stylesheets_changed (StTheme *theme,
+                               gpointer data)
+{
+  StThemeNode *node = data;
+  node->properties_computed = FALSE;
+}
+
 
 static void
 st_theme_node_dispose (GObject *gobject)
@@ -84,6 +92,10 @@ st_theme_node_dispose (GObject *gobject)
       st_icon_colors_unref (node->icon_colors);
       node->icon_colors = NULL;
     }
+
+  if (node->theme)
+    g_signal_handlers_disconnect_by_func (node->theme,
+                                          on_custom_stylesheets_changed, node);
 
   g_clear_object (&node->theme);
 
@@ -221,10 +233,11 @@ st_theme_node_new (StThemeContext    *context,
     theme = parent_node->theme;
 
   if (theme != NULL)
-    node->theme = theme;
-
-  if (node->theme != NULL)
-    g_object_ref (node->theme);
+    {
+      node->theme = g_object_ref (theme);
+      g_signal_connect (node->theme, "custom-stylesheets-changed",
+                        G_CALLBACK (on_custom_stylesheets_changed), node);
+    }
 
   node->element_type = element_type;
   node->element_id = g_strdup (element_id);
