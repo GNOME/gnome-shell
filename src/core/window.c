@@ -9482,13 +9482,6 @@ get_work_area_monitor (MetaWindow    *window,
               area->x, area->y, area->width, area->height);
 }
 
-/**
- * meta_window_get_work_area_current_monitor:
- * @window: a #MetaWindow
- * @area: (out): a location to store the work area
- *
- * Get the work area for the monitor @window is currently on.
- */
 void
 meta_window_get_work_area_current_monitor (MetaWindow    *window,
                                            MetaRectangle *area)
@@ -9502,15 +9495,6 @@ meta_window_get_work_area_current_monitor (MetaWindow    *window,
                                          area);
 }
 
-/**
- * meta_window_get_work_area_for_monitor:
- * @window: a #MetaWindow
- * @which_monitor: a moniotr to get the work area for
- * @area: (out): a location to store the work area
- *
- * Get the work area for @window, given the monitor index
- * @which_monitor.
- */
 void
 meta_window_get_work_area_for_monitor (MetaWindow    *window,
                                        int            which_monitor,
@@ -9523,13 +9507,6 @@ meta_window_get_work_area_for_monitor (MetaWindow    *window,
                          which_monitor);
 }
 
-/**
- * meta_window_get_work_area_all_monitors:
- * @window: a #MetaWindow
- * @area: (out): a location to store the work area
- *
- * Get the work area for all monitors for @window.
- */
 void
 meta_window_get_work_area_all_monitors (MetaWindow    *window,
                                         MetaRectangle *area)

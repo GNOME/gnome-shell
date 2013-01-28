@@ -607,6 +607,14 @@ void meta_window_handle_mouse_grab_op_event (MetaWindow *window,
 
 GList* meta_window_get_workspaces (MetaWindow *window);
 
+void meta_window_get_work_area_current_monitor (MetaWindow    *window,
+                                                MetaRectangle *area);
+void meta_window_get_work_area_for_monitor     (MetaWindow    *window,
+                                                int            which_monitor,
+                                                MetaRectangle *area);
+void meta_window_get_work_area_all_monitors    (MetaWindow    *window,
+                                                MetaRectangle *area);
+
 void meta_window_get_current_tile_area         (MetaWindow    *window,
                                                 MetaRectangle *tile_area);
 
