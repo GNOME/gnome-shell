@@ -137,8 +137,12 @@ function remoteProvidersLoaded(loadState) {
             idxB = sortOrder.indexOf(appIdB);
 
             // if no provider is found in the order, use alphabetical order
-            if ((idxA == -1) && (idxB == -1))
-                return GLib.utf8_collate(providerA.title, providerB.title);
+            if ((idxA == -1) && (idxB == -1)) {
+                let nameA = providerA.appInfo.get_name();
+                let nameB = providerB.appInfo.get_name();
+
+                return GLib.utf8_collate(nameA, nameB);
+            }
 
             if (numSorted > 1) {
                 // if providerA is the last, it goes after everything
@@ -217,7 +221,7 @@ const RemoteSearchProvider = new Lang.Class({
                                                  Lang.bind(this, this._getResultsFinished),
                                                  this._cancellable);
         } catch(e) {
-            log('Error calling GetInitialResultSet for provider %s: %s'.format( this.title, e.toString()));
+            log('Error calling GetInitialResultSet for provider %s: %s'.format(this.id, e.toString()));
             this.searchSystem.pushResults(this, []);
         }
     },
@@ -230,7 +234,7 @@ const RemoteSearchProvider = new Lang.Class({
                                                    Lang.bind(this, this._getResultsFinished),
                                                    this._cancellable);
         } catch(e) {
-            log('Error calling GetSubsearchResultSet for provider %s: %s'.format(this.title, e.toString()));
+            log('Error calling GetSubsearchResultSet for provider %s: %s'.format(this.id, e.toString()));
             this.searchSystem.pushResults(this, []);
         }
     },
@@ -261,7 +265,7 @@ const RemoteSearchProvider = new Lang.Class({
                                             Lang.bind(this, this._getResultMetasFinished, callback),
                                             this._cancellable);
         } catch(e) {
-            log('Error calling GetResultMetas for provider %s: %s'.format(this.title, e.toString()));
+            log('Error calling GetResultMetas for provider %s: %s'.format(this.id, e.toString()));
             callback([]);
         }
     },
