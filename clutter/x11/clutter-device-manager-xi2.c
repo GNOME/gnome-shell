@@ -94,13 +94,13 @@ translate_valuator_class (Display             *xdisplay,
       atoms_initialized = TRUE;
     }
 
-  for (i = CLUTTER_INPUT_AXIS_IGNORE;
-       i < CLUTTER_INPUT_AXIS_LAST;
+  for (i = 0;
+       i < N_AXIS_ATOMS;
        i += 1)
     {
       if (clutter_input_axis_atoms[i] == class->label)
         {
-          axis = i;
+          axis = i + 1;
           break;
         }
     }
