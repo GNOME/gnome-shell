@@ -1934,10 +1934,10 @@ const NMApplet = new Lang.Class({
         section.addMenuItem(wrapper.statusItem);
         section.addMenuItem(wrapper.section);
 
-        this._syncSectionTitle(wrapper.category);
-
         let devices = this._devices[wrapper.category].devices;
         devices.push(wrapper);
+
+        this._syncSectionTitle(wrapper.category);
     },
 
     _deviceRemoved: function(client, device) {
