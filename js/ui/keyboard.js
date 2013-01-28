@@ -142,7 +142,6 @@ const Keyboard = new Lang.Class({
         this._focusInExtendedKeys = false;
 
         this._timestamp = global.display.get_current_time_roundtrip();
-        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._redraw));
 
         this._keyboardSettings = new Gio.Settings({ schema: KEYBOARD_SCHEMA });
         this._keyboardSettings.connect('changed', Lang.bind(this, this._settingsChanged));
@@ -161,9 +160,8 @@ const Keyboard = new Lang.Class({
         }));
         this._keyboardRequested = false;
         this._keyboardRestingId = 0;
-    },
 
-    init: function () {
+        Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._redraw));
         this._redraw();
     },
 
