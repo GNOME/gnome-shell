@@ -2040,6 +2040,14 @@ meta_screen_get_monitor_for_window (MetaScreen *screen,
   return meta_screen_get_monitor_for_rect (screen, &window_rect);
 }
 
+int
+meta_screen_get_monitor_index_for_rect (MetaScreen    *screen,
+                                        MetaRectangle *rect)
+{
+  const MetaMonitorInfo *monitor = meta_screen_get_monitor_for_rect (screen, rect);
+  return monitor->number;
+}
+
 const MetaMonitorInfo* 
 meta_screen_get_monitor_neighbor (MetaScreen         *screen,
                                   int                 which_monitor,
