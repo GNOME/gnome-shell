@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.7.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-27 12:50+0100\n"
-"PO-Revision-Date: 2013-01-27 12:54+0100\n"
+"POT-Creation-Date: 2013-01-29 18:29+0100\n"
+"PO-Revision-Date: 2013-01-29 18:29+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -280,7 +280,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "Attach modal dialog to the parent window"
-msgstr ""
+msgstr "Fest modal dialog til opphavsvinduet"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:41
 msgid ""
@@ -1086,12 +1086,12 @@ msgstr "Installer"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Last ned og installer «%s» fra extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:291
+#: ../js/ui/keyboard.js:289
 msgid "tray"
 msgstr "varslingsområde"
 
-#: ../js/ui/keyboard.js:636 ../js/ui/status/keyboard.js:309
-#: ../js/ui/status/power.js:206
+#: ../js/ui/keyboard.js:634 ../js/ui/status/keyboard.js:309
+#: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Tastatur"
 
@@ -1159,7 +1159,7 @@ msgstr "Ingen meldinger"
 msgid "Message Tray"
 msgstr "Meldingstrau"
 
-#: ../js/ui/messageTray.js:2672
+#: ../js/ui/messageTray.js:2685
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -1576,17 +1576,17 @@ msgstr "Nettverk er slått av"
 msgid "Battery"
 msgstr "Batteri"
 
-#: ../js/ui/status/power.js:72
+#: ../js/ui/status/power.js:81
 msgid "Power Settings"
 msgstr "Innstillinger for strøm"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:94
+#: ../js/ui/status/power.js:99
 msgid "Estimating..."
 msgstr "Estimerer …"
 
-#: ../js/ui/status/power.js:101
+#: ../js/ui/status/power.js:106
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -1594,77 +1594,77 @@ msgstr[0] "%d time gjenstår"
 msgstr[1] "%d timer gjenstår"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:104
+#: ../js/ui/status/power.js:109
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s gjenstår"
 
-#: ../js/ui/status/power.js:106
+#: ../js/ui/status/power.js:111
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "time"
 msgstr[1] "timer"
 
-#: ../js/ui/status/power.js:106
+#: ../js/ui/status/power.js:111
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minutt"
 msgstr[1] "minutter"
 
-#: ../js/ui/status/power.js:109
+#: ../js/ui/status/power.js:114
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d minutt gjenstår"
 msgstr[1] "%d minutter gjenstår"
 
-#: ../js/ui/status/power.js:112 ../js/ui/status/power.js:186
+#: ../js/ui/status/power.js:117 ../js/ui/status/power.js:191
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../js/ui/status/power.js:196
+#: ../js/ui/status/power.js:201
 msgid "AC adapter"
 msgstr "Strømadapter"
 
-#: ../js/ui/status/power.js:198
+#: ../js/ui/status/power.js:203
 msgid "Laptop battery"
 msgstr "Batteri på bærbar"
 
-#: ../js/ui/status/power.js:200
+#: ../js/ui/status/power.js:205
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:202
+#: ../js/ui/status/power.js:207
 msgid "Monitor"
 msgstr "Skjerm"
 
-#: ../js/ui/status/power.js:204
+#: ../js/ui/status/power.js:209
 msgid "Mouse"
 msgstr "Mus"
 
-#: ../js/ui/status/power.js:208
+#: ../js/ui/status/power.js:213
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:210
+#: ../js/ui/status/power.js:215
 msgid "Cell phone"
 msgstr "Mobiltelefon"
 
-#: ../js/ui/status/power.js:212
+#: ../js/ui/status/power.js:217
 msgid "Media player"
 msgstr "Medieavspiller"
 
-#: ../js/ui/status/power.js:214
+#: ../js/ui/status/power.js:219
 msgid "Tablet"
 msgstr "Nettbrett"
 
-#: ../js/ui/status/power.js:216
+#: ../js/ui/status/power.js:221
 msgid "Computer"
 msgstr "Datamaskin"
 
-#: ../js/ui/status/power.js:218
+#: ../js/ui/status/power.js:223
 msgctxt "device"
 msgid "Unknown"
 msgstr "Ukjent"
