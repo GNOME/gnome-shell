@@ -120,20 +120,17 @@ paint_cb (void *user_data)
       data->frame = 0;
     }
 
-  /* If the driver can deliver swap complete events then we can remove
-   * the idle paint callback until we next get a swap complete event
-   * otherwise we keep the idle paint callback installed and simply
-   * paint as fast as the driver will allow... */
-  if (cogl_has_feature (data->ctx, COGL_FEATURE_ID_SWAP_BUFFERS_EVENT))
-    return FALSE; /* remove the callback */
-  else
-    return TRUE;
+  return FALSE; /* remove the callback */
 }
 
 static void
-swap_complete_cb (CoglFramebuffer *framebuffer, void *user_data)
+frame_event_cb (CoglOnscreen *onscreen,
+                CoglFrameEvent event,
+                CoglFrameInfo *info,
+                void *user_data)
 {
-  g_idle_add (paint_cb, user_data);
+  if (event == COGL_FRAME_EVENT_SYNC)
+    g_idle_add (paint_cb, user_data);
 }
 
 int
@@ -172,9 +169,10 @@ main (int argc, char **argv)
 
   g_source_attach (cogl_source, NULL);
 
-  if (cogl_has_feature (data.ctx, COGL_FEATURE_ID_SWAP_BUFFERS_EVENT))
-    cogl_onscreen_add_swap_buffers_callback (COGL_ONSCREEN (data.fb),
-                                             swap_complete_cb, &data);
+  cogl_onscreen_add_frame_callback (COGL_ONSCREEN (data.fb),
+                                    frame_event_cb,
+                                    &data,
+                                    NULL); /* destroy notify */
 
   g_idle_add (paint_cb, &data);
 
