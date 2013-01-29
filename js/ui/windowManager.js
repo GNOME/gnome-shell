@@ -530,11 +530,11 @@ const WindowManager = new Lang.Class({
         if (direction == Meta.MotionDirection.UP ||
             direction == Meta.MotionDirection.UP_LEFT ||
             direction == Meta.MotionDirection.UP_RIGHT)
-                yDest = global.screen_height;
+                yDest = global.screen_height - Main.panel.actor.height;
         else if (direction == Meta.MotionDirection.DOWN ||
             direction == Meta.MotionDirection.DOWN_LEFT ||
             direction == Meta.MotionDirection.DOWN_RIGHT)
-                yDest = -global.screen_height;
+                yDest = -global.screen_height + Main.panel.actor.height;
 
         if (direction == Meta.MotionDirection.LEFT ||
             direction == Meta.MotionDirection.UP_LEFT ||
