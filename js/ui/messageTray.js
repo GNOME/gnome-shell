@@ -1618,12 +1618,7 @@ const MessageTray = new Lang.Class({
         this._sources = new Hash.Map();
         this._chatSummaryItemsCount = 0;
 
-        let pointerWatcher = PointerWatcher.getPointerWatcher();
-        pointerWatcher.addWatch(TRAY_DWELL_CHECK_INTERVAL, Lang.bind(this, this._checkTrayDwell));
-        this._trayDwellTimeoutId = 0;
-        this._trayDwelling = false;
-        this._trayDwellUserTime = 0;
-
+        this._setupTrayDwellIfNeeded();
         this._sessionUpdated();
 
         this._noMessages = new St.Label({ text: _("No Messages"),
@@ -1634,6 +1629,18 @@ const MessageTray = new Lang.Class({
                                           y_expand: true });
         this.actor.add_actor(this._noMessages);
         this._updateNoMessagesLabel();
+    },
+
+    _setupTrayDwellIfNeeded: function() {
+        // If we don't have extended barrier features, then we need
+        // to support the old tray dwelling mechanism.
+        if (!global.display.supports_extended_barriers()) {
+            let pointerWatcher = PointerWatcher.getPointerWatcher();
+            pointerWatcher.addWatch(TRAY_DWELL_CHECK_INTERVAL, Lang.bind(this, this._checkTrayDwell));
+            this._trayDwellTimeoutId = 0;
+            this._trayDwelling = false;
+            this._trayDwellUserTime = 0;
+        }
     },
 
     _updateNoMessagesLabel: function() {
