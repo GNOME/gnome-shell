@@ -776,13 +776,20 @@ glx_attributes_from_framebuffer_config (CoglDisplay *display,
   attributes[i++] = GLX_STENCIL_SIZE;
   attributes[i++] = config->need_stencil ? 1: GLX_DONT_CARE;
 
-  if (glx_renderer->glx_major == 1 && glx_renderer->glx_minor >= 4 &&
-      config->samples_per_pixel)
+  if (glx_renderer->glx_major == 1 && glx_renderer->glx_minor >= 4)
     {
-       attributes[i++] = GLX_SAMPLE_BUFFERS;
-       attributes[i++] = 1;
-       attributes[i++] = GLX_SAMPLES;
-       attributes[i++] = config->samples_per_pixel;
+       if (config->samples_per_pixel)
+         {
+            attributes[i++] = GLX_SAMPLE_BUFFERS;
+            attributes[i++] = 1;
+            attributes[i++] = GLX_SAMPLES;
+            attributes[i++] = config->samples_per_pixel;
+         }
+       else
+         {
+            attributes[i++] = GLX_SAMPLE_BUFFERS;
+            attributes[i++] = 0;
+         }
     }
 
   attributes[i++] = None;
@@ -2023,6 +2030,16 @@ get_fbconfig_for_depth (CoglContext *context,
                                           &value);
       if (value != depth && (value - alpha) != depth)
         continue;
+
+      if (glx_renderer->glx_major == 1 && glx_renderer->glx_minor >= 4)
+        {
+          glx_renderer->glXGetFBConfigAttrib (dpy,
+                                              fbconfigs[i],
+                                              GLX_SAMPLES,
+                                              &value);
+          if (value > 1)
+            continue;
+        }
 
       value = 0;
       if (depth == 32)
