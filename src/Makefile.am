@@ -145,7 +145,6 @@ libgnome_shell_la_SOURCES =		\
 	shell-app-system-private.h	\
 	shell-embedded-window-private.h	\
 	shell-global-private.h		\
-	shell-jsapi-compat-private.h	\
 	shell-window-tracker-private.h	\
 	shell-wm-private.h		\
 	gnome-shell-plugin.c		\

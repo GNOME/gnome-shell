@@ -35,7 +35,6 @@
 
 #include "shell-enum-types.h"
 #include "shell-global-private.h"
-#include "shell-jsapi-compat-private.h"
 #include "shell-perf-log.h"
 #include "shell-window-tracker.h"
 #include "shell-wm.h"
