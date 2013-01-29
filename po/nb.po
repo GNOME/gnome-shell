@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter 3.7.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-21 12:11+0100\n"
-"PO-Revision-Date: 2013-01-21 12:13+0100\n"
+"POT-Creation-Date: 2013-01-29 19:33+0100\n"
+"PO-Revision-Date: 2013-01-29 19:34+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "Language: \n"
@@ -669,7 +669,7 @@ msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Auto maximize nearly monitor sized windows"
-msgstr ""
+msgstr "Maksimer vinduer automatisk hvis de er nesten like store som skjermen"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid ""
