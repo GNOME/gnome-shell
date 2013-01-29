@@ -951,6 +951,12 @@ const ScreenShield = new Lang.Class({
         this._lockScreenGroup.fixed_position_set = false;
         this._lockScreenScrollCounter = 0;
 
+        let prevIsActive = this._isActive;
+        this._isActive = true;
+
+        if (prevIsActive != this._isActive)
+            this.emit('lock-status-changed');
+
         this.emit('lock-screen-shown');
     },
 
@@ -1078,8 +1084,16 @@ const ScreenShield = new Lang.Class({
 
         this._resetLockScreen(animate, animate);
 
-        this._isActive = true;
-        this.emit('lock-status-changed');
+        // We used to set isActive and emit lock-status-changed here,
+        // but now we do that from lockScreenShown, which means
+        // there is a 0.3 seconds window during which the lock
+        // screen is effectively visible and the screen is locked, but
+        // the DBus interface reports the screensaver is off.
+        // This is because when we emit ActiveChanged(true),
+        // gnome-settings-daemon blanks the screen, and we don't want
+        // blank during the animation.
+        // This is not a problem for the idle fade case, because we
+        // activate without animation in that case.
     },
 
     lock: function(animate) {
