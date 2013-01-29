@@ -29,7 +29,6 @@ const SCREENSAVER_SCHEMA = 'org.gnome.desktop.screensaver';
 const LOCK_ENABLED_KEY = 'lock-enabled';
 const LOCK_DELAY_KEY = 'lock-delay';
 
-const CURTAIN_SLIDE_TIME = 0.3;
 // fraction of screen height the arrow must reach before completing
 // the slide up automatically
 const ARROW_DRAG_THRESHOLD = 0.1;
@@ -46,11 +45,14 @@ const BUMP_TIME = 0.3;
 
 const SUMMARY_ICON_SIZE = 48;
 
-// Lightbox fading times
-// STANDARD_FADE_TIME is used when the session goes idle, while
-// SHORT_FADE_TIME is used when requesting lock explicitly from the user menu
+// ScreenShield animation time
+// - STANDARD_FADE_TIME is used when the session goes idle
+// - MANUAL_FADE_TIME is used for lowering the shield when asked by the user,
+//   or when cancelling the dialog
+// - CURTAIN_SLIDE_TIME is used when raising the shield before unlocking
 const STANDARD_FADE_TIME = 10;
-const SHORT_FADE_TIME = 0.3;
+const MANUAL_FADE_TIME = 0.8;
+const CURTAIN_SLIDE_TIME = 0.3;
 
 function sample(offx, offy) {
     return 'texel += texture2D (sampler, tex_coord.st + pixel_step * ' +
@@ -689,7 +691,7 @@ const ScreenShield = new Lang.Class({
             // restore the lock screen to its original place
             // try to use the same speed as the normal animation
             let h = global.stage.height;
-            let time = CURTAIN_SLIDE_TIME * (-this._lockScreenGroup.y) / h;
+            let time = MANUAL_FADE_TIME * (-this._lockScreenGroup.y) / h;
             Tweener.removeTweens(this._lockScreenGroup);
             Tweener.addTween(this._lockScreenGroup,
                              { y: 0,
@@ -930,7 +932,7 @@ const ScreenShield = new Lang.Class({
             Tweener.removeTweens(this._lockScreenGroup);
             Tweener.addTween(this._lockScreenGroup,
                              { y: 0,
-                               time: SHORT_FADE_TIME,
+                               time: MANUAL_FADE_TIME,
                                transition: 'easeOutQuad',
                                onComplete: function() {
                                    this._lockScreenShown();
@@ -947,7 +949,7 @@ const ScreenShield = new Lang.Class({
             Tweener.removeTweens(this._lockDialogGroup);
             Tweener.addTween(this._lockDialogGroup,
                              { opacity: 255,
-                               time: SHORT_FADE_TIME,
+                               time: MANUAL_FADE_TIME,
                                transition: 'easeOutQuad' });
         } else {
             this._lockDialogGroup.opacity = 255;
