@@ -847,12 +847,12 @@ StScrollBar StButton#vhandle:active {
     icon-size: 96px;
 }
 
-.all-app {
+.app-display {
     padding: 0px 16px 32px 32px;
     spacing: 20px;
 }
 
-.all-app:rtl {
+.app-display:rtl {
     padding-left: 16px;
     padding-right: 32px;
 }

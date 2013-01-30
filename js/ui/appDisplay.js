@@ -108,22 +108,30 @@ const AlphabeticalView = new Lang.Class({
     }
 });
 
-const ViewByCategories = new Lang.Class({
-    Name: 'ViewByCategories',
+const AppDisplay = new Lang.Class({
+    Name: 'AppDisplay',
 
     _init: function() {
         this._appSystem = Shell.AppSystem.get_default();
-        this.actor = new St.BoxLayout({ style_class: 'all-app' });
-        this.actor._delegate = this;
+        this._appSystem.connect('installed-changed', Lang.bind(this, function() {
+            Main.queueDeferredWork(this._workId);
+        }));
+
+        let box = new St.BoxLayout();
+        this.actor = new St.Bin({ child: box,
+                                  style_class: 'app-display',
+                                  x_fill: true, y_fill: true });
 
         this._view = new AlphabeticalView();
-        this.actor.add(this._view.actor, { expand: true, x_fill: true, y_fill: true });
+        box.add(this._view.actor);
 
         // We need a dummy actor to catch the keyboard focus if the
         // user Ctrl-Alt-Tabs here before the deferred work creates
         // our real contents
         this._focusDummy = new St.Bin({ can_focus: true });
-        this.actor.add(this._focusDummy);
+        box.add(this._focusDummy);
+
+        this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplay));
     },
 
     // Recursively load a GMenuTreeDirectory; we could put this in ShellAppSystem too
@@ -148,7 +156,7 @@ const ViewByCategories = new Lang.Class({
         this._view.removeAll();
     },
 
-    refresh: function() {
+    _redisplay: function() {
         this._removeAll();
 
         var tree = this._appSystem.get_tree();
@@ -173,29 +181,6 @@ const ViewByCategories = new Lang.Class({
             if (focused)
                 this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
         }
-    }
-});
-
-/* This class represents a display containing a collection of application items.
- * The applications are sorted based on their name.
- */
-const AllAppDisplay = new Lang.Class({
-    Name: 'AllAppDisplay',
-
-    _init: function() {
-        this._appSystem = Shell.AppSystem.get_default();
-        this._appSystem.connect('installed-changed', Lang.bind(this, function() {
-            Main.queueDeferredWork(this._workId);
-        }));
-
-        this._appView = new ViewByCategories();
-        this.actor = new St.Bin({ child: this._appView.actor, x_fill: true, y_fill: true });
-
-        this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplay));
-    },
-
-    _redisplay: function() {
-        this._appView.refresh();
     }
 });
 

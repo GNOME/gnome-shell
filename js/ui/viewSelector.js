@@ -96,7 +96,7 @@ const ViewSelector = new Lang.Class({
         this._workspacesPage = this._addPage(this._workspacesDisplay.actor,
                                              _("Windows"), 'emblem-documents-symbolic');
 
-        this._appDisplay = new AppDisplay.AllAppDisplay();
+        this._appDisplay = new AppDisplay.AppDisplay();
         this._appsPage = this._addPage(this._appDisplay.actor,
                                        _("Applications"), 'view-grid-symbolic');
 
