@@ -5122,6 +5122,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
 
 #ifdef HAVE_XSYNC
       if (window == window->display->grab_window &&
+          meta_grab_op_is_resizing (window->display->grab_op) &&
           window->sync_request_counter != None &&
 	  window->sync_request_alarm != None &&
 	  window->sync_request_time.tv_usec == 0 &&
@@ -9520,9 +9521,8 @@ meta_window_update_sync_request_counter (MetaWindow *window,
   meta_compositor_set_updates_frozen (window->display->compositor, window,
                                       meta_window_updates_are_frozen (window));
 
-  if (window->display->grab_op != META_GRAB_OP_NONE &&
-      window == window->display->grab_window &&
-      meta_grab_op_is_mouse (window->display->grab_op) &&
+  if (window == window->display->grab_window &&
+      meta_grab_op_is_resizing (window->display->grab_op) &&
       new_counter_value >= window->display->grab_sync_counter_wait_serial)
     {
       meta_topic (META_DEBUG_RESIZING,
@@ -9538,36 +9538,13 @@ meta_window_update_sync_request_counter (MetaWindow *window,
       window->sync_request_time.tv_sec = 0;
       window->sync_request_time.tv_usec = 0;
 
-      /* This means we are ready for another configure. */
-      switch (window->display->grab_op)
-        {
-        case META_GRAB_OP_RESIZING_E:
-        case META_GRAB_OP_RESIZING_W:
-        case META_GRAB_OP_RESIZING_S:
-        case META_GRAB_OP_RESIZING_N:
-        case META_GRAB_OP_RESIZING_SE:
-        case META_GRAB_OP_RESIZING_SW:
-        case META_GRAB_OP_RESIZING_NE:
-        case META_GRAB_OP_RESIZING_NW:
-        case META_GRAB_OP_KEYBOARD_RESIZING_S:
-        case META_GRAB_OP_KEYBOARD_RESIZING_N:
-        case META_GRAB_OP_KEYBOARD_RESIZING_W:
-        case META_GRAB_OP_KEYBOARD_RESIZING_E:
-        case META_GRAB_OP_KEYBOARD_RESIZING_SE:
-        case META_GRAB_OP_KEYBOARD_RESIZING_NE:
-        case META_GRAB_OP_KEYBOARD_RESIZING_SW:
-        case META_GRAB_OP_KEYBOARD_RESIZING_NW:
-          /* no pointer round trip here, to keep in sync */
-          update_resize (window,
-                         window->display->grab_last_user_action_was_snap,
-                         window->display->grab_latest_motion_x,
-                         window->display->grab_latest_motion_y,
-                         TRUE);
-          break;
-
-        default:
-          break;
-        }
+      /* This means we are ready for another configure;
+       * no pointer round trip here, to keep in sync */
+      update_resize (window,
+                     window->display->grab_last_user_action_was_snap,
+                     window->display->grab_latest_motion_x,
+                     window->display->grab_latest_motion_y,
+                     TRUE);
     }
 }
 #endif /* HAVE_XSYNC */
