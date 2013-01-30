@@ -35,13 +35,10 @@
 #ifndef __CLUTTER_WAYLAND_COMPOSITOR_H__
 #define __CLUTTER_WAYLAND_COMPOSITOR_H__
 
-#include <wayland-server.h>
-#include <clutter/wayland/clutter-wayland-surface.h>
-
 G_BEGIN_DECLS
 
 void
-clutter_wayland_set_compositor_display (struct wl_display *display);
+clutter_wayland_set_compositor_display (void *display);
 
 G_END_DECLS
 

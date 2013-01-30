@@ -1322,7 +1322,7 @@ clutter_backend_get_cogl_context (ClutterBackend *backend)
  * Stability: unstable
  */
 void
-clutter_wayland_set_compositor_display (struct wl_display *display)
+clutter_wayland_set_compositor_display (void *display)
 {
   if (_clutter_context_is_initialized ())
     {
