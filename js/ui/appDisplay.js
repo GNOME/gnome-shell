@@ -71,7 +71,7 @@ const AlphabeticalView = new Lang.Class({
         if (this._appIcons[id] !== undefined)
             return;
 
-        let appIcon = new AppWellIcon(app);
+        let appIcon = new AppIcon(app);
         let pos = Util.insertSorted(this._allApps, app, function(a, b) {
             return a.compare_by_name(b);
         });
@@ -250,30 +250,14 @@ const AppSearchProvider = new Lang.Class({
 
     createResultActor: function (resultMeta, terms) {
         let app = resultMeta['id'];
-        let icon = new AppWellIcon(app);
+        let icon = new AppIcon(app);
         return icon.actor;
     }
 });
 
+
 const AppIcon = new Lang.Class({
     Name: 'AppIcon',
-    Extends: IconGrid.BaseIcon,
-
-    _init : function(app, params) {
-        this.app = app;
-
-        let label = this.app.get_name();
-
-        this.parent(label, params);
-    },
-
-    createIcon: function(iconSize) {
-        return this.app.create_icon_texture(iconSize);
-    }
-});
-
-const AppWellIcon = new Lang.Class({
-    Name: 'AppWellIcon',
 
     _init : function(app, iconParams) {
         this.app = app;
@@ -285,7 +269,11 @@ const AppWellIcon = new Lang.Class({
                                      y_fill: true });
         this.actor._delegate = this;
 
-        this.icon = new AppIcon(app, iconParams);
+        if (!iconParams)
+            iconParams = {};
+
+        iconParams['createIcon'] = Lang.bind(this, this._createIcon);
+        this.icon = new IconGrid.BaseIcon(app.get_name(), iconParams);
         this.actor.set_child(this.icon.actor);
 
         this.actor.label_actor = this.icon.label;
@@ -326,6 +314,10 @@ const AppWellIcon = new Lang.Class({
             this.app.disconnect(this._stateChangedId);
         this._stateChangedId = 0;
         this._removeMenuTimeout();
+    },
+
+    _createIcon: function(iconSize) {
+        return this.app.create_icon_texture(iconSize);
     },
 
     _removeMenuTimeout: function() {
@@ -453,7 +445,7 @@ const AppWellIcon = new Lang.Class({
         return this.icon.icon;
     }
 });
-Signals.addSignalMethods(AppWellIcon.prototype);
+Signals.addSignalMethods(AppIcon.prototype);
 
 const AppIconMenu = new Lang.Class({
     Name: 'AppIconMenu',

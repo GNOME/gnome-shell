@@ -22,7 +22,7 @@ const DASH_ITEM_LABEL_HIDE_TIME = 0.1;
 const DASH_ITEM_HOVER_TIMEOUT = 300;
 
 function getAppFromSource(source) {
-    if (source instanceof AppDisplay.AppWellIcon) {
+    if (source instanceof AppDisplay.AppIcon) {
         return source.app;
     } else {
         return null;
@@ -486,9 +486,9 @@ const Dash = new Lang.Class({
     },
 
     _createAppItem: function(app) {
-        let appIcon = new AppDisplay.AppWellIcon(app,
-                                                 { setSizeManually: true,
-                                                   showLabel: false });
+        let appIcon = new AppDisplay.AppIcon(app,
+                                             { setSizeManually: true,
+                                               showLabel: false });
         appIcon._draggable.connect('drag-begin',
                                    Lang.bind(this, function() {
                                        appIcon.actor.opacity = 50;
@@ -505,7 +505,7 @@ const Dash = new Lang.Class({
         let item = new DashItemContainer();
         item.setChild(appIcon.actor);
 
-        // Override default AppWellIcon label_actor, now the
+        // Override default AppIcon label_actor, now the
         // accessible_name is set at DashItemContainer.setLabelText
         appIcon.actor.label_actor = null;
         item.setLabelText(app.get_name());
