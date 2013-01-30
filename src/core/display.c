@@ -778,7 +778,7 @@ meta_display_open (void)
   }
 
   {
-    int major = 2, minor = 2;
+    int major = 2, minor = 3;
     gboolean has_xi = FALSE;
 
     if (XQueryExtension (the_display->xdisplay,
