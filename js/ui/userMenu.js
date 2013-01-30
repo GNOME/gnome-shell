@@ -555,6 +555,8 @@ const UserMenuButton = new Lang.Class({
                                        Lang.bind(this, this._updateLogout));
         this._lockdownSettings.connect('changed::' + DISABLE_LOCK_SCREEN_KEY,
                                        Lang.bind(this, this._updateLockScreen));
+        global.settings.connect('changed::' + ALWAYS_SHOW_LOG_OUT_KEY,
+                                Lang.bind(this, this._updateLogout));
         this._screenSaverSettings.connect('changed::' + SHOW_FULL_NAME_IN_TOP_BAR_KEY,
                                            Lang.bind(this, this._updateUserName));
         this._privacySettings.connect('changed::' + SHOW_FULL_NAME_IN_TOP_BAR_KEY,
