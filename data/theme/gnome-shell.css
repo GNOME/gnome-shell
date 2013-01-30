@@ -2417,6 +2417,7 @@ StScrollBar StButton#vhandle:active {
 
 .screen-shield-notifications-box {
     spacing: 18px;
+    max-width: 34em;
 }
 
 .screen-shield-notification-source {

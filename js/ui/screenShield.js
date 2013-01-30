@@ -13,6 +13,7 @@ const St = imports.gi.St;
 const TweenerEquations = imports.tweener.equations;
 
 const GnomeSession = imports.misc.gnomeSession;
+const Hash = imports.misc.hash;
 const Layout = imports.ui.layout;
 const LoginManager = imports.misc.loginManager;
 const Lightbox = imports.ui.lightbox;
@@ -127,49 +128,48 @@ const NotificationsBox = new Lang.Class({
                                         name: 'screenShieldNotifications',
                                         style_class: 'screen-shield-notifications-box' });
 
-        this._residentNotificationBox = new St.BoxLayout({ vertical: true,
-                                                           style_class: 'screen-shield-notifications-box' });
-        let scrollView = new St.ScrollView({ x_fill: false, x_align: St.Align.START });
-        this._persistentNotificationBox = new St.BoxLayout({ vertical: true,
-                                                             style_class: 'screen-shield-notifications-box' });
-        scrollView.add_actor(this._persistentNotificationBox);
+        this._musicBin = new St.Bin({ style_class: 'screen-shield-notifications-box',
+                                      visible: false });
 
-        this.actor.add(this._residentNotificationBox, { x_fill: true });
+        let scrollView = new St.ScrollView({ x_fill: false, x_align: St.Align.START });
+        this._notificationBox = new St.BoxLayout({ vertical: true,
+                                                   style_class: 'screen-shield-notifications-box' });
+        scrollView.add_actor(this._notificationBox);
+
+        this.actor.add(this._musicBin);
         this.actor.add(scrollView, { x_fill: true, x_align: St.Align.START });
 
-        this._items = [];
-        Main.messageTray.getSummaryItems().forEach(Lang.bind(this, function(item) {
-            this._summaryItemAdded(Main.messageTray, item, true);
+        this._sources = new Hash.Map();
+        Main.messageTray.getSources().forEach(Lang.bind(this, function(source) {
+            this._sourceAdded(Main.messageTray, source, true);
         }));
         this._updateVisibility();
 
-        this._summaryAddedId = Main.messageTray.connect('summary-item-added', Lang.bind(this, this._summaryItemAdded));
+        this._sourceAddedId = Main.messageTray.connect('source-added', Lang.bind(this, this._sourceAdded));
     },
 
     destroy: function() {
-        if (this._summaryAddedId) {
-            Main.messageTray.disconnect(this._summaryAddedId);
-            this._summaryAddedId = 0;
+        if (this._sourceAddedId) {
+            Main.messageTray.disconnect(this._sourceAddedId);
+            this._sourceAddedId = 0;
         }
 
-        for (let i = 0; i < this._items.length; i++)
-            this._removeItem(this._items[i]);
-        this._items = [];
+        let items = this._sources.items();
+        for (let i = 0; i < items.length; i++) {
+            let [source, obj] = items[i];
+            this._removeSource(source, obj);
+        }
 
         this.actor.destroy();
     },
 
     _updateVisibility: function() {
-        this._residentNotificationBox.visible = this._residentNotificationBox.get_n_children() > 0;
-        this._persistentNotificationBox.visible = this._persistentNotificationBox.get_children().some(function(a) {
+        this._musicBin.visible = this._musicBin.child != null && this._musicBin.child.visible;
+        this._notificationBox.visible = this._notificationBox.get_children().some(function(a) {
             return a.visible;
         });
 
-        this.actor.visible = this._residentNotificationBox.visible || this._persistentNotificationBox.visible;
-    },
-
-    _sourceIsResident: function(source) {
-        return source.hasResidentNotification() && !source.isChat;
+        this.actor.visible = this._musicBin.visible || this._notificationBox.visible;
     },
 
     _makeNotificationCountText: function(count, isChat) {
@@ -179,18 +179,16 @@ const NotificationsBox = new Lang.Class({
             return ngettext("%d new notification", "%d new notifications", count).format(count);
     },
 
-    _makeNotificationSource: function(source) {
-        let box = new St.BoxLayout({ style_class: 'screen-shield-notification-source' });
-
+    _makeNotificationSource: function(source, box) {
         let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
         box.add(sourceActor.actor, { y_fill: true });
 
         let textBox = new St.BoxLayout({ vertical: true });
         box.add(textBox, { y_fill: false, y_align: St.Align.START });
 
-        let label = new St.Label({ text: source.title,
+        let title = new St.Label({ text: source.title,
                                    style_class: 'screen-shield-notification-label' });
-        textBox.add(label);
+        textBox.add(title);
 
         let count = source.unseenCount;
         let countLabel = new St.Label({ text: this._makeNotificationCountText(count, source.isChat),
@@ -198,118 +196,172 @@ const NotificationsBox = new Lang.Class({
         textBox.add(countLabel);
 
         box.visible = count != 0;
-        return [box, countLabel];
+        return [title, countLabel];
     },
 
-    _summaryItemAdded: function(tray, item, dontUpdateVisibility) {
-        // Ignore transient sources, or sources explicitly marked not to show
-        // in the lock screen
-        if (item.source.isTransient || !item.source.showInLockScreen)
+    _makeNotificationDetailedSource: function(source, box) {
+        let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
+        box.add(sourceActor.actor, { y_fill: true });
+
+        let textBox = new St.BoxLayout({ vertical: true });
+        box.add(textBox, { y_fill: false, y_align: St.Align.START });
+
+        let title = new St.Label({ text: source.title,
+                                   style_class: 'screen-shield-notification-label' });
+        textBox.add(title);
+
+        let visible = false;
+        for (let i = 0; i < source.notifications.length; i++) {
+            let n = source.notifications[i];
+
+            if (n.acknowledged || n.isMusic)
+                continue;
+
+            let body = '';
+            if (n.bannerBodyText)
+                body = n.bannerBodyMarkup ? n.bannerBodyText :
+                GLib.markup_escape_text(n.bannerBodyMarkup, -1);
+            let label = new St.Label({ style_class: 'screen-shield-notification-count-text' });
+            label.clutter_text.set_markup('<b>' + n.title + '</b> ' + body);
+            textBox.add(label);
+
+            visible = true;
+        }
+
+        box.visible = visible;
+        return [title, null];
+    },
+
+    _showSource: function(source, obj, box) {
+        let musicNotification = source.getMusicNotification();
+
+        if (musicNotification != null &&
+            this._musicBin.child == null) {
+            if (musicNotification.actor.get_parent() != null)
+                musicNotification.actor.get_parent().remove_actor(musicNotification.actor);
+            this._musicBin.child = musicNotification.actor;
+            this._musicBin.child.visible = obj.visible;
+
+            musicNotification.expand(false /* animate */);
+
+            obj.musicNotification = musicNotification;
+        }
+
+        if (obj.detailed) {
+            [obj.titleLabel, obj.countLabel] = this._makeNotificationDetailedSource(source, box);
+        } else {
+            [obj.titleLabel, obj.countLabel] = this._makeNotificationSource(source, box);
+        }
+
+        box.visible = obj.visible &&
+            (source.unseenCount > (musicNotification ? 1 : 0));
+    },
+
+    _sourceAdded: function(tray, source, dontUpdateVisibility) {
+        // Ignore transient sources
+        if (source.isTransient)
             return;
 
         let obj = {
-            item: item,
-            source: item.source,
-            resident: this._sourceIsResident(item.source),
-            contentUpdatedId: 0,
+            visible: source.policy.showInLockScreen,
+            detailed: source.policy.detailsInLockScreen,
             sourceDestroyId: 0,
+            sourceCountChangedId: 0,
+            sourceTitleChangedId: 0,
+            sourceUpdatedId: 0,
+            musicNotification: null,
             sourceBox: null,
+            titleLabel: null,
             countLabel: null,
         };
 
-        if (obj.resident) {
-            this._residentNotificationBox.add(item.notificationStackWidget);
-            item.closeButton.hide();
-            item.prepareNotificationStackForShowing();
-        } else {
-            [obj.sourceBox, obj.countLabel] = this._makeNotificationSource(item.source);
-            this._persistentNotificationBox.add(obj.sourceBox, { x_fill: false, x_align: St.Align.START });
-        }
+        obj.sourceBox = new St.BoxLayout({ style_class: 'screen-shield-notification-source' });
+        this._showSource(source, obj, obj.sourceBox);
+        this._notificationBox.add(obj.sourceBox, { x_fill: false, x_align: St.Align.START });
 
-        obj.contentUpdatedId = item.connect('content-updated', Lang.bind(this, this._onItemContentUpdated));
-        obj.sourceCountChangedId = item.source.connect('count-updated', Lang.bind(this, this._onSourceChanged));
-        obj.sourceTitleChangedId = item.source.connect('title-changed', Lang.bind(this, this._onSourceChanged));
-        obj.sourceDestroyId = item.source.connect('destroy', Lang.bind(this, this._onSourceDestroy));
-        this._items.push(obj);
+        obj.sourceCountChangedId = source.connect('count-updated', Lang.bind(this, function(source) {
+            this._countChanged(source, obj);
+        }));
+        obj.sourceTitleChangedId = source.connect('title-changed', Lang.bind(this, function(source) {
+            this._titleChanged(source, obj);
+        }));
+        obj.policyChangedId = source.policy.connect('policy-changed', Lang.bind(this, function(policy, key) {
+            if (key == 'show-in-lock-screen')
+                this._visibleChanged(source, obj);
+            else
+                this._detailedChanged(source, obj);
+        }));
+        obj.sourceDestroyId = source.connect('destroy', Lang.bind(this, function(source) {
+            this._onSourceDestroy(source, obj);
+        }));
+
+        this._sources.set(source, obj);
 
         if (!dontUpdateVisibility)
             this._updateVisibility();
     },
 
-    _findSource: function(source) {
-        for (let i = 0; i < this._items.length; i++) {
-            if (this._items[i].source == source)
-                return i;
+    _titleChanged: function(source, obj) {
+        obj.titleLabel.text = source.title;
+    },
+
+    _countChanged: function(source, obj) {
+        if (obj.detailed) {
+            // A new notification was pushed, or a previous notification was destroyed.
+            // Give up, and build the list again.
+
+            obj.sourceBox.destroy_all_children();
+            obj.titleLabel = obj.countLabel = null;
+            this._showSource(source, obj, obj.sourceBox);
+        } else {
+            let count = source.unseenCount;
+            obj.countLabel.text = this._makeNotificationCountText(count, source.isChat);
         }
 
-        return -1;
+        obj.sourceBox.visible = obj.visible &&
+            (source.unseenCount > (obj.musicNotification ? 1 : 0));
+        this._updateVisibility();
     },
 
-    _onItemContentUpdated: function(item) {
-        let obj = this._items[this._findSource(item.source)];
-        this._updateItem(obj);
-    },
-
-    _onSourceChanged: function(source) {
-        let obj = this._items[this._findSource(source)];
-        this._updateItem(obj);
-    },
-
-    _updateItem: function(obj) {
-        let itemShouldBeResident = this._sourceIsResident(obj.source);
-
-        if (itemShouldBeResident && obj.resident) {
-            // Nothing to do here, the actor is already updated
+    _visibleChanged: function(source, obj) {
+        if (obj.visible == source.policy.showInLockScreen)
             return;
-        }
 
-        if (obj.resident && !itemShouldBeResident) {
-            // make into a regular item
-            obj.item.doneShowingNotificationStack();
-            this._residentNotificationBox.remove_actor(obj.item.notificationStackWidget);
-
-            [obj.sourceBox, obj.countLabel] = this._makeNotificationSource(obj.source);
-            this._persistentNotificationBox.add(obj.sourceBox, { x_fill: false, x_align: St.Align.START });
-        } else if (itemShouldBeResident && !obj.resident) {
-            // make into a resident item
-            obj.sourceBox.destroy();
-            obj.sourceBox = obj.countLabel = null;
-            obj.resident = true;
-
-            this._residentNotificationBox.add(obj.item.notificationStackWidget);
-            obj.item.closeButton.hide();
-            obj.item.prepareNotificationStackForShowing();
-        } else {
-            // just update the counter
-            let count = obj.source.unseenCount;
-            obj.countLabel.text = this._makeNotificationCountText(count, obj.source.isChat);
-            obj.sourceBox.visible = count != 0;
-        }
+        obj.visible = source.policy.showInLockScreen;
+        if (obj.musicNotification)
+            obj.musicNotification.actor.visible = obj.visible;
+        obj.sourceBox.visible = obj.visible &&
+            source.unseenCount > (obj.musicNotification ? 1 : 0);
 
         this._updateVisibility();
     },
 
-    _onSourceDestroy: function(source) {
-        let idx = this._findSource(source);
+    _detailedChanged: function(source, obj) {
+        if (obj.detailed == source.policy.detailsInLockScreen)
+            return;
 
-        this._removeItem(this._items[idx]);
-        this._items.splice(idx, 1);
+        obj.detailed = source.policy.detailsInLockScreen;
 
+        obj.sourceBox.destroy_all_children();
+        obj.titleLabel = obj.countLabel = null;
+        this._showSource(source, obj, obj.sourceBox);
+    },
+
+    _onSourceDestroy: function(source, obj) {
+        this._removeSource(source, obj);
         this._updateVisibility();
     },
 
-    _removeItem: function(obj) {
-        if (obj.resident) {
-            obj.item.doneShowingNotificationStack();
-            this._residentNotificationBox.remove_actor(obj.item.notificationStackWidget);
-        } else {
-            obj.sourceBox.destroy();
-        }
+    _removeSource: function(source, obj) {
+        obj.sourceBox.destroy();
+        obj.sourceBox = obj.titleLabel = obj.countLabel = null;
 
-        obj.item.disconnect(obj.contentUpdatedId);
-        obj.source.disconnect(obj.sourceDestroyId);
-        obj.source.disconnect(obj.sourceCountChangedId);
-        obj.source.disconnect(obj.sourceTitleChangedId);
+        source.disconnect(obj.sourceDestroyId);
+        source.disconnect(obj.sourceCountChangedId);
+        source.disconnect(obj.sourceTitleChangedId);
+        source.policy.disconnect(obj.policyChangedId);
+
+        this._sources.delete(source);
     },
 });
 

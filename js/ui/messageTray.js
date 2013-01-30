@@ -345,6 +345,7 @@ const Notification = new Lang.Class({
         this.resident = false;
         // 'transient' is a reserved keyword in JS, so we have to use an alternate variable name
         this.isTransient = false;
+        this.isMusic = false;
         this.forFeedback = false;
         this.expanded = false;
         this.focused = false;
@@ -352,8 +353,8 @@ const Notification = new Lang.Class({
         this._destroyed = false;
         this._useActionIcons = false;
         this._customContent = false;
-        this._bannerBodyText = null;
-        this._bannerBodyMarkup = false;
+        this.bannerBodyText = null;
+        this.bannerBodyMarkup = false;
         this._titleFitsInBannerMode = true;
         this._titleDirection = Clutter.TextDirection.DEFAULT;
         this._spacing = 0;
@@ -505,12 +506,12 @@ const Notification = new Lang.Class({
         // is done correctly automatically.
         this._table.set_text_direction(this._titleDirection);
 
-        // Unless the notification has custom content, we save this._bannerBodyText
+        // Unless the notification has custom content, we save this.bannerBodyText
         // to add it to the content of the notification if the notification is
         // expandable due to other elements in its content area or due to the banner
         // not fitting fully in the single-line mode.
-        this._bannerBodyText = this._customContent ? null : banner;
-        this._bannerBodyMarkup = params.bannerMarkup;
+        this.bannerBodyText = this._customContent ? null : banner;
+        this.bannerBodyMarkup = params.bannerMarkup;
 
         banner = banner ? banner.replace(/\n/g, '  ') : '';
 
@@ -518,7 +519,7 @@ const Notification = new Lang.Class({
         this._bannerLabel.queue_relayout();
 
         // Add the bannerBody now if we know for sure we'll need it
-        if (this._bannerBodyText && this._bannerBodyText.indexOf('\n') > -1)
+        if (this.bannerBodyText && this.bannerBodyText.indexOf('\n') > -1)
             this._addBannerBody();
 
         if (params.body)
@@ -584,10 +585,10 @@ const Notification = new Lang.Class({
     },
 
     _addBannerBody: function() {
-        if (this._bannerBodyText) {
-            let text = this._bannerBodyText;
-            this._bannerBodyText = null;
-            this.addBody(text, this._bannerBodyMarkup);
+        if (this.bannerBodyText) {
+            let text = this.bannerBodyText;
+            this.bannerBodyText = null;
+            this.addBody(text, this.bannerBodyMarkup);
         }
     },
 
@@ -879,7 +880,7 @@ const Notification = new Lang.Class({
     },
 
     _canExpandContent: function() {
-        return this._bannerBodyText ||
+        return this.bannerBodyText ||
                (!this._titleFitsInBannerMode && !this._table.has_style_class_name('multi-line-notification'));
     },
 
@@ -1279,7 +1280,16 @@ const Source = new Lang.Class({
 
     hasResidentNotification: function() {
         return this.notifications.some(function(n) { return n.resident; });
-    }
+    },
+
+    getMusicNotification: function() {
+        for (let i = 0; i < this.notifications.length; i++) {
+            if (this.notifications[i].isMusic)
+                return this.notifications[i];
+        }
+
+        return null;
+    },
 });
 Signals.addSignalMethods(Source.prototype);
 
@@ -1777,7 +1787,7 @@ const MessageTray = new Lang.Class({
         // So postpone calling _updateState() a tiny bit.
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() { this._updateState(); return false; }));
 
-        this.emit('summary-item-added', summaryItem);
+        this.emit('source-added', source);
 
         this._updateNoMessagesLabel();
     },
@@ -1813,10 +1823,8 @@ const MessageTray = new Lang.Class({
             this._updateState();
     },
 
-    getSummaryItems: function() {
-        return this._sources.values().map(function(v) {
-            return v.summaryItem;
-        });
+    getSources: function() {
+        return this._sources.keys();
     },
 
     _onSourceEnableChanged: function(policy, source) {
