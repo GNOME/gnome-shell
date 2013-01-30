@@ -105,27 +105,6 @@ const AlphabeticalView = new Lang.Class({
                          { value: value,
                            time: SCROLL_TIME,
                            transition: 'easeOutQuad' });
-    },
-
-    setVisibleApps: function(apps) {
-        if (apps == null) { // null implies "all"
-            for (var id in this._appIcons) {
-                var icon = this._appIcons[id];
-                icon.actor.visible = true;
-            }
-        } else {
-            // Set everything to not-visible, then set to visible what we should see
-            for (var id in this._appIcons) {
-                var icon = this._appIcons[id];
-                icon.actor.visible = false;
-            }
-            for (var i = 0; i < apps.length; i++) {
-                var app = apps[i];
-                var id = app.get_id();
-                var icon = this._appIcons[id];
-                icon.actor.visible = true;
-            }
-        }
     }
 });
 
@@ -138,31 +117,7 @@ const ViewByCategories = new Lang.Class({
         this.actor._delegate = this;
 
         this._view = new AlphabeticalView();
-
-        // categories can be -1 (the All view) or 0...n-1, where n
-        // is the number of sections
-        // -2 is a flag to indicate that nothing is selected
-        // (used only before the actor is mapped the first time)
-        this._currentCategory = -2;
-        this._categories = [];
-
-        this._categoryBox = new St.BoxLayout({ vertical: true,
-                                               reactive: true,
-                                               accessible_role: Atk.Role.LIST });
-        this._categoryScroll = new St.ScrollView({ x_fill: false,
-                                                   y_fill: false,
-                                                   style_class: 'vfade' });
-        this._categoryScroll.add_actor(this._categoryBox);
-        this._categoryScroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.actor.add(this._view.actor, { expand: true, x_fill: true, y_fill: true });
-        this.actor.add(this._categoryScroll, { expand: false, y_fill: false, y_align: St.Align.START });
-
-        // Always select the "All" filter when switching to the app view
-        this.actor.connect('notify::mapped', Lang.bind(this,
-            function() {
-                if (this.actor.mapped && this._allCategoryButton)
-                    this._selectCategory(-1);
-            }));
 
         // We need a dummy actor to catch the keyboard focus if the
         // user Ctrl-Alt-Tabs here before the deferred work creates
@@ -171,111 +126,45 @@ const ViewByCategories = new Lang.Class({
         this.actor.add(this._focusDummy);
     },
 
-    _selectCategory: function(num) {
-        if (this._currentCategory == num) // nothing to do
-            return;
-
-        this._currentCategory = num;
-
-        if (num != -1) {
-            var category = this._categories[num];
-            this._allCategoryButton.remove_style_pseudo_class('selected');
-            this._view.setVisibleApps(category.apps);
-        } else {
-            this._allCategoryButton.add_style_pseudo_class('selected');
-            this._view.setVisibleApps(null);
-        }
-
-        for (var i = 0; i < this._categories.length; i++) {
-            if (i == num)
-                this._categories[i].button.add_style_pseudo_class('selected');
-            else
-                this._categories[i].button.remove_style_pseudo_class('selected');
-        }
-    },
-
     // Recursively load a GMenuTreeDirectory; we could put this in ShellAppSystem too
-    _loadCategory: function(dir, appList) {
+    _loadCategory: function(dir) {
         var iter = dir.iter();
         var nextType;
         while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
             if (nextType == GMenu.TreeItemType.ENTRY) {
                 var entry = iter.get_entry();
                 var app = this._appSystem.lookup_app_by_tree_entry(entry);
-                if (!entry.get_app_info().get_nodisplay()) {
+                if (!entry.get_app_info().get_nodisplay())
                     this._view.addApp(app);
-                    appList.push(app);
-                }
             } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
                 var itemDir = iter.get_directory();
                 if (!itemDir.get_is_nodisplay())
-                    this._loadCategory(itemDir, appList);
+                    this._loadCategory(itemDir);
             }
         }
     },
 
-    _addCategory: function(name, index, dir) {
-        let apps;
-
-        if (dir != null) {
-            apps = [];
-            this._loadCategory(dir, apps);
-
-            if (apps.length == 0)
-                return false;
-        }
-
-        let button = new St.Button({ label: GLib.markup_escape_text (name, -1),
-                                     style_class: 'app-filter',
-                                     x_align: St.Align.START,
-                                     can_focus: true ,
-                                     accessible_role: Atk.Role.LIST_ITEM });
-        button.connect('clicked', Lang.bind(this, function() {
-            this._selectCategory(index);
-        }));
-
-        if (dir == null) {
-            this._allCategoryButton = button;
-        } else {
-            this._categories.push({ apps: apps,
-                                    name: name,
-                                    button: button });
-        }
-
-        this._categoryBox.add(button, { expand: true, x_fill: true, y_fill: false });
-        return true;
-    },
-
     _removeAll: function() {
         this._view.removeAll();
-        this._categories = [];
-        this._categoryBox.destroy_all_children();
     },
 
     refresh: function() {
         this._removeAll();
-
-        /* Translators: Filter to display all applications */
-        this._addCategory(_("All"), -1, null);
 
         var tree = this._appSystem.get_tree();
         var root = tree.get_root_directory();
 
         var iter = root.iter();
         var nextType;
-        var i = 0;
         while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
             if (nextType == GMenu.TreeItemType.DIRECTORY) {
                 var dir = iter.get_directory();
                 if (dir.get_is_nodisplay())
                     continue;
 
-                if (this._addCategory(dir.get_name(), i, dir))
-                    i++;
+                this._loadCategory(dir);
             }
         }
-
-        this._selectCategory(-1);
 
         if (this._focusDummy) {
             let focused = this._focusDummy.has_key_focus();

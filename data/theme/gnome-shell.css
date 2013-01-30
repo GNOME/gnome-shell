@@ -857,32 +857,6 @@ StScrollBar StButton#vhandle:active {
     padding-right: 32px;
 }
 
-.app-filter {
-    font-weight: bold;
-    height: 2.85em;
-    color: #aaa;
-    width: 200px;
-}
-
-.app-filter:hover {
-    color: #eee;
-}
-
-.app-filter:selected {
-    color: #ffffff;
-    background-image: url("filter-selected-ltr.svg");
-    background-position: 190px 10px;
-}
-
-.app-filter:selected:rtl {
-    background-image: url("filter-selected-rtl.svg");
-    background-position: 10px 10px;
-}
-
-.app-filter:focus {
-    outline: 1px solid #aaa;
-}
-
 .dash-item-container > StButton {
     padding: 4px 8px;
 }
