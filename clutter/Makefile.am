@@ -651,6 +651,7 @@ egl_source_c = $(srcdir)/egl/clutter-backend-eglnative.c
 if SUPPORT_WAYLAND
 backend_source_h_priv += \
        $(srcdir)/wayland/clutter-backend-wayland.h             \
+       $(srcdir)/wayland/clutter-backend-wayland-priv.h        \
        $(srcdir)/wayland/clutter-stage-wayland.h               \
        $(srcdir)/wayland/clutter-event-wayland.h               \
        $(srcdir)/wayland/clutter-input-device-wayland.h        \

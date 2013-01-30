@@ -32,9 +32,6 @@
 #include <clutter/clutter-backend.h>
 #include <clutter/clutter-device-manager.h>
 
-#include <wayland-client.h>
-#include <wayland-cursor.h>
-
 #include "clutter-backend-private.h"
 
 G_BEGIN_DECLS
@@ -48,31 +45,6 @@ G_BEGIN_DECLS
 
 typedef struct _ClutterBackendWayland       ClutterBackendWayland;
 typedef struct _ClutterBackendWaylandClass  ClutterBackendWaylandClass;
-
-struct _ClutterBackendWayland
-{
-  ClutterBackend parent_instance;
-
-  ClutterDeviceManager *device_manager;
-
-  struct wl_display *wayland_display;
-  struct wl_registry *wayland_registry;
-  struct wl_compositor *wayland_compositor;
-  struct wl_shell *wayland_shell;
-  struct wl_shm *wayland_shm;
-  struct wl_surface *cursor_surface;
-  struct wl_buffer *cursor_buffer;
-  struct wl_output *wayland_output;
-  struct wl_cursor_theme *cursor_theme;
-
-  gint cursor_x, cursor_y;
-  gint output_width, output_height;
-
-  GSource *wayland_source;
-
-  /* event timer */
-  GTimer *event_timer;
-};
 
 struct _ClutterBackendWaylandClass
 {

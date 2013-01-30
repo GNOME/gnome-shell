@@ -42,6 +42,7 @@
 #include "clutter-stage-private.h"
 
 #include "wayland/clutter-backend-wayland.h"
+#include "wayland/clutter-backend-wayland-priv.h"
 #include "wayland/clutter-device-manager-wayland.h"
 #include "wayland/clutter-event-wayland.h"
 #include "wayland/clutter-stage-wayland.h"

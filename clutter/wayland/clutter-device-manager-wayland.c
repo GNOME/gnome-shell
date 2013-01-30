@@ -32,6 +32,7 @@
 
 #include "clutter-backend.h"
 #include "wayland/clutter-backend-wayland.h"
+#include "wayland/clutter-backend-wayland-priv.h"
 #include "clutter-debug.h"
 #include "clutter-device-manager-private.h"
 #include "clutter-private.h"
