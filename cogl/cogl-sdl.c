@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -80,8 +80,27 @@ cogl_sdl_handle_event (CoglContext *context, SDL_Event *event)
     winsys->poll_dispatch (context, NULL, 0);
 }
 
+static void
+_cogl_sdl_push_wakeup_event (CoglContext *context)
+{
+  SDL_Event wakeup_event;
+
+  wakeup_event.type = context->display->renderer->sdl_event_type;
+
+  SDL_PushEvent (&wakeup_event);
+}
+
 void
 cogl_sdl_idle (CoglContext *context)
 {
   _cogl_dispatch_onscreen_events (context);
+
+  /* It is expected that this will be called from the application
+   * immediately before blocking in SDL_WaitEvent. However,
+   * dispatching the onscreen events may cause more events to be
+   * queued. If that happens we need to make sure the blocking returns
+   * immediately. We'll post our dummy event to make sure that
+   * happens */
+  if (!COGL_TAILQ_EMPTY (&context->onscreen_events_queue))
+    _cogl_sdl_push_wakeup_event (context);
 }
