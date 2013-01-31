@@ -2542,21 +2542,27 @@ flush_pending_notifications_cb (void *data,
     {
       CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
       CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
+      CoglBool pending_sync_notify = glx_onscreen->pending_sync_notify;
+      CoglBool pending_complete_notify = glx_onscreen->pending_complete_notify;
 
-      if (glx_onscreen->pending_sync_notify)
+      /* If swap_region is called then notifying the sync event could
+       * potentially immediately queue a subsequent pending notify so
+       * we need to clear the flag before invoking the callback */
+      glx_onscreen->pending_sync_notify = FALSE;
+      glx_onscreen->pending_complete_notify = FALSE;
+
+      if (pending_sync_notify)
         {
           CoglFrameInfo *info = g_queue_peek_head (&onscreen->pending_frame_infos);
 
           _cogl_onscreen_notify_frame_sync (onscreen, info);
-          glx_onscreen->pending_sync_notify = FALSE;
         }
 
-      if (glx_onscreen->pending_complete_notify)
+      if (pending_complete_notify)
         {
           CoglFrameInfo *info = g_queue_pop_head (&onscreen->pending_frame_infos);
 
           _cogl_onscreen_notify_complete (onscreen, info);
-          glx_onscreen->pending_complete_notify = FALSE;
 
           cogl_object_unref (info);
         }
@@ -2585,12 +2591,15 @@ _cogl_winsys_poll_dispatch (CoglContext *context,
       glx_display->pending_resize_notify ||
       glx_display->pending_complete_notify)
     {
-      g_list_foreach (context->framebuffers,
-                      flush_pending_notifications_cb,
-                      NULL);
+      /* These need to be cleared before invoking the callbacks in
+       * case the callbacks cause them to be set again */
       glx_display->pending_sync_notify = FALSE;
       glx_display->pending_resize_notify = FALSE;
       glx_display->pending_complete_notify = FALSE;
+
+      g_list_foreach (context->framebuffers,
+                      flush_pending_notifications_cb,
+                      NULL);
     }
 }
 

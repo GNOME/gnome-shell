@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2011 Intel Corporation.
+ * Copyright (C) 2011, 2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -524,9 +524,18 @@ void
 _cogl_dispatch_onscreen_events (CoglContext *context)
 {
   CoglOnscreenEvent *event, *tmp;
+  CoglOnscreenEventList queue;
+
+  /* Dispatching the event callback may cause another frame to be
+   * drawn which in may cause another event to be queued immediately.
+   * To make sure this loop will only dispatch one set of events we'll
+   * steal the queue and iterate that separately */
+  COGL_TAILQ_INIT (&queue);
+  COGL_TAILQ_CONCAT (&queue, &context->onscreen_events_queue, list_node);
+  COGL_TAILQ_INIT (&context->onscreen_events_queue);
 
   COGL_TAILQ_FOREACH_SAFE (event,
-                           &context->onscreen_events_queue,
+                           &queue,
                            list_node,
                            tmp)
     {
@@ -538,7 +547,6 @@ _cogl_dispatch_onscreen_events (CoglContext *context)
       cogl_object_unref (onscreen);
       cogl_object_unref (info);
 
-      COGL_TAILQ_REMOVE (&context->onscreen_events_queue, event, list_node);
       g_slice_free (CoglOnscreenEvent, event);
     }
 }
