@@ -218,9 +218,11 @@ const NotificationsBox = new Lang.Class({
                 continue;
 
             let body = '';
-            if (n.bannerBodyText)
+            if (n.bannerBodyText) {
                 body = n.bannerBodyMarkup ? n.bannerBodyText :
                 GLib.markup_escape_text(n.bannerBodyMarkup, -1);
+            }
+
             let label = new St.Label({ style_class: 'screen-shield-notification-count-text' });
             label.clutter_text.set_markup('<b>' + n.title + '</b> ' + body);
             textBox.add(label);
@@ -355,6 +357,11 @@ const NotificationsBox = new Lang.Class({
     _removeSource: function(source, obj) {
         obj.sourceBox.destroy();
         obj.sourceBox = obj.titleLabel = obj.countLabel = null;
+
+        if (obj.musicNotification) {
+            this._musicBin.child = null;
+            obj.musicNotification = null;
+        }
 
         source.disconnect(obj.sourceDestroyId);
         source.disconnect(obj.sourceCountChangedId);
