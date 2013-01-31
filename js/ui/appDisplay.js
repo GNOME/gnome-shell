@@ -28,6 +28,25 @@ const MAX_APPLICATION_WORK_MILLIS = 75;
 const MENU_POPUP_TIMEOUT = 600;
 const SCROLL_TIME = 0.1;
 
+// Recursively load a GMenuTreeDirectory; we could put this in ShellAppSystem too
+function _loadCategory(dir, view) {
+    let iter = dir.iter();
+    let appSystem = Shell.AppSystem.get_default();
+    let nextType;
+    while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
+        if (nextType == GMenu.TreeItemType.ENTRY) {
+            let entry = iter.get_entry();
+            let app = appSystem.lookup_app_by_tree_entry(entry);
+            if (!entry.get_app_info().get_nodisplay())
+                view.addApp(app);
+        } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
+            let itemDir = iter.get_directory();
+            if (!itemDir.get_is_nodisplay())
+                _loadCategory(itemDir, view);
+        }
+    }
+};
+
 const AlphabeticalView = new Lang.Class({
     Name: 'AlphabeticalView',
 
@@ -132,24 +151,6 @@ const AppDisplay = new Lang.Class({
         this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplay));
     },
 
-    // Recursively load a GMenuTreeDirectory; we could put this in ShellAppSystem too
-    _loadCategory: function(dir) {
-        var iter = dir.iter();
-        var nextType;
-        while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
-            if (nextType == GMenu.TreeItemType.ENTRY) {
-                var entry = iter.get_entry();
-                var app = this._appSystem.lookup_app_by_tree_entry(entry);
-                if (!entry.get_app_info().get_nodisplay())
-                    this._view.addApp(app);
-            } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
-                var itemDir = iter.get_directory();
-                if (!itemDir.get_is_nodisplay())
-                    this._loadCategory(itemDir);
-            }
-        }
-    },
-
     _removeAll: function() {
         this._view.removeAll();
     },
@@ -168,7 +169,7 @@ const AppDisplay = new Lang.Class({
                 if (dir.get_is_nodisplay())
                     continue;
 
-                this._loadCategory(dir);
+                _loadCategory(dir, this._view);
             }
         }
 
