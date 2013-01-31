@@ -267,6 +267,9 @@ const AppDisplay = new Lang.Class({
         this._appSystem.connect('installed-changed', Lang.bind(this, function() {
             Main.queueDeferredWork(this._workId);
         }));
+        global.settings.connect('changed::app-folder-categories', Lang.bind(this, function() {
+            Main.queueDeferredWork(this._workId);
+        }));
 
         let box = new St.BoxLayout();
         this.actor = new St.Bin({ child: box,
@@ -297,13 +300,17 @@ const AppDisplay = new Lang.Class({
 
         var iter = root.iter();
         var nextType;
+        let folderCategories = global.settings.get_strv('app-folder-categories');
         while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
             if (nextType == GMenu.TreeItemType.DIRECTORY) {
                 var dir = iter.get_directory();
                 if (dir.get_is_nodisplay())
                     continue;
 
-                _loadCategory(dir, this._view);
+                if (folderCategories.indexOf(dir.get_menu_id()) != -1)
+                    this._view.addFolder(dir);
+                else
+                    _loadCategory(dir, this._view);
             }
         }
         this._view.loadGrid();
