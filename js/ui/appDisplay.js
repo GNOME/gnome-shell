@@ -184,15 +184,29 @@ const AllView = new Lang.Class({
     },
 
     _getItemId: function(item) {
-        return item.get_id();
+        if (item instanceof Shell.App)
+            return item.get_id();
+        else if (item instanceof GMenu.TreeDirectory)
+            return item.get_menu_id();
+        else
+            return null;
     },
 
     _createItemIcon: function(item) {
-        return new AppIcon(item);
+        if (item instanceof Shell.App)
+            return new AppIcon(item);
+        else if (item instanceof GMenu.TreeDirectory)
+            return new FolderIcon(item, this);
+        else
+            return null;
     },
 
-    _compareItems: function(a, b) {
-        return a.compare_by_name(b);
+    _compareItems: function(itemA, itemB) {
+        // bit of a hack: rely on both ShellApp and GMenuTreeDirectory
+        // having a get_name() method
+        let nameA = GLib.utf8_collate_key(itemA.get_name(), -1);
+        let nameB = GLib.utf8_collate_key(itemB.get_name(), -1);
+        return (nameA > nameB) ? 1 : (nameA < nameB ? -1 : 0);
     },
 
     addApp: function(app) {
@@ -200,6 +214,13 @@ const AllView = new Lang.Class({
         if (appIcon)
             appIcon.actor.connect('key-focus-in',
                                   Lang.bind(this, this._ensureIconVisible));
+    },
+
+    addFolder: function(dir) {
+        let folderIcon = this._addItem(dir);
+        if (folderIcon)
+            folderIcon.actor.connect('key-focus-in',
+                                     Lang.bind(this, this._ensureIconVisible));
     },
 
     addFolderPopup: function(popup) {
