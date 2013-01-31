@@ -176,19 +176,9 @@ const Keyboard = new Lang.Class({
         if (this._keyboard)
             this._destroyKeyboard();
 
-        if (this._enableKeyboard) {
-            // If we've been called because the setting actually just
-            // changed to true (as opposed to being called from
-            // this._init()), then we want to pop up the keyboard.
-            let showKeyboard = (settings != null);
-
-            // However, caribou-gtk-module or this._onKeyFocusChanged
-            // will probably immediately tell us to hide it, so we
-            // have to fake things out so we'll ignore that request.
-            if (showKeyboard)
-                this._timestamp = global.display.get_current_time_roundtrip() + 1;
-            this._setupKeyboard(showKeyboard);
-        } else
+        if (this._enableKeyboard)
+            this._setupKeyboard();
+        else
             Main.layoutManager.hideKeyboard(true);
     },
 
@@ -204,7 +194,7 @@ const Keyboard = new Lang.Class({
         this._destroySource();
     },
 
-    _setupKeyboard: function(show) {
+    _setupKeyboard: function() {
         this.actor = new St.BoxLayout({ name: 'keyboard', vertical: true, reactive: true });
         Main.layoutManager.keyboardBox.add_actor(this.actor);
         Main.layoutManager.trackChrome(this.actor);
@@ -227,10 +217,7 @@ const Keyboard = new Lang.Class({
         this._keyboardNotifyId = this._keyboard.connect('notify::active-group', Lang.bind(this, this._onGroupChanged));
         this._focusNotifyId = global.stage.connect('notify::key-focus', Lang.bind(this, this._onKeyFocusChanged));
 
-        if (show)
-            this.show(Main.layoutManager.focusIndex);
-        else
-            this._createSource();
+        this._createSource();
     },
 
     _onKeyFocusChanged: function () {
