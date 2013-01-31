@@ -857,6 +857,10 @@ StScrollBar StButton#vhandle:active {
     padding-right: 32px;
 }
 
+.app-folder-icon {
+    padding: 5px;
+}
+
 .dash-item-container > StButton {
     padding: 4px 8px;
 }
@@ -896,10 +900,25 @@ StScrollBar StButton#vhandle:active {
     text-align: center;
 }
 
+.app-folder-popup {
+    -arrow-border-radius: 8px;
+    -arrow-background-color: black;
+    -arrow-base: 24px;
+    -arrow-rise: 11px;
+}
+
+.app-folder-popup-bin {
+    padding: 15px;
+}
+
 .app-well-app.running > .overview-icon {
     text-shadow: black 0px 2px 2px;
     background-image: url("running-indicator.svg");
     background-size: contain;
+}
+
+.app-well-app.app-folder > .overview-icon {
+    background-color: rgba(0,0,0,0.5);
 }
 
 .app-well-app:hover > .overview-icon,
@@ -925,6 +944,8 @@ StScrollBar StButton#vhandle:active {
     color: white;
 }
 
+.app-well-app:checked > .overview-icon,
+.app-well-app:active > .overview-icon,
 .show-apps:checked > .overview-icon,
 .show-apps:active > .overview-icon {
     background-gradient-start: rgba(255, 255, 255, .05);

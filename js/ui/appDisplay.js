@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const GObject = imports.gi.GObject;
 const Gtk = imports.gi.Gtk;
 const GMenu = imports.gi.GMenu;
 const Shell = imports.gi.Shell;
@@ -14,6 +15,7 @@ const Mainloop = imports.mainloop;
 const Atk = imports.gi.Atk;
 
 const AppFavorites = imports.ui.appFavorites;
+const BoxPointer = imports.ui.boxpointer;
 const DND = imports.ui.dnd;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
@@ -28,6 +30,9 @@ const MAX_APPLICATION_WORK_MILLIS = 75;
 const MENU_POPUP_TIMEOUT = 600;
 const SCROLL_TIME = 0.1;
 const MAX_COLUMNS = 6;
+
+const FOLDER_SUBICON_FRACTION = .4;
+
 
 // Recursively load a GMenuTreeDirectory; we could put this in ShellAppSystem too
 function _loadCategory(dir, view) {
@@ -93,6 +98,51 @@ const AlphabeticalView = new Lang.Class({
     }
 });
 
+const FolderView = new Lang.Class({
+    Name: 'FolderView',
+    Extends: AlphabeticalView,
+
+    _init: function() {
+        this.parent();
+        this.actor = this._grid.actor;
+    },
+
+    _getItemId: function(item) {
+        return item.get_id();
+    },
+
+    _createItemIcon: function(item) {
+        return new AppIcon(item);
+    },
+
+    _compareItems: function(a, b) {
+        return a.compare_by_name(b);
+    },
+
+    addApp: function(app) {
+        this._addItem(app);
+    },
+
+    createFolderIcon: function(size) {
+        let icon = new St.Widget({ layout_manager: new Clutter.BinLayout(),
+                                   style_class: 'app-folder-icon',
+                                   width: size, height: size });
+        let subSize = Math.floor(FOLDER_SUBICON_FRACTION * size);
+
+        let aligns = [ Clutter.ActorAlign.START, Clutter.ActorAlign.END ];
+        for (let i = 0; i < Math.min(this._allItems.length, 4); i++) {
+            let texture = this._allItems[i].create_icon_texture(subSize);
+            let bin = new St.Bin({ child: texture,
+                                   x_expand: true, y_expand: true });
+            bin.set_x_align(aligns[i % 2]);
+            bin.set_y_align(aligns[Math.floor(i / 2)]);
+            icon.add_actor(bin);
+        }
+
+        return icon;
+    }
+});
+
 const AllView = new Lang.Class({
     Name: 'AllView',
     Extends: AlphabeticalView,
@@ -145,6 +195,11 @@ const AllView = new Lang.Class({
 
     addFolderPopup: function(popup) {
         this._stack.add_actor(popup.actor);
+        popup.connect('open-state-changed', Lang.bind(this,
+            function(popup, isOpen) {
+                if (isOpen)
+                    this._ensureIconVisible(popup.actor);
+            }));
     },
 
     _ensureIconVisible: function(icon) {
@@ -288,6 +343,145 @@ const AppSearchProvider = new Lang.Class({
     }
 });
 
+const FolderIcon = new Lang.Class({
+    Name: 'FolderIcon',
+
+    _init: function(dir, parentView) {
+        this._dir = dir;
+        this._parentView = parentView;
+
+        this.actor = new St.Button({ style_class: 'app-well-app app-folder',
+                                     button_mask: St.ButtonMask.ONE,
+                                     toggle_mode: true,
+                                     can_focus: true,
+                                     x_fill: true,
+                                     y_fill: true });
+        this.actor._delegate = this;
+
+        let label = this._dir.get_name();
+        this.icon = new IconGrid.BaseIcon(label,
+                                          { createIcon: Lang.bind(this, this._createIcon) });
+        this.actor.set_child(this.icon.actor);
+        this.actor.label_actor = this.icon.label;
+
+        this.view = new FolderView();
+        this.view.actor.reactive = false;
+        _loadCategory(dir, this.view);
+
+        this.actor.connect('clicked', Lang.bind(this,
+            function() {
+                this._ensurePopup();
+                this._popup.toggle();
+            }));
+        this.actor.connect('notify::mapped', Lang.bind(this,
+            function() {
+                if (!this.actor.mapped && this._popup)
+                    this._popup.popdown();
+            }));
+    },
+
+    _createIcon: function(size) {
+        return this.view.createFolderIcon(size);
+    },
+
+    _ensurePopup: function() {
+        if (this._popup)
+            return;
+
+        let spaceTop = this.actor.y;
+        let spaceBottom = this._parentView.actor.height - (this.actor.y + this.actor.height);
+        let side = spaceTop > spaceBottom ? St.Side.BOTTOM : St.Side.TOP;
+
+        this._popup = new AppFolderPopup(this, side);
+        this._parentView.addFolderPopup(this._popup);
+        let constraint = new Clutter.AlignConstraint({ source: this._parentView.actor,
+                                                       align_axis: Clutter.AlignAxis.X_AXIS,
+                                                       factor: 0.5 });
+        this._popup.actor.add_constraint(constraint);
+
+        // Position the popup above or below the source icon
+        if (side == St.Side.BOTTOM) {
+            this._popup.actor.show();
+            this._popup.actor.y = this.actor.y - this._popup.actor.height;
+            this._popup.actor.hide();
+        } else {
+            this._popup.actor.y = this.actor.y + this.actor.height;
+        }
+
+        this._popup.connect('open-state-changed', Lang.bind(this,
+            function(popup, isOpen) {
+                if (!isOpen)
+                    this.actor.checked = false;
+            }));
+    },
+});
+
+const AppFolderPopup = new Lang.Class({
+    Name: 'AppFolderPopup',
+
+    _init: function(source, side) {
+        this._source = source;
+        this._view = source.view;
+        this._arrowSide = side;
+
+        this._isOpen = false;
+
+        this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
+                                     visible: false });
+        this._boxPointer = new BoxPointer.BoxPointer(this._arrowSide,
+                                                     { style_class: 'app-folder-popup-bin',
+                                                       x_fill: true,
+                                                       y_fill: true,
+                                                       x_align: St.Align.START });
+
+        this._boxPointer.actor.style_class = 'app-folder-popup';
+        this.actor.add_actor(this._boxPointer.actor);
+        this._boxPointer.bin.set_child(this._view.actor);
+
+        let closeButton = Util.makeCloseButton();
+        closeButton.connect('clicked', Lang.bind(this, this.popdown));
+        this.actor.add_actor(closeButton);
+
+        this._boxPointer.actor.bind_property('opacity', closeButton, 'opacity',
+                                             GObject.BindingFlags.SYNC_CREATE);
+
+        source.actor.connect('destroy', Lang.bind(this,
+            function() {
+                this.actor.destroy();
+            }));
+    },
+
+    toggle: function() {
+        if (this._isOpen)
+            this.popdown();
+        else
+            this.popup();
+    },
+
+    popup: function() {
+        if (this._isOpen)
+            return;
+
+        this.actor.show();
+        this._boxPointer.setArrowOrigin(this._source.actor.x + this._source.actor.width / 2);
+        this._boxPointer.show(BoxPointer.PopupAnimation.FADE |
+                              BoxPointer.PopupAnimation.SLIDE);
+
+        this._isOpen = true;
+        this.emit('open-state-changed', true);
+    },
+
+    popdown: function() {
+        if (!this._isOpen)
+            return;
+
+        this._boxPointer.hide(BoxPointer.PopupAnimation.FADE |
+                              BoxPointer.PopupAnimation.SLIDE);
+        this._isOpen = false;
+        this.emit('open-state-changed', false);
+    }
+});
+Signals.addSignalMethods(AppFolderPopup.prototype);
 
 const AppIcon = new Lang.Class({
     Name: 'AppIcon',
