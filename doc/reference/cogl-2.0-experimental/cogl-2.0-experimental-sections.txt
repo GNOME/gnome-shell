@@ -604,6 +604,12 @@ cogl_onscreen_show
 cogl_onscreen_hide
 
 <SUBSECTION>
+CoglFrameCallback
+CoglFrameClosure
+cogl_onscreen_add_frame_callback
+cogl_onscreen_remove_frame_callback
+
+<SUBSECTION>
 cogl_onscreen_swap_buffers
 cogl_onscreen_swap_region
 cogl_onscreen_set_swap_throttled
