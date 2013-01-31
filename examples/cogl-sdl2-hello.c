@@ -13,9 +13,10 @@ typedef struct Data
   CoglFramebuffer *fb;
   CoglBool quit;
   CoglBool redraw_queued;
+  CoglBool ready_to_draw;
 } Data;
 
-static CoglBool
+static void
 redraw (Data *data)
 {
   CoglFramebuffer *fb = data->fb;
@@ -29,8 +30,6 @@ redraw (Data *data)
   cogl_framebuffer_pop_matrix (fb);
 
   cogl_onscreen_swap_buffers (COGL_ONSCREEN (fb));
-
-  return FALSE;
 }
 
 static void
@@ -71,6 +70,18 @@ handle_event (Data *data, SDL_Event *event)
     }
 }
 
+static void
+frame_cb (CoglOnscreen *onscreen,
+          CoglFrameEvent event,
+          CoglFrameInfo *info,
+          void *user_data)
+{
+  Data *data = user_data;
+
+  if (event == COGL_FRAME_EVENT_SYNC)
+    data->ready_to_draw = TRUE;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -95,6 +106,11 @@ main (int argc, char **argv)
   onscreen = cogl_onscreen_new (ctx, 800, 600);
   data.fb = COGL_FRAMEBUFFER (onscreen);
 
+  cogl_onscreen_add_frame_callback (onscreen,
+                                    frame_cb,
+                                    &data,
+                                    NULL /* destroy callback */);
+
   data.center_x = 0.0f;
   data.center_y = 0.0f;
   data.quit = FALSE;
@@ -110,28 +126,30 @@ main (int argc, char **argv)
   data.pipeline = cogl_pipeline_new (ctx);
 
   data.redraw_queued = TRUE;
+  data.ready_to_draw = TRUE;
+
   while (!data.quit)
     {
-      while (!data.quit)
+      if (!SDL_PollEvent (&event))
         {
-          if (!SDL_PollEvent (&event))
+          if (data.redraw_queued && data.ready_to_draw)
             {
-              if (data.redraw_queued)
-                break;
-
-              cogl_sdl_idle (ctx);
-              if (!SDL_WaitEvent (&event))
-                {
-                  fprintf (stderr, "Error waiting for SDL events");
-                  return 1;
-                }
+              redraw (&data);
+              data.redraw_queued = FALSE;
+              data.ready_to_draw = FALSE;
+              continue;
             }
 
-          handle_event (&data, &event);
-          cogl_sdl_handle_event (ctx, &event);
+          cogl_sdl_idle (ctx);
+          if (!SDL_WaitEvent (&event))
+            {
+              fprintf (stderr, "Error waiting for SDL events");
+              return 1;
+            }
         }
 
-      data.redraw_queued = redraw (&data);
+      handle_event (&data, &event);
+      cogl_sdl_handle_event (ctx, &event);
     }
 
   cogl_object_unref (ctx);
