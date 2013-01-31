@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
+const Signals = imports.signals;
 const St = imports.gi.St;
 
 const Params = imports.misc.params;
