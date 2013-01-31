@@ -454,6 +454,7 @@ const ScreenShield = new Lang.Class({
                                                 reactive: true,
                                                 can_focus: true,
                                                 name: 'lockScreenGroup',
+                                                visible: false,
                                               });
         this._lockScreenGroup.connect('key-release-event',
                                       Lang.bind(this, this._onLockScreenKeyRelease));
