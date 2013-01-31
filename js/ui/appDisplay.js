@@ -33,9 +33,7 @@ const AlphabeticalView = new Lang.Class({
 
     _init: function() {
         this._grid = new IconGrid.IconGrid({ xAlign: St.Align.START });
-        this._appSystem = Shell.AppSystem.get_default();
 
-        this._pendingAppLaterId = 0;
         this._appIcons = {}; // desktop file id
         this._allApps = [];
 
