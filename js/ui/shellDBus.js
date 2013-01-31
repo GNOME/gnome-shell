@@ -248,7 +248,7 @@ const ScreenSaverDBus = new Lang.Class({
 
         this._screenShield = screenShield;
         screenShield.connect('lock-status-changed', Lang.bind(this, function(shield) {
-            this._dbusImpl.emit_signal('ActiveChanged', GLib.Variant.new('(b)', [shield.locked]));
+            this._dbusImpl.emit_signal('ActiveChanged', GLib.Variant.new('(b)', [shield.active]));
         }));
 
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(ScreenSaverIface, this);
