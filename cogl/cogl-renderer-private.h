@@ -70,7 +70,7 @@ struct _CoglRenderer
 
 #ifdef COGL_HAS_SDL_SUPPORT
   CoglBool sdl_event_type_set;
-  uint8_t sdl_event_type;
+  uint32_t sdl_event_type;
 #endif
 
   /* List of callback functions that will be given every native event */
