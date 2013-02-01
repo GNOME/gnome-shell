@@ -6,7 +6,7 @@
 #
 # Sander Dijkhuis <sander.dijkhuis@gmail.com>, 2009–2010
 # Reinout van Schouwen <reinouts@gnome.org>, 2010
-# Wouter Bolsterlee <wbolster@gnome.org>, 2011–2012
+# Wouter Bolsterlee <wbolster@gnome.org>, 2011–2013
 #
 # Aangezien dit een erg zichtbare module is graag eerst contact opnemen met
 # Wouter Bolsterlee alvorens zaken te wijzigen!
@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-22 13:37+0100\n"
-"PO-Revision-Date: 2012-11-22 13:37+0100\n"
+"POT-Creation-Date: 2013-02-01 16:59+0100\n"
+"PO-Revision-Date: 2013-02-01 17:00+0100\n"
 "Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
@@ -166,67 +166,86 @@ msgstr ""
 "item ‘afmelden’ in situaties met een enkele gebruiker en een enkele sessie."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+msgid ""
+"Whether to remember password for mounting encrypted or remote filesystems"
+msgstr ""
+"Of wachtwoorden voor versleutelde bestandssystemen of bestandssystemen op "
+"afstand onthouden moeten worden"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+msgid ""
+"The shell will request a password when an encrypted device or a remote "
+"filesystem is mounted. If the password can be saved for future use a "
+"'Remember Password' checkbox will be present. This key sets the default "
+"state of the checkbox."
+msgstr ""
+"De shell vraagt om een wachtwoord als een versleuteld bestandssysteem of een "
+"bestandssysteem op afstand aangekoppeld wordt. Als het wachtwoord voor "
+"toekomstig gebruik opgeslagen kan worden, dan zal een ‘Wachtwoord onthouden’-"
+"vinkje getoond worden. Deze instelling bepaalt de standaardwaarde hiervoor."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Show the week date in the calendar"
 msgstr "Weeknummers tonen in kalender"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Indien ingeschakeld worden weeknummers in de kalender getoond."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to open the application menu"
 msgstr "Sneltoets om het toepassingenmenu te openen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to open the application menu."
 msgstr "Sneltoets om het toepassingenmenu te openen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "Sneltoets voor de toepassingen-weergave"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr "Sneltoets voor de toepassingen-weergave in het activiteitenoverzicht"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr "Sneltoets om het berichtenoverzicht te tonen of te verbergen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "Sneltoets om het berichtenoverzicht te tonen of te verbergen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to focus the active notification"
 msgstr "Sneltoets om de actieve notificatie de focus te geven"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to focus the active notification."
 msgstr "Sneltoets om de actieve notificatie de focus te geven"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to toggle the screen recorder"
 msgstr "Sneltoets om de schermopname aan en uit te zetten"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "Keybinding to start/stop the builtin screen recorder."
 msgstr "Sneltoets om de ingebouwde schermopname aan en uit te zetten"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Which keyboard to use"
 msgstr "Welk toetsenbord gebruikt wordt"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "The type of keyboard to use."
 msgstr "Het te gebruiken type toetsenbord"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Framerate used for recording screencasts."
 msgstr "Framerate voor het opnemen van de schermopnamen."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -234,11 +253,11 @@ msgstr ""
 "De framerate (in frames per seconde) voor de opnames die door de "
 "schermopname van Gnome Shell gemaakt worden."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "De gstreamer-pijplijn voor het coderen van de schermopname"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -264,11 +283,11 @@ msgstr ""
 "hetgeen resulteert in een WebM-opname met de VP8-codec. %T wordt gebruikt "
 "voor een schatting van het optimale aantal threads voor dit systeem."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid "File extension used for storing the screencast"
 msgstr "Bestandsextensie voor het opslaan van de schermopname"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -278,36 +297,50 @@ msgstr ""
 "de huidige datum en gebruikt deze extensie. Dit moet aangepast worden bij "
 "het gebruik van een ander containerformaat."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+msgid "The application icon mode."
+msgstr "Weergave van toepassingspictogrammen"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+msgid ""
+"Configures how the windows are shown in the switcher. Valid possibilities "
+"are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
+"only' (shows only the application icon) or 'both'."
+msgstr ""
+"Geeft aan hoe vensters in het overzicht getoond worden. Geldige waarden zijn "
+"‘thumbnail-only’ (alleen een miniatuur tonen), ‘app-icon-only’ (alleen het "
+"pictogram van de toepassing tonen) of ‘both’ (beide tonen)."
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "Attach modal dialog to the parent window"
 msgstr "Modale dialoogvensters aan hoofdvenster vastmaken"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr "Deze waarde overschrijft de waarde in org.gnome.mutter in Gnome Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Arrangement of buttons on the titlebar"
 msgstr "Indeling van de knoppen in de titelbalk"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
 msgstr "Deze waarde overschrijft de waarde in org.gnome.mutter in Gnome Shell."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 "Vensters langs de randen positioneren bij verslepen naar de rand van het "
 "scherm"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
 msgid "Workspaces are managed dynamically"
 msgstr "Werkbladen dynamisch beheren"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:46
 msgid "Workspaces only on primary monitor"
 msgstr "Alleen werkbladen op hoofdmonitor"
 
@@ -324,11 +357,11 @@ msgstr "Uitbreiding"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Selecteer de te configureren uitbreiding uit de keuzelijst hierboven."
 
-#: ../js/gdm/loginDialog.js:565
+#: ../js/gdm/loginDialog.js:569
 msgid "Session..."
 msgstr "Sessie…"
 
-#: ../js/gdm/loginDialog.js:722
+#: ../js/gdm/loginDialog.js:726
 msgctxt "title"
 msgid "Sign In"
 msgstr "Aanmelden"
@@ -336,35 +369,35 @@ msgstr "Aanmelden"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:786
+#: ../js/gdm/loginDialog.js:790
 msgid "Not listed?"
 msgstr "Niet in de lijst?"
 
-#: ../js/gdm/loginDialog.js:962 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:967 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
-#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:396
-#: ../js/ui/status/bluetooth.js:413 ../js/ui/unlockDialog.js:179
+#: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
+#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:178
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: ../js/gdm/loginDialog.js:978
+#: ../js/gdm/loginDialog.js:983
 msgctxt "button"
 msgid "Sign In"
 msgstr "Aanmelden"
 
-#: ../js/gdm/loginDialog.js:978
+#: ../js/gdm/loginDialog.js:983
 msgid "Next"
 msgstr "Volgende"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:1086 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:1091 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Gebruikersnaam: "
 
-#: ../js/gdm/loginDialog.js:1382
+#: ../js/gdm/loginDialog.js:1387
 msgid "Login Window"
 msgstr "Aanmeldvenster"
 
@@ -373,8 +406,8 @@ msgstr "Aanmeldvenster"
 msgid "Power"
 msgstr "Uitschakelen"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:667 ../js/ui/userMenu.js:671
-#: ../js/ui/userMenu.js:782
+#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:679 ../js/ui/userMenu.js:683
+#: ../js/ui/userMenu.js:794
 msgid "Suspend"
 msgstr "Slaapstand"
 
@@ -382,8 +415,8 @@ msgstr "Slaapstand"
 msgid "Restart"
 msgstr "Opnieuw opstarten"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:669
-#: ../js/ui/userMenu.js:671 ../js/ui/userMenu.js:781
+#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:681
+#: ../js/ui/userMenu.js:683 ../js/ui/userMenu.js:793
 msgid "Power Off"
 msgstr "Uitschakelen"
 
@@ -422,23 +455,15 @@ msgstr "Uitvoeren van ‘%s’ mislukt:"
 msgid "All"
 msgstr "Alles"
 
-#: ../js/ui/appDisplay.js:317
-msgid "APPLICATIONS"
-msgstr "TOEPASSINGEN"
-
-#: ../js/ui/appDisplay.js:377
-msgid "SETTINGS"
-msgstr "INSTELLINGEN"
-
-#: ../js/ui/appDisplay.js:682
+#: ../js/ui/appDisplay.js:667
 msgid "New Window"
 msgstr "Nieuw venster"
 
-#: ../js/ui/appDisplay.js:685 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:670 ../js/ui/dash.js:289
 msgid "Remove from Favorites"
 msgstr "Uit favorieten verwijderen"
 
-#: ../js/ui/appDisplay.js:686
+#: ../js/ui/appDisplay.js:671
 msgid "Add to Favorites"
 msgstr "Aan favorieten toevoegen"
 
@@ -455,19 +480,19 @@ msgstr "%s is verwijderd uit uw favorieten."
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:62
+#: ../js/ui/calendar.js:61
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Gehele dag"
 
 #. Translators: Shown in calendar event list, if 24h format
-#: ../js/ui/calendar.js:67
+#: ../js/ui/calendar.js:66
 msgctxt "event list time"
 msgid "%H:%M"
 msgstr "%H:%M"
 
 #. Transators: Shown in calendar event list, if 12h format
-#: ../js/ui/calendar.js:74
+#: ../js/ui/calendar.js:73
 msgctxt "event list time"
 msgid "%l:%M %p"
 msgstr "%l:%M %p"
@@ -477,43 +502,43 @@ msgstr "%l:%M %p"
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:114
+#: ../js/ui/calendar.js:104
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Z"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:116
+#: ../js/ui/calendar.js:106
 msgctxt "grid monday"
 msgid "M"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:118
+#: ../js/ui/calendar.js:108
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:120
+#: ../js/ui/calendar.js:110
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "W"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:122
+#: ../js/ui/calendar.js:112
 msgctxt "grid thursday"
 msgid "T"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:124
+#: ../js/ui/calendar.js:114
 msgctxt "grid friday"
 msgid "F"
 msgstr "V"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:126
+#: ../js/ui/calendar.js:116
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Z"
@@ -524,99 +549,107 @@ msgstr "Z"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:139
+#: ../js/ui/calendar.js:129
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Zo"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:141
+#: ../js/ui/calendar.js:131
 msgctxt "list monday"
 msgid "M"
 msgstr "Ma"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:143
+#: ../js/ui/calendar.js:133
 msgctxt "list tuesday"
 msgid "T"
 msgstr "Di"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:145
+#: ../js/ui/calendar.js:135
 msgctxt "list wednesday"
 msgid "W"
 msgstr "Wo"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:147
+#: ../js/ui/calendar.js:137
 msgctxt "list thursday"
 msgid "Th"
 msgstr "Do"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:149
+#: ../js/ui/calendar.js:139
 msgctxt "list friday"
 msgid "F"
 msgstr "Vr"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:151
+#: ../js/ui/calendar.js:141
 msgctxt "list saturday"
 msgid "S"
 msgstr "Za"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:700
+#: ../js/ui/calendar.js:674
 msgid "Nothing Scheduled"
 msgstr "Niets gepland"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:716
+#: ../js/ui/calendar.js:690
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%a %d %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:719
+#: ../js/ui/calendar.js:693
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%a %d %B %Y"
 
-#: ../js/ui/calendar.js:729
+#: ../js/ui/calendar.js:703
 msgid "Today"
 msgstr "Vandaag"
 
-#: ../js/ui/calendar.js:733
+#: ../js/ui/calendar.js:707
 msgid "Tomorrow"
 msgstr "Morgen"
 
-#: ../js/ui/calendar.js:744
+#: ../js/ui/calendar.js:718
 msgid "This week"
 msgstr "Deze week"
 
-#: ../js/ui/calendar.js:752
+#: ../js/ui/calendar.js:726
 msgid "Next week"
 msgstr "Volgende week"
+
+#: ../js/ui/components/automountManager.js:92
+msgid "External drive connected"
+msgstr "Verbinding met externe schijf gemaakt"
+
+#: ../js/ui/components/automountManager.js:103
+msgid "External drive disconnected"
+msgstr "Verbinding met externe schijf verbroken"
 
 # Lelijk, maar KDE gebruikt het ook…
 #: ../js/ui/components/autorunManager.js:295
 msgid "Removable Devices"
 msgstr "Verwijderbare apparaten"
 
-#: ../js/ui/components/autorunManager.js:591
+#: ../js/ui/components/autorunManager.js:594
 #, c-format
 msgid "Open with %s"
 msgstr "Openen met %s"
 
-#: ../js/ui/components/autorunManager.js:617
+#: ../js/ui/components/autorunManager.js:620
 msgid "Eject"
 msgstr "Uitwerpen"
 
-#: ../js/ui/components/keyring.js:86 ../js/ui/components/polkitAgent.js:260
+#: ../js/ui/components/keyring.js:82 ../js/ui/components/polkitAgent.js:268
 msgid "Password:"
 msgstr "Wachtwoord:"
 
-#: ../js/ui/components/keyring.js:105
+#: ../js/ui/components/keyring.js:101
 msgid "Type again:"
 msgstr "Nogmaals:"
 
@@ -705,7 +738,7 @@ msgid "Administrator"
 msgstr "Beheerder"
 
 # Vrij vertaald (Wouter Bolsterlee)
-#: ../js/ui/components/polkitAgent.js:166
+#: ../js/ui/components/polkitAgent.js:165
 msgid "Authenticate"
 msgstr "Verifiëren"
 
@@ -713,7 +746,7 @@ msgstr "Verifiëren"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/components/polkitAgent.js:248 ../js/ui/shellMountOperation.js:381
+#: ../js/ui/components/polkitAgent.js:256 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Helaas, dat werkte niet. Probeer het opnieuw."
 
@@ -725,72 +758,66 @@ msgstr "Schermopname van %d %t"
 
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/components/telepathyClient.js:237
+#: ../js/ui/components/telepathyClient.js:238
 msgid "Invitation"
 msgstr "Uitnodiging"
 
 #. We got the TpContact
-#: ../js/ui/components/telepathyClient.js:297
+#: ../js/ui/components/telepathyClient.js:298
 msgid "Call"
 msgstr "Oproep"
 
 #. We got the TpContact
-#: ../js/ui/components/telepathyClient.js:313
+#: ../js/ui/components/telepathyClient.js:314
 msgid "File Transfer"
 msgstr "Bestandsoverdracht"
 
-#: ../js/ui/components/telepathyClient.js:394
-msgid "Subscription request"
-msgstr "Aanvraag voor abonnement"
+#: ../js/ui/components/telepathyClient.js:418
+msgid "Chat"
+msgstr "Chatten"
 
-#: ../js/ui/components/telepathyClient.js:430
-msgid "Connection error"
-msgstr "Verbindingsfout"
-
-#: ../js/ui/components/telepathyClient.js:491
+#: ../js/ui/components/telepathyClient.js:480
 msgid "Unmute"
 msgstr "Geluid aanzetten"
 
-#: ../js/ui/components/telepathyClient.js:491
+#: ../js/ui/components/telepathyClient.js:480
 msgid "Mute"
 msgstr "Geluid uitzetten"
 
-#. Translators: this is a time format string followed by the word "Yesterday". i.e. "14:30 on Yesterday"
-#: ../js/ui/components/telepathyClient.js:946
+#. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"
+#: ../js/ui/components/telepathyClient.js:938
 #, no-c-format
-msgid "<b>%H:%M</b> on Yesterday"
-msgstr "Gisteren om <b>%H:%M</b>"
+msgid "<b>Yesterday</b>, <b>%H:%M</b>"
+msgstr "<b>Gisteren</b> om <b>%H:%M</b>"
 
-#. Translators: this is a time format string followed by a week day name. i.e. "14:30 on Monday
-#: ../js/ui/components/telepathyClient.js:952
+#. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30
+#: ../js/ui/components/telepathyClient.js:944
 #, no-c-format
-msgid "<b>%H:%M</b> on <b>%A</b>"
+msgid "<b>%A</b>, <b>%H:%M</b>"
 msgstr "<b>%A</b> om <b>%H:%M</b>"
 
-#. Translators: this is a time format in the style of "14:30 on Wednesday, May 25",
-#. shown when you get a chat message in the same year
-#: ../js/ui/components/telepathyClient.js:958
+#. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"
+#: ../js/ui/components/telepathyClient.js:949
 #, no-c-format
-msgid "<b>%H:%M</b> on <b>%A</b>, <b>%B</b> <b>%d</b>"
-msgstr "<b>%A %d %B</b> om <b>%H:%M</b>"
+msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
+msgstr "<b>%d %B</b> om <b>%H:%M</b>"
 
-#. Translators: this is a time format in the style of "14:30 on Wednesday, May 25, 2012",
-#. shown when you get a chat message in a different year
-#: ../js/ui/components/telepathyClient.js:963
+#. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"
+#: ../js/ui/components/telepathyClient.js:953
 #, no-c-format
-msgid "<b>%H:%M</b> on <b>%A</b>, <b>%B</b> <b>%d</b>, %Y"
-msgstr "<b>%A %d %B %Y</b> om <b>%H:%M</b>"
+msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
+msgstr "<b>%d %B %Y</b> om <b>%H:%M</b>"
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:991
+#: ../js/ui/components/telepathyClient.js:981
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s heet vanaf nu %s"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1090
+#: ../js/ui/components/telepathyClient.js:1084
 #, c-format
 msgid "Invitation to %s"
 msgstr "Uitnodiging voor %s"
@@ -798,38 +825,38 @@ msgstr "Uitnodiging voor %s"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/components/telepathyClient.js:1098
+#: ../js/ui/components/telepathyClient.js:1092
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s nodigt u uit om deel te nemen aan %s"
 
-#: ../js/ui/components/telepathyClient.js:1100
-#: ../js/ui/components/telepathyClient.js:1139
-#: ../js/ui/components/telepathyClient.js:1179
-#: ../js/ui/components/telepathyClient.js:1242
+#: ../js/ui/components/telepathyClient.js:1094
+#: ../js/ui/components/telepathyClient.js:1133
+#: ../js/ui/components/telepathyClient.js:1173
+#: ../js/ui/components/telepathyClient.js:1236
 msgid "Decline"
 msgstr "Afwijzen"
 
-#: ../js/ui/components/telepathyClient.js:1101
-#: ../js/ui/components/telepathyClient.js:1180
-#: ../js/ui/components/telepathyClient.js:1243
+#: ../js/ui/components/telepathyClient.js:1095
+#: ../js/ui/components/telepathyClient.js:1174
+#: ../js/ui/components/telepathyClient.js:1237
 msgid "Accept"
 msgstr "Accepteren"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1131
+#: ../js/ui/components/telepathyClient.js:1125
 #, c-format
 msgid "Video call from %s"
 msgstr "Video-oproep van %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1134
+#: ../js/ui/components/telepathyClient.js:1128
 #, c-format
 msgid "Call from %s"
 msgstr "Oproep van %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1141
+#: ../js/ui/components/telepathyClient.js:1135
 msgid "Answer"
 msgstr "Antwoorden"
 
@@ -838,111 +865,111 @@ msgstr "Antwoorden"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/components/telepathyClient.js:1173
+#: ../js/ui/components/telepathyClient.js:1167
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s stuurt %s op"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1208
+#: ../js/ui/components/telepathyClient.js:1202
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s wil toestemming om te zien wanneer u online bent"
 
-#: ../js/ui/components/telepathyClient.js:1300
+#: ../js/ui/components/telepathyClient.js:1294
 msgid "Network error"
 msgstr "Netwerkfout"
 
-#: ../js/ui/components/telepathyClient.js:1302
+#: ../js/ui/components/telepathyClient.js:1296
 msgid "Authentication failed"
 msgstr "Authenticatie mislukt"
 
-#: ../js/ui/components/telepathyClient.js:1304
+#: ../js/ui/components/telepathyClient.js:1298
 msgid "Encryption error"
 msgstr "Versleutelingsfout"
 
-#: ../js/ui/components/telepathyClient.js:1306
+#: ../js/ui/components/telepathyClient.js:1300
 msgid "Certificate not provided"
 msgstr "Geen certificaat opgegeven"
 
-#: ../js/ui/components/telepathyClient.js:1308
+#: ../js/ui/components/telepathyClient.js:1302
 msgid "Certificate untrusted"
 msgstr "Certificaat niet vertrouwd"
 
-#: ../js/ui/components/telepathyClient.js:1310
+#: ../js/ui/components/telepathyClient.js:1304
 msgid "Certificate expired"
 msgstr "Certificaat verlopen"
 
-#: ../js/ui/components/telepathyClient.js:1312
+#: ../js/ui/components/telepathyClient.js:1306
 msgid "Certificate not activated"
 msgstr "Certificaat niet geactiveerd"
 
-#: ../js/ui/components/telepathyClient.js:1314
+#: ../js/ui/components/telepathyClient.js:1308
 msgid "Certificate hostname mismatch"
 msgstr "Hostnaam van certificaat onjuist"
 
-#: ../js/ui/components/telepathyClient.js:1316
+#: ../js/ui/components/telepathyClient.js:1310
 msgid "Certificate fingerprint mismatch"
 msgstr "Vingerafdruk van certificaat onjuist"
 
-#: ../js/ui/components/telepathyClient.js:1318
+#: ../js/ui/components/telepathyClient.js:1312
 msgid "Certificate self-signed"
 msgstr "Certificaat is zelf ondertekend"
 
-#: ../js/ui/components/telepathyClient.js:1320
+#: ../js/ui/components/telepathyClient.js:1314
 msgid "Status is set to offline"
 msgstr "Status is op offline ingesteld"
 
-#: ../js/ui/components/telepathyClient.js:1322
+#: ../js/ui/components/telepathyClient.js:1316
 msgid "Encryption is not available"
 msgstr "Versleuteling is niet beschikbaar"
 
-#: ../js/ui/components/telepathyClient.js:1324
+#: ../js/ui/components/telepathyClient.js:1318
 msgid "Certificate is invalid"
 msgstr "Certificaat is ongeldig"
 
-#: ../js/ui/components/telepathyClient.js:1326
+#: ../js/ui/components/telepathyClient.js:1320
 msgid "Connection has been refused"
 msgstr "De berbinding is geweigerd"
 
-#: ../js/ui/components/telepathyClient.js:1328
+#: ../js/ui/components/telepathyClient.js:1322
 msgid "Connection can't be established"
 msgstr "De verbinding kan niet gemaakt worden"
 
-#: ../js/ui/components/telepathyClient.js:1330
+#: ../js/ui/components/telepathyClient.js:1324
 msgid "Connection has been lost"
 msgstr "Verbinding verloren"
 
-#: ../js/ui/components/telepathyClient.js:1332
+#: ../js/ui/components/telepathyClient.js:1326
 msgid "This account is already connected to the server"
 msgstr "Dit account is reeds met de server verbonden"
 
-#: ../js/ui/components/telepathyClient.js:1334
+#: ../js/ui/components/telepathyClient.js:1328
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "De verbinding is vervangen door een nieuwe verbinding met dezelfde resource"
 
-#: ../js/ui/components/telepathyClient.js:1336
+#: ../js/ui/components/telepathyClient.js:1330
 msgid "The account already exists on the server"
 msgstr "Het account bestaat al op de server"
 
-#: ../js/ui/components/telepathyClient.js:1338
+#: ../js/ui/components/telepathyClient.js:1332
 msgid "Server is currently too busy to handle the connection"
 msgstr "De server is momenteel te druk om de verbinding af te handelen"
 
-#: ../js/ui/components/telepathyClient.js:1340
+#: ../js/ui/components/telepathyClient.js:1334
 msgid "Certificate has been revoked"
 msgstr "Certificaat is ingetrokken"
 
-#: ../js/ui/components/telepathyClient.js:1342
+#: ../js/ui/components/telepathyClient.js:1336
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Het certificaat gebruikt een onveilig versleutelingsalgoritme of is "
 "cryptografisch zwak."
 
-#: ../js/ui/components/telepathyClient.js:1344
+#: ../js/ui/components/telepathyClient.js:1338
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -951,45 +978,49 @@ msgstr ""
 "servercertificaat overschrijden de limieten die de cryptografische "
 "bibliotheek stelt."
 
-#: ../js/ui/components/telepathyClient.js:1346
+#: ../js/ui/components/telepathyClient.js:1340
 msgid "Internal error"
 msgstr "Interne fout"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1356
+#: ../js/ui/components/telepathyClient.js:1350
 #, c-format
-msgid "Connection to %s failed"
-msgstr "Verbinding met %s mislukt"
+msgid "Unable to connect to %s"
+msgstr "Kon niet verbinden met %s"
 
-#: ../js/ui/components/telepathyClient.js:1365
-msgid "Reconnect"
-msgstr "Opnieuw verbinden…"
+#: ../js/ui/components/telepathyClient.js:1355
+msgid "View account"
+msgstr "Account tonen"
 
-#: ../js/ui/components/telepathyClient.js:1366
-msgid "Edit account"
-msgstr "Account bewerken"
-
-#: ../js/ui/components/telepathyClient.js:1411
+#: ../js/ui/components/telepathyClient.js:1394
 msgid "Unknown reason"
 msgstr "Onbekende reden"
+
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:81
+msgid "Windows"
+msgstr "Vensters"
 
 #: ../js/ui/dash.js:253 ../js/ui/dash.js:291
 msgid "Show Applications"
 msgstr "Toepassingen tonen"
 
-#: ../js/ui/dateMenu.js:86
-msgid "Date and Time Settings"
-msgstr "Instellingen voor datum en tijd"
-
-#: ../js/ui/dateMenu.js:111
+#: ../js/ui/dateMenu.js:91
 msgid "Open Calendar"
 msgstr "Agenda openen"
+
+#: ../js/ui/dateMenu.js:96
+msgid "Open Clocks"
+msgstr "Klok openen"
+
+#: ../js/ui/dateMenu.js:105
+msgid "Date and Time Settings"
+msgstr "Instellingen voor datum en tijd"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:201
+#: ../js/ui/dateMenu.js:205
 msgid "%A %B %e, %Y"
 msgstr "%A %e %B %Y"
 
@@ -1096,93 +1127,93 @@ msgstr "Installeren"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "‘%s’ van extensions.gnome.org downloaden en installeren?"
 
-#: ../js/ui/keyboard.js:308
+#: ../js/ui/keyboard.js:289
 msgid "tray"
 msgstr "tray"
 
-#: ../js/ui/keyboard.js:555 ../js/ui/status/keyboard.js:195
-#: ../js/ui/status/power.js:205
+#: ../js/ui/keyboard.js:634 ../js/ui/status/keyboard.js:314
+#: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Toetsenbord"
 
-#: ../js/ui/lookingGlass.js:691
+#: ../js/ui/lookingGlass.js:692
 msgid "No extensions installed"
 msgstr "Geen uitbreidingen geïnstalleerd"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:745
+#: ../js/ui/lookingGlass.js:746
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s heeft geen fouten gemeld."
 
-#: ../js/ui/lookingGlass.js:751
+#: ../js/ui/lookingGlass.js:752
 msgid "Hide Errors"
 msgstr "Fouten verbergen"
 
-#: ../js/ui/lookingGlass.js:755 ../js/ui/lookingGlass.js:815
+#: ../js/ui/lookingGlass.js:756 ../js/ui/lookingGlass.js:816
 msgid "Show Errors"
 msgstr "Fouten tonen"
 
-#: ../js/ui/lookingGlass.js:764
+#: ../js/ui/lookingGlass.js:765
 msgid "Enabled"
 msgstr "Ingeschakeld"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:767 ../src/gvc/gvc-mixer-control.c:1082
+#: ../js/ui/lookingGlass.js:768 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Uitgeschakeld"
 
-#: ../js/ui/lookingGlass.js:769
+#: ../js/ui/lookingGlass.js:770
 msgid "Error"
 msgstr "Fout"
 
-#: ../js/ui/lookingGlass.js:771
+#: ../js/ui/lookingGlass.js:772
 msgid "Out of date"
 msgstr "Gedateerd"
 
-#: ../js/ui/lookingGlass.js:773
+#: ../js/ui/lookingGlass.js:774
 msgid "Downloading"
 msgstr "Downloaden"
 
-#: ../js/ui/lookingGlass.js:797
+#: ../js/ui/lookingGlass.js:798
 msgid "View Source"
 msgstr "Broncode weergeven"
 
-#: ../js/ui/lookingGlass.js:806
+#: ../js/ui/lookingGlass.js:807
 msgid "Web Page"
 msgstr "Webpagina"
 
-#: ../js/ui/messageTray.js:1088
+#: ../js/ui/messageTray.js:1151
 msgid "Open"
 msgstr "Openen"
 
-#: ../js/ui/messageTray.js:1095
+#: ../js/ui/messageTray.js:1158
 msgid "Remove"
 msgstr "Verwijderen"
 
-#: ../js/ui/messageTray.js:1552
+#: ../js/ui/messageTray.js:1629
 msgid "No Messages"
 msgstr "Geen berichten"
 
-#: ../js/ui/messageTray.js:1569
+#: ../js/ui/messageTray.js:1648
 msgid "Message Tray"
 msgstr "Berichtenoverzicht"
 
-#: ../js/ui/messageTray.js:2638
+#: ../js/ui/messageTray.js:2757
 msgid "System Information"
 msgstr "Systeeminformatie"
 
-#: ../js/ui/notificationDaemon.js:504 ../src/shell-app.c:374
+#: ../js/ui/notificationDaemon.js:627 ../src/shell-app.c:374
 msgctxt "program"
 msgid "Unknown"
 msgstr "Onbekend"
 
-#: ../js/ui/overview.js:107
+#: ../js/ui/overview.js:92
 msgid "Undo"
 msgstr "Ongedaan maken"
 
-#: ../js/ui/overview.js:155
+#: ../js/ui/overview.js:139
 msgid "Overview"
 msgstr "Overzicht"
 
@@ -1190,28 +1221,28 @@ msgstr "Overzicht"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:229
+#: ../js/ui/overview.js:218
 msgid "Type to search..."
 msgstr "Typ om te zoeken…"
 
 # Betere vertaling is welkom (Wouter Bolsterlee)
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/overview.js:250
+#: ../js/ui/overview.js:236
 msgid "Dash"
 msgstr "Zijbalk"
 
-#: ../js/ui/panel.js:599
+#: ../js/ui/panel.js:613
 msgid "Quit"
 msgstr "Afsluiten"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:631
+#: ../js/ui/panel.js:642
 msgid "Activities"
 msgstr "Activiteiten"
 
-#: ../js/ui/panel.js:999
+#: ../js/ui/panel.js:976
 msgid "Top Bar"
 msgstr "Bovenbalk"
 
@@ -1220,7 +1251,7 @@ msgstr "Bovenbalk"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:731
+#: ../js/ui/popupMenu.js:727
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1234,33 +1265,33 @@ msgstr "Sluiten"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:112
+#: ../js/ui/screenShield.js:114
 msgid "%A, %B %d"
 msgstr "%A %d %B"
 
-#: ../js/ui/screenShield.js:176
+#: ../js/ui/screenShield.js:177
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d nieuw bericht"
 msgstr[1] "%d nieuwe berichten"
 
-#: ../js/ui/screenShield.js:178
+#: ../js/ui/screenShield.js:179
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d nieuwe notificatie"
 msgstr[1] "%d nieuwe notificaties"
 
-#: ../js/ui/screenShield.js:401 ../js/ui/userMenu.js:773
+#: ../js/ui/screenShield.js:463 ../js/ui/userMenu.js:785
 msgid "Lock"
 msgstr "Vergrendelen"
 
-#: ../js/ui/searchDisplay.js:275
+#: ../js/ui/searchDisplay.js:430
 msgid "Searching..."
 msgstr "Zoeken…"
 
-#: ../js/ui/searchDisplay.js:323
+#: ../js/ui/searchDisplay.js:478
 msgid "No results."
 msgstr "Geen resultaten"
 
@@ -1280,15 +1311,15 @@ msgstr "Tekst tonen"
 msgid "Hide Text"
 msgstr "Tekst verbergen"
 
-#: ../js/ui/shellMountOperation.js:368
+#: ../js/ui/shellMountOperation.js:370
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: ../js/ui/shellMountOperation.js:389
+#: ../js/ui/shellMountOperation.js:391
 msgid "Remember Password"
 msgstr "Wachtwoord onthouden"
 
-#: ../js/ui/shellMountOperation.js:400 ../js/ui/unlockDialog.js:193
+#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:192
 msgid "Unlock"
 msgstr "Ontgrendelen"
 
@@ -1340,237 +1371,247 @@ msgstr "Hoog contrast"
 msgid "Large Text"
 msgstr "Grote tekst"
 
-#: ../js/ui/status/bluetooth.js:27 ../js/ui/status/bluetooth.js:31
-#: ../js/ui/status/bluetooth.js:288 ../js/ui/status/bluetooth.js:319
-#: ../js/ui/status/bluetooth.js:355 ../js/ui/status/bluetooth.js:386
+#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:32
+#: ../js/ui/status/bluetooth.js:289 ../js/ui/status/bluetooth.js:321
+#: ../js/ui/status/bluetooth.js:357 ../js/ui/status/bluetooth.js:388
+#: ../js/ui/status/network.js:814
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:44
+#: ../js/ui/status/bluetooth.js:45
 msgid "Visibility"
 msgstr "Zichtbaarheid"
 
-#: ../js/ui/status/bluetooth.js:58
+#: ../js/ui/status/bluetooth.js:59
 msgid "Send Files to Device..."
 msgstr "Bestanden naar apparaat sturen…"
 
-#: ../js/ui/status/bluetooth.js:59
+#: ../js/ui/status/bluetooth.js:60
 msgid "Set up a New Device..."
 msgstr "Nieuw apparaat instellen…"
 
-#: ../js/ui/status/bluetooth.js:83
+#: ../js/ui/status/bluetooth.js:84
 msgid "Bluetooth Settings"
 msgstr "Bluetooth-instellingen"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:169
+#: ../js/ui/status/bluetooth.js:104 ../js/ui/status/network.js:178
 msgid "hardware disabled"
 msgstr "uitgeschakeld in hardware"
 
-#: ../js/ui/status/bluetooth.js:196
+#: ../js/ui/status/bluetooth.js:197
 msgid "Connection"
 msgstr "Verbinding"
 
-#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:436
+#: ../js/ui/status/bluetooth.js:208 ../js/ui/status/network.js:460
 msgid "disconnecting..."
 msgstr "verbinding verbreken…"
 
-#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:442
-#: ../js/ui/status/network.js:1449
+#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:466
+#: ../js/ui/status/network.js:1534
 msgid "connecting..."
 msgstr "verbinden…"
 
-#: ../js/ui/status/bluetooth.js:238
+#: ../js/ui/status/bluetooth.js:239
 msgid "Send Files..."
 msgstr "Bestanden sturen…"
 
-#: ../js/ui/status/bluetooth.js:245
+#: ../js/ui/status/bluetooth.js:246
 msgid "Keyboard Settings"
 msgstr "Toetsenbordvoorkeuren"
 
-#: ../js/ui/status/bluetooth.js:248
+#: ../js/ui/status/bluetooth.js:249
 msgid "Mouse Settings"
 msgstr "Muisvoorkeuren"
 
-#: ../js/ui/status/bluetooth.js:253 ../js/ui/status/volume.js:234
+#: ../js/ui/status/bluetooth.js:254 ../js/ui/status/volume.js:317
 msgid "Sound Settings"
 msgstr "Geluidsvoorkeuren"
 
-#: ../js/ui/status/bluetooth.js:320
+#: ../js/ui/status/bluetooth.js:322
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Autorisatie-aanvraag van %s"
 
-#: ../js/ui/status/bluetooth.js:326
+#: ../js/ui/status/bluetooth.js:328
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "Het apparaat ‘%s’ wil toegang tot de dienst ‘%s’"
 
-#: ../js/ui/status/bluetooth.js:328
+#: ../js/ui/status/bluetooth.js:330
 msgid "Always grant access"
 msgstr "Altijd toestaan"
 
-#: ../js/ui/status/bluetooth.js:329
+#: ../js/ui/status/bluetooth.js:331
 msgid "Grant this time only"
 msgstr "Eenmalig toestaan"
 
-#: ../js/ui/status/bluetooth.js:330
+#: ../js/ui/status/bluetooth.js:332
 msgid "Reject"
 msgstr "Afwijzen"
 
 #. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:357
+#: ../js/ui/status/bluetooth.js:359
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Koppelbevestiging voor %s"
 
-#: ../js/ui/status/bluetooth.js:363 ../js/ui/status/bluetooth.js:394
+#: ../js/ui/status/bluetooth.js:365 ../js/ui/status/bluetooth.js:396
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "Het apparaat ‘%s’ wil aankoppelen met deze computer"
 
-#: ../js/ui/status/bluetooth.js:364
+#: ../js/ui/status/bluetooth.js:366
 #, c-format
 msgid "Please confirm whether the PIN '%06d' matches the one on the device."
 msgstr "Bevestig dat de PIN-code ‘%06d’ hetzelfde is als die van het apparaat."
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:369
 msgid "Matches"
 msgstr "Komt overeen"
 
-#: ../js/ui/status/bluetooth.js:368
+#: ../js/ui/status/bluetooth.js:370
 msgid "Does not match"
 msgstr "Komt niet overeen"
 
-#: ../js/ui/status/bluetooth.js:387
+#: ../js/ui/status/bluetooth.js:389
 #, c-format
 msgid "Pairing request for %s"
 msgstr "Verzoek tot koppelen met %s"
 
-#: ../js/ui/status/bluetooth.js:395
+#: ../js/ui/status/bluetooth.js:397
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Geef de op het apparaat aangegeven PIN-code."
 
-#: ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:414
 msgid "OK"
 msgstr "OK"
 
-#: ../js/ui/status/keyboard.js:228
+#: ../js/ui/status/keyboard.js:368
 msgid "Show Keyboard Layout"
 msgstr "Toetsenbordindeling tonen"
 
-#: ../js/ui/status/keyboard.js:233
+#: ../js/ui/status/keyboard.js:373
 msgid "Region and Language Settings"
 msgstr "Instellingen voor taal en regio"
 
-#: ../js/ui/status/lockScreenMenu.js:18
+#: ../js/ui/status/lockScreenMenu.js:43
 msgid "Volume, network, battery"
 msgstr "Volume, netwerk, accu"
 
-#: ../js/ui/status/network.js:95
+#: ../js/ui/status/network.js:104
 msgid "<unknown>"
 msgstr "<onbekend>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:191
+#: ../js/ui/status/network.js:200
 msgid "disabled"
 msgstr "uitgeschakeld"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:434
+#: ../js/ui/status/network.js:458
 msgid "unmanaged"
 msgstr "niet gemanaged"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:445 ../js/ui/status/network.js:1452
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1537
 msgid "authentication required"
 msgstr "authenticatie nodig"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:455
+#: ../js/ui/status/network.js:479
 msgid "firmware missing"
 msgstr "firmware ontbreekt"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:462
+#: ../js/ui/status/network.js:486
 msgid "cable unplugged"
 msgstr "kabel niet verbonden"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:467
+#: ../js/ui/status/network.js:491
 msgid "unavailable"
 msgstr "niet beschikbaar"
 
-#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1454
+#: ../js/ui/status/network.js:493 ../js/ui/status/network.js:1539
 msgid "connection failed"
 msgstr "verbinding mislukt"
 
-#: ../js/ui/status/network.js:525 ../js/ui/status/network.js:1388
-#: ../js/ui/status/network.js:1530
+#: ../js/ui/status/network.js:552 ../js/ui/status/network.js:1423
+#: ../js/ui/status/network.js:1615
 msgid "More..."
 msgstr "Meer…"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:561 ../js/ui/status/network.js:1318
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1353
 msgid "Connected (private)"
 msgstr "Verbonden (persoonlijke verbinding)"
 
-#: ../js/ui/status/network.js:615
+# Expliciet "netwerk" toegevoegd (Wouter Bolsterlee)
+#: ../js/ui/status/network.js:667
+msgid "Wired"
+msgstr "Bekabeld netwerk"
+
+#: ../js/ui/status/network.js:668
 msgid "Auto Ethernet"
 msgstr "Automatisch ethernetverbinding"
 
-#: ../js/ui/status/network.js:673
+#: ../js/ui/status/network.js:695
+msgid "Mobile broadband"
+msgstr "Mobiel breedband"
+
+#: ../js/ui/status/network.js:716
 msgid "Auto broadband"
 msgstr "Automatische breedbandverbinding"
 
-#: ../js/ui/status/network.js:676
+#: ../js/ui/status/network.js:719
 msgid "Auto dial-up"
 msgstr "Automatisch inbellen"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:805 ../js/ui/status/network.js:1335
+#: ../js/ui/status/network.js:849 ../js/ui/status/network.js:1370
 #, c-format
 msgid "Auto %s"
 msgstr "%s (automatisch)"
 
-#: ../js/ui/status/network.js:807
+#: ../js/ui/status/network.js:851
 msgid "Auto bluetooth"
 msgstr "Automatische Bluetooth"
 
-#: ../js/ui/status/network.js:1337
+#: ../js/ui/status/network.js:1372
 msgid "Auto wireless"
 msgstr "Automatisch draadloos netwerk"
 
-#: ../js/ui/status/network.js:1579
+#: ../js/ui/status/network.js:1665
 msgid "Enable networking"
 msgstr "Netwerk inschakelen"
 
-#: ../js/ui/status/network.js:1611
+#: ../js/ui/status/network.js:1707
 msgid "Wi-Fi"
 msgstr "Wi-Fi"
 
-#: ../js/ui/status/network.js:1630
+#: ../js/ui/status/network.js:1726
 msgid "Network Settings"
 msgstr "Netwerkinstellingen"
 
-#: ../js/ui/status/network.js:1674
+#: ../js/ui/status/network.js:1785
 msgid "Network Manager"
 msgstr "Netwerk-manager"
 
-#: ../js/ui/status/network.js:1756
+#: ../js/ui/status/network.js:1875
 msgid "Connection failed"
 msgstr "Verbinding mislukt"
 
-#: ../js/ui/status/network.js:1757
+#: ../js/ui/status/network.js:1876
 msgid "Activation of network connection failed"
 msgstr "Activeren van netwerkverbinding mislukt"
 
-#: ../js/ui/status/network.js:2074
+#: ../js/ui/status/network.js:2254
 msgid "Networking is disabled"
 msgstr "Netwerk is uitgeschakeld"
 
@@ -1578,17 +1619,17 @@ msgstr "Netwerk is uitgeschakeld"
 msgid "Battery"
 msgstr "Accu"
 
-#: ../js/ui/status/power.js:72
+#: ../js/ui/status/power.js:81
 msgid "Power Settings"
 msgstr "Energievoorkeuren"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:94
+#: ../js/ui/status/power.js:99
 msgid "Estimating..."
 msgstr "Schatten…"
 
-#: ../js/ui/status/power.js:101
+#: ../js/ui/status/power.js:106
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
@@ -1596,147 +1637,151 @@ msgstr[0] "%d uur resterend"
 msgstr[1] "%d uur resterend"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:104
+#: ../js/ui/status/power.js:109
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s resterend"
 
-#: ../js/ui/status/power.js:106
+#: ../js/ui/status/power.js:111
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "uur"
 msgstr[1] "uur"
 
-#: ../js/ui/status/power.js:106
+#: ../js/ui/status/power.js:111
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minuut"
 msgstr[1] "minuten"
 
-#: ../js/ui/status/power.js:109
+#: ../js/ui/status/power.js:114
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d minuut resterend"
 msgstr[1] "%d minuten resterend"
 
-#: ../js/ui/status/power.js:112 ../js/ui/status/power.js:186
+#: ../js/ui/status/power.js:117 ../js/ui/status/power.js:191
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../js/ui/status/power.js:195
+#: ../js/ui/status/power.js:201
 msgid "AC adapter"
 msgstr "Netstroom"
 
-#: ../js/ui/status/power.js:197
+#: ../js/ui/status/power.js:203
 msgid "Laptop battery"
 msgstr "Laptop-accu"
 
-#: ../js/ui/status/power.js:199
+#: ../js/ui/status/power.js:205
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:201
+#: ../js/ui/status/power.js:207
 msgid "Monitor"
 msgstr "Monitor"
 
-#: ../js/ui/status/power.js:203
+#: ../js/ui/status/power.js:209
 msgid "Mouse"
 msgstr "Muis"
 
-#: ../js/ui/status/power.js:207
+#: ../js/ui/status/power.js:213
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:209
+#: ../js/ui/status/power.js:215
 msgid "Cell phone"
 msgstr "Mobiele telefoon"
 
-#: ../js/ui/status/power.js:211
+#: ../js/ui/status/power.js:217
 msgid "Media player"
 msgstr "Mediaspeler"
 
-#: ../js/ui/status/power.js:213
+#: ../js/ui/status/power.js:219
 msgid "Tablet"
 msgstr "Tablet"
 
-#: ../js/ui/status/power.js:215
+#: ../js/ui/status/power.js:221
 msgid "Computer"
 msgstr "Computer"
 
-#: ../js/ui/status/power.js:217
+#: ../js/ui/status/power.js:223
 msgctxt "device"
 msgid "Unknown"
 msgstr "Onbekend"
 
+#: ../js/ui/status/volume.js:124
+msgid "Volume changed"
+msgstr "Volume gewijzigd"
+
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:47 ../js/ui/status/volume.js:221
+#: ../js/ui/status/volume.js:250 ../js/ui/status/volume.js:298
 msgid "Volume"
 msgstr "Volume"
 
-#: ../js/ui/status/volume.js:59
+#: ../js/ui/status/volume.js:259
 msgid "Microphone"
 msgstr "Microfoon"
 
-#: ../js/ui/unlockDialog.js:202
+#: ../js/ui/unlockDialog.js:203
 msgid "Log in as another user"
 msgstr "Aanmelden als andere gebruiker"
 
-#: ../js/ui/unlockDialog.js:225
+#: ../js/ui/unlockDialog.js:229
 msgid "Unlock Window"
 msgstr "Venster voor ontgrendelen"
 
-#: ../js/ui/userMenu.js:176
+#: ../js/ui/userMenu.js:178
 msgid "Available"
 msgstr "Beschikbaar"
 
-#: ../js/ui/userMenu.js:179
+#: ../js/ui/userMenu.js:181
 msgid "Busy"
 msgstr "Bezig"
 
-#: ../js/ui/userMenu.js:182
+#: ../js/ui/userMenu.js:184
 msgid "Invisible"
 msgstr "Onzichtbaar"
 
-#: ../js/ui/userMenu.js:185
+#: ../js/ui/userMenu.js:187
 msgid "Away"
 msgstr "Afwezig"
 
-#: ../js/ui/userMenu.js:188
+#: ../js/ui/userMenu.js:190
 msgid "Idle"
 msgstr "Inactief"
 
-#: ../js/ui/userMenu.js:191
+#: ../js/ui/userMenu.js:193
 msgid "Offline"
 msgstr "Offline"
 
-#: ../js/ui/userMenu.js:747
+#: ../js/ui/userMenu.js:759
 msgid "Notifications"
 msgstr "Notificaties"
 
-#: ../js/ui/userMenu.js:755
+#: ../js/ui/userMenu.js:767
 msgid "Settings"
 msgstr "Voorkeuren"
 
-#: ../js/ui/userMenu.js:763
+#: ../js/ui/userMenu.js:775
 msgid "Switch User"
 msgstr "Gebruiker wisselen"
 
-#: ../js/ui/userMenu.js:768
+#: ../js/ui/userMenu.js:780
 msgid "Log Out"
 msgstr "Afmelden"
 
-#: ../js/ui/userMenu.js:788
+#: ../js/ui/userMenu.js:800
 msgid "Install Updates & Restart"
 msgstr "Updates installeren en opnieuw opstarten"
 
-#: ../js/ui/userMenu.js:806
+#: ../js/ui/userMenu.js:818
 msgid "Your chat status will be set to busy"
 msgstr "De chatstatus zal op ‘bezig’ gezet worden"
 
-#: ../js/ui/userMenu.js:807
+#: ../js/ui/userMenu.js:819
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1745,19 +1790,15 @@ msgstr ""
 "aangepast om anderen te laten weten dat berichten mogelijk niet direct "
 "gelezen worden."
 
-#: ../js/ui/viewSelector.js:87
-msgid "Windows"
-msgstr "Vensters"
-
-#: ../js/ui/viewSelector.js:91
+#: ../js/ui/viewSelector.js:85
 msgid "Applications"
 msgstr "Toepassingen"
 
-#: ../js/ui/viewSelector.js:95
+#: ../js/ui/viewSelector.js:89
 msgid "Search"
 msgstr "Zoeken"
 
-#: ../js/ui/wanda.js:117
+#: ../js/ui/wanda.js:92
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1766,14 +1807,10 @@ msgstr ""
 "Sorry, geen wijsheden vandaag:\n"
 "%s"
 
-#: ../js/ui/wanda.js:121
+#: ../js/ui/wanda.js:96
 #, c-format
 msgid "%s the Oracle says"
 msgstr "%s het orakel zegt"
-
-#: ../js/ui/wanda.js:162
-msgid "Your favorite Easter Egg"
-msgstr "Uw favoriete Easter Egg"
 
 #: ../js/ui/windowAttentionHandler.js:19
 #, c-format
@@ -1786,7 +1823,7 @@ msgstr "Evolution-agenda"
 
 #. translators:
 #. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1089
+#: ../src/gvc/gvc-mixer-control.c:1837
 #, c-format
 msgid "%u Output"
 msgid_plural "%u Outputs"
@@ -1795,30 +1832,30 @@ msgstr[1] "%u uitvoerkanalen"
 
 #. translators:
 #. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1099
+#: ../src/gvc/gvc-mixer-control.c:1847
 #, c-format
 msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u invoerkanaal"
 msgstr[1] "%u invoerkanalen"
 
-#: ../src/gvc/gvc-mixer-control.c:1397
+#: ../src/gvc/gvc-mixer-control.c:2371
 msgid "System Sounds"
 msgstr "Systeemgeluiden"
 
-#: ../src/main.c:332
+#: ../src/main.c:347
 msgid "Print version"
 msgstr "Versie weergeven"
 
-#: ../src/main.c:338
+#: ../src/main.c:353
 msgid "Mode used by GDM for login screen"
 msgstr "De mode die door GDM voor het aanmeldscherm gebruikt wordt"
 
-#: ../src/main.c:344
+#: ../src/main.c:359
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Specifieke modus gebruiken, b.v. ‘gdm’ voor het aanmeldscherm"
 
-#: ../src/main.c:350
+#: ../src/main.c:365
 msgid "List possible modes"
 msgstr "Mogelijke modi tonen"
 
@@ -1846,6 +1883,33 @@ msgstr "Standaard"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Authenticatievenster is door de gebruiker afgesloten"
+
+#~ msgid "APPLICATIONS"
+#~ msgstr "TOEPASSINGEN"
+
+#~ msgid "SETTINGS"
+#~ msgstr "INSTELLINGEN"
+
+#~ msgid "Subscription request"
+#~ msgstr "Aanvraag voor abonnement"
+
+#~ msgid "Connection error"
+#~ msgstr "Verbindingsfout"
+
+#~ msgid "<b>%H:%M</b> on Yesterday"
+#~ msgstr "Gisteren om <b>%H:%M</b>"
+
+#~ msgid "<b>%H:%M</b> on <b>%A</b>, <b>%B</b> <b>%d</b>, %Y"
+#~ msgstr "<b>%A %d %B %Y</b> om <b>%H:%M</b>"
+
+#~ msgid "Connection to %s failed"
+#~ msgstr "Verbinding met %s mislukt"
+
+#~ msgid "Reconnect"
+#~ msgstr "Opnieuw verbinden…"
+
+#~ msgid "Your favorite Easter Egg"
+#~ msgstr "Uw favoriete Easter Egg"
 
 #~ msgid "If true, display date in the clock, in addition to time."
 #~ msgstr ""
@@ -1918,15 +1982,8 @@ msgstr "Authenticatievenster is door de gebruiker afgesloten"
 #~ msgstr "Netwerk"
 
 # Expliciet "netwerk" toegevoegd (Wouter Bolsterlee)
-#~ msgid "Wired"
-#~ msgstr "Bekabeld netwerk"
-
-# Expliciet "netwerk" toegevoegd (Wouter Bolsterlee)
 #~ msgid "Wireless"
 #~ msgstr "Draadloos netwerk"
-
-#~ msgid "Mobile broadband"
-#~ msgstr "Mobiel breedband"
 
 #~ msgid "VPN Connections"
 #~ msgstr "VPN-verbindingen"
