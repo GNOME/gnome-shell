@@ -115,9 +115,14 @@ const IBusManager = new Lang.Class({
             this._panelService.connect('update-property', Lang.bind(this, this._updateProperty));
             // If an engine is already active we need to get its properties
             this._ibus.get_global_engine_async(-1, null, Lang.bind(this, function(i, result) {
-                let engine = this._ibus.get_global_engine_async_finish(result);
-                if (!engine)
+                let engine;
+                try {
+                    engine = this._ibus.get_global_engine_async_finish(result);
+                    if (!engine)
+                        return;
+                } catch(e) {
                     return;
+                }
                 this._engineChanged(this._ibus, engine.get_name());
             }));
             this._updateReadiness();
