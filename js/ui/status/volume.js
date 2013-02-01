@@ -169,9 +169,8 @@ const OutputStreamSlider = new Lang.Class({
         // a bit hackish, but ALSA/PulseAudio have a number
         // of different identifiers for headphones, and I could
         // not find the complete list
-        let port = sink.get_port();
-        if (port)
-            return port.port.indexOf('headphone') >= 0;
+        if (sink.get_ports().length > 0)
+            return sink.get_port().port.indexOf('headphone') >= 0;
 
         return false;
     },
