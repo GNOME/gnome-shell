@@ -1055,6 +1055,11 @@ const ScreenShield = new Lang.Class({
     deactivate: function(animate) {
         this._hideLockScreen(animate, 0);
 
+        if (Main.sessionMode.currentMode == 'lock-screen')
+            Main.sessionMode.popMode('lock-screen');
+        if (Main.sessionMode.currentMode == 'unlock-dialog')
+            Main.sessionMode.popMode('unlock-dialog');
+
         Tweener.addTween(this._lockDialogGroup, {
             scale_x: 0,
             scale_y: 0,
@@ -1082,11 +1087,6 @@ const ScreenShield = new Lang.Class({
         }
 
         this.actor.hide();
-
-        if (Main.sessionMode.currentMode == 'lock-screen')
-            Main.sessionMode.popMode('lock-screen');
-        if (Main.sessionMode.currentMode == 'unlock-dialog')
-            Main.sessionMode.popMode('unlock-dialog');
 
         if (this._becameActiveId != 0) {
             this.idleMonitor.disconnect(this._becameActiveId);
