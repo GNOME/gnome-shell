@@ -7151,9 +7151,7 @@ send_configure_notify (MetaWindow *window)
  *
  * Gets the location of the icon corresponding to the window. The location
  * will be provided set by the task bar or other user interface element
- * displaying the icon, and is relative to the root window. This currently
- * retrieves the icon geometry from the X server as a round trip on every
- * call.
+ * displaying the icon, and is relative to the root window.
  *
  * Return value: %TRUE if the icon geometry was succesfully retrieved.
  */
@@ -7161,33 +7159,12 @@ gboolean
 meta_window_get_icon_geometry (MetaWindow    *window,
                                MetaRectangle *rect)
 {
-  gulong *geometry = NULL;
-  int nitems;
-
   g_return_val_if_fail (!window->override_redirect, FALSE);
 
-  if (meta_prop_get_cardinal_list (window->display,
-                                   window->xwindow,
-                                   window->display->atom__NET_WM_ICON_GEOMETRY,
-                                   &geometry, &nitems))
+  if (window->icon_geometry_set)
     {
-      if (nitems != 4)
-        {
-          meta_verbose ("_NET_WM_ICON_GEOMETRY on %s has %d values instead of 4\n",
-                        window->desc, nitems);
-          meta_XFree (geometry);
-          return FALSE;
-        }
-
       if (rect)
-        {
-          rect->x = geometry[0];
-          rect->y = geometry[1];
-          rect->width = geometry[2];
-          rect->height = geometry[3];
-        }
-
-      meta_XFree (geometry);
+        *rect = window->icon_geometry;
 
       return TRUE;
     }
