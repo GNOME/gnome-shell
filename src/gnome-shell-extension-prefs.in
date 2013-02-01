@@ -1,12 +1,12 @@
 #!/bin/sh
 
-if [ -n "$GI_TYPELIB_PATH" ]; then
+if [ -z "$GI_TYPELIB_PATH" ]; then
     export GI_TYPELIB_PATH=@pkglibdir@
 else
     export GI_TYPELIB_PATH=@pkglibdir@:$GI_TYPELIB_PATH
 fi
 
-if [ -n "$LD_LIBRARY_PATH" ] ; then
+if [ -z "$LD_LIBRARY_PATH" ] ; then
     export LD_LIBRARY_PATH=@pkglibdir@
 else
     export LD_LIBRARY_PATH=@pkglibdir@:$LD_LIBRARY_PATH
