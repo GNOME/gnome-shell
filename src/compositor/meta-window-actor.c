@@ -1217,7 +1217,7 @@ meta_window_actor_set_redirected (MetaWindowActor *self, gboolean state)
       meta_error_trap_push (display);
       XCompositeRedirectWindow (xdisplay, xwin, CompositeRedirectManual);
       meta_error_trap_pop (display);
-      meta_window_actor_queue_create_pixmap (self);
+      meta_window_actor_detach (self);
       self->priv->unredirected = FALSE;
     }
   else
