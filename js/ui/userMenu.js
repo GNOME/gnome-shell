@@ -585,6 +585,7 @@ const UserMenuButton = new Lang.Class({
                                        Lang.bind(this, this._updateHaveShutdown));
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        Main.screenShield.connect('locked-changed', Lang.bind(this, this._updatePresenceIcon));
         this._sessionUpdated();
     },
 
@@ -704,6 +705,11 @@ const UserMenuButton = new Lang.Class({
             this._iconBox.child = this._idleIcon;
         else
             this._iconBox.child = this._offlineIcon;
+
+        if (Main.sessionMode.isLocked)
+            this._iconBox.visible = Main.screenShield.locked;
+        else
+            this._iconBox.visible = true;
     },
 
     _setupAccounts: function() {
