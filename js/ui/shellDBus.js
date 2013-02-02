@@ -247,7 +247,7 @@ const ScreenSaverDBus = new Lang.Class({
         this.parent();
 
         this._screenShield = screenShield;
-        screenShield.connect('lock-status-changed', Lang.bind(this, function(shield) {
+        screenShield.connect('active-changed', Lang.bind(this, function(shield) {
             this._dbusImpl.emit_signal('ActiveChanged', GLib.Variant.new('(b)', [shield.active]));
         }));
 

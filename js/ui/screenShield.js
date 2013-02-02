@@ -536,6 +536,7 @@ const ScreenShield = new Lang.Class({
         this._hasLockScreen = false;
         this._isGreeter = false;
         this._isActive = false;
+        this._isLocked = false;
         this._inUnlockAnimation = false;
         this._activationTime = 0;
         this._becameActiveId = 0;
@@ -956,7 +957,7 @@ const ScreenShield = new Lang.Class({
         this._isActive = true;
 
         if (prevIsActive != this._isActive)
-            this.emit('lock-status-changed');
+            this.emit('active-changed');
 
         this.emit('lock-screen-shown');
     },
@@ -1067,7 +1068,8 @@ const ScreenShield = new Lang.Class({
         this._activationTime = 0;
         this._isActive = false;
         this._isLocked = false;
-        this.emit('lock-status-changed');
+        this.emit('active-changed');
+        this.emit('locked-changed');
     },
 
     activate: function(animate) {
@@ -1085,7 +1087,7 @@ const ScreenShield = new Lang.Class({
 
         this._resetLockScreen(animate, animate);
 
-        // We used to set isActive and emit lock-status-changed here,
+        // We used to set isActive and emit active-changed here,
         // but now we do that from lockScreenShown, which means
         // there is a 0.3 seconds window during which the lock
         // screen is effectively visible and the screen is locked, but
@@ -1105,6 +1107,8 @@ const ScreenShield = new Lang.Class({
 
         this._isLocked = true;
         this.activate(animate);
+
+        this.emit('locked-changed');
     },
 });
 Signals.addSignalMethods(ScreenShield.prototype);
@@ -1138,13 +1142,13 @@ const ScreenShieldFallback = new Lang.Class({
         else
             this._locked = false;
 
-        this.emit('lock-status-changed', this._locked);
+        this.emit('active-changed', this._locked);
     },
 
     _onSignal: function(proxy, senderName, signalName, params) {
         if (signalName == 'ActiveChanged') {
             [this._locked] = params.deep_unpack();
-            this.emit('lock-status-changed', this._locked);
+            this.emit('active-changed', this._locked);
         }
     },
 
