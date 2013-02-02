@@ -429,7 +429,6 @@ StScrollBar StButton#vhandle:active {
     background-color: black;
     font-weight: bold;
     height: 1.86em;
-    transition-duration: 250ms;
 }
 
 #panel.lock-screen {
