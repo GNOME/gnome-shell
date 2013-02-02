@@ -62,6 +62,13 @@ typedef enum {
 
 #define NUMBER_OF_QUEUES 3
 
+
+typedef enum {
+  _NET_WM_BYPASS_COMPOSITOR_HINT_AUTO = 0,
+  _NET_WM_BYPASS_COMPOSITOR_HINT_ON = 1,
+  _NET_WM_BYPASS_COMPOSITOR_HINT_OFF = 2,
+} MetaBypassCompositorHintValue;
+
 struct _MetaWindow
 {
   GObject parent_instance;
@@ -421,8 +428,7 @@ struct _MetaWindow
   MetaWindow *tile_match;
 
   /* Bypass compositor hints */
-  guint bypass_compositor : 1;
-  guint dont_bypass_compositor : 1;
+  guint bypass_compositor;
 };
 
 struct _MetaWindowClass
