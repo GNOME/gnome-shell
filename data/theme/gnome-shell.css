@@ -432,13 +432,11 @@ StScrollBar StButton#vhandle:active {
 }
 
 #panel.lock-screen {
-    height: 2em;
     background-color: rgba(0,0,0,0.3);
 }
 
 #panel.unlock-screen,
 #panel.login-screen {
-    height: 2em;
     background-color: transparent;
 }
 
