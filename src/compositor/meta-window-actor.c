@@ -119,6 +119,10 @@ struct _MetaWindowActorPrivate
   guint             no_more_x_calls        : 1;
 
   guint             unredirected           : 1;
+
+  /* This is used to detect fullscreen windows that need to be unredirected */
+  guint             full_damage_frames_count;
+  guint             does_full_damage  : 1;
 };
 
 enum
@@ -1158,47 +1162,58 @@ gboolean
 meta_window_actor_should_unredirect (MetaWindowActor *self)
 {
   MetaWindow *metaWindow = meta_window_actor_get_meta_window (self);
-  MetaScreen *screen = meta_window_get_screen (metaWindow);
   MetaWindowActorPrivate *priv = self->priv;
-  int screen_width, screen_height;
-  MetaRectangle window_rect, monitor_rect;
-  int num_monitors = meta_screen_get_n_monitors (screen);
-  int i;
+
+  gboolean occupies_full_monitors = FALSE;
 
   if (meta_window_requested_dont_bypass_compositor (metaWindow))
-    return FALSE;
-
-  if (!meta_window_is_override_redirect (metaWindow) &&
-      !meta_window_requested_bypass_compositor (metaWindow))
     return FALSE;
 
   if (priv->opacity != 0xff)
     return FALSE;
 
-  if (priv->argb32 && !meta_window_requested_bypass_compositor (metaWindow))
-    return FALSE;
-
   if (metaWindow->has_shape)
     return FALSE;
 
-  if (meta_window_requested_bypass_compositor (metaWindow) &&
-      meta_window_is_fullscreen (metaWindow))
-    return TRUE;
+  if (priv->argb32 && !meta_window_requested_bypass_compositor (metaWindow))
+    return FALSE;
 
-  meta_screen_get_size (screen, &screen_width, &screen_height);
-  meta_window_get_outer_rect (metaWindow, &window_rect);
-
-  if (window_rect.x == 0 && window_rect.y == 0 &&
-      window_rect.width == screen_width && window_rect.height == screen_height)
-    return TRUE;
-
-  for (i = 0; i < num_monitors; i++)
+  if (meta_window_is_fullscreen (metaWindow))
+    occupies_full_monitors = TRUE;
+  else if (meta_window_is_override_redirect (metaWindow))
     {
-      meta_screen_get_monitor_geometry (screen , i, &monitor_rect);
-      if (monitor_rect.x == window_rect.x && monitor_rect.y == window_rect.y &&
-          monitor_rect.width == window_rect.width && monitor_rect.height == window_rect.height)
-        return TRUE;
+      MetaScreen *screen = meta_window_get_screen (metaWindow);
+      MetaRectangle window_rect, monitor_rect;
+
+      int num_monitors = meta_screen_get_n_monitors (screen);
+      int screen_width, screen_height, i;
+
+      meta_screen_get_size (screen, &screen_width, &screen_height);
+
+      if (window_rect.x == 0 && window_rect.y == 0 &&
+          window_rect.width == screen_width && window_rect.height == screen_height)
+        occupies_full_monitors = TRUE;
+
+      for (i = 0; i < num_monitors; i++)
+        {
+          meta_screen_get_monitor_geometry (screen , i, &monitor_rect);
+          if (monitor_rect.x == window_rect.x && monitor_rect.y == window_rect.y &&
+              monitor_rect.width == window_rect.width && monitor_rect.height == window_rect.height)
+            occupies_full_monitors = TRUE;
+        }
     }
+
+  if (!occupies_full_monitors)
+    return FALSE;
+
+  if (meta_window_requested_bypass_compositor (metaWindow))
+    return TRUE;
+
+  if (meta_window_is_override_redirect (metaWindow))
+    return TRUE;
+
+  if (priv->does_full_damage)
+    return TRUE;
 
   return FALSE;
 }
@@ -1883,11 +1898,29 @@ meta_window_actor_process_damage (MetaWindowActor    *self,
                                   XDamageNotifyEvent *event)
 {
   MetaWindowActorPrivate *priv = self->priv;
+  MetaCompScreen *info = meta_screen_get_compositor_data (priv->screen);
 
   priv->received_damage = TRUE;
 
+  if (meta_window_is_fullscreen (priv->window) && g_list_last (info->windows)->data == self && !priv->unredirected)
+    {
+      MetaRectangle window_rect;
+      meta_window_get_outer_rect (priv->window, &window_rect);
+
+      if (window_rect.x == event->area.x &&
+          window_rect.y == event->area.y &&
+          window_rect.width == event->area.width &&
+          window_rect.height == event->area.height)
+        priv->full_damage_frames_count++;
+      else
+        priv->full_damage_frames_count = 0;
+
+      if (priv->full_damage_frames_count >= 100)
+        priv->does_full_damage = TRUE;
+    }
+
   /* Drop damage event for unredirected windows */
-  if (self->priv->unredirected)
+  if (priv->unredirected)
     return;
 
   if (is_frozen (self))
