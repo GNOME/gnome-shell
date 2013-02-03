@@ -316,10 +316,6 @@ key_event_to_gdk (ClutterKeyEvent *event_clutter)
    * doesn't support XKB; we'll just end up with group == 0 */
   event_gdk->group = XkbGroupForCoreState (event_gdk->state);
 
-  gdk_keymap_translate_keyboard_state (keymap, event_gdk->hardware_keycode,
-                                       event_gdk->state, event_gdk->group,
-                                       &event_gdk->keyval, NULL, NULL, NULL);
-
   if (event_clutter->unicode_value)
     {
       /* This is not particularly close to what GDK does - event_gdk->string
