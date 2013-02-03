@@ -1522,6 +1522,10 @@ _clutter_stage_do_pick (ClutterStage   *stage,
   context->pick_mode = CLUTTER_PICK_NONE;
   CLUTTER_TIMER_STOP (_clutter_uprof_context, pick_paint);
 
+  /* Notify the backend that we have trashed the contents of
+   * the back buffer... */
+  _clutter_stage_window_dirty_back_buffer (priv->impl);
+
   if (is_clipped)
     {
       if (G_LIKELY (!(clutter_pick_debug_flags &

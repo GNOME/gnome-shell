@@ -50,6 +50,8 @@ struct _ClutterStageCogl
   /* TRUE if the current paint cycle has a clipped redraw. In that
      case bounding_redraw_clip specifies the the bounds. */
   guint using_clipped_redraw : 1;
+
+  guint dirty_backbuffer     : 1;
 };
 
 struct _ClutterStageCoglClass

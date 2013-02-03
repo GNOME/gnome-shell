@@ -502,6 +502,9 @@ clutter_stage_cogl_redraw (ClutterStageWindow *stage_window)
   /* reset the redraw clipping for the next paint... */
   stage_cogl->initialized_redraw_clip = FALSE;
 
+  /* We have repaired the backbuffer */
+  stage_cogl->dirty_backbuffer = FALSE;
+
   stage_cogl->frame_count++;
 }
 
@@ -511,6 +514,14 @@ clutter_stage_cogl_get_active_framebuffer (ClutterStageWindow *stage_window)
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
 
   return COGL_FRAMEBUFFER (stage_cogl->onscreen);
+}
+
+static void
+clutter_stage_cogl_dirty_back_buffer (ClutterStageWindow *stage_window)
+{
+ ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+
+ stage_cogl->dirty_backbuffer = TRUE;
 }
 
 static void
@@ -530,6 +541,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   iface->get_redraw_clip_bounds = clutter_stage_cogl_get_redraw_clip_bounds;
   iface->redraw = clutter_stage_cogl_redraw;
   iface->get_active_framebuffer = clutter_stage_cogl_get_active_framebuffer;
+  iface->dirty_back_buffer = clutter_stage_cogl_dirty_back_buffer;
 }
 
 static void

@@ -236,6 +236,18 @@ _clutter_stage_window_redraw (ClutterStageWindow *window)
     iface->redraw (window);
 }
 
+void
+_clutter_stage_window_dirty_back_buffer (ClutterStageWindow *window)
+{
+  ClutterStageWindowIface *iface;
+
+  g_return_if_fail (CLUTTER_IS_STAGE_WINDOW (window));
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->dirty_back_buffer)
+    iface->dirty_back_buffer (window);
+}
+
 /* NB: The presumption shouldn't be that a stage can't be comprised of
  * multiple internal framebuffers, so instead of simply naming this
  * function _clutter_stage_window_get_framebuffer(), the "active"
