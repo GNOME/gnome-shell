@@ -14,11 +14,6 @@
 #include <langinfo.h>
 #endif
 
-#ifdef WITH_SYSTEMD
-#include <systemd/sd-daemon.h>
-#include <systemd/sd-login.h>
-#endif
-
 static void
 stop_pick (ClutterActor       *actor,
            const ClutterColor *color)
@@ -353,29 +348,6 @@ shell_get_file_contents_utf8_sync (const char *path,
       return NULL;
     }
   return contents;
-}
-
-/**
- * shell_session_is_active_for_systemd:
- *
- * Checks whether the session we are running in is currently active,
- * i.e. in the foreground and ready for user input.
- *
- * Returns: TRUE if session is active
- */
-gboolean
-shell_session_is_active_for_systemd (void)
-{
-  /* If this isn't systemd, let's assume the session is active. */
-
-#ifdef WITH_SYSTEMD
-  if (sd_booted () <= 0)
-    return TRUE;
-
-  return sd_session_is_active (NULL) != 0;
-#else
-  return TRUE;
-#endif
 }
 
 /**

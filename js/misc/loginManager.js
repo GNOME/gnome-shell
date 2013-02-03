@@ -51,12 +51,6 @@ const ConsoleKitManagerIface = <interface name='org.freedesktop.ConsoleKit.Manag
 </interface>;
 
 const ConsoleKitSessionIface = <interface name='org.freedesktop.ConsoleKit.Session'>
-<method name='IsActive'>
-    <arg type='b' direction='out' />
-</method>
-<signal name='ActiveChanged'>
-    <arg type='b' direction='out' />
-</signal>
 <signal name='Lock' />
 <signal name='Unlock' />
 </interface>;
@@ -107,10 +101,6 @@ const LoginManagerSystemd = new Lang.Class({
         }
 
         return this._currentSession;
-    },
-
-    get sessionActive() {
-        return Shell.session_is_active_for_systemd();
     },
 
     canPowerOff: function(asyncCallback) {
@@ -175,19 +165,6 @@ const LoginManagerConsoleKit = new Lang.Class({
         }
 
         return this._currentSession;
-    },
-
-    get sessionActive() {
-        if (this._sessionActive !== undefined)
-            return this._sessionActive;
-
-        let session = this.getCurrentSessionProxy();
-        session.connectSignal('ActiveChanged', Lang.bind(this, function(object, senderName, [isActive]) {
-            this._sessionActive = isActive;
-        }));
-        [this._sessionActive] = session.IsActiveSync();
-
-        return this._sessionActive;
     },
 
     canPowerOff: function(asyncCallback) {

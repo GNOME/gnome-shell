@@ -32,8 +32,6 @@ gboolean shell_write_string_to_stream          (GOutputStream    *stream,
 char    *shell_get_file_contents_utf8_sync     (const char       *path,
                                                 GError          **error);
 
-gboolean shell_session_is_active_for_systemd (void);
-
 gboolean shell_util_wifexited                  (int               status,
                                                 int              *exit);
 
