@@ -44,13 +44,6 @@ cogl_poll_get_info (CoglContext *context,
   _COGL_RETURN_IF_FAIL (n_poll_fds != NULL);
   _COGL_RETURN_IF_FAIL (timeout != NULL);
 
-  if (!COGL_TAILQ_EMPTY (&context->onscreen_events_queue))
-    {
-      *n_poll_fds = 0;
-      *timeout = 0;
-      return;
-    }
-
   winsys = _cogl_context_get_winsys (context);
 
   if (winsys->poll_get_info)
@@ -59,13 +52,17 @@ cogl_poll_get_info (CoglContext *context,
                              poll_fds,
                              n_poll_fds,
                              timeout);
-      return;
+    }
+  else
+    {
+      /* By default we'll assume Cogl doesn't need to block on anything */
+      *poll_fds = NULL;
+      *n_poll_fds = 0;
+      *timeout = -1; /* no timeout */
     }
 
-  /* By default we'll assume Cogl doesn't need to block on anything */
-  *poll_fds = NULL;
-  *n_poll_fds = 0;
-  *timeout = -1; /* no timeout */
+  if (!COGL_TAILQ_EMPTY (&context->onscreen_events_queue))
+    *timeout = 0;
 }
 
 void
