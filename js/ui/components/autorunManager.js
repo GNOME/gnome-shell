@@ -4,7 +4,6 @@ const Lang = imports.lang;
 const Gio = imports.gi.Gio;
 const St = imports.gi.St;
 
-const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const ShellMountOperation = imports.ui.shellMountOperation;
@@ -162,8 +161,6 @@ const AutorunManager = new Lang.Class({
     Name: 'AutorunManager',
 
     _init: function() {
-        this._loginManager = LoginManager.getLoginManager();
-
         this._volumeMonitor = Gio.VolumeMonitor.get();
 
         this._transDispatcher = new AutorunTransientDispatcher(this);
@@ -215,7 +212,7 @@ const AutorunManager = new Lang.Class({
     _onMountAdded: function(monitor, mount) {
         // don't do anything if our session is not the currently
         // active one
-        if (!this._loginManager.sessionActive)
+        if (!this._session.SessionIsActive)
             return;
 
         this._processMount(mount, true);

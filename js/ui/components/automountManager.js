@@ -8,7 +8,6 @@ const Params = imports.misc.params;
 const Shell = imports.gi.Shell;
 
 const GnomeSession = imports.misc.gnomeSession;
-const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
 const ShellMountOperation = imports.ui.shellMountOperation;
 
@@ -33,7 +32,6 @@ const AutomountManager = new Lang.Class({
                                     Lang.bind(this, this._InhibitorsChanged));
         this._inhibited = false;
 
-        this._loginManager = LoginManager.getLoginManager();
         this._volumeMonitor = Gio.VolumeMonitor.get();
     },
 
@@ -85,7 +83,7 @@ const AutomountManager = new Lang.Class({
     _onDriveConnected: function() {
         // if we're not in the current ConsoleKit session,
         // or screensaver is active, don't play sounds
-        if (!this._loginManager.sessionActive)
+        if (!this._session.SessionIsActive)
             return;
 
         global.play_theme_sound(0, 'device-added-media',
@@ -96,7 +94,7 @@ const AutomountManager = new Lang.Class({
     _onDriveDisconnected: function() {
         // if we're not in the current ConsoleKit session,
         // or screensaver is active, don't play sounds
-        if (!this._loginManager.sessionActive)
+        if (!this._session.SessionIsActive)
             return;
 
         global.play_theme_sound(0, 'device-removed-media',
@@ -107,7 +105,7 @@ const AutomountManager = new Lang.Class({
     _onDriveEjectButton: function(monitor, drive) {
         // TODO: this code path is not tested, as the GVfs volume monitor
         // doesn't emit this signal just yet.
-        if (!this._loginManager.sessionActive)
+        if (!this._session.SessionIsActive)
             return;
 
         // we force stop/eject in this case, so we don't have to pass a
@@ -147,7 +145,7 @@ const AutomountManager = new Lang.Class({
         if (params.checkSession) {
             // if we're not in the current ConsoleKit session,
             // don't attempt automount
-            if (!this._loginManager.sessionActive)
+            if (!this._session.SessionIsActive)
                 return;
         }
 

@@ -58,6 +58,7 @@ const SessionManagerIface = <interface name="org.gnome.SessionManager">
     <arg type="u" direction="in" />
     <arg type="b" direction="out" />
 </method>
+<property name="SessionIsActive" type="b" access="read"/>
 <signal name="InhibitorAdded">
     <arg type="o" direction="out"/>
 </signal>
