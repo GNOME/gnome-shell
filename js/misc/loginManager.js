@@ -5,7 +5,6 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Shell = imports.gi.Shell;
-const UPowerGlib = imports.gi.UPowerGlib;
 
 const SystemdLoginManagerIface = <interface name='org.freedesktop.login1.Manager'>
 <method name='PowerOff'>
@@ -150,7 +149,6 @@ const LoginManagerConsoleKit = new Lang.Class({
         this._proxy = new ConsoleKitManager(Gio.DBus.system,
                                             'org.freedesktop.ConsoleKit',
                                             '/org/freedesktop/ConsoleKit/Manager');
-        this._upClient = new UPowerGlib.Client();
     },
 
     // Having this function is a bit of a hack since the Systemd and ConsoleKit
@@ -186,10 +184,7 @@ const LoginManagerConsoleKit = new Lang.Class({
     },
 
     canSuspend: function(asyncCallback) {
-        Mainloop.idle_add(Lang.bind(this, function() {
-            asyncCallback(this._upClient.get_can_suspend());
-            return false;
-        }));
+        return false;
     },
 
     powerOff: function() {
@@ -201,6 +196,5 @@ const LoginManagerConsoleKit = new Lang.Class({
     },
 
     suspend: function() {
-        this._upClient.suspend_sync(null);
     }
 });
