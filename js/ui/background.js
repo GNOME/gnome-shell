@@ -4,6 +4,7 @@ const Clutter = imports.gi.Clutter;
 const GDesktopEnums = imports.gi.GDesktopEnums;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const GnomeDesktop = imports.gi.GnomeDesktop;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
 const Signals = imports.signals;
@@ -22,6 +23,13 @@ const PICTURE_OPACITY_KEY = 'picture-opacity';
 const PICTURE_URI_KEY = 'picture-uri';
 
 const FADE_ANIMATION_TIME = 1.0;
+
+// These parameters affect how often we redraw.
+// The first is how different (percent crossfaded) the slide show
+// has to look before redrawing and the second is the minimum
+// frequency (in seconds) we're willing to wake up
+const ANIMATION_OPACITY_STEP_INCREMENT = 4.0;
+const ANIMATION_MIN_WAKEUP_INTERVAL = 1.0;
 
 let _backgroundCache = null;
 
@@ -181,6 +189,33 @@ const BackgroundCache = new Lang.Class({
                                                       params.onFinished(content);
                                               }));
         }
+    },
+
+    getAnimation: function(params) {
+        params = Params.parse(params, { filename: null,
+                                        onLoaded: null });
+
+        if (this._animationFilename == params.filename) {
+            if (params.onLoaded) {
+                GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
+                    params.onLoaded(this._animation);
+                }));
+            }
+        }
+
+        let animation = new Animation({ filename: params.filename });
+
+        animation.load(Lang.bind(this, function() {
+                           this._monitorFile(params.filename);
+                           this._animationFilename = params.filename;
+                           this._animation = animation;
+
+                           if (params.onLoaded) {
+                               GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
+                                   params.onLoaded(this._animation);
+                               }));
+                           }
+                       }));
     }
 });
 Signals.addSignalMethods(BackgroundCache.prototype);
@@ -196,6 +231,7 @@ const Background = new Lang.Class({
 
     _init: function(params) {
         params = Params.parse(params, { monitorIndex: 0,
+                                        layoutManager: Main.layoutManager,
                                         effects: Meta.BackgroundEffects.NONE });
         this.actor = new Meta.BackgroundGroup();
         this.actor._delegate = this;
@@ -205,10 +241,13 @@ const Background = new Lang.Class({
 
         this._settings = new Gio.Settings({ schema: BACKGROUND_SCHEMA });
         this._monitorIndex = params.monitorIndex;
+        this._layoutManager = params.layoutManager;
         this._effects = params.effects;
         this._fileWatches = {};
         this._pattern = null;
-        this._image = null;
+        // contains a single image for static backgrounds and
+        // two images (from and to) for slide shows
+        this._images = {};
 
         this._brightness = 1.0;
         this._vignetteSharpness = 0.2;
@@ -227,8 +266,12 @@ const Background = new Lang.Class({
         this._cancellable.cancel();
         this._cancellable = null;
 
-        let i;
+        if (this._animationUpdateTimeoutId) {
+            GLib.source_remove (this._animationUpdateTimeoutId);
+            this._animationUpdateTimeoutId = 0
+        }
 
+        let i;
         let keys = Object.keys(this._fileWatches);
         for (i = 0; i < keys.length; i++) {
             this._cache.disconnect(this._fileWatches[keys[i]]);
@@ -243,16 +286,20 @@ const Background = new Lang.Class({
             this._pattern = null;
         }
 
-        if (this._image) {
-            if (this._image.content)
-                this._cache.removeImageContent(this._image.content);
+        keys = Object.keys(this._images);
+        for (i = 0; i < keys.length; i++) {
+            let actor = this._images[keys[i]];
 
-            this._image.destroy();
-            this._image = null;
+            if (actor.content)
+                this._cache.removeImageContent(actor.content);
+
+            actor.destroy();
+            this._images[keys[i]] = null;
         }
 
         this.actor.disconnect(this._destroySignalId);
         this._destroySignalId = 0;
+
         this.actor.destroy();
     },
 
@@ -303,15 +350,123 @@ const Background = new Lang.Class({
         this._fileWatches[filename] = signalId;
     },
 
-    _setImage: function(content, filename) {
+    _addImage: function(content, index, filename) {
         content.saturation = this._saturation;
         content.brightness = this._brightness;
         content.vignette_sharpness = this._vignetteSharpness;
 
-        this._image = new Meta.BackgroundActor();
-        this._image.content = content;
-        this.actor.add_child(this._image);
+        let actor = new Meta.BackgroundActor();
+        actor.content = content;
+        this.actor.add_child(actor);
+
+        this._images[index] = actor;
         this._watchCacheFile(filename);
+    },
+
+    _updateImage: function(content, index, filename) {
+        content.saturation = this._saturation;
+        content.brightness = this._brightness;
+        content.vignette_sharpness = this._vignetteSharpness;
+
+        this._images[index].content = content;
+        this._watchCacheFile(filename);
+    },
+
+    _updateAnimationProgress: function() {
+        if (this._images[1]) {
+            this._images[1].raise_top();
+            this._images[1].opacity = this._animation.transitionProgress * 255;
+        }
+
+        this._queueAnimationUpdate();
+    },
+
+    _updateAnimation: function() {
+        this._animationUpdateTimeoutId = 0;
+
+        let files = this._animation.getKeyFrameFiles(this._layoutManager.monitors[this._monitorIndex]);
+
+        if (!files) {
+            this._setLoaded();
+            this._queueAnimationUpdate();
+            return;
+        }
+
+        let numPendingImages = files.length;
+        for (let i = 0; i < files.length; i++) {
+            if (this._images[i] && this._images[i].content &&
+                this._images[i].content.get_filename() == files[i]) {
+
+                numPendingImages--;
+                if (numPendingImages == 0)
+                    this._updateAnimationProgress();
+                continue;
+            }
+            this._cache.getImageContent({ monitorIndex: this._monitorIndex,
+                                          effects: this._effects,
+                                          style: this._style,
+                                          filename: files[i],
+                                          cancellable: this._cancellable,
+                                          onFinished: Lang.bind(this, function(content) {
+                                              numPendingImages--;
+
+                                              if (!content) {
+                                                  this._setLoaded();
+                                                  if (numPendingImages == 0)
+                                                      this._updateAnimationProgress();
+                                                  return;
+                                              }
+
+                                              if (!this._images[i]) {
+                                                  this._addImage(content, i, files[i]);
+                                              } else {
+                                                  this._updateImage(content, i, files[i]);
+                                              }
+
+                                              if (numPendingImages == 0) {
+                                                  this._setLoaded();
+                                                  this._updateAnimationProgress();
+                                              }
+                                          })
+                                        });
+        }
+    },
+
+    _queueAnimationUpdate: function() {
+        if (this._animationUpdateTimeoutId != 0)
+            return;
+
+        if (!this._cancellable || this._cancellable.is_cancelled())
+            return;
+
+        if (!this._animation.duration)
+            return;
+
+        let interval = Math.max(ANIMATION_MIN_WAKEUP_INTERVAL * 1000,
+                                ANIMATION_OPACITY_STEP_INCREMENT / this._animation.duration);
+        this._animationUpdateTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+                                                      interval,
+                                                      Lang.bind(this, function() {
+                                                                    this._animationUpdateTimeoutId = 0;
+                                                                    this._updateAnimation();
+                                                                    return false;
+                                                                }));
+    },
+
+    _loadAnimation: function(filename) {
+        this._cache.getAnimation({ filename: filename,
+                                             onLoaded: Lang.bind(this, function(animation) {
+                                                 this._animation = animation;
+
+                                                 if (!this._animation) {
+                                                     this._setLoaded();
+                                                     return;
+                                                 }
+
+                                                 this._updateAnimation();
+                                                 this._watchCacheFile(filename);
+                                             })
+                                           });
     },
 
     _loadFile: function(filename) {
@@ -322,10 +477,13 @@ const Background = new Lang.Class({
                                       cancellable: this._cancellable,
                                       onFinished: Lang.bind(this, function(content) {
                                           if (!content) {
+                                              if (this._cancellable &&
+                                                  !this._cancellable.is_cancelled())
+                                                  this._loadAnimation(filename);
                                               return;
                                           }
 
-                                          this._setImage(content, filename);
+                                          this._addImage(content, 0, filename);
                                           this._setLoaded();
                                       })
                                     });
@@ -364,8 +522,12 @@ const Background = new Lang.Class({
         if (this._pattern && this._pattern.content)
             this._pattern.content.saturation = saturation;
 
-        if (this._image && this._image.content)
-            this._image.content.saturation = saturation;
+        let keys = Object.keys(this._images);
+        for (let i = 0; i < keys.length; i++) {
+            let image = this._images[keys[i]];
+            if (image && image.content)
+                image.content.saturation = saturation;
+        }
     },
 
     get brightness() {
@@ -377,8 +539,12 @@ const Background = new Lang.Class({
         if (this._pattern && this._pattern.content)
             this._pattern.content.brightness = factor;
 
-        if (this._image && this._image.content)
-            this._image.content.brightness = factor;
+        let keys = Object.keys(this._images);
+        for (let i = 0; i < keys.length; i++) {
+            let image = this._images[keys[i]];
+            if (image && image.content)
+                image.content.brightness = factor;
+        }
     },
 
     get vignetteSharpness() {
@@ -390,8 +556,12 @@ const Background = new Lang.Class({
         if (this._pattern && this._pattern.content)
             this._pattern.content.vignette_sharpness = sharpness;
 
-        if (this._image && this._image.content)
-            this._image.content.vignette_sharpness = sharpness;
+        let keys = Object.keys(this._images);
+        for (let i = 0; i < keys.length; i++) {
+            let image = this._images[keys[i]];
+            if (image && image.content)
+                image.content.vignette_sharpness = sharpness;
+        }
     }
 });
 Signals.addSignalMethods(Background.prototype);
@@ -412,6 +582,58 @@ const StillFrame = new Lang.Class({
     }
 });
 Signals.addSignalMethods(StillFrame.prototype);
+
+const Animation = new Lang.Class({
+    Name: 'Animation',
+
+    _init: function(params) {
+        params = Params.parse(params, { filename: null });
+
+        this.filename = params.filename;
+        this._keyFrames = [];
+        this.duration = 0.0;
+        this.transitionProgress = 0.0;
+        this.loaded = false;
+    },
+
+    load: function(callback) {
+        let file = Gio.File.new_for_path(this.filename);
+
+        this._show = new GnomeDesktop.BGSlideShow({ filename: this.filename });
+
+        this._show.load_async(null,
+                              Lang.bind(this,
+                                        function(object, result) {
+                                            this.duration = this._show.get_total_duration();
+                                            this.loaded = true;
+                                            if (callback)
+                                                callback();
+                                        }));
+    },
+
+    getKeyFrameFiles: function(monitor) {
+        if (!this._show)
+            return null;
+
+        if (this._show.get_num_slides() < 1)
+            return null;
+
+        let [progress, duration, isFixed, file1, file2] = this._show.get_current_slide(monitor.width, monitor.height);
+
+        this.transitionProgress = progress;
+
+        let files = [];
+
+        if (file1)
+            files.push(file1);
+
+        if (file2)
+            files.push(file2);
+
+        return files;
+    },
+});
+Signals.addSignalMethods(Animation.prototype);
 
 const BackgroundManager = new Lang.Class({
     Name: 'BackgroundManager',
