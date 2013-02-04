@@ -722,14 +722,6 @@ const LoginDialog = new Lang.Class({
         this.contentLayout.add(this._bannerLabel);
         this._updateBanner();
 
-        this._titleLabel = new St.Label({ style_class: 'login-dialog-title',
-                                          text: C_("title", "Sign In"),
-                                          visible: false });
-
-        this.contentLayout.add(this._titleLabel,
-                              { y_fill: false,
-                                y_align: St.Align.START });
-
         this._userList = new UserList();
         this.contentLayout.add(this._userList.actor,
                                { expand: true,
@@ -1249,8 +1241,7 @@ const LoginDialog = new Lang.Class({
                          this._userList.actor.hide();
                      },
 
-                     new Batch.ConcurrentBatch(this, [this._fadeOutTitleLabel,
-                                                      this._fadeOutNotListedButton]),
+                     this._fadeOutNotListedButton,
 
                      function() {
                          return this._askForUsernameAndLogIn();
@@ -1263,8 +1254,7 @@ const LoginDialog = new Lang.Class({
     _showUserList: function() {
         let tasks = [this._hidePrompt,
 
-                     new Batch.ConcurrentBatch(this, [this._fadeInTitleLabel,
-                                                      this._fadeInNotListedButton]),
+                     this._fadeInNotListedButton,
 
                      function() {
                          this._sessionList.close();
@@ -1289,14 +1279,6 @@ const LoginDialog = new Lang.Class({
 
     _fadeOutBanner: function() {
         return GdmUtil.fadeOutActor(this._bannerLabel);
-    },
-
-    _fadeInTitleLabel: function() {
-        return GdmUtil.fadeInActor(this._titleLabel);
-    },
-
-    _fadeOutTitleLabel: function() {
-        return GdmUtil.fadeOutActor(this._titleLabel);
     },
 
     _fadeInNotListedButton: function() {
@@ -1331,8 +1313,7 @@ const LoginDialog = new Lang.Class({
                          return this._userList.giveUpWhitespace();
                      },
 
-                     new Batch.ConcurrentBatch(this, [this._fadeOutTitleLabel,
-                                                      this._fadeOutNotListedButton]),
+                     this._fadeOutNotListedButton,
 
                      function() {
                          return this._userList.shrinkToNaturalHeight();
