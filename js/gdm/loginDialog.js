@@ -44,7 +44,6 @@ const PanelMenu = imports.ui.panelMenu;
 const Tweener = imports.ui.tweener;
 const UserMenu = imports.ui.userMenu;
 
-const _RESIZE_ANIMATION_TIME = 0.25;
 const _SCROLL_ANIMATION_TIME = 0.5;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _LOGO_ICON_HEIGHT = 16;
@@ -54,39 +53,6 @@ const WORK_SPINNER_ANIMATION_DELAY = 1.0;
 const WORK_SPINNER_ANIMATION_TIME = 0.3;
 
 let _loginDialog = null;
-
-function _smoothlyResizeActor(actor, width, height) {
-    let finalWidth;
-    let finalHeight;
-
-    if (width < 0)
-        finalWidth = actor.width;
-    else
-        finalWidth = width;
-
-    if (height < 0)
-        finalHeight = actor.height;
-    else
-        finalHeight = height;
-
-    actor.set_size(actor.width, actor.height);
-
-    if (actor.width == finalWidth && actor.height == finalHeight)
-        return null;
-
-    let hold = new Batch.Hold();
-
-    Tweener.addTween(actor,
-                     { width: finalWidth,
-                       height: finalHeight,
-                       time: _RESIZE_ANIMATION_TIME,
-                       transition: 'easeOutQuad',
-                       onComplete: Lang.bind(this, function() {
-                                       hold.release();
-                                   })
-                     });
-    return hold;
-}
 
 const LogoMenuButton = new Lang.Class({
     Name: 'LogoMenuButton',
@@ -246,58 +212,11 @@ const UserList = new Lang.Class({
         }
     },
 
-    _showItem: function(item) {
-        let tasks = [function() {
-                         return GdmUtil.fadeInActor(item.actor);
-                     }];
-
-        let batch = new Batch.ConsecutiveBatch(this, tasks);
-        return batch.run();
-    },
-
     _onItemActivated: function(activatedItem) {
         this.emit('activate', activatedItem);
     },
 
-    giveUpWhitespace: function() {
-        let container = this.actor.get_parent();
-
-        container.child_set(this.actor, { expand: false });
-    },
-
-    takeOverWhitespace: function() {
-        let container = this.actor.get_parent();
-
-        container.child_set(this.actor, { expand: true });
-    },
-
-    pinInPlace: function() {
-        this._box.set_size(this._box.width, this._box.height);
-    },
-
-    shrinkToNaturalHeight: function() {
-        let oldWidth = this._box.width;
-        let oldHeight = this._box.height;
-        this._box.set_size(-1, -1);
-        let [minHeight, naturalHeight] = this._box.get_preferred_height(-1);
-        this._box.set_size(oldWidth, oldHeight);
-
-        let batch = new Batch.ConsecutiveBatch(this,
-                                               [function() {
-                                                    return _smoothlyResizeActor(this._box, -1, naturalHeight);
-                                                },
-
-                                                function() {
-                                                    this._box.set_size(-1, -1);
-                                                }
-                                               ]);
-
-        return batch.run();
-    },
-
     hideItemsExcept: function(exception) {
-        let tasks = [];
-
         for (let userName in this._items) {
             let item = this._items[userName];
 
@@ -307,58 +226,20 @@ const UserList = new Lang.Class({
             item.syncStyleClasses();
             item._timedLoginIndicator.scale_x = 0.;
             if (item != exception)
-                tasks.push(function() {
-                    return GdmUtil.fadeOutActor(item.actor);
-                });
+                item.actor.hide();
         }
 
-        let batch = new Batch.ConsecutiveBatch(this,
-                                               [function() {
-                                                    return GdmUtil.fadeOutActor(this.actor.vscroll);
-                                                },
-
-                                                new Batch.ConcurrentBatch(this, tasks),
-
-                                                function() {
-                                                    this._box.remove_style_pseudo_class('expanded');
-                                                }
-                                               ]);
-
-        return batch.run();
+        this._box.remove_style_pseudo_class('expanded');
     },
 
     hideItems: function() {
         return this.hideItemsExcept(null);
     },
 
-    _getExpandedHeight: function() {
-        let hiddenActors = [];
-        for (let userName in this._items) {
-            let item = this._items[userName];
-            if (!item.actor.visible) {
-                item.actor.show();
-                hiddenActors.push(item.actor);
-            }
-        }
-
-        if (!this._box.visible) {
-            this._box.show();
-            hiddenActors.push(this._box);
-        }
-
-        this._box.set_size(-1, -1);
-        let [minHeight, naturalHeight] = this._box.get_preferred_height(-1);
-
-        for (let i = 0; i < hiddenActors.length; i++) {
-            let actor = hiddenActors[i];
-            actor.hide();
-        }
-
-        return naturalHeight;
-    },
-
     showItems: function() {
         let tasks = [];
+
+        this._box.add_style_pseudo_class('expanded');
 
         for (let userName in this._items) {
             let item = this._items[userName];
@@ -366,35 +247,8 @@ const UserList = new Lang.Class({
             item.actor.reactive = true;
             item.actor.can_focus = true;
             item.syncStyleClasses();
-            tasks.push(function() {
-                return this._showItem(item);
-            });
+            item.actor.show();
         }
-
-        let batch = new Batch.ConsecutiveBatch(this,
-                                               [function() {
-                                                    this.takeOverWhitespace();
-                                                },
-
-                                                function() {
-                                                    let fullHeight = this._getExpandedHeight();
-                                                    return _smoothlyResizeActor(this._box, -1, fullHeight);
-                                                },
-
-                                                function() {
-                                                    this._box.add_style_pseudo_class('expanded');
-                                                },
-
-                                                new Batch.ConcurrentBatch(this, tasks),
-
-                                                function() {
-                                                    this.actor.set_size(-1, -1);
-                                                },
-
-                                                function() {
-                                                    return GdmUtil.fadeInActor(this.actor.vscroll);
-                                                }]);
-        return batch.run();
     },
 
     scrollToItem: function(item) {
@@ -836,9 +690,9 @@ const LoginDialog = new Lang.Class({
 
         if (enabled && text) {
             this._bannerLabel.set_text(text);
-            this._fadeInBanner();
+            this._bannerLabel.show();
         } else {
-            this._fadeOutBanner();
+            this._bannerLabel.hide();
         }
     },
 
@@ -869,19 +723,20 @@ const LoginDialog = new Lang.Class({
         if (message) {
             this._promptMessage.text = message;
             this._promptMessage.styleClass = styleClass;
-            GdmUtil.fadeInActor(this._promptMessage);
+            this._promptMessage.show();
         } else {
-            GdmUtil.fadeOutActor(this._promptMessage);
+            this._promptMessage.hide();
         }
     },
 
     _showLoginHint: function(verifier, message) {
         this._promptLoginHint.set_text(message)
-        GdmUtil.fadeInActor(this._promptLoginHint);
+        this._promptLoginHint.show();
+        this._promptLoginHint.opacity = 255;
     },
 
     _hideLoginHint: function() {
-        GdmUtil.fadeOutActor(this._promptLoginHint);
+        this._promptLoginHint.hide();
         this._promptLoginHint.set_text('');
     },
 
@@ -892,53 +747,21 @@ const LoginDialog = new Lang.Class({
             this._reset();
     },
 
-    _fadeInPrompt: function() {
-        let tasks = [function() {
-                         return GdmUtil.fadeInActor(this._promptLabel);
-                     },
-
-                     function() {
-                         return GdmUtil.fadeInActor(this._promptEntry);
-                     },
-
-                     function() {
-                         // Show it with 0 opacity so we preallocate space for it
-                         // in the event we need to fade in the message
-                         this._promptLoginHint.opacity = 0;
-                         this._promptLoginHint.show();
-                     },
-
-                     function() {
-                         return GdmUtil.fadeInActor(this._promptBox);
-                     },
-
-                     function() {
-                         if (this._user && this._user.is_logged_in())
-                             return null;
-
-                         if (!this._verifyingUser)
-                             return null;
-
-                         return GdmUtil.fadeInActor(this._sessionList.actor);
-                     },
-
-                     function() {
-                         this._promptEntry.grab_key_focus();
-                     }];
-
-        this._sessionList.actor.hide();
-        let batch = new Batch.ConcurrentBatch(this, tasks);
-        return batch.run();
-    },
-
     _showPrompt: function(forSecret) {
+        this._sessionList.actor.hide();
+        this._promptLabel.show();
+        this._promptEntry.show();
+        this._promptLoginHint.opacity = 0;
+        this._promptLoginHint.show();
+        this._promptBox.show();
+
+        if (!this._user || (this._user.is_logged_in() && this._verifyingUser))
+            this._sessionList.actor.show();
+
+        this._promptEntry.grab_key_focus();
+
         let hold = new Batch.Hold();
-
         let tasks = [function() {
-                         return this._fadeInPrompt();
-                     },
-
-                     function() {
                          this._prepareDialog(forSecret, hold);
                      },
 
@@ -1014,26 +837,16 @@ const LoginDialog = new Lang.Class({
             this._promptEntryTextChangedId = 0;
         }
 
-        let tasks = [function() {
-                         this._setWorking(false);
+        this._setWorking(false);
+        this._promptBox.hide();
+        this._promptLoginHint.hide();
 
-                         return GdmUtil.fadeOutActor(this._promptBox);
-                     },
+        this._updateSensitivity(true);
+        this._promptEntry.set_text('');
 
-                     function() {
-                         this._promptLoginHint.hide();
-
-                         this._updateSensitivity(true);
-                         this._promptEntry.set_text('');
-
-                         this.clearButtons();
-                         this._workSpinner = null;
-                         this._signInButton = null;
-                     }];
-
-        let batch = new Batch.ConsecutiveBatch(this, tasks);
-
-        return batch.run();
+        this.clearButtons();
+        this._workSpinner = null;
+        this._signInButton = null;
     },
 
     _setWorking: function(working) {
@@ -1229,64 +1042,22 @@ const LoginDialog = new Lang.Class({
     },
 
     _hideUserListAndLogIn: function() {
-        let tasks = [function() {
-                         return this._userList.hideItems();
-                     },
-
-                     function() {
-                         return this._userList.giveUpWhitespace();
-                     },
-
-                     function() {
-                         this._userList.actor.hide();
-                     },
-
-                     this._fadeOutNotListedButton,
-
-                     function() {
-                         return this._askForUsernameAndLogIn();
-                     }];
-
-        let batch = new Batch.ConsecutiveBatch(this, tasks);
-        batch.run();
+        this._userList.hideItems();
+        this._userList.actor.hide();
+        this._notListedButton.hide();
+        this._askForUsernameAndLogIn();
     },
 
     _showUserList: function() {
-        let tasks = [this._hidePrompt,
-
-                     this._fadeInNotListedButton,
-
-                     function() {
-                         this._sessionList.close();
-                         this._promptLoginHint.hide();
-                         this._userList.actor.show();
-                         this._userList.actor.opacity = 255;
-                         return this._userList.showItems();
-                     },
-
-                     function() {
-                         this._userList.actor.reactive = true;
-                         this._userList.actor.grab_key_focus();
-                     }];
-
-        let batch = new Batch.ConsecutiveBatch(this, tasks);
-        batch.run();
-    },
-
-    _fadeInBanner: function() {
-        return GdmUtil.fadeInActor(this._bannerLabel);
-    },
-
-    _fadeOutBanner: function() {
-        return GdmUtil.fadeOutActor(this._bannerLabel);
-    },
-
-    _fadeInNotListedButton: function() {
-        return GdmUtil.fadeInActor(this._notListedButton);
-    },
-
-    _fadeOutNotListedButton: function() {
-        return GdmUtil.fadeOutActor(this._notListedButton);
+        this._hidePrompt();
+        this._sessionList.close();
+        this._promptLoginHint.hide();
+        this._userList.actor.show();
+        this._userList.actor.opacity = 255;
+        this._notListedButton.show();
+        this._userList.showItems();
+        this._userList.actor.reactive = true;
+        this._userList.actor.grab_key_focus();
     },
 
     _beginVerificationForUser: function(userName) {
@@ -1298,37 +1069,13 @@ const LoginDialog = new Lang.Class({
     },
 
     _onUserListActivated: function(activatedItem) {
-        let userName;
-
-        let tasks = [function() {
-                         this._userList.actor.reactive = false;
-                         return this._userList.pinInPlace();
-                     },
-
-                     function() {
-                         return this._userList.hideItemsExcept(activatedItem);
-                     },
-
-                     function() {
-                         return this._userList.giveUpWhitespace();
-                     },
-
-                     this._fadeOutNotListedButton,
-
-                     function() {
-                         return this._userList.shrinkToNaturalHeight();
-                     },
-
-                     function() {
-                         userName = activatedItem.user.get_user_name();
-
-                         return this._beginVerificationForUser(userName);
-                     }];
+        this._userList.actor.reactive = false;
+        this._userList.hideItemsExcept(activatedItem);
+        this._notListedButton.hide();
 
         this._user = activatedItem.user;
-
-        let batch = new Batch.ConsecutiveBatch(this, tasks);
-        batch.run();
+        let userName = activatedItem.user.get_user_name();
+        this._beginVerificationForUser(userName);
     },
 
     _onDestroy: function() {
