@@ -5,43 +5,11 @@ const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 
-// The following are not the complete interfaces, just the methods we need
-// (or may need in the future)
 
-const ModemGsmNetworkInterface = <interface name="org.freedesktop.ModemManager.Modem.Gsm.Network">
-<method name="GetRegistrationInfo">
-    <arg type="(uss)" direction="out" />
-</method>
-<method name="GetSignalQuality">
-    <arg type="u" direction="out" />
-</method>
-<property name="AccessTechnology" type="u" access="read" />
-<signal name="SignalQuality">
-    <arg type="u" direction="out" />
-</signal>
-<signal name="RegistrationInfo">
-    <arg type="u" direction="out" />
-    <arg type="s" direction="out" />
-    <arg type="s" direction="out" />
-</signal>
-</interface>;
-
-const ModemGsmNetworkProxy = Gio.DBusProxy.makeProxyWrapper(ModemGsmNetworkInterface);
-
-const ModemCdmaInterface = <interface name="org.freedesktop.ModemManager.Modem.Cdma">
-<method name="GetSignalQuality">
-    <arg type="u" direction="out" />
-</method>
-<method name="GetServingSystem">
-    <arg type="(usu)" direction="out" />
-</method>
-<signal name="SignalQuality">
-    <arg type="u" direction="out" />
-</signal>
-</interface>;
-
-const ModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(ModemCdmaInterface);
-
+// _getProvidersTable:
+//
+// Gets the table of references between MCCMNC and operator name
+//
 let _providersTable;
 function _getProvidersTable() {
     if (_providersTable)
@@ -49,6 +17,12 @@ function _getProvidersTable() {
     return _providersTable = Shell.mobile_providers_parse(null,null);
 }
 
+// findProviderForMCCMNC:
+// @table: a table of country code keys and Shell.CountryMobileProvider values
+// @needle: operator code, given as MCCMNC string
+//
+// Tries to find the operator name corresponding to the given MCCMNC
+//
 function findProviderForMCCMNC(table, needle) {
     let needlemcc = needle.substring(0, 3);
     let needlemnc = needle.substring(3, needle.length);
@@ -87,6 +61,47 @@ function findProviderForMCCMNC(table, needle) {
     return name3 || name2 || null;
 }
 
+// findOperatorName:
+// @operator_name: operator name
+// @operator_code: operator code
+//
+// Given an operator name string (which may not be a real operator name) and an
+// operator code string, tries to find a proper operator name to display.
+//
+function findOperatorName(operator_name, operator_code) {
+    if (operator_name) {
+        if (operator_name.length != 0 &&
+            (operator_name.length > 6 || operator_name.length < 5)) {
+            // this looks like a valid name, i.e. not an MCCMNC (that some
+            // devices return when not yet connected
+            return operator_name;
+        }
+
+        if (isNaN(parseInt(operator_name))) {
+            // name is definitely not a MCCMNC, so it may be a name
+            // after all; return that
+            return operator_name;
+        }
+    }
+
+    let needle;
+    if ((!operator_name || operator_name.length == 0) && operator_code)
+        needle = operator_code;
+    else if (operator_name && (operator_name.length == 6 || operator_name.length == 5))
+        needle = operator_name;
+    else // nothing to search
+        return null;
+
+    let table = _getProvidersTable();
+    return findProviderForMCCMNC(table, needle);
+}
+
+// findProviderForSid:
+// @table: a table of country code keys and Shell.CountryMobileProvider values
+// @sid: System Identifier of the serving CDMA network
+//
+// Tries to find the operator name corresponding to the given SID
+//
 function findProviderForSid(table, sid) {
     if (sid == 0)
         return null;
@@ -112,6 +127,48 @@ function findProviderForSid(table, sid) {
     return null;
 }
 
+//------------------------------------------------------------------------------
+// Support for the old ModemManager interface (MM < 0.7)
+//------------------------------------------------------------------------------
+
+
+// The following are not the complete interfaces, just the methods we need
+// (or may need in the future)
+
+const ModemGsmNetworkInterface = <interface name="org.freedesktop.ModemManager.Modem.Gsm.Network">
+<method name="GetRegistrationInfo">
+    <arg type="(uss)" direction="out" />
+</method>
+<method name="GetSignalQuality">
+    <arg type="u" direction="out" />
+</method>
+<property name="AccessTechnology" type="u" access="read" />
+<signal name="SignalQuality">
+    <arg type="u" direction="out" />
+</signal>
+<signal name="RegistrationInfo">
+    <arg type="u" direction="out" />
+    <arg type="s" direction="out" />
+    <arg type="s" direction="out" />
+</signal>
+</interface>;
+
+const ModemGsmNetworkProxy = Gio.DBusProxy.makeProxyWrapper(ModemGsmNetworkInterface);
+
+const ModemCdmaInterface = <interface name="org.freedesktop.ModemManager.Modem.Cdma">
+<method name="GetSignalQuality">
+    <arg type="u" direction="out" />
+</method>
+<method name="GetServingSystem">
+    <arg type="(usu)" direction="out" />
+</method>
+<signal name="SignalQuality">
+    <arg type="u" direction="out" />
+</signal>
+</interface>;
+
+const ModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(ModemCdmaInterface);
+
 const ModemGsm = new Lang.Class({
     Name: 'ModemGsm',
 
@@ -127,7 +184,7 @@ const ModemGsm = new Lang.Class({
             this.emit('notify::signal-quality');
         }));
         this._proxy.connectSignal('RegistrationInfo', Lang.bind(this, function(proxy, sender, [status, code, name]) {
-            this.operator_name = this._findOperatorName(name, code);
+            this.operator_name = findOperatorName(name, code);
             this.emit('notify::operator-name');
         }));
         this._proxy.GetRegistrationInfoRemote(Lang.bind(this, function([result], err) {
@@ -137,7 +194,7 @@ const ModemGsm = new Lang.Class({
             }
 
             let [status, code, name] = result;
-            this.operator_name = this._findOperatorName(name, code);
+            this.operator_name = findOperatorName(name, code);
             this.emit('notify::operator-name');
         }));
         this._proxy.GetSignalQualityRemote(Lang.bind(this, function(result, err) {
@@ -150,32 +207,6 @@ const ModemGsm = new Lang.Class({
             }
             this.emit('notify::signal-quality');
         }));
-    },
-
-    _findOperatorName: function(name, opCode) {
-        if (name) {
-            if (name && name.length != 0 && (name.length > 6 || name.length < 5)) {
-                // this looks like a valid name, i.e. not an MCCMNC (that some
-                // devices return when not yet connected
-                return name;
-            }
-            if (isNaN(parseInt(name))) {
-                // name is definitely not a MCCMNC, so it may be a name
-                // after all; return that
-                return name;
-            }
-        }
-
-        let needle;
-        if ((name == null || name.length == 0) && opCode)
-            needle = opCode;
-        else if (name.length == 6 || name.length == 5)
-            needle = name;
-        else // nothing to search
-            return null;
-
-        let table = _getProvidersTable();
-        return findProviderForMCCMNC(table, needle);
     }
 });
 Signals.addSignalMethods(ModemGsm.prototype);
@@ -227,3 +258,90 @@ const ModemCdma = new Lang.Class({
     }
 });
 Signals.addSignalMethods(ModemCdma.prototype);
+
+
+//------------------------------------------------------------------------------
+// Support for the new ModemManager1 interface (MM >= 0.7)
+//------------------------------------------------------------------------------
+
+const BroadbandModemInterface = <interface name="org.freedesktop.ModemManager1.Modem">
+<property name="SignalQuality" type="(ub)" access="read" />
+</interface>;
+const BroadbandModemProxy = Gio.DBusProxy.makeProxyWrapper(BroadbandModemInterface);
+
+const BroadbandModem3gppInterface = <interface name="org.freedesktop.ModemManager1.Modem.Modem3gpp">
+<property name="OperatorCode" type="s" access="read" />
+<property name="OperatorName" type="s" access="read" />
+</interface>;
+const BroadbandModem3gppProxy = Gio.DBusProxy.makeProxyWrapper(BroadbandModem3gppInterface);
+
+const BroadbandModemCdmaInterface = <interface name="org.freedesktop.ModemManager1.Modem.ModemCdma">
+<property name="Sid" type="u" access="read" />
+</interface>;
+const BroadbandModemCdmaProxy = Gio.DBusProxy.makeProxyWrapper(BroadbandModemCdmaInterface);
+
+const BroadbandModem = new Lang.Class({
+    Name: 'BroadbandModem',
+
+    _init: function(path, capabilities) {
+        this._proxy = new BroadbandModemProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
+        this._proxy_3gpp = new BroadbandModem3gppProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
+        this._proxy_cdma = new BroadbandModemCdmaProxy(Gio.DBus.system, 'org.freedesktop.ModemManager1', path);
+        this._capabilities = capabilities;
+
+        this._proxy.connect('g-properties-changed', Lang.bind(this, function(proxy, properties) {
+            if ('SignalQuality' in properties.deep_unpack())
+                this._reloadSignalQuality();
+        }));
+        this._reloadSignalQuality();
+
+        this._proxy_3gpp.connect('g-properties-changed', Lang.bind(this, function(proxy, properties) {
+            let unpacked = properties.deep_unpack();
+            if ('OperatorName' in unpacked || 'OperatorCode' in unpacked)
+                this._reload3gppOperatorName();
+        }));
+        this._reload3gppOperatorName();
+
+        this._proxy_cdma.connect('g-properties-changed', Lang.bind(this, function(proxy, properties) {
+            let unpacked = properties.deep_unpack();
+            if ('Nid' in unpacked || 'Sid' in unpacked)
+                this._reloadCdmaOperatorName();
+        }));
+        this._reloadCdmaOperatorName();
+    },
+
+    _reloadSignalQuality: function() {
+        let [quality, recent] = this._proxy.SignalQuality;
+        this.signal_quality = quality;
+        this.emit('notify::signal-quality');
+    },
+
+    _reloadOperatorName: function() {
+        let new_name = "";
+        if (this.operator_name_3gpp && this.operator_name_3gpp.length > 0)
+            new_name += this.operator_name_3gpp;
+
+        if (this.operator_name_cdma && this.operator_name_cdma.length > 0) {
+            if (new_name != "")
+                new_name += ", ";
+            new_name += this.operator_name_cdma;
+        }
+
+        this.operator_name = new_name;
+        this.emit('notify::operator-name');
+    },
+
+    _reload3gppOperatorName: function() {
+        let name = this._proxy_3gpp.OperatorName;
+        let code = this._proxy_3gpp.OperatorCode;
+        this.operator_name_3gpp = findOperatorName(name, code);
+        this._reloadOperatorName();
+    },
+
+    _reloadCdmaOperatorName: function() {
+        let sid = this._proxy_cdma.Sid;
+        this.operator_name_cdma = findProviderForSid(sid);
+        this._reloadOperatorName();
+    }
+});
+Signals.addSignalMethods(BroadbandModem.prototype);
