@@ -1,3 +1,24 @@
+3.7.5
+=====
+* Don't allow multiline window titles [Jon; #683056]
+* Make meta_window_located_on_workspace() public [Jasper; #691744]
+* Request XI2.3 [Colin; #692877]
+* Add meta_window_set_icon_geometry() method [Florian; #692997]
+* Require XFixes 5.0 [Jasper; #677215]
+* Change unredirection hints to match spec changes [Adel; #693064]
+* Improve unredict heuristicts [Adel; #683786]
+* Misc bug fixes and cleanups [Florian, Jasper, Adel; #691874, #679901,
+  #692952, #693042]
+
+Contributors:
+  Adel Gadllah, William Jon McCann, Florian Müllner, Jasper St. Pierre,
+  Colin Walters
+
+Translations:
+  Daniel Mustieles [es], Ihar Hrachyshka [be], Nilamdyuti Goswami [as],
+  Gheyret Kenji [ug], Kjartan Maraas [nb], Yaron Shahrabani [he],
+  Piotr Drąg [pl], Chao-Hsiung Liao [zh_HK,zh_TW], Milo Casagrande [it]
+
 3.7.4
 =====
 * Add support for bypass compositor hints [Adel; #683020]
