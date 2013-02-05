@@ -56,6 +56,5 @@ src/shell-app.c
 src/shell-app-system.c
 src/shell-global.c
 src/shell-keyring-prompt.c
-src/shell-mobile-providers.c
 src/shell-polkit-authentication-agent.c
 src/shell-util.c
