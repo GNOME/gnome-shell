@@ -106,11 +106,15 @@ function enableExtension(uuid) {
 
     extensionOrder.push(uuid);
 
-    let stylesheetFile = extension.dir.get_child('stylesheet.css');
-    if (stylesheetFile.query_exists(null)) {
-        let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
-        theme.load_stylesheet(stylesheetFile.get_path());
-        extension.stylesheet = stylesheetFile;
+    let stylesheetNames = [global.session_mode + '.css', 'stylesheet.css'];
+    for (let i = 0; i < stylesheetNames.length; i++) {
+        let stylesheetFile = extension.dir.get_child(stylesheetNames[i]);
+        if (stylesheetFile.query_exists(null)) {
+            let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
+            theme.load_stylesheet(stylesheetFile.get_path());
+            extension.stylesheet = stylesheetFile;
+            break;
+        }
     }
 
     extension.stateObj.enable();
