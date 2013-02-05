@@ -1817,6 +1817,8 @@ const MessageTray = new Lang.Class({
 
         summaryItem.destroy();
 
+        this.emit('source-removed', source);
+
         this._updateNoMessagesLabel();
 
         if (needUpdate)
