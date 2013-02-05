@@ -972,6 +972,13 @@ const Panel = new Lang.Class({
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
 
+        Main.overview.connect('showing', Lang.bind(this, function () {
+            this.actor.add_style_pseudo_class('overview');
+        }));
+        Main.overview.connect('hiding', Lang.bind(this, function () {
+            this.actor.remove_style_pseudo_class('overview');
+        }));
+
         Main.layoutManager.panelBox.add(this.actor);
         Main.ctrlAltTabManager.addGroup(this.actor, _("Top Bar"), 'emblem-system-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.TOP });
