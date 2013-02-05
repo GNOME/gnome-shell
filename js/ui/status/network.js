@@ -719,7 +719,8 @@ const NMDeviceModem = new Lang.Class({
             this._connectionType = NetworkManager.SETTING_CDMA_SETTING_NAME;
         } else if (this._capabilities & NetworkManager.DeviceModemCapabilities.LTE) {
             is_wwan = true;
-            // FIXME: support signal quality
+            this.mobileDevice = new ModemManager.ModemGsm(device.udi);
+            this._connectionType = NetworkManager.SETTING_GSM_SETTING_NAME;
         }
 
         if (is_wwan) {
