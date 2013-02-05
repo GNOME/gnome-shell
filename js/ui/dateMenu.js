@@ -102,7 +102,7 @@ const DateMenuButton = new Lang.Class({
                                               Lang.bind(this, this._appInstalledChanged));
         this._appInstalledChanged();
 
-        item = this.menu.addSettingsAction(_("Date and Time Settings"), 'gnome-datetime-panel.desktop');
+        item = this.menu.addSettingsAction(_("Date & Time Settings"), 'gnome-datetime-panel.desktop');
         if (item) {
             item.actor.show_on_set_parent = false;
             item.actor.can_focus = false;
