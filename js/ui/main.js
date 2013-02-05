@@ -95,6 +95,8 @@ function start() {
     Gio.DesktopAppInfo.set_desktop_env('GNOME');
 
     sessionMode = new SessionMode.SessionMode();
+    sessionMode.connect('updated', _loadDefaultStylesheet);
+
     shellDBusService = new ShellDBus.GnomeShell();
     shellMountOpDBusService = new ShellMountOperation.GnomeShellMountOpHandler();
 
@@ -117,8 +119,7 @@ function start() {
     global.stage.color = DEFAULT_BACKGROUND_COLOR;
     global.stage.no_clear_hint = true;
 
-    _defaultCssStylesheet = global.datadir + '/theme/gnome-shell.css';
-    loadTheme();
+    _loadDefaultStylesheet();
 
     // Set up stage hierarchy to group all UI actors under one container.
     uiGroup = new Shell.GenericContainer({ name: 'uiGroup' });
@@ -377,6 +378,18 @@ function _nWorkspacesChanged() {
     _queueCheckWorkspaces();
 
     return false;
+}
+
+function _loadDefaultStylesheet() {
+    if (!Main.sessionMode.isPrimary)
+        return;
+
+    let stylesheet = global.datadir + '/theme/' + sessionMode.stylesheetName;
+    if (_defaultCssStylesheet == stylesheet)
+        return;
+
+    _defaultCssStylesheet = stylesheet;
+    loadTheme();
 }
 
 /**

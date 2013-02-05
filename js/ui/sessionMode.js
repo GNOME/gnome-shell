@@ -15,6 +15,7 @@ const DEFAULT_MODE = 'restrictive';
 const _modes = {
     'restrictive': {
         parentMode: null,
+        stylesheetName: 'gnome-shell.css',
         hasOverview: false,
         showCalendarEvents: false,
         allowSettings: false,
