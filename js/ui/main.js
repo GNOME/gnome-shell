@@ -381,7 +381,7 @@ function _nWorkspacesChanged() {
 }
 
 function _loadDefaultStylesheet() {
-    if (!Main.sessionMode.isPrimary)
+    if (!sessionMode.isPrimary)
         return;
 
     let stylesheet = global.datadir + '/theme/' + sessionMode.stylesheetName;
