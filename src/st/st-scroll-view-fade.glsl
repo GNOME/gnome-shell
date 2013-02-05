@@ -17,8 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#version 120
-
 uniform sampler2D tex;
 uniform float height;
 uniform float width;
