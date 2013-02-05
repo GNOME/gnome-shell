@@ -1,3 +1,49 @@
+3.7.5
+=====
+* MessageTray: pass keyboard events to tray icons [Giovanni; #687425]
+* network: add support for virtual devices (vlan, bond, bridge) [Dan; #677144]
+* gdm: Allow right-clicking buttons for left-handed users [Jasper; #688748]
+* Make list search results span all available horizontal space [Tanner; #691967]
+* Make Show-Applications button depress when held down [Hashem; #692319]
+* Set a max width on search results [Cosimo; #692453]
+* Reserve scrollbar allocation for automatic policy [Cosimo; #686881]
+* Improve scaling algorithm for window thumbnails [Jasper; #686944]
+* Fix launching settings panels after g-c-c changes [Jasper; #692483]
+* Stop launching applications from empty searches [Hashem; #692391]
+* Implement per-source notification filtering [Giovanni; #685926]
+* ScreenShield: Omit ActiveChanged() signal at end of fade [Giovanni; #691964]
+* ScreenShield: Lower the shield on idle before locking [Giovanni; #692560]
+* Make previews of minimized windows translucent in overview [Florian; #692999]
+* windowManager: Respect icon geometry when minimizing [Florian; #692997]
+* ScreenShield: Only show lock icon when actually locked [Giovanni; #693007]
+* general: Use & instead of 'and' for Settings panels [Jeremy; #689590]
+* network: Add support for new ModemManager1 interface [Aleksander; #687359]
+* network: Handle LTE-only modems as GSM ones [Aleksander; #688144]
+* mobile-providers: Port to libnm-gtk [Aleksander; #688943]
+* general: Consistently use Title Case in top bar [Jeremy; #689589]
+* panel: Add :overview pseudo class while in overview [Florian; #693218]
+* sessionMode: Add support for mode-specific styling [Florian; #693219]
+* loginManager: Make suspend a NOP in the ConsoleKit patch [Florian; #693162]
+* screenShield: Inhibit suspend until the screen is locked [Florian; #686482]
+* Misc bug fixes and cleanups [Jasper, Giovanni, Rui, Cosimo, Florian, Stefano,
+  Adel, Yanko; #691745, #691731, #690171, #689091, #691976, #691963, #684279,
+  #692052, #692091, #642831, #692454, #692715, #692678, #692723, #692677,
+  #683986, #692693, #692749, #692948, #692995, #692996, #692994, #677215,
+  #692586, #693067, #693031, #693049, #643111, #693161, #693220]
+
+Contributors:
+  Jeremy Bicha, Giovanni Campagna, Cosimo Cecchi, Tanner Doshier,
+  Stefano Facchini, Adel Gadllah, Yanko Kaneti, Rui Matos, Aleksander Morgado,
+  Florian Müllner, Hashem Nasarat, Jasper St. Pierre, Dan Winship
+
+Translations:
+  Duarte Loreto [pt], Daniel Mustieles [es], Kjartan Maraas [nb],
+  Nilamdyuti Goswami [as], Мирослав Николић [sr,sr@latin],
+  Tobias Endrigkeit [de], Fabio Tomat [fur], Matej Urbančič [sl], A S Alam [pa],
+  Inaki Larranaga Murgoitio [eu], Piotr Drąg [pl], Wouter Bolsterlee [nl],
+  Gheyret Kenji [ug], Yaron Shahrabani [he], Chao-Hsiung Liao [zh_HK,zh_TW],
+  Milo Casagrande [it], Benjamin Steinwender [de]
+
 3.7.4.1
 =======
 * userMenu: Use show-full-name-in-top-bar setting [Bastien; #689561]
