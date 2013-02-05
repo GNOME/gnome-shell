@@ -1,20 +1,20 @@
 # Italian translation for Mutter.
 # Based on Italian translation for Metacity
 # This file is distributed under the same license as metacity package
-# Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011 Free Software Foundation, Inc.
+# Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013 Free Software Foundation, Inc.
 # Copyright (C) 2012 the mutter's copyright holder. 
 # Pier Luigi Fiorini <plfiorini@libero.it>, 2002.
 # Lapo Calamandrei <lapo.calamandrei@virgilio.it>, 2003.
 # Luca Ferretti <lferrett@gnome.org>, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012.
-# Milo Casagrande <milo@casagrande.name>, 2012.
+# Milo Casagrande <milo@ubuntu.com>, 2012, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-26 21:49+0200\n"
-"PO-Revision-Date: 2012-08-26 21:49+0200\n"
-"Last-Translator: Milo Casagrande <milo@casagrande.name>\n"
+"POT-Creation-Date: 2013-02-05 22:07+0100\n"
+"PO-Revision-Date: 2013-02-05 22:14+0100\n"
+"Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -22,24 +22,201 @@ msgstr ""
 "Content-Transfer-Encoding: 8-bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Navigation"
+msgstr "Navigazione"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+msgid "Move window to workspace 1"
+msgstr "Sposta la finestra sullo spazio di lavoro 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+msgid "Move window to workspace 2"
+msgstr "Sposta la finestra sullo spazio di lavoro 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move window to workspace 3"
+msgstr "Sposta la finestra sullo spazio di lavoro 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move window to workspace 4"
+msgstr "Sposta la finestra sullo spazio di lavoro 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+msgid "Move window one workspace to the left"
+msgstr "Sposta la finestra sullo spazio di lavoro a sinistra"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the right"
+msgstr "Sposta la finestra sullo spazio di lavoro a destra"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace up"
+msgstr "Sposta la finestra sullo spazio di lavoro in alto"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace down"
+msgstr "Sposta la finestra sullo spazio di lavoro in basso"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Switch applications"
+msgstr "Evidenzia le applicazioni"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Switch windows"
+msgstr "Evidenzia direttamente le finestre"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Switch windows of an application"
+msgstr "Evidenzia le finestre di un'applicazione"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Switch system controls"
+msgstr "Evidenzia i controlli di sistema"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Switch windows directly"
+msgstr "Evidenzia direttamente le finestre"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch windows of an app directly"
+msgstr "Evidenzia direttamente le finestre di una applicazione"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Switch system controls directly"
+msgstr "Evidenzia direttamente i controlli di sistema"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+msgid "Hide all normal windows"
+msgstr "Nasconde tutte le finestre normali"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+msgid "Switch to workspace 1"
+msgstr "Passa allo spazio di lavoro 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+msgid "Switch to workspace 2"
+msgstr "Passa allo spazio di lavoro 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+msgid "Switch to workspace 3"
+msgstr "Passa allo spazio di lavoro 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+msgid "Switch to workspace 4"
+msgstr "Passa allo spazio di lavoro 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Move to workspace left"
+msgstr "Sposta su spazio di lavoro a sinistra"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Move to workspace right"
+msgstr "Sposta su spazio di lavoro a destra"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Move to workspace above"
+msgstr "Sposta su spazio di lavoro in alto"
+
+#: ../src/50-mutter-navigation.xml.in.h:25
+msgid "Move to workspace below"
+msgstr "Sposta su spazio di lavoro in basso"
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "System"
+msgstr "Sistema"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "Mostra il prompt esegui comando"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "Show the activities overview"
+msgstr "Mostra la panoramica delle attività"
+
 #: ../src/50-mutter-windows.xml.in.h:1
 msgid "Windows"
 msgstr "Finestre"
 
+#: ../src/50-mutter-windows.xml.in.h:2
+msgid "Activate the window menu"
+msgstr "Attiva il menù della finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Toggle fullscreen mode"
+msgstr "Attiva/Disattiva la modalità schermo intero"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+msgid "Toggle maximization state"
+msgstr "Attiva/Disattiva lo stato massimizzazione"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+msgid "Maximize window"
+msgstr "Massimizza la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+msgid "Restore window"
+msgstr "Ripristina la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+msgid "Toggle shaded state"
+msgstr "Attiva/Disattiva lo stato arrotolato"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+msgid "Close window"
+msgstr "Chiudi la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+msgid "Hide window"
+msgstr "Ridimensiona la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Move window"
+msgstr "Muovi la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+msgid "Resize window"
+msgstr "Ridimensiona la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+msgid "Toggle window on all workspaces or one"
+msgstr ""
+"Attiva/Disattiva la stato «su tutti gli spazi di lavoro» per la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Solleva la finestra se è coperta, in caso contrario l'abbassa"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+msgid "Raise window above other windows"
+msgstr "Solleva la finestra sopra le altre"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+msgid "Lower window below other windows"
+msgstr "Abbassa la finestra sotto le altre"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Maximize window vertically"
+msgstr "Massimizza verticalmente la finestra"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+msgid "Maximize window horizontally"
+msgstr "Massimizza orizzontalmente la finestra"
+
 # scorciatoia per mettere la finestra a mezzo schermo intero sulla sinistra
 #
 # traduzione infedele, ma "frazionamento della vista a sn/ds" mi pare peggio
-#: ../src/50-mutter-windows.xml.in.h:2
+#: ../src/50-mutter-windows.xml.in.h:18
 msgid "View split on left"
 msgstr "Massimizza a sinistra"
 
-#: ../src/50-mutter-windows.xml.in.h:3
+#: ../src/50-mutter-windows.xml.in.h:19
 msgid "View split on right"
 msgstr "Massimizza a destra"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:492
+#: ../src/compositor/compositor.c:512
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -59,16 +236,16 @@ msgstr "Evento campanella"
 msgid "Unknown window information request: %d"
 msgstr "Richiesta informazioni finestra sconosciuta: %d"
 
-#: ../src/core/delete.c:114
+#: ../src/core/delete.c:111
 #, c-format
-msgid "%s is not responding."
+msgid "“%s” is not responding."
 msgstr "Nessuna risposta da %s."
 
-#: ../src/core/delete.c:118
+#: ../src/core/delete.c:113
 msgid "Application is not responding."
 msgstr "L'applicazione non risponde."
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:118
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -76,25 +253,25 @@ msgstr ""
 "È possibile scegliere di attendere un po' lasciando che l'applicazione "
 "continui, oppure forzare la terminazione dell'applicazione."
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:125
 msgid "_Wait"
 msgstr "_Attendi"
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:125
 msgid "_Force Quit"
 msgstr "_Forza uscita"
 
-#: ../src/core/display.c:380
+#: ../src/core/display.c:393
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Estensione %s richiesta per il compositing mancante"
 
-#: ../src/core/display.c:446
+#: ../src/core/display.c:489
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Apertura del display «%s» di X Window System non riuscita\n"
 
-#: ../src/core/keybindings.c:853
+#: ../src/core/keybindings.c:876
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -163,7 +340,7 @@ msgstr "Stampa la versione"
 msgid "Mutter plugin to use"
 msgstr "Plugin Mutter da usare"
 
-#: ../src/core/prefs.c:1071
+#: ../src/core/prefs.c:1087
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -171,14 +348,14 @@ msgstr ""
 "Disabilitate le funzionalità palliative per la applicazioni difettose. "
 "Alcune applicazioni potrebbero avere comportamenti errati.\n"
 
-#: ../src/core/prefs.c:1146
+#: ../src/core/prefs.c:1162
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "Impossibile analizzare la descrizione del tipo di carattere «%s» dalla "
 "chiave GSettings %s\n"
 
-#: ../src/core/prefs.c:1212
+#: ../src/core/prefs.c:1228
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -187,7 +364,7 @@ msgstr ""
 "Il valore «%s» trovato nel database di configurazione non è valido per il "
 "modificatore del tasto del mouse\n"
 
-#: ../src/core/prefs.c:1736
+#: ../src/core/prefs.c:1780
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -196,17 +373,17 @@ msgstr ""
 "Il valore «%s» nel database di configurazione non è valido per "
 "l'associazione di tasti «%s»\n"
 
-#: ../src/core/prefs.c:1833
+#: ../src/core/prefs.c:1877
 #, c-format
 msgid "Workspace %d"
 msgstr "Spazio di lavoro %d"
 
-#: ../src/core/screen.c:652
+#: ../src/core/screen.c:658
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Lo schermo %d nel display «%s» non è valido\n"
 
-#: ../src/core/screen.c:668
+#: ../src/core/screen.c:674
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -215,7 +392,7 @@ msgstr ""
 "Lo schermo %d sul display «%s» ha già un window manager; provare a "
 "utilizzare l'opzione --replace per sostituirlo.\n"
 
-#: ../src/core/screen.c:695
+#: ../src/core/screen.c:701
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -223,12 +400,12 @@ msgstr ""
 "Impossibile acquisire la selezione del window manager per lo schermo %d nel "
 "display «%s»\n"
 
-#: ../src/core/screen.c:750
+#: ../src/core/screen.c:770
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Lo schermo %d sul display «%s» ha già un window manager\n"
 
-#: ../src/core/screen.c:935
+#: ../src/core/screen.c:955
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Impossibile rilasciare lo schermo %d sul display «%s»\n"
@@ -328,7 +505,7 @@ msgid "Window manager error: "
 msgstr "Errore del window manager: "
 
 #. first time through
-#: ../src/core/window.c:7234
+#: ../src/core/window.c:7285
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -344,7 +521,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7899
+#: ../src/core/window.c:7951
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -354,26 +531,26 @@ msgstr ""
 "ridimensionabile, ma ha impostato la dimensione minima %d x %d e la "
 "dimensione massima %d x %d; ciò non ha senso.\n"
 
-#: ../src/core/window-props.c:310
+#: ../src/core/window-props.c:304
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "L'applicazione ha impostato un _NET_WM_PID errato %lu\n"
 
-#: ../src/core/window-props.c:429
+#: ../src/core/window-props.c:423
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (su %s)"
 
 # Sì, direi che è oscuro  -Luca
 #
-#: ../src/core/window-props.c:1484
+#: ../src/core/window-props.c:1478
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Specificato un WM_TRANSIENT_FOR finestra 0x%lx non valido per %s.\n"
 
 # Sì, direi che è oscuro  -Luca
 #
-#: ../src/core/window-props.c:1495
+#: ../src/core/window-props.c:1489
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR finestra 0x%lx per %s potrebbe creare un loop.\n"
@@ -499,10 +676,24 @@ msgstr ""
 "passare da una finestra all'altra."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "Ritarda il cambio del focus fino a quando il puntatore si ferma"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focus will not be changed immediately when entering a window, but only "
+"after the pointer stops moving."
+msgstr ""
+"Se impostato a VERO, e la modalità di focus è impostata a \"sloppy\" o "
+"\"mouse\", il focus non viene spostato immediatamente quando si passa su una "
+"finestra, ma solo quando il puntatore si ferma."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
 msgstr "Larghezza bordo trascinabile"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -511,11 +702,23 @@ msgstr ""
 "del tema non sono sufficienti, vengono aggiunti dei bordi invisibili per "
 "raggiungere questo valore."
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Auto maximize nearly monitor sized windows"
+msgstr "Massimizza automaticamente finestre grandi quasi quanto lo schermo"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+msgid ""
+"If enabled, monitor nearly monitor sized windows automatically get maximized "
+"when mapped."
+msgstr ""
+"Se abilitato, le finestre con quasi la stessa dimensione dello schermo "
+"vengono massimizzate automaticamente."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:19
 msgid "Select window from tab popup"
 msgstr "Seleziona finestra dal tab popup"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:20
 msgid "Cancel tab popup"
 msgstr "Annulla tab popup"
 
@@ -739,49 +942,49 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d × %d"
 
-#: ../src/ui/theme.c:234
+#: ../src/ui/theme.c:235
 msgid "top"
 msgstr "alto"
 
-#: ../src/ui/theme.c:236
+#: ../src/ui/theme.c:237
 msgid "bottom"
 msgstr "basso"
 
-#: ../src/ui/theme.c:238
+#: ../src/ui/theme.c:239
 msgid "left"
 msgstr "sinistra"
 
-#: ../src/ui/theme.c:240
+#: ../src/ui/theme.c:241
 msgid "right"
 msgstr "destra"
 
-#: ../src/ui/theme.c:268
+#: ../src/ui/theme.c:269
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "la geometria della cornice non specifica la dimensione «%s»"
 
-#: ../src/ui/theme.c:287
+#: ../src/ui/theme.c:288
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr ""
 "la geometria della cornice non specifica la dimensione «%s» per il bordo «%s»"
 
-#: ../src/ui/theme.c:324
+#: ../src/ui/theme.c:325
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Le proporzioni %g del pulsante non sono ragionevoli"
 
-#: ../src/ui/theme.c:336
+#: ../src/ui/theme.c:337
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "La geometria della cornice non specifica la dimensione dei pulsanti"
 
-#: ../src/ui/theme.c:1049
+#: ../src/ui/theme.c:1050
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "I gradienti dovrebbero avere almeno due colori"
 
-#: ../src/ui/theme.c:1201
+#: ../src/ui/theme.c:1202
 #, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
@@ -791,7 +994,7 @@ msgstr ""
 "colore e un ripiego tra parentesi, per es. gtk:custom(foo,bar); impossibile "
 "analizzare \"%s\""
 
-#: ../src/ui/theme.c:1217
+#: ../src/ui/theme.c:1218
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
@@ -800,7 +1003,7 @@ msgstr ""
 "Carattere \"%c\" non valido nel parametro color_name di gtk:custom, sono "
 "validi solo A-Za-z0-9-_"
 
-#: ../src/ui/theme.c:1231
+#: ../src/ui/theme.c:1232
 #, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
@@ -809,7 +1012,7 @@ msgstr ""
 "Il formato per Gtk:custom è \"gtk:custom(color_name,fallback)\", «%s» non è "
 "adatto a tale formato"
 
-#: ../src/ui/theme.c:1276
+#: ../src/ui/theme.c:1277
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -818,7 +1021,7 @@ msgstr ""
 "La specificazione del colore GTK deve avere lo stato fra parentesi, per es. "
 "gtk:fg[NORMAL] dove NORMAL è lo stato; impossibile analizzare \"%s\""
 
-#: ../src/ui/theme.c:1290
+#: ../src/ui/theme.c:1291
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -828,18 +1031,18 @@ msgstr ""
 "lo stato, per es. gtk:fg[NORMAL] dove NORMAL è lo stato; impossibile "
 "analizzare \"%s\""
 
-#: ../src/ui/theme.c:1301
+#: ../src/ui/theme.c:1302
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Stato «%s» incomprensibile nella specificazione del colore"
 
-#: ../src/ui/theme.c:1314
+#: ../src/ui/theme.c:1315
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr ""
 "Componente di colore «%s» incomprensibile nella specificazione del colore"
 
-#: ../src/ui/theme.c:1343
+#: ../src/ui/theme.c:1344
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -848,17 +1051,17 @@ msgstr ""
 "Il formato della sfumature è «blend/bg_color/fg_color/alpha», «%s» non è "
 "adatto a tale formato"
 
-#: ../src/ui/theme.c:1354
+#: ../src/ui/theme.c:1355
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Impossibile analizzare il valore alpha «%s» nel colore sfumato"
 
-#: ../src/ui/theme.c:1364
+#: ../src/ui/theme.c:1365
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Il valore alpha «%s» nel colore sfumato non è compreso tra 0.0 e 1.0"
 
-#: ../src/ui/theme.c:1411
+#: ../src/ui/theme.c:1412
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -866,31 +1069,31 @@ msgstr ""
 "Il formato dell'ombreggiatura è «shade/base_color/factor», «%s» non è adatto "
 "a tale formato"
 
-#: ../src/ui/theme.c:1422
+#: ../src/ui/theme.c:1423
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr ""
 "Impossibile analizzare il fattore di ombreggiatura «%s» nel colore "
 "ombreggiato"
 
-#: ../src/ui/theme.c:1432
+#: ../src/ui/theme.c:1433
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Il fattore di ombreggiatura «%s» nel colore ombreggiato è negativo"
 
-#: ../src/ui/theme.c:1461
+#: ../src/ui/theme.c:1462
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Impossibile analizzare il colore «%s»"
 
-#: ../src/ui/theme.c:1778
+#: ../src/ui/theme.c:1779
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr ""
 "L'espressione delle coordinate contiene il carattere «%s» che non è "
 "consentito"
 
-#: ../src/ui/theme.c:1805
+#: ../src/ui/theme.c:1806
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -899,14 +1102,14 @@ msgstr ""
 "L'espressione delle coordinate contiene il numero in virgola mobile «%s» che "
 "non può essere analizzato"
 
-#: ../src/ui/theme.c:1819
+#: ../src/ui/theme.c:1820
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
 "L'espressione delle coordinate contiene l'intero «%s» che non può essere "
 "analizzato"
 
-#: ../src/ui/theme.c:1940
+#: ../src/ui/theme.c:1941
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -915,18 +1118,18 @@ msgstr ""
 "L'espressione delle coordinate contiene un operatore sconosciuto all'inizio "
 "di questo testo: \"%s\""
 
-#: ../src/ui/theme.c:1997
+#: ../src/ui/theme.c:1998
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "L'espressione delle coordinate è vuota o incomprensibile"
 
-#: ../src/ui/theme.c:2110 ../src/ui/theme.c:2120 ../src/ui/theme.c:2154
+#: ../src/ui/theme.c:2111 ../src/ui/theme.c:2121 ../src/ui/theme.c:2155
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr ""
 "L'espressione delle coordinate ha come risultato una divisione per zero"
 
-#: ../src/ui/theme.c:2162
+#: ../src/ui/theme.c:2163
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
@@ -934,27 +1137,27 @@ msgstr ""
 "L'espressione delle coordinate tenta di usare un operatore mod su un numero "
 "in virgola mobile"
 
-#: ../src/ui/theme.c:2218
+#: ../src/ui/theme.c:2219
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "L'espressione delle coordinate ha un operatore «%s» dove è atteso un operando"
 
-#: ../src/ui/theme.c:2227
+#: ../src/ui/theme.c:2228
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr ""
 "L'espressione delle coordinate ha un operando dove è atteso un operatore"
 
-#: ../src/ui/theme.c:2235
+#: ../src/ui/theme.c:2236
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr ""
 "L'espressione delle coordinate finisce con un operatore invece che un "
 "operando"
 
-#: ../src/ui/theme.c:2245
+#: ../src/ui/theme.c:2246
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -963,45 +1166,45 @@ msgstr ""
 "L'espressione delle coordinate ha l'operatore «%c» seguito dall'operatore "
 "«%c» senza un operando fra i due"
 
-#: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
+#: ../src/ui/theme.c:2397 ../src/ui/theme.c:2442
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr ""
 "L'espressione delle coordinate ha la variabile o la costante «%s» sconosciuta"
 
-#: ../src/ui/theme.c:2495
+#: ../src/ui/theme.c:2496
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr ""
 "L'analizzatore dell'espressione delle coordinate ha superato il proprio "
 "buffer."
 
-#: ../src/ui/theme.c:2524
+#: ../src/ui/theme.c:2525
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "L'espressione delle coordinate ha una parentesi di chiusura senza la "
 "relativa di apertura"
 
-#: ../src/ui/theme.c:2588
+#: ../src/ui/theme.c:2589
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "L'espressione delle coordinate ha una parentesi di apertura senza la "
 "relativa di chiusura"
 
-#: ../src/ui/theme.c:2599
+#: ../src/ui/theme.c:2600
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
 "L'espressione delle coordinate non sembra avere né operatori né operandi"
 
-#: ../src/ui/theme.c:2812 ../src/ui/theme.c:2832 ../src/ui/theme.c:2852
+#: ../src/ui/theme.c:2813 ../src/ui/theme.c:2833 ../src/ui/theme.c:2853
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Il tema contiene un'espressione che ha come risultato un errore: %s\n"
 
-#: ../src/ui/theme.c:4498
+#: ../src/ui/theme.c:4499
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1010,7 +1213,7 @@ msgstr ""
 "È necessario specificare <button function=\"%s\" state=\"%s\" draw_ops="
 "\"whatever\"/> per questo stile di cornice"
 
-#: ../src/ui/theme.c:5009 ../src/ui/theme.c:5034
+#: ../src/ui/theme.c:5010 ../src/ui/theme.c:5035
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
@@ -1018,18 +1221,18 @@ msgstr ""
 "Risulta mancante <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style="
 "\"whatever\"/>"
 
-#: ../src/ui/theme.c:5082
+#: ../src/ui/theme.c:5083
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Caricamento del tema «%s» non riuscito: %s\n"
 
-#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
-#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
+#: ../src/ui/theme.c:5219 ../src/ui/theme.c:5226 ../src/ui/theme.c:5233
+#: ../src/ui/theme.c:5240 ../src/ui/theme.c:5247
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Nessun <%s> impostato per il tema «%s»"
 
-#: ../src/ui/theme.c:5254
+#: ../src/ui/theme.c:5255
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1038,7 +1241,7 @@ msgstr ""
 "Nessuno stile di cornice impostato per il tipo di finestra «%s» nel tema "
 "«%s», aggiungere un elemento <window type=\"%s\" style_set=\"whatever\"/>"
 
-#: ../src/ui/theme.c:5650 ../src/ui/theme.c:5712 ../src/ui/theme.c:5775
+#: ../src/ui/theme.c:5662 ../src/ui/theme.c:5724 ../src/ui/theme.c:5787
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -1046,7 +1249,7 @@ msgstr ""
 "Le costanti definite dall'utente devono iniziare con una lettera maiuscola, "
 "«%s» non lo fa"
 
-#: ../src/ui/theme.c:5658 ../src/ui/theme.c:5720 ../src/ui/theme.c:5783
+#: ../src/ui/theme.c:5670 ../src/ui/theme.c:5732 ../src/ui/theme.c:5795
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "La costante «%s» è già definita"
@@ -1580,31 +1783,31 @@ msgstr "Errore nel caricare il tema: %s\n"
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Tema «%s» caricato in %g secondi\n"
 
-#: ../src/ui/theme-viewer.c:870
+#: ../src/ui/theme-viewer.c:871
 msgid "Normal Title Font"
 msgstr "Carattere titolo normale"
 
-#: ../src/ui/theme-viewer.c:876
+#: ../src/ui/theme-viewer.c:877
 msgid "Small Title Font"
 msgstr "Carattere titolo piccolo"
 
-#: ../src/ui/theme-viewer.c:882
+#: ../src/ui/theme-viewer.c:883
 msgid "Large Title Font"
 msgstr "Carattere titolo grande"
 
-#: ../src/ui/theme-viewer.c:887
+#: ../src/ui/theme-viewer.c:888
 msgid "Button Layouts"
 msgstr "Disposizione pulsanti"
 
-#: ../src/ui/theme-viewer.c:892
+#: ../src/ui/theme-viewer.c:893
 msgid "Benchmark"
 msgstr "Prestazioni"
 
-#: ../src/ui/theme-viewer.c:944
+#: ../src/ui/theme-viewer.c:949
 msgid "Window Title Goes Here"
 msgstr "Qui va il titolo della finestra"
 
-#: ../src/ui/theme-viewer.c:1047
+#: ../src/ui/theme-viewer.c:1055
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1615,258 +1818,41 @@ msgstr ""
 "e %g secondi di wall clock time, incluse le risorse del server X (%g "
 "millisecondi per cornice)\n"
 
-#: ../src/ui/theme-viewer.c:1266
+#: ../src/ui/theme-viewer.c:1275
 msgid "position expression test returned TRUE but set error"
 msgstr "test espressione posizione ha restituito TRUE, ma impostato errore"
 
-#: ../src/ui/theme-viewer.c:1268
+#: ../src/ui/theme-viewer.c:1277
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 "test espressione posizione ha restituito FALSE, ma non ha impostato errore"
 
-#: ../src/ui/theme-viewer.c:1272
+#: ../src/ui/theme-viewer.c:1281
 msgid "Error was expected but none given"
 msgstr "Errore atteso, ma non fornito"
 
-#: ../src/ui/theme-viewer.c:1274
+#: ../src/ui/theme-viewer.c:1283
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Atteso errore %d, ma fornito %d"
 
-#: ../src/ui/theme-viewer.c:1280
+#: ../src/ui/theme-viewer.c:1289
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Errore non atteso, ma è stato restituito: %s"
 
-#: ../src/ui/theme-viewer.c:1284
+#: ../src/ui/theme-viewer.c:1293
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "valore x era %d, era atteso %d"
 
-#: ../src/ui/theme-viewer.c:1287
+#: ../src/ui/theme-viewer.c:1296
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "valore y era %d, era atteso %d"
 
-#: ../src/ui/theme-viewer.c:1352
+#: ../src/ui/theme-viewer.c:1361
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d espressioni di coordinate analizzate in %g secondi (%g secondi in media)\n"
-
-#: ../src/50-mutter-navigation.xml.in.h:1
-#, fuzzy
-msgid "Navigation"
-msgstr "Navigazione"
-
-
-#: ../src/50-mutter-navigation.xml.in.h:2
-#, fuzzy
-msgid "Move window to workspace 1"
-msgstr "Sposta la finestra sullo spazio di lavoro 1"
-
-#: ../src/50-mutter-navigation.xml.in.h:3
-#, fuzzy
-msgid "Move window to workspace 2"
-msgstr "Sposta la finestra sullo spazio di lavoro 2"
-
-#: ../src/50-mutter-navigation.xml.in.h:4
-#, fuzzy
-msgid "Move window to workspace 3"
-msgstr "Sposta la finestra sullo spazio di lavoro 3"
-
-#: ../src/50-mutter-navigation.xml.in.h:5
-#, fuzzy
-msgid "Move window to workspace 4"
-msgstr "Sposta la finestra sullo spazio di lavoro 4"
-
-#: ../src/50-mutter-navigation.xml.in.h:6
-#, fuzzy
-msgid "Move window one workspace to the left"
-msgstr "Sposta la finestra sullo spazio di lavoro a sinistra"
-
-#: ../src/50-mutter-navigation.xml.in.h:7
-#, fuzzy
-msgid "Move window one workspace to the right"
-msgstr "Sposta la finestra sullo spazio di lavoro a destra"
-
-#: ../src/50-mutter-navigation.xml.in.h:8
-#, fuzzy
-msgid "Move window one workspace up"
-msgstr "Sposta la finestra sullo spazio di lavoro in alto"
-
-#: ../src/50-mutter-navigation.xml.in.h:9
-#, fuzzy
-msgid "Move window one workspace down"
-msgstr "Sposta la finestra sullo spazio di lavoro in basso"
-
-#: ../src/50-mutter-navigation.xml.in.h:10
-#, fuzzy
-msgid "Switch applications"
-msgstr "Evidenzia le applicazioni"
-
-#: ../src/50-mutter-navigation.xml.in.h:11
-#, fuzzy
-msgid "Switch windows of an application"
-msgstr "Evidenzia le finestre di un'applicazione"
-
-#: ../src/50-mutter-navigation.xml.in.h:12
-#, fuzzy
-msgid "Switch system controls"
-msgstr "Evidenzia i controlli di sistema"
-
-#: ../src/50-mutter-navigation.xml.in.h:13
-#, fuzzy
-msgid "Switch windows directly"
-msgstr "Evidenzia direttamente le finestre"
-
-#: ../src/50-mutter-navigation.xml.in.h:14
-#, fuzzy
-msgid "Switch windows of an app directly"
-msgstr "Evidenzia direttamente le finestre di una applicazione"
-
-#: ../src/50-mutter-navigation.xml.in.h:15
-#, fuzzy
-msgid "Switch system controls directly"
-msgstr "Evidenzia direttamente i controlli di sistema"
-
-#: ../src/50-mutter-navigation.xml.in.h:16
-#, fuzzy
-msgid "Hide all normal windows"
-msgstr "Nasconde tutte le finestre normali"
-
-
-#: ../src/50-mutter-navigation.xml.in.h:17
-#, fuzzy
-msgid "Switch to workspace 1"
-msgstr "Passa allo spazio di lavoro 1"
-
-#: ../src/50-mutter-navigation.xml.in.h:18
-#, fuzzy
-msgid "Switch to workspace 2"
-msgstr "Passa allo spazio di lavoro 2"
-
-#: ../src/50-mutter-navigation.xml.in.h:19
-#, fuzzy
-msgid "Switch to workspace 3"
-msgstr "Passa allo spazio di lavoro 3"
-
-#: ../src/50-mutter-navigation.xml.in.h:20
-#, fuzzy
-msgid "Switch to workspace 4"
-msgstr "Passa allo spazio di lavoro 4"
-
-#: ../src/50-mutter-navigation.xml.in.h:21
-#, fuzzy
-msgid "Move to workspace left"
-msgstr "Sposta su spazio di lavoro a sinistra"
-
-#: ../src/50-mutter-navigation.xml.in.h:22
-#, fuzzy
-msgid "Move to workspace right"
-msgstr "Sposta su spazio di lavoro a destra"
-
-#: ../src/50-mutter-navigation.xml.in.h:23
-#, fuzzy
-msgid "Move to workspace above"
-msgstr "Sposta su spazio di lavoro in alto"
-
-#: ../src/50-mutter-navigation.xml.in.h:24
-#, fuzzy
-msgid "Move to workspace below"
-msgstr "Sposta su spazio di lavoro in basso"
-
-#: ../src/50-mutter-system.xml.in.h:1
-#, fuzzy
-msgid "System"
-msgstr "Sistema"
-
-#: ../src/50-mutter-system.xml.in.h:2
-#, fuzzy
-msgid "Show the run command prompt"
-msgstr "Mostra il prompt esegui comando"
-
-#: ../src/50-mutter-system.xml.in.h:3
-#, fuzzy
-msgid "Show the activities overview"
-msgstr "Mostra la panoramica delle attività"
-
-#: ../src/50-mutter-windows.xml.in.h:2
-#, fuzzy
-msgid "Activate the window menu"
-msgstr "Attiva il menù della finestra"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-#, fuzzy
-msgid "Toggle fullscreen mode"
-msgstr "Commuta la modalità schermo intero"
-
-#: ../src/50-mutter-windows.xml.in.h:4
-#, fuzzy
-msgid "Toggle maximization state"
-msgstr "Commuta lo stato massimizzazione"
-
-#: ../src/50-mutter-windows.xml.in.h:5
-#, fuzzy
-msgid "Maximize window"
-msgstr "Massimizza la finestra"
-
-#: ../src/50-mutter-windows.xml.in.h:6
-#, fuzzy
-msgid "Restore window"
-msgstr "Ripristina la finestra"
-
-#: ../src/50-mutter-windows.xml.in.h:7
-#, fuzzy
-msgid "Toggle shaded state"
-msgstr "Commuta lo stato arrotolato"
-
-#: ../src/50-mutter-windows.xml.in.h:8
-#, fuzzy
-msgid "Close window"
-msgstr "Chiudi la finestra"
-
-#: ../src/50-mutter-windows.xml.in.h:9
-#, fuzzy
-msgid "Minimize window"
-msgstr "Minimizza la finestra"
-
-#: ../src/50-mutter-windows.xml.in.h:10
-#, fuzzy
-msgid "Move window"
-msgstr "Muovi la finestra"
-
-#: ../src/50-mutter-windows.xml.in.h:11
-#, fuzzy
-msgid "Resize window"
-msgstr "Ridimensiona la finestra"
-
-#: ../src/50-mutter-windows.xml.in.h:12
-#, fuzzy
-msgid "Toggle window on all workspaces or one"
-msgstr "Commuta la stato «su tutti gli spazi di lavoro» per la finestra"
-
-#: ../src/50-mutter-windows.xml.in.h:13
-#, fuzzy
-msgid "Raise window if covered, otherwise lower it"
-msgstr "Solleva la finestra è coperta, in caso contrario l'abbassa"
-
-#: ../src/50-mutter-windows.xml.in.h:14
-#, fuzzy
-msgid "Raise window above other windows"
-msgstr "Solleva la finestra sopra le altre finestre"
-
-#: ../src/50-mutter-windows.xml.in.h:15
-#, fuzzy
-msgid "Lower window below other windows"
-msgstr "Abbassa la finestra sotto le altre"
-
-#: ../src/50-mutter-windows.xml.in.h:16
-#, fuzzy
-msgid "Maximize window vertically"
-msgstr "Massimizza verticalmente la finestra"
-
-#: ../src/50-mutter-windows.xml.in.h:17
-#, fuzzy
-msgid "Maximize window horizontally"
-msgstr "Massimizza orizzontalmente la finestra"
