@@ -70,6 +70,8 @@ struct _MetaWindowActorPrivate
 
   /* A region that matches the shape of the window, including frame bounds */
   cairo_region_t   *shape_region;
+  /* A rectangular region with the visible extents of the window */
+  cairo_region_t   *bounding_region;
   /* The region we should clip to when painting the shadow */
   cairo_region_t   *shadow_clip;
 
@@ -78,6 +80,7 @@ struct _MetaWindowActorPrivate
 
   gint              last_width;
   gint              last_height;
+  MetaFrameBorders  last_borders;
 
   gint              freeze_count;
 
@@ -387,6 +390,7 @@ meta_window_actor_dispose (GObject *object)
   meta_window_actor_detach (self);
 
   g_clear_pointer (&priv->shape_region, cairo_region_destroy);
+  g_clear_pointer (&priv->bounding_region, cairo_region_destroy);
   g_clear_pointer (&priv->shadow_clip, cairo_region_destroy);
 
   g_clear_pointer (&priv->shadow_class, g_free);
@@ -1299,7 +1303,6 @@ meta_window_actor_sync_actor_position (MetaWindowActor *self)
     {
       priv->size_changed = TRUE;
       meta_window_actor_queue_create_pixmap (self);
-      meta_window_actor_update_shape (self);
 
       priv->last_width = window_rect.width;
       priv->last_height = window_rect.height;
@@ -1536,6 +1539,55 @@ meta_window_actor_unmapped (MetaWindowActor *self)
   priv->needs_pixmap = FALSE;
 }
 
+static void
+meta_window_actor_update_bounding_region_and_borders (MetaWindowActor *self,
+                                                      int              width,
+                                                      int              height)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+  MetaFrameBorders borders;
+  cairo_rectangle_int_t bounding_rectangle;
+
+  meta_frame_calc_borders (priv->window->frame, &borders);
+
+  bounding_rectangle.x = borders.invisible.left;
+  bounding_rectangle.y = borders.invisible.top;
+
+  width -= borders.invisible.left + borders.invisible.right;
+  height -= borders.invisible.top + borders.invisible.bottom;
+
+  bounding_rectangle.width = width;
+  bounding_rectangle.height = height;
+
+  if (priv->bounding_region != NULL)
+    {
+      cairo_rectangle_int_t old_bounding_rectangle;
+      cairo_region_get_extents (priv->bounding_region, &old_bounding_rectangle);
+
+      /* Because the bounding region doesn't include the invisible borders,
+       * we need to make sure that the border sizes haven't changed before
+       * short-circuiting early.
+       */
+      if (bounding_rectangle.width == old_bounding_rectangle.width &&
+          bounding_rectangle.height == old_bounding_rectangle.height &&
+          priv->last_borders.invisible.left == borders.invisible.left &&
+          priv->last_borders.invisible.right == borders.invisible.right &&
+          priv->last_borders.invisible.top == borders.invisible.top &&
+          priv->last_borders.invisible.bottom == borders.invisible.bottom)
+        return;
+    }
+
+  priv->last_borders = borders;
+
+  g_clear_pointer (&priv->bounding_region, cairo_region_destroy);
+
+  priv->bounding_region = cairo_region_create_rectangle (&bounding_rectangle);
+
+  meta_window_actor_update_shape (self);
+
+  g_signal_emit (self, signals[SIZE_CHANGED], 0);
+}
+
 /**
  * meta_window_actor_get_obscured_region:
  * @self: a #MetaWindowActor
@@ -1721,6 +1773,7 @@ check_needs_pixmap (MetaWindowActor *self)
       if (priv->back_pixmap == None)
         {
           meta_verbose ("Unable to get named pixmap for %p\n", self);
+          meta_window_actor_update_bounding_region_and_borders (self, 0, 0);
           goto out;
         }
 
@@ -1741,16 +1794,9 @@ check_needs_pixmap (MetaWindowActor *self)
       if (G_UNLIKELY (!cogl_texture_pixmap_x11_is_using_tfp_extension (texture)))
         g_warning ("NOTE: Not using GLX TFP!\n");
 
-      /* ::size-changed is supposed to refer to meta_window_get_outer_rect().
-       * Emitting it here works pretty much OK because a new value of the
-       * *input* rect (which is the outer rect with the addition of invisible
-       * borders) forces a new pixmap and we get here. In the rare case where
-       * a change to the window size was exactly balanced by a change to the
-       * invisible borders, we would miss emitting the signal. We would also
-       * emit spurious signals when we get a new pixmap without a new size,
-       * but that should be mostly harmless.
-       */
-      g_signal_emit (self, signals[SIZE_CHANGED], 0);
+      meta_window_actor_update_bounding_region_and_borders (self,
+                                                            cogl_texture_get_width (texture),
+                                                            cogl_texture_get_height (texture));
     }
 
   priv->needs_pixmap = FALSE;
@@ -2160,27 +2206,13 @@ check_needs_reshape (MetaWindowActor *self)
 
   needs_mask = (region != NULL) || (priv->window->frame != NULL);
 
-  if (region != NULL)
-    {
-      /* The shape we get back from the client may have coordinates
-       * outside of the frame. The X SHAPE Extension requires that
-       * the overall shape the client provides never exceeds the
-       * "bounding rectangle" of the window -- the shape that the
-       * window would have gotten if it was unshaped. In our case,
-       * this is simply the client area.
-       */
-      cairo_region_intersect_rectangle (region, &client_area);
-    }
-  else
+  if (region == NULL)
     {
       /* If we don't have a shape on the server, that means that
        * we have an implicit shape of one rectangle covering the
        * entire window. */
       region = cairo_region_create_rectangle (&client_area);
     }
-
-  /* The region at this point should be constrained to the
-   * bounds of the client rectangle. */
 
   if (needs_mask)
     {
@@ -2192,6 +2224,20 @@ check_needs_reshape (MetaWindowActor *self)
     }
 
   priv->shape_region = region;
+
+  /* Our "shape_region" is called the "bounding region" in the X Shape
+   * Extension Documentation.
+   *
+   * Our "bounding_region" is called the "bounding rectangle", which defines
+   * the shape of the window as if it the window was unshaped.
+   *
+   * The X Shape extension requires that the "bounding region" can never
+   * extend outside the "bounding rectangle", and says it must be implicitly
+   * clipped before rendering. The region we get back hasn't been clipped.
+   * We explicitly clip the region here.
+   */
+  if (priv->bounding_region != NULL)
+    cairo_region_intersect (priv->shape_region, priv->bounding_region);
 
   priv->needs_reshape = FALSE;
   meta_window_actor_invalidate_shadow (self);
