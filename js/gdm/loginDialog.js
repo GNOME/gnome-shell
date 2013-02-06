@@ -218,33 +218,18 @@ const UserList = new Lang.Class({
         this.emit('activate', activatedItem);
     },
 
-    hideItems: function() {
-        for (let userName in this._items) {
-            let item = this._items[userName];
-
-            item.actor.set_hover(false);
-            item.actor.reactive = false;
-            item.actor.can_focus = false;
-            item.syncStyleClasses();
-            item._timedLoginIndicator.scale_x = 0.;
-            item.actor.hide();
-        }
-
-        this._box.remove_style_pseudo_class('expanded');
-    },
-
-    showItems: function() {
+    updateStyle: function(isExpanded) {
         let tasks = [];
 
-        this._box.add_style_pseudo_class('expanded');
+        if (isExpanded)
+            this._box.add_style_pseudo_class('expanded');
+        else
+            this._box.remove_style_pseudo_class('expanded');
 
         for (let userName in this._items) {
             let item = this._items[userName];
             item.actor.sync_hover();
-            item.actor.reactive = true;
-            item.actor.can_focus = true;
             item.syncStyleClasses();
-            item.actor.show();
         }
     },
 
@@ -568,16 +553,20 @@ const LoginDialog = new Lang.Class({
         this._settings.connect('changed::' + GdmUtil.DISABLE_USER_LIST_KEY,
                                Lang.bind(this, this._updateDisableUserList));
 
+        this._userSelectionBox = new St.BoxLayout({ style_class: 'login-dialog-user-selection-box',
+                                                    vertical: true });
+        this.contentLayout.add(this._userSelectionBox);
+
         this._bannerLabel = new St.Label({ style_class: 'login-dialog-banner',
                                            text: '' });
-        this.contentLayout.add(this._bannerLabel);
+        this._userSelectionBox.add(this._bannerLabel);
         this._updateBanner();
 
         this._userList = new UserList();
-        this.contentLayout.add(this._userList.actor,
-                               { expand: true,
-                                 x_fill: true,
-                                 y_fill: true });
+        this._userSelectionBox.add(this._userList.actor,
+                                   { expand: true,
+                                     x_fill: true,
+                                     y_fill: true });
 
         this.setInitialKeyFocus(this._userList.actor);
 
@@ -649,10 +638,10 @@ const LoginDialog = new Lang.Class({
 
         this._notListedButton.connect('clicked', Lang.bind(this, this._hideUserListAndLogIn));
 
-        this.contentLayout.add(this._notListedButton,
-                               { expand: false,
-                                 x_align: St.Align.START,
-                                 x_fill: true });
+        this._userSelectionBox.add(this._notListedButton,
+                                   { expand: false,
+                                     x_align: St.Align.START,
+                                     x_fill: true });
 
         if (!this._userManager.is_loaded)
             this._userManagerLoadedId = this._userManager.connect('notify::is-loaded',
@@ -1069,20 +1058,19 @@ const LoginDialog = new Lang.Class({
                              }));
     },
 
+    _setUserListExpanded: function(expanded) {
+        this._userList.updateStyle(expanded);
+        this._userSelectionBox.visible = expanded;
+    },
+
     _hideUserListAndLogIn: function() {
-        this._userList.hideItems();
-        this._userList.actor.hide();
-        this._notListedButton.hide();
+        this._setUserListExpanded(false);
         this._askForUsernameAndLogIn();
     },
 
     _showUserList: function() {
         this._hidePrompt();
-        this._userList.actor.show();
-        this._userList.actor.opacity = 255;
-        this._notListedButton.show();
-        this._userList.showItems();
-        this._userList.actor.reactive = true;
+        this._setUserListExpanded(true);
         this._userList.actor.grab_key_focus();
     },
 
@@ -1098,9 +1086,7 @@ const LoginDialog = new Lang.Class({
         let userWidget = new UserWidget.UserWidget(item.user);
         this._promptUser.set_child(userWidget.actor);
 
-        this._userList.actor.reactive = false;
-        this._userList.hideItems();
-        this._notListedButton.hide();
+        this._setUserListExpanded(false);
 
         this._user = activatedItem.user;
         let userName = activatedItem.user.get_user_name();
