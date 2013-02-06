@@ -1063,7 +1063,8 @@ const LoginDialog = new Lang.Class({
                                transition: 'linear',
                                onCompleteScope: this,
                                onComplete: function() {
-                                   this._workSpinner.stop();
+                                   if (this._workSpinner)
+                                       this._workSpinner.stop();
                                }
                              });
         }
