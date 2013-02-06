@@ -277,7 +277,7 @@ test_gles2_read_pixels (void)
   CoglGLES2Context *gles2_ctx;
   const CoglGLES2Vtable *gles2;
   CoglError *error = NULL;
-  GLubyte pixel[3];
+  GLubyte pixel[4];
   GLuint fbo_handle;
 
   create_gles2_context (&offscreen_texture,
@@ -299,7 +299,7 @@ test_gles2_read_pixels (void)
 
   gles2->glClearColor (1, 0, 0, 1);
   gles2->glClear (GL_COLOR_BUFFER_BIT);
-  gles2->glReadPixels (0, 0, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, &pixel);
+  gles2->glReadPixels (0, 0, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
   test_utils_compare_pixel (pixel, 0xff0000ff);
 
@@ -309,7 +309,7 @@ test_gles2_read_pixels (void)
 
   gles2->glClearColor (0, 1, 0, 1);
   gles2->glClear (GL_COLOR_BUFFER_BIT);
-  gles2->glReadPixels (0, 0, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, &pixel);
+  gles2->glReadPixels (0, 0, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
   test_utils_compare_pixel (pixel, 0x00ff00ff);
 
@@ -317,7 +317,7 @@ test_gles2_read_pixels (void)
 
   gles2->glClearColor (0, 1, 1, 1);
   gles2->glClear (GL_COLOR_BUFFER_BIT);
-  gles2->glReadPixels (0, 0, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, &pixel);
+  gles2->glReadPixels (0, 0, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
   test_utils_compare_pixel (pixel, 0x00ffffff);
 
@@ -335,7 +335,7 @@ test_gles2_read_pixels (void)
       g_error ("Failed to push gles2 context: %s\n", error->message);
     }
 
-  gles2->glReadPixels (0, 0, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, &pixel);
+  gles2->glReadPixels (0, 0, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
   test_utils_compare_pixel (pixel, 0x00ffffff);
 
@@ -355,7 +355,7 @@ test_gles2_read_pixels (void)
       g_error ("Failed to push gles2 context: %s\n", error->message);
     }
 
-  gles2->glReadPixels (0, 0, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, &pixel);
+  gles2->glReadPixels (0, 0, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixel);
 
   test_utils_compare_pixel (pixel, 0xffffffff);
 
