@@ -81,10 +81,6 @@ int  meta_screen_get_current_monitor  (MetaScreen    *screen);
 void meta_screen_get_monitor_geometry (MetaScreen    *screen,
                                        int            monitor,
                                        MetaRectangle *geometry);
-
-int meta_screen_get_monitor_index_for_rect (MetaScreen    *screen,
-                                            MetaRectangle *rect);
-
 void meta_screen_focus_default_window (MetaScreen *screen,
                                        guint32     timestamp);
 
