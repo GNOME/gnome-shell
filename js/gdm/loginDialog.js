@@ -43,6 +43,7 @@ const Panel = imports.ui.panel;
 const PanelMenu = imports.ui.panelMenu;
 const Tweener = imports.ui.tweener;
 const UserMenu = imports.ui.userMenu;
+const UserWidget = imports.ui.userWidget;
 
 const _FADE_ANIMATION_TIME = 0.25;
 const _SCROLL_ANIMATION_TIME = 0.5;
@@ -217,7 +218,7 @@ const UserList = new Lang.Class({
         this.emit('activate', activatedItem);
     },
 
-    hideItemsExcept: function(exception) {
+    hideItems: function() {
         for (let userName in this._items) {
             let item = this._items[userName];
 
@@ -226,15 +227,10 @@ const UserList = new Lang.Class({
             item.actor.can_focus = false;
             item.syncStyleClasses();
             item._timedLoginIndicator.scale_x = 0.;
-            if (item != exception)
-                item.actor.hide();
+            item.actor.hide();
         }
 
         this._box.remove_style_pseudo_class('expanded');
-    },
-
-    hideItems: function() {
-        return this.hideItemsExcept(null);
     },
 
     showItems: function() {
@@ -592,6 +588,13 @@ const LoginDialog = new Lang.Class({
                                  x_fill: true,
                                  y_fill: true,
                                  x_align: St.Align.START });
+        this._promptUser = new St.Bin({ x_fill: true,
+                                        x_align: St.Align.START });
+        this._promptBox.add(this._promptUser,
+                            { x_align: St.Align.START,
+                              x_fill: true,
+                              y_fill: true,
+                              expand: true });
         this._promptLabel = new St.Label({ style_class: 'login-dialog-prompt-label' });
 
         this._promptBox.add(this._promptLabel,
@@ -842,6 +845,8 @@ const LoginDialog = new Lang.Class({
         this._promptBox.hide();
         this._promptLoginHint.hide();
 
+        this._promptUser.set_child(null);
+
         this._updateSensitivity(true);
         this._promptEntry.set_text('');
 
@@ -1089,8 +1094,11 @@ const LoginDialog = new Lang.Class({
     },
 
     _onUserListActivated: function(activatedItem) {
+        let userWidget = new UserWidget.UserWidget(item.user);
+        this._promptUser.set_child(userWidget.actor);
+
         this._userList.actor.reactive = false;
-        this._userList.hideItemsExcept(activatedItem);
+        this._userList.hideItems();
         this._notListedButton.hide();
 
         this._user = activatedItem.user;
