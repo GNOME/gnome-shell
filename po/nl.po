@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-01 16:59+0100\n"
-"PO-Revision-Date: 2013-02-01 17:00+0100\n"
+"POT-Creation-Date: 2013-02-06 21:53+0100\n"
+"PO-Revision-Date: 2013-02-06 21:53+0100\n"
 "Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
@@ -407,7 +407,7 @@ msgid "Power"
 msgstr "Uitschakelen"
 
 #: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:679 ../js/ui/userMenu.js:683
-#: ../js/ui/userMenu.js:794
+#: ../js/ui/userMenu.js:799
 msgid "Suspend"
 msgstr "Slaapstand"
 
@@ -416,7 +416,7 @@ msgid "Restart"
 msgstr "Opnieuw opstarten"
 
 #: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:681
-#: ../js/ui/userMenu.js:683 ../js/ui/userMenu.js:793
+#: ../js/ui/userMenu.js:683 ../js/ui/userMenu.js:798
 msgid "Power Off"
 msgstr "Uitschakelen"
 
@@ -623,25 +623,25 @@ msgstr "Deze week"
 msgid "Next week"
 msgstr "Volgende week"
 
-#: ../js/ui/components/automountManager.js:92
+#: ../js/ui/components/automountManager.js:90
 msgid "External drive connected"
 msgstr "Verbinding met externe schijf gemaakt"
 
-#: ../js/ui/components/automountManager.js:103
+#: ../js/ui/components/automountManager.js:101
 msgid "External drive disconnected"
 msgstr "Verbinding met externe schijf verbroken"
 
 # Lelijk, maar KDE gebruikt het ook…
-#: ../js/ui/components/autorunManager.js:295
+#: ../js/ui/components/autorunManager.js:292
 msgid "Removable Devices"
 msgstr "Verwijderbare apparaten"
 
-#: ../js/ui/components/autorunManager.js:594
+#: ../js/ui/components/autorunManager.js:591
 #, c-format
 msgid "Open with %s"
 msgstr "Openen met %s"
 
-#: ../js/ui/components/autorunManager.js:620
+#: ../js/ui/components/autorunManager.js:617
 msgid "Eject"
 msgstr "Uitwerpen"
 
@@ -1014,7 +1014,7 @@ msgid "Open Clocks"
 msgstr "Klok openen"
 
 #: ../js/ui/dateMenu.js:105
-msgid "Date and Time Settings"
+msgid "Date & Time Settings"
 msgstr "Instellingen voor datum en tijd"
 
 #. Translators: This is the date format to use when the calendar popup is
@@ -1200,7 +1200,7 @@ msgstr "Geen berichten"
 msgid "Message Tray"
 msgstr "Berichtenoverzicht"
 
-#: ../js/ui/messageTray.js:2757
+#: ../js/ui/messageTray.js:2759
 msgid "System Information"
 msgstr "Systeeminformatie"
 
@@ -1242,7 +1242,7 @@ msgstr "Afsluiten"
 msgid "Activities"
 msgstr "Activiteiten"
 
-#: ../js/ui/panel.js:976
+#: ../js/ui/panel.js:983
 msgid "Top Bar"
 msgstr "Bovenbalk"
 
@@ -1265,27 +1265,31 @@ msgstr "Sluiten"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:114
+#: ../js/ui/screenShield.js:115
 msgid "%A, %B %d"
 msgstr "%A %d %B"
 
-#: ../js/ui/screenShield.js:177
+#: ../js/ui/screenShield.js:178
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d nieuw bericht"
 msgstr[1] "%d nieuwe berichten"
 
-#: ../js/ui/screenShield.js:179
+#: ../js/ui/screenShield.js:180
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d nieuwe notificatie"
 msgstr[1] "%d nieuwe notificaties"
 
-#: ../js/ui/screenShield.js:463 ../js/ui/userMenu.js:785
+#: ../js/ui/screenShield.js:464 ../js/ui/userMenu.js:790
 msgid "Lock"
 msgstr "Vergrendelen"
+
+#: ../js/ui/screenShield.js:615
+msgid "GNOME needs to lock the screen"
+msgstr "Gnome moet het scherm vergrendelen"
 
 #: ../js/ui/searchDisplay.js:430
 msgid "Searching..."
@@ -1374,7 +1378,7 @@ msgstr "Grote tekst"
 #: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:32
 #: ../js/ui/status/bluetooth.js:289 ../js/ui/status/bluetooth.js:321
 #: ../js/ui/status/bluetooth.js:357 ../js/ui/status/bluetooth.js:388
-#: ../js/ui/status/network.js:814
+#: ../js/ui/status/network.js:826
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1387,7 +1391,7 @@ msgid "Send Files to Device..."
 msgstr "Bestanden naar apparaat sturen…"
 
 #: ../js/ui/status/bluetooth.js:60
-msgid "Set up a New Device..."
+msgid "Set Up a New Device..."
 msgstr "Nieuw apparaat instellen…"
 
 #: ../js/ui/status/bluetooth.js:84
@@ -1408,7 +1412,7 @@ msgid "disconnecting..."
 msgstr "verbinding verbreken…"
 
 #: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:466
-#: ../js/ui/status/network.js:1534
+#: ../js/ui/status/network.js:1546
 msgid "connecting..."
 msgstr "verbinden…"
 
@@ -1424,7 +1428,7 @@ msgstr "Toetsenbordvoorkeuren"
 msgid "Mouse Settings"
 msgstr "Muisvoorkeuren"
 
-#: ../js/ui/status/bluetooth.js:254 ../js/ui/status/volume.js:317
+#: ../js/ui/status/bluetooth.js:254 ../js/ui/status/volume.js:316
 msgid "Sound Settings"
 msgstr "Geluidsvoorkeuren"
 
@@ -1493,8 +1497,8 @@ msgid "Show Keyboard Layout"
 msgstr "Toetsenbordindeling tonen"
 
 #: ../js/ui/status/keyboard.js:373
-msgid "Region and Language Settings"
-msgstr "Instellingen voor taal en regio"
+msgid "Region & Language Settings"
+msgstr "Instellingen voor regio en taal"
 
 #: ../js/ui/status/lockScreenMenu.js:43
 msgid "Volume, network, battery"
@@ -1516,7 +1520,7 @@ msgid "unmanaged"
 msgstr "niet gemanaged"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1537
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1549
 msgid "authentication required"
 msgstr "authenticatie nodig"
 
@@ -1537,18 +1541,18 @@ msgstr "kabel niet verbonden"
 msgid "unavailable"
 msgstr "niet beschikbaar"
 
-#: ../js/ui/status/network.js:493 ../js/ui/status/network.js:1539
+#: ../js/ui/status/network.js:493 ../js/ui/status/network.js:1551
 msgid "connection failed"
 msgstr "verbinding mislukt"
 
-#: ../js/ui/status/network.js:552 ../js/ui/status/network.js:1423
-#: ../js/ui/status/network.js:1615
+#: ../js/ui/status/network.js:552 ../js/ui/status/network.js:1435
+#: ../js/ui/status/network.js:1627
 msgid "More..."
 msgstr "Meer…"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1353
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1365
 msgid "Connected (private)"
 msgstr "Verbonden (persoonlijke verbinding)"
 
@@ -1565,53 +1569,53 @@ msgstr "Automatisch ethernetverbinding"
 msgid "Mobile broadband"
 msgstr "Mobiel breedband"
 
-#: ../js/ui/status/network.js:716
+#: ../js/ui/status/network.js:728
 msgid "Auto broadband"
 msgstr "Automatische breedbandverbinding"
 
-#: ../js/ui/status/network.js:719
+#: ../js/ui/status/network.js:731
 msgid "Auto dial-up"
 msgstr "Automatisch inbellen"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:849 ../js/ui/status/network.js:1370
+#: ../js/ui/status/network.js:861 ../js/ui/status/network.js:1382
 #, c-format
 msgid "Auto %s"
 msgstr "%s (automatisch)"
 
-#: ../js/ui/status/network.js:851
+#: ../js/ui/status/network.js:863
 msgid "Auto bluetooth"
 msgstr "Automatische Bluetooth"
 
-#: ../js/ui/status/network.js:1372
+#: ../js/ui/status/network.js:1384
 msgid "Auto wireless"
 msgstr "Automatisch draadloos netwerk"
 
-#: ../js/ui/status/network.js:1665
+#: ../js/ui/status/network.js:1677
 msgid "Enable networking"
 msgstr "Netwerk inschakelen"
 
-#: ../js/ui/status/network.js:1707
+#: ../js/ui/status/network.js:1719
 msgid "Wi-Fi"
 msgstr "Wi-Fi"
 
-#: ../js/ui/status/network.js:1726
+#: ../js/ui/status/network.js:1738
 msgid "Network Settings"
 msgstr "Netwerkinstellingen"
 
-#: ../js/ui/status/network.js:1785
+#: ../js/ui/status/network.js:1797
 msgid "Network Manager"
 msgstr "Netwerk-manager"
 
-#: ../js/ui/status/network.js:1875
+#: ../js/ui/status/network.js:1887
 msgid "Connection failed"
 msgstr "Verbinding mislukt"
 
-#: ../js/ui/status/network.js:1876
+#: ../js/ui/status/network.js:1888
 msgid "Activation of network connection failed"
 msgstr "Activeren van netwerkverbinding mislukt"
 
-#: ../js/ui/status/network.js:2254
+#: ../js/ui/status/network.js:2266
 msgid "Networking is disabled"
 msgstr "Netwerk is uitgeschakeld"
 
@@ -1668,11 +1672,11 @@ msgid "%d%%"
 msgstr "%d%%"
 
 #: ../js/ui/status/power.js:201
-msgid "AC adapter"
+msgid "AC Adapter"
 msgstr "Netstroom"
 
 #: ../js/ui/status/power.js:203
-msgid "Laptop battery"
+msgid "Laptop Battery"
 msgstr "Laptop-accu"
 
 #: ../js/ui/status/power.js:205
@@ -1692,11 +1696,11 @@ msgid "PDA"
 msgstr "PDA"
 
 #: ../js/ui/status/power.js:215
-msgid "Cell phone"
+msgid "Cell Phone"
 msgstr "Mobiele telefoon"
 
 #: ../js/ui/status/power.js:217
-msgid "Media player"
+msgid "Media Player"
 msgstr "Mediaspeler"
 
 #: ../js/ui/status/power.js:219
@@ -1717,11 +1721,11 @@ msgid "Volume changed"
 msgstr "Volume gewijzigd"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:250 ../js/ui/status/volume.js:298
+#: ../js/ui/status/volume.js:249 ../js/ui/status/volume.js:297
 msgid "Volume"
 msgstr "Volume"
 
-#: ../js/ui/status/volume.js:259
+#: ../js/ui/status/volume.js:258
 msgid "Microphone"
 msgstr "Microfoon"
 
@@ -1733,55 +1737,55 @@ msgstr "Aanmelden als andere gebruiker"
 msgid "Unlock Window"
 msgstr "Venster voor ontgrendelen"
 
-#: ../js/ui/userMenu.js:178
+#: ../js/ui/userMenu.js:177
 msgid "Available"
 msgstr "Beschikbaar"
 
-#: ../js/ui/userMenu.js:181
+#: ../js/ui/userMenu.js:180
 msgid "Busy"
 msgstr "Bezig"
 
-#: ../js/ui/userMenu.js:184
+#: ../js/ui/userMenu.js:183
 msgid "Invisible"
 msgstr "Onzichtbaar"
 
-#: ../js/ui/userMenu.js:187
+#: ../js/ui/userMenu.js:186
 msgid "Away"
 msgstr "Afwezig"
 
-#: ../js/ui/userMenu.js:190
+#: ../js/ui/userMenu.js:189
 msgid "Idle"
 msgstr "Inactief"
 
-#: ../js/ui/userMenu.js:193
+#: ../js/ui/userMenu.js:192
 msgid "Offline"
 msgstr "Offline"
 
-#: ../js/ui/userMenu.js:759
+#: ../js/ui/userMenu.js:764
 msgid "Notifications"
 msgstr "Notificaties"
 
-#: ../js/ui/userMenu.js:767
+#: ../js/ui/userMenu.js:772
 msgid "Settings"
 msgstr "Voorkeuren"
 
-#: ../js/ui/userMenu.js:775
+#: ../js/ui/userMenu.js:780
 msgid "Switch User"
 msgstr "Gebruiker wisselen"
 
-#: ../js/ui/userMenu.js:780
+#: ../js/ui/userMenu.js:785
 msgid "Log Out"
 msgstr "Afmelden"
 
-#: ../js/ui/userMenu.js:800
+#: ../js/ui/userMenu.js:805
 msgid "Install Updates & Restart"
 msgstr "Updates installeren en opnieuw opstarten"
 
-#: ../js/ui/userMenu.js:818
+#: ../js/ui/userMenu.js:823
 msgid "Your chat status will be set to busy"
 msgstr "De chatstatus zal op ‘bezig’ gezet worden"
 
-#: ../js/ui/userMenu.js:819
+#: ../js/ui/userMenu.js:824
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1872,17 +1876,15 @@ msgstr "De wachtwoorden komen niet overeen."
 msgid "Password cannot be blank"
 msgstr "Het wachtwoord mag niet leeg blijven."
 
-#: ../src/shell-mobile-providers.c:85
-msgid "United Kingdom"
-msgstr "Verenigd Koninkrijk"
-
-#: ../src/shell-mobile-providers.c:619
-msgid "Default"
-msgstr "Standaard"
-
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Authenticatievenster is door de gebruiker afgesloten"
+
+#~ msgid "United Kingdom"
+#~ msgstr "Verenigd Koninkrijk"
+
+#~ msgid "Default"
+#~ msgstr "Standaard"
 
 #~ msgid "APPLICATIONS"
 #~ msgstr "TOEPASSINGEN"
