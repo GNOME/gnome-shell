@@ -50,9 +50,11 @@ const SUMMARY_ICON_SIZE = 48;
 // - MANUAL_FADE_TIME is used for lowering the shield when asked by the user,
 //   or when cancelling the dialog
 // - CURTAIN_SLIDE_TIME is used when raising the shield before unlocking
+// - INITIAL_FADE_IN_TIME is used for the initial fade in at startup
 const STANDARD_FADE_TIME = 10;
 const MANUAL_FADE_TIME = 0.8;
 const CURTAIN_SLIDE_TIME = 0.3;
+const INITIAL_FADE_IN_TIME = 0.25;
 
 function sample(offx, offy) {
     return 'texel += texture2D (sampler, tex_coord.st + pixel_step * ' +
@@ -511,8 +513,15 @@ const ScreenShield = new Lang.Class({
 
         this._lockDialogGroup = new St.Widget({ x_expand: true,
                                                 y_expand: true,
+                                                opacity: 0,
                                                 pivot_point: new Clutter.Point({ x: 0.5, y: 0.5 }),
                                                 name: 'lockDialogGroup' });
+
+        Tweener.addTween(this._lockDialogGroup,
+                         { opacity: 255,
+                           time: INITIAL_FADE_IN_TIME,
+                           transition: 'easeInQuad',
+                         });
 
         this.actor.add_actor(this._lockDialogGroup);
         this.actor.add_actor(this._lockScreenGroup);

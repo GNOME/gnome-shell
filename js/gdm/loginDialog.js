@@ -44,6 +44,7 @@ const PanelMenu = imports.ui.panelMenu;
 const Tweener = imports.ui.tweener;
 const UserMenu = imports.ui.userMenu;
 
+const _FADE_ANIMATION_TIME = 0.25;
 const _SCROLL_ANIMATION_TIME = 0.5;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _LOGO_ICON_HEIGHT = 16;
@@ -914,7 +915,26 @@ const LoginDialog = new Lang.Class({
     },
 
     _onSessionOpened: function(client, serviceName) {
-        this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
+        Tweener.addTween(this.dialogLayout,
+                         { opacity: 0,
+                           time: _FADE_ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onUpdate: function() {
+                               let children = Main.layoutManager.uiGroup.get_children();
+
+                               for (let i = 0; i < children.length; i++) {
+                                   if (children[i] != Main.layoutManager.screenShieldGroup)
+                                       children[i].opacity = this.dialogLayout.opacity;
+                               }
+                           },
+                           onUpdateScope: this,
+                           onComplete: function() {
+                               Mainloop.idle_add(Lang.bind(this, function() {
+                                   this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
+                                   return false;
+                               }));
+                           },
+                           onCompleteScope: this });
     },
 
     _waitForItemForUser: function(userName) {
