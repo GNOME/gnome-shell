@@ -167,18 +167,8 @@ const LayoutManager = new Lang.Class({
         global.stage.remove_actor(global.window_group);
         this.uiGroup.add_actor(global.window_group);
 
-        // Now, you might wonder why we went through all the hoops to implement
-        // the GDM greeter inside an X11 compositor, to do this at the end...
-        // However, hiding this is necessary to avoid showing the background during
-        // the initial animation, before Gdm.LoginDialog covers everything
-        if (Main.sessionMode.isGreeter) {
-            global.window_group.hide();
-            global.top_window_group.hide();
-        }
-
         global.stage.remove_actor(global.overlay_group);
         this.uiGroup.add_actor(global.overlay_group);
-
         global.stage.add_child(this.uiGroup);
 
         this.screenShieldGroup = new St.Widget({ name: 'screenShieldGroup',
