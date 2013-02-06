@@ -1185,6 +1185,7 @@ meta_window_actor_should_unredirect (MetaWindowActor *self)
       int screen_width, screen_height, i;
 
       meta_screen_get_size (screen, &screen_width, &screen_height);
+      meta_window_get_outer_rect (priv->window, &window_rect);
 
       if (window_rect.x == 0 && window_rect.y == 0 &&
           window_rect.width == screen_width && window_rect.height == screen_height)
