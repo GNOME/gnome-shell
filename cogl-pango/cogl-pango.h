@@ -48,7 +48,6 @@ typedef PangoCairoFontMap CoglPangoFontMap;
 
 /**
  * cogl_pango_font_map_new:
- * @context: A #CoglContext
  *
  * Creates a new font map.
  *
@@ -65,7 +64,7 @@ cogl_pango_font_map_new (void);
  *
  * Create a #PangoContext for the given @font_map.
  *
- * Returns: the newly created context: free with g_object_unref().
+ * Returns: (transfer full): the newly created context: free with g_object_unref().
  */
 PangoContext *
 cogl_pango_font_map_create_context (CoglPangoFontMap *font_map);
@@ -176,7 +175,7 @@ cogl_pango_show_layout (CoglFramebuffer *framebuffer,
                         const CoglColor *color);
 
 /**
- * cogl_pango_render_layout_line:
+ * cogl_pango_show_layout_line:
  * @framebuffer: A #CoglFramebuffer to draw too.
  * @line: a #PangoLayoutLine
  * @x: X coordinate to render the line at
