@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -15,6 +16,7 @@ const Tweener = imports.ui.tweener;
 const PASSWORD_SERVICE_NAME = 'gdm-password';
 const FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
 const FADE_ANIMATION_TIME = 0.16;
+const CLONE_FADE_ANIMATION_TIME = 0.25;
 
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
@@ -67,6 +69,34 @@ function fadeOutActor(actor) {
                            this.set_height(-1);
                            hold.release();
                        },
+                     });
+    return hold;
+}
+
+function cloneAndFadeOutActor(actor) {
+    // Immediately hide actor so its sibling can have its space
+    // and position, but leave a non-reactive clone on-screen,
+    // so from the user's point of view it smoothly fades away
+    // and reveals its sibling.
+    actor.hide();
+
+    let clone = new Clutter.Clone({ source: actor,
+                                    reactive: false });
+
+    Main.uiGroup.add_child(clone);
+
+    let [x, y] = actor.get_transformed_position();
+    clone.set_position(x, y);
+
+    let hold = new Batch.Hold();
+    Tweener.addTween(clone,
+                     { opacity: 0,
+                       time: CLONE_FADE_ANIMATION_TIME,
+                       transition: 'easeOutQuad',
+                       onComplete: function() {
+                           clone.destroy();
+                           hold.release();
+                       }
                      });
     return hold;
 }

@@ -746,7 +746,12 @@ const LoginDialog = new Lang.Class({
         this._promptEntry.show();
         this._promptLoginHint.opacity = 0;
         this._promptLoginHint.show();
+        this._promptBox.opacity = 0;
         this._promptBox.show();
+        Tweener.addTween(this._promptBox,
+                         { opacity: 255,
+                           time: _FADE_ANIMATION_TIME,
+                           transition: 'easeOutQuad' });
 
         if (!this._user || (this._user.is_logged_in() && this._verifyingUser))
             this._sessionList.actor.show();
@@ -1065,6 +1070,7 @@ const LoginDialog = new Lang.Class({
 
     _hideUserListAndLogIn: function() {
         this._setUserListExpanded(false);
+        GdmUtil.cloneAndFadeOutActor(this._userSelectionBox);
         this._askForUsernameAndLogIn();
     },
 
@@ -1082,15 +1088,31 @@ const LoginDialog = new Lang.Class({
         return hold;
     },
 
-    _onUserListActivated: function(activatedItem) {
+    _beginVerificationForItem: function(item) {
         let userWidget = new UserWidget.UserWidget(item.user);
         this._promptUser.set_child(userWidget.actor);
 
-        this._setUserListExpanded(false);
+        let tasks = [function() {
+                         let userName = item.user.get_user_name();
+                         return this._beginVerificationForUser(userName);
+                     }];
+        let batch = new Batch.ConsecutiveBatch(this, tasks);
+        return batch.run();
+    },
+
+    _onUserListActivated: function(activatedItem) {
+        let tasks = [function() {
+                         return GdmUtil.cloneAndFadeOutActor(this._userSelectionBox);
+                     },
+                     function() {
+                         this._setUserListExpanded(false);
+                     }];
 
         this._user = activatedItem.user;
-        let userName = activatedItem.user.get_user_name();
-        this._beginVerificationForUser(userName);
+
+        let batch = new Batch.ConcurrentBatch(this, [new Batch.ConsecutiveBatch(this, tasks),
+                                                     this._beginVerificationForItem(activatedItem)]);
+        batch.run();
     },
 
     _onDestroy: function() {
