@@ -1195,8 +1195,8 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
   if (n_layers)
     {
       CoglPipelineCompareLayersState state;
-      layer_differences = g_alloca (sizeof (unsigned long *) * n_layers);
-      memset (layer_differences, 0, sizeof (layer_differences));
+      layer_differences = g_alloca (sizeof (unsigned long) * n_layers);
+      memset (layer_differences, 0, sizeof (unsigned long) * n_layers);
       state.i = 0;
       state.layer_differences = layer_differences;
       _cogl_pipeline_foreach_layer_internal (pipeline,
