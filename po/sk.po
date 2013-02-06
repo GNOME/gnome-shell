@@ -1417,7 +1417,6 @@ msgid "Send Files to Device..."
 msgstr "Odoslať súbory do zariadenia…"
 
 #: ../js/ui/status/bluetooth.js:60
-#, fuzzy
 #| msgid "Set up a New Device..."
 msgid "Set Up a New Device..."
 msgstr "Nastaviť nové zariadenie…"
@@ -1704,13 +1703,11 @@ msgid "%d%%"
 msgstr "%d %%"
 
 #: ../js/ui/status/power.js:201
-#, fuzzy
 #| msgid "AC adapter"
 msgid "AC Adapter"
 msgstr "Napájací adaptér"
 
 #: ../js/ui/status/power.js:203
-#, fuzzy
 #| msgid "Laptop battery"
 msgid "Laptop Battery"
 msgstr "Batéria notebooku"
@@ -1732,13 +1729,11 @@ msgid "PDA"
 msgstr "PDA"
 
 #: ../js/ui/status/power.js:215
-#, fuzzy
 #| msgid "Cell phone"
 msgid "Cell Phone"
 msgstr "Mobilný telefón"
 
 #: ../js/ui/status/power.js:217
-#, fuzzy
 #| msgid "Media player"
 msgid "Media Player"
 msgstr "Prehrávač multimédií"
