@@ -52,6 +52,9 @@ struct _ClutterStageCogl
   guint using_clipped_redraw : 1;
 
   guint dirty_backbuffer     : 1;
+
+  /* Stores a list of previous damaged areas */
+  GSList *damage_history;
 };
 
 struct _ClutterStageCoglClass

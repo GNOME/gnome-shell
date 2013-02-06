@@ -236,6 +236,23 @@ _clutter_stage_window_redraw (ClutterStageWindow *window)
     iface->redraw (window);
 }
 
+
+void
+_clutter_stage_window_get_dirty_pixel (ClutterStageWindow *window,
+                                       int *x, int *y)
+{
+  ClutterStageWindowIface *iface;
+
+  *x = 0;
+  *y = 0;
+
+  g_return_if_fail (CLUTTER_IS_STAGE_WINDOW (window));
+
+  iface = CLUTTER_STAGE_WINDOW_GET_IFACE (window);
+  if (iface->get_dirty_pixel)
+    iface->get_dirty_pixel (window, x, y);
+}
+
 void
 _clutter_stage_window_dirty_back_buffer (ClutterStageWindow *window)
 {

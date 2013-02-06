@@ -75,6 +75,9 @@ struct _ClutterStageWindowIface
 
   void              (* dirty_back_buffer)       (ClutterStageWindow *stage_window);
 
+  void              (* get_dirty_pixel)         (ClutterStageWindow *stage_window,
+                                                 int *x, int *y);
+
   CoglFramebuffer  *(* get_active_framebuffer)  (ClutterStageWindow *stage_window);
 
   gboolean          (* can_clip_redraws)        (ClutterStageWindow *stage_window);
@@ -120,6 +123,9 @@ void              _clutter_stage_window_set_accept_focus        (ClutterStageWin
 void              _clutter_stage_window_redraw                  (ClutterStageWindow *window);
 
 void              _clutter_stage_window_dirty_back_buffer       (ClutterStageWindow *window);
+
+void              _clutter_stage_window_get_dirty_pixel         (ClutterStageWindow *window,
+                                                                 int *x, int *y);
 
 CoglFramebuffer  *_clutter_stage_window_get_active_framebuffer  (ClutterStageWindow *window);
 
