@@ -301,9 +301,7 @@ test_gles2_read_pixels (void)
   gles2->glClear (GL_COLOR_BUFFER_BIT);
   gles2->glReadPixels (0, 0, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, &pixel);
 
-  g_assert (pixel[0] == 0xff);
-  g_assert (pixel[1] == 0);
-  g_assert (pixel[2] == 0);
+  test_utils_compare_pixel (pixel, 0xff0000ff);
 
   fbo_handle = create_gles2_framebuffer (gles2, 256, 256);
 
@@ -313,9 +311,7 @@ test_gles2_read_pixels (void)
   gles2->glClear (GL_COLOR_BUFFER_BIT);
   gles2->glReadPixels (0, 0, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, &pixel);
 
-  g_assert (pixel[0] == 0);
-  g_assert (pixel[1] == 0xff);
-  g_assert (pixel[2] == 0);
+  test_utils_compare_pixel (pixel, 0x00ff00ff);
 
   gles2->glBindFramebuffer (GL_FRAMEBUFFER, 0);
 
@@ -323,9 +319,7 @@ test_gles2_read_pixels (void)
   gles2->glClear (GL_COLOR_BUFFER_BIT);
   gles2->glReadPixels (0, 0, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, &pixel);
 
-  g_assert (pixel[0] == 0);
-  g_assert (pixel[1] == 0xff);
-  g_assert (pixel[2] == 0xff);
+  test_utils_compare_pixel (pixel, 0x00ffffff);
 
   cogl_pop_gles2_context (test_ctx);
 
@@ -343,9 +337,7 @@ test_gles2_read_pixels (void)
 
   gles2->glReadPixels (0, 0, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, &pixel);
 
-  g_assert (pixel[0] == 0);
-  g_assert (pixel[1] == 0xff);
-  g_assert (pixel[2] == 0xff);
+  test_utils_compare_pixel (pixel, 0x00ffffff);
 
   cogl_pop_gles2_context (test_ctx);
 
@@ -365,9 +357,7 @@ test_gles2_read_pixels (void)
 
   gles2->glReadPixels (0, 0, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, &pixel);
 
-  g_assert (pixel[0] == 0xff);
-  g_assert (pixel[1] == 0xff);
-  g_assert (pixel[2] == 0xff);
+  test_utils_compare_pixel (pixel, 0xffffffff);
 
   cogl_pop_gles2_context (test_ctx);
 }
