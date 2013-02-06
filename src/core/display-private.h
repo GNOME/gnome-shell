@@ -146,7 +146,7 @@ struct _MetaDisplay
   MetaEventQueue *events;
   GSList *screens;
   MetaScreen *active_screen;
-  GHashTable *window_ids;
+  GHashTable *xids;
   int error_traps;
   int (* error_trap_handler) (Display     *display,
                               XErrorEvent *error);  

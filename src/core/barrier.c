@@ -196,7 +196,7 @@ meta_barrier_constructed (GObject *object)
    * so that the object stays alive and doesn't get GC'd. */
   g_object_ref (barrier);
 
-  g_hash_table_insert (priv->display->window_ids, &priv->xbarrier, barrier);
+  g_hash_table_insert (priv->display->xids, &priv->xbarrier, barrier);
 
   G_OBJECT_CLASS (meta_barrier_parent_class)->constructed (object);
 }
@@ -310,7 +310,7 @@ meta_barrier_destroy (MetaBarrier *barrier)
     return;
 
   XFixesDestroyPointerBarrier (dpy, priv->xbarrier);
-  g_hash_table_remove (priv->display->window_ids, &priv->xbarrier);
+  g_hash_table_remove (priv->display->xids, &priv->xbarrier);
   priv->xbarrier = 0;
 
   g_object_unref (barrier);
@@ -360,7 +360,7 @@ meta_display_process_barrier_event (MetaDisplay    *display,
 {
   MetaBarrier *barrier;
 
-  barrier = g_hash_table_lookup (display->window_ids, &xev->barrier);
+  barrier = g_hash_table_lookup (display->xids, &xev->barrier);
   if (barrier != NULL)
     {
       meta_barrier_fire_event (barrier, xev);

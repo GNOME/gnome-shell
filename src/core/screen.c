@@ -1220,7 +1220,7 @@ meta_screen_foreach_window (MetaScreen *screen,
    */
   
   winlist = NULL;
-  g_hash_table_foreach (screen->display->window_ids,
+  g_hash_table_foreach (screen->display->xids,
                         listify_func,
                         &winlist);
   
