@@ -894,7 +894,10 @@ const LoginDialog = new Lang.Class({
     },
 
     cancel: function() {
-        this._userVerifier.cancel();
+        if (this._verifyingUser)
+            this._userVerifier.cancel();
+        else
+            this._reset();
     },
 
     _fadeInPrompt: function() {
