@@ -44,6 +44,7 @@
 #include "window-props.h"
 #include "constraints.h"
 #include "mutter-enum-types.h"
+#include "core.h"
 
 #include <X11/Xatom.h>
 #include <X11/Xlibint.h> /* For display->resource_mask */
