@@ -748,6 +748,8 @@ meta_screen_new (MetaDisplay *display,
     XIEventMask mask = { XIAllMasterDevices, sizeof (mask_bits), mask_bits };
     XWindowAttributes attr;
 
+    meta_core_add_old_event_mask (xdisplay, xroot, &mask);
+
     XISetMask (mask.mask, XI_KeyPress);
     XISetMask (mask.mask, XI_KeyRelease);
     XISetMask (mask.mask, XI_Enter);
