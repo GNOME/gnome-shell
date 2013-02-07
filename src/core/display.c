@@ -381,8 +381,7 @@ sn_error_trap_pop (SnDisplay *sn_display,
 #endif
 
 static void
-enable_compositor (MetaDisplay *display,
-                   gboolean     composite_windows)
+enable_compositor (MetaDisplay *display)
 {
   GSList *list;
 
@@ -408,9 +407,6 @@ enable_compositor (MetaDisplay *display,
       
       meta_compositor_manage_screen (screen->display->compositor,
 				     screen);
-
-      if (composite_windows)
-        meta_screen_composite_all_windows (screen);
     }
 }
 
@@ -906,10 +902,7 @@ meta_display_open (void)
       return FALSE;
     }
 
-  /* We don't composite the windows here because they will be composited 
-     faster with the call to meta_screen_manage_all_windows further down 
-     the code */
-  enable_compositor (the_display, FALSE);
+  enable_compositor (the_display);
    
   meta_display_grab (the_display);
   
