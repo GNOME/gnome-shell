@@ -485,8 +485,7 @@ preview_collection (int font_size,
 
   eventbox = gtk_event_box_new ();
   gtk_container_add (GTK_CONTAINER (eventbox), box);
-  
-  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), eventbox);
+  gtk_container_add (GTK_CONTAINER (sw), eventbox);
 
   desktop_color.red = 0.32;
   desktop_color.green = 0.46;
@@ -709,8 +708,7 @@ previews_of_button_layouts (void)
 
   eventbox = gtk_event_box_new ();
   gtk_container_add (GTK_CONTAINER (eventbox), box);
-  
-  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), eventbox);
+  gtk_container_add (GTK_CONTAINER (sw), eventbox);
 
   desktop_color.red = 0.32;
   desktop_color.green = 0.46;
