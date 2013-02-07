@@ -41,7 +41,7 @@ uniform mat2 fade_area;
  * changing it to scaling [1.0, 0.0] to [0.0, 0.0]
  * and then transforming the end result.
  */
-#define FADE(gradient, factor) (1 - (1 - gradient) * factor)
+#define FADE(gradient, factor) (1.0 - (1.0 - gradient) * factor)
 
 void main ()
 {
@@ -57,10 +57,10 @@ void main ()
     float ratio = 1.0;
     float fade_bottom_start = fade_area[1][1] - vfade_offset;
     float fade_right_start = fade_area[1][0] - hfade_offset;
-    bool fade_top = y < vfade_offset && vvalue > 0;
-    bool fade_bottom = y > fade_bottom_start && vvalue < 1;
-    bool fade_left = x < hfade_offset && hvalue > 0;
-    bool fade_right = x > fade_right_start && hvalue < 1;
+    bool fade_top = y < vfade_offset && vvalue > 0.0;
+    bool fade_bottom = y > fade_bottom_start && vvalue < 1.0;
+    bool fade_left = x < hfade_offset && hvalue > 0.0;
+    bool fade_right = x > fade_right_start && hvalue < 1.0;
 
     float vfade_scale = height / vfade_offset;
     if (fade_top) {
