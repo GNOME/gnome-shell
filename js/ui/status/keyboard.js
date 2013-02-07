@@ -429,11 +429,11 @@ const InputSourceIndicator = new Lang.Class({
 
         if (oldSource) {
             oldSource.menuItem.setShowDot(false);
-            this._container.set_skip_paint(oldSource.indicatorLabel, true);
+            oldSource.indicatorLabel.hide();
         }
 
         newSource.menuItem.setShowDot(true);
-        this._container.set_skip_paint(newSource.indicatorLabel, false);
+        newSource.indicatorLabel.show();
 
         this._buildPropSection(newSource.properties);
 
@@ -510,8 +510,8 @@ const InputSourceIndicator = new Lang.Class({
 
             this.menu.addMenuItem(is.menuItem, menuIndex++);
 
+            is.indicatorLabel.hide();
             this._container.add_actor(is.indicatorLabel);
-            this._container.set_skip_paint(is.indicatorLabel, true);
         }
 
         let sourcesList = [];
