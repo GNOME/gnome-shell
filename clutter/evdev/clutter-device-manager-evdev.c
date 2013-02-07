@@ -494,10 +494,10 @@ clutter_event_source_new (ClutterInputDeviceEvdev *input_device)
   if (type == CLUTTER_KEYBOARD_DEVICE)
     {
       /* create the xkb description */
-      event_source->xkb = _clutter_xkb_desc_new (NULL,
-                                                 option_xkb_layout,
-                                                 option_xkb_variant,
-                                                 option_xkb_options);
+      event_source->xkb = _clutter_xkb_state_new (NULL,
+                                                  option_xkb_layout,
+                                                  option_xkb_variant,
+                                                  option_xkb_options);
       if (G_UNLIKELY (event_source->xkb == NULL))
         {
           g_warning ("Could not compile keymap %s:%s:%s", option_xkb_layout,
