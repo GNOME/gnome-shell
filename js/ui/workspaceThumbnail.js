@@ -176,7 +176,8 @@ const WorkspaceThumbnail = new Lang.Class({
         let monitor = Main.layoutManager.primaryMonitor;
         this.setPorthole(monitor.x, monitor.y, monitor.width, monitor.height);
 
-        let windows = global.get_window_actors().filter(Lang.bind(this, function(win) {
+        let windows = global.get_window_actors().filter(Lang.bind(this, function(actor) {
+            let win = actor.meta_window;
             return win.located_on_workspace(metaWorkspace);
         }));
 
