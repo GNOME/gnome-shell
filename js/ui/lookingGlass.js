@@ -950,9 +950,7 @@ const LookingGlass = new Lang.Class({
 
     _updateFont: function() {
         let fontName = this._interfaceSettings.get_string('monospace-font-name');
-        // This is mishandled by the scanner - should by Pango.FontDescription_from_string(fontName);
-        // https://bugzilla.gnome.org/show_bug.cgi?id=595889
-        let fontDesc = Pango.font_description_from_string(fontName);
+        let fontDesc = Pango.FontDescription.from_string(fontName);
         // We ignore everything but size and style; you'd be crazy to set your system-wide
         // monospace font to be bold/oblique/etc. Could easily be added here.
         this.actor.style =
