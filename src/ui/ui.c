@@ -151,7 +151,7 @@ maybe_redirect_mouse_event (XEvent *xevent)
     return FALSE;
 
   gmanager = gdk_display_get_device_manager (gdisplay);
-  gdevice = gdk_device_manager_get_client_pointer (gmanager);
+  gdevice = gdk_x11_device_manager_lookup (gmanager, META_VIRTUAL_CORE_POINTER_ID);
 
   /* If GDK already thinks it has a grab, we better let it see events; this
    * is the menu-navigation case and events need to get sent to the appropriate
