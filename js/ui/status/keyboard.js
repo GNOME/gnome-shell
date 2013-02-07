@@ -410,6 +410,9 @@ const InputSourceIndicator = new Lang.Class({
         let newSourceIndex = this._settings.get_uint(KEY_CURRENT_INPUT_SOURCE);
         let newSource = this._inputSources[newSourceIndex];
 
+        let oldSource;
+        [oldSource, this._currentSource] = [this._currentSource, newSource];
+
         if (!newSource || (nVisibleSources < 2 && !newSource.properties)) {
             // This source index might be invalid if we weren't able
             // to build a menu item for it, so we hide ourselves since
@@ -423,9 +426,6 @@ const InputSourceIndicator = new Lang.Class({
         }
 
         this.actor.show();
-
-        let oldSource;
-        [oldSource, this._currentSource] = [this._currentSource, newSource];
 
         if (oldSource) {
             oldSource.menuItem.setShowDot(false);
