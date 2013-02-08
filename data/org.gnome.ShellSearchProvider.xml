@@ -46,7 +46,7 @@
     <!--
         GetResultMetas:
         @identifiers: An array of result identifiers as returned by GetInitialResultSet() or GetSubsearchResultSet()
-        @metas: A dictionary describing the given search result, containing 'id' and 'name' (both strings). Optionally, either 'gicon' (a serialized GIcon) or 'icon-data' (raw image data as (iiibiiay) - width, height, rowstride, has-alpha, bits per sample, channels, data) can be specified if the result can be better served with a thumbnail of the content (such as with images).
+        @metas: A dictionary describing the given search result, containing a human-readable 'name' (string), along with the result identifier this meta is for, 'id' (string). Optionally, either 'gicon' (a serialized GIcon) or 'icon-data' (raw image data as (iiibiiay) - width, height, rowstride, has-alpha, bits per sample, channels, data) can be specified if the result can be better served with a thumbnail of the content (such as with images). A 'description' field (string) may also be specified if more context would help the user find the desired result.
 
         Return an array of meta data used to display each given result
     -->
