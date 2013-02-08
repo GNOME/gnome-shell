@@ -294,10 +294,6 @@ const ListSearchResults = new Lang.Class({
         return newResults;
     },
 
-    getVisibleResultCount: function() {
-        return this._content.get_n_children();
-    },
-
     _renderResults: function(metas) {
         for (let i = 0; i < metas.length; i++) {
             let display = new ListSearchResult(this.provider, metas[i], this._terms);
@@ -311,7 +307,7 @@ const ListSearchResults = new Lang.Class({
     },
 
     getFirstResult: function() {
-        if (this.getVisibleResultCount() > 0)
+        if (this._content.get_n_children() > 0)
             return this._content.get_child_at_index(0)._delegate;
         else
             return null;
@@ -340,10 +336,6 @@ const GridSearchResults = new Lang.Class({
         return newResults;
     },
 
-    getVisibleResultCount: function() {
-        return this._grid.visibleItemsCount();
-    },
-
     _renderResults: function(metas) {
         for (let i = 0; i < metas.length; i++) {
             let display = new GridSearchResult(this.provider, metas[i], this._terms);
@@ -357,7 +349,7 @@ const GridSearchResults = new Lang.Class({
     },
 
     getFirstResult: function() {
-        if (this.getVisibleResultCount() > 0)
+        if (this._grid.visibleItemsCount() > 0)
             return this._grid.getItemAtIndex(0)._delegate;
         else
             return null;
