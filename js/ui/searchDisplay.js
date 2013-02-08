@@ -188,6 +188,24 @@ const SearchResultsBase = new Lang.Class({
 
         this._notDisplayedResult = [];
         this._terms = [];
+
+        this.actor = new St.BoxLayout({ style_class: 'search-section',
+                                        vertical: true });
+
+        this._resultDisplayBin = new St.Bin({ x_fill: true,
+                                              y_fill: true });
+        this.actor.add(this._resultDisplayBin, { expand: true });
+
+        let separator = new Separator.HorizontalSeparator({ style_class: 'search-section-separator' });
+        this.actor.add(separator.actor);
+    },
+
+    _clearResultDisplay: function() {
+    },
+
+    clear: function() {
+        this._clearResultDisplay();
+        this.actor.hide();
     },
 
     hasMoreResults: function() {
@@ -210,7 +228,8 @@ const SearchResultsBase = new Lang.Class({
     updateSearch: function(providerResults, terms, callback) {
         this.setResults(providerResults, terms);
         if (providerResults.length == 0) {
-            this.clear();
+            this._clearResultDisplay();
+            this.actor.hide();
             callback();
         } else {
             let results = this.getResultsForDisplay();
@@ -222,6 +241,7 @@ const SearchResultsBase = new Lang.Class({
                 // the first search result stays the same, we hide the
                 // content while filling in the results.
                 this.actor.hide();
+                this._clearResultDisplay();
                 this._renderResults(metas);
                 this._setMoreIconVisible(this.hasMoreResults() && this.provider.canLaunchSearch);
                 this.actor.show();
@@ -238,7 +258,7 @@ const ListSearchResults = new Lang.Class({
     _init: function(provider) {
         this.parent(provider);
 
-        this.actor = new St.BoxLayout({ style_class: 'search-section-content' });
+        this._container = new St.BoxLayout({ style_class: 'search-section-content' });
         this.providerIcon = new ProviderIcon(provider);
         this.providerIcon.connect('clicked', Lang.bind(this,
             function() {
@@ -246,14 +266,16 @@ const ListSearchResults = new Lang.Class({
                 Main.overview.toggle();
             }));
 
-        this.actor.add(this.providerIcon, { x_fill: false,
-                                            y_fill: false,
-                                            x_align: St.Align.START,
-                                            y_align: St.Align.START });
+        this._container.add(this.providerIcon, { x_fill: false,
+                                                 y_fill: false,
+                                                 x_align: St.Align.START,
+                                                 y_align: St.Align.START });
 
         this._content = new St.BoxLayout({ style_class: 'list-search-results',
                                            vertical: true });
-        this.actor.add(this._content, { expand: true });
+        this._container.add(this._content, { expand: true });
+
+        this._resultDisplayBin.set_child(this._container);
     },
 
     _setMoreIconVisible: function(visible) {
@@ -278,7 +300,7 @@ const ListSearchResults = new Lang.Class({
         }
     },
 
-    clear: function () {
+    _clearResultDisplay: function () {
         this._content.destroy_all_children();
     },
 
@@ -300,13 +322,14 @@ const GridSearchResults = new Lang.Class({
 
         this._grid = new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
                                              xAlign: St.Align.START });
-        this.actor = new St.Bin({ x_align: St.Align.MIDDLE });
+        this._bin = new St.Bin({ x_align: St.Align.MIDDLE });
+        this._bin.set_child(this._grid.actor);
 
-        this.actor.set_child(this._grid.actor);
+        this._resultDisplayBin.set_child(this._bin);
     },
 
     getResultsForDisplay: function() {
-        let canDisplay = this._grid.childrenInRow(this.actor.width) * this._grid.getRowLimit();
+        let canDisplay = this._grid.childrenInRow(this._bin.width) * this._grid.getRowLimit();
         let newResults = this._notDisplayedResult.splice(0, canDisplay);
         return newResults;
     },
@@ -323,7 +346,7 @@ const GridSearchResults = new Lang.Class({
         }
     },
 
-    clear: function () {
+    _clearResultDisplay: function () {
         this._grid.removeAll();
     },
 
@@ -399,8 +422,6 @@ const SearchResults = new Lang.Class({
     },
 
     createProviderMeta: function(provider) {
-        let providerBox = new St.BoxLayout({ style_class: 'search-section',
-                                             vertical: true });
         let resultDisplay = null;
 
         if (provider.appInfo) {
@@ -420,16 +441,15 @@ const SearchResults = new Lang.Class({
         providerBox.add(separator.actor);
 
         this._providerMeta.push({ provider: provider,
-                                  actor: providerBox,
                                   resultDisplay: resultDisplay });
-        this._content.add(providerBox);
+        this._content.add(resultDisplay.actor);
     },
 
     destroyProviderMeta: function(provider) {
         for (let i=0; i < this._providerMeta.length; i++) {
             let meta = this._providerMeta[i];
             if (meta.provider == provider) {
-                meta.actor.destroy();
+                meta.resultDisplay.actor.destroy();
                 this._providerMeta.splice(i, 1);
                 break;
             }
@@ -440,7 +460,6 @@ const SearchResults = new Lang.Class({
         for (let i = 0; i < this._providerMeta.length; i++) {
             let meta = this._providerMeta[i];
             meta.resultDisplay.clear();
-            meta.actor.hide();
         }
     },
 
@@ -467,7 +486,7 @@ const SearchResults = new Lang.Class({
         for (let i = 0; i < this._providerMeta.length; i++) {
             let meta = this._providerMeta[i];
 
-            if (!meta.actor.visible)
+            if (!meta.resultDisplay.actor.visible)
                 continue;
 
             let firstResult = meta.resultDisplay.getFirstResult();
@@ -509,7 +528,6 @@ const SearchResults = new Lang.Class({
         let [provider, providerResults] = results;
         let meta = this._metaForProvider(provider);
 
-        meta.actor.visible = providerResults.length > 0;
         meta.resultDisplay.updateSearch(providerResults, terms, Lang.bind(this, function() {
             this._maybeSetInitialSelection();
             this._updateStatusText();
