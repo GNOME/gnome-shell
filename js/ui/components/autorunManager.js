@@ -4,6 +4,7 @@ const Lang = imports.lang;
 const Gio = imports.gi.Gio;
 const St = imports.gi.St;
 
+const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const ShellMountOperation = imports.ui.shellMountOperation;
@@ -161,6 +162,7 @@ const AutorunManager = new Lang.Class({
     Name: 'AutorunManager',
 
     _init: function() {
+        this._session = new GnomeSession.SessionManager();
         this._volumeMonitor = Gio.VolumeMonitor.get();
 
         this._transDispatcher = new AutorunTransientDispatcher(this);
