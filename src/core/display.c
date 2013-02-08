@@ -1837,11 +1837,13 @@ get_input_event (MetaDisplay *display,
           if (((XIEnterEvent *) input_event)->deviceid == META_VIRTUAL_CORE_POINTER_ID)
             return input_event;
           break;
+#ifdef HAVE_XI23
         case XI_BarrierHit:
         case XI_BarrierLeave:
           if (((XIBarrierEvent *) input_event)->deviceid == META_VIRTUAL_CORE_POINTER_ID)
             return input_event;
           break;
+#endif /* HAVE_XI23 */
         default:
           break;
         }
