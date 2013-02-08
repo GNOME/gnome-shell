@@ -205,13 +205,10 @@ const ListSearchResults = new Lang.Class({
 
         this._notDisplayedResult = [];
         this._terms = [];
-        this._pendingClear = false;
     },
 
     getResultsForDisplay: function() {
-        let alreadyVisible = this._pendingClear ? 0 : this.getVisibleResultCount();
-        let canDisplay = MAX_LIST_SEARCH_RESULTS_ROWS - alreadyVisible;
-
+        let canDisplay = MAX_LIST_SEARCH_RESULTS_ROWS;
         let newResults = this._notDisplayedResult.splice(0, canDisplay);
         return newResults;
     },
@@ -228,7 +225,6 @@ const ListSearchResults = new Lang.Class({
         // copy the lists
         this._notDisplayedResult = results.slice(0);
         this._terms = terms.slice(0);
-        this._pendingClear = true;
     },
 
     _keyFocusIn: function(icon) {
@@ -245,7 +241,6 @@ const ListSearchResults = new Lang.Class({
 
     clear: function () {
         this._content.destroy_all_children();
-        this._pendingClear = false;
     },
 
     getFirstResult: function() {
@@ -271,14 +266,10 @@ const GridSearchResults = new Lang.Class({
 
         this._notDisplayedResult = [];
         this._terms = [];
-        this._pendingClear = false;
     },
 
     getResultsForDisplay: function() {
-        let alreadyVisible = this._pendingClear ? 0 : this._grid.visibleItemsCount();
-        let canDisplay = this._grid.childrenInRow(this.actor.width) * this._grid.getRowLimit()
-                         - alreadyVisible;
-
+        let canDisplay = this._grid.childrenInRow(this.actor.width) * this._grid.getRowLimit();
         let newResults = this._notDisplayedResult.splice(0, canDisplay);
         return newResults;
     },
@@ -295,7 +286,6 @@ const GridSearchResults = new Lang.Class({
         // copy the lists
         this._notDisplayedResult = results.slice(0);
         this._terms = terms.slice(0);
-        this._pendingClear = true;
     },
 
     _keyFocusIn: function(icon) {
@@ -312,7 +302,6 @@ const GridSearchResults = new Lang.Class({
 
     clear: function () {
         this._grid.removeAll();
-        this._pendingClear = false;
     },
 
     getFirstResult: function() {
