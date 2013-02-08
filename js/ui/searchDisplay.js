@@ -202,6 +202,41 @@ const SearchResultsBase = new Lang.Class({
         // copy the lists
         this._notDisplayedResult = results.slice(0);
         this._terms = terms.slice(0);
+    },
+
+    _setMoreIconVisible: function(visible) {
+    },
+
+    updateSearch: function(providerResults, terms, callback) {
+        this.setResults(providerResults, terms);
+        if (providerResults.length == 0) {
+            this.clear();
+            callback();
+        } else {
+            let results = this.getResultsForDisplay();
+
+            this.provider.getResultMetas(results, Lang.bind(this, function(metas) {
+                this.clear();
+
+                // Hiding drops the key focus if we have it
+                let focus = global.stage.get_key_focus();
+
+                // To avoid CSS transitions causing flickering when
+                // the first search result stays the same, we hide the
+                // content while filling in the results.
+                this.actor.hide();
+
+                this.renderResults(metas);
+
+                this._setMoreIconVisible(this.hasMoreResults() && this.provider.canLaunchSearch);
+
+                this.actor.show();
+                if (this.actor.contains(focus))
+                    global.stage.set_key_focus(focus);
+
+                callback();
+            }));
+        }
     }
 });
 
@@ -228,6 +263,10 @@ const ListSearchResults = new Lang.Class({
         this._content = new St.BoxLayout({ style_class: 'list-search-results',
                                            vertical: true });
         this.actor.add(this._content, { expand: true });
+    },
+
+    _setMoreIconVisible: function(visible) {
+        this.providerIcon.moreIcon.visible = true;
     },
 
     getResultsForDisplay: function() {
@@ -482,41 +521,11 @@ const SearchResults = new Lang.Class({
         let [provider, providerResults] = results;
         let meta = this._metaForProvider(provider);
 
-        if (providerResults.length == 0) {
-            meta.resultDisplay.clear();
-            meta.actor.hide();
-            meta.resultDisplay.setResults([], []);
+        meta.actor.visible = providerResults.length > 0;
+        meta.resultDisplay.updateSearch(providerResults, terms, Lang.bind(this, function() {
             this._maybeSetInitialSelection();
             this._updateStatusText();
-        } else {
-            meta.resultDisplay.setResults(providerResults, terms);
-            let results = meta.resultDisplay.getResultsForDisplay();
-
-            if (meta.icon)
-                meta.icon.moreIcon.visible =
-                    meta.resultDisplay.hasMoreResults() &&
-                    provider.canLaunchSearch;
-
-            provider.getResultMetas(results, Lang.bind(this, function(metas) {
-                meta.resultDisplay.clear();
-                meta.actor.show();
-
-                // Hiding drops the key focus if we have it
-                let focus = global.stage.get_key_focus();
-                // To avoid CSS transitions causing flickering when
-                // the first search result stays the same, we hide the
-                // content while filling in the results.
-                this._content.hide();
-
-                meta.resultDisplay.renderResults(metas);
-                this._maybeSetInitialSelection();
-                this._updateStatusText();
-
-                this._content.show();
-                if (this._content.contains(focus))
-                    global.stage.set_key_focus(focus);
-            }));
-        }
+        }));
     },
 
     activateDefault: function() {
