@@ -745,7 +745,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
           }
 
         if (source_device)
-          _clutter_input_device_reset_scroll_info (device);
+          _clutter_input_device_reset_scroll_info (source_device);
       }
       retval = CLUTTER_TRANSLATE_REMOVE;
       break;
