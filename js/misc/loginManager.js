@@ -222,7 +222,7 @@ const LoginManagerConsoleKit = new Lang.Class({
     },
 
     canSuspend: function(asyncCallback) {
-        return false;
+        asyncCallback(false);
     },
 
     powerOff: function() {
