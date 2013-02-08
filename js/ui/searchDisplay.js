@@ -401,12 +401,10 @@ const SearchResults = new Lang.Class({
     createProviderMeta: function(provider) {
         let providerBox = new St.BoxLayout({ style_class: 'search-section',
                                              vertical: true });
-        let providerIcon = null;
         let resultDisplay = null;
 
         if (provider.appInfo) {
             resultDisplay = new ListSearchResults(provider);
-            providerIcon = resultDisplay.providerIcon;
         } else {
             resultDisplay = new GridSearchResults(provider);
         }
@@ -423,7 +421,6 @@ const SearchResults = new Lang.Class({
 
         this._providerMeta.push({ provider: provider,
                                   actor: providerBox,
-                                  icon: providerIcon,
                                   resultDisplay: resultDisplay });
         this._content.add(providerBox);
     },
