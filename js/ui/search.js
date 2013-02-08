@@ -323,6 +323,8 @@ const SearchResultsBase = new Lang.Class({
 
         let separator = new Separator.HorizontalSeparator({ style_class: 'search-section-separator' });
         this.actor.add(separator.actor);
+
+        this._resultDisplays = {};
     },
 
     destroy: function() {
@@ -334,6 +336,7 @@ const SearchResultsBase = new Lang.Class({
     },
 
     clear: function() {
+        this._resultDisplays = {};
         this._clearResultDisplay();
         this.actor.hide();
     },
@@ -349,6 +352,27 @@ const SearchResultsBase = new Lang.Class({
     _setMoreIconVisible: function(visible) {
     },
 
+    _ensureResultActors: function(results, callback) {
+        let metasNeeded = results.filter(Lang.bind(this, function(resultId) {
+            return this._resultDisplays[resultId] === undefined;
+        }));
+
+        if (metasNeeded.length === 0) {
+            callback();
+        } else {
+            this.provider.getResultMetas(metasNeeded, Lang.bind(this, function(metas) {
+                metasNeeded.forEach(Lang.bind(this, function(resultId, i) {
+                    let meta = metas[i];
+                    let display = this._createResultDisplay(meta);
+                    display.connect('activate', Lang.bind(this, this._activateResult));
+                    display.actor.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
+                    this._resultDisplays[resultId] = display;
+                }));
+                callback();
+            }));
+        }
+    },
+
     updateSearch: function(providerResults, terms, callback) {
         this._terms = terms;
 
@@ -361,15 +385,17 @@ const SearchResultsBase = new Lang.Class({
             let results = this.provider.filterResults(providerResults, maxResults);
             let hasMoreResults = results.length < providerResults.length;
 
-            this.provider.getResultMetas(results, Lang.bind(this, function(metas) {
-                this.clear();
+            this._ensureResultActors(results, Lang.bind(this, function() {
+                this._clearResultDisplay();
 
                 // To avoid CSS transitions causing flickering when
                 // the first search result stays the same, we hide the
                 // content while filling in the results.
                 this.actor.hide();
                 this._clearResultDisplay();
-                this._renderResults(metas);
+                results.forEach(Lang.bind(this, function(resultId) {
+                    this._addItem(this._resultDisplays[resultId]);
+                }));
                 this._setMoreIconVisible(hasMoreResults && this.provider.canLaunchSearch);
                 this.actor.show();
                 callback();
@@ -414,17 +440,16 @@ const ListSearchResults = new Lang.Class({
         return MAX_LIST_SEARCH_RESULTS_ROWS;
     },
 
-    _renderResults: function(metas) {
-        for (let i = 0; i < metas.length; i++) {
-            let display = new ListSearchResult(this.provider, metas[i]);
-            display.connect('activate', Lang.bind(this, this._activateResult));
-            display.actor.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
-            this._content.add_actor(display.actor);
-        }
+    _clearResultDisplay: function () {
+        this._content.remove_all_children();
     },
 
-    _clearResultDisplay: function () {
-        this._content.destroy_all_children();
+    _createResultDisplay: function(meta) {
+        return new ListSearchResult(this.provider, meta);
+    },
+
+    _addItem: function(display) {
+        this._content.add_actor(display.actor);
     },
 
     getFirstResult: function() {
@@ -466,6 +491,14 @@ const GridSearchResults = new Lang.Class({
 
     _clearResultDisplay: function () {
         this._grid.removeAll();
+    },
+
+    _createResultDisplay: function(meta) {
+        return new GridSearchResult(this.provider, meta);
+    },
+
+    _addItem: function(display) {
+        this._grid.addItem(display.actor);
     },
 
     getFirstResult: function() {

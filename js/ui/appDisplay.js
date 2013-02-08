@@ -92,7 +92,7 @@ const BaseAppView = new Lang.Class({
     },
 
     removeAll: function() {
-        this._grid.removeAll();
+        this._grid.destroyAll();
         this._items = {};
         this._allItems = [];
     },
@@ -611,6 +611,10 @@ const FrequentView = new Lang.Class({
 
     hasUsefulData: function() {
         return this._usage.get_most_used("").length >= MIN_FREQUENT_APPS_COUNT;
+    },
+
+    removeAll: function() {
+        this._grid.destroyAll();
     },
 
     loadApps: function() {
