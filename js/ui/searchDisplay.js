@@ -180,11 +180,37 @@ const GridSearchResult = new Lang.Class({
     }
 });
 
-const ListSearchResults = new Lang.Class({
-    Name: 'ListSearchResults',
+const SearchResultsBase = new Lang.Class({
+    Name: 'SearchResultsBase',
 
     _init: function(provider) {
         this.provider = provider;
+
+        this._notDisplayedResult = [];
+        this._terms = [];
+    },
+
+    hasMoreResults: function() {
+        return this._notDisplayedResult.length > 0;
+    },
+
+    _keyFocusIn: function(icon) {
+        this.emit('key-focus-in', icon);
+    },
+
+    setResults: function(results, terms) {
+        // copy the lists
+        this._notDisplayedResult = results.slice(0);
+        this._terms = terms.slice(0);
+    }
+});
+
+const ListSearchResults = new Lang.Class({
+    Name: 'ListSearchResults',
+    Extends: SearchResultsBase,
+
+    _init: function(provider) {
+        this.parent(provider);
 
         this.actor = new St.BoxLayout({ style_class: 'search-section-content' });
         this.providerIcon = new ProviderIcon(provider);
@@ -202,9 +228,6 @@ const ListSearchResults = new Lang.Class({
         this._content = new St.BoxLayout({ style_class: 'list-search-results',
                                            vertical: true });
         this.actor.add(this._content, { expand: true });
-
-        this._notDisplayedResult = [];
-        this._terms = [];
     },
 
     getResultsForDisplay: function() {
@@ -215,20 +238,6 @@ const ListSearchResults = new Lang.Class({
 
     getVisibleResultCount: function() {
         return this._content.get_n_children();
-    },
-
-    hasMoreResults: function() {
-        return this._notDisplayedResult.length > 0;
-    },
-
-    setResults: function(results, terms) {
-        // copy the lists
-        this._notDisplayedResult = results.slice(0);
-        this._terms = terms.slice(0);
-    },
-
-    _keyFocusIn: function(icon) {
-        this.emit('key-focus-in', icon);
     },
 
     renderResults: function(metas) {
@@ -254,18 +263,16 @@ Signals.addSignalMethods(ListSearchResults.prototype);
 
 const GridSearchResults = new Lang.Class({
     Name: 'GridSearchResults',
+    Extends: SearchResultsBase,
 
     _init: function(provider) {
-        this.provider = provider;
+        this.parent(provider);
 
         this._grid = new IconGrid.IconGrid({ rowLimit: MAX_GRID_SEARCH_RESULTS_ROWS,
                                              xAlign: St.Align.START });
         this.actor = new St.Bin({ x_align: St.Align.MIDDLE });
 
         this.actor.set_child(this._grid.actor);
-
-        this._notDisplayedResult = [];
-        this._terms = [];
     },
 
     getResultsForDisplay: function() {
@@ -276,20 +283,6 @@ const GridSearchResults = new Lang.Class({
 
     getVisibleResultCount: function() {
         return this._grid.visibleItemsCount();
-    },
-
-    hasMoreResults: function() {
-        return this._notDisplayedResult.length > 0;
-    },
-
-    setResults: function(results, terms) {
-        // copy the lists
-        this._notDisplayedResult = results.slice(0);
-        this._terms = terms.slice(0);
-    },
-
-    _keyFocusIn: function(icon) {
-        this.emit('key-focus-in', icon);
     },
 
     renderResults: function(metas) {
