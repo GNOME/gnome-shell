@@ -417,12 +417,6 @@ const SearchResults = new Lang.Class({
         }
     },
 
-    _clearDisplayForProvider: function(provider) {
-        let meta = this._metaForProvider(provider);
-        meta.resultDisplay.clear();
-        meta.actor.hide();
-    },
-
     reset: function() {
         this._searchSystem.reset();
         this._statusBin.hide();
@@ -489,7 +483,8 @@ const SearchResults = new Lang.Class({
         let meta = this._metaForProvider(provider);
 
         if (providerResults.length == 0) {
-            this._clearDisplayForProvider(provider);
+            meta.resultDisplay.clear();
+            meta.actor.hide();
             meta.resultDisplay.setResults([], []);
             this._maybeSetInitialSelection();
             this._updateStatusText();
@@ -503,7 +498,7 @@ const SearchResults = new Lang.Class({
                     provider.canLaunchSearch;
 
             provider.getResultMetas(results, Lang.bind(this, function(metas) {
-                this._clearDisplayForProvider(provider);
+                meta.resultDisplay.clear();
                 meta.actor.show();
 
                 // Hiding drops the key focus if we have it
