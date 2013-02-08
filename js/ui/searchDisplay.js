@@ -186,7 +186,6 @@ const SearchResultsBase = new Lang.Class({
     _init: function(provider) {
         this.provider = provider;
 
-        this._notDisplayedResult = [];
         this._terms = [];
 
         this.actor = new St.BoxLayout({ style_class: 'search-section',
@@ -202,7 +201,6 @@ const SearchResultsBase = new Lang.Class({
 
     destroy: function() {
         this.actor.destroy();
-        this._notDisplayedResult = [];
         this._terms = [];
     },
 
@@ -214,31 +212,24 @@ const SearchResultsBase = new Lang.Class({
         this.actor.hide();
     },
 
-    hasMoreResults: function() {
-        return this._notDisplayedResult.length > 0;
-    },
-
     _keyFocusIn: function(icon) {
         this.emit('key-focus-in', icon);
-    },
-
-    setResults: function(results, terms) {
-        // copy the lists
-        this._notDisplayedResult = results.slice(0);
-        this._terms = terms.slice(0);
     },
 
     _setMoreIconVisible: function(visible) {
     },
 
     updateSearch: function(providerResults, terms, callback) {
-        this.setResults(providerResults, terms);
+        this._terms = terms;
+
         if (providerResults.length == 0) {
             this._clearResultDisplay();
             this.actor.hide();
             callback();
         } else {
-            let results = this.getResultsForDisplay();
+            let maxResults = this._getMaxDisplayedResults();
+            let results = providerResults.slice(0, maxResults);
+            let hasMoreResults = results.length < providerResults.length;
 
             this.provider.getResultMetas(results, Lang.bind(this, function(metas) {
                 this.clear();
@@ -249,7 +240,7 @@ const SearchResultsBase = new Lang.Class({
                 this.actor.hide();
                 this._clearResultDisplay();
                 this._renderResults(metas);
-                this._setMoreIconVisible(this.hasMoreResults() && this.provider.canLaunchSearch);
+                this._setMoreIconVisible(hasMoreResults && this.provider.canLaunchSearch);
                 this.actor.show();
                 callback();
             }));
@@ -288,10 +279,8 @@ const ListSearchResults = new Lang.Class({
         this.providerIcon.moreIcon.visible = true;
     },
 
-    getResultsForDisplay: function() {
-        let canDisplay = MAX_LIST_SEARCH_RESULTS_ROWS;
-        let newResults = this._notDisplayedResult.splice(0, canDisplay);
-        return newResults;
+    _getMaxDisplayedResults: function() {
+        return MAX_LIST_SEARCH_RESULTS_ROWS;
     },
 
     _renderResults: function(metas) {
@@ -330,10 +319,8 @@ const GridSearchResults = new Lang.Class({
         this._resultDisplayBin.set_child(this._bin);
     },
 
-    getResultsForDisplay: function() {
-        let canDisplay = this._grid.childrenInRow(this._bin.width) * this._grid.getRowLimit();
-        let newResults = this._notDisplayedResult.splice(0, canDisplay);
-        return newResults;
+    _getMaxDisplayedResults: function() {
+        return this._grid.childrenInRow(this._bin.width) * this._grid.getRowLimit();
     },
 
     _renderResults: function(metas) {
