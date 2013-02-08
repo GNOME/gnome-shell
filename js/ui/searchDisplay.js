@@ -200,6 +200,12 @@ const SearchResultsBase = new Lang.Class({
         this.actor.add(separator.actor);
     },
 
+    destroy: function() {
+        this.actor.destroy();
+        this._notDisplayedResult = [];
+        this._terms = [];
+    },
+
     _clearResultDisplay: function() {
     },
 
@@ -401,9 +407,9 @@ const SearchResults = new Lang.Class({
         this._content.add(this._statusBin, { expand: true });
         this._statusBin.add_actor(this._statusText);
         this._providers = this._searchSystem.getProviders();
-        this._providerMeta = [];
+        this._providerDisplays = {};
         for (let i = 0; i < this._providers.length; i++) {
-            this.createProviderMeta(this._providers[i]);
+            this.createProviderDisplay(this._providers[i]);
         }
 
         this._highlightDefault = false;
@@ -421,45 +427,30 @@ const SearchResults = new Lang.Class({
         Util.ensureActorVisibleInScrollView(this._scrollView, icon);
     },
 
-    createProviderMeta: function(provider) {
-        let resultDisplay = null;
+    createProviderDisplay: function(provider) {
+        let providerDisplay = null;
 
         if (provider.appInfo) {
-            resultDisplay = new ListSearchResults(provider);
+            providerDisplay = new ListSearchResults(provider);
         } else {
-            resultDisplay = new GridSearchResults(provider);
+            providerDisplay = new GridSearchResults(provider);
         }
 
-        resultDisplay.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
-
-        let resultDisplayBin = new St.Bin({ child: resultDisplay.actor,
-                                            x_fill: true,
-                                            y_fill: true });
-        providerBox.add(resultDisplayBin, { expand: true });
-
-        let separator = new Separator.HorizontalSeparator({ style_class: 'search-section-separator' });
-        providerBox.add(separator.actor);
-
-        this._providerMeta.push({ provider: provider,
-                                  resultDisplay: resultDisplay });
-        this._content.add(resultDisplay.actor);
+        providerDisplay.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
+        this._providerDisplays[provider.id] = providerDisplay;
+        this._content.add(providerDisplay.actor);
     },
 
-    destroyProviderMeta: function(provider) {
-        for (let i=0; i < this._providerMeta.length; i++) {
-            let meta = this._providerMeta[i];
-            if (meta.provider == provider) {
-                meta.resultDisplay.actor.destroy();
-                this._providerMeta.splice(i, 1);
-                break;
-            }
-        }
+    destroyProviderDisplay: function(provider) {
+        this._providerDisplays[provider.id].destroy();
+        delete this._providerDisplays[provider.id];
     },
 
     _clearDisplay: function() {
-        for (let i = 0; i < this._providerMeta.length; i++) {
-            let meta = this._providerMeta[i];
-            meta.resultDisplay.clear();
+        for (let i = 0; i < this._providers.length; i++) {
+            let provider = this._providers[i];
+            let providerDisplay = this._providerDisplays[provider.id];
+            providerDisplay.clear();
         }
     },
 
@@ -476,20 +467,17 @@ const SearchResults = new Lang.Class({
         this._statusBin.show();
     },
 
-    _metaForProvider: function(provider) {
-        return this._providerMeta[this._providers.indexOf(provider)];
-    },
-
     _maybeSetInitialSelection: function() {
         let newDefaultResult = null;
 
-        for (let i = 0; i < this._providerMeta.length; i++) {
-            let meta = this._providerMeta[i];
+        for (let i = 0; i < this._providers.length; i++) {
+            let provider = this._providers[i];
+            let display = this._providerDisplays[provider.id];
 
-            if (!meta.resultDisplay.actor.visible)
+            if (!display.actor.visible)
                 continue;
 
-            let firstResult = meta.resultDisplay.getFirstResult();
+            let firstResult = display.getFirstResult();
             if (firstResult) {
                 newDefaultResult = firstResult;
                 break; // select this one!
@@ -509,11 +497,14 @@ const SearchResults = new Lang.Class({
     _updateStatusText: function () {
         let haveResults = false;
 
-        for (let i = 0; i < this._providerMeta.length; ++i)
-            if (this._providerMeta[i].resultDisplay.getFirstResult()) {
+        for (let i = 0; i < this._providers.length; i++) {
+            let provider = this._providers[i];
+            let display = this._providerDisplays[provider.id];
+            if (display.getFirstResult()) {
                 haveResults = true;
                 break;
             }
+        }
 
         if (!haveResults) {
             this._statusText.set_text(_("No results."));
@@ -526,9 +517,9 @@ const SearchResults = new Lang.Class({
     _updateResults: function(searchSystem, results) {
         let terms = searchSystem.getTerms();
         let [provider, providerResults] = results;
-        let meta = this._metaForProvider(provider);
+        let display = this._providerDisplays[provider.id];
 
-        meta.resultDisplay.updateSearch(providerResults, terms, Lang.bind(this, function() {
+        display.updateSearch(providerResults, terms, Lang.bind(this, function() {
             this._maybeSetInitialSelection();
             this._updateStatusText();
         }));

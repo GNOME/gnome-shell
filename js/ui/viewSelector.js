@@ -508,12 +508,12 @@ const ViewSelector = new Lang.Class({
             return;
 
         this._searchSystem.registerProvider(provider);
-        this._searchResults.createProviderMeta(provider);
+        this._searchResults.createProviderDisplay(provider);
     },
 
     removeSearchProvider: function(provider) {
         this._searchSystem.unregisterProvider(provider);
-        this._searchResults.destroyProviderMeta(provider);
+        this._searchResults.destroyProviderDisplay(provider);
     },
 
     getActivePage: function() {
