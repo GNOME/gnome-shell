@@ -423,6 +423,7 @@ const SearchResults = new Lang.Class({
         this._searchSystem.reset();
         this._statusBin.hide();
         this._clearDisplay();
+        this._defaultResult = null;
     },
 
     startingSearch: function() {
