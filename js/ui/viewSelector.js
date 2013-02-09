@@ -423,8 +423,7 @@ const ViewSelector = new Lang.Class({
 
     _doSearch: function () {
         this._searchTimeoutId = 0;
-        let text = this._text.get_text().replace(/^\s+/g, '').replace(/\s+$/g, '');
-        this._searchResults.doSearch(text);
+        this._searchResults.doSearch(this._text.text);
 
         this._showPage(this._searchPage);
     },
