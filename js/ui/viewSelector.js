@@ -35,6 +35,14 @@ const FocusTrap = new Lang.Class({
     }
 });
 
+function getTermsForSearchString(searchString) {
+    searchString = searchString.replace(/^\s+/g, '').replace(/\s+$/g, '');
+    if (searchString == '')
+        return [];
+
+    let terms = searchString.split(/\s+/);
+    return terms;
+}
 
 const ViewSelector = new Lang.Class({
     Name: 'ViewSelector',
@@ -328,8 +336,10 @@ const ViewSelector = new Lang.Class({
     },
 
     _onTextChanged: function (se, prop) {
+        let terms = getTermsForSearchString(this._entry.get_text());
+
         let searchPreviouslyActive = this._searchActive;
-        this._searchActive = this._entry.get_text() != '';
+        this._searchActive = (terms.length > 0);
 
         let startSearch = this._searchActive && !searchPreviouslyActive;
         if (startSearch)
@@ -423,8 +433,10 @@ const ViewSelector = new Lang.Class({
 
     _doSearch: function () {
         this._searchTimeoutId = 0;
-        this._searchSystem.updateSearch(this._text.text);
 
+        let terms = getTermsForSearchString(this._entry.get_text());
+
+        this._searchSystem.updateSearchResults(terms);
         this._showPage(this._searchPage);
     },
 

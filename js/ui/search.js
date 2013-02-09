@@ -60,15 +60,6 @@ const SearchSystem = new Lang.Class({
         this.emit('search-updated', this._previousResults[i]);
     },
 
-    updateSearch: function(searchString) {
-        searchString = searchString.replace(/^\s+/g, '').replace(/\s+$/g, '');
-        if (searchString == '')
-            return;
-
-        let terms = searchString.split(/\s+/);
-        this.updateSearchResults(terms);
-    },
-
     updateSearchResults: function(terms) {
         if (!terms)
             return;
