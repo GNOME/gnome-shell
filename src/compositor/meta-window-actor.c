@@ -362,9 +362,9 @@ meta_window_actor_constructed (GObject *object)
 
   meta_window_actor_update_opacity (self);
 
-  /* Force a reshape to ensure that we always have a set shape_region. */
-  meta_window_actor_update_shape (self);
-  check_needs_reshape (self);
+  /* Start off with an empty region to maintain the invariant that
+     the shape region is always set */
+  priv->shape_region = cairo_region_create();
 }
 
 static void
