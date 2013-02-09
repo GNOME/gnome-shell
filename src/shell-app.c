@@ -53,7 +53,7 @@ typedef struct {
  * SECTION:shell-app
  * @short_description: Object representing an application
  *
- * This object wraps a #GMenuTreeEntry, providing methods and signals
+ * This object wraps a #GDesktopAppInfo, providing methods and signals
  * primarily useful for running applications.
  */
 struct _ShellApp
@@ -64,7 +64,7 @@ struct _ShellApp
 
   ShellAppState state;
 
-  GMenuTreeEntry *entry; /* If NULL, this app is backed by one or more
+  GDesktopAppInfo *info; /* If NULL, this app is backed by one or more
                           * MetaWindow.  For purposes of app title
                           * etc., we use the first window added,
                           * because it's most likely to be what we
@@ -137,15 +137,15 @@ shell_app_get_property (GObject    *gobject,
 const char *
 shell_app_get_id (ShellApp *app)
 {
-  if (app->entry)
-    return gmenu_tree_entry_get_desktop_file_id (app->entry);
+  if (app->info)
+    return g_app_info_get_id (G_APP_INFO (app->info));
   return app->window_id_string;
 }
 
 static MetaWindow *
 window_backed_app_get_window (ShellApp     *app)
 {
-  g_assert (app->entry == NULL);
+  g_assert (app->info == NULL);
   g_assert (app->running_state);
   g_assert (app->running_state->windows);
   return app->running_state->windows->data;
@@ -194,10 +194,10 @@ shell_app_create_icon_texture (ShellApp   *app,
 
   ret = NULL;
 
-  if (app->entry == NULL)
+  if (app->info == NULL)
     return window_backed_app_get_icon (app, size);
 
-  icon = g_app_info_get_icon (G_APP_INFO (gmenu_tree_entry_get_app_info (app->entry)));
+  icon = g_app_info_get_icon (G_APP_INFO (app->info));
   if (icon != NULL)
     ret = st_texture_cache_load_gicon (st_texture_cache_get_default (), NULL, icon, size);
 
@@ -245,7 +245,7 @@ shell_app_create_faded_icon_cpu (StTextureCache *cache,
 
   info = NULL;
 
-  icon = g_app_info_get_icon (G_APP_INFO (gmenu_tree_entry_get_app_info (app->entry)));
+  icon = g_app_info_get_icon (G_APP_INFO (app->info));
   if (icon != NULL)
     {
       info = gtk_icon_theme_lookup_by_gicon (gtk_icon_theme_get_default (),
@@ -347,7 +347,7 @@ shell_app_get_faded_icon (ShellApp *app, int size, ClutterTextDirection directio
    * property tracking bits, and this helps us visually distinguish
    * app-tracked from not.
    */
-  if (!app->entry)
+  if (!app->info)
     return window_backed_app_get_icon (app, size);
 
   /* Use icon: prefix so that we get evicted from the cache on
@@ -384,8 +384,8 @@ shell_app_get_faded_icon (ShellApp *app, int size, ClutterTextDirection directio
 const char *
 shell_app_get_name (ShellApp *app)
 {
-  if (app->entry)
-    return g_app_info_get_name (G_APP_INFO (gmenu_tree_entry_get_app_info (app->entry)));
+  if (app->info)
+    return g_app_info_get_name (G_APP_INFO (app->info));
   else
     {
       MetaWindow *window = window_backed_app_get_window (app);
@@ -401,8 +401,8 @@ shell_app_get_name (ShellApp *app)
 const char *
 shell_app_get_description (ShellApp *app)
 {
-  if (app->entry)
-    return g_app_info_get_description (G_APP_INFO (gmenu_tree_entry_get_app_info (app->entry)));
+  if (app->info)
+    return g_app_info_get_description (G_APP_INFO (app->info));
   else
     return NULL;
 }
@@ -417,7 +417,7 @@ shell_app_get_description (ShellApp *app)
 gboolean
 shell_app_is_window_backed (ShellApp *app)
 {
-  return app->entry == NULL;
+  return app->info == NULL;
 }
 
 typedef struct {
@@ -665,7 +665,7 @@ void
 shell_app_open_new_window (ShellApp      *app,
                            int            workspace)
 {
-  g_return_if_fail (app->entry != NULL);
+  g_return_if_fail (app->info != NULL);
 
   /* Here we just always launch the application again, even if we know
    * it was already running.  For most applications this
@@ -855,25 +855,24 @@ _shell_app_new_for_window (MetaWindow      *window)
 }
 
 ShellApp *
-_shell_app_new (GMenuTreeEntry *info)
+_shell_app_new (GDesktopAppInfo *info)
 {
   ShellApp *app;
 
   app = g_object_new (SHELL_TYPE_APP, NULL);
 
-  _shell_app_set_entry (app, info);
+  _shell_app_set_app_info (app, info);
 
   return app;
 }
 
 void
-_shell_app_set_entry (ShellApp       *app,
-                      GMenuTreeEntry *entry)
+_shell_app_set_app_info (ShellApp        *app,
+                         GDesktopAppInfo *info)
 {
-  if (app->entry != NULL)
-    gmenu_tree_item_unref (app->entry);
-  app->entry = gmenu_tree_item_ref (entry);
-  
+  g_clear_object (&app->info);
+  app->info = g_object_ref (info);
+
   if (app->name_collation_key != NULL)
     g_free (app->name_collation_key);
   app->name_collation_key = g_utf8_collate_key (shell_app_get_name (app), -1);
@@ -1174,14 +1173,13 @@ shell_app_launch (ShellApp     *app,
                   int           workspace,
                   GError      **error)
 {
-  GDesktopAppInfo *gapp;
   GdkAppLaunchContext *context;
   gboolean ret;
   ShellGlobal *global;
   MetaScreen *screen;
   GdkDisplay *gdisplay;
 
-  if (app->entry == NULL)
+  if (app->info == NULL)
     {
       MetaWindow *window = window_backed_app_get_window (app);
       meta_window_activate (window, timestamp);
@@ -1202,8 +1200,7 @@ shell_app_launch (ShellApp     *app,
   gdk_app_launch_context_set_timestamp (context, timestamp);
   gdk_app_launch_context_set_desktop (context, workspace);
 
-  gapp = gmenu_tree_entry_get_app_info (app->entry);
-  ret = g_desktop_app_info_launch_uris_as_manager (gapp, NULL,
+  ret = g_desktop_app_info_launch_uris_as_manager (app->info, NULL,
                                                    G_APP_LAUNCH_CONTEXT (context),
                                                    G_SPAWN_SEARCH_PATH | G_SPAWN_DO_NOT_REAP_CHILD,
                                                    NULL, NULL,
@@ -1223,21 +1220,7 @@ shell_app_launch (ShellApp     *app,
 GDesktopAppInfo *
 shell_app_get_app_info (ShellApp *app)
 {
-  if (app->entry)
-    return gmenu_tree_entry_get_app_info (app->entry);
-  return NULL;
-}
-
-/**
- * shell_app_get_tree_entry:
- * @app: a #ShellApp
- *
- * Returns: (transfer none): The #GMenuTreeEntry for this app, or %NULL if backed by a window
- */
-GMenuTreeEntry *
-shell_app_get_tree_entry (ShellApp *app)
-{
-  return app->entry;
+  return app->info;
 }
 
 static void
@@ -1352,24 +1335,22 @@ shell_app_init_search_data (ShellApp *app)
   const char *exec;
   const char * const *keywords;
   char *normalized_exec;
-  GDesktopAppInfo *appinfo;
 
-  appinfo = gmenu_tree_entry_get_app_info (app->entry);
-  name = g_app_info_get_name (G_APP_INFO (appinfo));
+  name = g_app_info_get_name (G_APP_INFO (app->info));
   app->casefolded_name = shell_util_normalize_casefold_and_unaccent (name);
 
-  generic_name = g_desktop_app_info_get_generic_name (appinfo);
+  generic_name = g_desktop_app_info_get_generic_name (app->info);
   if (generic_name)
     app->casefolded_generic_name = shell_util_normalize_casefold_and_unaccent (generic_name);
   else
     app->casefolded_generic_name = NULL;
 
-  exec = g_app_info_get_executable (G_APP_INFO (appinfo));
+  exec = g_app_info_get_executable (G_APP_INFO (app->info));
   normalized_exec = shell_util_normalize_casefold_and_unaccent (exec);
   app->casefolded_exec = trim_exec_line (normalized_exec);
   g_free (normalized_exec);
 
-  keywords = g_desktop_app_info_get_keywords (appinfo);
+  keywords = g_desktop_app_info_get_keywords (app->info);
 
   if (keywords)
     {
@@ -1490,16 +1471,14 @@ _shell_app_do_match (ShellApp         *app,
                      GSList          **substring_results)
 {
   ShellAppSearchMatch match;
-  GAppInfo *appinfo;
 
   g_assert (app != NULL);
 
   /* Skip window-backed apps */ 
-  appinfo = (GAppInfo*)shell_app_get_app_info (app);
-  if (appinfo == NULL)
+  if (app->info == NULL)
     return;
   /* Skip not-visible apps */ 
-  if (!g_app_info_should_show (appinfo))
+  if (!g_app_info_should_show (G_APP_INFO (app->info)))
     return;
 
   match = _shell_app_match_search_terms (app, terms);
@@ -1528,11 +1507,7 @@ shell_app_dispose (GObject *object)
 {
   ShellApp *app = SHELL_APP (object);
 
-  if (app->entry)
-    {
-      gmenu_tree_item_unref (app->entry);
-      app->entry = NULL;
-    }
+  g_clear_object (&app->info);
 
   if (app->running_state)
     {
