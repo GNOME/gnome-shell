@@ -6321,9 +6321,6 @@ meta_window_change_workspace_by_index (MetaWindow *window,
 #define _NET_WM_MOVERESIZE_MOVE_KEYBOARD    10
 #define _NET_WM_MOVERESIZE_CANCEL           11
 
-/* Copied from the old gtk+/xi2 branch */
-#define XIMaskIsSet(ptr, bit) (((unsigned char *) (ptr))[(bit) >> 3] & (1 << ((bit) & 7)))
-
 gboolean
 meta_window_client_message (MetaWindow *window,
                             XEvent     *event)
