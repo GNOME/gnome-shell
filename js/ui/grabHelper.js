@@ -311,7 +311,8 @@ const GrabHelper = new Lang.Class({
 
         if (hadFocus) {
             let poppedGrab = poppedGrabs[0];
-            _navigateActor(poppedGrab.savedFocus);
+            if (poppedGrab.savedFocus)
+                poppedGrab.savedFocus.grab_key_focus();
         }
     },
 
