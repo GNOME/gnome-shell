@@ -110,6 +110,6 @@ const SearchSystem = new Lang.Class({
                 }
             }
         }
-    },
+    }
 });
 Signals.addSignalMethods(SearchSystem.prototype);
