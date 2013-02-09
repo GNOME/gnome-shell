@@ -336,13 +336,22 @@ sort_and_concat_results (ShellAppSystem *system,
                          GSList         *prefix_matches,
                          GSList         *substring_matches)
 {
+  GSList *matches = NULL;
+  GSList *l;
+
   prefix_matches = g_slist_sort_with_data (prefix_matches,
                                            compare_apps_by_usage,
                                            system);
   substring_matches = g_slist_sort_with_data (substring_matches,
                                               compare_apps_by_usage,
                                               system);
-  return g_slist_concat (prefix_matches, substring_matches);
+
+  for (l = substring_matches; l != NULL; l = l->next)
+    matches = g_slist_prepend (matches, (char *) shell_app_get_id (SHELL_APP (l->data)));
+  for (l = prefix_matches; l != NULL; l = l->next)
+    matches = g_slist_prepend (matches, (char *) shell_app_get_id (SHELL_APP (l->data)));
+
+  return g_slist_reverse (matches);
 }
 
 /**
@@ -389,7 +398,6 @@ search_tree (ShellAppSystem *self,
   g_slist_free_full (normalized_terms, g_free);
 
   return sort_and_concat_results (self, prefix_results, substring_results);
-
 }
 
 /**
@@ -399,7 +407,7 @@ search_tree (ShellAppSystem *self,
  *
  * Search through applications for the given search terms.
  *
- * Returns: (transfer container) (element-type ShellApp): List of applications
+ * Returns: (transfer container) (element-type utf8): List of applications
  */
 GSList *
 shell_app_system_initial_search (ShellAppSystem  *self,
@@ -411,7 +419,7 @@ shell_app_system_initial_search (ShellAppSystem  *self,
 /**
  * shell_app_system_subsearch:
  * @system: A #ShellAppSystem
- * @previous_results: (element-type ShellApp): List of previous results
+ * @previous_results: (element-type utf8): List of previous results
  * @terms: (element-type utf8): List of terms, logical AND
  *
  * Search through a previous result set; for more information, see
@@ -419,7 +427,7 @@ shell_app_system_initial_search (ShellAppSystem  *self,
  * the same as passed to shell_app_system_initial_search().  Note that returned
  * strings are only valid until a return to the main loop.
  *
- * Returns: (transfer container) (element-type ShellApp): List of application identifiers
+ * Returns: (transfer container) (element-type utf8): List of application identifiers
  */
 GSList *
 shell_app_system_subsearch (ShellAppSystem   *system,
@@ -435,8 +443,8 @@ shell_app_system_subsearch (ShellAppSystem   *system,
 
   for (iter = previous_results; iter; iter = iter->next)
     {
-      ShellApp *app = iter->data;
-      
+      ShellApp *app = shell_app_system_lookup_app (system, iter->data);
+
       _shell_app_do_match (app, normalized_terms,
                            &prefix_results,
                            &substring_results);
