@@ -509,11 +509,11 @@ const AppSearchProvider = new Lang.Class({
     },
 
     getInitialResultSet: function(terms) {
-        this.searchSystem.pushResults(this, this._appSys.initial_search(terms));
+        this.searchSystem.setResults(this, this._appSys.initial_search(terms));
     },
 
     getSubsearchResultSet: function(previousResults, terms) {
-        this.searchSystem.pushResults(this, this._appSys.subsearch(previousResults, terms));
+        this.searchSystem.setResults(this, this._appSys.subsearch(previousResults, terms));
     },
 
     activateResult: function(app) {

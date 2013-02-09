@@ -51,7 +51,7 @@ const SearchSystem = new Lang.Class({
         this._previousResults = [];
     },
 
-    pushResults: function(provider, results) {
+    setResults: function(provider, results) {
         let i = this._providers.indexOf(provider);
         if (i == -1)
             return;

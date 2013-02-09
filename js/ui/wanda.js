@@ -134,9 +134,9 @@ const WandaSearchProvider = new Lang.Class({
 
     getInitialResultSet: function(terms) {
         if (terms.join(' ') == MAGIC_FISH_KEY) {
-            this.searchSystem.pushResults(this, [ FISH_NAME ]);
+            this.searchSystem.setResults(this, [ FISH_NAME ]);
         } else {
-            this.searchSystem.pushResults(this, []);
+            this.searchSystem.setResults(this, []);
         }
     },
 

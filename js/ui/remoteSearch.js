@@ -205,7 +205,7 @@ const RemoteSearchProvider = new Lang.Class({
     _getResultsFinished: function(results, error) {
         if (error)
             return;
-        this.searchSystem.pushResults(this, results[0]);
+        this.searchSystem.setResults(this, results[0]);
     },
 
     getInitialResultSet: function(terms) {
@@ -217,7 +217,7 @@ const RemoteSearchProvider = new Lang.Class({
                                                  this._cancellable);
         } catch(e) {
             log('Error calling GetInitialResultSet for provider %s: %s'.format(this.id, e.toString()));
-            this.searchSystem.pushResults(this, []);
+            this.searchSystem.setResults(this, []);
         }
     },
 
@@ -230,7 +230,7 @@ const RemoteSearchProvider = new Lang.Class({
                                                    this._cancellable);
         } catch(e) {
             log('Error calling GetSubsearchResultSet for provider %s: %s'.format(this.id, e.toString()));
-            this.searchSystem.pushResults(this, []);
+            this.searchSystem.setResults(this, []);
         }
     },
 
