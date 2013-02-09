@@ -450,25 +450,6 @@ shell_app_system_lookup_app (ShellAppSystem   *self,
 }
 
 /**
- * shell_app_system_lookup_app_by_tree_entry:
- * @system: a #ShellAppSystem
- * @entry: a #GMenuTreeEntry
- *
- * Find a #ShellApp corresponding to a #GMenuTreeEntry.
- *
- * Return value: (transfer none): The #ShellApp for @entry, or %NULL if none
- */
-ShellApp *
-shell_app_system_lookup_app_by_tree_entry (ShellAppSystem  *self,
-                                           GMenuTreeEntry  *entry)
-{
-  /* If we looked up directly in ->entry_to_app, we'd lose the
-   * override of running apps.  Thus, indirect through the id.
-   */
-  return shell_app_system_lookup_app (self, gmenu_tree_entry_get_desktop_file_id (entry));
-}
-
-/**
  * shell_app_system_lookup_app_for_path:
  * @system: a #ShellAppSystem
  * @desktop_path: (type utf8): UTF-8 encoded absolute file name

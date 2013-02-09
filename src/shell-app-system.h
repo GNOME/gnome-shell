@@ -43,8 +43,6 @@ GMenuTree      *shell_app_system_get_tree                     (ShellAppSystem *s
 
 ShellApp       *shell_app_system_lookup_app                   (ShellAppSystem  *system,
                                                                const char      *id);
-ShellApp       *shell_app_system_lookup_app_by_tree_entry     (ShellAppSystem  *system,
-                                                               GMenuTreeEntry  *entry);
 ShellApp       *shell_app_system_lookup_app_for_path          (ShellAppSystem  *system,
                                                                const char      *desktop_path);
 ShellApp       *shell_app_system_lookup_heuristic_basename    (ShellAppSystem  *system,

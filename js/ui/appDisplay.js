@@ -55,8 +55,9 @@ function _loadCategory(dir, view) {
     while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
         if (nextType == GMenu.TreeItemType.ENTRY) {
             let entry = iter.get_entry();
-            let app = appSystem.lookup_app_by_tree_entry(entry);
-            if (!entry.get_app_info().get_nodisplay())
+            let appInfo = entry.get_app_info();
+            let app = appSystem.lookup_app(entry.get_desktop_file_id());
+            if (appInfo.should_show())
                 view.addApp(app);
         } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
             let itemDir = iter.get_directory();
