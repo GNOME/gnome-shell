@@ -871,8 +871,8 @@ const AppSearchProvider = new Lang.Class({
     getResultMetas: function(apps, callback) {
         let metas = [];
         for (let i = 0; i < apps.length; i++) {
-            let app = apps[i];
-            metas.push({ 'id': app,
+            let app = this._appSys.lookup_app(apps[i]);
+            metas.push({ 'id': app.get_id(),
                          'name': app.get_name(),
                          'createIcon': function(size) {
                              return app.create_icon_texture(size);
@@ -894,7 +894,8 @@ const AppSearchProvider = new Lang.Class({
         this.searchSystem.setResults(this, this._appSys.subsearch(previousResults, terms));
     },
 
-    activateResult: function(app) {
+    activateResult: function(result) {
+        let app = this._appSys.lookup_app(result);
         let event = Clutter.get_current_event();
         let modifiers = event ? event.get_state() : 0;
         let openNewWindow = modifiers & Clutter.ModifierType.CONTROL_MASK;
@@ -914,7 +915,7 @@ const AppSearchProvider = new Lang.Class({
     },
 
     createResultObject: function (resultMeta, terms) {
-        let app = resultMeta['id'];
+        let app = this._appSys.lookup_app(resultMeta['id']);
         return new AppIcon(app);
     }
 });
