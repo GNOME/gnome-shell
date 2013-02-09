@@ -471,7 +471,7 @@ shell_app_system_lookup_app_for_path (ShellAppSystem   *system,
   if (!app)
     return NULL;
 
-  app_path = gmenu_tree_entry_get_desktop_file_path (shell_app_get_tree_entry (app));
+  app_path = g_desktop_app_info_get_filename (shell_app_get_app_info (app));
   if (strcmp (desktop_path, app_path) != 0)
     return NULL;
 
