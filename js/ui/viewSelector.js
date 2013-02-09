@@ -423,7 +423,7 @@ const ViewSelector = new Lang.Class({
 
     _doSearch: function () {
         this._searchTimeoutId = 0;
-        this._searchResults.doSearch(this._text.text);
+        this._searchSystem.updateSearch(this._text.text);
 
         this._showPage(this._searchPage);
     },

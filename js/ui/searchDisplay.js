@@ -432,10 +432,6 @@ const SearchResults = new Lang.Class({
         this._statusBin.show();
     },
 
-    doSearch: function (searchString) {
-        this._searchSystem.updateSearch(searchString);
-    },
-
     _metaForProvider: function(provider) {
         return this._providerMeta[this._providers.indexOf(provider)];
     },
