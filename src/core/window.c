@@ -6321,6 +6321,9 @@ meta_window_change_workspace_by_index (MetaWindow *window,
 #define _NET_WM_MOVERESIZE_MOVE_KEYBOARD    10
 #define _NET_WM_MOVERESIZE_CANCEL           11
 
+/* Copied from the old gtk+/xi2 branch */
+#define XIMaskIsSet(ptr, bit) (((unsigned char *) (ptr))[(bit) >> 3] & (1 << ((bit) & 7)))
+
 gboolean
 meta_window_client_message (MetaWindow *window,
                             XEvent     *event)
@@ -6703,11 +6706,11 @@ meta_window_client_message (MetaWindow *window,
                               &buttons, &mods, &group);
               meta_error_trap_pop (window->display);
 
-              if (mods.effective & Button1Mask)
+              if (XIMaskIsSet (buttons.mask, Button1))
                 button = 1;
-              else if (mods.effective & Button2Mask)
+              else if (XIMaskIsSet (buttons.mask, Button2))
                 button = 2;
-              else if (mods.effective & Button3Mask)
+              else if (XIMaskIsSet (buttons.mask, Button3))
                 button = 3;
               else
                 button = 0;
