@@ -1448,6 +1448,49 @@ const SummaryItem = new Lang.Class({
 });
 Signals.addSignalMethods(SummaryItem.prototype);
 
+const MessageTrayContextMenu = new Lang.Class({
+    Name: 'MessageTrayContextMenu',
+    Extends: PopupMenu.PopupMenu,
+
+    _init: function(tray) {
+        this._dummy = new St.Bin({ opacity: 0 });
+        Main.uiGroup.add_actor(this._dummy);
+
+        this.parent(this._dummy, 0, St.Side.BOTTOM);
+
+        this.addAction(_("Clear"), function() {
+            let toDestroy = [];
+            let sources = tray.getSources();
+            for (let i = 0; i < sources.length; i++) {
+                // We exclude trayIcons, chat and resident sources
+                if (sources[i].trayIcon ||
+                    sources[i].isChat ||
+                    sources[i].resident)
+                    continue;
+                toDestroy.push(sources[i]);
+            }
+
+            for (let i = 0; i < toDestroy.length; i++) {
+                toDestroy[i].destroy();
+            }
+
+            toDestroy = null;
+            tray.close();
+        });
+
+        let separator = new PopupMenu.PopupSeparatorMenuItem();
+        this.addMenuItem(separator);
+
+        let settingsItem = this.addSettingsAction(_("Notification Settings"), 'gnome-notifications-panel.desktop');
+        settingsItem.connect('activate', function() { tray.close(); });
+    },
+
+    setPosition: function(x, y) {
+        this._dummy.set_position(x, y);
+    }
+
+});
+
 const MessageTray = new Lang.Class({
     Name: 'MessageTray',
 
@@ -1629,6 +1672,36 @@ const MessageTray = new Lang.Class({
                                           y_expand: true });
         this.actor.add_actor(this._noMessages);
         this._updateNoMessagesLabel();
+
+        this._contextMenu = new MessageTrayContextMenu(this);
+        this._grabHelper.addActor(this._contextMenu.actor);
+        this.actor.connect('button-press-event', Lang.bind(this, function(actor, event) {
+            let button = event.get_button();
+            if (button == 3) {
+                let [stageX, stageY] = event.get_coords();
+                this._lock();
+                this._contextMenu.setPosition(Math.round(stageX), Math.round(stageY));
+                this._grabHelper.grab({ actor: this._contextMenu.actor,
+                                        grabFocus: true,
+                                        onUngrab: Lang.bind(this, function () {
+                                            this._unlock();
+                                            this._contextMenu.close();
+                                        })
+                });
+                this._contextMenu.open();
+            }
+            else {
+                this._grabHelper.ungrab({ actor: this._contextMenu.actor });
+            }
+        }));
+
+        this._contextMenu.actor.hide();
+        Main.layoutManager.addChrome(this._contextMenu.actor);
+
+    },
+
+    close: function() {
+        this._escapeTray();
     },
 
     _setupTrayDwellIfNeeded: function() {
