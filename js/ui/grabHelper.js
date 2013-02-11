@@ -10,17 +10,6 @@ const St = imports.gi.St;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 
-function _navigateActor(actor) {
-    if (!actor)
-        return;
-
-    let needsGrab = true;
-    if (actor instanceof St.Widget)
-        needsGrab = !actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
-    if (needsGrab)
-        actor.grab_key_focus();
-}
-
 // GrabHelper:
 // @owner: the actor that owns the GrabHelper
 // @params: optional parameters to pass to Main.pushModal()
@@ -178,10 +167,12 @@ const GrabHelper = new Lang.Class({
         if (params.grabFocus && !this._takeFocusGrab(hadFocus))
             return false;
 
-        if (params.focus)
+        if (params.focus) {
             params.focus.grab_key_focus();
-        else if (hadFocus || params.grabFocus)
-            _navigateActor(newFocus);
+        } else if (newFocus && (hadFocus || params.grabFocus)) {
+            if (!newFocus.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false))
+                newFocus.grab_key_focus();
+        }
 
         if ((params.grabFocus || params.modal) && !this._capturedEventId)
             this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
