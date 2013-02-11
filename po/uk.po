@@ -1372,7 +1372,7 @@ msgstr "Показувати розкладку клавіатури"
 
 #: ../js/ui/status/keyboard.js:233
 msgid "Region and Language Settings"
-msgstr "Параметри дати і часу"
+msgstr "Параметри  регіону і мови"
 
 #: ../js/ui/status/lockScreenMenu.js:18
 msgid "Volume, network, battery"
