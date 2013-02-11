@@ -1023,6 +1023,9 @@ _cogl_framebuffer_gl_discard_buffers (CoglFramebuffer *framebuffer,
             attachments[i++] = GL_STENCIL_ATTACHMENT;
         }
 
+      _cogl_framebuffer_flush_state (framebuffer,
+                                     framebuffer,
+                                     COGL_FRAMEBUFFER_STATE_BIND);
       GE (ctx, glDiscardFramebuffer (GL_FRAMEBUFFER, i, attachments));
     }
 #endif /* GL_EXT_discard_framebuffer */
