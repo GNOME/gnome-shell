@@ -68,7 +68,7 @@ const UserAvatarWidget = new Lang.Class({
 
     update: function() {
         let iconFile = this._user.get_icon_file();
-        if (!GLib.file_test(iconFile, GLib.FileTest.EXISTS))
+        if (iconFile && !GLib.file_test(iconFile, GLib.FileTest.EXISTS))
             iconFile = null;
 
         if (iconFile) {
