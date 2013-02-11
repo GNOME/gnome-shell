@@ -98,6 +98,17 @@
 #define GL_PACK_INVERT_MESA 0x8758
 #endif
 
+#ifndef GL_COLOR
+#define GL_COLOR 0x1800
+#endif
+#ifndef GL_DEPTH
+#define GL_DEPTH 0x1801
+#endif
+#ifndef GL_STENCIL
+#define GL_STENCIL 0x1802
+#endif
+
+
 static void
 _cogl_framebuffer_gl_flush_viewport_state (CoglFramebuffer *framebuffer)
 {
@@ -996,7 +1007,6 @@ void
 _cogl_framebuffer_gl_discard_buffers (CoglFramebuffer *framebuffer,
                                       unsigned long buffers)
 {
-#ifdef GL_EXT_discard_framebuffer
   CoglContext *ctx = framebuffer->context;
 
   if (ctx->glDiscardFramebuffer)
@@ -1007,11 +1017,11 @@ _cogl_framebuffer_gl_discard_buffers (CoglFramebuffer *framebuffer,
       if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
         {
           if (buffers & COGL_BUFFER_BIT_COLOR)
-            attachments[i++] = GL_COLOR_EXT;
+            attachments[i++] = GL_COLOR;
           if (buffers & COGL_BUFFER_BIT_DEPTH)
-            attachments[i++] = GL_DEPTH_EXT;
+            attachments[i++] = GL_DEPTH;
           if (buffers & COGL_BUFFER_BIT_STENCIL)
-            attachments[i++] = GL_STENCIL_EXT;
+            attachments[i++] = GL_STENCIL;
         }
       else
         {
@@ -1028,7 +1038,6 @@ _cogl_framebuffer_gl_discard_buffers (CoglFramebuffer *framebuffer,
                                      COGL_FRAMEBUFFER_STATE_BIND);
       GE (ctx, glDiscardFramebuffer (GL_FRAMEBUFFER, i, attachments));
     }
-#endif /* GL_EXT_discard_framebuffer */
 }
 
 void
