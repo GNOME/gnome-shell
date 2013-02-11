@@ -4,17 +4,20 @@ const AccountsService = imports.gi.AccountsService;
 const Gdm = imports.gi.Gdm;
 const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
+const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Tp = imports.gi.TelepathyGLib;
 const Atk = imports.gi.Atk;
+const Clutter = imports.gi.Clutter;
 
 const BoxPointer = imports.ui.boxpointer;
 const GnomeSession = imports.misc.gnomeSession;
 const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
+const ModalDialog = imports.ui.modalDialog;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Params = imports.misc.params;
@@ -31,6 +34,8 @@ const SHOW_FULL_NAME_IN_TOP_BAR_KEY = 'show-full-name-in-top-bar';
 
 const DIALOG_ICON_SIZE = 64;
 
+const MAX_USERS_IN_SESSION_DIALOG = 5;
+
 const IMStatus = {
     AVAILABLE: 0,
     BUSY: 1,
@@ -40,6 +45,15 @@ const IMStatus = {
     OFFLINE: 5,
     LAST: 6
 };
+
+
+const SystemdLoginSessionIface = <interface name='org.freedesktop.login1.Session'>
+    <property name="Remote" type="b" access="read"/>
+    <property name="Class" type="s" access="read"/>
+    <property name="Type" type="s" access="read"/>
+</interface>;
+
+const SystemdLoginSession = Gio.DBusProxy.makeProxyWrapper(SystemdLoginSessionIface);
 
 // Adapted from gdm/gui/user-switch-applet/applet.c
 //
@@ -864,12 +878,109 @@ const UserMenuButton = new Lang.Class({
         this._session.RebootRemote();
     },
 
+    _openSessionWarnDialog: function(sessions) {
+        let dialog = new ModalDialog.ModalDialog();
+        let subjectLabel = new St.Label({ style_class: 'end-session-dialog-subject',
+                                          text: _("Other users are logged in.") });
+        dialog.contentLayout.add(subjectLabel, { y_fill: true,
+                                                 y_align: St.Align.START });
+
+        let descriptionLabel = new St.Label({ style_class: 'end-session-dialog-description'});
+        descriptionLabel.set_text(_("Shutting down might cause them to lose unsaved work."));
+        dialog.contentLayout.add(descriptionLabel, { x_fill: true,
+                                                     y_fill: true,
+                                                     y_align: St.Align.START });
+
+        let scrollView = new St.ScrollView({ style_class: 'end-session-dialog-app-list' });
+        scrollView.add_style_class_name('vfade');
+        scrollView.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        dialog.contentLayout.add(scrollView, { x_fill: true, y_fill: true });
+
+        let userList = new St.BoxLayout({ vertical: true });
+        scrollView.add_actor(userList);
+
+        for (let i = 0; i < sessions.length; i++) {
+            let session = sessions[i];
+            let userEntry = new St.BoxLayout({ style_class: 'login-dialog-user-list-item',
+                                               vertical: false });
+            let avatar = new UserAvatarWidget(session.user);
+            avatar.update();
+            userEntry.add(avatar.actor);
+
+            let userLabelText = "";;
+            let userName = session.user.get_real_name() ?
+                           session.user.get_real_name() : session.username;
+
+            if (session.info.remote)
+                userLabelText = _("%s (remote)").format(userName);
+            else if (session.info.type == "tty")
+                userLabelText = _("%s (console)").format(userName);
+            else
+                userLabelText = userName;
+
+            let textLayout = new St.BoxLayout({ style_class: 'login-dialog-user-list-item-text-box',
+                                                vertical: true });
+            textLayout.add(new St.Label({ text: userLabelText }),
+                           { y_fill: false,
+                             y_align: St.Align.MIDDLE,
+                             expand: true });
+            userEntry.add(textLayout, { expand: true });
+            userList.add(userEntry, { x_fill: true });
+        }
+
+        let cancelButton = { label: _("Cancel"),
+                             action: function() { dialog.close(); },
+                             key: Clutter.Escape };
+
+        let powerOffButton = { label: _("Power Off"),  action: Lang.bind(this, function() {
+            dialog.close();
+            this._session.ShutdownRemote();
+        }), default: true };
+
+        dialog.setButtons([cancelButton, powerOffButton]);
+
+        dialog.open();
+    },
+
     _onSuspendOrPowerOffActivate: function() {
         Main.overview.hide();
 
         if (this._haveShutdown &&
             this._suspendOrPowerOffItem.state == PopupMenu.PopupAlternatingMenuItemState.DEFAULT) {
-            this._session.ShutdownRemote();
+            this._loginManager.listSessions(Lang.bind(this,
+                function(result) {
+                    let sessions = [];
+                    let n = 0;
+                    for (let i = 0; i < result.length; i++) {
+                        let[id, uid, userName, seat, sessionPath] = result[i];
+                        let proxy = new SystemdLoginSession(Gio.DBus.system,
+                                                            'org.freedesktop.login1',
+                                                            sessionPath);
+
+                        if (proxy.Class != "user")
+                            continue;
+
+                        if (userName == GLib.get_user_name() &&
+                            !proxy.Remote && proxy.Type == "x11")
+                            continue;
+
+                        sessions.push({ user: this._userManager.get_user(userName),
+                                        username: userName,
+                                        info: { "type": proxy.Type,
+                                                "remote": proxy.Remote}
+                        });
+
+                        // limit the number of entries
+                        n++;
+                        if (n == MAX_USERS_IN_SESSION_DIALOG)
+                            break;
+                    }
+
+                    if (n != 0)
+                        this._openSessionWarnDialog(sessions);
+                    else
+                        this._session.ShutdownRemote();
+            }));
         } else {
             this.menu.close(BoxPointer.PopupAnimation.NONE);
             this._loginManager.suspend();

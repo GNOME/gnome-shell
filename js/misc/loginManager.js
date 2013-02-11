@@ -33,6 +33,9 @@ const SystemdLoginManagerIface = <interface name='org.freedesktop.login1.Manager
     <arg type='s' direction='in'/>
     <arg type='h' direction='out'/>
 </method>
+<method name='ListSessions'>
+    <arg name='sessions' type='a(susso)' direction='out'/>
+</method>
 <signal name='PrepareForSleep'>
     <arg type='b' direction='out'/>
 </signal>
@@ -142,6 +145,15 @@ const LoginManagerSystemd = new Lang.Class({
         });
     },
 
+    listSessions: function(asyncCallback) {
+        this._proxy.ListSessionsRemote(function(result, error) {
+            if (error)
+                asyncCallback([]);
+            else
+                asyncCallback(result[0]);
+        });
+    },
+
     powerOff: function() {
         this._proxy.PowerOffRemote(true);
     },
@@ -223,6 +235,10 @@ const LoginManagerConsoleKit = new Lang.Class({
 
     canSuspend: function(asyncCallback) {
         asyncCallback(false);
+    },
+
+    listSessions: function(asyncCallback) {
+        asyncCallback([]);
     },
 
     powerOff: function() {
