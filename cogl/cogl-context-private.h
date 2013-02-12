@@ -247,10 +247,6 @@ struct _CoglContext
      cogl_is_texture */
   GSList           *texture_types;
 
-  /* List of types that will be considered a subclass of CoglBuffer in
-     cogl_is_buffer */
-  GSList           *buffer_types;
-
   /* Clipping */
   /* TRUE if we have a valid clipping stack flushed. In that case
      current_clip_stack will describe what the current state is. If

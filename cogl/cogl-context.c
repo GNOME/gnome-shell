@@ -180,7 +180,6 @@ cogl_context_new (CoglDisplay *display,
   context->private_feature_flags = 0;
 
   context->texture_types = NULL;
-  context->buffer_types = NULL;
 
   context->rectangle_state = COGL_WINSYS_RECTANGLE_STATE_UNKNOWN;
 
@@ -560,7 +559,6 @@ _cogl_context_free (CoglContext *context)
   _cogl_bitmask_destroy (&context->changed_bits_tmp);
 
   g_slist_free (context->texture_types);
-  g_slist_free (context->buffer_types);
 
   if (context->current_modelview_entry)
     cogl_matrix_entry_unref (context->current_modelview_entry);
