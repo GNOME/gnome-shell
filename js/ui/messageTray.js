@@ -1597,7 +1597,6 @@ const MessageTray = new Lang.Class({
         if (Main.panel.statusArea.activities)
             this._grabHelper.addActor(Main.panel.statusArea.activities.hotCorner.actor);
 
-        Main.layoutManager.keyboardBox.connect('notify::hover', Lang.bind(this, this._onKeyboardHoverChanged));
         Main.layoutManager.connect('keyboard-visible-changed', Lang.bind(this, this._onKeyboardVisibleChanged));
 
         this._trayState = State.HIDDEN;
@@ -1608,7 +1607,6 @@ const MessageTray = new Lang.Class({
         this._pointerInTray = false;
         this._pointerInKeyboard = false;
         this._keyboardVisible = false;
-        this._keyboardUnderMessageTray = false;
         this._summaryState = State.HIDDEN;
         this._pointerInSummary = false;
         this._notificationClosed = false;
@@ -2103,38 +2101,8 @@ const MessageTray = new Lang.Class({
         }
     },
 
-    _onKeyboardHoverChanged: function(keyboard) {
-        this._pointerInKeyboard = keyboard.hover;
-
-        if (!keyboard.hover) {
-            let event = Clutter.get_current_event();
-            if (event && event.type() == Clutter.EventType.LEAVE) {
-                let into = event.get_related();
-                if (into && this.actor.contains(into)) {
-                    // Don't call _updateState, because pointerInTray is
-                    // still false
-                    return;
-                }
-            }
-        }
-
-        this._updateState();
-    },
-
     _onKeyboardVisibleChanged: function(layoutManager, keyboardVisible) {
-        let keyboardUnderMessageTray = layoutManager.keyboardIndex == layoutManager.bottomIndex;
-        if (this._keyboardVisible == keyboardVisible &&
-            this._keyboardUnderMesssageTray == keyboardUnderMessageTray)
-            return;
-
         this._keyboardVisible = keyboardVisible;
-        this._keyboardUnderMessageTray = keyboardUnderMessageTray;
-
-        if (keyboardVisible && keyboardUnderMessageTray)
-            this.actor.add_style_pseudo_class('keyboard');
-        else
-            this.actor.remove_style_pseudo_class('keyboard');
-
         this._updateState();
     },
 
@@ -2276,7 +2244,8 @@ const MessageTray = new Lang.Class({
         let trayIsVisible = (this._trayState == State.SHOWING ||
                              this._trayState == State.SHOWN);
         let trayShouldBeVisible = (this._summaryState == State.SHOWING ||
-                                   this._summaryState == State.SHOWN);
+                                   this._summaryState == State.SHOWN) &&
+                                  !this._keyboardVisible;
         if (!trayIsVisible && trayShouldBeVisible)
             trayShouldBeVisible = this._showTray();
         else if (trayIsVisible && !trayShouldBeVisible)
@@ -2286,13 +2255,12 @@ const MessageTray = new Lang.Class({
         let desktopCloneIsVisible = (this._desktopCloneState == State.SHOWING ||
                                      this._desktopCloneState == State.SHOWN);
         let desktopCloneShouldBeVisible = (trayShouldBeVisible &&
-                                           !this._overviewVisible &&
-                                           (!this._keyboardVisible || !this._keyboardUnderMessageTray));
+                                           !this._overviewVisible);
 
         if (!desktopCloneIsVisible && desktopCloneShouldBeVisible) {
             this._showDesktopClone();
         } else if (desktopCloneIsVisible && !desktopCloneShouldBeVisible) {
-            this._hideDesktopClone (this._keyboardVisible && this._keyboardUnderMessageTray);
+            this._hideDesktopClone();
         }
     },
 
@@ -2402,10 +2370,10 @@ const MessageTray = new Lang.Class({
             this.actor.remove_style_pseudo_class('overview');
     },
 
-    _hideDesktopClone: function(now) {
+    _hideDesktopClone: function() {
         this._tween(this._desktopClone, '_desktopCloneState', State.HIDDEN,
                     { y: 0,
-                      time: now ? 0 : ANIMATION_TIME,
+                      time: ANIMATION_TIME,
                       transition: 'easeOutQuad',
                       onComplete: Lang.bind(this, function() {
                           this._desktopClone.destroy();
