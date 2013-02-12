@@ -7,6 +7,7 @@
 #include "shell-window-tracker.h"
 #include "tray/na-tray-child.h"
 #include <gdk/gdkx.h>
+#include <X11/Xatom.h>
 #include "st.h"
 
 enum {

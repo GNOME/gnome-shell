@@ -30,6 +30,6 @@ struct _ShellEmbeddedWindowClass
 };
 
 GType shell_embedded_window_get_type (void) G_GNUC_CONST;
-GtkWidget *shell_embedded_window_new (ClutterStage *stage);
+GtkWidget *shell_embedded_window_new (void);
 
 #endif /* __SHELL_EMBEDDED_WINDOW_H__ */

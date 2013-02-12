@@ -3,8 +3,11 @@
 #include "config.h"
 
 #include "shell-embedded-window-private.h"
+#include "shell-global.h"
 
 #include <gdk/gdkx.h>
+#include <meta/display.h>
+#include <meta/window.h>
 
 enum {
    PROP_0,
@@ -15,9 +18,14 @@ enum {
 struct _ShellGtkEmbedPrivate
 {
   ShellEmbeddedWindow *window;
+
+  ClutterActor *window_actor;
+  guint window_actor_destroyed_handler;
+
+  guint window_created_handler;
 };
 
-G_DEFINE_TYPE (ShellGtkEmbed, shell_gtk_embed, CLUTTER_X11_TYPE_TEXTURE_PIXMAP);
+G_DEFINE_TYPE (ShellGtkEmbed, shell_gtk_embed, CLUTTER_TYPE_CLONE);
 
 static void shell_gtk_embed_set_window (ShellGtkEmbed       *embed,
                                         ShellEmbeddedWindow *window);
@@ -30,38 +38,105 @@ shell_gtk_embed_on_window_destroy (GtkWidget     *object,
 }
 
 static void
-shell_gtk_embed_on_window_realize (GtkWidget     *widget,
+shell_gtk_embed_remove_window_actor (ShellGtkEmbed *embed)
+{
+  ShellGtkEmbedPrivate *priv = embed->priv;
+
+  if (priv->window_actor)
+    {
+      g_signal_handler_disconnect (priv->window_actor,
+                                   priv->window_actor_destroyed_handler);
+      priv->window_actor_destroyed_handler = 0;
+
+      g_object_unref (priv->window_actor);
+      priv->window_actor = NULL;
+    }
+
+  clutter_clone_set_source (CLUTTER_CLONE (embed), NULL);
+}
+
+static void
+shell_gtk_embed_window_created_cb (MetaDisplay   *display,
+                                   MetaWindow    *window,
                                    ShellGtkEmbed *embed)
 {
-  /* Here automatic=FALSE means to use CompositeRedirectManual.
-   * That is, the X server shouldn't draw the window onto the
-   * screen.
-   */
-  clutter_x11_texture_pixmap_set_window (CLUTTER_X11_TEXTURE_PIXMAP (embed),
-                                         gdk_x11_window_get_xid (gtk_widget_get_window (widget)),
-                                         FALSE);
+  ShellGtkEmbedPrivate *priv = embed->priv;
+  Window xwindow = meta_window_get_xwindow (window);
+  GdkWindow *gdk_window = gtk_widget_get_window (GTK_WIDGET (priv->window));
+
+  if (xwindow == gdk_x11_window_get_xid (gdk_window))
+    {
+      ClutterActor *window_actor =
+        CLUTTER_ACTOR (meta_window_get_compositor_private (window));
+      MetaDisplay *display = shell_global_get_display (shell_global_get ());
+      GCallback remove_cb = G_CALLBACK (shell_gtk_embed_remove_window_actor);
+      cairo_region_t *empty_region;
+
+      clutter_clone_set_source (CLUTTER_CLONE (embed), window_actor);
+
+      /* We want to explicitly clear the clone source when the window
+         actor is destroyed because otherwise we might end up keeping
+         it alive after it has been disposed. Otherwise this can cause
+         a crash if there is a paint after mutter notices that the top
+         level window has been destroyed, which causes it to dispose
+         the window, and before the tray manager notices that the
+         window is gone which would otherwise reset the window and
+         unref the clone */
+      priv->window_actor = g_object_ref (window_actor);
+      priv->window_actor_destroyed_handler =
+        g_signal_connect_swapped (window_actor,
+                                  "destroy",
+                                  remove_cb,
+                                  embed);
+
+      /* Hide the original actor otherwise it will appear in the scene
+         as a normal window */
+      clutter_actor_set_opacity (window_actor, 0);
+
+      /* Set an empty input shape on the window so that it can't get
+         any input. This probably isn't the ideal way to acheive this.
+         It would probably be better to force the window to go behind
+         Mutter's guard window, but this is quite difficult to do as
+         Mutter doesn't manage the stacking for override redirect
+         windows and the guard window is repeatedly lowered to the
+         bottom of the stack. */
+      empty_region = cairo_region_create ();
+      gdk_window_input_shape_combine_region (gdk_window,
+                                             empty_region,
+                                             0, 0 /* offset x/y */);
+      cairo_region_destroy (empty_region);
+
+      /* Now that we've found the window we don't need to listen for
+         new windows anymore */
+      g_signal_handler_disconnect (display,
+                                   priv->window_created_handler);
+      priv->window_created_handler = 0;
+    }
 }
 
 static void
 shell_gtk_embed_set_window (ShellGtkEmbed       *embed,
                             ShellEmbeddedWindow *window)
 {
+  MetaDisplay *display = shell_global_get_display (shell_global_get ());
 
   if (embed->priv->window)
     {
+      if (embed->priv->window_created_handler)
+        {
+          g_signal_handler_disconnect (display,
+                                       embed->priv->window_created_handler);
+          embed->priv->window_created_handler = 0;
+        }
+
+      shell_gtk_embed_remove_window_actor (embed);
+
       _shell_embedded_window_set_actor (embed->priv->window, NULL);
 
       g_object_unref (embed->priv->window);
 
-      clutter_x11_texture_pixmap_set_window (CLUTTER_X11_TEXTURE_PIXMAP (embed),
-                                             None,
-                                             FALSE);
-
       g_signal_handlers_disconnect_by_func (embed->priv->window,
                                             (gpointer)shell_gtk_embed_on_window_destroy,
-                                            embed);
-      g_signal_handlers_disconnect_by_func (embed->priv->window,
-                                            (gpointer)shell_gtk_embed_on_window_realize,
                                             embed);
     }
 
@@ -75,11 +150,14 @@ shell_gtk_embed_set_window (ShellGtkEmbed       *embed,
 
       g_signal_connect (embed->priv->window, "destroy",
                         G_CALLBACK (shell_gtk_embed_on_window_destroy), embed);
-      g_signal_connect (embed->priv->window, "realize",
-                        G_CALLBACK (shell_gtk_embed_on_window_realize), embed);
 
-      if (gtk_widget_get_realized (GTK_WIDGET (window)))
-        shell_gtk_embed_on_window_realize (GTK_WIDGET (embed->priv->window), embed);
+      /* Listen for new windows so we can detect when Mutter has
+         created a MutterWindow for this window */
+      embed->priv->window_created_handler =
+        g_signal_connect (display,
+                          "window-created",
+                          G_CALLBACK (shell_gtk_embed_window_created_cb),
+                          embed);
     }
 
   clutter_actor_queue_relayout (CLUTTER_ACTOR (embed));
@@ -260,11 +338,6 @@ shell_gtk_embed_init (ShellGtkEmbed *embed)
 {
   embed->priv = G_TYPE_INSTANCE_GET_PRIVATE (embed, SHELL_TYPE_GTK_EMBED,
                                              ShellGtkEmbedPrivate);
-
-  /* automatic here means whether ClutterX11TexturePixmap should
-   * process damage update and refresh the pixmap itself.
-   */
-  clutter_x11_texture_pixmap_set_automatic (CLUTTER_X11_TEXTURE_PIXMAP (embed), TRUE);
 }
 
 /*

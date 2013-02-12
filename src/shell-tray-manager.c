@@ -17,7 +17,6 @@
 
 struct _ShellTrayManagerPrivate {
   NaTrayManager *na_manager;
-  ClutterStage *stage;
   ClutterColor bg_color;
 
   GHashTable *icons;
@@ -135,7 +134,6 @@ shell_tray_manager_finalize (GObject *object)
   ShellTrayManager *manager = SHELL_TRAY_MANAGER (object);
 
   g_object_unref (manager->priv->na_manager);
-  g_object_unref (manager->priv->stage);
   g_hash_table_destroy (manager->priv->icons);
 
   G_OBJECT_CLASS (shell_tray_manager_parent_class)->finalize (object);
@@ -219,42 +217,19 @@ shell_tray_manager_style_changed (StWidget *theme_widget,
 }
 
 void
-shell_tray_manager_manage_stage (ShellTrayManager *manager,
-                                 ClutterStage     *stage,
-                                 StWidget         *theme_widget)
+shell_tray_manager_manage_screen (ShellTrayManager *manager,
+                                  MetaScreen       *screen,
+                                  StWidget         *theme_widget)
 {
-  Window stage_xwindow;
-  GdkWindow *stage_window;
   GdkDisplay *display;
-  GdkScreen *screen;
+  GdkScreen *gdk_screen;
+  int screen_number;
 
-  g_return_if_fail (manager->priv->stage == NULL);
+  display = gdk_display_get_default ();
+  screen_number = meta_screen_get_screen_number (screen);
+  gdk_screen = gdk_display_get_screen (display, screen_number);
 
-  manager->priv->stage = g_object_ref (stage);
-
-  stage_xwindow = clutter_x11_get_stage_window (stage);
-
-  /* This is a pretty ugly way to get the GdkScreen for the stage; it
-   *  will normally go through the foreign_new() case with a
-   *  round-trip to the X server, it might be nicer to pass the screen
-   *  in in some way. (The Clutter/Mutter combo is currently incapable
-   *  of multi-screen operation, so alternatively we could just assume
-   *  that clutter_x11_get_default_screen() gives us the right
-   *  screen.) We assume, in any case, that we are using the default
-   *  GDK display.
-   */
-  display = gdk_display_get_default();
-  stage_window = gdk_x11_window_lookup_for_display (display, stage_xwindow);
-  if (stage_window)
-    g_object_ref (stage_window);
-  else
-    stage_window = gdk_x11_window_foreign_new_for_display (display, stage_xwindow);
-
-  screen = gdk_window_get_screen (stage_window);
-
-  g_object_unref (stage_window);
-
-  na_tray_manager_manage_screen (manager->priv->na_manager, screen);
+  na_tray_manager_manage_screen (manager->priv->na_manager, gdk_screen);
 
   g_signal_connect (theme_widget, "style-changed",
                     G_CALLBACK (shell_tray_manager_style_changed), manager);
@@ -320,7 +295,7 @@ na_tray_icon_added (NaTrayManager *na_manager, GtkWidget *socket,
    */
   na_tray_child_set_composited (NA_TRAY_CHILD (socket), FALSE);
 
-  win = shell_embedded_window_new (manager->priv->stage);
+  win = shell_embedded_window_new ();
   gtk_container_add (GTK_CONTAINER (win), socket);
 
   /* The visual of the socket matches that of its contents; make
