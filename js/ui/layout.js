@@ -25,6 +25,17 @@ const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 const MESSAGE_TRAY_PRESSURE_THRESHOLD = 200; // pixels
 const MESSAGE_TRAY_PRESSURE_TIMEOUT = 3000; // ms
 
+function isPopupMetaWindow(actor) {
+    switch(actor.meta_window.get_window_type()) {
+    case Meta.WindowType.DROPDOWN_MENU:
+    case Meta.WindowType.POPUP_MENU:
+    case Meta.WindowType.COMBO:
+        return true;
+    default:
+        return false;
+    }
+}
+
 const MonitorConstraint = new Lang.Class({
     Name: 'MonitorConstraint',
     Extends: Clutter.Constraint,
@@ -126,6 +137,7 @@ const LayoutManager = new Lang.Class({
         this._updateRegionIdle = 0;
 
         this._trackedActors = [];
+        this._isPopupWindowVisible = false;
 
         // Normally, the stage is always covered so Clutter doesn't need to clear
         // it; however it becomes visible during the startup animation
@@ -158,8 +170,10 @@ const LayoutManager = new Lang.Class({
         // the GDM greeter inside an X11 compositor, to do this at the end...
         // However, hiding this is necessary to avoid showing the background during
         // the initial animation, before Gdm.LoginDialog covers everything
-        if (Main.sessionMode.isGreeter)
+        if (Main.sessionMode.isGreeter) {
             global.window_group.hide();
+            global.top_window_group.hide();
+        }
 
         global.stage.remove_actor(global.overlay_group);
         this.uiGroup.add_actor(global.overlay_group);
@@ -189,6 +203,9 @@ const LayoutManager = new Lang.Class({
                                               track_hover: true });
         this.addChrome(this.keyboardBox);
         this._keyboardHeightNotifyId = 0;
+
+        global.stage.remove_actor(global.top_window_group);
+        this.uiGroup.add_actor(global.top_window_group);
 
         // Need to update struts on new workspaces when they are added
         global.screen.connect('notify::n-workspaces',
@@ -801,6 +818,9 @@ const LayoutManager = new Lang.Class({
             }
         }
 
+        if (!changed && (this._isPopupWindowVisible != global.top_window_group.get_children().some(isPopupMetaWindow)))
+            changed = true;
+
         if (changed) {
             this._updateVisibility();
             this._queueUpdateRegions();
@@ -819,9 +839,12 @@ const LayoutManager = new Lang.Class({
             delete this._updateRegionIdle;
         }
 
+        let isPopupMenuVisible = global.top_window_group.get_children().some(isPopupMetaWindow);
+        let wantsInputRegion = !isPopupMenuVisible;
+
         for (i = 0; i < this._trackedActors.length; i++) {
             let actorData = this._trackedActors[i];
-            if (!actorData.affectsInputRegion && !actorData.affectsStruts)
+            if (!(actorData.affectsInputRegion && wantsInputRegion) && !actorData.affectsStruts)
                 continue;
 
             let [x, y] = actorData.actor.get_transformed_position();
@@ -831,7 +854,7 @@ const LayoutManager = new Lang.Class({
             w = Math.round(w);
             h = Math.round(h);
 
-            if (actorData.affectsInputRegion) {
+            if (actorData.affectsInputRegion && wantsInputRegion) {
                 let rect = new Meta.Rectangle({ x: x, y: y, width: w, height: h});
 
                 if (actorData.actor.get_paint_visibility() &&
@@ -914,6 +937,7 @@ const LayoutManager = new Lang.Class({
         }
 
         global.set_stage_input_region(rects);
+        this._isPopupWindowVisible = isPopupMenuVisible;
 
         let screen = global.screen;
         for (let w = 0; w < screen.n_workspaces; w++) {

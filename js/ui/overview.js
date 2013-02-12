@@ -476,6 +476,7 @@ const Overview = new Lang.Class({
         // Disable unredirection while in the overview
         Meta.disable_unredirect_for_screen(global.screen);
         global.window_group.hide();
+        global.top_window_group.hide();
         this._overview.show();
         this._background.show();
         this._viewSelector.show();
@@ -643,6 +644,7 @@ const Overview = new Lang.Class({
         Meta.enable_unredirect_for_screen(global.screen);
 
         global.window_group.show();
+        global.top_window_group.show();
 
         this._viewSelector.hide();
         this._desktopFade.hide();
