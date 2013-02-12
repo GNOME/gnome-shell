@@ -78,12 +78,12 @@ cogl_texture_error_quark (void)
  * abstract class manually.
  */
 
+static GSList *_cogl_texture_types;
+
 void
 _cogl_texture_register_texture_type (const CoglObjectClass *klass)
 {
-  _COGL_GET_CONTEXT (ctxt, NO_RETVAL);
-
-  ctxt->texture_types = g_slist_prepend (ctxt->texture_types, (void *) klass);
+  _cogl_texture_types = g_slist_prepend (_cogl_texture_types, (void *) klass);
 }
 
 CoglBool
@@ -92,12 +92,10 @@ cogl_is_texture (void *object)
   CoglObject *obj = (CoglObject *)object;
   GSList *l;
 
-  _COGL_GET_CONTEXT (ctxt, FALSE);
-
   if (object == NULL)
     return FALSE;
 
-  for (l = ctxt->texture_types; l; l = l->next)
+  for (l = _cogl_texture_types; l; l = l->next)
     if (l->data == obj->klass)
       return TRUE;
 

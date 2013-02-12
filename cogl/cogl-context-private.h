@@ -243,10 +243,6 @@ struct _CoglContext
   CoglBool current_gl_dither_enabled;
   CoglColorMask current_gl_color_mask;
 
-  /* List of types that will be considered a subclass of CoglTexture in
-     cogl_is_texture */
-  GSList           *texture_types;
-
   /* Clipping */
   /* TRUE if we have a valid clipping stack flushed. In that case
      current_clip_stack will describe what the current state is. If
