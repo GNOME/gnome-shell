@@ -285,33 +285,6 @@ const Keyboard = new Lang.Class({
         this._setActiveLayer();
     },
 
-    _getTrayIcon: function () {
-        let trayButton = new St.Button ({ label: _("tray"),
-                                          style_class: 'keyboard-key' });
-        trayButton.key_width = 1;
-        trayButton.connect('button-press-event', Lang.bind(this, function () {
-            Main.messageTray.toggle();
-        }));
-
-        Main.overview.connect('showing', Lang.bind(this, function () {
-            trayButton.reactive = false;
-            trayButton.add_style_pseudo_class('grayed');
-        }));
-        Main.overview.connect('hiding', Lang.bind(this, function () {
-            trayButton.reactive = true;
-            trayButton.remove_style_pseudo_class('grayed');
-        }));
-        Main.sessionMode.connect('updated', Lang.bind(this, function() {
-            trayButton.reactive = !Main.sessionMode.isLocked;
-            if (Main.sessionMode.isLocked)
-                trayButton.add_style_pseudo_class('grayed');
-            else
-                trayButton.remove_style_pseudo_class('grayed');
-        }));
-
-        return trayButton;
-    },
-
     _onCapturedEvent: function(actor, event) {
         let type = event.type();
         let press = type == Clutter.EventType.BUTTON_PRESS;
@@ -343,9 +316,6 @@ const Keyboard = new Lang.Class({
                     left_box.add(button.actor);
                 if (key.name == 'Caribou_Prefs') {
                     key.connect('key-released', Lang.bind(this, this.hide));
-
-                    // Add new key for hiding message tray
-                    right_box.add(this._getTrayIcon());
                 }
 
                 button.connect('show-subkeys', Lang.bind(this, function() {
