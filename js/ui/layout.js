@@ -317,13 +317,6 @@ const LayoutManager = new Lang.Class({
         this.trayBox.set_position(this.bottomMonitor.x,
                                   this.bottomMonitor.y + this.bottomMonitor.height);
         this.trayBox.set_size(this.bottomMonitor.width, -1);
-
-        // Set trayBox's clip to show things above it, but not below
-        // it (so it's not visible behind the keyboard). The exact
-        // height of the clip doesn't matter, as long as it's taller
-        // than any Notification.actor.
-        this.trayBox.set_clip(0, -this.bottomMonitor.height,
-                              this.bottomMonitor.width, this.bottomMonitor.height);
     },
 
     _panelBoxChanged: function() {
@@ -505,15 +498,6 @@ const LayoutManager = new Lang.Class({
                            onComplete: this._showKeyboardComplete,
                            onCompleteScope: this
                          });
-
-        if (this.keyboardIndex == this.bottomIndex) {
-            Tweener.addTween(this.trayBox,
-                             { anchor_y: this.keyboardBox.height,
-                               time: KEYBOARD_ANIMATION_TIME,
-                               transition: 'easeOutQuad'
-                             });
-        }
-
         this.emit('keyboard-visible-changed', true);
     },
 
@@ -524,8 +508,6 @@ const LayoutManager = new Lang.Class({
 
         this._keyboardHeightNotifyId = this.keyboardBox.connect('notify::height', Lang.bind(this, function () {
             this.keyboardBox.anchor_y = this.keyboardBox.height;
-            if (this.keyboardIndex == this.bottomIndex)
-                this.trayBox.anchor_y = this.keyboardBox.height;
         }));
     },
 
@@ -541,14 +523,6 @@ const LayoutManager = new Lang.Class({
                            onComplete: this._hideKeyboardComplete,
                            onCompleteScope: this
                          });
-
-        if (this.keyboardIndex == this.bottomIndex) {
-            Tweener.addTween(this.trayBox,
-                             { anchor_y: 0,
-                               time: immediate ? 0 : KEYBOARD_ANIMATION_TIME,
-                               transition: 'easeOutQuad'
-                             });
-        }
 
         this.emit('keyboard-visible-changed', false);
     },
