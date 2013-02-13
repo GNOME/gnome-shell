@@ -2091,7 +2091,7 @@ event_callback (XEvent   *event,
                                               display->grab_old_window_stacking);
                 }
               meta_display_end_grab_op (display,
-                                        device_event->detail);
+                                        device_event->time);
             }
           else if (window && display->grab_op == META_GRAB_OP_NONE)
             {
