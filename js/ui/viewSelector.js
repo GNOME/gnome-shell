@@ -23,6 +23,12 @@ const WorkspacesView = imports.ui.workspacesView;
 
 const SHELL_KEYBINDINGS_SCHEMA = 'org.gnome.shell.keybindings';
 
+const ViewPage = {
+    WINDOWS: 1,
+    APPS: 2,
+    SEARCH: 3
+};
+
 const FocusTrap = new Lang.Class({
     Name: 'FocusTrap',
     Extends: St.Widget,
@@ -476,6 +482,15 @@ const ViewSelector = new Lang.Class({
     removeSearchProvider: function(provider) {
         this._searchSystem.unregisterProvider(provider);
         this._searchResults.destroyProviderMeta(provider);
+    },
+
+    getActivePage: function() {
+        if (this._activePage == this._workspacesPage)
+            return ViewPage.WINDOWS;
+        else if (this._activePage == this._appsPage)
+            return ViewPage.APPS;
+        else
+            return ViewPage.SEARCH;
     }
 });
 Signals.addSignalMethods(ViewSelector.prototype);
