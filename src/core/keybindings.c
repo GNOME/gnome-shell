@@ -645,13 +645,13 @@ add_builtin_keybinding (MetaDisplay          *display,
  *
  * Add a keybinding at runtime. The key @name in @schema needs to be of
  * type %G_VARIANT_TYPE_STRING_ARRAY, with each string describing a
- * keybinding in the form of "<Control>a" or "<Shift><Alt>F1". The parser
+ * keybinding in the form of "&lt;Control&gt;a" or "&lt;Shift&gt;&lt;Alt&gt;F1". The parser
  * is fairly liberal and allows lower or upper case, and also abbreviations
- * such as "<Ctl>" and "<Ctrl>". If the key is set to the empty list or a
+ * such as "&lt;Ctl&gt;" and "&lt;Ctrl&gt;". If the key is set to the empty list or a
  * list with a single element of either "" or "disabled", the keybinding is
  * disabled.
  * If %META_KEY_BINDING_REVERSES is specified in @flags, the binding
- * may be reversed by holding down the "shift" key; therefore, "<Shift>"
+ * may be reversed by holding down the "shift" key; therefore, "&lt;Shift&gt;"
  * cannot be one of the keys used. @handler is expected to check for the
  * "shift" modifier in this case and reverse its action.
  *
