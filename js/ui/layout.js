@@ -151,7 +151,8 @@ const LayoutManager = new Lang.Class({
                             [alloc.min_size, alloc.natural_size] = [height, height];
                         });
 
-        global.window_group.reparent(this.uiGroup);
+        global.stage.remove_actor(global.window_group);
+        this.uiGroup.add_actor(global.window_group);
 
         // Now, you might wonder why we went through all the hoops to implement
         // the GDM greeter inside an X11 compositor, to do this at the end...
@@ -160,7 +161,9 @@ const LayoutManager = new Lang.Class({
         if (Main.sessionMode.isGreeter)
             global.window_group.hide();
 
-        global.overlay_group.reparent(this.uiGroup);
+        global.stage.remove_actor(global.overlay_group);
+        this.uiGroup.add_actor(global.overlay_group);
+
         global.stage.add_child(this.uiGroup);
 
         this.screenShieldGroup = new St.Widget({ name: 'screenShieldGroup',
