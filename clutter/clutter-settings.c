@@ -216,18 +216,26 @@ settings_update_fontmap (ClutterSettings *self,
 
   if (self->last_fontconfig_timestamp != stamp)
     {
-      PangoFontMap *fontmap;
+      ClutterMainContext *context;
       gboolean update_needed = FALSE;
 
-      fontmap = clutter_get_font_map ();
+      context = _clutter_context_get_default ();
 
-      if (PANGO_IS_FC_FONT_MAP (fontmap) &&
-          !FcConfigUptoDate (NULL))
+      /* If there is no font map yet then we don't need to do anything
+       * because the config for fontconfig will be read when it is
+       * created */
+      if (context->font_map)
         {
-          pango_fc_font_map_cache_clear (PANGO_FC_FONT_MAP (fontmap));
+          PangoFontMap *fontmap = PANGO_FONT_MAP (context->font_map);
 
-          if (FcInitReinitialize ())
-            update_needed = TRUE;
+          if (PANGO_IS_FC_FONT_MAP (fontmap) &&
+              !FcConfigUptoDate (NULL))
+            {
+              pango_fc_font_map_cache_clear (PANGO_FC_FONT_MAP (fontmap));
+
+              if (FcInitReinitialize ())
+                update_needed = TRUE;
+            }
         }
 
       self->last_fontconfig_timestamp = stamp;
