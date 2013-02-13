@@ -1457,8 +1457,9 @@ const MessageTrayContextMenu = new Lang.Class({
         Main.uiGroup.add_actor(this._dummy);
 
         this.parent(this._dummy, 0, St.Side.BOTTOM);
+        this._tray = tray;
 
-        this.addAction(_("Clear"), function() {
+        this._clearItem = this.addAction(_("Clear"), function() {
             let toDestroy = [];
             let sources = tray.getSources();
             for (let i = 0; i < sources.length; i++) {
@@ -1478,11 +1479,23 @@ const MessageTrayContextMenu = new Lang.Class({
             tray.close();
         });
 
+        tray.connect('source-added', Lang.bind(this, this._updateClearSensitivity));
+        tray.connect('source-removed', Lang.bind(this, this._updateClearSensitivity));
+        this._updateClearSensitivity();
+
         let separator = new PopupMenu.PopupSeparatorMenuItem();
         this.addMenuItem(separator);
 
         let settingsItem = this.addSettingsAction(_("Notification Settings"), 'gnome-notifications-panel.desktop');
         settingsItem.connect('activate', function() { tray.close(); });
+    },
+
+    _updateClearSensitivity: function() {
+        let sources = this._tray.getSources();
+        sources = sources.filter(function(source) {
+            return !source.trayIcon && !source.isChat && !source.resident;
+        });
+        this._clearItem.setSensitive(sources.length > 0);
     },
 
     setPosition: function(x, y) {
