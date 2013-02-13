@@ -1,3 +1,21 @@
+3.6.3
+=====
+* recorder: Set frame duration to fix broken video headers [Adel; #688487]
+* Block cancellation of unlock dialog during drags [Giovanni; #686800]
+* Honor lock-delay GSettings key [Giovanni, Matthias; #690766, #691170]
+* Fix reentrancy problem causing the tray to disappear [Giovanni; #683986]
+
+Contributors:
+  Giovanni Campagna, Matthias Clasen, Adel Gadllah,
+
+Translations:
+  Mattias Põldaru [et], Sandeep Sheshrao Shedmake [mr], Wouter Bolsterlee [nl],
+  Rajesh Ranjan [hi], Nilamdyuti Goswami [as], Ani Peter [ml],
+  Andika Triwidada [id], Krishnababu Krothapalli [te], Shankar Prasad [kn],
+  Dr.T.Vasudevan [ta], Runa Bhattacharjee [bn_IN], Rafael Ferreira [pt_BR],
+  Balázs Úr [hu], Gheyret Kenji [ug], Yasumichi Akahoshi [ja], Yoji TOYODA [ja],
+  Alexandre Franke [fr]
+
 3.6.2
 =====
 * Implement org.gnome.ScreenSaver.GetActiveTime [Giovanni; #686064]
