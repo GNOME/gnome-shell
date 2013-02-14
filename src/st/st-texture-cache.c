@@ -299,7 +299,7 @@ typedef struct {
 } AsyncTextureLoadData;
 
 static void
-texture_load_data_destroy (gpointer p)
+texture_load_data_free (gpointer p)
 {
   AsyncTextureLoadData *data = p;
 
@@ -317,6 +317,8 @@ texture_load_data_destroy (gpointer p)
 
   if (data->textures)
     g_slist_free_full (data->textures, (GDestroyNotify) g_object_unref);
+
+  g_free (data);
 }
 
 /**
@@ -677,8 +679,7 @@ out:
   if (texdata)
     cogl_handle_unref (texdata);
 
-  texture_load_data_destroy (data);
-  g_free (data);
+  texture_load_data_free (data);
 
   g_clear_error (&error);
 }
