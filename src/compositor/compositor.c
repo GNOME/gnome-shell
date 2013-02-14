@@ -1063,8 +1063,10 @@ static void
 sync_actor_stacking (MetaCompScreen *info)
 {
   GList *children;
+  GList *expected_window_node;
   GList *tmp;
   GList *old;
+  gboolean has_windows;
   gboolean reordered;
 
   /* NB: The first entries in the lists are stacked the lowest */
@@ -1076,49 +1078,41 @@ sync_actor_stacking (MetaCompScreen *info)
   children = clutter_container_get_children (CLUTTER_CONTAINER (info->window_group));
   reordered = FALSE;
 
-  old = children;
-
   /* We allow for actors in the window group other than the actors we
    * know about, but it's up to a plugin to try and keep them stacked correctly
    * (we really need extra API to make that reliable.)
    */
 
-  /* Of the actors we know, the bottom actor should be the background actor */
-
-  while (old && old->data != info->background_actor && !META_IS_WINDOW_ACTOR (old->data))
-    old = old->next;
-  if (old == NULL || old->data != info->background_actor)
+  /* First we check if the background is at the bottom. Then
+   * we check if the window actors are in the correct sequence */
+  expected_window_node = info->windows;
+  for (old = children; old != NULL; old = old->next)
     {
-      reordered = TRUE;
-      goto done_with_check;
-    }
+      ClutterActor *actor = old->data;
 
-  /* Then the window actors should follow in sequence */
-
-  old = old->next;
-  for (tmp = info->windows; tmp != NULL; tmp = tmp->next)
-    {
-      while (old && !META_IS_WINDOW_ACTOR (old->data))
-        old = old->next;
-
-      /* old == NULL: someone reparented a window out of the window group,
-       * order undefined, always restack */
-      if (old == NULL || old->data != tmp->data)
+      if (actor == info->background_actor)
         {
-          reordered = TRUE;
-          goto done_with_check;
+          if (has_windows)
+            reordered = TRUE;
         }
+      else if (META_IS_WINDOW_ACTOR (actor) && !reordered)
+        {
+          has_windows = TRUE;
 
-      old = old->next;
+          if (expected_window_node != NULL && actor == expected_window_node->data)
+            expected_window_node = expected_window_node->next;
+          else
+            reordered = TRUE;
+        }
     }
-
- done_with_check:
 
   g_list_free (children);
 
   if (!reordered)
     return;
 
+  /* reorder the actors by lowering them in turn to the bottom of the stack.
+   * windows first, then background */
   for (tmp = g_list_last (info->windows); tmp != NULL; tmp = tmp->prev)
     {
       MetaWindowActor *window_actor = tmp->data;
