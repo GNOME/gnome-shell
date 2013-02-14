@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-02-10 12:40+0000\n"
-"PO-Revision-Date: 2013-02-10 19:39+0530\n"
+"POT-Creation-Date: 2013-02-12 15:16+0000\n"
+"PO-Revision-Date: 2013-02-14 23:30+0530\n"
 "Last-Translator: Anish A <aneesh.nl@gmail.com>\n"
 "Language-Team: Swatantra Malayalam Computing\n"
 "Language: ml\n"
@@ -162,6 +162,7 @@ msgstr ""
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
+"എന്‍ക്രിപ്റ്റ് ചെയ്തതോ വിദൂരമോ ആയ ഫയല്‍സിസ്റ്റങ്ങള്‍ മൌണ്ട് ചെയ്യുമ്പോഴുള്ള രഹസ്യവാക്ക് ഓര്‍മ്മിക്കണോ എന്ന്"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid ""
@@ -188,17 +189,13 @@ msgid "Keybinding to open the application menu."
 msgstr "പ്രയോഗത്തിന്റെ മെനു തുറക്കുന്നതിനുള്ള കീക്കൂട്ടം."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:21
-#, fuzzy
-#| msgid "Keybinding to open the application menu"
 msgid "Keybinding to open the \"Show Applications\" view"
-msgstr "പ്രയോഗത്തിന്റെ മെനു തുറക്കുന്നതിനുള്ള കീക്കൂട്ടം"
+msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:22
-#, fuzzy
-#| msgid "Keybinding to open the application menu."
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
-msgstr "പ്രയോഗത്തിന്റെ മെനു തുറക്കുന്നതിനുള്ള കീക്കൂട്ടം."
+msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to toggle the visibility of the message tray"
@@ -209,16 +206,12 @@ msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "സന്ദേശ ട്രേയുടെ ദൃശ്യത ടൊഗ്ഗിള്‍ ചെയ്യുന്നതിനുള്ള കീക്കൂട്ടം."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-#, fuzzy
-#| msgid "Keybinding to open the application menu"
 msgid "Keybinding to focus the active notification"
-msgstr "പ്രയോഗത്തിന്റെ മെനു തുറക്കുന്നതിനുള്ള കീക്കൂട്ടം"
+msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-#, fuzzy
-#| msgid "Keybinding to open the application menu."
 msgid "Keybinding to focus the active notification."
-msgstr "പ്രയോഗത്തിന്റെ മെനു തുറക്കുന്നതിനുള്ള കീക്കൂട്ടം."
+msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to toggle the screen recorder"
@@ -356,9 +349,10 @@ msgid "Not listed?"
 msgstr "ലഭ്യമല്ലേ?"
 
 #: ../js/gdm/loginDialog.js:967 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
+#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:374
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:178
+#: ../js/ui/userMenu.js:931
 msgid "Cancel"
 msgstr "വേണ്ട"
 
@@ -388,8 +382,8 @@ msgstr "പ്രവേശന ജാലകം"
 msgid "Power"
 msgstr "ഓഫ്"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:679 ../js/ui/userMenu.js:683
-#: ../js/ui/userMenu.js:799
+#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:693 ../js/ui/userMenu.js:697
+#: ../js/ui/userMenu.js:813
 msgid "Suspend"
 msgstr "താത്കാലികമായി നിര്‍ത്തുക"
 
@@ -397,8 +391,8 @@ msgstr "താത്കാലികമായി നിര്‍ത്തുക"
 msgid "Restart"
 msgstr "പുനരാരംഭിക്കുക"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:681
-#: ../js/ui/userMenu.js:683 ../js/ui/userMenu.js:798
+#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:695
+#: ../js/ui/userMenu.js:697 ../js/ui/userMenu.js:812 ../js/ui/userMenu.js:935
 msgid "Power Off"
 msgstr "നിര്‍ത്തുക"
 
@@ -467,60 +461,63 @@ msgctxt "event list time"
 msgid "All Day"
 msgstr "ദിനം മുഴുവനും"
 
-#. Translators: Shown in calendar event list, if 24h format
-#: ../js/ui/calendar.js:66
+#. Translators: Shown in calendar event list, if 24h format,
+#. \u2236 is a ratio character, similar to :
+#: ../js/ui/calendar.js:67
 msgctxt "event list time"
-msgid "%H:%M"
-msgstr "%H:%M"
+msgid "%H\\u2236%M"
+msgstr "%H\\u2236%M"
 
-#. Transators: Shown in calendar event list, if 12h format
-#: ../js/ui/calendar.js:73
+#. Transators: Shown in calendar event list, if 12h format,
+#. \u2236 is a ratio character, similar to : and \u2009 is
+#. a thin space
+#: ../js/ui/calendar.js:76
 msgctxt "event list time"
-msgid "%l:%M %p"
-msgstr "%l:%M %p"
+msgid "%l\\u2236%M\\u2009%p"
+msgstr "%l\\u2236%M\\u2009%p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:104
+#: ../js/ui/calendar.js:107
 msgctxt "grid sunday"
 msgid "S"
 msgstr "ഞാ"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:106
+#: ../js/ui/calendar.js:109
 msgctxt "grid monday"
 msgid "M"
 msgstr "തി"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:108
+#: ../js/ui/calendar.js:111
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "ചൊ"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:110
+#: ../js/ui/calendar.js:113
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "ബു"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:112
+#: ../js/ui/calendar.js:115
 msgctxt "grid thursday"
 msgid "T"
 msgstr "വ്യാ"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:114
+#: ../js/ui/calendar.js:117
 msgctxt "grid friday"
 msgid "F"
 msgstr "വെ"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:116
+#: ../js/ui/calendar.js:119
 msgctxt "grid saturday"
 msgid "S"
 msgstr "ശ"
@@ -531,77 +528,77 @@ msgstr "ശ"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:129
+#: ../js/ui/calendar.js:132
 msgctxt "list sunday"
 msgid "Su"
 msgstr "ഞാ"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:131
+#: ../js/ui/calendar.js:134
 msgctxt "list monday"
 msgid "M"
 msgstr "തി"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:133
+#: ../js/ui/calendar.js:136
 msgctxt "list tuesday"
 msgid "T"
 msgstr "ചൊ"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:135
+#: ../js/ui/calendar.js:138
 msgctxt "list wednesday"
 msgid "W"
 msgstr "ബു"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:137
+#: ../js/ui/calendar.js:140
 msgctxt "list thursday"
 msgid "Th"
 msgstr "വ്യാ"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:139
+#: ../js/ui/calendar.js:142
 msgctxt "list friday"
 msgid "F"
 msgstr "വെ"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:141
+#: ../js/ui/calendar.js:144
 msgctxt "list saturday"
 msgid "S"
 msgstr "ശ"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:674
+#: ../js/ui/calendar.js:677
 msgid "Nothing Scheduled"
 msgstr "ഒന്നും ക്രമീകരിച്ചിട്ടില്ല"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:690
+#: ../js/ui/calendar.js:693
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:693
+#: ../js/ui/calendar.js:696
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:703
+#: ../js/ui/calendar.js:706
 msgid "Today"
 msgstr "ഇന്നു്"
 
-#: ../js/ui/calendar.js:707
+#: ../js/ui/calendar.js:710
 msgid "Tomorrow"
 msgstr "നാളെ"
 
-#: ../js/ui/calendar.js:718
+#: ../js/ui/calendar.js:721
 msgid "This week"
 msgstr "ഈ ആഴ്ച"
 
-#: ../js/ui/calendar.js:726
+#: ../js/ui/calendar.js:729
 msgid "Next week"
 msgstr "അടുത്ത ആഴ്ച"
 
@@ -1000,95 +997,95 @@ msgstr "തീയതി, സമയ ക്രമീകരണങ്ങള്‍"
 msgid "%A %B %e, %Y"
 msgstr "%A %B %e, %Y"
 
-#: ../js/ui/endSessionDialog.js:61
+#: ../js/ui/endSessionDialog.js:62
 #, c-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "%s ല്‍ നിന്നു പുറത്ത് കടക്കുക"
 
-#: ../js/ui/endSessionDialog.js:62
+#: ../js/ui/endSessionDialog.js:63
 msgctxt "title"
 msgid "Log Out"
 msgstr "പുറത്ത് കടക്കുക"
 
-#: ../js/ui/endSessionDialog.js:63
+#: ../js/ui/endSessionDialog.js:64
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "ഈ പ്രയോഗങ്ങളില്‍ നിന്നും പുറത്തു് കടക്കുന്നതിനായി പുറത്തു കടക്കുക ക്ലിക്ക് ചെയ്തു് സിസ്റ്റത്തില്‍ നിന്നും "
 "പുറത്തു് കടക്കുക."
 
-#: ../js/ui/endSessionDialog.js:65
+#: ../js/ui/endSessionDialog.js:66
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s %d നിമിഷത്തിനുള്ളില്‍ സ്വയമേ പുറത്ത് കടക്കുന്നതാണു്."
 msgstr[1] "%s %d നിമിഷങ്ങള്‍ക്കുള്ളില്‍ സ്വയമേ പുറത്ത് കടക്കുന്നതാണു്."
 
-#: ../js/ui/endSessionDialog.js:70
+#: ../js/ui/endSessionDialog.js:71
 #, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "നിങ്ങള്‍ %d നിമിഷത്തിനുള്ളില്‍ സ്വയമേ പുറത്ത് കടക്കുന്നതാണു്."
 msgstr[1] "നിങ്ങള്‍ %d നിമിഷങ്ങള്‍ക്കുള്ളില്‍ സ്വയമേ പുറത്ത് കടക്കുന്നതാണു്."
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:75
 msgid "Logging out of the system."
 msgstr "സിസ്റ്റത്തില്‍ നിന്നു പുറത്തു കടക്കുന്നു."
 
-#: ../js/ui/endSessionDialog.js:76
+#: ../js/ui/endSessionDialog.js:77
 msgctxt "button"
 msgid "Log Out"
 msgstr "പുറത്ത് കടക്കുക"
 
-#: ../js/ui/endSessionDialog.js:81
+#: ../js/ui/endSessionDialog.js:82
 msgctxt "title"
 msgid "Power Off"
 msgstr "നിര്‍ത്തുക"
 
-#: ../js/ui/endSessionDialog.js:82
+#: ../js/ui/endSessionDialog.js:83
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
 "ഈ പ്രയോഗങ്ങളില്‍ നിന്നും പുറത്തു് കടക്കുന്നതിനായി പവര്‍ ഓഫ് ചെയ്യുക ക്ലിക്ക് ചെയ്തു സിസ്റ്റിന്റെ പവര്‍ "
 "ഓഫ് ചെയ്യുക."
 
-#: ../js/ui/endSessionDialog.js:84
+#: ../js/ui/endSessionDialog.js:85
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "സിസ്റ്റം %d നിമിഷത്തിനുള്ളില്‍ സ്വയമേ ഓഫ് ചെയ്യപ്പെടുന്നതാണു്."
 msgstr[1] "സിസ്റ്റം %d നിമിഷങ്ങള്‍ക്കുള്ളില്‍ സ്വയമേ ഓഫ് ചെയ്യപ്പെടുന്നതാണു്."
 
-#: ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:89
 msgid "Powering off the system."
 msgstr "സിസ്റ്റത്തിന്റെ പവര്‍ ഓഫ് ചെയ്യുന്നു."
 
-#: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:91 ../js/ui/endSessionDialog.js:108
 msgctxt "button"
 msgid "Restart"
 msgstr "പുനരാരംഭിക്കൂ"
 
-#: ../js/ui/endSessionDialog.js:92
+#: ../js/ui/endSessionDialog.js:93
 msgctxt "button"
 msgid "Power Off"
 msgstr "നിര്‍ത്തുക"
 
-#: ../js/ui/endSessionDialog.js:98
+#: ../js/ui/endSessionDialog.js:99
 msgctxt "title"
 msgid "Restart"
 msgstr "പുനരാരംഭിക്കുക"
 
-#: ../js/ui/endSessionDialog.js:99
+#: ../js/ui/endSessionDialog.js:100
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "ഈ പ്രയോഗങ്ങള്‍ നിറുത്തി സിസ്റ്റം പുനരാരംഭിക്കുവാന്‍ പുനരാരംഭിക്കൂ അമര്‍ത്തുക"
 
-#: ../js/ui/endSessionDialog.js:101
+#: ../js/ui/endSessionDialog.js:102
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "സിസ്റ്റം %d നിമിഷത്തിനുള്ളില്‍ സ്വയമേ വീണ്ടും ആരംഭിയ്ക്കുന്നു."
 msgstr[1] "സിസ്റ്റം %d നിമിഷങ്ങള്‍ക്കുള്ളില്‍ സ്വയമേ വീണ്ടും ആരംഭിയ്ക്കുന്നു."
 
-#: ../js/ui/endSessionDialog.js:105
+#: ../js/ui/endSessionDialog.js:106
 msgid "Restarting the system."
 msgstr "സിസ്റ്റം പുനരാരംഭിക്കുന്നു."
 
@@ -1166,15 +1163,23 @@ msgstr "തുറക്കുക"
 msgid "Remove"
 msgstr "നീക്കം ചെയ്യുക"
 
-#: ../js/ui/messageTray.js:1624
+#: ../js/ui/messageTray.js:1461
+msgid "Clear"
+msgstr "വെടിപ്പാക്കുക"
+
+#: ../js/ui/messageTray.js:1484
+msgid "Notification Settings"
+msgstr "അറിയിപ്പു് ക്രമീകരണങ്ങള്‍"
+
+#: ../js/ui/messageTray.js:1667
 msgid "No Messages"
 msgstr "സന്ദേശങ്ങളില്ല"
 
-#: ../js/ui/messageTray.js:1655
+#: ../js/ui/messageTray.js:1728
 msgid "Message Tray"
 msgstr "സന്ദേശത്തിന്റെ ട്രേ"
 
-#: ../js/ui/messageTray.js:2769
+#: ../js/ui/messageTray.js:2842
 msgid "System Information"
 msgstr "സിസ്റ്റത്തെക്കുറിച്ചുള്ള വിവരം"
 
@@ -1256,7 +1261,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d പുതിയ അറിയിപ്പു്"
 msgstr[1] "%d പുതിയ അറിയിപ്പുകള്‍"
 
-#: ../js/ui/screenShield.js:464 ../js/ui/userMenu.js:790
+#: ../js/ui/screenShield.js:464 ../js/ui/userMenu.js:804
 msgid "Lock"
 msgstr "പൂട്ടുക"
 
@@ -1709,61 +1714,79 @@ msgstr "മറ്റൊരു ഉപയോക്താവായി പ്രവ�
 msgid "Unlock Window"
 msgstr "ജാലകത്തിന്റെ പൂട്ടു തുറക്കുക"
 
-#: ../js/ui/userMenu.js:177
+#: ../js/ui/userMenu.js:191
 msgid "Available"
 msgstr "ലഭ്യമാണ്"
 
-#: ../js/ui/userMenu.js:180
+#: ../js/ui/userMenu.js:194
 msgid "Busy"
 msgstr "തിരക്കിലാണ്"
 
-#: ../js/ui/userMenu.js:183
+#: ../js/ui/userMenu.js:197
 msgid "Invisible"
 msgstr "അദൃശ്യം"
 
-#: ../js/ui/userMenu.js:186
+#: ../js/ui/userMenu.js:200
 msgid "Away"
 msgstr "വിദൂരെയാണ്"
 
-#: ../js/ui/userMenu.js:189
+#: ../js/ui/userMenu.js:203
 msgid "Idle"
 msgstr "പ്രവര്‍ത്തനത്തിലല്ല"
 
-#: ../js/ui/userMenu.js:192
+#: ../js/ui/userMenu.js:206
 msgid "Offline"
 msgstr "ഓഫ്​ലൈന്‍"
 
-#: ../js/ui/userMenu.js:764
+#: ../js/ui/userMenu.js:778
 msgid "Notifications"
 msgstr "അറിയിപ്പുകള്‍"
 
-#: ../js/ui/userMenu.js:772
+#: ../js/ui/userMenu.js:786
 msgid "Settings"
 msgstr "സജ്ജീകരണങ്ങള്‍"
 
-#: ../js/ui/userMenu.js:780
+#: ../js/ui/userMenu.js:794
 msgid "Switch User"
 msgstr "ഉപയോക്താവിനെ മാറ്റുക"
 
-#: ../js/ui/userMenu.js:785
+#: ../js/ui/userMenu.js:799
 msgid "Log Out"
 msgstr "പുറത്ത് കടക്കുക"
 
-#: ../js/ui/userMenu.js:805
+#: ../js/ui/userMenu.js:819
 msgid "Install Updates & Restart"
 msgstr "പരിഷ്കരണങ്ങള്‍ ഇന്‍സ്റ്റോള്‍ ചെയ്തു് വീണ്ടും ആരംഭിയ്ക്കുക"
 
-#: ../js/ui/userMenu.js:823
+#: ../js/ui/userMenu.js:837
 msgid "Your chat status will be set to busy"
 msgstr "നിങ്ങളുടെ ചാറ്റ് അവസ്ഥ - തിരക്കില്‍"
 
-#: ../js/ui/userMenu.js:824
+#: ../js/ui/userMenu.js:838
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
 msgstr ""
 "ചാറ്റ് സന്ദേശങ്ങള്‍ എന്ന പോലെ അറിയിപ്പുകള്‍ പ്രവര്‍ത്തന രഹിതമാക്കുന്നു. മറ്റുള്ളവരുടെ ചാറ്റ് സന്ദേശങ്ങള്‍ "
 "നിങ്ങള്‍ക്കു് കാണുവാന്‍ സാധ്യമല്ല എന്നു് നിങ്ങളുടെ ഓണ്‍ലൈന്‍ അവസ്ഥയില്‍ വ്യക്തമാക്കുന്നു."
+
+#: ../js/ui/userMenu.js:884
+msgid "Other users are logged in."
+msgstr "വേറേ ഉപയോക്താക്കള്‍ ലോഗിന്‍ ചെയ്തിട്ടുണ്ട്."
+
+#: ../js/ui/userMenu.js:889
+msgid "Shutting down might cause them to lose unsaved work."
+msgstr "അടച്ചുപൂട്ടുന്നത് അവരുടെ സൂക്ഷിക്കാത്ത ജോലികള്‍ നഷ്ട്ടപ്പെടുത്താം."
+
+#: ../js/ui/userMenu.js:915
+#, c-format
+msgid "%s (remote)"
+msgstr "%s (വിദൂരം)"
+
+#: ../js/ui/userMenu.js:917
+#, c-format
+msgid "%s (console)"
+msgstr "%s (കണ്‍സോള്‍)"
 
 #: ../js/ui/viewSelector.js:85
 msgid "Applications"
@@ -1850,6 +1873,14 @@ msgstr "രഹസ്യവാക്ക് കാലിയാകുവാന്�
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "ഉപയോക്താവു് ആധികാരികത ഉറപ്പാക്കല്‍ ഡയലോഗ് നിര്‍ത്തുന്നു"
+
+#~ msgctxt "event list time"
+#~ msgid "%H:%M"
+#~ msgstr "%H:%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l:%M %p"
+#~ msgstr "%l:%M %p"
 
 #~ msgid "APPLICATIONS"
 #~ msgstr "പ്രയോഗങ്ങള്‍"
