@@ -246,9 +246,7 @@ impl_load_pixbuf_gicon (GtkIconInfo  *info,
                         StIconColors *colors,
                         GError      **error)
 {
-  int scaled_width, scaled_height;
   GdkPixbuf *pixbuf;
-  int width, height;
 
   if (colors)
     {
@@ -272,21 +270,6 @@ impl_load_pixbuf_gicon (GtkIconInfo  *info,
       pixbuf = gtk_icon_info_load_icon (info, error);
     }
 
-  if (!pixbuf)
-    return NULL;
-
-  width = gdk_pixbuf_get_width (pixbuf);
-  height = gdk_pixbuf_get_height (pixbuf);
-
-  if (compute_pixbuf_scale (width,
-                            height,
-                            size, size,
-                            &scaled_width, &scaled_height))
-    {
-      GdkPixbuf *scaled = gdk_pixbuf_scale_simple (pixbuf, width, height, GDK_INTERP_BILINEAR);
-      g_object_unref (pixbuf);
-      pixbuf = scaled;
-    }
   return pixbuf;
 }
 
