@@ -685,7 +685,8 @@ const Memory = new Lang.Class({
 const Extensions = new Lang.Class({
     Name: 'Extensions',
 
-    _init: function() {
+    _init: function(lookingGlass) {
+        this._lookingGlass = lookingGlass;
         this.actor = new St.BoxLayout({ vertical: true,
                                         name: 'lookingGlassExtensions' });
         this._noExtensions = new St.Label({ style_class: 'lg-extensions-none',
@@ -912,7 +913,7 @@ const LookingGlass = new Lang.Class({
         this._memory = new Memory();
         notebook.appendPage('Memory', this._memory.actor);
 
-        this._extensions = new Extensions();
+        this._extensions = new Extensions(this);
         notebook.appendPage('Extensions', this._extensions.actor);
 
         this._entry.clutter_text.connect('activate', Lang.bind(this, function (o, e) {
