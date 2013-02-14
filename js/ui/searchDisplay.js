@@ -226,7 +226,7 @@ const SearchResultsBase = new Lang.Class({
                 // content while filling in the results.
                 this.actor.hide();
 
-                this.renderResults(metas);
+                this._renderResults(metas);
 
                 this._setMoreIconVisible(this.hasMoreResults() && this.provider.canLaunchSearch);
 
@@ -279,7 +279,7 @@ const ListSearchResults = new Lang.Class({
         return this._content.get_n_children();
     },
 
-    renderResults: function(metas) {
+    _renderResults: function(metas) {
         for (let i = 0; i < metas.length; i++) {
             let display = new ListSearchResult(this.provider, metas[i], this._terms);
             display.actor.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
@@ -324,7 +324,7 @@ const GridSearchResults = new Lang.Class({
         return this._grid.visibleItemsCount();
     },
 
-    renderResults: function(metas) {
+    _renderResults: function(metas) {
         for (let i = 0; i < metas.length; i++) {
             let display = new GridSearchResult(this.provider, metas[i], this._terms);
             display.actor.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
