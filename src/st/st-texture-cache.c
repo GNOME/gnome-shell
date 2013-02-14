@@ -240,39 +240,6 @@ rgba_from_clutter (GdkRGBA      *rgba,
   rgba->alpha = color->alpha / 255.;
 }
 
-static GdkPixbuf *
-impl_load_pixbuf_gicon (GtkIconInfo  *info,
-                        int           size,
-                        StIconColors *colors,
-                        GError      **error)
-{
-  GdkPixbuf *pixbuf;
-
-  if (colors)
-    {
-      GdkRGBA foreground_color;
-      GdkRGBA success_color;
-      GdkRGBA warning_color;
-      GdkRGBA error_color;
-
-      rgba_from_clutter (&foreground_color, &colors->foreground);
-      rgba_from_clutter (&success_color, &colors->success);
-      rgba_from_clutter (&warning_color, &colors->warning);
-      rgba_from_clutter (&error_color, &colors->error);
-
-      pixbuf = gtk_icon_info_load_symbolic (info,
-                                            &foreground_color, &success_color,
-                                            &warning_color, &error_color,
-                                            NULL, error);
-    }
-  else
-    {
-      pixbuf = gtk_icon_info_load_icon (info, error);
-    }
-
-  return pixbuf;
-}
-
 /* A private structure for keeping width and height. */
 typedef struct {
   int width;
@@ -525,13 +492,9 @@ load_pixbuf_thread (GSimpleAsyncResult *result,
 
   data = g_async_result_get_user_data (G_ASYNC_RESULT (result));
   g_assert (data != NULL);
+  g_assert (data->uri != NULL);
 
-  if (data->uri)
-    pixbuf = impl_load_pixbuf_file (data->uri, data->width, data->height, &error);
-  else if (data->icon_info)
-    pixbuf = impl_load_pixbuf_gicon (data->icon_info, data->width, data->colors, &error);
-  else
-    g_assert_not_reached ();
+  pixbuf = impl_load_pixbuf_file (data->uri, data->width, data->height, &error);
 
   if (error != NULL)
     {
@@ -632,29 +595,21 @@ pixbuf_to_cairo_surface (GdkPixbuf *pixbuf)
 }
 
 static void
-on_pixbuf_loaded (GObject      *source,
-                  GAsyncResult *result,
-                  gpointer      user_data)
+finish_texture_load (AsyncTextureLoadData *data,
+                     GdkPixbuf            *pixbuf)
 {
   GSList *iter;
   StTextureCache *cache;
-  AsyncTextureLoadData *data;
-  GdkPixbuf *pixbuf;
-  GError *error = NULL;
   CoglHandle texdata = NULL;
 
-  data = user_data;
-  cache = ST_TEXTURE_CACHE (source);
+  cache = data->cache;
 
   g_hash_table_remove (cache->priv->outstanding_requests, data->key);
 
-  pixbuf = load_pixbuf_async_finish (cache, result, &error);
   if (pixbuf == NULL)
     goto out;
 
   texdata = pixbuf_to_cogl_handle (pixbuf, data->enforced_square);
-
-  g_object_unref (pixbuf);
 
   if (data->policy != ST_TEXTURE_CACHE_POLICY_NONE)
     {
@@ -680,18 +635,79 @@ out:
     cogl_handle_unref (texdata);
 
   texture_load_data_free (data);
+}
 
-  g_clear_error (&error);
+static void
+on_symbolic_icon_loaded (GObject      *source,
+                         GAsyncResult *result,
+                         gpointer      user_data)
+{
+  GdkPixbuf *pixbuf;
+  pixbuf = gtk_icon_info_load_symbolic_finish (GTK_ICON_INFO (source), result, NULL, NULL);
+  finish_texture_load (user_data, pixbuf);
+  g_clear_object (&pixbuf);
+}
+
+static void
+on_icon_loaded (GObject      *source,
+                GAsyncResult *result,
+                gpointer      user_data)
+{
+  GdkPixbuf *pixbuf;
+  pixbuf = gtk_icon_info_load_icon_finish (GTK_ICON_INFO (source), result, NULL);
+  finish_texture_load (user_data, pixbuf);
+  g_clear_object (&pixbuf);
+}
+
+static void
+on_pixbuf_loaded (GObject      *source,
+                  GAsyncResult *result,
+                  gpointer      user_data)
+{
+  GdkPixbuf *pixbuf;
+  pixbuf = load_pixbuf_async_finish (ST_TEXTURE_CACHE (source), result, NULL);
+  finish_texture_load (user_data, pixbuf);
+  g_clear_object (&pixbuf);
 }
 
 static void
 load_texture_async (StTextureCache       *cache,
                     AsyncTextureLoadData *data)
 {
-  GSimpleAsyncResult *result;
-  result = g_simple_async_result_new (G_OBJECT (cache), on_pixbuf_loaded, data, load_texture_async);
-  g_simple_async_result_run_in_thread (result, load_pixbuf_thread, G_PRIORITY_DEFAULT, NULL);
-  g_object_unref (result);
+  if (data->uri)
+    {
+      GSimpleAsyncResult *result;
+      result = g_simple_async_result_new (G_OBJECT (cache), on_pixbuf_loaded, data, load_texture_async);
+      g_simple_async_result_run_in_thread (result, load_pixbuf_thread, G_PRIORITY_DEFAULT, NULL);
+      g_object_unref (result);
+    }
+  else if (data->icon_info)
+    {
+      StIconColors *colors = data->colors;
+      if (colors)
+        {
+          GdkRGBA foreground_color;
+          GdkRGBA success_color;
+          GdkRGBA warning_color;
+          GdkRGBA error_color;
+
+          rgba_from_clutter (&foreground_color, &colors->foreground);
+          rgba_from_clutter (&success_color, &colors->success);
+          rgba_from_clutter (&warning_color, &colors->warning);
+          rgba_from_clutter (&error_color, &colors->error);
+
+          gtk_icon_info_load_symbolic_async (data->icon_info,
+                                             &foreground_color, &success_color,
+                                             &warning_color, &error_color,
+                                             NULL, on_symbolic_icon_loaded, data);
+        }
+      else
+        {
+          gtk_icon_info_load_icon_async (data->icon_info, NULL, on_icon_loaded, data);
+        }
+    }
+  else
+    g_assert_not_reached ();
 }
 
 typedef struct {
