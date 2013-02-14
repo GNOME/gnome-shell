@@ -587,18 +587,19 @@ const NetworkAgent = new Lang.Class({
     Name: 'NetworkAgent',
 
     _init: function() {
-        this._native = new Shell.NetworkAgent({ auto_register: false,
-                                                identifier: 'org.gnome.Shell.NetworkAgent' });
+        this._native = new Shell.NetworkAgent({ identifier: 'org.gnome.Shell.NetworkAgent' });
 
         this._dialogs = { };
         this._vpnRequests = { };
 
         this._native.connect('new-request', Lang.bind(this, this._newRequest));
         this._native.connect('cancel-request', Lang.bind(this, this._cancelRequest));
+
+        this._enabled = false;
     },
 
     enable: function() {
-        this._native.auto_register = true;
+        this._enabled = true;
     },
 
     disable: function() {
@@ -612,12 +613,15 @@ const NetworkAgent = new Lang.Class({
             this._vpnRequests[requestId].cancel(true);
         this._vpnRequests = { };
 
-        this._native.auto_register = false;
-        if (this._native.registered)
-            this._native.unregister();
+        this._enabled = false;
     },
 
     _newRequest:  function(agent, requestId, connection, settingName, hints, flags) {
+        if (!this._enabled) {
+            agent.respond(requestId, Shell.NetworkAgentResponse.USER_CANCELED);
+            return;
+        }
+
         if (settingName == 'vpn') {
             this._vpnRequest(requestId, connection, hints, flags);
             return;
