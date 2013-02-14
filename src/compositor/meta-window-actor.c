@@ -107,6 +107,7 @@ struct _MetaWindowActorPrivate
 
   guint		    needs_damage_all       : 1;
   guint		    received_damage        : 1;
+  guint             repaint_scheduled      : 1;
 
   /* If set, the client needs to be sent a _NET_WM_FRAME_DRAWN
    * client message using the most recent frame in ->frames */
@@ -932,6 +933,7 @@ meta_window_actor_damage_all (MetaWindowActor *self)
                                    cogl_texture_get_height (texture));
 
   priv->needs_damage_all = FALSE;
+  priv->repaint_scheduled = TRUE;
 }
 
 static void
@@ -961,17 +963,41 @@ meta_window_actor_thaw (MetaWindowActor *self)
    * don't know what real damage has happened. */
   if (self->priv->needs_damage_all)
     meta_window_actor_damage_all (self);
-  else if (self->priv->needs_frame_drawn != 0)
+}
+
+void
+meta_window_actor_queue_frame_drawn (MetaWindowActor *self,
+                                     gboolean         no_delay_frame)
+{
+  MetaWindowActorPrivate *priv = self->priv;
+  FrameData *frame = g_slice_new0 (FrameData);
+
+  priv->needs_frame_drawn = TRUE;
+
+  frame->sync_request_serial = priv->window->sync_request_serial;
+
+  priv->frames = g_list_prepend (priv->frames, frame);
+
+  if (no_delay_frame)
     {
-      /* A frame was marked by the client without actually doing any damage;
-       * we need to make sure that the pre_paint/post_paint functions
-       * get called, enabling us to send a _NET_WM_FRAME_DRAWN. We do a
-       * 1-pixel redraw to get consistent timing with non-empty frames.
+      ClutterActor *stage = clutter_actor_get_stage (CLUTTER_ACTOR (self));
+      clutter_stage_skip_sync_delay (CLUTTER_STAGE (stage));
+    }
+
+  if (!priv->repaint_scheduled)
+    {
+      /* A frame was marked by the client without actually doing any
+       * damage, or while we had the window frozen (e.g. during an
+       * interactive resize.) We need to make sure that the
+       * pre_paint/post_paint functions get called, enabling us to
+       * send a _NET_WM_FRAME_DRAWN. We do a 1-pixel redraw to get
+       * consistent timing with non-empty frames.
        */
-      if (self->priv->mapped && !self->priv->needs_pixmap)
+      if (priv->mapped && !priv->needs_pixmap)
         {
           const cairo_rectangle_int_t clip = { 0, 0, 1, 1 };
-          clutter_actor_queue_redraw_with_clip (self->priv->actor, &clip);
+          clutter_actor_queue_redraw_with_clip (priv->actor, &clip);
+          priv->repaint_scheduled = TRUE;
         }
     }
 }
@@ -1949,6 +1975,7 @@ meta_window_actor_process_damage (MetaWindowActor    *self,
                                    event->area.y,
                                    event->area.width,
                                    event->area.height);
+  priv->repaint_scheduled = TRUE;
 }
 
 void
@@ -2350,25 +2377,6 @@ meta_window_actor_handle_updates (MetaWindowActor *self)
   check_needs_pixmap (self);
   check_needs_reshape (self);
   check_needs_shadow (self);
-
-  if (priv->window->needs_frame_drawn)
-    {
-      FrameData *frame = g_slice_new0 (FrameData);
-
-      priv->needs_frame_drawn = TRUE;
-
-      frame->sync_request_serial = priv->window->sync_request_serial;
-
-      priv->frames = g_list_prepend (priv->frames, frame);
-
-      priv->window->needs_frame_drawn = FALSE;
-
-      if (priv->window->no_delay_frame)
-        {
-          ClutterActor *stage = clutter_actor_get_stage (CLUTTER_ACTOR (self));
-          clutter_stage_skip_sync_delay (CLUTTER_STAGE (stage));
-        }
-    }
 }
 
 void
@@ -2395,6 +2403,8 @@ void
 meta_window_actor_post_paint (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
+
+  priv->repaint_scheduled = FALSE;
 
   if (priv->needs_frame_drawn)
     {

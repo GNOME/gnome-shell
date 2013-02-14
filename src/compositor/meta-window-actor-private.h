@@ -51,6 +51,8 @@ void     meta_window_actor_mapped              (MetaWindowActor *self);
 void     meta_window_actor_unmapped            (MetaWindowActor *self);
 void     meta_window_actor_set_updates_frozen  (MetaWindowActor *self,
                                                 gboolean         updates_frozen);
+void     meta_window_actor_queue_frame_drawn   (MetaWindowActor *self,
+                                                gboolean         no_delay_frame);
 
 cairo_region_t *meta_window_actor_get_obscured_region (MetaWindowActor *self);
 

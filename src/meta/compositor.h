@@ -156,6 +156,9 @@ void meta_compositor_sync_window_geometry (MetaCompositor *compositor,
 void meta_compositor_set_updates_frozen   (MetaCompositor *compositor,
                                            MetaWindow     *window,
                                            gboolean        updates_frozen);
+void meta_compositor_queue_frame_drawn    (MetaCompositor *compositor,
+                                           MetaWindow     *window,
+                                           gboolean        no_delay_frame);
 
 void meta_compositor_sync_stack                (MetaCompositor *compositor,
                                                 MetaScreen     *screen,

@@ -764,6 +764,21 @@ meta_compositor_set_updates_frozen (MetaCompositor *compositor,
   meta_window_actor_set_updates_frozen (window_actor, updates_frozen);
 }
 
+void
+meta_compositor_queue_frame_drawn (MetaCompositor *compositor,
+                                   MetaWindow     *window,
+                                   gboolean        no_delay_frame)
+{
+  MetaWindowActor *window_actor;
+
+  DEBUG_TRACE ("meta_compositor_queue_frame_drawn\n");
+  window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
+  if (!window_actor)
+    return;
+
+  meta_window_actor_queue_frame_drawn (window_actor, no_delay_frame);
+}
+
 static gboolean
 is_grabbed_event (MetaDisplay *display,
                   XEvent      *event)

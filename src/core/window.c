@@ -9510,11 +9510,13 @@ void
 meta_window_update_sync_request_counter (MetaWindow *window,
                                          gint64      new_counter_value)
 {
-  if (window->extended_sync_request_counter &&
-      new_counter_value % 2 == 0)
+  gboolean needs_frame_drawn = FALSE;
+  gboolean no_delay_frame = FALSE;
+
+  if (window->extended_sync_request_counter && new_counter_value % 2 == 0)
     {
-      window->needs_frame_drawn = TRUE;
-      window->no_delay_frame = new_counter_value == window->sync_request_serial + 1;
+      needs_frame_drawn = TRUE;
+      no_delay_frame = new_counter_value == window->sync_request_serial + 1;
     }
 
   window->sync_request_serial = new_counter_value;
@@ -9547,6 +9549,10 @@ meta_window_update_sync_request_counter (MetaWindow *window,
                      window->display->grab_latest_motion_y,
                      TRUE);
     }
+
+  if (needs_frame_drawn)
+    meta_compositor_queue_frame_drawn (window->display->compositor, window,
+                                       no_delay_frame);
 }
 #endif /* HAVE_XSYNC */
 
