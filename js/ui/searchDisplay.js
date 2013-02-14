@@ -218,22 +218,13 @@ const SearchResultsBase = new Lang.Class({
             this.provider.getResultMetas(results, Lang.bind(this, function(metas) {
                 this.clear();
 
-                // Hiding drops the key focus if we have it
-                let focus = global.stage.get_key_focus();
-
                 // To avoid CSS transitions causing flickering when
                 // the first search result stays the same, we hide the
                 // content while filling in the results.
                 this.actor.hide();
-
                 this._renderResults(metas);
-
                 this._setMoreIconVisible(this.hasMoreResults() && this.provider.canLaunchSearch);
-
                 this.actor.show();
-                if (this.actor.contains(focus))
-                    global.stage.set_key_focus(focus);
-
                 callback();
             }));
         }
