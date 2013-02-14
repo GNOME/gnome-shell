@@ -164,19 +164,6 @@ prepare_write_stream (const gchar *filename,
   return stream;
 }
 
-static cairo_status_t
-do_write_to_stream (void *closure,
-                    const guchar *data,
-                    guint length)
-{
-  GOutputStream *stream = closure;
-  gboolean res;
-
-  res = g_output_stream_write_all (stream, data, length, NULL, NULL, NULL);
-
-  return res ? CAIRO_STATUS_SUCCESS : CAIRO_STATUS_WRITE_ERROR;
-}
-
 static void
 write_screenshot_thread (GSimpleAsyncResult *result,
                          GObject *object,
@@ -194,7 +181,26 @@ write_screenshot_thread (GSimpleAsyncResult *result,
   if (stream == NULL)
     status = CAIRO_STATUS_FILE_NOT_FOUND;
   else
-    status = cairo_surface_write_to_png_stream (screenshot_data->image, do_write_to_stream, stream);
+    {
+      GdkPixbuf *pixbuf;
+      pixbuf = gdk_pixbuf_new_from_data (cairo_image_surface_get_data (screenshot_data->image),
+                                         GDK_COLORSPACE_RGB,
+                                         TRUE,
+                                         8,
+                                         cairo_image_surface_get_width (screenshot_data->image),
+                                         cairo_image_surface_get_height (screenshot_data->image),
+                                         cairo_image_surface_get_stride (screenshot_data->image),
+                                         NULL,
+                                         NULL);
+      if (gdk_pixbuf_save_to_stream (pixbuf, stream, "png", NULL, NULL,
+                                    "tEXt::Software", "gnome-screenshot", NULL))
+        status = CAIRO_STATUS_SUCCESS;
+      else
+        status = CAIRO_STATUS_WRITE_ERROR;
+
+      g_clear_object (&pixbuf);
+    }
+
 
   g_simple_async_result_set_op_res_gboolean (result, status == CAIRO_STATUS_SUCCESS);
 
