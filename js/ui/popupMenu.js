@@ -621,7 +621,7 @@ const PopupSliderMenuItem = new Lang.Class({
 
     _startDragging: function(actor, event) {
         if (this._dragging) // don't allow two drags at the same time
-            return;
+            return false;
 
         this._dragging = true;
 
@@ -634,6 +634,8 @@ const PopupSliderMenuItem = new Lang.Class({
         let absX, absY;
         [absX, absY] = event.get_coords();
         this._moveHandle(absX, absY);
+
+        return true;
     },
 
     _endDragging: function() {
