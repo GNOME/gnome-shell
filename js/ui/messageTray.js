@@ -359,6 +359,7 @@ const Notification = new Lang.Class({
         this._customContent = false;
         this.bannerBodyText = null;
         this.bannerBodyMarkup = false;
+        this._bannerBodyAdded = false;
         this._titleFitsInBannerMode = true;
         this._titleDirection = Clutter.TextDirection.DEFAULT;
         this._spacing = 0;
@@ -521,6 +522,7 @@ const Notification = new Lang.Class({
         // not fitting fully in the single-line mode.
         this.bannerBodyText = this._customContent ? null : banner;
         this.bannerBodyMarkup = params.bannerMarkup;
+        this._bannerBodyAdded = false;
 
         banner = banner ? banner.replace(/\n/g, '  ') : '';
 
@@ -602,10 +604,9 @@ const Notification = new Lang.Class({
     },
 
     _addBannerBody: function() {
-        if (this.bannerBodyText) {
-            let text = this.bannerBodyText;
-            this.bannerBodyText = null;
-            this.addBody(text, this.bannerBodyMarkup);
+        if (this.bannerBodyText && !this._bannerBodyAdded) {
+            this._bannerBodyAdded = true;
+            this.addBody(this.bannerBodyText, this.bannerBodyMarkup);
         }
     },
 
@@ -897,7 +898,7 @@ const Notification = new Lang.Class({
     },
 
     _canExpandContent: function() {
-        return this.bannerBodyText ||
+        return (this.bannerBodyText && !this._bannerBodyAdded) ||
                (!this._titleFitsInBannerMode && !this._table.has_style_class_name('multi-line-notification'));
     },
 
