@@ -68,6 +68,7 @@ nobase_dist_js_DATA = 	\
 	ui/shellMountOperation.js \
 	ui/notificationDaemon.js \
 	ui/overview.js		\
+	ui/overviewControls.js	\
 	ui/panel.js		\
 	ui/panelMenu.js		\
 	ui/pointerWatcher.js    \
