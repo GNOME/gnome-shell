@@ -914,7 +914,11 @@ const PopupMenuBase = new Lang.Class({
     },
 
     isEmpty: function() {
-        return this.box.get_n_children() == 0;
+        let hasVisibleChildren = this.box.get_children().some(function(child) {
+            return child.visible;
+        });
+
+        return !hasVisibleChildren;
     },
 
     isChildMenu: function(menu) {
