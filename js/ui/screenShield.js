@@ -204,7 +204,10 @@ const NotificationsBox = new Lang.Class({
 
     _makeNotificationDetailedSource: function(source, box) {
         let sourceActor = new MessageTray.SourceActor(source, SUMMARY_ICON_SIZE);
-        box.add(sourceActor.actor, { y_fill: true });
+        let sourceBin = new St.Bin({ y_align: St.Align.START,
+                                     x_align: St.Align.START,
+                                     child: sourceActor.actor });
+        box.add(sourceBin);
 
         let textBox = new St.BoxLayout({ vertical: true });
         box.add(textBox, { y_fill: false, y_align: St.Align.START });
