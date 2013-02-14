@@ -51,7 +51,7 @@ const CandidateArea = new Lang.Class({
         this._cursorPosition = 0;
     },
 
-    _setOrientation: function(orientation) {
+    setOrientation: function(orientation) {
         if (this._orientation == orientation)
             return;
 
@@ -72,9 +72,7 @@ const CandidateArea = new Lang.Class({
         }
     },
 
-    setCandidates: function(indexes, candidates, orientation, cursorPosition, cursorVisible) {
-        this._setOrientation(orientation);
-
+    setCandidates: function(indexes, candidates, cursorPosition, cursorVisible) {
         for (let i = 0; i < MAX_CANDIDATES_PER_PAGE; ++i) {
             let visible = i < candidates.length;
             let box = this._candidateBoxes[i];
@@ -215,9 +213,9 @@ const CandidatePopup = new Lang.Class({
 
                                  this._candidateArea.setCandidates(indexes,
                                                                    candidates,
-                                                                   lookupTable.get_orientation(),
                                                                    cursorPos % pageSize,
                                                                    lookupTable.is_cursor_visible());
+                                 this._candidateArea.setOrientation(lookupTable.get_orientation());
                                  this._candidateArea.updateButtons(lookupTable.is_round(), page, nPages);
                              }));
         panelService.connect('show-lookup-table',
