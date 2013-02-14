@@ -127,6 +127,7 @@ function startSession() {
 
     // Setup the stage hierarchy early
     layoutManager = new Layout.LayoutManager();
+
     // Various parts of the codebase still refers to Main.uiGroup
     // instead using the layoutManager.  This keeps that code
     // working until it's updated.
@@ -154,6 +155,7 @@ function startSession() {
     BackgroundMenu.addBackgroundMenu(global.background_actor);
 
     layoutManager.init();
+    layoutManager.prepareStartupAnimation();
     overview.init();
 
     global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
@@ -190,6 +192,14 @@ function startSession() {
 
     ExtensionDownloader.init();
     ExtensionSystem.init();
+
+    // Run the startup animation as soon as the mainloop is idle enough.
+    // This is necessary to have it smooth and without interruptions from
+    // completed IO tasks
+    GLib.idle_add(GLib.PRIORITY_LOW, function() {
+        layoutManager.startupAnimation();
+        return false;
+    });
 }
 
 let _workspaces = [];

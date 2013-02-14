@@ -229,7 +229,6 @@ const LayoutManager = new Lang.Class({
         Main.overview.connect('showing', Lang.bind(this, this._overviewShowing));
         Main.overview.connect('hidden', Lang.bind(this, this._overviewHidden));
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
-        this._startupAnimation();
     },
 
     _overviewShowing: function() {
@@ -465,9 +464,11 @@ const LayoutManager = new Lang.Class({
         return this._keyboardIndex;
     },
 
-    _startupAnimation: function() {
+    prepareStartupAnimation: function() {
         this.panelBox.translation_y = -this.panelBox.height;
+    },
 
+    startupAnimation: function() {
         let plymouthTransitionRunning = false;
 
         // If we're the greeter, put up the xrootpmap actor
