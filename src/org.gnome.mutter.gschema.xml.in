@@ -88,8 +88,8 @@
       <default>true</default>
       <_summary>Auto maximize nearly monitor sized windows</_summary>
       <_description>
-        If enabled, monitor nearly monitor sized windows automatically get
-        maximized when mapped.
+        If enabled, new windows that are initially the size of the monitor
+        automatically get maximized.
       </_description>
     </key>
 
