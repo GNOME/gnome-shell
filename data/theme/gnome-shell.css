@@ -286,6 +286,7 @@ StScrollBar StButton#vhandle:active {
 
 /* Buttons */
 
+.candidate-page-button,
 .dash-search-button,
 .notification-button,
 .notification-icon-button,
@@ -303,6 +304,7 @@ StScrollBar StButton#vhandle:active {
     font-weight: bold;
 }
 
+.candidate-page-button:hover,
 .dash-search-button:hover,
 .notification-button:hover,
 .notification-icon-button:hover,
@@ -322,6 +324,8 @@ StScrollBar StButton#vhandle:active {
     border-width: 2px;
 }
 
+.candidate-page-button:active,
+.candidate-page-button:pressed,
 .dash-search-button:active,
 .dash-search-button:pressed,
 .notification-button:active,
@@ -334,6 +338,7 @@ StScrollBar StButton#vhandle:active {
     background-gradient-end: rgba(255, 255, 255, 0.2);
 }
 
+.candidate-page-button:insensitive,
 .notification-button:insensitive,
 .notification-icon-button:insensitive,
 .modal-dialog-button:insensitive {
@@ -2119,6 +2124,31 @@ StScrollBar StButton#vhandle:active {
 .candidate-box:selected {
     border-radius: 4px;
     background-color: rgba(255,255,255,0.2);
+}
+
+.candidate-page-button-box {
+    height: 2em;
+    width: 80px;
+}
+
+.vertical .candidate-page-button-box {
+    padding-top: 0.5em;
+}
+
+.horizontal .candidate-page-button-box {
+    padding-left: 0.5em;
+}
+
+.candidate-page-button-previous {
+    border-radius: 4px 0px 0px 4px;
+}
+
+.candidate-page-button-next {
+    border-radius: 0px 4px 4px 0px;
+}
+
+.candidate-page-button-icon {
+    icon-size: 1em;
 }
 
 /* Login Dialog */
