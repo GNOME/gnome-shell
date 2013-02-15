@@ -3198,7 +3198,7 @@ meta_spew_xi2_event (MetaDisplay *display,
   char *extra = NULL;
 
   XIDeviceEvent *device_event = (XIDeviceEvent *) input_event;
-  XIEnterEvent *enter_event = (XIEnterEvent *) enter_event;
+  XIEnterEvent *enter_event = (XIEnterEvent *) input_event;
 
   switch (input_event->evtype)
     {
