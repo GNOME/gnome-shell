@@ -5785,20 +5785,6 @@ meta_display_get_shape_event_base (MetaDisplay *display)
 #endif
 
 /**
- * meta_display_get_atom: (skip)
- *
- * Gets up an X atom that Mutter prefetched at startup.
- *
- * Return value: the X atom corresponding to the given atom enumeration
- */
-Atom meta_display_get_atom (MetaDisplay *display, MetaAtom meta_atom)
-{
-  Atom *atoms = & display->atom_WM_PROTOCOLS;
-
-  return atoms[meta_atom - 1];
-}
-
-/**
  * meta_display_get_leader_window:
  * @display: a #MetaDisplay
  *

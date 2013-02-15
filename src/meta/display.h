@@ -56,14 +56,6 @@ GType meta_display_get_type (void) G_GNUC_CONST;
 
 #define meta_XFree(p) do { if ((p)) XFree ((p)); } while (0)
 
-typedef enum
-{
-  META_ATOM_FIRST = 0,
-#define item(x) META_ATOM_##x,
-#include "atomnames.h"
-#undef item
-}MetaAtom;
-
 void meta_display_get_compositor_version (MetaDisplay *display,
                                           int         *major,
                                           int         *minor);
@@ -84,7 +76,6 @@ gboolean  meta_display_xwindow_is_a_no_focus_window (MetaDisplay *display,
 
 int meta_display_get_damage_event_base (MetaDisplay *display);
 int meta_display_get_shape_event_base (MetaDisplay *display);
-Atom meta_display_get_atom (MetaDisplay *display, MetaAtom meta_atom);
 
 gboolean meta_display_xserver_time_is_before (MetaDisplay *display,
                                               guint32      time1,
