@@ -1190,11 +1190,6 @@ const PressureBarrier = new Lang.Class({
         this._barrierEvents = this._barrierEvents.slice(firstNewEvent);
     },
 
-    _addBarrierEvent: function(event) {
-        this._barrierEvents.push(event);
-        this._currentPressure += this._getDistanceAcrossBarrier(event);
-    },
-
     _onBarrierLeft: function(barrier, event) {
         this._reset();
     },
@@ -1218,7 +1213,8 @@ const PressureBarrier = new Lang.Class({
         this._lastTime = event.time;
 
         this._trimBarrierEvents();
-        this._addBarrierEvent(event);
+        this._barrierEvents.push(event);
+        this._currentPressure += distance;
 
         if (this._currentPressure >= this._threshold) {
             this.emit('trigger');
