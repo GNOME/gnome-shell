@@ -771,7 +771,7 @@ const ScreenShield = new Lang.Class({
         if (this._activationTime == 0)
             this._activationTime = GLib.get_monotonic_time();
 
-        this._becameActiveId = this.idleMonitor.add_user_active_watch(this._onUserBecameActive);
+        this._becameActiveId = this.idleMonitor.add_user_active_watch(Lang.bind(this, this._onUserBecameActive));
 
         let shouldLock = this._settings.get_boolean(LOCK_ENABLED_KEY) && !this._isLocked;
 
