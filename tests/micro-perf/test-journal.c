@@ -130,7 +130,7 @@ frame_event_cb (CoglOnscreen *onscreen,
                 void *user_data)
 {
   if (event == COGL_FRAME_EVENT_SYNC)
-    g_idle_add (paint_cb, user_data);
+    paint_cb (user_data);
 }
 
 int
