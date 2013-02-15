@@ -421,6 +421,10 @@ const Dash = new Lang.Class({
                               Lang.bind(this, this._onDragCancelled));
         Main.overview.connect('window-drag-end',
                               Lang.bind(this, this._onDragEnd));
+
+        // Translators: this is the name of the dock/favorites area on
+        // the left of the overview
+        Main.ctrlAltTabManager.addGroup(this.actor, _("Dash"), 'user-bookmarks-symbolic');
     },
 
     _onDragBegin: function() {

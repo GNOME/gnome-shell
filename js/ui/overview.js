@@ -234,10 +234,6 @@ const Overview = new Lang.Class({
         this._dashSlider = new OverviewControls.DashSlider(this._dash);
         this._group.add_actor(this._dashSlider.actor);
 
-        // Translators: this is the name of the dock/favorites area on
-        // the left of the overview
-        Main.ctrlAltTabManager.addGroup(this._dash.actor, _("Dash"), 'user-bookmarks-symbolic');
-
         this._viewSelector = new ViewSelector.ViewSelector(this._searchEntry,
                                                            this._dash.showAppsButton);
         this._group.add(this._viewSelector.actor, { x_fill: true,
