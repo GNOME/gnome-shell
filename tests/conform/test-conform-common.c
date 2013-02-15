@@ -32,20 +32,21 @@ test_conform_simple_fixture_setup (TestConformSimpleFixture *fixture,
   counter++;
 
 #ifdef CLUTTER_WINDOWING_X11
-  {
-    /* on X11 we need a display connection to run the test suite */
-    const gchar *display = g_getenv ("DISPLAY");
-    if (!display || *display == '\0')
-      {
-        g_print ("No DISPLAY found. Unable to run the conformance "
-                 "test suite without a display.\n");
+  if (clutter_check_windowing_backend (CLUTTER_WINDOWING_X11))
+    {
+      /* on X11 we need a display connection to run the test suite */
+      const gchar *display = g_getenv ("DISPLAY");
+      if (!display || *display == '\0')
+        {
+          g_print ("No DISPLAY found. Unable to run the conformance "
+                   "test suite without a display.\n");
 
-        exit (EXIT_SUCCESS);
-      }
+          exit (EXIT_SUCCESS);
+        }
 
       /* enable XInput support */
       clutter_x11_enable_xinput ();
-  }
+    }
 #endif
 
   g_assert (clutter_init (shared_state->argc_addr, shared_state->argv_addr)
