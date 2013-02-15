@@ -223,25 +223,20 @@ const Overview = new Lang.Class({
                                             x_align: St.Align.MIDDLE });
         this._overview.add_actor(this._searchEntryBin);
 
-        // TODO - recalculate everything when desktop size changes
+        // Create controls
         this._dash = new Dash.Dash();
-        this.dashIconSize = this._dash.iconSize;
-        this._dash.connect('icon-size-changed',
-                           Lang.bind(this, function() {
-                               this.dashIconSize = this._dash.iconSize;
-                           }));
-
-        this._dashSlider = new OverviewControls.DashSlider(this._dash);
-        this._group.add_actor(this._dashSlider.actor);
-
         this._viewSelector = new ViewSelector.ViewSelector(this._searchEntry,
                                                            this._dash.showAppsButton);
+        this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
+        this._controls = new OverviewControls.ControlsManager(this._dash,
+                                                              this._thumbnailsBox,
+                                                              this._viewSelector);
+
+        // Pack all the actors into the group
+        this._group.add_actor(this._controls.dashActor);
         this._group.add(this._viewSelector.actor, { x_fill: true,
                                                     expand: true });
-
-        this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
-        this._thumbnailsSlider = new OverviewControls.ThumbnailsSlider(this._thumbnailsBox);
-        this._group.add_actor(this._thumbnailsSlider.actor);
+        this._group.add_actor(this._controls.thumbnailsActor);
 
         // Add our same-line elements after the search entry
         this._overview.add(this._group, { y_fill: true,
@@ -255,37 +250,15 @@ const Overview = new Lang.Class({
                                               y_fill: true });
         this._overview.add_actor(this._messageTrayGhost);
 
-        this._viewSelector.connect('page-changed', Lang.bind(this,
-            function() {
-                this._setSideControlsVisibility();
-            }));
+        // TODO - recalculate everything when desktop size changes
+        this.dashIconSize = this._dash.iconSize;
+        this._dash.connect('icon-size-changed',
+                           Lang.bind(this, function() {
+                               this.dashIconSize = this._dash.iconSize;
+                           }));
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this._relayout));
         this._relayout();
-    },
-
-    _setSideControlsVisibility: function() {
-        // Ignore the case when we're leaving the overview, since
-        // actors will be made visible again when entering the overview
-        // next time, and animating them while doing so is just
-        // unnecesary noise
-        if (!this.visible || this._hideInProgress)
-            return;
-
-        let activePage = this._viewSelector.getActivePage();
-        let dashVisible = (activePage == ViewSelector.ViewPage.WINDOWS ||
-                           activePage == ViewSelector.ViewPage.APPS);
-        let thumbnailsVisible = (activePage == ViewSelector.ViewPage.WINDOWS);
-
-        if (dashVisible)
-            this._dashSlider.slideIn();
-        else
-            this._dashSlider.slideOut();
-
-        if (thumbnailsVisible)
-            this._thumbnailsSlider.slideIn();
-        else
-            this._thumbnailsSlider.slideOut();
     },
 
     addSearchProvider: function(provider) {

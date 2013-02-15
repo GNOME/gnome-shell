@@ -6,6 +6,7 @@ const St = imports.gi.St;
 
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
+const ViewSelector = imports.ui.viewSelector;
 
 const SIDE_CONTROLS_ANIMATION_TIME = 0.2;
 
@@ -230,5 +231,44 @@ const DashSlider = new Lang.Class({
             return 1;
         else
             return 0;
+    }
+});
+
+const ControlsManager = new Lang.Class({
+    Name: 'ControlsManager',
+
+    _init: function(dash, thumbnails, viewSelector) {
+        this._dashSlider = new DashSlider(dash);
+        this.dashActor = this._dashSlider.actor;
+
+        this._thumbnailsSlider = new ThumbnailsSlider(thumbnails);
+        this.thumbnailsActor = this._thumbnailsSlider.actor;
+
+        this._viewSelector = viewSelector;
+        this._viewSelector.connect('page-changed', Lang.bind(this, this._setVisibility));
+    },
+
+    _setVisibility: function() {
+        // Ignore the case when we're leaving the overview, since
+        // actors will be made visible again when entering the overview
+        // next time, and animating them while doing so is just
+        // unnecessary noise
+        if (!Main.overview.visible)
+            return;
+
+        let activePage = this._viewSelector.getActivePage();
+        let dashVisible = (activePage == ViewSelector.ViewPage.WINDOWS ||
+                           activePage == ViewSelector.ViewPage.APPS);
+        let thumbnailsVisible = (activePage == ViewSelector.ViewPage.WINDOWS);
+
+        if (dashVisible)
+            this._dashSlider.slideIn();
+        else
+            this._dashSlider.slideOut();
+
+        if (thumbnailsVisible)
+            this._thumbnailsSlider.slideIn();
+        else
+            this._thumbnailsSlider.slideOut();
     }
 });
