@@ -229,7 +229,7 @@ const UnlockDialog = new Lang.Class({
         Main.ctrlAltTabManager.addGroup(this.dialogLayout, _("Unlock Window"), 'dialog-password-symbolic');
 
         this._idleMonitor = new GnomeDesktop.IdleMonitor();
-        this._idleWatchId = this._idleMonitor.add_watch(IDLE_TIMEOUT * 1000, Lang.bind(this, this._escape));
+        this._idleWatchId = this._idleMonitor.add_idle_watch(IDLE_TIMEOUT * 1000, Lang.bind(this, this._escape));
     },
 
     _updateSensitivity: function(sensitive) {
