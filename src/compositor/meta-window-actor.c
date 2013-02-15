@@ -1576,6 +1576,8 @@ meta_window_actor_new (MetaWindow *window)
 
   clutter_actor_hide (CLUTTER_ACTOR (self));
 
+  clutter_actor_set_reactive (CLUTTER_ACTOR (self), TRUE);
+
   /* Initial position in the stack is arbitrary; stacking will be synced
    * before we first paint.
    */
