@@ -53,6 +53,7 @@ typedef enum {
  * MetaBarrierEvent:
  * @event_id: A unique integer ID identifying a
  * consecutive series of motions at or along the barrier
+ * @time: Server time, in milliseconds
  * @dt: Server time, in milliseconds, since the last event
  * sent for this barrier
  * @x: The cursor X position in screen coordinates
@@ -75,6 +76,7 @@ struct _MetaBarrierEvent {
   /* < public > */
   int event_id;
   int dt;
+  guint32 time;
   double x;
   double y;
   double dx;

@@ -331,6 +331,7 @@ meta_barrier_fire_event (MetaBarrier    *barrier,
 
   event->ref_count = 1;
   event->event_id = xevent->eventid;
+  event->time = xevent->time;
   event->dt = xevent->dtime;
 
   event->x = xevent->root_x;
