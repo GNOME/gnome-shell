@@ -214,16 +214,16 @@ const DashSlider = new Lang.Class({
 
         this.layout.slideDirection = SlideDirection.LEFT;
 
-        this.dash = dash;
+        this._dash = dash;
 
         // SlideLayout reads the actor's expand flags to decide
         // whether to allocate the natural size to its child, or the whole
         // available allocation
-        dash.actor.x_expand = true;
-        dash.actor.y_expand = true;
-        this.actor.add_actor(this.dash.actor);
+        this._dash.actor.x_expand = true;
+        this._dash.actor.y_expand = true;
+        this.actor.add_actor(this._dash.actor);
 
-        this.dash.connect('icon-size-changed', Lang.bind(this, this.updateSlide));
+        this._dash.connect('icon-size-changed', Lang.bind(this, this.updateSlide));
     },
 
     getSlide: function() {
