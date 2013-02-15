@@ -1525,7 +1525,7 @@ const AppIconMenu = new Lang.Class({
         }));
         source.actor.connect('destroy', Lang.bind(this, function () { this.actor.destroy(); }));
 
-        Main.uiGroup.add_actor(this.actor);
+        Main.layoutManager.menuGroup.add_actor(this.actor);
     },
 
     _redisplay: function() {

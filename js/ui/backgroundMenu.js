@@ -22,7 +22,7 @@ const BackgroundMenu = new Lang.Class({
 
         this.actor.add_style_class_name('background-menu');
 
-        layoutManager.uiGroup.add_actor(this.actor);
+        layoutManager.menuGroup.add_actor(this.actor);
         this.actor.hide();
     }
 });

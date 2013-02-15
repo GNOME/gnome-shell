@@ -54,7 +54,7 @@ const SwitcherPopup = new Lang.Class({
         this.actor.connect('allocate', Lang.bind(this, this._allocate));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
-        Main.uiGroup.add_actor(this.actor);
+        Main.layoutManager.switcherPopupGroup.add_child(this.actor);
 
         this._haveModal = false;
         this._modifierMask = 0;

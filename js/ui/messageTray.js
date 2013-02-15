@@ -1611,7 +1611,7 @@ const MessageTrayMenu = new Lang.Class({
         this._accountManager.prepare_async(null, Lang.bind(this, this._onIMPresenceChanged));
 
         this.actor.hide();
-        Main.layoutManager.addChrome(this.actor);
+        Main.layoutManager.menuGroup.add_child(this.actor);
 
         this._busyItem = new PopupMenu.PopupSwitchMenuItem(_("Notifications"));
         this._busyItem.connect('toggled', Lang.bind(this, this._updatePresence));

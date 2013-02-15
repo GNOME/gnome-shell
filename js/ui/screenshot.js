@@ -146,7 +146,7 @@ const SelectArea = new Lang.Class({
                                       reactive: true,
                                       x: 0,
                                       y: 0 });
-        Main.uiGroup.add_actor(this._group);
+        Main.layoutManager.osdGroup.add_actor(this._group);
 
         this._group.connect('button-press-event',
                             Lang.bind(this, this._onButtonPress));
@@ -259,9 +259,9 @@ const Flashspot = new Lang.Class({
     Extends: Lightbox.Lightbox,
 
     _init: function(area) {
-        this.parent(Main.uiGroup, { inhibitEvents: true,
-                                    width: area.width,
-                                    height: area.height });
+        this.parent(Main.layoutManager.osdGroup, { inhibitEvents: true,
+                                                   width: area.width,
+                                                   height: area.height });
 
         this.actor.style_class = 'flashspot';
         this.actor.set_position(area.x, area.y);

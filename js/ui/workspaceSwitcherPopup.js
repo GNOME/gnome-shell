@@ -25,7 +25,7 @@ const WorkspaceSwitcherPopup = new Lang.Class({
                                      width: global.screen_width,
                                      height: global.screen_height,
                                      style_class: 'workspace-switcher-group' });
-        Main.uiGroup.add_actor(this.actor);
+        Main.layoutManager.osdGroup.add_child(this.actor);
 
         this._container = new St.BoxLayout({ style_class: 'workspace-switcher-container' });
         this._list = new Shell.GenericContainer({ style_class: 'workspace-switcher' });

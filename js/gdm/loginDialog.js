@@ -274,7 +274,7 @@ const SessionMenuButton = new Lang.Class({
         this.actor = new St.Bin({ child: this._button });
 
         this._menu = new PopupMenu.PopupMenu(this._button, 0, St.Side.TOP);
-        Main.uiGroup.add_actor(this._menu.actor);
+        Main.layoutManager.menuGroup.add_actor(this._menu.actor);
         this._menu.actor.hide();
 
         this._menu.connect('open-state-changed',

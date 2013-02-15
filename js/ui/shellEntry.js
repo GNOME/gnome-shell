@@ -36,7 +36,7 @@ const EntryMenu = new Lang.Class({
 
         this._passwordItem = null;
 
-        Main.uiGroup.add_actor(this.actor);
+        Main.layoutManager.menuGroup.add_actor(this.actor);
         this.actor.hide();
     },
 

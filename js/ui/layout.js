@@ -219,6 +219,18 @@ const LayoutManager = new Lang.Class({
         this.addChrome(this.keyboardBox);
         this._keyboardHeightNotifyId = 0;
 
+        this.menuGroup = new St.Widget();
+        this.uiGroup.add_actor(this.menuGroup);
+
+        this.osdGroup = new St.Widget();
+        this.uiGroup.add_actor(this.osdGroup);
+
+        this.switcherPopupGroup = new St.Widget();
+        this.uiGroup.add_actor(this.switcherPopupGroup);
+
+        this.dialogGroup = new St.Widget();
+        this.uiGroup.add_actor(this.dialogGroup);
+
         // A dummy actor that tracks the mouse or text cursor, based on the
         // position set in setDummyCursorPosition.
         this.dummyCursor = new St.Widget({ width: 0, height: 0 });
