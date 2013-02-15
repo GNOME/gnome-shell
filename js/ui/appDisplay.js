@@ -27,6 +27,7 @@ const Util = imports.misc.util;
 const MAX_APPLICATION_WORK_MILLIS = 75;
 const MENU_POPUP_TIMEOUT = 600;
 const SCROLL_TIME = 0.1;
+const MAX_COLUMNS = 6;
 
 // Recursively load a GMenuTreeDirectory; we could put this in ShellAppSystem too
 function _loadCategory(dir, view) {
@@ -51,7 +52,8 @@ const AlphabeticalView = new Lang.Class({
     Name: 'AlphabeticalView',
 
     _init: function() {
-        this._grid = new IconGrid.IconGrid({ xAlign: St.Align.START });
+        this._grid = new IconGrid.IconGrid({ xAlign: St.Align.MIDDLE,
+                                             columnLimit: MAX_COLUMNS });
 
         this._appIcons = {}; // desktop file id
         this._allApps = [];
@@ -62,6 +64,7 @@ const AlphabeticalView = new Lang.Class({
         this.actor = new St.ScrollView({ x_fill: true,
                                          y_fill: false,
                                          y_align: St.Align.START,
+                                         x_expand: true,
                                          style_class: 'vfade' });
         this.actor.add_actor(box);
         this.actor.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -140,7 +143,7 @@ const AppDisplay = new Lang.Class({
                                   x_fill: true, y_fill: true });
 
         this._view = new AlphabeticalView();
-        box.add(this._view.actor);
+        box.add(this._view.actor, { expand: true });
 
         // We need a dummy actor to catch the keyboard focus if the
         // user Ctrl-Alt-Tabs here before the deferred work creates
