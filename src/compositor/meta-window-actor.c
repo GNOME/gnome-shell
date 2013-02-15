@@ -1012,6 +1012,12 @@ meta_window_actor_effect_in_progress (MetaWindowActor *self)
 	  self->priv->destroy_in_progress);
 }
 
+static gboolean
+is_frozen (MetaWindowActor *self)
+{
+  return self->priv->freeze_count ? TRUE : FALSE;
+}
+
 static void
 meta_window_actor_queue_create_pixmap (MetaWindowActor *self)
 {
@@ -1020,6 +1026,9 @@ meta_window_actor_queue_create_pixmap (MetaWindowActor *self)
   priv->needs_pixmap = TRUE;
 
   if (!priv->mapped)
+    return;
+
+  if (is_frozen (self))
     return;
 
   /* This will cause the compositor paint function to be run
@@ -1360,12 +1369,6 @@ meta_window_actor_destroy (MetaWindowActor *self)
     clutter_actor_destroy (CLUTTER_ACTOR (self));
 }
 
-static gboolean
-is_frozen (MetaWindowActor *self)
-{
-  return self->priv->freeze_count ? TRUE : FALSE;
-}
-
 void
 meta_window_actor_sync_actor_position (MetaWindowActor *self)
 {
@@ -1373,9 +1376,6 @@ meta_window_actor_sync_actor_position (MetaWindowActor *self)
   MetaRectangle window_rect;
 
   meta_window_get_input_rect (priv->window, &window_rect);
-
-  if (is_frozen (self))
-    return;
 
   if (priv->last_width != window_rect.width ||
       priv->last_height != window_rect.height)
@@ -2202,6 +2202,12 @@ check_needs_reshape (MetaWindowActor *self)
   if (!priv->needs_reshape)
     return;
 
+  if (priv->shadow_shape != NULL)
+    {
+      meta_window_shape_unref (priv->shadow_shape);
+      priv->shadow_shape = NULL;
+    }
+
   meta_frame_calc_borders (priv->window->frame, &borders);
 
   client_area.x = borders.total.left;
@@ -2315,11 +2321,9 @@ meta_window_actor_update_shape (MetaWindowActor *self)
   MetaWindowActorPrivate *priv = self->priv;
 
   priv->needs_reshape = TRUE;
-  if (priv->shadow_shape != NULL)
-    {
-      meta_window_shape_unref (priv->shadow_shape);
-      priv->shadow_shape = NULL;
-    }
+
+  if (is_frozen (self))
+    return;
 
   clutter_actor_queue_redraw (priv->actor);
 }
@@ -2520,6 +2524,10 @@ meta_window_actor_invalidate_shadow (MetaWindowActor *self)
 
   priv->recompute_focused_shadow = TRUE;
   priv->recompute_unfocused_shadow = TRUE;
+
+  if (is_frozen (self))
+    return;
+
   clutter_actor_queue_redraw (CLUTTER_ACTOR (self));
 }
 
