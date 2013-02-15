@@ -1176,8 +1176,9 @@ const PressureBarrier = new Lang.Class({
         // and then chop events after that off.
         let i = 0;
         while (i < this._barrierEvents.length) {
-            if (!this._isBarrierEventTooOld(this._barrierEvents[i++]))
+            if (!this._isBarrierEventTooOld(this._barrierEvents[i]))
                 break;
+            i++;
         }
 
         let firstNewEvent = i;
