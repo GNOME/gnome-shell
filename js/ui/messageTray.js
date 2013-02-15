@@ -1741,30 +1741,43 @@ const MessageTray = new Lang.Class({
         this._updateNoMessagesLabel();
 
         this._contextMenu = new MessageTrayContextMenu(this);
-        this._grabHelper.addActor(this._contextMenu.actor);
-        this.actor.connect('button-press-event', Lang.bind(this, function(actor, event) {
-            let button = event.get_button();
-            if (button == 3) {
-                let [stageX, stageY] = event.get_coords();
-                this._lock();
-                this._contextMenu.setPosition(Math.round(stageX), Math.round(stageY));
-                this._grabHelper.grab({ actor: this._contextMenu.actor,
-                                        grabFocus: true,
-                                        onUngrab: Lang.bind(this, function () {
-                                            this._unlock();
-                                            this._contextMenu.close();
-                                        })
-                });
-                this._contextMenu.open();
+
+        let clickAction = new Clutter.ClickAction();
+        this.actor.add_action(clickAction);
+
+        clickAction.connect('clicked', Lang.bind(this, function(action) {
+            let button = action.get_button();
+            if (button == 3)
+                this._openContextMenu();
+        }));
+
+        clickAction.connect('long-press', Lang.bind(this, function(action, actor, state) {
+            switch (state) {
+            case Clutter.LongPressState.QUERY:
+                return true;
+            case Clutter.LongPressState.ACTIVATE:
+                this._openContextMenu();
             }
-            else {
-                this._grabHelper.ungrab({ actor: this._contextMenu.actor });
-            }
+            return false;
         }));
 
         this._contextMenu.actor.hide();
         Main.layoutManager.addChrome(this._contextMenu.actor);
 
+    },
+
+    _openContextMenu: function () {
+        let [x, y, mask] = global.get_pointer();
+        this._lock();
+        this._contextMenu.setPosition(Math.round(x), Math.round(y));
+        this._grabHelper.grab({ actor: this._contextMenu.actor,
+                                grabFocus: true,
+                                onUngrab: Lang.bind(this, function () {
+                                    this._contextMenu.close();
+                                    this._unlock();
+                                })
+        });
+        this._contextMenu.open();
     },
 
     close: function() {
