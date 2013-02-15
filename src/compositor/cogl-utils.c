@@ -26,10 +26,10 @@
 
 /**
  * meta_create_color_texture_4ub:
- * @red:
- * @green:
- * @blue:
- * @alpha:
+ * @red: red component
+ * @green: green component
+ * @blue: blue component
+ * @alpha: alpha component
  * @flags: Optional flags for the texture, or %COGL_TEXTURE_NONE;
  *   %COGL_TEXTURE_NO_SLICING is useful if the texture will be
  *   repeated to create a constant color fill, since hardware

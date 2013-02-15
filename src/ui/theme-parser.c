@@ -4267,6 +4267,8 @@ keep_trying (GError **error)
 
 /**
  * meta_theme_load: (skip)
+ * @theme_name: 
+ * @err: 
  *
  */
 MetaTheme*

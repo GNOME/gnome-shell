@@ -44,6 +44,7 @@ typedef struct _MetaShapedTexturePrivate MetaShapedTexturePrivate;
 
 struct _MetaShapedTextureClass
 {
+  /*< private >*/
   ClutterActorClass parent_class;
 };
 

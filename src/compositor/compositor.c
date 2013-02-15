@@ -838,6 +838,9 @@ maybe_spoof_guard_window_event_as_stage_event (MetaCompScreen *info,
 
 /**
  * meta_compositor_process_event: (skip)
+ * @compositor: 
+ * @event: 
+ * @window: 
  *
  */
 gboolean
@@ -1414,6 +1417,7 @@ on_shadow_factory_changed (MetaShadowFactory *factory,
 
 /**
  * meta_compositor_new: (skip)
+ * @display:
  *
  */
 MetaCompositor *
@@ -1458,6 +1462,7 @@ meta_compositor_new (MetaDisplay *display)
 
 /**
  * meta_get_overlay_window: (skip)
+ * @screen: a #MetaScreen
  *
  */
 Window

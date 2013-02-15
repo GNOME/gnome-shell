@@ -225,6 +225,7 @@ utf8_fputs (const char *str,
 
 /**
  * meta_free_gslist_and_elements: (skip)
+ * @list_to_deep_free: list to deep free
  *
  */
 void
@@ -599,6 +600,16 @@ append_argument (GPtrArray  *args,
 
 /**
  * meta_show_dialog: (skip)
+ * @type: type of dialog
+ * @message: message
+ * @timeout: timeout
+ * @display: display
+ * @ok_text: text for Ok button
+ * @cancel_text: text for Cancel button
+ * @icon_name: icon name
+ * @transient_for: window XID of parent
+ * @columns: columns
+ * @entries: entries
  *
  */
 GPid

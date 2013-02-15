@@ -50,6 +50,32 @@ void meta_warning    (const char *format,
 void meta_fatal      (const char *format,
                       ...) G_GNUC_PRINTF (1, 2);
 
+/**
+ * MetaDebugTopic:
+ * @META_DEBUG_VERBOSE: verbose logging
+ * @META_DEBUG_FOCUS: focus
+ * @META_DEBUG_WORKAREA: workarea
+ * @META_DEBUG_STACK: stack
+ * @META_DEBUG_THEMES: themes
+ * @META_DEBUG_SM: session management
+ * @META_DEBUG_EVENTS: events
+ * @META_DEBUG_WINDOW_STATE: window state
+ * @META_DEBUG_WINDOW_OPS: window operations
+ * @META_DEBUG_GEOMETRY: geometry
+ * @META_DEBUG_PLACEMENT: window placement
+ * @META_DEBUG_PING: ping
+ * @META_DEBUG_XINERAMA: Xinerama
+ * @META_DEBUG_KEYBINDINGS: keybindings
+ * @META_DEBUG_SYNC: sync
+ * @META_DEBUG_ERRORS: errors
+ * @META_DEBUG_STARTUP: startup
+ * @META_DEBUG_PREFS: preferences
+ * @META_DEBUG_GROUPS: groups
+ * @META_DEBUG_RESIZING: resizing
+ * @META_DEBUG_SHAPES: shapes
+ * @META_DEBUG_COMPOSITOR: compositor
+ * @META_DEBUG_EDGE_RESISTANCE: edge resistance
+ */
 typedef enum
 {
   META_DEBUG_VERBOSE         = -1,

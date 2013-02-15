@@ -24,7 +24,7 @@
 #define META_WORKSPACE_H
 
 /**
- * SECTION:Workspaces
+ * SECTION:workspace
  * @short_description:Workspaces
  *
  * A workspace is a set of windows which all live on the same

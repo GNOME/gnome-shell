@@ -29,6 +29,13 @@
 
 #define META_TYPE_RECTANGLE            (meta_rectangle_get_type ())
 
+/**
+ * MetaRectangle:
+ * @x: X coordinate of the top-left corner
+ * @y: Y coordinate of the top-left corner
+ * @width: Width of the rectangle
+ * @height: Height of the rectangle
+ */
 typedef struct _MetaRectangle MetaRectangle;
 struct _MetaRectangle
 {
@@ -38,6 +45,11 @@ struct _MetaRectangle
   int height;
 };
 
+/**
+ * MetaStrut:
+ * @rect: #MetaRectangle the #MetaStrut is on
+ * @side: #MetaSide the #MetaStrut is on
+ */
 typedef struct _MetaStrut MetaStrut;
 struct _MetaStrut
 {
@@ -45,6 +57,12 @@ struct _MetaStrut
   MetaSide side;
 };
 
+/**
+ * MetaEdgeType:
+ * @META_EDGE_WINDOW: Whether the edge belongs to a window
+ * @META_EDGE_MONITOR: Whether the edge belongs to a monitor
+ * @META_EDGE_SCREEN: Whether the edge belongs to a screen
+ */
 typedef enum
 {
   META_EDGE_WINDOW,
@@ -52,6 +70,12 @@ typedef enum
   META_EDGE_SCREEN
 } MetaEdgeType;
 
+/**
+ * MetaEdge:
+ * @rect: #MetaRectangle with the bounds of the edge
+ * @side_type: Side
+ * @edge_type: To what belongs the edge
+ */
 typedef struct _MetaEdge MetaEdge;
 struct _MetaEdge
 {

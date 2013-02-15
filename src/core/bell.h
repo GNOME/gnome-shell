@@ -28,30 +28,35 @@
 
 #ifdef HAVE_XKB
 /**
+ * meta_bell_notify:
+ * @display: The display the bell event came in on
+ * @xkb_ev: The bell event we just received 
+ *
  * Gives the user some kind of visual bell; in fact, this is our response
  * to any kind of bell request, but we set it up so that we only get
  * notified about visual bells, and X deals with audible ones.
  *
  * If the configure script found we had no XKB, this does not exist.
- *
- * \param display  The display the bell event came in on
- * \param xkb_ev   The bell event we just received
  */
 void meta_bell_notify (MetaDisplay *display, XkbAnyEvent *xkb_ev);
 #endif
 
 /**
+ * meta_bell_set_audible:
+ * @display: The display we're configuring
+ * @audible: True for an audible bell, false for a visual bell
+ *
  * Turns the bell to audible or visual. This tells X what to do, but
  * not Mutter; you will need to set the "visual bell" pref for that.
  *
  * If the configure script found we had no XKB, this is a no-op.
- *
- * \param display  The display we're configuring
- * \param audible  True for an audible bell, false for a visual bell
  */
 void meta_bell_set_audible (MetaDisplay *display, gboolean audible);
 
 /**
+ * meta_bell_init:
+ * @display: The display which is opening
+ *
  * Initialises the bell subsystem. This involves intialising
  * XKB (which, despite being a keyboard extension, is the
  * place to look for bell notifications), then asking it
@@ -64,8 +69,6 @@ void meta_bell_set_audible (MetaDisplay *display, gboolean audible);
  * we will have HAVE_XKB undefined, which will cause this
  * function to be a no-op.
  *
- * \param display  The display which is opening
- *
  * \bug There is a line of code that's never run that tells
  * XKB to reset the bell status after we quit. Bill H said
  * (<http://bugzilla.gnome.org/show_bug.cgi?id=99886#c12>)
@@ -75,9 +78,10 @@ void meta_bell_set_audible (MetaDisplay *display, gboolean audible);
 gboolean meta_bell_init (MetaDisplay *display);
 
 /**
- * Shuts down the bell subsystem.
+ * meta_bell_shutdown:
+ * @display: The display which is closing
  *
- * \param display  The display which is closing
+ * Shuts down the bell subsystem.
  *
  * \bug This is never called! If we had XkbSetAutoResetControls
  * enabled in meta_bell_init(), this wouldn't be a problem, but
@@ -86,11 +90,12 @@ gboolean meta_bell_init (MetaDisplay *display);
 void meta_bell_shutdown (MetaDisplay *display);
 
 /**
+ * meta_bell_notify_frame_destroy:
+ * @frame: The frame which is being destroyed
+ *
  * Deals with a frame being destroyed. This is important because if we're
  * using a visual bell, we might be flashing the edges of the frame, and
  * so we'd have a timeout function waiting ready to un-flash them. If the
  * frame's going away, we can tell the timeout not to bother.
- *
- * \param frame  The frame which is being destroyed
  */
 void meta_bell_notify_frame_destroy (MetaFrame *frame);

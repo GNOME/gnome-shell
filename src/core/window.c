@@ -2130,7 +2130,7 @@ set_net_wm_state (MetaWindow *window)
  * @window: a #MetaWindow
  * @workspace: a #MetaWorkspace
  *
- * Returns whether @window is displayed on @workspace, or whether it
+ * Returns: whether @window is displayed on @workspace, or whether it
  * will be displayed on all workspaces.
  */
 gboolean
@@ -3629,6 +3629,7 @@ meta_window_maximize (MetaWindow        *window,
 
 /**
  * meta_window_get_maximized:
+ * @window: a #MetaWindow
  *
  * Gets the current maximization state of the window, as combination
  * of the %META_MAXIMIZE_HORIZONTAL and %META_MAXIMIZE_VERTICAL flags;
@@ -3644,6 +3645,7 @@ meta_window_get_maximized (MetaWindow *window)
 
 /**
  * meta_window_is_fullscreen:
+ * @window: a #MetaWindow
  *
  * Return value: %TRUE if the window is currently fullscreen
  */
@@ -3690,6 +3692,7 @@ meta_window_get_all_monitors (MetaWindow *window, gsize *length)
 
 /**
  * meta_window_is_screen_sized:
+ * @window: A #MetaWindow
  *
  * Return value: %TRUE if the window is occupies the
  *               the whole screen (all monitors).
@@ -3741,6 +3744,7 @@ meta_window_is_monitor_sized (MetaWindow *window)
 
 /**
  * meta_window_is_on_primary_monitor:
+ * @window: a #MetaWindow
  *
  * Return value: %TRUE if the window is on the primary monitor
  */
@@ -3752,6 +3756,7 @@ meta_window_is_on_primary_monitor (MetaWindow *window)
 
 /**
  * meta_window_requested_bypass_compositor:
+ * @window: a #MetaWindow
  *
  * Return value: %TRUE if the window requested to bypass the compositor
  */
@@ -3763,6 +3768,7 @@ meta_window_requested_bypass_compositor (MetaWindow *window)
 
 /**
  * meta_window_requested_dont_bypass_compositor:
+ * @window: a #MetaWindow
  *
  * Return value: %TRUE if the window requested to opt out of unredirecting
  */
@@ -10333,6 +10339,7 @@ meta_window_stack_just_below (MetaWindow *window,
 
 /**
  * meta_window_get_user_time:
+ * @window: a #MetaWindow
  *
  * The user time represents a timestamp for the last time the user
  * interacted with this window.  Note this property is only available
@@ -10501,6 +10508,7 @@ meta_window_unset_demands_attention (MetaWindow *window)
 
 /**
  * meta_window_get_frame: (skip)
+ * @window: a #MetaWindow
  *
  */
 MetaFrame *
@@ -10541,7 +10549,7 @@ meta_window_is_shaded (MetaWindow *window)
  * meta_window_is_override_redirect:
  * @window: A #MetaWindow
  *
- * Returns if this window isn't managed by mutter; it will
+ * Returns: %TRUE if this window isn't managed by mutter; it will
  * control its own positioning and mutter won't draw decorations
  * among other things.  In X terminology this is "override redirect".
  */
@@ -10609,6 +10617,7 @@ meta_window_get_display (MetaWindow *window)
 
 /**
  * meta_window_get_xwindow: (skip)
+ * @window: a #MetaWindow
  *
  */
 Window
@@ -10819,7 +10828,7 @@ meta_window_get_role (MetaWindow *window)
  * meta_window_get_title:
  * @window: a #MetaWindow
  *
- * Returns the current title of the window.
+ * Returns: the current title of the window.
  */
 const char *
 meta_window_get_title (MetaWindow *window)
@@ -11046,6 +11055,7 @@ meta_window_get_frame_type (MetaWindow *window)
 
 /**
  * meta_window_get_frame_bounds:
+ * @window: a #MetaWindow
  *
  * Gets a region representing the outer bounds of the window's frame.
  *
@@ -11083,6 +11093,7 @@ meta_window_is_attached_dialog (MetaWindow *window)
 
 /**
  * meta_window_get_tile_match:
+ * @window: a #MetaWindow
  *
  * Returns the matching tiled window on the same monitor as @window. This is
  * the topmost tiled window in a complementary tile mode that is:

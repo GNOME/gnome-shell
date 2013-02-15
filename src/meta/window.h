@@ -29,6 +29,25 @@
 #include <meta/boxes.h>
 #include <meta/types.h>
 
+/**
+ * MetaWindowType:
+ * @META_WINDOW_NORMAL: Normal
+ * @META_WINDOW_DESKTOP: Desktop
+ * @META_WINDOW_DOCK: Dock
+ * @META_WINDOW_DIALOG: Dialog
+ * @META_WINDOW_MODAL_DIALOG: Modal dialog
+ * @META_WINDOW_TOOLBAR: Toolbar
+ * @META_WINDOW_MENU: Menu
+ * @META_WINDOW_UTILITY: Utility
+ * @META_WINDOW_SPLASHSCREEN: Splashcreen
+ * @META_WINDOW_DROPDOWN_MENU: Dropdown menu
+ * @META_WINDOW_POPUP_MENU: Popup menu
+ * @META_WINDOW_TOOLTIP: Tooltip
+ * @META_WINDOW_NOTIFICATION: Notification
+ * @META_WINDOW_COMBO: Combobox
+ * @META_WINDOW_DND: Drag and drop
+ * @META_WINDOW_OVERRIDE_OTHER: Other override-redirect window type
+ */
 typedef enum
 {
   META_WINDOW_NORMAL,
@@ -51,6 +70,11 @@ typedef enum
   META_WINDOW_OVERRIDE_OTHER
 } MetaWindowType;
 
+/**
+ * MetaMaximizeFlags:
+ * @META_MAXIMIZE_HORIZONTAL: Horizontal
+ * @META_MAXIMIZE_VERTICAL: Vertical
+ */
 typedef enum
 {
   META_MAXIMIZE_HORIZONTAL = 1 << 0,

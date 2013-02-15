@@ -22,6 +22,13 @@ typedef struct _MetaBarrierPrivate MetaBarrierPrivate;
 
 typedef struct _MetaBarrierEvent   MetaBarrierEvent;
 
+/**
+ * MetaBarrier:
+ *
+ * The <structname>MetaBarrier</structname> structure contains
+ * only private data and should be accessed using the provided API
+ *
+ **/
 struct _MetaBarrier
 {
   GObject parent;
@@ -29,8 +36,15 @@ struct _MetaBarrier
   MetaBarrierPrivate *priv;
 };
 
+/**
+ * MetaBarrierClass:
+ *
+ * The <structname>MetaBarrierClass</structname> structure contains only
+ * private data.
+ */
 struct _MetaBarrierClass
 {
+  /*< private >*/
   GObjectClass parent_class;
 };
 
@@ -40,6 +54,14 @@ gboolean meta_barrier_is_active (MetaBarrier *barrier);
 void meta_barrier_destroy (MetaBarrier *barrier);
 void meta_barrier_release (MetaBarrier      *barrier,
                            MetaBarrierEvent *event);
+
+/**
+ * MetaBarrierDirection:
+ * @META_BARRIER_DIRECTION_POSITIVE_X: Positive direction in the X axis
+ * @META_BARRIER_DIRECTION_POSITIVE_Y: Positive direction in the Y axis
+ * @META_BARRIER_DIRECTION_NEGATIVE_X: Negative direction in the X axis
+ * @META_BARRIER_DIRECTION_NEGATIVE_Y: Negative direction in the Y axis
+ */
 
 /* Keep in sync with XFixes */
 typedef enum {

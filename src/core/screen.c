@@ -3484,6 +3484,7 @@ meta_screen_get_display (MetaScreen *screen)
 
 /**
  * meta_screen_get_xroot: (skip)
+ * @screen: A #MetaScreen
  *
  */
 Window
@@ -3514,6 +3515,7 @@ meta_screen_get_size (MetaScreen *screen,
 
 /**
  * meta_screen_get_compositor_data: (skip)
+ * @screen: A #MetaScreen
  *
  */
 gpointer
@@ -3582,6 +3584,7 @@ meta_screen_get_active_workspace_index (MetaScreen *screen)
 
 /**
  * meta_screen_get_active_workspace:
+ * @screen: A #MetaScreen
  *
  * Returns: (transfer none): The current workspace
  */

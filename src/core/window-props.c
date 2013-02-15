@@ -1,6 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/**
+/*
  * SECTION:window-props
  * @short_description: #MetaWindow property handling
  *

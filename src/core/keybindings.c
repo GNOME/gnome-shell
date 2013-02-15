@@ -3861,6 +3861,11 @@ meta_keybindings_set_custom_handler (const gchar        *name,
 
 /**
  * meta_keybindings_switch_window: (skip)
+ * @display: a #MetaDisplay
+ * @screen: a #MetaScreen
+ * @event_window: a #MetaWindow
+ * @event: a #XIDeviceEvent
+ * @binding: a #MetaKeyBinding
  *
  */
 void

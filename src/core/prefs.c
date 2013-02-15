@@ -700,6 +700,8 @@ handle_preference_update_int (GSettings *settings,
 
 /**
  * meta_prefs_add_listener: (skip)
+ * @func: a #MetaPrefsChangedFunc
+ * @user_data: data passed to the function
  *
  */
 void
@@ -717,6 +719,8 @@ meta_prefs_add_listener (MetaPrefsChangedFunc func,
 
 /**
  * meta_prefs_remove_listener: (skip)
+ * @func: a #MetaPrefsChangedFunc
+ * @user_data: data passed to the function
  *
  */
 void

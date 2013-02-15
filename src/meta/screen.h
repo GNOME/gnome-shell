@@ -88,6 +88,13 @@ int meta_screen_get_monitor_index_for_rect (MetaScreen    *screen,
 void meta_screen_focus_default_window (MetaScreen *screen,
                                        guint32     timestamp);
 
+/**
+ * MetaScreenCorner:
+ * @META_SCREEN_TOPLEFT: top-left corner
+ * @META_SCREEN_TOPRIGHT: top-right corner
+ * @META_SCREEN_BOTTOMLEFT: bottom-left corner
+ * @META_SCREEN_BOTTOMRIGHT: bottom-right corner
+ */
 typedef enum
 {
   META_SCREEN_TOPLEFT,

@@ -52,15 +52,59 @@ struct _MetaPlugin
   MetaPluginPrivate *priv;
 };
 
+/**
+ * MetaPluginClass:
+ * @start: virtual function called when the compositor starts managing a screen
+ * @minimize: virtual function called when a window is minimized
+ * @maximize: virtual function called when a window is maximized
+ * @unmaximize: virtual function called when a window is unmaximized
+ * @map: virtual function called when a window is mapped
+ * @destroy: virtual function called when a window is destroyed
+ * @switch_workspace: virtual function called when the user switches to another
+ * workspace
+ * @kill_window_effects: virtual function called when the effects on a window
+ * need to be killed prematurely; the plugin must call the completed() callback
+ * as if the effect terminated naturally
+ * @kill_switch_workspace: virtual function called when the workspace-switching
+ * effect needs to be killed prematurely
+ * @xevent_filter: virtual function called when handling each event
+ * @keybinding_filter: virtual function called when handling each keybinding
+ * @plugin_info: virtual function that returns information about the
+ * #MetaPlugin
+ */
 struct _MetaPluginClass
 {
+  /*< private >*/
   GObjectClass parent_class;
 
+  /*< public >*/
+
+  /**
+   * MetaPluginClass::start:
+   *
+   * Virtual function called when the compositor starts managing a screen
+   */
   void (*start)            (MetaPlugin         *plugin);
 
+  /**
+   * MetaPluginClass::minimize:
+   * @actor: a #MetaWindowActor
+   *
+   * Virtual function called when the window represented by @actor is minimized.
+   */
   void (*minimize)         (MetaPlugin         *plugin,
                             MetaWindowActor    *actor);
 
+  /**
+   * MetaPluginClass::maximize:
+   * @actor: a #MetaWindowActor
+   * @x: target X coordinate
+   * @y: target Y coordinate
+   * @width: target width
+   * @height: target height
+   *
+   * Virtual function called when the window represented by @actor is maximized.
+   */
   void (*maximize)         (MetaPlugin         *plugin,
                             MetaWindowActor    *actor,
                             gint                x,
@@ -68,6 +112,16 @@ struct _MetaPluginClass
                             gint                width,
                             gint                height);
 
+  /**
+   * MetaPluginClass::unmaximize:
+   * @actor: a #MetaWindowActor
+   * @x: target X coordinate
+   * @y: target Y coordinate
+   * @width: target width
+   * @height: target height
+   *
+   * Virtual function called when the window represented by @actor is unmaximized.
+   */
   void (*unmaximize)       (MetaPlugin         *plugin,
                             MetaWindowActor    *actor,
                             gint                x,
@@ -75,42 +129,101 @@ struct _MetaPluginClass
                             gint                width,
                             gint                height);
 
+  /**
+   * MetaPluginClass::map:
+   * @actor: a #MetaWindowActor
+   *
+   * Virtual function called when the window represented by @actor is mapped.
+   */
   void (*map)              (MetaPlugin         *plugin,
                             MetaWindowActor    *actor);
 
+  /**
+   * MetaPluginClass::destroy:
+   * @actor: a #MetaWindowActor
+   *
+   * Virtual function called when the window represented by @actor is destroyed.
+   */
   void (*destroy)          (MetaPlugin         *plugin,
                             MetaWindowActor    *actor);
 
+  /**
+   * MetaPluginClass::switch_workspace:
+   * @from: origin workspace
+   * @to: destination workspace
+   * @direction: a #MetaMotionDirection
+   *
+   * Virtual function called when the window represented by @actor is destroyed.
+   */
   void (*switch_workspace) (MetaPlugin         *plugin,
                             gint                from,
                             gint                to,
                             MetaMotionDirection direction);
 
-  /*
-   * Called if an effects should be killed prematurely; the plugin must
-   * call the completed() callback as if the effect terminated naturally.
+
+  /**
+   * MetaPluginClass::kill_window_effects:
+   * @actor: a #MetaWindowActor
+   *
+   * Virtual function called when the effects on @actor need to be killed
+   * prematurely; the plugin must call the completed() callback as if the effect
+   * terminated naturally.
    */
   void (*kill_window_effects)      (MetaPlugin      *plugin,
                                     MetaWindowActor *actor);
 
+  /**
+   * MetaPluginClass::kill_switch_workspace:
+   *
+   * Virtual function called when the workspace-switching effect needs to be
+   * killed prematurely.
+   */
   void (*kill_switch_workspace)    (MetaPlugin     *plugin);
 
-  /* General XEvent filter. This is fired *before* meta itself handles
-   * an event. Return TRUE to block any further processing.
-   */
   /**
    * MetaPluginClass::xevent_filter:
    * @event: (type xlib.XEvent):
+   *
+   * Virtual function called when handling each event.
+   *
+   * Returns: %TRUE if the plugin handled the event type (i.e., if the return
+   * value is %FALSE, there will be no subsequent call to the manager
+   * completed() callback, and the compositor must ensure that any appropriate
+   * post-effect cleanup is carried out.
    */
   gboolean (*xevent_filter) (MetaPlugin       *plugin,
                              XEvent           *event);
 
+  /**
+   * MetaPluginClass::keybinding_filter:
+   * @binding: a #MetaKeyBinding
+   *
+   * Virtual function called when handling each keybinding.
+   *
+   * Returns: %TRUE if the plugin handled the keybinding.
+   */
   gboolean (*keybinding_filter) (MetaPlugin     *plugin,
                                  MetaKeyBinding *binding);
 
+  /**
+   * MetaPluginClass::plugin_info:
+   * @plugin: a #MetaPlugin
+   *
+   * Virtual function that returns information about the #MetaPlugin.
+   *
+   * Returns: a #MetaPluginInfo.
+   */
   const MetaPluginInfo * (*plugin_info) (MetaPlugin *plugin);
 };
 
+/**
+ * MetaPluginInfo:
+ * @name: name of the plugin
+ * @version: version of the plugin
+ * @author: author of the plugin
+ * @license: license of the plugin
+ * @description: description of the plugin
+ */
 struct _MetaPluginInfo
 {
   const gchar *name;
@@ -127,6 +240,13 @@ gboolean      meta_plugin_debug_mode          (MetaPlugin *plugin);
 
 const MetaPluginInfo * meta_plugin_get_info (MetaPlugin *plugin);
 
+/**
+ * MetaPluginVersion:
+ * @version_major: major component of the version number of Meta with which the plugin was compiled
+ * @version_minor: minor component of the version number of Meta with which the plugin was compiled
+ * @version_micro: micro component of the version number of Meta with which the plugin was compiled
+ * @version_api: version of the plugin API
+ */
 struct _MetaPluginVersion
 {
   /*

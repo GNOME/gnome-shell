@@ -172,6 +172,12 @@ meta_gradient_create_multi (int              width,
 
 /**
  * meta_gradient_create_interwoven: (skip)
+ * @width: Width in pixels
+ * @height: Height in pixels
+ * @colors1: Array of colors
+ * @thickness1: Thickness
+ * @colors2: Array of colors
+ * @thickness2: Thickness
  *
  * Interwoven essentially means we have two vertical gradients,
  * cut into horizontal strips of the given thickness, and then the strips

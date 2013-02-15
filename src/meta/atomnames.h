@@ -23,7 +23,7 @@
  * 02111-1307, USA.
  */
 
-/**
+/*
  * \file atomnames.h  A list of atom names.
  *
  * This is a list of the names of all the X atoms that Mutter uses.

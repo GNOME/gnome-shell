@@ -30,11 +30,13 @@ typedef struct _MetaBackgroundGroupPrivate MetaBackgroundGroupPrivate;
 
 struct _MetaBackgroundGroupClass
 {
+  /*< private >*/
   ClutterActorClass parent_class;
 };
 
 struct _MetaBackgroundGroup
 {
+  /*< private >*/
   ClutterActor parent;
 
   MetaBackgroundGroupPrivate *priv;

@@ -106,6 +106,7 @@ meta_group_unref (MetaGroup *group)
 
 /**
  * meta_window_get_group: (skip)
+ * @window: a #MetaWindow
  *
  */
 MetaGroup*
@@ -204,6 +205,8 @@ meta_window_shutdown_group (MetaWindow *window)
 
 /**
  * meta_display_lookup_group: (skip)
+ * @display: a #MetaDisplay
+ * @group_leader: a X window
  *
  */
 MetaGroup*
@@ -279,6 +282,8 @@ meta_group_get_startup_id (MetaGroup *group)
 
 /**
  * meta_group_property_notify: (skip)
+ * @group: a #MetaGroup
+ * @event: a X event
  *
  */
 gboolean

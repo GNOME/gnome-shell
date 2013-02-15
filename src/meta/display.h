@@ -29,6 +29,13 @@
 #include <meta/prefs.h>
 #include <meta/common.h>
 
+/**
+ * MetaTabList:
+ * @META_TAB_LIST_NORMAL: Normal windows
+ * @META_TAB_LIST_DOCKS: Dock windows
+ * @META_TAB_LIST_GROUP: Groups
+ * @META_TAB_LIST_NORMAL_ALL: All windows
+ */
 typedef enum
 {
   META_TAB_LIST_NORMAL,
@@ -37,6 +44,11 @@ typedef enum
   META_TAB_LIST_NORMAL_ALL
 } MetaTabList;
 
+/**
+ * MetaTabShowType:
+ * @META_TAB_SHOW_ICON: Show icon (Alt-Tab mode)
+ * @META_TAB_SHOW_INSTANTLY: Show instantly (Alt-Esc mode)
+ */
 typedef enum
 {
   META_TAB_SHOW_ICON,      /* Alt-Tab mode */

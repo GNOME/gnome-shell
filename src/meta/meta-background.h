@@ -52,6 +52,11 @@ typedef struct _MetaBackgroundPrivate MetaBackgroundPrivate;
 
 /**
  * MetaBackgroundEffects:
+ * @META_BACKGROUND_EFFECTS_NONE: No effect
+ * @META_BACKGROUND_EFFECTS_DESATURATE: Desaturate
+ * @META_BACKGROUND_EFFECTS_BLUR: Blur
+ * @META_BACKGROUND_EFFECTS_VIGNETTE: Vignette
+ *
  * Which effects to enable on the background
  */
 
@@ -65,11 +70,13 @@ typedef enum
 
 struct _MetaBackgroundClass
 {
+  /*< private >*/
   GObjectClass parent_class;
 };
 
 struct _MetaBackground
 {
+  /*< private >*/
   GObject parent;
 
   MetaBackgroundPrivate *priv;

@@ -6212,6 +6212,7 @@ meta_frame_type_from_string (const char *str)
 
 /**
  * meta_frame_type_to_string:
+ * @type: a #MetaFrameType
  *
  * Converts a frame type enum value to the name string that would
  * appear in the theme definition file.

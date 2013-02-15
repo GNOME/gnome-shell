@@ -22,8 +22,8 @@
  * 02111-1307, USA.
  */
 
-/**
- * SECTION:Bell
+/*
+ * SECTION:bell
  * @short_description: Ring the bell or flash the screen
  *
  * Sometimes, X programs "ring the bell", whatever that means. Mutter lets
@@ -52,7 +52,9 @@
 #include <config.h>
 #include "bell.h"
 #include "screen-private.h"
+#include "window-private.h"
 #include <meta/prefs.h>
+#include <meta/compositor.h>
 #ifdef HAVE_LIBCANBERRA
 #include <canberra-gtk.h>
 #endif

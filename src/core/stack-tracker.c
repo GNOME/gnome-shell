@@ -1,6 +1,21 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
 /*
+ * SECTION:stack-tracker
+ * @short_description: Track stacking order for compositor
+ *
+ * #MetaStackTracker maintains the most accurate view we have at a
+ * given point of time of the ordering of the children of the root
+ * window (including override-redirect windows.) This is used to order
+ * the windows when the compositor draws them.
+ *
+ * By contrast, #MetaStack is responsible for keeping track of how we
+ * think that windows *should* be ordered.  For windows we manage
+ * (non-override-redirect windows), the two stacking orders will be
+ * the same.
+ */
+
+/*
  * Copyright (C) 2009 Red Hat, Inc.
  *
  * This program is free software; you can redistribute it and/or
@@ -616,7 +631,7 @@ meta_stack_tracker_configure_event (MetaStackTracker    *tracker,
  * @windows: location to store list of windows, or %NULL
  * @n_windows: location to store count of windows, or %NULL
  *
- * Returns the most current view we have of the stacking order
+ * @windows will contain the most current view we have of the stacking order
  * of the children of the root window. The returned array contains
  * everything: InputOnly windows, override-redirect windows,
  * hidden windows, etc. Some of these will correspond to MetaWindow

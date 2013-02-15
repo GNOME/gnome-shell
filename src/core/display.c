@@ -24,7 +24,7 @@
  * 02111-1307, USA.
  */
 
-/**
+/*
  * SECTION:MetaDisplay
  * @short_description: Handles operations on an X display.
  *
@@ -83,7 +83,7 @@
          g == META_GRAB_OP_KEYBOARD_ESCAPING_DOCK   ||  \
          g == META_GRAB_OP_KEYBOARD_ESCAPING_GROUP)
 
-/**
+/*
  * SECTION:pings
  *
  * Sometimes we want to see whether a window is responding,
@@ -1132,6 +1132,7 @@ meta_display_close (MetaDisplay *display,
 /**
  * meta_display_screen_for_root:
  * @display: a #MetaDisplay
+ * @xroot: a X window
  *
  * Return the #MetaScreen corresponding to a specified X root window ID.
  *
@@ -3638,7 +3639,7 @@ meta_display_notify_window_created (MetaDisplay  *display,
  * @display: A #MetaDisplay
  * @xwindow: An X11 window
  *
- * Returns %TRUE iff window is one of mutter's internal "no focus" windows
+ * Returns: %TRUE iff window is one of mutter's internal "no focus" windows
  * (there is one per screen) which will have the focus when there is no
  * actual client window focused.
  */
@@ -4098,6 +4099,8 @@ meta_display_end_grab_op (MetaDisplay *display,
 
 /**
  * meta_display_get_grab_op:
+ * @display: The #MetaDisplay that the window is on
+
  * Gets the current grab operation, if any.
  *
  * Return value: the current grab operation, or %META_GRAB_OP_NONE if
@@ -4469,6 +4472,7 @@ meta_is_syncing (void)
 
 /**
  * meta_set_syncing:
+ * @setting: whether to turn syncing on or off
  *
  * A handy way to turn on synchronisation on or off for every display.
  */
@@ -5689,6 +5693,7 @@ meta_display_get_compositor_version (MetaDisplay *display,
 
 /**
  * meta_display_get_xinput_opcode: (skip)
+ * @display: a #MetaDisplay
  *
  */
 int
@@ -5701,7 +5706,7 @@ meta_display_get_xinput_opcode (MetaDisplay *display)
  * meta_display_supports_extended_barriers:
  * @display: a #MetaDisplay
  *
- * Returns whether the X server supports extended barrier
+ * Returns: whether the X server supports extended barrier
  * features as defined in version 2.3 of the XInput 2
  * specification.
  *
@@ -5716,6 +5721,7 @@ meta_display_supports_extended_barriers (MetaDisplay *display)
 
 /**
  * meta_display_get_xdisplay: (skip)
+ * @display: a #MetaDisplay
  *
  */
 Display *
@@ -5726,6 +5732,7 @@ meta_display_get_xdisplay (MetaDisplay *display)
 
 /**
  * meta_display_get_compositor: (skip)
+ * @display: a #MetaDisplay
  *
  */
 MetaCompositor *

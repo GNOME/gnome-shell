@@ -27,6 +27,14 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gdk/gdk.h>
 
+/**
+ * MetaGradientType:
+ * @META_GRADIENT_VERTICAL: Vertical gradient
+ * @META_GRADIENT_HORIZONTAL: Horizontal gradient
+ * @META_GRADIENT_DIAGONAL: Diagonal gradient
+ * @META_GRADIENT_LAST: Marks the end of the #MetaGradientType enumeration
+ *
+ */
 typedef enum
 {
   META_GRADIENT_VERTICAL,

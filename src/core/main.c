@@ -581,8 +581,8 @@ meta_quit (MetaExitCode code)
 
 /**
  * prefs_changed_callback:
- * @pref  Which preference has changed
- * @data  Arbitrary data (which we ignore)
+ * @pref:  Which preference has changed
+ * @data:  Arbitrary data (which we ignore)
  *
  * Called on pref changes. (One of several functions of its kind and purpose.)
  *

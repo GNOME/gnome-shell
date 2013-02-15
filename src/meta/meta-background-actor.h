@@ -52,6 +52,7 @@ typedef struct _MetaBackgroundActorPrivate MetaBackgroundActorPrivate;
 
 struct _MetaBackgroundActorClass
 {
+  /*< private >*/
   ClutterActorClass parent_class;
 };
 

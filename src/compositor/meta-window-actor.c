@@ -786,6 +786,7 @@ meta_window_actor_has_shadow (MetaWindowActor *self)
 
 /**
  * meta_window_actor_get_x_window: (skip)
+ * @self: a #MetaWindowActor
  *
  */
 Window
@@ -799,6 +800,7 @@ meta_window_actor_get_x_window (MetaWindowActor *self)
 
 /**
  * meta_window_actor_get_meta_window:
+ * @self: a #MetaWindowActor
  *
  * Gets the #MetaWindow object that the the #MetaWindowActor is displaying
  *
@@ -812,6 +814,7 @@ meta_window_actor_get_meta_window (MetaWindowActor *self)
 
 /**
  * meta_window_actor_get_texture:
+ * @self: a #MetaWindowActor
  *
  * Gets the ClutterActor that is used to display the contents of the window
  *
@@ -825,6 +828,7 @@ meta_window_actor_get_texture (MetaWindowActor *self)
 
 /**
  * meta_window_actor_is_destroyed:
+ * @self: a #MetaWindowActor
  *
  * Gets whether the X window that the actor was displaying has been destroyed
  *

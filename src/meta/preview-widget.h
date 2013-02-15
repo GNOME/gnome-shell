@@ -62,6 +62,7 @@ struct _MetaPreview
 
 struct _MetaPreviewClass
 {
+  /*< private >*/
   GtkBinClass parent_class;
 };
 
