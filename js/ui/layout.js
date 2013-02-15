@@ -219,6 +219,11 @@ const LayoutManager = new Lang.Class({
         this.addChrome(this.keyboardBox);
         this._keyboardHeightNotifyId = 0;
 
+        // A dummy actor that tracks the mouse or text cursor, based on the
+        // position set in setDummyCursorPosition.
+        this.dummyCursor = new St.Widget({ width: 0, height: 0 });
+        this.uiGroup.add_actor(this.dummyCursor);
+
         global.stage.remove_actor(global.top_window_group);
         this.uiGroup.add_actor(global.top_window_group);
 
@@ -718,6 +723,20 @@ const LayoutManager = new Lang.Class({
 
     _hideKeyboardComplete: function() {
         this._updateRegions();
+    },
+
+    // setDummyCursorPosition:
+    //
+    // The cursor dummy is a standard widget commonly used for popup
+    // menus and box pointers to track, as the box pointer API only
+    // tracks actors. If you want to pop up a menu based on where the
+    // user clicked, or where the text cursor is, the cursor dummy
+    // is what you should use. Given that the menu should not track
+    // the actual mouse pointer as it moves, you need to call this
+    // function before you show the menu to ensure it is at the right
+    // position.
+    setDummyCursorPosition: function(x, y) {
+        this.dummyCursor.set_position(Math.round(x), Math.round(y));
     },
 
     // addChrome:

@@ -13,8 +13,8 @@ const BackgroundMenu = new Lang.Class({
     Name: 'BackgroundMenu',
     Extends: PopupMenu.PopupMenu,
 
-    _init: function(source, layoutManager) {
-        this.parent(source, 0, St.Side.TOP);
+    _init: function(layoutManager) {
+        this.parent(layoutManager.dummyCursor, 0, St.Side.TOP);
 
         this.addSettingsAction(_("Settings"), 'gnome-control-center.desktop');
         this.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
@@ -28,17 +28,14 @@ const BackgroundMenu = new Lang.Class({
 });
 
 function addBackgroundMenu(actor, layoutManager) {
-    let cursor = new St.Bin({ opacity: 0 });
-    layoutManager.uiGroup.add_actor(cursor);
-
     actor.reactive = true;
-    actor._backgroundMenu = new BackgroundMenu(cursor, layoutManager);
+    actor._backgroundMenu = new BackgroundMenu(layoutManager);
     actor._backgroundManager = new PopupMenu.PopupMenuManager({ actor: actor });
     actor._backgroundManager.addMenu(actor._backgroundMenu);
 
     function openMenu() {
         let [x, y] = global.get_pointer();
-        cursor.set_position(x, y);
+        Main.layoutManager.setDummyCursorPosition(x, y);
         actor._backgroundMenu.open(BoxPointer.PopupAnimation.NONE);
     }
 
@@ -59,10 +56,8 @@ function addBackgroundMenu(actor, layoutManager) {
     actor.add_action(clickAction);
 
     actor.connect('destroy', function() {
-                      actor._backgroundMenu.destroy();
-                      actor._backgroundMenu = null;
-                      actor._backgroundManager = null;
-
-                      cursor.destroy();
-                  });
+        actor._backgroundMenu.destroy();
+        actor._backgroundMenu = null;
+        actor._backgroundManager = null;
+    });
 }
