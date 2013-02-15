@@ -58,7 +58,60 @@ EXTRA_HFILES=
 
 # Header files or dirs to ignore when scanning. Use base file/dir names
 # e.g. IGNORE_HFILES=gtkdebug.h gtkintl.h private_code
-IGNORE_HFILES=
+IGNORE_HFILES= \
+	async-getprop.h \
+	atoms.h \
+	bell.h \
+	boxes-private.h \
+	clutter-utils.h \
+	cogl-utils.h \
+	compositor-private.h \
+	constraints.h \
+	core.h \
+	display-private.h \
+	draw-workspace.h \
+	edge-resistance.h \
+	eventqueue.h \
+	frame.h \
+	frames.h \
+	group-private.h \
+	group-props.h \
+	iconcache.h \
+	inlinepixbufs.h \
+	keybindings-private.h \
+	menu.h \
+	metaaccellabel.h \
+	meta-background-actor-private.h \
+	meta-background-group-private.h \
+	meta-module.h \
+	meta-plugin-manager.h \
+	meta-shadow-factory-private.h \
+	meta-texture-rectangle.h \
+	meta-texture-tower.h \
+	meta-window-actor-private.h \
+	meta-window-group.h \
+	meta-window-shape.h \
+	mutter-enum-types.h \
+	mutter-Xatomtype.h \
+	place.h \
+	region-utils.h \
+	resizepopup.h \
+	screen-private.h \
+	session.h \
+	stack.h \
+	stack-tracker.h \
+	stamp-mutter-enum-types.h \
+	tabpopup.h \
+	theme-private.h \
+	tile-preview.h \
+	ui.h \
+	window-private.h \
+	window-props.h \
+	workspace-private.h \
+	xprops.h \
+	$(NULL)
+
+MKDB_OPTIONS+=--ignore-files="$(IGNORE_HFILES)"
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png
