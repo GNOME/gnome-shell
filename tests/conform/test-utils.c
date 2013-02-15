@@ -79,6 +79,33 @@ check_flags (TestFlags flags,
   return TRUE;
 }
 
+CoglBool
+is_boolean_env_set (const char *variable)
+{
+  char *val = getenv (variable);
+  CoglBool ret;
+
+  if (!val)
+    return FALSE;
+
+  if (g_ascii_strcasecmp (val, "1") == 0 ||
+      g_ascii_strcasecmp (val, "on") == 0 ||
+      g_ascii_strcasecmp (val, "true") == 0)
+    ret = TRUE;
+  else if (g_ascii_strcasecmp (val, "0") == 0 ||
+           g_ascii_strcasecmp (val, "off") == 0 ||
+           g_ascii_strcasecmp (val, "false") == 0)
+    ret = FALSE;
+  else
+    {
+      g_critical ("Spurious boolean environment variable value (%s=%s)",
+                  variable, val);
+      ret = TRUE;
+    }
+
+  return ret;
+}
+
 void
 test_utils_init (TestFlags requirement_flags,
                  TestFlags known_failure_flags)
@@ -100,7 +127,8 @@ test_utils_init (TestFlags requirement_flags,
                 "$ make test-report");
   counter++;
 
-  if (g_getenv ("COGL_TEST_VERBOSE") || g_getenv ("V"))
+  if (is_boolean_env_set ("COGL_TEST_VERBOSE") ||
+      is_boolean_env_set ("V"))
     cogl_test_is_verbose = TRUE;
 
   if (g_getenv ("G_DEBUG"))
@@ -124,7 +152,7 @@ test_utils_init (TestFlags requirement_flags,
   missing_requirement = !check_flags (requirement_flags, renderer);
   known_failure = !check_flags (known_failure_flags, renderer);
 
-  if (getenv  ("COGL_TEST_ONSCREEN"))
+  if (is_boolean_env_set ("COGL_TEST_ONSCREEN"))
     {
       onscreen = cogl_onscreen_new (test_ctx, 640, 480);
       test_fb = COGL_FRAMEBUFFER (onscreen);
