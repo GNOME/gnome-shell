@@ -10,13 +10,14 @@
 # Gabriel F. Vilar <cogumm@gmail.com>, 2011.
 # Adorilson Bezerra <adorilson@gmail.com>, 2011.
 # Djavan Fagundes <djavan@comum.org>, 2012.
+# Rafael Ferreira <rafael.f.f1@gmail.com>, 2013.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-10 13:02+0000\n"
-"PO-Revision-Date: 2012-11-21 04:58-0300\n"
+"POT-Creation-Date: 2013-02-14 07:51+0000\n"
+"PO-Revision-Date: 2013-02-14 18:06-0300\n"
 "Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -24,7 +25,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Virtaal 0.7.1\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:1
@@ -41,7 +42,7 @@ msgstr "Sistema"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
 msgid "Show the message tray"
-msgstr "Exibe a área de notificações"
+msgstr "Mostra a área de notificação"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -177,12 +178,12 @@ msgstr "Associação de tecla para abrir um menu de aplicativo."
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr ""
-"Associação de tecla para alternar a visibilidade da bandeja de mensagens"
+"Associação de tecla para alternar a visibilidade da área de notificação"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr ""
-"Associação de tecla para alternar a visibilidade da bandeja de mensagens."
+"Associação de tecla para alternar a visibilidade da área de notificação."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to toggle the screen recorder"
@@ -343,7 +344,7 @@ msgstr "(ou deslize o dedo)"
 #: ../js/gdm/util.js:294
 #, c-format
 msgid "(e.g., user or %s)"
-msgstr "(ex., usuário ou %s)"
+msgstr "(ex.: usuário ou %s)"
 
 #: ../js/misc/util.js:92
 msgid "Command not found"
@@ -517,13 +518,13 @@ msgstr "Nada agendado"
 #: ../js/ui/calendar.js:715
 msgctxt "calendar heading"
 msgid "%A, %B %d"
-msgstr "%A, %B %d"
+msgstr "%A, %d de %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
 #: ../js/ui/calendar.js:718
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
-msgstr "%A, %B %d, %Y"
+msgstr "%A, %d de %B, %Y"
 
 #: ../js/ui/calendar.js:728
 msgid "Today"
@@ -690,11 +691,11 @@ msgstr "Erro de conexão"
 
 #: ../js/ui/components/telepathyClient.js:491
 msgid "Unmute"
-msgstr "Ativar som"
+msgstr "Ativar áudio"
 
 #: ../js/ui/components/telepathyClient.js:491
 msgid "Mute"
-msgstr "Mudo"
+msgstr "Sem áudio"
 
 #. Translators: this is a time format string followed by a date.
 #. If applicable, replace %X with a strftime format valid for your
@@ -936,7 +937,7 @@ msgstr "%A, %e de %B de %Y"
 #, c-format
 msgctxt "title"
 msgid "Log Out %s"
-msgstr "Encerrar sessão %s"
+msgstr "Encerrar sessão de %s"
 
 #: ../js/ui/endSessionDialog.js:62
 msgctxt "title"
@@ -1099,7 +1100,7 @@ msgstr "Remover"
 msgid "Message Tray"
 msgstr "Área de notificações"
 
-#: ../js/ui/messageTray.js:2543
+#: ../js/ui/messageTray.js:2553
 msgid "System Information"
 msgstr "Informações do sistema"
 
@@ -1114,7 +1115,7 @@ msgstr "Desfazer"
 
 #: ../js/ui/overview.js:127
 msgid "Overview"
-msgstr "Visão Geral"
+msgstr "Visão geral"
 
 #. Translators: this is the text displayed
 #. in the search entry when no search is
@@ -1159,18 +1160,18 @@ msgstr "Por favor, digite um comando:"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:81
+#: ../js/ui/screenShield.js:82
 msgid "%A, %B %d"
-msgstr "%A, %B %d"
+msgstr "%A, %d de %B"
 
-#: ../js/ui/screenShield.js:145
+#: ../js/ui/screenShield.js:146
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d nova mensagem"
 msgstr[1] "%d novas mensagens"
 
-#: ../js/ui/screenShield.js:147
+#: ../js/ui/screenShield.js:148
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1251,7 +1252,7 @@ msgstr "Teclas do mouse"
 
 #: ../js/ui/status/accessibility.js:75
 msgid "Universal Access Settings"
-msgstr "Configurações de acesso universal"
+msgstr "Configurações de acessibilidade"
 
 #: ../js/ui/status/accessibility.js:109
 msgid "High Contrast"
