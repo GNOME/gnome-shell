@@ -780,6 +780,8 @@ shell_app_system_subsearch (ShellAppSystem   *system,
   GSList *substring_results = NULL;
   GSList *normalized_terms = normalize_terms (terms);
 
+  previous_results = g_slist_reverse (previous_results);
+
   for (iter = previous_results; iter; iter = iter->next)
     {
       ShellApp *app = iter->data;
