@@ -167,6 +167,8 @@ const GrabHelper = new Lang.Class({
         if (params.grabFocus && !this._takeFocusGrab(hadFocus))
             return false;
 
+        this._grabStack.push(params);
+
         if (params.focus) {
             params.focus.grab_key_focus();
         } else if (newFocus && (hadFocus || params.grabFocus)) {
@@ -177,7 +179,6 @@ const GrabHelper = new Lang.Class({
         if ((params.grabFocus || params.modal) && !this._capturedEventId)
             this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
 
-        this._grabStack.push(params);
         return true;
     },
 
