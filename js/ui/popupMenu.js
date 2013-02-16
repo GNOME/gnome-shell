@@ -1267,6 +1267,10 @@ const PopupMenu = new Lang.Class({
         if (this._activeMenuItem)
             this._activeMenuItem.setActive(false);
 
+        this._childMenus.forEach(function(childMenu) {
+            childMenu.close();
+        });
+
         if (this._boxPointer.actor.visible)
             this._boxPointer.hide(animate);
 
