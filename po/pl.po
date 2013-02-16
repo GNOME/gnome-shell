@@ -4,15 +4,15 @@
 # pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas:
 # gnomepl@aviary.pl
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# Piotr Drąg <piotrdrag@gmail.com>, 2010-2012.
-# Aviary.pl <gnomepl@aviary.pl>, 2010-2012.
+# Piotr Drąg <piotrdrag@gmail.com>, 2010-2013.
+# Aviary.pl <gnomepl@aviary.pl>, 2010-2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2012-12-23 04:11+0100\n"
-"PO-Revision-Date: 2012-12-23 04:12+0100\n"
+"POT-Creation-Date: 2013-02-16 21:15+0100\n"
+"PO-Revision-Date: 2013-02-16 21:16+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -959,7 +959,7 @@ msgstr "Przytrzymane"
 msgid "Whether the clickable has a grab"
 msgstr "Określa, czy element klikalny posiada przytrzymanie"
 
-#: ../clutter/clutter-click-action.c:591 ../clutter/clutter-settings.c:599
+#: ../clutter/clutter-click-action.c:591 ../clutter/clutter-settings.c:607
 msgid "Long Press Duration"
 msgstr "Czas trwania długiego przyciśnięcia"
 
@@ -1017,7 +1017,7 @@ msgstr "Czynnik usuwania nasycenia"
 
 #: ../clutter/clutter-device-manager.c:131
 #: ../clutter/clutter-input-device.c:366
-#: ../clutter/x11/clutter-keymap-x11.c:316
+#: ../clutter/x11/clutter-keymap-x11.c:321
 msgid "Backend"
 msgstr "Mechanizm"
 
@@ -1432,108 +1432,108 @@ msgstr "Tryb przewijania"
 msgid "The scrolling direction"
 msgstr "Kierunek przewijania"
 
-#: ../clutter/clutter-settings.c:440
+#: ../clutter/clutter-settings.c:448
 msgid "Double Click Time"
 msgstr "Czas podwójnego kliknięcia"
 
-#: ../clutter/clutter-settings.c:441
+#: ../clutter/clutter-settings.c:449
 msgid "The time between clicks necessary to detect a multiple click"
 msgstr "Czas między kliknięciami wymagany, aby wykryć wielokrotne kliknięcie"
 
-#: ../clutter/clutter-settings.c:456
+#: ../clutter/clutter-settings.c:464
 msgid "Double Click Distance"
 msgstr "Odległość podwójnego kliknięcia"
 
-#: ../clutter/clutter-settings.c:457
+#: ../clutter/clutter-settings.c:465
 msgid "The distance between clicks necessary to detect a multiple click"
 msgstr ""
 "Odległość między kliknięciami wymagane, aby wykryć wielokrotne kliknięcie"
 
-#: ../clutter/clutter-settings.c:472
+#: ../clutter/clutter-settings.c:480
 msgid "Drag Threshold"
 msgstr "Próg przeciągania"
 
-#: ../clutter/clutter-settings.c:473
+#: ../clutter/clutter-settings.c:481
 msgid "The distance the cursor should travel before starting to drag"
 msgstr ""
 "Odległość, jaką musi przemierzyć kursor przed rozpoczęciem przeciągania"
 
-#: ../clutter/clutter-settings.c:488 ../clutter/clutter-text.c:3369
+#: ../clutter/clutter-settings.c:496 ../clutter/clutter-text.c:3367
 msgid "Font Name"
 msgstr "Nazwa czcionki"
 
-#: ../clutter/clutter-settings.c:489
+#: ../clutter/clutter-settings.c:497
 msgid ""
 "The description of the default font, as one that could be parsed by Pango"
 msgstr ""
 "Opis domyślnej czcionki, możliwy do przetworzenia przez bibliotekę Pango"
 
-#: ../clutter/clutter-settings.c:504
+#: ../clutter/clutter-settings.c:512
 msgid "Font Antialias"
 msgstr "Wygładzanie czcionki"
 
-#: ../clutter/clutter-settings.c:505
+#: ../clutter/clutter-settings.c:513
 msgid ""
 "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
 "default)"
 msgstr ""
-"Określa, czy używać wygładzania (1 włącza, 2 wyłącza, a -1 używa wartości "
+"Określa, czy używać wygładzania (1 włącza, 0 wyłącza, a -1 używa wartości "
 "domyślnej)"
 
-#: ../clutter/clutter-settings.c:521
+#: ../clutter/clutter-settings.c:529
 msgid "Font DPI"
 msgstr "DPI czcionki"
 
-#: ../clutter/clutter-settings.c:522
+#: ../clutter/clutter-settings.c:530
 msgid ""
 "The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
 msgstr ""
 "Rozdzielczość czcionki, w 1024 * punktów na cal, lub -1, aby użyć domyślnej"
 
-#: ../clutter/clutter-settings.c:538
+#: ../clutter/clutter-settings.c:546
 msgid "Font Hinting"
 msgstr "Hinting czcionki"
 
-#: ../clutter/clutter-settings.c:539
+#: ../clutter/clutter-settings.c:547
 msgid ""
 "Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
 msgstr ""
-"Określa, czy używać hintingu (1 włącza, 2 wyłącza, a -1 używa wartości "
+"Określa, czy używać hintingu (1 włącza, 0 wyłącza, a -1 używa wartości "
 "domyślnej)"
 
-#: ../clutter/clutter-settings.c:560
+#: ../clutter/clutter-settings.c:568
 msgid "Font Hint Style"
 msgstr "Styl hintingu czcionki"
 
-#: ../clutter/clutter-settings.c:561
+#: ../clutter/clutter-settings.c:569
 msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
 msgstr "Styl hintingu (hintnone, hintslight, hintmedium, hintfull)"
 
-#: ../clutter/clutter-settings.c:582
+#: ../clutter/clutter-settings.c:590
 msgid "Font Subpixel Order"
 msgstr "Kolejność podpikseli czcionki"
 
-#: ../clutter/clutter-settings.c:583
+#: ../clutter/clutter-settings.c:591
 msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
 msgstr "Typ wygładzania podpikselowego (none, rgb, bgr, vrgb, vbgr)"
 
-#: ../clutter/clutter-settings.c:600
+#: ../clutter/clutter-settings.c:608
 msgid "The minimum duration for a long press gesture to be recognized"
 msgstr "Minimalny czas trwania gestu długiego przyciśnięcia"
 
-#: ../clutter/clutter-settings.c:607
+#: ../clutter/clutter-settings.c:615
 msgid "Fontconfig configuration timestamp"
 msgstr "Czas konfiguracji fontconfig"
 
-#: ../clutter/clutter-settings.c:608
+#: ../clutter/clutter-settings.c:616
 msgid "Timestamp of the current fontconfig configuration"
 msgstr "Czas bieżącej konfiguracji fontconfig"
 
-#: ../clutter/clutter-settings.c:625
+#: ../clutter/clutter-settings.c:633
 msgid "Password Hint Time"
 msgstr "Czas wskazówki hasła"
 
-#: ../clutter/clutter-settings.c:626
+#: ../clutter/clutter-settings.c:634
 msgid "How long to show the last input character in hidden entries"
 msgstr "Jak długo wyświetlać ostatni znak w ukrytych wpisach"
 
@@ -1569,108 +1569,108 @@ msgstr "Krawędź źródła, która powinna być przełamana"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "Offset w pikselach do zastosowania do ograniczenia"
 
-#: ../clutter/clutter-stage.c:1895
+#: ../clutter/clutter-stage.c:1929
 msgid "Fullscreen Set"
 msgstr "Ustawienie pełnego ekranu"
 
-#: ../clutter/clutter-stage.c:1896
+#: ../clutter/clutter-stage.c:1930
 msgid "Whether the main stage is fullscreen"
 msgstr "Określa, czy główna scena jest na pełnym ekranie"
 
-#: ../clutter/clutter-stage.c:1910
+#: ../clutter/clutter-stage.c:1944
 msgid "Offscreen"
 msgstr "Poza ekranem"
 
-#: ../clutter/clutter-stage.c:1911
+#: ../clutter/clutter-stage.c:1945
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Określa, czy główna scena powinna być wyświetlana poza ekranem"
 
-#: ../clutter/clutter-stage.c:1923 ../clutter/clutter-text.c:3483
+#: ../clutter/clutter-stage.c:1957 ../clutter/clutter-text.c:3481
 msgid "Cursor Visible"
 msgstr "Widoczność kursora"
 
-#: ../clutter/clutter-stage.c:1924
+#: ../clutter/clutter-stage.c:1958
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Określa, czy kursor myszy jest widoczny na głównej scenie"
 
-#: ../clutter/clutter-stage.c:1938
+#: ../clutter/clutter-stage.c:1972
 msgid "User Resizable"
 msgstr "Użytkownik może zmieniać rozmiar"
 
-#: ../clutter/clutter-stage.c:1939
+#: ../clutter/clutter-stage.c:1973
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr "Określa, czy można zmieniać rozmiar sceny przez działania użytkownika"
 
-#: ../clutter/clutter-stage.c:1954 ../clutter/deprecated/clutter-box.c:260
+#: ../clutter/clutter-stage.c:1988 ../clutter/deprecated/clutter-box.c:260
 #: ../clutter/deprecated/clutter-rectangle.c:273
 msgid "Color"
 msgstr "Kolor"
 
-#: ../clutter/clutter-stage.c:1955
+#: ../clutter/clutter-stage.c:1989
 msgid "The color of the stage"
 msgstr "Kolor sceny"
 
-#: ../clutter/clutter-stage.c:1970
+#: ../clutter/clutter-stage.c:2004
 msgid "Perspective"
 msgstr "Perspektywa"
 
-#: ../clutter/clutter-stage.c:1971
+#: ../clutter/clutter-stage.c:2005
 msgid "Perspective projection parameters"
 msgstr "Parametry projekcji perspektywy"
 
-#: ../clutter/clutter-stage.c:1986
+#: ../clutter/clutter-stage.c:2020
 msgid "Title"
 msgstr "Tytuł"
 
-#: ../clutter/clutter-stage.c:1987
+#: ../clutter/clutter-stage.c:2021
 msgid "Stage Title"
 msgstr "Tytuł sceny"
 
-#: ../clutter/clutter-stage.c:2004
+#: ../clutter/clutter-stage.c:2038
 msgid "Use Fog"
 msgstr "Użycie mgły"
 
-#: ../clutter/clutter-stage.c:2005
+#: ../clutter/clutter-stage.c:2039
 msgid "Whether to enable depth cueing"
 msgstr "Określa, czy włączyć wskazówki głębi"
 
-#: ../clutter/clutter-stage.c:2021
+#: ../clutter/clutter-stage.c:2055
 msgid "Fog"
 msgstr "Mgła"
 
-#: ../clutter/clutter-stage.c:2022
+#: ../clutter/clutter-stage.c:2056
 msgid "Settings for the depth cueing"
 msgstr "Ustawienia dla wskazówek głębi"
 
-#: ../clutter/clutter-stage.c:2038
+#: ../clutter/clutter-stage.c:2072
 msgid "Use Alpha"
 msgstr "Użycie alfy"
 
-#: ../clutter/clutter-stage.c:2039
+#: ../clutter/clutter-stage.c:2073
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Określa, czy uwzględniać składnik alfa koloru sceny"
 
-#: ../clutter/clutter-stage.c:2055
+#: ../clutter/clutter-stage.c:2089
 msgid "Key Focus"
 msgstr "Aktywny klawisz"
 
-#: ../clutter/clutter-stage.c:2056
+#: ../clutter/clutter-stage.c:2090
 msgid "The currently key focused actor"
 msgstr "Aktor obecnie posiadający aktywny klawisz"
 
-#: ../clutter/clutter-stage.c:2072
+#: ../clutter/clutter-stage.c:2106
 msgid "No Clear Hint"
 msgstr "Bez wskazówki czyszczenia"
 
-#: ../clutter/clutter-stage.c:2073
+#: ../clutter/clutter-stage.c:2107
 msgid "Whether the stage should clear its contents"
 msgstr "Określa, czy scena powinna czyścić swoją zawartość"
 
-#: ../clutter/clutter-stage.c:2086
+#: ../clutter/clutter-stage.c:2120
 msgid "Accept Focus"
 msgstr "Akceptowanie aktywności"
 
-#: ../clutter/clutter-stage.c:2087
+#: ../clutter/clutter-stage.c:2121
 msgid "Whether the stage should accept focus on show"
 msgstr "Określa, czy scena powinna akceptować aktywność podczas wyświetlania"
 
@@ -1730,7 +1730,7 @@ msgstr "Odstęp między kolumnami"
 msgid "Spacing between rows"
 msgstr "Odstęp między wierszami"
 
-#: ../clutter/clutter-text-buffer.c:351 ../clutter/clutter-text.c:3404
+#: ../clutter/clutter-text-buffer.c:351 ../clutter/clutter-text.c:3402
 msgid "Text"
 msgstr "Tekst"
 
@@ -1754,205 +1754,205 @@ msgstr "Maksymalna długość"
 msgid "Maximum number of characters for this entry. Zero if no maximum"
 msgstr "Maksymalna liczba znaków dla tego wpisu. Zero, jeśli nie ma maksimum"
 
-#: ../clutter/clutter-text.c:3351
+#: ../clutter/clutter-text.c:3349
 msgid "Buffer"
 msgstr "Bufor"
 
-#: ../clutter/clutter-text.c:3352
+#: ../clutter/clutter-text.c:3350
 msgid "The buffer for the text"
 msgstr "Bufor dla tekstu"
 
-#: ../clutter/clutter-text.c:3370
+#: ../clutter/clutter-text.c:3368
 msgid "The font to be used by the text"
 msgstr "Czcionka używana przez tekst"
 
-#: ../clutter/clutter-text.c:3387
+#: ../clutter/clutter-text.c:3385
 msgid "Font Description"
 msgstr "Opis czcionki"
 
-#: ../clutter/clutter-text.c:3388
+#: ../clutter/clutter-text.c:3386
 msgid "The font description to be used"
 msgstr "Używany opis czcionki"
 
-#: ../clutter/clutter-text.c:3405
+#: ../clutter/clutter-text.c:3403
 msgid "The text to render"
 msgstr "Tekst do wyświetlenia"
 
-#: ../clutter/clutter-text.c:3419
+#: ../clutter/clutter-text.c:3417
 msgid "Font Color"
 msgstr "Kolor czcionki"
 
-#: ../clutter/clutter-text.c:3420
+#: ../clutter/clutter-text.c:3418
 msgid "Color of the font used by the text"
 msgstr "Kolor czcionki używanej przez tekst"
 
-#: ../clutter/clutter-text.c:3435
+#: ../clutter/clutter-text.c:3433
 msgid "Editable"
 msgstr "Można modyfikować"
 
-#: ../clutter/clutter-text.c:3436
+#: ../clutter/clutter-text.c:3434
 msgid "Whether the text is editable"
 msgstr "Określa, czy tekst można modyfikować"
 
-#: ../clutter/clutter-text.c:3451
+#: ../clutter/clutter-text.c:3449
 msgid "Selectable"
 msgstr "Można skalować"
 
-#: ../clutter/clutter-text.c:3452
+#: ../clutter/clutter-text.c:3450
 msgid "Whether the text is selectable"
 msgstr "Określa, czy tekst można skalować"
 
-#: ../clutter/clutter-text.c:3466
+#: ../clutter/clutter-text.c:3464
 msgid "Activatable"
 msgstr "Można aktywować"
 
-#: ../clutter/clutter-text.c:3467
+#: ../clutter/clutter-text.c:3465
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr ""
 "Określa, czy wciśnięcie klawisza Return powoduje wysłanie sygnały aktywacji"
 
-#: ../clutter/clutter-text.c:3484
+#: ../clutter/clutter-text.c:3482
 msgid "Whether the input cursor is visible"
 msgstr "Określa, czy kursor wejścia jest widoczny"
 
-#: ../clutter/clutter-text.c:3498 ../clutter/clutter-text.c:3499
+#: ../clutter/clutter-text.c:3496 ../clutter/clutter-text.c:3497
 msgid "Cursor Color"
 msgstr "Kolor kursora"
 
-#: ../clutter/clutter-text.c:3514
+#: ../clutter/clutter-text.c:3512
 msgid "Cursor Color Set"
 msgstr "Ustawienie koloru kursora"
 
-#: ../clutter/clutter-text.c:3515
+#: ../clutter/clutter-text.c:3513
 msgid "Whether the cursor color has been set"
 msgstr "Określa, czy kolor kursora został ustawiony"
 
-#: ../clutter/clutter-text.c:3530
+#: ../clutter/clutter-text.c:3528
 msgid "Cursor Size"
 msgstr "Rozmiar kursora"
 
-#: ../clutter/clutter-text.c:3531
+#: ../clutter/clutter-text.c:3529
 msgid "The width of the cursor, in pixels"
 msgstr "Szerokość kursora w pikselach"
 
-#: ../clutter/clutter-text.c:3547 ../clutter/clutter-text.c:3565
+#: ../clutter/clutter-text.c:3545 ../clutter/clutter-text.c:3563
 msgid "Cursor Position"
 msgstr "Położenie kursora"
 
-#: ../clutter/clutter-text.c:3548 ../clutter/clutter-text.c:3566
+#: ../clutter/clutter-text.c:3546 ../clutter/clutter-text.c:3564
 msgid "The cursor position"
 msgstr "Położenie kursora"
 
-#: ../clutter/clutter-text.c:3581
+#: ../clutter/clutter-text.c:3579
 msgid "Selection-bound"
 msgstr "Powiązanie zaznaczenia"
 
-#: ../clutter/clutter-text.c:3582
+#: ../clutter/clutter-text.c:3580
 msgid "The cursor position of the other end of the selection"
 msgstr "Położenie kursora na drugim końcu zaznaczenia"
 
-#: ../clutter/clutter-text.c:3597 ../clutter/clutter-text.c:3598
+#: ../clutter/clutter-text.c:3595 ../clutter/clutter-text.c:3596
 msgid "Selection Color"
 msgstr "Kolor zaznaczenia"
 
-#: ../clutter/clutter-text.c:3613
+#: ../clutter/clutter-text.c:3611
 msgid "Selection Color Set"
 msgstr "Ustawienie koloru zaznaczenia"
 
-#: ../clutter/clutter-text.c:3614
+#: ../clutter/clutter-text.c:3612
 msgid "Whether the selection color has been set"
 msgstr "Określa, czy kolor zaznaczenia został ustawiony"
 
-#: ../clutter/clutter-text.c:3629
+#: ../clutter/clutter-text.c:3627
 msgid "Attributes"
 msgstr "Atrybuty"
 
-#: ../clutter/clutter-text.c:3630
+#: ../clutter/clutter-text.c:3628
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr "Lista atrybutów stylu do zastosowania do zawartości aktora"
 
-#: ../clutter/clutter-text.c:3652
+#: ../clutter/clutter-text.c:3650
 msgid "Use markup"
 msgstr "Użycie znaczników"
 
-#: ../clutter/clutter-text.c:3653
+#: ../clutter/clutter-text.c:3651
 msgid "Whether or not the text includes Pango markup"
 msgstr "Określa, czy tekst zawiera znaczniki biblioteki Pango"
 
-#: ../clutter/clutter-text.c:3669
+#: ../clutter/clutter-text.c:3667
 msgid "Line wrap"
 msgstr "Zawijanie wierszy"
 
-#: ../clutter/clutter-text.c:3670
+#: ../clutter/clutter-text.c:3668
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr "Jeśli ustawione, zawija wiersze, jeśli tekst staje się za szeroki"
 
-#: ../clutter/clutter-text.c:3685
+#: ../clutter/clutter-text.c:3683
 msgid "Line wrap mode"
 msgstr "Tryb zawijania wierszy"
 
-#: ../clutter/clutter-text.c:3686
+#: ../clutter/clutter-text.c:3684
 msgid "Control how line-wrapping is done"
 msgstr "Kontroluje, jak wykonywać zawijanie wierszy"
 
-#: ../clutter/clutter-text.c:3701
+#: ../clutter/clutter-text.c:3699
 msgid "Ellipsize"
 msgstr "Przycięcie"
 
-#: ../clutter/clutter-text.c:3702
+#: ../clutter/clutter-text.c:3700
 msgid "The preferred place to ellipsize the string"
 msgstr "Preferowane miejsce do przycięcia ciągu"
 
-#: ../clutter/clutter-text.c:3718
+#: ../clutter/clutter-text.c:3716
 msgid "Line Alignment"
 msgstr "Wyrównanie wiersza"
 
-#: ../clutter/clutter-text.c:3719
+#: ../clutter/clutter-text.c:3717
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr "Preferowane wyrównanie ciągu dla tekstu wielowierszowego"
 
-#: ../clutter/clutter-text.c:3735
+#: ../clutter/clutter-text.c:3733
 msgid "Justify"
 msgstr "Justowanie"
 
-#: ../clutter/clutter-text.c:3736
+#: ../clutter/clutter-text.c:3734
 msgid "Whether the text should be justified"
 msgstr "Określa, czy tekst powinien być justowany"
 
-#: ../clutter/clutter-text.c:3751
+#: ../clutter/clutter-text.c:3749
 msgid "Password Character"
 msgstr "Znak hasła"
 
-#: ../clutter/clutter-text.c:3752
+#: ../clutter/clutter-text.c:3750
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr ""
 "Jeśli nie wynosi zero, używa tego znaku do wyświetlania zawartości aktora"
 
-#: ../clutter/clutter-text.c:3766
+#: ../clutter/clutter-text.c:3764
 msgid "Max Length"
 msgstr "Maksymalna długość"
 
-#: ../clutter/clutter-text.c:3767
+#: ../clutter/clutter-text.c:3765
 msgid "Maximum length of the text inside the actor"
 msgstr "Maksymalna długość tekstu w aktorze"
 
-#: ../clutter/clutter-text.c:3790
+#: ../clutter/clutter-text.c:3788
 msgid "Single Line Mode"
 msgstr "Tryb pojedynczego wiersza"
 
-#: ../clutter/clutter-text.c:3791
+#: ../clutter/clutter-text.c:3789
 msgid "Whether the text should be a single line"
 msgstr "Określa, czy tekst powinien być pojedynczym wierszem"
 
-#: ../clutter/clutter-text.c:3805 ../clutter/clutter-text.c:3806
+#: ../clutter/clutter-text.c:3803 ../clutter/clutter-text.c:3804
 msgid "Selected Text Color"
 msgstr "Kolor zaznaczonego tekstu"
 
-#: ../clutter/clutter-text.c:3821
+#: ../clutter/clutter-text.c:3819
 msgid "Selected Text Color Set"
 msgstr "Ustawienie koloru zaznaczonego tekstu"
 
-#: ../clutter/clutter-text.c:3822
+#: ../clutter/clutter-text.c:3820
 msgid "Whether the selected text color has been set"
 msgstr "Określa, czy kolor zaznaczonego tekstu został ustawiony"
 
@@ -2686,7 +2686,7 @@ msgstr "Synchroniczne wywołania X"
 msgid "Disable XInput support"
 msgstr "Wyłącza obsługę XInput"
 
-#: ../clutter/x11/clutter-keymap-x11.c:317
+#: ../clutter/x11/clutter-keymap-x11.c:322
 msgid "The Clutter backend"
 msgstr "Mechanizm biblioteki Clutter"
 
