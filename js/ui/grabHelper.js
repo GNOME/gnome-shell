@@ -35,6 +35,7 @@ const GrabHelper = new Lang.Class({
         this._keyFocusNotifyId = 0;
         this._focusWindowChangedId = 0;
         this._ignoreRelease = false;
+        this._isUngrabbingCount = 0;
 
         this._modalCount = 0;
         this._grabFocusCount = 0;
@@ -275,6 +276,14 @@ const GrabHelper = new Lang.Class({
         if (grabStackIndex < 0)
             return;
 
+        // We may get key focus changes when calling onUngrab, which
+        // would cause an extra ungrab() on the next actor in the
+        // stack, which is wrong. Ignore key focus changes during the
+        // ungrab, and restore the saved key focus ourselves afterwards.
+        // We use a count as ungrab() may be re-entrant, as onUngrab()
+        // may ungrab additional actors.
+        this._isUngrabbingCount++;
+
         let focus = global.stage.key_focus;
         let hadFocus = focus && this._isWithinGrabbedActor(focus);
 
@@ -306,6 +315,8 @@ const GrabHelper = new Lang.Class({
             if (poppedGrab.savedFocus)
                 poppedGrab.savedFocus.grab_key_focus();
         }
+
+        this._isUngrabbingCount--;
     },
 
     _onCapturedEvent: function(actor, event) {
@@ -348,6 +359,9 @@ const GrabHelper = new Lang.Class({
     },
 
     _onKeyFocusChanged: function() {
+        if (this._isUngrabbingCount > 0)
+            return;
+
         let focus = global.stage.key_focus;
         if (!focus || !this._isWithinGrabbedActor(focus))
             this.ungrab({ isUser: true });
