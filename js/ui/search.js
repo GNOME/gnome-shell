@@ -64,15 +64,12 @@ const SearchSystem = new Lang.Class({
         if (!terms)
             return;
 
-        let isSubSearch = terms.length == this._previousTerms.length;
-        if (isSubSearch) {
-            for (let i = 0; i < terms.length; i++) {
-                if (terms[i].indexOf(this._previousTerms[i]) != 0) {
-                    isSubSearch = false;
-                    break;
-                }
-            }
-        }
+        let searchString = terms.join(' ');
+        let previousSearchString = this._previousTerms.join(' ');
+
+        let isSubSearch = false;
+        if (this._previousTerms.length > 0)
+            isSubSearch = searchString.indexOf(previousSearchString) == 0;
 
         let previousResultsArr = this._previousResults;
 
