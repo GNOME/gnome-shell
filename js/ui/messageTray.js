@@ -1749,6 +1749,8 @@ const MessageTray = new Lang.Class({
             let button = action.get_button();
             if (button == 3)
                 this._openContextMenu();
+            if (button == 1 && this._contextMenu.isOpen)
+                this._grabHelper.ungrab({ actor: this._contextMenu.actor });
         }));
 
         clickAction.connect('long-press', Lang.bind(this, function(action, actor, state) {
