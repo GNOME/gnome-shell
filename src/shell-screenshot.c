@@ -183,22 +183,19 @@ write_screenshot_thread (GSimpleAsyncResult *result,
   else
     {
       GdkPixbuf *pixbuf;
-      pixbuf = gdk_pixbuf_new_from_data (cairo_image_surface_get_data (screenshot_data->image),
-                                         GDK_COLORSPACE_RGB,
-                                         TRUE,
-                                         8,
-                                         cairo_image_surface_get_width (screenshot_data->image),
-                                         cairo_image_surface_get_height (screenshot_data->image),
-                                         cairo_image_surface_get_stride (screenshot_data->image),
-                                         NULL,
-                                         NULL);
+
+      pixbuf = gdk_pixbuf_get_from_surface (screenshot_data->image,
+                                            0, 0,
+                                            cairo_image_surface_get_width (screenshot_data->image),
+                                            cairo_image_surface_get_height (screenshot_data->image));
+
       if (gdk_pixbuf_save_to_stream (pixbuf, stream, "png", NULL, NULL,
                                     "tEXt::Software", "gnome-screenshot", NULL))
         status = CAIRO_STATUS_SUCCESS;
       else
         status = CAIRO_STATUS_WRITE_ERROR;
 
-      g_clear_object (&pixbuf);
+      g_object_unref (pixbuf);
     }
 
 
