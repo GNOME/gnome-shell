@@ -161,6 +161,7 @@ const ViewSelector = new Lang.Class({
     show: function() {
         this._activePage = this._workspacesPage;
 
+        this.reset();
         this._appsPage.hide();
         this._searchPage.hide();
         this._workspacesDisplay.show();
@@ -244,11 +245,8 @@ const ViewSelector = new Lang.Class({
     },
 
     _onShowAppsButtonToggled: function() {
-        if (this._searchActive)
-            this.reset();
-        else
-            this._showPage(this._showAppsButton.checked ? this._appsPage
-                                                        : this._workspacesPage);
+        this._showPage(this._showAppsButton.checked ? this._appsPage
+                                                    : this._workspacesPage);
     },
 
     _resetShowAppsButton: function() {
