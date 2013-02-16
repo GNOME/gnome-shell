@@ -115,6 +115,43 @@ const SlidingControl = new Lang.Class({
                                         transition: 'easeOutQuad' });
     },
 
+    getVisibleWidth: function() {
+        let child = this.actor.get_first_child();
+        let [, , natWidth, ] = child.get_preferred_size();
+        return natWidth;
+    },
+
+    _getTranslation: function() {
+        let child = this.actor.get_first_child();
+        let direction = getRtlSlideDirection(this.layout.slideDirection, child);
+
+        let slide = this.getSlide();
+        let visibleWidth = this.getVisibleWidth();
+
+        if (direction == SlideDirection.LEFT)
+            return ((slide - 1) * visibleWidth);
+        else
+            return ((1 - slide) * visibleWidth);
+    },
+
+    _updateTranslation: function(slidingIn) {
+        let translationStart = 0;
+        let translationEnd = 0;
+        let translation = this._getTranslation();
+
+        if (slidingIn) {
+            translationStart = translation;
+        } else {
+            translationEnd = translation;
+        }
+
+        this.actor.translation_x = translationStart;
+        Tweener.addTween(this.actor, { translation_x: translationEnd,
+                                       time: SIDE_CONTROLS_ANIMATION_TIME,
+                                       transition: 'easeOutQuad'
+                                     });
+    },
+
     _onOverviewShowing: function() {
         // reset any translation and make sure the actor is visible when
         // entering the overview
@@ -133,13 +170,23 @@ const SlidingControl = new Lang.Class({
     },
 
     slideIn: function() {
+        this._updateTranslation(true);
         this.visible = true;
-        this.updateSlide();
+        // we will update slideX from pageEmpty
     },
 
     slideOut: function() {
         this.visible = false;
-        this.updateSlide();
+        this._updateTranslation(false);
+        // we will update slideX from pageEmpty
+    },
+
+    pageEmpty: function() {
+        // When pageEmpty is received, there's no visible view in the
+        // selector; this means we can now safely set the full slide for
+        // the next page, since slideIn or slideOut might have been called,
+        // changing the visiblity
+        this.layout.slideX = this.getSlide();
     }
 });
 
@@ -168,10 +215,7 @@ const ThumbnailsSlider = new Lang.Class({
         this.actor.connect('notify::hover', Lang.bind(this, this.updateSlide));
     },
 
-    getSlide: function() {
-        if (!this.visible)
-            return 0;
-
+    _getAlwaysZoomOut: function() {
         // Always show the pager when hover, during a drag, or if workspaces are
         // actually used, e.g. there are windows on more than one
         let alwaysZoomOut = this.actor.hover || this.inDrag || global.screen.n_workspaces > 2;
@@ -191,6 +235,14 @@ const ThumbnailsSlider = new Lang.Class({
             }
         }
 
+        return alwaysZoomOut;
+    },
+
+    getSlide: function() {
+        if (!this.visible)
+            return 0;
+
+        let alwaysZoomOut = this._getAlwaysZoomOut();
         if (alwaysZoomOut)
             return 1;
 
@@ -200,6 +252,15 @@ const ThumbnailsSlider = new Lang.Class({
         let visibleWidth = child.get_theme_node().get_length('visible-width');
 
         return visibleWidth / expandedWidth;
+    },
+
+    getVisibleWidth: function() {
+        let alwaysZoomOut = this._getAlwaysZoomOut();
+        if (alwaysZoomOut)
+            return this.parent();
+
+        let child = this.actor.get_first_child();
+        return child.get_theme_node().get_length('visible-width');
     }
 });
 
@@ -244,6 +305,7 @@ const ControlsManager = new Lang.Class({
 
         this._viewSelector = viewSelector;
         this._viewSelector.connect('page-changed', Lang.bind(this, this._setVisibility));
+        this._viewSelector.connect('page-empty', Lang.bind(this, this._onPageEmpty));
     },
 
     _setVisibility: function() {
@@ -268,5 +330,10 @@ const ControlsManager = new Lang.Class({
             this._thumbnailsSlider.slideIn();
         else
             this._thumbnailsSlider.slideOut();
+    },
+
+    _onPageEmpty: function() {
+        this._dashSlider.pageEmpty();
+        this._thumbnailsSlider.pageEmpty();
     }
 });
