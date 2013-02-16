@@ -1680,7 +1680,7 @@ const MessageTray = new Lang.Class({
         this._desktopClone = null;
         this._inCtrlAltTab = false;
 
-        this._lightbox = new Lightbox.Lightbox(global.window_group,
+        this._lightbox = new Lightbox.Lightbox(global.overlay_group,
                                                { inhibitEvents: true,
                                                  fadeInTime: ANIMATION_TIME,
                                                  fadeOutTime: ANIMATION_TIME,
@@ -1699,13 +1699,11 @@ const MessageTray = new Lang.Class({
             function() {
                 this._overviewVisible = true;
                 this._grabHelper.ungrab(); // drop modal grab if necessary
-                this.actor.add_style_pseudo_class('overview');
                 this._updateState();
             }));
         Main.overview.connect('hiding', Lang.bind(this,
             function() {
                 this._overviewVisible = false;
-                this._escapeTray();
                 this._updateState();
             }));
 
@@ -2271,16 +2269,15 @@ const MessageTray = new Lang.Class({
         }
 
         // Summary
-        let summarySummoned = this._pointerInSummary || this._overviewVisible ||  this._traySummoned;
+        let summarySummoned = this._pointerInSummary || this._traySummoned;
         let summaryPinned = this._pointerInTray || summarySummoned || this._locked;
         let summaryHovered = this._pointerInTray || this._pointerInSummary;
 
         let notificationsVisible = this._notificationState != State.HIDDEN;
         let notificationsDone = !notificationsVisible && !notificationsPending;
 
-        let summaryOptionalInOverview = this._overviewVisible && !this._locked && !summaryHovered;
-        let mustHideSummary = (notificationsPending && (notificationUrgent || summaryOptionalInOverview))
-                              || notificationsVisible || !Main.sessionMode.hasNotifications;
+        let mustHideSummary = ((notificationsPending && notificationUrgent)
+                              || notificationsVisible || !Main.sessionMode.hasNotifications);
 
         if (this._summaryState == State.HIDDEN && !mustHideSummary && summarySummoned)
             this._showSummary();
@@ -2327,8 +2324,7 @@ const MessageTray = new Lang.Class({
         // Desktop clone
         let desktopCloneIsVisible = (this._desktopCloneState == State.SHOWING ||
                                      this._desktopCloneState == State.SHOWN);
-        let desktopCloneShouldBeVisible = (trayShouldBeVisible &&
-                                           !this._overviewVisible);
+        let desktopCloneShouldBeVisible = (trayShouldBeVisible);
 
         if (!desktopCloneIsVisible && desktopCloneShouldBeVisible) {
             this._showDesktopClone();
@@ -2362,13 +2358,8 @@ const MessageTray = new Lang.Class({
     },
 
     _showTray: function() {
-        // Don't actually take a modal grab in the overview.
-        // Just add something to the grab stack that we can
-        // pop later.
-        let modal = !this._overviewVisible;
-
         if (!this._grabHelper.grab({ actor: this.actor,
-                                     modal: modal,
+                                     modal: true,
                                      onUngrab: Lang.bind(this, this._escapeTray) })) {
             this._traySummoned = false;
             return false;
@@ -2380,8 +2371,7 @@ const MessageTray = new Lang.Class({
                       transition: 'easeOutQuad'
                     });
 
-        if (!this._overviewVisible)
-            this._lightbox.show();
+        this._lightbox.show();
 
         return true;
     },
@@ -2404,8 +2394,10 @@ const MessageTray = new Lang.Class({
 
         if (this._desktopClone)
             this._desktopClone.destroy();
-        this._desktopClone = new Clutter.Clone({ source: global.window_group, clip: new Clutter.Geometry(this._bottomMonitorGeometry) });
-        Main.uiGroup.insert_child_above(this._desktopClone, global.window_group);
+        let cloneSource = this._overviewVisible ? global.overlay_group : global.window_group;
+        this._desktopClone = new Clutter.Clone({ source: cloneSource,
+                                                 clip: new Clutter.Geometry(this._bottomMonitorGeometry) });
+        Main.uiGroup.insert_child_above(this._desktopClone, cloneSource);
         this._desktopClone.x = 0;
         this._desktopClone.y = 0;
         this._desktopClone.show();
@@ -2426,9 +2418,7 @@ const MessageTray = new Lang.Class({
         this._tween(this.actor, '_trayState', State.HIDDEN,
                     { y: 0,
                       time: ANIMATION_TIME,
-                      transition: 'easeOutQuad',
-                      onComplete: this._onTrayHidden,
-                      onCompleteScope: this
+                      transition: 'easeOutQuad'
                     });
 
         // Note that we might have entered here without a grab,
@@ -2436,11 +2426,6 @@ const MessageTray = new Lang.Class({
         // This is a no-op in that case.
         this._grabHelper.ungrab({ actor: this.actor });
         this._lightbox.hide();
-    },
-
-    _onTrayHidden: function() {
-        if (!this._overviewVisible)
-            this.actor.remove_style_pseudo_class('overview');
     },
 
     _hideDesktopClone: function() {

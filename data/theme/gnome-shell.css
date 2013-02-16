@@ -1310,11 +1310,6 @@ StScrollBar StButton#vhandle:active {
     height: 72px;
 }
 
-#message-tray:overview {
-    background: rgba(0, 0, 0, 0.1);
-    outline: 1px solid rgba(128, 128, 128, 0.3);
-}
-
 .message-tray-summary {
     height: 72px;
 }
