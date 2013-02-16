@@ -529,10 +529,15 @@ const WindowOverlay = new Lang.Class({
     },
 
     relayout: function(animate) {
-        let [cloneX, cloneY, cloneWidth, cloneHeight] = this._windowClone.slot;
-
         let button = this.closeButton;
         let title = this.title;
+        let border = this.border;
+
+        Tweener.removeTweens(button);
+        Tweener.removeTweens(title);
+        Tweener.removeTweens(border);
+
+        let [cloneX, cloneY, cloneWidth, cloneHeight] = this._windowClone.slot;
 
         let layout = Meta.prefs_get_button_layout();
         let side = layout.left_buttons.indexOf(Meta.ButtonFunction.CLOSE) > -1 ? St.Side.LEFT : St.Side.RIGHT;
