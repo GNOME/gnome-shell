@@ -66,6 +66,8 @@ const SearchSystem = new Lang.Class({
 
         let searchString = terms.join(' ');
         let previousSearchString = this._previousTerms.join(' ');
+        if (searchString == previousSearchString)
+            return;
 
         let isSubSearch = false;
         if (this._previousTerms.length > 0)
