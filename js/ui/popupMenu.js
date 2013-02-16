@@ -867,7 +867,6 @@ const PopupMenuBase = new Lang.Class({
         this.blockSourceEvents = false;
 
         this._activeMenuItem = null;
-        this._childMenus = [];
         this._settingsActions = { };
 
         this._sessionUpdatedId = Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
@@ -921,26 +920,8 @@ const PopupMenuBase = new Lang.Class({
         return !hasVisibleChildren;
     },
 
-    isChildMenu: function(menu) {
-        return this._childMenus.indexOf(menu) != -1;
-    },
-
-    addChildMenu: function(menu) {
-        if (this.isChildMenu(menu))
-            return;
-
-        this._childMenus.push(menu);
-        this.emit('child-menu-added', menu);
-    },
-
-    removeChildMenu: function(menu) {
-        let index = this._childMenus.indexOf(menu);
-
-        if (index == -1)
-            return;
-
-        this._childMenus.splice(index, 1);
-        this.emit('child-menu-removed', menu);
+    isChildMenu: function() {
+        return false;
     },
 
     /**
@@ -1215,6 +1196,8 @@ const PopupMenu = new Lang.Class({
 
         global.focus_manager.add_group(this.actor);
         this.actor.reactive = true;
+
+        this._childMenus = [];
     },
 
     _boxGetPreferredWidth: function (actor, forHeight, alloc) {
@@ -1239,6 +1222,28 @@ const PopupMenu = new Lang.Class({
 
     setSourceAlignment: function(alignment) {
         this._boxPointer.setSourceAlignment(alignment);
+    },
+
+    isChildMenu: function(menu) {
+        return this._childMenus.indexOf(menu) != -1;
+    },
+
+    addChildMenu: function(menu) {
+        if (this.isChildMenu(menu))
+            return;
+
+        this._childMenus.push(menu);
+        this.emit('child-menu-added', menu);
+    },
+
+    removeChildMenu: function(menu) {
+        let index = this._childMenus.indexOf(menu);
+
+        if (index == -1)
+            return;
+
+        this._childMenus.splice(index, 1);
+        this.emit('child-menu-removed', menu);
     },
 
     open: function(animate) {
