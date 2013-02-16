@@ -157,6 +157,7 @@ const SlidingControl = new Lang.Class({
         // entering the overview
         this.visible = true;
         this.layout.slideX = this.getSlide();
+        this.actor.translation_x = 0;
     },
 
     _onDragBegin: function() {
