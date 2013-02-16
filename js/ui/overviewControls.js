@@ -10,6 +10,15 @@ const ViewSelector = imports.ui.viewSelector;
 
 const SIDE_CONTROLS_ANIMATION_TIME = 0.2;
 
+function getRtlSlideDirection(direction, actor) {
+    let rtl = (actor.text_direction == Clutter.TextDirection.RTL);
+    if (rtl)
+        direction = (direction == SlideDirection.LEFT) ?
+            SlideDirection.RIGHT : SlideDirection.LEFT;
+
+    return direction;
+};
+
 const SlideDirection = {
     LEFT: 0,
     RIGHT: 1
@@ -24,17 +33,6 @@ const SlideLayout = new Lang.Class({
         this._direction = SlideDirection.LEFT;
 
         this.parent(params);
-    },
-
-    _getRealSlideDirection: function(child) {
-        let direction = this._direction;
-
-        let rtl = (child.text_direction == Clutter.TextDirection.RTL);
-        if (rtl)
-            direction = (direction == SlideDirection.LEFT) ?
-                SlideDirection.RIGHT : SlideDirection.LEFT;
-
-        return direction;
     },
 
     vfunc_get_preferred_width: function(container, forHeight) {
@@ -55,7 +53,7 @@ const SlideLayout = new Lang.Class({
         let availWidth = Math.round(box.x2 - box.x1);
         let availHeight = Math.round(box.y2 - box.y1);
 
-        let realDirection = this._getRealSlideDirection(child);
+        let realDirection = getRtlSlideDirection(this._direction, child);
         let translationX = (realDirection == SlideDirection.LEFT) ?
             (availWidth - natWidth) : (natWidth - availWidth);
 
