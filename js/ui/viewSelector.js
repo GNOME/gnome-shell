@@ -205,6 +205,8 @@ const ViewSelector = new Lang.Class({
     },
 
     _fadePageIn: function() {
+        this.emit('page-empty');
+
         this._activePage.show();
         Tweener.addTween(this._activePage,
             { opacity: 255,
