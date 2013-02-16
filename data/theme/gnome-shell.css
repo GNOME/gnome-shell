@@ -718,6 +718,7 @@ StScrollBar StButton#vhandle:active {
     -vertical-spacing: 32px;
     padding-left: 32px;
     padding-right: 32px;
+    padding-bottom: 32px;
 }
 
 .window-picker.external-monitor {
@@ -849,13 +850,13 @@ StScrollBar StButton#vhandle:active {
 }
 
 .all-app {
-    padding: 16px 16px 16px 48px;
+    padding: 0px 16px 32px 32px;
     spacing: 20px;
 }
 
 .all-app:rtl {
     padding-left: 16px;
-    padding-right: 48px;
+    padding-right: 32px;
 }
 
 .app-filter {

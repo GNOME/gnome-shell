@@ -230,7 +230,8 @@ const Overview = new Lang.Class({
         this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
         this._controls = new OverviewControls.ControlsManager(this._dash,
                                                               this._thumbnailsBox,
-                                                              this._viewSelector);
+                                                              this._viewSelector,
+                                                              this._searchEntryBin);
 
         // Pack all the actors into the group
         this._group.add_actor(this._controls.dashActor);
@@ -241,14 +242,6 @@ const Overview = new Lang.Class({
         // Add our same-line elements after the search entry
         this._overview.add(this._group, { y_fill: true,
                                           expand: true });
-
-        // Then account for message tray
-        this._messageTrayGhost = new St.Bin({ style_class: 'message-tray-summary',
-                                              reactive: false,
-                                              opacity: 0,
-                                              x_fill: true,
-                                              y_fill: true });
-        this._overview.add_actor(this._messageTrayGhost);
 
         // TODO - recalculate everything when desktop size changes
         this.dashIconSize = this._dash.iconSize;
