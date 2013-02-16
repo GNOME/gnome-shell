@@ -1195,10 +1195,16 @@ const PressureBarrier = new Lang.Class({
     },
 
     _onBarrierHit: function(barrier, event) {
-        // Throw out all events where the pointer was grabbed,
-        // as the client that grabbed the pointer expects to have
-        // complete control over it.
-        if (event.grabbed)
+        // Throw out all events where the pointer was grabbed by another
+        // client, as the client that grabbed the pointer expects to have
+        // complete control over it
+        if (event.grabbed && Main.modalCount == 0)
+            return;
+
+        let isOverview = ((Main.keybindingMode & (Shell.KeyBindingMode.OVERVIEW)) != 0);
+
+        // Throw out events where the grab is taken by the overview visible
+        if (event.grabbed && !isOverview)
             return;
 
         let slide = this._getDistanceAlongBarrier(event);
