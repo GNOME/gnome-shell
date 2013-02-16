@@ -268,7 +268,7 @@ const ViewSelector = new Lang.Class({
             if (this._searchActive)
                 this.reset();
             else if (this._showAppsButton.checked)
-                this._resetShowAppsButton();
+                this._showAppsButton.checked = false;
             else
                 Main.overview.hide();
             return true;
