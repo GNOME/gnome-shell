@@ -232,7 +232,7 @@ const GrabHelper = new Lang.Class({
             this._keyFocusNotifyId = 0;
         }
 
-        if (!this._focusWindowChanged > 0) {
+        if (this._focusWindowChangedId > 0) {
             let metaDisplay = global.screen.get_display();
             metaDisplay.disconnect(this._focusWindowChangedId);
             this._focusWindowChangedId = 0;
