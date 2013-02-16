@@ -169,7 +169,7 @@ const ViewSelector = new Lang.Class({
         if (!this._workspacesDisplay.activeWorkspaceHasMaximizedWindows())
             Main.overview.fadeOutDesktop();
 
-        this._showPage(this._workspacesPage);
+        this._showPage(this._workspacesPage, true);
     },
 
     zoomFromOverview: function() {
@@ -205,7 +205,10 @@ const ViewSelector = new Lang.Class({
         return page;
     },
 
-    _fadePageIn: function() {
+    _fadePageIn: function(oldPage) {
+        if (oldPage)
+            oldPage.hide();
+
         this.emit('page-empty');
 
         this._activePage.show();
@@ -216,7 +219,7 @@ const ViewSelector = new Lang.Class({
             });
     },
 
-    _showPage: function(page) {
+    _showPage: function(page, noFade) {
         if (page == this._activePage)
             return;
 
@@ -224,19 +227,18 @@ const ViewSelector = new Lang.Class({
         this._activePage = page;
         this.emit('page-changed');
 
-        if (oldPage)
+        if (oldPage && !noFade)
             Tweener.addTween(oldPage,
                              { opacity: 0,
                                time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
                                transition: 'easeOutQuad',
                                onComplete: Lang.bind(this,
                                    function() {
-                                       oldPage.hide();
-                                       this._fadePageIn();
+                                       this._fadePageIn(oldPage);
                                    })
                              });
         else
-            this._fadePageIn();
+            this._fadePageIn(oldPage);
     },
 
     _a11yFocusPage: function(page) {
