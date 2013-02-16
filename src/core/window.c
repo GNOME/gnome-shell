@@ -4775,6 +4775,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
   gboolean is_configure_request;
   gboolean do_gravity_adjust;
   gboolean is_user_action;
+  gboolean did_placement;
   gboolean configure_frame_first;
   gboolean use_static_gravity;
   /* used for the configure request, but may not be final
@@ -4847,6 +4848,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
                   "weird positioning; new pos %d,%d\n",
                   new_rect.x, new_rect.y);
     }
+
+  did_placement = !window->placed && window->calc_placement;
 
   meta_window_constrain (window,
                          window->frame ? &borders : NULL,
@@ -5161,7 +5164,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
     save_user_window_placement (window);
 
   if (need_move_frame || need_resize_frame ||
-      need_move_client || need_resize_client)
+      need_move_client || need_resize_client ||
+      did_placement)
     {
       int newx, newy;
       meta_window_get_position (window, &newx, &newy);
@@ -5172,7 +5176,8 @@ meta_window_move_resize_internal (MetaWindow          *window,
                   window->user_rect.width, window->user_rect.height);
       if (window->display->compositor)
         meta_compositor_sync_window_geometry (window->display->compositor,
-                                              window);
+                                              window,
+                                              did_placement);
     }
   else
     {
@@ -5506,7 +5511,7 @@ meta_window_configure_notify (MetaWindow      *window,
     meta_warning ("Unhandled change of windows override redirect status\n");
 
   if (window->display->compositor)
-    meta_compositor_sync_window_geometry (window->display->compositor, window);
+    meta_compositor_sync_window_geometry (window->display->compositor, window, FALSE);
 }
 
 void

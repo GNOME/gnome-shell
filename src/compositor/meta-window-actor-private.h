@@ -43,7 +43,8 @@ void meta_window_actor_get_shape_bounds (MetaWindowActor       *self,
                                           cairo_rectangle_int_t *bounds);
 
 gboolean meta_window_actor_effect_in_progress  (MetaWindowActor *self);
-void     meta_window_actor_sync_actor_position (MetaWindowActor *self);
+void     meta_window_actor_sync_actor_geometry (MetaWindowActor *self,
+                                                gboolean         did_placement);
 void     meta_window_actor_sync_visibility     (MetaWindowActor *self);
 void     meta_window_actor_update_shape        (MetaWindowActor *self);
 void     meta_window_actor_update_opacity      (MetaWindowActor *self);

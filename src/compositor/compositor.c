@@ -1198,7 +1198,8 @@ meta_compositor_window_unmapped (MetaCompositor *compositor,
 
 void
 meta_compositor_sync_window_geometry (MetaCompositor *compositor,
-				      MetaWindow *window)
+				      MetaWindow *window,
+                                      gboolean did_placement)
 {
   MetaWindowActor *window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
   MetaScreen      *screen = meta_window_get_screen (window);
@@ -1210,7 +1211,7 @@ meta_compositor_sync_window_geometry (MetaCompositor *compositor,
   if (!window_actor)
     return;
 
-  meta_window_actor_sync_actor_position (window_actor);
+  meta_window_actor_sync_actor_geometry (window_actor, did_placement);
 }
 
 void

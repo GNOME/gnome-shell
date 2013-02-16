@@ -951,8 +951,8 @@ meta_window_actor_thaw (MetaWindowActor *self)
   if (self->priv->freeze_count)
     return;
 
-  /* We ignore moves and resizes on frozen windows */
-  meta_window_actor_sync_actor_position (self);
+  /* We sometimes ignore moves and resizes on frozen windows */
+  meta_window_actor_sync_actor_geometry (self, FALSE);
 
   /* We do this now since we might be going right back into the
    * frozen state */
@@ -1121,7 +1121,7 @@ meta_window_actor_after_effects (MetaWindowActor *self)
     }
 
   meta_window_actor_sync_visibility (self);
-  meta_window_actor_sync_actor_position (self);
+  meta_window_actor_sync_actor_geometry (self, FALSE);
 
   if (!meta_window_is_mapped (priv->window))
     meta_window_actor_detach (self);
@@ -1370,10 +1370,21 @@ meta_window_actor_destroy (MetaWindowActor *self)
 }
 
 void
-meta_window_actor_sync_actor_position (MetaWindowActor *self)
+meta_window_actor_sync_actor_geometry (MetaWindowActor *self,
+                                       gboolean         did_placement)
 {
   MetaWindowActorPrivate *priv = self->priv;
   MetaRectangle window_rect;
+
+  /* Normally we want freezing a window to also freeze its position; this allows
+   * windows to atomically move and resize together, either under app control,
+   * or because the user is resizing from the left/top. But on initial placement
+   * we need to assign a position, since immediately after the window
+   * is shown, the map effect will go into effect and prevent further geometry
+   * updates.
+   */
+  if (is_frozen (self) && !did_placement)
+    return;
 
   meta_window_get_input_rect (priv->window, &window_rect);
 
@@ -1578,7 +1589,7 @@ meta_window_actor_new (MetaWindow *window)
   meta_window_actor_set_updates_frozen (self,
                                         meta_window_updates_are_frozen (priv->window));
 
-  meta_window_actor_sync_actor_position (self);
+  meta_window_actor_sync_actor_geometry (self, priv->window->placed);
 
   /* Hang our compositor window state off the MetaWindow for fast retrieval */
   meta_window_set_compositor_private (window, G_OBJECT (self));
