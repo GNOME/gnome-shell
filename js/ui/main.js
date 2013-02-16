@@ -458,10 +458,6 @@ function _findModal(actor) {
     return -1;
 }
 
-function isInModalStack(actor) {
-    return _findModal(actor) != -1;
-}
-
 /**
  * pushModal:
  * @actor: #ClutterActor which will be given keyboard focus
