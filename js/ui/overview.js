@@ -152,7 +152,7 @@ const Overview = new Lang.Class({
         this._shownTemporarily = false; // showTemporarily() and not hideTemporarily()
         this._modal = false;            // have a modal grab
         this.animationInProgress = false;
-        this._hideInProgress = false;
+        this.visibleTarget = false;
 
         // During transitions, we raise this to the top to avoid having the overview
         // area be reactive; it causes too many issues such as double clicks on
@@ -469,6 +469,7 @@ const Overview = new Lang.Class({
 
         this.visible = true;
         this.animationInProgress = true;
+        this.visibleTarget = true;
 
         // All the the actors in the window group are completely obscured,
         // hiding the group holding them while the Overview is displayed greatly
@@ -606,7 +607,7 @@ const Overview = new Lang.Class({
             return;
 
         this.animationInProgress = true;
-        this._hideInProgress = true;
+        this.visibleTarget = false;
 
         this._viewSelector.zoomFromOverview();
 
@@ -658,7 +659,6 @@ const Overview = new Lang.Class({
 
         this.visible = false;
         this.animationInProgress = false;
-        this._hideInProgress = false;
 
         this._coverPane.hide();
 

@@ -314,7 +314,8 @@ const ControlsManager = new Lang.Class({
         // actors will be made visible again when entering the overview
         // next time, and animating them while doing so is just
         // unnecessary noise
-        if (!Main.overview.visible)
+        if (!Main.overview.visible ||
+            (Main.overview.animationInProgress && !Main.overview.visibleTarget))
             return;
 
         let activePage = this._viewSelector.getActivePage();
