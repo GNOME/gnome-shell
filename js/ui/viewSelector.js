@@ -57,6 +57,7 @@ const ViewSelector = new Lang.Class({
     _init : function(searchEntry, showAppsButton) {
         this.actor = new Shell.Stack({ name: 'viewSelector' });
 
+        this._showAppsBlocked = false;
         this._showAppsButton = showAppsButton;
         this._showAppsButton.connect('notify::checked', Lang.bind(this, this._onShowAppsButtonToggled));
 
@@ -247,12 +248,19 @@ const ViewSelector = new Lang.Class({
     },
 
     _onShowAppsButtonToggled: function() {
-        this._showPage(this._showAppsButton.checked ? this._appsPage
-                                                    : this._workspacesPage);
+        if (this._showAppsBlocked)
+            return;
+
+        this._showPage(this._showAppsButton.checked ?
+                       this._appsPage : this._workspacesPage);
     },
 
     _resetShowAppsButton: function() {
+        this._showAppsBlocked = true;
         this._showAppsButton.checked = false;
+        this._showAppsBlocked = false;
+
+        this._showPage(this._workspacesPage, true);
     },
 
     _onStageKeyPress: function(actor, event) {
