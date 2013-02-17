@@ -1671,7 +1671,6 @@ const MessageTray = new Lang.Class({
         this._summaryBoxPointerState = State.HIDDEN;
         this._summaryBoxPointerTimeoutId = 0;
         this._desktopCloneState = State.HIDDEN;
-        this._overviewVisible = Main.overview.visible;
         this._notificationRemoved = false;
         this._reNotifyAfterHideNotification = null;
         this._inFullscreen = false;
@@ -1693,17 +1692,10 @@ const MessageTray = new Lang.Class({
 
         Main.layoutManager.connect('primary-fullscreen-changed', Lang.bind(this, this._onFullscreenChanged));
 
-        Main.overview.connect('showing', Lang.bind(this,
-            function() {
-                this._overviewVisible = true;
-                this._grabHelper.ungrab(); // drop modal grab if necessary
-                this._updateState();
-            }));
-        Main.overview.connect('hiding', Lang.bind(this,
-            function() {
-                this._overviewVisible = false;
-                this._updateState();
-            }));
+        // If the overview shows or hides while we're in
+        // the message tray, revert back to normal mode.
+        Main.overview.connect('showing', Lang.bind(this, this._escapeTray));
+        Main.overview.connect('hiding', Lang.bind(this, this._escapeTray));
 
         // Track if we've added the activities button
         this._activitiesButtonAdded = false;
@@ -2402,7 +2394,7 @@ const MessageTray = new Lang.Class({
 
         if (this._desktopClone)
             this._desktopClone.destroy();
-        let cloneSource = this._overviewVisible ? global.overlay_group : global.window_group;
+        let cloneSource = Main.overview.visible ? global.overlay_group : global.window_group;
         this._desktopClone = new Clutter.Clone({ source: cloneSource,
                                                  clip: new Clutter.Geometry(this._bottomMonitorGeometry) });
         Main.uiGroup.insert_child_above(this._desktopClone, cloneSource);
