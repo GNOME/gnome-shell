@@ -1850,7 +1850,10 @@ const MessageTray = new Lang.Class({
     _trayDwellTimeout: function() {
         this._trayDwellTimeoutId = 0;
 
-        if (Main.modalCount > 0)
+        // We don't want to open the tray when a modal dialog
+        // is up, so we check the modal count for that. When we are in the
+        // overview we have to take the overview's modal push into account
+        if (Main.modalCount > (Main.overview.visible ? 1 : 0))
             return false;
 
         // If the user interacted with the focus window since we started the tray
