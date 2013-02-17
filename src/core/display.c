@@ -4895,25 +4895,13 @@ meta_display_get_tab_list (MetaDisplay   *display,
 
   mru_list = workspace ? workspace->mru_list : global_mru_list;
 
-  /* Windows sellout mode - MRU order. Collect unminimized windows
-   * then minimized so minimized windows aren't in the way so much.
+  /* Windows sellout mode - MRU order.
    */
   for (tmp = mru_list; tmp; tmp = tmp->next)
     {
       MetaWindow *window = tmp->data;
 
-      if (!window->minimized &&
-          window->screen == screen &&
-          IN_TAB_CHAIN (window, type))
-        tab_list = g_list_prepend (tab_list, window);
-    }
-
-  for (tmp = mru_list; tmp; tmp = tmp->next)
-    {
-      MetaWindow *window = tmp->data;
-
-      if (window->minimized &&
-          window->screen == screen &&
+      if (window->screen == screen &&
           IN_TAB_CHAIN (window, type))
         tab_list = g_list_prepend (tab_list, window);
     }
