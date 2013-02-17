@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-02-06 00:15+0000\n"
-"PO-Revision-Date: 2013-02-06 17:57+0200\n"
+"POT-Creation-Date: 2013-02-12 15:16+0000\n"
+"PO-Revision-Date: 2013-02-17 13:51+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -379,9 +379,10 @@ msgid "Not listed?"
 msgstr "Non está na lista?"
 
 #: ../js/gdm/loginDialog.js:967 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
+#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:374
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:178
+#: ../js/ui/userMenu.js:931
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -411,8 +412,8 @@ msgstr "Xanela de inicio de sesión"
 msgid "Power"
 msgstr "Apagar"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:679 ../js/ui/userMenu.js:683
-#: ../js/ui/userMenu.js:799
+#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:693 ../js/ui/userMenu.js:697
+#: ../js/ui/userMenu.js:813
 msgid "Suspend"
 msgstr "Suspender"
 
@@ -420,8 +421,8 @@ msgstr "Suspender"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:681
-#: ../js/ui/userMenu.js:683 ../js/ui/userMenu.js:798
+#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:695
+#: ../js/ui/userMenu.js:697 ../js/ui/userMenu.js:812 ../js/ui/userMenu.js:935
 msgid "Power Off"
 msgstr "Apagar"
 
@@ -490,60 +491,63 @@ msgctxt "event list time"
 msgid "All Day"
 msgstr "Todo o día"
 
-#. Translators: Shown in calendar event list, if 24h format
-#: ../js/ui/calendar.js:66
+#. Translators: Shown in calendar event list, if 24h format,
+#. \u2236 is a ratio character, similar to :
+#: ../js/ui/calendar.js:67
 msgctxt "event list time"
-msgid "%H:%M"
-msgstr "%H:%M"
+msgid "%H\\u2236%M"
+msgstr "%H\\u2236%M"
 
-#. Transators: Shown in calendar event list, if 12h format
-#: ../js/ui/calendar.js:73
+#. Transators: Shown in calendar event list, if 12h format,
+#. \u2236 is a ratio character, similar to : and \u2009 is
+#. a thin space
+#: ../js/ui/calendar.js:76
 msgctxt "event list time"
-msgid "%l:%M %p"
-msgstr "%l:%M %p"
+msgid "%l\\u2236%M\\u2009%p"
+msgstr "%l\\u2236%M\\u2009%p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:104
+#: ../js/ui/calendar.js:107
 msgctxt "grid sunday"
 msgid "S"
 msgstr "D"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:106
+#: ../js/ui/calendar.js:109
 msgctxt "grid monday"
 msgid "M"
 msgstr "L"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:108
+#: ../js/ui/calendar.js:111
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "M"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:110
+#: ../js/ui/calendar.js:113
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "W"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:112
+#: ../js/ui/calendar.js:115
 msgctxt "grid thursday"
 msgid "T"
 msgstr "X"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:114
+#: ../js/ui/calendar.js:117
 msgctxt "grid friday"
 msgid "F"
 msgstr "V"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:116
+#: ../js/ui/calendar.js:119
 msgctxt "grid saturday"
 msgid "S"
 msgstr "S"
@@ -554,77 +558,77 @@ msgstr "S"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:129
+#: ../js/ui/calendar.js:132
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Do"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:131
+#: ../js/ui/calendar.js:134
 msgctxt "list monday"
 msgid "M"
 msgstr "L"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:133
+#: ../js/ui/calendar.js:136
 msgctxt "list tuesday"
 msgid "T"
 msgstr "M"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:135
+#: ../js/ui/calendar.js:138
 msgctxt "list wednesday"
 msgid "W"
 msgstr "W"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:137
+#: ../js/ui/calendar.js:140
 msgctxt "list thursday"
 msgid "Th"
 msgstr "X"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:139
+#: ../js/ui/calendar.js:142
 msgctxt "list friday"
 msgid "F"
 msgstr "V"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:141
+#: ../js/ui/calendar.js:144
 msgctxt "list saturday"
 msgid "S"
 msgstr "S"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:674
+#: ../js/ui/calendar.js:677
 msgid "Nothing Scheduled"
 msgstr "Nada programado"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:690
+#: ../js/ui/calendar.js:693
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d de %B"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:693
+#: ../js/ui/calendar.js:696
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d de %B de %Y"
 
-#: ../js/ui/calendar.js:703
+#: ../js/ui/calendar.js:706
 msgid "Today"
 msgstr "Hoxe"
 
-#: ../js/ui/calendar.js:707
+#: ../js/ui/calendar.js:710
 msgid "Tomorrow"
 msgstr "Mañá"
 
-#: ../js/ui/calendar.js:718
+#: ../js/ui/calendar.js:721
 msgid "This week"
 msgstr "Esta semana"
 
-#: ../js/ui/calendar.js:726
+#: ../js/ui/calendar.js:729
 msgid "Next week"
 msgstr "A vindeira semana"
 
@@ -636,16 +640,16 @@ msgstr "Unidade externa conectada"
 msgid "External drive disconnected"
 msgstr "Unidade externa desconectada"
 
-#: ../js/ui/components/autorunManager.js:292
+#: ../js/ui/components/autorunManager.js:294
 msgid "Removable Devices"
 msgstr "Dispositivos extraíbeis"
 
-#: ../js/ui/components/autorunManager.js:591
+#: ../js/ui/components/autorunManager.js:593
 #, c-format
 msgid "Open with %s"
 msgstr "Abrir con %s"
 
-#: ../js/ui/components/autorunManager.js:617
+#: ../js/ui/components/autorunManager.js:619
 msgid "Eject"
 msgstr "Expulsar"
 
@@ -1018,7 +1022,6 @@ msgid "Open Clocks"
 msgstr "Abrir Reloxos"
 
 #: ../js/ui/dateMenu.js:105
-#| msgid "Date and Time Settings"
 msgid "Date & Time Settings"
 msgstr "Preferencias de data e hora"
 
@@ -1029,93 +1032,93 @@ msgstr "Preferencias de data e hora"
 msgid "%A %B %e, %Y"
 msgstr "%a, %e de %B, %Y"
 
-#: ../js/ui/endSessionDialog.js:61
+#: ../js/ui/endSessionDialog.js:62
 #, c-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Saír da sesión %s"
 
-#: ../js/ui/endSessionDialog.js:62
+#: ../js/ui/endSessionDialog.js:63
 msgctxt "title"
 msgid "Log Out"
 msgstr "Saír da sesión"
 
-#: ../js/ui/endSessionDialog.js:63
+#: ../js/ui/endSessionDialog.js:64
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Prema sobre «Saír da sesión» para saír deses aplicativos e saír da sesión do "
 "sistema."
 
-#: ../js/ui/endSessionDialog.js:65
+#: ../js/ui/endSessionDialog.js:66
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "Vaise pechar a sesión de %s en %d segundo."
 msgstr[1] "Vaise pechar a sesión de %s en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:70
+#: ../js/ui/endSessionDialog.js:71
 #, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "A súa sesión pecharase automaticamente en %d segundo."
 msgstr[1] "A súa sesión pecharase automaticamente en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:75
 msgid "Logging out of the system."
 msgstr "Saíndo da sesión."
 
-#: ../js/ui/endSessionDialog.js:76
+#: ../js/ui/endSessionDialog.js:77
 msgctxt "button"
 msgid "Log Out"
 msgstr "Saír da sesión"
 
-#: ../js/ui/endSessionDialog.js:81
+#: ../js/ui/endSessionDialog.js:82
 msgctxt "title"
 msgid "Power Off"
 msgstr "Apagar"
 
-#: ../js/ui/endSessionDialog.js:82
+#: ../js/ui/endSessionDialog.js:83
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "Prema sobre «Apagar» para saír deses aplicativos e apagar o sistema."
 
-#: ../js/ui/endSessionDialog.js:84
+#: ../js/ui/endSessionDialog.js:85
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "O sistema apagarase automaticamente en %d segundo."
 msgstr[1] "O sistema apagarase automaticamente en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:89
 msgid "Powering off the system."
 msgstr "Apagando o sistema."
 
-#: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:91 ../js/ui/endSessionDialog.js:108
 msgctxt "button"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/ui/endSessionDialog.js:92
+#: ../js/ui/endSessionDialog.js:93
 msgctxt "button"
 msgid "Power Off"
 msgstr "Apagar"
 
-#: ../js/ui/endSessionDialog.js:98
+#: ../js/ui/endSessionDialog.js:99
 msgctxt "title"
 msgid "Restart"
 msgstr "Reiniciar"
 
-#: ../js/ui/endSessionDialog.js:99
+#: ../js/ui/endSessionDialog.js:100
 msgid "Click Restart to quit these applications and restart the system."
 msgstr "Prema «Reiniciar» para saír deses aplicativos e reiniciar o sistema."
 
-#: ../js/ui/endSessionDialog.js:101
+#: ../js/ui/endSessionDialog.js:102
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "O sistema reiniciarase automaticamente en %d segundo."
 msgstr[1] "O sistema reiniciarase automaticamente en %d segundos."
 
-#: ../js/ui/endSessionDialog.js:105
+#: ../js/ui/endSessionDialog.js:106
 msgid "Restarting the system."
 msgstr "Reiniciando o sistema."
 
@@ -1193,15 +1196,24 @@ msgstr "Abrir"
 msgid "Remove"
 msgstr "Retirar"
 
-#: ../js/ui/messageTray.js:1629
+#: ../js/ui/messageTray.js:1461
+msgid "Clear"
+msgstr "Limpar"
+
+#: ../js/ui/messageTray.js:1484
+#| msgid "Notifications"
+msgid "Notification Settings"
+msgstr "Preferencias das notificacións"
+
+#: ../js/ui/messageTray.js:1667
 msgid "No Messages"
 msgstr "Non hai mensaxes"
 
-#: ../js/ui/messageTray.js:1648
+#: ../js/ui/messageTray.js:1728
 msgid "Message Tray"
 msgstr "Bandexa de mensaxes"
 
-#: ../js/ui/messageTray.js:2759
+#: ../js/ui/messageTray.js:2842
 msgid "System Information"
 msgstr "Información do sistema"
 
@@ -1283,7 +1295,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d notificación nova"
 msgstr[1] "%d notificacións novas"
 
-#: ../js/ui/screenShield.js:464 ../js/ui/userMenu.js:790
+#: ../js/ui/screenShield.js:464 ../js/ui/userMenu.js:804
 msgid "Lock"
 msgstr "Bloquear"
 
@@ -1291,11 +1303,11 @@ msgstr "Bloquear"
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME debe bloquear a pantalla"
 
-#: ../js/ui/searchDisplay.js:430
+#: ../js/ui/searchDisplay.js:431
 msgid "Searching..."
 msgstr "Buscando…"
 
-#: ../js/ui/searchDisplay.js:478
+#: ../js/ui/searchDisplay.js:479
 msgid "No results."
 msgstr "Sen resultados."
 
@@ -1391,7 +1403,6 @@ msgid "Send Files to Device..."
 msgstr "Enviar ficheiros ao dispositivo…"
 
 #: ../js/ui/status/bluetooth.js:60
-#| msgid "Set up a New Device..."
 msgid "Set Up a New Device..."
 msgstr "Configurar un dispositivo novo…"
 
@@ -1498,7 +1509,6 @@ msgid "Show Keyboard Layout"
 msgstr "Mostrar a distribución do teclado"
 
 #: ../js/ui/status/keyboard.js:373
-#| msgid "Region and Language Settings"
 msgid "Region & Language Settings"
 msgstr "Configuración rexional e de idioma"
 
@@ -1673,12 +1683,10 @@ msgid "%d%%"
 msgstr "%d%%"
 
 #: ../js/ui/status/power.js:201
-#| msgid "AC adapter"
 msgid "AC Adapter"
 msgstr "Adaptador de corrente"
 
 #: ../js/ui/status/power.js:203
-#| msgid "Laptop battery"
 msgid "Laptop Battery"
 msgstr "Batería do portátil"
 
@@ -1699,12 +1707,10 @@ msgid "PDA"
 msgstr "PDA"
 
 #: ../js/ui/status/power.js:215
-#| msgid "Cell phone"
 msgid "Cell Phone"
 msgstr "Teléfono móbil"
 
 #: ../js/ui/status/power.js:217
-#| msgid "Media player"
 msgid "Media Player"
 msgstr "Reprodutor multimedia"
 
@@ -1722,7 +1728,6 @@ msgid "Unknown"
 msgstr "Descoñecido"
 
 #: ../js/ui/status/volume.js:124
-#| msgid "Volume"
 msgid "Volume changed"
 msgstr "Volume cambiado"
 
@@ -1743,55 +1748,55 @@ msgstr "Iniciar sesión como outro usuario"
 msgid "Unlock Window"
 msgstr "Desbloquear xanela"
 
-#: ../js/ui/userMenu.js:177
+#: ../js/ui/userMenu.js:191
 msgid "Available"
 msgstr "Dispoñíbel"
 
-#: ../js/ui/userMenu.js:180
+#: ../js/ui/userMenu.js:194
 msgid "Busy"
 msgstr "Ocupado"
 
-#: ../js/ui/userMenu.js:183
+#: ../js/ui/userMenu.js:197
 msgid "Invisible"
 msgstr "Invisíbel"
 
-#: ../js/ui/userMenu.js:186
+#: ../js/ui/userMenu.js:200
 msgid "Away"
 msgstr "Ausente"
 
-#: ../js/ui/userMenu.js:189
+#: ../js/ui/userMenu.js:203
 msgid "Idle"
 msgstr "Inactivo"
 
-#: ../js/ui/userMenu.js:192
+#: ../js/ui/userMenu.js:206
 msgid "Offline"
 msgstr "Desconectado"
 
-#: ../js/ui/userMenu.js:764
+#: ../js/ui/userMenu.js:778
 msgid "Notifications"
 msgstr "Notificacións"
 
-#: ../js/ui/userMenu.js:772
+#: ../js/ui/userMenu.js:786
 msgid "Settings"
 msgstr "Preferencias"
 
-#: ../js/ui/userMenu.js:780
+#: ../js/ui/userMenu.js:794
 msgid "Switch User"
 msgstr "Cambiar de usuario"
 
-#: ../js/ui/userMenu.js:785
+#: ../js/ui/userMenu.js:799
 msgid "Log Out"
 msgstr "Saír da sesión"
 
-#: ../js/ui/userMenu.js:805
+#: ../js/ui/userMenu.js:819
 msgid "Install Updates & Restart"
 msgstr "Instalar actualizacións e reiniciar"
 
-#: ../js/ui/userMenu.js:823
+#: ../js/ui/userMenu.js:837
 msgid "Your chat status will be set to busy"
 msgstr "O seu estado de conversa definirase como «ocupado»"
 
-#: ../js/ui/userMenu.js:824
+#: ../js/ui/userMenu.js:838
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1799,6 +1804,24 @@ msgstr ""
 "Agora as notificacións están desactivadas, incluíndo as mensaxes de "
 "conversa. O seu estado de conexión axustouse para que outros saiban que non "
 "quere ver as súas mensaxes."
+
+#: ../js/ui/userMenu.js:884
+msgid "Other users are logged in."
+msgstr "Hai outros usuarios conectados."
+
+#: ../js/ui/userMenu.js:889
+msgid "Shutting down might cause them to lose unsaved work."
+msgstr "Se apaga o computador pode perder o traballo que non gardou."
+
+#: ../js/ui/userMenu.js:915
+#, c-format
+msgid "%s (remote)"
+msgstr "%s (remoto)"
+
+#: ../js/ui/userMenu.js:917
+#, c-format
+msgid "%s (console)"
+msgstr "%s (consola)"
 
 #: ../js/ui/viewSelector.js:85
 msgid "Applications"
@@ -1887,6 +1910,14 @@ msgstr "O contrasinal non pode estar baleiro"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "O usuario rexeitou o diálogo de autenticación"
+
+#~ msgctxt "event list time"
+#~ msgid "%H:%M"
+#~ msgstr "%H:%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l:%M %p"
+#~ msgstr "%l:%M %p"
 
 #~| msgid "Always show the 'Log out' menuitem in the user menu."
 #~ msgid "Show full name in the user menu"
