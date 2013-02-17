@@ -163,6 +163,7 @@ const SlidingControl = new Lang.Class({
 
     _onDragBegin: function() {
         this.inDrag = true;
+        this.actor.translation_x = 0;
         this.updateSlide();
     },
 
