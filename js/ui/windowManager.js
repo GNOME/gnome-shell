@@ -254,10 +254,12 @@ const WindowManager = new Lang.Class({
             yScale = geom.height / actor.height;
         } else {
             let monitor = Main.layoutManager.monitors[actor.meta_window.get_monitor()];
-            let xDest = monitor.x;
-            let yDest = monitor.y;
+            xDest = monitor.x;
+            yDest = monitor.y;
             if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
                 xDest += monitor.width;
+            xScale = 0;
+            yScale = 0;
         }
 
         Tweener.addTween(actor,
