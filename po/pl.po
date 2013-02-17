@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-02 23:57+0100\n"
-"PO-Revision-Date: 2013-02-02 23:58+0100\n"
+"POT-Creation-Date: 2013-02-17 20:31+0100\n"
+"PO-Revision-Date: 2013-02-17 20:32+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -187,7 +187,7 @@ msgstr "Zmiana rozmiaru okna"
 #: ../src/50-mutter-windows.xml.in.h:12
 msgid "Toggle window on all workspaces or one"
 msgstr ""
-"Przełączenie obecności okna na wszystkich obszarach roboczych lub jednym "
+"Przełączenie obecności okna na wszystkich obszarach roboczych lub jednym"
 
 #: ../src/50-mutter-windows.xml.in.h:13
 msgid "Raise window if covered, otherwise lower it"
@@ -220,7 +220,7 @@ msgstr "Podział widoku po prawej"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:512
+#: ../src/compositor/compositor.c:542
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -260,12 +260,12 @@ msgstr "_Czekaj"
 msgid "_Force Quit"
 msgstr "_Zakończ"
 
-#: ../src/core/display.c:393
+#: ../src/core/display.c:392
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Brak rozszerzenia %s, wymaganego przez składanie"
 
-#: ../src/core/display.c:489
+#: ../src/core/display.c:485
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr ""
@@ -379,12 +379,12 @@ msgstr ""
 msgid "Workspace %d"
 msgstr "Obszar roboczy %d"
 
-#: ../src/core/screen.c:658
+#: ../src/core/screen.c:659
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Podekran %d ekranu \"%s\" jest nieprawidłowy\n"
 
-#: ../src/core/screen.c:674
+#: ../src/core/screen.c:675
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -393,7 +393,7 @@ msgstr ""
 "Na podekranie %d ekranu \"%s\" działa już menedżer okien. Aby zastąpić "
 "działającego menedżera okien, proszę spróbować użyć opcji --replace.\n"
 
-#: ../src/core/screen.c:701
+#: ../src/core/screen.c:702
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -401,12 +401,12 @@ msgstr ""
 "Nie można uzyskać zaznaczenia menedżera okien na podekranie %d ekranu \"%s"
 "\"\n"
 
-#: ../src/core/screen.c:770
+#: ../src/core/screen.c:780
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Na podekranie %d ekranu \"%s\" działa już menedżer okien\n"
 
-#: ../src/core/screen.c:955
+#: ../src/core/screen.c:965
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nie można zwolnić podekranu %d ekranu \"%s\"\n"
@@ -506,7 +506,7 @@ msgid "Window manager error: "
 msgstr "Błąd menedżera okien: "
 
 #. first time through
-#: ../src/core/window.c:7285
+#: ../src/core/window.c:7452
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -522,7 +522,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7951
+#: ../src/core/window.c:8176
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -542,13 +542,13 @@ msgstr "Program ustawił błędną wartość _NET_WM_PID %lu\n"
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
 
-#: ../src/core/window-props.c:1478
+#: ../src/core/window-props.c:1506
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
 "Nieprawidłowa wartość WM_TRANSIENT_FOR dla okna 0x%lx określona w %s.\n"
 
-#: ../src/core/window-props.c:1489
+#: ../src/core/window-props.c:1517
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR okna 0x%lx dla %s utworzyłoby pętlę.\n"
@@ -707,11 +707,11 @@ msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid ""
-"If enabled, monitor nearly monitor sized windows automatically get maximized "
-"when mapped."
+"If enabled, new windows that are initially the size of the monitor "
+"automatically get maximized."
 msgstr ""
-"Jeśli jest włączone, to okna o rozmiarze zbliżonym do rozmiaru monitora "
-"zostają automatycznie maksymalizowane podczas mapowania."
+"Jeśli jest włączone, to nowe okna o początkowym rozmiarze zbliżonym do "
+"rozmiaru monitora zostają automatycznie maksymalizowane."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:19
 msgid "Select window from tab popup"
@@ -920,7 +920,7 @@ msgstr "Mod5"
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
-#: ../src/ui/resizepopup.c:113
+#: ../src/ui/resizepopup.c:136
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1723,57 +1723,57 @@ msgstr "Krawędź"
 msgid "Attached Modal Dialog"
 msgstr "Dołączone modalne okno dialogowe"
 
-#: ../src/ui/theme-viewer.c:739
+#: ../src/ui/theme-viewer.c:737
 #, c-format
 msgid "Button layout test %d"
 msgstr "Test układu przycisków %d"
 
-#: ../src/ui/theme-viewer.c:768
+#: ../src/ui/theme-viewer.c:766
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g milisekundy do narysowania jednej ramki okna"
 
-#: ../src/ui/theme-viewer.c:813
+#: ../src/ui/theme-viewer.c:811
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Użycie: metacity-theme-viewer [NAZWA_MOTYWU]\n"
 
-#: ../src/ui/theme-viewer.c:820
+#: ../src/ui/theme-viewer.c:818
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Błąd podczas wczytywania motywu: %s\n"
 
-#: ../src/ui/theme-viewer.c:826
+#: ../src/ui/theme-viewer.c:824
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Wczytano motyw \"%s\" w ciągu %g sekund\n"
 
-#: ../src/ui/theme-viewer.c:871
+#: ../src/ui/theme-viewer.c:869
 msgid "Normal Title Font"
 msgstr "Zwykła czcionka tytułu"
 
-#: ../src/ui/theme-viewer.c:877
+#: ../src/ui/theme-viewer.c:875
 msgid "Small Title Font"
 msgstr "Mała czcionka tytułu"
 
-#: ../src/ui/theme-viewer.c:883
+#: ../src/ui/theme-viewer.c:881
 msgid "Large Title Font"
 msgstr "Duża czcionka tytułu"
 
-#: ../src/ui/theme-viewer.c:888
+#: ../src/ui/theme-viewer.c:886
 msgid "Button Layouts"
 msgstr "Układy przycisków"
 
-#: ../src/ui/theme-viewer.c:893
+#: ../src/ui/theme-viewer.c:891
 msgid "Benchmark"
 msgstr "Test wydajności"
 
-#: ../src/ui/theme-viewer.c:949
+#: ../src/ui/theme-viewer.c:947
 msgid "Window Title Goes Here"
 msgstr "Tutaj znajduje się tytuł okna"
 
 # FIXME - bełkot
-#: ../src/ui/theme-viewer.c:1055
+#: ../src/ui/theme-viewer.c:1053
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1784,39 +1784,39 @@ msgstr ""
 "%g sekund rzeczywistych, włączając w to zasoby serwera X (%g milisekund na "
 "ramkę)\n"
 
-#: ../src/ui/theme-viewer.c:1275
+#: ../src/ui/theme-viewer.c:1273
 msgid "position expression test returned TRUE but set error"
 msgstr "Test wyrażenia pozycji zwrócił wartość PRAWDA, lecz ustawił błąd"
 
-#: ../src/ui/theme-viewer.c:1277
+#: ../src/ui/theme-viewer.c:1275
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "Test wyrażenia pozycji zwrócił wartość FAŁSZ, lecz nie ustawił błędu"
 
-#: ../src/ui/theme-viewer.c:1281
+#: ../src/ui/theme-viewer.c:1279
 msgid "Error was expected but none given"
 msgstr "Oczekiwano błędu, lecz nie otrzymano żadnego"
 
-#: ../src/ui/theme-viewer.c:1283
+#: ../src/ui/theme-viewer.c:1281
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Oczekiwano błędu %d, lecz otrzymano %d"
 
-#: ../src/ui/theme-viewer.c:1289
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Nie oczekiwano błędu, lecz został on zwrócony: %s"
 
-#: ../src/ui/theme-viewer.c:1293
+#: ../src/ui/theme-viewer.c:1291
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "Wartością X było %d, oczekiwano wartości %d"
 
-#: ../src/ui/theme-viewer.c:1296
+#: ../src/ui/theme-viewer.c:1294
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "Wartością Y było %d, oczekiwano wartości %d"
 
-#: ../src/ui/theme-viewer.c:1361
+#: ../src/ui/theme-viewer.c:1359
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
