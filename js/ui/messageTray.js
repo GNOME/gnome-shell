@@ -1864,11 +1864,6 @@ const MessageTray = new Lang.Class({
         return false;
     },
 
-    openTray: function() {
-        this._traySummoned = true;
-        this._updateState();
-    },
-
     _onNotificationKeyRelease: function(actor, event) {
         if (event.get_key_symbol() == Clutter.KEY_Escape && event.get_state() == 0) {
             this._closeNotification();
@@ -2032,6 +2027,11 @@ const MessageTray = new Lang.Class({
             return;
         this._locked = false;
         this._pointerInTray = this.actor.hover;
+        this._updateState();
+    },
+
+    openTray: function() {
+        this._traySummoned = true;
         this._updateState();
     },
 
