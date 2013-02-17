@@ -207,6 +207,11 @@ const LayoutManager = new Lang.Class({
         global.stage.remove_actor(global.top_window_group);
         this.uiGroup.add_actor(global.top_window_group);
 
+        // This blocks the XDND picks from finding the activities button
+        // and we never attempt to pick anything from it anyway so make
+        // it invisible from picks
+        Shell.util_set_hidden_from_pick(global.top_window_group, true);
+
         // Need to update struts on new workspaces when they are added
         global.screen.connect('notify::n-workspaces',
                               Lang.bind(this, this._queueUpdateRegions));
