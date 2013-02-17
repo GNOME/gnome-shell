@@ -142,7 +142,8 @@ const Overview = new Lang.Class({
                                             vertical: true });
         this._overview._delegate = this;
 
-        this._group = new St.BoxLayout({ name: 'overview-group' });
+        this._group = new St.BoxLayout({ name: 'overview-group',
+                                         clip_to_allocation: true });
 
         this._capturedEventId = 0;
         this._buttonPressId = 0;
