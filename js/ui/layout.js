@@ -773,10 +773,10 @@ const LayoutManager = new Lang.Class({
             let layer = metaWindow.get_layer();
 
             // Skip minimized windows
-            if (!window.showing_on_its_workspace())
+            if (!metaWindow.showing_on_its_workspace())
                 continue;
 
-            if (window.is_monitor_sized()) {
+            if (metaWindow.is_monitor_sized()) {
                 let monitor = this.monitors[metaWindow.get_monitor()];
                 if (monitor)
                     monitor.inFullscreen = true;
