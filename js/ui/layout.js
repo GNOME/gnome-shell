@@ -1186,7 +1186,8 @@ const PressureBarrier = new Lang.Class({
 
         let isOverview = ((Main.keybindingMode & (Shell.KeyBindingMode.OVERVIEW)) != 0);
 
-        // Throw out events where the grab is taken by the overview visible
+        // Throw out events where the grab is taken by something that's
+        // not the overview (modal dialogs, etc.)
         if (event.grabbed && !isOverview)
             return;
 
