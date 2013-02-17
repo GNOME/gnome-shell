@@ -1651,8 +1651,6 @@ const MessageTray = new Lang.Class({
                                                      { keybindingMode: Shell.KeyBindingMode.MESSAGE_TRAY });
         this._grabHelper.addActor(this._summaryBoxPointer.actor);
         this._grabHelper.addActor(this.actor);
-        if (Main.panel.statusArea.activities)
-            this._grabHelper.addActor(Main.panel.statusArea.activities.hotCorner.actor);
 
         Main.layoutManager.connect('keyboard-visible-changed', Lang.bind(this, this._onKeyboardVisibleChanged));
 
@@ -1707,6 +1705,8 @@ const MessageTray = new Lang.Class({
                 this._updateState();
             }));
 
+        // Track if we've added the activities button
+        this._activitiesButtonAdded = false;
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
 
         Main.wm.addKeybinding('toggle-message-tray',
@@ -1802,6 +1802,11 @@ const MessageTray = new Lang.Class({
     },
 
     _sessionUpdated: function() {
+        if (!this._activitiesButtonAdded && Main.panel.statusArea.activities) {
+            this._activitiesButtonAdded = true;
+            this._grabHelper.addActor(Main.panel.statusArea.activities.hotCorner.actor);
+        }
+
         if ((Main.sessionMode.isLocked || Main.sessionMode.isGreeter) && this._inCtrlAltTab) {
             Main.ctrlAltTabManager.removeGroup(this._summary);
             this._inCtrlAltTab = false;
