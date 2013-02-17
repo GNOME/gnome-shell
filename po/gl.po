@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-07 00:50+0100\n"
-"PO-Revision-Date: 2013-02-07 00:52+0200\n"
+"POT-Creation-Date: 2013-02-17 13:08+0100\n"
+"PO-Revision-Date: 2013-02-17 13:11+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -215,7 +215,7 @@ msgstr "Dividir vista á dereita"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:512
+#: ../src/compositor/compositor.c:542
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -258,12 +258,12 @@ msgstr "Espe_rar"
 msgid "_Force Quit"
 msgstr "_Forzar a saída"
 
-#: ../src/core/display.c:393
+#: ../src/core/display.c:392
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Falta a extensión %s que se require para a composición"
 
-#: ../src/core/display.c:489
+#: ../src/core/display.c:485
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Produciuse un erro ao abrir a visualización do X Window System «%s»\n"
@@ -375,12 +375,12 @@ msgstr ""
 msgid "Workspace %d"
 msgstr "Espazo de traballo %d"
 
-#: ../src/core/screen.c:658
+#: ../src/core/screen.c:659
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "A pantalla %d na visualización «%s» non é válida\n"
 
-#: ../src/core/screen.c:674
+#: ../src/core/screen.c:675
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -389,7 +389,7 @@ msgstr ""
 "A visualización %d na pantalla «%s» ten xa un xestor de xanelas, tente usar "
 "a opción --replace para substituír o xestor de xanelas.\n"
 
-#: ../src/core/screen.c:701
+#: ../src/core/screen.c:702
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -397,12 +397,12 @@ msgstr ""
 "Non foi posíbel obter a selección do xestor de xanelas na pantalla %d na "
 "visualización «%s»\n"
 
-#: ../src/core/screen.c:770
+#: ../src/core/screen.c:780
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "A visualización %d na pantalla «%s» ten xa un xestor de xanelas\n"
 
-#: ../src/core/screen.c:955
+#: ../src/core/screen.c:965
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Non foi posíbel liberar a visualización %d na pantalla «%s»\n"
@@ -499,7 +499,7 @@ msgid "Window manager error: "
 msgstr "Erro do xestor de xanelas: "
 
 #. first time through
-#: ../src/core/window.c:7288
+#: ../src/core/window.c:7452
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -515,7 +515,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8012
+#: ../src/core/window.c:8176
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -535,13 +535,13 @@ msgstr "O aplicativo configurou un _NET_WM_PID %lu falso\n"
 msgid "%s (on %s)"
 msgstr "%s (en %s)"
 
-#: ../src/core/window-props.c:1486
+#: ../src/core/window-props.c:1506
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
 "WM_TRANSIENT_FOR non válido para a xanela 0x%lx especificada para %s.\n"
 
-#: ../src/core/window-props.c:1497
+#: ../src/core/window-props.c:1517
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR xanela 0x%lx para %s crearía un bucle.\n"
@@ -695,11 +695,11 @@ msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid ""
-"If enabled, monitor nearly monitor sized windows automatically get maximized "
-"when mapped."
+"If enabled, new windows that are initially the size of the monitor "
+"automatically get maximized."
 msgstr ""
-"Se está activada, as xanelas cercanas ao tamaño da pantalla se maximizan "
-"automaticamente ao mapealas."
+"Se está activada, as xanelas novas que inicialmente teñan o tamaño da "
+"pantalla maximizaranse automaticamente."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:19
 msgid "Select window from tab popup"
@@ -908,7 +908,7 @@ msgstr "Mod5"
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
-#: ../src/ui/resizepopup.c:113
+#: ../src/ui/resizepopup.c:136
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1700,56 +1700,56 @@ msgstr "Bordo"
 msgid "Attached Modal Dialog"
 msgstr "Diálogo modal adxunto"
 
-#: ../src/ui/theme-viewer.c:739
+#: ../src/ui/theme-viewer.c:737
 #, c-format
 msgid "Button layout test %d"
 msgstr "Proba de disposición de botóns %d"
 
-#: ../src/ui/theme-viewer.c:768
+#: ../src/ui/theme-viewer.c:766
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g milisegundos para debuxar un marco de xanela"
 
-#: ../src/ui/theme-viewer.c:813
+#: ../src/ui/theme-viewer.c:811
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Uso: metacity-theme-viewer [NOMETEMA]\n"
 
-#: ../src/ui/theme-viewer.c:820
+#: ../src/ui/theme-viewer.c:818
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Produciuse un erro ao cargar o tema: %s\n"
 
-#: ../src/ui/theme-viewer.c:826
+#: ../src/ui/theme-viewer.c:824
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Cargouse o tema «%s» en %g segundos\n"
 
-#: ../src/ui/theme-viewer.c:871
+#: ../src/ui/theme-viewer.c:869
 msgid "Normal Title Font"
 msgstr "Tipo de letra de título normal"
 
-#: ../src/ui/theme-viewer.c:877
+#: ../src/ui/theme-viewer.c:875
 msgid "Small Title Font"
 msgstr "Tipo de letra de título pequena"
 
-#: ../src/ui/theme-viewer.c:883
+#: ../src/ui/theme-viewer.c:881
 msgid "Large Title Font"
 msgstr "Tipo de letra de título grande"
 
-#: ../src/ui/theme-viewer.c:888
+#: ../src/ui/theme-viewer.c:886
 msgid "Button Layouts"
 msgstr "Disposición dos botóns"
 
-#: ../src/ui/theme-viewer.c:893
+#: ../src/ui/theme-viewer.c:891
 msgid "Benchmark"
 msgstr "Banco de probas"
 
-#: ../src/ui/theme-viewer.c:949
+#: ../src/ui/theme-viewer.c:947
 msgid "Window Title Goes Here"
 msgstr "O título da xanela vai aquí"
 
-#: ../src/ui/theme-viewer.c:1055
+#: ../src/ui/theme-viewer.c:1053
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1760,41 +1760,41 @@ msgstr ""
 "marco) e %g segundos de tempo estándar incluíndo recursos do servidor X (%g "
 "milisegundos por marco)\n"
 
-#: ../src/ui/theme-viewer.c:1275
+#: ../src/ui/theme-viewer.c:1273
 msgid "position expression test returned TRUE but set error"
 msgstr ""
 "a proba de expresión da posición devolveu TRUE mais estabeleceu un erro"
 
-#: ../src/ui/theme-viewer.c:1277
+#: ../src/ui/theme-viewer.c:1275
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 "a proba de expresión da posición devolveu FALSE mais estabeleceu un erro"
 
-#: ../src/ui/theme-viewer.c:1281
+#: ../src/ui/theme-viewer.c:1279
 msgid "Error was expected but none given"
 msgstr "Esperábase un erro, mais non se deu ningún"
 
-#: ../src/ui/theme-viewer.c:1283
+#: ../src/ui/theme-viewer.c:1281
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Esperábase un erro %d mais deuse %d"
 
-#: ../src/ui/theme-viewer.c:1289
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Non se esperaba ningún erro mais devolveuse un: %s"
 
-#: ../src/ui/theme-viewer.c:1293
+#: ../src/ui/theme-viewer.c:1291
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "o valor x era %d, esperábase %d"
 
-#: ../src/ui/theme-viewer.c:1296
+#: ../src/ui/theme-viewer.c:1294
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "o valor y era %d, esperábase %d"
 
-#: ../src/ui/theme-viewer.c:1361
+#: ../src/ui/theme-viewer.c:1359
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
