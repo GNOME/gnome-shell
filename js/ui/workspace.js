@@ -844,6 +844,13 @@ const LayoutStrategy = new Lang.Class({
         layout.space = space;
     },
 
+    _getDistance: function (row, actor) {
+        let dist_x = actor.x - row.x;
+        let dist_y = actor.y - row.y;
+
+        return Math.sqrt(Math.pow(dist_x, 2) + Math.pow(dist_y, 2));
+    },
+
     computeWindowSlots: function(layout, area) {
         this._computeRowSizes(layout);
 
@@ -857,6 +864,9 @@ const LayoutStrategy = new Lang.Class({
             row.x = area.x + (area.width - row.width) / 2;
             row.y = area.y + y;
             y += row.height + this._rowSpacing;
+            row.windows.sort(Lang.bind(this, function(a, b) {
+                return this._getDistance(row, a.realWindow) - this._getDistance(row, b.realWindow);
+            }));
         }
 
         let height = y - this._rowSpacing;
@@ -881,7 +891,7 @@ const LayoutStrategy = new Lang.Class({
                     width = row.cellWidth;
                 }
 
-                slots.push([x, y, s]);
+                slots.push([x, y, s, window]);
                 baseX += width + this._columnSpacing;
             }
         }
@@ -1171,9 +1181,9 @@ const Workspace = new Lang.Class({
         let currentWorkspace = global.screen.get_active_workspace();
         let isOnCurrentWorkspace = this.metaWorkspace == null || this.metaWorkspace == currentWorkspace;
 
-        for (let i = 0; i < clones.length; i++) {
+        for (let i = 0; i < slots.length; i++) {
             let slot = slots[i];
-            let clone = clones[i];
+            let [x, y, scale, clone] = slot;
             let metaWindow = clone.metaWindow;
             let overlay = clone.overlay;
             clone.slotId = i;
@@ -1183,7 +1193,6 @@ const Workspace = new Lang.Class({
             if (clone.inDrag)
                 continue;
 
-            let [x, y, scale] = slot;
             clone.slot = [x, y, clone.actor.width * scale, clone.actor.height * scale];
 
             if (overlay && initialPositioning)
