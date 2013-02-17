@@ -67,7 +67,7 @@ const GrabHelper = new Lang.Class({
     },
 
     _isWithinGrabbedActor: function(actor) {
-       let currentActor = this.currentGrab.actor;
+        let currentActor = this.currentGrab.actor;
         while (actor) {
             if (this._actors.indexOf(actor) != -1)
                 return true;
