@@ -776,33 +776,11 @@ const LayoutManager = new Lang.Class({
             if (!window.showing_on_its_workspace())
                 continue;
 
-            if (layer == Meta.StackLayer.FULLSCREEN) {
+            if (window.is_monitor_sized()) {
                 let monitor = this.monitors[metaWindow.get_monitor()];
                 if (monitor)
                     monitor.inFullscreen = true;
             }
-            if (layer == Meta.StackLayer.OVERRIDE_REDIRECT) {
-                // Check whether the window is screen sized
-                let isScreenSized =
-                    (window.x == 0 && window.y == 0 &&
-                    window.width == global.screen_width &&
-                    window.height == global.screen_height);
-
-                if (isScreenSized) {
-                    for (let i = 0; i < this.monitors.length; i++)
-                        this.monitors[i].inFullscreen = true;
-                }
-
-                // Or whether it is monitor sized
-                let monitor = this.monitors[metaWindow.get_monitor()];
-                if (monitor &&
-                    window.x <= monitor.x &&
-                    window.x + window.width >= monitor.x + monitor.width &&
-                    window.y <= monitor.y &&
-                    window.y + window.height >= monitor.y + monitor.height)
-                    monitor.inFullscreen = true;
-            } else
-                break;
         }
     },
 
