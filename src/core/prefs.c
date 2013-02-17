@@ -1815,6 +1815,8 @@ update_binding (MetaKeyPref *binding,
                       binding->name, keysym, keycode, mods);
     }
 
+  binding->bindings = g_slist_reverse (binding->bindings);
+
   return changed;
 }
 
