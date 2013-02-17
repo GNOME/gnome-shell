@@ -141,6 +141,7 @@ void     meta_window_foreach_ancestor         (MetaWindow            *window,
 
 MetaMaximizeFlags meta_window_get_maximized (MetaWindow *window);
 gboolean          meta_window_is_fullscreen (MetaWindow *window);
+gboolean          meta_window_is_monitor_sized (MetaWindow *window);
 gboolean          meta_window_is_on_primary_monitor (MetaWindow *window);
 gboolean          meta_window_requested_bypass_compositor (MetaWindow *window);
 gboolean          meta_window_requested_dont_bypass_compositor (MetaWindow *window);
