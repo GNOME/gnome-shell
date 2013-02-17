@@ -2031,18 +2031,25 @@ const MessageTray = new Lang.Class({
     },
 
     openTray: function() {
+        if (Main.overview.animationInProgress)
+            return;
+
         this._traySummoned = true;
         this._updateState();
     },
 
     toggle: function() {
+        if (Main.overview.animationInProgress)
+            return false;
+
         this._traySummoned = !this._traySummoned;
         this._updateState();
+        return true;
     },
 
     toggleAndNavigate: function() {
-        this.toggle();
-        this._summary.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+        if (this.toggle())
+            this._summary.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
     },
 
     hide: function() {
