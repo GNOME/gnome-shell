@@ -3,6 +3,7 @@
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const St = imports.gi.St;
+const Shell = imports.gi.Shell;
 
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
@@ -305,14 +306,11 @@ const SlidingControlContainer = new Lang.Class({
         child.x_expand = true;
         this.add_actor(child);
 
-        let entryClone = new St.Widget();
-        entryClone.height = entryBin.height;
+        let entryClone = new Shell.GenericContainer();
+        entryClone.connect('get-preferred-height', function(actor, forWidth, alloc) {
+            [alloc.min_size, alloc.natural_size] = [entryBin.height, entryBin.height];
+        });
         this.add_actor(entryClone);
-
-        entryBin.connect('notify::height', Lang.bind(this,
-            function() {
-                entryClone.height = entryBin.height;
-            }));
     }
 });
 
