@@ -1076,7 +1076,6 @@ const HotCorner = new Lang.Class({
         if (!Main.overview.visible && !Main.overview.animationInProgress) {
             this.rippleAnimation();
             Main.overview.showTemporarily();
-            Main.overview.beginItemDrag(actor);
         }
 
         return DND.DragMotionResult.CONTINUE;

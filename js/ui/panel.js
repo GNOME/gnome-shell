@@ -739,7 +739,6 @@ const ActivitiesButton = new Lang.Class({
         if (pickedActor == this.actor) {
             if (!Main.overview.visible && !Main.overview.animationInProgress) {
                 Main.overview.showTemporarily();
-                Main.overview.beginItemDrag(actor);
             }
         }
 
