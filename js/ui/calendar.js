@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const St = imports.gi.St;
 const Signals = imports.signals;
@@ -203,15 +204,12 @@ const CalendarServerIface = <interface name="org.gnome.Shell.CalendarServer">
 const CalendarServerInfo  = Gio.DBusInterfaceInfo.new_for_xml(CalendarServerIface);
 
 function CalendarServer() {
-    var self = new Gio.DBusProxy({ g_connection: Gio.DBus.session,
-                                   g_interface_name: CalendarServerInfo.name,
-                                   g_interface_info: CalendarServerInfo,
-                                   g_name: 'org.gnome.Shell.CalendarServer',
-                                   g_object_path: '/org/gnome/Shell/CalendarServer',
-                                   g_flags: Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES });
-
-    self.init(null);
-    return self;
+    return new Gio.DBusProxy({ g_connection: Gio.DBus.session,
+                               g_interface_name: CalendarServerInfo.name,
+                               g_interface_info: CalendarServerInfo,
+                               g_name: 'org.gnome.Shell.CalendarServer',
+                               g_object_path: '/org/gnome/Shell/CalendarServer',
+                               g_flags: Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES });
 }
 
 function _datesEqual(a, b) {
@@ -239,14 +237,27 @@ const DBusEventSource = new Lang.Class({
     _init: function() {
         this._resetCache();
 
+        this._initialized = false;
         this._dbusProxy = new CalendarServer();
-        this._dbusProxy.connectSignal('Changed', Lang.bind(this, this._onChanged));
+        this._dbusProxy.init_async(GLib.PRIORITY_DEFAULT, null, Lang.bind(this, function(object, result) {
+            try {
+                this._dbusProxy.init_finish(result);
+            } catch(e) {
+                log('Error loading calendars: ' + e.message);
+                return;
+            }
 
-        this._dbusProxy.connect('notify::g-name-owner', Lang.bind(this, function() {
-            if (this._dbusProxy.g_name_owner)
-                this._onNameAppeared();
-            else
-                this._onNameVanished();
+            this._dbusProxy.connectSignal('Changed', Lang.bind(this, this._onChanged));
+
+            this._dbusProxy.connect('notify::g-name-owner', Lang.bind(this, function() {
+                if (this._dbusProxy.g_name_owner)
+                    this._onNameAppeared();
+                else
+                    this._onNameVanished();
+            }));
+
+            this._initialized = true;
+            this._onNameAppeared();
         }));
     },
 
@@ -292,6 +303,10 @@ const DBusEventSource = new Lang.Class({
     },
 
     _loadEvents: function(forceReload) {
+        // Ignore while loading
+        if (!this._initialized)
+            return;
+
         if (this._curRequestBegin && this._curRequestEnd){
             let callFlags = Gio.DBusCallFlags.NO_AUTO_START;
             if (forceReload)
