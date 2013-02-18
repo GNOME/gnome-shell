@@ -245,28 +245,9 @@ const WindowManager = new Lang.Class({
 
         this._minimizing.push(actor);
 
-        let xDest, yDest, xScale, yScale;
-        let [success, geom] = actor.meta_window.get_icon_geometry();
-        if (success) {
-            xDest = geom.x;
-            yDest = geom.y;
-            xScale = geom.width / actor.width;
-            yScale = geom.height / actor.height;
-        } else {
-            let monitor = Main.layoutManager.monitors[actor.meta_window.get_monitor()];
-            xDest = monitor.x;
-            yDest = monitor.y;
-            if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
-                xDest += monitor.width;
-            xScale = 0;
-            yScale = 0;
-        }
-
-        Tweener.addTween(actor,
-                         { scale_x: xScale,
-                           scale_y: yScale,
-                           x: xDest,
-                           y: yDest,
+        if (actor.meta_window.is_monitor_sized()) {
+            Tweener.addTween(actor,
+                         { opacity: 0,
                            time: WINDOW_ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete: this._minimizeWindowDone,
@@ -276,12 +257,46 @@ const WindowManager = new Lang.Class({
                            onOverwriteScope: this,
                            onOverwriteParams: [shellwm, actor]
                          });
+        } else {
+            let xDest, yDest, xScale, yScale;
+            let [success, geom] = actor.meta_window.get_icon_geometry();
+            if (success) {
+                xDest = geom.x;
+                yDest = geom.y;
+                xScale = geom.width / actor.width;
+                yScale = geom.height / actor.height;
+            } else {
+                let monitor = Main.layoutManager.monitors[actor.meta_window.get_monitor()];
+                xDest = monitor.x;
+                yDest = monitor.y;
+                if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
+                    xDest += monitor.width;
+                xScale = 0;
+                yScale = 0;
+            }
+
+            Tweener.addTween(actor,
+                             { scale_x: xScale,
+                               scale_y: yScale,
+                               x: xDest,
+                               y: yDest,
+                               time: WINDOW_ANIMATION_TIME,
+                               transition: 'easeOutQuad',
+                               onComplete: this._minimizeWindowDone,
+                               onCompleteScope: this,
+                               onCompleteParams: [shellwm, actor],
+                               onOverwrite: this._minimizeWindowOverwritten,
+                               onOverwriteScope: this,
+                               onOverwriteParams: [shellwm, actor]
+                             });
+        }
     },
 
     _minimizeWindowDone : function(shellwm, actor) {
         if (this._removeEffect(this._minimizing, actor)) {
             Tweener.removeTweens(actor);
             actor.set_scale(1.0, 1.0);
+            actor.set_opacity(255);
             actor.move_anchor_point_from_gravity(Clutter.Gravity.NORTH_WEST);
 
             shellwm.completed_minimize(actor);

@@ -816,6 +816,23 @@ const LayoutManager = new Lang.Class({
         }
 
         if (primaryWasInFullscreen != this.primaryMonitor.inFullscreen) {
+            let windows = this._getWindowActorsForWorkspace(global.screen.get_active_workspace());
+            for (let i = 0; i < windows.length - 1; i++) {
+                let window = windows[i];
+                let metaWindow = window.meta_window;
+
+                // Skip minimized windows
+                if (!metaWindow.showing_on_its_workspace())
+                    continue;
+
+                // Skip windows that aren't on the primary monitor
+                if (!metaWindow.is_on_primary_monitor())
+                    continue;
+
+                // Minimize monitor sized windows
+                if (metaWindow.is_monitor_sized())
+                    metaWindow.minimize();
+            }
             this.emit('primary-fullscreen-changed', this.primaryMonitor.inFullscreen);
         }
     },
