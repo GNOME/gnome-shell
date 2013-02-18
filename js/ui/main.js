@@ -96,6 +96,15 @@ function start() {
     Gio.DesktopAppInfo.set_desktop_env('GNOME');
 
     sessionMode = new SessionMode.SessionMode();
+
+    // start session after we know what mode we're running in
+    let signalId = sessionMode.connect('updated', function() {
+                                           sessionMode.disconnect(signalId);
+                                           startSession();
+                                       });
+}
+
+function startSession() {
     sessionMode.connect('updated', _loadDefaultStylesheet);
 
     shellDBusService = new ShellDBus.GnomeShell();
