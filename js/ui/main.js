@@ -98,19 +98,21 @@ function start() {
 
     Gio.DesktopAppInfo.set_desktop_env('GNOME');
 
-    sessionMode = new SessionMode.SessionMode();
-
-    // start session after we know what mode we're running in
-    let signalId = sessionMode.connect('updated', function() {
-                                           sessionMode.disconnect(signalId);
-                                           startSession();
-                                       });
-}
-
-function startSession() {
     shellDBusService = new ShellDBus.GnomeShell();
     shellMountOpDBusService = new ShellMountOperation.GnomeShellMountOpHandler();
 
+    sessionMode = new SessionMode.SessionMode();
+    sessionMode.connect('sessions-loaded', _sessionsLoaded);
+    sessionMode.init();
+}
+
+function _sessionsLoaded() {
+    sessionMode.connect('updated', _sessionUpdated);
+    _initializeUI();
+    _sessionUpdated();
+}
+
+function _initializeUI() {
     // Ensure ShellWindowTracker and ShellAppUsage are initialized; this will
     // also initialize ShellAppSystem first.  ShellAppSystem
     // needs to load all the .desktop files, and ShellWindowTracker
