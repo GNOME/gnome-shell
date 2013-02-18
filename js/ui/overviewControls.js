@@ -144,6 +144,9 @@ const SlidingControl = new Lang.Class({
             translationEnd = translation;
         }
 
+        if (this.actor.translation_x == translationEnd)
+            return;
+
         this.actor.translation_x = translationStart;
         Tweener.addTween(this.actor, { translation_x: translationEnd,
                                        time: SIDE_CONTROLS_ANIMATION_TIME,
