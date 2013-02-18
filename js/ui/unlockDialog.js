@@ -18,6 +18,7 @@ const Panel = imports.ui.panel;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
 const UserMenu = imports.ui.userMenu;
+const UserWidget = imports.ui.userWidget;
 
 const Batch = imports.gdm.batch;
 const GdmUtil = imports.gdm.util;
@@ -55,59 +56,6 @@ function isSupported() {
     }
 }
 
-// A widget showing the user avatar and name
-const UserWidget = new Lang.Class({
-    Name: 'UserWidget',
-
-    _init: function(user) {
-        this._user = user;
-
-        this.actor = new St.BoxLayout({ style_class: 'unlock-dialog-user-name-container',
-                                        vertical: false });
-
-        this._avatar = new UserMenu.UserAvatarWidget(user);
-        this.actor.add(this._avatar.actor,
-                       { x_fill: true, y_fill: true });
-
-        this._label = new St.Label({ style_class: 'login-dialog-username' });
-        this.actor.add(this._label,
-                       { expand: true,
-                         x_fill: true,
-                         y_fill: false,
-                         y_align: St.Align.MIDDLE });
-
-        this._userLoadedId = this._user.connect('notify::is-loaded',
-                                                Lang.bind(this, this._updateUser));
-        this._userChangedId = this._user.connect('changed',
-                                                 Lang.bind(this, this._updateUser));
-        if (this._user.is_loaded)
-            this._updateUser();
-    },
-
-    destroy: function() {
-        if (this._userLoadedId != 0) {
-            this._user.disconnect(this._userLoadedId);
-            this._userLoadedId = 0;
-        }
-
-        if (this._userChangedId != 0) {
-            this._user.disconnect(this._userChangedId);
-            this._userChangedId = 0;
-        }
-
-        this.actor.destroy();
-    },
-
-    _updateUser: function() {
-        if (this._user.is_loaded)
-            this._label.text = this._user.get_real_name();
-        else
-            this._label.text = '';
-
-        this._avatar.update();
-    }
-});
-
 const UnlockDialog = new Lang.Class({
     Name: 'UnlockDialog',
     Extends: ModalDialog.ModalDialog,
@@ -138,7 +86,7 @@ const UnlockDialog = new Lang.Class({
         this._userVerifier.connect('show-login-hint', Lang.bind(this, this._showLoginHint));
         this._userVerifier.connect('hide-login-hint', Lang.bind(this, this._hideLoginHint));
 
-        this._userWidget = new UserWidget(this._user);
+        this._userWidget = new UserWidget.UserWidget(this._user);
         this.contentLayout.add_actor(this._userWidget.actor);
 
         this._promptLayout = new St.BoxLayout({ style_class: 'login-dialog-prompt-layout',

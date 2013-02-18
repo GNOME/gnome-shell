@@ -2408,8 +2408,16 @@ StScrollView.frequent-apps StScrollBar {
     color: orange;
 }
 
-.unlock-dialog-user-name-container {
+.user-widget {
     spacing: .4em;
+}
+
+.user-widget-label {
+    font-size: 16pt;
+    font-weight: bold;
+    text-align: left;
+    padding-left: 15px;
+    text-shadow: black 0px 4px 3px 0px;
 }
 
 /* Screen shield */

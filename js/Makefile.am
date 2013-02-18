@@ -93,6 +93,7 @@ nobase_dist_js_DATA = 	\
 	ui/tweener.js		\
 	ui/unlockDialog.js	\
 	ui/userMenu.js		\
+	ui/userWidget.js	\
 	ui/viewSelector.js	\
 	ui/wanda.js		\
 	ui/windowAttentionHandler.js	\
