@@ -1517,7 +1517,7 @@ const MessageTrayContextMenu = new Lang.Class({
         this.parent(this._dummy, 0, St.Side.BOTTOM);
         this._tray = tray;
 
-        this._clearItem = this.addAction(_("Clear"), function() {
+        this._clearItem = this.addAction(_("Clear Messages"), function() {
             let toDestroy = [];
             let sources = tray.getSources();
             for (let i = 0; i < sources.length; i++) {
