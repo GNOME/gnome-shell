@@ -1682,9 +1682,7 @@ const PopupComboBoxMenuItem = new Lang.Class({
     _getTopMenu: function() {
         let actor = this.actor.get_parent();
         while (actor) {
-            if (actor._delegate &&
-                (actor._delegate instanceof PopupMenu ||
-                 actor._delegate instanceof PopupComboMenu))
+            if (actor._delegate && actor._delegate instanceof PopupMenu)
                 return actor._delegate;
 
             actor = actor.get_parent();
