@@ -133,12 +133,12 @@ const SlidingControl = new Lang.Class({
             return visibleWidth;
     },
 
-    _updateTranslation: function(slidingIn) {
+    _updateTranslation: function() {
         let translationStart = 0;
         let translationEnd = 0;
         let translation = this._getTranslation();
 
-        if (slidingIn) {
+        if (this.visible) {
             translationStart = translation;
         } else {
             translationEnd = translation;
@@ -171,14 +171,13 @@ const SlidingControl = new Lang.Class({
     },
 
     slideIn: function() {
-        this._updateTranslation(true);
         this.visible = true;
-        // we will update slideX from pageEmpty
+        // we will update slideX and the translation from pageEmpty
     },
 
     slideOut: function() {
         this.visible = false;
-        this._updateTranslation(false);
+        this._updateTranslation();
         // we will update slideX from pageEmpty
     },
 
@@ -188,6 +187,7 @@ const SlidingControl = new Lang.Class({
         // the next page, since slideIn or slideOut might have been called,
         // changing the visiblity
         this.layout.slideX = this.getSlide();
+        this._updateTranslation();
     }
 });
 
