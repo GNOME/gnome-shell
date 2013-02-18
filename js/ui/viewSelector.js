@@ -215,7 +215,7 @@ const ViewSelector = new Lang.Class({
         this._activePage.show();
         Tweener.addTween(this._activePage,
             { opacity: 255,
-              time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
+              time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
               transition: 'easeOutQuad'
             });
     },
@@ -231,7 +231,7 @@ const ViewSelector = new Lang.Class({
         if (oldPage && !noFade)
             Tweener.addTween(oldPage,
                              { opacity: 0,
-                               time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
+                               time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
                                transition: 'easeOutQuad',
                                onComplete: Lang.bind(this,
                                    function() {

@@ -9,7 +9,7 @@ const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 const ViewSelector = imports.ui.viewSelector;
 
-const SIDE_CONTROLS_ANIMATION_TIME = 0.2;
+const SIDE_CONTROLS_ANIMATION_TIME = 0.16;
 
 function getRtlSlideDirection(direction, actor) {
     let rtl = (actor.text_direction == Clutter.TextDirection.RTL);
