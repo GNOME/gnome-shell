@@ -101,7 +101,9 @@ const AllView = new Lang.Class({
         this.parent();
 
         let box = new St.BoxLayout({ vertical: true });
-        box.add(this._grid.actor, { y_align: St.Align.START, expand: true });
+        this._stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+        this._stack.add_actor(this._grid.actor);
+        box.add(this._stack, { y_align: St.Align.START, expand: true });
 
         this.actor = new St.ScrollView({ x_fill: true,
                                          y_fill: false,
@@ -139,6 +141,10 @@ const AllView = new Lang.Class({
         if (appIcon)
             appIcon.actor.connect('key-focus-in',
                                   Lang.bind(this, this._ensureIconVisible));
+    },
+
+    addFolderPopup: function(popup) {
+        this._stack.add_actor(popup.actor);
     },
 
     _ensureIconVisible: function(icon) {
