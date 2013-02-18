@@ -480,8 +480,6 @@ sort_apps_by_usage (gconstpointer a,
  * shell_app_usage_get_most_used:
  * @usage: the usage instance to request
  * @context: Activity identifier
- * @max_count: how many applications are requested. Note that the actual
- *     list size may be less, or NULL if not enough applications are registered.
  *
  * Get a list of most popular applications for a given context.
  *
@@ -489,8 +487,7 @@ sort_apps_by_usage (gconstpointer a,
  */
 GSList *
 shell_app_usage_get_most_used (ShellAppUsage   *self,
-                               const char      *context,
-                               gint             max_count)
+                               const char      *context)
 {
   GSList *apps;
   GList *appids, *iter;
