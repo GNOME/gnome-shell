@@ -42,6 +42,8 @@ libmutter_la_SOURCES =				\
 	core/boxes.c				\
 	core/boxes-private.h			\
 	meta/boxes.h				\
+	compositor/clutter-utils.c		\
+	compositor/clutter-utils.h		\
 	compositor/cogl-utils.c			\
 	compositor/cogl-utils.h			\
 	compositor/compositor.c			\

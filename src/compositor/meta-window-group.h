@@ -49,4 +49,7 @@ GType meta_window_group_get_type (void);
 
 ClutterActor *meta_window_group_new (MetaScreen *screen);
 
+gboolean meta_window_group_actor_is_untransformed (ClutterActor *actor,
+                                                   int          *x_origin,
+                                                   int          *y_origin);
 #endif /* META_WINDOW_GROUP_H */
