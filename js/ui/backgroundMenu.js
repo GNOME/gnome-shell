@@ -38,7 +38,7 @@ function addBackgroundMenu(actor) {
     function openMenu() {
         let [x, y] = global.get_pointer();
         cursor.set_position(x, y);
-        actor._backgroundMenu.open(BoxPointer.PopupAnimation.FULL);
+        actor._backgroundMenu.open(BoxPointer.PopupAnimation.NONE);
     }
 
     let clickAction = new Clutter.ClickAction();
