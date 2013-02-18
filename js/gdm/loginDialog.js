@@ -850,6 +850,9 @@ const LoginDialog = new Lang.Class({
         this._updateSensitivity(true);
         this._promptEntry.set_text('');
 
+        this._sessionList.close();
+        this._promptLoginHint.hide();
+
         this.clearButtons();
         this._workSpinner = null;
         this._signInButton = null;
@@ -1075,8 +1078,6 @@ const LoginDialog = new Lang.Class({
 
     _showUserList: function() {
         this._hidePrompt();
-        this._sessionList.close();
-        this._promptLoginHint.hide();
         this._userList.actor.show();
         this._userList.actor.opacity = 255;
         this._notListedButton.show();
