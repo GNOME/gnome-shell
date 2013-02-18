@@ -848,13 +848,44 @@ StScrollBar StButton#vhandle:active {
 }
 
 .app-display {
-    padding: 0px 16px 32px 32px;
+    padding: 8px;
     spacing: 20px;
 }
 
-.app-display:rtl {
-    padding-left: 16px;
-    padding-right: 32px;
+.app-view-controls {
+    border-radius: 8px;
+    border: 1px solid rgba(245,245,245,0.6);
+    width: 250px;
+}
+
+.app-view-controls-bin {
+    padding-right: 10px;
+}
+
+.app-view-control {
+    padding: 4px 16px;
+    background-gradient-start: rgba(254,254,254,0.1);
+    background-gradient-end: rgba(5,5,6,0.1);
+    background-gradient-direction: vertical;
+}
+
+.app-view-control:first-child {
+    border-radius: 8px 0px 0px 8px;
+}
+
+.app-view-control:last-child {
+    border-radius: 0px 8px 8px 0px;
+}
+
+.app-view-control:checked {
+    background-gradient-start: rgba(0,0,0,0.8);
+    background-gradient-end: rgba(5,5,6,0.1);
+    background-gradient-direction: vertical;
+}
+
+StScrollView.frequent-apps StScrollBar {
+    min-width: 0px;
+    width: 0px;
 }
 
 .app-folder-icon {

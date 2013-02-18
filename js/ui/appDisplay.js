@@ -20,6 +20,7 @@ const DND = imports.ui.dnd;
 const IconGrid = imports.ui.iconGrid;
 const Main = imports.ui.main;
 const Overview = imports.ui.overview;
+const OverviewControls = imports.ui.overviewControls;
 const PopupMenu = imports.ui.popupMenu;
 const Tweener = imports.ui.tweener;
 const Workspace = imports.ui.workspace;
@@ -288,61 +289,174 @@ const AllView = new Lang.Class({
     }
 });
 
+const FrequentView = new Lang.Class({
+    Name: 'FrequentView',
+
+    _init: function() {
+        this._grid = new IconGrid.IconGrid({ xAlign: St.Align.MIDDLE,
+                                             columnLimit: MAX_COLUMNS });
+        let box = new St.BoxLayout({ vertical: true });
+        box.add(this._grid.actor);
+
+        // HACK: IconGrid currently lacks API to only display items that match
+        // the allocation, so rather than clipping away eventual overflow, we
+        // use an unscrollable ScrollView with hidden scrollbars to nicely
+        // fade out cut off items
+        this.actor = new St.ScrollView({ x_fill: true,
+                                         y_fill: false,
+                                         y_align: St.Align.START,
+                                         x_expand: true,
+                                         reactive: false,
+                                         style_class: 'frequent-apps vfade' });
+        this.actor.add_actor(box);
+        this.actor.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+
+        this._usage = Shell.AppUsage.get_default();
+    },
+
+    removeAll: function() {
+        this._grid.removeAll();
+    },
+
+    loadApps: function() {
+        let mostUsed = this._usage.get_most_used ("");
+        for (let i = 0; i < mostUsed.length; i++) {
+            let appIcon = new AppIcon(mostUsed[i]);
+            this._grid.addItem(appIcon.actor, -1);
+        }
+    }
+});
+
+const Views = {
+    FREQUENT: 0,
+    ALL: 1
+};
+
 const AppDisplay = new Lang.Class({
     Name: 'AppDisplay',
 
     _init: function() {
         this._appSystem = Shell.AppSystem.get_default();
         this._appSystem.connect('installed-changed', Lang.bind(this, function() {
-            Main.queueDeferredWork(this._workId);
+            Main.queueDeferredWork(this._allAppsWorkId);
+        }));
+        Main.overview.connect('showing', Lang.bind(this, function() {
+            Main.queueDeferredWork(this._frequentAppsWorkId);
         }));
         global.settings.connect('changed::app-folder-categories', Lang.bind(this, function() {
             Main.queueDeferredWork(this._workId);
         }));
 
-        let box = new St.BoxLayout();
-        this.actor = new St.Bin({ child: box,
-                                  style_class: 'app-display',
-                                  x_fill: true, y_fill: true });
+        this._views = [];
 
-        this._view = new AllView();
-        box.add(this._view.actor, { expand: true });
+        let view, button;
+        view = new FrequentView();
+        button = new St.Button({ label: _("Frequent"),
+                                 style_class: 'app-view-control',
+                                 can_focus: true,
+                                 x_expand: true });
+        this._views[Views.FREQUENT] = { 'view': view, 'control': button };
+
+        view = new AllView();
+        button = new St.Button({ label: _("All"),
+                                 style_class: 'app-view-control',
+                                 can_focus: true,
+                                 x_expand: true });
+        this._views[Views.ALL] = { 'view': view, 'control': button };
+
+        this.actor = new St.BoxLayout({ style_class: 'app-display',
+                                        vertical: true,
+                                        x_expand: true, y_expand: true });
+
+        this._viewStack = new St.Widget({ layout_manager: new Clutter.BinLayout(),
+                                          x_expand: true, y_expand: true });
+        let bin = new St.Bin({ child: this._viewStack,
+                               clip_to_allocation: true,
+                               x_fill: true, y_fill: true });
+        this.actor.add(bin, { expand: true });
+
+        let layout = new Clutter.BoxLayout({ homogeneous: true });
+        this._controls = new St.Widget({ style_class: 'app-view-controls',
+                                         layout_manager: layout });
+        this.actor.add(new St.Bin({ child: this._controls }));
+
+
+        for (let i = 0; i < this._views.length; i++) {
+            this._viewStack.add_actor(this._views[i].view.actor);
+            this._controls.add_actor(this._views[i].control);
+
+            let viewIndex = i;
+            this._views[i].control.connect('clicked', Lang.bind(this,
+                function(actor) {
+                    this._showView(viewIndex);
+                }));
+        }
+        this._showView(Views.FREQUENT);
 
         // We need a dummy actor to catch the keyboard focus if the
         // user Ctrl-Alt-Tabs here before the deferred work creates
         // our real contents
         this._focusDummy = new St.Bin({ can_focus: true });
-        box.add(this._focusDummy);
+        this._viewStack.add_actor(this._focusDummy);
 
-        this._workId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplay));
+        this._allAppsWorkId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplayAllApps));
+        this._frequentAppsWorkId = Main.initializeDeferredWork(this.actor, Lang.bind(this, this._redisplayFrequentApps));
     },
 
-    _removeAll: function() {
-        this._view.removeAll();
+    _showView: function(activeIndex) {
+        for (let i = 0; i < this._views.length; i++) {
+            let actor = this._views[i].view.actor;
+            let params = { time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME,
+                           opacity: (i == activeIndex) ? 255 : 0 };
+            if (i == activeIndex)
+                actor.visible = true;
+            else
+                params.onComplete = function() { actor.hide(); };
+            Tweener.addTween(actor, params);
+
+            if (i == activeIndex)
+                this._views[i].control.add_style_pseudo_class('checked');
+            else
+                this._views[i].control.remove_style_pseudo_class('checked');
+        }
     },
 
     _redisplay: function() {
-        this._removeAll();
+        this._redisplayFrequentApps();
+        this._redisplayAllApps();
+    },
 
-        var tree = this._appSystem.get_tree();
-        var root = tree.get_root_directory();
+    _redisplayFrequentApps: function() {
+        let view = this._views[Views.FREQUENT].view;
 
-        var iter = root.iter();
-        var nextType;
+        view.removeAll();
+        view.loadApps();
+    },
+
+    _redisplayAllApps: function() {
+        let view = this._views[Views.ALL].view;
+
+        view.removeAll();
+
+        let tree = this._appSystem.get_tree();
+        let root = tree.get_root_directory();
+
+        let iter = root.iter();
+        let nextType;
         let folderCategories = global.settings.get_strv('app-folder-categories');
         while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
             if (nextType == GMenu.TreeItemType.DIRECTORY) {
-                var dir = iter.get_directory();
+                let dir = iter.get_directory();
                 if (dir.get_is_nodisplay())
                     continue;
 
                 if (folderCategories.indexOf(dir.get_menu_id()) != -1)
-                    this._view.addFolder(dir);
+                    view.addFolder(dir);
                 else
-                    _loadCategory(dir, this._view);
+                    _loadCategory(dir, view);
             }
         }
-        this._view.loadGrid();
+        view.loadGrid();
 
         if (this._focusDummy) {
             let focused = this._focusDummy.has_key_focus();
