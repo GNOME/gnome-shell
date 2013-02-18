@@ -423,10 +423,10 @@ st_scroll_view_fade_get_property (GObject *object,
   switch (prop_id)
     {
     case PROP_HFADE_OFFSET:
-      g_value_set_float (value, self->vfade_offset);
+      g_value_set_float (value, self->hfade_offset);
       break;
     case PROP_VFADE_OFFSET:
-      g_value_set_float (value, self->hfade_offset);
+      g_value_set_float (value, self->vfade_offset);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
