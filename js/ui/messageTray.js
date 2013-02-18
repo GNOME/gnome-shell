@@ -2792,20 +2792,20 @@ const MessageTray = new Lang.Class({
         return true;
     },
 
-   _onSummaryBoxPointerKeyPress: function(actor, event) {
-       switch (event.get_key_symbol()) {
-           case Clutter.KEY_Down:
-           case Clutter.KEY_Escape:
-               this._setClickedSummaryItem(null);
-               this._updateState();
-               return true;
-           case Clutter.KEY_Delete:
-               this._clickedSummaryItem.source.destroy();
-               this._escapeTray();
-               return true;
-       }
-       return false;
-   },
+    _onSummaryBoxPointerKeyPress: function(actor, event) {
+        switch (event.get_key_symbol()) {
+        case Clutter.KEY_Down:
+        case Clutter.KEY_Escape:
+            this._setClickedSummaryItem(null);
+            this._updateState();
+            return true;
+        case Clutter.KEY_Delete:
+            this._clickedSummaryItem.source.destroy();
+            this._escapeTray();
+            return true;
+        }
+        return false;
+    },
 
     _onSummaryBoxPointerUngrabbed: function() {
         this._summaryBoxPointerState = State.HIDING;
