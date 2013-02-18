@@ -116,6 +116,8 @@ main (int argc, char **argv)
 
   ADD_TEST (test_map_buffer_range, TEST_REQUIREMENT_MAP_WRITE, 0);
 
+  ADD_TEST (test_primitive_and_journal, 0, TEST_KNOWN_FAILURE);
+
   UNPORTED_TEST (test_viewport);
 
   ADD_TEST (test_gles2_context, TEST_REQUIREMENT_GLES2_CONTEXT, 0);
