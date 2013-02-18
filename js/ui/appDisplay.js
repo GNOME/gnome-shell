@@ -86,9 +86,9 @@ const AlphabeticalView = new Lang.Class({
         let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
 
         let offset = 0;
-        let vfade = this.actor.get_effect("vfade");
+        let vfade = this.actor.get_effect("fade");
         if (vfade)
-            offset = vfade.fade_offset;
+            offset = vfade.vfade_offset;
 
         // If this gets called as part of a right-click, the actor
         // will be needs_allocation, and so "icon.y" would return 0
