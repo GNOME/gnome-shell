@@ -71,6 +71,8 @@ let _cssStylesheet = null;
 let _overridesSettings = null;
 
 function _sessionUpdated() {
+    _loadDefaultStylesheet();
+
     wm.setCustomKeybindingHandler('panel-main-menu',
                                   Shell.KeyBindingMode.NORMAL |
                                   Shell.KeyBindingMode.OVERVIEW,
@@ -106,8 +108,6 @@ function start() {
 }
 
 function startSession() {
-    sessionMode.connect('updated', _loadDefaultStylesheet);
-
     shellDBusService = new ShellDBus.GnomeShell();
     shellMountOpDBusService = new ShellMountOperation.GnomeShellMountOpHandler();
 
