@@ -48,6 +48,7 @@ const IMStatus = {
 
 
 const SystemdLoginSessionIface = <interface name='org.freedesktop.login1.Session'>
+    <property name="Id" type="s" access="read"/>
     <property name="Remote" type="b" access="read"/>
     <property name="Class" type="s" access="read"/>
     <property name="Type" type="s" access="read"/>
@@ -960,8 +961,7 @@ const UserMenuButton = new Lang.Class({
                         if (proxy.Class != "user")
                             continue;
 
-                        if (userName == GLib.get_user_name() &&
-                            !proxy.Remote && proxy.Type == "x11")
+                        if (proxy.Id == GLib.getenv('XDG_SESSION_ID'))
                             continue;
 
                         sessions.push({ user: this._userManager.get_user(userName),
