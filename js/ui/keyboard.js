@@ -185,6 +185,10 @@ const Keyboard = new Lang.Class({
     _destroyKeyboard: function() {
         if (this._keyboardNotifyId)
             this._keyboard.disconnect(this._keyboardNotifyId);
+        if (this._keyboardGroupAddedId)
+            this._keyboard.disconnect(this._keyboardGroupAddedId);
+        if (this._keyboardGroupRemovedId)
+            this._keyboard.disconnect(this._keyboardGroupRemovedId);
         if (this._focusNotifyId)
             global.stage.disconnect(this._focusNotifyId);
         this._keyboard = null;
@@ -215,6 +219,8 @@ const Keyboard = new Lang.Class({
         this.actor.text_direction = Clutter.TextDirection.LTR;
 
         this._keyboardNotifyId = this._keyboard.connect('notify::active-group', Lang.bind(this, this._onGroupChanged));
+        this._keyboardGroupAddedId = this._keyboard.connect('group-added', Lang.bind(this, this._onGroupAdded));
+        this._keyboardGroupRemovedId = this._keyboard.connect('group-removed', Lang.bind(this, this._onGroupRemoved));
         this._focusNotifyId = global.stage.connect('notify::key-focus', Lang.bind(this, this._onKeyFocusChanged));
 
         this._createSource();
@@ -247,26 +253,30 @@ const Keyboard = new Lang.Class({
                                              Lang.bind(this, function() { this.Show(time); }));
     },
 
+    _createLayersForGroup: function (gname) {
+        let group = this._keyboard.get_group(gname);
+        group.connect('notify::active-level', Lang.bind(this, this._onLevelChanged));
+        let layers = {};
+        let levels = group.get_levels();
+        for (let j = 0; j < levels.length; ++j) {
+            let lname = levels[j];
+            let level = group.get_level(lname);
+            let layout = new St.BoxLayout({ style_class: 'keyboard-layout',
+                                                 vertical: true });
+            this._loadRows(level, layout);
+            layers[lname] = layout;
+            this.actor.add(layout, { x_fill: false });
+
+            layout.hide();
+        }
+        return layers;
+    },
+
     _addKeys: function () {
         let groups = this._keyboard.get_groups();
         for (let i = 0; i < groups.length; ++i) {
              let gname = groups[i];
-             let group = this._keyboard.get_group(gname);
-             group.connect('notify::active-level', Lang.bind(this, this._onLevelChanged));
-             let layers = {};
-             let levels = group.get_levels();
-             for (let j = 0; j < levels.length; ++j) {
-                 let lname = levels[j];
-                 let level = group.get_level(lname);
-                 let layout = new St.BoxLayout({ style_class: 'keyboard-layout',
-                                                 vertical: true });
-                 this._loadRows(level, layout);
-                 layers[lname] = layout;
-                 this.actor.add(layout, { x_fill: false });
-
-                 layout.hide();
-             }
-             this._groups[gname] = layers;
+             this._groups[gname] = this._createLayersForGroup(gname);
         }
 
         this._setActiveLayer();
@@ -399,6 +409,16 @@ const Keyboard = new Lang.Class({
     _onGroupChanged: function () {
         this._setActiveLayer();
         this._redraw();
+    },
+
+    _onGroupAdded: function (keyboard, gname) {
+        if (!(gname in this._groups))
+            this._groups[gname] = this._createLayersForGroup(gname);
+    },
+
+    _onGroupRemoved: function (keyboard, gname) {
+        // Since _createLayersForGroup is costly, don't remove the
+        // actors from _groups, so they can be reused.
     },
 
     _setActiveLayer: function () {

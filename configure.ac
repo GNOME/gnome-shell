@@ -108,6 +108,7 @@ PKG_CHECK_MODULES(BROWSER_PLUGIN, gio-2.0 >= $GIO_MIN_VERSION json-glib-1.0 >= 0
 PKG_CHECK_MODULES(TRAY, gtk+-3.0)
 PKG_CHECK_MODULES(GVC, libpulse >= $PULSE_MIN_VERS libpulse-mainloop-glib gobject-2.0)
 PKG_CHECK_MODULES(DESKTOP_SCHEMAS, gsettings-desktop-schemas >= 3.7.4)
+PKG_CHECK_MODULES(CARIBOU, caribou-1.0 >= 0.4.8)
 
 AC_MSG_CHECKING([for bluetooth support])
 PKG_CHECK_EXISTS([gnome-bluetooth-1.0 >= 3.1.0],
