@@ -632,10 +632,6 @@ StScrollBar StButton#vhandle:active {
     padding-bottom: 32px;
 }
 
-.window-caption {
-    spacing: 25px;
-}
-
 .workspace-thumbnails-background {
     border: 1px solid rgba(128, 128, 128, 0.4);
     border-right: 0px;
@@ -663,11 +659,16 @@ StScrollBar StButton#vhandle:active {
 }
 
 .window-caption {
+    spacing: 25px;
     background: rgba(0,0,0,0.5);
     border-radius: 8px;
     padding: 4px 12px;
     -shell-caption-spacing: 12px;
     border: 2px solid rgba(0, 0, 0, 0);
+}
+
+.window-caption:hover {
+    border: 2px solid rgba(255, 255, 255, 0);
 }
 
 .window-close, .notification-close {
@@ -679,10 +680,6 @@ StScrollBar StButton#vhandle:active {
 
 .window-close {
     -shell-close-overlap: 16px;
-}
-
-.window-caption:hover {
-    border: 2px solid rgba(255, 255, 255, 0);
 }
 
 .window-clone-border {
