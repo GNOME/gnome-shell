@@ -341,6 +341,21 @@ const ControlsManager = new Lang.Class({
         this._viewSelector = viewSelector;
         this._viewSelector.connect('page-changed', Lang.bind(this, this._setVisibility));
         this._viewSelector.connect('page-empty', Lang.bind(this, this._onPageEmpty));
+
+        Main.overview.connect('item-drag-begin', Lang.bind(this,
+            function() {
+                let activePage = this._viewSelector.getActivePage();
+                if (activePage != ViewSelector.ViewPage.WINDOWS)
+                    this._viewSelector.fadeHalf();
+            }));
+        Main.overview.connect('item-drag-end', Lang.bind(this,
+            function() {
+                this._viewSelector.fadeIn();
+            }));
+        Main.overview.connect('item-drag-cancelled', Lang.bind(this,
+            function() {
+                this._viewSelector.fadeIn();
+            }));
     },
 
     _setVisibility: function() {

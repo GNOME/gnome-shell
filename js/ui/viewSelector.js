@@ -502,6 +502,22 @@ const ViewSelector = new Lang.Class({
             return ViewPage.APPS;
         else
             return ViewPage.SEARCH;
+    },
+
+    fadeIn: function() {
+        let actor = this._activePage;
+        Tweener.addTween(actor, { opacity: 255,
+                                  time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
+                                  transition: 'easeInQuad'
+                                });
+    },
+
+    fadeHalf: function() {
+        let actor = this._activePage;
+        Tweener.addTween(actor, { opacity: 128,
+                                  time: OverviewControls.SIDE_CONTROLS_ANIMATION_TIME / 2,
+                                  transition: 'easeOutQuad'
+                                });
     }
 });
 Signals.addSignalMethods(ViewSelector.prototype);
