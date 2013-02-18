@@ -379,7 +379,7 @@ const LayoutManager = new Lang.Class({
 
         if (this._trayBarrier) {
             this._trayBarrier.destroy();
-            this._trayPressure = null;
+            this._trayBarrier = null;
         }
 
         if (this._trayPressure) {
