@@ -3647,6 +3647,28 @@ meta_window_is_fullscreen (MetaWindow *window)
 }
 
 /**
+ * meta_window_is_screen_sized:
+ *
+ * Return value: %TRUE if the window is occupies the
+ *               the whole screen (all monitors).
+ */
+gboolean
+meta_window_is_screen_sized (MetaWindow *window)
+{
+  MetaRectangle window_rect;
+  int screen_width, screen_height;
+
+  meta_screen_get_size (window->screen, &screen_width, &screen_height);
+  meta_window_get_outer_rect (window, &window_rect);
+
+  if (window_rect.x == 0 && window_rect.y == 0 &&
+      window_rect.width == screen_width && window_rect.height == screen_height)
+    return TRUE;
+
+  return FALSE;
+}
+
+/**
  * meta_window_is_monitor_sized:
  *
  * Return value: %TRUE if the window is occupies an entire monitor or
@@ -3658,18 +3680,14 @@ meta_window_is_monitor_sized (MetaWindow *window)
   if (window->fullscreen)
     return TRUE;
 
+  if (meta_window_is_screen_sized (window))
+    return TRUE;
+
   if (window->override_redirect)
     {
       MetaRectangle window_rect, monitor_rect;
-      int screen_width, screen_height;
 
-      meta_screen_get_size (window->screen, &screen_width, &screen_height);
       meta_window_get_outer_rect (window, &window_rect);
-
-      if (window_rect.x == 0 && window_rect.y == 0 &&
-          window_rect.width == screen_width && window_rect.height == screen_height)
-        return TRUE;
-
       meta_screen_get_monitor_geometry (window->screen, window->monitor->number, &monitor_rect);
 
       if (meta_rectangle_equal (&window_rect, &monitor_rect))
