@@ -1766,11 +1766,11 @@ const MessageTray = new Lang.Class({
         this._grabHelper.grab({ actor: this._contextMenu.actor,
                                 grabFocus: true,
                                 onUngrab: Lang.bind(this, function () {
-                                    this._contextMenu.close();
+                                    this._contextMenu.close(BoxPointer.PopupAnimation.FULL);
                                     this._unlock();
                                 })
         });
-        this._contextMenu.open();
+        this._contextMenu.open(BoxPointer.PopupAnimation.FULL);
     },
 
     close: function() {
