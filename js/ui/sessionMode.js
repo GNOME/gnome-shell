@@ -158,12 +158,7 @@ function listModes() {
 const SessionMode = new Lang.Class({
     Name: 'SessionMode',
 
-    _init: function() {
-        global.connect('notify::session-mode', Lang.bind(this, this._sync));
-        this._modes = _modes;
-        this._modeStack = [DEFAULT_MODE];
-        this._sync();
-
+    init: function() {
         _getModes(Lang.bind(this, function(modes) {
             this._modes = modes;
             let primary = modes[global.session_mode] &&
@@ -171,6 +166,8 @@ const SessionMode = new Lang.Class({
             let mode = primary ? global.session_mode : 'user';
             this._modeStack = [mode];
             this._sync();
+
+            this.emit('sessions-loaded');
         }));
     },
 
