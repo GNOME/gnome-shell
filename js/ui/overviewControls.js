@@ -125,14 +125,12 @@ const SlidingControl = new Lang.Class({
     _getTranslation: function() {
         let child = this.actor.get_first_child();
         let direction = getRtlSlideDirection(this.layout.slideDirection, child);
-
-        let slide = this.getSlide();
         let visibleWidth = this.getVisibleWidth();
 
         if (direction == SlideDirection.LEFT)
-            return ((slide - 1) * visibleWidth);
+            return - visibleWidth;
         else
-            return ((1 - slide) * visibleWidth);
+            return visibleWidth;
     },
 
     _updateTranslation: function(slidingIn) {
