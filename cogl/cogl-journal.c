@@ -1316,6 +1316,10 @@ _cogl_journal_flush (CoglJournal *journal)
                                  ~(COGL_FRAMEBUFFER_STATE_MODELVIEW |
                                    COGL_FRAMEBUFFER_STATE_CLIP));
 
+  /* We need to mark the current modelview state of the framebuffer as
+   * dirty because we are going to manually replace it */
+  ctx->current_draw_buffer_changes |= COGL_FRAMEBUFFER_STATE_MODELVIEW;
+
   state.ctx = ctx;
   state.journal = journal;
 
