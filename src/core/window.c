@@ -3715,6 +3715,7 @@ meta_window_is_screen_sized (MetaWindow *window)
 
 /**
  * meta_window_is_monitor_sized:
+ * @window: a #MetaWindow
  *
  * Return value: %TRUE if the window is occupies an entire monitor or
  *               the whole screen.

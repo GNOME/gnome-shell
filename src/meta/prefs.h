@@ -380,12 +380,13 @@ typedef enum
  * @keycode: keycode
  * @modifiers: modifiers
  */
-typedef struct
+typedef struct _MetaKeyCombo MetaKeyCombo;
+struct _MetaKeyCombo
 {
   unsigned int keysym;
   unsigned int keycode;
   MetaVirtualModifier modifiers;
-} MetaKeyCombo;
+};
 
 /**
  * MetaKeyHandlerFunc:

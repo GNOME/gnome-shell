@@ -23,6 +23,12 @@
  * 02111-1307, USA.
  */
 
+/**
+ * SECTION:keybindings
+ * @Title: MetaKeybinding
+ * @Short_Description: Key bindings
+ */
+
 #define _GNU_SOURCE
 #define _SVID_SOURCE /* for putenv() */
 

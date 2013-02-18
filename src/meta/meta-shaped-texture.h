@@ -48,8 +48,15 @@ struct _MetaShapedTextureClass
   ClutterActorClass parent_class;
 };
 
+/**
+ * MetaShapedTexture:
+ *
+ * The <structname>MetaShapedTexture</structname> structure contains
+ * only private data and should be accessed using the provided API
+ */
 struct _MetaShapedTexture
 {
+  /*< private >*/
   ClutterActor parent;
 
   MetaShapedTexturePrivate *priv;

@@ -1,5 +1,11 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+/**
+ * SECTION:compositor
+ * @Title: MetaCompositor
+ * @Short_Description: Compositor API
+ */
+
 #include <config.h>
 
 #include <clutter/x11/clutter-x11.h>

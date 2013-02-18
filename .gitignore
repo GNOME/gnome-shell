@@ -80,10 +80,13 @@ doc/reference/*.bak
 doc/reference/*.hierarchy
 doc/reference/*.interfaces
 doc/reference/*.prerequisites
-doc/reference/*.sgml
 doc/reference/*.signals
 doc/reference/*.stamp
-doc/reference/*.txt
-doc/reference/*.types
 doc/reference/html/
 doc/reference/xml/
+doc/reference/meta-decl-list.txt
+doc/reference/meta-decl.txt
+doc/reference/meta-overrides.txt
+doc/reference/meta-undeclared.txt
+doc/reference/meta-undocumented.txt
+doc/reference/meta-unused.txt
