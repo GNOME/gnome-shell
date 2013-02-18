@@ -109,6 +109,7 @@ struct _StEntryPrivate
 
   gboolean      hint_visible;
   gboolean      capslock_warning_shown;
+  gboolean      has_ibeam;
 };
 
 static guint entry_signals[LAST_SIGNAL] = { 0, };
@@ -667,6 +668,13 @@ st_entry_set_cursor (StEntry  *entry,
 
   dpy = clutter_x11_get_default_display ();
   stage = clutter_actor_get_stage (actor);
+
+  if (stage == NULL)
+    {
+      g_warn_if_fail (!entry->priv->has_ibeam);
+      return;
+    }
+
   wid = clutter_x11_get_stage_window (CLUTTER_STAGE (stage));
 
   if (ibeam == None)
@@ -676,6 +684,8 @@ st_entry_set_cursor (StEntry  *entry,
     XDefineCursor (dpy, wid, ibeam);
   else
     XUndefineCursor (dpy, wid);
+
+  entry->priv->has_ibeam = use_ibeam;
 }
 
 static gboolean
@@ -686,6 +696,15 @@ st_entry_crossing_event (ClutterActor         *actor,
     st_entry_set_cursor (ST_ENTRY (actor), (event->type == CLUTTER_ENTER));
 
   return FALSE;
+}
+
+static void
+st_entry_unmap (ClutterActor *actor)
+{
+  if (ST_ENTRY (actor)->priv->has_ibeam)
+    st_entry_set_cursor (ST_ENTRY (actor), FALSE);
+
+  CLUTTER_ACTOR_CLASS (st_entry_parent_class)->unmap (actor);
 }
 
 static void
@@ -706,6 +725,7 @@ st_entry_class_init (StEntryClass *klass)
   actor_class->get_preferred_width = st_entry_get_preferred_width;
   actor_class->get_preferred_height = st_entry_get_preferred_height;
   actor_class->allocate = st_entry_allocate;
+  actor_class->unmap = st_entry_unmap;
 
   actor_class->key_press_event = st_entry_key_press_event;
   actor_class->key_focus_in = st_entry_key_focus_in;
