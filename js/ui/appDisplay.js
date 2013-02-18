@@ -31,6 +31,7 @@ const MENU_POPUP_TIMEOUT = 600;
 const SCROLL_TIME = 0.1;
 const MAX_COLUMNS = 6;
 
+const INACTIVE_GRID_OPACITY = 77;
 const FOLDER_SUBICON_FRACTION = .4;
 
 
@@ -162,6 +163,8 @@ const AllView = new Lang.Class({
         let box = new St.BoxLayout({ vertical: true });
         this._stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         this._stack.add_actor(this._grid.actor);
+        this._eventBlocker = new St.Widget({ x_expand: true, y_expand: true });
+        this._stack.add_actor(this._eventBlocker);
         box.add(this._stack, { y_align: St.Align.START, expand: true });
 
         this.actor = new St.ScrollView({ x_fill: true,
@@ -174,9 +177,23 @@ const AllView = new Lang.Class({
         let action = new Clutter.PanAction({ interpolate: true });
         action.connect('pan', Lang.bind(this, this._onPan));
         this.actor.add_action(action);
+
+        this._clickAction = new Clutter.ClickAction();
+        this._clickAction.connect('clicked', Lang.bind(this, function() {
+            if (!this._currentPopup)
+                return;
+
+            let [x, y] = this._clickAction.get_coords();
+            let actor = global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
+            if (!this._currentPopup.actor.contains(actor))
+                this._currentPopup.popdown();
+        }));
+        this._eventBlocker.add_action(this._clickAction);
     },
 
     _onPan: function(action) {
+        this._clickAction.release();
+
         let [dist, dx, dy] = action.get_motion_delta(0);
         let adjustment = this.actor.vscroll.adjustment;
         adjustment.value -= (dy / this.actor.height) * adjustment.page_size;
@@ -227,6 +244,9 @@ const AllView = new Lang.Class({
         this._stack.add_actor(popup.actor);
         popup.connect('open-state-changed', Lang.bind(this,
             function(popup, isOpen) {
+                this._eventBlocker.reactive = isOpen;
+                this._currentPopup = isOpen ? popup : null;
+                this._updateIconOpacities(isOpen);
                 if (isOpen)
                     this._ensureIconVisible(popup.actor);
             }));
@@ -256,6 +276,15 @@ const AllView = new Lang.Class({
                          { value: value,
                            time: SCROLL_TIME,
                            transition: 'easeOutQuad' });
+    },
+
+    _updateIconOpacities: function(folderOpen) {
+        for (let id in this._items) {
+            if (folderOpen && !this._items[id].actor.checked)
+                this._items[id].actor.opacity = INACTIVE_GRID_OPACITY;
+            else
+                this._items[id].actor.opacity = 255;
+        }
     }
 });
 
