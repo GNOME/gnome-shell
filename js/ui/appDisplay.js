@@ -386,7 +386,7 @@ const AppIcon = new Lang.Class({
 const AppWellIcon = new Lang.Class({
     Name: 'AppWellIcon',
 
-    _init : function(app, iconParams, onActivateOverride) {
+    _init : function(app, iconParams) {
         this.app = app;
         this.actor = new St.Button({ style_class: 'app-well-app',
                                      reactive: true,
@@ -401,8 +401,6 @@ const AppWellIcon = new Lang.Class({
 
         this.actor.label_actor = this.icon.label;
 
-        // A function callback to override the default "app.activate()"; used by preferences
-        this._onActivateOverride = onActivateOverride;
         this.actor.connect('button-press-event', Lang.bind(this, this._onButtonPress));
         this.actor.connect('clicked', Lang.bind(this, this._onClicked));
         this.actor.connect('popup-menu', Lang.bind(this, this._onKeyboardPopupMenu));
@@ -539,16 +537,13 @@ const AppWellIcon = new Lang.Class({
         this.emit('launching');
         let modifiers = event.get_state();
 
-        if (this._onActivateOverride) {
-            this._onActivateOverride(event);
+        if (modifiers & Clutter.ModifierType.CONTROL_MASK
+            && this.app.state == Shell.AppState.RUNNING) {
+            this.app.open_new_window(-1);
         } else {
-            if (modifiers & Clutter.ModifierType.CONTROL_MASK
-                && this.app.state == Shell.AppState.RUNNING) {
-                this.app.open_new_window(-1);
-            } else {
-                this.app.activate();
-            }
+            this.app.activate();
         }
+
         Main.overview.hide();
     },
 
