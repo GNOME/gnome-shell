@@ -5,6 +5,7 @@ const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
 const St = imports.gi.St;
 
+const BoxPointer = imports.ui.boxpointer;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
@@ -67,7 +68,7 @@ const EntryMenu = new Lang.Class({
 	}
     },
 
-    open: function() {
+    open: function(animate) {
         this._updatePasteItem();
         this._updateCopyItem();
         if (this._passwordItem)
@@ -77,13 +78,13 @@ const EntryMenu = new Lang.Class({
         if (!this.actor.navigate_focus(null, direction, false))
             this.actor.grab_key_focus();
 
-        this.parent();
+        this.parent(animate);
         this._entry.add_style_pseudo_class('focus');
     },
 
-    close: function() {
+    close: function(animate) {
         this._entry.grab_key_focus();
-        this.parent();
+        this.parent(animate);
     },
 
     _updateCopyItem: function() {
@@ -136,12 +137,12 @@ function _setMenuAlignment(entry, stageX) {
 
 function _onButtonPressEvent(actor, event, entry) {
     if (entry.menu.isOpen) {
-        entry.menu.close();
+        entry.menu.close(BoxPointer.PopupAnimation.FULL);
         return true;
     } else if (event.get_button() == 3) {
         let [stageX, stageY] = event.get_coords();
         _setMenuAlignment(entry, stageX);
-        entry.menu.open();
+        entry.menu.open(BoxPointer.PopupAnimation.FULL);
         return true;
     }
     return false;
@@ -151,7 +152,7 @@ function _onPopup(actor, entry) {
     let [success, textX, textY, lineHeight] = entry.clutter_text.position_to_coords(-1);
     if (success)
         entry.menu.setSourceAlignment(textX / entry.width);
-    entry.menu.open();
+    entry.menu.open(BoxPointer.PopupAnimation.FULL);
 };
 
 function addContextMenu(entry, params) {
