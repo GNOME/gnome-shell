@@ -294,34 +294,15 @@ const DashSlider = new Lang.Class({
     }
 });
 
-const SlidingControlContainer = new Lang.Class({
-    Name: 'SlidingControlContainer',
-    Extends: St.Widget,
-
-    _init: function(child, entryBin) {
-        this._layout = new Clutter.BoxLayout({ vertical: true });
-        this.parent({ layout_manager: this._layout });
-
-        child.x_expand = true;
-        this.add_actor(child);
-
-        let entryClone = new Shell.GenericContainer();
-        entryClone.connect('get-preferred-height', function(actor, forWidth, alloc) {
-            [alloc.min_size, alloc.natural_size] = [entryBin.height, entryBin.height];
-        });
-        this.add_actor(entryClone);
-    }
-});
-
 const ControlsManager = new Lang.Class({
     Name: 'ControlsManager',
 
-    _init: function(dash, thumbnails, viewSelector, entryBin) {
+    _init: function(dash, thumbnails, viewSelector) {
         this._dashSlider = new DashSlider(dash);
-        this.dashActor = new SlidingControlContainer(this._dashSlider.actor, entryBin);
+        this.dashActor = this._dashSlider.actor;
 
         this._thumbnailsSlider = new ThumbnailsSlider(thumbnails);
-        this.thumbnailsActor = new SlidingControlContainer(this._thumbnailsSlider.actor, entryBin);
+        this.thumbnailsActor = this._thumbnailsSlider.actor;
 
         this._viewSelector = viewSelector;
         this._viewSelector.connect('page-changed', Lang.bind(this, this._setVisibility));

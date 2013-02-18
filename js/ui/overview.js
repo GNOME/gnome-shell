@@ -231,8 +231,7 @@ const Overview = new Lang.Class({
         this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
         this._controls = new OverviewControls.ControlsManager(this._dash,
                                                               this._thumbnailsBox,
-                                                              this._viewSelector,
-                                                              this._searchEntryBin);
+                                                              this._viewSelector);
 
         // Pack all the actors into the group
         this._group.add_actor(this._controls.dashActor);

@@ -629,6 +629,7 @@ StScrollBar StButton#vhandle:active {
 
 #overview {
     spacing: 24px;
+    padding-bottom: 32px;
 }
 
 .window-caption {
