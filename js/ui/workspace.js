@@ -974,57 +974,6 @@ const UnalignedLayoutStrategy = new Lang.Class({
     }
 });
 
-const GridLayoutStrategy = new Lang.Class({
-    Name: 'GridLayoutStrategy',
-    Extends: LayoutStrategy,
-
-    _computeRowSizes: function(layout) {
-        let { rows: rows, scale: scale } = layout;
-
-        let gridWidth = layout.numColumns * layout.maxWindowWidth;
-        let hspacing = (layout.numColumns - 1) * this._columnSpacing;
-        for (let i = 0; i < rows.length; i++) {
-            let row = rows[i];
-            row.fullWidth = layout.gridWidth;
-            row.fullHeight = layout.maxWindowHeight;
-
-            row.width = row.fullWidth * scale + hspacing;
-            row.height = row.fullHeight * scale;
-            row.cellWidth = layout.maxWindowWidth * scale;
-        }
-    },
-
-    computeLayout: function(windows, layout) {
-        let { numRows: numRows, numColumns: numColumns } = layout;
-        let rows = [];
-        let windowIdx = 0;
-
-        let maxWindowWidth = 0;
-        let maxWindowHeight = 0;
-        for (let i = 0; i < numRows; i++) {
-            let row = this._newRow();
-            rows.push(row);
-            for (; windowIdx < windows.length; windowIdx++) {
-                if (row.windows.length >= numColumns)
-                    break;
-
-                let window = windows[windowIdx];
-                row.windows.push(window);
-
-                let s = this._computeWindowScale(window, 1);
-                maxWindowWidth = Math.max(maxWindowWidth, window.actor.width * s);
-                maxWindowHeight = Math.max(maxWindowHeight, window.actor.height * s);
-            }
-        }
-
-        layout.rows = rows;
-        layout.maxColumns = numColumns;
-        layout.gridWidth = numColumns * maxWindowWidth;
-        layout.gridHeight = numRows * maxWindowHeight;
-        layout.maxWindowWidth = maxWindowWidth;
-        layout.maxWindowHeight = maxWindowHeight;
-    }
-});
 
 /**
  * @metaWorkspace: a #Meta.Workspace, or null
@@ -1650,8 +1599,7 @@ const Workspace = new Lang.Class({
             if (numColumns == lastLayout.numColumns)
                 break;
 
-            let strategyClass = numRows > 2 ? GridLayoutStrategy : UnalignedLayoutStrategy;
-            let strategy = new strategyClass(this._monitor, rowSpacing, columnSpacing);
+            let strategy = new UnalignedLayoutStrategy(this._monitor, rowSpacing, columnSpacing);
 
             let layout = { area: area, strategy: strategy, numRows: numRows, numColumns: numColumns };
             strategy.computeLayout(windows, layout);
