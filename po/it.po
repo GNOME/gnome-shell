@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.7.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-18 14:44+0100\n"
-"PO-Revision-Date: 2013-02-18 14:57+0100\n"
+"POT-Creation-Date: 2013-02-19 11:03+0100\n"
+"PO-Revision-Date: 2013-02-19 11:07+0100\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -322,7 +322,9 @@ msgstr "Collega la finestra modale a quella genitore"
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:41
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr "Questa chiave scavalca la chiave in org.gnome.mutter quando si esegue GNOME Shell."
+msgstr ""
+"Questa chiave scavalca la chiave in org.gnome.mutter quando si esegue GNOME "
+"Shell."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Arrangement of buttons on the titlebar"
@@ -332,11 +334,13 @@ msgstr "Disposizione dei pulsanti nella barra del titolo"
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
-msgstr "Questa chiave scavalca la chiave in org.gnome.desktop.wm.preferences quando si esegue GNOME Shell."
+msgstr ""
+"Questa chiave scavalca la chiave in org.gnome.desktop.wm.preferences quando "
+"si esegue GNOME Shell."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
+msgstr "Abilita il tiling di bordo quando si trascinano le finestre sui bordi dello schermo"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:45
 msgid "Workspaces are managed dynamically"
@@ -378,32 +382,32 @@ msgstr "Accesso"
 msgid "Not listed?"
 msgstr "Non elencato?"
 
-#: ../js/gdm/loginDialog.js:967 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:970 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:375
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:178
-#: ../js/ui/userMenu.js:931
+#: ../js/ui/userMenu.js:932
 msgid "Cancel"
 msgstr "Annulla"
 
-#: ../js/gdm/loginDialog.js:983
+#: ../js/gdm/loginDialog.js:986
 msgctxt "button"
 msgid "Sign In"
 msgstr "Accedi"
 
-#: ../js/gdm/loginDialog.js:983
+#: ../js/gdm/loginDialog.js:986
 msgid "Next"
 msgstr "Avanti"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:1091 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:1095 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Nome utente: "
 
-#: ../js/gdm/loginDialog.js:1387
+#: ../js/gdm/loginDialog.js:1391
 msgid "Login Window"
 msgstr "Finestra di accesso"
 
@@ -412,8 +416,8 @@ msgstr "Finestra di accesso"
 msgid "Power"
 msgstr "Risparmio energetico"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:693 ../js/ui/userMenu.js:697
-#: ../js/ui/userMenu.js:813
+#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:694 ../js/ui/userMenu.js:698
+#: ../js/ui/userMenu.js:814
 msgid "Suspend"
 msgstr "Sospendi"
 
@@ -421,8 +425,8 @@ msgstr "Sospendi"
 msgid "Restart"
 msgstr "Riavvia"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:695
-#: ../js/ui/userMenu.js:697 ../js/ui/userMenu.js:812 ../js/ui/userMenu.js:935
+#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:696
+#: ../js/ui/userMenu.js:698 ../js/ui/userMenu.js:813 ../js/ui/userMenu.js:936
 msgid "Power Off"
 msgstr "Spegni"
 
@@ -461,15 +465,15 @@ msgstr "Esecuzione di «%s» non riuscita:"
 msgid "All"
 msgstr "Tutte"
 
-#: ../js/ui/appDisplay.js:667
+#: ../js/ui/appDisplay.js:624
 msgid "New Window"
 msgstr "Nuova finestra"
 
-#: ../js/ui/appDisplay.js:670 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:627 ../js/ui/dash.js:286
 msgid "Remove from Favorites"
 msgstr "Rimuovi dai preferiti"
 
-#: ../js/ui/appDisplay.js:671
+#: ../js/ui/appDisplay.js:628
 msgid "Add to Favorites"
 msgstr "Aggiungi ai preferiti"
 
@@ -1015,14 +1019,14 @@ msgstr "Motivo sconosciuto"
 msgid "Windows"
 msgstr "Finestre"
 
-#: ../js/ui/dash.js:253 ../js/ui/dash.js:291
+#: ../js/ui/dash.js:250 ../js/ui/dash.js:288
 msgid "Show Applications"
 msgstr "Mostra applicazioni"
 
 # cruscotto?!?!?!?!?!?!?
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/dash.js:427
+#: ../js/ui/dash.js:418
 msgid "Dash"
 msgstr "Dash"
 
@@ -1148,7 +1152,7 @@ msgstr "Installa"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Scaricare e installare «%s» da extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:601 ../js/ui/status/keyboard.js:314
+#: ../js/ui/keyboard.js:621 ../js/ui/status/keyboard.js:314
 #: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Tastiera"
@@ -1212,22 +1216,22 @@ msgid "Remove"
 msgstr "Rimuovi"
 
 #: ../js/ui/messageTray.js:1520
-msgid "Clear"
-msgstr "Pulisci"
+msgid "Clear Messages"
+msgstr "Pulisci messaggi"
 
 #: ../js/ui/messageTray.js:1547
 msgid "Notification Settings"
 msgstr "Impostazioni notifiche"
 
-#: ../js/ui/messageTray.js:1733
+#: ../js/ui/messageTray.js:1725
 msgid "No Messages"
 msgstr "Nessun messaggio"
 
-#: ../js/ui/messageTray.js:1809
+#: ../js/ui/messageTray.js:1806
 msgid "Message Tray"
 msgstr "Cassetto messaggi"
 
-#: ../js/ui/messageTray.js:2877
+#: ../js/ui/messageTray.js:2881
 msgid "System Information"
 msgstr "Informazione di sistema"
 
@@ -1248,7 +1252,7 @@ msgstr "Panoramica"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:219
+#: ../js/ui/overview.js:220
 msgid "Type to search…"
 msgstr "Digita per cercare…"
 
@@ -1262,7 +1266,7 @@ msgstr "Esci"
 msgid "Activities"
 msgstr "Attività"
 
-#: ../js/ui/panel.js:983
+#: ../js/ui/panel.js:982
 msgid "Top Bar"
 msgstr "Barra superiore"
 
@@ -1303,7 +1307,7 @@ msgid_plural "%d new notifications"
 msgstr[0] "%d nuova notifica"
 msgstr[1] "%d nuove notifiche"
 
-#: ../js/ui/screenShield.js:469 ../js/ui/userMenu.js:804
+#: ../js/ui/screenShield.js:469 ../js/ui/userMenu.js:805
 msgid "Lock"
 msgstr "Blocca"
 
@@ -1334,19 +1338,19 @@ msgstr "Ricerca…"
 msgid "No results."
 msgstr "Nessun risultato."
 
-#: ../js/ui/shellEntry.js:26
+#: ../js/ui/shellEntry.js:29
 msgid "Copy"
 msgstr "Copia"
 
-#: ../js/ui/shellEntry.js:31
+#: ../js/ui/shellEntry.js:34
 msgid "Paste"
 msgstr "Incolla"
 
-#: ../js/ui/shellEntry.js:102
+#: ../js/ui/shellEntry.js:105
 msgid "Show Text"
 msgstr "Mostra testo"
 
-#: ../js/ui/shellEntry.js:104
+#: ../js/ui/shellEntry.js:107
 msgid "Hide Text"
 msgstr "Nascondi testo"
 
@@ -1778,56 +1782,56 @@ msgstr "Accedi come altro utente"
 msgid "Unlock Window"
 msgstr "Sblocca finestra"
 
-#: ../js/ui/userMenu.js:191
+#: ../js/ui/userMenu.js:192
 msgid "Available"
 msgstr "Disponibile"
 
-#: ../js/ui/userMenu.js:194
+#: ../js/ui/userMenu.js:195
 msgid "Busy"
 msgstr "Non disponibile"
 
-#: ../js/ui/userMenu.js:197
+#: ../js/ui/userMenu.js:198
 msgid "Invisible"
 msgstr "Invisibile"
 
-#: ../js/ui/userMenu.js:200
+#: ../js/ui/userMenu.js:201
 msgid "Away"
 msgstr "Assente"
 
-#: ../js/ui/userMenu.js:203
+#: ../js/ui/userMenu.js:204
 msgid "Idle"
 msgstr "Inattivo"
 
-#: ../js/ui/userMenu.js:206
+#: ../js/ui/userMenu.js:207
 msgid "Offline"
 msgstr "Fuori rete"
 
-#: ../js/ui/userMenu.js:778
+#: ../js/ui/userMenu.js:779
 msgid "Notifications"
 msgstr "Notifiche"
 
-#: ../js/ui/userMenu.js:786
+#: ../js/ui/userMenu.js:787
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: ../js/ui/userMenu.js:794
+#: ../js/ui/userMenu.js:795
 msgid "Switch User"
 msgstr "Cambia utente"
 
-#: ../js/ui/userMenu.js:799
+#: ../js/ui/userMenu.js:800
 msgid "Log Out"
 msgstr "Termina sessione"
 
-#: ../js/ui/userMenu.js:819
+#: ../js/ui/userMenu.js:820
 msgid "Install Updates & Restart"
 msgstr "Installa aggiornamenti e riavvia"
 
 # accorciato, altrimenti non si legge...
-#: ../js/ui/userMenu.js:837
+#: ../js/ui/userMenu.js:838
 msgid "Your chat status will be set to busy"
 msgstr "Stato per chat impostato a non disponibile"
 
-#: ../js/ui/userMenu.js:838
+#: ../js/ui/userMenu.js:839
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1836,20 +1840,20 @@ msgstr ""
 "online è stato modificato in modo che gli altri sappiano che i loro messaggi "
 "potrebbero non essere notati."
 
-#: ../js/ui/userMenu.js:884
+#: ../js/ui/userMenu.js:885
 msgid "Other users are logged in."
 msgstr "Sono connessi altri utenti."
 
-#: ../js/ui/userMenu.js:889
+#: ../js/ui/userMenu.js:890
 msgid "Shutting down might cause them to lose unsaved work."
 msgstr "L'arresto potrebbe causare la perdita del loro lavoro non salvato."
 
-#: ../js/ui/userMenu.js:915
+#: ../js/ui/userMenu.js:916
 #, c-format
 msgid "%s (remote)"
 msgstr "%s (remoto)"
 
-#: ../js/ui/userMenu.js:917
+#: ../js/ui/userMenu.js:918
 #, c-format
 msgid "%s (console)"
 msgstr "%s (console)"
@@ -1942,6 +1946,9 @@ msgstr "La password non può essere vuota"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Il dialogo di autenticazione è stato annullato dall'utente"
+
+#~ msgid "Clear"
+#~ msgstr "Pulisci"
 
 #~ msgctxt "event list time"
 #~ msgid "%H:%M"
