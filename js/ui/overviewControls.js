@@ -6,6 +6,7 @@ const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
 const Main = imports.ui.main;
+const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 const ViewSelector = imports.ui.viewSelector;
 
@@ -88,11 +89,14 @@ const SlideLayout = new Lang.Class({
 const SlidingControl = new Lang.Class({
     Name: 'SlidingControl',
 
-    _init: function() {
+    _init: function(params) {
+        params = Params.parse(params, { slideDirection: SlideDirection.LEFT });
+
         this.visible = true;
         this.inDrag = false;
 
         this.layout = new SlideLayout();
+        this.layout.slideDirection = params.slideDirection;
         this.actor = new St.Widget({ layout_manager: this.layout,
                                      clip_to_allocation: true });
 
@@ -222,9 +226,7 @@ const ThumbnailsSlider = new Lang.Class({
     Extends: SlidingControl,
 
     _init: function(thumbnailsBox) {
-        this.parent();
-
-        this.layout.slideDirection = SlideDirection.RIGHT;
+        this.parent({ slideDirection: SlideDirection.RIGHT });
 
         this._thumbnailsBox = thumbnailsBox;
 
@@ -296,9 +298,7 @@ const DashSlider = new Lang.Class({
     Extends: SlidingControl,
 
     _init: function(dash) {
-        this.parent();
-
-        this.layout.slideDirection = SlideDirection.LEFT;
+        this.parent({ slideDirection: SlideDirection.LEFT });
 
         this._dash = dash;
 
