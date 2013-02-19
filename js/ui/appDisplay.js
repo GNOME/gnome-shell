@@ -89,12 +89,21 @@ const AlphabeticalView = new Lang.Class({
             return null;
 
         let itemIcon = this._createItemIcon(item);
-        let pos = Util.insertSorted(this._allItems, item, this._compareItems);
-        this._grid.addItem(itemIcon.actor, pos);
-
+        this._allItems.push(item);
         this._items[id] = itemIcon;
 
         return itemIcon;
+    },
+
+    loadGrid: function() {
+        this._allItems.sort(this._compareItems);
+
+        for (let i = 0; i < this._allItems.length; i++) {
+            let id = this._getItemId(this._allItems[i]);
+            if (!id)
+                continue;
+            this._grid.addItem(this._items[id].actor);
+        }
     }
 });
 
@@ -276,6 +285,7 @@ const AppDisplay = new Lang.Class({
                 _loadCategory(dir, this._view);
             }
         }
+        this._view.loadGrid();
 
         if (this._focusDummy) {
             let focused = this._focusDummy.has_key_focus();
@@ -367,6 +377,7 @@ const FolderIcon = new Lang.Class({
         this.view = new FolderView();
         this.view.actor.reactive = false;
         _loadCategory(dir, this.view);
+        this.view.loadGrid();
 
         this.actor.connect('clicked', Lang.bind(this,
             function() {
