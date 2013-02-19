@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2010,2011,2012 Intel Corporation.
+ * Copyright (C) 2010,2011,2012,2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -228,6 +228,10 @@ _cogl_buffer_gl_map_range (CoglBuffer *buffer,
 
   gl_target = convert_bind_target_to_gl_target (target);
 
+  if ((hints & COGL_BUFFER_MAP_HINT_DISCARD_RANGE) &&
+      offset == 0 && size >= buffer->size)
+    hints |= COGL_BUFFER_MAP_HINT_DISCARD;
+
   /* If the map buffer range extension is supported then we will
    * always use it even if we are mapping the full range because the
    * normal mapping function doesn't support passing the discard
@@ -235,6 +239,7 @@ _cogl_buffer_gl_map_range (CoglBuffer *buffer,
   if (ctx->glMapBufferRange)
     {
       GLbitfield gl_access = 0;
+      CoglBool should_recreate_store = !buffer->store_created;
 
       if ((access & COGL_BUFFER_ACCESS_READ))
         gl_access |= GL_MAP_READ_BIT;
@@ -242,11 +247,25 @@ _cogl_buffer_gl_map_range (CoglBuffer *buffer,
         gl_access |= GL_MAP_WRITE_BIT;
 
       if ((hints & COGL_BUFFER_MAP_HINT_DISCARD))
-        gl_access |= GL_MAP_INVALIDATE_BUFFER_BIT;
-      if ((hints & COGL_BUFFER_MAP_HINT_DISCARD_RANGE))
+        {
+          /* glMapBufferRange generates an error if you pass the
+           * discard hint along with asking for read access. However
+           * it can make sense to ask for both if write access is also
+           * requested so that the application can immediately read
+           * back what it just wrote. To work around the restriction
+           * in GL we just recreate the buffer storage in that case
+           * which is an alternative way to indicate that the buffer
+           * contents can be discarded. */
+          if ((access & COGL_BUFFER_ACCESS_READ))
+            should_recreate_store = TRUE;
+          else
+            gl_access |= GL_MAP_INVALIDATE_BUFFER_BIT;
+        }
+      else if ((hints & COGL_BUFFER_MAP_HINT_DISCARD_RANGE) &&
+               !(access & COGL_BUFFER_ACCESS_READ))
         gl_access |= GL_MAP_INVALIDATE_RANGE_BIT;
 
-      if (!buffer->store_created)
+      if (should_recreate_store)
         {
           if (!recreate_store (buffer, error))
             {
@@ -278,9 +297,7 @@ _cogl_buffer_gl_map_range (CoglBuffer *buffer,
        * lazily allows the user of the CoglBuffer to set a hint before the
        * store is created. */
       if (!buffer->store_created ||
-          (hints & COGL_BUFFER_MAP_HINT_DISCARD) ||
-          ((hints & COGL_BUFFER_MAP_HINT_DISCARD_RANGE) &&
-           offset == 0 && size >= buffer->size))
+          (hints & COGL_BUFFER_MAP_HINT_DISCARD))
         {
           if (!recreate_store (buffer, error))
             {
