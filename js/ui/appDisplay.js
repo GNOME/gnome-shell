@@ -63,6 +63,9 @@ const AlphabeticalView = new Lang.Class({
         this._grid = new IconGrid.IconGrid({ xAlign: St.Align.MIDDLE,
                                              columnLimit: MAX_COLUMNS });
 
+        // Standard hack for ClutterBinLayout
+        this._grid.actor.x_expand = true;
+
         this._items = {};
         this._allItems = [];
     },

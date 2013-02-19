@@ -241,7 +241,7 @@ const IconGrid = new Lang.Class({
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
 
-        let [nColumns, usedWidth] = this._computeLayout(availWidth);
+        let [nColumns, usedWidth, spacing] = this._computeLayout(availWidth);
 
         let leftPadding;
         switch(this._xAlign) {
@@ -294,10 +294,10 @@ const IconGrid = new Lang.Class({
             }
 
             if (columnIndex == 0) {
-                y += this._vItemSize + this._spacing;
+                y += this._vItemSize + spacing;
                 x = box.x1 + leftPadding;
             } else {
-                x += this._hItemSize + this._spacing;
+                x += this._hItemSize + spacing;
             }
         }
     },
@@ -313,16 +313,25 @@ const IconGrid = new Lang.Class({
     _computeLayout: function (forWidth) {
         let nColumns = 0;
         let usedWidth = 0;
+        let spacing = this._spacing;
+
+        if (this._colLimit) {
+            let itemWidth = this._hItemSize * this._colLimit;
+            let emptyArea = forWidth - itemWidth;
+            spacing = Math.max(this._spacing, emptyArea / (2 * this._colLimit));
+            spacing = Math.round(spacing);
+        }
+
         while ((this._colLimit == null || nColumns < this._colLimit) &&
                (usedWidth + this._hItemSize <= forWidth)) {
-            usedWidth += this._hItemSize + this._spacing;
+            usedWidth += this._hItemSize + spacing;
             nColumns += 1;
         }
 
         if (nColumns > 0)
-            usedWidth -= this._spacing;
+            usedWidth -= spacing;
 
-        return [nColumns, usedWidth];
+        return [nColumns, usedWidth, spacing];
     },
 
     _onStyleChanged: function() {
