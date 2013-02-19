@@ -101,9 +101,10 @@ const SlidingControl = new Lang.Class({
         Main.overview.connect('item-drag-begin', Lang.bind(this, this._onDragBegin));
         Main.overview.connect('item-drag-end', Lang.bind(this, this._onDragEnd));
         Main.overview.connect('item-drag-cancelled', Lang.bind(this, this._onDragEnd));
-        Main.overview.connect('window-drag-begin', Lang.bind(this, this._onDragBegin));
-        Main.overview.connect('window-drag-cancelled', Lang.bind(this, this._onDragEnd));
-        Main.overview.connect('window-drag-end', Lang.bind(this, this._onDragEnd));
+
+        Main.overview.connect('window-drag-begin', Lang.bind(this, this._onWindowDragBegin));
+        Main.overview.connect('window-drag-cancelled', Lang.bind(this, this._onWindowDragEnd));
+        Main.overview.connect('window-drag-end', Lang.bind(this, this._onWindowDragEnd));
     },
 
     getSlide: function() {
@@ -162,6 +163,14 @@ const SlidingControl = new Lang.Class({
         this.actor.translation_x = 0;
     },
 
+    _onWindowDragBegin: function() {
+        this._onDragBegin();
+    },
+
+    _onWindowDragEnd: function() {
+        this._onDragEnd();
+    },
+
     _onDragBegin: function() {
         this.inDrag = true;
         this.actor.translation_x = 0;
@@ -171,6 +180,20 @@ const SlidingControl = new Lang.Class({
     _onDragEnd: function() {
         this.inDrag = false;
         this.updateSlide();
+    },
+
+    fadeIn: function() {
+        Tweener.addTween(this.actor, { opacity: 255,
+                                       time: SIDE_CONTROLS_ANIMATION_TIME / 2,
+                                       transition: 'easeInQuad'
+                                     });
+    },
+
+    fadeHalf: function() {
+        Tweener.addTween(this.actor, { opacity: 128,
+                                       time: SIDE_CONTROLS_ANIMATION_TIME / 2,
+                                       transition: 'easeOutQuad'
+                                     });
     },
 
     slideIn: function() {
@@ -294,6 +317,14 @@ const DashSlider = new Lang.Class({
             return 1;
         else
             return 0;
+    },
+
+    _onWindowDragBegin: function() {
+        this.fadeHalf();
+    },
+
+    _onWindowDragEnd: function() {
+        this.fadeIn();
     }
 });
 

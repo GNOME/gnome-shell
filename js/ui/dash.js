@@ -24,9 +24,6 @@ const DASH_ITEM_HOVER_TIMEOUT = 300;
 function getAppFromSource(source) {
     if (source instanceof AppDisplay.AppWellIcon) {
         return source.app;
-    } else if (source.metaWindow) {
-        let tracker = Shell.WindowTracker.get_default();
-        return tracker.get_window_app(source.metaWindow);
     } else {
         return null;
     }
@@ -415,12 +412,6 @@ const Dash = new Lang.Class({
                               Lang.bind(this, this._onDragEnd));
         Main.overview.connect('item-drag-cancelled',
                               Lang.bind(this, this._onDragCancelled));
-        Main.overview.connect('window-drag-begin',
-                              Lang.bind(this, this._onDragBegin));
-        Main.overview.connect('window-drag-cancelled',
-                              Lang.bind(this, this._onDragCancelled));
-        Main.overview.connect('window-drag-end',
-                              Lang.bind(this, this._onDragEnd));
 
         // Translators: this is the name of the dock/favorites area on
         // the left of the overview
