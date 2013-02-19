@@ -958,7 +958,7 @@ const UserMenuButton = new Lang.Class({
                                                             'org.freedesktop.login1',
                                                             sessionPath);
 
-                        if (proxy.Class != "user")
+                        if (proxy.Class != 'user')
                             continue;
 
                         if (proxy.Id == GLib.getenv('XDG_SESSION_ID'))
@@ -966,8 +966,8 @@ const UserMenuButton = new Lang.Class({
 
                         sessions.push({ user: this._userManager.get_user(userName),
                                         username: userName,
-                                        info: { "type": proxy.Type,
-                                                "remote": proxy.Remote}
+                                        info: { type: proxy.Type,
+                                                remote: proxy.Remote }
                         });
 
                         // limit the number of entries
