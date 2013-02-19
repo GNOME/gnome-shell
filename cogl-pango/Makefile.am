@@ -32,7 +32,7 @@ libcogl_pango_la_LIBADD = $(top_builddir)/cogl/libcogl.la
 libcogl_pango_la_LIBADD += $(COGL_DEP_LIBS) $(COGL_PANGO_DEP_LIBS) $(COGL_EXTRA_LDFLAGS)
 libcogl_pango_la_LDFLAGS = \
 	-export-dynamic \
-	-export-symbols-regex "^cogl_pango_.*"
+	-export-symbols-regex "^cogl_pango_.*" \
 	-no-undefined \
 	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@
 
