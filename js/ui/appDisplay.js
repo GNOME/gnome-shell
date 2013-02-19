@@ -50,13 +50,55 @@ function _loadCategory(dir, view) {
 
 const AlphabeticalView = new Lang.Class({
     Name: 'AlphabeticalView',
+    Abstract: true,
 
     _init: function() {
         this._grid = new IconGrid.IconGrid({ xAlign: St.Align.MIDDLE,
                                              columnLimit: MAX_COLUMNS });
 
-        this._appIcons = {}; // desktop file id
-        this._allApps = [];
+        this._items = {};
+        this._allItems = [];
+    },
+
+    removeAll: function() {
+        this._grid.removeAll();
+        this._items = {};
+        this._allItems = [];
+    },
+
+    _getItemId: function(item) {
+        throw new Error('Not implemented');
+    },
+
+    _createItemIcon: function(item) {
+        throw new Error('Not implemented');
+    },
+
+    _compareItems: function(a, b) {
+        throw new Error('Not implemented');
+    },
+
+    _addItem: function(item) {
+        let id = this._getItemId(item);
+        if (this._items[id] !== undefined)
+            return null;
+
+        let itemIcon = this._createItemIcon(item);
+        let pos = Util.insertSorted(this._allItems, item, this._compareItems);
+        this._grid.addItem(itemIcon.actor, pos);
+
+        this._items[id] = itemIcon;
+
+        return itemIcon;
+    }
+});
+
+const AllView = new Lang.Class({
+    Name: 'AllView',
+    Extends: AlphabeticalView,
+
+    _init: function() {
+        this.parent();
 
         let box = new St.BoxLayout({ vertical: true });
         box.add(this._grid.actor, { y_align: St.Align.START, expand: true });
@@ -80,25 +122,23 @@ const AlphabeticalView = new Lang.Class({
         return false;
     },
 
-    removeAll: function() {
-        this._grid.removeAll();
-        this._appIcons = {};
-        this._allApps = [];
+    _getItemId: function(item) {
+        return item.get_id();
+    },
+
+    _createItemIcon: function(item) {
+        return new AppIcon(item);
+    },
+
+    _compareItems: function(a, b) {
+        return a.compare_by_name(b);
     },
 
     addApp: function(app) {
-        var id = app.get_id();
-        if (this._appIcons[id] !== undefined)
-            return;
-
-        let appIcon = new AppIcon(app);
-        let pos = Util.insertSorted(this._allApps, app, function(a, b) {
-            return a.compare_by_name(b);
-        });
-        this._grid.addItem(appIcon.actor, pos);
-        appIcon.actor.connect('key-focus-in', Lang.bind(this, this._ensureIconVisible));
-
-        this._appIcons[id] = appIcon;
+        let appIcon = this._addItem(app);
+        if (appIcon)
+            appIcon.actor.connect('key-focus-in',
+                                  Lang.bind(this, this._ensureIconVisible));
     },
 
     _ensureIconVisible: function(icon) {
@@ -142,7 +182,7 @@ const AppDisplay = new Lang.Class({
                                   style_class: 'app-display',
                                   x_fill: true, y_fill: true });
 
-        this._view = new AlphabeticalView();
+        this._view = new AllView();
         box.add(this._view.actor, { expand: true });
 
         // We need a dummy actor to catch the keyboard focus if the
