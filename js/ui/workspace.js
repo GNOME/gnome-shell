@@ -1349,6 +1349,11 @@ const Workspace = new Lang.Class({
 
         overlay.connect('show-close-button', Lang.bind(this, this._onShowOverlayClose));
 
+        if (this._windows.length == 0)
+            clone.setStackAbove(null);
+        else
+            clone.setStackAbove(this._windows[this._windows.length - 1].actor);
+
         this._windows.push(clone);
         this._windowOverlays.push(overlay);
 
