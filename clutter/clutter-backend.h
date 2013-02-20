@@ -31,7 +31,7 @@
 #include <cairo.h>
 #include <pango/pango.h>
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
+#ifdef COGL_ENABLE_EXPERIMENTAL_API
 #include <cogl/cogl.h>
 #endif
 

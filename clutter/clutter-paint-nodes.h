@@ -118,10 +118,10 @@ typedef struct _ClutterPipelineNodeClass        ClutterPipelineNodeClass;
 CLUTTER_AVAILABLE_IN_1_10
 GType clutter_pipeline_node_get_type (void) G_GNUC_CONST;
 
-#if defined(COGL_ENABLE_EXPERIMENTAL_2_0_API) && defined(CLUTTER_ENABLE_EXPERIMENTAL_API)
+#if defined(COGL_ENABLE_EXPERIMENTAL_API) && defined(CLUTTER_ENABLE_EXPERIMENTAL_API)
 CLUTTER_AVAILABLE_IN_1_10
 ClutterPaintNode *      clutter_pipeline_node_new       (CoglPipeline          *pipeline);
-#endif /* COGL_ENABLE_EXPERIMENTAL_2_0_API && CLUTTER_ENABLE_EXPERIMENTAL_API */
+#endif /* COGL_ENABLE_EXPERIMENTAL_API && CLUTTER_ENABLE_EXPERIMENTAL_API */
 
 #define CLUTTER_TYPE_TEXT_NODE                  (clutter_text_node_get_type ())
 #define CLUTTER_TEXT_NODE(obj)                  (G_TYPE_CHECK_INSTANCE_CAST ((obj), CLUTTER_TYPE_TEXT_NODE, ClutterTextNode))

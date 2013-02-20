@@ -66,14 +66,14 @@ void                    clutter_paint_node_add_texture_rectangle        (Clutter
                                                                          float                  y_1,
                                                                          float                  x_2,
                                                                          float                  y_2);
-#if defined(COGL_ENABLE_EXPERIMENTAL_2_0_API) && defined(CLUTTER_ENABLE_EXPERIMENTAL_API)
+#if defined(COGL_ENABLE_EXPERIMENTAL_API) && defined(CLUTTER_ENABLE_EXPERIMENTAL_API)
 CLUTTER_AVAILABLE_IN_1_10
 void                    clutter_paint_node_add_path                     (ClutterPaintNode      *node,
                                                                          CoglPath              *path);
 CLUTTER_AVAILABLE_IN_1_10
 void                    clutter_paint_node_add_primitive                (ClutterPaintNode      *node,
                                                                          CoglPrimitive         *primitive);
-#endif /* COGL_ENABLE_EXPERIMENTAL_2_0_API && CLUTTER_ENABLE_EXPERIMENTAL_API */
+#endif /* COGL_ENABLE_EXPERIMENTAL_API && CLUTTER_ENABLE_EXPERIMENTAL_API */
 
 /**
  * CLUTTER_VALUE_HOLDS_PAINT_NODE:
