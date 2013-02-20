@@ -1065,6 +1065,9 @@ const Panel = new Lang.Class({
     },
 
     _onButtonPress: function(actor, event) {
+        if (Main.modalCount > 0)
+            return false;
+
         if (event.get_source() != actor)
             return false;
 
