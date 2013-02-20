@@ -204,10 +204,10 @@ const IconGrid = new Lang.Class({
             // later we'll allocate as many children as fit the parent
             return;
 
-        let children = this._grid.get_children();
+        let nChildren = this._grid.get_n_children();
         let nColumns = this._colLimit ? Math.min(this._colLimit,
-                                                 children.length)
-                                      : children.length;
+                                                 nChildren)
+                                      : nChildren;
         let totalSpacing = Math.max(0, nColumns - 1) * this._spacing;
         // Kind of a lie, but not really an issue right now.  If
         // we wanted to support some sort of hidden/overflow that would
