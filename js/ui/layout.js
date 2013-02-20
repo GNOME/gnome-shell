@@ -577,7 +577,6 @@ const LayoutManager = new Lang.Class({
     },
 
     _startupAnimationGreeter: function() {
-        this._freezeUpdateRegions();
         Tweener.addTween(this.panelBox,
                          { translation_y: 0,
                            time: STARTUP_ANIMATION_TIME,
@@ -587,7 +586,6 @@ const LayoutManager = new Lang.Class({
     },
 
     _startupAnimationSession: function() {
-        this._freezeUpdateRegions();
         this._createPrimaryBackground();
         Tweener.addTween(this.uiGroup,
                          { scale_x: 1,
@@ -615,7 +613,6 @@ const LayoutManager = new Lang.Class({
             this._createSecondaryBackgrounds();
 
         this.emit('panel-box-changed');
-        this._thawUpdateRegions();
     },
 
     showKeyboard: function () {
@@ -832,20 +829,9 @@ const LayoutManager = new Lang.Class({
         if (Main.sessionMode.isGreeter)
             return;
 
-        if (!this._updateRegionIdle && !this._freezeUpdateCount)
+        if (!this._updateRegionIdle)
             this._updateRegionIdle = Mainloop.idle_add(Lang.bind(this, this._updateRegions),
                                                        Meta.PRIORITY_BEFORE_REDRAW);
-    },
-
-    _freezeUpdateRegions: function() {
-        if (this._updateRegionIdle)
-            this._updateRegions();
-        this._freezeUpdateCount++;
-    },
-
-    _thawUpdateRegions: function() {
-        this._freezeUpdateCount--;
-        this._queueUpdateRegions();
     },
 
     _getWindowActorsForWorkspace: function(workspace) {
