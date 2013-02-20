@@ -20,6 +20,7 @@ const Tweener = imports.ui.tweener;
 const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 const STARTUP_ANIMATION_TIME = 0.5;
 const KEYBOARD_ANIMATION_TIME = 0.15;
+const BACKGROUND_FADE_ANIMATION_TIME = 1.0;
 const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
 // The message tray takes this much pressure
