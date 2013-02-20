@@ -38,7 +38,6 @@ stage {
 
 /* small */
 .app-well-menu,
-.contact-details-status,
 .run-dialog-error-label {
     font-size: 9pt;
 }
@@ -851,10 +850,6 @@ StScrollBar StButton#vhandle:active {
 
 .app-view-controls {
     width: 250px;
-}
-
-.app-view-controls-bin {
-    padding-right: 10px;
 }
 
 .app-view-control {
