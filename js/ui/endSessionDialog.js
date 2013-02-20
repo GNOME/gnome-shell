@@ -379,7 +379,12 @@ const EndSessionDialog = new Lang.Class({
             let signal = dialogContent.confirmButtons[i].signal;
             let label = dialogContent.confirmButtons[i].label;
             buttons.push({ action: Lang.bind(this, function() {
-                                       this._confirm(signal);
+                                       this.close(true);
+                                       let signalId = this.connect('closed',
+                                                                   Lang.bind(this, function() {
+                                                                       this.disconnect(signalId);
+                                                                       this._confirm(signal);
+                                                                   }));
                                    }),
                            label: label });
         }
@@ -387,9 +392,11 @@ const EndSessionDialog = new Lang.Class({
         this.setButtons(buttons);
     },
 
-    close: function() {
+    close: function(skipSignal) {
         this.parent();
-        this._dbusImpl.emit_signal('Closed', null);
+
+        if (!skipSignal)
+            this._dbusImpl.emit_signal('Closed', null);
     },
 
     cancel: function() {
