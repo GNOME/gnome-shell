@@ -881,6 +881,7 @@ const LoginDialog = new Lang.Class({
     _askQuestion: function(verifier, serviceName, question, passwordChar) {
         this._promptLabel.set_text(question);
 
+        this._updateSensitivity(true);
         this._promptEntry.set_text('');
         this._promptEntry.clutter_text.set_password_char(passwordChar);
 
