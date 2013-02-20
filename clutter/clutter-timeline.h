@@ -148,6 +148,10 @@ void                            clutter_timeline_set_delay                      
                                                                                  guint                     msecs);
 guint                           clutter_timeline_get_delay                      (ClutterTimeline          *timeline);
 guint                           clutter_timeline_get_delta                      (ClutterTimeline          *timeline);
+CLUTTER_AVAILABLE_IN_1_14
+void                            clutter_timeline_add_marker                     (ClutterTimeline          *timeline,
+                                                                                 const gchar              *marker_name,
+                                                                                 gdouble                   progress);
 void                            clutter_timeline_add_marker_at_time             (ClutterTimeline          *timeline,
                                                                                  const gchar              *marker_name,
                                                                                  guint                     msecs);

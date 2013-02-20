@@ -1484,6 +1484,7 @@ clutter_threads_init
 clutter_threads_leave
 clutter_threads_remove_repaint_func
 clutter_threads_set_lock_functions
+clutter_timeline_add_marker
 clutter_timeline_add_marker_at_time
 clutter_timeline_advance
 clutter_timeline_advance_to_marker

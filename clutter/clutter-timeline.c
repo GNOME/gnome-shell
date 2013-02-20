@@ -169,8 +169,14 @@ struct _ClutterTimelinePrivate
 
 typedef struct {
   gchar *name;
-  guint msecs;
   GQuark quark;
+
+  union {
+    guint msecs;
+    gdouble progress;
+  } data;
+
+  guint is_relative : 1;
 } TimelineMarker;
 
 enum
@@ -205,14 +211,29 @@ enum
 static guint timeline_signals[LAST_SIGNAL] = { 0, };
 
 static TimelineMarker *
-timeline_marker_new (const gchar *name,
-                     guint        msecs)
+timeline_marker_new_time (const gchar *name,
+                          guint        msecs)
 {
-  TimelineMarker *marker = g_slice_new0 (TimelineMarker);
+  TimelineMarker *marker = g_slice_new (TimelineMarker);
 
   marker->name = g_strdup (name);
   marker->quark = g_quark_from_string (marker->name);
-  marker->msecs = msecs;
+  marker->is_relative = FALSE;
+  marker->data.msecs = msecs;
+
+  return marker;
+}
+
+static TimelineMarker *
+timeline_marker_new_progress (const gchar *name,
+                              gdouble      progress)
+{
+  TimelineMarker *marker = g_slice_new (TimelineMarker);
+
+  marker->name = g_strdup (name);
+  marker->quark = g_quark_from_string (marker->name);
+  marker->is_relative = TRUE;
+  marker->data.progress = CLAMP (progress, 0.0, 1.0);
 
   return marker;
 }
@@ -256,9 +277,16 @@ clutter_timeline_add_marker_internal (ClutterTimeline *timeline,
   old_marker = g_hash_table_lookup (priv->markers_by_name, marker->name);
   if (old_marker != NULL)
     {
+      guint msecs;
+
+      if (old_marker->is_relative)
+        msecs = old_marker->data.progress * priv->duration;
+      else
+        msecs = old_marker->data.msecs;
+
       g_warning ("A marker named '%s' already exists at time %d",
                  old_marker->name,
-                 old_marker->msecs);
+                 msecs);
       timeline_marker_free (marker);
       return;
     }
@@ -315,12 +343,13 @@ parse_timeline_markers (JsonArray *array,
   object = json_node_get_object (element);
 
   if (!(json_object_has_member (object, "name") &&
-        json_object_has_member (object, "time")))
+        (json_object_has_member (object, "time") ||
+         json_object_has_member (object, "progress"))))
     {
       g_warning ("The marker definition in a ClutterTimeline description "
-                 "must be an object with the 'name' and 'time' members, "
-                 "but the element %d of the 'markers' array does not have "
-                 "either",
+                 "must be an object with the 'name' and either the 'time' "
+                 "or the 'progress' members, but the element %d of the "
+                 "'markers' array does not have any of them.",
                  index_);
       return;
     }
@@ -333,8 +362,12 @@ parse_timeline_markers (JsonArray *array,
       markers = NULL;
     }
 
-  marker = timeline_marker_new (json_object_get_string_member (object, "name"),
-                                json_object_get_int_member (object, "time"));
+  if (json_object_has_member (object, "time"))
+    marker = timeline_marker_new_time (json_object_get_string_member (object, "name"),
+                                       json_object_get_int_member (object, "time"));
+  else
+    marker = timeline_marker_new_progress (json_object_get_string_member (object, "name"),
+                                           json_object_get_double_member (object, "progress"));
 
   markers = g_list_prepend (markers, marker);
 
@@ -858,8 +891,8 @@ have_passed_time (const struct CheckIfMarkerHitClosure *data,
 
       /* Otherwise it's just a simple test if the time is in range of
          the previous time and the new time */
-      return (msecs > data->new_time - data->delta
-              && msecs <= data->new_time);
+      return (msecs > data->new_time - data->delta &&
+              msecs <= data->new_time);
     }
   else
     {
@@ -872,8 +905,8 @@ have_passed_time (const struct CheckIfMarkerHitClosure *data,
 
       /* Otherwise it's just a simple test if the time is in range of
          the previous time and the new time */
-      return (msecs >= data->new_time
-              && msecs < data->new_time + data->delta);
+      return (msecs >= data->new_time &&
+              msecs < data->new_time + data->delta);
     }
 }
 
@@ -882,14 +915,21 @@ check_if_marker_hit (const gchar *name,
                      TimelineMarker *marker,
                      struct CheckIfMarkerHitClosure *data)
 {
-  if (have_passed_time (data, marker->msecs))
+  gint msecs;
+
+  if (marker->is_relative)
+    msecs = (gdouble) data->duration * marker->data.progress;
+  else
+    msecs = marker->data.msecs;
+
+  if (have_passed_time (data, msecs))
     {
       CLUTTER_NOTE (SCHEDULER, "Marker '%s' reached", name);
 
       g_signal_emit (data->timeline, timeline_signals[MARKER_REACHED],
                      marker->quark,
                      name,
-                     marker->msecs);
+                     msecs);
     }
 }
 
@@ -1724,20 +1764,59 @@ _clutter_timeline_do_tick (ClutterTimeline *timeline,
 }
 
 /**
+ * clutter_timeline_add_marker:
+ * @timeline: a #ClutterTimeline
+ * @marker_name: the unique name for this marker
+ * @progress: the normalized value of the position of the martke
+ *
+ * Adds a named marker that will be hit when the timeline has reached
+ * the specified @progress.
+ *
+ * Markers are unique string identifiers for a given position on the
+ * timeline. Once @timeline reaches the given @progress of its duration,
+ * if will emit a ::marker-reached signal for each marker attached to
+ * that particular point.
+ *
+ * A marker can be removed with clutter_timeline_remove_marker(). The
+ * timeline can be advanced to a marker using
+ * clutter_timeline_advance_to_marker().
+ *
+ * See also: clutter_timeline_add_marker_at_time()
+ *
+ * Since: 1.14
+ */
+void
+clutter_timeline_add_marker (ClutterTimeline *timeline,
+                             const gchar     *marker_name,
+                             gdouble          progress)
+{
+  TimelineMarker *marker;
+
+  g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
+  g_return_if_fail (marker_name != NULL);
+
+  marker = timeline_marker_new_progress (marker_name, progress);
+  clutter_timeline_add_marker_internal (timeline, marker);
+}
+
+/**
  * clutter_timeline_add_marker_at_time:
  * @timeline: a #ClutterTimeline
  * @marker_name: the unique name for this marker
  * @msecs: position of the marker in milliseconds
  *
  * Adds a named marker that will be hit when the timeline has been
- * running for @msecs milliseconds. Markers are unique string
- * identifiers for a given time. Once @timeline reaches
- * @msecs, it will emit a ::marker-reached signal for each marker
- * attached to that time.
+ * running for @msecs milliseconds.
+ *
+ * Markers are unique string identifiers for a given position on the
+ * timeline. Once @timeline reaches the given @msecs, it will emit
+ * a ::marker-reached signal for each marker attached to that position.
  *
  * A marker can be removed with clutter_timeline_remove_marker(). The
  * timeline can be advanced to a marker using
  * clutter_timeline_advance_to_marker().
+ *
+ * See also: clutter_timeline_add_marker()
  *
  * Since: 0.8
  */
@@ -1752,12 +1831,13 @@ clutter_timeline_add_marker_at_time (ClutterTimeline *timeline,
   g_return_if_fail (marker_name != NULL);
   g_return_if_fail (msecs <= clutter_timeline_get_duration (timeline));
 
-  marker = timeline_marker_new (marker_name, msecs);
+  marker = timeline_marker_new_time (marker_name, msecs);
   clutter_timeline_add_marker_internal (timeline, marker);
 }
 
 struct CollectMarkersClosure
 {
+  guint duration;
   guint msecs;
   GArray *markers;
 };
@@ -1767,7 +1847,14 @@ collect_markers (const gchar *key,
                  TimelineMarker *marker,
                  struct CollectMarkersClosure *data)
 {
-  if (marker->msecs == data->msecs)
+  guint msecs;
+
+  if (marker->is_relative)
+    msecs = marker->data.progress * data->duration;
+  else
+    msecs = marker->data.msecs;
+
+  if (msecs == data->msecs)
     {
       gchar *name_copy = g_strdup (key);
       g_array_append_val (data->markers, name_copy);
@@ -1827,6 +1914,7 @@ clutter_timeline_list_markers (ClutterTimeline *timeline,
     {
       struct CollectMarkersClosure data;
 
+      data.duration = priv->duration;
       data.msecs = msecs;
       data.markers = g_array_new (TRUE, FALSE, sizeof (gchar *));
 
@@ -1864,6 +1952,7 @@ clutter_timeline_advance_to_marker (ClutterTimeline *timeline,
 {
   ClutterTimelinePrivate *priv;
   TimelineMarker *marker;
+  guint msecs;
 
   g_return_if_fail (CLUTTER_IS_TIMELINE (timeline));
   g_return_if_fail (marker_name != NULL);
@@ -1877,13 +1966,18 @@ clutter_timeline_advance_to_marker (ClutterTimeline *timeline,
     }
 
   marker = g_hash_table_lookup (priv->markers_by_name, marker_name);
-  if (!marker)
+  if (marker == NULL)
     {
       g_warning ("No marker named '%s' found.", marker_name);
       return;
     }
 
-  clutter_timeline_advance (timeline, marker->msecs);
+  if (marker->is_relative)
+    msecs = marker->data.progress * priv->duration;
+  else
+    msecs = marker->data.msecs;
+
+  clutter_timeline_advance (timeline, msecs);
 }
 
 /**

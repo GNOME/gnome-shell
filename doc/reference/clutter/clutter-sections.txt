@@ -746,6 +746,7 @@ clutter_timeline_get_progress
 clutter_timeline_is_playing
 
 <SUBSECTION>
+clutter_timeline_add_marker
 clutter_timeline_add_marker_at_time
 clutter_timeline_has_marker
 clutter_timeline_list_markers

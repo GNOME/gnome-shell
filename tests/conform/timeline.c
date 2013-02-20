@@ -343,15 +343,17 @@ timeline_markers_from_script (TestConformSimpleFixture *fixture,
   g_assert (clutter_timeline_has_marker (timeline, "marker1"));
   g_assert (!clutter_timeline_has_marker (timeline, "foo"));
   g_assert (clutter_timeline_has_marker (timeline, "marker2"));
+  g_assert (clutter_timeline_has_marker (timeline, "marker3"));
 
   markers = clutter_timeline_list_markers (timeline, -1, &n_markers);
-  g_assert_cmpint (n_markers, ==, 3);
+  g_assert_cmpint (n_markers, ==, 4);
   g_strfreev (markers);
 
   markers = clutter_timeline_list_markers (timeline, 500, &n_markers);
-  g_assert_cmpint (n_markers, ==, 1);
+  g_assert_cmpint (n_markers, ==, 2);
   g_assert (markers != NULL);
-  g_assert_cmpstr (markers[0], ==, "marker1");
+  g_assert_cmpstr (markers[0], ==, "marker3");
+  g_assert_cmpstr (markers[1], ==, "marker1");
   g_strfreev (markers);
 
   g_object_unref (script);
