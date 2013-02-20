@@ -4,6 +4,7 @@ src/50-mutter-navigation.xml.in
 src/50-mutter-system.xml.in
 src/50-mutter-windows.xml.in
 src/compositor/compositor.c
+src/compositor/meta-background.c
 src/core/bell.c
 src/core/core.c
 src/core/delete.c
