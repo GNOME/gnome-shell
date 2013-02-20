@@ -425,7 +425,7 @@ const WorkspaceThumbnail = new Lang.Class({
         this._contents.add_actor(clone.actor);
 
         if (this._windows.length == 0)
-            clone.setStackAbove(this._bgManager.actor);
+            clone.setStackAbove(this._bgManager.background.actor);
         else
             clone.setStackAbove(this._windows[this._windows.length - 1].actor);
 
