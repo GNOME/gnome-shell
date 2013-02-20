@@ -829,6 +829,9 @@ const LayoutManager = new Lang.Class({
     },
 
     _queueUpdateRegions: function() {
+        if (Main.sessionMode.isGreeter)
+            return;
+
         if (!this._updateRegionIdle && !this._freezeUpdateCount)
             this._updateRegionIdle = Mainloop.idle_add(Lang.bind(this, this._updateRegions),
                                                        Meta.PRIORITY_BEFORE_REDRAW);
