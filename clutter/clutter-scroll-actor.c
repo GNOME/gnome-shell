@@ -100,92 +100,13 @@ G_DEFINE_TYPE_WITH_CODE (ClutterScrollActor, clutter_scroll_actor, CLUTTER_TYPE_
                                                 clutter_animatable_iface_init))
 
 static void
-clutter_scroll_actor_apply_transform (ClutterActor *actor,
-                                      CoglMatrix   *transform)
-{
-  ClutterScrollActorPrivate *priv = CLUTTER_SCROLL_ACTOR (actor)->priv;
-  float x_factor, y_factor;
-
-  CLUTTER_ACTOR_CLASS (clutter_scroll_actor_parent_class)->apply_transform (actor, transform);
-
-  if (priv->scroll_mode & CLUTTER_SCROLL_HORIZONTALLY)
-    x_factor = -priv->scroll_to.x;
-  else
-    x_factor = 0.f;
-
-  if (priv->scroll_mode & CLUTTER_SCROLL_VERTICALLY)
-    y_factor = -priv->scroll_to.y;
-  else
-    y_factor = 0.f;
-
-  cogl_matrix_translate (transform, x_factor, y_factor, 0.0f);
-}
-
-static inline void
-clutter_scroll_actor_push_clip (ClutterActor *actor)
-{
-  ClutterScrollActorPrivate *priv = CLUTTER_SCROLL_ACTOR (actor)->priv;
-  ClutterActorBox allocation;
-  float width, height;
-  float x, y;
-
-  clutter_actor_get_allocation_box (actor, &allocation);
-  clutter_actor_box_get_size (&allocation, &width, &height);
-
-  if (priv->scroll_mode & CLUTTER_SCROLL_HORIZONTALLY)
-    x = priv->scroll_to.x;
-  else
-    x = 0.f;
-
-  if (priv->scroll_mode & CLUTTER_SCROLL_VERTICALLY)
-    y = priv->scroll_to.y;
-  else
-    y = 0.f;
-
-  /* offset the clip so that we keep it at the right place */
-  cogl_clip_push_rectangle (x,
-                            y,
-                            x + width,
-                            y + height);
-}
-
-static void
-clutter_scroll_actor_paint (ClutterActor *actor)
-{
-  clutter_scroll_actor_push_clip (actor);
-
-  CLUTTER_ACTOR_CLASS (clutter_scroll_actor_parent_class)->paint (actor);
-
-  cogl_clip_pop ();
-}
-
-static void
-clutter_scroll_actor_pick (ClutterActor       *actor,
-                           const ClutterColor *pick_color)
-{
-  ClutterActorIter iter;
-  ClutterActor *child;
-
-  clutter_scroll_actor_push_clip (actor);
-
-  CLUTTER_ACTOR_CLASS (clutter_scroll_actor_parent_class)->pick (actor, pick_color);
-
-  /* FIXME - this has to go away when we remove the vfunc check inside
-   * the ClutterActor::pick default implementation
-   */
-  clutter_actor_iter_init (&iter, actor);
-  while (clutter_actor_iter_next (&iter, &child))
-    clutter_actor_paint (child);
-
-  cogl_clip_pop ();
-}
-
-static void
 clutter_scroll_actor_set_scroll_to_internal (ClutterScrollActor *self,
                                              const ClutterPoint *point)
 {
   ClutterScrollActorPrivate *priv = self->priv;
   ClutterActor *actor = CLUTTER_ACTOR (self);
+  ClutterMatrix m = CLUTTER_MATRIX_INIT_IDENTITY;
+  float dx, dy;
 
   if (clutter_point_equals (&priv->scroll_to, point))
     return;
@@ -195,7 +116,18 @@ clutter_scroll_actor_set_scroll_to_internal (ClutterScrollActor *self,
   else
     priv->scroll_to = *point;
 
-  clutter_actor_queue_redraw (actor);
+  if (priv->scroll_mode & CLUTTER_SCROLL_HORIZONTALLY)
+    dx = -priv->scroll_to.x;
+  else
+    dx = 0.f;
+
+  if (priv->scroll_mode & CLUTTER_SCROLL_VERTICALLY)
+    dy = -priv->scroll_to.y;
+  else
+    dy = 0.f;
+
+  cogl_matrix_translate (&m, dx, dy, 0.f);
+  clutter_actor_set_child_transform (actor, &m);
 }
 
 static void
@@ -240,16 +172,11 @@ static void
 clutter_scroll_actor_class_init (ClutterScrollActorClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (ClutterScrollActorPrivate));
 
   gobject_class->set_property = clutter_scroll_actor_set_property;
   gobject_class->get_property = clutter_scroll_actor_get_property;
-
-  actor_class->apply_transform = clutter_scroll_actor_apply_transform;
-  actor_class->paint = clutter_scroll_actor_paint;
-  actor_class->pick = clutter_scroll_actor_pick;
 
   /**
    * ClutterScrollActor:scroll-mode:
@@ -277,6 +204,8 @@ clutter_scroll_actor_init (ClutterScrollActor *self)
                                             ClutterScrollActorPrivate);
 
   self->priv->scroll_mode = CLUTTER_SCROLL_BOTH;
+
+  clutter_actor_set_clip_to_allocation (CLUTTER_ACTOR (self), TRUE);
 }
 
 static GParamSpec *
