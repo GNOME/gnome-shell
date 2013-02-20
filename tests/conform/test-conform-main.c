@@ -244,6 +244,7 @@ main (int argc, char **argv)
   /* FIXME - see bug https://bugzilla.gnome.org/show_bug.cgi?id=655588 */
   TEST_CONFORM_TODO ("/cally", cally_text);
 
+#if 0
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_object);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_fixed);
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_materials);
@@ -265,6 +266,7 @@ main (int argc, char **argv)
   /* left to the end because they aren't currently very orthogonal and tend to
    * break subsequent tests! */
   TEST_CONFORM_SIMPLE ("/cogl", test_cogl_viewport);
+#endif
 
   return g_test_run ();
 }
