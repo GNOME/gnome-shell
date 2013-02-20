@@ -292,7 +292,8 @@ StScrollBar StButton#vhandle:active {
 .notification-icon-button,
 .hotplug-notification-item,
 .hotplug-resident-eject-button,
-.modal-dialog-button {
+.modal-dialog-button,
+.app-view-control {
     border: 1px solid #8b8b8b;
     background-gradient-direction: vertical;
     background-gradient-start: rgba(255, 255, 255, 0.2);
@@ -333,7 +334,8 @@ StScrollBar StButton#vhandle:active {
 .hotplug-notification-item:active,
 .hotplug-resident-eject-button:active,
 .modal-dialog-button:active,
-.modal-dialog-button:pressed {
+.modal-dialog-button:pressed,
+.app-view-control:checked {
     background-gradient-start: rgba(255, 255, 255, 0);
     background-gradient-end: rgba(255, 255, 255, 0.2);
 }
@@ -346,6 +348,27 @@ StScrollBar StButton#vhandle:active {
     color: #9f9f9f;
     background-gradient-direction: none;
     background-color: rgba(102, 102, 102, 0.15);
+}
+
+/* Common radii */
+
+#searchEntry,
+.modal-dialog-button,
+.notification-button,
+.hotplug-notification-item,
+.app-view-controls {
+    border-radius: 18px;
+}
+
+.app-view-control:first-child:ltr,
+.app-view-control:last-child:rtl {
+    border-radius: 18px 0px 0px 18px;
+    border-right-width: 0px;
+}
+
+.app-view-control:last-child:ltr,
+.app-view-control:first-child:rtl {
+    border-radius: 0px 18px 18px 0px;
 }
 
 /* Entries */
@@ -750,7 +773,6 @@ StScrollBar StButton#vhandle:active {
 /* Search Box */
 
 #searchEntry {
-    border-radius: 17px;
     width: 320px;
 }
 
@@ -853,8 +875,6 @@ StScrollBar StButton#vhandle:active {
 }
 
 .app-view-controls {
-    border-radius: 8px;
-    border: 1px solid rgba(245,245,245,0.6);
     width: 250px;
 }
 
@@ -864,25 +884,6 @@ StScrollBar StButton#vhandle:active {
 
 .app-view-control {
     padding: 4px 16px;
-    background-gradient-start: rgba(254,254,254,0.1);
-    background-gradient-end: rgba(5,5,6,0.1);
-    background-gradient-direction: vertical;
-}
-
-.app-view-control:first-child:ltr,
-.app-view-control:last-child:rtl {
-    border-radius: 8px 0px 0px 8px;
-}
-
-.app-view-control:last-child:ltr,
-.app-view-control:first-child:rtl {
-    border-radius: 0px 8px 8px 0px;
-}
-
-.app-view-control:checked {
-    background-gradient-start: rgba(0,0,0,0.8);
-    background-gradient-end: rgba(5,5,6,0.1);
-    background-gradient-direction: vertical;
 }
 
 StScrollView.frequent-apps StScrollBar {
@@ -1436,7 +1437,6 @@ StScrollView.frequent-apps StScrollBar {
 }
 
 .notification-button {
-    border-radius: 18px;
     padding: 4px 42px 5px;
 }
 
@@ -1469,7 +1469,6 @@ StScrollView.frequent-apps StScrollBar {
 
 .hotplug-notification-item {
     padding: 2px 10px;
-    border-radius: 18px;
 }
 
 .hotplug-notification-item:focus {
@@ -1765,8 +1764,6 @@ StScrollView.frequent-apps StScrollBar {
 }
 
 .modal-dialog-button {
-    border-radius: 18px;
-
     margin-left: 10px;
     margin-right: 10px;
     padding: 4px 32px 5px;
