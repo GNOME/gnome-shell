@@ -38,6 +38,7 @@ const BoxPointer = new Lang.Class({
         this._arrowSide = arrowSide;
         this._userArrowSide = arrowSide;
         this._arrowOrigin = 0;
+        this._arrowActor = null;
         this.actor = new St.Bin({ x_fill: true,
                                   y_fill: true });
         this._container = new Shell.GenericContainer();
@@ -227,6 +228,19 @@ const BoxPointer = new Lang.Class({
 
     _drawBorder: function(area) {
         let themeNode = this.actor.get_theme_node();
+
+        if (this._arrowActor) {
+            let [sourceX, sourceY] = this._arrowActor.get_transformed_position();
+            let [sourceWidth, sourceHeight] = this._arrowActor.get_transformed_size();
+            let [absX, absY] = this.actor.get_transformed_position();
+
+            if (this._arrowSide == St.Side.TOP ||
+                this._arrowSide == St.Side.BOTTOM) {
+                this._arrowOrigin = sourceX - absX + sourceWidth / 2;
+            } else {
+                this._arrowOrigin = sourceY - absY + sourceHeight / 2;
+            }
+        }
 
         let borderWidth = themeNode.get_length('-arrow-border-width');
         let base = themeNode.get_length('-arrow-base');
@@ -533,6 +547,16 @@ const BoxPointer = new Lang.Class({
     setArrowOrigin: function(origin) {
         if (this._arrowOrigin != origin) {
             this._arrowOrigin = origin;
+            this._border.queue_repaint();
+        }
+    },
+
+    // @actor: an actor relative to which the arrow is positioned.
+    // Differently from setPosition, this will not move the boxpointer itself,
+    // on the arrow
+    setArrowActor: function(actor) {
+        if (this._arrowActor != actor) {
+            this._arrowActor = actor;
             this._border.queue_repaint();
         }
     },

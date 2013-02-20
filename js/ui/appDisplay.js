@@ -648,7 +648,8 @@ const AppFolderPopup = new Lang.Class({
             return;
 
         this.actor.show();
-        this._boxPointer.setArrowOrigin(this._source.actor.x + this._source.actor.width / 2);
+
+        this._boxPointer.setArrowActor(this._source.actor);
         this._boxPointer.show(BoxPointer.PopupAnimation.FADE |
                               BoxPointer.PopupAnimation.SLIDE);
 
