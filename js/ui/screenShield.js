@@ -540,7 +540,10 @@ const ScreenShield = new Lang.Class({
     _createBackground: function(monitorIndex) {
         let bin = new St.Bin({ style_class: 'screen-shield-background' });
 
-        let bgManager = new Background.BackgroundManager({ container: bin,
+        let group = new Meta.BackgroundGroup();
+        bin.child = group;
+
+        let bgManager = new Background.BackgroundManager({ container: group,
                                                            monitorIndex: monitorIndex,
                                                            effects: Meta.BackgroundEffects.BLUR | Meta.BackgroundEffects.DESATURATE });
 
