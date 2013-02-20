@@ -577,13 +577,13 @@ const LayoutManager = new Lang.Class({
     },
 
     _startupAnimationGreeter: function() {
-         this._freezeUpdateRegions();
-         Tweener.addTween(this.panelBox,
-                          { translation_y: 0,
-                            time: STARTUP_ANIMATION_TIME,
-                            transition: 'easeOutQuad',
-                            onComplete: this._startupAnimationComplete,
-                            onCompleteScope: this });
+        this._freezeUpdateRegions();
+        Tweener.addTween(this.panelBox,
+                         { translation_y: 0,
+                           time: STARTUP_ANIMATION_TIME,
+                           transition: 'easeOutQuad',
+                           onComplete: this._startupAnimationComplete,
+                           onCompleteScope: this });
     },
 
     _startupAnimationSession: function() {
