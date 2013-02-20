@@ -346,6 +346,9 @@ struct _MetaWindow
   /* if TRUE, we are freezing updates during a resize */
   guint updates_frozen_for_resize : 1;
 
+  /* whether or not the window is from a program running on another machine */
+  guint is_remote : 1;
+
   /* if non-NULL, the bounds of the window frame */
   cairo_region_t *frame_bounds;
 

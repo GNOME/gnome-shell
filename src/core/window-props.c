@@ -37,6 +37,7 @@
  */
 
 #define _GNU_SOURCE
+#define _SVID_SOURCE /* for gethostname() */
 
 #include <config.h>
 #include "window-props.h"
@@ -47,6 +48,11 @@
 #include <X11/Xatom.h>
 #include <unistd.h>
 #include <string.h>
+
+#ifndef HOST_NAME_MAX
+/* Solaris headers apparently don't define this so do so manually; #326745 */
+#define HOST_NAME_MAX 255
+#endif
 
 typedef void (* ReloadValueFunc) (MetaWindow    *window,
                                   MetaPropValue *value,
@@ -195,6 +201,19 @@ reload_wm_client_machine (MetaWindow    *window,
 
   meta_verbose ("Window has client machine \"%s\"\n",
                 window->wm_client_machine ? window->wm_client_machine : "unset");
+
+  if (window->wm_client_machine == NULL)
+    {
+      window->is_remote = FALSE;
+    }
+  else
+    {
+      char hostname[HOST_NAME_MAX + 1] = "";
+
+      gethostname (hostname, HOST_NAME_MAX + 1);
+
+      window->is_remote = g_strcmp0 (window->wm_client_machine, hostname) != 0;
+    }
 }
 
 static void

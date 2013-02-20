@@ -93,7 +93,6 @@ struct _MetaDisplay
   
   char *name;
   Display *xdisplay;
-  char *hostname;
 
   Window leader_window;
   Window timestamp_pinging_window;

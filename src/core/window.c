@@ -1161,6 +1161,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   window->role = NULL;
   window->sm_client_id = NULL;
   window->wm_client_machine = NULL;
+  window->is_remote = FALSE;
   window->startup_id = NULL;
 
   window->net_wm_pid = -1;
@@ -10895,11 +10896,7 @@ meta_window_get_client_machine (MetaWindow *window)
 gboolean
 meta_window_is_remote (MetaWindow *window)
 {
-  g_return_val_if_fail (META_IS_WINDOW (window), FALSE);
-
-  if (window->wm_client_machine != NULL)
-    return g_strcmp0 (window->wm_client_machine, window->display->hostname) != 0;
-  return FALSE;
+  return window->is_remote;
 }
 
 /**
