@@ -133,9 +133,6 @@ const Overview = new Lang.Class({
         this._backgroundGroup.hide();
         this._bgManagers = [];
 
-        this._capturedEventId = 0;
-        this._buttonPressId = 0;
-
         this.visible = false;           // animating to overview, in overview, animating out
         this._shown = false;            // show() and not hide()
         this._shownTemporarily = false; // showTemporarily() and not hideTemporarily()
