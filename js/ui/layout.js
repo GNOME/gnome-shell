@@ -607,6 +607,8 @@ const LayoutManager = new Lang.Class({
         global.stage_input_mode = Shell.StageInputMode.NORMAL;
 
         this._consoleBackgroundGroup.destroy();
+        this._consoleBackgroundGroup = null;
+
         this._startingUp = false;
 
         this.trayBox.show();
