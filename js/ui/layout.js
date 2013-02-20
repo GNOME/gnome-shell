@@ -140,6 +140,7 @@ const LayoutManager = new Lang.Class({
 
         this._trackedActors = [];
         this._isPopupWindowVisible = false;
+        this._startingUp = true;
 
         // Normally, the stage is always covered so Clutter doesn't need to clear
         // it; however it becomes visible during the startup animation
@@ -602,6 +603,7 @@ const LayoutManager = new Lang.Class({
         global.stage_input_mode = Shell.StageInputMode.NORMAL;
 
         this._consoleBackgroundGroup.destroy();
+        this._startingUp = false;
 
         if (Main.sessionMode.isGreeter)
             this._createSecondaryBackgrounds();
