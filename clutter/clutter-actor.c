@@ -15205,34 +15205,32 @@ clutter_actor_allocate_align_fill (ClutterActor           *self,
   if (available_height < 0)
     available_height = 0;
 
+  allocation.x1 = x_offset;
+  allocation.y1 = y_offset;
+
   if (x_fill)
-    {
-      allocation.x1 = x_offset;
-      allocation.x2 = allocation.x1 + available_width;
-    }
+    child_width = available_width;
 
   if (y_fill)
-    {
-      allocation.y1 = y_offset;
-      allocation.y2 = allocation.y1 + available_height;
-    }
+    child_height = available_height;
 
   /* if we are filling horizontally and vertically then we're done */
   if (x_fill && y_fill)
     goto out;
-
-  child_width = child_height = 0.0f;
 
   if (priv->request_mode == CLUTTER_REQUEST_HEIGHT_FOR_WIDTH)
     {
       gfloat min_width, natural_width;
       gfloat min_height, natural_height;
 
-      clutter_actor_get_preferred_width (self, available_height,
-                                         &min_width,
-                                         &natural_width);
+      if (!x_fill)
+        {
+          clutter_actor_get_preferred_width (self, available_height,
+                                             &min_width,
+                                             &natural_width);
 
-      child_width = CLAMP (natural_width, min_width, available_width);
+          child_width = CLAMP (natural_width, min_width, available_width);
+        }
 
       if (!y_fill)
         {
@@ -15248,11 +15246,14 @@ clutter_actor_allocate_align_fill (ClutterActor           *self,
       gfloat min_width, natural_width;
       gfloat min_height, natural_height;
 
-      clutter_actor_get_preferred_height (self, available_width,
-                                          &min_height,
-                                          &natural_height);
+      if (!y_fill)
+        {
+          clutter_actor_get_preferred_height (self, available_width,
+                                              &min_height,
+                                              &natural_height);
 
-      child_height = CLAMP (natural_height, min_height, available_height);
+          child_height = CLAMP (natural_height, min_height, available_height);
+        }
 
       if (!x_fill)
         {
@@ -15270,22 +15271,17 @@ clutter_actor_allocate_align_fill (ClutterActor           *self,
 
   if (!x_fill)
     {
-      allocation.x1 = x_offset
-                    + ((available_width - child_width) * x_align);
+      allocation.x1 += ((available_width - child_width) * x_align);
       allocation.x2 = allocation.x1 + child_width;
     }
 
   if (!y_fill)
     {
-      allocation.y1 = y_offset
-                    + ((available_height - child_height) * y_align);
+      allocation.y1 += ((available_height - child_height) * y_align);
       allocation.y2 = allocation.y1 + child_height;
     }
 
 out:
-
-  child_width = allocation.x2 - allocation.x1;
-  child_height = allocation.y2 - allocation.y1;
 
   allocation.x1 = floorf (allocation.x1);
   allocation.y1 = floorf (allocation.y1);
