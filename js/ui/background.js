@@ -301,8 +301,6 @@ const Background = new Lang.Class({
 
         this.actor.disconnect(this._destroySignalId);
         this._destroySignalId = 0;
-
-        this.actor.destroy();
     },
 
     _setLoaded: function() {
