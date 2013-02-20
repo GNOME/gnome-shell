@@ -287,7 +287,6 @@ StScrollBar StButton#vhandle:active {
 /* Buttons */
 
 .candidate-page-button,
-.dash-search-button,
 .notification-button,
 .notification-icon-button,
 .hotplug-notification-item,
@@ -300,13 +299,11 @@ StScrollBar StButton#vhandle:active {
     background-gradient-end: rgba(255, 255, 255, 0);
 }
 
-.dash-search-button,
 .modal-dialog-button {
     font-weight: bold;
 }
 
 .candidate-page-button:hover,
-.dash-search-button:hover,
 .notification-button:hover,
 .notification-icon-button:hover,
 .hotplug-notification-item:hover,
@@ -316,8 +313,6 @@ StScrollBar StButton#vhandle:active {
     background-gradient-end: rgba(255, 255, 255, 0.1);
 }
 
-.dash-search-button:selected,
-.dash-search-button:focus,
 .notification-button:focus,
 .notification-icon-button:focus,
 .hotplug-notification-item:focus,
@@ -327,8 +322,6 @@ StScrollBar StButton#vhandle:active {
 
 .candidate-page-button:active,
 .candidate-page-button:pressed,
-.dash-search-button:active,
-.dash-search-button:pressed,
 .notification-button:active,
 .notification-icon-button:active,
 .hotplug-notification-item:active,
@@ -829,24 +822,6 @@ StScrollBar StButton#vhandle:active {
 
 .list-search-results {
     spacing: 3px;
-}
-
-/* Text labels are an odd number of pixels tall. The uneven top and bottom
- * padding compensates for this and ensures that the label is vertically
- * centered */
-.dash-search-button {
-    border-radius: 16px;
-    padding-top: 4px;
-    padding-bottom: 5px;
-    width: 300px;
-    font-weight: bold;
-}
-
-.dash-search-button:focus,
-.dash-search-button:selected {
-    padding-top: 3px;
-    padding-bottom: 4px;
-    width: 298px;
 }
 
 .dash-label {
