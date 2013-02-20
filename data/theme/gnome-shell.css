@@ -869,11 +869,13 @@ StScrollBar StButton#vhandle:active {
     background-gradient-direction: vertical;
 }
 
-.app-view-control:first-child {
+.app-view-control:first-child:ltr,
+.app-view-control:last-child:rtl {
     border-radius: 8px 0px 0px 8px;
 }
 
-.app-view-control:last-child {
+.app-view-control:last-child:ltr,
+.app-view-control:first-child:rtl {
     border-radius: 0px 8px 8px 0px;
 }
 
