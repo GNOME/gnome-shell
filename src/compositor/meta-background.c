@@ -462,7 +462,7 @@ static void
 ensure_pipeline (MetaBackground *self)
 {
   if (self->priv->pipeline == NULL)
-    self->priv->pipeline = COGL_PIPELINE (meta_create_texture_material (NULL));
+    self->priv->pipeline = COGL_PIPELINE (meta_create_texture_pipeline (NULL));
 }
 
 static void
@@ -761,7 +761,7 @@ unset_texture (MetaBackground *self)
 
   g_clear_pointer (&priv->texture,
                    (GDestroyNotify)
-                   cogl_handle_unref);
+                   cogl_object_unref);
 }
 
 static void
@@ -852,7 +852,7 @@ meta_background_load_still_frame (MetaBackground *self)
   MetaBackgroundPrivate *priv = self->priv;
   MetaDisplay *display = meta_screen_get_display (priv->screen);
   Pixmap still_frame;
-  CoglHandle texture;
+  CoglTexture *texture;
   CoglContext *context = clutter_backend_get_cogl_context (clutter_get_default_backend ());
   GError *error = NULL;
 
@@ -865,7 +865,7 @@ meta_background_load_still_frame (MetaBackground *self)
   XSync (meta_display_get_xdisplay (display), False);
 
   meta_error_trap_push (display);
-  texture = cogl_texture_pixmap_x11_new (context, still_frame, FALSE, &error);
+  texture = COGL_TEXTURE (cogl_texture_pixmap_x11_new (context, still_frame, FALSE, &error));
   meta_error_trap_pop (display);
 
   if (error != NULL)
@@ -876,7 +876,7 @@ meta_background_load_still_frame (MetaBackground *self)
       return;
     }
 
-  set_texture (self, COGL_TEXTURE (texture));
+  set_texture (self, texture);
 }
 
 /**
@@ -897,7 +897,7 @@ meta_background_load_gradient (MetaBackground             *self,
                                ClutterColor               *second_color)
 {
   MetaBackgroundPrivate *priv = self->priv;
-  CoglHandle texture;
+  CoglTexture *texture;
   guint width, height;
   uint8_t pixels[8];
 
@@ -954,7 +954,7 @@ meta_background_load_color (MetaBackground *self,
                             ClutterColor   *color)
 {
   MetaBackgroundPrivate *priv = self->priv;
-  CoglHandle    texture;
+  CoglTexture  *texture;
   ClutterActor *stage = meta_get_stage_for_screen (priv->screen);
   ClutterColor  stage_color;
 

@@ -56,13 +56,13 @@ typedef struct _MetaTextureTower MetaTextureTower;
 MetaTextureTower *meta_texture_tower_new               (void);
 void              meta_texture_tower_free              (MetaTextureTower *tower);
 void              meta_texture_tower_set_base_texture  (MetaTextureTower *tower,
-                                                        CoglHandle        texture);
+                                                        CoglTexture      *texture);
 void              meta_texture_tower_update_area       (MetaTextureTower *tower,
                                                         int               x,
                                                         int               y,
                                                         int               width,
                                                         int               height);
-CoglHandle        meta_texture_tower_get_paint_texture (MetaTextureTower *tower);
+CoglTexture      *meta_texture_tower_get_paint_texture (MetaTextureTower *tower);
 
 G_BEGIN_DECLS
 

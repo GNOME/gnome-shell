@@ -25,11 +25,11 @@
 
 #include <cogl/cogl.h>
 
-CoglHandle meta_create_color_texture_4ub (guint8           red,
-                                          guint8           green,
-                                          guint8           blue,
-                                          guint8           alpha,
-                                          CoglTextureFlags flags);
-CoglHandle meta_create_texture_material  (CoglHandle src_texture);
+CoglTexture * meta_create_color_texture_4ub (guint8           red,
+                                             guint8           green,
+                                             guint8           blue,
+                                             guint8           alpha,
+                                             CoglTextureFlags flags);
+CoglPipeline * meta_create_texture_pipeline (CoglTexture *texture);
 
 #endif /* __META_COGL_UTILS_H__ */

@@ -21,6 +21,7 @@
  * 02111-1307, USA.
  */
 
+#include <clutter/clutter.h>
 #include "cogl-utils.h"
 
 /**
@@ -39,7 +40,7 @@
  *
  * Return value: (transfer full): a newly created Cogl texture
  */
-CoglHandle
+CoglTexture *
 meta_create_color_texture_4ub (guint8           red,
                                guint8           green,
                                guint8           blue,
@@ -68,43 +69,45 @@ meta_create_color_texture_4ub (guint8           red,
 /* Based on gnome-shell/src/st/st-private.c:_st_create_texture_material.c */
 
 /**
- * meta_create_texture_material:
+ * meta_create_texture_pipeline:
  * @src_texture: (allow-none): texture to use initially for the layer
  *
- * Creates a material with a single layer. Using a common template
+ * Creates a pipeline with a single layer. Using a common template
  * allows sharing a shader for different uses in Mutter. To share the same
- * shader with all other materials that are just texture plus opacity
+ * shader with all other pipelines that are just texture plus opacity
  * would require Cogl fixes.
  * (See http://bugzilla.clutter-project.org/show_bug.cgi?id=2425)
  *
- * Return value: (transfer full): a newly created Cogl material
+ * Return value: (transfer full): a newly created #CoglPipeline
  */
-CoglHandle
-meta_create_texture_material (CoglHandle src_texture)
+CoglPipeline *
+meta_create_texture_pipeline (CoglTexture *src_texture)
 {
-  static CoglHandle texture_material_template = COGL_INVALID_HANDLE;
-  CoglHandle material;
+  static CoglPipeline *texture_pipeline_template = NULL;
+  CoglPipeline *pipeline;
 
-  /* We use a material that has a dummy texture as a base for all
-     texture materials. The idea is that only the Cogl texture object
+  /* We use a pipeline that has a dummy texture as a base for all
+     texture pipelines. The idea is that only the Cogl texture object
      would be different in the children so it is likely that Cogl will
      be able to share GL programs between all the textures. */
-  if (G_UNLIKELY (texture_material_template == COGL_INVALID_HANDLE))
+  if (G_UNLIKELY (texture_pipeline_template == NULL))
     {
-      CoglHandle dummy_texture;
+      CoglTexture *dummy_texture;
+      CoglContext *ctx = clutter_backend_get_cogl_context (clutter_get_default_backend ());
 
       dummy_texture = meta_create_color_texture_4ub (0xff, 0xff, 0xff, 0xff,
                                                      COGL_TEXTURE_NONE);
 
-      texture_material_template = cogl_material_new ();
-      cogl_material_set_layer (texture_material_template, 0, dummy_texture);
-      cogl_handle_unref (dummy_texture);
+
+      texture_pipeline_template = cogl_pipeline_new (ctx);
+      cogl_pipeline_set_layer_texture (texture_pipeline_template, 0, dummy_texture);
+      cogl_object_unref (dummy_texture);
     }
 
-  material = cogl_material_copy (texture_material_template);
+  pipeline = cogl_pipeline_copy (texture_pipeline_template);
 
-  if (src_texture != COGL_INVALID_HANDLE)
-    cogl_material_set_layer (material, 0, src_texture);
+  if (src_texture != NULL)
+    cogl_pipeline_set_layer_texture (pipeline, 0, src_texture);
 
-  return material;
+  return pipeline;
 }

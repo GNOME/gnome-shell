@@ -917,7 +917,7 @@ static void
 meta_window_actor_damage_all (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
-  CoglHandle texture;
+  CoglTexture *texture;
 
   if (!priv->needs_damage_all)
     return;
@@ -1778,7 +1778,7 @@ check_needs_pixmap (MetaWindowActor *self)
 
   if (priv->back_pixmap == None)
     {
-      CoglHandle texture;
+      CoglTexture *texture;
 
       meta_error_trap_push (display);
 
@@ -1816,7 +1816,7 @@ check_needs_pixmap (MetaWindowActor *self)
        * do it here.
        * See: http://bugzilla.clutter-project.org/show_bug.cgi?id=2236
        */
-      if (G_UNLIKELY (!cogl_texture_pixmap_x11_is_using_tfp_extension (texture)))
+      if (G_UNLIKELY (!cogl_texture_pixmap_x11_is_using_tfp_extension (COGL_TEXTURE_PIXMAP_X11 (texture))))
         g_warning ("NOTE: Not using GLX TFP!\n");
 
       /* ::size-changed is supposed to refer to meta_window_get_outer_rect().
@@ -2090,13 +2090,13 @@ build_and_scan_frame_mask (MetaWindowActor       *self,
   MetaWindowActorPrivate *priv = self->priv;
   guchar *mask_data;
   guint tex_width, tex_height;
-  CoglHandle paint_tex, mask_texture;
+  CoglTexture *paint_tex, *mask_texture;
   int stride;
   cairo_t *cr;
   cairo_surface_t *surface;
 
   paint_tex = meta_shaped_texture_get_texture (META_SHAPED_TEXTURE (priv->actor));
-  if (paint_tex == COGL_INVALID_HANDLE)
+  if (paint_tex == NULL)
     return;
 
   tex_width = cogl_texture_get_width (paint_tex);
@@ -2165,7 +2165,7 @@ build_and_scan_frame_mask (MetaWindowActor       *self,
 
   meta_shaped_texture_set_mask_texture (META_SHAPED_TEXTURE (priv->actor),
                                         mask_texture);
-  cogl_handle_unref (mask_texture);
+  cogl_object_unref (mask_texture);
 
   g_free (mask_data);
 }
@@ -2200,7 +2200,7 @@ check_needs_reshape (MetaWindowActor *self)
   client_area.width = priv->window->rect.width;
   client_area.height = priv->window->rect.height;
 
-  meta_shaped_texture_set_mask_texture (META_SHAPED_TEXTURE (priv->actor), COGL_INVALID_HANDLE);
+  meta_shaped_texture_set_mask_texture (META_SHAPED_TEXTURE (priv->actor), NULL);
   g_clear_pointer (&priv->shape_region, cairo_region_destroy);
 
 #ifdef HAVE_SHAPE

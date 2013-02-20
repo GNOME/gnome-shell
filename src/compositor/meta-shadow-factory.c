@@ -65,8 +65,8 @@ struct _MetaShadow
 
   MetaShadowFactory *factory;
   MetaShadowCacheKey key;
-  CoglHandle texture;
-  CoglHandle material;
+  CoglTexture *texture;
+  CoglPipeline *pipeline;
 
   /* The outer order is the distance the shadow extends outside the window
    * shape; the inner border is the unscaled portion inside the window
@@ -175,8 +175,8 @@ meta_shadow_unref (MetaShadow *shadow)
         }
 
       meta_window_shape_unref (shadow->key.shape);
-      cogl_handle_unref (shadow->texture);
-      cogl_handle_unref (shadow->material);
+      cogl_object_unref (shadow->texture);
+      cogl_object_unref (shadow->pipeline);
 
       g_slice_free (MetaShadow, shadow);
     }
@@ -218,10 +218,10 @@ meta_shadow_paint (MetaShadow     *shadow,
   int dest_y[4];
   int n_x, n_y;
 
-  cogl_material_set_color4ub (shadow->material,
+  cogl_pipeline_set_color4ub (shadow->pipeline,
                               opacity, opacity, opacity, opacity);
 
-  cogl_set_source (shadow->material);
+  cogl_set_source (shadow->pipeline);
 
   if (shadow->scale_width)
     {
@@ -801,7 +801,7 @@ make_shadow (MetaShadow     *shadow,
   cairo_region_destroy (column_convolve_region);
   g_free (buffer);
 
-  shadow->material = meta_create_texture_material (shadow->texture);
+  shadow->pipeline = meta_create_texture_pipeline (shadow->texture);
 }
 
 static MetaShadowParams *

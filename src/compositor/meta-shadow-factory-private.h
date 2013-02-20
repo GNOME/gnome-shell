@@ -40,7 +40,7 @@ typedef struct _MetaShadow MetaShadow;
 
 MetaShadow *meta_shadow_ref         (MetaShadow            *shadow);
 void        meta_shadow_unref       (MetaShadow            *shadow);
-CoglHandle  meta_shadow_get_texture (MetaShadow            *shadow);
+CoglTexture*meta_shadow_get_texture (MetaShadow            *shadow);
 void        meta_shadow_paint       (MetaShadow            *shadow,
                                      int                    window_x,
                                      int                    window_y,

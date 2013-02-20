@@ -59,8 +59,8 @@ typedef struct
 struct _MetaTextureTower
 {
   int n_levels;
-  CoglHandle textures[MAX_TEXTURE_LEVELS];
-  CoglHandle fbos[MAX_TEXTURE_LEVELS];
+  CoglTexture *textures[MAX_TEXTURE_LEVELS];
+  CoglOffscreen *fbos[MAX_TEXTURE_LEVELS];
   Box invalid[MAX_TEXTURE_LEVELS];
 };
 
@@ -93,7 +93,7 @@ meta_texture_tower_free (MetaTextureTower *tower)
 {
   g_return_if_fail (tower != NULL);
 
-  meta_texture_tower_set_base_texture (tower, COGL_INVALID_HANDLE);
+  meta_texture_tower_set_base_texture (tower, NULL);
 
   g_slice_free (MetaTextureTower, tower);
 }
@@ -110,7 +110,7 @@ meta_texture_tower_free (MetaTextureTower *tower)
  */
 void
 meta_texture_tower_set_base_texture (MetaTextureTower *tower,
-                                     CoglHandle        texture)
+                                     CoglTexture      *texture)
 {
   int i;
 
@@ -119,33 +119,33 @@ meta_texture_tower_set_base_texture (MetaTextureTower *tower,
   if (texture == tower->textures[0])
     return;
 
-  if (tower->textures[0] != COGL_INVALID_HANDLE)
+  if (tower->textures[0] != NULL)
     {
       for (i = 1; i < tower->n_levels; i++)
         {
-          if (tower->textures[i] != COGL_INVALID_HANDLE)
+          if (tower->textures[i] != NULL)
             {
-              cogl_handle_unref (tower->textures[i]);
-              tower->textures[i] = COGL_INVALID_HANDLE;
+              cogl_object_unref (tower->textures[i]);
+              tower->textures[i] = NULL;
             }
 
-          if (tower->fbos[i] != COGL_INVALID_HANDLE)
+          if (tower->fbos[i] != NULL)
             {
-              cogl_handle_unref (tower->fbos[i]);
-              tower->fbos[i] = COGL_INVALID_HANDLE;
+              cogl_object_unref (tower->fbos[i]);
+              tower->fbos[i] = NULL;
             }
         }
 
-      cogl_handle_unref (tower->textures[0]);
+      cogl_object_unref (tower->textures[0]);
     }
 
   tower->textures[0] = texture;
 
-  if (tower->textures[0] != COGL_INVALID_HANDLE)
+  if (tower->textures[0] != NULL)
     {
       int width, height;
 
-      cogl_handle_ref (tower->textures[0]);
+      cogl_object_ref (tower->textures[0]);
 
       width = cogl_texture_get_width (tower->textures[0]);
       height = cogl_texture_get_height (tower->textures[0]);
@@ -186,7 +186,7 @@ meta_texture_tower_update_area (MetaTextureTower *tower,
 
   g_return_if_fail (tower != NULL);
 
-  if (tower->textures[0] == COGL_INVALID_HANDLE)
+  if (tower->textures[0] == NULL)
     return;
 
   texture_width = cogl_texture_get_width (tower->textures[0]);
@@ -387,22 +387,22 @@ static gboolean
 texture_tower_revalidate_fbo (MetaTextureTower *tower,
                               int               level)
 {
-  CoglHandle source_texture = tower->textures[level - 1];
+  CoglTexture *source_texture = tower->textures[level - 1];
   int source_texture_width = cogl_texture_get_width (source_texture);
   int source_texture_height = cogl_texture_get_height (source_texture);
-  CoglHandle dest_texture = tower->textures[level];
+  CoglTexture *dest_texture = tower->textures[level];
   int dest_texture_width = cogl_texture_get_width (dest_texture);
   int dest_texture_height = cogl_texture_get_height (dest_texture);
   Box *invalid = &tower->invalid[level];
   CoglMatrix modelview;
 
-  if (tower->fbos[level] == COGL_INVALID_HANDLE)
+  if (tower->fbos[level] == NULL)
     tower->fbos[level] = cogl_offscreen_new_to_texture (dest_texture);
 
-  if (tower->fbos[level] == COGL_INVALID_HANDLE)
+  if (tower->fbos[level] == NULL)
     return FALSE;
 
-  cogl_push_framebuffer (tower->fbos[level]);
+  cogl_push_framebuffer (COGL_FRAMEBUFFER (tower->fbos[level]));
 
   cogl_ortho (0, dest_texture_width, dest_texture_height, 0, -1., 1.);
 
@@ -460,12 +460,12 @@ static void
 texture_tower_revalidate_client (MetaTextureTower *tower,
                                  int               level)
 {
-  CoglHandle source_texture = tower->textures[level - 1];
+  CoglTexture *source_texture = tower->textures[level - 1];
   int source_texture_width = cogl_texture_get_width (source_texture);
   int source_texture_height = cogl_texture_get_height (source_texture);
   guint source_rowstride;
   guchar *source_data;
-  CoglHandle dest_texture = tower->textures[level];
+  CoglTexture *dest_texture = tower->textures[level];
   int dest_texture_width = cogl_texture_get_width (dest_texture);
   int dest_texture_height = cogl_texture_get_height (dest_texture);
   int dest_x = tower->invalid[level].x1;
@@ -575,28 +575,28 @@ texture_tower_revalidate (MetaTextureTower *tower,
  * rectangle (0, 0, 200, 200).
  *
  * Return value: the COGL texture handle to use for painting, or
- *  %COGL_INVALID_HANDLE if no base texture has yet been set.
+ *  %NULL if no base texture has yet been set.
  */
-CoglHandle
+CoglTexture *
 meta_texture_tower_get_paint_texture (MetaTextureTower *tower)
 {
   int texture_width, texture_height;
   int level;
 
-  g_return_val_if_fail (tower != NULL, COGL_INVALID_HANDLE);
+  g_return_val_if_fail (tower != NULL, NULL);
 
-  if (tower->textures[0] == COGL_INVALID_HANDLE)
-    return COGL_INVALID_HANDLE;
+  if (tower->textures[0] == NULL)
+    return NULL;
 
   texture_width = cogl_texture_get_width (tower->textures[0]);
   texture_height = cogl_texture_get_height (tower->textures[0]);
 
   level = get_paint_level(texture_width, texture_height);
   if (level < 0) /* singular paint matrix, scaled to nothing */
-    return COGL_INVALID_HANDLE;
+    return NULL;
   level = MIN (level, tower->n_levels - 1);
 
-  if (tower->textures[level] == COGL_INVALID_HANDLE ||
+  if (tower->textures[level] == NULL ||
       (tower->invalid[level].x2 != tower->invalid[level].x1 &&
        tower->invalid[level].y2 != tower->invalid[level].y1))
     {
@@ -608,7 +608,7 @@ meta_texture_tower_get_paint_texture (MetaTextureTower *tower)
          texture_width = MAX (1, texture_width / 2);
          texture_height = MAX (1, texture_height / 2);
 
-         if (tower->textures[i] == COGL_INVALID_HANDLE)
+         if (tower->textures[i] == NULL)
            texture_tower_create_texture (tower, i, texture_width, texture_height);
        }
 
