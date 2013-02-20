@@ -37,7 +37,6 @@
  */
 
 #define _GNU_SOURCE
-#define _SVID_SOURCE /* for gethostname() */
 
 #include <config.h>
 #include "window-props.h"
@@ -48,10 +47,6 @@
 #include <X11/Xatom.h>
 #include <unistd.h>
 #include <string.h>
-#ifndef HOST_NAME_MAX
-/* Solaris headers apparently don't define this so do so manually; #326745 */
-#define HOST_NAME_MAX 255
-#endif
 
 typedef void (* ReloadValueFunc) (MetaWindow    *window,
                                   MetaPropValue *value,
@@ -399,7 +394,6 @@ set_title_text (MetaWindow  *window,
                 Atom         atom,
                 char       **target)
 {
-  char hostname[HOST_NAME_MAX + 1];
   gboolean modified = FALSE;
   
   if (!target)
@@ -416,9 +410,7 @@ set_title_text (MetaWindow  *window,
     }
   /* if WM_CLIENT_MACHINE indicates this machine is on a remote host
    * lets place that hostname in the title */
-  else if (window->wm_client_machine &&
-           !gethostname (hostname, HOST_NAME_MAX + 1) &&
-           strcmp (hostname, window->wm_client_machine))
+  else if (meta_window_is_remote (window))
     {
       *target = g_strdup_printf (_("%s (on %s)"),
                       title, window->wm_client_machine);
