@@ -544,13 +544,8 @@ add_texture_lookup_shader (MetaBackground *self)
 {
   MetaBackgroundPrivate *priv = self->priv;
   CoglSnippet *snippet;
-  const char *code;
+  const char *code = NULL;
 
-  ensure_pipeline (self);
-
-  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP,
-                              TEXTURE_LOOKUP_SHADER_DECLARATIONS,
-                              NULL);
   if ((priv->effects & META_BACKGROUND_EFFECTS_BLUR) &&
       (priv->effects & META_BACKGROUND_EFFECTS_DESATURATE))
     code = BLUR_CODE "\n" DESATURATE_CODE;
@@ -558,7 +553,14 @@ add_texture_lookup_shader (MetaBackground *self)
     code = BLUR_CODE;
   else if (priv->effects & META_BACKGROUND_EFFECTS_DESATURATE)
     code = DESATURATE_CODE;
+  else
+    return;
 
+  ensure_pipeline (self);
+
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP,
+                              TEXTURE_LOOKUP_SHADER_DECLARATIONS,
+                              NULL);
   cogl_snippet_set_replace (snippet, code);
   cogl_pipeline_add_layer_snippet (priv->pipeline, 0, snippet);
   cogl_object_unref (snippet);
