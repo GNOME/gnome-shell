@@ -265,6 +265,7 @@ const ModalDialog = new Lang.Class({
                                function() {
                                    this.state = State.CLOSED;
                                    this._group.hide();
+                                   this.emit('closed');
                                })
                          });
     },
