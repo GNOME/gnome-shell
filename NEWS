@@ -1,3 +1,13 @@
+3.6.3.1
+=======
+* Fix regression in reentrancy fix for 3.6.3 [Giovanni; #689295]
+
+Contributors:
+  Giovanni Campagna
+
+Translations:
+  Rafael Ferreira [pt_BR]
+
 3.6.3
 =====
 * recorder: Set frame duration to fix broken video headers [Adel; #688487]
