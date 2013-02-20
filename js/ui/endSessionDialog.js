@@ -395,7 +395,7 @@ const EndSessionDialog = new Lang.Class({
     cancel: function() {
         this._stopTimer();
         this._dbusImpl.emit_signal('Canceled', null);
-        this.close(global.get_current_time());
+        this.close();
     },
 
     _confirm: function(signal) {
@@ -454,7 +454,7 @@ const EndSessionDialog = new Lang.Class({
             let item = new ListItem(app, reason);
             item.connect('activate',
                          Lang.bind(this, function() {
-                             this.close(global.get_current_time());
+                             this.close();
                          }));
             this._applicationList.add(item.actor, { x_fill: true });
             this._stopTimer();

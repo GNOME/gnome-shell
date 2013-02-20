@@ -215,7 +215,7 @@ const InstallExtensionDialog = new Lang.Class({
     },
 
     _onCancelButtonPressed: function(button, event) {
-        this.close(global.get_current_time());
+        this.close();
         this._invocation.return_value(GLib.Variant.new('(s)', ['cancelled']));
     },
 
@@ -257,7 +257,7 @@ const InstallExtensionDialog = new Lang.Class({
             gotExtensionZipFile(session, message, uuid, dir, callback, errback);
         }));
 
-        this.close(global.get_current_time());
+        this.close();
     }
 });
 
