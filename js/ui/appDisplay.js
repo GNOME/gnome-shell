@@ -347,7 +347,7 @@ const AppDisplay = new Lang.Class({
             Main.queueDeferredWork(this._frequentAppsWorkId);
         }));
         global.settings.connect('changed::app-folder-categories', Lang.bind(this, function() {
-            Main.queueDeferredWork(this._workId);
+            Main.queueDeferredWork(this._allAppsWorkId);
         }));
 
         this._views = [];
