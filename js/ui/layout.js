@@ -333,6 +333,7 @@ const LayoutManager = new Lang.Class({
         let bgManager = new Background.BackgroundManager({ container: this._backgroundGroup,
                                                            layoutManager: this,
                                                            monitorIndex: monitorIndex });
+        BackgroundMenu.addBackgroundMenu(bgManager.background.actor);
 
         bgManager.connect('changed', Lang.bind(this, function() {
                               BackgroundMenu.addBackgroundMenu(bgManager.background.actor);

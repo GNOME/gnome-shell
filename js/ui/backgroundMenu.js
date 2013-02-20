@@ -31,6 +31,7 @@ function addBackgroundMenu(actor) {
     let cursor = new St.Bin({ opacity: 0 });
     Main.uiGroup.add_actor(cursor);
 
+    actor.reactive = true;
     actor._backgroundMenu = new BackgroundMenu(cursor);
     actor._backgroundManager = new PopupMenu.PopupMenuManager({ actor: actor });
     actor._backgroundManager.addMenu(actor._backgroundMenu);
