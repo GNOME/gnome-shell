@@ -1,3 +1,27 @@
+3.7.90
+======
+* Support _NET_WM_OPAQUE_REGION [Jasper, Adel; #679901]
+* Add wrapper for XI2.3 pointer barriers [Jasper; #677215]
+* Update style of resize popups [Cosimo; #692741]
+* Implement compositor <-> application frame synchronization [Owen; #685463]
+* Handle animated backgrounds [Ray; #682427]
+* Add a new window group for override-redirect windows [Gayan; #633620]
+* Pass on pointer events on guard window to Clutter [Jasper; #681540]
+* Show correct shortcut in window menus [Giovanni; #694045]
+* Don't put minimized windows at the back of alt-tab [Jasper; #693991]
+* Misc bug fixes and cleanups [Jasper, Rico, Adel, Florian, Rui, Giovanni,
+  Owen; #692679, #693354, #690581, #693439, #692718, #693475, #693482, #693540,
+  #690580, #680990, #693833, #693922, #693854, #694224]
+
+Contributors:
+  Giovanni Campagna, Cosimo Cecchi, Adel Gadllah, Rui Matos, Florian Müllner,
+  Gayan Perera, Jasper St. Pierre, Ray Strode, Owen Taylor, Rico Tzschichholz
+
+Translations:
+  Fran Diéguez [gl], A S Alam [pa], Alexandre Franke [fr], Aurimas Černius [lt],
+  Мирослав Николић [sr, sr@latin], Fran Diéguez [gl], Piotr Drąg [pl],
+  Luca Ferretti [it], Daniel Mustieles [es]
+
 3.7.5
 =====
 * Don't allow multiline window titles [Jon; #683056]
