@@ -567,10 +567,6 @@ const FolderIcon = new Lang.Class({
 
         this._popup = new AppFolderPopup(this, side);
         this._parentView.addFolderPopup(this._popup);
-        let constraint = new Clutter.AlignConstraint({ source: this._parentView.actor,
-                                                       align_axis: Clutter.AlignAxis.X_AXIS,
-                                                       factor: 0.5 });
-        this._popup.actor.add_constraint(constraint);
 
         // Position the popup above or below the source icon
         if (side == St.Side.BOTTOM) {
@@ -600,7 +596,17 @@ const AppFolderPopup = new Lang.Class({
         this._isOpen = false;
 
         this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
-                                     visible: false });
+                                     visible: false,
+                                     // We don't want to expand really, but look
+                                     // at the layout manager of our parent...
+                                     //
+                                     // DOUBLE HACK: if you set one, you automatically
+                                     // get the effect for the other direction too, so
+                                     // we need to set the y_align
+                                     x_expand: true,
+                                     y_expand: true,
+                                     x_align: Clutter.ActorAlign.CENTER,
+                                     y_align: Clutter.ActorAlign.START });
         this._boxPointer = new BoxPointer.BoxPointer(this._arrowSide,
                                                      { style_class: 'app-folder-popup-bin',
                                                        x_fill: true,
