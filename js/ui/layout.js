@@ -605,7 +605,7 @@ const LayoutManager = new Lang.Class({
         this._consoleBackgroundGroup.destroy();
         this._startingUp = false;
 
-        if (Main.sessionMode.isGreeter)
+        if (!Main.sessionMode.isGreeter)
             this._createSecondaryBackgrounds();
 
         this.emit('panel-box-changed');
