@@ -412,13 +412,11 @@ const Keyboard = new Lang.Class({
     },
 
     _onGroupAdded: function (keyboard, gname) {
-        if (!(gname in this._groups))
-            this._groups[gname] = this._createLayersForGroup(gname);
+        this._groups[gname] = this._createLayersForGroup(gname);
     },
 
     _onGroupRemoved: function (keyboard, gname) {
-        // Since _createLayersForGroup is costly, don't remove the
-        // actors from _groups, so they can be reused.
+        delete this._groups[gname];
     },
 
     _setActiveLayer: function () {
