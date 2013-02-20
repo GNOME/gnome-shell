@@ -165,7 +165,7 @@ const BackgroundCache = new Lang.Class({
             content = candidateContent.copy(params.monitorIndex, params.effects);
 
             if (params.cancellable && params.cancellable.is_cancelled())
-                content = NULL;
+                content = null;
 
             if (params.onFinished)
                 params.onFinished(content);
