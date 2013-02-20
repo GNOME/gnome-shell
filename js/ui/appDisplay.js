@@ -790,6 +790,7 @@ const AppIcon = new Lang.Class({
     popupMenu: function() {
         this._removeMenuTimeout();
         this.actor.fake_release();
+        this._draggable.fakeRelease();
 
         if (!this._menu) {
             this._menu = new AppIconMenu(this);

@@ -136,9 +136,10 @@ const _Draggable = new Lang.Class({
     },
 
     _ungrabActor: function() {
-        Clutter.ungrab_pointer();
         if (!this._onEventId)
             return;
+
+        Clutter.ungrab_pointer();
         this.actor.disconnect(this._onEventId);
         this._onEventId = null;
     },
@@ -201,6 +202,19 @@ const _Draggable = new Lang.Class({
         }
 
         return false;
+    },
+
+    /**
+     * fakeRelease:
+     *
+     * Fake a release event.
+     * Must be called if you want to intercept release events on draggable
+     * actors for other purposes (for example if you're using
+     * PopupMenu.ignoreRelease())
+     */
+    fakeRelease: function() {
+        this._buttonDown = false;
+        this._ungrabActor();
     },
 
     /**
