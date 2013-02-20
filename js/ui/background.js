@@ -664,16 +664,12 @@ const BackgroundManager = new Lang.Class({
             this.background.disconnect(this._changedSignalId);
 
         if (this._newBackground) {
-            let container = this._newBackground.actor.get_parent();
-            if (container)
-                container.remove_actor(this._newBackground.actor);
+            this._newBackground.actor.destroy();
             this._newBackground = null;
         }
 
         if (this.background) {
-            let container = this.background.actor.get_parent();
-            if (container)
-                container.remove_actor(this.background.actor);
+            this.background.actor.destroy();
             this.background = null;
         }
     },
@@ -695,7 +691,7 @@ const BackgroundManager = new Lang.Class({
                                    onComplete: Lang.bind(this, function() {
                                        this.background = newBackground;
                                        this._newBackground = null;
-                                       this._container.remove_actor(background.actor);
+                                       background.actor.destroy();
                                        this.emit('changed');
                                    })
                                  });
