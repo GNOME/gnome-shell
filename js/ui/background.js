@@ -164,6 +164,9 @@ const BackgroundCache = new Lang.Class({
         if (candidateContent) {
             content = candidateContent.copy(params.monitorIndex, params.effects);
 
+            if (params.cancellable && params.cancellable.is_cancelled())
+                content = NULL;
+
             if (params.onFinished)
                 params.onFinished(content);
         } else {
@@ -264,7 +267,6 @@ const Background = new Lang.Class({
 
     _destroy: function() {
         this._cancellable.cancel();
-        this._cancellable = null;
 
         if (this._animationUpdateTimeoutId) {
             GLib.source_remove (this._animationUpdateTimeoutId);
@@ -458,7 +460,7 @@ const Background = new Lang.Class({
                                              onLoaded: Lang.bind(this, function(animation) {
                                                  this._animation = animation;
 
-                                                 if (!this._animation) {
+                                                 if (!this._animation || this._cancellable.is_cancelled()) {
                                                      this._setLoaded();
                                                      return;
                                                  }
@@ -477,8 +479,7 @@ const Background = new Lang.Class({
                                       cancellable: this._cancellable,
                                       onFinished: Lang.bind(this, function(content) {
                                           if (!content) {
-                                              if (this._cancellable &&
-                                                  !this._cancellable.is_cancelled())
+                                              if (!this._cancellable.is_cancelled())
                                                   this._loadAnimation(filename);
                                               return;
                                           }
