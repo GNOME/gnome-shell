@@ -556,6 +556,9 @@ const LayoutManager = new Lang.Class({
         if (Main.sessionMode.isGreeter) {
             this.panelBox.translation_y = -this.panelBox.height;
         } else {
+            this.trayBox.hide();
+            this.keyboardBox.hide();
+
             let monitor = this.primaryMonitor;
             let x = monitor.x + monitor.width / 2.0;
             let y = monitor.y + monitor.height / 2.0;
@@ -604,6 +607,9 @@ const LayoutManager = new Lang.Class({
 
         this._consoleBackgroundGroup.destroy();
         this._startingUp = false;
+
+        this.trayBox.show();
+        this.keyboardBox.show();
 
         if (!Main.sessionMode.isGreeter)
             this._createSecondaryBackgrounds();
