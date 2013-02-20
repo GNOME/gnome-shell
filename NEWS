@@ -1,3 +1,58 @@
+3.7.90
+======
+* Let GNOME Shell work on EGL and GLES2 [Neil; #693225, #693438, #693339]
+* Implement middle-click paste [Jasper; #645019]
+* Fix top bar transition between session modes [Rui; #692966]
+* Trigger the message tray with downward pressure [Jasper; #677215]
+* Don't ask for a password on shutdown [Adel; #693385]
+* Add a context menu to the message tray [Adel; #691035, #693887]
+* Use unicode formatting in the date menu [Matthias; #689251]
+* Use proper ellipsis instead of three dots [Jeremy; #689542]
+* Tweak screen shield animation [Giovanni; #691964]
+* Always hide the OSK when showing the message tray [Florian; #662687]
+* Support sound in notifications [Giovanni; #642831]
+* Place application popup menus above chrome [Jasper; #633620]
+* Hide overview elements while searching [Cosimo; #682050]
+* Implement updated IBus candidate popup designs [Rui; #691902]
+* Add support for enable-animations preference [Cosimo; #655746]
+* Don't always show the message tray in the overview [Cosimo; #693987]
+* Improve arrangement of window previews [Adel; #690313]
+* Remove builtin settings provider [Giovanni; #690824]
+* Minimize fullscreen windows when they end up in the background [Adel; #693991]
+* Add context menu to the background actor [Jasper; #681540]
+* Handle backgrounds in the shell, improve startup animation [Ray; #682429]
+* Hide universal access menu when not needed [Giovanni; #681528]
+* Implement updated app picker designs [Florian; #694192]
+* Improve login manager -> session transition [Ray; #694062]
+* Don't use a grid layout in window picker [Adel; #694210]
+* Use scroll wheel for workspace switching rather than zoom [Florian; #686639]
+* Misc bug fixes and cleanups: [Jasper, Florian, Debarshi, Adel, Matthias,
+  Giovanni, Daiki, Rico, Bastien, Cosimo, Ray, Allan, Antonio; #693284,
+  #692680, #691746, #693303, #693162, #693161, #693522, #693385, #691715,
+  #688915, #689106, #682429, #693570, #693737, #693458, #692845, 693836,
+  #681540, #679925, #688227, #692773, #693909, #683288, #693854, #693746,
+  #693931, #693924, #693940, #693970, #693935, #693937, #693974, #693936,
+  #693975, #693822, #694030, #685849, #694052, #694035, #694038, #694079,
+  #694064, #681735, #694100, #694057, #694070, #693572, #693896, #686984,
+  #694123, #694125, #693756, #693757, #687556, #694215, 694062, #694227,
+  #694240, #694234, #694264, 694276, 694282, #694241, #689394, #694202,
+  #694265, #694289, #691806, #694290, #694296]
+
+Contributors:
+  Jeremy Bicha, Giovanni Campagna, Cosimo Cecchi, Matthias Clasen, Allan Day,
+  António Fernandes, Adel Gadllah, Rui Matos, Florian Müllner, Bastien Nocera,
+  Debarshi Ray, Neil Roberts, Jasper St. Pierre, Ray Strode, Rico Tzschichholz,
+  Daiki Ueno
+
+Translations:
+  Yasumichi Akahoshi [ja], Yoji TOYODA [ja], Dušan Kazik [sk],
+  Wouter Bolsterlee [nl], Matej Urbančič [sl], Gheyret Kenji [ug],
+  Ivaylo Valkov [bg], Daniel Korostil [uk], Gheyret Kenji [ug],
+  Daniel Mustieles [es], Anish A [ml], Gil Forcada [ca],
+  Carles Ferrando [ca@valencia], Мирослав Николић [sr, sr@latin],
+  Aurimas Černius [lt], Rafael Ferreira [pt_BR], Fran Diéguez [gl],
+  Piotr Drąg [pl], Luca Ferretti [it], A S Alam [pa]
+
 3.7.5
 =====
 * MessageTray: pass keyboard events to tray icons [Giovanni; #687425]
