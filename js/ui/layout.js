@@ -221,7 +221,6 @@ const LayoutManager = new Lang.Class({
         global.screen.connect('monitors-changed',
                               Lang.bind(this, this._monitorsChanged));
         this._monitorsChanged();
-        this._prepareStartupAnimation();
     },
 
     // This is called by Main after everything else is constructed;
@@ -537,7 +536,7 @@ const LayoutManager = new Lang.Class({
     // MetaBackgroundActor inside global.window_group covers the entirety of the
     // screen. So, we set no_clear_hint at the end of the animation.
 
-    _prepareStartupAnimation: function() {
+    prepareStartupAnimation: function() {
         // Set ourselves to FULLSCREEN input mode while the animation is running
         // so events don't get delivered to X11 windows (which are distorted by the animation)
         global.stage_input_mode = Shell.StageInputMode.FULLSCREEN;
@@ -556,6 +555,10 @@ const LayoutManager = new Lang.Class({
         if (Main.sessionMode.isGreeter) {
             this.panelBox.translation_y = -this.panelBox.height;
         } else {
+            // We need to force an update of the regions now before we scale
+            // the UI group to get the coorect allocation for the struts.
+            this._updateRegions();
+
             this.trayBox.hide();
             this.keyboardBox.hide();
 
@@ -613,6 +616,8 @@ const LayoutManager = new Lang.Class({
             this._createSecondaryBackgrounds();
 
         this.emit('panel-box-changed');
+
+        this._queueUpdateRegions();
     },
 
     showKeyboard: function () {
@@ -827,6 +832,9 @@ const LayoutManager = new Lang.Class({
 
     _queueUpdateRegions: function() {
         if (Main.sessionMode.isGreeter)
+            return;
+
+        if (this._startingUp)
             return;
 
         if (!this._updateRegionIdle)

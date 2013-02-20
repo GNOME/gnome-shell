@@ -152,6 +152,7 @@ function startSession() {
     componentManager = new Components.ComponentManager();
 
     layoutManager.init();
+    layoutManager.prepareStartupAnimation();
     overview.init();
 
     global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
