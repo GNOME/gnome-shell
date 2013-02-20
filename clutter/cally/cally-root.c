@@ -42,20 +42,21 @@
 static void cally_root_finalize   (GObject *object);
 
 /* AtkObject.h */
-static void       cally_root_initialize                            (AtkObject *accessible,
-                                                                    gpointer   data);
-static gint       cally_root_get_n_children                        (AtkObject *obj);
-static AtkObject *cally_root_ref_child                             (AtkObject *obj,
-                                                                    gint i);
-static AtkObject *cally_root_get_parent                            (AtkObject *obj);
+static void             cally_root_initialize           (AtkObject *accessible,
+                                                         gpointer   data);
+static gint             cally_root_get_n_children       (AtkObject *obj);
+static AtkObject *      cally_root_ref_child            (AtkObject *obj,
+                                                         gint i);
+static AtkObject *      cally_root_get_parent           (AtkObject *obj);
+static const char *     cally_root_get_name             (AtkObject *obj);
 
 /* Private */
-static void       cally_util_stage_added_cb                        (ClutterStageManager *stage_manager,
-                                                                    ClutterStage *stage,
-                                                                    gpointer data);
-static void       cally_util_stage_removed_cb                      (ClutterStageManager *stage_manager,
-                                                                    ClutterStage *stage,
-                                                                    gpointer data);
+static void             cally_util_stage_added_cb       (ClutterStageManager *stage_manager,
+                                                         ClutterStage *stage,
+                                                         gpointer data);
+static void             cally_util_stage_removed_cb     (ClutterStageManager *stage_manager,
+                                                         ClutterStage *stage,
+                                                         gpointer data);
 
 #define CALLY_ROOT_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), CALLY_TYPE_ROOT, CallyRootPrivate))
 
@@ -89,6 +90,7 @@ cally_root_class_init (CallyRootClass *klass)
   class->ref_child = cally_root_ref_child;
   class->get_parent = cally_root_get_parent;
   class->initialize = cally_root_initialize;
+  class->get_name = cally_root_get_name;
 
   g_type_class_add_private (gobject_class, sizeof (CallyRootPrivate));
 }
@@ -167,7 +169,6 @@ cally_root_initialize (AtkObject              *accessible,
   CallyRoot           *root          = NULL;
 
   accessible->role = ATK_ROLE_APPLICATION;
-  accessible->name = g_get_prgname();
   accessible->accessible_parent = NULL;
 
   /* children initialization */
@@ -236,6 +237,12 @@ static AtkObject*
 cally_root_get_parent (AtkObject *obj)
 {
   return NULL;
+}
+
+static const char *
+cally_root_get_name (AtkObject *obj)
+{
+  return g_get_prgname ();
 }
 
 /* -------------------------------- PRIVATE --------------------------------- */
