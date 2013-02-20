@@ -474,8 +474,6 @@ const WorkspacesDisplay = new Lang.Class({
         this._switchWorkspaceNotifyId = 0;
 
         this._notifyOpacityId = 0;
-        this._swipeScrollBeginId = 0;
-        this._swipeScrollEndId = 0;
         this._scrollEventId = 0;
     },
 
