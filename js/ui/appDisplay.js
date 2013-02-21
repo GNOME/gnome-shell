@@ -175,6 +175,7 @@ const AllView = new Lang.Class({
                                          y_fill: false,
                                          y_align: St.Align.START,
                                          x_expand: true,
+                                         y_expand: true,
                                          style_class: 'vfade' });
         this.actor.add_actor(box);
         this.actor.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -309,6 +310,7 @@ const FrequentView = new Lang.Class({
                                          y_fill: false,
                                          y_align: St.Align.START,
                                          x_expand: true,
+                                         y_expand: true,
                                          reactive: false,
                                          style_class: 'frequent-apps vfade' });
         this.actor.add_actor(box);
@@ -373,10 +375,7 @@ const AppDisplay = new Lang.Class({
 
         this._viewStack = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                           x_expand: true, y_expand: true });
-        let bin = new St.Bin({ child: this._viewStack,
-                               clip_to_allocation: true,
-                               x_fill: true, y_fill: true });
-        this.actor.add(bin, { expand: true });
+        this.actor.add(this._viewStack, { expand: true });
 
         let layout = new Clutter.BoxLayout({ homogeneous: true });
         this._controls = new St.Widget({ style_class: 'app-view-controls',
