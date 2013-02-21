@@ -555,7 +555,8 @@ const LayoutManager = new Lang.Class({
 
             this.uiGroup.set_pivot_point(x / global.screen_width,
                                          y / global.screen_height);
-            this.uiGroup.scale_x = this.uiGroup.scale_y = 0;
+            this.uiGroup.scale_x = this.uiGroup.scale_y = 0.5;
+            this.uiGroup.opacity = 0;
         }
 
         this._systemBackground = new Background.SystemBackground();
@@ -610,6 +611,7 @@ const LayoutManager = new Lang.Class({
         Tweener.addTween(this.uiGroup,
                          { scale_x: 1,
                            scale_y: 1,
+                           opacity: 255,
                            time: STARTUP_ANIMATION_TIME,
                            transition: 'easeOutQuad',
                            onComplete: this._startupAnimationComplete,
