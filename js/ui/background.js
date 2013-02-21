@@ -576,6 +576,25 @@ const StillFrame = new Lang.Class({
 });
 Signals.addSignalMethods(StillFrame.prototype);
 
+const SystemBackground = new Lang.Class({
+    Name: 'SystemBackground',
+
+    _init: function() {
+        this._cache = getBackgroundCache();
+        this.actor = new Meta.BackgroundActor();
+
+        this._cache.getImageContent({ style: GDesktopEnums.BackgroundStyle.WALLPAPER,
+                                      filename: global.datadir + '/theme/noise-texture.png',
+                                      effects: Meta.BackgroundEffects.NONE,
+                                      onFinished: Lang.bind(this, function(content) {
+                                          this.actor.content = content;
+                                          this.emit('loaded');
+                                      })
+                                    });
+    }
+});
+Signals.addSignalMethods(SystemBackground.prototype);
+
 const Animation = new Lang.Class({
     Name: 'Animation',
 

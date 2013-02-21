@@ -1,6 +1,7 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
 const Clutter = imports.gi.Clutter;
+const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
@@ -199,9 +200,6 @@ const LayoutManager = new Lang.Class({
 
         global.stage.remove_actor(global.top_window_group);
         this.uiGroup.add_actor(global.top_window_group);
-
-        this._consoleBackgroundGroup = new Meta.BackgroundGroup();
-        global.stage.insert_child_below(this._consoleBackgroundGroup, null);
 
         this._backgroundGroup = new Meta.BackgroundGroup();
         global.window_group.add_child(this._backgroundGroup);
@@ -541,17 +539,6 @@ const LayoutManager = new Lang.Class({
         // so events don't get delivered to X11 windows (which are distorted by the animation)
         global.stage_input_mode = Shell.StageInputMode.FULLSCREEN;
 
-        // build new backgrounds
-        for (let i = 0; i < this.monitors.length; i++) {
-            let monitor = this.monitors[i];
-
-            let stillFrame = new Background.StillFrame(i);
-            this._consoleBackgroundGroup.add_child(stillFrame.actor);
-
-            stillFrame.actor.set_size(this.monitors[i].width, this.monitors[i].height);
-            stillFrame.actor.set_position(this.monitors[i].x, this.monitors[i].y);
-        }
-
         if (Main.sessionMode.isGreeter) {
             this.panelBox.translation_y = -this.panelBox.height;
         } else {
@@ -570,6 +557,35 @@ const LayoutManager = new Lang.Class({
                                          y / global.screen_height);
             this.uiGroup.scale_x = this.uiGroup.scale_y = 0;
         }
+
+        this._systemBackground = new Background.SystemBackground();
+        this._systemBackground.actor.hide();
+
+        global.stage.insert_child_below(this._systemBackground.actor, null);
+
+        let constraint = new Clutter.BindConstraint({ source: global.stage,
+                                                      coordinate: Clutter.BindCoordinate.ALL });
+        this._systemBackground.actor.add_constraint(constraint);
+
+        let signalId = this._systemBackground.connect('loaded',
+                                                      Lang.bind(this, function() {
+                                                          this._systemBackground.disconnect(signalId);
+                                                          this._systemBackground.actor.show();
+
+                                                          // We're mostly prepared for the startup animation
+                                                          // now, but since a lot is going on asynchronously
+                                                          // during startup, let's defer emission of the
+                                                          // startup-prepared signal until the event loop is
+                                                          // uncontended and idle. This helps to prevent us
+                                                          // from running the animation when the system is
+                                                          // bogged down
+                                                          GLib.idle_add(GLib.PRIORITY_LOW,
+                                                                        Lang.bind(this, function() {
+                                                                                      this.emit('startup-prepared');
+                                                                                      return false;
+                                                                                  }));
+
+                                                      }));
     },
 
     startupAnimation: function() {
@@ -607,8 +623,8 @@ const LayoutManager = new Lang.Class({
 
         global.stage_input_mode = Shell.StageInputMode.NORMAL;
 
-        this._consoleBackgroundGroup.destroy();
-        this._consoleBackgroundGroup = null;
+        this._systemBackground.actor.destroy();
+        this._systemBackground = null;
 
         this._startingUp = false;
 

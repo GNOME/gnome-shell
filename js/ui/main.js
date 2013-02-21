@@ -196,13 +196,10 @@ function startSession() {
     ExtensionDownloader.init();
     ExtensionSystem.init();
 
-    // Run the startup animation as soon as the mainloop is idle enough.
-    // This is necessary to have it smooth and without interruptions from
-    // completed IO tasks
-    GLib.idle_add(GLib.PRIORITY_LOW, function() {
-        layoutManager.startupAnimation();
-        return false;
-    });
+    layoutManager.connect('startup-prepared',
+                          Lang.bind(this, function() {
+                              layoutManager.startupAnimation();
+                          }));
 }
 
 let _workspaces = [];
