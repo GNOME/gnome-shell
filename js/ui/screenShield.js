@@ -447,7 +447,7 @@ const ScreenShield = new Lang.Class({
 
         this._lockScreenGroup.add_actor(this._lockScreenContents);
 
-        this._backgroundGroup = new Meta.BackgroundGroup();
+        this._backgroundGroup = new Clutter.Actor();
 
         this._lockScreenGroup.add_actor(this._backgroundGroup);
         this._backgroundGroup.lower_bottom();
@@ -538,21 +538,22 @@ const ScreenShield = new Lang.Class({
     },
 
     _createBackground: function(monitorIndex) {
-        let bin = new St.Bin({ style_class: 'screen-shield-background' });
+        let monitor = Main.layoutManager.monitors[monitorIndex];
+        let widget = new St.Widget({ style_class: 'screen-shield-background',
+                                     x: monitor.x,
+                                     y: monitor.y,
+                                     width: monitor.width,
+                                     height: monitor.height });
 
-        let group = new Meta.BackgroundGroup();
-        bin.child = group;
-
-        let bgManager = new Background.BackgroundManager({ container: group,
+        let bgManager = new Background.BackgroundManager({ container: widget,
                                                            monitorIndex: monitorIndex,
-                                                           effects: Meta.BackgroundEffects.BLUR | Meta.BackgroundEffects.DESATURATE });
-
+                                                           effects: Meta.BackgroundEffects.BLUR | Meta.BackgroundEffects.DESATURATE,
+                                                           controlPosition: false });
         bgManager.background.saturation = 0.6;
 
         this._bgManagers.push(bgManager);
 
-        this._backgroundGroup.add_child(bin);
-        bin.lower_bottom();
+        this._backgroundGroup.add_child(widget);
     },
 
     _updateBackgrounds: function() {

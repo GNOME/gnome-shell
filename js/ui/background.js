@@ -635,12 +635,14 @@ const BackgroundManager = new Lang.Class({
         params = Params.parse(params, { container: null,
                                         layoutManager: Main.layoutManager,
                                         monitorIndex: null,
-                                        effects: Meta.BackgroundEffects.NONE });
+                                        effects: Meta.BackgroundEffects.NONE,
+                                        controlPosition: true });
 
         this._container = params.container;
         this._layoutManager = params.layoutManager;
         this._effects = params.effects;
         this._monitorIndex = params.monitorIndex;
+        this._controlPosition = params.controlPosition;
 
         this.background = this._createBackground();
         this._newBackground = null;
@@ -700,9 +702,12 @@ const BackgroundManager = new Lang.Class({
         this._container.add_child(background.actor);
 
         let monitor = this._layoutManager.monitors[this._monitorIndex];
-        background.actor.set_position(monitor.x, monitor.y);
+
         background.actor.set_size(monitor.width, monitor.height);
-        background.actor.lower_bottom();
+        if (this._controlPosition) {
+            background.actor.set_position(monitor.x, monitor.y);
+            background.actor.lower_bottom();
+        }
 
         let signalId = background.connect('changed', Lang.bind(this, function() {
             background.disconnect(signalId);
