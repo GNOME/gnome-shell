@@ -180,6 +180,7 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
 
   if (priv->is_dirty)
     {
+      ClutterRect rect;
       gboolean mapped_buffer;
       CoglVertexP3T2C4 *verts;
       ClutterActor *actor;
@@ -193,7 +194,12 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
       /* if we don't have a target size, fall back to the actor's
        * allocation, though wrong it might be
        */
-      if (!clutter_offscreen_effect_get_target_size (effect, &width, &height))
+      if (clutter_offscreen_effect_get_target_rect (effect, &rect))
+        {
+          width = clutter_rect_get_width (&rect);
+          height = clutter_rect_get_height (&rect);
+        }
+      else
         clutter_actor_get_size (actor, &width, &height);
 
       /* XXX ideally, the sub-classes should tell us what they
