@@ -25,8 +25,8 @@ const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
 // The message tray takes this much pressure
 // in the pressure barrier at once to release it.
-const MESSAGE_TRAY_PRESSURE_THRESHOLD = 200; // pixels
-const MESSAGE_TRAY_PRESSURE_TIMEOUT = 3000; // ms
+const MESSAGE_TRAY_PRESSURE_THRESHOLD = 250; // pixels
+const MESSAGE_TRAY_PRESSURE_TIMEOUT = 1000; // ms
 
 function isPopupMetaWindow(actor) {
     switch(actor.meta_window.get_window_type()) {
