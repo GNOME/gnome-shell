@@ -1,3 +1,40 @@
+Cogl 1.13.4                                                        2013-02-21
+
+  • List of changes since Cogl 1.13.2
+
+  » New CoglOutput API to query information about displays.
+  » New API for querying frame timing information in a frame callback.
+  » New API for querying the buffer age of an onscreen framebuffer.
+  » Fixed building the GLES2 driver without the GL driver.
+  » Fixed X errors when Cogl is used after an onscreen is destroyed.
+  » Fixed API used by Clutter-GST to query the number of texture units.
+  » Fixed the soname for the libcogl-pango2 library
+  » Fixed building with MinGW32
+
+  • Bugzilla bugs closed since 1.13.2:
+
+  #669122 - Clipped redraws and tearing
+  #692420 - Build fails on Mac OS Mountain Lion:
+            error: 'GL_NUM_EXTENSIONS' undeclared 
+  #693360 - cogl-pango: Fix some doc/introspection comments
+  #693612 - cogl-pango: wrong rendering on the second line of an
+            underlined layout
+  #693696 - Fix startup with gnome-shell and cogl-1.14
+  #693894 - COGL_TEST_ONSCREEN=0 results in onscreen conformance testing
+  #694164 - Don't use GL_MAP_INVALIDATE_RANGE_BIT on READ_BIT buffers
+
+Many thanks to:
+
+  Robert Bragg
+  Owen W. Taylor
+  Jasper St. Pierre
+  Piotr Drąg
+  Adam Jackson
+  Adel Gadllah
+  Daniel Martinez
+  Gheyret Kenji
+  Jerome Glisse
+
 Cogl 1.13.2                                                        2013-01-21
 
   • List of changes since Cogl 1.12.2
