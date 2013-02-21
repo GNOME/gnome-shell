@@ -103,9 +103,15 @@ void            clutter_offscreen_effect_paint_target           (ClutterOffscree
 CoglHandle      clutter_offscreen_effect_create_texture         (ClutterOffscreenEffect *effect,
                                                                  gfloat                  width,
                                                                  gfloat                  height);
+
+CLUTTER_DEPRECATED_IN_1_14_FOR (clutter_offscreen_effect_get_target_rect)
 gboolean        clutter_offscreen_effect_get_target_size        (ClutterOffscreenEffect *effect,
                                                                  gfloat                 *width,
                                                                  gfloat                 *height);
+
+CLUTTER_AVAILABLE_IN_1_14
+gboolean        clutter_offscreen_effect_get_target_rect        (ClutterOffscreenEffect *effect,
+                                                                 ClutterRect            *rect);
 
 G_END_DECLS
 
