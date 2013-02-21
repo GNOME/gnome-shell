@@ -1754,13 +1754,12 @@ const MessageTray = new Lang.Class({
     },
 
     _setupTrayDwellIfNeeded: function() {
-        this._trayDwellTimeoutId = 0;
-
         // If we don't have extended barrier features, then we need
         // to support the old tray dwelling mechanism.
         if (!global.display.supports_extended_barriers()) {
             let pointerWatcher = PointerWatcher.getPointerWatcher();
             pointerWatcher.addWatch(TRAY_DWELL_CHECK_INTERVAL, Lang.bind(this, this._checkTrayDwell));
+            this._trayDwellTimeoutId = 0;
             this._trayDwelling = false;
             this._trayDwellUserTime = 0;
         }
