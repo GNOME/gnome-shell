@@ -411,7 +411,7 @@ echo
 echo "To get started, you should be able to configure and build from"
 echo "the top of your cogl source directory as follows:"
 echo
-echo "./configure --host=\"$TARGET\" --target=\"$TARGET\" --build=\"$build_config\" --enable-wgl CFLAGS=\"-mms-bitfields -I$ROOT_DIR/include\" PKG_CONFIG=\"$RUN_PKG_CONFIG\"" PKG_CONFIG_PATH=
+echo "./configure --host=\"$TARGET\" --target=\"$TARGET\" --build=\"$build_config\" --enable-wgl CFLAGS=\"-mms-bitfields -I$ROOT_DIR/include\" --enable-deprecated PKG_CONFIG=\"$RUN_PKG_CONFIG\"" PKG_CONFIG_PATH=
 echo "make"
 echo
 echo "Note: the explicit --build option is often necessary to ensure autoconf"
