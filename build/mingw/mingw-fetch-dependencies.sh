@@ -8,10 +8,14 @@
 TOR_URL="http://ftp.gnome.org/pub/gnome/binaries/win32";
 
 TOR_BINARIES=( \
-    glib/2.28/glib{-dev,}_2.28.8-1_win32.zip \
     pango/1.28/pango{-dev,}_1.28.0-1_win32.zip);
 
 TOR_DEP_URL="http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies";
+
+ZLIB_VERSION=1.2.4-2
+FFI_VERSION=3.0.6
+GLIB_VERSION=2.34.3
+GLIB_MINOR_VERSION="${GLIB_VERSION%.*}"
 
 TOR_DEPS=( \
     cairo{-dev,}_1.10.0-2_win32.zip \
@@ -20,7 +24,13 @@ TOR_DEPS=( \
     freetype{-dev,}_2.3.12-1_win32.zip \
     expat_2.0.1-1_win32.zip \
     libpng{-dev,}_1.4.0-1_win32.zip \
-    zlib{-dev,}_1.2.4-2_win32.zip );
+    zlib{-dev,}_${ZLIB_VERSION}_win32.zip \
+    libffi{-dev,}_${FFI_VERSION}-1_win32.zip \
+    gettext-runtime{-dev,}_0.18.1.1-2_win32.zip );
+
+GNOME_SOURCES_URL="http://ftp.gnome.org/pub/GNOME/sources/"
+SOURCES_DEPS=(\
+    glib/${GLIB_MINOR_VERSION}/glib-${GLIB_VERSION}.tar.xz );
 
 GL_HEADER_URLS=( \
     http://cgit.freedesktop.org/mesa/mesa/plain/include/GL/gl.h \
@@ -125,7 +135,7 @@ function do_untar_source_d ()
     local exdir="$1"; shift;
     local tarfile="$1"; shift;
 
-    tar -C "$exdir" -zxvf "$tarfile" "$@";
+    tar -C "$exdir" -axvf "$tarfile" "$@";
 
     if [ "$?" -ne 0 ]; then
 	echo "Failed to extract $tarfile";
@@ -178,13 +188,51 @@ function find_compiler ()
     echo "Using compiler ${MINGW_TOOL_PREFIX}gcc and target $TARGET";
 }
 
+function generate_pc_file ()
+{
+    local pcfile="$1"; shift;
+    local libs="$1"; shift;
+    local version="$1"; shift;
+    local include="$1"; shift;
+    local bn=`basename "$pcfile"`;
+
+    if test -z "$include"; then
+        include="\${prefix}/include";
+    fi;
+
+    if ! test -f "$pcfile"; then
+        cat > "$pcfile" <<EOF
+prefix=$ROOT_DIR
+exec_prefix=\${prefix}
+libdir=\${prefix}/lib
+sharedlibdir=\${libdir}
+includedir=$include
+
+Name: $bn
+Description: $bn
+
+Requires:
+Libs: -L\${libdir} $libs
+Cflags: -I\${includedir}
+Version: $version
+EOF
+    fi
+}
+
 function do_cross_compile ()
 {
     local dep="$1"; shift;
     local builddir="$BUILD_DIR/$dep";
 
     cd "$builddir"
-    ./configure --prefix="$ROOT_DIR" --host="$TARGET" --target="$TARGET" --build="`./config.guess`" CFLAGS="-mms-bitfields" PKG_CONFIG="$RUN_PKG_CONFIG";
+    ./configure --prefix="$ROOT_DIR" \
+        --host="$TARGET" \
+        --target="$TARGET" \
+        --build="`./config.guess`" \
+        CFLAGS="-mms-bitfields -I${ROOT_DIR}/include" \
+        LDFLAGS="-L${ROOT_DIR}/lib" \
+        PKG_CONFIG="$RUN_PKG_CONFIG" \
+        "$@";
 
     if [ "$?" -ne 0 ]; then
 	echo "Failed to configure $dep";
@@ -258,6 +306,11 @@ for dep in "${GL_HEADER_URLS[@]}"; do
     download_file "$dep" "$bn";
 done;
 
+for dep in "${SOURCES_DEPS[@]}"; do
+    src="${dep##*/}";
+    download_file "$GNOME_SOURCES_URL/$dep" "$src";
+done;
+
 download_file "$CONFIG_GUESS_URL" "config.guess";
 
 ##
@@ -273,6 +326,12 @@ done;
 for dep in "${TOR_DEPS[@]}"; do
     echo "Extracting $dep...";
     do_unzip "$DOWNLOAD_DIR/$dep";
+done;
+
+for src in "${SOURCES_DEPS[@]}"; do
+    echo "Extracting $src...";
+    src="${src##*/}";
+    do_untar_source "$DOWNLOAD_DIR/$src";
 done;
 
 echo "Fixing pkgconfig files...";
@@ -303,6 +362,13 @@ for header in "${GL_HEADERS[@]}"; do
     fi;
 done;
 
+# We need pkg-config files for zlib and ffi to build glib. The
+# prepackaged binaries from tml doesn't seem to include them so we'll
+# just generate it manually.
+generate_pc_file "$ROOT_DIR/lib/pkgconfig/zlib.pc" "-lz" "$ZLIB_VERSION"
+generate_pc_file "$ROOT_DIR/lib/pkgconfig/libffi.pc" "-lffi" "$FFI_VERSION" \
+    "${ROOT_DIR}/lib/libffi-${FFI_VERSION}/include"
+
 RUN_PKG_CONFIG="$BUILD_DIR/run-pkg-config.sh";
 
 echo "Generating $BUILD_DIR/run-pkg-config.sh";
@@ -330,6 +396,12 @@ chmod a+x "$RUN_PKG_CONFIG";
 find_compiler;
 
 build_config=`bash $DOWNLOAD_DIR/config.guess`;
+
+##
+# Build source dependencies
+##
+
+do_cross_compile "glib-${GLIB_VERSION}" --disable-modular-tests
 
 echo
 echo "Done!"
