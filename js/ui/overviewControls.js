@@ -98,6 +98,7 @@ const SlidingControl = new Lang.Class({
         this.layout = new SlideLayout();
         this.layout.slideDirection = params.slideDirection;
         this.actor = new St.Widget({ layout_manager: this.layout,
+                                     style_class: 'overview-controls',
                                      clip_to_allocation: true });
 
         Main.overview.connect('showing', Lang.bind(this, this._onOverviewShowing));

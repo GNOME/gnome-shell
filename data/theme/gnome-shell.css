@@ -644,6 +644,9 @@ StScrollBar StButton#vhandle:active {
 
 #overview {
     spacing: 24px;
+}
+
+.overview-controls {
     padding-bottom: 32px;
 }
 
@@ -781,7 +784,7 @@ StScrollBar StButton#vhandle:active {
 /* Search Results */
 
 #searchResults {
-    padding: 20px 10px 10px 10px;
+    padding: 20px 10px 0px 10px;
     spacing: 18px;
 }
 
@@ -850,6 +853,7 @@ StScrollBar StButton#vhandle:active {
 
 .app-view-controls {
     width: 250px;
+    padding-bottom: 32px;
 }
 
 .app-view-control {
