@@ -1330,7 +1330,7 @@ const PressureBarrier = new Lang.Class({
 
         this._trimBarrierEvents();
         this._barrierEvents.push(event);
-        this._currentPressure += distance;
+        this._currentPressure += Math.min(15, distance);
 
         if (this._currentPressure >= this._threshold) {
             this.emit('trigger');
