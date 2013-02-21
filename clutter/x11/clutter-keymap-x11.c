@@ -365,6 +365,7 @@ clutter_keymap_x11_translate_event (ClutterEventTranslator *translator,
           retval = CLUTTER_TRANSLATE_REMOVE;
           break;
 
+        case XkbNewKeyboardNotify:
         case XkbMapNotify:
           CLUTTER_NOTE (EVENT, "Updating keyboard mapping");
           XkbRefreshKeyboardMapping (&xkb_event->map);
