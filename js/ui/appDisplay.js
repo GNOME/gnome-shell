@@ -187,6 +187,9 @@ const AllView = new Lang.Class({
     _init: function() {
         this.parent();
 
+        this._grid.actor.y_align = Clutter.ActorAlign.START;
+        this._grid.actor.y_expand = true;
+
         let box = new St.BoxLayout({ vertical: true });
         this._stack = new St.Widget({ layout_manager: new AllViewLayout() });
         this._stack.add_actor(this._grid.actor);
