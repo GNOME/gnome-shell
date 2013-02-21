@@ -89,6 +89,9 @@ function start() {
     global.logError = window.log;
     global.log = window.log;
 
+    // Hide the stage until we're ready for it
+    global.stage.hide();
+
     // Chain up async errors reported from C
     global.connect('notify-error', function (global, msg, detail) { notifyError(msg, detail); });
 

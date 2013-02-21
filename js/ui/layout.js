@@ -573,6 +573,7 @@ const LayoutManager = new Lang.Class({
     },
 
     startupAnimation: function() {
+        global.stage.show();
         if (Main.sessionMode.isGreeter)
             this._startupAnimationGreeter();
         else
