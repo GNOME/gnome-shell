@@ -15184,10 +15184,10 @@ clutter_actor_allocate_align_fill (ClutterActor           *self,
                                    ClutterAllocationFlags  flags)
 {
   ClutterActorPrivate *priv;
-  ClutterActorBox allocation = { 0, };
+  ClutterActorBox allocation = CLUTTER_ACTOR_BOX_INIT_ZERO;
   gfloat x_offset, y_offset;
   gfloat available_width, available_height;
-  gfloat child_width, child_height;
+  gfloat child_width = 0.f, child_height = 0.f;
 
   g_return_if_fail (CLUTTER_IS_ACTOR (self));
   g_return_if_fail (box != NULL);
