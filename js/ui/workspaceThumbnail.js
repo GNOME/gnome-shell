@@ -590,7 +590,7 @@ const ThumbnailsBox = new Lang.Class({
             let thumbnail = this._thumbnails[i]
             let [w, h] = thumbnail.actor.get_transformed_size();
             if (y >= thumbnail.actor.y && y <= thumbnail.actor.y + h) {
-                thumbnail.activate(event.time);
+                thumbnail.activate(event.get_time());
                 break;
             }
         }
