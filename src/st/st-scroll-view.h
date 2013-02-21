@@ -80,6 +80,10 @@ void          st_scroll_view_set_mouse_scrolling (StScrollView *scroll,
                                                   gboolean      enabled);
 gboolean      st_scroll_view_get_mouse_scrolling (StScrollView *scroll);
 
+void          st_scroll_view_set_overlay_scrollbars (StScrollView *scroll,
+                                                     gboolean      enabled);
+gboolean      st_scroll_view_get_overlay_scrollbars (StScrollView *scroll);
+
 void          st_scroll_view_set_policy          (StScrollView   *scroll,
                                                   GtkPolicyType   hscroll,
                                                   GtkPolicyType   vscroll);

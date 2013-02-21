@@ -101,6 +101,7 @@ struct _StScrollViewPrivate
   gboolean      row_size_set : 1;
   gboolean      column_size_set : 1;
   guint         mouse_scroll : 1;
+  guint         overlay_scrollbars : 1;
   guint         hscrollbar_visible : 1;
   guint         vscrollbar_visible : 1;
 };
@@ -115,6 +116,7 @@ enum {
   PROP_HSCROLLBAR_VISIBLE,
   PROP_VSCROLLBAR_VISIBLE,
   PROP_MOUSE_SCROLL,
+  PROP_OVERLAY_SCROLLBARS,
 };
 
 static void
@@ -147,6 +149,9 @@ st_scroll_view_get_property (GObject    *object,
       break;
     case PROP_MOUSE_SCROLL:
       g_value_set_boolean (value, priv->mouse_scroll);
+      break;
+    case PROP_OVERLAY_SCROLLBARS:
+      g_value_set_boolean (value, priv->overlay_scrollbars);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -211,6 +216,10 @@ st_scroll_view_set_property (GObject      *object,
     case PROP_MOUSE_SCROLL:
       st_scroll_view_set_mouse_scrolling (self,
                                           g_value_get_boolean (value));
+      break;
+    case PROP_OVERLAY_SCROLLBARS:
+      st_scroll_view_set_overlay_scrollbars (self,
+                                             g_value_get_boolean (value));
       break;
     case PROP_HSCROLLBAR_POLICY:
       st_scroll_view_set_policy (self,
@@ -376,14 +385,14 @@ st_scroll_view_get_preferred_width (ClutterActor *actor,
       account_for_vscrollbar = FALSE;
       break;
     case GTK_POLICY_ALWAYS:
-      account_for_vscrollbar = TRUE;
+      account_for_vscrollbar = !priv->overlay_scrollbars;
       break;
     case GTK_POLICY_AUTOMATIC:
       /* For automatic scrollbars, we always request space for the vertical
        * scrollbar; we won't know whether we actually need one until our
        * height is assigned in allocate().
        */
-      account_for_vscrollbar = TRUE;
+      account_for_vscrollbar = !priv->overlay_scrollbars;
       break;
     }
 
@@ -448,14 +457,14 @@ st_scroll_view_get_preferred_height (ClutterActor *actor,
       account_for_hscrollbar = FALSE;
       break;
     case GTK_POLICY_ALWAYS:
-      account_for_hscrollbar = TRUE;
+      account_for_hscrollbar = !priv->overlay_scrollbars;
       break;
     case GTK_POLICY_AUTOMATIC:
       /* For automatic scrollbars, we always request space for the horizontal
        * scrollbar; we won't know whether we actually need one until our
        * width is assigned in allocate().
        */
-      account_for_hscrollbar = TRUE;
+      account_for_hscrollbar = !priv->overlay_scrollbars;
       break;
     }
 
@@ -626,14 +635,15 @@ st_scroll_view_allocate (ClutterActor          *actor,
       clutter_actor_allocate (priv->hscroll, &child_box, flags);
     }
 
-  /* In case the scrollbar policy is NEVER, we don't trim the content
-   * box allocation by the scrollbar size.
+  /* In case the scrollbar policy is NEVER or scrollbars should be
+   * overlayed, we don't trim the content box allocation by the
+   * scrollbar size.
    * Fold this into the scrollbar sizes to simplify the rest of the
    * computations.
    */
-  if (priv->hscrollbar_policy == GTK_POLICY_NEVER)
+  if (priv->hscrollbar_policy == GTK_POLICY_NEVER || priv->overlay_scrollbars)
     sb_height = 0;
-  if (priv->vscrollbar_policy == GTK_POLICY_NEVER)
+  if (priv->vscrollbar_policy == GTK_POLICY_NEVER || priv->overlay_scrollbars)
     sb_width = 0;
 
   /* Child */
@@ -828,6 +838,14 @@ st_scroll_view_class_init (StScrollViewClass *klass)
                                    PROP_MOUSE_SCROLL,
                                    pspec);
 
+  pspec = g_param_spec_boolean ("overlay-scrollbars",
+                                "Use Overlay Scrollbars",
+                                "Overlay scrollbars over the content",
+                                FALSE,
+                                G_PARAM_READWRITE);
+  g_object_class_install_property (object_class,
+                                   PROP_OVERLAY_SCROLLBARS,
+                                   pspec);
 }
 
 static void
@@ -1088,6 +1106,49 @@ st_scroll_view_get_mouse_scrolling (StScrollView *scroll)
   priv = ST_SCROLL_VIEW (scroll)->priv;
 
   return priv->mouse_scroll;
+}
+
+/**
+ * st_scroll_view_set_overlay_scrollbars:
+ * @scroll: A #StScrollView
+ * @enabled: Whether to enable overlay scrollbars
+ *
+ * Sets whether scrollbars are painted on top of the content.
+ */
+void
+st_scroll_view_set_overlay_scrollbars (StScrollView *scroll,
+                                       gboolean      enabled)
+{
+  StScrollViewPrivate *priv;
+
+  g_return_if_fail (ST_IS_SCROLL_VIEW (scroll));
+
+  priv = ST_SCROLL_VIEW (scroll)->priv;
+
+  if (priv->overlay_scrollbars != enabled)
+    {
+      priv->overlay_scrollbars = enabled;
+      g_object_notify (G_OBJECT (scroll), "overlay-scrollbars");
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (scroll));
+    }
+}
+
+/**
+ * st_scroll_view_get_overlay_scrollbars:
+ * @scroll: A #StScrollView
+ *
+ * Gets the value set by st_scroll_view_set_overlay_scrollbars().
+ */
+gboolean
+st_scroll_view_get_overlay_scrollbars (StScrollView *scroll)
+{
+  StScrollViewPrivate *priv;
+
+  g_return_val_if_fail (ST_IS_SCROLL_VIEW (scroll), FALSE);
+
+  priv = ST_SCROLL_VIEW (scroll)->priv;
+
+  return priv->overlay_scrollbars;
 }
 
 /**

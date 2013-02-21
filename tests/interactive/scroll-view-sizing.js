@@ -339,6 +339,10 @@ function test() {
     let vfade = new St.Button({ label: 'No', style: 'text-decoration: underline; color: #4444ff;' });
     fadeBox.add(vfade);
 
+    fadeBox.add(new St.Label({ text: 'Overlay scrollbars: '}));
+    let overlay = new St.Button({ label: 'No', style: 'text-decoration: underline; color: #4444ff;' });
+    fadeBox.add(overlay);
+
     function togglePadding(button) {
         switch(button.label) {
         case 'No':
@@ -387,6 +391,20 @@ function test() {
 
     vfade.connect('clicked', function() { toggleFade(vfade); });
     toggleFade(vfade);
+
+    function toggleOverlay(button) {
+        switch(button.label) {
+        case 'No':
+	    button.label = 'Yes';
+	    break;
+        case 'Yes':
+	    button.label = 'No';
+	    break;
+        }
+        scrollView.overlay_scrollbars = (button.label == 'Yes');
+    }
+
+    overlay.connect('clicked', function() { toggleOverlay(overlay); });
 
     UI.main(stage);
 }
