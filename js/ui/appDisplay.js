@@ -176,7 +176,8 @@ const AllView = new Lang.Class({
                                          y_align: St.Align.START,
                                          x_expand: true,
                                          y_expand: true,
-                                         style_class: 'vfade' });
+                                         overlay_scrollbars: true,
+                                         style_class: 'all-apps vfade' });
         this.actor.add_actor(box);
         this.actor.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         let action = new Clutter.PanAction({ interpolate: true });
