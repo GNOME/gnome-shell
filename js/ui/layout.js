@@ -1303,6 +1303,11 @@ const PressureBarrier = new Lang.Class({
         this._reset();
     },
 
+    _trigger: function() {
+        this.emit('trigger');
+        this._reset();
+    },
+
     _onBarrierHit: function(barrier, event) {
         // Throw out all events where the pointer was grabbed by another
         // client, as the client that grabbed the pointer expects to have
@@ -1320,6 +1325,11 @@ const PressureBarrier = new Lang.Class({
         let slide = this._getDistanceAlongBarrier(event);
         let distance = this._getDistanceAcrossBarrier(event);
 
+        if (distance >= this._threshold) {
+            this._trigger();
+            return;
+        }
+
         // Throw out events where the cursor is move more
         // along the axis of the barrier than moving with
         // the barrier.
@@ -1332,10 +1342,8 @@ const PressureBarrier = new Lang.Class({
         this._barrierEvents.push(event);
         this._currentPressure += Math.min(15, distance);
 
-        if (this._currentPressure >= this._threshold) {
-            this.emit('trigger');
-            this._reset();
-        }
+        if (this._currentPressure >= this._threshold)
+            this._trigger();
     }
 });
 Signals.addSignalMethods(PressureBarrier.prototype);
