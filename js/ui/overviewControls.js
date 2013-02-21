@@ -329,12 +329,52 @@ const DashSlider = new Lang.Class({
     }
 });
 
+const DashSpacer = new Lang.Class({
+    Name: 'DashSpacer',
+    Extends: St.Widget,
+
+    _init: function(params) {
+        this.parent(params);
+
+        this._bindConstraint = null;
+    },
+
+    setDashActor: function(dashActor) {
+        if (this._bindConstraint) {
+            this.remove_constraint(this._bindConstraint);
+            this._bindConstraint = null;
+        }
+
+        if (dashActor) {
+            this._bindConstraint = new Clutter.BindConstraint({ source: dashActor,
+                                                                coordinate: Clutter.BindCoordinate.SIZE });
+            this.add_constraint(this._bindConstraint);
+        }
+    },
+
+    vfunc_get_preferred_width: function(forHeight) {
+        let box = this.get_allocation_box();
+        let minWidth = this.parent(forHeight)[0];
+        let natWidth = box.x2 - box.x1;
+        return [minWidth, natWidth];
+    },
+
+    vfunc_get_preferred_height: function(forWidth) {
+        let box = this.get_allocation_box();
+        let minHeight = this.parent(forWidth)[0];
+        let natHeight = box.y2 - box.y1;
+        return [minHeight, natHeight];
+    }
+});
+
 const ControlsManager = new Lang.Class({
     Name: 'ControlsManager',
 
     _init: function(dash, thumbnails, viewSelector) {
         this._dashSlider = new DashSlider(dash);
         this.dashActor = this._dashSlider.actor;
+        this.dashSpacer = new DashSpacer();
+        this.dashSpacer.setDashActor(this.dashActor);
 
         this._thumbnailsSlider = new ThumbnailsSlider(thumbnails);
         this.thumbnailsActor = this._thumbnailsSlider.actor;
@@ -343,6 +383,7 @@ const ControlsManager = new Lang.Class({
         this._viewSelector.connect('page-changed', Lang.bind(this, this._setVisibility));
         this._viewSelector.connect('page-empty', Lang.bind(this, this._onPageEmpty));
 
+        Main.overview.connect('showing', Lang.bind(this, this._updateSpacerVisibility));
         Main.overview.connect('item-drag-begin', Lang.bind(this,
             function() {
                 let activePage = this._viewSelector.getActivePage();
@@ -384,8 +425,18 @@ const ControlsManager = new Lang.Class({
             this._thumbnailsSlider.slideOut();
     },
 
+    _updateSpacerVisibility: function() {
+        if (Main.overview.animationInProgress && !Main.overview.visibleTarget)
+            return;
+
+        let activePage = this._viewSelector.getActivePage();
+        this.dashSpacer.visible = (activePage == ViewSelector.ViewPage.WINDOWS);
+    },
+
     _onPageEmpty: function() {
         this._dashSlider.pageEmpty();
         this._thumbnailsSlider.pageEmpty();
+
+        this._updateSpacerVisibility();
     }
 });

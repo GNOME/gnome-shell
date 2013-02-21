@@ -129,9 +129,13 @@ const Overview = new Lang.Class({
                                             vertical: true });
         this._overview._delegate = this;
 
+        this._groupStack = new St.Widget({ layout_manager: new Clutter.BinLayout(),
+                                           x_expand: true, y_expand: true });
         this._group = new St.BoxLayout({ name: 'overview-group',
                                          reactive: true,
+                                         x_expand: true, y_expand: true,
                                          clip_to_allocation: true });
+        this._groupStack.add_actor(this._group);
 
         this._backgroundGroup = new Meta.BackgroundGroup();
         global.overlay_group.add_child(this._backgroundGroup);
@@ -289,15 +293,20 @@ const Overview = new Lang.Class({
                                                               this._thumbnailsBox,
                                                               this._viewSelector);
 
+        this._controls.dashActor.x_align = Clutter.ActorAlign.START;
+        this._controls.dashActor.y_expand = true;
+
+        // Put the dash in a separate layer to allow content to be centered
+        this._groupStack.add_actor(this._controls.dashActor);
+
         // Pack all the actors into the group
-        this._group.add_actor(this._controls.dashActor);
+        this._group.add_actor(this._controls.dashSpacer);
         this._group.add(this._viewSelector.actor, { x_fill: true,
                                                     expand: true });
         this._group.add_actor(this._controls.thumbnailsActor);
 
         // Add our same-line elements after the search entry
-        this._overview.add(this._group, { y_fill: true,
-                                          expand: true });
+        this._overview.add(this._groupStack, { y_fill: true, expand: true });
 
         // TODO - recalculate everything when desktop size changes
         this.dashIconSize = this._dash.iconSize;
