@@ -45,6 +45,7 @@
 #include "cogl-feature-private.h"
 #include "cogl-win32-renderer.h"
 #include "cogl-winsys-wgl-private.h"
+#include "cogl-error-private.h"
 
 typedef struct _CoglRendererWgl
 {
@@ -416,8 +417,8 @@ create_window_class (CoglDisplay *display, CoglError **error)
   if (wgl_display->window_class == 0)
     {
       _cogl_set_error (error, COGL_WINSYS_ERROR,
-                   COGL_WINSYS_ERROR_CREATE_CONTEXT,
-                   "Unable to register window class");
+                       COGL_WINSYS_ERROR_CREATE_CONTEXT,
+                       "Unable to register window class");
       return FALSE;
     }
 
@@ -617,7 +618,8 @@ update_winsys_features (CoglContext *context, CoglError **error)
 
   if (wgl_extensions)
     {
-      char **split_extensions = g_strsplit (wgl_extensions);
+      char **split_extensions =
+        g_strsplit (wgl_extensions, " ", 0 /* max_tokens */);
 
       COGL_NOTE (WINSYS, "  WGL Extensions: %s", wgl_extensions);
 
@@ -644,9 +646,7 @@ update_winsys_features (CoglContext *context, CoglError **error)
 static CoglBool
 _cogl_winsys_context_init (CoglContext *context, CoglError **error)
 {
-  CoglContextWgl *wgl_context;
-
-  wgl_context = context->winsys = g_new0 (CoglContextWgl, 1);
+  context->winsys = g_new0 (CoglContextWgl, 1);
 
   cogl_win32_renderer_add_filter (context->display->renderer,
                                   win32_event_filter_cb,

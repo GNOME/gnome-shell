@@ -33,6 +33,7 @@
 #include "cogl-buffer-gl-private.h"
 #include "cogl-error-private.h"
 #include "cogl-texture-gl-private.h"
+#include "cogl-texture-private.h"
 
 #include <glib.h>
 #include <string.h>

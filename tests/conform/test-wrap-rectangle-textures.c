@@ -1,5 +1,4 @@
 #include <cogl/cogl.h>
-#include <gdk-pixbuf/gdk-pixbuf.h>
 
 #include <string.h>
 
