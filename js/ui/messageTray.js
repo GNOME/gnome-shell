@@ -1695,6 +1695,7 @@ const MessageTray = new Lang.Class({
         this._sources = new Hash.Map();
         this._chatSummaryItemsCount = 0;
 
+        this._trayDwellTimeoutId = 0;
         this._setupTrayDwellIfNeeded();
         this._sessionUpdated();
 
@@ -1759,7 +1760,6 @@ const MessageTray = new Lang.Class({
         if (!global.display.supports_extended_barriers()) {
             let pointerWatcher = PointerWatcher.getPointerWatcher();
             pointerWatcher.addWatch(TRAY_DWELL_CHECK_INTERVAL, Lang.bind(this, this._checkTrayDwell));
-            this._trayDwellTimeoutId = 0;
             this._trayDwelling = false;
             this._trayDwellUserTime = 0;
         }
