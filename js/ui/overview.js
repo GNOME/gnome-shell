@@ -92,7 +92,9 @@ const Overview = new Lang.Class({
     _init: function() {
         this._overviewCreated = false;
         this._initCalled = false;
+        this._controlPressed = false;
 
+        global.stage.connect('captured-event', Lang.bind(this, this._capturedEvent));
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
         this._sessionUpdated();
     },
@@ -222,6 +224,20 @@ const Overview = new Lang.Class({
                                transition: 'easeOutQuad'
                              });
         }
+    },
+
+    _capturedEvent: function(actor, event) {
+        let type = event.type();
+        if (type != Clutter.EventType.KEY_PRESS &&
+            type != Clutter.EventType.KEY_RELEASE)
+            return false;
+
+        let symbol = event.get_key_symbol();
+        if (symbol == Clutter.KEY_Control_L ||
+            symbol == Clutter.KEY_Control_R)
+            this._controlPressed = type == Clutter.EventType.KEY_PRESS;
+
+        return false;
     },
 
     _sessionUpdated: function() {
@@ -563,6 +579,9 @@ const Overview = new Lang.Class({
             return;
 
         if (!this._shown)
+            return;
+
+        if (this._controlPressed)
             return;
 
         if (!this._shownTemporarily)
