@@ -860,11 +860,6 @@ StScrollBar StButton#vhandle:active {
     padding: 4px 16px;
 }
 
-StScrollView.frequent-apps StScrollBar {
-    min-width: 0px;
-    width: 0px;
-}
-
 .app-folder-icon {
     padding: 5px;
 }

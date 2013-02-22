@@ -298,23 +298,11 @@ const FrequentView = new Lang.Class({
 
     _init: function() {
         this._grid = new IconGrid.IconGrid({ xAlign: St.Align.MIDDLE,
+                                             fillParent: true,
                                              columnLimit: MAX_COLUMNS });
-        let box = new St.BoxLayout({ vertical: true });
-        box.add(this._grid.actor);
-
-        // HACK: IconGrid currently lacks API to only display items that match
-        // the allocation, so rather than clipping away eventual overflow, we
-        // use an unscrollable ScrollView with hidden scrollbars to nicely
-        // fade out cut off items
-        this.actor = new St.ScrollView({ x_fill: true,
-                                         y_fill: false,
-                                         y_align: St.Align.START,
-                                         x_expand: true,
-                                         y_expand: true,
-                                         reactive: false,
-                                         style_class: 'frequent-apps vfade' });
-        this.actor.add_actor(box);
-        this.actor.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        this.actor = new St.Widget({ style_class: 'frequent-apps',
+                                     x_expand: true, y_expand: true });
+        this.actor.add_actor(this._grid.actor);
 
         this._usage = Shell.AppUsage.get_default();
     },
