@@ -593,7 +593,7 @@ const WindowManager = new Lang.Class({
                 switchData.windows.push({ window: window,
                                           parent: window.get_parent() });
                 window.reparent(switchData.inGroup);
-                window.show_all();
+                window.show();
             }
         }
 
