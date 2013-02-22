@@ -8,6 +8,10 @@ if BUILD_COGL_GLES2
 SUBDIRS += cogl-gles2
 endif
 
+if BUILD_COGL_GST
+SUBDIRS += cogl-gst
+endif
+
 SUBDIRS += examples doc po build
 
 ACLOCAL_AMFLAGS = -I build/autotools ${ACLOCAL_FLAGS}
@@ -32,6 +36,7 @@ DISTCHECK_CONFIGURE_FLAGS = \
 	--enable-xlib-egl-platform \
 	--enable-wayland-egl-platform \
 	--enable-glx \
-	--enable-wayland-egl-server
+	--enable-wayland-egl-server  \
+	--enable-cogl-gst
 
 include $(top_srcdir)/build/autotools/Makefile.am.release

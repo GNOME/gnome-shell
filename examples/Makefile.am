@@ -50,6 +50,13 @@ cogl_crate_CFLAGS = $(AM_CFLAGS) $(COGL_PANGO_DEP_CFLAGS)
 examples_data_DATA += crate.jpg
 endif
 
+if BUILD_COGL_GST
+programs += cogl-basic-video-player
+cogl_basic_video_player_SOURCES = cogl-basic-video-player.c
+cogl_basic_video_player_LDADD = $(common_ldadd) $(COGL_GST_DEP_LIBS) $(top_builddir)/cogl-gst/libcogl-gst.la
+cogl_basic_video_player_CFLAGS = $(AM_CFLAGS) $(COGL_GST_DEP_CFLAGS) -I$(top_builddir)/cogl-gst
+endif
+
 if X11_TESTS
 programs += cogl-x11-foreign cogl-x11-tfp
 cogl_x11_foreign_SOURCES = cogl-x11-foreign.c
