@@ -161,6 +161,7 @@ get_texture_area_and_scale (MetaBackground        *self,
   float texture_width, texture_height;
   float actor_x_scale, actor_y_scale;
   float monitor_x_scale, monitor_y_scale;
+  float x_offset, y_offset;
 
   meta_screen_get_monitor_geometry (priv->screen, priv->monitor, &monitor_geometry);
 
@@ -187,14 +188,40 @@ get_texture_area_and_scale (MetaBackground        *self,
           *texture_y_scale = 1.0 / actor_pixel_rect.height;
           break;
       case G_DESKTOP_BACKGROUND_STYLE_WALLPAPER:
-          /* paint region is whole actor, and the texture
-           * is left unscaled
+          /* The wallpaper should be centered in the middle of all monitors.
+           * Therefore, the textured area is the union of all monitors plus
+           * an additional bit to make up for the texture getting centered.  */
+          meta_screen_get_size (priv->screen, &screen_width, &screen_height);
+
+          /* so start by making the unclipped texture area the whole screen */
+          image_area.width = screen_width;
+          image_area.height = screen_height;
+
+          /* If one of the tiles is already centered in the screen, then that tile
+           * will start tile_size/2.0 before the center of the screen. So find out
+           * how far we are from that ideal and adjust by that offset.
            */
-          image_area = actor_pixel_rect;
-          *texture_x_scale = 1.0 / texture_width;
-          *texture_y_scale = 1.0 / texture_height;
+          x_offset = texture_width - ((int) ((screen_width / 2.0) - (texture_width / 2.0))) % ((int) texture_width);
+          y_offset = texture_height - ((int) ((screen_height / 2.0) - (texture_height / 2.0))) % ((int) texture_height);
+
+          image_area.width += x_offset;
+          image_area.height += y_offset;
+          image_area.x = -x_offset;
+          image_area.y = -y_offset;
+
+          /* now line up with the appropriate monitor */
+          image_area.x -= monitor_geometry.x;
+          image_area.y -= monitor_geometry.y;
+
+          /* and scale to actor */
+          image_area.x *= actor_x_scale;
+          image_area.y *= actor_y_scale;
+          image_area.width *= actor_x_scale;
+          image_area.height *= actor_y_scale;
 
           *texture_area = image_area;
+          *texture_x_scale = 1.0 / texture_width;
+          *texture_y_scale = 1.0 / texture_height;
           break;
       case G_DESKTOP_BACKGROUND_STYLE_CENTERED:
           /* paint region is the original image size centered in the actor,
