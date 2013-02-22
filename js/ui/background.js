@@ -14,7 +14,6 @@ const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
 const BACKGROUND_SCHEMA = 'org.gnome.desktop.background';
-const DRAW_BACKGROUND_KEY = 'draw-background';
 const PRIMARY_COLOR_KEY = 'primary-color';
 const SECONDARY_COLOR_KEY = 'secondary-color';
 const COLOR_SHADING_TYPE_KEY = 'color-shading-type';
@@ -490,11 +489,6 @@ const Background = new Lang.Class({
     },
 
     _load: function () {
-        if (!this._settings.get_boolean(DRAW_BACKGROUND_KEY)) {
-            this._setLoaded();
-            return;
-        }
-
         this._cache = getBackgroundCache();
 
         this._loadPattern(this._cache);
