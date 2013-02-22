@@ -305,7 +305,7 @@ const SwitcherList = new Lang.Class({
         this.actor.connect('allocate', Lang.bind(this, this._allocateTop));
 
         // Here we use a GenericContainer so that we can force all the
-        // children except the separator to have the same width.
+        // children to have the same width.
         this._list = new Shell.GenericContainer({ style_class: 'switcher-list-item-container' });
         this._list.spacing = 0;
         this._list.connect('style-changed', Lang.bind(this, function() {
@@ -340,7 +340,6 @@ const SwitcherList = new Lang.Class({
 
         this._items = [];
         this._highlighted = -1;
-        this._separator = null;
         this._squareItems = squareItems;
         this._minSize = 0;
         this._scrollableRight = true;
@@ -401,12 +400,6 @@ const SwitcherList = new Lang.Class({
 
     _onItemEnter: function (index) {
         this._itemEntered(index);
-    },
-
-    addSeparator: function () {
-        let box = new St.Bin({ style_class: 'separator' });
-        this._separator = box;
-        this._list.add_actor(box);
     },
 
     highlight: function(index, justOutline) {
@@ -516,14 +509,8 @@ const SwitcherList = new Lang.Class({
     _getPreferredWidth: function (actor, forHeight, alloc) {
         let [maxChildMin, maxChildNat] = this._maxChildWidth(forHeight);
 
-        let separatorWidth = 0;
-        if (this._separator) {
-            let [sepMin, sepNat] = this._separator.get_preferred_width(forHeight);
-            separatorWidth = sepNat + this._list.spacing;
-        }
-
         let totalSpacing = this._list.spacing * (this._items.length - 1);
-        alloc.min_size = this._items.length * maxChildMin + separatorWidth + totalSpacing;
+        alloc.min_size = this._items.length * maxChildMin + totalSpacing;
         alloc.natural_size = alloc.min_size;
         this._minSize = alloc.min_size;
     },
@@ -554,14 +541,7 @@ const SwitcherList = new Lang.Class({
         let [maxChildMin, maxChildNat] = this._maxChildWidth(childHeight);
         let totalSpacing = this._list.spacing * (this._items.length - 1);
 
-        let separatorWidth = 0;
-        if (this._separator) {
-            let [sepMin, sepNat] = this._separator.get_preferred_width(childHeight);
-            separatorWidth = sepNat;
-            totalSpacing += this._list.spacing;
-        }
-
-        let childWidth = Math.floor(Math.max(0, box.x2 - box.x1 - totalSpacing - separatorWidth) / this._items.length);
+        let childWidth = Math.floor(Math.max(0, box.x2 - box.x1 - totalSpacing) / this._items.length);
 
         let x = 0;
         let children = this._list.get_children();
@@ -581,14 +561,6 @@ const SwitcherList = new Lang.Class({
                 children[i].allocate(childBox, flags);
 
                 x += this._list.spacing + childWidth;
-            } else if (children[i] == this._separator) {
-                // We want the separator to be more compact than the rest.
-                childBox.x1 = x;
-                childBox.y1 = 0;
-                childBox.x2 = x + separatorWidth;
-                childBox.y2 = childHeight;
-                children[i].allocate(childBox, flags);
-                x += this._list.spacing + separatorWidth;
             } else {
                 // Something else, eg, AppSwitcher's arrows;
                 // we don't allocate it.
