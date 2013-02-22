@@ -176,13 +176,16 @@ const IconGrid = new Lang.Class({
     _init: function(params) {
         params = Params.parse(params, { rowLimit: null,
                                         columnLimit: null,
+                                        fillParent: false,
                                         xAlign: St.Align.MIDDLE });
         this._rowLimit = params.rowLimit;
         this._colLimit = params.columnLimit;
         this._xAlign = params.xAlign;
+        this._fillParent = params.fillParent;
 
         this.actor = new St.BoxLayout({ style_class: 'icon-grid',
                                         vertical: true });
+
         // Pulled from CSS, but hardcode some defaults here
         this._spacing = 0;
         this._hItemSize = this._vItemSize = ICON_SIZE;
@@ -196,6 +199,11 @@ const IconGrid = new Lang.Class({
     },
 
     _getPreferredWidth: function (grid, forHeight, alloc) {
+        if (this._fillParent)
+            // Ignore all size requests of children and request a size of 0;
+            // later we'll allocate as many children as fit the parent
+            return;
+
         let children = this._grid.get_children();
         let nColumns = this._colLimit ? Math.min(this._colLimit,
                                                  children.length)
@@ -217,6 +225,11 @@ const IconGrid = new Lang.Class({
     },
 
     _getPreferredHeight: function (grid, forWidth, alloc) {
+        if (this._fillParent)
+            // Ignore all size requests of children and request a size of 0;
+            // later we'll allocate as many children as fit the parent
+            return;
+
         let children = this._getVisibleChildren();
         let nColumns, spacing;
         if (forWidth < 0) {
@@ -240,6 +253,13 @@ const IconGrid = new Lang.Class({
     },
 
     _allocate: function (grid, box, flags) {
+        if (this._fillParent) {
+            // Reset the passed in box to fill the parent
+            let parentBox = this.actor.get_parent().allocation;
+            let gridBox = this.actor.get_theme_node().get_content_box(parentBox);
+            box = this._grid.get_theme_node().get_content_box(gridBox);
+        }
+
         let children = this._getVisibleChildren();
         let availWidth = box.x2 - box.x1;
         let availHeight = box.y2 - box.y1;
@@ -283,7 +303,8 @@ const IconGrid = new Lang.Class({
             childBox.x2 = childBox.x1 + width;
             childBox.y2 = childBox.y1 + height;
 
-            if (this._rowLimit && rowIndex >= this._rowLimit) {
+            if (this._rowLimit && rowIndex >= this._rowLimit ||
+                this._fillParent && childBox.y2 > availHeight) {
                 this._grid.set_skip_paint(children[i], true);
             } else {
                 children[i].allocate(childBox, flags);
