@@ -279,8 +279,7 @@ const ViewSelector = new Lang.Class({
             else
                 Main.overview.hide();
             return true;
-        } else if (Clutter.keysym_to_unicode(symbol) ||
-                   (symbol == Clutter.BackSpace && this._searchActive)) {
+        } else if (this._shouldTriggerSearch(symbol)) {
             this.startSearch(event);
         } else if (!this._searchActive) {
             if (symbol == Clutter.Tab || symbol == Clutter.Down) {
@@ -343,6 +342,17 @@ const ViewSelector = new Lang.Class({
                 global.stage.disconnect(this._capturedEventId);
             this._capturedEventId = 0;
         }
+    },
+
+    _shouldTriggerSearch: function(symbol) {
+        let unicode = Clutter.keysym_to_unicode(symbol);
+        if (unicode == 0)
+            return false;
+
+        if (getTermsForSearchString(String.fromCharCode(unicode)).length > 0)
+            return true;
+
+        return symbol == Clutter.BackSpace && this._searchActive;
     },
 
     startSearch: function(event) {
