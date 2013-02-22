@@ -203,7 +203,7 @@ const TextShadower = new Lang.Class({
             let child = children[i];
             let childBox = new Clutter.ActorBox();
             // The order of the labels here is arbitrary, except
-            // we know the "real" label is at the end because Clutter.Group
+            // we know the "real" label is at the end because Clutter.Actor
             // sorts by Z order
             switch (i) {
                 case 0: // top

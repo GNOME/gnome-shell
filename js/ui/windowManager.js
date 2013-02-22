@@ -564,9 +564,9 @@ const WindowManager = new Lang.Class({
 
         let switchData = {};
         this._switchData = switchData;
-        switchData.inGroup = new Clutter.Group();
-        switchData.outGroup = new Clutter.Group();
-        switchData.movingWindowBin = new Clutter.Group();
+        switchData.inGroup = new Clutter.Actor();
+        switchData.outGroup = new Clutter.Actor();
+        switchData.movingWindowBin = new Clutter.Actor();
         switchData.windows = [];
 
         let wgroup = global.window_group;

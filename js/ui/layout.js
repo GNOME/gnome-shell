@@ -1075,7 +1075,7 @@ const HotCorner = new Lang.Class({
         // multiple times due to an accidental jitter.
         this._entered = false;
 
-        this.actor = new Clutter.Group({ name: 'hot-corner-environs',
+        this.actor = new Clutter.Actor({ name: 'hot-corner-environs',
                                          width: 3,
                                          height: 3,
                                          reactive: true });
@@ -1087,7 +1087,7 @@ const HotCorner = new Lang.Class({
                                                reactive: true });
         this._corner._delegate = this;
 
-        this.actor.add_actor(this._corner);
+        this.actor.add_child(this._corner);
 
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
             this._corner.set_position(this.actor.width - this._corner.width, 0);

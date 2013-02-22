@@ -80,7 +80,7 @@ const ModalDialog = new Lang.Class({
             let stack = new Shell.Stack();
             this._backgroundBin.child = stack;
 
-            this._eventBlocker = new Clutter.Group({ reactive: true });
+            this._eventBlocker = new Clutter.Actor({ reactive: true });
             stack.add_actor(this._eventBlocker);
             stack.add_actor(this.dialogLayout);
         } else {

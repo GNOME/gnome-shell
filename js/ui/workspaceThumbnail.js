@@ -166,8 +166,8 @@ const WorkspaceThumbnail = new Lang.Class({
                                      style_class: 'workspace-thumbnail' });
         this.actor._delegate = this;
 
-        this._contents = new Clutter.Group();
-        this.actor.add_actor(this._contents);
+        this._contents = new Clutter.Actor();
+        this.actor.add_child(this._contents);
 
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 

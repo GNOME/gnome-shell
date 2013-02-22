@@ -68,15 +68,15 @@ const WindowClone = new Lang.Class({
 
         // The MetaShapedTexture that we clone has a size that includes
         // the invisible border; this is inconvenient; rather than trying
-        // to compensate all over the place we insert a ClutterGroup into
+        // to compensate all over the place we insert a ClutterActor into
         // the hierarchy that is sized to only the visible portion.
-        this.actor = new Clutter.Group({ reactive: true,
+        this.actor = new Clutter.Actor({ reactive: true,
                                          x: this.origX,
                                          y: this.origY,
                                          width: outerRect.width,
                                          height: outerRect.height });
 
-        this.actor.add_actor(this._windowClone);
+        this.actor.add_child(this._windowClone);
 
         this.actor._delegate = this;
 
@@ -814,7 +814,7 @@ const Workspace = new Lang.Class({
 
         this.monitorIndex = monitorIndex;
         this._monitor = Main.layoutManager.monitors[this.monitorIndex];
-        this._windowOverlaysGroup = new Clutter.Group();
+        this._windowOverlaysGroup = new Clutter.Actor();
         // Without this the drop area will be overlapped.
         this._windowOverlaysGroup.set_size(0, 0);
 
