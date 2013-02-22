@@ -25,6 +25,10 @@
 #ifndef __COGL_OBJECT_H
 #define __COGL_OBJECT_H
 
+#include <cogl/cogl-types.h>
+
+COGL_BEGIN_DECLS
+
 typedef struct _CoglObject      CoglObject;
 
 #define COGL_OBJECT(X)          ((CoglObject *)X)
@@ -208,6 +212,8 @@ void
 cogl_debug_object_print_instances (void);
 
 #endif /* COGL_ENABLE_EXPERIMENTAL_API */
+
+COGL_END_DECLS
 
 #endif /* __COGL_OBJECT_H */
 
