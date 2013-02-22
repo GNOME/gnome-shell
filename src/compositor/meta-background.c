@@ -33,12 +33,6 @@
 #include <meta/meta-background.h>
 #include "meta-background-actor-private.h"
 
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-#define TEXTURE_FORMAT COGL_PIXEL_FORMAT_BGRA_8888_PRE
-#else
-#define TEXTURE_FORMAT COGL_PIXEL_FORMAT_ARGB_8888_PRE
-#endif
-
 #define TEXTURE_LOOKUP_SHADER_DECLARATIONS                                     \
 "uniform vec2 pixel_step;\n"                                                   \
 "vec4 apply_blur(in sampler2D texture, in vec2 coordinates) {\n"               \
@@ -932,9 +926,10 @@ meta_background_load_gradient (MetaBackground             *self,
   pixels[5] = second_color->green;
   pixels[6] = second_color->blue;
   pixels[7] = second_color->alpha;
+
   texture = cogl_texture_new_from_data (width, height,
                                         COGL_TEXTURE_NO_SLICING,
-                                        TEXTURE_FORMAT,
+                                        COGL_PIXEL_FORMAT_RGBA_8888,
                                         COGL_PIXEL_FORMAT_ANY,
                                         4,
                                         pixels);
