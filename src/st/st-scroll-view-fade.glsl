@@ -64,20 +64,20 @@ void main ()
 
     float vfade_scale = height / vfade_offset;
     if (fade_top) {
-        ratio *= FADE((y / vfade_offset), min(vvalue * vfade_scale, 1.0));
+        ratio *= FADE((y / vfade_offset), min(sqrt(vvalue) * vfade_scale, 1.0));
     }
 
     if (fade_bottom) {
-        ratio *= FADE((fade_area[1][1] - y)/(fade_area[1][1] - fade_bottom_start), min((1.0 - vvalue) * vfade_scale, 1.0));
+        ratio *= FADE((fade_area[1][1] - y)/(fade_area[1][1] - fade_bottom_start), min(sqrt(1.0 - vvalue) * vfade_scale, 1.0));
     }
 
     float hfade_scale = width / hfade_offset;
     if (fade_left) {
-        ratio *= FADE(x / hfade_offset, min(hvalue * hfade_scale, 1.0));
+        ratio *= FADE(x / hfade_offset, min(sqrt(hvalue) * hfade_scale, 1.0));
     }
 
     if (fade_right) {
-        ratio *= FADE((fade_area[1][0] - x)/(fade_area[1][0] - fade_right_start), min((1.0 - hvalue) * hfade_scale, 1.0));
+        ratio *= FADE((fade_area[1][0] - x)/(fade_area[1][0] - fade_right_start), min(sqrt(1.0 - hvalue) * hfade_scale, 1.0));
     }
 
     cogl_color_out *= ratio;
