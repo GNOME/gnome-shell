@@ -3648,6 +3648,42 @@ meta_window_is_fullscreen (MetaWindow *window)
 }
 
 /**
+ * meta_window_get_all_monitors:
+ * @window: The #MetaWindow
+ * @length: (out caller-allocates): gint holding the length, may be %NULL to
+ *                                  ignore
+ *
+ * Returns: (array length=length) (element-type gint) (transfer container):
+ *           List of the monitor indices the window is on.
+ */
+gint *
+meta_window_get_all_monitors (MetaWindow *window, gsize *length)
+{
+  GArray *monitors;
+  MetaRectangle window_rect;
+  int i;
+
+  monitors = g_array_new (FALSE, FALSE, sizeof (int));
+  meta_window_get_outer_rect (window, &window_rect);
+
+  for (i = 0; i < window->screen->n_monitor_infos; i++)
+    {
+      MetaRectangle *monitor_rect = &window->screen->monitor_infos[i].rect;
+
+      if (meta_rectangle_overlap (&window_rect, monitor_rect))
+        g_array_append_val (monitors, i);
+    }
+
+  if (length)
+    *length = monitors->len;
+
+  i = -1;
+  g_array_append_val (monitors, i);
+
+  return (gint*) g_array_free (monitors, FALSE);
+}
+
+/**
  * meta_window_is_screen_sized:
  *
  * Return value: %TRUE if the window is occupies the
