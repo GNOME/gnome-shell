@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-17 20:31+0100\n"
-"PO-Revision-Date: 2013-02-17 20:32+0100\n"
+"POT-Creation-Date: 2013-02-24 02:31+0100\n"
+"PO-Revision-Date: 2013-02-24 02:32+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -220,13 +220,17 @@ msgstr "Podział widoku po prawej"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:542
+#: ../src/compositor/compositor.c:507
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr ""
 "Inny menedżer składania jest już uruchomiony na podekranie %i ekranu \"%s\"."
+
+#: ../src/compositor/meta-background.c:1116
+msgid "background texture could not be created from file"
+msgstr "nie można utworzyć tekstury tła z pliku"
 
 #: ../src/core/bell.c:320
 msgid "Bell event"
@@ -265,7 +269,7 @@ msgstr "_Zakończ"
 msgid "Missing %s extension required for compositing"
 msgstr "Brak rozszerzenia %s, wymaganego przez składanie"
 
-#: ../src/core/display.c:485
+#: ../src/core/display.c:484
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr ""
@@ -374,17 +378,17 @@ msgstr ""
 "Wartość \"%s\", odnaleziona w bazie danych konfiguracji nie opisuje "
 "prawidłowo skrótu klawiszowego \"%s\"\n"
 
-#: ../src/core/prefs.c:1877
+#: ../src/core/prefs.c:1879
 #, c-format
 msgid "Workspace %d"
 msgstr "Obszar roboczy %d"
 
-#: ../src/core/screen.c:659
+#: ../src/core/screen.c:673
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Podekran %d ekranu \"%s\" jest nieprawidłowy\n"
 
-#: ../src/core/screen.c:675
+#: ../src/core/screen.c:689
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -393,7 +397,7 @@ msgstr ""
 "Na podekranie %d ekranu \"%s\" działa już menedżer okien. Aby zastąpić "
 "działającego menedżera okien, proszę spróbować użyć opcji --replace.\n"
 
-#: ../src/core/screen.c:702
+#: ../src/core/screen.c:716
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -401,12 +405,12 @@ msgstr ""
 "Nie można uzyskać zaznaczenia menedżera okien na podekranie %d ekranu \"%s"
 "\"\n"
 
-#: ../src/core/screen.c:780
+#: ../src/core/screen.c:794
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Na podekranie %d ekranu \"%s\" działa już menedżer okien\n"
 
-#: ../src/core/screen.c:965
+#: ../src/core/screen.c:979
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nie można zwolnić podekranu %d ekranu \"%s\"\n"
@@ -506,7 +510,7 @@ msgid "Window manager error: "
 msgstr "Błąd menedżera okien: "
 
 #. first time through
-#: ../src/core/window.c:7452
+#: ../src/core/window.c:7504
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -522,7 +526,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8176
+#: ../src/core/window.c:8228
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -532,23 +536,23 @@ msgstr ""
 "niezmienny, lecz jednocześnie ustawia minimalny rozmiar na %d x %d, a "
 "maksymalny rozmiar na %d x %d. To nie ma żadnego sensu.\n"
 
-#: ../src/core/window-props.c:304
+#: ../src/core/window-props.c:318
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Program ustawił błędną wartość _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:423
+#: ../src/core/window-props.c:434
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
 
-#: ../src/core/window-props.c:1506
+#: ../src/core/window-props.c:1517
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
 "Nieprawidłowa wartość WM_TRANSIENT_FOR dla okna 0x%lx określona w %s.\n"
 
-#: ../src/core/window-props.c:1517
+#: ../src/core/window-props.c:1528
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR okna 0x%lx dla %s utworzyłoby pętlę.\n"
