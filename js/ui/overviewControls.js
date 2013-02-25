@@ -6,10 +6,12 @@ const Meta = imports.gi.Meta;
 const St = imports.gi.St;
 const Shell = imports.gi.Shell;
 
+const Dash = imports.ui.dash;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 const ViewSelector = imports.ui.viewSelector;
+const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
 const SIDE_CONTROLS_ANIMATION_TIME = 0.16;
 
@@ -309,6 +311,10 @@ const DashSlider = new Lang.Class({
         // available allocation
         this._dash.actor.x_expand = true;
         this._dash.actor.y_expand = true;
+
+        this.actor.x_align = Clutter.ActorAlign.START;
+        this.actor.y_expand = true;
+
         this.actor.add_actor(this._dash.actor);
 
         this._dash.connect('icon-size-changed', Lang.bind(this, this.updateSlide));
@@ -479,36 +485,52 @@ const MessagesIndicator = new Lang.Class({
 const ControlsManager = new Lang.Class({
     Name: 'ControlsManager',
 
-    _init: function(dash, thumbnails, viewSelector) {
-        this._dashSlider = new DashSlider(dash);
-        this.dashActor = this._dashSlider.actor;
-        this.dashSpacer = new DashSpacer();
-        this.dashSpacer.setDashActor(this.dashActor);
+    _init: function(searchEntry) {
+        this.dash = new Dash.Dash();
+        this._dashSlider = new DashSlider(this.dash);
+        this._dashSpacer = new DashSpacer();
+        this._dashSpacer.setDashActor(this._dashSlider.actor);
 
-        this._thumbnailsSlider = new ThumbnailsSlider(thumbnails);
-        this.thumbnailsActor = this._thumbnailsSlider.actor;
+        this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
+        this._thumbnailsSlider = new ThumbnailsSlider(this._thumbnailsBox);
 
-        this._indicator = new MessagesIndicator(viewSelector);
+        this.viewSelector = new ViewSelector.ViewSelector(searchEntry,
+                                                          this.dash.showAppsButton);
+        this.viewSelector.connect('page-changed', Lang.bind(this, this._setVisibility));
+        this.viewSelector.connect('page-empty', Lang.bind(this, this._onPageEmpty));
+
+        this._indicator = new MessagesIndicator(this.viewSelector);
         this.indicatorActor = this._indicator.actor;
 
-        this._viewSelector = viewSelector;
-        this._viewSelector.connect('page-changed', Lang.bind(this, this._setVisibility));
-        this._viewSelector.connect('page-empty', Lang.bind(this, this._onPageEmpty));
+        this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
+                                     x_expand: true, y_expand: true,
+                                     clip_to_allocation: true });
+        this._group = new St.BoxLayout({ name: 'overview-group',
+                                        reactive: true,
+                                        x_expand: true, y_expand: true });
+        this.actor.add_actor(this._group);
+
+        this.actor.add_actor(this._dashSlider.actor);
+
+        this._group.add_actor(this._dashSpacer);
+        this._group.add(this.viewSelector.actor, { x_fill: true,
+                                                   expand: true });
+        this._group.add_actor(this._thumbnailsSlider.actor);
 
         Main.overview.connect('showing', Lang.bind(this, this._updateSpacerVisibility));
         Main.overview.connect('item-drag-begin', Lang.bind(this,
             function() {
-                let activePage = this._viewSelector.getActivePage();
+                let activePage = this.viewSelector.getActivePage();
                 if (activePage != ViewSelector.ViewPage.WINDOWS)
-                    this._viewSelector.fadeHalf();
+                    this.viewSelector.fadeHalf();
             }));
         Main.overview.connect('item-drag-end', Lang.bind(this,
             function() {
-                this._viewSelector.fadeIn();
+                this.viewSelector.fadeIn();
             }));
         Main.overview.connect('item-drag-cancelled', Lang.bind(this,
             function() {
-                this._viewSelector.fadeIn();
+                this.viewSelector.fadeIn();
             }));
     },
 
@@ -521,7 +543,7 @@ const ControlsManager = new Lang.Class({
             (Main.overview.animationInProgress && !Main.overview.visibleTarget))
             return;
 
-        let activePage = this._viewSelector.getActivePage();
+        let activePage = this.viewSelector.getActivePage();
         let dashVisible = (activePage == ViewSelector.ViewPage.WINDOWS ||
                            activePage == ViewSelector.ViewPage.APPS);
         let thumbnailsVisible = (activePage == ViewSelector.ViewPage.WINDOWS);
@@ -541,8 +563,8 @@ const ControlsManager = new Lang.Class({
         if (Main.overview.animationInProgress && !Main.overview.visibleTarget)
             return;
 
-        let activePage = this._viewSelector.getActivePage();
-        this.dashSpacer.visible = (activePage == ViewSelector.ViewPage.WINDOWS);
+        let activePage = this.viewSelector.getActivePage();
+        this._dashSpacer.visible = (activePage == ViewSelector.ViewPage.WINDOWS);
     },
 
     _onPageEmpty: function() {

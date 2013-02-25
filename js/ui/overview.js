@@ -11,7 +11,6 @@ const Shell = imports.gi.Shell;
 const Gdk = imports.gi.Gdk;
 
 const Background = imports.ui.background;
-const Dash = imports.ui.dash;
 const DND = imports.ui.dnd;
 const LayoutManager = imports.ui.layout;
 const Main = imports.ui.main;
@@ -20,8 +19,6 @@ const OverviewControls = imports.ui.overviewControls;
 const Panel = imports.ui.panel;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
-const ViewSelector = imports.ui.viewSelector;
-const WorkspaceThumbnail = imports.ui.workspaceThumbnail;
 
 // Time for initial animation going into Overview mode
 const ANIMATION_TIME = 0.25;
@@ -133,14 +130,6 @@ const Overview = new Lang.Class({
                                             y_expand: true });
         this._overview._delegate = this;
 
-        this._groupStack = new St.Widget({ layout_manager: new Clutter.BinLayout(),
-                                           x_expand: true, y_expand: true,
-                                           clip_to_allocation: true });
-        this._group = new St.BoxLayout({ name: 'overview-group',
-                                         reactive: true,
-                                         x_expand: true, y_expand: true });
-        this._groupStack.add_actor(this._group);
-
         this._backgroundGroup = new Meta.BackgroundGroup();
         global.overlay_group.add_child(this._backgroundGroup);
         this._backgroundGroup.hide();
@@ -177,7 +166,6 @@ const Overview = new Lang.Class({
         Main.xdndHandler.connect('drag-end', Lang.bind(this, this._onDragEnd));
 
         global.screen.connect('restacked', Lang.bind(this, this._onRestacked));
-        this._group.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
 
         this._windowSwitchTimeoutId = 0;
         this._windowSwitchTimestamp = 0;
@@ -276,28 +264,13 @@ const Overview = new Lang.Class({
         this._overview.add_actor(this._searchEntryBin);
 
         // Create controls
-        this._dash = new Dash.Dash();
-        this._viewSelector = new ViewSelector.ViewSelector(this._searchEntry,
-                                                           this._dash.showAppsButton);
-        this._thumbnailsBox = new WorkspaceThumbnail.ThumbnailsBox();
-        this._controls = new OverviewControls.ControlsManager(this._dash,
-                                                              this._thumbnailsBox,
-                                                              this._viewSelector);
-
-        this._controls.dashActor.x_align = Clutter.ActorAlign.START;
-        this._controls.dashActor.y_expand = true;
-
-        // Put the dash in a separate layer to allow content to be centered
-        this._groupStack.add_actor(this._controls.dashActor);
-
-        // Pack all the actors into the group
-        this._group.add_actor(this._controls.dashSpacer);
-        this._group.add(this._viewSelector.actor, { x_fill: true,
-                                                    expand: true });
-        this._group.add_actor(this._controls.thumbnailsActor);
+        this._controls = new OverviewControls.ControlsManager(this._searchEntry);
+        this._dash = this._controls.dash;
+        this._viewSelector = this._controls.viewSelector;
 
         // Add our same-line elements after the search entry
-        this._overview.add(this._groupStack, { y_fill: true, expand: true });
+        this._overview.add(this._controls.actor, { y_fill: true, expand: true });
+        this._controls.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
 
         this._stack.add_actor(this._controls.indicatorActor);
 
