@@ -47,7 +47,7 @@ const GnomeShell = new Lang.Class({
         this._dbusImpl = Gio.DBusExportedObject.wrapJSObject(GnomeShellIface, this);
         this._dbusImpl.export(Gio.DBus.session, '/org/gnome/Shell');
 
-        this._extensionsSerivce = new GnomeShellExtensions();
+        this._extensionsService = new GnomeShellExtensions();
         this._screenshotService = new Screenshot.ScreenshotService();
     },
 
