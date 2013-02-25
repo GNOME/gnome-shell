@@ -43,9 +43,7 @@ let dragMonitors = [];
 
 function _getEventHandlerActor() {
     if (!eventHandlerActor) {
-        eventHandlerActor = new Clutter.Rectangle();
-        eventHandlerActor.width = 0;
-        eventHandlerActor.height = 0;
+        eventHandlerActor = new Clutter.Rectangle({ width: 0, height: 0 });
         Main.uiGroup.add_actor(eventHandlerActor);
         // We connect to 'event' rather than 'captured-event' because the capturing phase doesn't happen
         // when you've grabbed the pointer.
