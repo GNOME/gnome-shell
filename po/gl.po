@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-17 13:08+0100\n"
-"PO-Revision-Date: 2013-02-17 13:11+0200\n"
+"POT-Creation-Date: 2013-02-26 00:27+0100\n"
+"PO-Revision-Date: 2013-02-26 00:33+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -215,7 +215,7 @@ msgstr "Dividir vista á dereita"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:542
+#: ../src/compositor/compositor.c:507
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -223,6 +223,10 @@ msgid ""
 msgstr ""
 "Xa se está a executar outro xestor de composición na pantalla %i na "
 "visualización «%s»"
+
+#: ../src/compositor/meta-background.c:1116
+msgid "background texture could not be created from file"
+msgstr "a textura do fondo non puido crearse desde o ficheiro"
 
 #: ../src/core/bell.c:320
 msgid "Bell event"
@@ -263,7 +267,7 @@ msgstr "_Forzar a saída"
 msgid "Missing %s extension required for compositing"
 msgstr "Falta a extensión %s que se require para a composición"
 
-#: ../src/core/display.c:485
+#: ../src/core/display.c:484
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Produciuse un erro ao abrir a visualización do X Window System «%s»\n"
@@ -370,17 +374,17 @@ msgstr ""
 "«%s» atopados na base de datos de configuración non é un valor correcto para "
 "a combinación de teclas «%s»\n"
 
-#: ../src/core/prefs.c:1877
+#: ../src/core/prefs.c:1879
 #, c-format
 msgid "Workspace %d"
 msgstr "Espazo de traballo %d"
 
-#: ../src/core/screen.c:659
+#: ../src/core/screen.c:673
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "A pantalla %d na visualización «%s» non é válida\n"
 
-#: ../src/core/screen.c:675
+#: ../src/core/screen.c:689
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -389,7 +393,7 @@ msgstr ""
 "A visualización %d na pantalla «%s» ten xa un xestor de xanelas, tente usar "
 "a opción --replace para substituír o xestor de xanelas.\n"
 
-#: ../src/core/screen.c:702
+#: ../src/core/screen.c:716
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -397,12 +401,12 @@ msgstr ""
 "Non foi posíbel obter a selección do xestor de xanelas na pantalla %d na "
 "visualización «%s»\n"
 
-#: ../src/core/screen.c:780
+#: ../src/core/screen.c:794
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "A visualización %d na pantalla «%s» ten xa un xestor de xanelas\n"
 
-#: ../src/core/screen.c:965
+#: ../src/core/screen.c:979
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Non foi posíbel liberar a visualización %d na pantalla «%s»\n"
@@ -499,7 +503,7 @@ msgid "Window manager error: "
 msgstr "Erro do xestor de xanelas: "
 
 #. first time through
-#: ../src/core/window.c:7452
+#: ../src/core/window.c:7540
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -515,7 +519,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8176
+#: ../src/core/window.c:8264
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -525,23 +529,23 @@ msgstr ""
 "mais configurou o tamaño mínimo a %d x %d e o tamaño máximo a %d x %d, isto "
 "non ten moito sentido.\n"
 
-#: ../src/core/window-props.c:304
+#: ../src/core/window-props.c:318
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "O aplicativo configurou un _NET_WM_PID %lu falso\n"
 
-#: ../src/core/window-props.c:423
+#: ../src/core/window-props.c:434
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (en %s)"
 
-#: ../src/core/window-props.c:1506
+#: ../src/core/window-props.c:1517
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr ""
 "WM_TRANSIENT_FOR non válido para a xanela 0x%lx especificada para %s.\n"
 
-#: ../src/core/window-props.c:1517
+#: ../src/core/window-props.c:1528
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR xanela 0x%lx para %s crearía un bucle.\n"
