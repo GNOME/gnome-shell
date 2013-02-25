@@ -956,15 +956,15 @@ const Workspace = new Lang.Class({
         this._positionWindowsId = 0;
     },
 
-    setGeometry: function(x, y, width, height) {
-        this._x = x;
-        this._y = y;
-        this._width = width;
-        this._height = height;
+    setGeometry: function(geom) {
+        this._x = geom.x;
+        this._y = geom.y;
+        this._width = geom.width;
+        this._height = geom.height;
 
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
-            this._dropRect.set_position(x, y);
-            this._dropRect.set_size(width, height);
+            this._dropRect.set_position(geom.x, geom.y);
+            this._dropRect.set_size(geom.width, geom.height);
             return false;
         }));
 

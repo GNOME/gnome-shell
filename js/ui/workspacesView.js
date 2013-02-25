@@ -124,10 +124,7 @@ const WorkspacesView = new Lang.Class({
                 continue;
 
             let ws = new Workspace.Workspace(null, i);
-            ws.setGeometry(monitors[i].x,
-                           monitors[i].y,
-                           monitors[i].width,
-                           monitors[i].height);
+            ws.setGeometry(monitors[i]);
             global.overlay_group.add_actor(ws.actor);
             this._extraWorkspaces.push(ws);
         }
@@ -139,18 +136,18 @@ const WorkspacesView = new Lang.Class({
         this._extraWorkspaces = [];
     },
 
-    setGeometry: function(x, y, width, height) {
-        if (this._x == x && this._y == y &&
-            this._width == width && this._height == height)
+    setGeometry: function(geom) {
+        if (this._x == geom.x && this._y == geom.y &&
+            this._width == geom.width && this._height == geom.height)
             return;
 
-        this._width = width;
-        this._height = height;
-        this._x = x;
-        this._y = y;
+        this._width = geom.width;
+        this._height = geom.height;
+        this._x = geom.x;
+        this._y = geom.y;
 
         for (let i = 0; i < this._workspaces.length; i++)
-            this._workspaces[i].setGeometry(x, y, width, height);
+            this._workspaces[i].setGeometry(geom);
     },
 
     _lookupWorkspaceForMetaWindow: function (metaWindow) {
@@ -281,8 +278,10 @@ const WorkspacesView = new Lang.Class({
 
         if (newNumWorkspaces > oldNumWorkspaces) {
             for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
-                this._workspaces[w].setGeometry(this._x, this._y,
-                                                this._width, this._height);
+                this._workspaces[w].setGeometry({ x: this._x,
+                                                  y: this._y,
+                                                  width: this._width,
+                                                  height: this._height });
                 this.actor.add_actor(this._workspaces[w].actor);
             }
 
@@ -645,13 +644,10 @@ const WorkspacesDisplay = new Lang.Class({
         let m = 0;
         for (let i = 0; i < monitors.length; i++) {
             if (i == this._primaryIndex) {
-                this._workspacesViews[m].setGeometry(x, y, width, height);
+                this._workspacesViews[m].setGeometry({ x: x, y: y, width: width, height: height });
                 m++;
             } else if (!this._workspacesOnlyOnPrimary) {
-                this._workspacesViews[m].setGeometry(monitors[i].x,
-                                                     monitors[i].y,
-                                                     monitors[i].width,
-                                                     monitors[i].height);
+                this._workspacesViews[m].setGeometry(monitors[i]);
                 m++;
             }
         }
