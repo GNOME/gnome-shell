@@ -64,14 +64,16 @@
 "cogl_texel = apply_blur(cogl_sampler, cogl_tex_coord.st);\n"
 
 #define FRAGMENT_SHADER_DECLARATIONS                                           \
+"uniform vec2 texture_scale;\n"                                                \
+"uniform vec2 actor_size;\n"                                                   \
+"uniform vec2 offset;\n"                                                       \
 "uniform float brightness;\n"                                                  \
 "uniform float vignette_sharpness;\n"                                          \
 
 #define VIGNETTE_CODE                                                          \
-"float unit_length = 0.5;\n"                                                   \
-"vec2 center = vec2(unit_length, unit_length);\n"                              \
-"vec2 position = cogl_tex_coord_in[0].xy - center;\n"                          \
-"float t = min(length(position), unit_length) / unit_length;\n"                \
+"vec2 position = cogl_tex_coord_in[0].xy * texture_scale - offset;\n"          \
+"float t = length(2.0 * (position / actor_size));\n"                           \
+"t = clamp(t, 0.0, 1.0);\n"                                                    \
 "float pixel_brightness = mix(1.0, 1.0 - vignette_sharpness, t);\n"            \
 "cogl_color_out.rgb = cogl_color_out.rgb * pixel_brightness * brightness;\n"
 
@@ -374,6 +376,44 @@ set_blur_parameters (MetaBackground  *self,
 }
 
 static void
+set_vignette_parameters (MetaBackground        *self,
+                         ClutterActorBox       *actor_box,
+                         cairo_rectangle_int_t *texture_area,
+                         float                  texture_x_scale,
+                         float                  texture_y_scale)
+{
+  MetaBackgroundPrivate *priv = self->priv;
+  float                  texture_scale[2];
+  float                  actor_size[2];
+  float                  offset[2];
+
+  if (!(priv->effects & META_BACKGROUND_EFFECTS_VIGNETTE))
+    return;
+
+  texture_scale[0] = 1.0 / texture_x_scale;
+  texture_scale[1] = 1.0 / texture_y_scale;
+  actor_size[0] = actor_box->x2 - actor_box->x1;
+  actor_size[1] = actor_box->y2 - actor_box->y1;
+  offset[0] = -texture_area->x + (actor_size[0] / 2.0);
+  offset[1] = -texture_area->y + (actor_size[1] / 2.0);
+
+  cogl_pipeline_set_uniform_float (priv->pipeline,
+                                   cogl_pipeline_get_uniform_location (priv->pipeline,
+                                                                       "texture_scale"),
+                                   2, 1, texture_scale);
+
+  cogl_pipeline_set_uniform_float (priv->pipeline,
+                                   cogl_pipeline_get_uniform_location (priv->pipeline,
+                                                                       "actor_size"),
+                                   2, 1, actor_size);
+
+  cogl_pipeline_set_uniform_float (priv->pipeline,
+                                   cogl_pipeline_get_uniform_location (priv->pipeline,
+                                                                       "offset"),
+                                   2, 1, offset);
+}
+
+static void
 meta_background_paint_content (ClutterContent   *content,
                                ClutterActor     *actor,
                                ClutterPaintNode *root)
@@ -407,6 +447,8 @@ meta_background_paint_content (ClutterContent   *content,
                               &texture_area,
                               &texture_x_scale,
                               &texture_y_scale);
+
+  set_vignette_parameters (self, &actor_box, &texture_area, texture_x_scale, texture_y_scale);
 
   /* Now figure out what to actually paint. We start by clipping the texture area to
    * the actor's bounds.
