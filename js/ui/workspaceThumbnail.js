@@ -551,7 +551,6 @@ const ThumbnailsBox = new Lang.Class({
 
         this.actor.connect('button-press-event', function() { return true; });
         this.actor.connect('button-release-event', Lang.bind(this, this._onButtonRelease));
-        this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
 
         Main.overview.connect('showing',
                               Lang.bind(this, this._createThumbnails));
@@ -1215,16 +1214,5 @@ const ThumbnailsBox = new Lang.Class({
                            },
                            onCompleteScope: this
                          });
-    },
-
-    _onScrollEvent: function (actor, event) {
-        switch (event.get_scroll_direction()) {
-        case Clutter.ScrollDirection.UP:
-            Main.wm.actionMoveWorkspace(Meta.MotionDirection.UP);
-            break;
-        case Clutter.ScrollDirection.DOWN:
-            Main.wm.actionMoveWorkspace(Meta.MotionDirection.DOWN);
-            break;
-        }
     }
 });
