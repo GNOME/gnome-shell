@@ -140,9 +140,9 @@ const WorkspacesView = new Lang.Class({
     },
 
     setGeometry: function(x, y, width, height) {
-      if (this._x == x && this._y == y &&
-          this._width == width && this._height == height)
-          return;
+        if (this._x == x && this._y == y &&
+            this._width == width && this._height == height)
+            return;
 
         this._width = width;
         this._height = height;
