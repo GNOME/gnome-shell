@@ -56,6 +56,7 @@ const WorkspacesView = new Lang.Class({
             }));
 
         this._fullGeometry = null;
+        this._actualGeometry = null;
 
         this._spacing = 0;
         this._animating = false; // tweening
@@ -135,6 +136,7 @@ const WorkspacesView = new Lang.Class({
 
             let ws = new Workspace.Workspace(null, i);
             ws.setFullGeometry(monitors[i]);
+            ws.setActualGeometry(monitors[i]);
             global.overlay_group.add_actor(ws.actor);
             this._extraWorkspaces.push(ws);
         }
@@ -154,6 +156,16 @@ const WorkspacesView = new Lang.Class({
 
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setFullGeometry(geom);
+    },
+
+    setActualGeometry: function(geom) {
+        if (rectEqual(this._actualGeometry, geom))
+            return;
+
+        this._actualGeometry = geom;
+
+        for (let i = 0; i < this._workspaces.length; i++)
+            this._workspaces[i].setActualGeometry(geom);
     },
 
     _lookupWorkspaceForMetaWindow: function (metaWindow) {
@@ -432,6 +444,7 @@ const WorkspacesDisplay = new Lang.Class({
 
     _init: function() {
         this.actor = new St.Widget({ clip_to_allocation: true });
+        this.actor.connect('notify::allocation', Lang.bind(this, this._updateWorkspacesActualGeometry));
         this.actor.connect('parent-set', Lang.bind(this, this._parentSet));
 
         let clickAction = new Clutter.ClickAction()
@@ -576,6 +589,7 @@ const WorkspacesDisplay = new Lang.Class({
         }
 
         this._updateWorkspacesFullGeometry();
+        this._updateWorkspacesActualGeometry();
 
         for (let i = 0; i < this._workspacesViews.length; i++)
             global.overlay_group.add_actor(this._workspacesViews[i].actor);
@@ -655,6 +669,28 @@ const WorkspacesDisplay = new Lang.Class({
                 m++;
             } else if (!this._workspacesOnlyOnPrimary) {
                 this._workspacesViews[m].setFullGeometry(monitors[i]);
+                m++;
+            }
+        }
+    },
+
+    _updateWorkspacesActualGeometry: function() {
+        if (!this._workspacesViews.length)
+            return;
+
+        let [x, y] = this.actor.get_transformed_position();
+        let width = this.actor.allocation.x2 - this.actor.allocation.x1;
+        let height = this.actor.allocation.y2 - this.actor.allocation.y1;
+        let geometry = { x: x, y: y, width: width, height: height };
+
+        let monitors = Main.layoutManager.monitors;
+        let m = 0;
+        for (let i = 0; i < monitors.length; i++) {
+            if (i == this._primaryIndex) {
+                this._workspacesViews[m].setActualGeometry(geometry);
+                m++;
+            } else if (!this._workspacesOnlyOnPrimary) {
+                this._workspacesViews[m].setActualGeometry(monitors[i]);
                 m++;
             }
         }

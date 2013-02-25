@@ -768,20 +768,27 @@ const LayoutStrategy = new Lang.Class({
         let slots = [];
 
         // Do this in three parts.
+        let width = 0;
         let height = 0;
         for (let i = 0; i < rows.length; i++) {
             let row = rows[i];
+            width = Math.max(width, row.width);
             height += row.height + this._rowSpacing;
         }
 
         height -= this._rowSpacing;
 
+        // If the window layout doesn't fit in the actual
+        // geometry, then apply this additional scale to
+        // tne entire layout.
+        let additionalScale = Math.min(1, area.width / width, area.height / height);
+
         let y = 0;
 
         for (let i = 0; i < rows.length; i++) {
             let row = rows[i];
-            row.x = area.x + (area.width - row.width) / 2;
-            row.y = area.y + y + (area.height - height) / 2;
+            row.x = area.x + (Math.max(area.width - row.width, 0) / 2) * additionalScale;
+            row.y = area.y + (y + Math.max(area.height - height, 0) / 2) * additionalScale;
             y += row.height + this._rowSpacing;
 
             row.windows.sort(Lang.bind(this, function(a, b) {
@@ -795,7 +802,7 @@ const LayoutStrategy = new Lang.Class({
             for (let j = 0; j < row.windows.length; j++) {
                 let window = row.windows[j];
 
-                let s = scale * this._computeWindowScale(window);
+                let s = scale * this._computeWindowScale(window) * additionalScale;
                 let cellWidth = window.actor.width * s;
                 let cellHeight = window.actor.height * s;
 
@@ -915,6 +922,14 @@ const Workspace = new Lang.Class({
         // this, like if the workspace switcher is slid out.
         this._fullGeometry = null;
 
+        // The actual geometry is the geometry we need to arrange windows
+        // in. If this is a smaller area than the full geometry, we'll
+        // do some simple aspect ratio like math to fit the layout calculated
+        // for the full geometry into this area.
+        this._actualGeometry = null;
+
+        this._currentLayout = null;
+
         this.monitorIndex = monitorIndex;
         this._monitor = Main.layoutManager.monitors[this.monitorIndex];
         this._windowOverlaysGroup = new Clutter.Actor();
@@ -967,14 +982,19 @@ const Workspace = new Lang.Class({
 
     setFullGeometry: function(geom) {
         this._fullGeometry = geom;
+        this._recalculateWindowPositions(WindowPositionFlags.NONE);
+    },
+
+    setActualGeometry: function(geom) {
+        this._actualGeometry = geom;
 
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
             this._dropRect.set_position(geom.x, geom.y);
             this._dropRect.set_size(geom.width, geom.height);
+            if (this._currentLayout != null)
+                this._updateWindowPositions(WindowPositionFlags.NONE);
             return false;
         }));
-
-        this._recalculateWindowPositions(WindowPositionFlags.NONE);
     },
 
     _lookupIndex: function (metaWindow) {
@@ -1048,7 +1068,7 @@ const Workspace = new Lang.Class({
         let strategy = layout.strategy;
 
         let [, , padding] = this._getSpacingAndPadding();
-        let area = padArea(this._fullGeometry, padding);
+        let area = padArea(this._actualGeometry, padding);
         let slots = strategy.computeWindowSlots(layout, area);
 
         let currentWorkspace = global.screen.get_active_workspace();
