@@ -520,6 +520,8 @@ const ControlsManager = new Lang.Class({
                                                    expand: true });
         this._group.add_actor(this._thumbnailsSlider.actor);
 
+        this._group.connect('notify::allocation', Lang.bind(this, this._updateWorkspacesGeometry));
+
         Main.overview.connect('showing', Lang.bind(this, this._updateSpacerVisibility));
         Main.overview.connect('item-drag-begin', Lang.bind(this,
             function() {
@@ -535,6 +537,26 @@ const ControlsManager = new Lang.Class({
             function() {
                 this.viewSelector.fadeIn();
             }));
+    },
+
+    _updateWorkspacesGeometry: function() {
+        let [x, y] = this.actor.get_transformed_position();
+        let [width, height] = this.actor.get_transformed_size();
+        let geometry = { x: x, y: y, width: width, height: height };
+
+        let spacing = this.actor.get_theme_node().get_length('spacing');
+        let dashWidth = this._dashSlider.getVisibleWidth() + spacing;
+        let thumbnailsWidth = this._thumbnailsSlider.getNonExpandedWidth() + spacing;
+
+        geometry.width -= dashWidth;
+        geometry.width -= thumbnailsWidth;
+
+        if (this.actor.get_text_direction() == Clutter.TextDirection.LTR)
+            geometry.x += dashWidth;
+        else
+            geometry.x += thumbnailsWidth;
+
+        this.viewSelector.setWorkspacesGeometry(geometry);
     },
 
     _setVisibility: function() {

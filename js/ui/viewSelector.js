@@ -186,6 +186,10 @@ const ViewSelector = new Lang.Class({
             Main.overview.fadeInDesktop();
     },
 
+    setWorkspacesGeometry: function(geom) {
+        this._workspacesDisplay.setWorkspacesGeometry(geom);
+    },
+
     hide: function() {
         this._workspacesDisplay.hide();
     },

@@ -429,7 +429,6 @@ const WorkspacesDisplay = new Lang.Class({
 
     _init: function() {
         this.actor = new St.Widget({ clip_to_allocation: true });
-        this.actor.connect('notify::allocation', Lang.bind(this, this._updateWorkspacesGeometry));
         this.actor.connect('parent-set', Lang.bind(this, this._parentSet));
 
         let clickAction = new Clutter.ClickAction()
@@ -631,20 +630,23 @@ const WorkspacesDisplay = new Lang.Class({
         }));
     },
 
+    // This geometry should always be the fullest geometry
+    // the workspaces switcher can ever be allocated, as if
+    // the sliding controls were never slid in at all.
+    setWorkspacesGeometry: function(geom) {
+        this._geometry = geom;
+        this._updateWorkspacesGeometry();
+    },
+
     _updateWorkspacesGeometry: function() {
         if (!this._workspacesViews.length)
             return;
-
-        let width = this.actor.allocation.x2 - this.actor.allocation.x1;
-        let height = this.actor.allocation.y2 - this.actor.allocation.y1;
-
-        let [x, y] = this.actor.get_transformed_position();
 
         let monitors = Main.layoutManager.monitors;
         let m = 0;
         for (let i = 0; i < monitors.length; i++) {
             if (i == this._primaryIndex) {
-                this._workspacesViews[m].setGeometry({ x: x, y: y, width: width, height: height });
+                this._workspacesViews[m].setGeometry(this._geometry);
                 m++;
             } else if (!this._workspacesOnlyOnPrimary) {
                 this._workspacesViews[m].setGeometry(monitors[i]);
