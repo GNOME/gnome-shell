@@ -985,28 +985,18 @@ const LookingGlass = new Lang.Class({
 
     _showCompletions: function(completions) {
         if (!this._completionActor) {
-            let actor = new St.BoxLayout({ vertical: true });
-
-            this._completionText = new St.Label({ name: 'LookingGlassAutoCompletionText', style_class: 'lg-completions-text' });
-            this._completionText.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
-            this._completionText.clutter_text.line_wrap = true;
-            actor.add(this._completionText);
-
-            let line = new Clutter.Rectangle();
-            let padBin = new St.Bin({ x_fill: true, y_fill: true });
-            padBin.add_actor(line);
-            actor.add(padBin);
-
-            this._completionActor = actor;
+            this._completionActor = new St.Label({ name: 'LookingGlassAutoCompletionText', style_class: 'lg-completions-text' });
+            this._completionActor.clutter_text.ellipsize = Pango.EllipsizeMode.NONE;
+            this._completionActor.clutter_text.line_wrap = true;
             this._evalBox.insert_child_below(this._completionActor, this._entryArea);
         }
 
-        this._completionText.set_text(completions.join(', '));
+        this._completionActor.set_text(completions.join(', '));
 
         // Setting the height to -1 allows us to get its actual preferred height rather than
         // whatever was last given in set_height by Tweener.
         this._completionActor.set_height(-1);
-        let [minHeight, naturalHeight] = this._completionText.get_preferred_height(this._resultsArea.get_width());
+        let [minHeight, naturalHeight] = this._completionActor.get_preferred_height(this._resultsArea.get_width());
 
         // Don't reanimate if we are already visible
         if (this._completionActor.visible) {
