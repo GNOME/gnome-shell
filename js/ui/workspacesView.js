@@ -636,15 +636,10 @@ const WorkspacesDisplay = new Lang.Class({
         if (!this._workspacesViews.length)
             return;
 
-        let fullWidth = this.actor.allocation.x2 - this.actor.allocation.x1;
-        let fullHeight = this.actor.allocation.y2 - this.actor.allocation.y1;
-
-        let width = fullWidth;
-        let height = fullHeight;
+        let width = this.actor.allocation.x2 - this.actor.allocation.x1;
+        let height = this.actor.allocation.y2 - this.actor.allocation.y1;
 
         let [x, y] = this.actor.get_transformed_position();
-
-        let rtl = (Clutter.get_default_text_direction () == Clutter.TextDirection.RTL);
 
         let monitors = Main.layoutManager.monitors;
         let m = 0;
