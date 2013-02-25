@@ -308,10 +308,6 @@ const Result = new Lang.Class({
         box.add(resultTxt);
         let objLink = new ObjLink(this._lookingGlass, o);
         box.add(objLink.actor);
-        let line = new Clutter.Rectangle({ name: 'Separator' });
-        let padBin = new St.Bin({ name: 'Separator', x_fill: true, y_fill: true });
-        padBin.add_actor(line);
-        this.actor.add(padBin);
     }
 });
 
