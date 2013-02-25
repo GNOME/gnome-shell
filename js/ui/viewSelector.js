@@ -186,8 +186,8 @@ const ViewSelector = new Lang.Class({
             Main.overview.fadeInDesktop();
     },
 
-    setWorkspacesGeometry: function(geom) {
-        this._workspacesDisplay.setWorkspacesGeometry(geom);
+    setWorkspacesFullGeometry: function(geom) {
+        this._workspacesDisplay.setWorkspacesFullGeometry(geom);
     },
 
     hide: function() {

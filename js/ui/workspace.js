@@ -901,10 +901,11 @@ const Workspace = new Lang.Class({
         // When dragging a window, we use this slot for reserve space.
         this._reservedSlot = null;
         this.metaWorkspace = metaWorkspace;
-        this._x = 0;
-        this._y = 0;
-        this._width = 0;
-        this._height = 0;
+
+        // The full geometry is the geometry we should try and position
+        // windows for. The actual geometry we allocate may be less than
+        // this, like if the workspace switcher is slid out.
+        this._fullGeometry = null;
 
         this.monitorIndex = monitorIndex;
         this._monitor = Main.layoutManager.monitors[this.monitorIndex];
@@ -956,11 +957,8 @@ const Workspace = new Lang.Class({
         this._positionWindowsId = 0;
     },
 
-    setGeometry: function(geom) {
-        this._x = geom.x;
-        this._y = geom.y;
-        this._width = geom.width;
-        this._height = geom.height;
+    setFullGeometry: function(geom) {
+        this._fullGeometry = geom;
 
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
             this._dropRect.set_position(geom.x, geom.y);
@@ -1148,8 +1146,8 @@ const Workspace = new Lang.Class({
         let [x, y, mask] = global.get_pointer();
 
         let pointerHasMoved = (this._cursorX != x && this._cursorY != y);
-        let inWorkspace = (this._x < x && x < this._x + this._width &&
-                           this._y < y && y < this._y + this._height);
+        let inWorkspace = (this._fullGeometry.x < x && x < this._fullGeometry.x + this._fullGeometry.width &&
+                           this._fullGeometry.y < y && y < this._fullGeometry.y + this._fullGeometry.height);
 
         if (pointerHasMoved && inWorkspace) {
             // store current cursor position
@@ -1538,10 +1536,10 @@ const Workspace = new Lang.Class({
         padding.right += rightBorder;
 
         let area = {
-            x: this._x + padding.left,
-            y: this._y + padding.top,
-            width: this._width - padding.left - padding.right,
-            height: this._height - padding.top - padding.bottom,
+            x: this._fullGeometry.x + padding.left,
+            y: this._fullGeometry.y + padding.top,
+            width: this._fullGeometry.width - padding.left - padding.right,
+            height: this._fullGeometry.height - padding.top - padding.bottom,
         };
 
         let layout = this._computeLayout(windows, area, rowSpacing, columnSpacing);

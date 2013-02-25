@@ -556,7 +556,7 @@ const ControlsManager = new Lang.Class({
         else
             geometry.x += thumbnailsWidth;
 
-        this.viewSelector.setWorkspacesGeometry(geometry);
+        this.viewSelector.setWorkspacesFullGeometry(geometry);
     },
 
     _setVisibility: function() {

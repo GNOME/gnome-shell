@@ -23,6 +23,18 @@ const MAX_WORKSPACES = 16;
 
 const OVERRIDE_SCHEMA = 'org.gnome.shell.overrides';
 
+function rectEqual(one, two) {
+    if (one == two)
+        return true;
+
+    if (!one || !two)
+        return false;
+
+    return (one.x == two.x &&
+            one.y == two.y &&
+            one.width == two.width &&
+            one.height == two.height);
+}
 
 const WorkspacesView = new Lang.Class({
     Name: 'WorkspacesView',
@@ -43,10 +55,8 @@ const WorkspacesView = new Lang.Class({
                 this._updateWorkspaceActors(false);
             }));
 
-        this._width = 0;
-        this._height = 0;
-        this._x = 0;
-        this._y = 0;
+        this._fullGeometry = null;
+
         this._spacing = 0;
         this._animating = false; // tweening
         this._scrolling = false; // swipe-scrolling
@@ -85,8 +95,8 @@ const WorkspacesView = new Lang.Class({
         this._overviewShownId =
             Main.overview.connect('shown',
                                  Lang.bind(this, function() {
-                this.actor.set_clip(this._x, this._y,
-                                    this._width, this._height);
+                this.actor.set_clip(this._fullGeometry.x, this._fullGeometry.y,
+                                    this._fullGeometry.width, this._fullGeometry.height);
         }));
 
         this.scrollAdjustment = new St.Adjustment({ value: activeWorkspaceIndex,
@@ -124,7 +134,7 @@ const WorkspacesView = new Lang.Class({
                 continue;
 
             let ws = new Workspace.Workspace(null, i);
-            ws.setGeometry(monitors[i]);
+            ws.setFullGeometry(monitors[i]);
             global.overlay_group.add_actor(ws.actor);
             this._extraWorkspaces.push(ws);
         }
@@ -136,18 +146,14 @@ const WorkspacesView = new Lang.Class({
         this._extraWorkspaces = [];
     },
 
-    setGeometry: function(geom) {
-        if (this._x == geom.x && this._y == geom.y &&
-            this._width == geom.width && this._height == geom.height)
+    setFullGeometry: function(geom) {
+        if (rectEqual(this._fullGeometry, geom))
             return;
 
-        this._width = geom.width;
-        this._height = geom.height;
-        this._x = geom.x;
-        this._y = geom.y;
+        this._fullGeometry = geom;
 
         for (let i = 0; i < this._workspaces.length; i++)
-            this._workspaces[i].setGeometry(geom);
+            this._workspaces[i].setFullGeometry(geom);
     },
 
     _lookupWorkspaceForMetaWindow: function (metaWindow) {
@@ -207,7 +213,7 @@ const WorkspacesView = new Lang.Class({
 
             Tweener.removeTweens(workspace.actor);
 
-            let y = (w - active) * (this._height + this._spacing);
+            let y = (w - active) * (this._fullGeometry.height + this._spacing);
 
             if (showAnimation) {
                 let params = { y: y,
@@ -278,10 +284,7 @@ const WorkspacesView = new Lang.Class({
 
         if (newNumWorkspaces > oldNumWorkspaces) {
             for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
-                this._workspaces[w].setGeometry({ x: this._x,
-                                                  y: this._y,
-                                                  width: this._width,
-                                                  height: this._height });
+                this._workspaces[w].setFullGeometry(this._fullGeometry);
                 this.actor.add_actor(this._workspaces[w].actor);
             }
 
@@ -482,6 +485,8 @@ const WorkspacesDisplay = new Lang.Class({
 
         this._notifyOpacityId = 0;
         this._scrollEventId = 0;
+
+        this._fullGeometry = null;
     },
 
     _onPan: function(action) {
@@ -570,7 +575,7 @@ const WorkspacesDisplay = new Lang.Class({
             this._workspacesViews.push(view);
         }
 
-        this._updateWorkspacesGeometry();
+        this._updateWorkspacesFullGeometry();
 
         for (let i = 0; i < this._workspacesViews.length; i++)
             global.overlay_group.add_actor(this._workspacesViews[i].actor);
@@ -633,12 +638,12 @@ const WorkspacesDisplay = new Lang.Class({
     // This geometry should always be the fullest geometry
     // the workspaces switcher can ever be allocated, as if
     // the sliding controls were never slid in at all.
-    setWorkspacesGeometry: function(geom) {
-        this._geometry = geom;
-        this._updateWorkspacesGeometry();
+    setWorkspacesFullGeometry: function(geom) {
+        this._fullGeometry = geom;
+        this._updateWorkspacesFullGeometry();
     },
 
-    _updateWorkspacesGeometry: function() {
+    _updateWorkspacesFullGeometry: function() {
         if (!this._workspacesViews.length)
             return;
 
@@ -646,10 +651,10 @@ const WorkspacesDisplay = new Lang.Class({
         let m = 0;
         for (let i = 0; i < monitors.length; i++) {
             if (i == this._primaryIndex) {
-                this._workspacesViews[m].setGeometry(this._geometry);
+                this._workspacesViews[m].setFullGeometry(this._fullGeometry);
                 m++;
             } else if (!this._workspacesOnlyOnPrimary) {
-                this._workspacesViews[m].setGeometry(monitors[i]);
+                this._workspacesViews[m].setFullGeometry(monitors[i]);
                 m++;
             }
         }
