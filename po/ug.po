@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-11 15:23+0000\n"
-"PO-Revision-Date: 2011-08-08 16:52+0600\n"
-"Last-Translator: Sahran <sahran.ug@gmail.com>\n"
+"POT-Creation-Date: 2013-02-20 15:50+0000\n"
+"PO-Revision-Date: 2013-02-25 18:42+0900\n"
+"Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -63,7 +63,6 @@ msgid "Switch windows"
 msgstr "كۆزنەكلەرنى ئالماشتۇرۇش"
 
 #: ../src/50-mutter-navigation.xml.in.h:12
-#| msgid "Move between windows of an application immediately"
 msgid "Switch windows of an application"
 msgstr "پروگراممىنىڭ كۆزنىكىنى ئالماشتۇرۇش"
 
@@ -76,7 +75,6 @@ msgid "Switch windows directly"
 msgstr "كۆزنەكلەرنى بىۋاسىتە ئالماشتۇرۇش"
 
 #: ../src/50-mutter-navigation.xml.in.h:15
-#| msgid "Move between windows of an application immediately"
 msgid "Switch windows of an app directly"
 msgstr "بىر پروگراممىنىڭ كۆزنەكلىرىنى بىۋاسىتە ئالماشتۇرۇش"
 
@@ -85,7 +83,6 @@ msgid "Switch system controls directly"
 msgstr "سىستېما تىزگىنلىرىنى بىۋاسىتە ئالماشتۇرۇش"
 
 #: ../src/50-mutter-navigation.xml.in.h:17
-#| msgid "Hide all normal windows and set focus to the desktop"
 msgid "Hide all normal windows"
 msgstr "بارلىق نورمال كۆزنەكلەرنى يوشۇرۇش"
 
@@ -106,22 +103,18 @@ msgid "Switch to workspace 4"
 msgstr "4-خىزمەت رايونىغا ئالمىشىش"
 
 #: ../src/50-mutter-navigation.xml.in.h:22
-#| msgid "Move to Workspace _Left"
 msgid "Move to workspace left"
 msgstr "سولدىكى خىزمەت رايونىغا يۆتكەش"
 
 #: ../src/50-mutter-navigation.xml.in.h:23
-#| msgid "Move to Workspace R_ight"
 msgid "Move to workspace right"
 msgstr "ئوڭدىكى خىزمەت رايونىغا يۆتكەش"
 
 #: ../src/50-mutter-navigation.xml.in.h:24
-#| msgid "Move to Workspace _Left"
 msgid "Move to workspace above"
 msgstr "ئۇستىدىكى خىزمەت رايونىغا يۆتكەش"
 
 #: ../src/50-mutter-navigation.xml.in.h:25
-#| msgid "Move to Workspace _Down"
 msgid "Move to workspace below"
 msgstr "تۆۋەندىكى خىزمەت رايونىغا يۆتكەش"
 
@@ -130,7 +123,6 @@ msgid "System"
 msgstr "سىستېما"
 
 #: ../src/50-mutter-system.xml.in.h:2
-#| msgid "Show the panel's main menu"
 msgid "Show the run command prompt"
 msgstr "بۇيرۇق قۇرىنى كۆرسىتىدۇ"
 
@@ -171,7 +163,6 @@ msgid "Close window"
 msgstr "كۆزنەك ياپ"
 
 #: ../src/50-mutter-windows.xml.in.h:9
-#| msgid "Resize window"
 msgid "Hide window"
 msgstr "كۆزنەكنى يوشۇرۇش"
 
@@ -184,12 +175,10 @@ msgid "Resize window"
 msgstr "كۆزنەك چوڭلۇقىنى ئۆزگەرتىش"
 
 #: ../src/50-mutter-windows.xml.in.h:12
-#| msgid "Toggle whether window is on all workspaces or just one"
 msgid "Toggle window on all workspaces or one"
 msgstr "كۆزنەكنى بارلىق خىزمەت رايونى ياكى بىرىگىلا ئالماشتۇرۇش"
 
 #: ../src/50-mutter-windows.xml.in.h:13
-#| msgid "Raise window if it's covered by another window, otherwise lower it"
 msgid "Raise window if covered, otherwise lower it"
 msgstr "كۆزنەك توسۇلۇپ قالغان بولسا كۆتۈرسۇن، بولمىسا پەسلەتسۇن"
 
@@ -219,12 +208,16 @@ msgstr "كۆزنەكنىڭ ئوڭ تەرىپىدە كۆرسەتسۇن"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:512
+#: ../src/compositor/compositor.c:507
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
-msgstr "كۆرسەتكۈچ \"%2$s\" نىڭدىكى ئېكران %1$d دا بۆلەك باشقۇرغۇچ ئىجرا قىلىنىۋاتىدۇ."
+msgstr "كۆرسەتكۈچ «%2$s» نىڭدىكى ئېكران %1$i دا بۆلەك باشقۇرغۇچ ئىجرا قىلىنىۋاتىدۇ."
+
+#: ../src/compositor/meta-background.c:1116
+msgid "background texture could not be created from file"
+msgstr "ھۆججەتتىن تەگلىك texture نى قۇرغىلى بولمايدۇ"
 
 #: ../src/core/bell.c:320
 msgid "Bell event"
@@ -237,7 +230,6 @@ msgstr "نامەلۇم كۆزنەك ئۇچۇرى ئىلتىماسى:%d"
 
 #: ../src/core/delete.c:111
 #, c-format
-#| msgid "<tt>%s</tt> is not responding."
 msgid "“%s” is not responding."
 msgstr "%s نىڭدىن جاۋاب كەلمەيۋاتىدۇ."
 
@@ -259,12 +251,12 @@ msgstr "كۈت(_W)"
 msgid "_Force Quit"
 msgstr "مەجبۇرى ئاخىرلاشتۇر(_F)"
 
-#: ../src/core/display.c:394
+#: ../src/core/display.c:392
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "بىرىكتۈرۈش ئۈچۈن زۆرۈر بولغان كېڭەيتىلمە %s يوق"
 
-#: ../src/core/display.c:491
+#: ../src/core/display.c:485
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "‏X كۆزنەك سىستېمىسى كۆرسەتكۈچى ‹%s› نى ئېچىش مەغلۇپ بولدى\n"
@@ -278,7 +270,7 @@ msgstr "باشقا پروگرامما %s كۇنۇپكىسى بىلەن سۈپە�
 
 #: ../src/core/main.c:196
 msgid "Disable connection to session manager"
-msgstr "ئەڭگىمە باشقۇرغۇچقا باغلىنىشنى چەكلە"
+msgstr "ئەڭگىمە باشقۇرغۇچقا باغلىنىشنى ئىناۋەتسىز قىل"
 
 #: ../src/core/main.c:202
 msgid "Replace the running window manager"
@@ -340,7 +332,6 @@ msgstr "بۇزۇلغان پروگراممىلارنى تۈزىتىش-ياخشى�
 
 #: ../src/core/prefs.c:1162
 #, c-format
-#| msgid "Could not parse font description \"%s\" from GConf key %s\n"
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "GSettings ئاچقۇچى %s نىڭ تەركىبىدىكى فونت چۈشەندۈرۈشى «%s»نى تەھلىل قىلغىنى بولمىدى\n"
 
@@ -358,35 +349,35 @@ msgid ""
 "\"%s\"\n"
 msgstr "سەپلىمە ساندىنىدىن تېپىلغان «%s»، «%s» كۇنۇپكا باغلانمىسىنىڭ ئىناۋەتلىك قىممىتى ئەمەس\n"
 
-#: ../src/core/prefs.c:1877
+#: ../src/core/prefs.c:1879
 #, c-format
 msgid "Workspace %d"
 msgstr "خىزمەت بوشلۇقى %d"
 
-#: ../src/core/screen.c:658
+#: ../src/core/screen.c:673
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "كۆرسەتكۈچ ‹%2$s› دىكى ئېكران %1$d ئىناۋەتسىز\n"
 
-#: ../src/core/screen.c:674
+#: ../src/core/screen.c:689
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr "كۆرسەتكۈچ «%2$s» دىكى ئېكران %1$d نىڭ كۆزنەك باشقۇرغۇسى بار؛ ھازىرقى كۆزنەك باشقۇرغۇنى ئالماشتۇرۇش ئۈچۈن --replace تاللانمىسىنى ئىشلىتىپ كۆرۈپ بېقىڭ.\n"
 
-#: ../src/core/screen.c:701
+#: ../src/core/screen.c:716
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "كۆرسەتكۈچ «%2$s» نىڭدىكى ئېكران %1$d دا كۆزنەك باشقۇرغۇنىڭ تاللانمىسىنى ئالغىلى بولمىدى\n"
 
-#: ../src/core/screen.c:770
+#: ../src/core/screen.c:794
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "«%2$s» دىكى %1$d ئېكراندا بىر كۆزنەك باشقۇرغۇ  بار\n"
 
-#: ../src/core/screen.c:955
+#: ../src/core/screen.c:979
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "«%2$s» دىكى %1$d  ئېكراننى بوشاتقىلى بولمىدى\n"
@@ -481,12 +472,12 @@ msgid "Window manager error: "
 msgstr "كۆزنەك باشقۇرغۇ خاتالىقى: "
 
 #. first time through
-#: ../src/core/window.c:7279
+#: ../src/core/window.c:7503
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
 "window as specified in the ICCCM.\n"
-msgstr "كۆزنەك %s  بەلگىلىمە ICCCM دا بەلگىلەنگەن WM_CLIENT_LEADER كۆزنەكنى ئەمەس SM_CLIENT_ID نى ئۆزى بەلگىلىۋېتىپتۇ.\n"
+msgstr "كۆزنەك %s  بەلگىلىمە ICCCM دا بەلگىلەنگەن WM_CLIENT_LEADER كۆزنەكنى ئەمەس SM_CLIENT_ID نى ئۆزى بەلگىلىۋېپتۇ.\n"
 
 #. We ignore mwm_has_resize_func because WM_NORMAL_HINTS is the
 #. * authoritative source for that info. Some apps such as mplayer or
@@ -495,29 +486,29 @@ msgstr "كۆزنەك %s  بەلگىلىمە ICCCM دا بەلگىلەنگەن WM
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7945
+#: ../src/core/window.c:8227
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
 "%d x %d and max size %d x %d; this doesn't make much sense.\n"
 msgstr "كۆزنەك %s نىڭدا MWM بەلگىلەنگەن بولۇپ، بۇ كۆزنەك چوڭلۇقىنى ئۆزگەرتكىلى بولمايدۇ دېگەن مەنىدە. بىراق ئەڭ كىچىك چوڭلۇقى%d x %d، ۋە ئەڭ كىچىك چوڭلۇقى %d x %d قىلىپ بەلگىلىنىپتۇ. بۇنىڭ ھېچقانداق ئەھمىيىتى يوق.\n"
 
-#: ../src/core/window-props.c:274
+#: ../src/core/window-props.c:304
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "پروگرامما بىر ساختا _NET_WM_PID نى بەلگىلىدى%lu\n"
 
-#: ../src/core/window-props.c:393
+#: ../src/core/window-props.c:423
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (ھازىر %s نىڭ ئۈستىدە)"
 
-#: ../src/core/window-props.c:1448
+#: ../src/core/window-props.c:1506
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "%2$s  گە بەلگىلەنگەن ئۈنۈمسىز WM_TRANSIENT_FOR كۆزنەك 0x%1$lx بولىدۇ.\n"
 
-#: ../src/core/window-props.c:1459
+#: ../src/core/window-props.c:1517
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "%2$s نىڭ WM_TRANSIENT_FOR كۆزنەك0x%1$lx دەۋرىيلىك قۇرۇشى مۇمكىن.\n"
@@ -587,14 +578,14 @@ msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Workspaces are managed dynamically"
-msgstr ""
+msgstr "خىزمەت رايونلىرى جانلىق باشقۇرۇلسۇن"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid ""
 "Determines whether workspaces are managed dynamically or whether there's a "
 "static number of workspaces (determined by the num-workspaces key in org."
 "gnome.desktop.wm.preferences)."
-msgstr ""
+msgstr "خىزمەت رايونلىرى جانلىق باشقۇرۇلامدۇ ياكى خىزمەت رايونلىرىنىڭ سانى مۇقىم بولامدۇ بەلگىلەيدۇ(خىزمەت رايونلىرىنىڭ سانى org.gnome.desktop.wm.preferences دېگەن ئاچقۇچتا بەلگىلىنىدۇ)"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
 msgid "Workspaces only on primary"
@@ -608,7 +599,7 @@ msgstr "خىزمەت رايونى ئالماشتۇرۇشنىڭ ھەممە ئېك
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:11
 msgid "No tab popup"
-msgstr ""
+msgstr "بەتكۈچ سەكرىمىسۇن"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:12
 msgid ""
@@ -629,13 +620,13 @@ msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
-msgstr ""
+msgstr "سۆرەشكە بولىدىغان گىرۋەكنىڭ كەڭلىكى"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
-msgstr ""
+msgstr "سۆرەشكە بولىدىغان گىرۋەكنىڭ كەڭلىكى. ئۆرنەكتە كۆرسىتىلىۋاتقان گىرۋەكنىڭ كەڭلىكى بۇنىڭدىن كىچىك بولسا، كۆرسەتكىلى بولمايدىغان گىرۋەككە مۇشۇ قىممەتكە ماس كېلىدىغان قىلىپ قىممەت قوشۇلىدۇ."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Auto maximize nearly monitor sized windows"
@@ -643,18 +634,17 @@ msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid ""
-"If enabled, monitor nearly monitor sized windows automatically get maximized "
-"when mapped."
+"If enabled, new windows that are initially the size of the monitor "
+"automatically get maximized."
 msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:19
-#| msgid "Remove Window From Top"
 msgid "Select window from tab popup"
-msgstr ""
+msgstr "سەكرەپ چىققان بەتكۈچتىن كۆزنەك تاللىسۇن"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:20
 msgid "Cancel tab popup"
-msgstr ""
+msgstr "سەكرەپ چىققان بەتكۈچنى ئەمەلدىن قالدۇر"
 
 #: ../src/tools/mutter-message.c:123
 #, c-format
@@ -855,7 +845,7 @@ msgstr "Mod5"
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
-#: ../src/ui/resizepopup.c:113
+#: ../src/ui/resizepopup.c:136
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1108,13 +1098,13 @@ msgid ""
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr "ئۆرنەك «%2$s» نىڭ ئىچىدىكى كۆزنەك تىپى <%1$s> نىڭ كاندۇك ئۇسلۇبى بەلگىلەنمىگەن. بىر <window type=\"%3$s\" style_set=\"whatever\"/> ئېلېمېنتى قوشۇڭ"
 
-#: ../src/ui/theme.c:5659 ../src/ui/theme.c:5721 ../src/ui/theme.c:5784
+#: ../src/ui/theme.c:5662 ../src/ui/theme.c:5724 ../src/ui/theme.c:5787
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "ئىشلەتكۈچى بەلگىلىگەن تۇراقلىق مىقدار چوقۇم چوڭ ھەرپ بىلەن باشلانسۇن؛ «%s» بولمايدۇ"
 
-#: ../src/ui/theme.c:5667 ../src/ui/theme.c:5729 ../src/ui/theme.c:5792
+#: ../src/ui/theme.c:5670 ../src/ui/theme.c:5732 ../src/ui/theme.c:5795
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "تۇراقلىق سان «%s» غا ئېنىقلىما بېرىلگەن"
@@ -1580,96 +1570,96 @@ msgstr "گىرۋەك"
 msgid "Attached Modal Dialog"
 msgstr "قوشۇلغان Modal سۆزلەشكۈ"
 
-#: ../src/ui/theme-viewer.c:739
+#: ../src/ui/theme-viewer.c:737
 #, c-format
 msgid "Button layout test %d"
 msgstr "توپچا ئورۇنلاشتۇرۇلۇشىنى سىناش %d"
 
-#: ../src/ui/theme-viewer.c:768
+#: ../src/ui/theme-viewer.c:766
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "بىر كۆزنەك كاندۇكىنى سىزىشقا كەتكەن ۋاقىت %g مىللىسېكۇنت"
 
-#: ../src/ui/theme-viewer.c:813
+#: ../src/ui/theme-viewer.c:811
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "ئىشلىتىش ئۇسۇلى: metacity-theme-viewer [ئۆرنەك ئاتى]\n"
 
-#: ../src/ui/theme-viewer.c:820
+#: ../src/ui/theme-viewer.c:818
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "ئۆرنەك ئوقۇشتا خاتالىق كۆرۈلدى: %s\n"
 
-#: ../src/ui/theme-viewer.c:826
+#: ../src/ui/theme-viewer.c:824
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "«%s» دېگەن ئۆرنەكنى %g سېكۇنتتا ئوقۇدى\n"
 
-#: ../src/ui/theme-viewer.c:871
+#: ../src/ui/theme-viewer.c:869
 msgid "Normal Title Font"
 msgstr "ئادەتتىكى ماۋزۇ خەت نۇسخىسى"
 
-#: ../src/ui/theme-viewer.c:877
+#: ../src/ui/theme-viewer.c:875
 msgid "Small Title Font"
 msgstr "تارماق ماۋزۇ خەت نۇسخىسى"
 
-#: ../src/ui/theme-viewer.c:883
+#: ../src/ui/theme-viewer.c:881
 msgid "Large Title Font"
 msgstr "ماۋزۇ خەت نۇسخىسى"
 
-#: ../src/ui/theme-viewer.c:888
+#: ../src/ui/theme-viewer.c:886
 msgid "Button Layouts"
 msgstr "توپچا جايلاشتۇرۇشلىرى"
 
-#: ../src/ui/theme-viewer.c:893
+#: ../src/ui/theme-viewer.c:891
 msgid "Benchmark"
 msgstr "ئاساسىي كۆرسەتكۈچ"
 
-#: ../src/ui/theme-viewer.c:949
+#: ../src/ui/theme-viewer.c:947
 msgid "Window Title Goes Here"
 msgstr "بۇ يەردە كۆزنەك ماۋزۇسى كۆرسىتىلىدۇ"
 
-#: ../src/ui/theme-viewer.c:1055
+#: ../src/ui/theme-viewer.c:1053
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
 "seconds wall clock time including X server resources (%g milliseconds per "
 "frame)\n"
-msgstr "在 %2$g 的客户端秒(每帧 %3$g 毫秒)和包括 X 服务器资源在内的 %4$g 秒时钟时间(每帧 %5$g 毫秒)内绘制 %1$d 帧\n"
+msgstr "%d دانە كاندۇك خېرىدار تەرەپتە %g سېكۇنتتا سىزىلدى(بىر كاندۇك ئۈچۈن %g مىللىسېكۇنت). ئەمەلىيەتتە X مۇلازىمېتىرىنىڭ مەنبەلىرىنىمۇ قوشۇپ %g سېكۇنت(بىر كاندۇكنى %g مىللىسېكۇنت) ۋاقىتتا سىزدى.\n"
 
-#: ../src/ui/theme-viewer.c:1275
+#: ../src/ui/theme-viewer.c:1273
 msgid "position expression test returned TRUE but set error"
 msgstr "ئورۇن ئىپادىسىنى سىناشتا TRUE قايتتى بىراق خاتالىق كۆرۈلدى"
 
-#: ../src/ui/theme-viewer.c:1277
+#: ../src/ui/theme-viewer.c:1275
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "ئورۇن ئىپادىسىنى سىناشتا FALSE قايتتى بىراق خاتالىق كۆرۈلمىدى"
 
-#: ../src/ui/theme-viewer.c:1281
+#: ../src/ui/theme-viewer.c:1279
 msgid "Error was expected but none given"
 msgstr "خاتالىق چىقىدىغان يەردە خاتالىق چىقمىدى"
 
-#: ../src/ui/theme-viewer.c:1283
+#: ../src/ui/theme-viewer.c:1281
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "خاتالىق %d چىقىدىغان يەردە %d چىقتى"
 
-#: ../src/ui/theme-viewer.c:1289
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "خاتالىق چىقمايدىغان يەردە بىر خاتالىق چىقىپ قالدى: %s"
 
-#: ../src/ui/theme-viewer.c:1293
+#: ../src/ui/theme-viewer.c:1291
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x نىڭ قىممىتى %d ئىكەن، ئەسلى %d بولسا بولاتتى"
 
-#: ../src/ui/theme-viewer.c:1296
+#: ../src/ui/theme-viewer.c:1294
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y نىڭ قىممىتى %d ئىكەن، ئەسلى %d بولسا بولاتتى"
 
-#: ../src/ui/theme-viewer.c:1361
+#: ../src/ui/theme-viewer.c:1359
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d كوئوردېنات ئىپادىسى %g سېكۇنتتا تەھلىل قىلىندى(%g ئوتتۇرىچە سېكۇنت)\n"
