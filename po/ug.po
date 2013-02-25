@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cogl\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-25 18:21+0000\n"
-"PO-Revision-Date: 2013-01-30 19:25+0900\n"
+"POT-Creation-Date: 2013-02-22 15:38+0000\n"
+"PO-Revision-Date: 2013-02-25 18:54+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: \n"
@@ -26,7 +26,7 @@ msgstr "ئالاھىدە سازلاش قىممەتلىرى:"
 
 #: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
-msgstr ""
+msgstr "بارلىق non-behavioural سازلاش تاللانمىلىرىنى ئىناۋەتلىك قىلسۇن"
 
 #: ../cogl/cogl-debug.c:190
 msgid "Additional environment variables:"
@@ -93,7 +93,7 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:42
 msgid "Trace Blend Strings"
-msgstr ""
+msgstr "تېكىستنى بىرىكتۈرۈشنى ئىزلا"
 
 #: ../cogl/cogl-debug-options.h:43
 msgid "Debug CoglBlendString parsing"
@@ -101,7 +101,7 @@ msgstr "CoglBlendString نى تەھلىل قىلىشنى سازلايدۇ"
 
 #: ../cogl/cogl-debug-options.h:47
 msgid "Trace Journal"
-msgstr ""
+msgstr "ژۇرنالنى ئىزلا"
 
 #: ../cogl/cogl-debug-options.h:48
 msgid "View all the geometry passing through the journal"
@@ -153,7 +153,7 @@ msgstr "سۈرەتلەشتۈر"
 
 #: ../cogl/cogl-debug-options.h:78
 msgid "Outline rectangles"
-msgstr ""
+msgstr "سىرتقى تىك تۆت تەرەپلىك"
 
 #: ../cogl/cogl-debug-options.h:79
 msgid "Add wire outlines for all rectangular geometry"
@@ -176,15 +176,15 @@ msgstr ""
 #: ../cogl/cogl-debug-options.h:153 ../cogl/cogl-debug-options.h:173
 #: ../cogl/cogl-debug-options.h:178
 msgid "Root Cause"
-msgstr ""
+msgstr "ئەسلى سەۋەبى"
 
 #: ../cogl/cogl-debug-options.h:88
 msgid "Disable Journal batching"
-msgstr ""
+msgstr "ژۇرنال بىر تەرەپ قىلىشنى ئىناۋەتسىز قىل"
 
 #: ../cogl/cogl-debug-options.h:89
 msgid "Disable batching of geometry in the Cogl Journal."
-msgstr ""
+msgstr "Cogl ژۇرنالدىكى سىرتقى كۆرۈنۈشنى توپ بىر تەرەپ قىلىشنى ئىناۋەتسىز قىلىدۇ."
 
 #: ../cogl/cogl-debug-options.h:93
 msgid "Disable GL Vertex Buffers"
@@ -254,15 +254,15 @@ msgstr "arbfp نى ئىناۋەتسىز قىل"
 
 #: ../cogl/cogl-debug-options.h:130
 msgid "Disable use of ARB fragment programs"
-msgstr ""
+msgstr "ARB پارچە پروگراممىلىرىنى ئىشلىتىشنى ئىناۋەتسىز قىلىدۇ"
 
 #: ../cogl/cogl-debug-options.h:134
 msgid "Disable fixed"
-msgstr ""
+msgstr "مۇقىم ئىقتىدار نەيچىسىنى ئىناۋەتسىز قىل"
 
 #: ../cogl/cogl-debug-options.h:135
 msgid "Disable use of the fixed function pipeline backend"
-msgstr ""
+msgstr "مۇقىم ئىقتىدار نەيچىسىنىڭ ئارقا ئۇچنى ئىشلىتىشنى ئىناۋەتسىز قىلىدۇ"
 
 #: ../cogl/cogl-debug-options.h:139
 msgid "Disable GLSL"
