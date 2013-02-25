@@ -860,6 +860,7 @@ StScrollBar StButton#vhandle:active {
     padding: 4px 16px;
 }
 
+.search-display > StBoxLayout,
 .all-apps > StBoxLayout,
 .frequent-apps > StBoxLayout {
     /* horizontal padding to make sure the scrollbar doesn't overlap content */
