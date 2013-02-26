@@ -961,7 +961,7 @@ const Workspace = new Lang.Class({
             return false;
         }));
 
-        this.positionWindows(WindowPositionFlags.NONE);
+        this._positionWindows(WindowPositionFlags.NONE);
     },
 
     _lookupIndex: function (metaWindow) {
@@ -989,16 +989,10 @@ const Workspace = new Lang.Class({
             clone = null;
 
         this._reservedSlot = clone;
-        this.positionWindows(WindowPositionFlags.ANIMATE);
+        this._positionWindows(WindowPositionFlags.ANIMATE);
     },
 
-    /**
-     * positionWindows:
-     * @flags:
-     *  INITIAL - this is the initial positioning of the windows.
-     *  ANIMATE - Indicates that we need animate changing position.
-     */
-    positionWindows: function(flags) {
+    _positionWindows: function(flags) {
         this._positionWindowsFlags |= flags;
 
         if (this._positionWindowsId > 0)
@@ -1161,7 +1155,7 @@ const Workspace = new Lang.Class({
                 return true;
         }
 
-        this.positionWindows(WindowPositionFlags.ANIMATE);
+        this._positionWindows(WindowPositionFlags.ANIMATE);
         return false;
     },
 
@@ -1264,7 +1258,7 @@ const Workspace = new Lang.Class({
             clone.overlay.relayout(false);
         }
 
-        this.positionWindows(WindowPositionFlags.ANIMATE);
+        this._positionWindows(WindowPositionFlags.ANIMATE);
     },
 
     _windowAdded : function(metaWorkspace, metaWin) {
@@ -1303,9 +1297,9 @@ const Workspace = new Lang.Class({
     zoomToOverview : function() {
         // Position and scale the windows.
         if (Main.overview.animationInProgress)
-            this.positionWindows(WindowPositionFlags.ANIMATE | WindowPositionFlags.INITIAL);
+            this._positionWindows(WindowPositionFlags.ANIMATE | WindowPositionFlags.INITIAL);
         else
-            this.positionWindows(WindowPositionFlags.INITIAL);
+            this._positionWindows(WindowPositionFlags.INITIAL);
     },
 
     // Animates the return from Overview mode
@@ -1429,7 +1423,7 @@ const Workspace = new Lang.Class({
                       }));
         clone.connect('size-changed',
                       Lang.bind(this, function() {
-                          this.positionWindows(WindowPositionFlags.NONE);
+                          this._positionWindows(WindowPositionFlags.NONE);
                       }));
 
         this.actor.add_actor(clone.actor);
