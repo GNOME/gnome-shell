@@ -1436,7 +1436,7 @@ const Workspace = new Lang.Class({
                       }));
         clone.connect('size-changed',
                       Lang.bind(this, function() {
-                          this.positionWindows(0);
+                          this.positionWindows(WindowPositionFlags.NONE);
                       }));
 
         this.actor.add_actor(clone.actor);
