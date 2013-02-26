@@ -583,13 +583,9 @@ const LayoutStrategy = new Lang.Class({
         //   meant to be scaled
         //
         // * neither height/fullHeight have any sort of spacing or padding
-        //
-        // * if cellWidth is present, all windows in the row will occupy
-        //   the space of cellWidth, centered.
         return { x: 0, y: 0,
                  width: 0, height: 0,
                  fullWidth: 0, fullHeight: 0,
-                 cellWidth: 0,
                  windows: [] };
     },
 
@@ -614,8 +610,8 @@ const LayoutStrategy = new Lang.Class({
 
     // Compute the size of each row, by assigning to the properties
     // row.width, row.height, row.fullWidth, row.fullHeight, and
-    // (optionally) row.cellWidth, for each row in @layout.rows.
-    // This method is intended to be called by subclasses.
+    // (optionally) for each row in @layout.rows. This method is
+    // intended to be called by subclasses.
     _computeRowSizes: function(layout) {
         throw new Error('_computeRowSizes not implemented');
     },
@@ -697,7 +693,7 @@ const LayoutStrategy = new Lang.Class({
         for (let i = 0; i < rows.length; i++) {
             let row = rows[i];
             row.y += baseY;
-            let baseX = row.x;
+            let x = row.x;
             for (let j = 0; j < row.windows.length; j++) {
                 let window = row.windows[j];
 
@@ -707,14 +703,8 @@ const LayoutStrategy = new Lang.Class({
                 let height = window.actor.height * s;
                 let y = row.y + row.height - height;
 
-                let x = baseX;
-                if (row.cellWidth) {
-                    x += (row.cellWidth - width) / 2;
-                    width = row.cellWidth;
-                }
-
                 slots.push([x, y, s, window]);
-                baseX += width + this._columnSpacing;
+                x += width + this._columnSpacing;
             }
         }
         return slots;
