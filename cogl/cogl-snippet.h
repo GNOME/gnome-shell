@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2011 Intel Corporation.
+ * Copyright (C) 2011, 2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -312,6 +312,12 @@ typedef struct _CoglSnippet CoglSnippet;
    to within a pipeline. */
 /**
  * CoglSnippetHook:
+ * @COGL_SNIPPET_HOOK_VERTEX_GLOBALS: A hook for declaring global data
+ *   that can be shared with all other snippets that are on a vertex
+ *   hook.
+ * @COGL_SNIPPET_HOOK_FRAGMENT_GLOBALS: A hook for declaring global
+ *   data wthat can be shared with all other snippets that are on a
+ *   fragment hook.
  * @COGL_SNIPPET_HOOK_VERTEX: A hook for the entire vertex processing
  *   stage of the pipeline.
  * @COGL_SNIPPET_HOOK_VERTEX_TRANSFORM: A hook for the vertex transformation.
@@ -329,6 +335,30 @@ typedef struct _CoglSnippet CoglSnippet;
  * is attached to a pipeline.
  *
  * <glosslist>
+ *  <glossentry>
+ *   <glossterm>%COGL_SNIPPET_HOOK_VERTEX_GLOBALS</glossterm>
+ *   <glossdef>
+ * <para>
+ * Adds a shader snippet at the beginning of the global section of the
+ * shader for the vertex processing. Any declarations here can be
+ * shared with all other snippets that are attached to a vertex hook.
+ * Only the ‘declarations’ string is used and the other strings are
+ * ignored.
+ * </para>
+ *   </glossdef>
+ *  </glossentry>
+ *  <glossentry>
+ *   <glossterm>%COGL_SNIPPET_HOOK_FRAGMENT_GLOBALS</glossterm>
+ *   <glossdef>
+ * <para>
+ * Adds a shader snippet at the beginning of the global section of the
+ * shader for the fragment processing. Any declarations here can be
+ * shared with all other snippets that are attached to a fragment
+ * hook. Only the ‘declarations’ string is used and the other strings
+ * are ignored.
+ * </para>
+ *   </glossdef>
+ *  </glossentry>
  *  <glossentry>
  *   <glossterm>%COGL_SNIPPET_HOOK_VERTEX</glossterm>
  *   <glossdef>
@@ -552,9 +582,11 @@ typedef enum {
   /* Per pipeline vertex hooks */
   COGL_SNIPPET_HOOK_VERTEX = 0,
   COGL_SNIPPET_HOOK_VERTEX_TRANSFORM,
+  COGL_SNIPPET_HOOK_VERTEX_GLOBALS,
 
   /* Per pipeline fragment hooks */
   COGL_SNIPPET_HOOK_FRAGMENT = 2048,
+  COGL_SNIPPET_HOOK_FRAGMENT_GLOBALS,
 
   /* Per layer vertex hooks */
   COGL_SNIPPET_HOOK_TEXTURE_COORD_TRANSFORM = 4096,

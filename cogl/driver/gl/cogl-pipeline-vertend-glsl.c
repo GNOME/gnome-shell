@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2010 Intel Corporation.
+ * Copyright (C) 2010,2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -141,6 +141,21 @@ get_layer_vertex_snippets (CoglPipelineLayer *layer)
 }
 
 static void
+add_global_declarations (CoglPipeline *pipeline,
+                         CoglPipelineShaderState *shader_state)
+{
+  CoglSnippetHook hook = COGL_SNIPPET_HOOK_VERTEX_GLOBALS;
+  CoglPipelineSnippetList *snippets = get_vertex_snippets (pipeline);
+
+  /* Add the global data hooks. All of the code in these snippets is
+   * always added and only the declarations data is used */
+
+  _cogl_pipeline_snippet_generate_declarations (shader_state->header,
+                                                hook,
+                                                snippets);
+}
+
+static void
 _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
                                    int n_layers,
                                    unsigned long pipelines_difference)
@@ -235,6 +250,8 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
   g_string_set_size (ctx->codegen_source_buffer, 0);
   shader_state->header = ctx->codegen_header_buffer;
   shader_state->source = ctx->codegen_source_buffer;
+
+  add_global_declarations (pipeline, shader_state);
 
   g_string_append (shader_state->source,
                    "void\n"

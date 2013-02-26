@@ -6,7 +6,7 @@
 
 typedef struct _TestState
 {
-  int padding;
+  int fb_width, fb_height;
 } TestState;
 
 typedef void (* SnippetTestFunc) (TestState *state);
@@ -533,6 +533,109 @@ test_vertex_transform_hook (TestState *state)
 }
 
 static void
+test_global_vertex_hook (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
+
+  pipeline = cogl_pipeline_new (test_ctx);
+
+  /* Creates a function in the global declarations hook which is used
+   * by a subsequent snippet. The subsequent snippets replace any
+   * previous snippets but this shouldn't prevent the global
+   * declarations from being generated */
+
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX_GLOBALS,
+                              /* declarations */
+                              "float\n"
+                              "multiply_by_two (float number)\n"
+                              "{\n"
+                              "  return number * 2.0;\n"
+                              "}\n",
+                              /* post */
+                              "This string shouldn't be used so "
+                              "we can safely put garbage in here.");
+  cogl_snippet_set_pre (snippet,
+                        "This string shouldn't be used so "
+                        "we can safely put garbage in here.");
+  cogl_snippet_set_replace (snippet,
+                            "This string shouldn't be used so "
+                            "we can safely put garbage in here.");
+  cogl_pipeline_add_snippet (pipeline, snippet);
+  cogl_object_unref (snippet);
+
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX,
+                              NULL, /* declarations */
+                              NULL /* replace */);
+  cogl_snippet_set_replace (snippet,
+                            "cogl_color_out.r = multiply_by_two (0.5);\n"
+                            "cogl_color_out.gba = vec3 (0.0, 0.0, 1.0);\n"
+                            "cogl_position_out = cogl_position_in;\n");
+  cogl_pipeline_add_snippet (pipeline, snippet);
+  cogl_object_unref (snippet);
+
+  cogl_framebuffer_draw_rectangle (test_fb,
+                                   pipeline,
+                                   -1, 1,
+                                   10.0f * 2.0f / state->fb_width - 1.0f,
+                                   10.0f * 2.0f / state->fb_height - 1.0f);
+
+  cogl_object_unref (pipeline);
+
+  test_utils_check_pixel (test_fb, 5, 5, 0xff0000ff);
+}
+
+static void
+test_global_fragment_hook (TestState *state)
+{
+  CoglPipeline *pipeline;
+  CoglSnippet *snippet;
+
+  pipeline = cogl_pipeline_new (test_ctx);
+
+  /* Creates a function in the global declarations hook which is used
+   * by a subsequent snippet. The subsequent snippets replace any
+   * previous snippets but this shouldn't prevent the global
+   * declarations from being generated */
+
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT_GLOBALS,
+                              /* declarations */
+                              "float\n"
+                              "multiply_by_four (float number)\n"
+                              "{\n"
+                              "  return number * 4.0;\n"
+                              "}\n",
+                              /* post */
+                              "This string shouldn't be used so "
+                              "we can safely put garbage in here.");
+  cogl_snippet_set_pre (snippet,
+                        "This string shouldn't be used so "
+                        "we can safely put garbage in here.");
+  cogl_snippet_set_replace (snippet,
+                            "This string shouldn't be used so "
+                            "we can safely put garbage in here.");
+  cogl_pipeline_add_snippet (pipeline, snippet);
+  cogl_object_unref (snippet);
+
+  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT,
+                              NULL, /* declarations */
+                              NULL /* replace */);
+  cogl_snippet_set_replace (snippet,
+                            "cogl_color_out.r = multiply_by_four (0.25);\n"
+                            "cogl_color_out.gba = vec3 (0.0, 0.0, 1.0);\n");
+  cogl_pipeline_add_snippet (pipeline, snippet);
+  cogl_object_unref (snippet);
+
+  cogl_framebuffer_draw_rectangle (test_fb,
+                                   pipeline,
+                                   0, 0, 10, 10);
+
+  cogl_object_unref (pipeline);
+
+  test_utils_check_pixel (test_fb, 5, 5, 0xff0000ff);
+}
+
+static void
 test_snippet_order (TestState *state)
 {
   CoglPipeline *pipeline;
@@ -668,6 +771,8 @@ tests[] =
     test_modify_vertex_layer,
     test_replace_vertex_layer,
     test_vertex_transform_hook,
+    test_global_fragment_hook,
+    test_global_vertex_hook,
     test_snippet_order,
     test_naming_texture_units,
     test_snippet_properties
@@ -693,10 +798,13 @@ test_snippets (void)
 {
   TestState state;
 
+  state.fb_width = cogl_framebuffer_get_width (test_fb);
+  state.fb_height = cogl_framebuffer_get_height (test_fb);
+
   cogl_framebuffer_orthographic (test_fb,
                                  0, 0,
-                                 cogl_framebuffer_get_width (test_fb),
-                                 cogl_framebuffer_get_height (test_fb),
+                                 state.fb_width,
+                                 state.fb_height,
                                  -1,
                                  100);
 

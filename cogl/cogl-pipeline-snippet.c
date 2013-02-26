@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2011 Intel Corporation.
+ * Copyright (C) 2011, 2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -180,6 +180,23 @@ _cogl_pipeline_snippet_generate_code (const CoglPipelineSnippetData *data)
                                   data->return_variable);
 
         g_string_append (data->source_buf, "}\n");
+      }
+}
+
+void
+_cogl_pipeline_snippet_generate_declarations (GString *declarations_buf,
+                                              CoglSnippetHook hook,
+                                              CoglPipelineSnippetList *snippets)
+{
+  CoglPipelineSnippet *snippet;
+
+  COGL_LIST_FOREACH (snippet, snippets, list_node)
+    if (snippet->snippet->hook == hook)
+      {
+        const char *source;
+
+        if ((source = cogl_snippet_get_declarations (snippet->snippet)))
+          g_string_append (declarations_buf, source);
       }
 }
 
