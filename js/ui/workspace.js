@@ -1039,8 +1039,12 @@ const Workspace = new Lang.Class({
         let initialPositioning = flags & WindowPositionFlags.INITIAL;
         let animate = flags & WindowPositionFlags.ANIMATE;
 
-        // Start the animations
-        let slots = this._computeAllWindowSlots(clones);
+        let layout = this._computeLayout(clones);
+        let strategy = layout.strategy;
+
+        let [, , padding] = this._getSpacingAndPadding();
+        let area = padArea(this._fullGeometry, padding);
+        let slots = strategy.computeWindowSlots(layout, area);
 
         let currentWorkspace = global.screen.get_active_workspace();
         let isOnCurrentWorkspace = this.metaWorkspace == null || this.metaWorkspace == currentWorkspace;
@@ -1484,7 +1488,7 @@ const Workspace = new Lang.Class({
         }
     },
 
-    _computeLayout: function(windows, area, rowSpacing, columnSpacing) {
+    _getBestLayout: function(windows, area, rowSpacing, columnSpacing) {
         // We look for the largest scale that allows us to fit the
         // largest row/tallest column on the workspace.
 
@@ -1546,11 +1550,10 @@ const Workspace = new Lang.Class({
         return [rowSpacing, columnSpacing, padding];
     },
 
-    _computeAllWindowSlots: function(windows) {
+    _computeLayout: function(windows) {
         let [rowSpacing, columnSpacing, padding] = this._getSpacingAndPadding();
         let area = padArea(this._fullGeometry, padding);
-        let layout = this._computeLayout(windows, area, rowSpacing, columnSpacing);
-        return layout.strategy.computeWindowSlots(layout, area);
+        return this._getBestLayout(windows, area, rowSpacing, columnSpacing);
     },
 
     _onCloneSelected : function (clone, time) {
