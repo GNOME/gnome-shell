@@ -1475,6 +1475,8 @@ const Workspace = new Lang.Class({
 
         let lastLayout = {};
 
+        let strategy = new UnalignedLayoutStrategy(this._monitor, rowSpacing, columnSpacing);
+
         for (let numRows = 1; ; numRows++) {
             let numColumns = Math.ceil(windows.length / numRows);
 
@@ -1483,8 +1485,6 @@ const Workspace = new Lang.Class({
             // 3 columns as well => just use 3 rows then)
             if (numColumns == lastLayout.numColumns)
                 break;
-
-            let strategy = new UnalignedLayoutStrategy(this._monitor, rowSpacing, columnSpacing);
 
             let layout = { area: area, strategy: strategy, numRows: numRows, numColumns: numColumns };
             strategy.computeLayout(windows, layout);
