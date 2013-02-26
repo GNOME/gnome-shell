@@ -767,23 +767,30 @@ const LayoutStrategy = new Lang.Class({
 
         let slots = [];
 
+        // Do this in three parts.
+        let height = 0;
+        for (let i = 0; i < rows.length; i++) {
+            let row = rows[i];
+            height += row.height + this._rowSpacing;
+        }
+
+        height -= this._rowSpacing;
+
         let y = 0;
+
         for (let i = 0; i < rows.length; i++) {
             let row = rows[i];
             row.x = area.x + (area.width - row.width) / 2;
-            row.y = area.y + y;
+            row.y = area.y + y + (area.height - height) / 2;
             y += row.height + this._rowSpacing;
+
             row.windows.sort(Lang.bind(this, function(a, b) {
                 return this._getDistance(row, a.realWindow) - this._getDistance(row, b.realWindow);
             }));
         }
 
-        let height = y - this._rowSpacing;
-        let baseY = (area.height - height) / 2;
-
         for (let i = 0; i < rows.length; i++) {
             let row = rows[i];
-            row.y += baseY;
             let x = row.x;
             for (let j = 0; j < row.windows.length; j++) {
                 let window = row.windows[j];
