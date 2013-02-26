@@ -140,6 +140,37 @@ get_layer_vertex_snippets (CoglPipelineLayer *layer)
   return &layer->big_state->vertex_snippets;
 }
 
+static CoglBool
+add_layer_declaration_cb (CoglPipelineLayer *layer,
+                          void *user_data)
+{
+  CoglPipelineShaderState *shader_state = user_data;
+  CoglTextureType texture_type =
+    _cogl_pipeline_layer_get_texture_type (layer);
+  const char *target_string;
+
+  _cogl_gl_util_get_texture_target_string (texture_type, &target_string, NULL);
+
+  g_string_append_printf (shader_state->header,
+                          "uniform sampler%s cogl_sampler%i;\n",
+                          target_string,
+                          layer->index);
+
+  return TRUE;
+}
+
+static void
+add_layer_declarations (CoglPipeline *pipeline,
+                        CoglPipelineShaderState *shader_state)
+{
+  /* We always emit sampler uniforms in case there will be custom
+   * layer snippets that want to sample arbitrary layers. */
+
+  _cogl_pipeline_foreach_layer_internal (pipeline,
+                                         add_layer_declaration_cb,
+                                         shader_state);
+}
+
 static void
 add_global_declarations (CoglPipeline *pipeline,
                          CoglPipelineShaderState *shader_state)
@@ -251,6 +282,7 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
   shader_state->header = ctx->codegen_header_buffer;
   shader_state->source = ctx->codegen_source_buffer;
 
+  add_layer_declarations (pipeline, shader_state);
   add_global_declarations (pipeline, shader_state);
 
   g_string_append (shader_state->source,

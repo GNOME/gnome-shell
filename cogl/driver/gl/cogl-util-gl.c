@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -100,4 +100,42 @@ _cogl_gl_util_catch_out_of_memory (CoglContext *ctx, CoglError **error)
     }
 
   return FALSE;
+}
+
+void
+_cogl_gl_util_get_texture_target_string (CoglTextureType texture_type,
+                                         const char **target_string_out,
+                                         const char **swizzle_out)
+{
+  const char *target_string, *tex_coord_swizzle;
+
+  switch (texture_type)
+    {
+#if 0 /* TODO */
+    case COGL_TEXTURE_TYPE_1D:
+      target_string = "1D";
+      tex_coord_swizzle = "s";
+      break;
+#endif
+
+    case COGL_TEXTURE_TYPE_2D:
+      target_string = "2D";
+      tex_coord_swizzle = "st";
+      break;
+
+    case COGL_TEXTURE_TYPE_3D:
+      target_string = "3D";
+      tex_coord_swizzle = "stp";
+      break;
+
+    case COGL_TEXTURE_TYPE_RECTANGLE:
+      target_string = "2DRect";
+      tex_coord_swizzle = "st";
+      break;
+    }
+
+  if (target_string_out)
+    *target_string_out = target_string;
+  if (swizzle_out)
+    *swizzle_out = tex_coord_swizzle;
 }

@@ -207,6 +207,37 @@ has_replace_hook (CoglPipelineLayer *layer,
   return FALSE;
 }
 
+static CoglBool
+add_layer_declaration_cb (CoglPipelineLayer *layer,
+                          void *user_data)
+{
+  CoglPipelineShaderState *shader_state = user_data;
+  CoglTextureType texture_type =
+    _cogl_pipeline_layer_get_texture_type (layer);
+  const char *target_string;
+
+  _cogl_gl_util_get_texture_target_string (texture_type, &target_string, NULL);
+
+  g_string_append_printf (shader_state->header,
+                          "uniform sampler%s cogl_sampler%i;\n",
+                          target_string,
+                          layer->index);
+
+  return TRUE;
+}
+
+static void
+add_layer_declarations (CoglPipeline *pipeline,
+                        CoglPipelineShaderState *shader_state)
+{
+  /* We always emit sampler uniforms in case there will be custom
+   * layer snippets that want to sample arbitrary layers. */
+
+  _cogl_pipeline_foreach_layer_internal (pipeline,
+                                         add_layer_declaration_cb,
+                                         shader_state);
+}
+
 static void
 add_global_declarations (CoglPipeline *pipeline,
                          CoglPipelineShaderState *shader_state)
@@ -330,6 +361,7 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
   shader_state->source = ctx->codegen_source_buffer;
   COGL_LIST_INIT (&shader_state->layers);
 
+  add_layer_declarations (pipeline, shader_state);
   add_global_declarations (pipeline, shader_state);
 
   g_string_append (shader_state->source,
@@ -356,44 +388,6 @@ add_constant_lookup (CoglPipelineShaderState *shader_state,
 }
 
 static void
-get_texture_target_string (CoglTextureType texture_type,
-                           const char **target_string_out,
-                           const char **swizzle_out)
-{
-  const char *target_string, *tex_coord_swizzle;
-
-  switch (texture_type)
-    {
-#if 0 /* TODO */
-    case COGL_TEXTURE_TYPE_1D:
-      target_string = "1D";
-      tex_coord_swizzle = "s";
-      break;
-#endif
-
-    case COGL_TEXTURE_TYPE_2D:
-      target_string = "2D";
-      tex_coord_swizzle = "st";
-      break;
-
-    case COGL_TEXTURE_TYPE_3D:
-      target_string = "3D";
-      tex_coord_swizzle = "stp";
-      break;
-
-    case COGL_TEXTURE_TYPE_RECTANGLE:
-      target_string = "2DRect";
-      tex_coord_swizzle = "st";
-      break;
-    }
-
-  if (target_string_out)
-    *target_string_out = target_string;
-  if (swizzle_out)
-    *swizzle_out = tex_coord_swizzle;
-}
-
-static void
 ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
                                  CoglPipeline *pipeline,
                                  CoglPipelineLayer *layer)
@@ -410,9 +404,9 @@ ensure_texture_lookup_generated (CoglPipelineShaderState *shader_state,
 
   texture_type =
     _cogl_pipeline_layer_get_texture_type (layer);
-  get_texture_target_string (texture_type,
-                             &target_string,
-                             &tex_coord_swizzle);
+  _cogl_gl_util_get_texture_target_string (texture_type,
+                                           &target_string,
+                                           &tex_coord_swizzle);
 
   shader_state->unit_state[unit_index].sampled = TRUE;
 
@@ -1008,24 +1002,6 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
         {
           CoglPipelineLayer *last_layer;
           LayerData *layer_data, *tmp;
-
-          /* We always emit sampler uniforms in case there will be custom
-           * layer snippets that want to sample arbitrary layers. */
-
-          COGL_LIST_FOREACH (layer_data, &shader_state->layers, list_node)
-            {
-              CoglPipelineLayer *layer = layer_data->layer;
-              CoglTextureType texture_type =
-                _cogl_pipeline_layer_get_texture_type (layer);
-              const char *target_string;
-
-              get_texture_target_string (texture_type, &target_string, NULL);
-
-              g_string_append_printf (shader_state->header,
-                                      "uniform sampler%s cogl_sampler%i;\n",
-                                      target_string,
-                                      layer->index);
-            }
 
           last_layer = COGL_LIST_FIRST (&shader_state->layers)->layer;
 

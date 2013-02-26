@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,6 +28,7 @@
 #include "cogl-types.h"
 #include "cogl-context.h"
 #include "cogl-gl-header.h"
+#include "cogl-texture.h"
 
 #ifdef COGL_GL_DEBUG
 
@@ -65,5 +66,10 @@ _cogl_gl_error_to_string (GLenum error_code);
 
 CoglBool
 _cogl_gl_util_catch_out_of_memory (CoglContext *ctx, CoglError **error);
+
+void
+_cogl_gl_util_get_texture_target_string (CoglTextureType texture_type,
+                                         const char **target_string_out,
+                                         const char **swizzle_out);
 
 #endif /* _COGL_UTIL_GL_PRIVATE_H_ */
