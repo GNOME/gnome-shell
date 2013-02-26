@@ -12,43 +12,225 @@
 # kostas: 29Dec2002, updated translation
 # Nikos: 07Sep2003, Review translation.
 # Marios Zindilis <m.zindilis@dmajor.org>, 2011.
-#
+# Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.gnome-2-26\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-10-11 14:32+0000\n"
-"PO-Revision-Date: 2012-10-13 00:59+0200\n"
-"Last-Translator: Tom Tryfonidis <tomtryf@gmail.com>\n"
-"Language-Team: Greek <team@gnome.gr>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
+"&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-02-20 15:50+0000\n"
+"PO-Revision-Date: 2013-02-26 11:38+0300\n"
+"Last-Translator: Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>\n"
+"Language-Team: team@gnome.gr\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.7.1\n"
+"X-Project-Style: gnome\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Navigation"
+msgstr "Περιήγηση"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+msgid "Move window to workspace 1"
+msgstr "Μετακίνηση παραθύρου στον χώρο εργασίας 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+msgid "Move window to workspace 2"
+msgstr "Μετακίνηση παραθύρου στον χώρο εργασίας 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move window to workspace 3"
+msgstr "Μετακίνηση παραθύρου στον χώρο εργασίας 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move window to workspace 4"
+msgstr "Μετακίνηση παραθύρου στον χώρο εργασίας 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+msgid "Move window one workspace to the left"
+msgstr "Μετακίνηση του παραθύρου έναν χώρο εργασίας αριστερά"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the right"
+msgstr "Μετακίνηση του παραθύρου έναν χώρο εργασίας δεξιά"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace up"
+msgstr "Μετακίνηση του παραθύρου έναν χώρο εργασίας πάνω"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace down"
+msgstr "Μετακίνηση του παραθύρου έναν χώρο εργασίας κάτω"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Switch applications"
+msgstr "Εναλλαγή εφαρμογών"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Switch windows"
+msgstr "Εναλλαγή παραθύρων"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Switch windows of an application"
+msgstr "Εναλλαγή παραθύρων μιας εφαρμογής"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Switch system controls"
+msgstr "Εναλλαγή ελέγχων συστήματος"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Switch windows directly"
+msgstr "Άμεση εναλλαγή παραθύρων"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch windows of an app directly"
+msgstr "Άμεση εναλλαγή παραθύρων μιας εφαρμογής"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Switch system controls directly"
+msgstr "Άμεση εναλλαγή ελέγχων συστήματος"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+msgid "Hide all normal windows"
+msgstr "Απόκρυψη όλων των κανονικών παραθύρων"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+msgid "Switch to workspace 1"
+msgstr "Αλλαγή στον χώρο εργασίας 1"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+msgid "Switch to workspace 2"
+msgstr "Αλλαγή στον χώρο εργασίας 2"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+msgid "Switch to workspace 3"
+msgstr "Αλλαγή στον χώρο εργασίας 3"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+msgid "Switch to workspace 4"
+msgstr "Αλλαγή στον χώρο εργασίας 4"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Move to workspace left"
+msgstr "Μετακίνηση στον χώρο εργασίας αριστερά"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Move to workspace right"
+msgstr "Μετακίνηση στον χώρο εργασίας δεξιά"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Move to workspace above"
+msgstr "Μετακίνηση στον χώρο εργασίας επάνω"
+
+#: ../src/50-mutter-navigation.xml.in.h:25
+msgid "Move to workspace below"
+msgstr "Μετακίνηση στον χώρο εργασίας κάτω"
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "System"
+msgstr "Σύστημα"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "Εμφάνιση της προτροπής της εντολής run"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "Show the activities overview"
+msgstr "Εμφάνιση της επισκόπησης των δραστηριοτήτων"
+
+#: ../src/50-mutter-windows.xml.in.h:1
 msgid "Windows"
 msgstr "Παράθυρα"
 
 #: ../src/50-mutter-windows.xml.in.h:2
+msgid "Activate the window menu"
+msgstr "Ενεργοποίηση του μενού παραθύρου"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Toggle fullscreen mode"
+msgstr "Εναλλαγή κατάστασης πλήρους οθόνης"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+msgid "Toggle maximization state"
+msgstr "Εναλλαγή κατάστασης μεγιστοποίησης"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+msgid "Maximize window"
+msgstr "Μεγιστοποίηση παραθύρου"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+msgid "Restore window"
+msgstr "Επαναφορά παραθύρου"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+msgid "Toggle shaded state"
+msgstr "Εναλλαγή σκιασμένης κατάστασης"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+msgid "Close window"
+msgstr "Κλείσιμο παραθύρου"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+msgid "Hide window"
+msgstr "Απόκρυψη παραθύρου"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Move window"
+msgstr "Μετακίνηση παραθύρου"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+msgid "Resize window"
+msgstr "Αυξομείωση παραθύρου"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+msgid "Toggle window on all workspaces or one"
+msgstr "Εναλλαγή παραθύρου σε όλες τις επιφάνειες εργασίας ή σε μία"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Ανύψωση παραθύρου εάν καλύπτεται, αλλιώς βύθισή του"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+msgid "Raise window above other windows"
+msgstr "Ανύψωση παραθύρου πάνω από τα άλλα παράθυρα"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+msgid "Lower window below other windows"
+msgstr "Βύθιση παραθύρου κάτω από τα άλλα παράθυρα"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Maximize window vertically"
+msgstr "Μεγιστοποίηση παραθύρου κάθετα"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+msgid "Maximize window horizontally"
+msgstr "Μεγιστοποίηση παραθύρου οριζόντια"
+
+#: ../src/50-mutter-windows.xml.in.h:18
 msgid "View split on left"
 msgstr "Μεγιστοποίηση στα αριστερά"
 
-#: ../src/50-mutter-windows.xml.in.h:3
+#: ../src/50-mutter-windows.xml.in.h:19
 msgid "View split on right"
 msgstr "Μεγιστοποίηση στα δεξιά"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:492
+#: ../src/compositor/compositor.c:507
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr ""
 "Εκτελείται ένας άλλος διαχειριστής παραθύρων στην οθόνη %i προβολή \"%s\"."
+
+#: ../src/compositor/meta-background.c:1116
+msgid "background texture could not be created from file"
+msgstr "η υφή παρασκηνίου δεν μπόρεσε να δημιουργηθεί από αρχείο"
 
 #: ../src/core/bell.c:320
 msgid "Bell event"
@@ -59,16 +241,17 @@ msgstr "Ηχητικό συμβάν κουδουνιού"
 msgid "Unknown window information request: %d"
 msgstr "Άγνωστη αίτηση πληροφοριών παραθύρου: %d"
 
-#: ../src/core/delete.c:113
+#: ../src/core/delete.c:111
 #, c-format
-msgid "%s is not responding."
-msgstr "Το %s δεν ανταποκρίνεται."
+#| msgid "%s is not responding."
+msgid "“%s” is not responding."
+msgstr "Το “%s” δεν ανταποκρίνεται."
 
-#: ../src/core/delete.c:117
+#: ../src/core/delete.c:113
 msgid "Application is not responding."
 msgstr "Η εφαρμογή δεν ανταποκρίνεται."
 
-#: ../src/core/delete.c:122
+#: ../src/core/delete.c:118
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -76,26 +259,26 @@ msgstr ""
 "Μπορείτε να επιλέξετε να περιμένετε λίγο για να συνεχίσει, ή να εξαναγκάσετε "
 "την εφαρμογή σε έξοδο."
 
-#: ../src/core/delete.c:129
+#: ../src/core/delete.c:125
 msgid "_Wait"
 msgstr "_Αναμονή"
 
-#: ../src/core/delete.c:129
+#: ../src/core/delete.c:125
 msgid "_Force Quit"
 msgstr "_Εξαναγκασμός σε τερματισμό"
 
-#: ../src/core/display.c:396
+#: ../src/core/display.c:392
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Λείπει η επέκταση %s που απαιτείται για compositing"
 
 # gconf/gconf-internals.c:2416
-#: ../src/core/display.c:492
+#: ../src/core/display.c:485
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Αποτυχία ανοίγματος οθόνης του συστήματος παραθύρων Χ '%s'\n"
 
-#: ../src/core/keybindings.c:853
+#: ../src/core/keybindings.c:876
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -165,7 +348,7 @@ msgstr "Εκτύπωση έκδοσης"
 msgid "Mutter plugin to use"
 msgstr "Πρόσθετα του Mutter για χρήση"
 
-#: ../src/core/prefs.c:1079
+#: ../src/core/prefs.c:1087
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -173,13 +356,13 @@ msgstr ""
 "Οι προσωρινές λύσεις για προβληματικές εφαρμογές έχουν απενεργοποιηθεί. "
 "Μερικές εφαρμογές μπορεί να μη συμπεριφέρονται σωστά.\n"
 
-#: ../src/core/prefs.c:1154
+#: ../src/core/prefs.c:1162
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr ""
 "Αδυναμία ανάλυσης περιγραφής γραμματοσειράς \"%s\" από κλειδί GSettings %s\n"
 
-#: ../src/core/prefs.c:1220
+#: ../src/core/prefs.c:1228
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -188,7 +371,7 @@ msgstr ""
 "Το \"%s\" που βρέθηκε στη βάση δεδομένων ρυθμίσεων δεν είναι μια έγκυρη τιμή "
 "για μετατροπέα κουμπιού ποντικιού\n"
 
-#: ../src/core/prefs.c:1747
+#: ../src/core/prefs.c:1780
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -197,39 +380,38 @@ msgstr ""
 "Το \"%s\" που βρέθηκε στη βάση δεδομένων ρυθμίσεων δεν είναι μια έγκυρη τιμή "
 "για συνδυασμό πλήκτρων\"%s\"\n"
 
-#: ../src/core/prefs.c:1844
+#: ../src/core/prefs.c:1879
 #, c-format
 msgid "Workspace %d"
 msgstr "Χώρος εργασίας %d"
 
-#: ../src/core/screen.c:652
+#: ../src/core/screen.c:673
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Η οθόνη %d στην προβολή '%s' δεν είναι έγκυρη\n"
 
-#: ../src/core/screen.c:668
+#: ../src/core/screen.c:689
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
-msgstr ""
-"Η οθόνη %d στην προβολή '%s' έχει ήδη ένα διαχειριστή παραθύρων. Προσπαθήστε "
+msgstr "Η οθόνη %d στην προβολή \"%s\" έχει ήδη ένα διαχειριστή παραθύρων· προσπαθήστε "
 "να χρησιμοποιήσετε την επιλογή --replace για να αντικαταστήσετε τον τρέχων "
 "διαχειριστή παραθύρων.\n"
 
-#: ../src/core/screen.c:695
+#: ../src/core/screen.c:716
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Αδυναμία λήψης επιλογής διαχειριστή παραθύρων στην οθόνη %d προβολή \"%s\"\n"
 
-#: ../src/core/screen.c:750
+#: ../src/core/screen.c:794
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
-msgstr "Η οθόνη  %d στην προβολή \"%s\" έχει ήδη ένα διαχειριστή παραθύρων\n"
+msgstr "Η οθόνη %d στην προβολή \"%s\" έχει ήδη ένα διαχειριστή παραθύρων\n"
 
-#: ../src/core/screen.c:935
+#: ../src/core/screen.c:979
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Αδυναμία απελευθέρωσης οθόνης %d στην προβολή \"%s\"\n"
@@ -244,7 +426,7 @@ msgstr "Αδυναμία δημιουργίας καταλόγου '%s': %s\n"
 #: ../src/core/session.c:860
 #, c-format
 msgid "Could not open session file '%s' for writing: %s\n"
-msgstr "Αδύνατο το άνοιγμα  αρχείου συνεδρίας `%s' για εγγραφή: %s\n"
+msgstr "Αδύνατο το άνοιγμα αρχείου συνεδρίας '%s' για εγγραφή: %s\n"
 
 #: ../src/core/session.c:1001
 #, c-format
@@ -267,7 +449,7 @@ msgstr "Αποτυχία ανάλυσης αποθηκευμένου αρχεί�
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
 msgstr ""
-"βρέθηκε η ιδιότητα <mutter_session> αλλά ήδη έχουμε την ταυτότητα συνεδρίας "
+"βρέθηκε η ιδιότητα <mutter_session> αλλά ήδη έχουμε την ταυτότητα συνεδρίας"
 
 #: ../src/core/session.c:1198 ../src/core/session.c:1273
 #: ../src/core/session.c:1305 ../src/core/session.c:1377
@@ -284,15 +466,16 @@ msgstr "ενσωματωμένη ετικέτα <window>"
 #: ../src/core/session.c:1457
 #, c-format
 msgid "Unknown element %s"
-msgstr "Άγνωστο στοιχείο %s "
+msgstr "Άγνωστο στοιχείο %s"
 
 #: ../src/core/session.c:1809
 msgid ""
 "These windows do not support &quot;save current setup&quot; and will have to "
 "be restarted manually next time you log in."
 msgstr ""
-"Αυτά τα παράθυρα δεν υποστηρίζουν «αποθήκευση τρέχουσας εγκατάστασης» και θα "
-"πρέπει να επανεκκινηθούν χειροκίνητα στην επόμενη είσοδο σας."
+"Αυτά τα παράθυρα δεν υποστηρίζουν &quot;αποθήκευση τρέχουσας "
+"εγκατάστασης&quot; και θα πρέπει να επανεκκινηθούν χειροκίνητα στην επόμενη "
+"είσοδο σας."
 
 # gconf/gconftool.c:1639
 #: ../src/core/util.c:80
@@ -304,7 +487,7 @@ msgstr "Αποτυχία ανοίγματος καταγραφής εκσφαλ�
 #: ../src/core/util.c:90
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
-msgstr "Αποτυχία  fdopen() αρχείου καταγραφής %s: %s\n"
+msgstr "Αποτυχία ανοίγματος fdopen() αρχείου καταγραφής %s: %s\n"
 
 #: ../src/core/util.c:96
 #, c-format
@@ -333,7 +516,7 @@ msgid "Window manager error: "
 msgstr "Σφάλμα διαχειριστή παραθύρων: "
 
 #. first time through
-#: ../src/core/window.c:7237
+#: ../src/core/window.c:7503
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -349,32 +532,31 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7902
+#: ../src/core/window.c:8227
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
 "%d x %d and max size %d x %d; this doesn't make much sense.\n"
-msgstr ""
-"Το παράθυρο %s  όρισε μια συμβουλή  MWM ότι δεν είναι δυνατή η αλλαγή "
-"μεγέθους, αλλά όρισε ελάχιστο μέγεθος  %d x %d και μέγιστο μέγεθος %d x %d; "
+msgstr "Το παράθυρο %s όρισε μια συμβουλή MWM ότι δεν είναι δυνατή η αλλαγή "
+"μεγέθους, αλλά όρισε ελάχιστο μέγεθος %d x %d και μέγιστο μέγεθος %d x %d; "
 "αυτό είναι ακατανόητο.\n"
 
-#: ../src/core/window-props.c:274
+#: ../src/core/window-props.c:304
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Η εφαρμογή έθεσε ένα πλαστό _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:393
+#: ../src/core/window-props.c:423
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (σε %s)"
 
-#: ../src/core/window-props.c:1448
+#: ../src/core/window-props.c:1506
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Άκυρο WM_TRANSIENT_FOR παράθυρο 0x%lx που καθορίστηκε για %s.\n"
 
-#: ../src/core/window-props.c:1459
+#: ../src/core/window-props.c:1517
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr ""
@@ -392,7 +574,7 @@ msgid ""
 msgstr ""
 "Το παράθυρο 0x%lx έχει ιδιότητα %s\n"
 "η οποία αναμενόταν να έχει τύπο %s μορφή %d\n"
-"ενώ στην πραγματικότητα έχει τύπο %s μορφή %d n_items %d\n"
+"ενώ στην πραγματικότητα έχει τύπο %s μορφή %d n_items %d.\n"
 "Αυτό πιθανόν να είναι σφάλμα της εφαρμογής και όχι του διαχειριστή "
 "παραθύρων.\n"
 "Το παράθυρο έχει τίτλο=\"%s\" class=\"%s\" name=\"%s\"\n"
@@ -406,9 +588,8 @@ msgstr "Η ιδιότητα %s στο παράθυρο 0x%lx περιείχε μ
 #, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
-msgstr ""
-"Η ιδιότητα %s στο παράθυρο 0x%lx περιείχε μη έγκυρο UTF-8\n"
-" για το αντικείμενο %d στη λίστα\n"
+msgstr "Η ιδιότητα %s στο παράθυρο 0x%lx περιείχε μη έγκυρο UTF-8  για το "
+"αντικείμενο %d στη λίστα\n"
 
 #: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
@@ -425,10 +606,11 @@ msgid ""
 "\"Windows key\" on PC hardware. It's expected that this binding either the "
 "default or set to the empty string."
 msgstr ""
-"Αυτό το πλήκτρο θα ξεκινήσει το «overlay», που είναι συνδυασμένο σύστημα "
+"Αυτό το πλήκτρο θα ξεκινήσει την \"επικάλυψη\", που είναι συνδυασμένο σύστημα "
 "επισκόπησης παραθύρων και εκκίνησης εφαρμογών. Η προεπιλογή προτίθεται να "
-"είναι το «πλήκτρο Windows» σε μηχανήματα PC. Αναμένεται ότι αυτή η "
-"αντιστοίχιση θα είναι είτε η προεπιλογή ή θα ορίζεται στο κενό αλφαριθμητικό."
+"είναι το \"πλήκτρο Windows\" σε μηχανήματα PC. Αναμένεται ότι αυτή η "
+"αντιστοίχιση θα είναι είτε η προεπιλογή ή θα ορίζεται στο κενό "
+"αλφαριθμητικό."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid "Attach modal dialogs"
@@ -457,9 +639,9 @@ msgid ""
 "area. Dropping windows on the top screen edge maximizes them completely."
 msgstr ""
 "Αν είναι ενεργοποιημένο, με τη μετακίνηση των παραθύρων στις κάθετες πλευρές "
-"της οθόνης τα παράθυρα μεγιστοποιούνται και αλλάζουν το μέγεθος τους ώστε να "
-"καλύψουν το μισό της οθόνης. Το σύρσιμο των παραθύρων στο πάνω μέρος της "
-"οθόνης τα μεγιστοποιεί ολοκληρωτικά. "
+"της οθόνης τα παράθυρα μεγιστοποιούνται και αλλάζουν το μέγεθος τους ώστε "
+"να καλύψουν το μισό της οθόνης. Το σύρσιμο των παραθύρων στο πάνω μέρος της "
+"οθόνης τα μεγιστοποιεί ολοκληρωτικά."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Workspaces are managed dynamically"
@@ -528,10 +710,24 @@ msgstr ""
 "αυτής της τιμής."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Auto maximize nearly monitor sized windows"
+msgstr ""
+"Αυτόματη μεγιστοποίηση των παραθύρων των οποίων το μέγεθος είναι κοντά με το "
+"μέγεθος της οθόνης"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+msgid ""
+"If enabled, new windows that are initially the size of the monitor "
+"automatically get maximized."
+msgstr ""
+"Εάν ενεργοποιηθεί, τα νέα παράθυρα που είναι αρχικά στο μέγεθος της οθόνης "
+"μεγιστοποιούνται αυτόματα."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:19
 msgid "Select window from tab popup"
 msgstr "Επιλογή παραθύρου από την αναδυόμενη καρτέλα"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+#: ../src/org.gnome.mutter.gschema.xml.in.h:20
 msgid "Cancel tab popup"
 msgstr "Ακύρωση αναδυόμενης καρτέλας"
 
@@ -735,64 +931,64 @@ msgstr "Mod5"
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
-#: ../src/ui/resizepopup.c:113
+#: ../src/ui/resizepopup.c:136
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:234
+#: ../src/ui/theme.c:235
 msgid "top"
 msgstr "επάνω"
 
-#: ../src/ui/theme.c:236
+#: ../src/ui/theme.c:237
 msgid "bottom"
 msgstr "κάτω"
 
-#: ../src/ui/theme.c:238
+#: ../src/ui/theme.c:239
 msgid "left"
 msgstr "αριστερά"
 
-#: ../src/ui/theme.c:240
+#: ../src/ui/theme.c:241
 msgid "right"
 msgstr "δεξιά"
 
-#: ../src/ui/theme.c:268
+#: ../src/ui/theme.c:269
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "η γεωμετρία πλαισίου δεν έχει καθορίσει \"%s\" διάσταση"
 
-#: ../src/ui/theme.c:287
+#: ../src/ui/theme.c:288
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr ""
 "η γεωμετρία πλαισίου δεν έχει καθορίσει \"%s\" διάσταση για περίγραμμα \"%s\""
 
-#: ../src/ui/theme.c:324
+#: ../src/ui/theme.c:325
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr "Η αναλογία διαστάσεων κουμπιού  %g  δεν είναι λογική"
+msgstr "Η αναλογία διαστάσεων κουμπιού %g δεν είναι λογική"
 
-#: ../src/ui/theme.c:336
+#: ../src/ui/theme.c:337
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Η γεωμετρία πλαισίου δεν έχει καθορίσει μέγεθος κουμπιών"
 
-#: ../src/ui/theme.c:1049
+#: ../src/ui/theme.c:1050
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Τα διαβαθμισμένα χρώματα θα πρέπει να έχουν δύο τουλάχιστον θέματα"
 
-#: ../src/ui/theme.c:1201
+#: ../src/ui/theme.c:1202
 #, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
 "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
 msgstr ""
 "Ο καθορισμός προσαρμοσμένου χρώματος GTK θα πρέπει να έχει το όνομα του "
-"χρώματος και το υποκατάστατο σε παρενθέσεις. π.χ gtk:custom(foo,bar). "
-"Αδυναμία ανάλυσης \"%s\""
+"χρώματος και το υποκατάστατο σε παρενθέσεις. π.χ gtk:custom(foo,bar)· "
+"αδυναμία ανάλυσης \"%s\""
 
-#: ../src/ui/theme.c:1217
+#: ../src/ui/theme.c:1218
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
@@ -801,7 +997,7 @@ msgstr ""
 "Μη έγκυρος χαρακτήρας '%c' στη παράμετρο color_name του gtk:custom, μόνο τα "
 "A-Za-z0-9-_ είναι έγκυρα"
 
-#: ../src/ui/theme.c:1231
+#: ../src/ui/theme.c:1232
 #, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
@@ -810,36 +1006,36 @@ msgstr ""
 "Ο τύπος σκίασης είναι \"gtk:custom(color_name,fallback)\", το \"%s\" δεν "
 "ταιριάζει στον τύπο"
 
-#: ../src/ui/theme.c:1276
+#: ../src/ui/theme.c:1277
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
 "where NORMAL is the state; could not parse \"%s\""
 msgstr ""
-"Ο καθορισμός χρώματος GTK θα πρέπει να έχει τη κατάσταση σε αγκύλες, π.χ gtk:"
-"fg[NORMAL] όπου NORMAL είναι η κατάσταση. Αδυναμία ανάλυσης \"%s\""
+"Ο καθορισμός χρώματος GTK θα πρέπει να έχει τη κατάσταση σε αγκύλες, π.χ "
+"gtk:fg[NORMAL] όπου NORMAL είναι η κατάσταση· αδυναμία ανάλυσης \"%s\""
 
-#: ../src/ui/theme.c:1290
+#: ../src/ui/theme.c:1291
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
 "fg[NORMAL] where NORMAL is the state; could not parse \"%s\""
 msgstr ""
 "Ο καθορισμός χρώματος GTK θα πρέπει να έχει μια αγκύλη κλεισίματος μετά την "
-"κατάσταση. π.χ gtk:fg[NORMAL] όπου NORMAL είναι η κατάσταση. Αδυναμία "
+"κατάσταση, π.χ gtk:fg[NORMAL] όπου NORMAL είναι η κατάσταση· αδυναμία "
 "ανάλυσης \"%s\""
 
-#: ../src/ui/theme.c:1301
+#: ../src/ui/theme.c:1302
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
-msgstr "Δεν έγινε κατανοητή η κατάσταση  \"%s\" στον ορισμό χρώματος"
+msgstr "Δεν έγινε κατανοητή η κατάσταση \"%s\" στον ορισμό χρώματος"
 
-#: ../src/ui/theme.c:1314
+#: ../src/ui/theme.c:1315
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
-msgstr "Δεν έγινε κατανοητό το συστατικό χρώματος  \"%s\" στον ορισμό χρώματος"
+msgstr "Δεν έγινε κατανοητό το συστατικό χρώματος \"%s\" στον ορισμό χρώματος"
 
-#: ../src/ui/theme.c:1343
+#: ../src/ui/theme.c:1344
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -848,46 +1044,46 @@ msgstr ""
 "Ο τύπος ανάμιξης που είναι \"blend/bg_color/fg_color/alpha\", \"%s\" δεν "
 "ταιριάζει στη διαμόρφωση"
 
-#: ../src/ui/theme.c:1354
+#: ../src/ui/theme.c:1355
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Αδυναμία ανάλυσης τιμής alpha \"%s\" στο αναμεμιγμένο χρώμα"
 
-#: ../src/ui/theme.c:1364
+#: ../src/ui/theme.c:1365
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr ""
 "Η τιμή Alpha \"%s\" στο αναμεμιγμένο χρώμα δεν είναι ανάμεσα σε 0.0 και 1.0"
 
-#: ../src/ui/theme.c:1411
+#: ../src/ui/theme.c:1412
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr ""
-"Ο τύπος σκίασης είναι  \"shade/base_color/factor\", το \"%s\" δεν ταιριάζει "
-"στον τύπο"
+"Ο τύπος σκίασης είναι \"shade/base_color/factor\", το \"%s\" δεν ταιριάζει στον "
+"τύπο"
 
-#: ../src/ui/theme.c:1422
+#: ../src/ui/theme.c:1423
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Αδυναμία ανάλυσης παράγοντα σκίασης \"%s\" στο σκιασμένο χρώμα"
 
-#: ../src/ui/theme.c:1432
+#: ../src/ui/theme.c:1433
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
-msgstr "Ο παράγοντας σκίασης  \"%s\" στο σκιασμένο χρώμα είναι αρνητικός"
+msgstr "Ο παράγοντας σκίασης \"%s\" στο σκιασμένο χρώμα είναι αρνητικός"
 
-#: ../src/ui/theme.c:1461
+#: ../src/ui/theme.c:1462
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Αδύνατη η ανάλυση χρώματος \"%s\""
 
-#: ../src/ui/theme.c:1778
+#: ../src/ui/theme.c:1779
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
-msgstr "Η συντεταγμένη έκφραση περιέχει ένα χαρακτήρα '%s που δεν επιτρέπεται"
+msgstr "Η έκφραση συντεταγμένης περιέχει ένα χαρακτήρα '%s' που δεν επιτρέπεται"
 
-#: ../src/ui/theme.c:1805
+#: ../src/ui/theme.c:1806
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -896,137 +1092,137 @@ msgstr ""
 "Η συντεταγμένη έκφραση περιέχει αριθμό κινητού σημείου '%s' που δεν μπορεί "
 "να αναλυθεί"
 
-#: ../src/ui/theme.c:1819
+#: ../src/ui/theme.c:1820
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
-"Η συντεταγμένη έκφραση περιέχει έναν ακέραιο  '%s που δεν μπορεί να αναλυθεί"
+"Η έκφραση συντεταγμένης περιέχει έναν ακέραιο '%s' που δεν μπορεί να "
+"αναλυθεί"
 
-#: ../src/ui/theme.c:1940
+#: ../src/ui/theme.c:1941
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr ""
-"Η συντεταγμένη έκφραση περιείχε έναν άγνωστο χειριστή στην αρχή αυτού του "
+"Η συντεταγμένη έκφραση περιείχε έναν άγνωστο τελεστή στην αρχή αυτού του "
 "κειμένου: \"%s\""
 
-#: ../src/ui/theme.c:1997
+#: ../src/ui/theme.c:1998
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Η συντεταγμένη έκφραση ήταν κενή ή δεν έγινε κατανοητή"
 
-#: ../src/ui/theme.c:2110 ../src/ui/theme.c:2120 ../src/ui/theme.c:2154
+#: ../src/ui/theme.c:2111 ../src/ui/theme.c:2121 ../src/ui/theme.c:2155
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Η συντεταγμένη έκφραση έχει σαν αποτέλεσμα διαίρεση με το μηδέν"
 
-#: ../src/ui/theme.c:2162
+#: ../src/ui/theme.c:2163
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
-"Η συντεταγμένη έκφραση  προσπαθεί να χρησιμοποίησε ιmod operator σε αριθμό "
-"κινητού σημείου"
+"Η συντεταγμένη έκφραση προσπαθεί να χρησιμοποίησε τελεστή mod σε αριθμό "
+"κινητής υποδιαστολής"
 
-#: ../src/ui/theme.c:2218
+#: ../src/ui/theme.c:2219
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
-msgstr ""
-"Η συντεταγμένη έκφραση έχει ένα operator \"%s\" ενώ αναμενόταν operand "
+msgstr "Η συντεταγμένη έκφραση έχει έναν τελεστή \"%s\" ενώ αναμενόταν τελεστέος"
 
-#: ../src/ui/theme.c:2227
+#: ../src/ui/theme.c:2228
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
-msgstr "Η συντεταγμένη έκφραση έχει ένα operand  ενώ αναμενόταν  operator"
+msgstr "Η συντεταγμένη έκφραση έχει ένα τελεστέο ενώ αναμενόταν τελεστής"
 
-#: ../src/ui/theme.c:2235
+#: ../src/ui/theme.c:2236
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
-msgstr "Η συντεταγμένη έκφραση τέλειωσε με χειριστή αντί για operand"
+msgstr "Η συντεταγμένη έκφραση τέλειωσε με τελεστή αντί για τελεστέο"
 
-#: ../src/ui/theme.c:2245
+#: ../src/ui/theme.c:2246
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
 "operand in between"
 msgstr ""
-"Η συντεταγμένη έκφραση έχει operator \"%c\" ακολουθούμενο operator \"%c\" "
-"χωρίς operand μεταξύ τους"
+"Η συντεταγμένη έκφραση έχει τελεστή \"%c\" που ακολουθεί έναν τελεστή \"%c\" "
+"χωρίς τελεστέο μεταξύ τους"
 
-#: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
+#: ../src/ui/theme.c:2397 ../src/ui/theme.c:2442
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Η συντεταγμένη έκφραση έχει άγνωστη μεταβλητή ή συνεχής \"%s\""
 
-#: ../src/ui/theme.c:2495
+#: ../src/ui/theme.c:2496
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
-msgstr "Η συντεταγμένη έκφραση ήταν κενή ή δεν έγινε κατανοητή"
+msgstr ""
+"Ο αναλυτής της έκφρασης συντεταγμένης υπερχείλισε την ενδιάμεση μνήμη του."
 
-#: ../src/ui/theme.c:2524
+#: ../src/ui/theme.c:2525
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "Η συντεταγμένη έκφραση έχει μια παρένθεση κλεισίματος χωρίς να έχει ανοιχθεί "
 "παρένθεση"
 
-#: ../src/ui/theme.c:2588
+#: ../src/ui/theme.c:2589
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "Η συντεταγμένη έκφραση έχει μια παρένθεση ανοίγματος χωρίς να έχει κλεισθεί "
 "παρένθεση"
 
-#: ../src/ui/theme.c:2599
+#: ../src/ui/theme.c:2600
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
-msgstr "Η συντεταγμένη έκφραση δεν φαίνεται να έχει operators ή operands"
+msgstr "Η συντεταγμένη έκφραση δεν φαίνεται να έχει τελεστές ή τελεστέους"
 
-#: ../src/ui/theme.c:2812 ../src/ui/theme.c:2832 ../src/ui/theme.c:2852
+#: ../src/ui/theme.c:2813 ../src/ui/theme.c:2833 ../src/ui/theme.c:2853
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Το θέμα περιείχε μια έκφραση που είχε σαν αποτέλεσμα σφάλμα: %s\n"
 
-#: ../src/ui/theme.c:4498
+#: ../src/ui/theme.c:4499
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
 "specified for this frame style"
 msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> θα πρέπει να "
-"καθοριστεί στο στυλ πλαισίου"
+"καθοριστεί σε αυτή την τεχνοτροπία πλαισίου"
 
-#: ../src/ui/theme.c:5009 ../src/ui/theme.c:5034
+#: ../src/ui/theme.c:5010 ../src/ui/theme.c:5035
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
-msgstr ""
-"Λείπει <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
+msgstr "Λείπει <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 
-#: ../src/ui/theme.c:5082
+#: ../src/ui/theme.c:5083
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Αποτυχία φόρτωσης θέματος \"%s\": %s\n"
 
 # gconf/gconftool.c:877
-#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
-#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
+#: ../src/ui/theme.c:5219 ../src/ui/theme.c:5226 ../src/ui/theme.c:5233
+#: ../src/ui/theme.c:5240 ../src/ui/theme.c:5247
 #, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr "Δεν έχει ορισθεί  <%s> για θέμα \"%s\""
+msgstr "Δεν έχει ορισθεί <%s> για θέμα \"%s\""
 
-#: ../src/ui/theme.c:5254
+#: ../src/ui/theme.c:5255
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
 "type=\"%s\" style_set=\"whatever\"/> element"
 msgstr ""
-"Δεν έχει ορισθεί στύλ πλαισίου για τον τύπο παραθύρου \"%s\" στο θέμα \"%s"
-"\", add a <window type=\"%s\" style_set=\"whatever\"/> element"
+"Δεν έχει ορισθεί τεχνοτροπία πλαισίου για τον τύπο παραθύρου \"%s\" στο θέμα \""
+"%s\", προσθέστε ένα <window type=\"%s\" style_set=\"whatever\"/> στοιχείο"
 
-#: ../src/ui/theme.c:5650 ../src/ui/theme.c:5712 ../src/ui/theme.c:5775
+#: ../src/ui/theme.c:5662 ../src/ui/theme.c:5724 ../src/ui/theme.c:5787
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -1034,7 +1230,7 @@ msgstr ""
 "Οι συνεχείς που ορίζονται από το χρήστη θα πρέπει να ξεκινάνε με κεφαλαίο "
 "γράμμα, η \"%s\" δεν έχει"
 
-#: ../src/ui/theme.c:5658 ../src/ui/theme.c:5720 ../src/ui/theme.c:5783
+#: ../src/ui/theme.c:5670 ../src/ui/theme.c:5732 ../src/ui/theme.c:5795
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Constant \"%s\" έχει ήδη καθορισθεί"
@@ -1045,7 +1241,7 @@ msgstr "Constant \"%s\" έχει ήδη καθορισθεί"
 #: ../src/ui/theme-parser.c:236
 #, c-format
 msgid "No \"%s\" attribute on element <%s>"
-msgstr "Δεν υπάρχει γνώρισμα  \"%s\" για το στοιχείο <%s>"
+msgstr "Δεν υπάρχει γνώρισμα \"%s\" για το στοιχείο <%s>"
 
 #: ../src/ui/theme-parser.c:265 ../src/ui/theme-parser.c:283
 #, c-format
@@ -1082,7 +1278,7 @@ msgstr "Ο ακέραιος %ld θα πρέπει να είναι θετικός
 #: ../src/ui/theme-parser.c:621
 #, c-format
 msgid "Integer %ld is too large, current max is %d"
-msgstr "Ο ακέραιος  %ld είναι πολύ μεγάλος , μέγιστος δυνατός %d"
+msgstr "Ο ακέραιος %ld είναι πολύ μεγάλος, μέγιστος δυνατός %d"
 
 #: ../src/ui/theme-parser.c:649 ../src/ui/theme-parser.c:765
 #, c-format
@@ -1092,8 +1288,7 @@ msgstr "Αδυναμία ανάλυσης \"%s\" ως αριθμό κινητο�
 #: ../src/ui/theme-parser.c:680 ../src/ui/theme-parser.c:708
 #, c-format
 msgid "Boolean values must be \"true\" or \"false\" not \"%s\""
-msgstr ""
-"Οι τιμές Boolean θα πρέπει να είναι είτε  \"true\" ή \"false\" όχι \"%s\""
+msgstr "Οι τιμές Μπουλ θα πρέπει να είναι είτε \"true\" ή \"false\" όχι \"%s\""
 
 #: ../src/ui/theme-parser.c:735
 #, c-format
@@ -1103,8 +1298,7 @@ msgstr "Η γωνία θα πρέπει να είναι ανάμεσα σε 0.0 
 #: ../src/ui/theme-parser.c:798
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
-"Το Alpha θα πρέπει να είναι ανάμεσα σε 0.0 (αόρατο) και 1.0 (πλήρης ορατό), "
+msgstr "Το Alpha θα πρέπει να είναι ανάμεσα σε 0.0 (αόρατο) και 1.0 (πλήρης ορατό), "
 "ήταν %g\n"
 
 #: ../src/ui/theme-parser.c:863
@@ -1131,7 +1325,7 @@ msgstr "<%s> μητρικό \"%s\" δεν έχει ορισθεί"
 #: ../src/ui/theme-parser.c:1141
 #, c-format
 msgid "<%s> geometry \"%s\" has not been defined"
-msgstr "<%s> γεωμετρία \"%s\"  δεν έχει ορισθεί"
+msgstr "<%s> γεωμετρία \"%s\" δεν έχει ορισθεί"
 
 #: ../src/ui/theme-parser.c:1154
 #, c-format
@@ -1147,17 +1341,17 @@ msgstr "Πρέπει να καθορίσετε ένα παρασκήνιο γι�
 #: ../src/ui/theme-parser.c:1264
 #, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr "Άγνωστος τύπος \"%s\" στο στοιχείο <%s> "
+msgstr "Άγνωστος τύπος \"%s\" στο στοιχείο <%s>"
 
 #: ../src/ui/theme-parser.c:1275
 #, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
-msgstr "Άγνωστος ορισμός τύπου \"%s\" στο στοιχείο <%s> "
+msgstr "Άγνωστος ορισμός_τεχνοτροπίας \"%s\" στο στοιχείο <%s>"
 
 #: ../src/ui/theme-parser.c:1283
 #, c-format
 msgid "Window type \"%s\" has already been assigned a style set"
-msgstr "Έχει ορισθεί ήδη ένα στυλ για τον τύπο  παραθύρου  \"%s\""
+msgstr "Έχει ορισθεί ήδη μια τεχνοτροπία για τον τύπο παραθύρου \"%s\""
 
 #: ../src/ui/theme-parser.c:1313 ../src/ui/theme-parser.c:1377
 #: ../src/ui/theme-parser.c:1603 ../src/ui/theme-parser.c:2838
@@ -1190,21 +1384,19 @@ msgstr "Η αναλογία διαστάσεων \"%s\" είναι άγνωστ�
 #: ../src/ui/theme-parser.c:1557
 #, c-format
 msgid "Border \"%s\" is unknown"
-msgstr "Περίγραμμα  \"%s\" είναι άγνωστο"
+msgstr "Το περίγραμμα \"%s\" είναι άγνωστο"
 
 #: ../src/ui/theme-parser.c:1868
 #, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
 msgstr ""
-"Δεν υπάρχει γνώρισμα \"έναρξη γωνίας\"  ή γνώρισμα \"από\" για το στοιχείο <"
-"%s>"
+"Δεν υπάρχει γνώρισμα \"έναρξη_γωνίας\" ή γνώρισμα \"από\" για το στοιχείο <%s>"
 
 #: ../src/ui/theme-parser.c:1875
 #, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
 msgstr ""
-"Δεν υπάρχει γνώρισμα \"επέκταση_γωνίας\"  ή γνώρισμα \"σε\" για το στοιχείο <"
-"%s>"
+"Δεν υπάρχει γνώρισμα \"επέκταση_γωνίας\" ή γνώρισμα \"σε\" για το στοιχείο <%s>"
 
 #: ../src/ui/theme-parser.c:2115
 #, c-format
@@ -1220,55 +1412,55 @@ msgstr "Δεν έγινε κατανοητός ο τύπος γεμίσματο�
 #: ../src/ui/theme-parser.c:2506
 #, c-format
 msgid "Did not understand state \"%s\" for <%s> element"
-msgstr "Δεν έγινε κατανοητή η κατάσταση \"%s\" για στοιχείο <%s> )"
+msgstr "Δεν έγινε κατανοητή η κατάσταση \"%s\" για στοιχείο <%s>"
 
 #: ../src/ui/theme-parser.c:2370 ../src/ui/theme-parser.c:2453
 #, c-format
 msgid "Did not understand shadow \"%s\" for <%s> element"
-msgstr "Δεν έγινε κατανοητή η σκίαση \"%s\" για στοιχείο <%s> "
+msgstr "Δεν έγινε κατανοητή η σκίαση \"%s\" για στοιχείο <%s>"
 
 #: ../src/ui/theme-parser.c:2380
 #, c-format
 msgid "Did not understand arrow \"%s\" for <%s> element"
-msgstr "Δεν έγινε κατανοητό το βέλος \"%s\" για στοιχείο <%s> "
+msgstr "Δεν έγινε κατανοητό το βέλος \"%s\" για στοιχείο <%s>"
 
 #: ../src/ui/theme-parser.c:2694 ../src/ui/theme-parser.c:2790
 #, c-format
 msgid "No <draw_ops> called \"%s\" has been defined"
-msgstr "Δεν έχουν ορισθεί  <λειτουργίες σχεδίασης> που ονομάζονται \"%s\""
+msgstr "Δεν έχουν ορισθεί <draw_ops> που ονομάζονται \"%s\""
 
 #: ../src/ui/theme-parser.c:2706 ../src/ui/theme-parser.c:2802
 #, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
 msgstr ""
-"Αν συμπεριλάβετε εδώ λειτουργίες σχεδίασης \"%s\" θα δημιουργήσετε μια "
-"κυκλική αναφορά"
+"Αν συμπεριλάβετε εδώ λειτουργίες_σχεδίασης \"%s\" θα δημιουργήσετε μια κυκλική "
+"αναφορά"
 
 #: ../src/ui/theme-parser.c:2917
 #, c-format
 msgid "Unknown position \"%s\" for frame piece"
-msgstr "Άγνωστη θέση  \"%s\" για το κομμάτι πλαισίου"
+msgstr "Άγνωστη θέση \"%s\" για το κομμάτι πλαισίου"
 
 #: ../src/ui/theme-parser.c:2925
 #, c-format
 msgid "Frame style already has a piece at position %s"
-msgstr "Το στυλ πλαισίου έχει ήδη ένα κομμάτι στην θέση %s"
+msgstr "Η τεχνοτροπία πλαισίου έχει ήδη ένα κομμάτι στην θέση %s"
 
 #: ../src/ui/theme-parser.c:2942 ../src/ui/theme-parser.c:3019
 #, c-format
 msgid "No <draw_ops> with the name \"%s\" has been defined"
-msgstr "δεν έχουν ορισθεί <λειτουργίες σχεδίασης> με το όνομα  \"%s\""
+msgstr "Δεν έχουν ορισθεί <draw_ops> με το όνομα \"%s\""
 
 #: ../src/ui/theme-parser.c:2972
 #, c-format
 msgid "Unknown function \"%s\" for button"
-msgstr "Άγνωστη λειτουργία  \"%s\" για το κουμπί"
+msgstr "Άγνωστη λειτουργία \"%s\" για το κουμπί"
 
 #: ../src/ui/theme-parser.c:2982
 #, c-format
 msgid "Button function \"%s\" does not exist in this version (%d, need %d)"
 msgstr ""
-"Η λειτουργία \"%s\" του κουμπιού δεν υπάρχει σε αυτή την έκδοση  (%d, "
+"Η λειτουργία \"%s\" του κουμπιού δεν υπάρχει σε αυτή την έκδοση (%d, "
 "χρειάζεται %d)"
 
 #
@@ -1281,7 +1473,7 @@ msgstr "Άγνωστη κατάσταση \"%s\" για το κουμπί"
 #, c-format
 msgid "Frame style already has a button for function %s state %s"
 msgstr ""
-"Το στυλ πλαισίου έχει ήδη ένα κουμπί για τη λειτουργία  %s κατάσταση %s"
+"Η τεχνοτροπία πλαισίου έχει ήδη ένα κουμπί για τη λειτουργία %s κατάσταση %s"
 
 #: ../src/ui/theme-parser.c:3073
 #, c-format
@@ -1296,7 +1488,7 @@ msgstr "\"%s\" δεν είναι έγκυρη τιμή για το γνώρισ�
 #: ../src/ui/theme-parser.c:3092
 #, c-format
 msgid "A style called \"%s\" has not been defined"
-msgstr "Ένα στυλ που ονομάζεται \"%s\"  δεν έχει ορισθεί"
+msgstr "Η τεχνοτροπία που ονομάζεται \"%s\" δεν έχει ορισθεί"
 
 #: ../src/ui/theme-parser.c:3113 ../src/ui/theme-parser.c:3136
 #, c-format
@@ -1324,41 +1516,42 @@ msgstr ""
 #, c-format
 msgid "Style has already been specified for state %s resize %s focus %s"
 msgstr ""
-"Το στυλ έχει ήδη καθορισθεί για κατάσταση %s αλλαγή μεγέθους %s εστίαση %s"
+"Η τεχνοτροπία έχει ήδη καθορισθεί για κατάσταση %s αλλαγή μεγέθους %s "
+"εστίαση %s"
 
 #: ../src/ui/theme-parser.c:3186 ../src/ui/theme-parser.c:3197
 #: ../src/ui/theme-parser.c:3208 ../src/ui/theme-parser.c:3233
 #: ../src/ui/theme-parser.c:3244 ../src/ui/theme-parser.c:3255
 #, c-format
 msgid "Style has already been specified for state %s focus %s"
-msgstr "Το στυλ έχει ήδη καθορισθεί για κατάσταση %s εστίαση %s"
+msgstr "Η τεχνοτροπία έχει ήδη καθορισθεί για κατάσταση %s εστίαση %s"
 
 #: ../src/ui/theme-parser.c:3294
 msgid ""
 "Can't have a two draw_ops for a <piece> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Δεν μπορεί να υπάρχουν δυο λειτουργίες σχεδίασης για ένα στοιχείο <κομμάτι> "
-"( το θέμα έχει καθορίσει ένα γνώρισμα λειτουργίας σχεδίασης και ακόμα ένα "
-"στοιχείο <λειτουργίες σχεδίασης> ή καθόρισε δύο στοιχεία)"
+"Δεν μπορεί να υπάρχουν δυο λειτουργίες_σχεδίασης για ένα στοιχείο <piece> ( "
+"το θέμα έχει καθορίσει ένα γνώρισμα λειτουργίας_σχεδίασης και ακόμα ένα "
+"στοιχείο <draw_ops> ή καθόρισε δύο στοιχεία)"
 
 #: ../src/ui/theme-parser.c:3332
 msgid ""
 "Can't have a two draw_ops for a <button> element (theme specified a draw_ops "
 "attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Δεν μπορεί να υπάρχουν δυο λειτουργίες σχεδίασης για ένα στοιχείο <κουμπί> "
-"( το θέμα έχει καθορίσει ένα γνώρισμα λειτουργίας σχεδίασης και ακόμα ένα "
-"στοιχείο <λειτουργίες σχεδίασης> ή καθόρισε δύο στοιχεία)"
+"Δεν μπορεί να υπάρχουν δυο λειτουργίες_σχεδίασης για ένα στοιχείο <button> ( "
+"το θέμα έχει καθορίσει ένα γνώρισμα λειτουργίας_σχεδίασης και ακόμα ένα "
+"στοιχείο <draw_ops> ή καθόρισε δύο στοιχεία)"
 
 #: ../src/ui/theme-parser.c:3370
 msgid ""
 "Can't have a two draw_ops for a <menu_icon> element (theme specified a "
 "draw_ops attribute and also a <draw_ops> element, or specified two elements)"
 msgstr ""
-"Δεν μπορεί να υπάρχουν δυο λειτουργίες σχεδίασης για ένα στοιχείο <εικονίδιο "
-"μενού> ( το θέμα έχει καθορίσει ένα γνώρισμα λειτουργίας σχεδίασης και ακόμα "
-"ένα στοιχείο <λειτουργίες σχεδίασης> ή καθόρισε δύο στοιχεία)"
+"Δεν μπορεί να υπάρχουν δυο λειτουργίες_σχεδίασης για ένα στοιχείο "
+"<menu_icon> (το θέμα έχει καθορίσει ένα γνώρισμα λειτουργίας_σχεδίασης και "
+"ακόμα ένα στοιχείο <draw_ops> ή καθόρισε δύο στοιχεία)"
 
 #: ../src/ui/theme-parser.c:3434
 #, c-format
@@ -1391,41 +1584,40 @@ msgstr ""
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
 msgstr ""
-"Το στοιχείο  <%s> δεν επιτρέπεται μέσα σε στοιχείο ονόματος/συγγραφέα/"
-"ημερομηνίας/περιγραφής"
+"Το στοιχείο <%s> δεν επιτρέπεται μέσα σε στοιχείο "
+"ονόματος/συγγραφέα/ημερομηνίας/περιγραφής"
 
 #: ../src/ui/theme-parser.c:3587
 #, c-format
 msgid "Element <%s> is not allowed inside a <constant> element"
-msgstr "Το στοιχείο  <%s> δεν επιτρέπεται μέσα σε στοιχείο <constant>"
+msgstr "Το στοιχείο <%s> δεν επιτρέπεται μέσα σε στοιχείο <constant>"
 
 #: ../src/ui/theme-parser.c:3599
 #, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
 msgstr ""
-"Το στοιχείο  <%s> δεν επιτρέπεται μέσα σε στοιχείο απόστασης/περιγράμματος/"
-"aspect_ratio"
+"Το στοιχείο <%s> δεν επιτρέπεται μέσα σε στοιχείο "
+"απόστασης/περιγράμματος/aspect_ratio"
 
 #: ../src/ui/theme-parser.c:3621
 #, c-format
 msgid "Element <%s> is not allowed inside a draw operation element"
-msgstr ""
-"Το στοιχείο  <%s> δεν επιτρέπεται μέσα σε στοιχείο λειτουργίας σχεδίασης"
+msgstr "Το στοιχείο <%s> δεν επιτρέπεται μέσα σε στοιχείο λειτουργίας σχεδίασης"
 
 #: ../src/ui/theme-parser.c:3631 ../src/ui/theme-parser.c:3661
 #: ../src/ui/theme-parser.c:3666 ../src/ui/theme-parser.c:3671
 #, c-format
 msgid "Element <%s> is not allowed inside a <%s> element"
-msgstr "Το στοιχείο  <%s> δεν επιτρέπεται μέσα σε στοιχείο <%s>"
+msgstr "Το στοιχείο <%s> δεν επιτρέπεται μέσα σε στοιχείο <%s>"
 
 #: ../src/ui/theme-parser.c:3899
 msgid "No draw_ops provided for frame piece"
-msgstr "Δεν παρέχονται λειτουργίες σχεδίασης για το κομμάτι πλαισίου"
+msgstr "Δεν παρέχονται λειτουργίες_σχεδίασης για το κομμάτι πλαισίου"
 
 #: ../src/ui/theme-parser.c:3914
 msgid "No draw_ops provided for button"
-msgstr "Δεν παρέχονται λειτουργίες σχεδίασης για το κουμπί"
+msgstr "Δεν παρέχονται λειτουργίες_σχεδίασης για το κουμπί"
 
 #: ../src/ui/theme-parser.c:3968
 #, c-format
@@ -1483,7 +1675,7 @@ msgstr "_Δεξί ταμπλό"
 
 #: ../src/ui/theme-viewer.c:108
 msgid "_All docks"
-msgstr "_Όλα τα ταμπλό"
+msgstr "Ό_λες οι προσαρτήσεις"
 
 #: ../src/ui/theme-viewer.c:109
 msgid "Des_ktop"
@@ -1546,57 +1738,57 @@ msgstr "Πλαίσιο"
 msgid "Attached Modal Dialog"
 msgstr "Συνημμένο κουτί σχηματικού διαλόγου"
 
-#: ../src/ui/theme-viewer.c:739
+#: ../src/ui/theme-viewer.c:737
 #, c-format
 msgid "Button layout test %d"
 msgstr "Δοκιμή διάταξης κουμπιού %d"
 
-#: ../src/ui/theme-viewer.c:768
+#: ../src/ui/theme-viewer.c:766
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g χιλιοστά δευτερ. για τη σχεδίαση ενός πλαισίου παραθύρου"
 
-#: ../src/ui/theme-viewer.c:813
+#: ../src/ui/theme-viewer.c:811
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Χρήση: metacity-theme-viewer [THEMENAME]\n"
 
 # gconf/gconf-backend.c:243
-#: ../src/ui/theme-viewer.c:820
+#: ../src/ui/theme-viewer.c:818
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Σφάλμα φόρτωσης θέματος: %s\n"
 
-#: ../src/ui/theme-viewer.c:826
+#: ../src/ui/theme-viewer.c:824
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
-msgstr "Το θέμα \"%s\" φορτώθηκε σε %g  δευτερόλεπτα\n"
+msgstr "Το θέμα \"%s\" φορτώθηκε σε %g δευτερόλεπτα\n"
 
-#: ../src/ui/theme-viewer.c:870
+#: ../src/ui/theme-viewer.c:869
 msgid "Normal Title Font"
 msgstr "Γραμματοσειρά κανονικού τίτλου"
 
-#: ../src/ui/theme-viewer.c:876
+#: ../src/ui/theme-viewer.c:875
 msgid "Small Title Font"
 msgstr "Γραμματοσειρά μικρού τίτλου"
 
-#: ../src/ui/theme-viewer.c:882
+#: ../src/ui/theme-viewer.c:881
 msgid "Large Title Font"
 msgstr "Γραμματοσειρά μεγάλου τίτλου"
 
-#: ../src/ui/theme-viewer.c:887
+#: ../src/ui/theme-viewer.c:886
 msgid "Button Layouts"
 msgstr "Διατάξεις κουμπιού"
 
-#: ../src/ui/theme-viewer.c:892
+#: ../src/ui/theme-viewer.c:891
 msgid "Benchmark"
 msgstr "Benchmark"
 
-#: ../src/ui/theme-viewer.c:944
+#: ../src/ui/theme-viewer.c:947
 msgid "Window Title Goes Here"
 msgstr "Τίτλος παραθύρου εδώ"
 
-#: ../src/ui/theme-viewer.c:1047
+#: ../src/ui/theme-viewer.c:1053
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1608,260 +1800,50 @@ msgstr ""
 "συμπεριλαμβανομένων και των πόρων του εξυπηρετητή X (%g χιλιοστά ανά "
 "πλαίσιο)\n"
 
-#: ../src/ui/theme-viewer.c:1266
+#: ../src/ui/theme-viewer.c:1273
 msgid "position expression test returned TRUE but set error"
 msgstr ""
 "επιστράφηκε TRUE στη θέση της δοκιμαστικής έκφρασης αλλά ορίστηκε σφάλμα"
 
-#: ../src/ui/theme-viewer.c:1268
+#: ../src/ui/theme-viewer.c:1275
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 "επιστράφηκε FALSE στη θέση της δοκιμαστικής έκφρασης αλλά δεν ορίστηκε σφάλμα"
 
-#: ../src/ui/theme-viewer.c:1272
+#: ../src/ui/theme-viewer.c:1279
 msgid "Error was expected but none given"
-msgstr "Αναμένονταν σφάλμα αλλά δε δόθηκε κανένα "
+msgstr "Αναμένονταν σφάλμα αλλά δε δόθηκε κανένα"
 
-#: ../src/ui/theme-viewer.c:1274
+#: ../src/ui/theme-viewer.c:1281
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Αναμένονταν το σφάλμα %d αλλά δόθηκε το %d"
 
-#: ../src/ui/theme-viewer.c:1280
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Δεν αναμένονταν σφάλμα αλλά επιστράφηκε ένα: %s"
 
-#: ../src/ui/theme-viewer.c:1284
+#: ../src/ui/theme-viewer.c:1291
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "η τιμή x ήταν %d, αναμενόταν %d"
 
-#: ../src/ui/theme-viewer.c:1287
+#: ../src/ui/theme-viewer.c:1294
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "η τιμή y ήταν %d, αναμενόταν %d"
 
-#: ../src/ui/theme-viewer.c:1352
+#: ../src/ui/theme-viewer.c:1359
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "οι εκφράσεις συντεταγμένης %d αναλύθηκαν σε %g δευτερόλεπτα (%g δευτερόλεπτα μέσος όρος)\n"
-
-#: ../src/50-mutter-navigation.xml.in.h:1
-#, fuzzy
-msgid "Hide all normal windows"
-msgstr "Απόκρυψη όλων των κανονικών παραθύρων"
-
-#: ../src/50-mutter-navigation.xml.in.h:2
-#, fuzzy
-msgid "Move to workspace above"
-msgstr "Μετακίνηση στο χώρο εργασίας επάνω"
-
-#: ../src/50-mutter-navigation.xml.in.h:3
-#, fuzzy
-msgid "Move to workspace below"
-msgstr "Μετακίνηση στο χώρο εργασίας κάτω"
-
-#: ../src/50-mutter-navigation.xml.in.h:4
-#, fuzzy
-msgid "Move to workspace left"
-msgstr "Μετακίνηση στο χώρο εργασίας αριστερά"
-
-#: ../src/50-mutter-navigation.xml.in.h:5
-#, fuzzy
-msgid "Move to workspace right"
-msgstr "Μετακίνηση στο χώρο εργασίας δεξιά"
-
-#: ../src/50-mutter-navigation.xml.in.h:6
-#, fuzzy
-msgid "Move window one workspace down"
-msgstr "Μετακίνηση του παραθύρου ένα χώρο εργασίας κάτω"
-
-#: ../src/50-mutter-navigation.xml.in.h:7
-#, fuzzy
-msgid "Move window one workspace to the left"
-msgstr "Μετακίνηση του παραθύρου ένα χώρο εργασίας αριστερά"
-
-#: ../src/50-mutter-navigation.xml.in.h:8
-#, fuzzy
-msgid "Move window one workspace to the right"
-msgstr "Μετακίνηση του παραθύρου ένα χώρο εργασίας δεξιά"
-
-#: ../src/50-mutter-navigation.xml.in.h:9
-#, fuzzy
-msgid "Move window one workspace up"
-msgstr "Μετακίνηση του παραθύρου ένα χώρο εργασίας πάνω"
-
-#: ../src/50-mutter-navigation.xml.in.h:10
-#, fuzzy
-msgid "Move window to workspace 1"
-msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 1"
-
-#: ../src/50-mutter-navigation.xml.in.h:11
-#, fuzzy
-msgid "Move window to workspace 2"
-msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 2"
-
-#: ../src/50-mutter-navigation.xml.in.h:12
-#, fuzzy
-msgid "Move window to workspace 3"
-msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 3"
-
-#: ../src/50-mutter-navigation.xml.in.h:13
-#, fuzzy
-msgid "Move window to workspace 4"
-msgstr "Μετακίνηση παραθύρου στο χώρο εργασίας 4"
-
-#: ../src/50-mutter-navigation.xml.in.h:14
-#, fuzzy
-msgid "Navigation"
-msgstr "Πλοήγηση"
-
-#: ../src/50-mutter-navigation.xml.in.h:15
-#, fuzzy
-msgid "Switch applications"
-msgstr "Εναλλαγή εφαρμογών"
-
-#: ../src/50-mutter-navigation.xml.in.h:16
-#, fuzzy
-msgid "Switch system controls"
-msgstr "Εναλλαγή ελέγχων συστήματος"
-
-#: ../src/50-mutter-navigation.xml.in.h:17
-#, fuzzy
-msgid "Switch system controls directly"
-msgstr "Αναστροφή άμεση εναλλαγή ελέγχων συστήματος"
-
-#: ../src/50-mutter-navigation.xml.in.h:18
-#, fuzzy
-msgid "Switch to workspace 1"
-msgstr "Αλλαγή στο χώρο εργασίας 1"
-
-#: ../src/50-mutter-navigation.xml.in.h:19
-#, fuzzy
-msgid "Switch to workspace 2"
-msgstr "Αλλαγή στο χώρο εργασίας 2"
-
-#: ../src/50-mutter-navigation.xml.in.h:20
-#, fuzzy
-msgid "Switch to workspace 3"
-msgstr "Αλλαγή στο χώρο εργασίας 3"
-
-#: ../src/50-mutter-navigation.xml.in.h:21
-#, fuzzy
-msgid "Switch to workspace 4"
-msgstr "Αλλαγή στο χώρο εργασίας 4"
-
-#: ../src/50-mutter-navigation.xml.in.h:22
-#, fuzzy
-msgid "Switch windows directly"
-msgstr "Απευθείας εναλλαγή παραθύρων"
-
-#: ../src/50-mutter-navigation.xml.in.h:23
-#, fuzzy
-msgid "Switch windows of an app directly"
-msgstr "Άμεση εναλλαγή μεταξύ παραθύρων μιας εφαρμογής"
-
-#: ../src/50-mutter-navigation.xml.in.h:24
-#, fuzzy
-msgid "Switch windows of an application"
-msgstr "Άμεση εναλλαγή μεταξύ παραθύρων μιας εφαρμογής"
-
-#: ../src/50-mutter-system.xml.in.h:1
-#, fuzzy
-msgid "Show the activities overview"
-msgstr "Εμφάνιση της επισκόπησης των δραστηριοτήτων"
-
-#: ../src/50-mutter-system.xml.in.h:2
-#, fuzzy
-msgid "Show the run command prompt"
-msgstr "Εμφάνιση της ειδοποίησης της εντολής run"
-
-#: ../src/50-mutter-system.xml.in.h:3
-#, fuzzy
-msgid "System"
-msgstr "Σύστημα"
-
-#: ../src/50-mutter-windows.xml.in.h:1
-#, fuzzy
-msgid "Activate the window menu"
-msgstr "Ενεργοποίηση του μενού του παραθύρου"
-
-#: ../src/50-mutter-windows.xml.in.h:2
-#, fuzzy
-msgid "Close window"
-msgstr "Κλείσιμο παραθύρου"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-#, fuzzy
-msgid "Lower window below other windows"
-msgstr "Χαμήλωμα παραθύρου κάτω από τα άλλα παράθυρα"
-
-#: ../src/50-mutter-windows.xml.in.h:4
-#, fuzzy
-msgid "Maximize window"
-msgstr "Μεγιστοποίηση παραθύρου"
-
-#: ../src/50-mutter-windows.xml.in.h:5
-#, fuzzy
-msgid "Maximize window horizontally"
-msgstr "Μεγιστοποίηση ενός παραθύρου οριζόντια"
-
-#: ../src/50-mutter-windows.xml.in.h:6
-#, fuzzy
-msgid "Maximize window vertically"
-msgstr "Μεγιστοποίηση ενός παραθύρου κάθετα"
-
-#: ../src/50-mutter-windows.xml.in.h:7
-#, fuzzy
-msgid "Minimize window"
-msgstr "Ελαχιστοποίηση παραθύρου"
-
-#: ../src/50-mutter-windows.xml.in.h:8
-#, fuzzy
-msgid "Move window"
-msgstr "Μετακίνηση παραθύρου"
-
-#: ../src/50-mutter-windows.xml.in.h:9
-#, fuzzy
-msgid "Raise window above other windows"
-msgstr "Ανασήκωση παραθύρου πάνω από τα άλλα παράθυρα"
-
-#: ../src/50-mutter-windows.xml.in.h:10
-#, fuzzy
-msgid "Raise window if covered, otherwise lower it"
 msgstr ""
-"Ανασήκωση παραθύρου αν καλύπτεται από άλλο παράθυρο, αλλιώς χαμήλωμα του"
+"οι εκφράσεις συντεταγμένης %d αναλύθηκαν σε %g δευτερόλεπτα (%g δευτερόλεπτα "
+"μέσος όρος)\n"
 
-#: ../src/50-mutter-windows.xml.in.h:11
 #, fuzzy
-msgid "Resize window"
-msgstr "Αλλαγή μεγέθους παραθύρου"
-
-#: ../src/50-mutter-windows.xml.in.h:12
-#, fuzzy
-msgid "Restore window"
-msgstr "Επαναφορά παραθύρου"
-
-#: ../src/50-mutter-windows.xml.in.h:13
-#, fuzzy
-msgid "Toggle fullscreen mode"
-msgstr "Εναλλαγή κατάστασης πλήρους οθόνης"
-
-#: ../src/50-mutter-windows.xml.in.h:14
-#, fuzzy
-msgid "Toggle maximization state"
-msgstr "Εναλλαγή κατάστασης μεγιστοποίησης"
-
-#: ../src/50-mutter-windows.xml.in.h:15
-#, fuzzy
-msgid "Toggle shaded state"
-msgstr "Εναλλαγή σκιασμένης κατάστασης"
-
-#: ../src/50-mutter-windows.xml.in.h:16
-#, fuzzy
-msgid "Toggle window on all workspaces or one"
-msgstr "Εναλλαγή παραθύρου σε όλες τις επιφάνειες εργασίας ή σε μία"
+#~ msgid "Minimize window"
+#~ msgstr "Ελαχιστοποίηση παραθύρου"
 
 #~ msgid ""
 #~ "There was an error running <tt>%s</tt>:\n"
