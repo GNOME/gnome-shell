@@ -1,7 +1,7 @@
 # Vietnamese translation for gnome-shell.
 # Copyright (C) 2010 GNOME i18n Project for Vietnamese.
 # This file is distributed under the same license as the gnome-shell package.
-# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2010-2012.
+# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2010-2013.
 # Ngô Chin <ndtrung4419@gmail.com>, 2011.
 #
 msgid ""
@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-02-12 15:16+0000\n"
-"PO-Revision-Date: 2013-02-26 20:34+0700\n"
+"PO-Revision-Date: 2013-02-26 20:46+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "Language: vi\n"
@@ -20,45 +20,32 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:1
-#, fuzzy
-#| msgid "Screen position"
 msgid "Screenshots"
-msgstr "Vị trí màn hình"
+msgstr "Chụp hình"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:2
 msgid "Record a screencast"
-msgstr ""
+msgstr "Thu screencast"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
-#, fuzzy
-#| msgid "File System"
 msgid "System"
-msgstr "Hệ thống tập tin"
+msgstr "Hệ thống"
 
 #: ../data/50-gnome-shell-system.xml.in.h:2
-#, fuzzy
-#| msgid "Message Tray"
 msgid "Show the message tray"
-msgstr "Khay thông báo"
+msgstr "Hiện khay thông báo"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
-#, fuzzy
-#| msgid "%d new notification"
-#| msgid_plural "%d new notifications"
 msgid "Focus the active notification"
-msgstr "%d thông báo mới"
+msgstr "Tập trung vào thông báo hoạt động"
 
 #: ../data/50-gnome-shell-system.xml.in.h:4
-#, fuzzy
-#| msgid "Show Applications"
 msgid "Show all applications"
-msgstr "Hiện ứng dụng"
+msgstr "Hiện mọi ứng dụng"
 
 #: ../data/50-gnome-shell-system.xml.in.h:5
-#, fuzzy
-#| msgid "Keybinding to open the application menu"
 msgid "Open the application menu"
-msgstr "Phím mở trình đơn ứng dụng"
+msgstr "Mở trình đơn ứng dụng"
 
 #: ../data/gnome-shell.desktop.in.in.h:1
 msgid "GNOME Shell"
@@ -157,7 +144,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "Always show the 'Log out' menuitem in the user menu."
-msgstr ""
+msgstr "Luôn hiện mục \"Đăng xuất\" trên trình đơn người dùng."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid ""
@@ -195,17 +182,13 @@ msgid "Keybinding to open the application menu."
 msgstr "Phím mở trình đơn ứng dụng."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:21
-#, fuzzy
-#| msgid "Keybinding to open the application menu"
 msgid "Keybinding to open the \"Show Applications\" view"
-msgstr "Phím mở trình đơn ứng dụng"
+msgstr "Phím hiện ứng dụng"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:22
-#, fuzzy
-#| msgid "Keybinding to open the application menu."
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
-msgstr "Phím mở trình đơn ứng dụng."
+msgstr "Phím hiện ứng dụng trong tổng quan hoạt động."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to toggle the visibility of the message tray"
@@ -216,16 +199,12 @@ msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "Phím bật/tắt hiện khay thông báo."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-#, fuzzy
-#| msgid "Keybinding to open the application menu"
 msgid "Keybinding to focus the active notification"
-msgstr "Phím mở trình đơn ứng dụng"
+msgstr "Phím tập trung vào thông báo hoạt động"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-#, fuzzy
-#| msgid "Keybinding to open the application menu."
 msgid "Keybinding to focus the active notification."
-msgstr "Phím mở trình đơn ứng dụng."
+msgstr "Phím tập trung vào thông báo hoạt động."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to toggle the screen recorder"
@@ -260,18 +239,7 @@ msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Ống dẫn gstreamer để thu screencast"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:35
-#, fuzzy, no-c-format
-#| msgid ""
-#| "Sets the GStreamer pipeline used to encode recordings. It follows the "
-#| "syntax used for gst-launch. The pipeline should have an unconnected sink "
-#| "pad where the recorded video is recorded. It will normally have a "
-#| "unconnected source pad; output from that pad will be written into the "
-#| "output file. However the pipeline can also take care of its own output - "
-#| "this might be used to send the output to an icecast server via shout2send "
-#| "or similar. When unset or set to an empty value, the default pipeline "
-#| "will be used. This is currently 'vp8enc quality=8 speed=6 threads=%T ! "
-#| "queue ! webmmux' and records to WEBM using the VP8 codec. %T is used as a "
-#| "placeholder for a guess at the optimal thread count on the system."
+#, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
 "used for gst-launch. The pipeline should have an unconnected sink pad where "
@@ -289,9 +257,10 @@ msgstr ""
 "source pad không kết nối; đầu ra từ pad sẽ được ghi vào tập tin kết quả. Tuy "
 "nhiên ống dẫn có thể tự lưu đầu ra riêng - có thể hữu dụng để gửi kết quả "
 "đến máy chủ icecast thông qua shout2send hoặc tương tự. Nếu bỏ chọn hoặc đặt "
-"giá trị rỗng, ống dẫn mặc định sẽ được dùng, hiện thời là vp8enc quality=8 "
-"speed=6 threads=%T ! queue ! webmmux' và lưu ở dạng WEBM dùng VP8 codec. %T "
-"được dùng để thế chỗ cho số thread dự đoán tối ưu cho hệ thống."
+"giá trị rỗng, ống dẫn mặc định sẽ được dùng, hiện thời là 'vp8enc "
+"min_quantizer=13 max_quantizer=13 cpu-used=5 deadline=1000000 threads=%T ! "
+"queue ! webmmux' và lưu ở dạng WEBM dùng VP8 codec. %T được dùng để thế chỗ "
+"cho số thread dự đoán tối ưu cho hệ thống."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:36
 msgid "File extension used for storing the screencast"
@@ -309,7 +278,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "The application icon mode."
-msgstr ""
+msgstr "Chế độ biểu tượng ứng dụng."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid ""
@@ -339,15 +308,15 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
+msgstr "Bật xếp lớp ở cạnh khi thả cửa sổ vào cạnh màn hình"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:45
 msgid "Workspaces are managed dynamically"
-msgstr ""
+msgstr "Quản lý động vùng làm việc"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:46
 msgid "Workspaces only on primary monitor"
-msgstr ""
+msgstr "Vùng làm việc chỉ ở trên màn hình chính"
 
 #: ../js/extensionPrefs/main.js:124
 #, c-format
@@ -392,10 +361,8 @@ msgid "Sign In"
 msgstr "Đăng nhập"
 
 #: ../js/gdm/loginDialog.js:983
-#, fuzzy
-#| msgid "Next week"
 msgid "Next"
-msgstr "Tuần tới"
+msgstr "Tới"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
@@ -411,10 +378,8 @@ msgstr "Cửa sổ đặt nhập"
 
 #. Translators: accessible name of the power menu in the login screen
 #: ../js/gdm/powerMenu.js:36
-#, fuzzy
-#| msgid "Power Off"
 msgid "Power"
-msgstr "Tắt máy"
+msgstr "Nguồn"
 
 #: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:693 ../js/ui/userMenu.js:697
 #: ../js/ui/userMenu.js:813
@@ -431,10 +396,8 @@ msgid "Power Off"
 msgstr "Tắt máy"
 
 #: ../js/gdm/util.js:152
-#, fuzzy
-#| msgid "Authentication Required"
 msgid "Authentication error"
-msgstr "Cần xác thực"
+msgstr "Lỗi xác thực"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
@@ -502,7 +465,7 @@ msgstr "Cả ngày"
 #: ../js/ui/calendar.js:67
 msgctxt "event list time"
 msgid "%H\\u2236%M"
-msgstr ""
+msgstr "%H\\u2236%M"
 
 #. Transators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
@@ -510,7 +473,7 @@ msgstr ""
 #: ../js/ui/calendar.js:76
 msgctxt "event list time"
 msgid "%l\\u2236%M\\u2009%p"
-msgstr ""
+msgstr "%l\\u2236%M\\u2009%p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
@@ -640,11 +603,11 @@ msgstr "Tuần tới"
 
 #: ../js/ui/components/automountManager.js:90
 msgid "External drive connected"
-msgstr ""
+msgstr "Ổ ngoài đã kết nối"
 
 #: ../js/ui/components/automountManager.js:101
 msgid "External drive disconnected"
-msgstr ""
+msgstr "Ổ ngoài đã ngắt kết nối"
 
 #: ../js/ui/components/autorunManager.js:294
 msgid "Removable Devices"
@@ -785,7 +748,7 @@ msgstr "Truyền tập tin"
 
 #: ../js/ui/components/telepathyClient.js:418
 msgid "Chat"
-msgstr ""
+msgstr "Tán gẫu"
 
 #: ../js/ui/components/telepathyClient.js:480
 msgid "Unmute"
@@ -799,27 +762,25 @@ msgstr "Im lặng"
 #: ../js/ui/components/telepathyClient.js:938
 #, no-c-format
 msgid "<b>Yesterday</b>, <b>%H:%M</b>"
-msgstr ""
+msgstr "<b>Hôm qua</b>, <b>%H:%M</b>"
 
 #. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30
 #: ../js/ui/components/telepathyClient.js:944
-#, fuzzy, no-c-format
-#| msgid "Sent on <b>%A</b>, <b>%B %d</b>"
+#, no-c-format
 msgid "<b>%A</b>, <b>%H:%M</b>"
-msgstr "Đã gửi <b>%A</b>, <b>%d %B</b>"
+msgstr "<b>%A</b>, <b>%H:%M</b>"
 
 #. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"
 #: ../js/ui/components/telepathyClient.js:949
-#, fuzzy, no-c-format
-#| msgid "Sent on <b>%A</b>, <b>%B %d</b>"
+#, no-c-format
 msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
-msgstr "Đã gửi <b>%A</b>, <b>%d %B</b>"
+msgstr "<b>%d</b> <b>%B</b>, <b>%H:%M</b>"
 
 #. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"
 #: ../js/ui/components/telepathyClient.js:953
 #, no-c-format
 msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
-msgstr ""
+msgstr "<b>%H:%M</b>, <b>%d</b> <b>%B</b> <b>%Y</b> "
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
@@ -996,13 +957,11 @@ msgstr "Lỗi nội bộ"
 #: ../js/ui/components/telepathyClient.js:1350
 #, c-format
 msgid "Unable to connect to %s"
-msgstr ""
+msgstr "Không thể kết nối đến %s"
 
 #: ../js/ui/components/telepathyClient.js:1355
-#, fuzzy
-#| msgid "Edit account"
 msgid "View account"
-msgstr "Sửa tài khoản"
+msgstr "Xem tài khoản"
 
 #: ../js/ui/components/telepathyClient.js:1394
 msgid "Unknown reason"
@@ -1022,11 +981,9 @@ msgstr "Mở lịch"
 
 #: ../js/ui/dateMenu.js:96
 msgid "Open Clocks"
-msgstr ""
+msgstr "Mở đồng hồ"
 
 #: ../js/ui/dateMenu.js:105
-#, fuzzy
-#| msgid "Date and Time Settings"
 msgid "Date & Time Settings"
 msgstr "Thiết lập ngày giờ"
 
@@ -1198,19 +1155,15 @@ msgstr "Loại bỏ"
 
 #: ../js/ui/messageTray.js:1461
 msgid "Clear"
-msgstr ""
+msgstr "Xoá trắng"
 
 #: ../js/ui/messageTray.js:1484
-#, fuzzy
-#| msgid "Notifications"
 msgid "Notification Settings"
-msgstr "Thông báo"
+msgstr "Thiết lập thông báo"
 
 #: ../js/ui/messageTray.js:1667
-#, fuzzy
-#| msgid "Message Tray"
 msgid "No Messages"
-msgstr "Khay thông báo"
+msgstr "Không có thông báo"
 
 #: ../js/ui/messageTray.js:1728
 msgid "Message Tray"
@@ -1271,14 +1224,12 @@ msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
 #: ../js/ui/runDialog.js:205
-#, fuzzy
-#| msgid "Please enter a command:"
 msgid "Enter a Command"
-msgstr "Vui lòng nhập lệnh:"
+msgstr "Nhập lệnh"
 
 #: ../js/ui/runDialog.js:241
 msgid "Close"
-msgstr ""
+msgstr "Đóng"
 
 #. Translators: This is a time format for a date in
 #. long format
@@ -1304,7 +1255,7 @@ msgstr "Khoá"
 
 #: ../js/ui/screenShield.js:615
 msgid "GNOME needs to lock the screen"
-msgstr ""
+msgstr "GNOME cần khoá màn hình"
 
 #: ../js/ui/searchDisplay.js:431
 msgid "Searching..."
@@ -1406,8 +1357,6 @@ msgid "Send Files to Device..."
 msgstr "Gửi tập tin đến thiết bị..."
 
 #: ../js/ui/status/bluetooth.js:60
-#, fuzzy
-#| msgid "Set up a New Device..."
 msgid "Set Up a New Device..."
 msgstr "Thiết lập thiết bị mới..."
 
@@ -1514,8 +1463,6 @@ msgid "Show Keyboard Layout"
 msgstr "Hiện bố trí bàn phím"
 
 #: ../js/ui/status/keyboard.js:373
-#, fuzzy
-#| msgid "Region and Language Settings"
 msgid "Region & Language Settings"
 msgstr "Thiết lập Lãnh thổ và Ngôn ngữ"
 
@@ -1615,7 +1562,7 @@ msgstr "Bật nối mạng"
 
 #: ../js/ui/status/network.js:1719
 msgid "Wi-Fi"
-msgstr ""
+msgstr "Wi-Fi"
 
 #: ../js/ui/status/network.js:1738
 msgid "Network Settings"
@@ -1686,14 +1633,10 @@ msgid "%d%%"
 msgstr "%d%%"
 
 #: ../js/ui/status/power.js:201
-#, fuzzy
-#| msgid "AC adapter"
 msgid "AC Adapter"
 msgstr "Nguồn AC"
 
 #: ../js/ui/status/power.js:203
-#, fuzzy
-#| msgid "Laptop battery"
 msgid "Laptop Battery"
 msgstr "Pin laptop"
 
@@ -1714,14 +1657,10 @@ msgid "PDA"
 msgstr "PDA"
 
 #: ../js/ui/status/power.js:215
-#, fuzzy
-#| msgid "Cell phone"
 msgid "Cell Phone"
-msgstr "Điện thoại cầm tay"
+msgstr "Điện thoại di động"
 
 #: ../js/ui/status/power.js:217
-#, fuzzy
-#| msgid "Media player"
 msgid "Media Player"
 msgstr "Máy nghe nhạc"
 
@@ -1739,10 +1678,8 @@ msgid "Unknown"
 msgstr "Không biết"
 
 #: ../js/ui/status/volume.js:124
-#, fuzzy
-#| msgid "Volume"
 msgid "Volume changed"
-msgstr "Âm lượng"
+msgstr "Âm lượng đã thay đổi"
 
 #. Translators: This is the label for audio volume
 #: ../js/ui/status/volume.js:249 ../js/ui/status/volume.js:297
@@ -1758,10 +1695,8 @@ msgid "Log in as another user"
 msgstr "Đăng nhập người dùng khác"
 
 #: ../js/ui/unlockDialog.js:229
-#, fuzzy
-#| msgid "Login Window"
 msgid "Unlock Window"
-msgstr "Cửa sổ đặt nhập"
+msgstr "Bỏ khoá cửa sổ"
 
 #: ../js/ui/userMenu.js:191
 msgid "Available"
@@ -1792,10 +1727,8 @@ msgid "Notifications"
 msgstr "Thông báo"
 
 #: ../js/ui/userMenu.js:786
-#, fuzzy
-#| msgid "Mouse Settings"
 msgid "Settings"
-msgstr "Thiết lập chuột"
+msgstr "Thiết lập"
 
 #: ../js/ui/userMenu.js:794
 msgid "Switch User"
@@ -1823,21 +1756,21 @@ msgstr ""
 
 #: ../js/ui/userMenu.js:884
 msgid "Other users are logged in."
-msgstr ""
+msgstr "Người dùng khác đang đăng nhập."
 
 #: ../js/ui/userMenu.js:889
 msgid "Shutting down might cause them to lose unsaved work."
-msgstr ""
+msgstr "Tắt sẽ làm mất những kết quả chưa được lưu."
 
 #: ../js/ui/userMenu.js:915
 #, c-format
 msgid "%s (remote)"
-msgstr ""
+msgstr "%s (ở xa)"
 
 #: ../js/ui/userMenu.js:917
 #, c-format
 msgid "%s (console)"
-msgstr ""
+msgstr "%s (console)"
 
 #: ../js/ui/viewSelector.js:85
 msgid "Applications"
