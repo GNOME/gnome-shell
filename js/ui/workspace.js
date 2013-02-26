@@ -974,7 +974,7 @@ const Workspace = new Lang.Class({
             return false;
         }));
 
-        this._positionWindows(WindowPositionFlags.NONE);
+        this._recalculateWindowPositions(WindowPositionFlags.NONE);
     },
 
     _lookupIndex: function (metaWindow) {
@@ -1002,24 +1002,24 @@ const Workspace = new Lang.Class({
             clone = null;
 
         this._reservedSlot = clone;
-        this._positionWindows(WindowPositionFlags.ANIMATE);
+        this._recalculateWindowPositions(WindowPositionFlags.ANIMATE);
     },
 
-    _positionWindows: function(flags) {
+    _recalculateWindowPositions: function(flags) {
         this._positionWindowsFlags |= flags;
 
         if (this._positionWindowsId > 0)
             return;
 
         this._positionWindowsId = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
-            this._realPositionWindows(this._positionWindowsFlags);
+            this._realRecalculateWindowPositions(this._positionWindowsFlags);
             this._positionWindowsFlags = 0;
             this._positionWindowsId = 0;
             return false;
         }));
     },
 
-    _realPositionWindows : function(flags) {
+    _realRecalculateWindowPositions: function(flags) {
         if (this._repositionWindowsId > 0) {
             Mainloop.source_remove(this._repositionWindowsId);
             this._repositionWindowsId = 0;
@@ -1036,10 +1036,15 @@ const Workspace = new Lang.Class({
         if (this._reservedSlot)
             clones.push(this._reservedSlot);
 
+        this._currentLayout = this._computeLayout(clones);
+        this._updateWindowPositions(flags);
+    },
+
+    _updateWindowPositions: function(flags) {
         let initialPositioning = flags & WindowPositionFlags.INITIAL;
         let animate = flags & WindowPositionFlags.ANIMATE;
 
-        let layout = this._computeLayout(clones);
+        let layout = this._currentLayout;
         let strategy = layout.strategy;
 
         let [, , padding] = this._getSpacingAndPadding();
@@ -1174,7 +1179,7 @@ const Workspace = new Lang.Class({
                 return true;
         }
 
-        this._positionWindows(WindowPositionFlags.ANIMATE);
+        this._recalculateWindowPositions(WindowPositionFlags.ANIMATE);
         return false;
     },
 
@@ -1277,7 +1282,7 @@ const Workspace = new Lang.Class({
             clone.overlay.relayout(false);
         }
 
-        this._positionWindows(WindowPositionFlags.ANIMATE);
+        this._recalculateWindowPositions(WindowPositionFlags.ANIMATE);
     },
 
     _windowAdded : function(metaWorkspace, metaWin) {
@@ -1315,7 +1320,7 @@ const Workspace = new Lang.Class({
     // Animate the full-screen to Overview transition.
     zoomToOverview : function() {
         // Position and scale the windows.
-        this._positionWindows(WindowPositionFlags.ANIMATE | WindowPositionFlags.INITIAL);
+        this._recalculateWindowPositions(WindowPositionFlags.ANIMATE | WindowPositionFlags.INITIAL);
     },
 
     // Animates the return from Overview mode
@@ -1439,7 +1444,7 @@ const Workspace = new Lang.Class({
                       }));
         clone.connect('size-changed',
                       Lang.bind(this, function() {
-                          this._positionWindows(WindowPositionFlags.NONE);
+                          this._recalculateWindowPositions(WindowPositionFlags.NONE);
                       }));
 
         this.actor.add_actor(clone.actor);
