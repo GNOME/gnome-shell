@@ -1296,10 +1296,7 @@ const Workspace = new Lang.Class({
     // Animate the full-screen to Overview transition.
     zoomToOverview : function() {
         // Position and scale the windows.
-        if (Main.overview.animationInProgress)
-            this._positionWindows(WindowPositionFlags.ANIMATE | WindowPositionFlags.INITIAL);
-        else
-            this._positionWindows(WindowPositionFlags.INITIAL);
+        this._positionWindows(WindowPositionFlags.ANIMATE | WindowPositionFlags.INITIAL);
     },
 
     // Animates the return from Overview mode
