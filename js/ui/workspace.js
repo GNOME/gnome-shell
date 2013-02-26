@@ -890,6 +890,14 @@ const UnalignedLayoutStrategy = new Lang.Class({
     }
 });
 
+function padArea(area, padding) {
+    return {
+        x: area.x + padding.left,
+        y: area.y + padding.top,
+        width: area.width - padding.left - padding.right,
+        height: area.height - padding.top - padding.bottom,
+    };
+}
 
 /**
  * @metaWorkspace: a #Meta.Workspace, or null
@@ -1506,7 +1514,7 @@ const Workspace = new Lang.Class({
         return lastLayout;
     },
 
-    _computeAllWindowSlots: function(windows) {
+    _getSpacingAndPadding: function() {
         let node = this.actor.get_theme_node();
 
         // Window grid spacing
@@ -1535,13 +1543,12 @@ const Workspace = new Lang.Class({
         padding.left += leftBorder;
         padding.right += rightBorder;
 
-        let area = {
-            x: this._fullGeometry.x + padding.left,
-            y: this._fullGeometry.y + padding.top,
-            width: this._fullGeometry.width - padding.left - padding.right,
-            height: this._fullGeometry.height - padding.top - padding.bottom,
-        };
+        return [rowSpacing, columnSpacing, padding];
+    },
 
+    _computeAllWindowSlots: function(windows) {
+        let [rowSpacing, columnSpacing, padding] = this._getSpacingAndPadding();
+        let area = padArea(this._fullGeometry, padding);
         let layout = this._computeLayout(windows, area, rowSpacing, columnSpacing);
         return layout.strategy.computeWindowSlots(layout, area);
     },
