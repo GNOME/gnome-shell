@@ -1013,6 +1013,8 @@ const Workspace = new Lang.Class({
         }
 
         let clones = this._windows.slice();
+        if (clones.length == 0)
+            return;
 
         clones.sort(function(a, b) {
             return a.metaWindow.get_stable_sequence() - b.metaWindow.get_stable_sequence();
@@ -1500,7 +1502,6 @@ const Workspace = new Lang.Class({
     },
 
     _computeAllWindowSlots: function(windows) {
-        let totalWindows = windows.length;
         let node = this.actor.get_theme_node();
 
         // Window grid spacing
@@ -1513,21 +1514,14 @@ const Workspace = new Lang.Class({
             right: node.get_padding(St.Side.RIGHT),
         };
 
-        if (!totalWindows)
-            return [];
-
         let closeButtonHeight, captionHeight;
         let leftBorder, rightBorder;
-        if (this._windowOverlays.length) {
-            // All of the overlays have the same chrome sizes,
-            // so just pick the first one.
-            let overlay = this._windowOverlays[0];
-            [closeButtonHeight, captionHeight] = overlay.chromeHeights();
-            [leftBorder, rightBorder] = overlay.chromeWidths();
-        } else {
-            [closeButtonHeight, captionHeight] = [0, 0];
-            [leftBorder, rightBorder] = [0, 0];
-        }
+
+        // All of the overlays have the same chrome sizes,
+        // so just pick the first one.
+        let overlay = this._windowOverlays[0];
+        [closeButtonHeight, captionHeight] = overlay.chromeHeights();
+        [leftBorder, rightBorder] = overlay.chromeWidths();
 
         rowSpacing += captionHeight;
         columnSpacing += (rightBorder + leftBorder) / 2;
