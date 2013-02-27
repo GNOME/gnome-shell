@@ -2000,27 +2000,39 @@ meta_screen_get_monitor_for_rect (MetaScreen    *screen,
                                   MetaRectangle *rect)
 {
   int i;
-  int best_monitor, monitor_score;
+  int best_monitor, monitor_score, rect_area;
 
   if (screen->n_monitor_infos == 1)
     return &screen->monitor_infos[0];
 
   best_monitor = 0;
-  monitor_score = 0;
+  monitor_score = -1;
 
+  rect_area = meta_rectangle_area (rect);
   for (i = 0; i < screen->n_monitor_infos; i++)
     {
-      MetaRectangle dest;
-      if (meta_rectangle_intersect (&screen->monitor_infos[i].rect,
-                                    rect,
-                                    &dest))
+      gboolean result;
+      int cur;
+
+      if (rect_area > 0)
         {
-          int cur = meta_rectangle_area (&dest);
-          if (cur > monitor_score)
-            {
-              monitor_score = cur;
-              best_monitor = i;
-            }
+          MetaRectangle dest;
+          result = meta_rectangle_intersect (&screen->monitor_infos[i].rect,
+                                             rect,
+                                             &dest);
+          cur = meta_rectangle_area (&dest);
+        }
+      else
+        {
+          result = meta_rectangle_contains_rect (&screen->monitor_infos[i].rect,
+                                                 rect);
+          cur = rect_area;
+        }
+
+      if (result && cur > monitor_score)
+        {
+          monitor_score = cur;
+          best_monitor = i;
         }
     }
 
