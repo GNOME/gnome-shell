@@ -255,6 +255,7 @@ const RemoteSearchProvider = new Lang.Class({
                 metas[i][prop] = metas[i][prop].deep_unpack();
             resultMetas.push({ id: metas[i]['id'],
                                name: metas[i]['name'],
+                               description: metas[i]['description'],
                                createIcon: Lang.bind(this,
                                                      this.createIcon, metas[i]) });
         }

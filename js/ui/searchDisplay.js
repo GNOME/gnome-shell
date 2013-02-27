@@ -103,10 +103,9 @@ const ListSearchResult = new Lang.Class({
                              x_align: St.Align.START,
                              y_align: St.Align.START });
 
-        // TODO: should highlight terms in the description here
         if (this.metaInfo['description']) {
-            let description = new St.Label({ style_class: 'list-search-result-description',
-                                             text: '"' + this.metaInfo['description'] + '"' });
+            let description = new St.Label({ style_class: 'list-search-result-description' });
+            description.clutter_text.set_markup(this.metaInfo['description']);
             details.add(description, { x_fill: false,
                                        y_fill: false,
                                        x_align: St.Align.START,
