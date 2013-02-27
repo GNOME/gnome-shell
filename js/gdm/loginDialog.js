@@ -753,7 +753,7 @@ const LoginDialog = new Lang.Class({
                            time: _FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad' });
 
-        if (!this._user || (this._user.is_logged_in() && this._verifyingUser))
+        if ((this._user && !this._user.is_logged_in()) || this._verifyingUser)
             this._sessionList.actor.show();
 
         this._promptEntry.grab_key_focus();
