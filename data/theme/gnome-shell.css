@@ -125,7 +125,8 @@ StScrollBar StButton#vhandle:active {
 
 /* PopupMenu */
 
-.popup-menu-boxpointer {
+.popup-menu-boxpointer,
+.candidate-popup-boxpointer {
     -arrow-border-radius: 8px;
     -arrow-background-color: rgba(0,0,0,0.9);
     -arrow-border-width: 2px;
@@ -2129,21 +2130,10 @@ StScrollBar StButton#vhandle:active {
 }
 
 /* IBus Candidate Popup */
-.candidate-popup-boxpointer {
-    -arrow-border-radius: 8px;
-    -arrow-background-color: #707070;
-    -arrow-border-width: 0px;
-    -arrow-base: 24px;
-    -arrow-rise: 11px;
-}
 
 .candidate-popup-content {
     padding: 0.5em;
     spacing: 0.3em;
-}
-
-.candidate-popup-text {
-    font-size: 9pt;
 }
 
 .candidate-index {
