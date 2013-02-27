@@ -3650,8 +3650,7 @@ meta_window_is_fullscreen (MetaWindow *window)
 /**
  * meta_window_get_all_monitors:
  * @window: The #MetaWindow
- * @length: (out caller-allocates): gint holding the length, may be %NULL to
- *                                  ignore
+ * @length: (out): gint holding the length, may be %NULL to ignore
  *
  * Returns: (array length=length) (element-type gint) (transfer container):
  *           List of the monitor indices the window is on.
