@@ -815,7 +815,9 @@ const UnalignedLayoutStrategy = new Lang.Class({
         let rows = [];
         let totalWidth = 0;
         for (let i = 0; i < windows.length; i++) {
-            totalWidth += windows[i].actor.width;
+            let window = windows[i];
+            let s = this._computeWindowScale(window);
+            totalWidth += window.actor.width * s;
         }
 
         let idealRowWidth = totalWidth / numRows;
