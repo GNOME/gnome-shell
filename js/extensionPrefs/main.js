@@ -45,6 +45,7 @@ const Application = new Lang.Class({
         this._extensionPrefsModules = {};
 
         this._extensionIters = {};
+        this._startupUuid = null;
     },
 
     _buildModel: function() {
@@ -203,6 +204,7 @@ const Application = new Lang.Class({
     _scanExtensions: function() {
         let finder = new ExtensionUtils.ExtensionFinder();
         finder.connect('extension-found', Lang.bind(this, this._extensionFound));
+        finder.connect('extensions-loaded', Lang.bind(this, this._extensionsLoaded));
         finder.scanExtensions();
     },
 
@@ -212,6 +214,11 @@ const Application = new Lang.Class({
         this._extensionIters[extension.uuid] = iter;
     },
 
+    _extensionsLoaded: function() {
+        if (this._startupUuid && this._extensionAvailable(this._startupUuid))
+            this._selectExtension(this._startupUuid);
+        this._startupUuid = null;
+    },
 
     _onActivate: function() {
         this._window.present();
@@ -232,10 +239,10 @@ const Application = new Lang.Class({
             // Strip off "extension:///" prefix which fakes a URI, if it exists
             uuid = stripPrefix(uuid, "extension:///");
 
-            if (!this._extensionAvailable(uuid))
-                return 1;
-
-            this._selectExtension(uuid);
+            if (this._extensionAvailable(uuid))
+                this._selectExtension(uuid);
+            else
+                this._startupUuid = uuid;
         }
         return 0;
     }
