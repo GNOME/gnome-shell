@@ -672,7 +672,7 @@ const LayoutStrategy = new Lang.Class({
     computeWindowSlots: function(layout, area) {
         this._computeRowSizes(layout);
 
-        let { rows: rows, scale: scale, state: state } = layout;
+        let { rows: rows, scale: scale } = layout;
 
         let slots = [];
 
