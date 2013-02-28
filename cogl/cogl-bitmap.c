@@ -447,6 +447,10 @@ _cogl_bitmap_gl_bind (CoglBitmap *bitmap,
   uint8_t *ptr;
   CoglError *internal_error = NULL;
 
+  g_return_val_if_fail (access & (COGL_BUFFER_ACCESS_READ |
+                                  COGL_BUFFER_ACCESS_WRITE),
+                        NULL);
+
   /* Divert to another bitmap if this data is shared */
   if (bitmap->shared_bmp)
     return _cogl_bitmap_gl_bind (bitmap->shared_bmp, access, hints, error);
@@ -463,8 +467,6 @@ _cogl_bitmap_gl_bind (CoglBitmap *bitmap,
       return data;
     }
 
-  bitmap->bound = TRUE;
-
   if (access == COGL_BUFFER_ACCESS_READ)
     ptr = _cogl_buffer_gl_bind (bitmap->buffer,
                                 COGL_BUFFER_BIND_TARGET_PIXEL_UNPACK,
@@ -477,6 +479,7 @@ _cogl_bitmap_gl_bind (CoglBitmap *bitmap,
     {
       ptr = NULL;
       g_assert_not_reached ();
+      return NULL;
     }
 
   /* NB: _cogl_buffer_gl_bind() may return NULL in non-error
@@ -487,6 +490,8 @@ _cogl_bitmap_gl_bind (CoglBitmap *bitmap,
       _cogl_propagate_error (error, internal_error);
       return NULL;
     }
+
+  bitmap->bound = TRUE;
 
   /* The data pointer actually stores the offset */
   return ptr + GPOINTER_TO_INT (bitmap->data);
