@@ -168,6 +168,9 @@ function startSession() {
     // initiate logouts.
     EndSessionDialog.init();
 
+    // We're ready for the session manager to move to the next phase
+    Meta.register_with_session();
+
     _startDate = new Date();
 
     log('GNOME Shell started at ' + _startDate);
