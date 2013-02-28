@@ -631,8 +631,9 @@ const WindowPositionFlags = {
 // must always be true. This is for each individual window -- while we
 // could adjust layoutScale to make the largest thumbnail smaller than
 // WINDOW_CLONE_MAXIMUM_SCALE, it would shrink windows which are already
-// under the inequality. This is a difficult issue, and right now is
-// unsolved -- it will generate bad layouts.
+// under the inequality. To solve this, we simply cheat: we simply keep
+// each window's "cell" area to be the same, but we shrink the thumbnail
+// and center it horizontally, and align it to the bottom vertically.
 
 const LayoutStrategy = new Lang.Class({
     Name: 'LayoutStrategy',
@@ -770,13 +771,17 @@ const LayoutStrategy = new Lang.Class({
                 let window = row.windows[j];
 
                 let s = scale * this._computeWindowScale(window);
-                s = Math.min(s, WINDOW_CLONE_MAXIMUM_SCALE);
-                let width = window.actor.width * s;
-                let height = window.actor.height * s;
-                let y = row.y + row.height - height;
+                let cellWidth = window.actor.width * s;
+                let cellHeight = window.actor.height * s;
 
-                slots.push([x, y, s, window]);
-                x += width + this._columnSpacing;
+                s = Math.min(s, WINDOW_CLONE_MAXIMUM_SCALE);
+                let cloneWidth = window.actor.width * s;
+
+                let cloneX = x + (cellWidth - cloneWidth) / 2;
+                let cloneY = row.y + row.height - cellHeight;
+
+                slots.push([cloneX, cloneY, s, window]);
+                x += cellWidth + this._columnSpacing;
             }
         }
         return slots;
