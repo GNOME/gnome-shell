@@ -81,5 +81,6 @@ main (int argc, char **argv)
     meta_plugin_manager_load (plugin);
 
   meta_init ();
+  meta_register_with_session ();
   return meta_run ();
 }

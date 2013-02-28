@@ -447,9 +447,48 @@ meta_init (void)
 }
 
 /**
+ * meta_register_with_session:
+ *
+ * Registers mutter with the session manager.  Call this after completing your own
+ * initialization.
+ *
+ * This should be called when the session manager can safely continue to the
+ * next phase of startup and potentially display windows.
+ */
+void
+meta_register_with_session (void)
+{
+  if (!opt_disable_sm)
+    {
+      if (opt_client_id == NULL)
+        {
+          const gchar *desktop_autostart_id;
+
+          desktop_autostart_id = g_getenv ("DESKTOP_AUTOSTART_ID");
+
+          if (desktop_autostart_id != NULL)
+            opt_client_id = g_strdup (desktop_autostart_id);
+        }
+
+      /* Unset DESKTOP_AUTOSTART_ID in order to avoid child processes to
+       * use the same client id. */
+      g_unsetenv ("DESKTOP_AUTOSTART_ID");
+
+      meta_session_init (opt_client_id, opt_save_file);
+    }
+  /* Free memory possibly allocated by the argument parsing which are
+   * no longer needed.
+   */
+  g_free (opt_save_file);
+  g_free (opt_display_name);
+  g_free (opt_client_id);
+}
+
+/**
  * meta_run: (skip)
  *
- * Runs mutter. Call this after completing your own initialization.
+ * Runs mutter. Call this after completing initialization that doesn't require
+ * an event loop.
  *
  * Return value: mutter's exit status
  */
@@ -509,35 +548,6 @@ meta_run (void)
   if (!meta_ui_have_a_theme ())
     meta_fatal (_("Could not find a theme! Be sure %s exists and contains the usual themes.\n"),
                 MUTTER_DATADIR"/themes");
-  
-  /* Connect to SM as late as possible - but before managing display,
-   * or we might try to manage a window before we have the session
-   * info
-   */
-  if (!opt_disable_sm)
-    {
-      if (opt_client_id == NULL)
-        {
-          const gchar *desktop_autostart_id;
-  
-          desktop_autostart_id = g_getenv ("DESKTOP_AUTOSTART_ID");
- 
-          if (desktop_autostart_id != NULL)
-            opt_client_id = g_strdup (desktop_autostart_id);
-        }
-
-      /* Unset DESKTOP_AUTOSTART_ID in order to avoid child processes to
-       * use the same client id. */
-      g_unsetenv ("DESKTOP_AUTOSTART_ID");
-
-      meta_session_init (opt_client_id, opt_save_file);
-    }
-  /* Free memory possibly allocated by the argument parsing which are
-   * no longer needed.
-   */
-  g_free (opt_save_file);
-  g_free (opt_display_name);
-  g_free (opt_client_id);
 
   if (!meta_display_open ())
     meta_exit (META_EXIT_ERROR);
