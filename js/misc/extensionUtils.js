@@ -174,10 +174,15 @@ const ExtensionFinder = new Lang.Class({
         this.emit('extension-found', extension);
     },
 
+    _extensionsLoaded: function() {
+        this.emit('extensions-loaded');
+    },
+
     scanExtensions: function() {
         let perUserDir = Gio.File.new_for_path(global.userdatadir);
         FileUtils.collectFromDatadirsAsync('extensions',
                                            { processFile: Lang.bind(this, this._loadExtension),
+                                             loadedCallback: Lang.bind(this, this._extensionsLoaded),
                                              includeUserDir: true,
                                              data: perUserDir });
     }
