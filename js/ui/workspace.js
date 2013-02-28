@@ -589,9 +589,9 @@ const LayoutStrategy = new Lang.Class({
                  windows: [] };
     },
 
-    // Computes and returns a fancy scale for @window using the
-    // base scale, @scale.
-    _computeWindowScale: function(window, scale) {
+    // Computes and returns an individual scaling factor for @window,
+    // to be applied in addition to the overal layout scale.
+    _computeWindowScale: function(window) {
         // Since we align windows next to each other, the height of the
         // thumbnails is much more important to preserve than the width of
         // them, so two windows with equal height, but maybe differering
@@ -604,8 +604,7 @@ const LayoutStrategy = new Lang.Class({
         // good. We'll use a multiplier of 1.5 for this.
 
         // Map from [0, 1] to [1.5, 1]
-        let fancyScale = _interpolate(1.5, 1, ratio) * scale;
-        return fancyScale;
+        return _interpolate(1.5, 1, ratio);
     },
 
     // Compute the size of each row, by assigning to the properties
@@ -697,7 +696,7 @@ const LayoutStrategy = new Lang.Class({
             for (let j = 0; j < row.windows.length; j++) {
                 let window = row.windows[j];
 
-                let s = this._computeWindowScale(window, scale);
+                let s = scale * this._computeWindowScale(window);
                 s = Math.min(s, WINDOW_CLONE_MAXIMUM_SCALE);
                 let width = window.actor.width * s;
                 let height = window.actor.height * s;
@@ -755,7 +754,7 @@ const UnalignedLayoutStrategy = new Lang.Class({
 
             for (; windowIdx < windows.length; windowIdx++) {
                 let window = windows[windowIdx];
-                let s = this._computeWindowScale(window, 1);
+                let s = this._computeWindowScale(window);
                 let width = window.actor.width * s;
                 let height = window.actor.height * s;
                 row.fullHeight = Math.max(row.fullHeight, height);
