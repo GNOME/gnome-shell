@@ -561,6 +561,79 @@ const WindowPositionFlags = {
     ANIMATE: 1 << 1
 };
 
+// Window Thumbnail Layout Algorithm
+// =================================
+//
+// General overview
+// ----------------
+//
+// The window thumbnail layout algorithm calculates some optimal layout
+// by computing layouts with some number of rows, calculating how good
+// each layout is, and stopping iterating when it finds one that is worse
+// than the previous layout. A layout consists of which windows are in
+// which rows, row sizes and other general state tracking that would make
+// calculating window positions from this information fairly easy.
+//
+// We don't compute some global order of windows right now for optimal
+// travel when animating into the overview; windows are assumed to be
+// in some stable order.
+//
+// After a layout is computed that's considered the best layout, we
+// compute the layout scale to fit it in the area, and then compute
+// slots (sizes and positions) for each thumbnail.
+//
+// Layout generation
+// -----------------
+//
+// Layout generation is naive and simple: we simply add windows to a row
+// until we've added too many windows to a row, and then make a new row,
+// until we have our required N rows. The potential issue with this strategy
+// is that we may have too many windows at the bottom in some pathological
+// cases, which tends to make the thumbnails have the shape of a pile of
+// sand with a peak, with one window at the top.
+//
+// Scaling factors
+// ---------------
+//
+// Thumbnail position is mostly straightforward -- the main issue is
+// computing an optimal scale for each window that fits the constraints,
+// and doesn't make the thumbnail too small to see. There are two factors
+// involved in thumbnail scale to make sure that these two goals are met:
+// the window scale (calculated by _computeWindowScale) and the layout
+// scale (calculated by computeSizeAndScale).
+//
+// The calculation logic becomes slightly more complicated because row
+// and column spacing are not scaled, they're constant, so we can't
+// simply generate a bunch of window positions and then scale it. In
+// practice, it's not too bad -- we can simply try to fit the layout
+// in the input area minus whatever spacing we have, and then add
+// it back afterwards.
+//
+// The window scale is constant for the window's size regardless of the
+// input area or the layout scale or rows or anything else, and right
+// now just enlarges the window if it's too small. The fact that this
+// factor is stable makes it easy to calculate, so there's no sense
+// in not applying it in most calculations.
+//
+// The layout scale depends on the input area, the rows, etc, but is the
+// same for the entire layout, rather than being per-window. After
+// generating the rows of windows, we basically do some basic math to
+// fit the full, unscaled layout to the input area, as described above.
+//
+// With these two factors combined, the final scale of each thumbnail is
+// simply windowScale * layoutScale... almost.
+//
+// There's one additional constraint: the thumbnail scale must never be
+// larger than WINDOW_CLONE_MAXIMUM_SCALE, which means that the inequality:
+//
+//   windowScale * layoutScale <= WINDOW_CLONE_MAXIMUM_SCALE
+//
+// must always be true. This is for each individual window -- while we
+// could adjust layoutScale to make the largest thumbnail smaller than
+// WINDOW_CLONE_MAXIMUM_SCALE, it would shrink windows which are already
+// under the inequality. This is a difficult issue, and right now is
+// unsolved -- it will generate bad layouts.
+
 const LayoutStrategy = new Lang.Class({
     Name: 'LayoutStrategy',
     Abstract: true,
