@@ -1562,6 +1562,12 @@ meta_window_actor_new (MetaWindow *window)
   meta_window_actor_set_updates_frozen (self,
                                         meta_window_updates_are_frozen (priv->window));
 
+  /* If a window doesn't start off with updates frozen, we should
+   * we should send a _NET_WM_FRAME_DRAWN immediately after the first drawn.
+   */
+  if (priv->window->extended_sync_request_counter && !priv->updates_frozen)
+    meta_window_actor_queue_frame_drawn (self, FALSE);
+
   meta_window_actor_sync_actor_geometry (self, priv->window->placed);
 
   /* Hang our compositor window state off the MetaWindow for fast retrieval */
@@ -2408,7 +2414,6 @@ meta_window_actor_post_paint (MetaWindowActor *self)
 
       frame->frame_drawn_time = meta_compositor_monotonic_time_to_server_time (display,
                                                                                g_get_monotonic_time ());
-
       ev.type = ClientMessage;
       ev.window = meta_window_get_xwindow (priv->window);
       ev.message_type = display->atom__NET_WM_FRAME_DRAWN;

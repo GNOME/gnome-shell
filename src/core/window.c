@@ -4558,10 +4558,6 @@ meta_window_create_sync_request_alarm (MetaWindow *window)
 
       window->sync_request_serial =
         XSyncValueLow32 (init) + ((gint64)XSyncValueHigh32 (init) << 32);
-
-      /* if the value is odd, the window starts off with updates frozen */
-      meta_compositor_set_updates_frozen (window->display->compositor, window,
-                                          meta_window_updates_are_frozen (window));
     }
   else
     {
