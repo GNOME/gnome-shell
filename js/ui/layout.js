@@ -887,8 +887,10 @@ const LayoutManager = new Lang.Class({
                         this.monitors[i].inFullscreen = true;
                 } else {
                     let monitors = metaWindow.get_all_monitors();
-                    for (let i = 0; i < monitors.length; i++)
-                        this.monitors[i].inFullscreen = true;
+                    for (let i = 0; i < monitors.length; i++) {
+                        let index = monitors[i];
+                        this.monitors[index].inFullscreen = true;
+                    }
                 }
             }
         }
