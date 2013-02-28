@@ -923,7 +923,7 @@ const LayoutManager = new Lang.Class({
 
         if (primaryWasInFullscreen != this.primaryMonitor.inFullscreen) {
             let windows = this._getWindowActorsForWorkspace(global.screen.get_active_workspace());
-            for (let i = 0; i < windows.length - 1; i++) {
+            for (let i = 0; i < windows.length; i++) {
                 let window = windows[i];
                 let metaWindow = window.meta_window;
 
@@ -935,8 +935,9 @@ const LayoutManager = new Lang.Class({
                 if (!metaWindow.is_on_primary_monitor())
                     continue;
 
-                // Minimize monitor sized windows
-                if (metaWindow.is_monitor_sized())
+                // Minimize monitor sized windows that are not focused
+                if (metaWindow.is_monitor_sized() &&
+                    !metaWindow.appears_focused)
                     metaWindow.minimize();
             }
             this.emit('primary-fullscreen-changed', this.primaryMonitor.inFullscreen);
