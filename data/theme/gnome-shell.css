@@ -316,8 +316,18 @@ StScrollBar StButton#vhandle:active {
 .notification-button:focus,
 .notification-icon-button:focus,
 .hotplug-notification-item:focus,
-.modal-dialog-button:focus {
+.modal-dialog-button:focus,
+.app-view-control:focus {
     border-width: 2px;
+}
+
+.app-view-control:focus {
+    padding: 3px;
+}
+
+.app-view-control:first-child:ltr:focus,
+.app-view-control:last-child:rtl:focus {
+    border-right-width: 1px;
 }
 
 .candidate-page-button:active,
