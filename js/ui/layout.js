@@ -1264,6 +1264,7 @@ const PressureBarrier = new Lang.Class({
         this._timeout = timeout;
         this._orientation = (barrier.y1 == barrier.y2) ? Clutter.Orientation.HORIZONTAL : Clutter.Orientation.VERTICAL;
 
+        this._isTriggered = false;
         this._reset();
 
         this._barrierHitId = this._barrier.connect('hit', Lang.bind(this, this._onBarrierHit));
@@ -1322,14 +1323,21 @@ const PressureBarrier = new Lang.Class({
 
     _onBarrierLeft: function(barrier, event) {
         this._reset();
+        this._isTriggered = false;
     },
 
     _trigger: function() {
+        this._isTriggered = true;
         this.emit('trigger');
         this._reset();
     },
 
     _onBarrierHit: function(barrier, event) {
+        // If we've triggered the barrier, wait until the pointer has the
+        // left the barrier hitbox until we trigger it again.
+        if (this._isTriggered)
+            return;
+
         // Throw out all events where the pointer was grabbed by another
         // client, as the client that grabbed the pointer expects to have
         // complete control over it
