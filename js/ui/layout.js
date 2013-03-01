@@ -132,7 +132,6 @@ const LayoutManager = new Lang.Class({
         this.hotCorners = [];
 
         this._keyboardIndex = -1;
-        this._leftPanelBarrier = null;
         this._rightPanelBarrier = null;
         this._trayBarrier = null;
 
@@ -280,6 +279,8 @@ const LayoutManager = new Lang.Class({
             this.hotCorners[i].destroy();
         this.hotCorners = [];
 
+        let size = this.panelBox.height;
+
         // build new hot corners
         for (let i = 0; i < this.monitors.length; i++) {
             let monitor = this.monitors[i];
@@ -321,6 +322,7 @@ const LayoutManager = new Lang.Class({
             }
 
             let corner = new HotCorner(this, cornerX, cornerY);
+            corner.setBarrierSize(size);
             this.hotCorners.push(corner);
         }
 
@@ -394,15 +396,15 @@ const LayoutManager = new Lang.Class({
     },
 
     _panelBoxChanged: function() {
-        this._updatePanelBarriers();
+        this._updatePanelBarrier();
+
+        let size = this.panelBox.height;
+        this.hotCorners.forEach(function(corner) {
+            corner.setBarrierSize(size);
+        });
     },
 
-    _updatePanelBarriers: function() {
-        if (this._leftPanelBarrier) {
-            this._leftPanelBarrier.destroy();
-            this._leftPanelBarrier = null;
-        }
-
+    _updatePanelBarrier: function() {
         if (this._rightPanelBarrier) {
             this._rightPanelBarrier.destroy();
             this._rightPanelBarrier = null;
@@ -411,10 +413,6 @@ const LayoutManager = new Lang.Class({
         if (this.panelBox.height) {
             let primary = this.primaryMonitor;
 
-            this._leftPanelBarrier  = new Meta.Barrier({ display: global.display,
-                                                         x1: primary.x, y1: primary.y,
-                                                         x2: primary.x, y2: primary.y + this.panelBox.height,
-                                                         directions: Meta.BarrierDirection.POSITIVE_X });
             this._rightPanelBarrier = new Meta.Barrier({ display: global.display,
                                                          x1: primary.x + primary.width, y1: primary.y,
                                                          x2: primary.x + primary.width, y2: primary.y + this.panelBox.height,
@@ -1108,6 +1106,9 @@ const HotCorner = new Lang.Class({
         // multiple times due to an accidental jitter.
         this._entered = false;
 
+        this._x = x;
+        this._y = y;
+
         this.actor = new Clutter.Actor({ name: 'hot-corner-environs',
                                          x: x, y: y,
                                          width: 3,
@@ -1149,7 +1150,29 @@ const HotCorner = new Lang.Class({
         layoutManager.uiGroup.add_actor(this._ripple3);
     },
 
+    setBarrierSize: function(size) {
+        if (this._verticalBarrier) {
+            this._verticalBarrier.destroy();
+            this._verticalBarrier = null;
+        }
+
+        if (this._horizontalBarrier) {
+            this._horizontalBarrier.destroy();
+            this._horizontalBarrier = null;
+        }
+
+        if (size > 0) {
+            this._verticalBarrier = new Meta.Barrier({ display: global.display,
+                                                       x1: this._x, x2: this._x, y1: this._y, y2: this._y + size,
+                                                       directions: Meta.BarrierDirection.POSITIVE_X });
+            this._horizontalBarrier = new Meta.Barrier({ display: global.display,
+                                                         x1: this._x, x2: this._x + size, y1: this._y, y2: this._y,
+                                                         directions: Meta.BarrierDirection.POSITIVE_Y });
+        }
+    },
+
     destroy: function() {
+        this.setBarrierSize(0);
         this.actor.destroy();
     },
 
