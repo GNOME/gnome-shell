@@ -343,8 +343,9 @@ const AppDisplay = new Lang.Class({
         global.settings.connect('changed::app-folder-categories', Lang.bind(this, function() {
             Main.queueDeferredWork(this._allAppsWorkId);
         }));
-        global.settings.connect('changed::enable-app-monitoring',
-                                Lang.bind(this, this._updateFrequentVisibility));
+        this._privacySettings = new Gio.Settings({ schema: 'org.gnome.desktop.privacy' });
+        this._privacySettings.connect('changed::remember-app-usage',
+                                      Lang.bind(this, this._updateFrequentVisibility));
 
         this._views = [];
 
@@ -419,7 +420,7 @@ const AppDisplay = new Lang.Class({
     },
 
     _updateFrequentVisibility: function() {
-        let enabled = global.settings.get_boolean('enable-app-monitoring');
+        let enabled = this._privacySettings.get_boolean('remember-app-usage');
         this._views[Views.FREQUENT].control.visible = enabled;
 
         let visibleViews = this._views.filter(function(v) {

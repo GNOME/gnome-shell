@@ -21,16 +21,6 @@
         EnableExtension and DisableExtension DBus methods on org.gnome.Shell.
       </_description>
     </key>
-    <key name="enable-app-monitoring" type="b">
-      <default>true</default>
-      <_summary>Whether to collect stats about applications usage</_summary>
-      <_description>
-        The shell normally monitors active applications in order to present
-        the most used ones (e.g. in launchers). While this data will be
-        kept private, you may want to disable this for privacy reasons.
-        Please note that doing so won't remove already saved data.
-      </_description>
-    </key>
     <key name="favorite-apps" type="as">
       <default>[ 'epiphany.desktop', 'evolution.desktop', 'empathy.desktop', 'rhythmbox.desktop', 'shotwell.desktop', 'libreoffice-writer.desktop', 'nautilus.desktop', 'gnome-documents.desktop' ]</default>
       <_summary>List of desktop file IDs for favorite applications</_summary>
