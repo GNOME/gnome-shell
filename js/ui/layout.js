@@ -18,7 +18,6 @@ const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
 
-const HOT_CORNER_ACTIVATION_TIMEOUT = 0.5;
 const STARTUP_ANIMATION_TIME = 0.5;
 const KEYBOARD_ANIMATION_TIME = 0.15;
 const BACKGROUND_FADE_ANIMATION_TIME = 1.0;
@@ -130,8 +129,9 @@ const LayoutManager = new Lang.Class({
         this.monitors = [];
         this.primaryMonitor = null;
         this.primaryIndex = -1;
+        this.hotCorners = [];
+
         this._keyboardIndex = -1;
-        this._hotCorners = [];
         this._leftPanelBarrier = null;
         this._rightPanelBarrier = null;
         this._trayBarrier = null;
@@ -276,56 +276,57 @@ const LayoutManager = new Lang.Class({
 
     _updateHotCorners: function() {
         // destroy old hot corners
-        for (let i = 0; i < this._hotCorners.length; i++)
-            this._hotCorners[i].destroy();
-        this._hotCorners = [];
+        for (let i = 0; i < this.hotCorners.length; i++)
+            this.hotCorners[i].destroy();
+        this.hotCorners = [];
 
         // build new hot corners
         for (let i = 0; i < this.monitors.length; i++) {
-            if (i == this.primaryIndex)
-                continue;
-
             let monitor = this.monitors[i];
             let cornerX = this._rtl ? monitor.x + monitor.width : monitor.x;
             let cornerY = monitor.y;
 
-            let haveTopLeftCorner = true;
+            if (i != this.primaryIndex) {
+                let haveTopLeftCorner = true;
 
-            // Check if we have a top left (right for RTL) corner.
-            // I.e. if there is no monitor directly above or to the left(right)
-            let besideX = this._rtl ? monitor.x + 1 : cornerX - 1;
-            let besideY = cornerY;
-            let aboveX = cornerX;
-            let aboveY = cornerY - 1;
+                // Check if we have a top left (right for RTL) corner.
+                // I.e. if there is no monitor directly above or to the left(right)
+                let besideX = this._rtl ? monitor.x + 1 : cornerX - 1;
+                let besideY = cornerY;
+                let aboveX = cornerX;
+                let aboveY = cornerY - 1;
 
-            for (let j = 0; j < this.monitors.length; j++) {
-                if (i == j)
+                for (let j = 0; j < this.monitors.length; j++) {
+                    if (i == j)
+                        continue;
+                    let otherMonitor = this.monitors[j];
+                    if (besideX >= otherMonitor.x &&
+                        besideX < otherMonitor.x + otherMonitor.width &&
+                        besideY >= otherMonitor.y &&
+                        besideY < otherMonitor.y + otherMonitor.height) {
+                        haveTopLeftCorner = false;
+                        break;
+                    }
+                    if (aboveX >= otherMonitor.x &&
+                        aboveX < otherMonitor.x + otherMonitor.width &&
+                        aboveY >= otherMonitor.y &&
+                        aboveY < otherMonitor.y + otherMonitor.height) {
+                        haveTopLeftCorner = false;
+                        break;
+                    }
+                }
+
+                if (!haveTopLeftCorner)
                     continue;
-                let otherMonitor = this.monitors[j];
-                if (besideX >= otherMonitor.x &&
-                    besideX < otherMonitor.x + otherMonitor.width &&
-                    besideY >= otherMonitor.y &&
-                    besideY < otherMonitor.y + otherMonitor.height) {
-                    haveTopLeftCorner = false;
-                    break;
-                }
-                if (aboveX >= otherMonitor.x &&
-                    aboveX < otherMonitor.x + otherMonitor.width &&
-                    aboveY >= otherMonitor.y &&
-                    aboveY < otherMonitor.y + otherMonitor.height) {
-                    haveTopLeftCorner = false;
-                    break;
-                }
             }
 
-            if (!haveTopLeftCorner)
-                continue;
-
             let corner = new HotCorner(this);
-            this._hotCorners.push(corner);
+            this.hotCorners.push(corner);
             corner.actor.set_position(cornerX, cornerY);
             this.addChrome(corner.actor);
         }
+
+        this.emit('hot-corners-changed');
     },
 
     _createBackground: function(monitorIndex) {
@@ -395,7 +396,6 @@ const LayoutManager = new Lang.Class({
     },
 
     _panelBoxChanged: function() {
-        this.emit('panel-box-changed');
         this._updatePanelBarriers();
     },
 
@@ -649,8 +649,6 @@ const LayoutManager = new Lang.Class({
 
         if (!Main.sessionMode.isGreeter)
             this._createSecondaryBackgrounds();
-
-        this.emit('panel-box-changed');
 
         this._queueUpdateRegions();
 
@@ -1133,24 +1131,11 @@ const HotCorner = new Lang.Class({
             this._corner.set_position(0, 0);
         }
 
-        this._activationTime = 0;
-
         this.actor.connect('leave-event',
                            Lang.bind(this, this._onEnvironsLeft));
 
-        // Clicking on the hot corner environs should result in the
-        // same behavior as clicking on the hot corner.
-        this.actor.connect('button-release-event',
-                           Lang.bind(this, this._onCornerClicked));
-
-        // In addition to being triggered by the mouse enter event,
-        // the hot corner can be triggered by clicking on it. This is
-        // useful if the user wants to undo the effect of triggering
-        // the hot corner once in the hot corner.
         this._corner.connect('enter-event',
                              Lang.bind(this, this._onCornerEntered));
-        this._corner.connect('button-release-event',
-                             Lang.bind(this, this._onCornerClicked));
         this._corner.connect('leave-event',
                              Lang.bind(this, this._onCornerLeft));
 
@@ -1225,20 +1210,12 @@ const HotCorner = new Lang.Class({
     _onCornerEntered : function() {
         if (!this._entered) {
             this._entered = true;
-            if (!Main.overview.animationInProgress) {
-                this._activationTime = Date.now() / 1000;
-
+            if (Main.overview.shouldToggleByCornerOrButton()) {
                 this.rippleAnimation();
                 Main.overview.toggle();
             }
         }
         return false;
-    },
-
-    _onCornerClicked : function() {
-        if (this.shouldToggleOverviewOnClick())
-            Main.overview.toggle();
-        return true;
     },
 
     _onCornerLeft : function(actor, event) {
@@ -1251,20 +1228,6 @@ const HotCorner = new Lang.Class({
     _onEnvironsLeft : function(actor, event) {
         if (event.get_related() != this._corner)
             this._entered = false;
-        return false;
-    },
-
-    // Checks if the Activities button is currently sensitive to
-    // clicks. The first call to this function within the
-    // HOT_CORNER_ACTIVATION_TIMEOUT time of the hot corner being
-    // triggered will return false. This avoids opening and closing
-    // the overview if the user both triggered the hot corner and
-    // clicked the Activities button.
-    shouldToggleOverviewOnClick: function() {
-        if (Main.overview.animationInProgress)
-            return false;
-        if (this._activationTime == 0 || Date.now() / 1000 - this._activationTime > HOT_CORNER_ACTIVATION_TIMEOUT)
-            return true;
         return false;
     }
 });

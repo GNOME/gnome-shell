@@ -18,7 +18,6 @@ const Atk = imports.gi.Atk;
 const Config = imports.misc.config;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const DND = imports.ui.dnd;
-const Layout = imports.ui.layout;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
@@ -630,22 +629,14 @@ const ActivitiesButton = new Lang.Class({
         this.parent(0.0, null, true);
         this.actor.accessible_role = Atk.Role.TOGGLE_BUTTON;
 
-        let container = new Shell.GenericContainer();
-        container.connect('get-preferred-width', Lang.bind(this, this._containerGetPreferredWidth));
-        container.connect('get-preferred-height', Lang.bind(this, this._containerGetPreferredHeight));
-        container.connect('allocate', Lang.bind(this, this._containerAllocate));
-        this.actor.add_actor(container);
         this.actor.name = 'panelActivities';
 
         /* Translators: If there is no suitable word for "Activities"
            in your language, you can use the word for "Overview". */
         this._label = new St.Label({ text: _("Activities") });
-        container.add_actor(this._label);
+        this.actor.add_actor(this._label);
 
         this.actor.label_actor = this._label;
-
-        this.hotCorner = new Layout.HotCorner(Main.layoutManager);
-        container.add_actor(this.hotCorner.actor);
 
         this.actor.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
         this.actor.connect_after('button-release-event', Lang.bind(this, this._onButtonRelease));
@@ -661,44 +652,6 @@ const ActivitiesButton = new Lang.Class({
         }));
 
         this._xdndTimeOut = 0;
-
-        // Since the hot corner uses stage coordinates, Clutter won't
-        // queue relayouts for us when the panel moves. Queue a relayout
-        // when that happens.
-        Main.layoutManager.connect('panel-box-changed', Lang.bind(this, function() {
-            container.queue_relayout();
-        }));
-    },
-
-    _containerGetPreferredWidth: function(actor, forHeight, alloc) {
-        [alloc.min_size, alloc.natural_size] = this._label.get_preferred_width(forHeight);
-    },
-
-    _containerGetPreferredHeight: function(actor, forWidth, alloc) {
-        [alloc.min_size, alloc.natural_size] = this._label.get_preferred_height(forWidth);
-    },
-
-    _containerAllocate: function(actor, box, flags) {
-        this._label.allocate(box, flags);
-
-        // The hot corner needs to be outside any padding/alignment
-        // that has been imposed on us
-        let primary = Main.layoutManager.primaryMonitor;
-        let hotBox = new Clutter.ActorBox();
-        let ok, x, y;
-        if (actor.get_text_direction() == Clutter.TextDirection.LTR) {
-            [ok, x, y] = actor.transform_stage_point(primary.x, primary.y)
-        } else {
-            [ok, x, y] = actor.transform_stage_point(primary.x + primary.width, primary.y);
-            // hotCorner.actor has northeast gravity, so we don't need
-            // to adjust x for its width
-        }
-
-        hotBox.x1 = Math.round(x);
-        hotBox.x2 = hotBox.x1 + this.hotCorner.actor.width;
-        hotBox.y1 = Math.round(y);
-        hotBox.y2 = hotBox.y1 + this.hotCorner.actor.height;
-        this.hotCorner.actor.allocate(hotBox, flags);
     },
 
     handleDragOver: function(source, actor, x, y, time) {
@@ -715,7 +668,7 @@ const ActivitiesButton = new Lang.Class({
 
     _onCapturedEvent: function(actor, event) {
         if (event.type() == Clutter.EventType.BUTTON_PRESS) {
-            if (!this.hotCorner.shouldToggleOverviewOnClick())
+            if (!Main.overview.shouldToggleByCornerOrButton())
                 return true;
         }
         return false;

@@ -33,6 +33,8 @@ const SHADE_ANIMATION_TIME = .20;
 
 const DND_WINDOW_SWITCH_TIMEOUT = 1250;
 
+const OVERVIEW_ACTIVATION_TIMEOUT = 0.5;
+
 const ShellInfo = new Lang.Class({
     Name: 'ShellInfo',
 
@@ -145,6 +147,8 @@ const Overview = new Lang.Class({
         global.overlay_group.add_child(this._backgroundGroup);
         this._backgroundGroup.hide();
         this._bgManagers = [];
+
+        this._activationTime = 0;
 
         this.visible = false;           // animating to overview, in overview, animating out
         this._shown = false;            // show() and not hide()
@@ -536,6 +540,7 @@ const Overview = new Lang.Class({
         this.visible = true;
         this.animationInProgress = true;
         this.visibleTarget = true;
+        this._activationTime = Date.now() / 1000;
 
         // All the the actors in the window group are completely obscured,
         // hiding the group holding them while the Overview is displayed greatly
@@ -631,6 +636,20 @@ const Overview = new Lang.Class({
             this.hide();
         else
             this.show();
+    },
+
+    // Checks if the Activities button is currently sensitive to
+    // clicks. The first call to this function within the
+    // OVERVIEW_ACTIVATION_TIMEOUT time of the hot corner being
+    // triggered will return false. This avoids opening and closing
+    // the overview if the user both triggered the hot corner and
+    // clicked the Activities button.
+    shouldToggleByCornerOrButton: function() {
+        if (this.animationInProgress)
+            return false;
+        if (this._activationTime == 0 || Date.now() / 1000 - this._activationTime > OVERVIEW_ACTIVATION_TIMEOUT)
+            return true;
+        return false;
     },
 
     //// Private methods ////

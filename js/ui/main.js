@@ -148,8 +148,6 @@ function startSession() {
     else
         screenShield = new ScreenShield.ScreenShieldFallback();
 
-    // The message tray relies on being constructed
-    // after the panel.
     panel = new Panel.Panel();
     messageTray = new MessageTray.MessageTray();
     keyboard = new Keyboard.Keyboard();

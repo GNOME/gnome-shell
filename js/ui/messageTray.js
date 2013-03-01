@@ -1672,14 +1672,13 @@ const MessageTray = new Lang.Class({
         Main.layoutManager.trackChrome(this._closeButton);
 
         Main.layoutManager.connect('primary-fullscreen-changed', Lang.bind(this, this._onFullscreenChanged));
+        Main.layoutManager.connect('hot-corners-changed', Lang.bind(this, this._hotCornersChanged));
 
         // If the overview shows or hides while we're in
         // the message tray, revert back to normal mode.
         Main.overview.connect('showing', Lang.bind(this, this._escapeTray));
         Main.overview.connect('hiding', Lang.bind(this, this._escapeTray));
 
-        // Track if we've added the activities button
-        this._activitiesButtonAdded = false;
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
 
         Main.wm.addKeybinding('toggle-message-tray',
@@ -1703,6 +1702,7 @@ const MessageTray = new Lang.Class({
         this._trayDwellTimeoutId = 0;
         this._setupTrayDwellIfNeeded();
         this._sessionUpdated();
+        this._hotCornersChanged();
 
         this._noMessages = new St.Label({ text: _("No Messages"),
                                           style_class: 'no-messages-label',
@@ -1775,11 +1775,6 @@ const MessageTray = new Lang.Class({
     },
 
     _sessionUpdated: function() {
-        if (!this._activitiesButtonAdded && Main.panel.statusArea.activities) {
-            this._activitiesButtonAdded = true;
-            this._grabHelper.addActor(Main.panel.statusArea.activities.hotCorner.actor);
-        }
-
         if ((Main.sessionMode.isLocked || Main.sessionMode.isGreeter) && this._inCtrlAltTab) {
             Main.ctrlAltTabManager.removeGroup(this._summary);
             this._inCtrlAltTab = false;
@@ -2099,6 +2094,13 @@ const MessageTray = new Lang.Class({
     _onSummaryHoverChanged: function() {
         this._pointerInSummary = this._summary.hover;
         this._updateState();
+    },
+
+    _hotCornersChanged: function() {
+        let primary = Main.layoutManager.primaryIndex;
+        let corner = Main.layoutManager.hotCorners[primary];
+        if (corner && corner.actor)
+            this._grabHelper.addActor(corner.actor);
     },
 
     _onTrayHoverChanged: function() {
