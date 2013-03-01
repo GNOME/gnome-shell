@@ -320,10 +320,8 @@ const LayoutManager = new Lang.Class({
                     continue;
             }
 
-            let corner = new HotCorner(this);
+            let corner = new HotCorner(this, cornerX, cornerY);
             this.hotCorners.push(corner);
-            corner.actor.set_position(cornerX, cornerY);
-            this.addChrome(corner.actor);
         }
 
         this.emit('hot-corners-changed');
@@ -1103,7 +1101,7 @@ Signals.addSignalMethods(LayoutManager.prototype);
 const HotCorner = new Lang.Class({
     Name: 'HotCorner',
 
-    _init : function(layoutManager) {
+    _init : function(layoutManager, x, y) {
         // We use this flag to mark the case where the user has entered the
         // hot corner and has not left both the hot corner and a surrounding
         // guard area (the "environs"). This avoids triggering the hot corner
@@ -1111,6 +1109,7 @@ const HotCorner = new Lang.Class({
         this._entered = false;
 
         this.actor = new Clutter.Actor({ name: 'hot-corner-environs',
+                                         x: x, y: y,
                                          width: 3,
                                          height: 3,
                                          reactive: true });
@@ -1123,6 +1122,7 @@ const HotCorner = new Lang.Class({
         this._corner._delegate = this;
 
         this.actor.add_child(this._corner);
+        layoutManager.addChrome(this.actor);
 
         if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
             this._corner.set_position(this.actor.width - this._corner.width, 0);
