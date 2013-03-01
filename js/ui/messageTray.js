@@ -2348,6 +2348,7 @@ const MessageTray = new Lang.Class({
             return false;
         }
 
+        this.emit('showing');
         this._tween(this.actor, '_trayState', State.SHOWN,
                     { y: -this.actor.height,
                       time: ANIMATION_TIME,
@@ -2398,6 +2399,7 @@ const MessageTray = new Lang.Class({
         // is distracting, so hide it immediately in case it was visible.
         this._summaryBoxPointer.actor.hide();
 
+        this.emit('hiding');
         this._tween(this.actor, '_trayState', State.HIDDEN,
                     { y: 0,
                       time: ANIMATION_TIME,
