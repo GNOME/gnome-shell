@@ -1,13 +1,28 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Define if building universal (internal helper macro) */
+/* #undef AC_APPLE_UNIVERSAL_BUILD */
+
+/* define if asm blocks can use numeric local labels */
+/* #undef ASM_NUMERIC_LABELS */
+
 /* Can use Cogl 2.0 API internally */
 #define COGL_ENABLE_EXPERIMENTAL_2_0_API 1
 
 /* Can use experimental API internally */
 #define COGL_ENABLE_EXPERIMENTAL_API 1
 
+/* The major version for libgbm */
+/* #undef COGL_GBM_MAJOR */
+
+/* The micro version for libgbm */
+/* #undef COGL_GBM_MICRO */
+
+/* The minor version for libgbm */
+/* #undef COGL_GBM_MINOR */
+
 /* Cogl supports OpenGL using the WGL API */
-#define COGL_HAS_WIN32_SUPPORT 1
+#define COGL_HAS_WGL_SUPPORT 1
 
 /* Define to 1 if translation of program messages to the user's native
    language is requested. */
@@ -15,6 +30,75 @@
 
 /* The prefix for our gettext translation domains. */
 #define GETTEXT_PACKAGE "@GETTEXT_PACKAGE@"
+
+/* Define to the GLIB binary age */
+/* #undef GLIB_BINARY_AGE */
+
+/* Byte contents of gmutex */
+/* #undef GLIB_BYTE_CONTENTS_GMUTEX */
+
+/* Define to the GLIB interface age */
+/* #undef GLIB_INTERFACE_AGE */
+
+/* The size of gmutex, as computed by sizeof. */
+/* #undef GLIB_SIZEOF_GMUTEX */
+
+/* The size of system_thread, as computed by sizeof. */
+/* #undef GLIB_SIZEOF_SYSTEM_THREAD */
+
+/* alpha atomic implementation */
+/* #undef G_ATOMIC_ALPHA */
+
+/* arm atomic implementation */
+/* #undef G_ATOMIC_ARM */
+
+/* cris atomic implementation */
+/* #undef G_ATOMIC_CRIS */
+
+/* crisv32 atomic implementation */
+/* #undef G_ATOMIC_CRISV32 */
+
+/* i486 atomic implementation */
+/* #undef G_ATOMIC_I486 */
+
+/* ia64 atomic implementation */
+/* #undef G_ATOMIC_IA64 */
+
+/* powerpc atomic implementation */
+/* #undef G_ATOMIC_POWERPC */
+
+/* s390 atomic implementation */
+/* #undef G_ATOMIC_S390 */
+
+/* sparcv9 atomic implementation */
+/* #undef G_ATOMIC_SPARCV9 */
+
+/* x86_64 atomic implementation */
+/* #undef G_ATOMIC_X86_64 */
+
+/* Have inline keyword */
+/* #undef G_HAVE_INLINE */
+
+/* Have __inline keyword */
+/* #undef G_HAVE___INLINE */
+
+/* Have __inline__ keyword */
+/* #undef G_HAVE___INLINE__ */
+
+/* Source file containing theread implementation */
+/* #undef G_THREAD_SOURCE */
+
+/* A 'va_copy' style function */
+/* #undef G_VA_COPY */
+
+/* 'va_lists' cannot be copies as values */
+/* #undef G_VA_COPY_AS_ARRAY */
+
+/* Define to 1 if you have the <alloca.h> header file. */
+/* #undef HAVE_ALLOCA_H */
+
+/* Define to 1 if you have the `atexit' function. */
+/* #undef HAVE_ATEXIT */
 
 /* Whether we have cairo or not */
 #define HAVE_CAIRO 1
@@ -29,6 +113,9 @@
 /* Define to 1 if you have the MacOS X function CFPreferencesCopyAppValue in
    the CoreFoundation framework. */
 /*#undef HAVE_CFPREFERENCESCOPYAPPVALUE*/
+
+/* Define to 1 if you have the `chown' function. */
+/* #undef HAVE_CHOWN */
 
 /* Have GL for rendering */
 #define HAVE_COGL_GL 1
@@ -46,6 +133,9 @@
 /* Defined if the GL library shouldn't be dlopened */
 #define HAVE_DIRECTLY_LINKED_GL_LIBRARY 1
 
+/* Define to 1 if you have the <dirent.h> header file. */
+/* #undef HAVE_DIRENT_H */
+
 /* Define to 1 if you have the <dlfcn.h> header file. */
 /*#undef HAVE_DLFCN_H*/
 
@@ -55,25 +145,88 @@
 /* Define to 1 if you have the <EGL/egl.h> header file. */
 /*#undef HAVE_EGL_EGL_H*/
 
+/* Define to 1 if you have the `endmntent' function. */
+/* #undef HAVE_ENDMNTENT */
+
+/* Define to 1 if you have the `fchmod' function. */
+/* #undef HAVE_FCHMOD */
+
+/* Define to 1 if you have the `fchown' function. */
+/* #undef HAVE_FCHOWN */
+
 /* Define to 1 if you have the <fcntl.h> header file. */
 #define HAVE_FCNTL_H 1
+
+/* Define to 1 if you have the `fdwalk' function. */
+/* #undef HAVE_FDWALK */
 
 /* Define to 1 if you have the `ffs' function. */
 /*#undef HAVE_FFS*/
 
+/* Define to 1 if you have the <float.h> header file. */
+#define HAVE_FLOAT_H 1
+
+/* Define to 1 if you have the <fstab.h> header file. */
+/* #undef HAVE_FSTAB_H */
+
+/* we have the futex(2) system call */
+/* #undef HAVE_FUTEX */
+
+/* Define to 1 if you have the `getcwd' function. */
+#define HAVE_GETCWD 1
+
+/* Define to 1 if you have the `getc_unlocked' function. */
+/* #undef HAVE_GETC_UNLOCKED */
+
+/* Define to 1 if you have the `getfsstat' function. */
+/* #undef HAVE_GETFSSTAT */
+
+/* Define to 1 if you have the `getgrgid' function. */
+/* #undef HAVE_GETGRGID */
+
+/* Define to 1 if you have the `getmntent_r' function. */
+/* #undef HAVE_GETMNTENT_R */
+
+/* Define to 1 if you have the `getpwuid' function. */
+/* #undef HAVE_GETPWUID */
+
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #define HAVE_GETTEXT 1
+
+/* Define to 1 if you have the `getvfsstat' function. */
+/* #undef HAVE_GETVFSSTAT */
 
 /* Define to 1 if you have the <GLES/egl.h> header file. */
 /*#undef HAVE_GLES_EGL_H*/
 
+/* Define to 1 if you have the `gmtime_r' function. */
+/* #undef HAVE_GMTIME_R */
+
+/* define to use system printf */
+/* #undef HAVE_GOOD_PRINTF */
+
+/* Define to 1 if you have the <grp.h> header file. */
+/* #undef HAVE_GRP_H */
+
+/* Define to 1 if you have the `hasmntopt' function. */
+/* #undef HAVE_HASMNTOPT */
+
 /* Define if you have the iconv() function and it works. */
 #define HAVE_ICONV 1
+
+/* define to support printing 64-bit integers with format I64 */
+#define HAVE_INT64_AND_I64 1
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #ifndef _MSC_VER
 #define HAVE_INTTYPES_H 1
 #endif
+
+/* Define to 1 if you have the `lchmod' function. */
+/* #undef HAVE_LCHMOD */
+
+/* Define to 1 if you have the `lchown' function. */
+/* #undef HAVE_LCHOWN */
 
 /* Define to 1 if you have the <libgdl.h> header file. */
 /*#undef HAVE_LIBGDL_H*/
@@ -84,8 +237,77 @@
 /* Define to 1 if you have the <limits.h> header file. */
 #define HAVE_LIMITS_H 1
 
+/* Define to 1 if you have the `link' function. */
+/* #undef HAVE_LINK */
+
+/* Define to 1 if you have the <linux/magic.h> header file. */
+/* #undef HAVE_LINUX_MAGIC_H */
+
+/* Define to 1 if you have the `localtime_r' function. */
+/* #undef HAVE_LOCALTIME_R */
+
+/* define if system printf can print long long */
+#define HAVE_LONG_LONG_FORMAT 1
+
+/* Define to 1 if you have the `lstat' function. */
+/* #undef HAVE_LSTAT */
+
+/* Define to 1 if you have the <malloc.h> header file. */
+#define HAVE_MALLOC_H 1
+
+/* Define to 1 if you have the `memmem' function. */
+/* #undef HAVE_MEMMEM */
+
+/* Define to 1 if you have the `memmove' function. */
+#define HAVE_MEMMOVE 1
+
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
+
+/* Define to 1 if you have the <mntent.h> header file. */
+/* #undef HAVE_MNTENT_H */
+
+/* Have non-POSIX function getgrgid_r */
+/* #undef HAVE_NONPOSIX_GETGRGID_R */
+
+/* Have non-POSIX function getpwuid_r */
+/* #undef HAVE_NONPOSIX_GETPWUID_R */
+
+/* Define to 1 if you have the `on_exit' function. */
+/* #undef HAVE_ON_EXIT */
+
+/* Define to 1 if you have the `poll' function. */
+/* #undef HAVE_POLL */
+
+/* Have POSIX function getgrgid_r */
+/* #undef HAVE_POSIX_GETGRGID_R */
+
+/* Have POSIX function getpwuid_r */
+/* #undef HAVE_POSIX_GETPWUID_R */
+
+/* Have function pthread_attr_setstacksize */
+/* #undef HAVE_PTHREAD_ATTR_SETSTACKSIZE */
+
+/* Define to 1 if you have the <pwd.h> header file. */
+/* #undef HAVE_PWD_H */
+
+/* Define to 1 if you have the `readlink' function. */
+/* #undef HAVE_READLINK */
+
+/* Define to 1 if you have the <sched.h> header file. */
+/* #undef HAVE_SCHED_H */
+
+/* Define to 1 if you have the `setenv' function. */
+/* #undef HAVE_SETENV */
+
+/* Define to 1 if you have the `setmntent' function. */
+/* #undef HAVE_SETMNTENT */
+
+/* Define to 1 if you have the `splice' function. */
+/* #undef HAVE_SPLICE */
+
+/* Whether _Static_assert can be used or not */
+/* #undef HAVE_STATIC_ASSERT */
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #if ((_MSC_VER >= 1600) || !defined(_MSC_VER))
@@ -95,6 +317,21 @@
 /* Define to 1 if you have the <stdlib.h> header file. */
 #define HAVE_STDLIB_H 1
 
+/* Define to 1 if you have the `stpcpy' function. */
+/* #undef HAVE_STPCPY */
+
+/* Define to 1 if you have the `strcasecmp' function. */
+#if defined(_MSC_VER)
+#define strcasecmp _stricmp
+#endif /* _MSC_VER uses _stricmp, which is identical to strcasecmp */
+
+#if !defined(__DMC__)
+#define HAVE_STRCASECMP 1
+#endif /* _MSC_VER or __gcc__ */
+
+/* Define to 1 if you have the `strerror' function. */
+#define HAVE_STRERROR 1
+
 /* Define to 1 if you have the <strings.h> header file. */
 #ifndef _MSC_VER
 #define HAVE_STRINGS_H 1
@@ -103,16 +340,168 @@
 /* Define to 1 if you have the <string.h> header file. */
 #define HAVE_STRING_H 1
 
+/* Define to 1 if you have the `strncasecmp' function. */
+#if !defined(_MSC_VER) && !defined(__DMC__)
+#define HAVE_STRNCASECMP 1
+#else /* _MSC_VER or __DMC__ */
+/* #undef HAVE_STRNCASECMP */
+#endif /* _MSC_VER or __DMC__ */
+
+/* Define to 1 if you have the `strsignal' function. */
+/* #undef HAVE_STRSIGNAL */
+
+/* Define to 1 if `f_bavail' is a member of `struct statfs'. */
+/* #undef HAVE_STRUCT_STATFS_F_BAVAIL */
+
+/* Define to 1 if `f_fstypename' is a member of `struct statfs'. */
+/* #undef HAVE_STRUCT_STATFS_F_FSTYPENAME */
+
+/* Define to 1 if `f_basetype' is a member of `struct statvfs'. */
+/* #undef HAVE_STRUCT_STATVFS_F_BASETYPE */
+
+/* Define to 1 if `f_fstypename' is a member of `struct statvfs'. */
+/* #undef HAVE_STRUCT_STATVFS_F_FSTYPENAME */
+
+/* Define to 1 if `st_atimensec' is a member of `struct stat'. */
+/* #undef HAVE_STRUCT_STAT_ST_ATIMENSEC */
+
+/* Define to 1 if `st_atim.tv_nsec' is a member of `struct stat'. */
+/* #undef HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC */
+
+/* Define to 1 if `st_blksize' is a member of `struct stat'. */
+/* #undef HAVE_STRUCT_STAT_ST_BLKSIZE */
+
+/* Define to 1 if `st_blocks' is a member of `struct stat'. */
+/* #undef HAVE_STRUCT_STAT_ST_BLOCKS */
+
+/* Define to 1 if `st_ctimensec' is a member of `struct stat'. */
+/* #undef HAVE_STRUCT_STAT_ST_CTIMENSEC */
+
+/* Define to 1 if `st_ctim.tv_nsec' is a member of `struct stat'. */
+/* #undef HAVE_STRUCT_STAT_ST_CTIM_TV_NSEC */
+
+/* Define to 1 if `st_mtimensec' is a member of `struct stat'. */
+/* #undef HAVE_STRUCT_STAT_ST_MTIMENSEC */
+
+/* Define to 1 if `st_mtim.tv_nsec' is a member of `struct stat'. */
+/* #undef HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC */
+
+/* Define to 1 if `tm_gmtoff' is a a member of `struct tm'. */
+/* #undef HAVE_STRUCT_TM_TM_GMTOFF */
+
+/* Define to 1 if `__tm_gmtoff' is a member of `struct tm'. */
+/* #undef HAVE_STRUCT_TM___TM_GMTOFF */
+
+/* Define to 1 if you have the `symlink' function. */
+/* #undef HAVE_SYMLINK */
+
+/* Define to 1 if you have the <sys/mkdev.h> header file. */
+/* #undef HAVE_SYS_MKDEV_H */
+
+/* Define to 1 if you have the <sys/mntctl.h> header file. */
+/* #undef HAVE_SYS_MNTCTL_H */
+
+/* Define to 1 if you have the <sys/mnttab.h> header file. */
+/* #undef HAVE_SYS_MNTTAB_H */
+
+/* Define to 1 if you have the <sys/mount.h> header file. */
+/* #undef HAVE_SYS_MOUNT_H */
+
+/* Define to 1 if you have the <sys/param.h> header file. */
+#if !defined(_MSC_VER) && !defined(__DMC__)
+#define HAVE_SYS_PARAM_H 1
+#else /* _MSC_VER or __DMC__ */
+/* #undef HAVE_SYS_PARAM_H */
+#endif /* _MSC_VER or __DMC__ */
+
+/* Define to 1 if you have the <sys/poll.h> header file. */
+/* #undef HAVE_SYS_POLL_H */
+
+/* Define to 1 if you have the <sys/resource.h> header file. */
+/* #undef HAVE_SYS_RESOURCE_H */
+
+/* Define to 1 if you have the <sys/select.h> header file. */
+/* #undef HAVE_SYS_SELECT_H */
+
+/* Define to 1 if you have the <sys/statfs.h> header file. */
+/* #undef HAVE_SYS_STATFS_H */
+
+/* Define to 1 if you have the <sys/statvfs.h> header file. */
+/* #undef HAVE_SYS_STATVFS_H */
+
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #define HAVE_SYS_STAT_H 1
 
+/* Define to 1 if you have the <sys/sysctl.h> header file. */
+/* #undef HAVE_SYS_SYSCTL_H */
+
+/* Define to 1 if you have the <sys/times.h> header file. */
+/* #undef HAVE_SYS_TIMES_H */
+
+/* Define to 1 if you have the <sys/time.h> header file. */
+#ifndef _MSC_VER
+#define HAVE_SYS_TIME_H 1
+#else /* _MSC_VER */
+/* #undef HAVE_SYS_TIME_H */
+#endif /* _MSC_VER */
+
 /* Define to 1 if you have the <sys/types.h> header file. */
 #define HAVE_SYS_TYPES_H 1
+
+/* Define to 1 if you have the <sys/uio.h> header file. */
+/* #undef HAVE_SYS_UIO_H */
+
+/* Define to 1 if you have the <sys/vfstab.h> header file. */
+/* #undef HAVE_SYS_VFSTAB_H */
+
+/* Define to 1 if you have the <sys/vfs.h> header file. */
+/* #undef HAVE_SYS_VFS_H */
+
+/* Define to 1 if you have the <sys/vmount.h> header file. */
+/* #undef HAVE_SYS_VMOUNT_H */
+
+/* Define to 1 if you have the <sys/wait.h> header file. */
+/* #undef HAVE_SYS_WAIT_H */
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #ifndef _MSC_VER
 #define HAVE_UNISTD_H 1
 #endif
+
+/* Define to 1 if you have the `unsetenv' function. */
+/* #undef HAVE_UNSETENV */
+
+/* Define to 1 if you have the `utimes' function. */
+/* #undef HAVE_UTIMES */
+
+/* Define to 1 if you have the <values.h> header file. */
+#if !defined(_MSC_VER) && !defined(__DMC__)
+#define HAVE_VALUES_H 1
+#else /* _MSC_VER or __DMC__ */
+/* #undef HAVE_VALUES_H */
+#endif /* _MSC_VER or __DMC__ */
+
+/* Define to 1 if you have the `vasprintf' function. */
+#define HAVE_VASPRINTF 1
+
+/* Define to 1 if you have the `vsnprintf' function. */
+#ifndef _MSC_VER
+#define HAVE_VSNPRINTF 1
+#ifdef __DMC__
+#define vsnprintf _vsnprintf
+#endif
+#else /* _MSC_VER */
+#if (_MSC_VER >= 1500)
+#define HAVE_VSNPRINTF 1
+#endif /* VS 2008+ has vsnprintf */
+/* #undef HAVE_VSNPRINTF */
+#endif /* _MSC_VER */
+
+/* Have Win32 atomic intrinsics */
+#define HAVE_WIN32_BUILTINS_FOR_ATOMIC_OPERATIONS 1
+
+/* Have a working bcopy */
+/* #undef HAVE_WORKING_BCOPY */
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
@@ -130,7 +519,7 @@
 #define PACKAGE_NAME "cogl"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "cogl @COGL_VERSION@"
+#define PACKAGE_STRING "cogl @COGL_1_VERSION@"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "cogl"
@@ -139,7 +528,52 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "@COGL_VERSION@"
+#define PACKAGE_VERSION "@COGL_1_VERSION@"
+
+/* Maximum POSIX RT priority */
+/* #undef POSIX_MAX_PRIORITY */
+
+/* Minimum POSIX RT priority */
+/* #undef POSIX_MIN_PRIORITY */
+
+/* The POSIX RT yield function */
+/* #undef POSIX_YIELD_FUNC */
+
+/* The size of `char', as computed by sizeof. */
+#define SIZEOF_CHAR 1
+
+/* The size of `int', as computed by sizeof. */
+#define SIZEOF_INT 4
+
+/* The size of `long', as computed by sizeof. */
+#define SIZEOF_LONG 4
+
+/* The size of `long long', as computed by sizeof. */
+#ifndef _MSC_VER
+#define SIZEOF_LONG_LONG 8
+#else /* _MSC_VER */
+#define SIZEOF_LONG_LONG 0
+#endif /* _MSC_VER */
+
+/* The size of `short', as computed by sizeof. */
+#define SIZEOF_SHORT 2
+
+/* The size of `size_t', as computed by sizeof. */
+#define SIZEOF_SIZE_T 4
+
+/* The size of `void *', as computed by sizeof. */
+#ifdef _MSC_VER
+#if (defined(_M_X64) || defined(_M_AMD64))
+#define SIZEOF_VOID_P 8
+#elif (defined(_M_IX86))
+#define SIZEOF_VOID_P 4
+#endif
+#else
+#define SIZEOF_VOID_P 4
+#endif
+
+/* The size of `__int64', as computed by sizeof. */
+#define SIZEOF___INT64 8
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1
@@ -153,7 +587,52 @@
 /* Use Core Graphics (Quartz) for loading image data */
 /*#undef USE_QUARTZ*/
 
+/* Enable extensions on AIX 3, Interix.  */
+#ifndef _ALL_SOURCE
+# undef _ALL_SOURCE
+#endif
+/* Enable GNU extensions on systems that have them.  */
+#ifndef _GNU_SOURCE
+# undef _GNU_SOURCE
+#endif
+/* Enable threading extensions on Solaris.  */
+#ifndef _POSIX_PTHREAD_SEMANTICS
+# undef _POSIX_PTHREAD_SEMANTICS
+#endif
+/* Enable extensions on HP NonStop.  */
+#ifndef _TANDEM_SOURCE
+# undef _TANDEM_SOURCE
+#endif
+/* Enable general extensions on Solaris.  */
+#ifndef __EXTENSIONS__
+# undef __EXTENSIONS__
+#endif
+
+
+/* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
+   significant byte first (like Motorola and SPARC, unlike Intel). */
+#if defined AC_APPLE_UNIVERSAL_BUILD
+# if defined __BIG_ENDIAN__
+#  define WORDS_BIGENDIAN 1
+# endif
+#else
+# ifndef WORDS_BIGENDIAN
+#  undef WORDS_BIGENDIAN
+# endif
+#endif
+
+/* Define to 1 if on MINIX. */
+/* #undef _MINIX */
+
+/* Define to 2 if the system does not provide POSIX.1 features except with
+   this defined. */
+/* #undef _POSIX_1_SOURCE */
+
+/* Define to 1 if you need to in order for `stat' and other things to work. */
+/* #undef _POSIX_SOURCE */
+
 /* Define to empty if `const' does not conform to ANSI C. */
-/*#undef const*/
+/* #undef const */
+
 
 #include "config-custom.h"
