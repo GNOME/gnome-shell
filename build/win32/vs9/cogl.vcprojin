@@ -35,7 +35,7 @@ $(PreBuildCmd)
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
 				PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglBuildDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -77,7 +77,7 @@ $(PreBuildCmd)
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
 				PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglBuildDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -118,7 +118,7 @@ $(PreBuildCmd)
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
 				PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglBuildDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -160,7 +160,7 @@ $(PreBuildCmd)
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
 				PreprocessorDefinitions="$(DebugLibBuildDefines);$(CoglBuildDefines)"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -202,7 +202,7 @@ $(PreBuildCmd)
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
 				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglBuildDefines)"
 				RuntimeLibrary="2"
@@ -247,7 +247,7 @@ $(PreBuildCmd)
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
 				EnableIntrinsicFunctions="true"
 				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglBuildDefines)"
 				RuntimeLibrary="2"
@@ -289,7 +289,7 @@ $(PreBuildCmd)
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
 				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglBuildDefines)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -330,7 +330,7 @@ $(PreBuildCmd)
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl"
+				AdditionalIncludeDirectories="..\..\..\cogl\tesselator;..\..\..\cogl\winsys;..\..\..\cogl\driver\gl;..\..\..\cogl\driver\gl\gl"
 				PreprocessorDefinitions="$(ReleaseLibBuildDefines);$(CoglBuildDefines)"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -379,8 +379,15 @@ $(PreBuildCmd)
 			<File RelativePath="..\..\..\cogl\cogl-win32-renderer.c" />
 #include "cogl.sourcefiles"
 			<Filter Name="Driver_GL" >
-				<File RelativePath="..\..\..\cogl\driver\gl\cogl-gl.c" />
-				<File RelativePath="..\..\..\cogl\driver\gl\cogl-texture-driver-gl.c" />
+				<File RelativePath="..\..\..\cogl\driver\gl\gl\cogl-driver-gl.c" />
+				<File RelativePath="..\..\..\cogl\driver\gl\gl\cogl-texture-driver-gl.c" />
+				<File RelativePath="..\..\..\cogl\driver\gl\cogl-attribute-gl.c" />
+				<File RelativePath="..\..\..\cogl\driver\gl\cogl-buffer-gl.c" />
+				<File RelativePath="..\..\..\cogl\driver\gl\cogl-clip-stack-gl.c" />
+				<File RelativePath="..\..\..\cogl\driver\gl\cogl-framebuffer-gl.c" />
+				<File RelativePath="..\..\..\cogl\driver\gl\cogl-texture-gl.c" />
+				<File RelativePath="..\..\..\cogl\driver\gl\cogl-texture-2d-gl.c" />
+				<File RelativePath="..\..\..\cogl\driver\gl\cogl-util-gl.c" />
 			</Filter>
 		</Filter>
 		<Filter Name="Headers"
