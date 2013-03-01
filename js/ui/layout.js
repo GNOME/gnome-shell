@@ -446,9 +446,20 @@ const LayoutManager = new Lang.Class({
                                                  MESSAGE_TRAY_PRESSURE_TIMEOUT,
                                                  Shell.KeyBindingMode.NORMAL |
                                                  Shell.KeyBindingMode.OVERVIEW);
+        this._trayPressure.setEventFilter(this._trayBarrierEventFilter);
         this._trayPressure.connect('trigger', function(barrier) {
             Main.messageTray.openTray();
         });
+    },
+
+    _trayBarrierEventFilter: function(event) {
+        // Throw out all events where the pointer was grabbed by another
+        // client, as the client that grabbed the pointer expects to have
+        // complete control over it
+        if (event.grabbed && Main.modalCount == 0)
+            return true;
+
+        return false;
     },
 
     _monitorsChanged: function() {
@@ -1268,6 +1279,7 @@ const PressureBarrier = new Lang.Class({
         this._timeout = timeout;
         this._keybindingMode = keybindingMode;
         this._orientation = (barrier.y1 == barrier.y2) ? Clutter.Orientation.HORIZONTAL : Clutter.Orientation.VERTICAL;
+        this._eventFilter = null;
 
         this._isTriggered = false;
         this._reset();
@@ -1280,6 +1292,10 @@ const PressureBarrier = new Lang.Class({
         this._barrier.disconnect(this._barrierHitId);
         this._barrier.disconnect(this._barrierLeftId);
         this._barrier = null;
+    },
+
+    setEventFilter: function(filter) {
+        this._eventFilter = filter;
     },
 
     _reset: function() {
@@ -1343,10 +1359,7 @@ const PressureBarrier = new Lang.Class({
         if (this._isTriggered)
             return;
 
-        // Throw out all events where the pointer was grabbed by another
-        // client, as the client that grabbed the pointer expects to have
-        // complete control over it
-        if (event.grabbed && Main.modalCount == 0)
+        if (this._eventFilter && this._eventFilter(event))
             return;
 
         // Throw out all events not in the proper keybinding mode
