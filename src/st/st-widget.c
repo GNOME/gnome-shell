@@ -791,6 +791,9 @@ st_widget_get_paint_volume (ClutterActor *self,
         {
           const ClutterPaintVolume *child_volume;
 
+          if (!CLUTTER_ACTOR_IS_VISIBLE (child))
+            continue;
+
           child_volume = clutter_actor_get_transformed_paint_volume (child, self);
           if (!child_volume)
             return FALSE;
