@@ -2,17 +2,17 @@
 # Basque translation for gnome-shell.
 # Copyright (C) 2011 gnome-shell's COPYRIGHT HOLDER
 # This file is distributed under the same license as the gnome-shell package.
+#
 # Julen Ruiz Aizpuru <julenx@gmail.com>, 2011.
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2011, 2012, 2013.
 # Asier Sarasua Garmendia <asiersar@yahoo.com>, 2013.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: eu\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-29 17:29+0000\n"
-"PO-Revision-Date: 2013-01-30 21:57+0100\n"
+"POT-Creation-Date: 2013-02-12 15:16+0000\n"
+"PO-Revision-Date: 2013-02-28 22:54+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
 "Language: eu\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.0\n"
 "X-Project-Style: gnome\n"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:1
@@ -376,9 +376,10 @@ msgid "Not listed?"
 msgstr "Ez zaude zerrendan?"
 
 #: ../js/gdm/loginDialog.js:967 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
+#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:374
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:413 ../js/ui/unlockDialog.js:178
+#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:178
+#: ../js/ui/userMenu.js:931
 msgid "Cancel"
 msgstr "Utzi"
 
@@ -408,8 +409,8 @@ msgstr "Saio-hasierako leihoa"
 msgid "Power"
 msgstr "Energia"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:677 ../js/ui/userMenu.js:681
-#: ../js/ui/userMenu.js:792
+#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:693 ../js/ui/userMenu.js:697
+#: ../js/ui/userMenu.js:813
 msgid "Suspend"
 msgstr "Eseki"
 
@@ -417,8 +418,8 @@ msgstr "Eseki"
 msgid "Restart"
 msgstr "Berrabiarazi"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:679
-#: ../js/ui/userMenu.js:681 ../js/ui/userMenu.js:791
+#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:695
+#: ../js/ui/userMenu.js:697 ../js/ui/userMenu.js:812 ../js/ui/userMenu.js:935
 msgid "Power Off"
 msgstr "Itzali"
 
@@ -487,60 +488,63 @@ msgctxt "event list time"
 msgid "All Day"
 msgstr "Egun osoa"
 
-#. Translators: Shown in calendar event list, if 24h format
-#: ../js/ui/calendar.js:66
+#. Translators: Shown in calendar event list, if 24h format,
+#. \u2236 is a ratio character, similar to :
+#: ../js/ui/calendar.js:67
 msgctxt "event list time"
-msgid "%H:%M"
-msgstr "%H:%M"
+msgid "%H\\u2236%M"
+msgstr "%H\\u2236%M"
 
-#. Transators: Shown in calendar event list, if 12h format
-#: ../js/ui/calendar.js:73
+#. Transators: Shown in calendar event list, if 12h format,
+#. \u2236 is a ratio character, similar to : and \u2009 is
+#. a thin space
+#: ../js/ui/calendar.js:76
 msgctxt "event list time"
-msgid "%l:%M %p"
-msgstr "%l:%M %p"
+msgid "%l\\u2236%M\\u2009%p"
+msgstr "%l\\u2236%M\\u2009%p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:104
+#: ../js/ui/calendar.js:107
 msgctxt "grid sunday"
 msgid "S"
 msgstr "I"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:106
+#: ../js/ui/calendar.js:109
 msgctxt "grid monday"
 msgid "M"
 msgstr "A"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:108
+#: ../js/ui/calendar.js:111
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "A"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:110
+#: ../js/ui/calendar.js:113
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "A"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:112
+#: ../js/ui/calendar.js:115
 msgctxt "grid thursday"
 msgid "T"
 msgstr "O"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:114
+#: ../js/ui/calendar.js:117
 msgctxt "grid friday"
 msgid "F"
 msgstr "O"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:116
+#: ../js/ui/calendar.js:119
 msgctxt "grid saturday"
 msgid "S"
 msgstr "L"
@@ -551,98 +555,98 @@ msgstr "L"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:129
+#: ../js/ui/calendar.js:132
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Ig"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:131
+#: ../js/ui/calendar.js:134
 msgctxt "list monday"
 msgid "M"
 msgstr "Al"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:133
+#: ../js/ui/calendar.js:136
 msgctxt "list tuesday"
 msgid "T"
 msgstr "Ar"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:135
+#: ../js/ui/calendar.js:138
 msgctxt "list wednesday"
 msgid "W"
 msgstr "Az"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:137
+#: ../js/ui/calendar.js:140
 msgctxt "list thursday"
 msgid "Th"
 msgstr "Og"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:139
+#: ../js/ui/calendar.js:142
 msgctxt "list friday"
 msgid "F"
 msgstr "Or"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:141
+#: ../js/ui/calendar.js:144
 msgctxt "list saturday"
 msgid "S"
 msgstr "Lr"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:674
+#: ../js/ui/calendar.js:677
 msgid "Nothing Scheduled"
 msgstr "Ezer ez antolatuta"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:690
+#: ../js/ui/calendar.js:693
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:693
+#: ../js/ui/calendar.js:696
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %Y(e)ko %Bren %da"
 
-#: ../js/ui/calendar.js:703
+#: ../js/ui/calendar.js:706
 msgid "Today"
 msgstr "Gaur"
 
-#: ../js/ui/calendar.js:707
+#: ../js/ui/calendar.js:710
 msgid "Tomorrow"
 msgstr "Bihar"
 
-#: ../js/ui/calendar.js:718
+#: ../js/ui/calendar.js:721
 msgid "This week"
 msgstr "Aste honetan"
 
-#: ../js/ui/calendar.js:726
+#: ../js/ui/calendar.js:729
 msgid "Next week"
 msgstr "Hurrengo astea"
 
-#: ../js/ui/components/automountManager.js:92
+#: ../js/ui/components/automountManager.js:90
 msgid "External drive connected"
 msgstr "Kanpoko unitatea konektatuta"
 
-#: ../js/ui/components/automountManager.js:103
+#: ../js/ui/components/automountManager.js:101
 msgid "External drive disconnected"
 msgstr "Kanpoko unitatea deskonektatuta"
 
-#: ../js/ui/components/autorunManager.js:295
+#: ../js/ui/components/autorunManager.js:294
 msgid "Removable Devices"
 msgstr "Euskarri aldagarriak"
 
-#: ../js/ui/components/autorunManager.js:591
+#: ../js/ui/components/autorunManager.js:593
 #, c-format
 msgid "Open with %s"
 msgstr "Ireki honekin: %s"
 
-#: ../js/ui/components/autorunManager.js:617
+#: ../js/ui/components/autorunManager.js:619
 msgid "Eject"
 msgstr "Egotzi"
 
@@ -758,66 +762,66 @@ msgstr "Pantailaren bideoa %d %t"
 
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/components/telepathyClient.js:237
+#: ../js/ui/components/telepathyClient.js:238
 msgid "Invitation"
 msgstr "Gonbidapena"
 
 #. We got the TpContact
-#: ../js/ui/components/telepathyClient.js:297
+#: ../js/ui/components/telepathyClient.js:298
 msgid "Call"
 msgstr "Deitu"
 
 #. We got the TpContact
-#: ../js/ui/components/telepathyClient.js:313
+#: ../js/ui/components/telepathyClient.js:314
 msgid "File Transfer"
 msgstr "Fitxategi-transferentzia"
 
-#: ../js/ui/components/telepathyClient.js:417
+#: ../js/ui/components/telepathyClient.js:418
 msgid "Chat"
 msgstr "Berriketa"
 
-#: ../js/ui/components/telepathyClient.js:477
+#: ../js/ui/components/telepathyClient.js:480
 msgid "Unmute"
 msgstr "Ez mututu"
 
-#: ../js/ui/components/telepathyClient.js:477
+#: ../js/ui/components/telepathyClient.js:480
 msgid "Mute"
 msgstr "Mututu"
 
 #. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"
-#: ../js/ui/components/telepathyClient.js:931
+#: ../js/ui/components/telepathyClient.js:938
 #, no-c-format
 msgid "<b>Yesterday</b>, <b>%H:%M</b>"
 msgstr "<b>Atzo</b>, <b>%H:%M</b>"
 
 #. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30
-#: ../js/ui/components/telepathyClient.js:937
+#: ../js/ui/components/telepathyClient.js:944
 #, no-c-format
 msgid "<b>%A</b>, <b>%H:%M</b>"
 msgstr "<b>%A</b>, <b>%H:%M</b>"
 
 #. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"
-#: ../js/ui/components/telepathyClient.js:942
+#: ../js/ui/components/telepathyClient.js:949
 #, no-c-format
 msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
 msgstr "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
 
 #. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"
-#: ../js/ui/components/telepathyClient.js:946
+#: ../js/ui/components/telepathyClient.js:953
 #, no-c-format
 msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
 msgstr "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:974
+#: ../js/ui/components/telepathyClient.js:981
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s orain %s izenarekin ezagutzen da"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1073
+#: ../js/ui/components/telepathyClient.js:1084
 #, c-format
 msgid "Invitation to %s"
 msgstr "%s gelarako gonbidapena"
@@ -825,38 +829,38 @@ msgstr "%s gelarako gonbidapena"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/components/telepathyClient.js:1081
+#: ../js/ui/components/telepathyClient.js:1092
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s(e)k gonbidatzen zaitu '%s'(e)ra elkartzeko"
 
-#: ../js/ui/components/telepathyClient.js:1083
-#: ../js/ui/components/telepathyClient.js:1122
-#: ../js/ui/components/telepathyClient.js:1162
-#: ../js/ui/components/telepathyClient.js:1225
+#: ../js/ui/components/telepathyClient.js:1094
+#: ../js/ui/components/telepathyClient.js:1133
+#: ../js/ui/components/telepathyClient.js:1173
+#: ../js/ui/components/telepathyClient.js:1236
 msgid "Decline"
 msgstr "Ukatu"
 
-#: ../js/ui/components/telepathyClient.js:1084
-#: ../js/ui/components/telepathyClient.js:1163
-#: ../js/ui/components/telepathyClient.js:1226
+#: ../js/ui/components/telepathyClient.js:1095
+#: ../js/ui/components/telepathyClient.js:1174
+#: ../js/ui/components/telepathyClient.js:1237
 msgid "Accept"
 msgstr "Onartu"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1114
+#: ../js/ui/components/telepathyClient.js:1125
 #, c-format
 msgid "Video call from %s"
 msgstr "%s(r)en bideo-deia"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1117
+#: ../js/ui/components/telepathyClient.js:1128
 #, c-format
 msgid "Call from %s"
 msgstr "%s(r)en deia"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1124
+#: ../js/ui/components/telepathyClient.js:1135
 msgid "Answer"
 msgstr "Erantzun"
 
@@ -865,111 +869,111 @@ msgstr "Erantzun"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/components/telepathyClient.js:1156
+#: ../js/ui/components/telepathyClient.js:1167
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s fitxategia ari zaizu bidaltzen: %s"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1191
+#: ../js/ui/components/telepathyClient.js:1202
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s(e)k baimena nahiko luke linean noiz zauden jakiteko"
 
-#: ../js/ui/components/telepathyClient.js:1283
+#: ../js/ui/components/telepathyClient.js:1294
 msgid "Network error"
 msgstr "Sareko errorea"
 
-#: ../js/ui/components/telepathyClient.js:1285
+#: ../js/ui/components/telepathyClient.js:1296
 msgid "Authentication failed"
 msgstr "Autentifikazioak huts egin du"
 
-#: ../js/ui/components/telepathyClient.js:1287
+#: ../js/ui/components/telepathyClient.js:1298
 msgid "Encryption error"
 msgstr "Zifratze-errorea"
 
-#: ../js/ui/components/telepathyClient.js:1289
+#: ../js/ui/components/telepathyClient.js:1300
 msgid "Certificate not provided"
 msgstr "Ez da ziurtagiririk eman"
 
-#: ../js/ui/components/telepathyClient.js:1291
+#: ../js/ui/components/telepathyClient.js:1302
 msgid "Certificate untrusted"
 msgstr "Ziurtagiria ez da fidagarria"
 
-#: ../js/ui/components/telepathyClient.js:1293
+#: ../js/ui/components/telepathyClient.js:1304
 msgid "Certificate expired"
 msgstr "Ziurtagiria iraungituta"
 
-#: ../js/ui/components/telepathyClient.js:1295
+#: ../js/ui/components/telepathyClient.js:1306
 msgid "Certificate not activated"
 msgstr "Ziurtagiria aktibatu gabe"
 
-#: ../js/ui/components/telepathyClient.js:1297
+#: ../js/ui/components/telepathyClient.js:1308
 msgid "Certificate hostname mismatch"
 msgstr "Ziurtagiriaren ostalari-izena ez dator bat"
 
-#: ../js/ui/components/telepathyClient.js:1299
+#: ../js/ui/components/telepathyClient.js:1310
 msgid "Certificate fingerprint mismatch"
 msgstr "Ziurtagiriaren hatz-marka ez dator bat"
 
-#: ../js/ui/components/telepathyClient.js:1301
+#: ../js/ui/components/telepathyClient.js:1312
 msgid "Certificate self-signed"
 msgstr "Ziurtagiria bere buruarekin sinatuta"
 
-#: ../js/ui/components/telepathyClient.js:1303
+#: ../js/ui/components/telepathyClient.js:1314
 msgid "Status is set to offline"
 msgstr "Egoera lineaz kanpo da"
 
-#: ../js/ui/components/telepathyClient.js:1305
+#: ../js/ui/components/telepathyClient.js:1316
 msgid "Encryption is not available"
 msgstr "Zifratzea ez dago eskuragarri"
 
-#: ../js/ui/components/telepathyClient.js:1307
+#: ../js/ui/components/telepathyClient.js:1318
 msgid "Certificate is invalid"
 msgstr "Ziurtagiria baliogabea da"
 
-#: ../js/ui/components/telepathyClient.js:1309
+#: ../js/ui/components/telepathyClient.js:1320
 msgid "Connection has been refused"
 msgstr "Konexioa ukatu egin da"
 
-#: ../js/ui/components/telepathyClient.js:1311
+#: ../js/ui/components/telepathyClient.js:1322
 msgid "Connection can't be established"
 msgstr "Konexioa ezin da burutu"
 
-#: ../js/ui/components/telepathyClient.js:1313
+#: ../js/ui/components/telepathyClient.js:1324
 msgid "Connection has been lost"
 msgstr "Konexioa galdu egin da"
 
-#: ../js/ui/components/telepathyClient.js:1315
+#: ../js/ui/components/telepathyClient.js:1326
 msgid "This account is already connected to the server"
 msgstr "Kontu hau jadanik zerbitzariarekin konektatuta dago"
 
-#: ../js/ui/components/telepathyClient.js:1317
+#: ../js/ui/components/telepathyClient.js:1328
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr ""
 "Konexioa ordezkatu egin da baliabide bera darabilen konexio berri batengatik"
 
-#: ../js/ui/components/telepathyClient.js:1319
+#: ../js/ui/components/telepathyClient.js:1330
 msgid "The account already exists on the server"
 msgstr "Kontua badago lehendik zerbitzarian"
 
-#: ../js/ui/components/telepathyClient.js:1321
+#: ../js/ui/components/telepathyClient.js:1332
 msgid "Server is currently too busy to handle the connection"
 msgstr "Zerbitzaria oso lanpetuta dago konexioa maneiatzeko"
 
-#: ../js/ui/components/telepathyClient.js:1323
+#: ../js/ui/components/telepathyClient.js:1334
 msgid "Certificate has been revoked"
 msgstr "Ziurtagiria errebokatu egin da"
 
-#: ../js/ui/components/telepathyClient.js:1325
+#: ../js/ui/components/telepathyClient.js:1336
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Ziurtagiriak zifratze-algoritmo ez-segurua darabil edo kriptografikoki ahula "
 "da"
 
-#: ../js/ui/components/telepathyClient.js:1327
+#: ../js/ui/components/telepathyClient.js:1338
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -977,22 +981,22 @@ msgstr ""
 "Zerbitzariaren ziurtagiriaren luzerak edo ziurtagiri-katearen sakonerak "
 "liburutegi kriptografikoak ezarritako mugak gainditzen ditu"
 
-#: ../js/ui/components/telepathyClient.js:1329
+#: ../js/ui/components/telepathyClient.js:1340
 msgid "Internal error"
 msgstr "Barneko errorea"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1339
+#: ../js/ui/components/telepathyClient.js:1350
 #, c-format
 msgid "Unable to connect to %s"
 msgstr "Ezin da %s(e)ra konektatu"
 
-#: ../js/ui/components/telepathyClient.js:1344
+#: ../js/ui/components/telepathyClient.js:1355
 msgid "View account"
 msgstr "Ikusi kontua"
 
-#: ../js/ui/components/telepathyClient.js:1383
+#: ../js/ui/components/telepathyClient.js:1394
 msgid "Unknown reason"
 msgstr "Arrazoi ezezaguna"
 
@@ -1013,8 +1017,8 @@ msgid "Open Clocks"
 msgstr "Ireki erlojuak"
 
 #: ../js/ui/dateMenu.js:105
-msgid "Date and Time Settings"
-msgstr "Dataren eta orduaren ezarpenak"
+msgid "Date & Time Settings"
+msgstr "Data eta orduaren ezarpenak"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
@@ -1023,96 +1027,96 @@ msgstr "Dataren eta orduaren ezarpenak"
 msgid "%A %B %e, %Y"
 msgstr "%A, %Y(e)ko %Bren %e(a)"
 
-#: ../js/ui/endSessionDialog.js:61
+#: ../js/ui/endSessionDialog.js:62
 #, c-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Amaitu %s(r)en saioa"
 
-#: ../js/ui/endSessionDialog.js:62
+#: ../js/ui/endSessionDialog.js:63
 msgctxt "title"
 msgid "Log Out"
 msgstr "Amaitu saioa"
 
-#: ../js/ui/endSessionDialog.js:63
+#: ../js/ui/endSessionDialog.js:64
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
 "Egin klik 'Amaitu saioa' botoian aplikazio hauetatik irten eta sistemako "
 "saioa amaitzeko."
 
-#: ../js/ui/endSessionDialog.js:65
+#: ../js/ui/endSessionDialog.js:66
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s erabiltzailearen saioa automatikoki %d segundotan amaituko da."
 msgstr[1] "%s erabiltzailearen saioa automatikoki %d segundotan amaituko da."
 
-#: ../js/ui/endSessionDialog.js:70
+#: ../js/ui/endSessionDialog.js:71
 #, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Zure saioa automatikoki %d segundotan amaituko da."
 msgstr[1] "Zure saioa automatikoki %d segundotan amaituko da."
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:75
 msgid "Logging out of the system."
 msgstr "Sistemako saioa amaitzen."
 
-#: ../js/ui/endSessionDialog.js:76
+#: ../js/ui/endSessionDialog.js:77
 msgctxt "button"
 msgid "Log Out"
 msgstr "Amaitu saioa"
 
-#: ../js/ui/endSessionDialog.js:81
+#: ../js/ui/endSessionDialog.js:82
 msgctxt "title"
 msgid "Power Off"
 msgstr "Itzali"
 
-#: ../js/ui/endSessionDialog.js:82
+#: ../js/ui/endSessionDialog.js:83
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
 "Egin klik 'Itzali' botoian aplikazio hauetatik irten eta sistema itzaltzeko."
 
-#: ../js/ui/endSessionDialog.js:84
+#: ../js/ui/endSessionDialog.js:85
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Sistema automatikoki %d segundotan itzaliko da."
 msgstr[1] "Sistema automatikoki %d segundotan itzaliko da."
 
-#: ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:89
 msgid "Powering off the system."
 msgstr "Sistema itzaltzen."
 
-#: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:91 ../js/ui/endSessionDialog.js:108
 msgctxt "button"
 msgid "Restart"
 msgstr "Berrabiarazi"
 
-#: ../js/ui/endSessionDialog.js:92
+#: ../js/ui/endSessionDialog.js:93
 msgctxt "button"
 msgid "Power Off"
 msgstr "Itzali"
 
-#: ../js/ui/endSessionDialog.js:98
+#: ../js/ui/endSessionDialog.js:99
 msgctxt "title"
 msgid "Restart"
 msgstr "Berrabiarazi"
 
-#: ../js/ui/endSessionDialog.js:99
+#: ../js/ui/endSessionDialog.js:100
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Egin klik 'Berrabiarazi' botoian aplikazio hauetatik irten eta sistema "
 "berrabiarazteko."
 
-#: ../js/ui/endSessionDialog.js:101
+#: ../js/ui/endSessionDialog.js:102
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Sistema automatikoki %d segundotan berrabiaraziko da."
 msgstr[1] "Sistema automatikoki %d segundotan berrabiaraziko da."
 
-#: ../js/ui/endSessionDialog.js:105
+#: ../js/ui/endSessionDialog.js:106
 msgid "Restarting the system."
 msgstr "Sistema berrabiarazten."
 
@@ -1129,7 +1133,7 @@ msgstr "Deskargatu eta instalatu '%s' extensions.gnome.org gunetik?"
 msgid "tray"
 msgstr "erretilua"
 
-#: ../js/ui/keyboard.js:634 ../js/ui/status/keyboard.js:309
+#: ../js/ui/keyboard.js:634 ../js/ui/status/keyboard.js:314
 #: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Teklatua"
@@ -1182,27 +1186,35 @@ msgstr "Ikusi iturburua"
 msgid "Web Page"
 msgstr "Web orria"
 
-#: ../js/ui/messageTray.js:1118
+#: ../js/ui/messageTray.js:1151
 msgid "Open"
 msgstr "Ireki"
 
-#: ../js/ui/messageTray.js:1125
+#: ../js/ui/messageTray.js:1158
 msgid "Remove"
 msgstr "Kendu"
 
-#: ../js/ui/messageTray.js:1581
+#: ../js/ui/messageTray.js:1461
+msgid "Clear"
+msgstr "Garbitu"
+
+#: ../js/ui/messageTray.js:1484
+msgid "Notification Settings"
+msgstr "Jakinarazpenen ezarpenak"
+
+#: ../js/ui/messageTray.js:1667
 msgid "No Messages"
 msgstr "Mezurik ez"
 
-#: ../js/ui/messageTray.js:1599
+#: ../js/ui/messageTray.js:1728
 msgid "Message Tray"
 msgstr "Mezuen erretilua"
 
-#: ../js/ui/messageTray.js:2685
+#: ../js/ui/messageTray.js:2842
 msgid "System Information"
 msgstr "Sistemaren informazioa"
 
-#: ../js/ui/notificationDaemon.js:504 ../src/shell-app.c:374
+#: ../js/ui/notificationDaemon.js:627 ../src/shell-app.c:374
 msgctxt "program"
 msgid "Unknown"
 msgstr "Ezezaguna"
@@ -1239,7 +1251,7 @@ msgstr "Irten"
 msgid "Activities"
 msgstr "Jarduerak"
 
-#: ../js/ui/panel.js:976
+#: ../js/ui/panel.js:983
 msgid "Top Bar"
 msgstr "Goiko barra"
 
@@ -1262,33 +1274,37 @@ msgstr "Itxi"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:113
+#: ../js/ui/screenShield.js:115
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/screenShield.js:177
+#: ../js/ui/screenShield.js:178
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "Mezu berri &d"
 msgstr[1] "%d mezu berri"
 
-#: ../js/ui/screenShield.js:179
+#: ../js/ui/screenShield.js:180
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "Jakinarazpen berri %d"
 msgstr[1] "%d jakinarazpen berri"
 
-#: ../js/ui/screenShield.js:403 ../js/ui/userMenu.js:783
+#: ../js/ui/screenShield.js:464 ../js/ui/userMenu.js:804
 msgid "Lock"
 msgstr "Blokeatu"
 
-#: ../js/ui/searchDisplay.js:430
+#: ../js/ui/screenShield.js:615
+msgid "GNOME needs to lock the screen"
+msgstr "GNOMEk pantaila blokeatzea behar du"
+
+#: ../js/ui/searchDisplay.js:431
 msgid "Searching..."
 msgstr "Bilatzen..."
 
-#: ../js/ui/searchDisplay.js:478
+#: ../js/ui/searchDisplay.js:479
 msgid "No results."
 msgstr "Emaitzarik ez."
 
@@ -1368,246 +1384,246 @@ msgstr "Kontraste handia"
 msgid "Large Text"
 msgstr "Testu handia"
 
-#: ../js/ui/status/bluetooth.js:27 ../js/ui/status/bluetooth.js:31
-#: ../js/ui/status/bluetooth.js:288 ../js/ui/status/bluetooth.js:319
-#: ../js/ui/status/bluetooth.js:355 ../js/ui/status/bluetooth.js:386
-#: ../js/ui/status/network.js:813
+#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:32
+#: ../js/ui/status/bluetooth.js:289 ../js/ui/status/bluetooth.js:321
+#: ../js/ui/status/bluetooth.js:357 ../js/ui/status/bluetooth.js:388
+#: ../js/ui/status/network.js:826
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:44
+#: ../js/ui/status/bluetooth.js:45
 msgid "Visibility"
 msgstr "Ikusgaitasuna"
 
-#: ../js/ui/status/bluetooth.js:58
+#: ../js/ui/status/bluetooth.js:59
 msgid "Send Files to Device..."
 msgstr "Bidali fitxategiak gailura..."
 
-#: ../js/ui/status/bluetooth.js:59
-msgid "Set up a New Device..."
+#: ../js/ui/status/bluetooth.js:60
+msgid "Set Up a New Device..."
 msgstr "Konfiguratu gailu berria..."
 
-#: ../js/ui/status/bluetooth.js:83
+#: ../js/ui/status/bluetooth.js:84
 msgid "Bluetooth Settings"
 msgstr "Bluetooth ezarpenak"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:177
+#: ../js/ui/status/bluetooth.js:104 ../js/ui/status/network.js:178
 msgid "hardware disabled"
 msgstr "hardwarea desgaituta"
 
-#: ../js/ui/status/bluetooth.js:196
+#: ../js/ui/status/bluetooth.js:197
 msgid "Connection"
 msgstr "Konexioa"
 
-#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:459
+#: ../js/ui/status/bluetooth.js:208 ../js/ui/status/network.js:460
 msgid "disconnecting..."
 msgstr "deskonektatzen..."
 
-#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:465
-#: ../js/ui/status/network.js:1533
+#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:466
+#: ../js/ui/status/network.js:1546
 msgid "connecting..."
 msgstr "konektatzen..."
 
-#: ../js/ui/status/bluetooth.js:238
+#: ../js/ui/status/bluetooth.js:239
 msgid "Send Files..."
 msgstr "Bidali fitxategiak..."
 
-#: ../js/ui/status/bluetooth.js:245
+#: ../js/ui/status/bluetooth.js:246
 msgid "Keyboard Settings"
 msgstr "Teklatuaren ezarpenak"
 
-#: ../js/ui/status/bluetooth.js:248
+#: ../js/ui/status/bluetooth.js:249
 msgid "Mouse Settings"
 msgstr "Saguaren ezarpenak"
 
-#: ../js/ui/status/bluetooth.js:253 ../js/ui/status/volume.js:317
+#: ../js/ui/status/bluetooth.js:254 ../js/ui/status/volume.js:316
 msgid "Sound Settings"
 msgstr "Soinuaren ezarpenak"
 
-#: ../js/ui/status/bluetooth.js:320
+#: ../js/ui/status/bluetooth.js:322
 #, c-format
 msgid "Authorization request from %s"
 msgstr "Baimena eskatu da %s(e)tik"
 
-#: ../js/ui/status/bluetooth.js:326
+#: ../js/ui/status/bluetooth.js:328
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "%s gailuak '%s' zerbitzurako sarbidea nahi du"
 
-#: ../js/ui/status/bluetooth.js:328
+#: ../js/ui/status/bluetooth.js:330
 msgid "Always grant access"
 msgstr "Baimendu beti sarbidetza"
 
-#: ../js/ui/status/bluetooth.js:329
+#: ../js/ui/status/bluetooth.js:331
 msgid "Grant this time only"
 msgstr "Baimendu une honetan bakarrik"
 
-#: ../js/ui/status/bluetooth.js:330
+#: ../js/ui/status/bluetooth.js:332
 msgid "Reject"
 msgstr "Ukatu"
 
 #. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:357
+#: ../js/ui/status/bluetooth.js:359
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "Parekatze-berrespena %s gailuarentzat"
 
-#: ../js/ui/status/bluetooth.js:363 ../js/ui/status/bluetooth.js:394
+#: ../js/ui/status/bluetooth.js:365 ../js/ui/status/bluetooth.js:396
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "%s gailuak ordenagailu honekin parekatu nahi du"
 
-#: ../js/ui/status/bluetooth.js:364
+#: ../js/ui/status/bluetooth.js:366
 #, c-format
 msgid "Please confirm whether the PIN '%06d' matches the one on the device."
 msgstr "Berretsi '%06d' PINa gailukoarekin bat datorrela."
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:369
 msgid "Matches"
 msgstr "Bat datozenak"
 
-#: ../js/ui/status/bluetooth.js:368
+#: ../js/ui/status/bluetooth.js:370
 msgid "Does not match"
 msgstr "Ez dator bat"
 
-#: ../js/ui/status/bluetooth.js:387
+#: ../js/ui/status/bluetooth.js:389
 #, c-format
 msgid "Pairing request for %s"
 msgstr "%s gailuaren parekatze-eskaera"
 
-#: ../js/ui/status/bluetooth.js:395
+#: ../js/ui/status/bluetooth.js:397
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Sartu gailuan aipatutako PINa."
 
-#: ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:414
 msgid "OK"
 msgstr "Ados"
 
-#: ../js/ui/status/keyboard.js:363
+#: ../js/ui/status/keyboard.js:368
 msgid "Show Keyboard Layout"
 msgstr "Erakutsi teklatuaren diseinua"
 
-#: ../js/ui/status/keyboard.js:368
-msgid "Region and Language Settings"
+#: ../js/ui/status/keyboard.js:373
+msgid "Region & Language Settings"
 msgstr "Eskualdearen eta hizkuntzaren ezarpenak"
 
 #: ../js/ui/status/lockScreenMenu.js:43
 msgid "Volume, network, battery"
 msgstr "Bolumena, sarea, bateria"
 
-#: ../js/ui/status/network.js:103
+#: ../js/ui/status/network.js:104
 msgid "<unknown>"
 msgstr "<ezezaguna>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:199
+#: ../js/ui/status/network.js:200
 msgid "disabled"
 msgstr "desgaituta"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:457
+#: ../js/ui/status/network.js:458
 msgid "unmanaged"
 msgstr "kudeatu gabea"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:468 ../js/ui/status/network.js:1536
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1549
 msgid "authentication required"
 msgstr "autentifikazioa behar da"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:478
+#: ../js/ui/status/network.js:479
 msgid "firmware missing"
 msgstr "firmwarea falta da"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:485
+#: ../js/ui/status/network.js:486
 msgid "cable unplugged"
 msgstr "kablea deskonektatuta"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:490
+#: ../js/ui/status/network.js:491
 msgid "unavailable"
 msgstr "ez dago erabilgarri"
 
-#: ../js/ui/status/network.js:492 ../js/ui/status/network.js:1538
+#: ../js/ui/status/network.js:493 ../js/ui/status/network.js:1551
 msgid "connection failed"
 msgstr "konexioak huts egin du"
 
-#: ../js/ui/status/network.js:551 ../js/ui/status/network.js:1422
-#: ../js/ui/status/network.js:1614
+#: ../js/ui/status/network.js:552 ../js/ui/status/network.js:1435
+#: ../js/ui/status/network.js:1627
 msgid "More..."
 msgstr "Gehiago..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:587 ../js/ui/status/network.js:1352
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1365
 msgid "Connected (private)"
 msgstr "Konektatuta (pribatua)"
 
-#: ../js/ui/status/network.js:666
+#: ../js/ui/status/network.js:667
 msgid "Wired"
 msgstr "Hariduna"
 
-#: ../js/ui/status/network.js:667
+#: ../js/ui/status/network.js:668
 msgid "Auto Ethernet"
 msgstr "Ethernet automatikoa"
 
-#: ../js/ui/status/network.js:694
+#: ../js/ui/status/network.js:695
 msgid "Mobile broadband"
 msgstr "Mugikorraren banda zabalera"
 
-#: ../js/ui/status/network.js:715
+#: ../js/ui/status/network.js:728
 msgid "Auto broadband"
 msgstr "Banda zabalera automatikoa"
 
-#: ../js/ui/status/network.js:718
+#: ../js/ui/status/network.js:731
 msgid "Auto dial-up"
 msgstr "Modem automatikoa"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:848 ../js/ui/status/network.js:1369
+#: ../js/ui/status/network.js:861 ../js/ui/status/network.js:1382
 #, c-format
 msgid "Auto %s"
 msgstr "%s automatikoa"
 
-#: ../js/ui/status/network.js:850
+#: ../js/ui/status/network.js:863
 msgid "Auto bluetooth"
 msgstr "Bluetooth automatikoa"
 
-#: ../js/ui/status/network.js:1371
+#: ../js/ui/status/network.js:1384
 msgid "Auto wireless"
 msgstr "Haririk gabekoa automatikoa"
 
-#: ../js/ui/status/network.js:1664
+#: ../js/ui/status/network.js:1677
 msgid "Enable networking"
 msgstr "Gaitu sarea"
 
-#: ../js/ui/status/network.js:1706
+#: ../js/ui/status/network.js:1719
 msgid "Wi-Fi"
 msgstr "Wifia"
 
-#: ../js/ui/status/network.js:1725
+#: ../js/ui/status/network.js:1738
 msgid "Network Settings"
 msgstr "Sarearen ezarpenak"
 
-#: ../js/ui/status/network.js:1784
+#: ../js/ui/status/network.js:1797
 msgid "Network Manager"
 msgstr "Sarearen kudeatzailea"
 
-#: ../js/ui/status/network.js:1873
+#: ../js/ui/status/network.js:1887
 msgid "Connection failed"
 msgstr "Konexioak huts egin du"
 
-#: ../js/ui/status/network.js:1874
+#: ../js/ui/status/network.js:1888
 msgid "Activation of network connection failed"
 msgstr "Sareko konexioa aktibatzeak huts egin du"
 
-#: ../js/ui/status/network.js:2252
+#: ../js/ui/status/network.js:2266
 msgid "Networking is disabled"
 msgstr "Sarea desgaituta dago"
 
@@ -1664,11 +1680,11 @@ msgid "%d%%"
 msgstr "%%%d"
 
 #: ../js/ui/status/power.js:201
-msgid "AC adapter"
+msgid "AC Adapter"
 msgstr "AC moldagailua"
 
 #: ../js/ui/status/power.js:203
-msgid "Laptop battery"
+msgid "Laptop Battery"
 msgstr "Eramangarriaren bateria"
 
 #: ../js/ui/status/power.js:205
@@ -1688,12 +1704,12 @@ msgid "PDA"
 msgstr "PDA"
 
 #: ../js/ui/status/power.js:215
-msgid "Cell phone"
+msgid "Cell Phone"
 msgstr "Telefono mugikorra"
 
 #: ../js/ui/status/power.js:217
-msgid "Media player"
-msgstr "Multimediaren erreproduzigailua"
+msgid "Media Player"
+msgstr "Multimediaren erreproduzitzailea"
 
 #: ../js/ui/status/power.js:219
 msgid "Tablet"
@@ -1713,11 +1729,11 @@ msgid "Volume changed"
 msgstr "Bolumena aldatuta"
 
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:250 ../js/ui/status/volume.js:298
+#: ../js/ui/status/volume.js:249 ../js/ui/status/volume.js:297
 msgid "Volume"
 msgstr "Bolumena"
 
-#: ../js/ui/status/volume.js:259
+#: ../js/ui/status/volume.js:258
 msgid "Microphone"
 msgstr "Mikrofonoa"
 
@@ -1729,55 +1745,55 @@ msgstr "Hasi saioa beste erabiltzaile baten gisan"
 msgid "Unlock Window"
 msgstr "Desblokeatu leihoa"
 
-#: ../js/ui/userMenu.js:178
+#: ../js/ui/userMenu.js:191
 msgid "Available"
 msgstr "Erabilgarri"
 
-#: ../js/ui/userMenu.js:181
+#: ../js/ui/userMenu.js:194
 msgid "Busy"
 msgstr "Lanpetuta"
 
-#: ../js/ui/userMenu.js:184
+#: ../js/ui/userMenu.js:197
 msgid "Invisible"
 msgstr "Ikusezina"
 
-#: ../js/ui/userMenu.js:187
+#: ../js/ui/userMenu.js:200
 msgid "Away"
 msgstr "Kanpoan"
 
-#: ../js/ui/userMenu.js:190
+#: ../js/ui/userMenu.js:203
 msgid "Idle"
 msgstr "Inaktiboa"
 
-#: ../js/ui/userMenu.js:193
+#: ../js/ui/userMenu.js:206
 msgid "Offline"
 msgstr "Lineaz kanpo"
 
-#: ../js/ui/userMenu.js:757
+#: ../js/ui/userMenu.js:778
 msgid "Notifications"
 msgstr "Jakinarazpenak"
 
-#: ../js/ui/userMenu.js:765
+#: ../js/ui/userMenu.js:786
 msgid "Settings"
 msgstr "Ezarpenak"
 
-#: ../js/ui/userMenu.js:773
+#: ../js/ui/userMenu.js:794
 msgid "Switch User"
 msgstr "Aldatu erabiltzailea"
 
-#: ../js/ui/userMenu.js:778
+#: ../js/ui/userMenu.js:799
 msgid "Log Out"
 msgstr "Amaitu saioa"
 
-#: ../js/ui/userMenu.js:798
+#: ../js/ui/userMenu.js:819
 msgid "Install Updates & Restart"
 msgstr "Instalatu eguneraketak eta berrabiarazi"
 
-#: ../js/ui/userMenu.js:816
+#: ../js/ui/userMenu.js:837
 msgid "Your chat status will be set to busy"
 msgstr "Zure berriketaren egoera lanpetuta gisa ezar daiteke"
 
-#: ../js/ui/userMenu.js:817
+#: ../js/ui/userMenu.js:838
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1785,6 +1801,24 @@ msgstr ""
 "Jakinarazpenak desgaituta daude orain, berriketen mezuak barne. Zure lineako "
 "egoera doitu egin da besteek beraien mezurik ezin ditzakezula ikusi jakin "
 "dezaten."
+
+#: ../js/ui/userMenu.js:884
+msgid "Other users are logged in."
+msgstr "Beste erabiltzaileek saioa hasi dute."
+
+#: ../js/ui/userMenu.js:889
+msgid "Shutting down might cause them to lose unsaved work."
+msgstr "Itzaltzeak haien gorde gabeko lanak galtzea eragin dezake."
+
+#: ../js/ui/userMenu.js:915
+#, c-format
+msgid "%s (remote)"
+msgstr "%s (urrunekoa)"
+
+#: ../js/ui/userMenu.js:917
+#, c-format
+msgid "%s (console)"
+msgstr "%s (kontsola)"
 
 #: ../js/ui/viewSelector.js:85
 msgid "Applications"
@@ -1868,17 +1902,23 @@ msgstr "Pasahitzak ez datoz bat"
 msgid "Password cannot be blank"
 msgstr "Pasahitza ezin da hutsa izan"
 
-#: ../src/shell-mobile-providers.c:85
-msgid "United Kingdom"
-msgstr "Erresuma Batua"
-
-#: ../src/shell-mobile-providers.c:619
-msgid "Default"
-msgstr "Lehenetsia"
-
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Erabiltzaileak autentifikatzeko elkarrizketa-koadroa itxi du"
+
+#~ msgctxt "event list time"
+#~ msgid "%H:%M"
+#~ msgstr "%H:%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l:%M %p"
+#~ msgstr "%l:%M %p"
+
+#~ msgid "United Kingdom"
+#~ msgstr "Erresuma Batua"
+
+#~ msgid "Default"
+#~ msgstr "Lehenetsia"
 
 #~ msgid "Show full name in the user menu"
 #~ msgstr "Erakutsi izen osoa erabiltzaile-menuan"
