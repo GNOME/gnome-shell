@@ -130,11 +130,11 @@ const Overview = new Lang.Class({
         this._overview._delegate = this;
 
         this._groupStack = new St.Widget({ layout_manager: new Clutter.BinLayout(),
-                                           x_expand: true, y_expand: true });
+                                           x_expand: true, y_expand: true,
+                                           clip_to_allocation: true });
         this._group = new St.BoxLayout({ name: 'overview-group',
                                          reactive: true,
-                                         x_expand: true, y_expand: true,
-                                         clip_to_allocation: true });
+                                         x_expand: true, y_expand: true });
         this._groupStack.add_actor(this._group);
 
         this._backgroundGroup = new Meta.BackgroundGroup();
