@@ -507,6 +507,29 @@ clutter_get_accessibility_enabled (void)
 }
 
 /**
+ * clutter_disable_accessibility:
+ *
+ * Disable loading the accessibility support. It has the same effect
+ * as setting the environment variable
+ * CLUTTER_DISABLE_ACCESSIBILITY. For the same reason, this method
+ * should be called before clutter_init().
+ *
+ * Since: 1.14
+ */
+void
+clutter_disable_accessibility (void)
+{
+  if (clutter_is_initialized)
+    {
+      g_warning ("clutter_disable_accessibility() can only be called before "
+                 "initializing Clutter.");
+      return;
+    }
+
+  clutter_enable_accessibility = FALSE;
+}
+
+/**
  * clutter_redraw:
  *
  * Forces a redraw of the entire stage. Applications should never use this

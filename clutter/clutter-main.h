@@ -100,6 +100,9 @@ void                    clutter_do_event                        (ClutterEvent *e
 /* Debug utility functions */
 gboolean                clutter_get_accessibility_enabled       (void);
 
+CLUTTER_AVAILABLE_IN_1_14
+void                    clutter_disable_accessibility           (void);
+
 /* Threading functions */
 void                    clutter_threads_set_lock_functions      (GCallback enter_fn,
                                                                  GCallback leave_fn);
