@@ -153,7 +153,7 @@ const Overview = new Lang.Class({
         this._overview.add_actor(this._coverPane);
         this._coverPane.connect('event', Lang.bind(this, function (actor, event) { return true; }));
 
-        this._overview.hide();
+        this._stack.hide();
         this._stack.add_actor(this._overview);
         global.overlay_group.add_actor(this._stack);
 
@@ -538,12 +538,12 @@ const Overview = new Lang.Class({
         Meta.disable_unredirect_for_screen(global.screen);
         global.window_group.hide();
         global.top_window_group.hide();
-        this._overview.show();
+        this._stack.show();
         this._backgroundGroup.show();
         this._viewSelector.show();
 
-        this._overview.opacity = 0;
-        Tweener.addTween(this._overview,
+        this._stack.opacity = 0;
+        Tweener.addTween(this._stack,
                          { opacity: 255,
                            transition: 'easeOutQuad',
                            time: ANIMATION_TIME,
@@ -665,7 +665,7 @@ const Overview = new Lang.Class({
         this._viewSelector.zoomFromOverview();
 
         // Make other elements fade out.
-        Tweener.addTween(this._overview,
+        Tweener.addTween(this._stack,
                          { opacity: 0,
                            transition: 'easeOutQuad',
                            time: ANIMATION_TIME,
@@ -703,7 +703,7 @@ const Overview = new Lang.Class({
         this._viewSelector.hide();
         this._desktopFade.hide();
         this._backgroundGroup.hide();
-        this._overview.hide();
+        this._stack.hide();
 
         this.visible = false;
         this.animationInProgress = false;
