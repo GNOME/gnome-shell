@@ -1296,19 +1296,16 @@ const PressureBarrier = new Lang.Class({
             return Math.abs(event.dy);
     },
 
-    _isBarrierEventTooOld: function(event) {
-        // Ignore all events older than this time
-        let threshold = this._lastTime - this._timeout;
-        return event.time < threshold;
-    },
-
     _trimBarrierEvents: function() {
         // Events are guaranteed to be sorted in time order from
         // oldest to newest, so just look for the first old event,
         // and then chop events after that off.
         let i = 0;
+        let threshold = this._lastTime - this._timeout;
+
         while (i < this._barrierEvents.length) {
-            if (!this._isBarrierEventTooOld(this._barrierEvents[i]))
+            let [time, distance] = this._barrierEvents[i];
+            if (time >= threshold)
                 break;
             i++;
         }
@@ -1316,7 +1313,8 @@ const PressureBarrier = new Lang.Class({
         let firstNewEvent = i;
 
         for (i = 0; i < firstNewEvent; i++) {
-            this._currentPressure -= this._getDistanceAcrossBarrier(this._barrierEvents[i]);
+            let [time, distance] = this._barrierEvents[i];
+            this._currentPressure -= distance;
         }
 
         this._barrierEvents = this._barrierEvents.slice(firstNewEvent);
@@ -1362,8 +1360,10 @@ const PressureBarrier = new Lang.Class({
         this._lastTime = event.time;
 
         this._trimBarrierEvents();
-        this._barrierEvents.push(event);
-        this._currentPressure += Math.min(15, distance);
+        distance = Math.min(15, distance);
+
+        this._barrierEvents.push([event.time, distance]);
+        this._currentPressure += distance;
 
         if (this._currentPressure >= this._threshold)
             this._trigger();
