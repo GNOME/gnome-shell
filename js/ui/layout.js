@@ -191,6 +191,7 @@ const LayoutManager = new Lang.Class({
         this.trayBox = new St.Widget({ name: 'trayBox',
                                        layout_manager: new Clutter.BinLayout() }); 
         this.addChrome(this.trayBox);
+        this._setupTrayPressure();
 
         this.keyboardBox = new St.BoxLayout({ name: 'keyboardBox',
                                               reactive: true,
@@ -423,26 +424,8 @@ const LayoutManager = new Lang.Class({
         }
     },
 
-    _updateTrayBarrier: function() {
-        let monitor = this.bottomMonitor;
-
-        if (this._trayBarrier) {
-            this._trayBarrier.destroy();
-            this._trayBarrier = null;
-        }
-
-        if (this._trayPressure) {
-            this._trayPressure.destroy();
-            this._trayPressure = null;
-        }
-
-        this._trayBarrier = new Meta.Barrier({ display: global.display,
-                                               x1: monitor.x, x2: monitor.x + monitor.width,
-                                               y1: monitor.y + monitor.height, y2: monitor.y + monitor.height,
-                                               directions: Meta.BarrierDirection.NEGATIVE_Y });
-
-        this._trayPressure = new PressureBarrier(this._trayBarrier,
-                                                 MESSAGE_TRAY_PRESSURE_THRESHOLD,
+    _setupTrayPressure: function() {
+        this._trayPressure = new PressureBarrier(MESSAGE_TRAY_PRESSURE_THRESHOLD,
                                                  MESSAGE_TRAY_PRESSURE_TIMEOUT,
                                                  Shell.KeyBindingMode.NORMAL |
                                                  Shell.KeyBindingMode.OVERVIEW);
@@ -450,6 +433,22 @@ const LayoutManager = new Lang.Class({
         this._trayPressure.connect('trigger', function(barrier) {
             Main.messageTray.openTray();
         });
+    },
+
+    _updateTrayBarrier: function() {
+        let monitor = this.bottomMonitor;
+
+        if (this._trayBarrier) {
+            this._trayPressure.removeBarrier(this._trayBarrier);
+            this._trayBarrier.destroy();
+            this._trayBarrier = null;
+        }
+
+        this._trayBarrier = new Meta.Barrier({ display: global.display,
+                                               x1: monitor.x, x2: monitor.x + monitor.width,
+                                               y1: monitor.y + monitor.height, y2: monitor.y + monitor.height,
+                                               directions: Meta.BarrierDirection.NEGATIVE_Y });
+        this._trayPressure.addBarrier(this._trayBarrier);
     },
 
     _trayBarrierEventFilter: function(event) {
@@ -1273,25 +1272,37 @@ const HotCorner = new Lang.Class({
 const PressureBarrier = new Lang.Class({
     Name: 'PressureBarrier',
 
-    _init: function(barrier, threshold, timeout, keybindingMode) {
-        this._barrier = barrier;
+    _init: function(threshold, timeout, keybindingMode) {
         this._threshold = threshold;
         this._timeout = timeout;
         this._keybindingMode = keybindingMode;
-        this._orientation = (barrier.y1 == barrier.y2) ? Clutter.Orientation.HORIZONTAL : Clutter.Orientation.VERTICAL;
+        this._barriers = [];
         this._eventFilter = null;
 
         this._isTriggered = false;
         this._reset();
+    },
 
-        this._barrierHitId = this._barrier.connect('hit', Lang.bind(this, this._onBarrierHit));
-        this._barrierLeftId = this._barrier.connect('left', Lang.bind(this, this._onBarrierLeft));
+    addBarrier: function(barrier) {
+        barrier._pressureHitId = barrier.connect('hit', Lang.bind(this, this._onBarrierHit));
+        barrier._pressureLeftId = barrier.connect('left', Lang.bind(this, this._onBarrierLeft));
+
+        this._barriers.push(barrier);
+    },
+
+    _disconnectBarrier: function(barrier) {
+        barrier.disconnect(barrier._pressureHitId);
+        barrier.disconnect(barrier._pressureLeftId);
+    },
+
+    removeBarrier: function(barrier) {
+        this._disconnectBarrier(barrier);
+        this._barriers.splice(this._barriers.indexOf(barrier), 1);
     },
 
     destroy: function() {
-        this._barrier.disconnect(this._barrierHitId);
-        this._barrier.disconnect(this._barrierLeftId);
-        this._barrier = null;
+        this._barriers.forEach(Lang.bind(this, this._disconnectBarrier));
+        this._barriers = [];
     },
 
     setEventFilter: function(filter) {
@@ -1304,15 +1315,19 @@ const PressureBarrier = new Lang.Class({
         this._lastTime = 0;
     },
 
-    _getDistanceAcrossBarrier: function(event) {
-        if (this._orientation == Clutter.Orientation.HORIZONTAL)
+    _isHorizontal: function(barrier) {
+        return barrier.y1 == barrier.y2;
+    },
+
+    _getDistanceAcrossBarrier: function(barrier, event) {
+        if (this._isHorizontal(barrier))
             return Math.abs(event.dy);
         else
             return Math.abs(event.dx);
     },
 
-    _getDistanceAlongBarrier: function(event) {
-        if (this._orientation == Clutter.Orientation.HORIZONTAL)
+    _getDistanceAlongBarrier: function(barrier, event) {
+        if (this._isHorizontal(barrier))
             return Math.abs(event.dx);
         else
             return Math.abs(event.dy);
@@ -1366,8 +1381,8 @@ const PressureBarrier = new Lang.Class({
         if (!(this._keybindingMode & Main.keybindingMode))
             return;
 
-        let slide = this._getDistanceAlongBarrier(event);
-        let distance = this._getDistanceAcrossBarrier(event);
+        let slide = this._getDistanceAlongBarrier(barrier, event);
+        let distance = this._getDistanceAcrossBarrier(barrier, event);
 
         if (distance >= this._threshold) {
             this._trigger();
