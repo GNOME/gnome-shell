@@ -910,8 +910,6 @@ StScrollBar StButton#vhandle:active {
 }
 
 .list-search-result-description {
-    font-weight: bold;
-    font-size: 12pt;
     color: #eeeeec;
 }
 
@@ -963,6 +961,10 @@ StScrollBar StButton#vhandle:active {
     text-shadow: black 0px 2px 2px;
     transition-duration: 100ms;
     color:white;
+}
+
+.list-search-result:hover .list-search-result-description {
+    text-shadow: rgba(0,0,0,0.8) 0px 1px 2px;
 }
 
 .show-apps {
