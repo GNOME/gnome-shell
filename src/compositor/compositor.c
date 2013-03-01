@@ -611,7 +611,6 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
     }
 
   clutter_actor_show (info->overlay_group);
-  clutter_actor_show (info->stage);
 }
 
 void

@@ -23,6 +23,7 @@
 
 #include <meta/meta-plugin.h>
 #include <meta/window.h>
+#include <meta/util.h>
 
 #include <libintl.h>
 #define _(x) dgettext (GETTEXT_PACKAGE, x)
@@ -68,6 +69,7 @@ struct _MetaDefaultPluginClass
 
 static GQuark actor_data_quark = 0;
 
+static void start      (MetaPlugin      *plugin);
 static void minimize   (MetaPlugin      *plugin,
                         MetaWindowActor *actor);
 static void map        (MetaPlugin      *plugin,
@@ -191,6 +193,7 @@ meta_default_plugin_class_init (MetaDefaultPluginClass *klass)
   gobject_class->set_property    = meta_default_plugin_set_property;
   gobject_class->get_property    = meta_default_plugin_get_property;
 
+  plugin_class->start            = start;
   plugin_class->map              = map;
   plugin_class->minimize         = minimize;
   plugin_class->maximize         = maximize;
@@ -280,6 +283,29 @@ on_switch_workspace_effect_complete (ClutterTimeline *timeline, gpointer data)
   priv->desktop2 = NULL;
 
   meta_plugin_switch_workspace_completed (plugin);
+}
+
+static gboolean
+show_stage (MetaPlugin *plugin)
+{
+  MetaScreen *screen;
+  ClutterActor *stage;
+
+  screen = meta_plugin_get_screen (plugin);
+  stage = meta_get_stage_for_screen (screen);
+
+  clutter_actor_show (stage);
+
+  return FALSE;
+}
+
+static void
+start (MetaPlugin *plugin)
+{
+  meta_later_add (META_LATER_BEFORE_REDRAW,
+                  (GSourceFunc) show_stage,
+                  plugin,
+                  NULL);
 }
 
 static void
