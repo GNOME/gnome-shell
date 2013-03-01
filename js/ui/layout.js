@@ -441,7 +441,11 @@ const LayoutManager = new Lang.Class({
                                                y1: monitor.y + monitor.height, y2: monitor.y + monitor.height,
                                                directions: Meta.BarrierDirection.NEGATIVE_Y });
 
-        this._trayPressure = new PressureBarrier(this._trayBarrier, MESSAGE_TRAY_PRESSURE_THRESHOLD, MESSAGE_TRAY_PRESSURE_TIMEOUT);
+        this._trayPressure = new PressureBarrier(this._trayBarrier,
+                                                 MESSAGE_TRAY_PRESSURE_THRESHOLD,
+                                                 MESSAGE_TRAY_PRESSURE_TIMEOUT,
+                                                 Shell.KeyBindingMode.NORMAL |
+                                                 Shell.KeyBindingMode.OVERVIEW);
         this._trayPressure.connect('trigger', function(barrier) {
             Main.messageTray.openTray();
         });
@@ -1258,10 +1262,11 @@ const HotCorner = new Lang.Class({
 const PressureBarrier = new Lang.Class({
     Name: 'PressureBarrier',
 
-    _init: function(barrier, threshold, timeout) {
+    _init: function(barrier, threshold, timeout, keybindingMode) {
         this._barrier = barrier;
         this._threshold = threshold;
         this._timeout = timeout;
+        this._keybindingMode = keybindingMode;
         this._orientation = (barrier.y1 == barrier.y2) ? Clutter.Orientation.HORIZONTAL : Clutter.Orientation.VERTICAL;
 
         this._isTriggered = false;
@@ -1344,11 +1349,8 @@ const PressureBarrier = new Lang.Class({
         if (event.grabbed && Main.modalCount == 0)
             return;
 
-        let isOverview = ((Main.keybindingMode & (Shell.KeyBindingMode.OVERVIEW)) != 0);
-
-        // Throw out events where the grab is taken by something that's
-        // not the overview (modal dialogs, etc.)
-        if (event.grabbed && !isOverview)
+        // Throw out all events not in the proper keybinding mode
+        if (!(this._keybindingMode & Main.keybindingMode))
             return;
 
         let slide = this._getDistanceAlongBarrier(event);
