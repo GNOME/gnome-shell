@@ -367,6 +367,111 @@ const DashSpacer = new Lang.Class({
     }
 });
 
+const MessagesIndicator = new Lang.Class({
+    Name: 'MessagesIndicator',
+
+    _init: function(viewSelector) {
+        this._count = 0;
+        this._sources = [];
+        this._viewSelector = viewSelector;
+
+        this._container = new St.BoxLayout({ style_class: 'messages-indicator-contents',
+                                             reactive: true,
+                                             track_hover: true,
+                                             x_expand: true,
+                                             y_expand: true,
+                                             x_align: Clutter.ActorAlign.CENTER });
+
+        this._icon = new St.Icon({ icon_name: 'user-idle-symbolic',
+                                   icon_size: 16 });
+        this._container.add_actor(this._icon);
+
+        this._label = new St.Label();
+        this._container.add_actor(this._label);
+
+        this._highlight = new St.Widget({ style_class: 'messages-indicator-highlight',
+                                          x_expand: true,
+                                          y_expand: true,
+                                          y_align: Clutter.ActorAlign.END,
+                                          visible: false });
+
+        this._container.connect('notify::hover', Lang.bind(this,
+            function() {
+                this._highlight.visible = this._container.hover;
+            }));
+
+        let clickAction = new Clutter.ClickAction();
+        this._container.add_action(clickAction);
+        clickAction.connect('clicked', Lang.bind(this,
+            function() {
+                Main.messageTray.openTray();
+            }));
+
+        Main.messageTray.connect('showing', Lang.bind(this,
+            function() {
+                this._highlight.visible = false;
+                this._container.hover = false;
+            }));
+
+        let layout = new Clutter.BinLayout();
+        this.actor = new St.Widget({ layout_manager: layout,
+                                     style_class: 'messages-indicator',
+                                     y_expand: true,
+                                     y_align: Clutter.ActorAlign.END,
+                                     visible: false });
+        this.actor.add_actor(this._container);
+        this.actor.add_actor(this._highlight);
+
+        Main.messageTray.connect('source-added', Lang.bind(this, this._onSourceAdded));
+        Main.messageTray.connect('source-removed', Lang.bind(this, this._onSourceRemoved));
+
+        let sources = Main.messageTray.getSources();
+        sources.forEach(Lang.bind(this, function(source) { this._onSourceAdded(null, source); }));
+
+        this._viewSelector.connect('page-changed', Lang.bind(this, this._updateVisibility));
+        Main.overview.connect('showing', Lang.bind(this, this._updateVisibility));
+    },
+
+    _onSourceAdded: function(tray, source) {
+        if (source.trayIcon)
+            return;
+
+        if (source.isTransient)
+            return;
+
+        source.connect('count-updated', Lang.bind(this, this._updateCount));
+        this._sources.push(source);
+        this._updateCount();
+    },
+
+    _onSourceRemoved: function(tray, source) {
+        this._sources.splice(this._sources.indexOf(source), 1);
+        this._updateCount();
+    },
+
+    _updateCount: function() {
+        let count = 0;
+        this._sources.forEach(Lang.bind(this,
+            function(source) {
+                count += source.indicatorCount;
+            }));
+
+        this._count = count;
+        this._label.text = ngettext("%d new message",
+                                    "%d new messages",
+                                   count).format(count);
+
+        this._updateVisibility();
+    },
+
+    _updateVisibility: function() {
+        let activePage = this._viewSelector.getActivePage();
+        let visible = ((this._count > 0) && (activePage == ViewSelector.ViewPage.WINDOWS));
+
+        this.actor.visible = visible;
+    }
+});
+
 const ControlsManager = new Lang.Class({
     Name: 'ControlsManager',
 
@@ -378,6 +483,9 @@ const ControlsManager = new Lang.Class({
 
         this._thumbnailsSlider = new ThumbnailsSlider(thumbnails);
         this.thumbnailsActor = this._thumbnailsSlider.actor;
+
+        this._indicator = new MessagesIndicator(viewSelector);
+        this.indicatorActor = this._indicator.actor;
 
         this._viewSelector = viewSelector;
         this._viewSelector.connect('page-changed', Lang.bind(this, this._setVisibility));

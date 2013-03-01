@@ -734,11 +734,34 @@ StScrollBar StButton#vhandle:active {
     -vertical-spacing: 32px;
     padding-left: 32px;
     padding-right: 32px;
-    padding-bottom: 32px;
+    padding-bottom: 48px;
 }
 
 .window-picker.external-monitor {
     padding: 32px;
+}
+
+.messages-indicator {
+    color: #999999;
+    height: 32px;
+}
+
+.messages-indicator-contents {
+    spacing: 12px;
+    padding-bottom: 12px;
+}
+
+.messages-indicator-contents:hover {
+    color: white;
+    text-shadow: black 0px 2px 2px;
+}
+
+.messages-indicator-highlight {
+    background-gradient-start: transparent;
+    background-gradient-end: #999999;
+    background-gradient-direction: vertical;
+
+    height: 6px;
 }
 
 /* Dash */

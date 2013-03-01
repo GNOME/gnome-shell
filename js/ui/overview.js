@@ -308,6 +308,8 @@ const Overview = new Lang.Class({
         // Add our same-line elements after the search entry
         this._overview.add(this._groupStack, { y_fill: true, expand: true });
 
+        this._stack.add_actor(this._controls.indicatorActor);
+
         // TODO - recalculate everything when desktop size changes
         this.dashIconSize = this._dash.iconSize;
         this._dash.connect('icon-size-changed',
