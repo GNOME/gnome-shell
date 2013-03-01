@@ -464,23 +464,16 @@ after_stage_paint (gpointer data)
   return TRUE;
 }
 
-void
-meta_compositor_manage_screen (MetaCompositor *compositor,
-                               MetaScreen     *screen)
+static void
+redirect_windows (MetaCompositor *compositor,
+                  MetaScreen     *screen)
 {
-  MetaCompScreen *info;
-  MetaDisplay    *display       = meta_screen_get_display (screen);
-  Display        *xdisplay      = meta_display_get_xdisplay (display);
-  int             screen_number = meta_screen_get_screen_number (screen);
-  Window          xroot         = meta_screen_get_xroot (screen);
-  Window          xwin;
-  gint            width, height;
-  guint           n_retries;
-  guint           max_retries;
-
-  /* Check if the screen is already managed */
-  if (meta_screen_get_compositor_data (screen))
-    return;
+  MetaDisplay *display       = meta_screen_get_display (screen);
+  Display     *xdisplay      = meta_display_get_xdisplay (display);
+  Window       xroot         = meta_screen_get_xroot (screen);
+  int          screen_number = meta_screen_get_screen_number (screen);
+  guint        n_retries;
+  guint        max_retries;
 
   if (meta_get_replace_current_wm ())
     max_retries = 5;
@@ -513,6 +506,21 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
       n_retries++;
       g_usleep (G_USEC_PER_SEC);
     }
+}
+
+void
+meta_compositor_manage_screen (MetaCompositor *compositor,
+                               MetaScreen     *screen)
+{
+  MetaCompScreen *info;
+  MetaDisplay    *display       = meta_screen_get_display (screen);
+  Display        *xdisplay      = meta_display_get_xdisplay (display);
+  Window          xwin;
+  gint            width, height;
+
+  /* Check if the screen is already managed */
+  if (meta_screen_get_compositor_data (screen))
+    return;
 
   info = g_new0 (MetaCompScreen, 1);
   /*
@@ -611,6 +619,13 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
     }
 
   clutter_actor_show (info->overlay_group);
+
+  /* Map overlay window before redirecting windows offscreen so we catch their
+   * contents until we show the stage.
+   */
+  XMapWindow (xdisplay, info->output);
+
+  redirect_windows (compositor, screen);
 }
 
 void
