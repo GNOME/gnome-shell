@@ -118,6 +118,9 @@ const Overview = new Lang.Class({
         this._desktopFade = new St.Bin();
         global.overlay_group.add_actor(this._desktopFade);
 
+        let layout = new Clutter.BinLayout();
+        this._stack = new Clutter.Actor({ layout_manager: layout });
+
         /* Translators: This is the main view to select
            activities. See also note for "Activities" string. */
         this._overview = new St.BoxLayout({ name: 'overview',
@@ -151,7 +154,8 @@ const Overview = new Lang.Class({
         this._coverPane.connect('event', Lang.bind(this, function (actor, event) { return true; }));
 
         this._overview.hide();
-        global.overlay_group.add_actor(this._overview);
+        this._stack.add_actor(this._overview);
+        global.overlay_group.add_actor(this._stack);
 
         this._coverPane.hide();
 
