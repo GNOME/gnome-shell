@@ -343,6 +343,8 @@ const AppDisplay = new Lang.Class({
         global.settings.connect('changed::app-folder-categories', Lang.bind(this, function() {
             Main.queueDeferredWork(this._allAppsWorkId);
         }));
+        global.settings.connect('changed::enable-app-monitoring',
+                                Lang.bind(this, this._updateFrequentVisibility));
 
         this._views = [];
 
@@ -386,6 +388,7 @@ const AppDisplay = new Lang.Class({
                 }));
         }
         this._showView(Views.FREQUENT);
+        this._updateFrequentVisibility();
 
         // We need a dummy actor to catch the keyboard focus if the
         // user Ctrl-Alt-Tabs here before the deferred work creates
@@ -413,6 +416,19 @@ const AppDisplay = new Lang.Class({
             else
                 this._views[i].control.remove_style_pseudo_class('checked');
         }
+    },
+
+    _updateFrequentVisibility: function() {
+        let enabled = global.settings.get_boolean('enable-app-monitoring');
+        this._views[Views.FREQUENT].control.visible = enabled;
+
+        let visibleViews = this._views.filter(function(v) {
+            return v.control.visible;
+        });
+        this._controls.visible = visibleViews.length > 1;
+
+        if (!enabled && this._views[Views.FREQUENT].view.actor.visible)
+            this._showView(Views.ALL);
     },
 
     _redisplay: function() {
