@@ -85,7 +85,8 @@ typedef struct _CoglDisplay	      CoglDisplay;
  *
  * A common use for explicitly allocating a display object is to
  * define a template for allocating onscreen framebuffers which is
- * what the @onscreen_template argument is for.
+ * what the @onscreen_template argument is for, or alternatively
+ * you can use cogl_display_set_onscreen_template().
  *
  * When a display is first allocated via cogl_display_new() it is in a
  * mutable configuration mode. It's designed this way so we can
@@ -120,6 +121,26 @@ cogl_display_new (CoglRenderer *renderer,
  */
 CoglRenderer *
 cogl_display_get_renderer (CoglDisplay *display);
+
+/**
+ * cogl_display_set_onscreen_template:
+ * @display: a #CoglDisplay
+ * @onscreen_template: A template for creating #CoglOnscreen framebuffers
+ *
+ * Specifies a template for creating #CoglOnscreen framebuffers.
+ *
+ * Depending on the system, the constraints for creating #CoglOnscreen
+ * framebuffers need to be known before setting up a #CoglDisplay because the
+ * final setup of the display may constrain how onscreen framebuffers may be
+ * allocated. If Cogl knows how an application wants to allocate onscreen
+ * framebuffers then it can try to make sure to setup the display accordingly.
+ *
+ * Since: 1.16
+ * Stability: unstable
+ */
+void
+cogl_display_set_onscreen_template (CoglDisplay *display,
+                                    CoglOnscreenTemplate *onscreen_template);
 
 /**
  * cogl_display_setup:

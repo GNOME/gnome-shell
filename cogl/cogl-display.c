@@ -95,25 +95,43 @@ cogl_display_new (CoglRenderer *renderer,
   if (!cogl_renderer_connect (display->renderer, &error))
     g_error ("Failed to connect to renderer: %s\n", error->message);
 
-  display->onscreen_template = onscreen_template;
-  if (onscreen_template)
-    cogl_object_ref (onscreen_template);
-  else
-    display->onscreen_template = cogl_onscreen_template_new (NULL);
-
   display->setup = FALSE;
 
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
   display->gdl_plane = GDL_PLANE_ID_UPP_C;
 #endif
 
-  return _cogl_display_object_new (display);
+  display = _cogl_display_object_new (display);
+
+  cogl_display_set_onscreen_template (display, onscreen_template);
+
+  return display;
 }
 
 CoglRenderer *
 cogl_display_get_renderer (CoglDisplay *display)
 {
   return display->renderer;
+}
+
+void
+cogl_display_set_onscreen_template (CoglDisplay *display,
+                                    CoglOnscreenTemplate *onscreen_template)
+{
+  _COGL_RETURN_IF_FAIL (display->setup == FALSE);
+
+  if (onscreen_template)
+    cogl_object_ref (onscreen_template);
+
+  if (display->onscreen_template)
+    cogl_object_unref (display->onscreen_template);
+
+  display->onscreen_template = onscreen_template;
+
+  /* NB: we want to maintain the invariable that there is always an
+   * onscreen template associated with a CoglDisplay... */
+  if (!onscreen_template)
+    display->onscreen_template = cogl_onscreen_template_new (NULL);
 }
 
 CoglBool
