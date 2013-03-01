@@ -95,9 +95,13 @@ copy ..\..\..\cogl\cogl-deprecated.h $(CopyDir)\include\cogl-$(CoglApiVersion)\c
 
 copy ..\..\..\cogl\cogl-depth-state.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
+copy ..\..\..\cogl\cogl-error.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
+
 copy ..\..\..\cogl\cogl-euler.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-fixed.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-frame-info.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-glib-source.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
@@ -109,9 +113,13 @@ copy ..\..\..\cogl\cogl-vector.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-matrix.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
+copy ..\..\..\cogl\cogl-matrix-stack.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
+
 copy ..\..\..\cogl\cogl-offscreen.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-onscreen.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-output.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-primitives.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
@@ -138,6 +146,8 @@ copy ..\..\..\cogl\cogl-snippet.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 copy ..\..\..\cogl\cogl-texture.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-texture-2d.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
+
+copy ..\..\..\cogl\cogl-texture-2d-gl.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
 copy ..\..\..\cogl\cogl-texture-2d-sliced.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
 
@@ -233,7 +243,7 @@ copy ..\..\..\cogl\cogl-sdl.h $(CopyDir)\include\cogl-$(CoglApiVersion)\cogl
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..;..\..\..\cogl;..\..\..\cogl\winsys;$(GlibEtcInstallRoot)\include;$(GlibEtcInstallRoot)\include\glib-2.0;$(GlibEtcInstallRoot)\include\cairo;$(GlibEtcInstallRoot)\include\pango-1.0;$(GlibEtcInstallRoot)\include\gdk-pixbuf-2.0;$(GlibEtcInstallRoot)\lib\glib-2.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>G_DISABLE_SINGLE_INCLUDES;COGL_HAS_GLIB_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>G_DISABLE_SINGLE_INCLUDES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>msvc_recommended_pragmas.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
