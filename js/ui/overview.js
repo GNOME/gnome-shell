@@ -13,6 +13,7 @@ const Gdk = imports.gi.Gdk;
 const Background = imports.ui.background;
 const Dash = imports.ui.dash;
 const DND = imports.ui.dnd;
+const LayoutManager = imports.ui.layout;
 const Main = imports.ui.main;
 const MessageTray = imports.ui.messageTray;
 const OverviewControls = imports.ui.overviewControls;
@@ -120,13 +121,16 @@ const Overview = new Lang.Class({
 
         let layout = new Clutter.BinLayout();
         this._stack = new Clutter.Actor({ layout_manager: layout });
+        this._stack.add_constraint(new LayoutManager.MonitorConstraint({ primary: true }));
 
         /* Translators: This is the main view to select
            activities. See also note for "Activities" string. */
         this._overview = new St.BoxLayout({ name: 'overview',
                                             accessible_name: _("Overview"),
                                             reactive: true,
-                                            vertical: true });
+                                            vertical: true,
+                                            x_expand: true,
+                                            y_expand: true });
         this._overview._delegate = this;
 
         this._groupStack = new St.Widget({ layout_manager: new Clutter.BinLayout(),
@@ -442,11 +446,7 @@ const Overview = new Lang.Class({
         // when it is next shown.
         this.hide();
 
-        let primary = Main.layoutManager.primaryMonitor;
         let workArea = Main.layoutManager.getWorkAreaForMonitor(Main.layoutManager.primaryIndex);
-
-        this._overview.set_position(primary.x, primary.y);
-        this._overview.set_size(primary.width, primary.height);
 
         this._coverPane.set_position(0, workArea.y);
         this._coverPane.set_size(workArea.width, workArea.height);
