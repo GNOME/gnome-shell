@@ -28,6 +28,9 @@ const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 const MESSAGE_TRAY_PRESSURE_THRESHOLD = 250; // pixels
 const MESSAGE_TRAY_PRESSURE_TIMEOUT = 1000; // ms
 
+const HOT_CORNER_PRESSURE_THRESHOLD = 100; // pixels
+const HOT_CORNER_PRESSURE_TIMEOUT = 1000; // ms
+
 function isPopupMetaWindow(actor) {
     switch(actor.meta_window.get_window_type()) {
     case Meta.WindowType.DROPDOWN_MENU:
@@ -1109,36 +1112,13 @@ const HotCorner = new Lang.Class({
         this._x = x;
         this._y = y;
 
-        this.actor = new Clutter.Actor({ name: 'hot-corner-environs',
-                                         x: x, y: y,
-                                         width: 3,
-                                         height: 3,
-                                         reactive: true });
+        this._setupFallbackCornerIfNeeded();
 
-        this._corner = new Clutter.Rectangle({ name: 'hot-corner',
-                                               width: 1,
-                                               height: 1,
-                                               opacity: 0,
-                                               reactive: true });
-        this._corner._delegate = this;
-
-        this.actor.add_child(this._corner);
-        layoutManager.addChrome(this.actor);
-
-        if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
-            this._corner.set_position(this.actor.width - this._corner.width, 0);
-            this.actor.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
-        } else {
-            this._corner.set_position(0, 0);
-        }
-
-        this.actor.connect('leave-event',
-                           Lang.bind(this, this._onEnvironsLeft));
-
-        this._corner.connect('enter-event',
-                             Lang.bind(this, this._onCornerEntered));
-        this._corner.connect('leave-event',
-                             Lang.bind(this, this._onCornerLeft));
+        this._pressureBarrier = new PressureBarrier(HOT_CORNER_PRESSURE_THRESHOLD,
+                                                    HOT_CORNER_PRESSURE_TIMEOUT,
+                                                    Shell.KeyBindingMode.NORMAL |
+                                                    Shell.KeyBindingMode.OVERVIEW);
+        this._pressureBarrier.connect('trigger', Lang.bind(this, this._toggleOverview));
 
         // Cache the three ripples instead of dynamically creating and destroying them.
         this._ripple1 = new St.BoxLayout({ style_class: 'ripple-box', opacity: 0, visible: false });
@@ -1152,11 +1132,13 @@ const HotCorner = new Lang.Class({
 
     setBarrierSize: function(size) {
         if (this._verticalBarrier) {
+            this._pressureBarrier.removeBarrier(this._verticalBarrier);
             this._verticalBarrier.destroy();
             this._verticalBarrier = null;
         }
 
         if (this._horizontalBarrier) {
+            this._pressureBarrier.removeBarrier(this._horizontalBarrier);
             this._horizontalBarrier.destroy();
             this._horizontalBarrier = null;
         }
@@ -1168,12 +1150,54 @@ const HotCorner = new Lang.Class({
             this._horizontalBarrier = new Meta.Barrier({ display: global.display,
                                                          x1: this._x, x2: this._x + size, y1: this._y, y2: this._y,
                                                          directions: Meta.BarrierDirection.POSITIVE_Y });
+
+            this._pressureBarrier.addBarrier(this._verticalBarrier);
+            this._pressureBarrier.addBarrier(this._horizontalBarrier);
+        }
+    },
+
+    _setupFallbackCornerIfNeeded: function() {
+        if (!global.display.supports_extended_barriers()) {
+            this.actor = new Clutter.Actor({ name: 'hot-corner-environs',
+                                             x: x, y: y,
+                                             width: 3,
+                                             height: 3,
+                                             reactive: true });
+
+            this._corner = new Clutter.Rectangle({ name: 'hot-corner',
+                                                   width: 1,
+                                                   height: 1,
+                                                   opacity: 0,
+                                                   reactive: true });
+            this._corner._delegate = this;
+
+            this.actor.add_child(this._corner);
+            layoutManager.addChrome(this.actor);
+
+            if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
+                this._corner.set_position(this.actor.width - this._corner.width, 0);
+                this.actor.set_anchor_point_from_gravity(Clutter.Gravity.NORTH_EAST);
+            } else {
+                this._corner.set_position(0, 0);
+            }
+
+            this.actor.connect('leave-event',
+                               Lang.bind(this, this._onEnvironsLeft));
+
+            this._corner.connect('enter-event',
+                                 Lang.bind(this, this._onCornerEntered));
+            this._corner.connect('leave-event',
+                                 Lang.bind(this, this._onCornerLeft));
         }
     },
 
     destroy: function() {
         this.setBarrierSize(0);
-        this.actor.destroy();
+        this._pressureBarrier.destroy();
+        this._pressureBarrier = null;
+
+        if (this.actor)
+            this.actor.destroy();
     },
 
     _animRipple : function(ripple, delay, time, startScale, startOpacity, finalScale) {
@@ -1206,7 +1230,7 @@ const HotCorner = new Lang.Class({
                                    onComplete: function() { ripple.visible = false; } });
     },
 
-    rippleAnimation: function() {
+    _rippleAnimation: function() {
         // Show three concentric ripples expanding outwards; the exact
         // parameters were found by trial and error, so don't look
         // for them to make perfect sense mathematically
@@ -1217,14 +1241,16 @@ const HotCorner = new Lang.Class({
         this._animRipple(this._ripple3, 0.35,  1.0,   0.0,   0.3,     1);
     },
 
+    _toggleOverview: function() {
+        if (Main.overview.shouldToggleByCornerOrButton()) {
+            this._rippleAnimation();
+            Main.overview.toggle();
+        }
+    },
+
     handleDragOver: function(source, actor, x, y, time) {
         if (source != Main.xdndHandler)
             return DND.DragMotionResult.CONTINUE;
-
-        if (Main.overview.shouldToggleByCornerOrButton()) {
-            this.rippleAnimation();
-            Main.overview.toggle();
-        }
 
         return DND.DragMotionResult.CONTINUE;
     },
@@ -1232,10 +1258,7 @@ const HotCorner = new Lang.Class({
     _onCornerEntered : function() {
         if (!this._entered) {
             this._entered = true;
-            if (Main.overview.shouldToggleByCornerOrButton()) {
-                this.rippleAnimation();
-                Main.overview.toggle();
-            }
+            this._toggleOverview();
         }
         return false;
     },
