@@ -640,6 +640,10 @@ const ChatSource = new Lang.Class({
         return this._pendingMessages.length;
     },
 
+    get indicatorCount() {
+        return this.count;
+    },
+
     get unseenCount() {
         return this.count;
     },
