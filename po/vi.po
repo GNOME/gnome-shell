@@ -1,6 +1,6 @@
 # Vietnamese translation for Metacity.
 # Copyright © 2009 GNOME i18n Project for Vietnamese.
-# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2002-2004, 2007, 2008, 2011-2012.
+# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2002-2004, 2007, 2008, 2011-2013.
 # Clytie Siddall <clytie@riverland.net.au>, 2005-2009.
 #
 msgid ""
@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-03-01 15:50+0000\n"
-"PO-Revision-Date: 2013-03-02 18:00+0700\n"
+"PO-Revision-Date: 2013-03-02 18:04+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "Language: vi\n"
@@ -60,10 +60,8 @@ msgid "Switch applications"
 msgstr "Chuyển ứng dụng"
 
 #: ../src/50-mutter-navigation.xml.in.h:11
-#, fuzzy
-#| msgid "Switch windows directly"
 msgid "Switch windows"
-msgstr "Chuyển cửa sổ trực tiếp"
+msgstr "Chuyển cửa sổ"
 
 #: ../src/50-mutter-navigation.xml.in.h:12
 msgid "Switch windows of an application"
@@ -142,13 +140,8 @@ msgid "Activate the window menu"
 msgstr "Kích hoạt trình đơn cửa sổ"
 
 #: ../src/50-mutter-windows.xml.in.h:3
-#, fuzzy
 msgid "Toggle fullscreen mode"
-msgstr ""
-"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
-"Bật/Tắt Chế độ Toàn màn hình\n"
-"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
-"Bật/Tắt toàn màn hình"
+msgstr "Bật/Tắt toàn màn hình"
 
 #: ../src/50-mutter-windows.xml.in.h:4
 msgid "Toggle maximization state"
@@ -171,26 +164,16 @@ msgid "Close window"
 msgstr "Đóng cửa sổ"
 
 #: ../src/50-mutter-windows.xml.in.h:9
-#, fuzzy
 msgid "Hide window"
-msgstr ""
-"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
-"Co giãn cửa sổ\n"
-"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
-"Đổi cỡ cửa sổ"
+msgstr "Ẩn cửa sổ"
 
 #: ../src/50-mutter-windows.xml.in.h:10
 msgid "Move window"
 msgstr "Di chuyển cửa sổ"
 
 #: ../src/50-mutter-windows.xml.in.h:11
-#, fuzzy
 msgid "Resize window"
-msgstr ""
-"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
-"Co giãn cửa sổ\n"
-"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
-"Đổi cỡ cửa sổ"
+msgstr "Co giãn cửa sổ"
 
 #: ../src/50-mutter-windows.xml.in.h:12
 msgid "Toggle window on all workspaces or one"
@@ -201,22 +184,12 @@ msgid "Raise window if covered, otherwise lower it"
 msgstr "Nâng cửa sổ nếu bị che, không thì hạ xuống"
 
 #: ../src/50-mutter-windows.xml.in.h:14
-#, fuzzy
 msgid "Raise window above other windows"
-msgstr ""
-"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
-"Nâng cửa sổ lên trên các cửa sổ khác\n"
-"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
-"Nâng cửa sổ trên các cửa sổ khác"
+msgstr "Nâng cửa sổ trên các cửa sổ khác"
 
 #: ../src/50-mutter-windows.xml.in.h:15
-#, fuzzy
 msgid "Lower window below other windows"
-msgstr ""
-"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
-"Hạ thấp cửa sổ xuống dưới các cửa sổ khác\n"
-"#-#-#-#-#  vi.po (metacity GNOME 2.26)  #-#-#-#-#\n"
-"Hạ cửa sổ dưới các cửa sổ khác"
+msgstr "Hạ cửa sổ dưới các cửa sổ khác"
 
 #: ../src/50-mutter-windows.xml.in.h:16
 msgid "Maximize window vertically"
@@ -246,7 +219,7 @@ msgstr ""
 
 #: ../src/compositor/meta-background.c:1111
 msgid "background texture could not be created from file"
-msgstr ""
+msgstr "không thể tạo ảnh nền từ tập tin"
 
 #: ../src/core/bell.c:320
 msgid "Bell event"
@@ -258,10 +231,9 @@ msgid "Unknown window information request: %d"
 msgstr "Yêu cầu thông tin cửa sổ không rõ: %d"
 
 #: ../src/core/delete.c:111
-#, fuzzy, c-format
-#| msgid "%s is not responding."
+#, c-format
 msgid "“%s” is not responding."
-msgstr "%s không trả lời."
+msgstr "“%s” không trả lời."
 
 #: ../src/core/delete.c:113
 msgid "Application is not responding."
@@ -300,10 +272,9 @@ msgstr ""
 "Một chương trình khác đã dùng phím %s với phím bổ trợ «%x» như là tổ hợp.\n"
 
 #: ../src/core/keybindings.c:1129
-#, fuzzy, c-format
-#| msgid "\"%s\" is not a valid value for focus attribute"
+#, c-format
 msgid "\"%s\" is not a valid accelerator\n"
-msgstr "\"%s\" không phải là giá trị tiêu điểm hợp lệ."
+msgstr "\"%s\" không phải là phím tắt hợp lệ\n"
 
 #: ../src/core/main.c:196
 msgid "Disable connection to session manager"
@@ -683,25 +654,17 @@ msgstr "Xác định có bỏ qua popup và khung tô sáng khi xoay vòng cửa
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "Delay focus changes until the pointer stops moving"
-msgstr ""
+msgstr "Khoảng chờ con trỏ dừng di chuyển trước khi thay đổi tiêu điểm"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:14
-#, fuzzy
-#| msgid ""
-#| "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
-#| "the focused window will be automatically raised after a delay specified "
-#| "by the auto_raise_delay key. This is not related to clicking on a window "
-#| "to raise it, nor to entering a window during drag-and-drop."
 msgid ""
 "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
 "the focus will not be changed immediately when entering a window, but only "
 "after the pointer stops moving."
 msgstr ""
-"Nếu bật, và chế độ tiêu điểm hoạc là « sloppy » (luộm thuộm) hay « mouse "
-"» (con chuột) thì cửa sổ có tiêu điểm sẽ được nâng lên tự động, sau một thời "
-"gian hoãn được xác định bởi khoá « auto_raise_delay » (hoãn nâng lên tự "
-"động). Cái này không liên quan đến việc nhắp vào cửa sổ để nâng nó lên, cũng "
-"không liên quan đến việc vào cửa sổ trong khi kéo và thả."
+"Nếu bật, và chế độ tiêu điểm là \"sloppy\" hay \"mouse\" thì cửa sổ có tiêu "
+"điểm sẽ được thay đổi tức thì khi vào cửa sổ, nhưng chỉ sau khi chuột ngừng "
+"di chuyển."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
@@ -717,13 +680,14 @@ msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Auto maximize nearly monitor sized windows"
-msgstr ""
+msgstr "Tự động phóng to cửa sổ có kích thước gần bằng màn hình"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid ""
 "If enabled, new windows that are initially the size of the monitor "
 "automatically get maximized."
 msgstr ""
+"Nếu bật, sẽ tự động phóng to cửa sổ mới với kích thước gần bằng màn hình"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:19
 msgid "Select window from tab popup"
