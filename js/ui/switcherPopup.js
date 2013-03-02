@@ -160,6 +160,7 @@ const SwitcherPopup = new Lang.Class({
         // disturbed by the popup briefly flashing.
         this._initialDelayTimeoutId = Mainloop.timeout_add(POPUP_DELAY_TIMEOUT,
                                                            Lang.bind(this, function () {
+                                                               Main.osdWindow.cancel();
                                                                this.actor.opacity = 255;
                                                                this._initialDelayTimeoutId = 0;
                                                            }));

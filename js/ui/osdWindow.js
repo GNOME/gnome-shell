@@ -140,6 +140,15 @@ const OsdWindow = new Lang.Class({
                                                    Lang.bind(this, this._hide));
     },
 
+    cancel: function() {
+        if (!this._hideTimeoutId)
+            return;
+
+        Mainloop.source_remove(this._hideTimeoutId);
+        this._hideTimeoutId = 0;
+        this._hide();
+    },
+
     _hide: function() {
         Tweener.addTween(this.actor,
                          { opacity: 0,
