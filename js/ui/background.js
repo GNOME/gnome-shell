@@ -559,23 +559,6 @@ const Background = new Lang.Class({
 });
 Signals.addSignalMethods(Background.prototype);
 
-const StillFrame = new Lang.Class({
-    Name: 'StillFrame',
-
-    _init: function(monitorIndex) {
-        this.actor = new Meta.BackgroundActor();
-        this.actor._delegate = this;
-
-        let content = new Meta.Background({ meta_screen: global.screen,
-                                            monitor: monitorIndex,
-                                            effects: Meta.BackgroundEffects.NONE });
-        content.load_still_frame();
-
-        this.actor.content = content;
-    }
-});
-Signals.addSignalMethods(StillFrame.prototype);
-
 const SystemBackground = new Lang.Class({
     Name: 'SystemBackground',
 
