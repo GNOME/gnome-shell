@@ -127,8 +127,6 @@ function remoteProvidersLoaded(loadState) {
     // Special case gnome-control-center to be always active and always first
     sortOrder.unshift('gnome-control-center.desktop');
 
-    let numSorted = sortOrder.length;
-
     loadState.loadedProviders.sort(
         function(providerA, providerB) {
             let idxA, idxB;
@@ -146,15 +144,6 @@ function remoteProvidersLoaded(loadState) {
                 let nameB = providerB.appInfo.get_name();
 
                 return GLib.utf8_collate(nameA, nameB);
-            }
-
-            if (numSorted > 1) {
-                // if providerA is the last, it goes after everything
-                if ((idxA + 1) == numSorted)
-                    return 1;
-                // if providerB is the last, it goes after everything
-                else if ((idxB + 1) == numSorted)
-                    return -1;
             }
 
             // if providerA isn't found, it's sorted after providerB
