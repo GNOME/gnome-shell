@@ -20,11 +20,20 @@ meta_background_group_dispose (GObject *object)
   G_OBJECT_CLASS (meta_background_group_parent_class)->dispose (object);
 }
 
+static gboolean
+meta_background_group_get_paint_volume (ClutterActor       *actor,
+                                        ClutterPaintVolume *volume)
+{
+  return clutter_paint_volume_set_from_allocation (volume, actor);
+}
+
 static void
 meta_background_group_class_init (MetaBackgroundGroupClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
+  ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
+  actor_class->get_paint_volume = meta_background_group_get_paint_volume;
   object_class->dispose = meta_background_group_dispose;
 
   g_type_class_add_private (klass, sizeof (MetaBackgroundGroupPrivate));
