@@ -20,6 +20,9 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
     <arg type="b" direction="out" name="success" />
     <arg type="s" direction="out" name="result" />
 </method>
+<method name="ShowOSD">
+    <arg type="a{sv}" direction="in" name="params"/>
+</method>
 <method name="GrabAccelerator">
     <arg type="s" direction="in" name="accelerator"/>
     <arg type="u" direction="in" name="flags"/>
@@ -109,6 +112,21 @@ const GnomeShell = new Lang.Class({
             success = false;
         }
         return [success, returnValue];
+    },
+
+    ShowOSD: function(params) {
+        for (let param in params)
+            params[param] = params[param].deep_unpack();
+
+        let icon = null;
+        if (params['icon'])
+            icon = Gio.Icon.new_for_string(params['icon']);
+
+        Main.osdWindow.setIcon(icon);
+        Main.osdWindow.setLabel(params['label']);
+        Main.osdWindow.setLevel(params['level']);
+
+        Main.osdWindow.show();
     },
 
     GrabAcceleratorAsync: function(params, invocation) {
