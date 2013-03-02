@@ -534,22 +534,31 @@ void
 st_icon_set_icon_name (StIcon      *icon,
                        const gchar *icon_name)
 {
-  StIconPrivate *priv;
+  StIconPrivate *priv = icon->priv;
+  GIcon *gicon = NULL;
 
   g_return_if_fail (ST_IS_ICON (icon));
 
-  priv = icon->priv;
+  if (icon_name)
+    gicon = g_themed_icon_new_with_default_fallbacks (icon_name);
+
+  if (g_icon_equal (priv->gicon, gicon)) /* do nothing */
+    {
+      g_object_unref (gicon);
+      return;
+    }
 
   if (priv->gicon)
     g_object_unref (priv->gicon);
 
-  if (icon_name)
-    priv->gicon = g_themed_icon_new_with_default_fallbacks (icon_name);
-  else
-    priv->gicon = NULL;
+  g_object_freeze_notify (G_OBJECT (icon));
+
+  priv->gicon = gicon;
 
   g_object_notify (G_OBJECT (icon), "gicon");
   g_object_notify (G_OBJECT (icon), "icon-name");
+
+  g_object_thaw_notify (G_OBJECT (icon));
 
   st_icon_update (icon);
 }
@@ -579,7 +588,7 @@ st_icon_set_gicon (StIcon *icon, GIcon *gicon)
   g_return_if_fail (ST_IS_ICON (icon));
   g_return_if_fail (gicon == NULL || G_IS_ICON (gicon));
 
-  if (icon->priv->gicon == gicon) /* do nothing */
+  if (g_icon_equal (icon->priv->gicon, gicon)) /* do nothing */
     return;
 
   if (icon->priv->gicon)
