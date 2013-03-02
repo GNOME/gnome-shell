@@ -889,6 +889,7 @@ const UserMenuButton = new Lang.Class({
 
         let descriptionLabel = new St.Label({ style_class: 'end-session-dialog-description'});
         descriptionLabel.set_text(_("Shutting down might cause them to lose unsaved work."));
+        descriptionLabel.clutter_text.line_wrap = true;
         dialog.contentLayout.add(descriptionLabel, { x_fill: true,
                                                      y_fill: true,
                                                      y_align: St.Align.START });
