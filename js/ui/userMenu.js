@@ -52,6 +52,7 @@ const SystemdLoginSessionIface = <interface name='org.freedesktop.login1.Session
     <property name="Remote" type="b" access="read"/>
     <property name="Class" type="s" access="read"/>
     <property name="Type" type="s" access="read"/>
+    <property name="State" type="s" access="read"/>
 </interface>;
 
 const SystemdLoginSession = Gio.DBusProxy.makeProxyWrapper(SystemdLoginSessionIface);
@@ -959,6 +960,9 @@ const UserMenuButton = new Lang.Class({
                                                             sessionPath);
 
                         if (proxy.Class != 'user')
+                            continue;
+
+                        if (proxy.State == 'closing')
                             continue;
 
                         if (proxy.Id == GLib.getenv('XDG_SESSION_ID'))
