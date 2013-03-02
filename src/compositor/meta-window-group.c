@@ -250,12 +250,20 @@ meta_window_group_paint (ClutterActor *actor)
   g_list_free (children);
 }
 
+static gboolean
+meta_window_group_get_paint_volume (ClutterActor       *actor,
+                                    ClutterPaintVolume *volume)
+{
+  return clutter_paint_volume_set_from_allocation (volume, actor);
+}
+
 static void
 meta_window_group_class_init (MetaWindowGroupClass *klass)
 {
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
 
   actor_class->paint = meta_window_group_paint;
+  actor_class->get_paint_volume = meta_window_group_get_paint_volume;
 }
 
 static void
