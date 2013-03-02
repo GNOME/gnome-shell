@@ -1608,12 +1608,26 @@ StScrollBar StButton#vhandle:active {
     -shell-counter-overlap-y: 13px;
 }
 
+/* OSD */
+.osd-window {
+    text-align: center;
+    font-weight: bold;
+    spacing: 1em;
+}
+
+.osd-window .level {
+    height: 0.6em;
+    border-radius: 0.3em;
+    background-color: rgba(190,190,190,0.2);
+}
+
 /* App Switcher */
 .switcher-popup {
     padding: 8px;
     spacing: 16px;
 }
 
+.osd-window,
 .switcher-list {
     background: rgba(0,0,0,0.8);
     border: 1px solid rgba(128,128,128,0.40);

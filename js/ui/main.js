@@ -18,6 +18,7 @@ const ExtensionSystem = imports.ui.extensionSystem;
 const ExtensionDownloader = imports.ui.extensionDownloader;
 const Keyboard = imports.ui.keyboard;
 const MessageTray = imports.ui.messageTray;
+const OsdWindow = imports.ui.osdWindow;
 const Overview = imports.ui.overview;
 const Panel = imports.ui.panel;
 const Params = imports.misc.params;
@@ -51,6 +52,7 @@ let screenShield = null;
 let notificationDaemon = null;
 let windowAttentionHandler = null;
 let ctrlAltTabManager = null;
+let osdWindow = null;
 let sessionMode = null;
 let shellDBusService = null;
 let shellMountOpDBusService = null;
@@ -137,6 +139,7 @@ function startSession() {
 
     xdndHandler = new XdndHandler.XdndHandler();
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
+    osdWindow = new OsdWindow.OsdWindow();
     overview = new Overview.Overview();
     wm = new WindowManager.WindowManager();
     magnifier = new Magnifier.Magnifier();
