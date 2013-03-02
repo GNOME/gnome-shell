@@ -803,16 +803,14 @@ global_stage_notify_height (GObject    *gobject,
 }
 
 static void
-global_stage_before_paint (ClutterStage *stage,
-                           ShellGlobal  *global)
+global_stage_before_paint (gpointer data)
 {
   shell_perf_log_event (shell_perf_log_get_default (),
                         "clutter.stagePaintStart");
 }
 
 static void
-global_stage_after_paint (ClutterStage *stage,
-                          ShellGlobal  *global)
+global_stage_after_paint (gpointer data)
 {
   shell_perf_log_event (shell_perf_log_get_default (),
                         "clutter.stagePaintDone");
@@ -939,10 +937,13 @@ _shell_global_set_plugin (ShellGlobal *global,
   g_signal_connect (global->stage, "notify::height",
                     G_CALLBACK (global_stage_notify_height), global);
 
-  g_signal_connect (global->stage, "paint",
-                    G_CALLBACK (global_stage_before_paint), global);
-  g_signal_connect_after (global->stage, "paint",
-                          G_CALLBACK (global_stage_after_paint), global);
+  clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_PRE_PAINT,
+                                         (GSourceFunc) global_stage_before_paint,
+                                         NULL, NULL);
+
+  clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_POST_PAINT,
+                                         (GSourceFunc) global_stage_after_paint,
+                                         NULL, NULL);
 
   shell_perf_log_define_event (shell_perf_log_get_default(),
                                "clutter.stagePaintStart",
