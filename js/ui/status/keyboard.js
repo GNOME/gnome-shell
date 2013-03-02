@@ -398,6 +398,9 @@ const InputSourceIndicator = new Lang.Class({
     },
 
     _switchInputSource: function(display, screen, window, binding) {
+        if (this._mruSources.length < 2)
+            return;
+
         let popup = new InputSourcePopup(this._mruSources, this._keybindingAction, this._keybindingActionBackward);
         let modifiers = binding.get_modifiers();
         let backwards = modifiers & Meta.VirtualModifier.SHIFT_MASK;
