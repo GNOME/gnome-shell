@@ -864,6 +864,14 @@ const ScreenShield = new Lang.Class({
                          });
     },
 
+    _hideLockScreenComplete: function() {
+        if (Main.sessionMode.currentMode == 'lock-screen')
+            Main.sessionMode.popMode('lock-screen');
+
+        this._lockScreenState = MessageTray.State.HIDDEN;
+        this._lockScreenGroup.hide();
+    },
+
     _hideLockScreen: function(animate, velocity) {
         if (this._lockScreenState == MessageTray.State.HIDDEN)
             return;
@@ -887,21 +895,13 @@ const ScreenShield = new Lang.Class({
                              { y: -h,
                                time: time,
                                transition: 'easeInQuad',
-                               onComplete: function() {
-                                   this._lockScreenState = MessageTray.State.HIDDEN;
-                                   this._lockScreenGroup.hide();
-                               },
-                               onCompleteScope: this,
+                               onComplete: Lang.bind(this, this._hideLockScreenComplete),
                              });
         } else {
-            this._lockScreenState = MessageTray.State.HIDDEN;
-            this._lockScreenGroup.hide();
+            this._hideLockScreenComplete();
         }
 
         global.stage.show_cursor();
-
-        if (Main.sessionMode.currentMode == 'lock-screen')
-            Main.sessionMode.popMode('lock-screen');
     },
 
     _ensureUnlockDialog: function(onPrimary, allowCancel) {
