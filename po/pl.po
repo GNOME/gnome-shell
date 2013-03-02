@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-24 02:31+0100\n"
-"PO-Revision-Date: 2013-02-24 02:32+0100\n"
+"POT-Creation-Date: 2013-03-02 01:52+0100\n"
+"PO-Revision-Date: 2013-03-02 01:53+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -228,7 +228,7 @@ msgid ""
 msgstr ""
 "Inny menedżer składania jest już uruchomiony na podekranie %i ekranu \"%s\"."
 
-#: ../src/compositor/meta-background.c:1116
+#: ../src/compositor/meta-background.c:1111
 msgid "background texture could not be created from file"
 msgstr "nie można utworzyć tekstury tła z pliku"
 
@@ -264,18 +264,18 @@ msgstr "_Czekaj"
 msgid "_Force Quit"
 msgstr "_Zakończ"
 
-#: ../src/core/display.c:392
+#: ../src/core/display.c:401
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Brak rozszerzenia %s, wymaganego przez składanie"
 
-#: ../src/core/display.c:484
+#: ../src/core/display.c:493
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr ""
 "Otwarcie połączenia z ekranem \"%s\" systemu X Window się nie powiodło\n"
 
-#: ../src/core/keybindings.c:876
+#: ../src/core/keybindings.c:929
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -284,9 +284,14 @@ msgstr ""
 "Skrótu klawiszowego z klawiszem %s i modyfikatorami %x używa już inny "
 "program\n"
 
+#: ../src/core/keybindings.c:1129
+#, c-format
+msgid "\"%s\" is not a valid accelerator\n"
+msgstr "\"%s\" nie jest prawidłowym skrótem\n"
+
 #: ../src/core/main.c:196
 msgid "Disable connection to session manager"
-msgstr "Wyłącza połączenie z menedżerem sesji"
+msgstr "Rozłącza połączenie z menedżerem sesji"
 
 #: ../src/core/main.c:202
 msgid "Replace the running window manager"
@@ -294,7 +299,7 @@ msgstr "Zastępuje uruchomionego menedżera okien"
 
 #: ../src/core/main.c:208
 msgid "Specify session management ID"
-msgstr "Określa identyfikator zarządzania sesją"
+msgstr "Podaje identyfikator zarządzania sesją"
 
 #: ../src/core/main.c:213
 msgid "X Display to use"
@@ -308,12 +313,12 @@ msgstr "Inicjuje sesję z zapisanego pliku"
 msgid "Make X calls synchronous"
 msgstr "Synchroniczne wywołania X"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:533
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Przejrzenie katalogu z motywami się nie powiodło: %s\n"
 
-#: ../src/core/main.c:510
+#: ../src/core/main.c:549
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -510,7 +515,7 @@ msgid "Window manager error: "
 msgstr "Błąd menedżera okien: "
 
 #. first time through
-#: ../src/core/window.c:7504
+#: ../src/core/window.c:7539
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -526,7 +531,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8228
+#: ../src/core/window.c:8263
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
