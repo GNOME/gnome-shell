@@ -1,3 +1,6 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+[encoding: UTF-8]
 data/50-gnome-shell-screenshot.xml.in
 data/50-gnome-shell-system.xml.in
 data/gnome-shell.desktop.in.in
@@ -30,6 +33,7 @@ js/ui/lookingGlass.js
 js/ui/main.js
 js/ui/messageTray.js
 js/ui/notificationDaemon.js
+js/ui/overviewControls.js
 js/ui/overview.js
 js/ui/panel.js
 js/ui/popupMenu.js
