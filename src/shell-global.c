@@ -802,18 +802,22 @@ global_stage_notify_height (GObject    *gobject,
   g_object_notify (G_OBJECT (global), "screen-height");
 }
 
-static void
+static gboolean
 global_stage_before_paint (gpointer data)
 {
   shell_perf_log_event (shell_perf_log_get_default (),
                         "clutter.stagePaintStart");
+
+  return TRUE;
 }
 
-static void
+static gboolean
 global_stage_after_paint (gpointer data)
 {
   shell_perf_log_event (shell_perf_log_get_default (),
                         "clutter.stagePaintDone");
+
+  return TRUE;
 }
 
 /* This is an IBus workaround. The flow of events with IBus is that every time
@@ -938,11 +942,11 @@ _shell_global_set_plugin (ShellGlobal *global,
                     G_CALLBACK (global_stage_notify_height), global);
 
   clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_PRE_PAINT,
-                                         (GSourceFunc) global_stage_before_paint,
+                                         global_stage_before_paint,
                                          NULL, NULL);
 
   clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_POST_PAINT,
-                                         (GSourceFunc) global_stage_after_paint,
+                                         global_stage_after_paint,
                                          NULL, NULL);
 
   shell_perf_log_define_event (shell_perf_log_get_default(),
