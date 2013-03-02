@@ -453,9 +453,9 @@ meta_check_end_modal (MetaScreen *screen)
 }
 
 static void
-after_stage_paint (ClutterActor   *stage,
-                   MetaCompScreen *info)
+after_stage_paint (gpointer data)
 {
+  MetaCompScreen *info = (MetaCompScreen*) data;
   GList *l;
 
   for (l = info->windows; l; l = l->next)
@@ -531,8 +531,10 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
   meta_screen_set_cm_selection (screen);
 
   info->stage = clutter_stage_new ();
-  g_signal_connect_after (info->stage, "paint",
-                          G_CALLBACK (after_stage_paint), info);
+
+  clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_POST_PAINT,
+                                         (GSourceFunc) after_stage_paint,
+                                         info, NULL);
 
   clutter_stage_set_sync_delay (CLUTTER_STAGE (info->stage), META_SYNC_DELAY);
 
