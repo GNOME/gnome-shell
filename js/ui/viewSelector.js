@@ -83,11 +83,10 @@ const ViewSelector = new Lang.Class({
         this._entry.connect('notify::mapped', Lang.bind(this, this._onMapped));
         global.stage.connect('notify::key-focus', Lang.bind(this, this._onStageKeyFocusChanged));
 
-        this._inactiveIcon = new St.Icon({ style_class: 'search-entry-icon',
-                                           icon_name: 'edit-find-symbolic' });
-        this._activeIcon = new St.Icon({ style_class: 'search-entry-icon',
-                                         icon_name: 'edit-clear-symbolic' });
-        this._entry.set_secondary_icon(this._inactiveIcon);
+        this._entry.set_primary_icon(new St.Icon({ style_class: 'search-entry-icon',
+                                                   icon_name: 'edit-find-symbolic' }));
+        this._clearIcon = new St.Icon({ style_class: 'search-entry-icon',
+                                        icon_name: 'edit-clear-symbolic' });
 
         this._iconClickedId = 0;
         this._capturedEventId = 0;
@@ -376,7 +375,7 @@ const ViewSelector = new Lang.Class({
             this._searchResults.startingSearch();
 
         if (this._searchActive) {
-            this._entry.set_secondary_icon(this._activeIcon);
+            this._entry.set_secondary_icon(this._clearIcon);
 
             if (this._iconClickedId == 0)
                 this._iconClickedId = this._entry.connect('secondary-icon-clicked',
@@ -396,7 +395,7 @@ const ViewSelector = new Lang.Class({
                 this._searchTimeoutId = 0;
             }
 
-            this._entry.set_secondary_icon(this._inactiveIcon);
+            this._entry.set_secondary_icon(null);
             this._searchCancelled();
         }
     },
