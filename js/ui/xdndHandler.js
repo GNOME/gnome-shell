@@ -68,7 +68,7 @@ const XdndHandler = new Lang.Class({
                                                                    source: cursorWindow});
 
             this._cursorWindowClone = new Clutter.Clone({ source: cursorWindow });
-            global.overlay_group.add_actor(this._cursorWindowClone);
+            Main.uiGroup.add_actor(this._cursorWindowClone);
             Shell.util_set_hidden_from_pick(this._cursorWindowClone, true);
 
             // Make sure that the clone has the same position as the source
