@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-03-02 23:02+0000\n"
-"PO-Revision-Date: 2013-03-03 11:11+0700\n"
+"PO-Revision-Date: 2013-03-03 11:13+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "Language: vi\n"
@@ -342,10 +342,8 @@ msgid "Select an extension to configure using the combobox above."
 msgstr "Chọn phần mở rộng để cấu hình dùng hộp chọn."
 
 #: ../js/gdm/loginDialog.js:405
-#, fuzzy
-#| msgid "Session..."
 msgid "Session…"
-msgstr "Phiên làm việc..."
+msgstr "Phiên làm việc…"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
@@ -434,7 +432,7 @@ msgstr "Lỗi thực hiện '%s':"
 
 #: ../js/ui/appDisplay.js:348
 msgid "Frequent"
-msgstr ""
+msgstr "Thường dùng"
 
 #: ../js/ui/appDisplay.js:355
 msgid "All"
@@ -468,7 +466,7 @@ msgstr "Thiết lập"
 
 #: ../js/ui/backgroundMenu.js:21
 msgid "Change Background…"
-msgstr ""
+msgstr "Thay đổi nền…"
 
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
@@ -1174,10 +1172,8 @@ msgid "Remove"
 msgstr "Loại bỏ"
 
 #: ../js/ui/messageTray.js:1501
-#, fuzzy
-#| msgid "No Messages"
 msgid "Clear Messages"
-msgstr "Không có thông báo"
+msgstr "Xoá thông báo"
 
 #: ../js/ui/messageTray.js:1528
 msgid "Notification Settings"
@@ -1219,10 +1215,8 @@ msgstr "Tổng quan"
 #. active; it should not exceed ~30
 #. characters.
 #: ../js/ui/overview.js:284
-#, fuzzy
-#| msgid "Type to search..."
 msgid "Type to search…"
-msgstr "Nhập để tìm..."
+msgstr "Nhập để tìm…"
 
 #: ../js/ui/panel.js:613
 msgid "Quit"
@@ -1283,22 +1277,16 @@ msgstr "GNOME cần khoá màn hình"
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
 #: ../js/ui/screenShield.js:758 ../js/ui/screenShield.js:1169
-#, fuzzy
-#| msgid "Unable to connect to %s"
 msgid "Unable to lock"
-msgstr "Không thể kết nối đến %s"
+msgstr "Không thể khoá"
 
 #: ../js/ui/screenShield.js:759 ../js/ui/screenShield.js:1170
-#, fuzzy
-#| msgid "No such application"
 msgid "Lock was blocked by an application"
-msgstr "Không có ứng dụng đó"
+msgstr "Một ứng dụng đã ngăn cản khoá"
 
 #: ../js/ui/searchDisplay.js:431
-#, fuzzy
-#| msgid "Searching..."
 msgid "Searching…"
-msgstr "Đang tìm..."
+msgstr "Đang tìm…"
 
 #: ../js/ui/searchDisplay.js:475
 msgid "No results."
@@ -1392,16 +1380,12 @@ msgid "Visibility"
 msgstr "Tầm nhìn"
 
 #: ../js/ui/status/bluetooth.js:59
-#, fuzzy
-#| msgid "Send Files to Device..."
 msgid "Send Files to Device…"
-msgstr "Gửi tập tin đến thiết bị..."
+msgstr "Gửi tập tin đến thiết bị…"
 
 #: ../js/ui/status/bluetooth.js:60
-#, fuzzy
-#| msgid "Set Up a New Device..."
 msgid "Set Up a New Device…"
-msgstr "Thiết lập thiết bị mới..."
+msgstr "Thiết lập thiết bị mới…"
 
 #: ../js/ui/status/bluetooth.js:84
 msgid "Bluetooth Settings"
@@ -1426,10 +1410,8 @@ msgid "connecting..."
 msgstr "đang kết nối..."
 
 #: ../js/ui/status/bluetooth.js:239
-#, fuzzy
-#| msgid "Send Files..."
 msgid "Send Files…"
-msgstr "Gửi tập tin..."
+msgstr "Gửi tập tin…"
 
 #: ../js/ui/status/bluetooth.js:246
 msgid "Keyboard Settings"
@@ -1559,7 +1541,7 @@ msgstr "lỗi kết nối"
 #: ../js/ui/status/network.js:552 ../js/ui/status/network.js:1435
 #: ../js/ui/status/network.js:1627
 msgid "More…"
-msgstr ""
+msgstr "Nữa…"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
@@ -1640,10 +1622,8 @@ msgstr "Thiết lập năng lượng"
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
 #: ../js/ui/status/power.js:99
-#, fuzzy
-#| msgid "Estimating..."
 msgid "Estimating…"
-msgstr "Ước lượng..."
+msgstr "Ước lượng…"
 
 #: ../js/ui/status/power.js:106
 #, c-format
