@@ -1193,9 +1193,8 @@ const HotCorner = new Lang.Class({
         ripple.opacity = 255 * Math.sqrt(startOpacity);
         ripple.scale_x = ripple.scale_y = startScale;
 
-        let [x, y] = this._corner.get_transformed_position();
-        ripple.x = x;
-        ripple.y = y;
+        ripple.x = this._x;
+        ripple.y = this._y;
 
         Tweener.addTween(ripple, { _opacity: 0,
                                    scale_x: finalScale,
