@@ -450,6 +450,7 @@ meta_window_actor_finalize (GObject *object)
   MetaWindowActor        *self = META_WINDOW_ACTOR (object);
   MetaWindowActorPrivate *priv = self->priv;
 
+  g_list_free_full (priv->frames, (GDestroyNotify) frame_data_free);
   g_free (priv->desc);
 
   G_OBJECT_CLASS (meta_window_actor_parent_class)->finalize (object);
