@@ -639,6 +639,8 @@ const LayoutManager = new Lang.Class({
         this.emit('panel-box-changed');
 
         this._queueUpdateRegions();
+
+        this.emit('startup-complete');
     },
 
     showKeyboard: function () {

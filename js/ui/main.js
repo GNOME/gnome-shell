@@ -58,7 +58,7 @@ let shellDBusService = null;
 let shellMountOpDBusService = null;
 let screenSaverDBus = null;
 let modalCount = 0;
-let keybindingMode = Shell.KeyBindingMode.NORMAL;
+let keybindingMode = Shell.KeyBindingMode.NONE;
 let modalActorFocusStack = [];
 let uiGroup = null;
 let magnifier = null;
@@ -201,6 +201,11 @@ function startSession() {
 
     layoutManager.connect('startup-prepared', function() {
                               layoutManager.startupAnimation();
+                          });
+    layoutManager.connect('startup-complete', function() {
+                              if (keybindingMode == Shell.KeyBindingMode.NONE) {
+                                  keybindingMode = Shell.KeyBindingMode.NORMAL;
+                              }
                           });
 }
 
