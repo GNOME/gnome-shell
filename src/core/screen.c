@@ -52,6 +52,7 @@
 #include <locale.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 static char* get_screen_name (MetaDisplay *display,
                               int          number);
@@ -1985,6 +1986,7 @@ meta_screen_get_mouse_window (MetaScreen  *screen,
                   &mods,
                   &group);
   meta_error_trap_pop (screen->display);
+  free (buttons.mask);
 
   window = meta_stack_get_default_focus_window_at_point (screen->stack,
                                                          screen->active_workspace,
@@ -2236,6 +2238,7 @@ meta_screen_get_current_monitor (MetaScreen *screen)
                       &buttons,
                       &mods,
                       &group);
+      free (buttons.mask);
 
       pointer_position.x = root_x_return;
       pointer_position.y = root_y_return;

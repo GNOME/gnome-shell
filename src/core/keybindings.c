@@ -1544,6 +1544,7 @@ primary_modifier_still_pressed (MetaDisplay *display,
                   &root_x, &root_y,
                   &x, &y,
                   &buttons, &mods, &group);
+  free (buttons.mask);
 
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Primary modifier 0x%x full grab mask 0x%x current state 0x%x\n",

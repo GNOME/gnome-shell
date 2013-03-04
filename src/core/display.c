@@ -71,6 +71,7 @@
 #include <X11/extensions/Xcomposite.h>
 #include <X11/extensions/Xdamage.h>
 #include <X11/extensions/Xfixes.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -1674,6 +1675,7 @@ window_focus_on_pointer_rest_callback (gpointer data) {
                   &root_x, &root_y, &x, &y,
                   &buttons, &mods, &group);
   meta_error_trap_pop (display);
+  free (buttons.mask);
 
   if (root_x != focus_data->pointer_x ||
       root_y != focus_data->pointer_y)

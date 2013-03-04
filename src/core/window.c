@@ -48,6 +48,7 @@
 
 #include <X11/Xatom.h>
 #include <X11/Xlibint.h> /* For display->resource_mask */
+#include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
@@ -6959,6 +6960,8 @@ meta_window_client_message (MetaWindow *window,
                 button = 3;
               else
                 button = 0;
+
+              free (buttons.mask);
             }
 
           if (button != 0)
