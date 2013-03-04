@@ -990,7 +990,27 @@ _cogl_framebuffer_compare_viewport_state (CoglFramebuffer *a,
       /* NB: we render upside down to offscreen framebuffers and that
        * can affect how we setup the GL viewport... */
       a->type != b->type)
-    return COGL_FRAMEBUFFER_STATE_VIEWPORT;
+    {
+      unsigned long differences = COGL_FRAMEBUFFER_STATE_VIEWPORT;
+      CoglContext *context = a->context;
+
+      /* XXX: ONGOING BUG: Intel viewport scissor
+       *
+       * Intel gen6 drivers don't currently correctly handle offset
+       * viewports, since primitives aren't clipped within the bounds of
+       * the viewport.  To workaround this we push our own clip for the
+       * viewport that will use scissoring to ensure we clip as expected.
+       *
+       * This workaround implies that a change in viewport state is
+       * effectively also a change in the clipping state.
+       *
+       * TODO: file a bug upstream!
+       */
+      if (G_UNLIKELY (context->needs_viewport_scissor_workaround))
+          differences |= COGL_FRAMEBUFFER_STATE_CLIP;
+
+      return differences;
+    }
   else
     return 0;
 }
