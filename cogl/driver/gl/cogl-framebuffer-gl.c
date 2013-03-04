@@ -890,7 +890,21 @@ _cogl_framebuffer_gl_clear (CoglFramebuffer *framebuffer,
     }
 
   if (buffers & COGL_BUFFER_BIT_DEPTH)
-    gl_buffers |= GL_DEPTH_BUFFER_BIT;
+    {
+      gl_buffers |= GL_DEPTH_BUFFER_BIT;
+
+      if (ctx->depth_writing_enabled_cache != TRUE)
+        {
+          GE( ctx, glDepthMask (TRUE));
+
+          ctx->depth_writing_enabled_cache = TRUE;
+
+          /* Make sure the DepthMask is updated when the next primitive is drawn */
+          ctx->current_pipeline_changes_since_flush |=
+            COGL_PIPELINE_STATE_DEPTH;
+          ctx->current_pipeline_age--;
+        }
+    }
 
   if (buffers & COGL_BUFFER_BIT_STENCIL)
     gl_buffers |= GL_STENCIL_BUFFER_BIT;
