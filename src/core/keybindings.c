@@ -1707,23 +1707,21 @@ process_overlay_key (MetaDisplay *display,
         }
       else if (event->evtype == XI_KeyRelease)
         {
+          MetaKeyBinding *binding;
+
           display->overlay_key_only_pressed = FALSE;
           /* We want to unfreeze events, but keep the grab so that if the user
            * starts typing into the overlay we get all the keys */
           XIAllowEvents (display->xdisplay, event->deviceid,
                          XIAsyncDevice, event->time);
 
-          if (display->grab_op == META_GRAB_OP_COMPOSITOR)
-            {
-              MetaKeyBinding *binding =
-                display_get_keybinding (display,
-                                        display->overlay_key_combo.keysym,
-                                        display->overlay_key_combo.keycode,
-                                        display->grab_mask);
-              if (binding &&
-                  meta_compositor_filter_keybinding (display->compositor, screen, binding))
-                return TRUE;
-            }
+          binding = display_get_keybinding (display,
+                                            display->overlay_key_combo.keysym,
+                                            display->overlay_key_combo.keycode,
+                                            display->grab_mask);
+          if (binding &&
+              meta_compositor_filter_keybinding (display->compositor, screen, binding))
+            return TRUE;
           meta_display_overlay_key_activate (display);
         }
 
