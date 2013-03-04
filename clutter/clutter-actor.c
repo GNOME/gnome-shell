@@ -18512,7 +18512,9 @@ transition_closure_free (gpointer data)
       if (clutter_timeline_is_playing (timeline))
         clutter_timeline_stop (timeline);
 
+      /* remove the reference added in add_transition_internal() */
       g_object_unref (clos->transition);
+
       g_free (clos->name);
 
       g_slice_free (TransitionClosure, clos);
@@ -18545,9 +18547,7 @@ on_transition_stopped (ClutterTransition *transition,
     {
       /* we take a reference here because removing the closure
        * will release the reference on the transition, and we
-       * want the transition to survive the signal emission;
-       * the master clock will release the last reference at
-       * the end of the frame processing.
+       * want the transition to survive the signal emission
        */
       g_object_ref (transition);
 
@@ -18555,6 +18555,9 @@ on_transition_stopped (ClutterTransition *transition,
        * so we won't recurse
        */
       g_hash_table_remove (info->transitions, clos->name);
+
+      /* we can release the reference here */
+      g_object_unref (transition);
     }
 
   /* we emit the ::transition-stopped after removing the
