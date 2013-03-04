@@ -159,8 +159,6 @@ function startSession() {
     global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
                                             false, -1, 1);
     global.display.connect('overlay-key', Lang.bind(overview, overview.toggle));
-    sessionMode.connect('updated', _sessionUpdated);
-    _sessionUpdated();
 
     // Provide the bus object for gnome-session to
     // initiate logouts.
@@ -201,6 +199,9 @@ function startSession() {
                               if (keybindingMode == Shell.KeyBindingMode.NONE) {
                                   keybindingMode = Shell.KeyBindingMode.NORMAL;
                               }
+
+                              sessionMode.connect('updated', _sessionUpdated);
+                              _sessionUpdated();
                           });
 }
 
