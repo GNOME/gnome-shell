@@ -661,7 +661,7 @@ const ActivitiesButton = new Lang.Class({
         if (this._xdndTimeOut != 0)
             Mainloop.source_remove(this._xdndTimeOut);
         this._xdndTimeOut = Mainloop.timeout_add(BUTTON_DND_ACTIVATION_TIMEOUT,
-                                                 Lang.bind(this, this._xdndShowOverview, actor));
+                                                 Lang.bind(this, this._xdndToggleOverview, actor));
 
         return DND.DragMotionResult.CONTINUE;
     },
@@ -685,15 +685,12 @@ const ActivitiesButton = new Lang.Class({
         }
     },
 
-    _xdndShowOverview: function(actor) {
+    _xdndToggleOverview: function(actor) {
         let [x, y, mask] = global.get_pointer();
         let pickedActor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
 
-        if (pickedActor == this.actor) {
-            if (!Main.overview.visible && !Main.overview.animationInProgress) {
-                Main.overview.showTemporarily();
-            }
-        }
+        if (pickedActor == this.actor && Main.overview.shouldToggleByCornerOrButton())
+            Main.overview.toggle();
 
         Mainloop.source_remove(this._xdndTimeOut);
         this._xdndTimeOut = 0;

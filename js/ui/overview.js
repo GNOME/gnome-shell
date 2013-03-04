@@ -152,7 +152,6 @@ const Overview = new Lang.Class({
 
         this.visible = false;           // animating to overview, in overview, animating out
         this._shown = false;            // show() and not hide()
-        this._shownTemporarily = false; // showTemporarily() and not hideTemporarily()
         this._modal = false;            // have a modal grab
         this.animationInProgress = false;
         this.visibleTarget = false;
@@ -350,18 +349,22 @@ const Overview = new Lang.Class({
     },
 
     _onDragBegin: function() {
+        this._inXdndDrag = true;
+
         DND.addDragMonitor(this._dragMonitor);
         // Remember the workspace we started from
         this._lastActiveWorkspaceIndex = global.screen.get_active_workspace_index();
     },
 
     _onDragEnd: function(time) {
+        this._inXdndDrag = false;
+
         // In case the drag was canceled while in the overview
         // we have to go back to where we started and hide
         // the overview
-        if (this._shownTemporarily)  {
+        if (this._shown) {
             global.screen.get_workspace_by_index(this._lastActiveWorkspaceIndex).activate(time);
-            this.hideTemporarily();
+            this.hide();
         }
         this._resetWindowSwitchTimeout();
         this._lastHoveredWindow = null;
@@ -409,7 +412,7 @@ const Overview = new Lang.Class({
                                                 this._needsFakePointerEvent = true;
                                                 Main.activateWindow(dragEvent.targetActor._delegate.metaWindow,
                                                                     this._windowSwitchTimestamp);
-                                                this.hideTemporarily();
+                                                this.hide();
                                                 this._lastHoveredWindow = null;
                                             }));
         }
@@ -505,9 +508,10 @@ const Overview = new Lang.Class({
         if (this._shown)
             return;
         this._shown = true;
-        this._syncInputMode();
-        if (!this._modal)
+
+        if (!this._syncInputMode())
             return;
+
         this._animateVisible();
     },
 
@@ -573,24 +577,6 @@ const Overview = new Lang.Class({
         this.emit('showing');
     },
 
-    // showTemporarily:
-    //
-    // Animates the overview visible without grabbing mouse and keyboard input;
-    // if show() has already been called, this has no immediate effect, but
-    // will result in the overview not being hidden until hideTemporarily() is
-    // called.
-    showTemporarily: function() {
-        if (this.isDummy)
-            return;
-
-        if (this._shownTemporarily)
-            return;
-
-        this._syncInputMode();
-        this._animateVisible();
-        this._shownTemporarily = true;
-    },
-
     // hide:
     //
     // Reverses the effect of show()
@@ -604,27 +590,9 @@ const Overview = new Lang.Class({
         if (this._controlPressed)
             return;
 
-        if (!this._shownTemporarily)
-            this._animateNotVisible();
+        this._animateNotVisible();
 
         this._shown = false;
-        this._syncInputMode();
-    },
-
-    // hideTemporarily:
-    //
-    // Reverses the effect of showTemporarily()
-    hideTemporarily: function() {
-        if (this.isDummy)
-            return;
-
-        if (!this._shownTemporarily)
-            return;
-
-        if (!this._shown)
-            this._animateNotVisible();
-
-        this._shownTemporarily = false;
         this._syncInputMode();
     },
 
@@ -659,22 +627,23 @@ const Overview = new Lang.Class({
         // overview we don't have a problem with the release of a press/release
         // going to an application.
         if (this.animationInProgress)
-            return;
+            return true;
 
         if (this._shown) {
-            if (!this._modal) {
-                if (Main.pushModal(this._overview,
-                                   { keybindingMode: Shell.KeyBindingMode.OVERVIEW }))
-                    this._modal = true;
-                else
-                    this.hide();
+            let shouldBeModal = !this._inXdndDrag;
+            if (shouldBeModal) {
+                if (!this._modal) {
+                    if (Main.pushModal(this._overview,
+                                       { keybindingMode: Shell.KeyBindingMode.OVERVIEW })) {
+                        this._modal = true;
+                    } else {
+                        this.hide();
+                        return false;
+                    }
+                }
+            } else {
+                global.stage_input_mode = Shell.StageInputMode.FULLSCREEN;
             }
-        } else if (this._shownTemporarily) {
-            if (this._modal) {
-                Main.popModal(this._overview);
-                this._modal = false;
-            }
-            global.stage_input_mode = Shell.StageInputMode.FULLSCREEN;
         } else {
             if (this._modal) {
                 Main.popModal(this._overview);
@@ -683,6 +652,7 @@ const Overview = new Lang.Class({
             else if (global.stage_input_mode == Shell.StageInputMode.FULLSCREEN)
                 global.stage_input_mode = Shell.StageInputMode.NORMAL;
         }
+        return true;
     },
 
     _animateNotVisible: function() {
@@ -716,7 +686,7 @@ const Overview = new Lang.Class({
 
         this.emit('shown');
         // Handle any calls to hide* while we were showing
-        if (!this._shown && !this._shownTemporarily)
+        if (!this._shown)
             this._animateNotVisible();
 
         this._syncInputMode();
@@ -742,7 +712,7 @@ const Overview = new Lang.Class({
 
         this.emit('hidden');
         // Handle any calls to show* while we were hiding
-        if (this._shown || this._shownTemporarily)
+        if (this._shown)
             this._animateVisible();
 
         this._syncInputMode();

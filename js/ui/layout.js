@@ -1221,9 +1221,9 @@ const HotCorner = new Lang.Class({
         if (source != Main.xdndHandler)
             return DND.DragMotionResult.CONTINUE;
 
-        if (!Main.overview.visible && !Main.overview.animationInProgress) {
+        if (Main.overview.shouldToggleByCornerOrButton()) {
             this.rippleAnimation();
-            Main.overview.showTemporarily();
+            Main.overview.toggle();
         }
 
         return DND.DragMotionResult.CONTINUE;
