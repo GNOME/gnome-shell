@@ -602,7 +602,8 @@ st_entry_key_press_event (ClutterActor    *actor,
 
   /* copy */
   if ((event->modifier_state & CLUTTER_CONTROL_MASK)
-      && event->keyval == CLUTTER_c)
+      && event->keyval == CLUTTER_c &&
+      clutter_text_get_password_char ((ClutterText*) priv->entry) == 0)
     {
       StClipboard *clipboard;
       gchar *text;
@@ -622,7 +623,8 @@ st_entry_key_press_event (ClutterActor    *actor,
 
   /* cut */
   if ((event->modifier_state & CLUTTER_CONTROL_MASK)
-      && event->keyval == CLUTTER_x)
+      && event->keyval == CLUTTER_x &&
+      clutter_text_get_password_char ((ClutterText*) priv->entry) == 0)
     {
       StClipboard *clipboard;
       gchar *text;
