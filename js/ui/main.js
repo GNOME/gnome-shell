@@ -82,7 +82,7 @@ function _sessionUpdated() {
                                   Shell.KeyBindingMode.NORMAL |
                                   Shell.KeyBindingMode.OVERVIEW,
                                   sessionMode.hasRunDialog ? openRunDialog : null);
-    if (sessionMode.isGreeter)
+    if (sessionMode.isGreeter && screenShield)
         screenShield.showDialog();
 }
 
@@ -142,8 +142,6 @@ function startSession() {
     magnifier = new Magnifier.Magnifier();
     if (LoginManager.canLock())
         screenShield = new ScreenShield.ScreenShield();
-    else
-        screenShield = new ScreenShield.ScreenShieldFallback();
 
     panel = new Panel.Panel();
     messageTray = new MessageTray.MessageTray();

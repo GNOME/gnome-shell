@@ -600,7 +600,8 @@ const UserMenuButton = new Lang.Class({
                                        Lang.bind(this, this._updateHaveShutdown));
 
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
-        Main.screenShield.connect('locked-changed', Lang.bind(this, this._updatePresenceIcon));
+        if (Main.screenShield)
+            Main.screenShield.connect('locked-changed', Lang.bind(this, this._updatePresenceIcon));
         this._sessionUpdated();
     },
 
@@ -656,7 +657,7 @@ const UserMenuButton = new Lang.Class({
 
     _updateLockScreen: function() {
         let allowLockScreen = !this._lockdownSettings.get_boolean(DISABLE_LOCK_SCREEN_KEY);
-        this._lockScreenItem.actor.visible = allowLockScreen;
+        this._lockScreenItem.actor.visible = allowLockScreen && LoginManager.canLock();
     },
 
     _updateInstallUpdates: function() {
@@ -864,7 +865,8 @@ const UserMenuButton = new Lang.Class({
     _onLoginScreenActivate: function() {
         this.menu.close(BoxPointer.PopupAnimation.NONE);
         Main.overview.hide();
-        Main.screenShield.lock(false);
+        if (Main.screenShield)
+            Main.screenShield.lock(false);
         Gdm.goto_login_session_sync(null);
     },
 
