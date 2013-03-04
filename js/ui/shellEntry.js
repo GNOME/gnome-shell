@@ -89,7 +89,8 @@ const EntryMenu = new Lang.Class({
 
     _updateCopyItem: function() {
         let selection = this._entry.clutter_text.get_selection();
-        this._copyItem.setSensitive(selection && selection != '');
+        this._copyItem.setSensitive(!this._entry.clutter_text.password_char &&
+                                    selection && selection != '');
     },
 
     _updatePasteItem: function() {
