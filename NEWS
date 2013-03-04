@@ -1,3 +1,46 @@
+3.7.91
+======
+* overview: Fade out controls during DND that are not targets [Cosimo; #686984]
+* overview: Keep open when a Control key is held [Florian; #686984]
+* Improve login screen => session transition [Ray; #694321]
+* Center application grid horizontally [Florian; #694261]
+* Fix hiding panel when fullscreen windows span multiple monitors [Adel; 646861]
+* Tweak thresholds of pressure barrier [Jasper; #694467]
+* Tweak window picker layout [Jasper; #694902]
+* Expose key grab DBus API to gnome-settings-daemon [Florian; #643111]
+* Don't always show message tray in overview, add message indicator
+  [Cosimo; #687787]
+* Tweak startup animation [Ray; #694326]
+* Add OSD popups and expose them to gnome-settings-daemon [Florian; #613543]
+* Move loupe icon to the start of the search entry [Jasper; #695069]
+* Don't show the input switcher with less than 2 items [Rui; 695000]
+* Fix auto-completion of system modals immediately upon display [Stef; #692937]
+* Ignore workspaces in alt-tab [Florian; #661156]
+* Disable copying text from password entries [Florian; #695104]
+* Use standard styling for ibus candidate popups [Allan; #694796]
+* Fix calendar changing height on month changes [Giovanni; #641383]
+* Port the hot corner to use pressure barriers [Jasper; #663661]
+* Misc bug fixes and cleanups: [Hashem, Giovanni, Alban, Jasper, Cosimo,
+  Florian, Adel, Daniel, Matthias, Ray, Rui, Guillaume, Stef; #685849, #690643,
+  #694292, #693814, #694234, #694365, #694287, #694336, #694256, #694261,
+  #663601, #694441, #694284, #694463, #694475, #687248, #694394, #694320,
+  #694701, #694784, #694858, #694906, #694327, #694876, #694905, #694969,
+  #694970, #694988, #695006, #695001, #694998, #695023, #695002, #695073,
+  #695126, #687748, #694837, #693907, #679851, #694988]
+
+Contributors:
+  Giovanni Campagna, Cosimo Cecchi, Matthias Clasen, Alban Crequy, Allan Day,
+  Guillaume Desmottes, Adel Gadllah, Rui Matos, Daniel Mustieles,
+  Hashem Nasarat, Jasper St. Pierre, Ray Strode, Stef Walter
+
+Translations:
+  Yuri Myasoedov [ru], Adam Matoušek [cs], Piotr Drąg [pl], Matej Urbančič [sl],
+  Sweta Kothari [gu], Kjartan Maraas [nb], Nguyễn Thái Ngọc Duy [vi],
+  Chao-Hsiung Liao [zh_HK, zh_TW], Dimitris Spingos [el],
+  Inaki Larranaga Murgoitio [eu], Luca Ferretti [it], A S Alam [pa],
+  Gheyret Kenji [ug], Stas Solovey [ru], Enrico Nicoletto [pt_BR],
+  Fran Diéguez [gl], Daniel Mustieles [es], Aurimas Černius [lt]
+
 3.7.90
 ======
 * Let GNOME Shell work on EGL and GLES2 [Neil; #693225, #693438, #693339]
