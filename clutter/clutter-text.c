@@ -555,8 +555,7 @@ clutter_text_dirty_cache (ClutterText *text)
  * @desc: a #PangoFontDescription
  *
  * Sets @desc as the font description to be used by the #ClutterText
- * actor. The font description ownership is transferred to @self so
- * the #PangoFontDescription must not be freed after this function
+ * actor. The #PangoFontDescription is copied.
  *
  * This function will also set the :font-name field as a side-effect
  *
@@ -576,7 +575,7 @@ clutter_text_set_font_description_internal (ClutterText          *self,
   if (priv->font_desc != NULL)
     pango_font_description_free (priv->font_desc);
 
-  priv->font_desc = desc;
+  priv->font_desc = pango_font_description_copy (desc);
 
   /* update the font name string we use */
   g_free (priv->font_name);
@@ -618,6 +617,7 @@ clutter_text_settings_changed_cb (ClutterText *text)
       font_desc = pango_font_description_from_string (font_name);
       clutter_text_set_font_description_internal (text, font_desc);
 
+      pango_font_description_free (font_desc);
       g_free (font_name);
     }
 
@@ -4917,12 +4917,9 @@ void
 clutter_text_set_font_description (ClutterText          *self,
                                    PangoFontDescription *font_desc)
 {
-  PangoFontDescription *copy;
-
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
-  copy = pango_font_description_copy (font_desc);
-  clutter_text_set_font_description_internal (self, copy);
+  clutter_text_set_font_description_internal (self, font_desc);
 }
 
 /**
@@ -5020,7 +5017,7 @@ clutter_text_set_font_name (ClutterText *self,
     goto out;
 
   desc = pango_font_description_from_string (font_name);
-  if (!desc)
+  if (desc == NULL)
     {
       g_warning ("Attempting to create a PangoFontDescription for "
 		 "font name '%s', but failed.",
@@ -5033,6 +5030,8 @@ clutter_text_set_font_name (ClutterText *self,
   priv->is_default_font = is_default_font;
 
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FONT_NAME]);
+
+  pango_font_description_free (desc);
 
 out:
   if (is_default_font)
