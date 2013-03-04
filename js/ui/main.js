@@ -199,10 +199,9 @@ function startSession() {
     ExtensionDownloader.init();
     ExtensionSystem.init();
 
-    layoutManager.connect('startup-prepared',
-                          Lang.bind(this, function() {
+    layoutManager.connect('startup-prepared', function() {
                               layoutManager.startupAnimation();
-                          }));
+                          });
 }
 
 let _workspaces = [];
