@@ -452,9 +452,11 @@ const MessagesIndicator = new Lang.Class({
 
     _updateCount: function() {
         let count = 0;
+        let hasChats = false;
         this._sources.forEach(Lang.bind(this,
             function(source) {
                 count += source.indicatorCount;
+                hasChats |= source.isChat;
             }));
 
         this._count = count;
@@ -462,6 +464,7 @@ const MessagesIndicator = new Lang.Class({
                                     "%d new messages",
                                    count).format(count);
 
+        this._icon.visible = hasChats;
         this._updateVisibility();
     },
 
