@@ -1,3 +1,24 @@
+3.7.91
+======
+* Fix windows being treated as remote after hostname changes [Ray; #688716]
+* Add meta_window_get_all_monitors() method [Adel; #646861]
+* Add grab API for externally defined accelerators [Florian; #643111]
+* Make session registration an explicit step [Ray; #694876]
+* Avoid unnecessary stage redraws [Adel; #694988, #695006]
+* Misc fixes [Giovanni, Ray, Jasper, Rui, Pavel, Owen; #694801, #694725,
+  #694641, #694393, #678917, #695093, #694837, #695135, #694771, #694321]
+
+Contributors:
+  Giovanni Campagna, Adel Gadllah, Rui Matos, Florian Müllner,
+  Jasper St. Pierre, Ray Strode, Owen Taylor, Pavel Vasin
+
+Translations:
+  Daniel Mustieles [es], Yaron Shahrabani [he], A S Alam [pa], Piotr Drąg [pl],
+  Gheyret Kenji [ug], Alexandre Franke [fr], Milo Casagrande [it],
+  Fran Diéguez [gl], Dimitris Spingos [el], Мирослав Николић [sr, sr@latin],
+  Chao-Hsiung Liao [zh_HK, zh_TW], Nguyễn Thái Ngọc Duy [vi],
+  Aurimas Černius [lt], Mario Blättermann [de], Kjartan Maraas [nb]
+
 3.7.90
 ======
 * Support _NET_WM_OPAQUE_REGION [Jasper, Adel; #679901]
