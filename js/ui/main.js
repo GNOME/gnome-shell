@@ -24,6 +24,7 @@ const Panel = imports.ui.panel;
 const Params = imports.misc.params;
 const RunDialog = imports.ui.runDialog;
 const Layout = imports.ui.layout;
+const LoginManager = imports.misc.loginManager;
 const LookingGlass = imports.ui.lookingGlass;
 const NotificationDaemon = imports.ui.notificationDaemon;
 const WindowAttentionHandler = imports.ui.windowAttentionHandler;
@@ -32,7 +33,6 @@ const Scripting = imports.ui.scripting;
 const SessionMode = imports.ui.sessionMode;
 const ShellDBus = imports.ui.shellDBus;
 const ShellMountOperation = imports.ui.shellMountOperation;
-const UnlockDialog = imports.ui.unlockDialog;
 const WindowManager = imports.ui.windowManager;
 const Magnifier = imports.ui.magnifier;
 const XdndHandler = imports.ui.xdndHandler;
@@ -140,7 +140,7 @@ function startSession() {
     overview = new Overview.Overview();
     wm = new WindowManager.WindowManager();
     magnifier = new Magnifier.Magnifier();
-    if (UnlockDialog.isSupported())
+    if (LoginManager.canLock())
         screenShield = new ScreenShield.ScreenShield();
     else
         screenShield = new ScreenShield.ScreenShieldFallback();
