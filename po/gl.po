@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-26 00:27+0100\n"
-"PO-Revision-Date: 2013-02-26 00:33+0200\n"
+"POT-Creation-Date: 2013-03-04 13:55+0100\n"
+"PO-Revision-Date: 2013-03-04 14:20+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
@@ -215,7 +215,7 @@ msgstr "Dividir vista á dereita"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:507
+#: ../src/compositor/compositor.c:509
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -224,7 +224,7 @@ msgstr ""
 "Xa se está a executar outro xestor de composición na pantalla %i na "
 "visualización «%s»"
 
-#: ../src/compositor/meta-background.c:1116
+#: ../src/compositor/meta-background.c:1180
 msgid "background texture could not be created from file"
 msgstr "a textura do fondo non puido crearse desde o ficheiro"
 
@@ -262,17 +262,17 @@ msgstr "Espe_rar"
 msgid "_Force Quit"
 msgstr "_Forzar a saída"
 
-#: ../src/core/display.c:392
+#: ../src/core/display.c:401
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Falta a extensión %s que se require para a composición"
 
-#: ../src/core/display.c:484
+#: ../src/core/display.c:493
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Produciuse un erro ao abrir a visualización do X Window System «%s»\n"
 
-#: ../src/core/keybindings.c:876
+#: ../src/core/keybindings.c:929
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -280,6 +280,11 @@ msgid ""
 msgstr ""
 "Algún outro programa xa está usando a tecla %s cos modificadores %x como "
 "combinación\n"
+
+#: ../src/core/keybindings.c:1129
+#, c-format
+msgid "\"%s\" is not a valid accelerator\n"
+msgstr "«%s» non é un acelerador correcto\n"
 
 #: ../src/core/main.c:196
 msgid "Disable connection to session manager"
@@ -305,12 +310,12 @@ msgstr "Inicializar sesión desde o ficheiro de salvagarda"
 msgid "Make X calls synchronous"
 msgstr "Facer que as chamadas a X sexan sincrónicas"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:533
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Produciuse un erro ao dixitalizar o directorio de temas: %s\n"
 
-#: ../src/core/main.c:510
+#: ../src/core/main.c:549
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -503,7 +508,7 @@ msgid "Window manager error: "
 msgstr "Erro do xestor de xanelas: "
 
 #. first time through
-#: ../src/core/window.c:7540
+#: ../src/core/window.c:7539
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -519,7 +524,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8264
+#: ../src/core/window.c:8263
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
