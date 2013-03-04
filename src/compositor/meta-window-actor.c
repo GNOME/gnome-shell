@@ -2201,6 +2201,7 @@ check_needs_reshape (MetaWindowActor *self)
 
   meta_shaped_texture_set_mask_texture (META_SHAPED_TEXTURE (priv->actor), NULL);
   g_clear_pointer (&priv->shape_region, cairo_region_destroy);
+  g_clear_pointer (&priv->opaque_region, cairo_region_destroy);
 
 #ifdef HAVE_SHAPE
   if (priv->window->has_shape)
