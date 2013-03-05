@@ -1112,7 +1112,7 @@ const HotCorner = new Lang.Class({
         this._x = x;
         this._y = y;
 
-        this._setupFallbackCornerIfNeeded();
+        this._setupFallbackCornerIfNeeded(layoutManager);
 
         this._pressureBarrier = new PressureBarrier(HOT_CORNER_PRESSURE_THRESHOLD,
                                                     HOT_CORNER_PRESSURE_TIMEOUT,
@@ -1156,10 +1156,10 @@ const HotCorner = new Lang.Class({
         }
     },
 
-    _setupFallbackCornerIfNeeded: function() {
+    _setupFallbackCornerIfNeeded: function(layoutManager) {
         if (!global.display.supports_extended_barriers()) {
             this.actor = new Clutter.Actor({ name: 'hot-corner-environs',
-                                             x: x, y: y,
+                                             x: this._x, y: this._y,
                                              width: 3,
                                              height: 3,
                                              reactive: true });
