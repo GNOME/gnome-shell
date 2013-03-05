@@ -18539,6 +18539,9 @@ on_transition_stopped (ClutterTransition *transition,
 
   info = _clutter_actor_get_animation_info (actor);
 
+  /* we need copies because we emit the signal after the
+   * TransitionClosure data structure has been freed
+   */
   t_quark = g_quark_from_string (clos->name);
   t_name = g_strdup (clos->name);
 
@@ -18552,12 +18555,12 @@ on_transition_stopped (ClutterTransition *transition,
       g_object_ref (transition);
 
       /* this is safe, because the timeline has now stopped,
-       * so we won't recurse
+       * so we won't recurse; the reference on the Animatable
+       * will be dropped by the ::stopped signal closure in
+       * ClutterTransition, which is RUN_LAST, and thus will
+       * be called after this handler
        */
       g_hash_table_remove (info->transitions, clos->name);
-
-      /* we can release the reference here */
-      g_object_unref (transition);
     }
 
   /* we emit the ::transition-stopped after removing the
