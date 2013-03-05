@@ -892,14 +892,12 @@ const ScreenShield = new Lang.Class({
 
 
             let time = global.get_current_time();
-            this._dialog.connect('loaded', Lang.bind(this, function() {
-                if (!this._dialog.open(time, onPrimary)) {
-                    // This is kind of an impossible error: we're already modal
-                    // by the time we reach this...
-                    log('Could not open login dialog: failed to acquire grab');
-                    this.deactivate(true);
-                }
-            }));
+            if (!this._dialog.open(time, onPrimary)) {
+                // This is kind of an impossible error: we're already modal
+                // by the time we reach this...
+                log('Could not open login dialog: failed to acquire grab');
+                this.deactivate(true);
+            }
 
             this._dialog.connect('failed', Lang.bind(this, this._onUnlockFailed));
             this._dialog.connect('unlocked', Lang.bind(this, this._onUnlockSucceded));

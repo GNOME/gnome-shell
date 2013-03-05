@@ -141,11 +141,6 @@ const UnlockDialog = new Lang.Class({
         let batch = new Batch.Hold();
         this._userVerifier.begin(this._userName, batch);
 
-        GLib.idle_add(GLib.PRIORITY_DEFAULT, Lang.bind(this, function() {
-            this.emit('loaded');
-            return false;
-        }));
-
         Main.ctrlAltTabManager.addGroup(this.dialogLayout, _("Unlock Window"), 'dialog-password-symbolic');
 
         this._idleMonitor = new GnomeDesktop.IdleMonitor();

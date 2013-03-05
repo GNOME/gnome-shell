@@ -1014,7 +1014,7 @@ const LoginDialog = new Lang.Class({
                      function() {
                          // If we're just starting out, start on the right
                          // item.
-                         if (!this.is_loaded) {
+                         if (!this._userManager.is_loaded) {
                              this._userList.jumpToItem(this._timedLoginItem);
                          }
                      },
@@ -1152,15 +1152,6 @@ const LoginDialog = new Lang.Class({
                                   Lang.bind(this, function(userManager, user) {
                                       this._userList.removeUser(user);
                                   }));
-
-        // emitted in idle so caller doesn't have to explicitly check if
-        // it's loaded immediately after construction
-        // (since there's no way the caller could be listening for
-        // 'loaded' yet)
-        Mainloop.idle_add(Lang.bind(this, function() {
-            this.emit('loaded');
-            this.is_loaded = true;
-        }));
     },
 
     _onOpened: function() {
