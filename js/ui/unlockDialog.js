@@ -300,4 +300,8 @@ const UnlockDialog = new Lang.Class({
 
         this.destroy();
     },
+
+    addCharacter: function(unichar) {
+        this._promptEntry.clutter_text.insert_unichar(unichar);
+    },
 });

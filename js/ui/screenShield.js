@@ -601,6 +601,10 @@ const ScreenShield = new Lang.Class({
             return false;
 
         this._ensureUnlockDialog(true, true);
+
+        if (GLib.unichar_isgraph(unichar))
+            this._dialog.addCharacter(unichar);
+
         this._liftShield(true, 0);
         return true;
     },

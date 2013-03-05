@@ -1166,5 +1166,9 @@ const LoginDialog = new Lang.Class({
         this.parent();
 
         Main.ctrlAltTabManager.removeGroup(this.dialogLayout);
-    }
+    },
+
+    addCharacter: function(unichar) {
+        this._promptEntry.clutter_text.insert_unichar(unichar);
+    },
 });
