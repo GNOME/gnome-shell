@@ -837,7 +837,7 @@ clutter_event_set_key_code (ClutterEvent *event,
  *
  * Return value: The unicode value representing the key
  */
-guint32
+gunichar
 clutter_event_get_key_unicode (const ClutterEvent *event)
 {
   g_return_val_if_fail (event != NULL, 0);
@@ -862,7 +862,7 @@ clutter_event_get_key_unicode (const ClutterEvent *event)
  */
 void
 clutter_event_set_key_unicode (ClutterEvent *event,
-                               guint32       key_unicode)
+                               gunichar      key_unicode)
 {
   g_return_if_fail (event != NULL);
   g_return_if_fail (event->type == CLUTTER_KEY_PRESS ||

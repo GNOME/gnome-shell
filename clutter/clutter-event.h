@@ -470,8 +470,8 @@ void                    clutter_event_set_key_code              (ClutterEvent   
                                                                  guint16                 key_code);
 guint16                 clutter_event_get_key_code              (const ClutterEvent     *event);
 void                    clutter_event_set_key_unicode           (ClutterEvent           *event,
-                                                                 guint32                 key_unicode);
-guint32                 clutter_event_get_key_unicode           (const ClutterEvent     *event);
+                                                                 gunichar                key_unicode);
+gunichar                clutter_event_get_key_unicode           (const ClutterEvent     *event);
 
 void                    clutter_event_set_button                (ClutterEvent           *event,
                                                                  guint32                 button);
