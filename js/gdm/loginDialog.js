@@ -594,6 +594,7 @@ const LoginDialog = new Lang.Class({
         this._promptEntry = new St.Entry({ style_class: 'login-dialog-prompt-entry',
                                            can_focus: true });
         this._promptEntryTextChangedId = 0;
+        this._promptEntryActivateId = 0;
         this._promptBox.add(this._promptEntry,
                             { expand: true,
                               x_fill: true,
@@ -811,6 +812,11 @@ const LoginDialog = new Lang.Class({
                                                     Lang.bind(this, function() {
                                                         this._updateSignInButtonSensitivity(this._promptEntry.text.length > 0);
                                                     }));
+
+        this._promptEntryActivateId =
+            this._promptEntry.clutter_text.connect('activate', function() {
+                hold.release();
+            });
     },
 
     _updateSensitivity: function(sensitive) {
@@ -833,6 +839,11 @@ const LoginDialog = new Lang.Class({
         if (this._promptEntryTextChangedId > 0) {
             this._promptEntry.clutter_text.disconnect(this._promptEntryTextChangedId);
             this._promptEntryTextChangedId = 0;
+        }
+
+        if (this._promptEntryActivateId > 0) {
+            this._promptEntry.clutter_text.disconnect(this._promptEntryActivateId);
+            this._promptEntryActivateId = 0;
         }
 
         this._setWorking(false);

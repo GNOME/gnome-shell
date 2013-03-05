@@ -98,6 +98,7 @@ const UnlockDialog = new Lang.Class({
 
         this._promptEntry = new St.Entry({ style_class: 'login-dialog-prompt-entry',
                                            can_focus: true });
+        this._promptEntry.clutter_text.connect('activate', Lang.bind(this, this._doUnlock));
         this._promptEntry.clutter_text.set_password_char('\u25cf');
         ShellEntry.addContextMenu(this._promptEntry, { isPassword: true });
         this.setInitialKeyFocus(this._promptEntry);
