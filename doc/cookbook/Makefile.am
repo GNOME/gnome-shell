@@ -130,6 +130,10 @@ clean-local:
 	rm -f *.pdf ; \
 	rm -f *.stamp
 
+dist-hook:
+	mkdir $(distdir)/html
+	cp -r ./html/* $(distdir)/html
+
 uninstall-local:
 	@rm -rf $(DESTDIR)$(TARGET_DIR)
 	@rm -f $(DESTDIR)$(TARGET_DIR)/clutter-cookbook.devhelp
