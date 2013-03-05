@@ -836,7 +836,7 @@ clutter_timeline_class_init (ClutterTimelineClass *klass)
     g_signal_new (I_("stopped"),
 		  G_TYPE_FROM_CLASS (object_class),
 		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (ClutterTimelineClass, completed),
+		  G_STRUCT_OFFSET (ClutterTimelineClass, stopped),
 		  NULL, NULL,
 		  _clutter_marshal_VOID__BOOLEAN,
 		  G_TYPE_NONE, 1,
