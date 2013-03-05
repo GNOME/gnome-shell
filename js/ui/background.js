@@ -356,7 +356,7 @@ const Background = new Lang.Class({
 
         let actor = new Meta.BackgroundActor();
         actor.content = content;
-        this.actor.add_child(actor);
+        this.actor.insert_child_at_index(actor, index);
 
         this._images[index] = actor;
         this._watchCacheFile(filename);
@@ -372,10 +372,8 @@ const Background = new Lang.Class({
     },
 
     _updateAnimationProgress: function() {
-        if (this._images[1]) {
-            this._images[1].raise_top();
+        if (this._images[1])
             this._images[1].opacity = this._animation.transitionProgress * 255;
-        }
 
         this._queueAnimationUpdate();
     },
