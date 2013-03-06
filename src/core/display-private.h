@@ -33,7 +33,6 @@
 
 #include <glib.h>
 #include <X11/Xlib.h>
-#include "eventqueue.h"
 #include <meta/common.h>
 #include <meta/boxes.h>
 #include <meta/display.h>
@@ -142,7 +141,6 @@ struct _MetaDisplay
   
   /*< private-ish >*/
   guint error_trap_synced_at_last_pop : 1;
-  MetaEventQueue *events;
   GSList *screens;
   MetaScreen *active_screen;
   GHashTable *xids;
