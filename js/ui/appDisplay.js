@@ -627,10 +627,24 @@ const AppFolderPopup = new Lang.Class({
         this._boxPointer.actor.bind_property('opacity', closeButton, 'opacity',
                                              GObject.BindingFlags.SYNC_CREATE);
 
+        global.focus_manager.add_group(this.actor);
+
         source.actor.connect('destroy', Lang.bind(this,
             function() {
                 this.actor.destroy();
             }));
+        this.actor.connect('key-press-event', Lang.bind(this, this._onKeyPress));
+    },
+
+    _onKeyPress: function(actor, event) {
+        if (!this._isOpen)
+            return false;
+
+        if (event.get_key_symbol() != Clutter.KEY_Escape)
+            return false;
+
+        this.popdown();
+        return true;
     },
 
     toggle: function() {
@@ -645,6 +659,7 @@ const AppFolderPopup = new Lang.Class({
             return;
 
         this.actor.show();
+        this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
 
         this._boxPointer.setArrowActor(this._source.actor);
         this._boxPointer.show(BoxPointer.PopupAnimation.FADE |
