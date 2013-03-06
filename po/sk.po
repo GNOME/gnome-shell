@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-03-01 08:01+0000\n"
-"PO-Revision-Date: 2013-03-06 15:35+0000\n"
+"PO-Revision-Date: 2013-03-06 17:39+0000\n"
 "Last-Translator: Ján Kyselica <kyselica.jan@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -239,7 +239,7 @@ msgstr "Zakázať vyrovnávacie pamäte pre vrcholy v GL"
 # popis (description) ladiacej hodnoty
 #: ../cogl/cogl-debug-options.h:94
 msgid "Disable use of OpenGL vertex buffer objects"
-msgstr "Zakáže používanie vyrovnávacej pamäte pre vrcholy objektov v OpenGL"
+msgstr "Zakáže používanie vyrovnávacej pamäte pre vertexy objektov v OpenGL"
 
 # formátovaný názov ladiacej hodnoty
 #: ../cogl/cogl-debug-options.h:98
