@@ -304,8 +304,7 @@ _cogl_buffer_map_range_for_fill_or_fallback (CoglBuffer *buffer,
   if (ret)
     return ret;
 
-  if (ignore_error)
-    cogl_error_free (ignore_error);
+  cogl_error_free (ignore_error);
 
   /* If the map fails then we'll use a temporary buffer to fill
      the data and then upload it using cogl_buffer_set_data when
