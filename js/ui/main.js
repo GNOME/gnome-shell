@@ -199,9 +199,6 @@ function _initializeUI() {
                               if (keybindingMode == Shell.KeyBindingMode.NONE) {
                                   keybindingMode = Shell.KeyBindingMode.NORMAL;
                               }
-
-                              sessionMode.connect('updated', _sessionUpdated);
-                              _sessionUpdated();
                           });
 }
 
