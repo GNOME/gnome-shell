@@ -153,7 +153,6 @@ function _initializeUI() {
     componentManager = new Components.ComponentManager();
 
     layoutManager.init();
-    layoutManager.prepareStartupAnimation();
     overview.init();
 
     global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
@@ -192,9 +191,6 @@ function _initializeUI() {
     ExtensionDownloader.init();
     ExtensionSystem.init();
 
-    layoutManager.connect('startup-prepared', function() {
-                              layoutManager.startupAnimation();
-                          });
     layoutManager.connect('startup-complete', function() {
                               if (keybindingMode == Shell.KeyBindingMode.NONE) {
                                   keybindingMode = Shell.KeyBindingMode.NORMAL;

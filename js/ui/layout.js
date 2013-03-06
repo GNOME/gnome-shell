@@ -231,6 +231,8 @@ const LayoutManager = new Lang.Class({
         Main.overview.connect('showing', Lang.bind(this, this._overviewShowing));
         Main.overview.connect('hidden', Lang.bind(this, this._overviewHidden));
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+
+        this._prepareStartupAnimation();
     },
 
     _overviewShowing: function() {
@@ -547,7 +549,7 @@ const LayoutManager = new Lang.Class({
     // MetaBackgroundActor inside global.window_group covers the entirety of the
     // screen. So, we set no_clear_hint at the end of the animation.
 
-    prepareStartupAnimation: function() {
+    _prepareStartupAnimation: function() {
         // Set ourselves to FULLSCREEN input mode while the animation is running
         // so events don't get delivered to X11 windows (which are distorted by the animation)
         global.stage_input_mode = Shell.StageInputMode.FULLSCREEN;
@@ -585,25 +587,25 @@ const LayoutManager = new Lang.Class({
                                                       Lang.bind(this, function() {
                                                           this._systemBackground.disconnect(signalId);
                                                           this._systemBackground.actor.show();
+                                                          global.stage.show();
+
+                                                          this.emit('startup-prepared');
 
                                                           // We're mostly prepared for the startup animation
                                                           // now, but since a lot is going on asynchronously
-                                                          // during startup, let's defer emission of the
-                                                          // startup-prepared signal until the event loop is
-                                                          // uncontended and idle. This helps to prevent us
-                                                          // from running the animation when the system is
-                                                          // bogged down
+                                                          // during startup, let's defer the startup animation
+                                                          // until the event loop is uncontended and idle.
+                                                          // This helps to prevent us from running the animation
+                                                          // when the system is bogged down
                                                           GLib.idle_add(GLib.PRIORITY_LOW,
                                                                         Lang.bind(this, function() {
-                                                                                      this.emit('startup-prepared');
-                                                                                      return false;
-                                                                                  }));
-
+                                                                            this._startupAnimation();
+                                                                            return false;
+                                                                        }));
                                                       }));
     },
 
-    startupAnimation: function() {
-        global.stage.show();
+    _startupAnimation: function() {
         if (Main.sessionMode.isGreeter)
             this._startupAnimationGreeter();
         else
