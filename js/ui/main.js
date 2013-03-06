@@ -84,8 +84,6 @@ function _sessionUpdated() {
                                   Shell.KeyBindingMode.NORMAL |
                                   Shell.KeyBindingMode.OVERVIEW,
                                   sessionMode.hasRunDialog ? openRunDialog : null);
-    if (sessionMode.isGreeter && screenShield)
-        screenShield.showDialog();
 }
 
 function start() {
@@ -190,6 +188,12 @@ function _initializeUI() {
 
     ExtensionDownloader.init();
     ExtensionSystem.init();
+
+    if (sessionMode.isGreeter && screenShield) {
+        layoutManager.connect('startup-prepared', function() {
+            screenShield.showDialog();
+        });
+    }
 
     layoutManager.connect('startup-complete', function() {
                               if (keybindingMode == Shell.KeyBindingMode.NONE) {
