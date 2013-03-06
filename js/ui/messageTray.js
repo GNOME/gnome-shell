@@ -2539,6 +2539,14 @@ const MessageTray = new Lang.Class({
             this._notificationUnfocusedId = 0;
         }
 
+        this._useLongerTrayLeftTimeout = false;
+        if (this._trayLeftTimeoutId) {
+            Mainloop.source_remove(this._trayLeftTimeoutId);
+            this._trayLeftTimeoutId = 0;
+            this._trayLeftMouseX = -1;
+            this._trayLeftMouseY = -1;
+        }
+
         if (this._notificationRemoved) {
             Tweener.removeTweens(this._notificationWidget);
             this._notificationWidget.y = this.actor.height;
