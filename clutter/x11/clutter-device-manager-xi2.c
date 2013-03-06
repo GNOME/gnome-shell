@@ -765,7 +765,7 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         event->key.time = xev->time;
         event->key.stage = stage;
         event->key.modifier_state =
-          _clutter_input_device_xi2_translate_state (&xev->mods, &xev->buttons);
+          _clutter_input_device_xi2_translate_state (&xev->mods, &xev->buttons, &xev->group);
         event->key.hardware_keycode = xev->detail;
 
           /* keyval is the key ignoring all modifiers ('1' vs. '!') */
@@ -875,7 +875,8 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             event->scroll.y = xev->event_y;
             event->scroll.modifier_state =
               _clutter_input_device_xi2_translate_state (&xev->mods,
-                                                         &xev->buttons);
+                                                         &xev->buttons,
+                                                         &xev->group);
 
             clutter_event_set_source_device (event, source_device);
             clutter_event_set_device (event, device);
@@ -923,7 +924,8 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             event->button.button = xev->detail;
             event->button.modifier_state =
               _clutter_input_device_xi2_translate_state (&xev->mods,
-                                                         &xev->buttons);
+                                                         &xev->buttons,
+                                                         &xev->group);
 
             clutter_event_set_source_device (event, source_device);
             clutter_event_set_device (event, device);
@@ -1004,7 +1006,8 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
             event->scroll.y = xev->event_y;
             event->scroll.modifier_state =
               _clutter_input_device_xi2_translate_state (&xev->mods,
-                                                         &xev->buttons);
+                                                         &xev->buttons,
+                                                         &xev->group);
 
             clutter_event_set_scroll_delta (event, delta_x, delta_y);
             clutter_event_set_source_device (event, source_device);
@@ -1032,7 +1035,8 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         event->motion.y = xev->event_y;
         event->motion.modifier_state =
           _clutter_input_device_xi2_translate_state (&xev->mods,
-                                                     &xev->buttons);
+                                                     &xev->buttons,
+                                                     &xev->group);
 
         clutter_event_set_source_device (event, source_device);
         clutter_event_set_device (event, device);
@@ -1083,7 +1087,8 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
         event->touch.y = xev->event_y;
         event->touch.modifier_state =
           _clutter_input_device_xi2_translate_state (&xev->mods,
-                                                     &xev->buttons);
+                                                     &xev->buttons,
+                                                     &xev->group);
 
         clutter_event_set_source_device (event, source_device);
 
@@ -1151,7 +1156,8 @@ clutter_device_manager_xi2_translate_event (ClutterEventTranslator *translator,
 
         event->touch.modifier_state =
           _clutter_input_device_xi2_translate_state (&xev->mods,
-                                                     &xev->buttons);
+                                                     &xev->buttons,
+                                                     &xev->group);
         event->touch.modifier_state |= CLUTTER_BUTTON1_MASK;
 
         if (xev->flags & XITouchEmulatingPointer)

@@ -38,7 +38,8 @@ typedef struct _ClutterInputDeviceXI2           ClutterInputDeviceXI2;
 GType _clutter_input_device_xi2_get_type (void) G_GNUC_CONST;
 
 guint _clutter_input_device_xi2_translate_state (XIModifierState *modifiers_state,
-                                                 XIButtonState   *buttons_state);
+                                                 XIButtonState   *buttons_state,
+                                                 XIGroupState    *group_state);
 
 G_END_DECLS
 

@@ -158,7 +158,8 @@ clutter_input_device_xi2_init (ClutterInputDeviceXI2 *self)
 
 guint
 _clutter_input_device_xi2_translate_state (XIModifierState *modifiers_state,
-                                           XIButtonState   *buttons_state)
+                                           XIButtonState   *buttons_state,
+                                           XIGroupState    *group_state)
 {
   guint retval = 0;
 
@@ -203,6 +204,9 @@ _clutter_input_device_xi2_translate_state (XIModifierState *modifiers_state,
             }
         }
     }
+
+  if (group_state)
+    retval |= (group_state->effective) << 13;
 
   return retval;
 }
