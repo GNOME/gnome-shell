@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: as\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-11 15:23+0000\n"
-"PO-Revision-Date: 2013-01-16 14:25+0530\n"
+"POT-Creation-Date: 2013-03-01 15:50+0000\n"
+"PO-Revision-Date: 2013-03-07 19:33+0530\n"
 "Last-Translator: Nilamdyuti Goswami <ngoswami@redhat.com>\n"
 "Language-Team: Assamese <kde-i18n-doc@kde.org>\n"
 "Language: as_IN\n"
@@ -168,7 +168,6 @@ msgid "Close window"
 msgstr "উইন্ডো বন্ধ কৰক"
 
 #: ../src/50-mutter-windows.xml.in.h:9
-#| msgid "Resize window"
 msgid "Hide window"
 msgstr "উইন্ডোক লুকাওক"
 
@@ -214,12 +213,16 @@ msgstr "বিভাজনক সোঁফালে দৰ্শন কৰক"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:512
+#: ../src/compositor/compositor.c:507
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr "অন্য মিশ্ৰণ ব্যৱস্থাপক ইতিমধ্যে চলি আছে পৰ্দা %i প্ৰদৰ্শন \"%s\"।"
+
+#: ../src/compositor/meta-background.c:1111
+msgid "background texture could not be created from file"
+msgstr "পটভূমিৰ ৰূপ ফাইলৰ পৰা সৃষ্টি কৰিব পৰা নগল"
 
 #: ../src/core/bell.c:320
 msgid "Bell event"
@@ -255,17 +258,17 @@ msgstr "অপেক্ষা কৰক (_W)"
 msgid "_Force Quit"
 msgstr "বলপূৰ্বক বন্ধ কৰক (_F)"
 
-#: ../src/core/display.c:394
+#: ../src/core/display.c:401
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "মিশ্ৰণৰ বাবে সন্ধানহিন %s সম্প্ৰসাৰনৰ প্ৰয়োজন"
 
-#: ../src/core/display.c:491
+#: ../src/core/display.c:493
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X উইন্ডো চিস্টেম প্ৰদৰ্শন '%s'খোলিব পৰা নগল \n"
 
-#: ../src/core/keybindings.c:876
+#: ../src/core/keybindings.c:929
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -274,6 +277,12 @@ msgstr ""
 "অন্য কোনো প্ৰগ্ৰামে ইতিমধ্যে কি' %s ক বাইন্ডিং হিচাপে পৰিৱৰ্তক %x ৰ সৈতে "
 "ব্যৱহাৰ "
 "কৰি আছে\n"
+
+#: ../src/core/keybindings.c:1129
+#, c-format
+#| msgid "\"%s\" is not a valid value for focus attribute"
+msgid "\"%s\" is not a valid accelerator\n"
+msgstr "\"%s\" এটা বৈধ ত্বৰক নহয়\n"
 
 #: ../src/core/main.c:196
 msgid "Disable connection to session manager"
@@ -365,17 +374,17 @@ msgid ""
 msgstr ""
 "সংৰূপ ডাটাবেইচত উপলব্ধ \"%s\", \"%s\" কি-বাইন্ডিং ৰ ক্ষেত্ৰত বৈধ মান নহয়\n"
 
-#: ../src/core/prefs.c:1877
+#: ../src/core/prefs.c:1879
 #, c-format
 msgid "Workspace %d"
 msgstr "কৰ্মস্থান %d"
 
-#: ../src/core/screen.c:658
+#: ../src/core/screen.c:673
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "পৰ্দা %d প্ৰদৰ্শন '%s' ত অবৈধ\n"
 
-#: ../src/core/screen.c:674
+#: ../src/core/screen.c:689
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -385,19 +394,19 @@ msgstr ""
 "উইন্ডো "
 "ব্যৱস্থাপক পৰিবৰ্তন কৰোঁতে --replace বিকল্প প্ৰয়োগ কৰক।\n"
 
-#: ../src/core/screen.c:701
+#: ../src/core/screen.c:716
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "উইন্ডো ব্যৱস্থাপকৰ নিৰ্বাচন গ্ৰহণ কৰোঁতে ব্যৰ্থ পৰ্দা %d প্ৰদৰ্শন \"%s\"\n"
 
-#: ../src/core/screen.c:770
+#: ../src/core/screen.c:794
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "পৰ্দা %d প্ৰদৰ্শন \"%s\" ৰ এটা উইন্ডো ব্যৱস্থাপক ইতিমধ্যে আছে\n"
 
-#: ../src/core/screen.c:955
+#: ../src/core/screen.c:979
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "পৰ্দা %d মুক্ত কৰিব পৰা নগল প্ৰদৰ্শন \"%s\"\n"
@@ -496,7 +505,7 @@ msgid "Window manager error: "
 msgstr "উইন্ডো ব্যৱস্থাপক ত্ৰুটি: "
 
 #. first time through
-#: ../src/core/window.c:7279
+#: ../src/core/window.c:7539
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -512,7 +521,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7945
+#: ../src/core/window.c:8263
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -523,22 +532,22 @@ msgstr ""
 "বিশেষ "
 "এটা সংজ্ঞা নিদিয়ে।\n"
 
-#: ../src/core/window-props.c:274
+#: ../src/core/window-props.c:318
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "এপ্লিকেচন দ্বাৰা ভুল _NET_WM_PID %lu নিৰ্ধাৰিত হৈছে\n"
 
-#: ../src/core/window-props.c:393
+#: ../src/core/window-props.c:434
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (%s ৰ ওপৰত)"
 
-#: ../src/core/window-props.c:1448
+#: ../src/core/window-props.c:1517
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "অবৈধ WM_TRANSIENT_FOR উইন্ডো 0x%lx, %s ৰ বাবে নিৰ্ধাৰিত হৈছে।\n"
 
-#: ../src/core/window-props.c:1459
+#: ../src/core/window-props.c:1528
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR window 0x%lx এ %s ৰ বাবে লুপ সৃষ্টি কৰিব।\n"
@@ -692,12 +701,16 @@ msgid "Auto maximize nearly monitor sized windows"
 msgstr "মনিটৰৰ প্ৰায় সমান আকাৰৰ উইন্ডোসমূহক স্বচালিতভাৱে ডাঙৰ কৰক"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:18
+#| msgid ""
+#| "If enabled, monitor nearly monitor sized windows automatically get "
+#| "maximized when mapped."
 msgid ""
-"If enabled, monitor nearly monitor sized windows automatically get maximized "
-"when mapped."
+"If enabled, new windows that are initially the size of the monitor "
+"automatically get maximized."
 msgstr ""
-"যদি সামৰ্থবান, মনিটৰৰ প্ৰায় সমান আকাৰৰ উইন্ডোসমূহ মেপ কৰোতে স্বচালিতভাৱে ডাঙৰ "
-"হয়।"
+"যদি সামৰ্থবান থাকে, আৰম্ভণিত মনিটৰৰ আকাৰৰ নতুন উইন্ডোসমূহ স্বচালিতভাৱে "
+"সৰ্বোচ্চ আকাৰ "
+"প্ৰাপ্ত কৰে।"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:19
 msgid "Select window from tab popup"
@@ -906,7 +919,7 @@ msgstr "Mod5"
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
-#: ../src/ui/resizepopup.c:113
+#: ../src/ui/resizepopup.c:136
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1189,14 +1202,14 @@ msgstr ""
 "থীম \"%s\" ত উইন্ডো ধৰণ \"%s\" ৰ বাবে কোনো ফ্ৰেইম শৈলী সংহিত নাই, এটা <window "
 "type=\"%s\" style_set=\"whatever\"/> উপাদন যোগ কৰক"
 
-#: ../src/ui/theme.c:5659 ../src/ui/theme.c:5721 ../src/ui/theme.c:5784
+#: ../src/ui/theme.c:5662 ../src/ui/theme.c:5724 ../src/ui/theme.c:5787
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr ""
 "ব্যৱহাৰকাৰী-বিৱৰিত ধ্ৰুৱকসমূহ এটা ডাঙৰ ফলাৰ সৈতে আৰম্ভ হব লাগিব; \"%s\" নহয়"
 
-#: ../src/ui/theme.c:5667 ../src/ui/theme.c:5729 ../src/ui/theme.c:5792
+#: ../src/ui/theme.c:5670 ../src/ui/theme.c:5732 ../src/ui/theme.c:5795
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "ধ্ৰুৱক \"%s\" ইতিমধ্যে বিৱৰিত"
@@ -1685,56 +1698,56 @@ msgstr "প্ৰান্ত"
 msgid "Attached Modal Dialog"
 msgstr "সংযুক্ত মোডাল ডাইলগ"
 
-#: ../src/ui/theme-viewer.c:739
+#: ../src/ui/theme-viewer.c:737
 #, c-format
 msgid "Button layout test %d"
 msgstr "বুটাম বিন্যাসৰ পৰীক্ষা %d"
 
-#: ../src/ui/theme-viewer.c:768
+#: ../src/ui/theme-viewer.c:766
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "এটা উইন্ডো ফ্ৰেইম আকিবলে %g মিলিছেকেণ্ড"
 
-#: ../src/ui/theme-viewer.c:813
+#: ../src/ui/theme-viewer.c:811
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "ব্যৱহাৰপদ্ধতি: metacity-theme-viewer [THEMENAME]\n"
 
-#: ../src/ui/theme-viewer.c:820
+#: ../src/ui/theme-viewer.c:818
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "থীম ল'ড কৰোতে ত্ৰুটি: %s\n"
 
-#: ../src/ui/theme-viewer.c:826
+#: ../src/ui/theme-viewer.c:824
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "\"%s\" থীম %g ছেকেণ্ডত ল'ড কৰা হৈছে\n"
 
-#: ../src/ui/theme-viewer.c:871
+#: ../src/ui/theme-viewer.c:869
 msgid "Normal Title Font"
 msgstr "স্বাভাবিক শীৰ্ষক ফন্ট"
 
-#: ../src/ui/theme-viewer.c:877
+#: ../src/ui/theme-viewer.c:875
 msgid "Small Title Font"
 msgstr "সৰু শীৰ্ষক ফন্ট"
 
-#: ../src/ui/theme-viewer.c:883
+#: ../src/ui/theme-viewer.c:881
 msgid "Large Title Font"
 msgstr "ডাঙৰ শীৰ্ষক ফন্ট"
 
-#: ../src/ui/theme-viewer.c:888
+#: ../src/ui/theme-viewer.c:886
 msgid "Button Layouts"
 msgstr "বুটামৰ বিন্যাসসমূহ"
 
-#: ../src/ui/theme-viewer.c:893
+#: ../src/ui/theme-viewer.c:891
 msgid "Benchmark"
 msgstr "ধাপ"
 
-#: ../src/ui/theme-viewer.c:949
+#: ../src/ui/theme-viewer.c:947
 msgid "Window Title Goes Here"
 msgstr "উইন্ডো শীৰ্ষক ইয়াত যাব"
 
-#: ../src/ui/theme-viewer.c:1055
+#: ../src/ui/theme-viewer.c:1053
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1747,39 +1760,39 @@ msgstr ""
 "অকাঁ "
 "হৈছিল\n"
 
-#: ../src/ui/theme-viewer.c:1275
+#: ../src/ui/theme-viewer.c:1273
 msgid "position expression test returned TRUE but set error"
 msgstr "অবস্থান অভিব্যক্তিৰ পৰীক্ষায়ে TRUE ঘুৰাই দিলেও ত্ৰুটি সংহিত হৈছে"
 
-#: ../src/ui/theme-viewer.c:1277
+#: ../src/ui/theme-viewer.c:1275
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "অবস্থান অভিব্যক্তিৰ পৰীক্ষায়ে FALSE ঘুৰাই দিলেও ত্ৰুটি সংহিত নাই হোৱা"
 
-#: ../src/ui/theme-viewer.c:1281
+#: ../src/ui/theme-viewer.c:1279
 msgid "Error was expected but none given"
 msgstr "ত্ৰুটি প্ৰত্যাশিত আছিল কিন্তু কোনো এটা দিয়া হোৱা নাই"
 
-#: ../src/ui/theme-viewer.c:1283
+#: ../src/ui/theme-viewer.c:1281
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "ত্ৰুটি %d প্ৰত্যাশিত আছিল কিন্তু %d প্ৰদান কৰা হৈছে"
 
-#: ../src/ui/theme-viewer.c:1289
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "ত্ৰুটি প্ৰত্যাশিত নহয় কিন্তু প্ৰাপ্ত: %s"
 
-#: ../src/ui/theme-viewer.c:1293
+#: ../src/ui/theme-viewer.c:1291
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x ৰ মান %d, %d প্ৰত্যাশিত"
 
-#: ../src/ui/theme-viewer.c:1296
+#: ../src/ui/theme-viewer.c:1294
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y ৰ মান %d, %d প্ৰত্যাশিত"
 
-#: ../src/ui/theme-viewer.c:1361
+#: ../src/ui/theme-viewer.c:1359
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d অক্ষ অভিব্যক্তিসমূহ %g ছেকেণ্ডত বিশ্লেষণ কৰা হৈছে (গড় %g ছেকেণ্ড)\n"
