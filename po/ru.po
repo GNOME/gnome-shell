@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-03-03 12:52+0000\n"
-"PO-Revision-Date: 2013-03-03 23:21+0400\n"
+"PO-Revision-Date: 2013-03-07 09:35+0400\n"
 "Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
 "Language-Team: русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -400,7 +400,7 @@ msgstr "Войти"
 
 #: ../js/gdm/loginDialog.js:799
 msgid "Next"
-msgstr "Следующий"
+msgstr "Далее"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
