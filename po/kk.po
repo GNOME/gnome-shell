@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-19 14:51+0000\n"
-"PO-Revision-Date: 2013-01-06 20:07+0600\n"
+"POT-Creation-Date: 2013-03-04 08:38+0000\n"
+"PO-Revision-Date: 2013-03-06 21:45+0600\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
@@ -28,7 +28,6 @@ msgid "Record a screencast"
 msgstr "Скринкастты жазу"
 
 #: ../data/50-gnome-shell-system.xml.in.h:1
-#| msgid "File System"
 msgid "System"
 msgstr "Жүйе"
 
@@ -41,12 +40,10 @@ msgid "Focus the active notification"
 msgstr "Белсенді хабарламаға фокусты орнату"
 
 #: ../data/50-gnome-shell-system.xml.in.h:4
-#| msgid "Applications"
 msgid "Show all applications"
 msgstr "Барлық қолданбаларды көрсету"
 
 #: ../data/50-gnome-shell-system.xml.in.h:5
-#| msgid "Keybinding to open the application menu"
 msgid "Open the application menu"
 msgstr "Қолданбалар мәзірін ашу"
 
@@ -59,7 +56,7 @@ msgid "Window management and application launching"
 msgstr "Терезелерді басқару мен қолданбаларды жөнелту"
 
 #: ../data/gnome-shell-extension-prefs.desktop.in.in.h:1
-#: ../js/extensionPrefs/main.js:152
+#: ../js/extensionPrefs/main.js:153
 msgid "GNOME Shell Extension Preferences"
 msgstr "GNOME Shell кеңейту баптаулары"
 
@@ -120,42 +117,44 @@ msgid ""
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
-msgid "History for command (Alt-F2) dialog"
-msgstr "Командалар сұхбаты (Alt-F2) үшін тарихы"
+msgid "List of categories that should be displayed as folders"
+msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:10
-msgid "History for the looking glass dialog"
+msgid ""
+"Each category name in this list will be represented as folder in the "
+"application view, rather than being displayed inline in the main view."
 msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
+msgid "History for command (Alt-F2) dialog"
+msgstr "Командалар сұхбаты (Alt-F2) үшін тарихы"
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+msgid "History for the looking glass dialog"
+msgstr ""
+
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid ""
 "Internally used to store the last IM presence explicitly set by the user. "
 "The value here is from the TpConnectionPresenceType enumeration."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid ""
 "Internally used to store the last session presence status for the user. The "
 "value here is from the GsmPresenceStatus enumeration."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid "Always show the 'Log out' menuitem in the user menu."
 msgstr "Пайдаланушы мәзірінде \"Жүйеден шығу\" нұсқасын әрқашан да көрсету"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menuitem in single-"
 "user, single-session situations."
 msgstr ""
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
-msgid "Show full name in the user menu"
-msgstr "Пайдаланушы мәзірінде толық атын көрсету"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
-msgid "Whether the users full name is shown in the user menu or not."
-msgstr "Пайдаланушы мәзірінде пайдаланушының толық аты көрсетіле ме, жоқ па."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid ""
@@ -187,34 +186,28 @@ msgid "Keybinding to open the application menu."
 msgstr "Қолданбалар мәзірін ашу үшін пернелер комбинациясы."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
-#| msgid "Keybinding to open the application menu"
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "\"Қолданбаларды көрсету\" көрінісін ашу үшін пернелер комбинациясы"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:24
-#| msgid "Keybinding to open the application menu."
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr ""
 "Көрініс ішінен \"Қолданбаларды көрсету\" ашу үшін пернелер комбинациясы"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
-#| msgid "Keybinding to toggle the screen recorder"
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr "Жүйелік трей көрінуін іске қосу/сөндіру үшін пернелер комбинациясы"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
-#| msgid "Keybinding to toggle the screen recorder"
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "Жүйелік трей көрінуін іске қосу/сөндіру үшін пернелер комбинациясы."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
-#| msgid "Keybinding to open the application menu"
 msgid "Keybinding to focus the active notification"
 msgstr "Белсенді ескертуге фокусты ауыстыру пернелер комбинациясы"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
-#| msgid "Keybinding to open the application menu."
 msgid "Keybinding to focus the active notification."
 msgstr "Белсенді ескертуге фокусты ауыстыру пернелер комбинациясы."
 
@@ -321,73 +314,67 @@ msgstr "Жұмыс орындары динамикалы түрде басқар
 msgid "Workspaces only on primary monitor"
 msgstr "Жұмыс орындар тек біріншілік мониторда"
 
-#: ../js/extensionPrefs/main.js:124
+#: ../js/extensionPrefs/main.js:125
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr "%s үшін баптаулар сұхбатын жүктеу кезінде қате орын алды:"
 
-#: ../js/extensionPrefs/main.js:164
-#| msgid "<b>Extension</b>"
+#: ../js/extensionPrefs/main.js:165
 msgid "Extension"
 msgstr "Кеңейту"
 
-#: ../js/extensionPrefs/main.js:188
+#: ../js/extensionPrefs/main.js:189
 msgid "Select an extension to configure using the combobox above."
 msgstr ""
 
-#: ../js/gdm/loginDialog.js:565
-msgid "Session..."
+#: ../js/gdm/loginDialog.js:405
+#| msgid "Session..."
+msgid "Session…"
 msgstr "Сессия..."
-
-#: ../js/gdm/loginDialog.js:722
-msgctxt "title"
-msgid "Sign In"
-msgstr "Кіру"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:786
+#: ../js/gdm/loginDialog.js:629
 msgid "Not listed?"
 msgstr "Тізімде жоқсыз ба?"
 
-#: ../js/gdm/loginDialog.js:962 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:373
+#: ../js/gdm/loginDialog.js:783 ../js/ui/components/networkAgent.js:137
+#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:375
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:413 ../js/ui/unlockDialog.js:178
+#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:126
+#: ../js/ui/userMenu.js:934
 msgid "Cancel"
 msgstr "Бас тарту"
 
-#: ../js/gdm/loginDialog.js:978
+#: ../js/gdm/loginDialog.js:799
 msgctxt "button"
 msgid "Sign In"
 msgstr "Кіру"
 
-#: ../js/gdm/loginDialog.js:978
-#| msgid "Next week"
+#: ../js/gdm/loginDialog.js:799
 msgid "Next"
 msgstr "Келесі"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:1086 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:904 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Пайдаланушы аты:"
 
-#: ../js/gdm/loginDialog.js:1382
+#: ../js/gdm/loginDialog.js:1157
 msgid "Login Window"
 msgstr "Жүйеге кіру терезесі"
 
 #. Translators: accessible name of the power menu in the login screen
 #: ../js/gdm/powerMenu.js:36
-#| msgid "Power Off"
 msgid "Power"
 msgstr "Эл. қорегі"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:675 ../js/ui/userMenu.js:679
-#: ../js/ui/userMenu.js:790
+#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:695 ../js/ui/userMenu.js:699
+#: ../js/ui/userMenu.js:815
 msgid "Suspend"
 msgstr "Ұйықтату"
 
@@ -395,56 +382,58 @@ msgstr "Ұйықтату"
 msgid "Restart"
 msgstr "Қайта қосу"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:677
-#: ../js/ui/userMenu.js:679 ../js/ui/userMenu.js:789
+#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:697
+#: ../js/ui/userMenu.js:699 ../js/ui/userMenu.js:814 ../js/ui/userMenu.js:938
 msgid "Power Off"
 msgstr "Сөндіру"
 
-#: ../js/gdm/util.js:152
-#| msgid "Authentication Required"
+#: ../js/gdm/util.js:182
 msgid "Authentication error"
 msgstr "Аутентификация қатесі"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:269
+#: ../js/gdm/util.js:299
 msgid "(or swipe finger)"
 msgstr ""
 
-#: ../js/gdm/util.js:294
+#: ../js/gdm/util.js:324
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(мыс., пайдаланушы не %s)"
 
-#: ../js/misc/util.js:92
+#: ../js/misc/util.js:94
 msgid "Command not found"
 msgstr "Команда табылмады"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:125
+#: ../js/misc/util.js:127
 msgid "Could not parse command:"
 msgstr "Команданы талдау мүмкін емес:"
 
-#: ../js/misc/util.js:133
+#: ../js/misc/util.js:135
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "'%s' жөнелту сәтсіз:"
 
-#. Translators: Filter to display all applications
-#: ../js/ui/appDisplay.js:258
+#: ../js/ui/appDisplay.js:348
+msgid "Frequent"
+msgstr ""
+
+#: ../js/ui/appDisplay.js:355
 msgid "All"
 msgstr "Барлық"
 
-#: ../js/ui/appDisplay.js:666
+#: ../js/ui/appDisplay.js:913
 msgid "New Window"
 msgstr "Жаңа терезе"
 
-#: ../js/ui/appDisplay.js:669 ../js/ui/dash.js:289
+#: ../js/ui/appDisplay.js:916 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Таңдамалылардан өшіру"
 
-#: ../js/ui/appDisplay.js:670
+#: ../js/ui/appDisplay.js:917
 msgid "Add to Favorites"
 msgstr "Таңдамалыларға қосу"
 
@@ -458,68 +447,79 @@ msgstr "%s таңдамалыларыңызға қосылды."
 msgid "%s has been removed from your favorites."
 msgstr "%s таңдамалыларыңыздан өшірілді."
 
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/userMenu.js:788
+msgid "Settings"
+msgstr "Баптаулар"
+
+#: ../js/ui/backgroundMenu.js:21
+msgid "Change Background…"
+msgstr ""
+
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
-#: ../js/ui/calendar.js:61
+#: ../js/ui/calendar.js:62
 msgctxt "event list time"
 msgid "All Day"
 msgstr "Толық күн"
 
-#. Translators: Shown in calendar event list, if 24h format
-#: ../js/ui/calendar.js:66
+#. Translators: Shown in calendar event list, if 24h format,
+#. \u2236 is a ratio character, similar to :
+#: ../js/ui/calendar.js:68
 msgctxt "event list time"
-msgid "%H:%M"
-msgstr "%H:%M"
+msgid "%H\\u2236%M"
+msgstr ""
 
-#. Transators: Shown in calendar event list, if 12h format
-#: ../js/ui/calendar.js:73
+#. Transators: Shown in calendar event list, if 12h format,
+#. \u2236 is a ratio character, similar to : and \u2009 is
+#. a thin space
+#: ../js/ui/calendar.js:77
 msgctxt "event list time"
-msgid "%l:%M %p"
-msgstr "%l:%M %p"
+msgid "%l\\u2236%M\\u2009%p"
+msgstr ""
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
 #. * NOTE: These grid abbreviations are always shown together
 #. * and in order, e.g. "S M T W T F S".
 #.
-#: ../js/ui/calendar.js:104
+#: ../js/ui/calendar.js:108
 msgctxt "grid sunday"
 msgid "S"
 msgstr "Жк"
 
 #. Translators: Calendar grid abbreviation for Monday
-#: ../js/ui/calendar.js:106
+#: ../js/ui/calendar.js:110
 msgctxt "grid monday"
 msgid "M"
 msgstr "Дс"
 
 #. Translators: Calendar grid abbreviation for Tuesday
-#: ../js/ui/calendar.js:108
+#: ../js/ui/calendar.js:112
 msgctxt "grid tuesday"
 msgid "T"
 msgstr "Сс"
 
 #. Translators: Calendar grid abbreviation for Wednesday
-#: ../js/ui/calendar.js:110
+#: ../js/ui/calendar.js:114
 msgctxt "grid wednesday"
 msgid "W"
 msgstr "Ср"
 
 #. Translators: Calendar grid abbreviation for Thursday
-#: ../js/ui/calendar.js:112
+#: ../js/ui/calendar.js:116
 msgctxt "grid thursday"
 msgid "T"
 msgstr "Бс"
 
 #. Translators: Calendar grid abbreviation for Friday
-#: ../js/ui/calendar.js:114
+#: ../js/ui/calendar.js:118
 msgctxt "grid friday"
 msgid "F"
 msgstr "Жм"
 
 #. Translators: Calendar grid abbreviation for Saturday
-#: ../js/ui/calendar.js:116
+#: ../js/ui/calendar.js:120
 msgctxt "grid saturday"
 msgid "S"
 msgstr "Сн"
@@ -530,98 +530,106 @@ msgstr "Сн"
 #. * so they need to be unique (e.g. Tuesday and Thursday cannot
 #. * both be 'T').
 #.
-#: ../js/ui/calendar.js:129
+#: ../js/ui/calendar.js:133
 msgctxt "list sunday"
 msgid "Su"
 msgstr "Жк"
 
 #. Translators: Event list abbreviation for Monday
-#: ../js/ui/calendar.js:131
+#: ../js/ui/calendar.js:135
 msgctxt "list monday"
 msgid "M"
 msgstr "Бс"
 
 #. Translators: Event list abbreviation for Tuesday
-#: ../js/ui/calendar.js:133
+#: ../js/ui/calendar.js:137
 msgctxt "list tuesday"
 msgid "T"
 msgstr "Сс"
 
 #. Translators: Event list abbreviation for Wednesday
-#: ../js/ui/calendar.js:135
+#: ../js/ui/calendar.js:139
 msgctxt "list wednesday"
 msgid "W"
 msgstr "Ср"
 
 #. Translators: Event list abbreviation for Thursday
-#: ../js/ui/calendar.js:137
+#: ../js/ui/calendar.js:141
 msgctxt "list thursday"
 msgid "Th"
 msgstr "Бс"
 
 #. Translators: Event list abbreviation for Friday
-#: ../js/ui/calendar.js:139
+#: ../js/ui/calendar.js:143
 msgctxt "list friday"
 msgid "F"
 msgstr "Жм"
 
 #. Translators: Event list abbreviation for Saturday
-#: ../js/ui/calendar.js:141
+#: ../js/ui/calendar.js:145
 msgctxt "list saturday"
 msgid "S"
 msgstr "Сн"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:674
+#: ../js/ui/calendar.js:692
 msgid "Nothing Scheduled"
 msgstr "Жоспар бос"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:690
+#: ../js/ui/calendar.js:708
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:693
+#: ../js/ui/calendar.js:711
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:703
+#: ../js/ui/calendar.js:721
 msgid "Today"
 msgstr "Бүгін"
 
-#: ../js/ui/calendar.js:707
+#: ../js/ui/calendar.js:725
 msgid "Tomorrow"
 msgstr "Ертен"
 
-#: ../js/ui/calendar.js:718
+#: ../js/ui/calendar.js:736
 msgid "This week"
 msgstr "Осы аптада"
 
-#: ../js/ui/calendar.js:726
+#: ../js/ui/calendar.js:744
 msgid "Next week"
 msgstr "Келесі аптада"
 
-#: ../js/ui/components/autorunManager.js:295
+#: ../js/ui/components/automountManager.js:90
+msgid "External drive connected"
+msgstr ""
+
+#: ../js/ui/components/automountManager.js:101
+msgid "External drive disconnected"
+msgstr ""
+
+#: ../js/ui/components/autorunManager.js:294
 msgid "Removable Devices"
 msgstr "Ауыстырмалы құрылғылар"
 
-#: ../js/ui/components/autorunManager.js:591
+#: ../js/ui/components/autorunManager.js:593
 #, c-format
 msgid "Open with %s"
 msgstr "%s көмегімен ашу"
 
-#: ../js/ui/components/autorunManager.js:617
+#: ../js/ui/components/autorunManager.js:619
 msgid "Eject"
 msgstr "Шығару"
 
-#: ../js/ui/components/keyring.js:86 ../js/ui/components/polkitAgent.js:260
+#: ../js/ui/components/keyring.js:82 ../js/ui/components/polkitAgent.js:268
 msgid "Password:"
 msgstr "Пароль:"
 
-#: ../js/ui/components/keyring.js:105
+#: ../js/ui/components/keyring.js:101
 msgid "Type again:"
 msgstr "Қайтадан енгізіңіз:"
 
@@ -707,7 +715,7 @@ msgstr "Аутентификация керек"
 msgid "Administrator"
 msgstr "Әкімші"
 
-#: ../js/ui/components/polkitAgent.js:166
+#: ../js/ui/components/polkitAgent.js:165
 msgid "Authenticate"
 msgstr "Аутентификация"
 
@@ -715,7 +723,7 @@ msgstr "Аутентификация"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/components/polkitAgent.js:248 ../js/ui/shellMountOperation.js:383
+#: ../js/ui/components/polkitAgent.js:256 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Кешіріңіз, талап сәтсіз. Қайтадан көріңіз."
 
@@ -727,68 +735,66 @@ msgstr ""
 
 #. FIXME: We don't have a 'chat room' icon (bgo #653737) use
 #. system-users for now as Empathy does.
-#: ../js/ui/components/telepathyClient.js:237
+#: ../js/ui/components/telepathyClient.js:238
 msgid "Invitation"
 msgstr "Шақыру"
 
 #. We got the TpContact
-#: ../js/ui/components/telepathyClient.js:297
+#: ../js/ui/components/telepathyClient.js:298
 msgid "Call"
 msgstr "Қоңырау"
 
 #. We got the TpContact
-#: ../js/ui/components/telepathyClient.js:313
+#: ../js/ui/components/telepathyClient.js:314
 msgid "File Transfer"
 msgstr "Файлдармен алмасу"
 
-#: ../js/ui/components/telepathyClient.js:417
+#: ../js/ui/components/telepathyClient.js:418
 msgid "Chat"
 msgstr "Чат"
 
-#: ../js/ui/components/telepathyClient.js:477
+#: ../js/ui/components/telepathyClient.js:480
 msgid "Unmute"
 msgstr "Дыбысты қайтару"
 
-#: ../js/ui/components/telepathyClient.js:477
+#: ../js/ui/components/telepathyClient.js:480
 msgid "Mute"
 msgstr "Дыбысын өшіру"
 
 #. Translators: this is the word "Yesterday" followed by a time string. i.e. "Yesterday, 14:30"
-#: ../js/ui/components/telepathyClient.js:931
+#: ../js/ui/components/telepathyClient.js:942
 #, no-c-format
 msgid "<b>Yesterday</b>, <b>%H:%M</b>"
 msgstr "<b>Кеше</b>, <b>%H:%M</b>"
 
 #. Translators: this is the week day name followed by a time string. i.e. "Monday, 14:30
-#: ../js/ui/components/telepathyClient.js:937
+#: ../js/ui/components/telepathyClient.js:948
 #, no-c-format
-#| msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgid "<b>%A</b>, <b>%H:%M</b>"
 msgstr "<b>%A</b>, <b>%H:%M</b>"
 
 #. Translators: this is the month name and day number followed by a time string. i.e. "May 25, 14:30"
-#: ../js/ui/components/telepathyClient.js:942
+#: ../js/ui/components/telepathyClient.js:953
 #, no-c-format
-#| msgid "Sent on <b>%A</b>, <b>%B %d</b>"
 msgid "<b>%B</b> <b>%d</b>, <b>%H:%M</b>"
 msgstr "<b>%d</b> <b>%B</b>, <b>%H:%M</b>"
 
 #. Translators: this is the month name, day number, year number followed by a time string. i.e. "May 25 2012, 14:30"
-#: ../js/ui/components/telepathyClient.js:946
+#: ../js/ui/components/telepathyClient.js:957
 #, no-c-format
 msgid "<b>%B</b> <b>%d</b> <b>%Y</b>, <b>%H:%M</b> "
 msgstr "<b>%d</b> <b>%B</b> <b>%Y</b>, <b>%H:%M</b> "
 
 #. Translators: this is the other person changing their old IM name to their new
 #. IM name.
-#: ../js/ui/components/telepathyClient.js:974
+#: ../js/ui/components/telepathyClient.js:985
 #, c-format
 msgid "%s is now known as %s"
 msgstr "%s енді %s ретінде белгілі"
 
 #. translators: argument is a room name like
 #. * room@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1073
+#: ../js/ui/components/telepathyClient.js:1088
 #, c-format
 msgid "Invitation to %s"
 msgstr "%s ішіне шақыру"
@@ -796,38 +802,38 @@ msgstr "%s ішіне шақыру"
 #. translators: first argument is the name of a contact and the second
 #. * one the name of a room. "Alice is inviting you to join room@jabber.org
 #. * for example.
-#: ../js/ui/components/telepathyClient.js:1081
+#: ../js/ui/components/telepathyClient.js:1096
 #, c-format
 msgid "%s is inviting you to join %s"
 msgstr "%s сізді %s ішіне қосылуды шақырады"
 
-#: ../js/ui/components/telepathyClient.js:1083
-#: ../js/ui/components/telepathyClient.js:1122
-#: ../js/ui/components/telepathyClient.js:1162
-#: ../js/ui/components/telepathyClient.js:1225
+#: ../js/ui/components/telepathyClient.js:1098
+#: ../js/ui/components/telepathyClient.js:1137
+#: ../js/ui/components/telepathyClient.js:1177
+#: ../js/ui/components/telepathyClient.js:1240
 msgid "Decline"
 msgstr "Тайдыру"
 
-#: ../js/ui/components/telepathyClient.js:1084
-#: ../js/ui/components/telepathyClient.js:1163
-#: ../js/ui/components/telepathyClient.js:1226
+#: ../js/ui/components/telepathyClient.js:1099
+#: ../js/ui/components/telepathyClient.js:1178
+#: ../js/ui/components/telepathyClient.js:1241
 msgid "Accept"
 msgstr "Қабылдау"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1114
+#: ../js/ui/components/telepathyClient.js:1129
 #, c-format
 msgid "Video call from %s"
 msgstr "Видео қоңырау: %s"
 
 #. translators: argument is a contact name like Alice for example.
-#: ../js/ui/components/telepathyClient.js:1117
+#: ../js/ui/components/telepathyClient.js:1132
 #, c-format
 msgid "Call from %s"
 msgstr "Қоңырау: %s"
 
 #. translators: this is a button label (verb), not a noun
-#: ../js/ui/components/telepathyClient.js:1124
+#: ../js/ui/components/telepathyClient.js:1139
 msgid "Answer"
 msgstr "Жауап"
 
@@ -836,110 +842,110 @@ msgstr "Жауап"
 #. * file name. The string will be something
 #. * like: "Alice is sending you test.ogg"
 #.
-#: ../js/ui/components/telepathyClient.js:1156
+#: ../js/ui/components/telepathyClient.js:1171
 #, c-format
 msgid "%s is sending you %s"
 msgstr "%s сізге %s жіберуде"
 
 #. To translators: The parameter is the contact's alias
-#: ../js/ui/components/telepathyClient.js:1191
+#: ../js/ui/components/telepathyClient.js:1206
 #, c-format
 msgid "%s would like permission to see when you are online"
 msgstr "%s сіз қашан желіде болатыныңызды білу құқығын сұрап тұр"
 
-#: ../js/ui/components/telepathyClient.js:1283
+#: ../js/ui/components/telepathyClient.js:1298
 msgid "Network error"
 msgstr "Желілік қате"
 
-#: ../js/ui/components/telepathyClient.js:1285
+#: ../js/ui/components/telepathyClient.js:1300
 msgid "Authentication failed"
 msgstr "Аутентификация сәтсіз"
 
-#: ../js/ui/components/telepathyClient.js:1287
+#: ../js/ui/components/telepathyClient.js:1302
 msgid "Encryption error"
 msgstr "Шифрлеу қатесі"
 
-#: ../js/ui/components/telepathyClient.js:1289
+#: ../js/ui/components/telepathyClient.js:1304
 msgid "Certificate not provided"
 msgstr "Сертификат ұсынылмады"
 
-#: ../js/ui/components/telepathyClient.js:1291
+#: ../js/ui/components/telepathyClient.js:1306
 msgid "Certificate untrusted"
 msgstr "Сертификат сенімсіз"
 
-#: ../js/ui/components/telepathyClient.js:1293
+#: ../js/ui/components/telepathyClient.js:1308
 msgid "Certificate expired"
 msgstr "Сертификаттың мерзімі аяқталған"
 
-#: ../js/ui/components/telepathyClient.js:1295
+#: ../js/ui/components/telepathyClient.js:1310
 msgid "Certificate not activated"
 msgstr "Сертификат белсендірілмеген"
 
-#: ../js/ui/components/telepathyClient.js:1297
+#: ../js/ui/components/telepathyClient.js:1312
 msgid "Certificate hostname mismatch"
 msgstr "Сертификаттың хост аты сәйкес емес"
 
-#: ../js/ui/components/telepathyClient.js:1299
+#: ../js/ui/components/telepathyClient.js:1314
 msgid "Certificate fingerprint mismatch"
 msgstr "Сертификаттың баспасы сәйкес емес"
 
-#: ../js/ui/components/telepathyClient.js:1301
+#: ../js/ui/components/telepathyClient.js:1316
 msgid "Certificate self-signed"
 msgstr "Сертификат өздігінен қолтаңбаланған"
 
-#: ../js/ui/components/telepathyClient.js:1303
+#: ../js/ui/components/telepathyClient.js:1318
 msgid "Status is set to offline"
 msgstr "Қалып-күй желіде емес етіп орнатылды"
 
-#: ../js/ui/components/telepathyClient.js:1305
+#: ../js/ui/components/telepathyClient.js:1320
 msgid "Encryption is not available"
 msgstr "Шифрлеу қолжетерсіз"
 
-#: ../js/ui/components/telepathyClient.js:1307
+#: ../js/ui/components/telepathyClient.js:1322
 msgid "Certificate is invalid"
 msgstr "Сертификат дұрыс емес"
 
-#: ../js/ui/components/telepathyClient.js:1309
+#: ../js/ui/components/telepathyClient.js:1324
 msgid "Connection has been refused"
 msgstr "Сертификат тайдырылды"
 
-#: ../js/ui/components/telepathyClient.js:1311
+#: ../js/ui/components/telepathyClient.js:1326
 msgid "Connection can't be established"
 msgstr "Байланысты орнату мүмкін емес"
 
-#: ../js/ui/components/telepathyClient.js:1313
+#: ../js/ui/components/telepathyClient.js:1328
 msgid "Connection has been lost"
 msgstr "Байланыс жоғалтылды"
 
-#: ../js/ui/components/telepathyClient.js:1315
+#: ../js/ui/components/telepathyClient.js:1330
 msgid "This account is already connected to the server"
 msgstr "Бұл тіркелгі серверге байланысқан болып тұр"
 
-#: ../js/ui/components/telepathyClient.js:1317
+#: ../js/ui/components/telepathyClient.js:1332
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
 msgstr "Байланыс дәл сол ресурсты қолданып, жаңа байланыспен алмастырылды"
 
-#: ../js/ui/components/telepathyClient.js:1319
+#: ../js/ui/components/telepathyClient.js:1334
 msgid "The account already exists on the server"
 msgstr "Бұл тіркелгі серверде бар болып тұр"
 
-#: ../js/ui/components/telepathyClient.js:1321
+#: ../js/ui/components/telepathyClient.js:1336
 msgid "Server is currently too busy to handle the connection"
 msgstr "Сервер бұл байланысты өңдеу үшін тым бос емес"
 
-#: ../js/ui/components/telepathyClient.js:1323
+#: ../js/ui/components/telepathyClient.js:1338
 msgid "Certificate has been revoked"
 msgstr "Сертификат қайта шақырылған"
 
-#: ../js/ui/components/telepathyClient.js:1325
+#: ../js/ui/components/telepathyClient.js:1340
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
 "Сертификат қауіпсіз емес шифрлеу алгоритмін қолдануда немесе криптографиялы "
 "әлсіз"
 
-#: ../js/ui/components/telepathyClient.js:1327
+#: ../js/ui/components/telepathyClient.js:1342
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
@@ -947,132 +953,141 @@ msgstr ""
 "Сервер сертификатының ұзындығы, не ол сертификат тізбегінің ұзындығы "
 "криптографиялық жинақ ұсына алатын шегінен асып тұр"
 
-#: ../js/ui/components/telepathyClient.js:1329
+#: ../js/ui/components/telepathyClient.js:1344
 msgid "Internal error"
 msgstr "Ішкі қате"
 
 #. translators: argument is the account name, like
 #. * name@jabber.org for example.
-#: ../js/ui/components/telepathyClient.js:1339
+#: ../js/ui/components/telepathyClient.js:1354
 #, c-format
 msgid "Unable to connect to %s"
 msgstr "%s байланысын орнату мүмкін емес"
 
-#: ../js/ui/components/telepathyClient.js:1344
-#| msgid "Edit account"
+#: ../js/ui/components/telepathyClient.js:1359
 msgid "View account"
 msgstr "Тіркелгіні қарап шығу"
 
-#: ../js/ui/components/telepathyClient.js:1384
+#: ../js/ui/components/telepathyClient.js:1398
 msgid "Unknown reason"
 msgstr "Себебі белгісіз"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:81
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
 msgid "Windows"
 msgstr "Терезелер"
 
-#: ../js/ui/dash.js:253 ../js/ui/dash.js:291
-#| msgid "Applications"
+#: ../js/ui/dash.js:248 ../js/ui/dash.js:286
 msgid "Show Applications"
 msgstr "Қолданбаларды көрсету"
 
-#: ../js/ui/dateMenu.js:86
-msgid "Date and Time Settings"
-msgstr "Уақыт пен күн баптаулары"
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+#: ../js/ui/dash.js:435
+msgid "Dash"
+msgstr ""
 
-#: ../js/ui/dateMenu.js:111
+#: ../js/ui/dateMenu.js:91
 msgid "Open Calendar"
 msgstr "Күнтізбені ашу"
+
+#: ../js/ui/dateMenu.js:96
+msgid "Open Clocks"
+msgstr ""
+
+#: ../js/ui/dateMenu.js:105
+#| msgid "Date and Time Settings"
+msgid "Date & Time Settings"
+msgstr "Уақыт пен күн баптаулары"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:201
+#: ../js/ui/dateMenu.js:205
 msgid "%A %B %e, %Y"
 msgstr "%A %e %B, %Y"
 
-#: ../js/ui/endSessionDialog.js:61
+#: ../js/ui/endSessionDialog.js:63
 #, c-format
 msgctxt "title"
 msgid "Log Out %s"
 msgstr "Шығу: %s"
 
-#: ../js/ui/endSessionDialog.js:62
+#: ../js/ui/endSessionDialog.js:64
 msgctxt "title"
 msgid "Log Out"
 msgstr "Шығу"
 
-#: ../js/ui/endSessionDialog.js:63
+#: ../js/ui/endSessionDialog.js:65
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr "Бұл қолданбалардан шығу мен жүйеден шығу үшін Жүйеден шығуды шертіңіз."
 
-#: ../js/ui/endSessionDialog.js:65
+#: ../js/ui/endSessionDialog.js:67
 #, c-format
 msgid "%s will be logged out automatically in %d second."
 msgid_plural "%s will be logged out automatically in %d seconds."
 msgstr[0] "%s жүйеден автоматты түрде %d секундтан кейін шығады."
 
-#: ../js/ui/endSessionDialog.js:70
+#: ../js/ui/endSessionDialog.js:72
 #, c-format
 msgid "You will be logged out automatically in %d second."
 msgid_plural "You will be logged out automatically in %d seconds."
 msgstr[0] "Сіз жүйеден автоматты түрде %d секундтан кейін шығасыз."
 
-#: ../js/ui/endSessionDialog.js:74
+#: ../js/ui/endSessionDialog.js:76
 msgid "Logging out of the system."
 msgstr "Жүйеден шығу."
 
-#: ../js/ui/endSessionDialog.js:76
+#: ../js/ui/endSessionDialog.js:78
 msgctxt "button"
 msgid "Log Out"
 msgstr "Шығу"
 
-#: ../js/ui/endSessionDialog.js:81
+#: ../js/ui/endSessionDialog.js:83
 msgctxt "title"
 msgid "Power Off"
 msgstr "Сөндіру"
 
-#: ../js/ui/endSessionDialog.js:82
+#: ../js/ui/endSessionDialog.js:84
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr "Бұл қолданбалардан шығу мен жүйені сөндіру үшін Сөндіруді шертіңіз."
 
-#: ../js/ui/endSessionDialog.js:84
+#: ../js/ui/endSessionDialog.js:86
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
 msgstr[0] "Жүйе %d секундтан кейін автоматты түрде сөндіріледі."
 
-#: ../js/ui/endSessionDialog.js:88
+#: ../js/ui/endSessionDialog.js:90
 msgid "Powering off the system."
 msgstr "Жүйені сөндіру."
 
-#: ../js/ui/endSessionDialog.js:90 ../js/ui/endSessionDialog.js:107
+#: ../js/ui/endSessionDialog.js:92 ../js/ui/endSessionDialog.js:109
 msgctxt "button"
 msgid "Restart"
 msgstr "Қайта қосу"
 
-#: ../js/ui/endSessionDialog.js:92
+#: ../js/ui/endSessionDialog.js:94
 msgctxt "button"
 msgid "Power Off"
 msgstr "Сөндіру"
 
-#: ../js/ui/endSessionDialog.js:98
+#: ../js/ui/endSessionDialog.js:100
 msgctxt "title"
 msgid "Restart"
 msgstr "Қайта қосу"
 
-#: ../js/ui/endSessionDialog.js:99
+#: ../js/ui/endSessionDialog.js:101
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
 "Бұл қолданбалардан шығу мен жүйені қайта жүктеу үшін Қайта қосуды шертіңіз."
 
-#: ../js/ui/endSessionDialog.js:101
+#: ../js/ui/endSessionDialog.js:103
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
 msgstr[0] "Жүйе %d секундтан кейін автоматты түрде қайта қосылады."
 
-#: ../js/ui/endSessionDialog.js:105
+#: ../js/ui/endSessionDialog.js:107
 msgid "Restarting the system."
 msgstr "Жүйені қайта қосу."
 
@@ -1085,91 +1100,105 @@ msgstr "Орнату"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "extensions.gnome.org адресінен '%s' жүктеп алып, орнату керек пе?"
 
-#: ../js/ui/keyboard.js:308
-msgid "tray"
-msgstr "трей"
-
-#: ../js/ui/keyboard.js:555 ../js/ui/status/keyboard.js:309
-#: ../js/ui/status/power.js:205
+#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:314
+#: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Пернетақта"
 
-#: ../js/ui/lookingGlass.js:691
+#: ../js/ui/lookingGlass.js:693
 msgid "No extensions installed"
 msgstr "Кеңейтулер орнатылмаған"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:745
+#: ../js/ui/lookingGlass.js:747
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s ешбір қатені шығармады."
 
-#: ../js/ui/lookingGlass.js:751
+#: ../js/ui/lookingGlass.js:753
 msgid "Hide Errors"
 msgstr "Қателерді жасыру"
 
-#: ../js/ui/lookingGlass.js:755 ../js/ui/lookingGlass.js:815
+#: ../js/ui/lookingGlass.js:757 ../js/ui/lookingGlass.js:817
 msgid "Show Errors"
 msgstr "Қателерді көрсету"
 
-#: ../js/ui/lookingGlass.js:764
+#: ../js/ui/lookingGlass.js:766
 msgid "Enabled"
 msgstr "Іске қосылған"
 
-#: ../js/ui/lookingGlass.js:767
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:769 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Сөндірулі"
 
-#: ../js/ui/lookingGlass.js:769
+#: ../js/ui/lookingGlass.js:771
 msgid "Error"
 msgstr "Қате"
 
-#: ../js/ui/lookingGlass.js:771
+#: ../js/ui/lookingGlass.js:773
 msgid "Out of date"
 msgstr "Ескірген"
 
-#: ../js/ui/lookingGlass.js:773
+#: ../js/ui/lookingGlass.js:775
 msgid "Downloading"
 msgstr "Жүктелуде"
 
-#: ../js/ui/lookingGlass.js:797
+#: ../js/ui/lookingGlass.js:799
 msgid "View Source"
 msgstr "Бастапқы кодын қарау"
 
-#: ../js/ui/lookingGlass.js:806
+#: ../js/ui/lookingGlass.js:808
 msgid "Web Page"
 msgstr "Веб парағы"
 
-#: ../js/ui/messageTray.js:1088
+#: ../js/ui/messageTray.js:1182
 msgid "Open"
 msgstr "Ашу"
 
-#: ../js/ui/messageTray.js:1095
+#: ../js/ui/messageTray.js:1189
 msgid "Remove"
 msgstr "Өшіру"
 
-#: ../js/ui/messageTray.js:1552
+#: ../js/ui/messageTray.js:1501
+#| msgid "No Messages"
+msgid "Clear Messages"
+msgstr "Хабарламаларды тазарту"
+
+#: ../js/ui/messageTray.js:1528
+#| msgid "Notifications"
+msgid "Notification Settings"
+msgstr "Хабарлау баптаулары"
+
+#: ../js/ui/messageTray.js:1707
 msgid "No Messages"
 msgstr "Хабарламалар жоқ"
 
-#: ../js/ui/messageTray.js:1570
+#: ../js/ui/messageTray.js:1787
 msgid "Message Tray"
 msgstr "Жүйелік трей"
 
-#: ../js/ui/messageTray.js:2639
+#: ../js/ui/messageTray.js:2864
 msgid "System Information"
 msgstr "Жүйелік ақпарат"
 
-#: ../js/ui/notificationDaemon.js:504 ../src/shell-app.c:374
+#: ../js/ui/notificationDaemon.js:629 ../src/shell-app.c:374
 msgctxt "program"
 msgid "Unknown"
 msgstr "Белгісіз"
 
-#: ../js/ui/overview.js:92
+#: ../js/ui/overviewControls.js:460 ../js/ui/screenShield.js:153
+#, c-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "%d жаңа хабарлама"
+
+#: ../js/ui/overview.js:82
 msgid "Undo"
 msgstr "Болдырмау"
 
-#: ../js/ui/overview.js:139
+#: ../js/ui/overview.js:129
 msgid "Overview"
 msgstr "Шолу"
 
@@ -1177,27 +1206,22 @@ msgstr "Шолу"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:218
-msgid "Type to search..."
+#: ../js/ui/overview.js:284
+#| msgid "Type to search..."
+msgid "Type to search…"
 msgstr "Іздеу үшін теріңіз..."
 
-#. Translators: this is the name of the dock/favorites area on
-#. the left of the overview
-#: ../js/ui/overview.js:236
-msgid "Dash"
-msgstr ""
-
-#: ../js/ui/panel.js:608
+#: ../js/ui/panel.js:613
 msgid "Quit"
 msgstr "Шығу"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:637
+#: ../js/ui/panel.js:642
 msgid "Activities"
 msgstr "Көрініс"
 
-#: ../js/ui/panel.js:980
+#: ../js/ui/panel.js:983
 msgid "Top Bar"
 msgstr "Үстідегі панель"
 
@@ -1206,12 +1230,11 @@ msgstr "Үстідегі панель"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:711
+#: ../js/ui/popupMenu.js:727
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
 #: ../js/ui/runDialog.js:205
-#| msgid "Please enter a command:"
 msgid "Enter a Command"
 msgstr "Команданы енгізу"
 
@@ -1221,347 +1244,369 @@ msgstr "Жабу"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:112
-#| msgctxt "calendar heading"
-#| msgid "%A, %B %d"
+#: ../js/ui/screenShield.js:90
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/screenShield.js:176
+#: ../js/ui/screenShield.js:155
 #, c-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d жаңа хабарлама"
-
-#: ../js/ui/screenShield.js:178
-#, c-format
-#| msgid "Notifications"
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d жаңа ескерту"
 
-#: ../js/ui/screenShield.js:402 ../js/ui/userMenu.js:781
+#: ../js/ui/screenShield.js:442 ../js/ui/userMenu.js:806
 msgid "Lock"
 msgstr "Блоктау"
 
-#: ../js/ui/searchDisplay.js:403
-msgid "Searching..."
-msgstr "Іздеуде..."
+#: ../js/ui/screenShield.js:639
+msgid "GNOME needs to lock the screen"
+msgstr ""
 
-#: ../js/ui/searchDisplay.js:451
-#| msgid "No matching results."
+#. We could not become modal, so we can't activate the
+#. screenshield. The user is probably very upset at this
+#. point, but any application using global grabs is broken
+#. Just tell him to stop using this app
+#.
+#. XXX: another option is to kick the user into the gdm login
+#. screen, where we're not affected by grabs
+#: ../js/ui/screenShield.js:758 ../js/ui/screenShield.js:1169
+#| msgid "Unable to connect to %s"
+msgid "Unable to lock"
+msgstr "Блоктау мүмкін емес"
+
+#: ../js/ui/screenShield.js:759 ../js/ui/screenShield.js:1170
+msgid "Lock was blocked by an application"
+msgstr ""
+
+#: ../js/ui/searchDisplay.js:431
+#| msgid "Searching..."
+msgid "Searching…"
+msgstr "Іздеу..."
+
+#: ../js/ui/searchDisplay.js:475
 msgid "No results."
 msgstr "Нәтижелер жоқ."
 
-#: ../js/ui/shellEntry.js:26
+#: ../js/ui/shellEntry.js:29
 msgid "Copy"
 msgstr "Көшіру"
 
-#: ../js/ui/shellEntry.js:31
+#: ../js/ui/shellEntry.js:34
 msgid "Paste"
 msgstr "Кірістіру"
 
-#: ../js/ui/shellEntry.js:102
+#: ../js/ui/shellEntry.js:105
 msgid "Show Text"
 msgstr "Мәтінді көрсету"
 
-#: ../js/ui/shellEntry.js:104
+#: ../js/ui/shellEntry.js:107
 msgid "Hide Text"
 msgstr "Мәтінді жасыру"
 
 #: ../js/ui/shellMountOperation.js:370
-#| msgid "Password:"
 msgid "Password"
 msgstr "Пароль"
 
 #: ../js/ui/shellMountOperation.js:391
-#| msgid "Remember Passphrase"
 msgid "Remember Password"
 msgstr "Парольді еске сақтау"
 
-#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:192
+#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:140
 msgid "Unlock"
 msgstr "Босату"
 
-#: ../js/ui/status/accessibility.js:40
+#: ../js/ui/status/accessibility.js:36
 msgid "Accessibility"
 msgstr "Қол жетерлілігі"
 
-#: ../js/ui/status/accessibility.js:45
+#: ../js/ui/status/accessibility.js:41
 msgid "Zoom"
 msgstr "Үлкейту"
 
-#: ../js/ui/status/accessibility.js:52
+#: ../js/ui/status/accessibility.js:48
 msgid "Screen Reader"
 msgstr "Экраннан оқитын қолданба"
 
-#: ../js/ui/status/accessibility.js:56
+#: ../js/ui/status/accessibility.js:52
 msgid "Screen Keyboard"
 msgstr "Экрандағы пернетақта"
 
-#: ../js/ui/status/accessibility.js:60
+#: ../js/ui/status/accessibility.js:56
 msgid "Visual Alerts"
 msgstr "Бейнелік хабарлау"
 
-#: ../js/ui/status/accessibility.js:63
+#: ../js/ui/status/accessibility.js:59
 msgid "Sticky Keys"
 msgstr "Жабысқақ пернелер"
 
-#: ../js/ui/status/accessibility.js:66
+#: ../js/ui/status/accessibility.js:62
 msgid "Slow Keys"
 msgstr "Баяу пернелер"
 
-#: ../js/ui/status/accessibility.js:69
+#: ../js/ui/status/accessibility.js:65
 msgid "Bounce Keys"
 msgstr "Қайталанатын пернелер"
 
-#: ../js/ui/status/accessibility.js:72
+#: ../js/ui/status/accessibility.js:68
 msgid "Mouse Keys"
 msgstr "Тышқан пернелері"
 
-#: ../js/ui/status/accessibility.js:76
+#: ../js/ui/status/accessibility.js:72
 msgid "Universal Access Settings"
 msgstr "Әмбебап қатынау баптаулары"
 
-#: ../js/ui/status/accessibility.js:112
+#: ../js/ui/status/accessibility.js:129
 msgid "High Contrast"
 msgstr "Жоғары контраст"
 
-#: ../js/ui/status/accessibility.js:159
+#: ../js/ui/status/accessibility.js:178
 msgid "Large Text"
 msgstr "Үлкен мәтін"
 
-#: ../js/ui/status/bluetooth.js:27 ../js/ui/status/bluetooth.js:31
-#: ../js/ui/status/bluetooth.js:288 ../js/ui/status/bluetooth.js:319
-#: ../js/ui/status/bluetooth.js:355 ../js/ui/status/bluetooth.js:386
+#: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:32
+#: ../js/ui/status/bluetooth.js:289 ../js/ui/status/bluetooth.js:321
+#: ../js/ui/status/bluetooth.js:357 ../js/ui/status/bluetooth.js:388
+#: ../js/ui/status/network.js:826
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../js/ui/status/bluetooth.js:44
+#: ../js/ui/status/bluetooth.js:45
 msgid "Visibility"
 msgstr "Көрінуі"
 
-#: ../js/ui/status/bluetooth.js:58
-msgid "Send Files to Device..."
+#: ../js/ui/status/bluetooth.js:59
+#| msgid "Send Files to Device..."
+msgid "Send Files to Device…"
 msgstr "Файлдарды құрылғыға жіберу..."
 
-#: ../js/ui/status/bluetooth.js:59
-msgid "Set up a New Device..."
+#: ../js/ui/status/bluetooth.js:60
+#| msgid "Set up a New Device..."
+msgid "Set Up a New Device…"
 msgstr "Жаңа құрылғыны баптау..."
 
-#: ../js/ui/status/bluetooth.js:83
+#: ../js/ui/status/bluetooth.js:84
 msgid "Bluetooth Settings"
 msgstr "Bluetooth баптаулары"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:103 ../js/ui/status/network.js:169
+#: ../js/ui/status/bluetooth.js:104 ../js/ui/status/network.js:178
 msgid "hardware disabled"
 msgstr "құрылғы сөндірулі"
 
-#: ../js/ui/status/bluetooth.js:196
+#: ../js/ui/status/bluetooth.js:197
 msgid "Connection"
 msgstr "Байланыс"
 
-#: ../js/ui/status/bluetooth.js:207 ../js/ui/status/network.js:436
+#: ../js/ui/status/bluetooth.js:208 ../js/ui/status/network.js:460
 msgid "disconnecting..."
 msgstr "байланысты үзу..."
 
-#: ../js/ui/status/bluetooth.js:220 ../js/ui/status/network.js:442
-#: ../js/ui/status/network.js:1464
+#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:466
+#: ../js/ui/status/network.js:1546
 msgid "connecting..."
 msgstr "байланысты орнату..."
 
-#: ../js/ui/status/bluetooth.js:238
-msgid "Send Files..."
+#: ../js/ui/status/bluetooth.js:239
+#| msgid "Send Files..."
+msgid "Send Files…"
 msgstr "Файлдарды жіберу..."
 
-#: ../js/ui/status/bluetooth.js:245
+#: ../js/ui/status/bluetooth.js:246
 msgid "Keyboard Settings"
 msgstr "Пернетақта баптаулары"
 
-#: ../js/ui/status/bluetooth.js:248
+#: ../js/ui/status/bluetooth.js:249
 msgid "Mouse Settings"
 msgstr "Тышқан баптаулары"
 
-#: ../js/ui/status/bluetooth.js:253 ../js/ui/status/volume.js:270
+#: ../js/ui/status/bluetooth.js:254 ../js/ui/status/volume.js:316
 msgid "Sound Settings"
 msgstr "Дыбыс баптаулары"
 
-#: ../js/ui/status/bluetooth.js:320
+#: ../js/ui/status/bluetooth.js:322
 #, c-format
 msgid "Authorization request from %s"
 msgstr "%s жіберген авторизация сұранымы"
 
-#: ../js/ui/status/bluetooth.js:326
+#: ../js/ui/status/bluetooth.js:328
 #, c-format
 msgid "Device %s wants access to the service '%s'"
 msgstr "%s құрылғысы '%s' қызметін қатынағысы кеп тұр"
 
-#: ../js/ui/status/bluetooth.js:328
+#: ../js/ui/status/bluetooth.js:330
 msgid "Always grant access"
 msgstr "Әрқашан рұқсат ету"
 
-#: ../js/ui/status/bluetooth.js:329
+#: ../js/ui/status/bluetooth.js:331
 msgid "Grant this time only"
 msgstr "Тек осы ретке рұқсат ету"
 
-#: ../js/ui/status/bluetooth.js:330
+#: ../js/ui/status/bluetooth.js:332
 msgid "Reject"
 msgstr "Болдырмау"
 
 #. Translators: argument is the device short name
-#: ../js/ui/status/bluetooth.js:357
+#: ../js/ui/status/bluetooth.js:359
 #, c-format
 msgid "Pairing confirmation for %s"
 msgstr "%s жіберген парлау растауы"
 
-#: ../js/ui/status/bluetooth.js:363 ../js/ui/status/bluetooth.js:394
+#: ../js/ui/status/bluetooth.js:365 ../js/ui/status/bluetooth.js:396
 #, c-format
 msgid "Device %s wants to pair with this computer"
 msgstr "%s құрылғысы бұл компьютермен пар болғысы кеп тұр"
 
-#: ../js/ui/status/bluetooth.js:364
+#: ../js/ui/status/bluetooth.js:366
 #, c-format
 msgid "Please confirm whether the PIN '%06d' matches the one on the device."
 msgstr "'%06d' PIN коды құрылғыдағы кодымен сәйкес келетінін растаңыз."
 
 #. Translators: this is the verb, not the noun
-#: ../js/ui/status/bluetooth.js:367
+#: ../js/ui/status/bluetooth.js:369
 msgid "Matches"
 msgstr "Сәйкес"
 
-#: ../js/ui/status/bluetooth.js:368
+#: ../js/ui/status/bluetooth.js:370
 msgid "Does not match"
 msgstr "Сәйкес емес"
 
-#: ../js/ui/status/bluetooth.js:387
+#: ../js/ui/status/bluetooth.js:389
 #, c-format
 msgid "Pairing request for %s"
 msgstr "%s үшін парлау сұранымы"
 
-#: ../js/ui/status/bluetooth.js:395
+#: ../js/ui/status/bluetooth.js:397
 msgid "Please enter the PIN mentioned on the device."
 msgstr "Құрылғыда көрсетілген PIN кодын енгізіңіз."
 
-#: ../js/ui/status/bluetooth.js:412
+#: ../js/ui/status/bluetooth.js:414
 msgid "OK"
 msgstr "ОК"
 
-#: ../js/ui/status/keyboard.js:363
+#: ../js/ui/status/keyboard.js:368
 msgid "Show Keyboard Layout"
 msgstr "Пернетақта жаймасын көрсету"
 
-#: ../js/ui/status/keyboard.js:368
-msgid "Region and Language Settings"
+#: ../js/ui/status/keyboard.js:373
+#| msgid "Region and Language Settings"
+msgid "Region & Language Settings"
 msgstr "Аймақ пен тіл баптаулары"
 
-#: ../js/ui/status/lockScreenMenu.js:18
+#: ../js/ui/status/lockScreenMenu.js:43
 msgid "Volume, network, battery"
 msgstr "Том, желі, батарея"
 
-#: ../js/ui/status/network.js:95
+#: ../js/ui/status/network.js:104
 msgid "<unknown>"
 msgstr "<белгісіз>"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:191
+#: ../js/ui/status/network.js:200
 msgid "disabled"
 msgstr "сөндірулі"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:434
+#: ../js/ui/status/network.js:458
 msgid "unmanaged"
 msgstr "басқарылмайтын"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:445 ../js/ui/status/network.js:1467
+#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1549
 msgid "authentication required"
 msgstr "аутентификация керек"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:455
+#: ../js/ui/status/network.js:479
 msgid "firmware missing"
 msgstr "бинарлы кодтары жоқ"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:462
+#: ../js/ui/status/network.js:486
 msgid "cable unplugged"
 msgstr "кабель ажыратылған"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:467
+#: ../js/ui/status/network.js:491
 msgid "unavailable"
 msgstr "қолжетерсіз"
 
-#: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1469
+#: ../js/ui/status/network.js:493 ../js/ui/status/network.js:1551
 msgid "connection failed"
 msgstr "байланысты орнату сәтсіз"
 
-#: ../js/ui/status/network.js:525 ../js/ui/status/network.js:1403
-#: ../js/ui/status/network.js:1545
-msgid "More..."
+#: ../js/ui/status/network.js:552 ../js/ui/status/network.js:1435
+#: ../js/ui/status/network.js:1627
+msgid "More…"
 msgstr "Көбірек..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:561 ../js/ui/status/network.js:1333
+#: ../js/ui/status/network.js:588 ../js/ui/status/network.js:1365
 msgid "Connected (private)"
 msgstr "Байланысқан (жеке)"
 
-#: ../js/ui/status/network.js:641
+#: ../js/ui/status/network.js:667
+msgid "Wired"
+msgstr "Сымды"
+
+#: ../js/ui/status/network.js:668
 msgid "Auto Ethernet"
 msgstr "Автоматты Ethernet"
 
-#: ../js/ui/status/network.js:688
+#: ../js/ui/status/network.js:695
+msgid "Mobile broadband"
+msgstr "Мобильді кеңжолақты"
+
+#: ../js/ui/status/network.js:728
 msgid "Auto broadband"
 msgstr "Автоматты кеңжолақты"
 
-#: ../js/ui/status/network.js:691
+#: ../js/ui/status/network.js:731
 msgid "Auto dial-up"
 msgstr "Автоматты dial-up"
 
 #. TRANSLATORS: this the automatic wireless connection name (including the network name)
-#: ../js/ui/status/network.js:820 ../js/ui/status/network.js:1350
+#: ../js/ui/status/network.js:861 ../js/ui/status/network.js:1382
 #, c-format
 msgid "Auto %s"
 msgstr "Автоматты %s"
 
-#: ../js/ui/status/network.js:822
+#: ../js/ui/status/network.js:863
 msgid "Auto bluetooth"
 msgstr "Автоматты bluetooth"
 
-#: ../js/ui/status/network.js:1352
+#: ../js/ui/status/network.js:1384
 msgid "Auto wireless"
 msgstr "Автоматты сымсыз"
 
-#: ../js/ui/status/network.js:1595
+#: ../js/ui/status/network.js:1729
 msgid "Enable networking"
 msgstr "Желіні іске қосу"
 
-#: ../js/ui/status/network.js:1627
+#: ../js/ui/status/network.js:1771
 msgid "Wi-Fi"
 msgstr "Wi-Fi"
 
-#: ../js/ui/status/network.js:1646
+#: ../js/ui/status/network.js:1790
 msgid "Network Settings"
 msgstr "Желі баптаулары"
 
-#: ../js/ui/status/network.js:1692
+#: ../js/ui/status/network.js:1807
 msgid "Network Manager"
 msgstr "Желілер басқарушысы"
 
-#: ../js/ui/status/network.js:1774
+#: ../js/ui/status/network.js:1897
 msgid "Connection failed"
 msgstr "Байланыс орнату сәтсіз"
 
-#: ../js/ui/status/network.js:1775
+#: ../js/ui/status/network.js:1898
 msgid "Activation of network connection failed"
 msgstr "Желілік байланысты белсендіру сәтсіз"
 
-#: ../js/ui/status/network.js:2092
+#: ../js/ui/status/network.js:2276
 msgid "Networking is disabled"
 msgstr "Желі сөндірулі тұр"
 
@@ -1569,164 +1614,167 @@ msgstr "Желі сөндірулі тұр"
 msgid "Battery"
 msgstr "Батарея"
 
-#: ../js/ui/status/power.js:72
+#: ../js/ui/status/power.js:81
 msgid "Power Settings"
 msgstr "Қорек баптаулары"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-#: ../js/ui/status/power.js:94
-msgid "Estimating..."
+#: ../js/ui/status/power.js:99
+#| msgid "Estimating..."
+msgid "Estimating…"
 msgstr "Есептеу..."
 
-#: ../js/ui/status/power.js:101
+#: ../js/ui/status/power.js:106
 #, c-format
 msgid "%d hour remaining"
 msgid_plural "%d hours remaining"
 msgstr[0] "%d сағат қалды"
 
 #. TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining"
-#: ../js/ui/status/power.js:104
+#: ../js/ui/status/power.js:109
 #, c-format
 msgid "%d %s %d %s remaining"
 msgstr "%d %s %d %s қалды"
 
-#: ../js/ui/status/power.js:106
+#: ../js/ui/status/power.js:111
 msgid "hour"
 msgid_plural "hours"
 msgstr[0] "сағат"
 
-#: ../js/ui/status/power.js:106
+#: ../js/ui/status/power.js:111
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "минут"
 
-#: ../js/ui/status/power.js:109
+#: ../js/ui/status/power.js:114
 #, c-format
 msgid "%d minute remaining"
 msgid_plural "%d minutes remaining"
 msgstr[0] "%d минут қалды"
 
-#: ../js/ui/status/power.js:112 ../js/ui/status/power.js:186
+#: ../js/ui/status/power.js:117 ../js/ui/status/power.js:191
 #, c-format
 msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
-#: ../js/ui/status/power.js:195
-msgid "AC adapter"
+#: ../js/ui/status/power.js:201
+#| msgid "AC adapter"
+msgid "AC Adapter"
 msgstr "Эл. қорек көзі"
 
-#: ../js/ui/status/power.js:197
-msgid "Laptop battery"
+#: ../js/ui/status/power.js:203
+#| msgid "Laptop battery"
+msgid "Laptop Battery"
 msgstr "Ноутбук батареясы"
 
-#: ../js/ui/status/power.js:199
+#: ../js/ui/status/power.js:205
 msgid "UPS"
 msgstr "UPS"
 
-#: ../js/ui/status/power.js:201
+#: ../js/ui/status/power.js:207
 msgid "Monitor"
 msgstr "Монитор"
 
-#: ../js/ui/status/power.js:203
+#: ../js/ui/status/power.js:209
 msgid "Mouse"
 msgstr "Тышқан"
 
-#: ../js/ui/status/power.js:207
+#: ../js/ui/status/power.js:213
 msgid "PDA"
 msgstr "PDA"
 
-#: ../js/ui/status/power.js:209
-msgid "Cell phone"
+#: ../js/ui/status/power.js:215
+#| msgid "Cell phone"
+msgid "Cell Phone"
 msgstr "Ұялы телефон"
 
-#: ../js/ui/status/power.js:211
-msgid "Media player"
+#: ../js/ui/status/power.js:217
+#| msgid "Media player"
+msgid "Media Player"
 msgstr "Медиа плеері"
 
-#: ../js/ui/status/power.js:213
+#: ../js/ui/status/power.js:219
 msgid "Tablet"
 msgstr "Планшет"
 
-#: ../js/ui/status/power.js:215
+#: ../js/ui/status/power.js:221
 msgid "Computer"
 msgstr "Компьютер"
 
-#: ../js/ui/status/power.js:217
+#: ../js/ui/status/power.js:223
 msgctxt "device"
 msgid "Unknown"
 msgstr "Белгісіз"
 
+#: ../js/ui/status/volume.js:124
+#| msgid "Volume"
+msgid "Volume changed"
+msgstr "Дыбыс өзгертілді"
+
 #. Translators: This is the label for audio volume
-#: ../js/ui/status/volume.js:50 ../js/ui/status/volume.js:251
+#: ../js/ui/status/volume.js:249 ../js/ui/status/volume.js:297
 msgid "Volume"
 msgstr "Дыбыс деңгейі"
 
-#: ../js/ui/status/volume.js:62
+#: ../js/ui/status/volume.js:258
 msgid "Microphone"
 msgstr "Микрофон"
 
-#: ../js/ui/unlockDialog.js:201
-#| msgid "Login as another user"
+#: ../js/ui/unlockDialog.js:151
 msgid "Log in as another user"
 msgstr "Басқа пайдаланушы ретінде жүйеге кіру"
 
-#: ../js/ui/unlockDialog.js:224
-#| msgid "Login Window"
+#: ../js/ui/unlockDialog.js:177
 msgid "Unlock Window"
 msgstr "Блоктауды алу терезесі"
 
-#: ../js/ui/userMenu.js:177
+#: ../js/ui/userMenu.js:193
 msgid "Available"
 msgstr "Қолжетерлік"
 
-#: ../js/ui/userMenu.js:180
+#: ../js/ui/userMenu.js:196
 msgid "Busy"
 msgstr "Бос емес"
 
-#: ../js/ui/userMenu.js:183
+#: ../js/ui/userMenu.js:199
 msgid "Invisible"
 msgstr "Жасырын"
 
-#: ../js/ui/userMenu.js:186
+#: ../js/ui/userMenu.js:202
 msgid "Away"
 msgstr "Кетіп қалған"
 
-#: ../js/ui/userMenu.js:189
+#: ../js/ui/userMenu.js:205
 msgid "Idle"
 msgstr "Іссіз"
 
-#: ../js/ui/userMenu.js:192
+#: ../js/ui/userMenu.js:208
 msgid "Offline"
 msgstr "Желіде емес"
 
-#: ../js/ui/userMenu.js:755
+#: ../js/ui/userMenu.js:780
 msgid "Notifications"
 msgstr "Хабарламалар"
 
-#: ../js/ui/userMenu.js:763
-#| msgid "Mouse Settings"
-msgid "Settings"
-msgstr "Баптаулар"
-
-#: ../js/ui/userMenu.js:771
+#: ../js/ui/userMenu.js:796
 msgid "Switch User"
 msgstr "Пайдаланушыны ауыстыру"
 
-#: ../js/ui/userMenu.js:776
+#: ../js/ui/userMenu.js:801
 msgid "Log Out"
 msgstr "Жүйеден шығу"
 
-#: ../js/ui/userMenu.js:796
+#: ../js/ui/userMenu.js:821
 msgid "Install Updates & Restart"
 msgstr "Жаңартуларды орнату мен қайта қосу"
 
-#: ../js/ui/userMenu.js:814
+#: ../js/ui/userMenu.js:839
 msgid "Your chat status will be set to busy"
 msgstr "Сіздің чат күйіңіз бос емес етіп орнатылады"
 
-#: ../js/ui/userMenu.js:815
+#: ../js/ui/userMenu.js:840
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1735,11 +1783,29 @@ msgstr ""
 "қалып-күйіңіз осыған орай өзгертілді, басқалар енді сіз олардың "
 "хабарламаларын көрмеу мүмкін екеніңіз туралы білетін болады."
 
-#: ../js/ui/viewSelector.js:85
+#: ../js/ui/userMenu.js:886
+msgid "Other users are logged in."
+msgstr ""
+
+#: ../js/ui/userMenu.js:891
+msgid "Shutting down might cause them to lose unsaved work."
+msgstr ""
+
+#: ../js/ui/userMenu.js:918
+#, c-format
+msgid "%s (remote)"
+msgstr ""
+
+#: ../js/ui/userMenu.js:920
+#, c-format
+msgid "%s (console)"
+msgstr ""
+
+#: ../js/ui/viewSelector.js:100
 msgid "Applications"
 msgstr "Қолданбалар"
 
-#: ../js/ui/viewSelector.js:89
+#: ../js/ui/viewSelector.js:104
 msgid "Search"
 msgstr "Іздеу"
 
@@ -1766,19 +1832,40 @@ msgstr "'%s' дайын"
 msgid "Evolution Calendar"
 msgstr "Evolution күнтізбесі"
 
-#: ../src/main.c:332
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1837
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] ""
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1847
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] ""
+
+#: ../src/gvc/gvc-mixer-control.c:2371
+#| msgid "System"
+msgid "System Sounds"
+msgstr "Жүйелік дыбыстар"
+
+#: ../src/main.c:347
 msgid "Print version"
 msgstr "Баспа нұсқасы"
 
-#: ../src/main.c:338
+#: ../src/main.c:353
 msgid "Mode used by GDM for login screen"
 msgstr "Жүйеге кіру экраны үшін GDM қолданатын режимі"
 
-#: ../src/main.c:344
+#: ../src/main.c:359
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Жүйеге кіру экраны үшін арнайы режимді, мыс. \"gdm\", қолдану"
 
-#: ../src/main.c:350
+#: ../src/main.c:365
 msgid "List possible modes"
 msgstr "Қолжетерлік режимдерді тізіп шығу"
 
@@ -1795,17 +1882,37 @@ msgstr "Парольдер өзара сәйкес емес"
 msgid "Password cannot be blank"
 msgstr "Пароль бос болуы мүмкін емес"
 
-#: ../src/shell-mobile-providers.c:85
-msgid "United Kingdom"
-msgstr ""
-
-#: ../src/shell-mobile-providers.c:619
-msgid "Default"
-msgstr "Бастапқы"
-
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Аутентификация терезесін пайдаланушы тайдырды"
+
+#~ msgid "Show full name in the user menu"
+#~ msgstr "Пайдаланушы мәзірінде толық атын көрсету"
+
+#~ msgid "Whether the users full name is shown in the user menu or not."
+#~ msgstr ""
+#~ "Пайдаланушы мәзірінде пайдаланушының толық аты көрсетіле ме, жоқ па."
+
+#~ msgctxt "title"
+#~ msgid "Sign In"
+#~ msgstr "Кіру"
+
+#~ msgctxt "event list time"
+#~ msgid "%H:%M"
+#~ msgstr "%H:%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l:%M %p"
+#~ msgstr "%l:%M %p"
+
+#~ msgid "tray"
+#~ msgstr "трей"
+
+#~ msgid "More..."
+#~ msgstr "Көбірек..."
+
+#~ msgid "Default"
+#~ msgstr "Бастапқы"
 
 #~ msgid "disabled OpenSearch providers"
 #~ msgstr "сөндірілген OpenSearch ұсынушылары"
@@ -1840,14 +1947,8 @@ msgstr "Аутентификация терезесін пайдаланушы �
 #~ msgid "The requested device cannot be browsed, error is '%s'"
 #~ msgstr "Сұралған құрылғыны шолу мүмкін емес, қате '%s'"
 
-#~ msgid "Wired"
-#~ msgstr "Сымды"
-
 #~ msgid "Wireless"
 #~ msgstr "Сымсыз"
-
-#~ msgid "Mobile broadband"
-#~ msgstr "Мобильді кеңжолақты"
 
 #~ msgid "VPN Connections"
 #~ msgstr "VPN байланыстары"
