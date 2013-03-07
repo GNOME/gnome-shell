@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-02 23:02+0000\n"
-"PO-Revision-Date: 2013-03-03 15:57+0900\n"
+"POT-Creation-Date: 2013-03-04 08:38+0000\n"
+"PO-Revision-Date: 2013-03-07 21:01+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: \n"
@@ -112,13 +112,13 @@ msgstr "مۇناسىپ پروگرامما بەلگىسى يىغقۇچ رايون
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "List of categories that should be displayed as folders"
-msgstr ""
+msgstr "قىسقۇچ سۈپىتىدە كۆرسىتىلىدىغان كاتېگورىيەلەرنىڭ تىزىمى"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid ""
 "Each category name in this list will be represented as folder in the "
 "application view, rather than being displayed inline in the main view."
-msgstr ""
+msgstr "پروگرامما كۆرۈنۈشىدە ھەر بىر كاتېگورىيە ئاتى قىسقۇچ سۈپىتىدە ئىپادىلىنىدۇ، ئاساسىي كۆرۈنۈشتە كۆرسىتىلمەيدۇ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "History for command (Alt-F2) dialog"
@@ -316,7 +316,6 @@ msgid "Select an extension to configure using the combobox above."
 msgstr "يۇقىرىدىكى combobox دىن سەپلەيدىغان كېڭەيتىلمىنى تاللاڭ."
 
 #: ../js/gdm/loginDialog.js:405
-#| msgid "Session..."
 msgid "Session…"
 msgstr "ئەڭگىمە…"
 
@@ -331,7 +330,7 @@ msgstr "تىزىمدا يوقمۇ؟"
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:375
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
 #: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:126
-#: ../js/ui/userMenu.js:932
+#: ../js/ui/userMenu.js:934
 msgid "Cancel"
 msgstr "ئەمەلدىن قالدۇر"
 
@@ -361,8 +360,8 @@ msgstr "كىرىش كۆزنىكى"
 msgid "Power"
 msgstr "توك مەنبە"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:694 ../js/ui/userMenu.js:698
-#: ../js/ui/userMenu.js:814
+#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:695 ../js/ui/userMenu.js:699
+#: ../js/ui/userMenu.js:815
 msgid "Suspend"
 msgstr "توڭلات"
 
@@ -370,14 +369,14 @@ msgstr "توڭلات"
 msgid "Restart"
 msgstr "قايتا قوزغات"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:696
-#: ../js/ui/userMenu.js:698 ../js/ui/userMenu.js:813 ../js/ui/userMenu.js:936
+#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:697
+#: ../js/ui/userMenu.js:699 ../js/ui/userMenu.js:814 ../js/ui/userMenu.js:938
 msgid "Power Off"
 msgstr "توكنى ئۈز"
 
 #: ../js/gdm/util.js:182
 msgid "Authentication error"
-msgstr "سالاھىيەت دەلىللەش خاتالىقى"
+msgstr "كىملىك دەلىللەش خاتالىقى"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
@@ -435,7 +434,7 @@ msgstr "‏%s يىغقۇچىڭىزغا قوشۇلدى."
 msgid "%s has been removed from your favorites."
 msgstr "‏%s يىغقۇچىڭىزدىن چىقىرىۋېتىلىدۇ."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/userMenu.js:787
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/userMenu.js:788
 msgid "Settings"
 msgstr "تەڭشەكلەر"
 
@@ -697,7 +696,7 @@ msgstr "‹%s› كە باغلىنىش ئۈچۈن بىر ئىمغا ئېھتىي
 
 #: ../js/ui/components/polkitAgent.js:55
 msgid "Authentication Required"
-msgstr "سالاھىيەت دەلىللەش زۆرۈر"
+msgstr "كىملىك دەلىللەش زۆرۈر"
 
 #: ../js/ui/components/polkitAgent.js:93
 msgid "Administrator"
@@ -847,7 +846,7 @@ msgstr "تور خاتالىقى"
 
 #: ../js/ui/components/telepathyClient.js:1300
 msgid "Authentication failed"
-msgstr "سالاھىيەت دەلىللەش مەغلۇپ بولدى"
+msgstr "كىملىك دەلىللەش مەغلۇپ بولدى"
 
 #: ../js/ui/components/telepathyClient.js:1302
 msgid "Encryption error"
@@ -956,7 +955,7 @@ msgstr "ھېساباتنى كۆرۈش"
 msgid "Unknown reason"
 msgstr "نامەلۇم سەۋەب"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:97
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
 msgid "Windows"
 msgstr "كۆزنەكلەر"
 
@@ -1144,7 +1143,6 @@ msgid "Remove"
 msgstr "چىقىرىۋەت"
 
 #: ../js/ui/messageTray.js:1501
-#| msgid "No Messages"
 msgid "Clear Messages"
 msgstr "ئۇچۇرنى تازىلا"
 
@@ -1188,7 +1186,6 @@ msgstr "قىسقىچە بايان"
 #. active; it should not exceed ~30
 #. characters.
 #: ../js/ui/overview.js:284
-#| msgid "Type to search..."
 msgid "Type to search…"
 msgstr "ئىزدەيدىغاننى كىرگۈزۈڭ.…"
 
@@ -1235,7 +1232,7 @@ msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d دانە ئۇقتۇرۇش"
 
-#: ../js/ui/screenShield.js:442 ../js/ui/userMenu.js:805
+#: ../js/ui/screenShield.js:442 ../js/ui/userMenu.js:806
 msgid "Lock"
 msgstr "قۇلۇپلا"
 
@@ -1251,7 +1248,6 @@ msgstr "گىنوم ئېكراننى قۇلۇپلىشى زۆرۈر"
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
 #: ../js/ui/screenShield.js:758 ../js/ui/screenShield.js:1169
-#| msgid "Unable to connect to %s"
 msgid "Unable to lock"
 msgstr "قۇلۇپلىغىلى بولمىدى"
 
@@ -1260,7 +1256,6 @@ msgid "Lock was blocked by an application"
 msgstr "بىر پروگرامما قۇلۇپلاشنى توسۇپ قويغان"
 
 #: ../js/ui/searchDisplay.js:431
-#| msgid "Searching..."
 msgid "Searching…"
 msgstr "ئىزدەۋاتىدۇ…"
 
@@ -1356,12 +1351,10 @@ msgid "Visibility"
 msgstr "كۆرۈشچانلىقى"
 
 #: ../js/ui/status/bluetooth.js:59
-#| msgid "Send Files to Device..."
 msgid "Send Files to Device…"
 msgstr "ھۆججەتلەرنى ئۈسكۈنىگە ئەۋەتىش…"
 
 #: ../js/ui/status/bluetooth.js:60
-#| msgid "Set Up a New Device..."
 msgid "Set Up a New Device…"
 msgstr "يېڭى ئۈسكۈنە ئورنىتىش…"
 
@@ -1388,7 +1381,6 @@ msgid "connecting..."
 msgstr "باغلىنىۋاتىدۇ…"
 
 #: ../js/ui/status/bluetooth.js:239
-#| msgid "Send Files..."
 msgid "Send Files…"
 msgstr "ھۆججەت يوللاش…"
 
@@ -1494,7 +1486,7 @@ msgstr "باشقۇرۇلمىغان"
 #. Translators: this is for network connections that require some kind of key or password
 #: ../js/ui/status/network.js:469 ../js/ui/status/network.js:1549
 msgid "authentication required"
-msgstr "سالاھىيەت دەلىللەش زۆرۈر"
+msgstr "كىملىك دەلىللەش زۆرۈر"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
@@ -1601,7 +1593,6 @@ msgstr "توك مەنبە تەڭشىكى"
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
 #: ../js/ui/status/power.js:99
-#| msgid "Estimating..."
 msgid "Estimating…"
 msgstr "مۆلچەرلەۋاتىدۇ…"
 
@@ -1705,79 +1696,79 @@ msgstr "باشقا ئىشلەتكۈچى سۈپىتىدە كىر"
 msgid "Unlock Window"
 msgstr "كۆزنەكنى قۇلۇپلا"
 
-#: ../js/ui/userMenu.js:192
+#: ../js/ui/userMenu.js:193
 msgid "Available"
 msgstr "ئىشلەتكىلى بولىدۇ"
 
-#: ../js/ui/userMenu.js:195
+#: ../js/ui/userMenu.js:196
 msgid "Busy"
 msgstr "ئالدىراش"
 
-#: ../js/ui/userMenu.js:198
+#: ../js/ui/userMenu.js:199
 msgid "Invisible"
 msgstr "يوشۇرۇن"
 
-#: ../js/ui/userMenu.js:201
+#: ../js/ui/userMenu.js:202
 msgid "Away"
 msgstr "يوق"
 
-#: ../js/ui/userMenu.js:204
+#: ../js/ui/userMenu.js:205
 msgid "Idle"
 msgstr "بىكار"
 
-#: ../js/ui/userMenu.js:207
+#: ../js/ui/userMenu.js:208
 msgid "Offline"
 msgstr "توردا يوق"
 
-#: ../js/ui/userMenu.js:779
+#: ../js/ui/userMenu.js:780
 msgid "Notifications"
 msgstr "ئۇقتۇرۇشلار"
 
-#: ../js/ui/userMenu.js:795
+#: ../js/ui/userMenu.js:796
 msgid "Switch User"
 msgstr "ئىشلەتكۈچى ئالماشتۇرۇش"
 
-#: ../js/ui/userMenu.js:800
+#: ../js/ui/userMenu.js:801
 msgid "Log Out"
 msgstr "تىزىمدىن چىقىش"
 
-#: ../js/ui/userMenu.js:820
+#: ../js/ui/userMenu.js:821
 msgid "Install Updates & Restart"
 msgstr "يېڭىلانمىلارنى ئورنىتىپ قايتا قوزغات"
 
-#: ../js/ui/userMenu.js:838
+#: ../js/ui/userMenu.js:839
 msgid "Your chat status will be set to busy"
 msgstr "سىزنىڭ سۆھبەت ھالىتىڭىز ئالدىراش قىلىنىدۇ"
 
-#: ../js/ui/userMenu.js:839
+#: ../js/ui/userMenu.js:840
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
 msgstr ""
 
-#: ../js/ui/userMenu.js:885
+#: ../js/ui/userMenu.js:886
 msgid "Other users are logged in."
 msgstr "باشقا ئىشلەتكۈچىلەر كىردى:"
 
-#: ../js/ui/userMenu.js:890
+#: ../js/ui/userMenu.js:891
 msgid "Shutting down might cause them to lose unsaved work."
 msgstr "تاقالسا ساقلانمىغان خىزمەتلەر يوقىلىشى مۇمكىن."
 
-#: ../js/ui/userMenu.js:916
+#: ../js/ui/userMenu.js:918
 #, c-format
 msgid "%s (remote)"
 msgstr "%s (يىراق)"
 
-#: ../js/ui/userMenu.js:918
+#: ../js/ui/userMenu.js:920
 #, c-format
 msgid "%s (console)"
 msgstr "%s (تىزگىن كۆزنەك)"
 
-#: ../js/ui/viewSelector.js:101
+#: ../js/ui/viewSelector.js:100
 msgid "Applications"
 msgstr "پروگراممىلار"
 
-#: ../js/ui/viewSelector.js:105
+#: ../js/ui/viewSelector.js:104
 msgid "Search"
 msgstr "ئىزدە"
 
