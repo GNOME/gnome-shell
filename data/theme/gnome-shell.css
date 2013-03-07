@@ -964,6 +964,10 @@ StScrollBar StButton#vhandle:active {
     color:white;
 }
 
+.app-display .app-well-app:hover > .overview-icon {
+    border-radius: 10px;
+}
+
 .list-search-result:hover .list-search-result-description {
     text-shadow: rgba(0,0,0,0.8) 0px 1px 2px;
 }
