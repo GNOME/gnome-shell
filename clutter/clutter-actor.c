@@ -774,6 +774,11 @@ struct _ClutterActorPrivate
   /* a set of clones of the actor */
   GHashTable *clones;
 
+  /* whether the actor is inside a cloned branch; this
+   * value is propagated to all the actor's children
+   */
+  gulong in_cloned_branch;
+
   /* bitfields: KEEP AT THE END */
 
   /* fixed position and sizes */
@@ -8611,7 +8616,8 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
    * of their parents has been hidden
    */
   if (!CLUTTER_ACTOR_IS_MAPPED (self) &&
-      !clutter_actor_has_mapped_clones (self))
+      !clutter_actor_has_mapped_clones (self) &&
+      self->priv->in_cloned_branch == 0)
     return;
 
   /* given the check above we could end up queueing a redraw on an
@@ -20157,6 +20163,32 @@ clutter_actor_get_child_transform (ClutterActor  *self,
     clutter_matrix_init_identity (transform);
 }
 
+static void
+clutter_actor_push_in_cloned_branch (ClutterActor *self)
+{
+  ClutterActor *iter;
+
+  for (iter = self->priv->first_child;
+       iter != NULL;
+       iter = iter->priv->next_sibling)
+    clutter_actor_push_in_cloned_branch (iter);
+
+  self->priv->in_cloned_branch += 1;
+}
+
+static void
+clutter_actor_pop_in_cloned_branch (ClutterActor *self)
+{
+  ClutterActor *iter;
+
+  self->priv->in_cloned_branch -= 1;
+
+  for (iter = self->priv->first_child;
+       iter != NULL;
+       iter = iter->priv->next_sibling)
+    clutter_actor_pop_in_cloned_branch (iter);
+}
+
 void
 _clutter_actor_attach_clone (ClutterActor *actor,
                              ClutterActor *clone)
@@ -20169,6 +20201,8 @@ _clutter_actor_attach_clone (ClutterActor *actor,
     priv->clones = g_hash_table_new (NULL, NULL);
 
   g_hash_table_add (priv->clones, clone);
+
+  clutter_actor_push_in_cloned_branch (actor);
 }
 
 void
@@ -20182,6 +20216,8 @@ _clutter_actor_detach_clone (ClutterActor *actor,
   if (priv->clones == NULL ||
       g_hash_table_lookup (priv->clones, clone) == NULL)
     return;
+
+  clutter_actor_pop_in_cloned_branch (actor);
 
   g_hash_table_remove (priv->clones, clone);
 
