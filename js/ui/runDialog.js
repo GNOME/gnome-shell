@@ -259,18 +259,6 @@ const RunDialog = new Lang.Class({
 
                 return true;
             }
-            if (symbol == Clutter.slash) {
-                // Need preload data before get completion. GFilenameCompleter load content of parent directory.
-                // Parent directory for /usr/include/ is /usr/. So need to add fake name('a').
-                let text = o.get_text().concat('/a');
-                let prefix;
-                if (text.lastIndexOf(' ') == -1)
-                    prefix = text;
-                else
-                    prefix = text.substr(text.lastIndexOf(' ') + 1);
-                this._getCompletion(prefix);
-                return false;
-            }
             if (symbol == Clutter.Tab) {
                 let text = o.get_text();
                 let prefix;
@@ -282,8 +270,6 @@ const RunDialog = new Lang.Class({
                 if (postfix != null && postfix.length > 0) {
                     o.insert_text(postfix, -1);
                     o.set_cursor_position(text.length + postfix.length);
-                    if (postfix[postfix.length - 1] == '/')
-                        this._getCompletion(text + postfix + 'a');
                 }
                 return true;
             }
