@@ -816,6 +816,7 @@ struct _ClutterActorPrivate
   guint needs_compute_expand        : 1;
   guint needs_x_expand              : 1;
   guint needs_y_expand              : 1;
+  guint was_painted                 : 1;
 };
 
 enum
@@ -1486,6 +1487,12 @@ clutter_actor_real_map (ClutterActor *self)
 
   stage = _clutter_actor_get_stage_internal (self);
   priv->pick_id = _clutter_stage_acquire_pick_id (CLUTTER_STAGE (stage), self);
+
+  /* reset the was_painted flag here: unmapped actors are not going to
+   * be painted in any case, and this allows us to catch the case of
+   * cloned actors.
+   */
+  priv->was_painted = FALSE;
 
   CLUTTER_NOTE (ACTOR, "Pick id '%d' for actor '%s'",
                 priv->pick_id,
@@ -3892,6 +3899,9 @@ clutter_actor_continue_paint (ClutterActor *self)
 
           /* XXX:2.0 - Call the paint() virtual directly */
           g_signal_emit (self, actor_signals[PAINT], 0);
+
+          /* the actor was painted at least once */
+          priv->was_painted = TRUE;
         }
       else
         {
@@ -8611,14 +8621,26 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
     return;
 
   /* we can ignore unmapped actors, unless they have at least one
-   * mapped clone, as unmapped actors will simply be left unpainted;
+   * mapped clone or they are inside a cloned branch of the scene
+   * graph, as unmapped actors will simply be left unpainted.
+   *
    * this allows us to ignore redraws queued on leaf nodes when one
    * of their parents has been hidden
    */
   if (!CLUTTER_ACTOR_IS_MAPPED (self) &&
-      !clutter_actor_has_mapped_clones (self) &&
-      self->priv->in_cloned_branch == 0)
-    return;
+      self->priv->in_cloned_branch == 0 &&
+      !clutter_actor_has_mapped_clones (self))
+    {
+      CLUTTER_NOTE (PAINT,
+                    "Skipping queue_redraw('%s'): mapped=%s, "
+                    "mapped_clones=%s, "
+                    "in_cloned_branch=%s\n",
+                    _clutter_actor_get_debug_name (self),
+                    CLUTTER_ACTOR_IS_MAPPED (self) ? "yes" : "no",
+                    clutter_actor_has_mapped_clones (self) ? "yes" : "no",
+                    self->priv->in_cloned_branch != 0 ? "yes" : "no");
+      return;
+    }
 
   /* given the check above we could end up queueing a redraw on an
    * unmapped actor with mapped clones, so we cannot assume that
@@ -18761,15 +18783,21 @@ _clutter_actor_create_transition (ClutterActor *actor,
       goto out;
     }
 
-  /* if the current easing state has a duration of 0, then we don't
-   * bother to create the transition, and we just set the final value
-   * directly on the actor; we don't go through the Animatable
-   * interface because we know we got here through an animatable
-   * property.
-   */
-  if (info->cur_state->easing_duration == 0)
+  if (info->cur_state->easing_duration == 0 ||
+      !actor->priv->was_painted ||
+      (!CLUTTER_ACTOR_IS_MAPPED (actor) &&
+       actor->priv->in_cloned_branch == 0 &&
+       !clutter_actor_has_mapped_clones (actor)))
     {
-      CLUTTER_NOTE (ANIMATION, "Easing duration=0, immediate set for '%s::%s'",
+      /* don't bother creating the transition if one is not necessary
+       * because the actor doesn't want one, or if the actor is not
+       * visible: we just set the final value directly on the actor.
+       *
+       * we also don't go through the Animatable interface because we
+       * already know we got here through an animatable property.
+       */
+      CLUTTER_NOTE (ANIMATION, "Easing duration=0 was_painted=%s, immediate set for '%s::%s'",
+                    actor->priv->was_painted ? "yes" : "no",
                     _clutter_actor_get_debug_name (actor),
                     pspec->name);
 
