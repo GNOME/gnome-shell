@@ -1,4 +1,3 @@
-
 /* cogl2_clip_push_from_path is only for 1.10.x*/
 cogl2_clip_push_from_path
 
@@ -26,7 +25,19 @@ cogl2_path_stroke
 cogl_android_set_native_window
 #endif
 
+cogl_attribute_buffer_new_with_size
+
 cogl_attribute_new
+cogl_attribute_new_const_1f
+cogl_attribute_new_const_2f
+cogl_attribute_new_const_2fv
+cogl_attribute_new_const_2x2fv
+cogl_attribute_new_const_3f
+cogl_attribute_new_const_3fv
+cogl_attribute_new_const_3x3fv
+cogl_attribute_new_const_4f
+cogl_attribute_new_const_4fv
+cogl_attribute_new_const_4x4fv
 cogl_attribute_buffer_new
 cogl_attribute_get_buffer
 cogl_attribute_get_normalized
@@ -37,7 +48,6 @@ cogl_attribute_type_get_type
 cogl_begin_gl
 
 cogl_bitmap_error_get_type
-cogl_bitmap_error_domain
 cogl_bitmap_get_buffer
 cogl_bitmap_get_format
 cogl_bitmap_get_height
@@ -49,7 +59,6 @@ cogl_bitmap_new_from_file
 cogl_bitmap_new_from_buffer
 cogl_bitmap_new_with_size
 cogl_blend_string_error_get_type
-cogl_blend_string_error_domain
 
 cogl_buffer_bit_get_type
 cogl_buffer_get_size
@@ -59,6 +68,7 @@ cogl_buffer_get_update_hint
 cogl_buffer_get_usage_hint
 #endif
 cogl_buffer_map
+cogl_buffer_map_range
 cogl_buffer_set_data
 cogl_buffer_set_update_hint
 #if 0
@@ -124,6 +134,7 @@ cogl_color_get_red_float
 cogl_color_init_from_4f
 cogl_color_init_from_4fv
 cogl_color_init_from_4ub
+cogl_color_mask_get_type
 cogl_color_new
 cogl_color_premultiply
 cogl_color_set_alpha
@@ -153,6 +164,10 @@ cogl_context_new
 cogl_create_program
 cogl_create_shader
 
+cogl_debug_matrix_entry_print
+cogl_debug_matrix_print
+cogl_debug_object_foreach_type
+cogl_debug_object_print_instances
 cogl_depth_state_get_range
 cogl_depth_state_get_test_enabled
 cogl_depth_state_get_test_function
@@ -174,7 +189,9 @@ cogl_double_to_fixed
 
 cogl_end_gl
 
-cogl_error_get_type
+cogl_error_copy
+cogl_error_free
+cogl_error_matches
 
 cogl_euler_copy
 cogl_euler_equal
@@ -216,7 +233,6 @@ cogl_framebuffer_draw_rectangle
 cogl_framebuffer_draw_rectangles
 cogl_framebuffer_draw_textured_rectangle
 cogl_framebuffer_draw_textured_rectangles
-cogl_framebuffer_error_domain
 cogl_framebuffer_fill_path
 cogl_framebuffer_finish
 cogl_framebuffer_frustum
@@ -225,6 +241,9 @@ cogl_framebuffer_get_blue_bits
 cogl_framebuffer_get_color_format
 cogl_framebuffer_get_color_mask
 cogl_framebuffer_get_context
+cogl_framebuffer_get_depth_bits
+cogl_framebuffer_get_depth_texture
+cogl_framebuffer_get_depth_texture_enabled
 cogl_framebuffer_get_dither_enabled
 cogl_framebuffer_get_green_bits
 cogl_framebuffer_get_height
@@ -261,6 +280,7 @@ cogl_framebuffer_rotate_quaternion
 
 cogl_framebuffer_scale
 cogl_framebuffer_set_color_mask
+cogl_framebuffer_set_depth_texture_enabled
 cogl_framebuffer_set_dither_enabled
 cogl_framebuffer_set_modelview_matrix
 cogl_framebuffer_set_projection_matrix
@@ -272,6 +292,11 @@ cogl_framebuffer_translate
 cogl_framebuffer_vdraw_attributes
 /* cogl_framebuffer_vdraw_indexed_attributes */ /* Not Implemented! */
 
+cogl_frame_info_get_frame_counter
+cogl_frame_info_get_output
+cogl_frame_info_get_presentation_time
+cogl_frame_info_get_refresh_rate
+
 #ifdef COGL_HAS_EGL_PLATFORM_GDL_SUPPORT
 cogl_gdl_display_set_plane
 #endif
@@ -280,6 +305,7 @@ cogl_frustum
 
 cogl_get_backface_culling_enabled
 cogl_get_bitmasks
+cogl_get_clock_time
 cogl_get_depth_test_enabled
 cogl_get_draw_framebuffer
 cogl_get_features
@@ -328,15 +354,18 @@ cogl_is_attribute
 cogl_is_attribute_buffer
 cogl_is_bitmap
 cogl_is_buffer
-cogl_is_gles2_context
 cogl_is_context
+cogl_is_frame_info
+cogl_is_gles2_context
 cogl_is_index_buffer
 #if 0
 /* not implemented! */
 cogl_is_indices_array
 #endif
 cogl_is_material
+cogl_is_matrix_stack
 cogl_is_offscreen
+cogl_is_output
 cogl_is_path
 cogl_is_pipeline
 cogl_is_pixel_buffer
@@ -423,6 +452,12 @@ cogl_material_unref
 cogl_material_wrap_mode_get_type
 
 cogl_matrix_copy
+cogl_matrix_entry_calculate_translation
+cogl_matrix_entry_equal
+cogl_matrix_entry_get
+cogl_matrix_entry_is_identity
+cogl_matrix_entry_ref
+cogl_matrix_entry_unref
 cogl_matrix_equal
 cogl_matrix_free
 cogl_matrix_frustum
@@ -450,6 +485,23 @@ cogl_matrix_rotate_quaternion
 #endif
 
 cogl_matrix_scale
+cogl_matrix_stack_frustum
+cogl_matrix_stack_get
+cogl_matrix_stack_get_entry
+cogl_matrix_stack_get_inverse
+cogl_matrix_stack_load_identity
+cogl_matrix_stack_multiply
+cogl_matrix_stack_new
+cogl_matrix_stack_orthographic
+cogl_matrix_stack_perspective
+cogl_matrix_stack_pop
+cogl_matrix_stack_push
+cogl_matrix_stack_rotate
+cogl_matrix_stack_rotate_euler
+cogl_matrix_stack_rotate_quaternion
+cogl_matrix_stack_scale
+cogl_matrix_stack_set
+cogl_matrix_stack_translate
 cogl_matrix_transform_point
 cogl_matrix_transform_points
 cogl_matrix_translate
@@ -466,15 +518,19 @@ cogl_object_unref
 
 cogl_offscreen_new_to_texture
 
+cogl_onscreen_add_frame_callback
 cogl_onscreen_add_resize_handler
 cogl_onscreen_add_swap_buffers_callback
 #ifndef COGL_WINSYS_INTEGRATED
 cogl_onscreen_clutter_backend_set_size_CLUTTER
 #endif
+cogl_onscreen_get_buffer_age
+cogl_onscreen_get_frame_counter
 cogl_onscreen_get_resizable
 cogl_onscreen_hide
 cogl_onscreen_new
 cogl_onscreen_set_swap_throttled
+cogl_onscreen_remove_frame_callback
 cogl_onscreen_remove_resize_handler
 cogl_onscreen_remove_swap_buffers_callback
 cogl_onscreen_set_resizable
@@ -487,6 +543,15 @@ cogl_onscreen_template_set_samples_per_pixel
 cogl_onscreen_template_set_swap_throttled
 
 cogl_ortho
+
+cogl_output_get_height
+cogl_output_get_mm_height
+cogl_output_get_mm_width
+cogl_output_get_refresh_rate
+cogl_output_get_subpixel_order
+cogl_output_get_width
+cogl_output_get_x
+cogl_output_get_y
 
 cogl_path_arc
 cogl_path_close
@@ -690,10 +755,10 @@ cogl_rectangle_with_texture_coords
 cogl_renderer_add_constraint
 cogl_renderer_check_onscreen_template
 cogl_renderer_connect
+cogl_renderer_foreach_output
 cogl_renderer_get_driver
 cogl_renderer_get_n_fragment_texture_units
 cogl_renderer_error_get_type
-cogl_renderer_error_domain
 cogl_renderer_get_winsys_id
 cogl_renderer_new
 cogl_renderer_remove_constraint
@@ -714,6 +779,9 @@ cogl_set_fog
 cogl_sdl_context_new
 cogl_sdl_handle_event
 cogl_sdl_idle
+#if SDL_MAJOR_VERSION >= 2
+cogl_sdl_onscreen_get_window
+#endif
 cogl_sdl_renderer_get_event_type
 cogl_sdl_renderer_set_event_type
 #endif
@@ -739,6 +807,7 @@ cogl_shader_ref
 #endif
 
 cogl_shader_source
+cogl_shader_type_get_type
 
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_shader_unref
@@ -764,7 +833,10 @@ cogl_swap_chain_new
 cogl_swap_chain_set_has_alpha
 cogl_swap_chain_set_length
 
-cogl_texture_error_domain
+cogl_system_error_get_type
+
+cogl_texture_allocate
+cogl_texture_error_get_type
 cogl_texture_flags_get_type
 cogl_texture_get_data
 cogl_texture_get_format
@@ -788,18 +860,20 @@ cogl_texture_pixmap_x11_set_damage_object
 cogl_texture_pixmap_x11_update_area
 #endif
 cogl_texture_rectangle_new_from_bitmap
+cogl_texture_rectangle_new_from_foreign
 cogl_texture_rectangle_new_with_size
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_texture_ref
 #endif
+cogl_texture_set_data
 cogl_texture_set_region
 cogl_texture_set_region_from_bitmap
+cogl_texture_type_get_type
 #ifndef COGL_DISABLE_DEPRECATED
 cogl_texture_unref
 #endif
 cogl_texture_2d_new_from_bitmap
 cogl_texture_2d_new_from_data
-cogl_texture_2d_new_from_foreign
 cogl_texture_2d_new_with_size
 cogl_texture_2d_sliced_new_with_size
 cogl_texture_3d_new_from_bitmap
@@ -865,6 +939,8 @@ cogl_wayland_renderer_set_foreign_shell
 cogl_wayland_texture_2d_new_from_buffer
 #endif
 
+cogl_winding_get_type
+
 #ifdef COGL_HAS_WIN32_SUPPORT
 cogl_win32_onscreen_get_window
 cogl_win32_onscreen_set_foreign_window
@@ -896,9 +972,7 @@ cogl_x11_onscreen_set_foreign_window_xid
 /* eventually, this section should disappear (or cogl, cogl-pango, clutter et al */
 /* will link without the following) */
 _cogl_atlas_add_reorganize_callback
-_cogl_atlas_copy_rectangle
 _cogl_atlas_new
-_cogl_atlas_remove
 _cogl_atlas_remove_reorganize_callback
 _cogl_atlas_reserve_space
 _cogl_atlas_texture_add_reorganize_callback
@@ -906,23 +980,4 @@ _cogl_atlas_texture_new_from_bitmap
 _cogl_atlas_texture_new_with_size
 _cogl_atlas_texture_remove_reorganize_callback
 _cogl_context_get_default
-_cogl_system_error_domain
-_cogl_texture_associate_framebuffer
-_cogl_texture_can_hardware_repeat
-_cogl_texture_determine_internal_format
-_cogl_texture_ensure_non_quad_rendering
-_cogl_texture_flush_journal_rendering
-_cogl_texture_free
-_cogl_texture_get_associated_framebuffers
-_cogl_texture_get_gl_format
-_cogl_texture_init
-_cogl_texture_is_foreign
-_cogl_texture_prepare_for_upload
-_cogl_texture_gl_prep_alignment_for_pixels_upload
-_cogl_texture_pre_paint
-_cogl_texture_register_texture_type
-_cogl_texture_gl_flush_legacy_texobj_filters
-_cogl_texture_gl_flush_legacy_texobj_wrap_modes
-_cogl_texture_transform_coords_to_gl
-_cogl_texture_transform_quad_coords_to_gl
 #endif
