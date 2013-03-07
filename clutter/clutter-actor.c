@@ -4060,6 +4060,7 @@ clutter_actor_remove_child_internal (ClutterActor                 *self,
   gboolean notify_first_last;
   gboolean was_mapped;
   gboolean stop_transitions;
+  GObject *obj;
 
   destroy_meta = (flags & REMOVE_CHILD_DESTROY_META) != 0;
   emit_parent_set = (flags & REMOVE_CHILD_EMIT_PARENT_SET) != 0;
@@ -4069,7 +4070,8 @@ clutter_actor_remove_child_internal (ClutterActor                 *self,
   notify_first_last = (flags & REMOVE_CHILD_NOTIFY_FIRST_LAST) != 0;
   stop_transitions = (flags & REMOVE_CHILD_STOP_TRANSITIONS) != 0;
 
-  g_object_freeze_notify (G_OBJECT (self));
+  obj = G_OBJECT (self);
+  g_object_freeze_notify (obj);
 
   if (stop_transitions)
     _clutter_actor_stop_transitions (child);
@@ -4154,13 +4156,13 @@ clutter_actor_remove_child_internal (ClutterActor                 *self,
   if (notify_first_last)
     {
       if (old_first != self->priv->first_child)
-        g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FIRST_CHILD]);
+        g_object_notify_by_pspec (obj, obj_props[PROP_FIRST_CHILD]);
 
       if (old_last != self->priv->last_child)
-        g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LAST_CHILD]);
+        g_object_notify_by_pspec (obj, obj_props[PROP_LAST_CHILD]);
     }
 
-  g_object_thaw_notify (G_OBJECT (self));
+  g_object_thaw_notify (obj);
 
   /* remove the reference we acquired in clutter_actor_add_child() */
   g_object_unref (child);
@@ -12445,6 +12447,7 @@ clutter_actor_add_child_internal (ClutterActor              *self,
   gboolean notify_first_last;
   gboolean show_on_set_parent;
   ClutterActor *old_first_child, *old_last_child;
+  GObject *obj;
 
   if (child->priv->parent != NULL)
     {
@@ -12463,8 +12466,7 @@ clutter_actor_add_child_internal (ClutterActor              *self,
       return;
     }
 
-#if 0
-  /* XXX - this check disallows calling methods that change the stacking
+  /* the following check disallows calling methods that change the stacking
    * order within the destruction sequence, by triggering a critical
    * warning first, and leaving the actor in an undefined state, which
    * then ends up being caught by an assertion.
@@ -12495,14 +12497,12 @@ clutter_actor_add_child_internal (ClutterActor              *self,
    *
    * another potential fix is to just remove this check here, and let
    * code doing stacking order changes inside the destruction sequence
-   * of an actor continue doing the work.
+   * of an actor continue doing the stacking changes as before; this
+   * option still performs more work than necessary.
    *
    * the third fix is to silently bail out early from every
    * set_child_*_sibling() and set_child_at_index() method, and avoid
-   * doing work.
-   *
-   * I have a preference for the second solution, since it involves the
-   * least amount of work, and the least amount of code duplication.
+   * doing stack changes altogether; Clutter implements this last option.
    *
    * see bug: https://bugzilla.gnome.org/show_bug.cgi?id=670647
    */
@@ -12513,7 +12513,6 @@ clutter_actor_add_child_internal (ClutterActor              *self,
                  _clutter_actor_get_debug_name (child));
       return;
     }
-#endif
 
   create_meta = (flags & ADD_CHILD_CREATE_META) != 0;
   emit_parent_set = (flags & ADD_CHILD_EMIT_PARENT_SET) != 0;
@@ -12525,7 +12524,8 @@ clutter_actor_add_child_internal (ClutterActor              *self,
   old_first_child = self->priv->first_child;
   old_last_child = self->priv->last_child;
 
-  g_object_freeze_notify (G_OBJECT (self));
+  obj = G_OBJECT (self);
+  g_object_freeze_notify (obj);
 
   if (create_meta)
     clutter_container_create_child_meta (CLUTTER_CONTAINER (self), child);
@@ -12583,9 +12583,19 @@ clutter_actor_add_child_internal (ClutterActor              *self,
       clutter_actor_set_text_direction (child, text_dir);
     }
 
+  /* this may end up queueing a redraw, in case the actor is
+   * not visible but the show-on-set-parent property is still
+   * set.
+   *
+   * XXX:2.0 - remove this check and unconditionally show() the
+   * actor once we remove the show-on-set-parent property
+   */
   if (show_on_set_parent && child->priv->show_on_set_parent)
     clutter_actor_show (child);
 
+  /* on the other hand, this will catch any other case where
+   * the actor is supposed to be visible when it's added
+   */
   if (CLUTTER_ACTOR_IS_MAPPED (child))
     clutter_actor_queue_redraw (child);
 
@@ -12604,7 +12614,11 @@ clutter_actor_add_child_internal (ClutterActor              *self,
       child->priv->needs_height_request = TRUE;
       child->priv->needs_allocation = TRUE;
 
-      clutter_actor_queue_relayout (child->priv->parent);
+      /* we only queue a relayout here, because any possible
+       * redraw has already been queued either by show() or
+       * by our call to queue_redraw() above
+       */
+      _clutter_actor_queue_only_relayout (child->priv->parent);
     }
 
   if (emit_actor_added)
@@ -12613,13 +12627,13 @@ clutter_actor_add_child_internal (ClutterActor              *self,
   if (notify_first_last)
     {
       if (old_first_child != self->priv->first_child)
-        g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FIRST_CHILD]);
+        g_object_notify_by_pspec (obj, obj_props[PROP_FIRST_CHILD]);
 
       if (old_last_child != self->priv->last_child)
-        g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_LAST_CHILD]);
+        g_object_notify_by_pspec (obj, obj_props[PROP_LAST_CHILD]);
     }
 
-  g_object_thaw_notify (G_OBJECT (self));
+  g_object_thaw_notify (obj);
 }
 
 /**
