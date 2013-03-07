@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: mutter.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-11 15:23+0000\n"
+"POT-Creation-Date: 2013-03-01 15:50+0000\n"
 "PO-Revision-Date: 2012-10-13 17:44+0300\n"
 "Last-Translator: Ігар Грачышка <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
@@ -206,13 +206,17 @@ msgstr "Падзяліць прагляд справа"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:512
+#: ../src/compositor/compositor.c:507
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr ""
 "Іншы кампазітны кіраўнік вокнаў ужо абслугоўвае экран %i дысплея \"%s\"."
+
+#: ../src/compositor/meta-background.c:1111
+msgid "background texture could not be created from file"
+msgstr "не ўдалося стварыць фонавую тэкстуру з файла"
 
 #: ../src/core/bell.c:320
 msgid "Bell event"
@@ -247,18 +251,18 @@ msgstr "_Пачакаць"
 msgid "_Force Quit"
 msgstr "_Змусіць да выхаду"
 
-#: ../src/core/display.c:394
+#: ../src/core/display.c:401
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr ""
 "Адсутнічае пашырэнне \"%s\", патрэбнае для ажыццяўлення кампазітнага вываду"
 
-#: ../src/core/display.c:491
+#: ../src/core/display.c:493
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Не ўдалося адкрыць X-дысплей аконнай сістэмы \"%s\"\n"
 
-#: ../src/core/keybindings.c:876
+#: ../src/core/keybindings.c:929
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -266,6 +270,11 @@ msgid ""
 msgstr ""
 "Нейкая іншая праграма ўжо выкарыстоўвае як скарот клавішу %s з "
 "мадыфікатарамі %x\n"
+
+#: ../src/core/keybindings.c:1129
+#, c-format
+msgid "\"%s\" is not a valid accelerator\n"
+msgstr "\"%s\" - гэта хібны клавіятурны скарот\n"
 
 #: ../src/core/main.c:196
 msgid "Disable connection to session manager"
@@ -359,17 +368,17 @@ msgstr ""
 "Значэнне \"%s\", знойдзенае ў базе канфігурацыйных даных, не азначае "
 "клавіятурны скарот \"%s\"\n"
 
-#: ../src/core/prefs.c:1877
+#: ../src/core/prefs.c:1879
 #, c-format
 msgid "Workspace %d"
 msgstr "Прастора працы %d"
 
-#: ../src/core/screen.c:658
+#: ../src/core/screen.c:673
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Экран %d на дысплеі \"%s\" хібны\n"
 
-#: ../src/core/screen.c:674
+#: ../src/core/screen.c:689
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -378,19 +387,19 @@ msgstr ""
 "Экран %d на дысплеі \"%s\" ужо мае аконнага кіраўніка. Каб замяніць яго "
 "новым, дадайце опцыю --replace.\n"
 
-#: ../src/core/screen.c:701
+#: ../src/core/screen.c:716
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
 "Не ўдалося пераняць вылучэнне кіраўніка вокнаў для экрана %d дысплея \"%s\"\n"
 
-#: ../src/core/screen.c:770
+#: ../src/core/screen.c:794
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Экран %d на дысплеі \"%s\" ужо мае кіраўніка вокнаў\n"
 
-#: ../src/core/screen.c:955
+#: ../src/core/screen.c:979
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Не ўдалося вызваліць экран %d на дысплеі \"%s\"\n"
@@ -490,7 +499,7 @@ msgid "Window manager error: "
 msgstr "Памылка кіраўніка вокнаў: "
 
 #. first time through
-#: ../src/core/window.c:7279
+#: ../src/core/window.c:7539
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -506,7 +515,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7945
+#: ../src/core/window.c:8263
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -516,22 +525,22 @@ msgstr ""
 "памеру, але разам з гэтым прызначыла для сябе мінімальны памер %d x %d і "
 "максімальны памер %d x %d. Такія паводзіны не маюць сэнсу.\n"
 
-#: ../src/core/window-props.c:274
+#: ../src/core/window-props.c:318
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Праграма прызначыла памылковае значэнне _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:393
+#: ../src/core/window-props.c:434
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (на %s)"
 
-#: ../src/core/window-props.c:1448
+#: ../src/core/window-props.c:1517
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Для %2$s вызначана хібнае акно WM_TRANSIENT_FOR 0x%1$lx.\n"
 
-#: ../src/core/window-props.c:1459
+#: ../src/core/window-props.c:1528
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR акно 0x%lx для %s стварыла б цыкл.\n"
@@ -680,13 +689,15 @@ msgstr ""
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:17
 msgid "Auto maximize nearly monitor sized windows"
-msgstr ""
+msgstr "Аўтаматычна максімалізаваць вокны, якія расцягнутыя амаль на ўвесь экран"
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:18
 msgid ""
-"If enabled, monitor nearly monitor sized windows automatically get maximized "
-"when mapped."
+"If enabled, new windows that are initially the size of the monitor "
+"automatically get maximized."
 msgstr ""
+"Калі ўключана, новыя вокны з памерам, блізкім да памераў манітора, будуць "
+"аўтаматычна максімалізавацца."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:19
 msgid "Select window from tab popup"
@@ -895,7 +906,7 @@ msgstr "Mod5"
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
-#: ../src/ui/resizepopup.c:113
+#: ../src/ui/resizepopup.c:136
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
@@ -1180,7 +1191,7 @@ msgstr ""
 "Стыль рамкі не вызначаны для вокнаў тыпу \"%s\" для матыву аздаблення \"%s"
 "\". Дадайце <window type=\"%s\" style_set=\"штосьці\"/>."
 
-#: ../src/ui/theme.c:5659 ../src/ui/theme.c:5721 ../src/ui/theme.c:5784
+#: ../src/ui/theme.c:5662 ../src/ui/theme.c:5724 ../src/ui/theme.c:5787
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -1188,7 +1199,7 @@ msgstr ""
 "Назвы канстантаў, вызначаных карыстальнікам, мусяць пачынацца з вялікай "
 "літары. \"%s\" не адпавядае гэтаму патрабаванню."
 
-#: ../src/ui/theme.c:5667 ../src/ui/theme.c:5729 ../src/ui/theme.c:5792
+#: ../src/ui/theme.c:5670 ../src/ui/theme.c:5732 ../src/ui/theme.c:5795
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Канстанта \"%s\" ужо азначана"
@@ -1680,56 +1691,56 @@ msgstr "Аблямоўка"
 msgid "Attached Modal Dialog"
 msgstr "Прычапленае мадальнае дыялогавае акенца"
 
-#: ../src/ui/theme-viewer.c:739
+#: ../src/ui/theme-viewer.c:737
 #, c-format
 msgid "Button layout test %d"
 msgstr "Выпрабаванне размяшчэння кнопак %d"
 
-#: ../src/ui/theme-viewer.c:768
+#: ../src/ui/theme-viewer.c:766
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g мілісекунд, каб намаляваць адну рамку акна"
 
-#: ../src/ui/theme-viewer.c:813
+#: ../src/ui/theme-viewer.c:811
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Правілы карыстання: metacity-theme-viewer [НАЗВА_МАТЫВУ]\n"
 
-#: ../src/ui/theme-viewer.c:820
+#: ../src/ui/theme-viewer.c:818
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Памылка загрузкі матыву аздаблення: %s\n"
 
-#: ../src/ui/theme-viewer.c:826
+#: ../src/ui/theme-viewer.c:824
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Матыў аздаблення \"%s\" загружаны за %g секунд\n"
 
-#: ../src/ui/theme-viewer.c:871
+#: ../src/ui/theme-viewer.c:869
 msgid "Normal Title Font"
 msgstr "Звычайны шрыфт загалоўка"
 
-#: ../src/ui/theme-viewer.c:877
+#: ../src/ui/theme-viewer.c:875
 msgid "Small Title Font"
 msgstr "Маленькі шрыфт загалоўка"
 
-#: ../src/ui/theme-viewer.c:883
+#: ../src/ui/theme-viewer.c:881
 msgid "Large Title Font"
 msgstr "Вялікі шрыфт загалоўка"
 
-#: ../src/ui/theme-viewer.c:888
+#: ../src/ui/theme-viewer.c:886
 msgid "Button Layouts"
 msgstr "Размяшчэнне кнопак"
 
-#: ../src/ui/theme-viewer.c:893
+#: ../src/ui/theme-viewer.c:891
 msgid "Benchmark"
 msgstr "Выпрабаванне"
 
-#: ../src/ui/theme-viewer.c:949
+#: ../src/ui/theme-viewer.c:947
 msgid "Window Title Goes Here"
 msgstr "Месца для загалоўка акна"
 
-#: ../src/ui/theme-viewer.c:1055
+#: ../src/ui/theme-viewer.c:1053
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1740,42 +1751,41 @@ msgstr ""
 "і %g секунд каляндарнага часу, уключна з рэсурсамі X-сервера (%g мілісекунд "
 "на рамку)\n"
 
-#: ../src/ui/theme-viewer.c:1275
+#: ../src/ui/theme-viewer.c:1273
 msgid "position expression test returned TRUE but set error"
 msgstr "выпрабаванне выразу пазіцыі вярнула TRUE, але паведаміла аб памылцы"
 
-#: ../src/ui/theme-viewer.c:1277
+#: ../src/ui/theme-viewer.c:1275
 msgid "position expression test returned FALSE but didn't set error"
 msgstr ""
 "выпрабаванне выразу пазіцыі вярнула FALSE, але не паведаміла аб памылцы"
 
-#: ../src/ui/theme-viewer.c:1281
+#: ../src/ui/theme-viewer.c:1279
 msgid "Error was expected but none given"
 msgstr "Чакалася памылка, але звесткі не атрыманыя"
 
-#: ../src/ui/theme-viewer.c:1283
+#: ../src/ui/theme-viewer.c:1281
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Чакалася памылка %d, але атрымана %d"
 
-#: ../src/ui/theme-viewer.c:1289
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Атрымана нечаканая памылка: %s"
 
-#: ../src/ui/theme-viewer.c:1293
+#: ../src/ui/theme-viewer.c:1291
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "X-значэнне было %d, а чакалася %d"
 
-#: ../src/ui/theme-viewer.c:1296
+#: ../src/ui/theme-viewer.c:1294
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "Y-значэнне было %d, а чакалася %d"
 
-#: ../src/ui/theme-viewer.c:1361
+#: ../src/ui/theme-viewer.c:1359
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d каардынатных выразаў разабраныя за %g секунд (у сярэднім %g секунд)\n"
-
