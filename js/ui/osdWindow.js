@@ -164,12 +164,12 @@ const OsdWindow = new Lang.Class({
     },
 
     _monitorsChanged: function() {
-        /* assume 130x130 on a 640x480 display and scale from there */
+        /* assume 110x110 on a 640x480 display and scale from there */
         let monitor = Main.layoutManager.primaryMonitor;
         let scalew = monitor.width / 640.0;
         let scaleh = monitor.height / 480.0;
         let scale = Math.min(scalew, scaleh);
-        let size = 130 * Math.max(1, scale);
+        let size = 110 * Math.max(1, scale);
 
         this._box.set_size(size, size);
         this._box.translation_y = monitor.height / 4;
