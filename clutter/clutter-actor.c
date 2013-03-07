@@ -1062,6 +1062,8 @@ static void clutter_actor_set_transform_internal (ClutterActor        *self,
 static void clutter_actor_set_child_transform_internal (ClutterActor        *self,
                                                         const ClutterMatrix *transform);
 
+static inline gboolean clutter_actor_has_mapped_clones (ClutterActor *self);
+
 /* Helper macro which translates by the anchor coord, applies the
    given transformation and then translates back */
 #define TRANSFORM_ABOUT_ANCHOR_COORD(a,m,c,_transform)  G_STMT_START { \
@@ -8532,11 +8534,12 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
    *
    * The process starts in one of the following two functions which
    * are wrappers for this function:
-   * clutter_actor_queue_redraw
-   * _clutter_actor_queue_redraw_with_clip
+   *
+   *   clutter_actor_queue_redraw()
+   *   _clutter_actor_queue_redraw_with_clip()
    *
    * additionally, an effect can queue a redraw by wrapping this
-   * function in clutter_effect_queue_rerun
+   * function in clutter_effect_queue_repaint().
    *
    * This functions queues an entry in a list associated with the
    * stage which is a list of actors that queued a redraw while
@@ -8567,19 +8570,20 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
    * difference to performance.
    *
    * So the control flow goes like this:
-   * One of clutter_actor_queue_redraw,
-   *        _clutter_actor_queue_redraw_with_clip
-   *     or clutter_effect_queue_rerun
+   * One of clutter_actor_queue_redraw(),
+   *        _clutter_actor_queue_redraw_with_clip(),
+   *     or clutter_effect_queue_repaint()
    *
    * then control moves to:
-   *   _clutter_stage_queue_actor_redraw
+   *   _clutter_stage_queue_actor_redraw()
    *
-   * later during _clutter_stage_do_update, once relayouting is done
+   * later during _clutter_stage_do_update(), once relayouting is done
    * and the scenegraph has been updated we will call:
-   * _clutter_stage_finish_queue_redraws
+   * _clutter_stage_finish_queue_redraws().
    *
-   * _clutter_stage_finish_queue_redraws will call
-   * _clutter_actor_finish_queue_redraw for each listed actor.
+   * _clutter_stage_finish_queue_redraws() will call
+   * _clutter_actor_finish_queue_redraw() for each listed actor.
+   *
    * Note: actors *are* allowed to queue further redraws during this
    * process (considering clone actors or texture_new_from_actor which
    * respond to their source queueing a redraw by queuing a redraw
@@ -8587,12 +8591,12 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
    *
    * This will result in the "queue-redraw" signal being fired for
    * each actor which will pass control to the default signal handler:
-   * clutter_actor_real_queue_redraw
+   * clutter_actor_real_queue_redraw()
    *
    * This will bubble up to the stages handler:
-   * clutter_stage_real_queue_redraw
+   * clutter_stage_real_queue_redraw()
    *
-   * clutter_stage_real_queue_redraw will transform the actors paint
+   * clutter_stage_real_queue_redraw() will transform the actors paint
    * volume into screen space and add it as a clip region for the next
    * paint.
    */
@@ -8601,9 +8605,20 @@ _clutter_actor_queue_redraw_full (ClutterActor       *self,
   if (CLUTTER_ACTOR_IN_DESTRUCTION (self))
     return;
 
-  stage = _clutter_actor_get_stage_internal (self);
+  /* we can ignore unmapped actors, unless they have at least one
+   * mapped clone, as unmapped actors will simply be left unpainted;
+   * this allows us to ignore redraws queued on leaf nodes when one
+   * of their parents has been hidden
+   */
+  if (!CLUTTER_ACTOR_IS_MAPPED (self) &&
+      !clutter_actor_has_mapped_clones (self))
+    return;
 
-  /* Ignore queueing a redraw for actors not descended from a stage */
+  /* given the check above we could end up queueing a redraw on an
+   * unmapped actor with mapped clones, so we cannot assume that
+   * get_stage() will return a Stage
+   */
+  stage = _clutter_actor_get_stage_internal (self);
   if (stage == NULL)
     return;
 
@@ -20205,4 +20220,24 @@ _clutter_actor_queue_relayout_on_clones (ClutterActor *self)
   g_hash_table_iter_init (&iter, priv->clones);
   while (g_hash_table_iter_next (&iter, &key, NULL))
     clutter_actor_queue_relayout (key);
+}
+
+static inline gboolean
+clutter_actor_has_mapped_clones (ClutterActor *self)
+{
+  ClutterActorPrivate *priv = self->priv;
+  GHashTableIter iter;
+  gpointer key;
+
+  if (priv->clones == NULL)
+    return FALSE;
+
+  g_hash_table_iter_init (&iter, priv->clones);
+  while (g_hash_table_iter_next (&iter, &key, NULL))
+    {
+      if (CLUTTER_ACTOR_IS_MAPPED (key))
+        return TRUE;
+    }
+
+  return FALSE;
 }
