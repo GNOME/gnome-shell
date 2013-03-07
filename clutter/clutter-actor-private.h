@@ -234,83 +234,83 @@ struct _ClutterAnimationInfo
   GHashTable *transitions;
 };
 
-const ClutterAnimationInfo *    _clutter_actor_get_animation_info_or_defaults   (ClutterActor *self);
-ClutterAnimationInfo *          _clutter_actor_get_animation_info               (ClutterActor *self);
+const ClutterAnimationInfo *    _clutter_actor_get_animation_info_or_defaults           (ClutterActor *self);
+ClutterAnimationInfo *          _clutter_actor_get_animation_info                       (ClutterActor *self);
 
-ClutterTransition *             _clutter_actor_create_transition                (ClutterActor *self,
-                                                                                 GParamSpec   *pspec,
-                                                                                 ...);
-ClutterTransition *             _clutter_actor_get_transition                   (ClutterActor *self,
-                                                                                 GParamSpec   *pspec);
+ClutterTransition *             _clutter_actor_create_transition                        (ClutterActor *self,
+                                                                                         GParamSpec   *pspec,
+                                                                                         ...);
+ClutterTransition *             _clutter_actor_get_transition                           (ClutterActor *self,
+                                                                                         GParamSpec   *pspec);
 
-gboolean      _clutter_actor_foreach_child              (ClutterActor *self,
-                                                         ClutterForeachCallback callback,
-                                                         gpointer user_data);
-void          _clutter_actor_traverse                   (ClutterActor *actor,
-                                                         ClutterActorTraverseFlags flags,
-                                                         ClutterTraverseCallback before_children_callback,
-                                                         ClutterTraverseCallback after_children_callback,
-                                                         gpointer user_data);
-ClutterActor *_clutter_actor_get_stage_internal         (ClutterActor *actor);
+gboolean                        _clutter_actor_foreach_child                            (ClutterActor *self,
+                                                                                         ClutterForeachCallback callback,
+                                                                                         gpointer user_data);
+void                            _clutter_actor_traverse                                 (ClutterActor *actor,
+                                                                                         ClutterActorTraverseFlags flags,
+                                                                                         ClutterTraverseCallback before_children_callback,
+                                                                                         ClutterTraverseCallback after_children_callback,
+                                                                                         gpointer user_data);
+ClutterActor *                  _clutter_actor_get_stage_internal                       (ClutterActor *actor);
 
-void _clutter_actor_apply_modelview_transform           (ClutterActor *self,
-                                                         CoglMatrix *matrix);
-void _clutter_actor_apply_relative_transformation_matrix (ClutterActor *self,
-                                                          ClutterActor *ancestor,
-                                                          CoglMatrix *matrix);
+void                            _clutter_actor_apply_modelview_transform                (ClutterActor *self,
+                                                                                         CoglMatrix   *matrix);
+void                            _clutter_actor_apply_relative_transformation_matrix     (ClutterActor *self,
+                                                                                         ClutterActor *ancestor,
+                                                                                         CoglMatrix   *matrix);
 
-void _clutter_actor_rerealize (ClutterActor    *self,
-                               ClutterCallback  callback,
-                               gpointer         data);
+void                            _clutter_actor_rerealize                                (ClutterActor    *self,
+                                                                                         ClutterCallback  callback,
+                                                                                         gpointer         data);
 
-void _clutter_actor_set_opacity_override (ClutterActor *self,
-                                          gint          opacity);
-gint _clutter_actor_get_opacity_override (ClutterActor *self);
-void _clutter_actor_set_in_clone_paint (ClutterActor *self,
-                                        gboolean      is_in_clone_paint);
+void                            _clutter_actor_set_opacity_override                     (ClutterActor *self,
+                                                                                         gint          opacity);
+gint                            _clutter_actor_get_opacity_override                     (ClutterActor *self);
+void                            _clutter_actor_set_in_clone_paint                       (ClutterActor *self,
+                                                                                         gboolean      is_in_clone_paint);
 
-void _clutter_actor_set_enable_model_view_transform (ClutterActor *self,
-                                                     gboolean      enable);
+void                            _clutter_actor_set_enable_model_view_transform          (ClutterActor *self,
+                                                                                         gboolean      enable);
 
-void _clutter_actor_set_enable_paint_unmapped (ClutterActor *self,
-                                               gboolean      enable);
+void                            _clutter_actor_set_enable_paint_unmapped                (ClutterActor *self,
+                                                                                         gboolean      enable);
 
-void _clutter_actor_set_has_pointer (ClutterActor *self,
-                                     gboolean      has_pointer);
+void                            _clutter_actor_set_has_pointer                          (ClutterActor *self,
+                                                                                         gboolean      has_pointer);
 
-void _clutter_actor_queue_redraw_with_clip   (ClutterActor              *self,
-                                              ClutterRedrawFlags         flags,
-                                              ClutterPaintVolume        *clip_volume);
-void _clutter_actor_queue_redraw_full        (ClutterActor              *self,
-                                              ClutterRedrawFlags         flags,
-                                              ClutterPaintVolume        *volume,
-                                              ClutterEffect             *effect);
+void                            _clutter_actor_queue_redraw_with_clip                   (ClutterActor       *self,
+                                                                                         ClutterRedrawFlags  flags,
+                                                                                         ClutterPaintVolume *clip_volume);
+void                            _clutter_actor_queue_redraw_full                        (ClutterActor       *self,
+                                                                                         ClutterRedrawFlags  flags,
+                                                                                         ClutterPaintVolume *volume,
+                                                                                         ClutterEffect      *effect);
 
-ClutterPaintVolume *_clutter_actor_get_queue_redraw_clip (ClutterActor *self);
-void _clutter_actor_set_queue_redraw_clip     (ClutterActor             *self,
-                                               ClutterPaintVolume *clip_volume);
-void _clutter_actor_finish_queue_redraw       (ClutterActor             *self,
-                                               ClutterPaintVolume       *clip);
+ClutterPaintVolume *            _clutter_actor_get_queue_redraw_clip                    (ClutterActor       *self);
+void                            _clutter_actor_set_queue_redraw_clip                    (ClutterActor       *self,
+                                                                                         ClutterPaintVolume *clip_volume);
+void                            _clutter_actor_finish_queue_redraw                      (ClutterActor       *self,
+                                                                                         ClutterPaintVolume *clip);
 
-gboolean        _clutter_actor_set_default_paint_volume (ClutterActor *self,
-                                                         GType         check_gtype,
-                                                         ClutterPaintVolume *volume);
+gboolean                        _clutter_actor_set_default_paint_volume                 (ClutterActor       *self,
+                                                                                         GType               check_gtype,
+                                                                                         ClutterPaintVolume *volume);
 
-const gchar *   _clutter_actor_get_debug_name (ClutterActor *self);
+const gchar *                   _clutter_actor_get_debug_name                           (ClutterActor *self);
 
-void _clutter_actor_push_clone_paint (void);
-void _clutter_actor_pop_clone_paint  (void);
+void                            _clutter_actor_push_clone_paint                         (void);
+void                            _clutter_actor_pop_clone_paint                          (void);
 
-guint32 _clutter_actor_get_pick_id (ClutterActor *self);
+guint32                         _clutter_actor_get_pick_id                              (ClutterActor *self);
 
-void    _clutter_actor_shader_pre_paint         (ClutterActor *actor,
-                                                 gboolean      repeat);
-void    _clutter_actor_shader_post_paint        (ClutterActor *actor);
+void                            _clutter_actor_shader_pre_paint                         (ClutterActor *actor,
+                                                                                         gboolean      repeat);
+void                            _clutter_actor_shader_post_paint                        (ClutterActor *actor);
 
-ClutterActorAlign       _clutter_actor_get_effective_x_align    (ClutterActor *self);
+ClutterActorAlign               _clutter_actor_get_effective_x_align                    (ClutterActor *self);
 
-void            _clutter_actor_handle_event             (ClutterActor       *actor,
-                                                         const ClutterEvent *event);
+void                            _clutter_actor_handle_event                             (ClutterActor       *actor,
+                                                                                         const ClutterEvent *event);
 
 G_END_DECLS
 
