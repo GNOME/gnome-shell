@@ -771,7 +771,10 @@ struct _ClutterActorPrivate
   gchar *debug_name;
 #endif
 
-  /* bitfields */
+  /* a set of clones of the actor */
+  GHashTable *clones;
+
+  /* bitfields: KEEP AT THE END */
 
   /* fixed position and sizes */
   guint position_set                : 1;
@@ -2547,6 +2550,8 @@ _clutter_actor_signal_queue_redraw (ClutterActor *self,
    * the actor bas been cloned. In this case the clone will need to
    * receive the signal so it can queue its own redraw.
    */
+
+  _clutter_actor_queue_redraw_on_clones (self);
 
   /* calls klass->queue_redraw in default handler */
   g_signal_emit (self, actor_signals[QUEUE_REDRAW], 0, origin);
@@ -5805,6 +5810,12 @@ clutter_actor_dispose (GObject *object)
       g_clear_object (&priv->content);
     }
 
+  if (priv->clones != NULL)
+    {
+      g_hash_table_unref (priv->clones);
+      priv->clones = NULL;
+    }
+
   G_OBJECT_CLASS (clutter_actor_parent_class)->dispose (object);
 }
 
@@ -8790,6 +8801,8 @@ _clutter_actor_queue_only_relayout (ClutterActor *self)
                  _clutter_actor_get_debug_name (self));
     }
 #endif /* CLUTTER_ENABLE_DEBUG */
+
+  _clutter_actor_queue_relayout_on_clones (self);
 
   g_signal_emit (self, actor_signals[QUEUE_RELAYOUT], 0);
 }
@@ -20127,4 +20140,69 @@ clutter_actor_get_child_transform (ClutterActor  *self,
     clutter_matrix_init_from_matrix (transform, &info->child_transform);
   else
     clutter_matrix_init_identity (transform);
+}
+
+void
+_clutter_actor_attach_clone (ClutterActor *actor,
+                             ClutterActor *clone)
+{
+  ClutterActorPrivate *priv = actor->priv;
+
+  g_assert (clone != NULL);
+
+  if (priv->clones == NULL)
+    priv->clones = g_hash_table_new (NULL, NULL);
+
+  g_hash_table_add (priv->clones, clone);
+}
+
+void
+_clutter_actor_detach_clone (ClutterActor *actor,
+                             ClutterActor *clone)
+{
+  ClutterActorPrivate *priv = actor->priv;
+
+  g_assert (clone != NULL);
+
+  if (priv->clones == NULL ||
+      g_hash_table_lookup (priv->clones, clone) == NULL)
+    return;
+
+  g_hash_table_remove (priv->clones, clone);
+
+  if (g_hash_table_size (priv->clones) == 0)
+    {
+      g_hash_table_unref (priv->clones);
+      priv->clones = NULL;
+    }
+}
+
+void
+_clutter_actor_queue_redraw_on_clones (ClutterActor *self)
+{
+  ClutterActorPrivate *priv = self->priv;
+  GHashTableIter iter;
+  gpointer key;
+
+  if (priv->clones == NULL)
+    return;
+
+  g_hash_table_iter_init (&iter, priv->clones);
+  while (g_hash_table_iter_next (&iter, &key, NULL))
+    clutter_actor_queue_redraw (key);
+}
+
+void
+_clutter_actor_queue_relayout_on_clones (ClutterActor *self)
+{
+  ClutterActorPrivate *priv = self->priv;
+  GHashTableIter iter;
+  gpointer key;
+
+  if (priv->clones == NULL)
+    return;
+
+  g_hash_table_iter_init (&iter, priv->clones);
+  while (g_hash_table_iter_next (&iter, &key, NULL))
+    clutter_actor_queue_relayout (key);
 }

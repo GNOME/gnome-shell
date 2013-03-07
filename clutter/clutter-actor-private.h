@@ -312,6 +312,13 @@ ClutterActorAlign               _clutter_actor_get_effective_x_align            
 void                            _clutter_actor_handle_event                             (ClutterActor       *actor,
                                                                                          const ClutterEvent *event);
 
+void                            _clutter_actor_attach_clone                             (ClutterActor *actor,
+                                                                                         ClutterActor *clone);
+void                            _clutter_actor_detach_clone                             (ClutterActor *actor,
+                                                                                         ClutterActor *clone);
+void                            _clutter_actor_queue_redraw_on_clones                   (ClutterActor *actor);
+void                            _clutter_actor_queue_relayout_on_clones                 (ClutterActor *actor);
+
 G_END_DECLS
 
 #endif /* __CLUTTER_ACTOR_PRIVATE_H__ */
