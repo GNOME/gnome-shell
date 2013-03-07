@@ -150,7 +150,7 @@
 			<AdditionalDependencies>opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
 			<ModuleDefinitionFile>$(IntDir)\cogl.def</ModuleDefinitionFile>
-			<ImportLibrary>$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib</ImportLibrary>
+			<ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
 			<SubSystem>Windows</SubSystem>
 			<TargetMachine>MachineX86</TargetMachine>
@@ -182,7 +182,7 @@
 			<AdditionalDependencies>SDL.lib;opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
 			<ModuleDefinitionFile>$(IntDir)\cogl.def</ModuleDefinitionFile>
-			<ImportLibrary>$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib</ImportLibrary>
+			<ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
 			<SubSystem>Windows</SubSystem>
 			<TargetMachine>MachineX86</TargetMachine>
@@ -214,7 +214,7 @@
 			<AdditionalDependencies>opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
 			<ModuleDefinitionFile>$(IntDir)\cogl.def</ModuleDefinitionFile>
-			<ImportLibrary>$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib</ImportLibrary>
+			<ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
 			<SubSystem>Windows</SubSystem>
 			<TargetMachine>MachineX64</TargetMachine>
@@ -246,7 +246,7 @@
 			<AdditionalDependencies>SDL.lib;opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
 			<ModuleDefinitionFile>$(IntDir)\cogl.def</ModuleDefinitionFile>
-			<ImportLibrary>$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib</ImportLibrary>
+			<ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
 			<SubSystem>Windows</SubSystem>
 			<TargetMachine>MachineX64</TargetMachine>
@@ -278,7 +278,7 @@
 			<AdditionalDependencies>opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
 			<ModuleDefinitionFile>$(IntDir)\cogl.def</ModuleDefinitionFile>
-			<ImportLibrary>$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib</ImportLibrary>
+			<ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
 			<SubSystem>Windows</SubSystem>
 			<OptimizeReferences>true</OptimizeReferences>
@@ -312,7 +312,7 @@
 			<AdditionalDependencies>SDL.lib;opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
 			<ModuleDefinitionFile>$(IntDir)\cogl.def</ModuleDefinitionFile>
-			<ImportLibrary>$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib</ImportLibrary>
+			<ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
 			<SubSystem>Windows</SubSystem>
 			<OptimizeReferences>true</OptimizeReferences>
@@ -343,7 +343,7 @@
 			<AdditionalDependencies>opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
 			<ModuleDefinitionFile>$(IntDir)\cogl.def</ModuleDefinitionFile>
-			<ImportLibrary>$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib</ImportLibrary>
+			<ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
 			<SubSystem>Windows</SubSystem>
 			<OptimizeReferences>true</OptimizeReferences>
@@ -374,7 +374,7 @@
 			<AdditionalDependencies>SDL.lib;opengl32.lib;intl.lib;cairo.lib;gdk_pixbuf-2.0.lib;gmodule-2.0.lib;%(AdditionalDependencies)</AdditionalDependencies>
 			<OutputFile>$(OutDir)$(CoglDllPrefix)$(ProjectName)$(CoglDllSuffix).dll</OutputFile>
 			<ModuleDefinitionFile>$(IntDir)\cogl.def</ModuleDefinitionFile>
-			<ImportLibrary>$(TargetDir)$(ProjectName)-$(CoglApiVersion).lib</ImportLibrary>
+			<ImportLibrary>$(TargetDir)$(ProjectName)-$(ApiVersion).lib</ImportLibrary>
 			<GenerateDebugInformation>true</GenerateDebugInformation>
 			<SubSystem>Windows</SubSystem>
 			<OptimizeReferences>true</OptimizeReferences>

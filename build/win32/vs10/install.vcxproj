@@ -102,10 +102,6 @@
       <Project>{f5a43c12-7032-428e-a56a-d294075fa493}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
-    <ProjectReference Include="cogl-msaa.vcxproj">
-      <Project>{44e864d4-8447-484d-9b16-d5405e0783cf}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <ProjectReference Include="cogl-info.vcxproj">
       <Project>{cd17f5c8-c860-4a65-8209-4d0b093a3da3}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
