@@ -224,7 +224,7 @@ multi_layout_allocate (ClutterLayoutManager   *manager,
   clutter_actor_iter_init (&iter, CLUTTER_ACTOR (container));
   while (clutter_actor_iter_next (&iter, &child))
     {
-      ClutterActorBox child_allocation = CLUTTER_ACTOR_BOX_INIT (0, 0, 0, 0);
+      ClutterActorBox child_allocation = CLUTTER_ACTOR_BOX_INIT_ZERO;
 
       if (!CLUTTER_ACTOR_IS_VISIBLE (child))
         continue;
@@ -373,6 +373,7 @@ main (int argc, char *argv[])
   ClutterActor *stage, *box, *label;
   ClutterLayoutManager *manager;
   ClutterMargin margin;
+  ClutterTransition *transition;
   int i;
 
   if (clutter_init (&argc, &argv) != CLUTTER_INIT_SUCCESS)
@@ -383,11 +384,13 @@ main (int argc, char *argv[])
   g_signal_connect (stage, "destroy", G_CALLBACK (clutter_main_quit), NULL);
   clutter_actor_show (stage);
 
+  /* the layout manager for the main container */
   manager = multi_layout_new ();
   multi_layout_set_spacing ((MultiLayout *) manager, PADDING);
 
   margin.top = margin.bottom = margin.left = margin.right = PADDING;
 
+  /* our main container, centered on the stage */
   box = clutter_actor_new ();
   clutter_actor_set_margin (box, &margin);
   clutter_actor_set_layout_manager (box, manager);
@@ -407,14 +410,31 @@ main (int argc, char *argv[])
 
       color.alpha = 128 + 128 / N_RECTS * i;
 
+      /* elements on the layout */
       clutter_actor_set_size (rect, RECT_SIZE, RECT_SIZE);
       clutter_actor_set_pivot_point (rect, .5f, .5f);
       clutter_actor_set_background_color (rect, &color);
+      clutter_actor_set_opacity (rect, 0);
       clutter_actor_set_reactive (rect, TRUE);
+
+      /* explicit transition that fades in the element; the delay on
+       * the transition staggers the fade depending on the index
+       */
+      transition = clutter_property_transition_new ("opacity");
+      clutter_timeline_set_duration (CLUTTER_TIMELINE (transition), 250);
+      clutter_timeline_set_delay (CLUTTER_TIMELINE (transition), i * 50);
+      clutter_transition_set_from (transition, G_TYPE_UINT, 0);
+      clutter_transition_set_to (transition, G_TYPE_UINT, 255);
+      clutter_actor_add_transition (rect, "fadeIn", transition);
+      g_object_unref (transition);
+
+      /* we want all state transitions to be animated */
       clutter_actor_set_easing_duration (rect, 250);
       clutter_actor_set_easing_mode (rect, CLUTTER_EASE_OUT_CUBIC);
+
       clutter_actor_add_child (box, rect);
 
+      /* simple hover effect */
       g_signal_connect (rect, "enter-event", G_CALLBACK (on_enter), NULL);
       g_signal_connect (rect, "leave-event", G_CALLBACK (on_leave), NULL);
     }
