@@ -1612,34 +1612,35 @@ clutter_actor_unmap (ClutterActor *self)
 static void
 clutter_actor_real_show (ClutterActor *self)
 {
-  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
+  ClutterActorPrivate *priv = self->priv;
+
+  if (CLUTTER_ACTOR_IS_VISIBLE (self))
+    return;
+
+  CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_VISIBLE);
+
+  /* we notify on the "visible" flag in the clutter_actor_show()
+   * wrapper so the entire show signal emission completes first,
+   * and the branch of the scene graph is in a stable state
+   */
+  clutter_actor_update_map_state (self, MAP_STATE_CHECK);
+
+  /* we queue a relayout unless the actor is inside a
+   * container that explicitly told us not to
+   */
+  if (priv->parent != NULL &&
+      (!(priv->parent->flags & CLUTTER_ACTOR_NO_LAYOUT)))
     {
-      ClutterActorPrivate *priv = self->priv;
-
-      CLUTTER_ACTOR_SET_FLAGS (self, CLUTTER_ACTOR_VISIBLE);
-
-      /* we notify on the "visible" flag in the clutter_actor_show()
-       * wrapper so the entire show signal emission completes first
-       * (?)
+      /* While an actor is hidden the parent may not have
+       * allocated/requested so we need to start from scratch
+       * and avoid the short-circuiting in
+       * clutter_actor_queue_relayout().
        */
-      clutter_actor_update_map_state (self, MAP_STATE_CHECK);
+      priv->needs_width_request  = FALSE;
+      priv->needs_height_request = FALSE;
+      priv->needs_allocation     = FALSE;
 
-      /* we queue a relayout unless the actor is inside a
-       * container that explicitly told us not to
-       */
-      if (priv->parent != NULL &&
-          (!(priv->parent->flags & CLUTTER_ACTOR_NO_LAYOUT)))
-        {
-          /* While an actor is hidden the parent may not have
-           * allocated/requested so we need to start from scratch
-           * and avoid the short-circuiting in
-           * clutter_actor_queue_relayout().
-           */
-          priv->needs_width_request  = FALSE;
-          priv->needs_height_request = FALSE;
-          priv->needs_allocation     = FALSE;
-          clutter_actor_queue_relayout (self);
-        }
+      clutter_actor_queue_relayout (self);
     }
 }
 
@@ -1747,25 +1748,25 @@ clutter_actor_show_all (ClutterActor *self)
 static void
 clutter_actor_real_hide (ClutterActor *self)
 {
-  if (CLUTTER_ACTOR_IS_VISIBLE (self))
-    {
-      ClutterActorPrivate *priv = self->priv;
+  ClutterActorPrivate *priv = self->priv;
 
-      CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_VISIBLE);
+  if (!CLUTTER_ACTOR_IS_VISIBLE (self))
+    return;
 
-      /* we notify on the "visible" flag in the clutter_actor_hide()
-       * wrapper so the entire hide signal emission completes first
-       * (?)
-       */
-      clutter_actor_update_map_state (self, MAP_STATE_CHECK);
+  CLUTTER_ACTOR_UNSET_FLAGS (self, CLUTTER_ACTOR_VISIBLE);
 
-      /* we queue a relayout unless the actor is inside a
-       * container that explicitly told us not to
-       */
-      if (priv->parent != NULL &&
-          (!(priv->parent->flags & CLUTTER_ACTOR_NO_LAYOUT)))
-        clutter_actor_queue_relayout (priv->parent);
-    }
+  /* we notify on the "visible" flag in the clutter_actor_hide()
+   * wrapper so the entire hide signal emission completes first,
+   * and the branch of the scene graph is in a stable state
+   */
+  clutter_actor_update_map_state (self, MAP_STATE_CHECK);
+
+  /* we queue a relayout unless the actor is inside a
+   * container that explicitly told us not to
+   */
+  if (priv->parent != NULL &&
+      (!(priv->parent->flags & CLUTTER_ACTOR_NO_LAYOUT)))
+    clutter_actor_queue_relayout (priv->parent);
 }
 
 /**
