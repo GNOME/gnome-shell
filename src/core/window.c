@@ -3938,13 +3938,6 @@ meta_window_unmaximize_internal (MetaWindow        *window,
       window->maximized_vertically =
         window->maximized_vertically   && !unmaximize_vertically;
 
-      /* Reset the tile mode for maximized tiled windows for consistency
-       * with "normal" maximized windows, but keep other tile modes,
-       * as side-by-side tiled windows may snap back.
-       */
-      if (window->tile_mode == META_TILE_MAXIMIZED)
-        window->tile_mode = META_TILE_NONE;
-
       /* Unmaximize to the saved_rect position in the direction(s)
        * being unmaximized.
        */
