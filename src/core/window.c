@@ -1415,6 +1415,9 @@ meta_window_new_with_attrs (MetaDisplay       *display,
   if (!window->override_redirect)
     meta_stack_add (window->screen->stack,
                     window);
+  else if (window->screen->tile_preview != NULL &&
+           meta_tile_preview_get_xwindow (window->screen->tile_preview, NULL) == xwindow)
+    window->layer = META_LAYER_NORMAL;
   else
     window->layer = META_LAYER_OVERRIDE_REDIRECT; /* otherwise set by MetaStack */
 
