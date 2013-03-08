@@ -318,9 +318,7 @@ static gboolean
 on_enter (ClutterActor *rect,
           ClutterEvent *event)
 {
-  clutter_actor_save_easing_state (rect);
   clutter_actor_set_scale (rect, 1.2, 1.2);
-  clutter_actor_restore_easing_state (rect);
 
   return CLUTTER_EVENT_STOP;
 }
@@ -329,9 +327,7 @@ static gboolean
 on_leave (ClutterActor *rect,
           ClutterEvent *event)
 {
-  clutter_actor_save_easing_state (rect);
   clutter_actor_set_scale (rect, 1.0, 1.0);
-  clutter_actor_restore_easing_state (rect);
 
   return CLUTTER_EVENT_STOP;
 }
