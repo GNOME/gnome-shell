@@ -3604,6 +3604,7 @@ meta_window_maximize (MetaWindow        *window,
           saved_rect = &window->saved_rect;
 
           window->maximized_vertically = FALSE;
+          window->tile_mode = META_TILE_NONE;
         }
 
       meta_window_maximize_internal (window,
