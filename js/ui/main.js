@@ -99,9 +99,6 @@ function start() {
 
     Gio.DesktopAppInfo.set_desktop_env('GNOME');
 
-    shellDBusService = new ShellDBus.GnomeShell();
-    shellMountOpDBusService = new ShellMountOperation.GnomeShellMountOpHandler();
-
     sessionMode = new SessionMode.SessionMode();
     sessionMode.connect('sessions-loaded', _sessionsLoaded);
     sessionMode.init();
@@ -110,6 +107,10 @@ function start() {
 function _sessionsLoaded() {
     sessionMode.connect('updated', _sessionUpdated);
     _initializeUI();
+
+    shellDBusService = new ShellDBus.GnomeShell();
+    shellMountOpDBusService = new ShellMountOperation.GnomeShellMountOpHandler();
+
     _sessionUpdated();
 }
 
