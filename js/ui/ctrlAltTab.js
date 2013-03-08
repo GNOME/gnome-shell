@@ -103,6 +103,11 @@ const CtrlAltTabManager = new Lang.Class({
                 else
                     icon = textureCache.bind_pixbuf_property(windows[i], 'icon');
                 items.push({ name: windows[i].title,
+                             proxy: windows[i].get_compositor_private(),
+                             focusCallback: Lang.bind(windows[i],
+                                 function(timestamp) {
+                                     Main.activateWindow(this, timestamp);
+                                 }),
                              iconActor: icon,
                              sortGroup: SortGroup.MIDDLE });
             }
