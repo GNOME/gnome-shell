@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2008,2009,2010 Intel Corporation.
+ * Copyright (C) 2008,2009,2010,2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -1436,6 +1436,11 @@ _cogl_pipeline_add_layer_difference (CoglPipeline *pipeline,
 
   if (inc_n_layers)
     pipeline->n_layers++;
+
+  /* Adding a layer difference may mean this pipeline now overrides
+   * all of the layers of its parent which might make the parent
+   * redundant so we should try to prune the hierarchy */
+  _cogl_pipeline_prune_redundant_ancestry (pipeline);
 }
 
 void

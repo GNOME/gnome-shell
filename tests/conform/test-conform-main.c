@@ -118,7 +118,7 @@ main (int argc, char **argv)
 
   ADD_TEST (test_primitive_and_journal, 0, 0);
 
-  ADD_TEST (test_copy_replace_texture, 0, TEST_KNOWN_FAILURE);
+  ADD_TEST (test_copy_replace_texture, 0, 0);
 
   UNPORTED_TEST (test_viewport);
 
