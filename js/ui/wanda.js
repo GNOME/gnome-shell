@@ -11,12 +11,14 @@ const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const Panel = imports.ui.panel;
 
-// we could make these gsettings
 const FISH_NAME = 'wanda';
+const FISH_FILENAME = 'wanda.png';
 const FISH_SPEED = 300;
 const FISH_COMMAND = 'fortune';
+// The size of an individual frame in the animation
+const FISH_HEIGHT = 22;
+const FISH_WIDTH = 36;
 
-const GNOME_PANEL_PIXMAPDIR = '../gnome-panel/fish';
 const FISH_GROUP = 'Fish Animation';
 
 const MAGIC_FISH_KEY = 'free the fish';
@@ -26,33 +28,16 @@ const WandaIcon = new Lang.Class({
     Extends: IconGrid.BaseIcon,
 
     _init : function(fish, label, params) {
-        this._fish = fish;
-        let file = GLib.build_filenamev([global.datadir, GNOME_PANEL_PIXMAPDIR, fish + '.fish']);
-
-        if (GLib.file_test(file, GLib.FileTest.EXISTS)) {
-            this._keyfile = new GLib.KeyFile();
-            this._keyfile.load_from_file(file, GLib.KeyFileFlags.NONE);
-
-            this._imageFile = GLib.build_filenamev([global.datadir, GNOME_PANEL_PIXMAPDIR,
-                                                    this._keyfile.get_string(FISH_GROUP, 'image')]);
-
-            let tmpPixbuf = GdkPixbuf.Pixbuf.new_from_file(this._imageFile);
-
-            this._imgHeight = tmpPixbuf.height;
-            this._imgWidth = tmpPixbuf.width / this._keyfile.get_integer(FISH_GROUP, 'frames');
-        } else {
-            this._imageFile = null;
-        }
-
         this.parent(label, params);
+
+        this._fish = fish;
+        this._imageFile = GLib.build_filenamev([global.datadir, fish + '.png']);
+
+        this._imgHeight = FISH_HEIGHT;
+        this._imgWidth = FISH_WIDTH;
     },
 
     createIcon: function(iconSize) {
-        if (!this._imageFile) {
-            return new St.Icon({ icon_name: 'face-smile',
-                                 icon_size: iconSize });
-        }
-
         this._animations = new Panel.Animation(this._imageFile, this._imgWidth, this._imgHeight, FISH_SPEED);
         this._animations.play();
         return this._animations.actor;
