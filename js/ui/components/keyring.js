@@ -222,7 +222,7 @@ const KeyringPrompter = new Lang.Class({
     enable: function() {
         this._prompter.register(Gio.DBus.session);
         this._dbusId = Gio.DBus.session.own_name('org.gnome.keyring.SystemPrompter',
-                                                 Gio.BusNameOwnerFlags.REPLACE, null, null);
+                                                 Gio.BusNameOwnerFlags.ALLOW_REPLACEMENT, null, null);
     },
 
     disable: function() {
