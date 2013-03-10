@@ -326,7 +326,7 @@ const LayoutManager = new Lang.Class({
                     continue;
             }
 
-            let corner = new HotCorner(this, cornerX, cornerY);
+            let corner = new HotCorner(this, monitor, cornerX, cornerY);
             corner.setBarrierSize(size);
             this.hotCorners.push(corner);
         }
@@ -1107,12 +1107,14 @@ Signals.addSignalMethods(LayoutManager.prototype);
 const HotCorner = new Lang.Class({
     Name: 'HotCorner',
 
-    _init : function(layoutManager, x, y) {
+    _init : function(layoutManager, monitor, x, y) {
         // We use this flag to mark the case where the user has entered the
         // hot corner and has not left both the hot corner and a surrounding
         // guard area (the "environs"). This avoids triggering the hot corner
         // multiple times due to an accidental jitter.
         this._entered = false;
+
+        this._monitor = monitor;
 
         this._x = x;
         this._y = y;
@@ -1247,6 +1249,9 @@ const HotCorner = new Lang.Class({
     },
 
     _toggleOverview: function() {
+        if (this._monitor.inFullscreen)
+            return;
+
         if (Main.overview.shouldToggleByCornerOrButton()) {
             this._rippleAnimation();
             Main.overview.toggle();
