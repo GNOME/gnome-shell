@@ -908,7 +908,7 @@ const Workspace = new Lang.Class({
         this._windowOverlays = [];
         for (let i = 0; i < windows.length; i++) {
             if (this._isOverviewWindow(windows[i])) {
-                this._addWindowClone(windows[i]);
+                this._addWindowClone(windows[i], true);
             }
         }
 
@@ -1033,10 +1033,22 @@ const Workspace = new Lang.Class({
             if (clone.inDrag)
                 continue;
 
-            clone.slot = [x, y, clone.actor.width * scale, clone.actor.height * scale];
+            let cloneWidth = clone.actor.width * scale;
+            let cloneHeight = clone.actor.height * scale;
+            clone.slot = [x, y, cloneWidth, cloneHeight];
 
-            if (overlay && initialPositioning)
+            if (overlay && (initialPositioning || !clone.positioned))
                 overlay.hide();
+
+            if (!clone.positioned) {
+                // This window appeared after the overview was already up
+                // Grow the clone from the center of the slot
+                clone.actor.x = x + cloneWidth / 2;
+                clone.actor.y = y + cloneHeight / 2;
+                clone.actor.scale_x = 0;
+                clone.actor.scale_y = 0;
+                clone.positioned = true;
+            }
 
             if (animate && isOnCurrentWorkspace) {
                 if (!metaWindow.showing_on_its_workspace()) {
@@ -1223,7 +1235,7 @@ const Workspace = new Lang.Class({
         if (!this._isMyWindow(win) || !this._isOverviewWindow(win))
             return;
 
-        let [clone, overlay] = this._addWindowClone(win);
+        let [clone, overlay] = this._addWindowClone(win, false);
 
         if (win._overviewHint) {
             let x = win._overviewHint.x - this.actor.x;
@@ -1232,16 +1244,10 @@ const Workspace = new Lang.Class({
             delete win._overviewHint;
 
             clone.slot = [x, y, clone.actor.width * scale, clone.actor.height * scale];
+            clone.positioned = true;
             clone.actor.set_position (x, y);
             clone.actor.set_scale (scale, scale);
             clone.overlay.relayout(false);
-        } else {
-            // Position new windows at the top corner of the workspace rather
-            // than where they were placed for real to avoid the window
-            // being clipped to the workspaceView. Its not really more
-            // natural for the window to suddenly appear in the overview
-            // on some seemingly random location anyway.
-            clone.actor.set_position (this._x, this._y);
         }
 
         this._currentLayout = null;
@@ -1388,10 +1394,11 @@ const Workspace = new Lang.Class({
     },
 
     // Create a clone of a (non-desktop) window and add it to the window list
-    _addWindowClone : function(win) {
+    _addWindowClone : function(win, positioned) {
         let clone = new WindowClone(win, this);
         let overlay = new WindowOverlay(clone, this._windowOverlaysGroup);
         clone.overlay = overlay;
+        clone.positioned = positioned;
 
         clone.connect('selected',
                       Lang.bind(this, this._onCloneSelected));
