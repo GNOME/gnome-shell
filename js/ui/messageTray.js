@@ -1823,6 +1823,9 @@ const MessageTray = new Lang.Class({
     _trayDwellTimeout: function() {
         this._trayDwellTimeoutId = 0;
 
+        if (Main.layoutManager.bottomMonitor.inFullscreen)
+            return false;
+
         // We don't want to open the tray when a modal dialog
         // is up, so we check the modal count for that. When we are in the
         // overview we have to take the overview's modal push into account

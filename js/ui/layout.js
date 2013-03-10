@@ -432,6 +432,9 @@ const LayoutManager = new Lang.Class({
                                                  Shell.KeyBindingMode.OVERVIEW);
         this._trayPressure.setEventFilter(this._trayBarrierEventFilter);
         this._trayPressure.connect('trigger', function(barrier) {
+            if (Main.layoutManager.bottomMonitor.inFullscreen)
+                return;
+
             Main.messageTray.openTray();
         });
     },
