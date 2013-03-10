@@ -917,8 +917,10 @@ const UserMenuButton = new Lang.Class({
                            session.user.get_real_name() : session.username;
 
             if (session.info.remote)
+                /* Translators: Remote here refers to a remote session, like a ssh login */
                 userLabelText = _("%s (remote)").format(userName);
             else if (session.info.type == "tty")
+                /* Translators: Console here refers to a tty like a VT console */
                 userLabelText = _("%s (console)").format(userName);
             else
                 userLabelText = userName;
