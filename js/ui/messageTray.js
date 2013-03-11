@@ -1636,7 +1636,6 @@ const MessageTray = new Lang.Class({
         Main.layoutManager.connect('keyboard-visible-changed', Lang.bind(this, this._onKeyboardVisibleChanged));
 
         this._trayState = State.HIDDEN;
-        this._locked = false;
         this._traySummoned = false;
         this._useLongerTrayLeftTimeout = false;
         this._trayLeftTimeoutId = 0;
@@ -1742,13 +1741,11 @@ const MessageTray = new Lang.Class({
 
     _openContextMenu: function () {
         let [x, y, mask] = global.get_pointer();
-        this._lock();
         this._contextMenu.setPosition(Math.round(x), Math.round(y));
         this._grabHelper.grab({ actor: this._contextMenu.actor,
                                 grabFocus: true,
                                 onUngrab: Lang.bind(this, function () {
                                     this._contextMenu.close(BoxPointer.PopupAnimation.FULL);
-                                    this._unlock();
                                 })
         });
         this._contextMenu.open(BoxPointer.PopupAnimation.FULL);
@@ -1996,18 +1993,6 @@ const MessageTray = new Lang.Class({
             this._notificationQueue.splice(index, 1);
     },
 
-    _lock: function() {
-        this._locked = true;
-    },
-
-    _unlock: function() {
-        if (!this._locked)
-            return;
-        this._locked = false;
-        this._pointerInTray = this.actor.hover;
-        this._updateState();
-    },
-
     openTray: function() {
         if (Main.overview.animationInProgress)
             return;
@@ -2208,7 +2193,6 @@ const MessageTray = new Lang.Class({
     },
 
     _escapeTray: function() {
-        this._unlock();
         this._pointerInTray = false;
         this._pointerInSummary = false;
         this._traySummoned = false;
@@ -2235,8 +2219,7 @@ const MessageTray = new Lang.Class({
         let notificationExpired = this._notificationTimeoutId == 0 &&
                                   !(this._notification && this._notification.urgency == Urgency.CRITICAL) &&
                                   !(this._notification && this._notification.focused) &&
-                                  !this._pointerInTray &&
-                                  !this._locked;
+                                  !this._pointerInTray;
         let notificationLockedOut = !Main.sessionMode.hasNotifications && this._notification;
         let notificationMustClose = this._notificationRemoved || notificationLockedOut || (notificationExpired && this._userActiveWhileNotificationShown) || this._notificationClosed;
         let canShowNotification = notificationsPending && this._summaryState == State.HIDDEN;
@@ -2255,7 +2238,7 @@ const MessageTray = new Lang.Class({
 
         // Summary
         let summarySummoned = this._pointerInSummary || this._traySummoned;
-        let summaryPinned = this._pointerInTray || summarySummoned || this._locked;
+        let summaryPinned = this._pointerInTray || summarySummoned;
 
         let notificationsVisible = this._notificationState != State.HIDDEN;
         let notificationsDone = !notificationsVisible && !notificationsPending;
@@ -2712,7 +2695,6 @@ const MessageTray = new Lang.Class({
         this._grabHelper.grab({ actor: this._summaryBoxPointer.bin.child,
                                 grabFocus: true,
                                 onUngrab: Lang.bind(this, this._onSummaryBoxPointerUngrabbed) });
-        this._lock();
 
         this._summaryBoxPointer.actor.opacity = 0;
         this._summaryBoxPointer.actor.show();
@@ -2802,8 +2784,6 @@ const MessageTray = new Lang.Class({
             this._summaryBoxPointerItem.source.disconnect(this._sourceDoneDisplayingId);
             this._sourceDoneDisplayingId = 0;
         }
-
-        this._unlock();
 
         if (this._summaryBoxPointerItem.source.notifications.length == 0) {
             this._summaryBoxPointer.actor.hide();
