@@ -1,8 +1,4 @@
 /*
- * shaped texture
- *
- * An actor to draw a masked texture.
- *
  * Authored By Neil Roberts  <neil@linux.intel.com>
  * and Jasper St. Pierre <jstpierre@mecheye.net>
  *
@@ -23,6 +19,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
+ */
+
+/**
+ * SECTION:meta-shaped-texture
+ * @title: MetaShapedTexture
+ * @short_description: An actor to draw a masked texture.
  */
 
 #include <config.h>

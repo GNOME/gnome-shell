@@ -1,7 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Mutter preferences */
-
 /* 
  * Copyright (C) 2001 Havoc Pennington, Copyright (C) 2002 Red Hat Inc.
  * Copyright (C) 2006 Elijah Newren
@@ -22,6 +20,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
+ */
+
+/**
+ * SECTION:prefs
+ * @title: Preferences
+ * @short_description: Mutter preferences
  */
 
 #include <config.h>

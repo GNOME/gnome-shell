@@ -1,7 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Mutter common types shared by core.h and ui.h
- *
+/*
  * PLEASE KEEP IN SYNC WITH GSETTINGS SCHEMAS!
  */
 
@@ -34,6 +33,12 @@
 #include <X11/extensions/XInput2.h>
 #include <glib.h>
 #include <gtk/gtk.h>
+
+/**
+ * SECTION:common
+ * @Title: Common
+ * @Short_Description: Mutter common types
+ */
 
 /* This is set in stone and also hard-coded in GDK. */
 #define META_VIRTUAL_CORE_POINTER_ID 2

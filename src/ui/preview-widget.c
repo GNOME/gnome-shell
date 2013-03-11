@@ -1,7 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity theme preview widget */
-
 /* 
  * Copyright (C) 2002 Havoc Pennington
  * 
@@ -19,6 +17,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
+ */
+
+/**
+ * SECTION:preview-widget
+ * @title: MetaPreview
+ * @short_description: Mutter theme preview widget
  */
 
 #define _GNU_SOURCE

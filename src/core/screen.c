@@ -1,7 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Mutter X screen handler */
-
 /* 
  * Copyright (C) 2001, 2002 Havoc Pennington
  * Copyright (C) 2002, 2003 Red Hat Inc.
@@ -24,6 +22,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
+ */
+
+/**
+ * SECTION:screen
+ * @title: MetaScreen
+ * @short_description: Mutter X screen handler
  */
 
 #include <config.h>

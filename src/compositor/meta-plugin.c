@@ -21,6 +21,13 @@
  * 02111-1307, USA.
  */
 
+/**
+ * SECTION:meta-plugin
+ * @title: MetaPlugin
+ * @short_description: Entry point for plugins
+ *
+ */
+
 #include <meta/meta-plugin.h>
 #include "meta-plugin-manager.h"
 #include <meta/screen.h>

@@ -1,9 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 /*
- * MetaShadowFactory:
- *
- * Create and cache shadow textures for abritrary window shapes
- *
  * Copyright 2010 Red Hat, Inc.
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +17,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
  */
+
+/**
+ * SECTION:meta-shadow-factory
+ * @title: MetaShadowFactory
+ * @short_description: Create and cache shadow textures for abritrary window shapes
+ */
+
 #include <config.h>
 #include <math.h>
 #include <string.h>

@@ -1,6 +1,10 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Simple box operations */
+/**
+ * SECTION:boxes
+ * @Title: MetaRectangle
+ * @Short_Description: Simple box operations
+ */
 
 /* 
  * Copyright (C) 2005, 2006 Elijah Newren

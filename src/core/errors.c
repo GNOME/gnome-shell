@@ -1,7 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Mutter X error handling */
-
 /* 
  * Copyright (C) 2001 Havoc Pennington, error trapping inspired by GDK
  * code copyrighted by the GTK team.
@@ -20,6 +18,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
+ */
+
+/**
+ * SECTION:errors
+ * @title: Errors
+ * @short_description: Mutter X error handling
  */
 
 #include <config.h>

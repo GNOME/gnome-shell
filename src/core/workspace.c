@@ -1,7 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Mutter Workspaces */
-
 /* 
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2003 Rob Adams
@@ -21,6 +19,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
+ */
+
+/**
+ * SECTION:workspace
+ * @short_description:Workspaces
+ *
+ * A workspace is a set of windows which all live on the same
+ * screen.  (You may also see the name "desktop" around the place,
+ * which is the EWMH's name for the same thing.)  Only one workspace
+ * of a screen may be active at once; all windows on all other workspaces
+ * are unmapped.
  */
 
 #include <config.h>

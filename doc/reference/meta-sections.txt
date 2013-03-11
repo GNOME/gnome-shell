@@ -104,10 +104,6 @@ meta_compositor_queue_frame_drawn
 meta_compositor_sync_stack
 meta_compositor_sync_screen_size
 meta_compositor_flash_screen
-</SECTION>
-
-<SECTION>
-<FILE>compositor-mutter</FILE>
 meta_get_stage_for_screen
 meta_get_overlay_group_for_screen
 meta_get_overlay_window
@@ -233,6 +229,7 @@ meta_quit
 <FILE>meta-background</FILE>
 <TITLE>MetaBackground</TITLE>
 MetaBackgroundEffects
+MetaBackground
 MetaBackgroundClass
 meta_background_new
 meta_background_copy

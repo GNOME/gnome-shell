@@ -1,5 +1,19 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+/**
+ * SECTION:meta-background-group
+ * @title: MetaBackgroundGroup
+ * @short_description: Container for background actors
+ *
+ * This class is a subclass of ClutterActor with special handling for
+ * MetaBackgroundActor/MetaBackgroundGroup when painting children.
+ * It makes sure to only draw the parts of the backgrounds not
+ * occluded by opaque windows.
+ *
+ * See #MetaWindowGroup for more information behind the motivation,
+ * and details on implementation.
+ */
+
 #include <config.h>
 
 #include "compositor-private.h"

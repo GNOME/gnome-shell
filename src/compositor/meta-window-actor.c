@@ -1,5 +1,11 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
+/**
+ * SECTION:meta-window-actor
+ * @title: MetaWindowActor
+ * @short_description: An actor representing a top-level window in the scene graph
+ */
+
 #include <config.h>
 
 #include <math.h>

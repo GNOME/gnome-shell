@@ -1,7 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity Theme Rendering */
-
 /*
  * Copyright (C) 2001 Havoc Pennington
  *
@@ -23,14 +21,17 @@
 
 /**
  * SECTION:theme
- * @short_description: Making Metacity look pretty
+ * @title: MetaTheme
+ * @short_description: Metacity Theme Rendering
  *
  * The window decorations drawn by Metacity are described by files on disk
  * known internally as "themes" (externally as "window border themes" on
  * http://art.gnome.org/themes/metacity/ or "Metacity themes"). This file
  * contains most of the code necessary to support themes; it does not
  * contain the XML parser, which is in theme-parser.c.
- *
+ */
+
+/*
  * FIXME: This is a big file with lots of different subsystems, which might
  *        be better split out into separate files.
  */

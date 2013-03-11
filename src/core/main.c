@@ -24,6 +24,7 @@
 
 /**
  * SECTION:main
+ * @title: Main
  * @short_description: Program startup.
  *
  * Functions which parse the command-line arguments, create the display,

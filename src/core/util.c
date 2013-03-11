@@ -1,7 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Mutter utilities */
-
 /* 
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2005 Elijah Newren
@@ -20,6 +18,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
+ */
+
+/**
+ * SECTION:util
+ * @title: Utility functions
+ * @short_description: Miscellaneous utility functions
  */
 
 #define _GNU_SOURCE

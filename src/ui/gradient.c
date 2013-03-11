@@ -1,7 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Metacity gradient rendering */
-
 /* 
  * Copyright (C) 2001 Havoc Pennington, 99% copied from wrlib in
  * WindowMaker, Copyright (C) 1997-2000 Dan Pascu and Alfredo Kojima
@@ -21,6 +19,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.  */
+
+/**
+ * SECTION:gradient
+ * @title: Gradients
+ * @short_description: Metacity gradient rendering
+ */
 
 #include <meta/gradient.h>
 #include <meta/util.h>

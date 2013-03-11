@@ -1,7 +1,6 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
+
 /*
- * meta-background.c: CoglTexture for painting the system background
- *
  * Copyright 2013 Red Hat, Inc.
  *
  * This program is free software; you can redistribute it and/or
@@ -18,6 +17,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
+ */
+
+/**
+ * SECTION:meta-background
+ * @title: MetaBackground
+ * @short_description: ClutterContent for painting the system background
+ *
  */
 
 #include <config.h>

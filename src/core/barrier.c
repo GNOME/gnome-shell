@@ -1,5 +1,11 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; c-basic-offset: 2; -*- */
 
+/**
+ * SECTION:barrier
+ * @Title: MetaBarrier
+ * @Short_Description: Pointer barriers
+ */
+
 #include "config.h"
 
 #include <glib-object.h>

@@ -1,7 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 /*
- * meta-background-actor.c: Actor for painting the root window background
- *
  * Copyright 2009 Sander Dijkhuis
  * Copyright 2010 Red Hat, Inc.
  *
@@ -21,6 +19,13 @@
  * 02111-1307, USA.
  *
  * Portions adapted from gnome-shell/src/shell-global.c
+ */
+
+/**
+ * SECTION:meta-background-actor
+ * @title: MetaBackgroundActor
+ * @short_description: Actor for painting the root window background
+ *
  */
 
 #include <config.h>

@@ -1,7 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Mutter X display handler */
-
 /* 
  * Copyright (C) 2001 Havoc Pennington
  * Copyright (C) 2002, 2003, 2004 Red Hat, Inc.
@@ -24,9 +22,10 @@
  * 02111-1307, USA.
  */
 
-/*
- * SECTION:MetaDisplay
- * @short_description: Handles operations on an X display.
+/**
+ * SECTION:display
+ * @title: MetaDisplay
+ * @short_description: Mutter X display handler
  *
  * The display is represented as a #MetaDisplay struct.
  */

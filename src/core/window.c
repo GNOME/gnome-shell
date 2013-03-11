@@ -1,7 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Mutter X managed windows */
-
 /*
  * Copyright (C) 2001 Havoc Pennington, Anders Carlsson
  * Copyright (C) 2002, 2003 Red Hat, Inc.
@@ -22,6 +20,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
+ */
+
+/**
+ * SECTION:window
+ * @title: MetaWindow
+ * @short_description: Mutter X managed windows
  */
 
 #include <config.h>

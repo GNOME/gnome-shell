@@ -1,7 +1,5 @@
 /* -*- mode: C; c-file-style: "gnu"; indent-tabs-mode: nil; -*- */
 
-/* Mutter window groups */
-
 /* 
  * Copyright (C) 2002 Red Hat Inc.
  * Copyright (C) 2003 Rob Adams
@@ -20,6 +18,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
  * 02111-1307, USA.
+ */
+
+/**
+ * SECTION:group
+ * @title: MetaGroup
+ * @short_description: Mutter window groups
+ *
  */
 
 #include <config.h>
