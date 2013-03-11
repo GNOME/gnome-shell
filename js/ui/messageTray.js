@@ -1670,7 +1670,7 @@ const MessageTray = new Lang.Class({
         Main.layoutManager.trackChrome(this._notificationWidget);
         Main.layoutManager.trackChrome(this._closeButton);
 
-        Main.layoutManager.connect('primary-fullscreen-changed', Lang.bind(this, this._onFullscreenChanged));
+        Main.layoutManager.connect('fullscreen-changed', Lang.bind(this, this._updateState));
         Main.layoutManager.connect('hot-corners-changed', Lang.bind(this, this._hotCornersChanged));
 
         // If the overview shows or hides while we're in
@@ -2169,11 +2169,6 @@ const MessageTray = new Lang.Class({
         this._updateState();
     },
 
-    _onFullscreenChanged: function(obj, state) {
-        this._inFullscreen = state;
-        this._updateState();
-    },
-
     _onStatusChanged: function(status) {
         if (status == GnomeSession.PresenceStatus.BUSY) {
             // remove notification and allow the summary to be closed now
@@ -2232,7 +2227,7 @@ const MessageTray = new Lang.Class({
         let notificationQueue = this._notificationQueue;
         let notificationUrgent = notificationQueue.length > 0 && notificationQueue[0].urgency == Urgency.CRITICAL;
         let notificationForFeedback = notificationQueue.length > 0 && notificationQueue[0].forFeedback;
-        let notificationsLimited = this._busy || this._inFullscreen;
+        let notificationsLimited = this._busy || Main.layoutManager.bottomMonitor.inFullscreen;
         let notificationsPending = notificationQueue.length > 0 && (!notificationsLimited || notificationUrgent || notificationForFeedback) && Main.sessionMode.hasNotifications;
         let nextNotification = notificationQueue.length > 0 ? notificationQueue[0] : null;
         let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;

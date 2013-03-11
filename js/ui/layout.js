@@ -976,8 +976,9 @@ const LayoutManager = new Lang.Class({
                     !metaWindow.appears_focused)
                     metaWindow.minimize();
             }
-            this.emit('primary-fullscreen-changed', this.primaryMonitor.inFullscreen);
         }
+
+        this.emit('fullscreen-changed');
     },
 
     _updateRegions: function() {
