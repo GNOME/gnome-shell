@@ -2620,10 +2620,9 @@ const MessageTray = new Lang.Class({
     },
 
     _expandNotification: function(autoExpanding) {
-        // Don't grab focus in notifications that are auto-expanded.
+        // Don't focus notifications that are auto-expanding.
         if (!autoExpanding)
-            this._grabHelper.grab({ actor: this._notification.actor,
-                                    grabFocus: true });
+            this._ensureNotificationFocused();
 
         if (!this._notificationExpandedId)
             this._notificationExpandedId =
@@ -2653,8 +2652,6 @@ const MessageTray = new Lang.Class({
         }
     },
 
-    // We use this function to grab focus when the user moves the pointer
-    // to a notification with CRITICAL urgency that was already auto-expanded.
     _ensureNotificationFocused: function() {
         this._grabHelper.grab({ actor: this._notification.actor,
                                 grabFocus: true });
