@@ -3,44 +3,44 @@
                "http://www.oasis-open.org/docbook/xml/4.3/docbookx.dtd"
 [
   <!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+  <!ENTITY version "@VERSION@">
 ]>
 <book id="index">
   <bookinfo>
-    <title>meta Reference Manual</title>
+    <title>Mutter Reference Manual</title>
     <releaseinfo>
-      for meta [VERSION].
+      This document is for Mutter &version;.
       The latest version of this documentation can be found on-line at
-      <ulink role="online-location" url="http://[SERVER]/meta/index.html">http://[SERVER]/meta/</ulink>.
+      <ulink role="online-location" url="http://developer.gnome.org/meta/">http://developer.gnome.org/meta/</ulink>.
     </releaseinfo>
   </bookinfo>
 
-  <chapter>
-    <title>[Insert title here]</title>
-        <xi:include href="xml/barrier.xml"/>
-    <xi:include href="xml/boxes.xml"/>
+  <part id="core-reference">
+    <title>Mutter Core Reference</title>
+    <xi:include href="xml/main.xml"/>
     <xi:include href="xml/common.xml"/>
-    <xi:include href="xml/compositor.xml"/>
-    <xi:include href="xml/compositor-mutter.xml"/>
-    <xi:include href="xml/display.xml"/>
-    <xi:include href="xml/errors.xml"/>
     <xi:include href="xml/gradient.xml"/>
+    <xi:include href="xml/prefs.xml"/>
+    <xi:include href="xml/util.xml"/>
+    <xi:include href="xml/errors.xml"/>
+    <xi:include href="xml/meta-plugin.xml"/>
+    <xi:include href="xml/barrier.xml"/>
+    <xi:include href="xml/boxes.xml"/>
+    <xi:include href="xml/compositor.xml"/>
+    <xi:include href="xml/display.xml"/>
     <xi:include href="xml/group.xml"/>
     <xi:include href="xml/keybindings.xml"/>
-    <xi:include href="xml/main.xml"/>
     <xi:include href="xml/meta-background-actor.xml"/>
-    <xi:include href="xml/meta-plugin.xml"/>
     <xi:include href="xml/meta-shadow-factory.xml"/>
     <xi:include href="xml/meta-shaped-texture.xml"/>
     <xi:include href="xml/meta-window-actor.xml"/>
-    <xi:include href="xml/prefs.xml"/>
     <xi:include href="xml/preview-widget.xml"/>
     <xi:include href="xml/screen.xml"/>
     <xi:include href="xml/theme.xml"/>
-    <xi:include href="xml/util.xml"/>
     <xi:include href="xml/window.xml"/>
     <xi:include href="xml/workspace.xml"/>
+  </part>
 
-  </chapter>
   <chapter id="object-tree">
     <title>Object Hierarchy</title>
      <xi:include href="xml/tree_index.sgml"/>

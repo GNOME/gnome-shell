@@ -437,6 +437,7 @@ Makefile
 doc/Makefile
 doc/man/Makefile
 doc/reference/Makefile
+doc/reference/meta-docs.sgml
 src/Makefile
 src/wm-tester/Makefile
 src/libmutter.pc

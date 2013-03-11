@@ -90,3 +90,5 @@ doc/reference/meta-overrides.txt
 doc/reference/meta-undeclared.txt
 doc/reference/meta-undocumented.txt
 doc/reference/meta-unused.txt
+doc/reference/meta-docs.sgml
+doc/reference/meta.types
