@@ -15,6 +15,9 @@
     </releaseinfo>
   </bookinfo>
 
+  <xi:include href="xml/mutter-overview.xml"/>
+  <xi:include href="xml/running-mutter.xml"/>
+
   <part id="core-reference">
     <title>Mutter Core Reference</title>
     <xi:include href="xml/main.xml"/>

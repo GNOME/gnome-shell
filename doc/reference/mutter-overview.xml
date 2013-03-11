@@ -1,0 +1,15 @@
+<part id="mutter-overview">
+
+  <title>Overview</title>
+
+  <partintro>
+
+    <para>Mutter is a GObject-based library for creating compositing window managers.</para>
+
+    <para>Compositors that wish to use Mutter must implement a subclass of #MetaPlugin and register it with meta_plugin_manager_set_plugin_type() before calling meta_init() but after g_type_init().</para>
+
+    <para>#MetaPlugin provides virtual functions that allow to override default behavior in the window management code, such as the effect to perform when a window is created or when switching workspaces.</para>
+
+  </partintro>
+
+</part>
