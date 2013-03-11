@@ -1641,7 +1641,6 @@ const MessageTray = new Lang.Class({
         this._useLongerTrayLeftTimeout = false;
         this._trayLeftTimeoutId = 0;
         this._pointerInTray = false;
-        this._pointerInKeyboard = false;
         this._keyboardVisible = false;
         this._summaryState = State.HIDDEN;
         this._pointerInSummary = false;
@@ -2242,8 +2241,7 @@ const MessageTray = new Lang.Class({
                                   !(this._notification && this._notification.urgency == Urgency.CRITICAL) &&
                                   !(this._notification && this._notification.focused) &&
                                   !this._pointerInTray &&
-                                  !this._locked &&
-                                  !(this._pointerInKeyboard && notificationExpanded);
+                                  !this._locked;
         let notificationLockedOut = !Main.sessionMode.hasNotifications && this._notification;
         let notificationMustClose = this._notificationRemoved || notificationLockedOut || (notificationExpired && this._userActiveWhileNotificationShown) || this._notificationClosed;
         let canShowNotification = notificationsPending && this._summaryState == State.HIDDEN;
@@ -2264,7 +2262,6 @@ const MessageTray = new Lang.Class({
         // Summary
         let summarySummoned = this._pointerInSummary || this._traySummoned;
         let summaryPinned = this._pointerInTray || summarySummoned || this._locked;
-        let summaryHovered = this._pointerInTray || this._pointerInSummary;
 
         let notificationsVisible = this._notificationState != State.HIDDEN;
         let notificationsDone = !notificationsVisible && !notificationsPending;
