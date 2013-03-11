@@ -1636,7 +1636,18 @@ const MessageTray = new Lang.Class({
         this._traySummoned = false;
         this._useLongerTrayLeftTimeout = false;
         this._trayLeftTimeoutId = 0;
+
+        // pointerInTray is sort of a misnomer -- it tracks whether
+        // a message tray notification should expand. The value is
+        // partially driven by the hover state of the tray, but has
+        // a lot of complex state related to timeouts and the current
+        // state of the pointer when a notification pops up.
         this._pointerInTray = false;
+
+        // This tracks this.actor.hover and is used to fizzle
+        // out non-changing hover notifications in onTrayHoverChanged.
+        this._trayHovered = false;
+
         this._keyboardVisible = false;
         this._notificationClosed = false;
         this._notificationState = State.HIDDEN;
@@ -2080,19 +2091,16 @@ const MessageTray = new Lang.Class({
     },
 
     _onTrayHoverChanged: function() {
-        if (this.actor.hover) {
+        if (this.actor.hover == this._trayHovered)
+            return;
+
+        this._trayHovered = this.actor.hover;
+        if (this._trayHovered) {
             // No dwell inside notifications at the bottom of the screen
             this._cancelTrayDwell();
 
             // Don't do anything if the one pixel area at the bottom is hovered over while the tray is hidden.
             if (this._trayState == State.HIDDEN && this._notificationState == State.HIDDEN)
-                return;
-
-            // Don't do anything if this._useLongerTrayLeftTimeout is true, meaning the notification originally
-            // popped up under the pointer, but this._trayLeftTimeoutId is 0, meaning the pointer didn't leave
-            // the tray yet. We need to check for this case because sometimes _onTrayHoverChanged() gets called
-            // multiple times while this.actor.hover is true.
-            if (this._useLongerTrayLeftTimeout && !this._trayLeftTimeoutId)
                 return;
 
             this._useLongerTrayLeftTimeout = false;
@@ -2561,7 +2569,11 @@ const MessageTray = new Lang.Class({
         this._notificationRemoved = false;
         this._closeButton.hide();
         this._pointerInTray = false;
-        this.actor.hover = false; // Clutter doesn't emit notify::hover when actors move
+
+        // Clutter will send a leave-event the next time the mouse
+        // moves, but we need to set this here now to update the
+        // state machine.
+        this.actor.hover = false;
         this._notificationBin.child = null;
         this._notificationWidget.hide();
     },
