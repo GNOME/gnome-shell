@@ -2247,9 +2247,8 @@ const MessageTray = new Lang.Class({
         let canShowNotification = notificationsPending && this._summaryState == State.HIDDEN;
 
         if (this._notificationState == State.HIDDEN) {
-            if (canShowNotification) {
+            if (canShowNotification)
                 this._showNotification();
-            }
         } else if (this._notificationState == State.SHOWN) {
             if (notificationMustClose)
                 this._hideNotification();
