@@ -4,6 +4,7 @@ const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Gtk = imports.gi.Gtk;
 const Meta = imports.gi.Meta;
+const Signals = imports.signals;
 const St = imports.gi.St;
 const Atk = imports.gi.Atk;
 
@@ -13,6 +14,7 @@ const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const Separator = imports.ui.separator;
 const Search = imports.ui.search;
+const Util = imports.misc.util;
 
 const MAX_LIST_SEARCH_RESULTS_ROWS = 3;
 const MAX_GRID_SEARCH_RESULTS_ROWS = 1;
@@ -227,9 +229,14 @@ const ListSearchResults = new Lang.Class({
         this._pendingClear = true;
     },
 
+    _keyFocusIn: function(icon) {
+        this.emit('key-focus-in', icon);
+    },
+
     renderResults: function(metas) {
         for (let i = 0; i < metas.length; i++) {
             let display = new ListSearchResult(this.provider, metas[i], this._terms);
+            display.actor.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
             this._content.add_actor(display.actor);
         }
     },
@@ -246,6 +253,7 @@ const ListSearchResults = new Lang.Class({
             return null;
     }
 });
+Signals.addSignalMethods(ListSearchResults.prototype);
 
 const GridSearchResults = new Lang.Class({
     Name: 'GridSearchResults',
@@ -288,9 +296,14 @@ const GridSearchResults = new Lang.Class({
         this._pendingClear = true;
     },
 
+    _keyFocusIn: function(icon) {
+        this.emit('key-focus-in', icon);
+    },
+
     renderResults: function(metas) {
         for (let i = 0; i < metas.length; i++) {
             let display = new GridSearchResult(this.provider, metas[i], this._terms);
+            display.actor.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
             this._grid.addItem(display.actor);
         }
     },
@@ -307,6 +320,7 @@ const GridSearchResults = new Lang.Class({
             return null;
     }
 });
+Signals.addSignalMethods(GridSearchResults.prototype);
 
 const SearchResults = new Lang.Class({
     Name: 'SearchResults',
@@ -366,6 +380,10 @@ const SearchResults = new Lang.Class({
         return false;
     },
 
+    _keyFocusIn: function(provider, icon) {
+        Util.ensureActorVisibleInScrollView(this._scrollView, icon);
+    },
+
     createProviderMeta: function(provider) {
         let providerBox = new St.BoxLayout({ style_class: 'search-section',
                                              vertical: true });
@@ -378,6 +396,8 @@ const SearchResults = new Lang.Class({
         } else {
             resultDisplay = new GridSearchResults(provider);
         }
+
+        resultDisplay.connect('key-focus-in', Lang.bind(this, this._keyFocusIn));
 
         let resultDisplayBin = new St.Bin({ child: resultDisplay.actor,
                                             x_fill: true,
