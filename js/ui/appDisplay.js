@@ -29,7 +29,6 @@ const Util = imports.misc.util;
 
 const MAX_APPLICATION_WORK_MILLIS = 75;
 const MENU_POPUP_TIMEOUT = 600;
-const SCROLL_TIME = 0.1;
 const MAX_COLUMNS = 6;
 
 const INACTIVE_GRID_OPACITY = 77;
@@ -259,29 +258,7 @@ const AllView = new Lang.Class({
     },
 
     _ensureIconVisible: function(icon) {
-        let adjustment = this.actor.vscroll.adjustment;
-        let [value, lower, upper, stepIncrement, pageIncrement, pageSize] = adjustment.get_values();
-
-        let offset = 0;
-        let vfade = this.actor.get_effect("fade");
-        if (vfade)
-            offset = vfade.vfade_offset;
-
-        // If this gets called as part of a right-click, the actor
-        // will be needs_allocation, and so "icon.y" would return 0
-        let box = icon.get_allocation_box();
-
-        if (box.y1 < value + offset)
-            value = Math.max(0, box.y1 - offset);
-        else if (box.y2 > value + pageSize - offset)
-            value = Math.min(upper, box.y2 + offset - pageSize);
-        else
-            return;
-
-        Tweener.addTween(adjustment,
-                         { value: value,
-                           time: SCROLL_TIME,
-                           transition: 'easeOutQuad' });
+        Util.ensureActorVisibleInScrollView(this.actor, icon);
     },
 
     _updateIconOpacities: function(folderOpen) {
