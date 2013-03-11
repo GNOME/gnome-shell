@@ -852,6 +852,48 @@ recorder_remove_update_pointer_timeout (ShellRecorder *recorder)
 }
 
 static void
+recorder_connect_stage_callbacks (ShellRecorder *recorder)
+{
+  g_signal_connect (recorder->stage, "destroy",
+                    G_CALLBACK (recorder_on_stage_destroy), recorder);
+  g_signal_connect_after (recorder->stage, "paint",
+                          G_CALLBACK (recorder_on_stage_paint), recorder);
+  g_signal_connect (recorder->stage, "notify::width",
+                    G_CALLBACK (recorder_on_stage_notify_size), recorder);
+  g_signal_connect (recorder->stage, "notify::width",
+                    G_CALLBACK (recorder_on_stage_notify_size), recorder);
+
+  clutter_x11_add_filter (recorder_event_filter, recorder);
+}
+
+static void
+recorder_disconnect_stage_callbacks (ShellRecorder *recorder)
+{
+  g_signal_handlers_disconnect_by_func (recorder->stage,
+                                        (void *)recorder_on_stage_destroy,
+                                        recorder);
+  g_signal_handlers_disconnect_by_func (recorder->stage,
+                                        (void *)recorder_on_stage_paint,
+                                        recorder);
+  g_signal_handlers_disconnect_by_func (recorder->stage,
+                                        (void *)recorder_on_stage_notify_size,
+                                        recorder);
+
+  clutter_x11_remove_filter (recorder_event_filter, recorder);
+
+  /* We don't don't deselect for cursor changes in case someone else just
+   * happened to be selecting for cursor events on the same window; sending
+   * us the events is close to free in any case.
+   */
+
+  if (recorder->redraw_idle)
+    {
+      g_source_remove (recorder->redraw_idle);
+      recorder->redraw_idle = 0;
+    }
+}
+
+static void
 recorder_set_stage (ShellRecorder *recorder,
                     ClutterStage  *stage)
 {
@@ -862,30 +904,7 @@ recorder_set_stage (ShellRecorder *recorder,
     shell_recorder_close (recorder);
 
   if (recorder->stage)
-    {
-      g_signal_handlers_disconnect_by_func (recorder->stage,
-                                            (void *)recorder_on_stage_destroy,
-                                            recorder);
-      g_signal_handlers_disconnect_by_func (recorder->stage,
-                                            (void *)recorder_on_stage_paint,
-                                            recorder);
-      g_signal_handlers_disconnect_by_func (recorder->stage,
-                                            (void *)recorder_on_stage_notify_size,
-                                            recorder);
-
-      clutter_x11_remove_filter (recorder_event_filter, recorder);
-
-      /* We don't don't deselect for cursor changes in case someone else just
-       * happened to be selecting for cursor events on the same window; sending
-       * us the events is close to free in any case.
-       */
-
-      if (recorder->redraw_idle)
-        {
-          g_source_remove (recorder->redraw_idle);
-          recorder->redraw_idle = 0;
-        }
-    }
+   recorder_disconnect_stage_callbacks (recorder);
 
   recorder->stage = stage;
 
@@ -895,16 +914,6 @@ recorder_set_stage (ShellRecorder *recorder,
       int major = 2, minor = 3;
 
       recorder->stage = stage;
-      g_signal_connect (recorder->stage, "destroy",
-                        G_CALLBACK (recorder_on_stage_destroy), recorder);
-      g_signal_connect_after (recorder->stage, "paint",
-                              G_CALLBACK (recorder_on_stage_paint), recorder);
-      g_signal_connect (recorder->stage, "notify::width",
-                        G_CALLBACK (recorder_on_stage_notify_size), recorder);
-      g_signal_connect (recorder->stage, "notify::width",
-                        G_CALLBACK (recorder_on_stage_notify_size), recorder);
-
-      clutter_x11_add_filter (recorder_event_filter, recorder);
 
       recorder_update_size (recorder);
 
@@ -1461,6 +1470,8 @@ recorder_pipeline_closed (RecorderPipeline *pipeline)
                                         (gpointer) recorder_pipeline_on_memory_used_changed,
                                         pipeline);
 
+  recorder_disconnect_stage_callbacks (pipeline->recorder);
+
   gst_element_set_state (pipeline->pipeline, GST_STATE_NULL);
 
   if (pipeline->recorder)
@@ -1721,6 +1732,8 @@ shell_recorder_record (ShellRecorder *recorder)
 
   if (!recorder_open_pipeline (recorder))
     return FALSE;
+
+  recorder_connect_stage_callbacks (recorder);
 
   recorder->start_time = get_wall_time();
   recorder->last_frame_time = 0;
