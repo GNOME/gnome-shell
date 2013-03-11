@@ -435,8 +435,8 @@ const ScreenShield = new Lang.Class({
                                                 name: 'lockScreenGroup',
                                                 visible: false,
                                               });
-        this._lockScreenGroup.connect('key-release-event',
-                                      Lang.bind(this, this._onLockScreenKeyRelease));
+        this._lockScreenGroup.connect('key-press-event',
+                                      Lang.bind(this, this._onLockScreenKeyPress));
         this._lockScreenGroup.connect('scroll-event',
                                       Lang.bind(this, this._onLockScreenScroll));
         Main.ctrlAltTabManager.addGroup(this._lockScreenGroup, _("Lock"), 'changes-prevent-symbolic');
@@ -590,7 +590,7 @@ const ScreenShield = new Lang.Class({
         return this._isModal;
     },
 
-    _onLockScreenKeyRelease: function(actor, event) {
+    _onLockScreenKeyPress: function(actor, event) {
         let symbol = event.get_key_symbol();
 
         // Do nothing if the lock screen is not fully shown.
