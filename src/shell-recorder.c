@@ -19,6 +19,11 @@
 
 #include <clutter/x11/clutter-x11.h>
 #include <X11/extensions/Xfixes.h>
+#include <X11/extensions/XInput.h>
+#include <X11/extensions/XInput2.h>
+
+/* This is also hard-coded in mutter and GDK */
+#define VIRTUAL_CORE_POINTER_ID 2
 
 typedef enum {
   RECORDER_STATE_CLOSED,
@@ -56,6 +61,8 @@ struct _ShellRecorder {
 
   gboolean have_xfixes;
   int xfixes_event_base;
+
+  int xinput_opcode;
 
   CoglHandle recording_icon; /* icon shown while playing */
 
@@ -661,9 +668,14 @@ recorder_event_filter (XEvent        *xev,
                        gpointer       data)
 {
   ShellRecorder *recorder = data;
+  XIEvent *input_event = NULL;
 
   if (xev->xany.window != clutter_x11_get_stage_window (recorder->stage))
     return CLUTTER_X11_FILTER_CONTINUE;
+
+  if (xev->xany.type == GenericEvent &&
+      xev->xcookie.extension == recorder->xinput_opcode)
+    input_event = (XIEvent *) xev->xcookie.data;
 
   if (xev->xany.type == recorder->xfixes_event_base + XFixesCursorNotify)
     {
@@ -680,36 +692,53 @@ recorder_event_filter (XEvent        *xev,
           recorder_queue_redraw (recorder);
         }
     }
-  else if (xev->xany.type == MotionNotify)
+  else if (input_event != NULL &&
+           input_event->evtype == XI_Motion)
     {
-      recorder->pointer_x = xev->xmotion.x;
-      recorder->pointer_y = xev->xmotion.y;
+      XIDeviceEvent *device_event = (XIDeviceEvent *) input_event;
+      if (device_event->deviceid == VIRTUAL_CORE_POINTER_ID)
+        {
+          recorder->pointer_x = device_event->event_x;
+          recorder->pointer_y = device_event->event_y;
 
-      recorder_queue_redraw (recorder);
+          recorder_queue_redraw (recorder);
+        }
     }
   /* We want to track whether the pointer is over the stage
    * window itself, and not in a child window. A "virtual"
    * crossing is one that goes directly from ancestor to child.
    */
-  else if (xev->xany.type == EnterNotify &&
-           (xev->xcrossing.detail != NotifyVirtual &&
-            xev->xcrossing.detail != NotifyNonlinearVirtual))
+  else if (input_event != NULL &&
+           input_event->evtype == XI_Enter)
     {
-      recorder->have_pointer = TRUE;
-      recorder->pointer_x = xev->xcrossing.x;
-      recorder->pointer_y = xev->xcrossing.y;
+      XIEnterEvent *enter_event = (XIEnterEvent *) input_event;
 
-      recorder_queue_redraw (recorder);
+      if (enter_event->deviceid == VIRTUAL_CORE_POINTER_ID &&
+          (enter_event->detail != XINotifyVirtual &&
+           enter_event->detail != XINotifyNonlinearVirtual))
+        {
+          recorder->have_pointer = TRUE;
+          recorder->pointer_x = enter_event->event_x;
+          recorder->pointer_y = enter_event->event_y;
+
+          recorder_queue_redraw (recorder);
+        }
     }
-  else if (xev->xany.type == LeaveNotify &&
-           (xev->xcrossing.detail != NotifyVirtual &&
-            xev->xcrossing.detail != NotifyNonlinearVirtual))
+  else if (input_event != NULL &&
+           input_event->evtype == XI_Leave)
     {
-      recorder->have_pointer = FALSE;
-      recorder->pointer_x = xev->xcrossing.x;
-      recorder->pointer_y = xev->xcrossing.y;
+      XILeaveEvent *leave_event = (XILeaveEvent *) input_event;
 
-      recorder_queue_redraw (recorder);
+      if (leave_event->deviceid == VIRTUAL_CORE_POINTER_ID &&
+          (leave_event->detail != XINotifyVirtual &&
+           leave_event->detail != XINotifyNonlinearVirtual))
+        {
+          recorder->have_pointer = FALSE;
+          recorder->pointer_x = leave_event->event_x;
+          recorder->pointer_y = leave_event->event_y;
+
+          recorder_queue_redraw (recorder);
+        }
     }
 
   return CLUTTER_X11_FILTER_CONTINUE;
@@ -862,7 +891,8 @@ recorder_set_stage (ShellRecorder *recorder,
 
   if (recorder->stage)
     {
-      int error_base;
+      int error_base, event_base;
+      int major = 2, minor = 3;
 
       recorder->stage = stage;
       g_signal_connect (recorder->stage, "destroy",
@@ -885,6 +915,28 @@ recorder_set_stage (ShellRecorder *recorder,
         XFixesSelectCursorInput (clutter_x11_get_default_display (),
                                    clutter_x11_get_stage_window (stage),
                                  XFixesDisplayCursorNotifyMask);
+
+      if (XQueryExtension (clutter_x11_get_default_display (),
+                           "XInputExtension",
+                           &recorder->xinput_opcode,
+                           &error_base,
+                           &event_base))
+        {
+          if (XIQueryVersion (clutter_x11_get_default_display (), &major, &minor) == Success)
+            {
+              int version = (major * 10) + minor;
+              if (version < 22)
+                g_warning("ShellRecorder: xinput version %d.%d is too old", major, minor);
+            }
+          else
+            {
+              g_warning("ShellRecorder: xinput version could not be queried");
+            }
+        }
+      else
+        {
+          g_warning("ShellRecorder: xinput extension unavailable");
+        }
 
       clutter_stage_ensure_current (stage);
 
