@@ -764,14 +764,6 @@ recorder_get_initial_cursor_position (ShellRecorder *recorder)
 
   XUngrabServer(xdisplay);
   XFlush(xdisplay);
-
-  /* While we are at it, add mouse events to the event mask; they will
-   * be there for the stage windows that Clutter creates by default, but
-   * maybe this stage was created differently. Since we've already
-   * retrieved the event mask, it's almost free.
-   */
-  XSelectInput(xdisplay, xwindow,
-               xwa.your_event_mask | EnterWindowMask | LeaveWindowMask | PointerMotionMask);
 }
 
 /* When the cursor is not over the stage's input area, we query for the
