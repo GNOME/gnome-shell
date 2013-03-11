@@ -2442,7 +2442,7 @@ const MessageTray = new Lang.Class({
     _showNotification: function() {
         this._notification = this._notificationQueue.shift();
 
-        this._userActiveWhileNotificationShown = this.idleMonitor.get_idletime() > IDLE_TIME;
+        this._userActiveWhileNotificationShown = this.idleMonitor.get_idletime() <= IDLE_TIME;
         if (!this._userActiveWhileNotificationShown) {
             // If the user isn't active, set up a watch to let us know
             // when the user becomes active.
