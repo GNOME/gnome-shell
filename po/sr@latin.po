@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=mutter"
 "&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-02-20 15:50+0000\n"
-"PO-Revision-Date: 2013-03-01 11:30+0200\n"
+"POT-Creation-Date: 2013-03-01 15:50+0000\n"
+"PO-Revision-Date: 2013-03-11 11:40+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -220,7 +220,7 @@ msgid ""
 msgstr ""
 "Neki drugi kompozitni upravnik je već pokrenut na prikazu %i erkana „%s“."
 
-#: ../src/compositor/meta-background.c:1116
+#: ../src/compositor/meta-background.c:1111
 msgid "background texture could not be created from file"
 msgstr "sklop pozadine ne može biti stvoren iz datoteke"
 
@@ -258,17 +258,17 @@ msgstr "_Sačekaj"
 msgid "_Force Quit"
 msgstr "_Primoraj izlaz"
 
-#: ../src/core/display.c:392
+#: ../src/core/display.c:401
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Nedostaje potreban kompozitni dodatak %s"
 
-#: ../src/core/display.c:485
+#: ../src/core/display.c:493
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Nisam uspeo da otvorim ekran „%s“ Iks sistema prozora\n"
 
-#: ../src/core/keybindings.c:876
+#: ../src/core/keybindings.c:929
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -276,6 +276,12 @@ msgid ""
 msgstr ""
 "Neki drugi program već koristi taster %s sa izmenjivačima %x za neku "
 "funkciju\n"
+
+#: ../src/core/keybindings.c:1129
+#, c-format
+#| msgid "\"%s\" is not a valid value for focus attribute"
+msgid "\"%s\" is not a valid accelerator\n"
+msgstr "„%s“ nije ispravna prečica\n"
 
 #: ../src/core/main.c:196
 msgid "Disable connection to session manager"
@@ -493,7 +499,7 @@ msgid "Window manager error: "
 msgstr "Greška upravnika prozora: "
 
 #. first time through
-#: ../src/core/window.c:7503
+#: ../src/core/window.c:7539
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -509,7 +515,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8227
+#: ../src/core/window.c:8263
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -519,22 +525,22 @@ msgstr ""
 "ali je postavio najmanju veličinu %d x %d i najveću veličinu %d x %d što nema "
 "mnogo smisla.\n"
 
-#: ../src/core/window-props.c:304
+#: ../src/core/window-props.c:318
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Program je postavio netačan _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:423
+#: ../src/core/window-props.c:434
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (na %s)"
 
-#: ../src/core/window-props.c:1506
+#: ../src/core/window-props.c:1517
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Neispravan prozor 0x%lx naveden kao WM_TRANSIENT_FOR za %s.\n"
 
-#: ../src/core/window-props.c:1517
+#: ../src/core/window-props.c:1528
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR prozor 0x%lx za %s će napraviti petlju.\n"
