@@ -1591,14 +1591,11 @@ const MessageTray = new Lang.Class({
         global.focus_manager.add_group(this.actor);
         this._summary = new St.BoxLayout({ style_class: 'message-tray-summary',
                                            reactive: true,
-                                           track_hover: true,
                                            x_align: Clutter.ActorAlign.END,
                                            x_expand: true,
                                            y_align: Clutter.ActorAlign.CENTER,
                                            y_expand: true });
-        this._summary.connect('notify::hover', Lang.bind(this, this._onSummaryHoverChanged));
         this.actor.add_actor(this._summary);
-        this._summary.opacity = 0;
 
         this._summaryMotionId = 0;
         this._trayMotionId = 0;
@@ -1641,8 +1638,6 @@ const MessageTray = new Lang.Class({
         this._trayLeftTimeoutId = 0;
         this._pointerInTray = false;
         this._keyboardVisible = false;
-        this._summaryState = State.HIDDEN;
-        this._pointerInSummary = false;
         this._notificationClosed = false;
         this._notificationState = State.HIDDEN;
         this._notificationTimeoutId = 0;
@@ -2018,7 +2013,6 @@ const MessageTray = new Lang.Class({
     hide: function() {
         this._traySummoned = false;
         this.actor.set_hover(false);
-        this._summary.set_hover(false);
         this._updateState();
     },
 
@@ -2075,11 +2069,6 @@ const MessageTray = new Lang.Class({
                 this._setClickedSummaryItem(null);
         }
 
-        this._updateState();
-    },
-
-    _onSummaryHoverChanged: function() {
-        this._pointerInSummary = this._summary.hover;
         this._updateState();
     },
 
@@ -2185,7 +2174,6 @@ const MessageTray = new Lang.Class({
             this._trayLeftTimeoutId = 0;
             this._useLongerTrayLeftTimeout = false;
             this._pointerInTray = false;
-            this._pointerInSummary = false;
             this._updateNotificationTimeout(0);
             this._updateState();
         }
@@ -2194,7 +2182,6 @@ const MessageTray = new Lang.Class({
 
     _escapeTray: function() {
         this._pointerInTray = false;
-        this._pointerInSummary = false;
         this._traySummoned = false;
         this._setClickedSummaryItem(null);
         this._updateNotificationTimeout(0);
@@ -2203,7 +2190,7 @@ const MessageTray = new Lang.Class({
 
     // All of the logic for what happens when occurs here; the various
     // event handlers merely update variables such as
-    // 'this._pointerInTray', 'this._summaryState', etc, and
+    // 'this._pointerInTray', 'this._traySummoned', etc, and
     // _updateState() figures out what (if anything) needs to be done
     // at the present time.
     _updateState: function() {
@@ -2214,7 +2201,7 @@ const MessageTray = new Lang.Class({
         let notificationsLimited = this._busy || Main.layoutManager.bottomMonitor.inFullscreen;
         let notificationsPending = notificationQueue.length > 0 && (!notificationsLimited || notificationUrgent || notificationForFeedback) && Main.sessionMode.hasNotifications;
         let nextNotification = notificationQueue.length > 0 ? notificationQueue[0] : null;
-        let notificationPinned = this._pointerInTray && !this._pointerInSummary && !this._notificationRemoved;
+        let notificationPinned = this._pointerInTray && !this._notificationRemoved;
         let notificationExpanded = this._notification && this._notification.expanded;
         let notificationExpired = this._notificationTimeoutId == 0 &&
                                   !(this._notification && this._notification.urgency == Urgency.CRITICAL) &&
@@ -2222,7 +2209,7 @@ const MessageTray = new Lang.Class({
                                   !this._pointerInTray;
         let notificationLockedOut = !Main.sessionMode.hasNotifications && this._notification;
         let notificationMustClose = this._notificationRemoved || notificationLockedOut || (notificationExpired && this._userActiveWhileNotificationShown) || this._notificationClosed;
-        let canShowNotification = notificationsPending && this._summaryState == State.HIDDEN;
+        let canShowNotification = notificationsPending && this._trayState == State.HIDDEN;
 
         if (this._notificationState == State.HIDDEN) {
             if (canShowNotification)
@@ -2236,26 +2223,17 @@ const MessageTray = new Lang.Class({
                 this._ensureNotificationFocused();
         }
 
-        // Summary
-        let summarySummoned = this._pointerInSummary || this._traySummoned;
-        let summaryPinned = this._pointerInTray || summarySummoned;
-
         let notificationsVisible = this._notificationState != State.HIDDEN;
         let notificationsDone = !notificationsVisible && !notificationsPending;
 
-        let mustHideSummary = ((notificationsPending && notificationUrgent)
-                              || notificationsVisible || !Main.sessionMode.hasNotifications);
-
-        if (this._summaryState == State.HIDDEN && !mustHideSummary && summarySummoned)
-            this._showSummary();
-        else if (this._summaryState == State.SHOWN && (!summaryPinned || mustHideSummary))
-            this._hideSummary();
+        let mustHideTray = ((notificationsPending && notificationUrgent)
+                           || notificationsVisible || !Main.sessionMode.hasNotifications);
 
         // Summary notification
         let haveClickedSummaryItem = this._clickedSummaryItem != null;
         let summarySourceIsMainNotificationSource = (haveClickedSummaryItem && this._notification &&
                                                      this._clickedSummaryItem.source == this._notification.source);
-        let canShowSummaryBoxPointer = this._summaryState == State.SHOWN;
+        let canShowSummaryBoxPointer = this._trayState == State.SHOWN;
         // We only have sources with empty notification stacks for legacy tray icons. Currently, we never attempt
         // to show notifications for legacy tray icons, but this would be necessary if we did.
         let requestedNotificationStackIsEmpty = (this._clickedSummaryItemMouseButton == 1 && this._clickedSummaryItem.source.notifications.length == 0);
@@ -2270,7 +2248,7 @@ const MessageTray = new Lang.Class({
             if (haveClickedSummaryItem && !summarySourceIsMainNotificationSource && canShowSummaryBoxPointer && !requestedNotificationStackIsEmpty)
                 this._showSummaryBoxPointer();
         } else if (this._summaryBoxPointerState == State.SHOWN) {
-            if (!haveClickedSummaryItem || !canShowSummaryBoxPointer || wrongSummaryBoxPointer || mustHideSummary) {
+            if (!haveClickedSummaryItem || !canShowSummaryBoxPointer || wrongSummaryBoxPointer || mustHideTray) {
                 this._hideSummaryBoxPointer();
                 if (wrongSummaryBoxPointer)
                     this._showSummaryBoxPointer();
@@ -2280,9 +2258,7 @@ const MessageTray = new Lang.Class({
         // Tray itself
         let trayIsVisible = (this._trayState == State.SHOWING ||
                              this._trayState == State.SHOWN);
-        let trayShouldBeVisible = (this._summaryState == State.SHOWING ||
-                                   this._summaryState == State.SHOWN) &&
-                                  !this._keyboardVisible;
+        let trayShouldBeVisible = this._traySummoned && !this._keyboardVisible && !mustHideTray;
         if (!trayIsVisible && trayShouldBeVisible)
             trayShouldBeVisible = this._showTray();
         else if (trayIsVisible && !trayShouldBeVisible)
@@ -2633,23 +2609,6 @@ const MessageTray = new Lang.Class({
     _ensureNotificationFocused: function() {
         this._grabHelper.grab({ actor: this._notification.actor,
                                 grabFocus: true });
-    },
-
-    _showSummary: function() {
-        this._summary.opacity = 0;
-        this._tween(this._summary, '_summaryState', State.SHOWN,
-                    { opacity: 255,
-                      time: ANIMATION_TIME,
-                      transition: 'easeOutQuad',
-                    });
-    },
-
-    _hideSummary: function() {
-        this._tween(this._summary, '_summaryState', State.HIDDEN,
-                    { opacity: 0,
-                      time: ANIMATION_TIME,
-                      transition: 'easeOutQuad',
-                    });
     },
 
     _onSourceDoneDisplayingContent: function(source, closeTray) {
