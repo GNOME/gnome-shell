@@ -248,7 +248,7 @@ const GrabHelper = new Lang.Class({
                 global.set_stage_input_mode(Shell.StageInputMode.FOCUSED);
         }
 
-        global.screen.focus_default_window(global.get_current_time());
+        global.screen.focus_default_window(global.display.get_current_time_roundtrip());
     },
 
     // ignoreRelease:
