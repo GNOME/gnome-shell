@@ -64,7 +64,7 @@ G_DEFINE_TYPE_WITH_CODE (ClutterStageGdk,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_STAGE_WINDOW,
                                                 clutter_stage_window_iface_init));
 
-#ifdef CLUTTER_WINDOWING_X11
+#ifdef GDK_WINDOWING_X11
 static void
 clutter_stage_gdk_update_foreign_event_mask (CoglOnscreen *onscreen,
 					     guint32 event_mask,
