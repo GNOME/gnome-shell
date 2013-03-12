@@ -597,7 +597,8 @@ const ScreenShield = new Lang.Class({
         if (this._lockScreenState != MessageTray.State.SHOWN)
             return false;
 
-        if (!(GLib.unichar_isprint(unichar) || symbol == Clutter.KEY_Escape))
+        let isEnter = (symbol == Clutter.KEY_Return || symbol == Clutter.KEY_KP_Enter);
+        if (!isEnter && !(GLib.unichar_isprint(unichar) || symbol == Clutter.KEY_Escape))
             return false;
 
         this._ensureUnlockDialog(true, true);
