@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-09 13:03+0000\n"
-"PO-Revision-Date: 2012-12-19 16:47+0300\n"
+"POT-Creation-Date: 2013-03-11 22:02+0000\n"
+"PO-Revision-Date: 2013-03-12 16:28+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <>\n"
 "Language: et\n"
@@ -104,6 +104,16 @@ msgid ""
 "favorites area."
 msgstr "Nendele tunnustele vastavaid rakendusi kuvatakse lemmikutes."
 
+msgid "List of categories that should be displayed as folders"
+msgstr "Kategooriad, mida tuleb kuvada kaustadena"
+
+msgid ""
+"Each category name in this list will be represented as folder in the "
+"application view, rather than being displayed inline in the main view."
+msgstr ""
+"Kõiki selles loetelus olevaid kategooriaid kuvatakse rakenduste vaates "
+"kaustadena, mitte peavaates teistega koos."
+
 msgid "History for command (Alt-F2) dialog"
 msgstr "Käsudialoogi (Alt-F2) ajalugu"
 
@@ -134,12 +144,6 @@ msgid ""
 msgstr ""
 "See võti keelab automaatse 'Logi välja' menüükirje peitmise, kui arvutis on "
 "üks kasutaja ning avatud üks seanss."
-
-msgid "Show full name in the user menu"
-msgstr "Kasutajamenüüs näidatakse kasutaja tervet nime"
-
-msgid "Whether the users full name is shown in the user menu or not."
-msgstr "Kas kasutajamenüüs näidatakse kasutaja kogu nime või mitte."
 
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
@@ -299,12 +303,8 @@ msgstr "Laiendus"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Vali seadistatav laiendus kasutades ülemist valikukasti."
 
-msgid "Session..."
-msgstr "Seanss..."
-
-msgctxt "title"
-msgid "Sign In"
-msgstr "Sisselogimine"
+msgid "Session…"
+msgstr "Seanss…"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
@@ -368,15 +368,11 @@ msgstr "Käsku pole võimalik analüüsida:"
 msgid "Execution of '%s' failed:"
 msgstr "'%s' käivitamine nurjus:"
 
-#. Translators: Filter to display all applications
+msgid "Frequent"
+msgstr "Sage"
+
 msgid "All"
 msgstr "Kõik"
-
-msgid "APPLICATIONS"
-msgstr "RAKENDUSED"
-
-msgid "SETTINGS"
-msgstr "SEADED"
 
 msgid "New Window"
 msgstr "Uus aken"
@@ -395,6 +391,12 @@ msgstr "%s lisati lemmikutesse."
 msgid "%s has been removed from your favorites."
 msgstr "%s eemaldati lemmikutest."
 
+msgid "Settings"
+msgstr "Sätted"
+
+msgid "Change Background…"
+msgstr "Muuda tausta…"
+
 #. Translators: Shown in calendar event list for all day events
 #. * Keep it short, best if you can use less then 10 characters
 #.
@@ -402,15 +404,18 @@ msgctxt "event list time"
 msgid "All Day"
 msgstr "Kogu päev"
 
-#. Translators: Shown in calendar event list, if 24h format
+#. Translators: Shown in calendar event list, if 24h format,
+#. \u2236 is a ratio character, similar to :
 msgctxt "event list time"
-msgid "%H:%M"
-msgstr "%H:%M"
+msgid "%H\\u2236%M"
+msgstr "%H\\u2236%M"
 
-#. Transators: Shown in calendar event list, if 12h format
+#. Transators: Shown in calendar event list, if 12h format,
+#. \u2236 is a ratio character, similar to : and \u2009 is
+#. a thin space
 msgctxt "event list time"
-msgid "%l:%M %p"
-msgstr "%l:%M %p"
+msgid "%l\\u2236%M\\u2009%p"
+msgstr "%l\\u2236%M\\u2009%p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
@@ -516,6 +521,12 @@ msgstr "Käesolev nädal"
 
 msgid "Next week"
 msgstr "Järgmine nädal"
+
+msgid "External drive connected"
+msgstr "Väline ketas ühendati"
+
+msgid "External drive disconnected"
+msgstr "Väline ketas eemaldati"
 
 msgid "Removable Devices"
 msgstr "Eemaldatavad seadmed"
@@ -801,11 +812,19 @@ msgstr "Aknad"
 msgid "Show Applications"
 msgstr "Rakenduste kuvamine"
 
-msgid "Date and Time Settings"
-msgstr "Kuupäeva ja kellaaja sätted"
+#. Translators: this is the name of the dock/favorites area on
+#. the left of the overview
+msgid "Dash"
+msgstr "Dokk"
 
 msgid "Open Calendar"
 msgstr "Ava kalender"
+
+msgid "Open Clocks"
+msgstr "Ava kell"
+
+msgid "Date & Time Settings"
+msgstr "Kuupäeva ja kella sätted"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
@@ -897,9 +916,6 @@ msgstr "Paigalda"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Kas laadida alla ja paigaldada '%s' aadressilt extensions.gnome.org?"
 
-msgid "tray"
-msgstr "salv"
-
 msgid "Keyboard"
 msgstr "Klaviatuur"
 
@@ -920,6 +936,8 @@ msgstr "Näita vigu"
 msgid "Enabled"
 msgstr "Lubatud"
 
+#. translators:
+#. * The device has been disabled
 msgid "Disabled"
 msgstr "Keelatud"
 
@@ -944,6 +962,12 @@ msgstr "Ava"
 msgid "Remove"
 msgstr "Eemalda"
 
+msgid "Clear Messages"
+msgstr "Kustuta teated"
+
+msgid "Notification Settings"
+msgstr "Märguannete sätted"
+
 msgid "No Messages"
 msgstr "Teateid pole"
 
@@ -957,6 +981,12 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Tundmatu"
 
+#, c-format
+msgid "%d new message"
+msgid_plural "%d new messages"
+msgstr[0] "%d uus sõnum"
+msgstr[1] "%d uut sõnumit"
+
 msgid "Undo"
 msgstr "Võta tagasi"
 
@@ -967,13 +997,8 @@ msgstr "Ülevaade"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-msgid "Type to search..."
-msgstr "Otsing..."
-
-#. Translators: this is the name of the dock/favorites area on
-#. the left of the overview
-msgid "Dash"
-msgstr "Dokk"
+msgid "Type to search…"
+msgstr "Otsing…"
 
 msgid "Quit"
 msgstr "Sulge"
@@ -1006,12 +1031,6 @@ msgid "%A, %B %d"
 msgstr "%A, %d. %B"
 
 #, c-format
-msgid "%d new message"
-msgid_plural "%d new messages"
-msgstr[0] "%d uus sõnum"
-msgstr[1] "%d uut sõnumit"
-
-#, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d uus märguanne"
@@ -1020,8 +1039,24 @@ msgstr[1] "%d uut märguannet"
 msgid "Lock"
 msgstr "Lukusta"
 
-msgid "Searching..."
-msgstr "Otsimine..."
+msgid "GNOME needs to lock the screen"
+msgstr "GNOME peab ekraani lukustama"
+
+#. We could not become modal, so we can't activate the
+#. screenshield. The user is probably very upset at this
+#. point, but any application using global grabs is broken
+#. Just tell him to stop using this app
+#.
+#. XXX: another option is to kick the user into the gdm login
+#. screen, where we're not affected by grabs
+msgid "Unable to lock"
+msgstr "Pole võimalik lukustada"
+
+msgid "Lock was blocked by an application"
+msgstr "Rakendus blokeeris lukustamise"
+
+msgid "Searching…"
+msgstr "Otsing…"
 
 msgid "No results."
 msgstr "Tulemused puuduvad."
@@ -1089,11 +1124,11 @@ msgstr "Bluetooth"
 msgid "Visibility"
 msgstr "Nähtavus"
 
-msgid "Send Files to Device..."
-msgstr "Failide saatmine seadmesse..."
+msgid "Send Files to Device…"
+msgstr "Failide saatmine seadmesse…"
 
-msgid "Set up a New Device..."
-msgstr "Uue seadme häälestamine..."
+msgid "Set Up a New Device…"
+msgstr "Uue seadme häälestamine…"
 
 msgid "Bluetooth Settings"
 msgstr "Bluetoothi sätted"
@@ -1111,8 +1146,8 @@ msgstr "ühenduse katkestamine..."
 msgid "connecting..."
 msgstr "ühendumine..."
 
-msgid "Send Files..."
-msgstr "Failide saatmine..."
+msgid "Send Files…"
+msgstr "Failide saatmine…"
 
 msgid "Keyboard Settings"
 msgstr "Klaviatuurisätted"
@@ -1173,7 +1208,7 @@ msgstr "Olgu"
 msgid "Show Keyboard Layout"
 msgstr "Klaviatuuripaigutuse kuvamine"
 
-msgid "Region and Language Settings"
+msgid "Region & Language Settings"
 msgstr "Asukoha ja keele sätted"
 
 msgid "Volume, network, battery"
@@ -1212,16 +1247,22 @@ msgstr "pole saadaval"
 msgid "connection failed"
 msgstr "ühendumine nurjus"
 
-msgid "More..."
-msgstr "Veel..."
+msgid "More…"
+msgstr "Veel…"
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
 msgid "Connected (private)"
 msgstr "Ühendatud (privaatne)"
 
+msgid "Wired"
+msgstr "Juhtmega"
+
 msgid "Auto Ethernet"
 msgstr "Automaatne ethernet"
+
+msgid "Mobile broadband"
+msgstr "Mobiiliühendus"
 
 msgid "Auto broadband"
 msgstr "Automaatne lairibaühendus"
@@ -1269,8 +1310,8 @@ msgstr "Toitesätted..."
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
-msgid "Estimating..."
-msgstr "Andmete kogumine..."
+msgid "Estimating…"
+msgstr "Andmete kogumine…"
 
 #, c-format
 msgid "%d hour remaining"
@@ -1304,10 +1345,10 @@ msgctxt "percent of battery remaining"
 msgid "%d%%"
 msgstr "%d%%"
 
-msgid "AC adapter"
-msgstr "Võrgutoite adapter"
+msgid "AC Adapter"
+msgstr "Laadija"
 
-msgid "Laptop battery"
+msgid "Laptop Battery"
 msgstr "Sülearvuti aku"
 
 msgid "UPS"
@@ -1322,10 +1363,10 @@ msgstr "Hiir"
 msgid "PDA"
 msgstr "Elektronmärkmik"
 
-msgid "Cell phone"
+msgid "Cell Phone"
 msgstr "Mobiiltelefon"
 
-msgid "Media player"
+msgid "Media Player"
 msgstr "Meediaesitaja"
 
 msgid "Tablet"
@@ -1337,6 +1378,9 @@ msgstr "Arvuti"
 msgctxt "device"
 msgid "Unknown"
 msgstr "Tundmatu"
+
+msgid "Volume changed"
+msgstr "Helivaljus muutus"
 
 #. Translators: This is the label for audio volume
 msgid "Volume"
@@ -1372,9 +1416,6 @@ msgstr "Ühendamata"
 msgid "Notifications"
 msgstr "Märguanded"
 
-msgid "Settings"
-msgstr "Sätted"
-
 msgid "Switch User"
 msgstr "Vaheta kasutajat"
 
@@ -1394,6 +1435,22 @@ msgstr ""
 "Märguanded on nüüd keelatud, sealhulgas vestlusteated. Sinu netiolekut "
 "muudeti, et teised teaksid, et sa ei pruugi nende teateid näha."
 
+msgid "Other users are logged in."
+msgstr "Teised kasutajad on sisse logitud."
+
+msgid "Shutting down might cause them to lose unsaved work."
+msgstr "Väljalülitamine võib põhjustada salvestamata töö kaotsimineku."
+
+#. Translators: Remote here refers to a remote session, like a ssh login
+#, c-format
+msgid "%s (remote)"
+msgstr "%s (kaugühendus)"
+
+#. Translators: Console here refers to a tty like a VT console
+#, c-format
+msgid "%s (console)"
+msgstr "%s (konsool)"
+
 msgid "Applications"
 msgstr "Rakendused"
 
@@ -1412,15 +1469,31 @@ msgstr ""
 msgid "%s the Oracle says"
 msgstr "Oraakel %s ütleb"
 
-msgid "Your favorite Easter Egg"
-msgstr "Sinu lemmiküllatusmuna"
-
 #, c-format
 msgid "'%s' is ready"
 msgstr "'%s' on valmis"
 
 msgid "Evolution Calendar"
 msgstr "Evolutioni kalender"
+
+#. translators:
+#. * The number of sound outputs on a particular device
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u väljund"
+msgstr[1] "%u väljundit"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u sisend"
+msgstr[1] "%u sisendit"
+
+msgid "System Sounds"
+msgstr "Süsteemi helid"
 
 msgid "Print version"
 msgstr "Printimise versioon"
@@ -1444,14 +1517,47 @@ msgstr "Paroolid ei kattu."
 msgid "Password cannot be blank"
 msgstr "Parool ei saa olla tühi"
 
-msgid "United Kingdom"
-msgstr "Suurbritannia"
-
-msgid "Default"
-msgstr "Vaikimisi"
-
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Kasutaja katkestas autentimisdialoogi"
+
+#~ msgid "Show full name in the user menu"
+#~ msgstr "Kasutajamenüüs näidatakse kasutaja tervet nime"
+
+#~ msgid "Whether the users full name is shown in the user menu or not."
+#~ msgstr "Kas kasutajamenüüs näidatakse kasutaja kogu nime või mitte."
+
+#~ msgctxt "title"
+#~ msgid "Sign In"
+#~ msgstr "Sisselogimine"
+
+#~ msgid "APPLICATIONS"
+#~ msgstr "RAKENDUSED"
+
+#~ msgid "SETTINGS"
+#~ msgstr "SEADED"
+
+#~ msgctxt "event list time"
+#~ msgid "%H:%M"
+#~ msgstr "%H:%M"
+
+#~ msgctxt "event list time"
+#~ msgid "%l:%M %p"
+#~ msgstr "%l:%M %p"
+
+#~ msgid "tray"
+#~ msgstr "salv"
+
+#~ msgid "More..."
+#~ msgstr "Veel..."
+
+#~ msgid "Your favorite Easter Egg"
+#~ msgstr "Sinu lemmiküllatusmuna"
+
+#~ msgid "United Kingdom"
+#~ msgstr "Suurbritannia"
+
+#~ msgid "Default"
+#~ msgstr "Vaikimisi"
 
 #~ msgid "Subscription request"
 #~ msgstr "Tellimuse päring"
@@ -1471,27 +1577,8 @@ msgstr "Kasutaja katkestas autentimisdialoogi"
 #~ msgid "Reconnect"
 #~ msgstr "Ühendu uuesti"
 
-#~ msgid "Wired"
-#~ msgstr "Juhtmega"
-
 #~ msgid "Wireless"
 #~ msgstr "Juhtmeta"
-
-#~ msgid "Mobile broadband"
-#~ msgstr "Mobiiliühendus"
-
-#~ msgid "%u Output"
-#~ msgid_plural "%u Outputs"
-#~ msgstr[0] "%u väljund"
-#~ msgstr[1] "%u väljundit"
-
-#~ msgid "%u Input"
-#~ msgid_plural "%u Inputs"
-#~ msgstr[0] "%u sisend"
-#~ msgstr[1] "%u sisendit"
-
-#~ msgid "System Sounds"
-#~ msgstr "Süsteemi helid"
 
 #~ msgid "disabled OpenSearch providers"
 #~ msgstr "keelatud OpenSearch pakkujad"
