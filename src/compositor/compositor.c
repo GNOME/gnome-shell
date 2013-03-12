@@ -1095,13 +1095,17 @@ sync_actor_stacking (MetaCompScreen *info)
     }
 
   /* reorder the actors by lowering them in turn to the bottom of the stack.
-   * windows first, then background */
+   * windows first, then background.
+   *
+   * We reorder the actors even if they're not parented to the window group,
+   * to allow stacking to work with intermediate actors (eg during effects)
+   */
   for (tmp = g_list_last (info->windows); tmp != NULL; tmp = tmp->prev)
     {
-      ClutterActor *actor = tmp->data;
+      ClutterActor *actor = tmp->data, *parent;
 
-      if (clutter_actor_get_parent (actor) == info->window_group)
-        clutter_actor_set_child_below_sibling (info->window_group, actor, NULL);
+      parent = clutter_actor_get_parent (actor);
+      clutter_actor_set_child_below_sibling (parent, actor, NULL);
     }
 
   /* we prepended the backgrounds above so the last actor in the list
@@ -1109,10 +1113,10 @@ sync_actor_stacking (MetaCompScreen *info)
    */
   for (tmp = backgrounds; tmp != NULL; tmp = tmp->next)
     {
-      ClutterActor *actor = tmp->data;
+      ClutterActor *actor = tmp->data, *parent;
 
-      if (clutter_actor_get_parent (actor) == info->window_group)
-        clutter_actor_set_child_below_sibling (info->window_group, actor, NULL);
+      parent = clutter_actor_get_parent (actor);
+      clutter_actor_set_child_below_sibling (parent, actor, NULL);
     }
   g_list_free (backgrounds);
 }
