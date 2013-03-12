@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-25 22:09+0100\n"
-"PO-Revision-Date: 2013-02-25 22:09+0100\n"
+"POT-Creation-Date: 2013-03-12 18:34+0100\n"
+"PO-Revision-Date: 2013-03-12 18:35+0100\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: it\n"
@@ -216,7 +216,7 @@ msgstr "Massimizza a destra"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:507
+#: ../src/compositor/compositor.c:502
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -225,7 +225,7 @@ msgstr ""
 "Un altro compositing manager è già in esecuzione sullo schermo %i sul "
 "display «%s»."
 
-#: ../src/compositor/meta-background.c:1116
+#: ../src/compositor/meta-background.c:1180
 msgid "background texture could not be created from file"
 msgstr "La texture dello sfondo non può essere creata dal file"
 
@@ -265,17 +265,17 @@ msgstr "_Attendi"
 msgid "_Force Quit"
 msgstr "_Forza uscita"
 
-#: ../src/core/display.c:392
+#: ../src/core/display.c:402
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Estensione %s richiesta per il compositing mancante"
 
-#: ../src/core/display.c:484
+#: ../src/core/display.c:494
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Apertura del display «%s» di X Window System non riuscita\n"
 
-#: ../src/core/keybindings.c:876
+#: ../src/core/keybindings.c:929
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -283,6 +283,11 @@ msgid ""
 msgstr ""
 "Qualche altro programma sta già usando il tasto %s con i modificatori %x "
 "come una associazione di tasti\n"
+
+#: ../src/core/keybindings.c:1129
+#, c-format
+msgid "\"%s\" is not a valid accelerator\n"
+msgstr "«%s» non è una scorciatoia valida\n"
 
 #: ../src/core/main.c:196
 msgid "Disable connection to session manager"
@@ -308,12 +313,12 @@ msgstr "Inizializza la sessione da file salvato"
 msgid "Make X calls synchronous"
 msgstr "Rende le chiamate X sincrone"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:533
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Scansione della directory dei temi non riuscita: %s\n"
 
-#: ../src/core/main.c:510
+#: ../src/core/main.c:549
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -382,12 +387,12 @@ msgstr ""
 msgid "Workspace %d"
 msgstr "Spazio di lavoro %d"
 
-#: ../src/core/screen.c:673
+#: ../src/core/screen.c:674
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Lo schermo %d nel display «%s» non è valido\n"
 
-#: ../src/core/screen.c:689
+#: ../src/core/screen.c:690
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -396,7 +401,7 @@ msgstr ""
 "Lo schermo %d sul display «%s» ha già un window manager; provare a "
 "utilizzare l'opzione --replace per sostituirlo.\n"
 
-#: ../src/core/screen.c:716
+#: ../src/core/screen.c:717
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
@@ -404,12 +409,12 @@ msgstr ""
 "Impossibile acquisire la selezione del window manager per lo schermo %d nel "
 "display «%s»\n"
 
-#: ../src/core/screen.c:794
+#: ../src/core/screen.c:795
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Lo schermo %d sul display «%s» ha già un window manager\n"
 
-#: ../src/core/screen.c:979
+#: ../src/core/screen.c:980
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Impossibile rilasciare lo schermo %d sul display «%s»\n"
@@ -509,7 +514,7 @@ msgid "Window manager error: "
 msgstr "Errore del window manager: "
 
 #. first time through
-#: ../src/core/window.c:7540
+#: ../src/core/window.c:7538
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -525,7 +530,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8264
+#: ../src/core/window.c:8262
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
