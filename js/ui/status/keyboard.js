@@ -9,6 +9,7 @@ const Meta = imports.gi.Meta;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
+const Gettext = imports.gettext;
 
 try {
     var IBus = imports.gi.IBus;
@@ -535,8 +536,12 @@ const InputSourceIndicator = new Lang.Class({
                 let engineDesc = this._ibusManager.getEngineDesc(id);
                 if (engineDesc) {
                     let language = IBus.get_language_name(engineDesc.get_language());
+                    let longName = engineDesc.get_longname();
+                    let textdomain = engineDesc.get_textdomain();
+                    if (textdomain != '')
+                        longName = Gettext.dgettext(textdomain, longName);
                     exists = true;
-                    displayName = language + ' (' + engineDesc.get_longname() + ')';
+                    displayName = '%s (%s)'.format(language, longName);
                     shortName = this._makeEngineShortName(engineDesc);
                 }
             }
