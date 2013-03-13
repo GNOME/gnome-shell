@@ -343,9 +343,6 @@ struct _MetaWindow
   /* if TRUE, window is attached to its parent */
   guint attached : 1;
 
-  /* if TRUE, we are freezing updates during a resize */
-  guint updates_frozen_for_resize : 1;
-
   /* whether or not the window is from a program running on another machine */
   guint is_remote : 1;
 
@@ -366,6 +363,7 @@ struct _MetaWindow
   /* XSync update counter */
   XSyncCounter sync_request_counter;
   gint64 sync_request_serial;
+  gint64 sync_request_wait_serial;
   GTimeVal sync_request_time;
   /* alarm monitoring client's _NET_WM_SYNC_REQUEST_COUNTER */
   XSyncAlarm sync_request_alarm;

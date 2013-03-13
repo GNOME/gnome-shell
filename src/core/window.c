@@ -4631,7 +4631,7 @@ send_sync_request (MetaWindow *window)
    */
   wait_serial = window->sync_request_serial + 240;
 
-  window->display->grab_sync_counter_wait_serial = wait_serial;
+  window->sync_request_wait_serial = wait_serial;
 
   ev.type = ClientMessage;
   ev.window = window->xwindow;
@@ -4655,6 +4655,9 @@ send_sync_request (MetaWindow *window)
 	      window->xwindow, False, 0, (XEvent*) &ev);
 
   g_get_current_time (&window->sync_request_time);
+
+  meta_compositor_set_updates_frozen (window->display->compositor, window,
+                                      meta_window_updates_are_frozen (window));
 }
 #endif
 
@@ -4677,22 +4680,12 @@ meta_window_updates_are_frozen (MetaWindow *window)
   if (window->extended_sync_request_counter &&
       window->sync_request_serial % 2 == 1)
     return TRUE;
+
+  if (window->sync_request_serial < window->sync_request_wait_serial)
+    return TRUE;
 #endif
 
-  return window->updates_frozen_for_resize;
-}
-
-static void
-meta_window_set_updates_frozen_for_resize (MetaWindow *window,
-                                           gboolean    updates_frozen)
-{
-  if (updates_frozen != window->updates_frozen_for_resize)
-    {
-      window->updates_frozen_for_resize = updates_frozen;
-      if (window->display->compositor)
-        meta_compositor_set_updates_frozen (window->display->compositor, window,
-                                            meta_window_updates_are_frozen (window));
-    }
+  return FALSE;
 }
 
 static gboolean
@@ -5210,14 +5203,12 @@ meta_window_move_resize_internal (MetaWindow          *window,
 #ifdef HAVE_XSYNC
       if (window == window->display->grab_window &&
           meta_grab_op_is_resizing (window->display->grab_op) &&
+          !window->disable_sync &&
           window->sync_request_counter != None &&
 	  window->sync_request_alarm != None &&
 	  window->sync_request_time.tv_usec == 0 &&
 	  window->sync_request_time.tv_sec == 0)
 	{
-	  /* turn off updating */
-          meta_window_set_updates_frozen_for_resize (window, TRUE);
-
 	  send_sync_request (window);
 	}
 #endif
@@ -8860,6 +8851,14 @@ check_moveresize_frequency (MetaWindow *window,
 	       * application to respond to the sync request
 	       */
 	      window->disable_sync = TRUE;
+
+              /* Reset the wait serial, so we don't continue freezing
+               * window updates
+               */
+              window->sync_request_wait_serial = 0;
+              meta_compositor_set_updates_frozen (window->display->compositor, window,
+                                                  meta_window_updates_are_frozen (window));
+
 	      return TRUE;
 	    }
 	}
@@ -9405,9 +9404,6 @@ update_resize (MetaWindow *window,
       return;
     }
 
-  /* If we get here, it means the client should have redrawn itself */
-  meta_window_set_updates_frozen_for_resize (window, FALSE);
-
   /* Remove any scheduled compensation events */
   if (window->display->grab_resize_timeout_id)
     {
@@ -9616,7 +9612,7 @@ meta_window_update_sync_request_counter (MetaWindow *window,
 
   if (window == window->display->grab_window &&
       meta_grab_op_is_resizing (window->display->grab_op) &&
-      new_counter_value >= window->display->grab_sync_counter_wait_serial &&
+      new_counter_value >= window->sync_request_wait_serial &&
       (!window->extended_sync_request_counter || new_counter_value % 2 == 0))
     {
       meta_topic (META_DEBUG_RESIZING,
@@ -9682,7 +9678,6 @@ meta_window_handle_mouse_grab_op_event (MetaWindow *window,
                                xev->root_x,
                                xev->root_y,
                                TRUE);
-              meta_window_set_updates_frozen_for_resize (window, FALSE);
 
               /* If a tiled window has been dragged free with a
                * mouse resize without snapping back to the tiled
