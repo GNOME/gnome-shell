@@ -1573,7 +1573,6 @@ const MessageTray = new Lang.Class({
                                                    layout_manager: new Clutter.BinLayout() });
         this._notificationWidget.connect('key-release-event', Lang.bind(this, this._onNotificationKeyRelease));
         this._notificationWidget.connect('notify::hover', Lang.bind(this, this._onNotificationHoverChanged));
-        this.actor.add_actor(this._notificationWidget);
 
         this._notificationBin = new St.Bin({ y_expand: true });
         this._notificationBin.set_y_align(Clutter.ActorAlign.START);
@@ -1628,6 +1627,7 @@ const MessageTray = new Lang.Class({
                                                      { keybindingMode: Shell.KeyBindingMode.MESSAGE_TRAY });
         this._grabHelper.addActor(this._summaryBoxPointer.actor);
         this._grabHelper.addActor(this.actor);
+        this._grabHelper.addActor(this._notificationWidget);
 
         Main.layoutManager.connect('keyboard-visible-changed', Lang.bind(this, this._onKeyboardVisibleChanged));
 
@@ -1669,6 +1669,7 @@ const MessageTray = new Lang.Class({
                                                });
 
         Main.layoutManager.trayBox.add_actor(this.actor);
+        Main.layoutManager.trayBox.add_actor(this._notificationWidget);
         Main.layoutManager.trackChrome(this.actor);
         Main.layoutManager.trackChrome(this._notificationWidget);
         Main.layoutManager.trackChrome(this._closeButton);
