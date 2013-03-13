@@ -1290,6 +1290,7 @@ clutter_get_font_map
 ClutterTextDirection
 clutter_get_default_text_direction
 clutter_get_accessibility_enabled
+clutter_disable_accessibility
 
 <SUBSECTION>
 clutter_threads_set_lock_functions
