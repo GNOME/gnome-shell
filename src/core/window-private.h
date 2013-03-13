@@ -364,7 +364,7 @@ struct _MetaWindow
   XSyncCounter sync_request_counter;
   gint64 sync_request_serial;
   gint64 sync_request_wait_serial;
-  GTimeVal sync_request_time;
+  guint sync_request_timeout_id;
   /* alarm monitoring client's _NET_WM_SYNC_REQUEST_COUNTER */
   XSyncAlarm sync_request_alarm;
 #endif

@@ -1020,8 +1020,7 @@ meta_window_new_with_attrs (MetaDisplay       *display,
 #ifdef HAVE_XSYNC
   window->sync_request_counter = None;
   window->sync_request_serial = 0;
-  window->sync_request_time.tv_sec = 0;
-  window->sync_request_time.tv_usec = 0;
+  window->sync_request_timeout_id = 0;
   window->sync_request_alarm = None;
 #endif
 
@@ -1772,6 +1771,12 @@ meta_window_unmanage (MetaWindow  *window,
                   "Unmanaging window %s which has struts, so invalidating work areas\n",
                   window->desc);
       invalidate_work_areas (window);
+    }
+
+  if (window->sync_request_timeout_id)
+    {
+      g_source_remove (window->sync_request_timeout_id);
+      window->sync_request_timeout_id = 0;
     }
 
   if (window->display->grab_window == window)
@@ -4616,6 +4621,38 @@ meta_window_destroy_sync_request_alarm (MetaWindow *window)
 }
 
 #ifdef HAVE_XSYNC
+static gboolean
+sync_request_timeout (gpointer data)
+{
+  MetaWindow *window = data;
+
+  window->sync_request_timeout_id = 0;
+
+  /* We have now waited for more than a second for the
+   * application to respond to the sync request
+   */
+  window->disable_sync = TRUE;
+
+  /* Reset the wait serial, so we don't continue freezing
+   * window updates
+   */
+  window->sync_request_wait_serial = 0;
+  meta_compositor_set_updates_frozen (window->display->compositor, window,
+                                      meta_window_updates_are_frozen (window));
+
+  if (window == window->display->grab_window &&
+      meta_grab_op_is_resizing (window->display->grab_op))
+    {
+      update_resize (window,
+                     window->display->grab_last_user_action_was_snap,
+                     window->display->grab_latest_motion_x,
+                     window->display->grab_latest_motion_y,
+                     TRUE);
+    }
+
+  return FALSE;
+}
+
 static void
 send_sync_request (MetaWindow *window)
 {
@@ -4654,7 +4691,13 @@ send_sync_request (MetaWindow *window)
   XSendEvent (window->display->xdisplay,
 	      window->xwindow, False, 0, (XEvent*) &ev);
 
-  g_get_current_time (&window->sync_request_time);
+  /* We give the window 1 sec to respond to _NET_WM_SYNC_REQUEST;
+   * if this time expires, we consider the window unresponsive
+   * and resize it unsynchonized.
+   */
+  window->sync_request_timeout_id = g_timeout_add (1000,
+                                                   sync_request_timeout,
+                                                   window);
 
   meta_compositor_set_updates_frozen (window->display->compositor, window,
                                       meta_window_updates_are_frozen (window));
@@ -5206,8 +5249,7 @@ meta_window_move_resize_internal (MetaWindow          *window,
           !window->disable_sync &&
           window->sync_request_counter != None &&
 	  window->sync_request_alarm != None &&
-	  window->sync_request_time.tv_usec == 0 &&
-	  window->sync_request_time.tv_sec == 0)
+          window->sync_request_timeout_id == 0)
 	{
 	  send_sync_request (window);
 	}
@@ -8821,81 +8863,39 @@ check_moveresize_frequency (MetaWindow *window,
 			    gdouble    *remaining)
 {
   GTimeVal current_time;
+  const double max_resizes_per_second = 25.0;
+  const double ms_between_resizes = 1000.0 / max_resizes_per_second;
+  double elapsed;
 
   g_get_current_time (&current_time);
 
 #ifdef HAVE_XSYNC
+  /* If we are throttling via _NET_WM_SYNC_REQUEST, we don't need
+   * an artificial timeout-based throttled */
   if (!window->disable_sync &&
       window->sync_request_alarm != None)
-    {
-      if (window->sync_request_time.tv_sec != 0 ||
-	  window->sync_request_time.tv_usec != 0)
-	{
-	  double elapsed =
-	    time_diff (&current_time, &window->sync_request_time);
-
-	  if (elapsed < 1000.0)
-	    {
-	      /* We want to be sure that the timeout happens at
-	       * a time where elapsed will definitely be
-	       * greater than 1000, so we can disable sync
-	       */
-	      if (remaining)
-		*remaining = 1000.0 - elapsed + 100;
-
-	      return FALSE;
-	    }
-	  else
-	    {
-	      /* We have now waited for more than a second for the
-	       * application to respond to the sync request
-	       */
-	      window->disable_sync = TRUE;
-
-              /* Reset the wait serial, so we don't continue freezing
-               * window updates
-               */
-              window->sync_request_wait_serial = 0;
-              meta_compositor_set_updates_frozen (window->display->compositor, window,
-                                                  meta_window_updates_are_frozen (window));
-
-	      return TRUE;
-	    }
-	}
-      else
-	{
-	  /* No outstanding sync requests. Go ahead and resize
-	   */
-	  return TRUE;
-	}
-    }
-  else
+    return TRUE;
 #endif /* HAVE_XSYNC */
+
+  elapsed = time_diff (&current_time, &window->display->grab_last_moveresize_time);
+
+  if (elapsed >= 0.0 && elapsed < ms_between_resizes)
     {
-      const double max_resizes_per_second = 25.0;
-      const double ms_between_resizes = 1000.0 / max_resizes_per_second;
-      double elapsed;
-
-      elapsed = time_diff (&current_time, &window->display->grab_last_moveresize_time);
-
-      if (elapsed >= 0.0 && elapsed < ms_between_resizes)
-	{
-	  meta_topic (META_DEBUG_RESIZING,
-		      "Delaying move/resize as only %g of %g ms elapsed\n",
-		      elapsed, ms_between_resizes);
-
-	  if (remaining)
-	    *remaining = (ms_between_resizes - elapsed);
-
-	  return FALSE;
-	}
-
       meta_topic (META_DEBUG_RESIZING,
-		  " Checked moveresize freq, allowing move/resize now (%g of %g seconds elapsed)\n",
-		  elapsed / 1000.0, 1.0 / max_resizes_per_second);
+                  "Delaying move/resize as only %g of %g ms elapsed\n",
+                  elapsed, ms_between_resizes);
 
-      return TRUE;
+      if (remaining)
+        *remaining = (ms_between_resizes - elapsed);
+
+      return FALSE;
     }
+
+  meta_topic (META_DEBUG_RESIZING,
+              " Checked moveresize freq, allowing move/resize now (%g of %g seconds elapsed)\n",
+              elapsed / 1000.0, 1.0 / max_resizes_per_second);
+
+  return TRUE;
 }
 
 static gboolean
@@ -9625,8 +9625,9 @@ meta_window_update_sync_request_counter (MetaWindow *window,
        * busy with a pagefault or a long computation).
        */
       window->disable_sync = FALSE;
-      window->sync_request_time.tv_sec = 0;
-      window->sync_request_time.tv_usec = 0;
+
+      g_source_remove (window->sync_request_timeout_id);
+      window->sync_request_timeout_id = 0;
 
       /* This means we are ready for another configure;
        * no pointer round trip here, to keep in sync */

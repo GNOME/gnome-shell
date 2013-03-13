@@ -3962,8 +3962,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
            display->grab_window->sync_request_counter != None)
         {
           meta_window_create_sync_request_alarm (display->grab_window);
-          window->sync_request_time.tv_sec = 0;
-          window->sync_request_time.tv_usec = 0;
         }
 #endif
     }
