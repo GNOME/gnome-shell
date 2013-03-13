@@ -7,15 +7,15 @@
 #
 # Tõivo Leedjärv <toivo linux ee>, 2004.
 # Ivar Smolin <okul linux ee>, 2005, 2006, 2009–2011.
-# Mattias Põldaru <mahfiaz@gmail.com>, 2008–2011, 2012.
+# Mattias Põldaru <mahfiaz@gmail.com>, 2008–2011, 2012, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: mutter MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-18 22:30+0000\n"
-"PO-Revision-Date: 2012-12-19 18:06+0300\n"
+"POT-Creation-Date: 2013-03-12 18:53+0000\n"
+"PO-Revision-Date: 2013-03-12 20:55+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
 "Language-Team: Estonian <>\n"
 "Language: et\n"
@@ -132,8 +132,8 @@ msgstr "Varjatud oleku vahetamine"
 msgid "Close window"
 msgstr "Akna sulgemine"
 
-msgid "Minimize window"
-msgstr "Akna minimeerimine"
+msgid "Hide window"
+msgstr "Peida aken"
 
 msgid "Move window"
 msgstr "Akna liigutamine"
@@ -172,6 +172,9 @@ msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr "Teine komposiithaldur juba töötab ekraani %i kuval \"%s\"."
+
+msgid "background texture could not be created from file"
+msgstr "failist polnud võimalik taustatekstuuri luua"
 
 msgid "Bell event"
 msgstr "Helina sündmus"
@@ -213,6 +216,10 @@ msgid ""
 msgstr ""
 "Mõni teine programm juba kasutab klahvi %s koos muuteklahvidega %x "
 "kiirklahvina\n"
+
+#, c-format
+msgid "\"%s\" is not a valid accelerator\n"
+msgstr "\"%s\" pole sobiv kiirklahv\n"
 
 msgid "Disable connection to session manager"
 msgstr "Seansihalduriga ühendumise keelamine"
@@ -548,6 +555,16 @@ msgid ""
 msgstr ""
 "Lohistatava äärise laius. Kui kujunduse nähtavatest ääristest ei piisa, "
 "lisatakse puuduoleva osa jaoks nähtamatu ääris."
+
+msgid "Auto maximize nearly monitor sized windows"
+msgstr "Peaaegu monitori suurused ekraanid maksimeeritakse automaatselt"
+
+msgid ""
+"If enabled, new windows that are initially the size of the monitor "
+"automatically get maximized."
+msgstr ""
+"Kui lubatud, maksimeeritakse automaatselt aknad, mis on avanedes monitori "
+"suurused."
 
 msgid "Select window from tab popup"
 msgstr "Akna valimine tabulaatori hüpikaknalt"
@@ -1417,3 +1434,6 @@ msgstr "y väärtus oli %d, oodati väärtust %d"
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr ""
 "%d koordinaatide avaldis töödeldi %g sekundiga (keskmine %g sekundit)\n"
+
+#~ msgid "Minimize window"
+#~ msgstr "Akna minimeerimine"
