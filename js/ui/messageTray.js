@@ -1557,22 +1557,22 @@ const MessageTray = new Lang.Class({
 
         this.actor = new St.Widget({ name: 'message-tray',
                                      reactive: true,
-                                     track_hover: true,
                                      layout_manager: new Clutter.BinLayout(),
                                      x_expand: true,
                                      y_expand: true,
                                      y_align: Clutter.ActorAlign.START,
                                    });
-        this.actor.connect('notify::hover', Lang.bind(this, this._onTrayHoverChanged));
 
         this._notificationWidget = new St.Widget({ name: 'notification-container',
+                                                   reactive: true,
+                                                   track_hover: true,
                                                    y_align: Clutter.ActorAlign.START,
                                                    x_align: Clutter.ActorAlign.CENTER,
                                                    y_expand: true,
                                                    x_expand: true,
                                                    layout_manager: new Clutter.BinLayout() });
         this._notificationWidget.connect('key-release-event', Lang.bind(this, this._onNotificationKeyRelease));
-
+        this._notificationWidget.connect('notify::hover', Lang.bind(this, this._onNotificationHoverChanged));
         this.actor.add_actor(this._notificationWidget);
 
         this._notificationBin = new St.Bin({ y_expand: true });
@@ -1633,19 +1633,19 @@ const MessageTray = new Lang.Class({
 
         this._trayState = State.HIDDEN;
         this._traySummoned = false;
-        this._useLongerTrayLeftTimeout = false;
+        this._useLongerNotificationLeftTimeout = false;
         this._trayLeftTimeoutId = 0;
 
-        // pointerInTray is sort of a misnomer -- it tracks whether
+        // pointerInNotification is sort of a misnomer -- it tracks whether
         // a message tray notification should expand. The value is
-        // partially driven by the hover state of the tray, but has
+        // partially driven by the hover state of the notification, but has
         // a lot of complex state related to timeouts and the current
         // state of the pointer when a notification pops up.
-        this._pointerInTray = false;
+        this._pointerInNotification = false;
 
-        // This tracks this.actor.hover and is used to fizzle
-        // out non-changing hover notifications in onTrayHoverChanged.
-        this._trayHovered = false;
+        // This tracks this._notificationWidget.hover and is used to fizzle
+        // out non-changing hover notifications in onNotificationHoverChanged.
+        this._notificationHovered = false;
 
         this._keyboardVisible = false;
         this._notificationClosed = false;
@@ -1796,12 +1796,12 @@ const MessageTray = new Lang.Class({
                            y == monitor.y + monitor.height - 1);
         if (shouldDwell) {
             // We only set up dwell timeout when the user is not hovering over the tray
-            // (!this.actor.hover). This avoids bringing up the message tray after the
+            // (!this._notificationHovered). This avoids bringing up the message tray after the
             // user clicks on a notification with the pointer on the bottom pixel
             // of the monitor. The _trayDwelling variable is used so that we only try to
             // fire off one tray dwell - if it fails (because, say, the user has the mouse down),
             // we don't try again until the user moves the mouse up and down again.
-            if (!this._trayDwelling && !this.actor.hover && this._trayDwellTimeoutId == 0) {
+            if (!this._trayDwelling && !this._notificationHovered && this._trayDwellTimeoutId == 0) {
                 // Save the interaction timestamp so we can detect user input
                 let focusWindow = global.display.focus_window;
                 this._trayDwellUserTime = focusWindow ? focusWindow.user_time : 0;
@@ -2024,7 +2024,6 @@ const MessageTray = new Lang.Class({
 
     hide: function() {
         this._traySummoned = false;
-        this.actor.set_hover(false);
         this._updateState();
     },
 
@@ -2091,25 +2090,21 @@ const MessageTray = new Lang.Class({
             this._grabHelper.addActor(corner.actor);
     },
 
-    _onTrayHoverChanged: function() {
-        if (this.actor.hover == this._trayHovered)
+    _onNotificationHoverChanged: function() {
+        if (this._notificationWidget.hover == this._notificationHovered)
             return;
 
-        this._trayHovered = this.actor.hover;
-        if (this._trayHovered) {
+        this._notificationHovered = this._notificationWidget.hover;
+        if (this._notificationHovered) {
             // No dwell inside notifications at the bottom of the screen
             this._cancelTrayDwell();
 
-            // Don't do anything if the one pixel area at the bottom is hovered over while the tray is hidden.
-            if (this._trayState == State.HIDDEN && this._notificationState == State.HIDDEN)
-                return;
-
-            this._useLongerTrayLeftTimeout = false;
-            if (this._trayLeftTimeoutId) {
-                Mainloop.source_remove(this._trayLeftTimeoutId);
-                this._trayLeftTimeoutId = 0;
-                this._trayLeftMouseX = -1;
-                this._trayLeftMouseY = -1;
+            this._useLongerNotificationLeftTimeout = false;
+            if (this._notificationLeftTimeoutId) {
+                Mainloop.source_remove(this._notificationLeftTimeoutId);
+                this._notificationLeftTimeoutId = 0;
+                this._notificationLeftMouseX = -1;
+                this._notificationLeftMouseY = -1;
                 return;
             }
 
@@ -2118,32 +2113,32 @@ const MessageTray = new Lang.Class({
                     global.stage.get_actor_at_pos(Clutter.PickMode.ALL, this._showNotificationMouseX, this._showNotificationMouseY);
                 this._showNotificationMouseX = -1;
                 this._showNotificationMouseY = -1;
-                // Don't set this._pointerInTray to true if the pointer was initially in the area where the notification
+                // Don't set this._pointerInNotification to true if the pointer was initially in the area where the notification
                 // popped up. That way we will not be expanding notifications that happen to pop up over the pointer
                 // automatically. Instead, the user is able to expand the notification by mousing away from it and then
                 // mousing back in. Because this is an expected action, we set the boolean flag that indicates that a longer
                 // timeout should be used before popping down the notification.
                 if (this.actor.contains(actorAtShowNotificationPosition)) {
-                    this._useLongerTrayLeftTimeout = true;
+                    this._useLongerNotificationLeftTimeout = true;
                     return;
                 }
             }
-            this._pointerInTray = true;
+            this._pointerInNotification = true;
             this._updateState();
         } else {
             // We record the position of the mouse the moment it leaves the tray. These coordinates are used in
-            // this._onTrayLeftTimeout() to determine if the mouse has moved far enough during the initial timeout for us
+            // this._onNotificationLeftTimeout() to determine if the mouse has moved far enough during the initial timeout for us
             // to consider that the user intended to leave the tray and therefore hide the tray. If the mouse is still
             // close to its previous position, we extend the timeout once.
             let [x, y, mods] = global.get_pointer();
-            this._trayLeftMouseX = x;
-            this._trayLeftMouseY = y;
+            this._notificationLeftMouseX = x;
+            this._notificationLeftMouseY = y;
 
             // We wait just a little before hiding the message tray in case the user quickly moves the mouse back into it.
             // We wait for a longer period if the notification popped up where the mouse pointer was already positioned.
             // That gives the user more time to mouse away from the notification and mouse back in in order to expand it.
-            let timeout = this._useLongerTrayLeftTimeout ? LONGER_HIDE_TIMEOUT * 1000 : HIDE_TIMEOUT * 1000;
-            this._trayLeftTimeoutId = Mainloop.timeout_add(timeout, Lang.bind(this, this._onTrayLeftTimeout));
+            let timeout = this._useLongerNotificationLeftTimeout ? LONGER_HIDE_TIMEOUT * 1000 : HIDE_TIMEOUT * 1000;
+            this._notificationLeftTimeoutId = Mainloop.timeout_add(timeout, Lang.bind(this, this._onNotificationLeftTimeout));
         }
     },
 
@@ -2167,22 +2162,22 @@ const MessageTray = new Lang.Class({
         this._updateState();
     },
 
-    _onTrayLeftTimeout: function() {
+    _onNotificationLeftTimeout: function() {
         let [x, y, mods] = global.get_pointer();
         // We extend the timeout once if the mouse moved no further than MOUSE_LEFT_ACTOR_THRESHOLD to either side or up.
         // We don't check how far down the mouse moved because any point above the tray, but below the exit coordinate,
         // is close to the tray.
-        if (this._trayLeftMouseX > -1 &&
-            y > this._trayLeftMouseY - MOUSE_LEFT_ACTOR_THRESHOLD &&
-            x < this._trayLeftMouseX + MOUSE_LEFT_ACTOR_THRESHOLD &&
-            x > this._trayLeftMouseX - MOUSE_LEFT_ACTOR_THRESHOLD) {
-            this._trayLeftMouseX = -1;
-            this._trayLeftTimeoutId = Mainloop.timeout_add(LONGER_HIDE_TIMEOUT * 1000,
-                                                             Lang.bind(this, this._onTrayLeftTimeout));
+        if (this._notificationLeftMouseX > -1 &&
+            y > this._notificationLeftMouseY - MOUSE_LEFT_ACTOR_THRESHOLD &&
+            x < this._notificationLeftMouseX + MOUSE_LEFT_ACTOR_THRESHOLD &&
+            x > this._notificationLeftMouseX - MOUSE_LEFT_ACTOR_THRESHOLD) {
+            this._notificationLeftMouseX = -1;
+            this._notificationLeftTimeoutId = Mainloop.timeout_add(LONGER_HIDE_TIMEOUT * 1000,
+                                                             Lang.bind(this, this._onNotificationLeftTimeout));
         } else {
-            this._trayLeftTimeoutId = 0;
-            this._useLongerTrayLeftTimeout = false;
-            this._pointerInTray = false;
+            this._notificationLeftTimeoutId = 0;
+            this._useLongerNotificationLeftTimeout = false;
+            this._pointerInNotification = false;
             this._updateNotificationTimeout(0);
             this._updateState();
         }
@@ -2190,7 +2185,7 @@ const MessageTray = new Lang.Class({
     },
 
     _escapeTray: function() {
-        this._pointerInTray = false;
+        this._pointerInNotification = false;
         this._traySummoned = false;
         this._setClickedSummaryItem(null);
         this._updateNotificationTimeout(0);
@@ -2199,7 +2194,7 @@ const MessageTray = new Lang.Class({
 
     // All of the logic for what happens when occurs here; the various
     // event handlers merely update variables such as
-    // 'this._pointerInTray', 'this._traySummoned', etc, and
+    // 'this._pointerInNotification', 'this._traySummoned', etc, and
     // _updateState() figures out what (if anything) needs to be done
     // at the present time.
     _updateState: function() {
@@ -2210,7 +2205,7 @@ const MessageTray = new Lang.Class({
         let notificationsLimited = this._busy || Main.layoutManager.bottomMonitor.inFullscreen;
         let notificationsPending = notificationQueue.length > 0 && (!notificationsLimited || notificationUrgent || notificationForFeedback) && Main.sessionMode.hasNotifications;
         let nextNotification = notificationQueue.length > 0 ? notificationQueue[0] : null;
-        let notificationPinned = this._pointerInTray && !this._notificationRemoved;
+        let notificationPinned = this._pointerInNotification && !this._notificationRemoved;
         let notificationExpanded = this._notification && this._notification.expanded;
         let notificationExpired = this._notificationTimeoutId == 0 &&
                                   !(this._notification && this._notification.urgency == Urgency.CRITICAL) &&
@@ -2428,7 +2423,7 @@ const MessageTray = new Lang.Class({
         let [x, y, mods] = global.get_pointer();
         // We save the position of the mouse at the time when we started showing the notification
         // in order to determine if the notification popped up under it. We make that check if
-        // the user starts moving the mouse and _onTrayHoverChanged() gets called. We don't
+        // the user starts moving the mouse and _onNotificationHoverChanged() gets called. We don't
         // expand the notification if it just happened to pop up under the mouse unless the user
         // explicitly mouses away from it and then mouses back in.
         this._showNotificationMouseX = x;
@@ -2490,13 +2485,13 @@ const MessageTray = new Lang.Class({
 
     _notificationTimeout: function() {
         let [x, y, mods] = global.get_pointer();
-        if (y > this._lastSeenMouseY + 10 && !this.actor.hover) {
+        if (y > this._lastSeenMouseY + 10 && !this._notificationHovered) {
             // The mouse is moving towards the notification, so don't
             // hide it yet. (We just create a new timeout (and destroy
             // the old one) each time because the bookkeeping is
             // simpler.)
             this._updateNotificationTimeout(1000);
-        } else if (this._useLongerTrayLeftTimeout && !this._trayLeftTimeoutId &&
+        } else if (this._useLongerNotificationLeftTimeout && !this._notificationLeftTimeoutId &&
                   (x != this._lastSeenMouseX || y != this._lastSeenMouseY)) {
             // Refresh the timeout if the notification originally
             // popped up under the pointer, and the pointer is hovering
@@ -2540,12 +2535,12 @@ const MessageTray = new Lang.Class({
             this._notificationUnfocusedId = 0;
         }
 
-        this._useLongerTrayLeftTimeout = false;
-        if (this._trayLeftTimeoutId) {
-            Mainloop.source_remove(this._trayLeftTimeoutId);
-            this._trayLeftTimeoutId = 0;
-            this._trayLeftMouseX = -1;
-            this._trayLeftMouseY = -1;
+        this._useLongerNotificationLeftTimeout = false;
+        if (this._notificationLeftTimeoutId) {
+            Mainloop.source_remove(this._notificationLeftTimeoutId);
+            this._notificationLeftTimeoutId = 0;
+            this._notificationLeftMouseX = -1;
+            this._notificationLeftMouseY = -1;
         }
 
         if (this._notificationRemoved) {
@@ -2575,14 +2570,9 @@ const MessageTray = new Lang.Class({
         if (notification.isTransient)
             notification.destroy(NotificationDestroyedReason.EXPIRED);
 
-        this._notificationRemoved = false;
         this._closeButton.hide();
-        this._pointerInTray = false;
-
-        // Clutter will send a leave-event the next time the mouse
-        // moves, but we need to set this here now to update the
-        // state machine.
-        this.actor.hover = false;
+        this._pointerInNotification = false;
+        this._notificationRemoved = false;
         this._notificationBin.child = null;
         this._notificationWidget.hide();
     },
