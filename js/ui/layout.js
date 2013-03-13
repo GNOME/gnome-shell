@@ -833,6 +833,11 @@ const LayoutManager = new Lang.Class({
     },
 
     _updateVisibility: function() {
+        let windowsVisible = Main.sessionMode.hasWindows && !this._inOverview;
+
+        global.window_group.visible = windowsVisible;
+        global.top_window_group.visible = windowsVisible;
+
         for (let i = 0; i < this._trackedActors.length; i++) {
             let actorData = this._trackedActors[i], visible;
             if (!actorData.trackFullscreen)
@@ -840,7 +845,7 @@ const LayoutManager = new Lang.Class({
             if (!actorData.isToplevel)
                 continue;
 
-            if (this._inOverview || !Main.sessionMode.hasWindows)
+            if (!windowsVisible)
                 visible = true;
             else if (this.findMonitorForActor(actorData.actor).inFullscreen)
                 visible = false;
