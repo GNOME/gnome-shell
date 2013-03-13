@@ -1598,7 +1598,6 @@ const MessageTray = new Lang.Class({
         this.actor.add_actor(this._summary);
 
         this._summaryMotionId = 0;
-        this._trayMotionId = 0;
 
         this._summaryBoxPointer = new BoxPointer.BoxPointer(St.Side.BOTTOM,
                                                             { reactive: true,
@@ -1670,7 +1669,6 @@ const MessageTray = new Lang.Class({
                                                });
 
         Main.layoutManager.trayBox.add_actor(this.actor);
-        this.actor.y = 0;
         Main.layoutManager.trackChrome(this.actor);
         Main.layoutManager.trackChrome(this._notificationWidget);
         Main.layoutManager.trackChrome(this._closeButton);
@@ -2708,10 +2706,8 @@ const MessageTray = new Lang.Class({
             this._clickedSummaryItem.actor.remove_style_pseudo_class('selected');
             this._clickedSummaryItem.actor.disconnect(this._clickedSummaryItemAllocationChangedId);
             this._summary.disconnect(this._summaryMotionId);
-            Main.layoutManager.trayBox.disconnect(this._trayMotionId);
             this._clickedSummaryItemAllocationChangedId = 0;
             this._summaryMotionId = 0;
-            this._trayMotionId = 0;
         }
 
         this._clickedSummaryItem = item;
@@ -2726,8 +2722,6 @@ const MessageTray = new Lang.Class({
             // _clickedSummaryItem.actor can change absolute position without changing allocation
             this._summaryMotionId = this._summary.connect('allocation-changed',
                                                           Lang.bind(this, this._adjustSummaryBoxPointerPosition));
-            this._trayMotionId = Main.layoutManager.trayBox.connect('notify::anchor-y',
-                                                                    Lang.bind(this, this._adjustSummaryBoxPointerPosition));
         }
 
         return true;
