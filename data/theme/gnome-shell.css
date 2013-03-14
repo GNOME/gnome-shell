@@ -974,7 +974,7 @@ StScrollBar StButton#vhandle:active {
     color:white;
 }
 
-.app-display .app-well-app:hover > .overview-icon {
+.app-display .app-well-app > .overview-icon {
     border-radius: 10px;
 }
 
