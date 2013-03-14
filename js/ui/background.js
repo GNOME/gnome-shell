@@ -407,7 +407,7 @@ const Background = new Lang.Class({
                                           style: this._style,
                                           filename: files[i],
                                           cancellable: this._cancellable,
-                                          onFinished: Lang.bind(this, function(content) {
+                                          onFinished: Lang.bind(this, function(content, i) {
                                               numPendingImages--;
 
                                               if (!content) {
@@ -427,7 +427,7 @@ const Background = new Lang.Class({
                                                   this._setLoaded();
                                                   this._updateAnimationProgress();
                                               }
-                                          })
+                                          }, i)
                                         });
         }
     },
