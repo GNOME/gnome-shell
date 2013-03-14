@@ -2110,9 +2110,9 @@ const PopupMenuManager = new Lang.Class({
     },
 
     get activeMenu() {
-        let actor = this._grabHelper.currentGrab.actor;
-        if (actor)
-            return actor._delegate;
+        let firstGrab = this._grabHelper.grabStack[0];
+        if (firstGrab)
+            return firstGrab.actor._delegate;
         else
             return null;
     },
