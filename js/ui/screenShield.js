@@ -502,6 +502,7 @@ const ScreenShield = new Lang.Class({
         this._screenSaverDBus = new ShellDBus.ScreenSaverDBus(this);
 
         this._inhibitor = null;
+        this._aboutToSuspend = false;
         this._loginManager = LoginManager.getLoginManager();
         this._loginManager.connect('prepare-for-sleep',
                                    Lang.bind(this, this._prepareForSleep));
@@ -644,6 +645,8 @@ const ScreenShield = new Lang.Class({
     },
 
     _prepareForSleep: function(loginManager, aboutToSuspend) {
+        this._aboutToSuspend = aboutToSuspend;
+
         if (aboutToSuspend) {
             if (!this._settings.get_boolean(LOCK_ENABLED_KEY)) {
                 this._uninhibitSuspend();
@@ -999,7 +1002,8 @@ const ScreenShield = new Lang.Class({
         if (prevIsActive != this._isActive)
             this.emit('active-changed');
 
-        this._uninhibitSuspend();
+        if (this._aboutToSuspend)
+            this._uninhibitSuspend();
 
         this.emit('lock-screen-shown');
     },
