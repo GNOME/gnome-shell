@@ -356,7 +356,10 @@ const Background = new Lang.Class({
 
         let actor = new Meta.BackgroundActor();
         actor.content = content;
-        this.actor.insert_child_at_index(actor, index);
+
+        // The background pattern is the first actor in
+        // the group, and all images should be above that.
+        this.actor.insert_child_at_index(actor, index + 1);
 
         this._images[index] = actor;
         this._watchCacheFile(filename);
