@@ -703,7 +703,7 @@ const InputSourceIndicator = new Lang.Class({
                 item.prop = prop;
                 item.connect('activate', Lang.bind(this, function() {
                     this._ibusManager.activateProperty(item.prop.get_key(),
-                                                       IBus.PropState.CHECKED);
+                                                       item.prop.get_state());
                 }));
                 break;
 
