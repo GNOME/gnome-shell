@@ -222,6 +222,8 @@ const LayoutManager = new Lang.Class({
                               Lang.bind(this, this._windowsRestacked));
         global.screen.connect('monitors-changed',
                               Lang.bind(this, this._monitorsChanged));
+        global.screen.connect('in-fullscreen-changed',
+                              Lang.bind(this, this._updateFullscreen));
         this._monitorsChanged();
     },
 
@@ -894,185 +896,26 @@ const LayoutManager = new Lang.Class({
         });
     },
 
-   _disconnectTopActor: function(window) {
-       /* O-R status is immutable in Mutter */
-       if (window.metaWindow.is_override_redirect()) {
-           window.disconnect(window._topActorPositionChangedId);
-           delete window._topActorPositionChangedId;
-           window.disconnect(window._topActorSizeChangedId);
-           delete window._topActorSizeChangedId;
-       }
-   },
-
-   _disconnectTopWindow: function(metaWindow) {
-       metaWindow.disconnect(metaWindow._topActorUnmanagedId);
-       delete window._topActorUnmanagedId;
-       metaWindow.disconnect(metaWindow._topActorNotifyFullscreenId);
-       delete window._topActorNotifyFullscreenId;
-   },
-
-    _topActorUnmanaged: function(metaWindow, window) {
-        /* Actor is already destroyed, so don't disconnect it */
-        this._disconnectTopWindow(metaWindow);
-
-        let i = this._topActors.indexOf(window);
-        this._topActors.splice(i, 1);
-    },
-
-    _topActorChanged: function() {
-        this._windowsRestacked();
-    },
-
     _updateFullscreen: function() {
-        // Ordinary chrome should be visible unless the top window in
-        // the stack is monitor sized. We allow override-redirect
-        // windows to be above this "top window" because there can be
-        // O-R windows that are offscreen, or otherwise have no
-        // semantic meaning to the user.
-        //
-        // If we wanted to be extra clever, we could figure out when
-        // an OVERRIDE_REDIRECT window was trying to partially overlap
-        // us, and then adjust the input region and our clip region
-        // accordingly...
-
-        // @windows is sorted bottom to top.
-        let windows = this._getWindowActorsForWorkspace(global.screen.get_active_workspace());
-
-        // Reset all monitors to not fullscreen
         for (let i = 0; i < this.monitors.length; i++)
-            this.monitors[i].inFullscreen = false;
+            this.monitors[i].inFullscreen = global.screen.get_monitor_in_fullscreen (i);
 
-        let oldTopActors = this._topActors;
-        let newTopActors = [];
+        this._updateVisibility();
+        this._queueUpdateRegions();
 
-        for (let i = windows.length - 1; i > -1; i--) {
-            let window = windows[i];
-            let metaWindow = window.meta_window;
-
-            // Because we are working with the list of actors, not the list of
-            // windows, we have an uncomfortable corner case to deal with.
-            // If a window is being hidden, it's actor will be left on top
-            // of the actor stack until any animation is done. (See
-            // meta_compositor_sync_stack()). These windows are actually at
-            // the bottom of the window stack, so if they return and become
-            // relevant again, we'll get another ::restacked signal, so we
-            // can just ignore them. This check *DOES NOT* handle destroyed
-            // windows correctly, but we don't currently animate such windows.
-            // If bugs show up here, instead of making this more complex,
-            // add a function to get the window stack from MetaStackTracker.
-            if (!metaWindow.showing_on_its_workspace ())
-                continue;
-
-            newTopActors.push(window);
-
-            if (metaWindow.is_monitor_sized()) {
-                if (metaWindow.is_screen_sized()) {
-                    for (let i = 0; i < this.monitors.length; i++)
-                        this.monitors[i].inFullscreen = true;
-                } else {
-                    let monitors = metaWindow.get_all_monitors();
-                    for (let i = 0; i < monitors.length; i++) {
-                        let index = monitors[i];
-                        this.monitors[index].inFullscreen = true;
-                    }
-                }
-                break;
-            }
-
-            if (!window.is_override_redirect())
-                break;
-        }
-
-        // Deal with windows being added or removed from the "top actors" set.
-        // These are the actors that a change to could cause a change in
-        // our computed fullscreen status without a change in the stack.
-        for (let i = 0; i < oldTopActors.length; i++) {
-            let window = oldTopActors[i];
-            if (newTopActors.indexOf(window) < 0) {
-                this._disconnectTopActor(window);
-                this._disconnectTopWindow(window.metaWindow);
-            }
-        }
-
-        for (let i = 0; i < newTopActors.length; i++) {
-            let window = newTopActors[i];
-
-            if (oldTopActors.indexOf(window) < 0) {
-                window.metaWindow._topActorUnmanagedId =
-                    window.metaWindow.connect('unmanaged',
-                                              Lang.bind(this, this._topActorUnmanaged, window));
-                window.metaWindow._topActorNotifyFullscreenId =
-                    window.metaWindow.connect('notify::fullscreen',
-                                              Lang.bind(this, this._topActorChanged));
-
-                /* In almost all cases, meta_window_is_monitor_size() depends
-                 * on position only for O-R windows. The remaining case is a non-OR,
-                 * non-fullscreen window which is screen sized. That is highly
-                 * unlikely and probably should be excluded in
-                 * meta_window_is_monitor_size().
-                 */
-                if (window.metaWindow.is_override_redirect()) {
-                    window._topActorPositionChangedId =
-                        window.connect('position-changed',
-                                       Lang.bind(this, this._topActorChanged));
-                    window._topActorSizeChangedId =
-                        window.connect('size-changed',
-                                       Lang.bind(this, this._topActorChanged));
-                }
-            }
-        }
-
-        this._topActors = newTopActors;
+        this.emit('fullscreen-changed');
     },
 
     _windowsRestacked: function() {
-        let wasInFullscreen = [];
-        for (let i = 0; i < this.monitors.length; i++)
-            wasInFullscreen[i] = this.monitors[i].inFullscreen;
-
-        let primaryWasInFullscreen = this.primaryMonitor.inFullscreen;
-
-        this._updateFullscreen();
-
         let changed = false;
-        for (let i = 0; i < wasInFullscreen.length; i++) {
-            if (wasInFullscreen[i] != this.monitors[i].inFullscreen) {
-                changed = true;
-                break;
-            }
-        }
 
-        if (!changed && (this._isPopupWindowVisible != global.top_window_group.get_children().some(isPopupMetaWindow)))
+        if (this._isPopupWindowVisible != global.top_window_group.get_children().some(isPopupMetaWindow))
             changed = true;
 
         if (changed) {
             this._updateVisibility();
             this._queueUpdateRegions();
         }
-
-        if (primaryWasInFullscreen != this.primaryMonitor.inFullscreen) {
-            let windows = this._getWindowActorsForWorkspace(global.screen.get_active_workspace());
-            for (let i = 0; i < windows.length; i++) {
-                let window = windows[i];
-                let metaWindow = window.meta_window;
-
-                // Skip minimized windows
-                if (!metaWindow.showing_on_its_workspace())
-                    continue;
-
-                // Skip windows that aren't on the primary monitor
-                if (!metaWindow.is_on_primary_monitor())
-                    continue;
-
-                // Minimize monitor sized windows that are not focused
-                if (metaWindow.is_monitor_sized() &&
-                    !metaWindow.appears_focused)
-                    metaWindow.minimize();
-            }
-        }
-
-        if (changed)
-            this.emit('fullscreen-changed');
     },
 
     _updateRegions: function() {
