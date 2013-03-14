@@ -442,8 +442,11 @@ const Background = new Lang.Class({
         if (!this._animation.duration)
             return;
 
+        let nSteps = 255 / ANIMATION_OPACITY_STEP_INCREMENT;
+        let timePerStep = (this._animation.duration * 1000) / nSteps;
+
         let interval = Math.max(ANIMATION_MIN_WAKEUP_INTERVAL * 1000,
-                                ANIMATION_OPACITY_STEP_INCREMENT / this._animation.duration);
+                                timePerStep);
         this._animationUpdateTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                                                       interval,
                                                       Lang.bind(this, function() {
