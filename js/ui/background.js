@@ -387,7 +387,7 @@ const Background = new Lang.Class({
         this._animation.update(this._layoutManager.monitors[this._monitorIndex]);
         let files = this._animation.keyFrameFiles;
 
-        if (!files) {
+        if (files.length == 0) {
             this._setLoaded();
             this._queueUpdateAnimation();
             return;
