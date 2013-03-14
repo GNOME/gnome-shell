@@ -440,11 +440,11 @@ const Background = new Lang.Class({
         if (!this._cancellable || this._cancellable.is_cancelled())
             return;
 
-        if (!this._animation.duration)
+        if (!this._animation.transitionDuration)
             return;
 
         let nSteps = 255 / ANIMATION_OPACITY_STEP_INCREMENT;
-        let timePerStep = (this._animation.duration * 1000) / nSteps;
+        let timePerStep = (this._animation.transitionDuration * 1000) / nSteps;
 
         let interval = Math.max(ANIMATION_MIN_WAKEUP_INTERVAL * 1000,
                                 timePerStep);
@@ -591,8 +591,8 @@ const Animation = new Lang.Class({
 
         this.filename = params.filename;
         this.keyFrameFiles = [];
-        this.duration = 0.0;
         this.transitionProgress = 0.0;
+        this.transitionDuration = 0.0;
         this.loaded = false;
     },
 
@@ -604,7 +604,6 @@ const Animation = new Lang.Class({
         this._show.load_async(null,
                               Lang.bind(this,
                                         function(object, result) {
-                                            this.duration = this._show.get_total_duration();
                                             this.loaded = true;
                                             if (callback)
                                                 callback();
@@ -622,6 +621,7 @@ const Animation = new Lang.Class({
 
         let [progress, duration, isFixed, file1, file2] = this._show.get_current_slide(monitor.width, monitor.height);
 
+        this.transitionDuration = duration;
         this.transitionProgress = progress;
 
         if (file1)
