@@ -2,15 +2,15 @@
 # Copyright (C) 2011, 2012 cogl's the Free Software Foundation.
 # This file is distributed under the same license as the cogl package.
 # Luca Ferretti <lferrett@gnome.org>, 2011.
-# Milo Casagrande <milo@ubuntu.com>, 2012.
+# Milo Casagrande <milo@ubuntu.com>, 2012, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: cogl\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2012-09-29 17:56+0200\n"
-"PO-Revision-Date: 2012-09-29 18:01+0200\n"
+"POT-Creation-Date: 2013-03-14 10:46+0100\n"
+"PO-Revision-Date: 2013-03-14 10:59+0100\n"
 "Last-Translator: Milo Casagrande <milo@ubuntu.com>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
 "Language: \n"
@@ -69,7 +69,7 @@ msgstr "Mostra le opzioni Cogl"
 #: ../cogl/cogl-debug-options.h:168 ../cogl/cogl-debug-options.h:184
 #: ../cogl/cogl-debug-options.h:189
 msgid "Cogl Tracing"
-msgstr "Tracing di Cogl"
+msgstr "Esegue il trace di Cogl"
 
 #: ../cogl/cogl-debug-options.h:27
 msgid "CoglObject references"
@@ -77,23 +77,23 @@ msgstr "Riferimenti CoglObject"
 
 #: ../cogl/cogl-debug-options.h:28
 msgid "Debug ref counting issues for CoglObjects"
-msgstr ""
+msgstr "Debug del conteggio riferimenti per CoglObjects"
 
 #: ../cogl/cogl-debug-options.h:32
 msgid "Trace Texture Slicing"
-msgstr ""
+msgstr "Trace di Texture Slicing"
 
 #: ../cogl/cogl-debug-options.h:33
 msgid "debug the creation of texture slices"
-msgstr ""
+msgstr "Esegue il debug della creazione di porzioni di texture"
 
 #: ../cogl/cogl-debug-options.h:37
 msgid "Trace Atlas Textures"
-msgstr ""
+msgstr "Trace di Atlas Textures"
 
 #: ../cogl/cogl-debug-options.h:38
 msgid "Debug texture atlas management"
-msgstr ""
+msgstr "Esegue il debug della gestione dello texture atlas"
 
 #: ../cogl/cogl-debug-options.h:42
 msgid "Trace Blend Strings"
@@ -101,15 +101,15 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:43
 msgid "Debug CoglBlendString parsing"
-msgstr ""
+msgstr "Esegue il debug dell'analisi di CoglBlendString"
 
 #: ../cogl/cogl-debug-options.h:47
 msgid "Trace Journal"
-msgstr ""
+msgstr "Trace del Journal"
 
 #: ../cogl/cogl-debug-options.h:48
 msgid "View all the geometry passing through the journal"
-msgstr ""
+msgstr "Visualizza tutte le geometrie che transitano per il journal"
 
 #: ../cogl/cogl-debug-options.h:52
 msgid "Trace Batching"
@@ -121,11 +121,11 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:57
 msgid "Trace matrices"
-msgstr "Traccia matrici"
+msgstr "Trace delle matrici"
 
 #: ../cogl/cogl-debug-options.h:58
 msgid "Trace all matrix manipulation"
-msgstr ""
+msgstr "Esegue il trace delle manipolazioni delle matrici"
 
 #: ../cogl/cogl-debug-options.h:63
 msgid "Trace Misc Drawing"
@@ -137,19 +137,19 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:68
 msgid "Trace Pango Renderer"
-msgstr ""
+msgstr "Trace di Pango Renderer"
 
 #: ../cogl/cogl-debug-options.h:69
 msgid "Trace the Cogl Pango renderer"
-msgstr ""
+msgstr "Esegue il trace del render Pango di Cogl"
 
 #: ../cogl/cogl-debug-options.h:73
 msgid "Trace CoglTexturePixmap backend"
-msgstr ""
+msgstr "Trace del backend CoglTexturePixmap"
 
 #: ../cogl/cogl-debug-options.h:74
 msgid "Trace the Cogl texture pixmap backend"
-msgstr ""
+msgstr "Esegue il trace del backend di Cogl per texture pixmap"
 
 #: ../cogl/cogl-debug-options.h:76 ../cogl/cogl-debug-options.h:81
 msgid "Visualize"
@@ -192,19 +192,19 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:93
 msgid "Disable GL Vertex Buffers"
-msgstr ""
+msgstr "Disabilita GL Vertex Buffers"
 
 #: ../cogl/cogl-debug-options.h:94
 msgid "Disable use of OpenGL vertex buffer objects"
-msgstr ""
+msgstr "Disabilita l'uso di oggetti vertex buffer OpenGL"
 
 #: ../cogl/cogl-debug-options.h:98
 msgid "Disable GL Pixel Buffers"
-msgstr ""
+msgstr "Disabilita GL Pixel Buffers"
 
 #: ../cogl/cogl-debug-options.h:99
 msgid "Disable use of OpenGL pixel buffer objects"
-msgstr ""
+msgstr "Disabilita l'uso di oggetti pixel buffer OpenGL"
 
 #: ../cogl/cogl-debug-options.h:103
 msgid "Disable software rect transform"
@@ -216,27 +216,27 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:106
 msgid "Cogl Specialist"
-msgstr ""
+msgstr "Cogl specialist"
 
 #: ../cogl/cogl-debug-options.h:108
 msgid "Dump atlas images"
-msgstr ""
+msgstr "Dump delle immagini atlas"
 
 #: ../cogl/cogl-debug-options.h:109
 msgid "Dump texture atlas changes to an image file"
-msgstr ""
+msgstr "Esegue il dump su un file delle modifiche allo texture atlas"
 
 #: ../cogl/cogl-debug-options.h:113
 msgid "Disable texture atlasing"
-msgstr ""
+msgstr "Disabilita aliasing delle texture"
 
 #: ../cogl/cogl-debug-options.h:114
 msgid "Disable use of texture atlasing"
-msgstr ""
+msgstr "Disabilita l'utilizzo di aliasing delle texture"
 
 #: ../cogl/cogl-debug-options.h:118
 msgid "Disable sharing the texture atlas between text and images"
-msgstr ""
+msgstr "Disabilita la condivisione dello texture atlas tra testo e immagini"
 
 #: ../cogl/cogl-debug-options.h:119
 msgid ""
@@ -278,15 +278,15 @@ msgstr "Disabilita l'uso di GLSL"
 
 #: ../cogl/cogl-debug-options.h:144
 msgid "Disable blending"
-msgstr ""
+msgstr "Disabilita blending"
 
 #: ../cogl/cogl-debug-options.h:145
 msgid "Disable use of blending"
-msgstr ""
+msgstr "Disabilita l'uso del blending"
 
 #: ../cogl/cogl-debug-options.h:149
 msgid "Disable non-power-of-two textures"
-msgstr ""
+msgstr "Disabilita texture non-power-of-two"
 
 #: ../cogl/cogl-debug-options.h:150
 msgid ""
@@ -316,7 +316,7 @@ msgstr "Traccia OpenGL"
 
 #: ../cogl/cogl-debug-options.h:166
 msgid "Traces some select OpenGL calls"
-msgstr ""
+msgstr "Eseguire il trace di alcune chiamante OpenGL"
 
 #: ../cogl/cogl-debug-options.h:170
 msgid "Trace offscreen support"
@@ -328,7 +328,7 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:175
 msgid "Disable program caches"
-msgstr ""
+msgstr "Disabilita le cache del programma"
 
 #: ../cogl/cogl-debug-options.h:176
 msgid "Disable fallback caches for arbfp and glsl programs"
@@ -336,7 +336,7 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:180
 msgid "Disable read pixel optimization"
-msgstr ""
+msgstr "Disabilita ottimizzazione lettura pixel"
 
 #: ../cogl/cogl-debug-options.h:181
 msgid ""
@@ -353,7 +353,7 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:191
 msgid "Trace performance concerns"
-msgstr ""
+msgstr "Eseguire il trace delle prestazioni"
 
 #: ../cogl/cogl-debug-options.h:192
 msgid "Tries to highlight sub-optimal Cogl usage."
