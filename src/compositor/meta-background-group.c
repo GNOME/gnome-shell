@@ -7,7 +7,7 @@
 #include "meta-background-actor-private.h"
 #include "meta-background-group-private.h"
 
-G_DEFINE_TYPE (MetaBackgroundGroup, meta_background_group, CLUTTER_TYPE_GROUP);
+G_DEFINE_TYPE (MetaBackgroundGroup, meta_background_group, CLUTTER_TYPE_ACTOR);
 
 struct _MetaBackgroundGroupPrivate
 {

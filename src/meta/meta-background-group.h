@@ -8,7 +8,7 @@
 /**
  * MetaBackgroundGroup:
  *
- * This class is a subclass of ClutterGroup with special handling for
+ * This class is a subclass of ClutterActor with special handling for
  * MetaBackgroundActor when painting the group. It makes sure to only
  * draw the parts of the backgrounds not occluded by opaque windows.
  *
@@ -29,12 +29,12 @@ typedef struct _MetaBackgroundGroupPrivate MetaBackgroundGroupPrivate;
 
 struct _MetaBackgroundGroupClass
 {
-  ClutterGroupClass parent_class;
+  ClutterActorClass parent_class;
 };
 
 struct _MetaBackgroundGroup
 {
-  ClutterGroup parent;
+  ClutterActor parent;
 
   MetaBackgroundGroupPrivate *priv;
 };
