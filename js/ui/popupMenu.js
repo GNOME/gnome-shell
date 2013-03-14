@@ -2086,7 +2086,7 @@ const PopupMenuManager = new Lang.Class({
     },
 
     removeMenu: function(menu) {
-        if (menu == this._activeMenu)
+        if (menu == this.activeMenu)
             this._closeMenu(menu);
 
         let position = this._findMenu(menu);
