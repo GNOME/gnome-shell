@@ -784,6 +784,9 @@ meta_compositor_window_shape_changed (MetaCompositor *compositor,
 {
   MetaWindowActor *window_actor;
   window_actor = META_WINDOW_ACTOR (meta_window_get_compositor_private (window));
+  if (!window_actor)
+    return;
+
   meta_window_actor_update_shape (window_actor);
 }
 
