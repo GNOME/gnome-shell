@@ -443,14 +443,16 @@ const Calendar = new Lang.Class({
         this.actor.add(this._topBox,
                        { row: 0, col: 0, col_span: offsetCols + 7 });
 
-        let back = new St.Button({ style_class: 'calendar-change-month-back' });
+        let back = new St.Button({ style_class: 'calendar-change-month-back',
+                                   can_focus: true });
         this._topBox.add(back);
         back.connect('clicked', Lang.bind(this, this._onPrevMonthButtonClicked));
 
         this._monthLabel = new St.Label({style_class: 'calendar-month-label'});
         this._topBox.add(this._monthLabel, { expand: true, x_fill: false, x_align: St.Align.MIDDLE });
 
-        let forward = new St.Button({ style_class: 'calendar-change-month-forward' });
+        let forward = new St.Button({ style_class: 'calendar-change-month-forward',
+                                      can_focus: true });
         this._topBox.add(forward);
         forward.connect('clicked', Lang.bind(this, this._onNextMonthButtonClicked));
 
@@ -590,7 +592,8 @@ const Calendar = new Lang.Class({
         // nRows here means 6 weeks + one header + one navbar
         let nRows = 8;
         while (row < 8) {
-            let button = new St.Button({ label: iter.getDate().toString() });
+            let button = new St.Button({ label: iter.getDate().toString(),
+                                         can_focus: true });
             let rtl = button.get_text_direction() == Clutter.TextDirection.RTL;
 
             if (this._eventSource.isDummy)

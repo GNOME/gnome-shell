@@ -90,12 +90,10 @@ const DateMenuButton = new Lang.Class({
 
         this._openCalendarItem = new PopupMenu.PopupMenuItem(_("Open Calendar"));
         this._openCalendarItem.connect('activate', Lang.bind(this, this._onOpenCalendarActivate));
-        this._openCalendarItem.actor.can_focus = false;
         vbox.add(this._openCalendarItem.actor, {y_align: St.Align.END, expand: true, y_fill: false});
 
         this._openClocksItem = new PopupMenu.PopupMenuItem(_("Open Clocks"));
         this._openClocksItem.connect('activate', Lang.bind(this, this._onOpenClocksActivate));
-        this._openClocksItem.actor.can_focus = false;
         vbox.add(this._openClocksItem.actor, {y_align: St.Align.END, expand: true, y_fill: false});
 
         Shell.AppSystem.get_default().connect('installed-changed',
@@ -105,7 +103,6 @@ const DateMenuButton = new Lang.Class({
         item = this.menu.addSettingsAction(_("Date & Time Settings"), 'gnome-datetime-panel.desktop');
         if (item) {
             item.actor.show_on_set_parent = false;
-            item.actor.can_focus = false;
             item.actor.reparent(vbox);
             this._dateAndTimeSeparator = separator;
         }
