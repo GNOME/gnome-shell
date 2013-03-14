@@ -10,13 +10,15 @@
 /**
  * MetaWindowGroup:
  *
- * This class is a subclass of ClutterGroup with special handling for
- * MetaWindowActor when painting the group. When we are painting a stack
- * of 5-10 maximized windows, the standard bottom-to-top method of
- * drawing every actor results in a tremendous amount of overdraw
- * and can easily max out the available memory bandwidth on a low-end
- * graphics chipset. It's even worse if window textures are being accessed
- * over the AGP bus.
+ * This class is a subclass of ClutterActor with special handling for
+ * MetaWindowActor/MetaBackgroundActor/MetaBackgroundGroup when painting
+ * children.
+ *
+ * When we are painting a stack of 5-10 maximized windows, the
+ * standard bottom-to-top method of drawing every actor results in a
+ * tremendous amount of overdraw and can easily max out the available
+ * memory bandwidth on a low-end graphics chipset. It's even worse if
+ * window textures are being accessed over the AGP bus.
  *
  * The basic technique applied here is to do a pre-pass before painting
  * where we walk window from top to bottom and compute the visible area

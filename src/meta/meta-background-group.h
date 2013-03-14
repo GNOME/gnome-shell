@@ -9,8 +9,9 @@
  * MetaBackgroundGroup:
  *
  * This class is a subclass of ClutterActor with special handling for
- * MetaBackgroundActor when painting the group. It makes sure to only
- * draw the parts of the backgrounds not occluded by opaque windows.
+ * MetaBackgroundActor/MetaBackgroundGroup when painting children.
+ * It makes sure to only draw the parts of the backgrounds not
+ * occluded by opaque windows.
  *
  * See #MetaWindowGroup for more information behind the motivation,
  * and details on implementation.
