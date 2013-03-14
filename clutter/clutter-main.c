@@ -1409,6 +1409,11 @@ clutter_create_backend (void)
     retval = g_object_new (CLUTTER_TYPE_BACKEND_WIN32, NULL);
   else
 #endif
+#ifdef CLUTTER_WINDOWING_X11
+  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_X11))
+    retval = g_object_new (CLUTTER_TYPE_BACKEND_X11, NULL);
+  else
+#endif
 #ifdef CLUTTER_WINDOWING_WAYLAND
   if (backend == NULL || backend == I_(CLUTTER_WINDOWING_WAYLAND))
     retval = g_object_new (CLUTTER_TYPE_BACKEND_WAYLAND, NULL);
@@ -1417,11 +1422,6 @@ clutter_create_backend (void)
 #ifdef CLUTTER_WINDOWING_EGL
   if (backend == NULL || backend == I_(CLUTTER_WINDOWING_EGL))
     retval = g_object_new (CLUTTER_TYPE_BACKEND_EGL_NATIVE, NULL);
-  else
-#endif
-#ifdef CLUTTER_WINDOWING_X11
-  if (backend == NULL || backend == I_(CLUTTER_WINDOWING_X11))
-    retval = g_object_new (CLUTTER_TYPE_BACKEND_X11, NULL);
   else
 #endif
 #ifdef CLUTTER_WINDOWING_GDK
