@@ -93,6 +93,7 @@ enum
   STARTUP_SEQUENCE_CHANGED,
   WORKAREAS_CHANGED,
   MONITORS_CHANGED,
+  IN_FULLSCREEN_CHANGED,
 
   LAST_SIGNAL
 };
@@ -245,6 +246,14 @@ meta_screen_class_init (MetaScreenClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (MetaScreenClass, monitors_changed),
           NULL, NULL, NULL,
+		  G_TYPE_NONE, 0);
+
+  screen_signals[IN_FULLSCREEN_CHANGED] =
+    g_signal_new ("in-fullscreen-changed",
+		  G_TYPE_FROM_CLASS (object_class),
+		  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL, NULL,
 		  G_TYPE_NONE, 0);
 
   g_object_class_install_property (object_class,
@@ -480,11 +489,13 @@ reload_monitor_infos (MetaScreen *screen)
       screen->monitor_infos[0].number = 0;
       screen->monitor_infos[0].rect = screen->rect;
       screen->monitor_infos[0].rect.width = screen->rect.width / 2;
+      screen->monitor_infos[0].in_fullscreen = -1;
 
       screen->monitor_infos[1].number = 1;
       screen->monitor_infos[1].rect = screen->rect;
       screen->monitor_infos[1].rect.x = screen->rect.width / 2;
       screen->monitor_infos[1].rect.width = screen->rect.width / 2;
+      screen->monitor_infos[0].in_fullscreen = -1;
     }
 
   if (screen->n_monitor_infos == 0 &&
@@ -514,6 +525,7 @@ reload_monitor_infos (MetaScreen *screen)
               screen->monitor_infos[i].rect.y = infos[i].y_org;
               screen->monitor_infos[i].rect.width = infos[i].width;
               screen->monitor_infos[i].rect.height = infos[i].height;
+              screen->monitor_infos[i].in_fullscreen = -1;
 
               meta_topic (META_DEBUG_XINERAMA,
                           "Monitor %d is %d,%d %d x %d\n",
@@ -573,6 +585,7 @@ reload_monitor_infos (MetaScreen *screen)
           
       screen->monitor_infos[0].number = 0;
       screen->monitor_infos[0].rect = screen->rect;
+      screen->monitor_infos[0].in_fullscreen = -1;
     }
 
   filter_mirrored_monitors (screen);
@@ -828,6 +841,7 @@ meta_screen_new (MetaDisplay *display,
                                                                  xroot, 
                                                                  NoEventMask);
   screen->work_area_later = 0;
+  screen->check_fullscreen_later = 0;
 
   screen->active_workspace = NULL;
   screen->workspaces = NULL;
@@ -990,6 +1004,8 @@ meta_screen_free (MetaScreen *screen,
                   screen->wm_sn_selection_window);
   
   if (screen->work_area_later != 0)
+    g_source_remove (screen->work_area_later);
+  if (screen->check_fullscreen_later != 0)
     g_source_remove (screen->work_area_later);
 
   if (screen->monitor_infos)
@@ -2997,6 +3013,8 @@ meta_screen_resize (MetaScreen *screen,
   g_free (old_monitor_infos);
   g_slist_free (windows);
 
+  meta_screen_queue_check_fullscreen (screen);
+
   g_signal_emit (screen, screen_signals[MONITORS_CHANGED], 0);
 }
 
@@ -3649,3 +3667,142 @@ meta_screen_set_active_workspace_hint (MetaScreen *screen)
   meta_error_trap_pop (screen->display);
 }
 
+static gboolean
+check_fullscreen_func (gpointer data)
+{
+  MetaScreen *screen = data;
+  GSList *windows;
+  GSList *tmp;
+  GSList *fullscreen_monitors = NULL;
+  gboolean in_fullscreen_changed = FALSE;
+  int i;
+
+  screen->check_fullscreen_later = 0;
+
+  windows = meta_display_list_windows (screen->display,
+                                       META_LIST_INCLUDE_OVERRIDE_REDIRECT);
+
+  for (tmp = windows; tmp != NULL; tmp = tmp->next)
+    {
+      MetaWindow *window = tmp->data;
+      gboolean covers_monitors = FALSE;
+
+      if (window->screen != screen || window->hidden)
+        continue;
+
+      if (window->fullscreen)
+        /* The checks for determining a fullscreen window's layer are quite
+         * elaborate, and we do a poor job at keeping it dynamically up-to-date.
+         * (It depends, for example, on whether the focus window is on the
+         * same monitor as the fullscreen window.) But because we minimize
+         * fullscreen windows not in LAYER_FULLSCREEN (see below), if the
+         * layer is stale here, it's really bad, so just force recomputation for
+         * here. This is expensive, but hopefully this function won't be
+         * called too often.
+         */
+        meta_window_update_layer (window);
+
+      if (window->override_redirect)
+        {
+          /* We want to handle the case where an application is creating an
+           * override-redirect window the size of the screen (monitor) and treat
+           * it similarly to a fullscreen window, though it doesn't have fullscreen
+           * window management behavior. (Being O-R, it's not managed at all.)
+           */
+          if (meta_window_is_monitor_sized (window))
+            covers_monitors = TRUE;
+        }
+      else
+        {
+          if (window->layer == META_LAYER_FULLSCREEN)
+            covers_monitors = TRUE;
+        }
+
+      if (covers_monitors)
+        {
+          int *monitors;
+          gsize n_monitors;
+          gsize j;
+
+          monitors = meta_window_get_all_monitors (window, &n_monitors);
+          for (j = 0; j < n_monitors; j++)
+            {
+              /* + 1 to avoid NULL */
+              gpointer monitor_p = GINT_TO_POINTER(monitors[j] + 1);
+              if (!g_slist_find (fullscreen_monitors, monitor_p))
+                fullscreen_monitors = g_slist_prepend (fullscreen_monitors, monitor_p);
+            }
+
+          g_free (monitors);
+        }
+
+      /* If we find a window that is fullscreen but not in the FULLSCREEN
+       * layer, it means that we've kicked it out of the layer because
+       * we've focused another window on the same monitor. In this case
+       * it would be confusing to keep the window fullscreen and visible,
+       * so minimize it. We can't do the same thing for override-redirect
+       * windows, so we just hope the application does the right thing.
+       */
+      if (!covers_monitors && window->fullscreen)
+        {
+          meta_window_minimize (window);
+          meta_topic (META_DEBUG_WINDOW_OPS,
+                      "Minimizing %s: was fullscreen but in a lower layer\n",
+                      window->desc);
+        }
+    }
+
+  g_slist_free (windows);
+
+  for (i = 0; i < screen->n_monitor_infos; i++)
+    {
+      MetaMonitorInfo *info = &screen->monitor_infos[i];
+      gboolean in_fullscreen = g_slist_find (fullscreen_monitors, GINT_TO_POINTER (i + 1)) != NULL;
+      if (in_fullscreen != info->in_fullscreen)
+        {
+          info->in_fullscreen = in_fullscreen;
+          in_fullscreen_changed = TRUE;
+        }
+    }
+
+  g_slist_free (fullscreen_monitors);
+
+  if (in_fullscreen_changed)
+    g_signal_emit (screen, screen_signals[IN_FULLSCREEN_CHANGED], 0, NULL);
+
+  return FALSE;
+}
+
+void
+meta_screen_queue_check_fullscreen (MetaScreen *screen)
+{
+  if (!screen->check_fullscreen_later)
+    screen->check_fullscreen_later = meta_later_add (META_LATER_CHECK_FULLSCREEN,
+                                                     check_fullscreen_func,
+                                                     screen, NULL);
+}
+
+/**
+ * meta_screen_get_monitor_in_fullscreen:
+ * @screen: a #MetaScreen
+ * @monitor: the monitor number
+ *
+ * Determines whether there is a fullscreen window obscuring the specified
+ * monitor. If there is a fullscreen window, the desktop environment will
+ * typically hide any controls that might obscure the fullscreen window.
+ *
+ * You can get notification when this changes by connecting to
+ * MetaScreen::in-fullscreen-changed.
+ *
+ * Returns: %TRUE if there is a fullscreen window covering the specified monitor.
+ */
+gboolean
+meta_screen_get_monitor_in_fullscreen (MetaScreen  *screen,
+                                       int          monitor)
+{
+  g_return_val_if_fail (META_IS_SCREEN (screen), FALSE);
+  g_return_val_if_fail (monitor >= 0 && monitor < screen->n_monitor_infos, FALSE);
+
+  /* We use -1 as a flag to mean "not known yet" for notification purposes */
+  return screen->monitor_infos[monitor].in_fullscreen == TRUE;
+}

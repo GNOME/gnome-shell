@@ -754,7 +754,7 @@ meta_stack_tracker_queue_sync_stack (MetaStackTracker *tracker)
 {
   if (tracker->sync_stack_later == 0)
     {
-      tracker->sync_stack_later = meta_later_add (META_LATER_BEFORE_REDRAW,
+      tracker->sync_stack_later = meta_later_add (META_LATER_SYNC_STACK,
                                                   stack_tracker_sync_stack_later,
                                                   tracker, NULL);
     }

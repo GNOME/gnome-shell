@@ -395,6 +395,8 @@ get_maximum_layer_in_group (MetaWindow *window)
 static void
 compute_layer (MetaWindow *window)
 {
+  MetaStackLayer old_layer = window->layer;
+
   window->layer = get_standalone_layer (window);
   
   /* We can only do promotion-due-to-group for dialogs and other
@@ -430,6 +432,10 @@ compute_layer (MetaWindow *window)
   meta_topic (META_DEBUG_STACK, "Window %s on layer %u type = %u has_focus = %d\n",
               window->desc, window->layer,
               window->type, window->has_focus);
+
+  if (window->layer != old_layer &&
+      (old_layer == META_LAYER_FULLSCREEN || window->layer == META_LAYER_FULLSCREEN))
+    meta_screen_queue_check_fullscreen (window->screen);
 }
 
 /* Front of the layer list is the topmost window,

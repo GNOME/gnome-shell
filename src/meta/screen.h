@@ -82,6 +82,9 @@ void meta_screen_get_monitor_geometry (MetaScreen    *screen,
                                        int            monitor,
                                        MetaRectangle *geometry);
 
+gboolean meta_screen_get_monitor_in_fullscreen (MetaScreen  *screen,
+                                                int          monitor);
+
 int meta_screen_get_monitor_index_for_rect (MetaScreen    *screen,
                                             MetaRectangle *rect);
 
