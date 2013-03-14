@@ -384,7 +384,8 @@ const Background = new Lang.Class({
     _updateAnimation: function() {
         this._updateAnimationTimeoutId = 0;
 
-        let files = this._animation.getKeyFrameFiles(this._layoutManager.monitors[this._monitorIndex]);
+        this._animation.update(this._layoutManager.monitors[this._monitorIndex]);
+        let files = this._animation.keyFrameFiles;
 
         if (!files) {
             this._setLoaded();
@@ -589,7 +590,7 @@ const Animation = new Lang.Class({
         params = Params.parse(params, { filename: null });
 
         this.filename = params.filename;
-        this._keyFrames = [];
+        this.keyFrameFiles = [];
         this.duration = 0.0;
         this.transitionProgress = 0.0;
         this.loaded = false;
@@ -610,26 +611,24 @@ const Animation = new Lang.Class({
                                         }));
     },
 
-    getKeyFrameFiles: function(monitor) {
+    update: function(monitor) {
+        this.keyFrameFiles = [];
+
         if (!this._show)
-            return null;
+            return;
 
         if (this._show.get_num_slides() < 1)
-            return null;
+            return;
 
         let [progress, duration, isFixed, file1, file2] = this._show.get_current_slide(monitor.width, monitor.height);
 
         this.transitionProgress = progress;
 
-        let files = [];
-
         if (file1)
-            files.push(file1);
+            this.keyFrameFiles.push(file1);
 
         if (file2)
-            files.push(file2);
-
-        return files;
+            this.keyFrameFiles.push(file2);
     },
 });
 Signals.addSignalMethods(Animation.prototype);
