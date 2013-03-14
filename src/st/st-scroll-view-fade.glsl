@@ -50,35 +50,38 @@ void main ()
     float y = height * cogl_tex_coord_in[0].y;
     float x = width * cogl_tex_coord_in[0].x;
 
-    if (x < fade_area[0][0] || x > fade_area[1][0] ||
-        y < fade_area[0][1] || y > fade_area[1][1])
-        return;
+    /*
+     * We cannot just return here due to a bug in llvmpipe see:
+     * https://bugzilla.freedesktop.org/show_bug.cgi?id=62357
+     */
+    if (x > fade_area[0][0] && x < fade_area[1][0] &&
+        y > fade_area[0][1] && y < fade_area[1][1]) {
+        float ratio = 1.0;
+        float fade_bottom_start = fade_area[1][1] - vfade_offset;
+        float fade_right_start = fade_area[1][0] - hfade_offset;
+        bool fade_top = y < vfade_offset && vvalue > 0.0;
+        bool fade_bottom = y > fade_bottom_start && vvalue < 1.0;
+        bool fade_left = x < hfade_offset && hvalue > 0.0;
+        bool fade_right = x > fade_right_start && hvalue < 1.0;
 
-    float ratio = 1.0;
-    float fade_bottom_start = fade_area[1][1] - vfade_offset;
-    float fade_right_start = fade_area[1][0] - hfade_offset;
-    bool fade_top = y < vfade_offset && vvalue > 0.0;
-    bool fade_bottom = y > fade_bottom_start && vvalue < 1.0;
-    bool fade_left = x < hfade_offset && hvalue > 0.0;
-    bool fade_right = x > fade_right_start && hvalue < 1.0;
+        float vfade_scale = height / vfade_offset;
+        if (fade_top) {
+            ratio *= FADE((y / vfade_offset), min(sqrt(vvalue) * vfade_scale, 1.0));
+        }
 
-    float vfade_scale = height / vfade_offset;
-    if (fade_top) {
-        ratio *= FADE((y / vfade_offset), min(sqrt(vvalue) * vfade_scale, 1.0));
+        if (fade_bottom) {
+            ratio *= FADE((fade_area[1][1] - y)/(fade_area[1][1] - fade_bottom_start), min(sqrt(1.0 - vvalue) * vfade_scale, 1.0));
+        }
+
+        float hfade_scale = width / hfade_offset;
+        if (fade_left) {
+            ratio *= FADE(x / hfade_offset, min(sqrt(hvalue) * hfade_scale, 1.0));
+        }
+
+        if (fade_right) {
+            ratio *= FADE((fade_area[1][0] - x)/(fade_area[1][0] - fade_right_start), min(sqrt(1.0 - hvalue) * hfade_scale, 1.0));
+        }
+
+        cogl_color_out *= ratio;
     }
-
-    if (fade_bottom) {
-        ratio *= FADE((fade_area[1][1] - y)/(fade_area[1][1] - fade_bottom_start), min(sqrt(1.0 - vvalue) * vfade_scale, 1.0));
-    }
-
-    float hfade_scale = width / hfade_offset;
-    if (fade_left) {
-        ratio *= FADE(x / hfade_offset, min(sqrt(hvalue) * hfade_scale, 1.0));
-    }
-
-    if (fade_right) {
-        ratio *= FADE((fade_area[1][0] - x)/(fade_area[1][0] - fade_right_start), min(sqrt(1.0 - hvalue) * hfade_scale, 1.0));
-    }
-
-    cogl_color_out *= ratio;
 }
