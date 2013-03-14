@@ -20,7 +20,7 @@ msgstr ""
 "org/enter_bug.cgi?product=mutter&component=general\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-02-20 15:50+0000\n"
+"POT-Creation-Date: 2013-03-01 15:50+0000\n"
 "PO-Revision-Date: 2012-10-15 21:26+0200\n"
 "Last-Translator: Alain Lojewski <allomervan@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -229,7 +229,7 @@ msgstr ""
 "Un autre gestionnaire de composition est déjà lancé sur l'écran %i de "
 "l'affichage « %s »."
 
-#: ../src/compositor/meta-background.c:1116
+#: ../src/compositor/meta-background.c:1111
 msgid "background texture could not be created from file"
 msgstr "la texture d'arrière-plan n'a pas pu être créée depuis le fichier"
 
@@ -267,17 +267,17 @@ msgstr "_Attendre"
 msgid "_Force Quit"
 msgstr "_Forcer à quitter"
 
-#: ../src/core/display.c:392
+#: ../src/core/display.c:401
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Il manque l'extension %s nécessaire à la composition"
 
-#: ../src/core/display.c:485
+#: ../src/core/display.c:493
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Impossible d'ouvrir le visuel « %s » du système X Window\n"
 
-#: ../src/core/keybindings.c:876
+#: ../src/core/keybindings.c:929
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -285,6 +285,11 @@ msgid ""
 msgstr ""
 "Un autre programme utilise déjà la clé %s avec les modificateurs %x comme "
 "liaison\n"
+
+#: ../src/core/keybindings.c:1129
+#, c-format
+msgid "\"%s\" is not a valid accelerator\n"
+msgstr "« %s » n'est pas un accélérateur valide\n"
 
 #: ../src/core/main.c:196
 msgid "Disable connection to session manager"
@@ -514,7 +519,7 @@ msgid "Window manager error: "
 msgstr "Erreur du gestionnaire de fenêtres : "
 
 #. first time through
-#: ../src/core/window.c:7503
+#: ../src/core/window.c:7539
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -530,7 +535,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8227
+#: ../src/core/window.c:8263
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -540,22 +545,22 @@ msgstr ""
 "redimensionnable, mais positionne une taille minimale de %d x %d et une "
 "taille maximale de %d x %d ; ceci n'a pas beaucoup de sens.\n"
 
-#: ../src/core/window-props.c:304
+#: ../src/core/window-props.c:318
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "L'application a défini un _NET_WM_PID %lu erroné\n"
 
-#: ../src/core/window-props.c:423
+#: ../src/core/window-props.c:434
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (sur %s)"
 
-#: ../src/core/window-props.c:1506
+#: ../src/core/window-props.c:1517
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Fenêtre WM_TRANSIENT_FOR 0x%lx non valide indiquée pour %s.\n"
 
-#: ../src/core/window-props.c:1517
+#: ../src/core/window-props.c:1528
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "Fenêtre WM_TRANSIENT_FOR 0x%lx pour %s créerait une boucle.\n"
@@ -716,8 +721,8 @@ msgid ""
 "If enabled, new windows that are initially the size of the monitor "
 "automatically get maximized."
 msgstr ""
-"Si activé, les nouvelles fenêtres qui ont presque la taille de l'écran "
-"à l'ouverture seront maximisées automatiquement."
+"Si activé, les nouvelles fenêtres qui ont presque la taille de l'écran à "
+"l'ouverture seront maximisées automatiquement."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:19
 msgid "Select window from tab popup"
