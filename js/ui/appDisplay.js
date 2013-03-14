@@ -156,6 +156,30 @@ const FolderView = new Lang.Class({
     }
 });
 
+const AllViewLayout = new Lang.Class({
+    Name: 'AllViewLayout',
+    Extends: Clutter.BinLayout,
+
+    vfunc_get_preferred_height: function(container, forWidth) {
+        let minBottom = 0;
+        let naturalBottom = 0;
+
+        for (let child = container.get_first_child();
+             child;
+             child = child.get_next_sibling()) {
+            let childY = child.y;
+            let [childMin, childNatural] = child.get_preferred_height(forWidth);
+
+            if (childMin + childY > minBottom)
+                minBottom = childMin + childY;
+
+            if (childNatural + childY > naturalBottom)
+                naturalBottom = childNatural + childY;
+        }
+        return [minBottom, naturalBottom];
+    }
+});
+
 const AllView = new Lang.Class({
     Name: 'AllView',
     Extends: AlphabeticalView,
@@ -164,7 +188,7 @@ const AllView = new Lang.Class({
         this.parent();
 
         let box = new St.BoxLayout({ vertical: true });
-        this._stack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
+        this._stack = new St.Widget({ layout_manager: new AllViewLayout() });
         this._stack.add_actor(this._grid.actor);
         this._eventBlocker = new St.Widget({ x_expand: true, y_expand: true });
         this._stack.add_actor(this._eventBlocker);
