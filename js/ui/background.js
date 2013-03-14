@@ -267,9 +267,9 @@ const Background = new Lang.Class({
     _destroy: function() {
         this._cancellable.cancel();
 
-        if (this._animationUpdateTimeoutId) {
-            GLib.source_remove (this._animationUpdateTimeoutId);
-            this._animationUpdateTimeoutId = 0
+        if (this._updateAnimationTimeoutId) {
+            GLib.source_remove (this._updateAnimationTimeoutId);
+            this._updateAnimationTimeoutId = 0;
         }
 
         let i;
@@ -378,17 +378,17 @@ const Background = new Lang.Class({
         if (this._images[1])
             this._images[1].opacity = this._animation.transitionProgress * 255;
 
-        this._queueAnimationUpdate();
+        this._queueUpdateAnimation();
     },
 
     _updateAnimation: function() {
-        this._animationUpdateTimeoutId = 0;
+        this._updateAnimationTimeoutId = 0;
 
         let files = this._animation.getKeyFrameFiles(this._layoutManager.monitors[this._monitorIndex]);
 
         if (!files) {
             this._setLoaded();
-            this._queueAnimationUpdate();
+            this._queueUpdateAnimation();
             return;
         }
 
@@ -432,8 +432,8 @@ const Background = new Lang.Class({
         }
     },
 
-    _queueAnimationUpdate: function() {
-        if (this._animationUpdateTimeoutId != 0)
+    _queueUpdateAnimation: function() {
+        if (this._updateAnimationTimeoutId != 0)
             return;
 
         if (!this._cancellable || this._cancellable.is_cancelled())
@@ -447,10 +447,10 @@ const Background = new Lang.Class({
 
         let interval = Math.max(ANIMATION_MIN_WAKEUP_INTERVAL * 1000,
                                 timePerStep);
-        this._animationUpdateTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+        this._updateAnimationTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                                                       interval,
                                                       Lang.bind(this, function() {
-                                                                    this._animationUpdateTimeoutId = 0;
+                                                                    this._updateAnimationTimeoutId = 0;
                                                                     this._updateAnimation();
                                                                     return false;
                                                                 }));
