@@ -51,6 +51,19 @@
  * is called. If the live_hidden_windows preference is set, windows will never
  * be unmapped.
  *
+ * # Containers #
+ *
+ * There's three containers in the stage that can be used to place actors, here
+ * are listed in the order in which they are painted:
+ *
+ * - window group, accessible with meta_get_window_group_for_screen()
+ * - top window group, accessible with meta_get_top_window_group_for_screen()
+ * - overlay group, accessible with meta_get_overlay_group_for_screen()
+ *
+ * Mutter will place actors representing windows in the window group, except for
+ * override-redirect windows (ie. popups and menus) which will be placed in the
+ * top window group. Mutter won't put any actors in the overlay group, but it's
+ * intended for compositors to place there panel, dashes, status bars, etc.
  */
 
 #include <config.h>
