@@ -1066,7 +1066,8 @@ const LayoutManager = new Lang.Class({
             }
         }
 
-        this.emit('fullscreen-changed');
+        if (changed)
+            this.emit('fullscreen-changed');
     },
 
     _updateRegions: function() {
