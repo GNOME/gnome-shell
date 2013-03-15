@@ -9638,18 +9638,13 @@ meta_window_update_sync_request_counter (MetaWindow *window,
   if (window == window->display->grab_window &&
       meta_grab_op_is_resizing (window->display->grab_op) &&
       new_counter_value >= window->sync_request_wait_serial &&
-      (!window->extended_sync_request_counter || new_counter_value % 2 == 0))
+      (!window->extended_sync_request_counter || new_counter_value % 2 == 0) &&
+      window->sync_request_timeout_id)
     {
       meta_topic (META_DEBUG_RESIZING,
                   "Alarm event received last motion x = %d y = %d\n",
                   window->display->grab_latest_motion_x,
                   window->display->grab_latest_motion_y);
-
-      /* If sync was previously disabled, turn it back on and hope
-       * the application has come to its senses (maybe it was just
-       * busy with a pagefault or a long computation).
-       */
-      window->disable_sync = FALSE;
 
       g_source_remove (window->sync_request_timeout_id);
       window->sync_request_timeout_id = 0;
@@ -9662,6 +9657,12 @@ meta_window_update_sync_request_counter (MetaWindow *window,
                      window->display->grab_latest_motion_y,
                      TRUE);
     }
+
+  /* If sync was previously disabled, turn it back on and hope
+   * the application has come to its senses (maybe it was just
+   * busy with a pagefault or a long computation).
+   */
+  window->disable_sync = FALSE;
 
   if (needs_frame_drawn)
     meta_compositor_queue_frame_drawn (window->display->compositor, window,
