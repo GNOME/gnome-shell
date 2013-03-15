@@ -19,7 +19,7 @@
  * 02111-1307, USA.
  */
 
-/**
+/*
  * SECTION:preview-widget
  * @title: MetaPreview
  * @short_description: Mutter theme preview widget

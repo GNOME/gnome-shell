@@ -37,9 +37,7 @@
     <xi:include href="xml/meta-shadow-factory.xml"/>
     <xi:include href="xml/meta-shaped-texture.xml"/>
     <xi:include href="xml/meta-window-actor.xml"/>
-    <xi:include href="xml/preview-widget.xml"/>
     <xi:include href="xml/screen.xml"/>
-    <xi:include href="xml/theme.xml"/>
     <xi:include href="xml/window.xml"/>
     <xi:include href="xml/workspace.xml"/>
   </part>

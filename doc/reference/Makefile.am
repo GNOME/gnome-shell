@@ -94,6 +94,7 @@ IGNORE_HFILES= \
 	mutter-enum-types.h \
 	mutter-Xatomtype.h \
 	place.h \
+	preview-widget.h \
 	region-utils.h \
 	resizepopup.h \
 	screen-private.h \
@@ -102,6 +103,7 @@ IGNORE_HFILES= \
 	stack-tracker.h \
 	stamp-mutter-enum-types.h \
 	tabpopup.h \
+	theme.h \
 	theme-private.h \
 	tile-preview.h \
 	ui.h \

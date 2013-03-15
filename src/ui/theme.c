@@ -19,7 +19,7 @@
  * 02111-1307, USA.
  */
 
-/**
+/*
  * SECTION:theme
  * @title: MetaTheme
  * @short_description: Metacity Theme Rendering

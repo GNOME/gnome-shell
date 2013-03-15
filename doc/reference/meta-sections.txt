@@ -453,29 +453,6 @@ meta_key_binding_get_type
 </SECTION>
 
 <SECTION>
-<FILE>preview-widget</FILE>
-<TITLE>MetaPreview</TITLE>
-MetaPreview
-MetaPreviewClass
-meta_preview_new
-meta_preview_set_theme
-meta_preview_set_title
-meta_preview_set_frame_type
-meta_preview_set_frame_flags
-meta_preview_set_button_layout
-meta_preview_get_icon
-meta_preview_get_mini_icon
-<SUBSECTION Standard>
-META_IS_PREVIEW
-META_IS_PREVIEW_CLASS
-META_PREVIEW
-META_PREVIEW_CLASS
-META_PREVIEW_GET_CLASS
-META_TYPE_PREVIEW
-meta_preview_get_type
-</SECTION>
-
-<SECTION>
 <FILE>screen</FILE>
 MetaScreen
 MetaScreenClass
@@ -512,17 +489,6 @@ META_SCREEN_CLASS
 META_SCREEN_GET_CLASS
 META_TYPE_SCREEN
 meta_screen_get_type
-</SECTION>
-
-<SECTION>
-<FILE>theme</FILE>
-meta_theme_get_current
-meta_theme_set_current
-meta_theme_new
-meta_theme_free
-meta_theme_validate
-meta_theme_load
-MetaTheme
 </SECTION>
 
 <SECTION>
