@@ -4,6 +4,53 @@
  * SECTION:compositor
  * @Title: MetaCompositor
  * @Short_Description: Compositor API
+ *
+ * At a high-level, a window is not-visible or visible. When a
+ * window is added (with meta_compositor_add_window()) it is not visible.
+ * meta_compositor_show_window() indicates a transition from not-visible to
+ * visible. Some of the reasons for this:
+ *
+ * - Window newly created
+ * - Window is unminimized
+ * - Window is moved to the current desktop
+ * - Window was made sticky
+ *
+ * meta_compositor_hide_window() indicates that the window has transitioned from
+ * visible to not-visible. Some reasons include:
+ *
+ * - Window was destroyed
+ * - Window is minimized
+ * - Window is moved to a different desktop
+ * - Window no longer sticky.
+ *
+ * Note that combinations are possible - a window might have first
+ * been minimized and then moved to a different desktop. The 'effect' parameter
+ * to meta_compositor_show_window() and meta_compositor_hide_window() is a hint
+ * as to the appropriate effect to show the user and should not
+ * be considered to be indicative of a state change.
+ *
+ * When the active workspace is changed, meta_compositor_switch_workspace() is
+ * called first, then meta_compositor_show_window() and
+ * meta_compositor_hide_window() are called individually for each window
+ * affected, with an effect of META_COMP_EFFECT_NONE.
+ * If hiding windows will affect the switch workspace animation, the
+ * compositor needs to delay hiding the windows until the switch
+ * workspace animation completes.
+ *
+ * meta_compositor_maximize_window() and meta_compositor_unmaximize_window()
+ * are transitions within the visible state. The window is resized __before__
+ * the call, so it may be necessary to readjust the display based on the
+ * old_rect to start the animation.
+ *
+ * meta_compositor_window_mapped() and meta_compositor_window_unmapped() are
+ * notifications when the toplevel window (frame or client window) is mapped or
+ * unmapped. That is, when the result of meta_window_toplevel_is_mapped()
+ * changes. The main use of this is to drop resources when a window is unmapped.
+ * A window will always be mapped before meta_compositor_show_window()
+ * is called and will not be unmapped until after meta_compositor_hide_window()
+ * is called. If the live_hidden_windows preference is set, windows will never
+ * be unmapped.
+ *
  */
 
 #include <config.h>
