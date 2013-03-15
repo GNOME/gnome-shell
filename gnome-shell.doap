@@ -66,11 +66,4 @@ its dependencies to build from tarballs.</description>
       <gnome:userid>fmuellner</gnome:userid>
     </foaf:Person>
   </maintainer>
-  <maintainer>
-    <foaf:Person>
-      <foaf:name>Ray Strode</foaf:name>
-      <foaf:mbox rdf:resource="mailto:halfline@gmail.com" />
-      <gnome:userid>halfline</gnome:userid>
-    </foaf:Person>
-  </maintainer>
 </Project>
