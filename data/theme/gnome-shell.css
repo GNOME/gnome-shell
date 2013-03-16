@@ -1188,7 +1188,8 @@ StScrollBar StButton#vhandle:active {
     background-image: url("calendar-arrow-right.svg");
 }
 
-.calendar-change-month-back:hover {
+.calendar-change-month-back:hover,
+.calendar-change-month-back:focus {
     background-color: #999999;
 }
 .calendar-change-month-back:active {
@@ -1206,7 +1207,8 @@ StScrollBar StButton#vhandle:active {
     background-image: url("calendar-arrow-left.svg");
 }
 
-.calendar-change-month-forward:hover {
+.calendar-change-month-forward:hover,
+.calendar-change-month-forward:focus {
     background-color: #999999;
 }
 .calendar-change-month-forward:active {
@@ -1227,7 +1229,8 @@ StScrollBar StButton#vhandle:active {
     height: 2.4em;
 }
 
-.calendar-day-base:hover {
+.calendar-day-base:hover,
+.calendar-day-base:focus {
     background-color: #777777;
 }
 
