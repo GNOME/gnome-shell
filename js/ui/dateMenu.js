@@ -49,11 +49,6 @@ const DateMenuButton = new Lang.Class({
             menuAlignment = 1.0 - menuAlignment;
         this.parent(menuAlignment);
 
-        // At this moment calendar menu is not keyboard navigable at
-        // all (so not accessible), so it doesn't make sense to set as
-        // role ATK_ROLE_MENU like other elements of the panel.
-        this.actor.accessible_role = Atk.Role.LABEL;
-
         this._clockDisplay = new St.Label();
         this.actor.add_actor(this._clockDisplay);
 
