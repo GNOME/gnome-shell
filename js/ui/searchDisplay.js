@@ -104,6 +104,7 @@ const ListSearchResult = new Lang.Class({
                              y_fill: false,
                              x_align: St.Align.START,
                              y_align: St.Align.START });
+        this.actor.label_actor = title;
 
         if (this.metaInfo['description']) {
             let description = new St.Label({ style_class: 'list-search-result-description' });
@@ -141,6 +142,7 @@ const GridSearchResult = new Lang.Class({
         }
 
         this.actor.set_child(content);
+        this.actor.label_actor = content.label_actor;
 
         let draggable = DND.makeDraggable(this.actor);
         draggable.connect('drag-begin',
