@@ -579,6 +579,7 @@ const ProviderIcon = new Lang.Class({
         this.parent({ style_class: 'search-provider-icon',
                       reactive: true,
                       can_focus: true,
+                      accessible_name: provider.appInfo.get_name(),
                       track_hover: true });
 
         this._content = new St.Widget({ layout_manager: new Clutter.BinLayout() });
