@@ -4370,7 +4370,7 @@ clutter_actor_set_translation_factor (ClutterActor      *self,
 
     case CLUTTER_Z_AXIS:
       pspec = obj_props[PROP_TRANSLATION_Z];
-      translate_p = &info->translation.x;
+      translate_p = &info->translation.z;
       break;
     }
 
