@@ -151,9 +151,6 @@ const WorkspacesView = new Lang.Class({
 
         for (let i = 0; i < this._workspaces.length; i++)
             this._workspaces[i].setGeometry(x, y, width, height);
-
-        if (Main.overview.visible && !Main.overview.animationInProgress)
-            this.actor.set_clip(this._x, this._y, this._width, this._height);
     },
 
     _lookupWorkspaceForMetaWindow: function (metaWindow) {
