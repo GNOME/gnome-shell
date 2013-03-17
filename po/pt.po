@@ -1,15 +1,15 @@
 # cogl's portuguese translation.
-# Copyright © 2011, 2012 cogl
+# Copyright © 2011, 2012, 2013 cogl
 # This file is distributed under the same license as the cogl package.
-# Duarte Loreto <happyguy_pt@hotmail.com>, 2011, 2012.
-#
+# Duarte Loreto <happyguy_pt@hotmail.com>, 2011, 2012, 2013.
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: 3.6\n"
+"Project-Id-Version: 3.8\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter\n"
-"POT-Creation-Date: 2012-08-19 22:31+0100\n"
-"PO-Revision-Date: 2012-08-19 22:35+0000\n"
+"POT-Creation-Date: 2013-03-17 00:42+0000\n"
+"PO-Revision-Date: 2013-03-17 00:40+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "Language: pt\n"
@@ -27,7 +27,7 @@ msgstr "Valores de depuração especiais:"
 
 #: ../cogl/cogl-debug.c:181 ../cogl/cogl-debug.c:183
 msgid "Enables all non-behavioural debug options"
-msgstr "Activa todas as opções de depuração não-comportamentais"
+msgstr "Ativa todas as opções de depuração não-comportamentais"
 
 #: ../cogl/cogl-debug.c:190
 msgid "Additional environment variables:"
@@ -35,11 +35,28 @@ msgstr "Variáveis de ambiente adicionais:"
 
 #: ../cogl/cogl-debug.c:191
 msgid "Comma-separated list of GL extensions to pretend are disabled"
-msgstr "Lista separada por vírgulas de extensões GL para considerar desactivadas"
+msgstr ""
+"Lista separada por vírgulas de extensões GL para considerar desativadas"
 
 #: ../cogl/cogl-debug.c:193
 msgid "Override the GL version that Cogl will assume the driver supports"
 msgstr "Redefinir a versão GL que o Cogl irá assumir que o controlador suporta"
+
+#: ../cogl/cogl-debug.c:237
+msgid "Cogl debugging flags to set"
+msgstr "Parâmetros de depuração Cogl a definir"
+
+#: ../cogl/cogl-debug.c:239
+msgid "Cogl debugging flags to unset"
+msgstr "Parâmetros de depuração Cogl a desativar"
+
+#: ../cogl/cogl-debug.c:288
+msgid "Cogl Options"
+msgstr "Opções Cogl"
+
+#: ../cogl/cogl-debug.c:289
+msgid "Show Cogl options"
+msgstr "Apresentar as opções do Cogl"
 
 #: ../cogl/cogl-debug-options.h:25 ../cogl/cogl-debug-options.h:30
 #: ../cogl/cogl-debug-options.h:35 ../cogl/cogl-debug-options.h:40
@@ -138,11 +155,11 @@ msgstr "Visualizar"
 
 #: ../cogl/cogl-debug-options.h:78
 msgid "Outline rectangles"
-msgstr "Delimitar rectângulos"
+msgstr "Delimitar retângulos"
 
 #: ../cogl/cogl-debug-options.h:79
 msgid "Add wire outlines for all rectangular geometry"
-msgstr "Adicionar delimitações a todas as geometrias rectangulares"
+msgstr "Adicionar delimitações a todas as geometrias retangulares"
 
 #: ../cogl/cogl-debug-options.h:83
 msgid "Show wireframes"
@@ -165,35 +182,35 @@ msgstr "Motivo Inicial"
 
 #: ../cogl/cogl-debug-options.h:88
 msgid "Disable Journal batching"
-msgstr "Desactivar Loteamento no Diário"
+msgstr "Desativar Loteamento no Diário"
 
 #: ../cogl/cogl-debug-options.h:89
 msgid "Disable batching of geometry in the Cogl Journal."
-msgstr "Desactivar o loteamento da geometria no Diário Cogl."
+msgstr "Desativar o loteamento da geometria no Diário Cogl."
 
 #: ../cogl/cogl-debug-options.h:93
 msgid "Disable GL Vertex Buffers"
-msgstr "Desactivar Buffers GL Vertex"
+msgstr "Desativar Buffers GL Vertex"
 
 #: ../cogl/cogl-debug-options.h:94
 msgid "Disable use of OpenGL vertex buffer objects"
-msgstr "Desactivar a utilização de objectos de buffer vertex OpenGL"
+msgstr "Desativar a utilização de objetos de buffer vertex OpenGL"
 
 #: ../cogl/cogl-debug-options.h:98
 msgid "Disable GL Pixel Buffers"
-msgstr "Desactivar Buffer de Pixels GL"
+msgstr "Desativar Buffer de Pixels GL"
 
 #: ../cogl/cogl-debug-options.h:99
 msgid "Disable use of OpenGL pixel buffer objects"
-msgstr "Desactivar a utilização de objectos de buffer de pixels OpenGL"
+msgstr "Desativar a utilização de objetos de buffer de pixels OpenGL"
 
 #: ../cogl/cogl-debug-options.h:103
 msgid "Disable software rect transform"
-msgstr "Desactivar a transformação de rectângulos pela aplicação"
+msgstr "Desativar a transformação de retângulos pela aplicação"
 
 #: ../cogl/cogl-debug-options.h:104
 msgid "Use the GPU to transform rectangular geometry"
-msgstr "Utilizar o Processador Gráfico para transformar geometria rectangular"
+msgstr "Utilizar o Processador Gráfico para transformar geometria retangular"
 
 #: ../cogl/cogl-debug-options.h:106
 msgid "Cogl Specialist"
@@ -209,15 +226,15 @@ msgstr "Despejar alterações de texturas atlas num ficheiro de imagem"
 
 #: ../cogl/cogl-debug-options.h:113
 msgid "Disable texture atlasing"
-msgstr "Desactivar atlas de texturas"
+msgstr "Desativar atlas de texturas"
 
 #: ../cogl/cogl-debug-options.h:114
 msgid "Disable use of texture atlasing"
-msgstr "Desactivar a utilização de atlas de texturas"
+msgstr "Desativar a utilização de atlas de texturas"
 
 #: ../cogl/cogl-debug-options.h:118
 msgid "Disable sharing the texture atlas between text and images"
-msgstr "Desactivar a partilha de texturas atlas entre texto e imagens"
+msgstr "Desativar a partilha de texturas atlas entre texto e imagens"
 
 #: ../cogl/cogl-debug-options.h:119
 msgid ""
@@ -229,47 +246,47 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:124
 msgid "Disable texturing"
-msgstr "Desactivar texturas"
+msgstr "Desativar texturas"
 
 #: ../cogl/cogl-debug-options.h:125
 msgid "Disable texturing any primitives"
-msgstr "Desactivar texturas de quaisquer primitivas"
+msgstr "Desativar texturas de quaisquer primitivas"
 
 #: ../cogl/cogl-debug-options.h:129
 msgid "Disable arbfp"
-msgstr "Desactivar arbfp"
+msgstr "Desativar arbfp"
 
 #: ../cogl/cogl-debug-options.h:130
 msgid "Disable use of ARB fragment programs"
-msgstr "Desactivar a utilização de aplicações de fragmentos ARB"
+msgstr "Desativar a utilização de aplicações de fragmentos ARB"
 
 #: ../cogl/cogl-debug-options.h:134
 msgid "Disable fixed"
-msgstr "Desactivar fixa"
+msgstr "Desativar fixa"
 
 #: ../cogl/cogl-debug-options.h:135
 msgid "Disable use of the fixed function pipeline backend"
-msgstr "Desactivar a utilização do motor de canal de função fixa"
+msgstr "Desativar a utilização do motor de canal de função fixa"
 
 #: ../cogl/cogl-debug-options.h:139
 msgid "Disable GLSL"
-msgstr "Desactivar GLSL"
+msgstr "Desativar GLSL"
 
 #: ../cogl/cogl-debug-options.h:140
 msgid "Disable use of GLSL"
-msgstr "Desactivar a utilização do GLSL"
+msgstr "Desativar a utilização do GLSL"
 
 #: ../cogl/cogl-debug-options.h:144
 msgid "Disable blending"
-msgstr "Desactivar mistura"
+msgstr "Desativar mistura"
 
 #: ../cogl/cogl-debug-options.h:145
 msgid "Disable use of blending"
-msgstr "Desactivar a utilização de mistura"
+msgstr "Desativar a utilização de mistura"
 
 #: ../cogl/cogl-debug-options.h:149
 msgid "Disable non-power-of-two textures"
-msgstr "Desactivar texturas que não sejam potência-de-dois"
+msgstr "Desativar texturas que não sejam potência-de-dois"
 
 #: ../cogl/cogl-debug-options.h:150
 msgid ""
@@ -281,12 +298,11 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:155
 msgid "Disable software clipping"
-msgstr "Desactivar corte por aplicação"
+msgstr "Desativar corte por aplicação"
 
 #: ../cogl/cogl-debug-options.h:156
 msgid "Disables Cogl's attempts to clip some rectangles in software."
-msgstr ""
-"Desactiva a tentativa do Cogl de cortar na aplicação alguns rectângulos."
+msgstr "Desativa a tentativa do Cogl de cortar na aplicação alguns retângulos."
 
 #: ../cogl/cogl-debug-options.h:160
 msgid "Show source"
@@ -302,7 +318,7 @@ msgstr "Acompanhar algum OpenGL"
 
 #: ../cogl/cogl-debug-options.h:166
 msgid "Traces some select OpenGL calls"
-msgstr "Acompanha algumas chamadas OpenGL seleccionadas"
+msgstr "Acompanha algumas chamadas OpenGL selecionadas"
 
 #: ../cogl/cogl-debug-options.h:170
 msgid "Trace offscreen support"
@@ -314,21 +330,21 @@ msgstr "Depurar suporte fora do ecrã"
 
 #: ../cogl/cogl-debug-options.h:175
 msgid "Disable program caches"
-msgstr "Desactivar caches da aplicação"
+msgstr "Desativar caches da aplicação"
 
 #: ../cogl/cogl-debug-options.h:176
 msgid "Disable fallback caches for arbfp and glsl programs"
-msgstr "Desactivar caches de recurso para aplicações arbfp e glsl"
+msgstr "Desativar caches de recurso para aplicações arbfp e glsl"
 
 #: ../cogl/cogl-debug-options.h:180
 msgid "Disable read pixel optimization"
-msgstr "Desactivar optimização de pixel lido"
+msgstr "Desativar otimização de pixel lido"
 
 #: ../cogl/cogl-debug-options.h:181
 msgid ""
 "Disable optimization for reading 1px for simple scenes of opaque rectangles"
 msgstr ""
-"Desactivar a optimização para leitura de 1px de cenas simples de rectângulos "
+"Desativar a otimização para leitura de 1px de cenas simples de retângulos "
 "opacos"
 
 #: ../cogl/cogl-debug-options.h:186
@@ -345,16 +361,4 @@ msgstr "Acompanhar problemas de desempenho"
 
 #: ../cogl/cogl-debug-options.h:192
 msgid "Tries to highlight sub-optimal Cogl usage."
-msgstr "Tenta realçar utilização sub-óptima do Cogl."
-
-#~ msgid "Cogl debugging flags to set"
-#~ msgstr "Parâmetros de depuração Cogl a definir"
-
-#~ msgid "Cogl debugging flags to unset"
-#~ msgstr "Parâmetros de depuração Cogl a desactivar"
-
-#~ msgid "Cogl Options"
-#~ msgstr "Opções Cogl"
-
-#~ msgid "Show Cogl options"
-#~ msgstr "Apresentar as opções do Cogl"
+msgstr "Tenta realçar utilização subótima do Cogl."
