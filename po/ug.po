@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: cogl\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-02-22 15:38+0000\n"
-"PO-Revision-Date: 2013-02-25 18:54+0900\n"
+"POT-Creation-Date: 2013-03-17 00:42+0000\n"
+"PO-Revision-Date: 2013-03-17 13:32+0900\n"
 "Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: \n"
@@ -77,19 +77,19 @@ msgstr "CoglObjects پايدىلانمىلىرىنىڭ ساناش مەسىلىس
 
 #: ../cogl/cogl-debug-options.h:32
 msgid "Trace Texture Slicing"
-msgstr ""
+msgstr "Texture Slicing نى ئىزلاش"
 
 #: ../cogl/cogl-debug-options.h:33
 msgid "debug the creation of texture slices"
-msgstr ""
+msgstr "texture slices نىڭ قۇرۇلۇشىنى سازلاش"
 
 #: ../cogl/cogl-debug-options.h:37
 msgid "Trace Atlas Textures"
-msgstr ""
+msgstr "Atlas Textures نى ئىزلاش"
 
 #: ../cogl/cogl-debug-options.h:38
 msgid "Debug texture atlas management"
-msgstr ""
+msgstr "texture atlas باشقۇرۇشنى سازلاش"
 
 #: ../cogl/cogl-debug-options.h:42
 msgid "Trace Blend Strings"
@@ -105,7 +105,7 @@ msgstr "ژۇرنالنى ئىزلا"
 
 #: ../cogl/cogl-debug-options.h:48
 msgid "View all the geometry passing through the journal"
-msgstr ""
+msgstr "ژۇرنالغا يوللاپ بېرىلگەن بارلىق شەكىللەرنى كۆرىدۇ"
 
 #: ../cogl/cogl-debug-options.h:52
 msgid "Trace Batching"
@@ -113,7 +113,7 @@ msgstr "توپ بىر تەرەپ قىلىشنى ئىزلا"
 
 #: ../cogl/cogl-debug-options.h:53
 msgid "Show how geometry is being batched in the journal"
-msgstr ""
+msgstr "ژۇرنالدا شەكىللەرنىڭ قانداق توپ بىر تەرەپ قىلىنىدىغانلىقىنى كۆرسىتىدۇ"
 
 #: ../cogl/cogl-debug-options.h:57
 msgid "Trace matrices"
@@ -153,19 +153,19 @@ msgstr "سۈرەتلەشتۈر"
 
 #: ../cogl/cogl-debug-options.h:78
 msgid "Outline rectangles"
-msgstr "سىرتقى تىك تۆت تەرەپلىك"
+msgstr "تىك تۆت تەرەپلىكنىڭ ئىزناسى"
 
 #: ../cogl/cogl-debug-options.h:79
 msgid "Add wire outlines for all rectangular geometry"
-msgstr ""
+msgstr "تىك تۆت تەرەپلىك شەكىللەرنىڭ سىم ئىزناسىنى قوشىدۇ"
 
 #: ../cogl/cogl-debug-options.h:83
 msgid "Show wireframes"
-msgstr ""
+msgstr "سىملىق قۇرۇلمىسىنى كۆرسەت"
 
 #: ../cogl/cogl-debug-options.h:84
 msgid "Add wire outlines for all geometry"
-msgstr ""
+msgstr "بارلىق شەكىللەرگە سىم ئىزنا قوشىدۇ"
 
 #: ../cogl/cogl-debug-options.h:86 ../cogl/cogl-debug-options.h:91
 #: ../cogl/cogl-debug-options.h:96 ../cogl/cogl-debug-options.h:101
@@ -216,23 +216,23 @@ msgstr "Cogl مۇتەخەسسىسى"
 
 #: ../cogl/cogl-debug-options.h:108
 msgid "Dump atlas images"
-msgstr ""
+msgstr "atlas سۈرەتلىرىگە تۆكسۇن"
 
 #: ../cogl/cogl-debug-options.h:109
 msgid "Dump texture atlas changes to an image file"
-msgstr ""
+msgstr "texture atlas نىڭ ئۆزگىرىشلىرىنى سۈرەت ھۆججىتىگە تۆكىدۇ"
 
 #: ../cogl/cogl-debug-options.h:113
 msgid "Disable texture atlasing"
-msgstr ""
+msgstr "texture atlasing نى ئىناۋەتسىز قىلسۇن"
 
 #: ../cogl/cogl-debug-options.h:114
 msgid "Disable use of texture atlasing"
-msgstr ""
+msgstr "texture atlasing ئىشلىتىشنى ئىناۋەتسىز قىلسۇن"
 
 #: ../cogl/cogl-debug-options.h:118
 msgid "Disable sharing the texture atlas between text and images"
-msgstr ""
+msgstr "تېكىست بىلەن سۈرەت ئارىسىدا texture atlas نى ھەمبەھىر قىلىشنى ئىناۋەتسىز قىلىدۇ"
 
 #: ../cogl/cogl-debug-options.h:119
 msgid ""
@@ -242,7 +242,7 @@ msgstr ""
 
 #: ../cogl/cogl-debug-options.h:124
 msgid "Disable texturing"
-msgstr ""
+msgstr "texturing نى ئىناۋەتسىز قىل"
 
 #: ../cogl/cogl-debug-options.h:125
 msgid "Disable texturing any primitives"
@@ -316,11 +316,11 @@ msgstr "بىر قىسىم OpenGL چاقىرىشلىرىنى ئىزلايدۇ"
 
 #: ../cogl/cogl-debug-options.h:170
 msgid "Trace offscreen support"
-msgstr ""
+msgstr "ئېكرانسىز قوللاشنى ئىزلا"
 
 #: ../cogl/cogl-debug-options.h:171
 msgid "Debug offscreen support"
-msgstr ""
+msgstr "ئېكرانسىز قوللاشنى سازلايدۇ"
 
 #: ../cogl/cogl-debug-options.h:175
 msgid "Disable program caches"
