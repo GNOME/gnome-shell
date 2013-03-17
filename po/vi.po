@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-03-01 15:50+0000\n"
-"PO-Revision-Date: 2013-03-02 18:04+0700\n"
+"PO-Revision-Date: 2013-03-17 19:37+0700\n"
 "Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "Language: vi\n"
@@ -797,11 +797,11 @@ msgstr "Vùng làm việc 1_0"
 #: ../src/ui/menu.c:216
 #, c-format
 msgid "Workspace %s%d"
-msgstr "Vùng làm việc «%s%d»"
+msgstr "Vùng làm việc %s%d"
 
 #: ../src/ui/menu.c:397
 msgid "Move to Another _Workspace"
-msgstr "Chuyển sang Vùng làm việc _khác"
+msgstr "Chuyển sang vùng làm việc _khác"
 
 # Name: don't translate / Tên: đừng dịch
 #. This is the text that should appear next to menu accelerators
@@ -850,7 +850,7 @@ msgstr "Meta"
 #.
 #: ../src/ui/metaaccellabel.c:101
 msgid "Super"
-msgstr "Cao cấp"
+msgstr "Super"
 
 #. This is the text that should appear next to menu accelerators
 #. * that use the hyper key. If the text on this key isn't typically
@@ -859,7 +859,7 @@ msgstr "Cao cấp"
 #.
 #: ../src/ui/metaaccellabel.c:107
 msgid "Hyper"
-msgstr "Cao"
+msgstr "Hyper"
 
 # Name: don't translate / Tên: đừng dịch
 #. This is the text that should appear next to menu accelerators
