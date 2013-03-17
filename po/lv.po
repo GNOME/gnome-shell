@@ -2,48 +2,229 @@
 # metaciy for Latvian.
 # Copyright (C) 2002, 2006, 2007, 2009 Free Software Foundation, Inc.
 #
+#
 # Peteris Krisjanis <pecisk@inbox.lv>, 2002.
 # Raivis Dejus <orvils@gmail.com>, 2006, 2007, 2009.
 # Rudolfs <rudolfs.mazurs@gmail.com>, 2011.
 # Rūdofls Mazurs <rudolfs.mazurs@gmail.com>, 2011, 2012.
-# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2012.
-#
+# Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: lv\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-12 22:25+0300\n"
-"PO-Revision-Date: 2012-10-12 22:31+0300\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=mutter&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-03-01 15:50+0000\n"
+"PO-Revision-Date: 2013-03-17 13:05+0200\n"
 "Last-Translator: Rūdolfs Mazurs <rudolfs.mazurs@gmail.com>\n"
-"Language-Team: Latviešu <lata-l10n@googlegroups.com>\n"
+"Language-Team: Latvian <lata-l10n@googlegroups.com>\n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
-"X-Generator: Gtranslator 2.91.5\n"
+"X-Generator: Lokalize 1.4\n"
+
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Navigation"
+msgstr "Navigācija"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+msgid "Move window to workspace 1"
+msgstr "Pārvietot logu uz 1. darbvietu"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+msgid "Move window to workspace 2"
+msgstr "Pārvietot logu uz 2. darbvietu"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move window to workspace 3"
+msgstr "Pārvietot logu uz 3. darbvietu"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move window to workspace 4"
+msgstr "Pārvietot logu uz 4. darbvietu"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+msgid "Move window one workspace to the left"
+msgstr "Pārvietot logu uz darbvietu pa kreisi"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the right"
+msgstr "Pārvietot logu uz darbvietu pa labi"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace up"
+msgstr "Pārvietot logu uz darbvietu augšup"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace down"
+msgstr "Pārvietot logu uz darbvietu lejup"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Switch applications"
+msgstr "Pārslēgt lietotnes"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+msgid "Switch windows"
+msgstr "Pārslēgt logus"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Switch windows of an application"
+msgstr "Pārslēgt lietotnes logus"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Switch system controls"
+msgstr "Pārslēgt sistēmas vadīklas"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Switch windows directly"
+msgstr "Pārslēgties starp logiem tieši"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch windows of an app directly"
+msgstr "Pārslēgt starp lietotnes logiem tieši"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Switch system controls directly"
+msgstr "Pārslēgt sistēmas vadīklas tieši"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+msgid "Hide all normal windows"
+msgstr "Slēpt visus parastos logus"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+msgid "Switch to workspace 1"
+msgstr "Pārslēgties uz 1. darbvietu"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+msgid "Switch to workspace 2"
+msgstr "Pārslēgties uz 2. darbvietu"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+msgid "Switch to workspace 3"
+msgstr "Pārslēgties uz 3. darbvietu"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+msgid "Switch to workspace 4"
+msgstr "Pārslēgties uz 4. darbvietu"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Move to workspace left"
+msgstr "Pāriet uz darbvietu pa kreisi"
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Move to workspace right"
+msgstr "Pāriet uz darbvietu pa labi"
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Move to workspace above"
+msgstr "Pāriet uz darbvietu augšup"
+
+#: ../src/50-mutter-navigation.xml.in.h:25
+msgid "Move to workspace below"
+msgstr "Pāriet uz darbvietu lejup"
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "System"
+msgstr "Sistēma"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "Rādīt palaišanas komandrindu"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "Show the activities overview"
+msgstr "Rādīt aktivitāšu pārskatu"
 
 #: ../src/50-mutter-windows.xml.in.h:1
 msgid "Windows"
 msgstr "Logi"
 
 #: ../src/50-mutter-windows.xml.in.h:2
+msgid "Activate the window menu"
+msgstr "Aktivizēt loga izvēlni"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Toggle fullscreen mode"
+msgstr "Pārslēgt pilnekrāna režīmu"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+msgid "Toggle maximization state"
+msgstr "Pārslēgt maksimizācijas stāvokli"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+msgid "Maximize window"
+msgstr "Maksimizēt logu"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+msgid "Restore window"
+msgstr "Atjaunot loga izmēru"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+msgid "Toggle shaded state"
+msgstr "Pārslēgt ēnoto stāvokli"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+msgid "Close window"
+msgstr "Aizvērt logu"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+msgid "Hide window"
+msgstr "Paslēpt logu"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Move window"
+msgstr "Pārvietot logu"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+msgid "Resize window"
+msgstr "Mainīt loga izmēru"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+msgid "Toggle window on all workspaces or one"
+msgstr "Pārslēgt, vai logam jābūt visās darbvietās vai vienā"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+msgid "Raise window if covered, otherwise lower it"
+msgstr "Pacelt logu, ja to aizsedz, citādi pazemināt"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+msgid "Raise window above other windows"
+msgstr "Pacelt logu virs citiem logiem"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+msgid "Lower window below other windows"
+msgstr "Pazemināt logu zem citiem logiem"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Maximize window vertically"
+msgstr "Maksimizēt logu vertikāli"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+msgid "Maximize window horizontally"
+msgstr "Maksimizēt logu horizontāli"
+
+#: ../src/50-mutter-windows.xml.in.h:18
 msgid "View split on left"
 msgstr "Izvietot kreisajā ekrāna pusē"
 
-#: ../src/50-mutter-windows.xml.in.h:3
+#: ../src/50-mutter-windows.xml.in.h:19
 msgid "View split on right"
 msgstr "Izvietot labajā ekrāna pusē"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:492
+#: ../src/compositor/compositor.c:507
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr "Cits kompozīcijas pārvaldnieks jau darbojas ekrānā %d displejā “%s”."
+
+#: ../src/compositor/meta-background.c:1111
+msgid "background texture could not be created from file"
+msgstr "nevarēja no datnes izveidot fona tekstūru"
 
 #: ../src/core/bell.c:320
 msgid "Bell event"
@@ -54,16 +235,17 @@ msgstr "Zvana notikums"
 msgid "Unknown window information request: %d"
 msgstr "Nezināms logu informācijas pieprasījums — %d"
 
-#: ../src/core/delete.c:113
+#: ../src/core/delete.c:111
 #, c-format
-msgid "%s is not responding."
-msgstr "%s nereaģē."
+#| msgid "%s is not responding."
+msgid "“%s” is not responding."
+msgstr "“%s” nereaģē."
 
-#: ../src/core/delete.c:117
+#: ../src/core/delete.c:113
 msgid "Application is not responding."
 msgstr "Lietotne nereaģē."
 
-#: ../src/core/delete.c:122
+#: ../src/core/delete.c:118
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -71,31 +253,37 @@ msgstr ""
 "Var uzgaidīt neilgu brīdi, līdz tā atgūstas, vai arī aizvērt to piespiedu "
 "kārtā."
 
-#: ../src/core/delete.c:129
+#: ../src/core/delete.c:125
 msgid "_Wait"
 msgstr "_Gaidīt"
 
-#: ../src/core/delete.c:129
+#: ../src/core/delete.c:125
 msgid "_Force Quit"
 msgstr "Aizvērt _piespiedu kārtā"
 
-#: ../src/core/display.c:396
+#: ../src/core/display.c:401
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Trūkst %s paplašinājuma, kas nepieciešams kompozicionēšanai"
 
-#: ../src/core/display.c:492
+#: ../src/core/display.c:493
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Neizdevās atvērt X logu sistēmas displeju “%s”\n"
 
-#: ../src/core/keybindings.c:853
+#: ../src/core/keybindings.c:929
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
 "binding\n"
 msgstr ""
 "Kāda cita programma jau lieto taustiņu %s ar modificētājiem %x kā sasaisti\n"
+
+#: ../src/core/keybindings.c:1129
+#, c-format
+#| msgid "\"%s\" is not a valid value for focus attribute"
+msgid "\"%s\" is not a valid accelerator\n"
+msgstr "“%s” nav derīgs paātrinātājs\n"
 
 #: ../src/core/main.c:196
 msgid "Disable connection to session manager"
@@ -157,7 +345,7 @@ msgstr "Parādīt versiju"
 msgid "Mutter plugin to use"
 msgstr "Izmantojamais mutter spraudnis"
 
-#: ../src/core/prefs.c:1079
+#: ../src/core/prefs.c:1087
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -165,12 +353,12 @@ msgstr ""
 "Apvedceļi bojātām lietotnēm ir deaktivēti. Dažas lietotnes var neuzvesties "
 "pareizi.\n"
 
-#: ../src/core/prefs.c:1154
+#: ../src/core/prefs.c:1162
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Neizdevās parsēt fonta aprakstu “%s” no GSettings atslēgas %s\n"
 
-#: ../src/core/prefs.c:1220
+#: ../src/core/prefs.c:1228
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -179,7 +367,7 @@ msgstr ""
 "“%s”, kas atrasta konfigurācijas datubāzē, nav derīga vērtība peles pogas "
 "modifikatoram\n"
 
-#: ../src/core/prefs.c:1747
+#: ../src/core/prefs.c:1780
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -188,17 +376,17 @@ msgstr ""
 "“%s”, kas atrasta konfigurācijas datubāzē, nav derīga vērtība "
 "taustiņsasaistei “%s”\n"
 
-#: ../src/core/prefs.c:1844
+#: ../src/core/prefs.c:1879
 #, c-format
 msgid "Workspace %d"
 msgstr "Darbvieta %d"
 
-#: ../src/core/screen.c:652
+#: ../src/core/screen.c:673
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Ekrāna %d displejs “%s“ nav derīgs\n"
 
-#: ../src/core/screen.c:668
+#: ../src/core/screen.c:689
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -207,18 +395,18 @@ msgstr ""
 "Ekrāna %d displejam “%s” jau ir logu pārvaldnieks; mēģiniet lietot --replace "
 "iespēju, lai aizvietotu pašreizējo logu pārvaldnieku.\n"
 
-#: ../src/core/screen.c:695
+#: ../src/core/screen.c:716
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "Neizdevās iegūt logu pārvaldnieka izvēli ekrāna %d displejā “%s”\n"
 
-#: ../src/core/screen.c:750
+#: ../src/core/screen.c:794
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Ekrāna %d displejam “%s” jau ir logu pārvaldnieks\n"
 
-#: ../src/core/screen.c:935
+#: ../src/core/screen.c:979
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Neizdevās atlaist ekrānu %d uz displeja “%s”\n"
@@ -315,7 +503,7 @@ msgid "Window manager error: "
 msgstr "Logu pārvaldnieka kļūda: "
 
 #. first time through
-#: ../src/core/window.c:7237
+#: ../src/core/window.c:7539
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -331,7 +519,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7902
+#: ../src/core/window.c:8263
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -340,22 +528,22 @@ msgstr ""
 "Logs %s iestata MWM norādi, ka tā izmērs nav maināms, bet iestata minimālo "
 "izmēru %d x %d un maksimālo izmēru %d x %d; tas ir diezgan dīvaini.\n"
 
-#: ../src/core/window-props.c:274
+#: ../src/core/window-props.c:318
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Lietotne iestatīja neīstu _NET_WM_PID %lu\n"
 
-#: ../src/core/window-props.c:393
+#: ../src/core/window-props.c:434
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (uz %s)"
 
-#: ../src/core/window-props.c:1448
+#: ../src/core/window-props.c:1517
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "Nederīgs WM_TRANSIENT_FOR logs 0x%lx norādīts %s.\n"
 
-#: ../src/core/window-props.c:1459
+#: ../src/core/window-props.c:1528
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR logs 0x%lx priekš %s veidotu ciklu.\n"
@@ -500,10 +688,22 @@ msgstr ""
 "pievienotas neredzamas robežas, lai iegūtu šo vērtību."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Auto maximize nearly monitor sized windows"
+msgstr "Automātiski maksimizēt logus, kas ir gandrīz ar monitora izmēru"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+msgid ""
+"If enabled, new windows that are initially the size of the monitor "
+"automatically get maximized."
+msgstr ""
+"Ja aktivizēts, jauni logi, kuru izmērs ir gandrīz tāds pats, kā monitoram, "
+"tiks maksimizēti."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:19
 msgid "Select window from tab popup"
 msgstr "Izvēlēties logu no tabulatora izvēlnes"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+#: ../src/org.gnome.mutter.gschema.xml.in.h:20
 msgid "Cancel tab popup"
 msgstr "Atcelt logu rādīšanu"
 
@@ -706,53 +906,53 @@ msgstr "Mod5"
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
-#: ../src/ui/resizepopup.c:113
+#: ../src/ui/resizepopup.c:136
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:234
+#: ../src/ui/theme.c:235
 msgid "top"
 msgstr "augša"
 
-#: ../src/ui/theme.c:236
+#: ../src/ui/theme.c:237
 msgid "bottom"
 msgstr "apakša"
 
-#: ../src/ui/theme.c:238
+#: ../src/ui/theme.c:239
 msgid "left"
 msgstr "pa kreisi"
 
-#: ../src/ui/theme.c:240
+#: ../src/ui/theme.c:241
 msgid "right"
 msgstr "pa labi"
 
-#: ../src/ui/theme.c:268
+#: ../src/ui/theme.c:269
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "rāmja ģeometrija nenosaka “%s” dimensiju"
 
-#: ../src/ui/theme.c:287
+#: ../src/ui/theme.c:288
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "rāmja ģeometrija nenosaka dimensiju “%s” robežai “%s”"
 
-#: ../src/ui/theme.c:324
+#: ../src/ui/theme.c:325
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "Pogas samērs %g nav saprātīgs"
 
-#: ../src/ui/theme.c:336
+#: ../src/ui/theme.c:337
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Rāmja ģeometrija nenosaka pogu izmēru"
 
-#: ../src/ui/theme.c:1049
+#: ../src/ui/theme.c:1050
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Krāsu pārejās ir jābūt vismaz divām krāsām"
 
-#: ../src/ui/theme.c:1201
+#: ../src/ui/theme.c:1202
 #, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
@@ -761,7 +961,7 @@ msgstr ""
 "GTK pielāgotajā krāsu specifikācijā ir jābūt krāsas nosaukumam un atkāpšanās "
 "ceļam iekavās, piemēram, gtk:custom(foo,bar); neizdevās parsēt “%s”"
 
-#: ../src/ui/theme.c:1217
+#: ../src/ui/theme.c:1218
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
@@ -770,7 +970,7 @@ msgstr ""
 "Nederīga rakstzīme “%c” color_name parametrā no gtk:custom, ir derīgas tikai "
 "A-Za-z0-9-_"
 
-#: ../src/ui/theme.c:1231
+#: ../src/ui/theme.c:1232
 #, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
@@ -779,7 +979,7 @@ msgstr ""
 "Gtk:custom formāts ir “gtk:custom(color_name,fallback)”, “%s” neiekļaujas "
 "formātā"
 
-#: ../src/ui/theme.c:1276
+#: ../src/ui/theme.c:1277
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -788,7 +988,7 @@ msgstr ""
 "GTK krāsas specifikācijā ir jābūt stāvoklim iekavās, piemēram, gtk:fg"
 "[NORMAL], kur NORMAL ir stāvoklis; neizdevās parsēt “%s”"
 
-#: ../src/ui/theme.c:1290
+#: ../src/ui/theme.c:1291
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -797,17 +997,17 @@ msgstr ""
 "GTK krāsas specifikācijā ir jābūt kvadrātiekavām pēc stāvokļa, piemēram, gtk:"
 "fg[NORMAL], kur NORMAL ir stāvoklis; neizdevās parsēt “%s”"
 
-#: ../src/ui/theme.c:1301
+#: ../src/ui/theme.c:1302
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "Nesaprotams stāvoklis “%s” krāsas specifikācijā"
 
-#: ../src/ui/theme.c:1314
+#: ../src/ui/theme.c:1315
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "Nesaprotams krāsas komponents “%s” krāsas specifikācijā"
 
-#: ../src/ui/theme.c:1343
+#: ../src/ui/theme.c:1344
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -816,95 +1016,95 @@ msgstr ""
 "Saplūšanas formāts ir “blend/bg_color/fg_color/alpha”, “%s” neatbilst "
 "formātam"
 
-#: ../src/ui/theme.c:1354
+#: ../src/ui/theme.c:1355
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Neizdevās parsēt alfa vērtību “%s” sapludinātajā krāsā"
 
-#: ../src/ui/theme.c:1364
+#: ../src/ui/theme.c:1365
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Alfa vērtība “%s” sapludinātajā krāsā nav starp 0.0 un 1.0"
 
-#: ../src/ui/theme.c:1411
+#: ../src/ui/theme.c:1412
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "Ēnošanas formāts ir “shade/base_color/factor”, “%s” neatbilst formātam"
 
-#: ../src/ui/theme.c:1422
+#: ../src/ui/theme.c:1423
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Neizdevās parsēt ēnas koeficientu “%s” ēnotajā krāsā"
 
-#: ../src/ui/theme.c:1432
+#: ../src/ui/theme.c:1433
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Ēnošanas koeficients “%s” ēnotajā krāsā ir negatīvs"
 
-#: ../src/ui/theme.c:1461
+#: ../src/ui/theme.c:1462
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Neizdevās parsēt krāsu “%s”"
 
-#: ../src/ui/theme.c:1778
+#: ../src/ui/theme.c:1779
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Koordinātu izteiksme satur rakstzīmi “%s”, kas nav atļauta"
 
-#: ../src/ui/theme.c:1805
+#: ../src/ui/theme.c:1806
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
 "parsed"
 msgstr "Koordinātu izteiksme satur neparsējamu peldošā punkta skaitli “%s”"
 
-#: ../src/ui/theme.c:1819
+#: ../src/ui/theme.c:1820
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "Koordinātu izteiksme satur neparsējamu veselu skaitli “%s”"
 
-#: ../src/ui/theme.c:1940
+#: ../src/ui/theme.c:1941
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
 "\"%s\""
 msgstr "Koordinātu izteiksme satur nezināmu operatoru šī teksta sākumā — “%s”"
 
-#: ../src/ui/theme.c:1997
+#: ../src/ui/theme.c:1998
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Koordinātu izteiksme bija tukša vai nesaprasta"
 
-#: ../src/ui/theme.c:2110 ../src/ui/theme.c:2120 ../src/ui/theme.c:2154
+#: ../src/ui/theme.c:2111 ../src/ui/theme.c:2121 ../src/ui/theme.c:2155
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Koordinātu izteiksme noved pie dalīšanas ar nulli"
 
-#: ../src/ui/theme.c:2162
+#: ../src/ui/theme.c:2163
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
 msgstr ""
 "Koordinātu izteiksme mēģina lietot mod operatoru uz peldošā komata skaitļa"
 
-#: ../src/ui/theme.c:2218
+#: ../src/ui/theme.c:2219
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Koordinātu izteiksmei ir operators “%s”, kur tika gaidīts operands"
 
-#: ../src/ui/theme.c:2227
+#: ../src/ui/theme.c:2228
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Koordinātu izteiksmei bija operands, kur tika gaidīts operators"
 
-#: ../src/ui/theme.c:2235
+#: ../src/ui/theme.c:2236
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Koordinātu izteiksme beidzās ar operatoru, nevis ar operandu"
 
-#: ../src/ui/theme.c:2245
+#: ../src/ui/theme.c:2246
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -913,39 +1113,39 @@ msgstr ""
 "Koordinātu izteiksmē ir operatoram “%c” sekojošais operators “%c” bez "
 "operanda to starpā"
 
-#: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
+#: ../src/ui/theme.c:2397 ../src/ui/theme.c:2442
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Koordinātu izteiksmē bija nezināms mainīgais vai konstante “%s”"
 
-#: ../src/ui/theme.c:2495
+#: ../src/ui/theme.c:2496
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "Koordinātu izteiksme pārpildīja parsera buferi."
 
-#: ../src/ui/theme.c:2524
+#: ../src/ui/theme.c:2525
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "Koordinātu izteiksmei bija aizverošās iekavas bez nevienas atvērtās iekavas"
 
-#: ../src/ui/theme.c:2588
+#: ../src/ui/theme.c:2589
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "Koordinātu izteiksmei bija atverošās iekavas bez nevienas aizvērtās iekavas"
 
-#: ../src/ui/theme.c:2599
+#: ../src/ui/theme.c:2600
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Šķiet, ka koordinātu izteiksmē nav ne operatoru, ne operandu"
 
-#: ../src/ui/theme.c:2812 ../src/ui/theme.c:2832 ../src/ui/theme.c:2852
+#: ../src/ui/theme.c:2813 ../src/ui/theme.c:2833 ../src/ui/theme.c:2853
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Motīvs saturēja izteiksmi, kas noveda pie kļūdas — %s\n"
 
-#: ../src/ui/theme.c:4498
+#: ../src/ui/theme.c:4499
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -954,25 +1154,25 @@ msgstr ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"jebkas\"/> jābūt noteiktam "
 "šajā rāmja stilā"
 
-#: ../src/ui/theme.c:5009 ../src/ui/theme.c:5034
+#: ../src/ui/theme.c:5010 ../src/ui/theme.c:5035
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "Iztrūkst <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"jebkas\"/>"
 
-#: ../src/ui/theme.c:5082
+#: ../src/ui/theme.c:5083
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Neizdevās ielādēt motīvu “%s” — %s\n"
 
-#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
-#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
+#: ../src/ui/theme.c:5219 ../src/ui/theme.c:5226 ../src/ui/theme.c:5233
+#: ../src/ui/theme.c:5240 ../src/ui/theme.c:5247
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "Nav iestatīts <%s> motīvam “%s”"
 
-#: ../src/ui/theme.c:5254
+#: ../src/ui/theme.c:5255
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -981,13 +1181,13 @@ msgstr ""
 "Nav rāmja stila kopas loga tipam “%s” motīvā “%s”; pievienojiet <window type="
 "\"%s\" style_set=\"jebkas\"/> elementu"
 
-#: ../src/ui/theme.c:5650 ../src/ui/theme.c:5712 ../src/ui/theme.c:5775
+#: ../src/ui/theme.c:5662 ../src/ui/theme.c:5724 ../src/ui/theme.c:5787
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "Lietotāja definētajām konstantēm jāsākas ar lielo burtu; “%s” tāds nav"
 
-#: ../src/ui/theme.c:5658 ../src/ui/theme.c:5720 ../src/ui/theme.c:5783
+#: ../src/ui/theme.c:5670 ../src/ui/theme.c:5732 ../src/ui/theme.c:5795
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konstante “%s” jau tika definēta"
@@ -1470,56 +1670,56 @@ msgstr "Apmale"
 msgid "Attached Modal Dialog"
 msgstr "Piesaistītais modālais dialoglodziņš"
 
-#: ../src/ui/theme-viewer.c:739
+#: ../src/ui/theme-viewer.c:737
 #, c-format
 msgid "Button layout test %d"
 msgstr "Pogu izkārtojuma tests %d"
 
-#: ../src/ui/theme-viewer.c:768
+#: ../src/ui/theme-viewer.c:766
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "%g milisekundes, lai uzzīmētu loga rāmi"
 
-#: ../src/ui/theme-viewer.c:813
+#: ../src/ui/theme-viewer.c:811
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "Pielietojums: metacity-theme-viewer [MOTĪVANOSAUKUMS]\n"
 
-#: ../src/ui/theme-viewer.c:820
+#: ../src/ui/theme-viewer.c:818
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "Kļūda, ielādējot motīvu — %s\n"
 
-#: ../src/ui/theme-viewer.c:826
+#: ../src/ui/theme-viewer.c:824
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "Motīvs “%s” ielādēts %g sekundēs\n"
 
-#: ../src/ui/theme-viewer.c:870
+#: ../src/ui/theme-viewer.c:869
 msgid "Normal Title Font"
 msgstr "Normāls virsraksta fonts"
 
-#: ../src/ui/theme-viewer.c:876
+#: ../src/ui/theme-viewer.c:875
 msgid "Small Title Font"
 msgstr "Mazs virsraksta fonts"
 
-#: ../src/ui/theme-viewer.c:882
+#: ../src/ui/theme-viewer.c:881
 msgid "Large Title Font"
 msgstr "Liels virsraksta fonts"
 
-#: ../src/ui/theme-viewer.c:887
+#: ../src/ui/theme-viewer.c:886
 msgid "Button Layouts"
 msgstr "Pogu izkārtojumi"
 
-#: ../src/ui/theme-viewer.c:892
+#: ../src/ui/theme-viewer.c:891
 msgid "Benchmark"
 msgstr "Etalonuzdevums"
 
-#: ../src/ui/theme-viewer.c:944
+#: ../src/ui/theme-viewer.c:947
 msgid "Window Title Goes Here"
 msgstr "Šeit paredzēts loga virsraksts"
 
-#: ../src/ui/theme-viewer.c:1047
+#: ../src/ui/theme-viewer.c:1053
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1530,265 +1730,46 @@ msgstr ""
 "%g sekundēs pēc ierastā laika, ieskaitot X servera resursus (%g milisekundes "
 "uz kadru)\n"
 
-#: ../src/ui/theme-viewer.c:1266
+#: ../src/ui/theme-viewer.c:1273
 msgid "position expression test returned TRUE but set error"
 msgstr "pozīcijas izteiksmes tests atgrieza TRUE, bet ziņoja par kļūdu"
 
-#: ../src/ui/theme-viewer.c:1268
+#: ../src/ui/theme-viewer.c:1275
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "pozīcijas izteiksmes tests atgrieza FALSE, bet nenorādīja kļūdu"
 
-#: ../src/ui/theme-viewer.c:1272
+#: ../src/ui/theme-viewer.c:1279
 msgid "Error was expected but none given"
 msgstr "Tika gaidīta kļūda, taču tā netika dota"
 
-#: ../src/ui/theme-viewer.c:1274
+#: ../src/ui/theme-viewer.c:1281
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "Tika gaidīta kļūda %d, bet saņemta kļūda %d"
 
-#: ../src/ui/theme-viewer.c:1280
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "Kļūda netika gaidīta, taču tika saņemta — %s"
 
-#: ../src/ui/theme-viewer.c:1284
+#: ../src/ui/theme-viewer.c:1291
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x vērtība bija %d, tika gaidīta %d"
 
-#: ../src/ui/theme-viewer.c:1287
+#: ../src/ui/theme-viewer.c:1294
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y vērtība bija %d, tika gaidīta %d"
 
-#: ../src/ui/theme-viewer.c:1352
+#: ../src/ui/theme-viewer.c:1359
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
 msgstr "%d koordinātas izteiksme noparsēta %g sekundēs (vidēji %g sekundēs)\n"
 
-#: ../src/50-mutter-navigation.xml.in.h:17
 #, fuzzy
-msgid "Switch to workspace 1"
-msgstr "Pārslēgties uz 1. darbvietu"
-
-#: ../src/50-mutter-navigation.xml.in.h:18
-#, fuzzy
-msgid "Switch to workspace 2"
-msgstr "Pārslēgties uz 2. darbvietu"
-
-#: ../src/50-mutter-navigation.xml.in.h:19
-#, fuzzy
-msgid "Switch to workspace 3"
-msgstr "Pārslēgties uz 3. darbvietu"
-
-#: ../src/50-mutter-navigation.xml.in.h:20
-#, fuzzy
-msgid "Switch to workspace 4"
-msgstr "Pārslēgties uz 4. darbvietu"
-
-#: ../src/50-mutter-windows.xml.in.h:2
-#, fuzzy
-msgid "Activate the window menu"
-msgstr "Aktivizēt loga izvēlni"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-#, fuzzy
-msgid "Toggle fullscreen mode"
-msgstr "Pārslēgt pilnekrāna režīmu"
-
-#: ../src/50-mutter-windows.xml.in.h:4
-#, fuzzy
-msgid "Toggle maximization state"
-msgstr "Pārslēgt maksimizācijas stāvokli"
-
-#: ../src/50-mutter-windows.xml.in.h:5
-#, fuzzy
-msgid "Maximize window"
-msgstr "Maksimizēt logu"
-
-#: ../src/50-mutter-windows.xml.in.h:6
-#, fuzzy
-msgid "Restore window"
-msgstr "Atjaunot logu"
-
-#: ../src/50-mutter-windows.xml.in.h:7
-#, fuzzy
-msgid "Toggle shaded state"
-msgstr "Pārslēgt ēnoto stāvokli"
-
-#: ../src/50-mutter-windows.xml.in.h:9
-#, fuzzy
-msgid "Minimize window"
-msgstr "Minimizēt logu"
-
-#: ../src/50-mutter-windows.xml.in.h:8
-#, fuzzy
-msgid "Close window"
-msgstr "Aizvērt logu"
-
-#: ../src/50-mutter-windows.xml.in.h:10
-#, fuzzy
-msgid "Move window"
-msgstr "Pārvietot logu"
-
-#: ../src/50-mutter-windows.xml.in.h:11
-#, fuzzy
-msgid "Resize window"
-msgstr "Mainīt loga izmēru"
-
-#: ../src/50-mutter-navigation.xml.in.h:2
-#, fuzzy
-msgid "Move window to workspace 1"
-msgstr "Pārvietot logu uz 1. darbvietu"
-
-#: ../src/50-mutter-navigation.xml.in.h:3
-#, fuzzy
-msgid "Move window to workspace 2"
-msgstr "Pārvietot logu uz 2. darbvietu"
-
-#: ../src/50-mutter-navigation.xml.in.h:4
-#, fuzzy
-msgid "Move window to workspace 3"
-msgstr "Pārvietot logu uz 3. darbvietu"
-
-#: ../src/50-mutter-navigation.xml.in.h:5
-#, fuzzy
-msgid "Move window to workspace 4"
-msgstr "Pārvietot logu uz 4. darbvietu"
-
-#: ../src/50-mutter-navigation.xml.in.h:6
-#, fuzzy
-msgid "Move window one workspace to the left"
-msgstr "Pārvietot logu vienu darbvietu pa kreisi"
-
-#: ../src/50-mutter-navigation.xml.in.h:7
-#, fuzzy
-msgid "Move window one workspace to the right"
-msgstr ""
-"#-#-#-#-#  lv.po (lv)  #-#-#-#-#\n"
-"Pārvietot logu vienu darbvietu pa labi\n"
-"#-#-#-#-#  lv.po (lv)  #-#-#-#-#\n"
-"Pārvietot logu uz darbvietu pa labi"
-
-#: ../src/50-mutter-navigation.xml.in.h:8
-#, fuzzy
-msgid "Move window one workspace up"
-msgstr ""
-"#-#-#-#-#  lv.po (lv)  #-#-#-#-#\n"
-"Pārvietot logu vienu darbvietu augšup\n"
-"#-#-#-#-#  lv.po (lv)  #-#-#-#-#\n"
-"Pārvietot logu uz darbvietu augšup"
-
-#: ../src/50-mutter-navigation.xml.in.h:9
-#, fuzzy
-msgid "Move window one workspace down"
-msgstr "Pārvietot logu vienu darbvietu lejup"
-
-#: ../src/50-mutter-windows.xml.in.h:14
-#, fuzzy
-msgid "Raise window above other windows"
-msgstr "Pacelt logu virs citiem logiem"
-
-#: ../src/50-mutter-windows.xml.in.h:15
-#, fuzzy
-msgid "Lower window below other windows"
-msgstr "Pazemināt logu zem citiem logiem"
-
-#: ../src/50-mutter-windows.xml.in.h:16
-#, fuzzy
-msgid "Maximize window vertically"
-msgstr "Maksimizēt logu vertikāli"
-
-#: ../src/50-mutter-windows.xml.in.h:17
-#, fuzzy
-msgid "Maximize window horizontally"
-msgstr "Maksimizēt logu horizontāli"
-
-#: ../src/50-mutter-navigation.xml.in.h:1
-#, fuzzy
-msgid "Navigation"
-msgstr "Navigācija"
-
-#: ../src/50-mutter-navigation.xml.in.h:10
-#, fuzzy
-msgid "Switch applications"
-msgstr "Pārslēgt lietotnes"
-
-#: ../src/50-mutter-navigation.xml.in.h:11
-#, fuzzy
-msgid "Switch windows of an application"
-msgstr "Pārslēgt lietotnes logus"
-
-#: ../src/50-mutter-navigation.xml.in.h:12
-#, fuzzy
-msgid "Switch system controls"
-msgstr "Pārslēgt sistēmas vadīklas"
-
-#: ../src/50-mutter-navigation.xml.in.h:13
-#, fuzzy
-msgid "Switch windows directly"
-msgstr "Pārslēgt logu tieši"
-
-#: ../src/50-mutter-navigation.xml.in.h:14
-#, fuzzy
-msgid "Switch windows of an app directly"
-msgstr "Pārslēgt lietotnes logu tieši"
-
-#: ../src/50-mutter-navigation.xml.in.h:15
-#, fuzzy
-msgid "Switch system controls directly"
-msgstr "Pārslēgt sistēmas vadīklas tieši"
-
-#: ../src/50-mutter-navigation.xml.in.h:16
-#, fuzzy
-msgid "Hide all normal windows"
-msgstr "Slēpt visus parastos logus"
-
-#: ../src/50-mutter-navigation.xml.in.h:21
-#, fuzzy
-msgid "Move to workspace left"
-msgstr "Pārvietot uz darbvietu pa kreisi"
-
-#: ../src/50-mutter-navigation.xml.in.h:22
-#, fuzzy
-msgid "Move to workspace right"
-msgstr "Pārvietot uz darbvietu pa labi"
-
-#: ../src/50-mutter-navigation.xml.in.h:23
-#, fuzzy
-msgid "Move to workspace above"
-msgstr "Pārvietot uz darbvietu uz augšu"
-
-#: ../src/50-mutter-navigation.xml.in.h:24
-#, fuzzy
-msgid "Move to workspace below"
-msgstr "Pārvietot uz darbvietu zemāk"
-
-#: ../src/50-mutter-system.xml.in.h:1
-#, fuzzy
-msgid "System"
-msgstr "Sistēma"
-
-#: ../src/50-mutter-system.xml.in.h:2
-#, fuzzy
-msgid "Show the run command prompt"
-msgstr "Rādīt palaišanas komandrindu"
-
-#: ../src/50-mutter-system.xml.in.h:3
-#, fuzzy
-msgid "Show the activities overview"
-msgstr "Rādīt aktivitāšu pārskatu"
-
-#: ../src/50-mutter-windows.xml.in.h:12
-#, fuzzy
-msgid "Toggle window on all workspaces or one"
-msgstr "Pārslēgt loga redzamību visās darbvirsmās vai tikai vienā"
-
-#: ../src/50-mutter-windows.xml.in.h:13
-#, fuzzy
-msgid "Raise window if covered, otherwise lower it"
-msgstr "Pacelt logu, ja to aizsedz, citādi pazemināt"
+#~ msgid "Minimize window"
+#~ msgstr "Minimizēt logu"
 
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "Ar komatu atdalīts kompozīcijas spraudņu saraksts"
