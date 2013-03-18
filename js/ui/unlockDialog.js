@@ -47,6 +47,7 @@ const UnlockDialog = new Lang.Class({
 
         this._greeterClient = new Gdm.Client();
         this._userVerifier = new GdmUtil.ShellUserVerifier(this._greeterClient, { reauthenticationOnly: true });
+        this._userVerified = false;
 
         this._userVerifier.connect('ask-question', Lang.bind(this, this._onAskQuestion));
         this._userVerifier.connect('show-message', Lang.bind(this, this._showMessage));
@@ -250,18 +251,22 @@ const UnlockDialog = new Lang.Class({
     },
 
     _onVerificationComplete: function() {
+        this._userVerified = true;
         this._userVerifier.clear();
         this.emit('unlocked');
     },
 
     _onReset: function() {
-        this._userVerifier.clear();
-        this.emit('failed');
+        if (!this._userVerified) {
+            this._userVerifier.clear();
+            this.emit('failed');
+        }
     },
 
     _onVerificationFailed: function() {
         this._currentQuery = null;
         this._firstQuestion = true;
+        this._userVerified = false;
 
         this._promptEntry.text = '';
         this._promptEntry.clutter_text.set_password_char('\u25cf');
