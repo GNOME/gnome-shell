@@ -1,3 +1,34 @@
+3.7.92
+======
+* Drop fallback lock implementation [Florian; #693403]
+* Don't let the user trigger message-tray when in fullscreen [Jasper; #694997]
+* Scroll search results when using keynav [Jasper; #689681]
+* Allow raising the shield by starting to type the password [Jasper; #686740]
+* Improve tracking of fullscreen windows [Owen; #649748]
+* Improve animation of new windows in overview [Giovanni; #695582]
+* workspace switcher: Animate new workspaces created by DND [Giovanni; #685285]
+* Give user time to read messages on login screen [Ray; #694688]
+* Misc bug fixes and cleanups [Jasper, Ray, Florian, Cosimo, Giovanni, Adel,
+  Stef, Takao, Rui, Neil; #695154, #694993, #695272, #691578, #694321, #695338,
+  #695409, #695458, #695526, #695601, #695471, #695324, #695650, #695656,
+  #695659, #695485, #695395, #694951, #695824, #695841, #695801, #694321,
+  #693708, #695800, #695607, #695882, #691578, #685851, #694371, #690857,
+  #694092, #695747, #696007, #693438, #696064, #696102
+
+Contributors:
+  Giovanni Campagna, Cosimo Cecchi, Allan Day, Takao Fujiwara, Adel Gadllah,
+  Tim Lunn, Rui Matos, Florian Müllner, Neil Roberts, Jasper St. Pierre,
+  Ray Strode, Stef Walter, Colin Walters, Owen W. Taylor
+
+Translations:
+  Nilamdyuti Goswami [as], Chao-Hsiung Liao [zh_HK, zh_TW],
+  Yuri Myasoedov [ru], Gheyret Kenji [ug], Baurzhan Muftakhidinov [kk],
+  Ville-Pekka Vainio [fi], Matej Urbančič [sl],
+  Мирослав Николић [sr, sr@latin], Rūdolfs Mazurs [lv], Christian Kirbach [de],
+  Andika Triwidada [id], Gil Forcada [ca], Mattias Põldaru [et],
+  Duarte Loreto [pt], Adam Matoušek [cs], Changwoo Ryu [ko],
+  Ihar Hrachyshka [be], Carles Ferrando [ca@valencia], Sweta Kothari [gu]
+
 3.7.91
 ======
 * overview: Fade out controls during DND that are not targets [Cosimo; #686984]
