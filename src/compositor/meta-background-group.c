@@ -25,7 +25,7 @@ G_DEFINE_TYPE (MetaBackgroundGroup, meta_background_group, CLUTTER_TYPE_ACTOR);
 
 struct _MetaBackgroundGroupPrivate
 {
-  ClutterLayoutManager *layout_manager;
+  gpointer dummy;
 };
 
 static void
@@ -59,11 +59,6 @@ meta_background_group_init (MetaBackgroundGroup *self)
   self->priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
                                             META_TYPE_BACKGROUND_GROUP,
                                             MetaBackgroundGroupPrivate);
-
-  self->priv->layout_manager = clutter_bin_layout_new (CLUTTER_BIN_ALIGNMENT_FIXED,
-                                                       CLUTTER_BIN_ALIGNMENT_FIXED);
-
-  clutter_actor_set_layout_manager (CLUTTER_ACTOR (self), self->priv->layout_manager);
 }
 
 /**
