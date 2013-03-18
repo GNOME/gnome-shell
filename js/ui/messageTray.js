@@ -1721,6 +1721,9 @@ const MessageTray = new Lang.Class({
         this.actor.add_action(clickAction);
 
         clickAction.connect('clicked', Lang.bind(this, function(action) {
+            if (this._trayState != State.SHOWN)
+                return;
+
             let button = action.get_button();
             if (button == 3)
                 this._openContextMenu();
@@ -1731,7 +1734,7 @@ const MessageTray = new Lang.Class({
         clickAction.connect('long-press', Lang.bind(this, function(action, actor, state) {
             switch (state) {
             case Clutter.LongPressState.QUERY:
-                return true;
+                return this._trayState == State.SHOWN;
             case Clutter.LongPressState.ACTIVATE:
                 this._openContextMenu();
             }
