@@ -308,6 +308,8 @@ const GrabHelper = new Lang.Class({
         if (!this.grabbed && this._capturedEventId > 0) {
             global.stage.disconnect(this._capturedEventId);
             this._capturedEventId = 0;
+
+            this._ignoreRelease = false;
         }
 
         if (hadFocus) {
