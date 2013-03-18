@@ -118,6 +118,22 @@ const MonitorConstraint = new Lang.Class({
     }
 });
 
+const Monitor = new Lang.Class({
+    Name: 'Monitor',
+
+    _init: function(index, geometry) {
+        this.index = index;
+        this.x = geometry.x;
+        this.y = geometry.y;
+        this.width = geometry.width;
+        this.height = geometry.height;
+    },
+
+    get inFullscreen() {
+        return global.screen.get_monitor_in_fullscreen(this.index);
+    }
+})
+
 const defaultParams = {
     trackFullscreen: false,
     affectsStruts: false,
@@ -261,7 +277,7 @@ const LayoutManager = new Lang.Class({
         this.monitors = [];
         let nMonitors = screen.get_n_monitors();
         for (let i = 0; i < nMonitors; i++)
-            this.monitors.push(screen.get_monitor_geometry(i));
+            this.monitors.push(new Monitor(i, screen.get_monitor_geometry(i)));
 
         if (nMonitors == 1) {
             this.primaryIndex = this.bottomIndex = 0;
@@ -904,13 +920,8 @@ const LayoutManager = new Lang.Class({
     },
 
     _updateFullscreen: function() {
-        for (let i = 0; i < this.monitors.length; i++)
-            this.monitors[i].inFullscreen = global.screen.get_monitor_in_fullscreen (i);
-
         this._updateVisibility();
         this._queueUpdateRegions();
-
-        this.emit('fullscreen-changed');
     },
 
     _windowsRestacked: function() {

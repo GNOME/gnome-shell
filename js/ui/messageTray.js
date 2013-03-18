@@ -1657,7 +1657,6 @@ const MessageTray = new Lang.Class({
         this._desktopCloneState = State.HIDDEN;
         this._notificationRemoved = false;
         this._reNotifyAfterHideNotification = null;
-        this._inFullscreen = false;
         this._desktopClone = null;
         this._inCtrlAltTab = false;
 
@@ -1674,7 +1673,7 @@ const MessageTray = new Lang.Class({
         Main.layoutManager.trackChrome(this._notificationWidget);
         Main.layoutManager.trackChrome(this._closeButton);
 
-        Main.layoutManager.connect('fullscreen-changed', Lang.bind(this, this._updateState));
+        global.screen.connect('in-fullscreen-changed', Lang.bind(this, this._updateState));
         Main.layoutManager.connect('hot-corners-changed', Lang.bind(this, this._hotCornersChanged));
 
         // If the overview shows or hides while we're in
