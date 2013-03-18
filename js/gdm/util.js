@@ -346,8 +346,6 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     _onReset: function() {
-        this.clear();
-
         // Clear previous attempts to authenticate
         this._failCounter = 0;
 

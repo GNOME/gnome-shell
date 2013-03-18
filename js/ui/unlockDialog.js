@@ -255,6 +255,7 @@ const UnlockDialog = new Lang.Class({
     },
 
     _onReset: function() {
+        this._userVerifier.clear();
         this.emit('failed');
     },
 
