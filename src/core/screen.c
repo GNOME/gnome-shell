@@ -1006,7 +1006,7 @@ meta_screen_free (MetaScreen *screen,
   if (screen->work_area_later != 0)
     g_source_remove (screen->work_area_later);
   if (screen->check_fullscreen_later != 0)
-    g_source_remove (screen->work_area_later);
+    g_source_remove (screen->check_fullscreen_later);
 
   if (screen->monitor_infos)
     g_free (screen->monitor_infos);
