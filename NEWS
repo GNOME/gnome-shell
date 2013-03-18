@@ -1,3 +1,24 @@
+3.7.92
+======
+* Build and improve reference docs [Tomeu; #676856, #695641, #695935]
+* Add tracking of whether there are fullscreen windows [Owen; 649748]
+* Misc bug fixes and cleanups [Adel, Giovanni, Owen, Jasper, Florian; #695269,
+  #695711, #694046, #695813, #695881, #676856, #696053, #682779, #696089,
+  #696091, #696087]
+
+Contributors:
+  Giovanni Campagna, Adel Gadllah, Florian Müllner, Jasper St. Pierre,
+  Tomeu Vizoso, Owen W. Taylor
+
+Translations:
+  Chao-Hsiung Liao [zh_HK, zh_TW], Rafael Ferreira [pt_BR],
+  Ihar Hrachyshka [be], Nilamdyuti Goswami [as], Matej Urbančič [sl],
+  Dimitris Spingos [el], Jan Kyselica [sk], Khaled Hosny [ar],
+  Мирослав Николић [sr, sr@latin], Duarte Loreto [pt], Sweta Kothari [gu],
+  Milo Casagrande [it], Changwoo Ryu [ko], Gil Forcada [ca],
+  Carles Ferrando [ca@valencia], Mattias Põldaru [et], Alexandre Franke [fr],
+  Ask H. Larsen [da], Rūdolfs Mazurs [lv], Nguyễn Thái Ngọc Duy [vi]
+
 3.7.91
 ======
 * Fix windows being treated as remote after hostname changes [Ray; #688716]
