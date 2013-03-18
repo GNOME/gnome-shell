@@ -161,16 +161,22 @@ const RunDialog = new Lang.Class({
         let paths = GLib.getenv('PATH').split(':');
         paths.push(GLib.get_home_dir());
         let someResults = paths.map(function(path) {
-            let file = Gio.File.new_for_path(path);
-            let fileEnum = file.enumerate_children('standard::name', Gio.FileQueryInfoFlags.NONE, null);
-            let info;
             let results = [];
-            while ((info = fileEnum.next_file(null))) {
-                let name = info.get_name();
-                if (name.slice(0, text.length) == text)
-                    results.push(name);
+            try {
+                let file = Gio.File.new_for_path(path);
+                let fileEnum = file.enumerate_children('standard::name', Gio.FileQueryInfoFlags.NONE, null);
+                let info;
+                while ((info = fileEnum.next_file(null))) {
+                    let name = info.get_name();
+                    if (name.slice(0, text.length) == text)
+                        results.push(name);
+                }
+            } catch (e if (!e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_FOUND) &&
+                           !e.matches(Gio.IOErrorEnum, Gio.IOErrorEnum.NOT_DIRECTORY))) {
+                log(e);
+            } finally {
+                return results;
             }
-            return results;
         });
         let results = someResults.reduce(function(a, b) {
             return a.concat(b);
