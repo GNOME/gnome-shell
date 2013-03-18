@@ -63,6 +63,11 @@
 "   return vec3(mix(color.rgb, gray, 1.0 - saturation));\n"                    \
 "}\n"                                                                          \
 
+/* Used when we don't have a blur, as the texel is going to be junk
+ * unless we set something to it. */
+#define DESATURATE_PRELUDE                                                     \
+"cogl_texel = texture2D(cogl_sampler, cogl_tex_coord.st);\n"
+
 #define DESATURATE_CODE                                                        \
 "cogl_texel.rgb = desaturate(cogl_texel.rgb);\n"
 
@@ -621,7 +626,7 @@ add_texture_lookup_shader (MetaBackground *self)
   else if (priv->effects & META_BACKGROUND_EFFECTS_BLUR)
     code = BLUR_CODE;
   else if (priv->effects & META_BACKGROUND_EFFECTS_DESATURATE)
-    code = DESATURATE_CODE;
+    code = DESATURATE_PRELUDE "\n" DESATURATE_CODE;
   else
     return;
 
