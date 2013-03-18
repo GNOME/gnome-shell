@@ -9413,6 +9413,15 @@ update_resize (MetaWindow *window,
       break;
     }
 
+#ifdef HAVE_XSYNC
+  /* If we're waiting for a request for _NET_WM_SYNC_REQUEST, we'll
+   * resize the window when the window responds, or when we time
+   * the response out.
+   */
+  if (window->sync_request_timeout_id != 0)
+    return;
+#endif
+
   if (!check_moveresize_frequency (window, &remaining) && !force)
     {
       /* we are ignoring an event here, so we schedule a
