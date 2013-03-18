@@ -930,7 +930,7 @@ const LoginDialog = new Lang.Class({
         return batch.run();
     },
 
-    _onSessionOpened: function(client, serviceName) {
+    _startSession: function(serviceName) {
         Tweener.addTween(this.dialogLayout,
                          { opacity: 0,
                            time: _FADE_ANIMATION_TIME,
@@ -951,6 +951,18 @@ const LoginDialog = new Lang.Class({
                                }));
                            },
                            onCompleteScope: this });
+    },
+
+    _onSessionOpened: function(client, serviceName) {
+        if (!this._userVerifier.hasPendingMessages) {
+            this._startSession(serviceName);
+        } else {
+            let signalId = this._userVerifier.connect('no-more-messages',
+                                                      Lang.bind(this, function() {
+                                                          this._userVerifier.disconnect(signalId);
+                                                          this._startSession(serviceName);
+                                                      }));
+        }
     },
 
     _waitForItemForUser: function(userName) {

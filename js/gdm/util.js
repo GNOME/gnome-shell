@@ -2,6 +2,7 @@
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
+const GLib = imports.gi.GLib;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
 const Signals = imports.signals;
@@ -26,6 +27,9 @@ const ALLOWED_FAILURES_KEY = 'allowed-failures';
 
 const LOGO_KEY = 'logo';
 const DISABLE_USER_LIST_KEY = 'disable-user-list';
+
+// Give user 16ms to read each character of a PAM message
+const USER_READ_TIME = 16
 
 function fadeInActor(actor) {
     if (actor.opacity == 255 && actor.visible)
@@ -114,6 +118,9 @@ const ShellUserVerifier = new Lang.Class({
 
         this._fprintManager = new Fprint.FprintManager();
         this._realmManager = new Realmd.Manager();
+        this._messageQueue = [];
+        this._messageQueueTimeoutId = 0;
+        this.hasPendingMessages = false;
 
         this._failCounter = 0;
     },
@@ -153,13 +160,73 @@ const ShellUserVerifier = new Lang.Class({
             this._userVerifier.run_dispose();
             this._userVerifier = null;
         }
+
+        this._clearMessageQueue();
     },
 
     answerQuery: function(serviceName, answer) {
-        // Clear any previous message
-        this.emit('show-message', null, null);
+        if (!this._userVerifier.hasPendingMessages) {
+            this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
+        } else {
+            let signalId = this._userVerifier.connect('no-more-messages',
+                                                      Lang.bind(this, function() {
+                                                          this._userVerifier.disconnect(signalId);
+                                                          this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
+                                                      }));
+        }
+    },
 
-        this._userVerifier.call_answer_query(serviceName, answer, this._cancellable, null);
+    _getIntervalForMessage: function(message) {
+        // We probably could be smarter here
+        return message.length * USER_READ_TIME;
+    },
+
+    finishMessageQueue: function() {
+        if (!this.hasPendingMessages)
+            return;
+
+        this._messageQueue = [];
+
+        this.hasPendingMessages = false;
+        this.emit('no-more-messages');
+    },
+
+    _queueMessageTimeout: function() {
+        if (this._messageQueue.length == 0) {
+            this.finishMessageQueue();
+            return;
+        }
+
+        if (this._messageQueueTimeoutId != 0)
+            return;
+
+        let message = this._messageQueue.shift();
+        this.emit('show-message', message.text, message.iconName);
+
+        this._messageQueueTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
+                                                       message.interval,
+                                                       Lang.bind(this, function() {
+                                                           this._messageQueueTimeoutId = 0;
+                                                           this._queueMessageTimeout();
+                                                       }));
+    },
+
+    _queueMessage: function(message, iconName) {
+        let interval = this._getIntervalForMessage(message);
+
+        this.hasPendingMessages = true;
+        this._messageQueue.push({ text: message, interval: interval, iconName: iconName });
+        this._queueMessageTimeout();
+    },
+
+    _clearMessageQueue: function() {
+        this.finishMessageQueue();
+
+        if (this._messageQueueTimeoutId != 0) {
+            GLib.source_remove(this._messageQueueTimeoutId);
+            this._messageQueueTimeoutId = 0;
+        }
+        this.emit('show-message', null, null);
     },
 
     _checkForFingerprintReader: function() {
@@ -179,7 +246,7 @@ const ShellUserVerifier = new Lang.Class({
         logError(error, where);
         this._hold.release();
 
-        this.emit('show-message', _("Authentication error"), 'login-dialog-message-warning');
+        this._queueMessage(_("Authentication error"), 'login-dialog-message-warning');
         this._verificationFailed(false);
     },
 
@@ -298,7 +365,7 @@ const ShellUserVerifier = new Lang.Class({
             // to indicate the user can swipe their finger instead
             this.emit('show-login-hint', _("(or swipe finger)"));
         } else if (serviceName == PASSWORD_SERVICE_NAME) {
-            this.emit('show-message', info, 'login-dialog-message-info');
+            this._queueMessage(info, 'login-dialog-message-info');
         }
     },
 
@@ -307,7 +374,7 @@ const ShellUserVerifier = new Lang.Class({
         // users who haven't enrolled their fingerprint.
         if (serviceName != PASSWORD_SERVICE_NAME)
             return;
-        this.emit('show-message', problem, 'login-dialog-message-warning');
+        this._queueMessage(problem, 'login-dialog-message-warning');
     },
 
     _showRealmLoginHint: function() {
@@ -356,6 +423,15 @@ const ShellUserVerifier = new Lang.Class({
         this.emit('verification-complete');
     },
 
+    _cancelAndReset: function() {
+        this.cancel();
+        this._onReset();
+    },
+
+    _retry: function() {
+        this.begin(this._userName, new Batch.Hold());
+    },
+
     _verificationFailed: function(retry) {
         // For Not Listed / enterprise logins, immediately reset
         // the dialog
@@ -367,15 +443,25 @@ const ShellUserVerifier = new Lang.Class({
             this._failCounter < this._settings.get_int(ALLOWED_FAILURES_KEY);
 
         if (canRetry) {
-            this.clear();
-            this.begin(this._userName, new Batch.Hold());
+            if (!this._userVerifier.hasPendingMessages) {
+                this._retry();
+            } else {
+                let signalId = this._userVerifier.connect('no-more-messages',
+                                                          Lang.bind(this, function() {
+                                                              this._userVerifier.disconnect(signalId);
+                                                              this._retry();
+                                                          }));
+            }
         } else {
-            // Allow some time to see the message, then reset everything
-            Mainloop.timeout_add(3000, Lang.bind(this, function() {
-                this.cancel();
-
-                this._onReset();
-            }));
+            if (!this._userVerifier.hasPendingMessages) {
+                this._cancelAndReset();
+            } else {
+                let signalId = this._userVerifier.connect('no-more-messages',
+                                                          Lang.bind(this, function() {
+                                                              this._userVerifier.disconnect(signalId);
+                                                              this._cancelAndReset();
+                                                          }));
+            }
         }
 
         this.emit('verification-failed');
