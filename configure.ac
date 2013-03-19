@@ -1263,12 +1263,6 @@ AS_IF([test "x$enable_cogl_gst" = "xyes"],
 )
 AM_CONDITIONAL([BUILD_COGL_GST], [test "x$enable_cogl_gst" = "xyes"])
 
-have_hw_decoder_support=no
-#PKG_CHECK_MODULES(HW, [$COGL_GST_PKG_REQUIRES], [have_hw_decoder_support=yes
-#                  AC_DEFINE([HAVE_HW_DECODER_SUPPORT], [1],
-#                  ["Defined if building Cogl-Gst with HW decoder support"])
-#                  ],[ have_hw_decoder_support=no ])
-
 
 
 dnl ================================================================
@@ -1495,7 +1489,6 @@ echo "        Image backend: ${COGL_IMAGE_BACKEND}"
 echo "        Cogl Pango: ${enable_cogl_pango}"
 echo "        Profiling: ${enable_profile}"
 echo "        CoglGst: ${enable_cogl_gst}"
-echo "        CoglGst has HW suppport: ${have_hw_decoder_support}"
 
 # Compiler/Debug related flags
 echo ""

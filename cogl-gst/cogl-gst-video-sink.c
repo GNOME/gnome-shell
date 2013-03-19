@@ -48,10 +48,6 @@
 #define COGL_GST_TEXTURE_FLAGS \
        (COGL_TEXTURE_NO_SLICING | COGL_TEXTURE_NO_ATLAS)
 #define COGL_GST_DEFAULT_PRIORITY    (G_PRIORITY_HIGH_IDLE)
-#ifdef HAVE_HW_DECODER_SUPPORT
-#define GST_USE_UNSTABLE_API 1
-#include <gst/video/gstsurfacemeta.h>
-#endif
 
 #define BASE_SINK_CAPS "{ AYUV," \
                        "YV12," \
@@ -143,9 +139,6 @@ struct _CoglGstVideoSinkPrivate
   GstFlowReturn flow_return;
   int free_layer;
   GstVideoInfo info;
-  #ifdef HAVE_HW_DECODER_SUPPORT
-  GstSurfaceConverter *converter;
-  #endif
 };
 
 static void
@@ -570,67 +563,6 @@ static CoglGstRenderer ayuv_glsl_renderer =
   cogl_gst_ayuv_upload,
 };
 
-#ifdef HAVE_HW_DECODER_SUPPORT
-
-static void
-cogl_gst_hw_init (CoglGstVideoSink *sink)
-{
-  create_template_pipeline (sink, NULL, NULL, 1);
-}
-
-static void
-cogl_gst_hw_deinit (CoglGstVideoSink* sink)
-{
-  if (sink->priv->converter != NULL)
-    g_object_unref (sink->priv->converter);
-  sink->priv->converter = NULL;
-}
-
-static CoglBool
-cogl_gst_hw_upload (CoglGstVideoSink *sink,
-                    GstBuffer *buffer)
-{
-  CoglGstVideoSinkPrivate *priv = sink->priv;
-  GstSurfaceMeta* surface = gst_buffer_get_surface_meta (buffer);
-
-  if (G_UNLIKELY (priv->converter == NULL))
-    {
-      unsigned int gl_tex;
-      unsigned int gl_tar;
-      GValue value = {0};
-
-      clear_frame_textures (sink);
-
-      priv->frame[0] = cogl_texture_new_with_size (priv->ctx, priv->info.width,
-                                                   priv->info.height,
-                                                   COGL_GST_TEXTURE_FLAGS,
-                                                   COGL_PIXEL_FORMAT_BGRA_8888);
-
-      cogl_texture_get_gl_texture (priv->frame[0], &gl_tex, &gl_tar);
-
-      g_value_init (&value, G_TYPE_UINT);
-      g_value_set_uint (&value, gl_tex);
-
-      priv->converter = gst_surface_meta_create_converter (surface, "opengl",
-                                                           &value);
-    }
-  gst_surface_converter_upload (priv->converter, buffer);
-
-  return TRUE;
-}
-
-static CoglGstRenderer hw_renderer = {
-  "HW surface",
-  COGL_GST_SURFACE,
-  0,
-  GST_STATIC_CAPS ("x-video/surface, opengl=true"),
-  cogl_gst_hw_init,
-  cogl_gst_hw_deinit,
-  cogl_gst_hw_upload,
-};
-
-#endif
-
 static GSList*
 cogl_gst_build_renderers_list (CoglContext *ctx)
 {
@@ -644,9 +576,6 @@ cogl_gst_build_renderers_list (CoglContext *ctx)
     &yv12_glsl_renderer,
     &i420_glsl_renderer,
     &ayuv_glsl_renderer,
-    #ifdef HAVE_HW_DECODER_SUPPORT
-    &hw_renderer,
-    #endif
     NULL
   };
 
