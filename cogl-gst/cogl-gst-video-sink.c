@@ -47,7 +47,7 @@
 
 #define COGL_GST_TEXTURE_FLAGS \
        (COGL_TEXTURE_NO_SLICING | COGL_TEXTURE_NO_ATLAS)
-#define COGL_GST_DEFAULT_PRIORITY    (G_PRIORITY_HIGH_IDLE)
+#define COGL_GST_DEFAULT_PRIORITY G_PRIORITY_HIGH_IDLE
 
 #define BASE_SINK_CAPS "{ AYUV," \
                        "YV12," \
@@ -57,15 +57,14 @@
                        "RGB," \
                        "BGR }"
 
+#define SINK_CAPS GST_VIDEO_CAPS_MAKE (BASE_SINK_CAPS)
 
-#define SINK_CAPS GST_VIDEO_CAPS_MAKE(BASE_SINK_CAPS)
+static GstStaticPadTemplate sinktemplate_all =
+  GST_STATIC_PAD_TEMPLATE ("sink",
+                           GST_PAD_SINK,
+                           GST_PAD_ALWAYS,
+                           GST_STATIC_CAPS (SINK_CAPS));
 
-static GstStaticPadTemplate sinktemplate_all = GST_STATIC_PAD_TEMPLATE ("sink",
-    GST_PAD_SINK,
-    GST_PAD_ALWAYS,
-    GST_STATIC_CAPS (SINK_CAPS));
-
-#define cogl_gst_video_sink_parent_class parent_class
 G_DEFINE_TYPE (CoglGstVideoSink, cogl_gst_video_sink, GST_TYPE_BASE_SINK);
 
 enum
@@ -93,7 +92,7 @@ typedef enum
   COGL_GST_YV12,
   COGL_GST_SURFACE,
   COGL_GST_I420
-}CoglGstVideoFormat;
+} CoglGstVideoFormat;
 
 typedef enum
 {
@@ -107,10 +106,10 @@ typedef struct _CoglGstSource
   GMutex buffer_lock;
   GstBuffer *buffer;
   CoglBool has_new_caps;
-}CoglGstSource;
+} CoglGstSource;
 
-typedef void (CoglGstRendererPaint) (CoglGstVideoSink*);
-typedef void (CoglGstRendererPostPaint) (CoglGstVideoSink*);
+typedef void (CoglGstRendererPaint) (CoglGstVideoSink *);
+typedef void (CoglGstRendererPostPaint) (CoglGstVideoSink *);
 
 typedef struct _CoglGstRenderer
 {
@@ -118,11 +117,11 @@ typedef struct _CoglGstRenderer
   CoglGstVideoFormat format;
   int flags;
   GstStaticCaps caps;
-  void (*init)   (CoglGstVideoSink *sink);
-  void (*deinit)  (CoglGstVideoSink *sink);
+  void (*init) (CoglGstVideoSink *sink);
+  void (*deinit) (CoglGstVideoSink *sink);
   CoglBool (*upload) (CoglGstVideoSink *sink,
                       GstBuffer *buffer);
-}CoglGstRenderer;
+} CoglGstRenderer;
 
 struct _CoglGstVideoSinkPrivate
 {
@@ -144,7 +143,7 @@ struct _CoglGstVideoSinkPrivate
 static void
 cogl_gst_source_finalize (GSource *source)
 {
-  CoglGstSource *gst_source = (CoglGstSource*) source;
+  CoglGstSource *gst_source = (CoglGstSource *) source;
 
   g_mutex_lock (&gst_source->buffer_lock);
   if (gst_source->buffer)
@@ -155,7 +154,7 @@ cogl_gst_source_finalize (GSource *source)
 }
 
 int
-cogl_gst_video_sink_get_free_layer (CoglGstVideoSink* sink)
+cogl_gst_video_sink_get_free_layer (CoglGstVideoSink *sink)
 {
   return sink->priv->free_layer;
 }
@@ -178,7 +177,7 @@ static CoglBool
 cogl_gst_source_prepare (GSource *source,
                          int *timeout)
 {
-  CoglGstSource *gst_source = (CoglGstSource*) source;
+  CoglGstSource *gst_source = (CoglGstSource *) source;
 
   *timeout = -1;
 
@@ -188,7 +187,7 @@ cogl_gst_source_prepare (GSource *source,
 static CoglBool
 cogl_gst_source_check (GSource *source)
 {
-  CoglGstSource *gst_source = (CoglGstSource*) source;
+  CoglGstSource *gst_source = (CoglGstSource *) source;
 
   return gst_source->buffer != NULL;
 }
@@ -198,7 +197,7 @@ cogl_gst_video_sink_set_priority (CoglGstVideoSink *sink,
                                   int priority)
 {
   if (sink->priv->source)
-    g_source_set_priority ((GSource*) sink->priv->source, priority);
+    g_source_set_priority ((GSource *) sink->priv->source, priority);
 }
 
 /* We want to cache the snippets instead of recreating a new one every
@@ -268,7 +267,7 @@ create_template_pipeline (CoglGstVideoSink *sink,
   g_signal_emit (sink, video_sink_signals[PIPELINE_READY_SIGNAL], 0, NULL);
 }
 
-CoglPipeline*
+CoglPipeline *
 cogl_gst_video_sink_get_pipeline (CoglGstVideoSink *vt)
 {
   CoglGstVideoSinkPrivate *priv = vt->priv;
@@ -364,7 +363,6 @@ map_fail:
     return FALSE;
   }
 }
-
 
 static CoglGstRenderer rgb24_renderer =
 {
@@ -592,15 +590,15 @@ static void
 append_cap (gpointer data,
             gpointer user_data)
 {
-  CoglGstRenderer *renderer = (CoglGstRenderer*) data;
-  GstCaps *caps = (GstCaps*) user_data;
+  CoglGstRenderer *renderer = (CoglGstRenderer *) data;
+  GstCaps *caps = (GstCaps *) user_data;
   GstCaps *writable_caps;
   writable_caps =
     gst_caps_make_writable (gst_static_caps_get (&renderer->caps));
   gst_caps_append (caps, writable_caps);
 }
 
-static GstCaps*
+static GstCaps *
 cogl_gst_build_caps (GSList *renderers)
 {
   GstCaps *caps;
@@ -613,7 +611,8 @@ cogl_gst_build_caps (GSList *renderers)
 }
 
 void
-cogl_gst_video_sink_set_context (CoglGstVideoSink *vt, CoglContext *ctx)
+cogl_gst_video_sink_set_context (CoglGstVideoSink *vt,
+                                 CoglContext *ctx)
 {
   CoglGstVideoSinkPrivate *priv = vt->priv;
 
@@ -640,7 +639,7 @@ cogl_gst_video_sink_set_context (CoglGstVideoSink *vt, CoglContext *ctx)
     }
 }
 
-static CoglGstRenderer*
+static CoglGstRenderer *
 cogl_gst_find_renderer_by_format (CoglGstVideoSink *sink,
                                   CoglGstVideoFormat format)
 {
@@ -650,7 +649,7 @@ cogl_gst_find_renderer_by_format (CoglGstVideoSink *sink,
 
   for (element = priv->renderers; element; element = g_slist_next (element))
     {
-      CoglGstRenderer *candidate = (CoglGstRenderer*) element->data;
+      CoglGstRenderer *candidate = (CoglGstRenderer *) element->data;
       if (candidate->format == format)
         {
           renderer = candidate;
@@ -661,7 +660,7 @@ cogl_gst_find_renderer_by_format (CoglGstVideoSink *sink,
   return renderer;
 }
 
-static GstCaps*
+static GstCaps *
 cogl_gst_video_sink_get_caps (GstBaseSink *bsink,
                               GstCaps *filter)
 {
@@ -680,7 +679,7 @@ cogl_gst_video_sink_parse_caps (GstCaps *caps,
   GstVideoInfo vinfo;
   CoglGstVideoFormat format;
   CoglBool bgr = FALSE;
-  CoglGstRenderer* renderer;
+  CoglGstRenderer *renderer;
 
   intersection = gst_caps_intersect (priv->caps, caps);
   if (gst_caps_is_empty (intersection))
@@ -691,7 +690,8 @@ cogl_gst_video_sink_parse_caps (GstCaps *caps,
   if (!gst_video_info_from_caps (&vinfo, caps))
     goto unknown_format;
 
-  switch (vinfo.finfo->format) {
+  switch (vinfo.finfo->format)
+    {
     case GST_VIDEO_FORMAT_YV12:
       format = COGL_GST_YV12;
       break;
@@ -720,7 +720,7 @@ cogl_gst_video_sink_parse_caps (GstCaps *caps,
       break;
     default:
       goto unhandled_format;
-  }
+    }
 
   renderer = cogl_gst_find_renderer_by_format (sink, format);
 
@@ -729,14 +729,15 @@ cogl_gst_video_sink_parse_caps (GstCaps *caps,
 
   GST_INFO_OBJECT (sink, "found the %s renderer", renderer->name);
 
-  if (save) {
-    priv->info = vinfo;
+  if (save)
+    {
+      priv->info = vinfo;
 
-    priv->format = format;
-    priv->bgr = bgr;
+      priv->format = format;
+      priv->bgr = bgr;
 
-    priv->renderer = renderer;
-  }
+      priv->renderer = renderer;
+    }
 
   return TRUE;
 
@@ -790,7 +791,7 @@ cogl_gst_video_sink_set_caps (GstBaseSink *bsink,
 static CoglBool
 cogl_gst_source_dispatch (GSource *source,
                           GSourceFunc callback,
-                          void* user_data)
+                          void *user_data)
 {
   CoglGstSource *gst_source= (CoglGstSource*) source;
   CoglGstVideoSinkPrivate *priv = gst_source->sink->priv;
@@ -862,14 +863,14 @@ static GSourceFuncs gst_source_funcs =
   cogl_gst_source_finalize
 };
 
-static CoglGstSource*
+static CoglGstSource *
 cogl_gst_source_new (CoglGstVideoSink *sink)
 {
   GSource *source;
   CoglGstSource *gst_source;
 
   source = g_source_new (&gst_source_funcs, sizeof (CoglGstSource));
-  gst_source = (CoglGstSource*) source;
+  gst_source = (CoglGstSource *) source;
 
   g_source_set_can_recurse (source, TRUE);
   g_source_set_priority (source, COGL_GST_DEFAULT_PRIORITY);
@@ -884,7 +885,7 @@ cogl_gst_source_new (CoglGstVideoSink *sink)
 static void
 cogl_gst_video_sink_init (CoglGstVideoSink *sink)
 {
-  CoglGstVideoSinkPrivate* priv;
+  CoglGstVideoSinkPrivate *priv;
 
   sink->priv = priv = G_TYPE_INSTANCE_GET_PRIVATE (sink,
                                                    COGL_GST_TYPE_VIDEO_SINK,
@@ -950,7 +951,7 @@ cogl_gst_video_sink_dispose (GObject *object)
       priv->caps = NULL;
     }
 
-  G_OBJECT_CLASS(parent_class)->dispose (object);
+  G_OBJECT_CLASS (cogl_gst_video_sink_parent_class)->dispose (object);
 }
 
 static void
@@ -960,7 +961,7 @@ cogl_gst_video_sink_finalize (GObject *object)
 
   cogl_gst_video_sink_set_context (self, NULL);
 
-  G_OBJECT_CLASS (parent_class)->finalize (object);
+  G_OBJECT_CLASS (cogl_gst_video_sink_parent_class)->finalize (object);
 }
 
 static CoglBool
@@ -970,7 +971,7 @@ cogl_gst_video_sink_start (GstBaseSink *base_sink)
   CoglGstVideoSinkPrivate *priv = sink->priv;
 
   priv->source = cogl_gst_source_new (sink);
-  g_source_attach ((GSource*) priv->source, NULL);
+  g_source_attach ((GSource *) priv->source, NULL);
   priv->flow_return = GST_FLOW_OK;
   return TRUE;
 }
@@ -1006,7 +1007,7 @@ cogl_gst_video_sink_get_property (GObject *object,
   switch (prop_id)
     {
     case PROP_UPDATE_PRIORITY:
-      g_value_set_int (value, g_source_get_priority ((GSource*) priv->source));
+      g_value_set_int (value, g_source_get_priority ((GSource *) priv->source));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1022,7 +1023,7 @@ cogl_gst_video_sink_stop (GstBaseSink *base_sink)
 
   if (priv->source)
     {
-      GSource *source = (GSource*) priv->source;
+      GSource *source = (GSource *) priv->source;
       g_source_destroy (source);
       g_source_unref (source);
       priv->source = NULL;
@@ -1037,6 +1038,7 @@ cogl_gst_video_sink_class_init (CoglGstVideoSinkClass *klass)
   GObjectClass *go_class = G_OBJECT_CLASS (klass);
   GstBaseSinkClass *gb_class = GST_BASE_SINK_CLASS (klass);
   GstElementClass *ge_class = GST_ELEMENT_CLASS (klass);
+  GstPadTemplate *pad_template;
   GParamSpec *pspec;
 
   g_type_class_add_private (klass, sizeof (CoglGstVideoSinkPrivate));
@@ -1045,14 +1047,18 @@ cogl_gst_video_sink_class_init (CoglGstVideoSinkClass *klass)
   go_class->dispose = cogl_gst_video_sink_dispose;
   go_class->finalize = cogl_gst_video_sink_finalize;
 
-  gst_element_class_add_pad_template (ge_class,
-                                      gst_static_pad_template_get (&sinktemplate_all));
-  gst_element_class_set_metadata (ge_class, "Cogl video sink", "Sink/Video",
-            "Sends video data from GStreamer to a Cogl pipeline",
-            "Jonathan Matthew <jonathan@kaolin.wh9.net>, "
-            "Matthew Allum <mallum@o-hand.com, "
-            "Chris Lord <chris@o-hand.com>, "
-            "Plamena Manolova <plamena.n.manolova@intel.com>");
+  pad_template = gst_static_pad_template_get (&sinktemplate_all);
+  gst_element_class_add_pad_template (ge_class, pad_template);
+
+  gst_element_class_set_metadata (ge_class,
+                                  "Cogl video sink", "Sink/Video",
+                                  "Sends video data from GStreamer to a "
+                                  "Cogl pipeline",
+                                  "Jonathan Matthew <jonathan@kaolin.wh9.net>, "
+                                  "Matthew Allum <mallum@o-hand.com, "
+                                  "Chris Lord <chris@o-hand.com>, "
+                                  "Plamena Manolova "
+                                  "<plamena.n.manolova@intel.com>");
 
   gb_class->render = _cogl_gst_video_sink_render;
   gb_class->preroll = _cogl_gst_video_sink_render;
@@ -1093,10 +1099,10 @@ cogl_gst_video_sink_class_init (CoglGstVideoSinkClass *klass)
                   0 /* n_params */);
 }
 
-CoglGstVideoSink*
+CoglGstVideoSink *
 cogl_gst_video_sink_new (CoglContext *ctx)
 {
-  CoglGstVideoSink* sink = g_object_new (COGL_GST_TYPE_VIDEO_SINK, NULL);
+  CoglGstVideoSink *sink = g_object_new (COGL_GST_TYPE_VIDEO_SINK, NULL);
   cogl_gst_video_sink_set_context (sink, ctx);
 
   return sink;

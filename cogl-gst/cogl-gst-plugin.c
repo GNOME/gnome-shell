@@ -43,20 +43,20 @@
 #define VERSION "0.0"
 
 static CoglBool
-_plugin_init (GstPlugin * coglgstvideosink)
+_plugin_init (GstPlugin *coglgstvideosink)
 {
-  return gst_element_register (coglgstvideosink, "coglsink", GST_RANK_PRIMARY,
-      COGL_GST_TYPE_VIDEO_SINK);
+  return gst_element_register (coglgstvideosink,
+                               "coglsink",
+                               GST_RANK_PRIMARY,
+                               COGL_GST_TYPE_VIDEO_SINK);
 }
 
-GST_PLUGIN_DEFINE (
-    GST_VERSION_MAJOR,
-    GST_VERSION_MINOR,
-    cogl,
-    "Sends video data from GStreamer to a Cogl pipeline",
-    _plugin_init,
-    VERSION,
-    "LGPL",
-    "CoglGst",
-    "http://gstreamer.net/"
-)
+GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
+                   GST_VERSION_MINOR,
+                   cogl,
+                   "Sends video data from GStreamer to a Cogl pipeline",
+                   _plugin_init,
+                   VERSION,
+                   "LGPL",
+                   "CoglGst",
+                   "http://gstreamer.net/")
