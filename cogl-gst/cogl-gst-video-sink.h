@@ -94,19 +94,20 @@ struct _CoglGstVideoSinkClass
   void *_padding_dummy[8];
 };
 
-GType       cogl_gst_video_sink_get_type    (void) G_GNUC_CONST;
+GType
+cogl_gst_video_sink_get_type (void) G_GNUC_CONST;
 
-CoglGstVideoSink*
+CoglGstVideoSink *
 cogl_gst_video_sink_new (CoglContext *ctx);
 
-CoglPipeline*
+CoglPipeline *
 cogl_gst_video_sink_get_pipeline (CoglGstVideoSink *vt);
 
 void
 cogl_gst_video_sink_set_context (CoglGstVideoSink *vt,
                                  CoglContext *ctx);
 
-GMainLoop*
+GMainLoop *
 cogl_gst_video_sink_get_main_loop (CoglGstVideoSink *loop);
 
 int
