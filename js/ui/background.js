@@ -654,17 +654,9 @@ const BackgroundManager = new Lang.Class({
 
         this.background = this._createBackground();
         this._newBackground = null;
-        this._loadedSignalId = 0;
-        this._changedSignalId = 0;
     },
 
     destroy: function() {
-        if (this._loadedSignalId)
-            this._newBackground.disconnect(this._loadedSignalId);
-
-        if (this._changedSignalId)
-            this.background.disconnect(this._changedSignalId);
-
         if (this._newBackground) {
             this._newBackground.actor.destroy();
             this._newBackground = null;
@@ -683,22 +675,24 @@ const BackgroundManager = new Lang.Class({
         newBackground.saturation = background.saturation;
         newBackground.visible = background.visible;
 
-        let signalId = newBackground.connect('loaded',
+        newBackground.loadedSignalId = newBackground.connect('loaded',
             Lang.bind(this, function() {
-                newBackground.disconnect(signalId);
+                newBackground.disconnect(newBackground.loadedSignalId);
+                newBackground.loadedSignalId = 0;
                 Tweener.addTween(background.actor,
                                  { opacity: 0,
                                    time: FADE_ANIMATION_TIME,
                                    transition: 'easeOutQuad',
                                    onComplete: Lang.bind(this, function() {
-                                       this.background = newBackground;
-                                       this._newBackground = null;
-                                       background.actor.destroy();
+                                       if (this.background == background) {
+                                           this.background = newBackground;
+                                           this._newBackground = null;
+                                           background.actor.destroy();
+                                       }
                                        this.emit('changed');
                                    })
                                  });
         }));
-        this._loadedSignalId = signalId;
 
         this._newBackground = newBackground;
     },
@@ -717,12 +711,19 @@ const BackgroundManager = new Lang.Class({
             background.actor.lower_bottom();
         }
 
-        let signalId = background.connect('changed', Lang.bind(this, function() {
-            background.disconnect(signalId);
+        background.changeSignalId = background.connect('changed', Lang.bind(this, function() {
+            background.disconnect(background.changeSignalId);
+            background.changeSignalId = 0;
             this._updateBackground(background, this._monitorIndex);
         }));
 
-        this._changedSignalId = signalId;
+        background.actor.connect('destroy', Lang.bind(this, function() {
+            if (background.changeSignalId)
+                background.disconnect(background.changeSignalId);
+
+            if (background.loadedSignalId)
+                background.disconnect(background.loadedSignalId);
+        }));
 
         return background;
     },
