@@ -283,8 +283,10 @@ const LayoutManager = new Lang.Class({
 
     _updateHotCorners: function() {
         // destroy old hot corners
-        for (let i = 0; i < this.hotCorners.length; i++)
-            this.hotCorners[i].destroy();
+        this.hotCorners.forEach(function(corner) {
+            if (corner)
+                corner.destroy();
+        });
         this.hotCorners = [];
 
         let size = this.panelBox.height;
@@ -295,9 +297,9 @@ const LayoutManager = new Lang.Class({
             let cornerX = this._rtl ? monitor.x + monitor.width : monitor.x;
             let cornerY = monitor.y;
 
-            if (i != this.primaryIndex) {
-                let haveTopLeftCorner = true;
+            let haveTopLeftCorner = true;
 
+            if (i != this.primaryIndex) {
                 // Check if we have a top left (right for RTL) corner.
                 // I.e. if there is no monitor directly above or to the left(right)
                 let besideX = this._rtl ? monitor.x + 1 : cornerX - 1;
@@ -324,14 +326,15 @@ const LayoutManager = new Lang.Class({
                         break;
                     }
                 }
-
-                if (!haveTopLeftCorner)
-                    continue;
             }
 
-            let corner = new HotCorner(this, monitor, cornerX, cornerY);
-            corner.setBarrierSize(size);
-            this.hotCorners.push(corner);
+            if (haveTopLeftCorner) {
+                let corner = new HotCorner(this, monitor, cornerX, cornerY);
+                corner.setBarrierSize(size);
+                this.hotCorners.push(corner);
+            } else {
+                this.hotCorners.push(null);
+            }
         }
 
         this.emit('hot-corners-changed');
@@ -408,7 +411,8 @@ const LayoutManager = new Lang.Class({
 
         let size = this.panelBox.height;
         this.hotCorners.forEach(function(corner) {
-            corner.setBarrierSize(size);
+            if (corner)
+                corner.setBarrierSize(size);
         });
     },
 
