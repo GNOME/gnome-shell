@@ -40,7 +40,6 @@
 #include "cogl-gst-video-sink.h"
 
 #define PACKAGE "CoglGst"
-#define VERSION "0.0"
 
 static CoglBool
 _plugin_init (GstPlugin *coglgstvideosink)
@@ -56,7 +55,7 @@ GST_PLUGIN_DEFINE (GST_VERSION_MAJOR,
                    cogl,
                    "Sends video data from GStreamer to a Cogl pipeline",
                    _plugin_init,
-                   VERSION,
+                   COGL_VERSION_STRING,
                    "LGPL",
-                   "CoglGst",
-                   "http://gstreamer.net/")
+                   PACKAGE,
+                   "http://cogl3d.org/")
