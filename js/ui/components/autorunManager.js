@@ -292,6 +292,7 @@ const AutorunResidentSource = new Lang.Class({
 
     _init: function(manager) {
         this.parent(_("Removable Devices"), 'media-removable');
+        this.resident = true;
 
         this._mounts = [];
 
