@@ -578,6 +578,7 @@ const LayoutManager = new Lang.Class({
                                          y / global.screen_height);
             this.uiGroup.scale_x = this.uiGroup.scale_y = 0.5;
             this.uiGroup.opacity = 0;
+            global.window_group.set_clip(monitor.x, monitor.y, monitor.width, monitor.height);
         }
 
         this._systemBackground = new Background.SystemBackground();
@@ -654,8 +655,10 @@ const LayoutManager = new Lang.Class({
         this.trayBox.show();
         this.keyboardBox.show();
 
-        if (!Main.sessionMode.isGreeter)
+        if (!Main.sessionMode.isGreeter) {
             this._createSecondaryBackgrounds();
+            global.window_group.remove_clip();
+        }
 
         this._queueUpdateRegions();
 
