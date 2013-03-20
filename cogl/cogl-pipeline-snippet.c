@@ -100,7 +100,7 @@ _cogl_pipeline_snippet_generate_code (const CoglPipelineSnippetData *data)
 
   for (snippet = first_snippet, snippet_num = 0;
        snippet_num < n_snippets;
-       snippet = COGL_LIST_NEXT (snippet, list_node), snippet_num++)
+       snippet = COGL_LIST_NEXT (snippet, list_node))
     if (snippet->snippet->hook == data->hook)
       {
         const char *source;
@@ -180,6 +180,7 @@ _cogl_pipeline_snippet_generate_code (const CoglPipelineSnippetData *data)
                                   data->return_variable);
 
         g_string_append (data->source_buf, "}\n");
+        snippet_num++;
       }
 }
 
