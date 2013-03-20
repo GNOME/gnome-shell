@@ -20,8 +20,7 @@ const Recorder = new Lang.Class({
         Main.wm.addKeybinding('toggle-recording',
                               this._bindingSettings,
                               Meta.KeyBindingFlags.NONE,
-                              Shell.KeyBindingMode.NORMAL |
-                              Shell.KeyBindingMode.OVERVIEW,
+                              Shell.KeyBindingMode.ALL,
                               Lang.bind(this, this._toggleRecorder));
     },
 
