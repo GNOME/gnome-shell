@@ -79,6 +79,7 @@ const _modes = {
     },
 
     'initial-setup': {
+        hasWindows: true,
         isPrimary: true,
         components: ['keyring'],
         panel: {
