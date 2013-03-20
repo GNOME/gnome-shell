@@ -2,6 +2,7 @@
 #include <cogl/cogl-wayland-server.h>
 #include <glib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/time.h>
 #include <string.h>
 
@@ -108,6 +109,47 @@ struct _CoglandCompositor
 
   GList *surfaces;
 };
+
+static CoglBool option_multiple_outputs = FALSE;
+
+static GOptionEntry
+options[] =
+  {
+    {
+      "multiple", 'm', 0, G_OPTION_ARG_NONE, &option_multiple_outputs,
+      "Split the compositor into four outputs", NULL
+    },
+    { NULL, 0, 0, 0, NULL, NULL, NULL }
+  };
+
+static CoglBool
+process_arguments (int *argc, char ***argv,
+                   GError **error)
+{
+  GOptionContext *context;
+  CoglBool ret;
+  GOptionGroup *group;
+
+  group = g_option_group_new (NULL, /* name */
+                              NULL, /* description */
+                              NULL, /* help_description */
+                              NULL, /* user_data */
+                              NULL /* destroy notify */);
+  g_option_group_add_entries (group, options);
+  context = g_option_context_new ("- An example Wayland compositor using Cogl");
+  g_option_context_set_main_group (context, group);
+  ret = g_option_context_parse (context, argc, argv, error);
+  g_option_context_free (context);
+
+  if (ret && *argc > 1)
+    {
+      g_set_error (error, G_OPTION_ERROR, G_OPTION_ERROR_UNKNOWN_OPTION,
+                   "Unknown option '%s'", (* argv)[1]);
+      ret = FALSE;
+    }
+
+  return ret;
+}
 
 static uint32_t
 get_time (void)
@@ -959,12 +1001,19 @@ main (int argc, char **argv)
   CoglandCompositor compositor;
   GMainLoop *loop;
   CoglError *error = NULL;
+  GError *gerror = NULL;
   CoglVertexP2C4 triangle_vertices[] = {
       {0, 0.7, 0xff, 0x00, 0x00, 0x80},
       {-0.7, -0.7, 0x00, 0xff, 0x00, 0xff},
       {0.7, -0.7, 0x00, 0x00, 0xff, 0xff}
   };
   GSource *cogl_source;
+
+  if (!process_arguments (&argc, &argv, &gerror))
+    {
+      fprintf (stderr, "%s\n", gerror->message);
+      return EXIT_FAILURE;
+    }
 
   memset (&compositor, 0, sizeof (compositor));
 
@@ -1000,11 +1049,18 @@ main (int argc, char **argv)
   compositor.virtual_width = 640;
   compositor.virtual_height = 480;
 
-  /* Emulate compositing with multiple monitors... */
-  cogland_compositor_create_output (&compositor, 0, 0, 320, 240);
-  cogland_compositor_create_output (&compositor, 320, 0, 320, 240);
-  cogland_compositor_create_output (&compositor, 0, 240, 320, 240);
-  cogland_compositor_create_output (&compositor, 320, 240, 320, 240);
+  if (option_multiple_outputs)
+    {
+      /* Emulate compositing with multiple monitors... */
+      cogland_compositor_create_output (&compositor, 0, 0, 320, 240);
+      cogland_compositor_create_output (&compositor, 320, 0, 320, 240);
+      cogland_compositor_create_output (&compositor, 0, 240, 320, 240);
+      cogland_compositor_create_output (&compositor, 320, 240, 320, 240);
+    }
+  else
+    {
+      cogland_compositor_create_output (&compositor, 0, 0, 640, 480);
+    }
 
   if (wl_display_add_global (compositor.wayland_display, &wl_shell_interface,
                              &compositor, bind_shell) == NULL)
