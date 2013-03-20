@@ -547,9 +547,7 @@ const ScreenShield = new Lang.Class({
 
         let bgManager = new Background.BackgroundManager({ container: widget,
                                                            monitorIndex: monitorIndex,
-                                                           effects: Meta.BackgroundEffects.BLUR | Meta.BackgroundEffects.DESATURATE,
                                                            controlPosition: false });
-        bgManager.background.saturation = 0.6;
 
         this._bgManagers.push(bgManager);
 
