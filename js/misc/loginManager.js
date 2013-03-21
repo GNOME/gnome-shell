@@ -76,7 +76,7 @@ const ConsoleKitSession = Gio.DBusProxy.makeProxyWrapper(ConsoleKitSessionIface)
 const ConsoleKitManager = Gio.DBusProxy.makeProxyWrapper(ConsoleKitManagerIface);
 
 function haveSystemd() {
-    return GLib.access("/sys/fs/cgroup/systemd", 0) >= 0;
+    return GLib.access("/run/systemd/seats", 0) >= 0;
 }
 
 function versionCompare(required, reference) {
