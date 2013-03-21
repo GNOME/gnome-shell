@@ -1748,7 +1748,7 @@ const MessageTray = new Lang.Class({
         let [x, y, mask] = global.get_pointer();
         this._contextMenu.setPosition(Math.round(x), Math.round(y));
         this._grabHelper.grab({ actor: this._contextMenu.actor,
-                                grabFocus: true,
+                                modal: true,
                                 onUngrab: Lang.bind(this, function () {
                                     this._contextMenu.close(BoxPointer.PopupAnimation.FULL);
                                 })
@@ -2661,7 +2661,7 @@ const MessageTray = new Lang.Class({
         }
 
         this._grabHelper.grab({ actor: this._summaryBoxPointer.bin.child,
-                                grabFocus: true,
+                                modal: true,
                                 onUngrab: Lang.bind(this, this._onSummaryBoxPointerUngrabbed) });
 
         this._summaryBoxPointer.actor.opacity = 0;
