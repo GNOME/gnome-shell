@@ -6,7 +6,7 @@ apiversion=@COGL_API_VERSION@
 requires=@COGL_PKG_REQUIRES@ @COGL_GST_PKG_REQUIRES@
 
 Name: Cogl
-Description: An gstreamer integration library for Cogl
+Description: A gstreamer integration library for Cogl
 Version: @COGL_VERSION@
 Libs: -L${libdir} -lcogl-gst
 Cflags: -I${includedir}/cogl -DCOGL_ENABLE_EXPERIMENTAL_2_0_API
