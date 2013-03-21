@@ -1046,20 +1046,25 @@ main (int argc, char **argv)
   if (!compositor.cogl_context)
     g_error ("Failed to create a Cogl context: %s\n", error->message);
 
-  compositor.virtual_width = 640;
-  compositor.virtual_height = 480;
+  compositor.virtual_width = 800;
+  compositor.virtual_height = 600;
 
   if (option_multiple_outputs)
     {
+      int hw = compositor.virtual_width / 2;
+      int hh = compositor.virtual_height / 2;
       /* Emulate compositing with multiple monitors... */
-      cogland_compositor_create_output (&compositor, 0, 0, 320, 240);
-      cogland_compositor_create_output (&compositor, 320, 0, 320, 240);
-      cogland_compositor_create_output (&compositor, 0, 240, 320, 240);
-      cogland_compositor_create_output (&compositor, 320, 240, 320, 240);
+      cogland_compositor_create_output (&compositor, 0, 0, hw, hh);
+      cogland_compositor_create_output (&compositor, hw, 0, hw, hh);
+      cogland_compositor_create_output (&compositor, 0, hh, hw, hh);
+      cogland_compositor_create_output (&compositor, hw, hh, hw, hh);
     }
   else
     {
-      cogland_compositor_create_output (&compositor, 0, 0, 640, 480);
+      cogland_compositor_create_output (&compositor,
+                                        0, 0,
+                                        compositor.virtual_width,
+                                        compositor.virtual_height);
     }
 
   if (wl_display_add_global (compositor.wayland_display, &wl_shell_interface,
