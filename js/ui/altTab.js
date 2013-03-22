@@ -232,11 +232,11 @@ const AppSwitcherPopup = new Lang.Class({
     },
 
     _finish : function(timestamp) {
-        this.parent();
-
         let appIcon = this._items[this._selectedIndex];
         let window = this._currentWindow > 0 ? this._currentWindow : 0;
         appIcon.app.activate_window(appIcon.cachedWindows[window], timestamp);
+
+        this.parent();
     },
 
     _onDestroy : function() {
@@ -395,9 +395,9 @@ const WindowSwitcherPopup = new Lang.Class({
     },
 
     _finish: function() {
-        this.parent();
-
         Main.activateWindow(this._items[this._selectedIndex].window);
+
+        this.parent();
     }
 });
 
