@@ -108,6 +108,8 @@ struct _CoglandCompositor
   GSource *wayland_event_source;
 
   GList *surfaces;
+
+  unsigned int redraw_idle;
 };
 
 static CoglBool option_multiple_outputs = FALSE;
@@ -264,6 +266,73 @@ wayland_event_source_new (struct wl_display *display)
   return &source->source;
 }
 
+typedef struct _CoglandFrameCallback
+{
+  struct wl_list link;
+
+  /* Pointer back to the compositor */
+  CoglandCompositor *compositor;
+
+  struct wl_resource resource;
+} CoglandFrameCallback;
+
+static CoglBool
+paint_cb (void *user_data)
+{
+  CoglandCompositor *compositor = user_data;
+  GList *l;
+
+  for (l = compositor->outputs; l; l = l->next)
+    {
+      CoglandOutput *output = l->data;
+      CoglFramebuffer *fb = COGL_FRAMEBUFFER (output->onscreen);
+      GList *l2;
+
+      cogl_push_framebuffer (fb);
+
+      cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
+
+      cogl_framebuffer_draw_primitive (fb, compositor->triangle_pipeline,
+                                       compositor->triangle);
+
+      for (l2 = compositor->surfaces; l2; l2 = l2->next)
+        {
+          CoglandSurface *surface = l2->data;
+
+          if (surface->texture)
+            {
+              CoglTexture2D *texture = surface->texture;
+              cogl_set_source_texture (COGL_TEXTURE (texture));
+              cogl_rectangle (-1, 1, 1, -1);
+            }
+        }
+      cogl_onscreen_swap_buffers (COGL_ONSCREEN (fb));
+
+      cogl_pop_framebuffer ();
+    }
+
+  while (!wl_list_empty (&compositor->frame_callbacks))
+    {
+      CoglandFrameCallback *callback =
+        wl_container_of (compositor->frame_callbacks.next, callback, link);
+
+      wl_resource_post_event (&callback->resource,
+                              WL_CALLBACK_DONE, get_time ());
+      wl_resource_destroy (&callback->resource);
+    }
+
+  compositor->redraw_idle = 0;
+
+  return G_SOURCE_REMOVE;
+}
+
+static void
+cogland_queue_redraw (CoglandCompositor *compositor)
+{
+  if (compositor->redraw_idle == 0)
+    compositor->redraw_idle = g_idle_add (paint_cb, compositor);
+}
+
 static void
 shm_buffer_damaged (CoglandSurface *surface,
                     int32_t x,
@@ -335,6 +404,8 @@ cogland_surface_detach_buffer (CoglandSurface *surface)
           cogl_object_unref (surface->texture);
           surface->texture = NULL;
         }
+
+      cogland_queue_redraw (surface->compositor);
     }
 }
 
@@ -398,16 +469,6 @@ cogland_surface_damage (struct wl_client *client,
 
   region_add (&surface->pending.damage, x, y, width, height);
 }
-
-typedef struct _CoglandFrameCallback
-{
-  struct wl_list link;
-
-  /* Pointer back to the compositor */
-  CoglandCompositor *compositor;
-
-  struct wl_resource resource;
-} CoglandFrameCallback;
 
 static void
 destroy_frame_callback (struct wl_resource *callback_resource)
@@ -520,6 +581,8 @@ cogland_surface_commit (struct wl_client *client,
   wl_list_insert_list (&compositor->frame_callbacks,
                        &surface->pending.frame_callback_list);
   wl_list_init (&surface->pending.frame_callback_list);
+
+  cogland_queue_redraw (compositor);
 }
 
 static void
@@ -755,54 +818,6 @@ cogland_compositor_create_output (CoglandCompositor *compositor,
   output->modes = g_list_prepend (output->modes, mode);
 
   compositor->outputs = g_list_prepend (compositor->outputs, output);
-}
-
-static CoglBool
-paint_cb (void *user_data)
-{
-  CoglandCompositor *compositor = user_data;
-  GList *l;
-
-  for (l = compositor->outputs; l; l = l->next)
-    {
-      CoglandOutput *output = l->data;
-      CoglFramebuffer *fb = COGL_FRAMEBUFFER (output->onscreen);
-      GList *l2;
-
-      cogl_push_framebuffer (fb);
-
-      cogl_framebuffer_clear4f (fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
-
-      cogl_framebuffer_draw_primitive (fb, compositor->triangle_pipeline,
-                                       compositor->triangle);
-
-      for (l2 = compositor->surfaces; l2; l2 = l2->next)
-        {
-          CoglandSurface *surface = l2->data;
-
-          if (surface->texture)
-            {
-              CoglTexture2D *texture = surface->texture;
-              cogl_set_source_texture (COGL_TEXTURE (texture));
-              cogl_rectangle (-1, 1, 1, -1);
-            }
-        }
-      cogl_onscreen_swap_buffers (COGL_ONSCREEN (fb));
-
-      cogl_pop_framebuffer ();
-    }
-
-  while (!wl_list_empty (&compositor->frame_callbacks))
-    {
-      CoglandFrameCallback *callback =
-        wl_container_of (compositor->frame_callbacks.next, callback, link);
-
-      wl_resource_post_event (&callback->resource,
-                              WL_CALLBACK_DONE, get_time ());
-      wl_resource_destroy (&callback->resource);
-    }
-
-  return TRUE;
 }
 
 const static struct wl_compositor_interface cogland_compositor_interface =
@@ -1079,12 +1094,12 @@ main (int argc, char **argv)
                                                  3, triangle_vertices);
   compositor.triangle_pipeline = cogl_pipeline_new (compositor.cogl_context);
 
-  g_timeout_add (16, paint_cb, &compositor);
-
   cogl_source = cogl_glib_source_new (compositor.cogl_context,
                                       G_PRIORITY_DEFAULT);
 
   g_source_attach (cogl_source, NULL);
+
+  cogland_queue_redraw (&compositor);
 
   g_main_loop_run (loop);
 
