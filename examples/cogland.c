@@ -213,7 +213,11 @@ region_subtract (CoglandRegion *region,
 static CoglBool
 wayland_event_source_prepare (GSource *base, int *timeout)
 {
+  WaylandEventSource *source = (WaylandEventSource *)base;
+
   *timeout = -1;
+
+  wl_display_flush_clients (source->display);
 
   return FALSE;
 }
@@ -222,8 +226,6 @@ static CoglBool
 wayland_event_source_check (GSource *base)
 {
   WaylandEventSource *source = (WaylandEventSource *)base;
-
-  wl_display_flush_clients (source->display);
 
   return source->pfd.revents;
 }
