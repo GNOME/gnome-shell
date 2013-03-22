@@ -65,7 +65,9 @@ const ModalDialog = new Lang.Class({
         this._group.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
         this._group.connect('key-release-event', Lang.bind(this, this._onKeyReleaseEvent));
 
-        this._backgroundBin = new St.Bin();
+        this.backgroundStack = new Shell.Stack();
+        this._backgroundBin = new St.Bin({ child: this.backgroundStack,
+                                           x_fill: true, y_fill: true });
         this._monitorConstraint = new Layout.MonitorConstraint();
         this._backgroundBin.add_constraint(this._monitorConstraint);
         this._group.add_actor(this._backgroundBin);
@@ -81,15 +83,10 @@ const ModalDialog = new Lang.Class({
                                                    { inhibitEvents: true });
             this._lightbox.highlight(this._backgroundBin);
 
-            let stack = new Shell.Stack();
-            this._backgroundBin.child = stack;
-
             this._eventBlocker = new Clutter.Actor({ reactive: true });
-            stack.add_actor(this._eventBlocker);
-            stack.add_actor(this.dialogLayout);
-        } else {
-            this._backgroundBin.child = this.dialogLayout;
+            this.backgroundStack.add_actor(this._eventBlocker);
         }
+        this.backgroundStack.add_actor(this.dialogLayout);
 
 
         this.contentLayout = new St.BoxLayout({ vertical: true });
