@@ -84,9 +84,9 @@ const BackgroundCache = new Lang.Class({
             } else {
                 content.load_gradient(params.shadingType, params.color, params.secondColor);
             }
-
-            this._patterns.push(content);
         }
+
+        this._patterns.push(content);
 
         return content;
     },
@@ -165,6 +165,8 @@ const BackgroundCache = new Lang.Class({
 
             if (params.cancellable && params.cancellable.is_cancelled())
                 content = null;
+            else
+                this._images.push(content);
 
             if (params.onFinished)
                 params.onFinished(content);
