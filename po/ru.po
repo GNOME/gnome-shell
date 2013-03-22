@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-03 12:52+0000\n"
-"PO-Revision-Date: 2013-03-07 09:35+0400\n"
+"POT-Creation-Date: 2013-03-14 18:11+0000\n"
+"PO-Revision-Date: 2013-03-22 21:02+0400\n"
 "Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
 "Language-Team: русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -142,11 +142,11 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "History for command (Alt-F2) dialog"
-msgstr "История команд диалога (Alt-F2)"
+msgstr "История команд диалогового окна (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid "History for the looking glass dialog"
-msgstr "История просмотра прозрачного диалога"
+msgstr "История просмотра прозрачного диалогового окна"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid ""
@@ -223,11 +223,11 @@ msgstr "Комбинация клавиш для перехода в режим 
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to toggle the visibility of the message tray"
-msgstr "Комбинация клавиш для показа и скрытия панели сообщений"
+msgstr "Комбинация клавиш для отображения или скрытия панели сообщений"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to toggle the visibility of the message tray."
-msgstr "Комбинация клавиш для показа и скрытия панели сообщений."
+msgstr "Комбинация клавиш для отображения или скрытия панели сообщений."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
@@ -239,12 +239,13 @@ msgstr "Комбинация клавиш для перевода фокуса �
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Keybinding to toggle the screen recorder"
-msgstr "Комбинация клавиш для включения и выключения средства записи экрана"
+msgstr "Комбинация клавиш для включения или выключения средства записи экрана"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Keybinding to start/stop the builtin screen recorder."
 msgstr ""
-"Комбинация клавиш для запуска и останова встроенного средства записи экрана."
+"Комбинация клавиш для запуска или остановки встроенного средства записи "
+"экрана."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Which keyboard to use"
@@ -263,8 +264,8 @@ msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
-"Частота смены кадров в скринкасте, записанном с помощью GNOME Shell (кадров/"
-"сек)."
+"Частота смены кадров (кадров/сек) скринкаста, записанного с помощью GNOME "
+"Shell."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "The gstreamer pipeline used to encode the screencast"
@@ -299,7 +300,7 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "File extension used for storing the screencast"
-msgstr "Расширение файла, использующееся для хранения скринкастов"
+msgstr "Расширение файла, используемое при сохранении скринкастов"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid ""
@@ -307,9 +308,9 @@ msgid ""
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
-"Имя файла записанного скринкаста будет уникальным именем, основанным на "
-"текущей дате, и использует это расширение. Оно должно быть изменено, если "
-"запись выполняется в другой контейнерный формат."
+"Имя файла записанного скринкаста будет уникальным, основанным на текущей "
+"дате и используемом расширении. Оно должно быть изменено, если запись "
+"выполняется в другой формат контейнера."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "The application icon mode."
@@ -364,7 +365,7 @@ msgstr "Рабочие места только на основном монит�
 #: ../js/extensionPrefs/main.js:125
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
-msgstr "При загрузке диалога параметров для %s произошла ошибка:"
+msgstr "При загрузке диалогового окна параметров для %s произошла ошибка:"
 
 #: ../js/extensionPrefs/main.js:165
 msgid "Extension"
@@ -381,46 +382,46 @@ msgstr "Сеанс…"
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:629
+#: ../js/gdm/loginDialog.js:630
 msgid "Not listed?"
 msgstr "Нет в списке?"
 
-#: ../js/gdm/loginDialog.js:783 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:784 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:375
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:126
-#: ../js/ui/userMenu.js:934
+#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:98
+#: ../js/ui/userMenu.js:938
 msgid "Cancel"
 msgstr "Отмена"
 
-#: ../js/gdm/loginDialog.js:799
+#: ../js/gdm/loginDialog.js:800
 msgctxt "button"
 msgid "Sign In"
 msgstr "Войти"
 
-#: ../js/gdm/loginDialog.js:799
+#: ../js/gdm/loginDialog.js:800
 msgid "Next"
 msgstr "Далее"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:904 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:915 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Имя пользователя: "
 
-#: ../js/gdm/loginDialog.js:1157
+#: ../js/gdm/loginDialog.js:1159
 msgid "Login Window"
 msgstr "Окно входа в систему"
 
 #. Translators: accessible name of the power menu in the login screen
 #: ../js/gdm/powerMenu.js:36
 msgid "Power"
-msgstr "Питание"
+msgstr "Электропитание"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:695 ../js/ui/userMenu.js:699
-#: ../js/ui/userMenu.js:815
+#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:696 ../js/ui/userMenu.js:700
+#: ../js/ui/userMenu.js:816
 msgid "Suspend"
 msgstr "Ждущий режим"
 
@@ -428,14 +429,14 @@ msgstr "Ждущий режим"
 msgid "Restart"
 msgstr "Перезапустить"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:697
-#: ../js/ui/userMenu.js:699 ../js/ui/userMenu.js:814 ../js/ui/userMenu.js:938
+#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:698
+#: ../js/ui/userMenu.js:700 ../js/ui/userMenu.js:815 ../js/ui/userMenu.js:942
 msgid "Power Off"
 msgstr "Выключить"
 
 #: ../js/gdm/util.js:182
 msgid "Authentication error"
-msgstr "Ошибка подтверждения подлинности"
+msgstr "Ошибка проверки подлинности"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
@@ -448,38 +449,38 @@ msgstr "(или проведите пальцем по считывающему 
 msgid "(e.g., user or %s)"
 msgstr "(например, пользователь или %s)"
 
-#: ../js/misc/util.js:94
+#: ../js/misc/util.js:97
 msgid "Command not found"
 msgstr "Команда не найдена"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:127
+#: ../js/misc/util.js:130
 msgid "Could not parse command:"
 msgstr "Не удалось разобрать команду:"
 
-#: ../js/misc/util.js:135
+#: ../js/misc/util.js:138
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "Не удалось выполнить «%s»:"
 
-#: ../js/ui/appDisplay.js:348
+#: ../js/ui/appDisplay.js:325
 msgid "Frequent"
-msgstr "Часто используемые"
+msgstr "Популярные"
 
-#: ../js/ui/appDisplay.js:355
+#: ../js/ui/appDisplay.js:332
 msgid "All"
 msgstr "Все"
 
-#: ../js/ui/appDisplay.js:913
+#: ../js/ui/appDisplay.js:890
 msgid "New Window"
 msgstr "Новое окно"
 
-#: ../js/ui/appDisplay.js:916 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:893 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Удалить из избранного"
 
-#: ../js/ui/appDisplay.js:917
+#: ../js/ui/appDisplay.js:894
 msgid "Add to Favorites"
 msgstr "Добавить в избранное"
 
@@ -493,7 +494,7 @@ msgstr "Приложение %s добавлено в избранное."
 msgid "%s has been removed from your favorites."
 msgstr "Приложение %s удалено из избранного."
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/userMenu.js:788
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/userMenu.js:789
 msgid "Settings"
 msgstr "Параметры"
 
@@ -618,35 +619,35 @@ msgid "S"
 msgstr "Сб"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:692
+#: ../js/ui/calendar.js:720
 msgid "Nothing Scheduled"
 msgstr "Нет событий"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:708
+#: ../js/ui/calendar.js:736
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:711
+#: ../js/ui/calendar.js:739
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %B %d, %Y"
 
-#: ../js/ui/calendar.js:721
+#: ../js/ui/calendar.js:749
 msgid "Today"
 msgstr "Сегодня"
 
-#: ../js/ui/calendar.js:725
+#: ../js/ui/calendar.js:753
 msgid "Tomorrow"
 msgstr "Завтра"
 
-#: ../js/ui/calendar.js:736
+#: ../js/ui/calendar.js:764
 msgid "This week"
 msgstr "Эта неделя"
 
-#: ../js/ui/calendar.js:744
+#: ../js/ui/calendar.js:772
 msgid "Next week"
 msgstr "Следующая неделя"
 
@@ -743,7 +744,7 @@ msgstr "Для широкополосного мобильного устрой�
 
 #: ../js/ui/components/networkAgent.js:330
 msgid "PIN: "
-msgstr "PIN: "
+msgstr "PIN-код: "
 
 #: ../js/ui/components/networkAgent.js:336
 msgid "Mobile broadband network password"
@@ -772,7 +773,7 @@ msgstr "Подтвердить"
 #. * for instance.
 #: ../js/ui/components/polkitAgent.js:256 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
-msgstr "Извините, это не сработало. Попробуйте снова."
+msgstr "Не удалось подтвердить подлинность. Попробуйте снова."
 
 #. Translators: this is a filename used for screencast recording
 #: ../js/ui/components/recorder.js:48
@@ -1020,7 +1021,7 @@ msgstr "Показать учётную запись"
 msgid "Unknown reason"
 msgstr "Неизвестная причина"
 
-#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:97
+#: ../js/ui/ctrlAltTab.js:29 ../js/ui/viewSelector.js:96
 msgid "Windows"
 msgstr "Окна"
 
@@ -1049,7 +1050,7 @@ msgstr "Настроить дату и время"
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:205
+#: ../js/ui/dateMenu.js:215
 msgid "%A %B %e, %Y"
 msgstr "%A, %e %B, %Y"
 
@@ -1057,7 +1058,7 @@ msgstr "%A, %e %B, %Y"
 #, c-format
 msgctxt "title"
 msgid "Log Out %s"
-msgstr "Завершить сеанс пользователя %s"
+msgstr "Завершение сеанса пользователя %s"
 
 #: ../js/ui/endSessionDialog.js:64
 msgctxt "title"
@@ -1228,15 +1229,15 @@ msgstr "Очистить список сообщений"
 msgid "Notification Settings"
 msgstr "Параметры уведомлений"
 
-#: ../js/ui/messageTray.js:1707
+#: ../js/ui/messageTray.js:1711
 msgid "No Messages"
 msgstr "Нет сообщений"
 
-#: ../js/ui/messageTray.js:1787
+#: ../js/ui/messageTray.js:1784
 msgid "Message Tray"
 msgstr "Панель сообщений"
 
-#: ../js/ui/messageTray.js:2864
+#: ../js/ui/messageTray.js:2816
 msgid "System Information"
 msgstr "Системная информация"
 
@@ -1245,7 +1246,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: ../js/ui/overviewControls.js:460 ../js/ui/screenShield.js:153
+#: ../js/ui/overviewControls.js:463 ../js/ui/screenShield.js:148
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1253,7 +1254,7 @@ msgstr[0] "%d новое сообщение"
 msgstr[1] "%d новых сообщения"
 msgstr[2] "%d новых сообщений"
 
-#: ../js/ui/overview.js:82
+#: ../js/ui/overview.js:84
 msgid "Undo"
 msgstr "Отменить"
 
@@ -1265,21 +1266,21 @@ msgstr "Обзор"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:284
+#: ../js/ui/overview.js:271
 msgid "Type to search…"
 msgstr "Найти…"
 
-#: ../js/ui/panel.js:613
+#: ../js/ui/panel.js:612
 msgid "Quit"
 msgstr "Закрыть"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:642
+#: ../js/ui/panel.js:636
 msgid "Activities"
 msgstr "Обзор"
 
-#: ../js/ui/panel.js:983
+#: ../js/ui/panel.js:933
 msgid "Top Bar"
 msgstr "Верхняя панель"
 
@@ -1292,33 +1293,33 @@ msgstr "Верхняя панель"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:205
+#: ../js/ui/runDialog.js:73
 msgid "Enter a Command"
 msgstr "Введите команду"
 
-#: ../js/ui/runDialog.js:241
+#: ../js/ui/runDialog.js:109
 msgid "Close"
 msgstr "Закрыть"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:90
+#: ../js/ui/screenShield.js:85
 msgid "%A, %B %d"
 msgstr "%d %B, %A"
 
-#: ../js/ui/screenShield.js:155
+#: ../js/ui/screenShield.js:150
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
-msgstr[0] "%d новые уведомление"
-msgstr[1] "%d новых уведомленя"
+msgstr[0] "%d новое уведомление"
+msgstr[1] "%d новых уведомления"
 msgstr[2] "%d новых уведомлений"
 
-#: ../js/ui/screenShield.js:442 ../js/ui/userMenu.js:806
+#: ../js/ui/screenShield.js:437 ../js/ui/userMenu.js:807
 msgid "Lock"
 msgstr "Заблокировать"
 
-#: ../js/ui/screenShield.js:639
+#: ../js/ui/screenShield.js:635
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME необходимо заблокировать экран"
 
@@ -1329,19 +1330,19 @@ msgstr "GNOME необходимо заблокировать экран"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:758 ../js/ui/screenShield.js:1169
+#: ../js/ui/screenShield.js:756 ../js/ui/screenShield.js:1151
 msgid "Unable to lock"
 msgstr "Не удалось заблокировать"
 
-#: ../js/ui/screenShield.js:759 ../js/ui/screenShield.js:1170
+#: ../js/ui/screenShield.js:757 ../js/ui/screenShield.js:1152
 msgid "Lock was blocked by an application"
-msgstr "Блокировано помешало приложение"
+msgstr "Блокировке помешало приложение"
 
-#: ../js/ui/searchDisplay.js:431
+#: ../js/ui/searchDisplay.js:451
 msgid "Searching…"
 msgstr "Поиск…"
 
-#: ../js/ui/searchDisplay.js:475
+#: ../js/ui/searchDisplay.js:495
 msgid "No results."
 msgstr "Нет результатов."
 
@@ -1353,11 +1354,11 @@ msgstr "Копировать"
 msgid "Paste"
 msgstr "Вставить"
 
-#: ../js/ui/shellEntry.js:105
+#: ../js/ui/shellEntry.js:106
 msgid "Show Text"
 msgstr "Показать текст"
 
-#: ../js/ui/shellEntry.js:107
+#: ../js/ui/shellEntry.js:108
 msgid "Hide Text"
 msgstr "Скрыть текст"
 
@@ -1369,7 +1370,7 @@ msgstr "Пароль"
 msgid "Remember Password"
 msgstr "Запомнить пароль"
 
-#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:140
+#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:112
 msgid "Unlock"
 msgstr "Разблокировать"
 
@@ -1670,7 +1671,7 @@ msgstr "Батарея"
 
 #: ../js/ui/status/power.js:81
 msgid "Power Settings"
-msgstr "Параметры питания"
+msgstr "Параметры электропитания"
 
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
@@ -1778,11 +1779,11 @@ msgstr "Громкость"
 msgid "Microphone"
 msgstr "Микрофон"
 
-#: ../js/ui/unlockDialog.js:151
+#: ../js/ui/unlockDialog.js:123
 msgid "Log in as another user"
 msgstr "Войти от имени другого пользователя"
 
-#: ../js/ui/unlockDialog.js:177
+#: ../js/ui/unlockDialog.js:144
 msgid "Unlock Window"
 msgstr "Разблокировать окно"
 
@@ -1810,27 +1811,27 @@ msgstr "Бездействует"
 msgid "Offline"
 msgstr "Не в сети"
 
-#: ../js/ui/userMenu.js:780
+#: ../js/ui/userMenu.js:781
 msgid "Notifications"
 msgstr "Уведомления"
 
-#: ../js/ui/userMenu.js:796
+#: ../js/ui/userMenu.js:797
 msgid "Switch User"
 msgstr "Сменить пользователя"
 
-#: ../js/ui/userMenu.js:801
+#: ../js/ui/userMenu.js:802
 msgid "Log Out"
 msgstr "Выйти из системы"
 
-#: ../js/ui/userMenu.js:821
+#: ../js/ui/userMenu.js:822
 msgid "Install Updates & Restart"
 msgstr "Установить обновления и выполнить перезагрузку"
 
-#: ../js/ui/userMenu.js:839
+#: ../js/ui/userMenu.js:840
 msgid "Your chat status will be set to busy"
 msgstr "Будет установлен статус «не беспокоить»"
 
-#: ../js/ui/userMenu.js:840
+#: ../js/ui/userMenu.js:841
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
@@ -1838,33 +1839,35 @@ msgstr ""
 "Уведомления отключены, включая сообщения в чате. Ваш статус доступности "
 "изменён, чтобы другие знали, что вы возможно не видите их сообщения."
 
-#: ../js/ui/userMenu.js:886
+#: ../js/ui/userMenu.js:888
 msgid "Other users are logged in."
-msgstr "В системе имеются сеансы других пользователей."
+msgstr "В системе имеются открытые сеансы других пользователей."
 
-#: ../js/ui/userMenu.js:891
+#: ../js/ui/userMenu.js:893
 msgid "Shutting down might cause them to lose unsaved work."
 msgstr "Завершение работы может привести к потере несохранённых изменений."
 
-#: ../js/ui/userMenu.js:918
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: ../js/ui/userMenu.js:921
 #, c-format
 msgid "%s (remote)"
 msgstr "%s (удалённый)"
 
-#: ../js/ui/userMenu.js:920
+#. Translators: Console here refers to a tty like a VT console
+#: ../js/ui/userMenu.js:924
 #, c-format
 msgid "%s (console)"
 msgstr "%s (консоль)"
 
-#: ../js/ui/viewSelector.js:101
+#: ../js/ui/viewSelector.js:100
 msgid "Applications"
 msgstr "Приложения"
 
-#: ../js/ui/viewSelector.js:105
+#: ../js/ui/viewSelector.js:104
 msgid "Search"
 msgstr "Поиск"
 
-#: ../js/ui/wanda.js:92
+#: ../js/ui/wanda.js:77
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1873,7 +1876,7 @@ msgstr ""
 "Извините, на сегодня нет никаких советов:\n"
 "%s"
 
-#: ../js/ui/wanda.js:96
+#: ../js/ui/wanda.js:81
 #, c-format
 msgid "%s the Oracle says"
 msgstr "Оракул говорит: «%s»"
