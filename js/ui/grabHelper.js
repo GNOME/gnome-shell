@@ -355,6 +355,7 @@ const GrabHelper = new Lang.Class({
                 this._ignoreRelease = true;
             let i = this._actorInGrabStack(event.get_source()) + 1;
             this.ungrab({ actor: this._grabStack[i].actor, isUser: true });
+            return true;
         }
 
         return this._modalCount > 0;
