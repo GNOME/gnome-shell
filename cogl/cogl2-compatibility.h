@@ -30,6 +30,7 @@
 
 #include <cogl/cogl-types.h>
 #include <cogl/cogl2-path.h>
+#include <cogl/cogl-macros.h>
 
 COGL_BEGIN_DECLS
 
@@ -45,9 +46,11 @@ COGL_BEGIN_DECLS
  *
  * Since: 1.8
  * Stability: Unstable
+ * Deprecated: 1.16: Use cogl_framebuffer_push_path_clip() instead
  */
 void
-cogl_clip_push_from_path (CoglPath *path);
+cogl_clip_push_from_path (CoglPath *path)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_path_clip);
 
 COGL_END_DECLS
 

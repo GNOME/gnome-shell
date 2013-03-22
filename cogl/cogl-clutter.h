@@ -32,11 +32,13 @@ COGL_BEGIN_DECLS
 
 #define cogl_clutter_check_extension cogl_clutter_check_extension_CLUTTER
 CoglBool
-cogl_clutter_check_extension (const char *name, const char *ext);
+cogl_clutter_check_extension (const char *name, const char *ext)
+     COGL_DEPRECATED_IN_1_16;
 
 #define cogl_clutter_winsys_has_feature cogl_clutter_winsys_has_feature_CLUTTER
 CoglBool
-cogl_clutter_winsys_has_feature (CoglWinsysFeature feature);
+cogl_clutter_winsys_has_feature (CoglWinsysFeature feature)
+     COGL_DEPRECATED_FOR (cogl_has_feature);
 
 #define cogl_onscreen_clutter_backend_set_size cogl_onscreen_clutter_backend_set_size_CLUTTER
 void

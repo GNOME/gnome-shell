@@ -21,14 +21,14 @@
  *
  */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif
+#include <config.h>
 
 #include <string.h>
 #include <math.h>
 #include <stdlib.h>
 #include <glib/gi18n-lib.h>
+
+#define COGL_VERSION_MIN_REQUIRED COGL_VERSION_1_4
 
 #include "cogl-debug.h"
 #include "cogl-util.h"

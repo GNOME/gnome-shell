@@ -132,6 +132,7 @@ cogl_experimental_h = \
 	$(srcdir)/cogl-pixel-buffer.h		\
 	$(srcdir)/cogl2-experimental.h		\
 	$(srcdir)/cogl2-compatibility.h		\
+	$(srcdir)/cogl-macros.h			\
 	$(srcdir)/cogl-version.h		\
 	$(srcdir)/cogl-error.h			\
 	$(NULL)

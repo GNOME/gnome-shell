@@ -34,6 +34,7 @@
 #include <glib.h>
 #include <cogl/cogl-defines.h>
 #include <cogl/cogl-types.h>
+#include <cogl/cogl-macros.h>
 
 COGL_BEGIN_DECLS
 
@@ -82,9 +83,11 @@ COGL_BEGIN_DECLS
  * Creates a new vertex buffer that you can use to add attributes.
  *
  * Return value: a new #CoglHandle
+ * Deprecated: 1.16: Use the #CoglPrimitive api instead
  */
 CoglHandle
-cogl_vertex_buffer_new (unsigned int n_vertices);
+cogl_vertex_buffer_new (unsigned int n_vertices)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_API);
 
 /**
  * cogl_vertex_buffer_get_n_vertices:
@@ -93,9 +96,11 @@ cogl_vertex_buffer_new (unsigned int n_vertices);
  * Retrieves the number of vertices that @handle represents
  *
  * Return value: the number of vertices
+ * Deprecated: 1.16: Use the #CoglPrimitive api instead
  */
 unsigned int
-cogl_vertex_buffer_get_n_vertices (CoglHandle handle);
+cogl_vertex_buffer_get_n_vertices (CoglHandle handle)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_API);
 
 /**
  * cogl_vertex_buffer_add:
@@ -159,6 +164,8 @@ cogl_vertex_buffer_get_n_vertices (CoglHandle handle);
  * |- - - - -0-0-0-0-0-0 0 0 0 0|
  * </programlisting>
  * (Though you can have multiple groups of interleved attributes)</note>
+ *
+ * Deprecated: 1.16: Use the #CoglPrimitive api instead
  */
 void
 cogl_vertex_buffer_add (CoglHandle         handle,
@@ -167,7 +174,8 @@ cogl_vertex_buffer_add (CoglHandle         handle,
 			CoglAttributeType  type,
 			CoglBool           normalized,
 			uint16_t           stride,
-			const void        *pointer);
+			const void        *pointer)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_API);
 
 /**
  * cogl_vertex_buffer_delete:
@@ -177,10 +185,13 @@ cogl_vertex_buffer_add (CoglHandle         handle,
  * Deletes an attribute from a buffer. You will need to call
  * cogl_vertex_buffer_submit() or issue a draw call to commit this
  * change to the GPU.
+ *
+ * Deprecated: 1.16: Use the #CoglPrimitive api instead
  */
 void
 cogl_vertex_buffer_delete (CoglHandle   handle,
-			   const char  *attribute_name);
+			   const char  *attribute_name)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_API);
 
 /**
  * cogl_vertex_buffer_submit:
@@ -193,9 +204,12 @@ cogl_vertex_buffer_delete (CoglHandle   handle,
  * validating your data; it potentially incurs a transport cost (especially if
  * you are using GLX indirect rendering) and potentially a format conversion
  * cost if the GPU doesn't natively support any of the given attribute formats.
+ *
+ * Deprecated: 1.16: Use the #CoglPrimitive api instead
  */
 void
-cogl_vertex_buffer_submit (CoglHandle handle);
+cogl_vertex_buffer_submit (CoglHandle handle)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_API);
 
 /**
  * cogl_vertex_buffer_disable:
@@ -210,10 +224,13 @@ cogl_vertex_buffer_submit (CoglHandle handle);
  *
  * You don't need to call cogl_vertex_buffer_submit() after using this
  * function.
+ *
+ * Deprecated: 1.16: Use the #CoglPrimitive api instead
  */
 void
 cogl_vertex_buffer_disable (CoglHandle  handle,
-			    const char *attribute_name);
+			    const char *attribute_name)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_API);
 
 /**
  * cogl_vertex_buffer_enable:
@@ -227,10 +244,13 @@ cogl_vertex_buffer_disable (CoglHandle  handle,
  * attributes before using a buffer for drawing.
  *
  * You don't need to call cogl_vertex_buffer_submit() after using this function
+ *
+ * Deprecated: 1.16: Use the #CoglPrimitive api instead
  */
 void
 cogl_vertex_buffer_enable (CoglHandle  handle,
-			   const char *attribute_name);
+			   const char *attribute_name)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_API);
 
 /**
  * cogl_vertex_buffer_draw:
@@ -245,12 +265,15 @@ cogl_vertex_buffer_enable (CoglHandle  handle,
  *
  * Any un-submitted attribute changes are automatically submitted before
  * drawing.
+ *
+ * Deprecated: 1.16: Use the #CoglPrimitive api instead
  */
 void
 cogl_vertex_buffer_draw (CoglHandle       handle,
 		         CoglVerticesMode mode,
 		         int              first,
-		         int              count);
+		         int              count)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_API);
 
 /**
  * cogl_vertex_buffer_indices_new:
@@ -267,11 +290,14 @@ cogl_vertex_buffer_draw (CoglHandle       handle,
  *
  * Return value: A CoglHandle for the indices which you can pass to
  *   cogl_vertex_buffer_draw_elements().
+ *
+ * Deprecated: 1.16: Use the #CoglPrimitive api instead
  */
 CoglHandle
 cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
                                 const void      *indices_array,
-                                int              indices_len);
+                                int              indices_len)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_API);
 
 /**
  * cogl_vertex_buffer_indices_get_type:
@@ -280,9 +306,12 @@ cogl_vertex_buffer_indices_new (CoglIndicesType  indices_type,
  * Queries back the data type used for the given indices
  *
  * Returns: The CoglIndicesType used
+ *
+ * Deprecated: 1.16: Use the #CoglPrimitive api instead
  */
 CoglIndicesType
-cogl_vertex_buffer_indices_get_type (CoglHandle indices);
+cogl_vertex_buffer_indices_get_type (CoglHandle indices)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_API);
 
 /**
  * cogl_vertex_buffer_draw_elements:
@@ -303,6 +332,7 @@ cogl_vertex_buffer_indices_get_type (CoglHandle indices);
  *
  * Any un-submitted attribute changes are automatically submitted before
  * drawing.
+ * Deprecated: 1.16: Use the #CoglPrimitive api instead
  */
 void
 cogl_vertex_buffer_draw_elements (CoglHandle       handle,
@@ -311,9 +341,8 @@ cogl_vertex_buffer_draw_elements (CoglHandle       handle,
                                   int              min_index,
                                   int              max_index,
                                   int              indices_offset,
-                                  int              count);
-
-#ifndef COGL_DISABLE_DEPRECATED
+                                  int              count)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_API);
 
 /**
  * cogl_vertex_buffer_ref:
@@ -323,10 +352,11 @@ cogl_vertex_buffer_draw_elements (CoglHandle       handle,
  *
  * Return value: the @handle.
  *
- * Deprecated: 1.2: Use cogl_handle_ref() instead
+ * Deprecated: 1.2: Use cogl_object_ref() instead
  */
 CoglHandle
-cogl_vertex_buffer_ref (CoglHandle handle) G_GNUC_DEPRECATED;
+cogl_vertex_buffer_ref (CoglHandle handle)
+     COGL_DEPRECATED_FOR (cogl_object_ref);
 
 /**
  * cogl_vertex_buffer_unref:
@@ -334,12 +364,11 @@ cogl_vertex_buffer_ref (CoglHandle handle) G_GNUC_DEPRECATED;
  *
  * Decrement the reference count for a vertex buffer
  *
- * Deprecated: 1.2: Use cogl_handle_unref() instead
+ * Deprecated: 1.2: Use cogl_object_unref() instead
  */
 void
-cogl_vertex_buffer_unref (CoglHandle handle) G_GNUC_DEPRECATED;
-
-#endif /* COGL_DISABLE_DEPRECATED */
+cogl_vertex_buffer_unref (CoglHandle handle)
+     COGL_DEPRECATED_FOR (cogl_object_unref);
 
 /**
  * cogl_vertex_buffer_indices_get_for_quads:
@@ -371,9 +400,12 @@ cogl_vertex_buffer_unref (CoglHandle handle) G_GNUC_DEPRECATED;
  *
  * Returns: A %CoglHandle containing the indices. The handled is
  * owned by Cogl and should not be modified or unref'd.
+ *
+ * Deprecated: 1.16: Use the #CoglPrimitive api instead
  */
 CoglHandle
-cogl_vertex_buffer_indices_get_for_quads (unsigned int n_indices);
+cogl_vertex_buffer_indices_get_for_quads (unsigned int n_indices)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_API);
 
 /**
  * cogl_is_vertex_buffer:
@@ -385,9 +417,11 @@ cogl_vertex_buffer_indices_get_for_quads (unsigned int n_indices);
  *   otherwise
  *
  * Since: 1.0
+ * Deprecated: 1.16: Use the #CoglPrimitive api instead
  */
 CoglBool
-cogl_is_vertex_buffer (CoglHandle handle);
+cogl_is_vertex_buffer (CoglHandle handle)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_API);
 
 /**
  * cogl_is_vertex_buffer_indices:
@@ -400,9 +434,11 @@ cogl_is_vertex_buffer (CoglHandle handle);
  *   otherwise
  *
  * Since: 1.4
+ * Deprecated: 1.16: Use the #CoglPrimitive api instead
  */
 CoglBool
-cogl_is_vertex_buffer_indices (CoglHandle handle);
+cogl_is_vertex_buffer_indices (CoglHandle handle)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_primitive_API);
 
 COGL_END_DECLS
 

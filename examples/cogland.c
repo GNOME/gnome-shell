@@ -806,15 +806,9 @@ cogland_compositor_create_output (CoglandCompositor *compositor,
     g_error ("Failed to allocate framebuffer: %s\n", error->message);
 
   cogl_onscreen_show (output->onscreen);
-#if 0
-  cogl_framebuffer_set_viewport (fb, x, y, width, height);
-#else
-  cogl_push_framebuffer (fb);
-  cogl_set_viewport (-x, -y,
-                     compositor->virtual_width,
-                     compositor->virtual_height);
-  cogl_pop_framebuffer ();
-#endif
+  cogl_framebuffer_set_viewport (fb, -x, -y,
+                                 compositor->virtual_width,
+                                 compositor->virtual_height);
 
   mode = g_slice_new0 (CoglandMode);
   mode->flags = 0;

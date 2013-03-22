@@ -1,3 +1,5 @@
+#define COGL_VERSION_MIN_REQUIRED COGL_VERSION_1_0
+
 #include <cogl/cogl.h>
 
 #include "test-utils.h"

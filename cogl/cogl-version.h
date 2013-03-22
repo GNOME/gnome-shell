@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012,2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ * License along with this library. If not, see
+ * <http://www.gnu.org/licenses/>.
  *
  *
  */
@@ -33,7 +34,39 @@
  * Cogl offers a set of macros for checking the version of the library
  * at compile time.
  *
- * Since: 1.12.0
+ * Cogl adds version information to both API deprecations and additions;
+ * by definining the macros %COGL_VERSION_MIN_REQUIRED and
+ * %COGL_VERSION_MAX_ALLOWED, you can specify the range of Cogl versions
+ * whose API you want to use. Functions that were deprecated before, or
+ * introduced after, this range will trigger compiler warnings. For instance,
+ * if we define the following symbols:
+ *
+ * |[
+ *   COGL_VERSION_MIN_REQUIRED = COGL_VERSION_1_6
+ *   COGL_VERSION_MAX_ALLOWED  = COGL_VERSION_1_8
+ * ]|
+ *
+ * and we have the following functions annotated in the Cogl headers:
+ *
+ * |[
+ *   void cogl_function_A (void) COGL_DEPRECATED_IN_1_4;
+ *   void cogl_function_B (void) COGL_DEPRECATED_IN_1_6;
+ *   void cogl_function_C (void) COGL_AVAILABLE_IN_1_8;
+ *   void cogl_function_D (void) COGL_AVAILABLE_IN_1_10;
+ * ]|
+ *
+ * then any application code using the functions above will get the output:
+ *
+ * |[
+ *   cogl_function_A: deprecation warning
+ *   cogl_function_B: no warning
+ *   cogl_function_C: no warning
+ *   cogl_function_D: symbol not available warning
+ * ]|
+ *
+ * It is possible to disable the compiler warnings by defining the macro
+ * %COGL_DISABLE_DEPRECATION_WARNINGS before including the cogl.h
+ * header.
  */
 
 /**
@@ -181,5 +214,119 @@
  */
 #define COGL_VERSION_CHECK(major, minor, micro) \
   (COGL_VERSION >= COGL_VERSION_ENCODE (major, minor, micro))
+
+/**
+ * COGL_VERSION_1_0:
+ *
+ * A macro that evaluates to the 1.0 version of Cogl, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.16
+ */
+#define COGL_VERSION_1_0 (COGL_VERSION_ENCODE (1, 0, 0))
+
+/**
+ * COGL_VERSION_1_2:
+ *
+ * A macro that evaluates to the 1.2 version of Cogl, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.16
+ */
+#define COGL_VERSION_1_2 (COGL_VERSION_ENCODE (1, 2, 0))
+
+/**
+ * COGL_VERSION_1_4:
+ *
+ * A macro that evaluates to the 1.4 version of Cogl, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.16
+ */
+#define COGL_VERSION_1_4 (COGL_VERSION_ENCODE (1, 4, 0))
+
+/**
+ * COGL_VERSION_1_6:
+ *
+ * A macro that evaluates to the 1.6 version of Cogl, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.16
+ */
+#define COGL_VERSION_1_6 (COGL_VERSION_ENCODE (1, 6, 0))
+
+/**
+ * COGL_VERSION_1_8:
+ *
+ * A macro that evaluates to the 1.8 version of Cogl, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.16
+ */
+#define COGL_VERSION_1_8 (COGL_VERSION_ENCODE (1, 8, 0))
+
+/**
+ * COGL_VERSION_1_10:
+ *
+ * A macro that evaluates to the 1.10 version of Cogl, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.16
+ */
+#define COGL_VERSION_1_10 (COGL_VERSION_ENCODE (1, 10, 0))
+
+/**
+ * COGL_VERSION_1_12:
+ *
+ * A macro that evaluates to the 1.12 version of Cogl, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.16
+ */
+#define COGL_VERSION_1_12 (COGL_VERSION_ENCODE (1, 12, 0))
+
+/**
+ * COGL_VERSION_1_14:
+ *
+ * A macro that evaluates to the 1.14 version of Cogl, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.16
+ */
+#define COGL_VERSION_1_14 (COGL_VERSION_ENCODE (1, 14, 0))
+
+/**
+ * COGL_VERSION_1_16:
+ *
+ * A macro that evaluates to the 1.16 version of Cogl, in a format
+ * that can be used by the C pre-processor.
+ *
+ * Since: 1.16
+ */
+#define COGL_VERSION_1_16 (COGL_VERSION_ENCODE (1, 16, 0))
+
+/* evaluates to the current stable version; for development cycles,
+ * this means the next stable target
+ */
+#if (COGL_VERSION_MINOR_INTERNAL % 2)
+#define COGL_VERSION_CURRENT_STABLE \
+  (COGL_VERSION_ENCODE (COGL_VERSION_MAJOR_INTERNAL, \
+                        COGL_VERSION_MINOR_INTERNAL + 1, 0))
+#else
+#define COGL_VERSION_CURRENT_STABLE \
+  (COGL_VERSION_ENCODE (COGL_VERSION_MAJOR_INTERNAL, \
+                        COGL_VERSION_MINOR_INTERNAL, 0))
+#endif
+
+/* evaluates to the previous stable version */
+#if (COGL_VERSION_MINOR_INTERNAL % 2)
+#define COGL_VERSION_PREVIOUS_STABLE \
+  (COGL_VERSION_ENCODE (COGL_VERSION_MAJOR_INTERNAL, \
+                        COGL_VERSION_MINOR_INTERNAL - 1, 0))
+#else
+#define COGL_VERSION_PREVIOUS_STABLE \
+  (COGL_VERSION_ENCODE (COGL_VERSION_MAJOR_INTERNAL, \
+                        COGL_VERSION_MINOR_INTERNAL - 2, 0))
+#endif
 
 #endif /* __COGL_VERSION_H__ */

@@ -546,12 +546,13 @@ typedef void (*CoglSwapBuffersNotify) (CoglFramebuffer *framebuffer,
  *               the callback later.
  * Since: 1.10
  * Stability: unstable
- * Deprecated: 1.14: Use cogl_onscreen_add_swap_complete_callback
+ * Deprecated: 1.14: Use cogl_onscreen_add_frame_callback() instead
  */
 unsigned int
 cogl_onscreen_add_swap_buffers_callback (CoglOnscreen *onscreen,
                                          CoglSwapBuffersNotify callback,
-                                         void *user_data);
+                                         void *user_data)
+     COGL_DEPRECATED_IN_1_14_FOR (cogl_onscreen_add_frame_callback);
 
 /**
  * cogl_onscreen_remove_swap_buffers_callback:
@@ -563,11 +564,12 @@ cogl_onscreen_add_swap_buffers_callback (CoglOnscreen *onscreen,
  *
  * Since: 1.10
  * Stability: unstable
- * Deprecated: 1.14: Use cogl_onscreen_remove_swap_complete_callback
+ * Deprecated: 1.14: Use cogl_onscreen_remove_frame_callback() instead
  */
 void
 cogl_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
-                                            unsigned int id);
+                                            unsigned int id)
+     COGL_DEPRECATED_IN_1_14_FOR (cogl_onscreen_remove_frame_callback);
 
 /**
  * cogl_onscreen_set_resizable:

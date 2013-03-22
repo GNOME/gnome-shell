@@ -31,10 +31,11 @@
 #include <glib-object.h>
 #endif /* COGL_HAS_GTYPE_SUPPORT */
 
-#include "cogl-types.h"
+#include <cogl/cogl-types.h>
+#include <cogl/cogl-macros.h>
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
-#include "cogl-quaternion.h"
+#include <cogl/cogl-quaternion.h>
 #endif
 
 COGL_BEGIN_DECLS
@@ -408,7 +409,8 @@ cogl_matrix_ortho (CoglMatrix *matrix,
                    float       bottom,
                    float       top,
                    float       near,
-                   float       far);
+                   float       far)
+     COGL_DEPRECATED_IN_1_10_FOR (cogl_matrix_orthographic);
 
 #ifdef COGL_ENABLE_EXPERIMENTAL_API
 /**

@@ -3,6 +3,9 @@ RELEASING
 
 When making a new release;
 
+ - If it's a new stable release that increments the Cogl minor version
+   remember to add a new COGL_VERSION_1_X define to cogl/cogl-macros.h
+
  - Verify that you don't have uncommitted changes; both:
 
      $ git diff HEAD

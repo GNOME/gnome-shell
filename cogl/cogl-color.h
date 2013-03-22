@@ -39,6 +39,7 @@
 #define __COGL_COLOR_H__
 
 #include <cogl/cogl-types.h>
+#include <cogl/cogl-macros.h>
 
 COGL_BEGIN_DECLS
 
@@ -117,7 +118,8 @@ cogl_color_set_from_4ub (CoglColor *color,
                          uint8_t red,
                          uint8_t green,
                          uint8_t blue,
-                         uint8_t alpha);
+                         uint8_t alpha)
+     COGL_DEPRECATED_IN_1_4_FOR (cogl_color_init_from_4ub);
 
 /**
  * cogl_color_init_from_4f:
@@ -156,7 +158,8 @@ cogl_color_set_from_4f (CoglColor *color,
                         float red,
                         float green,
                         float blue,
-                        float alpha);
+                        float alpha)
+     COGL_DEPRECATED_IN_1_4_FOR (cogl_color_init_from_4f);
 
 /**
  * cogl_color_init_from_4fv:

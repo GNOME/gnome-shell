@@ -169,8 +169,9 @@ main (int argc, char **argv)
 
   cogl_onscreen_show (onscreen);
 
-  cogl_push_framebuffer (fb);
-  cogl_set_viewport (0, 0, data.framebuffer_width, data.framebuffer_height);
+  cogl_framebuffer_set_viewport (fb, 0, 0,
+                                 data.framebuffer_width,
+                                 data.framebuffer_height);
 
   fovy = 60; /* y-axis field of view */
   aspect = (float)data.framebuffer_width/(float)data.framebuffer_height;
@@ -178,7 +179,7 @@ main (int argc, char **argv)
   z_2d = 1000; /* position to 2d plane */
   z_far = 2000; /* distance to far clipping plane */
 
-  cogl_perspective (fovy, aspect, z_near, z_far);
+  cogl_framebuffer_perspective (fb, fovy, aspect, z_near, z_far);
 
   /* Since the pango renderer emits geometry in pixel/device coordinates
    * and the anti aliasing is implemented with the assumption that the
@@ -195,12 +196,11 @@ main (int argc, char **argv)
   cogl_matrix_view_2d_in_perspective (&data.view, fovy, aspect, z_near, z_2d,
                                       data.framebuffer_width,
                                       data.framebuffer_height);
-  cogl_set_modelview_matrix (&data.view);
-  cogl_pop_framebuffer ();
+  cogl_framebuffer_set_modelview_matrix (fb, &data.view);
 
   /* Initialize some convenient constants */
   cogl_matrix_init_identity (&identity);
-  cogl_color_set_from_4ub (&white, 0xff, 0xff, 0xff, 0xff);
+  cogl_color_init_from_4ub (&white, 0xff, 0xff, 0xff, 0xff);
 
   /* rectangle indices allow the GPU to interpret a list of quads (the
    * faces of our cube) as a list of triangles.

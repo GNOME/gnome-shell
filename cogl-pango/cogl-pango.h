@@ -53,7 +53,7 @@ typedef PangoCairoFontMap CoglPangoFontMap;
  *
  * Return value: (transfer full): the newly created #PangoFontMap
  *
- * Since: 2.0
+ * Since: 1.14
  */
 PangoFontMap *
 cogl_pango_font_map_new (void);
@@ -80,7 +80,7 @@ cogl_pango_font_map_create_context (CoglPangoFontMap *font_map);
  * The default value is %96, meaning that a 10 point font will be 13
  * units high. (10 * 96. / 72. = 13.3).
  *
- * Since: 2.0
+ * Since: 1.14
  */
 void
 cogl_pango_font_map_set_resolution (CoglPangoFontMap *font_map,
@@ -165,7 +165,7 @@ cogl_pango_font_map_get_renderer (CoglPangoFontMap *font_map);
  * @y) within the @framebuffer<!-- -->'s current model-view coordinate
  * space.
  *
- * Since: 2.0
+ * Since: 1.14
  */
 void
 cogl_pango_show_layout (CoglFramebuffer *framebuffer,
@@ -186,7 +186,7 @@ cogl_pango_show_layout (CoglFramebuffer *framebuffer,
  * @y) within the @framebuffer<!-- -->'s current model-view coordinate
  * space.
  *
- * Since: 2.0
+ * Since: 1.14
  */
 void
 cogl_pango_show_layout_line (CoglFramebuffer *framebuffer,
@@ -209,19 +209,51 @@ typedef struct _CoglPangoRendererClass CoglPangoRendererClass;
 
 GType cogl_pango_renderer_get_type (void) G_GNUC_CONST;
 
+/**
+ * cogl_pango_render_layout:
+ * @layout: a #PangoLayout
+ * @x: X coordinate (in Pango units) to render the layout at
+ * @y: Y coordinate (in Pango units) to render the layout at
+ * @color: color to use when rendering the layout
+ * @flags:
+ *
+ * Draws a solidly coloured @layout on the given @framebuffer at (@x,
+ * @y) within the @framebuffer<!-- -->'s current model-view coordinate
+ * space.
+ *
+ * Since: 1.0
+ * Deprecated: 1.16: Use cogl_pango_show_layout() instead
+ */
 void
 cogl_pango_render_layout_subpixel (PangoLayout *layout,
                                    int x,
                                    int y,
                                    const CoglColor *color,
-                                   int flags);
+                                   int flags)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_pango_show_layout);
 
+/**
+ * cogl_pango_render_layout:
+ * @layout: a #PangoLayout
+ * @x: X coordinate to render the layout at
+ * @y: Y coordinate to render the layout at
+ * @color: color to use when rendering the layout
+ * @flags:
+ *
+ * Draws a solidly coloured @layout on the given @framebuffer at (@x,
+ * @y) within the @framebuffer<!-- -->'s current model-view coordinate
+ * space.
+ *
+ * Since: 1.0
+ * Deprecated: 1.16: Use cogl_pango_show_layout() instead
+ */
 void
 cogl_pango_render_layout (PangoLayout *layout,
                           int x,
                           int y,
                           const CoglColor *color,
-                          int flags);
+                          int flags)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_pango_show_layout);
 
 /**
  * cogl_pango_render_layout_line:
@@ -233,12 +265,14 @@ cogl_pango_render_layout (PangoLayout *layout,
  * Renders @line at the given coordinates using the given color.
  *
  * Since: 1.0
+ * Deprecated: 1.16: Use cogl_pango_show_layout() instead
  */
 void
 cogl_pango_render_layout_line (PangoLayoutLine *line,
                                int x,
                                int y,
-                               const CoglColor *color);
+                               const CoglColor *color)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_pango_show_layout_line);
 
 COGL_END_DECLS
 

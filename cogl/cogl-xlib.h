@@ -32,6 +32,7 @@
 #include <cogl/cogl-types.h>
 #include <cogl/cogl-clutter-xlib.h>
 #include <cogl/cogl-xlib-renderer.h>
+#include <cogl/cogl-macros.h>
 
 COGL_BEGIN_DECLS
 
@@ -43,9 +44,11 @@ COGL_BEGIN_DECLS
  * before this function is called.
  *
  * Stability: Unstable
+ * Deprecated: 1.16: Use cogl_xlib_renderer_get_display() instead
  */
 Display *
-cogl_xlib_get_display (void);
+cogl_xlib_get_display (void)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_xlib_renderer_get_display);
 
 /*
  * cogl_xlib_set_display:
@@ -55,9 +58,12 @@ cogl_xlib_get_display (void);
  * more complete winsys abstraction.
  *
  * Stability: Unstable
+ * Deprecated: 1.16: Use cogl_xlib_renderer_set_foreign_display()
+ *                   instead
  */
 void
-cogl_xlib_set_display (Display *display);
+cogl_xlib_set_display (Display *display)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_xlib_renderer_set_foreign_display);
 
 /*
  * cogl_xlib_handle_event:
@@ -75,9 +81,11 @@ cogl_xlib_set_display (Display *display);
  * any exclusive action.
  *
  * Stability: Unstable
+ * Deprecated: 1.16: Use cogl_xlib_renderer_handle_event() instead
  */
 CoglFilterReturn
-cogl_xlib_handle_event (XEvent *xevent);
+cogl_xlib_handle_event (XEvent *xevent)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_xlib_renderer_handle_event);
 
 COGL_END_DECLS
 
