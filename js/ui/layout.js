@@ -1200,6 +1200,8 @@ const HotCorner = new Lang.Class({
         if (source != Main.xdndHandler)
             return DND.DragMotionResult.CONTINUE;
 
+        this._toggleOverview();
+
         return DND.DragMotionResult.CONTINUE;
     },
 
