@@ -49,7 +49,7 @@ const UserWidget = imports.ui.userWidget;
 const _FADE_ANIMATION_TIME = 0.25;
 const _SCROLL_ANIMATION_TIME = 0.5;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
-const _LOGO_ICON_HEIGHT = 16;
+const _LOGO_ICON_HEIGHT = 48;
 
 const WORK_SPINNER_ICON_SIZE = 24;
 const WORK_SPINNER_ANIMATION_DELAY = 1.0;
@@ -553,6 +553,12 @@ const LoginDialog = new Lang.Class({
                                Lang.bind(this, this._updateBanner));
         this._settings.connect('changed::' + GdmUtil.DISABLE_USER_LIST_KEY,
                                Lang.bind(this, this._updateDisableUserList));
+        this._settings.connect('changed::' + GdmUtil.LOGO_KEY,
+                               Lang.bind(this, this._updateLogo));
+
+        this._textureCache = St.TextureCache.get_default();
+        this._textureCache.connect('texture-file-changed',
+                                   Lang.bind(this, this._updateLogoTexture));
 
         this._userSelectionBox = new St.BoxLayout({ style_class: 'login-dialog-user-selection-box',
                                                     vertical: true });
@@ -645,6 +651,11 @@ const LoginDialog = new Lang.Class({
                                      x_align: St.Align.START,
                                      x_fill: true });
 
+        this._logoBin = new St.Bin({ style_class: 'login-dialog-logo-bin' });
+        this._logoBin.set_y_align(Clutter.ActorAlign.END);
+        this.backgroundStack.add_actor(this._logoBin);
+        this._updateLogo();
+
         if (!this._userManager.is_loaded)
             this._userManagerLoadedId = this._userManager.connect('notify::is-loaded',
                                                                   Lang.bind(this, function() {
@@ -689,6 +700,24 @@ const LoginDialog = new Lang.Class({
         } else {
             this._bannerLabel.hide();
         }
+    },
+
+    _updateLogoTexture: function(cache, uri) {
+        if (this._logoFileUri != uri)
+            return;
+
+        let icon = null;
+        if (this._logoFileUri)
+            icon = this._textureCache.load_uri_async(this._logoFileUri,
+                                                     -1, _LOGO_ICON_HEIGHT);
+        this._logoBin.set_child(icon);
+    },
+
+    _updateLogo: function() {
+        let path = this._settings.get_string(GdmUtil.LOGO_KEY);
+
+        this._logoFileUri = path ? Gio.file_new_for_path(path).get_uri() : null;
+        this._updateLogoTexture(this._textureCache, this._logoFileUri);
     },
 
     _reset: function() {
