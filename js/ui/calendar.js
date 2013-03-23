@@ -71,7 +71,7 @@ function _formatEventTime(event, clockFormat) {
         default:
             /* explicit fall-through */
         case '12h':
-            /* Transators: Shown in calendar event list, if 12h format,
+            /* Translators: Shown in calendar event list, if 12h format,
                \u2236 is a ratio character, similar to : and \u2009 is
                a thin space */
             ret = event.date.toLocaleFormat(C_("event list time", "%l\u2236%M\u2009%p"));
