@@ -84,7 +84,7 @@ const _modes = {
         panel: {
             left: [],
             center: ['dateMenu'],
-            right: ['a11yGreeter', 'keyboard', 'volume']
+            right: ['a11yGreeter', 'keyboard', 'volume', 'battery']
         }
     },
 
