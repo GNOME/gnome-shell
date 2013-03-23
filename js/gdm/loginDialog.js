@@ -57,36 +57,6 @@ const WORK_SPINNER_ANIMATION_TIME = 0.3;
 
 let _loginDialog = null;
 
-const LogoMenuButton = new Lang.Class({
-    Name: 'LogoMenuButton',
-    Extends: PanelMenu.Button,
-
-    _init: function() {
-        this.parent(0.0, null, true);
-
-        this._settings = new Gio.Settings({ schema: GdmUtil.LOGIN_SCREEN_SCHEMA });
-        this._settings.connect('changed::' + GdmUtil.LOGO_KEY,
-                               Lang.bind(this, this._updateLogo));
-
-        this._iconBin = new St.Bin();
-        this.actor.add_actor(this._iconBin);
-
-        this._updateLogo();
-    },
-
-    _updateLogo: function() {
-        let path = this._settings.get_string(GdmUtil.LOGO_KEY);
-        let icon = null;
-
-        if (path) {
-            let file = Gio.file_new_for_path(path);
-            let cache = St.TextureCache.get_default();
-            icon = cache.load_uri_async(file.get_uri(), -1, _LOGO_ICON_HEIGHT);
-        }
-        this._iconBin.set_child(icon);
-    }
-});
-
 const UserListItem = new Lang.Class({
     Name: 'UserListItem',
 
