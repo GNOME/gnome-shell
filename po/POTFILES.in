@@ -55,6 +55,7 @@ js/ui/viewSelector.js
 js/ui/wanda.js
 js/ui/windowAttentionHandler.js
 src/calendar-server/evolution-calendar.desktop.in.in
+src/gvc/gvc-mixer-control.c
 src/main.c
 src/shell-app.c
 src/shell-app-system.c
