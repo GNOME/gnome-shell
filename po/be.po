@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-14 18:11+0000\n"
+"POT-Creation-Date: 2013-03-23 11:49+0000\n"
 "PO-Revision-Date: 2012-10-16 12:05+0300\n"
 "Last-Translator: Kasia Bondarava <kasia.bondarava@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
@@ -124,13 +124,15 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "List of categories that should be displayed as folders"
-msgstr ""
+msgstr "Спіс катэгорый, якія трэба паказваць як папкі"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid ""
 "Each category name in this list will be represented as folder in the "
 "application view, rather than being displayed inline in the main view."
 msgstr ""
+"Кожная катэгорыя ў спісе будзе выяўлена як папка ў рэжыме праграм, "
+"а не ўкарэнена ў галоўны від акна."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "History for command (Alt-F2) dialog"
@@ -159,18 +161,22 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid "Always show the 'Log out' menuitem in the user menu."
-msgstr ""
+msgstr "Заўсёды паказваць элемент \"Выйсці з сеанса\" ў меню карыстальніка."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menuitem in single-"
 "user, single-session situations."
 msgstr ""
+"Гэты ключ падмяняе аўтаматычнае хаванне элемента меню \"Выйсці з сеанса\" "
+"ў выпадку аднаго карыстальніка з адным сеансам."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
+"Ці трэба запамінаць пароль для прымацавання зашыфраваных і аддаленых "
+"файлавых сістэм"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid ""
@@ -179,6 +185,10 @@ msgid ""
 "'Remember Password' checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
+"Абалонка запатрабуе пароль пры прымацавані зашыфраванага прыстасавання або "
+"аддаленай файлавай сістэмы. Калі пароль можна будзе захаваць на будучыню, "
+"будзе паказаны пераключальнік \"Запомніць пароль\". Гэты ключ вызначае "
+"прадвызначанае становішча гэтага пераключальніка."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Show the week date in the calendar"
@@ -304,37 +314,42 @@ msgid ""
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
 "only' (shows only the application icon) or 'both'."
 msgstr ""
+"Настройка паказу вокнаў у пераключальніку. Магчымыя значэнні: \"thumbnail-only\" "
+"(паказваць мініяцюры вокнаў), \"app-icon-only\" (паказваць толькі значкі праграм) "
+"і \"both\" (адразу ўсё)."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Attach modal dialog to the parent window"
-msgstr ""
+msgstr "Чапляць мадальныя дыялогавыя акенцы да бацькоўскіх вокнаў"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
+"Гэты ключ падмяняе ключ у org.gnome.mutter пры запуску Абалонкі GNOME."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Arrangement of buttons on the titlebar"
-msgstr ""
+msgstr "Парадак кнопак у загалоўку акна"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:45
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
 msgstr ""
+"Гэты ключ падмяняе ключ у org.gnome.desktop.wm.preferences пры запуску Абалонкі GNOME."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:46
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
+msgstr "Уключыць парадкаванне на краі экрана пры перацягванні туды вокнаў"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:47
 msgid "Workspaces are managed dynamically"
-msgstr ""
+msgstr "Дынамічнае кіраванне прасторамі працы"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:48
 msgid "Workspaces only on primary monitor"
-msgstr ""
+msgstr "Прасторы працы толькі для асноўнага манітора"
 
 #: ../js/extensionPrefs/main.js:125
 #, c-format
@@ -362,32 +377,32 @@ msgstr "Сеанс..."
 msgid "Not listed?"
 msgstr "Няма ў спісе?"
 
-#: ../js/gdm/loginDialog.js:784 ../js/ui/components/networkAgent.js:137
+#: ../js/gdm/loginDialog.js:786 ../js/ui/components/networkAgent.js:137
 #: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:375
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:98
+#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:99
 #: ../js/ui/userMenu.js:938
 msgid "Cancel"
 msgstr "Скасаваць"
 
-#: ../js/gdm/loginDialog.js:800
+#: ../js/gdm/loginDialog.js:802
 msgctxt "button"
 msgid "Sign In"
 msgstr "Увайсці"
 
-#: ../js/gdm/loginDialog.js:800
+#: ../js/gdm/loginDialog.js:802
 msgid "Next"
 msgstr "Далей"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:915 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:917 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Імя карыстальніка: "
 
-#: ../js/gdm/loginDialog.js:1159
+#: ../js/gdm/loginDialog.js:1173
 msgid "Login Window"
 msgstr "Акно ўваходу"
 
@@ -410,17 +425,17 @@ msgstr "Перазапусціць сістэму"
 msgid "Power Off"
 msgstr "Выключыць камп'ютар"
 
-#: ../js/gdm/util.js:182
+#: ../js/gdm/util.js:249
 msgid "Authentication error"
 msgstr "Памылка ідэнтыфікацыі"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:299
+#: ../js/gdm/util.js:366
 msgid "(or swipe finger)"
 msgstr "(або правядзіце пальцам)"
 
-#: ../js/gdm/util.js:324
+#: ../js/gdm/util.js:391
 #, c-format
 msgid "(e.g., user or %s)"
 msgstr "(напр., карыстальнік ці %s)"
@@ -440,23 +455,23 @@ msgstr "Не ўдалося разабраць загад:"
 msgid "Execution of '%s' failed:"
 msgstr "Не ўдалося выканаць \"%s\":"
 
-#: ../js/ui/appDisplay.js:325
+#: ../js/ui/appDisplay.js:349
 msgid "Frequent"
 msgstr "Часта"
 
-#: ../js/ui/appDisplay.js:332
+#: ../js/ui/appDisplay.js:356
 msgid "All"
 msgstr "Усе"
 
-#: ../js/ui/appDisplay.js:890
+#: ../js/ui/appDisplay.js:914
 msgid "New Window"
 msgstr "Новае акно"
 
-#: ../js/ui/appDisplay.js:893 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:917 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Выдаліць са спіса ўпадабанага"
 
-#: ../js/ui/appDisplay.js:894
+#: ../js/ui/appDisplay.js:918
 msgid "Add to Favorites"
 msgstr "Дадаць у спіс упадабанага"
 
@@ -639,12 +654,12 @@ msgstr "Адлучаны знешні прывод"
 msgid "Removable Devices"
 msgstr "Зменныя прыстасаванні"
 
-#: ../js/ui/components/autorunManager.js:593
+#: ../js/ui/components/autorunManager.js:594
 #, c-format
 msgid "Open with %s"
 msgstr "Адкрыць у %s"
 
-#: ../js/ui/components/autorunManager.js:619
+#: ../js/ui/components/autorunManager.js:620
 msgid "Eject"
 msgstr "Выняць"
 
@@ -1164,9 +1179,7 @@ msgstr "Паказваць памылкі"
 msgid "Enabled"
 msgstr "Уключана"
 
-#. translators:
-#. * The device has been disabled
-#: ../js/ui/lookingGlass.js:769 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:769
 msgid "Disabled"
 msgstr "Выключана"
 
@@ -1206,15 +1219,15 @@ msgstr "Ачысціць спіс апавяшчэнняў"
 msgid "Notification Settings"
 msgstr "Настройкі апавяшчэння"
 
-#: ../js/ui/messageTray.js:1711
+#: ../js/ui/messageTray.js:1709
 msgid "No Messages"
 msgstr "Апавяшчэнні адсутнічаюць"
 
-#: ../js/ui/messageTray.js:1784
+#: ../js/ui/messageTray.js:1782
 msgid "Message Tray"
 msgstr "Абшар апавяшчэнняў"
 
-#: ../js/ui/messageTray.js:2816
+#: ../js/ui/messageTray.js:2810
 msgid "System Information"
 msgstr "Сістэмная інфармацыя"
 
@@ -1223,7 +1236,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Невядомая"
 
-#: ../js/ui/overviewControls.js:463 ../js/ui/screenShield.js:148
+#: ../js/ui/overviewControls.js:463 ../js/ui/screenShield.js:149
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1280,11 +1293,11 @@ msgstr "Закрыць"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:85
+#: ../js/ui/screenShield.js:86
 msgid "%A, %B %d"
 msgstr "%A, %d %B"
 
-#: ../js/ui/screenShield.js:150
+#: ../js/ui/screenShield.js:151
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1292,11 +1305,11 @@ msgstr[0] "%d новае апавяшчэнне"
 msgstr[1] "%d новыя апавяшчэнні"
 msgstr[2] "%d новых апавяшчэнняў"
 
-#: ../js/ui/screenShield.js:437 ../js/ui/userMenu.js:807
+#: ../js/ui/screenShield.js:438 ../js/ui/userMenu.js:807
 msgid "Lock"
 msgstr "Заблакіраваць"
 
-#: ../js/ui/screenShield.js:635
+#: ../js/ui/screenShield.js:637
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME патрабуе блакіравання экрана"
 
@@ -1307,19 +1320,19 @@ msgstr "GNOME патрабуе блакіравання экрана"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:756 ../js/ui/screenShield.js:1151
+#: ../js/ui/screenShield.js:758 ../js/ui/screenShield.js:1194
 msgid "Unable to lock"
 msgstr "Не ўдалося заблакіраваць"
 
-#: ../js/ui/screenShield.js:757 ../js/ui/screenShield.js:1152
+#: ../js/ui/screenShield.js:759 ../js/ui/screenShield.js:1195
 msgid "Lock was blocked by an application"
 msgstr "Блакіраванне стрымана праграмай"
 
-#: ../js/ui/searchDisplay.js:451
+#: ../js/ui/searchDisplay.js:453
 msgid "Searching…"
 msgstr "Пошук..."
 
-#: ../js/ui/searchDisplay.js:495
+#: ../js/ui/searchDisplay.js:497
 msgid "No results."
 msgstr "Нічога не знойдзена."
 
@@ -1347,7 +1360,7 @@ msgstr "Пароль"
 msgid "Remember Password"
 msgstr "Запомніць пароль"
 
-#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:112
+#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:113
 msgid "Unlock"
 msgstr "Разблакіраваць"
 
@@ -1756,11 +1769,11 @@ msgstr "Гучнасць"
 msgid "Microphone"
 msgstr "Мікрафон"
 
-#: ../js/ui/unlockDialog.js:123
+#: ../js/ui/unlockDialog.js:124
 msgid "Log in as another user"
 msgstr "Увайсці іншым карыстальнікам"
 
-#: ../js/ui/unlockDialog.js:144
+#: ../js/ui/unlockDialog.js:145
 msgid "Unlock Window"
 msgstr "Акно блакіравання"
 
@@ -1867,30 +1880,6 @@ msgstr "\"%s\" гатова"
 #: ../src/calendar-server/evolution-calendar.desktop.in.in.h:1
 msgid "Evolution Calendar"
 msgstr "Каляндар Evolution"
-
-#. translators:
-#. * The number of sound outputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1837
-#, c-format
-msgid "%u Output"
-msgid_plural "%u Outputs"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-
-#. translators:
-#. * The number of sound inputs on a particular device
-#: ../src/gvc/gvc-mixer-control.c:1847
-#, c-format
-msgid "%u Input"
-msgid_plural "%u Inputs"
-msgstr[0] "%u уваход"
-msgstr[1] "%u уваходы"
-msgstr[2] "%u уваходаў"
-
-#: ../src/gvc/gvc-mixer-control.c:2371
-msgid "System Sounds"
-msgstr "Сістэмныя гукі"
 
 #: ../src/main.c:347
 msgid "Print version"
