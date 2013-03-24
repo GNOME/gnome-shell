@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: cogl cogl-1.14\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=cogl&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-01 08:01+0000\n"
-"PO-Revision-Date: 2013-03-06 17:39+0000\n"
+"POT-Creation-Date: 2013-03-22 19:31+0000\n"
+"PO-Revision-Date: 2013-03-24 10:53+0100\n"
 "Last-Translator: Ján Kyselica <kyselica.jan@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -93,10 +93,9 @@ msgid "Trace Texture Slicing"
 msgstr "Sledovať delenie textúry"
 
 # PM: prečo je to malým písmenom ked všetky ostatné reťazce sú veľkým, nahlás bug
-# popis (description) ladiacej hodnoty
 # JK: https://bugzilla.gnome.org/show_bug.cgi?id=695237
+# popis (description) ladiacej hodnoty
 #: ../cogl/cogl-debug-options.h:33
-#, fuzzy
 msgid "debug the creation of texture slices"
 msgstr "ladí tvorbu častí textúry"
 
@@ -291,14 +290,13 @@ msgstr "Zakáže vytváranie atlasu z textúr"
 # PK: sharing je zevraj nespisovne, nemam tusenie ako to prelozit inak
 # formátovaný názov ladiacej hodnoty
 #: ../cogl/cogl-debug-options.h:118
-#, fuzzy
 msgid "Disable sharing the texture atlas between text and images"
-msgstr "Zakázať zdieľanie atlasu textúr medzi textom a obrázkami"
+msgstr ""
+"Zakázať spoločné používanie atlasu textúr v texte a zároveň aj v obrázkoch."
 
 # PM: zdá sa mi že originál hovorí niečo iné ako preklad.
 # popis (description) ladiacej hodnoty
 #: ../cogl/cogl-debug-options.h:119
-#, fuzzy
 msgid ""
 "When this is set the glyph cache will always use a separate texture for its "
 "atlas. Otherwise it will try to share the atlas with images."
@@ -358,10 +356,10 @@ msgstr "Zakáže používanie miešania"
 
 # PK: preco nie textury co nejsu mocninou 2
 # formátovaný názov ladiacej hodnoty
+# JK: v nasledujucom retazci je pouzita skratka NPOT, preklad moze byt matuci
 #: ../cogl/cogl-debug-options.h:149
-#, fuzzy
 msgid "Disable non-power-of-two textures"
-msgstr "Zakázať textúry typu non-power-of-two"
+msgstr "Zakázať textúry, ktoré nie sú mocninou dvojky (NPOT)"
 
 # popis (description) ladiacej hodnoty
 #: ../cogl/cogl-debug-options.h:150
@@ -452,9 +450,11 @@ msgstr "Sledovať aspekty výkonnosti"
 
 # PM: čo znamená suboptimálne? takmer optimálne?
 # JK: áno, niečo v tom význame.
-# PK: preco nie menej optimalne? 
+# PK: preco nie menej optimalne?
+# JK: Co je zle na suboptimalne? Bezne sa to pouziva, v skole sa s tym stretavam pravidelne.
+# MČ: pokiaľ mám správne informácie, tak slovo „optimálne“ má takú hlúpu vlastnosť, že sa nedá stupňovať a predstavuje najvyšší stupeň. Teda menej optimálne je z tohto pohľadu nezmysel. Takže niečo je optimálne, alebo nie je optimálne. Suboptimálne sa dá teda preložiť ako horšie ako optimálne, ale nie o mnoho. 
+# PM: čiže takmer optimálne
 # popis (description) ladiacej hodnoty
 #: ../cogl/cogl-debug-options.h:192
-#, fuzzy
 msgid "Tries to highlight sub-optimal Cogl usage."
-msgstr "Pokúsi sa zvýrazniť suboptimálne použitie rozhrania Cogl."
+msgstr "Pokúsi sa zvýrazniť takmer optimálne použitie rozhrania Cogl."
