@@ -926,12 +926,14 @@ handle_wm_protocols_event (ClutterBackendX11 *backend_x11,
                            ClutterStageX11   *stage_x11,
                            XEvent            *xevent)
 {
-  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_x11);
   Atom atom = (Atom) xevent->xclient.data.l[0];
 
   if (atom == backend_x11->atom_WM_DELETE_WINDOW &&
       xevent->xany.window == stage_x11->xwin)
     {
+#ifdef CLUTTER_ENABLE_DEBUG
+      ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_x11);
+
       /* the WM_DELETE_WINDOW is a request: we do not destroy
        * the window right away, as it might contain vital data;
        * we relay the event to the application and we let it
@@ -941,6 +943,7 @@ handle_wm_protocols_event (ClutterBackendX11 *backend_x11,
                     _clutter_actor_get_debug_name (CLUTTER_ACTOR (stage_cogl->wrapper)),
                     stage_cogl->wrapper,
                     (unsigned int) stage_x11->xwin);
+#endif /* CLUTTER_ENABLE_DEBUG */
 
       set_user_time (backend_x11, stage_x11, xevent->xclient.data.l[1]);
 

@@ -368,11 +368,6 @@ clutter_stage_allocate (ClutterActor           *self,
   float new_width, new_height;
   float width, height;
   cairo_rectangle_int_t window_size;
-  gboolean origin_changed;
-
-  origin_changed = (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED)
-                 ? TRUE
-                 : FALSE;
 
   if (priv->impl == NULL)
     return;
@@ -395,9 +390,11 @@ clutter_stage_allocate (ClutterActor           *self,
   if (!clutter_feature_available (CLUTTER_FEATURE_STAGE_STATIC))
     {
       CLUTTER_NOTE (LAYOUT,
-                    "Following allocation to %.2fx%.2f (origin %s)",
+                    "Following allocation to %.2fx%.2f (absolute origin %s)",
                     width, height,
-                    origin_changed ? "changed" : "not changed");
+                    (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED)
+                      ? "changed"
+                      : "not changed");
 
       clutter_actor_set_allocation (self, box,
                                     flags | CLUTTER_DELEGATE_LAYOUT);
@@ -451,11 +448,13 @@ clutter_stage_allocate (ClutterActor           *self,
 
       CLUTTER_NOTE (LAYOUT,
                     "Overriding original allocation of %dx%d "
-                    "with %.2fx%.2f (origin %s)",
+                    "with %.2fx%.2f (absolute origin %s)",
                     width, height,
                     (int) (override.x2),
                     (int) (override.y2),
-                    origin_changed ? "changed" : "not changed");
+                    (flags & CLUTTER_ABSOLUTE_ORIGIN_CHANGED)
+                      ? "changed"
+                      : "not changed");
 
       /* and store the overridden allocation */
       clutter_actor_set_allocation (self, &override,

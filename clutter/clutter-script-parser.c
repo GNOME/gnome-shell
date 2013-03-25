@@ -1781,7 +1781,6 @@ apply_layout_properties (ClutterScript    *script,
 {
   ClutterScriptable *scriptable = NULL;
   ClutterScriptableIface *iface = NULL;
-  gboolean set_custom_property = FALSE;
   gboolean parse_custom_node = FALSE;
   GList *l, *unresolved, *properties;
   ClutterLayoutManager *manager;
@@ -1806,7 +1805,6 @@ apply_layout_properties (ClutterScript    *script,
       iface = CLUTTER_SCRIPTABLE_GET_IFACE (scriptable);
 
       parse_custom_node = iface->parse_custom_node != NULL ? TRUE : FALSE;
-      set_custom_property = iface->set_custom_property != NULL ? TRUE : FALSE;
     }
 
   properties = oinfo->properties;
@@ -1859,7 +1857,7 @@ apply_layout_properties (ClutterScript    *script,
       CLUTTER_NOTE (SCRIPT,
                     "Setting %s layout property '%s' (type:%s) to "
                     "object '%s' (id:%s)",
-                    set_custom_property ? "custom" : "regular",
+                    iface->set_custom_property != NULL ? "custom" : "regular",
                     name,
                     g_type_name (G_VALUE_TYPE (&value)),
                     g_type_name (oinfo->gtype),
@@ -1887,7 +1885,6 @@ apply_child_properties (ClutterScript    *script,
 {
   ClutterScriptable *scriptable = NULL;
   ClutterScriptableIface *iface = NULL;
-  gboolean set_custom_property = FALSE;
   gboolean parse_custom_node = FALSE;
   GList *l, *unresolved, *properties;
   GObjectClass *klass;
@@ -1906,7 +1903,6 @@ apply_child_properties (ClutterScript    *script,
       iface = CLUTTER_SCRIPTABLE_GET_IFACE (scriptable);
 
       parse_custom_node = iface->parse_custom_node != NULL ? TRUE : FALSE;
-      set_custom_property = iface->set_custom_property != NULL ? TRUE : FALSE;
     }
 
   properties = oinfo->properties;
@@ -1960,7 +1956,7 @@ apply_child_properties (ClutterScript    *script,
       CLUTTER_NOTE (SCRIPT,
                     "Setting %s child property '%s' (type:%s) to "
                     "object '%s' (id:%s)",
-                    set_custom_property ? "custom" : "regular",
+                    iface->set_custom_property != NULL ? "custom" : "regular",
                     name,
                     g_type_name (G_VALUE_TYPE (&value)),
                     g_type_name (oinfo->gtype),

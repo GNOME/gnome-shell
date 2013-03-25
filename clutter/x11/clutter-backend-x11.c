@@ -773,7 +773,6 @@ clutter_backend_x11_create_stage (ClutterBackend  *backend,
 				  ClutterStage    *wrapper,
 				  GError         **error)
 {
-  ClutterBackendX11 *backend_x11 = CLUTTER_BACKEND_X11 (backend);
   ClutterEventTranslator *translator;
   ClutterStageWindow *stage;
 
@@ -787,9 +786,9 @@ clutter_backend_x11_create_stage (ClutterBackend  *backend,
   _clutter_backend_add_event_translator (backend, translator);
 
   CLUTTER_NOTE (MISC, "X11 stage created (display:%p, screen:%d, root:%u)",
-                backend_x11->xdpy,
-                backend_x11->xscreen_num,
-                (unsigned int) backend_x11->xwin_root);
+                CLUTTER_BACKEND_X11 (backend)->xdpy,
+                CLUTTER_BACKEND_X11 (backend)->xscreen_num,
+                (unsigned int) CLUTTER_BACKEND_X11 (backend)->xwin_root);
 
   return stage;
 }
