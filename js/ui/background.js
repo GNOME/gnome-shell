@@ -503,6 +503,10 @@ const Background = new Lang.Class({
 
         let interval = Math.max(ANIMATION_MIN_WAKEUP_INTERVAL * 1000,
                                 timePerStep);
+
+        if (interval > GLib.MAXUINT32)
+            return;
+
         this._updateAnimationTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT,
                                                       interval,
                                                       Lang.bind(this, function() {
