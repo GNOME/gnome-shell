@@ -349,6 +349,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-pipeline-snippet.c		\
 	$(srcdir)/cogl-pipeline-cache.h			\
 	$(srcdir)/cogl-pipeline-cache.c			\
+	$(srcdir)/cogl-pipeline-hash-table.h		\
+	$(srcdir)/cogl-pipeline-hash-table.c		\
 	$(srcdir)/cogl-material-compat.c		\
 	$(srcdir)/cogl-program.c			\
 	$(srcdir)/cogl-program-private.h		\
