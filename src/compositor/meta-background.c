@@ -99,7 +99,6 @@ G_DEFINE_TYPE_WITH_CODE (MetaBackground, meta_background, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (CLUTTER_TYPE_CONTENT,
                                                 clutter_content_iface_init))
 
-
 static gboolean
 meta_background_get_preferred_size (ClutterContent *content,
                                     gfloat         *width,
@@ -535,13 +534,18 @@ static void
 add_vignette (MetaBackground *self)
 {
   MetaBackgroundPrivate *priv = self->priv;
-  CoglSnippet *snippet;
+  static CoglSnippet *snippet = NULL;
 
   ensure_pipeline (self);
 
-  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT, FRAGMENT_SHADER_DECLARATIONS, VIGNETTE_CODE);
+  /* Cogl automatically caches pipelines with no eviction policy,
+   * so we need to prevent identical pipelines from getting cached
+   * separately, by reusing the same fragement shader snippet.
+   */
+  if (snippet == NULL)
+    snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT, FRAGMENT_SHADER_DECLARATIONS, VIGNETTE_CODE);
+
   cogl_pipeline_add_snippet (priv->pipeline, snippet);
-  cogl_object_unref (snippet);
 
   cogl_pipeline_set_uniform_1f (priv->pipeline,
                                 cogl_pipeline_get_uniform_location (priv->pipeline,
