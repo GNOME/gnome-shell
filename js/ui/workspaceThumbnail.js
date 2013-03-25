@@ -384,9 +384,8 @@ const WorkspaceThumbnail = new Lang.Class({
     },
 
     destroy : function() {
-        this.actor.destroy();
-        this._bgManager.destroy();
-        this._bgManager = null;
+        if (this.actor)
+          this.actor.destroy();
     },
 
     workspaceRemoved : function() {
@@ -406,6 +405,11 @@ const WorkspaceThumbnail = new Lang.Class({
 
     _onDestroy: function(actor) {
         this.workspaceRemoved();
+
+        if (this._bgManager) {
+          this._bgManager.destroy();
+          this._bgManager = null;
+        }
 
         this._windows = [];
         this.actor = null;
