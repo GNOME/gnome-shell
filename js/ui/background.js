@@ -38,6 +38,7 @@ const BackgroundCache = new Lang.Class({
     _init: function() {
        this._patterns = [];
        this._images = [];
+       this._pendingFileLoads = [];
        this._fileMonitors = {};
     },
 
@@ -128,6 +129,73 @@ const BackgroundCache = new Lang.Class({
         this._removeContent(this._images, content);
     },
 
+    _loadImageContent: function(params) {
+        params = Params.parse(params, { monitorIndex: 0,
+                                        style: null,
+                                        filename: null,
+                                        effects: Meta.BackgroundEffects.NONE,
+                                        cancellable: null,
+                                        onFinished: null });
+
+        for (let i = 0; i < this._pendingFileLoads.length; i++) {
+            if (this._pendingFileLoads[i].filename == params.filename &&
+                this._pendingFileLoads[i].style == params.style) {
+                this._pendingFileLoads[i].callers.push({ shouldCopy: true,
+                                                         monitorIndex: params.monitorIndex,
+                                                         effects: params.effects,
+                                                         onFinished: params.onFinished });
+                return;
+            }
+        }
+
+        this._pendingFileLoads.push({ filename: params.filename,
+                                      style: params.style,
+                                      callers: [{ shouldCopy: false,
+                                                  monitorIndex: params.monitorIndex,
+                                                  effects: params.effects,
+                                                  onFinished: params.onFinished }] });
+
+        let content = new Meta.Background({ meta_screen: global.screen,
+                                            monitor: params.monitorIndex,
+                                            effects: params.effects });
+
+        content.load_file_async(params.filename,
+                                params.style,
+                                params.cancellable,
+                                Lang.bind(this,
+                                          function(object, result) {
+                                              try {
+                                                  content.load_file_finish(result);
+
+                                                  this._monitorFile(params.filename);
+                                                  this._images.push(content);
+                                              } catch(e) {
+                                                  content = null;
+                                              }
+
+                                              for (let i = 0; i < this._pendingFileLoads.length; i++) {
+                                                  let pendingLoad = this._pendingFileLoads[i];
+                                                  if (pendingLoad.filename != params.filename ||
+                                                      pendingLoad.style != params.style)
+                                                      continue;
+
+                                                  for (let j = 0; j < pendingLoad.callers.length; j++) {
+                                                      if (pendingLoad.callers[j].onFinished) {
+                                                          if (content && pendingLoad.callers[j].shouldCopy) {
+                                                              content = object.copy(pendingLoad.callers[j].monitorIndex,
+                                                                                    pendingLoad.callers[j].effects);
+
+                                                          }
+
+                                                          pendingLoad.callers[j].onFinished(content);
+                                                      }
+                                                  }
+
+                                                  this._pendingFileLoads.splice(i, 1);
+                                              }
+                                          }));
+    },
+
     getImageContent: function(params) {
         params = Params.parse(params, { monitorIndex: 0,
                                         style: null,
@@ -171,27 +239,11 @@ const BackgroundCache = new Lang.Class({
             if (params.onFinished)
                 params.onFinished(content);
         } else {
-            content = new Meta.Background({ meta_screen: global.screen,
-                                            monitor: params.monitorIndex,
-                                            effects: params.effects });
+            this._loadImageContent({ filename: params.filename,
+                                     style: params.style,
+                                     cancellable: params.cancellable,
+                                     onFinished: params.onFinished });
 
-            content.load_file_async(params.filename,
-                                    params.style,
-                                    params.cancellable,
-                                    Lang.bind(this,
-                                              function(object, result) {
-                                                  try {
-                                                      content.load_file_finish(result);
-
-                                                      this._monitorFile(params.filename);
-                                                      this._images.push(content);
-                                                  } catch(e) {
-                                                       content = null;
-                                                  }
-
-                                                  if (params.onFinished)
-                                                      params.onFinished(content);
-                                              }));
         }
     },
 
