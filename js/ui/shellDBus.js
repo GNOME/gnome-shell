@@ -397,7 +397,7 @@ const ScreenSaverDBus = new Lang.Class({
         if (active)
             this._screenShield.activate(true);
         else
-            this._screenShield.unlock(false);
+            this._screenShield.deactivate(false);
     },
 
     GetActive: function() {
