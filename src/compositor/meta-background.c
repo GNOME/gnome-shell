@@ -1156,6 +1156,7 @@ meta_background_load_file_finish (MetaBackground  *self,
   int width, height, row_stride;
   guchar *pixels;
   gboolean has_alpha;
+  gboolean loaded = FALSE;
 
   g_return_val_if_fail (g_task_is_valid (result, self), FALSE);
 
@@ -1164,7 +1165,7 @@ meta_background_load_file_finish (MetaBackground  *self,
   pixbuf = g_task_propagate_pointer (task, error);
 
   if (pixbuf == NULL)
-    return FALSE;
+    goto out;
 
   task_data = g_task_get_task_data (task);
 
@@ -1190,7 +1191,7 @@ meta_background_load_file_finish (MetaBackground  *self,
                            COGL_BITMAP_ERROR,
                            COGL_BITMAP_ERROR_FAILED,
                            _("background texture could not be created from file"));
-      return FALSE;
+      goto out;
     }
 
   cogl_object_set_user_data (COGL_OBJECT (texture),
@@ -1206,8 +1207,12 @@ meta_background_load_file_finish (MetaBackground  *self,
   set_texture (self, texture);
 
   clutter_content_invalidate (CLUTTER_CONTENT (self));
+  loaded = TRUE;
 
-  return TRUE;
+out:
+  if (pixbuf != NULL)
+    g_object_unref (pixbuf);
+  return loaded;
 }
 
 /**
