@@ -33,6 +33,10 @@ const SystemdLoginManagerIface = <interface name='org.freedesktop.login1.Manager
     <arg type='s' direction='in'/>
     <arg type='h' direction='out'/>
 </method>
+<method name='GetSession'>
+    <arg type='s' direction='in'/>
+    <arg type='o' direction='out'/>
+</method>
 <method name='ListSessions'>
     <arg name='sessions' type='a(susso)' direction='out'/>
 </method>
@@ -136,15 +140,23 @@ const LoginManagerSystemd = new Lang.Class({
     // Having this function is a bit of a hack since the Systemd and ConsoleKit
     // session objects have different interfaces - but in both cases there are
     // Lock/Unlock signals, and that's all we count upon at the moment.
-    getCurrentSessionProxy: function() {
-        if (!this._currentSession) {
-            this._currentSession = new SystemdLoginSession(Gio.DBus.system,
-                                                           'org.freedesktop.login1',
-                                                           '/org/freedesktop/login1/session/' +
-                                                           GLib.getenv('XDG_SESSION_ID'));
+    getCurrentSessionProxy: function(callback) {
+        if (this._currentSession) {
+            callback (this._currentSession);
+            return;
         }
 
-        return this._currentSession;
+        this._proxy.GetSessionRemote(GLib.getenv('XDG_SESSION_ID'), Lang.bind(this,
+            function(result, error) {
+                if (error) {
+                    logError(error, 'Could not get a proxy for the current session');
+                } else {
+                    this._currentSession = new SystemdLoginSession(Gio.DBus.system,
+                                                                   'org.freedesktop.login1',
+                                                                   result[0]);
+                    callback(this._currentSession);
+                }
+            }));
     },
 
     canPowerOff: function(asyncCallback) {
@@ -233,15 +245,23 @@ const LoginManagerConsoleKit = new Lang.Class({
     // Having this function is a bit of a hack since the Systemd and ConsoleKit
     // session objects have different interfaces - but in both cases there are
     // Lock/Unlock signals, and that's all we count upon at the moment.
-    getCurrentSessionProxy: function() {
-        if (!this._currentSession) {
-            let [currentSessionId] = this._proxy.GetCurrentSessionSync();
-            this._currentSession = new ConsoleKitSession(Gio.DBus.system,
-                                                         'org.freedesktop.ConsoleKit',
-                                                         currentSessionId);
+    getCurrentSessionProxy: function(callback) {
+        if (this._currentSession) {
+            callback (this._currentSession);
+            return;
         }
 
-        return this._currentSession;
+        this._proxy.GetCurrentSessionRemote(Lang.bind(this,
+            function(result, error) {
+                if (error) {
+                    logError(error, 'Could not get a proxy for the current session');
+                } else {
+                    this._currentSession = new ConsoleKitSession(Gio.DBus.system,
+                                                                 'org.freedesktop.ConsoleKit',
+                                                                 result[0]);
+                    callback(this._currentSession);
+                }
+            }));
     },
 
     canPowerOff: function(asyncCallback) {

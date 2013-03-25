@@ -512,9 +512,12 @@ const ScreenShield = new Lang.Class({
                                    Lang.bind(this, this._prepareForSleep));
         this._inhibitSuspend();
 
-        this._loginSession = this._loginManager.getCurrentSessionProxy();
-        this._loginSession.connectSignal('Lock', Lang.bind(this, function() { this.lock(false); }));
-        this._loginSession.connectSignal('Unlock', Lang.bind(this, function() { this.deactivate(false); }));
+        this._loginManager.getCurrentSessionProxy(Lang.bind(this,
+            function(sessionProxy) {
+                this._loginSession = sessionProxy;
+                this._loginSession.connectSignal('Lock', Lang.bind(this, function() { this.lock(false); }));
+                this._loginSession.connectSignal('Unlock', Lang.bind(this, function() { this.deactivate(false); }));
+            }));
 
         this._settings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
 
