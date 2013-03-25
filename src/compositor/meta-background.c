@@ -1129,6 +1129,7 @@ meta_background_load_file_async (MetaBackground          *self,
     g_task_set_task_data (task, task_data, (GDestroyNotify) load_file_task_data_free);
 
     g_task_run_in_thread (task, (GTaskThreadFunc) load_file);
+    g_object_unref (task);
 }
 
 /**
