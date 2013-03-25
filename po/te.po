@@ -6,38 +6,215 @@
 # A Mohan Vamsee(Swecha Team)) <mohan.arza@ymail.com>, 2011, 2012.
 # Sasi Bhushan Boddepalli <sasi@swecha.net>, 2012.
 # Praveen Illa <mail2ipn@gmail.com>, 2012.
-# Krishnababu Krothapalli <kkrothap@redhat.com>, 2012.
+# Krishnababu Krothapalli <kkrothap@redhat.com>, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: metacity.gnome-2-26\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-08-06 23:35+0000\n"
-"PO-Revision-Date: 2012-09-21 21:19+0530\n"
+"POT-Creation-Date: 2013-03-22 10:02+0000\n"
+"PO-Revision-Date: 2013-03-25 21:43+0530\n"
 "Last-Translator: Krishnababu Krothapalli <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <Fedora-trans-te@redhat.com>\n"
 "Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: ../src/50-mutter-windows.xml.in.h:1 ../src/50-mutter-windows.xml.in.h:17
+#: ../src/50-mutter-navigation.xml.in.h:1
+msgid "Navigation"
+msgstr "విహారణ"
+
+#: ../src/50-mutter-navigation.xml.in.h:2
+msgid "Move window to workspace 1"
+msgstr "విండోని పనిప్రదేశము 1 నకు జరుపుము"
+
+#: ../src/50-mutter-navigation.xml.in.h:3
+msgid "Move window to workspace 2"
+msgstr "విండోని పనిప్రదేశము 2 నకు జరుపుము"
+
+#: ../src/50-mutter-navigation.xml.in.h:4
+msgid "Move window to workspace 3"
+msgstr "విండోని పనిప్రదేశము 3 నకు జరుపుము"
+
+#: ../src/50-mutter-navigation.xml.in.h:5
+msgid "Move window to workspace 4"
+msgstr "విండోని పనిప్రదేశము 4 నకు జరుపుము"
+
+#: ../src/50-mutter-navigation.xml.in.h:6
+msgid "Move window one workspace to the left"
+msgstr "విండో ఒక పనిప్రదేశమును ఎడమ వైపునకు జరుపుము"
+
+#: ../src/50-mutter-navigation.xml.in.h:7
+msgid "Move window one workspace to the right"
+msgstr "విండో ఒక పనిప్రదేశమును కుడి వైపునకు జరుపుము"
+
+#: ../src/50-mutter-navigation.xml.in.h:8
+msgid "Move window one workspace up"
+msgstr "విండో ఒక పనిప్రదేశమును పై వైపునకు జరుపుము"
+
+#: ../src/50-mutter-navigation.xml.in.h:9
+msgid "Move window one workspace down"
+msgstr "విండో ఒక పనిప్రదేశమును కింది వైపునకు జరుపుము"
+
+#: ../src/50-mutter-navigation.xml.in.h:10
+msgid "Switch applications"
+msgstr "అనువర్తనాలను మార్చు"
+
+#: ../src/50-mutter-navigation.xml.in.h:11
+#| msgid "Switch windows directly"
+msgid "Switch windows"
+msgstr "విండోలను మార్చు"
+
+#: ../src/50-mutter-navigation.xml.in.h:12
+msgid "Switch windows of an application"
+msgstr "అనువర్తనము యొక్క కిటికీల మధ్య మారు"
+
+#: ../src/50-mutter-navigation.xml.in.h:13
+msgid "Switch system controls"
+msgstr "వ్యవస్థ నియంత్రణల మీట"
+
+#: ../src/50-mutter-navigation.xml.in.h:14
+msgid "Switch windows directly"
+msgstr "సూటిగా కిటికీకు మీట"
+
+#: ../src/50-mutter-navigation.xml.in.h:15
+msgid "Switch windows of an app directly"
+msgstr "అనువర్తనము యొక్క కిటికీలమద్య సూటిగా కదులుము"
+
+#: ../src/50-mutter-navigation.xml.in.h:16
+msgid "Switch system controls directly"
+msgstr "సూటిగా వ్యవస్థ నియంత్రణకు మీట"
+
+#: ../src/50-mutter-navigation.xml.in.h:17
+msgid "Hide all normal windows"
+msgstr "అన్ని సాధారణ కిటికీలను దాయి"
+
+#: ../src/50-mutter-navigation.xml.in.h:18
+msgid "Switch to workspace 1"
+msgstr "పనిప్రదేశము 1 కి మారుము"
+
+#: ../src/50-mutter-navigation.xml.in.h:19
+msgid "Switch to workspace 2"
+msgstr "పనిప్రదేశము 2 కి మారుము"
+
+#: ../src/50-mutter-navigation.xml.in.h:20
+msgid "Switch to workspace 3"
+msgstr "పనిప్రదేశము 3 కి మారుము"
+
+#: ../src/50-mutter-navigation.xml.in.h:21
+msgid "Switch to workspace 4"
+msgstr "పనిప్రదేశము 4 కి మారుము"
+
+#: ../src/50-mutter-navigation.xml.in.h:22
+msgid "Move to workspace left"
+msgstr "కార్యక్షేత్రం నుండి ఎడమవైపుకు కదులు "
+
+#: ../src/50-mutter-navigation.xml.in.h:23
+msgid "Move to workspace right"
+msgstr "కార్యక్షేత్రం నుండి కుడివైపుకు కదులు "
+
+#: ../src/50-mutter-navigation.xml.in.h:24
+msgid "Move to workspace above"
+msgstr "కార్యక్షేత్రం నుండి ఎడమవైపుకు కదులు"
+
+#: ../src/50-mutter-navigation.xml.in.h:25
+msgid "Move to workspace below"
+msgstr "కార్యక్షేత్రం నుండి కదులు "
+
+#: ../src/50-mutter-system.xml.in.h:1
+msgid "System"
+msgstr "వ్యవస్థ"
+
+#: ../src/50-mutter-system.xml.in.h:2
+msgid "Show the run command prompt"
+msgstr "రన్ కమాండు మెనూను చూపించు"
+
+#: ../src/50-mutter-system.xml.in.h:3
+msgid "Show the activities overview"
+msgstr "కార్యకలాపాల పై పై పరిశీలనను చూపించు"
+
+#: ../src/50-mutter-windows.xml.in.h:1
 msgid "Windows"
 msgstr "కిటికీలు"
 
 #: ../src/50-mutter-windows.xml.in.h:2
+msgid "Activate the window menu"
+msgstr "విండో జాబితాను క్రియాశీలపరుచుము"
+
+#: ../src/50-mutter-windows.xml.in.h:3
+msgid "Toggle fullscreen mode"
+msgstr "పూర్తితెర సంవిధానమును మార్చుము"
+
+#: ../src/50-mutter-windows.xml.in.h:4
+msgid "Toggle maximization state"
+msgstr "గరిష్ట స్థితికి మార్చుము"
+
+#: ../src/50-mutter-windows.xml.in.h:5
+msgid "Maximize window"
+msgstr "విండోని గరిష్ఠీకరించు"
+
+#: ../src/50-mutter-windows.xml.in.h:6
+msgid "Restore window"
+msgstr "విండోని తిరిగివుంచు"
+
+#: ../src/50-mutter-windows.xml.in.h:7
+msgid "Toggle shaded state"
+msgstr "షేడెడ్ స్ధితిని మార్చుము"
+
+#: ../src/50-mutter-windows.xml.in.h:8
+msgid "Close window"
+msgstr "విండోను మూయుము"
+
+#: ../src/50-mutter-windows.xml.in.h:9
+msgid "Hide window"
+msgstr "విండోని మరగునవుంచు"
+
+#: ../src/50-mutter-windows.xml.in.h:10
+msgid "Move window"
+msgstr "విండోని జరుపుము"
+
+#: ../src/50-mutter-windows.xml.in.h:11
+msgid "Resize window"
+msgstr "విండోని పునఃపరిమాణించుము"
+
+#: ../src/50-mutter-windows.xml.in.h:12
+msgid "Toggle window on all workspaces or one"
+msgstr "కిటికీ అన్ని కార్యక్షేత్రంలపై వన్నా లేక వొకటి  వున్నా మార్చుము"
+
+#: ../src/50-mutter-windows.xml.in.h:13
+msgid "Raise window if covered, otherwise lower it"
+msgstr "ఒక కిటికీ  కప్పివుంటే దానిని వృద్దిచేయుము, లేదా దానిని తగ్గించు"
+
+#: ../src/50-mutter-windows.xml.in.h:14
+msgid "Raise window above other windows"
+msgstr "విండోని ఇతర విండోల పైకి తీసుకొనిరమ్ము"
+
+#: ../src/50-mutter-windows.xml.in.h:15
+msgid "Lower window below other windows"
+msgstr "విండోని ఇతర విండోల కిందికి తీసుకొనివెళ్ళుమ్ము"
+
+#: ../src/50-mutter-windows.xml.in.h:16
+msgid "Maximize window vertically"
+msgstr "విండోని నిలువుగా గరిష్ఠీకరించు"
+
+#: ../src/50-mutter-windows.xml.in.h:17
+msgid "Maximize window horizontally"
+msgstr "విండోని అడ్డంగా గరిష్ఠీకరించు"
+
+#: ../src/50-mutter-windows.xml.in.h:18
 msgid "View split on left"
 msgstr "ఎడమ వైపు స్ప్లిట్ చూడండి"
 
-#: ../src/50-mutter-windows.xml.in.h:3
+#: ../src/50-mutter-windows.xml.in.h:19
 msgid "View split on right"
 msgstr "కుడి వైపు  స్ప్లిట్ చూడండి"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:492
+#: ../src/compositor/compositor.c:568
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -46,7 +223,11 @@ msgstr ""
 "మరొక కూర్పునకు నిర్వాహకం ప్రదర్శన పై %i తెరపైన   ముందుగానే జరుగుచున్నది \"%"
 "s\"."
 
-#: ../src/core/bell.c:320
+#: ../src/compositor/meta-background.c:1191
+msgid "background texture could not be created from file"
+msgstr "ఫైలు నుండి బ్యాక్‌గ్రౌండ్ టెక్చర్ సృష్టించబడలేక పోయింది"
+
+#: ../src/core/bell.c:322
 msgid "Bell event"
 msgstr "బెల్ సన్నివేశము"
 
@@ -55,17 +236,17 @@ msgstr "బెల్ సన్నివేశము"
 msgid "Unknown window information request: %d"
 msgstr "తెలియని కిటికీ సమాచార మనవి: %d"
 
-#: ../src/core/delete.c:114
+#: ../src/core/delete.c:111
 #, c-format
-#| msgid "<tt>%s</tt> is not responding."
-msgid "%s is not responding."
-msgstr "%s స్పందించుటలేదు."
+#| msgid "%s is not responding."
+msgid "“%s” is not responding."
+msgstr "“%s” స్పందించుటలేదు."
 
-#: ../src/core/delete.c:118
+#: ../src/core/delete.c:113
 msgid "Application is not responding."
 msgstr "అనువర్తనం స్పందించుటలేదు."
 
-#: ../src/core/delete.c:123
+#: ../src/core/delete.c:118
 msgid ""
 "You may choose to wait a short while for it to continue or force the "
 "application to quit entirely."
@@ -74,25 +255,25 @@ msgstr ""
 "అనువర్తనమును బలవంతముగా "
 "త్యజించుము"
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:125
 msgid "_Wait"
 msgstr "నిరీక్షించండి (_W)"
 
-#: ../src/core/delete.c:130
+#: ../src/core/delete.c:125
 msgid "_Force Quit"
 msgstr "బలవంతముగా త్యజించు (_F)"
 
-#: ../src/core/display.c:380
+#: ../src/core/display.c:401
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "కూర్పునకు తొలిగించిన %s పొడిగింపు అవసరమున్నది"
 
-#: ../src/core/display.c:446
+#: ../src/core/display.c:493
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "X కిటికీ సిస్టమ్ ప్రదర్శన '%s'ను తెరుచుట విఫలమైనది\n"
 
-#: ../src/core/keybindings.c:844
+#: ../src/core/keybindings.c:935
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -101,36 +282,42 @@ msgstr ""
 "కీ %sని ముందుగానే %x మార్పుచేయునవి తో పాటు  వేరొక కార్యక్రమము బంధించున్నదిగా  "
 "ఉపయోగిస్తుంది\n"
 
-#: ../src/core/main.c:196
+#: ../src/core/keybindings.c:1135
+#, c-format
+#| msgid "\"%s\" is not a valid value for focus attribute"
+msgid "\"%s\" is not a valid accelerator\n"
+msgstr "\"%s\" చెల్లునటువంచి ఏగ్జలరేటర్ కాదు\n"
+
+#: ../src/core/main.c:197
 msgid "Disable connection to session manager"
 msgstr "సెషన్ నిర్వాహకానికి అనుసంధానమును అచేతనము చేయుము"
 
-#: ../src/core/main.c:202
+#: ../src/core/main.c:203
 msgid "Replace the running window manager"
 msgstr "పరుగెడుతున్న కిటికీ నిర్వాహకంను పునఃప్రస్ధానము చేయుము"
 
-#: ../src/core/main.c:208
+#: ../src/core/main.c:209
 msgid "Specify session management ID"
 msgstr "సెషన్ నిర్వహణా IDను తెలుపుము"
 
-#: ../src/core/main.c:213
+#: ../src/core/main.c:214
 msgid "X Display to use"
 msgstr "X ప్రదర్శనం వుపయోగించుట కొఱకు"
 
-#: ../src/core/main.c:219
+#: ../src/core/main.c:220
 msgid "Initialize session from savefile"
 msgstr "బద్రపరిచిన దస్త్రము నుండి సమావేశమును మొదలుపెట్టుము"
 
-#: ../src/core/main.c:225
+#: ../src/core/main.c:226
 msgid "Make X calls synchronous"
 msgstr "Xపిలుపులను కాలనియమితం చేయుము"
 
-#: ../src/core/main.c:494
+#: ../src/core/main.c:534
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "వైవిద్యాంశముల వివరము: %sను సంశోథించుట విఫలమైనది\n"
 
-#: ../src/core/main.c:510
+#: ../src/core/main.c:550
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -163,7 +350,7 @@ msgstr "వివరణము ముద్రించు"
 msgid "Mutter plugin to use"
 msgstr "ఉపయోగించుటకు మట్టర్ చొప్పింత"
 
-#: ../src/core/prefs.c:1065
+#: ../src/core/prefs.c:1095
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -172,12 +359,12 @@ msgstr ""
 "అనువర్తనములు సరైన రీతిలో "
 "వ్యవహరించకపోవచ్చు.\n"
 
-#: ../src/core/prefs.c:1140
+#: ../src/core/prefs.c:1170
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "%s జికాన్‌ఫ్ కీ నుండి \"%s\" పార్స్ ఖతి వివరించలేకపోవుచున్నది\n"
 
-#: ../src/core/prefs.c:1206
+#: ../src/core/prefs.c:1236
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -186,7 +373,7 @@ msgstr ""
 "మోస్ బటన్‌  మార్చునదికి రూపకరించిన దత్తాంశస్థానములో కనుగొనిన \"%s\"కు "
 "విలువలేదు\n"
 
-#: ../src/core/prefs.c:1724
+#: ../src/core/prefs.c:1788
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -194,17 +381,17 @@ msgid ""
 msgstr ""
 "కీబంధించునదికి రూపకరించిన దత్తాంశస్థానములో కనుగొనిన \"%s\"కు విలువలేదు\"%s\"\n"
 
-#: ../src/core/prefs.c:1821
+#: ../src/core/prefs.c:1887
 #, c-format
 msgid "Workspace %d"
 msgstr "%d కార్యక్షేత్రము"
 
-#: ../src/core/screen.c:652
+#: ../src/core/screen.c:691
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "%d తెర '%s' ప్రదర్శనపై నిస్సారమైనది\n"
 
-#: ../src/core/screen.c:668
+#: ../src/core/screen.c:707
 #, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
@@ -214,19 +401,19 @@ msgstr ""
 "ప్రస్తుత కిటికీ నిర్వాహకంను --"
 "పునఃస్థాపించు ఇచ్చాపూర్వకముచేత  పునఃస్థాపించుటకు ప్రయత్నించుము.\n"
 
-#: ../src/core/screen.c:695
+#: ../src/core/screen.c:734
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr "%d తెర పై \"%s\" ప్రదర్శనపు కిటికీ నిర్వాహకంను ఎంపిక సంపాదించుటలేదు\n"
 
-#: ../src/core/screen.c:750
+#: ../src/core/screen.c:812
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr ""
 "%d తెర \"%s\" ప్రదర్శనపై  ముందుగానే ఒక కిటికీ నిర్వాహకంను కలిగివున్నది\n"
 
-#: ../src/core/screen.c:935
+#: ../src/core/screen.c:998
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "%d తెరని \"%s\" ప్రదర్శనపై విడుదలచేయబడుటలేదు\n"
@@ -289,44 +476,44 @@ msgstr ""
 "మరియు మళ్ళీ "
 "ప్రవేశించినప్పుడుస్వయముగా పునఃప్రారంభించబడవలెను"
 
-#: ../src/core/util.c:80
+#: ../src/core/util.c:84
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "%s అను లోపనిర్మూలన నమోదును తెరవబడుట విఫలమైనది\n"
 
-#: ../src/core/util.c:90
+#: ../src/core/util.c:94
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "%s అను నమోదు దస్త్రం ఎఫ్‌డిఒపెన్()చేయుట విఫలమైనది: %s\n"
 
-#: ../src/core/util.c:96
+#: ../src/core/util.c:100
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "%s అను నమోదు దస్త్రమును తెరివబడెను\n"
 
-#: ../src/core/util.c:115 ../src/tools/mutter-message.c:149
+#: ../src/core/util.c:119 ../src/tools/mutter-message.c:149
 #, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
 msgstr "మట్టర్ వెర్‌బోస్ విధమునకు సహకారము కల్పించకుండా క్రోడీకరించబడినది\n"
 
-#: ../src/core/util.c:259
+#: ../src/core/util.c:264
 msgid "Window manager: "
 msgstr "కిటికీ నిర్వాహకం: "
 
-#: ../src/core/util.c:407
+#: ../src/core/util.c:412
 msgid "Bug in window manager: "
 msgstr "కిటికీ నిర్వాహకంలో లోపము: "
 
-#: ../src/core/util.c:438
+#: ../src/core/util.c:443
 msgid "Window manager warning: "
 msgstr "కిటికీ నిర్వాహకం హెచ్చరిక: "
 
-#: ../src/core/util.c:466
+#: ../src/core/util.c:471
 msgid "Window manager error: "
 msgstr "కిటికీ నిర్వాహకం దోషము: "
 
 #. first time through
-#: ../src/core/window.c:7234
+#: ../src/core/window.c:7596
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -343,7 +530,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:7899
+#: ../src/core/window.c:8320
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -353,22 +540,22 @@ msgstr ""
 "కనిష్ఠ పరిమాణం %d x "
 "%d మరియు గనిష్ఠ పరిమాణం %d x %d ను అమర్చినది; ఇది అర్దవంతమైనదికాదు.\n"
 
-#: ../src/core/window-props.c:310
+#: ../src/core/window-props.c:318
 #, c-format
 msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "అనువర్తనమును నకిలీ _NET_WM_PID %luను అమర్చెను\n"
 
-#: ../src/core/window-props.c:429
+#: ../src/core/window-props.c:434
 #, c-format
 msgid "%s (on %s)"
 msgstr "%s (%s పై)"
 
-#: ../src/core/window-props.c:1484
+#: ../src/core/window-props.c:1517
 #, c-format
 msgid "Invalid WM_TRANSIENT_FOR window 0x%lx specified for %s.\n"
 msgstr "నిస్సారమైన WM_TRANSIENT_FOR కిటికీ 0x%lxని %s కొఱకు పేర్కొనబడినది.\n"
 
-#: ../src/core/window-props.c:1495
+#: ../src/core/window-props.c:1528
 #, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
 msgstr "WM_TRANSIENT_FOR కిటికీ 0x%lx %s కొఱకు లూప్‌ని స్రుష్ఠించును.\n"
@@ -495,10 +682,24 @@ msgstr ""
 "చేయాలి లేదో నిర్ణయిస్తుంది."
 
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
+msgid "Delay focus changes until the pointer stops moving"
+msgstr "సూచకి కదులుట ఆగునంతవరకు ఫోకస్ మార్పులను జాగుచేయి"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+msgid ""
+"If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
+"the focus will not be changed immediately when entering a window, but only "
+"after the pointer stops moving."
+msgstr ""
+"true కు అమర్చితే, మరియు ఫోకస్ రీతి \"sloppy\" లేదా \"mouse\" అయితే అప్పుడు "
+"విండోకు ప్రవేశించునప్పుడు "
+"ఫోకస్ తక్షణమే మారబోదు, అయితే సూచకి కదులుట ఆగిన తరువాత మాత్రమే మారును."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:15
 msgid "Draggable border width"
 msgstr "కదుల్చుటకు వీలుగా ఉన్న సరిహద్దు వెడల్పు"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:14
+#: ../src/org.gnome.mutter.gschema.xml.in.h:16
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
@@ -507,11 +708,23 @@ msgstr ""
 "సరిహద్దులుసరిపోనిచో, ఈ "
 "విలువకు చేరుటకు అగోచరమైన సరిహద్దులను జోడించబడును"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:15
+#: ../src/org.gnome.mutter.gschema.xml.in.h:17
+msgid "Auto maximize nearly monitor sized windows"
+msgstr "దాదాపు మానిటర్ పరిమాణపు విండోలను స్వయంచాలకంగా పెద్దవిచేయి"
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:18
+msgid ""
+"If enabled, new windows that are initially the size of the monitor "
+"automatically get maximized."
+msgstr ""
+"చేతనం చేస్తే, ప్రాధమికంగా మానిటర్ పరిమాణంలో వున్న కొత్త విండోలు స్వయంచాలకంగా "
+"పెద్దవి చేయబడతాయి."
+
+#: ../src/org.gnome.mutter.gschema.xml.in.h:19
 msgid "Select window from tab popup"
 msgstr "పాప్అప్ టాబ్ నుండి కిటికీ ఎంచుకోండి"
 
-#: ../src/org.gnome.mutter.gschema.xml.in.h:16
+#: ../src/org.gnome.mutter.gschema.xml.in.h:20
 msgid "Cancel tab popup"
 msgstr "టాబ్ పాప్అప్ రద్దు"
 
@@ -714,54 +927,54 @@ msgstr "మాడ్ 5"
 #. Translators: This represents the size of a window.  The first number is
 #. * the width of the window and the second is the height.
 #.
-#: ../src/ui/resizepopup.c:113
+#: ../src/ui/resizepopup.c:136
 #, c-format
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:234
+#: ../src/ui/theme.c:236
 msgid "top"
 msgstr "పైన"
 
-#: ../src/ui/theme.c:236
+#: ../src/ui/theme.c:238
 msgid "bottom"
 msgstr "క్రింద"
 
-#: ../src/ui/theme.c:238
+#: ../src/ui/theme.c:240
 msgid "left"
 msgstr "ఎడమ"
 
-#: ../src/ui/theme.c:240
+#: ../src/ui/theme.c:242
 msgid "right"
 msgstr "కుడి"
 
-#: ../src/ui/theme.c:268
+#: ../src/ui/theme.c:270
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "చట్రపు క్షేత్రగణితం \"%s\"అను తలమును నిర్దేశించలేదు"
 
-#: ../src/ui/theme.c:287
+#: ../src/ui/theme.c:289
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr ""
 "చట్రపు క్షేత్రగణితం \"%s\"అను తలమును \"%s\" సరిహద్దు కొఱకు నిర్దేశించలేదు"
 
-#: ../src/ui/theme.c:324
+#: ../src/ui/theme.c:326
 #, c-format
 msgid "Button aspect ratio %g is not reasonable"
 msgstr "బటన్ దృశ్య నిష్పత్తి %g సరైనవిధముగా లేదు"
 
-#: ../src/ui/theme.c:336
+#: ../src/ui/theme.c:338
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "చట్రపు క్షేత్రగణితం బటన్‌ల పరిమాణమును పేర్కొనబడలేదు"
 
-#: ../src/ui/theme.c:1049
+#: ../src/ui/theme.c:1051
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "పాతములకు కనీసం రెండు వర్ణములైన వుండవలెను"
 
-#: ../src/ui/theme.c:1201
+#: ../src/ui/theme.c:1203
 #, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
@@ -771,7 +984,7 @@ msgstr ""
 "ఉదాహరణ gtk: మలచిన"
 "(ఫు,బార్);\"%s\"ని పార్స్ చేయబడుటలేదు"
 
-#: ../src/ui/theme.c:1217
+#: ../src/ui/theme.c:1219
 #, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
@@ -781,7 +994,7 @@ msgstr ""
 "A-Za-z0-9-(_n)_ మాత్రమే "
 "వర్తించును"
 
-#: ../src/ui/theme.c:1231
+#: ../src/ui/theme.c:1233
 #, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
@@ -791,7 +1004,7 @@ msgstr ""
 "రూపలావణ్యమును "
 "అమర్చబడలేదు"
 
-#: ../src/ui/theme.c:1276
+#: ../src/ui/theme.c:1278
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -801,7 +1014,7 @@ msgstr ""
 "gtk:fg[NORMAL]NORMAL అనునది "
 "ఒక స్థితి; \"%s\"ను పార్స్ చేయబడదు"
 
-#: ../src/ui/theme.c:1290
+#: ../src/ui/theme.c:1292
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -811,17 +1024,17 @@ msgstr ""
 "ఉదాహరణ gtk:fg[NORMAL]"
 "NORMAL అనునది ఒక స్థితి; \"%s\"ను పార్స్ చేయబడదు"
 
-#: ../src/ui/theme.c:1301
+#: ../src/ui/theme.c:1303
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "వర్ణము నిర్దేశించుటలో \"%s\"అను స్థితిని గ్రహించలేకపోయెను"
 
-#: ../src/ui/theme.c:1314
+#: ../src/ui/theme.c:1316
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "వర్ణము నిర్దేశించుటలో \"%s\"అను వర్ణము భాగముని గ్రహించలేకపోయెను"
 
-#: ../src/ui/theme.c:1343
+#: ../src/ui/theme.c:1345
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -830,17 +1043,17 @@ msgstr ""
 "\"కలుపుట/bg వరణం/fg వర్ణం/ఆల్ఫ\"అనునది కలిపేటి రూపలావణ్యము,\"%"
 "s\"రూపలావణ్యములో అమర్చబడలేదు"
 
-#: ../src/ui/theme.c:1354
+#: ../src/ui/theme.c:1356
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "కలిపేటి వర్ణములోవున్న \"%s\"అను ఆల్ఫా విలువను పార్స్ చేయబడదు"
 
-#: ../src/ui/theme.c:1364
+#: ../src/ui/theme.c:1366
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "కలిపేటి వర్ణములోవున్న \"%s\"అను ఆల్ఫా విలువ 0.0 మరియు 1.0 మథ్యలో ఉండదు"
 
-#: ../src/ui/theme.c:1411
+#: ../src/ui/theme.c:1413
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
@@ -848,27 +1061,27 @@ msgstr ""
 "\"మాయుట/మూలపు వర్ణం/కారకం\"అనునది మాయు రూపలావణ్యము, \"%s\" రూపలావణ్యములో "
 "అమర్చబడదు"
 
-#: ../src/ui/theme.c:1422
+#: ../src/ui/theme.c:1424
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "మాయు వర్ణములో \"%s\"అను మాయు కారకం పార్స్ చేయబడలేదు"
 
-#: ../src/ui/theme.c:1432
+#: ../src/ui/theme.c:1434
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "మాయు వర్ణములో \"%s\"అను మాయు కారకం కాదనెడిది"
 
-#: ../src/ui/theme.c:1461
+#: ../src/ui/theme.c:1463
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "వర్ణమును ప్పార్స్ చేయుబడుటలేదు\"%s\""
 
-#: ../src/ui/theme.c:1778
+#: ../src/ui/theme.c:1780
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "సమాంతరపు వైఖరి అంగీకరించబడని '%s'అను అక్షరమును కలిగివున్నది"
 
-#: ../src/ui/theme.c:1805
+#: ../src/ui/theme.c:1807
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -876,12 +1089,12 @@ msgid ""
 msgstr ""
 "సమాంతరపు వైఖరి పార్సించబడలేని '%s'అను ఫ్లోటింగ్ సూచించు సంఖ్యను కలిగివున్నది"
 
-#: ../src/ui/theme.c:1819
+#: ../src/ui/theme.c:1821
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr "సమాంతరపు వైఖరి పార్సించబడని '%s'అను పూర్ణాంకమును కలిగివున్నది"
 
-#: ../src/ui/theme.c:1940
+#: ../src/ui/theme.c:1942
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -889,17 +1102,17 @@ msgid ""
 msgstr ""
 "సమాంతరపు వైఖరి ఈ పాఠ్యాంశము మొదటిలో తెలియని నిర్వాహకం:\"%s\"ను కలిగివుండెను"
 
-#: ../src/ui/theme.c:1997
+#: ../src/ui/theme.c:1999
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "సమాంతరపు వైఖరి ఖాళీగా లేక గ్రహించలేకుండెను"
 
-#: ../src/ui/theme.c:2110 ../src/ui/theme.c:2120 ../src/ui/theme.c:2154
+#: ../src/ui/theme.c:2112 ../src/ui/theme.c:2122 ../src/ui/theme.c:2156
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "సమాంతరపు వైఖరి సున్నాతో భాగించుటలో ఫలితమిచ్చింది"
 
-#: ../src/ui/theme.c:2162
+#: ../src/ui/theme.c:2164
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
@@ -907,24 +1120,24 @@ msgstr ""
 "సమాంతరపు వైఖరి మాడ్ నిర్వాహకంను ఫ్లోటింగ్ సూచించు సంఖ్యపై ఉపయోగించుటకు "
 "ప్రయత్నిస్తుంది"
 
-#: ../src/ui/theme.c:2218
+#: ../src/ui/theme.c:2220
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr ""
 "సమాంతరపు వైఖరి ఊహించబడిన నిర్వాహణ కర్మకు \"%s\"అను నిర్వాహకంను కలిగివున్నది"
 
-#: ../src/ui/theme.c:2227
+#: ../src/ui/theme.c:2229
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "సమాంతరపు వైఖరి ఊహించబడిన నిర్వాహకానికి నిర్వాహణ కర్మని కలిగివుండెను"
 
-#: ../src/ui/theme.c:2235
+#: ../src/ui/theme.c:2237
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "సమాంతరపు వైఖరి నిర్వాహణ కర్మకు బదులుగా నిర్వాహకతో ముగించెను"
 
-#: ../src/ui/theme.c:2245
+#: ../src/ui/theme.c:2247
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -934,43 +1147,43 @@ msgstr ""
 "మధ్యలోఎలాంటి నిర్వాహణ "
 "కర్మలు లేకుండా కలిగెను"
 
-#: ../src/ui/theme.c:2396 ../src/ui/theme.c:2441
+#: ../src/ui/theme.c:2398 ../src/ui/theme.c:2443
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "సమాంతరపు వైఖరి తెలియని చెరరాశి లేక \"%s\"అను స్థిరరాశి కలిగివుండెను"
 
-#: ../src/ui/theme.c:2495
+#: ../src/ui/theme.c:2497
 #, c-format
 msgid "Coordinate expression parser overflowed its buffer."
 msgstr "సమాంతరపు వైఖరి పార్స్ ర్ తన బఫర్‌ను అథికముగా ప్రసరించెను."
 
-#: ../src/ui/theme.c:2524
+#: ../src/ui/theme.c:2526
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr ""
 "సమాంతరపు వైఖరి తెరిచివున్న పారన్‌తిసిస్ కాకుండ మూసివున్న పారన్‌తిసిస్‌ని "
 "కలిగివుండెను"
 
-#: ../src/ui/theme.c:2588
+#: ../src/ui/theme.c:2590
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr ""
 "సమాంతరపు వైఖరి మూసివున్న పారన్‌తిసిస్ కాకుండ తెరిచివున్న పారన్‌తిసిస్‌ని "
 "కలిగివుండెను"
 
-#: ../src/ui/theme.c:2599
+#: ../src/ui/theme.c:2601
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr ""
 "సమాంతరపు వైఖరి నిర్వాహకంలు లేక నిర్వాహణ కర్మలును కలిగివుండలేదు అని "
 "అనిపిస్తోంది"
 
-#: ../src/ui/theme.c:2812 ../src/ui/theme.c:2832 ../src/ui/theme.c:2852
+#: ../src/ui/theme.c:2814 ../src/ui/theme.c:2834 ../src/ui/theme.c:2854
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "వైఖరిని కలిగివిన్న వైవిద్వాంశము %s దోషముగా ఫలితమిచ్చినది\n"
 
-#: ../src/ui/theme.c:4498
+#: ../src/ui/theme.c:4500
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -980,25 +1193,25 @@ msgstr ""
 "ఆప్‌లు=\"ఏదేమైన\">నుతప్పనిసరై "
 "పేర్కొనవలెను "
 
-#: ../src/ui/theme.c:5009 ../src/ui/theme.c:5034
+#: ../src/ui/theme.c:5011 ../src/ui/theme.c:5036
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr ""
 "<చట్రపు స్థితి=\"%s\" పునఃపరిమాణించు=\"%s\" కేంద్రము=\"%s\" శైలి=\"ఏదేమైన\">"
 
-#: ../src/ui/theme.c:5082
+#: ../src/ui/theme.c:5084
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "\"%s\"వైవిధ్యాంశమును భర్తీ చేయుట విఫలమైనది: %s\n"
 
-#: ../src/ui/theme.c:5218 ../src/ui/theme.c:5225 ../src/ui/theme.c:5232
-#: ../src/ui/theme.c:5239 ../src/ui/theme.c:5246
+#: ../src/ui/theme.c:5220 ../src/ui/theme.c:5227 ../src/ui/theme.c:5234
+#: ../src/ui/theme.c:5241 ../src/ui/theme.c:5248
 #, c-format
 msgid "No <%s> set for theme \"%s\""
 msgstr "\"%s\"వైవిధ్యాంశము కొఱకు ఏ <%s>ని అమర్చలేదు"
 
-#: ../src/ui/theme.c:5254
+#: ../src/ui/theme.c:5256
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1008,7 +1221,7 @@ msgstr ""
 "ఆమోదించలేదు, ఒక <కిటికీరకము="
 "\"%s\"ఆమోదించు శైలి= \"ఏదేమైన\"/>మూలాంకము"
 
-#: ../src/ui/theme.c:5650 ../src/ui/theme.c:5712 ../src/ui/theme.c:5775
+#: ../src/ui/theme.c:5663 ../src/ui/theme.c:5725 ../src/ui/theme.c:5788
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
@@ -1016,7 +1229,7 @@ msgstr ""
 "వినియోగదారు నిర్వచించిన స్థిరరాశులు ప్రధానమైన అక్షరములతో మొదలుపెట్తుము; \"%"
 "s\"నకు అవసరములేదు"
 
-#: ../src/ui/theme.c:5658 ../src/ui/theme.c:5720 ../src/ui/theme.c:5783
+#: ../src/ui/theme.c:5671 ../src/ui/theme.c:5733 ../src/ui/theme.c:5796
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "\"%s\" అను స్థిరరాశి ముందుగానే నిర్వచించబడినది"
@@ -1418,7 +1631,7 @@ msgstr "<%s> మూల వస్తువు లోపల ఎటువంటి 
 msgid "<%s> specified twice for this theme"
 msgstr "ఈ వైవిద్వాంశమునకు <%s>ను రెండు మార్లు పేర్కొనబడినవి"
 
-#: ../src/ui/theme-parser.c:4334
+#: ../src/ui/theme-parser.c:4336
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "%s అను వైవిద్వాంశమునకు ఒక స్థిరీకరించు దస్త్రమును కనుగొనుట విఫలమైనది\n"
@@ -1524,56 +1737,56 @@ msgstr "సరిహద్దు"
 msgid "Attached Modal Dialog"
 msgstr "జోడించిన మోడల్ వివరణ"
 
-#: ../src/ui/theme-viewer.c:739
+#: ../src/ui/theme-viewer.c:737
 #, c-format
 msgid "Button layout test %d"
 msgstr "బటన్ కూర్పు పరీక్ష %d"
 
-#: ../src/ui/theme-viewer.c:768
+#: ../src/ui/theme-viewer.c:766
 #, c-format
 msgid "%g milliseconds to draw one window frame"
 msgstr "ఒక కిటికీ చట్రమును గీయుట కొఱకు  %g మిల్లిసెకన్‌ల సమయము పడుతుంది"
 
-#: ../src/ui/theme-viewer.c:813
+#: ../src/ui/theme-viewer.c:811
 #, c-format
 msgid "Usage: metacity-theme-viewer [THEMENAME]\n"
 msgstr "ఉపయోగం: మెటాసిటీ-వైవిద్వాంశం-చూపించునది [THEMENAME]\n"
 
-#: ../src/ui/theme-viewer.c:820
+#: ../src/ui/theme-viewer.c:818
 #, c-format
 msgid "Error loading theme: %s\n"
 msgstr "వైవిద్వాంశమును బర్తీచేయుచున్నప్పుడు కలిగిన దోషము: %s\n"
 
-#: ../src/ui/theme-viewer.c:826
+#: ../src/ui/theme-viewer.c:824
 #, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
 msgstr "\"%s\" అను  వైవిద్వాంశము %g సెకన్‌లలో బర్తీచేయబడినది\n"
 
-#: ../src/ui/theme-viewer.c:870
+#: ../src/ui/theme-viewer.c:869
 msgid "Normal Title Font"
 msgstr "సాధారణ శీర్షిక ఖతి"
 
-#: ../src/ui/theme-viewer.c:876
+#: ../src/ui/theme-viewer.c:875
 msgid "Small Title Font"
 msgstr "చిన్న శీర్షిక ఖతి"
 
-#: ../src/ui/theme-viewer.c:882
+#: ../src/ui/theme-viewer.c:881
 msgid "Large Title Font"
 msgstr "పెద్ద శీర్షిక ఖతి"
 
-#: ../src/ui/theme-viewer.c:887
+#: ../src/ui/theme-viewer.c:886
 msgid "Button Layouts"
 msgstr "బటన్ కూర్పులు"
 
-#: ../src/ui/theme-viewer.c:892
+#: ../src/ui/theme-viewer.c:891
 msgid "Benchmark"
 msgstr "బెంచ్‌మార్క్"
 
-#: ../src/ui/theme-viewer.c:944
+#: ../src/ui/theme-viewer.c:947
 msgid "Window Title Goes Here"
 msgstr "కిటికీ శీర్షిక ఇక్కడ నడుస్తోంది"
 
-#: ../src/ui/theme-viewer.c:1047
+#: ../src/ui/theme-viewer.c:1053
 #, c-format
 msgid ""
 "Drew %d frames in %g client-side seconds (%g milliseconds per frame) and %g "
@@ -1584,344 +1797,51 @@ msgstr ""
 "సెకన్‌ల గోడపు గడియారము "
 "సమయము తో పాటుగా x సేవిక వనరులను చిత్రీకరించెను(ఒక చట్రమునకు %g సెకన్‌లు)\n"
 
-#: ../src/ui/theme-viewer.c:1266
+#: ../src/ui/theme-viewer.c:1273
 msgid "position expression test returned TRUE but set error"
 msgstr "స్థానపు వైఖరి పరీక్ష TRUE అని తేల్చినది కాని దోషమును చూపించలేదు"
 
-#: ../src/ui/theme-viewer.c:1268
+#: ../src/ui/theme-viewer.c:1275
 msgid "position expression test returned FALSE but didn't set error"
 msgstr "స్థానపు వైఖరి పరీక్ష FALSE అని తేల్చినది కాని దోషమును చూపించలేదు"
 
-#: ../src/ui/theme-viewer.c:1272
+#: ../src/ui/theme-viewer.c:1279
 msgid "Error was expected but none given"
 msgstr "దోషమును ఊహించెను కాని ఏమి ఇవ్వలేదు"
 
-#: ../src/ui/theme-viewer.c:1274
+#: ../src/ui/theme-viewer.c:1281
 #, c-format
 msgid "Error %d was expected but %d given"
 msgstr "%d దోషమును ఊహించెను కాని %d ఇచ్చినది"
 
-#: ../src/ui/theme-viewer.c:1280
+#: ../src/ui/theme-viewer.c:1287
 #, c-format
 msgid "Error not expected but one was returned: %s"
 msgstr "దోషమును ఊహించలేదు కాని ఒకటటి పునరాగమించినది: %s"
 
-#: ../src/ui/theme-viewer.c:1284
+#: ../src/ui/theme-viewer.c:1291
 #, c-format
 msgid "x value was %d, %d was expected"
 msgstr "x విలువ %d అని ఉండెడది, %d ఊహించబడినది"
 
-#: ../src/ui/theme-viewer.c:1287
+#: ../src/ui/theme-viewer.c:1294
 #, c-format
 msgid "y value was %d, %d was expected"
 msgstr "y విలువ %d అని ఉండెడది, %d ఊహించబడినది"
 
-#: ../src/ui/theme-viewer.c:1352
+#: ../src/ui/theme-viewer.c:1359
 #, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
-msgstr "%d అనుకరించు వైఖరిలను %g సెకన్‌లలో పార్స్ చేయబడినవి(సగటుగా %g సెకన్‌లు)\n"
-
-#: ../src/50-mutter-navigation.xml.in.h:18
-#, fuzzy
-msgid "Switch to workspace 1"
 msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"పనిప్రదేశము 1 కి మారుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కార్యక్షేత్రం 1కు మారు"
+"%d అనుకరించు వైఖరిలను %g సెకన్‌లలో పార్స్ చేయబడినవి(సగటుగా %g సెకన్‌లు)\n"
 
-#: ../src/50-mutter-navigation.xml.in.h:19
 #, fuzzy
-msgid "Switch to workspace 2"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"పనిప్రదేశము 2 కి మారుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కార్యక్షేత్రం 2కు మారు"
-
-#: ../src/50-mutter-navigation.xml.in.h:20
-#, fuzzy
-msgid "Switch to workspace 3"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"పనిప్రదేశము 3 కి మారుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కార్యక్షేత్రం 3కు మారు"
-
-#: ../src/50-mutter-navigation.xml.in.h:21
-#, fuzzy
-msgid "Switch to workspace 4"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"పనిప్రదేశము 4 కి మారుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కార్యక్షేత్రం 4కు మారు"
-
-#: ../src/50-mutter-windows.xml.in.h:1
-#, fuzzy
-msgid "Activate the window menu"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండో జాబితాను క్రియాశీలపరుచుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీ మెనూను క్రియాశీలముచేయి"
-
-#: ../src/50-mutter-windows.xml.in.h:13
-#, fuzzy
-msgid "Toggle fullscreen mode"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"పూర్తితెర సంవిధానమును మార్చుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"పూర్తితెర రీతిని మార్చు"
-
-#: ../src/50-mutter-windows.xml.in.h:14
-#, fuzzy
-msgid "Toggle maximization state"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"పెద్దదిగాచేయు స్థితిని మార్చుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"గరిష్ట స్థితికి మార్చుము"
-
-#: ../src/50-mutter-windows.xml.in.h:4
-#, fuzzy
-msgid "Maximize window"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండోని పెద్దదిగా చేయుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీ పెద్దదిచేయి"
-
-#: ../src/50-mutter-windows.xml.in.h:12
-#, fuzzy
-msgid "Restore window"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండోని పునఃస్ధాపించు\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీ పూర్వస్థితికి వుంచు"
-
-#: ../src/50-mutter-windows.xml.in.h:15
-#, fuzzy
-msgid "Toggle shaded state"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"మూసివున్న స్ధితిని మార్చుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"షేడెడ్ స్థితిని మార్చుము"
-
-#: ../src/50-mutter-windows.xml.in.h:7
-#, fuzzy
-msgid "Minimize window"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండోని చిన్నదిగా చేయుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీ చిన్నదిచేయి"
-
-#: ../src/50-mutter-windows.xml.in.h:2
-#, fuzzy
-msgid "Close window"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"గవాక్షమును మూయుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీను మూసివేయి"
-
-#: ../src/50-mutter-windows.xml.in.h:8
-#, fuzzy
-msgid "Move window"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండోని జరుపుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీను కదుపు"
-
-#: ../src/50-mutter-windows.xml.in.h:11
-#, fuzzy
-msgid "Resize window"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండోని పునఃపరిమాణించుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీ పూర్వస్థితికి వుంచు"
-
-#: ../src/50-mutter-navigation.xml.in.h:10
-#, fuzzy
-msgid "Move window to workspace 1"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండోని పనిప్రదేశము 1 నకు జరుపుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీను కార్యక్షేత్రం 1కు తరలించు"
-
-#: ../src/50-mutter-navigation.xml.in.h:11
-#, fuzzy
-msgid "Move window to workspace 2"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండోని పనిప్రదేశము 2 నకు జరుపుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీను కార్యక్షేత్రం 2కు తరలించు"
-
-#: ../src/50-mutter-navigation.xml.in.h:12
-#, fuzzy
-msgid "Move window to workspace 3"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండోని పనిప్రదేశము 3 నకు  జరుపుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీను కార్యక్షేత్రం 3కు తరలించు"
-
-#: ../src/50-mutter-navigation.xml.in.h:13
-#, fuzzy
-msgid "Move window to workspace 4"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండోని పనిప్రదేశము 4 నకు  జరుపుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీను కార్యక్షేత్రం 4కు తరలించు"
-
-#: ../src/50-mutter-navigation.xml.in.h:7
-#, fuzzy
-msgid "Move window one workspace to the left"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండో ఒక పనిప్రదేశమును ఎడమ భాగమునకు జరుపుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీను వొక కార్యక్షేత్రం ఎడమనకు తరలించు"
-
-#: ../src/50-mutter-navigation.xml.in.h:8
-#, fuzzy
-msgid "Move window one workspace to the right"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండో ఒక పనిప్రదేశమును కుడి భాగమునకు జరుపుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీను వొక కార్యక్షేత్రం కుడికు తరలించు"
-
-#: ../src/50-mutter-navigation.xml.in.h:9
-#, fuzzy
-msgid "Move window one workspace up"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండో ఒక పనిప్రదేశమును పై భాగమునకు జరుపుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీను వొక కార్యక్షేత్రం పైనకు తరలించు"
-
-#: ../src/50-mutter-navigation.xml.in.h:6
-#, fuzzy
-msgid "Move window one workspace down"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండో ఒక పనిప్రదేశమును క్రింది భాగమునకు జరుపుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీను వొక కార్యక్షేత్రం క్రిందనకు తరలించు"
-
-#: ../src/50-mutter-windows.xml.in.h:9
-#, fuzzy
-msgid "Raise window above other windows"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండోని ఇతర విండోల వెలుపలికి తీసుకొనిరమ్ము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీను యితర కిటికీలపైన వృద్దిచేయి"
-
-#: ../src/50-mutter-windows.xml.in.h:3
-#, fuzzy
-msgid "Lower window below other windows"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండోని ఇతర విండోల లోపలికి తీసుకొనివెళ్ళుమ్ము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీను క్రింది యితర కిటికీలకు తగ్గించు"
-
-#: ../src/50-mutter-windows.xml.in.h:6
-#, fuzzy
-msgid "Maximize window vertically"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండోని నిలువుగా పెద్దది చేయుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీను నిలువుగా పెద్దదిచేయి"
-
-#: ../src/50-mutter-windows.xml.in.h:5
-#, fuzzy
-msgid "Maximize window horizontally"
-msgstr ""
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"విండోని అడ్డంగా పెద్దది చేయుము\n"
-"#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
-"కిటికీను అడ్డముగా పెద్దదిచేయి"
-
-#: ../src/50-mutter-navigation.xml.in.h:1
-msgid "Hide all normal windows"
-msgstr "అన్ని సాధారణ కిటికీలను దాయి"
-
-#: ../src/50-mutter-navigation.xml.in.h:2
-msgid "Move to workspace above"
-msgstr "కార్యక్షేత్రం నుండి ఎడమవైపుకు కదులు"
-
-#: ../src/50-mutter-navigation.xml.in.h:3
-msgid "Move to workspace below"
-msgstr "కార్యక్షేత్రం నుండి కదులు "
-
-#: ../src/50-mutter-navigation.xml.in.h:4
-msgid "Move to workspace left"
-msgstr "కార్యక్షేత్రం నుండి ఎడమవైపుకు కదులు "
-
-#: ../src/50-mutter-navigation.xml.in.h:5
-msgid "Move to workspace right"
-msgstr "కార్యక్షేత్రం నుండి కుడివైపుకు కదులు "
-
-#: ../src/50-mutter-navigation.xml.in.h:14
-msgid "Navigation"
-msgstr "విహారణ"
-
-#: ../src/50-mutter-navigation.xml.in.h:15
-msgid "Switch applications"
-msgstr "అనువర్తనాలను మార్చు"
-
-#: ../src/50-mutter-navigation.xml.in.h:16
-msgid "Switch system controls"
-msgstr "వ్యవస్థ నియంత్రణల మీట"
-
-#: ../src/50-mutter-navigation.xml.in.h:17
-msgid "Switch system controls directly"
-msgstr "సూటిగా వ్యవస్థ నియంత్రణకు మీట"
-
-#: ../src/50-mutter-navigation.xml.in.h:22
-msgid "Switch windows directly"
-msgstr "సూటిగా కిటికీకు మీట"
-
-#: ../src/50-mutter-navigation.xml.in.h:23
-msgid "Switch windows of an app directly"
-msgstr "అనువర్తనము యొక్క కిటికీలమద్య సూటిగా కదులుము"
-
-#: ../src/50-mutter-navigation.xml.in.h:24
-msgid "Switch windows of an application"
-msgstr "అనువర్తనము యొక్క కిటికీల మధ్య మారు"
-
-#: ../src/50-mutter-system.xml.in.h:1
-msgid "Show the activities overview"
-msgstr "కార్యకలాపాల పై పై పరిశీలనను చూపించు"
-
-#: ../src/50-mutter-system.xml.in.h:2
-msgid "Show the run command prompt"
-msgstr "రన్ కమాండు మెనూను చూపించు"
-
-#: ../src/50-mutter-system.xml.in.h:3
-msgid "System"
-msgstr "వ్యవస్థ"
-
-#: ../src/50-mutter-windows.xml.in.h:10
-msgid "Raise window if covered, otherwise lower it"
-msgstr "ఒక కిటికీ  కప్పివుంటే దానిని వృద్దిచేయుము, లేదా దానిని తగ్గించు"
-
-#: ../src/50-mutter-windows.xml.in.h:16
-msgid "Toggle window on all workspaces or one"
-msgstr "కిటికీ అన్ని కార్యక్షేత్రంలపై వన్నా లేక వొకటి  వున్నా మార్చుము"
+#~ msgid "Minimize window"
+#~ msgstr ""
+#~ "#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+#~ "విండోని చిన్నదిగా చేయుము\n"
+#~ "#-#-#-#-#  te.po (metacity.gnome-2-26)  #-#-#-#-#\n"
+#~ "కిటికీ చిన్నదిచేయి"
 
 #~ msgid "Comma-separated list of compositor plugins"
 #~ msgstr "కామ-కూర్పుచేయు ప్లగ్ - ఇన్‌ల వేరుచేయబడిన జాబిత"
