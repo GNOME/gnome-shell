@@ -704,7 +704,8 @@ static void
 unset_texture (MetaBackground *self)
 {
   MetaBackgroundPrivate *priv = self->priv;
-  cogl_pipeline_set_layer_texture (priv->pipeline, 0, NULL);
+  if (priv->pipeline != NULL)
+    cogl_pipeline_set_layer_texture (priv->pipeline, 0, NULL);
 
   g_clear_pointer (&priv->texture,
                    (GDestroyNotify)
