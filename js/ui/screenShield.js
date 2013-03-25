@@ -50,7 +50,7 @@ const SUMMARY_ICON_SIZE = 48;
 // - CURTAIN_SLIDE_TIME is used when raising the shield before unlocking
 // - INITIAL_FADE_IN_TIME is used for the initial fade in at startup
 const STANDARD_FADE_TIME = 10;
-const MANUAL_FADE_TIME = 0.8;
+const MANUAL_FADE_TIME = 0.3;
 const BACKGROUND_FADE_TIME = 1.0;
 const CURTAIN_SLIDE_TIME = 0.3;
 const INITIAL_FADE_IN_TIME = 0.25;
