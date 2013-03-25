@@ -1,3 +1,44 @@
+Cogl 1.14.0                                                        2013-03-25
+
+  • List of changes since Cogl 1.13.4
+
+  » New snippet hook location for adding global definitions that can
+    be shared amongst other snippets.
+  » Fixed some cases where it's not possible to reference the builtin
+    cogl_sampler* uniforms from a snippet.
+  » Fixes for building on Visual Studio.
+  » Fixed a problem with the workaround for the viewport bug in Mesa
+    which could leave a broken scissor when switching between
+    different sized framebuffers.
+  » Fix some cases where the depth buffer wouldn't get cleared in
+    cogl_framebuffer_clear*.
+  » Fix for leaking pipelines and textures when a pipeline is copied
+    but all of its layer properties are replaced.
+  » Fix for interleaving snippets with different hook points.
+  » The Cogland example Wayland compositor has been updated to the
+    Wayland 1.0 API.
+
+  • Bugzilla bugs closed since 1.13.4:
+
+  #686770 - _cogl_bitmap_unbind: assertion failed: (bitmap->bound)
+            for gnome-shell on nexus 7
+  #694537 - Fails to compile if the EGL stack doesn't implement
+            KHR_create_context
+  #694657 - cogl-buffer: Stop warning spam running in sw rendering
+
+Many thanks to:
+
+  Chun-wei Fan
+  Robert Bragg
+  Gheyret Kenji
+  Ján Kyselica
+  Bastien Nocera
+  Duarte Loreto
+  Milo Casagrande
+  Pavol Klačanský
+  Plamena Manolova
+  Tomeu Vizoso
+
 Cogl 1.13.4                                                        2013-02-21
 
   • List of changes since Cogl 1.13.2
