@@ -39,41 +39,6 @@
 #include <meta/meta-background.h>
 #include "meta-background-actor-private.h"
 
-#define TEXTURE_LOOKUP_SHADER_DECLARATIONS                                     \
-"uniform vec2 pixel_step;\n"                                                   \
-"vec4 apply_blur(in sampler2D texture, in vec2 coordinates) {\n"               \
-" vec4 texel;\n"                                                               \
-" texel  = texture2D(texture, coordinates.st);\n"                                \
-" texel += texture2D(texture, coordinates.st + pixel_step * vec2(-1.0, -1.0));\n"\
-" texel += texture2D(texture, coordinates.st + pixel_step * vec2( 0.0, -1.0));\n"\
-" texel += texture2D(texture, coordinates.st + pixel_step * vec2(+1.0, -1.0));\n"\
-" texel += texture2D(texture, coordinates.st + pixel_step * vec2(-1.0,  0.0));\n"\
-" texel += texture2D(texture, coordinates.st + pixel_step * vec2(+1.0,  0.0));\n"\
-" texel += texture2D(texture, coordinates.st + pixel_step * vec2(-1.0, +1.0));\n"\
-" texel += texture2D(texture, coordinates.st + pixel_step * vec2( 0.0, +1.0));\n"\
-" texel += texture2D(texture, coordinates.st + pixel_step * vec2(+1.0, +1.0));\n"\
-" texel /= 9.0;\n"                                                             \
-" return texel;\n"                                                             \
-"}\n"                                                                          \
-"uniform float saturation;\n"                                                  \
-"vec3 desaturate(const vec3 color)\n"                                          \
-"{\n"                                                                          \
-"   const vec3 gray_conv = vec3(0.299, 0.587, 0.114);\n"                       \
-"   vec3 gray = vec3(dot(gray_conv, color));\n"                                \
-"   return vec3(mix(color.rgb, gray, 1.0 - saturation));\n"                    \
-"}\n"                                                                          \
-
-/* Used when we don't have a blur, as the texel is going to be junk
- * unless we set something to it. */
-#define DESATURATE_PRELUDE                                                     \
-"cogl_texel = texture2D(cogl_sampler, cogl_tex_coord.st);\n"
-
-#define DESATURATE_CODE                                                        \
-"cogl_texel.rgb = desaturate(cogl_texel.rgb);\n"
-
-#define BLUR_CODE                                                              \
-"cogl_texel = apply_blur(cogl_sampler, cogl_tex_coord.st);\n"
-
 #define FRAGMENT_SHADER_DECLARATIONS                                           \
 "uniform vec2 texture_scale;\n"                                                \
 "uniform vec2 actor_size;\n"                                                   \
@@ -116,7 +81,6 @@ struct _MetaBackgroundPrivate
 
   float brightness;
   float vignette_sharpness;
-  float saturation;
 };
 
 enum
@@ -126,7 +90,6 @@ enum
   PROP_EFFECTS,
   PROP_BRIGHTNESS,
   PROP_VIGNETTE_SHARPNESS,
-  PROP_SATURATION
 };
 
 static void clutter_content_iface_init (ClutterContentIface *iface);
@@ -368,25 +331,6 @@ clip_region_to_actor_box (cairo_region_t  *region,
 }
 
 static void
-set_blur_parameters (MetaBackground  *self,
-                     ClutterActorBox *actor_box)
-{
-  MetaBackgroundPrivate *priv = self->priv;
-  float pixel_step[2];
-
-  if (!(priv->effects & META_BACKGROUND_EFFECTS_BLUR))
-    return;
-
-  pixel_step[0] = 1.0 / (actor_box->x2 - actor_box->x1);
-  pixel_step[1] = 1.0 / (actor_box->y2 - actor_box->y1);
-
-  cogl_pipeline_set_uniform_float (priv->pipeline,
-                                   cogl_pipeline_get_uniform_location (priv->pipeline,
-                                                                       "pixel_step"),
-                                   2, 1, pixel_step);
-}
-
-static void
 set_vignette_parameters (MetaBackground        *self,
                          ClutterActorBox       *actor_box,
                          cairo_rectangle_int_t *texture_area,
@@ -446,8 +390,6 @@ meta_background_paint_content (ClutterContent   *content,
   node = meta_background_paint_node_new (self, actor);
 
   clutter_actor_get_content_box (actor, &actor_box);
-
-  set_blur_parameters (self, &actor_box);
 
   /* First figure out where on the monitor the texture is supposed to be painted.
    * If the actor is not the size of the monitor, this function makes sure to scale
@@ -590,63 +532,6 @@ set_vignette_sharpness (MetaBackground *self,
 }
 
 static void
-set_saturation (MetaBackground *self,
-                gfloat          saturation)
-{
-  MetaBackgroundPrivate *priv = self->priv;
-
-  if (priv->saturation == saturation)
-    return;
-
-  priv->saturation = saturation;
-
-  ensure_pipeline (self);
-
-  cogl_pipeline_set_uniform_1f (priv->pipeline,
-				cogl_pipeline_get_uniform_location (priv->pipeline,
-								    "saturation"),
-				priv->saturation);
-
-
-  clutter_content_invalidate (CLUTTER_CONTENT (self));
-
-  g_object_notify (G_OBJECT (self), "saturation");
-}
-
-static void
-add_texture_lookup_shader (MetaBackground *self)
-{
-  MetaBackgroundPrivate *priv = self->priv;
-  CoglSnippet *snippet;
-  const char *code = NULL;
-
-  if ((priv->effects & META_BACKGROUND_EFFECTS_BLUR) &&
-      (priv->effects & META_BACKGROUND_EFFECTS_DESATURATE))
-    code = BLUR_CODE "\n" DESATURATE_CODE;
-  else if (priv->effects & META_BACKGROUND_EFFECTS_BLUR)
-    code = BLUR_CODE;
-  else if (priv->effects & META_BACKGROUND_EFFECTS_DESATURATE)
-    code = DESATURATE_PRELUDE "\n" DESATURATE_CODE;
-  else
-    return;
-
-  ensure_pipeline (self);
-
-  snippet = cogl_snippet_new (COGL_SNIPPET_HOOK_TEXTURE_LOOKUP,
-                              TEXTURE_LOOKUP_SHADER_DECLARATIONS,
-                              NULL);
-  cogl_snippet_set_replace (snippet, code);
-  cogl_pipeline_add_layer_snippet (priv->pipeline, 0, snippet);
-  cogl_object_unref (snippet);
-
-  if (priv->effects & META_BACKGROUND_EFFECTS_DESATURATE)
-      cogl_pipeline_set_uniform_1f (priv->pipeline,
-                                    cogl_pipeline_get_uniform_location (priv->pipeline,
-                                                                        "saturation"),
-                                    priv->saturation);
-}
-
-static void
 add_vignette (MetaBackground *self)
 {
   MetaBackgroundPrivate *priv = self->priv;
@@ -676,10 +561,6 @@ set_effects (MetaBackground        *self,
   MetaBackgroundPrivate *priv = self->priv;
 
   priv->effects = effects;
-
-  if ((priv->effects & META_BACKGROUND_EFFECTS_BLUR) ||
-      (priv->effects & META_BACKGROUND_EFFECTS_DESATURATE))
-    add_texture_lookup_shader (self);
 
   if ((priv->effects & META_BACKGROUND_EFFECTS_VIGNETTE))
     add_vignette (self);
@@ -713,9 +594,6 @@ meta_background_set_property (GObject      *object,
     case PROP_VIGNETTE_SHARPNESS:
       set_vignette_sharpness (self, g_value_get_float (value));
       break;
-    case PROP_SATURATION:
-      set_saturation (self, g_value_get_float (value));
-      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -746,9 +624,6 @@ meta_background_get_property (GObject      *object,
       break;
     case PROP_VIGNETTE_SHARPNESS:
       g_value_set_float (value, priv->vignette_sharpness);
-      break;
-    case PROP_SATURATION:
-      g_value_set_float (value, priv->saturation);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -804,17 +679,9 @@ meta_background_class_init (MetaBackgroundClass *klass)
                                    G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
   g_object_class_install_property (object_class, PROP_VIGNETTE_SHARPNESS, param_spec);
 
-  param_spec = g_param_spec_float ("saturation",
-                                   "saturation",
-                                   "Values less than 1.0 grays background",
-                                   0.0, 1.0,
-                                   1.0,
-                                   G_PARAM_READWRITE | G_PARAM_CONSTRUCT);
-  g_object_class_install_property (object_class, PROP_SATURATION, param_spec);
-
   param_spec = g_param_spec_flags ("effects",
                                    "Effects",
-                                   "Set to alter saturation, to blur, etc",
+                                   "Set to enable vignette",
 				   meta_background_effects_get_type (),
                                    META_BACKGROUND_EFFECTS_NONE,
                                    G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
@@ -1256,14 +1123,10 @@ meta_background_copy (MetaBackground        *self,
       background->priv->pipeline = cogl_pipeline_copy (self->priv->pipeline);
       background->priv->texture = cogl_object_ref (self->priv->texture);
       background->priv->style = self->priv->style;
-      background->priv->saturation = self->priv->saturation;
 
       if (effects != self->priv->effects)
         {
           set_effects (background, effects);
-
-          if (effects & META_BACKGROUND_EFFECTS_DESATURATE)
-            set_saturation (background, self->priv->saturation);
 
           if (effects & META_BACKGROUND_EFFECTS_VIGNETTE)
             {
@@ -1284,9 +1147,6 @@ meta_background_copy (MetaBackground        *self,
         set_texture (background, cogl_object_ref (self->priv->texture));
       set_style (background, self->priv->style);
       set_effects (background, effects);
-
-      if (effects & META_BACKGROUND_EFFECTS_DESATURATE)
-        set_saturation (background, self->priv->saturation);
 
       if (effects & META_BACKGROUND_EFFECTS_VIGNETTE)
         {
@@ -1309,8 +1169,7 @@ meta_background_copy (MetaBackground        *self,
  * The returned object should be set on a #MetaBackgroundActor with
  * clutter_actor_set_content().
  *
- * The background may be desaturated, blurred, or given a vignette depending
- * on @effects.
+ * The background may be given a vignette by setting @effects
  *
  * Return value: the newly created background content
  */

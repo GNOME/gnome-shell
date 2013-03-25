@@ -53,8 +53,6 @@ typedef struct _MetaBackgroundPrivate MetaBackgroundPrivate;
 /**
  * MetaBackgroundEffects:
  * @META_BACKGROUND_EFFECTS_NONE: No effect
- * @META_BACKGROUND_EFFECTS_DESATURATE: Desaturate
- * @META_BACKGROUND_EFFECTS_BLUR: Blur
  * @META_BACKGROUND_EFFECTS_VIGNETTE: Vignette
  *
  * Which effects to enable on the background
@@ -63,9 +61,7 @@ typedef struct _MetaBackgroundPrivate MetaBackgroundPrivate;
 typedef enum
 {
   META_BACKGROUND_EFFECTS_NONE       = 0,
-  META_BACKGROUND_EFFECTS_DESATURATE = 1 << 0,
-  META_BACKGROUND_EFFECTS_BLUR       = 1 << 1,
-  META_BACKGROUND_EFFECTS_VIGNETTE   = 1 << 2,
+  META_BACKGROUND_EFFECTS_VIGNETTE   = 1 << 1,
 } MetaBackgroundEffects;
 
 struct _MetaBackgroundClass
