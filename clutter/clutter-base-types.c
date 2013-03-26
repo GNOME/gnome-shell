@@ -69,6 +69,8 @@ clutter_geometry_free (ClutterGeometry *geometry)
  * Find the union of two rectangles represented as #ClutterGeometry.
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.16: Use #ClutterRect and clutter_rect_union()
  */
 void
 clutter_geometry_union (const ClutterGeometry *geometry_a,
@@ -101,6 +103,8 @@ clutter_geometry_union (const ClutterGeometry *geometry_a,
  * %FALSE.
  *
  * Since: 1.4
+ *
+ * Deprecated: 1.16: Use #ClutterRect and clutter_rect_intersection()
  */
 gboolean
 clutter_geometry_intersects (const ClutterGeometry *geometry0,
