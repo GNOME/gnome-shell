@@ -67,6 +67,9 @@
 /* cursor width in pixels */
 #define DEFAULT_CURSOR_SIZE     2
 
+/* vertical padding for the cursor */
+#define CURSOR_Y_PADDING        2
+
 /* We need at least three cached layouts to run the allocation without
  * regenerating a new layout. First the layout will be generated at
  * full width to get the preferred width, then it will be generated at
@@ -168,7 +171,7 @@ struct _ClutterTextPrivate
   gint text_y;
 
   /* Where to draw the cursor */
-  ClutterGeometry cursor_pos;
+  ClutterRect cursor_rect;
   ClutterColor cursor_color;
   guint cursor_size;
 
@@ -262,10 +265,11 @@ static GParamSpec *obj_props[PROP_LAST];
 enum
 {
   TEXT_CHANGED,
-  CURSOR_EVENT,
+  CURSOR_EVENT, /* XXX:2.0 - remove */
   ACTIVATE,
   INSERT_TEXT,
   DELETE_TEXT,
+  CURSOR_CHANGED,
 
   LAST_SIGNAL
 };
@@ -974,9 +978,7 @@ clutter_text_ensure_cursor_position (ClutterText *self)
 {
   ClutterTextPrivate *priv = self->priv;
   gfloat x, y, cursor_height;
-  ClutterGeometry cursor_pos = { 0, };
-  gboolean x_changed, y_changed;
-  gboolean width_changed, height_changed;
+  ClutterRect cursor_rect = CLUTTER_RECT_INIT_ZERO;
   gint position;
 
   position = priv->position;
@@ -985,6 +987,7 @@ clutter_text_ensure_cursor_position (ClutterText *self)
     {
       if (position == -1)
         position = clutter_text_buffer_get_length (get_buffer (self));
+
       position += priv->preedit_cursor_pos;
     }
 
@@ -998,21 +1001,26 @@ clutter_text_ensure_cursor_position (ClutterText *self)
                                    &x, &y,
                                    &cursor_height);
 
-  cursor_pos.x      = x;
-  cursor_pos.y      = y + 2;
-  cursor_pos.width  = priv->cursor_size;
-  cursor_pos.height = cursor_height - 4;
+  clutter_rect_init (&cursor_rect,
+                     x,
+                     y + CURSOR_Y_PADDING,
+                     priv->cursor_size,
+                     cursor_height - 2 * CURSOR_Y_PADDING);
 
-  x_changed      = priv->cursor_pos.x != cursor_pos.x;
-  y_changed      = priv->cursor_pos.y != cursor_pos.y;
-  width_changed  = priv->cursor_pos.width != cursor_pos.width;
-  height_changed = priv->cursor_pos.height != cursor_pos.height;
-
-  if (x_changed || y_changed || width_changed || height_changed)
+  if (!clutter_rect_equals (&priv->cursor_rect, &cursor_rect))
     {
-      priv->cursor_pos = cursor_pos;
+      ClutterGeometry cursor_pos;
 
-      g_signal_emit (self, text_signals[CURSOR_EVENT], 0, &priv->cursor_pos);
+      priv->cursor_rect = cursor_rect;
+
+      /* XXX:2.0 - remove */
+      cursor_pos.x = clutter_rect_get_x (&priv->cursor_rect);
+      cursor_pos.y = clutter_rect_get_y (&priv->cursor_rect);
+      cursor_pos.width = clutter_rect_get_width (&priv->cursor_rect);
+      cursor_pos.height = clutter_rect_get_height (&priv->cursor_rect);
+      g_signal_emit (self, text_signals[CURSOR_EVENT], 0, &cursor_pos);
+
+      g_signal_emit (self, text_signals[CURSOR_CHANGED], 0);
     }
 }
 
@@ -1590,14 +1598,12 @@ selection_paint (ClutterText *self)
           cogl_set_source_color4ub (color->red,
                                     color->green,
                                     color->blue,
-                                    paint_opacity
-                                    * color->alpha
-                                    / 255);
+                                    paint_opacity * color->alpha / 255);
 
-          cogl_rectangle (priv->cursor_pos.x,
-                          priv->cursor_pos.y,
-                          priv->cursor_pos.x + priv->cursor_pos.width,
-                          priv->cursor_pos.y + priv->cursor_pos.height);
+          cogl_rectangle (priv->cursor_rect.origin.x,
+                          priv->cursor_rect.origin.y,
+                          priv->cursor_rect.origin.x + priv->cursor_rect.size.width,
+                          priv->cursor_rect.origin.y + priv->cursor_rect.size.height);
         }
       else
         {
@@ -2275,7 +2281,7 @@ clutter_text_paint (ClutterActor *self)
 
       if (actor_width < text_width)
         {
-          gint cursor_x = priv->cursor_pos.x;
+          gint cursor_x = clutter_rect_get_x (&priv->cursor_rect);
 
           if (priv->position == -1)
             {
@@ -2386,12 +2392,13 @@ clutter_text_get_paint_volume_for_cursor (ClutterText        *text,
 
   if (priv->position == priv->selection_bound)
     {
-      origin.x = priv->cursor_pos.x;
-      origin.y = priv->cursor_pos.y;
+      origin.x = priv->cursor_rect.origin.x;
+      origin.y = priv->cursor_rect.origin.y;
       origin.z = 0;
+
       clutter_paint_volume_set_origin (volume, &origin);
-      clutter_paint_volume_set_width (volume, priv->cursor_pos.width);
-      clutter_paint_volume_set_height (volume, priv->cursor_pos.height);
+      clutter_paint_volume_set_width (volume, priv->cursor_rect.size.width);
+      clutter_paint_volume_set_height (volume, priv->cursor_rect.size.height);
     }
   else
     {
@@ -3901,16 +3908,36 @@ clutter_text_class_init (ClutterTextClass *klass)
    * itself.
    *
    * Since: 1.0
+   *
+   * Deprecated: 1.16: Use the #ClutterText::cursor-changed signal instead
    */
   text_signals[CURSOR_EVENT] =
     g_signal_new (I_("cursor-event"),
 		  G_TYPE_FROM_CLASS (gobject_class),
-		  G_SIGNAL_RUN_LAST,
+		  G_SIGNAL_RUN_LAST | G_SIGNAL_DEPRECATED,
 		  G_STRUCT_OFFSET (ClutterTextClass, cursor_event),
 		  NULL, NULL,
 		  _clutter_marshal_VOID__BOXED,
 		  G_TYPE_NONE, 1,
 		  CLUTTER_TYPE_GEOMETRY | G_SIGNAL_TYPE_STATIC_SCOPE);
+
+  /**
+   * ClutterText::cursor-changed:
+   * @self: the #ClutterText that emitted the signal
+   *
+   * The ::cursor-changed signal is emitted whenever the cursor
+   * position or size changes.
+   *
+   * Since: 1.16
+   */
+  text_signals[CURSOR_CHANGED] =
+    g_signal_new (I_("cursor-changed"),
+                  G_TYPE_FROM_CLASS (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (ClutterTextClass, cursor_changed),
+                  NULL, NULL,
+                  _clutter_marshal_VOID__VOID,
+                  G_TYPE_NONE, 0);
 
   /**
    * ClutterText::activate:
@@ -4088,7 +4115,6 @@ clutter_text_init (ClutterText *self)
   priv->text_y = 0;
 
   priv->cursor_size = DEFAULT_CURSOR_SIZE;
-  memset (&priv->cursor_pos, 0, sizeof (ClutterGeometry));
 
   priv->settings_changed_id =
     g_signal_connect_swapped (clutter_get_default_backend (),
@@ -6155,4 +6181,26 @@ clutter_text_get_layout_offsets (ClutterText *self,
 
   if (y != NULL)
     *y = priv->text_y;
+}
+
+/**
+ * clutter_text_get_cursor_rect:
+ * @self: a #ClutterText
+ * @rect: (out caller-allocates): return location of a #ClutterRect
+ *
+ * Retrieves the rectangle that contains the cursor.
+ *
+ * The coordinates of the rectangle's origin are in actor-relative
+ * coordinates.
+ *
+ * Since: 1.16
+ */
+void
+clutter_text_get_cursor_rect (ClutterText *self,
+                              ClutterRect *rect)
+{
+  g_return_if_fail (CLUTTER_IS_TEXT (self));
+  g_return_if_fail (rect != NULL);
+
+  *rect = self->priv->cursor_rect;
 }

@@ -65,7 +65,8 @@ struct _ClutterText
  * ClutterTextClass:
  * @text_changed: class handler for the #ClutterText::text-changed signal
  * @activate: class handler for the #ClutterText::activate signal
- * @cursor_event: class handler for the #ClutterText::cursor_event signal
+ * @cursor_event: class handler for the #ClutterText::cursor-event signal
+ * @cursor_changed: class handler for the #ClutterText::cursor-changed signal
  *
  * The #ClutterTextClass struct contains only private data.
  *
@@ -78,10 +79,11 @@ struct _ClutterTextClass
 
   /*< public >*/
   /* signals, not vfuncs */
-  void (* text_changed) (ClutterText           *self);
-  void (* activate)     (ClutterText           *self);
-  void (* cursor_event) (ClutterText           *self,
-                         const ClutterGeometry *geometry);
+  void (* text_changed)   (ClutterText           *self);
+  void (* activate)       (ClutterText           *self);
+  void (* cursor_event)   (ClutterText           *self,
+                           const ClutterGeometry *geometry);
+  void (* cursor_changed) (ClutterText           *self);
 
   /*< private >*/
   /* padding for future expansion */
@@ -92,7 +94,6 @@ struct _ClutterTextClass
   void (* _clutter_reserved5) (void);
   void (* _clutter_reserved6) (void);
   void (* _clutter_reserved7) (void);
-  void (* _clutter_reserved8) (void);
 };
 
 GType clutter_text_get_type (void) G_GNUC_CONST;
@@ -182,6 +183,8 @@ void                  clutter_text_get_cursor_color     (ClutterText          *s
 void                  clutter_text_set_cursor_size      (ClutterText          *self,
                                                          gint                  size);
 guint                 clutter_text_get_cursor_size      (ClutterText          *self);
+void                  clutter_text_get_cursor_rect      (ClutterText          *self,
+                                                         ClutterRect          *rect);
 void                  clutter_text_set_selectable       (ClutterText          *self,
                                                          gboolean              selectable);
 gboolean              clutter_text_get_selectable       (ClutterText          *self);

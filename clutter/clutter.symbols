@@ -1413,6 +1413,7 @@ clutter_text_get_chars
 clutter_text_get_color
 clutter_text_get_cursor_color
 clutter_text_get_cursor_position
+clutter_text_get_cursor_rect
 clutter_text_get_cursor_size
 clutter_text_get_cursor_visible
 clutter_text_get_editable
