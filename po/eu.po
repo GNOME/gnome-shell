@@ -19,9 +19,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"\n"
-"\n"
-"\n"
 
 #: ../src/50-mutter-navigation.xml.in.h:1
 msgid "Navigation"
