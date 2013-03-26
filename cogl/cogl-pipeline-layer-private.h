@@ -358,6 +358,11 @@ _cogl_pipeline_layer_get_wrap_mode_t (CoglPipelineLayer *layer);
 CoglPipelineWrapMode
 _cogl_pipeline_layer_get_wrap_mode_p (CoglPipelineLayer *layer);
 
+void
+_cogl_pipeline_layer_copy_differences (CoglPipelineLayer *dest,
+                                       CoglPipelineLayer *src,
+                                       unsigned long differences);
+
 unsigned long
 _cogl_pipeline_layer_compare_differences (CoglPipelineLayer *layer0,
                                           CoglPipelineLayer *layer1);

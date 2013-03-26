@@ -845,6 +845,17 @@ _cogl_pipeline_hash (CoglPipeline *pipeline,
                      unsigned long layer_differences,
                      CoglPipelineEvalFlags flags);
 
+/* Makes a copy of the given pipeline that is a child of the root
+ * pipeline rather than a child of the source pipeline. That way the
+ * new pipeline won't hold a reference to the source pipeline. The
+ * differences specified in @differences and @layer_differences are
+ * copied across and all other state is left with the default
+ * values. */
+CoglPipeline *
+_cogl_pipeline_deep_copy (CoglPipeline *pipeline,
+                          unsigned long differences,
+                          unsigned long layer_differences);
+
 CoglPipeline *
 _cogl_pipeline_journal_ref (CoglPipeline *pipeline);
 

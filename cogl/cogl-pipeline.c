@@ -2771,6 +2771,97 @@ _cogl_pipeline_hash (CoglPipeline *pipeline,
 
 typedef struct
 {
+  CoglContext *context;
+  CoglPipeline *src_pipeline;
+  CoglPipeline *dst_pipeline;
+  unsigned int layer_differences;
+} DeepCopyData;
+
+static CoglBool
+deep_copy_layer_cb (CoglPipelineLayer *src_layer,
+                    void *user_data)
+{
+  DeepCopyData *data = user_data;
+  CoglPipelineLayer *dst_layer;
+  unsigned int differences = data->layer_differences;
+
+  dst_layer = _cogl_pipeline_get_layer (data->dst_pipeline, src_layer->index);
+
+  while (src_layer != data->context->default_layer_n &&
+         src_layer != data->context->default_layer_0 &&
+         differences)
+    {
+      unsigned long to_copy = differences & src_layer->differences;
+
+      if (to_copy)
+        {
+          _cogl_pipeline_layer_copy_differences (dst_layer, src_layer, to_copy);
+          differences ^= to_copy;
+        }
+
+      src_layer = COGL_PIPELINE_LAYER (COGL_NODE (src_layer)->parent);
+    }
+
+  return TRUE;
+}
+
+CoglPipeline *
+_cogl_pipeline_deep_copy (CoglPipeline *pipeline,
+                          unsigned long differences,
+                          unsigned long layer_differences)
+{
+  CoglPipeline *new, *authority;
+  CoglBool copy_layer_state;
+
+  _COGL_GET_CONTEXT (ctx, NULL);
+
+  if ((differences & COGL_PIPELINE_STATE_LAYERS))
+    {
+      copy_layer_state = TRUE;
+      differences &= ~COGL_PIPELINE_STATE_LAYERS;
+    }
+  else
+    copy_layer_state = FALSE;
+
+  new = cogl_pipeline_new (ctx);
+
+  for (authority = pipeline;
+       authority != ctx->default_pipeline && differences;
+       authority = COGL_PIPELINE (COGL_NODE (authority)->parent))
+    {
+      unsigned long to_copy = differences & authority->differences;
+
+      if (to_copy)
+        {
+          _cogl_pipeline_copy_differences (new, authority, to_copy);
+          differences ^= to_copy;
+        }
+    }
+
+  if (copy_layer_state)
+    {
+      DeepCopyData data;
+
+      /* The unit index doesn't need to be copied because it should
+       * end up with the same values anyway because the new pipeline
+       * will have the same indices as the source pipeline */
+      layer_differences &= ~COGL_PIPELINE_LAYER_STATE_UNIT;
+
+      data.context = ctx;
+      data.src_pipeline = pipeline;
+      data.dst_pipeline = new;
+      data.layer_differences = layer_differences;
+
+      _cogl_pipeline_foreach_layer_internal (pipeline,
+                                             deep_copy_layer_cb,
+                                             &data);
+    }
+
+  return new;
+}
+
+typedef struct
+{
   int i;
   CoglPipelineLayer **layers;
 } AddLayersToArrayState;

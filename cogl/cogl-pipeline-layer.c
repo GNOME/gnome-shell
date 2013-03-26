@@ -42,6 +42,8 @@
 #include "cogl-context-private.h"
 #include "cogl-texture-private.h"
 
+#include <string.h>
+
 static void
 _cogl_pipeline_layer_free (CoglPipelineLayer *layer);
 
@@ -144,6 +146,107 @@ _cogl_get_n_args_for_combine_func (CoglPipelineCombineFunc func)
       return 3;
     }
   return 0;
+}
+
+void
+_cogl_pipeline_layer_copy_differences (CoglPipelineLayer *dest,
+                                       CoglPipelineLayer *src,
+                                       unsigned long differences)
+{
+  CoglPipelineLayerBigState *big_dest, *big_src;
+
+  if ((differences & COGL_PIPELINE_LAYER_STATE_NEEDS_BIG_STATE) &&
+      !dest->has_big_state)
+    {
+      dest->big_state = g_slice_new (CoglPipelineLayerBigState);
+      dest->has_big_state = TRUE;
+    }
+
+  big_dest = dest->big_state;
+  big_src = src->big_state;
+
+  dest->differences |= differences;
+
+  while (differences)
+    {
+      int index = _cogl_util_ffs (differences) - 1;
+
+      differences &= ~(1 << index);
+
+      /* This convoluted switch statement is just here so that we'll
+       * get a warning if a new state is added without handling it
+       * here */
+      switch (index)
+        {
+        case COGL_PIPELINE_LAYER_STATE_COUNT:
+        case COGL_PIPELINE_LAYER_STATE_UNIT_INDEX:
+          g_warn_if_reached ();
+          break;
+
+        case COGL_PIPELINE_LAYER_STATE_TEXTURE_TYPE_INDEX:
+          dest->texture_type = src->texture_type;
+          break;
+
+        case COGL_PIPELINE_LAYER_STATE_TEXTURE_DATA_INDEX:
+          dest->texture = src->texture;
+          if (dest->texture)
+            cogl_object_ref (dest->texture);
+          break;
+
+        case COGL_PIPELINE_LAYER_STATE_SAMPLER_INDEX:
+          dest->sampler_cache_entry = src->sampler_cache_entry;
+          break;
+
+        case COGL_PIPELINE_LAYER_STATE_COMBINE_INDEX:
+          {
+            CoglPipelineCombineFunc func;
+            int n_args, i;
+
+            func = big_src->texture_combine_rgb_func;
+            big_dest->texture_combine_rgb_func = func;
+            n_args = _cogl_get_n_args_for_combine_func (func);
+            for (i = 0; i < n_args; i++)
+              {
+                big_dest->texture_combine_rgb_src[i] =
+                  big_src->texture_combine_rgb_src[i];
+                big_dest->texture_combine_rgb_op[i] =
+                  big_src->texture_combine_rgb_op[i];
+              }
+
+            func = big_src->texture_combine_alpha_func;
+            big_dest->texture_combine_alpha_func = func;
+            n_args = _cogl_get_n_args_for_combine_func (func);
+            for (i = 0; i < n_args; i++)
+              {
+                big_dest->texture_combine_alpha_src[i] =
+                  big_src->texture_combine_alpha_src[i];
+                big_dest->texture_combine_alpha_op[i] =
+                  big_src->texture_combine_alpha_op[i];
+              }
+          }
+          break;
+
+        case COGL_PIPELINE_LAYER_STATE_COMBINE_CONSTANT_INDEX:
+          memcpy (big_dest->texture_combine_constant,
+                  big_src->texture_combine_constant,
+                  sizeof (big_dest->texture_combine_constant));
+          break;
+
+        case COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS_INDEX:
+          big_dest->point_sprite_coords = big_src->point_sprite_coords;
+          break;
+
+        case COGL_PIPELINE_LAYER_STATE_VERTEX_SNIPPETS_INDEX:
+          _cogl_pipeline_snippet_list_copy (&big_dest->vertex_snippets,
+                                            &big_src->vertex_snippets);
+          break;
+
+        case COGL_PIPELINE_LAYER_STATE_FRAGMENT_SNIPPETS_INDEX:
+          _cogl_pipeline_snippet_list_copy (&big_dest->fragment_snippets,
+                                            &big_src->fragment_snippets);
+          break;
+        }
+    }
 }
 
 static void

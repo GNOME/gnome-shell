@@ -130,23 +130,20 @@ _cogl_pipeline_hash_table_get (CoglPipelineHashTable *hash,
                "unusual, so something is probably wrong!\n",
                hash->debug_string);
 
-  /* XXX: Any keys referenced by the hash table need to remain valid
-   * all the while that there are corresponding values, so for now we
-   * simply make a copy of the current authority pipeline.
-   *
-   * FIXME: A problem with this is that our key into the cache may
-   * hold references to some arbitrary user textures which will now be
-   * kept alive indefinitly which is a shame. A better solution will
-   * be to derive a special "key pipeline" from the authority which
-   * derives from the base Cogl pipeline (to avoid affecting the
-   * lifetime of any other pipelines) and only takes a copy of the
-   * state that relates to the fragment shader and references small
-   * dummy textures instead of potentially large user textures.
-   */
   entry = g_slice_new (CoglPipelineHashTableEntry);
-  entry->pipeline = cogl_pipeline_copy (key_pipeline);
   entry->hash = hash;
   entry->hash_value = dummy_entry.hash_value;
+
+  copy_state = hash->main_state;
+  if (hash->layer_state)
+    copy_state |= COGL_PIPELINE_STATE_LAYERS;
+
+  /* Create a new pipeline that is a child of the root pipeline
+   * instead of a normal copy so that the template pipeline won't hold
+   * a reference to the original pipeline */
+  entry->pipeline = _cogl_pipeline_deep_copy (key_pipeline,
+                                              copy_state,
+                                              hash->layer_state);
 
   g_hash_table_insert (hash->table, entry, entry);
 
