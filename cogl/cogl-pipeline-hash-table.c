@@ -38,6 +38,12 @@ typedef struct
   /* The template pipeline */
   CoglPipeline *pipeline;
 
+  /* Calculating the hash is a little bit expensive for pipelines so
+   * we don't want to do it repeatedly for entries that are already in
+   * the hash table. Instead we cache the value here and calculate it
+   * outside of the GHashTable. */
+  unsigned int hash_value;
+
   /* GHashTable annoyingly doesn't let us pass a user data pointer to
    * the hash and equal functions so to work around it we have to
    * store the pointer in every hash table entry. We will use this
@@ -59,12 +65,8 @@ static unsigned int
 entry_hash (const void *data)
 {
   const CoglPipelineHashTableEntry *entry = data;
-  const CoglPipelineHashTable *hash = entry->hash;
 
-  return _cogl_pipeline_hash (entry->pipeline,
-                              hash->main_state,
-                              hash->layer_state,
-                              0);
+  return entry->hash_value;
 }
 
 static CoglBool
@@ -114,7 +116,10 @@ _cogl_pipeline_hash_table_get (CoglPipelineHashTable *hash,
 
   dummy_entry.pipeline = key_pipeline;
   dummy_entry.hash = hash;
-
+  dummy_entry.hash_value = _cogl_pipeline_hash (key_pipeline,
+                                                hash->main_state,
+                                                hash->layer_state,
+                                                0);
   entry = g_hash_table_lookup (hash->table, &dummy_entry);
 
   if (entry)
@@ -124,13 +129,6 @@ _cogl_pipeline_hash_table_get (CoglPipelineHashTable *hash,
     g_warning ("Over 50 separate %s have been generated which is very "
                "unusual, so something is probably wrong!\n",
                hash->debug_string);
-
-  /* XXX: I wish there was a way to insert into a GHashTable with a
-   * pre-calculated hash value since there is a cost to calculating
-   * the hash of a CoglPipeline and in this case we know we have
-   * already called _cogl_pipeline_hash during the lookup so we could
-   * pass the value through to here to avoid hashing it again.
-   */
 
   /* XXX: Any keys referenced by the hash table need to remain valid
    * all the while that there are corresponding values, so for now we
@@ -148,6 +146,7 @@ _cogl_pipeline_hash_table_get (CoglPipelineHashTable *hash,
   entry = g_slice_new (CoglPipelineHashTableEntry);
   entry->pipeline = cogl_pipeline_copy (key_pipeline);
   entry->hash = hash;
+  entry->hash_value = dummy_entry.hash_value;
 
   g_hash_table_insert (hash->table, entry, entry);
 
