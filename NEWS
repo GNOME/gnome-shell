@@ -1,3 +1,27 @@
+3.8.0
+=====
+* Remove blur and desaturation from lock screen [Jasper; #696322]
+* Remove scroll view fade near edges [Adel; #696404]
+* dateMenu: Open calendar component when using Evolution [Florian; #696432]
+* Fix unlocking on fast user switch [Cosimo; #696287]
+* Tweak screen shield animation [Rui; #696380]
+* Fix major memory leak when changing backgrounds [Ray; #696157]
+* Miscellaneous bug fixes [Jasper, Adel, Florian; #696199, #696212, #696422,
+  #696447, #696235]
+
+Contributors:
+  Giovanni Campagna, Cosimo Cecchi, Adel Gadllah, Rui Matos, Florian Müllner,
+  Jasper St. Pierre, Ray Strode
+
+Translations:
+  Alexandre Franke [fr], Victor Ibragimov [tg], Arash Mousavi [fa],
+  Gabor Kelemen [hu], Sandeep Sheshrao Shedmake [mr], ManojKumar Giri [or],
+  Shantha kumar [ta], Rajesh Ranjan [hi], Stas Solovey [ru],
+  Shankar Prasad [kn], Dušan Kazik [sk], Ihar Hrachyshka [be],
+  Wouter Bolsterlee [nl], Kris Thomsen [da], Jiro Matsuzawa [ja],
+  Daniel Korostil [uk], Ani Peter [ml], Krishnababu Krothapalli [te],
+  Mantas Kriaučiūnas [lt], Praveen Illa [te]
+
 3.7.92
 ======
 * Drop fallback lock implementation [Florian; #693403]
