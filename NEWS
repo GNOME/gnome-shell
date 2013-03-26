@@ -1,3 +1,7 @@
+3.8.0.1
+=======
+* Background bug fixes [Ray; #696712]
+
 3.8.0
 =====
 * Remove blur and desaturation from lock screen [Jasper; #696322]
