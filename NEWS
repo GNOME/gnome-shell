@@ -1,3 +1,17 @@
+3.8.0
+=====
+* Address major memory leak when changing backgrounds [Ray; #696157]
+
+Contributors:
+  Ray Strode
+
+Translations:
+  Sandeep Sheshrao Shedmake [mr], Victor Ibragimov [tg], Gabor Kelemen [hu],
+  Ville-Pekka Vainio [fi], Rajesh Ranjan [hi], Dr.T.Vasudevan [ta],
+  ManojKumar Giri [or], Yuri Myasoedov [ru], Petr Kovar [cs],
+  Jiro Matsuzawa [ja], Krishnababu Krothapalli [te], Ani Peter [ml],
+  Inaki Larranaga Murgoitio [eu]
+
 3.7.92
 ======
 * Build and improve reference docs [Tomeu; #676856, #695641, #695935]
