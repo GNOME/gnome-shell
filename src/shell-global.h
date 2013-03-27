@@ -44,6 +44,8 @@ gboolean shell_global_begin_modal            (ShellGlobal         *global,
                                               MetaModalOptions    options);
 void     shell_global_end_modal              (ShellGlobal         *global,
                                               guint32              timestamp);
+void     shell_global_freeze_keyboard        (ShellGlobal         *global,
+                                              guint32              timestamp);
 
 typedef enum {
   SHELL_STAGE_INPUT_MODE_NONREACTIVE,
