@@ -435,6 +435,7 @@ const Overview = new Lang.Class({
 
     beginItemDrag: function(source) {
         this.emit('item-drag-begin');
+        this._inDrag = true;
     },
 
     cancelledItemDrag: function(source) {
@@ -443,10 +444,12 @@ const Overview = new Lang.Class({
 
     endItemDrag: function(source) {
         this.emit('item-drag-end');
+        this._inDrag = false;
     },
 
     beginWindowDrag: function(source) {
         this.emit('window-drag-begin');
+        this._inDrag = true;
     },
 
     cancelledWindowDrag: function(source) {
@@ -455,6 +458,7 @@ const Overview = new Lang.Class({
 
     endWindowDrag: function(source) {
         this.emit('window-drag-end');
+        this._inDrag = false;
     },
 
     // show:
@@ -577,6 +581,8 @@ const Overview = new Lang.Class({
     // clicked the Activities button.
     shouldToggleByCornerOrButton: function() {
         if (this.animationInProgress)
+            return false;
+        if (this._inDrag)
             return false;
         if (this._activationTime == 0 || Date.now() / 1000 - this._activationTime > OVERVIEW_ACTIVATION_TIMEOUT)
             return true;
