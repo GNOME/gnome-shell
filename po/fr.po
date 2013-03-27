@@ -1352,7 +1352,7 @@ msgstr "<%s> doit indiquer une géométrie ou un parent qui en possède une"
 
 #: ../src/ui/theme-parser.c:1196
 msgid "You must specify a background for an alpha value to be meaningful"
-msgstr "Vous devez indiquer une valeur pour le paramètre alpha."
+msgstr "Vous devez indiquer un arrière-plan pour qu'une valeur alpha ait du sens."
 
 #: ../src/ui/theme-parser.c:1264
 #, c-format
