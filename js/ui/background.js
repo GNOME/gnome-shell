@@ -241,6 +241,7 @@ const BackgroundCache = new Lang.Class({
         } else {
             this._loadImageContent({ filename: params.filename,
                                      style: params.style,
+                                     effects: params.effects,
                                      cancellable: params.cancellable,
                                      onFinished: params.onFinished });
 
