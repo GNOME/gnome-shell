@@ -410,8 +410,8 @@ st_icon_finish_update (StIcon *icon)
       st_icon_update_shadow_material (icon);
 
       /* "pixbuf-change" is actually a misnomer for "texture-changed" */
-      g_signal_connect (priv->icon_texture, "pixbuf-change",
-                        G_CALLBACK (on_pixbuf_changed), icon);
+      g_signal_connect_object (priv->icon_texture, "pixbuf-change",
+                               G_CALLBACK (on_pixbuf_changed), icon, 0);
     }
 }
 
@@ -469,7 +469,7 @@ st_icon_update (StIcon *icon)
       else
         {
           /* Will be shown when fully loaded */
-          priv->opacity_handler_id = g_signal_connect (priv->pending_texture, "notify::opacity", G_CALLBACK (opacity_changed_cb), icon);
+          priv->opacity_handler_id = g_signal_connect_object (priv->pending_texture, "notify::opacity", G_CALLBACK (opacity_changed_cb), icon, 0);
         }
     }
   else if (priv->icon_texture)
