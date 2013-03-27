@@ -33,6 +33,36 @@ const KEY_INPUT_SOURCES = 'sources';
 const INPUT_SOURCE_TYPE_XKB = 'xkb';
 const INPUT_SOURCE_TYPE_IBUS = 'ibus';
 
+// This is longest we'll keep the keyboard frozen until an input
+// source is active.
+const MAX_INPUT_SOURCE_ACTIVATION_TIME = 2000; // ms
+
+const BUS_NAME = 'org.gnome.SettingsDaemon.Keyboard';
+const OBJECT_PATH = '/org/gnome/SettingsDaemon/Keyboard';
+
+const KeyboardManagerInterface =
+<interface name="org.gnome.SettingsDaemon.Keyboard">
+<method name="SetInputSource">
+    <arg type="u" direction="in" />
+</method>
+</interface>;
+
+const KeyboardManagerProxy = Gio.DBusProxy.makeProxyWrapper(KeyboardManagerInterface);
+
+function releaseKeyboard() {
+    if (Main.modalCount > 0)
+        global.display.unfreeze_keyboard(global.get_current_time());
+    else
+        global.display.ungrab_keyboard(global.get_current_time());
+}
+
+function holdKeyboard() {
+    if (Main.modalCount > 0)
+        global.display.freeze_keyboard(global.get_current_time());
+    else
+        global.display.grab_keyboard(global.get_current_time());
+}
+
 const IBusManager = new Lang.Class({
     Name: 'IBusManager',
 
@@ -230,6 +260,7 @@ const InputSource = new Lang.Class({
     },
 
     activate: function() {
+        holdKeyboard();
         this.emit('activate');
     },
 });
@@ -364,6 +395,12 @@ const InputSourceIndicator = new Lang.Class({
         this._ibusManager.connect('property-updated', Lang.bind(this, this._ibusPropertyUpdated));
         this._inputSourcesChanged();
 
+        this._keyboardManager = new KeyboardManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
+                                                         function(proxy, error) {
+                                                             if (error)
+                                                                 log(error.message);
+                                                         });
+
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this._showLayoutItem = this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, this._showLayout));
 
@@ -487,10 +524,10 @@ const InputSourceIndicator = new Lang.Class({
             let is = new InputSource(type, id, displayName, shortName, i);
 
             is.connect('activate', Lang.bind(this, function() {
-                if (this._currentSource && this._currentSource.index == is.index)
-                    return;
-                this._settings.set_value(KEY_CURRENT_INPUT_SOURCE,
-                                         GLib.Variant.new_uint32(is.index));
+                let inVariant = new GLib.Variant('(u)', [is.index]);
+                this._keyboardManager.call('SetInputSource', inVariant, 0,
+                                           MAX_INPUT_SOURCE_ACTIVATION_TIME,
+                                           null, releaseKeyboard);
             }));
 
             if (!(is.shortName in inputSourcesByShortName))
