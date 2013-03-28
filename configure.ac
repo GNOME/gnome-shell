@@ -474,6 +474,7 @@ AS_IF(
     EXPERIMENTAL_OPTIONS="$EXPERIMENTAL_OPTIONS Quartz Core Graphics,"
     AC_DEFINE([USE_QUARTZ], 1,
 	      [Use Core Graphics (Quartz) for loading image data])
+    COGL_EXTRA_LDFLAGS="$COGL_EXTRA_LDFLAGS -framework ApplicationServices"
     COGL_IMAGE_BACKEND="quartz"
   ],
   [
