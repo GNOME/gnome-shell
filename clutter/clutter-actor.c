@@ -13314,6 +13314,7 @@ clutter_actor_set_child_above_sibling (ClutterActor *self,
                                     ADD_CHILD_NOTIFY_FIRST_LAST,
                                     insert_child_above,
                                     sibling);
+  g_object_unref(child);
 
   clutter_actor_queue_relayout (self);
 }
@@ -13360,6 +13361,7 @@ clutter_actor_set_child_below_sibling (ClutterActor *self,
                                     ADD_CHILD_NOTIFY_FIRST_LAST,
                                     insert_child_below,
                                     sibling);
+  g_object_unref(child);
 
   clutter_actor_queue_relayout (self);
 }
