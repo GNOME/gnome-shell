@@ -130,6 +130,22 @@ clutter_stage_wayland_realize (ClutterStageWindow *stage_window)
 }
 
 static void
+clutter_stage_wayland_show (ClutterStageWindow *stage_window,
+                            gboolean            do_raise)
+{
+  ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+
+  clutter_stage_window_parent_iface->show (stage_window, do_raise);
+
+  /* We need to queue a redraw after the stage is shown because all of
+   * the other queue redraws up to this point will have been ignored
+   * because the actor was not visible. The other backends do not need
+   * to do this because they will get expose events at some point, but
+   * that does not happen for Wayland. */
+  clutter_actor_queue_redraw (CLUTTER_ACTOR (stage_cogl->wrapper));
+}
+
+static void
 clutter_stage_wayland_set_fullscreen (ClutterStageWindow *stage_window,
                                       gboolean            fullscreen)
 {
@@ -203,6 +219,7 @@ clutter_stage_window_iface_init (ClutterStageWindowIface *iface)
   clutter_stage_window_parent_iface = g_type_interface_peek_parent (iface);
 
   iface->realize = clutter_stage_wayland_realize;
+  iface->show = clutter_stage_wayland_show;
   iface->set_fullscreen = clutter_stage_wayland_set_fullscreen;
   iface->resize = clutter_stage_wayland_resize;
 }
