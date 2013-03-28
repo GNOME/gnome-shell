@@ -125,11 +125,24 @@ _cogl_bitmap_from_file (CoglContext *ctx,
   /* allocate buffer big enough to hold pixel data */
   bmp = _cogl_bitmap_new_with_malloc_buffer (ctx,
                                              width, height,
-                                             COGL_PIXEL_FORMAT_ARGB_8888);
+                                             COGL_PIXEL_FORMAT_ARGB_8888,
+                                             error);
+  if (bmp == NULL)
+    {
+      CFRelease (image);
+      return NULL;
+    }
   rowstride = cogl_bitmap_get_rowstride (bmp);
   out_data = _cogl_bitmap_map (bmp,
                                COGL_BUFFER_ACCESS_WRITE,
-                               COGL_BUFFER_MAP_HINT_DISCARD);
+                               COGL_BUFFER_MAP_HINT_DISCARD,
+                               error);
+  if (out_data == NULL)
+    {
+      cogl_object_unref (bmp);
+      CFRelease (image);
+      return NULL;
+    }
 
   /* render to buffer */
   color_space = CGColorSpaceCreateWithName (kCGColorSpaceGenericRGB);
