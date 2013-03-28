@@ -13400,6 +13400,7 @@ clutter_actor_set_child_at_index (ClutterActor *self,
                                     ADD_CHILD_NOTIFY_FIRST_LAST,
                                     insert_child_at_index,
                                     GINT_TO_POINTER (index_));
+  g_object_unref (child);
 
   clutter_actor_queue_relayout (self);
 }
