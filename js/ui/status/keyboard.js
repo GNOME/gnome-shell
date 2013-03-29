@@ -364,14 +364,14 @@ const InputSourceIndicator = new Lang.Class({
             Main.wm.addKeybinding('switch-input-source',
                                   new Gio.Settings({ schema: "org.gnome.desktop.wm.keybindings" }),
                                   Meta.KeyBindingFlags.REVERSES,
-                                  Shell.KeyBindingMode.ALL & ~Shell.KeyBindingMode.MESSAGE_TRAY,
+                                  Shell.KeyBindingMode.ALL,
                                   Lang.bind(this, this._switchInputSource));
         this._keybindingActionBackward =
             Main.wm.addKeybinding('switch-input-source-backward',
                                   new Gio.Settings({ schema: "org.gnome.desktop.wm.keybindings" }),
                                   Meta.KeyBindingFlags.REVERSES |
                                   Meta.KeyBindingFlags.REVERSED,
-                                  Shell.KeyBindingMode.ALL & ~Shell.KeyBindingMode.MESSAGE_TRAY,
+                                  Shell.KeyBindingMode.ALL,
                                   Lang.bind(this, this._switchInputSource));
         this._settings = new Gio.Settings({ schema: DESKTOP_INPUT_SOURCES_SCHEMA });
         this._settings.connect('changed::' + KEY_CURRENT_INPUT_SOURCE, Lang.bind(this, this._currentInputSourceChanged));
@@ -458,6 +458,17 @@ const InputSourceIndicator = new Lang.Class({
     _switchInputSource: function(display, screen, window, binding) {
         if (this._mruSources.length < 2)
             return;
+
+        // HACK: Fall back on simple input source switching since we
+        // can't show a popup switcher while a GrabHelper grab is in
+        // effect without considerable work to consolidate the usage
+        // of pushModal/popModal and grabHelper. See
+        // https://bugzilla.gnome.org/show_bug.cgi?id=695143 .
+        if (Main.keybindingMode == Shell.KeyBindingMode.MESSAGE_TRAY ||
+            Main.keybindingMode == Shell.KeyBindingMode.TOPBAR_POPUP) {
+            this._modifiersSwitcher();
+            return;
+        }
 
         let popup = new InputSourcePopup(this._mruSources, this._keybindingAction, this._keybindingActionBackward);
         let modifiers = binding.get_modifiers();
