@@ -1264,7 +1264,8 @@ grab_status_to_string (int status)
 static gboolean
 grab_keyboard (MetaDisplay *display,
                Window       xwindow,
-               guint32      timestamp)
+               guint32      timestamp,
+               int          grab_mode)
 {
   int result;
   int grab_status;
@@ -1280,12 +1281,21 @@ grab_keyboard (MetaDisplay *display,
    */
   meta_error_trap_push_with_return (display);
 
+  /* Strictly, we only need to set grab_mode on the keyboard device
+   * while the pointer should always be XIGrabModeAsync. Unfortunately
+   * there is a bug in the X server, only fixed (link below) in 1.15,
+   * which swaps these arguments for keyboard devices. As such, we set
+   * both the device and the paired device mode which works around
+   * that bug and also works on fixed X servers.
+   *
+   * http://cgit.freedesktop.org/xorg/xserver/commit/?id=9003399708936481083424b4ff8f18a16b88b7b3
+   */
   grab_status = XIGrabDevice (display->xdisplay,
                               META_VIRTUAL_CORE_KEYBOARD_ID,
                               xwindow,
                               timestamp,
                               None,
-                              XIGrabModeAsync, XIGrabModeAsync,
+                              grab_mode, grab_mode,
                               True, /* owner_events */
                               &mask);
 
@@ -1339,7 +1349,7 @@ meta_screen_grab_all_keys (MetaScreen *screen, guint32 timestamp)
 
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Grabbing all keys on RootWindow\n");
-  retval = grab_keyboard (screen->display, screen->xroot, timestamp);
+  retval = grab_keyboard (screen->display, screen->xroot, timestamp, XIGrabModeAsync);
   if (retval)
     {
       screen->all_keys_grabbed = TRUE;
@@ -1392,7 +1402,7 @@ meta_window_grab_all_keys (MetaWindow  *window,
 
   meta_topic (META_DEBUG_KEYBINDINGS,
               "Grabbing all keys on window %s\n", window->desc);
-  retval = grab_keyboard (window->display, grabwindow, timestamp);
+  retval = grab_keyboard (window->display, grabwindow, timestamp, XIGrabModeAsync);
   if (retval)
     {
       window->keys_grabbed = FALSE;
@@ -1417,6 +1427,32 @@ meta_window_ungrab_all_keys (MetaWindow *window, guint32 timestamp)
       /* Re-establish our standard bindings */
       meta_window_grab_keys (window);
     }
+}
+
+void
+meta_display_freeze_keyboard (MetaDisplay *display, Window window, guint32 timestamp)
+{
+  grab_keyboard (display, window, timestamp, XIGrabModeSync);
+}
+
+void
+meta_display_ungrab_keyboard (MetaDisplay *display, guint32 timestamp)
+{
+  ungrab_keyboard (display, timestamp);
+}
+
+void
+meta_display_unfreeze_keyboard (MetaDisplay *display, guint32 timestamp)
+{
+  meta_error_trap_push (display);
+  XIAllowEvents (display->xdisplay, META_VIRTUAL_CORE_KEYBOARD_ID,
+                 XIAsyncDevice, timestamp);
+  /* We shouldn't need to unfreeze the pointer device here, however we
+   * have to, due to the workaround we do in grab_keyboard().
+   */
+  XIAllowEvents (display->xdisplay, META_VIRTUAL_CORE_POINTER_ID,
+                 XIAsyncDevice, timestamp);
+  meta_error_trap_pop (display);
 }
 
 static gboolean
