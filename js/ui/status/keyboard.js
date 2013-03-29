@@ -400,6 +400,7 @@ const InputSourceIndicator = new Lang.Class({
                                                              if (error)
                                                                  log(error.message);
                                                          });
+        global.display.connect('modifiers-accelerator-activated', Lang.bind(this, this._modifiersSwitcher));
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this._showLayoutItem = this.menu.addAction(_("Show Keyboard Layout"), Lang.bind(this, this._showLayout));
@@ -432,6 +433,27 @@ const InputSourceIndicator = new Lang.Class({
         this._ibusReady = ready;
         this._mruSources = [];
         this._inputSourcesChanged();
+    },
+
+    _modifiersSwitcher: function() {
+        let sourceIndexes = Object.keys(this._inputSources);
+        if (sourceIndexes.length == 0) {
+            releaseKeyboard();
+            return;
+        }
+
+        let is = this._currentSource;
+        if (!is)
+            is = this._inputSources[sourceIndexes[0]];
+
+        let nextIndex = is.index + 1;
+        if (nextIndex > sourceIndexes[sourceIndexes.length - 1])
+            nextIndex = 0;
+
+        while (!(is = this._inputSources[nextIndex]))
+            nextIndex += 1;
+
+        is.activate();
     },
 
     _switchInputSource: function(display, screen, window, binding) {
