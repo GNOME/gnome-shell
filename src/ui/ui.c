@@ -744,7 +744,17 @@ meta_ui_theme_get_frame_borders (MetaUI *ui,
 
       if (!font_desc)
         {
+          GdkDisplay *display = gdk_x11_lookup_xdisplay (ui->xdisplay);
+          GdkScreen *screen = gdk_display_get_screen (display, XScreenNumberOfScreen (ui->xscreen));
+          GtkWidgetPath *widget_path;
+
           style = gtk_style_context_new ();
+          gtk_style_context_set_screen (style, screen);
+          widget_path = gtk_widget_path_new ();
+          gtk_widget_path_append_type (widget_path, GTK_TYPE_WINDOW);
+          gtk_style_context_set_path (style, widget_path);
+          gtk_widget_path_free (widget_path);
+
           gtk_style_context_get (style, GTK_STATE_FLAG_NORMAL, "font", &free_font_desc, NULL);
           font_desc = (const PangoFontDescription *) free_font_desc;
         }
