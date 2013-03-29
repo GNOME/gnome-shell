@@ -61,7 +61,6 @@
  *
  * This object provides a ClutterContent object to assist in sharing between actors.
  */
-typedef struct _MetaBackgroundPrivate MetaBackgroundPrivate;
 
 struct _MetaBackgroundPrivate
 {
