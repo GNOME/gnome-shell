@@ -37,7 +37,6 @@ G_BEGIN_DECLS
 
 #define CLUTTER_TYPE_ACTOR_BOX          (clutter_actor_box_get_type ())
 #define CLUTTER_TYPE_FOG                (clutter_fog_get_type ())
-#define CLUTTER_TYPE_GEOMETRY           (clutter_geometry_get_type ())
 #define CLUTTER_TYPE_KNOT               (clutter_knot_get_type ())
 #define CLUTTER_TYPE_MARGIN             (clutter_margin_get_type ())
 #define CLUTTER_TYPE_MATRIX             (clutter_matrix_get_type ())
@@ -78,7 +77,6 @@ typedef struct _ClutterPathNode                 ClutterPathNode;
 
 typedef struct _ClutterActorBox                 ClutterActorBox;
 typedef struct _ClutterColor                    ClutterColor;
-typedef struct _ClutterGeometry                 ClutterGeometry; /* XXX:2.0 - remove */
 typedef struct _ClutterKnot                     ClutterKnot;
 typedef struct _ClutterMargin                   ClutterMargin;
 typedef struct _ClutterPerspective              ClutterPerspective;
@@ -527,40 +525,6 @@ void             clutter_actor_box_set_origin     (ClutterActorBox       *box,
 void             clutter_actor_box_set_size       (ClutterActorBox       *box,
                                                    gfloat                 width,
                                                    gfloat                 height);
-
-/**
- * ClutterGeometry:
- * @x: X coordinate of the top left corner of an actor
- * @y: Y coordinate of the top left corner of an actor
- * @width: width of an actor
- * @height: height of an actor
- *
- * The rectangle containing an actor's bounding box, measured in pixels.
- *
- * <warning>You should not use #ClutterGeometry, or operate on its fields
- * directly; you should use #cairo_rectangle_int_t or #ClutterRect if you
- * need a rectangle type, depending on the precision required.</warning>
- *
- * Deprecated: 1.16
- */
-struct _ClutterGeometry
-{
-  /*< public >*/
-  gint   x;
-  gint   y;
-  guint  width;
-  guint  height;
-};
-
-GType clutter_geometry_get_type (void) G_GNUC_CONST;
-
-CLUTTER_DEPRECATED_IN_1_16
-void      clutter_geometry_union      (const ClutterGeometry *geometry_a,
-                                       const ClutterGeometry *geometry_b,
-                                       ClutterGeometry       *result);
-CLUTTER_DEPRECATED_IN_1_16
-gboolean  clutter_geometry_intersects (const ClutterGeometry *geometry0,
-                                       const ClutterGeometry *geometry1);
 
 /**
  * ClutterKnot:

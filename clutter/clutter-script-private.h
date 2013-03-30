@@ -119,9 +119,9 @@ gboolean _clutter_script_flags_from_string (GType          gtype,
 gboolean _clutter_script_parse_knot        (ClutterScript   *script,
                                             JsonNode        *node,
                                             ClutterKnot     *knot);
-gboolean _clutter_script_parse_geometry    (ClutterScript   *script,
+gboolean _clutter_script_parse_rect        (ClutterScript   *script,
                                             JsonNode        *node,
-                                            ClutterGeometry *geometry);
+                                            ClutterRect     *rect);
 gboolean _clutter_script_parse_color       (ClutterScript   *script,
                                             JsonNode        *node,
                                             ClutterColor    *color);
