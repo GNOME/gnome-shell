@@ -1850,10 +1850,11 @@ static gboolean
 update_binding (MetaKeyPref *binding,
                 gchar      **strokes)
 {
+  GSList *old_bindings, *a, *b;
+  gboolean changed;
   unsigned int keysym;
   unsigned int keycode;
   MetaVirtualModifier mods;
-  gboolean changed = FALSE;
   MetaKeyCombo *combo;
   int i;
 
@@ -1861,13 +1862,9 @@ update_binding (MetaKeyPref *binding,
               "Binding \"%s\" has new GSettings value\n",
               binding->name);
 
-  /* Okay, so, we're about to provide a new list of key combos for this
-   * action. Delete any pre-existing list.
-   */
-  g_slist_foreach (binding->bindings, (GFunc) g_free, NULL);
-  g_slist_free (binding->bindings);
+  old_bindings = binding->bindings;
   binding->bindings = NULL;
-  
+
   for (i = 0; strokes && strokes[i]; i++)
     {
       keysym = 0;
@@ -1902,8 +1899,6 @@ update_binding (MetaKeyPref *binding,
            * Changing the key in response to a modification could lead to cyclic calls. */
           continue;
         }
-  
-      changed = TRUE;
 
       combo = g_malloc0 (sizeof (MetaKeyCombo));
       combo->keysym = keysym;
@@ -1917,6 +1912,34 @@ update_binding (MetaKeyPref *binding,
     }
 
   binding->bindings = g_slist_reverse (binding->bindings);
+
+  a = old_bindings;
+  b = binding->bindings;
+  while (TRUE)
+    {
+      if ((!a && b) || (a && !b))
+        {
+          changed = TRUE;
+          break;
+        }
+      else if (!a && !b)
+        {
+          changed = FALSE;
+          break;
+        }
+      else if (memcmp (a->data, b->data, sizeof (MetaKeyCombo)) != 0)
+        {
+          changed = TRUE;
+          break;
+        }
+      else
+        {
+          a = a->next;
+          b = b->next;
+        }
+    }
+
+  g_slist_free_full (old_bindings, g_free);
 
   return changed;
 }
