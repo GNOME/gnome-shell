@@ -316,6 +316,8 @@ const FrequentView = new Lang.Class({
     loadApps: function() {
         let mostUsed = this._usage.get_most_used ("");
         for (let i = 0; i < mostUsed.length; i++) {
+            if (!mostUsed[i].get_app_info().should_show())
+                continue;
             let appIcon = new AppIcon(mostUsed[i]);
             this._grid.addItem(appIcon.actor, -1);
         }
