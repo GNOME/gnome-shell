@@ -40,7 +40,7 @@
  * the logic for recognizing mouse clicks and touch tap gestures.
  *
  * The simplest usage of #ClutterTapAction consists in adding it to
- * a #ClutterActor with a child, setting it as reactive and connecting a
+ * a #ClutterActor, setting it as reactive and connecting a
  * callback for the #ClutterTapAction::tap signal, along the lines of the
  * following code:
  *
