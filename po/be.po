@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: gnome-shell.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-23 11:49+0000\n"
+"POT-Creation-Date: 2013-03-31 01:48+0000\n"
 "PO-Revision-Date: 2012-10-16 12:05+0300\n"
 "Last-Translator: Kasia Bondarava <kasia.bondarava@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
@@ -131,8 +131,8 @@ msgid ""
 "Each category name in this list will be represented as folder in the "
 "application view, rather than being displayed inline in the main view."
 msgstr ""
-"Кожная катэгорыя ў спісе будзе выяўлена як папка ў рэжыме праграм, "
-"а не ўкарэнена ў галоўны від акна."
+"Кожная катэгорыя ў спісе будзе выяўлена як папка ў рэжыме праграм, а не "
+"ўкарэнена ў галоўны від акна."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "History for command (Alt-F2) dialog"
@@ -168,8 +168,8 @@ msgid ""
 "This key overrides the automatic hiding of the 'Log out' menuitem in single-"
 "user, single-session situations."
 msgstr ""
-"Гэты ключ падмяняе аўтаматычнае хаванне элемента меню \"Выйсці з сеанса\" "
-"ў выпадку аднаго карыстальніка з адным сеансам."
+"Гэты ключ падмяняе аўтаматычнае хаванне элемента меню \"Выйсці з сеанса\" ў "
+"выпадку аднаго карыстальніка з адным сеансам."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid ""
@@ -314,9 +314,9 @@ msgid ""
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
 "only' (shows only the application icon) or 'both'."
 msgstr ""
-"Настройка паказу вокнаў у пераключальніку. Магчымыя значэнні: \"thumbnail-only\" "
-"(паказваць мініяцюры вокнаў), \"app-icon-only\" (паказваць толькі значкі праграм) "
-"і \"both\" (адразу ўсё)."
+"Настройка паказу вокнаў у пераключальніку. Магчымыя значэнні: \"thumbnail-"
+"only\" (паказваць мініяцюры вокнаў), \"app-icon-only\" (паказваць толькі "
+"значкі праграм) і \"both\" (адразу ўсё)."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Attach modal dialog to the parent window"
@@ -325,8 +325,7 @@ msgstr "Чапляць мадальныя дыялогавыя акенцы да
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"Гэты ключ падмяняе ключ у org.gnome.mutter пры запуску Абалонкі GNOME."
+msgstr "Гэты ключ падмяняе ключ у org.gnome.mutter пры запуску Абалонкі GNOME."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Arrangement of buttons on the titlebar"
@@ -337,7 +336,8 @@ msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
 msgstr ""
-"Гэты ключ падмяняе ключ у org.gnome.desktop.wm.preferences пры запуску Абалонкі GNOME."
+"Гэты ключ падмяняе ключ у org.gnome.desktop.wm.preferences пры запуску "
+"Абалонкі GNOME."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:46
 msgid "Enable edge tiling when dropping windows on screen edges"
@@ -508,7 +508,7 @@ msgctxt "event list time"
 msgid "%H\\u2236%M"
 msgstr "%H\\u2236%M"
 
-#. Transators: Shown in calendar event list, if 12h format,
+#. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space
 #: ../js/ui/calendar.js:77
@@ -1179,7 +1179,9 @@ msgstr "Паказваць памылкі"
 msgid "Enabled"
 msgstr "Уключана"
 
-#: ../js/ui/lookingGlass.js:769
+#. translators:
+#. * The device has been disabled
+#: ../js/ui/lookingGlass.js:769 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Выключана"
 
@@ -1309,7 +1311,7 @@ msgstr[2] "%d новых апавяшчэнняў"
 msgid "Lock"
 msgstr "Заблакіраваць"
 
-#: ../js/ui/screenShield.js:637
+#: ../js/ui/screenShield.js:640
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME патрабуе блакіравання экрана"
 
@@ -1320,11 +1322,11 @@ msgstr "GNOME патрабуе блакіравання экрана"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:758 ../js/ui/screenShield.js:1194
+#: ../js/ui/screenShield.js:761 ../js/ui/screenShield.js:1197
 msgid "Unable to lock"
 msgstr "Не ўдалося заблакіраваць"
 
-#: ../js/ui/screenShield.js:759 ../js/ui/screenShield.js:1195
+#: ../js/ui/screenShield.js:762 ../js/ui/screenShield.js:1198
 msgid "Lock was blocked by an application"
 msgstr "Блакіраванне стрымана праграмай"
 
@@ -1881,6 +1883,30 @@ msgstr "\"%s\" гатова"
 msgid "Evolution Calendar"
 msgstr "Каляндар Evolution"
 
+#. translators:
+#. * The number of sound outputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1837
+#, c-format
+msgid "%u Output"
+msgid_plural "%u Outputs"
+msgstr[0] "%u выхад"
+msgstr[1] "%u выхады"
+msgstr[2] "%u выхадаў"
+
+#. translators:
+#. * The number of sound inputs on a particular device
+#: ../src/gvc/gvc-mixer-control.c:1847
+#, c-format
+msgid "%u Input"
+msgid_plural "%u Inputs"
+msgstr[0] "%u уваход"
+msgstr[1] "%u уваходы"
+msgstr[2] "%u уваходаў"
+
+#: ../src/gvc/gvc-mixer-control.c:2371
+msgid "System Sounds"
+msgstr "Сістэмныя гукі"
+
 #: ../src/main.c:347
 msgid "Print version"
 msgstr "Вывесці нумар версіі праграмы"
@@ -1913,4 +1939,3 @@ msgstr "Пароль не можа быць пустым"
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Карыстальнік праігнараваў дыялогавае акенца ідэнтыфікацыі"
-
