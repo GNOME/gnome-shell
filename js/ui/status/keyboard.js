@@ -293,11 +293,11 @@ const InputSourcePopup = new Lang.Class({
         this._select(this._selectedIndex);
     },
 
-    _keyPressHandler: function(keysym, backwards, action) {
+    _keyPressHandler: function(keysym, _ignored, action) {
         if (action == this._action)
-            this._select(backwards ? this._previous() : this._next());
+            this._select(this._next());
         else if (action == this._actionBackward)
-            this._select(backwards ? this._next() : this._previous());
+            this._select(this._previous());
         else if (keysym == Clutter.Left)
             this._select(this._previous());
         else if (keysym == Clutter.Right)
@@ -367,14 +367,13 @@ const InputSourceIndicator = new Lang.Class({
         this._keybindingAction =
             Main.wm.addKeybinding('switch-input-source',
                                   new Gio.Settings({ schema: "org.gnome.desktop.wm.keybindings" }),
-                                  Meta.KeyBindingFlags.REVERSES,
+                                  Meta.KeyBindingFlags.NONE,
                                   Shell.KeyBindingMode.ALL,
                                   Lang.bind(this, this._switchInputSource));
         this._keybindingActionBackward =
             Main.wm.addKeybinding('switch-input-source-backward',
                                   new Gio.Settings({ schema: "org.gnome.desktop.wm.keybindings" }),
-                                  Meta.KeyBindingFlags.REVERSES |
-                                  Meta.KeyBindingFlags.REVERSED,
+                                  Meta.KeyBindingFlags.NONE,
                                   Shell.KeyBindingMode.ALL,
                                   Lang.bind(this, this._switchInputSource));
         this._settings = new Gio.Settings({ schema: DESKTOP_INPUT_SOURCES_SCHEMA });
@@ -472,7 +471,7 @@ const InputSourceIndicator = new Lang.Class({
 
         let popup = new InputSourcePopup(this._mruSources, this._keybindingAction, this._keybindingActionBackward);
         let modifiers = binding.get_modifiers();
-        let backwards = modifiers & Meta.VirtualModifier.SHIFT_MASK;
+        let backwards = false;  // Not using this
         if (!popup.show(backwards, binding.get_name(), binding.get_mask()))
             popup.destroy();
     },
