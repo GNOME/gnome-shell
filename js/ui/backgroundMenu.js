@@ -55,4 +55,10 @@ function addBackgroundMenu(actor) {
             openMenu();
     });
     actor.add_action(clickAction);
+
+    actor.connect('destroy', function() {
+                      actor._backgroundMenu.destroy();
+                      actor._backgroundMenu = null;
+                      actor._backgroundManager = null;
+                  });
 }
