@@ -566,9 +566,14 @@ const AppMenuButton = new Lang.Class({
         }
 
         if (targetApp == this._targetApp) {
-            if (targetApp && targetApp.get_state() != Shell.AppState.STARTING) {
+            if (targetApp &&
+                targetApp.get_state() != Shell.AppState.STARTING &&
+                targetApp.get_state() != Shell.AppState.BUSY) {
                 this.stopAnimation();
                 this._maybeSetMenu();
+            } else if (targetApp &&
+                       targetApp.get_state() == Shell.AppState.BUSY) {
+                this.startAnimation();
             }
             return;
         }
@@ -601,7 +606,8 @@ const AppMenuButton = new Lang.Class({
         this._iconBox.set_child(icon);
         this._iconBox.show();
 
-        if (targetApp.get_state() == Shell.AppState.STARTING)
+        if (targetApp.get_state() == Shell.AppState.STARTING ||
+            targetApp.get_state() == Shell.AppState.BUSY)
             this.startAnimation();
         else
             this._maybeSetMenu();
