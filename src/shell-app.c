@@ -39,6 +39,9 @@ typedef struct {
   /* Whether or not we need to resort the windows; this is done on demand */
   gboolean window_sort_stale : 1;
 
+  /* DBus property notification subscription */
+  guint properties_changed_id : 1;
+
   /* See GApplication documentation */
   GDBusMenuModel   *remote_menu;
   GActionMuxer     *muxer;
@@ -959,6 +962,84 @@ shell_app_on_ws_switch (MetaScreen         *screen,
   g_signal_emit (app, shell_app_signals[WINDOWS_CHANGED], 0);
 }
 
+static void
+application_properties_changed (GDBusConnection *connection,
+                                const gchar     *sender_name,
+                                const gchar     *object_path,
+                                const gchar     *interface_name,
+                                const gchar     *signal_name,
+                                GVariant        *parameters,
+                                gpointer         user_data)
+{
+  ShellApp *app = user_data;
+  GVariant *changed_properties;
+  GVariantIter iter;
+  gboolean busy = FALSE;
+  const gchar *key, *interface_name_for_signal;
+  GVariant *value;
+
+  g_variant_get (parameters,
+                 "(&s@a{sv}as)",
+                 &interface_name_for_signal,
+                 &changed_properties,
+                 NULL);
+
+  if (g_strcmp0 (interface_name_for_signal, "org.gtk.Application") != 0)
+    return;
+
+  g_variant_iter_init (&iter, changed_properties);
+  while (g_variant_iter_next (&iter, "{&sv}", &key, &value))
+    {
+      if (g_strcmp0 (key, "Busy") != 0)
+        {
+          g_variant_unref (value);
+          continue;
+        }
+
+      busy = g_variant_get_boolean (value);
+      g_variant_unref (value);
+      break;
+    }
+
+  if (busy)
+    shell_app_state_transition (app, SHELL_APP_STATE_BUSY);
+  else
+    shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
+
+  if (changed_properties != NULL)
+    g_variant_unref (changed_properties);
+}
+
+static void
+shell_app_ensure_busy_watch (ShellApp *app)
+{
+  ShellAppRunningState *running_state = app->running_state;
+  MetaWindow *window;
+  const gchar *object_path;
+
+  if (running_state->properties_changed_id != 0)
+    return;
+
+  if (running_state->unique_bus_name == NULL)
+    return;
+
+  window = g_slist_nth_data (running_state->windows, 0);
+  object_path = meta_window_get_gtk_application_object_path (window);
+
+  if (object_path == NULL)
+    return;
+
+  running_state->properties_changed_id =
+    g_dbus_connection_signal_subscribe (running_state->session,
+                                        running_state->unique_bus_name,
+                                        "org.freedesktop.DBus.Properties",
+                                        "PropertiesChanged",
+                                        object_path,
+                                        "org.gtk.Application",
+                                        G_DBUS_SIGNAL_FLAGS_NONE,
+                                        application_properties_changed, app, NULL);
+}
+
 void
 _shell_app_add_window (ShellApp        *app,
                        MetaWindow      *window)
@@ -977,6 +1058,7 @@ _shell_app_add_window (ShellApp        *app,
   g_signal_connect (window, "notify::user-time", G_CALLBACK(shell_app_on_user_time_changed), app);
 
   shell_app_update_app_menu (app, window);
+  shell_app_ensure_busy_watch (app);
 
   if (app->state != SHELL_APP_STATE_STARTING)
     shell_app_state_transition (app, SHELL_APP_STATE_RUNNING);
@@ -1278,6 +1360,9 @@ unref_running_state (ShellAppRunningState *state)
 
   screen = shell_global_get_screen (shell_global_get ());
   g_signal_handler_disconnect (screen, state->workspace_switch_id);
+
+  if (state->properties_changed_id != 0)
+    g_dbus_connection_signal_unsubscribe (state->session, state->properties_changed_id);
 
   g_clear_object (&state->remote_menu);
   g_clear_object (&state->muxer);

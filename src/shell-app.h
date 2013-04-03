@@ -31,7 +31,8 @@ struct _ShellAppClass
 typedef enum {
   SHELL_APP_STATE_STOPPED,
   SHELL_APP_STATE_STARTING,
-  SHELL_APP_STATE_RUNNING
+  SHELL_APP_STATE_RUNNING,
+  SHELL_APP_STATE_BUSY
 } ShellAppState;
 
 GType shell_app_get_type (void) G_GNUC_CONST;
