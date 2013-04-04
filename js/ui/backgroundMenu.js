@@ -60,5 +60,7 @@ function addBackgroundMenu(actor) {
                       actor._backgroundMenu.destroy();
                       actor._backgroundMenu = null;
                       actor._backgroundManager = null;
+
+                      cursor.destroy();
                   });
 }
