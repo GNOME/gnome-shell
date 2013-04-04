@@ -126,6 +126,11 @@ const BackgroundCache = new Lang.Class({
     },
 
     removeImageContent: function(content) {
+        let filename = content.get_filename();
+
+        if (filename && this._fileMonitors[filename])
+            delete this._fileMonitors[filename];
+
         this._removeContent(this._images, content);
     },
 
