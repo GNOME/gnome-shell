@@ -29,6 +29,23 @@
 
 G_BEGIN_DECLS
 
+typedef struct _StThemeNodePaintState StThemeNodePaintState;
+
+struct _StThemeNodePaintState {
+  float alloc_width;
+  float alloc_height;
+
+  CoglHandle background_texture;
+  CoglHandle background_material;
+  CoglHandle border_slices_texture;
+  CoglHandle border_slices_material;
+  CoglHandle background_shadow_material;
+  CoglHandle box_shadow_material;
+  CoglHandle prerendered_texture;
+  CoglHandle prerendered_material;
+  CoglHandle corner_material[4];
+};
+
 struct _StThemeNode {
   GObject parent;
 
@@ -100,19 +117,7 @@ struct _StThemeNode {
   guint text_shadow_computed : 1;
   guint link_type : 2;
 
-  /* Graphics state */
-  float alloc_width;
-  float alloc_height;
-
-  CoglHandle background_shadow_material;
-  CoglHandle box_shadow_material;
-  CoglHandle background_texture;
-  CoglHandle background_material;
-  CoglHandle border_slices_texture;
-  CoglHandle border_slices_material;
-  CoglHandle prerendered_texture;
-  CoglHandle prerendered_material;
-  CoglHandle corner_material[4];
+  StThemeNodePaintState state;
 };
 
 struct _StThemeNodeClass {
@@ -123,8 +128,8 @@ struct _StThemeNodeClass {
 void _st_theme_node_ensure_background (StThemeNode *node);
 void _st_theme_node_ensure_geometry (StThemeNode *node);
 
-void _st_theme_node_init_drawing_state (StThemeNode *node);
-void _st_theme_node_free_drawing_state (StThemeNode *node);
+void _st_theme_node_paint_state_init (StThemeNodePaintState *state);
+void _st_theme_node_paint_state_free (StThemeNodePaintState *state);
 
 G_END_DECLS
 

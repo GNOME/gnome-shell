@@ -49,7 +49,7 @@ static void
 st_theme_node_init (StThemeNode *node)
 {
   node->transition_duration = -1;
-  _st_theme_node_init_drawing_state (node);
+  _st_theme_node_paint_state_init (&node->state);
 }
 
 static void
@@ -152,7 +152,7 @@ st_theme_node_finalize (GObject *object)
   if (node->background_image)
     g_free (node->background_image);
 
-  _st_theme_node_free_drawing_state (node);
+  _st_theme_node_paint_state_free (&node->state);
 
   G_OBJECT_CLASS (st_theme_node_parent_class)->finalize (object);
 }
