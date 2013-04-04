@@ -171,4 +171,10 @@ function addContextMenu(entry, params) {
     entry.connect('button-press-event', Lang.bind(null, _onButtonPressEvent, entry));
 
     entry.connect('popup-menu', Lang.bind(null, _onPopup, entry));
+
+    entry.connect('destroy', function() {
+        entry.menu.destroy();
+        entry.menu = null;
+        entry._menuManager = null;
+    });
 }
