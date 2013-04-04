@@ -160,7 +160,7 @@ main (int argc, char **argv)
   fb = COGL_FRAMEBUFFER (onscreen);
 
   cogl_onscreen_set_resizable (onscreen, TRUE);
-  cogl_onscreen_add_resize_handler (onscreen, resize_handler, onscreen);
+  cogl_onscreen_add_resize_callback (onscreen, resize_handler, onscreen, NULL);
 
   triangle = cogl_primitive_new_p2c4 (ctx, COGL_VERTICES_MODE_TRIANGLES,
                                       3, triangle_vertices);

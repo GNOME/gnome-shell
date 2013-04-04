@@ -47,7 +47,7 @@ _cogl_onscreen_init_from_template (CoglOnscreen *onscreen,
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
 
   COGL_TAILQ_INIT (&onscreen->frame_closures);
-  COGL_TAILQ_INIT (&onscreen->resize_callbacks);
+  COGL_TAILQ_INIT (&onscreen->resize_closures);
 
   framebuffer->config = onscreen_template->config;
   cogl_object_ref (framebuffer->config.swap_chain);
@@ -115,24 +115,20 @@ _cogl_onscreen_free (CoglOnscreen *onscreen)
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
   const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
-  CoglResizeNotifyEntry *resize_entry;
-  CoglFrameClosure *frame_closure;
   CoglFrameInfo *frame_info;
 
-  while ((resize_entry = COGL_TAILQ_FIRST (&onscreen->resize_callbacks)))
+  while (!COGL_TAILQ_EMPTY (&onscreen->resize_closures))
     {
-      COGL_TAILQ_REMOVE (&onscreen->resize_callbacks, resize_entry, list_node);
-      g_slice_free (CoglResizeNotifyEntry, resize_entry);
+      CoglOnscreenResizeClosure *resize_closure =
+        COGL_TAILQ_FIRST (&onscreen->resize_closures);
+      cogl_onscreen_remove_resize_callback (onscreen, resize_closure);
     }
 
-  while ((frame_closure = COGL_TAILQ_FIRST (&onscreen->frame_closures)))
+  while (!COGL_TAILQ_EMPTY (&onscreen->frame_closures))
     {
-      COGL_TAILQ_REMOVE (&onscreen->frame_closures, frame_closure, list_node);
-
-      if (frame_closure->destroy)
-        frame_closure->destroy (frame_closure->user_data);
-
-      g_slice_free (CoglFrameClosure, frame_closure);
+      CoglFrameClosure *frame_closure =
+        COGL_TAILQ_FIRST (&onscreen->frame_closures);
+      cogl_onscreen_remove_frame_callback (onscreen, frame_closure);
     }
 
   while ((frame_info = g_queue_pop_tail (&onscreen->pending_frame_infos)))
@@ -566,17 +562,17 @@ _cogl_onscreen_notify_complete (CoglOnscreen *onscreen, CoglFrameInfo *info)
 void
 _cogl_onscreen_notify_resize (CoglOnscreen *onscreen)
 {
-  CoglResizeNotifyEntry *entry, *tmp;
+  CoglOnscreenResizeClosure *closure, *tmp;
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
 
-  COGL_TAILQ_FOREACH_SAFE (entry,
-                           &onscreen->resize_callbacks,
+  COGL_TAILQ_FOREACH_SAFE (closure,
+                           &onscreen->resize_closures,
                            list_node,
                            tmp)
-    entry->callback (onscreen,
-                     framebuffer->width,
-                     framebuffer->height,
-                     entry->user_data);
+    closure->callback (onscreen,
+                       framebuffer->width,
+                       framebuffer->height,
+                       closure->user_data);
 }
 
 void
@@ -620,38 +616,33 @@ cogl_onscreen_get_resizable (CoglOnscreen *onscreen)
   return onscreen->resizable;
 }
 
-unsigned int
-cogl_onscreen_add_resize_handler (CoglOnscreen *onscreen,
-                                  CoglOnscreenResizeCallback callback,
-                                  void *user_data)
+CoglOnscreenResizeClosure *
+cogl_onscreen_add_resize_callback (CoglOnscreen *onscreen,
+                                   CoglOnscreenResizeCallback callback,
+                                   void *user_data,
+                                   CoglUserDataDestroyCallback destroy)
 {
-  CoglResizeNotifyEntry *entry = g_slice_new (CoglResizeNotifyEntry);
-  static int next_resize_callback_id = 0;
+  CoglOnscreenResizeClosure *closure = g_slice_new (CoglOnscreenResizeClosure);
 
-  entry->callback = callback;
-  entry->user_data = user_data;
-  entry->id = next_resize_callback_id++;
+  closure->callback = callback;
+  closure->user_data = user_data;
+  closure->destroy = destroy;
 
-  COGL_TAILQ_INSERT_TAIL (&onscreen->resize_callbacks, entry, list_node);
+  COGL_TAILQ_INSERT_TAIL (&onscreen->resize_closures, closure, list_node);
 
-  return entry->id;
+  return closure;
 }
 
 void
-cogl_onscreen_remove_resize_handler (CoglOnscreen *onscreen,
-                                     unsigned int id)
+cogl_onscreen_remove_resize_callback (CoglOnscreen *onscreen,
+                                      CoglOnscreenResizeClosure *closure)
 {
-  CoglResizeNotifyEntry *entry;
+  if (closure->destroy)
+    closure->destroy (closure->user_data);
 
-  COGL_TAILQ_FOREACH (entry, &onscreen->resize_callbacks, list_node)
-    {
-      if (entry->id == id)
-        {
-          COGL_TAILQ_REMOVE (&onscreen->resize_callbacks, entry, list_node);
-          g_slice_free (CoglResizeNotifyEntry, entry);
-          break;
-        }
-    }
+  COGL_TAILQ_REMOVE (&onscreen->resize_closures, closure, list_node);
+
+  g_slice_free (CoglOnscreenResizeClosure, closure);
 }
 
 int64_t

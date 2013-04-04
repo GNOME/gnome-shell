@@ -46,17 +46,16 @@ struct _CoglFrameClosure
   CoglUserDataDestroyCallback destroy;
 };
 
-typedef struct _CoglResizeNotifyEntry CoglResizeNotifyEntry;
+COGL_TAILQ_HEAD (CoglOnscreenResizeCallbackList, CoglOnscreenResizeClosure);
 
-COGL_TAILQ_HEAD (CoglResizeNotifyList, CoglResizeNotifyEntry);
-
-struct _CoglResizeNotifyEntry
+struct _CoglOnscreenResizeClosure
 {
-  COGL_TAILQ_ENTRY (CoglResizeNotifyEntry) list_node;
+  COGL_TAILQ_ENTRY (CoglOnscreenResizeClosure) list_node;
 
   CoglOnscreenResizeCallback callback;
+
   void *user_data;
-  unsigned int id;
+  CoglUserDataDestroyCallback destroy;
 };
 
 typedef struct _CoglOnscreenEvent CoglOnscreenEvent;
@@ -95,7 +94,7 @@ struct _CoglOnscreen
   CoglFrameCallbackList frame_closures;
 
   CoglBool resizable;
-  CoglResizeNotifyList resize_callbacks;
+  CoglOnscreenResizeCallbackList resize_closures;
 
   int64_t frame_counter;
   int64_t swap_frame_counter; /* frame counter at last all to

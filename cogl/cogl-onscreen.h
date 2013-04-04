@@ -614,7 +614,7 @@ cogl_onscreen_remove_swap_buffers_callback (CoglOnscreen *onscreen,
  * will be automatically updated to match the new size of the
  * framebuffer with an origin of (0,0). If your application needs more
  * specialized control of the viewport it will need to register a
- * resize handler using cogl_onscreen_add_resize_handler() so that it
+ * resize handler using cogl_onscreen_add_resize_callback() so that it
  * can track when the viewport has been changed automatically.</note>
  *
  * Since: 2.0
@@ -655,10 +655,10 @@ cogl_onscreen_get_resizable (CoglOnscreen *onscreen);
  * @width: The new width of @onscreen
  * @height: The new height of @onscreen
  * @user_data: The private passed to
- *             cogl_onscreen_add_resize_handler()
+ *             cogl_onscreen_add_resize_callback()
  *
  * Is a callback type used with the
- * cogl_onscreen_add_resize_handler() allowing applications to be
+ * cogl_onscreen_add_resize_callback() allowing applications to be
  * notified whenever an @onscreen framebuffer is resized.
  *
  * <note>Cogl automatically updates the viewport of an @onscreen
@@ -679,18 +679,34 @@ typedef void (*CoglOnscreenResizeCallback) (CoglOnscreen *onscreen,
                                             void *user_data);
 
 /**
- * cogl_onscreen_add_resize_handler:
+ * CoglOnscreenResizeClosure:
+ *
+ * An opaque type that tracks a #CoglOnscreenResizeCallback and
+ * associated user data. A #CoglOnscreenResizeClosure pointer will be
+ * returned from cogl_onscreen_add_resize_callback() and it allows you
+ * to remove a callback later using
+ * cogl_onscreen_remove_resize_callback().
+ *
+ * Since: 2.0
+ * Stability: unstable
+ */
+typedef struct _CoglOnscreenResizeClosure CoglOnscreenResizeClosure;
+
+/**
+ * cogl_onscreen_add_resize_callback:
  * @onscreen: A #CoglOnscreen framebuffer
  * @callback: A #CoglOnscreenResizeCallback to call when the @onscreen
  *            changes size.
  * @user_data: Private data to be passed to @callback.
+ * @destroy: An optional callback to destroy @user_data when the
+ *           @callback is removed or @onscreen is freed.
  *
  * Registers a @callback with @onscreen that will be called whenever
  * the @onscreen framebuffer changes size.
  *
  * The @callback can be removed using
- * cogl_onscreen_remove_resize_handler() passing the same @callback
- * and @user_data pair.
+ * cogl_onscreen_remove_resize_callback() passing the returned closure
+ * pointer.
  *
  * <note>Since Cogl automatically updates the viewport of an @onscreen
  * framebuffer that is resized, a resize callback can also be used to
@@ -704,29 +720,29 @@ typedef void (*CoglOnscreenResizeCallback) (CoglOnscreen *onscreen,
  * while an application might have arbitrary locks held for
  * example.</note>
  *
- * Return value: a unique identifier that can be used to remove to remove
- *               the callback later.
- *
+ * Return value: a #CoglOnscreenResizeClosure pointer that can be used to
+ *               remove the callback and associated @user_data later.
  * Since: 2.0
  */
-unsigned int
-cogl_onscreen_add_resize_handler (CoglOnscreen *onscreen,
-                                  CoglOnscreenResizeCallback callback,
-                                  void *user_data);
+CoglOnscreenResizeClosure *
+cogl_onscreen_add_resize_callback (CoglOnscreen *onscreen,
+                                   CoglOnscreenResizeCallback callback,
+                                   void *user_data,
+                                   CoglUserDataDestroyCallback destroy);
 
 /**
- * cogl_onscreen_remove_resize_handler:
+ * cogl_onscreen_remove_resize_callback:
  * @onscreen: A #CoglOnscreen framebuffer
- * @id: An identifier returned from cogl_onscreen_add_resize_handler()
+ * @closure: An identifier returned from cogl_onscreen_add_resize_callback()
  *
  * Removes a resize @callback and @user_data pair that were previously
- * associated with @onscreen via cogl_onscreen_add_resize_handler().
+ * associated with @onscreen via cogl_onscreen_add_resize_callback().
  *
  * Since: 2.0
  */
 void
-cogl_onscreen_remove_resize_handler (CoglOnscreen *onscreen,
-                                     unsigned int id);
+cogl_onscreen_remove_resize_callback (CoglOnscreen *onscreen,
+                                      CoglOnscreenResizeClosure *closure);
 
 /**
  * cogl_is_onscreen:
