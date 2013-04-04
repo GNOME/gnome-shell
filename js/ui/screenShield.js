@@ -562,6 +562,7 @@ const ScreenShield = new Lang.Class({
             this._bgManagers[i].destroy();
 
         this._bgManagers = [];
+        this._backgroundGroup.destroy_all_children();
 
         for (let i = 0; i < Main.layoutManager.monitors.length; i++)
             this._createBackground(i);
