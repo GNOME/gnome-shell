@@ -426,7 +426,7 @@ const Background = new Lang.Class({
         content.brightness = this._brightness;
         content.vignette_sharpness = this._vignetteSharpness;
 
-        this._cache.removeImageContent(content);
+        this._cache.removeImageContent(this._images[index].content);
         this._images[index].content = content;
         this._watchCacheFile(filename);
     },
