@@ -41,6 +41,7 @@ config.h
 config.h.in
 config.h.win32
 config.log
+config.lt
 config.status
 configure
 depcomp

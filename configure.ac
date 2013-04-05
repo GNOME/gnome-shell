@@ -178,6 +178,12 @@ dnl internal glib configure (as-glibconfig.m4)
 m4_ifdef([LT_OUTPUT], [LT_OUTPUT])
 
 dnl ================================================================
+dnl Find an appropriate libm, for sin() etc.
+dnl ================================================================
+LT_LIB_M
+AC_SUBST(LIBM)
+
+dnl ================================================================
 dnl See what platform we are building for
 dnl ================================================================
 AC_CANONICAL_HOST
