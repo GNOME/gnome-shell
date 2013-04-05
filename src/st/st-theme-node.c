@@ -3894,3 +3894,30 @@ st_theme_node_paint_equal (StThemeNode *node,
 
   return TRUE;
 }
+
+gchar *
+st_theme_node_to_string (StThemeNode *node)
+{
+  GString *desc;
+  gchar **it;
+
+  if (!node)
+    return g_strdup ("[null]");
+
+  desc = g_string_new (NULL);
+  g_string_append_printf (desc,
+                          "[%p %s#%s",
+                          node,
+                          g_type_name (node->element_type),
+                          node->element_id);
+
+  for (it = node->element_classes; it && *it; it++)
+    g_string_append_printf (desc, ".%s", *it);
+
+  for (it = node->pseudo_classes; it && *it; it++)
+    g_string_append_printf (desc, ":%s", *it);
+
+  g_string_append_c (desc, ']');
+
+  return g_string_free (desc, FALSE);
+}

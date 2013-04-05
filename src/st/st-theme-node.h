@@ -271,6 +271,8 @@ void st_theme_node_paint (StThemeNode            *node,
 void st_theme_node_invalidate_background_image (StThemeNode *node);
 void st_theme_node_invalidate_border_image (StThemeNode *node);
 
+gchar * st_theme_node_to_string (StThemeNode *node);
+
 void st_theme_node_paint_state_init (StThemeNodePaintState *state);
 void st_theme_node_paint_state_free (StThemeNodePaintState *state);
 void st_theme_node_paint_state_copy (StThemeNodePaintState *state,
