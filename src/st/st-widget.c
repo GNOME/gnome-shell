@@ -278,30 +278,40 @@ st_widget_texture_cache_changed (StTextureCache *cache,
 {
   StWidget *actor = ST_WIDGET (user_data);
   StThemeNode *node = actor->priv->theme_node;
-  StBorderImage *border_image;
   char *path;
-  gboolean changed;
+  gboolean changed = FALSE;
 
   if (node == NULL)
     return;
 
   path = g_filename_from_uri (uri, NULL, NULL);
 
-  changed = g_strcmp0 (st_theme_node_get_background_image (node), path) == 0;
+  if (g_strcmp0 (st_theme_node_get_background_image (node), path) == 0)
+    {
+      st_theme_node_invalidate_background_image (node);
+      changed = TRUE;
+    }
 
-  border_image = st_theme_node_get_border_image (node);
-  if (!changed && border_image)
-    changed = strcmp (st_border_image_get_filename (border_image), path) == 0;
+  if (g_strcmp0 (st_border_image_get_filename (st_theme_node_get_border_image (node)), path) == 0)
+    {
+      st_theme_node_invalidate_border_image (node);
+      changed = TRUE;
+    }
+
+  if (changed)
+    {
+      /* If we prerender the background / border, we need to update
+       * the paint state. We should probably implement a method to
+       * the theme node to determine this, but for now, just wipe
+       * the entire paint state.
+       */
+      st_theme_node_paint_state_invalidate (&actor->priv->paint_state);
+
+      if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (actor)))
+        clutter_actor_queue_redraw (CLUTTER_ACTOR (actor));
+    }
 
   g_free (path);
-
-  if (!changed)
-    return;
-
-  st_theme_node_paint_state_invalidate (&actor->priv->paint_state);
-
-  if (CLUTTER_ACTOR_IS_MAPPED (CLUTTER_ACTOR (actor)))
-    clutter_actor_queue_redraw (CLUTTER_ACTOR (actor));
 }
 
 static void

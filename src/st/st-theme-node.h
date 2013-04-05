@@ -100,11 +100,6 @@ struct _StThemeNodePaintState {
   float alloc_width;
   float alloc_height;
 
-  CoglHandle background_texture;
-  CoglHandle background_material;
-  CoglHandle border_slices_texture;
-  CoglHandle border_slices_material;
-  CoglHandle background_shadow_material;
   CoglHandle box_shadow_material;
   CoglHandle prerendered_texture;
   CoglHandle prerendered_material;
@@ -271,11 +266,14 @@ void st_theme_node_paint (StThemeNode            *node,
                           const ClutterActorBox  *box,
                           guint8                  paint_opacity);
 
+void st_theme_node_invalidate_background_image (StThemeNode *node);
+void st_theme_node_invalidate_border_image (StThemeNode *node);
+
 void st_theme_node_paint_state_init (StThemeNodePaintState *state);
 void st_theme_node_paint_state_free (StThemeNodePaintState *state);
 void st_theme_node_paint_state_copy (StThemeNodePaintState *state,
                                      StThemeNodePaintState *other);
-void st_theme_node_paint_state_invalidate  (StThemeNodePaintState *node);
+void st_theme_node_paint_state_invalidate (StThemeNodePaintState *state);
 
 G_END_DECLS
 
