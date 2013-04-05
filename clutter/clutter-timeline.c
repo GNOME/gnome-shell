@@ -2496,6 +2496,11 @@ clutter_timeline_set_cubic_bezier_progress (ClutterTimeline    *timeline,
 
   priv->cb_1 = *c_1;
   priv->cb_2 = *c_2;
+
+  /* ensure the range on the X coordinate */
+  priv->cb_1.x = CLAMP (priv->cb_1.x, 0.f, 1.f);
+  priv->cb_2.x = CLAMP (priv->cb_2.x, 0.f, 1.f);
+
   clutter_timeline_set_progress_mode (timeline, CLUTTER_CUBIC_BEZIER);
 }
 
