@@ -1180,6 +1180,12 @@ AC_CHECK_FUNCS([ffs])
 dnl 'memmem' is a GNU extension but we have a simple fallback
 AC_CHECK_FUNCS([memmem])
 
+dnl This is used in the cogl-gles2-gears example but it is a GNU extension
+save_libs="$LIBS"
+LIBS="$LIBS $LIBM"
+AC_CHECK_FUNCS([sincos])
+LIBS="$save_libs"
+
 dnl ================================================================
 dnl Platform values
 dnl ================================================================
