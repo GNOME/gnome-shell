@@ -58,3 +58,4 @@ clutter/gdk/clutter-backend-gdk.c
 clutter/wayland/clutter-wayland-surface.c
 clutter/x11/clutter-backend-x11.c
 clutter/x11/clutter-keymap-x11.c
+clutter/x11/clutter-x11-texture-pixmap.c
