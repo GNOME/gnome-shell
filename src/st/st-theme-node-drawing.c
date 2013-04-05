@@ -1269,53 +1269,6 @@ st_theme_node_prerender_background (StThemeNode *node,
   return texture;
 }
 
-void
-_st_theme_node_paint_state_free (StThemeNodePaintState *state)
-{
-  int corner_id;
-
-  if (state->background_texture != COGL_INVALID_HANDLE)
-    cogl_handle_unref (state->background_texture);
-  if (state->background_material != COGL_INVALID_HANDLE)
-    cogl_handle_unref (state->background_material);
-  if (state->background_shadow_material != COGL_INVALID_HANDLE)
-    cogl_handle_unref (state->background_shadow_material);
-  if (state->border_slices_texture != COGL_INVALID_HANDLE)
-    cogl_handle_unref (state->border_slices_texture);
-  if (state->border_slices_material != COGL_INVALID_HANDLE)
-    cogl_handle_unref (state->border_slices_material);
-  if (state->prerendered_texture != COGL_INVALID_HANDLE)
-    cogl_handle_unref (state->prerendered_texture);
-  if (state->prerendered_material != COGL_INVALID_HANDLE)
-    cogl_handle_unref (state->prerendered_material);
-  if (state->box_shadow_material != COGL_INVALID_HANDLE)
-    cogl_handle_unref (state->box_shadow_material);
-
-  for (corner_id = 0; corner_id < 4; corner_id++)
-    if (state->corner_material[corner_id] != COGL_INVALID_HANDLE)
-      cogl_handle_unref (state->corner_material[corner_id]);
-
-  _st_theme_node_paint_state_init (state);
-}
-
-void
-_st_theme_node_paint_state_init (StThemeNodePaintState *state)
-{
-  int corner_id;
-
-  state->background_texture = COGL_INVALID_HANDLE;
-  state->background_material = COGL_INVALID_HANDLE;
-  state->background_shadow_material = COGL_INVALID_HANDLE;
-  state->box_shadow_material = COGL_INVALID_HANDLE;
-  state->border_slices_texture = COGL_INVALID_HANDLE;
-  state->border_slices_material = COGL_INVALID_HANDLE;
-  state->prerendered_texture = COGL_INVALID_HANDLE;
-  state->prerendered_material = COGL_INVALID_HANDLE;
-
-  for (corner_id = 0; corner_id < 4; corner_id++)
-    state->corner_material[corner_id] = COGL_INVALID_HANDLE;
-}
-
 static void st_theme_node_paint_borders (StThemeNode           *node,
                                          StThemeNodePaintState *state,
                                          const ClutterActorBox *box,
@@ -1345,7 +1298,7 @@ st_theme_node_render_resources (StThemeNode           *node,
    * geometry change versus things that can be cached regardless, such as
    * a background image.
    */
-  _st_theme_node_paint_state_free (state);
+  st_theme_node_paint_state_free (state);
 
   state->alloc_width = width;
   state->alloc_height = height;
@@ -1939,12 +1892,12 @@ st_theme_node_paint_outline (StThemeNode           *node,
 
 void
 st_theme_node_paint (StThemeNode           *node,
+                     StThemeNodePaintState *state,
                      const ClutterActorBox *box,
                      guint8                 paint_opacity)
 {
   float width, height;
   ClutterActorBox allocation;
-  StThemeNodePaintState *state = &node->state;
 
   /* Some things take an ActorBox, some things just width/height */
   width = box->x2 - box->x1;
@@ -2064,7 +2017,54 @@ st_theme_node_paint (StThemeNode           *node,
     }
 }
 
-static void
+void
+st_theme_node_paint_state_free (StThemeNodePaintState *state)
+{
+  int corner_id;
+
+  if (state->background_texture != COGL_INVALID_HANDLE)
+    cogl_handle_unref (state->background_texture);
+  if (state->background_material != COGL_INVALID_HANDLE)
+    cogl_handle_unref (state->background_material);
+  if (state->background_shadow_material != COGL_INVALID_HANDLE)
+    cogl_handle_unref (state->background_shadow_material);
+  if (state->border_slices_texture != COGL_INVALID_HANDLE)
+    cogl_handle_unref (state->border_slices_texture);
+  if (state->border_slices_material != COGL_INVALID_HANDLE)
+    cogl_handle_unref (state->border_slices_material);
+  if (state->prerendered_texture != COGL_INVALID_HANDLE)
+    cogl_handle_unref (state->prerendered_texture);
+  if (state->prerendered_material != COGL_INVALID_HANDLE)
+    cogl_handle_unref (state->prerendered_material);
+  if (state->box_shadow_material != COGL_INVALID_HANDLE)
+    cogl_handle_unref (state->box_shadow_material);
+
+  for (corner_id = 0; corner_id < 4; corner_id++)
+    if (state->corner_material[corner_id] != COGL_INVALID_HANDLE)
+      cogl_handle_unref (state->corner_material[corner_id]);
+
+  st_theme_node_paint_state_init (state);
+}
+
+void
+st_theme_node_paint_state_init (StThemeNodePaintState *state)
+{
+  int corner_id;
+
+  state->background_texture = COGL_INVALID_HANDLE;
+  state->background_material = COGL_INVALID_HANDLE;
+  state->background_shadow_material = COGL_INVALID_HANDLE;
+  state->box_shadow_material = COGL_INVALID_HANDLE;
+  state->border_slices_texture = COGL_INVALID_HANDLE;
+  state->border_slices_material = COGL_INVALID_HANDLE;
+  state->prerendered_texture = COGL_INVALID_HANDLE;
+  state->prerendered_material = COGL_INVALID_HANDLE;
+
+  for (corner_id = 0; corner_id < 4; corner_id++)
+    state->corner_material[corner_id] = COGL_INVALID_HANDLE;
+}
+
+void
 st_theme_node_paint_state_copy (StThemeNodePaintState *state,
                                 StThemeNodePaintState *other)
 {
@@ -2073,10 +2073,7 @@ st_theme_node_paint_state_copy (StThemeNodePaintState *state,
   if (state == other)
     return;
 
-  /* Check omitted for speed: */
-  /* g_return_if_fail (st_theme_node_paint_equal (node, other)); */
-
-  _st_theme_node_paint_state_free (state);
+  st_theme_node_paint_state_free (state);
 
   state->alloc_width = other->alloc_width;
   state->alloc_height = other->alloc_height;
@@ -2102,33 +2099,9 @@ st_theme_node_paint_state_copy (StThemeNodePaintState *state,
       state->corner_material[corner_id] = cogl_handle_ref (other->corner_material[corner_id]);
 }
 
-/**
- * st_theme_node_copy_cached_paint_state:
- * @node: a #StThemeNode
- * @other: a different #StThemeNode
- *
- * Copy cached painting state from @other to @node. This function can be used to
- * optimize redrawing cached background images when the style on an element changess
- * in a way that doesn't affect background drawing. This function must only be called
- * if st_theme_node_paint_equal (node, other) returns %TRUE.
- */
 void
-st_theme_node_copy_cached_paint_state (StThemeNode *node,
-                                       StThemeNode *other)
-{
-  st_theme_node_paint_state_copy (&node->state,
-                                  &other->state);
-}
-
-static void
 st_theme_node_paint_state_invalidate (StThemeNodePaintState *state)
 {
   state->alloc_width = 0;
   state->alloc_height = 0;
-}
-
-void
-st_theme_node_invalidate_paint_state (StThemeNode *node)
-{
-  st_theme_node_paint_state_invalidate (&node->state);
 }

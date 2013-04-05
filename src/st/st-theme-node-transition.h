@@ -56,6 +56,7 @@ GType st_theme_node_transition_get_type (void) G_GNUC_CONST;
 
 StThemeNodeTransition *st_theme_node_transition_new (StThemeNode *from_node,
                                                      StThemeNode *to_node,
+                                                     StThemeNodePaintState *old_paint_state,
                                                      guint        duration);
 
 void  st_theme_node_transition_update   (StThemeNodeTransition *transition,
@@ -68,6 +69,8 @@ void  st_theme_node_transition_paint    (StThemeNodeTransition *transition,
 void  st_theme_node_transition_get_paint_box (StThemeNodeTransition *transition,
                                               const ClutterActorBox *allocation,
                                               ClutterActorBox       *paint_box);
+
+StThemeNodePaintState * st_theme_node_transition_get_new_paint_state (StThemeNodeTransition *transition);
 
 G_END_DECLS
 

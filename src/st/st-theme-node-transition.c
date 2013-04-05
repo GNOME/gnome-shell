@@ -33,6 +33,9 @@ struct _StThemeNodeTransitionPrivate {
   StThemeNode *old_theme_node;
   StThemeNode *new_theme_node;
 
+  StThemeNodePaintState old_paint_state;
+  StThemeNodePaintState new_paint_state;
+
   CoglHandle old_texture;
   CoglHandle new_texture;
 
@@ -75,6 +78,7 @@ on_timeline_new_frame (ClutterTimeline       *timeline,
 StThemeNodeTransition *
 st_theme_node_transition_new (StThemeNode *from_node,
                               StThemeNode *to_node,
+                              StThemeNodePaintState *old_paint_state,
                               guint        duration)
 {
   StThemeNodeTransition *transition;
@@ -90,6 +94,9 @@ st_theme_node_transition_new (StThemeNode *from_node,
   transition->priv->old_theme_node = g_object_ref (from_node);
   transition->priv->new_theme_node = g_object_ref (to_node);
 
+  st_theme_node_paint_state_copy (&transition->priv->old_paint_state,
+                                  old_paint_state);
+
   transition->priv->timeline = clutter_timeline_new (duration);
 
   transition->priv->timeline_completed_id =
@@ -104,6 +111,12 @@ st_theme_node_transition_new (StThemeNode *from_node,
   clutter_timeline_start (transition->priv->timeline);
 
   return transition;
+}
+
+StThemeNodePaintState *
+st_theme_node_transition_get_new_paint_state (StThemeNodeTransition *transition)
+{
+  return &transition->priv->new_paint_state;
 }
 
 void
@@ -134,6 +147,12 @@ st_theme_node_transition_update (StThemeNodeTransition *transition,
    */
   if (st_theme_node_equal (new_node, old_node))
     {
+      {
+        StThemeNodePaintState tmp = priv->old_paint_state;
+        priv->old_paint_state = priv->new_paint_state;
+        priv->new_paint_state = tmp;
+      }
+
       if (clutter_timeline_get_elapsed_time (priv->timeline) > 0)
         {
           if (direction == CLUTTER_TIMELINE_FORWARD)
@@ -162,15 +181,10 @@ st_theme_node_transition_update (StThemeNodeTransition *transition,
 
           clutter_timeline_set_duration (priv->timeline, new_duration);
 
-          /* If the change doesn't affect painting, we don't need to redraw,
-           * but we still need to replace the node so that we properly share
-           * caching with the painting that happens after the transition finishes.
-           */
-          if (!st_theme_node_paint_equal (priv->new_theme_node, new_node))
-              priv->needs_setup = TRUE;
-
           g_object_unref (priv->new_theme_node);
           priv->new_theme_node = g_object_ref (new_node);
+
+          st_theme_node_paint_state_invalidate (&priv->new_paint_state);
         }
     }
 }
@@ -285,7 +299,7 @@ setup_framebuffers (StThemeNodeTransition *transition,
   cogl_ortho (priv->offscreen_box.x1, priv->offscreen_box.x2,
               priv->offscreen_box.y2, priv->offscreen_box.y1,
               0.0, 1.0);
-  st_theme_node_paint (priv->old_theme_node, allocation, 255);
+  st_theme_node_paint (priv->old_theme_node, &priv->old_paint_state, allocation, 255);
   cogl_pop_framebuffer ();
 
   cogl_push_framebuffer (priv->new_offscreen);
@@ -293,7 +307,7 @@ setup_framebuffers (StThemeNodeTransition *transition,
   cogl_ortho (priv->offscreen_box.x1, priv->offscreen_box.x2,
               priv->offscreen_box.y2, priv->offscreen_box.y1,
               0.0, 1.0);
-  st_theme_node_paint (priv->new_theme_node, allocation, 255);
+  st_theme_node_paint (priv->new_theme_node, &priv->new_paint_state, allocation, 255);
   cogl_pop_framebuffer ();
 
   return TRUE;
@@ -408,6 +422,9 @@ st_theme_node_transition_dispose (GObject *object)
   priv->timeline_completed_id = 0;
   priv->timeline_new_frame_id = 0;
 
+  st_theme_node_paint_state_free (&priv->old_paint_state);
+  st_theme_node_paint_state_free (&priv->new_paint_state);
+
   G_OBJECT_CLASS (st_theme_node_transition_parent_class)->dispose (object);
 }
 
@@ -424,6 +441,9 @@ st_theme_node_transition_init (StThemeNodeTransition *transition)
 
   transition->priv->old_offscreen = NULL;
   transition->priv->new_offscreen = NULL;
+
+  st_theme_node_paint_state_init (&transition->priv->old_paint_state);
+  st_theme_node_paint_state_init (&transition->priv->new_paint_state);
 
   transition->priv->needs_setup = TRUE;
 }

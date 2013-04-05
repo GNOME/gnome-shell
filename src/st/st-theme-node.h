@@ -94,6 +94,23 @@ typedef enum {
   ST_GRADIENT_RADIAL
 } StGradientType;
 
+typedef struct _StThemeNodePaintState StThemeNodePaintState;
+
+struct _StThemeNodePaintState {
+  float alloc_width;
+  float alloc_height;
+
+  CoglHandle background_texture;
+  CoglHandle background_material;
+  CoglHandle border_slices_texture;
+  CoglHandle border_slices_material;
+  CoglHandle background_shadow_material;
+  CoglHandle box_shadow_material;
+  CoglHandle prerendered_texture;
+  CoglHandle prerendered_material;
+  CoglHandle corner_material[4];
+};
+
 GType st_theme_node_get_type (void) G_GNUC_CONST;
 
 StThemeNode *st_theme_node_new (StThemeContext *context,
@@ -250,12 +267,15 @@ gboolean st_theme_node_paint_equal    (StThemeNode *node,
                                        StThemeNode *other);
 
 void st_theme_node_paint (StThemeNode            *node,
+                          StThemeNodePaintState  *state,
                           const ClutterActorBox  *box,
                           guint8                  paint_opacity);
 
-void st_theme_node_copy_cached_paint_state (StThemeNode *node,
-                                            StThemeNode *other);
-void st_theme_node_invalidate_paint_state  (StThemeNode *node);
+void st_theme_node_paint_state_init (StThemeNodePaintState *state);
+void st_theme_node_paint_state_free (StThemeNodePaintState *state);
+void st_theme_node_paint_state_copy (StThemeNodePaintState *state,
+                                     StThemeNodePaintState *other);
+void st_theme_node_paint_state_invalidate  (StThemeNodePaintState *node);
 
 G_END_DECLS
 
