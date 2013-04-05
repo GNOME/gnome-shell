@@ -97,6 +97,8 @@ typedef enum {
 typedef struct _StThemeNodePaintState StThemeNodePaintState;
 
 struct _StThemeNodePaintState {
+  StThemeNode *node;
+
   float alloc_width;
   float alloc_height;
 

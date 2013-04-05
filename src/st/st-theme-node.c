@@ -3801,8 +3801,8 @@ st_theme_node_geometry_equal (StThemeNode *node,
 
 /**
  * st_theme_node_paint_equal:
- * @node: a #StThemeNode
- * @other: a different #StThemeNode
+ * @node: (allow-none): a #StThemeNode
+ * @other: (allow-none): a different #StThemeNode
  *
  * Check if st_theme_node_paint() will paint identically for @node as it does
  * for @other. Note that in some cases this function may return %TRUE even
@@ -3819,12 +3819,12 @@ st_theme_node_paint_equal (StThemeNode *node,
   StShadow *shadow, *other_shadow;
   int i;
 
-  g_return_val_if_fail (ST_IS_THEME_NODE (node), FALSE);
+  /* Make sure NULL != NULL */
+  if (node == NULL || other == NULL)
+    return TRUE;
 
   if (node == other)
     return TRUE;
-
-  g_return_val_if_fail (ST_IS_THEME_NODE (other), FALSE);
 
   _st_theme_node_ensure_background (node);
   _st_theme_node_ensure_background (other);

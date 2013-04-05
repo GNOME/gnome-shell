@@ -1965,7 +1965,10 @@ st_theme_node_paint (StThemeNode           *node,
     return;
 
   if (state->alloc_width != width || state->alloc_height != height)
-    st_theme_node_render_resources (node, state, width, height);
+    {
+      state->node = node;
+      st_theme_node_render_resources (node, state, width, height);
+    }
 
   /* Rough notes about the relationship of borders and backgrounds in CSS3;
    * see http://www.w3.org/TR/css3-background/ for more accurate details.
@@ -2097,6 +2100,7 @@ st_theme_node_paint_state_init (StThemeNodePaintState *state)
 {
   int corner_id;
 
+  state->node = NULL;
   state->box_shadow_material = COGL_INVALID_HANDLE;
   state->prerendered_texture = COGL_INVALID_HANDLE;
   state->prerendered_material = COGL_INVALID_HANDLE;
@@ -2115,6 +2119,8 @@ st_theme_node_paint_state_copy (StThemeNodePaintState *state,
     return;
 
   st_theme_node_paint_state_free (state);
+
+  state->node = other->node;
 
   state->alloc_width = other->alloc_width;
   state->alloc_height = other->alloc_height;
