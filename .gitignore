@@ -62,6 +62,7 @@ depcomp
 /doc/reference/cogl2/*.bak
 /examples/cogl-crate
 /examples/cogl-gles2-context
+/examples/cogl-gles2-gears
 /examples/cogl-hello
 /examples/cogl-info
 /examples/cogl-msaa
