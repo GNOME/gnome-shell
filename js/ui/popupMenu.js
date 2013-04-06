@@ -1157,6 +1157,7 @@ const PopupMenuBase = new Lang.Class({
     },
 
     destroy: function() {
+        this.close();
         this.removeAll();
         this.actor.destroy();
 
