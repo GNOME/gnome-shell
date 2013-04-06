@@ -35,7 +35,8 @@ const RunDialog = new Lang.Class({
     Extends: ModalDialog.ModalDialog,
 
     _init : function() {
-        this.parent({ styleClass: 'run-dialog' });
+        this.parent({ styleClass: 'run-dialog',
+                      destroyOnClose: false });
 
         this._lockdownSettings = new Gio.Settings({ schema: LOCKDOWN_SCHEMA });
         this._terminalSettings = new Gio.Settings({ schema: TERMINAL_SCHEMA });
