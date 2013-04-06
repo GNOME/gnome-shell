@@ -38,15 +38,13 @@ const ModalDialog = new Lang.Class({
                                         styleClass: null,
                                         parentActor: Main.uiGroup,
                                         keybindingMode: Shell.KeyBindingMode.SYSTEM_MODAL,
-                                        shouldFadeIn: true,
-                                        destroyOnClose: true });
+                                        shouldFadeIn: true });
 
         this.state = State.CLOSED;
         this._hasModal = false;
         this._keybindingMode = params.keybindingMode;
         this._shellReactive = params.shellReactive;
         this._shouldFadeIn = params.shouldFadeIn;
-        this._destroyOnClose = params.destroyOnClose;
 
         this._group = new St.Widget({ visible: false,
                                       x: 0,
@@ -279,9 +277,6 @@ const ModalDialog = new Lang.Class({
                                    this.state = State.CLOSED;
                                    this._group.hide();
                                    this.emit('closed');
-
-                                   if (this._destroyOnClose)
-                                       this.destroy();
                                })
                          });
     },

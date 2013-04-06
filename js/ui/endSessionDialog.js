@@ -225,8 +225,7 @@ const EndSessionDialog = new Lang.Class({
     Extends: ModalDialog.ModalDialog,
 
     _init: function() {
-        this.parent({ styleClass: 'end-session-dialog',
-                      destroyOnClose: false });
+        this.parent({ styleClass: 'end-session-dialog' });
 
         this._user = AccountsService.UserManager.get_default().get_user(GLib.get_user_name());
 
