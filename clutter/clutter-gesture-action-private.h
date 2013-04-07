@@ -35,7 +35,7 @@ G_BEGIN_DECLS
  * it needs to wait until the drag threshold has been exceeded before
  * considering that the gesture has begun;
  * @CLUTTER_GESTURE_TRIGGER_BEFORE: Tell #ClutterGestureAction that
- * the gesture must begin immegiately and that it must be cancelled
+ * the gesture must begin immediately and that it must be cancelled
  * once the drag exceed the configured threshold.
  *
  * Enum passed to the _clutter_gesture_action_set_threshold_trigger_edge()
