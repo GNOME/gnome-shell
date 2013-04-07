@@ -291,7 +291,7 @@ stage_captured_event_cb (ClutterActor       *stage,
   gboolean return_value;
   GesturePoint *point;
   gfloat motion_x, motion_y;
-  gint64 time;
+  gint64 _time;
 
   if ((point = gesture_find_point (action, event, &position)) == NULL)
     return CLUTTER_EVENT_PROPAGATE;
@@ -347,9 +347,9 @@ stage_captured_event_cb (ClutterActor       *stage,
       point->last_motion_x = motion_x;
       point->last_motion_y = motion_y;
 
-      time = clutter_event_get_time (event);
-      point->last_delta_time = time - point->last_motion_time;
-      point->last_motion_time = time;
+      _time = clutter_event_get_time (event);
+      point->last_delta_time = _time - point->last_motion_time;
+      point->last_motion_time = _time;
 
       g_signal_emit (action, gesture_signals[GESTURE_PROGRESS], 0, actor,
                      &return_value);
@@ -384,8 +384,8 @@ stage_captured_event_cb (ClutterActor       *stage,
             /* Treat the release event as the continuation of the last motion,
              * in case the user keeps the pointer still for a while before
              * releasing it. */
-            time = clutter_event_get_time (event);
-            point->last_delta_time += time - point->last_motion_time;
+            _time = clutter_event_get_time (event);
+            point->last_delta_time += _time - point->last_motion_time;
 
             priv->in_gesture = FALSE;
             g_signal_emit (action, gesture_signals[GESTURE_END], 0, actor);
