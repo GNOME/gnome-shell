@@ -128,6 +128,15 @@ struct _ClutterGestureActionPrivate
 
 enum
 {
+  PROP_0,
+
+  PROP_N_TOUCH_POINTS,
+
+  PROP_LAST
+};
+
+enum
+{
   GESTURE_BEGIN,
   GESTURE_PROGRESS,
   GESTURE_END,
@@ -136,6 +145,7 @@ enum
   LAST_SIGNAL
 };
 
+static GParamSpec *gesture_props[PROP_LAST];
 static guint gesture_signals[LAST_SIGNAL] = { 0, };
 
 G_DEFINE_TYPE (ClutterGestureAction, clutter_gesture_action, CLUTTER_TYPE_ACTION);
@@ -516,17 +526,90 @@ _clutter_gesture_action_set_threshold_trigger_edge  (ClutterGestureAction     *a
 }
 
 static void
+clutter_gesture_action_set_property (GObject      *gobject,
+                                     guint         prop_id,
+                                     const GValue *value,
+                                     GParamSpec   *pspec)
+{
+  ClutterGestureAction *self = CLUTTER_GESTURE_ACTION (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_N_TOUCH_POINTS:
+      clutter_gesture_action_set_n_touch_points (self, g_value_get_int (value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+clutter_gesture_action_get_property (GObject    *gobject,
+                                     guint       prop_id,
+                                     GValue     *value,
+                                     GParamSpec *pspec)
+{
+  ClutterGestureAction *self = CLUTTER_GESTURE_ACTION (gobject);
+
+  switch (prop_id)
+    {
+    case PROP_N_TOUCH_POINTS:
+      g_value_set_int (value, self->priv->requested_nb_points);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+clutter_gesture_action_finalize (GObject *gobject)
+{
+  ClutterGestureActionPrivate *priv = CLUTTER_GESTURE_ACTION (gobject)->priv;
+
+  g_array_unref (priv->points);
+
+  G_OBJECT_CLASS (clutter_gesture_action_parent_class)->finalize (gobject);
+}
+
+static void
 clutter_gesture_action_class_init (ClutterGestureActionClass *klass)
 {
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   ClutterActorMetaClass *meta_class = CLUTTER_ACTOR_META_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (ClutterGestureActionPrivate));
+
+  gobject_class->finalize = clutter_gesture_action_finalize;
+  gobject_class->set_property = clutter_gesture_action_set_property;
+  gobject_class->get_property = clutter_gesture_action_get_property;
 
   meta_class->set_actor = clutter_gesture_action_set_actor;
 
   klass->gesture_begin = default_event_handler;
   klass->gesture_progress = default_event_handler;
   klass->gesture_prepare = default_event_handler;
+
+  /**
+   * ClutterGestureAction:n-touch-points:
+   *
+   * Number of touch points to trigger a gesture action.
+   *
+   * Since: 1.16
+   */
+  gesture_props[PROP_N_TOUCH_POINTS] =
+    g_param_spec_int ("n-touch-points",
+                      P_("Number touch points"),
+                      P_("Number of touch points"),
+                      1, G_MAXINT, 1,
+                      CLUTTER_PARAM_READWRITE);
+
+  g_object_class_install_properties (gobject_class,
+                                     PROP_LAST,
+                                     gesture_props);
 
   /**
    * ClutterGestureAction::gesture-begin:
@@ -876,6 +959,9 @@ clutter_gesture_action_set_n_touch_points (ClutterGestureAction *action,
 
   priv = action->priv;
 
+  if (priv->requested_nb_points == nb_points)
+    return;
+
   priv->requested_nb_points = nb_points;
 
   if (priv->in_gesture)
@@ -906,6 +992,9 @@ clutter_gesture_action_set_n_touch_points (ClutterGestureAction *action,
             }
         }
     }
+
+  g_object_notify_by_pspec (G_OBJECT (action),
+                            gesture_props[PROP_N_TOUCH_POINTS]);
 }
 
 /**
