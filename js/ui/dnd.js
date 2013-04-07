@@ -302,8 +302,8 @@ const _Draggable = new Lang.Class({
             // Set the actor's scale such that it will keep the same
             // transformed size when it's reparented to the uiGroup
             let [scaledWidth, scaledHeight] = this.actor.get_transformed_size();
-            this.actor.set_scale(scaledWidth / this.actor.width,
-                                 scaledHeight / this.actor.height);
+            this._dragActor.set_scale(scaledWidth / this.actor.width,
+                                      scaledHeight / this.actor.height);
         }
 
         this._dragOrigOpacity = this._dragActor.opacity;
