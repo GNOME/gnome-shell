@@ -82,11 +82,6 @@ const EntryMenu = new Lang.Class({
             this.actor.grab_key_focus();
     },
 
-    close: function(animate) {
-        this._entry.grab_key_focus();
-        this.parent(animate);
-    },
-
     _updateCopyItem: function() {
         let selection = this._entry.clutter_text.get_selection();
         this._copyItem.setSensitive(!this._entry.clutter_text.password_char &&
