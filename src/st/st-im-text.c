@@ -74,27 +74,24 @@ st_im_text_dispose (GObject *object)
 }
 
 static void
-update_im_cursor_location (StIMText *self)
+st_im_text_cursor_event (ClutterText           *self,
+                         const ClutterGeometry *geometry)
 {
-  StIMTextPrivate *priv = self->priv;
-  ClutterText *clutter_text = CLUTTER_TEXT (self);
-  gint position;
-  gfloat cursor_x, cursor_y, cursor_height;
+  StIMTextPrivate *priv = ST_IM_TEXT (self)->priv;
   gfloat actor_x, actor_y;
   GdkRectangle area;
 
-  position = clutter_text_get_cursor_position (clutter_text);
-  clutter_text_position_to_coords (clutter_text, position,
-                                   &cursor_x, &cursor_y, &cursor_height);
-
   clutter_actor_get_transformed_position (CLUTTER_ACTOR (self), &actor_x, &actor_y);
 
-  area.x = (int)(0.5 + cursor_x + actor_x);
-  area.y = (int)(0.5 + cursor_y + actor_y);
-  area.width = 0;
-  area.height = (int)(0.5 + cursor_height);
+  area.x = (int)(0.5 + geometry->x + actor_x);
+  area.y = (int)(0.5 + geometry->y + actor_y);
+  area.width = geometry->width;
+  area.height = geometry->height;
 
   gtk_im_context_set_cursor_location (priv->im_context, &area);
+
+  if (CLUTTER_TEXT_CLASS (st_im_text_parent_class)->cursor_event)
+    CLUTTER_TEXT_CLASS (st_im_text_parent_class)->cursor_event (self, geometry);
 }
 
 static void
@@ -188,20 +185,6 @@ reset_im_context (StIMText *self)
       gtk_im_context_reset (priv->im_context);
       priv->need_im_reset = FALSE;
     }
-}
-
-static void
-st_im_text_paint (ClutterActor *actor)
-{
-  StIMText *self = ST_IM_TEXT (actor);
-  ClutterText *clutter_text = CLUTTER_TEXT (actor);
-
-  /* This updates the cursor position as a side-effect */
-  if (CLUTTER_ACTOR_CLASS (st_im_text_parent_class)->paint)
-    CLUTTER_ACTOR_CLASS (st_im_text_parent_class)->paint (actor);
-
-  if (clutter_text_get_editable (clutter_text))
-    update_im_cursor_location (self);
 }
 
 static gboolean
@@ -426,12 +409,12 @@ st_im_text_class_init (StIMTextClass *klass)
 {
   GObjectClass *object_class = G_OBJECT_CLASS (klass);
   ClutterActorClass *actor_class = CLUTTER_ACTOR_CLASS (klass);
+  ClutterTextClass *text_class = CLUTTER_TEXT_CLASS (klass);
 
   g_type_class_add_private (klass, sizeof (StIMTextPrivate));
 
   object_class->dispose = st_im_text_dispose;
 
-  actor_class->paint = st_im_text_paint;
   actor_class->get_paint_volume = st_im_text_get_paint_volume;
   actor_class->realize = st_im_text_realize;
   actor_class->unrealize = st_im_text_unrealize;
@@ -440,6 +423,8 @@ st_im_text_class_init (StIMTextClass *klass)
   actor_class->captured_event = st_im_text_captured_event;
   actor_class->key_focus_in = st_im_text_key_focus_in;
   actor_class->key_focus_out = st_im_text_key_focus_out;
+
+  text_class->cursor_event = st_im_text_cursor_event;
 }
 
 static void
