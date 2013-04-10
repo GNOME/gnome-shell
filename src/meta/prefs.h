@@ -353,6 +353,7 @@ typedef enum _MetaKeyBindingAction
   META_KEYBINDING_ACTION_MOVE_TO_SIDE_W,
   META_KEYBINDING_ACTION_MOVE_TO_CENTER,
   META_KEYBINDING_ACTION_OVERLAY_KEY,
+  META_KEYBINDING_ACTION_ISO_NEXT_GROUP,
 
   META_KEYBINDING_ACTION_LAST
 } MetaKeyBindingAction;
@@ -442,6 +443,7 @@ void meta_prefs_get_window_binding (const char          *name,
                                     MetaVirtualModifier *modifiers);
 
 void meta_prefs_get_overlay_binding (MetaKeyCombo *combo);
+const char *meta_prefs_get_iso_next_group_option (void);
 
 gboolean           meta_prefs_get_visual_bell      (void);
 gboolean           meta_prefs_bell_is_audible      (void);
