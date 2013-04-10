@@ -226,6 +226,7 @@ create_template_pipeline (CoglGstVideoSink *sink,
   if (decl)
     {
       static CoglSnippet *default_sample_snippet = NULL;
+      int i;
 
       /* The global sampling function gets added to both the fragment
        * and vertex stages. The hope is that the GLSL compiler will
@@ -246,16 +247,21 @@ create_template_pipeline (CoglGstVideoSink *sink,
       cogl_pipeline_add_snippet (priv->pipeline,
                                  snippet_cache->fragment_snippet);
 
-      /* Set the replace string for the last layer so that no
-       * redundant code for the previous layers will be generated. The
-       * application can also replace this default sampling by adding
-       * another layer */
+      /* Set all of the layers to just directly copy from the previous
+       * layer so that it won't redundantly generate code to sample
+       * the intermediate textures */
+      for (i = 0; i < n_layers; i++)
+        cogl_pipeline_set_layer_combine (priv->pipeline,
+                                         i,
+                                         "RGBA=REPLACE(PREVIOUS)",
+                                         NULL);
+
       if (default_sample_snippet == NULL)
         {
           default_sample_snippet =
-            cogl_snippet_new (COGL_SNIPPET_HOOK_LAYER_FRAGMENT, NULL, NULL);
-          cogl_snippet_set_replace (default_sample_snippet,
-                                    _cogl_gst_shader_default_sample);
+            cogl_snippet_new (COGL_SNIPPET_HOOK_LAYER_FRAGMENT,
+                              NULL, /* declarations */
+                              _cogl_gst_shader_default_sample);
         }
       cogl_pipeline_add_layer_snippet (priv->pipeline,
                                        n_layers - 1,

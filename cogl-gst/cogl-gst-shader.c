@@ -78,4 +78,4 @@ _cogl_gst_shader_ayuv_to_rgba_decl[] =
 
 const char
 _cogl_gst_shader_default_sample[] =
-  "  cogl_layer = cogl_gst_sample_video (cogl_tex_coord0_in.st);\n";
+  "  cogl_layer *= cogl_gst_sample_video (cogl_tex_coord0_in.st);\n";
