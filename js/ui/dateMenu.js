@@ -93,7 +93,6 @@ const DateMenuButton = new Lang.Class({
 
         Shell.AppSystem.get_default().connect('installed-changed',
                                               Lang.bind(this, this._appInstalledChanged));
-        this._appInstalledChanged();
 
         item = this.menu.addSettingsAction(_("Date & Time Settings"), 'gnome-datetime-panel.desktop');
         if (item) {
@@ -149,14 +148,16 @@ const DateMenuButton = new Lang.Class({
     },
 
     _appInstalledChanged: function() {
-        let app = Shell.AppSystem.get_default().lookup_app('gnome-clocks.desktop');
-        this._openClocksItem.actor.visible = app !== null;
+        this._calendarApp = undefined;
+        this._updateEventsVisibility();
     },
 
     _updateEventsVisibility: function() {
         let visible = this._eventSource.hasCalendars;
-        this._openCalendarItem.actor.visible = visible;
-        this._openClocksItem.actor.visible = visible;
+        this._openCalendarItem.actor.visible = visible &&
+            (this._getCalendarApp() != null);
+        this._openClocksItem.actor.visible = visible &&
+            (this._getClockApp() != null);
         this._separator.visible = visible;
         if (visible) {
           let alignment = 0.25;
@@ -209,10 +210,26 @@ const DateMenuButton = new Lang.Class({
         this._date.set_text(displayDate.toLocaleFormat(dateFormat));
     },
 
+    _getCalendarApp: function() {
+        if (this._calendarApp !== undefined)
+            return this._calendarApp;
+
+        let apps = Gio.AppInfo.get_recommended_for_type('text/calendar');
+        if (apps && (apps.length > 0))
+            this._calendarApp = apps[0];
+        else
+            this._calendarApp = null;
+        return this._calendarApp;
+    },
+
+    _getClockApp: function() {
+        return Shell.AppSystem.get_default().lookup_app('gnome-clocks.desktop');
+    },
+
     _onOpenCalendarActivate: function() {
         this.menu.close();
 
-        let app = Gio.AppInfo.get_default_for_type('text/calendar', false);
+        let app = this._getCalendarApp();
         if (app.get_id() == 'evolution.desktop')
             app = Gio.DesktopAppInfo.new('evolution-calendar.desktop');
         app.launch([], global.create_app_launch_context());
@@ -220,7 +237,7 @@ const DateMenuButton = new Lang.Class({
 
     _onOpenClocksActivate: function() {
         this.menu.close();
-        let app = Shell.AppSystem.get_default().lookup_app('gnome-clocks.desktop');
+        let app = this._getClockApp();
         app.activate();
     }
 });
