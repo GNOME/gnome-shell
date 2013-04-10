@@ -139,6 +139,7 @@ enum
 {
   OVERLAY_KEY,
   ACCELERATOR_ACTIVATED,
+  MODIFIERS_ACCELERATOR_ACTIVATED,
   FOCUS_WINDOW,
   WINDOW_CREATED,
   WINDOW_DEMANDS_ATTENTION,
@@ -254,6 +255,25 @@ meta_display_class_init (MetaDisplayClass *klass)
                   0,
                   NULL, NULL, NULL,
                   G_TYPE_NONE, 2, G_TYPE_UINT, G_TYPE_UINT);
+
+  /**
+   * MetaDisplay::modifiers-accelerator-activated:
+   * @display: the #MetaDisplay instance
+   *
+   * The ::modifiers-accelerator-activated signal will be emitted when
+   * a special modifiers-only keybinding is activated.
+   *
+   * Returns: %TRUE means that the keyboard device should remain
+   *    frozen and %FALSE for the default behavior of unfreezing the
+   *    keyboard.
+   */
+  display_signals[MODIFIERS_ACCELERATOR_ACTIVATED] =
+    g_signal_new ("modifiers-accelerator-activated",
+                  G_TYPE_FROM_CLASS (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  g_signal_accumulator_first_wins, NULL, NULL,
+                  G_TYPE_BOOLEAN, 0);
 
   display_signals[WINDOW_CREATED] =
     g_signal_new ("window-created",
@@ -5853,6 +5873,16 @@ meta_display_accelerator_activate (MetaDisplay *display,
 {
   g_signal_emit (display, display_signals[ACCELERATOR_ACTIVATED],
                  0, action, deviceid);
+}
+
+gboolean
+meta_display_modifiers_accelerator_activate (MetaDisplay *display)
+{
+  gboolean freeze;
+
+  g_signal_emit (display, display_signals[MODIFIERS_ACCELERATOR_ACTIVATED], 0, &freeze);
+
+  return freeze;
 }
 
 void
