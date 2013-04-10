@@ -428,7 +428,7 @@ cogl_gst_yv12_upload (CoglGstVideoSink *sink,
 {
   CoglGstVideoSinkPrivate *priv = sink->priv;
   GstVideoFrame frame;
-  CoglPixelFormat format = COGL_PIXEL_FORMAT_G_8;
+  CoglPixelFormat format = COGL_PIXEL_FORMAT_A_8;
 
   if (!gst_video_frame_map (&frame, &priv->info, buffer, GST_MAP_READ))
     goto map_fail;
