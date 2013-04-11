@@ -93,7 +93,6 @@ struct _CoglandCompositor
   struct wl_display *wayland_display;
   struct wl_event_loop *wayland_loop;
 
-  CoglDisplay *cogl_display;
   CoglContext *cogl_context;
 
   int virtual_width;
@@ -1019,6 +1018,36 @@ bind_shell (struct wl_client *client,
                         &cogland_shell_interface, id, data);
 }
 
+static CoglContext *
+create_cogl_context (CoglandCompositor *compositor,
+                     CoglBool use_egl_constraint,
+                     CoglError **error)
+{
+  CoglRenderer *renderer = renderer = cogl_renderer_new ();
+  CoglDisplay *display;
+  CoglContext *context;
+
+  if (use_egl_constraint)
+    cogl_renderer_add_constraint (renderer, COGL_RENDERER_CONSTRAINT_USES_EGL);
+
+  if (!cogl_renderer_connect (renderer, error))
+    {
+      cogl_object_unref (renderer);
+      return NULL;
+    }
+
+  display = cogl_display_new (renderer, NULL);
+  cogl_wayland_display_set_compositor_display (display,
+                                               compositor->wayland_display);
+
+  context = cogl_context_new (display, error);
+
+  cogl_object_unref (renderer);
+  cogl_object_unref (display);
+
+  return context;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -1062,13 +1091,30 @@ main (int argc, char **argv)
     wayland_event_source_new (compositor.wayland_display);
   g_source_attach (compositor.wayland_event_source, NULL);
 
-  compositor.cogl_display = cogl_display_new (NULL, NULL);
-  cogl_wayland_display_set_compositor_display (compositor.cogl_display,
-                                               compositor.wayland_display);
+  /* We want Cogl to use an EGL renderer because otherwise it won't
+   * set up the wl_drm object and only SHM buffers will work. */
+  compositor.cogl_context =
+    create_cogl_context (&compositor,
+                         TRUE /* use EGL constraint */,
+                         &error);
+  if (compositor.cogl_context == NULL)
+    {
+      /* If we couldn't get an EGL context then try any type of
+       * context */
+      cogl_error_free (error);
+      error = NULL;
 
-  compositor.cogl_context = cogl_context_new (compositor.cogl_display, &error);
-  if (!compositor.cogl_context)
-    g_error ("Failed to create a Cogl context: %s\n", error->message);
+      compositor.cogl_context =
+        create_cogl_context (&compositor,
+                             FALSE, /* don't set EGL constraint */
+                             &error);
+
+      if (compositor.cogl_context)
+        g_warning ("Failed to create context with EGL constraint, "
+                   "falling back");
+      else
+        g_error ("Failed to create a Cogl context: %s\n", error->message);
+    }
 
   compositor.virtual_width = 800;
   compositor.virtual_height = 600;
