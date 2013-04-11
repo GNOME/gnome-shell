@@ -976,7 +976,7 @@ get_shell_surface (struct wl_client *client,
                    struct wl_resource *surface_resource)
 {
   CoglandSurface *surface = surface_resource->data;
-  CoglandShellSurface *shell_surface = g_new0 (CoglandShellSurface, 1);
+  CoglandShellSurface *shell_surface;
 
   if (surface->has_shell_surface)
     {
@@ -986,6 +986,7 @@ get_shell_surface (struct wl_client *client,
       return;
     }
 
+  shell_surface = g_new0 (CoglandShellSurface, 1);
   shell_surface->resource.destroy = destroy_shell_surface;
   shell_surface->resource.object.id = id;
   shell_surface->resource.object.interface = &wl_shell_surface_interface;
