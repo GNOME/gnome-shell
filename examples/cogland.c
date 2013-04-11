@@ -546,10 +546,13 @@ cogland_surface_commit (struct wl_client *client,
 
           wl_signal_add (&surface->buffer->resource.destroy_signal,
                          &surface->buffer_destroy_listener);
-          wl_list_remove (&surface->pending.buffer_destroy_listener.link);
         }
     }
-  surface->pending.buffer = NULL;
+  if (surface->pending.buffer)
+    {
+      wl_list_remove (&surface->pending.buffer_destroy_listener.link);
+      surface->pending.buffer = NULL;
+    }
   surface->pending.sx = 0;
   surface->pending.sy = 0;
 
@@ -613,6 +616,9 @@ cogland_surface_free (CoglandSurface *surface)
 
   compositor->surfaces = g_list_remove (compositor->surfaces, surface);
   cogland_surface_detach_buffer_and_notify (surface);
+
+  if (surface->pending.buffer)
+    wl_list_remove (&surface->pending.buffer_destroy_listener.link);
 
   wl_list_for_each_safe (cb, next,
                          &surface->pending.frame_callback_list, link)
