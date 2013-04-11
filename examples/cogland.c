@@ -336,15 +336,16 @@ cogland_queue_redraw (CoglandCompositor *compositor)
 }
 
 static void
-shm_buffer_damaged (CoglandSurface *surface,
-                    int32_t x,
-                    int32_t y,
-                    int32_t width,
-                    int32_t height)
+surface_damaged (CoglandSurface *surface,
+                 int32_t x,
+                 int32_t y,
+                 int32_t width,
+                 int32_t height)
 {
   struct wl_buffer *wayland_buffer = surface->buffer;
 
-  if (surface->texture)
+  if (surface->texture &&
+      wl_buffer_is_shm (surface->buffer))
     {
       CoglPixelFormat format;
       int stride = wl_shm_buffer_get_stride (wayland_buffer);
@@ -381,6 +382,8 @@ shm_buffer_damaged (CoglandSurface *surface,
                                stride,
                                data);
     }
+
+  cogland_queue_redraw (surface->compositor);
 }
 
 static void
@@ -558,7 +561,6 @@ cogland_surface_commit (struct wl_client *client,
 
   /* wl_surface.damage */
   if (surface->buffer &&
-      wl_buffer_is_shm (surface->buffer) &&
       surface->texture &&
       !region_is_empty (&surface->pending.damage))
     {
@@ -574,11 +576,11 @@ cogland_surface_commit (struct wl_client *client,
       if (region->y1 < 0)
         region->y1 = 0;
 
-      shm_buffer_damaged (surface,
-                          region->x1,
-                          region->y1,
-                          region->x2 - region->x1,
-                          region->y2 - region->y1);
+      surface_damaged (surface,
+                       region->x1,
+                       region->y1,
+                       region->x2 - region->x1,
+                       region->y2 - region->y1);
     }
   region_init (&surface->pending.damage);
 
@@ -586,8 +588,6 @@ cogland_surface_commit (struct wl_client *client,
   wl_list_insert_list (&compositor->frame_callbacks,
                        &surface->pending.frame_callback_list);
   wl_list_init (&surface->pending.frame_callback_list);
-
-  cogland_queue_redraw (compositor);
 }
 
 static void
