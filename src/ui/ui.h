@@ -66,6 +66,13 @@ void meta_ui_theme_get_frame_borders (MetaUI *ui,
 void meta_ui_get_frame_borders (MetaUI *ui,
                                 Window frame_xwindow,
                                 MetaFrameBorders *borders);
+
+void meta_ui_get_frame_mask (MetaUI *ui,
+                             Window frame_xwindow,
+                             guint width,
+                             guint height,
+                             cairo_t *cr);
+
 Window meta_ui_create_frame_window (MetaUI *ui,
                                     Display *xdisplay,
                                     Visual *xvisual,
@@ -101,13 +108,6 @@ cairo_region_t *meta_ui_get_frame_bounds (MetaUI  *ui,
                                           Window   xwindow,
                                           int      window_width,
                                           int      window_height);
-
-void meta_ui_get_corner_radiuses (MetaUI *ui,
-                                  Window  xwindow,
-                                  float  *top_left,
-                                  float  *top_right,
-                                  float  *bottom_left,
-                                  float  *bottom_right);
 
 void meta_ui_queue_frame_draw (MetaUI *ui,
                                Window xwindow);

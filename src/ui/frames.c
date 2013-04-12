@@ -740,22 +740,6 @@ meta_ui_frame_get_corner_radiuses (MetaFrames  *frames,
 }
 
 void
-meta_frames_get_corner_radiuses (MetaFrames *frames,
-                                 Window      xwindow,
-                                 float      *top_left,
-                                 float      *top_right,
-                                 float      *bottom_left,
-                                 float      *bottom_right)
-{
-  MetaUIFrame *frame;
-
-  frame = meta_frames_lookup_window (frames, xwindow);
-
-  meta_ui_frame_get_corner_radiuses (frames, frame, top_left, top_right,
-                                     bottom_left, bottom_right);
-}
-
-void
 meta_frames_reset_bg (MetaFrames *frames,
                       Window  xwindow)
 {
@@ -1849,6 +1833,102 @@ clip_region_to_visible_frame_border (cairo_region_t *region,
   cairo_region_intersect (region, frame_border);
 
   cairo_region_destroy (frame_border);
+}
+
+#define TAU (2*M_PI)
+
+/*
+ * Draw the opaque and semi-opaque pixels of this frame into a mask.
+ *
+ * (0,0) in Cairo coordinates is assumed to be the top left corner of the
+ * invisible border.
+ *
+ * The parts of @cr's surface in the clip region are assumed to be
+ * initialized to fully-transparent, and the clip region is assumed to
+ * contain the invisible border and the visible parts of the frame, but
+ * not the client area.
+ *
+ * This function uses @cr to draw pixels of arbitrary color (it will
+ * typically be drawing in a %CAIRO_FORMAT_A8 surface, so the color is
+ * discarded anyway) with appropriate alpha values to reproduce this
+ * frame's alpha channel, as a mask to be applied to an opaque pixmap.
+ *
+ * @frame: This frame
+ * @xwindow: The X window for the frame, which has the client window as a child
+ * @width: The width of the framed window including any invisible borders
+ * @height: The height of the framed window including any invisible borders
+ * @cr: Used to draw the resulting mask
+ */
+void
+meta_frames_get_mask (MetaFrames          *frames,
+                      Window               xwindow,
+                      guint                width,
+                      guint                height,
+                      cairo_t             *cr)
+{
+  MetaUIFrame *frame = meta_frames_lookup_window (frames, xwindow);
+  float top_left, top_right, bottom_left, bottom_right;
+  int x, y;
+  MetaFrameBorders borders;
+
+  if (frame == NULL)
+    meta_bug ("No such frame 0x%lx\n", xwindow);
+
+  cairo_save (cr);
+
+  meta_ui_frame_get_borders (frames, frame, &borders);
+  meta_ui_frame_get_corner_radiuses (frames, frame,
+                                     &top_left, &top_right,
+                                     &bottom_left, &bottom_right);
+
+  /* top left */
+  x = borders.invisible.left;
+  y = borders.invisible.top;
+
+  cairo_arc (cr,
+             x + top_left,
+             y + top_left,
+             top_left,
+             2 * TAU / 4,
+             3 * TAU / 4);
+
+  /* top right */
+  x = width - borders.invisible.right - top_right;
+  y = borders.invisible.top;
+
+  cairo_arc (cr,
+             x,
+             y + top_right,
+             top_right,
+             3 * TAU / 4,
+             4 * TAU / 4);
+
+  /* bottom right */
+  x = width - borders.invisible.right - bottom_right;
+  y = height - borders.invisible.bottom - bottom_right;
+
+  cairo_arc (cr,
+             x,
+             y,
+             bottom_right,
+             0 * TAU / 4,
+             1 * TAU / 4);
+
+  /* bottom left */
+  x = borders.invisible.left;
+  y = height - borders.invisible.bottom - bottom_left;
+
+  cairo_arc (cr,
+             x + bottom_left,
+             y,
+             bottom_left,
+             1 * TAU / 4,
+             2 * TAU / 4);
+
+  cairo_set_source_rgba (cr, 1, 1, 1, 1);
+  cairo_fill (cr);
+
+  cairo_restore (cr);
 }
 
 static gboolean

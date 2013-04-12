@@ -1993,73 +1993,6 @@ meta_window_actor_sync_visibility (MetaWindowActor *self)
     }
 }
 
-#define TAU (2*M_PI)
-
-static void
-install_corners (MetaWindow       *window,
-                 MetaFrameBorders *borders,
-                 cairo_t          *cr)
-{
-  float top_left, top_right, bottom_left, bottom_right;
-  int x, y;
-  MetaRectangle outer;
-
-  meta_frame_get_corner_radiuses (window->frame,
-                                  &top_left,
-                                  &top_right,
-                                  &bottom_left,
-                                  &bottom_right);
-
-  meta_window_get_outer_rect (window, &outer);
-
-  /* top left */
-  x = borders->invisible.left;
-  y = borders->invisible.top;
-
-  cairo_arc (cr,
-             x + top_left,
-             y + top_left,
-             top_left,
-             2 * TAU / 4,
-             3 * TAU / 4);
-
-  /* top right */
-  x = borders->invisible.left + outer.width - top_right;
-  y = borders->invisible.top;
-
-  cairo_arc (cr,
-             x,
-             y + top_right,
-             top_right,
-             3 * TAU / 4,
-             4 * TAU / 4);
-
-  /* bottom right */
-  x = borders->invisible.left + outer.width - bottom_right;
-  y = borders->invisible.top + outer.height - bottom_right;
-
-  cairo_arc (cr,
-             x,
-             y,
-             bottom_right,
-             0 * TAU / 4,
-             1 * TAU / 4);
-
-  /* bottom left */
-  x = borders->invisible.left;
-  y = borders->invisible.top + outer.height - bottom_left;
-
-  cairo_arc (cr,
-             x + bottom_left,
-             y,
-             bottom_left,
-             1 * TAU / 4,
-             2 * TAU / 4);
-
-  cairo_set_source_rgba (cr, 1, 1, 1, 1);
-  cairo_fill (cr);
-}
-
 static cairo_region_t *
 scan_visible_region (guchar         *mask_data,
                      int             stride,
@@ -2099,7 +2032,6 @@ scan_visible_region (guchar         *mask_data,
 
 static void
 build_and_scan_frame_mask (MetaWindowActor       *self,
-                           MetaFrameBorders      *borders,
                            cairo_rectangle_int_t *client_area,
                            cairo_region_t        *shape_region)
 {
@@ -2145,7 +2077,7 @@ build_and_scan_frame_mask (MetaWindowActor       *self,
       gdk_cairo_region (cr, frame_paint_region);
       cairo_clip (cr);
 
-      install_corners (priv->window, borders, cr);
+      meta_frame_get_mask (priv->window->frame, cr);
 
       cairo_surface_flush (surface);
       scanned_region = scan_visible_region (mask_data, stride, frame_paint_region);
@@ -2308,7 +2240,7 @@ check_needs_reshape (MetaWindowActor *self)
        * and scans the mask looking for all opaque pixels,
        * adding it to region.
        */
-      build_and_scan_frame_mask (self, &borders, &client_area, region);
+      build_and_scan_frame_mask (self, &client_area, region);
     }
 
   priv->shape_region = region;
