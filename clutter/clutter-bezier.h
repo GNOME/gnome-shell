@@ -6,6 +6,7 @@
  * Authored By Tomas Frydrych  <tf@openedhand.com>
  *
  * Copyright (C) 2006, 2007 OpenedHand
+ * Copyright (C) 2013 Erick Pérez Castellanos <erick.red@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,36 +30,35 @@
 
 G_BEGIN_DECLS
 
-/* This is used in _clutter_bezier_advance to represent the full
-   length of the bezier curve. Anything less than that represents a
-   fraction of the length */
-#define CLUTTER_BEZIER_MAX_LENGTH (1 << 18)
-
 typedef struct _ClutterBezier ClutterBezier;
 
-ClutterBezier *_clutter_bezier_new ();
+ClutterBezier *_clutter_bezier_new            ();
 
-void           _clutter_bezier_free (ClutterBezier * b);
+void           _clutter_bezier_free           (ClutterBezier       *b);
 
 ClutterBezier *_clutter_bezier_clone_and_move (const ClutterBezier *b,
-                                               gint           x,
-                                               gint           y);
+                                               gfloat               x,
+                                               gfloat               y);
 
-void           _clutter_bezier_advance (const ClutterBezier *b,
-                                        gint           L,
-                                        ClutterKnot   *knot);
+void           _clutter_bezier_advance        (const ClutterBezier *b,
+                                               gfloat               L,
+                                               ClutterKnot         *knot);
 
-void           _clutter_bezier_init (ClutterBezier *b,
-                                     gint x_0, gint y_0,
-                                     gint x_1, gint y_1,
-                                     gint x_2, gint y_2,
-                                     gint x_3, gint y_3);
+void           _clutter_bezier_init           (ClutterBezier       *b,
+                                               gfloat               x_0,
+                                               gfloat               y_0,
+                                               gfloat               x_1,
+                                               gfloat               y_1,
+                                               gfloat               x_2,
+                                               gfloat               y_2,
+                                               gfloat               x_3,
+                                               gfloat               y_3);
 
-void           _clutter_bezier_adjust (ClutterBezier *b,
-                                       ClutterKnot   *knot,
-                                       guint          indx);
+void           _clutter_bezier_adjust         (ClutterBezier       *b,
+                                               ClutterKnot         *knot,
+                                               guint                indx);
 
-guint          _clutter_bezier_get_length (const ClutterBezier *b);
+gfloat         _clutter_bezier_get_length     (const ClutterBezier *b);
 
 G_END_DECLS
 

@@ -1458,8 +1458,7 @@ clutter_path_get_position (ClutterPath *path,
       else
         {
           _clutter_bezier_advance (node->bezier,
-                                   point_distance * CLUTTER_BEZIER_MAX_LENGTH
-                                   / node->length,
+                                   (gfloat) point_distance / (gfloat) node->length,
                                    position);
         }
       break;
