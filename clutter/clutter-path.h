@@ -6,6 +6,7 @@
  * Authored By Matthew Allum  <mallum@openedhand.com>
  *
  * Copyright (C) 2008 Intel Corporation
+ * Copyright (C) 2013 Erick Pérez Castellanos <erick.red@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -91,31 +92,31 @@ GType clutter_path_get_type (void) G_GNUC_CONST;
 ClutterPath *clutter_path_new                  (void);
 ClutterPath *clutter_path_new_with_description (const gchar           *desc);
 void         clutter_path_add_move_to          (ClutterPath           *path,
-                                                gint                   x,
-                                                gint                   y);
+                                                gfloat                 x,
+                                                gfloat                 y);
 void         clutter_path_add_rel_move_to      (ClutterPath           *path,
-                                                gint                   x,
-                                                gint                   y);
+                                                gfloat                 x,
+                                                gfloat                 y);
 void         clutter_path_add_line_to          (ClutterPath           *path,
-                                                gint                   x,
-                                                gint                   y);
+                                                gfloat                 x,
+                                                gfloat                 y);
 void         clutter_path_add_rel_line_to      (ClutterPath           *path,
-                                                gint                   x,
-                                                gint                   y);
+                                                gfloat                 x,
+                                                gfloat                 y);
 void         clutter_path_add_curve_to         (ClutterPath           *path,
-                                                gint                   x_1,
-                                                gint                   y_1,
-                                                gint                   x_2,
-                                                gint                   y_2,
-                                                gint                   x_3,
-                                                gint                   y_3);
+                                                gfloat                 x_1,
+                                                gfloat                 y_1,
+                                                gfloat                 x_2,
+                                                gfloat                 y_2,
+                                                gfloat                 x_3,
+                                                gfloat                 y_3);
 void         clutter_path_add_rel_curve_to     (ClutterPath           *path,
-                                                gint                   x_1,
-                                                gint                   y_1,
-                                                gint                   x_2,
-                                                gint                   y_2,
-                                                gint                   x_3,
-                                                gint                   y_3);
+                                                gfloat                 x_1,
+                                                gfloat                 y_1,
+                                                gfloat                 x_2,
+                                                gfloat                 y_2,
+                                                gfloat                 x_3,
+                                                gfloat                 y_3);
 void         clutter_path_add_close            (ClutterPath           *path);
 gboolean     clutter_path_add_string           (ClutterPath           *path,
                                                 const gchar           *str);
@@ -147,7 +148,7 @@ void         clutter_path_to_cairo_path        (ClutterPath           *path,
                                                 cairo_t               *cr);
 guint        clutter_path_get_position         (ClutterPath           *path,
                                                 gdouble                progress,
-                                                ClutterKnot           *position);
+                                                ClutterPoint          *position);
 guint        clutter_path_get_length           (ClutterPath           *path);
 
 G_END_DECLS

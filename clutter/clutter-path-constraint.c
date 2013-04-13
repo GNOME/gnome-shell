@@ -97,7 +97,7 @@ clutter_path_constraint_update_allocation (ClutterConstraint *constraint,
 {
   ClutterPathConstraint *self = CLUTTER_PATH_CONSTRAINT (constraint);
   gfloat width, height;
-  ClutterKnot position;
+  ClutterPoint position;
   guint knot_id;
 
   if (self->path == NULL)

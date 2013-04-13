@@ -6,6 +6,7 @@
  * Authored By Matthew Allum  <mallum@openedhand.com>
  *
  * Copyright (C) 2008 Intel Corporation
+ * Copyright (C) 2013 Erick Pérez Castellanos <erick.red@gmail.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -342,7 +343,15 @@ clutter_path_add_node_full (ClutterPath         *path,
   priv->nodes_dirty = TRUE;
 }
 
-/* Helper function to make the rest of teh add_* functions shorter */
+/*
+ * clutter_path_add_node_helper:
+ * @path: A #ClutterPath
+ * @type: The node type
+ * @num_coords: The number of coords passed
+ * @...: The value of each coordinate, a float value, single precision
+ *
+ * Helper function to make the rest of the add_* functions shorter
+ */
 static void
 clutter_path_add_node_helper (ClutterPath         *path,
                               ClutterPathNodeType  type,
@@ -361,8 +370,8 @@ clutter_path_add_node_helper (ClutterPath         *path,
 
   for (i = 0; i < num_coords; i++)
     {
-      node->k.points[i].x = va_arg (ap, gint);
-      node->k.points[i].y = va_arg (ap, gint);
+      node->k.points[i].x = va_arg (ap, double);
+      node->k.points[i].y = va_arg (ap, double);
     }
 
   va_end (ap);
@@ -384,8 +393,8 @@ clutter_path_add_node_helper (ClutterPath         *path,
  */
 void
 clutter_path_add_move_to (ClutterPath *path,
-                          gint         x,
-                          gint         y)
+                          gfloat       x,
+                          gfloat       y)
 {
   g_return_if_fail (CLUTTER_IS_PATH (path));
 
@@ -405,8 +414,8 @@ clutter_path_add_move_to (ClutterPath *path,
  */
 void
 clutter_path_add_rel_move_to (ClutterPath *path,
-                              gint         x,
-                              gint         y)
+                              gfloat       x,
+                              gfloat       y)
 {
   g_return_if_fail (CLUTTER_IS_PATH (path));
 
@@ -426,8 +435,8 @@ clutter_path_add_rel_move_to (ClutterPath *path,
  */
 void
 clutter_path_add_line_to (ClutterPath *path,
-                          gint         x,
-                          gint         y)
+                          gfloat       x,
+                          gfloat       y)
 {
   g_return_if_fail (CLUTTER_IS_PATH (path));
 
@@ -447,8 +456,8 @@ clutter_path_add_line_to (ClutterPath *path,
  */
 void
 clutter_path_add_rel_line_to (ClutterPath *path,
-                              gint         x,
-                              gint         y)
+                              gfloat       x,
+                              gfloat       y)
 {
   g_return_if_fail (CLUTTER_IS_PATH (path));
 
@@ -473,12 +482,12 @@ clutter_path_add_rel_line_to (ClutterPath *path,
  */
 void
 clutter_path_add_curve_to (ClutterPath *path,
-                           gint         x_1,
-                           gint         y_1,
-                           gint         x_2,
-                           gint         y_2,
-                           gint         x_3,
-                           gint         y_3)
+                           gfloat       x_1,
+                           gfloat       y_1,
+                           gfloat       x_2,
+                           gfloat       y_2,
+                           gfloat       x_3,
+                           gfloat       y_3)
 {
   g_return_if_fail (CLUTTER_IS_PATH (path));
 
@@ -505,12 +514,12 @@ clutter_path_add_curve_to (ClutterPath *path,
  */
 void
 clutter_path_add_rel_curve_to (ClutterPath *path,
-                               gint         x_1,
-                               gint         y_1,
-                               gint         x_2,
-                               gint         y_2,
-                               gint         x_3,
-                               gint         y_3)
+                               gfloat       x_1,
+                               gfloat       y_1,
+                               gfloat       x_2,
+                               gfloat       y_2,
+                               gfloat       x_3,
+                               gfloat       y_3)
 {
   g_return_if_fail (CLUTTER_IS_PATH (path));
 
@@ -541,9 +550,10 @@ clutter_path_add_close (ClutterPath *path)
 static gboolean
 clutter_path_parse_number (const gchar **pin,
                            gboolean      allow_comma,
-                           gint         *ret)
+                           gfloat       *ret)
 {
   gint val = 0;
+  gint fract = 0;
   gboolean negative = FALSE;
   gint digit_count = 0;
   const gchar *p = *pin;
@@ -588,6 +598,7 @@ clutter_path_parse_number (const gchar **pin,
       digit_count = 0;
       while (clutter_path_isdigit (*p))
         {
+	  fract = fract * 10.0 + *p - '0';
           digit_count++;
           p++;
         }
@@ -599,6 +610,12 @@ clutter_path_parse_number (const gchar **pin,
 
   *pin = p;
   *ret = negative ? -val : val;
+
+  /* Adding fractional part */
+  if (fract != 0)
+    {
+      *ret += (gfloat) fract / pow (10, digit_count);
+    }
 
   return TRUE;
 }
@@ -1236,7 +1253,7 @@ clutter_path_get_description (ClutterPath *path)
       g_string_append_c (str, letter);
 
       for (i = 0; i < params; i++)
-        g_string_append_printf (str, " %i %i",
+        g_string_append_printf (str, " %f %f",
                                 node->k.points[i].x,
                                 node->k.points[i].y);
     }
@@ -1245,8 +1262,8 @@ clutter_path_get_description (ClutterPath *path)
 }
 
 static guint
-clutter_path_node_distance (const ClutterKnot *start,
-                            const ClutterKnot *end)
+clutter_path_node_distance (const ClutterPoint *start,
+                            const ClutterPoint *end)
 {
   gint64 x_d, y_d;
   float t;
@@ -1254,7 +1271,7 @@ clutter_path_node_distance (const ClutterKnot *start,
   g_return_val_if_fail (start != NULL, 0);
   g_return_val_if_fail (end != NULL, 0);
 
-  if (clutter_knot_equal (start, end))
+  if (clutter_point_equals (start, end))
     return 0;
 
   x_d = end->x - start->x;
@@ -1274,9 +1291,9 @@ clutter_path_ensure_node_data (ClutterPath *path)
   if (priv->nodes_dirty)
     {
       GSList *l;
-      ClutterKnot last_position = { 0, 0 };
-      ClutterKnot loop_start = { 0, 0 };
-      ClutterKnot points[3];
+      ClutterPoint last_position = { 0, 0 };
+      ClutterPoint loop_start = { 0, 0 };
+      ClutterPoint points[3];
 
       priv->total_length = 0;
 
@@ -1340,7 +1357,7 @@ clutter_path_ensure_node_data (ClutterPath *path)
                     }
                 }
               else
-                memcpy (points, node->k.points, sizeof (ClutterKnot) * 3);
+                memcpy (points, node->k.points, sizeof (ClutterPoint) * 3);
 
               _clutter_bezier_init (node->bezier,
                                     last_position.x, last_position.y,
@@ -1387,9 +1404,9 @@ clutter_path_ensure_node_data (ClutterPath *path)
  *
  */
 guint
-clutter_path_get_position (ClutterPath *path,
-                           gdouble progress,
-                           ClutterKnot *position)
+clutter_path_get_position (ClutterPath  *path,
+                           gdouble       progress,
+                           ClutterPoint *position)
 {
   ClutterPathPrivate *priv;
   GSList *l;
@@ -1407,7 +1424,7 @@ clutter_path_get_position (ClutterPath *path,
      something better */
   if (priv->nodes == NULL)
     {
-      memset (position, 0, sizeof (ClutterKnot));
+      memset (position, 0, sizeof (ClutterPoint));
       return 0;
     }
 

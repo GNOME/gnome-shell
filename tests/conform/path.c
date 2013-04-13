@@ -402,7 +402,7 @@ path_test_convert_to_cairo_path (CallbackData *data)
   cairo_t *cr;
   cairo_path_t *cpath;
   guint i, j;
-  ClutterKnot path_start = { 0, 0 }, last_point = { 0, 0 };
+  ClutterPoint path_start = { 0, 0 }, last_point = { 0, 0 };
 
   /* Create a temporary image surface and context to hold the cairo
      path */
@@ -531,7 +531,7 @@ path_test_get_position (CallbackData *data)
 
   for (i = 0; i < G_N_ELEMENTS (values); i += 3)
     {
-      ClutterKnot pos;
+      ClutterPoint pos;
 
       clutter_path_get_position (data->path,
                                  values[i],

@@ -143,7 +143,7 @@ _clutter_bezier_clone_and_move (const ClutterBezier *b,
 void
 _clutter_bezier_advance (const ClutterBezier *b,
                          gfloat               L,
-                         ClutterKnot         *knot)
+                         ClutterPoint        *knot)
 {
   gfloat t;
   t = L;
@@ -231,7 +231,7 @@ _clutter_bezier_init (ClutterBezier *b,
  */
 void
 _clutter_bezier_adjust (ClutterBezier *b,
-			ClutterKnot   *knot,
+			ClutterPoint  *knot,
 			guint          indx)
 {
   gfloat x[4], y[4];

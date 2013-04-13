@@ -556,7 +556,7 @@ struct _ClutterPathNode
 {
   ClutterPathNodeType type;
 
-  ClutterKnot points[3];
+  ClutterPoint points[3];
 };
 
 GType clutter_path_node_get_type (void) G_GNUC_CONST;
