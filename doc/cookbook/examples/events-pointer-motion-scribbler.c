@@ -16,7 +16,7 @@ static void
 _convert_clutter_path_node_to_cogl_path (const ClutterPathNode *node,
                                          gpointer               data)
 {
-  ClutterKnot knot;
+  ClutterPoint knot;
 
   g_return_if_fail (node != NULL);
 
@@ -25,12 +25,12 @@ _convert_clutter_path_node_to_cogl_path (const ClutterPathNode *node,
     case CLUTTER_PATH_MOVE_TO:
       knot = node->points[0];
       cogl_path_move_to (knot.x, knot.y);
-      g_debug ("move to %d, %d", knot.x, knot.y);
+      g_debug ("move to %f, %f", knot.x, knot.y);
       break;
     case CLUTTER_PATH_LINE_TO:
       knot = node->points[0];
       cogl_path_line_to (knot.x, knot.y);
-      g_debug ("line to %d, %d", knot.x, knot.y);
+      g_debug ("line to %f, %f", knot.x, knot.y);
       break;
     default:
       break;
