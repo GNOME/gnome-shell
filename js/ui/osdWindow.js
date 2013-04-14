@@ -125,13 +125,15 @@ const OsdWindow = new Lang.Class({
 
     setLevel: function(level) {
         this._level.actor.visible = (level != undefined);
-        if (this.actor.visible)
-            Tweener.addTween(this._level,
-                             { level: level,
-                               time: LEVEL_ANIMATION_TIME,
-                               transition: 'easeOutQuad' });
-        else
-            this._level.level = level;
+        if (level) {
+            if (this.actor.visible)
+                Tweener.addTween(this._level,
+                                 { level: level,
+                                   time: LEVEL_ANIMATION_TIME,
+                                   transition: 'easeOutQuad' });
+            else
+                this._level.level = level;
+        }
     },
 
     show: function() {
