@@ -16,4 +16,7 @@ GjsContext *_shell_global_get_gjs_context (ShellGlobal  *global);
 gboolean _shell_global_check_xdnd_event (ShellGlobal  *global,
                                          XEvent       *xev);
 
+gboolean _shell_global_check_xkb_event  (ShellGlobal  *global,
+                                         XEvent       *xev);
+
 #endif /* __SHELL_GLOBAL_PRIVATE_H__ */

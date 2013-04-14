@@ -16,6 +16,7 @@
 #include <locale.h>
 
 #include <X11/extensions/Xfixes.h>
+#include <X11/XKBlib.h>
 #include <canberra.h>
 #include <canberra-gtk.h>
 #include <clutter/glx/clutter-glx.h>
@@ -122,6 +123,7 @@ enum
  XDND_POSITION_CHANGED,
  XDND_LEAVE,
  XDND_ENTER,
+ XKB_STATE_CHANGED,
  NOTIFY_ERROR,
  LAST_SIGNAL
 };
@@ -337,6 +339,15 @@ shell_global_class_init (ShellGlobalClass *klass)
                     0,
                     NULL, NULL, NULL,
                     G_TYPE_NONE, 0);
+
+  shell_global_signals[XKB_STATE_CHANGED] =
+      g_signal_new ("xkb-state-changed",
+                    G_TYPE_FROM_CLASS (klass),
+                    G_SIGNAL_RUN_LAST,
+                    0,
+                    NULL, NULL, NULL,
+                    G_TYPE_NONE, 2,
+                    G_TYPE_UINT, G_TYPE_UINT);
 
   shell_global_signals[NOTIFY_ERROR] =
       g_signal_new ("notify-error",
@@ -1778,4 +1789,31 @@ shell_global_get_session_mode (ShellGlobal *global)
   g_return_val_if_fail (SHELL_IS_GLOBAL (global), "user");
 
   return global->session_mode;
+}
+
+static void
+notify_xkb_state (ShellGlobal         *global,
+                  XkbStateNotifyEvent *event)
+{
+  if (event->changed & (XkbModifierLatchMask | XkbModifierLockMask))
+    g_signal_emit_by_name (G_OBJECT (global), "xkb-state-changed",
+                           event->latched_mods, event->locked_mods);
+}
+
+gboolean
+_shell_global_check_xkb_event (ShellGlobal *global,
+                               XEvent      *event)
+{
+  XkbEvent *xkb_event = (XkbEvent *)event;
+
+  switch (xkb_event->any.xkb_type)
+    {
+    case XkbStateNotify:
+      notify_xkb_state (global, &xkb_event->state);
+      break;
+    default:
+      break;
+    }
+
+  return FALSE;
 }
