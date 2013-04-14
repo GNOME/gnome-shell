@@ -73,6 +73,14 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
         menuitem in single-user, single-session situations.
       </_description>
     </key>
+    <key name="always-show-universal-access" type="b">
+      <default>false</default>
+      <_summary>Always show the Universal Access status.</_summary>
+      <_description>
+        This key overrides the automatic hiding of the Universal
+        Access status icon when no accessibility features are enabled.
+      </_description>
+    </key>
     <key name="remember-mount-password" type="b">
       <default>false</default>
       <_summary>Whether to remember password for mounting encrypted or remote filesystems</_summary>
