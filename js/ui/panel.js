@@ -296,12 +296,9 @@ const AppMenuButton = new Lang.Class({
         }));
 
         this._stop = true;
-        if (Main.sessionMode.currentMode == 'classic')
-            this._spinner = new AnimatedIcon('process-working-inverse.svg',
-                                             PANEL_ICON_SIZE);
-        else
-            this._spinner = new AnimatedIcon('process-working.svg',
-                                             PANEL_ICON_SIZE);
+
+        this._spinner = new AnimatedIcon('process-working.svg',
+                                         PANEL_ICON_SIZE);
         this._container.add_actor(this._spinner.actor);
         this._spinner.actor.hide();
         this._spinner.actor.lower_bottom();
