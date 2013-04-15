@@ -105,7 +105,6 @@ nobase_dist_js_DATA = 	\
 	ui/workspacesView.js	\
 	ui/workspaceSwitcherPopup.js    \
 	ui/xdndHandler.js	\
-	ui/xkbHandler.js	\
 	ui/components/__init__.js		\
 	ui/components/autorunManager.js		\
 	ui/components/automountManager.js	\

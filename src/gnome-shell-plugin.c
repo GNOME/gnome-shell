@@ -35,7 +35,6 @@
 #include <gjs/gjs.h>
 #include <meta/display.h>
 #include <meta/meta-plugin.h>
-#include <X11/XKBlib.h>
 
 #include "shell-global-private.h"
 #include "shell-perf-log.h"
@@ -101,9 +100,6 @@ struct _GnomeShellPlugin
   int glx_event_base;
   guint have_swap_event : 1;
   CoglContext *cogl_context;
-
-  int xkb_event_base;
-  XkbDescPtr xkb;
 
   ShellGlobal *global;
 };
@@ -191,10 +187,6 @@ gnome_shell_plugin_start (MetaPlugin *plugin)
   int status;
   GjsContext *gjs_context;
   ClutterBackend *backend;
-  MetaScreen *screen;
-  MetaDisplay *display;
-  Display *xdisplay;
-  int xkb_base_error_type, xkb_opcode;
 
   backend = clutter_get_default_backend ();
   shell_plugin->cogl_context = clutter_backend_get_cogl_context (backend);
@@ -206,26 +198,6 @@ gnome_shell_plugin_start (MetaPlugin *plugin)
                                "glx.swapComplete",
                                "GL buffer swap complete event received (with timestamp of completion)",
                                "x");
-
-  screen = meta_plugin_get_screen (META_PLUGIN (shell_plugin));
-  display = meta_screen_get_display (screen);
-  xdisplay = meta_display_get_xdisplay (display);
-  if (!XkbQueryExtension (xdisplay, &xkb_opcode,
-                          &shell_plugin->xkb_event_base,
-                          &xkb_base_error_type,
-                          NULL, NULL))
-    {
-      shell_plugin->xkb_event_base = -1;
-      g_message ("could not find XKB extension.");
-    }
-  else
-    {
-      shell_plugin->xkb = XkbGetMap (xdisplay,
-                                     XkbAllComponentsMask,
-                                     XkbUseCoreKbd);
-      XkbSelectEvents (xdisplay, XkbUseCoreKbd,
-                       XkbAllEventsMask, XkbAllEventsMask);
-    }
 
   shell_plugin->global = shell_global_get ();
   _shell_global_set_plugin (shell_plugin->global, META_PLUGIN (shell_plugin));
@@ -415,10 +387,6 @@ gnome_shell_plugin_xevent_filter (MetaPlugin *plugin,
    * Pass the event to shell-global
    */
   if (_shell_global_check_xdnd_event (shell_plugin->global, xev))
-    return TRUE;
-
-  if (xev->type == shell_plugin->xkb_event_base &&
-      _shell_global_check_xkb_event (shell_plugin->global, xev))
     return TRUE;
 
   return clutter_x11_handle_event (xev) != CLUTTER_X11_FILTER_CONTINUE;

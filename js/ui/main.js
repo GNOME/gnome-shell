@@ -36,7 +36,6 @@ const ShellMountOperation = imports.ui.shellMountOperation;
 const WindowManager = imports.ui.windowManager;
 const Magnifier = imports.ui.magnifier;
 const XdndHandler = imports.ui.xdndHandler;
-const XkbHandler = imports.ui.xkbHandler;
 const Util = imports.misc.util;
 
 const OVERRIDES_SCHEMA = 'org.gnome.shell.overrides';
@@ -64,7 +63,6 @@ let modalActorFocusStack = [];
 let uiGroup = null;
 let magnifier = null;
 let xdndHandler = null;
-let xkbHandler = null;
 let keyboard = null;
 let layoutManager = null;
 let _startDate;
@@ -141,7 +139,6 @@ function _initializeUI() {
     uiGroup = layoutManager.uiGroup;
 
     xdndHandler = new XdndHandler.XdndHandler();
-    xkbHandler = new XkbHandler.XkbHandler();
     ctrlAltTabManager = new CtrlAltTab.CtrlAltTabManager();
     osdWindow = new OsdWindow.OsdWindow();
     overview = new Overview.Overview();
