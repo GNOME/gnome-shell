@@ -26,8 +26,6 @@ const KEY_ICON_THEME     = 'icon-theme';
 const KEY_WM_THEME       = 'theme';
 const KEY_TEXT_SCALING_FACTOR = 'text-scaling-factor';
 
-const KEY_ALWAYS_SHOW_UNIVERSAL_ACCESS = 'always-show-universal-access';
-
 const HIGH_CONTRAST_THEME = 'HighContrast';
 
 const ATIndicator = new Lang.Class({
@@ -73,18 +71,12 @@ const ATIndicator = new Lang.Class({
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addSettingsAction(_("Universal Access Settings"), 'gnome-universal-access-panel.desktop');
 
-        global.settings.connect('changed::' + KEY_ALWAYS_SHOW_UNIVERSAL_ACCESS, Lang.bind (this, this._queueSyncMenuVisibility));
-
         this._syncMenuVisibility();
     },
 
     _syncMenuVisibility: function() {
         this._syncMenuVisibilityIdle = 0;
 
-        if (global.settings.get_boolean(KEY_ALWAYS_SHOW_UNIVERSAL_ACCESS)) {
-            this.actor.visible = true;
-            return false;
-        }
         let items = this.menu._getMenuItems();
 
         this.actor.visible = items.some(function(f) { return !!f.state; });
