@@ -142,6 +142,10 @@ gboolean st_theme_node_lookup_shadow (StThemeNode  *node,
                                       const char   *property_name,
                                       gboolean      inherit,
                                       StShadow    **shadow);
+gboolean st_theme_node_lookup_url    (StThemeNode  *node,
+                                      const char   *property_name,
+                                      gboolean      inherit,
+                                      char        **value);
 
 /* Easier-to-use variants of the above, for application-level use */
 void          st_theme_node_get_color  (StThemeNode  *node,
@@ -152,6 +156,8 @@ gdouble       st_theme_node_get_double (StThemeNode  *node,
 gdouble       st_theme_node_get_length (StThemeNode  *node,
                                         const char   *property_name);
 StShadow     *st_theme_node_get_shadow (StThemeNode  *node,
+                                        const char   *property_name);
+char         *st_theme_node_get_url    (StThemeNode  *node,
                                         const char   *property_name);
 
 /* Specific getters for particular properties: cached

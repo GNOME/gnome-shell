@@ -879,6 +879,101 @@ st_theme_node_get_double (StThemeNode *node,
     }
 }
 
+/**
+ * st_theme_node_lookup_url:
+ * @node: a #StThemeNode
+ * @property_name: The name of the string property
+ * @inherit: if %TRUE, if a value is not found for the property on the
+ *   node, then it will be looked up on the parent node, and then on the
+ *   parent's parent, and so forth. Note that if the property has a
+ *   value of 'inherit' it will be inherited even if %FALSE is passed
+ *   in for @inherit; this only affects the default behavior for inheritance.
+ * @value: (out): location to store the newly allocated value that was
+ *   determined. If the property is not found, the value in this location
+ *   will not be changed.
+ *
+ * Looks up a property containing a single URL value.
+ *
+ * See also st_theme_node_get_url(), which provides a simpler API.
+ *
+ * Return value: %TRUE if the property was found in the properties for this
+ *  theme node (or in the properties of parent nodes when inheriting.)
+ */
+gboolean
+st_theme_node_lookup_url (StThemeNode  *node,
+                          const char   *property_name,
+                          gboolean      inherit,
+                          char        **value)
+{
+  gboolean result = FALSE;
+  int i;
+
+  ensure_properties (node);
+
+  for (i = node->n_properties - 1; i >= 0; i--)
+    {
+      CRDeclaration *decl = node->properties[i];
+
+      if (strcmp (decl->property->stryng->str, property_name) == 0)
+        {
+          CRTerm *term = decl->value;
+          CRStyleSheet *base_stylesheet;
+          GFile *file;
+
+          if (term->type != TERM_URI && term->type != TERM_STRING)
+            continue;
+
+          if (decl->parent_statement != NULL)
+            base_stylesheet = decl->parent_statement->parent_sheet;
+          else
+            base_stylesheet = NULL;
+
+          file = _st_theme_resolve_url (node->theme,
+                                        base_stylesheet,
+                                        decl->value->content.str->stryng->str);
+          *value = g_file_get_path (file);
+          g_object_unref (file);
+          result = TRUE;
+          break;
+        }
+    }
+
+  if (!result && inherit && node->parent_node)
+    result = st_theme_node_lookup_url (node->parent_node, property_name, inherit, value);
+
+  return result;
+}
+
+/*
+ * st_theme_node_get_url:
+ * @node: a #StThemeNode
+ * @property_name: The name of the string property
+ *
+ * Looks up a property containing a single URL value.
+ *
+ * See also st_theme_node_lookup_url(), which provides more options,
+ * and lets you handle the case where the theme does not specify the
+ * indicated value.
+ *
+ * Return value: the newly allocated value if found.
+ *  If @property_name is not found, a warning will be logged and %NULL
+ *  will be returned.
+ */
+char *
+st_theme_node_get_url (StThemeNode *node,
+                       const char  *property_name)
+{
+  char *value;
+
+  if (st_theme_node_lookup_url (node, property_name, FALSE, &value))
+    return value;
+  else
+    {
+      g_warning ("Did not find string property '%s'", property_name);
+      return NULL;
+    }
+}
+
 static const PangoFontDescription *
 get_parent_font (StThemeNode *node)
 {
