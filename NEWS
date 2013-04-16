@@ -1,3 +1,31 @@
+3.8.1
+=====
+* Clip window group during startup animation [Jasper; #696323]
+* Check for logind rather than systemd [Martin; #696252]
+* Don't special-case last remote search provider position [Giovanni; #694974]
+* Fix memory leaks [Ray, Jasper; ##697119, #697295, #697300, #697395]
+* AppSwitcherPopup: Activate only the selected window if any [Rui; #697480]
+* Enable screen recorder keybinding in all modes [Florian; #696200]
+* Remove box-shadow from screen shield for performance reasons [Adel; #697274]
+* Add support for -st-natural-width/height CSS properties [Giovanni; #664411]
+* Remove excessive padding from notification buttons [Allan; #664411]
+* Fix thumbnail dragging in overview [Jasper; #697504]
+* theme-node: Add get_url()/lookup_url() methods [Florian; #693688]
+* Misc bug fixes and cleanups [Jasper, Rui, Colin, David, Ray, Matthias:
+  #695859, #696259, #696585, #696436, #697432, #697435, #697560, #697722,
+  #697709]
+
+Contributors:
+  Giovanni Campagna, Matthias Clasen, Allan Day, Adel Gadllah, David Gumberg,
+  Rui Matos, Florian Müllner, Martin Pitt, Jasper St. Pierre, Ray Strode,
+  Colin Walters
+
+Translations:
+  Daniel Martinez [an], Bruce Cowan [en_GB], Khaled Hosny [ar],
+  Ihar Hrachyshka [be], Aron Xu [zh_CN], Wojciech Szczęsny [pl],
+  Inaki Larranaga Murgoitio [eu], Kjartan Maraas [nb],
+  Милош Поповић [sr, sr@latin], Trần Ngọc Quân [vi]
+
 3.8.0.1
 =======
 * Background bug fixes [Ray; #696712]
