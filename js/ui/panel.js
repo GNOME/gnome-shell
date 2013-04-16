@@ -258,6 +258,7 @@ const AppMenuButton = new Lang.Class({
         this._actionGroupNotifyId = 0;
 
         let bin = new St.Bin({ name: 'appMenu' });
+        bin.connect('style-changed', Lang.bind(this, this._onStyleChanged));
         this.actor.add_actor(bin);
 
         this.actor.bind_property("reactive", this.actor, "can-focus", 0);
@@ -297,11 +298,7 @@ const AppMenuButton = new Lang.Class({
 
         this._stop = true;
 
-        let spinnerIcon = global.datadir + '/theme/process-working.svg';
-        this._spinner = new AnimatedIcon(spinnerIcon, PANEL_ICON_SIZE);
-        this._container.add_actor(this._spinner.actor);
-        this._spinner.actor.hide();
-        this._spinner.actor.lower_bottom();
+        this._spinner = null;
 
         let tracker = Shell.WindowTracker.get_default();
         let appSys = Shell.AppSystem.get_default();
@@ -354,6 +351,18 @@ const AppMenuButton = new Lang.Class({
                            onCompleteScope: this });
     },
 
+    _onStyleChanged: function(actor) {
+        let node = actor.get_theme_node();
+        let [success, icon] = node.lookup_url('spinner-image', false);
+        if (!success || this._spinnerIcon == icon)
+            return;
+        this._spinnerIcon = icon;
+        this._spinner = new AnimatedIcon(this._spinnerIcon, PANEL_ICON_SIZE);
+        this._container.add_actor(this._spinner.actor);
+        this._spinner.actor.hide();
+        this._spinner.actor.lower_bottom();
+    },
+
     _onIconBoxStyleChanged: function() {
         let node = this._iconBox.get_theme_node();
         this._iconBottomClip = node.get_length('app-icon-bottom-clip');
@@ -385,6 +394,10 @@ const AppMenuButton = new Lang.Class({
 
         this._stop = true;
         this.actor.reactive = true;
+
+        if (this._spinner == null)
+            return;
+
         Tweener.addTween(this._spinner.actor,
                          { opacity: 0,
                            time: SPINNER_ANIMATION_TIME,
@@ -401,6 +414,10 @@ const AppMenuButton = new Lang.Class({
     startAnimation: function() {
         this._stop = false;
         this.actor.reactive = false;
+
+        if (this._spinner == null)
+            return;
+
         this._spinner.play();
         this._spinner.actor.show();
     },
@@ -462,6 +479,9 @@ const AppMenuButton = new Lang.Class({
             childBox.x1 = Math.max(0, childBox.x2 - naturalWidth);
         }
         this._label.actor.allocate(childBox, flags);
+
+        if (this._spinner == null)
+            return;
 
         if (direction == Clutter.TextDirection.LTR) {
             childBox.x1 = Math.floor(iconWidth / 2) + this._label.actor.width;
@@ -553,7 +573,8 @@ const AppMenuButton = new Lang.Class({
             return;
         }
 
-        this._spinner.actor.hide();
+        if (this._spinner)
+            this._spinner.actor.hide();
         if (this._iconBox.child != null)
             this._iconBox.child.destroy();
         this._iconBox.hide();
