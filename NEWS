@@ -1,3 +1,17 @@
+3.8.1
+=====
+* Fix crash when getting default font [Bastien; #696814]
+* Fix ungrabbing of keybindings [Rui; #697003]
+* Misc fixes and cleanups [Jasper, Simon; #697758]
+
+Contributors:
+  Jasper Lievisse Adriaanse, Rui Matos, Simon McVittie, Bastien Nocera
+
+Translations:
+  Guillaume Desmottes [fr], Shankar Prasad [kn], Bruce Cowan [en_GB],
+  Andika Triwidada [id], Yaron Shahrabani [he], Kjartan Maraas [nb],
+  Gheyret Kenji [ug]
+
 3.8.0
 =====
 * Address major memory leak when changing backgrounds [Ray; #696157]
