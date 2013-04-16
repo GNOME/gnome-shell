@@ -91,7 +91,8 @@ const UnlockDialog = new Lang.Class({
         this._promptLoginHint.hide();
         this.contentLayout.add_actor(this._promptLoginHint);
 
-        this._workSpinner = new Panel.AnimatedIcon('process-working.svg', LoginDialog.WORK_SPINNER_ICON_SIZE);
+        let spinnerIcon = global.datadir + '/theme/process-working.svg';
+        this._workSpinner = new Panel.AnimatedIcon(spinnerIcon, LoginDialog.WORK_SPINNER_ICON_SIZE);
         this._workSpinner.actor.opacity = 0;
 
         this.allowCancel = false;

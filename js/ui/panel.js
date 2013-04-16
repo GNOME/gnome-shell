@@ -144,8 +144,8 @@ const AnimatedIcon = new Lang.Class({
     Name: 'AnimatedIcon',
     Extends: Animation,
 
-    _init: function(name, size) {
-        this.parent(global.datadir + '/theme/' + name, size, size, ANIMATED_ICON_UPDATE_TIMEOUT);
+    _init: function(filename, size) {
+        this.parent(filename, size, size, ANIMATED_ICON_UPDATE_TIMEOUT);
     }
 });
 
@@ -297,8 +297,8 @@ const AppMenuButton = new Lang.Class({
 
         this._stop = true;
 
-        this._spinner = new AnimatedIcon('process-working.svg',
-                                         PANEL_ICON_SIZE);
+        let spinnerIcon = global.datadir + '/theme/process-working.svg';
+        this._spinner = new AnimatedIcon(spinnerIcon, PANEL_ICON_SIZE);
         this._container.add_actor(this._spinner.actor);
         this._spinner.actor.hide();
         this._spinner.actor.lower_bottom();

@@ -774,7 +774,8 @@ const LoginDialog = new Lang.Class({
     },
 
     _prepareDialog: function(forSecret, hold) {
-        this._workSpinner = new Panel.AnimatedIcon('process-working.svg', WORK_SPINNER_ICON_SIZE);
+        let spinnerIcon = global.datadir + '/theme/process-working.svg';
+        this._workSpinner = new Panel.AnimatedIcon(spinnerIcon, WORK_SPINNER_ICON_SIZE);
         this._workSpinner.actor.opacity = 0;
         this._workSpinner.actor.show();
 
