@@ -50,6 +50,7 @@ typedef struct _CoglRendererWayland
   struct wl_compositor *wayland_compositor;
   struct wl_shell *wayland_shell;
   struct wl_registry *wayland_registry;
+  CoglPollFD poll_fd;
 } CoglRendererWayland;
 
 typedef struct _CoglDisplayWayland
@@ -174,6 +175,10 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 
   if (!_cogl_winsys_egl_renderer_connect_common (renderer, error))
     goto error;
+
+  wayland_renderer->poll_fd.fd =
+    wl_display_get_fd(wayland_renderer->wayland_display);
+  wayland_renderer->poll_fd.events = COGL_POLL_FD_EVENT_IN;
 
   return TRUE;
 
@@ -566,6 +571,42 @@ cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
     _cogl_framebuffer_winsys_update_size (fb, width, height);
 }
 
+static void
+_cogl_winsys_poll_get_info (CoglContext *context,
+                            CoglPollFD **poll_fds,
+                            int *n_poll_fds,
+                            int64_t *timeout)
+{
+  CoglDisplay *display = context->display;
+  CoglRenderer *renderer = display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererWayland *wayland_renderer = egl_renderer->platform;
+
+  *poll_fds = &wayland_renderer->poll_fd;
+  *n_poll_fds = 1;
+  *timeout = -1;
+}
+
+static void
+_cogl_winsys_poll_dispatch (CoglContext *context,
+                            const CoglPollFD *poll_fds,
+                            int n_poll_fds)
+{
+  CoglDisplay *display = context->display;
+  CoglRenderer *renderer = display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererWayland *wayland_renderer = egl_renderer->platform;
+  int i;
+
+  for (i = 0; i < n_poll_fds; i++)
+    if (poll_fds[i].fd == wayland_renderer->poll_fd.fd)
+      {
+        if (poll_fds[i].revents & COGL_POLL_FD_EVENT_IN)
+          wl_display_dispatch (wayland_renderer->wayland_display);
+        break;
+      }
+}
+
 static const CoglWinsysEGLVtable
 _cogl_winsys_egl_vtable =
   {
@@ -599,6 +640,9 @@ _cogl_winsys_egl_wayland_get_vtable (void)
       vtable.renderer_disconnect = _cogl_winsys_renderer_disconnect;
 
       vtable.onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers;
+
+      vtable.poll_get_info = _cogl_winsys_poll_get_info;
+      vtable.poll_dispatch = _cogl_winsys_poll_dispatch;
 
       vtable_inited = TRUE;
     }
