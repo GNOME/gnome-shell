@@ -116,6 +116,17 @@ int
 cogl_gst_video_sink_attach_frame (CoglGstVideoSink *sink,
                                   CoglPipeline *pln);
 
+void
+cogl_gst_video_sink_set_first_layer (CoglGstVideoSink *sink,
+                                     int first_layer);
+
+void
+cogl_gst_video_sink_set_default_sample (CoglGstVideoSink *sink,
+                                        CoglBool default_sample);
+
+void
+cogl_gst_video_sink_setup_pipeline (CoglGstVideoSink *sink,
+                                    CoglPipeline *pipeline);
 G_END_DECLS
 
 #endif

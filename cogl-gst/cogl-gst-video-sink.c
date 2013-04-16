@@ -43,7 +43,6 @@
 #include <string.h>
 
 #include "cogl-gst-video-sink.h"
-#include "cogl-gst-shader-private.h"
 
 #define COGL_GST_TEXTURE_FLAGS \
        (COGL_TEXTURE_NO_SLICING | COGL_TEXTURE_NO_ATLAS)
@@ -99,6 +98,23 @@ typedef enum
   COGL_GST_RENDERER_NEEDS_GLSL = (1 << 0)
 } CoglGstRendererFlag;
 
+/* We want to cache the snippets instead of recreating a new one every
+ * time we initialise a pipeline so that if we end up recreating the
+ * same pipeline again then Cogl will be able to use the pipeline
+ * cache to avoid linking a redundant identical shader program */
+typedef struct
+{
+  CoglSnippet *vertex_snippet;
+  CoglSnippet *fragment_snippet;
+  CoglSnippet *default_sample_snippet;
+  int start_position;
+} SnippetCacheEntry;
+
+typedef struct
+{
+  GQueue entries;
+} SnippetCache;
+
 typedef struct _CoglGstSource
 {
   GSource source;
@@ -117,8 +133,9 @@ typedef struct _CoglGstRenderer
   CoglGstVideoFormat format;
   int flags;
   GstStaticCaps caps;
-  void (*init) (CoglGstVideoSink *sink);
-  void (*deinit) (CoglGstVideoSink *sink);
+  int n_layers;
+  void (*setup_pipeline) (CoglGstVideoSink *sink,
+                          CoglPipeline *pipeline);
   CoglBool (*upload) (CoglGstVideoSink *sink,
                       GstBuffer *buffer);
 } CoglGstRenderer;
@@ -136,7 +153,9 @@ struct _CoglGstVideoSinkPrivate
   GstCaps *caps;
   CoglGstRenderer *renderer;
   GstFlowReturn flow_return;
+  int custom_start;
   int free_layer;
+  CoglBool default_sample;
   GstVideoInfo info;
 };
 
@@ -168,7 +187,8 @@ cogl_gst_video_sink_attach_frame (CoglGstVideoSink *sink,
 
   for (i = 0; i < G_N_ELEMENTS (priv->frame); i++)
     if (priv->frame[i] != NULL)
-      cogl_pipeline_set_layer_texture (pln, i, priv->frame[i]);
+      cogl_pipeline_set_layer_texture (pln, i + priv->custom_start,
+                                       priv->frame[i]);
 
   return priv->free_layer;
 }
@@ -200,77 +220,139 @@ cogl_gst_video_sink_set_priority (CoglGstVideoSink *sink,
     g_source_set_priority ((GSource *) sink->priv->source, priority);
 }
 
-/* We want to cache the snippets instead of recreating a new one every
- * time we initialise a pipeline so that if we end up recreating the
- * same pipeline again then Cogl will be able to use the pipeline
- * cache to avoid linking a redundant identical shader program */
-typedef struct
-{
-  CoglSnippet *vertex_snippet;
-  CoglSnippet *fragment_snippet;
-} SnippetCache;
-
 static void
-create_template_pipeline (CoglGstVideoSink *sink,
-                          const char *decl,
-                          SnippetCache *snippet_cache,
-                          int n_layers)
+dirty_default_pipeline (CoglGstVideoSink *sink)
 {
   CoglGstVideoSinkPrivate *priv = sink->priv;
-  priv->free_layer = n_layers;
 
   if (priv->pipeline)
-    cogl_object_unref (priv->pipeline);
-  priv->pipeline = cogl_pipeline_new (priv->ctx);
-
-  if (decl)
     {
-      static CoglSnippet *default_sample_snippet = NULL;
+      cogl_object_unref (priv->pipeline);
+      priv->pipeline = NULL;
+    }
+}
+
+void
+cogl_gst_video_sink_set_first_layer (CoglGstVideoSink *sink,
+                                     int first_layer)
+{
+  if (first_layer != sink->priv->custom_start)
+    {
+      sink->priv->custom_start = first_layer;
+      dirty_default_pipeline (sink);
+
+      if (sink->priv->renderer)
+        sink->priv->free_layer = (sink->priv->custom_start +
+                                  sink->priv->renderer->n_layers);
+    }
+}
+
+void
+cogl_gst_video_sink_set_default_sample (CoglGstVideoSink *sink,
+                                        CoglBool default_sample)
+{
+  if (default_sample != sink->priv->default_sample)
+    {
+      sink->priv->default_sample = default_sample;
+      dirty_default_pipeline (sink);
+    }
+}
+
+void
+cogl_gst_video_sink_setup_pipeline (CoglGstVideoSink *sink,
+                                    CoglPipeline *pipeline)
+{
+  sink->priv->renderer->setup_pipeline (sink, pipeline);
+}
+
+static SnippetCacheEntry *
+get_cache_entry (CoglGstVideoSink *sink,
+                 SnippetCache *cache)
+{
+  CoglGstVideoSinkPrivate *priv = sink->priv;
+  GList *l;
+
+  for (l = cache->entries.head; l; l = l->next)
+    {
+      SnippetCacheEntry *entry = l->data;
+
+      if (entry->start_position == priv->custom_start)
+        return entry;
+    }
+
+  return NULL;
+}
+
+static SnippetCacheEntry *
+add_cache_entry (CoglGstVideoSink *sink,
+                 SnippetCache *cache,
+                 const char *decl)
+{
+  CoglGstVideoSinkPrivate *priv = sink->priv;
+  SnippetCacheEntry *entry = g_slice_new (SnippetCacheEntry);
+  char *default_source;
+
+  entry->start_position = priv->custom_start;
+
+  entry->vertex_snippet =
+    cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX_GLOBALS,
+                      decl,
+                      NULL /* post */);
+  entry->fragment_snippet =
+    cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT_GLOBALS,
+                      decl,
+                      NULL /* post */);
+
+  default_source =
+    g_strdup_printf ("  cogl_layer *= cogl_gst_sample_video%i "
+                     "(cogl_tex_coord%i_in.st);\n",
+                     priv->custom_start,
+                     priv->custom_start);
+  entry->default_sample_snippet =
+    cogl_snippet_new (COGL_SNIPPET_HOOK_LAYER_FRAGMENT,
+                      NULL, /* declarations */
+                      default_source);
+  g_free (default_source);
+
+  g_queue_push_head (&cache->entries, entry);
+
+  return entry;
+}
+
+static void
+setup_pipeline_from_cache_entry (CoglGstVideoSink *sink,
+                                 CoglPipeline *pipeline,
+                                 SnippetCacheEntry *cache_entry,
+                                 int n_layers)
+{
+  CoglGstVideoSinkPrivate *priv = sink->priv;
+
+  if (cache_entry)
+    {
       int i;
 
       /* The global sampling function gets added to both the fragment
        * and vertex stages. The hope is that the GLSL compiler will
        * easily remove the dead code if it's not actually used */
-      if (snippet_cache->vertex_snippet == NULL)
-        snippet_cache->vertex_snippet =
-          cogl_snippet_new (COGL_SNIPPET_HOOK_VERTEX_GLOBALS,
-                            decl,
-                            NULL /* post */);
-      cogl_pipeline_add_snippet (priv->pipeline,
-                                 snippet_cache->vertex_snippet);
-
-      if (snippet_cache->fragment_snippet == NULL)
-        snippet_cache->fragment_snippet =
-          cogl_snippet_new (COGL_SNIPPET_HOOK_FRAGMENT_GLOBALS,
-                            decl,
-                            NULL /* post */);
-      cogl_pipeline_add_snippet (priv->pipeline,
-                                 snippet_cache->fragment_snippet);
+      cogl_pipeline_add_snippet (pipeline, cache_entry->vertex_snippet);
+      cogl_pipeline_add_snippet (pipeline, cache_entry->fragment_snippet);
 
       /* Set all of the layers to just directly copy from the previous
        * layer so that it won't redundantly generate code to sample
        * the intermediate textures */
       for (i = 0; i < n_layers; i++)
-        cogl_pipeline_set_layer_combine (priv->pipeline,
-                                         i,
+        cogl_pipeline_set_layer_combine (pipeline,
+                                         priv->custom_start + i,
                                          "RGBA=REPLACE(PREVIOUS)",
                                          NULL);
 
-      if (default_sample_snippet == NULL)
-        {
-          default_sample_snippet =
-            cogl_snippet_new (COGL_SNIPPET_HOOK_LAYER_FRAGMENT,
-                              NULL, /* declarations */
-                              _cogl_gst_shader_default_sample);
-        }
-      cogl_pipeline_add_layer_snippet (priv->pipeline,
-                                       n_layers - 1,
-                                       default_sample_snippet);
+      if (priv->default_sample)
+        cogl_pipeline_add_layer_snippet (pipeline,
+                                         priv->custom_start + n_layers - 1,
+                                         cache_entry->default_sample_snippet);
     }
 
   priv->frame_dirty = TRUE;
-
-  g_signal_emit (sink, video_sink_signals[PIPELINE_READY_SIGNAL], 0, NULL);
 }
 
 CoglPipeline *
@@ -278,23 +360,24 @@ cogl_gst_video_sink_get_pipeline (CoglGstVideoSink *vt)
 {
   CoglGstVideoSinkPrivate *priv = vt->priv;
 
-  if (priv->frame_dirty)
+  if (priv->pipeline == NULL)
+    {
+      priv->pipeline = cogl_pipeline_new (priv->ctx);
+      cogl_gst_video_sink_setup_pipeline (vt, priv->pipeline);
+      cogl_gst_video_sink_attach_frame (vt, priv->pipeline);
+      priv->frame_dirty = FALSE;
+    }
+  else if (priv->frame_dirty)
     {
       CoglPipeline *pipeline = cogl_pipeline_copy (priv->pipeline);
       cogl_object_unref (priv->pipeline);
       priv->pipeline = pipeline;
 
       cogl_gst_video_sink_attach_frame (vt, pipeline);
-
       priv->frame_dirty = FALSE;
     }
 
-  return vt->priv->pipeline;
-}
-
-static void
-cogl_gst_dummy_deinit (CoglGstVideoSink *sink)
-{
+  return priv->pipeline;
 }
 
 static void
@@ -317,21 +400,35 @@ clear_frame_textures (CoglGstVideoSink *sink)
 }
 
 static void
-cogl_gst_rgb_init (CoglGstVideoSink *sink)
+cogl_gst_rgb_setup_pipeline (CoglGstVideoSink *sink,
+                             CoglPipeline *pipeline)
 {
   CoglGstVideoSinkPrivate *priv = sink->priv;
 
   if (cogl_has_feature (priv->ctx, COGL_FEATURE_ID_GLSL))
     {
       static SnippetCache snippet_cache;
+      SnippetCacheEntry *entry = get_cache_entry (sink, &snippet_cache);
 
-      create_template_pipeline (sink,
-                                _cogl_gst_shader_rgba_to_rgba_decl,
-                                &snippet_cache,
-                                1);
+      if (entry == NULL)
+        {
+          char *source;
+
+          source =
+            g_strdup_printf ("vec4\n"
+                             "cogl_gst_sample_video%i (vec2 UV)\n"
+                             "{\n"
+                             "  return texture2D (cogl_sampler%i, UV);\n"
+                             "}\n",
+                             priv->custom_start,
+                             priv->custom_start);
+
+          setup_pipeline_from_cache_entry (sink, pipeline, entry, 1);
+          g_free (source);
+        }
     }
   else
-    create_template_pipeline (sink, NULL, NULL, 1);
+    setup_pipeline_from_cache_entry (sink, pipeline, NULL, 1);
 }
 
 static CoglBool
@@ -376,8 +473,8 @@ static CoglGstRenderer rgb24_renderer =
   COGL_GST_RGB24,
   0,
   GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE ("{ RGB, BGR }")),
-  cogl_gst_rgb_init,
-  cogl_gst_dummy_deinit,
+  1, /* n_layers */
+  cogl_gst_rgb_setup_pipeline,
   cogl_gst_rgb24_upload,
 };
 
@@ -423,8 +520,8 @@ static CoglGstRenderer rgb32_renderer =
   COGL_GST_RGB32,
   0,
   GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE ("{ RGBA, BGRA }")),
-  cogl_gst_rgb_init,
-  cogl_gst_dummy_deinit,
+  1, /* n_layers */
+  cogl_gst_rgb_setup_pipeline,
   cogl_gst_rgb32_upload,
 };
 
@@ -471,14 +568,44 @@ map_fail:
 }
 
 static void
-cogl_gst_yv12_glsl_init (CoglGstVideoSink *sink)
+cogl_gst_yv12_glsl_setup_pipeline (CoglGstVideoSink *sink,
+                                   CoglPipeline *pipeline)
 {
+  CoglGstVideoSinkPrivate *priv = sink->priv;
   static SnippetCache snippet_cache;
+  SnippetCacheEntry *entry;
 
-  create_template_pipeline (sink,
-                            _cogl_gst_shader_yv12_to_rgba_decl,
-                            &snippet_cache,
-                            3);
+  entry = get_cache_entry (sink, &snippet_cache);
+
+  if (entry == NULL)
+    {
+      char *source;
+
+      source =
+        g_strdup_printf ("vec4\n"
+                         "cogl_gst_sample_video%i (vec2 UV)\n"
+                         "{\n"
+                         "  float y = 1.1640625 * "
+                         "(texture2D (cogl_sampler%i, UV).a - 0.0625);\n"
+                         "  float u = texture2D (cogl_sampler%i, UV).a - 0.5;\n"
+                         "  float v = texture2D (cogl_sampler%i, UV).a - 0.5;\n"
+                         "  vec4 color;\n"
+                         "  color.r = y + 1.59765625 * v;\n"
+                         "  color.g = y - 0.390625 * u - 0.8125 * v;\n"
+                         "  color.b = y + 2.015625 * u;\n"
+                         "  color.a = 1.0;\n"
+                         "  return color;\n"
+                         "}\n",
+                         priv->custom_start,
+                         priv->custom_start,
+                         priv->custom_start + 1,
+                         priv->custom_start + 2);
+
+      entry = add_cache_entry (sink, &snippet_cache, source);
+      g_free (source);
+    }
+
+  setup_pipeline_from_cache_entry (sink, pipeline, entry, 3);
 }
 
 static CoglGstRenderer yv12_glsl_renderer =
@@ -487,21 +614,10 @@ static CoglGstRenderer yv12_glsl_renderer =
   COGL_GST_YV12,
   COGL_GST_RENDERER_NEEDS_GLSL,
   GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE ("YV12")),
-  cogl_gst_yv12_glsl_init,
-  cogl_gst_dummy_deinit,
+  3, /* n_layers */
+  cogl_gst_yv12_glsl_setup_pipeline,
   cogl_gst_yv12_upload,
 };
-
-static void
-cogl_gst_i420_glsl_init (CoglGstVideoSink *sink)
-{
-  static SnippetCache snippet_cache;
-
-  create_template_pipeline (sink,
-                            _cogl_gst_shader_yv12_to_rgba_decl,
-                            &snippet_cache,
-                            3);
-}
 
 static CoglGstRenderer i420_glsl_renderer =
 {
@@ -509,20 +625,46 @@ static CoglGstRenderer i420_glsl_renderer =
   COGL_GST_I420,
   COGL_GST_RENDERER_NEEDS_GLSL,
   GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE ("I420")),
-  cogl_gst_i420_glsl_init,
-  cogl_gst_dummy_deinit,
+  3, /* n_layers */
+  cogl_gst_yv12_glsl_setup_pipeline,
   cogl_gst_yv12_upload,
 };
 
 static void
-cogl_gst_ayuv_glsl_init (CoglGstVideoSink *sink)
+cogl_gst_ayuv_glsl_setup_pipeline (CoglGstVideoSink *sink,
+                                   CoglPipeline *pipeline)
 {
+  CoglGstVideoSinkPrivate *priv = sink->priv;
   static SnippetCache snippet_cache;
+  SnippetCacheEntry *entry;
 
-  create_template_pipeline (sink,
-                            _cogl_gst_shader_ayuv_to_rgba_decl,
-                            &snippet_cache,
-                            1);
+  entry = get_cache_entry (sink, &snippet_cache);
+
+  if (entry == NULL)
+    {
+      char *source;
+
+      source
+        = g_strdup_printf ("vec4\n"
+                           "cogl_gst_sample_video%i (vec2 UV)\n"
+                           "{\n"
+                           "  vec4 color = texture2D (cogl_sampler%i, UV);\n"
+                           "  float y = 1.1640625 * (color.g - 0.0625);\n"
+                           "  float u = color.b - 0.5;\n"
+                           "  float v = color.a - 0.5;\n"
+                           "  color.a = color.r;\n"
+                           "  color.r = y + 1.59765625 * v;\n"
+                           "  color.g = y - 0.390625 * u - 0.8125 * v;\n"
+                           "  color.b = y + 2.015625 * u;\n"
+                           "  return color;\n"
+                           "}\n", priv->custom_start,
+                           priv->custom_start);
+
+      entry = add_cache_entry (sink, &snippet_cache, source);
+      g_free (source);
+    }
+
+  setup_pipeline_from_cache_entry (sink, pipeline, entry, 3);
 }
 
 static CoglBool
@@ -562,8 +704,8 @@ static CoglGstRenderer ayuv_glsl_renderer =
   COGL_GST_AYUV,
   COGL_GST_RENDERER_NEEDS_GLSL,
   GST_STATIC_CAPS (GST_VIDEO_CAPS_MAKE ("AYUV")),
-  cogl_gst_ayuv_glsl_init,
-  cogl_gst_dummy_deinit,
+  3, /* n_layers */
+  cogl_gst_ayuv_glsl_setup_pipeline,
   cogl_gst_ayuv_upload,
 };
 
@@ -811,14 +953,21 @@ cogl_gst_source_dispatch (GSource *source,
         gst_pad_get_current_caps (GST_BASE_SINK_PAD ((GST_BASE_SINK
                 (gst_source->sink))));
 
-      if (priv->renderer)
-        priv->renderer->deinit (gst_source->sink);
-
       if (!cogl_gst_video_sink_parse_caps (caps, gst_source->sink, TRUE))
         goto negotiation_fail;
 
-      priv->renderer->init (gst_source->sink);
       gst_source->has_new_caps = FALSE;
+      priv->free_layer = priv->custom_start + priv->renderer->n_layers;
+
+      dirty_default_pipeline (gst_source->sink);
+
+      /* We are now in a state where we could generate the pipeline if
+       * the application requests it so we can emit the signal.
+       * However we'll actually generate the pipeline lazily only if
+       * the application actually asks for it. */
+      g_signal_emit (gst_source->sink,
+                     video_sink_signals[PIPELINE_READY_SIGNAL],
+                     0 /* detail */);
     }
 
   buffer = gst_source->buffer;
@@ -938,12 +1087,6 @@ cogl_gst_video_sink_dispose (GObject *object)
   priv = self->priv;
 
   clear_frame_textures (self);
-
-  if (priv->renderer)
-    {
-      priv->renderer->deinit (self);
-      priv->renderer = NULL;
-    }
 
   if (priv->pipeline)
     {
@@ -1110,6 +1253,8 @@ cogl_gst_video_sink_new (CoglContext *ctx)
 {
   CoglGstVideoSink *sink = g_object_new (COGL_GST_TYPE_VIDEO_SINK, NULL);
   cogl_gst_video_sink_set_context (sink, ctx);
+  sink->priv->custom_start = 0;
+  sink->priv->default_sample = TRUE;
 
   return sink;
 }
