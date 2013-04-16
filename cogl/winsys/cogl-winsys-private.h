@@ -154,13 +154,11 @@ typedef struct _CoglWinsysVtable
   (*onscreen_win32_get_window) (CoglOnscreen *onscreen);
 #endif
 
+  int64_t
+  (*get_dispatch_timeout) (CoglRenderer *renderer);
+
   void
-  (*poll_get_info) (CoglContext *context,
-                    CoglPollFD **poll_fds,
-                    int *n_poll_fds,
-                    int64_t *timeout);
-  void
-  (*poll_dispatch) (CoglContext *context,
+  (*poll_dispatch) (CoglRenderer *renderer,
                     const CoglPollFD *poll_fds,
                     int n_poll_fds);
 

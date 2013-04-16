@@ -667,8 +667,8 @@ cogl_onscreen_get_resizable (CoglOnscreen *onscreen);
  *
  * <note>A resize callback will only ever be called while dispatching
  * Cogl events from the system mainloop; so for example during
- * cogl_poll_dispatch(). This is so that callbacks shouldn't occur
- * while an application might have arbitrary locks held for
+ * cogl_poll_renderer_dispatch(). This is so that callbacks shouldn't
+ * occur while an application might have arbitrary locks held for
  * example.</note>
  *
  * Since: 2.0
@@ -716,8 +716,8 @@ typedef struct _CoglOnscreenResizeClosure CoglOnscreenResizeClosure;
  *
  * <note>A resize callback will only ever be called while dispatching
  * Cogl events from the system mainloop; so for example during
- * cogl_poll_dispatch(). This is so that callbacks shouldn't occur
- * while an application might have arbitrary locks held for
+ * cogl_poll_renderer_dispatch(). This is so that callbacks shouldn't
+ * occur while an application might have arbitrary locks held for
  * example.</note>
  *
  * Return value: a #CoglOnscreenResizeClosure pointer that can be used to

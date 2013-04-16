@@ -96,11 +96,11 @@ notify_resize (CoglContext *context,
                int width,
                int height)
 {
+  CoglRenderer *renderer = context->display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglOnscreen *onscreen = find_onscreen_for_xid (context, drawable);
+  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
-  CoglDisplay *display = context->display;
-  CoglDisplayEGL *egl_display = display->winsys;
-  CoglOnscreenEGL *egl_onscreen;
 
   if (!onscreen)
     return;
@@ -110,9 +110,9 @@ notify_resize (CoglContext *context,
   _cogl_framebuffer_winsys_update_size (framebuffer, width, height);
 
   /* We only want to notify that a resize happened when the
-     application calls cogl_context_dispatch so instead of immediately
-     notifying we'll set a flag to remember to notify later */
-  egl_display->pending_resize_notify = TRUE;
+   * application calls cogl_context_dispatch so instead of immediately
+   * notifying we'll set a flag to remember to notify later */
+  egl_renderer->pending_resize_notify = TRUE;
   egl_onscreen->pending_resize_notify = TRUE;
 }
 
@@ -623,22 +623,15 @@ _cogl_winsys_xlib_get_visual_info (void)
   return get_visual_info (ctx->display, egl_display->egl_config);
 }
 
-static void
-_cogl_winsys_poll_get_info (CoglContext *context,
-                            CoglPollFD **poll_fds,
-                            int *n_poll_fds,
-                            int64_t *timeout)
+static int64_t
+_cogl_winsys_get_dispatch_timeout (CoglRenderer *renderer)
 {
-  CoglDisplay *display = context->display;
-  CoglDisplayEGL *egl_display = display->winsys;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
 
-  _cogl_xlib_renderer_poll_get_info (context->display->renderer,
-                                     poll_fds,
-                                     n_poll_fds,
-                                     timeout);
+  if (egl_renderer->pending_resize_notify)
+    return 0;
 
-  if (egl_display->pending_resize_notify)
-    *timeout = 0;
+  return _cogl_xlib_renderer_get_dispatch_timeout (renderer);
 }
 
 static void
@@ -661,23 +654,31 @@ flush_pending_notifications_cb (void *data,
 }
 
 static void
-_cogl_winsys_poll_dispatch (CoglContext *context,
+_cogl_winsys_poll_dispatch (CoglRenderer *renderer,
                             const CoglPollFD *poll_fds,
                             int n_poll_fds)
 {
-  CoglDisplay *display = context->display;
-  CoglDisplayEGL *egl_display = display->winsys;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
 
-  _cogl_xlib_renderer_poll_dispatch (context->display->renderer,
+  _cogl_xlib_renderer_poll_dispatch (renderer,
                                      poll_fds,
                                      n_poll_fds);
 
-  if (egl_display->pending_resize_notify)
+  /* FIXME: instead of requiring event dispatching which is handled at
+   * the CoglRenderer level to have to know about CoglContext we
+   * should have a generalized way of queuing an idle function */
+  if (renderer->context &&
+      egl_renderer->pending_resize_notify)
     {
+      CoglContext *context = renderer->context;
+
+      /* This needs to be cleared before invoking the callbacks in
+       * case the callbacks cause it to be set again */
+      egl_renderer->pending_resize_notify = FALSE;
+
       g_list_foreach (context->framebuffers,
                       flush_pending_notifications_cb,
                       NULL);
-      egl_display->pending_resize_notify = FALSE;
     }
 }
 
@@ -827,7 +828,7 @@ _cogl_winsys_egl_xlib_get_vtable (void)
 
       vtable.xlib_get_visual_info = _cogl_winsys_xlib_get_visual_info;
 
-      vtable.poll_get_info = _cogl_winsys_poll_get_info;
+      vtable.get_dispatch_timeout = _cogl_winsys_get_dispatch_timeout;
       vtable.poll_dispatch = _cogl_winsys_poll_dispatch;
 
 #ifdef EGL_KHR_image_pixmap

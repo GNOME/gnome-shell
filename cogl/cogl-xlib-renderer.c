@@ -38,6 +38,7 @@
 #include "cogl-x11-renderer-private.h"
 #include "cogl-winsys-private.h"
 #include "cogl-error-private.h"
+#include "cogl-poll-private.h"
 
 #include <X11/Xlib.h>
 #include <X11/extensions/Xdamage.h>
@@ -497,8 +498,12 @@ _cogl_xlib_renderer_connect (CoglRenderer *renderer, CoglError **error)
 
   xlib_renderer->trap_state = NULL;
 
-  xlib_renderer->poll_fd.fd = ConnectionNumber (xlib_renderer->xdpy);
-  xlib_renderer->poll_fd.events = COGL_POLL_FD_EVENT_IN;
+  if (renderer->xlib_enable_event_retrieval)
+    {
+      _cogl_poll_renderer_add_fd (renderer,
+                                  ConnectionNumber (xlib_renderer->xdpy),
+                                  COGL_POLL_FD_EVENT_IN);
+    }
 
   XRRSelectInput(xlib_renderer->xdpy,
                  DefaultRootWindow (xlib_renderer->xdpy),
@@ -568,29 +573,20 @@ cogl_xlib_renderer_remove_filter (CoglRenderer *renderer,
                                        (CoglNativeFilterFunc)func, data);
 }
 
-void
-_cogl_xlib_renderer_poll_get_info (CoglRenderer *renderer,
-                                   CoglPollFD **poll_fds,
-                                   int *n_poll_fds,
-                                   int64_t *timeout)
+int64_t
+_cogl_xlib_renderer_get_dispatch_timeout (CoglRenderer *renderer)
 {
   CoglXlibRenderer *xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
 
   if (renderer->xlib_enable_event_retrieval)
     {
-      *n_poll_fds = 1;
-      *poll_fds = &xlib_renderer->poll_fd;
       if (XPending (xlib_renderer->xdpy))
-        *timeout = 0;
+        return 0;
       else
-        *timeout = -1;
+        return -1;
     }
   else
-    {
-      *n_poll_fds = 0;
-      *poll_fds = NULL;
-      *timeout = -1;
-    }
+    return -1;
 }
 
 void

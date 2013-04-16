@@ -32,30 +32,13 @@ typedef struct _CoglGLibSource
 {
   GSource source;
 
-  CoglContext *context;
+  CoglRenderer *renderer;
 
   GArray *poll_fds;
+  int poll_fds_age;
 
   int64_t expiration_time;
 } CoglGLibSource;
-
-static CoglBool
-cogl_glib_source_poll_fds_changed (CoglGLibSource *cogl_source,
-                                   const CoglPollFD *poll_fds,
-                                   int n_poll_fds)
-{
-  int i;
-
-  if (cogl_source->poll_fds->len != n_poll_fds)
-    return TRUE;
-
-  for (i = 0; i < n_poll_fds; i++)
-    if (g_array_index (cogl_source->poll_fds, CoglPollFD, i).fd !=
-        poll_fds[i].fd)
-      return TRUE;
-
-  return FALSE;
-}
 
 static CoglBool
 cogl_glib_source_prepare (GSource *source, int *timeout)
@@ -64,18 +47,19 @@ cogl_glib_source_prepare (GSource *source, int *timeout)
   CoglPollFD *poll_fds;
   int n_poll_fds;
   int64_t cogl_timeout;
+  int age;
   int i;
 
-  cogl_poll_get_info (cogl_source->context,
-                      &poll_fds,
-                      &n_poll_fds,
-                      &cogl_timeout);
+  age = cogl_poll_renderer_get_info (cogl_source->renderer,
+                                     &poll_fds,
+                                     &n_poll_fds,
+                                     &cogl_timeout);
 
   /* We have to be careful not to call g_source_add/remove_poll unless
-     the FDs have changed because it will cause the main loop to
-     immediately wake up. If we call it every time the source is
-     prepared it will effectively never go idle. */
-  if (cogl_glib_source_poll_fds_changed (cogl_source, poll_fds, n_poll_fds))
+   * the FDs have changed because it will cause the main loop to
+   * immediately wake up. If we call it every time the source is
+   * prepared it will effectively never go idle. */
+  if (age != cogl_source->poll_fds_age)
     {
       /* Remove any existing polls before adding the new ones */
       for (i = 0; i < cogl_source->poll_fds->len; i++)
@@ -93,6 +77,8 @@ cogl_glib_source_prepare (GSource *source, int *timeout)
           g_source_add_poll (source, poll_fd);
         }
     }
+
+  cogl_source->poll_fds_age = age;
 
   /* Update the events */
   for (i = 0; i < n_poll_fds; i++)
@@ -147,9 +133,9 @@ cogl_glib_source_dispatch (GSource *source,
   CoglPollFD *poll_fds =
     (CoglPollFD *) &g_array_index (cogl_source->poll_fds, GPollFD, 0);
 
-  cogl_poll_dispatch (cogl_source->context,
-                      poll_fds,
-                      cogl_source->poll_fds->len);
+  cogl_poll_renderer_dispatch (cogl_source->renderer,
+                               poll_fds,
+                               cogl_source->poll_fds->len);
 
   return TRUE;
 }
@@ -172,8 +158,8 @@ cogl_glib_source_funcs =
   };
 
 GSource *
-cogl_glib_source_new (CoglContext *context,
-                      int priority)
+cogl_glib_renderer_source_new (CoglRenderer *renderer,
+                               int priority)
 {
   GSource *source;
   CoglGLibSource *cogl_source;
@@ -182,7 +168,7 @@ cogl_glib_source_new (CoglContext *context,
                          sizeof (CoglGLibSource));
   cogl_source = (CoglGLibSource *) source;
 
-  cogl_source->context = context;
+  cogl_source->renderer = renderer;
   cogl_source->poll_fds = g_array_new (FALSE, FALSE, sizeof (GPollFD));
 
   if (priority != G_PRIORITY_DEFAULT)
@@ -190,3 +176,13 @@ cogl_glib_source_new (CoglContext *context,
 
   return source;
 }
+
+GSource *
+cogl_glib_source_new (CoglContext *context,
+                      int priority)
+{
+  return cogl_glib_renderer_source_new (cogl_context_get_renderer (context),
+                                        priority);
+}
+
+

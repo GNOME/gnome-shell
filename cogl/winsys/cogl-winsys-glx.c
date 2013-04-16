@@ -308,9 +308,9 @@ set_sync_pending (CoglOnscreen *onscreen)
 {
   CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-  CoglGLXDisplay *glx_display = context->display->winsys;
+  CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
 
-  glx_display->pending_sync_notify = TRUE;
+  glx_renderer->pending_sync_notify = TRUE;
   glx_onscreen->pending_sync_notify = TRUE;
 }
 
@@ -319,9 +319,9 @@ set_complete_pending (CoglOnscreen *onscreen)
 {
   CoglOnscreenGLX *glx_onscreen = onscreen->winsys;
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-  CoglGLXDisplay *glx_display = context->display->winsys;
+  CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
 
-  glx_display->pending_complete_notify = TRUE;
+  glx_renderer->pending_complete_notify = TRUE;
   glx_onscreen->pending_complete_notify = TRUE;
 }
 
@@ -388,8 +388,7 @@ notify_resize (CoglContext *context,
   CoglOnscreen *onscreen = find_onscreen_for_xid (context,
                                                   configure_event->window);
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
-  CoglDisplay *display = context->display;
-  CoglGLXDisplay *glx_display = display->winsys;
+  CoglGLXRenderer *glx_renderer = context->display->renderer->winsys;
   CoglOnscreenGLX *glx_onscreen;
   CoglOnscreenXlib *xlib_onscreen;
 
@@ -406,7 +405,7 @@ notify_resize (CoglContext *context,
   /* We only want to notify that a resize happened when the
      application calls cogl_context_dispatch so instead of immediately
      notifying we'll set a flag to remember to notify later */
-  glx_display->pending_resize_notify = TRUE;
+  glx_renderer->pending_resize_notify = TRUE;
   glx_onscreen->pending_resize_notify = TRUE;
 
   if (!xlib_onscreen->is_foreign_xwin)
@@ -2510,26 +2509,19 @@ _cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
   return glx_tex_pixmap->glx_tex;
 }
 
-static void
-_cogl_winsys_poll_get_info (CoglContext *context,
-                            CoglPollFD **poll_fds,
-                            int *n_poll_fds,
-                            int64_t *timeout)
+static int64_t
+_cogl_winsys_get_dispatch_timeout (CoglRenderer *renderer)
 {
-  CoglDisplay *display = context->display;
-  CoglGLXDisplay *glx_display = display->winsys;
-
-  _cogl_xlib_renderer_poll_get_info (context->display->renderer,
-                                     poll_fds,
-                                     n_poll_fds,
-                                     timeout);
+  CoglGLXRenderer *glx_renderer = renderer->winsys;
 
   /* If we've already got a pending swap notify then we'll dispatch
-     immediately */
-  if (glx_display->pending_sync_notify ||
-      glx_display->pending_resize_notify ||
-      glx_display->pending_complete_notify)
-    *timeout = 0;
+   * immediately */
+  if (glx_renderer->pending_sync_notify ||
+      glx_renderer->pending_resize_notify ||
+      glx_renderer->pending_complete_notify)
+    return 0;
+
+  return _cogl_xlib_renderer_get_dispatch_timeout (renderer);
 }
 
 static void
@@ -2576,30 +2568,37 @@ flush_pending_notifications_cb (void *data,
 }
 
 static void
-_cogl_winsys_poll_dispatch (CoglContext *context,
+_cogl_winsys_poll_dispatch (CoglRenderer *renderer,
                             const CoglPollFD *poll_fds,
                             int n_poll_fds)
 {
-  CoglDisplay *display = context->display;
-  CoglGLXDisplay *glx_display = display->winsys;
+  CoglGLXRenderer *glx_renderer = renderer->winsys;
 
-  _cogl_xlib_renderer_poll_dispatch (context->display->renderer,
+  _cogl_xlib_renderer_poll_dispatch (renderer,
                                      poll_fds,
                                      n_poll_fds);
 
-  if (glx_display->pending_sync_notify ||
-      glx_display->pending_resize_notify ||
-      glx_display->pending_complete_notify)
+  /* FIXME: instead of requiring event dispatching which is handled at
+   * the CoglRenderer level to have to know about CoglContext we
+   * should have a generalized way of queuing an idle function */
+  if (renderer->context)
     {
-      /* These need to be cleared before invoking the callbacks in
-       * case the callbacks cause them to be set again */
-      glx_display->pending_sync_notify = FALSE;
-      glx_display->pending_resize_notify = FALSE;
-      glx_display->pending_complete_notify = FALSE;
+      CoglContext *context = renderer->context;
 
-      g_list_foreach (context->framebuffers,
-                      flush_pending_notifications_cb,
-                      NULL);
+      if (glx_renderer->pending_sync_notify ||
+          glx_renderer->pending_resize_notify ||
+          glx_renderer->pending_complete_notify)
+        {
+          /* These need to be cleared before invoking the callbacks in
+           * case the callbacks cause them to be set again */
+          glx_renderer->pending_sync_notify = FALSE;
+          glx_renderer->pending_resize_notify = FALSE;
+          glx_renderer->pending_complete_notify = FALSE;
+
+          g_list_foreach (context->framebuffers,
+                          flush_pending_notifications_cb,
+                          NULL);
+        }
     }
 }
 
@@ -2634,7 +2633,7 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .onscreen_set_resizable =
       _cogl_winsys_onscreen_set_resizable,
 
-    .poll_get_info = _cogl_winsys_poll_get_info,
+    .get_dispatch_timeout = _cogl_winsys_get_dispatch_timeout,
     .poll_dispatch = _cogl_winsys_poll_dispatch,
 
     /* X11 tfp support... */

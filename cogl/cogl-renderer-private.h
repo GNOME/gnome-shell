@@ -30,6 +30,7 @@
 #include "cogl-winsys-private.h"
 #include "cogl-driver.h"
 #include "cogl-texture-driver.h"
+#include "cogl-context.h"
 
 #ifdef COGL_HAS_XLIB_SUPPORT
 #include <X11/Xlib.h>
@@ -49,6 +50,24 @@ struct _CoglRenderer
   const CoglWinsysVtable *winsys_vtable;
   CoglWinsysID winsys_id_override;
   GList *constraints;
+
+  GArray *poll_fds;
+  int poll_fds_age;
+
+  /* NB: Currently a CoglContext can only be associated with 1
+   * CoglDisplay which itself can only be associated with 1
+   * CoglRenderer.
+   *
+   * We currently do event dispatching from the renderer but once we
+   * have fully setup a context then we need to refer to the context
+   * to dispatch context events.
+   *
+   * This gives us a back-reference to the CoglContext that can be
+   * referenced during event dispatching.
+   *
+   * We always need to consider that this may be NULL.
+   */
+  CoglContext *context;
 
   GList *outputs;
 

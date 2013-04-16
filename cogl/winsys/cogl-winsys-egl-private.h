@@ -82,6 +82,8 @@ typedef struct _CoglRendererEGL
   EGLint egl_version_major;
   EGLint egl_version_minor;
 
+  CoglBool pending_resize_notify;
+
   /* Data specific to the EGL platform */
   void *platform;
   /* vtable for platform specific parts */
@@ -114,8 +116,6 @@ typedef struct _CoglDisplayEGL
   EGLSurface current_read_surface;
   EGLSurface current_draw_surface;
   EGLContext current_context;
-
-  CoglBool pending_resize_notify;
 
   /* Platform specific display data */
   void *platform;

@@ -168,6 +168,8 @@ _cogl_renderer_free (CoglRenderer *renderer)
                    NULL);
   g_slist_free (renderer->event_filters);
 
+  g_array_free (renderer->poll_fds, TRUE);
+
   g_free (renderer);
 }
 
@@ -180,6 +182,8 @@ cogl_renderer_new (void)
 
   renderer->connected = FALSE;
   renderer->event_filters = NULL;
+
+  renderer->poll_fds = g_array_new (FALSE, TRUE, sizeof (CoglPollFD));
 
 #ifdef COGL_HAS_XLIB_SUPPORT
   renderer->xlib_enable_event_retrieval = TRUE;

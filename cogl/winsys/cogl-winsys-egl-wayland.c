@@ -601,29 +601,17 @@ cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
     _cogl_framebuffer_winsys_update_size (fb, width, height);
 }
 
-static void
-_cogl_winsys_poll_get_info (CoglContext *context,
-                            CoglPollFD **poll_fds,
-                            int *n_poll_fds,
-                            int64_t *timeout)
+static int64_t
+_cogl_winsys_get_dispatch_timeout (CoglRenderer *renderer)
 {
-  CoglDisplay *display = context->display;
-  CoglRenderer *renderer = display->renderer;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererWayland *wayland_renderer = egl_renderer->platform;
-
-  *poll_fds = &wayland_renderer->poll_fd;
-  *n_poll_fds = 1;
-  *timeout = -1;
+  return -1;
 }
 
 static void
-_cogl_winsys_poll_dispatch (CoglContext *context,
+_cogl_winsys_poll_dispatch (CoglRenderer *renderer,
                             const CoglPollFD *poll_fds,
                             int n_poll_fds)
 {
-  CoglDisplay *display = context->display;
-  CoglRenderer *renderer = display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglRendererWayland *wayland_renderer = egl_renderer->platform;
   int i;
@@ -671,7 +659,7 @@ _cogl_winsys_egl_wayland_get_vtable (void)
 
       vtable.onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers;
 
-      vtable.poll_get_info = _cogl_winsys_poll_get_info;
+      vtable.get_dispatch_timeout = _cogl_winsys_get_dispatch_timeout;
       vtable.poll_dispatch = _cogl_winsys_poll_dispatch;
 
       vtable_inited = TRUE;

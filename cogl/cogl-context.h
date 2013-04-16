@@ -125,6 +125,25 @@ cogl_context_new (CoglDisplay *display,
 CoglDisplay *
 cogl_context_get_display (CoglContext *context);
 
+/**
+ * cogl_context_get_renderer:
+ * @context: A #CoglContext pointer
+ *
+ * Retrieves the #CoglRenderer that is internally associated with the
+ * given @context. This will return the same #CoglRenderer that was
+ * passed to cogl_display_new() or if %NULL was passed to
+ * cogl_display_new() or cogl_context_new() then this function returns
+ * a pointer to the renderer that was automatically connected
+ * internally.
+ *
+ * Return value: (transfer none): The #CoglRenderer associated with the
+ *               given @context.
+ * Since: 1.16
+ * Stability: unstable
+ */
+CoglRenderer *
+cogl_context_get_renderer (CoglContext *context);
+
 #ifdef COGL_HAS_EGL_PLATFORM_ANDROID_SUPPORT
 /**
  * cogl_android_set_native_window:

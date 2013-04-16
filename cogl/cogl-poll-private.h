@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2011 Intel Corporation.
+ * Copyright (C) 2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,34 +22,15 @@
  *
  */
 
-#ifndef __COGL_DISPLAY_GLX_PRIVATE_H
-#define __COGL_DISPLAY_GLX_PRIVATE_H
+#ifndef __COGL_POLL_PRIVATE_H__
+#define __COGL_POLL_PRIVATE_H__
 
-#include "cogl-object-private.h"
+void
+_cogl_poll_renderer_remove_fd (CoglRenderer *renderer, int fd);
 
-typedef struct _CoglGLXCachedConfig
-{
-  /* This will be -1 if there is no cached config in this slot */
-  int depth;
-  CoglBool found;
-  GLXFBConfig fb_config;
-  CoglBool can_mipmap;
-} CoglGLXCachedConfig;
+void
+_cogl_poll_renderer_add_fd (CoglRenderer *renderer,
+                            int fd,
+                            CoglPollFDEvent events);
 
-#define COGL_GLX_N_CACHED_CONFIGS 3
-
-typedef struct _CoglGLXDisplay
-{
-  CoglGLXCachedConfig glx_cached_configs[COGL_GLX_N_CACHED_CONFIGS];
-
-  CoglBool found_fbconfig;
-  CoglBool fbconfig_has_rgba_visual;
-  GLXFBConfig fbconfig;
-
-  /* Single context for all wins */
-  GLXContext glx_context;
-  GLXWindow dummy_glxwin;
-  Window dummy_xwin;
-} CoglGLXDisplay;
-
-#endif /* __COGL_DISPLAY_GLX_PRIVATE_H */
+#endif /* __COGL_POLL_PRIVATE_H__ */

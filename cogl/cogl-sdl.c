@@ -69,15 +69,18 @@ void
 cogl_sdl_handle_event (CoglContext *context, SDL_Event *event)
 {
   const CoglWinsysVtable *winsys;
+  CoglRenderer *renderer;
 
   _COGL_RETURN_IF_FAIL (cogl_is_context (context));
 
-  winsys = _cogl_context_get_winsys (context);
+  renderer = context->display->renderer;
 
-  _cogl_renderer_handle_native_event (context->display->renderer, event);
+  winsys = renderer->winsys_vtable;
+
+  _cogl_renderer_handle_native_event (renderer, event);
 
   if (winsys->poll_dispatch)
-    winsys->poll_dispatch (context, NULL, 0);
+    winsys->poll_dispatch (renderer, NULL, 0);
 }
 
 static void

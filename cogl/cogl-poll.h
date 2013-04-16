@@ -104,19 +104,23 @@ typedef struct {
 } CoglPollFD;
 
 /**
- * cogl_poll_get_info:
- * @context: A #CoglContext
+ * cogl_poll_renderer_get_info:
+ * @renderer: A #CoglRenderer
  * @poll_fds: A return location for a pointer to an array
  *            of #CoglPollFD<!-- -->s
  * @n_poll_fds: A return location for the number of entries in *@poll_fds
  * @timeout: A return location for the maximum length of time to wait
  *           in microseconds, or -1 to wait indefinitely.
  *
- * This should be called whenever an application is about to go idle
- * so that Cogl has a chance to describe what state it needs to be
- * woken up on. The assumption is that the application is using a main
- * loop with something like the poll function call on Unix or the GLib
- * main loop.
+ * Is used to integrate Cogl with an application mainloop that is based
+ * on the unix poll(2) api (or select() or something equivalent). This
+ * api should be called whenever an application is about to go idle so
+ * that Cogl has a chance to describe what file descriptor events it
+ * needs to be woken up for.
+ *
+ * <note>If your application is using the Glib mainloop then you
+ * should jump to the cogl_glib_source_new() api as a more convenient
+ * way of integrating Cogl with the mainloop.</note>
  *
  * After the function is called *@poll_fds will contain a pointer to
  * an array of #CoglPollFD structs describing the file descriptors
@@ -124,8 +128,12 @@ typedef struct {
  * accordingly. After the application has completed its idle it is
  * expected to either update the revents members directly in this
  * array or to create a copy of the array and update them
- * there. Either way it should pass a pointer to either array back to
- * Cogl when calling cogl_poll_dispatch().
+ * there.
+ *
+ * When the application mainloop returns from calling poll(2) (or its
+ * equivalent) then it should call cogl_poll_renderer_dispatch()
+ * passing a pointer the array of CoglPollFD<!-- -->s with updated
+ * revent values.
  *
  * When using the %COGL_WINSYS_ID_WGL winsys (where file descriptors
  * don't make any sense) or %COGL_WINSYS_ID_SDL (where the event
@@ -134,21 +142,29 @@ typedef struct {
  *
  * @timeout will contain a maximum amount of time to wait in
  * microseconds before the application should wake up or -1 if the
- * application should wait indefinitely. This can also be 0 zero if
+ * application should wait indefinitely. This can also be 0 if
  * Cogl needs to be woken up immediately.
  *
+ * Return value: A "poll fd state age" that changes whenever the set
+ *               of poll_fds has changed. If this API is being used to
+ *               integrate with another system mainloop api then
+ *               knowing if the set of file descriptors and events has
+ *               really changed can help avoid redundant work
+ *               depending the api. The age isn't guaranteed to change
+ *               when the timeout changes.
+ *
  * Stability: unstable
- * Since: 1.10
+ * Since: 1.16
  */
-void
-cogl_poll_get_info (CoglContext *context,
-                    CoglPollFD **poll_fds,
-                    int *n_poll_fds,
-                    int64_t *timeout);
+int
+cogl_poll_renderer_get_info (CoglRenderer *renderer,
+                             CoglPollFD **poll_fds,
+                             int *n_poll_fds,
+                             int64_t *timeout);
 
 /**
- * cogl_poll_dispatch:
- * @context: A #CoglContext
+ * cogl_poll_renderer_dispatch:
+ * @renderer: A #CoglRenderer
  * @poll_fds: An array of #CoglPollFD<!-- -->s describing the events
  *            that have occurred since the application went idle.
  * @n_poll_fds: The length of the @poll_fds array.
@@ -157,17 +173,21 @@ cogl_poll_get_info (CoglContext *context,
  * going idle in its main loop. The @poll_fds array should contain a
  * list of file descriptors matched with the events that occurred in
  * revents. The events field is ignored. It is safe to pass in extra
- * file descriptors that Cogl didn't request from
- * cogl_context_begin_idle() or a shorter array missing some file
+ * file descriptors that Cogl didn't request when calling
+ * cogl_poll_renderer_get_info() or a shorter array missing some file
  * descriptors that Cogl requested.
  *
+ * <note>If your application didn't originally create a #CoglRenderer
+ * manually then you can easily get a #CoglRenderer pointer by calling
+ * cogl_get_renderer().</note>
+ *
  * Stability: unstable
- * Since: 1.10
+ * Since: 1.16
  */
 void
-cogl_poll_dispatch (CoglContext *context,
-                    const CoglPollFD *poll_fds,
-                    int n_poll_fds);
+cogl_poll_renderer_dispatch (CoglRenderer *renderer,
+                             const CoglPollFD *poll_fds,
+                             int n_poll_fds);
 
 COGL_END_DECLS
 

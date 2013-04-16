@@ -206,6 +206,18 @@ cogl_context_new (CoglDisplay *display,
 
   context->display = display;
 
+  /* Add a back reference to the context from the renderer because
+   * event dispatching is handled by the renderer and we don't
+   * currently have a generalized way of registering idle functions
+   * and such things internally so cogl_poll_renderer_dispatch()
+   * needs to poke inside the context if one is available to check
+   * if there are pending onscreen framebuffer events.
+   *
+   * FIXME: once we have a generalized way of registering idle
+   * functions then we can remove this back-reference.
+   */
+  display->renderer->context = context;
+
   /* This is duplicated data, but it's much more convenient to have
      the driver attached to the context and the value is accessed a
      lot throughout Cogl */
@@ -605,6 +617,12 @@ CoglDisplay *
 cogl_context_get_display (CoglContext *context)
 {
   return context->display;
+}
+
+CoglRenderer *
+cogl_context_get_renderer (CoglContext *context)
+{
+  return context->display->renderer;
 }
 
 #ifdef COGL_HAS_EGL_SUPPORT

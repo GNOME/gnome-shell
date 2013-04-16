@@ -40,9 +40,6 @@ typedef struct _CoglXlibRenderer
      these is expected to be allocated on the stack by the caller */
   CoglXlibTrapState *trap_state;
 
-  /* A poll FD for handling event retrieval within Cogl */
-  CoglPollFD poll_fd;
-
   unsigned long outputs_update_serial;
 } CoglXlibRenderer;
 
@@ -84,11 +81,8 @@ _cogl_xlib_renderer_untrap_errors (CoglRenderer *renderer,
 CoglXlibRenderer *
 _cogl_xlib_renderer_get_data (CoglRenderer *renderer);
 
-void
-_cogl_xlib_renderer_poll_get_info (CoglRenderer *renderer,
-                                   CoglPollFD **poll_fds,
-                                   int *n_poll_fds,
-                                   int64_t *timeout);
+int64_t
+_cogl_xlib_renderer_get_dispatch_timeout (CoglRenderer *renderer);
 
 void
 _cogl_xlib_renderer_poll_dispatch (CoglRenderer *renderer,

@@ -105,9 +105,11 @@ main (int argc, char **argv)
 
         cogl_onscreen_swap_buffers (onscreen);
 
-        cogl_poll_get_info (ctx, &poll_fds, &n_poll_fds, &timeout);
+        cogl_poll_renderer_get_info (cogl_context_get_renderer (ctx),
+                                     &poll_fds, &n_poll_fds, &timeout);
         g_poll ((GPollFD *) poll_fds, n_poll_fds, 0);
-        cogl_poll_dispatch (ctx, poll_fds, n_poll_fds);
+        cogl_poll_renderer_dispatch (cogl_context_get_renderer (ctx),
+                                     poll_fds, n_poll_fds);
     }
 
     return 0;

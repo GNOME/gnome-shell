@@ -416,6 +416,7 @@ cogl_sources_c = \
 	$(srcdir)/cogl-boxed-value.c			\
 	$(srcdir)/cogl-snippet-private.h		\
 	$(srcdir)/cogl-snippet.c			\
+	$(srcdir)/cogl-poll-private.h			\
 	$(srcdir)/cogl-poll.c				\
 	$(srcdir)/gl-prototypes/cogl-all-functions.h	\
 	$(srcdir)/gl-prototypes/cogl-gles1-functions.h	\
