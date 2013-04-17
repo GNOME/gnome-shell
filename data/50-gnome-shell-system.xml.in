@@ -11,6 +11,9 @@
 	<KeyListEntry name="focus-active-notification"
                       _description="Focus the active notification"/>
 
+	<KeyListEntry name="toggle-overview"
+                      _description="Show the overview"/>
+
 	<KeyListEntry name="toggle-application-view"
                       _description="Show all applications"/>
 

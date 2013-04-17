@@ -117,6 +117,13 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
         Overview.
       </_description>
     </key>
+    <key name="toggle-overview" type="as">
+      <default>["&lt;Super&gt;s"]</default>
+      <_summary>Keybinding to open the overview</_summary>
+      <_description>
+        Keybinding to open the Activities Overview.
+      </_description>
+    </key>
     <key name="toggle-message-tray" type="as">
       <default>["&lt;Super&gt;m"]</default>
       <_summary>Keybinding to toggle the visibility of the message tray</_summary>

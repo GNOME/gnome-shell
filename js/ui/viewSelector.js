@@ -150,6 +150,14 @@ const ViewSelector = new Lang.Class({
                               Shell.KeyBindingMode.NORMAL |
                               Shell.KeyBindingMode.OVERVIEW,
                               Lang.bind(this, this._toggleAppsPage));
+
+        Main.wm.addKeybinding('toggle-overview',
+                              new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
+                              Meta.KeyBindingFlags.NONE,
+                              Shell.KeyBindingMode.NORMAL |
+                              Shell.KeyBindingMode.OVERVIEW,
+                              Lang.bind(Main.overview, Main.overview.toggle));
+
     },
 
     _toggleAppsPage: function() {
