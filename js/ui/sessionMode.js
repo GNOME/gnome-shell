@@ -78,17 +78,6 @@ const _modes = {
         panelStyle: 'unlock-screen'
     },
 
-    'initial-setup': {
-        hasWindows: true,
-        isPrimary: true,
-        components: ['networkAgent', 'keyring'],
-        panel: {
-            left: [],
-            center: [],
-            right: ['a11yGreeter', 'keyboard', 'volume', 'battery']
-        }
-    },
-
     'user': {
         hasOverview: true,
         showCalendarEvents: true,
