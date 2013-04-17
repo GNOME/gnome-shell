@@ -474,7 +474,7 @@ typedef void (*CoglFrameCallback) (CoglOnscreen *onscreen,
  * Since: 1.14
  * Stability: unstable
  */
-typedef struct _CoglFrameClosure CoglFrameClosure;
+typedef struct _CoglClosure CoglFrameClosure;
 
 /**
  * cogl_onscreen_add_frame_callback:
@@ -690,7 +690,7 @@ typedef void (*CoglOnscreenResizeCallback) (CoglOnscreen *onscreen,
  * Since: 2.0
  * Stability: unstable
  */
-typedef struct _CoglOnscreenResizeClosure CoglOnscreenResizeClosure;
+typedef struct _CoglClosure CoglOnscreenResizeClosure;
 
 /**
  * cogl_onscreen_add_resize_callback:

@@ -27,36 +27,13 @@
 #include "cogl-onscreen.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-queue.h"
+#include "cogl-closure-list-private.h"
 
 #include <glib.h>
 
 #ifdef COGL_HAS_WIN32_SUPPORT
 #include <windows.h>
 #endif
-
-COGL_TAILQ_HEAD (CoglFrameCallbackList, CoglFrameClosure);
-
-struct _CoglFrameClosure
-{
-  COGL_TAILQ_ENTRY (CoglFrameClosure) list_node;
-
-  CoglFrameCallback callback;
-
-  void *user_data;
-  CoglUserDataDestroyCallback destroy;
-};
-
-COGL_TAILQ_HEAD (CoglOnscreenResizeCallbackList, CoglOnscreenResizeClosure);
-
-struct _CoglOnscreenResizeClosure
-{
-  COGL_TAILQ_ENTRY (CoglOnscreenResizeClosure) list_node;
-
-  CoglOnscreenResizeCallback callback;
-
-  void *user_data;
-  CoglUserDataDestroyCallback destroy;
-};
 
 typedef struct _CoglOnscreenEvent CoglOnscreenEvent;
 
@@ -91,10 +68,10 @@ struct _CoglOnscreen
 
   CoglBool swap_throttled;
 
-  CoglFrameCallbackList frame_closures;
+  CoglClosureList frame_closures;
 
   CoglBool resizable;
-  CoglOnscreenResizeCallbackList resize_closures;
+  CoglClosureList resize_closures;
 
   int64_t frame_counter;
   int64_t swap_frame_counter; /* frame counter at last all to

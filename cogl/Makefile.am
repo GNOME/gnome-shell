@@ -435,6 +435,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-gles2-context.c			\
 	$(srcdir)/cogl-error-private.h			\
 	$(srcdir)/cogl-error.c				\
+	$(srcdir)/cogl-closure-list-private.h		\
+	$(srcdir)/cogl-closure-list.c			\
 	$(NULL)
 
 if USE_GLIB
