@@ -41,6 +41,9 @@ const Util = imports.misc.util;
 const OVERRIDES_SCHEMA = 'org.gnome.shell.overrides';
 const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
+const A11Y_SCHEMA = 'org.gnome.desktop.a11y.keyboard';
+const STICKY_KEYS_ENABLE = 'stickykeys-enable';
+
 let componentManager = null;
 let panel = null;
 let overview = null;
@@ -69,6 +72,7 @@ let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
 let _overridesSettings = null;
+let _a11ySettings = null;
 
 function _sessionUpdated() {
     _loadDefaultStylesheet();
@@ -157,9 +161,14 @@ function _initializeUI() {
     layoutManager.init();
     overview.init();
 
+    _a11ySettings = new Gio.Settings({ schema: A11Y_SCHEMA });
+
     global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
                                             false, -1, 1);
-    global.display.connect('overlay-key', Lang.bind(overview, overview.toggle));
+    global.display.connect('overlay-key', Lang.bind(overview, function () {
+        if (!_a11ySettings.get_boolean (STICKY_KEYS_ENABLE))
+            overview.toggle();
+    }));
 
     // Provide the bus object for gnome-session to
     // initiate logouts.
