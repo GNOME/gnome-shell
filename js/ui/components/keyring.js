@@ -143,8 +143,15 @@ const KeyringDialog = new Lang.Class({
     },
 
     _updateSensitivity: function(sensitive) {
-        this._passwordEntry.reactive = sensitive;
-        this._passwordEntry.clutter_text.editable = sensitive;
+        if (this._passwordEntry) {
+            this._passwordEntry.reactive = sensitive;
+            this._passwordEntry.clutter_text.editable = sensitive;
+        }
+
+        if (this._confirmEntry) {
+            this._confirmEntry.reactive = sensitive;
+            this._confirmEntry.clutter_text.editable = sensitive;
+        }
 
         this._continueButton.can_focus = sensitive;
         this._continueButton.reactive = sensitive;
