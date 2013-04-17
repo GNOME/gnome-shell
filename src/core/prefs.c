@@ -1708,12 +1708,13 @@ meta_prefs_set_num_workspaces (int n_workspaces)
 {
   MetaBasePreference *pref;
 
-  find_pref (preferences_int, sizeof(MetaIntPreference),
-             KEY_NUM_WORKSPACES, &pref);
-
-  g_settings_set_int (SETTINGS (pref->schema),
-                      KEY_NUM_WORKSPACES,
-                      n_workspaces);
+  if (find_pref (preferences_int, sizeof(MetaIntPreference),
+                 KEY_NUM_WORKSPACES, &pref))
+    {
+      g_settings_set_int (SETTINGS (pref->schema),
+                          KEY_NUM_WORKSPACES,
+                          n_workspaces);
+    }
 }
 
 static GHashTable *key_bindings;
@@ -2216,9 +2217,11 @@ meta_prefs_set_no_tab_popup (gboolean whether)
 {
   MetaBasePreference *pref;
 
-  find_pref (preferences_bool, sizeof(MetaBoolPreference),
-             KEY_NO_TAB_POPUP, &pref);
-  g_settings_set_boolean (SETTINGS (pref->schema), KEY_NO_TAB_POPUP, whether);
+  if (find_pref (preferences_bool, sizeof(MetaBoolPreference),
+                 KEY_NO_TAB_POPUP, &pref))
+    {
+      g_settings_set_boolean (SETTINGS (pref->schema), KEY_NO_TAB_POPUP, whether);
+    }
 }
 
 int
