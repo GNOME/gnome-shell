@@ -96,12 +96,18 @@ const CtrlAltTabManager = new Lang.Class({
             let windowTracker = Shell.WindowTracker.get_default();
             let textureCache = St.TextureCache.get_default();
             for (let i = 0; i < windows.length; i++) {
-                let icon;
-                let app = windowTracker.get_window_app(windows[i]);
-                if (app)
-                    icon = app.create_icon_texture(POPUP_APPICON_SIZE);
-                else
-                    icon = textureCache.bind_pixbuf_property(windows[i], 'icon');
+                let icon = null;
+                let iconName = null;
+                if (windows[i].get_window_type () == Meta.WindowType.DESKTOP) {
+                    iconName = 'video-display-symbolic';
+                } else {
+                    let app = windowTracker.get_window_app(windows[i]);
+                    if (app)
+                        icon = app.create_icon_texture(POPUP_APPICON_SIZE);
+                    else
+                        icon = textureCache.bind_pixbuf_property(windows[i], 'icon');
+                }
+
                 items.push({ name: windows[i].title,
                              proxy: windows[i].get_compositor_private(),
                              focusCallback: Lang.bind(windows[i],
@@ -109,6 +115,7 @@ const CtrlAltTabManager = new Lang.Class({
                                      Main.activateWindow(this, timestamp);
                                  }),
                              iconActor: icon,
+                             iconName: iconName,
                              sortGroup: SortGroup.MIDDLE });
             }
         }
