@@ -195,6 +195,7 @@ struct _CoglContext
   int next_swap_callback_id;
 
   CoglOnscreenEventList onscreen_events_queue;
+  CoglClosure *onscreen_dispatch_idle;
 
   CoglGLES2Context *current_gles2_context;
   GQueue gles2_context_stack;

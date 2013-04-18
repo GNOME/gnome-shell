@@ -155,6 +155,8 @@ _cogl_renderer_free (CoglRenderer *renderer)
 {
   const CoglWinsysVtable *winsys = _cogl_renderer_get_winsys (renderer);
 
+  _cogl_closure_list_disconnect_all (&renderer->idle_closures);
+
   if (winsys)
     winsys->renderer_disconnect (renderer);
 
@@ -184,6 +186,8 @@ cogl_renderer_new (void)
   renderer->event_filters = NULL;
 
   renderer->poll_fds = g_array_new (FALSE, TRUE, sizeof (CoglPollFD));
+
+  COGL_LIST_INIT (&renderer->idle_closures);
 
 #ifdef COGL_HAS_XLIB_SUPPORT
   renderer->xlib_enable_event_retrieval = TRUE;

@@ -43,6 +43,7 @@
 #include "cogl-texture-pixmap-x11-private.h"
 #include "cogl-texture-2d-private.h"
 #include "cogl-error-private.h"
+#include "cogl-poll-private.h"
 
 #define COGL_ONSCREEN_X11_EVENT_MASK StructureNotifyMask
 
@@ -91,6 +92,42 @@ find_onscreen_for_xid (CoglContext *context, uint32_t xid)
 }
 
 static void
+flush_pending_resize_notifications_cb (void *data,
+                                       void *user_data)
+{
+  CoglFramebuffer *framebuffer = data;
+
+  if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
+    {
+      CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
+      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+
+      if (egl_onscreen->pending_resize_notify)
+        {
+          _cogl_onscreen_notify_resize (onscreen);
+          egl_onscreen->pending_resize_notify = FALSE;
+        }
+    }
+}
+
+static void
+flush_pending_resize_notifications_idle (void *user_data)
+{
+  CoglContext *context = user_data;
+  CoglRenderer *renderer = context->display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+
+  /* This needs to be disconnected before invoking the callbacks in
+   * case the callbacks cause it to be queued again */
+  _cogl_closure_disconnect (egl_renderer->resize_notify_idle);
+  egl_renderer->resize_notify_idle = NULL;
+
+  g_list_foreach (context->framebuffers,
+                  flush_pending_resize_notifications_cb,
+                  NULL);
+}
+
+static void
 notify_resize (CoglContext *context,
                Window drawable,
                int width,
@@ -111,8 +148,16 @@ notify_resize (CoglContext *context,
 
   /* We only want to notify that a resize happened when the
    * application calls cogl_context_dispatch so instead of immediately
-   * notifying we'll set a flag to remember to notify later */
-  egl_renderer->pending_resize_notify = TRUE;
+   * notifying we queue an idle callback */
+  if (!egl_renderer->resize_notify_idle)
+    {
+      egl_renderer->resize_notify_idle =
+        _cogl_poll_renderer_add_idle (renderer,
+                                      flush_pending_resize_notifications_idle,
+                                      context,
+                                      NULL);
+    }
+
   egl_onscreen->pending_resize_notify = TRUE;
 }
 
@@ -626,31 +671,7 @@ _cogl_winsys_xlib_get_visual_info (void)
 static int64_t
 _cogl_winsys_get_dispatch_timeout (CoglRenderer *renderer)
 {
-  CoglRendererEGL *egl_renderer = renderer->winsys;
-
-  if (egl_renderer->pending_resize_notify)
-    return 0;
-
   return _cogl_xlib_renderer_get_dispatch_timeout (renderer);
-}
-
-static void
-flush_pending_notifications_cb (void *data,
-                                void *user_data)
-{
-  CoglFramebuffer *framebuffer = data;
-
-  if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
-    {
-      CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
-      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
-
-      if (egl_onscreen->pending_resize_notify)
-        {
-          _cogl_onscreen_notify_resize (onscreen);
-          egl_onscreen->pending_resize_notify = FALSE;
-        }
-    }
 }
 
 static void
@@ -658,28 +679,9 @@ _cogl_winsys_poll_dispatch (CoglRenderer *renderer,
                             const CoglPollFD *poll_fds,
                             int n_poll_fds)
 {
-  CoglRendererEGL *egl_renderer = renderer->winsys;
-
   _cogl_xlib_renderer_poll_dispatch (renderer,
                                      poll_fds,
                                      n_poll_fds);
-
-  /* FIXME: instead of requiring event dispatching which is handled at
-   * the CoglRenderer level to have to know about CoglContext we
-   * should have a generalized way of queuing an idle function */
-  if (renderer->context &&
-      egl_renderer->pending_resize_notify)
-    {
-      CoglContext *context = renderer->context;
-
-      /* This needs to be cleared before invoking the callbacks in
-       * case the callbacks cause it to be set again */
-      egl_renderer->pending_resize_notify = FALSE;
-
-      g_list_foreach (context->framebuffers,
-                      flush_pending_notifications_cb,
-                      NULL);
-    }
 }
 
 #ifdef EGL_KHR_image_pixmap

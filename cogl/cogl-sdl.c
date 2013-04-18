@@ -68,19 +68,13 @@ cogl_sdl_context_new (int type, CoglError **error)
 void
 cogl_sdl_handle_event (CoglContext *context, SDL_Event *event)
 {
-  const CoglWinsysVtable *winsys;
   CoglRenderer *renderer;
 
   _COGL_RETURN_IF_FAIL (cogl_is_context (context));
 
   renderer = context->display->renderer;
 
-  winsys = renderer->winsys_vtable;
-
   _cogl_renderer_handle_native_event (renderer, event);
-
-  if (winsys->poll_dispatch)
-    winsys->poll_dispatch (renderer, NULL, 0);
 }
 
 static void
@@ -96,14 +90,16 @@ _cogl_sdl_push_wakeup_event (CoglContext *context)
 void
 cogl_sdl_idle (CoglContext *context)
 {
-  _cogl_dispatch_onscreen_events (context);
+  CoglRenderer *renderer = context->display->renderer;
+
+  cogl_poll_renderer_dispatch (renderer, NULL, 0);
 
   /* It is expected that this will be called from the application
    * immediately before blocking in SDL_WaitEvent. However,
-   * dispatching the onscreen events may cause more events to be
-   * queued. If that happens we need to make sure the blocking returns
-   * immediately. We'll post our dummy event to make sure that
-   * happens */
-  if (!COGL_TAILQ_EMPTY (&context->onscreen_events_queue))
+   * dispatching cause more work to be queued. If that happens we need
+   * to make sure the blocking returns immediately. We'll post our
+   * dummy event to make sure that happens
+   */
+  if (!COGL_LIST_EMPTY (&renderer->idle_closures))
     _cogl_sdl_push_wakeup_event (context);
 }

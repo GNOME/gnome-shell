@@ -54,12 +54,7 @@ typedef struct _CoglGLXRenderer
   /* GModule pointing to libGL which we use to get glX functions out of */
   GModule *libgl_module;
 
-  /* Events get dispatched from the CoglRenderer and these are
-   * high-level flags that let us quickly check if there are any
-   * pending events to dispatch. */
-  CoglBool pending_sync_notify;
-  CoglBool pending_complete_notify;
-  CoglBool pending_resize_notify;
+  CoglClosure *flush_notifications_idle;
 
   /* Copy of the winsys features that are based purely on the
    * information we can get without using a GL context. We want to

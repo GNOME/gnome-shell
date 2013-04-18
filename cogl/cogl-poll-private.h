@@ -25,6 +25,10 @@
 #ifndef __COGL_POLL_PRIVATE_H__
 #define __COGL_POLL_PRIVATE_H__
 
+#include "cogl-poll.h"
+#include "cogl-renderer.h"
+#include "cogl-closure-list-private.h"
+
 void
 _cogl_poll_renderer_remove_fd (CoglRenderer *renderer, int fd);
 
@@ -32,5 +36,13 @@ void
 _cogl_poll_renderer_add_fd (CoglRenderer *renderer,
                             int fd,
                             CoglPollFDEvent events);
+
+typedef void (*CoglIdleCallback) (void *user_data);
+
+CoglClosure *
+_cogl_poll_renderer_add_idle (CoglRenderer *renderer,
+                              CoglIdleCallback idle_cb,
+                              void *user_data,
+                              CoglUserDataDestroyCallback destroy_cb);
 
 #endif /* __COGL_POLL_PRIVATE_H__ */

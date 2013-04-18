@@ -81,7 +81,8 @@ _cogl_closure_list_add (CoglClosureList *list,
  * @cb_type: The name of a typedef for the closure callback function signature
  * @...: The the arguments to pass to the callback
  *
- * A convenience macro to invoke a closure list.
+ * A convenience macro to invoke a closure list with a variable number
+ * of arguments that will be passed to the closure callback functions.
  *
  * Note that the arguments will be evaluated multiple times so it is
  * not safe to pass expressions that have side-effects.
@@ -98,6 +99,17 @@ _cogl_closure_list_add (CoglClosureList *list,
       {                                                         \
         cb_type _cb = _c->function;                             \
         _cb (__VA_ARGS__, _c->user_data);                       \
+      }                                                         \
+  } G_STMT_END
+
+#define _cogl_closure_list_invoke_no_args(list)                 \
+  G_STMT_START {                                                \
+    CoglClosure *_c, *_tmp;                                     \
+                                                                \
+    COGL_LIST_FOREACH_SAFE (_c, (list), list_node, _tmp)        \
+      {                                                         \
+        void (*_cb)(void *) = _c->function;                     \
+        _cb (_c->user_data);                                    \
       }                                                         \
   } G_STMT_END
 

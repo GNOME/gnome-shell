@@ -38,6 +38,7 @@
 #include "cogl-onscreen-private.h"
 #include "cogl-winsys-sdl-private.h"
 #include "cogl-error-private.h"
+#include "cogl-poll-private.h"
 #include "cogl-sdl.h"
 
 typedef struct _CoglContextSdl2
@@ -47,7 +48,7 @@ typedef struct _CoglContextSdl2
 
 typedef struct _CoglRendererSdl2
 {
-  CoglBool pending_resize_notify;
+  CoglClosure *resize_notify_idle;
 } CoglRendererSdl2;
 
 typedef struct _CoglDisplaySdl2
@@ -265,6 +266,42 @@ error:
   return FALSE;
 }
 
+static void
+flush_pending_notifications_cb (void *data,
+                                void *user_data)
+{
+  CoglFramebuffer *framebuffer = data;
+
+  if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
+    {
+      CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
+      CoglOnscreenSdl2 *sdl_onscreen = onscreen->winsys;
+
+      if (sdl_onscreen->pending_resize_notify)
+        {
+          _cogl_onscreen_notify_resize (onscreen);
+          sdl_onscreen->pending_resize_notify = FALSE;
+        }
+    }
+}
+
+static void
+flush_pending_resize_notifications_idle (void *user_data)
+{
+  CoglContext *context = user_data;
+  CoglRenderer *renderer = context->display->renderer;
+  CoglRendererSdl2 *sdl_renderer = renderer->winsys;
+
+  /* This needs to be disconnected before invoking the callbacks in
+   * case the callbacks cause it to be queued again */
+  _cogl_closure_disconnect (sdl_renderer->resize_notify_idle);
+  sdl_renderer->resize_notify_idle = NULL;
+
+  g_list_foreach (context->framebuffers,
+                  flush_pending_notifications_cb,
+                  NULL);
+}
+
 static CoglFilterReturn
 sdl_event_filter_cb (SDL_Event *event, void *data)
 {
@@ -273,7 +310,8 @@ sdl_event_filter_cb (SDL_Event *event, void *data)
     {
       CoglContext *context = data;
       CoglDisplay *display = context->display;
-      CoglRendererSdl2 *sdl_renderer = display->renderer->winsys;
+      CoglRenderer *renderer = display->renderer;
+      CoglRendererSdl2 *sdl_renderer = renderer->winsys;
       float width = event->window.data1;
       float height = event->window.data2;
       CoglFramebuffer *framebuffer;
@@ -292,13 +330,19 @@ sdl_event_filter_cb (SDL_Event *event, void *data)
 
       _cogl_framebuffer_winsys_update_size (framebuffer, width, height);
 
-      sdl_onscreen = COGL_ONSCREEN (framebuffer)->winsys;
-
       /* We only want to notify that a resize happened when the
        * application calls cogl_context_dispatch so instead of
-       * immediately notifying we'll set a flag to remember to notify
-       * later */
-      sdl_renderer->pending_resize_notify = TRUE;
+       * immediately notifying we queue an idle callback */
+      if (!sdl_renderer->resize_notify_idle)
+        {
+          sdl_renderer->resize_notify_idle =
+            _cogl_poll_renderer_add_idle (renderer,
+                                          flush_pending_resize_notifications_idle,
+                                          context,
+                                          NULL);
+        }
+
+      sdl_onscreen = COGL_ONSCREEN (framebuffer)->winsys;
       sdl_onscreen->pending_resize_notify = TRUE;
 
       return COGL_FILTER_CONTINUE;
@@ -486,47 +530,6 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
     SDL_HideWindow (sdl_onscreen->window);
 }
 
-static void
-flush_pending_notifications_cb (void *data,
-                                void *user_data)
-{
-  CoglFramebuffer *framebuffer = data;
-
-  if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
-    {
-      CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
-      CoglOnscreenSdl2 *sdl_onscreen = onscreen->winsys;
-
-      if (sdl_onscreen->pending_resize_notify)
-        {
-          _cogl_onscreen_notify_resize (onscreen);
-          sdl_onscreen->pending_resize_notify = FALSE;
-        }
-    }
-}
-
-static void
-_cogl_winsys_poll_dispatch (CoglRenderer *renderer,
-                            const CoglPollFD *poll_fds,
-                            int n_poll_fds)
-{
-  CoglRendererSdl2 *sdl_renderer = renderer->winsys;
-
-  /* FIXME: instead of requiring event dispatching which is handled at
-   * the CoglRenderer level to have to know about CoglContext we
-   * should have a generalized way of queuing an idle function */
-  if (renderer->context &&
-      sdl_renderer->pending_resize_notify)
-    {
-      CoglContext *context = renderer->context;
-
-      g_list_foreach (context->framebuffers,
-                      flush_pending_notifications_cb,
-                      NULL);
-      sdl_renderer->pending_resize_notify = FALSE;
-    }
-}
-
 SDL_Window *
 cogl_sdl_onscreen_get_window (CoglOnscreen *onscreen)
 {
@@ -573,8 +576,6 @@ _cogl_winsys_sdl_get_vtable (void)
       vtable.onscreen_update_swap_throttled =
         _cogl_winsys_onscreen_update_swap_throttled;
       vtable.onscreen_set_visibility = _cogl_winsys_onscreen_set_visibility;
-
-      vtable.poll_dispatch = _cogl_winsys_poll_dispatch;
 
       vtable_inited = TRUE;
     }

@@ -63,8 +63,7 @@ typedef struct _CoglRendererKMS
 {
   int fd;
   struct gbm_device *gbm;
-
-  CoglBool pending_swap_notify;
+  CoglClosure *swap_notify_idle;
 } CoglRendererKMS;
 
 typedef struct _CoglOutputKMS
@@ -604,6 +603,48 @@ free_current_bo (CoglOnscreen *onscreen)
 }
 
 static void
+flush_pending_swap_notify_cb (void *data,
+                              void *user_data)
+{
+  CoglFramebuffer *framebuffer = data;
+
+  if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
+    {
+      CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
+      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+      CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
+
+      if (kms_onscreen->pending_swap_notify)
+        {
+          CoglFrameInfo *info = g_queue_pop_head (&onscreen->pending_frame_infos);
+
+          _cogl_onscreen_notify_frame_sync (onscreen, info);
+          _cogl_onscreen_notify_complete (onscreen, info);
+          kms_onscreen->pending_swap_notify = FALSE;
+
+          cogl_object_unref (info);
+        }
+    }
+}
+
+static void
+flush_pending_swap_notify_idle (void *user_data)
+{
+  CoglContext *context = user_data;
+  CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
+  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+
+  /* This needs to be disconnected before invoking the callbacks in
+   * case the callbacks cause it to be queued again */
+  _cogl_closure_disconnect (kms_renderer->swap_notify_idle);
+  kms_renderer->swap_notify_idle = NULL;
+
+  g_list_foreach (context->framebuffers,
+                  flush_pending_swap_notify_cb,
+                  NULL);
+}
+
+static void
 page_flip_handler (int fd,
                    unsigned int frame,
                    unsigned int sec,
@@ -627,9 +668,16 @@ page_flip_handler (int fd,
 
       /* We only want to notify that the swap is complete when the
        * application calls cogl_context_dispatch so instead of
-       * immediately notifying we'll set a flag to remember to notify
-       * later */
-      kms_renderer->pending_swap_notify = TRUE;
+       * immediately notifying we queue an idle callback */
+      if (!kms_renderer->swap_notify_idle)
+        {
+          kms_renderer->swap_notify_idle =
+            _cogl_poll_renderer_add_idle (renderer,
+                                          flush_pending_swap_notify_idle,
+                                          context,
+                                          NULL);
+        }
+
       kms_onscreen->pending_swap_notify = TRUE;
 
       free_current_bo (onscreen);
@@ -867,42 +915,6 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   onscreen->winsys = NULL;
 }
 
-static int64_t
-_cogl_winsys_get_dispatch_timeout (CoglRenderer *renderer)
-{
-  CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
-
-  /* If we've already got a pending swap notify then we'll dispatch
-   * immediately */
-  return kms_renderer->pending_swap_notify ? 0 : -1;
-}
-
-static void
-flush_pending_swap_notify_cb (void *data,
-                              void *user_data)
-{
-  CoglFramebuffer *framebuffer = data;
-
-  if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
-    {
-      CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
-      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
-      CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
-
-      if (kms_onscreen->pending_swap_notify)
-        {
-          CoglFrameInfo *info = g_queue_pop_head (&onscreen->pending_frame_infos);
-
-          _cogl_onscreen_notify_frame_sync (onscreen, info);
-          _cogl_onscreen_notify_complete (onscreen, info);
-          kms_onscreen->pending_swap_notify = FALSE;
-
-          cogl_object_unref (info);
-        }
-    }
-}
-
 static void
 _cogl_winsys_poll_dispatch (CoglRenderer *renderer,
                             const CoglPollFD *poll_fds,
@@ -920,23 +932,6 @@ _cogl_winsys_poll_dispatch (CoglRenderer *renderer,
 
         break;
       }
-
-  /* FIXME: instead of requiring event dispatching which is handled at
-   * the CoglRenderer level to have to know about CoglContext we
-   * should have a generalized way of queuing an idle function */
-  if (renderer->context &&
-      kms_renderer->pending_swap_notify)
-    {
-      CoglContext *context = renderer->context;
-
-      /* This needs to be cleared before invoking the callbacks in
-       * case the callbacks cause it to be set again */
-      kms_renderer->pending_swap_notify = FALSE;
-
-      g_list_foreach (context->framebuffers,
-                      flush_pending_swap_notify_cb,
-                      NULL);
-    }
 }
 
 static const CoglWinsysEGLVtable
@@ -976,7 +971,6 @@ _cogl_winsys_egl_kms_get_vtable (void)
       vtable.onscreen_swap_region = NULL;
       vtable.onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers;
 
-      vtable.get_dispatch_timeout = _cogl_winsys_get_dispatch_timeout;
       vtable.poll_dispatch = _cogl_winsys_poll_dispatch;
 
       vtable_inited = TRUE;

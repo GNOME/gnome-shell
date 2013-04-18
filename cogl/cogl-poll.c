@@ -49,16 +49,10 @@ cogl_poll_renderer_get_info (CoglRenderer *renderer,
   *poll_fds = (void *)renderer->poll_fds->data;
   *n_poll_fds = renderer->poll_fds->len;
 
-  /* NB: This will be NULL until the renderer has been connected,
-   * associated with a CoglDisplay and then a CoglContext is
-   * created from that display. */
-  if (renderer->context)
+  if (!COGL_LIST_EMPTY (&renderer->idle_closures))
     {
-      if (!COGL_TAILQ_EMPTY (&renderer->context->onscreen_events_queue))
-        {
-          *timeout = 0;
-          return renderer->poll_fds_age;
-        }
+      *timeout = 0;
+      return renderer->poll_fds_age;
     }
 
   winsys = renderer->winsys_vtable;
@@ -80,17 +74,7 @@ cogl_poll_renderer_dispatch (CoglRenderer *renderer,
 
   _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
 
-  /* FIXME: arbitrary cogl components should just be able to queue
-   * idle functions so that we don't have to explicitly poke into
-   * CoglContext here and understand about the CoglOnscreen event
-   * queue... */
-  if (renderer->context)
-    {
-      CoglContext *context = renderer->context;
-
-      if (!COGL_TAILQ_EMPTY (&context->onscreen_events_queue))
-        _cogl_dispatch_onscreen_events (context);
-    }
+  _cogl_closure_list_invoke_no_args (&renderer->idle_closures);
 
   winsys = renderer->winsys_vtable;
 
@@ -140,4 +124,16 @@ _cogl_poll_renderer_add_fd (CoglRenderer *renderer,
 
   g_array_append_val (renderer->poll_fds, pollfd);
   renderer->poll_fds_age++;
+}
+
+CoglClosure *
+_cogl_poll_renderer_add_idle (CoglRenderer *renderer,
+                              CoglIdleCallback idle_cb,
+                              void *user_data,
+                              CoglUserDataDestroyCallback destroy_cb)
+{
+  return _cogl_closure_list_add (&renderer->idle_closures,
+                                idle_cb,
+                                user_data,
+                                destroy_cb);
 }
