@@ -2603,20 +2603,6 @@ _cogl_winsys_texture_pixmap_x11_get_texture (CoglTexturePixmapX11 *tex_pixmap)
   return glx_tex_pixmap->glx_tex;
 }
 
-static int64_t
-_cogl_winsys_get_dispatch_timeout (CoglRenderer *renderer)
-{
-  return _cogl_xlib_renderer_get_dispatch_timeout (renderer);
-}
-
-static void
-_cogl_winsys_poll_dispatch (CoglRenderer *renderer,
-                            const CoglPollFD *poll_fds,
-                            int n_poll_fds)
-{
-  _cogl_xlib_renderer_poll_dispatch (renderer, poll_fds, n_poll_fds);
-}
-
 static CoglWinsysVtable _cogl_winsys_vtable =
   {
     .id = COGL_WINSYS_ID_GLX,
@@ -2647,9 +2633,6 @@ static CoglWinsysVtable _cogl_winsys_vtable =
     .onscreen_set_visibility = _cogl_winsys_onscreen_set_visibility,
     .onscreen_set_resizable =
       _cogl_winsys_onscreen_set_resizable,
-
-    .get_dispatch_timeout = _cogl_winsys_get_dispatch_timeout,
-    .poll_dispatch = _cogl_winsys_poll_dispatch,
 
     /* X11 tfp support... */
     /* XXX: instead of having a rather monolithic winsys vtable we could

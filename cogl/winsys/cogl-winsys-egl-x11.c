@@ -668,22 +668,6 @@ _cogl_winsys_xlib_get_visual_info (void)
   return get_visual_info (ctx->display, egl_display->egl_config);
 }
 
-static int64_t
-_cogl_winsys_get_dispatch_timeout (CoglRenderer *renderer)
-{
-  return _cogl_xlib_renderer_get_dispatch_timeout (renderer);
-}
-
-static void
-_cogl_winsys_poll_dispatch (CoglRenderer *renderer,
-                            const CoglPollFD *poll_fds,
-                            int n_poll_fds)
-{
-  _cogl_xlib_renderer_poll_dispatch (renderer,
-                                     poll_fds,
-                                     n_poll_fds);
-}
-
 #ifdef EGL_KHR_image_pixmap
 
 static CoglBool
@@ -829,9 +813,6 @@ _cogl_winsys_egl_xlib_get_vtable (void)
         _cogl_winsys_onscreen_x11_get_window_xid;
 
       vtable.xlib_get_visual_info = _cogl_winsys_xlib_get_visual_info;
-
-      vtable.get_dispatch_timeout = _cogl_winsys_get_dispatch_timeout;
-      vtable.poll_dispatch = _cogl_winsys_poll_dispatch;
 
 #ifdef EGL_KHR_image_pixmap
       /* X11 tfp support... */

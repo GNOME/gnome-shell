@@ -33,13 +33,21 @@
 #include "cogl-renderer-private.h"
 #include "cogl-context-private.h"
 
+typedef struct _CoglPollSource
+{
+  int fd;
+  CoglPollCheckCallback check;
+  CoglPollDispatchCallback dispatch;
+  void *user_data;
+} CoglPollSource;
+
 int
 cogl_poll_renderer_get_info (CoglRenderer *renderer,
                              CoglPollFD **poll_fds,
                              int *n_poll_fds,
                              int64_t *timeout)
 {
-  const CoglWinsysVtable *winsys;
+  GList *l;
 
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_renderer (renderer), 0);
   _COGL_RETURN_VAL_IF_FAIL (poll_fds != NULL, 0);
@@ -55,13 +63,17 @@ cogl_poll_renderer_get_info (CoglRenderer *renderer,
       return renderer->poll_fds_age;
     }
 
-  winsys = renderer->winsys_vtable;
+  for (l = renderer->poll_sources; l; l = l->next)
+    {
+      CoglPollSource *source = l->data;
+      if (source->check && source->check (source->user_data))
+        {
+          *timeout = 0;
+          return renderer->poll_fds_age;
+        }
+    }
 
-  if (winsys->get_dispatch_timeout)
-    *timeout = winsys->get_dispatch_timeout (renderer);
-  else
-    *timeout = -1;
-
+  *timeout = -1;
   return renderer->poll_fds_age;
 }
 
@@ -70,16 +82,28 @@ cogl_poll_renderer_dispatch (CoglRenderer *renderer,
                              const CoglPollFD *poll_fds,
                              int n_poll_fds)
 {
-  const CoglWinsysVtable *winsys;
+  GList *l;
 
   _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
 
   _cogl_closure_list_invoke_no_args (&renderer->idle_closures);
 
-  winsys = renderer->winsys_vtable;
+  for (l = renderer->poll_sources; l; l = l->next)
+    {
+      CoglPollSource *source = l->data;
+      int i;
 
-  if (winsys->poll_dispatch)
-    winsys->poll_dispatch (renderer, poll_fds, n_poll_fds);
+      for (i = 0; i < n_poll_fds; i++)
+        {
+          const CoglPollFD *pollfd = &poll_fds[i];
+
+          if (pollfd->fd == source->fd)
+            {
+              source->dispatch (source->user_data);
+              break;
+            }
+        }
+    }
 }
 
 static int
@@ -102,25 +126,50 @@ void
 _cogl_poll_renderer_remove_fd (CoglRenderer *renderer, int fd)
 {
   int i = find_pollfd (renderer, fd);
+  GList *l;
 
   if (i < 0)
     return;
 
   g_array_remove_index_fast (renderer->poll_fds, i);
   renderer->poll_fds_age++;
+
+  for (l = renderer->poll_sources; l; l = l->next)
+    {
+      CoglPollSource *source = l->data;
+      if (source->fd == fd)
+        {
+          renderer->poll_sources =
+            g_list_delete_link (renderer->poll_sources, l);
+          g_slice_free (CoglPollSource, source);
+          break;
+        }
+    }
 }
 
 void
 _cogl_poll_renderer_add_fd (CoglRenderer *renderer,
                             int fd,
-                            CoglPollFDEvent events)
+                            CoglPollFDEvent events,
+                            CoglPollCheckCallback check,
+                            CoglPollDispatchCallback dispatch,
+                            void *user_data)
 {
   CoglPollFD pollfd = {
     fd,
     events
   };
+  CoglPollSource *source;
 
   _cogl_poll_renderer_remove_fd (renderer, fd);
+
+  source = g_slice_new0 (CoglPollSource);
+  source->fd = fd;
+  source->check = check;
+  source->dispatch = dispatch;
+  source->user_data = user_data;
+
+  renderer->poll_sources = g_list_prepend (renderer->poll_sources, source);
 
   g_array_append_val (renderer->poll_fds, pollfd);
   renderer->poll_fds_age++;

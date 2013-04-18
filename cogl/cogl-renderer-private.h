@@ -54,6 +54,7 @@ struct _CoglRenderer
 
   GArray *poll_fds;
   int poll_fds_age;
+  GList *poll_sources;
 
   CoglClosureList idle_closures;
 

@@ -154,14 +154,6 @@ typedef struct _CoglWinsysVtable
   (*onscreen_win32_get_window) (CoglOnscreen *onscreen);
 #endif
 
-  int64_t
-  (*get_dispatch_timeout) (CoglRenderer *renderer);
-
-  void
-  (*poll_dispatch) (CoglRenderer *renderer,
-                    const CoglPollFD *poll_fds,
-                    int n_poll_fds);
-
 #ifdef COGL_HAS_XLIB_SUPPORT
   CoglBool
   (*texture_pixmap_x11_create) (CoglTexturePixmapX11 *tex_pixmap);

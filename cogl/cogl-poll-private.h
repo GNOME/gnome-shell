@@ -32,10 +32,16 @@
 void
 _cogl_poll_renderer_remove_fd (CoglRenderer *renderer, int fd);
 
+typedef CoglBool (*CoglPollCheckCallback) (void *user_data);
+typedef void (*CoglPollDispatchCallback) (void *user_data);
+
 void
 _cogl_poll_renderer_add_fd (CoglRenderer *renderer,
                             int fd,
-                            CoglPollFDEvent events);
+                            CoglPollFDEvent events,
+                            CoglPollCheckCallback check,
+                            CoglPollDispatchCallback dispatch,
+                            void *user_data);
 
 typedef void (*CoglIdleCallback) (void *user_data);
 

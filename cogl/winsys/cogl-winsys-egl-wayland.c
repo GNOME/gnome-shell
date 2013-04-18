@@ -39,6 +39,7 @@
 #include "cogl-onscreen-private.h"
 #include "cogl-wayland-renderer.h"
 #include "cogl-error-private.h"
+#include "cogl-poll-private.h"
 
 static const CoglWinsysEGLVtable _cogl_winsys_egl_vtable;
 
@@ -50,7 +51,7 @@ typedef struct _CoglRendererWayland
   struct wl_compositor *wayland_compositor;
   struct wl_shell *wayland_shell;
   struct wl_registry *wayland_registry;
-  CoglPollFD poll_fd;
+  int fd;
 } CoglRendererWayland;
 
 typedef struct _CoglDisplayWayland
@@ -107,6 +108,16 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 static const struct wl_registry_listener registry_listener = {
   registry_handle_global_cb,
 };
+
+static void
+dispatch_wayland_display_events (void *user_data)
+{
+  CoglRenderer *renderer = user_data;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererWayland *wayland_renderer = egl_renderer->platform;
+
+  wl_display_dispatch (wayland_renderer->wayland_display);
+}
 
 static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
@@ -176,9 +187,13 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   if (!_cogl_winsys_egl_renderer_connect_common (renderer, error))
     goto error;
 
-  wayland_renderer->poll_fd.fd =
-    wl_display_get_fd(wayland_renderer->wayland_display);
-  wayland_renderer->poll_fd.events = COGL_POLL_FD_EVENT_IN;
+  wayland_renderer->fd = wl_display_get_fd(wayland_renderer->wayland_display);
+  _cogl_poll_renderer_add_fd (renderer,
+                              wayland_renderer->fd,
+                              COGL_POLL_FD_EVENT_IN,
+                              NULL, /* no check callback */
+                              dispatch_wayland_display_events,
+                              renderer);
 
   return TRUE;
 
@@ -601,30 +616,6 @@ cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
     _cogl_framebuffer_winsys_update_size (fb, width, height);
 }
 
-static int64_t
-_cogl_winsys_get_dispatch_timeout (CoglRenderer *renderer)
-{
-  return -1;
-}
-
-static void
-_cogl_winsys_poll_dispatch (CoglRenderer *renderer,
-                            const CoglPollFD *poll_fds,
-                            int n_poll_fds)
-{
-  CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererWayland *wayland_renderer = egl_renderer->platform;
-  int i;
-
-  for (i = 0; i < n_poll_fds; i++)
-    if (poll_fds[i].fd == wayland_renderer->poll_fd.fd)
-      {
-        if (poll_fds[i].revents & COGL_POLL_FD_EVENT_IN)
-          wl_display_dispatch (wayland_renderer->wayland_display);
-        break;
-      }
-}
-
 static const CoglWinsysEGLVtable
 _cogl_winsys_egl_vtable =
   {
@@ -658,9 +649,6 @@ _cogl_winsys_egl_wayland_get_vtable (void)
       vtable.renderer_disconnect = _cogl_winsys_renderer_disconnect;
 
       vtable.onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers;
-
-      vtable.get_dispatch_timeout = _cogl_winsys_get_dispatch_timeout;
-      vtable.poll_dispatch = _cogl_winsys_poll_dispatch;
 
       vtable_inited = TRUE;
     }

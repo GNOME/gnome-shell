@@ -114,6 +114,143 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
   g_slice_free (CoglRendererEGL, egl_renderer);
 }
 
+static void
+flush_pending_swap_notify_cb (void *data,
+                              void *user_data)
+{
+  CoglFramebuffer *framebuffer = data;
+
+  if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
+    {
+      CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
+      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+      CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
+
+      if (kms_onscreen->pending_swap_notify)
+        {
+          CoglFrameInfo *info = g_queue_pop_head (&onscreen->pending_frame_infos);
+
+          _cogl_onscreen_notify_frame_sync (onscreen, info);
+          _cogl_onscreen_notify_complete (onscreen, info);
+          kms_onscreen->pending_swap_notify = FALSE;
+
+          cogl_object_unref (info);
+        }
+    }
+}
+
+static void
+flush_pending_swap_notify_idle (void *user_data)
+{
+  CoglContext *context = user_data;
+  CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
+  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+
+  /* This needs to be disconnected before invoking the callbacks in
+   * case the callbacks cause it to be queued again */
+  _cogl_closure_disconnect (kms_renderer->swap_notify_idle);
+  kms_renderer->swap_notify_idle = NULL;
+
+  g_list_foreach (context->framebuffers,
+                  flush_pending_swap_notify_cb,
+                  NULL);
+}
+
+static void
+free_current_bo (CoglOnscreen *onscreen)
+{
+  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
+  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglRenderer *renderer = context->display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+
+  if (kms_onscreen->current_fb_id)
+    {
+      drmModeRmFB (kms_renderer->fd,
+                   kms_onscreen->current_fb_id);
+      kms_onscreen->current_fb_id = 0;
+    }
+  if (kms_onscreen->current_bo)
+    {
+      gbm_surface_release_buffer (kms_onscreen->surface,
+                                  kms_onscreen->current_bo);
+      kms_onscreen->current_bo = NULL;
+    }
+}
+
+static void
+page_flip_handler (int fd,
+                   unsigned int frame,
+                   unsigned int sec,
+                   unsigned int usec,
+                   void *data)
+{
+  CoglFlipKMS *flip = data;
+
+  /* We're only ready to dispatch a swap notification once all outputs
+   * have flipped... */
+  flip->pending--;
+  if (flip->pending == 0)
+    {
+      CoglOnscreen *onscreen = flip->onscreen;
+      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+      CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
+      CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
+      CoglRenderer *renderer = context->display->renderer;
+      CoglRendererEGL *egl_renderer = renderer->winsys;
+      CoglRendererKMS *kms_renderer = egl_renderer->platform;
+
+      /* We only want to notify that the swap is complete when the
+       * application calls cogl_context_dispatch so instead of
+       * immediately notifying we queue an idle callback */
+      if (!kms_renderer->swap_notify_idle)
+        {
+          kms_renderer->swap_notify_idle =
+            _cogl_poll_renderer_add_idle (renderer,
+                                          flush_pending_swap_notify_idle,
+                                          context,
+                                          NULL);
+        }
+
+      kms_onscreen->pending_swap_notify = TRUE;
+
+      free_current_bo (onscreen);
+
+      kms_onscreen->current_fb_id = kms_onscreen->next_fb_id;
+      kms_onscreen->next_fb_id = 0;
+
+      kms_onscreen->current_bo = kms_onscreen->next_bo;
+      kms_onscreen->next_bo = NULL;
+
+      cogl_object_unref (flip->onscreen);
+
+      g_slice_free (CoglFlipKMS, flip);
+    }
+}
+
+static void
+handle_drm_event (CoglRendererKMS *kms_renderer)
+{
+  drmEventContext evctx;
+
+  memset (&evctx, 0, sizeof evctx);
+  evctx.version = DRM_EVENT_CONTEXT_VERSION;
+  evctx.page_flip_handler = page_flip_handler;
+  drmHandleEvent (kms_renderer->fd, &evctx);
+}
+
+static void
+dispatch_kms_events (void *user_data)
+{
+  CoglRenderer *renderer = user_data;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererKMS *kms_renderer = egl_renderer->platform;
+
+  handle_drm_event (kms_renderer);
+}
+
 static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                CoglError **error)
@@ -161,7 +298,10 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
 
   _cogl_poll_renderer_add_fd (renderer,
                               kms_renderer->fd,
-                              COGL_POLL_FD_EVENT_IN);
+                              COGL_POLL_FD_EVENT_IN,
+                              NULL, /* no check callback */
+                              dispatch_kms_events,
+                              renderer);
 
   return TRUE;
 
@@ -579,133 +719,6 @@ _cogl_winsys_egl_cleanup_context (CoglDisplay *display)
 }
 
 static void
-free_current_bo (CoglOnscreen *onscreen)
-{
-  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
-  CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
-  CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-  CoglRenderer *renderer = context->display->renderer;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
-
-  if (kms_onscreen->current_fb_id)
-    {
-      drmModeRmFB (kms_renderer->fd,
-                   kms_onscreen->current_fb_id);
-      kms_onscreen->current_fb_id = 0;
-    }
-  if (kms_onscreen->current_bo)
-    {
-      gbm_surface_release_buffer (kms_onscreen->surface,
-                                  kms_onscreen->current_bo);
-      kms_onscreen->current_bo = NULL;
-    }
-}
-
-static void
-flush_pending_swap_notify_cb (void *data,
-                              void *user_data)
-{
-  CoglFramebuffer *framebuffer = data;
-
-  if (framebuffer->type == COGL_FRAMEBUFFER_TYPE_ONSCREEN)
-    {
-      CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
-      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
-      CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
-
-      if (kms_onscreen->pending_swap_notify)
-        {
-          CoglFrameInfo *info = g_queue_pop_head (&onscreen->pending_frame_infos);
-
-          _cogl_onscreen_notify_frame_sync (onscreen, info);
-          _cogl_onscreen_notify_complete (onscreen, info);
-          kms_onscreen->pending_swap_notify = FALSE;
-
-          cogl_object_unref (info);
-        }
-    }
-}
-
-static void
-flush_pending_swap_notify_idle (void *user_data)
-{
-  CoglContext *context = user_data;
-  CoglRendererEGL *egl_renderer = context->display->renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
-
-  /* This needs to be disconnected before invoking the callbacks in
-   * case the callbacks cause it to be queued again */
-  _cogl_closure_disconnect (kms_renderer->swap_notify_idle);
-  kms_renderer->swap_notify_idle = NULL;
-
-  g_list_foreach (context->framebuffers,
-                  flush_pending_swap_notify_cb,
-                  NULL);
-}
-
-static void
-page_flip_handler (int fd,
-                   unsigned int frame,
-                   unsigned int sec,
-                   unsigned int usec,
-                   void *data)
-{
-  CoglFlipKMS *flip = data;
-
-  /* We're only ready to dispatch a swap notification once all outputs
-   * have flipped... */
-  flip->pending--;
-  if (flip->pending == 0)
-    {
-      CoglOnscreen *onscreen = flip->onscreen;
-      CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
-      CoglOnscreenKMS *kms_onscreen = egl_onscreen->platform;
-      CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
-      CoglRenderer *renderer = context->display->renderer;
-      CoglRendererEGL *egl_renderer = renderer->winsys;
-      CoglRendererKMS *kms_renderer = egl_renderer->platform;
-
-      /* We only want to notify that the swap is complete when the
-       * application calls cogl_context_dispatch so instead of
-       * immediately notifying we queue an idle callback */
-      if (!kms_renderer->swap_notify_idle)
-        {
-          kms_renderer->swap_notify_idle =
-            _cogl_poll_renderer_add_idle (renderer,
-                                          flush_pending_swap_notify_idle,
-                                          context,
-                                          NULL);
-        }
-
-      kms_onscreen->pending_swap_notify = TRUE;
-
-      free_current_bo (onscreen);
-
-      kms_onscreen->current_fb_id = kms_onscreen->next_fb_id;
-      kms_onscreen->next_fb_id = 0;
-
-      kms_onscreen->current_bo = kms_onscreen->next_bo;
-      kms_onscreen->next_bo = NULL;
-
-      cogl_object_unref (flip->onscreen);
-
-      g_slice_free (CoglFlipKMS, flip);
-    }
-}
-
-static void
-handle_drm_event (CoglRendererKMS *kms_renderer)
-{
-  drmEventContext evctx;
-
-  memset (&evctx, 0, sizeof evctx);
-  evctx.version = DRM_EVENT_CONTEXT_VERSION;
-  evctx.page_flip_handler = page_flip_handler;
-  drmHandleEvent (kms_renderer->fd, &evctx);
-}
-
-static void
 _cogl_winsys_onscreen_swap_buffers (CoglOnscreen *onscreen)
 {
   CoglContext *context = COGL_FRAMEBUFFER (onscreen)->context;
@@ -915,25 +928,6 @@ _cogl_winsys_onscreen_deinit (CoglOnscreen *onscreen)
   onscreen->winsys = NULL;
 }
 
-static void
-_cogl_winsys_poll_dispatch (CoglRenderer *renderer,
-                            const CoglPollFD *poll_fds,
-                            int n_poll_fds)
-{
-  CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererKMS *kms_renderer = egl_renderer->platform;
-  int i;
-
-  for (i = 0; i < n_poll_fds; i++)
-    if (poll_fds[i].fd == kms_renderer->fd)
-      {
-        if (poll_fds[i].revents)
-          handle_drm_event (kms_renderer);
-
-        break;
-      }
-}
-
 static const CoglWinsysEGLVtable
 _cogl_winsys_egl_vtable =
   {
@@ -970,8 +964,6 @@ _cogl_winsys_egl_kms_get_vtable (void)
       /* The KMS winsys doesn't support swap region */
       vtable.onscreen_swap_region = NULL;
       vtable.onscreen_swap_buffers = _cogl_winsys_onscreen_swap_buffers;
-
-      vtable.poll_dispatch = _cogl_winsys_poll_dispatch;
 
       vtable_inited = TRUE;
     }
