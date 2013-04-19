@@ -28,6 +28,7 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
+const Realmd = imports.gdm.realmd;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
@@ -914,10 +915,28 @@ const LoginDialog = new Lang.Class({
         return batch.run();
     },
 
+    _showRealmLoginHint: function(realmManager, hint) {
+        if (!hint)
+            return;
+
+        hint = hint.replace(/%U/g, 'user');
+        hint = hint.replace(/%D/g, 'DOMAIN');
+        hint = hint.replace(/%[^UD]/g, '');
+
+        // Translators: this message is shown below the username entry field
+        // to clue the user in on how to login to the local network realm
+        this._showLoginHint(null, _("(e.g., user or %s)").format(hint));
+    },
+
     _askForUsernameAndLogIn: function() {
         this._promptLabel.set_text(_("Username: "));
         this._promptEntry.set_text('');
         this._promptEntry.clutter_text.set_password_char('');
+
+        let realmManager = new Realmd.Manager();
+        let signalId = realmManager.connect('login-format-changed',
+	                                        Lang.bind(this, this._showRealmLoginHint));
+        this._showRealmLoginHint(realmManager.loginFormat);
 
         let tasks = [this._showPrompt,
 
@@ -925,6 +944,11 @@ const LoginDialog = new Lang.Class({
                          let userName = this._promptEntry.get_text();
                          this._promptEntry.reactive = false;
                          return this._beginVerificationForUser(userName);
+                     },
+
+                     function() {
+                         realmManager.disconnect(signalId)
+                         realmManager.release();
                      }];
 
         let batch = new Batch.ConsecutiveBatch(this, tasks);
