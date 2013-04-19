@@ -1533,8 +1533,8 @@ const SummaryItem = new Lang.Class({
 });
 Signals.addSignalMethods(SummaryItem.prototype);
 
-const MessageTrayContextMenu = new Lang.Class({
-    Name: 'MessageTrayContextMenu',
+const MessageTrayMenu = new Lang.Class({
+    Name: 'MessageTrayMenu',
     Extends: PopupMenu.PopupMenu,
 
     _init: function(tray) {
@@ -1765,9 +1765,9 @@ const MessageTray = new Lang.Class({
         this.actor.add_actor(this._noMessages);
         this._updateNoMessagesLabel();
 
-        this._contextMenu = new MessageTrayContextMenu(this);
-        this._contextMenuManager = new PopupMenu.PopupMenuManager({ actor: this.actor });
-        this._contextMenuManager.addMenu(this._contextMenu);
+        this._trayMenu = new MessageTrayMenu(this);
+        this._trayMenuManager = new PopupMenu.PopupMenuManager({ actor: this.actor });
+        this._trayMenuManager.addMenu(this._trayMenu);
 
         let clickAction = new Clutter.ClickAction();
         this.actor.add_action(clickAction);
@@ -1775,7 +1775,7 @@ const MessageTray = new Lang.Class({
         clickAction.connect('clicked', Lang.bind(this, function(action) {
             let button = action.get_button();
             if (button == 3)
-                this._openContextMenu();
+                this._openTrayMenu();
         }));
 
         clickAction.connect('long-press', Lang.bind(this, function(action, actor, state) {
@@ -1783,16 +1783,16 @@ const MessageTray = new Lang.Class({
             case Clutter.LongPressState.QUERY:
                 return true;
             case Clutter.LongPressState.ACTIVATE:
-                this._openContextMenu();
+                this._openTrayMenu();
             }
             return false;
         }));
     },
 
-    _openContextMenu: function () {
+    _openTrayMenu: function () {
         let [x, y, mask] = global.get_pointer();
-        this._contextMenu.setPosition(Math.round(x), Math.round(y));
-        this._contextMenu.open(BoxPointer.PopupAnimation.FULL);
+        this._trayMenu.setPosition(Math.round(x), Math.round(y));
+        this._trayMenu.open(BoxPointer.PopupAnimation.FULL);
     },
 
     close: function() {
