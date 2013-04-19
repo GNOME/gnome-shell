@@ -1533,6 +1533,7 @@ st_widget_recompute_style (StWidget    *widget,
   StThemeNode *new_theme_node = st_widget_get_theme_node (widget);
   int transition_duration;
   gboolean paint_equal;
+  gboolean animations_enabled;
 
   if (new_theme_node == old_theme_node)
     {
@@ -1551,7 +1552,11 @@ st_widget_recompute_style (StWidget    *widget,
   if (paint_equal)
     st_theme_node_copy_cached_paint_state (new_theme_node, old_theme_node);
 
-  if (transition_duration > 0)
+  g_object_get (gtk_settings_get_default (),
+                "gtk-enable-animations", &animations_enabled,
+                NULL);
+
+  if (animations_enabled && transition_duration > 0)
     {
       if (widget->priv->transition_animation != NULL)
         {
