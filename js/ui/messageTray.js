@@ -13,6 +13,7 @@ const Pango = imports.gi.Pango;
 const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
+const Tp = imports.gi.TelepathyGLib;
 
 const BoxPointer = imports.ui.boxpointer;
 const CtrlAltTab = imports.ui.ctrlAltTab;
@@ -1501,11 +1502,9 @@ const MessageTrayMenu = new Lang.Class({
     Name: 'MessageTrayMenu',
     Extends: PopupMenu.PopupMenu,
 
-    _init: function(tray) {
-        this._dummy = new St.Bin({ opacity: 0 });
-        Main.uiGroup.add_actor(this._dummy);
+    _init: function(button, tray) {
+        this.parent(button, 0, St.Side.BOTTOM);
 
-        this.parent(this._dummy, 0, St.Side.BOTTOM);
         this._tray = tray;
 
         this.actor.hide();
@@ -1545,11 +1544,66 @@ const MessageTrayMenu = new Lang.Class({
     _updateClearSensitivity: function() {
         this._clearItem.setSensitive(this._tray.clearableCount > 0);
     },
+});
 
-    setPosition: function(x, y) {
-        this._dummy.set_position(x, y);
-    }
+const MessageTrayMenuButton = new Lang.Class({
+    Name: 'MessageTrayMenuButton',
 
+    _init: function(tray) {
+        this._icon = new St.Icon();
+        this.actor = new St.Button({ style_class: 'message-tray-menu-button',
+                                     reactive: true,
+                                     track_hover: true,
+                                     can_focus: true,
+                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO | St.ButtonMask.THREE,
+                                     accessible_name: _("Tray Menu"),
+                                     accessible_role: Atk.Role.MENU,
+                                     child: this._icon });
+
+        // Standard hack for ClutterBinLayout.
+        this.actor.set_x_expand(true);
+        this.actor.set_y_expand(true);
+        this.actor.set_x_align(Clutter.ActorAlign.START);
+
+        this._menu = new MessageTrayMenu(this.actor, tray);
+        this._manager = new PopupMenu.PopupMenuManager({ actor: this.actor });
+        this._manager.addMenu(this._menu);
+        this._menu.connect('open-state-changed', Lang.bind(this, function(menu, open) {
+            if (open)
+                this.actor.add_style_pseudo_class('active');
+            else
+                this.actor.remove_style_pseudo_class('active');
+        }));
+
+        this.actor.connect('clicked', Lang.bind(this, function() {
+            this._menu.toggle();
+        }));
+
+        this._accountManager = Tp.AccountManager.dup();
+        this._accountManager.connect('most-available-presence-changed',
+                                     Lang.bind(this, this._sync));
+        this._accountManager.prepare_async(null, Lang.bind(this, this._sync));
+    },
+
+    _iconForPresence: function(presence) {
+        if (presence == Tp.ConnectionPresenceType.AVAILABLE)
+            return 'user-available-symbolic';
+        else if (presence == Tp.ConnectionPresenceType.BUSY)
+            return 'user-busy-symbolic';
+        else if (presence == Tp.ConnectionPresenceType.HIDDEN)
+            return 'user-hidden-symbolic';
+        else if (presence == Tp.ConnectionPresenceType.AWAY)
+            return 'user-away-symbolic';
+        else if (presence == Tp.ConnectionPresenceType.EXTENDED_AWAY)
+            return 'user-idle-symbolic';
+        else
+            return 'emblem-system-symbolic';
+    },
+
+    _sync: function() {
+        let [presence, status, message] = this._accountManager.get_most_available_presence();
+        this._icon.icon_name = this._iconForPresence(presence);
+    },
 });
 
 const MessageTray = new Lang.Class({
@@ -1729,34 +1783,8 @@ const MessageTray = new Lang.Class({
         this.actor.add_actor(this._noMessages);
         this._updateNoMessagesLabel();
 
-        this._trayMenu = new MessageTrayMenu(this);
-        this._trayMenuManager = new PopupMenu.PopupMenuManager({ actor: this.actor });
-        this._trayMenuManager.addMenu(this._trayMenu);
-
-        let clickAction = new Clutter.ClickAction();
-        this.actor.add_action(clickAction);
-
-        clickAction.connect('clicked', Lang.bind(this, function(action) {
-            let button = action.get_button();
-            if (button == 3)
-                this._openTrayMenu();
-        }));
-
-        clickAction.connect('long-press', Lang.bind(this, function(action, actor, state) {
-            switch (state) {
-            case Clutter.LongPressState.QUERY:
-                return true;
-            case Clutter.LongPressState.ACTIVATE:
-                this._openTrayMenu();
-            }
-            return false;
-        }));
-    },
-
-    _openTrayMenu: function () {
-        let [x, y, mask] = global.get_pointer();
-        this._trayMenu.setPosition(Math.round(x), Math.round(y));
-        this._trayMenu.open(BoxPointer.PopupAnimation.FULL);
+        this._messageTrayMenuButton = new MessageTrayMenuButton(this);
+        this.actor.add_actor(this._messageTrayMenuButton.actor);
     },
 
     close: function() {
