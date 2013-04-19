@@ -9,7 +9,6 @@ const Signals = imports.signals;
 
 const Batch = imports.gdm.batch;
 const Fprint = imports.gdm.fingerprint;
-const Realmd = imports.gdm.realmd;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
@@ -117,7 +116,6 @@ const ShellUserVerifier = new Lang.Class({
         this._settings = new Gio.Settings({ schema: LOGIN_SCREEN_SCHEMA });
 
         this._fprintManager = new Fprint.FprintManager();
-        this._realmManager = new Realmd.Manager();
         this._messageQueue = [];
         this._messageQueueTimeoutId = 0;
         this.hasPendingMessages = false;
@@ -377,29 +375,10 @@ const ShellUserVerifier = new Lang.Class({
         this._queueMessage(problem, 'login-dialog-message-warning');
     },
 
-    _showRealmLoginHint: function() {
-        if (this._realmManager.loginFormat) {
-            let hint = this._realmManager.loginFormat;
-
-            hint = hint.replace(/%U/g, 'user');
-            hint = hint.replace(/%D/g, 'DOMAIN');
-            hint = hint.replace(/%[^UD]/g, '');
-
-            // Translators: this message is shown below the username entry field
-            // to clue the user in on how to login to the local network realm
-            this.emit('show-login-hint',
-                      _("(e.g., user or %s)").format(hint));
-        }
-    },
-
     _onInfoQuery: function(client, serviceName, question) {
         // We only expect questions to come from the main auth service
         if (serviceName != PASSWORD_SERVICE_NAME)
             return;
-
-        this._showRealmLoginHint();
-        this._realmLoginHintSignalId = this._realmManager.connect('login-format-changed',
-                                                                  Lang.bind(this, this._showRealmLoginHint));
 
         this.emit('ask-question', serviceName, question, '');
     },
@@ -476,11 +455,6 @@ const ShellUserVerifier = new Lang.Class({
         }
 
         this.emit('hide-login-hint');
-
-        if (this._realmLoginHintSignalId) {
-            this._realmManager.disconnect(this._realmLoginHintSignalId);
-            this._realmLoginHintSignalId = 0;
-        }
     },
 });
 Signals.addSignalMethods(ShellUserVerifier.prototype);
