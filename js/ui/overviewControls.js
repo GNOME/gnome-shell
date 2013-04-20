@@ -271,6 +271,11 @@ const ThumbnailsSlider = new Lang.Class({
         return alwaysZoomOut;
     },
 
+    getNonExpandedWidth: function() {
+        let child = this.actor.get_first_child();
+        return child.get_theme_node().get_length('visible-width');
+    },
+
     getSlide: function() {
         if (!this.visible)
             return 0;
@@ -282,18 +287,16 @@ const ThumbnailsSlider = new Lang.Class({
         let child = this.actor.get_first_child();
         let preferredHeight = child.get_preferred_height(-1)[1];
         let expandedWidth = child.get_preferred_width(preferredHeight)[1];
-        let visibleWidth = child.get_theme_node().get_length('visible-width');
 
-        return visibleWidth / expandedWidth;
+        return this.getNonExpandedWidth() / expandedWidth;
     },
 
     getVisibleWidth: function() {
         let alwaysZoomOut = this._getAlwaysZoomOut();
         if (alwaysZoomOut)
             return this.parent();
-
-        let child = this.actor.get_first_child();
-        return child.get_theme_node().get_length('visible-width');
+        else
+            return this.getNonExpandedWidth();
     }
 });
 
