@@ -391,17 +391,6 @@ on_apps_tree_changed_cb (GMenuTree *tree,
 }
 
 /**
- * shell_app_system_get_tree:
- *
- * Return Value: (transfer none): The #GMenuTree for apps
- */
-GMenuTree *
-shell_app_system_get_tree (ShellAppSystem *self)
-{
-  return self->priv->apps_tree;
-}
-
-/**
  * shell_app_system_get_default:
  *
  * Return Value: (transfer none): The global #ShellAppSystem singleton
