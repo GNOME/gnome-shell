@@ -1869,18 +1869,20 @@ const RemoteMenu = new Lang.Class({
             // always returns null
             // Funny :)
 
+            item = new PopupMenuItem(label);
+
             switch (String.fromCharCode(action.state.classify())) {
             case 'b':
-                item = new PopupSwitchMenuItem(label, action.state.get_boolean());
                 action.items.push(item);
-                specificSignalId = item.connect('toggled', Lang.bind(this, function(item) {
+                item.setOrnament(action.state.get_boolean() ?
+                                 Ornament.CHECK : Ornament.NONE);
+                specificSignalId = item.connect('activate', Lang.bind(this, function(item) {
                     this.actionGroup.activate_action(action_id, null);
                 }));
                 break;
             case 's':
-                item = new PopupMenuItem(label);
-                item._remoteTarget = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_TARGET, null).deep_unpack();
                 action.items.push(item);
+                item._remoteTarget = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_TARGET, null).deep_unpack();
                 item.setOrnament(action.state.deep_unpack() == item._remoteTarget ?
                                  Ornament.DOT : Ornament.NONE);
                 specificSignalId = item.connect('activate', Lang.bind(this, function(item) {
@@ -2010,7 +2012,8 @@ const RemoteMenu = new Lang.Class({
             switch (String.fromCharCode(action.state.classify())) {
             case 'b':
                 for (let i = 0; i < action.items.length; i++)
-                    action.items[i].setToggleState(action.state.get_boolean());
+                    action.items[i].setOrnament(action.state.get_boolean() ?
+                                                Ornament.CHECK : Ornament.NONE);
                 break;
             case 'd':
                 for (let i = 0; i < action.items.length; i++)
