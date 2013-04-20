@@ -1820,39 +1820,8 @@ const RemoteMenu = new Lang.Class({
         this.parent();
     },
 
-    _createMenuItem: function(model, index) {
-        let labelValue = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_LABEL, null);
-        let label = labelValue ? labelValue.deep_unpack() : '';
-        // remove all underscores that are not followed by another underscore
-        label = label.replace(/_([^_])/, '$1');
-
-        let section_link = model.get_item_link(index, Gio.MENU_LINK_SECTION);
-        if (section_link) {
-            let item = new PopupMenuSection();
-            if (label) {
-                let title = new PopupMenuItem(label, { reactive: false,
-                                                       style_class: 'popup-subtitle-menu-item' });
-                item._titleMenuItem = title;
-                title._ignored = true;
-                item.addMenuItem(title);
-            }
-            this._modelChanged(section_link, 0, 0, section_link.get_n_items(), item);
-            return [item, true, ''];
-        }
-
-        let submenu_link = model.get_item_link(index, Gio.MENU_LINK_SUBMENU);
-
-        if (submenu_link) {
-            let item = new PopupSubMenuMenuItem(label);
-            this._modelChanged(submenu_link, 0, 0, submenu_link.get_n_items(), item.menu);
-            return [item, false, ''];
-        }
-
-        let action_id = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_ACTION, null).deep_unpack();
-        if (!this.actionGroup.has_action(action_id)) {
-            // the action may not be there yet, wait for action-added
-            return [null, false, 'action-added'];
-        }
+    _actionAdded: function(model, item, index) {
+        let action_id = item.action_id;
 
         if (!this._actions[action_id])
             this._actions[action_id] = { enabled: this.actionGroup.get_action_enabled(action_id),
@@ -1861,8 +1830,6 @@ const RemoteMenu = new Lang.Class({
                                        };
         let action = this._actions[action_id];
         let target, destroyId, specificSignalId;
-
-        let item = new PopupMenuItem(label);
 
         if (action.state) {
             // Docs have get_state_hint(), except that the DBus protocol
@@ -1891,7 +1858,7 @@ const RemoteMenu = new Lang.Class({
                 break;
             default:
                 log('Action "%s" has state of type %s, which is not supported'.format(action_id, action.state.get_type_string()));
-                return [null, false, 'action-state-changed'];
+                return [null, false];
             }
         } else {
             target = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_TARGET, null);
@@ -1912,8 +1879,57 @@ const RemoteMenu = new Lang.Class({
                 action.items.splice(pos, 1);
         }));
 
-        return [item, false, ''];
-    }, 
+        return [item, false];
+    },
+
+    _createMenuItem: function(model, index) {
+        let labelValue = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_LABEL, null);
+        let label = labelValue ? labelValue.deep_unpack() : '';
+        // remove all underscores that are not followed by another underscore
+        label = label.replace(/_([^_])/, '$1');
+
+        let section_link = model.get_item_link(index, Gio.MENU_LINK_SECTION);
+        if (section_link) {
+            let item = new PopupMenuSection();
+            if (label) {
+                let title = new PopupMenuItem(label, { reactive: false,
+                                                       style_class: 'popup-subtitle-menu-item' });
+                item._titleMenuItem = title;
+                title._ignored = true;
+                item.addMenuItem(title);
+            }
+            this._modelChanged(section_link, 0, 0, section_link.get_n_items(), item);
+            return [item, true];
+        }
+
+        let submenu_link = model.get_item_link(index, Gio.MENU_LINK_SUBMENU);
+
+        if (submenu_link) {
+            let item = new PopupSubMenuMenuItem(label);
+            this._modelChanged(submenu_link, 0, 0, submenu_link.get_n_items(), item.menu);
+            return [item, false];
+        }
+
+        let item = new PopupMenuItem(label);
+        let action_id = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_ACTION, null).deep_unpack();
+        item.actor.can_focus = item.actor.reactive = false;
+
+        item.action_id = action_id;
+
+        if (this.actionGroup.has_action(action_id)) {
+            this._actionAdded(model, item, index);
+            return [item, false];
+        }
+
+        let signalId = this.actionGroup.connect('action-added', Lang.bind(this, function(actionGroup, actionName) {
+            actionGroup.disconnect(signalId);
+            if (this._actions[actionName]) return;
+
+            this._actionAdded(model, item, index);
+        }));
+
+        return [item, false];
+    },
 
     _modelChanged: function(model, position, removed, added, target) {
         let j, k;
@@ -1945,35 +1961,28 @@ const RemoteMenu = new Lang.Class({
         }
 
         for (j = j0, k = k0; j < j0 + added; j++, k++) {
-            let [item, addSeparator, changeSignal] = this._createMenuItem(model, j);
+            let [item, addSeparator] = this._createMenuItem(model, j);
 
-            if (item) {
-                // separators must be added in the parent to make autohiding work
-                if (addSeparator) {
-                    let separator = new PopupSeparatorMenuItem();
-                    item.separators.push(separator);
-                    separator._ignored = true;
-                    target.addMenuItem(separator, k+1);
-                    k++;
-                }
+            if (!item)
+                continue;
 
-                target.addMenuItem(item, k);
+            // separators must be added in the parent to make autohiding work
+            if (addSeparator) {
+                let separator = new PopupSeparatorMenuItem();
+                item.separators.push(separator);
+                separator._ignored = true;
+                target.addMenuItem(separator, k+1);
+                k++;
+            }
 
-                if (addSeparator) {
-                    let separator = new PopupSeparatorMenuItem();
-                    item.separators.push(separator);
-                    separator._ignored = true;
-                    target.addMenuItem(separator, k+1);
-                    k++;
-                }
-            } else if (changeSignal) {
-                let signalId = this.actionGroup.connect(changeSignal, Lang.bind(this, function(actionGroup, actionName) {
-                    actionGroup.disconnect(signalId);
-                    if (this._actions[actionName]) return;
+            target.addMenuItem(item, k);
 
-                    // force a full update
-                    this._modelChanged(model, 0, -1, model.get_n_items(), target);
-                }));
+            if (addSeparator) {
+                let separator = new PopupSeparatorMenuItem();
+                item.separators.push(separator);
+                separator._ignored = true;
+                target.addMenuItem(separator, k+1);
+                k++;
             }
         }
 
