@@ -61,8 +61,7 @@ function _loadCategory(dir, view) {
                 view.addApp(app);
         } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
             let itemDir = iter.get_directory();
-            if (!itemDir.get_is_nodisplay())
-                _loadCategory(itemDir, view);
+            _loadCategory(itemDir, view);
         }
     }
 };
@@ -818,8 +817,6 @@ const AppDisplay = new Lang.Class({
         while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
             if (nextType == GMenu.TreeItemType.DIRECTORY) {
                 let dir = iter.get_directory();
-                if (dir.get_is_nodisplay())
-                    continue;
 
                 if (folderCategories.indexOf(dir.get_menu_id()) != -1)
                     view.addFolder(dir);
