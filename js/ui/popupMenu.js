@@ -1799,8 +1799,8 @@ const RemoteMenu = new Lang.Class({
         this.model = model;
         this.actionGroup = actionGroup;
 
-        this._actions = { };
-        this._modelChanged(this.model, 0, 0, this.model.get_n_items(), this);
+        this._actions = {};
+        this._trackMenu(model, this);
 
         this._actionStateChangeId = this.actionGroup.connect('action-state-changed', Lang.bind(this, this._actionStateChanged));
         this._actionEnableChangeId = this.actionGroup.connect('action-enabled-changed', Lang.bind(this, this._actionEnabledChanged));
@@ -1858,7 +1858,7 @@ const RemoteMenu = new Lang.Class({
                 break;
             default:
                 log('Action "%s" has state of type %s, which is not supported'.format(action_id, action.state.get_type_string()));
-                return [null, false];
+                return;
             }
         } else {
             target = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_TARGET, null);
@@ -1878,8 +1878,18 @@ const RemoteMenu = new Lang.Class({
             if (pos != -1)
                 action.items.splice(pos, 1);
         }));
+    },
 
-        return [item, false];
+    _trackMenu: function(model, item) {
+        item._tracker = Shell.MenuTracker.new(model,
+                                              null, /* action namespace */
+                                              Lang.bind(this, this._insertItem, item),
+                                              Lang.bind(this, this._removeItem, item));
+
+        item.connect('destroy', function() {
+            item._tracker.destroy();
+            item._tracker = null;
+        });
     },
 
     _createMenuItem: function(model, index) {
@@ -1888,26 +1898,11 @@ const RemoteMenu = new Lang.Class({
         // remove all underscores that are not followed by another underscore
         label = label.replace(/_([^_])/, '$1');
 
-        let section_link = model.get_item_link(index, Gio.MENU_LINK_SECTION);
-        if (section_link) {
-            let item = new PopupMenuSection();
-            if (label) {
-                let title = new PopupMenuItem(label, { reactive: false,
-                                                       style_class: 'popup-subtitle-menu-item' });
-                item._titleMenuItem = title;
-                title._ignored = true;
-                item.addMenuItem(title);
-            }
-            this._modelChanged(section_link, 0, 0, section_link.get_n_items(), item);
-            return [item, true];
-        }
-
-        let submenu_link = model.get_item_link(index, Gio.MENU_LINK_SUBMENU);
-
-        if (submenu_link) {
+        let submenuModel = model.get_item_link(index, Gio.MENU_LINK_SUBMENU);
+        if (submenuModel) {
             let item = new PopupSubMenuMenuItem(label);
-            this._modelChanged(submenu_link, 0, 0, submenu_link.get_n_items(), item.menu);
-            return [item, false];
+            this._trackMenu(submenuModel, item.menu);
+            return item;
         }
 
         let item = new PopupMenuItem(label);
@@ -1918,7 +1913,7 @@ const RemoteMenu = new Lang.Class({
 
         if (this.actionGroup.has_action(action_id)) {
             this._actionAdded(model, item, index);
-            return [item, false];
+            return item;
         }
 
         let signalId = this.actionGroup.connect('action-added', Lang.bind(this, function(actionGroup, actionName) {
@@ -1929,85 +1924,6 @@ const RemoteMenu = new Lang.Class({
         }));
 
         return [item, false];
-    },
-
-    _modelChanged: function(model, position, removed, added, target) {
-        let j, k;
-        let j0, k0;
-
-        let currentItems = target._getMenuItems();
-
-        k0 = 0;
-        // skip ignored items at the beginning
-        while (k0 < currentItems.length && currentItems[k0]._ignored)
-            k0++;
-        // find the right menu item matching the model item
-        for (j0 = 0; k0 < currentItems.length && j0 < position; j0++, k0++) {
-            if (currentItems[k0]._ignored)
-                k0++;
-        }
-
-        if (removed == -1) {
-            // special flag to indicate we should destroy everything
-            for (k = k0; k < currentItems.length; k++)
-                currentItems[k].destroy();
-        } else {
-            for (j = j0, k = k0; k < currentItems.length && j < j0 + removed; j++, k++) {
-                currentItems[k].destroy();
-
-                if (currentItems[k]._ignored)
-                    j--;
-            }
-        }
-
-        for (j = j0, k = k0; j < j0 + added; j++, k++) {
-            let [item, addSeparator] = this._createMenuItem(model, j);
-
-            if (!item)
-                continue;
-
-            // separators must be added in the parent to make autohiding work
-            if (addSeparator) {
-                let separator = new PopupSeparatorMenuItem();
-                item.separators.push(separator);
-                separator._ignored = true;
-                target.addMenuItem(separator, k+1);
-                k++;
-            }
-
-            target.addMenuItem(item, k);
-
-            if (addSeparator) {
-                let separator = new PopupSeparatorMenuItem();
-                item.separators.push(separator);
-                separator._ignored = true;
-                target.addMenuItem(separator, k+1);
-                k++;
-            }
-        }
-
-        if (!model._changedId) {
-            model._changedId = model.connect('items-changed', Lang.bind(this, this._modelChanged, target));
-            model._destroyId = target.connect('destroy', function() {
-                if (model._changedId)
-                    model.disconnect(model._changedId);
-                if (model._destroyId)
-                    target.disconnect(model._destroyId);
-                model._changedId = 0;
-                model._destroyId = 0;
-            });
-        }
-
-        if (target instanceof PopupMenuSection) {
-            if (target._titleMenuItem)
-                target.actor.visible = target.numMenuItems != 1;
-            else
-                target.actor.visible = target.numMenuItems != 0;
-        } else {
-            let sourceItem = target.sourceActor._delegate;
-            if (sourceItem instanceof PopupSubMenuMenuItem)
-                sourceItem.actor.visible = target.numMenuItems != 0;
-        }
     },
 
     _actionStateChanged: function(actionGroup, action_id) {
@@ -2047,7 +1963,23 @@ const RemoteMenu = new Lang.Class({
                 item.actor.reactive = item.actor.can_focus = action.enabled;
             }
         }
-    }
+    },
+
+    _insertItem: function(position, model, item_index, action_namespace, is_separator, target) {
+        let item;
+
+        if (is_separator)
+            item = new PopupSeparatorMenuItem();
+        else
+            item = this._createMenuItem(model, item_index);
+
+        target.addMenuItem(item, position);
+    },
+
+    _removeItem: function(position, target) {
+        let items = target._getMenuItems();
+        items[position].destroy();
+    },
 });
 
 /* Basic implementation of a menu manager.

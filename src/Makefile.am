@@ -135,7 +135,10 @@ shell_private_sources = \
 	gactionobservable.h		\
 	gactionobservable.c		\
 	gactionobserver.h		\
-	gactionobserver.c
+	gactionobserver.c		\
+	gtkmenutracker.c		\
+	gtkmenutracker.h		\
+	$(NULL)
 
 libgnome_shell_la_SOURCES =		\
 	$(shell_built_sources)		\
@@ -158,6 +161,8 @@ libgnome_shell_la_SOURCES =		\
 	shell-invert-lightness-effect.c	\
 	shell-keyring-prompt.h		\
 	shell-keyring-prompt.c		\
+	shell-menu-tracker.c		\
+	shell-menu-tracker.h		\
 	shell-mount-operation.c		\
 	shell-network-agent.c		\
 	shell-perf-log.c		\
