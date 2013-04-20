@@ -297,42 +297,6 @@ shell_app_system_lookup_app (ShellAppSystem   *self,
 }
 
 /**
- * shell_app_system_lookup_app_for_path:
- * @system: a #ShellAppSystem
- * @desktop_path: (type utf8): UTF-8 encoded absolute file name
- *
- * Find or create a #ShellApp corresponding to a given absolute file
- * name which must be in the standard paths (XDG_DATA_DIRS).  For
- * files outside the datadirs, this function returns %NULL.
- *
- * Return value: (transfer none): The #ShellApp for id, or %NULL if none
- */
-ShellApp *
-shell_app_system_lookup_app_for_path (ShellAppSystem   *system,
-                                      const char       *desktop_path)
-{
-  const char *basename;
-  const char *app_path;
-  ShellApp *app;
-
-  basename = g_strrstr (desktop_path, "/");
-  if (basename)
-    basename += 1;
-  else
-    basename = desktop_path;
-
-  app = shell_app_system_lookup_app (system, basename);
-  if (!app)
-    return NULL;
-
-  app_path = g_desktop_app_info_get_filename (shell_app_get_app_info (app));
-  if (strcmp (desktop_path, app_path) != 0)
-    return NULL;
-
-  return app;
-}
-
-/**
  * shell_app_system_lookup_heuristic_basename:
  * @system: a #ShellAppSystem
  * @id: Probable application identifier

@@ -844,6 +844,7 @@ ShellApp *
 shell_startup_sequence_get_app (ShellStartupSequence *sequence)
 {
   const char *appid;
+  char *basename;
   ShellAppSystem *appsys;
   ShellApp *app;
 
@@ -851,8 +852,10 @@ shell_startup_sequence_get_app (ShellStartupSequence *sequence)
   if (!appid)
     return NULL;
 
+  basename = g_path_get_basename (appid);
   appsys = shell_app_system_get_default ();
-  app = shell_app_system_lookup_app_for_path (appsys, appid);
+  app = shell_app_system_lookup_app (appsys, basename);
+  g_free (basename);
   return app;
 }
 
