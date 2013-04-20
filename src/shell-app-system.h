@@ -39,8 +39,6 @@ struct _ShellAppSystemClass
 GType           shell_app_system_get_type    (void) G_GNUC_CONST;
 ShellAppSystem *shell_app_system_get_default (void);
 
-GMenuTree      *shell_app_system_get_tree                     (ShellAppSystem *system);
-
 ShellApp       *shell_app_system_lookup_app                   (ShellAppSystem  *system,
                                                                const char      *id);
 ShellApp       *shell_app_system_lookup_app_for_path          (ShellAppSystem  *system,

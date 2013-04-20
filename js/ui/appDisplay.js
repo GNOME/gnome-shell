@@ -696,8 +696,7 @@ const AppDisplay = new Lang.Class({
     Name: 'AppDisplay',
 
     _init: function() {
-        this._appSystem = Shell.AppSystem.get_default();
-        this._appSystem.connect('installed-changed', Lang.bind(this, function() {
+        Shell.AppSystem.get_default().connect('installed-changed', Lang.bind(this, function() {
             Main.queueDeferredWork(this._allAppsWorkId);
         }));
         Main.overview.connect('showing', Lang.bind(this, function() {
@@ -818,7 +817,8 @@ const AppDisplay = new Lang.Class({
 
         view.removeAll();
 
-        let tree = this._appSystem.get_tree();
+        let tree = new GMenu.Tree({ menu_basename: "applications.menu" });
+        tree.load_sync();
         let root = tree.get_root_directory();
 
         let iter = root.iter();
