@@ -1096,12 +1096,21 @@ const HotCorner = new Lang.Class({
         }
 
         if (size > 0) {
-            this._verticalBarrier = new Meta.Barrier({ display: global.display,
-                                                       x1: this._x, x2: this._x, y1: this._y, y2: this._y + size,
-                                                       directions: Meta.BarrierDirection.POSITIVE_X });
-            this._horizontalBarrier = new Meta.Barrier({ display: global.display,
-                                                         x1: this._x, x2: this._x + size, y1: this._y, y2: this._y,
-                                                         directions: Meta.BarrierDirection.POSITIVE_Y });
+            if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL) {
+                this._verticalBarrier = new Meta.Barrier({ display: global.display,
+                                                           x1: this._x, x2: this._x, y1: this._y, y2: this._y + size,
+                                                           directions: Meta.BarrierDirection.NEGATIVE_X });
+                this._horizontalBarrier = new Meta.Barrier({ display: global.display,
+                                                             x1: this._x - size, x2: this._x, y1: this._y, y2: this._y,
+                                                             directions: Meta.BarrierDirection.POSITIVE_Y });
+            } else {
+                this._verticalBarrier = new Meta.Barrier({ display: global.display,
+                                                           x1: this._x, x2: this._x, y1: this._y, y2: this._y + size,
+                                                           directions: Meta.BarrierDirection.POSITIVE_X });
+                this._horizontalBarrier = new Meta.Barrier({ display: global.display,
+                                                             x1: this._x, x2: this._x + size, y1: this._y, y2: this._y,
+                                                             directions: Meta.BarrierDirection.POSITIVE_Y });
+            }
 
             this._pressureBarrier.addBarrier(this._verticalBarrier);
             this._pressureBarrier.addBarrier(this._horizontalBarrier);
