@@ -1466,23 +1466,12 @@ const PopupMenuSection = new Lang.Class({
         this.actor = this.box;
         this.actor._delegate = this;
         this.isOpen = true;
-
-        // an array of externally managed separators
-        this.separators = [];
     },
 
     // deliberately ignore any attempt to open() or close(), but emit the
     // corresponding signal so children can still pick it up
     open: function() { this.emit('open-state-changed', true); },
     close: function() { this.emit('open-state-changed', false); },
-
-    destroy: function() {
-        for (let i = 0; i < this.separators.length; i++)
-            this.separators[i].destroy();
-        this.separators = [];
-
-        this.parent();
-    }
 });
 
 const PopupSubMenuMenuItem = new Lang.Class({
