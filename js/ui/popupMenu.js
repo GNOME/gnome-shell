@@ -59,7 +59,8 @@ const PopupBaseMenuItem = new Lang.Class({
 
         this._children = [];
         this._ornament = Ornament.NONE;
-        this._dot = null;
+        this._ornamentLabel = new St.Label({ style_class: 'popup-menu-ornament' });
+        this.actor.add_actor(this._ornamentLabel);
         this._columnWidths = null;
         this._spacing = 0;
         this.active = false;
@@ -189,30 +190,12 @@ const PopupBaseMenuItem = new Lang.Class({
         this._ornament = ornament;
 
         if (ornament == Ornament.DOT) {
-            this._dot = new St.DrawingArea({ style_class: 'popup-menu-item-dot' });
-            this._dot.connect('repaint', Lang.bind(this, this._onRepaintDot));
-            this.actor.add_actor(this._dot);
-            this.actor.add_accessible_state (Atk.StateType.CHECKED);
-        } else  if (ornament == Ornament.NONE) {
-            this._dot.destroy();
-            this._dot = null;
-            this.actor.remove_accessible_state (Atk.StateType.CHECKED);
+            this._ornamentLabel.text = '\u2022';
+            this.actor.add_accessible_state(Atk.StateType.CHECKED);
+        } else if (ornament == Ornament.NONE) {
+            this._ornamentLabel.text = '';
+            this.actor.remove_accessible_state(Atk.StateType.CHECKED);
         }
-    },
-
-    _onRepaintDot: function(area) {
-        let cr = area.get_context();
-        let [width, height] = area.get_surface_size();
-        let color = area.get_theme_node().get_foreground_color();
-
-        cr.setSourceRGBA (
-            color.red / 255,
-            color.green / 255,
-            color.blue / 255,
-            color.alpha / 255);
-        cr.arc(width / 2, height / 2, width / 3, 0, 2 * Math.PI);
-        cr.fill();
-        cr.$dispose();
     },
 
     // This returns column widths in logical order (i.e. from the dot
@@ -285,25 +268,24 @@ const PopupBaseMenuItem = new Lang.Class({
         let height = box.y2 - box.y1;
         let direction = this.actor.get_text_direction();
 
-        if (this._dot) {
-            // The dot is placed outside box
-            // one quarter of padding from the border of the container
-            // (so 3/4 from the inner border)
-            // (padding is box.x1)
-            let dotBox = new Clutter.ActorBox();
-            let dotWidth = Math.round(box.x1 / 2);
+        // The ornament is placed outside box
+        // one quarter of padding from the border of the container
+        // (so 3/4 from the inner border)
+        // (padding is box.x1)
+        let ornamentBox = new Clutter.ActorBox();
+        let ornamentWidth = box.x1;
 
-            if (direction == Clutter.TextDirection.LTR) {
-                dotBox.x1 = Math.round(box.x1 / 4);
-                dotBox.x2 = dotBox.x1 + dotWidth;
-            } else {
-                dotBox.x2 = box.x2 + 3 * Math.round(box.x1 / 4);
-                dotBox.x1 = dotBox.x2 - dotWidth;
-            }
-            dotBox.y1 = Math.round(box.y1 + (height - dotWidth) / 2);
-            dotBox.y2 = dotBox.y1 + dotWidth;
-            this._dot.allocate(dotBox, flags);
+        ornamentBox.x1 = 0;
+        ornamentBox.x2 = ornamentWidth;
+        ornamentBox.y1 = box.y1;
+        ornamentBox.y2 = box.y2;
+
+        if (direction == Clutter.TextDirection.RTL) {
+            ornamentBox.x1 += box.x2;
+            ornamentBox.x2 += box.x2;
         }
+
+        this._ornamentLabel.allocate(ornamentBox, flags);
 
         let x;
         if (direction == Clutter.TextDirection.LTR)

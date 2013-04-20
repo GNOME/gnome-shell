@@ -125,6 +125,10 @@ StScrollBar StButton#vhandle:active {
 
 /* PopupMenu */
 
+.popup-menu-ornament {
+    text-align: center;
+}
+
 .popup-menu-boxpointer,
 .candidate-popup-boxpointer {
     -arrow-border-radius: 8px;
