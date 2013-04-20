@@ -19,6 +19,11 @@ const Tweener = imports.ui.tweener;
 
 const SLIDER_SCROLL_STEP = 0.05; /* Slider scrolling step in % */
 
+const Ornament = {
+    NONE: 0,
+    DOT: 1,
+};
+
 function _ensureStyle(actor) {
     if (actor.get_children) {
         let children = actor.get_children();
@@ -53,6 +58,7 @@ const PopupBaseMenuItem = new Lang.Class({
         this.actor._delegate = this;
 
         this._children = [];
+        this._ornament = Ornament.NONE;
         this._dot = null;
         this._columnWidths = null;
         this._spacing = 0;
@@ -176,19 +182,18 @@ const PopupBaseMenuItem = new Lang.Class({
         this._removeChild(child);
     },
 
-    setShowDot: function(show) {
-        if (show) {
-            if (this._dot)
-                return;
+    setOrnament: function(ornament) {
+        if (ornament == this._ornament)
+            return;
 
+        this._ornament = ornament;
+
+        if (ornament == Ornament.DOT) {
             this._dot = new St.DrawingArea({ style_class: 'popup-menu-item-dot' });
             this._dot.connect('repaint', Lang.bind(this, this._onRepaintDot));
             this.actor.add_actor(this._dot);
             this.actor.add_accessible_state (Atk.StateType.CHECKED);
-        } else {
-            if (!this._dot)
-                return;
-
+        } else  if (ornament == Ornament.NONE) {
             this._dot.destroy();
             this._dot = null;
             this.actor.remove_accessible_state (Atk.StateType.CHECKED);
@@ -1890,7 +1895,8 @@ const RemoteMenu = new Lang.Class({
                 item = new PopupMenuItem(label);
                 item._remoteTarget = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_TARGET, null).deep_unpack();
                 action.items.push(item);
-                item.setShowDot(action.state.deep_unpack() == item._remoteTarget);
+                item.setOrnament(action.state.deep_unpack() == item._remoteTarget ?
+                                 Ornament.DOT : Ornament.NONE);
                 specificSignalId = item.connect('activate', Lang.bind(this, function(item) {
                     this.actionGroup.activate_action(action_id, GLib.Variant.new_string(item._remoteTarget));
                 }));
@@ -2026,7 +2032,8 @@ const RemoteMenu = new Lang.Class({
                 break;
             case 's':
                 for (let i = 0; i < action.items.length; i++)
-                    action.items[i].setShowDot(action.items[i]._remoteTarget == action.state.deep_unpack());
+                    action.items[i].setOrnament(action.items[i]._remoteTarget == action.state.deep_unpack() ?
+                                                Ornament.DOT : Ornament.NONE);
             }
         }
     },

@@ -417,7 +417,7 @@ const InputSourceIndicator = new Lang.Class({
         [oldSource, this._currentSource] = [this._currentSource, newSource];
 
         if (oldSource) {
-            oldSource.menuItem.setShowDot(false);
+            oldSource.menuItem.setOrnament(PopupMenu.Ornament.NONE);
             oldSource.indicatorLabel.hide();
         }
 
@@ -435,7 +435,7 @@ const InputSourceIndicator = new Lang.Class({
 
         this.actor.show();
 
-        newSource.menuItem.setShowDot(true);
+        newSource.menuItem.setOrnament(PopupMenu.Ornament.DOT);
         newSource.indicatorLabel.show();
 
         this._buildPropSection(newSource.properties);
@@ -660,7 +660,8 @@ const InputSourceIndicator = new Lang.Class({
                 item.prop = prop;
                 radioGroup.push(item);
                 item.radioGroup = radioGroup;
-                item.setShowDot(prop.get_state() == IBus.PropState.CHECKED);
+                item.setOrnament(prop.get_state() == IBus.PropState.CHECKED ?
+                                 PopupMenu.Ornament.DOT : PopupMenu.Ornament.NONE);
                 item.connect('activate', Lang.bind(this, function() {
                     if (item.prop.get_state() == IBus.PropState.CHECKED)
                         return;
@@ -668,12 +669,12 @@ const InputSourceIndicator = new Lang.Class({
                     let group = item.radioGroup;
                     for (let i = 0; i < group.length; ++i) {
                         if (group[i] == item) {
-                            item.setShowDot(true);
+                            item.setOrnament(PopupMenu.Ornament.DOT);
                             item.prop.set_state(IBus.PropState.CHECKED);
                             this._ibusManager.activateProperty(item.prop.get_key(),
                                                                IBus.PropState.CHECKED);
                         } else {
-                            group[i].setShowDot(false);
+                            group[i].setOrnament(PopupMenu.Ornament.NONE);
                             group[i].prop.set_state(IBus.PropState.UNCHECKED);
                             this._ibusManager.activateProperty(group[i].prop.get_key(),
                                                                IBus.PropState.UNCHECKED);

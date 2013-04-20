@@ -588,7 +588,7 @@ const NMDevice = new Lang.Class({
             title = _("Connected (private)");
         }
         this._activeConnectionItem = new PopupMenu.PopupMenuItem(title, { reactive: false });
-        this._activeConnectionItem.setShowDot(true);
+        this._activeConnectionItem.setOrnament(PopupMenu.Ornament.DOT);
     },
 
     _deviceStateChanged: function(device, newstate, oldstate, reason) {
@@ -1371,7 +1371,7 @@ const NMDeviceWireless = new Lang.Class({
             this._activeConnectionItem = new PopupMenu.PopupImageMenuItem(title,
                                                                           'network-wireless-connected-symbolic',
                                                                           { reactive: false });
-        this._activeConnectionItem.setShowDot(true);
+        this._activeConnectionItem.setOrnament(PopupMenu.Ornament.DOT);
     },
 
     _createAutomaticConnection: function(apObj) {
