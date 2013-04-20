@@ -22,6 +22,7 @@ const SLIDER_SCROLL_STEP = 0.05; /* Slider scrolling step in % */
 const Ornament = {
     NONE: 0,
     DOT: 1,
+    CHECK: 2,
 };
 
 function _ensureStyle(actor) {
@@ -191,6 +192,9 @@ const PopupBaseMenuItem = new Lang.Class({
 
         if (ornament == Ornament.DOT) {
             this._ornamentLabel.text = '\u2022';
+            this.actor.add_accessible_state(Atk.StateType.CHECKED);
+        } else if (ornament == Ornament.CHECK) {
+            this._ornamentLabel.text = '\u2713';
             this.actor.add_accessible_state(Atk.StateType.CHECKED);
         } else if (ornament == Ornament.NONE) {
             this._ornamentLabel.text = '';
