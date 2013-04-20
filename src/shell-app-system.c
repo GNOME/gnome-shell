@@ -41,7 +41,6 @@ struct _ShellAppSystemPrivate {
   GMenuTree *apps_tree;
 
   GHashTable *running_apps;
-  GHashTable *visible_id_to_app;
   GHashTable *id_to_app;
   GHashTable *startup_wm_class_to_id;
 };
@@ -89,9 +88,6 @@ shell_app_system_init (ShellAppSystem *self)
                                            NULL,
                                            (GDestroyNotify)g_object_unref);
 
-  /* All the objects in this hash table are owned by id_to_app */
-  priv->visible_id_to_app = g_hash_table_new (g_str_hash, g_str_equal);
-
   priv->startup_wm_class_to_id = g_hash_table_new (g_str_hash, g_str_equal);
 
   /* We want to track NoDisplay apps, so we add INCLUDE_NODISPLAY. We'll
@@ -112,7 +108,6 @@ shell_app_system_finalize (GObject *object)
 
   g_hash_table_destroy (priv->running_apps);
   g_hash_table_destroy (priv->id_to_app);
-  g_hash_table_destroy (priv->visible_id_to_app);
   g_hash_table_destroy (priv->startup_wm_class_to_id);
 
   G_OBJECT_CLASS (shell_app_system_parent_class)->finalize (object);
@@ -189,8 +184,6 @@ on_apps_tree_changed_cb (GMenuTree *tree,
 
   g_assert (tree == self->priv->apps_tree);
 
-  g_hash_table_remove_all (self->priv->visible_id_to_app);
-
   if (!gmenu_tree_load_sync (self->priv->apps_tree, &error))
     {
       if (error)
@@ -240,8 +233,6 @@ on_apps_tree_changed_cb (GMenuTree *tree,
       g_object_unref (info);
 
       g_hash_table_replace (self->priv->id_to_app, (char*)id, app);
-      if (!gmenu_tree_entry_get_is_nodisplay_recurse (entry))
-        g_hash_table_replace (self->priv->visible_id_to_app, (char*)id, app);
 
       startup_wm_class = g_desktop_app_info_get_startup_wm_class (info);
       if (startup_wm_class)
@@ -556,7 +547,7 @@ GSList *
 shell_app_system_initial_search (ShellAppSystem  *self,
                                  GSList          *terms)
 {
-  return search_tree (self, terms, self->priv->visible_id_to_app);
+  return search_tree (self, terms, self->priv->id_to_app);
 }
 
 /**
