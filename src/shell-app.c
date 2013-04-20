@@ -653,6 +653,7 @@ shell_app_activate_full (ShellApp      *app,
       case SHELL_APP_STATE_STARTING:
         break;
       case SHELL_APP_STATE_RUNNING:
+      case SHELL_APP_STATE_BUSY:
         shell_app_activate_window (app, NULL, timestamp);
         break;
     }

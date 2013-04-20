@@ -618,6 +618,7 @@ _shell_app_system_notify_app_state_changed (ShellAppSystem *self,
   switch (state)
     {
     case SHELL_APP_STATE_RUNNING:
+    case SHELL_APP_STATE_BUSY:
       g_hash_table_insert (self->priv->running_apps, g_object_ref (app), NULL);
       break;
     case SHELL_APP_STATE_STARTING:
