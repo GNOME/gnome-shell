@@ -289,10 +289,10 @@ const AppMenuButton = new Lang.Class({
         this._visible = !Main.overview.visible;
         if (!this._visible)
             this.actor.hide();
-        Main.overview.connect('hiding', Lang.bind(this, function () {
+        this._overviewHidingId = Main.overview.connect('hiding', Lang.bind(this, function () {
             this.show();
         }));
-        Main.overview.connect('showing', Lang.bind(this, function () {
+        this._overviewShowingId = Main.overview.connect('showing', Lang.bind(this, function () {
             this.hide();
         }));
 
@@ -302,10 +302,12 @@ const AppMenuButton = new Lang.Class({
 
         let tracker = Shell.WindowTracker.get_default();
         let appSys = Shell.AppSystem.get_default();
-        tracker.connect('notify::focus-app', Lang.bind(this, this._focusAppChanged));
-        appSys.connect('app-state-changed', Lang.bind(this, this._onAppStateChanged));
-
-        global.window_manager.connect('switch-workspace', Lang.bind(this, this._sync));
+        this._focusAppNotifyId =
+            tracker.connect('notify::focus-app', Lang.bind(this, this._focusAppChanged));
+        this._appStateChangedSignalId =
+            appSys.connect('app-state-changed', Lang.bind(this, this._onAppStateChanged));
+        this._switchWorkspaceNotifyId =
+            global.window_manager.connect('switch-workspace', Lang.bind(this, this._sync));
 
         this._sync();
     },
@@ -637,6 +639,33 @@ const AppMenuButton = new Lang.Class({
 
         this.setMenu(menu);
         this._menuManager.addMenu(menu);
+    },
+
+    destroy: function() {
+        if (this._appStateChangedSignalId > 0) {
+            let appSys = Shell.AppSystem.get_default();
+            appSys.disconnect(this._appStateChangedSignalId);
+            this._appStateChangedSignalId = 0;
+        }
+        if (this._focusAppNotifyId > 0) {
+            let tracker = Shell.WindowTracker.get_default();
+            tracker.disconnect(this._focusAppNotifyId);
+            this._focusAppNotifyId = 0;
+        }
+        if (this._overviewHidingId > 0) {
+            Main.overview.disconnect(this._overviewHidingId);
+            this._overviewHidingId = 0;
+        }
+        if (this._overviewShowingId > 0) {
+            Main.overview.disconnect(this._overviewShowingId);
+            this._overviewShowingId = 0;
+        }
+        if (this._switchWorkspaceNotifyId > 0) {
+            global.window_manager.disconnect(this._switchWorkspaceNotifyId);
+            this._switchWorkspaceNotifyId = 0;
+        }
+
+        this.parent();
     }
 });
 
