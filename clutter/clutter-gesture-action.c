@@ -458,7 +458,8 @@ actor_captured_event_cb (ClutterActor *actor,
 
   /* Start the gesture immediately if the gesture has no
    * _TRIGGER_EDGE_AFTER drag threshold. */
-  if (priv->edge != CLUTTER_GESTURE_TRIGGER_EDGE_AFTER)
+  if ((priv->points->len < priv->requested_nb_points) &&
+      (priv->edge != CLUTTER_GESTURE_TRIGGER_EDGE_AFTER))
     begin_gesture (action, actor);
 
   return CLUTTER_EVENT_PROPAGATE;
