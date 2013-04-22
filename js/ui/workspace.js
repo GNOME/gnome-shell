@@ -1257,6 +1257,7 @@ const Workspace = new Lang.Class({
         this._cursorX = x;
         this._cursorY = y;
 
+        this._currentLayout = null;
         this._repositionWindowsId = Mainloop.timeout_add(750,
             Lang.bind(this, this._delayedWindowRepositioning));
     },
@@ -1304,6 +1305,7 @@ const Workspace = new Lang.Class({
             clone.overlay.relayout(false);
         }
 
+        this._currentLayout = null;
         this._recalculateWindowPositions(WindowPositionFlags.ANIMATE);
     },
 
