@@ -989,8 +989,7 @@ const Workspace = new Lang.Class({
         Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
             this._dropRect.set_position(geom.x, geom.y);
             this._dropRect.set_size(geom.width, geom.height);
-            if (this._currentLayout != null)
-                this._updateWindowPositions(WindowPositionFlags.NONE);
+            this._updateWindowPositions(WindowPositionFlags.NONE);
             return false;
         }));
     },
@@ -1059,6 +1058,11 @@ const Workspace = new Lang.Class({
     },
 
     _updateWindowPositions: function(flags) {
+        if (this._currentLayout == null) {
+            this._recalculateWindowPositions(flags);
+            return;
+        }
+
         let initialPositioning = flags & WindowPositionFlags.INITIAL;
         let animate = flags & WindowPositionFlags.ANIMATE;
 
