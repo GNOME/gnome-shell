@@ -2208,7 +2208,7 @@ const MessageTray = new Lang.Class({
         let notificationExpired = this._notificationTimeoutId == 0 &&
                                   !(this._notification && this._notification.urgency == Urgency.CRITICAL) &&
                                   !(this._notification && this._notification.focused) &&
-                                  !this._pointerInTray;
+                                  !this._pointerInNotification;
         let notificationLockedOut = !Main.sessionMode.hasNotifications && this._notification;
         let notificationMustClose = this._notificationRemoved || notificationLockedOut || (notificationExpired && this._userActiveWhileNotificationShown) || this._notificationClosed;
         let canShowNotification = notificationsPending && this._trayState == State.HIDDEN;
