@@ -768,27 +768,25 @@ const LayoutStrategy = new Lang.Class({
         let slots = [];
 
         // Do this in three parts.
-        let width = 0;
         let height = 0;
         for (let i = 0; i < rows.length; i++) {
             let row = rows[i];
-            width = Math.max(width, row.width);
             height += row.height + this._rowSpacing;
         }
 
         height -= this._rowSpacing;
 
-        // If the window layout doesn't fit in the actual
-        // geometry, then apply this additional scale to
-        // tne entire layout.
-        let additionalScale = Math.min(1, area.width / width, area.height / height);
-
         let y = 0;
 
         for (let i = 0; i < rows.length; i++) {
             let row = rows[i];
-            row.x = area.x + (Math.max(area.width - row.width, 0) / 2) * additionalScale;
-            row.y = area.y + (y + Math.max(area.height - height, 0) / 2) * additionalScale;
+
+            // If this window layout row doesn't fit in the actual
+            // geometry, then apply an additional scale to it.
+            row.additionalScale = Math.min(1, area.width / row.width, area.height / height);
+
+            row.x = area.x + (Math.max(area.width - row.width, 0) / 2) * row.additionalScale;
+            row.y = area.y + (y + Math.max(area.height - height, 0) / 2) * row.additionalScale;
             y += row.height + this._rowSpacing;
 
             row.windows.sort(Lang.bind(this, function(a, b) {
@@ -802,7 +800,7 @@ const LayoutStrategy = new Lang.Class({
             for (let j = 0; j < row.windows.length; j++) {
                 let window = row.windows[j];
 
-                let s = scale * this._computeWindowScale(window) * additionalScale;
+                let s = scale * this._computeWindowScale(window) * row.additionalScale;
                 let cellWidth = window.actor.width * s;
                 let cellHeight = window.actor.height * s;
 
