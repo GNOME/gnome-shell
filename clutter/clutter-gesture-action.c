@@ -223,13 +223,67 @@ gesture_unregister_point (ClutterGestureAction *action, gint position)
   g_array_remove_index (priv->points, position);
 }
 
+static void
+gesture_update_motion_point (GesturePoint *point,
+                             ClutterEvent *event)
+{
+  gfloat motion_x, motion_y;
+  gint64 _time;
+
+  clutter_event_get_coords (event, &motion_x, &motion_y);
+
+  clutter_event_free (point->last_event);
+  point->last_event = clutter_event_copy (event);
+
+  point->last_delta_x = motion_x - point->last_motion_x;
+  point->last_delta_y = motion_y - point->last_motion_y;
+  point->last_motion_x = motion_x;
+  point->last_motion_y = motion_y;
+
+  _time = clutter_event_get_time (event);
+  point->last_delta_time = _time - point->last_motion_time;
+  point->last_motion_time = _time;
+}
+
+static void
+gesture_update_release_point (GesturePoint *point,
+                              ClutterEvent *event)
+{
+  gint64 _time;
+
+  clutter_event_get_coords (event, &point->release_x, &point->release_y);
+
+  clutter_event_free (point->last_event);
+  point->last_event = clutter_event_copy (event);
+
+  /* Treat the release event as the continuation of the last motion,
+   * in case the user keeps the pointer still for a while before
+   * releasing it. */
+   _time = clutter_event_get_time (event);
+   point->last_delta_time += _time - point->last_motion_time;
+}
+
 static gint
-gesture_get_threshold (ClutterGestureAction *action)
+gesture_get_threshold (void)
 {
   gint threshold;
   ClutterSettings *settings = clutter_settings_get_default ();
   g_object_get (settings, "dnd-drag-threshold", &threshold, NULL);
   return threshold;
+}
+
+static gboolean
+gesture_point_pass_threshold (GesturePoint *point, ClutterEvent *event)
+{
+  gint drag_threshold = gesture_get_threshold ();
+  gfloat motion_x, motion_y;
+
+  clutter_event_get_coords (event, &motion_x, &motion_y);
+
+  if ((fabsf (point->press_y - motion_y) < drag_threshold) &&
+      (fabsf (point->press_x - motion_x) < drag_threshold))
+    return TRUE;
+  return FALSE;
 }
 
 static void
@@ -300,8 +354,6 @@ stage_captured_event_cb (ClutterActor       *stage,
   gint position, drag_threshold;
   gboolean return_value;
   GesturePoint *point;
-  gfloat motion_x, motion_y;
-  gint64 _time;
 
   if ((point = gesture_find_point (action, event, &position)) == NULL)
     return CLUTTER_EVENT_PROPAGATE;
@@ -327,39 +379,31 @@ stage_captured_event_cb (ClutterActor       *stage,
       /* Follow same code path as a touch event update */
 
     case CLUTTER_TOUCH_UPDATE:
-      clutter_event_get_coords (event,
-                                &motion_x,
-                                &motion_y);
-
-      if (priv->points->len < priv->requested_nb_points)
-        return CLUTTER_EVENT_PROPAGATE;
-
-      drag_threshold = gesture_get_threshold (action);
-
       if (!priv->in_gesture)
         {
+          if (priv->points->len < priv->requested_nb_points)
+            {
+              gesture_update_motion_point (point, event);
+              return CLUTTER_EVENT_PROPAGATE;
+            }
+
           /* Wait until the drag threshold has been exceeded
            * before starting _TRIGGER_EDGE_AFTER gestures. */
           if (priv->edge == CLUTTER_GESTURE_TRIGGER_EDGE_AFTER &&
-              (fabsf (point->press_y - motion_y) < drag_threshold) &&
-              (fabsf (point->press_x - motion_x) < drag_threshold))
-            return CLUTTER_EVENT_PROPAGATE;
+              gesture_point_pass_threshold (point, event))
+            {
+              gesture_update_motion_point (point, event);
+              return CLUTTER_EVENT_PROPAGATE;
+            }
 
           if (!begin_gesture(action, actor))
-            return CLUTTER_EVENT_PROPAGATE;
+            {
+              gesture_update_motion_point (point, event);
+              return CLUTTER_EVENT_PROPAGATE;
+            }
         }
 
-      clutter_event_free (point->last_event);
-      point->last_event = clutter_event_copy (event);
-
-      point->last_delta_x = motion_x - point->last_motion_x;
-      point->last_delta_y = motion_y - point->last_motion_y;
-      point->last_motion_x = motion_x;
-      point->last_motion_y = motion_y;
-
-      _time = clutter_event_get_time (event);
-      point->last_delta_time = _time - point->last_motion_time;
-      point->last_motion_time = _time;
+      gesture_update_motion_point (point, event);
 
       g_signal_emit (action, gesture_signals[GESTURE_PROGRESS], 0, actor,
                      &return_value);
@@ -371,9 +415,10 @@ stage_captured_event_cb (ClutterActor       *stage,
 
       /* Check if a _TRIGGER_EDGE_BEFORE gesture needs to be cancelled because
        * the drag threshold has been exceeded. */
+      drag_threshold = gesture_get_threshold ();
       if (priv->edge == CLUTTER_GESTURE_TRIGGER_EDGE_BEFORE &&
-          ((fabsf (point->press_y - motion_y) > drag_threshold) ||
-           (fabsf (point->press_x - motion_x) > drag_threshold)))
+          ((fabsf (point->press_y - point->last_motion_y) > drag_threshold) ||
+           (fabsf (point->press_x - point->last_motion_x) > drag_threshold)))
         {
           cancel_gesture (action);
           return CLUTTER_EVENT_PROPAGATE;
@@ -383,20 +428,11 @@ stage_captured_event_cb (ClutterActor       *stage,
     case CLUTTER_BUTTON_RELEASE:
     case CLUTTER_TOUCH_END:
       {
-        clutter_event_get_coords (event, &point->release_x, &point->release_y);
-
-        clutter_event_free (point->last_event);
-        point->last_event = clutter_event_copy (event);
+        gesture_update_release_point (point, event);
 
         if (priv->in_gesture &&
             ((priv->points->len - 1) < priv->requested_nb_points))
           {
-            /* Treat the release event as the continuation of the last motion,
-             * in case the user keeps the pointer still for a while before
-             * releasing it. */
-            _time = clutter_event_get_time (event);
-            point->last_delta_time += _time - point->last_motion_time;
-
             priv->in_gesture = FALSE;
             g_signal_emit (action, gesture_signals[GESTURE_END], 0, actor);
           }
@@ -407,6 +443,8 @@ stage_captured_event_cb (ClutterActor       *stage,
 
     case CLUTTER_TOUCH_CANCEL:
       {
+        gesture_update_release_point (point, event);
+
         if (priv->in_gesture)
           {
             priv->in_gesture = FALSE;
@@ -986,7 +1024,7 @@ clutter_gesture_action_set_n_touch_points (ClutterGestureAction *action,
             clutter_actor_meta_get_actor (CLUTTER_ACTOR_META (action));
           gint i, drag_threshold;
 
-          drag_threshold = gesture_get_threshold (action);
+          drag_threshold = gesture_get_threshold ();
 
           for (i = 0; i < priv->points->len; i++)
             {
