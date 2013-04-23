@@ -473,33 +473,6 @@ const PopupAlternatingMenuItem = new Lang.Class({
     }
 });
 
-const PopupSliderMenuItem = new Lang.Class({
-    Name: 'PopupSliderMenuItem',
-    Extends: PopupBaseMenuItem,
-
-    _init: function(value) {
-        this.parent({ activate: false });
-
-        this._slider = new Slider.Slider(value);
-        this._slider.connect('value-changed', Lang.bind(this, function(actor, value) {
-            this.emit('value-changed', value);
-        }));
-        this.addActor(this._slider.actor);
-    },
-
-    setValue: function(value) {
-        this._slider.setValue(value);
-    },
-
-    get value() {
-        return this._slider.value;
-    },
-
-    scroll: function (event) {
-        this._slider.scroll(event);
-    }
-});
-
 const Switch = new Lang.Class({
     Name: 'Switch',
 
