@@ -1912,7 +1912,7 @@ const RemoteMenu = new Lang.Class({
             this._actionAdded(model, item, index);
         }));
 
-        return [item, false];
+        return item;
     },
 
     _actionStateChanged: function(actionGroup, action_id) {
