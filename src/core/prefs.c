@@ -57,7 +57,6 @@
 
 #define KEY_OVERLAY_KEY "overlay-key"
 #define KEY_WORKSPACES_ONLY_ON_PRIMARY "workspaces-only-on-primary"
-#define KEY_NO_TAB_POPUP "no-tab-popup"
 
 /* These are the different schemas we are keeping
  * a GSettings instance for */
@@ -111,8 +110,6 @@ static MetaButtonLayout button_layout;
 static char **workspace_names = NULL;
 
 static gboolean workspaces_only_on_primary = FALSE;
-
-static gboolean no_tab_popup = FALSE;
 
 static char *iso_next_group_option = NULL;
 
@@ -364,13 +361,6 @@ static MetaBoolPreference preferences_bool[] =
         META_PREF_WORKSPACES_ONLY_ON_PRIMARY,
       },
       &workspaces_only_on_primary,
-    },
-    {
-      { KEY_NO_TAB_POPUP,
-        SCHEMA_MUTTER,
-        META_PREF_NO_TAB_POPUP,
-      },
-      &no_tab_popup,
     },
     {
       { "auto-maximize",
@@ -1813,9 +1803,6 @@ meta_preference_to_string (MetaPreference pref)
     case META_PREF_WORKSPACES_ONLY_ON_PRIMARY:
       return "WORKSPACES_ONLY_ON_PRIMARY";
 
-    case META_PREF_NO_TAB_POPUP:
-      return "NO_TAB_POPUP";
-
     case META_PREF_DRAGGABLE_BORDER_WIDTH:
       return "DRAGGABLE_BORDER_WIDTH";
 
@@ -2318,25 +2305,6 @@ gboolean
 meta_prefs_get_workspaces_only_on_primary (void)
 {
   return workspaces_only_on_primary;
-}
-
-
-gboolean
-meta_prefs_get_no_tab_popup (void)
-{
-  return no_tab_popup;
-}
-
-void
-meta_prefs_set_no_tab_popup (gboolean whether)
-{
-  MetaBasePreference *pref;
-
-  if (find_pref (preferences_bool, sizeof(MetaBoolPreference),
-                 KEY_NO_TAB_POPUP, &pref))
-    {
-      g_settings_set_boolean (SETTINGS (pref->schema), KEY_NO_TAB_POPUP, whether);
-    }
 }
 
 int

@@ -75,14 +75,6 @@
 #include "meta-xwayland-private.h"
 #include "meta-surface-actor-wayland.h"
 
-#define GRAB_OP_IS_WINDOW_SWITCH(g)                     \
-        (g == META_GRAB_OP_KEYBOARD_TABBING_NORMAL  ||  \
-         g == META_GRAB_OP_KEYBOARD_TABBING_DOCK    ||  \
-         g == META_GRAB_OP_KEYBOARD_TABBING_GROUP   ||  \
-         g == META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL ||  \
-         g == META_GRAB_OP_KEYBOARD_ESCAPING_DOCK   ||  \
-         g == META_GRAB_OP_KEYBOARD_ESCAPING_GROUP)
-
 /*
  * SECTION:pings
  *
@@ -1375,13 +1367,6 @@ grab_op_is_keyboard (MetaGrabOp op)
     case META_GRAB_OP_KEYBOARD_RESIZING_NE:
     case META_GRAB_OP_KEYBOARD_RESIZING_SW:
     case META_GRAB_OP_KEYBOARD_RESIZING_NW:
-    case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
-    case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
-    case META_GRAB_OP_KEYBOARD_TABBING_GROUP:
-    case META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL:
-    case META_GRAB_OP_KEYBOARD_ESCAPING_DOCK:
-    case META_GRAB_OP_KEYBOARD_ESCAPING_GROUP:
-    case META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING:
     case META_GRAB_OP_COMPOSITOR:
       return TRUE;
 
@@ -2076,19 +2061,6 @@ meta_display_handle_event (MetaDisplay        *display,
                       (display->grab_window ?
                        display->grab_window->desc :
                        "none"));
-          if (GRAB_OP_IS_WINDOW_SWITCH (display->grab_op))
-            {
-              meta_topic (META_DEBUG_WINDOW_OPS,
-                          "Syncing to old stack positions.\n");
-
-              /* XXX: I'm not sure if this is the right thing to do.
-                 The pre-Wayland code was only calling
-                 meta_stack_set_positions if the modified window was a
-                 root window */
-              if (event->any.source == CLUTTER_ACTOR (event->any.stage) && window && window->screen)
-                meta_stack_set_positions (window->screen->stack,
-                                          display->grab_old_window_stacking);
-            }
           meta_display_end_grab_op (display, event->any.time);
           bypass_clutter = TRUE;
           bypass_wayland = TRUE;
@@ -4084,16 +4056,6 @@ meta_display_begin_grab_op (MetaDisplay *display,
   g_assert (display->grab_window != NULL || display->grab_screen != NULL);
   g_assert (display->grab_op != META_GRAB_OP_NONE);
 
-  /* Save the old stacking */
-  if (GRAB_OP_IS_WINDOW_SWITCH (display->grab_op))
-    {
-      meta_topic (META_DEBUG_WINDOW_OPS,
-                  "Saving old stack positions; old pointer was %p.\n",
-                  display->grab_old_window_stacking);
-      display->grab_old_window_stacking = 
-        meta_stack_get_positions (screen->stack);
-    }
-
   if (display->grab_window)
     {
       meta_window_refresh_resize_popup (display->grab_window);
@@ -4134,20 +4096,6 @@ meta_display_end_grab_op (MetaDisplay *display,
        */
       if (!display->grab_threshold_movement_reached)
         meta_window_raise (display->grab_window);
-    }
-
-  if (GRAB_OP_IS_WINDOW_SWITCH (display->grab_op) ||
-      display->grab_op == META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING)
-    {
-      if (GRAB_OP_IS_WINDOW_SWITCH (display->grab_op))
-        meta_screen_tab_popup_destroy (display->grab_screen);
-      else
-        meta_screen_workspace_popup_destroy (display->grab_screen);
-
-      /* If the ungrab here causes an EnterNotify, ignore it for
-       * sloppy focus
-       */
-      display->ungrab_should_not_cause_focus_window = display->grab_xwindow;
     }
   
   /* If this was a move or resize clear out the edge cache */

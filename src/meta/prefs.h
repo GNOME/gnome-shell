@@ -62,7 +62,6 @@
  * @META_PREF_EDGE_TILING: edge tiling
  * @META_PREF_FORCE_FULLSCREEN: force fullscreen
  * @META_PREF_WORKSPACES_ONLY_ON_PRIMARY: workspaces only on primary
- * @META_PREF_NO_TAB_POPUP: no tab popup
  * @META_PREF_DRAGGABLE_BORDER_WIDTH: draggable border width
  * @META_PREF_AUTO_MAXIMIZE: auto-maximize
  */
@@ -100,7 +99,6 @@ typedef enum
   META_PREF_EDGE_TILING,
   META_PREF_FORCE_FULLSCREEN,
   META_PREF_WORKSPACES_ONLY_ON_PRIMARY,
-  META_PREF_NO_TAB_POPUP,
   META_PREF_DRAGGABLE_BORDER_WIDTH,
   META_PREF_AUTO_MAXIMIZE
 } MetaPreference;
@@ -163,9 +161,6 @@ void meta_prefs_set_force_fullscreen (gboolean whether);
 
 gboolean meta_prefs_get_workspaces_only_on_primary (void);
 
-gboolean meta_prefs_get_no_tab_popup (void);
-void     meta_prefs_set_no_tab_popup (gboolean whether);
-
 int      meta_prefs_get_draggable_border_width (void);
 
 gboolean meta_prefs_get_ignore_request_hide_titlebar (void);
@@ -204,8 +199,6 @@ void     meta_prefs_set_ignore_request_hide_titlebar (gboolean whether);
  * @META_KEYBINDING_ACTION_CYCLE_WINDOWS_BACKWARD: FILLME 
  * @META_KEYBINDING_ACTION_CYCLE_PANELS: FILLME 
  * @META_KEYBINDING_ACTION_CYCLE_PANELS_BACKWARD: FILLME 
- * @META_KEYBINDING_ACTION_TAB_POPUP_SELECT: FILLME 
- * @META_KEYBINDING_ACTION_TAB_POPUP_CANCEL: FILLME 
  * @META_KEYBINDING_ACTION_SHOW_DESKTOP: FILLME 
  * @META_KEYBINDING_ACTION_PANEL_MAIN_MENU: FILLME 
  * @META_KEYBINDING_ACTION_PANEL_RUN_DIALOG: FILLME 
@@ -301,8 +294,6 @@ typedef enum _MetaKeyBindingAction
   META_KEYBINDING_ACTION_CYCLE_WINDOWS_BACKWARD,
   META_KEYBINDING_ACTION_CYCLE_PANELS,
   META_KEYBINDING_ACTION_CYCLE_PANELS_BACKWARD,
-  META_KEYBINDING_ACTION_TAB_POPUP_SELECT,
-  META_KEYBINDING_ACTION_TAB_POPUP_CANCEL,
   META_KEYBINDING_ACTION_SHOW_DESKTOP,
   META_KEYBINDING_ACTION_PANEL_MAIN_MENU,
   META_KEYBINDING_ACTION_PANEL_RUN_DIALOG,

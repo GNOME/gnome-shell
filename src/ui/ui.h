@@ -178,6 +178,4 @@ int      meta_ui_get_drag_threshold       (MetaUI *ui);
 
 MetaUIDirection meta_ui_get_direction (void);
 
-#include "tabpopup.h"
-
 #endif

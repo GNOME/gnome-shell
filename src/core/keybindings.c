@@ -110,13 +110,6 @@ meta_key_binding_is_builtin (MetaKeyBinding *binding)
  * handler functions and have some kind of flag to say they're unbindable.
  */
 
-static void handle_workspace_switch  (MetaDisplay     *display,
-                                      MetaScreen      *screen,
-                                      MetaWindow      *window,
-                                      ClutterKeyEvent *event,
-                                      MetaKeyBinding  *binding,
-                                      gpointer         dummy);
-
 static gboolean process_mouse_move_resize_grab (MetaDisplay     *display,
                                                 MetaScreen      *screen,
                                                 MetaWindow      *window,
@@ -132,17 +125,8 @@ static gboolean process_keyboard_resize_grab (MetaDisplay     *display,
                                               MetaWindow      *window,
                                               ClutterKeyEvent *event);
 
-static gboolean process_tab_grab           (MetaDisplay     *display,
-                                            MetaScreen      *screen,
-                                            ClutterKeyEvent *event);
-
-static gboolean process_workspace_switch_grab (MetaDisplay     *display,
-                                               MetaScreen      *screen,
-                                               ClutterKeyEvent *event);
-
 static void grab_key_bindings           (MetaDisplay *display);
 static void ungrab_key_bindings         (MetaDisplay *display);
-
 
 static GHashTable *key_handlers;
 static GHashTable *external_grabs;
@@ -1664,140 +1648,6 @@ is_modifier (MetaDisplay *display,
   return retval;
 }
 
-/* Indexes:
- * shift = 0
- * lock = 1
- * control = 2
- * mod1 = 3
- * mod2 = 4
- * mod3 = 5
- * mod4 = 6
- * mod5 = 7
- */
-
-static gboolean
-is_specific_modifier (MetaDisplay *display,
-                      unsigned int keycode,
-                      unsigned int mask)
-{
-  int i;
-  int end;
-  gboolean retval = FALSE;
-  int mod_index;
-
-  g_assert (display->modmap);
-
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Checking whether code 0x%x is bound to modifier 0x%x\n",
-              keycode, mask);
-
-  mod_index = 0;
-  mask = mask >> 1;
-  while (mask != 0)
-    {
-      mod_index += 1;
-      mask = mask >> 1;
-    }
-
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Modifier has index %d\n", mod_index);
-
-  end = (mod_index + 1) * display->modmap->max_keypermod;
-  i = mod_index * display->modmap->max_keypermod;
-  while (i < end)
-    {
-      if (keycode == display->modmap->modifiermap[i])
-        {
-          retval = TRUE;
-          break;
-        }
-      ++i;
-    }
-
-  return retval;
-}
-
-static unsigned int
-get_primary_modifier (MetaDisplay *display,
-                      unsigned int entire_binding_mask)
-{
-  /* The idea here is to see if the "main" modifier
-   * for Alt+Tab has been pressed/released. So if the binding
-   * is Alt+Shift+Tab then releasing Alt is the thing that
-   * ends the operation. It's pretty random how we order
-   * these.
-   */
-  unsigned int masks[] = { Mod5Mask, Mod4Mask, Mod3Mask,
-                           Mod2Mask, Mod1Mask, ControlMask,
-                           ShiftMask, LockMask };
-
-  int i;
-
-  i = 0;
-  while (i < (int) G_N_ELEMENTS (masks))
-    {
-      if (entire_binding_mask & masks[i])
-        return masks[i];
-      ++i;
-    }
-
-  return 0;
-}
-
-static gboolean
-keycode_is_primary_modifier (MetaDisplay *display,
-                             unsigned int keycode,
-                             unsigned int entire_binding_mask)
-{
-  unsigned int primary_modifier;
-
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Checking whether code 0x%x is the primary modifier of mask 0x%x\n",
-              keycode, entire_binding_mask);
-
-  primary_modifier = get_primary_modifier (display, entire_binding_mask);
-  if (primary_modifier != 0)
-    return is_specific_modifier (display, keycode, primary_modifier);
-  else
-    return FALSE;
-}
-
-static gboolean
-primary_modifier_still_pressed (MetaDisplay *display,
-                                unsigned int entire_binding_mask)
-{
-  unsigned int primary_modifier;
-  double x, y, root_x, root_y;
-  Window root, child;
-  XIButtonState buttons;
-  XIModifierState mods;
-  XIGroupState group;
-  MetaScreen *random_screen;
-  Window      random_xwindow;
-
-  primary_modifier = get_primary_modifier (display, entire_binding_mask);
-
-  random_screen = display->screens->data;
-  random_xwindow = random_screen->no_focus_window;
-  XIQueryPointer (display->xdisplay,
-                  META_VIRTUAL_CORE_POINTER_ID,
-                  random_xwindow, /* some random window */
-                  &root, &child,
-                  &root_x, &root_y,
-                  &x, &y,
-                  &buttons, &mods, &group);
-  free (buttons.mask);
-
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Primary modifier 0x%x full grab mask 0x%x current state 0x%x\n",
-              primary_modifier, entire_binding_mask, mods.effective);
-
-  if ((mods.effective & primary_modifier) == 0)
-    return FALSE;
-  else
-    return TRUE;
-}
-
 static void
 invoke_handler (MetaDisplay     *display,
                 MetaScreen      *screen,
@@ -1820,20 +1670,6 @@ invoke_handler (MetaDisplay     *display,
                                event,
                                binding,
                                NULL);
-}
-
-static void
-invoke_handler_by_name (MetaDisplay     *display,
-                        MetaScreen      *screen,
-                        const char      *handler_name,
-                        MetaWindow      *window,
-                        ClutterKeyEvent *event)
-{
-  MetaKeyHandler *handler;
-
-  handler = HANDLER (handler_name);
-  if (handler)
-    invoke_handler (display, screen, handler, window, event, NULL);
 }
 
 static gboolean
@@ -2117,23 +1953,6 @@ meta_display_process_key_event (MetaDisplay     *display,
                           "Processing event for keyboard resize\n");
               g_assert (window != NULL);
               keep_grab = process_keyboard_resize_grab (display, screen, window, event);
-              break;
-
-            case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
-            case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
-            case META_GRAB_OP_KEYBOARD_TABBING_GROUP:
-            case META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL:
-            case META_GRAB_OP_KEYBOARD_ESCAPING_DOCK:
-            case META_GRAB_OP_KEYBOARD_ESCAPING_GROUP:
-              meta_topic (META_DEBUG_KEYBINDINGS,
-                          "Processing event for keyboard tabbing/cycling\n");
-              keep_grab = process_tab_grab (display, screen, event);
-              break;
-
-            case META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING:
-              meta_topic (META_DEBUG_KEYBINDINGS,
-                          "Processing event for keyboard workspace switching\n");
-              keep_grab = process_workspace_switch_grab (display, screen, event);
               break;
 
             default:
@@ -2674,347 +2493,6 @@ process_keyboard_resize_grab (MetaDisplay     *display,
   return handled;
 }
 
-static gboolean
-end_keyboard_grab (MetaDisplay *display,
-		   unsigned int keycode)
-{
-#ifdef HAVE_XKB
-  if (display->xkb_base_event_type > 0)
-    {
-      unsigned int primary_modifier;
-      XkbStateRec state;
-
-      primary_modifier = get_primary_modifier (display, display->grab_mask);
-
-      XkbGetState (display->xdisplay, XkbUseCoreKbd, &state);
-
-      if (!(primary_modifier & state.mods))
-	return TRUE;
-    }
-  else
-#endif
-    {
-      if (keycode_is_primary_modifier (display, keycode, display->grab_mask))
-	return TRUE;
-    }
-
-  return FALSE;
-}
-
-static gboolean
-process_tab_grab (MetaDisplay     *display,
-                  MetaScreen      *screen,
-                  ClutterKeyEvent *event)
-{
-  MetaKeyBinding *binding;
-  MetaKeyBindingAction action;
-  gboolean popup_not_showing;
-  gboolean backward;
-  gboolean key_used;
-  MetaWindow *prev_window;
-
-  if (screen != display->grab_screen)
-    return FALSE;
-
-  binding = display_get_keybinding (display,
-                                    event->keyval,
-                                    event->hardware_keycode,
-                                    display->grab_mask);
-  if (binding)
-    action = meta_prefs_get_keybinding_action (binding->name);
-  else
-    action = META_KEYBINDING_ACTION_NONE;
-
-  /*
-   * If there is no tab_pop up object, i.e., there is some custom handler
-   * implementing Alt+Tab & Co., we call this custom handler; we do not
-   * mess about with the grab, as that is up to the handler to deal with.
-   */
-  if (!screen->tab_popup)
-    {
-      if (event->type == CLUTTER_KEY_RELEASE)
-        {
-          if (end_keyboard_grab (display, event->hardware_keycode))
-            {
-              invoke_handler_by_name (display, screen, "tab-popup-select", NULL, event);
-
-              /* We return FALSE to end the grab; if the handler ended the grab itself
-               * that will be a noop. If the handler didn't end the grab, then it's a
-               * safety measure to prevent a stuck grab.
-               */
-              return FALSE;
-            }
-
-          return TRUE;
-        }
-
-      switch (action)
-        {
-        case META_KEYBINDING_ACTION_CYCLE_PANELS:
-        case META_KEYBINDING_ACTION_CYCLE_WINDOWS:
-        case META_KEYBINDING_ACTION_CYCLE_PANELS_BACKWARD:
-        case META_KEYBINDING_ACTION_CYCLE_WINDOWS_BACKWARD:
-        case META_KEYBINDING_ACTION_SWITCH_PANELS:
-        case META_KEYBINDING_ACTION_SWITCH_WINDOWS:
-        case META_KEYBINDING_ACTION_SWITCH_APPLICATIONS:
-        case META_KEYBINDING_ACTION_SWITCH_PANELS_BACKWARD:
-        case META_KEYBINDING_ACTION_SWITCH_WINDOWS_BACKWARD:
-        case META_KEYBINDING_ACTION_SWITCH_APPLICATIONS_BACKWARD:
-        case META_KEYBINDING_ACTION_CYCLE_GROUP:
-        case META_KEYBINDING_ACTION_CYCLE_GROUP_BACKWARD:
-        case META_KEYBINDING_ACTION_SWITCH_GROUP:
-        case META_KEYBINDING_ACTION_SWITCH_GROUP_BACKWARD:
-          /* These are the tab-popup bindings. If a custom Alt-Tab implementation
-           * is in effect, we expect it to want to handle all of these as a group
-           *
-           * If there are some of them that the custom implementation didn't
-           * handle, we treat them as "unbound" for the duration - running the
-           * normal handlers could get us into trouble.
-           */
-          if (binding->handler &&
-              binding->handler->func &&
-              binding->handler->func != binding->handler->default_func)
-            {
-              invoke_handler (display, screen, binding->handler, NULL, event, binding);
-              return TRUE;
-            }
-          break;
-        case META_KEYBINDING_ACTION_NONE:
-          {
-            /*
-             * If this is simply user pressing the Shift key, we do not want
-             * to cancel the grab.
-             */
-            if (is_modifier (display, event->hardware_keycode))
-              return TRUE;
-          }
-
-        default:
-          break;
-        }
-
-      /* Some unhandled key press */
-      invoke_handler_by_name (display, screen, "tab-popup-cancel", NULL, event);
-      return FALSE;
-    }
-
-  if (event->type == CLUTTER_KEY_RELEASE &&
-      end_keyboard_grab (display, event->hardware_keycode))
-    {
-      /* We're done, move to the new window. */
-      MetaWindow *target_window;
-
-      target_window = meta_screen_tab_popup_get_selected (screen);
-
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Ending tab operation, primary modifier released\n");
-
-      if (target_window)
-        {
-          target_window->tab_unminimized = FALSE;
-
-          meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Activating target window\n");
-
-          meta_topic (META_DEBUG_FOCUS, "Activating %s due to tab popup "
-                      "selection and turning mouse_mode off\n",
-                      target_window->desc);
-          display->mouse_mode = FALSE;
-          meta_window_activate (target_window, event->time);
-
-          meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Ending grab early so we can focus the target window\n");
-          meta_display_end_grab_op (display, event->time);
-
-          return TRUE; /* we already ended the grab */
-        }
-
-      return FALSE; /* end grab */
-    }
-
-  /* don't care about other releases, but eat them, don't end grab */
-  if (event->type == CLUTTER_KEY_RELEASE)
-    return TRUE;
-
-  /* don't end grab on modifier key presses */
-  if (is_modifier (display, event->hardware_keycode))
-    return TRUE;
-
-  prev_window = meta_screen_tab_popup_get_selected (screen);
-
-  /* Cancel when alt-Escape is pressed during using alt-Tab, and vice
-   * versa.
-   */
-  switch (action)
-    {
-    case META_KEYBINDING_ACTION_CYCLE_PANELS:
-    case META_KEYBINDING_ACTION_CYCLE_WINDOWS:
-    case META_KEYBINDING_ACTION_CYCLE_PANELS_BACKWARD:
-    case META_KEYBINDING_ACTION_CYCLE_WINDOWS_BACKWARD:
-      /* CYCLE_* are traditionally Escape-based actions,
-       * and should cancel traditionally Tab-based ones.
-       */
-      switch (display->grab_op)
-        {
-        case META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL:
-        case META_GRAB_OP_KEYBOARD_ESCAPING_DOCK:
-          /* carry on */
-          break;
-        default:
-          return FALSE;
-        }
-      break;
-    case META_KEYBINDING_ACTION_SWITCH_PANELS:
-    case META_KEYBINDING_ACTION_SWITCH_WINDOWS:
-    case META_KEYBINDING_ACTION_SWITCH_APPLICATIONS:
-    case META_KEYBINDING_ACTION_SWITCH_PANELS_BACKWARD:
-    case META_KEYBINDING_ACTION_SWITCH_WINDOWS_BACKWARD:
-    case META_KEYBINDING_ACTION_SWITCH_APPLICATIONS_BACKWARD:
-      /* SWITCH_* are traditionally Tab-based actions,
-       * and should cancel traditionally Escape-based ones.
-       */
-      switch (display->grab_op)
-        {
-        case META_GRAB_OP_KEYBOARD_TABBING_NORMAL:
-        case META_GRAB_OP_KEYBOARD_TABBING_DOCK:
-          /* carry on */
-          break;
-        default:
-          /* Also, we must re-lower and re-minimize whatever window
-           * we'd previously raised and unminimized.
-           */
-          meta_stack_set_positions (screen->stack,
-                                    screen->display->grab_old_window_stacking);
-          if (prev_window && prev_window->tab_unminimized)
-            {
-              meta_window_minimize (prev_window);
-              prev_window->tab_unminimized = FALSE;
-            }
-          return FALSE;
-        }
-      break;
-    case META_KEYBINDING_ACTION_CYCLE_GROUP:
-    case META_KEYBINDING_ACTION_CYCLE_GROUP_BACKWARD:
-    case META_KEYBINDING_ACTION_SWITCH_GROUP:
-    case META_KEYBINDING_ACTION_SWITCH_GROUP_BACKWARD:
-      switch (display->grab_op)
-        {
-        case META_GRAB_OP_KEYBOARD_ESCAPING_GROUP:
-        case META_GRAB_OP_KEYBOARD_TABBING_GROUP:
-          /* carry on */
-          break;
-        default:
-          return FALSE;
-        }
-
-      break;
-    default:
-      break;
-    }
-
-  /* !! TO HERE !!
-   * alt-f6 during alt-{Tab,Escape} does not end the grab
-   * but does change the grab op (and redraws the window,
-   * of course).
-   * See _{SWITCH,CYCLE}_GROUP.@@@
-   */
-
-  popup_not_showing = FALSE;
-  key_used = FALSE;
-  backward = FALSE;
-
-  switch (action)
-    {
-    case META_KEYBINDING_ACTION_CYCLE_PANELS:
-    case META_KEYBINDING_ACTION_CYCLE_WINDOWS:
-    case META_KEYBINDING_ACTION_CYCLE_GROUP:
-      popup_not_showing = TRUE;
-      key_used = TRUE;
-      break;
-    case META_KEYBINDING_ACTION_CYCLE_PANELS_BACKWARD:
-    case META_KEYBINDING_ACTION_CYCLE_WINDOWS_BACKWARD:
-    case META_KEYBINDING_ACTION_CYCLE_GROUP_BACKWARD:
-      popup_not_showing = TRUE;
-      key_used = TRUE;
-      backward = TRUE;
-      break;
-    case META_KEYBINDING_ACTION_SWITCH_PANELS:
-    case META_KEYBINDING_ACTION_SWITCH_WINDOWS:
-    case META_KEYBINDING_ACTION_SWITCH_APPLICATIONS:
-    case META_KEYBINDING_ACTION_SWITCH_GROUP:
-      key_used = TRUE;
-      break;
-    case META_KEYBINDING_ACTION_SWITCH_PANELS_BACKWARD:
-    case META_KEYBINDING_ACTION_SWITCH_WINDOWS_BACKWARD:
-    case META_KEYBINDING_ACTION_SWITCH_APPLICATIONS_BACKWARD:
-    case META_KEYBINDING_ACTION_SWITCH_GROUP_BACKWARD:
-      key_used = TRUE;
-      backward = TRUE;
-      break;
-    default:
-      break;
-    }
-
-  if (key_used)
-    {
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Key pressed, moving tab focus in popup\n");
-
-      if (event->modifier_state & CLUTTER_SHIFT_MASK)
-        backward = !backward;
-
-      if (backward)
-        meta_screen_tab_popup_backward (screen);
-      else
-        meta_screen_tab_popup_forward (screen);
-
-      if (popup_not_showing)
-        {
-          /* We can't actually change window focus, due to the grab.
-           * but raise the window.
-           */
-          MetaWindow *target_window;
-
-          meta_stack_set_positions (screen->stack,
-                                    display->grab_old_window_stacking);
-
-          target_window = meta_screen_tab_popup_get_selected (screen);
-
-          if (prev_window && prev_window->tab_unminimized)
-            {
-              prev_window->tab_unminimized = FALSE;
-              meta_window_minimize (prev_window);
-            }
-
-          if (target_window)
-            {
-              meta_window_raise (target_window);
-              target_window->tab_unminimized = target_window->minimized;
-              meta_window_unminimize (target_window);
-            }
-        }
-    }
-  else
-    {
-      /* end grab */
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Ending tabbing/cycling, uninteresting key pressed\n");
-
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Syncing to old stack positions.\n");
-      meta_stack_set_positions (screen->stack,
-                                screen->display->grab_old_window_stacking);
-
-      if (prev_window && prev_window->tab_unminimized)
-        {
-          meta_window_minimize (prev_window);
-          prev_window->tab_unminimized = FALSE;
-        }
-    }
-
-  return key_used;
-}
-
 static void
 handle_switch_to_workspace (MetaDisplay     *display,
                             MetaScreen      *screen,
@@ -3025,23 +2503,6 @@ handle_switch_to_workspace (MetaDisplay     *display,
 {
   gint which = binding->handler->data;
   MetaWorkspace *workspace;
-
-  if (which < 0)
-    {
-      /* Negative workspace numbers are directions with respect to the
-       * current workspace.  While we could insta-switch here by setting
-       * workspace to the result of meta_workspace_get_neighbor(), when
-       * people request a workspace switch to the left or right via
-       * the keyboard, they actually want a tab popup.  So we should
-       * go there instead.
-       *
-       * Note that we're the only caller of that function, so perhaps
-       * we should merge with it.
-       */
-      handle_workspace_switch (display, screen, event_window, event, binding,
-                               dummy);
-      return;
-    }
 
   workspace = meta_screen_get_workspace_by_index (screen, which);
 
@@ -3267,119 +2728,6 @@ handle_move_to_center  (MetaDisplay     *display,
                            window->rect.height);
 }
 
-static gboolean
-process_workspace_switch_grab (MetaDisplay     *display,
-                               MetaScreen      *screen,
-                               ClutterKeyEvent *event)
-{
-  MetaWorkspace *workspace;
-
-  if (screen != display->grab_screen || !screen->ws_popup)
-    return FALSE;
-
-  if (event->type == CLUTTER_KEY_RELEASE &&
-      end_keyboard_grab (display, event->hardware_keycode))
-    {
-      /* We're done, move to the new workspace. */
-      MetaWorkspace *target_workspace;
-
-      target_workspace = meta_screen_workspace_popup_get_selected (screen);
-
-      meta_topic (META_DEBUG_KEYBINDINGS,
-                  "Ending workspace tab operation, primary modifier released\n");
-
-      if (target_workspace == screen->active_workspace)
-        {
-          meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Ending grab so we can focus on the target workspace\n");
-          meta_display_end_grab_op (display, event->time);
-
-          meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Focusing default window on target workspace\n");
-
-          meta_workspace_focus_default_window (target_workspace,
-                                               NULL,
-                                               event->time);
-
-          return TRUE; /* we already ended the grab */
-        }
-
-      /* Workspace switching should have already occurred on KeyPress */
-      meta_warning ("target_workspace != active_workspace.  Some other event must have occurred.\n");
-
-      return FALSE; /* end grab */
-    }
-
-  /* don't care about other releases, but eat them, don't end grab */
-  if (event->type == CLUTTER_KEY_RELEASE)
-    return TRUE;
-
-  /* don't end grab on modifier key presses */
-  if (is_modifier (display, event->hardware_keycode))
-    return TRUE;
-
-  /* select the next workspace in the popup */
-  workspace = meta_screen_workspace_popup_get_selected (screen);
-
-  if (workspace)
-    {
-      MetaWorkspace *target_workspace;
-      MetaKeyBindingAction action;
-
-      action = meta_display_get_keybinding_action (display,
-                                                   event->hardware_keycode,
-                                                   display->grab_mask);
-
-      switch (action)
-        {
-        case META_KEYBINDING_ACTION_WORKSPACE_UP:
-          target_workspace = meta_workspace_get_neighbor (workspace,
-                                                          META_MOTION_UP);
-          break;
-
-        case META_KEYBINDING_ACTION_WORKSPACE_DOWN:
-          target_workspace = meta_workspace_get_neighbor (workspace,
-                                                          META_MOTION_DOWN);
-          break;
-
-        case META_KEYBINDING_ACTION_WORKSPACE_LEFT:
-          target_workspace = meta_workspace_get_neighbor (workspace,
-                                                          META_MOTION_LEFT);
-          break;
-
-        case META_KEYBINDING_ACTION_WORKSPACE_RIGHT:
-          target_workspace = meta_workspace_get_neighbor (workspace,
-                                                          META_MOTION_RIGHT);
-          break;
-
-        default:
-          target_workspace = NULL;
-          break;
-        }
-
-      if (target_workspace)
-        {
-          meta_screen_workspace_popup_select (screen, target_workspace);
-          meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Tab key pressed, moving tab focus in popup\n");
-
-          meta_topic (META_DEBUG_KEYBINDINGS,
-                      "Activating target workspace\n");
-
-          meta_workspace_activate (target_workspace, event->time);
-
-          return TRUE; /* we already ended the grab */
-        }
-    }
-
-  /* end grab */
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Ending workspace tabbing & focusing default window; uninteresting key pressed\n");
-  workspace = meta_screen_workspace_popup_get_selected (screen);
-  meta_workspace_focus_default_window (workspace, NULL, event->time);
-  return FALSE;
-}
-
 static void
 handle_show_desktop (MetaDisplay     *display,
                      MetaScreen      *screen,
@@ -3476,60 +2824,19 @@ handle_activate_window_menu (MetaDisplay     *display,
     }
 }
 
-static MetaGrabOp
-tab_op_from_tab_type (MetaTabList type)
-{
-  switch (type)
-    {
-    case META_TAB_LIST_NORMAL:
-      return META_GRAB_OP_KEYBOARD_TABBING_NORMAL;
-    case META_TAB_LIST_DOCKS:
-      return META_GRAB_OP_KEYBOARD_TABBING_DOCK;
-    case META_TAB_LIST_GROUP:
-      return META_GRAB_OP_KEYBOARD_TABBING_GROUP;
-    case META_TAB_LIST_NORMAL_ALL:
-      break;
-    }
-
-  g_assert_not_reached ();
-
-  return 0;
-}
-
-static MetaGrabOp
-cycle_op_from_tab_type (MetaTabList type)
-{
-  switch (type)
-    {
-    case META_TAB_LIST_NORMAL:
-      return META_GRAB_OP_KEYBOARD_ESCAPING_NORMAL;
-    case META_TAB_LIST_DOCKS:
-      return META_GRAB_OP_KEYBOARD_ESCAPING_DOCK;
-    case META_TAB_LIST_GROUP:
-      return META_GRAB_OP_KEYBOARD_ESCAPING_GROUP;
-    case META_TAB_LIST_NORMAL_ALL:
-      break;
-    }
-
-  g_assert_not_reached ();
-
-  return 0;
-}
-
 static void
 do_choose_window (MetaDisplay     *display,
                   MetaScreen      *screen,
                   MetaWindow      *event_window,
                   ClutterKeyEvent *event,
                   MetaKeyBinding  *binding,
-                  gboolean         backward,
-                  gboolean         show_popup)
+                  gboolean         backward)
 {
   MetaTabList type = binding->handler->data;
   MetaWindow *initial_selection;
 
   meta_topic (META_DEBUG_KEYBINDINGS,
-              "Tab list = %u show_popup = %d\n", type, show_popup);
+              "Tab list = %u\n", type);
 
   /* reverse direction if shift is down */
   if (event->modifier_state & CLUTTER_SHIFT_MASK)
@@ -3542,82 +2849,7 @@ do_choose_window (MetaDisplay     *display,
                                                  NULL,
                                                  backward);
 
-  /* Note that focus_window may not be in the tab chain, but it's OK */
-  if (initial_selection == NULL)
-    initial_selection = meta_display_get_tab_current (display,
-                                                      type, screen,
-                                                      screen->active_workspace);
-
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Initially selecting window %s\n",
-              initial_selection ? initial_selection->desc : "(none)");
-
-  if (initial_selection == NULL)
-    return;
-
-  if (binding->mask == 0)
-    {
-      /* If no modifiers, we can't do the "hold down modifier to keep
-       * moving" thing, so we just instaswitch by one window.
-       */
-      meta_topic (META_DEBUG_FOCUS,
-                  "Activating %s and turning off mouse_mode due to "
-                  "switch/cycle windows with no modifiers\n",
-                  initial_selection->desc);
-      display->mouse_mode = FALSE;
-      meta_window_activate (initial_selection, event->time);
-      return;
-    }
-
-  if (meta_prefs_get_no_tab_popup ())
-    {
-      /* FIXME? Shouldn't this be merged with the previous case? */
-      return;
-    }
-
-  if (!meta_display_begin_grab_op (display,
-                                   screen,
-                                   NULL,
-                                   show_popup ?
-                                   tab_op_from_tab_type (type) :
-                                   cycle_op_from_tab_type (type),
-                                   FALSE,
-                                   FALSE,
-                                   0,
-                                   binding->mask,
-                                   event->time,
-                                   0, 0))
-    return;
-
-  if (!primary_modifier_still_pressed (display, binding->mask))
-    {
-      /* This handles a race where modifier might be released before
-       * we establish the grab. must end grab prior to trying to focus
-       * a window.
-       */
-      meta_topic (META_DEBUG_FOCUS,
-                  "Ending grab, activating %s, and turning off "
-                  "mouse_mode due to switch/cycle windows where "
-                  "modifier was released prior to grab\n",
-                  initial_selection->desc);
-      meta_display_end_grab_op (display, event->time);
-      display->mouse_mode = FALSE;
-      meta_window_activate (initial_selection, event->time);
-      return;
-    }
-
-  meta_screen_tab_popup_create (screen, type,
-                                show_popup ? META_TAB_SHOW_ICON :
-                                META_TAB_SHOW_INSTANTLY,
-                                initial_selection);
-
-  if (!show_popup)
-    {
-      meta_window_raise (initial_selection);
-      initial_selection->tab_unminimized =
-        initial_selection->minimized;
-      meta_window_unminimize (initial_selection);
-    }
+  meta_window_activate (initial_selection, event->time);
 }
 
 static void
@@ -3629,9 +2861,7 @@ handle_switch (MetaDisplay     *display,
                gpointer         dummy)
 {
   gint backwards = (binding->handler->flags & META_KEY_BINDING_IS_REVERSED) != 0;
-
-  do_choose_window (display, screen, event_window, event, binding,
-                    backwards, TRUE);
+  do_choose_window (display, screen, event_window, event, binding, backwards);
 }
 
 static void
@@ -3643,31 +2873,7 @@ handle_cycle (MetaDisplay     *display,
               gpointer         dummy)
 {
   gint backwards = (binding->handler->flags & META_KEY_BINDING_IS_REVERSED) != 0;
-
-  do_choose_window (display, screen, event_window, event, binding,
-                    backwards, FALSE);
-}
-
-static void
-handle_tab_popup_select (MetaDisplay     *display,
-                         MetaScreen      *screen,
-                         MetaWindow      *window,
-                         ClutterKeyEvent *event,
-                         MetaKeyBinding  *binding,
-                         gpointer         dummy)
-{
-  /* Stub for custom handlers; no default implementation */
-}
-
-static void
-handle_tab_popup_cancel (MetaDisplay     *display,
-                         MetaScreen      *screen,
-                         MetaWindow      *window,
-                         ClutterKeyEvent *event,
-                         MetaKeyBinding  *binding,
-                         gpointer         dummy)
-{
-  /* Stub for custom handlers; no default implementation */
+  do_choose_window (display, screen, event_window, event, binding, backwards);
 }
 
 static void
@@ -4015,58 +3221,6 @@ handle_lower (MetaDisplay     *display,
 }
 
 static void
-handle_workspace_switch  (MetaDisplay     *display,
-                          MetaScreen      *screen,
-                          MetaWindow      *window,
-                          ClutterKeyEvent *event,
-                          MetaKeyBinding  *binding,
-                          gpointer         dummy)
-{
-  gint motion = binding->handler->data;
-  MetaWorkspace *next;
-  gboolean grabbed_before_release;
-
-  g_assert (motion < 0);
-
-  meta_topic (META_DEBUG_KEYBINDINGS,
-              "Starting tab between workspaces, showing popup\n");
-
-  if (!meta_display_begin_grab_op (display,
-                                   screen,
-                                   NULL,
-                                   META_GRAB_OP_KEYBOARD_WORKSPACE_SWITCHING,
-                                   FALSE,
-                                   FALSE,
-                                   0,
-                                   event->modifier_state,
-                                   event->time,
-                                   0, 0))
-    return;
-
-  next = meta_workspace_get_neighbor (screen->active_workspace, motion);
-  g_assert (next);
-
-  grabbed_before_release = primary_modifier_still_pressed (display, event->modifier_state);
-
-  meta_topic (META_DEBUG_KEYBINDINGS, "Activating target workspace\n");
-
-  if (!grabbed_before_release)
-    {
-      /* end the grab right away, modifier possibly released
-       * before we could establish the grab and receive the
-       * release event. Must end grab before we can switch
-       * spaces.
-       */
-      meta_display_end_grab_op (display, event->time);
-    }
-
-  meta_workspace_activate (next, event->time);
-
-  if (grabbed_before_release && !meta_prefs_get_no_tab_popup ())
-    meta_screen_workspace_popup_create (screen, next);
-}
-
-static void
 handle_set_spew_mark (MetaDisplay     *display,
                       MetaScreen      *screen,
                       MetaWindow      *window,
@@ -4217,28 +3371,28 @@ init_builtin_key_bindings (MetaDisplay *display)
                           common_keybindings,
                           META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_WORKSPACE_LEFT,
-                          handle_switch_to_workspace, META_MOTION_LEFT);
+                          NULL, 0);
 
   add_builtin_keybinding (display,
                           "switch-to-workspace-right",
                           common_keybindings,
                           META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_WORKSPACE_RIGHT,
-                          handle_switch_to_workspace, META_MOTION_RIGHT);
+                          NULL, 0);
 
   add_builtin_keybinding (display,
                           "switch-to-workspace-up",
                           common_keybindings,
                           META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_WORKSPACE_UP,
-                          handle_switch_to_workspace, META_MOTION_UP);
+                          NULL, 0);
 
   add_builtin_keybinding (display,
                           "switch-to-workspace-down",
                           common_keybindings,
                           META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_WORKSPACE_DOWN,
-                          handle_switch_to_workspace, META_MOTION_DOWN);
+                          NULL, 0);
 
 
   /* The ones which have inverses.  These can't be bound to any keystroke
@@ -4348,26 +3502,6 @@ init_builtin_key_bindings (MetaDisplay *display)
                           REVERSES_AND_REVERSED,
                           META_KEYBINDING_ACTION_CYCLE_PANELS_BACKWARD,
                           handle_cycle, META_TAB_LIST_DOCKS);
-
-
-  /* These two are special pseudo-bindings that are provided for allowing
-   * custom handlers, but will never be bound to a key. While a tab
-   * grab is in effect, they are invoked for releasing the primary modifier
-   * or pressing some unbound key, respectively.
-   */
-  add_builtin_keybinding (display,
-                          "tab-popup-select",
-                          mutter_keybindings,
-                          META_KEY_BINDING_NONE,
-                          META_KEYBINDING_ACTION_TAB_POPUP_SELECT,
-                          handle_tab_popup_select, 0);
-
-  add_builtin_keybinding (display,
-                          "tab-popup-cancel",
-                          mutter_keybindings,
-                          META_KEY_BINDING_NONE,
-                          META_KEYBINDING_ACTION_TAB_POPUP_CANCEL,
-                          handle_tab_popup_cancel, 0);
 
   /***********************************/
 
