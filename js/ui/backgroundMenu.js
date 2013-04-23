@@ -46,8 +46,10 @@ function addBackgroundMenu(actor) {
     clickAction.connect('long-press', function(action, actor, state) {
         if (state == Clutter.LongPressState.QUERY)
             return action.get_button() == 1 && !actor._backgroundMenu.isOpen;
-        if (state == Clutter.LongPressState.ACTIVATE)
+        if (state == Clutter.LongPressState.ACTIVATE) {
             openMenu();
+            actor._backgroundManager.ignoreRelease();
+        }
         return true;
     });
     clickAction.connect('clicked', function(action) {
