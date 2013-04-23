@@ -19,5 +19,10 @@ endif
 
 AM_CFLAGS = $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS)
 
+common_ldadd = \
+	$(COGL_DEP_LIBS) \
+	$(top_builddir)/cogl/libcogl.la \
+	$(LIBM)
+
 test_journal_SOURCES = test-journal.c
-test_journal_LDADD = $(COGL_DEP_LIBS) $(top_builddir)/cogl/libcogl.la
+test_journal_LDADD = $(common_ldadd)
