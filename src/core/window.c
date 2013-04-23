@@ -253,6 +253,8 @@ meta_window_finalize (GObject *object)
   g_free (window->gtk_window_object_path);
   g_free (window->gtk_app_menu_object_path);
   g_free (window->gtk_menubar_object_path);
+
+  G_OBJECT_CLASS (meta_window_parent_class)->finalize (object);
 }
 
 static void
