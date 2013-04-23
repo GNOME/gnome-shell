@@ -10,8 +10,6 @@ const Signals = imports.signals;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
-const VOLUME_ADJUSTMENT_STEP = 0.05; /* Volume adjustment step in % */
-
 const VOLUME_NOTIFY_ID = 1;
 
 // Each Gvc.MixerControl is a connection to PulseAudio,
@@ -44,7 +42,6 @@ const StreamSlider = new Lang.Class({
         this.item.addMenuItem(this._slider);
 
         this._stream = null;
-        this._shouldShow = true;
     },
 
     get stream() {
