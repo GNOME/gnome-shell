@@ -1518,8 +1518,6 @@ const NMApplet = new Lang.Class({
         this._vpnSection.connect('activation-failed', Lang.bind(this, this._onActivationFailed));
         this._vpnSection.connect('icon-changed', Lang.bind(this, this._updateIcon));
         this.menu.addMenuItem(this._vpnSection.section);
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.menu.addSettingsAction(_("Network Settings"), 'gnome-network-panel.desktop');
 
         this._readConnections();
         this._readDevices();

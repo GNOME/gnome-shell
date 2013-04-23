@@ -398,8 +398,6 @@ const InputSourceIndicator = new Lang.Class({
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
         this._sessionUpdated();
 
-        this.menu.addSettingsAction(_("Region & Language Settings"), 'gnome-region-panel.desktop');
-
         this._sourcesPerWindow = false;
         this._focusWindowNotifyId = 0;
         this._overviewShowingId = 0;

@@ -76,9 +76,6 @@ const Indicator = new Lang.Class({
 
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this._otherDevicePosition = 2;
-
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.menu.addSettingsAction(_("Power Settings"), 'gnome-power-panel.desktop');
     },
 
     _readPrimaryDevice: function() {

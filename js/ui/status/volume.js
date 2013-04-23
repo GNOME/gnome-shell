@@ -309,9 +309,6 @@ const Indicator = new Lang.Class({
 
         this.menu.addMenuItem(this._volumeMenu);
 
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-        this.menu.addSettingsAction(_("Sound Settings"), 'gnome-sound-panel.desktop');
-
         this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
     },
 

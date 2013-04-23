@@ -81,8 +81,6 @@ const Indicator = new Lang.Class({
         this._applet.connect('notify::show-full-menu', Lang.bind(this, this._updateFullMenu));
         this._updateFullMenu();
 
-        this.menu.addSettingsAction(_("Bluetooth Settings"), 'gnome-bluetooth-panel.desktop');
-
         this._applet.connect('pincode-request', Lang.bind(this, this._pinRequest));
         this._applet.connect('confirm-request', Lang.bind(this, this._confirmRequest));
         this._applet.connect('auth-request', Lang.bind(this, this._authRequest));
@@ -240,22 +238,6 @@ const Indicator = new Lang.Class({
             item.menu.addAction(_("Send Files…"), Lang.bind(this, function() {
                 this._applet.send_to_address(device.bdaddr, device.alias);
             }));
-        }
-
-        switch (device.type) {
-        case GnomeBluetoothApplet.Type.KEYBOARD:
-            item.menu.addSettingsAction(_("Keyboard Settings"), 'gnome-keyboard-panel.desktop');
-            break;
-        case GnomeBluetoothApplet.Type.MOUSE:
-            item.menu.addSettingsAction(_("Mouse Settings"), 'gnome-mouse-panel.desktop');
-            break;
-        case GnomeBluetoothApplet.Type.HEADSET:
-        case GnomeBluetoothApplet.Type.HEADPHONES:
-        case GnomeBluetoothApplet.Type.OTHER_AUDIO:
-            item.menu.addSettingsAction(_("Sound Settings"), 'gnome-sound-panel.desktop');
-            break;
-        default:
-            break;
         }
     },
 
