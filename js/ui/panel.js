@@ -855,6 +855,7 @@ const AggregateMenu = new Lang.Class({
         this._power = new imports.ui.status.power.Indicator();
         this._rfkill = new imports.ui.status.rfkill.Indicator();
         this._volume = new imports.ui.status.volume.Indicator();
+        this._brightness = new imports.ui.status.brightness.Indicator();
         this._system = new imports.ui.status.system.Indicator();
 
         this._indicators.add_child(this._network.indicators);
@@ -867,6 +868,7 @@ const AggregateMenu = new Lang.Class({
                                                   y_align: Clutter.ActorAlign.CENTER }));
 
         this.menu.addMenuItem(this._volume.menu);
+        this.menu.addMenuItem(this._brightness.menu);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addMenuItem(this._network.menu);
         this.menu.addMenuItem(this._bluetooth.menu);
