@@ -189,13 +189,6 @@ StScrollBar StButton#vhandle:active {
     border-width: 0px;
 }
 
-.popup-combo-menu {
-    background-color: rgba(0,0,0,0.9);
-    padding: 1em 0em;
-    border: 1px solid #5f5f5f;
-    border-radius: 9px;
-}
-
 /* The remaining popup-menu sizing is all done in ems, so that if you
  * override .popup-menu.font-size, everything else will scale with it.
  */
@@ -217,10 +210,6 @@ StScrollBar StButton#vhandle:active {
 }
 
 .popup-image-menu-item {
-}
-
-.popup-combobox-item {
-    spacing: 1em;
 }
 
 .popup-separator-menu-item {
