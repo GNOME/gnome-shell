@@ -605,42 +605,6 @@ StScrollBar StButton#vhandle:active {
     spacing: 8px;
 }
 
-/* User Menu */
-
-#panelUserMenu {
-    spacing: 4px;
-}
-
-.status-chooser {
-    spacing: .4em;
-}
-
-.status-chooser .popup-menu-item,
-.status-chooser-combo .popup-menu-item {
-    padding: .4em;
-}
-
-.status-chooser-user-name {
-    font-weight: bold;
-    font-size: 1.3em;
-    min-width: 120pt;
-}
-
-.status-chooser-combo {
-    border: 1px solid transparent;
-}
-
-.status-chooser-combo.popup-combo-menu {
-    padding: .4em 0em;
-    border-radius: 4px;
-    border: 1px solid #5f5f5f;
-}
-
-.status-chooser-status-item,
-.status-chooser-combo .popup-combobox-item {
-    spacing: .4em;
-}
-
 .system-status-icon {
     icon-size: 1.09em;
 }
