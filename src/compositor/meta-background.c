@@ -473,6 +473,17 @@ meta_background_dispose (GObject *object)
 }
 
 static void
+meta_background_finalize (GObject *object)
+{
+  MetaBackground        *self = META_BACKGROUND (object);
+  MetaBackgroundPrivate *priv = self->priv;
+
+  g_free (priv->filename);
+
+  G_OBJECT_CLASS (meta_background_parent_class)->finalize (object);
+}
+
+static void
 ensure_pipeline (MetaBackground *self)
 {
   if (self->priv->pipeline == NULL)
@@ -643,6 +654,7 @@ meta_background_class_init (MetaBackgroundClass *klass)
   g_type_class_add_private (klass, sizeof (MetaBackgroundPrivate));
 
   object_class->dispose = meta_background_dispose;
+  object_class->finalize = meta_background_finalize;
   object_class->set_property = meta_background_set_property;
   object_class->get_property = meta_background_get_property;
 
