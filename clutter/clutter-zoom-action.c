@@ -81,6 +81,7 @@ struct _ClutterZoomActionPrivate
 
   ZoomPoint points[2];
 
+  ClutterPoint initial_focal_point;
   ClutterPoint focal_point;
   ClutterPoint transformed_focal_point;
 
@@ -176,6 +177,18 @@ clutter_zoom_action_gesture_begin (ClutterGestureAction *action,
                            &priv->initial_scale_x,
                            &priv->initial_scale_y);
 
+  priv->initial_focal_point.x = (priv->points[0].start_x + priv->points[1].start_x) / 2;
+  priv->initial_focal_point.y = (priv->points[0].start_y + priv->points[1].start_y) / 2;
+  clutter_actor_transform_stage_point (actor,
+                                       priv->initial_focal_point.x,
+                                       priv->initial_focal_point.y,
+                                       &priv->transformed_focal_point.x,
+                                       &priv->transformed_focal_point.y);
+
+  clutter_actor_set_pivot_point (actor,
+                                 priv->transformed_focal_point.x / clutter_actor_get_width (actor),
+                                 priv->transformed_focal_point.y / clutter_actor_get_height (actor));
+
   return TRUE;
 }
 
@@ -200,11 +213,6 @@ clutter_zoom_action_gesture_progress (ClutterGestureAction *action,
 
   priv->focal_point.x = (priv->points[0].update_x + priv->points[1].update_x) / 2;
   priv->focal_point.y = (priv->points[0].update_y + priv->points[1].update_y) / 2;
-  priv->transformed_focal_point.x = (priv->points[0].transformed_update_x +
-                                     priv->points[1].transformed_update_x) / 2;
-  priv->transformed_focal_point.y = (priv->points[0].transformed_update_y +
-                                     priv->points[1].transformed_update_y) / 2;
-
 
   new_scale = distance / priv->zoom_initial_distance;
 
@@ -235,10 +243,15 @@ clutter_zoom_action_real_zoom (ClutterZoomAction *action,
                                gdouble            factor)
 {
   ClutterZoomActionPrivate *priv = action->priv;
-  ClutterActor *parent = clutter_actor_get_parent (actor);
   gfloat x, y, z;
   gdouble scale_x, scale_y;
   ClutterVertex out, in;
+
+  in.x = priv->transformed_focal_point.x;
+  in.y = priv->transformed_focal_point.y;
+  in.z = 0;
+
+  clutter_actor_apply_transform_to_point (actor, &in, &out);
 
   clutter_actor_get_scale (actor, &scale_x, &scale_y);
 
@@ -260,21 +273,10 @@ clutter_zoom_action_real_zoom (ClutterZoomAction *action,
       break;
     }
 
-
-  in.x = priv->transformed_focal_point.x;
-  in.y = priv->transformed_focal_point.y;
-  in.z = 0;
-
-  clutter_actor_apply_relative_transform_to_point (actor,
-                                                   parent,
-                                                   &in, &out);
-
-
-  clutter_actor_get_translation (actor, &x, &y, &z);
-  clutter_actor_set_translation (actor,
-                                 x + priv->focal_point.x - out.x,
-                                 y + priv->focal_point.y - out.y,
-                                 z);
+  x = priv->initial_x + priv->focal_point.x - priv->initial_focal_point.x;
+  y = priv->initial_y + priv->focal_point.y - priv->initial_focal_point.y;
+  clutter_actor_get_translation (actor, NULL, NULL, &z);
+  clutter_actor_set_translation (actor, x, y, z);
 
   return TRUE;
 }
