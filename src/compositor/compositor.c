@@ -517,20 +517,20 @@ meta_check_end_modal (MetaScreen *screen)
     {
       meta_end_modal_for_plugin (screen,
                                    compositor->modal_plugin,
-                                   CurrentTime);
+
+                                 CurrentTime);
     }
 }
 
-static gboolean
-after_stage_paint (gpointer data)
+static void
+after_stage_paint (ClutterStage *stage,
+                   gpointer      data)
 {
   MetaCompScreen *info = (MetaCompScreen*) data;
   GList *l;
 
   for (l = info->windows; l; l = l->next)
     meta_window_actor_post_paint (l->data);
-
-  return TRUE;
 }
 
 static void
@@ -611,9 +611,10 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
 
   info->stage = clutter_stage_new ();
 
-  clutter_threads_add_repaint_func_full (CLUTTER_REPAINT_FLAGS_POST_PAINT,
-                                         after_stage_paint,
-                                         info, NULL);
+  clutter_stage_set_paint_callback (CLUTTER_STAGE (info->stage),
+                                    after_stage_paint,
+                                    info,
+                                    NULL);
 
   clutter_stage_set_sync_delay (CLUTTER_STAGE (info->stage), META_SYNC_DELAY);
 
