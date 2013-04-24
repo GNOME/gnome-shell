@@ -187,7 +187,9 @@ const RemoteSearchProvider = new Lang.Class({
 
     createIcon: function(size, meta) {
         let gicon;
-        if (meta['gicon']) {
+        if (meta['icon']) {
+            gicon = Gio.icon_deserialize(meta['icon']);
+        } else if (meta['gicon']) {
             gicon = Gio.icon_new_for_string(meta['gicon']);
         } else if (meta['icon-data']) {
             let [width, height, rowStride, hasAlpha,
@@ -240,8 +242,12 @@ const RemoteSearchProvider = new Lang.Class({
         let metas = results[0];
         let resultMetas = [];
         for (let i = 0; i < metas.length; i++) {
-            for (let prop in metas[i])
-                metas[i][prop] = metas[i][prop].deep_unpack();
+            for (let prop in metas[i]) {
+                // we can use the serialized icon variant directly
+                if (prop != 'icon')
+                    metas[i][prop] = metas[i][prop].deep_unpack();
+            }
+
             resultMetas.push({ id: metas[i]['id'],
                                name: metas[i]['name'],
                                description: metas[i]['description'],
