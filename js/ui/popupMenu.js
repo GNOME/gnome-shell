@@ -393,12 +393,19 @@ const PopupSeparatorMenuItem = new Lang.Class({
     Name: 'PopupSeparatorMenuItem',
     Extends: PopupBaseMenuItem,
 
-    _init: function () {
+    _init: function (text) {
         this.parent({ reactive: false,
                       can_focus: false});
 
+        this._box = new St.BoxLayout();
+        this.addActor(this._box, { span: -1, expand: true });
+
+        this.label = new St.Label({ text: text || '' });
+        this._box.add(this.label);
+        this.actor.label_actor = this.label;
+
         this._separator = new Separator.HorizontalSeparator({ style_class: 'popup-separator-menu-item' });
-        this.addActor(this._separator.actor, { span: -1, expand: true });
+        this._box.add(this._separator.actor, { expand: true });
     }
 });
 
@@ -983,6 +990,9 @@ const PopupMenuBase = new Lang.Class({
     },
 
     _updateSeparatorVisibility: function(menuItem) {
+        if (menuItem.label.text)
+            return;
+
         let children = this.box.get_children();
 
         let index = children.indexOf(menuItem.actor);
