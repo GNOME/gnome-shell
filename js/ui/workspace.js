@@ -753,13 +753,6 @@ const LayoutStrategy = new Lang.Class({
         layout.space = space;
     },
 
-    _getDistance: function (row, actor) {
-        let dist_x = actor.x - row.x;
-        let dist_y = actor.y - row.y;
-
-        return Math.sqrt(Math.pow(dist_x, 2) + Math.pow(dist_y, 2));
-    },
-
     computeWindowSlots: function(layout, area) {
         this._computeRowSizes(layout);
 
@@ -788,10 +781,6 @@ const LayoutStrategy = new Lang.Class({
             row.x = area.x + (Math.max(area.width - row.width, 0) / 2) * row.additionalScale;
             row.y = area.y + (y + Math.max(area.height - height, 0) / 2) * row.additionalScale;
             y += row.height + this._rowSpacing;
-
-            row.windows.sort(Lang.bind(this, function(a, b) {
-                return this._getDistance(row, a.realWindow) - this._getDistance(row, b.realWindow);
-            }));
         }
 
         for (let i = 0; i < rows.length; i++) {
@@ -844,6 +833,13 @@ const UnalignedLayoutStrategy = new Lang.Class({
         return false;
     },
 
+    _sortRow: function(row) {
+        // Sort windows horizontally to minimize travel distance
+        row.windows.sort(function(a, b) {
+            return a.realWindow.x - b.realWindow.x;
+        });
+    },
+
     computeLayout: function(windows, layout) {
         let numRows = layout.numRows;
 
@@ -874,6 +870,7 @@ const UnalignedLayoutStrategy = new Lang.Class({
                     row.windows.push(window);
                     row.fullWidth += width;
                 } else {
+                    this._sortRow(row);
                     break;
                 }
             }
