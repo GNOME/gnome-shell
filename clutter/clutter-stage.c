@@ -159,6 +159,10 @@ struct _ClutterStagePrivate
 
   ClutterStageState current_state;
 
+  ClutterStagePaintFunc paint_callback;
+  gpointer paint_data;
+  GDestroyNotify paint_notify;
+
   guint relayout_pending       : 1;
   guint redraw_pending         : 1;
   guint is_fullscreen          : 1;
@@ -210,8 +214,9 @@ static guint stage_signals[LAST_SIGNAL] = { 0, };
 
 static const ClutterColor default_stage_color = { 255, 255, 255, 255 };
 
-static void _clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage);
+static void clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage);
 static void free_queue_redraw_entry (ClutterStageQueueRedrawEntry *entry);
+static void clutter_stage_invoke_paint_callback (ClutterStage *stage);
 
 static void
 clutter_stage_real_add (ClutterContainer *container,
@@ -669,6 +674,8 @@ _clutter_stage_do_paint (ClutterStage                *stage,
   _clutter_stage_paint_volume_stack_free_all (stage);
   _clutter_stage_update_active_framebuffer (stage);
   clutter_actor_paint (CLUTTER_ACTOR (stage));
+
+  clutter_stage_invoke_paint_callback (stage);
 }
 
 static void
@@ -1226,7 +1233,7 @@ _clutter_stage_do_update (ClutterStage *stage)
   if (!priv->redraw_pending)
     return FALSE;
 
-  _clutter_stage_maybe_finish_queue_redraws (stage);
+  clutter_stage_maybe_finish_queue_redraws (stage);
 
   clutter_stage_do_redraw (stage);
 
@@ -1878,6 +1885,9 @@ clutter_stage_finalize (GObject *object)
 
   if (priv->fps_timer != NULL)
     g_timer_destroy (priv->fps_timer);
+
+  if (priv->paint_notify != NULL)
+    priv->paint_notify (priv->paint_data);
 
   G_OBJECT_CLASS (clutter_stage_parent_class)->finalize (object);
 }
@@ -4137,7 +4147,7 @@ _clutter_stage_queue_redraw_entry_invalidate (ClutterStageQueueRedrawEntry *entr
 }
 
 static void
-_clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage)
+clutter_stage_maybe_finish_queue_redraws (ClutterStage *stage)
 {
   /* Note: we have to repeat until the pending_queue_redraws list is
    * empty because actors are allowed to queue redraws in response to
@@ -4580,4 +4590,43 @@ clutter_stage_skip_sync_delay (ClutterStage *stage)
   stage_window = _clutter_stage_get_window (stage);
   if (stage_window)
     _clutter_stage_window_schedule_update (stage_window, -1);
+}
+
+/**
+ * clutter_stage_set_paint_callback:
+ * @stage: a #ClutterStage
+ * @callback: (allow none): a callback
+ * @data: (allow none): data to be passed to @callback
+ * @notify: (allow none): function to be called when the callback is removed
+ *
+ * Sets a callback function to be invoked after the @stage has been
+ * painted.
+ *
+ * Since: 1.14
+ */
+void
+clutter_stage_set_paint_callback (ClutterStage          *stage,
+                                  ClutterStagePaintFunc  callback,
+                                  gpointer               data,
+                                  GDestroyNotify         notify)
+{
+  ClutterStagePrivate *priv;
+
+  g_return_if_fail (CLUTTER_IS_STAGE (stage));
+
+  priv = stage->priv;
+
+  if (priv->paint_notify != NULL)
+    priv->paint_notify (priv->paint_data);
+
+  priv->paint_callback = callback;
+  priv->paint_data = data;
+  priv->paint_notify = notify;
+}
+
+static void
+clutter_stage_invoke_paint_callback (ClutterStage *stage)
+{
+  if (stage->priv->paint_callback != NULL)
+    stage->priv->paint_callback (stage, stage->priv->paint_data);
 }
