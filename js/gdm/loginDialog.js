@@ -42,7 +42,6 @@ const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const PanelMenu = imports.ui.panelMenu;
 const Tweener = imports.ui.tweener;
-const UserMenu = imports.ui.userMenu;
 const UserWidget = imports.ui.userWidget;
 
 const _FADE_ANIMATION_TIME = 0.25;
@@ -69,8 +68,8 @@ const UserListItem = new Lang.Class({
                                      x_align: St.Align.START,
                                      x_fill: true });
 
-        this._userAvatar = new UserMenu.UserAvatarWidget(this.user,
-                                                         { styleClass: 'login-dialog-user-list-item-icon' });
+        this._userAvatar = new UserWidget.Avatar(this.user,
+                                                 { styleClass: 'login-dialog-user-list-item-icon' });
         layout.add(this._userAvatar.actor);
         let textLayout = new St.BoxLayout({ style_class: 'login-dialog-user-list-item-text-box',
                                             vertical:    true });

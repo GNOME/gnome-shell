@@ -17,7 +17,6 @@ const ModalDialog = imports.ui.modalDialog;
 const Panel = imports.ui.panel;
 const ShellEntry = imports.ui.shellEntry;
 const Tweener = imports.ui.tweener;
-const UserMenu = imports.ui.userMenu;
 const UserWidget = imports.ui.userWidget;
 
 const Batch = imports.gdm.batch;
