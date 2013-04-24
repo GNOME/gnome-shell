@@ -18706,6 +18706,52 @@ clutter_actor_add_transition_internal (ClutterActor *self,
   clutter_timeline_start (timeline);
 }
 
+static gboolean
+should_skip_transition (ClutterActor *self,
+                        GParamSpec   *pspec)
+{
+  ClutterActorPrivate *priv = self->priv;
+  const ClutterAnimationInfo *info;
+
+  /* this function is called from _clutter_actor_create_transition() which
+   * calls _clutter_actor_get_animation_info() first, so we're guaranteed
+   * to have the correct ClutterAnimationInfo pointer
+   */
+  info = _clutter_actor_get_animation_info_or_defaults (self);
+
+  /* if the easing state has a non-zero duration we always want an
+   * implicit transition to occur
+   */
+  if (info->cur_state->easing_duration == 0)
+    return TRUE;
+
+  /* we do want :opacity transitions to work even if they start from an
+   * unpainted actor, because of the opacity optimization that lives in
+   * clutter_actor_paint()
+   */
+  if (pspec == obj_props[PROP_OPACITY] && !priv->was_painted)
+    return FALSE;
+
+  /* on the other hand, if the actor hasn't been allocated yet, we want to
+   * skip all transitions on the :allocation, to avoid actors "flying in"
+   * into their new position and size
+   */
+  if (pspec == obj_props[PROP_ALLOCATION] && priv->needs_allocation)
+    return TRUE;
+
+  /* if the actor is not mapped and is not part of a branch of the scene
+   * graph that is being cloned, then we always skip implicit transitions
+   * on the account of the fact that the actor is not going to be visible
+   * when those transitions happen
+   */
+  if (!CLUTTER_ACTOR_IS_MAPPED (self) &&
+      priv->in_cloned_branch == 0 &&
+      !clutter_actor_has_mapped_clones (self))
+    return TRUE;
+
+  return FALSE;
+}
+
 /*< private >*
  * _clutter_actor_create_transition:
  * @actor: a #ClutterActor
@@ -18783,17 +18829,9 @@ _clutter_actor_create_transition (ClutterActor *actor,
       goto out;
     }
 
-  if (info->cur_state->easing_duration == 0 ||
-      !actor->priv->was_painted ||
-      (!CLUTTER_ACTOR_IS_MAPPED (actor) &&
-       actor->priv->in_cloned_branch == 0 &&
-       !clutter_actor_has_mapped_clones (actor)))
+  if (should_skip_transition (actor, pspec))
     {
-      /* don't bother creating the transition if one is not necessary
-       * because the actor doesn't want one, or if the actor is not
-       * visible: we just set the final value directly on the actor.
-       *
-       * we also don't go through the Animatable interface because we
+      /* we don't go through the Animatable interface because we
        * already know we got here through an animatable property.
        */
       CLUTTER_NOTE (ANIMATION, "Easing duration=0 was_painted=%s, immediate set for '%s::%s'",
@@ -18808,6 +18846,7 @@ _clutter_actor_create_transition (ClutterActor *actor,
                                              pspec->param_id,
                                              &final,
                                              pspec);
+
       g_value_unset (&initial);
       g_value_unset (&final);
 
