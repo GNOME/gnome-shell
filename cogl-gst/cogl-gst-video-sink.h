@@ -106,9 +106,6 @@ void
 cogl_gst_video_sink_set_context (CoglGstVideoSink *vt,
                                  CoglContext *ctx);
 
-GMainLoop *
-cogl_gst_video_sink_get_main_loop (CoglGstVideoSink *loop);
-
 int
 cogl_gst_video_sink_get_free_layer (CoglGstVideoSink *sink);
 
