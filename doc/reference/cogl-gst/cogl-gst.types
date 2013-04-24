@@ -1,0 +1,2 @@
+#include <cogl-gst/cogl-gst.h>
+cogl_gst_video_sink_get_type

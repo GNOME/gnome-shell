@@ -516,6 +516,10 @@ AS_IF([test "x$enable_cogl_gst" = "xyes"],
   dnl define location of gstreamer plugin directory
   plugindir="\$(libdir)/gstreamer-$GST_MAJORMINOR"
   AC_SUBST(plugindir)
+
+  dnl For the gtk doc generation
+  GSTREAMER_PREFIX="`$PKG_CONFIG --variable=prefix gstreamer-1.0`"
+  AC_SUBST(GSTREAMER_PREFIX)
       ]
 )
 
@@ -1441,6 +1445,8 @@ doc/reference/cogl/Makefile
 doc/reference/cogl/cogl-docs.xml
 doc/reference/cogl-2.0-experimental/Makefile
 doc/reference/cogl-2.0-experimental/cogl-2.0-experimental-docs.xml
+doc/reference/cogl-gst/Makefile
+doc/reference/cogl-gst/cogl-gst-docs.xml
 examples/Makefile
 tests/Makefile
 tests/config.env

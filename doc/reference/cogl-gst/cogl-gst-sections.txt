@@ -1,0 +1,28 @@
+<SECTION>
+<FILE>cogl-gst-video-sink</FILE>
+<TITLE>CoglGstVideoSink</TITLE>
+
+<SUBSECTION>
+CoglGstVideoSink
+CoglGstVideoSinkClass
+cogl_gst_video_sink_new
+cogl_gst_video_sink_set_context
+cogl_gst_video_sink_get_pipeline
+cogl_gst_video_sink_attach_frame
+cogl_gst_video_sink_setup_pipeline
+cogl_gst_video_sink_get_free_layer
+cogl_gst_video_sink_set_first_layer
+cogl_gst_video_sink_set_default_sample
+
+<SUBSECTION Standard>
+COGL_GST_IS_VIDEO_SINK
+COGL_GST_IS_VIDEO_SINK_CLASS
+COGL_GST_VIDEO_SINK
+COGL_GST_VIDEO_SINK_CLASS
+COGL_GST_TYPE_VIDEO_SINK
+COGL_GST_VIDEO_SINK_GET_CLASS
+<SUBSECTION Private>
+CoglGstVideoSinkPrivate
+cogl_gst_video_sink_get_type
+
+</SECTION>
