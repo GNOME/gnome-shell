@@ -28,6 +28,7 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
 <method name="FocusApp">
     <arg type="s" direction="in" name="id"/>
 </method>
+<method name="ShowApplications" />
 <method name="GrabAccelerator">
     <arg type="s" direction="in" name="accelerator"/>
     <arg type="u" direction="in" name="flags"/>
@@ -140,11 +141,12 @@ const GnomeShell = new Lang.Class({
     },
 
     FocusApp: function(id) {
-        let overview = Main.overview;
+        this.ShowApplications();
+        Main.overview.viewSelector.appDisplay.selectApp(id);
+    },
 
-        overview.show();
-        overview.viewSelector.setActivePage(ViewSelector.ViewPage.APPS);
-        overview.viewSelector.appDisplay.selectApp(id);
+    ShowApplications: function() {
+        Main.overview.viewSelector.showApps();
     },
 
     GrabAcceleratorAsync: function(params, invocation) {

@@ -165,6 +165,11 @@ const ViewSelector = new Lang.Class({
         this._showAppsButton.checked = !this._showAppsButton.checked;
     },
 
+    showApps: function() {
+        Main.overview.show();
+        this._showAppsButton.checked = true;
+    },
+
     show: function() {
         this._activePage = this._workspacesPage;
 
