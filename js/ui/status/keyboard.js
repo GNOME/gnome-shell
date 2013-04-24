@@ -459,6 +459,7 @@ const InputSourceIndicator = new Lang.Class({
 
         this._inputSources = {};
         this._ibusSources = {};
+        this._currentSource = null;
 
         let inputSourcesByShortName = {};
 
