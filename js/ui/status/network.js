@@ -130,18 +130,12 @@ const NMWirelessSectionTitleMenuItem = new Lang.Class({
     Name: 'NMWirelessSectionTitleMenuItem',
     Extends: PopupMenu.PopupSwitchMenuItem,
 
-    _init: function(client, property, title, params) {
-        params = params || { };
-        params.style_class = 'popup-subtitle-menu-item';
-        this.parent(title, false, params);
+    _init: function(client) {
+        this.parent(_("Wi-Fi"), false, { style_class: 'popup-subtitle-menu-item' });
 
         this._client = client;
-        this._property = property + '_enabled';
-        this._propertyHardware = property + '_hardware_enabled';
-        this._setEnabledFunc = property + '_set_enabled';
-
-        this._client.connect('notify::' + property + '-enabled', Lang.bind(this, this._propertyChanged));
-        this._client.connect('notify::' + property + '-hardware-enabled', Lang.bind(this, this._propertyChanged));
+        this._client.connect('notify::wireless-enabled', Lang.bind(this, this._propertyChanged));
+        this._client.connect('notify::wireless-hardware-enabled', Lang.bind(this, this._propertyChanged));
 
         this._propertyChanged();
     },
@@ -163,12 +157,12 @@ const NMWirelessSectionTitleMenuItem = new Lang.Class({
     activate: function(event) {
         this.parent(event);
 
-        this._client[this._setEnabledFunc](this._switch.state);
+        this._client.wireless_set_enabled(this._switch.state);
     },
 
     _propertyChanged: function() {
-        this._softwareEnabled = this._client[this._property];
-        this._hardwareEnabled = this._client[this._propertyHardware];
+        this._softwareEnabled = this._client.wireless_enabled;
+        this._hardwareEnabled = this._client.wireless_hardware_enabled;
 
         let enabled = this._softwareEnabled && this._hardwareEnabled;
         this.setToggleState(enabled);
@@ -1641,7 +1635,7 @@ const NMApplet = new Lang.Class({
         this._devices.wireless = {
             section: new PopupMenu.PopupMenuSection(),
             devices: [ ],
-            item: this._makeToggleItem('wireless', _("Wi-Fi"))
+            item: this._makeWirelessToggle()
         };
         this._devices.wireless.section.addMenuItem(this._devices.wireless.item);
         this._devices.wireless.section.actor.hide();
@@ -1688,14 +1682,14 @@ const NMApplet = new Lang.Class({
         }
     },
 
-    _makeToggleItem: function(type, title) {
-        let item = new NMWirelessSectionTitleMenuItem(this._client, type, title);
+    _makeWirelessToggle: function() {
+        let item = new NMWirelessSectionTitleMenuItem(this._client);
         item.connect('enabled-changed', Lang.bind(this, function(item, enabled) {
-            let devices = this._devices[type].devices;
+            let devices = this._devices.wireless.devices;
             devices.forEach(function(dev) {
                 dev.setEnabled(enabled);
             });
-            this._syncSectionTitle(type);
+            this._syncSectionTitle('wireless');
         }));
         return item;
     },
