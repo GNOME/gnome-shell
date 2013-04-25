@@ -262,12 +262,9 @@ cogl_gst_video_sink_get_free_layer (CoglGstVideoSink *sink);
  * would then make a copy of its template pipeline and call this to
  * set the textures.
  *
- * Return value: the next free layer after the sink's internal private
- *   layers. This is the same value that is returned by
- *   cogl_gst_video_sink_get_free_layer().
  * Since: 1.16
  */
-int
+void
 cogl_gst_video_sink_attach_frame (CoglGstVideoSink *sink,
                                   CoglPipeline *pln);
 

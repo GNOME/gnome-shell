@@ -190,7 +190,7 @@ cogl_gst_video_sink_get_free_layer (CoglGstVideoSink *sink)
   return sink->priv->free_layer;
 }
 
-int
+void
 cogl_gst_video_sink_attach_frame (CoglGstVideoSink *sink,
                                   CoglPipeline *pln)
 {
@@ -201,8 +201,6 @@ cogl_gst_video_sink_attach_frame (CoglGstVideoSink *sink,
     if (priv->frame[i] != NULL)
       cogl_pipeline_set_layer_texture (pln, i + priv->custom_start,
                                        priv->frame[i]);
-
-  return priv->free_layer;
 }
 
 static CoglBool
