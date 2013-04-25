@@ -84,7 +84,7 @@ const _modes = {
         components: ['networkAgent', 'keyring'],
         panel: {
             left: [],
-            center: ['dateMenu'],
+            center: [],
             right: ['a11yGreeter', 'keyboard', 'volume', 'battery']
         }
     },
