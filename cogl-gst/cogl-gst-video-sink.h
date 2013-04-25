@@ -101,18 +101,6 @@ G_BEGIN_DECLS
   (G_TYPE_INSTANCE_GET_CLASS ((obj), \
   COGL_GST_TYPE_VIDEO_SINK, CoglGstVideoSinkClass))
 
-#define COGL_GST_PARAM_STATIC        \
-  (G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB)
-
-#define COGL_GST_PARAM_READABLE      \
-  (G_PARAM_READABLE | COGL_GST_PARAM_STATIC)
-
-#define COGL_GST_PARAM_WRITABLE      \
-  (G_PARAM_WRITABLE | COGL_GST_PARAM_STATIC)
-
-#define COGL_GST_PARAM_READWRITE     \
-  (G_PARAM_READABLE | G_PARAM_WRITABLE | COGL_GST_PARAM_STATIC)
-
 typedef struct _CoglGstVideoSink CoglGstVideoSink;
 typedef struct _CoglGstVideoSinkClass CoglGstVideoSinkClass;
 typedef struct _CoglGstVideoSinkPrivate CoglGstVideoSinkPrivate;
