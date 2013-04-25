@@ -45,20 +45,6 @@ const NM80211ApSecurityFlags = NetworkManager['80211ApSecurityFlags'];
 // (the remaining are placed into More…)
 const NUM_VISIBLE_NETWORKS = 5;
 
-function macToArray(string) {
-    return string.split(':').map(function(el) {
-        return parseInt(el, 16);
-    });
-}
-
-function macCompare(one, two) {
-    for (let i = 0; i < 6; i++) {
-        if (one[i] != two[i])
-            return false;
-    }
-    return true;
-}
-
 function ssidCompare(one, two) {
     if (!one || !two)
         return false;
