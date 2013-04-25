@@ -539,7 +539,8 @@ st_icon_set_icon_name (StIcon      *icon,
 
   if (g_icon_equal (priv->gicon, gicon)) /* do nothing */
     {
-      g_object_unref (gicon);
+      if (gicon)
+        g_object_unref (gicon);
       return;
     }
 
