@@ -188,6 +188,25 @@ struct wl_shell_surface *
 cogl_wayland_onscreen_get_shell_surface (CoglOnscreen *onscreen);
 
 /**
+ * cogl_wayland_onscreen_set_foreign_surface:
+ * @onscreen: An unallocated framebuffer.
+ * @surface A Wayland surface to associate with the @onscreen.
+ *
+ * Allows you to explicitly notify Cogl of an existing Wayland surface to use,
+ * which prevents Cogl from allocating a surface and shell surface for the
+ * @onscreen. An allocated surface will not be destroyed when the @onscreen is
+ * freed.
+ *
+ * This function must be called before @onscreen is allocated.
+ *
+ * Since: 1.16
+ * Stability: unstable
+ */
+void
+cogl_wayland_onscreen_set_foreign_surface (CoglOnscreen *onscreen,
+                                           struct wl_surface *surface);
+
+/**
  * cogl_wayland_onscreen_resize:
  * @onscreen: A #CoglOnscreen framebuffer
  * @width: The desired width of the framebuffer

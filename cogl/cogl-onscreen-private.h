@@ -86,6 +86,10 @@ struct _CoglOnscreen
   HWND foreign_hwnd;
 #endif
 
+#ifdef COGL_HAS_EGL_PLATFORM_WAYLAND_SUPPORT
+  struct wl_surface *foreign_surface;
+#endif
+
   CoglBool swap_throttled;
 
   CoglFrameCallbackList frame_closures;
