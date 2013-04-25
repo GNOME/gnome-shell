@@ -566,7 +566,6 @@ const UserMenuButton = new Lang.Class({
 
         let allowSettings = Main.sessionMode.allowSettings;
         this._statusChooser.setSensitive(allowSettings);
-        this._systemSettings.visible = allowSettings;
 
         this.setSensitive(!Main.sessionMode.isLocked);
         this._updatePresenceIcon();
@@ -742,10 +741,7 @@ const UserMenuButton = new Lang.Class({
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupMenuItem(_("Settings"));
-        item.connect('activate', Lang.bind(this, this._onPreferencesActivate));
-        this.menu.addMenuItem(item);
-        this._systemSettings = item;
+        this.menu.addSettingsAction(_("Settings"), 'gnome-control-center.desktop');
 
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
@@ -803,12 +799,6 @@ const UserMenuButton = new Lang.Class({
     _onMyAccountActivate: function() {
         Main.overview.hide();
         let app = Shell.AppSystem.get_default().lookup_app('gnome-user-accounts-panel.desktop');
-        app.activate();
-    },
-
-    _onPreferencesActivate: function() {
-        Main.overview.hide();
-        let app = Shell.AppSystem.get_default().lookup_app('gnome-control-center.desktop');
         app.activate();
     },
 
