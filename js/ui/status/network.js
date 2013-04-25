@@ -2092,25 +2092,7 @@ const NMApplet = new Lang.Class({
         return false;
     },
 
-    _readConnections: function() {
-        let connections = this._settings.list_connections();
-        for (let i = 0; i < connections.length; i++) {
-            let connection = connections[i];
-            if (this._ignoreConnection(connection))
-                continue;
-            if (connection._updatedId) {
-                // connection was already seen (for example because NetworkManager was restarted)
-                continue;
-            }
-            connection._removedId = connection.connect('removed', Lang.bind(this, this._connectionRemoved));
-            connection._updatedId = connection.connect('updated', Lang.bind(this, this._updateConnection));
-
-            this._updateConnection(connection);
-            this._connections.push(connection);
-        }
-    },
-
-    _newConnection: function(settings, connection) {
+    _addConnection: function(connection) {
         if (this._ignoreConnection(connection))
             return;
         if (connection._updatedId) {
@@ -2123,7 +2105,15 @@ const NMApplet = new Lang.Class({
 
         this._updateConnection(connection);
         this._connections.push(connection);
+    },
 
+    _readConnections: function() {
+        let connections = this._settings.list_connections();
+        connections.forEach(Lang.bind(this, this._addConnection));
+    },
+
+    _newConnection: function(settings, connection) {
+        this._addConnection(connection);
         this._updateIcon();
     },
 
