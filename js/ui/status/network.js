@@ -1118,23 +1118,8 @@ const NMDeviceWireless = new Lang.Class({
                         break;
 
                     if (network.item) {
-                        if (network.item instanceof PopupMenu.PopupSubMenuMenuItem) {
-                            let items = network.item.menu._getMenuItems();
-                            if (items.length == 2) {
-                                // we need to update the connection list to convert this to a normal item
-                                forceupdate = true;
-                            } else {
-                                for (let j = 0; j < items.length; j++) {
-                                    if (items[j]._connection.get_uuid() == connection.get_uuid()) {
-                                        items[j].destroy();
-                                        break;
-                                    }
-                                }
-                            }
-                        } else {
-                            network.item.destroy();
-                            network.item = null;
-                        }
+                        network.item.destroy();
+                        network.item = null;
                     }
                     break;
                 }
@@ -1198,14 +1183,7 @@ const NMDeviceWireless = new Lang.Class({
         }
 
         if(network.connections.length > 0) {
-            if (network.connections.length == 1) {
-                network.item = this._createAPItem(network.connections[0], network, false);
-            } else {
-                let title = network.ssidText;
-                network.item = new PopupMenu.PopupSubMenuMenuItem(title);
-                for (let i = 0; i < network.connections.length; i++)
-                    network.item.menu.addMenuItem(this._createAPItem(network.connections[i], network, true));
-            }
+            network.item = this._createAPItem(network.connections[0], network, false);
         } else {
             network.item = new NMNetworkMenuItem(network.accessPoints[0]);
             network.item.connect('activate', Lang.bind(this, function() {
