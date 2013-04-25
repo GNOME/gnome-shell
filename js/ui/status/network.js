@@ -40,10 +40,6 @@ const NM80211Mode = NetworkManager['80211Mode'];
 const NM80211ApFlags = NetworkManager['80211ApFlags'];
 const NM80211ApSecurityFlags = NetworkManager['80211ApSecurityFlags'];
 
-// number of wireless networks that should be visible
-// (the remaining are placed into More…)
-const NUM_VISIBLE_NETWORKS = 5;
-
 function ssidCompare(one, two) {
     if (!one || !two)
         return false;
@@ -131,7 +127,6 @@ const NMDevice = new Lang.Class({
 
         this._activeConnection = null;
         this._activeConnectionItem = null;
-        this._overflowItem = null;
 
         this.statusItem = new PopupMenu.PopupSwitchMenuItem('', this.connected);
         this._statusChanged = this.statusItem.connect('toggled', Lang.bind(this, function(item, state) {
@@ -378,7 +373,6 @@ const NMDevice = new Lang.Class({
         // Clear everything
         this.section.removeAll();
         this._activeConnectionItem = null;
-        this._overflowItem = null;
         for (let i = 0; i < this._connections.length; i++) {
             this._connections[i].item = null;
         }
@@ -406,14 +400,7 @@ const NMDevice = new Lang.Class({
                     continue;
                 obj.item = this._createConnectionItem(obj);
 
-                if (j + activeOffset >= NUM_VISIBLE_NETWORKS) {
-                    if (!this._overflowItem) {
-                        this._overflowItem = new PopupMenu.PopupSubMenuMenuItem(_("More…"));
-                        this.section.addMenuItem(this._overflowItem);
-                    }
-                    this._overflowItem.menu.addMenuItem(obj.item);
-                } else
-                    this.section.addMenuItem(obj.item);
+                this.section.addMenuItem(obj.item);
             }
         }
     },
@@ -654,7 +641,6 @@ const NMDeviceWireless = new Lang.Class({
     _init: function(client, device, connections) {
         this.category = NMConnectionCategory.WIRELESS;
 
-        this._overflowItem = null;
         this._networks = [ ];
 
         this.parent(client, device, connections);
@@ -940,31 +926,6 @@ const NMDeviceWireless = new Lang.Class({
             if (network.item)
                 network.item.destroy();
 
-            if (this._overflowItem) {
-                if (!network.isMore) {
-                    // we removed an item in the main menu, and we have a more submenu
-                    // we need to extract the first item in more and move it to the submenu
-
-                    let item = this._overflowItem.menu.firstMenuItem;
-                    if (item && item._network) {
-                        item.destroy();
-                        // clear the cycle, and allow the construction of the new item
-                        item._network.item = null;
-
-                        this._createNetworkItem(item._network, NUM_VISIBLE_NETWORKS-1);
-                    } else {
-                        log('The more... menu was existing and empty! This should not happen');
-                    }
-                }
-
-                // This can happen if the removed connection is from the overflow
-                // menu, or if we just moved the last connection out from the menu
-                if (this._overflowItem.menu.numMenuItems == 0) {
-                    this._overflowItem.destroy();
-                    this._overflowItem = null;
-                }
-            }
-
             this._networks.splice(res.network, 1);
         } else {
             let okPrev = true, okNext = true;
@@ -983,10 +944,8 @@ const NMDeviceWireless = new Lang.Class({
 
     _clearSection: function() {
         this.parent();
-
         for (let i = 0; i < this._networks.length; i++)
             this._networks[i].item = null;
-        this._overflowItem = null;
     },
 
     removeConnection: function(connection) {
@@ -1107,17 +1066,7 @@ const NMDeviceWireless = new Lang.Class({
         }
         network.item._network = network;
 
-        if (position < NUM_VISIBLE_NETWORKS) {
-            network.isMore = false;
-            this.section.addMenuItem(network.item, position);
-        } else {
-            if (!this._overflowItem) {
-                this._overflowItem = new PopupMenu.PopupSubMenuMenuItem(_("More…"));
-                this.section.addMenuItem(this._overflowItem);
-            }
-            this._overflowItem.menu.addMenuItem(network.item, position - NUM_VISIBLE_NETWORKS);
-            network.isMore = true;
-        }
+        this.section.addMenuItem(network.item, position);
     },
 
     _createSection: function() {
