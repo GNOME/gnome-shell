@@ -5,16 +5,9 @@ const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const NetworkManager = imports.gi.NetworkManager;
 const NMClient = imports.gi.NMClient;
+const NMGtk = imports.gi.NMGtk;
 const Signals = imports.signals;
 const St = imports.gi.St;
-
-// Some of the new code depends on as-yet-unreleased NM
-var NMGtk;
-try {
-    NMGtk = imports.gi.NMGtk;
-} catch(e) {
-    NMGtk = null;
-}
 
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
@@ -1680,11 +1673,9 @@ const NMApplet = new Lang.Class({
 
         // Virtual device types
         this._vtypes = { };
-        if (NMGtk) {
-            this._vtypes[NetworkManager.SETTING_VLAN_SETTING_NAME] = NMDeviceVirtual;
-            this._vtypes[NetworkManager.SETTING_BOND_SETTING_NAME] = NMDeviceVirtual;
-            this._vtypes[NetworkManager.SETTING_BRIDGE_SETTING_NAME] = NMDeviceVirtual;
-        }
+        this._vtypes[NetworkManager.SETTING_VLAN_SETTING_NAME] = NMDeviceVirtual;
+        this._vtypes[NetworkManager.SETTING_BOND_SETTING_NAME] = NMDeviceVirtual;
+        this._vtypes[NetworkManager.SETTING_BRIDGE_SETTING_NAME] = NMDeviceVirtual;
 
         // Connection types
         this._ctypes = { };
@@ -1696,11 +1687,9 @@ const NMApplet = new Lang.Class({
         this._ctypes[NetworkManager.SETTING_CDMA_SETTING_NAME] = NMConnectionCategory.WWAN;
         this._ctypes[NetworkManager.SETTING_GSM_SETTING_NAME] = NMConnectionCategory.WWAN;
         this._ctypes[NetworkManager.SETTING_INFINIBAND_SETTING_NAME] = NMConnectionCategory.WIRED;
-        if (NMGtk) {
-            this._ctypes[NetworkManager.SETTING_VLAN_SETTING_NAME] = NMConnectionCategory.VIRTUAL;
-            this._ctypes[NetworkManager.SETTING_BOND_SETTING_NAME] = NMConnectionCategory.VIRTUAL;
-            this._ctypes[NetworkManager.SETTING_BRIDGE_SETTING_NAME] = NMConnectionCategory.VIRTUAL;
-        }
+        this._ctypes[NetworkManager.SETTING_VLAN_SETTING_NAME] = NMConnectionCategory.VIRTUAL;
+        this._ctypes[NetworkManager.SETTING_BOND_SETTING_NAME] = NMConnectionCategory.VIRTUAL;
+        this._ctypes[NetworkManager.SETTING_BRIDGE_SETTING_NAME] = NMConnectionCategory.VIRTUAL;
         this._ctypes[NetworkManager.SETTING_VPN_SETTING_NAME] = NMConnectionCategory.VPN;
 
         NMClient.Client.new_async(null, Lang.bind(this, this._clientGot));
@@ -1900,19 +1889,12 @@ const NMApplet = new Lang.Class({
     },
 
     _syncDeviceNames: function() {
-        if (NMGtk) {
-            let names = NMGtk.utils_disambiguate_device_names(this._nmDevices);
-            for (let i = 0; i < this._nmDevices.length; i++) {
-                let device = this._nmDevices[i];
-                device._description = names[i];
-                if (device._delegate)
-                    device._delegate.syncDescription();
-            }
-        } else {
-            for (let i = 0; i < this._nmDevices.length; i++) {
-                let device = this._nmDevices[i];
+        let names = NMGtk.utils_disambiguate_device_names(this._nmDevices);
+        for (let i = 0; i < this._nmDevices.length; i++) {
+            let device = this._nmDevices[i];
+            device._description = names[i];
+            if (device._delegate)
                 device._delegate.syncDescription();
-            }
         }
     },
 
