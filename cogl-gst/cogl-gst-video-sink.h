@@ -330,6 +330,98 @@ void
 cogl_gst_video_sink_setup_pipeline (CoglGstVideoSink *sink,
                                     CoglPipeline *pipeline);
 
+/**
+ * cogl_gst_video_sink_get_aspect:
+ * @sink: A #CoglGstVideoSink
+ *
+ * Returns a width-for-height aspect ratio that lets you calculate a
+ * suitable width for displaying your video based on a given height by
+ * multiplying your chosen height by the returned aspect ratio.
+ *
+ * This aspect ratio is calculated based on the underlying size of the
+ * video buffers and the current pixel-aspect-ratio.
+ *
+ * Return value: a width-for-height aspect ratio
+ *
+ * Since: 1.16
+ * Stability: unstable
+ */
+float
+cogl_gst_video_sink_get_aspect (CoglGstVideoSink *sink);
+
+/**
+ * cogl_gst_video_sink_get_width_for_height:
+ * @sink: A #CoglGstVideoSink
+ * @height: A specific output @height
+ *
+ * Calculates a suitable output width for a specific output @height
+ * that will maintain the video's aspect ratio.
+ *
+ * Return value: An output width for the given output @height.
+ *
+ * Since: 1.16
+ * Stability: unstable
+ */
+float
+cogl_gst_video_sink_get_width_for_height (CoglGstVideoSink *sink,
+                                          float height);
+
+/**
+ * cogl_gst_video_sink_get_height_for_width:
+ * @sink: A #CoglGstVideoSink
+ * @width: A specific output @width
+ *
+ * Calculates a suitable output height for a specific output @width
+ * that will maintain the video's aspect ratio.
+ *
+ * Return value: An output height for the given output @width.
+ *
+ * Since: 1.16
+ * Stability: unstable
+ */
+float
+cogl_gst_video_sink_get_height_for_width (CoglGstVideoSink *sink,
+                                          float width);
+
+/**
+ * CoglGstRectangle:
+ * @x: The X coordinate of the top left of the rectangle
+ * @y: The Y coordinate of the top left of the rectangle
+ * @width: The width of the rectangle
+ * @height: The height of the rectangle
+ *
+ * Describes a rectangle that can be used for video output.
+ */
+typedef struct _CoglGstRectangle
+{
+  float x;
+  float y;
+  float width;
+  float height;
+} CoglGstRectangle;
+
+/**
+ * cogl_gst_video_sink_fit_size:
+ * @sink: A #CoglGstVideoSink
+ * @available: The space available for video output
+ * @output: The return location for the calculated output position
+ *
+ * Calculates a suitable @output rectangle that can fit inside the
+ * @available space while maintaining the aspect ratio of the current
+ * video.
+ *
+ * Applications would typically use this api for "letterboxing" by
+ * using this api to position a video inside a fixed screen space and
+ * filling the remaining space with black borders.
+ *
+ * Since: 1.16
+ * Stability: unstable
+ */
+void
+cogl_gst_video_sink_fit_size (CoglGstVideoSink *sink,
+                              const CoglGstRectangle *available,
+                              CoglGstRectangle *output);
+
 G_END_DECLS
 
 #endif

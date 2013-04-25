@@ -1268,3 +1268,60 @@ cogl_gst_video_sink_new (CoglContext *ctx)
 
   return sink;
 }
+
+float
+cogl_gst_video_sink_get_aspect (CoglGstVideoSink *vt)
+{
+  GstVideoInfo *info = &vt->priv->info;
+  return ((float)info->width * (float)info->par_n) /
+    ((float)info->height * (float)info->par_d);
+}
+
+float
+cogl_gst_video_sink_get_width_for_height (CoglGstVideoSink *vt,
+                                          float height)
+{
+  float aspect = cogl_gst_video_sink_get_aspect (vt);
+  return height * aspect;
+}
+
+float
+cogl_gst_video_sink_get_height_for_width (CoglGstVideoSink *vt,
+                                          float width)
+{
+  float aspect = cogl_gst_video_sink_get_aspect (vt);
+  return width / aspect;
+}
+
+void
+cogl_gst_video_sink_fit_size (CoglGstVideoSink *vt,
+                              const CoglGstRectangle *available,
+                              CoglGstRectangle *output)
+{
+  if (available->height == 0.0f)
+    {
+      output->x = available->x;
+      output->y = available->y;
+      output->width = output->height = 0;
+    }
+  else
+    {
+      float available_aspect = available->width / available->height;
+      float video_aspect = cogl_gst_video_sink_get_aspect (vt);
+
+      if (video_aspect > available_aspect)
+        {
+          output->width = available->width;
+          output->height = available->width / video_aspect;
+          output->x = available->x;
+          output->y = available->y + (available->height - output->height) / 2;
+        }
+      else
+        {
+          output->width = available->height * video_aspect;
+          output->height = available->height;
+          output->x = available->x + (available->width - output->width) / 2;
+          output->y = available->y;
+        }
+    }
+}

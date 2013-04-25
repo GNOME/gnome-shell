@@ -1,17 +1,23 @@
+#include <stdbool.h>
+
 #include <cogl/cogl.h>
 #include <cogl-gst/cogl-gst.h>
 
 typedef struct _Data
 {
   CoglFramebuffer *fb;
-  CoglPipeline *pln;
+  CoglPipeline *border_pipeline;
+  CoglPipeline *video_pipeline;
   CoglGstVideoSink *sink;
-  CoglBool draw_ready;
-  CoglBool frame_ready;
+  int onscreen_width;
+  int onscreen_height;
+  CoglGstRectangle video_output;
+  bool draw_ready;
+  bool frame_ready;
   GMainLoop *main_loop;
 }Data;
 
-static CoglBool
+static gboolean
 _bus_watch (GstBus *bus,
             GstMessage *msg,
             void *user_data)
@@ -57,16 +63,55 @@ _draw (Data *data)
   */
   CoglPipeline* current = cogl_gst_video_sink_get_pipeline (data->sink);
 
-  cogl_framebuffer_clear4f (data->fb,
-                            COGL_BUFFER_BIT_COLOR|COGL_BUFFER_BIT_DEPTH, 0,
-                            0, 0, 1);
-  data->pln = current;
+  data->video_pipeline = current;
 
-  cogl_framebuffer_push_matrix (data->fb);
-  cogl_framebuffer_translate (data->fb, 640 / 2, 480 / 2, 0);
-  cogl_framebuffer_draw_textured_rectangle (data->fb, data->pln, -320, -240,
-                                            320, 240, 0, 0, 1, 1);
-  cogl_framebuffer_pop_matrix (data->fb);
+  if (data->video_output.x)
+    {
+      int x = data->video_output.x;
+
+      /* Letterboxed with vertical borders */
+      cogl_framebuffer_draw_rectangle (data->fb,
+                                       data->border_pipeline,
+                                       0, 0, x, data->onscreen_height);
+      cogl_framebuffer_draw_rectangle (data->fb,
+                                       data->border_pipeline,
+                                       data->onscreen_width - x,
+                                       0,
+                                       data->onscreen_width,
+                                       data->onscreen_height);
+      cogl_framebuffer_draw_rectangle (data->fb, data->video_pipeline,
+                                       x, 0,
+                                       x + data->video_output.width,
+                                       data->onscreen_height);
+    }
+  else if (data->video_output.y)
+    {
+      int y = data->video_output.y;
+
+      /* Letterboxed with horizontal borders */
+      cogl_framebuffer_draw_rectangle (data->fb,
+                                       data->border_pipeline,
+                                       0, 0, data->onscreen_width, y);
+      cogl_framebuffer_draw_rectangle (data->fb,
+                                       data->border_pipeline,
+                                       0,
+                                       data->onscreen_height - y,
+                                       data->onscreen_width,
+                                       data->onscreen_height);
+      cogl_framebuffer_draw_rectangle (data->fb, data->video_pipeline,
+                                       0, y,
+                                       data->onscreen_width,
+                                       y + data->video_output.height);
+
+    }
+  else
+    {
+      cogl_framebuffer_draw_rectangle (data->fb,
+                                       data->video_pipeline,
+                                       0, 0,
+                                       data->onscreen_width,
+                                       data->onscreen_height);
+    }
 
   cogl_onscreen_swap_buffers (COGL_ONSCREEN (data->fb));
 }
@@ -108,6 +153,32 @@ _new_frame_cb (CoglGstVideoSink *sink,
   _check_draw (data);
 }
 
+static void
+_resize_callback (CoglOnscreen *onscreen,
+                  int width,
+                  int height,
+                  void *user_data)
+{
+  Data *data = user_data;
+  CoglGstRectangle available;
+
+  data->onscreen_width = width;
+  data->onscreen_height = height;
+
+  cogl_framebuffer_orthographic (data->fb, 0, 0, width, height, -1, 100);
+
+  if (!data->video_pipeline)
+    return;
+
+  available.x = 0;
+  available.y = 0;
+  available.width = width;
+  available.height = height;
+  cogl_gst_video_sink_fit_size (data->sink,
+                                &available,
+                                &data->video_output);
+}
+
 /*
   A callback like this should be attached to the cogl-pipeline-ready
   signal. This way requesting the cogl pipeline before its creation
@@ -129,15 +200,25 @@ _set_up_pipeline (gpointer instance,
   */
 
   int free_layer = cogl_gst_video_sink_get_free_layer (data->sink);
-  data->pln = cogl_gst_video_sink_get_pipeline (data->sink);
+  data->video_pipeline = cogl_gst_video_sink_get_pipeline (data->sink);
 
   while (free_layer > 0)
     {
       free_layer--;
-      cogl_pipeline_set_layer_filters (data->pln, free_layer,
+      cogl_pipeline_set_layer_filters (data->video_pipeline, free_layer,
                                        COGL_PIPELINE_FILTER_LINEAR_MIPMAP_LINEAR,
                                        COGL_PIPELINE_FILTER_LINEAR);
     }
+
+  /* disable blending... */
+  cogl_pipeline_set_blend (data->video_pipeline,
+                           "RGBA = ADD (SRC_COLOR, 0)", NULL);
+
+  /* Now that we know the video size we can perform letterboxing */
+  _resize_callback (COGL_ONSCREEN (data->fb),
+                    data->onscreen_width,
+                    data->onscreen_height,
+                    data);
 
   cogl_onscreen_add_frame_callback (COGL_ONSCREEN (data->fb), _frame_callback,
                                     data, NULL);
@@ -159,33 +240,31 @@ main (int argc,
   Data data;
   CoglContext *ctx;
   CoglOnscreen *onscreen;
-  CoglMatrix view;
-  float fovy, aspect, z_near, z_2d, z_far;
   GstElement *pipeline;
   GstElement *bin;
   GSource *cogl_source;
   GstBus *bus;
   char *uri;
 
+  memset (&data, 0, sizeof (Data));
+
   /* Set the necessary cogl elements */
 
   ctx = cogl_context_new (NULL, NULL);
+
   onscreen = cogl_onscreen_new (ctx, 640, 480);
-  data.fb = COGL_FRAMEBUFFER (onscreen);
+  cogl_onscreen_set_resizable (onscreen, TRUE);
+  cogl_onscreen_add_resize_callback (onscreen, _resize_callback, &data, NULL);
   cogl_onscreen_show (onscreen);
 
-  cogl_framebuffer_set_viewport (data.fb, 0, 0, 640, 480);
-  fovy = 60;
-  aspect = 640 / 480;
-  z_near = 0.1;
-  z_2d = 1000;
-  z_far = 2000;
+  data.fb = COGL_FRAMEBUFFER (onscreen);
+  cogl_framebuffer_orthographic (data.fb, 0, 0, 640, 480, -1, 100);
 
-  cogl_framebuffer_perspective (data.fb, fovy, aspect, z_near, z_far);
-  cogl_matrix_init_identity (&view);
-  cogl_matrix_view_2d_in_perspective (&view, fovy, aspect, z_near, z_2d,
-                                      640, 480);
-  cogl_framebuffer_set_modelview_matrix (data.fb, &view);
+  data.border_pipeline = cogl_pipeline_new (ctx);
+  cogl_pipeline_set_color4f (data.border_pipeline, 0, 0, 0, 1);
+  /* disable blending */
+  cogl_pipeline_set_blend (data.border_pipeline,
+                           "RGBA = ADD (SRC_COLOR, 0)", NULL);
 
   /* Intialize GStreamer */
 
