@@ -292,7 +292,6 @@ const NMDevice = new Lang.Class({
 
         this._activeConnection = null;
         this._activeConnectionItem = null;
-        this._autoConnectionItem = null;
         this._overflowItem = null;
 
         this.statusItem = new PopupMenu.PopupSwitchMenuItem('', this.connected, { style_class: 'popup-subtitle-menu-item' });
@@ -379,13 +378,9 @@ const NMDevice = new Lang.Class({
     },
 
     _activateAutomaticConnection: function() {
-        let connection = this._createAutomaticConnection();
-        if (connection) {
-            this._client.add_and_activate_connection(connection, this.device, null, null);
-            return true;
-        }
-
-        return false;
+        let connection = new NetworkManager.Connection();
+        this._client.add_and_activate_connection(connection, this.device, null, null);
+        return true;
     },
 
     get connected() {
@@ -479,11 +474,6 @@ const NMDevice = new Lang.Class({
             this.statusItem.label.text = this.device._description;
     },
 
-    // protected
-    _createAutomaticConnection: function() {
-        throw new TypeError('Invoking pure virtual function NMDevice.createAutomaticConnection');
-    },
-
     _queueCreateSection: function() {
         if (this._deferredWorkId) {
             this._clearSection();
@@ -494,7 +484,6 @@ const NMDevice = new Lang.Class({
     _clearSection: function() {
         // Clear everything
         this.section.removeAll();
-        this._autoConnectionItem = null;
         this._activeConnectionItem = null;
         this._overflowItem = null;
         for (let i = 0; i < this._connections.length; i++) {
@@ -533,14 +522,6 @@ const NMDevice = new Lang.Class({
                 } else
                     this.section.addMenuItem(obj.item);
             }
-        } else if (this._autoConnectionName) {
-            this._autoConnectionItem = new PopupMenu.PopupMenuItem(this._autoConnectionName);
-            this._autoConnectionItem.connect('activate', Lang.bind(this, function() {
-                let connection = this._createAutomaticConnection();
-                if (connection)
-                    this._client.add_and_activate_connection(connection, this.device, null, null);
-            }));
-            this.section.addMenuItem(this._autoConnectionItem);
         }
     },
 
@@ -642,24 +623,10 @@ const NMDeviceWired = new Lang.Class({
 
     _init: function(client, device, connections) {
         device._description = _("Wired");
-        this._autoConnectionName = _("Auto Ethernet");
         this.category = NMConnectionCategory.WIRED;
 
         this.parent(client, device, connections);
     },
-
-    _createAutomaticConnection: function() {
-        let connection = new NetworkManager.Connection();
-        let uuid = NetworkManager.utils_uuid_generate();
-        connection.add_setting(new NetworkManager.SettingWired());
-        connection.add_setting(new NetworkManager.SettingConnection({
-            uuid: uuid,
-            id: this._autoConnectionName,
-            type: NetworkManager.SETTING_WIRED_SETTING_NAME,
-            autoconnect: true
-        }));
-        return connection;
-    }
 });
 
 const NMDeviceModem = new Lang.Class({
@@ -700,13 +667,10 @@ const NMDeviceModem = new Lang.Class({
             this._connectionType = NetworkManager.SETTING_GSM_SETTING_NAME;
         }
 
-        if (is_wwan) {
+        if (is_wwan)
             this.category = NMConnectionCategory.WWAN;
-            this._autoConnectionName = _("Auto broadband");
-        } else {
+        else
             this.category = NMConnectionCategory.WIRED;
-            this._autoConnectionName = _("Auto dial-up");
-        }
 
         if (this.mobileDevice) {
             this._operatorNameId = this.mobileDevice.connect('notify::operator-name', Lang.bind(this, function() {
@@ -801,50 +765,20 @@ const NMDeviceBluetooth = new Lang.Class({
 
     _init: function(client, device, connections) {
         device._description = _("Bluetooth");
-        this._autoConnectionName = this._makeConnectionName(device);
-        device.connect('notify::name', Lang.bind(this, this._updateAutoConnectionName));
 
         this.category = NMConnectionCategory.WWAN;
 
         this.parent(client, device, connections);
     },
 
-    _createAutomaticConnection: function() {
-        let connection = new NetworkManager.Connection;
-        let uuid = NetworkManager.utils_uuid_generate();
-        connection.add_setting(new NetworkManager.SettingBluetooth);
-        connection.add_setting(new NetworkManager.SettingConnection({
-            uuid: uuid,
-            id: this._autoConnectionName,
-            type: NetworkManager.SETTING_BLUETOOTH_SETTING_NAME,
-            autoconnect: false
-        }));
-        return connection;
-    },
-
     _activateAutomaticConnection: function() {
         // FIXME: DUN devices are configured like modems, so
-        // we need to spawn the mobile wizard
+        // We need to spawn the mobile wizard
         // but the network panel doesn't support bluetooth at the moment
         // so we just create an empty connection and hope
         // that this phone supports PAN
 
         return this.parent();
-    },
-
-    _makeConnectionName: function(device) {
-        let name = device.name;
-        if (name)
-            return _("Auto %s").format(name);
-        else
-            return _("Auto bluetooth");
-    },
-
-    _updateAutoConnectionName: function() {
-        this._autoConnectionName = this._makeConnectionName(this.device);
-
-        this._queueCreateSection();
-        this._updateStatusItem();
     }
 });
 
@@ -1337,26 +1271,6 @@ const NMDeviceWireless = new Lang.Class({
         this._activeConnectionItem.setOrnament(PopupMenu.Ornament.DOT);
     },
 
-    _createAutomaticConnection: function(apObj) {
-        let name;
-        let ssid = NetworkManager.utils_ssid_to_utf8(apObj.ssid);
-        if (ssid) {
-            /* TRANSLATORS: this the automatic wireless connection name (including the network name) */
-            name = _("Auto %s").format(ssid);
-        } else
-            name = _("Auto wireless");
-
-        let connection = new NetworkManager.Connection();
-        connection.add_setting(new NetworkManager.SettingWireless());
-        connection.add_setting(new NetworkManager.SettingConnection({
-            id: name,
-            autoconnect: true, // NetworkManager will know to ignore this if appropriate
-            uuid: NetworkManager.utils_uuid_generate(),
-            type: NetworkManager.SETTING_WIRELESS_SETTING_NAME
-        }));
-        return connection;
-    },
-
     _createNetworkItem: function(apObj, position) {
         if(!apObj.accessPoints || apObj.accessPoints.length == 0) {
             // this should not happen, but I have no idea why it happens
@@ -1383,7 +1297,7 @@ const NMDeviceWireless = new Lang.Class({
                     Util.spawn(['gnome-control-center', 'network', 'connect-8021x-wifi',
                                 this.device.get_path(), accessPoints[0].dbus_path]);
                 } else {
-                    let connection = this._createAutomaticConnection(apObj);
+                    let connection = new NetworkManager.Connection();
                     this._client.add_and_activate_connection(connection, this.device, accessPoints[0].dbus_path, null)
                 }
             }));
