@@ -2124,6 +2124,8 @@ const PopupMenuManager = new Lang.Class({
 
     _onMenuOpenState: function(menu, open) {
         if (open) {
+            if (this.activeMenu)
+                this.activeMenu.close(BoxPointer.PopupAnimation.FADE);
             this._grabHelper.grab({ actor: menu.actor, modal: true, focus: menu.sourceActor,
                                     onUngrab: Lang.bind(this, this._closeMenu, menu) });
         } else {
@@ -2140,13 +2142,8 @@ const PopupMenuManager = new Lang.Class({
     },
 
     _changeMenu: function(newMenu) {
-        let oldMenu = this.activeMenu;
-        if (oldMenu) {
-            oldMenu.close(BoxPointer.PopupAnimation.FADE);
-            newMenu.open(BoxPointer.PopupAnimation.FADE);
-        } else {
-            newMenu.open(BoxPointer.PopupAnimation.FULL);
-        }
+        newMenu.open(this.activeMenu ? BoxPointer.PopupAnimation.FADE
+                                     : BoxPointer.PopupAnimation.FULL);
     },
 
     _onMenuSourceEnter: function(menu) {
