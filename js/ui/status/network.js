@@ -1455,7 +1455,6 @@ const NMApplet = new Lang.Class({
         }));
         this._statusSection.actor.hide();
         this.menu.addMenuItem(this._statusSection);
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this._activeConnections = [ ];
         this._connections = [ ];
@@ -1470,10 +1469,7 @@ const NMApplet = new Lang.Class({
             section: new PopupMenu.PopupMenuSection(),
             devices: [ ],
         };
-
-        this._devices.wired.section.actor.hide();
         this.menu.addMenuItem(this._devices.wired.section);
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this._devices.wireless = {
             section: new PopupMenu.PopupMenuSection(),
@@ -1481,17 +1477,13 @@ const NMApplet = new Lang.Class({
             item: this._makeWirelessToggle()
         };
         this._devices.wireless.section.addMenuItem(this._devices.wireless.item);
-        this._devices.wireless.section.actor.hide();
         this.menu.addMenuItem(this._devices.wireless.section);
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this._devices.wwan = {
             section: new PopupMenu.PopupMenuSection(),
             devices: [ ],
         };
-        this._devices.wwan.section.actor.hide();
         this.menu.addMenuItem(this._devices.wwan.section);
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this._vpnSection = new NMVPNSection(this._client);
         this._vpnSection.connect('activation-failed', Lang.bind(this, this._onActivationFailed));
@@ -1539,29 +1531,22 @@ const NMApplet = new Lang.Class({
     _syncSectionTitle: function(category) {
         let devices = this._devices[category].devices;
         let item = this._devices[category].item;
-        let section = this._devices[category].section;
 
-        if (devices.length == 0)
-            section.actor.hide();
-        else {
-            section.actor.show();
+        // Sync the relation between the section title
+        // item (the one with the airplane mode switch)
+        // and the individual device switches
+        if (item) {
+            if (devices.length == 1) {
+                let dev = devices[0];
+                dev.statusItem.actor.hide();
+                item.updateForDevice(dev);
+            } else {
+                devices.forEach(function(dev) {
+                    dev.statusItem.actor.show();
+                });
 
-            // Sync the relation between the section title
-            // item (the one with the airplane mode switch)
-            // and the individual device switches
-            if (item) {
-                if (devices.length == 1) {
-                    let dev = devices[0];
-                    dev.statusItem.actor.hide();
-                    item.updateForDevice(dev);
-                } else {
-                    devices.forEach(function(dev) {
-                        dev.statusItem.actor.show();
-                    });
-
-                    // remove status text from the section title item
-                    item.updateForDevice(null);
-                }
+                // remove status text from the section title item
+                item.updateForDevice(null);
             }
         }
     },
@@ -1900,9 +1885,8 @@ const NMApplet = new Lang.Class({
 
         this._statusSection.actor.hide();
 
-        this._syncSectionTitle(NMConnectionCategory.WIRED);
-        this._syncSectionTitle(NMConnectionCategory.WIRELESS);
-        this._syncSectionTitle(NMConnectionCategory.WWAN);
+        for (let category in this._devices)
+            this._devices[category].section.actor.show();
     },
 
     _syncNMState: function() {
