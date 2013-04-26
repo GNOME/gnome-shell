@@ -11218,3 +11218,9 @@ meta_window_compute_tile_match (MetaWindow *window)
       window->tile_match = match;
     }
 }
+
+gboolean
+meta_window_can_close (MetaWindow *window)
+{
+  return window->has_close_func;
+}

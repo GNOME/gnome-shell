@@ -237,4 +237,6 @@ void meta_window_begin_grab_op (MetaWindow *window,
                                 gboolean    frame_action,
                                 guint32     timestamp);
 
+gboolean meta_window_can_close (MetaWindow *window);
+
 #endif
