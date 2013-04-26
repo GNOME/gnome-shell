@@ -375,11 +375,21 @@ _cogl_winsys_egl_onscreen_deinit (CoglOnscreen *onscreen)
       wayland_onscreen->wayland_egl_native_window = NULL;
     }
 
+  /* NB: The wayland protocol docs explicitly state that
+   * "wl_shell_surface_destroy() must be called before destroying the
+   * wl_surface object." ... */
+  if (wayland_onscreen->wayland_shell_surface)
+    {
+      wl_shell_surface_destroy (wayland_onscreen->wayland_shell_surface);
+      wayland_onscreen->wayland_shell_surface = NULL;
+    }
+
   if (wayland_onscreen->wayland_surface)
     {
       wl_surface_destroy (wayland_onscreen->wayland_surface);
       wayland_onscreen->wayland_surface = NULL;
     }
+
 
   g_slice_free (CoglOnscreenWayland, wayland_onscreen);
 }
