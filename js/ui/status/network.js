@@ -9,6 +9,7 @@ const NMGtk = imports.gi.NMGtk;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
+const Hash = imports.misc.hash;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
@@ -1319,26 +1320,38 @@ const NMDeviceVirtual = new Lang.Class({
     },
 });
 
-const NMVPNSection = new Lang.Class({
-    Name: 'NMVPNSection',
-    Extends: NMConnectionBased,
-    category: NMConnectionCategory.VPN,
+const NMVPNConnectionItem = new Lang.Class({
+    Name: 'NMVPNConnectionItem',
 
-    _init: function(client) {
-        this.parent([]);
+    _init: function(client, connection) {
         this._client = client;
+        this.connection = connection;
+        this._activeConnection = null;
+        this._activeConnectionChangedId = 0;
 
-        this.section = new PopupMenu.PopupMenuSection();
-        this._deferredWorkId = Main.initializeDeferredWork(this.section.actor, Lang.bind(this, this._createSection));
+        this.menuItem = new PopupMenu.PopupSwitchMenuItem(connection.get_id(), false,
+                                                          { style_class: 'popup-subtitle-menu-item' });
+        this.menuItem.connect('toggled', Lang.bind(this, this._toggle));
+
+        this._sync();
     },
 
-    connectionValid: function(connection) {
-        // filtering is done by NMApplet code
-        return true;
+    destroy: function() {
+        this.menuItem.destroy();
     },
 
-    getStatusLabel: function(activeConnection) {
-        switch(activeConnection.vpn_state) {
+    isActive: function() {
+        if (this._activeConnection == null)
+            return false;
+
+        return this._activeConnection.vpn_state == NetworkManager.VPNConnectionState.ACTIVATED;
+    },
+
+    _getStatus: function() {
+        if (this._activeConnection == null)
+            return null;
+
+        switch(this._activeConnection.vpn_state) {
         case NetworkManager.VPNConnectionState.DISCONNECTED:
         case NetworkManager.VPNConnectionState.ACTIVATED:
             return null;
@@ -1352,85 +1365,26 @@ const NMVPNSection = new Lang.Class({
         case NetworkManager.VPNConnectionState.FAILED:
             return _("connection failed");
         default:
-            log('VPN connection state invalid, is %d'.format(this.device.state));
             return 'invalid';
         }
     },
 
-    removeActiveConnection: function(activeConnection) {
-        let pos = this._findConnection(activeConnection.uuid);
-        if (pos < 0)
-            return;
+    _toggle: function() {
+        if (this._activeConnection == null)
+            this._client.activate_connection(this.connection, null, null, null);
+        else
+            this._client.deactivate_connection(this._activeConnection);
 
-        let obj = this._connections[pos];
-        obj.active.disconnect(obj.stateChangedId);
-        obj.active = null;
-
-        if (obj.item) {
-            obj.item.setToggleState(false);
-            obj.item.setStatus(null);
-        }
+        this._sync();
     },
 
-    addActiveConnection: function(activeConnection) {
-        let pos = this._findConnection(activeConnection.uuid);
-        if (pos < 0)
-            return;
-
-        let obj = this._connections[pos];
-        obj.active = activeConnection;
-        obj.stateChangedId = obj.active.connect('vpn-state-changed',
-                                                Lang.bind(this, this._connectionStateChanged));
-
-        if (obj.item) {
-            obj.item.setToggleState(obj.active.vpn_state ==
-                                    NetworkManager.VPNConnectionState.ACTIVATED);
-            obj.item.setStatus(this.getStatusLabel(obj.active));
-        }
+    _sync: function() {
+        this.menuItem.setToggleState(this.isActive());
+        this.menuItem.setStatus(this._getStatus());
+        this.emit('icon-changed');
     },
 
-    _queueCreateSection: function() {
-        this.section.removeAll();
-        Main.queueDeferredWork(this._deferredWorkId);
-    },
-
-    _createConnectionItem: function(obj) {
-        let menuItem = new PopupMenu.PopupSwitchMenuItem(obj.name, false,
-                                                         { style_class: 'popup-subtitle-menu-item' });
-        menuItem.connect('toggled', Lang.bind(this, function(menuItem) {
-            if (menuItem.state) {
-                this._client.activate_connection(obj.connection, null, null, null);
-                // Immediately go back to disconnected, until NM tells us to change
-                menuItem.setToggleState(false);
-            } else if (obj.active) {
-                this._client.deactivate_connection(obj.active);
-            }
-        }));
-
-        if (obj.active) {
-            menuItem.setToggleState(obj.active.vpn_state ==
-                                    NetworkManager.VPNConnectionState.ACTIVATED);
-            menuItem.setStatus(this.getStatusLabel(obj.active));
-        }
-
-        return menuItem;
-    },
-
-    _createSection: function() {
-        if (this._connections.length > 0) {
-            this.section.actor.show();
-
-            for(let j = 0; j < this._connections.length; ++j) {
-                let obj = this._connections[j];
-                obj.item = this._createConnectionItem(obj);
-                this.section.addMenuItem(obj.item);
-            }
-        } else {
-            this.section.actor.hide()
-        }
-    },
-
-    _connectionStateChanged: function(vpnConnection, newstate, reason) {
+    _connectionStateChanged: function(ac, newstate, reason) {
         if (newstate == NetworkManager.VPNConnectionState.FAILED &&
             reason != NetworkManager.VPNConnectionStateReason.NO_SECRETS) {
             // FIXME: if we ever want to show something based on reason,
@@ -1439,24 +1393,27 @@ const NMVPNSection = new Lang.Class({
             this.emit('activation-failed', reason);
         }
 
-        let pos = this._findConnection(vpnConnection.uuid);
-        if (pos >= 0) {
-            let obj = this._connections[pos];
-            if (obj.item) {
-                obj.item.setToggleState(vpnConnection.vpn_state ==
-                                        NetworkManager.VPNConnectionState.ACTIVATED);
-                obj.item.setStatus(this.getStatusLabel(vpnConnection));
-            }
-        } else {
-            log('Could not find connection for vpn-state-changed handler');
-        }
-
-        this.emit('icon-changed');
+        this._sync();
     },
 
-    _getIconForConnection: function(vpnConnection) {
-        if (vpnConnection) {
-            if (vpnConnection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
+    setActiveConnection: function(activeConnection) {
+        if (this._activeConnectionChangedId > 0) {
+            this._activeConnection.disconnect(this._activeConnectionChangedId);
+            this._activeConnectionChangedId = 0;
+        }
+
+        this._activeConnection = activeConnection;
+
+        if (this._activeConnection)
+            this._activeConnectionChangedId = this._activeConnection.connect('vpn-state-changed',
+                                                                             Lang.bind(this, this._connectionStateChanged));
+
+        this._sync();
+    },
+
+    getIndicatorIcon: function() {
+        if (this._activeConnection) {
+            if (this._activeConnection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
                 return 'network-vpn-acquiring-symbolic';
             else
                 return 'network-vpn-symbolic';
@@ -1464,17 +1421,64 @@ const NMVPNSection = new Lang.Class({
             return '';
         }
     },
+});
+Signals.addSignalMethods(NMVPNConnectionItem.prototype);
+
+const NMVPNSection = new Lang.Class({
+    Name: 'NMVPNSection',
+    category: NMConnectionCategory.VPN,
+
+    _init: function(client) {
+        this._client = client;
+        this._connectionItems = new Hash.Map();
+
+        this.section = new PopupMenu.PopupMenuSection();
+    },
+
+    checkConnection: function(connection) {
+        if (this._connectionItems.has(connection.get_uuid()))
+            return;
+
+        let item = new NMVPNConnectionItem(this._client, connection);
+
+        item.connect('icon-changed', Lang.bind(this, function() {
+            this.emit('icon-changed');
+        }));
+        item.connect('activation-failed', Lang.bind(this, function(item, reason) {
+            this.emit('activation-failed', reason);
+        }));
+
+        this.section.addMenuItem(item.menuItem);
+        this._connectionItems.set(connection.get_uuid(), item);
+    },
+
+    removeConnection: function(connection) {
+        this._connectionItems.get(connection.get_uuid()).destroy();
+        this._connectionItems.delete(connection.get_uuid());
+    },
+
+    addActiveConnection: function(activeConnection) {
+        let item = this._connectionItems.get(activeConnection._connection.get_uuid());
+        item.setActiveConnection(activeConnection);
+    },
+
+    removeActiveConnection: function(activeConnection) {
+        let item = this._connectionItems.get(activeConnection._connection.get_uuid());
+        item.setActiveConnection(null);
+    },
 
     getIndicatorIcon: function() {
-        for (let i = 0; i < this._connections.length; i++) {
-            let obj = this._connections[i];
-            let icon = this._getIconForConnection(obj.active);
+        let items = this._connectionItems.values();
+        for (let i = 0; i < items.length; i++) {
+            let item = items[i];
+            let icon = item.getIndicatorIcon();
             if (icon)
                 return icon;
         }
         return '';
     },
 });
+Signals.addSignalMethods(NMVPNSection.prototype);
 
 const NMApplet = new Lang.Class({
     Name: 'NMApplet',
