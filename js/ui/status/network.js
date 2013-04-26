@@ -1916,11 +1916,6 @@ const NMApplet = new Lang.Class({
         wrapper._deviceStateChangedId = wrapper.connect('state-changed', Lang.bind(this, function(dev) {
             this._syncSectionTitle(dev.category);
         }));
-        wrapper._destroyId = wrapper.connect('destroy', function(wrapper) {
-            wrapper.disconnect(wrapper._activationFailedId);
-            wrapper.disconnect(wrapper._deviceStateChangedId);
-            wrapper.disconnect(wrapper._destroyId);
-        });
 
         let section = this._devices[wrapper.category].section;
         section.addMenuItem(wrapper.statusItem);
@@ -1952,6 +1947,8 @@ const NMApplet = new Lang.Class({
     },
 
     _removeDeviceWrapper: function(wrapper) {
+        wrapper.disconnect(wrapper._activationFailedId);
+        wrapper.disconnect(wrapper._deviceStateChangedId);
         wrapper.destroy();
 
         let devices = this._devices[wrapper.category].devices;
