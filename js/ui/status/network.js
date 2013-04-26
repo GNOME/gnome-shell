@@ -80,15 +80,13 @@ const NMNetworkMenuItem = new Lang.Class({
     Name: 'NMNetworkMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem,
 
-    _init: function(bestAP, title, params) {
-        this.parent(params);
+    _init: function(bestAP) {
+        this.parent();
 
         this.bestAP = bestAP;
 
-        if (!title) {
-            let ssid = this.bestAP.get_ssid();
-            title = ssidToLabel(ssid);
-        }
+        let ssid = this.bestAP.get_ssid();
+        let title = ssidToLabel(ssid);
 
         this._label = new St.Label({ text: title });
         this.actor.label_actor = this._label;
@@ -1071,8 +1069,8 @@ const NMDeviceWireless = new Lang.Class({
         }
     },
 
-    _createAPItem: function(connection, accessPointObj, useConnectionName) {
-        let item = new NMNetworkMenuItem(accessPointObj.accessPoints[0], useConnectionName ? connection.get_id() : undefined);
+    _createAPItem: function(connection, accessPointObj) {
+        let item = new NMNetworkMenuItem(accessPointObj.accessPoints[0]);
         item._connection = connection;
         item.connect('activate', Lang.bind(this, function() {
             let accessPoints = accessPointObj.accessPoints;
@@ -1171,8 +1169,8 @@ const NMDeviceWireless = new Lang.Class({
         else
             title = _("Connected (private)");
 
-        this._activeConnectionItem = new NMNetworkMenuItem(this.device.active_access_point, undefined,
-                                                           { reactive: false });
+        this._activeConnectionItem = new NMNetworkMenuItem(this.device.active_access_point);
+        this._activeConnectionItem.setSensitive(false);
         this._activeConnectionItem.setOrnament(PopupMenu.Ornament.DOT);
     },
 
@@ -1183,7 +1181,7 @@ const NMDeviceWireless = new Lang.Class({
         }
 
         if(network.connections.length > 0) {
-            network.item = this._createAPItem(network.connections[0], network, false);
+            network.item = this._createAPItem(network.connections[0], network);
         } else {
             network.item = new NMNetworkMenuItem(network.accessPoints[0]);
             network.item.connect('activate', Lang.bind(this, function() {
