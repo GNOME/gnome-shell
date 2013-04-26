@@ -172,8 +172,9 @@ const WindowManager = new Lang.Class({
         this.addKeybinding('open-application-menu',
                            new Gio.Settings({ schema: SHELL_KEYBINDINGS_SCHEMA }),
                            Meta.KeyBindingFlags.NONE,
-                           Shell.KeyBindingMode.NORMAL,
-                           Lang.bind(this, this._openAppMenu));
+                           Shell.KeyBindingMode.NORMAL |
+                           Shell.KeyBindingMode.TOPBAR_POPUP,
+                           Lang.bind(this, this._toggleAppMenu));
 
         Main.overview.connect('showing', Lang.bind(this, function() {
             for (let i = 0; i < this._dimmedWindows.length; i++)
@@ -679,8 +680,8 @@ const WindowManager = new Lang.Class({
         Main.ctrlAltTabManager.popup(backwards, binding.get_name(), binding.get_mask());
     },
 
-    _openAppMenu : function(display, screen, window, event, binding) {
-        Main.panel.openAppMenu();
+    _toggleAppMenu : function(display, screen, window, event, binding) {
+        Main.panel.toggleAppMenu();
     },
 
     _showWorkspaceSwitcher : function(display, screen, window, binding) {
