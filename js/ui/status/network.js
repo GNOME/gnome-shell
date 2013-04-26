@@ -180,22 +180,7 @@ const NMConnectionBased = new Lang.Class({
 
     _init: function(connections) {
         this._connections = [ ];
-        for (let i = 0; i < connections.length; i++) {
-            if (!connections[i].get_uuid())
-                continue;
-            if (!this.connectionValid(connections[i]))
-                continue;
-            // record the connection
-            let obj = {
-                connection: connections[i],
-                name: connections[i].get_id(),
-                uuid: connections[i].get_uuid(),
-                timestamp: connections[i]._timestamp,
-                item: null,
-            };
-            this._connections.push(obj);
-        }
-        this._connections.sort(this._connectionSortFunction);
+        connections.forEach(Lang.bind(this, this.checkConnection));
     },
 
     checkConnection: function(connection) {
