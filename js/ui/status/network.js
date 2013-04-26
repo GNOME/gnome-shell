@@ -1341,13 +1341,8 @@ const NMDeviceWireless = new Lang.Class({
         else
             title = _("Connected (private)");
 
-        if (this._activeNetwork)
-            this._activeConnectionItem = new NMNetworkMenuItem(this.device.active_access_point, undefined,
-                                                               { reactive: false });
-        else
-            this._activeConnectionItem = new PopupMenu.PopupImageMenuItem(title,
-                                                                          'network-wireless-connected-symbolic',
-                                                                          { reactive: false });
+        this._activeConnectionItem = new NMNetworkMenuItem(this.device.active_access_point, undefined,
+                                                           { reactive: false });
         this._activeConnectionItem.setOrnament(PopupMenu.Ornament.DOT);
     },
 
