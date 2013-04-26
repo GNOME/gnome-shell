@@ -1069,21 +1069,6 @@ const NMDeviceWireless = new Lang.Class({
         }
     },
 
-    _createAPItem: function(connection, accessPointObj) {
-        let item = new NMNetworkMenuItem(accessPointObj.accessPoints[0]);
-        item._connection = connection;
-        item.connect('activate', Lang.bind(this, function() {
-            let accessPoints = accessPointObj.accessPoints;
-            for (let i = 0; i < accessPoints.length; i++) {
-                if (accessPoints[i].connection_valid(connection)) {
-                    this._client.activate_connection(connection, this.device, accessPoints[i].dbus_path, null);
-                    break;
-                }
-            }
-        }));
-        return item;
-    },
-
     _clearSection: function() {
         this.parent();
 
@@ -1180,10 +1165,20 @@ const NMDeviceWireless = new Lang.Class({
             return;
         }
 
+        network.item = new NMNetworkMenuItem(network.accessPoints[0]);
         if(network.connections.length > 0) {
-            network.item = this._createAPItem(network.connections[0], network);
+            let connection = network.connections[0];
+            network.item._connection = connection;
+            network.item.connect('activate', Lang.bind(this, function() {
+                let accessPoints = network.accessPoints;
+                for (let i = 0; i < accessPoints.length; i++) {
+                    if (accessPoints[i].connection_valid(connection)) {
+                        this._client.activate_connection(connection, this.device, accessPoints[i].dbus_path, null);
+                        break;
+                    }
+                }
+            }));
         } else {
-            network.item = new NMNetworkMenuItem(network.accessPoints[0]);
             network.item.connect('activate', Lang.bind(this, function() {
                 let accessPoints = network.accessPoints;
                 if (   (accessPoints[0]._secType == NMAccessPointSecurity.WPA2_ENT)
