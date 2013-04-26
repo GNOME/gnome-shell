@@ -453,6 +453,10 @@ const WindowOverlay = new Lang.Class({
         metaWindow.delete(global.get_current_time());
     },
 
+    _windowCanClose: function() {
+        return this._windowClone.metaWindow.can_close();
+    },
+
     _onWindowAdded: function(workspace, win) {
         let metaWindow = this._windowClone.metaWindow;
 
@@ -488,12 +492,14 @@ const WindowOverlay = new Lang.Class({
     _animateVisible: function() {
         this._parentActor.raise_top();
 
-        this.closeButton.show();
-        this.closeButton.opacity = 0;
-        Tweener.addTween(this.closeButton,
-                         { opacity: 255,
-                           time: CLOSE_BUTTON_FADE_TIME,
-                           transition: 'easeOutQuad' });
+        if (this._windowCanClose()) {
+            this.closeButton.show();
+            this.closeButton.opacity = 0;
+            Tweener.addTween(this.closeButton,
+                             { opacity: 255,
+                               time: CLOSE_BUTTON_FADE_TIME,
+                               transition: 'easeOutQuad' });
+        }
 
         this.border.show();
         this.border.opacity = 0;
