@@ -911,16 +911,7 @@ const NMDeviceWireless = new Lang.Class({
         for (let i = 0; i < this._networks.length; i++)
             sortAccessPoints(this._networks[i].accessPoints);
 
-        if (this.device.active_access_point) {
-            let networkPos = this._findNetwork(this.device.active_access_point);
-
-            if (networkPos == -1) // the connected access point is invisible
-                this._activeNetwork = null;
-            else
-                this._activeNetwork = this._networks[networkPos];
-        } else {
-            this._activeNetwork = null;
-        }
+        this._activeApChanged();
         this._networks.sort(this._networkSortFunction);
 
         this._apChangedId = device.connect('notify::active-access-point', Lang.bind(this, this._activeApChanged));
