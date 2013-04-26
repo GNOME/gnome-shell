@@ -2052,9 +2052,9 @@ const RemoteMenu = new Lang.Class({
 const PopupMenuManager = new Lang.Class({
     Name: 'PopupMenuManager',
 
-    _init: function(owner) {
+    _init: function(owner, grabParams) {
         this._owner = owner;
-        this._grabHelper = new GrabHelper.GrabHelper(owner.actor);
+        this._grabHelper = new GrabHelper.GrabHelper(owner.actor, grabParams);
         this._menus = [];
     },
 
