@@ -1077,17 +1077,18 @@ const Panel = new Lang.Class({
         return true;
     },
 
-    openAppMenu: function() {
+    toggleAppMenu: function() {
         let indicator = this.statusArea.appMenu;
         if (!indicator) // appMenu not supported by current session mode
             return;
 
         let menu = indicator.menu;
-        if (!indicator.actor.reactive || menu.isOpen)
+        if (!indicator.actor.reactive)
             return;
 
-        menu.open();
-        menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
+        menu.toggle();
+        if (menu.isOpen)
+            menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
     },
 
     set boxOpacity(value) {
