@@ -814,20 +814,20 @@ const NMDeviceWireless = new Lang.Class({
             }
 
             let pos = this._findNetwork(ap);
-            let obj;
+            let network;
             if (pos != -1) {
-                obj = this._networks[pos];
-                obj.accessPoints.push(ap);
+                network = this._networks[pos];
+                network.accessPoints.push(ap);
             } else {
-                obj = { ssid: ap.get_ssid(),
-                        mode: ap.mode,
-                        security: this._getApSecurityType(ap),
-                        connections: [ ],
-                        item: null,
-                        accessPoints: [ ap ]
+                network = { ssid: ap.get_ssid(),
+                            mode: ap.mode,
+                            security: this._getApSecurityType(ap),
+                            connections: [ ],
+                            item: null,
+                            accessPoints: [ ap ]
                       };
-                obj.ssidText = ssidToLabel(obj.ssid);
-                this._networks.push(obj);
+                network.ssidText = ssidToLabel(network.ssid);
+                this._networks.push(network);
             }
             ap._updateId = ap.connect('notify::strength', Lang.bind(this, this._onApStrengthChanged));
 
@@ -835,8 +835,8 @@ const NMDeviceWireless = new Lang.Class({
             for (let j = 0; j < validConnections.length; j++) {
                 let connection = validConnections[j];
                 if (ap.connection_valid(connection) &&
-                    obj.connections.indexOf(connection) == -1) {
-                    obj.connections.push(connection);
+                    network.connections.indexOf(connection) == -1) {
+                    network.connections.push(connection);
                 }
             }
         }
@@ -992,9 +992,9 @@ const NMDeviceWireless = new Lang.Class({
 
     _findExistingNetwork: function(accessPoint) {
         for (let i = 0; i < this._networks.length; i++) {
-            let apObj = this._networks[i];
-            for (let j = 0; j < apObj.accessPoints.length; j++) {
-                if (apObj.accessPoints[j] == accessPoint)
+            let network = this._networks[i];
+            for (let j = 0; j < network.accessPoints.length; j++) {
+                if (network.accessPoints[j] == accessPoint)
                     return { network: i, ap: j };
             }
         }
@@ -1042,30 +1042,30 @@ const NMDeviceWireless = new Lang.Class({
         }
 
         let pos = this._findNetwork(accessPoint);
-        let apObj;
+        let network;
         let needsupdate = false;
 
         if (pos != -1) {
-            apObj = this._networks[pos];
-            if (apObj.accessPoints.indexOf(accessPoint) != -1) {
+            network = this._networks[pos];
+            if (network.accessPoints.indexOf(accessPoint) != -1) {
                 log('Access point was already seen, not adding again');
                 return;
             }
 
-            Util.insertSorted(apObj.accessPoints, accessPoint, function(one, two) {
+            Util.insertSorted(network.accessPoints, accessPoint, function(one, two) {
                 return two.strength - one.strength;
             });
-            if (apObj.item)
-                apObj.item.updateBestAP(apObj.accessPoints[0]);
+            if (network.item)
+                network.item.updateBestAP(network.accessPoints[0]);
         } else {
-            apObj = { ssid: accessPoint.get_ssid(),
-                      mode: accessPoint.mode,
-                      security: this._getApSecurityType(accessPoint),
-                      connections: [ ],
-                      item: null,
-                      accessPoints: [ accessPoint ]
-                    };
-            apObj.ssidText = ssidToLabel(apObj.ssid);
+            network = { ssid: accessPoint.get_ssid(),
+                        mode: accessPoint.mode,
+                        security: this._getApSecurityType(accessPoint),
+                        connections: [ ],
+                        item: null,
+                        accessPoints: [ accessPoint ]
+                      };
+            network.ssidText = ssidToLabel(network.ssid);
         }
         accessPoint._updateId = accessPoint.connect('notify::strength', Lang.bind(this, this._onApStrengthChanged));
 
@@ -1073,14 +1073,14 @@ const NMDeviceWireless = new Lang.Class({
         for (let i = 0; i < this._connections.length; i++) {
             let connection = this._connections[i].connection;
             if (accessPoint.connection_valid(connection) &&
-                apObj.connections.indexOf(connection) == -1) {
-                apObj.connections.push(connection);
+                network.connections.indexOf(connection) == -1) {
+                network.connections.push(connection);
             }
         }
 
         if (pos != -1)
             this._networks.splice(pos, 1);
-        let newPos = Util.insertSorted(this._networks, apObj, this._networkSortFunction);
+        let newPos = Util.insertSorted(this._networks, network, this._networkSortFunction);
 
         // Queue an update of the UI if we changed the order
         if (newPos != pos)
@@ -1100,28 +1100,28 @@ const NMDeviceWireless = new Lang.Class({
             return;
         }
 
-        let apObj = this._networks[res.network];
-        apObj.accessPoints.splice(res.ap, 1);
+        let network = this._networks[res.network];
+        network.accessPoints.splice(res.ap, 1);
 
-        if (apObj.accessPoints.length == 0) {
-            if (this._activeNetwork == apObj)
+        if (network.accessPoints.length == 0) {
+            if (this._activeNetwork == network)
                 this._activeNetwork = null;
 
-            if (apObj.item)
-                apObj.item.destroy();
+            if (network.item)
+                network.item.destroy();
 
             if (this._overflowItem) {
-                if (!apObj.isMore) {
+                if (!network.isMore) {
                     // we removed an item in the main menu, and we have a more submenu
                     // we need to extract the first item in more and move it to the submenu
 
                     let item = this._overflowItem.menu.firstMenuItem;
-                    if (item && item._apObj) {
+                    if (item && item._network) {
                         item.destroy();
                         // clear the cycle, and allow the construction of the new item
-                        item._apObj.item = null;
+                        item._network.item = null;
 
-                        this._createNetworkItem(item._apObj, NUM_VISIBLE_NETWORKS-1);
+                        this._createNetworkItem(item._network, NUM_VISIBLE_NETWORKS-1);
                     } else {
                         log('The more... menu was existing and empty! This should not happen');
                     }
@@ -1140,14 +1140,14 @@ const NMDeviceWireless = new Lang.Class({
             let okPrev = true, okNext = true;
 
             if (res.network > 0)
-                okPrev = this._networkSortFunction(this._networks[res.network - 1], apObj) >= 0;
+                okPrev = this._networkSortFunction(this._networks[res.network - 1], network) >= 0;
             if (res.network < this._networks.length-1)
-                okNext = this._networkSortFunction(this._networks[res.network + 1], apObj) <= 0;
+                okNext = this._networkSortFunction(this._networks[res.network + 1], network) <= 0;
 
             if (!okPrev || !okNext)
                 this._queueCreateSection();
-            else if (apObj.item)
-                apObj.item.updateBestAP(apObj.accessPoints[0]);
+            else if (network.item)
+                network.item.updateBestAP(network.accessPoints[0]);
         }
     },
 
@@ -1186,8 +1186,8 @@ const NMDeviceWireless = new Lang.Class({
 
         let forceupdate = false;
         for (let i = 0; i < this._networks.length; i++) {
-            let apObj = this._networks[i];
-            let connections = apObj.connections;
+            let network = this._networks[i];
+            let connections = network.connections;
             for (let k = 0; k < connections.length; k++) {
                 if (connections[k].get_uuid() == connection.get_uuid()) {
                     // remove the connection from the access point group
@@ -1197,9 +1197,9 @@ const NMDeviceWireless = new Lang.Class({
                     if (forceupdate)
                         break;
 
-                    if (apObj.item) {
-                        if (apObj.item instanceof PopupMenu.PopupSubMenuMenuItem) {
-                            let items = apObj.item.menu._getMenuItems();
+                    if (network.item) {
+                        if (network.item instanceof PopupMenu.PopupSubMenuMenuItem) {
+                            let items = network.item.menu._getMenuItems();
                             if (items.length == 2) {
                                 // we need to update the connection list to convert this to a normal item
                                 forceupdate = true;
@@ -1212,8 +1212,8 @@ const NMDeviceWireless = new Lang.Class({
                                 }
                             }
                         } else {
-                            apObj.item.destroy();
-                            apObj.item = null;
+                            network.item.destroy();
+                            network.item = null;
                         }
                     }
                     break;
@@ -1239,13 +1239,13 @@ const NMDeviceWireless = new Lang.Class({
         // find an appropriate access point
         let forceupdate = false;
         for (let i = 0; i < this._networks.length; i++) {
-            let apObj = this._networks[i];
+            let network = this._networks[i];
 
             // Check if connection is valid for any of these access points
-            for (let k = 0; k < apObj.accessPoints.length; k++) {
-                let ap = apObj.accessPoints[k];
+            for (let k = 0; k < network.accessPoints.length; k++) {
+                let ap = network.accessPoints[k];
                 if (ap.connection_valid(connection)) {
-                    apObj.connections.push(connection);
+                    network.connections.push(connection);
                     // this potentially changes the sorting order
                     forceupdate = true;
                     break;
@@ -1271,25 +1271,25 @@ const NMDeviceWireless = new Lang.Class({
         this._activeConnectionItem.setOrnament(PopupMenu.Ornament.DOT);
     },
 
-    _createNetworkItem: function(apObj, position) {
-        if(!apObj.accessPoints || apObj.accessPoints.length == 0) {
+    _createNetworkItem: function(network, position) {
+        if(!network.accessPoints || network.accessPoints.length == 0) {
             // this should not happen, but I have no idea why it happens
             return;
         }
 
-        if(apObj.connections.length > 0) {
-            if (apObj.connections.length == 1) {
-                apObj.item = this._createAPItem(apObj.connections[0], apObj, false);
+        if(network.connections.length > 0) {
+            if (network.connections.length == 1) {
+                network.item = this._createAPItem(network.connections[0], network, false);
             } else {
-                let title = apObj.ssidText;
-                apObj.item = new PopupMenu.PopupSubMenuMenuItem(title);
-                for (let i = 0; i < apObj.connections.length; i++)
-                    apObj.item.menu.addMenuItem(this._createAPItem(apObj.connections[i], apObj, true));
+                let title = network.ssidText;
+                network.item = new PopupMenu.PopupSubMenuMenuItem(title);
+                for (let i = 0; i < network.connections.length; i++)
+                    network.item.menu.addMenuItem(this._createAPItem(network.connections[i], network, true));
             }
         } else {
-            apObj.item = new NMNetworkMenuItem(apObj.accessPoints[0]);
-            apObj.item.connect('activate', Lang.bind(this, function() {
-                let accessPoints = apObj.accessPoints;
+            network.item = new NMNetworkMenuItem(network.accessPoints[0]);
+            network.item.connect('activate', Lang.bind(this, function() {
+                let accessPoints = network.accessPoints;
                 if (   (accessPoints[0]._secType == NMAccessPointSecurity.WPA2_ENT)
                     || (accessPoints[0]._secType == NMAccessPointSecurity.WPA_ENT)) {
                     // 802.1x-enabled APs require further configuration, so they're
@@ -1302,18 +1302,18 @@ const NMDeviceWireless = new Lang.Class({
                 }
             }));
         }
-        apObj.item._apObj = apObj;
+        network.item._network = network;
 
         if (position < NUM_VISIBLE_NETWORKS) {
-            apObj.isMore = false;
-            this.section.addMenuItem(apObj.item, position);
+            network.isMore = false;
+            this.section.addMenuItem(network.item, position);
         } else {
             if (!this._overflowItem) {
                 this._overflowItem = new PopupMenu.PopupSubMenuMenuItem(_("More…"));
                 this.section.addMenuItem(this._overflowItem);
             }
-            this._overflowItem.menu.addMenuItem(apObj.item, position - NUM_VISIBLE_NETWORKS);
-            apObj.isMore = true;
+            this._overflowItem.menu.addMenuItem(network.item, position - NUM_VISIBLE_NETWORKS);
+            network.isMore = true;
         }
     },
 
@@ -1329,13 +1329,13 @@ const NMDeviceWireless = new Lang.Class({
         let activeOffset = this._activeConnectionItem ? 1 : 0;
 
         for(let j = 0; j < this._networks.length; j++) {
-            let apObj = this._networks[j];
-            if (apObj == this._activeNetwork) {
+            let network = this._networks[j];
+            if (network == this._activeNetwork) {
                 activeOffset--;
                 continue;
             }
 
-            this._createNetworkItem(apObj, j + activeOffset);
+            this._createNetworkItem(network, j + activeOffset);
         }
     },
 });
