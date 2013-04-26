@@ -97,7 +97,7 @@ const GnomeShell = new Lang.Class({
      */
     Eval: function(code) {
         if (!global.settings.get_boolean('development-tools'))
-            return [false, null];
+            return [false, ''];
 
         let returnValue;
         let success;
