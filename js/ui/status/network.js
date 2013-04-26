@@ -166,13 +166,37 @@ const NMWirelessSectionTitleMenuItem = new Lang.Class({
     }
 });
 
-const NMConnectionBased = new Lang.Class({
-    Name: 'NMConnectionBased',
+const NMDevice = new Lang.Class({
+    Name: 'NMDevice',
     Abstract: true,
 
-    _init: function(connections) {
-        this._connections = [ ];
+    _init: function(client, device, connections) {
+        this._client = client;
+        this._setDevice(device);
+
+        this._connections = [];
         connections.forEach(Lang.bind(this, this.checkConnection));
+
+        this._activeConnection = null;
+        this._activeConnectionItem = null;
+        this._overflowItem = null;
+
+        this.statusItem = new PopupMenu.PopupSwitchMenuItem('', this.connected, { style_class: 'popup-subtitle-menu-item' });
+        this._statusChanged = this.statusItem.connect('toggled', Lang.bind(this, function(item, state) {
+            let ok;
+            if (state)
+                ok = this.activate();
+            else
+                ok = this.deactivate();
+
+            if (!ok)
+                item.setToggleState(!state);
+        }));
+
+        this._updateStatusItem();
+        this.section = new PopupMenu.PopupMenuSection();
+
+        this._deferredWorkId = Main.initializeDeferredWork(this.section.actor, Lang.bind(this, this._createSection));
     },
 
     checkConnection: function(connection) {
@@ -247,40 +271,6 @@ const NMConnectionBased = new Lang.Class({
             return GLib.utf8_collate(one.name, two.name);
 
         return two.timestamp - one.timestamp;
-    },
-});
-Signals.addSignalMethods(NMConnectionBased.prototype);
-
-const NMDevice = new Lang.Class({
-    Name: 'NMDevice',
-    Abstract: true,
-    Extends: NMConnectionBased,
-
-    _init: function(client, device, connections) {
-        this._client = client;
-        this._setDevice(device);
-        this.parent(connections);
-
-        this._activeConnection = null;
-        this._activeConnectionItem = null;
-        this._overflowItem = null;
-
-        this.statusItem = new PopupMenu.PopupSwitchMenuItem('', this.connected, { style_class: 'popup-subtitle-menu-item' });
-        this._statusChanged = this.statusItem.connect('toggled', Lang.bind(this, function(item, state) {
-            let ok;
-            if (state)
-                ok = this.activate();
-            else
-                ok = this.deactivate();
-
-            if (!ok)
-                item.setToggleState(!state);
-        }));
-
-        this._updateStatusItem();
-        this.section = new PopupMenu.PopupMenuSection();
-
-        this._deferredWorkId = Main.initializeDeferredWork(this.section.actor, Lang.bind(this, this._createSection));
     },
 
     destroy: function() {
@@ -547,6 +537,7 @@ const NMDevice = new Lang.Class({
         this.emit('state-changed');
     }
 });
+Signals.addSignalMethods(NMDevice.prototype);
 
 const NMDeviceSimple = new Lang.Class({
     Name: 'NMDeviceSimple',
