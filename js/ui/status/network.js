@@ -1397,10 +1397,6 @@ const NMVPNSection = new Lang.Class({
         this._deferredWorkId = Main.initializeDeferredWork(this.section.actor, Lang.bind(this, this._createSection));
     },
 
-    get empty() {
-        return this._connections.length == 0;
-    },
-
     connectionValid: function(connection) {
         // filtering is done by NMApplet code
         return true;
