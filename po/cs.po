@@ -519,7 +519,7 @@ msgstr "Celý den"
 #: ../js/ui/calendar.js:68
 msgctxt "event list time"
 msgid "%H\\u2236%M"
-msgstr "%H.%M"
+msgstr "%H:%M"
 
 #. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
@@ -527,7 +527,7 @@ msgstr "%H.%M"
 #: ../js/ui/calendar.js:77
 msgctxt "event list time"
 msgid "%l\\u2236%M\\u2009%p"
-msgstr "%l.%M\\u2009%p"
+msgstr "%l:%M\\u2009%p"
 
 #. Translators: Calendar grid abbreviation for Sunday.
 #. *
