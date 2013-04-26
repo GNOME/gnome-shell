@@ -15,6 +15,8 @@
  * @SHELL_KEYBINDING_MODE_SYSTEM_MODAL: allow keybinding when a system modal
  *     dialog (e.g. authentification or session dialogs) is open
  * @SHELL_KEYBINDING_MODE_LOOKING_GLASS: allow keybinding in looking glass
+ * @SHELL_KEYBINDING_MODE_TOPBAR_POPUP: allow keybinding while a top bar menu
+ *     is open
  * @SHELL_KEYBINDING_MODE_ALL: always allow keybinding
  *
  * Controls in which GNOME Shell states a keybinding should be handled.
@@ -29,6 +31,7 @@ typedef enum {
   SHELL_KEYBINDING_MODE_MESSAGE_TRAY  = 1 << 5,
   SHELL_KEYBINDING_MODE_SYSTEM_MODAL  = 1 << 6,
   SHELL_KEYBINDING_MODE_LOOKING_GLASS = 1 << 7,
+  SHELL_KEYBINDING_MODE_TOPBAR_POPUP  = 1 << 8,
 
   SHELL_KEYBINDING_MODE_ALL = ~0,
 } ShellKeyBindingMode;
