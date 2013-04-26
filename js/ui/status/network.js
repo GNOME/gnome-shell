@@ -117,53 +117,6 @@ const NMNetworkMenuItem = new Lang.Class({
     }
 });
 
-const NMWirelessSectionTitleMenuItem = new Lang.Class({
-    Name: 'NMWirelessSectionTitleMenuItem',
-    Extends: PopupMenu.PopupSwitchMenuItem,
-
-    _init: function(client) {
-        this.parent(_("Wi-Fi"), false, { style_class: 'popup-subtitle-menu-item' });
-
-        this._client = client;
-        this._client.connect('notify::wireless-enabled', Lang.bind(this, this._propertyChanged));
-        this._client.connect('notify::wireless-hardware-enabled', Lang.bind(this, this._propertyChanged));
-
-        this._propertyChanged();
-    },
-
-    updateForDevice: function(device) {
-        // we show the switch
-        // - if there not just one device
-        // - if the switch is off (but it can be turned on)
-        // - if the device is activated or disconnected
-        if (!this._hardwareEnabled) {
-            this.setStatus(_("hardware disabled"));
-        } else if (device && this._softwareEnabled) {
-            let text = device.getStatusLabel();
-            this.setStatus(text);
-        } else
-            this.setStatus(null);
-    },
-
-    activate: function(event) {
-        this.parent(event);
-
-        this._client.wireless_set_enabled(this._switch.state);
-    },
-
-    _propertyChanged: function() {
-        this._softwareEnabled = this._client.wireless_enabled;
-        this._hardwareEnabled = this._client.wireless_hardware_enabled;
-
-        let enabled = this._softwareEnabled && this._hardwareEnabled;
-        this.setToggleState(enabled);
-        if (!this._hardwareEnabled)
-            /* Translators: this indicates that wireless or wwan is disabled by hardware killswitch */
-            this.setStatus(_("disabled"));
-
-        this.emit('enabled-changed', enabled);
-    }
-});
 
 const NMDevice = new Lang.Class({
     Name: 'NMDevice',
@@ -366,11 +319,6 @@ const NMDevice = new Lang.Class({
         return this._device.connection_valid(connection);
     },
 
-    setEnabled: function(enabled) {
-        // do nothing by default, we want to keep the conneciton list visible
-        // in the majority of cases (wired, wwan)
-    },
-
     getStatusLabel: function() {
         if (!this._device)
             return null;
@@ -511,7 +459,6 @@ const NMDevice = new Lang.Class({
         this._updateStatusItem();
 
         this._queueCreateSection();
-        this.emit('state-changed');
     },
 
     _updateStatusItem: function() {
@@ -521,8 +468,6 @@ const NMDevice = new Lang.Class({
 
     _substateChanged: function() {
         this.statusItem.setStatus(this.getStatusLabel());
-
-        this.emit('state-changed');
     }
 });
 Signals.addSignalMethods(NMDevice.prototype);
@@ -575,7 +520,6 @@ const NMDeviceModem = new Lang.Class({
 
     _init: function(client, device, connections) {
         device._description = _("Mobile broadband");
-        this._enabled = true;
         this.mobileDevice = null;
 
         this._capabilities = device.current_capabilities;
@@ -610,23 +554,6 @@ const NMDeviceModem = new Lang.Class({
         }
 
         this.parent(client, device, connections);
-    },
-
-    setEnabled: function(enabled) {
-        this._enabled = enabled;
-        if (this.category == NMConnectionCategory.WWAN) {
-            if (enabled) {
-                // prevent "network unavailable" statuses
-                this.statusItem.setStatus(null);
-            } else
-                this.statusItem.setStatus(this.getStatusLabel());
-        }
-
-        this.parent(enabled);
-    },
-
-    get connected() {
-        return this._enabled && this._device.state == NetworkManager.DeviceState.ACTIVATED;
     },
 
     destroy: function() {
@@ -768,11 +695,6 @@ const NMDeviceWireless = new Lang.Class({
         }
 
         this.parent();
-    },
-
-    setEnabled: function(enabled) {
-        this.statusItem.actor.visible = enabled;
-        this.section.actor.visible = enabled;
     },
 
     activate: function() {
@@ -1473,9 +1395,7 @@ const NMApplet = new Lang.Class({
         this._devices.wireless = {
             section: new PopupMenu.PopupMenuSection(),
             devices: [ ],
-            item: this._makeWirelessToggle()
         };
-        this._devices.wireless.section.addMenuItem(this._devices.wireless.item);
         this.menu.addMenuItem(this._devices.wireless.section);
 
         this._devices.wwan = {
@@ -1512,41 +1432,6 @@ const NMApplet = new Lang.Class({
                 this._source = null;
             }));
             Main.messageTray.add(this._source);
-        }
-    },
-
-    _makeWirelessToggle: function() {
-        let item = new NMWirelessSectionTitleMenuItem(this._client);
-        item.connect('enabled-changed', Lang.bind(this, function(item, enabled) {
-            let devices = this._devices.wireless.devices;
-            devices.forEach(function(dev) {
-                dev.setEnabled(enabled);
-            });
-            this._syncSectionTitle('wireless');
-        }));
-        return item;
-    },
-
-    _syncSectionTitle: function(category) {
-        let devices = this._devices[category].devices;
-        let item = this._devices[category].item;
-
-        // Sync the relation between the section title
-        // item (the one with the airplane mode switch)
-        // and the individual device switches
-        if (item) {
-            if (devices.length == 1) {
-                let dev = devices[0];
-                dev.statusItem.actor.hide();
-                item.updateForDevice(dev);
-            } else {
-                devices.forEach(function(dev) {
-                    dev.statusItem.actor.show();
-                });
-
-                // remove status text from the section title item
-                item.updateForDevice(null);
-            }
         }
     },
 
@@ -1616,9 +1501,6 @@ const NMApplet = new Lang.Class({
     _addDeviceWrapper: function(wrapper) {
         wrapper._activationFailedId = wrapper.connect('activation-failed',
                                                       Lang.bind(this, this._onActivationFailed));
-        wrapper._deviceStateChangedId = wrapper.connect('state-changed', Lang.bind(this, function(dev) {
-            this._syncSectionTitle(dev.category);
-        }));
 
         let section = this._devices[wrapper.category].section;
         section.addMenuItem(wrapper.statusItem);
@@ -1626,8 +1508,6 @@ const NMApplet = new Lang.Class({
 
         let devices = this._devices[wrapper.category].devices;
         devices.push(wrapper);
-
-        this._syncSectionTitle(wrapper.category);
     },
 
     _deviceRemoved: function(client, device) {
@@ -1648,14 +1528,11 @@ const NMApplet = new Lang.Class({
 
     _removeDeviceWrapper: function(wrapper) {
         wrapper.disconnect(wrapper._activationFailedId);
-        wrapper.disconnect(wrapper._deviceStateChangedId);
         wrapper.destroy();
 
         let devices = this._devices[wrapper.category].devices;
         let pos = devices.indexOf(wrapper);
         devices.splice(pos, 1);
-
-        this._syncSectionTitle(wrapper.category)
     },
 
     _getSupportedActiveConnections: function() {
