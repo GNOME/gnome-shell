@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>, 2012.
+# Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>, 2012, 2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=clutte"
 "r&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-18 02:00+0000\n"
-"PO-Revision-Date: 2012-12-23 18:52+0300\n"
+"POT-Creation-Date: 2013-04-23 16:38+0000\n"
+"PO-Revision-Date: 2013-04-27 06:09+0300\n"
 "Last-Translator: Dimitris Spingos (Δημήτρης Σπίγγος) <dmtrs32@gmail.com>\n"
 "Language-Team: team@gnome.gr\n"
 "Language: el\n"
@@ -19,665 +19,665 @@ msgstr ""
 "X-Generator: Virtaal 0.7.1\n"
 "X-Project-Style: gnome\n"
 
-#: ../clutter/clutter-actor.c:6144
+#: ../clutter/clutter-actor.c:6175
 msgid "X coordinate"
 msgstr "συντεταγμένη Χ"
 
-#: ../clutter/clutter-actor.c:6145
+#: ../clutter/clutter-actor.c:6176
 msgid "X coordinate of the actor"
 msgstr "συντεταγμένη Χ του δράστη"
 
-#: ../clutter/clutter-actor.c:6163
+#: ../clutter/clutter-actor.c:6194
 msgid "Y coordinate"
 msgstr "συντεταγμένη Υ"
 
-#: ../clutter/clutter-actor.c:6164
+#: ../clutter/clutter-actor.c:6195
 msgid "Y coordinate of the actor"
 msgstr "συντεταγμένη Υ του δράστη"
 
-#: ../clutter/clutter-actor.c:6186
+#: ../clutter/clutter-actor.c:6217
 msgid "Position"
 msgstr "Θέση"
 
-#: ../clutter/clutter-actor.c:6187
+#: ../clutter/clutter-actor.c:6218
 msgid "The position of the origin of the actor"
 msgstr "Η θέση προέλευσης του δράστη"
 
-#: ../clutter/clutter-actor.c:6204 ../clutter/clutter-canvas.c:215
+#: ../clutter/clutter-actor.c:6235 ../clutter/clutter-canvas.c:215
 #: ../clutter/clutter-grid-layout.c:1238
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:481
 msgid "Width"
 msgstr "Πλάτος"
 
-#: ../clutter/clutter-actor.c:6205
+#: ../clutter/clutter-actor.c:6236
 msgid "Width of the actor"
 msgstr "Πλάτος του δράστη"
 
-#: ../clutter/clutter-actor.c:6223 ../clutter/clutter-canvas.c:231
+#: ../clutter/clutter-actor.c:6254 ../clutter/clutter-canvas.c:231
 #: ../clutter/clutter-grid-layout.c:1245
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:497
 msgid "Height"
 msgstr "Ύψος"
 
-#: ../clutter/clutter-actor.c:6224
+#: ../clutter/clutter-actor.c:6255
 msgid "Height of the actor"
 msgstr "Ύψος του δράστη"
 
-#: ../clutter/clutter-actor.c:6245
+#: ../clutter/clutter-actor.c:6276
 msgid "Size"
 msgstr "Μέγεθος"
 
-#: ../clutter/clutter-actor.c:6246
+#: ../clutter/clutter-actor.c:6277
 msgid "The size of the actor"
 msgstr "Το μέγεθος του δράστη"
 
-#: ../clutter/clutter-actor.c:6264
+#: ../clutter/clutter-actor.c:6295
 msgid "Fixed X"
 msgstr "Σταθερό Χ"
 
-#: ../clutter/clutter-actor.c:6265
+#: ../clutter/clutter-actor.c:6296
 msgid "Forced X position of the actor"
 msgstr "Εξαναγκασμένη θέση Χ του δράστη"
 
-#: ../clutter/clutter-actor.c:6282
+#: ../clutter/clutter-actor.c:6313
 msgid "Fixed Y"
 msgstr "Σταθερό Υ"
 
-#: ../clutter/clutter-actor.c:6283
+#: ../clutter/clutter-actor.c:6314
 msgid "Forced Y position of the actor"
 msgstr "Εξαναγκασμένη θέση Υ του δράστη"
 
-#: ../clutter/clutter-actor.c:6298
+#: ../clutter/clutter-actor.c:6329
 msgid "Fixed position set"
 msgstr "Ορισμός σταθερής θέσης"
 
-#: ../clutter/clutter-actor.c:6299
+#: ../clutter/clutter-actor.c:6330
 msgid "Whether to use fixed positioning for the actor"
 msgstr "Εάν θα χρησιμοποιηθεί σταθερή θέση για τον δράστη"
 
-#: ../clutter/clutter-actor.c:6317
+#: ../clutter/clutter-actor.c:6348
 msgid "Min Width"
 msgstr "Ελάχιστο πλάτος"
 
-#: ../clutter/clutter-actor.c:6318
+#: ../clutter/clutter-actor.c:6349
 msgid "Forced minimum width request for the actor"
 msgstr "Εξαναγκασμένο αίτημα ελάχιστου πλάτους για το δράστη"
 
-#: ../clutter/clutter-actor.c:6336
+#: ../clutter/clutter-actor.c:6367
 msgid "Min Height"
 msgstr "Ελάχιστο ύψος"
 
-#: ../clutter/clutter-actor.c:6337
+#: ../clutter/clutter-actor.c:6368
 msgid "Forced minimum height request for the actor"
 msgstr "Εξαναγκασμένο αίτημα ελάχιστου ύψους για το δράστη"
 
-#: ../clutter/clutter-actor.c:6355
+#: ../clutter/clutter-actor.c:6386
 msgid "Natural Width"
 msgstr "Φυσικό πλάτος"
 
-#: ../clutter/clutter-actor.c:6356
+#: ../clutter/clutter-actor.c:6387
 msgid "Forced natural width request for the actor"
 msgstr "Εξαναγκασμένο αίτημα φυσικού πλάτους για το δράστη"
 
-#: ../clutter/clutter-actor.c:6374
+#: ../clutter/clutter-actor.c:6405
 msgid "Natural Height"
 msgstr "Φυσικό ύψος"
 
-#: ../clutter/clutter-actor.c:6375
+#: ../clutter/clutter-actor.c:6406
 msgid "Forced natural height request for the actor"
 msgstr "Εξαναγκασμένο αίτημα φυσικού ύψους για το δράστη"
 
-#: ../clutter/clutter-actor.c:6390
+#: ../clutter/clutter-actor.c:6421
 msgid "Minimum width set"
 msgstr "Ορισμός ελάχιστου πλάτους"
 
-#: ../clutter/clutter-actor.c:6391
+#: ../clutter/clutter-actor.c:6422
 msgid "Whether to use the min-width property"
 msgstr "Αν θα χρησιμοποιηθεί η ιδιότητα ελάχιστου πλάτους"
 
-#: ../clutter/clutter-actor.c:6405
+#: ../clutter/clutter-actor.c:6436
 msgid "Minimum height set"
 msgstr "Ορισμός ελάχιστου ύψους"
 
-#: ../clutter/clutter-actor.c:6406
+#: ../clutter/clutter-actor.c:6437
 msgid "Whether to use the min-height property"
 msgstr "Αν θα χρησιμοποιηθεί η ιδιότητα ελάχιστου ύψους"
 
-#: ../clutter/clutter-actor.c:6420
+#: ../clutter/clutter-actor.c:6451
 msgid "Natural width set"
 msgstr "Ορισμός φυσικού πλάτους"
 
-#: ../clutter/clutter-actor.c:6421
+#: ../clutter/clutter-actor.c:6452
 msgid "Whether to use the natural-width property"
 msgstr "Αν θα χρησιμοποιηθεί η ιδιότητα φυσικού πλάτους"
 
-#: ../clutter/clutter-actor.c:6435
+#: ../clutter/clutter-actor.c:6466
 msgid "Natural height set"
 msgstr "Ορισμός φυσικού ύψους"
 
-#: ../clutter/clutter-actor.c:6436
+#: ../clutter/clutter-actor.c:6467
 msgid "Whether to use the natural-height property"
 msgstr "Αν θα χρησιμοποιηθεί η ιδιότητα φυσικού ύψους"
 
-#: ../clutter/clutter-actor.c:6452
+#: ../clutter/clutter-actor.c:6483
 msgid "Allocation"
 msgstr "Μερίδιο"
 
-#: ../clutter/clutter-actor.c:6453
+#: ../clutter/clutter-actor.c:6484
 msgid "The actor's allocation"
 msgstr "Μερίδιο του δράστη"
 
-#: ../clutter/clutter-actor.c:6510
+#: ../clutter/clutter-actor.c:6541
 msgid "Request Mode"
 msgstr "Κατάσταση αιτήματος"
 
-#: ../clutter/clutter-actor.c:6511
+#: ../clutter/clutter-actor.c:6542
 msgid "The actor's request mode"
 msgstr "Η κατάσταση αιτήματος του δράστη"
 
-#: ../clutter/clutter-actor.c:6535
+#: ../clutter/clutter-actor.c:6566
 msgid "Depth"
 msgstr "Βάθος"
 
-#: ../clutter/clutter-actor.c:6536
+#: ../clutter/clutter-actor.c:6567
 msgid "Position on the Z axis"
 msgstr "Θέση του άξονα Ζ"
 
-#: ../clutter/clutter-actor.c:6563
+#: ../clutter/clutter-actor.c:6594
 msgid "Z Position"
 msgstr "Θέση Ζ"
 
-#: ../clutter/clutter-actor.c:6564
+#: ../clutter/clutter-actor.c:6595
 msgid "The actor's position on the Z axis"
 msgstr "Το πλάτος του δράστη στον άξονα Ζ"
 
-#: ../clutter/clutter-actor.c:6581
+#: ../clutter/clutter-actor.c:6612
 msgid "Opacity"
 msgstr "Αδιαφάνεια"
 
-#: ../clutter/clutter-actor.c:6582
+#: ../clutter/clutter-actor.c:6613
 msgid "Opacity of an actor"
 msgstr "Αδιαφάνεια ενός δράστη"
 
-#: ../clutter/clutter-actor.c:6602
+#: ../clutter/clutter-actor.c:6633
 msgid "Offscreen redirect"
 msgstr "Ανακατεύθυνση εκτός οθόνης"
 
-#: ../clutter/clutter-actor.c:6603
+#: ../clutter/clutter-actor.c:6634
 msgid "Flags controlling when to flatten the actor into a single image"
 msgstr ""
 "Οι σημαίες ελέγχουν πότε να ισοπεδώσουν το δράστη σε μια μοναδική εικόνα"
 
-#: ../clutter/clutter-actor.c:6617
+#: ../clutter/clutter-actor.c:6648
 msgid "Visible"
 msgstr "Ορατή"
 
-#: ../clutter/clutter-actor.c:6618
+#: ../clutter/clutter-actor.c:6649
 msgid "Whether the actor is visible or not"
 msgstr "Εάν ο δράστης είναι ορατός ή όχι"
 
-#: ../clutter/clutter-actor.c:6632
+#: ../clutter/clutter-actor.c:6663
 msgid "Mapped"
 msgstr "Χαρτογραφημένο"
 
-#: ../clutter/clutter-actor.c:6633
+#: ../clutter/clutter-actor.c:6664
 msgid "Whether the actor will be painted"
 msgstr "Εάν ο δράστης θα βαφτεί"
 
-#: ../clutter/clutter-actor.c:6646
+#: ../clutter/clutter-actor.c:6677
 msgid "Realized"
 msgstr "Κατανοητό"
 
-#: ../clutter/clutter-actor.c:6647
+#: ../clutter/clutter-actor.c:6678
 msgid "Whether the actor has been realized"
 msgstr "Εάν ο δράστης έχει γίνει κατανοητός"
 
-#: ../clutter/clutter-actor.c:6662
+#: ../clutter/clutter-actor.c:6693
 msgid "Reactive"
 msgstr "Ενεργός"
 
-#: ../clutter/clutter-actor.c:6663
+#: ../clutter/clutter-actor.c:6694
 msgid "Whether the actor is reactive to events"
 msgstr "Εάν ο δράστης είναι ενεργός στα συμβάντα"
 
-#: ../clutter/clutter-actor.c:6674
+#: ../clutter/clutter-actor.c:6705
 msgid "Has Clip"
 msgstr "Ύπαρξη αποκόμματος"
 
-#: ../clutter/clutter-actor.c:6675
+#: ../clutter/clutter-actor.c:6706
 msgid "Whether the actor has a clip set"
 msgstr "Εάν ο δράστης έχει ορίσει ένα απόκομμα"
 
-#: ../clutter/clutter-actor.c:6688
+#: ../clutter/clutter-actor.c:6719
 msgid "Clip"
 msgstr "Απόκομμα"
 
-#: ../clutter/clutter-actor.c:6689
+#: ../clutter/clutter-actor.c:6720
 msgid "The clip region for the actor"
 msgstr "Η περιοχή αποκοπής για τον δράστη"
 
-#: ../clutter/clutter-actor.c:6708
+#: ../clutter/clutter-actor.c:6739
 msgid "Clip Rectangle"
 msgstr "Απόκομμα τετραγώνου"
 
-#: ../clutter/clutter-actor.c:6709
+#: ../clutter/clutter-actor.c:6740
 msgid "The visible region of the actor"
 msgstr "Η ορατή περιοχή για το δράστη"
 
-#: ../clutter/clutter-actor.c:6723 ../clutter/clutter-actor-meta.c:207
+#: ../clutter/clutter-actor.c:6754 ../clutter/clutter-actor-meta.c:207
 #: ../clutter/clutter-binding-pool.c:319 ../clutter/clutter-input-device.c:258
 msgid "Name"
 msgstr "Όνομα"
 
-#: ../clutter/clutter-actor.c:6724
+#: ../clutter/clutter-actor.c:6755
 msgid "Name of the actor"
 msgstr "Όνομα του δράστη"
 
-#: ../clutter/clutter-actor.c:6745
+#: ../clutter/clutter-actor.c:6776
 msgid "Pivot Point"
 msgstr "Σημείο άξονα"
 
-#: ../clutter/clutter-actor.c:6746
+#: ../clutter/clutter-actor.c:6777
 msgid "The point around which the scaling and rotation occur"
 msgstr "Το σημείο στο οποίο συμβαίνει η εστίαση και η περιστροφή"
 
-#: ../clutter/clutter-actor.c:6764
+#: ../clutter/clutter-actor.c:6795
 msgid "Pivot Point Z"
 msgstr "Σημείο άξονα Ζ"
 
-#: ../clutter/clutter-actor.c:6765
+#: ../clutter/clutter-actor.c:6796
 msgid "Z component of the pivot point"
 msgstr "Ζ συνιστώσα του σημείου του άξονα"
 
-#: ../clutter/clutter-actor.c:6783
+#: ../clutter/clutter-actor.c:6814
 msgid "Scale X"
 msgstr "Κλίμακα Χ"
 
-#: ../clutter/clutter-actor.c:6784
+#: ../clutter/clutter-actor.c:6815
 msgid "Scale factor on the X axis"
 msgstr "Συντελεστής κλίμακας στον άξονα Χ"
 
-#: ../clutter/clutter-actor.c:6802
+#: ../clutter/clutter-actor.c:6833
 msgid "Scale Y"
 msgstr "Κλίμακα Υ"
 
-#: ../clutter/clutter-actor.c:6803
+#: ../clutter/clutter-actor.c:6834
 msgid "Scale factor on the Y axis"
 msgstr "Συντελεστής κλίμακας στον άξονα Υ"
 
-#: ../clutter/clutter-actor.c:6821
+#: ../clutter/clutter-actor.c:6852
 msgid "Scale Z"
 msgstr "Κλίμακα Ζ"
 
-#: ../clutter/clutter-actor.c:6822
+#: ../clutter/clutter-actor.c:6853
 msgid "Scale factor on the Z axis"
 msgstr "Κλίμακα συντελεστή στον άξονα Ζ"
 
-#: ../clutter/clutter-actor.c:6840
+#: ../clutter/clutter-actor.c:6871
 msgid "Scale Center X"
 msgstr "Κλίμακα κέντρου Χ"
 
-#: ../clutter/clutter-actor.c:6841
+#: ../clutter/clutter-actor.c:6872
 msgid "Horizontal scale center"
 msgstr "Κέντρο οριζόντιας κλίμακας"
 
-#: ../clutter/clutter-actor.c:6859
+#: ../clutter/clutter-actor.c:6890
 msgid "Scale Center Y"
 msgstr "Κέντρο κλίμακας Υ"
 
-#: ../clutter/clutter-actor.c:6860
+#: ../clutter/clutter-actor.c:6891
 msgid "Vertical scale center"
 msgstr "Κέντρο κάθετης κλίμακας"
 
-#: ../clutter/clutter-actor.c:6878
+#: ../clutter/clutter-actor.c:6909
 msgid "Scale Gravity"
 msgstr "Βαρύτητα κλίμακας"
 
-#: ../clutter/clutter-actor.c:6879
+#: ../clutter/clutter-actor.c:6910
 msgid "The center of scaling"
 msgstr "Το κέντρο της κλιμάκωσης"
 
-#: ../clutter/clutter-actor.c:6897
+#: ../clutter/clutter-actor.c:6928
 msgid "Rotation Angle X"
 msgstr "Γωνία περιστροφής Χ"
 
-#: ../clutter/clutter-actor.c:6898
+#: ../clutter/clutter-actor.c:6929
 msgid "The rotation angle on the X axis"
 msgstr "Η γωνία περιστροφής στον άξονα Χ"
 
-#: ../clutter/clutter-actor.c:6916
+#: ../clutter/clutter-actor.c:6947
 msgid "Rotation Angle Y"
 msgstr "Γωνία περιστροφής Υ"
 
-#: ../clutter/clutter-actor.c:6917
+#: ../clutter/clutter-actor.c:6948
 msgid "The rotation angle on the Y axis"
 msgstr "Η γωνία περιστροφής στον άξονα Υ"
 
-#: ../clutter/clutter-actor.c:6935
+#: ../clutter/clutter-actor.c:6966
 msgid "Rotation Angle Z"
 msgstr "Γωνία περιστροφής Ζ"
 
-#: ../clutter/clutter-actor.c:6936
+#: ../clutter/clutter-actor.c:6967
 msgid "The rotation angle on the Z axis"
 msgstr "Η γωνία περιστροφής στον άξονα Ζ"
 
-#: ../clutter/clutter-actor.c:6954
+#: ../clutter/clutter-actor.c:6985
 msgid "Rotation Center X"
 msgstr "Κέντρο περιστροφής Χ"
 
-#: ../clutter/clutter-actor.c:6955
+#: ../clutter/clutter-actor.c:6986
 msgid "The rotation center on the X axis"
 msgstr "Το κέντρο περιστροφής στον άξονα Χ"
 
-#: ../clutter/clutter-actor.c:6972
+#: ../clutter/clutter-actor.c:7003
 msgid "Rotation Center Y"
 msgstr "Κέντρο περιστροφής Υ"
 
-#: ../clutter/clutter-actor.c:6973
+#: ../clutter/clutter-actor.c:7004
 msgid "The rotation center on the Y axis"
 msgstr "Το κέντρο περιστροφής στον άξονα Υ"
 
-#: ../clutter/clutter-actor.c:6990
+#: ../clutter/clutter-actor.c:7021
 msgid "Rotation Center Z"
 msgstr "Κέντρο περιστροφής Ζ"
 
-#: ../clutter/clutter-actor.c:6991
+#: ../clutter/clutter-actor.c:7022
 msgid "The rotation center on the Z axis"
 msgstr "Το κέντρο περιστροφής στον άξονα Ζ"
 
-#: ../clutter/clutter-actor.c:7008
+#: ../clutter/clutter-actor.c:7039
 msgid "Rotation Center Z Gravity"
 msgstr "Κέντρο περιστροφής Ζ βαρύτητας"
 
-#: ../clutter/clutter-actor.c:7009
+#: ../clutter/clutter-actor.c:7040
 msgid "Center point for rotation around the Z axis"
 msgstr "Κεντρικό σημείο περιστροφής γύρω από τον άξονα Ζ"
 
-#: ../clutter/clutter-actor.c:7037
+#: ../clutter/clutter-actor.c:7068
 msgid "Anchor X"
 msgstr "Άγκυρα Χ"
 
-#: ../clutter/clutter-actor.c:7038
+#: ../clutter/clutter-actor.c:7069
 msgid "X coordinate of the anchor point"
 msgstr "Συντεταγμένη Χ του σημείου αγκύρωσης"
 
-#: ../clutter/clutter-actor.c:7066
+#: ../clutter/clutter-actor.c:7097
 msgid "Anchor Y"
 msgstr "Άγκυρα Υ"
 
-#: ../clutter/clutter-actor.c:7067
+#: ../clutter/clutter-actor.c:7098
 msgid "Y coordinate of the anchor point"
 msgstr "Συντεταγμένη Υ του σημείου αγκύρωσης"
 
-#: ../clutter/clutter-actor.c:7094
+#: ../clutter/clutter-actor.c:7125
 msgid "Anchor Gravity"
 msgstr "Άγκυρα βαρύτητας"
 
-#: ../clutter/clutter-actor.c:7095
+#: ../clutter/clutter-actor.c:7126
 msgid "The anchor point as a ClutterGravity"
 msgstr "Το σημείο αγκύρωσης ως ClutterGravity"
 
-#: ../clutter/clutter-actor.c:7114
+#: ../clutter/clutter-actor.c:7145
 msgid "Translation X"
 msgstr "Μετάφραση Χ"
 
-#: ../clutter/clutter-actor.c:7115
+#: ../clutter/clutter-actor.c:7146
 msgid "Translation along the X axis"
 msgstr "Μετάφραση κατά μήκος του άξονα Χ"
 
-#: ../clutter/clutter-actor.c:7134
+#: ../clutter/clutter-actor.c:7165
 msgid "Translation Y"
 msgstr "Μετάφραση Υ"
 
-#: ../clutter/clutter-actor.c:7135
+#: ../clutter/clutter-actor.c:7166
 msgid "Translation along the Y axis"
 msgstr "Μετάφραση κατά μήκος του άξονα Υ"
 
-#: ../clutter/clutter-actor.c:7154
+#: ../clutter/clutter-actor.c:7185
 msgid "Translation Z"
 msgstr "Μετάφραση Ζ"
 
-#: ../clutter/clutter-actor.c:7155
+#: ../clutter/clutter-actor.c:7186
 msgid "Translation along the Z axis"
 msgstr "Μετάφραση κατά μήκος του άξονα Ζ"
 
-#: ../clutter/clutter-actor.c:7185
+#: ../clutter/clutter-actor.c:7216
 msgid "Transform"
 msgstr "Μετασχηματισμός"
 
-#: ../clutter/clutter-actor.c:7186
+#: ../clutter/clutter-actor.c:7217
 msgid "Transformation matrix"
 msgstr "Πίνακας μετασχηματισμού"
 
-#: ../clutter/clutter-actor.c:7201
+#: ../clutter/clutter-actor.c:7232
 msgid "Transform Set"
 msgstr "Ορισμός μετασχηματισμού"
 
-#: ../clutter/clutter-actor.c:7202
+#: ../clutter/clutter-actor.c:7233
 msgid "Whether the transform property is set"
 msgstr "Εάν ορίστηκε η ιδιότητα του μετασχηματισμού"
 
-#: ../clutter/clutter-actor.c:7223
+#: ../clutter/clutter-actor.c:7254
 msgid "Child Transform"
 msgstr "Μετασχηματισμός παιδιού"
 
-#: ../clutter/clutter-actor.c:7224
+#: ../clutter/clutter-actor.c:7255
 msgid "Children transformation matrix"
 msgstr "Πίνακας μετασχηματισμού παιδιών"
 
-#: ../clutter/clutter-actor.c:7239
+#: ../clutter/clutter-actor.c:7270
 msgid "Child Transform Set"
 msgstr "Ορισμός μετασχηματισμού παιδιού"
 
-#: ../clutter/clutter-actor.c:7240
+#: ../clutter/clutter-actor.c:7271
 msgid "Whether the child-transform property is set"
 msgstr "Εάν ορίστηκε η ιδιότητα μετασχηματισμού του παιδιού"
 
-#: ../clutter/clutter-actor.c:7257
+#: ../clutter/clutter-actor.c:7288
 msgid "Show on set parent"
 msgstr "Εμφάνιση του ορισμένου γονέα"
 
-#: ../clutter/clutter-actor.c:7258
+#: ../clutter/clutter-actor.c:7289
 msgid "Whether the actor is shown when parented"
 msgstr "Εάν ο δράστης προβάλλεται όταν ορίζεται γονέας"
 
-#: ../clutter/clutter-actor.c:7275
+#: ../clutter/clutter-actor.c:7306
 msgid "Clip to Allocation"
 msgstr "Κόψιμο στο μερίδιο"
 
-#: ../clutter/clutter-actor.c:7276
+#: ../clutter/clutter-actor.c:7307
 msgid "Sets the clip region to track the actor's allocation"
 msgstr "Ορίζει την περιοχή κοπής για εντοπισμό του μεριδίου του δράστη"
 
-#: ../clutter/clutter-actor.c:7289
+#: ../clutter/clutter-actor.c:7320
 msgid "Text Direction"
 msgstr "Κατεύθυνση κειμένου"
 
-#: ../clutter/clutter-actor.c:7290
+#: ../clutter/clutter-actor.c:7321
 msgid "Direction of the text"
 msgstr "Κατεύθυνση του κειμένου"
 
-#: ../clutter/clutter-actor.c:7305
+#: ../clutter/clutter-actor.c:7336
 msgid "Has Pointer"
 msgstr "Έχει δείκτη"
 
-#: ../clutter/clutter-actor.c:7306
+#: ../clutter/clutter-actor.c:7337
 msgid "Whether the actor contains the pointer of an input device"
 msgstr "Εάν ο δράστης περιέχει τον δείκτη μιας συσκευής εισόδου"
 
-#: ../clutter/clutter-actor.c:7319
+#: ../clutter/clutter-actor.c:7350
 msgid "Actions"
 msgstr "Ενέργειες"
 
-#: ../clutter/clutter-actor.c:7320
+#: ../clutter/clutter-actor.c:7351
 msgid "Adds an action to the actor"
 msgstr "Προσθέτει μια ενέργεια στον δράστη"
 
-#: ../clutter/clutter-actor.c:7333
+#: ../clutter/clutter-actor.c:7364
 msgid "Constraints"
 msgstr "Περιορισμοί"
 
-#: ../clutter/clutter-actor.c:7334
+#: ../clutter/clutter-actor.c:7365
 msgid "Adds a constraint to the actor"
 msgstr "Προσθέτει έναν περιορισμό στο δράστη"
 
-#: ../clutter/clutter-actor.c:7347
+#: ../clutter/clutter-actor.c:7378
 msgid "Effect"
 msgstr "Εφέ"
 
-#: ../clutter/clutter-actor.c:7348
+#: ../clutter/clutter-actor.c:7379
 msgid "Add an effect to be applied on the actor"
 msgstr "Προσθήκη ενός εφέ για εφαρμογή στον δράστη"
 
-#: ../clutter/clutter-actor.c:7362
+#: ../clutter/clutter-actor.c:7393
 msgid "Layout Manager"
 msgstr "Διαχειριστής διάταξης"
 
-#: ../clutter/clutter-actor.c:7363
+#: ../clutter/clutter-actor.c:7394
 msgid "The object controlling the layout of an actor's children"
 msgstr "Το αντικείμενο που ελέγχει τη διάταξη ενός από τα παιδιά του δράστη"
 
-#: ../clutter/clutter-actor.c:7377
+#: ../clutter/clutter-actor.c:7408
 msgid "X Expand"
 msgstr "Επέκταση Χ"
 
-#: ../clutter/clutter-actor.c:7378
+#: ../clutter/clutter-actor.c:7409
 msgid "Whether extra horizontal space should be assigned to the actor"
 msgstr "Εάν πρέπει να ανατεθεί επιπλέον οριζόντιος χώρος στο δράστη"
 
-#: ../clutter/clutter-actor.c:7393
+#: ../clutter/clutter-actor.c:7424
 msgid "Y Expand"
 msgstr "Επέκταση Υ"
 
-#: ../clutter/clutter-actor.c:7394
+#: ../clutter/clutter-actor.c:7425
 msgid "Whether extra vertical space should be assigned to the actor"
 msgstr "Εάν πρέπει να ανατεθεί επιπλέον κάθετος χώρος στο δράστη"
 
-#: ../clutter/clutter-actor.c:7410
+#: ../clutter/clutter-actor.c:7441
 msgid "X Alignment"
 msgstr "Στοίχιση Χ"
 
-#: ../clutter/clutter-actor.c:7411
+#: ../clutter/clutter-actor.c:7442
 msgid "The alignment of the actor on the X axis within its allocation"
 msgstr "Η στοίχιση του δράστη στον άξονα Χ μέσα στο καταμερισμό του"
 
-#: ../clutter/clutter-actor.c:7426
+#: ../clutter/clutter-actor.c:7457
 msgid "Y Alignment"
 msgstr "Στοίχιση Υ"
 
-#: ../clutter/clutter-actor.c:7427
+#: ../clutter/clutter-actor.c:7458
 msgid "The alignment of the actor on the Y axis within its allocation"
 msgstr "Η στοίχιση του δράστη στον άξονα Υ μέσα στο καταμερισμό του"
 
-#: ../clutter/clutter-actor.c:7446
+#: ../clutter/clutter-actor.c:7477
 msgid "Margin Top"
 msgstr "Άνω περιθώριο"
 
-#: ../clutter/clutter-actor.c:7447
+#: ../clutter/clutter-actor.c:7478
 msgid "Extra space at the top"
 msgstr "Πρόσθετος χώρος στην κορυφή"
 
-#: ../clutter/clutter-actor.c:7468
+#: ../clutter/clutter-actor.c:7499
 msgid "Margin Bottom"
 msgstr "Κάτω περιθώριο"
 
-#: ../clutter/clutter-actor.c:7469
+#: ../clutter/clutter-actor.c:7500
 msgid "Extra space at the bottom"
 msgstr "Πρόσθετος χώρος στον πάτο"
 
-#: ../clutter/clutter-actor.c:7490
+#: ../clutter/clutter-actor.c:7521
 msgid "Margin Left"
 msgstr "Αριστερό περιθώριο"
 
-#: ../clutter/clutter-actor.c:7491
+#: ../clutter/clutter-actor.c:7522
 msgid "Extra space at the left"
 msgstr "Πρόσθετος χώρος στα αριστερά"
 
-#: ../clutter/clutter-actor.c:7512
+#: ../clutter/clutter-actor.c:7543
 msgid "Margin Right"
 msgstr "Δεξιό περιθώριο"
 
-#: ../clutter/clutter-actor.c:7513
+#: ../clutter/clutter-actor.c:7544
 msgid "Extra space at the right"
 msgstr "Πρόσθετος χώρος στα δεξιά"
 
-#: ../clutter/clutter-actor.c:7529
+#: ../clutter/clutter-actor.c:7560
 msgid "Background Color Set"
 msgstr "Ορισμός χρώματος παρασκηνίου"
 
-#: ../clutter/clutter-actor.c:7530 ../clutter/deprecated/clutter-box.c:275
+#: ../clutter/clutter-actor.c:7561 ../clutter/deprecated/clutter-box.c:275
 msgid "Whether the background color is set"
 msgstr "Αν έχει ορισθεί το χρώμα παρασκηνίου"
 
-#: ../clutter/clutter-actor.c:7546
+#: ../clutter/clutter-actor.c:7577
 msgid "Background color"
 msgstr "Χρώμα Παρασκηνίου"
 
-#: ../clutter/clutter-actor.c:7547
+#: ../clutter/clutter-actor.c:7578
 msgid "The actor's background color"
 msgstr "Το χρώμα παρασκηνίου του δράστη"
 
-#: ../clutter/clutter-actor.c:7562
+#: ../clutter/clutter-actor.c:7593
 msgid "First Child"
 msgstr "Πρώτο παιδί"
 
-#: ../clutter/clutter-actor.c:7563
+#: ../clutter/clutter-actor.c:7594
 msgid "The actor's first child"
 msgstr "Το πρώτο παιδί του δράστη"
 
-#: ../clutter/clutter-actor.c:7576
+#: ../clutter/clutter-actor.c:7607
 msgid "Last Child"
 msgstr "Τελευταίο παιδί"
 
-#: ../clutter/clutter-actor.c:7577
+#: ../clutter/clutter-actor.c:7608
 msgid "The actor's last child"
 msgstr "Το τελευταίο παιδί του δράστη"
 
-#: ../clutter/clutter-actor.c:7591
+#: ../clutter/clutter-actor.c:7622
 msgid "Content"
 msgstr "Περιεχόμενο "
 
-#: ../clutter/clutter-actor.c:7592
+#: ../clutter/clutter-actor.c:7623
 msgid "Delegate object for painting the actor's content"
 msgstr "Μεταβίβαση αντικειμένου για βαφή του περιεχομένου δράστη"
 
-#: ../clutter/clutter-actor.c:7617
+#: ../clutter/clutter-actor.c:7648
 msgid "Content Gravity"
 msgstr "Βαρύτητα περιεχομένου"
 
-#: ../clutter/clutter-actor.c:7618
+#: ../clutter/clutter-actor.c:7649
 msgid "Alignment of the actor's content"
 msgstr "Στοίχιση του περιεχομένου του δράστη"
 
-#: ../clutter/clutter-actor.c:7638
+#: ../clutter/clutter-actor.c:7669
 msgid "Content Box"
 msgstr "Πλαίσιο περιεχομένου"
 
-#: ../clutter/clutter-actor.c:7639
+#: ../clutter/clutter-actor.c:7670
 msgid "The bounding box of the actor's content"
 msgstr "Το οριακό πλαίσιο του περιεχομένου δράστη"
 
-#: ../clutter/clutter-actor.c:7647
+#: ../clutter/clutter-actor.c:7678
 msgid "Minification Filter"
 msgstr "Φίλτρο σμίκρυνσης"
 
-#: ../clutter/clutter-actor.c:7648
+#: ../clutter/clutter-actor.c:7679
 msgid "The filter used when reducing the size of the content"
 msgstr "Το χρησιμοποιούμενο φίλτρο όταν μειώνεται το μέγεθος του περιεχομένου"
 
-#: ../clutter/clutter-actor.c:7655
+#: ../clutter/clutter-actor.c:7686
 msgid "Magnification Filter"
 msgstr "Φίλτρο μεγέθυνσης"
 
-#: ../clutter/clutter-actor.c:7656
+#: ../clutter/clutter-actor.c:7687
 msgid "The filter used when increasing the size of the content"
 msgstr "Το χρησιμοποιούμενο φίλτρο όταν αυξάνεται το μέγεθος του περιεχομένου"
 
-#: ../clutter/clutter-actor.c:7670
+#: ../clutter/clutter-actor.c:7701
 msgid "Content Repeat"
 msgstr "Επανάληψη περιεχομένου"
 
-#: ../clutter/clutter-actor.c:7671
+#: ../clutter/clutter-actor.c:7702
 msgid "The repeat policy for the actor's content"
 msgstr "Η πολιτική επανάληψης για το περιεχομένου του δράστη"
 
@@ -954,7 +954,7 @@ msgstr "Σε αναμονή"
 msgid "Whether the clickable has a grab"
 msgstr "Εάν η ικανότητα κλικ μπορεί να συλληφθεί"
 
-#: ../clutter/clutter-click-action.c:591 ../clutter/clutter-settings.c:599
+#: ../clutter/clutter-click-action.c:591 ../clutter/clutter-settings.c:607
 msgid "Long Press Duration"
 msgstr "Διάρκεια παρατεταμένου πατήματος"
 
@@ -982,27 +982,27 @@ msgstr "Απόχρωση"
 msgid "The tint to apply"
 msgstr "Απόχρωση για εφαρμογή"
 
-#: ../clutter/clutter-deform-effect.c:588
+#: ../clutter/clutter-deform-effect.c:594
 msgid "Horizontal Tiles"
 msgstr "Οριζόντιες παραθέσεις"
 
-#: ../clutter/clutter-deform-effect.c:589
+#: ../clutter/clutter-deform-effect.c:595
 msgid "The number of horizontal tiles"
 msgstr "Ο αριθμός των οριζόντιων παραθέσεων"
 
-#: ../clutter/clutter-deform-effect.c:604
+#: ../clutter/clutter-deform-effect.c:610
 msgid "Vertical Tiles"
 msgstr "Κάθετες παραθέσεις"
 
-#: ../clutter/clutter-deform-effect.c:605
+#: ../clutter/clutter-deform-effect.c:611
 msgid "The number of vertical tiles"
 msgstr "Ο αριθμός των κάθετων παραθέσεων"
 
-#: ../clutter/clutter-deform-effect.c:622
+#: ../clutter/clutter-deform-effect.c:628
 msgid "Back Material"
 msgstr "Οπίσθιο υλικό"
 
-#: ../clutter/clutter-deform-effect.c:623
+#: ../clutter/clutter-deform-effect.c:629
 msgid "The material to be used when painting the back of the actor"
 msgstr "Το υλικό που θα χρησιμοποιηθεί όταν βάφεται το οπίσθιο του δράστη"
 
@@ -1012,7 +1012,7 @@ msgstr "Ο συντελεστής αποκορεσμού"
 
 #: ../clutter/clutter-device-manager.c:131
 #: ../clutter/clutter-input-device.c:366
-#: ../clutter/x11/clutter-keymap-x11.c:316
+#: ../clutter/x11/clutter-keymap-x11.c:321
 msgid "Backend"
 msgstr "Οπισθοφυλακή"
 
@@ -1121,6 +1121,16 @@ msgstr "Μέγιστο ύψος γραμμής"
 #: ../clutter/clutter-flow-layout.c:1002
 msgid "Maximum height for each row"
 msgstr "Μέγιστο ύψος κάθε γραμμής"
+
+#: ../clutter/clutter-gesture-action.c:648
+#| msgid "Number of Axes"
+msgid "Number touch points"
+msgstr "Αριθμός σημείων επαφής"
+
+#: ../clutter/clutter-gesture-action.c:649
+#| msgid "Number of Axes"
+msgid "Number of touch points"
+msgstr "Αριθμός σημείων επαφής"
 
 #: ../clutter/clutter-grid-layout.c:1222
 msgid "Left attachment"
@@ -1284,59 +1294,59 @@ msgstr "Ο διαχειριστής που δημιούργησε αυτά τα 
 #. * Do NOT translate it to non-English e.g. "predefinito:LTR"! If
 #. * it isn't default:LTR or default:RTL it will not work.
 #.
-#: ../clutter/clutter-main.c:772
+#: ../clutter/clutter-main.c:795
 msgid "default:LTR"
 msgstr "default:LTR"
 
-#: ../clutter/clutter-main.c:1646
+#: ../clutter/clutter-main.c:1669
 msgid "Show frames per second"
 msgstr "Εμφάνιση πλαισίων ανά δευτερόλεπτο"
 
-#: ../clutter/clutter-main.c:1648
+#: ../clutter/clutter-main.c:1671
 msgid "Default frame rate"
 msgstr "Προεπιλεγμένος ρυθμός πλαισίων"
 
-#: ../clutter/clutter-main.c:1650
+#: ../clutter/clutter-main.c:1673
 msgid "Make all warnings fatal"
 msgstr "Μετατροπή όλων των προειδοποιήσεων σε κρίσιμες"
 
-#: ../clutter/clutter-main.c:1653
+#: ../clutter/clutter-main.c:1676
 msgid "Direction for the text"
 msgstr "Κατεύθυνση για το κείμενο"
 
-#: ../clutter/clutter-main.c:1656
+#: ../clutter/clutter-main.c:1679
 msgid "Disable mipmapping on text"
 msgstr "Απενεργοποίηση χαρτογράφησης mip σε κείμενο"
 
-#: ../clutter/clutter-main.c:1659
+#: ../clutter/clutter-main.c:1682
 msgid "Use 'fuzzy' picking"
 msgstr "Χρήση 'ασαφούς' επιλογής"
 
-#: ../clutter/clutter-main.c:1662
+#: ../clutter/clutter-main.c:1685
 msgid "Clutter debugging flags to set"
 msgstr "Σημαίες αποσφαλμάτωσης Clutter για ενεργοποίηση"
 
-#: ../clutter/clutter-main.c:1664
+#: ../clutter/clutter-main.c:1687
 msgid "Clutter debugging flags to unset"
 msgstr "Σημαίες αποσφαλμάτωσης Clutter για απενεργοποίηση"
 
-#: ../clutter/clutter-main.c:1668
+#: ../clutter/clutter-main.c:1691
 msgid "Clutter profiling flags to set"
 msgstr "Σημαίες κατατομής Clutter για ενεργοποίηση"
 
-#: ../clutter/clutter-main.c:1670
+#: ../clutter/clutter-main.c:1693
 msgid "Clutter profiling flags to unset"
 msgstr "Σημαίες κατατομής Clutter για απενεργοποίηση"
 
-#: ../clutter/clutter-main.c:1673
+#: ../clutter/clutter-main.c:1696
 msgid "Enable accessibility"
 msgstr "Ενεργοποίηση προσιτότητας"
 
-#: ../clutter/clutter-main.c:1865
+#: ../clutter/clutter-main.c:1888
 msgid "Clutter Options"
 msgstr "Επιλογές Clutter"
 
-#: ../clutter/clutter-main.c:1866
+#: ../clutter/clutter-main.c:1889
 msgid "Show Clutter Options"
 msgstr "Εμφάνιση επιλογών Clutter"
 
@@ -1419,55 +1429,55 @@ msgstr "Τομέας μετάφρασης"
 msgid "The translation domain used to localize string"
 msgstr "Ο χρησιμοποιούμενος τομέας μετάφρασης για τοπικοποίηση συμβολοσειράς"
 
-#: ../clutter/clutter-scroll-actor.c:263
+#: ../clutter/clutter-scroll-actor.c:190
 msgid "Scroll Mode"
 msgstr "Λειτουργία κύλισης"
 
-#: ../clutter/clutter-scroll-actor.c:264
+#: ../clutter/clutter-scroll-actor.c:191
 msgid "The scrolling direction"
 msgstr "Η κατεύθυνση της κύλισης"
 
-#: ../clutter/clutter-settings.c:440
+#: ../clutter/clutter-settings.c:448
 msgid "Double Click Time"
 msgstr "Χρόνος διπλού κλικ"
 
-#: ../clutter/clutter-settings.c:441
+#: ../clutter/clutter-settings.c:449
 msgid "The time between clicks necessary to detect a multiple click"
 msgstr "Ο απαραίτητος χρόνος μεταξύ των κλικ για ανίχνευση πολλαπλού κλικ"
 
-#: ../clutter/clutter-settings.c:456
+#: ../clutter/clutter-settings.c:464
 msgid "Double Click Distance"
 msgstr "Απόσταση διπλού κλικ"
 
-#: ../clutter/clutter-settings.c:457
+#: ../clutter/clutter-settings.c:465
 msgid "The distance between clicks necessary to detect a multiple click"
 msgstr "Ο απαραίτητος χρόνος μεταξύ των κλικ για ανίχνευση πολλαπλού κλικ"
 
-#: ../clutter/clutter-settings.c:472
+#: ../clutter/clutter-settings.c:480
 msgid "Drag Threshold"
 msgstr "Κατώφλι συρσίματος"
 
-#: ../clutter/clutter-settings.c:473
+#: ../clutter/clutter-settings.c:481
 msgid "The distance the cursor should travel before starting to drag"
 msgstr ""
 "Η απόσταση που ο δρομέας πρέπει να διασχίσει πριν την έναρξη συρσίματος"
 
-#: ../clutter/clutter-settings.c:488 ../clutter/clutter-text.c:3369
+#: ../clutter/clutter-settings.c:496 ../clutter/clutter-text.c:3374
 msgid "Font Name"
 msgstr "Όνομα γραμματοσειράς"
 
-#: ../clutter/clutter-settings.c:489
+#: ../clutter/clutter-settings.c:497
 msgid ""
 "The description of the default font, as one that could be parsed by Pango"
 msgstr ""
 "Η περιγραφή της προεπιλεγμένης γραμματοσειράς, όπως θα μπορούσε να αναλυθεί "
 "από το Pango"
 
-#: ../clutter/clutter-settings.c:504
+#: ../clutter/clutter-settings.c:512
 msgid "Font Antialias"
 msgstr "Εξομάλυνση γραμματοσειράς"
 
-#: ../clutter/clutter-settings.c:505
+#: ../clutter/clutter-settings.c:513
 msgid ""
 "Whether to use antialiasing (1 to enable, 0 to disable, and -1 to use the "
 "default)"
@@ -1475,61 +1485,61 @@ msgstr ""
 "Εάν θα χρησιμοποιηθεί εξομάλυνση (1 για ενεργοποίηση, 0 για απενεργοποίηση "
 "και -1 για χρήση της προεπιλογής)"
 
-#: ../clutter/clutter-settings.c:521
+#: ../clutter/clutter-settings.c:529
 msgid "Font DPI"
 msgstr "DPI γραμματοσειράς"
 
-#: ../clutter/clutter-settings.c:522
+#: ../clutter/clutter-settings.c:530
 msgid ""
 "The resolution of the font, in 1024 * dots/inch, or -1 to use the default"
 msgstr ""
 "Η ανάλυση της γραμματοσειράς, σε 1024 * κουκκίδες/ίντσα ή -1 για χρήση της "
 "προεπιλογής"
 
-#: ../clutter/clutter-settings.c:538
+#: ../clutter/clutter-settings.c:546
 msgid "Font Hinting"
 msgstr "Υπόδειξη γραμματοσειράς"
 
-#: ../clutter/clutter-settings.c:539
+#: ../clutter/clutter-settings.c:547
 msgid ""
 "Whether to use hinting (1 to enable, 0 to disable and -1 to use the default)"
 msgstr ""
 "Εάν θα χρησιμοποιηθεί υπόδειξη (1 για ενεργοποίηση, 0 για απενεργοποίηση και "
 "-1 για χρήση της προεπιλογής)"
 
-#: ../clutter/clutter-settings.c:560
+#: ../clutter/clutter-settings.c:568
 msgid "Font Hint Style"
 msgstr "Τεχνοτροπία υπόδειξης γραμματοσειράς"
 
-#: ../clutter/clutter-settings.c:561
+#: ../clutter/clutter-settings.c:569
 msgid "The style of hinting (hintnone, hintslight, hintmedium, hintfull)"
 msgstr "Η τεχνοτροπία υπόδειξης (κανένα, ελαφρύ, μεσαίο, πλήρες)"
 
-#: ../clutter/clutter-settings.c:582
+#: ../clutter/clutter-settings.c:590
 msgid "Font Subpixel Order"
 msgstr "Διάταξη υποεικονοστοιχείου γραμματοσειράς"
 
-#: ../clutter/clutter-settings.c:583
+#: ../clutter/clutter-settings.c:591
 msgid "The type of subpixel antialiasing (none, rgb, bgr, vrgb, vbgr)"
 msgstr "Ο τύπος εξομάλυνσης υποεικονοστοιχείου (κανένα, rgb, bgr, vrgb, vbgr)"
 
-#: ../clutter/clutter-settings.c:600
+#: ../clutter/clutter-settings.c:608
 msgid "The minimum duration for a long press gesture to be recognized"
 msgstr "Η ελάχιστη διάρκεια για αναγνώριση παρατεταμένου πατήματος"
 
-#: ../clutter/clutter-settings.c:607
+#: ../clutter/clutter-settings.c:615
 msgid "Fontconfig configuration timestamp"
 msgstr "Αποτύπωμα χρόνου ρύθμισης Fontconfig"
 
-#: ../clutter/clutter-settings.c:608
+#: ../clutter/clutter-settings.c:616
 msgid "Timestamp of the current fontconfig configuration"
 msgstr "Αποτύπωμα χρόνου της τρέχουσας ρύθμισης fontconfig"
 
-#: ../clutter/clutter-settings.c:625
+#: ../clutter/clutter-settings.c:633
 msgid "Password Hint Time"
 msgstr "Χρόνος υπόδειξης κωδικού"
 
-#: ../clutter/clutter-settings.c:626
+#: ../clutter/clutter-settings.c:634
 msgid "How long to show the last input character in hidden entries"
 msgstr ""
 "Για πόσο χρόνο θα εμφανίζεται ο τελευταίος χαρακτήρας που εισήχθηκε σε "
@@ -1567,108 +1577,108 @@ msgstr "Η άκρη της πηγής που θα πρέπει να πιαστε
 msgid "The offset in pixels to apply to the constraint"
 msgstr "Η αντιστάθμιση σε εικονοστοιχεία για εφαρμογή στον περιορισμό"
 
-#: ../clutter/clutter-stage.c:1895
+#: ../clutter/clutter-stage.c:1928
 msgid "Fullscreen Set"
 msgstr "Ορισμός πλήρους οθόνης"
 
-#: ../clutter/clutter-stage.c:1896
+#: ../clutter/clutter-stage.c:1929
 msgid "Whether the main stage is fullscreen"
 msgstr "Αν η κύρια σκηνή είναι πλήρης οθόνη"
 
-#: ../clutter/clutter-stage.c:1910
+#: ../clutter/clutter-stage.c:1943
 msgid "Offscreen"
 msgstr "Εκτός οθόνης"
 
-#: ../clutter/clutter-stage.c:1911
+#: ../clutter/clutter-stage.c:1944
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Εάν η κύρια σκηνή θα αποδοθεί εκτός οθόνης"
 
-#: ../clutter/clutter-stage.c:1923 ../clutter/clutter-text.c:3483
+#: ../clutter/clutter-stage.c:1956 ../clutter/clutter-text.c:3488
 msgid "Cursor Visible"
 msgstr "Ορατός δρομέας"
 
-#: ../clutter/clutter-stage.c:1924
+#: ../clutter/clutter-stage.c:1957
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Εάν ο δείκτης ποντικιού είναι ορατός στην κύρια σκηνή"
 
-#: ../clutter/clutter-stage.c:1938
+#: ../clutter/clutter-stage.c:1971
 msgid "User Resizable"
 msgstr "Αυξομειούμενος από τον χρήστη"
 
-#: ../clutter/clutter-stage.c:1939
+#: ../clutter/clutter-stage.c:1972
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr "Εάν η σκηνή μπορεί να αυξομειωθεί μέσα από την αλληλεπίδραση χρήστη"
 
-#: ../clutter/clutter-stage.c:1954 ../clutter/deprecated/clutter-box.c:260
+#: ../clutter/clutter-stage.c:1987 ../clutter/deprecated/clutter-box.c:260
 #: ../clutter/deprecated/clutter-rectangle.c:273
 msgid "Color"
 msgstr "Χρώμα"
 
-#: ../clutter/clutter-stage.c:1955
+#: ../clutter/clutter-stage.c:1988
 msgid "The color of the stage"
 msgstr "Το χρώμα της σκηνής"
 
-#: ../clutter/clutter-stage.c:1970
+#: ../clutter/clutter-stage.c:2003
 msgid "Perspective"
 msgstr "Προοπτική"
 
-#: ../clutter/clutter-stage.c:1971
+#: ../clutter/clutter-stage.c:2004
 msgid "Perspective projection parameters"
 msgstr "παράμετροι προβολής προοπτικής"
 
-#: ../clutter/clutter-stage.c:1986
+#: ../clutter/clutter-stage.c:2019
 msgid "Title"
 msgstr "Τίτλος"
 
-#: ../clutter/clutter-stage.c:1987
+#: ../clutter/clutter-stage.c:2020
 msgid "Stage Title"
 msgstr "Τίτλος σκηνής"
 
-#: ../clutter/clutter-stage.c:2004
+#: ../clutter/clutter-stage.c:2037
 msgid "Use Fog"
 msgstr "Χρήση ομίχλης"
 
-#: ../clutter/clutter-stage.c:2005
+#: ../clutter/clutter-stage.c:2038
 msgid "Whether to enable depth cueing"
 msgstr "Εάν θα ενεργοποιηθεί σήμα βάθους"
 
-#: ../clutter/clutter-stage.c:2021
+#: ../clutter/clutter-stage.c:2054
 msgid "Fog"
 msgstr "Ομίχλη"
 
-#: ../clutter/clutter-stage.c:2022
+#: ../clutter/clutter-stage.c:2055
 msgid "Settings for the depth cueing"
 msgstr "ρυθμίσεις για το σήμα βάθους"
 
-#: ../clutter/clutter-stage.c:2038
+#: ../clutter/clutter-stage.c:2071
 msgid "Use Alpha"
 msgstr "Χρήση άλφα"
 
-#: ../clutter/clutter-stage.c:2039
+#: ../clutter/clutter-stage.c:2072
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Εάν θα πρέπει να σεβαστεί το συστατικό άλφα του χρώματος σκηνής"
 
-#: ../clutter/clutter-stage.c:2055
+#: ../clutter/clutter-stage.c:2088
 msgid "Key Focus"
 msgstr "Εστίαση πλήκτρου"
 
-#: ../clutter/clutter-stage.c:2056
+#: ../clutter/clutter-stage.c:2089
 msgid "The currently key focused actor"
 msgstr "Ο εστιασμένος δράστης του τρέχοντος πλήκτρου"
 
-#: ../clutter/clutter-stage.c:2072
+#: ../clutter/clutter-stage.c:2105
 msgid "No Clear Hint"
 msgstr "Χωρίς υπόδειξη καθαρισμού"
 
-#: ../clutter/clutter-stage.c:2073
+#: ../clutter/clutter-stage.c:2106
 msgid "Whether the stage should clear its contents"
 msgstr "Εάν η σκηνή θα πρέπει να καθαρίσει τα περιεχόμενα της"
 
-#: ../clutter/clutter-stage.c:2086
+#: ../clutter/clutter-stage.c:2119
 msgid "Accept Focus"
 msgstr "Αποδοχή εστίασης"
 
-#: ../clutter/clutter-stage.c:2087
+#: ../clutter/clutter-stage.c:2120
 msgid "Whether the stage should accept focus on show"
 msgstr "Εάν η σκηνή θα πρέπει να αποδεχθεί εστίαση στην εμφάνιση"
 
@@ -1728,7 +1738,7 @@ msgstr "Διάκενο μεταξύ στηλών"
 msgid "Spacing between rows"
 msgstr "Διάκενο μεταξύ γραμμών"
 
-#: ../clutter/clutter-text-buffer.c:351 ../clutter/clutter-text.c:3404
+#: ../clutter/clutter-text-buffer.c:351 ../clutter/clutter-text.c:3409
 msgid "Text"
 msgstr "Κείμενο"
 
@@ -1754,228 +1764,228 @@ msgstr ""
 "Μέγιστος αριθμός χαρακτήρων για αυτή την καταχώριση. Μηδέν αν δεν υπάρχει "
 "μέγιστος"
 
-#: ../clutter/clutter-text.c:3351
+#: ../clutter/clutter-text.c:3356
 msgid "Buffer"
 msgstr "Ενδιάμεση μνήμη"
 
-#: ../clutter/clutter-text.c:3352
+#: ../clutter/clutter-text.c:3357
 msgid "The buffer for the text"
 msgstr "Η ενδιάμεση μνήμη για το κείμενο"
 
-#: ../clutter/clutter-text.c:3370
+#: ../clutter/clutter-text.c:3375
 msgid "The font to be used by the text"
 msgstr "Η χρησιμοποιούμενη γραμματοσειρά από το κείμενο"
 
-#: ../clutter/clutter-text.c:3387
+#: ../clutter/clutter-text.c:3392
 msgid "Font Description"
 msgstr "Περιγραφή γραμματοσειράς"
 
-#: ../clutter/clutter-text.c:3388
+#: ../clutter/clutter-text.c:3393
 msgid "The font description to be used"
 msgstr "Η χρησιμοποιούμενη περιγραφή γραμματοσειράς"
 
-#: ../clutter/clutter-text.c:3405
+#: ../clutter/clutter-text.c:3410
 msgid "The text to render"
 msgstr "Κείμενο προς απόδοση"
 
-#: ../clutter/clutter-text.c:3419
+#: ../clutter/clutter-text.c:3424
 msgid "Font Color"
 msgstr "Χρώμα γραμματοσειράς"
 
-#: ../clutter/clutter-text.c:3420
+#: ../clutter/clutter-text.c:3425
 msgid "Color of the font used by the text"
 msgstr "Χρώμα της χρησιμοποιούμενης γραμματοσειράς από το κείμενο"
 
-#: ../clutter/clutter-text.c:3435
+#: ../clutter/clutter-text.c:3440
 msgid "Editable"
 msgstr "Επεξεργάσιμο"
 
-#: ../clutter/clutter-text.c:3436
+#: ../clutter/clutter-text.c:3441
 msgid "Whether the text is editable"
 msgstr "Εάν το κείμενο είναι επεξεργάσιμο"
 
-#: ../clutter/clutter-text.c:3451
+#: ../clutter/clutter-text.c:3456
 msgid "Selectable"
 msgstr "Επιλέξιμο"
 
-#: ../clutter/clutter-text.c:3452
+#: ../clutter/clutter-text.c:3457
 msgid "Whether the text is selectable"
 msgstr "Εάν το κείμενο είναι επιλέξιμο"
 
-#: ../clutter/clutter-text.c:3466
+#: ../clutter/clutter-text.c:3471
 msgid "Activatable"
 msgstr "Ενεργοποιήσιμο"
 
-#: ../clutter/clutter-text.c:3467
+#: ../clutter/clutter-text.c:3472
 msgid "Whether pressing return causes the activate signal to be emitted"
 msgstr "Εάν το πάτημα επιστροφής προκαλεί την εκπομπή σήματος ενεργοποίησης"
 
-#: ../clutter/clutter-text.c:3484
+#: ../clutter/clutter-text.c:3489
 msgid "Whether the input cursor is visible"
 msgstr "Εάν ο δρομέας εισόδου είναι ορατός"
 
-#: ../clutter/clutter-text.c:3498 ../clutter/clutter-text.c:3499
+#: ../clutter/clutter-text.c:3503 ../clutter/clutter-text.c:3504
 msgid "Cursor Color"
 msgstr "Χρώμα δρομέα"
 
-#: ../clutter/clutter-text.c:3514
+#: ../clutter/clutter-text.c:3519
 msgid "Cursor Color Set"
 msgstr "Ορισμός χρώματος δρομέα"
 
-#: ../clutter/clutter-text.c:3515
+#: ../clutter/clutter-text.c:3520
 msgid "Whether the cursor color has been set"
 msgstr "Εάν ορίστηκε το χρώμα δρομέα"
 
-#: ../clutter/clutter-text.c:3530
+#: ../clutter/clutter-text.c:3535
 msgid "Cursor Size"
 msgstr "Μέγεθος δρομέα"
 
-#: ../clutter/clutter-text.c:3531
+#: ../clutter/clutter-text.c:3536
 msgid "The width of the cursor, in pixels"
 msgstr "Το πλάτος του δρομέα, σε εικονοστοιχεία"
 
-#: ../clutter/clutter-text.c:3547 ../clutter/clutter-text.c:3565
+#: ../clutter/clutter-text.c:3552 ../clutter/clutter-text.c:3570
 msgid "Cursor Position"
 msgstr "Θέση δρομέα"
 
-#: ../clutter/clutter-text.c:3548 ../clutter/clutter-text.c:3566
+#: ../clutter/clutter-text.c:3553 ../clutter/clutter-text.c:3571
 msgid "The cursor position"
 msgstr "Η θέση δρομέα"
 
-#: ../clutter/clutter-text.c:3581
+#: ../clutter/clutter-text.c:3586
 msgid "Selection-bound"
 msgstr "Όριο επιλογής"
 
-#: ../clutter/clutter-text.c:3582
+#: ../clutter/clutter-text.c:3587
 msgid "The cursor position of the other end of the selection"
 msgstr "Η θέση δρομέα του άλλου άκρου της επιλογής"
 
-#: ../clutter/clutter-text.c:3597 ../clutter/clutter-text.c:3598
+#: ../clutter/clutter-text.c:3602 ../clutter/clutter-text.c:3603
 msgid "Selection Color"
 msgstr "Χρώμα Επιλογής"
 
-#: ../clutter/clutter-text.c:3613
+#: ../clutter/clutter-text.c:3618
 msgid "Selection Color Set"
 msgstr "Ορισμός χρώματος επιλογής"
 
-#: ../clutter/clutter-text.c:3614
+#: ../clutter/clutter-text.c:3619
 msgid "Whether the selection color has been set"
 msgstr "Εάν ορίστηκε το χρώμα επιλογής"
 
-#: ../clutter/clutter-text.c:3629
+#: ../clutter/clutter-text.c:3634
 msgid "Attributes"
 msgstr "Γνωρίσματα"
 
-#: ../clutter/clutter-text.c:3630
+#: ../clutter/clutter-text.c:3635
 msgid "A list of style attributes to apply to the contents of the actor"
 msgstr ""
 "Μια λίστα γνωρισμάτων τεχνοτροπίας για εφαρμογή στα περιεχόμενα του δράστη"
 
-#: ../clutter/clutter-text.c:3652
+#: ../clutter/clutter-text.c:3657
 msgid "Use markup"
 msgstr "Χρήση επισήμανσης"
 
-#: ../clutter/clutter-text.c:3653
+#: ../clutter/clutter-text.c:3658
 msgid "Whether or not the text includes Pango markup"
 msgstr "Εάν ή όχι το κείμενο περιλαμβάνει επισήμανση Pango"
 
-#: ../clutter/clutter-text.c:3669
+#: ../clutter/clutter-text.c:3674
 msgid "Line wrap"
 msgstr "Αναδίπλωση γραμμής"
 
-#: ../clutter/clutter-text.c:3670
+#: ../clutter/clutter-text.c:3675
 msgid "If set, wrap the lines if the text becomes too wide"
 msgstr "Αν οριστεί, αναδιπλώνονται οι γραμμές αν το κείμενο είναι πολύ μεγάλο"
 
-#: ../clutter/clutter-text.c:3685
+#: ../clutter/clutter-text.c:3690
 msgid "Line wrap mode"
 msgstr "Κατάσταση αναδίπλωσης γραμμής"
 
-#: ../clutter/clutter-text.c:3686
+#: ../clutter/clutter-text.c:3691
 msgid "Control how line-wrapping is done"
 msgstr "Έλεγχος τρόπου αναδίπλωσης γραμμής"
 
-#: ../clutter/clutter-text.c:3701
+#: ../clutter/clutter-text.c:3706
 msgid "Ellipsize"
 msgstr "Αποσιωπητικά"
 
-#: ../clutter/clutter-text.c:3702
+#: ../clutter/clutter-text.c:3707
 msgid "The preferred place to ellipsize the string"
 msgstr "Η προτιμώμενη θέση για αποσιωπητικά της συμβολοσειράς"
 
-#: ../clutter/clutter-text.c:3718
+#: ../clutter/clutter-text.c:3723
 msgid "Line Alignment"
 msgstr "Στοίχιση γραμμής"
 
-#: ../clutter/clutter-text.c:3719
+#: ../clutter/clutter-text.c:3724
 msgid "The preferred alignment for the string, for multi-line text"
 msgstr ""
 "Η προτιμώμενη στοίχιση για τη συμβολοσειρά, για κείμενο πολλαπλής γραμμής"
 
-#: ../clutter/clutter-text.c:3735
+#: ../clutter/clutter-text.c:3740
 msgid "Justify"
 msgstr "Πλήρης στοίχιση"
 
-#: ../clutter/clutter-text.c:3736
+#: ../clutter/clutter-text.c:3741
 msgid "Whether the text should be justified"
 msgstr "Εάν το κείμενο πρέπει να στοιχιστεί πλήρως"
 
-#: ../clutter/clutter-text.c:3751
+#: ../clutter/clutter-text.c:3756
 msgid "Password Character"
 msgstr "Χαρακτήρας κωδικού"
 
-#: ../clutter/clutter-text.c:3752
+#: ../clutter/clutter-text.c:3757
 msgid "If non-zero, use this character to display the actor's contents"
 msgstr ""
 "Εάν είναι μη μηδενικός, χρησιμοποιήστε αυτόν τον χαρακτήρα για εμφάνιση των "
 "περιεχομένων του δράστη"
 
-#: ../clutter/clutter-text.c:3766
+#: ../clutter/clutter-text.c:3771
 msgid "Max Length"
 msgstr "Μέγιστο μήκος"
 
-#: ../clutter/clutter-text.c:3767
+#: ../clutter/clutter-text.c:3772
 msgid "Maximum length of the text inside the actor"
 msgstr "Μέγιστο μήκος του κειμένου μέσα στον δράστη"
 
-#: ../clutter/clutter-text.c:3790
+#: ../clutter/clutter-text.c:3795
 msgid "Single Line Mode"
 msgstr "Κατάσταση μονής γραμμής"
 
-#: ../clutter/clutter-text.c:3791
+#: ../clutter/clutter-text.c:3796
 msgid "Whether the text should be a single line"
 msgstr "Εάν το κείμενο πρέπει να είναι μονής γραμμής"
 
-#: ../clutter/clutter-text.c:3805 ../clutter/clutter-text.c:3806
+#: ../clutter/clutter-text.c:3810 ../clutter/clutter-text.c:3811
 msgid "Selected Text Color"
 msgstr "Επιλεγμένο χρώμα κειμένου"
 
-#: ../clutter/clutter-text.c:3821
+#: ../clutter/clutter-text.c:3826
 msgid "Selected Text Color Set"
 msgstr "Ορισμός επιλεγμένου χρώματος κειμένου"
 
-#: ../clutter/clutter-text.c:3822
+#: ../clutter/clutter-text.c:3827
 msgid "Whether the selected text color has been set"
 msgstr "Εάν ορίστηκε το χρώμα επιλεγμένου κειμένου"
 
-#: ../clutter/clutter-timeline.c:561
+#: ../clutter/clutter-timeline.c:594
 #: ../clutter/deprecated/clutter-animation.c:560
 msgid "Loop"
 msgstr "Βρόχος"
 
-#: ../clutter/clutter-timeline.c:562
+#: ../clutter/clutter-timeline.c:595
 msgid "Should the timeline automatically restart"
 msgstr "Θα πρέπει η χρονογραμμή να ξεκινήσει αυτόματα"
 
-#: ../clutter/clutter-timeline.c:576
+#: ../clutter/clutter-timeline.c:609
 msgid "Delay"
 msgstr "Καθυστέρηση"
 
-#: ../clutter/clutter-timeline.c:577
+#: ../clutter/clutter-timeline.c:610
 msgid "Delay before start"
 msgstr "Καθυστέρηση πριν την έναρξη"
 
-#: ../clutter/clutter-timeline.c:592
+#: ../clutter/clutter-timeline.c:625
 #: ../clutter/deprecated/clutter-animation.c:544
 #: ../clutter/deprecated/clutter-animator.c:1804
 #: ../clutter/deprecated/clutter-media.c:224
@@ -1983,41 +1993,41 @@ msgstr "Καθυστέρηση πριν την έναρξη"
 msgid "Duration"
 msgstr "Διάρκεια"
 
-#: ../clutter/clutter-timeline.c:593
+#: ../clutter/clutter-timeline.c:626
 msgid "Duration of the timeline in milliseconds"
 msgstr "Διάρκεια της χρονογραμμής σε ms"
 
-#: ../clutter/clutter-timeline.c:608
+#: ../clutter/clutter-timeline.c:641
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:528
 #: ../clutter/deprecated/clutter-behaviour-rotate.c:337
 msgid "Direction"
 msgstr "Κατεύθυνση"
 
-#: ../clutter/clutter-timeline.c:609
+#: ../clutter/clutter-timeline.c:642
 msgid "Direction of the timeline"
 msgstr "Κατεύθυνση της χρονογραμμής"
 
-#: ../clutter/clutter-timeline.c:624
+#: ../clutter/clutter-timeline.c:657
 msgid "Auto Reverse"
 msgstr "Αυτόματη αντιστροφή"
 
-#: ../clutter/clutter-timeline.c:625
+#: ../clutter/clutter-timeline.c:658
 msgid "Whether the direction should be reversed when reaching the end"
 msgstr "Εάν η κατεύθυνση πρέπει να αντιστραφεί όταν φτάσει το τέλος"
 
-#: ../clutter/clutter-timeline.c:643
+#: ../clutter/clutter-timeline.c:676
 msgid "Repeat Count"
 msgstr "Μέτρηση επαναλήψεων"
 
-#: ../clutter/clutter-timeline.c:644
+#: ../clutter/clutter-timeline.c:677
 msgid "How many times the timeline should repeat"
 msgstr "Αριθμός επαναλήψεων χρονογραμμής"
 
-#: ../clutter/clutter-timeline.c:658
+#: ../clutter/clutter-timeline.c:691
 msgid "Progress Mode"
 msgstr "Κατάσταση προόδου"
 
-#: ../clutter/clutter-timeline.c:659
+#: ../clutter/clutter-timeline.c:692
 msgid "How the timeline should compute the progress"
 msgstr "Υπολογισμός προόδου από τη χρονογραμμή"
 
@@ -2045,11 +2055,11 @@ msgstr "Αφαίρεση με την ολοκλήρωση"
 msgid "Detach the transition when completed"
 msgstr "Απόσπαση της μετάβασης όταν ολοκληρωθεί"
 
-#: ../clutter/clutter-zoom-action.c:354
+#: ../clutter/clutter-zoom-action.c:356
 msgid "Zoom Axis"
 msgstr "Άξονας εστίασης"
 
-#: ../clutter/clutter-zoom-action.c:355
+#: ../clutter/clutter-zoom-action.c:357
 msgid "Constraints the zoom to an axis"
 msgstr "Περιορισμοί εστίασης σε έναν άξονα"
 
@@ -2642,7 +2652,7 @@ msgstr "Διαδρομή συσκευής"
 msgid "Path of the device node"
 msgstr "Διαδρομή του κόμβου συσκευής"
 
-#: ../clutter/gdk/clutter-backend-gdk.c:296
+#: ../clutter/gdk/clutter-backend-gdk.c:287
 #, c-format
 msgid "Could not find a suitable CoglWinsys for a GdkDisplay of type %s"
 msgstr "Αδυναμία εύρεσης κατάλληλου CoglWinsys για ένα GdkDisplay τύπου %s"
@@ -2671,24 +2681,23 @@ msgstr "Ύψος επιφάνειας"
 msgid "The height of the underlying wayland surface"
 msgstr "Το ύψος της υποκείμενης επιφάνειας wayland"
 
-#: ../clutter/x11/clutter-backend-x11.c:516
+#: ../clutter/x11/clutter-backend-x11.c:507
 msgid "X display to use"
 msgstr "Εμφάνιση Χ για χρήση"
 
-#: ../clutter/x11/clutter-backend-x11.c:522
+#: ../clutter/x11/clutter-backend-x11.c:513
 msgid "X screen to use"
 msgstr "Οθόνη Χ για χρήση"
 
-#: ../clutter/x11/clutter-backend-x11.c:527
+#: ../clutter/x11/clutter-backend-x11.c:518
 msgid "Make X calls synchronous"
 msgstr "Να γίνουν οι κλήσεις Χ σύγχρονες"
 
-#: ../clutter/x11/clutter-backend-x11.c:534
-#| msgid "Enable XInput support"
+#: ../clutter/x11/clutter-backend-x11.c:525
 msgid "Disable XInput support"
 msgstr "Απενεργοποίηση υποστήριξης XInput"
 
-#: ../clutter/x11/clutter-keymap-x11.c:317
+#: ../clutter/x11/clutter-keymap-x11.c:322
 msgid "The Clutter backend"
 msgstr "Η οπισθοφυλακή Clutter"
 
