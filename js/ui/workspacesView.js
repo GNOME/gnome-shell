@@ -297,6 +297,8 @@ const WorkspacesView = new Lang.Class({
         if (newNumWorkspaces > oldNumWorkspaces) {
             for (let w = oldNumWorkspaces; w < newNumWorkspaces; w++) {
                 this._workspaces[w].setFullGeometry(this._fullGeometry);
+                if (this._actualGeometry)
+                    this._workspaces[w].setActualGeometry(this._actualGeometry);
                 this.actor.add_actor(this._workspaces[w].actor);
             }
 
