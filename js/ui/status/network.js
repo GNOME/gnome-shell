@@ -302,6 +302,7 @@ const NMDevice = new Lang.Class({
             this.device = device;
             this.device._delegate = this;
             this._stateChangedId = this.device.connect('state-changed', Lang.bind(this, this._deviceStateChanged));
+            this._activeConnectionChangedId = this.device.connect('notify::active-connection', Lang.bind(this, this._activeConnectionChanged));
         } else if (this.device) {
             this.device._delegate = null;
 
@@ -309,6 +310,10 @@ const NMDevice = new Lang.Class({
                 // Need to go through GObject.Object.prototype because
                 // nm_device_disconnect conflicts with g_signal_disconnect
                 GObject.Object.prototype.disconnect.call(this.device, this._stateChangedId);
+                this._stateChangedId = 0;
+            }
+            if (this._activeConnectionChangedId) {
+                GObject.Object.prototype.disconnect.call(this.device, this._activeConnectionChangedId);
                 this._stateChangedId = 0;
             }
             if (this._carrierChangedId) {
@@ -357,11 +362,9 @@ const NMDevice = new Lang.Class({
         return this.device && this.device.state == NetworkManager.DeviceState.ACTIVATED;
     },
 
-    clearActiveConnection: function(activeConnection) {
-        this.setActiveConnection(null);
-    },
+    _activeConnectionChanged: function() {
+        let activeConnection = this.device.active_connection;
 
-    setActiveConnection: function(activeConnection) {
         if (activeConnection == this._activeConnection)
             // nothing to do
             return;
@@ -830,7 +833,7 @@ const NMDeviceWireless = new Lang.Class({
                 this._activeNetwork = this._networks[res.network];
         }
 
-        // we don't refresh the view here, setActiveConnection will
+        // we don't refresh the view here, _activeConnectionChanged will
     },
 
     _getApSecurityType: function(accessPoint) {
@@ -1319,7 +1322,7 @@ const NMVPNSection = new Lang.Class({
         }
     },
 
-    clearActiveConnection: function(activeConnection) {
+    removeActiveConnection: function(activeConnection) {
         let pos = this._findConnection(activeConnection.uuid);
         if (pos < 0)
             return;
@@ -1334,7 +1337,7 @@ const NMVPNSection = new Lang.Class({
         }
     },
 
-    setActiveConnection: function(activeConnection) {
+    addActiveConnection: function(activeConnection) {
         let pos = this._findConnection(activeConnection.uuid);
         if (pos < 0)
             return;
@@ -1777,10 +1780,8 @@ const NMApplet = new Lang.Class({
 
         for (let i = 0; i < closedConnections.length; i++) {
             let a = closedConnections[i];
-            if (a._primaryDevice) {
-                a._primaryDevice.clearActiveConnection(a);
-                a._primaryDevice = null;
-            }
+            if (a._type == NetworkManager.SETTING_VPN_SETTING_NAME)
+                this._vpnSection.removeActiveConnection(a);
             if (a._inited) {
                 a.disconnect(a._notifyStateId);
                 a.disconnect(a._notifyDefaultId);
@@ -1839,14 +1840,13 @@ const NMApplet = new Lang.Class({
                 active_vpn = a;
 
             if (!a._primaryDevice) {
-                if (a._type != NetworkManager.SETTING_VPN_SETTING_NAME)
+                if (a._type != NetworkManager.SETTING_VPN_SETTING_NAME) {
                     // This list is guaranteed to have one device in it.
                     a._primaryDevice = a.get_devices()[0]._delegate;
-                else
+                } else {
                     a._primaryDevice = this._vpnSection;
-
-                if (a._primaryDevice)
-                    a._primaryDevice.setActiveConnection(a);
+                    this._vpnSection.addActiveConnection(a);
+                }
 
                 if (a.state == NetworkManager.ActiveConnectionState.ACTIVATED
                     && a._primaryDevice && a._primaryDevice._notification) {
