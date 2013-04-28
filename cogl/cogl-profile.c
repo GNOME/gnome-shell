@@ -6,8 +6,8 @@
 
 #include "cogl-profile.h"
 #include "cogl-debug.h"
+#include "cogl-i18n-private.h"
 
-#include <glib/gi18n-lib.h>
 #include <stdlib.h>
 
 UProfContext *_cogl_uprof_context;

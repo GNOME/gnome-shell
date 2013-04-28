@@ -77,11 +77,25 @@ endif
 
 endif #USE_GLIB
 
+# XXX although emscripten "supports sdl" we can't build cogl-sdl-hello
+# un-modified for emscripten since emscripten doesn't support
+# SDL_WaitEvent() and we need to use some special emscripten apis
+# to create a mainloop....
+if USING_EMSCRIPTEN
+
+programs += cogl-emscripten-hello
+cogl_emscripten_hello_SOURCES = cogl-emscripten-hello.c
+cogl_emscripten_hello_LDADD = $(common_ldadd)
+
+else # USING_EMSCRIPTEN
+
 if SUPPORT_SDL
 programs += cogl-sdl-hello
 cogl_sdl_hello_SOURCES = cogl-sdl-hello.c
 cogl_sdl_hello_LDADD = $(common_ldadd)
 endif
+
+endif # USING_EMSCRIPTEN
 
 if SUPPORT_SDL2
 programs += cogl-sdl2-hello
@@ -89,6 +103,12 @@ cogl_sdl2_hello_SOURCES = cogl-sdl2-hello.c
 cogl_sdl2_hello_LDADD = $(common_ldadd)
 endif
 
+if USING_EMSCRIPTEN
+%.html: %.o $(top_builddir)/cogl/.libs/libcogl2.so $(top_builddir)/deps/glib/.libs/libglib.a
+	$(CC) $(AM_CFLAGS) $(CFLAGS) -o $@ $^
+
+all-local: $(addsuffix .html, $(programs))
+endif
 
 if INSTALL_EXAMPLES
 bin_PROGRAMS = $(programs)

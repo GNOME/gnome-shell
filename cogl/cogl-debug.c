@@ -26,8 +26,8 @@
 #endif
 
 #include <stdlib.h>
-#include <glib/gi18n-lib.h>
 
+#include "cogl-i18n-private.h"
 #include "cogl-private.h"
 #include "cogl-debug.h"
 #include "cogl1-context.h"

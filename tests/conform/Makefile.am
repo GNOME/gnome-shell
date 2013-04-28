@@ -28,7 +28,6 @@ unported_test_sources = \
 
 test_sources = \
 	test-atlas-migration.c \
-	test-bitmask.c \
 	test-blend-strings.c \
 	test-depth-test.c \
 	test-color-mask.c \
@@ -66,8 +65,17 @@ test_sources = \
 	test-primitive-and-journal.c \
 	test-copy-replace-texture.c \
 	test-pipeline-cache-unrefs-texture.c \
-	test-fence.c \
 	$(NULL)
+
+if !USING_EMSCRIPTEN
+# XXX: the emscripten toolchain gets upset about multiple definitions
+# of symbols due to the tricks we play in test-bitmask.c with
+# including cogl-util.c
+test_sources += test-bitmask.c
+# test-fence depends on the glib mainloop so it won't compile if using
+# emscripten which builds in standalone mode.
+test_sources += test-fence.c
+endif
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
 

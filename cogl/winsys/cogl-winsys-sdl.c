@@ -57,6 +57,8 @@ _cogl_winsys_renderer_get_proc_address (CoglRenderer *renderer,
                                         const char *name,
                                         CoglBool in_core)
 {
+  CoglFuncPtr ptr;
+
   /* XXX: It's not totally clear whether it's safe to call this for
    * core functions. From the code it looks like the implementations
    * will fall back to using some form of dlsym if the winsys
@@ -87,7 +89,16 @@ static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                CoglError **error)
 {
-#ifndef COGL_HAS_SDL_GLES_SUPPORT
+#ifdef USING_EMSCRIPTEN
+  if (renderer->driver != COGL_DRIVER_GLES2)
+    {
+      _cogl_set_error (error, COGL_WINSYS_ERROR,
+                       COGL_WINSYS_ERROR_INIT,
+                       "The SDL winsys with emscripten only supports "
+                       "the GLES2 driver");
+      return FALSE;
+    }
+#elif !defined (COGL_HAS_SDL_GLES_SUPPORT)
   if (renderer->driver != COGL_DRIVER_GL)
     {
       _cogl_set_error (error, COGL_WINSYS_ERROR,
@@ -95,7 +106,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                    "The SDL winsys only supports the GL driver");
       return FALSE;
     }
-#endif /* COGL_HAS_SDL_GLES_SUPPORT */
+#endif
 
   if (SDL_Init (SDL_INIT_VIDEO) == -1)
     {
@@ -180,7 +191,12 @@ _cogl_winsys_display_setup (CoglDisplay *display,
       SDL_GL_SetAttribute (SDL_GL_CONTEXT_MAJOR_VERSION, 1);
       SDL_GL_SetAttribute (SDL_GL_CONTEXT_MINOR_VERSION, 1);
       break;
-#endif /* COGL_HAS_SDL_GLES_SUPPORT */
+
+#elif defined (USING_EMSCRIPTEN)
+    case COGL_DRIVER_GLES2:
+      sdl_display->video_mode_flags = SDL_OPENGL;
+      break;
+#endif
 
     default:
       g_assert_not_reached ();

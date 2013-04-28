@@ -28,6 +28,7 @@
 #include "config.h"
 #endif
 
+#include "cogl-i18n-private.h"
 #include "cogl-util.h"
 #include "cogl-winsys-private.h"
 #include "cogl-feature-private.h"
@@ -58,8 +59,6 @@
 #include <sys/time.h>
 #include <fcntl.h>
 #include <time.h>
-
-#include <glib/gi18n-lib.h>
 
 #include <GL/glx.h>
 #include <X11/Xlib.h>

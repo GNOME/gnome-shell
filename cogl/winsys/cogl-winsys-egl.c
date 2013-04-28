@@ -28,6 +28,7 @@
 #include "config.h"
 #endif
 
+#include "cogl-i18n-private.h"
 #include "cogl-util.h"
 #include "cogl-winsys-egl-private.h"
 #include "cogl-winsys-private.h"
@@ -48,8 +49,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
-#include <glib/gi18n-lib.h>
 
 
 #ifndef EGL_KHR_create_context

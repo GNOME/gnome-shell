@@ -227,7 +227,11 @@ main (int argc, char **argv)
   const char *winsys_name;
   OutputState output_state;
 
+#ifdef COGL_HAS_EMSCRIPTEN_SUPPORT
+  ctx = cogl_sdl_context_new (SDL_USEREVENT, &error);
+#else
   ctx = cogl_context_new (NULL, &error);
+#endif
   if (!ctx) {
       fprintf (stderr, "Failed to create context: %s\n", error->message);
       return 1;

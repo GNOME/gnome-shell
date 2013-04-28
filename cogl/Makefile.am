@@ -258,6 +258,7 @@ cogl_sources_c = \
 	$(cogl_winsys_common_sources)			\
 	$(cogl_tesselator_sources)			\
 	$(srcdir)/cogl-private.h			\
+	$(srcdir)/cogl-i18n-private.h 			\
 	$(srcdir)/cogl-debug.h 				\
 	$(srcdir)/cogl-debug-options.h			\
 	$(srcdir)/cogl-gpu-info.c			\
