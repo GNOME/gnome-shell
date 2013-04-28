@@ -1,4 +1,6 @@
+#define COGL_ENABLE_EXPERIMENTAL_2_0_API
 #include <cogl/cogl.h>
+#include <cogl-path/cogl-path.h>
 
 #include <string.h>
 
@@ -20,7 +22,9 @@ draw_path_at (CoglPath *path, CoglPipeline *pipeline, int x, int y)
   cogl_framebuffer_push_matrix (test_fb);
   cogl_framebuffer_translate (test_fb, x * BLOCK_SIZE, y * BLOCK_SIZE, 0.0f);
 
-  cogl_framebuffer_fill_path (test_fb, pipeline, path);
+  cogl_set_framebuffer (test_fb);
+  cogl_set_source (pipeline);
+  cogl_path_fill (path);
 
   cogl_framebuffer_pop_matrix (test_fb);
 }
@@ -73,18 +77,18 @@ paint (TestState *state)
 
   /* Create a path filling just a quarter of a block. It will use two
      rectangles so that we have a sub path in the path */
-  cogl_path_new ();
-  cogl_path_rectangle (BLOCK_SIZE * 3 / 4, BLOCK_SIZE / 2,
+  path_a = cogl_path_new ();
+  cogl_path_rectangle (path_a,
+                       BLOCK_SIZE * 3 / 4, BLOCK_SIZE / 2,
                        BLOCK_SIZE, BLOCK_SIZE);
-  cogl_path_rectangle (BLOCK_SIZE / 2, BLOCK_SIZE / 2,
+  cogl_path_rectangle (path_a,
+                       BLOCK_SIZE / 2, BLOCK_SIZE / 2,
                        BLOCK_SIZE * 3 / 4, BLOCK_SIZE);
-  path_a = cogl_object_ref (cogl_get_path ());
   draw_path_at (path_a, white, 0, 0);
 
   /* Create another path filling the whole block */
-  cogl_path_new ();
-  cogl_path_rectangle (0, 0, BLOCK_SIZE, BLOCK_SIZE);
-  path_b = cogl_object_ref (cogl_get_path ());
+  path_b = cogl_path_new ();
+  cogl_path_rectangle (path_b, 0, 0, BLOCK_SIZE, BLOCK_SIZE);
   draw_path_at (path_b, white, 1, 0);
 
   /* Draw the first path again */
@@ -97,11 +101,10 @@ paint (TestState *state)
   /* Add another rectangle to path a. We'll use line_to's instead of
      cogl_rectangle so that we don't create another sub-path because
      that is more likely to break the copy */
-  cogl_set_path (path_a);
-  cogl_path_line_to (0, BLOCK_SIZE / 2);
-  cogl_path_line_to (0, 0);
-  cogl_path_line_to (BLOCK_SIZE / 2, 0);
-  cogl_path_line_to (BLOCK_SIZE / 2, BLOCK_SIZE / 2);
+  cogl_path_line_to (path_a, 0, BLOCK_SIZE / 2);
+  cogl_path_line_to (path_a, 0, 0);
+  cogl_path_line_to (path_a, BLOCK_SIZE / 2, 0);
+  cogl_path_line_to (path_a, BLOCK_SIZE / 2, BLOCK_SIZE / 2);
   draw_path_at (path_a, white, 4, 0);
 
   /* Draw the copy again. It should not have changed */
@@ -110,16 +113,15 @@ paint (TestState *state)
   /* Add another rectangle to path c. It will be added in two halves,
      one as an extension of the previous path and the other as a new
      sub path */
-  cogl_set_path (path_c);
-  cogl_path_line_to (BLOCK_SIZE / 2, 0);
-  cogl_path_line_to (BLOCK_SIZE * 3 / 4, 0);
-  cogl_path_line_to (BLOCK_SIZE * 3 / 4, BLOCK_SIZE / 2);
-  cogl_path_line_to (BLOCK_SIZE / 2, BLOCK_SIZE / 2);
-  cogl_path_rectangle (BLOCK_SIZE * 3 / 4, 0, BLOCK_SIZE, BLOCK_SIZE / 2);
+  cogl_path_line_to (path_c, BLOCK_SIZE / 2, 0);
+  cogl_path_line_to (path_c, BLOCK_SIZE * 3 / 4, 0);
+  cogl_path_line_to (path_c, BLOCK_SIZE * 3 / 4, BLOCK_SIZE / 2);
+  cogl_path_line_to (path_c, BLOCK_SIZE / 2, BLOCK_SIZE / 2);
+  cogl_path_rectangle (path_c,
+                       BLOCK_SIZE * 3 / 4, 0, BLOCK_SIZE, BLOCK_SIZE / 2);
   draw_path_at (path_c, white, 6, 0);
 
   /* Draw the original path again. It should not have changed */
-  cogl_set_path (path_a);
   draw_path_at (path_a, white, 7, 0);
 
   cogl_object_unref (path_a);
@@ -128,51 +130,48 @@ paint (TestState *state)
 
   /* Draw a self-intersecting path. The part that intersects should be
      inverted */
-  cogl_path_new ();
-  cogl_path_rectangle (0, 0, BLOCK_SIZE, BLOCK_SIZE);
-  cogl_path_line_to (0, BLOCK_SIZE / 2);
-  cogl_path_line_to (BLOCK_SIZE / 2, BLOCK_SIZE / 2);
-  cogl_path_line_to (BLOCK_SIZE / 2, 0);
-  cogl_path_close ();
-  path_a = cogl_object_ref (cogl_get_path ());
+  path_a = cogl_path_new ();
+  cogl_path_rectangle (path_a, 0, 0, BLOCK_SIZE, BLOCK_SIZE);
+  cogl_path_line_to (path_a, 0, BLOCK_SIZE / 2);
+  cogl_path_line_to (path_a, BLOCK_SIZE / 2, BLOCK_SIZE / 2);
+  cogl_path_line_to (path_a, BLOCK_SIZE / 2, 0);
+  cogl_path_close (path_a);
   draw_path_at (path_a, white, 8, 0);
   cogl_object_unref (path_a);
 
   /* Draw two sub paths. Where the paths intersect it should be
      inverted */
-  cogl_path_new ();
-  cogl_path_rectangle (0, 0, BLOCK_SIZE, BLOCK_SIZE);
-  cogl_path_rectangle (BLOCK_SIZE / 2, BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
-  path_a = cogl_object_ref (cogl_get_path ());
+  path_a = cogl_path_new ();
+  cogl_path_rectangle (path_a, 0, 0, BLOCK_SIZE, BLOCK_SIZE);
+  cogl_path_rectangle (path_a,
+                       BLOCK_SIZE / 2, BLOCK_SIZE / 2, BLOCK_SIZE, BLOCK_SIZE);
   draw_path_at (path_a, white, 9, 0);
   cogl_object_unref (path_a);
 
   /* Draw a clockwise outer path */
-  cogl_path_new ();
-  cogl_path_move_to (0, 0);
-  cogl_path_line_to (BLOCK_SIZE, 0);
-  cogl_path_line_to (BLOCK_SIZE, BLOCK_SIZE);
-  cogl_path_line_to (0, BLOCK_SIZE);
-  cogl_path_close ();
+  path_a = cogl_path_new ();
+  cogl_path_move_to (path_a, 0, 0);
+  cogl_path_line_to (path_a, BLOCK_SIZE, 0);
+  cogl_path_line_to (path_a, BLOCK_SIZE, BLOCK_SIZE);
+  cogl_path_line_to (path_a, 0, BLOCK_SIZE);
+  cogl_path_close (path_a);
   /* Add a clockwise sub path in the upper left quadrant */
-  cogl_path_move_to (0, 0);
-  cogl_path_line_to (BLOCK_SIZE / 2, 0);
-  cogl_path_line_to (BLOCK_SIZE / 2, BLOCK_SIZE / 2);
-  cogl_path_line_to (0, BLOCK_SIZE / 2);
-  cogl_path_close ();
+  cogl_path_move_to (path_a, 0, 0);
+  cogl_path_line_to (path_a, BLOCK_SIZE / 2, 0);
+  cogl_path_line_to (path_a, BLOCK_SIZE / 2, BLOCK_SIZE / 2);
+  cogl_path_line_to (path_a, 0, BLOCK_SIZE / 2);
+  cogl_path_close (path_a);
   /* Add a counter-clockwise sub path in the upper right quadrant */
-  cogl_path_move_to (BLOCK_SIZE / 2, 0);
-  cogl_path_line_to (BLOCK_SIZE / 2, BLOCK_SIZE / 2);
-  cogl_path_line_to (BLOCK_SIZE, BLOCK_SIZE / 2);
-  cogl_path_line_to (BLOCK_SIZE, 0);
-  cogl_path_close ();
+  cogl_path_move_to (path_a, BLOCK_SIZE / 2, 0);
+  cogl_path_line_to (path_a, BLOCK_SIZE / 2, BLOCK_SIZE / 2);
+  cogl_path_line_to (path_a, BLOCK_SIZE, BLOCK_SIZE / 2);
+  cogl_path_line_to (path_a, BLOCK_SIZE, 0);
+  cogl_path_close (path_a);
   /* Retain the path for the next test */
-  path_a = cogl_object_ref (cogl_get_path ());
   draw_path_at (path_a, white, 10, 0);
 
   /* Draw the same path again with the other fill rule */
-  cogl_set_path (path_a);
-  cogl_path_set_fill_rule (COGL_PATH_FILL_RULE_NON_ZERO);
+  cogl_path_set_fill_rule (path_a, COGL_PATH_FILL_RULE_NON_ZERO);
   draw_path_at (path_a, white, 11, 0);
 
   cogl_object_unref (path_a);

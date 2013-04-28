@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2008,2009 Intel Corporation.
+ * Copyright (C) 2008,2009,2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,8 @@
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
- * License along with this library. If not, see <http://www.gnu.org/licenses/>.
+ * License along with this library. If not, see
+ * <http://www.gnu.org/licenses/>.
  *
  *
  */
@@ -25,35 +26,13 @@
 #error "Only <cogl/cogl.h> can be included directly."
 #endif
 
-#ifndef __COGL2_PATH_H__
-#define __COGL2_PATH_H__
+#ifndef __COGL2_PATH_FUNCTIONS_H__
+#define __COGL2_PATH_FUNCTIONS_H__
 
 #include <cogl/cogl-types.h>
+#include <cogl/cogl.h>
 
 COGL_BEGIN_DECLS
-
-/**
- * SECTION:cogl-paths
- * @short_description: Functions for constructing and drawing 2D paths.
- *
- * There are two levels on which drawing with cogl-paths can be used.
- * The highest level functions construct various simple primitive
- * shapes to be either filled or stroked. Using a lower-level set of
- * functions more complex and arbitrary paths can be constructed by
- * concatenating straight line, bezier curve and arc segments.
- *
- * When constructing arbitrary paths, the current pen location is
- * initialized using the move_to command. The subsequent path segments
- * implicitly use the last pen location as their first vertex and move
- * the pen location to the last vertex they produce at the end. Also
- * there are special versions of functions that allow specifying the
- * vertices of the path segments relative to the last pen location
- * rather then in the absolute coordinates.
- */
-
-typedef struct _CoglPath CoglPath;
-
-#define COGL_PATH(obj) ((CoglPath *)(obj))
 
 #define cogl_path_new cogl2_path_new
 /**
@@ -396,48 +375,6 @@ cogl_path_round_rectangle (CoglPath *path,
                            float radius,
                            float arc_step);
 
-/**
- * CoglPathFillRule:
- * @COGL_PATH_FILL_RULE_NON_ZERO: Each time the line crosses an edge of
- * the path from left to right one is added to a counter and each time
- * it crosses from right to left the counter is decremented. If the
- * counter is non-zero then the point will be filled. See <xref
- * linkend="fill-rule-non-zero"/>.
- * @COGL_PATH_FILL_RULE_EVEN_ODD: If the line crosses an edge of the
- * path an odd number of times then the point will filled, otherwise
- * it won't. See <xref linkend="fill-rule-even-odd"/>.
- *
- * #CoglPathFillRule is used to determine how a path is filled. There
- * are two options - 'non-zero' and 'even-odd'. To work out whether any
- * point will be filled imagine drawing an infinetely long line in any
- * direction from that point. The number of times and the direction
- * that the edges of the path crosses this line determines whether the
- * line is filled as described below. Any open sub paths are treated
- * as if there was an extra line joining the first point and the last
- * point.
- *
- * The default fill rule is %COGL_PATH_FILL_RULE_EVEN_ODD. The fill
- * rule is attached to the current path so preserving a path with
- * cogl_get_path() also preserves the fill rule. Calling
- * cogl_path_new() resets the current fill rule to the default.
- *
- * <figure id="fill-rule-non-zero">
- *   <title>Example of filling various paths using the non-zero rule</title>
- *   <graphic fileref="fill-rule-non-zero.png" format="PNG"/>
- * </figure>
- *
- * <figure id="fill-rule-even-odd">
- *   <title>Example of filling various paths using the even-odd rule</title>
- *   <graphic fileref="fill-rule-even-odd.png" format="PNG"/>
- * </figure>
- *
- * Since: 1.4
- */
-typedef enum {
-  COGL_PATH_FILL_RULE_NON_ZERO,
-  COGL_PATH_FILL_RULE_EVEN_ODD
-} CoglPathFillRule;
-
 #define cogl_path_set_fill_rule cogl2_path_set_fill_rule
 /**
  * cogl_path_set_fill_rule:
@@ -487,6 +424,32 @@ cogl_path_get_fill_rule (CoglPath *path);
 void
 cogl_path_fill (CoglPath *path);
 
+/**
+ * cogl_framebuffer_fill_path:
+ * @framebuffer: A #CoglFramebuffer
+ * @pipeline: A #CoglPipeline to render with
+ * @path: The #CoglPath to fill
+ *
+ * Fills the interior of the path using the fragment operations
+ * defined by the pipeline.
+ *
+ * The interior of the shape is determined using the fill rule of the
+ * path. See %CoglPathFillRule for details.
+ *
+ * <note>The result of referencing sliced textures in your current
+ * pipeline when filling a path are undefined. You should pass
+ * the %COGL_TEXTURE_NO_SLICING flag when loading any texture you will
+ * use while filling a path.</note>
+ *
+ * Stability: unstable
+ * Deprecated: 1.16: Use cogl_path_fill() instead
+ */
+void
+cogl_framebuffer_fill_path (CoglFramebuffer *framebuffer,
+                            CoglPipeline *pipeline,
+                            CoglPath *path)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_path_fill);
+
 #define cogl_path_stroke cogl2_path_stroke
 /**
  * cogl_path_stroke:
@@ -500,7 +463,61 @@ cogl_path_fill (CoglPath *path);
 void
 cogl_path_stroke (CoglPath *path);
 
+/**
+ * cogl_framebuffer_stroke_path:
+ * @framebuffer: A #CoglFramebuffer
+ * @pipeline: A #CoglPipeline to render with
+ * @path: The #CoglPath to stroke
+ *
+ * Strokes the edge of the path using the fragment operations defined
+ * by the pipeline. The stroke line will have a width of 1 pixel
+ * regardless of the current transformation matrix.
+ *
+ * Stability: unstable
+ * Deprecated: 1.16: Use cogl_path_stroke() instead
+ */
+void
+cogl_framebuffer_stroke_path (CoglFramebuffer *framebuffer,
+                              CoglPipeline *pipeline,
+                              CoglPath *path)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_path_stroke);
+
+/**
+ * cogl_framebuffer_push_path_clip:
+ * @framebuffer: A #CoglFramebuffer pointer
+ * @path: The path to clip with.
+ *
+ * Sets a new clipping area using the silhouette of the specified,
+ * filled @path.  The clipping area is intersected with the previous
+ * clipping area. To restore the previous clipping area, call
+ * cogl_framebuffer_pop_clip().
+ *
+ * Since: 1.0
+ * Stability: unstable
+ */
+void
+cogl_framebuffer_push_path_clip (CoglFramebuffer *framebuffer,
+                                 CoglPath *path);
+
+#define cogl_clip_push_from_path cogl2_clip_push_from_path
+/**
+ * cogl_clip_push_from_path:
+ * @path: The path to clip with.
+ *
+ * Sets a new clipping area using the silhouette of the specified,
+ * filled @path.  The clipping area is intersected with the previous
+ * clipping area. To restore the previous clipping area, call
+ * call cogl_clip_pop().
+ *
+ * Since: 1.8
+ * Stability: Unstable
+ * Deprecated: 1.16: Use cogl_framebuffer_push_path_clip() instead
+ */
+void
+cogl_clip_push_from_path (CoglPath *path)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_path_clip);
+
 COGL_END_DECLS
 
-#endif /* __COGL2_PATH_H__ */
+#endif /* __COGL2_PATH_FUNCTIONS_H__ */
 

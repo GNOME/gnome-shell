@@ -37,12 +37,6 @@
  */
 typedef struct _CoglFramebuffer CoglFramebuffer;
 
-#ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
-#include <cogl/cogl2-path.h>
-#else
-#include <cogl/cogl-path.h>
-#endif
-
 #include <cogl/cogl-pipeline.h>
 #include <cogl/cogl-indices.h>
 #include <cogl/cogl-bitmap.h>
@@ -597,23 +591,6 @@ cogl_framebuffer_push_rectangle_clip (CoglFramebuffer *framebuffer,
                                       float y_1,
                                       float x_2,
                                       float y_2);
-
-/**
- * cogl_framebuffer_push_path_clip:
- * @framebuffer: A #CoglFramebuffer pointer
- * @path: The path to clip with.
- *
- * Sets a new clipping area using the silhouette of the specified,
- * filled @path.  The clipping area is intersected with the previous
- * clipping area. To restore the previous clipping area, call
- * cogl_framebuffer_pop_clip().
- *
- * Since: 1.0
- * Stability: unstable
- */
-void
-cogl_framebuffer_push_path_clip (CoglFramebuffer *framebuffer,
-                                 CoglPath *path);
 
 /**
  * cogl_framebuffer_push_primitive_clip:
@@ -1386,47 +1363,6 @@ cogl_framebuffer_draw_textured_rectangles (CoglFramebuffer *framebuffer,
                                            CoglPipeline *pipeline,
                                            const float *coordinates,
                                            unsigned int n_rectangles);
-
-/**
- * cogl_framebuffer_fill_path:
- * @framebuffer: A #CoglFramebuffer
- * @pipeline: A #CoglPipeline to render with
- * @path: The #CoglPath to fill
- *
- * Fills the interior of the path using the fragment operations
- * defined by the pipeline.
- *
- * The interior of the shape is determined using the fill rule of the
- * path. See %CoglPathFillRule for details.
- *
- * <note>The result of referencing sliced textures in your current
- * pipeline when filling a path are undefined. You should pass
- * the %COGL_TEXTURE_NO_SLICING flag when loading any texture you will
- * use while filling a path.</note>
- *
- * Since: 2.0
- */
-void
-cogl_framebuffer_fill_path (CoglFramebuffer *framebuffer,
-                            CoglPipeline *pipeline,
-                            CoglPath *path);
-
-/**
- * cogl_framebuffer_stroke_path:
- * @framebuffer: A #CoglFramebuffer
- * @pipeline: A #CoglPipeline to render with
- * @path: The #CoglPath to stroke
- *
- * Strokes the edge of the path using the fragment operations defined
- * by the pipeline. The stroke line will have a width of 1 pixel
- * regardless of the current transformation matrix.
- *
- * Since: 2.0
- */
-void
-cogl_framebuffer_stroke_path (CoglFramebuffer *framebuffer,
-                              CoglPipeline *pipeline,
-                              CoglPath *path);
 
 /* XXX: Should we take an n_buffers + buffer id array instead of using
  * the CoglBufferBits type which doesn't seem future proof? */

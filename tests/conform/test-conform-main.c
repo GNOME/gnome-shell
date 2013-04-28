@@ -57,7 +57,9 @@ main (int argc, char **argv)
   ADD_TEST (test_blend, 0, 0);
   ADD_TEST (test_premult, 0, 0);
   UNPORTED_TEST (test_readpixels);
+#ifdef COGL_HAS_COGL_PATH_SUPPORT
   ADD_TEST (test_path, 0, 0);
+#endif
   ADD_TEST (test_depth_test, 0, 0);
   ADD_TEST (test_color_mask, 0, 0);
   ADD_TEST (test_backface_culling, 0, TEST_REQUIREMENT_NPOT);

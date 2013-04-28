@@ -30,6 +30,7 @@
 #include <string.h>
 
 #include "cogl-pango-display-list.h"
+#include "cogl-pango-pipeline-cache.h"
 #include "cogl/cogl-context-private.h"
 
 typedef enum
@@ -88,12 +89,7 @@ struct _CoglPangoDisplayListNode
 
     struct
     {
-      float y_1;
-      float x_11;
-      float x_21;
-      float y_2;
-      float x_12;
-      float x_22;
+      CoglPrimitive *primitive;
     } trapezoid;
   } d;
 };
@@ -219,18 +215,25 @@ _cogl_pango_display_list_add_trapezoid (CoglPangoDisplayList *dl,
                                         float x_12,
                                         float x_22)
 {
+  CoglContext *ctx = dl->pipeline_cache->ctx;
   CoglPangoDisplayListNode *node = g_slice_new (CoglPangoDisplayListNode);
+  CoglVertexP2 vertices[4] = {
+        { x_11, y_1 },
+        { x_12, y_2 },
+        { x_22, y_2 },
+        { x_21, y_1 }
+  };
 
   node->type = COGL_PANGO_DISPLAY_LIST_TRAPEZOID;
   node->color_override = dl->color_override;
   node->color = dl->color;
-  node->d.trapezoid.y_1 = y_1;
-  node->d.trapezoid.x_11 = x_11;
-  node->d.trapezoid.x_21 = x_21;
-  node->d.trapezoid.y_2 = y_2;
-  node->d.trapezoid.x_12 = x_12;
-  node->d.trapezoid.x_22 = x_22;
   node->pipeline = NULL;
+
+  node->d.trapezoid.primitive =
+    cogl_primitive_new_p2 (ctx,
+                           COGL_VERTICES_MODE_TRIANGLE_FAN,
+                           4,
+                           vertices);
 
   _cogl_pango_display_list_append_node (dl, node);
 }
@@ -448,25 +451,8 @@ _cogl_pango_display_list_render (CoglFramebuffer *fb,
           break;
 
         case COGL_PANGO_DISPLAY_LIST_TRAPEZOID:
-          {
-            float points[8];
-            CoglPath *path;
-            CoglContext *ctx = fb->context;
-
-            points[0] =  node->d.trapezoid.x_11;
-            points[1] =  node->d.trapezoid.y_1;
-            points[2] =  node->d.trapezoid.x_12;
-            points[3] =  node->d.trapezoid.y_2;
-            points[4] =  node->d.trapezoid.x_22;
-            points[5] =  node->d.trapezoid.y_2;
-            points[6] =  node->d.trapezoid.x_21;
-            points[7] =  node->d.trapezoid.y_1;
-
-            path = cogl_path_new ();
-            cogl_path_polygon (path, points, 4);
-            cogl_framebuffer_fill_path (fb, node->pipeline, path);
-            cogl_object_unref (path);
-          }
+          cogl_framebuffer_draw_primitive (fb, node->pipeline,
+                                           node->d.trapezoid.primitive);
           break;
         }
     }
@@ -483,6 +469,8 @@ _cogl_pango_display_list_node_free (CoglPangoDisplayListNode *node)
       if (node->d.texture.primitive != NULL)
         cogl_object_unref (node->d.texture.primitive);
     }
+  else if (node->type == COGL_PANGO_DISPLAY_LIST_TRAPEZOID)
+    cogl_object_unref (node->d.trapezoid.primitive);
 
   if (node->pipeline)
     cogl_object_unref (node->pipeline);

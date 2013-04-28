@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2010 Intel Corporation.
+ * Copyright (C) 2010,2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,10 +30,10 @@
 #include "cogl-util.h"
 #include "cogl-object.h"
 #include "cogl-context-private.h"
-#include "cogl2-path.h"
 
-#include <string.h>
-#include <math.h>
+#include "cogl-path-types.h"
+
+#include "cogl2-path-functions.h"
 
 #undef cogl_path_set_fill_rule
 #undef cogl_path_get_fill_rule
@@ -56,15 +56,33 @@
 #undef cogl_path_round_rectangle
 #undef cogl_path_curve_to
 #undef cogl_path_rel_curve_to
+#undef cogl_clip_push_from_path
 
-#include "cogl-path-functions.h"
+#include "cogl1-path-functions.h"
+
+#include <string.h>
+#include <math.h>
+
+static void
+ensure_current_path (CoglContext *ctx)
+{
+  if (ctx->current_path == NULL)
+    ctx->current_path = cogl2_path_new ();
+}
+
+static CoglPath *
+get_current_path (CoglContext *ctx)
+{
+  ensure_current_path (ctx);
+  return ctx->current_path;
+}
 
 void
 cogl_path_set_fill_rule (CoglPathFillRule fill_rule)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_set_fill_rule (ctx->current_path, fill_rule);
+  cogl2_path_set_fill_rule (get_current_path (ctx), fill_rule);
 }
 
 CoglPathFillRule
@@ -72,7 +90,7 @@ cogl_path_get_fill_rule (void)
 {
   _COGL_GET_CONTEXT (ctx, COGL_PATH_FILL_RULE_EVEN_ODD);
 
-  return cogl2_path_get_fill_rule (ctx->current_path);
+  return cogl2_path_get_fill_rule (get_current_path (ctx));
 }
 
 void
@@ -80,9 +98,10 @@ cogl_path_fill (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_fill (ctx->current_path);
+  cogl2_path_fill (get_current_path (ctx));
 
-  cogl_object_unref (ctx->current_path);
+  if (ctx->current_path)
+    cogl_object_unref (ctx->current_path);
   ctx->current_path = cogl2_path_new ();
 }
 
@@ -91,7 +110,7 @@ cogl_path_fill_preserve (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_fill (ctx->current_path);
+  cogl2_path_fill (get_current_path (ctx));
 }
 
 void
@@ -99,9 +118,10 @@ cogl_path_stroke (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_stroke (ctx->current_path);
+  cogl2_path_stroke (get_current_path (ctx));
 
-  cogl_object_unref (ctx->current_path);
+  if (ctx->current_path)
+    cogl_object_unref (ctx->current_path);
   ctx->current_path = cogl2_path_new ();
 }
 
@@ -110,7 +130,7 @@ cogl_path_stroke_preserve (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_stroke (ctx->current_path);
+  cogl2_path_stroke (get_current_path (ctx));
 }
 
 void
@@ -119,7 +139,7 @@ cogl_path_move_to (float x,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_move_to (ctx->current_path, x, y);
+  cogl2_path_move_to (get_current_path (ctx), x, y);
 }
 
 void
@@ -128,7 +148,7 @@ cogl_path_rel_move_to (float x,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_rel_move_to (ctx->current_path, x, y);
+  cogl2_path_rel_move_to (get_current_path (ctx), x, y);
 }
 
 void
@@ -137,7 +157,7 @@ cogl_path_line_to (float x,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_line_to (ctx->current_path, x, y);
+  cogl2_path_line_to (get_current_path (ctx), x, y);
 }
 
 void
@@ -146,7 +166,7 @@ cogl_path_rel_line_to (float x,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_rel_line_to (ctx->current_path, x, y);
+  cogl2_path_rel_line_to (get_current_path (ctx), x, y);
 }
 
 void
@@ -154,7 +174,7 @@ cogl_path_close (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_close (ctx->current_path);
+  cogl2_path_close (get_current_path (ctx));
 }
 
 void
@@ -162,7 +182,8 @@ cogl_path_new (void)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl_object_unref (ctx->current_path);
+  if (ctx->current_path)
+    cogl_object_unref (ctx->current_path);
   ctx->current_path = cogl2_path_new ();
 }
 
@@ -174,7 +195,7 @@ cogl_path_line (float x_1,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_line (ctx->current_path, x_1, y_1, x_2, y_2);
+  cogl2_path_line (get_current_path (ctx), x_1, y_1, x_2, y_2);
 }
 
 void
@@ -183,7 +204,7 @@ cogl_path_polyline (const float *coords,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_polyline (ctx->current_path, coords, num_points);
+  cogl2_path_polyline (get_current_path (ctx), coords, num_points);
 }
 
 void
@@ -192,7 +213,7 @@ cogl_path_polygon (const float *coords,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_polygon (ctx->current_path, coords, num_points);
+  cogl2_path_polygon (get_current_path (ctx), coords, num_points);
 }
 
 void
@@ -203,7 +224,7 @@ cogl_path_rectangle (float x_1,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_rectangle (ctx->current_path, x_1, y_1, x_2, y_2);
+  cogl2_path_rectangle (get_current_path (ctx), x_1, y_1, x_2, y_2);
 }
 
 void
@@ -216,7 +237,7 @@ cogl_path_arc (float center_x,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_arc (ctx->current_path,
+  cogl2_path_arc (get_current_path (ctx),
                   center_x,
                   center_y,
                   radius_x,
@@ -233,7 +254,7 @@ cogl_path_ellipse (float center_x,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_ellipse (ctx->current_path,
+  cogl2_path_ellipse (get_current_path (ctx),
                       center_x,
                       center_y,
                       radius_x,
@@ -250,7 +271,7 @@ cogl_path_round_rectangle (float x_1,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_round_rectangle (ctx->current_path,
+  cogl2_path_round_rectangle (get_current_path (ctx),
                               x_1, y_1, x_2, y_2, radius, arc_step);
 }
 
@@ -264,7 +285,7 @@ cogl_path_curve_to (float x_1,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_curve_to (ctx->current_path,
+  cogl2_path_curve_to (get_current_path (ctx),
                        x_1, y_1, x_2, y_2, x_3, y_3);
 }
 
@@ -278,7 +299,7 @@ cogl_path_rel_curve_to (float x_1,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  cogl2_path_rel_curve_to (ctx->current_path,
+  cogl2_path_rel_curve_to (get_current_path (ctx),
                            x_1, y_1, x_2, y_2, x_3, y_3);
 }
 
@@ -287,7 +308,7 @@ cogl_get_path (void)
 {
   _COGL_GET_CONTEXT (ctx, NULL);
 
-  return ctx->current_path;
+  return get_current_path (ctx);
 }
 
 void
@@ -300,6 +321,27 @@ cogl_set_path (CoglPath *path)
   /* Reference the new object first in case it is the same as the old
      object */
   cogl_object_ref (path);
-  cogl_object_unref (ctx->current_path);
+  if (ctx->current_path)
+    cogl_object_unref (ctx->current_path);
   ctx->current_path = path;
+}
+
+void
+cogl_clip_push_from_path_preserve (void)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+  cogl_framebuffer_push_path_clip (cogl_get_draw_framebuffer (),
+                                   get_current_path (ctx));
+}
+
+void
+cogl_clip_push_from_path (void)
+{
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  cogl_clip_push_from_path_preserve ();
+
+  if (ctx->current_path)
+    cogl_object_unref (ctx->current_path);
+  ctx->current_path = cogl2_path_new ();
 }

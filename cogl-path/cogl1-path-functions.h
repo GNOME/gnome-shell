@@ -424,6 +424,36 @@ cogl_set_path (CoglPath *path);
 CoglPath *
 cogl_path_copy (CoglPath *path);
 
+/**
+ * cogl_clip_push_from_path_preserve:
+ *
+ * Sets a new clipping area using the current path. The current path
+ * is then cleared. The clipping area is intersected with the previous
+ * clipping area. To restore the previous clipping area, call
+ * cogl_clip_pop().
+ *
+ * Since: 1.0
+ * Deprecated: 1.16: Use cogl_framebuffer_push_path_clip() instead
+ */
+void
+cogl_clip_push_from_path_preserve (void)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_path_clip);
+
+/**
+ * cogl_clip_push_from_path:
+ *
+ * Sets a new clipping area using the current path. The current path
+ * is then cleared. The clipping area is intersected with the previous
+ * clipping area. To restore the previous clipping area, call
+ * cogl_clip_pop().
+ *
+ * Since: 1.0
+ * Deprecated: 1.16: Use cogl_framebuffer_push_path_clip() instead
+ */
+void
+cogl_clip_push_from_path (void)
+     COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_path_clip);
+
 COGL_END_DECLS
 
 #endif /* __COGL_PATH_FUNCTIONS_H__ */

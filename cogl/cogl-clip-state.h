@@ -32,19 +32,6 @@
 
 COGL_BEGIN_DECLS
 
-/**
- * cogl_clip_push_from_path:
- *
- * Sets a new clipping area using the current path. The current path
- * is then cleared. The clipping area is intersected with the previous
- * clipping area. To restore the previous clipping area, call
- * cogl_clip_pop().
- *
- * Since: 1.0
- */
-void
-cogl_clip_push_from_path (void);
-
 COGL_END_DECLS
 
 #endif /* __COGL_CLIP_STATE_H */

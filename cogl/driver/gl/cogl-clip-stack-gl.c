@@ -33,7 +33,6 @@
 #include "cogl-util-gl-private.h"
 #include "cogl-primitives-private.h"
 #include "cogl-pipeline-opengl-private.h"
-#include "cogl-path-private.h"
 #include "cogl-clip-stack-gl-private.h"
 #include "cogl-primitive-private.h"
 
@@ -362,41 +361,6 @@ add_stencil_clip_silhouette (CoglFramebuffer *framebuffer,
 }
 
 static void
-paint_path_silhouette (CoglFramebuffer *framebuffer,
-                       CoglPipeline *pipeline,
-                       void *user_data)
-{
-  CoglPath *path = user_data;
-  if (path->data->path_nodes->len >= 3)
-    _cogl_path_fill_nodes (path,
-                           framebuffer,
-                           pipeline,
-                           COGL_DRAW_SKIP_JOURNAL_FLUSH |
-                           COGL_DRAW_SKIP_PIPELINE_VALIDATION |
-                           COGL_DRAW_SKIP_FRAMEBUFFER_FLUSH);
-}
-
-static void
-add_stencil_clip_path (CoglFramebuffer *framebuffer,
-                       CoglMatrixEntry *modelview_entry,
-                       CoglPath *path,
-                       CoglBool merge,
-                       CoglBool need_clear)
-{
-  CoglPathData *data = path->data;
-  add_stencil_clip_silhouette (framebuffer,
-                               paint_path_silhouette,
-                               modelview_entry,
-                               data->path_nodes_min.x,
-                               data->path_nodes_min.y,
-                               data->path_nodes_max.x,
-                               data->path_nodes_max.y,
-                               merge,
-                               need_clear,
-                               path);
-}
-
-static void
 paint_primitive_silhouette (CoglFramebuffer *framebuffer,
                             CoglPipeline *pipeline,
                             void *user_data)
@@ -578,21 +542,6 @@ _cogl_clip_stack_gl_flush (CoglClipStack *stack,
     {
       switch (entry->type)
         {
-        case COGL_CLIP_STACK_PATH:
-            {
-              CoglClipStackPath *path_entry = (CoglClipStackPath *) entry;
-
-              COGL_NOTE (CLIPPING, "Adding stencil clip for path");
-
-              add_stencil_clip_path (framebuffer,
-                                     path_entry->matrix_entry,
-                                     path_entry->path,
-                                     using_stencil_buffer,
-                                     TRUE);
-
-              using_stencil_buffer = TRUE;
-              break;
-            }
         case COGL_CLIP_STACK_PRIMITIVE:
             {
               CoglClipStackPrimitive *primitive_entry =

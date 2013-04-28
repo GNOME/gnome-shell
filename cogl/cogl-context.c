@@ -44,7 +44,6 @@
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-onscreen-private.h"
-#include "cogl2-path.h"
 #include "cogl-attribute-private.h"
 #include "cogl1-context.h"
 #include "cogl-gpu-info-private.h"
@@ -378,7 +377,7 @@ cogl_context_new (CoglDisplay *display,
       cogl_object_unref (COGL_FRAMEBUFFER (window));
     }
 
-  context->current_path = cogl2_path_new ();
+  context->current_path = NULL;
   context->stencil_pipeline = cogl_pipeline_new (context);
 
   context->in_begin_gl_block = FALSE;

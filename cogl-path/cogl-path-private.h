@@ -86,6 +86,7 @@ struct _CoglPathData
   CoglIndices         *fill_vbo_indices;
   unsigned int         fill_vbo_n_indices;
   CoglAttribute       *fill_attributes[COGL_PATH_N_ATTRIBUTES + 1];
+  CoglPrimitive       *fill_primitive;
 
   CoglAttributeBuffer *stroke_attribute_buffer;
   CoglAttribute      **stroke_attributes;
@@ -114,16 +115,5 @@ _cogl_path_get_bounds (CoglPath *path,
 
 CoglBool
 _cogl_path_is_rectangle (CoglPath *path);
-
-void
-_cogl_path_stroke_nodes (CoglPath *path,
-                         CoglFramebuffer *framebuffer,
-                         CoglPipeline *pipeline);
-
-void
-_cogl_path_fill_nodes (CoglPath *path,
-                       CoglFramebuffer *framebuffer,
-                       CoglPipeline *pipeline,
-                       CoglDrawFlags flags);
 
 #endif /* __COGL_PATH_PRIVATE_H */

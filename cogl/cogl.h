@@ -64,7 +64,6 @@
  * 1.x only api...
  */
 #ifndef COGL_ENABLE_EXPERIMENTAL_2_0_API
-#include <cogl/cogl-path.h>
 #include <cogl/cogl-clip-state.h>
 #include <cogl/cogl-vertex-buffer.h>
 #include <cogl/cogl-enum-types.h>
@@ -130,18 +129,20 @@
 #endif
 
 /*
- * 2.0 only api...
- */
-#ifdef COGL_ENABLE_EXPERIMENTAL_2_0_API
-#include <cogl/cogl2-path.h>
-/* This header will be removed in Cogl 1.12 */
-#include <cogl/cogl2-compatibility.h>
-#endif
-
-/*
  * API deprecations
  */
 #include <cogl/cogl-deprecated.h>
+
+/*
+ * Cogl Path api compatability
+ *
+ * The cogl_path_ api used to be part of the core Cogl api so for
+ * compatability we include cogl-path.h via cogl.h
+ */
+#if defined (COGL_ENABLE_EXPERIMENTAL_2_0_API) && \
+    defined (COGL_HAS_COGL_PATH_SUPPORT)
+#include <cogl-path/cogl-path.h>
+#endif
 
 /**
  * SECTION:cogl

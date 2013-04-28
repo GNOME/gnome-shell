@@ -33,7 +33,6 @@ test_sources = \
 	test-color-mask.c \
 	test-backface-culling.c \
 	test-just-vertex-shader.c \
-	test-path.c \
 	test-pipeline-user-matrix.c \
 	test-pipeline-uniforms.c \
 	test-pixel-buffer.c \
@@ -73,6 +72,10 @@ if !USING_EMSCRIPTEN
 # test-fence depends on the glib mainloop so it won't compile if using
 # emscripten which builds in standalone mode.
 test_sources += test-fence.c
+endif
+
+if BUILD_COGL_PATH
+test_sources += test-path.c
 endif
 
 test_conformance_SOURCES = $(common_sources) $(test_sources)
@@ -144,6 +147,9 @@ test_conformance_LDADD = \
 	$(LIBM)
 if !USE_GLIB
 test_conformance_LDADD += $(top_builddir)/deps/glib/libglib.la
+endif
+if BUILD_COGL_PATH
+test_conformance_LDADD += $(top_builddir)/cogl-path/libcogl-path.la
 endif
 test_conformance_LDFLAGS = -export-dynamic
 

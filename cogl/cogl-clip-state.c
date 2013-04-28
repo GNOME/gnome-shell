@@ -39,6 +39,7 @@
 #include "cogl-matrix-private.h"
 #include "cogl-clip-state.h"
 #include "cogl1-context.h"
+#include "cogl-path/cogl-path.h"
 
 void
 cogl_clip_push_window_rectangle (int x_offset,
@@ -81,26 +82,6 @@ cogl_clip_push (float x_offset,
                             y_offset,
                             x_offset + width,
                             y_offset + height);
-}
-
-void
-cogl_clip_push_from_path_preserve (void)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-  cogl_framebuffer_push_path_clip (cogl_get_draw_framebuffer (),
-                                   ctx->current_path);
-}
-
-#undef cogl_clip_push_from_path
-void
-cogl_clip_push_from_path (void)
-{
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
-  cogl_clip_push_from_path_preserve ();
-
-  cogl_object_unref (ctx->current_path);
-  ctx->current_path = cogl2_path_new ();
 }
 
 void

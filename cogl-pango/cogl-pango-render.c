@@ -825,18 +825,8 @@ cogl_pango_renderer_draw_trapezoid (PangoRenderer   *renderer,
 				    double           x22)
 {
   CoglPangoRenderer *priv = COGL_PANGO_RENDERER (renderer);
-  float points[8];
 
   _COGL_RETURN_IF_FAIL (priv->display_list != NULL);
-
-  points[0] =  (x11);
-  points[1] =  (y1);
-  points[2] =  (x12);
-  points[3] =  (y2);
-  points[4] =  (x22);
-  points[5] = points[3];
-  points[6] =  (x21);
-  points[7] = points[1];
 
   cogl_pango_renderer_set_color_for_part (renderer, part);
 

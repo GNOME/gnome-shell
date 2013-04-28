@@ -37,7 +37,6 @@
 #include "cogl-framebuffer-private.h"
 #include "cogl-journal-private.h"
 #include "cogl-util.h"
-#include "cogl-path-private.h"
 #include "cogl-matrix-private.h"
 #include "cogl-primitives-private.h"
 #include "cogl-private.h"
@@ -250,57 +249,6 @@ _cogl_clip_stack_push_rectangle (CoglClipStack *stack,
 }
 
 CoglClipStack *
-_cogl_clip_stack_push_from_path (CoglClipStack *stack,
-                                 CoglPath *path,
-                                 CoglMatrixEntry *modelview_entry,
-                                 CoglMatrixEntry *projection_entry,
-                                 const float *viewport)
-{
-  float x_1, y_1, x_2, y_2;
-
-  _cogl_path_get_bounds (path, &x_1, &y_1, &x_2, &y_2);
-
-  /* If the path is a simple rectangle then we can divert to pushing a
-     rectangle clip instead which usually won't involve the stencil
-     buffer */
-  if (_cogl_path_is_rectangle (path))
-    return _cogl_clip_stack_push_rectangle (stack,
-                                            x_1, y_1,
-                                            x_2, y_2,
-                                            modelview_entry,
-                                            projection_entry,
-                                            viewport);
-  else
-    {
-      CoglClipStackPath *entry;
-      CoglMatrix modelview;
-      CoglMatrix projection;
-      float transformed_corners[8];
-
-      entry = _cogl_clip_stack_push_entry (stack,
-                                           sizeof (CoglClipStackPath),
-                                           COGL_CLIP_STACK_PATH);
-
-      entry->path = cogl_path_copy (path);
-
-      entry->matrix_entry = cogl_matrix_entry_ref (modelview_entry);
-
-      cogl_matrix_entry_get (modelview_entry, &modelview);
-      cogl_matrix_entry_get (projection_entry, &projection);
-
-      get_transformed_corners (x_1, y_1, x_2, y_2,
-                               &modelview,
-                               &projection,
-                               viewport,
-                               transformed_corners);
-      _cogl_clip_stack_entry_set_bounds ((CoglClipStack *) entry,
-                                         transformed_corners);
-
-      return (CoglClipStack *) entry;
-    }
-}
-
-CoglClipStack *
 _cogl_clip_stack_push_primitive (CoglClipStack *stack,
                                  CoglPrimitive *primitive,
                                  float bounds_x1,
@@ -378,15 +326,6 @@ _cogl_clip_stack_unref (CoglClipStack *entry)
         case COGL_CLIP_STACK_WINDOW_RECT:
           g_slice_free1 (sizeof (CoglClipStackWindowRect), entry);
           break;
-
-        case COGL_CLIP_STACK_PATH:
-          {
-            CoglClipStackPath *path_entry = (CoglClipStackPath *) entry;
-            cogl_matrix_entry_unref (path_entry->matrix_entry);
-            cogl_object_unref (path_entry->path);
-            g_slice_free1 (sizeof (CoglClipStackPath), entry);
-            break;
-          }
         case COGL_CLIP_STACK_PRIMITIVE:
           {
             CoglClipStackPrimitive *primitive_entry =

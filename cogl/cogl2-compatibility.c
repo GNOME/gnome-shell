@@ -29,17 +29,10 @@
    to maintain ABI compatibility. They will be removed again
    immediately once the branch for 1.12.x is created */
 
-#include "cogl2-compatibility.h"
 #include "cogl-framebuffer.h"
 #include "cogl-framebuffer-private.h"
 #include "cogl-index-buffer.h"
 #include "cogl-pipeline.h"
-
-void
-cogl_clip_push_from_path (CoglPath *path)
-{
-  cogl_framebuffer_push_path_clip (cogl_get_draw_framebuffer (), path);
-}
 
 /* These were never declared in a public header so we might as well
    keep it that way. The declarations here are just to avoid a

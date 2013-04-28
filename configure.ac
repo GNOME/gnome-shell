@@ -536,6 +536,21 @@ AS_IF([test "x$enable_cogl_gst" = "xyes"],
       ]
 )
 
+dnl     ============================================================
+dnl     Should cogl-path be built?
+dnl     ============================================================
+
+AC_ARG_ENABLE(
+  [cogl-path],
+  [AC_HELP_STRING([--enable-cogl-path=@<:@no/yes@:>@], [Enable 2D path support @<:@default=no@:>@])],
+  [],
+  enable_cogl_path=yes
+)
+AS_IF([test "x$enable_cogl_path" = "xyes"],
+      [
+        COGL_DEFINES_SYMBOLS="$COGL_DEFINES_SYMBOLS COGL_HAS_COGL_PATH_SUPPORT"
+      ]
+)
 
 dnl     ============================================================
 dnl     Choose image loading backend
@@ -1273,6 +1288,8 @@ AS_IF([test "x$enable_cogl_pango" = "xyes"],
 )
 AM_CONDITIONAL([BUILD_COGL_PANGO], [test "x$enable_cogl_pango" = "xyes"])
 
+AM_CONDITIONAL([BUILD_COGL_PATH], [test "x$enable_cogl_path" = "xyes"])
+
 AC_SUBST(COGL_GST_PKG_REQUIRES)
 
 AS_IF([test "x$enable_cogl_gst" = "xyes"],
@@ -1451,6 +1468,7 @@ cogl-pango/Makefile
 cogl-pango/cogl-pango-1.0.pc
 cogl-pango/cogl-pango-2.0-experimental.pc
 cogl-pango/cogl-pango.rc
+cogl-path/Makefile
 cogl-gst/Makefile
 cogl-gst/cogl-gst.pc
 cogl-gles2/Makefile
@@ -1509,13 +1527,14 @@ echo "        Building for emscripten environment: $enable_emscripten"
 echo "        Build libcogl-gles2 GLES 2.0 frontend api: ${enable_cogl_gles2}"
 echo "        Image backend: ${COGL_IMAGE_BACKEND}"
 echo "        Cogl Pango: ${enable_cogl_pango}"
-echo "        Profiling: ${enable_profile}"
-echo "        CoglGst: ${enable_cogl_gst}"
+echo "        Cogl Gstreamer: ${enable_cogl_gst}"
+echo "        Cogl Path: ${enable_cogl_path}"
 
 # Compiler/Debug related flags
 echo ""
-echo " • Compiler options:"
-echo "        Cogl debug: ${enable_debug}"
+echo " • Build options:"
+echo "        Debugging: ${enable_debug}"
+echo "        Profiling: ${enable_profile}"
 echo "        Enable deprecated symbols: ${enable_deprecated}"
 echo "        Compiler flags: ${CFLAGS} ${COGL_EXTRA_CFLAGS}"
 echo "        Linker flags: ${LDFLAGS} ${COGL_EXTRA_LDFLAGS}"

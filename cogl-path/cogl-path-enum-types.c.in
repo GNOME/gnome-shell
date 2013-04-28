@@ -1,0 +1,50 @@
+/*** BEGIN file-header ***/
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+/* We need to undefine this so that we will be sure to include
+ * cogl-path.h instead of cogl2-path.h when we include the framebuffer
+ * header. Otherwise it will include both headers and it won't
+ * compile. */
+#undef COGL_ENABLE_EXPERIMENTAL_2_0_API
+
+#include "cogl-path-enum-types.h"
+/*** END file-header ***/
+
+/*** BEGIN file-production ***/
+
+/* enumerations from "@filename@" */
+#include "@filename@"
+
+/*** END file-production ***/
+
+/*** BEGIN value-header ***/
+GType
+@enum_name@_get_type (void)
+{
+  static volatile gsize g_enum_type_id__volatile = 0;
+
+  if (g_once_init_enter (&g_enum_type_id__volatile))
+    {
+      static const G@Type@Value values[] = {
+/*** END value-header ***/
+
+/*** BEGIN value-production ***/
+        { @VALUENAME@, "@VALUENAME@", "@valuenick@" },
+/*** END value-production ***/
+
+/*** BEGIN value-tail ***/
+        { 0, NULL, NULL }
+      };
+      GType g_enum_type_id;
+
+      g_enum_type_id =
+        g_@type@_register_static (g_intern_static_string ("@EnumName@"), values);
+
+      g_once_init_leave (&g_enum_type_id__volatile, g_enum_type_id);
+    }
+
+  return g_enum_type_id__volatile;
+}
+/*** END value-tail ***/

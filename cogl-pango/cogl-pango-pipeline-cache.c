@@ -37,18 +37,6 @@
 
 typedef struct _CoglPangoPipelineCacheEntry CoglPangoPipelineCacheEntry;
 
-struct _CoglPangoPipelineCache
-{
-  CoglContext *ctx;
-
-  GHashTable *hash_table;
-
-  CoglPipeline *base_texture_alpha_pipeline;
-  CoglPipeline *base_texture_rgba_pipeline;
-
-  CoglBool use_mipmapping;
-};
-
 struct _CoglPangoPipelineCacheEntry
 {
   /* This will take a reference or it can be NULL to represent the

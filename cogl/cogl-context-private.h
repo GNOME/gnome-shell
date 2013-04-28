@@ -53,6 +53,7 @@
 #include "cogl-onscreen-private.h"
 #include "cogl-fence-private.h"
 #include "cogl-poll-private.h"
+#include "cogl-path/cogl-path-types.h"
 
 typedef struct
 {

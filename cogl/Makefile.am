@@ -18,7 +18,6 @@ lib_LTLIBRARIES =
 AM_CPPFLAGS = \
 	-I$(top_srcdir)				\
 	-I$(top_builddir)			\
-	-I$(srcdir)/tesselator			\
 	-I$(srcdir)/winsys 			\
 	-I$(srcdir)/driver/gl 			\
 	-I$(srcdir)/driver/gl/gl 		\
@@ -78,8 +77,6 @@ cogl_1_public_h = \
 	$(srcdir)/cogl-matrix.h 		\
 	$(srcdir)/cogl-offscreen.h 		\
 	$(srcdir)/cogl-primitives.h 		\
-	$(srcdir)/cogl-path.h 			\
-	$(srcdir)/cogl-path-functions.h         \
 	$(srcdir)/cogl-shader.h 		\
 	$(srcdir)/cogl-texture.h 		\
 	$(srcdir)/cogl-types.h 			\
@@ -101,7 +98,6 @@ cogl_experimental_h = \
 	$(srcdir)/cogl-pipeline-state.h 	\
 	$(srcdir)/cogl-pipeline-layer-state.h 	\
 	$(srcdir)/cogl-snippet.h		\
-	$(srcdir)/cogl2-path.h 			\
 	$(srcdir)/cogl-gles2.h			\
 	$(srcdir)/cogl-gles2-types.h		\
 	$(srcdir)/cogl-index-buffer.h 		\
@@ -132,7 +128,6 @@ cogl_experimental_h = \
 	$(srcdir)/cogl-buffer.h 		\
 	$(srcdir)/cogl-pixel-buffer.h		\
 	$(srcdir)/cogl2-experimental.h		\
-	$(srcdir)/cogl2-compatibility.h		\
 	$(srcdir)/cogl-macros.h			\
 	$(srcdir)/cogl-fence.h       		\
 	$(srcdir)/cogl-version.h		\
@@ -219,45 +214,10 @@ cogl_winsys_common_sources = \
 	$(srcdir)/winsys/cogl-winsys.c \
 	$(NULL)
 
-# tesselator sources
-cogl_tesselator_sources = \
-	$(srcdir)/tesselator/dict-list.h 	\
-	$(srcdir)/tesselator/dict.c 		\
-	$(srcdir)/tesselator/dict.h 		\
-	$(srcdir)/tesselator/geom.c 		\
-	$(srcdir)/tesselator/geom.h 		\
-	$(srcdir)/tesselator/gluos.h 		\
-	$(srcdir)/tesselator/memalloc.h 	\
-	$(srcdir)/tesselator/mesh.c 		\
-	$(srcdir)/tesselator/mesh.h 		\
-	$(srcdir)/tesselator/normal.c 		\
-	$(srcdir)/tesselator/normal.h 		\
-	$(srcdir)/tesselator/priorityq-heap.h 	\
-	$(srcdir)/tesselator/priorityq-sort.h 	\
-	$(srcdir)/tesselator/priorityq.c 	\
-	$(srcdir)/tesselator/priorityq.h 	\
-	$(srcdir)/tesselator/render.c 		\
-	$(srcdir)/tesselator/render.h 		\
-	$(srcdir)/tesselator/sweep.c 		\
-	$(srcdir)/tesselator/sweep.h 		\
-	$(srcdir)/tesselator/tess.c 		\
-	$(srcdir)/tesselator/tess.h 		\
-	$(srcdir)/tesselator/tesselator.h 	\
-	$(srcdir)/tesselator/tessmono.c 	\
-	$(srcdir)/tesselator/tessmono.h 	\
-	$(srcdir)/tesselator/GL/glu.h 		\
-	$(NULL)
-
-EXTRA_DIST += \
-	$(srcdir)/tesselator/README 		\
-	$(srcdir)/tesselator/priorityq-heap.c	\
-	$(NULL)
-
 # sources
 cogl_sources_c = \
 	$(cogl_driver_sources)				\
 	$(cogl_winsys_common_sources)			\
-	$(cogl_tesselator_sources)			\
 	$(srcdir)/cogl-private.h			\
 	$(srcdir)/cogl-i18n-private.h 			\
 	$(srcdir)/cogl-debug.h 				\
@@ -292,11 +252,6 @@ cogl_sources_c = \
 	$(srcdir)/cogl-primitives-private.h 		\
 	$(srcdir)/cogl-primitives.h 			\
 	$(srcdir)/cogl-primitives.c 			\
-	$(srcdir)/cogl-path-private.h 			\
-	$(srcdir)/cogl-path.h 				\
-	$(srcdir)/cogl-path.c 				\
-	$(srcdir)/cogl2-path.h 				\
-	$(srcdir)/cogl2-path.c 				\
 	$(srcdir)/cogl-bitmap-pixbuf.c 			\
 	$(srcdir)/cogl-clip-stack.h 			\
 	$(srcdir)/cogl-clip-stack.c			\
@@ -572,13 +527,16 @@ endif
 if UNIT_TESTS
 libcogl_la_LIBADD += $(top_builddir)/test-fixtures/libtest-fixtures.la
 endif
+if BUILD_COGL_PATH
+libcogl_la_LIBADD += $(top_builddir)/cogl-path/libcogl-path.la
+endif
 # XXX: The aim is to eventually get rid of all private API exports
 # for cogl-pango.
 libcogl_la_LDFLAGS = \
 	-no-undefined \
 	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@ \
 	-export-dynamic \
-	-export-symbols-regex "^(cogl|_cogl_debug_flags|_cogl_atlas_new|_cogl_atlas_add_reorganize_callback|_cogl_atlas_reserve_space|_cogl_callback|_cogl_util_get_eye_planes_for_screen_poly|_cogl_atlas_texture_remove_reorganize_callback|_cogl_atlas_texture_add_reorganize_callback|_cogl_texture_foreach_sub_texture_in_region|_cogl_profile_trace_message|_cogl_context_get_default|test_|unit_test_).*"
+	-export-symbols-regex "^(cogl|_cogl_debug_flags|_cogl_atlas_new|_cogl_atlas_add_reorganize_callback|_cogl_atlas_reserve_space|_cogl_callback|_cogl_util_get_eye_planes_for_screen_poly|_cogl_atlas_texture_remove_reorganize_callback|_cogl_atlas_texture_add_reorganize_callback|_cogl_texture_foreach_sub_texture_in_region|_cogl_profile_trace_message|_cogl_context_get_default|_cogl_framebuffer_get_stencil_bits|_cogl_clip_stack_push_rectangle|_cogl_framebuffer_get_modelview_stack|_cogl_object_default_unref|_cogl_pipeline_foreach_layer_internal|_cogl_clip_stack_push_primitive|_cogl_buffer_unmap_for_fill_or_fallback|_cogl_framebuffer_draw_primitive|_cogl_debug_instances|_cogl_framebuffer_get_projection_stack|_cogl_pipeline_layer_get_texture|_cogl_buffer_map_for_fill_or_fallback|_cogl_framebuffer_get_clip_state|_cogl_texture_can_hardware_repeat|_cogl_pipeline_prune_to_n_layers|_cogl_primitive_draw|test_|unit_test_).*"
 
 libcogl_la_SOURCES = $(cogl_sources_c)
 nodist_libcogl_la_SOURCES = $(BUILT_SOURCES)
@@ -699,6 +657,12 @@ if UNIT_TESTS
 Cogl_1_0_gir_LIBS += $(top_builddir)/test-fixtures/libtest-fixtures.la
 endif
 Cogl_1_0_gir_FILES = $(cogl_1_public_h) cogl-enum-types.h
+if BUILD_COGL_PATH
+Cogl_1_0_gir_FILES += \
+	$(top_builddir)/cogl-path/cogl-path-enum-types.h \
+	$(top_srcdir)/cogl-path/cogl-path-types.h \
+	$(top_srcdir)/cogl-path/cogl1-path-functions.h
+endif
 Cogl_1_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) -UCOGL_ENABLE_EXPERIMENTAL_API -UCOGL_ENABLE_EXPERIMENTAL_2_0_API
 Cogl_1_0_gir_INCLUDES = GL-1.0 GObject-2.0
 Cogl_1_0_gir_EXPORT_PACKAGES = cogl-1.0

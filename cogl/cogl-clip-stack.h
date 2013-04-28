@@ -24,7 +24,6 @@
 #ifndef __COGL_CLIP_STACK_H
 #define __COGL_CLIP_STACK_H
 
-#include "cogl2-path.h"
 #include "cogl-matrix.h"
 #include "cogl-primitive.h"
 #include "cogl-framebuffer.h"
@@ -41,14 +40,12 @@
 typedef struct _CoglClipStack CoglClipStack;
 typedef struct _CoglClipStackRect CoglClipStackRect;
 typedef struct _CoglClipStackWindowRect CoglClipStackWindowRect;
-typedef struct _CoglClipStackPath CoglClipStackPath;
 typedef struct _CoglClipStackPrimitive CoglClipStackPrimitive;
 
 typedef enum
   {
     COGL_CLIP_STACK_RECT,
     COGL_CLIP_STACK_WINDOW_RECT,
-    COGL_CLIP_STACK_PATH,
     COGL_CLIP_STACK_PRIMITIVE
   } CoglClipStackType;
 
@@ -65,14 +62,14 @@ typedef enum
  * CoglClipStack *stack_a = NULL;
  * stack_a = _cogl_clip_stack_push_rectangle (stack_a, ...);
  * stack_a = _cogl_clip_stack_push_rectangle (stack_a, ...);
- * stack_a = _cogl_clip_stack_push_from_path (stack_a, ...);
+ * stack_a = _cogl_clip_stack_push_primitive (stack_a, ...);
  * CoglClipStack *stack_b = NULL;
  * stack_b = cogl_clip_stack_push_window_rectangle (stack_b, ...);
  *
  *  stack_a
  *         \ holds a ref to
  *          +-----------+
- *          | path node |
+ *          | prim node |
  *          |ref count 1|
  *          +-----------+
  *                       \
@@ -143,16 +140,6 @@ struct _CoglClipStackWindowRect
      just adds to the scissor clip */
 };
 
-struct _CoglClipStackPath
-{
-  CoglClipStack _parent_data;
-
-  /* The matrix that was current when the clip was set */
-  CoglMatrixEntry *matrix_entry;
-
-  CoglPath *path;
-};
-
 struct _CoglClipStackPrimitive
 {
   CoglClipStack _parent_data;
@@ -181,13 +168,6 @@ _cogl_clip_stack_push_rectangle (CoglClipStack *stack,
                                  float y_1,
                                  float x_2,
                                  float y_2,
-                                 CoglMatrixEntry *modelview_entry,
-                                 CoglMatrixEntry *projection_entry,
-                                 const float *viewport);
-
-CoglClipStack *
-_cogl_clip_stack_push_from_path (CoglClipStack *stack,
-                                 CoglPath *path,
                                  CoglMatrixEntry *modelview_entry,
                                  CoglMatrixEntry *projection_entry,
                                  const float *viewport);

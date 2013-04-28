@@ -839,21 +839,6 @@ cogl_clip_push_rectangle (float x0,
      COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_rectangle_clip);
 
 /**
- * cogl_clip_push_from_path_preserve:
- *
- * Sets a new clipping area using the current path. The current path
- * is then cleared. The clipping area is intersected with the previous
- * clipping area. To restore the previous clipping area, call
- * cogl_clip_pop().
- *
- * Since: 1.0
- * Deprecated: 1.16: Use cogl_framebuffer_push_path_clip() instead
- */
-void
-cogl_clip_push_from_path_preserve (void)
-     COGL_DEPRECATED_IN_1_16_FOR (cogl_framebuffer_push_path_clip);
-
-/**
  * cogl_clip_push_primitive:
  * @primitive: A #CoglPrimitive describing a flat 2D shape
  * @bounds_x1: x coordinate for the top-left corner of the primitives

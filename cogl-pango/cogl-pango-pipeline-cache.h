@@ -33,7 +33,18 @@
 
 COGL_BEGIN_DECLS
 
-typedef struct _CoglPangoPipelineCache CoglPangoPipelineCache;
+typedef struct _CoglPangoPipelineCache
+{
+  CoglContext *ctx;
+
+  GHashTable *hash_table;
+
+  CoglPipeline *base_texture_alpha_pipeline;
+  CoglPipeline *base_texture_rgba_pipeline;
+
+  CoglBool use_mipmapping;
+} CoglPangoPipelineCache;
+
 
 CoglPangoPipelineCache *
 _cogl_pango_pipeline_cache_new (CoglContext *ctx,

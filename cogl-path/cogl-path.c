@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2007,2008,2009,2010 Intel Corporation.
+ * Copyright (C) 2007,2008,2009,2010,2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,15 +35,17 @@
 #include "cogl-context-private.h"
 #include "cogl-journal-private.h"
 #include "cogl-pipeline-private.h"
-#include "cogl-pipeline-opengl-private.h"
 #include "cogl-framebuffer-private.h"
-#include "cogl-path-private.h"
+#include "cogl-primitive-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-primitives-private.h"
 #include "cogl-private.h"
 #include "cogl-attribute-private.h"
 #include "cogl1-context.h"
 #include "tesselator/tesselator.h"
+
+#include "cogl-path/cogl-path.h"
+#include "cogl-path-private.h"
 
 #include <string.h>
 #include <math.h>
@@ -53,6 +55,7 @@
 static void _cogl_path_free (CoglPath *path);
 
 static void _cogl_path_build_fill_attribute_buffer (CoglPath *path);
+static CoglPrimitive *_cogl_path_get_fill_primitive (CoglPath *path);
 static void _cogl_path_build_stroke_attribute_buffer (CoglPath *path);
 
 COGL_OBJECT_DEFINE (Path, path);
@@ -71,6 +74,12 @@ _cogl_path_data_clear_vbos (CoglPathData *data)
         cogl_object_unref (data->fill_attributes[i]);
 
       data->fill_attribute_buffer = NULL;
+    }
+
+  if (data->fill_primitive)
+    {
+      cogl_object_unref (data->fill_primitive);
+      data->fill_primitive = NULL;
     }
 
   if (data->stroke_attribute_buffer)
@@ -119,6 +128,7 @@ _cogl_path_modify (CoglPath *path)
                            old_data->path_nodes->len);
 
       path->data->fill_attribute_buffer = NULL;
+      path->data->fill_primitive = NULL;
       path->data->stroke_attribute_buffer = NULL;
       path->data->ref_count = 1;
 
@@ -198,16 +208,22 @@ _cogl_path_add_node (CoglPath *path,
   data->is_rectangle = FALSE;
 }
 
-void
+static void
 _cogl_path_stroke_nodes (CoglPath *path,
                          CoglFramebuffer *framebuffer,
                          CoglPipeline *pipeline)
 {
-  CoglPathData *data = path->data;
+  CoglPathData *data;
   CoglPipeline *copy = NULL;
   unsigned int path_start;
   int path_num = 0;
   CoglPathNode *node;
+
+  _COGL_RETURN_IF_FAIL (cogl_is_path (path));
+  _COGL_RETURN_IF_FAIL (cogl_is_framebuffer (framebuffer));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
+
+  data = path->data;
 
   if (data->path_nodes->len == 0)
     return;
@@ -318,7 +334,7 @@ validate_layer_cb (CoglPipelineLayer *layer, void *user_data)
   return !*needs_fallback;
 }
 
-void
+static void
 _cogl_path_fill_nodes (CoglPath *path,
                        CoglFramebuffer *framebuffer,
                        CoglPipeline *pipeline,
@@ -344,6 +360,7 @@ _cogl_path_fill_nodes (CoglPath *path,
   else
     {
       CoglBool needs_fallback = FALSE;
+      CoglPrimitive *primitive;
 
       _cogl_pipeline_foreach_layer_internal (pipeline,
                                              validate_layer_cb,
@@ -356,46 +373,31 @@ _cogl_path_fill_nodes (CoglPath *path,
           return;
         }
 
-      _cogl_path_build_fill_attribute_buffer (path);
+      primitive = _cogl_path_get_fill_primitive (path);
 
-      _cogl_framebuffer_draw_indexed_attributes (framebuffer,
-                                                 pipeline,
-                                                 COGL_VERTICES_MODE_TRIANGLES,
-                                                 0, /* first_vertex */
-                                                 path->data->fill_vbo_n_indices,
-                                                 path->data->fill_vbo_indices,
-                                                 path->data->fill_attributes,
-                                                 COGL_PATH_N_ATTRIBUTES,
-                                                 flags);
+      _cogl_primitive_draw (primitive, framebuffer, pipeline, flags);
     }
 }
 
+/* TODO: Update to the protoype used in the Cogl master branch.
+ * This is experimental API but not in sync with the cogl_path_fill()
+ * api in Cogl master which takes explicit framebuffer and pipeline
+ * arguments */
 void
 cogl2_path_fill (CoglPath *path)
 {
   _COGL_RETURN_IF_FAIL (cogl_is_path (path));
 
-  if (path->data->path_nodes->len == 0)
-    return;
-
-  /* If the path is a simple rectangle then we can divert to using
-     cogl_rectangle which should be faster because it can go through
-     the journal instead of uploading the geometry just for two
-     triangles */
-  if (path->data->is_rectangle)
-    {
-      float x_1, y_1, x_2, y_2;
-
-      _cogl_path_get_bounds (path, &x_1, &y_1, &x_2, &y_2);
-      cogl_rectangle (x_1, y_1, x_2, y_2);
-    }
-  else
-    _cogl_path_fill_nodes (path,
-                           cogl_get_draw_framebuffer (),
-                           cogl_get_source (),
-                           0);
+  _cogl_path_fill_nodes (path,
+                         cogl_get_draw_framebuffer (),
+                         cogl_get_source (),
+                         0 /* flags */);
 }
 
+/* TODO: Update to the protoype used in the Cogl master branch.
+ * This is experimental API but not in sync with the cogl_path_fill()
+ * api in Cogl master which takes explicit framebuffer and pipeline
+ * arguments */
 void
 cogl2_path_stroke (CoglPath *path)
 {
@@ -1412,6 +1414,95 @@ _cogl_path_build_fill_attribute_buffer (CoglPath *path)
   g_array_free (tess.indices, TRUE);
 }
 
+static CoglPrimitive *
+_cogl_path_get_fill_primitive (CoglPath *path)
+{
+  if (path->data->fill_primitive)
+    return path->data->fill_primitive;
+
+  _cogl_path_build_fill_attribute_buffer (path);
+
+  path->data->fill_primitive =
+    cogl_primitive_new_with_attributes (COGL_VERTICES_MODE_TRIANGLES,
+                                        path->data->fill_vbo_n_indices,
+                                        path->data->fill_attributes,
+                                        COGL_PATH_N_ATTRIBUTES);
+  cogl_primitive_set_indices (path->data->fill_primitive,
+                              path->data->fill_vbo_indices,
+                              path->data->fill_vbo_n_indices);
+
+  return path->data->fill_primitive;
+}
+
+static CoglClipStack *
+_cogl_clip_stack_push_from_path (CoglClipStack *stack,
+                                 CoglPath *path,
+                                 CoglMatrixEntry *modelview_entry,
+                                 CoglMatrixEntry *projection_entry,
+                                 const float *viewport)
+{
+  float x_1, y_1, x_2, y_2;
+
+  _cogl_path_get_bounds (path, &x_1, &y_1, &x_2, &y_2);
+
+  /* If the path is a simple rectangle then we can divert to pushing a
+     rectangle clip instead which usually won't involve the stencil
+     buffer */
+  if (_cogl_path_is_rectangle (path))
+    return _cogl_clip_stack_push_rectangle (stack,
+                                            x_1, y_1,
+                                            x_2, y_2,
+                                            modelview_entry,
+                                            projection_entry,
+                                            viewport);
+  else
+    {
+      return _cogl_clip_stack_push_primitive (stack,
+                                              path->data->fill_primitive,
+                                              x_1, y_1, x_2, y_2,
+                                              modelview_entry,
+                                              projection_entry,
+                                              viewport);
+    }
+}
+
+void
+cogl_framebuffer_push_path_clip (CoglFramebuffer *framebuffer,
+                                 CoglPath *path)
+{
+  CoglClipState *clip_state = _cogl_framebuffer_get_clip_state (framebuffer);
+  CoglMatrixEntry *modelview_entry =
+    _cogl_framebuffer_get_modelview_entry (framebuffer);
+  CoglMatrixEntry *projection_entry =
+    _cogl_framebuffer_get_projection_entry (framebuffer);
+  /* XXX: It would be nicer if we stored the private viewport as a
+   * vec4 so we could avoid this redundant copy. */
+  float viewport[] = {
+      framebuffer->viewport_x,
+      framebuffer->viewport_y,
+      framebuffer->viewport_width,
+      framebuffer->viewport_height
+  };
+
+  clip_state->stacks->data =
+    _cogl_clip_stack_push_from_path (clip_state->stacks->data,
+                                     path,
+                                     modelview_entry,
+                                     projection_entry,
+                                     viewport);
+
+  if (framebuffer->context->current_draw_buffer == framebuffer)
+    framebuffer->context->current_draw_buffer_changes |=
+      COGL_FRAMEBUFFER_STATE_CLIP;
+}
+
+/* XXX: deprecated */
+void
+cogl_clip_push_from_path (CoglPath *path)
+{
+  cogl_framebuffer_push_path_clip (cogl_get_draw_framebuffer (), path);
+}
+
 static void
 _cogl_path_build_stroke_attribute_buffer (CoglPath *path)
 {
@@ -1474,4 +1565,30 @@ _cogl_path_build_stroke_attribute_buffer (CoglPath *path)
     }
 
   data->stroke_n_attributes = n_attributes;
+}
+
+/* XXX: deprecated */
+void
+cogl_framebuffer_fill_path (CoglFramebuffer *framebuffer,
+                            CoglPipeline *pipeline,
+                            CoglPath *path)
+{
+  _COGL_RETURN_IF_FAIL (cogl_is_framebuffer (framebuffer));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_path (path));
+
+  _cogl_path_fill_nodes (path, framebuffer, pipeline, 0 /* flags */);
+}
+
+/* XXX: deprecated */
+void
+cogl_framebuffer_stroke_path (CoglFramebuffer *framebuffer,
+                              CoglPipeline *pipeline,
+                              CoglPath *path)
+{
+  _COGL_RETURN_IF_FAIL (cogl_is_framebuffer (framebuffer));
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
+  _COGL_RETURN_IF_FAIL (cogl_is_path (path));
+
+  _cogl_path_stroke_nodes (path, framebuffer, pipeline);
 }
