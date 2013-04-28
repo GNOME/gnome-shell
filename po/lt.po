@@ -461,7 +461,7 @@ msgstr "Nepavyko įvykdyti „%s“:"
 
 #: ../js/ui/appDisplay.js:349
 msgid "Frequent"
-msgstr "Dažniausios"
+msgstr "Dažnai naudojamos"
 
 #: ../js/ui/appDisplay.js:356
 msgid "All"
@@ -1262,7 +1262,7 @@ msgstr "Apžvalga"
 #. characters.
 #: ../js/ui/overview.js:271
 msgid "Type to search…"
-msgstr "Rašykite ko ieškote…"
+msgstr "Rašykite, ko ieškote…"
 
 #: ../js/ui/panel.js:612
 msgid "Quit"
@@ -1299,7 +1299,7 @@ msgstr "Užverti"
 #. long format
 #: ../js/ui/screenShield.js:86
 msgid "%A, %B %d"
-msgstr "%A, %B %d"
+msgstr "%A, %B %d d."
 
 #: ../js/ui/screenShield.js:151
 #, c-format
