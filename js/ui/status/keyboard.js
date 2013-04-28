@@ -72,26 +72,24 @@ const IBusManager = new Lang.Class({
         this._readyCallback = readyCallback;
         this._candidatePopup = new IBusCandidatePopup.CandidatePopup();
 
-        this._ibus = null;
         this._panelService = null;
         this._engines = {};
         this._ready = false;
         this._registerPropertiesId = 0;
         this._currentEngineName = null;
 
-        this._nameWatcherId = Gio.DBus.session.watch_name(IBus.SERVICE_IBUS,
-                                                          Gio.BusNameWatcherFlags.NONE,
-                                                          Lang.bind(this, this._onNameAppeared),
-                                                          Lang.bind(this, this._clear));
+        this._ibus = IBus.Bus.new_async();
+        this._ibus.connect('connected', Lang.bind(this, this._onConnected));
+        this._ibus.connect('disconnected', Lang.bind(this, this._clear));
+        // Need to set this to get 'global-engine-changed' emitions
+        this._ibus.set_watch_ibus_signal(true);
+        this._ibus.connect('global-engine-changed', Lang.bind(this, this._engineChanged));
     },
 
     _clear: function() {
         if (this._panelService)
             this._panelService.destroy();
-        if (this._ibus)
-            this._ibus.destroy();
 
-        this._ibus = null;
         this._panelService = null;
         this._candidatePopup.setPanelService(null);
         this._engines = {};
@@ -103,18 +101,12 @@ const IBusManager = new Lang.Class({
             this._readyCallback(false);
     },
 
-    _onNameAppeared: function() {
-        this._ibus = IBus.Bus.new_async();
-        this._ibus.connect('connected', Lang.bind(this, this._onConnected));
-    },
-
     _onConnected: function() {
         this._ibus.list_engines_async(-1, null, Lang.bind(this, this._initEngines));
         this._ibus.request_name_async(IBus.SERVICE_PANEL,
                                       IBus.BusNameFlag.REPLACE_EXISTING,
                                       -1, null,
                                       Lang.bind(this, this._initPanelService));
-        this._ibus.connect('disconnected', Lang.bind(this, this._clear));
     },
 
     _initEngines: function(ibus, result) {
@@ -136,9 +128,6 @@ const IBusManager = new Lang.Class({
             this._panelService = new IBus.PanelService({ connection: this._ibus.get_connection(),
                                                          object_path: IBus.PATH_PANEL });
             this._candidatePopup.setPanelService(this._panelService);
-            // Need to set this to get 'global-engine-changed' emitions
-            this._ibus.set_watch_ibus_signal(true);
-            this._ibus.connect('global-engine-changed', Lang.bind(this, this._engineChanged));
             this._panelService.connect('update-property', Lang.bind(this, this._updateProperty));
             // If an engine is already active we need to get its properties
             this._ibus.get_global_engine_async(-1, null, Lang.bind(this, function(i, result) {
@@ -167,6 +156,9 @@ const IBusManager = new Lang.Class({
     },
 
     _engineChanged: function(bus, engineName) {
+        if (!this._ready)
+            return;
+
         this._currentEngineName = engineName;
 
         if (this._registerPropertiesId != 0)
