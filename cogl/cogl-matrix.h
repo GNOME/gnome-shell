@@ -27,6 +27,8 @@
 #ifndef __COGL_MATRIX_H
 #define __COGL_MATRIX_H
 
+#include <cogl/cogl-defines.h>
+
 #ifdef COGL_HAS_GTYPE_SUPPORT
 #include <glib-object.h>
 #endif /* COGL_HAS_GTYPE_SUPPORT */
