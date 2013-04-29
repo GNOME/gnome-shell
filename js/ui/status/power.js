@@ -175,18 +175,11 @@ const DeviceItem = new Lang.Class({
 
         let [device_id, device_type, icon, percentage, state, time] = device;
 
-        this._box = new St.BoxLayout({ style_class: 'popup-device-menu-item' });
         this._label = new St.Label({ text: this._deviceTypeToString(device_type) });
-
-        this._icon = new St.Icon({ gicon: Gio.icon_new_for_string(icon),
-                                   style_class: 'popup-menu-icon' });
-
-        this._box.add_actor(this._icon);
-        this._box.add_actor(this._label);
-        this.addActor(this._box);
+        this.addActor(this._label);
 
         let percentLabel = new St.Label({ text: C_("percent of battery remaining", "%d%%").format(Math.round(percentage)),
-                                          style_class: 'popup-battery-percentage' });
+                                          style_class: 'popup-status-menu-item popup-battery-percentage' });
         this.addActor(percentLabel, { align: St.Align.END });
         //FIXME: ideally we would like to expose this._label and percentLabel
         this.actor.label_actor = percentLabel;
