@@ -69,13 +69,6 @@ function signalToIcon(value) {
     return 'none';
 }
 
-// shared between NMNetworkMenuItem and NMDeviceWireless
-function sortAccessPoints(accessPoints) {
-    return accessPoints.sort(function (one, two) {
-        return two.strength - one.strength;
-    });
-}
-
 function ssidToLabel(ssid) {
     let label = NetworkManager.utils_ssid_to_utf8(ssid);
     if (!label)
@@ -771,58 +764,12 @@ const NMDeviceWireless = new Lang.Class({
         this._overflowItem = null;
         this._networks = [ ];
 
-        // breaking the layers with this, but cannot call
-        // this.connectionValid until I have a device
-        this.device = device;
+        this.parent(client, device, connections);
 
-        let validConnections = connections.filter(Lang.bind(this, function(connection) {
-            return this.connectionValid(connection);
-        }));
         let accessPoints = device.get_access_points() || [ ];
-        for (let i = 0; i < accessPoints.length; i++) {
-            // Access points are grouped by network
-            let ap = accessPoints[i];
-
-            if (ap.get_ssid() == null) {
-                // hidden access point cannot be added, we need to know
-                // the SSID and security details to connect
-                // nevertheless, the access point can acquire a SSID when
-                // NetworkManager connects to it (via nmcli or the control-center)
-                ap._notifySsidId = ap.connect('notify::ssid', Lang.bind(this, this._notifySsidCb));
-                continue;
-            }
-
-            let pos = this._findNetwork(ap);
-            let network;
-            if (pos != -1) {
-                network = this._networks[pos];
-                network.accessPoints.push(ap);
-            } else {
-                network = { ssid: ap.get_ssid(),
-                            mode: ap.mode,
-                            security: this._getApSecurityType(ap),
-                            connections: [ ],
-                            item: null,
-                            accessPoints: [ ap ]
-                      };
-                network.ssidText = ssidToLabel(network.ssid);
-                this._networks.push(network);
-            }
-            ap._updateId = ap.connect('notify::strength', Lang.bind(this, this._onApStrengthChanged));
-
-            // Check if some connection is valid for this AP
-            for (let j = 0; j < validConnections.length; j++) {
-                let connection = validConnections[j];
-                if (ap.connection_valid(connection) &&
-                    network.connections.indexOf(connection) == -1) {
-                    network.connections.push(connection);
-                }
-            }
-        }
-
-        // Sort APs within each network by strength
-        for (let i = 0; i < this._networks.length; i++)
-            sortAccessPoints(this._networks[i].accessPoints);
+        accessPoints.forEach(Lang.bind(this, function(ap) {
+            this._accessPointAdded(this.device, ap);
+        }));
 
         this._activeApChanged();
         this._networks.sort(this._networkSortFunction);
@@ -830,8 +777,6 @@ const NMDeviceWireless = new Lang.Class({
         this._apChangedId = device.connect('notify::active-access-point', Lang.bind(this, this._activeApChanged));
         this._apAddedId = device.connect('access-point-added', Lang.bind(this, this._accessPointAdded));
         this._apRemovedId = device.connect('access-point-removed', Lang.bind(this, this._accessPointRemoved));
-
-        this.parent(client, device, validConnections);
     },
 
     destroy: function() {
