@@ -79,14 +79,22 @@ const NMConnectionItem = new Lang.Class({
         this._activeConnection = null;
         this._activeConnectionChangedId = 0;
 
-        this.menuItem = new PopupMenu.PopupSwitchMenuItem(connection.get_id(), false);
-        this.menuItem.connect('toggled', Lang.bind(this, this._toggle));
+        this.labelItem = new PopupMenu.PopupMenuItem('');
+        this.labelItem.connect('activate', Lang.bind(this, this._toggle));
+
+        this.switchItem = new PopupMenu.PopupSwitchMenuItem(connection.get_id(), false);
+        this.switchItem.connect('toggled', Lang.bind(this, this._toggle));
 
         this._sync();
     },
 
     destroy: function() {
-        this.menuItem.destroy();
+        this.labelItem.destroy();
+        this.switchItem.destroy();
+    },
+
+    getName: function() {
+        return this.connection.get_id();
     },
 
     isActive: function() {
@@ -97,8 +105,10 @@ const NMConnectionItem = new Lang.Class({
     },
 
     _sync: function() {
-        this.menuItem.setToggleState(this._getIsActive());
-        this.menuItem.setStatus(this._getStatus());
+        let isActive = this.isActive();
+        this.labelItem.label.text = isActive ? _("Turn Off") : _("Connect");
+        this.switchItem.setToggleState(isActive);
+        this.switchItem.setStatus(this._getStatus());
         this.emit('icon-changed');
     },
 
@@ -145,21 +155,15 @@ const NMConnectionSection = new Lang.Class({
 
         this._connectionItems = new Hash.Map();
         this._connections = [];
-        this.section = new PopupMenu.PopupMenuSection();
 
-        this.statusItem = new PopupMenu.PopupSwitchMenuItem('', this.connected);
-        this._statusChanged = this.statusItem.connect('toggled', Lang.bind(this, function(item, state) {
-            let ok;
-            if (state)
-                ok = this.activate();
-            else
-                ok = this.deactivate();
+        this._labelSection = new PopupMenu.PopupMenuSection();
+        this._switchSection = new PopupMenu.PopupMenuSection();
 
-            if (!ok)
-                item.setToggleState(!state);
-        }));
+        this.item = new PopupMenu.PopupSubMenuMenuItem('', true);
+        this.item.menu.addMenuItem(this._labelSection);
+        this.item.menu.addMenuItem(this._switchSection);
 
-        this._updateStatusItem();
+        this.connect('icon-changed', Lang.bind(this, this._sync));
     },
 
     destroy: function() {
@@ -167,8 +171,25 @@ const NMConnectionSection = new Lang.Class({
         this.section.destroy();
     },
 
-    get connected() {
-        return false;
+    _sync: function() {
+        let nItems = this._connectionItems.size();
+
+        this._switchSection.actor.visible = (nItems > 1);
+        this._labelSection.actor.visible = (nItems == 1);
+
+        this.item.status.text = this._getStatus();
+        this.item.icon.icon_name = this._getMenuIcon();
+    },
+
+    _getStatus: function() {
+        let values = this._connectionItems.values();
+        for (let i = 0; i < values; i++) {
+            let item = values[i];
+            if (item.isActive())
+                return item.getName();
+        }
+
+        return _("Off");
     },
 
     _hasConnection: function(connection) {
@@ -188,6 +209,10 @@ const NMConnectionSection = new Lang.Class({
 
     _makeConnectionItem: function(connection) {
         return new NMConnectionItem(this, connection);
+    },
+
+    syncDescription: function() {
+        this.item.label.text = this._getDescription();
     },
 
     checkConnection: function(connection) {
@@ -213,8 +238,10 @@ const NMConnectionSection = new Lang.Class({
         }));
 
         let pos = Util.insertSorted(this._connections, connection, this._connectionSortFunction);
-        this.section.addMenuItem(item.menuItem, pos);
+        this._labelSection.addMenuItem(item.labelItem, pos);
+        this._switchSection.addMenuItem(item.switchItem, pos);
         this._connectionItems.set(connection.get_uuid(), item);
+        this._sync();
     },
 
     removeConnection: function(connection) {
@@ -223,6 +250,8 @@ const NMConnectionSection = new Lang.Class({
 
         let pos = this._connections.indexOf(connection);
         this._connections.splice(pos, 1);
+
+        this._sync();
     },
 });
 Signals.addSignalMethods(NMConnectionSection.prototype);
@@ -235,6 +264,9 @@ const NMConnectionDevice = new Lang.Class({
     _init: function(client, device) {
         this.parent(client);
         this._device = device;
+
+        this._autoConnectItem = this.item.menu.addAction(_("Connect"), Lang.bind(this, this._autoConnect));
+        this.item.menu.addSettingsAction(_("Network Settings"), 'gnome-network-panel.desktop');
 
         this._stateChangedId = this._device.connect('state-changed', Lang.bind(this, this._deviceStateChanged));
         this._activeConnectionChangedId = this._device.connect('notify::active-connection', Lang.bind(this, this._activeConnectionChanged));
@@ -253,6 +285,20 @@ const NMConnectionDevice = new Lang.Class({
         this.parent();
     },
 
+    _activeConnectionChanged: function() {
+        if (this._activeConnection) {
+            let item = this._connectionItems.get(this._activeConnection._connection.get_uuid());
+            item.setActiveConnection(null);
+        }
+
+        this._activeConnection = this._device.active_connection;
+
+        if (this._activeConnection) {
+            let item = this._connectionItems.get(this._activeConnection._connection.get_uuid());
+            item.setActiveConnection(this._activeConnection);
+        }
+    },
+
     _deviceStateChanged: function(device, newstate, oldstate, reason) {
         if (newstate == oldstate) {
             log('device emitted state-changed without actually changing state');
@@ -267,7 +313,7 @@ const NMConnectionDevice = new Lang.Class({
             this.emit('activation-failed', reason);
         }
 
-        this._updateStatusItem();
+        this._sync();
     },
 
     _connectionValid: function(connection) {
@@ -282,47 +328,14 @@ const NMConnectionDevice = new Lang.Class({
         this._device.disconnect(null);
     },
 
-    deactivate: function() {
-        this._device.disconnect(null);
-        return true;
+    _getDescription: function() {
+        return this._device._description;
     },
 
-    activate: function() {
-        if (this._activeConnection)
-            // nothing to do
-            return true;
-
-        // If there is only one connection available, use that
-        // Otherwise, if no connection is currently configured,
-        // try automatic configuration (or summon the config dialog)
-        if (this._connections.length == 1) {
-            this._client.activate_connection(this._connections[0].connection, this._device || null, null, null);
-            return true;
-        } else if (this._connections.length == 0) {
-            return this._activateAutomaticConnection();
-        }
-
-        return false;
-    },
-
-    _activateAutomaticConnection: function() {
-        let connection = new NetworkManager.Connection();
-        this._client.add_and_activate_connection(connection, this._device, null, null);
-        return true;
-    },
-
-    get connected() {
-        return this._device && this._device.state == NetworkManager.DeviceState.ACTIVATED;
-    },
-
-    _activeConnectionChanged: function() {
-        let activeConnection = this._device.active_connection;
-
-        if (activeConnection == this._activeConnection)
-            // nothing to do
-            return;
-
-        this._activeConnection = activeConnection;
+    _sync: function() {
+        let nItems = this._connectionItems.size();
+        this._autoConnectItem.actor.visible = (nItems == 0);
+        this.parent();
     },
 
     _getStatus: function() {
@@ -367,20 +380,6 @@ const NMConnectionDevice = new Lang.Class({
             return 'invalid';
         }
     },
-
-    syncDescription: function() {
-        if (this._device && this._device._description)
-            this.statusItem.label.text = this._device._description;
-    },
-
-    _updateStatusItem: function() {
-        this.statusItem.setStatus(this.getStatusLabel());
-        this.statusItem.setToggleState(this.connected);
-    },
-
-    _substateChanged: function() {
-        this.statusItem.setStatus(this.getStatusLabel());
-    },
 });
 
 const NMDeviceModem = new Lang.Class({
@@ -414,12 +413,14 @@ const NMDeviceModem = new Lang.Class({
                 }
             }));
             this._signalQualityId = this._mobileDevice.connect('notify::signal-quality', Lang.bind(this, function() {
-                if (this._operatorItem) {
-                    this._operatorItem.setIcon(this._getSignalIcon());
-                }
                 this.emit('icon-changed');
             }));
         }
+    },
+
+    _autoConnect: function() {
+        Util.spawn(['gnome-control-center', 'network',
+                    'connect-3g', this._device.get_path()]);
     },
 
     destroy: function() {
@@ -435,39 +436,15 @@ const NMDeviceModem = new Lang.Class({
         this.parent();
     },
 
+    _getMenuIcon: function() {
+        if (this._device.active_connection)
+            return this.getIndicatorIcon();
+        else
+            return 'network-cellular-signal-none-symbolic';
+    },
+
     _getSignalIcon: function() {
         return 'network-cellular-signal-' + signalToIcon(this._mobileDevice.signal_quality) + '-symbolic';
-    },
-
-    _createSection: function() {
-        if (!this._shouldShowConnectionList())
-            return;
-
-        if (this._mobileDevice) {
-            // If operator_name is null, just pass the empty string, as the item is hidden anyway
-            this._operatorItem = new PopupMenu.PopupImageMenuItem(this._mobileDevice.operator_name || '',
-                                                                  this._getSignalIcon(),
-                                                                  { reactive: false });
-            if (!this._mobileDevice.operator_name)
-                this._operatorItem.actor.hide();
-            this.section.addMenuItem(this._operatorItem);
-        }
-
-        this.parent();
-    },
-
-    _clearSection: function() {
-        this._operatorItem = null;
-
-        this.parent();
-    },
-
-    _activateAutomaticConnection: function() {
-        // Mobile wizard is too complex for the shell UI and
-        // is handled by the network panel
-        Util.spawn(['gnome-control-center', 'network',
-                    'connect-3g', this._device.get_path()]);
-        return true;
     },
 
     getIndicatorIcon: function() {
@@ -488,22 +465,34 @@ const NMDeviceBluetooth = new Lang.Class({
     Extends: NMConnectionDevice,
     category: NMConnectionCategory.WWAN,
 
-    _activateAutomaticConnection: function() {
+    _autoConnect: function() {
         // FIXME: DUN devices are configured like modems, so
         // We need to spawn the mobile wizard
         // but the network panel doesn't support bluetooth at the moment
         // so we just create an empty connection and hope
         // that this phone supports PAN
 
-        return this.parent();
+        let connection = new NetworkManager.Connection();
+        this._client.add_and_activate_connection(connection, this._device, null, null);
+        return true;
+    },
+
+    _getMenuIcon: function() {
+        if (this._device.active_connection)
+            return this.getIndicatorIcon();
+        else
+            return 'network-cellular-signal-none-symbolic';
     },
 
     getIndicatorIcon: function() {
-        if (this._device.active_connection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
-            return 'network-wired-acquiring-symbolic';
+        let state = this._device.active_connection.state;
+        if (state == NetworkManager.ActiveConnectionState.ACTIVATING)
+            return 'network-cellular-acquiring-symbolic';
+        else if (state == NetworkManager.ActiveConnectionState.ACTIVATED)
+            return 'network-cellular-connected-symbolic';
         else
-            return 'network-wired-symbolic';
-    },
+            return 'network-cellular-signal-none-symbolic';
+    }
 });
 
 const NMVPNConnectionItem = new Lang.Class({
@@ -582,6 +571,27 @@ const NMVPNSection = new Lang.Class({
     Name: 'NMVPNSection',
     Extends: NMConnectionSection,
     category: NMConnectionCategory.VPN,
+
+    _init: function(client) {
+        this.parent(client);
+
+        this.syncDescription();
+        this._sync();
+    },
+
+    _sync: function() {
+        let nItems = this._connectionItems.size();
+        this.item.actor.visible = (nItems > 0);
+        this.parent();
+    },
+
+    _getDescription: function() {
+        return _("VPN");
+    },
+
+    _getMenuIcon: function() {
+        return this.getIndicatorIcon() || 'network-vpn-symbolic';
+    },
 
     activateConnection: function(connection) {
         this._client.activate_connection(connection, null, null, null);
@@ -690,7 +700,7 @@ const NMApplet = new Lang.Class({
         this._vpnSection = new NMVPNSection(this._client);
         this._vpnSection.connect('activation-failed', Lang.bind(this, this._onActivationFailed));
         this._vpnSection.connect('icon-changed', Lang.bind(this, this._updateIcon));
-        this._section.addMenuItem(this._vpnSection.section);
+        this._section.addMenuItem(this._vpnSection.item);
 
         this._readConnections();
         this._readDevices();
@@ -791,8 +801,7 @@ const NMApplet = new Lang.Class({
                                                       Lang.bind(this, this._onActivationFailed));
 
         let section = this._devices[wrapper.category].section;
-        section.addMenuItem(wrapper.statusItem);
-        section.addMenuItem(wrapper.section);
+        section.addMenuItem(wrapper.item);
 
         let devices = this._devices[wrapper.category].devices;
         devices.push(wrapper);
