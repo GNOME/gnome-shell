@@ -1374,8 +1374,8 @@ const NMVPNSection = new Lang.Class({
     Extends: NMConnectionBased,
     category: NMConnectionCategory.VPN,
 
-    _init: function(client, connections) {
-        this.parent(connections);
+    _init: function(client) {
+        this.parent([]);
         this._client = client;
 
         this.section = new PopupMenu.PopupMenuSection();
@@ -1631,7 +1631,7 @@ const NMApplet = new Lang.Class({
         this.menu.addMenuItem(this._devices.wwan.section);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        this._vpnSection = new NMVPNSection(this._client, this._connections);
+        this._vpnSection = new NMVPNSection(this._client);
         this._vpnSection.connect('activation-failed', Lang.bind(this, this._onActivationFailed));
         this.menu.addMenuItem(this._vpnSection.section);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
