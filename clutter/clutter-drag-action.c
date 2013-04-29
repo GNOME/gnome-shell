@@ -657,30 +657,38 @@ clutter_drag_action_dispose (GObject *gobject)
   /* if we're being disposed while a capture is still present, we
    * need to reset the state we are currently holding
    */
-  if (priv->last_motion_device != NULL)
+  if (priv->stage != NULL)
     {
-      _clutter_stage_remove_pointer_drag_actor (priv->stage,
-                                                priv->last_motion_device);
+      if (priv->last_motion_device != NULL)
+        {
+          _clutter_stage_remove_pointer_drag_actor (priv->stage,
+                                                    priv->last_motion_device);
+          priv->last_motion_device = NULL;
+        }
+
+      if (priv->sequence != NULL)
+        {
+          _clutter_stage_remove_touch_drag_actor (priv->stage,
+                                                  priv->sequence);
+          priv->sequence = NULL;
+        }
+
+      if (priv->capture_id != 0)
+        {
+          clutter_stage_set_motion_events_enabled (priv->stage,
+                                                   priv->motion_events_enabled);
+
+          g_signal_handler_disconnect (priv->stage, priv->capture_id);
+
+          priv->capture_id = 0;
+          priv->stage = NULL;
+        }
+    }
+  else
+    {
       priv->last_motion_device = NULL;
-    }
-
-  if (priv->sequence != NULL)
-    {
-      _clutter_stage_remove_touch_drag_actor (priv->stage,
-                                              priv->sequence);
       priv->sequence = NULL;
-    }
-
-  if (priv->capture_id != 0)
-    {
-      clutter_stage_set_motion_events_enabled (priv->stage,
-                                               priv->motion_events_enabled);
-
-      if (priv->stage != NULL)
-        g_signal_handler_disconnect (priv->stage, priv->capture_id);
-
       priv->capture_id = 0;
-      priv->stage = NULL;
     }
 
   if (priv->button_press_id != 0)
