@@ -1946,18 +1946,10 @@ const NMApplet = new Lang.Class({
                 active_vpn = a;
 
             if (!a._primaryDevice) {
-                if (a._type != NetworkManager.SETTING_VPN_SETTING_NAME) {
-                    // find a good device to be considered primary
-                    a._primaryDevice = null;
-                    let devices = a.get_devices() || [];
-                    for (let j = 0; j < devices.length; j++) {
-                        let d = devices[j];
-                        if (d._delegate) {
-                            a._primaryDevice = d._delegate;
-                            break;
-                        }
-                    }
-                } else
+                if (a._type != NetworkManager.SETTING_VPN_SETTING_NAME)
+                    // This list is guaranteed to have one device in it.
+                    a._primaryDevice = a.get_devices()[0]._delegate;
+                else
                     a._primaryDevice = this._vpnSection;
 
                 if (a._primaryDevice)
