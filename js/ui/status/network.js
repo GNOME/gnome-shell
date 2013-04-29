@@ -20,7 +20,6 @@ const Util = imports.misc.util;
 
 const NMConnectionCategory = {
     INVALID: 'invalid',
-    WIRED: 'wired',
     WIRELESS: 'wireless',
     WWAN: 'wwan',
     VPN: 'vpn'
@@ -458,47 +457,6 @@ const NMDevice = new Lang.Class({
     }
 });
 Signals.addSignalMethods(NMDevice.prototype);
-
-const NMDeviceSimple = new Lang.Class({
-    Name: 'NMDeviceSimple',
-    Extends: NMDevice,
-
-    _init: function(client, device, connections) {
-        this.category = NMConnectionCategory.WIRED;
-
-        this.parent(client, device, connections);
-    },
-
-    _createSection: function() {
-        this.parent();
-
-        // if we have only one connection (normal or automatic)
-        // we hide the connection list, and use the switch to control
-        // the device
-        // we can do it here because addConnection and removeConnection
-        // both call _createSection at some point
-        this.section.actor.visible = this._connections.length > 1;
-    }
-});
-
-const NMDeviceWired = new Lang.Class({
-    Name: 'NMDeviceWired',
-    Extends: NMDeviceSimple,
-
-    _init: function(client, device, connections) {
-        device._description = _("Wired");
-        this.category = NMConnectionCategory.WIRED;
-
-        this.parent(client, device, connections);
-    },
-
-    getIndicatorIcon: function() {
-        if (this._device.active_connection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
-            return 'network-wired-acquiring-symbolic';
-        else
-            return 'network-wired-symbolic';
-    },
-});
 
 const NMDeviceModem = new Lang.Class({
     Name: 'NMDeviceModem',
@@ -1278,23 +1236,17 @@ const NMApplet = new Lang.Class({
 
         // Device types
         this._dtypes = { };
-        this._dtypes[NetworkManager.DeviceType.ETHERNET] = NMDeviceWired;
         this._dtypes[NetworkManager.DeviceType.WIFI] = NMDeviceWireless;
         this._dtypes[NetworkManager.DeviceType.MODEM] = NMDeviceModem;
         this._dtypes[NetworkManager.DeviceType.BT] = NMDeviceBluetooth;
-        this._dtypes[NetworkManager.DeviceType.INFINIBAND] = NMDeviceSimple;
         // TODO: WiMax support
 
         // Connection types
         this._ctypes = { };
         this._ctypes[NetworkManager.SETTING_WIRELESS_SETTING_NAME] = NMConnectionCategory.WIRELESS;
-        this._ctypes[NetworkManager.SETTING_WIRED_SETTING_NAME] = NMConnectionCategory.WIRED;
-        this._ctypes[NetworkManager.SETTING_PPPOE_SETTING_NAME] = NMConnectionCategory.WIRED;
-        this._ctypes[NetworkManager.SETTING_PPP_SETTING_NAME] = NMConnectionCategory.WIRED;
         this._ctypes[NetworkManager.SETTING_BLUETOOTH_SETTING_NAME] = NMConnectionCategory.WWAN;
         this._ctypes[NetworkManager.SETTING_CDMA_SETTING_NAME] = NMConnectionCategory.WWAN;
         this._ctypes[NetworkManager.SETTING_GSM_SETTING_NAME] = NMConnectionCategory.WWAN;
-        this._ctypes[NetworkManager.SETTING_INFINIBAND_SETTING_NAME] = NMConnectionCategory.WIRED;
         this._ctypes[NetworkManager.SETTING_VPN_SETTING_NAME] = NMConnectionCategory.VPN;
 
         NMClient.Client.new_async(null, Lang.bind(this, this._clientGot));
@@ -1328,12 +1280,6 @@ const NMApplet = new Lang.Class({
 
         this._section = new PopupMenu.PopupMenuSection();
         this.menu.addMenuItem(this._section);
-
-        this._devices.wired = {
-            section: new PopupMenu.PopupMenuSection(),
-            devices: [ ],
-        };
-        this._section.addMenuItem(this._devices.wired.section);
 
         this._devices.wireless = {
             section: new PopupMenu.PopupMenuSection(),
