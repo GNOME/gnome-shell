@@ -579,6 +579,13 @@ const NMDeviceWired = new Lang.Class({
 
         this.parent(client, device, connections);
     },
+
+    getIndicatorIcon: function() {
+        if (this.device.active_connection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
+            return 'network-wired-acquiring-symbolic';
+        else
+            return 'network-wired-symbolic';
+    },
 });
 
 const NMDeviceModem = new Lang.Class({
@@ -618,6 +625,7 @@ const NMDeviceModem = new Lang.Class({
                 if (this._operatorItem) {
                     this._operatorItem.setIcon(this._getSignalIcon());
                 }
+                this.emit('icon-changed');
             }));
         }
 
@@ -688,6 +696,18 @@ const NMDeviceModem = new Lang.Class({
                     'connect-3g', this.device.get_path()]);
         return true;
     },
+
+    getIndicatorIcon: function() {
+        if (this.device.active_connection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
+            return 'network-cellular-acquiring-symbolic';
+
+        if (!this.mobileDevice) {
+            // this can happen for bluetooth in PAN mode
+            return 'network-cellular-connected-symbolic';
+        }
+
+        return this._getSignalIcon();
+    }
 });
 
 const NMDeviceBluetooth = new Lang.Class({
@@ -710,7 +730,14 @@ const NMDeviceBluetooth = new Lang.Class({
         // that this phone supports PAN
 
         return this.parent();
-    }
+    },
+
+    getIndicatorIcon: function() {
+        if (this.device.active_connection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
+            return 'network-wired-acquiring-symbolic';
+        else
+            return 'network-wired-symbolic';
+    },
 });
 
 const NMDeviceWireless = new Lang.Class({
@@ -1194,6 +1221,45 @@ const NMDeviceWireless = new Lang.Class({
             this._createNetworkItem(network, j + activeOffset);
         }
     },
+
+    _updateAccessPoint: function() {
+        let ap = this.device.active_access_point;
+        if (this._activeAccessPoint == ap)
+            return;
+
+        if (this._activeAccessPoint) {
+            this._activeAccessPoint.disconnect(this._strengthChangedId);
+            this._strengthChangedId = 0;
+        }
+
+        this._activeAccessPoint = ap;
+
+        if (this._activeAccessPoint) {
+            this._strengthChangedId = this._activeAccessPoint.connect('notify::strength',
+                                                                      Lang.bind(this, this._strengthChanged));
+        }
+
+        this._syncStatusLabel();
+    },
+
+    _strengthChanged: function() {
+        this.emit('icon-changed');
+    },
+
+    getIndicatorIcon: function() {
+        if (this.device.active_connection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
+            return 'network-wireless-acquiring-symbolic';
+
+        let ap = this.device.active_access_point;
+        if (!ap) {
+            if (this.device.mode != NM80211Mode.ADHOC)
+                log('An active wireless connection, in infrastructure mode, involves no access point?');
+
+            return 'network-wireless-connected-symbolic';
+        }
+
+        return 'network-wireless-signal-' + signalToIcon(ap.strength) + '-symbolic';
+    },
 });
 
 const NMDeviceVirtual = new Lang.Class({
@@ -1243,7 +1309,14 @@ const NMDeviceVirtual = new Lang.Class({
 
     hasConnections: function() {
         return this._connections.length != 0;
-    }
+    },
+
+    getIndicatorIcon: function() {
+        if (this.device.active_connection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
+            return 'network-wired-acquiring-symbolic';
+        else
+            return 'network-wired-connected-symbolic';
+    },
 });
 
 const NMVPNSection = new Lang.Class({
@@ -1385,6 +1458,29 @@ const NMVPNSection = new Lang.Class({
         } else {
             log('Could not find connection for vpn-state-changed handler');
         }
+
+        this.emit('icon-changed');
+    },
+
+    _getIconForConnection: function(vpnConnection) {
+        if (vpnConnection) {
+            if (vpnConnection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
+                return 'network-vpn-acquiring-symbolic';
+            else
+                return 'network-vpn-symbolic';
+        } else {
+            return '';
+        }
+    },
+
+    getIndicatorIcon: function() {
+        for (let i = 0; i < this._connections.length; i++) {
+            let obj = this._connections[i];
+            let icon = this._getIconForConnection(obj.active);
+            if (icon)
+                return icon;
+        }
+        return '';
     },
 });
 
@@ -1462,11 +1558,7 @@ const NMApplet = new Lang.Class({
         this._connections = [ ];
 
         this._mainConnection = null;
-        this._vpnConnection = null;
-        this._activeAccessPointUpdateId = 0;
-        this._activeAccessPoint = null;
-        this._mobileUpdateId = 0;
-        this._mobileUpdateDevice = null;
+        this._mainConnectionIconChangedId = 0;
 
         this._nmDevices = [];
         this._devices = { };
@@ -1510,6 +1602,7 @@ const NMApplet = new Lang.Class({
 
         this._vpnSection = new NMVPNSection(this._client);
         this._vpnSection.connect('activation-failed', Lang.bind(this, this._onActivationFailed));
+        this._vpnSection.connect('icon-changed', Lang.bind(this, this._updateIcon));
         this.menu.addMenuItem(this._vpnSection.section);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addSettingsAction(_("Network Settings"), 'gnome-network-panel.desktop');
@@ -1752,14 +1845,17 @@ const NMApplet = new Lang.Class({
             }
         }
 
+        if (this._mainConnectionIconChangedId > 0) {
+            this._mainConnection._primaryDevice.disconnect(this._mainConnectionIconChangedId);
+            this._mainConnectionIconChangedId = 0;
+        }
+
         this._activeConnections = newActiveConnections;
         this._mainConnection = null;
-        this._vpnConnection = null;
 
         let activating = null;
         let default_ip4 = null;
         let default_ip6 = null;
-        let active_vpn = null;
         let active_any = null;
         for (let i = 0; i < this._activeConnections.length; i++) {
             let a = this._activeConnections[i];
@@ -1796,11 +1892,6 @@ const NMApplet = new Lang.Class({
             else if (a.state == NetworkManager.ActiveConnectionState.ACTIVATED)
                 active_any = a;
 
-            if (a._type == 'vpn' &&
-                (a.state == NetworkManager.ActiveConnectionState.ACTIVATING ||
-                 a.state == NetworkManager.ActiveConnectionState.ACTIVATED))
-                active_vpn = a;
-
             if (!a._primaryDevice) {
                 if (a._type != NetworkManager.SETTING_VPN_SETTING_NAME) {
                     // This list is guaranteed to have one device in it.
@@ -1819,7 +1910,11 @@ const NMApplet = new Lang.Class({
         }
 
         this._mainConnection = activating || default_ip4 || default_ip6 || active_any || null;
-        this._vpnConnection = active_vpn;
+
+        if (this._mainConnection) {
+            let dev = this._mainConnection._primaryDevice;
+            this._mainConnectionIconChangedId = dev.connect('icon-changed', Lang.bind(this, this._updateIcon));
+        }
     },
 
     _notifyActivated: function(activeConnection) {
@@ -1984,118 +2079,20 @@ const NMApplet = new Lang.Class({
 
     _updateIcon: function() {
         this._syncActiveConnections();
-        let mc = this._mainConnection;
         let hasApIcon = false;
         let hasMobileIcon = false;
 
-        if (!mc) {
+        if (!this._mainConnection) {
             this.setIcon('network-offline-symbolic');
-        } else if (mc.state == NetworkManager.ActiveConnectionState.ACTIVATING) {
-            switch (mc._section) {
-            case NMConnectionCategory.WWAN:
-                this.setIcon('network-cellular-acquiring-symbolic');
-                break;
-            case NMConnectionCategory.WIRELESS:
-                this.setIcon('network-wireless-acquiring-symbolic');
-                break;
-            case NMConnectionCategory.WIRED:
-            case NMConnectionCategory.VIRTUAL:
-                this.setIcon('network-wired-acquiring-symbolic');
-                break;
-            default:
-                // fallback to a generic connected icon
-                // (it could be a private connection of some other user)
-                this.setIcon('network-wired-acquiring-symbolic');
-            }
         } else {
-            let dev;
-            switch (mc._section) {
-            case NMConnectionCategory.WIRELESS:
-                dev = mc._primaryDevice;
-                if (dev) {
-                    let ap = dev.device.active_access_point;
-                    let mode = dev.device.mode;
-                    if (!ap) {
-                        if (mode != NM80211Mode.ADHOC) {
-                            log('An active wireless connection, in infrastructure mode, involves no access point?');
-                            break;
-                        }
-                        this.setIcon('network-wireless-connected-symbolic');
-                    } else {
-                        if (this._activeAccessPoint != ap) {
-                            if (this._accessPointUpdateId)
-                                this._activeAccessPoint.disconnect(this._accessPointUpdateId);
-                            this._activeAccessPoint = ap;
-                            this._activeAccessPointUpdateId = ap.connect('notify::strength', Lang.bind(this, function() {
-                                this.setIcon('network-wireless-signal-' + signalToIcon(ap.strength) + '-symbolic');
-                            }));
-                        }
-                        this.setIcon('network-wireless-signal-' + signalToIcon(ap.strength) + '-symbolic');
-                        hasApIcon = true;
-                    }
-                    break;
-                } else {
-                    log('Active connection with no primary device?');
-                    break;
-                }
-            case NMConnectionCategory.WIRED:
-            case NMConnectionCategory.VIRTUAL:
-                this.setIcon('network-wired-symbolic');
-                break;
-            case NMConnectionCategory.WWAN:
-                dev = mc._primaryDevice;
-                if (!dev) {
-                    log('Active connection with no primary device?');
-                    break;
-                }
-                if (!dev.mobileDevice) {
-                    // this can happen for bluetooth in PAN mode
-                    this.setIcon('network-cellular-connected-symbolic');
-                    break;
-                }
-
-                if (dev.mobileDevice != this._mobileUpdateDevice) {
-                    if (this._mobileUpdateId)
-                        this._mobileUpdateDevice.disconnect(this._mobileUpdateId);
-                    this._mobileUpdateDevice = dev.mobileDevice;
-                    this._mobileUpdateId = dev.mobileDevice.connect('notify::signal-quality', Lang.bind(this, function() {
-                        this.setIcon('network-cellular-signal-' + signalToIcon(dev.mobileDevice.signal_quality) + '-symbolic');
-                    }));
-                }
-                this.setIcon('network-cellular-signal-' + signalToIcon(dev.mobileDevice.signal_quality) + '-symbolic');
-                hasMobileIcon = true;
-                break;
-            default:
-                // fallback to a generic connected icon
-                // (it could be a private connection of some other user)
-                this.setIcon('network-wired-symbolic');
-                break;
+            let dev = this._mainConnection._primaryDevice;
+            if (!dev) {
+                log('Active connection with no primary device?');
+                return;
             }
+            this.setIcon(dev.getIndicatorIcon());
         }
 
-        // update VPN indicator
-        if (this._vpnConnection) {
-            if (this._vpnConnection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
-                this._vpnIcon.icon_name = 'network-vpn-acquiring-symbolic';
-            else
-                this._vpnIcon.icon_name = 'network-vpn-symbolic';
-
-            this._vpnIcon.show();
-        } else {
-            this._vpnIcon.hide();
-        }
-
-        // cleanup stale signal connections
-
-        if (!hasApIcon && this._activeAccessPointUpdateId) {
-            this._activeAccessPoint.disconnect(this._activeAccessPointUpdateId);
-            this._activeAccessPoint = null;
-            this._activeAccessPointUpdateId = 0;
-        }
-        if (!hasMobileIcon && this._mobileUpdateId) {
-            this._mobileUpdateDevice.disconnect(this._mobileUpdateId);
-            this._mobileUpdateDevice = null;
-            this._mobileUpdateId = 0;
-        }
+        this._vpnIcon.icon_name = this._vpnSection.getIndicatorIcon();
     }
 });
