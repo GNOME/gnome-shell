@@ -240,7 +240,7 @@ clutter_stage_wayland_class_init (ClutterStageWaylandClass *klass)
  * Note: this function can only be called when running on the Wayland
  * platform. Calling this function at any other time will return %NULL.
  *
- * Returns: (transfer non): the Wayland shell surface associated with
+ * Returns: (transfer none): the Wayland shell surface associated with
  * @stage
  *
  * Since: 1.10
