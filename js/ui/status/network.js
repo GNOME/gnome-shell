@@ -1368,15 +1368,6 @@ const NMApplet = new Lang.Class({
         if (!this._client || !this._settings)
             return;
 
-        this._statusSection = new PopupMenu.PopupMenuSection();
-        this._statusItem = new PopupMenu.PopupMenuItem('', { reactive: false });
-        this._statusSection.addMenuItem(this._statusItem);
-        this._statusSection.addAction(_("Enable networking"), Lang.bind(this, function() {
-            this._client.networking_enabled = true;
-        }));
-        this._statusSection.actor.hide();
-        this.menu.addMenuItem(this._statusSection);
-
         this._activeConnections = [ ];
         this._connections = [ ];
 
@@ -1386,28 +1377,31 @@ const NMApplet = new Lang.Class({
         this._nmDevices = [];
         this._devices = { };
 
+        this._section = new PopupMenu.PopupMenuSection();
+        this.menu.addMenuItem(this._section);
+
         this._devices.wired = {
             section: new PopupMenu.PopupMenuSection(),
             devices: [ ],
         };
-        this.menu.addMenuItem(this._devices.wired.section);
+        this._section.addMenuItem(this._devices.wired.section);
 
         this._devices.wireless = {
             section: new PopupMenu.PopupMenuSection(),
             devices: [ ],
         };
-        this.menu.addMenuItem(this._devices.wireless.section);
+        this._section.addMenuItem(this._devices.wireless.section);
 
         this._devices.wwan = {
             section: new PopupMenu.PopupMenuSection(),
             devices: [ ],
         };
-        this.menu.addMenuItem(this._devices.wwan.section);
+        this._section.addMenuItem(this._devices.wwan.section);
 
         this._vpnSection = new NMVPNSection(this._client);
         this._vpnSection.connect('activation-failed', Lang.bind(this, this._onActivationFailed));
         this._vpnSection.connect('icon-changed', Lang.bind(this, this._updateIcon));
-        this.menu.addMenuItem(this._vpnSection.section);
+        this._section.addMenuItem(this._vpnSection.section);
 
         this._readConnections();
         this._readDevices();
@@ -1747,45 +1741,19 @@ const NMApplet = new Lang.Class({
         }
     },
 
-    _hideDevices: function() {
-        this._devicesHidden = true;
-
-        for (let category in this._devices)
-            this._devices[category].section.actor.hide();
-    },
-
-    _showNormal: function() {
-        if (!this._devicesHidden) // nothing to do
-            return;
-        this._devicesHidden = false;
-
-        this._statusSection.actor.hide();
-
-        for (let category in this._devices)
-            this._devices[category].section.actor.show();
-    },
-
     _syncNMState: function() {
         this.mainIcon.visible = this._client.manager_running;
         this.actor.visible = this.mainIcon.visible;
 
-        if (!this._client.networking_enabled) {
-            this.setIcon('network-offline-symbolic');
-            this._hideDevices();
-            this._statusItem.label.text = _("Networking is disabled");
-            this._statusSection.actor.show();
-            return;
-        }
-
-        this._showNormal();
         this._syncActiveConnections();
+        this._section.actor.visible = this._client.networking_enabled;
     },
 
     _updateIcon: function() {
         let hasApIcon = false;
         let hasMobileIcon = false;
 
-        if (!this._mainConnection) {
+        if (!this._client.networking_enabled || !this._mainConnection) {
             this.setIcon('network-offline-symbolic');
         } else {
             let dev = this._mainConnection._primaryDevice;
