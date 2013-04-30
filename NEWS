@@ -1,3 +1,30 @@
+3.9.1
+=====
+* Add additional toggle-overview keybinding [Matthias; #698251]
+* Disable <super> shortcut when sticky keys are enabled [Matthias; #685974]
+* Disable tray context menu while a notification displays [Jasper; #695800]
+* Watch GApplication busy state [Cosimo; #697207]
+* Disable style transitions if animations are disabled [Jasper; #698391]
+* Filter out hidden applications from "Frequent" view [Giovanni; #696949]
+* Fix window previews swapping place randomly [Jasper; #694469, #698776]
+* Add support for serialized GIcons in remote search providers [Cosimo; #698761]
+* Fix hotcorner regression in RTL locales [Jasper; #698884]
+* Allow some keybindings to work while a top bar menu is open [Florian; #698938]
+* Make open-app-menu keybinding a toggle action [Florian; #686756]
+* Only recognize common URL schemes in notification messages [Monica; #661225]
+* Misc fixes and cleanups [Tim, Jasper, Florian, Giovanni, Owen; #698531,
+  #698622, #698427, #698483, #698513, #697203, #698959, #698918, #699029,
+  #699075, #696720, #649748]
+
+Contributors:
+  Giovanni Campagna, Cosimo Cecchi, Monica Chelliah, Matthias Clasen, Tim Lunn,
+  Florian Müllner, Jasper St. Pierre, Michael Wood, Owen W. Taylor
+
+Translations:
+  Fran Diéguez [gl], Muhammet Kara [tr], Daniel Mustieles [es],
+  Gil Forcada [ia], Anish A [ml], Dimitris Spingos [el], Marek Černocký [cs],
+  Žygimantas Beručka [lt]
+
 3.8.1
 =====
 * Clip window group during startup animation [Jasper; #696323]
