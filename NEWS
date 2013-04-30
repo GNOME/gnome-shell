@@ -1,3 +1,11 @@
+3.9.1
+=====
+* Fix miscellaneous memory leaks [Pavel; #698710]
+* Misc fixes and cleanups [Stef, Simon; #698179, #697758]
+
+Contributors:
+  Simon McVittie, Pavel Vasin, Stef Walter
+
 3.8.1
 =====
 * Fix crash when getting default font [Bastien; #696814]

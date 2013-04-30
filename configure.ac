@@ -1,7 +1,7 @@
 AC_PREREQ(2.50)
 
 m4_define([mutter_major_version], [3])
-m4_define([mutter_minor_version], [8])
+m4_define([mutter_minor_version], [9])
 m4_define([mutter_micro_version], [1])
 
 m4_define([mutter_version],
