@@ -1041,3 +1041,21 @@ _cogl_egl_destroy_image (CoglContext *ctx,
   egl_renderer->pf_eglDestroyImage (egl_renderer->edpy, image);
 }
 #endif
+
+#ifdef EGL_WL_bind_wayland_display
+CoglBool
+_cogl_egl_query_wayland_buffer (CoglContext *ctx,
+                                struct wl_buffer *buffer,
+                                int attribute,
+                                int *value)
+{
+  CoglRendererEGL *egl_renderer = ctx->display->renderer->winsys;
+
+  _COGL_RETURN_IF_FAIL (egl_renderer->pf_eglQueryWaylandBuffer);
+
+  return egl_renderer->pf_eglQueryWaylandBuffer (egl_renderer->edpy,
+                                                 buffer,
+                                                 attribute,
+                                                 value);
+}
+#endif
