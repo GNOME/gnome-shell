@@ -443,18 +443,18 @@ const Calendar = new Lang.Class({
         this.actor.add(this._topBox,
                        { row: 0, col: 0, col_span: offsetCols + 7 });
 
-        let back = new St.Button({ style_class: 'calendar-change-month-back',
-                                   can_focus: true });
-        this._topBox.add(back);
-        back.connect('clicked', Lang.bind(this, this._onPrevMonthButtonClicked));
+        this._backButton = new St.Button({ style_class: 'calendar-change-month-back',
+                                           can_focus: true });
+        this._topBox.add(this._backButton);
+        this._backButton.connect('clicked', Lang.bind(this, this._onPrevMonthButtonClicked));
 
         this._monthLabel = new St.Label({style_class: 'calendar-month-label'});
         this._topBox.add(this._monthLabel, { expand: true, x_fill: false, x_align: St.Align.MIDDLE });
 
-        let forward = new St.Button({ style_class: 'calendar-change-month-forward',
-                                      can_focus: true });
-        this._topBox.add(forward);
-        forward.connect('clicked', Lang.bind(this, this._onNextMonthButtonClicked));
+        this._forwardButton = new St.Button({ style_class: 'calendar-change-month-forward',
+                                              can_focus: true });
+        this._topBox.add(this._forwardButton);
+        this._forwardButton.connect('clicked', Lang.bind(this, this._onNextMonthButtonClicked));
 
         // Add weekday labels...
         //
@@ -513,10 +513,12 @@ const Calendar = new Lang.Class({
             }
         }
 
-        this.setDate(newDate, false);
-   },
+        this._backButton.grab_key_focus();
 
-   _onNextMonthButtonClicked: function() {
+        this.setDate(newDate, false);
+    },
+
+    _onNextMonthButtonClicked: function() {
         let newDate = new Date(this._selectedDate);
         let oldMonth = newDate.getMonth();
         if (oldMonth == 11) {
@@ -535,7 +537,9 @@ const Calendar = new Lang.Class({
             }
         }
 
-       this.setDate(newDate, false);
+        this._forwardButton.grab_key_focus();
+
+        this.setDate(newDate, false);
     },
 
     _onSettingsChange: function() {
@@ -601,8 +605,12 @@ const Calendar = new Lang.Class({
 
             let iterStr = iter.toUTCString();
             button.connect('clicked', Lang.bind(this, function() {
+                this._shouldDateGrabFocus = true;
+
                 let newlySelectedDate = new Date(iterStr);
                 this.setDate(newlySelectedDate, false);
+
+                this._shouldDateGrabFocus = false;
             }));
 
             let hasEvents = this._eventSource.hasEvents(iter);
@@ -627,9 +635,6 @@ const Calendar = new Lang.Class({
             else if (iter.getMonth() != this._selectedDate.getMonth())
                 styleClass += ' calendar-other-month-day';
 
-            if (_sameDay(this._selectedDate, iter))
-                button.add_style_pseudo_class('active');
-
             if (hasEvents)
                 styleClass += ' calendar-day-with-events'
 
@@ -638,6 +643,13 @@ const Calendar = new Lang.Class({
             let offsetCols = this._useWeekdate ? 1 : 0;
             this.actor.add(button,
                            { row: row, col: offsetCols + (7 + iter.getDay() - this._weekStart) % 7 });
+
+            if (_sameDay(this._selectedDate, iter)) {
+                button.add_style_pseudo_class('active');
+
+                if (this._shouldDateGrabFocus)
+                    button.grab_key_focus();
+            }
 
             if (this._useWeekdate && iter.getDay() == 4) {
                 let label = new St.Label({ text: _getCalendarWeekForDate(iter).toString(),
