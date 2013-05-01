@@ -239,7 +239,7 @@ update_outputs (CoglRenderer *renderer,
 
   _cogl_xlib_renderer_trap_errors (renderer, &state);
 
-  for (i = 0; i < resources->ncrtc && !error; i++)
+  for (i = 0; resources && i < resources->ncrtc && !error; i++)
     {
       XRRCrtcInfo *crtc_info = NULL;
       XRROutputInfo *output_info = NULL;
