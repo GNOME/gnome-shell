@@ -1980,11 +1980,7 @@ handle_window_focus_event (MetaDisplay  *display,
     {
       display->server_focus_window = event->event;
       display->server_focus_serial = serial;
-
-      if (window && window->override_redirect)
-        focus_window = NULL;
-      else
-        focus_window = window;
+      focus_window = window;
     }
   else if (event->evtype == XI_FocusOut)
     {

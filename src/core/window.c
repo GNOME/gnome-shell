@@ -7193,6 +7193,8 @@ meta_window_set_focused_internal (MetaWindow *window,
   if (focused)
     {
       window->has_focus = TRUE;
+      if (window->override_redirect)
+        return;
 
       /* Move to the front of the focusing workspace's MRU list.
        * We should only be "removing" it from the MRU list if it's
@@ -7258,8 +7260,11 @@ meta_window_set_focused_internal (MetaWindow *window,
     }
   else
     {
-      meta_window_propagate_focus_appearance (window, FALSE);
       window->has_focus = FALSE;
+      if (window->override_redirect)
+        return;
+
+      meta_window_propagate_focus_appearance (window, FALSE);
 
       if (!window->attached_focus_window)
         meta_window_appears_focused_changed (window);
