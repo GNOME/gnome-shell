@@ -55,6 +55,7 @@ static gint verbose_topics = 0;
 static gboolean is_debugging = FALSE;
 static gboolean replace_current = FALSE;
 static int no_prefix = 0;
+static gboolean is_wayland_compositor = FALSE;
 
 #ifdef WITH_VERBOSE_MODE
 static FILE* logfile = NULL;
@@ -192,6 +193,18 @@ void
 meta_set_replace_current_wm (gboolean setting)
 {
   replace_current = setting;
+}
+
+gboolean
+meta_is_wayland_compositor (void)
+{
+  return is_wayland_compositor;
+}
+
+void
+meta_set_is_wayland_compositor (gboolean value)
+{
+  is_wayland_compositor = value;
 }
 
 char *
