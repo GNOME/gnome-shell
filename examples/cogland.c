@@ -38,6 +38,7 @@ typedef struct
   struct
   {
     /* wl_surface.attach */
+    CoglBool newly_attached;
     struct wl_buffer *buffer;
     struct wl_listener buffer_destroy_listener;
     int32_t sx;
@@ -455,6 +456,7 @@ cogland_surface_attach (struct wl_client *wayland_client,
   surface->pending.sx = sx;
   surface->pending.sy = sy;
   surface->pending.buffer = buffer;
+  surface->pending.newly_attached = TRUE;
 
   if (buffer)
     wl_signal_add (&buffer->resource.destroy_signal,
@@ -524,7 +526,8 @@ cogland_surface_commit (struct wl_client *client,
   CoglandCompositor *compositor = surface->compositor;
 
   /* wl_surface.attach */
-  if (surface->buffer != surface->pending.buffer)
+  if (surface->pending.newly_attached &&
+      surface->buffer != surface->pending.buffer)
     {
       CoglError *error = NULL;
 
@@ -557,6 +560,7 @@ cogland_surface_commit (struct wl_client *client,
     }
   surface->pending.sx = 0;
   surface->pending.sy = 0;
+  surface->pending.newly_attached = FALSE;
 
   /* wl_surface.damage */
   if (surface->buffer &&
