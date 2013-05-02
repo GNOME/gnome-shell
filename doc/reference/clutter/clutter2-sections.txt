@@ -2333,7 +2333,6 @@ ClutterSize
 ClutterRect
 ClutterVertex
 ClutterActorBox
-ClutterKnot
 ClutterPaintVolume
 ClutterMatrix
 
@@ -2437,14 +2436,8 @@ clutter_matrix_init_from_array
 clutter_matrix_init_from_matrix
 clutter_matrix_init_identity
 
-<SUBSECTION>
-clutter_knot_copy
-clutter_knot_free
-clutter_knot_equal
-
 <SUBSECTION Standard>
 CLUTTER_TYPE_ACTOR_BOX
-CLUTTER_TYPE_KNOT
 CLUTTER_TYPE_MATRIX
 CLUTTER_TYPE_PAINT_VOLUME
 CLUTTER_TYPE_POINT
@@ -2453,7 +2446,6 @@ CLUTTER_TYPE_SIZE
 CLUTTER_TYPE_VERTEX
 <SUBSECTION Private>
 clutter_actor_box_get_type
-clutter_knot_get_type
 clutter_matrix_get_type
 clutter_paint_volume_get_type
 clutter_point_get_type
