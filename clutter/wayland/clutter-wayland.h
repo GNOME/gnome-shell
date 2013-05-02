@@ -50,6 +50,9 @@ CLUTTER_AVAILABLE_IN_1_10
 struct wl_surface *clutter_wayland_stage_get_wl_surface (ClutterStage *stage);
 
 CLUTTER_AVAILABLE_IN_1_16
+void clutter_wayland_stage_set_wl_surface (ClutterStage *stage, struct wl_surface *surface);
+
+CLUTTER_AVAILABLE_IN_1_16
 void clutter_wayland_set_display (struct wl_display *display);
 
 CLUTTER_AVAILABLE_IN_1_16

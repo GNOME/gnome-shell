@@ -290,3 +290,50 @@ clutter_wayland_stage_get_wl_surface (ClutterStage *stage)
   return stage_wayland->wayland_surface;
 
 }
+
+/**
+ * clutter_wayland_stage_set_wl_surface:
+ * @stage: a #ClutterStage
+ * @surface: A Wayland surface to associate with the @stage.
+ *
+ * Allows you to explicitly provide an existing Wayland surface to associate
+ * with @stage, preventing Cogl from allocating a surface and shell surface for
+ * the stage automatically.
+ *
+ * This function must be called before @stage is shown.
+ *
+ * Note: this function can only be called when running on the Wayland
+ * platform. Calling this function at any other time has no effect.
+ *
+ * Since: 1.16
+ */
+void
+clutter_wayland_stage_set_wl_surface (ClutterStage *stage,
+                                      struct wl_surface *surface)
+{
+  ClutterStageWindow *stage_window = _clutter_stage_get_window (stage);
+  ClutterStageWayland *stage_wayland;
+  ClutterStageCogl *stage_cogl;
+
+  if (!CLUTTER_IS_STAGE_WAYLAND (stage_window))
+    return;
+
+  stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+
+  if (stage_cogl->onscreen == NULL)
+    {
+      ClutterBackend *backend = clutter_get_default_backend ();
+
+      /* Use the same default dimensions as clutter_stage_cogl_realize() */
+      stage_cogl->onscreen = cogl_onscreen_new (backend->cogl_context,
+                                                800, 600);
+
+      cogl_wayland_onscreen_set_foreign_surface (stage_cogl->onscreen,
+                                                 surface);
+
+      stage_wayland = CLUTTER_STAGE_WAYLAND (stage_window);
+      stage_wayland->foreign_wl_surface = TRUE;
+    }
+  else
+    g_warning (G_STRLOC ": cannot set foreign surface for stage");
+}
