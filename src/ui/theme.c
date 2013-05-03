@@ -1880,7 +1880,7 @@ debug_print_tokens (PosToken *tokens,
 /**
  * pos_tokenize:
  * @expr: The expression
- * @tokens_p: (out) The resulting tokens
+ * @tokens_p: (out): The resulting tokens
  * @n_tokens_p: (out): The number of resulting tokens
  * @err: (out):  set to the problem if there was a problem
  
