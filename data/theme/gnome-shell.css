@@ -957,6 +957,11 @@ StScrollBar StButton#vhandle:active {
     padding: 0px 30px;
 }
 
+.no-frequent-applications-label {
+    font-size: 18pt;
+    color: #999999;
+}
+
 .app-folder-icon {
     padding: 5px;
 }

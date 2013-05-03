@@ -37,6 +37,8 @@ const INACTIVE_GRID_OPACITY = 77;
 const INACTIVE_GRID_OPACITY_ANIMATION_TIME = 0.40;
 const FOLDER_SUBICON_FRACTION = .4;
 
+const MIN_FREQUENT_APPS_COUNT = 3;
+
 const INDICATORS_ANIMATION_TIME = 0.5;
 // 100% means indicators wait for be animated until the previous one
 // is animated completely. 0% means all animators are animated
@@ -570,14 +572,32 @@ const FrequentView = new Lang.Class({
     _init: function() {
         this.parent(null, { fillParent: true });
         this.actor = new St.Widget({ style_class: 'frequent-apps',
+                                     layout_manager: new Clutter.BinLayout(),
                                      x_expand: true, y_expand: true });
+
+        this._noFrequentAppsLabel = new St.Label({ text: _("Frequently used applications will appear here"),
+                                                   style_class: 'no-frequent-applications-label',
+                                                   x_align: Clutter.ActorAlign.CENTER,
+                                                   x_expand: true,
+                                                   y_align: Clutter.ActorAlign.CENTER,
+                                                   y_expand: true });
+
+        this._grid.actor.y_expand = true;
+
         this.actor.add_actor(this._grid.actor);
+        this.actor.add_actor(this._noFrequentAppsLabel);
+        this._noFrequentAppsLabel.hide();
 
         this._usage = Shell.AppUsage.get_default();
     },
 
     loadApps: function() {
         let mostUsed = this._usage.get_most_used ("");
+        let hasUsefulData = mostUsed.length >= MIN_FREQUENT_APPS_COUNT;
+        this._noFrequentAppsLabel.visible = !hasUsefulData;
+        if(!hasUsefulData)
+            return;
+
         for (let i = 0; i < mostUsed.length; i++) {
             if (!mostUsed[i].get_app_info().should_show())
                 continue;
