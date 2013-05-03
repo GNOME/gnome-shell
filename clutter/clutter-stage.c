@@ -3396,6 +3396,8 @@ clutter_stage_ensure_viewport (ClutterStage *stage)
   clutter_actor_queue_redraw (CLUTTER_ACTOR (stage));
 }
 
+# define _DEG_TO_RAD(d)         ((d) * ((float) G_PI / 180.0f))
+
 /* This calculates a distance into the view frustum to position the
  * stage so there is a decent amount of space to position geometry
  * between the stage and the near clipping plane.
@@ -3508,13 +3510,26 @@ calculate_z_translation (float z_near)
    *  z_2d = --------------------------- + z_near
    *                 sin (0.5°)
    */
-#define _DEG_TO_RAD (G_PI / 180.0)
-  return z_near * tanf (30.0f * _DEG_TO_RAD) *
-         sinf (120.0f * _DEG_TO_RAD) * cosf (30.5f * _DEG_TO_RAD) /
-         sinf (0.5f * _DEG_TO_RAD) +
-         z_near;
-#undef _DEG_TO_RAD
-   /* We expect the compiler should boil this down to z_near * CONSTANT */
+
+   /* We expect the compiler should boil this down to z_near * CONSTANT
+    * already, but just in case we use precomputed constants
+    */
+#if 0
+# define A      tanf (_DEG_TO_RAD (30.f))
+# define B      sinf (_DEG_TO_RAD (120.f))
+# define C      cosf (_DEG_TO_RAD (30.5f))
+# define D      sinf (_DEG_TO_RAD (.5f))
+#else
+# define A      0.57735025882720947265625f
+# define B      0.866025388240814208984375f
+# define C      0.86162912845611572265625f
+# define D      0.00872653536498546600341796875f
+#endif
+
+  return z_near
+       * A * B * C
+       / D
+       + z_near;
 }
 
 void
@@ -3546,15 +3561,13 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
           perspective.aspect = priv->viewport[2] / priv->viewport[3];
           z_2d = calculate_z_translation (perspective.z_near);
 
-#define _DEG_TO_RAD (G_PI / 180.0)
           /* NB: z_2d is only enough room for 85% of the stage_height between
            * the stage and the z_near plane. For behind the stage plane we
            * want a more consistent gap of 10 times the stage_height before
            * hitting the far plane so we calculate that relative to the final
            * height of the stage plane at the z_2d_distance we got... */
           perspective.z_far = z_2d +
-            tanf ((perspective.fovy / 2.0f) * _DEG_TO_RAD) * z_2d * 20.0f;
-#undef _DEG_TO_RAD
+            tanf (_DEG_TO_RAD (perspective.fovy / 2.0f)) * z_2d * 20.0f;
 
           clutter_stage_set_perspective_internal (stage, &perspective);
         }
@@ -3580,6 +3593,8 @@ _clutter_stage_maybe_setup_viewport (ClutterStage *stage)
       priv->dirty_projection = FALSE;
     }
 }
+
+#undef _DEG_TO_RAD
 
 /**
  * clutter_stage_ensure_redraw:
