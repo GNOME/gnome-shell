@@ -294,60 +294,6 @@ _clutter_script_flags_from_string (GType        type,
 }
 
 static gboolean
-parse_knot_from_array (JsonArray   *array,
-                       ClutterKnot *knot)
-{
-  if (json_array_get_length (array) != 2)
-    return FALSE;
-
-  knot->x = json_array_get_int_element (array, 0);
-  knot->y = json_array_get_int_element (array, 1);
-
-  return TRUE;
-}
-
-static gboolean
-parse_knot_from_object (JsonObject  *object,
-                        ClutterKnot *knot)
-{
-  if (json_object_has_member (object, "x"))
-    knot->x = json_object_get_int_member (object, "x");
-  else
-    knot->x = 0;
-
-  if (json_object_has_member (object, "y"))
-    knot->y = json_object_get_int_member (object, "y");
-  else
-    knot->y = 0;
-
-  return TRUE;
-}
-
-gboolean
-_clutter_script_parse_knot (ClutterScript *script,
-                            JsonNode      *node,
-                            ClutterKnot   *knot)
-{
-  g_return_val_if_fail (CLUTTER_IS_SCRIPT (script), FALSE);
-  g_return_val_if_fail (node != NULL, FALSE);
-  g_return_val_if_fail (knot != NULL, FALSE);
-
-  switch (JSON_NODE_TYPE (node))
-    {
-    case JSON_NODE_ARRAY:
-      return parse_knot_from_array (json_node_get_array (node), knot);
-
-    case JSON_NODE_OBJECT:
-      return parse_knot_from_object (json_node_get_object (node), knot);
-
-    default:
-      break;
-    }
-
-  return FALSE;
-}
-
-static gboolean
 parse_rect_from_array (JsonArray   *array,
                        ClutterRect *rect)
 {
@@ -1077,18 +1023,6 @@ _clutter_script_parse_node (ClutterScript *script,
                   return TRUE;
                 }
             }
-          else if (p_type == CLUTTER_TYPE_KNOT)
-            {
-              ClutterKnot knot = { 0, };
-
-              /* knot := { "x" : (int), "y" : (int) } */
-
-              if (_clutter_script_parse_knot (script, node, &knot))
-                {
-                  g_value_set_boxed (value, &knot);
-                  return TRUE;
-                }
-            }
           else if (p_type == CLUTTER_TYPE_RECT)
             {
               ClutterRect rect = CLUTTER_RECT_INIT_ZERO;
@@ -1166,19 +1100,7 @@ _clutter_script_parse_node (ClutterScript *script,
           if (!G_IS_VALUE (value))
             g_value_init (value, G_PARAM_SPEC_VALUE_TYPE (pspec));
 
-          if (G_VALUE_HOLDS (value, CLUTTER_TYPE_KNOT))
-            {
-              ClutterKnot knot = { 0, };
-
-              /* knot := [ (int), (int) ] */
-
-              if (_clutter_script_parse_knot (script, node, &knot))
-                {
-                  g_value_set_boxed (value, &knot);
-                  return TRUE;
-                }
-            }
-          else if (G_VALUE_HOLDS (value, CLUTTER_TYPE_RECT))
+          if (G_VALUE_HOLDS (value, CLUTTER_TYPE_RECT))
             {
               ClutterRect rect = CLUTTER_RECT_INIT_ZERO;
 

@@ -116,9 +116,6 @@ gboolean _clutter_script_flags_from_string (GType          gtype,
                                             const gchar   *string,
                                             gint          *flags_value);
 
-gboolean _clutter_script_parse_knot        (ClutterScript   *script,
-                                            JsonNode        *node,
-                                            ClutterKnot     *knot);
 gboolean _clutter_script_parse_rect        (ClutterScript   *script,
                                             JsonNode        *node,
                                             ClutterRect     *rect);

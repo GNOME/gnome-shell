@@ -77,7 +77,6 @@ typedef struct _ClutterPathNode                 ClutterPathNode;
 
 typedef struct _ClutterActorBox                 ClutterActorBox;
 typedef struct _ClutterColor                    ClutterColor;
-typedef struct _ClutterKnot                     ClutterKnot;
 typedef struct _ClutterMargin                   ClutterMargin;
 typedef struct _ClutterPerspective              ClutterPerspective;
 typedef struct _ClutterPoint                    ClutterPoint;
@@ -516,27 +515,6 @@ void             clutter_actor_box_set_origin     (ClutterActorBox       *box,
 void             clutter_actor_box_set_size       (ClutterActorBox       *box,
                                                    gfloat                 width,
                                                    gfloat                 height);
-
-/**
- * ClutterKnot:
- * @x: X coordinate of the knot
- * @y: Y coordinate of the knot
- *
- * Point in a path behaviour.
- *
- *
- */
-struct _ClutterKnot
-{
-  gint x;
-  gint y;
-};
-
-GType        clutter_knot_get_type (void) G_GNUC_CONST;
-ClutterKnot *clutter_knot_copy     (const ClutterKnot *knot);
-void         clutter_knot_free     (ClutterKnot       *knot);
-gboolean     clutter_knot_equal    (const ClutterKnot *knot_a,
-                                    const ClutterKnot *knot_b);
 
 /**
  * ClutterPathNode:
