@@ -2137,10 +2137,9 @@ handle_window_focus_event (MetaDisplay  *display,
 }
 
 /**
- * event_callback:
+ * meta_display_handle_event:
+ * @display: The MetaDisplay that events are coming from
  * @event: The event that just happened
- * @data: The #MetaDisplay that events are coming from, cast to a gpointer
- *        so that it can be sent to a callback
  *
  * This is the most important function in the whole program. It is the heart,
  * it is the nexus, it is the Grand Central Station of Mutter's world.
@@ -2150,21 +2149,18 @@ handle_window_focus_event (MetaDisplay  *display,
  * busy around here. Most of this function is a ginormous switch statement
  * dealing with all the kinds of events that might turn up.
  */
-static gboolean
-event_callback (XEvent   *event,
-                gpointer  data)
+gboolean
+meta_display_handle_event (MetaDisplay *display,
+                           XEvent   *event)
 {
   MetaWindow *window;
   MetaWindow *property_for_window;
-  MetaDisplay *display;
   Window modified;
   gboolean frame_was_receiver;
   gboolean bypass_compositor;
   gboolean filter_out_event;
   XIEvent *input_event;
 
-  display = data;
-  
 #ifdef WITH_VERBOSE_MODE
   if (dump_events)
     meta_spew_event (display, event);
@@ -2655,6 +2651,15 @@ event_callback (XEvent   *event,
             }
           break;
         case XI_FocusIn:
+#ifdef HAVE_WAYLAND
+          if (meta_is_wayland_compositor ())
+            {
+              MetaWaylandCompositor *compositor =
+                meta_wayland_compositor_get_default ();
+              meta_wayland_compositor_set_input_focus (compositor, window);
+            }
+#endif
+          /* fall through */
         case XI_FocusOut:
           /* libXi does not properly copy the serial to the XIEnterEvent, so pull it
            * from the parent XAnyEvent.
@@ -3200,6 +3205,32 @@ event_callback (XEvent   *event,
   
   display->current_time = CurrentTime;
   return filter_out_event;
+}
+
+static gboolean
+event_callback (XEvent  *event,
+                gpointer data)
+{
+  MetaDisplay *display = data;
+
+  /* Under Wayland we want to filter out mouse motion events so we can
+     synthesize them from the Clutter events instead. This is
+     necessary because the position in the mouse events is passed to
+     the X server relative to the position of the surface. The X
+     server then translates these back to screen coordinates based on
+     the window position. If we rely on this translatation when
+     dragging a window around then the window will jump around
+     erratically because of the lag between updating the window
+     position from the surface position. Instead we bypass the
+     translation altogether by directly using the Clutter events */
+#ifdef HAVE_WAYLAND
+  if (meta_is_wayland_compositor () &&
+      event->type == GenericEvent &&
+      event->xcookie.evtype == XI_Motion)
+    return FALSE;
+#endif
+
+  return meta_display_handle_event (display, event);
 }
 
 /* Return the window this has to do with, if any, rather

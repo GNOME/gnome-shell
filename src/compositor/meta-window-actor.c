@@ -380,6 +380,9 @@ meta_window_actor_constructed (GObject *object)
 
       clutter_actor_add_child (CLUTTER_ACTOR (self), priv->actor);
 
+      if (meta_is_wayland_compositor ())
+        clutter_actor_set_reactive (priv->actor, TRUE);
+
       /*
        * Since we are holding a pointer to this actor independently of the
        * ClutterContainer internals, and provide a public API to access it,

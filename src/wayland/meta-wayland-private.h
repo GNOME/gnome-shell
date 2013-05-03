@@ -21,7 +21,7 @@
 #define META_WAYLAND_PRIVATE_H
 
 #include <wayland-server.h>
-
+#include <xkbcommon/xkbcommon.h>
 #include <clutter/clutter.h>
 
 #include <glib.h>
@@ -30,6 +30,16 @@
 #include "window-private.h"
 
 typedef struct _MetaWaylandCompositor MetaWaylandCompositor;
+
+typedef struct _MetaWaylandSeat MetaWaylandSeat;
+typedef struct _MetaWaylandPointer MetaWaylandPointer;
+typedef struct _MetaWaylandPointerGrab MetaWaylandPointerGrab;
+typedef struct _MetaWaylandPointerGrabInterface MetaWaylandPointerGrabInterface;
+typedef struct _MetaWaylandKeyboard MetaWaylandKeyboard;
+typedef struct _MetaWaylandKeyboardGrab MetaWaylandKeyboardGrab;
+typedef struct _MetaWaylandKeyboardGrabInterface MetaWaylandKeyboardGrabInterface;
+typedef struct _MetaWaylandDataOffer MetaWaylandDataOffer;
+typedef struct _MetaWaylandDataSource MetaWaylandDataSource;
 
 typedef struct
 {
@@ -155,17 +165,198 @@ struct _MetaWaylandCompositor
   struct wl_client *xwayland_client;
   struct wl_resource *xserver_resource;
   GHashTable *window_surfaces;
+
+  MetaWaylandSeat *seat;
+
+  /* This surface is only used to keep drag of the implicit grab when
+     synthesizing XEvents for Mutter */
+  MetaWaylandSurface *implicit_grab_surface;
+  /* Button that was pressed to initiate an implicit grab. The
+     implicit grab will only be released when this button is
+     released */
+  guint32 implicit_grab_button;
 };
 
-void                    meta_wayland_init                   (void);
-void                    meta_wayland_finalize               (void);
+struct _MetaWaylandPointerGrabInterface
+{
+  void (*focus) (MetaWaylandPointerGrab * grab,
+                 MetaWaylandSurface * surface, wl_fixed_t x, wl_fixed_t y);
+  void (*motion) (MetaWaylandPointerGrab * grab,
+                  uint32_t time, wl_fixed_t x, wl_fixed_t y);
+  void (*button) (MetaWaylandPointerGrab * grab,
+                  uint32_t time, uint32_t button, uint32_t state);
+};
+
+struct _MetaWaylandPointerGrab
+{
+  const MetaWaylandPointerGrabInterface *interface;
+  MetaWaylandPointer *pointer;
+  MetaWaylandSurface *focus;
+  wl_fixed_t x, y;
+};
+
+struct _MetaWaylandPointer
+{
+  struct wl_list resource_list;
+  MetaWaylandSurface *focus;
+  struct wl_resource *focus_resource;
+  struct wl_listener focus_listener;
+  guint32 focus_serial;
+  struct wl_signal focus_signal;
+
+  MetaWaylandPointerGrab *grab;
+  MetaWaylandPointerGrab default_grab;
+  wl_fixed_t grab_x, grab_y;
+  guint32 grab_button;
+  guint32 grab_serial;
+  guint32 grab_time;
+
+  wl_fixed_t x, y;
+  MetaWaylandSurface *current;
+  struct wl_listener current_listener;
+  wl_fixed_t current_x, current_y;
+
+  guint32 button_count;
+};
+
+struct _MetaWaylandKeyboardGrabInterface
+{
+  void (*key) (MetaWaylandKeyboardGrab * grab, uint32_t time,
+               uint32_t key, uint32_t state);
+  void (*modifiers) (MetaWaylandKeyboardGrab * grab, uint32_t serial,
+                     uint32_t mods_depressed, uint32_t mods_latched,
+                     uint32_t mods_locked, uint32_t group);
+};
+
+struct _MetaWaylandKeyboardGrab
+{
+  const MetaWaylandKeyboardGrabInterface *interface;
+  MetaWaylandKeyboard *keyboard;
+  MetaWaylandSurface *focus;
+  uint32_t key;
+};
+
+typedef struct
+{
+  struct xkb_keymap *keymap;
+  int keymap_fd;
+  size_t keymap_size;
+  char *keymap_area;
+  xkb_mod_index_t shift_mod;
+  xkb_mod_index_t caps_mod;
+  xkb_mod_index_t ctrl_mod;
+  xkb_mod_index_t alt_mod;
+  xkb_mod_index_t mod2_mod;
+  xkb_mod_index_t mod3_mod;
+  xkb_mod_index_t super_mod;
+  xkb_mod_index_t mod5_mod;
+} MetaWaylandXkbInfo;
+
+struct _MetaWaylandKeyboard
+{
+  struct wl_list resource_list;
+  MetaWaylandSurface *focus;
+  struct wl_resource *focus_resource;
+  struct wl_listener focus_listener;
+  uint32_t focus_serial;
+  struct wl_signal focus_signal;
+
+  MetaWaylandKeyboardGrab *grab;
+  MetaWaylandKeyboardGrab default_grab;
+  uint32_t grab_key;
+  uint32_t grab_serial;
+  uint32_t grab_time;
+
+  struct wl_array keys;
+
+  struct
+  {
+    uint32_t mods_depressed;
+    uint32_t mods_latched;
+    uint32_t mods_locked;
+    uint32_t group;
+  } modifiers;
+
+  struct wl_display *display;
+
+  struct xkb_context *xkb_context;
+
+  MetaWaylandXkbInfo xkb_info;
+  struct xkb_rule_names xkb_names;
+
+  MetaWaylandKeyboardGrab input_method_grab;
+  struct wl_resource *input_method_resource;
+
+  ClutterModifierType last_modifier_state;
+};
+
+struct _MetaWaylandDataOffer
+{
+  struct wl_resource *resource;
+  MetaWaylandDataSource *source;
+  struct wl_listener source_destroy_listener;
+};
+
+struct _MetaWaylandDataSource
+{
+  struct wl_resource *resource;
+  struct wl_array mime_types;
+
+  void (*accept) (MetaWaylandDataSource * source,
+                  uint32_t serial, const char *mime_type);
+  void (*send) (MetaWaylandDataSource * source,
+                const char *mime_type, int32_t fd);
+  void (*cancel) (MetaWaylandDataSource * source);
+};
+
+struct _MetaWaylandSeat
+{
+  struct wl_list base_resource_list;
+  struct wl_signal destroy_signal;
+
+  uint32_t selection_serial;
+  MetaWaylandDataSource *selection_data_source;
+  struct wl_listener selection_data_source_listener;
+  struct wl_signal selection_signal;
+
+  struct wl_list drag_resource_list;
+  struct wl_client *drag_client;
+  MetaWaylandDataSource *drag_data_source;
+  struct wl_listener drag_data_source_listener;
+  MetaWaylandSurface *drag_focus;
+  struct wl_resource *drag_focus_resource;
+  struct wl_listener drag_focus_listener;
+  MetaWaylandPointerGrab drag_grab;
+  MetaWaylandSurface *drag_surface;
+  struct wl_listener drag_icon_listener;
+  struct wl_signal drag_icon_signal;
+
+  MetaWaylandPointer pointer;
+  MetaWaylandKeyboard keyboard;
+
+  struct wl_display *display;
+
+  MetaWaylandSurface *sprite;
+  int hotspot_x, hotspot_y;
+  struct wl_listener sprite_destroy_listener;
+
+  ClutterActor *current_stage;
+};
+
+void                    meta_wayland_init                       (void);
+void                    meta_wayland_finalize                   (void);
 
 /* We maintain a singleton MetaWaylandCompositor which can be got at via this
  * API after meta_wayland_init() has been called. */
-MetaWaylandCompositor  *meta_wayland_compositor_get_default (void);
+MetaWaylandCompositor  *meta_wayland_compositor_get_default     (void);
 
-void                    meta_wayland_handle_sig_child       (void);
+void                    meta_wayland_handle_sig_child           (void);
 
-MetaWaylandSurface     *meta_wayland_lookup_surface_for_xid (guint32 xid);
+MetaWaylandSurface     *meta_wayland_lookup_surface_for_xid     (guint32 xid);
+
+void                    meta_wayland_compositor_repick          (MetaWaylandCompositor *compositor);
+
+void                    meta_wayland_compositor_set_input_focus (MetaWaylandCompositor *compositor,
+                                                                 MetaWindow            *window);
 
 #endif /* META_WAYLAND_PRIVATE_H */
