@@ -2298,6 +2298,8 @@ clutter_flow_layout_set_homogeneous
 clutter_flow_layout_get_homogeneous
 clutter_flow_layout_set_orientation
 clutter_flow_layout_get_orientation
+clutter_flow_layout_set_snap_to_grid
+clutter_flow_layout_get_snap_to_grid
 
 <SUBSECTION>
 clutter_flow_layout_set_column_spacing
