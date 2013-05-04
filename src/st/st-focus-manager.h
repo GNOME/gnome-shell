@@ -75,6 +75,8 @@ void            st_focus_manager_remove_group  (StFocusManager *manager,
                                                 StWidget       *root);
 StWidget       *st_focus_manager_get_group     (StFocusManager *manager,
                                                 StWidget       *widget);
+gboolean        st_focus_manager_navigate_from_event (StFocusManager *manager,
+                                                      ClutterEvent   *event);
 
 G_END_DECLS
 

@@ -233,3 +233,26 @@ st_focus_manager_get_group (StFocusManager *manager,
 
   return ST_WIDGET (actor);
 }
+
+/**
+ * st_focus_manager_navigate_from_event:
+ * @manager: the #StFocusManager
+ * @event: a #ClutterEvent
+ *
+ * Try to navigate from @event as if it bubbled all the way up to
+ * the stage. This is useful in complex event handling situations
+ * where you want key navigation, but a parent might be stopping
+ * the key navigation event from bubbling all the way up to the stage.
+ *
+ * Returns: Whether a new actor was navigated to
+ */
+gboolean
+st_focus_manager_navigate_from_event (StFocusManager *manager,
+                                      ClutterEvent   *event)
+{
+  if (event->type != CLUTTER_KEY_PRESS)
+    return FALSE;
+
+  ClutterActor *stage = CLUTTER_ACTOR (event->key.stage);
+  return st_focus_manager_stage_event (stage, event, manager);
+}
