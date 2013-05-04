@@ -184,6 +184,9 @@ const Button = new Lang.Class({
     },
 
     _onMenuKeyPress: function(actor, event) {
+        if (global.focus_manager.navigate_from_event(event))
+            return true;
+
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Left || symbol == Clutter.KEY_Right) {
             let group = global.focus_manager.get_group(this.actor);
