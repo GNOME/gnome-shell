@@ -223,9 +223,11 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
   ClutterOffscreenEffect *self = CLUTTER_OFFSCREEN_EFFECT (effect);
   ClutterOffscreenEffectPrivate *priv = self->priv;
   ClutterActorBox box;
+  ClutterActor *stage;
   CoglMatrix projection;
   CoglColor transparent;
-  gfloat fbo_width, fbo_height;
+  gfloat stage_width, stage_height;
+  gfloat fbo_width = -1, fbo_height = -1;
   gfloat width, height;
   gfloat xexpand, yexpand;
   int texture_width, texture_height;
@@ -236,6 +238,9 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
   if (priv->actor == NULL)
     return FALSE;
 
+  stage = _clutter_actor_get_stage_internal (priv->actor);
+  clutter_actor_get_size (stage, &stage_width, &stage_height);
+
   /* The paint box is the bounding box of the actor's paint volume in
    * stage coordinates. This will give us the size for the framebuffer
    * we need to redirect its rendering offscreen and its position will
@@ -244,16 +249,20 @@ clutter_offscreen_effect_pre_paint (ClutterEffect *effect)
     {
       clutter_actor_box_get_size (&box, &fbo_width, &fbo_height);
       clutter_actor_box_get_origin (&box, &priv->x_offset, &priv->y_offset);
+
+      fbo_width = MIN (fbo_width, stage_width);
+      fbo_height = MIN (fbo_height, stage_height);
     }
   else
     {
-      /* If we can't get a valid paint box then we fallback to
-       * creating a full stage size fbo. */
-      ClutterActor *stage = _clutter_actor_get_stage_internal (priv->actor);
-      clutter_actor_get_size (stage, &fbo_width, &fbo_height);
-      priv->x_offset = 0.0f;
-      priv->y_offset = 0.0f;
+      fbo_width = stage_width;
+      fbo_height = stage_height;
     }
+
+  if (fbo_width == stage_width)
+    priv->x_offset = 0.0f;
+  if (fbo_height == stage_height)
+    priv->y_offset = 0.0f;
 
   /* First assert that the framebuffer is the right size... */
   if (!update_fbo (effect, fbo_width, fbo_height))
