@@ -6626,6 +6626,41 @@ meta_window_change_workspace_by_index (MetaWindow *window,
 #define _NET_WM_MOVERESIZE_MOVE_KEYBOARD    10
 #define _NET_WM_MOVERESIZE_CANCEL           11
 
+static int
+query_pressed_buttons (MetaWindow *window)
+{
+  double x, y, query_root_x, query_root_y;
+  Window root, child;
+  XIButtonState buttons;
+  XIModifierState mods;
+  XIGroupState group;
+  int button = 0;
+
+  meta_error_trap_push (window->display);
+  XIQueryPointer (window->display->xdisplay,
+                  META_VIRTUAL_CORE_POINTER_ID,
+                  window->xwindow,
+                  &root, &child,
+                  &query_root_x, &query_root_y,
+                  &x, &y,
+                  &buttons, &mods, &group);
+
+  if (meta_error_trap_pop_with_return (window->display) != Success)
+    goto out;
+
+  if (XIMaskIsSet (buttons.mask, Button1))
+    button |= 1 << 1;
+  if (XIMaskIsSet (buttons.mask, Button2))
+    button |= 1 << 2;
+  if (XIMaskIsSet (buttons.mask, Button3))
+    button |= 1 << 3;
+
+  free (buttons.mask);
+
+ out:
+  return button;
+}
+
 gboolean
 meta_window_client_message (MetaWindow *window,
                             XEvent     *event)
@@ -6984,56 +7019,58 @@ meta_window_client_message (MetaWindow *window,
                 (op != META_GRAB_OP_MOVING &&
                  op != META_GRAB_OP_KEYBOARD_MOVING))))
         {
-          /*
-           * the button SHOULD already be included in the message
-           */
+          int button_mask;
+
+          meta_topic (META_DEBUG_WINDOW_OPS,
+                      "Beginning move/resize with button = %d\n", button);
+          meta_display_begin_grab_op (window->display,
+                                      window->screen,
+                                      window,
+                                      op,
+                                      FALSE,
+                                      frame_action,
+                                      button, 0,
+                                      timestamp,
+                                      x_root,
+                                      y_root);
+
+          button_mask = query_pressed_buttons (window);
+
           if (button == 0)
             {
-              double x, y, query_root_x, query_root_y;
-              Window root, child;
-              XIButtonState buttons;
-              XIModifierState mods;
-              XIGroupState group;
-
-              /* The race conditions in this _NET_WM_MOVERESIZE thing
-               * are mind-boggling
+              /*
+               * the button SHOULD already be included in the message
                */
-              meta_error_trap_push (window->display);
-              XIQueryPointer (window->display->xdisplay,
-                              META_VIRTUAL_CORE_POINTER_ID,
-                              window->xwindow,
-                              &root, &child,
-                              &query_root_x, &query_root_y,
-                              &x, &y,
-                              &buttons, &mods, &group);
-              meta_error_trap_pop (window->display);
-
-              if (XIMaskIsSet (buttons.mask, Button1))
+              if ((button_mask & (1 << 1)) != 0)
                 button = 1;
-              else if (XIMaskIsSet (buttons.mask, Button2))
+              else if ((button_mask & (1 << 2)) != 0)
                 button = 2;
-              else if (XIMaskIsSet (buttons.mask, Button3))
+              else if ((button_mask & (1 << 3)) != 0)
                 button = 3;
+
+              if (button != 0)
+                window->display->grab_button = button;
               else
-                button = 0;
-
-              free (buttons.mask);
+                meta_display_end_grab_op (window->display,
+                                          timestamp);
             }
-
-          if (button != 0)
+          else
             {
-              meta_topic (META_DEBUG_WINDOW_OPS,
-                          "Beginning move/resize with button = %d\n", button);
-              meta_display_begin_grab_op (window->display,
-                                          window->screen,
-                                          window,
-                                          op,
-                                          FALSE,
-                                          frame_action,
-                                          button, 0,
-                                          timestamp,
-                                          x_root,
-                                          y_root);
+              /* There is a potential race here. If the user presses and
+               * releases their mouse button very fast, it's possible for
+               * both the ButtonPress and ButtonRelease to be sent to the
+               * client before it can get a chance to send _NET_WM_MOVERESIZE
+               * to us. When that happens, we'll become stuck in a grab
+               * state, as we haven't received a ButtonRelease to cancel the
+               * grab.
+               *
+               * We can solve this by querying after we take the explicit
+               * pointer grab -- if the button isn't pressed, we cancel the
+               * drag immediately.
+               */
+
+              if ((button_mask & (1 << button)) == 0)
+                meta_display_end_grab_op (window->display, timestamp);
             }
         }
 
