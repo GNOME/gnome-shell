@@ -139,7 +139,11 @@ cally_stage_notify_key_focus_cb (ClutterStage *stage,
       AtkObject *old = NULL;
 
       if (self->priv->key_focus != NULL)
-        old = clutter_actor_get_accessible (self->priv->key_focus);
+        {
+          g_object_remove_weak_pointer (G_OBJECT (self->priv->key_focus),
+                                        (gpointer *) &self->priv->key_focus);
+          old = clutter_actor_get_accessible (self->priv->key_focus);
+        }
       else
         old = clutter_actor_get_accessible (CLUTTER_ACTOR (stage));
 
@@ -154,7 +158,19 @@ cally_stage_notify_key_focus_cb (ClutterStage *stage,
   self->priv->key_focus = key_focus;
 
   if (key_focus != NULL)
-    new = clutter_actor_get_accessible (key_focus);
+    {
+      /* ensure that if the key focus goes away, the field inside
+       * CallyStage is reset. see bug:
+       *
+       * https://bugzilla.gnome.org/show_bug.cgi?id=692706
+       *
+       * we remove the weak pointer above.
+       */
+      g_object_add_weak_pointer (G_OBJECT (self->priv->key_focus),
+                                 (gpointer *) &self->priv->key_focus);
+
+      new = clutter_actor_get_accessible (key_focus);
+    }
   else
     new = clutter_actor_get_accessible (CLUTTER_ACTOR (stage));
 
