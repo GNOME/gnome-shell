@@ -298,6 +298,16 @@ Relevant information for developers with existing Clutter applications
 wanting to port to newer releases (see NEWS for general information on new
 features).
 
+Release Notes for Clutter 1.16
+-------------------------------------------------------------------------------
+
+• Implicit transitions will not be created on actors that are not mapped,
+  unless they are in a cloned branch of the scene graph. This was never an
+  approved case, as ClutterActor would implicitly skip layout and paint on
+  unmapped actors, but now it's being enforced through the animation machinery
+  as well. Using explicit transitions still works, as explicit transitions
+  completely place the developer in charge.
+
 Release Notes for Clutter 1.14
 -------------------------------------------------------------------------------
 
