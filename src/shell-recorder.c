@@ -1708,6 +1708,7 @@ shell_recorder_set_pipeline (ShellRecorder *recorder,
 /**
  * shell_recorder_record:
  * @recorder: the #ShellRecorder
+ * @filename_used: (out) (allow-none): actual filename used for recording
  *
  * Starts recording, Starting the recording may fail if the output file
  * cannot be opened, or if the output stream cannot be created
@@ -1724,7 +1725,8 @@ shell_recorder_set_pipeline (ShellRecorder *recorder,
  * Return value: %TRUE if recording was succesfully started
  */
 gboolean
-shell_recorder_record (ShellRecorder *recorder)
+shell_recorder_record (ShellRecorder  *recorder,
+                       char          **filename_used)
 {
   g_return_val_if_fail (SHELL_IS_RECORDER (recorder), FALSE);
   g_return_val_if_fail (recorder->stage != NULL, FALSE);
@@ -1732,6 +1734,9 @@ shell_recorder_record (ShellRecorder *recorder)
 
   if (!recorder_open_pipeline (recorder))
     return FALSE;
+
+  if (filename_used)
+    *filename_used = g_strdup (recorder->current_pipeline->filename);
 
   recorder_connect_stage_callbacks (recorder);
 
