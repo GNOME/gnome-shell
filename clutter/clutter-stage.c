@@ -4610,9 +4610,9 @@ clutter_stage_skip_sync_delay (ClutterStage *stage)
 /**
  * clutter_stage_set_paint_callback:
  * @stage: a #ClutterStage
- * @callback: (allow none): a callback
- * @data: (allow none): data to be passed to @callback
- * @notify: (allow none): function to be called when the callback is removed
+ * @callback: (allow-none): a callback
+ * @data: (allow-none): data to be passed to @callback
+ * @notify: (allow-none): function to be called when the callback is removed
  *
  * Sets a callback function to be invoked after the @stage has been
  * painted.
