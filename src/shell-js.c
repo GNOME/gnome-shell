@@ -54,14 +54,11 @@ shell_js_add_extension_importer (const char  *target_object_script,
                          0,
                          &target_object))
     {
-      char *message;
-      gjs_log_exception(context,
-                        &message);
+      gjs_log_exception(context);
       g_set_error(error,
                   G_IO_ERROR,
                   G_IO_ERROR_FAILED,
-                  "%s", message ? message : "(unknown)");
-      g_free(message);
+                  "Unable to import %s", target_object_script);
       goto out;
     }
 
