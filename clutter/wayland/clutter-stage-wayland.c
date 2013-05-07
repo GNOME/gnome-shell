@@ -271,6 +271,8 @@ clutter_wayland_stage_get_wl_shell_surface (ClutterStage *stage)
  * platform. Calling this function at any other time will return %NULL.
  *
  * Returns: (transfer none): the Wayland surface associated with @stage
+ *
+ * Since: 1.10
  */
 struct wl_surface *
 clutter_wayland_stage_get_wl_surface (ClutterStage *stage)
