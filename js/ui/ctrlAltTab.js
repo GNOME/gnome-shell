@@ -89,7 +89,7 @@ const CtrlAltTabManager = new Lang.Class({
         let items = this._items.filter(function (item) { return item.proxy.mapped; });
 
         // And add the windows metacity would show in its Ctrl-Alt-Tab list
-        if (!Main.overview.visible) {
+        if (Main.sessionMode.hasWindows && !Main.overview.visible) {
             let screen = global.screen;
             let display = screen.get_display();
             let windows = display.get_tab_list(Meta.TabList.DOCKS, screen, screen.get_active_workspace ());
