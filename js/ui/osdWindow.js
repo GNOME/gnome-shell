@@ -8,6 +8,7 @@ const Layout = imports.ui.layout;
 const Main = imports.ui.main;
 const Mainloop = imports.mainloop;
 const Tweener = imports.ui.tweener;
+const Meta = imports.gi.Meta;
 
 const HIDE_TIMEOUT = 1500;
 const FADE_TIME = 0.1;
@@ -71,6 +72,7 @@ const OsdWindow = new Lang.Class({
     Name: 'OsdWindow',
 
     _init: function() {
+        this._popupSize = 0;
         this.actor = new St.Widget({ x_expand: true,
                                      y_expand: true,
                                      x_align: Clutter.ActorAlign.CENTER,
@@ -79,6 +81,15 @@ const OsdWindow = new Lang.Class({
         this._box = new St.BoxLayout({ style_class: 'osd-window',
                                        vertical: true });
         this.actor.add_actor(this._box);
+
+        this._box.connect('style-changed', Lang.bind(this, this._onStyleChanged));
+        this._box.connect('notify::height', Lang.bind(this,
+            function() {
+                Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this,
+                    function() {
+                        this._box.width = this._box.height;
+                    }));
+            }));
 
         this._icon = new St.Icon();
         this._box.add(this._icon, { expand: true });
@@ -169,11 +180,25 @@ const OsdWindow = new Lang.Class({
         let scalew = monitor.width / 640.0;
         let scaleh = monitor.height / 480.0;
         let scale = Math.min(scalew, scaleh);
-        let size = 110 * Math.max(1, scale);
+        this._popupSize = 110 * Math.max(1, scale);
 
-        this._box.set_size(size, size);
         this._box.translation_y = monitor.height / 4;
+        this._icon.icon_size = this._popupSize / 2;
+        this._box.style_changed();
+    },
 
-        this._icon.icon_size = size / 2;
+    _onStyleChanged: function() {
+        let themeNode = this._box.get_theme_node();
+        let horizontalPadding = themeNode.get_horizontal_padding();
+        let verticalPadding = themeNode.get_vertical_padding();
+        let topBorder = themeNode.get_border_width(St.Side.TOP);
+        let bottomBorder = themeNode.get_border_width(St.Side.BOTTOM);
+        let leftBorder = themeNode.get_border_width(St.Side.LEFT);
+        let rightBorder = themeNode.get_border_width(St.Side.RIGHT);
+
+        let minWidth = this._popupSize - verticalPadding - leftBorder - rightBorder;
+        let minHeight = this._popupSize - horizontalPadding - topBorder - bottomBorder;
+
+        this._box.style = 'min-height: %dpx;'.format(Math.max(minWidth, minHeight));
     }
 });
