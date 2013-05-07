@@ -292,11 +292,6 @@ st_shadow_helper_paint (StShadowHelper  *helper,
 
   clutter_actor_box_get_size (actor_box, &width, &height);
 
-  allocation.x1 = (width - helper->width) / 2;
-  allocation.y1 = (height - helper->height) / 2;
-  allocation.x2 = allocation.x1 + helper->width;
-  allocation.y2 = allocation.y1 + helper->height;
-
   _st_paint_shadow_with_opacity (helper->shadow,
                                  helper->material,
                                  &allocation,
