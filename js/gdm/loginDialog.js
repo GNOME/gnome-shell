@@ -621,7 +621,7 @@ const LoginDialog = new Lang.Class({
                                      x_align: St.Align.START,
                                      x_fill: true });
 
-        this._logoBin = new St.Bin({ style_class: 'login-dialog-logo-bin' });
+        this._logoBin = new St.Bin({ style_class: 'login-dialog-logo-bin', y_expand: true });
         this._logoBin.set_y_align(Clutter.ActorAlign.END);
         this.backgroundStack.add_actor(this._logoBin);
         this._updateLogo();
