@@ -3821,7 +3821,7 @@ st_theme_node_paint_equal (StThemeNode *node,
 
   /* Make sure NULL != NULL */
   if (node == NULL || other == NULL)
-    return TRUE;
+    return FALSE;
 
   if (node == other)
     return TRUE;
