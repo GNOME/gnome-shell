@@ -65,7 +65,7 @@ const ModalDialog = new Lang.Class({
         this._group.connect('key-press-event', Lang.bind(this, this._onKeyPressEvent));
         this._group.connect('key-release-event', Lang.bind(this, this._onKeyReleaseEvent));
 
-        this.backgroundStack = new Shell.Stack();
+        this.backgroundStack = new St.Widget({ layout_manager: new Clutter.BinLayout() });
         this._backgroundBin = new St.Bin({ child: this.backgroundStack,
                                            x_fill: true, y_fill: true });
         this._monitorConstraint = new Layout.MonitorConstraint();
