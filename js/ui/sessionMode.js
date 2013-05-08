@@ -195,6 +195,10 @@ const SessionMode = new Lang.Class({
         return this._modeStack[this._modeStack.length - 1];
     },
 
+    get allowScreencast() {
+        return this.components.indexOf('recorder') != -1;
+    },
+
     _sync: function() {
         let params = this._modes[this.currentMode];
         let defaults;
