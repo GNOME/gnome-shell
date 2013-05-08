@@ -1904,6 +1904,7 @@ const NMApplet = new Lang.Class({
         let default_ip4 = null;
         let default_ip6 = null;
         let active_vpn = null;
+        let active_any = null;
         for (let i = 0; i < this._activeConnections.length; i++) {
             let a = this._activeConnections[i];
 
@@ -1934,10 +1935,15 @@ const NMApplet = new Lang.Class({
             if (a.default6)
                 default_ip6 = a;
 
-            if (a._type == 'vpn')
-                active_vpn = a;
-            else if (a.state == NetworkManager.ActiveConnectionState.ACTIVATING)
+            if (a.state == NetworkManager.ActiveConnectionState.ACTIVATING)
                 activating = a;
+            else if (a.state == NetworkManager.ActiveConnectionState.ACTIVE)
+                active_any = a;
+
+            if (a._type == 'vpn' &&
+                (a.state == NetworkManager.ActiveConnectionState.ACTIVATING ||
+                 a.state == NetworkManager.ActiveConnectionState.ACTIVE))
+                active_vpn = a;
 
             if (!a._primaryDevice) {
                 if (a._type != NetworkManager.SETTING_VPN_SETTING_NAME) {
@@ -1965,7 +1971,7 @@ const NMApplet = new Lang.Class({
             }
         }
 
-        this._mainConnection = activating || default_ip4 || default_ip6 || this._activeConnections[0] || null;
+        this._mainConnection = activating || default_ip4 || default_ip6 || active_any || null;
         this._vpnConnection = active_vpn;
     },
 
