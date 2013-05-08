@@ -50,6 +50,8 @@ struct _ShellRecorder {
   RecorderState state;
 
   ClutterStage *stage;
+  gboolean custom_area;
+  cairo_rectangle_int_t area;
   int stage_width;
   int stage_height;
 
@@ -429,10 +431,10 @@ recorder_draw_cursor (ShellRecorder *recorder,
   /* We don't show a cursor unless the hot spot is in the frame; this
    * means that sometimes we aren't going to draw a cursor even when
    * there is a little bit overlapping within the stage */
-  if (recorder->pointer_x < 0 ||
-      recorder->pointer_y < 0 ||
-      recorder->pointer_x >= recorder->stage_width ||
-      recorder->pointer_y >= recorder->stage_height)
+  if (recorder->pointer_x < recorder->area.x ||
+      recorder->pointer_y < recorder->area.y ||
+      recorder->pointer_x >= recorder->area.x + recorder->area.width ||
+      recorder->pointer_y >= recorder->area.y + recorder->area.height)
     return;
 
   if (!recorder->cursor_image)
@@ -444,15 +446,15 @@ recorder_draw_cursor (ShellRecorder *recorder,
   gst_buffer_map (buffer, &info, GST_MAP_WRITE);
   surface = cairo_image_surface_create_for_data (info.data,
                                                  CAIRO_FORMAT_ARGB32,
-                                                 recorder->stage_width,
-                                                 recorder->stage_height,
-                                                 recorder->stage_width * 4);
+                                                 recorder->area.width,
+                                                 recorder->area.height,
+                                                 recorder->area.width * 4);
 
   cr = cairo_create (surface);
   cairo_set_source_surface (cr,
                             recorder->cursor_image,
-                            recorder->pointer_x - recorder->cursor_hot_x,
-                            recorder->pointer_y - recorder->cursor_hot_y);
+                            recorder->pointer_x - recorder->cursor_hot_x - recorder->area.x,
+                            recorder->pointer_y - recorder->cursor_hot_y - recorder->area.y);
   cairo_paint (cr);
 
   cairo_destroy (cr);
@@ -555,12 +557,13 @@ recorder_record_frame (ShellRecorder *recorder)
 
   recorder->last_frame_time = now;
 
-  size = recorder->stage_width * recorder->stage_height * 4;
+  size = recorder->area.width * recorder->area.height * 4;
 
-  data = g_malloc (recorder->stage_width * 4 * recorder->stage_height);
-  cogl_read_pixels (0, 0, /* x/y */
-                    recorder->stage_width,
-                    recorder->stage_height,
+  data = g_malloc (recorder->area.width * 4 * recorder->area.height);
+  cogl_read_pixels (recorder->area.x,
+                    recorder->area.y,
+                    recorder->area.width,
+                    recorder->area.height,
                     COGL_READ_PIXELS_COLOR_BUFFER,
                     CLUTTER_CAIRO_FORMAT_ARGB32,
                     data);
@@ -616,6 +619,14 @@ recorder_update_size (ShellRecorder *recorder)
   clutter_actor_get_allocation_box (CLUTTER_ACTOR (recorder->stage), &allocation);
   recorder->stage_width = (int)(0.5 + allocation.x2 - allocation.x1);
   recorder->stage_height = (int)(0.5 + allocation.y2 - allocation.y1);
+
+  if (!recorder->custom_area)
+    {
+      recorder->area.x = 0;
+      recorder->area.y = 0;
+      recorder->area.width = recorder->stage_width;
+      recorder->area.height = recorder->stage_height;
+    }
 }
 
 static void
@@ -1126,8 +1137,8 @@ recorder_pipeline_set_caps (RecorderPipeline *pipeline)
                               "bpp", G_TYPE_INT, 32,
                               "depth", G_TYPE_INT, 24,
                               "framerate", GST_TYPE_FRACTION, pipeline->recorder->framerate, 1,
-                              "width", G_TYPE_INT, pipeline->recorder->stage_width,
-                              "height", G_TYPE_INT, pipeline->recorder->stage_height,
+                              "width", G_TYPE_INT, pipeline->recorder->area.width,
+                              "height", G_TYPE_INT, pipeline->recorder->area.height,
                               NULL);
   g_object_set (pipeline->src, "caps", caps, NULL);
   gst_caps_unref (caps);
@@ -1703,6 +1714,31 @@ shell_recorder_set_pipeline (ShellRecorder *recorder,
   g_return_if_fail (SHELL_IS_RECORDER (recorder));
 
   recorder_set_pipeline (recorder, pipeline);
+}
+
+void
+shell_recorder_set_area (ShellRecorder *recorder,
+                         int            x,
+                         int            y,
+                         int            width,
+                         int            height)
+{
+  g_return_if_fail (SHELL_IS_RECORDER (recorder));
+
+  recorder->custom_area = TRUE;
+  recorder->area.x = CLAMP (x, 0, recorder->stage_width);
+  recorder->area.y = CLAMP (y, 0, recorder->stage_height);
+  recorder->area.width = CLAMP (width,
+                                0, recorder->stage_width - recorder->area.x);
+  recorder->area.height = CLAMP (height,
+                                 0, recorder->stage_height - recorder->area.y);
+
+  /* This breaks the recording but tweaking the GStreamer pipeline a bit
+   * might make it work, at least if the codec can handle a stream where
+   * the frame size changes in the middle.
+   */
+  if (recorder->current_pipeline)
+    recorder_pipeline_set_caps (recorder->current_pipeline);
 }
 
 /**
