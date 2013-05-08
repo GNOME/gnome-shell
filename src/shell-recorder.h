@@ -36,6 +36,8 @@ void               shell_recorder_set_file_template (ShellRecorder *recorder,
                                                      const char    *file_template);
 void               shell_recorder_set_pipeline (ShellRecorder *recorder,
 						const char    *pipeline);
+void               shell_recorder_set_draw_cursor (ShellRecorder *recorder,
+                                                   gboolean       draw_cursor);
 void               shell_recorder_set_area     (ShellRecorder *recorder,
                                                 int            x,
                                                 int            y,

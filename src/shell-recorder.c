@@ -68,6 +68,7 @@ struct _ShellRecorder {
 
   CoglHandle recording_icon; /* icon shown while playing */
 
+  gboolean draw_cursor;
   cairo_surface_t *cursor_image;
   int cursor_hot_x;
   int cursor_hot_y;
@@ -112,6 +113,8 @@ static void recorder_set_pipeline (ShellRecorder *recorder,
                                    const char    *pipeline);
 static void recorder_set_file_template (ShellRecorder *recorder,
                                         const char    *file_template);
+static void recorder_set_draw_cursor (ShellRecorder *recorder,
+                                      gboolean       draw_cursor);
 
 static void recorder_pipeline_set_caps (RecorderPipeline *pipeline);
 static void recorder_pipeline_closed   (RecorderPipeline *pipeline);
@@ -121,7 +124,8 @@ enum {
   PROP_STAGE,
   PROP_FRAMERATE,
   PROP_PIPELINE,
-  PROP_FILE_TEMPLATE
+  PROP_FILE_TEMPLATE,
+  PROP_DRAW_CURSOR
 };
 
 G_DEFINE_TYPE(ShellRecorder, shell_recorder, G_TYPE_OBJECT);
@@ -275,6 +279,7 @@ shell_recorder_init (ShellRecorder *recorder)
 
   recorder->state = RECORDER_STATE_CLOSED;
   recorder->framerate = DEFAULT_FRAMES_PER_SECOND;
+  recorder->draw_cursor = TRUE;
 }
 
 static void
@@ -575,7 +580,8 @@ recorder_record_frame (ShellRecorder *recorder)
 
   GST_BUFFER_PTS(buffer) = now - recorder->start_time;
 
-  recorder_draw_cursor (recorder, buffer);
+  if (recorder->draw_cursor)
+    recorder_draw_cursor (recorder, buffer);
 
   shell_recorder_src_add_buffer (SHELL_RECORDER_SRC (recorder->current_pipeline->src), buffer);
   gst_buffer_unref (buffer);
@@ -1018,6 +1024,18 @@ recorder_set_file_template (ShellRecorder *recorder,
 }
 
 static void
+recorder_set_draw_cursor (ShellRecorder *recorder,
+                          gboolean       draw_cursor)
+{
+  if (draw_cursor == recorder->draw_cursor)
+    return;
+
+  recorder->draw_cursor = draw_cursor;
+
+  g_object_notify (G_OBJECT (recorder), "draw-cursor");
+}
+
+static void
 shell_recorder_set_property (GObject      *object,
                              guint         prop_id,
                              const GValue *value,
@@ -1038,6 +1056,9 @@ shell_recorder_set_property (GObject      *object,
       break;
     case PROP_FILE_TEMPLATE:
       recorder_set_file_template (recorder, g_value_get_string (value));
+      break;
+    case PROP_DRAW_CURSOR:
+      recorder_set_draw_cursor (recorder, g_value_get_boolean (value));
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1066,6 +1087,9 @@ shell_recorder_get_property (GObject         *object,
       break;
     case PROP_FILE_TEMPLATE:
       g_value_set_string (value, recorder->file_template);
+      break;
+    case PROP_DRAW_CURSOR:
+      g_value_set_boolean (value, recorder->draw_cursor);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -1115,6 +1139,14 @@ shell_recorder_class_init (ShellRecorderClass *klass)
                                                         "The filename template to use for output files",
                                                         NULL,
                                                         G_PARAM_READWRITE));
+
+  g_object_class_install_property (gobject_class,
+                                   PROP_DRAW_CURSOR,
+                                   g_param_spec_boolean ("draw-cursor",
+                                                         "Draw Cursor",
+                                                         "Whether to record the cursor",
+                                                         TRUE,
+                                                         G_PARAM_READWRITE));
 }
 
 /* Sets the GstCaps (video format, in this case) on the stream
@@ -1687,6 +1719,15 @@ shell_recorder_set_file_template (ShellRecorder *recorder,
 
   recorder_set_file_template (recorder, file_template);
 
+}
+
+void
+shell_recorder_set_draw_cursor (ShellRecorder *recorder,
+                                gboolean       draw_cursor)
+{
+  g_return_if_fail (SHELL_IS_RECORDER (recorder));
+
+  recorder_set_draw_cursor (recorder, draw_cursor);
 }
 
 /**
