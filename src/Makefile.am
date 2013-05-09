@@ -136,6 +136,8 @@ shell_private_sources = 		\
 	gtkactionobservable.c		\
 	gtkactionobserver.h		\
 	gtkactionobserver.c		\
+	gtkmenutrackeritem.c		\
+	gtkmenutrackeritem.h		\
 	gtkmenutracker.c		\
 	gtkmenutracker.h		\
 	$(NULL)
@@ -304,6 +306,8 @@ ShellMenu_0_1_gir_FILES = \
 	gtkactionobservable.c		\
 	gtkactionobserver.h		\
 	gtkactionobserver.c		\
+	gtkmenutrackeritem.c		\
+	gtkmenutrackeritem.h		\
 	$(NULL)
 ShellMenu_0_1_gir_SCANNERFLAGS = --namespace=ShellMenu --identifier-prefix=Gtk
 INTROSPECTION_GIRS += ShellMenu-0.1.gir

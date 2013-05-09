@@ -25,6 +25,12 @@
 #include "shell-menu-tracker.h"
 #include "gtkmenutracker.h"
 
+/**
+ * SECTION:shell-menu-tracker
+ * @short_description: a simple wrapper around #GtkMenuTracker
+ *                     to make it bindable.
+ */
+
 struct _ShellMenuTracker
 {
   guint ref_count;
@@ -40,17 +46,12 @@ struct _ShellMenuTracker
 };
 
 static void
-shell_menu_tracker_insert_func (gint position,
-                                GMenuModel *model,
-                                gint item_index,
-                                const gchar *action_namespace,
-                                gboolean is_separator,
+shell_menu_tracker_insert_func (GtkMenuTrackerItem *item,
+                                gint position,
                                 gpointer user_data)
 {
   ShellMenuTracker *tracker = (ShellMenuTracker *) user_data;
-  tracker->insert_func (position, model, item_index,
-                        action_namespace, is_separator,
-                        tracker->insert_user_data);
+  tracker->insert_func (item, position, tracker->insert_user_data);
 }
 
 static void
@@ -63,6 +64,7 @@ shell_menu_tracker_remove_func (gint position,
 
 /**
  * shell_menu_tracker_new:
+ * @observable:
  * @model:
  * @action_namespace: (allow-none):
  * @insert_func:
@@ -73,7 +75,8 @@ shell_menu_tracker_remove_func (gint position,
  * @remove_notify:
  */
 ShellMenuTracker *
-shell_menu_tracker_new (GMenuModel                 *model,
+shell_menu_tracker_new (GtkActionObservable        *observable,
+                        GMenuModel                 *model,
                         const gchar                *action_namespace,
                         ShellMenuTrackerInsertFunc  insert_func,
                         gpointer                    insert_user_data,
@@ -92,7 +95,8 @@ shell_menu_tracker_new (GMenuModel                 *model,
   tracker->remove_user_data = remove_user_data;
   tracker->remove_notify = remove_notify;
 
-  tracker->tracker = gtk_menu_tracker_new (model,
+  tracker->tracker = gtk_menu_tracker_new (observable,
+                                           model,
                                            TRUE, /* with separators */
                                            action_namespace,
                                            shell_menu_tracker_insert_func,

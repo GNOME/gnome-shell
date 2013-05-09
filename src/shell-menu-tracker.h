@@ -25,21 +25,21 @@
 
 #include <gio/gio.h>
 
+#include "gtkmenutrackeritem.h"
+
 typedef struct _ShellMenuTracker ShellMenuTracker;
 
 GType shell_menu_tracker_get_type (void) G_GNUC_CONST;
 
-typedef void         (* ShellMenuTrackerInsertFunc)       (gint                      position,
-                                                           GMenuModel               *model,
-                                                           gint                      item_index,
-                                                           const gchar              *action_namespace,
-                                                           gboolean                  is_separator,
+typedef void         (* ShellMenuTrackerInsertFunc)       (GtkMenuTrackerItem       *item,
+                                                           gint                      position,
                                                            gpointer                  user_data);
 
 typedef void         (* ShellMenuTrackerRemoveFunc)       (gint                      position,
                                                            gpointer                  user_data);
 
-ShellMenuTracker * shell_menu_tracker_new (GMenuModel                 *model,
+ShellMenuTracker * shell_menu_tracker_new (GtkActionObservable        *observable,
+                                           GMenuModel                 *model,
                                            const gchar                *action_namespace,
                                            ShellMenuTrackerInsertFunc  insert_func,
                                            gpointer                    insert_user_data,
