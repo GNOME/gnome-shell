@@ -22,6 +22,10 @@ const Tweener = imports.ui.tweener;
 const OPEN_AND_CLOSE_TIME = 0.1;
 const FADE_OUT_DIALOG_TIME = 1.0;
 
+const WORK_SPINNER_ICON_SIZE = 24;
+const WORK_SPINNER_ANIMATION_DELAY = 1.0;
+const WORK_SPINNER_ANIMATION_TIME = 0.3;
+
 const State = {
     OPENED: 0,
     CLOSED: 1,
@@ -107,6 +111,8 @@ const ModalDialog = new Lang.Class({
         this._initialKeyFocus = this.dialogLayout;
         this._initialKeyFocusDestroyId = 0;
         this._savedKeyFocus = null;
+
+        this._workSpinner = null;
     },
 
     destroy: function() {
@@ -178,6 +184,44 @@ const ModalDialog = new Lang.Class({
         this.buttonLayout.add(button, layoutInfo);
 
         return button;
+    },
+
+    placeSpinner: function(layoutInfo) {
+        /* This is here because of recursive imports */
+        const Panel = imports.ui.panel;
+        let spinnerIcon = global.datadir + '/theme/process-working.svg';
+        this._workSpinner = new Panel.AnimatedIcon(spinnerIcon, WORK_SPINNER_ICON_SIZE);
+        this._workSpinner.actor.opacity = 0;
+        this._workSpinner.actor.show();
+
+        this.buttonLayout.add(this._workSpinner.actor, layoutInfo);
+    },
+
+    setWorking: function(working) {
+        if (!this._workSpinner)
+            return;
+
+        Tweener.removeTweens(this._workSpinner.actor);
+        if (working) {
+            this._workSpinner.play();
+            Tweener.addTween(this._workSpinner.actor,
+                             { opacity: 255,
+                               delay: WORK_SPINNER_ANIMATION_DELAY,
+                               time: WORK_SPINNER_ANIMATION_TIME,
+                               transition: 'linear'
+                             });
+        } else {
+            Tweener.addTween(this._workSpinner.actor,
+                             { opacity: 0,
+                               time: WORK_SPINNER_ANIMATION_TIME,
+                               transition: 'linear',
+                               onCompleteScope: this,
+                               onComplete: function() {
+                                   if (this._workSpinner)
+                                       this._workSpinner.stop();
+                               }
+                             });
+        }
     },
 
     _onKeyPressEvent: function(object, event) {

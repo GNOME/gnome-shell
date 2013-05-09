@@ -40,7 +40,6 @@ const GdmUtil = imports.gdm.util;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
-const Panel = imports.ui.panel;
 const PanelMenu = imports.ui.panelMenu;
 const Tweener = imports.ui.tweener;
 const UserMenu = imports.ui.userMenu;
@@ -50,10 +49,6 @@ const _FADE_ANIMATION_TIME = 0.25;
 const _SCROLL_ANIMATION_TIME = 0.5;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _LOGO_ICON_HEIGHT = 48;
-
-const WORK_SPINNER_ICON_SIZE = 24;
-const WORK_SPINNER_ANIMATION_DELAY = 1.0;
-const WORK_SPINNER_ANIMATION_TIME = 0.3;
 
 let _loginDialog = null;
 
@@ -586,7 +581,6 @@ const LoginDialog = new Lang.Class({
         this._promptBox.add(this._promptLoginHint);
 
         this._signInButton = null;
-        this._workSpinner = null;
 
         this._sessionList = new SessionList();
         this._sessionList.connect('session-activated',
@@ -708,7 +702,7 @@ const LoginDialog = new Lang.Class({
         this._promptEntry.text = '';
 
         this._updateSensitivity(true);
-        this._setWorking(false);
+        this.setWorking(false);
     },
 
     _onDefaultSessionChanged: function(client, sessionId) {
@@ -774,11 +768,6 @@ const LoginDialog = new Lang.Class({
     },
 
     _prepareDialog: function(forSecret, hold) {
-        let spinnerIcon = global.datadir + '/theme/process-working.svg';
-        this._workSpinner = new Panel.AnimatedIcon(spinnerIcon, WORK_SPINNER_ICON_SIZE);
-        this._workSpinner.actor.opacity = 0;
-        this._workSpinner.actor.show();
-
         this.buttonLayout.visible = true;
         this.clearButtons();
 
@@ -791,12 +780,11 @@ const LoginDialog = new Lang.Class({
                              y_fill: false,
                              x_align: St.Align.START,
                              y_align: St.Align.MIDDLE });
-        this.buttonLayout.add(this._workSpinner.actor,
-                              { expand: false,
-                                x_fill: false,
-                                y_fill: false,
-                                x_align: St.Align.END,
-                                y_align: St.Align.MIDDLE });
+        this.placeSpinner({ expand: false,
+                            x_fill: false,
+                            y_fill: false,
+                            x_align: St.Align.END,
+                            y_align: St.Align.MIDDLE });
         this._signInButton = this.addButton({ action: Lang.bind(this, function() {
                                                           hold.release();
                                                       }),
@@ -849,7 +837,7 @@ const LoginDialog = new Lang.Class({
             this._promptEntryActivateId = 0;
         }
 
-        this._setWorking(false);
+        this.setWorking(false);
         this._promptBox.hide();
         this._promptLoginHint.hide();
 
@@ -862,34 +850,7 @@ const LoginDialog = new Lang.Class({
         this._promptLoginHint.hide();
 
         this.clearButtons();
-        this._workSpinner = null;
         this._signInButton = null;
-    },
-
-    _setWorking: function(working) {
-        if (!this._workSpinner)
-            return;
-
-        if (working) {
-            this._workSpinner.play();
-            Tweener.addTween(this._workSpinner.actor,
-                             { opacity: 255,
-                               delay: WORK_SPINNER_ANIMATION_DELAY,
-                               time: WORK_SPINNER_ANIMATION_TIME,
-                               transition: 'linear'
-                             });
-        } else {
-            Tweener.addTween(this._workSpinner.actor,
-                             { opacity: 0,
-                               time: WORK_SPINNER_ANIMATION_TIME,
-                               transition: 'linear',
-                               onCompleteScope: this,
-                               onComplete: function() {
-                                   if (this._workSpinner)
-                                       this._workSpinner.stop();
-                               }
-                             });
-        }
     },
 
     _askQuestion: function(verifier, serviceName, question, passwordChar) {
@@ -906,7 +867,7 @@ const LoginDialog = new Lang.Class({
                      function() {
                          let text = this._promptEntry.get_text();
                          this._updateSensitivity(false);
-                         this._setWorking(true);
+                         this.setWorking(true);
                          this._userVerifier.answerQuery(serviceName, text);
                      }];
 
