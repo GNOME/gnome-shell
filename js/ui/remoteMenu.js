@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const Atk = imports.gi.Atk;
 const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gio = imports.gi.Gio;
@@ -29,12 +30,12 @@ const RemoteMenuItemMapper = new Lang.Class({
 
         this._trackerItem.connect('notify::label', Lang.bind(this, this._updateLabel));
         this._trackerItem.connect('notify::sensitive', Lang.bind(this, this._updateSensitivity));
-        this._trackerItem.connect('notify::role', Lang.bind(this, this._updateDecoration));
+        this._trackerItem.connect('notify::role', Lang.bind(this, this._updateRole));
         this._trackerItem.connect('notify::toggled', Lang.bind(this, this._updateDecoration));
 
         this._updateLabel();
         this._updateSensitivity();
-        this._updateDecoration();
+        this._updateRole();
 
         this.menuItem.connect('destroy', function() {
             trackerItem.run_dispose();
@@ -62,6 +63,18 @@ const RemoteMenuItemMapper = new Lang.Class({
             ornament = ornamentForRole[this._trackerItem.role];
 
         this.menuItem.setOrnament(ornament);
+    },
+
+    _updateRole: function() {
+        let a11yRoles = {};
+        a11yRoles[ShellMenu.MenuTrackerItemRole.NORMAL] = Atk.Role.MENU_ITEM;
+        a11yRoles[ShellMenu.MenuTrackerItemRole.RADIO] = Atk.Role.RADIO_MENU_ITEM;
+        a11yRoles[ShellMenu.MenuTrackerItemRole.CHECK] = Atk.Role.CHECK_MENU_ITEM;
+
+        let a11yRole = a11yRoles[this._trackerItem.role];
+        this.menuItem.actor.accessible_role = a11yRole;
+
+        this._updateDecoration();
     },
 });
 
