@@ -77,6 +77,7 @@ nobase_dist_js_DATA = 	\
 	ui/pointerWatcher.js    \
 	ui/popupMenu.js		\
 	ui/remoteSearch.js	\
+	ui/remoteMenu.js	\
 	ui/runDialog.js		\
 	ui/screencast.js	\
 	ui/screenshot.js	\

@@ -21,6 +21,7 @@ const DND = imports.ui.dnd;
 const Overview = imports.ui.overview;
 const PopupMenu = imports.ui.popupMenu;
 const PanelMenu = imports.ui.panelMenu;
+const RemoteMenu = imports.ui.remoteMenu;
 const Main = imports.ui.main;
 const Tweener = imports.ui.tweener;
 
@@ -621,11 +622,11 @@ const AppMenuButton = new Lang.Class({
         let menu;
 
         if (this._targetApp.action_group && this._targetApp.menu) {
-            if (this.menu instanceof PopupMenu.RemoteMenu &&
+            if (this.menu instanceof RemoteMenu.RemoteMenu &&
                 this.menu.actionGroup == this._targetApp.action_group)
                 return;
 
-            menu = new PopupMenu.RemoteMenu(this.actor, this._targetApp.menu, this._targetApp.action_group);
+            menu = new RemoteMenu.RemoteMenu(this.actor, this._targetApp.menu, this._targetApp.action_group);
             menu.connect('activate', Lang.bind(this, function() {
                 let win = this._targetApp.get_windows()[0];
                 win.check_alive(global.get_current_time());
