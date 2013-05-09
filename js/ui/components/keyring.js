@@ -63,11 +63,17 @@ const KeyringDialog = new Lang.Class({
 
         this._cancelButton = this.addButton({ label: '',
                                               action: Lang.bind(this, this._onCancelButton),
-                                              key: Clutter.Escape });
+                                              key: Clutter.Escape },
+                                            { expand: true, x_fill: false, x_align: St.Align.START });
+        this.placeSpinner({ expand: false,
+                            x_fill: false,
+                            y_fill: false,
+                            x_align: St.Align.END,
+                            y_align: St.Align.MIDDLE });
         this._continueButton = this.addButton({ label: '',
                                                 action: Lang.bind(this, this._onContinueButton),
                                                 default: true },
-                                              { expand: true, x_fill: false, x_align: St.Align.END });
+                                              { expand: false, x_fill: false, x_align: St.Align.END });
 
         this.prompt.bind_property('cancel-label', this._cancelButton, 'label', GObject.BindingFlags.SYNC_CREATE);
         this.prompt.bind_property('continue-label', this._continueButton, 'label', GObject.BindingFlags.SYNC_CREATE);
@@ -155,6 +161,7 @@ const KeyringDialog = new Lang.Class({
 
         this._continueButton.can_focus = sensitive;
         this._continueButton.reactive = sensitive;
+        this.setWorking(!sensitive);
     },
 
     _ensureOpen: function() {

@@ -161,11 +161,17 @@ const AuthenticationDialog = new Lang.Class({
 
         this._cancelButton = this.addButton({ label: _("Cancel"),
                                               action: Lang.bind(this, this.cancel),
-                                              key: Clutter.Escape });
+                                              key: Clutter.Escape },
+                                            { expand: true, x_fill: false, x_align: St.Align.START });
+        this.placeSpinner({ expand: false,
+                            x_fill: false,
+                            y_fill: false,
+                            x_align: St.Align.END,
+                            y_align: St.Align.MIDDLE });
         this._okButton = this.addButton({ label:  _("Authenticate"),
                                           action: Lang.bind(this, this._onAuthenticateButtonPressed),
                                           default: true },
-                                        { expand: true, x_fill: false, x_align: St.Align.END });
+                                        { expand: false, x_fill: false, x_align: St.Align.END });
 
         this._doneEmitted = false;
 
@@ -219,6 +225,7 @@ const AuthenticationDialog = new Lang.Class({
 
         this._okButton.can_focus = sensitive;
         this._okButton.reactive = sensitive;
+        this.setWorking(!sensitive);
     },
 
     _onEntryActivate: function() {

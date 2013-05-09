@@ -91,10 +91,6 @@ const UnlockDialog = new Lang.Class({
         this._promptLoginHint.hide();
         this.contentLayout.add_actor(this._promptLoginHint);
 
-        let spinnerIcon = global.datadir + '/theme/process-working.svg';
-        this._workSpinner = new Panel.AnimatedIcon(spinnerIcon, LoginDialog.WORK_SPINNER_ICON_SIZE);
-        this._workSpinner.actor.opacity = 0;
-
         this.allowCancel = false;
         this.buttonLayout.visible = true;
         this.addButton({ label: _("Cancel"),
@@ -105,12 +101,11 @@ const UnlockDialog = new Lang.Class({
                          y_fill: false,
                          x_align: St.Align.START,
                          y_align: St.Align.MIDDLE });
-        this.buttonLayout.add(this._workSpinner.actor,
-                              { expand: false,
-                                x_fill: false,
-                                y_fill: false,
-                                x_align: St.Align.END,
-                                y_align: St.Align.MIDDLE });
+        this.placeSpinner({ expand: false,
+                            x_fill: false,
+                            y_fill: false,
+                            x_align: St.Align.END,
+                            y_align: St.Align.MIDDLE });
         this._okButton = this.addButton({ label: _("Unlock"),
                                           action: Lang.bind(this, this._doUnlock),
                                           default: true },
@@ -164,28 +159,6 @@ const UnlockDialog = new Lang.Class({
         this._okButton.can_focus = sensitive;
     },
 
-    _setWorking: function(working) {
-        if (working) {
-            this._workSpinner.play();
-            Tweener.addTween(this._workSpinner.actor,
-                             { opacity: 255,
-                               delay: LoginDialog.WORK_SPINNER_ANIMATION_DELAY,
-                               time: LoginDialog.WORK_SPINNER_ANIMATION_TIME,
-                               transition: 'linear'
-                             });
-        } else {
-            Tweener.addTween(this._workSpinner.actor,
-                             { opacity: 0,
-                               time: LoginDialog.WORK_SPINNER_ANIMATION_TIME,
-                               transition: 'linear',
-                               onCompleteScope: this,
-                               onComplete: function() {
-                                   this._workSpinner.stop();
-                               }
-                             });
-        }
-    },
-
     _showMessage: function(userVerifier, message, styleClass) {
         if (message) {
             this._promptMessage.text = message;
@@ -216,7 +189,7 @@ const UnlockDialog = new Lang.Class({
 
         this._currentQuery = serviceName;
         this._updateSensitivity(true);
-        this._setWorking(false);
+        this.setWorking(false);
     },
 
     _showLoginHint: function(verifier, message) {
@@ -235,7 +208,7 @@ const UnlockDialog = new Lang.Class({
             // the actual reply to GDM will be sent as soon as asked
             this._firstQuestionAnswer = this._promptEntry.text;
             this._updateSensitivity(false);
-            this._setWorking(true);
+            this.setWorking(true);
             return;
         }
 
@@ -246,7 +219,7 @@ const UnlockDialog = new Lang.Class({
         this._currentQuery = null;
 
         this._updateSensitivity(false);
-        this._setWorking(true);
+        this.setWorking(true);
 
         this._userVerifier.answerQuery(query, this._promptEntry.text);
     },
@@ -286,7 +259,7 @@ const UnlockDialog = new Lang.Class({
         this._promptEntry.menu.isPassword = true;
 
         this._updateSensitivity(false);
-        this._setWorking(false);
+        this.setWorking(false);
     },
 
     _escape: function() {
