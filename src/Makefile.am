@@ -291,12 +291,32 @@ libgnome_shell_la_LIBADD =		\
 
 libgnome_shell_la_CPPFLAGS = $(gnome_shell_cflags)
 
-Shell-0.1.gir: libgnome-shell.la St-1.0.gir
+ShellMenu-0.1.gir: libgnome-shell.la
+ShellMenu_0_1_gir_INCLUDES = Gio-2.0
+ShellMenu_0_1_gir_CFLAGS = $(libgnome_shell_la_CPPFLAGS) -I $(srcdir)
+ShellMenu_0_1_gir_LIBS = libgnome-shell.la
+Shell_0_1_gir_SCANNERFLAGS =	\
+	$(if $(BLUETOOTH_DIR),-L $(BLUETOOTH_DIR),)
+ShellMenu_0_1_gir_FILES = \
+	gtkactionmuxer.h		\
+	gtkactionmuxer.c		\
+	gtkactionobservable.h		\
+	gtkactionobservable.c		\
+	gtkactionobserver.h		\
+	gtkactionobserver.c		\
+	$(NULL)
+ShellMenu_0_1_gir_SCANNERFLAGS = --namespace=ShellMenu --identifier-prefix=Gtk
+INTROSPECTION_GIRS += ShellMenu-0.1.gir
+CLEANFILES += ShellMenu-0.1.gir
+
+Shell-0.1.gir: libgnome-shell.la St-1.0.gir ShellMenu-0.1.gir
 Shell_0_1_gir_INCLUDES = Clutter-1.0 ClutterX11-1.0 Meta-3.0 TelepathyGLib-0.12 Soup-2.4 GMenu-3.0 NetworkManager-1.0 NMClient-1.0
 Shell_0_1_gir_CFLAGS = $(libgnome_shell_la_CPPFLAGS) -I $(srcdir)
 Shell_0_1_gir_LIBS = libgnome-shell.la
 Shell_0_1_gir_FILES = $(libgnome_shell_la_gir_sources)
-Shell_0_1_gir_SCANNERFLAGS = --include-uninstalled=$(builddir)/St-1.0.gir \
+Shell_0_1_gir_SCANNERFLAGS =	\
+	--include-uninstalled=$(builddir)/St-1.0.gir \
+	--include-uninstalled=$(builddir)/ShellMenu-0.1.gir \
 	--add-include-path=$(MUTTER_GIR_DIR) $(if $(BLUETOOTH_DIR),-L $(BLUETOOTH_DIR),)
 INTROSPECTION_GIRS += Shell-0.1.gir
 CLEANFILES += Shell-0.1.gir
