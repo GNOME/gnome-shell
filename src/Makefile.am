@@ -129,13 +129,13 @@ shell_public_headers_h =		\
 	shell-wm.h			\
 	shell-xfixes-cursor.h
 
-shell_private_sources = \
-	gactionmuxer.h			\
-	gactionmuxer.c			\
-	gactionobservable.h		\
-	gactionobservable.c		\
-	gactionobserver.h		\
-	gactionobserver.c		\
+shell_private_sources = 		\
+	gtkactionmuxer.h		\
+	gtkactionmuxer.c		\
+	gtkactionobservable.h		\
+	gtkactionobservable.c		\
+	gtkactionobserver.h		\
+	gtkactionobserver.c		\
 	gtkmenutracker.c		\
 	gtkmenutracker.h		\
 	$(NULL)
