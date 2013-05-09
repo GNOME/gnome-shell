@@ -19,6 +19,25 @@ function stripMnemonics(label) {
     return label.replace(/_([^_])/, '$1');
 }
 
+function _insertItem(menu, trackerItem, position) {
+    let item;
+
+    if (trackerItem.get_is_separator()) {
+        let mapper = new RemoteMenuSeparatorItemMapper(trackerItem);
+        item = mapper.menuItem;
+    } else {
+        let mapper = new RemoteMenuItemMapper(trackerItem);
+        item = mapper.menuItem;
+    }
+
+    menu.addMenuItem(item, position);
+}
+
+function _removeItem(menu, position) {
+    let items = menu._getMenuItems();
+    items[position].destroy();
+}
+
 const RemoteMenuSeparatorItemMapper = new Lang.Class({
     Name: 'RemoteMenuSeparatorItemMapper',
 
@@ -114,31 +133,12 @@ const RemoteMenu = new Lang.Class({
         this._tracker = Shell.MenuTracker.new(this._actionGroup,
                                               this._model,
                                               null, /* action namespace */
-                                              Lang.bind(this, this._insertItem),
-                                              Lang.bind(this, this._removeItem));
+                                              _insertItem.bind(null, this),
+                                              _removeItem.bind(null, this));
     },
 
     destroy: function() {
         this._tracker.destroy();
         this.parent();
-    },
-
-    _insertItem: function(trackerItem, position) {
-        let item;
-
-        if (trackerItem.get_is_separator()) {
-            let mapper = new RemoteMenuSeparatorItemMapper(trackerItem);
-            item = mapper.menuItem;
-        } else {
-            let mapper = new RemoteMenuItemMapper(trackerItem);
-            item = mapper.menuItem;
-        }
-
-        this.addMenuItem(item, position);
-    },
-
-    _removeItem: function(position) {
-        let items = this._getMenuItems();
-        items[position].destroy();
     },
 });
