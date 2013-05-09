@@ -1136,11 +1136,11 @@ const HotCorner = new Lang.Class({
                                              height: 3,
                                              reactive: true });
 
-            this._corner = new Clutter.Rectangle({ name: 'hot-corner',
-                                                   width: 1,
-                                                   height: 1,
-                                                   opacity: 0,
-                                                   reactive: true });
+            this._corner = new Clutter.Actor({ name: 'hot-corner',
+                                               width: 1,
+                                               height: 1,
+                                               opacity: 0,
+                                               reactive: true });
             this._corner._delegate = this;
 
             this.actor.add_child(this._corner);

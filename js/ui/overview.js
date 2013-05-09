@@ -147,8 +147,8 @@ const Overview = new Lang.Class({
         // During transitions, we raise this to the top to avoid having the overview
         // area be reactive; it causes too many issues such as double clicks on
         // Dash elements, or mouseover handlers in the workspaces.
-        this._coverPane = new Clutter.Rectangle({ opacity: 0,
-                                                  reactive: true });
+        this._coverPane = new Clutter.Actor({ opacity: 0,
+                                              reactive: true });
         this._overview.add_actor(this._coverPane);
         this._coverPane.connect('event', Lang.bind(this, function (actor, event) { return true; }));
 

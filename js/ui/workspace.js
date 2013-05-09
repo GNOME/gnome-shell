@@ -936,7 +936,7 @@ const Workspace = new Lang.Class({
             this.actor.add_style_class_name('external-monitor');
         this.actor.set_size(0, 0);
 
-        this._dropRect = new Clutter.Rectangle({ opacity: 0 });
+        this._dropRect = new Clutter.Actor({ opacity: 0 });
         this._dropRect._delegate = this;
 
         this.actor.add_actor(this._dropRect);
