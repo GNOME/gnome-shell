@@ -20,19 +20,16 @@ function stripMnemonics(label) {
 }
 
 function _insertItem(menu, trackerItem, position) {
-    let item;
+    let mapper;
 
-    if (trackerItem.get_is_separator()) {
-        let mapper = new RemoteMenuSeparatorItemMapper(trackerItem);
-        item = mapper.menuItem;
-    } else if (trackerItem.get_has_submenu()) {
-        let mapper = new RemoteMenuSubmenuItemMapper(trackerItem);
-        item = mapper.menuItem;
-    } else {
-        let mapper = new RemoteMenuItemMapper(trackerItem);
-        item = mapper.menuItem;
-    }
+    if (trackerItem.get_is_separator())
+        mapper = new RemoteMenuSeparatorItemMapper(trackerItem);
+    else if (trackerItem.get_has_submenu())
+        mapper = new RemoteMenuSubmenuItemMapper(trackerItem);
+    else
+        mapper = new RemoteMenuItemMapper(trackerItem);
 
+    let item = mapper.menuItem;
     menu.addMenuItem(item, position);
 }
 
