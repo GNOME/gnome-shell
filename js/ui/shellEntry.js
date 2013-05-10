@@ -14,9 +14,7 @@ const EntryMenu = new Lang.Class({
     Name: 'ShellEntryMenu',
     Extends: PopupMenu.PopupMenu,
 
-    _init: function(entry, params) {
-        params = Params.parse (params, { isPassword: false });
-
+    _init: function(entry) {
         this.parent(entry, 0, St.Side.TOP);
 
         this.actor.add_style_class_name('entry-context-menu');
@@ -37,8 +35,6 @@ const EntryMenu = new Lang.Class({
         this._pasteItem = item;
 
         this._passwordItem = null;
-        if (params.isPassword)
-	    this._makePasswordItem();
 
         Main.uiGroup.add_actor(this.actor);
         this.actor.hide();
@@ -53,19 +49,21 @@ const EntryMenu = new Lang.Class({
     },
 
     get isPassword() {
-	return this._passwordItem != null;
+        return this._passwordItem != null;
     },
 
     set isPassword(v) {
-	if (v == this.isPassword)
-	    return;
+        if (v == this.isPassword)
+            return;
 
-	if (v)
-	    this._makePasswordItem();
-	else {
-	    this._passwordItem.destroy();
-	    this._passwordItem = null;
-	}
+        if (v) {
+            this._makePasswordItem();
+            this._entry.input_purpose = Gtk.InputPurpose.PASSWORD;
+        } else {
+            this._passwordItem.destroy();
+            this._passwordItem = null;
+            this._entry.input_purpose = Gtk.InputPurpose.FREE_FORM;
+        }
     },
 
     open: function(animate) {
@@ -155,7 +153,10 @@ function addContextMenu(entry, params) {
     if (entry.menu)
         return;
 
-    entry.menu = new EntryMenu(entry, params);
+    params = Params.parse (params, { isPassword: false });
+
+    entry.menu = new EntryMenu(entry);
+    entry.menu.isPassword = params.isPassword;
     entry._menuManager = new PopupMenu.PopupMenuManager({ actor: entry });
     entry._menuManager.addMenu(entry.menu);
 
