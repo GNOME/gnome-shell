@@ -25,6 +25,9 @@ function _insertItem(menu, trackerItem, position) {
     if (trackerItem.get_is_separator()) {
         let mapper = new RemoteMenuSeparatorItemMapper(trackerItem);
         item = mapper.menuItem;
+    } else if (trackerItem.get_has_submenu()) {
+        let mapper = new RemoteMenuSubmenuItemMapper(trackerItem);
+        item = mapper.menuItem;
     } else {
         let mapper = new RemoteMenuItemMapper(trackerItem);
         item = mapper.menuItem;
@@ -50,6 +53,34 @@ const RemoteMenuSeparatorItemMapper = new Lang.Class({
         this.menuItem.connect('destroy', function() {
             trackerItem.run_dispose();
         });
+    },
+
+    _updateLabel: function() {
+        this.menuItem.label.text = stripMnemonics(this._trackerItem.label);
+    },
+});
+
+const RemoteMenuSubmenuItemMapper = new Lang.Class({
+    Name: 'RemoteMenuSubmenuItemMapper',
+
+    _init: function(trackerItem) {
+        this._trackerItem = trackerItem;
+        this.menuItem = new PopupMenu.PopupSubMenuMenuItem('');
+        this._trackerItem.connect('notify::label', Lang.bind(this, this._updateLabel));
+        this._updateLabel();
+
+        this._tracker = Shell.MenuTracker.new_for_item_submenu(this._trackerItem,
+                                                               _insertItem.bind(null, this.menuItem.menu),
+                                                               _removeItem.bind(null, this.menuItem.menu));
+
+        this.menuItem.connect('destroy', function() {
+            trackerItem.run_dispose();
+        });
+    },
+
+    destroy: function() {
+        this._tracker.destroy();
+        this.parent();
     },
 
     _updateLabel: function() {

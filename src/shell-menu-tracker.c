@@ -107,6 +107,33 @@ shell_menu_tracker_new (GtkActionObservable        *observable,
 }
 
 ShellMenuTracker *
+shell_menu_tracker_new_for_item_submenu (GtkMenuTrackerItem         *item,
+                                         ShellMenuTrackerInsertFunc  insert_func,
+                                         gpointer                    insert_user_data,
+                                         GDestroyNotify              insert_notify,
+                                         ShellMenuTrackerRemoveFunc  remove_func,
+                                         gpointer                    remove_user_data,
+                                         GDestroyNotify              remove_notify)
+{
+  ShellMenuTracker *tracker = g_slice_new0 (ShellMenuTracker);
+
+  tracker->ref_count = 1;
+  tracker->insert_func = insert_func;
+  tracker->insert_user_data = insert_user_data;
+  tracker->insert_notify = insert_notify;
+  tracker->remove_func = remove_func;
+  tracker->remove_user_data = remove_user_data;
+  tracker->remove_notify = remove_notify;
+
+  tracker->tracker = gtk_menu_tracker_new_for_item_submenu (item,
+                                                            shell_menu_tracker_insert_func,
+                                                            shell_menu_tracker_remove_func,
+                                                            tracker);
+
+  return tracker;
+}
+
+ShellMenuTracker *
 shell_menu_tracker_ref (ShellMenuTracker *tracker)
 {
   tracker->ref_count++;
