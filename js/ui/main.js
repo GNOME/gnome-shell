@@ -446,7 +446,8 @@ function loadTheme() {
     if (_cssStylesheet != null)
         cssStylesheet = _cssStylesheet;
 
-    let theme = new St.Theme ({ application_stylesheet: cssStylesheet });
+    let theme = new St.Theme ({ application_stylesheet: cssStylesheet,
+                                default_stylesheet: _defaultCssStylesheet });
 
     if (previousTheme) {
         let customStylesheets = previousTheme.get_custom_stylesheets();
