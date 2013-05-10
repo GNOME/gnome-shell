@@ -88,7 +88,7 @@
 
         Stop the recording started by either Screencast or ScreencastArea.
     -->
-    <method name="StopScreencasta">
+    <method name="StopScreencast">
       <arg type="b" direction="out" name="success"/>
     </method>
 
