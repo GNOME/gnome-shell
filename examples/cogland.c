@@ -25,7 +25,7 @@ typedef struct
 {
   CoglandCompositor *compositor;
 
-  struct wl_surface wayland_surface;
+  struct wl_resource resource;
   int x;
   int y;
   struct wl_buffer *buffer;
@@ -656,13 +656,13 @@ cogland_compositor_create_surface (struct wl_client *wayland_client,
 
   surface->compositor = compositor;
 
-  surface->wayland_surface.resource.destroy =
+  surface->resource.destroy =
     cogland_surface_resource_destroy_cb;
-  surface->wayland_surface.resource.object.id = id;
-  surface->wayland_surface.resource.object.interface = &wl_surface_interface;
-  surface->wayland_surface.resource.object.implementation =
+  surface->resource.object.id = id;
+  surface->resource.object.interface = &wl_surface_interface;
+  surface->resource.object.implementation =
           (void (**)(void)) &cogland_surface_interface;
-  surface->wayland_surface.resource.data = surface;
+  surface->resource.data = surface;
 
   surface->buffer_destroy_listener.notify =
     surface_handle_buffer_destroy;
@@ -672,7 +672,7 @@ cogland_compositor_create_surface (struct wl_client *wayland_client,
   wl_list_init (&surface->pending.frame_callback_list);
   region_init (&surface->pending.damage);
 
-  wl_client_add_resource (wayland_client, &surface->wayland_surface.resource);
+  wl_client_add_resource (wayland_client, &surface->resource);
 
   compositor->surfaces = g_list_prepend (compositor->surfaces,
                                          surface);
@@ -993,7 +993,7 @@ get_shell_surface (struct wl_client *client,
 
   shell_surface->surface = surface;
   shell_surface->surface_destroy_listener.notify = shell_handle_surface_destroy;
-  wl_signal_add (&surface->wayland_surface.resource.destroy_signal,
+  wl_signal_add (&surface->resource.destroy_signal,
                  &shell_surface->surface_destroy_listener);
 
   surface->has_shell_surface = TRUE;
