@@ -60,18 +60,45 @@ const RemoteMenuSeparatorItemMapper = new Lang.Class({
     },
 });
 
+const RequestSubMenu = new Lang.Class({
+    Name: 'RequestSubMenu',
+    Extends: PopupMenu.PopupSubMenuMenuItem,
+
+    _init: function() {
+        this.parent('');
+        this._requestOpen = false;
+    },
+
+    _setOpenState: function(open) {
+        this.emit('request-open', open);
+        this._requestOpen = open;
+    },
+
+    _getOpenState: function() {
+        return this._requestOpen;
+    },
+});
+
 const RemoteMenuSubmenuItemMapper = new Lang.Class({
     Name: 'RemoteMenuSubmenuItemMapper',
 
     _init: function(trackerItem) {
         this._trackerItem = trackerItem;
-        this.menuItem = new PopupMenu.PopupSubMenuMenuItem('');
+        this.menuItem = new RequestSubMenu();
         this._trackerItem.connect('notify::label', Lang.bind(this, this._updateLabel));
         this._updateLabel();
 
         this._tracker = Shell.MenuTracker.new_for_item_submenu(this._trackerItem,
                                                                _insertItem.bind(null, this.menuItem.menu),
                                                                _removeItem.bind(null, this.menuItem.menu));
+
+        this.menuItem.connect('request-open', Lang.bind(this, function(menu, open) {
+            this._trackerItem.request_submenu_shown(open);
+        }));
+
+        this._trackerItem.connect('notify::submenu-shown', Lang.bind(this, function() {
+            this.menuItem.setSubmenuShown(this._trackerItem.get_submenu_shown());
+        }));
 
         this.menuItem.connect('destroy', function() {
             trackerItem.run_dispose();

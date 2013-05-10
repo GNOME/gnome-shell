@@ -1516,15 +1516,30 @@ const PopupSubMenuMenuItem = new Lang.Class({
         this.parent();
     },
 
+    setSubmenuShown: function(open) {
+        if (open)
+            this.menu.open(BoxPointer.PopupAnimation.FULL);
+        else
+            this.menu.close(BoxPointer.PopupAnimation.FULL);
+    },
+
+    _setOpenState: function(open) {
+        this._setSubmenuShown(open);
+    },
+
+    _getOpenState: function() {
+        return this.menu.isOpen;
+    },
+
     _onKeyPressEvent: function(actor, event) {
         let symbol = event.get_key_symbol();
 
         if (symbol == Clutter.KEY_Right) {
-            this.menu.open(BoxPointer.PopupAnimation.FULL);
+            this._setOpenState(true);
             this.menu.actor.navigate_focus(null, Gtk.DirectionType.DOWN, false);
             return true;
-        } else if (symbol == Clutter.KEY_Left && this.menu.isOpen) {
-            this.menu.close();
+        } else if (symbol == Clutter.KEY_Left && this._getOpenState()) {
+            this._setOpenState(false);
             return true;
         }
 
@@ -1532,11 +1547,11 @@ const PopupSubMenuMenuItem = new Lang.Class({
     },
 
     activate: function(event) {
-        this.menu.open(BoxPointer.PopupAnimation.FULL);
+        this._setOpenState(true);
     },
 
     _onButtonReleaseEvent: function(actor) {
-        this.menu.toggle();
+        this._setOpenState(!this._getOpenState());
     }
 });
 
