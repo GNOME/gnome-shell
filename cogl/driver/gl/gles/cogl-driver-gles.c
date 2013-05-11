@@ -262,7 +262,7 @@ _cogl_driver_update_features (CoglContext *context,
       private_flags |= COGL_PRIVATE_FEATURE_BLEND_CONSTANT;
     }
   else if (context->driver == COGL_DRIVER_GLES1)
-    private_flags |= (COGL_PRIVATE_FEATURE_FIXED_FUNCTION |
+    private_flags |= (COGL_PRIVATE_FEATURE_GL_FIXED |
                       COGL_PRIVATE_FEATURE_ALPHA_TEST |
                       COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM);
 

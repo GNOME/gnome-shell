@@ -70,6 +70,7 @@ struct _CoglRenderer
 #endif
 
   CoglDriver driver;
+  CoglPrivateFeatureFlags private_feature_flags;
 #ifndef HAVE_DIRECTLY_LINKED_GL_LIBRARY
   GModule *libgl_module;
 #endif

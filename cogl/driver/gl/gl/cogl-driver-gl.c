@@ -591,7 +591,7 @@ _cogl_driver_update_features (CoglContext *ctx,
       int max_clip_planes = 0;
 
       /* Features which are not available in GL 3 */
-      private_flags |= (COGL_PRIVATE_FEATURE_FIXED_FUNCTION |
+      private_flags |= (COGL_PRIVATE_FEATURE_GL_FIXED |
                         COGL_PRIVATE_FEATURE_ALPHA_TEST |
                         COGL_PRIVATE_FEATURE_QUADS |
                         COGL_PRIVATE_FEATURE_ALPHA_TEXTURES);

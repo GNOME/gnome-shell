@@ -51,7 +51,7 @@ _cogl_pipeline_progend_fixed_arbfp_start (CoglPipeline *pipeline)
   if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_FIXED)))
     return FALSE;
 
-  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_FIXED_FUNCTION))
+  if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_FIXED))
     return FALSE;
 
   /* Vertex snippets are only supported in the GLSL fragend */

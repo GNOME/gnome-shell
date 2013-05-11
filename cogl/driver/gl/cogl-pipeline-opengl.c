@@ -434,7 +434,7 @@ flush_depth_state (CoglContext *ctx,
       (ctx->depth_range_near_cache != depth_state->range_near ||
        ctx->depth_range_far_cache != depth_state->range_far))
     {
-      if (ctx->driver == COGL_DRIVER_GLES2)
+      if (ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_EMBEDDED)
         GE (ctx, glDepthRangef (depth_state->range_near,
                                 depth_state->range_far));
       else
@@ -487,7 +487,7 @@ _cogl_pipeline_flush_color_blend_alpha_depth_state (
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* On GLES2 we'll flush the color later */
-  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_FIXED_FUNCTION) &&
+  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_FIXED) &&
       !with_color_attrib)
     {
       if ((pipelines_difference & COGL_PIPELINE_STATE_COLOR) ||
@@ -725,8 +725,7 @@ get_max_activateable_texture_units (void)
       int i;
 
 #ifdef HAVE_COGL_GL
-      if (ctx->driver == COGL_DRIVER_GL ||
-          ctx->driver == COGL_DRIVER_GL3)
+      if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_EMBEDDED))
         {
           /* GL_MAX_TEXTURE_COORDS is provided for both GLSL and ARBfp. It
              defines the number of texture coordinates that can be
@@ -749,7 +748,8 @@ get_max_activateable_texture_units (void)
 #endif /* HAVE_COGL_GL */
 
 #ifdef HAVE_COGL_GLES2
-      if (ctx->driver == COGL_DRIVER_GLES2)
+      if (ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_EMBEDDED &&
+          ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_PROGRAMMABLE)
         {
           GE (ctx, glGetIntegerv (GL_MAX_VERTEX_ATTRIBS, values + n_values));
           /* Two of the vertex attribs need to be used for the position
@@ -761,8 +761,8 @@ get_max_activateable_texture_units (void)
         }
 #endif
 
-#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES) /* not GLES2 */
-      if (ctx->driver != COGL_DRIVER_GLES2)
+#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES)
+      if (ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_FIXED)
         {
           /* GL_MAX_TEXTURE_UNITS defines the number of units that are
              usable from the fixed function pipeline, therefore it isn't
@@ -907,7 +907,7 @@ flush_layers_common_gl_state_cb (CoglPipelineLayer *layer, void *user_data)
    * glsl progend.
    */
 #if defined (HAVE_COGL_GLES) || defined (HAVE_COGL_GL)
-  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_FIXED_FUNCTION) &&
+  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_FIXED) &&
       (layers_difference & COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS))
     {
       CoglPipelineState change = COGL_PIPELINE_LAYER_STATE_POINT_SPRITE_COORDS;

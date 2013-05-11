@@ -1054,8 +1054,7 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
       source_strings[1] = shader_state->source->str;
 
       if (shader_state->ref_point_coord &&
-          (ctx->driver == COGL_DRIVER_GL ||
-           ctx->driver == COGL_DRIVER_GL3))
+          !(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_GL_EMBEDDED))
         version_string = "#version 120\n";
       else
         version_string = NULL;
