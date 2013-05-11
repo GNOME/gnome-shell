@@ -731,6 +731,7 @@ AS_IF([test "x$enable_gles2" = "xyes"],
               [
                 GL_LIBRARY_DIRECTLY_LINKED=yes
                 COGL_GLES2_LIBNAME=""
+                AC_DEFINE([HAVE_COGL_WEBGL], 1, [Have WebGL for rendering])
               ],
 
               [

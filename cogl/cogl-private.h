@@ -68,7 +68,8 @@ typedef enum
   COGL_PRIVATE_FEATURE_ANY_GL = 1L<<26,
   COGL_PRIVATE_FEATURE_GL_FIXED = 1L<<27,
   COGL_PRIVATE_FEATURE_GL_PROGRAMMABLE = 1L<<28,
-  COGL_PRIVATE_FEATURE_GL_EMBEDDED = 1L<<29
+  COGL_PRIVATE_FEATURE_GL_EMBEDDED = 1L<<29,
+  COGL_PRIVATE_FEATURE_GL_WEB = 1L<<30
 } CoglPrivateFeatureFlags;
 
 /* Sometimes when evaluating pipelines, either during comparisons or
