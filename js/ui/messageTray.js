@@ -2196,7 +2196,10 @@ const MessageTray = new Lang.Class({
     // at the present time.
     _updateState: function() {
         // Notifications
-        let notificationQueue = this._notificationQueue;
+        let notificationQueue = this._notificationQueue.filter(function(n) {
+            return !n.acknowledged;
+        });
+        this._notificationQueue = notificationQueue;
         let notificationUrgent = notificationQueue.length > 0 && notificationQueue[0].urgency == Urgency.CRITICAL;
         let notificationForFeedback = notificationQueue.length > 0 && notificationQueue[0].forFeedback;
         let notificationsLimited = this._busy || Main.layoutManager.bottomMonitor.inFullscreen;
@@ -2637,16 +2640,8 @@ const MessageTray = new Lang.Class({
 
         let hasRightClickMenu = this._summaryBoxPointerItem.rightClickMenu != null;
         if (this._clickedSummaryItemMouseButton == 1 || !hasRightClickMenu) {
-            let newQueue = [];
-            for (let i = 0; i < this._notificationQueue.length; i++) {
-                let notification = this._notificationQueue[i];
-                let sameSource = this._summaryBoxPointerItem.source == notification.source;
-                if (sameSource)
-                    notification.acknowledged = true;
-                else
-                    newQueue.push(notification);
-            }
-            this._notificationQueue = newQueue;
+            // Acknowledge all our notifications
+            this._summmaryBoxPointerItem.source.notifications.forEach(function(n) { n.acknowledged = true; });
 
             this._summaryBoxPointer.bin.child = this._summaryBoxPointerItem.notificationStackWidget;
 
