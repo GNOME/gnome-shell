@@ -1730,8 +1730,6 @@ const MessageTray = new Lang.Class({
         for (let i = 0; i < lightboxContainers.length; i++)
             this._lightboxes.push(new Lightbox.Lightbox(lightboxContainers[i],
                                                         { inhibitEvents: true,
-                                                          fadeInTime: ANIMATION_TIME,
-                                                          fadeOutTime: ANIMATION_TIME,
                                                           fadeFactor: 0.2
                                                         }));
 
@@ -2339,7 +2337,7 @@ const MessageTray = new Lang.Class({
                     });
 
         for (let i = 0; i < this._lightboxes.length; i++)
-            this._lightboxes[i].show();
+            this._lightboxes[i].show(ANIMATION_TIME);
 
         return true;
     },
@@ -2395,7 +2393,7 @@ const MessageTray = new Lang.Class({
         // This is a no-op in that case.
         this._grabHelper.ungrab({ actor: this.actor });
         for (let i = 0; i < this._lightboxes.length; i++)
-            this._lightboxes[i].hide();
+            this._lightboxes[i].hide(ANIMATION_TIME);
     },
 
     _hideDesktopClone: function() {

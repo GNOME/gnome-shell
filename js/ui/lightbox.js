@@ -42,15 +42,11 @@ const Lightbox = new Lang.Class({
         params = Params.parse(params, { inhibitEvents: false,
                                         width: null,
                                         height: null,
-                                        fadeInTime: null,
-                                        fadeOutTime: null,
-                                        fadeFactor: DEFAULT_FADE_FACTOR
+                                        fadeFactor: DEFAULT_FADE_FACTOR,
                                       });
 
         this._container = container;
         this._children = container.get_children();
-        this._fadeInTime = params.fadeInTime;
-        this._fadeOutTime = params.fadeOutTime;
         this._fadeFactor = params.fadeFactor;
         this.actor = new St.Bin({ x: 0,
                                   y: 0,
@@ -101,14 +97,16 @@ const Lightbox = new Lang.Class({
         }
     },
 
-    show: function() {
+    show: function(fadeInTime) {
+        fadeInTime = fadeInTime || 0;
+
         Tweener.removeTweens(this.actor);
-        if (this._fadeInTime) {
+        if (fadeInTime != 0) {
             this.shown = false;
             this.actor.opacity = 0;
             Tweener.addTween(this.actor,
                              { opacity: 255 * this._fadeFactor,
-                               time: this._fadeInTime,
+                               time: fadeInTime,
                                transition: 'easeOutQuad',
                                onComplete: Lang.bind(this, function() {
                                    this.shown = true;
@@ -123,13 +121,15 @@ const Lightbox = new Lang.Class({
         this.actor.show();
     },
 
-    hide: function() {
+    hide: function(fadeOutTime) {
+        fadeOutTime = fadeOutTime || 0;
+
         this.shown = false;
         Tweener.removeTweens(this.actor);
-        if (this._fadeOutTime) {
+        if (fadeOutTime != 0) {
             Tweener.addTween(this.actor,
                              { opacity: 0,
-                               time: this._fadeOutTime,
+                               time: fadeOutTime,
                                transition: 'easeOutQuad',
                                onComplete: Lang.bind(this, function() {
                                    this.actor.hide();
