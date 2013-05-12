@@ -122,7 +122,6 @@ static gboolean update_binding         (MetaKeyPref *binding,
                                         gchar      **strokes);
 static gboolean update_key_binding     (const char  *key,
                                         gchar      **strokes);
-static gboolean update_workspace_names (void);
 
 static void settings_changed (GSettings      *settings,
                               gchar          *key,
@@ -144,7 +143,6 @@ static gboolean overlay_key_handler (GVariant*, gpointer*, gpointer);
 static void     do_override               (char *key, char *schema);
 
 static void     init_bindings             (void);
-static void     init_workspace_names      (void);
 
 
 typedef struct
@@ -197,6 +195,13 @@ typedef struct
   GSettingsGetMapping handler;
   gchar **target;
 } MetaStringPreference;
+
+typedef struct
+{
+  MetaBasePreference base;
+  GSettingsGetMapping handler;
+  gchar ***target;
+} MetaStringArrayPreference;
 
 typedef struct
 {
@@ -436,6 +441,19 @@ static MetaStringPreference preferences_string[] =
     { { NULL, 0, 0 }, NULL },
   };
 
+static MetaStringArrayPreference preferences_string_array[] =
+  {
+    {
+      { KEY_WORKSPACE_NAMES,
+        SCHEMA_GENERAL,
+        META_PREF_KEYBINDINGS,
+      },
+      NULL,
+      &workspace_names,
+    },
+    { { NULL, 0, 0 }, NULL },
+  };
+
 static MetaIntPreference preferences_int[] =
   {
     {
@@ -556,6 +574,42 @@ handle_preference_init_string (void)
 }
 
 static void
+handle_preference_init_string_array (void)
+{
+  MetaStringArrayPreference *cursor = preferences_string_array;
+
+  while (cursor->base.key != NULL)
+    {
+      char **value;
+
+      /* Complex keys have a mapping function to check validity */
+      if (cursor->handler)
+        {
+          if (cursor->target)
+            meta_bug ("%s has both a target and a handler\n", cursor->base.key);
+
+          g_settings_get_mapped (SETTINGS (cursor->base.schema),
+                                 cursor->base.key, cursor->handler, NULL);
+        }
+      else
+        {
+          if (!cursor->target)
+            meta_bug ("%s must have handler or target\n", cursor->base.key);
+
+          if (*(cursor->target))
+            g_strfreev (*(cursor->target));
+
+          value = g_settings_get_strv (SETTINGS (cursor->base.schema),
+                                       cursor->base.key);
+
+          *(cursor->target) = value;
+        }
+
+      ++cursor;
+    }
+}
+
+static void
 handle_preference_init_int (void)
 {
   MetaIntPreference *cursor = preferences_int;
@@ -667,6 +721,56 @@ handle_preference_update_string (GSettings *settings,
         g_free(*(cursor->target));
 
       *(cursor->target) = value;
+    }
+
+  if (inform_listeners)
+    queue_changed (cursor->base.pref);
+}
+
+static void
+handle_preference_update_string_array (GSettings *settings,
+                                       gchar *key)
+{
+  MetaStringArrayPreference *cursor = preferences_string_array;
+  gboolean inform_listeners = FALSE;
+
+  while (cursor->base.key != NULL && strcmp (key, cursor->base.key) != 0)
+    ++cursor;
+
+  if (cursor->base.key==NULL)
+    /* Didn't recognise that key. */
+    return;
+
+  /* Complex keys have a mapping function to check validity */
+  if (cursor->handler)
+    {
+      if (cursor->target)
+        meta_bug ("%s has both a target and a handler\n", cursor->base.key);
+
+      g_settings_get_mapped (SETTINGS (cursor->base.schema),
+                             cursor->base.key, cursor->handler, NULL);
+    }
+  else
+    {
+      char **values, **previous;
+      int n_values, n_previous, i;
+
+      if (!cursor->target)
+        meta_bug ("%s must have handler or target\n", cursor->base.key);
+
+      values = g_settings_get_strv (SETTINGS (cursor->base.schema),
+                                    cursor->base.key);
+      n_values = g_strv_length (values);
+      previous = *(cursor->target);
+      n_previous = previous ? g_strv_length (previous) : 0;
+
+      inform_listeners = n_previous != n_values;
+      for (i = 0; i < n_values && !inform_listeners; i++)
+        inform_listeners = g_strcmp0 (values[i], previous[i]) != 0;
+
+      if (*(cursor->target))
+        g_strfreev (*(cursor->target));
+      *(cursor->target) = values;
     }
 
   if (inform_listeners)
@@ -869,10 +973,10 @@ meta_prefs_init (void)
   handle_preference_init_enum ();
   handle_preference_init_bool ();
   handle_preference_init_string ();
+  handle_preference_init_string_array ();
   handle_preference_init_int ();
 
   init_bindings ();
-  init_workspace_names ();
 }
 
 static gboolean
@@ -1020,14 +1124,6 @@ settings_changed (GSettings *settings,
   MetaEnumPreference *cursor;
   gboolean found_enum;
 
-  /* String array, handled separately */
-  if (strcmp (key, KEY_WORKSPACE_NAMES) == 0)
-    {
-      if (update_workspace_names ())
-        queue_changed (META_PREF_WORKSPACE_NAMES);
-      return;
-    }
-
   value = g_settings_get_value (settings, key);
   type = g_variant_get_type (value);
 
@@ -1035,6 +1131,8 @@ settings_changed (GSettings *settings,
     handle_preference_update_bool (settings, key);
   else if (g_variant_type_equal (type, G_VARIANT_TYPE_INT32))
     handle_preference_update_int (settings, key);
+  else if (g_variant_type_equal (type, G_VARIANT_TYPE_STRING_ARRAY))
+    handle_preference_update_string_array (settings, key);
   else if (g_variant_type_equal (type, G_VARIANT_TYPE_STRING))
     {
       cursor = preferences_enum;
@@ -1748,12 +1846,6 @@ init_bindings (void)
   g_hash_table_insert (key_bindings, g_strdup ("overlay-key"), pref);
 }
 
-static void
-init_workspace_names (void)
-{
-  update_workspace_names ();
-}
-
 static gboolean
 update_binding (MetaKeyPref *binding,
                 gchar      **strokes)
@@ -1839,41 +1931,6 @@ update_key_binding (const char *key,
     return update_binding (pref, strokes);
   else
     return FALSE;
-}
-
-static gboolean
-update_workspace_names (void)
-{
-  int i;
-  char **names;
-  int n_workspace_names, n_names;
-  gboolean changed = FALSE;
-
-  names = g_settings_get_strv (SETTINGS (SCHEMA_GENERAL), KEY_WORKSPACE_NAMES);
-  n_names = g_strv_length (names);
-  n_workspace_names = workspace_names ? g_strv_length (workspace_names) : 0;
-
-  for (i = 0; i < n_names; i++)
-    if (n_workspace_names < i + 1 || !workspace_names[i] ||
-        g_strcmp0 (names[i], workspace_names[i]) != 0)
-      {
-        changed = TRUE;
-        break;
-      }
-
-  if (n_workspace_names != n_names)
-    changed = TRUE;
-
-  if (changed)
-    {
-      if (workspace_names)
-        g_strfreev (workspace_names);
-      workspace_names = names;
-    }
-  else
-    g_strfreev (names);
-
-  return changed;
 }
 
 const char*
