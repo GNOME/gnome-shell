@@ -214,6 +214,7 @@ const NotificationsBox = new Lang.Class({
 
         if (musicNotification != null &&
             this._musicBin.child == null) {
+            musicNotification.acknowledged = true;
             if (musicNotification.actor.get_parent() != null)
                 musicNotification.actor.get_parent().remove_actor(musicNotification.actor);
             this._musicBin.child = musicNotification.actor;
@@ -246,6 +247,7 @@ const NotificationsBox = new Lang.Class({
             sourceCountChangedId: 0,
             sourceTitleChangedId: 0,
             sourceUpdatedId: 0,
+            sourceNotifyId: 0,
             musicNotification: null,
             sourceBox: null,
             titleLabel: null,
@@ -255,6 +257,12 @@ const NotificationsBox = new Lang.Class({
         obj.sourceBox = new St.BoxLayout({ style_class: 'screen-shield-notification-source' });
         this._showSource(source, obj, obj.sourceBox);
         this._notificationBox.add(obj.sourceBox, { x_fill: false, x_align: St.Align.START });
+
+        if (obj.musicNotification) {
+            obj.sourceNotifyId = source.connect('notify', Lang.bind(this, function(source, notification) {
+                notification.acknowledged = true;
+            }));
+        }
 
         obj.sourceCountChangedId = source.connect('count-updated', Lang.bind(this, function(source) {
             this._countChanged(source, obj);
@@ -336,6 +344,8 @@ const NotificationsBox = new Lang.Class({
         if (obj.musicNotification) {
             this._musicBin.child = null;
             obj.musicNotification = null;
+
+            source.disconnect(obj.sourceNotifyId);
         }
 
         source.disconnect(obj.sourceDestroyId);
