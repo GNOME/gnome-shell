@@ -979,10 +979,11 @@ const ScreenShield = new Lang.Class({
     },
 
     _onUnlockFailed: function() {
-        this._resetLockScreen(true, false);
+        this._resetLockScreen({ animateLockScreen: true,
+                                animateLockDialog: false });
     },
 
-    _resetLockScreen: function(animateLockScreen, animateLockDialog) {
+    _resetLockScreen: function(params) {
         // Don't reset the lock screen unless it is completely hidden
         // This prevents the shield going down if the lock-delay timeout
         // fires while the user is dragging (which has the potential
@@ -997,7 +998,7 @@ const ScreenShield = new Lang.Class({
         this._lockScreenGroup.show();
         this._lockScreenState = MessageTray.State.SHOWING;
 
-        if (animateLockScreen) {
+        if (params.animateLockScreen) {
             this._lockScreenGroup.y = -global.screen_height;
             Tweener.removeTweens(this._lockScreenGroup);
             Tweener.addTween(this._lockScreenGroup,
@@ -1014,7 +1015,7 @@ const ScreenShield = new Lang.Class({
             this._lockScreenShown();
         }
 
-        if (animateLockDialog) {
+        if (params.animateLockDialog) {
             this._lockDialogGroup.opacity = 0;
             Tweener.removeTweens(this._lockDialogGroup);
             Tweener.addTween(this._lockDialogGroup,
@@ -1258,7 +1259,8 @@ const ScreenShield = new Lang.Class({
                 Main.sessionMode.pushMode('unlock-dialog');
         }
 
-        this._resetLockScreen(animate, animate);
+        this._resetLockScreen({ animateLockScreen: animate,
+                                animateLockDialog: animate });
         global.set_runtime_state(LOCKED_STATE_STR, GLib.Variant.new('b', true));
 
         // We used to set isActive and emit active-changed here,
