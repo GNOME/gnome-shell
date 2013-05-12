@@ -1115,6 +1115,9 @@ const ScreenShield = new Lang.Class({
     deactivate: function(animate) {
         this._hideLockScreen(animate, 0);
 
+        if (this._hasLockScreen)
+            this._clearLockScreen();
+
         if (Main.sessionMode.currentMode == 'lock-screen')
             Main.sessionMode.popMode('lock-screen');
         if (Main.sessionMode.currentMode == 'unlock-dialog')
@@ -1131,9 +1134,6 @@ const ScreenShield = new Lang.Class({
     },
 
     _completeDeactivate: function() {
-        if (this._hasLockScreen)
-            this._clearLockScreen();
-
         if (this._dialog && !this._isGreeter) {
             this._dialog.destroy();
             this._dialog = null;
