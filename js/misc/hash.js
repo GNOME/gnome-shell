@@ -58,6 +58,7 @@ const Map = new Lang.Class({
 
     _init: function(iterable) {
         this._pool = { };
+        this._size = 0;
 
         if (iterable) {
             for (let i = 0; i < iterable.length; i++) {
@@ -99,6 +100,7 @@ const Map = new Lang.Class({
             node.value = value;
         } else {
             this._pool[hash] = { key: key, value: value };
+            this._size++;
         }
     },
 
@@ -108,6 +110,7 @@ const Map = new Lang.Class({
 
         if (node && _sameValue(node.key, key)) {
             delete this._pool[hash];
+            this._size--;
             return [node.key, node.value];
         } else {
             return [null, null];
@@ -136,6 +139,6 @@ const Map = new Lang.Class({
     },
 
     size: function() {
-        return Object.getOwnPropertyNames(this._pool).length;
+        return this._size;
     },
 });
