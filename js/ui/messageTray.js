@@ -1530,11 +1530,7 @@ const MessageTrayContextMenu = new Lang.Class({
     },
 
     _updateClearSensitivity: function() {
-        let sources = this._tray.getSources();
-        sources = sources.filter(function(source) {
-            return !source.trayIcon && !source.isChat && !source.resident;
-        });
-        this._clearItem.setSensitive(sources.length > 0);
+        this._clearItem.setSensitive(this._tray.clearableCount > 0);
     },
 
     setPosition: function(x, y) {
@@ -1659,6 +1655,8 @@ const MessageTray = new Lang.Class({
         this._reNotifyAfterHideNotification = null;
         this._desktopClone = null;
         this._inCtrlAltTab = false;
+
+        this.clearableCount = 0;
 
         this._lightbox = new Lightbox.Lightbox(global.overlay_group,
                                                { inhibitEvents: true,
@@ -1896,6 +1894,9 @@ const MessageTray = new Lang.Class({
             this._summary.insert_child_at_index(summaryItem.actor, this._chatSummaryItemsCount);
         }
 
+        if (!source.trayIcon && !source.isChat && !source.resident)
+            this.clearableCount++;
+
         this._sources.set(source, obj);
 
         obj.notifyId = source.connect('notify', Lang.bind(this, this._onNotify));
@@ -1936,6 +1937,9 @@ const MessageTray = new Lang.Class({
 
         if (source.isChat)
             this._chatSummaryItemsCount--;
+
+        if (!source.trayIcon && !source.isChat && !source.resident)
+            this.clearableCount--;
 
         source.disconnect(obj.notifyId);
         source.disconnect(obj.destroyId);
