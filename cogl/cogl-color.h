@@ -541,6 +541,44 @@ cogl_color_unpremultiply (CoglColor *color);
 CoglBool
 cogl_color_equal (const void *v1, const void *v2);
 
+/**
+ * cogl_color_to_hsl:
+ * @color: a #CoglColor
+ * @hue: (out): return location for the hue value or %NULL
+ * @saturation: (out): return location for the saturation value or %NULL
+ * @luminance: (out): return location for the luminance value or %NULL
+ *
+ * Converts @color to the HLS format.
+ *
+ * The @hue value is in the 0 .. 360 range. The @luminance and
+ * @saturation values are in the 0 .. 1 range.
+ *
+ * Since: 1.16
+ */
+void
+cogl_color_to_hsl (const CoglColor *color,
+                   float           *hue,
+                   float           *saturation,
+                   float           *luminance);
+
+/**
+ * cogl_color_init_from_hsl:
+ * @color: (out): return location for a #CoglColor
+ * @hue: hue value, in the 0 .. 360 range
+ * @saturation: saturation value, in the 0 .. 1 range
+ * @luminance: luminance value, in the 0 .. 1 range
+ *
+ * Converts a color expressed in HLS (hue, luminance and saturation)
+ * values into a #CoglColor.
+ *
+ * Since: 1.16
+ */
+void
+cogl_color_init_from_hsl (CoglColor *color,
+                          float      hue,
+                          float      saturation,
+                          float      luminance);
+
 COGL_END_DECLS
 
 #endif /* __COGL_COLOR_H__ */

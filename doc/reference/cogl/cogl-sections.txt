@@ -417,6 +417,10 @@ cogl_color_set_alpha_float
 cogl_color_premultiply
 cogl_color_unpremultiply
 cogl_color_equal
+
+<SUBSECTION>
+cogl_color_init_from_hsl
+cogl_color_to_hsl
 </SECTION>
 
 <SECTION>
