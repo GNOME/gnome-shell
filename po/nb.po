@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell 3.8.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-03 13:31+0200\n"
+"POT-Creation-Date: 2013-05-13 09:47+0200\n"
 "PO-Revision-Date: 2013-04-03 13:31+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
@@ -335,43 +335,50 @@ msgstr "Utvidelse"
 msgid "Select an extension to configure using the combobox above."
 msgstr "Velg en utvidelse som skal konfigureres med komboboksen over."
 
-#: ../js/gdm/loginDialog.js:405
+#: ../js/gdm/loginDialog.js:371
 msgid "Session…"
 msgstr "Økt …"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:630
+#: ../js/gdm/loginDialog.js:601
 msgid "Not listed?"
 msgstr "Ikke listet?"
 
-#: ../js/gdm/loginDialog.js:786 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:375
+#: ../js/gdm/loginDialog.js:776 ../js/ui/components/networkAgent.js:137
+#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:376
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:99
+#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:96
 #: ../js/ui/userMenu.js:938
 msgid "Cancel"
 msgstr "Avbryt"
 
-#: ../js/gdm/loginDialog.js:802
+#: ../js/gdm/loginDialog.js:791
 msgctxt "button"
 msgid "Sign In"
 msgstr "Logg inn"
 
-#: ../js/gdm/loginDialog.js:802
+#: ../js/gdm/loginDialog.js:791
 msgid "Next"
 msgstr "Neste"
+
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: ../js/gdm/loginDialog.js:888
+#, c-format
+msgid "(e.g., user or %s)"
+msgstr "(f.eks. bruker eller %s)"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:917 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:892 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Brukernavn: "
 
-#: ../js/gdm/loginDialog.js:1173
+#: ../js/gdm/loginDialog.js:1158
 msgid "Login Window"
 msgstr "Innloggingsvindu"
 
@@ -394,20 +401,15 @@ msgstr "Start på nytt"
 msgid "Power Off"
 msgstr "Slå av"
 
-#: ../js/gdm/util.js:249
+#: ../js/gdm/util.js:247
 msgid "Authentication error"
 msgstr "Autentiseringsfeil"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:366
+#: ../js/gdm/util.js:364
 msgid "(or swipe finger)"
 msgstr "(eller dra finger)"
-
-#: ../js/gdm/util.js:391
-#, c-format
-msgid "(e.g., user or %s)"
-msgstr "(f.eks. bruker eller %s)"
 
 #: ../js/misc/util.js:97
 msgid "Command not found"
@@ -632,11 +634,11 @@ msgstr "Åpne med %s"
 msgid "Eject"
 msgstr "Løs ut"
 
-#: ../js/ui/components/keyring.js:82 ../js/ui/components/polkitAgent.js:268
+#: ../js/ui/components/keyring.js:88 ../js/ui/components/polkitAgent.js:275
 msgid "Password:"
 msgstr "Passord:"
 
-#: ../js/ui/components/keyring.js:101
+#: ../js/ui/components/keyring.js:107
 msgid "Type again:"
 msgstr "Skriv på nytt:"
 
@@ -724,7 +726,7 @@ msgstr "Autentisering kreves"
 msgid "Administrator"
 msgstr "Administrator"
 
-#: ../js/ui/components/polkitAgent.js:165
+#: ../js/ui/components/polkitAgent.js:171
 msgid "Authenticate"
 msgstr "Autentiser"
 
@@ -732,12 +734,12 @@ msgstr "Autentiser"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/components/polkitAgent.js:256 ../js/ui/shellMountOperation.js:383
+#: ../js/ui/components/polkitAgent.js:263 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Beklager, det virket ikke. Vennligst prøv igjen."
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/components/recorder.js:48
+#: ../js/ui/components/recorder.js:47
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Skjermvideo fra %d %t"
@@ -1003,14 +1005,14 @@ msgstr "Åpne kalender"
 msgid "Open Clocks"
 msgstr "Åpne Klokker"
 
-#: ../js/ui/dateMenu.js:105
+#: ../js/ui/dateMenu.js:104
 msgid "Date & Time Settings"
 msgstr "Innstillinger for dato og klokkeslett"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:215
+#: ../js/ui/dateMenu.js:216
 msgid "%A %B %e, %Y"
 msgstr "%a %e %B, %Y"
 
@@ -1188,11 +1190,11 @@ msgstr "Innstillinger for varsling"
 msgid "No Messages"
 msgstr "Ingen meldinger"
 
-#: ../js/ui/messageTray.js:1782
+#: ../js/ui/messageTray.js:1785
 msgid "Message Tray"
 msgstr "Meldingstrau"
 
-#: ../js/ui/messageTray.js:2810
+#: ../js/ui/messageTray.js:2813
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -1224,17 +1226,17 @@ msgstr "Oversikt"
 msgid "Type to search…"
 msgstr "Skriv for å søke …"
 
-#: ../js/ui/panel.js:612
+#: ../js/ui/panel.js:635
 msgid "Quit"
 msgstr "Avslutt"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:636
+#: ../js/ui/panel.js:686
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: ../js/ui/panel.js:933
+#: ../js/ui/panel.js:982
 msgid "Top Bar"
 msgstr "Topp-panel"
 
@@ -1247,11 +1249,11 @@ msgstr "Topp-panel"
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
-#: ../js/ui/runDialog.js:73
+#: ../js/ui/runDialog.js:74
 msgid "Enter a Command"
 msgstr "Oppgi en kommando"
 
-#: ../js/ui/runDialog.js:109
+#: ../js/ui/runDialog.js:110
 msgid "Close"
 msgstr "Lukk"
 
@@ -1272,7 +1274,7 @@ msgstr[1] "%d nye varslinger"
 msgid "Lock"
 msgstr "Lås"
 
-#: ../js/ui/screenShield.js:640
+#: ../js/ui/screenShield.js:641
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME må låse skjermen"
 
@@ -1283,11 +1285,11 @@ msgstr "GNOME må låse skjermen"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:761 ../js/ui/screenShield.js:1197
+#: ../js/ui/screenShield.js:762 ../js/ui/screenShield.js:1198
 msgid "Unable to lock"
 msgstr "Kan ikke låse"
 
-#: ../js/ui/screenShield.js:762 ../js/ui/screenShield.js:1198
+#: ../js/ui/screenShield.js:763 ../js/ui/screenShield.js:1199
 msgid "Lock was blocked by an application"
 msgstr "Låsing ble stoppet av et program"
 
@@ -1307,11 +1309,11 @@ msgstr "Kopier"
 msgid "Paste"
 msgstr "Lim inn"
 
-#: ../js/ui/shellEntry.js:106
+#: ../js/ui/shellEntry.js:101
 msgid "Show Text"
 msgstr "Vis tekst"
 
-#: ../js/ui/shellEntry.js:108
+#: ../js/ui/shellEntry.js:103
 msgid "Hide Text"
 msgstr "Skjul tekst"
 
@@ -1323,7 +1325,7 @@ msgstr "Passord"
 msgid "Remember Password"
 msgstr "Husk passord"
 
-#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:113
+#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:109
 msgid "Unlock"
 msgstr "Lås opp"
 
@@ -1614,7 +1616,7 @@ msgstr "Tilkobling feilet"
 msgid "Activation of network connection failed"
 msgstr "Aktivering av nettverkstilkobling feilet"
 
-#: ../js/ui/status/network.js:2276
+#: ../js/ui/status/network.js:2282
 msgid "Networking is disabled"
 msgstr "Nettverk er slått av"
 
@@ -1728,11 +1730,11 @@ msgstr "Volum"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/unlockDialog.js:124
+#: ../js/ui/unlockDialog.js:120
 msgid "Log in as another user"
 msgstr "Logg inn som en annen bruker"
 
-#: ../js/ui/unlockDialog.js:145
+#: ../js/ui/unlockDialog.js:141
 msgid "Unlock Window"
 msgstr "Lås opp vindu"
 
@@ -1885,11 +1887,11 @@ msgstr "Vis mulige modi"
 msgid "Failed to launch '%s'"
 msgstr "Klarte ikke å starte «%s»"
 
-#: ../src/shell-keyring-prompt.c:708
+#: ../src/shell-keyring-prompt.c:714
 msgid "Passwords do not match."
 msgstr "Passordene er ikke like."
 
-#: ../src/shell-keyring-prompt.c:716
+#: ../src/shell-keyring-prompt.c:722
 msgid "Password cannot be blank"
 msgstr "Passordet kan ikke være tomt"
 
