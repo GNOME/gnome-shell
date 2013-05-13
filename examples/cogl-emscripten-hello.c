@@ -2,9 +2,10 @@
 #include <stdio.h>
 #include <SDL.h>
 #include <emscripten.h>
+#include "emscripten-example-js.h"
 
-/* This short example is just to demonstrate mixing SDL with Cogl as a
-   simple way to get portable support for events */
+/* This short example is just to demonstrate using Cogl with
+ * Emscripten using SDL to receive input events */
 
 typedef struct Data
 {
@@ -40,10 +41,6 @@ handle_event (Data *data, SDL_Event *event)
 {
   switch (event->type)
     {
-    case SDL_VIDEOEXPOSE:
-      data->redraw_queued = TRUE;
-      break;
-
     case SDL_MOUSEMOTION:
       {
         int width =
@@ -76,15 +73,23 @@ static void
 mainloop (void)
 {
   SDL_Event event;
+
   while (SDL_PollEvent (&event))
     {
       handle_event (&data, &event);
       cogl_sdl_handle_event (ctx, &event);
     }
 
-  redraw (&data);
-  data.redraw_queued = FALSE;
-  data.ready_to_draw = FALSE;
+  if (data.redraw_queued && data.ready_to_draw)
+    {
+      data.redraw_queued = FALSE;
+      data.ready_to_draw = FALSE;
+      redraw (&data);
+    }
+
+  /* NB: The mainloop will be automatically resumed if user input is received */
+  if (!data.redraw_queued)
+    emscripten_pause_main_loop ();
 
   cogl_sdl_idle (ctx);
 }
@@ -126,6 +131,15 @@ main (int argc, char **argv)
 
   data.redraw_queued = TRUE;
   data.ready_to_draw = TRUE;
+
+  /* The emscripten mainloop isn't event driven, it's periodic and so
+   * we aim to pause the emscripten mainlooop whenever we don't have a
+   * redraw queued. What we do instead is hook into the real browser
+   * mainloop using this javascript binding api to add an input event
+   * listener that will resume the emscripten mainloop whenever input
+   * is received.
+   */
+  example_js_add_input_listener ();
 
   emscripten_set_main_loop (mainloop, -1, TRUE);
 

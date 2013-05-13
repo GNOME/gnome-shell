@@ -105,7 +105,7 @@ endif
 
 if USING_EMSCRIPTEN
 %.html: %.o $(top_builddir)/cogl/.libs/libcogl2.so $(top_builddir)/deps/glib/.libs/libglib.a
-	$(CC) $(AM_CFLAGS) $(CFLAGS) -o $@ $^
+	$(CC) $(AM_CFLAGS) $(CFLAGS) --js-library $(top_srcdir)/examples/emscripten-example-js-library.js -o $@ $^
 
 all-local: $(addsuffix .html, $(programs))
 endif
