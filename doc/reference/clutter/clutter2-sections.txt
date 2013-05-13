@@ -917,6 +917,14 @@ ClutterX11XInputEventTypes
 </SECTION>
 
 <SECTION>
+<FILE>clutter-wayland</FILE>
+<TITLE>Wayland specific support</TITLE>
+clutter_wayland_input_device_get_wl_seat
+clutter_wayland_stage_get_wl_shell_surface
+clutter_wayland_stage_get_wl_surface
+</SECTION>
+
+<SECTION>
 <FILE>clutter-wayland-compositor</FILE>
 <TITLE>Wayland compositor specific support</TITLE>
 clutter_wayland_set_compositor_display
