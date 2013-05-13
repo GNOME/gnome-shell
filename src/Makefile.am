@@ -297,8 +297,7 @@ ShellMenu-0.1.gir: libgnome-shell.la
 ShellMenu_0_1_gir_INCLUDES = Gio-2.0
 ShellMenu_0_1_gir_CFLAGS = $(libgnome_shell_la_CPPFLAGS) -I $(srcdir)
 ShellMenu_0_1_gir_LIBS = libgnome-shell.la
-Shell_0_1_gir_SCANNERFLAGS =	\
-	$(if $(BLUETOOTH_DIR),-L $(BLUETOOTH_DIR),)
+ShellMenu_0_1_gir_SCANNERFLAGS = $(if $(BLUETOOTH_DIR),-L $(BLUETOOTH_DIR),)
 ShellMenu_0_1_gir_FILES = \
 	gtkactionmuxer.h		\
 	gtkactionmuxer.c		\
