@@ -2645,7 +2645,7 @@ const MessageTray = new Lang.Class({
         let hasRightClickMenu = this._summaryBoxPointerItem.rightClickMenu != null;
         if (this._clickedSummaryItemMouseButton == 1 || !hasRightClickMenu) {
             // Acknowledge all our notifications
-            this._summmaryBoxPointerItem.source.notifications.forEach(function(n) { n.acknowledged = true; });
+            this._summaryBoxPointerItem.source.notifications.forEach(function(n) { n.acknowledged = true; });
 
             this._summaryBoxPointer.bin.child = this._summaryBoxPointerItem.notificationStackWidget;
 
