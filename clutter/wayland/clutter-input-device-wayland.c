@@ -525,7 +525,7 @@ clutter_input_device_wayland_init (ClutterInputDeviceWayland *self)
 }
 
 /**
- * clutter_wayland_input_device_get_wl_input_device: (skip)
+ * clutter_wayland_input_device_get_wl_seat: (skip)
  * @device: a #ClutterInputDevice
  *
  * Access the underlying data structure representing the Wayland device that is
