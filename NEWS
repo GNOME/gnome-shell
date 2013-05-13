@@ -1,3 +1,34 @@
+3.8.2
+=====
+* Fix hotcorner regression in RTL locales [Jasper; #698884]
+* Allow some keybindings to work while a top bar menu is open [Florian; #698938]
+* Make open-app-menu keybinding a toggle action [Florian; #686756]
+* ctrlAltTab: Use symbolic icons for desktop windows [Matthias; #697914]
+* gdm: Fix regression where domain login hint not shown [Stef; #698200]
+* Hide "Open Calendar" item when no calendar app is installed [Lionel; #697725]
+* Update how branding appears on login screen [Florian; #694912, #699877]
+* Allow OSD popups to grow if necessary [Marta; #696523]
+* Fix offset of shadow offscreen rendering [Lionel; #698301]
+* Fix insensitive button preventing empty keyring password [Stef; #696304]
+* Allow cancelling keyring dialog between prompts [Stef; #682830]
+* modalDialog: Show spinner while working [Stef; #684438]
+* Provide a DBus API for screencasting [Florian; #696247]
+* Implement app folder keynav and shortcuts [Florian; #695314]
+* polkitAgent: Allow retrying after mistyped passwords [Stef; #684431]
+* Add input purpose and hints to StEntry and StIMText [Daiki; #691392]
+* Set input-purpose property for password entries [Rui; #700043]
+* Misc fixes and cleanups [Jasper, Florian, Giovanni, Tim, Rui; #697203,
+  #698959, #696720, #698531, #676285, #698812, #699189]
+
+Contributors:
+  Giovanni Campagna, Matthias Clasen, Lionel Landwerlin, Tim Lunn, Rui Matos,
+  Simon McVittie, Marta Milakovic, Florian Müllner, Jasper St. Pierre,
+  Daiki Ueno, Stef Walter
+
+Translations:
+  Muhammet Kara [tr], Nik Kalach [ia], Žygimantas Beručka [lt],
+  Kjartan Maraas [nb]
+
 3.8.1
 =====
 * Clip window group during startup animation [Jasper; #696323]
