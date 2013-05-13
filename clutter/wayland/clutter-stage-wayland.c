@@ -231,7 +231,6 @@ clutter_stage_wayland_class_init (ClutterStageWaylandClass *klass)
 
 /**
  * clutter_wayland_stage_get_wl_shell_surface: (skip)
- *
  * @stage: a #ClutterStage
  *
  * Access the underlying data structure representing the shell surface that is
@@ -261,7 +260,6 @@ clutter_wayland_stage_get_wl_shell_surface (ClutterStage *stage)
 
 /**
  * clutter_wayland_stage_get_wl_surface: (skip)
- *
  * @stage: a #ClutterStage
  *
  * Access the underlying data structure representing the surface that is
