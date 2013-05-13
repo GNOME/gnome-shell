@@ -44,6 +44,7 @@ HFILE_GLOB = \
 	$(top_srcdir)/clutter/cex100/clutter-cex100.h \
 	$(top_srcdir)/clutter/win32/clutter-win32.h \
 	$(top_srcdir)/clutter/gdk/clutter-gdk.h \
+	$(top_srcdir)/clutter/wayland/clutter-wayland.h \
 	$(top_srcdir)/clutter/wayland/clutter-wayland-compositor.h \
 	$(top_srcdir)/clutter/wayland/clutter-wayland-surface.h
 
@@ -113,6 +114,7 @@ EXTRA_HFILES = \
 	$(top_srcdir)/clutter/cex100/clutter-cex100.h \
 	$(top_srcdir)/clutter/win32/clutter-win32.h \
 	$(top_srcdir)/clutter/gdk/clutter-gdk.h \
+	$(top_srcdir)/clutter/wayland/clutter-wayland.h \
 	$(top_srcdir)/clutter/wayland/clutter-wayland-compositor.h \
 	$(top_srcdir)/clutter/wayland/clutter-wayland-surface.h
 

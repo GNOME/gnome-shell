@@ -222,6 +222,7 @@
     <xi:include href="xml/clutter-egl.xml"/>
     <xi:include href="xml/clutter-cex100.xml"/>
     <xi:include href="xml/clutter-gdk.xml"/>
+    <xi:include href="xml/clutter-wayland.xml"/>
     <xi:include href="xml/clutter-wayland-compositor.xml"/>
     <xi:include href="xml/clutter-wayland-surface.xml"/>
   </part>
