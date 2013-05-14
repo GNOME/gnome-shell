@@ -33,14 +33,20 @@ redraw (Data *data)
 }
 
 static void
+dirty_cb (CoglOnscreen *onscreen,
+          const CoglOnscreenDirtyInfo *info,
+          void *user_data)
+{
+  Data *data = user_data;
+
+  data->redraw_queued = TRUE;
+}
+
+static void
 handle_event (Data *data, SDL_Event *event)
 {
   switch (event->type)
     {
-    case SDL_VIDEOEXPOSE:
-      data->redraw_queued = TRUE;
-      break;
-
     case SDL_MOUSEMOTION:
       {
         int width =
@@ -101,6 +107,10 @@ main (int argc, char **argv)
                                     frame_cb,
                                     &data,
                                     NULL /* destroy callback */);
+  cogl_onscreen_add_dirty_callback (onscreen,
+                                    dirty_cb,
+                                    &data,
+                                    NULL /* destroy callback */);
 
   data.center_x = 0.0f;
   data.center_y = 0.0f;
@@ -112,7 +122,7 @@ main (int argc, char **argv)
                                            3, triangle_vertices);
   data.pipeline = cogl_pipeline_new (ctx);
 
-  data.redraw_queued = TRUE;
+  data.redraw_queued = FALSE;
   data.ready_to_draw = TRUE;
 
   while (!data.quit)

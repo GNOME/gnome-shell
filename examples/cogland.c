@@ -8,10 +8,6 @@
 
 #include <wayland-server.h>
 
-#ifdef COGL_HAS_XLIB_SUPPORT
-#include <cogl/cogl-xlib.h>
-#endif
-
 typedef struct _CoglandCompositor CoglandCompositor;
 
 typedef struct
@@ -782,6 +778,16 @@ bind_output (struct wl_client *client,
 }
 
 static void
+dirty_cb (CoglOnscreen *onscreen,
+          const CoglOnscreenDirtyInfo *info,
+          void *user_data)
+{
+  CoglandCompositor *compositor = user_data;
+
+  cogland_queue_redraw (compositor);
+}
+
+static void
 cogland_compositor_create_output (CoglandCompositor *compositor,
                                   int x,
                                   int y,
@@ -812,6 +818,11 @@ cogland_compositor_create_output (CoglandCompositor *compositor,
   fb = COGL_FRAMEBUFFER (output->onscreen);
   if (!cogl_framebuffer_allocate (fb, &error))
     g_error ("Failed to allocate framebuffer: %s\n", error->message);
+
+  cogl_onscreen_add_dirty_callback (output->onscreen,
+                                    dirty_cb,
+                                    compositor,
+                                    NULL /* destroy */);
 
   cogl_onscreen_show (output->onscreen);
   cogl_framebuffer_set_viewport (fb, -x, -y,
@@ -1050,78 +1061,6 @@ create_cogl_context (CoglandCompositor *compositor,
   return context;
 }
 
-#ifdef COGL_HAS_XLIB_SUPPORT
-
-static CoglFilterReturn
-x_event_cb (XEvent *event,
-            void *data)
-{
-  CoglandCompositor *compositor = data;
-
-  if (event->type == Expose)
-    cogland_queue_redraw (compositor);
-
-  return COGL_FILTER_CONTINUE;
-}
-
-#endif /* COGL_HAS_XLIB_SUPPORT */
-
-static gboolean
-timeout_cb (void *data)
-{
-  cogland_queue_redraw (data);
-
-  return TRUE;
-}
-
-static void
-init_redraws (CoglandCompositor *compositor)
-{
-#ifdef COGL_HAS_XLIB_SUPPORT
-  CoglRenderer *renderer = cogl_context_get_renderer (compositor->cogl_context);
-  CoglWinsysID winsys = cogl_renderer_get_winsys_id (renderer);
-
-  /* If Cogl is using X then we can listen for Expose events to know
-   * when to repaint the window. Otherwise we don't have any code to
-   * know when the contents of the window is dirty so we'll just
-   * redraw constantly */
-  switch (winsys)
-    {
-    case COGL_WINSYS_ID_GLX:
-    case COGL_WINSYS_ID_EGL_XLIB:
-      {
-        Display *display = cogl_xlib_renderer_get_display (renderer);
-        GList *l;
-
-        for (l = compositor->outputs; l; l = l->next)
-          {
-            CoglandOutput *output = l->data;
-            XWindowAttributes win_attribs;
-            Window win;
-
-            win = cogl_x11_onscreen_get_window_xid (output->onscreen);
-            if (XGetWindowAttributes (display, win, &win_attribs))
-              {
-                XSelectInput (display,
-                              win,
-                              win_attribs.your_event_mask | ExposureMask);
-                cogl_xlib_renderer_add_filter (renderer,
-                                               x_event_cb,
-                                               compositor);
-
-              }
-          }
-      }
-      return;
-
-    default:
-      break;
-    }
-#endif /* COGL_HAS_XLIB_SUPPORT */
-
-  g_timeout_add (16, timeout_cb, compositor);
-}
-
 int
 main (int argc, char **argv)
 {
@@ -1227,8 +1166,6 @@ main (int argc, char **argv)
                                       G_PRIORITY_DEFAULT);
 
   g_source_attach (cogl_source, NULL);
-
-  init_redraws (&compositor);
 
   g_main_loop_run (loop);
 

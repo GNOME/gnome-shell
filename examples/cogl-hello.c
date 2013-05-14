@@ -8,18 +8,39 @@ typedef struct _Data
     CoglFramebuffer *fb;
     CoglPrimitive *triangle;
     CoglPipeline *pipeline;
+
+    unsigned int redraw_idle;
+    CoglBool is_dirty;
+    CoglBool draw_ready;
 } Data;
 
-static CoglBool
+static gboolean
 paint_cb (void *user_data)
 {
     Data *data = user_data;
 
+    data->redraw_idle = 0;
+    data->is_dirty = FALSE;
+    data->draw_ready = FALSE;
+
     cogl_framebuffer_clear4f (data->fb, COGL_BUFFER_BIT_COLOR, 0, 0, 0, 1);
-    cogl_framebuffer_draw_primitive (data->fb, data->pipeline, data->triangle);
+    cogl_framebuffer_draw_primitive (data->fb,
+                                     data->pipeline,
+                                     data->triangle);
     cogl_onscreen_swap_buffers (COGL_ONSCREEN (data->fb));
 
-    return FALSE; /* remove the callback */
+    return G_SOURCE_REMOVE;
+}
+
+static void
+maybe_redraw (Data *data)
+{
+    if (data->is_dirty && data->draw_ready && data->redraw_idle == 0) {
+        /* We'll draw on idle instead of drawing immediately so that
+         * if Cogl reports multiple dirty rectangles we won't
+         * redundantly draw multiple frames */
+        data->redraw_idle = g_idle_add (paint_cb, data);
+    }
 }
 
 static void
@@ -28,8 +49,23 @@ frame_event_cb (CoglOnscreen *onscreen,
                 CoglFrameInfo *info,
                 void *user_data)
 {
-    if (event == COGL_FRAME_EVENT_SYNC)
-        paint_cb (user_data);
+    Data *data = user_data;
+
+    if (event == COGL_FRAME_EVENT_SYNC) {
+        data->draw_ready = TRUE;
+        maybe_redraw (data);
+    }
+}
+
+static void
+dirty_cb (CoglOnscreen *onscreen,
+          const CoglOnscreenDirtyInfo *info,
+          void *user_data)
+{
+    Data *data = user_data;
+
+    data->is_dirty = TRUE;
+    maybe_redraw (data);
 }
 
 int
@@ -45,6 +81,10 @@ main (int argc, char **argv)
     };
     GSource *cogl_source;
     GMainLoop *loop;
+
+    data.redraw_idle = 0;
+    data.is_dirty = FALSE;
+    data.draw_ready = TRUE;
 
     data.ctx = cogl_context_new (NULL, &error);
     if (!data.ctx) {
@@ -71,7 +111,10 @@ main (int argc, char **argv)
                                       frame_event_cb,
                                       &data,
                                       NULL); /* destroy notify */
-    g_idle_add (paint_cb, &data);
+    cogl_onscreen_add_dirty_callback (COGL_ONSCREEN (data.fb),
+                                      dirty_cb,
+                                      &data,
+                                      NULL); /* destroy notify */
 
     loop = g_main_loop_new (NULL, TRUE);
     g_main_loop_run (loop);
