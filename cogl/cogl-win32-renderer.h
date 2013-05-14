@@ -94,6 +94,25 @@ cogl_win32_renderer_remove_filter (CoglRenderer *renderer,
                                    CoglWin32FilterFunc func,
                                    void *data);
 
+/**
+ * cogl_win32_renderer_set_event_retrieval_enabled:
+ * @renderer: a #CoglRenderer
+ * @enable: The new value
+ *
+ * Sets whether Cogl should automatically retrieve messages from
+ * Windows. It defaults to %TRUE. It can be set to %FALSE if the
+ * application wants to handle its own message retrieval. Note that
+ * Cogl still needs to see all of the messages to function properly so
+ * the application should call cogl_win32_renderer_handle_event() for
+ * each message if it disables automatic event retrieval.
+ *
+ * Since: 1.16
+ * Stability: unstable
+ */
+void
+cogl_win32_renderer_set_event_retrieval_enabled (CoglRenderer *renderer,
+                                                 CoglBool enable);
+
 COGL_END_DECLS
 
 #endif /* __COGL_WIN32_RENDERER_H__ */

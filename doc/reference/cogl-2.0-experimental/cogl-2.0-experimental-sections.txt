@@ -85,6 +85,7 @@ CoglWin32FilterFunc
 cogl_win32_renderer_add_filter
 cogl_win32_renderer_remove_filter
 cogl_win32_renderer_handle_event
+cogl_win32_renderer_set_event_retrieval_enabled
 
 <SUBSECTION>
 cogl_wayland_renderer_set_foreign_display

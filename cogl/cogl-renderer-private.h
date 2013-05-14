@@ -65,6 +65,10 @@ struct _CoglRenderer
   CoglBool xlib_enable_event_retrieval;
 #endif
 
+#ifdef COGL_HAS_WIN32_SUPPORT
+  CoglBool win32_enable_event_retrieval;
+#endif
+
   CoglDriver driver;
 #ifndef HAVE_DIRECTLY_LINKED_GL_LIBRARY
   GModule *libgl_module;

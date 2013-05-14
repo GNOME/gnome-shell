@@ -46,6 +46,11 @@
 #include "cogl-win32-renderer.h"
 #include "cogl-winsys-wgl-private.h"
 #include "cogl-error-private.h"
+#include "cogl-poll-private.h"
+
+/* This magic handle will cause g_poll to wakeup when there is a
+ * pending message */
+#define WIN32_MSG_HANDLE 19981206
 
 typedef struct _CoglRendererWgl
 {
@@ -161,6 +166,9 @@ _cogl_winsys_renderer_disconnect (CoglRenderer *renderer)
 {
   CoglRendererWgl *wgl_renderer = renderer->winsys;
 
+  if (renderer->win32_enable_event_retrieval)
+    _cogl_poll_renderer_remove_fd (renderer, WIN32_MSG_HANDLE);
+
   if (wgl_renderer->gl_module)
     g_module_close (wgl_renderer->gl_module);
 
@@ -232,10 +240,44 @@ win32_event_filter_cb (MSG *msg, void *data)
 }
 
 static CoglBool
+check_messages (void *user_data)
+{
+  MSG msg;
+
+  return PeekMessageW (&msg, NULL, 0, 0, PM_NOREMOVE) ? TRUE : FALSE;
+}
+
+static void
+dispatch_messages (void *user_data)
+{
+  MSG msg;
+
+  while (PeekMessageW (&msg, NULL, 0, 0, PM_REMOVE))
+    /* This should cause the message to be sent to our window proc */
+    DispatchMessageW (&msg);
+}
+
+static CoglBool
 _cogl_winsys_renderer_connect (CoglRenderer *renderer,
                                CoglError **error)
 {
   renderer->winsys = g_slice_new0 (CoglRendererWgl);
+
+  if (renderer->win32_enable_event_retrieval)
+    {
+      /* We'll add a magic handle that will cause a GLib main loop to
+       * wake up when there are messages. This will only work if the
+       * application is using GLib but it shouldn't matter if it
+       * doesn't work in other cases because the application shouldn't
+       * be using the cogl_poll_* functions on non-Unix systems
+       * anyway */
+      _cogl_poll_renderer_add_fd (renderer,
+                                  WIN32_MSG_HANDLE,
+                                  COGL_POLL_FD_EVENT_IN,
+                                  check_messages,
+                                  dispatch_messages,
+                                  renderer);
+    }
 
   return TRUE;
 }

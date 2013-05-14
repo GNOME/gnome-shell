@@ -56,3 +56,13 @@ cogl_win32_renderer_remove_filter (CoglRenderer *renderer,
                                        (CoglNativeFilterFunc)func, data);
 }
 
+void
+cogl_win32_renderer_set_event_retrieval_enabled (CoglRenderer *renderer,
+                                                 CoglBool enable)
+{
+  _COGL_RETURN_IF_FAIL (cogl_is_renderer (renderer));
+  /* NB: Renderers are considered immutable once connected */
+  _COGL_RETURN_IF_FAIL (!renderer->connected);
+
+  renderer->win32_enable_event_retrieval = enable;
+}

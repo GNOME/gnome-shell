@@ -193,6 +193,10 @@ cogl_renderer_new (void)
   renderer->xlib_enable_event_retrieval = TRUE;
 #endif
 
+#ifdef COGL_HAS_WIN32_SUPPORT
+  renderer->win32_enable_event_retrieval = TRUE;
+#endif
+
   return _cogl_renderer_object_new (renderer);
 }
 
