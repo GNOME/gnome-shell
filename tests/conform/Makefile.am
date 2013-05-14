@@ -29,6 +29,7 @@ test_sources = \
 	test-blend-strings.c \
 	test-blend.c \
 	test-depth-test.c \
+	test-color-hsl.c \
 	test-color-mask.c \
 	test-backface-culling.c \
 	test-just-vertex-shader.c \

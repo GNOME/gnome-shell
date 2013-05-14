@@ -135,6 +135,7 @@ main (int argc, char **argv)
             0);
 
   ADD_TEST (test_euler_quaternion, 0, 0);
+  ADD_TEST (test_color_hsl, 0, 0);
 
   ADD_TEST (test_fence, TEST_REQUIREMENT_FENCE, 0);
 
