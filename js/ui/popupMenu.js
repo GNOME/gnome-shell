@@ -1524,7 +1524,7 @@ const PopupSubMenuMenuItem = new Lang.Class({
     },
 
     _setOpenState: function(open) {
-        this._setSubmenuShown(open);
+        this.setSubmenuShown(open);
     },
 
     _getOpenState: function() {
