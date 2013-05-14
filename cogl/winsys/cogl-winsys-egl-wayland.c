@@ -325,6 +325,16 @@ _cogl_winsys_egl_context_init (CoglContext *context,
                   COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
                   TRUE);
 
+  /* We'll manually handle queueing dirty events when the surface is
+   * first shown or when it is resized. Note that this is slightly
+   * different from the emulated behaviour that CoglFramebuffer would
+   * provide if we didn't set this flag because we want to emit the
+   * event on show instead of on allocation. The Wayland protocol
+   * delays setting the surface type until the next buffer is attached
+   * so attaching a buffer before setting the type would not cause
+   * anything to be displayed */
+  context->private_feature_flags |= COGL_PRIVATE_FEATURE_DIRTY_EVENTS;
+
   return TRUE;
 }
 
@@ -437,6 +447,8 @@ flush_pending_resize (CoglOnscreen *onscreen)
                                             wayland_onscreen->pending_width,
                                             wayland_onscreen->pending_height);
 
+      _cogl_onscreen_queue_full_dirty (onscreen);
+
       wayland_onscreen->pending_dx = 0;
       wayland_onscreen->pending_dy = 0;
       wayland_onscreen->has_pending = FALSE;
@@ -486,6 +498,7 @@ _cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
     {
       wl_shell_surface_set_toplevel (wayland_onscreen->wayland_shell_surface);
       wayland_onscreen->shell_surface_type_set = TRUE;
+      _cogl_onscreen_queue_full_dirty (onscreen);
     }
 
   /* FIXME: We should also do something here to hide the surface when

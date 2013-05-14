@@ -612,6 +612,13 @@ cogl_onscreen_add_frame_callback
 cogl_onscreen_remove_frame_callback
 
 <SUBSECTION>
+CoglOnscreenDirtyInfo
+CoglOnscreenDirtyCallback
+CoglOnscreenDirtyClosure
+cogl_onscreen_add_dirty_callback
+cogl_onscreen_remove_dirty_callback
+
+<SUBSECTION>
 CoglOnscreenResizeCallback
 CoglOnscreenResizeClosure
 cogl_onscreen_add_resize_callback

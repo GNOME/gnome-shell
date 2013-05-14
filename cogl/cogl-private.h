@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2010 Intel Corporation.
+ * Copyright (C) 2010,2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -57,7 +57,11 @@ typedef enum
   COGL_PRIVATE_FEATURE_ALPHA_TEXTURES = 1L<<21,
   COGL_PRIVATE_FEATURE_TEXTURE_SWIZZLE = 1L<<22,
   COGL_PRIVATE_FEATURE_TEXTURE_MAX_LEVEL = 1L<<23,
-  COGL_PRIVATE_FEATURE_OES_EGL_SYNC = 1L<<24
+  COGL_PRIVATE_FEATURE_OES_EGL_SYNC = 1L<<24,
+  /* If this is set then the winsys is responsible for queueing dirty
+   * events. Otherwise a dirty event will be queued when the onscreen
+   * is first allocated or when it is shown or resized */
+  COGL_PRIVATE_FEATURE_DIRTY_EVENTS = 1L<<25
 } CoglPrivateFeatureFlags;
 
 /* Sometimes when evaluating pipelines, either during comparisons or

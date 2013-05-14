@@ -684,6 +684,7 @@ cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
 {
   CoglOnscreen *onscreen = COGL_ONSCREEN (framebuffer);
   const CoglWinsysVtable *winsys = _cogl_framebuffer_get_winsys (framebuffer);
+  CoglContext *ctx = framebuffer->context;
 
   if (framebuffer->allocated)
     return TRUE;
@@ -701,10 +702,16 @@ cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
 
       if (!winsys->onscreen_init (onscreen, error))
         return FALSE;
+
+      /* If the winsys doesn't support dirty events then we'll report
+       * one on allocation so that if the application only paints in
+       * response to dirty events then it will at least paint once to
+       * start */
+      if (!(ctx->private_feature_flags & COGL_PRIVATE_FEATURE_DIRTY_EVENTS))
+        _cogl_onscreen_queue_full_dirty (onscreen);
     }
   else
     {
-      CoglContext *ctx = framebuffer->context;
       CoglOffscreen *offscreen = COGL_OFFSCREEN (framebuffer);
 
       if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))

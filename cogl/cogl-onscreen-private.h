@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2011 Intel Corporation.
+ * Copyright (C) 2011,2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -48,6 +48,18 @@ struct _CoglOnscreenEvent
   CoglFrameEvent type;
 };
 
+typedef struct _CoglOnscreenQueuedDirty CoglOnscreenQueuedDirty;
+
+COGL_TAILQ_HEAD (CoglOnscreenQueuedDirtyList, CoglOnscreenQueuedDirty);
+
+struct _CoglOnscreenQueuedDirty
+{
+  COGL_TAILQ_ENTRY (CoglOnscreenQueuedDirty) list_node;
+
+  CoglOnscreen *onscreen;
+  CoglOnscreenDirtyInfo info;
+};
+
 struct _CoglOnscreen
 {
   CoglFramebuffer  _parent;
@@ -72,6 +84,8 @@ struct _CoglOnscreen
 
   CoglBool resizable;
   CoglClosureList resize_closures;
+
+  CoglClosureList dirty_closures;
 
   int64_t frame_counter;
   int64_t swap_frame_counter; /* frame counter at last all to
@@ -99,6 +113,11 @@ void
 _cogl_onscreen_notify_resize (CoglOnscreen *onscreen);
 
 void
-_cogl_dispatch_onscreen_events (CoglContext *context);
+_cogl_onscreen_queue_dirty (CoglOnscreen *onscreen,
+                            const CoglOnscreenDirtyInfo *info);
+
+
+void
+_cogl_onscreen_queue_full_dirty (CoglOnscreen *onscreen);
 
 #endif /* __COGL_ONSCREEN_PRIVATE_H */

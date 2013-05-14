@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2011, 2012 Intel Corporation.
+ * Copyright (C) 2011, 2012, 2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -303,30 +303,30 @@ flush_pending_resize_notifications_idle (void *user_data)
 }
 
 static CoglFilterReturn
-sdl_event_filter_cb (SDL_Event *event, void *data)
+sdl_window_event_filter (SDL_WindowEvent *event,
+                         CoglContext *context)
 {
-  if (event->type == SDL_WINDOWEVENT &&
-      event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
+  SDL_Window *window;
+  CoglFramebuffer *framebuffer;
+
+  window = SDL_GetWindowFromID (event->windowID);
+
+  if (window == NULL)
+    return COGL_FILTER_CONTINUE;
+
+  framebuffer = SDL_GetWindowData (window, COGL_SDL_WINDOW_DATA_KEY);
+
+  if (framebuffer == NULL || framebuffer->context != context)
+    return COGL_FILTER_CONTINUE;
+
+  if (event->event == SDL_WINDOWEVENT_SIZE_CHANGED)
     {
-      CoglContext *context = data;
       CoglDisplay *display = context->display;
       CoglRenderer *renderer = display->renderer;
       CoglRendererSdl2 *sdl_renderer = renderer->winsys;
-      float width = event->window.data1;
-      float height = event->window.data2;
-      CoglFramebuffer *framebuffer;
+      float width = event->data1;
+      float height = event->data2;
       CoglOnscreenSdl2 *sdl_onscreen;
-      SDL_Window *window;
-
-      window = SDL_GetWindowFromID (event->window.windowID);
-
-      if (window == NULL)
-        return COGL_FILTER_CONTINUE;
-
-      framebuffer = SDL_GetWindowData (window, COGL_SDL_WINDOW_DATA_KEY);
-
-      if (framebuffer == NULL || framebuffer->context != context)
-        return COGL_FILTER_CONTINUE;
 
       _cogl_framebuffer_winsys_update_size (framebuffer, width, height);
 
@@ -344,11 +344,37 @@ sdl_event_filter_cb (SDL_Event *event, void *data)
 
       sdl_onscreen = COGL_ONSCREEN (framebuffer)->winsys;
       sdl_onscreen->pending_resize_notify = TRUE;
+    }
+  else if (event->event == SDL_WINDOWEVENT_EXPOSED)
+    {
+      CoglOnscreenDirtyInfo info;
 
-      return COGL_FILTER_CONTINUE;
+      /* Sadly SDL doesn't seem to report the rectangle of the expose
+       * event so we'll just queue the whole window */
+      info.x = 0;
+      info.y = 0;
+      info.width = framebuffer->width;
+      info.height = framebuffer->height;
+
+      _cogl_onscreen_queue_dirty (COGL_ONSCREEN (framebuffer), &info);
     }
 
   return COGL_FILTER_CONTINUE;
+}
+
+static CoglFilterReturn
+sdl_event_filter_cb (SDL_Event *event, void *data)
+{
+  CoglContext *context = data;
+
+  switch (event->type)
+    {
+    case SDL_WINDOWEVENT:
+      return sdl_window_event_filter (&event->window, context);
+
+    default:
+      return COGL_FILTER_CONTINUE;
+    }
 }
 
 static CoglBool
@@ -369,6 +395,10 @@ _cogl_winsys_context_init (CoglContext *context, CoglError **error)
     COGL_FLAGS_SET (context->winsys_features,
                     COGL_WINSYS_FEATURE_SWAP_REGION_THROTTLE,
                     TRUE);
+
+  /* We'll manually handle queueing dirty events in response to
+   * SDL_WINDOWEVENT_EXPOSED events */
+  context->private_feature_flags |= COGL_PRIVATE_FEATURE_DIRTY_EVENTS;
 
   _cogl_renderer_add_native_filter (renderer,
                                     (CoglNativeFilterFunc) sdl_event_filter_cb,

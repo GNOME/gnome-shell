@@ -235,6 +235,30 @@ win32_event_filter_cb (MSG *msg, void *data)
             }
         }
     }
+  else if (msg->message == WM_PAINT)
+    {
+      CoglOnscreen *onscreen =
+        find_onscreen_for_hwnd (context, msg->hwnd);
+      RECT rect;
+
+      if (onscreen && GetUpdateRect (msg->hwnd, &rect, FALSE))
+        {
+          CoglOnscreenDirtyInfo info;
+
+          /* Apparently this removes the dirty region from the window
+           * so that it won't be included in the next WM_PAINT
+           * message. This is also what SDL does to emit dirty
+           * events */
+          ValidateRect (msg->hwnd, &rect);
+
+          info.x = rect.left;
+          info.y = rect.top;
+          info.width = rect.right - rect.left;
+          info.height = rect.bottom - rect.top;
+
+          _cogl_onscreen_queue_dirty (onscreen, &info);
+        }
+    }
 
   return COGL_FILTER_CONTINUE;
 }
@@ -681,6 +705,10 @@ update_winsys_features (CoglContext *context, CoglError **error)
 
       g_strfreev (split_extensions);
     }
+
+  /* We'll manually handle queueing dirty events in response to
+   * WM_PAINT messages */
+  context->private_feature_flags |= COGL_PRIVATE_FEATURE_DIRTY_EVENTS;
 
   return TRUE;
 }

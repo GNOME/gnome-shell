@@ -50,6 +50,7 @@ _cogl_onscreen_init_from_template (CoglOnscreen *onscreen,
 
   COGL_LIST_INIT (&onscreen->frame_closures);
   COGL_LIST_INIT (&onscreen->resize_closures);
+  COGL_LIST_INIT (&onscreen->dirty_closures);
 
   framebuffer->config = onscreen_template->config;
   cogl_object_ref (framebuffer->config.swap_chain);
@@ -121,6 +122,7 @@ _cogl_onscreen_free (CoglOnscreen *onscreen)
 
   _cogl_closure_list_disconnect_all (&onscreen->resize_closures);
   _cogl_closure_list_disconnect_all (&onscreen->frame_closures);
+  _cogl_closure_list_disconnect_all (&onscreen->dirty_closures);
 
   while ((frame_info = g_queue_pop_tail (&onscreen->pending_frame_infos)))
     cogl_object_unref (frame_info);
@@ -139,6 +141,111 @@ _cogl_onscreen_free (CoglOnscreen *onscreen)
 }
 
 static void
+notify_event (CoglOnscreen *onscreen,
+              CoglFrameEvent event,
+              CoglFrameInfo *info)
+{
+  _cogl_closure_list_invoke (&onscreen->frame_closures,
+                             CoglFrameCallback,
+                             onscreen, event, info);
+}
+
+static void
+_cogl_dispatch_onscreen_cb (CoglContext *context)
+{
+  CoglOnscreenEvent *event, *tmp;
+  CoglOnscreenEventList queue;
+
+  /* Dispatching the event callback may cause another frame to be
+   * drawn which in may cause another event to be queued immediately.
+   * To make sure this loop will only dispatch one set of events we'll
+   * steal the queue and iterate that separately */
+  COGL_TAILQ_INIT (&queue);
+  COGL_TAILQ_CONCAT (&queue, &context->onscreen_events_queue, list_node);
+  COGL_TAILQ_INIT (&context->onscreen_events_queue);
+
+  _cogl_closure_disconnect (context->onscreen_dispatch_idle);
+  context->onscreen_dispatch_idle = NULL;
+
+  COGL_TAILQ_FOREACH_SAFE (event,
+                           &queue,
+                           list_node,
+                           tmp)
+    {
+      CoglOnscreen *onscreen = event->onscreen;
+      CoglFrameInfo *info = event->info;
+
+      notify_event (onscreen, event->type, info);
+
+      cogl_object_unref (onscreen);
+      cogl_object_unref (info);
+
+      g_slice_free (CoglOnscreenEvent, event);
+    }
+
+  while (!COGL_TAILQ_EMPTY (&context->onscreen_dirty_queue))
+    {
+      CoglOnscreenQueuedDirty *qe =
+        COGL_TAILQ_FIRST (&context->onscreen_dirty_queue);
+
+      COGL_TAILQ_REMOVE (&context->onscreen_dirty_queue, qe, list_node);
+
+      _cogl_closure_list_invoke (&qe->onscreen->dirty_closures,
+                                 CoglOnscreenDirtyCallback,
+                                 qe->onscreen,
+                                 &qe->info);
+
+      cogl_object_unref (qe->onscreen);
+
+      g_slice_free (CoglOnscreenQueuedDirty, qe);
+    }
+}
+
+static void
+_cogl_onscreen_queue_dispatch_idle (CoglOnscreen *onscreen)
+{
+  CoglContext *ctx = COGL_FRAMEBUFFER (onscreen)->context;
+
+  if (!ctx->onscreen_dispatch_idle)
+    {
+      ctx->onscreen_dispatch_idle =
+        _cogl_poll_renderer_add_idle (ctx->display->renderer,
+                                      (CoglIdleCallback)
+                                      _cogl_dispatch_onscreen_cb,
+                                      ctx,
+                                      NULL);
+    }
+}
+
+void
+_cogl_onscreen_queue_dirty (CoglOnscreen *onscreen,
+                            const CoglOnscreenDirtyInfo *info)
+{
+  CoglContext *ctx = COGL_FRAMEBUFFER (onscreen)->context;
+  CoglOnscreenQueuedDirty *qe = g_slice_new (CoglOnscreenQueuedDirty);
+
+  qe->onscreen = cogl_object_ref (onscreen);
+  qe->info = *info;
+  COGL_TAILQ_INSERT_TAIL (&ctx->onscreen_dirty_queue, qe, list_node);
+
+  _cogl_onscreen_queue_dispatch_idle (onscreen);
+}
+
+void
+_cogl_onscreen_queue_full_dirty (CoglOnscreen *onscreen)
+{
+  CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  CoglOnscreenDirtyInfo info;
+
+  info.x = 0;
+  info.y = 0;
+  info.width = framebuffer->width;
+  info.height = framebuffer->height;
+
+  _cogl_onscreen_queue_dirty (onscreen, &info);
+}
+
+static void
 _cogl_onscreen_queue_event (CoglOnscreen *onscreen,
                             CoglFrameEvent type,
                             CoglFrameInfo *info)
@@ -153,15 +260,7 @@ _cogl_onscreen_queue_event (CoglOnscreen *onscreen,
 
   COGL_TAILQ_INSERT_TAIL (&ctx->onscreen_events_queue, event, list_node);
 
-  if (!ctx->onscreen_dispatch_idle)
-    {
-      ctx->onscreen_dispatch_idle =
-        _cogl_poll_renderer_add_idle (ctx->display->renderer,
-                                      (CoglIdleCallback)
-                                      _cogl_dispatch_onscreen_events,
-                                      ctx,
-                                      NULL);
-    }
+  _cogl_onscreen_queue_dispatch_idle (onscreen);
 }
 
 void
@@ -501,50 +600,6 @@ cogl_onscreen_hide (CoglOnscreen *onscreen)
     }
 }
 
-static void
-notify_event (CoglOnscreen *onscreen,
-              CoglFrameEvent event,
-              CoglFrameInfo *info)
-{
-  _cogl_closure_list_invoke (&onscreen->frame_closures,
-                             CoglFrameCallback,
-                             onscreen, event, info);
-}
-
-void
-_cogl_dispatch_onscreen_events (CoglContext *context)
-{
-  CoglOnscreenEvent *event, *tmp;
-  CoglOnscreenEventList queue;
-
-  /* Dispatching the event callback may cause another frame to be
-   * drawn which in may cause another event to be queued immediately.
-   * To make sure this loop will only dispatch one set of events we'll
-   * steal the queue and iterate that separately */
-  COGL_TAILQ_INIT (&queue);
-  COGL_TAILQ_CONCAT (&queue, &context->onscreen_events_queue, list_node);
-  COGL_TAILQ_INIT (&context->onscreen_events_queue);
-
-  _cogl_closure_disconnect (context->onscreen_dispatch_idle);
-  context->onscreen_dispatch_idle = NULL;
-
-  COGL_TAILQ_FOREACH_SAFE (event,
-                           &queue,
-                           list_node,
-                           tmp)
-    {
-      CoglOnscreen *onscreen = event->onscreen;
-      CoglFrameInfo *info = event->info;
-
-      notify_event (onscreen, event->type, info);
-
-      cogl_object_unref (onscreen);
-      cogl_object_unref (info);
-
-      g_slice_free (CoglOnscreenEvent, event);
-    }
-}
-
 void
 _cogl_onscreen_notify_frame_sync (CoglOnscreen *onscreen, CoglFrameInfo *info)
 {
@@ -580,6 +635,10 @@ _cogl_framebuffer_winsys_update_size (CoglFramebuffer *framebuffer,
   framebuffer->height = height;
 
   cogl_framebuffer_set_viewport (framebuffer, 0, 0, width, height);
+
+  if (!(framebuffer->context->private_feature_flags &
+        COGL_PRIVATE_FEATURE_DIRTY_EVENTS))
+    _cogl_onscreen_queue_full_dirty (COGL_ONSCREEN (framebuffer));
 }
 
 void
@@ -626,6 +685,27 @@ void
 cogl_onscreen_remove_resize_callback (CoglOnscreen *onscreen,
                                       CoglOnscreenResizeClosure *closure)
 {
+  _cogl_closure_disconnect (closure);
+}
+
+CoglOnscreenDirtyClosure *
+cogl_onscreen_add_dirty_callback (CoglOnscreen *onscreen,
+                                  CoglOnscreenDirtyCallback callback,
+                                  void *user_data,
+                                  CoglUserDataDestroyCallback destroy)
+{
+  return _cogl_closure_list_add (&onscreen->dirty_closures,
+                                 callback,
+                                 user_data,
+                                 destroy);
+}
+
+void
+cogl_onscreen_remove_dirty_callback (CoglOnscreen *onscreen,
+                                     CoglOnscreenDirtyClosure *closure)
+{
+  _COGL_RETURN_IF_FAIL (closure);
+
   _cogl_closure_disconnect (closure);
 }
 

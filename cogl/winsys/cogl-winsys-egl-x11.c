@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2011 Intel Corporation.
+ * Copyright (C) 2011,2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -45,7 +45,7 @@
 #include "cogl-error-private.h"
 #include "cogl-poll-private.h"
 
-#define COGL_ONSCREEN_X11_EVENT_MASK StructureNotifyMask
+#define COGL_ONSCREEN_X11_EVENT_MASK (StructureNotifyMask | ExposureMask)
 
 static const CoglWinsysEGLVtable _cogl_winsys_egl_vtable;
 
@@ -172,6 +172,23 @@ event_filter_cb (XEvent *xevent, void *data)
                      xevent->xconfigure.window,
                      xevent->xconfigure.width,
                      xevent->xconfigure.height);
+    }
+  else if (xevent->type == Expose)
+    {
+      CoglOnscreen *onscreen =
+        find_onscreen_for_xid (context, xevent->xexpose.window);
+
+      if (onscreen)
+        {
+          CoglOnscreenDirtyInfo info;
+
+          info.x = xevent->xexpose.x;
+          info.y = xevent->xexpose.y;
+          info.width = xevent->xexpose.width;
+          info.height = xevent->xexpose.height;
+
+          _cogl_onscreen_queue_dirty (onscreen, &info);
+        }
     }
 
   return COGL_FILTER_CONTINUE;
@@ -302,6 +319,10 @@ _cogl_winsys_egl_context_init (CoglContext *context,
   COGL_FLAGS_SET (context->winsys_features,
                   COGL_WINSYS_FEATURE_MULTIPLE_ONSCREEN,
                   TRUE);
+
+  /* We'll manually handle queueing dirty events in response to
+   * Expose events from X */
+  context->private_feature_flags |= COGL_PRIVATE_FEATURE_DIRTY_EVENTS;
 
   return TRUE;
 }

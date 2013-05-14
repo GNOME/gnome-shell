@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2007,2008,2009 Intel Corporation.
+ * Copyright (C) 2007,2008,2009,2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -197,6 +197,7 @@ struct _CoglContext
   int next_swap_callback_id;
 
   CoglOnscreenEventList onscreen_events_queue;
+  CoglOnscreenQueuedDirtyList onscreen_dirty_queue;
   CoglClosure *onscreen_dispatch_idle;
 
   CoglGLES2Context *current_gles2_context;

@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2011,2012 Intel Corporation.
+ * Copyright (C) 2011,2012,2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -813,6 +813,117 @@ cogl_onscreen_add_resize_callback (CoglOnscreen *onscreen,
 void
 cogl_onscreen_remove_resize_callback (CoglOnscreen *onscreen,
                                       CoglOnscreenResizeClosure *closure);
+
+/**
+ * CoglOnscreenDirtyInfo:
+ * @x: Left edge of the dirty rectangle
+ * @y: Top edge of the dirty rectangle, measured from the top of the window
+ * @width: Width of the dirty rectangle
+ * @height: Height of the dirty rectangle
+ *
+ * A structure passed to callbacks registered using
+ * cogl_onscreen_add_dirty_callback(). The members describe a
+ * rectangle within the onscreen buffer that should be redrawn.
+ *
+ * Since: 1.16
+ * Stability: unstable
+ */
+typedef struct _CoglOnscreenDirtyInfo CoglOnscreenDirtyInfo;
+
+struct _CoglOnscreenDirtyInfo
+{
+  int x, y;
+  int width, height;
+};
+
+/**
+ * CoglOnscreenDirtyCallback:
+ * @onscreen: The onscreen that the frame is associated with
+ * @info: A #CoglOnscreenDirtyInfo struct containing the details of the
+ *   dirty area
+ * @user_data: The user pointer passed to
+ *             cogl_onscreen_add_frame_callback()
+ *
+ * Is a callback that can be registered via
+ * cogl_onscreen_add_dirty_callback() to be called when the windowing
+ * system determines that a region of the onscreen window has been
+ * lost and the application should redraw it.
+ *
+ * Since: 1.16
+ * Stability: unstable
+ */
+typedef void (*CoglOnscreenDirtyCallback) (CoglOnscreen *onscreen,
+                                           const CoglOnscreenDirtyInfo *info,
+                                           void *user_data);
+
+/**
+ * CoglOnscreenDirtyClosure:
+ *
+ * An opaque type that tracks a #CoglOnscreenDirtyCallback and associated
+ * user data. A #CoglOnscreenDirtyClosure pointer will be returned from
+ * cogl_onscreen_add_dirty_callback() and it allows you to remove a
+ * callback later using cogl_onscreen_remove_dirty_callback().
+ *
+ * Since: 1.16
+ * Stability: unstable
+ */
+typedef struct _CoglClosure CoglOnscreenDirtyClosure;
+
+/**
+ * cogl_onscreen_add_dirty_callback:
+ * @onscreen: A #CoglOnscreen framebuffer
+ * @callback: A callback function to call for dirty events
+ * @user_data: A private pointer to be passed to @callback
+ * @destroy: An optional callback to destroy @user_data when the
+ *           @callback is removed or @onscreen is freed.
+ *
+ * Installs a @callback function that will be called whenever the
+ * window system has lost the contents of a region of the onscreen
+ * buffer and the application should redraw it to repair the buffer.
+ * For example this may happen in a window system without a compositor
+ * if a window that was previously covering up the onscreen window has
+ * been moved causing a region of the onscreen to be exposed.
+ *
+ * The @callback will be passed a #CoglOnscreenDirtyInfo struct which
+ * decribes a rectangle containing the newly dirtied region. Note that
+ * this may be called multiple times to describe a non-rectangular
+ * region composed of multiple smaller rectangles.
+ *
+ * The dirty events are separate from %COGL_FRAME_EVENT_SYNC events so
+ * the application should also listen for this event before rendering
+ * the dirty region to ensure that the framebuffer is actually ready
+ * for rendering.
+ *
+ * Return value: a #CoglOnscreenDirtyClosure pointer that can be used to
+ *               remove the callback and associated @user_data later.
+ * Since: 1.16
+ * Stability: unstable
+ */
+CoglOnscreenDirtyClosure *
+cogl_onscreen_add_dirty_callback (CoglOnscreen *onscreen,
+                                  CoglOnscreenDirtyCallback callback,
+                                  void *user_data,
+                                  CoglUserDataDestroyCallback destroy);
+
+/**
+ * cogl_onscreen_remove_dirty_callback:
+ * @onscreen: A #CoglOnscreen
+ * @closure: A #CoglOnscreenDirtyClosure returned from
+ *           cogl_onscreen_add_dirty_callback()
+ *
+ * Removes a callback and associated user data that were previously
+ * registered using cogl_onscreen_add_dirty_callback().
+ *
+ * If a destroy callback was passed to
+ * cogl_onscreen_add_dirty_callback() to destroy the user data then
+ * this will also get called.
+ *
+ * Since: 1.16
+ * Stability: unstable
+ */
+void
+cogl_onscreen_remove_dirty_callback (CoglOnscreen *onscreen,
+                                     CoglOnscreenDirtyClosure *closure);
 
 /**
  * cogl_is_onscreen:

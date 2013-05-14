@@ -63,7 +63,7 @@
 #include <GL/glx.h>
 #include <X11/Xlib.h>
 
-#define COGL_ONSCREEN_X11_EVENT_MASK StructureNotifyMask
+#define COGL_ONSCREEN_X11_EVENT_MASK (StructureNotifyMask | ExposureMask)
 #define MAX_GLX_CONFIG_ATTRIBS 30
 
 typedef struct _CoglContextGLX
@@ -557,6 +557,26 @@ glx_event_filter_cb (XEvent *xevent, void *data)
     }
 #endif /* GLX_INTEL_swap_event */
 
+  if (xevent->type == Expose)
+    {
+      CoglOnscreen *onscreen =
+        find_onscreen_for_xid (context, xevent->xexpose.window);
+
+      if (onscreen)
+        {
+          CoglOnscreenDirtyInfo info;
+
+          info.x = xevent->xexpose.x;
+          info.y = xevent->xexpose.y;
+          info.width = xevent->xexpose.width;
+          info.height = xevent->xexpose.height;
+
+          _cogl_onscreen_queue_dirty (onscreen, &info);
+        }
+
+      return COGL_FILTER_CONTINUE;
+    }
+
   return COGL_FILTER_CONTINUE;
 }
 
@@ -834,6 +854,10 @@ update_winsys_features (CoglContext *context, CoglError **error)
                       COGL_FEATURE_ID_PRESENTATION_TIME,
                       TRUE);
     }
+
+  /* We'll manually handle queueing dirty events in response to
+   * Expose events from X */
+  context->private_feature_flags |= COGL_PRIVATE_FEATURE_DIRTY_EVENTS;
 
   return TRUE;
 }

@@ -3,7 +3,7 @@
  *
  * An object oriented GL/GLES Abstraction/Utility Layer
  *
- * Copyright (C) 2011 Intel Corporation.
+ * Copyright (C) 2011,2013 Intel Corporation.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -246,25 +246,27 @@ flush_pending_resize_notification_idle (void *user_data)
 static CoglFilterReturn
 sdl_event_filter_cb (SDL_Event *event, void *data)
 {
+  CoglContext *context = data;
+  CoglDisplay *display = context->display;
+  CoglDisplaySdl *sdl_display = display->winsys;
+  CoglFramebuffer *framebuffer;
+
+  if (!sdl_display->onscreen)
+    return COGL_FILTER_CONTINUE;
+
+  framebuffer = COGL_FRAMEBUFFER (sdl_display->onscreen);
+
   if (event->type == SDL_VIDEORESIZE)
     {
-      CoglContext *context = data;
-      CoglDisplay *display = context->display;
-      CoglDisplaySdl *sdl_display = display->winsys;
       CoglRenderer *renderer = display->renderer;
       CoglRendererSdl *sdl_renderer = renderer->winsys;
       float width = event->resize.w;
       float height = event->resize.h;
-      CoglFramebuffer *framebuffer;
-
-      if (!sdl_display->onscreen)
-        return COGL_FILTER_CONTINUE;
 
       sdl_display->surface = SDL_SetVideoMode (width, height,
                                                0, /* bitsperpixel */
                                                sdl_display->video_mode_flags);
 
-      framebuffer = COGL_FRAMEBUFFER (sdl_display->onscreen);
       _cogl_framebuffer_winsys_update_size (framebuffer, width, height);
 
       /* We only want to notify that a resize happened when the
@@ -280,6 +282,19 @@ sdl_event_filter_cb (SDL_Event *event, void *data)
         }
 
       return COGL_FILTER_CONTINUE;
+    }
+  else if (event->type == SDL_VIDEOEXPOSE)
+    {
+      CoglOnscreenDirtyInfo info;
+
+      /* Sadly SDL doesn't seem to report the rectangle of the expose
+       * event so we'll just queue the whole window */
+      info.x = 0;
+      info.y = 0;
+      info.width = framebuffer->width;
+      info.height = framebuffer->height;
+
+      _cogl_onscreen_queue_dirty (COGL_ONSCREEN (framebuffer), &info);
     }
 
   return COGL_FILTER_CONTINUE;
@@ -297,6 +312,10 @@ _cogl_winsys_context_init (CoglContext *context, CoglError **error)
   _cogl_renderer_add_native_filter (renderer,
                                     (CoglNativeFilterFunc)sdl_event_filter_cb,
                                     context);
+
+  /* We'll manually handle queueing dirty events in response to
+   * SDL_VIDEOEXPOSE events */
+  context->private_feature_flags |= COGL_PRIVATE_FEATURE_DIRTY_EVENTS;
 
   return _cogl_context_update_features (context, error);
 }
