@@ -1875,7 +1875,7 @@ const PopupMenuManager = new Lang.Class({
 
     _onMenuOpenState: function(menu, open) {
         if (open) {
-            if (this.activeMenu)
+            if (this.activeMenu && !this.activeMenu.isChildMenu(menu))
                 this.activeMenu.close(BoxPointer.PopupAnimation.FADE);
             this._grabHelper.grab({ actor: menu.actor, modal: true, focus: menu.sourceActor,
                                     onUngrab: Lang.bind(this, this._closeMenu, menu) });
