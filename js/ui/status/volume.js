@@ -307,7 +307,7 @@ const Indicator = new Lang.Class({
             this._headphoneIcon.visible = value;
         }));
 
-        this._headphoneIcon = this.addIcon(new Gio.ThemedIcon({ name: 'headphones-symbolic' }));
+        this._headphoneIcon = this.addIcon(new Gio.ThemedIcon({ name: 'audio-headphones-symbolic' }));
         this._headphoneIcon.visible = false;
 
         this.menu.addMenuItem(this._volumeMenu);
