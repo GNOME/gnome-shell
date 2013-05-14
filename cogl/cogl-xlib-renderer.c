@@ -468,17 +468,17 @@ randr_filter (XEvent *event,
   return COGL_FILTER_CONTINUE;
 }
 
-static CoglBool
-check_xlib_events (void *user_data)
+static int64_t
+prepare_xlib_events_timeout (void *user_data)
 {
   CoglRenderer *renderer = user_data;
   CoglXlibRenderer *xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
 
-  return XPending (xlib_renderer->xdpy) ? TRUE : FALSE;
+  return XPending (xlib_renderer->xdpy) ? 0 : -1;
 }
 
 static void
-dispatch_xlib_events (void *user_data)
+dispatch_xlib_events (void *user_data, int revents)
 {
   CoglRenderer *renderer = user_data;
   CoglXlibRenderer *xlib_renderer = _cogl_xlib_renderer_get_data (renderer);
@@ -529,7 +529,7 @@ _cogl_xlib_renderer_connect (CoglRenderer *renderer, CoglError **error)
       _cogl_poll_renderer_add_fd (renderer,
                                   ConnectionNumber (xlib_renderer->xdpy),
                                   COGL_POLL_FD_EVENT_IN,
-                                  check_xlib_events,
+                                  prepare_xlib_events_timeout,
                                   dispatch_xlib_events,
                                   renderer);
     }

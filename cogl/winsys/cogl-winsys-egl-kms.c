@@ -242,11 +242,14 @@ handle_drm_event (CoglRendererKMS *kms_renderer)
 }
 
 static void
-dispatch_kms_events (void *user_data)
+dispatch_kms_events (void *user_data, int revents)
 {
   CoglRenderer *renderer = user_data;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglRendererKMS *kms_renderer = egl_renderer->platform;
+
+  if (!revents)
+    return;
 
   handle_drm_event (kms_renderer);
 }
@@ -299,7 +302,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   _cogl_poll_renderer_add_fd (renderer,
                               kms_renderer->fd,
                               COGL_POLL_FD_EVENT_IN,
-                              NULL, /* no check callback */
+                              NULL, /* no prepare callback */
                               dispatch_kms_events,
                               renderer);
 

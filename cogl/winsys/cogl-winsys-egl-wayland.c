@@ -110,11 +110,14 @@ static const struct wl_registry_listener registry_listener = {
 };
 
 static void
-dispatch_wayland_display_events (void *user_data)
+dispatch_wayland_display_events (void *user_data, int revents)
 {
   CoglRenderer *renderer = user_data;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglRendererWayland *wayland_renderer = egl_renderer->platform;
+
+  if (!revents)
+    return;
 
   wl_display_dispatch (wayland_renderer->wayland_display);
 }
@@ -191,7 +194,7 @@ _cogl_winsys_renderer_connect (CoglRenderer *renderer,
   _cogl_poll_renderer_add_fd (renderer,
                               wayland_renderer->fd,
                               COGL_POLL_FD_EVENT_IN,
-                              NULL, /* no check callback */
+                              NULL, /* no prepare callback */
                               dispatch_wayland_display_events,
                               renderer);
 
