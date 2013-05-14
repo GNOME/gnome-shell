@@ -125,6 +125,12 @@
                                 <listitem><para>List possible modes and exit</para></listitem>
                         </varlistentry>
 
+                        <varlistentry>
+                                <term><option>--clutter-display=<replaceable>DISPLAY</replaceable></option></term>
+
+                                <listitem><para>Clutter the option display (otherwise ignored)</para></listitem>
+                        </varlistentry>
+
                 </variablelist>
 
         </refsect1>
