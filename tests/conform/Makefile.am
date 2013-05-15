@@ -124,7 +124,7 @@ stamp-test-conformance: Makefile $(srcdir)/test-conform-main.c
 	@for i in `cat unit-tests`; \
 	do \
 		unit=`basename $$i | sed -e s/_/-/g`; \
-		echo "  GEN    $$unit"; \
+		echo "  GEN      $$unit"; \
 		( echo "#!/bin/sh" ; echo "$(abs_builddir)/test-launcher.sh '$$i' \"\$$@\"" ) > $$unit$(SHEXT) ; \
 		( echo "#!/bin/sh" ; echo "exec $(abs_builddir)/test-conformance$(EXEEXT) -p $$i \"\$$@\"" ) > wrappers/$$unit$(SHEXT) ; \
 		( echo "test-conformance-clutter$(EXEEXT) -p $$i" ) > $(top_builddir)/build/win32/$$unit-clutter.bat ; \
@@ -139,7 +139,7 @@ clean-wrappers:
 	@for i in `cat unit-tests`; \
 	do \
 		unit=`basename $$i | sed -e s/_/-/g`; \
-		echo "  RM     $$unit"; \
+		echo "  RM       $$unit"; \
 		rm -f $$unit$(SHEXT) ; \
 		rm -f wrappers/$$unit$(SHEXT) ; \
 	done \

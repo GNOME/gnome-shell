@@ -82,7 +82,7 @@ stamp-test-interactive: Makefile
 	for i in $(UNIT_TESTS); \
 	do \
 		test_bin=$${i%*.c} ; \
-		echo "  GEN    $$test_bin" ; \
+		echo "  GEN      $$test_bin" ; \
 		( echo "#!/bin/sh" ; \
 		  echo "$$wrapper $$test_bin \$$@" \
 		) > $$test_bin$(SHEXT) ; \
@@ -92,7 +92,7 @@ stamp-test-interactive: Makefile
 	&& echo timestamp > $(@F)
 
 $(top_builddir)/build/win32/test-interactive-clutter.bat: Makefile test-interactive$(EXEEXT)
-	@echo "  GEN    test-interactive-clutter.bat" ; \
+	@echo "  GEN      test-interactive-clutter.bat" ; \
 	for i in $(UNIT_TESTS); \
 	do \
 		case $$i in \
@@ -106,7 +106,7 @@ $(top_builddir)/build/win32/test-interactive-clutter.bat: Makefile test-interact
 	&& mv -f *.bat $(top_builddir)/build/win32/
 
 $(top_builddir)/build/win32/test-unit-names.h: test-unit-names.h
-	@echo "  CP     "; cp test-unit-names.h $(top_builddir)/build/win32/
+	@echo "  CP       "; cp test-unit-names.h $(top_builddir)/build/win32/
 
 test-unit-names.h: stamp-test-unit-names
 	@true
@@ -127,7 +127,7 @@ clean-wrappers:
 	@for i in $(UNIT_TESTS); \
 	do \
 		test_bin=$${i%*.c} ; \
-		echo "  RM    $$test_bin"; \
+		echo "  RM      $$test_bin"; \
 		rm -f $$test_bin$(SHEXT); \
 	done \
 	&& rm -f $(top_builddir)/build/win32/*.bat \
