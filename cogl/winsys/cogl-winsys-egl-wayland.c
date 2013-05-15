@@ -74,6 +74,8 @@ typedef struct _CoglOnscreenWayland
   int pending_dx;
   int pending_dy;
   CoglBool has_pending;
+
+  CoglBool shell_surface_type_set;
 } CoglOnscreenWayland;
 
 static void
@@ -377,12 +379,9 @@ _cogl_winsys_egl_onscreen_init (CoglOnscreen *onscreen,
                             NULL);
 
   if (!onscreen->foreign_surface)
-    {
-      wayland_onscreen->wayland_shell_surface =
-        wl_shell_get_shell_surface (wayland_renderer->wayland_shell,
-                                    wayland_onscreen->wayland_surface);
-      wl_shell_surface_set_toplevel (wayland_onscreen->wayland_shell_surface);
-    }
+    wayland_onscreen->wayland_shell_surface =
+      wl_shell_get_shell_surface (wayland_renderer->wayland_shell,
+                                  wayland_onscreen->wayland_surface);
 
   return TRUE;
 }
@@ -458,6 +457,32 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
    * sent.
    */
   wl_display_flush (wayland_renderer->wayland_display);
+}
+
+static void
+_cogl_winsys_onscreen_set_visibility (CoglOnscreen *onscreen,
+                                      CoglBool visibility)
+{
+  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
+  CoglOnscreenWayland *wayland_onscreen = egl_onscreen->platform;
+
+  /* The first time the onscreen is shown we will set it to toplevel
+   * so that it will appear on the screen. If the surface is foreign
+   * then we won't have the shell surface and we'll just let the
+   * application deal with setting the surface type. */
+  if (visibility &&
+      wayland_onscreen->wayland_shell_surface &&
+      !wayland_onscreen->shell_surface_type_set)
+    {
+      wl_shell_surface_set_toplevel (wayland_onscreen->wayland_shell_surface);
+      wayland_onscreen->shell_surface_type_set = TRUE;
+    }
+
+  /* FIXME: We should also do something here to hide the surface when
+   * visilibity == FALSE. It sounds like there are currently ongoing
+   * discussions about adding support for hiding surfaces in the
+   * Wayland protocol so we might as well wait until then to add that
+   * here. */
 }
 
 void
@@ -656,6 +681,9 @@ _cogl_winsys_egl_wayland_get_vtable (void)
 
       vtable.onscreen_swap_buffers_with_damage =
         _cogl_winsys_onscreen_swap_buffers_with_damage;
+
+      vtable.onscreen_set_visibility =
+        _cogl_winsys_onscreen_set_visibility;
 
       vtable_inited = TRUE;
     }

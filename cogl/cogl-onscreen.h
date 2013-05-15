@@ -273,6 +273,12 @@ cogl_onscreen_set_swap_throttled (CoglOnscreen *onscreen,
  * This function will implicitly allocate the given @onscreen
  * framebuffer before showing it if it hasn't already been allocated.
  *
+ * When using the Wayland winsys calling this will set the surface to
+ * a toplevel type which will make it appear. If the application wants
+ * to set a different type for the surface, it can avoid calling
+ * cogl_onscreen_show() and set its own type directly with the Wayland
+ * client API via cogl_wayland_onscreen_get_surface().
+ *
  * <note>Since Cogl doesn't explicitly track the visibility status of
  * onscreen framebuffers it wont try to avoid redundant window system
  * requests e.g. to show an already visible window. This also means
