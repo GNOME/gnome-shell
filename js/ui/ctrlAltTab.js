@@ -61,8 +61,7 @@ const CtrlAltTabManager = new Lang.Class({
         if (item.focusCallback) {
             item.focusCallback(timestamp);
         } else {
-            if (global.stage_input_mode == Shell.StageInputMode.NONREACTIVE ||
-                global.stage_input_mode == Shell.StageInputMode.NORMAL)
+            if (global.stage_input_mode == Shell.StageInputMode.NORMAL)
                 global.set_stage_input_mode(Shell.StageInputMode.FOCUSED);
 
             item.root.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);

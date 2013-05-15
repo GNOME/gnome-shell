@@ -211,10 +211,8 @@ const GrabHelper = new Lang.Class({
             this._grabbedFromKeynav = hadFocus;
             this._preGrabInputMode = global.stage_input_mode;
 
-            if (this._preGrabInputMode == Shell.StageInputMode.NONREACTIVE ||
-                this._preGrabInputMode == Shell.StageInputMode.NORMAL) {
+            if (this._preGrabInputMode == Shell.StageInputMode.NORMAL)
                 global.set_stage_input_mode(Shell.StageInputMode.FOCUSED);
-            }
 
             this._keyFocusNotifyId = global.stage.connect('notify::key-focus', Lang.bind(this, this._onKeyFocusChanged));
             this._focusWindowChangedId = metaDisplay.connect('notify::focus-window', Lang.bind(this, this._focusWindowChanged));

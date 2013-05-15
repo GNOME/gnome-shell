@@ -546,13 +546,10 @@ shell_global_focus_stage (ShellGlobal *global)
  * @mode: the stage input mode
  *
  * Sets the input mode of the stage; when @mode is
- * %SHELL_STAGE_INPUT_MODE_NONREACTIVE, then the stage does not absorb
- * any clicks, but just passes them through to underlying windows.
- * When it is %SHELL_STAGE_INPUT_MODE_NORMAL, then the stage accepts
- * clicks in the region defined by
- * shell_global_set_stage_input_region() but passes through clicks
- * outside that region. When it is %SHELL_STAGE_INPUT_MODE_FULLSCREEN,
- * the stage absorbs all input.
+ * %SHELL_STAGE_INPUT_MODE_NORMAL, then the stage accepts clicks in
+ * the region defined by shell_global_set_stage_input_region() but
+ * passes through clicks outside that region. When it is
+ * %SHELL_STAGE_INPUT_MODE_FULLSCREEN, the stage absorbs all input.
  *
  * When the input mode is %SHELL_STAGE_INPUT_MODE_FOCUSED, the pointer
  * is handled as with %SHELL_STAGE_INPUT_MODE_NORMAL, but additionally
@@ -561,9 +558,8 @@ shell_global_focus_stage (ShellGlobal *global)
  * will revert to %SHELL_STAGE_INPUT_MODE_NORMAL.
  *
  * Note that whenever a mutter-internal Gtk widget has a pointer grab,
- * the shell behaves as though it was in
- * %SHELL_STAGE_INPUT_MODE_NONREACTIVE, to ensure that the widget gets
- * any clicks it is expecting.
+ * the shell goes unresponsive and passes things to the underlying GTK+
+ * widget to ensure that the widget gets any clicks it is expecting.
  */
 void
 shell_global_set_stage_input_mode (ShellGlobal         *global,
@@ -575,7 +571,7 @@ shell_global_set_stage_input_mode (ShellGlobal         *global,
 
   screen = meta_plugin_get_screen (global->plugin);
 
-  if (mode == SHELL_STAGE_INPUT_MODE_NONREACTIVE || global->gtk_grab_active)
+  if (global->gtk_grab_active)
     meta_empty_stage_input_region (screen);
   else if (mode == SHELL_STAGE_INPUT_MODE_FULLSCREEN || !global->input_region)
     meta_set_stage_input_region (screen, None);

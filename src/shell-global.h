@@ -46,7 +46,6 @@ void     shell_global_end_modal              (ShellGlobal         *global,
                                               guint32              timestamp);
 
 typedef enum {
-  SHELL_STAGE_INPUT_MODE_NONREACTIVE,
   SHELL_STAGE_INPUT_MODE_NORMAL,
   SHELL_STAGE_INPUT_MODE_FOCUSED,
   SHELL_STAGE_INPUT_MODE_FULLSCREEN
