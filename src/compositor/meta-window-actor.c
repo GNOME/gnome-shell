@@ -1645,7 +1645,7 @@ meta_window_actor_get_obscured_region (MetaWindowActor *self)
 {
   MetaWindowActorPrivate *priv = self->priv;
 
-  if (priv->back_pixmap && priv->opacity == 0xff)
+  if (priv->back_pixmap && priv->opacity == 0xff && !priv->window->shaded)
     return priv->opaque_region;
   else
     return NULL;
@@ -2146,7 +2146,10 @@ check_needs_reshape (MetaWindowActor *self)
   client_area.x = borders.total.left;
   client_area.y = borders.total.top;
   client_area.width = priv->window->rect.width;
-  client_area.height = priv->window->rect.height;
+  if (priv->window->shaded)
+    client_area.height = 0;
+  else
+    client_area.height = priv->window->rect.height;
 
   meta_shaped_texture_set_mask_texture (META_SHAPED_TEXTURE (priv->actor), NULL);
   g_clear_pointer (&priv->shape_region, cairo_region_destroy);
