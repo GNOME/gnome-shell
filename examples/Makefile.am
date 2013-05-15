@@ -22,12 +22,6 @@ all_examples += \
 	image-content
 endif
 
-INCLUDES = \
-	-I$(top_srcdir)			\
-	-I$(top_builddir)		\
-	-I$(top_srcdir)/clutter 	\
-	-I$(top_builddir)/clutter
-
 LDADD = \
 	$(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la \
 	$(CLUTTER_LIBS) \
@@ -39,7 +33,11 @@ AM_CFLAGS = $(CLUTTER_CFLAGS) $(GDK_PIXBUF_CFLAGS) $(MAINTAINER_CFLAGS)
 AM_CPPFLAGS = \
 	-DTESTS_DATADIR=\""$(abs_top_srcdir)/tests/data"\" \
 	-DG_DISABLE_SINGLE_INCLUDES \
-	-DGLIB_DISABLE_DEPRECATION_WARNINGS
+	-DGLIB_DISABLE_DEPRECATION_WARNINGS \
+	-I$(top_srcdir)	\
+	-I$(top_builddir) \
+	-I$(top_srcdir)/clutter \
+	-I$(top_builddir)/clutter
 
 noinst_PROGRAMS = $(all_examples)
 

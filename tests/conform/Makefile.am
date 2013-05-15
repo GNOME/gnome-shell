@@ -151,18 +151,16 @@ clean-wrappers:
 # a phony rule that will generate symlink scripts for running individual tests
 BUILT_SOURCES = wrappers
 
-INCLUDES = \
-	-I$(top_srcdir) \
-	-I$(top_builddir) \
-	-I$(top_srcdir)/clutter \
-	-I$(top_builddir)/clutter
-
 test_conformance_CPPFLAGS = \
 	-DG_DISABLE_SINGLE_INCLUDES \
 	-DCOGL_ENABLE_EXPERIMENTAL_API \
 	-DG_DISABLE_DEPRECATION_WARNINGS \
 	-DCLUTTER_DISABLE_DEPRECATION_WARNINGS \
-	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\"
+	-DTESTS_DATADIR=\""$(top_srcdir)/tests/data"\" \
+	-I$(top_srcdir) \
+	-I$(top_builddir) \
+	-I$(top_srcdir)/clutter \
+	-I$(top_builddir)/clutter
 
 test_conformance_CFLAGS = -g $(CLUTTER_CFLAGS)
 

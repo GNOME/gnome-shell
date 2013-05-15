@@ -11,14 +11,6 @@ BUILT_SOURCES =
 
 lib_LTLIBRARIES =
 
-INCLUDES = \
-	-I$(top_srcdir) 				\
-	-I$(top_srcdir)/clutter				\
-	-I$(top_srcdir)/clutter/cally			\
-	-I$(top_builddir)				\
-	-I$(top_builddir)/clutter			\
-	$(NULL)
-
 AM_CPPFLAGS = \
 	-DCLUTTER_PREFIX=\""$(prefix)"\"	\
 	-DCLUTTER_LIBDIR=\""$(libdir)"\"	\
@@ -28,6 +20,11 @@ AM_CPPFLAGS = \
 	-DCLUTTER_COMPILATION=1			\
 	-DCOGL_ENABLE_EXPERIMENTAL_API		\
 	-DG_LOG_DOMAIN=\"Clutter\" 		\
+	-I$(top_srcdir) 			\
+	-I$(top_srcdir)/clutter			\
+	-I$(top_srcdir)/clutter/cally		\
+	-I$(top_builddir)			\
+	-I$(top_builddir)/clutter		\
 	$(CLUTTER_DEPRECATED_CFLAGS)		\
 	$(CLUTTER_DEBUG_CFLAGS)			\
 	$(CLUTTER_PROFILE_CFLAGS)		\
@@ -970,7 +967,7 @@ Clutter_@CLUTTER_API_VERSION_AM@_gir_FILES = \
 	$(source_c) \
 	$(deprecated_c) \
 	$(built_source_c)
-Clutter_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS)
+Clutter_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS)
 Clutter_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = GL-1.0 GObject-2.0 cairo-1.0 Cogl-1.0 CoglPango-1.0 Atk-1.0 Json-1.0
 Clutter_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
@@ -985,7 +982,7 @@ Cally_@CLUTTER_API_VERSION_AM@_gir_NAMESPACE = Cally
 Cally_@CLUTTER_API_VERSION_AM@_gir_VERSION = @CLUTTER_API_VERSION@
 Cally_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_API_VERSION@.la
 Cally_@CLUTTER_API_VERSION_AM@_gir_FILES = $(cally_sources_h) $(cally_sources_c)
-Cally_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS)
+Cally_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS)
 Cally_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 	--warn-all \
 	--identifier-prefix=Cally \
@@ -1009,7 +1006,7 @@ ClutterX11_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = xlib-2.0
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_API_VERSION@.la
 ClutterX11_@CLUTTER_API_VERSION_AM@_gir_FILES = $(x11_introspection)
-ClutterX11_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS)
+ClutterX11_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS)
 
 INTROSPECTION_GIRS += ClutterX11-@CLUTTER_API_VERSION@.gir
 endif # SUPPORT_X11
@@ -1026,7 +1023,7 @@ ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_SCANNERFLAGS = \
 ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_INCLUDES = Gdk-3.0
 ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_LIBS = libclutter-@CLUTTER_API_VERSION@.la
 ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_FILES = $(gdk_introspection)
-ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(INCLUDES) $(CLUTTER_CFLAGS) $(AM_CPPFLAGS)
+ClutterGdk_@CLUTTER_API_VERSION_AM@_gir_CFLAGS = $(AM_CPPFLAGS) $(CLUTTER_CFLAGS)
 
 INTROSPECTION_GIRS += ClutterGdk-@CLUTTER_API_VERSION@.gir
 endif # SUPPORT_GDK

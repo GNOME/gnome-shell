@@ -136,12 +136,6 @@ clean-wrappers:
 
 .PHONY: wrappers clean-wrappers
 
-INCLUDES = \
-	-I$(top_srcdir)			\
-	-I$(top_builddir)		\
-	-I$(top_srcdir)/clutter 	\
-	-I$(top_builddir)/clutter
-
 common_ldadd = $(top_builddir)/clutter/libclutter-@CLUTTER_API_VERSION@.la
 
 noinst_PROGRAMS = test-interactive
@@ -153,7 +147,11 @@ test_interactive_CPPFLAGS = \
 	-DTESTS_DATADIR=\""$(abs_top_srcdir)/tests/data"\" \
 	-DG_DISABLE_SINGLE_INCLUDES \
 	-DGLIB_DISABLE_DEPRECATION_WARNINGS \
-	-DCLUTTER_DISABLE_DEPRECATION_WARNINGS
+	-DCLUTTER_DISABLE_DEPRECATION_WARNINGS \
+	-I$(top_srcdir)	\
+	-I$(top_builddir) \
+	-I$(top_srcdir)/clutter \
+	-I$(top_builddir)/clutter
 test_interactive_LDFLAGS = -export-dynamic
 test_interactive_LDADD = $(CLUTTER_LIBS) $(GDK_PIXBUF_LIBS) $(common_ldadd) -lm
 
