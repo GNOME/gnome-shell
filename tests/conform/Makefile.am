@@ -55,6 +55,7 @@ units_sources += \
 	actor-iter.c			\
 	actor-layout.c			\
 	actor-offscreen-redirect.c	\
+	actor-offscreen-limit-max-size.c\
 	actor-paint-opacity.c 		\
 	actor-pick.c 			\
 	actor-shader-effect.c		\

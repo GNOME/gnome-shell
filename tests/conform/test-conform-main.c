@@ -145,6 +145,7 @@ main (int argc, char **argv)
   TEST_CONFORM_SIMPLE ("/actor", actor_basic_layout);
   TEST_CONFORM_SIMPLE ("/actor", actor_margin_layout);
   TEST_CONFORM_SIMPLE ("/actor", actor_offscreen_redirect);
+  TEST_CONFORM_SIMPLE ("/actor", actor_offscreen_limit_max_size);
   TEST_CONFORM_SIMPLE ("/actor", actor_shader_effect);
 
   TEST_CONFORM_SIMPLE ("/actor/iter", actor_iter_traverse_children);
