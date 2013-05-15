@@ -26,6 +26,7 @@ stamp-marshal
 /clutter-lcov.info
 /clutter-lcov
 /build/autotools/*.m4
+/build/test-driver
 !/build/autotools/introspection.m4
 !/build/autotools/as-linguas.m4
 !/build/autotools/as-compiler-flag.m4
