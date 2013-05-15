@@ -234,7 +234,7 @@ const AppSwitcherPopup = new Lang.Class({
     _finish : function(timestamp) {
         let appIcon = this._items[this._selectedIndex];
         if (this._currentWindow < 0)
-            appIcon.app.activate_full(-1, timestamp);
+            appIcon.app.activate_window(appIcon.cachedWindows[0], timestamp);
         else
             Main.activateWindow(appIcon.cachedWindows[this._currentWindow], timestamp);
 
