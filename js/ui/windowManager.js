@@ -136,6 +136,42 @@ const WindowManager = new Lang.Class({
                                         Shell.KeyBindingMode.NORMAL |
                                         Shell.KeyBindingMode.OVERVIEW,
                                         Lang.bind(this, this._showWorkspaceSwitcher));
+        this.allowKeybinding('switch-to-workspace-1',
+                             Shell.KeyBindingMode.NORMAL |
+                             Shell.KeyBindingMode.OVERVIEW);
+        this.allowKeybinding('switch-to-workspace-2',
+                             Shell.KeyBindingMode.NORMAL |
+                             Shell.KeyBindingMode.OVERVIEW);
+        this.allowKeybinding('switch-to-workspace-3',
+                             Shell.KeyBindingMode.NORMAL |
+                             Shell.KeyBindingMode.OVERVIEW);
+        this.allowKeybinding('switch-to-workspace-4',
+                             Shell.KeyBindingMode.NORMAL |
+                             Shell.KeyBindingMode.OVERVIEW);
+        this.allowKeybinding('switch-to-workspace-5',
+                             Shell.KeyBindingMode.NORMAL |
+                             Shell.KeyBindingMode.OVERVIEW);
+        this.allowKeybinding('switch-to-workspace-6',
+                             Shell.KeyBindingMode.NORMAL |
+                             Shell.KeyBindingMode.OVERVIEW);
+        this.allowKeybinding('switch-to-workspace-7',
+                             Shell.KeyBindingMode.NORMAL |
+                             Shell.KeyBindingMode.OVERVIEW);
+        this.allowKeybinding('switch-to-workspace-8',
+                             Shell.KeyBindingMode.NORMAL |
+                             Shell.KeyBindingMode.OVERVIEW);
+        this.allowKeybinding('switch-to-workspace-9',
+                             Shell.KeyBindingMode.NORMAL |
+                             Shell.KeyBindingMode.OVERVIEW);
+        this.allowKeybinding('switch-to-workspace-10',
+                             Shell.KeyBindingMode.NORMAL |
+                             Shell.KeyBindingMode.OVERVIEW);
+        this.allowKeybinding('switch-to-workspace-11',
+                             Shell.KeyBindingMode.NORMAL |
+                             Shell.KeyBindingMode.OVERVIEW);
+        this.allowKeybinding('switch-to-workspace-12',
+                             Shell.KeyBindingMode.NORMAL |
+                             Shell.KeyBindingMode.OVERVIEW);
         this.setCustomKeybindingHandler('switch-applications',
                                         Shell.KeyBindingMode.NORMAL,
                                         Lang.bind(this, this._startAppSwitcher));
