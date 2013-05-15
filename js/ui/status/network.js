@@ -2080,12 +2080,12 @@ const NMApplet = new Lang.Class({
 
             if (a.state == NetworkManager.ActiveConnectionState.ACTIVATING)
                 activating = a;
-            else if (a.state == NetworkManager.ActiveConnectionState.ACTIVE)
+            else if (a.state == NetworkManager.ActiveConnectionState.ACTIVATED)
                 active_any = a;
 
             if (a._type == 'vpn' &&
                 (a.state == NetworkManager.ActiveConnectionState.ACTIVATING ||
-                 a.state == NetworkManager.ActiveConnectionState.ACTIVE))
+                 a.state == NetworkManager.ActiveConnectionState.ACTIVATED))
                 active_vpn = a;
 
             if (!a._primaryDevice) {
