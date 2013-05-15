@@ -151,19 +151,29 @@ clutter_canvas_set_property (GObject      *gobject,
   switch (prop_id)
     {
     case PROP_WIDTH:
-      if (priv->width != g_value_get_int (value))
-        {
-          priv->width = g_value_get_int (value);
-          clutter_content_invalidate (CLUTTER_CONTENT (gobject));
-        }
+      {
+        gint new_size = g_value_get_int (value);
+
+        if (priv->width != new_size)
+          {
+            priv->width = new_size;
+
+            clutter_content_invalidate (CLUTTER_CONTENT (gobject));
+          }
+      }
       break;
 
     case PROP_HEIGHT:
-      if (priv->height != g_value_get_int (value))
-        {
-          priv->height = g_value_get_int (value);
-          clutter_content_invalidate (CLUTTER_CONTENT (gobject));
-        }
+      {
+        gint new_size = g_value_get_int (value);
+
+        if (priv->height != new_size)
+          {
+            priv->height = new_size;
+
+            clutter_content_invalidate (CLUTTER_CONTENT (gobject));
+          }
+      }
       break;
 
     default:
@@ -494,13 +504,13 @@ clutter_canvas_new (void)
   return g_object_new (CLUTTER_TYPE_CANVAS, NULL);
 }
 
-static inline void
+static gboolean
 clutter_canvas_invalidate_internal (ClutterCanvas *canvas,
                                     int            width,
-                                    int            height,
-                                    gboolean       force_invalidate)
+                                    int            height)
 {
   gboolean width_changed = FALSE, height_changed = FALSE;
+  gboolean res = FALSE;
   GObject *obj;
 
   obj = G_OBJECT (canvas);
@@ -523,10 +533,15 @@ clutter_canvas_invalidate_internal (ClutterCanvas *canvas,
       g_object_notify_by_pspec (obj, obj_props[PROP_HEIGHT]);
     }
 
-  if (force_invalidate || (width_changed || height_changed))
-    clutter_content_invalidate (CLUTTER_CONTENT (canvas));
+  if (width_changed || height_changed)
+    {
+      clutter_content_invalidate (CLUTTER_CONTENT (canvas));
+      res = TRUE;
+    }
 
   g_object_thaw_notify (obj);
+
+  return res;
 }
 
 /**
@@ -540,39 +555,27 @@ clutter_canvas_invalidate_internal (ClutterCanvas *canvas,
  * This function will cause the @canvas to be invalidated only
  * if the size of the canvas surface has changed.
  *
+ * If you want to invalidate the contents of the @canvas when setting
+ * the size, you can use the return value of the function to conditionally
+ * call clutter_content_invalidate():
+ *
+ * |[
+ *   if (!clutter_canvas_set_size (canvas, width, height))
+ *     clutter_content_invalidate (CLUTTER_CONTENT (canvas));
+ * ]|
+ *
+ * Return value: this function returns %TRUE if the size change
+ *   caused a content invalidation, and %FALSE otherwise
+ *
  * Since: 1.10
  */
-void
+gboolean
 clutter_canvas_set_size (ClutterCanvas *canvas,
                          int            width,
                          int            height)
 {
-  g_return_if_fail (CLUTTER_IS_CANVAS (canvas));
-  g_return_if_fail (width >= -1 && height >= -1);
+  g_return_val_if_fail (CLUTTER_IS_CANVAS (canvas), FALSE);
+  g_return_val_if_fail (width >= -1 && height >= -1, FALSE);
 
-  clutter_canvas_invalidate_internal (canvas, width, height, FALSE);
-}
-
-/**
- * clutter_canvas_invalidate_with_size:
- * @canvas: a #ClutterCanvas
- * @width: the width of the canvas, in pixels
- * @height: the height of the canvas, in pixels
- *
- * Sets the size of the @canvas, and invalidates the content.
- *
- * This function will cause the @canvas to be invalidated regardless
- * of the size change.
- *
- * Since: 1.16
- */
-void
-clutter_canvas_invalidate_with_size (ClutterCanvas *canvas,
-                                     int            width,
-                                     int            height)
-{
-  g_return_if_fail (CLUTTER_IS_CANVAS (canvas));
-  g_return_if_fail (width >= -1 && height >= -1);
-
-  clutter_canvas_invalidate_internal (canvas, width, height, TRUE);
+  return clutter_canvas_invalidate_internal (canvas, width, height);
 }

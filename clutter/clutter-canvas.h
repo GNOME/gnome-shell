@@ -91,14 +91,10 @@ GType clutter_canvas_get_type (void) G_GNUC_CONST;
 CLUTTER_AVAILABLE_IN_1_10
 ClutterContent *        clutter_canvas_new                      (void);
 CLUTTER_AVAILABLE_IN_1_10
-void                    clutter_canvas_set_size                 (ClutterCanvas *canvas,
+gboolean                clutter_canvas_set_size                 (ClutterCanvas *canvas,
                                                                  int            width,
                                                                  int            height);
 
-CLUTTER_AVAILABLE_IN_1_16
-void                    clutter_canvas_invalidate_with_size     (ClutterCanvas *canvas,
-                                                                 int            width,
-                                                                 int            height);
 
 G_END_DECLS
 
