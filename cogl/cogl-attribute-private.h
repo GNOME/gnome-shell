@@ -126,5 +126,8 @@ _cogl_flush_attributes_state (CoglFramebuffer *framebuffer,
                               CoglAttribute **attributes,
                               int n_attributes);
 
+int
+_cogl_attribute_get_n_components (CoglAttribute *attribute);
+
 #endif /* __COGL_ATTRIBUTE_PRIVATE_H */
 

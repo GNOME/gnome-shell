@@ -375,26 +375,22 @@ _cogl_gl_flush_attributes_state (CoglFramebuffer *framebuffer,
 {
   CoglContext *ctx = framebuffer->context;
   int i;
-  CoglBool skip_gl_color = FALSE;
+  CoglBool with_color_attrib = FALSE;
+  CoglBool unknown_color_alpha = FALSE;
   CoglPipeline *copy = NULL;
 
-  /* Iterate the attributes to work out whether blending needs to be
-     enabled and how many texture coords there are. We need to do this
-     before flushing the pipeline. */
+  /* Iterate the attributes to see if we have a color attribute which
+   * may affect our decision to enable blending or not.
+   *
+   * We need to do this before flushing the pipeline. */
   for (i = 0; i < n_attributes; i++)
     switch (attributes[i]->name_state->name_id)
       {
       case COGL_ATTRIBUTE_NAME_ID_COLOR_ARRAY:
         if ((flags & COGL_DRAW_COLOR_ATTRIBUTE_IS_OPAQUE) == 0 &&
-            !_cogl_pipeline_get_real_blend_enabled (pipeline))
-          {
-            CoglPipelineBlendEnable blend_enable =
-              COGL_PIPELINE_BLEND_ENABLE_ENABLED;
-            copy = cogl_pipeline_copy (pipeline);
-            _cogl_pipeline_set_blend_enabled (copy, blend_enable);
-            pipeline = copy;
-          }
-        skip_gl_color = TRUE;
+            _cogl_attribute_get_n_components (attributes[i]) == 4)
+          unknown_color_alpha = TRUE;
+        with_color_attrib = TRUE;
         break;
 
       default:
@@ -445,9 +441,11 @@ _cogl_gl_flush_attributes_state (CoglFramebuffer *framebuffer,
        */
     }
 
-  _cogl_pipeline_flush_gl_state (pipeline,
+  _cogl_pipeline_flush_gl_state (ctx,
+                                 pipeline,
                                  framebuffer,
-                                 skip_gl_color);
+                                 with_color_attrib,
+                                 unknown_color_alpha);
 
   _cogl_bitmask_clear_all (&ctx->enable_builtin_attributes_tmp);
   _cogl_bitmask_clear_all (&ctx->enable_texcoord_attributes_tmp);

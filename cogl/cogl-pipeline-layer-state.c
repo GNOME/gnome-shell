@@ -210,7 +210,7 @@ _cogl_pipeline_set_layer_texture_type (CoglPipeline *pipeline,
 
 changed:
 
-  _cogl_pipeline_update_blend_enable (pipeline, COGL_PIPELINE_STATE_LAYERS);
+  pipeline->dirty_real_blend_enable = TRUE;
 }
 
 static void
@@ -289,7 +289,7 @@ _cogl_pipeline_set_layer_texture_data (CoglPipeline *pipeline,
 
 changed:
 
-  _cogl_pipeline_update_blend_enable (pipeline, COGL_PIPELINE_STATE_LAYERS);
+  pipeline->dirty_real_blend_enable = TRUE;
 }
 
 void
@@ -1267,7 +1267,7 @@ cogl_pipeline_set_layer_combine (CoglPipeline *pipeline,
 
 changed:
 
-  _cogl_pipeline_update_blend_enable (pipeline, COGL_PIPELINE_STATE_LAYERS);
+  pipeline->dirty_real_blend_enable = TRUE;
   return TRUE;
 }
 
@@ -1352,7 +1352,7 @@ cogl_pipeline_set_layer_combine_constant (CoglPipeline *pipeline,
 
 changed:
 
-  _cogl_pipeline_update_blend_enable (pipeline, COGL_PIPELINE_STATE_LAYERS);
+  pipeline->dirty_real_blend_enable = TRUE;
 }
 
 void

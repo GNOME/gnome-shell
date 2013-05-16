@@ -657,3 +657,12 @@ _cogl_flush_attributes_state (CoglFramebuffer *framebuffer,
   if (copy)
     cogl_object_unref (copy);
 }
+
+int
+_cogl_attribute_get_n_components (CoglAttribute *attribute)
+{
+  if (attribute->is_buffered)
+    return attribute->d.buffered.n_components;
+  else
+    return attribute->d.constant.boxed.size;
+}

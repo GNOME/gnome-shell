@@ -287,7 +287,8 @@ add_stencil_clip_silhouette (CoglFramebuffer *framebuffer,
                                               projection_stack->last_entry);
   _cogl_context_set_current_modelview_entry (ctx, modelview_entry);
 
-  _cogl_pipeline_flush_gl_state (ctx->stencil_pipeline, framebuffer, FALSE);
+  _cogl_pipeline_flush_gl_state (ctx, ctx->stencil_pipeline,
+                                 framebuffer, FALSE, FALSE);
 
   GE( ctx, glEnable (GL_STENCIL_TEST) );
 

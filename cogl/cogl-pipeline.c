@@ -740,70 +740,28 @@ layer_has_alpha_cb (CoglPipelineLayer *layer, void *data)
   return !(*has_alpha);
 }
 
+/* NB: If this pipeline returns FALSE that doesn't mean that the
+ * pipeline is definitely opaque, it just means that that the
+ * given changes dont imply transparency.
+ *
+ * If you want to find out of the pipeline is opaque then assuming
+ * this returns FALSE for a set of changes then you can follow
+ * up
+ */
 static CoglBool
-_cogl_pipeline_needs_blending_enabled (CoglPipeline    *pipeline,
-                                       unsigned long    changes,
-                                       const CoglColor *override_color)
+_cogl_pipeline_change_implies_transparency (CoglPipeline *pipeline,
+                                            unsigned int changes,
+                                            const CoglColor *override_color,
+                                            CoglBool unknown_color_alpha)
 {
-  CoglPipeline *enable_authority;
-  CoglPipeline *blend_authority;
-  CoglPipelineBlendState *blend_state;
-  CoglPipelineBlendEnable enabled;
-  unsigned long other_state;
-
-  _COGL_GET_CONTEXT (ctx, FALSE);
-
-  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_BLENDING)))
-    return FALSE;
-
-  enable_authority =
-    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_BLEND_ENABLE);
-
-  enabled = enable_authority->blend_enable;
-  if (enabled != COGL_PIPELINE_BLEND_ENABLE_AUTOMATIC)
-    return enabled == COGL_PIPELINE_BLEND_ENABLE_ENABLED ? TRUE : FALSE;
-
-  blend_authority =
-    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_BLEND);
-
-  blend_state = &blend_authority->big_state->blend_state;
-
-  /* We are trying to identify awkward cases that are equivalent to
-   * blending being disable, where the output is simply GL_SRC_COLOR.
-   *
-   * Note: we assume that all OpenGL drivers will identify the simple
-   * case of ADD (ONE, ZERO) as equivalent to blending being disabled.
-   *
-   * We should update this when we add support for more blend
-   * functions...
-   */
-
-#if defined (HAVE_COGL_GLES2) || defined (HAVE_COGL_GL)
-  if (ctx->driver != COGL_DRIVER_GLES1)
-    {
-      /* GLES 1 can't change the function or have separate alpha factors */
-      if (blend_state->blend_equation_rgb != GL_FUNC_ADD ||
-          blend_state->blend_equation_alpha != GL_FUNC_ADD)
-        return TRUE;
-
-      if (blend_state->blend_src_factor_alpha != GL_ONE ||
-          blend_state->blend_dst_factor_alpha != GL_ONE_MINUS_SRC_ALPHA)
-        return TRUE;
-    }
-#endif
-
-  if (blend_state->blend_src_factor_rgb != GL_ONE ||
-      blend_state->blend_dst_factor_rgb != GL_ONE_MINUS_SRC_ALPHA)
-    return TRUE;
-
-  /* Given the above constraints, it's now a case of finding any
-   * SRC_ALPHA that != 1 */
-
   /* In the case of a layer state change we need to check everything
    * else first since they contribute to the has_alpha status of the
-   * GL_PREVIOUS layer. */
+   * "PREVIOUS" layer. */
   if (changes & COGL_PIPELINE_STATE_LAYERS)
     changes = COGL_PIPELINE_STATE_AFFECTS_BLENDING;
+
+  if (unknown_color_alpha)
+    return TRUE;
 
   if ((override_color && cogl_color_get_alpha_byte (override_color) != 0xff))
     return TRUE;
@@ -878,24 +836,104 @@ _cogl_pipeline_needs_blending_enabled (CoglPipeline    *pipeline,
         return TRUE;
     }
 
+  return FALSE;
+}
+
+static CoglBool
+_cogl_pipeline_needs_blending_enabled (CoglPipeline *pipeline,
+                                       unsigned int changes,
+                                       const CoglColor *override_color,
+                                       CoglBool unknown_color_alpha)
+{
+  CoglPipeline *enable_authority;
+  CoglPipeline *blend_authority;
+  CoglPipelineBlendState *blend_state;
+  CoglPipelineBlendEnable enabled;
+
+  if (G_UNLIKELY (COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_BLENDING)))
+    return FALSE;
+
+  /* We unconditionally check the _BLEND_ENABLE state first because
+   * all the other changes are irrelevent if blend_enable != _AUTOMATIC
+   */
+  enable_authority =
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_BLEND_ENABLE);
+
+  enabled = enable_authority->blend_enable;
+  if (enabled != COGL_PIPELINE_BLEND_ENABLE_AUTOMATIC)
+    return enabled == COGL_PIPELINE_BLEND_ENABLE_ENABLED ? TRUE : FALSE;
+
+  blend_authority =
+    _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_BLEND);
+
+  blend_state = &blend_authority->big_state->blend_state;
+
+  /* We are trying to identify some cases that are equivalent to
+   * blending being disable, where the output is simply GL_SRC_COLOR.
+   *
+   * Note: we currently only consider a few cases that can be
+   * optimized but there could be opportunities to special case more
+   * blend functions later.
+   */
+
+  /* As the most common way that we currently use to effectively
+   * disable blending is to use an equation of
+   * "RGBA=ADD(SRC_COLOR, 0)" that's the first thing we check
+   * for... */
+  if (blend_state->blend_equation_rgb == GL_FUNC_ADD &&
+      blend_state->blend_equation_alpha == GL_FUNC_ADD &&
+      blend_state->blend_src_factor_alpha == GL_ONE &&
+      blend_state->blend_dst_factor_alpha == GL_ZERO)
+    {
+      return FALSE;
+    }
+
+  /* NB: The default blending equation for Cogl is
+   * "RGBA=ADD(SRC_COLOR, DST_COLOR * (1-SRC_COLOR[A]))"
+   *
+   * Next we check if the default blending equation is being used.  If
+   * so then we follow that by looking for cases where SRC_COLOR[A] ==
+   * 1 since that simplifies "DST_COLOR * (1-SRC_COLOR[A])" to 0 which
+   * also effectively requires no blending.
+   */
+
+  if (blend_state->blend_equation_rgb != GL_FUNC_ADD ||
+      blend_state->blend_equation_alpha != GL_FUNC_ADD)
+    return TRUE;
+
+  if (blend_state->blend_src_factor_alpha != GL_ONE ||
+      blend_state->blend_dst_factor_alpha != GL_ONE_MINUS_SRC_ALPHA)
+    return TRUE;
+
+  if (blend_state->blend_src_factor_rgb != GL_ONE ||
+      blend_state->blend_dst_factor_rgb != GL_ONE_MINUS_SRC_ALPHA)
+    return TRUE;
+
+  /* Given the above constraints, it's now a case of finding any
+   * SRC_ALPHA that != 1 */
+
+  if (_cogl_pipeline_change_implies_transparency (pipeline, changes,
+                                                  override_color,
+                                                  unknown_color_alpha))
+    return TRUE;
+
   /* At this point, considering just the state that has changed it
    * looks like blending isn't needed. If blending was previously
    * enabled though it could be that some other state still requires
-   * that we have blending enabled. In this case we still need to
-   * go and check the other state...
+   * that we have blending enabled because it implies transparency.
+   * In this case we still need to go and check the other state...
    *
-   * FIXME: We should explicitly keep track of the mask of state
-   * groups that are currently causing blending to be enabled so that
-   * we never have to resort to checking *all* the state and can
-   * instead always limit the check to those in the mask.
+   * XXX: We could explicitly keep track of the mask of state groups
+   * that are currently causing blending to be enabled so that we
+   * never have to resort to checking *all* the state and can instead
+   * always limit the check to those in the mask.
    */
   if (pipeline->real_blend_enable)
     {
-      other_state = COGL_PIPELINE_STATE_AFFECTS_BLENDING & ~changes;
+      unsigned int other_state =
+        COGL_PIPELINE_STATE_AFFECTS_BLENDING & ~changes;
       if (other_state &&
-          _cogl_pipeline_needs_blending_enabled (pipeline,
-                                                 other_state,
-                                                 NULL))
+          _cogl_pipeline_change_implies_transparency (pipeline, other_state, NULL, FALSE))
         return TRUE;
     }
 
@@ -1066,7 +1104,7 @@ _cogl_pipeline_copy_differences (CoglPipeline *dest,
    */
 check_for_blending_change:
   if (differences & COGL_PIPELINE_STATE_AFFECTS_BLENDING)
-    _cogl_pipeline_update_blend_enable (dest, differences);
+    dest->dirty_real_blend_enable = TRUE;
 
   dest->differences |= differences;
 }
@@ -1235,7 +1273,8 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
           CoglBool will_need_blending =
             _cogl_pipeline_needs_blending_enabled (pipeline,
                                                    change,
-                                                   new_color);
+                                                   new_color,
+                                                   FALSE);
           CoglBool blend_enable = pipeline->real_blend_enable ? TRUE : FALSE;
 
           if (will_need_blending == blend_enable)
@@ -1507,29 +1546,51 @@ _cogl_pipeline_try_reverting_layers_authority (CoglPipeline *authority,
     }
 }
 
-
 void
-_cogl_pipeline_update_blend_enable (CoglPipeline *pipeline,
-                                    CoglPipelineState change)
+_cogl_pipeline_update_real_blend_enable (CoglPipeline *pipeline,
+                                         CoglBool unknown_color_alpha)
 {
-  CoglBool blend_enable =
-    _cogl_pipeline_needs_blending_enabled (pipeline, change, NULL);
+  CoglPipeline *parent;
+  unsigned int differences;
 
-  if (blend_enable != pipeline->real_blend_enable)
+  if (pipeline->dirty_real_blend_enable == FALSE &&
+      pipeline->unknown_color_alpha == unknown_color_alpha)
+    return;
+
+  if (pipeline->dirty_real_blend_enable)
     {
-      /* - Flush journal primitives referencing the current state.
-       * - Make sure the pipeline has no dependants so it may be
-       *   modified.
-       * - If the pipeline isn't currently an authority for the state
-       *   being changed, then initialize that state from the current
-       *   authority.
+      differences = pipeline->differences;
+
+      parent = _cogl_pipeline_get_parent (pipeline);
+      while (parent->dirty_real_blend_enable)
+        {
+          differences |= parent->differences;
+          parent = _cogl_pipeline_get_parent (parent);
+        }
+
+      /* We initialize the pipeline's real_blend_enable with a known
+       * reference value from its nearest ancestor with clean state so
+       * we can then potentially reduce the work involved in checking
+       * if the pipeline really needs blending itself because we can
+       * just look at the things that differ between the ancestor and
+       * this pipeline.
        */
-      _cogl_pipeline_pre_change_notify (pipeline,
-                                        COGL_PIPELINE_STATE_REAL_BLEND_ENABLE,
-                                        NULL,
-                                        FALSE);
-      pipeline->real_blend_enable = blend_enable;
+      pipeline->real_blend_enable = parent->real_blend_enable;
     }
+  else /* pipeline->unknown_color_alpha != unknown_color_alpha */
+    differences = 0;
+
+  /* Note we don't call _cogl_pipeline_pre_change_notify() for this
+   * state change because ->real_blend_enable is lazily derived from
+   * other state while flushing the pipeline and we'd need to avoid
+   * recursion problems in cases where _pre_change_notify() flushes
+   * the journal if the pipeline is referenced by a journal.
+   */
+  pipeline->real_blend_enable =
+    _cogl_pipeline_needs_blending_enabled (pipeline, differences,
+                                           NULL, unknown_color_alpha);
+  pipeline->dirty_real_blend_enable = FALSE;
+  pipeline->unknown_color_alpha = unknown_color_alpha;
 }
 
 typedef struct
@@ -2145,7 +2206,7 @@ _cogl_pipeline_resolve_authorities (CoglPipeline *pipeline,
 CoglBool
 _cogl_pipeline_equal (CoglPipeline *pipeline0,
                       CoglPipeline *pipeline1,
-                      unsigned long differences,
+                      unsigned int differences,
                       unsigned long layer_differences,
                       CoglPipelineEvalFlags flags)
 {
@@ -2170,6 +2231,9 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
     }
 
   ret = FALSE;
+
+  _cogl_pipeline_update_real_blend_enable (pipeline0, FALSE);
+  _cogl_pipeline_update_real_blend_enable (pipeline1, FALSE);
 
   /* First check non-sparse properties */
 
@@ -2438,7 +2502,7 @@ cogl_pipeline_remove_layer (CoglPipeline *pipeline, int layer_index)
   _cogl_pipeline_remove_layer_difference (pipeline, layer_info.layer, TRUE);
   _cogl_pipeline_try_reverting_layers_authority (pipeline, NULL);
 
-  _cogl_pipeline_update_blend_enable (pipeline, COGL_PIPELINE_STATE_LAYERS);
+  pipeline->dirty_real_blend_enable = TRUE;
 }
 
 static CoglBool
@@ -2718,12 +2782,12 @@ _cogl_pipeline_init_state_hash_functions (void)
 
 unsigned int
 _cogl_pipeline_hash (CoglPipeline *pipeline,
-                     unsigned long differences,
+                     unsigned int differences,
                      unsigned long layer_differences,
                      CoglPipelineEvalFlags flags)
 {
   CoglPipeline *authorities[COGL_PIPELINE_STATE_SPARSE_COUNT];
-  unsigned long mask;
+  unsigned int mask;
   int i;
   CoglPipelineHashState state;
   unsigned int final_hash = 0;
@@ -2731,6 +2795,8 @@ _cogl_pipeline_hash (CoglPipeline *pipeline,
   state.hash = 0;
   state.layer_differences = layer_differences;
   state.flags = flags;
+
+  _cogl_pipeline_update_real_blend_enable (pipeline, FALSE);
 
   /* hash non-sparse state */
 
@@ -2748,7 +2814,7 @@ _cogl_pipeline_hash (CoglPipeline *pipeline,
 
   for (i = 0; i < COGL_PIPELINE_STATE_SPARSE_COUNT; i++)
     {
-      unsigned long current_state = (1L<<i);
+      unsigned int current_state = (1<<i);
 
       /* XXX: we are hashing the un-mixed hash values of all the
        * individual state groups; we should provide a means to test

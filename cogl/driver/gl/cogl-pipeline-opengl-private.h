@@ -142,9 +142,11 @@ void
 _cogl_delete_gl_texture (GLuint gl_texture);
 
 void
-_cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
+_cogl_pipeline_flush_gl_state (CoglContext *context,
+                               CoglPipeline *pipeline,
                                CoglFramebuffer *framebuffer,
-                               CoglBool skip_gl_state);
+                               CoglBool skip_gl_state,
+                               CoglBool unknown_color_alpha);
 
 #endif /* __COGL_PIPELINE_OPENGL_PRIVATE_H */
 

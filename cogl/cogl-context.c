@@ -325,7 +325,7 @@ cogl_context_new (CoglDisplay *display,
 
   context->current_pipeline = NULL;
   context->current_pipeline_changes_since_flush = 0;
-  context->current_pipeline_skip_gl_color = FALSE;
+  context->current_pipeline_with_color_attrib = FALSE;
 
   _cogl_bitmask_init (&context->enabled_builtin_attributes);
   _cogl_bitmask_init (&context->enable_builtin_attributes_tmp);

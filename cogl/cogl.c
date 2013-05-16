@@ -390,8 +390,10 @@ cogl_begin_gl (void)
    * values.
    */
   pipeline = cogl_get_source ();
-  _cogl_pipeline_flush_gl_state (pipeline,
+  _cogl_pipeline_flush_gl_state (ctx,
+                                 pipeline,
                                  cogl_get_draw_framebuffer (),
+                                 FALSE,
                                  FALSE);
 
   /* Disable any cached vertex arrays */

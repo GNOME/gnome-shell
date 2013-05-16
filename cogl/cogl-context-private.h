@@ -167,7 +167,8 @@ struct _CoglContext
   /* Some simple caching, to minimize state changes... */
   CoglPipeline     *current_pipeline;
   unsigned long     current_pipeline_changes_since_flush;
-  CoglBool          current_pipeline_skip_gl_color;
+  CoglBool          current_pipeline_with_color_attrib;
+  CoglBool          current_pipeline_unknown_color_alpha;
   unsigned long     current_pipeline_age;
 
   CoglBool          gl_blend_enable_cache;

@@ -448,18 +448,18 @@ static void
 _cogl_pipeline_flush_color_blend_alpha_depth_state (
                                             CoglPipeline *pipeline,
                                             unsigned long pipelines_difference,
-                                            CoglBool      skip_gl_color)
+                                            CoglBool      with_color_attrib)
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
   /* On GLES2 we'll flush the color later */
   if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_FIXED_FUNCTION) &&
-      !skip_gl_color)
+      !with_color_attrib)
     {
       if ((pipelines_difference & COGL_PIPELINE_STATE_COLOR) ||
           /* Assume if we were previously told to skip the color, then
            * the current color needs updating... */
-          ctx->current_pipeline_skip_gl_color)
+          ctx->current_pipeline_with_color_attrib)
         {
           CoglPipeline *authority =
             _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_COLOR);
@@ -889,7 +889,7 @@ static void
 _cogl_pipeline_flush_common_gl_state (CoglPipeline  *pipeline,
                                       unsigned long  pipelines_difference,
                                       unsigned long *layer_differences,
-                                      CoglBool       skip_gl_color)
+                                      CoglBool       with_color_attrib)
 {
   CoglPipelineFlushLayerState state;
 
@@ -897,7 +897,7 @@ _cogl_pipeline_flush_common_gl_state (CoglPipeline  *pipeline,
 
   _cogl_pipeline_flush_color_blend_alpha_depth_state (pipeline,
                                                       pipelines_difference,
-                                                      skip_gl_color);
+                                                      with_color_attrib);
 
   state.i = 0;
   state.layer_differences = layer_differences;
@@ -1149,10 +1149,13 @@ fragend_add_layer_cb (CoglPipelineLayer *layer,
  *    isn't ideal, and can't be used with CoglVertexBuffers.
  */
 void
-_cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
+_cogl_pipeline_flush_gl_state (CoglContext *ctx,
+                               CoglPipeline *pipeline,
                                CoglFramebuffer *framebuffer,
-                               CoglBool skip_gl_color)
+                               CoglBool with_color_attrib,
+                               CoglBool unknown_color_alpha)
 {
+  CoglPipeline *current_pipeline = ctx->current_pipeline;
   unsigned long pipelines_difference;
   int n_layers;
   unsigned long *layer_differences;
@@ -1166,29 +1169,61 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
                      "The time spent flushing material state",
                      0 /* no application private data */);
 
-  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
-
   COGL_TIMER_START (_cogl_uprof_context, pipeline_flush_timer);
 
-  if (ctx->current_pipeline == pipeline)
-    {
-      /* Bail out asap if we've been asked to re-flush the already current
-       * pipeline and we can see the pipeline hasn't changed */
-      if (ctx->current_pipeline_age == pipeline->age &&
-          ctx->current_pipeline_skip_gl_color == skip_gl_color)
-        goto done;
-
-      pipelines_difference = ctx->current_pipeline_changes_since_flush;
-    }
-  else if (ctx->current_pipeline)
-    {
-      pipelines_difference = ctx->current_pipeline_changes_since_flush;
-      pipelines_difference |=
-        _cogl_pipeline_compare_differences (ctx->current_pipeline,
-                                            pipeline);
-    }
+  /* Bail out asap if we've been asked to re-flush the already current
+   * pipeline and we can see the pipeline hasn't changed */
+  if (current_pipeline == pipeline &&
+      ctx->current_pipeline_age == pipeline->age &&
+      ctx->current_pipeline_with_color_attrib == with_color_attrib &&
+      ctx->current_pipeline_unknown_color_alpha == unknown_color_alpha)
+    goto done;
   else
-    pipelines_difference = COGL_PIPELINE_STATE_ALL_SPARSE;
+    {
+      /* Update derived state (currently just the 'real_blend_enable'
+       * state) and determine a mask of state that differs between the
+       * current pipeline and the one we are flushing.
+       *
+       * Note updating the derived state is done before doing any
+       * pipeline comparisons so that we can correctly compare the
+       * 'real_blend_enable' state itself.
+       */
+
+      if (current_pipeline == pipeline)
+        {
+          pipelines_difference = ctx->current_pipeline_changes_since_flush;
+
+          if (pipelines_difference & COGL_PIPELINE_STATE_AFFECTS_BLENDING ||
+              pipeline->unknown_color_alpha != unknown_color_alpha)
+            {
+              CoglBool save_real_blend_enable = pipeline->real_blend_enable;
+
+              _cogl_pipeline_update_real_blend_enable (pipeline,
+                                                       unknown_color_alpha);
+
+              if (save_real_blend_enable != pipeline->real_blend_enable)
+                pipelines_difference |= COGL_PIPELINE_STATE_REAL_BLEND_ENABLE;
+            }
+        }
+      else if (current_pipeline)
+        {
+          pipelines_difference = ctx->current_pipeline_changes_since_flush;
+
+          _cogl_pipeline_update_real_blend_enable (pipeline,
+                                                   unknown_color_alpha);
+
+          pipelines_difference |=
+            _cogl_pipeline_compare_differences (ctx->current_pipeline,
+                                                pipeline);
+        }
+      else
+        {
+          _cogl_pipeline_update_real_blend_enable (pipeline,
+                                                   unknown_color_alpha);
+
+          pipelines_difference = COGL_PIPELINE_STATE_ALL;
+        }
+    }
 
   /* Get a layer_differences mask for each layer to be flushed */
   n_layers = cogl_pipeline_get_n_layers (pipeline);
@@ -1225,7 +1260,7 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
   _cogl_pipeline_flush_common_gl_state (pipeline,
                                         pipelines_difference,
                                         layer_differences,
-                                        skip_gl_color);
+                                        with_color_attrib);
 
   /* Now flush the fragment, vertex and program state according to the
    * current progend backend.
@@ -1327,7 +1362,8 @@ _cogl_pipeline_flush_gl_state (CoglPipeline *pipeline,
     cogl_object_unref (ctx->current_pipeline);
   ctx->current_pipeline = pipeline;
   ctx->current_pipeline_changes_since_flush = 0;
-  ctx->current_pipeline_skip_gl_color = skip_gl_color;
+  ctx->current_pipeline_with_color_attrib = with_color_attrib;
+  ctx->current_pipeline_unknown_color_alpha = unknown_color_alpha;
   ctx->current_pipeline_age = pipeline->age;
 
 done:
@@ -1338,7 +1374,7 @@ done:
    * using the glsl progend because the generic attribute values are
    * not stored as part of the program object so they could be
    * overridden by any attribute changes in another program */
-  if (pipeline->progend == COGL_PIPELINE_PROGEND_GLSL && !skip_gl_color)
+  if (pipeline->progend == COGL_PIPELINE_PROGEND_GLSL && !with_color_attrib)
     {
       int attribute;
       CoglPipeline *authority =
