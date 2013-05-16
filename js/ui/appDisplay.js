@@ -598,9 +598,11 @@ const FolderIcon = new Lang.Class({
         // Position the popup above or below the source icon
         if (side == St.Side.BOTTOM) {
             this._popup.actor.show();
+            let closeButtonOffset = -this._popup.closeButton.translation_y;
             let y = this.actor.y - this._popup.actor.height;
-            this._popup.parentOffset = y < 0 ? -y : 0;
-            this._popup.actor.y = Math.max(y, 0);
+            let yWithButton = y - closeButtonOffset;
+            this._popup.parentOffset = yWithButton < 0 ? -yWithButton : 0;
+            this._popup.actor.y = Math.max(y, closeButtonOffset);
             this._popup.actor.hide();
         } else {
             this._popup.actor.y = this.actor.y + this.actor.height;
@@ -647,11 +649,11 @@ const AppFolderPopup = new Lang.Class({
         this.actor.add_actor(this._boxPointer.actor);
         this._boxPointer.bin.set_child(this._view.actor);
 
-        let closeButton = Util.makeCloseButton();
-        closeButton.connect('clicked', Lang.bind(this, this.popdown));
-        this.actor.add_actor(closeButton);
+        this.closeButton = Util.makeCloseButton();
+        this.closeButton.connect('clicked', Lang.bind(this, this.popdown));
+        this.actor.add_actor(this.closeButton);
 
-        this._boxPointer.actor.bind_property('opacity', closeButton, 'opacity',
+        this._boxPointer.actor.bind_property('opacity', this.closeButton, 'opacity',
                                              GObject.BindingFlags.SYNC_CREATE);
 
         global.focus_manager.add_group(this.actor);
