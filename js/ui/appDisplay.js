@@ -279,8 +279,12 @@ const AllView = new Lang.Class({
                 this._eventBlocker.reactive = isOpen;
                 this._currentPopup = isOpen ? popup : null;
                 this._updateIconOpacities(isOpen);
-                if (isOpen)
+                if (isOpen) {
                     this._ensureIconVisible(popup.actor);
+                    this._grid.actor.y = popup.parentOffset;
+                } else {
+                    this._grid.actor.y = 0;
+                }
             }));
     },
 
@@ -594,7 +598,9 @@ const FolderIcon = new Lang.Class({
         // Position the popup above or below the source icon
         if (side == St.Side.BOTTOM) {
             this._popup.actor.show();
-            this._popup.actor.y = this.actor.y - this._popup.actor.height;
+            let y = this.actor.y - this._popup.actor.height;
+            this._popup.parentOffset = y < 0 ? -y : 0;
+            this._popup.actor.y = Math.max(y, 0);
             this._popup.actor.hide();
         } else {
             this._popup.actor.y = this.actor.y + this.actor.height;
@@ -617,6 +623,7 @@ const AppFolderPopup = new Lang.Class({
         this._arrowSide = side;
 
         this._isOpen = false;
+        this.parentOffset = 0;
 
         this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
                                      visible: false,
