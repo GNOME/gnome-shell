@@ -1215,6 +1215,12 @@ const ScreenShield = new Lang.Class({
             return;
         }
 
+        // Clear the clipboard - otherwise, its contents may be leaked
+        // to unauthorized parties by pasting into the unlock dialog's
+        // password entry and unmasking the entry
+        St.Clipboard.get_default().set_text(St.ClipboardType.CLIPBOARD, '');
+        St.Clipboard.get_default().set_text(St.ClipboardType.PRIMARY, '');
+
         this._isLocked = true;
         this.activate(animate);
 
