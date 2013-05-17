@@ -136,42 +136,90 @@ const WindowManager = new Lang.Class({
                                         Shell.KeyBindingMode.NORMAL |
                                         Shell.KeyBindingMode.OVERVIEW,
                                         Lang.bind(this, this._showWorkspaceSwitcher));
-        this.allowKeybinding('switch-to-workspace-1',
-                             Shell.KeyBindingMode.NORMAL |
-                             Shell.KeyBindingMode.OVERVIEW);
-        this.allowKeybinding('switch-to-workspace-2',
-                             Shell.KeyBindingMode.NORMAL |
-                             Shell.KeyBindingMode.OVERVIEW);
-        this.allowKeybinding('switch-to-workspace-3',
-                             Shell.KeyBindingMode.NORMAL |
-                             Shell.KeyBindingMode.OVERVIEW);
-        this.allowKeybinding('switch-to-workspace-4',
-                             Shell.KeyBindingMode.NORMAL |
-                             Shell.KeyBindingMode.OVERVIEW);
-        this.allowKeybinding('switch-to-workspace-5',
-                             Shell.KeyBindingMode.NORMAL |
-                             Shell.KeyBindingMode.OVERVIEW);
-        this.allowKeybinding('switch-to-workspace-6',
-                             Shell.KeyBindingMode.NORMAL |
-                             Shell.KeyBindingMode.OVERVIEW);
-        this.allowKeybinding('switch-to-workspace-7',
-                             Shell.KeyBindingMode.NORMAL |
-                             Shell.KeyBindingMode.OVERVIEW);
-        this.allowKeybinding('switch-to-workspace-8',
-                             Shell.KeyBindingMode.NORMAL |
-                             Shell.KeyBindingMode.OVERVIEW);
-        this.allowKeybinding('switch-to-workspace-9',
-                             Shell.KeyBindingMode.NORMAL |
-                             Shell.KeyBindingMode.OVERVIEW);
-        this.allowKeybinding('switch-to-workspace-10',
-                             Shell.KeyBindingMode.NORMAL |
-                             Shell.KeyBindingMode.OVERVIEW);
-        this.allowKeybinding('switch-to-workspace-11',
-                             Shell.KeyBindingMode.NORMAL |
-                             Shell.KeyBindingMode.OVERVIEW);
-        this.allowKeybinding('switch-to-workspace-12',
-                             Shell.KeyBindingMode.NORMAL |
-                             Shell.KeyBindingMode.OVERVIEW);
+        this.setCustomKeybindingHandler('switch-to-workspace-1',
+                                        Shell.KeyBindingMode.NORMAL |
+                                        Shell.KeyBindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('switch-to-workspace-2',
+                                        Shell.KeyBindingMode.NORMAL |
+                                        Shell.KeyBindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('switch-to-workspace-3',
+                                        Shell.KeyBindingMode.NORMAL |
+                                        Shell.KeyBindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('switch-to-workspace-4',
+                                        Shell.KeyBindingMode.NORMAL |
+                                        Shell.KeyBindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('switch-to-workspace-5',
+                                        Shell.KeyBindingMode.NORMAL |
+                                        Shell.KeyBindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('switch-to-workspace-6',
+                                        Shell.KeyBindingMode.NORMAL |
+                                        Shell.KeyBindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('switch-to-workspace-7',
+                                        Shell.KeyBindingMode.NORMAL |
+                                        Shell.KeyBindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('switch-to-workspace-8',
+                                        Shell.KeyBindingMode.NORMAL |
+                                        Shell.KeyBindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('switch-to-workspace-9',
+                                        Shell.KeyBindingMode.NORMAL |
+                                        Shell.KeyBindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('switch-to-workspace-10',
+                                        Shell.KeyBindingMode.NORMAL |
+                                        Shell.KeyBindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('switch-to-workspace-11',
+                                        Shell.KeyBindingMode.NORMAL |
+                                        Shell.KeyBindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('switch-to-workspace-12',
+                                        Shell.KeyBindingMode.NORMAL |
+                                        Shell.KeyBindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-1',
+                                        Shell.KeyBindingMode.NORMAL,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-2',
+                                        Shell.KeyBindingMode.NORMAL,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-3',
+                                        Shell.KeyBindingMode.NORMAL,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-4',
+                                        Shell.KeyBindingMode.NORMAL,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-5',
+                                        Shell.KeyBindingMode.NORMAL,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-6',
+                                        Shell.KeyBindingMode.NORMAL,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-7',
+                                        Shell.KeyBindingMode.NORMAL,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-8',
+                                        Shell.KeyBindingMode.NORMAL,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-9',
+                                        Shell.KeyBindingMode.NORMAL,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-10',
+                                        Shell.KeyBindingMode.NORMAL,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-11',
+                                        Shell.KeyBindingMode.NORMAL,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-12',
+                                        Shell.KeyBindingMode.NORMAL,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
         this.setCustomKeybindingHandler('switch-applications',
                                         Shell.KeyBindingMode.NORMAL,
                                         Lang.bind(this, this._startAppSwitcher));
@@ -724,19 +772,31 @@ const WindowManager = new Lang.Class({
         if (screen.n_workspaces == 1)
             return;
 
-        let [action,,,direction] = binding.get_name().split('-');
-        let direction = Meta.MotionDirection[direction.toUpperCase()];
+        let [action,,,target] = binding.get_name().split('-');
         let newWs;
+        let direction;
 
+        if (isNaN(target)) {
+            direction = Meta.MotionDirection[target.toUpperCase()];
+            newWs = screen.get_active_workspace().get_neighbor(direction);
+        } else if (target > 0) {
+            target--;
+            newWs = screen.get_workspace_by_index(target);
+
+            if (screen.get_active_workspace().index() > target)
+                direction = Meta.MotionDirection.UP;
+            else
+                direction = Meta.MotionDirection.DOWN;
+        }
 
         if (direction != Meta.MotionDirection.UP &&
             direction != Meta.MotionDirection.DOWN)
             return;
 
         if (action == 'switch')
-            newWs = this.actionMoveWorkspace(direction);
+            this.actionMoveWorkspace(newWs);
         else
-            newWs = this.actionMoveWindow(window, direction);
+            this.actionMoveWindow(window, newWs);
 
         if (!Main.overview.visible) {
             if (this._workspaceSwitcherPopup == null) {
@@ -749,31 +809,27 @@ const WindowManager = new Lang.Class({
         }
     },
 
-    actionMoveWorkspace: function(direction) {
+    actionMoveWorkspace: function(workspace) {
         let activeWorkspace = global.screen.get_active_workspace();
-        let toActivate = activeWorkspace.get_neighbor(direction);
 
-        if (activeWorkspace != toActivate)
-            toActivate.activate(global.get_current_time());
+        if (activeWorkspace != workspace)
+            workspace.activate(global.get_current_time());
 
-        return toActivate;
     },
 
-    actionMoveWindow: function(window, direction) {
+    actionMoveWindow: function(window, workspace) {
         let activeWorkspace = global.screen.get_active_workspace();
-        let toActivate = activeWorkspace.get_neighbor(direction);
 
-        if (activeWorkspace != toActivate) {
+        if (activeWorkspace != workspace) {
             // This won't have any effect for "always sticky" windows
             // (like desktop windows or docks)
 
             this._movingWindow = window;
-            window.change_workspace(toActivate);
+            window.change_workspace(workspace);
 
             global.display.clear_mouse_mode();
-            toActivate.activate_with_focus (window, global.get_current_time());
+            workspace.activate_with_focus (window, global.get_current_time());
         }
 
-        return toActivate;
     },
 });
