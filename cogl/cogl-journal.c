@@ -1455,6 +1455,12 @@ _cogl_journal_log_quad (CoglJournal  *journal,
 
   COGL_TIMER_START (_cogl_uprof_context, log_timer);
 
+  /* Adding something to the journal should mean that we are in the
+   * middle of the scene. Although this will also end up being set
+   * when the journal is actually flushed, we set it here explicitly
+   * so that we will know sooner */
+  _cogl_framebuffer_mark_mid_scene (framebuffer);
+
   /* If the framebuffer was previously empty then we'll take a
      reference to the current framebuffer. This reference will be
      removed when the journal is flushed */

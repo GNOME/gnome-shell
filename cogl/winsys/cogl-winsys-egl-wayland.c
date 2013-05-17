@@ -420,15 +420,8 @@ _cogl_winsys_egl_onscreen_deinit (CoglOnscreen *onscreen)
 }
 
 static void
-_cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
-                                                const int *rectangles,
-                                                int n_rectangles)
+flush_pending_resize (CoglOnscreen *onscreen)
 {
-  CoglFramebuffer *fb = COGL_FRAMEBUFFER (onscreen);
-  CoglContext *context = fb->context;
-  CoglRenderer *renderer = context->display->renderer;
-  CoglRendererEGL *egl_renderer = renderer->winsys;
-  CoglRendererWayland *wayland_renderer = egl_renderer->platform;
   CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglOnscreenWayland *wayland_onscreen = egl_onscreen->platform;
 
@@ -440,11 +433,28 @@ _cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
                             wayland_onscreen->pending_dx,
                             wayland_onscreen->pending_dy);
 
-      _cogl_framebuffer_winsys_update_size (fb,
+      _cogl_framebuffer_winsys_update_size (COGL_FRAMEBUFFER (onscreen),
                                             wayland_onscreen->pending_width,
                                             wayland_onscreen->pending_height);
+
+      wayland_onscreen->pending_dx = 0;
+      wayland_onscreen->pending_dy = 0;
       wayland_onscreen->has_pending = FALSE;
     }
+}
+
+static void
+_cogl_winsys_onscreen_swap_buffers_with_damage (CoglOnscreen *onscreen,
+                                                const int *rectangles,
+                                                int n_rectangles)
+{
+  CoglFramebuffer *fb = COGL_FRAMEBUFFER (onscreen);
+  CoglContext *context = fb->context;
+  CoglRenderer *renderer = context->display->renderer;
+  CoglRendererEGL *egl_renderer = renderer->winsys;
+  CoglRendererWayland *wayland_renderer = egl_renderer->platform;
+
+  flush_pending_resize (onscreen);
 
   parent_vtable->onscreen_swap_buffers_with_damage (onscreen,
                                                     rectangles,
@@ -641,6 +651,15 @@ cogl_wayland_onscreen_resize (CoglOnscreen *onscreen,
           wayland_onscreen->pending_dx += offset_x;
           wayland_onscreen->pending_dy += offset_y;
           wayland_onscreen->has_pending = TRUE;
+
+          /* If nothing has been drawn to the framebuffer since the
+           * last swap then wl_egl_window_resize will take effect
+           * immediately. Otherwise it might not take effect until the
+           * next swap, depending on the version of Mesa. To keep
+           * consistent behaviour we'll delay the resize until the
+           * next swap unless we're sure nothing has been drawn */
+          if (!fb->mid_scene)
+            flush_pending_resize (onscreen);
         }
     }
   else

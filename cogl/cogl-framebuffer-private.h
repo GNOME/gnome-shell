@@ -170,6 +170,10 @@ struct _CoglFramebuffer
   int                 clear_clip_y1;
   CoglBool            clear_clip_dirty;
 
+  /* Whether something has been drawn to the buffer since the last
+   * swap buffers or swap region. */
+  CoglBool            mid_scene;
+
   /* driver specific */
   CoglBool            dirty_bitmasks;
   CoglFramebufferBits bits;

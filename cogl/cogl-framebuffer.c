@@ -236,6 +236,7 @@ void
 _cogl_framebuffer_mark_mid_scene (CoglFramebuffer *framebuffer)
 {
   framebuffer->clear_clip_dirty = TRUE;
+  framebuffer->mid_scene = TRUE;
 }
 
 void
@@ -398,6 +399,8 @@ cogl_framebuffer_clear4f (CoglFramebuffer *framebuffer,
 
 cleared:
 
+  _cogl_framebuffer_mark_mid_scene (framebuffer);
+
   if (buffers & COGL_BUFFER_BIT_COLOR && buffers & COGL_BUFFER_BIT_DEPTH)
     {
       /* For our fast-path for reading back a single pixel of simple
@@ -425,8 +428,6 @@ cleared:
           /* FIXME: set degenerate clip */
         }
     }
-  else
-    _cogl_framebuffer_mark_mid_scene (framebuffer);
 }
 
 /* Note: the 'buffers' and 'color' arguments were switched around on

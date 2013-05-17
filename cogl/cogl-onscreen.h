@@ -212,12 +212,12 @@ cogl_wayland_onscreen_set_foreign_surface (CoglOnscreen *onscreen,
  * @width: The desired width of the framebuffer
  * @height: The desired height of the framebuffer
  * @offset_x: A relative x offset for the new framebuffer
- * @offset_y: A relative x offset for the new framebuffer
+ * @offset_y: A relative y offset for the new framebuffer
  *
- * Queues a resize of the given @onscreen framebuffer which will be applied
- * during the next swap buffers request. Since a buffer is usually conceptually
- * scaled with a center point the @offset_x and @offset_y arguments allow the
- * newly allocated buffer to be positioned relative to the old buffer size.
+ * Resizes the backbuffer of the given @onscreen framebuffer to the
+ * given size. Since a buffer is usually conceptually scaled with a
+ * center point the @offset_x and @offset_y arguments allow the newly
+ * allocated buffer to be positioned relative to the old buffer size.
  *
  * For example a buffer that is being resized by moving the bottom right
  * corner, and the top left corner is remaining static would use x and y
@@ -228,9 +228,14 @@ cogl_wayland_onscreen_set_foreign_surface (CoglOnscreen *onscreen,
  * x/y_size_increase is how many pixels bigger the buffer is on the x and y
  * axis.
  *
- * If cogl_wayland_onscreen_resize() is called multiple times before the next
- * swap buffers request then the relative x and y offsets accumulate instead of
- * being replaced. The @width and @height values superseed the old values.
+ * Note that if some drawing commands have been applied to the
+ * framebuffer since the last swap buffers then the resize will be
+ * queued and will only take effect in the next swap buffers.
+ *
+ * If multiple calls to cogl_wayland_onscreen_resize() get queued
+ * before the next swap buffers request then the relative x and y
+ * offsets accumulate instead of being replaced. The @width and
+ * @height values superseed the old values.
  *
  * Since: 1.10
  * Stability: unstable
