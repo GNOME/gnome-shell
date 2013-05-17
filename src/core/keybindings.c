@@ -2452,6 +2452,19 @@ process_keyboard_resize_grab (MetaDisplay     *display,
 }
 
 static void
+handle_switch_to_last_workspace (MetaDisplay     *display,
+                                 MetaScreen      *screen,
+                                 MetaWindow      *event_window,
+                                 ClutterKeyEvent *event,
+                                 MetaKeyBinding *binding,
+                                 gpointer        dummy)
+{
+    gint target = meta_screen_get_n_workspaces(screen) - 1;
+    MetaWorkspace *workspace = meta_screen_get_workspace_by_index (screen, target);
+    meta_workspace_activate (workspace, event->time);
+}
+
+static void
 handle_switch_to_workspace (MetaDisplay     *display,
                             MetaScreen      *screen,
                             MetaWindow      *event_window,
@@ -3024,6 +3037,26 @@ handle_toggle_on_all_workspaces (MetaDisplay     *display,
 }
 
 static void
+handle_move_to_workspace_last (MetaDisplay     *display,
+                               MetaScreen      *screen,
+                               MetaWindow      *window,
+                               ClutterKeyEvent *event,
+                               MetaKeyBinding  *binding,
+                               gpointer         dummy)
+{
+  gint which;
+  MetaWorkspace *workspace;
+
+  if (window->always_sticky)
+    return;
+
+  which = meta_screen_get_n_workspaces (screen) - 1;
+  workspace = meta_screen_get_workspace_by_index (screen, which);
+  meta_window_change_workspace (window, workspace);
+}
+
+
+static void
 handle_move_to_workspace  (MetaDisplay     *display,
                            MetaScreen      *screen,
                            MetaWindow      *window,
@@ -3339,6 +3372,14 @@ init_builtin_key_bindings (MetaDisplay *display)
                           META_KEY_BINDING_NONE,
                           META_KEYBINDING_ACTION_WORKSPACE_DOWN,
                           NULL, 0);
+
+  add_builtin_keybinding (display,
+                          "switch-to-workspace-last",
+                          common_keybindings,
+                          META_KEY_BINDING_NONE,
+                          META_KEYBINDING_ACTION_WORKSPACE_LAST,
+                          handle_switch_to_last_workspace, 0);
+
 
 
   /* The ones which have inverses.  These can't be bound to any keystroke
@@ -3720,6 +3761,13 @@ init_builtin_key_bindings (MetaDisplay *display)
                           META_KEY_BINDING_PER_WINDOW,
                           META_KEYBINDING_ACTION_MOVE_TO_WORKSPACE_12,
                           handle_move_to_workspace, 11);
+
+  add_builtin_keybinding (display,
+                          "move-to-workspace-last",
+                          common_keybindings,
+                          META_KEY_BINDING_PER_WINDOW,
+                          META_KEYBINDING_ACTION_MOVE_TO_WORKSPACE_LAST,
+                          handle_move_to_workspace_last, 0);
 
   add_builtin_keybinding (display,
                           "move-to-workspace-left",
