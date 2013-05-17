@@ -477,7 +477,7 @@ recorder_draw_buffer_meter (ShellRecorder *recorder)
   GdkRectangle primary_monitor;
   float rects[16];
 
-  gdk_screen_get_monitor_geometry (recorder->gdk_screen,
+  gdk_screen_get_monitor_workarea (recorder->gdk_screen,
                                    gdk_screen_get_primary_monitor (recorder->gdk_screen),
                                    &primary_monitor);
 
@@ -602,7 +602,7 @@ recorder_on_stage_paint (ClutterActor  *actor,
     {
       GdkRectangle primary_monitor;
 
-      gdk_screen_get_monitor_geometry (recorder->gdk_screen,
+      gdk_screen_get_monitor_workarea (recorder->gdk_screen,
                                        gdk_screen_get_primary_monitor (recorder->gdk_screen),
                                        &primary_monitor);
       if (!recorder->only_paint)
