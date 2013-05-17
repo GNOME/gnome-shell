@@ -477,6 +477,11 @@ const Overview = new Lang.Class({
         this._animateVisible();
     },
 
+    focusSearch: function() {
+        this.show();
+        this._searchEntry.grab_key_focus();
+    },
+
     fadeInDesktop: function() {
             this._desktopFade.opacity = 0;
             this._desktopFade.show();

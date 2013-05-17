@@ -21,6 +21,7 @@ const GnomeShellIface = <interface name="org.gnome.Shell">
     <arg type="b" direction="out" name="success" />
     <arg type="s" direction="out" name="result" />
 </method>
+<method name="FocusSearch"/>
 <method name="ShowOSD">
     <arg type="a{sv}" direction="in" name="params"/>
 </method>
@@ -114,6 +115,10 @@ const GnomeShell = new Lang.Class({
             success = false;
         }
         return [success, returnValue];
+    },
+
+    FocusSearch: function() {
+        Main.overview.focusSearch();
     },
 
     ShowOSD: function(params) {
