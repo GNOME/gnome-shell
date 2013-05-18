@@ -507,6 +507,10 @@ const WindowManager = new Lang.Class({
                                         Shell.KeyBindingMode.NORMAL |
                                         Shell.KeyBindingMode.OVERVIEW,
                                         Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('switch-to-workspace-last',
+                                        Shell.KeyBindingMode.NORMAL |
+                                        Shell.KeyBindingMode.OVERVIEW,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
         this.setCustomKeybindingHandler('move-to-workspace-left',
                                         Shell.KeyBindingMode.NORMAL |
                                         Shell.KeyBindingMode.OVERVIEW,
@@ -605,6 +609,9 @@ const WindowManager = new Lang.Class({
                                         Shell.KeyBindingMode.NORMAL,
                                         Lang.bind(this, this._showWorkspaceSwitcher));
         this.setCustomKeybindingHandler('move-to-workspace-12',
+                                        Shell.KeyBindingMode.NORMAL,
+                                        Lang.bind(this, this._showWorkspaceSwitcher));
+        this.setCustomKeybindingHandler('move-to-workspace-last',
                                         Shell.KeyBindingMode.NORMAL,
                                         Lang.bind(this, this._showWorkspaceSwitcher));
         this.setCustomKeybindingHandler('switch-applications',
@@ -1208,7 +1215,10 @@ const WindowManager = new Lang.Class({
         let newWs;
         let direction;
 
-        if (isNaN(target)) {
+        if (target == 'last') {
+            direction = Meta.MotionDirection.DOWN;
+            newWs = screen.get_workspace_by_index(screen.n_workspaces - 1);
+        } else if (isNaN(target)) {
             direction = Meta.MotionDirection[target.toUpperCase()];
             newWs = screen.get_active_workspace().get_neighbor(direction);
         } else if (target > 0) {
