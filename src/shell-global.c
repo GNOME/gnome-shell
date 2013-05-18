@@ -604,6 +604,19 @@ focus_actor_changed (ClutterStage *stage,
   sync_stage_window_focus (global);
 }
 
+static void
+sync_input_region (ShellGlobal *global)
+{
+  MetaScreen *screen = global->meta_screen;
+
+  if (global->gtk_grab_active)
+    meta_empty_stage_input_region (screen);
+  else if (global->input_mode == SHELL_STAGE_INPUT_MODE_FULLSCREEN || !global->input_region)
+    meta_set_stage_input_region (screen, None);
+  else
+    meta_set_stage_input_region (screen, global->input_region);
+}
+
 /**
  * shell_global_set_stage_input_mode:
  * @global: the #ShellGlobal
@@ -623,24 +636,12 @@ void
 shell_global_set_stage_input_mode (ShellGlobal         *global,
                                    ShellStageInputMode  mode)
 {
-  MetaScreen *screen;
+  if (mode == global->input_mode)
+    return;
 
-  g_return_if_fail (SHELL_IS_GLOBAL (global));
-
-  screen = meta_plugin_get_screen (global->plugin);
-
-  if (global->gtk_grab_active)
-    meta_empty_stage_input_region (screen);
-  else if (mode == SHELL_STAGE_INPUT_MODE_FULLSCREEN || !global->input_region)
-    meta_set_stage_input_region (screen, None);
-  else
-    meta_set_stage_input_region (screen, global->input_region);
-
-  if (mode != global->input_mode)
-    {
-      global->input_mode = mode;
-      g_object_notify (G_OBJECT (global), "stage-input-mode");
-    }
+  global->input_mode = mode;
+  sync_input_region (global);
+  g_object_notify (G_OBJECT (global), "stage-input-mode");
 }
 
 /**
@@ -766,10 +767,7 @@ shell_global_set_stage_input_region (ShellGlobal *global,
   global->input_region = XFixesCreateRegion (global->xdisplay, rects, nrects);
   g_free (rects);
 
-  /* set_stage_input_mode() will figure out whether or not we
-   * should actually change the input region right now.
-   */
-  shell_global_set_stage_input_mode (global, global->input_mode);
+  sync_input_region (global);
 }
 
 /**
@@ -1299,7 +1297,7 @@ grab_notify (GtkWidget *widget, gboolean was_grabbed, gpointer user_data)
   global->gtk_grab_active = !was_grabbed;
 
   /* Update for the new setting of gtk_grab_active */
-  shell_global_set_stage_input_mode (global, global->input_mode);
+  sync_input_region (global);
 }
 
 /**
