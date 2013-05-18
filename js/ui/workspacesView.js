@@ -760,15 +760,20 @@ const WorkspacesDisplay = new Lang.Class({
     _onScrollEvent: function(actor, event) {
         if (!this.actor.mapped)
             return false;
+        let activeWs = global.screen.get_active_workspace();
+        let ws;
         switch (event.get_scroll_direction()) {
         case Clutter.ScrollDirection.UP:
-            Main.wm.actionMoveWorkspace(Meta.MotionDirection.UP);
-            return true;
+            ws = activeWs.get_neighbor(Meta.MotionDirection.UP);
+            break;
         case Clutter.ScrollDirection.DOWN:
-            Main.wm.actionMoveWorkspace(Meta.MotionDirection.DOWN);
-            return true;
+            ws = activeWs.get_neighbor(Meta.MotionDirection.DOWN);
+            break;
+        default:
+            return false;
         }
-        return false;
+        Main.wm.actionMoveWorkspace(ws);
+        return true;
     }
 });
 Signals.addSignalMethods(WorkspacesDisplay.prototype);
