@@ -449,7 +449,7 @@ const AppMenuButton = new Lang.Class({
             // If the app has just lost focus to the panel, pretend
             // nothing happened; otherwise you can't keynav to the
             // app menu.
-            if (global.stage_input_mode == Shell.StageInputMode.FOCUSED)
+            if (global.stage.key_focus != null)
                 return;
         }
         this._sync();

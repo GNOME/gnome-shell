@@ -49,7 +49,6 @@ void     shell_global_freeze_keyboard        (ShellGlobal         *global,
 
 typedef enum {
   SHELL_STAGE_INPUT_MODE_NORMAL,
-  SHELL_STAGE_INPUT_MODE_FOCUSED,
   SHELL_STAGE_INPUT_MODE_FULLSCREEN
 } ShellStageInputMode;
 

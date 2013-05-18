@@ -528,17 +528,10 @@ const LayoutManager = new Lang.Class({
     get focusIndex() {
         let i = Main.layoutManager.primaryIndex;
 
-        if (global.stage_input_mode == Shell.StageInputMode.FOCUSED ||
-            global.stage_input_mode == Shell.StageInputMode.FULLSCREEN) {
-            let focusActor = global.stage.key_focus;
-            if (focusActor)
-                i = this.findIndexForActor(focusActor);
-        } else {
-            let focusWindow = global.display.focus_window;
-            if (focusWindow)
-                i = focusWindow.get_monitor();
-        }
-
+        if (global.stage.key_focus != null)
+            i = this.findIndexForActor(global.stage.key_focus);
+        else if (global.display.focus_window != null)
+            i = global.display.focus_window.get_monitor();
         return i;
     },
 

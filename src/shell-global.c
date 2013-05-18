@@ -94,6 +94,8 @@ struct _ShellGlobal {
   guint32 xdnd_timestamp;
 
   gint64 last_gc_end_time;
+
+  gboolean has_modal;
 };
 
 enum {
@@ -529,6 +531,18 @@ shell_global_get (void)
   return the_object;
 }
 
+static guint32
+get_current_time_maybe_roundtrip (ShellGlobal *global)
+{
+  guint32 time;
+
+  time = shell_global_get_current_time (global);
+  if (time != CurrentTime)
+    return time;
+
+  return meta_display_get_current_time_roundtrip (global->meta_display);
+}
+
 static void
 focus_window_changed (MetaDisplay *display,
                       GParamSpec  *param,
@@ -536,9 +550,58 @@ focus_window_changed (MetaDisplay *display,
 {
   ShellGlobal *global = user_data;
 
-  if (global->input_mode == SHELL_STAGE_INPUT_MODE_FOCUSED &&
-      meta_display_get_focus_window (display) != NULL)
-    shell_global_set_stage_input_mode (global, SHELL_STAGE_INPUT_MODE_NORMAL);
+  if (global->has_modal)
+    return;
+
+  /* If the stage window became unfocused, drop the key focus
+   * on Clutter's side. */
+  if (!meta_stage_is_focused (global->meta_screen))
+    clutter_stage_set_key_focus (global->stage, NULL);
+}
+
+static ClutterActor *
+get_key_focused_actor (ShellGlobal *global)
+{
+  ClutterActor *actor;
+
+  actor = clutter_stage_get_key_focus (global->stage);
+
+  /* If there's no explicit key focus, clutter_stage_get_key_focus()
+   * returns the stage. This is a terrible API. */
+  if (actor == CLUTTER_ACTOR (global->stage))
+    actor = NULL;
+
+  return actor;
+}
+
+static void
+sync_stage_window_focus (ShellGlobal *global)
+{
+  ClutterActor *actor;
+
+  if (global->has_modal)
+    return;
+
+  actor = get_key_focused_actor (global);
+
+  /* An actor got key focus and the stage needs to be focused. */
+  if (actor != NULL && !meta_stage_is_focused (global->meta_screen))
+    meta_focus_stage_window (global->meta_screen,
+                             get_current_time_maybe_roundtrip (global));
+
+  /* An actor dropped key focus. Focus the default window. */
+  else if (actor == NULL && meta_stage_is_focused (global->meta_screen))
+    meta_screen_focus_default_window (global->meta_screen,
+                                      get_current_time_maybe_roundtrip (global));
+}
+
+static void
+focus_actor_changed (ClutterStage *stage,
+                     GParamSpec   *param,
+                     gpointer      user_data)
+{
+  ShellGlobal *global = user_data;
+  sync_stage_window_focus (global);
 }
 
 /**
@@ -551,12 +614,6 @@ focus_window_changed (MetaDisplay *display,
  * the region defined by shell_global_set_stage_input_region() but
  * passes through clicks outside that region. When it is
  * %SHELL_STAGE_INPUT_MODE_FULLSCREEN, the stage absorbs all input.
- *
- * When the input mode is %SHELL_STAGE_INPUT_MODE_FOCUSED, the pointer
- * is handled as with %SHELL_STAGE_INPUT_MODE_NORMAL, but additionally
- * the stage window has the keyboard focus. If the stage loses the
- * focus (eg, because the user clicked into a window) the input mode
- * will revert to %SHELL_STAGE_INPUT_MODE_NORMAL.
  *
  * Note that whenever a mutter-internal Gtk widget has a pointer grab,
  * the shell goes unresponsive and passes things to the underlying GTK+
@@ -578,10 +635,6 @@ shell_global_set_stage_input_mode (ShellGlobal         *global,
     meta_set_stage_input_region (screen, None);
   else
     meta_set_stage_input_region (screen, global->input_region);
-
-  if (mode == SHELL_STAGE_INPUT_MODE_FOCUSED)
-    meta_focus_stage_window (global->meta_screen,
-                             shell_global_get_current_time (global));
 
   if (mode != global->input_mode)
     {
@@ -956,6 +1009,8 @@ _shell_global_set_plugin (ShellGlobal *global,
                                "End of stage page repaint",
                                "");
 
+  g_signal_connect (global->stage, "notify::key-focus",
+                    G_CALLBACK (focus_actor_changed), global);
   g_signal_connect (global->meta_display, "notify::focus-window",
                     G_CALLBACK (focus_window_changed), global);
 
@@ -991,7 +1046,13 @@ shell_global_begin_modal (ShellGlobal       *global,
                           guint32           timestamp,
                           MetaModalOptions  options)
 {
-  return meta_plugin_begin_modal (global->plugin, global->stage_xwindow, None, options, timestamp);
+  /* Make it an error to call begin_modal while we already
+   * have a modal active. */
+  if (global->has_modal)
+    return FALSE;
+
+  global->has_modal = meta_plugin_begin_modal (global->plugin, global->stage_xwindow, None, options, timestamp);
+  return global->has_modal;
 }
 
 /**
@@ -1004,7 +1065,23 @@ void
 shell_global_end_modal (ShellGlobal *global,
                         guint32      timestamp)
 {
+  ClutterActor *actor;
+
+  if (!global->has_modal)
+    return;
+
   meta_plugin_end_modal (global->plugin, timestamp);
+  global->has_modal = FALSE;
+
+  /* If the stage window is unfocused, ensure that there's no
+   * actor focused on Clutter's side. */
+  if (!meta_stage_is_focused (global->meta_screen))
+    clutter_stage_set_key_focus (global->stage, NULL);
+
+  /* An actor dropped key focus. Focus the default window. */
+  else if (get_key_focused_actor (global) && meta_stage_is_focused (global->meta_screen))
+    meta_screen_focus_default_window (global->meta_screen,
+                                      get_current_time_maybe_roundtrip (global));
 }
 
 void

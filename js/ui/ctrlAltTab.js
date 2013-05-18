@@ -58,14 +58,10 @@ const CtrlAltTabManager = new Lang.Class({
     },
 
     focusGroup: function(item, timestamp) {
-        if (item.focusCallback) {
+        if (item.focusCallback)
             item.focusCallback(timestamp);
-        } else {
-            if (global.stage_input_mode == Shell.StageInputMode.NORMAL)
-                global.set_stage_input_mode(Shell.StageInputMode.FOCUSED);
-
+        else
             item.root.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
-        }
     },
 
     // Sort the items into a consistent order; panel first, tray last,
@@ -136,8 +132,6 @@ const CtrlAltTabManager = new Lang.Class({
     },
 
     _focusWindows: function(timestamp) {
-        global.set_stage_input_mode(Shell.StageInputMode.NORMAL);
-        global.stage.key_focus = null;
         global.screen.focus_default_window(timestamp);
     }
 });
