@@ -506,10 +506,10 @@ const ControlsManager = new Lang.Class({
         this.indicatorActor = this._indicator.actor;
 
         this.actor = new St.Widget({ layout_manager: new Clutter.BinLayout(),
+                                     reactive: true,
                                      x_expand: true, y_expand: true,
                                      clip_to_allocation: true });
         this._group = new St.BoxLayout({ name: 'overview-group',
-                                        reactive: true,
                                         x_expand: true, y_expand: true });
         this.actor.add_actor(this._group);
 
