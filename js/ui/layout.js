@@ -248,7 +248,7 @@ const LayoutManager = new Lang.Class({
     init: function() {
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
 
-        this._prepareStartupAnimation();
+        this._loadBackground();
     },
 
     showOverview: function() {
@@ -557,6 +557,25 @@ const LayoutManager = new Lang.Class({
         return this._keyboardIndex;
     },
 
+    _loadBackground: function() {
+        this._systemBackground = new Background.SystemBackground();
+        this._systemBackground.actor.hide();
+
+        global.stage.insert_child_below(this._systemBackground.actor, null);
+
+        let constraint = new Clutter.BindConstraint({ source: global.stage,
+                                                      coordinate: Clutter.BindCoordinate.ALL });
+        this._systemBackground.actor.add_constraint(constraint);
+
+        let signalId = this._systemBackground.connect('loaded', Lang.bind(this, function() {
+            this._systemBackground.disconnect(signalId);
+            this._systemBackground.actor.show();
+            global.stage.show();
+
+            this._prepareStartupAnimation();
+        }));
+    },
+
     // Startup Animations
     //
     // We have two different animations, depending on whether we're a greeter
@@ -602,32 +621,17 @@ const LayoutManager = new Lang.Class({
             global.window_group.set_clip(monitor.x, monitor.y, monitor.width, monitor.height);
         }
 
-        this._systemBackground = new Background.SystemBackground();
-        this._systemBackground.actor.hide();
+        this.emit('startup-prepared');
 
-        global.stage.insert_child_below(this._systemBackground.actor, null);
-
-        let constraint = new Clutter.BindConstraint({ source: global.stage,
-                                                      coordinate: Clutter.BindCoordinate.ALL });
-        this._systemBackground.actor.add_constraint(constraint);
-
-        let signalId = this._systemBackground.connect('loaded', Lang.bind(this, function() {
-            this._systemBackground.disconnect(signalId);
-            this._systemBackground.actor.show();
-            global.stage.show();
-
-            this.emit('startup-prepared');
-
-            // We're mostly prepared for the startup animation
-            // now, but since a lot is going on asynchronously
-            // during startup, let's defer the startup animation
-            // until the event loop is uncontended and idle.
-            // This helps to prevent us from running the animation
-            // when the system is bogged down
-            GLib.idle_add(GLib.PRIORITY_LOW, Lang.bind(this, function() {
-                this._startupAnimation();
-                return false;
-            }));
+        // We're mostly prepared for the startup animation
+        // now, but since a lot is going on asynchronously
+        // during startup, let's defer the startup animation
+        // until the event loop is uncontended and idle.
+        // This helps to prevent us from running the animation
+        // when the system is bogged down
+        GLib.idle_add(GLib.PRIORITY_LOW, Lang.bind(this, function() {
+            this._startupAnimation();
+            return false;
         }));
     },
 
