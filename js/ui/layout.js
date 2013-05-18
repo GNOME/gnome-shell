@@ -589,9 +589,13 @@ const LayoutManager = new Lang.Class({
     // screen. So, we set no_clear_hint at the end of the animation.
 
     _prepareStartupAnimation: function() {
-        // Set ourselves to FULLSCREEN input mode while the animation is running
-        // so events don't get delivered to X11 windows (which are distorted by the animation)
-        global.stage_input_mode = Shell.StageInputMode.FULLSCREEN;
+        // During the initial transition, add a simple actor to block all events,
+        // so they don't get delivered to X11 windows that have been transformed.
+        this._coverPane = new Clutter.Actor({ opacity: 0,
+                                              width: global.screen_width,
+                                              height: global.screen_height,
+                                              reactive: true });
+        this.addChrome(this._coverPane);
 
         if (Main.sessionMode.isGreeter) {
             this.panelBox.translation_y = -this.panelBox.height;
@@ -661,7 +665,8 @@ const LayoutManager = new Lang.Class({
         // we no longer need to clear the stage
         global.stage.no_clear_hint = true;
 
-        global.stage_input_mode = Shell.StageInputMode.NORMAL;
+        this._coverPane.destroy();
+        this._coverPane = null;
 
         this._systemBackground.actor.destroy();
         this._systemBackground = null;

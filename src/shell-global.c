@@ -70,7 +70,6 @@ struct _ShellGlobal {
   GtkWindow *grab_notifier;
   gboolean gtk_grab_active;
 
-  ShellStageInputMode input_mode;
   XserverRegion input_region;
 
   GjsContext *js_context;
@@ -108,7 +107,6 @@ enum {
   PROP_SCREEN_WIDTH,
   PROP_SCREEN_HEIGHT,
   PROP_STAGE,
-  PROP_STAGE_INPUT_MODE,
   PROP_WINDOW_GROUP,
   PROP_TOP_WINDOW_GROUP,
   PROP_WINDOW_MANAGER,
@@ -143,9 +141,6 @@ shell_global_set_property(GObject         *object,
 
   switch (prop_id)
     {
-    case PROP_STAGE_INPUT_MODE:
-      shell_global_set_stage_input_mode (global, g_value_get_enum (value));
-      break;
     case PROP_SESSION_MODE:
       g_clear_pointer (&global->session_mode, g_free);
       global->session_mode = g_ascii_strdown (g_value_get_string (value), -1);
@@ -196,9 +191,6 @@ shell_global_get_property(GObject         *object,
       break;
     case PROP_STAGE:
       g_value_set_object (value, global->stage);
-      break;
-    case PROP_STAGE_INPUT_MODE:
-      g_value_set_enum (value, global->input_mode);
       break;
     case PROP_WINDOW_GROUP:
       g_value_set_object (value, meta_get_window_group_for_screen (global->meta_screen));
@@ -279,8 +271,6 @@ shell_global_init (ShellGlobal *global)
   global->grab_notifier = GTK_WINDOW (gtk_window_new (GTK_WINDOW_TOPLEVEL));
   g_signal_connect (global->grab_notifier, "grab-notify", G_CALLBACK (grab_notify), global);
   global->gtk_grab_active = FALSE;
-
-  global->input_mode = SHELL_STAGE_INPUT_MODE_NORMAL;
 
   global->sound_context = ca_gtk_context_get ();
   ca_context_change_props (global->sound_context,
@@ -419,14 +409,6 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         "Stage holding the desktop scene graph",
                                                         CLUTTER_TYPE_ACTOR,
                                                         G_PARAM_READABLE));
-  g_object_class_install_property (gobject_class,
-                                   PROP_STAGE_INPUT_MODE,
-                                   g_param_spec_enum ("stage-input-mode",
-                                                      "Stage input mode",
-                                                      "The stage input mode",
-                                                      SHELL_TYPE_STAGE_INPUT_MODE,
-                                                      SHELL_STAGE_INPUT_MODE_NORMAL,
-                                                      G_PARAM_READWRITE));
   g_object_class_install_property (gobject_class,
                                    PROP_WINDOW_GROUP,
                                    g_param_spec_object ("window-group",
@@ -611,37 +593,10 @@ sync_input_region (ShellGlobal *global)
 
   if (global->gtk_grab_active)
     meta_empty_stage_input_region (screen);
-  else if (global->input_mode == SHELL_STAGE_INPUT_MODE_FULLSCREEN || !global->input_region || global->has_modal)
+  else if (global->has_modal)
     meta_set_stage_input_region (screen, None);
   else
     meta_set_stage_input_region (screen, global->input_region);
-}
-
-/**
- * shell_global_set_stage_input_mode:
- * @global: the #ShellGlobal
- * @mode: the stage input mode
- *
- * Sets the input mode of the stage; when @mode is
- * %SHELL_STAGE_INPUT_MODE_NORMAL, then the stage accepts clicks in
- * the region defined by shell_global_set_stage_input_region() but
- * passes through clicks outside that region. When it is
- * %SHELL_STAGE_INPUT_MODE_FULLSCREEN, the stage absorbs all input.
- *
- * Note that whenever a mutter-internal Gtk widget has a pointer grab,
- * the shell goes unresponsive and passes things to the underlying GTK+
- * widget to ensure that the widget gets any clicks it is expecting.
- */
-void
-shell_global_set_stage_input_mode (ShellGlobal         *global,
-                                   ShellStageInputMode  mode)
-{
-  if (mode == global->input_mode)
-    return;
-
-  global->input_mode = mode;
-  sync_input_region (global);
-  g_object_notify (G_OBJECT (global), "stage-input-mode");
 }
 
 /**
@@ -736,8 +691,7 @@ shell_global_unset_cursor (ShellGlobal  *global)
  * describing the input region.
  *
  * Sets the area of the stage that is responsive to mouse clicks when
- * the stage mode is %SHELL_STAGE_INPUT_MODE_NORMAL (but does not change the
- * current stage mode).
+ * we don't have a modal or grab.
  */
 void
 shell_global_set_stage_input_region (ShellGlobal *global,
@@ -1392,10 +1346,6 @@ shell_global_sync_pointer (ShellGlobal *global)
   event.type = CLUTTER_MOTION;
   event.time = shell_global_get_current_time (global);
   event.flags = 0;
-  /* This is wrong: we should be setting event.stage to NULL if the
-   * pointer is not inside the bounds of the stage given the current
-   * stage_input_mode. For our current purposes however, this works.
-   */
   event.stage = global->stage;
   event.x = x;
   event.y = y;
