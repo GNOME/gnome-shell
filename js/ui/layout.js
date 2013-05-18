@@ -960,13 +960,8 @@ const LayoutManager = new Lang.Class({
             w = Math.round(w);
             h = Math.round(h);
 
-            if (actorData.affectsInputRegion && wantsInputRegion) {
-                let rect = new Meta.Rectangle({ x: x, y: y, width: w, height: h});
-
-                if (actorData.actor.get_paint_visibility() &&
-                    !this.uiGroup.get_skip_paint(actorData.actor))
-                    rects.push(rect);
-            }
+            if (actorData.affectsInputRegion && wantsInputRegion && actorData.actor.get_paint_visibility())
+                rects.push(new Meta.Rectangle({ x: x, y: y, width: w, height: h }));
 
             if (actorData.affectsStruts) {
                 // Limit struts to the size of the screen
