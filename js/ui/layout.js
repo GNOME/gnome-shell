@@ -611,26 +611,24 @@ const LayoutManager = new Lang.Class({
                                                       coordinate: Clutter.BindCoordinate.ALL });
         this._systemBackground.actor.add_constraint(constraint);
 
-        let signalId = this._systemBackground.connect('loaded',
-                                                      Lang.bind(this, function() {
-                                                          this._systemBackground.disconnect(signalId);
-                                                          this._systemBackground.actor.show();
-                                                          global.stage.show();
+        let signalId = this._systemBackground.connect('loaded', Lang.bind(this, function() {
+            this._systemBackground.disconnect(signalId);
+            this._systemBackground.actor.show();
+            global.stage.show();
 
-                                                          this.emit('startup-prepared');
+            this.emit('startup-prepared');
 
-                                                          // We're mostly prepared for the startup animation
-                                                          // now, but since a lot is going on asynchronously
-                                                          // during startup, let's defer the startup animation
-                                                          // until the event loop is uncontended and idle.
-                                                          // This helps to prevent us from running the animation
-                                                          // when the system is bogged down
-                                                          GLib.idle_add(GLib.PRIORITY_LOW,
-                                                                        Lang.bind(this, function() {
-                                                                            this._startupAnimation();
-                                                                            return false;
-                                                                        }));
-                                                      }));
+            // We're mostly prepared for the startup animation
+            // now, but since a lot is going on asynchronously
+            // during startup, let's defer the startup animation
+            // until the event loop is uncontended and idle.
+            // This helps to prevent us from running the animation
+            // when the system is bogged down
+            GLib.idle_add(GLib.PRIORITY_LOW, Lang.bind(this, function() {
+                this._startupAnimation();
+                return false;
+            }));
+        }));
     },
 
     _startupAnimation: function() {
