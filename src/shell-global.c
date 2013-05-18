@@ -611,7 +611,7 @@ sync_input_region (ShellGlobal *global)
 
   if (global->gtk_grab_active)
     meta_empty_stage_input_region (screen);
-  else if (global->input_mode == SHELL_STAGE_INPUT_MODE_FULLSCREEN || !global->input_region)
+  else if (global->input_mode == SHELL_STAGE_INPUT_MODE_FULLSCREEN || !global->input_region || global->has_modal)
     meta_set_stage_input_region (screen, None);
   else
     meta_set_stage_input_region (screen, global->input_region);
@@ -1050,6 +1050,7 @@ shell_global_begin_modal (ShellGlobal       *global,
     return FALSE;
 
   global->has_modal = meta_plugin_begin_modal (global->plugin, global->stage_xwindow, None, options, timestamp);
+  sync_input_region (global);
   return global->has_modal;
 }
 
@@ -1080,6 +1081,8 @@ shell_global_end_modal (ShellGlobal *global,
   else if (get_key_focused_actor (global) && meta_stage_is_focused (global->meta_screen))
     meta_screen_focus_default_window (global->meta_screen,
                                       get_current_time_maybe_roundtrip (global));
+
+  sync_input_region (global);
 }
 
 void
