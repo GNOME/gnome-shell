@@ -492,6 +492,17 @@ shell_screenshot_screenshot_window (ShellScreenshot *screenshot,
   screenshot_data->filename = g_strdup (filename);
   screenshot_data->callback = callback;
 
+  if (!window)
+    {
+      screenshot_data->filename_used = g_strdup ("");
+      result = g_simple_async_result_new (NULL, on_screenshot_written, (gpointer)screenshot_data, shell_screenshot_screenshot_window);
+      g_simple_async_result_set_op_res_gboolean (result, FALSE);
+      g_simple_async_result_complete (result);
+      g_object_unref (result);
+
+      return;
+    }
+
   window_actor = CLUTTER_ACTOR (meta_window_get_compositor_private (window));
   clutter_actor_get_position (window_actor, &actor_x, &actor_y);
 
