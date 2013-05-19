@@ -107,7 +107,7 @@ const OsdWindow = new Lang.Class({
                                    Lang.bind(this, this._monitorsChanged));
         this._monitorsChanged();
 
-        Main.layoutManager.addChrome(this.actor, { affectsInputRegion: false });
+        Main.uiGroup.add_child(this.actor);
     },
 
     setIcon: function(icon) {
