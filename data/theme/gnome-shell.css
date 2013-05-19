@@ -2338,52 +2338,43 @@ StScrollBar StButton#vhandle:active {
     width: 15em;
 }
 
-.login-dialog-session-list {
-    color: #ffffff;
-    font-size: 10.5pt;
+.login-dialog-session-list,
+.login-dialog-session-list-item {
+    color: #babdb6;
+}
+
+.login-dialog-session-list-button:focus,
+.login-dialog-session-list-button:active,
+.login-dialog-session-list-button:hover,
+.login-dialog-session-list-item:focus,
+.login-dialog-session-list-item:hover {
+    color: white;
 }
 
 .login-dialog-session-list-button {
     padding: 4px;
 }
 
-.login-dialog-session-list-button:focus {
-    background-color: #4c4c4c;
-}
-
-.login-dialog-session-list-button:active {
-    background-color: #4c4c4c;
-}
-
-.login-dialog-session-list-button:hover {
-    font-weight: bold;
-}
-
 .login-dialog-session-list-scroll-view {
-    background-gradient-start: rgba(80,80,80,0.3);
-    background-gradient-end: rgba(80,80,80,0.7);
-    background-gradient-direction: vertical;
-    box-shadow: inset 0px 2px 4px rgba(0,0,0,0.9);
-    border-radius: 8px;
-    border: 1px solid rgba(80,80,80,1.0);
-    padding: .5em;
+    padding: 6px;
 }
 
-.login-dialog-session-list-item:focus {
-    background-color: #666666;
+.login-dialog-session-list-item {
+    padding-bottom: 6px;
 }
 
 .login-dialog-session-list-triangle {
-    padding-right: .5em;
+    padding-right: 6px;
 }
 
 .login-dialog-session-list-item-box {
-    spacing: .25em;
+    padding-left: 6px;
+    spacing: 6px;
 }
 
 .login-dialog-session-list-item-dot {
-    width: .75em;
-    height: .75em;
+    width: 10px;
+    height: 10px;
 }
 
 .login-dialog-logo-bin {
