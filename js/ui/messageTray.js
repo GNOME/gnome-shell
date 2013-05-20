@@ -2231,11 +2231,7 @@ const MessageTray = new Lang.Class({
                 this._ensureNotificationFocused();
         }
 
-        let notificationsVisible = this._notificationState != State.HIDDEN;
-        let notificationsDone = !notificationsVisible && !notificationsPending;
-
-        let mustHideTray = ((notificationsPending && notificationUrgent)
-                           || notificationsVisible || !Main.sessionMode.hasNotifications);
+        let mustHideTray = this._notificationState != State.HIDDEN || !Main.sessionMode.hasNotifications;
 
         // Summary notification
         let haveClickedSummaryItem = this._clickedSummaryItem != null;
