@@ -2203,11 +2203,13 @@ const MessageTray = new Lang.Class({
         let notificationQueue = this._notificationQueue.filter(function(n) {
             return !n.acknowledged;
         });
+        let hasNotifications = Main.sessionMode.hasNotifications;
+
         this._notificationQueue = notificationQueue;
         let notificationUrgent = notificationQueue.length > 0 && notificationQueue[0].urgency == Urgency.CRITICAL;
         let notificationForFeedback = notificationQueue.length > 0 && notificationQueue[0].forFeedback;
         let notificationsLimited = this._busy || Main.layoutManager.bottomMonitor.inFullscreen;
-        let notificationsPending = notificationQueue.length > 0 && (!notificationsLimited || notificationUrgent || notificationForFeedback) && Main.sessionMode.hasNotifications;
+        let notificationsPending = notificationQueue.length > 0 && (!notificationsLimited || notificationUrgent || notificationForFeedback) && hasNotifications;
         let nextNotification = notificationQueue.length > 0 ? notificationQueue[0] : null;
         let notificationPinned = this._pointerInNotification && !this._notificationRemoved;
         let notificationExpanded = this._notification && this._notification.expanded;
@@ -2215,7 +2217,7 @@ const MessageTray = new Lang.Class({
                                   !(this._notification && this._notification.urgency == Urgency.CRITICAL) &&
                                   !(this._notification && this._notification.focused) &&
                                   !this._pointerInNotification;
-        let notificationLockedOut = !Main.sessionMode.hasNotifications && this._notification;
+        let notificationLockedOut = !hasNotifications && this._notification;
         let notificationMustClose = this._notificationRemoved || notificationLockedOut || (notificationExpired && this._userActiveWhileNotificationShown) || this._notificationClosed;
         let canShowNotification = notificationsPending && this._trayState == State.HIDDEN;
 
@@ -2231,7 +2233,7 @@ const MessageTray = new Lang.Class({
                 this._ensureNotificationFocused();
         }
 
-        let mustHideTray = this._notificationState != State.HIDDEN || !Main.sessionMode.hasNotifications;
+        let mustHideTray = this._notificationState != State.HIDDEN || !hasNotifications;
 
         // Summary notification
         let haveClickedSummaryItem = this._clickedSummaryItem != null;
