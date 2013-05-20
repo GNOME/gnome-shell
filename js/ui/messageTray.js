@@ -2218,8 +2218,10 @@ const MessageTray = new Lang.Class({
                                   !(this._notification && this._notification.focused) &&
                                   !this._pointerInNotification;
         let notificationLockedOut = !hasNotifications && this._notification;
-        let notificationMustClose = this._notificationRemoved || notificationLockedOut || (notificationExpired && this._userActiveWhileNotificationShown) || this._notificationClosed;
-        let canShowNotification = notificationsPending && this._trayState == State.HIDDEN;
+        let notificationMustClose = (this._notificationRemoved || notificationLockedOut ||
+                                     (notificationExpired && this._userActiveWhileNotificationShown) ||
+                                     this._notificationClosed || this._traySummoned);
+        let canShowNotification = notificationsPending && this._trayState == State.HIDDEN && !this._traySummoned;
 
         if (this._notificationState == State.HIDDEN) {
             if (canShowNotification)
@@ -2232,8 +2234,6 @@ const MessageTray = new Lang.Class({
             else if (notificationPinned)
                 this._ensureNotificationFocused();
         }
-
-        let mustHideTray = this._notificationState != State.HIDDEN || !hasNotifications;
 
         // Summary notification
         let haveClickedSummaryItem = this._clickedSummaryItem != null;
@@ -2264,7 +2264,7 @@ const MessageTray = new Lang.Class({
         // Tray itself
         let trayIsVisible = (this._trayState == State.SHOWING ||
                              this._trayState == State.SHOWN);
-        let trayShouldBeVisible = this._traySummoned && !this._keyboardVisible && !mustHideTray;
+        let trayShouldBeVisible = this._traySummoned && !this._keyboardVisible && hasNotifications;
         if (!trayIsVisible && trayShouldBeVisible)
             trayShouldBeVisible = this._showTray();
         else if (trayIsVisible && !trayShouldBeVisible)
