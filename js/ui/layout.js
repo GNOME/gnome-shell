@@ -686,7 +686,6 @@ const LayoutManager = new Lang.Class({
     },
 
     showKeyboard: function () {
-        this.keyboardBox.raise_top();
         Tweener.addTween(this.keyboardBox,
                          { anchor_y: this.keyboardBox.height,
                            time: KEYBOARD_ANIMATION_TIME,
