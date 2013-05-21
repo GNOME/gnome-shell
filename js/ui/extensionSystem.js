@@ -292,7 +292,7 @@ function disableAllExtensions() {
         return;
 
     if (initted) {
-        enabledExtensions.forEach(function(uuid) {
+        extensionOrder.slice().reverse().forEach(function(uuid) {
             disableExtension(uuid);
         });
     }
