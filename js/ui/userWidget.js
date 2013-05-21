@@ -16,6 +16,7 @@ const UserWidget = new Lang.Class({
 
         this.actor = new St.BoxLayout({ style_class: 'user-widget',
                                         vertical: false });
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
         this._avatar = new UserMenu.UserAvatarWidget(user);
         this.actor.add(this._avatar.actor,
@@ -36,7 +37,7 @@ const UserWidget = new Lang.Class({
             this._updateUser();
     },
 
-    destroy: function() {
+    _onDestroy: function() {
         if (this._userLoadedId != 0) {
             this._user.disconnect(this._userLoadedId);
             this._userLoadedId = 0;
@@ -46,8 +47,6 @@ const UserWidget = new Lang.Class({
             this._user.disconnect(this._userChangedId);
             this._userChangedId = 0;
         }
-
-        this.actor.destroy();
     },
 
     _updateUser: function() {
