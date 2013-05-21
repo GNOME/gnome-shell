@@ -553,6 +553,10 @@ const PopupSliderMenuItem = new Lang.Class({
 
         let handleRadius = themeNode.get_length('-slider-handle-radius');
 
+        let handleBorderWidth = themeNode.get_length('-slider-handle-border-width');
+        let [hasHandleColor, handleBorderColor] =
+            themeNode.lookup_color('-slider-handle-border-color', false);
+
         let sliderWidth = width - 2 * handleRadius;
         let sliderHeight = themeNode.get_length('-slider-height');
 
@@ -604,7 +608,16 @@ const PopupSliderMenuItem = new Lang.Class({
             color.blue / 255,
             color.alpha / 255);
         cr.arc(handleX, handleY, handleRadius, 0, 2 * Math.PI);
-        cr.fill();
+        cr.fillPreserve();
+        if (hasHandleColor && handleBorderWidth) {
+          cr.setSourceRGBA(
+              handleBorderColor.red / 255,
+              handleBorderColor.green / 255,
+              handleBorderColor.blue / 255,
+              handleBorderColor.alpha / 255);
+          cr.setLineWidth(handleBorderWidth);
+          cr.stroke();
+        }
         cr.$dispose();
     },
 
