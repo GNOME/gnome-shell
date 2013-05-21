@@ -190,7 +190,9 @@ const LayoutManager = new Lang.Class({
         this.uiGroup.add_actor(global.window_group);
 
         global.stage.remove_actor(global.overlay_group);
-        this.uiGroup.add_actor(global.overlay_group);
+        this.overviewGroup = new St.Widget({ name: 'overviewGroup' });
+        this.uiGroup.add_actor(this.overviewGroup);
+
         global.stage.add_child(this.uiGroup);
 
         this.screenShieldGroup = new St.Widget({ name: 'screenShieldGroup',

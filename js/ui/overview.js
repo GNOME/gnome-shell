@@ -115,7 +115,7 @@ const Overview = new Lang.Class({
         let monitor = Main.layoutManager.primaryMonitor;
 
         this._desktopFade = new St.Bin();
-        global.overlay_group.add_actor(this._desktopFade);
+        Main.layoutManager.overviewGroup.add_child(this._desktopFade);
 
         let layout = new Clutter.BinLayout();
         this._stack = new Clutter.Actor({ layout_manager: layout });
@@ -132,7 +132,7 @@ const Overview = new Lang.Class({
         this._overview._delegate = this;
 
         this._backgroundGroup = new Meta.BackgroundGroup();
-        global.overlay_group.add_child(this._backgroundGroup);
+        Main.layoutManager.overviewGroup.add_child(this._backgroundGroup);
         this._backgroundGroup.hide();
         this._bgManagers = [];
 
@@ -154,7 +154,7 @@ const Overview = new Lang.Class({
 
         this._stack.hide();
         this._stack.add_actor(this._overview);
-        global.overlay_group.add_actor(this._stack);
+        Main.layoutManager.overviewGroup.add_child(this._stack);
 
         this._coverPane.hide();
 

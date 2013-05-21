@@ -1658,7 +1658,7 @@ const MessageTray = new Lang.Class({
 
         this.clearableCount = 0;
 
-        this._lightbox = new Lightbox.Lightbox(global.overlay_group,
+        this._lightbox = new Lightbox.Lightbox(Main.layoutManager.overviewGroup,
                                                { inhibitEvents: true,
                                                  fadeInTime: ANIMATION_TIME,
                                                  fadeOutTime: ANIMATION_TIME,
@@ -2344,7 +2344,7 @@ const MessageTray = new Lang.Class({
 
         if (this._desktopClone)
             this._desktopClone.destroy();
-        let cloneSource = Main.overview.visible ? global.overlay_group : global.window_group;
+        let cloneSource = Main.overview.visible ? Main.layoutManager.overviewGroup : global.window_group;
         this._desktopClone = new Clutter.Clone({ source: cloneSource,
                                                  clip: new Clutter.Geometry(this._bottomMonitorGeometry) });
         Main.uiGroup.insert_child_above(this._desktopClone, cloneSource);

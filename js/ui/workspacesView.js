@@ -137,7 +137,7 @@ const WorkspacesView = new Lang.Class({
             let ws = new Workspace.Workspace(null, i);
             ws.setFullGeometry(monitors[i]);
             ws.setActualGeometry(monitors[i]);
-            global.overlay_group.add_actor(ws.actor);
+            Main.layoutManager.overviewGroup.add_actor(ws.actor);
             this._extraWorkspaces.push(ws);
         }
     },
@@ -594,7 +594,7 @@ const WorkspacesDisplay = new Lang.Class({
         this._updateWorkspacesActualGeometry();
 
         for (let i = 0; i < this._workspacesViews.length; i++)
-            global.overlay_group.add_actor(this._workspacesViews[i].actor);
+            Main.layoutManager.overviewGroup.add_actor(this._workspacesViews[i].actor);
     },
 
     _scrollValueChanged: function() {
@@ -638,7 +638,7 @@ const WorkspacesDisplay = new Lang.Class({
 
                 // This is kinda hackish - we want the primary view to
                 // appear as parent of this.actor, though in reality it
-                // is added directly to overlay_group
+                // is added directly to Main.layoutManager.overviewGroup
                 this._notifyOpacityId = newParent.connect('notify::opacity',
                     Lang.bind(this, function() {
                         let opacity = this.actor.get_parent().opacity;
