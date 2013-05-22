@@ -989,10 +989,17 @@ const Workspace = new Lang.Class({
     setActualGeometry: function(geom) {
         this._actualGeometry = geom;
 
-        Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+        if (this._actualGeometryLater)
+            return;
+
+        this._actualGeometryLater = Meta.later_add(Meta.LaterType.BEFORE_REDRAW, Lang.bind(this, function() {
+            let geom = this._actualGeometry;
+
             this._dropRect.set_position(geom.x, geom.y);
             this._dropRect.set_size(geom.width, geom.height);
             this._updateWindowPositions(WindowPositionFlags.NONE);
+
+            this._actualGeometryLater = 0;
             return false;
         }));
     },
