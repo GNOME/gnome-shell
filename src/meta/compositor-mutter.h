@@ -35,7 +35,6 @@
 
 /* Public compositor API */
 ClutterActor *meta_get_stage_for_screen         (MetaScreen *screen);
-ClutterActor *meta_get_overlay_group_for_screen (MetaScreen *screen);
 Window        meta_get_overlay_window           (MetaScreen *screen);
 GList        *meta_get_window_actors            (MetaScreen *screen);
 ClutterActor *meta_get_window_group_for_screen  (MetaScreen *screen);

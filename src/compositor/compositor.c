@@ -53,17 +53,15 @@
  *
  * # Containers #
  *
- * There's three containers in the stage that can be used to place actors, here
+ * There's two containers in the stage that are used to place window actors, here
  * are listed in the order in which they are painted:
  *
  * - window group, accessible with meta_get_window_group_for_screen()
  * - top window group, accessible with meta_get_top_window_group_for_screen()
- * - overlay group, accessible with meta_get_overlay_group_for_screen()
  *
  * Mutter will place actors representing windows in the window group, except for
  * override-redirect windows (ie. popups and menus) which will be placed in the
- * top window group. Mutter won't put any actors in the overlay group, but it's
- * intended for compositors to place there panel, dashes, status bars, etc.
+ * top window group.
  */
 
 #include <config.h>
@@ -253,23 +251,6 @@ meta_get_stage_for_screen (MetaScreen *screen)
     return NULL;
 
   return info->stage;
-}
-
-/**
- * meta_get_overlay_group_for_screen:
- * @screen: a #MetaScreen
- *
- * Returns: (transfer none): The overlay group corresponding to @screen
- */
-ClutterActor *
-meta_get_overlay_group_for_screen (MetaScreen *screen)
-{
-  MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-
-  if (!info)
-    return NULL;
-
-  return info->overlay_group;
 }
 
 /**
@@ -649,11 +630,9 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
 
   info->window_group = meta_window_group_new (screen);
   info->top_window_group = meta_window_group_new (screen);
-  info->overlay_group = clutter_actor_new ();
 
   clutter_actor_add_child (info->stage, info->window_group);
   clutter_actor_add_child (info->stage, info->top_window_group);
-  clutter_actor_add_child (info->stage, info->overlay_group);
 
   info->plugin_mgr = meta_plugin_manager_new (screen);
 
@@ -683,8 +662,6 @@ meta_compositor_manage_screen (MetaCompositor *compositor,
       XFixesDestroyRegion (xdisplay, info->pending_input_region);
       info->pending_input_region = None;
     }
-
-  clutter_actor_show (info->overlay_group);
 
   /* Map overlay window before redirecting windows offscreen so we catch their
    * contents until we show the stage.
