@@ -2,9 +2,9 @@
 
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
-const St = imports.gi.St;
 const UPower = imports.gi.UPowerGlib;
 
+const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
@@ -37,51 +37,67 @@ const Indicator = new Lang.Class({
                                                     return;
                                                 }
                                                 this._proxy.connect('g-properties-changed',
-                                                                    Lang.bind(this, this._devicesChanged));
-                                                this._devicesChanged();
+                                                                    Lang.bind(this, this._sync));
+                                                this._sync();
                                             }));
 
-        this.item = new PopupMenu.PopupMenuItem('', { reactive: false });
-        this._primaryPercentage = new St.Label({ style_class: 'popup-battery-percentage' });
-        this.item.addActor(this._primaryPercentage, { align: St.Align.END });
-        this.menu.addMenuItem(this.item);
+        this._item = new PopupMenu.PopupSubMenuMenuItem(_("Battery"), true);
+        this._item.menu.addSettingsAction(_("Power Settings"), 'gnome-power-panel.desktop');
+        this.menu.addMenuItem(this._item);
+
+        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        this._sessionUpdated();
     },
 
-    _readPrimaryDevice: function() {
+    _sessionUpdated: function() {
+        let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
+        this.menu.setSensitive(sensitive);
+    },
+
+    _statusForDevice: function(device) {
+        let [device_id, device_type, icon, percentage, state, seconds] = device;
+
+        if (state == UPower.DeviceState.FULLY_CHARGED)
+            return _("Fully Charged");
+
+        let time = Math.round(seconds / 60);
+        if (time == 0) {
+            // 0 is reported when UPower does not have enough data
+            // to estimate battery life
+            return _("Estimating…");
+        }
+
+        let minutes = time % 60;
+        let hours = Math.floor(time / 60);
+
+        if (state == UPower.DeviceState.DISCHARGING) {
+            // Translators: this is <hours>:<minutes> Remaining (<percentage>)
+            return _("%d\u2236%d Remaining (%d%%)".format(hours, minutes, percentage));
+        }
+
+        if (state == UPower.DeviceState.CHARGING) {
+            // Translators: this is <hours>:<minutes> Until Full (<percentage>)
+            return _("%d\u2236%d Until Full (%d%%)".format(hours, minutes, percentage));
+        }
+
+        // state is one of PENDING_CHARGING, PENDING_DISCHARGING
+        return _("Estimating…");
+    },
+
+    _syncStatusLabel: function() {
         this._proxy.GetPrimaryDeviceRemote(Lang.bind(this, function(result, error) {
             if (error) {
-                this.item.actor.hide();
+                this._item.actor.hide();
                 return;
             }
 
-            let [[device_id, device_type, icon, percentage, state, seconds]] = result;
+            let [device] = result;
+            let [device_id, device_type] = device;
             if (device_type == UPower.DeviceKind.BATTERY) {
-                let time = Math.round(seconds / 60);
-                if (time == 0) {
-                    // 0 is reported when UPower does not have enough data
-                    // to estimate battery life
-                    this.item.label.text = _("Estimating…");
-                } else {
-                    let minutes = time % 60;
-                    let hours = Math.floor(time / 60);
-                    let timestring;
-                    if (time >= 60) {
-                        if (minutes == 0) {
-                            timestring = ngettext("%d hour remaining", "%d hours remaining", hours).format(hours);
-                        } else {
-                            /* TRANSLATORS: this is a time string, as in "%d hours %d minutes remaining" */
-                            let template = _("%d %s %d %s remaining");
-
-                            timestring = template.format (hours, ngettext("hour", "hours", hours), minutes, ngettext("minute", "minutes", minutes));
-                        }
-                    } else
-                        timestring = ngettext("%d minute remaining", "%d minutes remaining", minutes).format(minutes);
-                    this.item.label.text = timestring;
-                }
-                this._primaryPercentage.text = C_("percent of battery remaining", "%d%%").format(Math.round(percentage));
-                this.item.actor.show();
+                this._item.status.text = this._statusForDevice(device);
+                this._item.actor.show();
             } else {
-                this.item.actor.hide();
+                this._item.actor.hide();
             }
         }));
     },
@@ -93,14 +109,15 @@ const Indicator = new Lang.Class({
         if (icon) {
             let gicon = Gio.icon_new_for_string(icon);
             this.setGIcon(gicon);
+            this._item.icon.gicon = gicon;
             hasIcon = true;
         }
         this.mainIcon.visible = hasIcon;
         this.actor.visible = hasIcon;
     },
 
-    _devicesChanged: function() {
+    _sync: function() {
         this._syncIcon();
-        this._readPrimaryDevice();
+        this._syncStatusLabel();
     }
 });
