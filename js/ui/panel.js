@@ -857,7 +857,7 @@ const PANEL_ITEM_IMPLEMENTATIONS = {
     'lockScreen': imports.ui.status.lockScreenMenu.Indicator,
     'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
     'powerMenu': imports.gdm.powerMenu.PowerMenuButton,
-    'userMenu': imports.ui.userMenu.UserMenuButton
+    'system': imports.ui.status.system.Indicator,
 };
 
 if (Config.HAVE_BLUETOOTH)

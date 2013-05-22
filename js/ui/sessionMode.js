@@ -60,7 +60,7 @@ const _modes = {
         unlockDialog: undefined,
         components: ['polkitAgent', 'telepathyClient'],
         panel: {
-            left: ['userMenu'],
+            left: [],
             center: [],
             right: ['lockScreen']
         },
@@ -72,7 +72,7 @@ const _modes = {
         unlockDialog: undefined,
         components: ['polkitAgent', 'telepathyClient'],
         panel: {
-            left: ['userMenu'],
+            left: [],
             center: [],
             right: ['a11y', 'keyboard', 'lockScreen']
         },
@@ -97,7 +97,7 @@ const _modes = {
             left: ['activities', 'appMenu'],
             center: ['dateMenu'],
             right: ['a11y', 'keyboard', 'volume', 'bluetooth',
-                    'network', 'battery', 'userMenu']
+                    'network', 'battery', 'system']
         }
     }
 };

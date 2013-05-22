@@ -39,12 +39,12 @@ const SystemdLoginSessionIface = <interface name='org.freedesktop.login1.Session
 
 const SystemdLoginSession = Gio.DBusProxy.makeProxyWrapper(SystemdLoginSessionIface);
 
-const UserMenuButton = new Lang.Class({
-    Name: 'UserMenuButton',
+const Indicator = new Lang.Class({
+    Name: 'SystemIndicator',
     Extends: PanelMenu.SystemStatusButton,
 
     _init: function() {
-        this.parent('user-available-symbolic', _("User Menu"));
+        this.parent('system-shutdown-symbolic', _("System"));
 
         this._screenSaverSettings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
         this._lockdownSettings = new Gio.Settings({ schema: LOCKDOWN_SCHEMA });
