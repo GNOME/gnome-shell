@@ -2633,28 +2633,35 @@ const MessageTray = new Lang.Class({
     },
 
     _showSummaryBoxPointer: function() {
-        this._summaryBoxPointerItem = this._clickedSummaryItem;
+        let child;
+        let summaryItem = this._clickedSummaryItem;
+        if (this._clickedSummaryItemMouseButton == 1) {
+            // Acknowledge all our notifications
+            summaryItem.source.notifications.forEach(function(n) { n.acknowledged = true; });
+
+            child = summaryItem.notificationStackWidget;
+
+            let closeButton = summaryItem.closeButton;
+            closeButton.show();
+            this._summaryBoxPointerCloseClickedId = closeButton.connect('clicked', Lang.bind(this, this._hideSummaryBoxPointer));
+            summaryItem.prepareNotificationStackForShowing();
+        } else if (this._clickedSummaryItemMouseButton == 3) {
+            child = summaryItem.rightClickMenu;
+            this._summaryBoxPointerCloseClickedId = 0;
+        }
+
+        // If the user clicked the middle mouse button, or the item
+        // doesn't have a right-click menu, do nothing.
+        if (!child)
+            return;
+
+        this._summaryBoxPointerItem = summaryItem;
         this._summaryBoxPointerContentUpdatedId = this._summaryBoxPointerItem.connect('content-updated',
                                                                                       Lang.bind(this, this._onSummaryBoxPointerContentUpdated));
         this._sourceDoneDisplayingId = this._summaryBoxPointerItem.source.connect('done-displaying-content',
                                                                                   Lang.bind(this, this._onSourceDoneDisplayingContent));
 
-        let hasRightClickMenu = this._summaryBoxPointerItem.rightClickMenu != null;
-        if (this._clickedSummaryItemMouseButton == 1 || !hasRightClickMenu) {
-            // Acknowledge all our notifications
-            this._summaryBoxPointerItem.source.notifications.forEach(function(n) { n.acknowledged = true; });
-
-            this._summaryBoxPointer.bin.child = this._summaryBoxPointerItem.notificationStackWidget;
-
-            let closeButton = this._summaryBoxPointerItem.closeButton;
-            closeButton.show();
-            this._summaryBoxPointerCloseClickedId = closeButton.connect('clicked', Lang.bind(this, this._hideSummaryBoxPointer));
-            this._summaryBoxPointerItem.prepareNotificationStackForShowing();
-        } else if (this._clickedSummaryItemMouseButton == 3) {
-            this._summaryBoxPointer.bin.child = this._clickedSummaryItem.rightClickMenu;
-            this._summaryBoxPointerCloseClickedId = 0;
-        }
-
+        this._summaryBoxPointer.bin.child = child;
         this._grabHelper.grab({ actor: this._summaryBoxPointer.bin.child,
                                 modal: true,
                                 onUngrab: Lang.bind(this, this._onSummaryBoxPointerUngrabbed) });
