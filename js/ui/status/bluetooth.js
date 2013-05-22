@@ -86,6 +86,7 @@ const Indicator = new Lang.Class({
         this._applet.connect('pincode-request', Lang.bind(this, this._pinRequest));
         this._applet.connect('confirm-request', Lang.bind(this, this._confirmRequest));
         this._applet.connect('auth-request', Lang.bind(this, this._authRequest));
+        this._applet.connect('auth-service-request', Lang.bind(this, this._authServiceRequest));
         this._applet.connect('cancel-request', Lang.bind(this, this._cancelRequest));
     },
 
@@ -292,9 +293,14 @@ const Indicator = new Lang.Class({
         }
     },
 
-    _authRequest: function(applet, device_path, name, long_name, uuid) {
+    _authRequest: function(applet, device_path, name, long_name) {
         this._ensureSource();
-        this._source.notify(new AuthNotification(this._source, this._applet, device_path, name, long_name, uuid));
+        this._source.notify(new AuthNotification(this._source, this._applet, device_path, name, long_name));
+    },
+
+    _authServiceRequest: function(applet, device_path, name, long_name, uuid) {
+        this._ensureSource();
+        this._source.notify(new AuthServiceNotification(this._source, this._applet, device_path, name, long_name, uuid));
     },
 
     _confirmRequest: function(applet, device_path, name, long_name, pin) {
@@ -316,6 +322,34 @@ const AuthNotification = new Lang.Class({
     Name: 'AuthNotification',
     Extends: MessageTray.Notification,
 
+    _init: function(source, applet, device_path, name, long_name) {
+        this.parent(source,
+                    _("Bluetooth"),
+                    _("Authorization request from %s").format(name),
+                    { customContent: true });
+        this.setResident(true);
+
+        this._applet = applet;
+        this._devicePath = device_path;
+        this.addBody(_("Device %s wants to pair with this computer").format(long_name));
+
+        this.addButton('allow', _("Allow"));
+        this.addButton('deny', _("Deny"));
+
+        this.connect('action-invoked', Lang.bind(this, function(self, action) {
+            if (action == 'allow')
+                this._applet.agent_reply_confirm(this._devicePath, true);
+            else
+                this._applet.agent_reply_confirm(this._devicePath, false);
+            this.destroy();
+        }));
+    }
+});
+
+const AuthServiceNotification = new Lang.Class({
+    Name: 'AuthServiceNotification',
+    Extends: MessageTray.Notification,
+
     _init: function(source, applet, device_path, name, long_name, uuid) {
         this.parent(source,
                     _("Bluetooth"),
@@ -334,14 +368,14 @@ const AuthNotification = new Lang.Class({
         this.connect('action-invoked', Lang.bind(this, function(self, action) {
             switch (action) {
             case 'always-grant':
-                this._applet.agent_reply_auth(this._devicePath, true, true);
+                this._applet.agent_reply_auth_service(this._devicePath, true, true);
                 break;
             case 'grant':
-                this._applet.agent_reply_auth(this._devicePath, true, false);
+                this._applet.agent_reply_auth_service(this._devicePath, true, false);
                 break;
             case 'reject':
             default:
-                this._applet.agent_reply_auth(this._devicePath, false, false);
+                this._applet.agent_reply_auth_service(this._devicePath, false, false);
             }
             this.destroy();
         }));
