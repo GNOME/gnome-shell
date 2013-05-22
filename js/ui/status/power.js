@@ -3,37 +3,13 @@
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const St = imports.gi.St;
+const UPower = imports.gi.UPowerGlib;
 
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
 const BUS_NAME = 'org.gnome.SettingsDaemon.Power';
 const OBJECT_PATH = '/org/gnome/SettingsDaemon/Power';
-
-const UPDeviceType = {
-    UNKNOWN: 0,
-    AC_POWER: 1,
-    BATTERY: 2,
-    UPS: 3,
-    MONITOR: 4,
-    MOUSE: 5,
-    KEYBOARD: 6,
-    PDA: 7,
-    PHONE: 8,
-    MEDIA_PLAYER: 9,
-    TABLET: 10,
-    COMPUTER: 11
-};
-
-const UPDeviceState = {
-    UNKNOWN: 0,
-    CHARGING: 1,
-    DISCHARGING: 2,
-    EMPTY: 3,
-    FULLY_CHARGED: 4,
-    PENDING_CHARGE: 5,
-    PENDING_DISCHARGE: 6
-};
 
 const PowerManagerInterface = <interface name="org.gnome.SettingsDaemon.Power">
 <method name="GetDevices">
@@ -79,7 +55,7 @@ const Indicator = new Lang.Class({
             }
 
             let [[device_id, device_type, icon, percentage, state, seconds]] = result;
-            if (device_type == UPDeviceType.BATTERY) {
+            if (device_type == UPower.DeviceKind.BATTERY) {
                 let time = Math.round(seconds / 60);
                 if (time == 0) {
                     // 0 is reported when UPower does not have enough data
