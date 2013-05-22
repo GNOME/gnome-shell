@@ -1133,6 +1133,14 @@ const ScreenShield = new Lang.Class({
         if (Main.sessionMode.currentMode == 'unlock-dialog')
             Main.sessionMode.popMode('unlock-dialog');
 
+        if (this._dialog && !this._isGreeter)
+            this._dialog.popModal();
+
+        if (this._isModal) {
+            Main.popModal(this.actor);
+            this._isModal = false;
+        }
+
         Tweener.addTween(this._lockDialogGroup, {
             scale_x: 0,
             scale_y: 0,
@@ -1150,12 +1158,6 @@ const ScreenShield = new Lang.Class({
         }
 
         this._lightbox.hide();
-
-        if (this._isModal) {
-            Main.popModal(this.actor);
-            this._isModal = false;
-        }
-
         this.actor.hide();
 
         if (this._becameActiveId != 0) {
