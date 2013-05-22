@@ -1943,19 +1943,20 @@ const NMApplet = new Lang.Class({
 
         let section = connection._section;
 
-        if (section == NMConnectionCategory.VPN) {
-            this._vpnSection.removeConnection(connection);
-        } else if (section != NMConnectionCategory.INVALID) {
-            let devices = this._devices[section].devices;
-            for (let i = 0; i < devices.length; i++)
-                devices[i].removeConnection(connection);
-        }
+        if (section == NMConnectionCategory.INVALID)
+            return;
 
         if (section == NMConnectionCategory.VIRTUAL) {
             let iface = connection.get_virtual_iface_name();
             let wrapper = this._findVirtualDevice(iface);
             if (wrapper && !wrapper.hasConnections())
                 this._removeDeviceWrapper(wrapper);
+        } else if (section == NMConnectionCategory.VPN) {
+            this._vpnSection.removeConnection(connection);
+        } else {
+            let devices = this._devices[section].devices;
+            for (let i = 0; i < devices.length; i++)
+                devices[i].removeConnection(connection);
         }
 
         connection.disconnect(connection._removedId);
@@ -1970,6 +1971,9 @@ const NMApplet = new Lang.Class({
         connection._timestamp = connectionSettings.timestamp;
 
         let section = connection._section;
+
+        if (section == NMConnectionCategory.INVALID)
+            return;
 
         if (section == NMConnectionCategory.VIRTUAL) {
             let wrapperClass = this._vtypes[connection._type];
@@ -1990,11 +1994,7 @@ const NMApplet = new Lang.Class({
                         break;
                 }
             }
-        }
-
-        if (section == NMConnectionCategory.INVALID)
-            return;
-        if (section == NMConnectionCategory.VPN) {
+        } else if (section == NMConnectionCategory.VPN) {
             this._vpnSection.checkConnection(connection);
         } else {
             let devices = this._devices[section].devices;
