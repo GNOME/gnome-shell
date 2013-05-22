@@ -108,10 +108,6 @@ units_string (TestConformSimpleFixture *fixture,
   g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_POINT);
   g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, 0.5f);
 
-  g_assert (clutter_units_from_string (&units, "-3 px") == TRUE);
-  g_assert (clutter_units_get_unit_type (&units) == CLUTTER_UNIT_PIXEL);
-  g_assert_cmpfloat (clutter_units_get_unit_value (&units), ==, -3.0);
-
   g_assert (clutter_units_from_string (&units, "1 omg!!pony") == FALSE);
 
   clutter_units_from_pt (&units, 24.0);
