@@ -480,11 +480,21 @@ clutter_units_from_string (ClutterUnits *units,
   ClutterBackend *backend;
   ClutterUnitType unit_type;
   gfloat value;
+  gboolean negative = FALSE;
 
   g_return_val_if_fail (units != NULL, FALSE);
   g_return_val_if_fail (str != NULL, FALSE);
 
   /* strip leading space */
+  while (g_ascii_isspace (*str) || *str == '+')
+    str++;
+
+  if (*str == '-')
+    {
+      negative = TRUE;
+      str++;
+    }
+
   while (g_ascii_isspace (*str))
     str++;
 
@@ -549,6 +559,9 @@ clutter_units_from_string (ClutterUnits *units,
     str++;
   if (*str != '\0')
     return FALSE;
+
+  if (negative)
+    value *= -1;
 
   backend = clutter_get_default_backend ();
 
