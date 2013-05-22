@@ -527,10 +527,6 @@ const NMDevice = new Lang.Class({
             return;
         }
 
-        if (oldstate == NetworkManager.DeviceState.ACTIVATED) {
-            this.emit('network-lost');
-        }
-
         /* Emit a notification if activation fails, but don't do it
            if the reason is no secrets, as that indicates the user
            cancelled the agent dialog */
