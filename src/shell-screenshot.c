@@ -15,6 +15,9 @@
 #include "shell-global.h"
 #include "shell-screenshot.h"
 
+#define A11Y_APPS_SCHEMA "org.gnome.desktop.a11y.applications"
+#define MAGNIFIER_ACTIVE_KEY "screen-magnifier-enabled"
+
 struct _ShellScreenshotClass
 {
   GObjectClass parent_class;
@@ -304,6 +307,7 @@ grab_screenshot (ClutterActor *stage,
   MetaScreen *screen = shell_global_get_screen (screenshot_data->screenshot->global);
   int width, height;
   GSimpleAsyncResult *result;
+  GSettings *settings;
 
   meta_screen_get_size (screen, &width, &height);
 
@@ -352,8 +356,11 @@ grab_screenshot (ClutterActor *stage,
   screenshot_data->screenshot_area.width = width;
   screenshot_data->screenshot_area.height = height;
 
-  if (screenshot_data->include_cursor)
+  settings = g_settings_new (A11Y_APPS_SCHEMA);
+  if (screenshot_data->include_cursor &&
+      !g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
     _draw_cursor_image (screenshot_data->image, screenshot_data->screenshot_area);
+  g_object_unref (settings);
 
   g_signal_handlers_disconnect_by_func (stage, (void *)grab_screenshot, (gpointer)screenshot_data);
 
@@ -476,6 +483,7 @@ shell_screenshot_screenshot_window (ShellScreenshot *screenshot,
                                     ShellScreenshotCallback callback)
 {
   GSimpleAsyncResult *result;
+  GSettings *settings;
 
   _screenshot_data *screenshot_data = g_new0 (_screenshot_data, 1);
 
@@ -533,8 +541,10 @@ shell_screenshot_screenshot_window (ShellScreenshot *screenshot,
   stex = META_SHAPED_TEXTURE (meta_window_actor_get_texture (META_WINDOW_ACTOR (window_actor)));
   screenshot_data->image = meta_shaped_texture_get_image (stex, &clip);
 
-  if (include_cursor)
+  settings = g_settings_new (A11Y_APPS_SCHEMA);
+  if (include_cursor && !g_settings_get_boolean (settings, MAGNIFIER_ACTIVE_KEY))
     _draw_cursor_image (screenshot_data->image, screenshot_data->screenshot_area);
+  g_object_unref (settings);
 
   result = g_simple_async_result_new (NULL, on_screenshot_written, (gpointer)screenshot_data, shell_screenshot_screenshot_window);
   g_simple_async_result_run_in_thread (result, write_screenshot_thread, G_PRIORITY_DEFAULT, NULL);
