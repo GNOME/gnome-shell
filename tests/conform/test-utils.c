@@ -266,6 +266,20 @@ test_utils_check_pixel (CoglFramebuffer *test_fb,
 }
 
 void
+test_utils_check_pixel_and_alpha (CoglFramebuffer *test_fb,
+                                  int x, int y, uint32_t expected_pixel)
+{
+  uint8_t pixel[4];
+
+  cogl_framebuffer_read_pixels (test_fb,
+                                x, y, 1, 1,
+                                COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                pixel);
+
+  test_utils_compare_pixel_and_alpha (pixel, expected_pixel);
+}
+
+void
 test_utils_check_pixel_rgb (CoglFramebuffer *test_fb,
                             int x, int y, int r, int g, int b)
 {

@@ -52,6 +52,24 @@ void
 test_utils_check_pixel (CoglFramebuffer *framebuffer,
                         int x, int y, uint32_t expected_pixel);
 
+/**
+ * @framebuffer: The #CoglFramebuffer to read from
+ * @x: x co-ordinate of the pixel to test
+ * @y: y co-ordinate of the pixel to test
+ * @pixel: An integer of the form 0xRRGGBBAA representing the expected
+ *         pixel value
+ *
+ * This performs reads a pixel on the given cogl @framebuffer and
+ * asserts that it matches the given color. The alpha channel is also
+ * checked unlike with test_utils_check_pixel(). The pixels are
+ * converted to a string and compared with g_assert_cmpstr so that if
+ * the comparison fails then the assert will display a meaningful
+ * message.
+ */
+void
+test_utils_check_pixel_and_alpha (CoglFramebuffer *fb,
+                                  int x, int y, uint32_t expected_pixel);
+
 /*
  * test_utils_check_pixel:
  * @framebuffer: The #CoglFramebuffer to read from
