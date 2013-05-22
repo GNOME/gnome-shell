@@ -133,7 +133,6 @@ const Overview = new Lang.Class({
 
         this._backgroundGroup = new Meta.BackgroundGroup();
         Main.layoutManager.overviewGroup.add_child(this._backgroundGroup);
-        this._backgroundGroup.hide();
         this._bgManagers = [];
 
         this._activationTime = 0;
@@ -152,7 +151,6 @@ const Overview = new Lang.Class({
         this._overview.add_actor(this._coverPane);
         this._coverPane.connect('event', Lang.bind(this, function (actor, event) { return true; }));
 
-        this._stack.hide();
         this._stack.add_actor(this._overview);
         Main.layoutManager.overviewGroup.add_child(this._stack);
 
@@ -464,16 +462,17 @@ const Overview = new Lang.Class({
     // show:
     //
     // Animates the overview visible and grabs mouse and keyboard input
-    show : function() {
+    show: function() {
         if (this.isDummy)
             return;
         if (this._shown)
             return;
         this._shown = true;
 
-        if (!this._syncInputMode())
+        if (!this._syncGrab())
             return;
 
+        Main.layoutManager.showOverview();
         this._animateVisible();
     },
 
@@ -523,8 +522,6 @@ const Overview = new Lang.Class({
         //
         // Disable unredirection while in the overview
         Meta.disable_unredirect_for_screen(global.screen);
-        this._stack.show();
-        this._backgroundGroup.show();
         this._viewSelector.show();
 
         this._stack.opacity = 0;
@@ -565,7 +562,7 @@ const Overview = new Lang.Class({
         this._animateNotVisible();
 
         this._shown = false;
-        this._syncInputMode();
+        this._syncGrab();
     },
 
     toggle: function() {
@@ -596,8 +593,8 @@ const Overview = new Lang.Class({
 
     //// Private methods ////
 
-    _syncInputMode: function() {
-        // We delay input mode changes during animation so that when removing the
+    _syncGrab: function() {
+        // We delay grab changes during animation so that when removing the
         // overview we don't have a problem with the release of a press/release
         // going to an application.
         if (this.animationInProgress)
@@ -615,16 +612,12 @@ const Overview = new Lang.Class({
                         return false;
                     }
                 }
-            } else {
-                global.stage_input_mode = Shell.StageInputMode.FULLSCREEN;
             }
         } else {
             if (this._modal) {
                 Main.popModal(this._overview);
                 this._modal = false;
             }
-            else if (global.stage_input_mode == Shell.StageInputMode.FULLSCREEN)
-                global.stage_input_mode = Shell.StageInputMode.NORMAL;
         }
         return true;
     },
@@ -663,7 +656,7 @@ const Overview = new Lang.Class({
         if (!this._shown)
             this._animateNotVisible();
 
-        this._syncInputMode();
+        this._syncGrab();
         global.sync_pointer();
     },
 
@@ -673,20 +666,19 @@ const Overview = new Lang.Class({
 
         this._viewSelector.hide();
         this._desktopFade.hide();
-        this._backgroundGroup.hide();
-        this._stack.hide();
+        this._coverPane.hide();
 
         this.visible = false;
         this.animationInProgress = false;
-
-        this._coverPane.hide();
 
         this.emit('hidden');
         // Handle any calls to show* while we were hiding
         if (this._shown)
             this._animateVisible();
+        else
+            Main.layoutManager.hideOverview();
 
-        this._syncInputMode();
+        this._syncGrab();
 
         // Fake a pointer event if requested
         if (this._needsFakePointerEvent) {

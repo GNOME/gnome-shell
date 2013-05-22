@@ -189,10 +189,12 @@ const LayoutManager = new Lang.Class({
         this.uiGroup.add_actor(global.window_group);
 
         global.stage.remove_actor(global.overlay_group);
-        this.overviewGroup = new St.Widget({ name: 'overviewGroup' });
-        this.uiGroup.add_actor(this.overviewGroup);
 
         global.stage.add_child(this.uiGroup);
+
+        this.overviewGroup = new St.Widget({ name: 'overviewGroup',
+                                             visible: false });
+        this.addChrome(this.overviewGroup);
 
         this.screenShieldGroup = new St.Widget({ name: 'screenShieldGroup',
                                                  visible: false,
@@ -244,24 +246,24 @@ const LayoutManager = new Lang.Class({
         this._monitorsChanged();
     },
 
-    // This is called by Main after everything else is constructed;
-    // it needs access to Main.overview, which didn't exist
-    // yet when the LayoutManager was constructed.
+    // This is called by Main after everything else is constructed
     init: function() {
-        Main.overview.connect('showing', Lang.bind(this, this._overviewShowing));
-        Main.overview.connect('hidden', Lang.bind(this, this._overviewHidden));
         Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
 
         this._prepareStartupAnimation();
     },
 
-    _overviewShowing: function() {
+    showOverview: function() {
+        this.overviewGroup.show();
+
         this._inOverview = true;
         this._updateVisibility();
         this._queueUpdateRegions();
     },
 
-    _overviewHidden: function() {
+    hideOverview: function() {
+        this.overviewGroup.hide();
+
         this._inOverview = false;
         this._updateVisibility();
         this._queueUpdateRegions();
