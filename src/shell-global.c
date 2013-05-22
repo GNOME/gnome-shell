@@ -98,7 +98,6 @@ enum {
   PROP_0,
 
   PROP_SESSION_MODE,
-  PROP_OVERLAY_GROUP,
   PROP_SCREEN,
   PROP_GDK_SCREEN,
   PROP_DISPLAY,
@@ -165,9 +164,6 @@ shell_global_get_property(GObject         *object,
     {
     case PROP_SESSION_MODE:
       g_value_set_string (value, shell_global_get_session_mode (global));
-      break;
-    case PROP_OVERLAY_GROUP:
-      g_value_set_object (value, meta_get_overlay_group_for_screen (global->meta_screen));
       break;
     case PROP_SCREEN:
       g_value_set_object (value, global->meta_screen);
@@ -355,13 +351,6 @@ shell_global_class_init (ShellGlobalClass *klass)
                                                         "The session mode to use",
                                                         "user",
                                                         G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
-  g_object_class_install_property (gobject_class,
-                                   PROP_OVERLAY_GROUP,
-                                   g_param_spec_object ("overlay-group",
-                                                        "Overlay Group",
-                                                        "Actor holding objects that appear above the desktop contents",
-                                                        CLUTTER_TYPE_ACTOR,
-                                                        G_PARAM_READABLE));
   g_object_class_install_property (gobject_class,
                                    PROP_SCREEN,
                                    g_param_spec_object ("screen",

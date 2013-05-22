@@ -188,8 +188,6 @@ const LayoutManager = new Lang.Class({
         global.stage.remove_actor(global.window_group);
         this.uiGroup.add_actor(global.window_group);
 
-        global.stage.remove_actor(global.overlay_group);
-
         global.stage.add_child(this.uiGroup);
 
         this.overviewGroup = new St.Widget({ name: 'overviewGroup',
