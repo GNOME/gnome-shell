@@ -149,16 +149,16 @@ const _Draggable = new Lang.Class({
 
     _grabEvents: function() {
         if (!this._eventsGrabbed) {
-            Clutter.grab_pointer(_getEventHandlerActor());
-            Clutter.grab_keyboard(_getEventHandlerActor());
-            this._eventsGrabbed = true;
+            this._eventsGrabbed = Main.pushModal(_getEventHandlerActor());
+            if (this._eventsGrabbed)
+                Clutter.grab_pointer(_getEventHandlerActor());
         }
     },
 
     _ungrabEvents: function() {
         if (this._eventsGrabbed) {
             Clutter.ungrab_pointer();
-            Clutter.ungrab_keyboard();
+            Main.popModal(_getEventHandlerActor());
             this._eventsGrabbed = false;
         }
     },
