@@ -118,34 +118,34 @@ const GrabHelper = new Lang.Class({
     // grab:
     // @params: A bunch of parameters, see below
     //
-    // Grabs the mouse and keyboard, according to the GrabHelper's
-    // parameters. If @newFocus is not %null, then the keyboard focus
-    // is moved to the first #StWidget:can-focus widget inside it.
+    // The general effect of a "grab" is to ensure that the passed in actor
+    // and all actors inside the grab get exclusive control of the mouse and
+    // keyboard, with the grab automatically being dropped if the user tries
+    // to dismiss it. The actor is passed in through @params.actor.
     //
-    // The grab will automatically be dropped if:
-    //   - The user clicks outside the grabbed actors
-    //   - The user types Escape
-    //   - The keyboard focus is moved outside the grabbed actors
-    //   - A window is focused
+    // grab() can be called multiple times, with the scope of the grab being
+    // changed to a different actor every time. A nested grab does not have
+    // to have its grabbed actor inside the parent grab actors.
     //
-    // If @params.actor is not null, then it will be focused as the
-    // new actor. If you attempt to grab an already focused actor, the
-    // request to be focused will be ignored. The actor will not be
-    // added to the grab stack, so do not call a paired ungrab().
+    // Grabs can be automatically dropped if the user tries to dismiss it
+    // in one of two ways: the user clicking outside the currently grabbed
+    // actor, or the user typing the Escape key.
     //
-    // If @params contains { modal: true }, then grab() will push a modal
-    // on the owner of the GrabHelper. As long as there is at least one
-    // { modal: true } actor on the grab stack, the grab will be kept.
-    // When the last { modal: true } actor is ungrabbed, then the modal
-    // will be dropped. A modal grab can fail if there is already a grab
-    // in effect from aother application; in this case the function returns
-    // false and nothing happens. Non-modal grabs can never fail.
+    // If the user clicks outside the grabbed actors, and the clicked on
+    // actor is part of a previous grab in the stack, grabs will be popped
+    // until that grab is active. However, the click event will not be
+    // replayed to the actor.
     //
-    // If @params contains { grabFocus: true }, then if you call grab()
-    // while the shell is outside the overview, it will set the stage
-    // input mode to %Shell.StageInputMode.FOCUSED, and ungrab() will
-    // revert it back, and re-focus the previously-focused window (if
-    // another window hasn't been explicitly focused before then).
+    // If the user types the Escape key, one grab from the grab stack will
+    // be popped.
+    //
+    // When a grab is popped by user interacting as described above, if you
+    // pass a callback as @params.onUngrab, it will be called with %true.
+    //
+    // If @params.focus is not null, we'll set the key focus directly
+    // to that actor instead of navigating in @params.actor. This is for
+    // use cases like menus, where we want to grab the menu actor, but keep
+    // focus on the clicked on menu item.
     grab: function(params) {
         params = Params.parse(params, { actor: null,
                                         modal: false,
@@ -262,10 +262,14 @@ const GrabHelper = new Lang.Class({
     // ungrab:
     // @params: The parameters for the grab; see below.
     //
-    // Pops an actor from the grab stack, potentially dropping the grab.
+    // Pops @params.actor from the grab stack, potentially dropping
+    // the grab. If the actor is not on the grab stack, this call is
+    // ignored with no ill effects.
     //
-    // If the actor that was popped from the grab stack was not the actor
-    // That was passed in, this call is ignored.
+    // If the actor is not at the top of the grab stack, grabs are
+    // popped until the grabbed actor is at the top of the grab stack.
+    // The onUngrab callback for every grab is called for every popped
+    // grab with the parameter %false.
     ungrab: function(params) {
         params = Params.parse(params, { actor: this.currentGrab.actor,
                                         isUser: false });
