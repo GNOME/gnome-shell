@@ -1996,7 +1996,6 @@ const MessageTray = new Lang.Class({
         }
 
         let index = this._notificationQueue.indexOf(notification);
-        notification.destroy();
         if (index != -1)
             this._notificationQueue.splice(index, 1);
     },
