@@ -541,14 +541,6 @@ focus_window_changed (MetaDisplay *display,
     shell_global_set_stage_input_mode (global, SHELL_STAGE_INPUT_MODE_NORMAL);
 }
 
-static void
-shell_global_focus_stage (ShellGlobal *global)
-{
-  XSetInputFocus (global->xdisplay, global->stage_xwindow,
-                  RevertToPointerRoot,
-                  shell_global_get_current_time (global));
-}
-
 /**
  * shell_global_set_stage_input_mode:
  * @global: the #ShellGlobal
@@ -588,7 +580,8 @@ shell_global_set_stage_input_mode (ShellGlobal         *global,
     meta_set_stage_input_region (screen, global->input_region);
 
   if (mode == SHELL_STAGE_INPUT_MODE_FOCUSED)
-    shell_global_focus_stage (global);
+    meta_focus_stage_window (global->meta_screen,
+                             shell_global_get_current_time (global));
 
   if (mode != global->input_mode)
     {
