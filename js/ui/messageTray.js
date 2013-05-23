@@ -1808,7 +1808,6 @@ const MessageTray = new Lang.Class({
         let [x, y, mask] = global.get_pointer();
         this._contextMenu.setPosition(Math.round(x), Math.round(y));
         this._grabHelper.grab({ actor: this._contextMenu.actor,
-                                modal: true,
                                 onUngrab: Lang.bind(this, function () {
                                     this._contextMenu.close(BoxPointer.PopupAnimation.FULL);
                                 })
@@ -2375,7 +2374,6 @@ const MessageTray = new Lang.Class({
 
     _showTray: function() {
         if (!this._grabHelper.grab({ actor: this.actor,
-                                     modal: true,
                                      onUngrab: Lang.bind(this, this._escapeTray) })) {
             this._traySummoned = false;
             return false;
@@ -2720,7 +2718,6 @@ const MessageTray = new Lang.Class({
 
         this._summaryBoxPointer.bin.child = child;
         this._grabHelper.grab({ actor: this._summaryBoxPointer.bin.child,
-                                modal: true,
                                 onUngrab: Lang.bind(this, this._onSummaryBoxPointerUngrabbed) });
 
         this._summaryBoxPointer.actor.opacity = 0;

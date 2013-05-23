@@ -144,7 +144,6 @@ const GrabHelper = new Lang.Class({
     // focus on the clicked on menu item.
     grab: function(params) {
         params = Params.parse(params, { actor: null,
-                                        modal: false,
                                         focus: null,
                                         onUngrab: null });
 
@@ -157,7 +156,7 @@ const GrabHelper = new Lang.Class({
 
         params.savedFocus = focus;
 
-        if (params.modal && !this._takeModalGrab())
+        if (!this._takeModalGrab())
             return false;
 
         this._grabStack.push(params);
@@ -169,9 +168,6 @@ const GrabHelper = new Lang.Class({
                 newFocus.grab_key_focus();
         }
 
-        if (params.modal && !this._capturedEventId)
-            this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
-
         return true;
     },
 
@@ -180,6 +176,8 @@ const GrabHelper = new Lang.Class({
         if (firstGrab) {
             if (!Main.pushModal(this._owner, this._modalParams))
                 return false;
+
+            this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
         }
 
         this._modalCount++;
@@ -190,6 +188,11 @@ const GrabHelper = new Lang.Class({
         this._modalCount--;
         if (this._modalCount > 0)
             return;
+
+        global.stage.disconnect(this._capturedEventId);
+        this._capturedEventId = 0;
+
+        this._ignoreRelease = false;
 
         Main.popModal(this._owner);
         global.sync_pointer();
@@ -238,15 +241,7 @@ const GrabHelper = new Lang.Class({
             if (poppedGrab.onUngrab)
                 poppedGrab.onUngrab(params.isUser);
 
-            if (poppedGrab.modal)
-                this._releaseModalGrab();
-        }
-
-        if (!this.grabbed && this._capturedEventId > 0) {
-            global.stage.disconnect(this._capturedEventId);
-            this._capturedEventId = 0;
-
-            this._ignoreRelease = false;
+            this._releaseModalGrab();
         }
 
         if (hadFocus) {
