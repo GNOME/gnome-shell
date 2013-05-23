@@ -32,13 +32,9 @@ const GrabHelper = new Lang.Class({
 
         this._actors = [];
         this._capturedEventId = 0;
-        this._keyFocusNotifyId = 0;
-        this._focusWindowChangedId = 0;
         this._ignoreRelease = false;
-        this._isUngrabbingCount = 0;
 
         this._modalCount = 0;
-        this._grabFocusCount = 0;
     },
 
     // addActor:
@@ -149,7 +145,6 @@ const GrabHelper = new Lang.Class({
     grab: function(params) {
         params = Params.parse(params, { actor: null,
                                         modal: false,
-                                        grabFocus: false,
                                         focus: null,
                                         onUngrab: null });
 
@@ -165,19 +160,16 @@ const GrabHelper = new Lang.Class({
         if (params.modal && !this._takeModalGrab())
             return false;
 
-        if (params.grabFocus && !this._takeFocusGrab(hadFocus))
-            return false;
-
         this._grabStack.push(params);
 
         if (params.focus) {
             params.focus.grab_key_focus();
-        } else if (newFocus && (hadFocus || params.grabFocus)) {
+        } else if (newFocus && hadFocus) {
             if (!newFocus.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false))
                 newFocus.grab_key_focus();
         }
 
-        if ((params.grabFocus || params.modal) && !this._capturedEventId)
+        if (params.modal && !this._capturedEventId)
             this._capturedEventId = global.stage.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
 
         return true;
@@ -201,52 +193,6 @@ const GrabHelper = new Lang.Class({
 
         Main.popModal(this._owner);
         global.sync_pointer();
-    },
-
-    _takeFocusGrab: function(hadFocus) {
-        let firstGrab = (this._grabFocusCount == 0);
-        if (firstGrab) {
-            let metaDisplay = global.screen.get_display();
-
-            this._grabbedFromKeynav = hadFocus;
-            this._preGrabInputMode = global.stage_input_mode;
-
-            if (this._preGrabInputMode == Shell.StageInputMode.NORMAL)
-                global.set_stage_input_mode(Shell.StageInputMode.FOCUSED);
-
-            this._keyFocusNotifyId = global.stage.connect('notify::key-focus', Lang.bind(this, this._onKeyFocusChanged));
-            this._focusWindowChangedId = metaDisplay.connect('notify::focus-window', Lang.bind(this, this._focusWindowChanged));
-        }
-
-        this._grabFocusCount++;
-        return true;
-    },
-
-    _releaseFocusGrab: function() {
-        this._grabFocusCount--;
-        if (this._grabFocusCount > 0)
-            return;
-
-        if (this._keyFocusNotifyId > 0) {
-            global.stage.disconnect(this._keyFocusNotifyId);
-            this._keyFocusNotifyId = 0;
-        }
-
-        if (this._focusWindowChangedId > 0) {
-            let metaDisplay = global.screen.get_display();
-            metaDisplay.disconnect(this._focusWindowChangedId);
-            this._focusWindowChangedId = 0;
-        }
-
-        let prePopInputMode = global.stage_input_mode;
-
-        if (this._grabbedFromKeynav) {
-            if (this._preGrabInputMode == Shell.StageInputMode.FOCUSED &&
-                prePopInputMode != Shell.StageInputMode.FULLSCREEN)
-                global.set_stage_input_mode(Shell.StageInputMode.FOCUSED);
-        }
-
-        global.screen.focus_default_window(global.display.get_current_time_roundtrip());
     },
 
     // ignoreRelease:
@@ -278,14 +224,6 @@ const GrabHelper = new Lang.Class({
         if (grabStackIndex < 0)
             return;
 
-        // We may get key focus changes when calling onUngrab, which
-        // would cause an extra ungrab() on the next actor in the
-        // stack, which is wrong. Ignore key focus changes during the
-        // ungrab, and restore the saved key focus ourselves afterwards.
-        // We use a count as ungrab() may be re-entrant, as onUngrab()
-        // may ungrab additional actors.
-        this._isUngrabbingCount++;
-
         let focus = global.stage.key_focus;
         let hadFocus = focus && this._isWithinGrabbedActor(focus);
 
@@ -302,9 +240,6 @@ const GrabHelper = new Lang.Class({
 
             if (poppedGrab.modal)
                 this._releaseModalGrab();
-
-            if (poppedGrab.grabFocus)
-                this._releaseFocusGrab();
         }
 
         if (!this.grabbed && this._capturedEventId > 0) {
@@ -319,8 +254,6 @@ const GrabHelper = new Lang.Class({
             if (poppedGrab.savedFocus)
                 poppedGrab.savedFocus.grab_key_focus();
         }
-
-        this._isUngrabbingCount--;
     },
 
     _onCapturedEvent: function(actor, event) {
@@ -341,9 +274,6 @@ const GrabHelper = new Lang.Class({
             return true;
         }
 
-        if (!button && this._modalCount == 0)
-            return false;
-
         if (this._isWithinGrabbedActor(event.get_source()))
             return false;
 
@@ -360,21 +290,6 @@ const GrabHelper = new Lang.Class({
             return true;
         }
 
-        return this._modalCount > 0;
+        return true;
     },
-
-    _onKeyFocusChanged: function() {
-        if (this._isUngrabbingCount > 0)
-            return;
-
-        let focus = global.stage.key_focus;
-        if (!focus || !this._isWithinGrabbedActor(focus))
-            this.ungrab({ isUser: true });
-    },
-
-    _focusWindowChanged: function() {
-        let metaDisplay = global.screen.get_display();
-        if (metaDisplay.focus_window != null)
-            this.ungrab({ isUser: true });
-    }
 });

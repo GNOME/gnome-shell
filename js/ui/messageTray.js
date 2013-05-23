@@ -97,6 +97,65 @@ function _fixMarkup(text, allowMarkup) {
     return GLib.markup_escape_text(text, -1);
 }
 
+const FocusGrabber = new Lang.Class({
+    Name: 'FocusGrabber',
+
+    _init: function(actor) {
+        this._actor = actor;
+        this._prevKeyFocusActor = null;
+        this._focusActorChangedId = 0;
+        this._focused = false;
+    },
+
+    grabFocus: function() {
+        if (this._focused)
+            return;
+
+        this._prevFocusedWindow = global.display.focus_window;
+        this._prevKeyFocusActor = global.stage.get_key_focus();
+
+        this._focusActorChangedId = global.stage.connect('notify::key-focus', Lang.bind(this, this._focusActorChanged));
+
+        if (!this._actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false))
+            this._actor.grab_key_focus();
+
+        this._focused = true;
+    },
+
+    _focusUngrabbed: function() {
+        if (!this._focused)
+            return false;
+
+        if (this._focusActorChangedId > 0) {
+            global.stage.disconnect(this._focusActorChangedId);
+            this._focusActorChangedId = 0;
+        }
+
+        this._focused = false;
+        return true;
+    },
+
+    _focusActorChanged: function() {
+        let focusedActor = global.stage.get_key_focus();
+        if (!focusedActor || !this._actor.contains(focusedActor))
+            this._focusUngrabbed();
+    },
+
+    ungrabFocus: function() {
+        if (!this._focusUngrabbed())
+            return;
+
+        if (this._prevKeyFocusActor) {
+            global.stage.set_key_focus(this._prevKeyFocusActor);
+            this._prevKeyFocusActor = null;
+        } else {
+            let focusedActor = global.stage.get_key_focus();
+            if (focusedActor && this._actor.contains(focusedActor))
+                global.stage.set_key_focus(null);
+        }
+    }
+});
+
 const URLHighlighter = new Lang.Class({
     Name: 'URLHighlighter',
 
@@ -1574,6 +1633,7 @@ const MessageTray = new Lang.Class({
         this._notificationBin.set_y_align(Clutter.ActorAlign.START);
         this._notificationWidget.add_actor(this._notificationBin);
         this._notificationWidget.hide();
+        this._notificationFocusGrabber = new FocusGrabber(this._notificationWidget);
         this._notificationQueue = [];
         this._notification = null;
         this._notificationClickedId = 0;
@@ -1623,7 +1683,6 @@ const MessageTray = new Lang.Class({
                                                      { keybindingMode: Shell.KeyBindingMode.MESSAGE_TRAY });
         this._grabHelper.addActor(this._summaryBoxPointer.actor);
         this._grabHelper.addActor(this.actor);
-        this._grabHelper.addActor(this._notificationWidget);
 
         Main.layoutManager.connect('keyboard-visible-changed', Lang.bind(this, this._onKeyboardVisibleChanged));
 
@@ -2520,19 +2579,7 @@ const MessageTray = new Lang.Class({
     },
 
     _hideNotification: function() {
-        // HACK!
-        // There seems to be a reentrancy issue in calling .ungrab() here,
-        // which causes _updateState to be called before _notificationState
-        // becomes HIDING. That hides the notification again, nullifying the
-        // object but not setting _notificationState (and that's the weird part)
-        // As then _notificationState is stuck into SHOWN but _notification
-        // is null, every new _updateState fails and the message tray is
-        // lost forever.
-        //
-        // See more at https://bugzilla.gnome.org/show_bug.cgi?id=683986
-        this._notificationState = State.HIDING;
-
-        this._grabHelper.ungrab({ actor: this._notification.actor });
+        this._notificationFocusGrabber.ungrabFocus();
 
         if (this._notificationExpandedId) {
             this._notification.disconnect(this._notificationExpandedId);
@@ -2630,8 +2677,7 @@ const MessageTray = new Lang.Class({
     },
 
     _ensureNotificationFocused: function() {
-        this._grabHelper.grab({ actor: this._notification.actor,
-                                grabFocus: true });
+        this._notificationFocusGrabber.grabFocus();
     },
 
     _onSourceDoneDisplayingContent: function(source, closeTray) {
