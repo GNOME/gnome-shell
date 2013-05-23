@@ -369,6 +369,28 @@ meta_empty_stage_input_region (MetaScreen *screen)
   meta_set_stage_input_region (screen, region);
 }
 
+void
+meta_focus_stage_window (MetaScreen *screen,
+                         guint32     timestamp)
+{
+  ClutterStage *stage;
+  Window window;
+
+  stage = CLUTTER_STAGE (meta_get_stage_for_screen (screen));
+  if (!stage)
+    return;
+
+  window = clutter_x11_get_stage_window (stage);
+
+  if (window == None)
+    return;
+
+  meta_display_set_input_focus_xwindow (screen->display,
+                                        screen,
+                                        window,
+                                        timestamp);
+}
+
 gboolean
 meta_begin_modal_for_plugin (MetaScreen       *screen,
                              MetaPlugin       *plugin,

@@ -465,4 +465,9 @@ gboolean meta_display_process_barrier_event (MetaDisplay    *display,
                                              XIBarrierEvent *event);
 #endif /* HAVE_XI23 */
 
+void meta_display_set_input_focus_xwindow (MetaDisplay *display,
+                                           MetaScreen  *screen,
+                                           Window       window,
+                                           guint32      timestamp);
+
 #endif

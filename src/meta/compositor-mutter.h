@@ -46,5 +46,7 @@ void        meta_enable_unredirect_for_screen   (MetaScreen *screen);
 void meta_set_stage_input_region     (MetaScreen    *screen,
                                       XserverRegion  region);
 void meta_empty_stage_input_region   (MetaScreen    *screen);
+void meta_focus_stage_window         (MetaScreen    *screen,
+                                      guint32        timestamp);
 
 #endif

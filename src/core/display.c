@@ -5807,6 +5807,18 @@ meta_display_request_take_focus (MetaDisplay *display,
 }
 
 void
+meta_display_set_input_focus_xwindow (MetaDisplay *display,
+                                      MetaScreen  *screen,
+                                      Window       window,
+                                      guint32      timestamp)
+{
+  request_xserver_input_focus_change (display,
+                                      screen,
+                                      window,
+                                      timestamp);
+}
+
+void
 meta_display_focus_the_no_focus_window (MetaDisplay *display,
                                         MetaScreen  *screen,
                                         guint32      timestamp)
