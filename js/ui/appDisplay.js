@@ -334,6 +334,42 @@ const Views = {
     ALL: 1
 };
 
+const ControlsBoxLayout = Lang.Class({
+    Name: 'ControlsBoxLayout',
+    Extends: Clutter.BoxLayout,
+
+    /**
+     * Override the BoxLayout behavior to use the maximum preferred width of all
+     * buttons for each child
+     */
+    vfunc_get_preferred_width: function(container, forHeight) {
+        let maxMinWidth = 0;
+        let maxNaturalWidth = 0;
+        for (let child = container.get_first_child();
+             child;
+             child = child.get_next_sibling()) {
+             let [minWidth, natWidth] = child.get_preferred_width(forHeight);
+             maxMinWidth = Math.max(maxMinWidth, minWidth);
+             maxNaturalWidth = Math.max(maxNaturalWidth, natWidth);
+        }
+        let childrenCount = container.get_n_children();
+        let totalSpacing = this.spacing * (childrenCount - 1);
+        return [maxMinWidth * childrenCount + totalSpacing,
+                maxNaturalWidth * childrenCount + totalSpacing];
+    },
+
+    vfunc_set_container: function(container) {
+        if(this._styleChangedId) {
+            this._container.disconnect(this._styleChangedId);
+            this._styleChangedId = 0;
+        }
+        if(container != null)
+            this._styleChangedId = container.connect('style-changed', Lang.bind(this,
+                    function() { this.spacing = this._container.get_theme_node().get_length('spacing'); }));
+        this._container = container;
+    }
+});
+
 const AppDisplay = new Lang.Class({
     Name: 'AppDisplay',
 
@@ -374,9 +410,9 @@ const AppDisplay = new Lang.Class({
                                           x_expand: true, y_expand: true });
         this.actor.add(this._viewStack, { expand: true });
 
-        let layout = new Clutter.BoxLayout({ homogeneous: true });
-        this._controls = new St.Widget({ style_class: 'app-view-controls',
-                                         layout_manager: layout });
+        let layout = new ControlsBoxLayout({ homogeneous: true });
+        this._controls = new St.Widget({ style_class: 'app-view-controls' });
+        this._controls.set_layout_manager(layout);
         this.actor.add(new St.Bin({ child: this._controls }));
 
 
