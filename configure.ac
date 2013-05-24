@@ -96,7 +96,7 @@ PKG_CHECK_MODULES(GNOME_SHELL, gio-unix-2.0 >= $GIO_MIN_VERSION
                                polkit-agent-1 >= $POLKIT_MIN_VERSION xfixes
                                libnm-glib libnm-util >= $NETWORKMANAGER_MIN_VERSION
                                libnm-gtk >= $NETWORKMANAGER_MIN_VERSION
-                               libsecret-unstable gcr-3 >= $GCR_MIN_VERSION)
+                               libsecret-unstable gcr-base-3 >= $GCR_MIN_VERSION)
 
 PKG_CHECK_MODULES(GNOME_SHELL_JS, gio-2.0 gjs-internals-1.0 >= $GJS_MIN_VERSION)
 PKG_CHECK_MODULES(ST, clutter-1.0 gtk+-3.0 libcroco-0.6 >= 0.6.8 x11)
