@@ -48,5 +48,6 @@ void meta_set_stage_input_region     (MetaScreen    *screen,
 void meta_empty_stage_input_region   (MetaScreen    *screen);
 void meta_focus_stage_window         (MetaScreen    *screen,
                                       guint32        timestamp);
+gboolean meta_stage_is_focused       (MetaScreen    *screen);
 
 #endif

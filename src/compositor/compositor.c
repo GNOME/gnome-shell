@@ -392,6 +392,24 @@ meta_focus_stage_window (MetaScreen *screen,
 }
 
 gboolean
+meta_stage_is_focused (MetaScreen *screen)
+{
+  ClutterStage *stage;
+  Window window;
+
+  stage = CLUTTER_STAGE (meta_get_stage_for_screen (screen));
+  if (!stage)
+    return FALSE;
+
+  window = clutter_x11_get_stage_window (stage);
+
+  if (window == None)
+    return FALSE;
+
+  return (screen->display->focus_xwindow == window);
+}
+
+gboolean
 meta_begin_modal_for_plugin (MetaScreen       *screen,
                              MetaPlugin       *plugin,
                              Window            grab_window,

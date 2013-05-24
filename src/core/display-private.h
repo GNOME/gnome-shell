@@ -113,6 +113,9 @@ struct _MetaDisplay
    * or event that caused this.
    */
   MetaWindow *focus_window;
+  /* For windows we've focused that don't necessarily have an X window,
+   * like the no_focus_window or the stage X window. */
+  Window focus_xwindow;
   gulong focus_serial;
 
   /* last timestamp passed to XSetInputFocus */
