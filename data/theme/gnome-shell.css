@@ -891,12 +891,11 @@ StScrollBar StButton#vhandle:active {
 }
 
 .app-view-controls {
-    width: 250px;
     padding-bottom: 32px;
 }
 
 .app-view-control {
-    padding: 4px 16px;
+    padding: 4px 32px;
 }
 
 .search-display > StBoxLayout,
