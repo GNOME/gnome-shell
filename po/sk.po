@@ -5,7 +5,7 @@
 # Stanislav Visnovsky <visnovsky@kde.org>, 2003.
 # Marcel Telka <marcel@telka.sk>, 2005.
 # Peter Tuharsky <tuharsky@misbb.sk>, 2007.
-# Pavol Šimo <palo.simo@gmail.com>, 2007- 2010.
+# Pavol Šimo <palo.simo@gmail.com>, 2007-2010.
 # Ján Kyselica <kyselica.jan@gmail.com>, 2013.
 #
 msgid ""
@@ -13,9 +13,9 @@ msgstr ""
 "Project-Id-Version: mutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=mutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-07 16:17+0000\n"
-"PO-Revision-Date: 2013-03-09 17:58+0000\n"
-"Last-Translator: Ján Kyselica <kyselica.jan@gmail.com>\n"
+"POT-Creation-Date: 2013-05-24 21:44+0000\n"
+"PO-Revision-Date: 2013-05-18 16:53+0100\n"
+"Last-Translator: Jan Kyselica <kyselica.jan@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
@@ -27,102 +27,128 @@ msgstr ""
 msgid "Navigation"
 msgstr "Navigácia"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:2
 msgid "Move window to workspace 1"
 msgstr "Presunúť okno na pracovný priestor č. 1"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:3
 msgid "Move window to workspace 2"
 msgstr "Presunúť okno na pracovný priestor č. 2"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:4
 msgid "Move window to workspace 3"
 msgstr "Presunúť okno na pracovný priestor č. 3"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:5
 msgid "Move window to workspace 4"
 msgstr "Presunúť okno na pracovný priestor č. 4"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:6
 msgid "Move window one workspace to the left"
 msgstr "Presunúť okno o jeden pracovný priestor vľavo"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:7
 msgid "Move window one workspace to the right"
 msgstr "Presunúť okno o jeden pracovný priestor vpravo"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:8
 msgid "Move window one workspace up"
 msgstr "Presunúť okno o jeden pracovný priestor hore"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:9
 msgid "Move window one workspace down"
 msgstr "Presunúť okno o jeden pracovný priestor dolu"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:10
 msgid "Switch applications"
 msgstr "Prepnúť aplikácie"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:11
 msgid "Switch windows"
 msgstr "Prepnúť okná"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:12
 msgid "Switch windows of an application"
 msgstr "Prepnúť okná aplikácie"
 
 # MČ: nie som presvedčený o právnosti prekladu, je to popis ku položke s názvom „switch-panels“
+# PK: co tak medzie ovladacimi prvkami systemu?
+# PK: zisti co to robi
+# description
 #: ../src/50-mutter-navigation.xml.in.h:13
 #, fuzzy
 msgid "Switch system controls"
-msgstr "Prepnúť správcu systému"
+msgstr "Prepnúť medzi systémovými ovládacími prvkami"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:14
 msgid "Switch windows directly"
 msgstr "Prepnúť okná priamo"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:15
 msgid "Switch windows of an app directly"
 msgstr "Prepnúť okná aplikácie priamo"
 
 # MČ: podobne ako vyššie: „cycle-panels“
+# description
 #: ../src/50-mutter-navigation.xml.in.h:16
 #, fuzzy
 msgid "Switch system controls directly"
-msgstr "Prepnúť správcu systému priamo"
+msgstr "Prepnúť medzi systémovými ovládacími prvkami priamo"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:17
 msgid "Hide all normal windows"
 msgstr "Skryť všetky normálne okná"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:18
 msgid "Switch to workspace 1"
 msgstr "Prepnúť na pracovný priestor č. 1"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:19
 msgid "Switch to workspace 2"
 msgstr "Prepnúť na pracovný priestor č. 2"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:20
 msgid "Switch to workspace 3"
 msgstr "Prepnúť na pracovný priestor č. 3"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:21
 msgid "Switch to workspace 4"
 msgstr "Prepnúť na pracovný priestor č. 4"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:22
 msgid "Move to workspace left"
 msgstr "Presunúť na pracovný priestor vľavo"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:23
 msgid "Move to workspace right"
 msgstr "Presunúť na pracovný priestor vpravo"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:24
 msgid "Move to workspace above"
 msgstr "Presunúť na pracovný priestor hore"
 
+# description
 #: ../src/50-mutter-navigation.xml.in.h:25
 msgid "Move to workspace below"
 msgstr "Presunúť na pracovný priestor dole"
@@ -131,12 +157,12 @@ msgstr "Presunúť na pracovný priestor dole"
 msgid "System"
 msgstr "Systém"
 
-# PK: tu ide skor o to ze odtial mozes spustit prikaz
+# description
 #: ../src/50-mutter-system.xml.in.h:2
-#, fuzzy
 msgid "Show the run command prompt"
-msgstr "Zobraziť spustenie príkazového riadka"
+msgstr "Zobraziť riadok pre spustenie príkazu"
 
+# description
 #: ../src/50-mutter-system.xml.in.h:3
 msgid "Show the activities overview"
 msgstr "Zobraziť náhľad aktivít"
@@ -145,68 +171,84 @@ msgstr "Zobraziť náhľad aktivít"
 msgid "Windows"
 msgstr "Okná"
 
+# description
 #: ../src/50-mutter-windows.xml.in.h:2
 msgid "Activate the window menu"
 msgstr "Aktivovať ponuku okna"
 
+# description
 #: ../src/50-mutter-windows.xml.in.h:3
 msgid "Toggle fullscreen mode"
 msgstr "Prepnúť celoobrazovkový režim"
 
+# description
 #: ../src/50-mutter-windows.xml.in.h:4
 msgid "Toggle maximization state"
 msgstr "Prepnúť stav maximalizácie"
 
+# description
 #: ../src/50-mutter-windows.xml.in.h:5
 msgid "Maximize window"
 msgstr "Maximalizovať okno"
 
+# description
 #: ../src/50-mutter-windows.xml.in.h:6
 msgid "Restore window"
 msgstr "Obnoviť okno"
 
 # PK: co to robi?
+# description
 #: ../src/50-mutter-windows.xml.in.h:7
 #, fuzzy
 msgid "Toggle shaded state"
-msgstr "Prepnúť zabalenie okna"
+msgstr "Prepnúť stav zabalenia"
 
+# description
 #: ../src/50-mutter-windows.xml.in.h:8
 msgid "Close window"
 msgstr "Zatvoriť okno"
 
+# description
 #: ../src/50-mutter-windows.xml.in.h:9
 msgid "Hide window"
 msgstr "Skryť okno"
 
+# description
 #: ../src/50-mutter-windows.xml.in.h:10
 msgid "Move window"
 msgstr "Presunúť okno"
 
+# description
 #: ../src/50-mutter-windows.xml.in.h:11
 msgid "Resize window"
 msgstr "Zmeniť veľkosť okna"
 
+# description
 #: ../src/50-mutter-windows.xml.in.h:12
 msgid "Toggle window on all workspaces or one"
 msgstr "Prepnúť okno na všetky pracovné priestory alebo len na jeden"
 
+# description
 #: ../src/50-mutter-windows.xml.in.h:13
 msgid "Raise window if covered, otherwise lower it"
 msgstr "Presunúť okno dopredu ak je zakryté, inak presunúť dozadu"
 
+# description
 #: ../src/50-mutter-windows.xml.in.h:14
 msgid "Raise window above other windows"
 msgstr "Presunúť okno nad ostatné okná"
 
+# description
 #: ../src/50-mutter-windows.xml.in.h:15
 msgid "Lower window below other windows"
 msgstr "Presunúť okno pod ostatné okná"
 
+# description
 #: ../src/50-mutter-windows.xml.in.h:16
 msgid "Maximize window vertically"
 msgstr "Maximalizovať okno zvisle"
 
+# description
 #: ../src/50-mutter-windows.xml.in.h:17
 msgid "Maximize window horizontally"
 msgstr "Maximalizovať okno vodorovne"
@@ -214,33 +256,30 @@ msgstr "Maximalizovať okno vodorovne"
 # MČ: doteraz sú všetky description v neurčitku a teraz popisný tvar? Asi by sa to malo zjednotiť.
 # Description
 #: ../src/50-mutter-windows.xml.in.h:18
-#, fuzzy
 msgid "View split on left"
-msgstr "Zobrazí rozdelenie naľavo"
+msgstr "Zobraziť rozdelenie naľavo"
 
 # Description
 #: ../src/50-mutter-windows.xml.in.h:19
-#, fuzzy
 msgid "View split on right"
-msgstr "Zobrazí rozdelenie napravo"
+msgstr "Zobraziť rozdelenie napravo"
 
-# JK: Možno by bolo vhodné ponechať "správca okien", nechávam na kontrolóra.
-# MČ: Správca okien asi nie, keďže je v poznámke non-WM, ale ani správca kompozície.
+# PK: je %i cislo obrazovky? ak ano tak "č. %i"
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:502
+#: ../src/compositor/compositor.c:571
 #, fuzzy, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
 "\"."
 msgstr ""
-"Pre obrazovku %d na displeji „%s“ je spustený už iný správca kompozície."
+"Pre obrazovku %i na displeji „%s“ je spustený už iný správca rozloženia."
 
-#: ../src/compositor/meta-background.c:1180
+#: ../src/compositor/meta-background.c:1076
 msgid "background texture could not be created from file"
 msgstr "nepodarilo sa vytvoriť textúru pozadia zo súboru"
 
-#: ../src/core/bell.c:320
+#: ../src/core/bell.c:322
 msgid "Bell event"
 msgstr "Udalosť zvončeka"
 
@@ -274,18 +313,18 @@ msgstr "_Počkať"
 msgid "_Force Quit"
 msgstr "_Vynútiť ukončenie"
 
-#: ../src/core/display.c:402
+#: ../src/core/display.c:401
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Rozšírenie %s, potrebné pre kompozitné prostredie, chýba"
 
 # X window system preloz, napr. system na spravu okien X
-#: ../src/core/display.c:494
-#, fuzzy, c-format
+#: ../src/core/display.c:493
+#, c-format
 msgid "Failed to open X Window System display '%s'\n"
-msgstr "Zlyhalo otvorenie displeja X Window System „%s“\n"
+msgstr "Zlyhalo otvorenie displeja systému na správu okien X „%s“\n"
 
-#: ../src/core/keybindings.c:929
+#: ../src/core/keybindings.c:970
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -293,50 +332,46 @@ msgid ""
 msgstr ""
 "Iný program už používa kláves %s s modifikátormi %x ako klávesovú skratku\n"
 
-#: ../src/core/keybindings.c:1129
-#, fuzzy, c-format
-#| msgid "\"%s\" is not a valid value for focus attribute"
+#: ../src/core/keybindings.c:1151
+#, c-format
 msgid "\"%s\" is not a valid accelerator\n"
-msgstr "„%s“ nie je platná hodnota pre atribút fokusu"
+msgstr "„%s“ nie je platný akcelerátor\n"
 
-# PK: pripojenia k spravcovi relacii 
 # cmd desc
-#: ../src/core/main.c:196
-#, fuzzy
+#: ../src/core/main.c:197
 msgid "Disable connection to session manager"
-msgstr "Zakáže spojenia na správcu relácií"
+msgstr "Zakáže pripojenia k správcovi relácií"
 
 # cmd desc
-#: ../src/core/main.c:202
+#: ../src/core/main.c:203
 msgid "Replace the running window manager"
 msgstr "Nahradí bežiaceho správcu okien"
 
-# PK: identifikator
 # cmd desc
-#: ../src/core/main.c:208
+#: ../src/core/main.c:209
 msgid "Specify session management ID"
-msgstr "Zadá ID správy relácií"
+msgstr "Zadá identifikátor správy relácií"
 
-#: ../src/core/main.c:213
+#: ../src/core/main.c:214
 msgid "X Display to use"
 msgstr "X displej, ktorý bude použitý"
 
 # cmd desc
-#: ../src/core/main.c:219
+#: ../src/core/main.c:220
 msgid "Initialize session from savefile"
 msgstr "Inicializuje reláciu z uloženého súboru"
 
 # cmd desc
-#: ../src/core/main.c:225
+#: ../src/core/main.c:226
 msgid "Make X calls synchronous"
 msgstr "Použije synchrónne volania X"
 
-#: ../src/core/main.c:533
+#: ../src/core/main.c:534
 #, c-format
 msgid "Failed to scan themes directory: %s\n"
 msgstr "Zlyhalo prehľadanie adresára s témami: %s\n"
 
-#: ../src/core/main.c:549
+#: ../src/core/main.c:550
 #, c-format
 msgid ""
 "Could not find a theme! Be sure %s exists and contains the usual themes.\n"
@@ -368,7 +403,7 @@ msgstr "Zobrazí verziu"
 msgid "Mutter plugin to use"
 msgstr "Použije zásuvný modul Mutter"
 
-#: ../src/core/prefs.c:1087
+#: ../src/core/prefs.c:1193
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -376,12 +411,12 @@ msgstr ""
 "Náhradné riešenia pre chybné aplikácie nie sú povolené. Niektoré aplikácie "
 "sa nemusia správať správne.\n"
 
-#: ../src/core/prefs.c:1162
+#: ../src/core/prefs.c:1268
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Nepodarilo sa spracovať popis písma „%s“ z kľúča GSettings %s\n"
 
-#: ../src/core/prefs.c:1228
+#: ../src/core/prefs.c:1334
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -390,7 +425,7 @@ msgstr ""
 "V konfiguračnej databáze sa našlo „%s“, čo nie je platná hodnota pre "
 "modifikátor tlačidla myši\n"
 
-#: ../src/core/prefs.c:1780
+#: ../src/core/prefs.c:1881
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -399,39 +434,39 @@ msgstr ""
 "V konfiguračnej databáze sa našlo „%s“, čo nie je platná hodnota pre "
 "klávesovú skratku „%s“\n"
 
-#: ../src/core/prefs.c:1879
+#: ../src/core/prefs.c:1945
 #, c-format
 msgid "Workspace %d"
 msgstr "Pracovný priestor č. %d"
 
-#: ../src/core/screen.c:674
+#: ../src/core/screen.c:691
 #, c-format
 msgid "Screen %d on display '%s' is invalid\n"
 msgstr "Obrazovka č. %d na displeji „%s“ nie je platná\n"
 
-# PK: predefinoval -> nahradil 
-#: ../src/core/screen.c:690
-#, fuzzy, c-format
+#: ../src/core/screen.c:707
+#, c-format
 msgid ""
 "Screen %d on display \"%s\" already has a window manager; try using the --"
 "replace option to replace the current window manager.\n"
 msgstr ""
-"Obrazovka č. %d na displeji „%s“ už má správcu okien. Skúste použiť prepínač --"
-"replace, aby sa aktuálny správca predefinoval.\n"
+"Obrazovka č. %d na displeji „%s“ už má správcu okien. Skúste použiť prepínač "
+"--replace, aby sa aktuálny správca nahradil.\n"
 
-#: ../src/core/screen.c:717
+#: ../src/core/screen.c:734
 #, c-format
 msgid ""
 "Could not acquire window manager selection on screen %d display \"%s\"\n"
 msgstr ""
-"Nepodarilo sa získať výber správcu okien pre obrazovku č. %d na displeji „%s“\n"
+"Nepodarilo sa získať výber správcu okien pre obrazovku č. %d na displeji "
+"„%s“\n"
 
-#: ../src/core/screen.c:795
+#: ../src/core/screen.c:812
 #, c-format
 msgid "Screen %d on display \"%s\" already has a window manager\n"
 msgstr "Obrazovka č. %d na displeji „%s“ už má správcu okien\n"
 
-#: ../src/core/screen.c:980
+#: ../src/core/screen.c:998
 #, c-format
 msgid "Could not release screen %d on display \"%s\"\n"
 msgstr "Nepodarilo sa uvoľniť obrazovku č. %d na displeji „%s“\n"
@@ -464,7 +499,8 @@ msgstr "Zlyhalo spracovanie uloženého súboru relácie: %s\n"
 #: ../src/core/session.c:1185
 #, c-format
 msgid "<mutter_session> attribute seen but we already have the session ID"
-msgstr "Našiel sa atribút <mutter_session>, ale identifikátor relácie už je nastavený"
+msgstr ""
+"Našiel sa atribút <mutter_session>, ale identifikátor relácie už je nastavený"
 
 #: ../src/core/session.c:1198 ../src/core/session.c:1273
 #: ../src/core/session.c:1305 ../src/core/session.c:1377
@@ -491,45 +527,44 @@ msgstr ""
 "Tieto okná nepodporujú &quot;uložiť aktuálne nastavenie&quot; a pri budúcom "
 "prihlásení ich budete musieť znovu spustiť ručne."
 
-#: ../src/core/util.c:80
+#: ../src/core/util.c:84
 #, c-format
 msgid "Failed to open debug log: %s\n"
 msgstr "Zlyhalo otvorenie záznamu pre ladenie: %s\n"
 
-#: ../src/core/util.c:90
+#: ../src/core/util.c:94
 #, c-format
 msgid "Failed to fdopen() log file %s: %s\n"
 msgstr "Zlyhalo otvorenie súboru so záznamom pomocou fdopen() %s: %s\n"
 
-#: ../src/core/util.c:96
+#: ../src/core/util.c:100
 #, c-format
 msgid "Opened log file %s\n"
 msgstr "Otvorený súbor so záznamom %s\n"
 
-# PK: verbose mode, je skor ze to vypise podrobnosti pri behu
-#: ../src/core/util.c:115 ../src/tools/mutter-message.c:149
-#, fuzzy, c-format
+#: ../src/core/util.c:119 ../src/tools/mutter-message.c:149
+#, c-format
 msgid "Mutter was compiled without support for verbose mode\n"
-msgstr "Mutter bol skompilovaný bez podpory zobrazovania informácií\n"
+msgstr "Mutter bol skompilovaný bez výpisu podrobností pri behu\n"
 
-#: ../src/core/util.c:259
+#: ../src/core/util.c:264
 msgid "Window manager: "
 msgstr "Správca okien: "
 
-#: ../src/core/util.c:407
+#: ../src/core/util.c:412
 msgid "Bug in window manager: "
 msgstr "Chyba v správcovi okien: "
 
-#: ../src/core/util.c:438
+#: ../src/core/util.c:443
 msgid "Window manager warning: "
 msgstr "Varovanie správcu okien: "
 
-#: ../src/core/util.c:466
+#: ../src/core/util.c:471
 msgid "Window manager error: "
 msgstr "Chyba správcu okien: "
 
 #. first time through
-#: ../src/core/window.c:7538
+#: ../src/core/window.c:7505
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -545,7 +580,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8262
+#: ../src/core/window.c:8229
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
@@ -561,6 +596,8 @@ msgid "Application set a bogus _NET_WM_PID %lu\n"
 msgstr "Aplikácia nastavila neplatné _NET_WM_PID %lu\n"
 
 # PK: co je toto?
+# JK: nedokazem zistit
+# PM: vyžiadaj komentár od vývojárov, pomožeme aj ostatným prekladateľom
 #: ../src/core/window-props.c:434
 #, fuzzy, c-format
 msgid "%s (on %s)"
@@ -573,9 +610,9 @@ msgstr "Neplatné WM_TRANSIENT_FOR okno 0x%lx nastavené pre %s.\n"
 
 # MČ: zacykliť sa, alebo vytvoriť slučku.
 #: ../src/core/window-props.c:1528
-#, fuzzy, c-format
+#, c-format
 msgid "WM_TRANSIENT_FOR window 0x%lx for %s would create loop.\n"
-msgstr "WM_TRANSIENT_FOR okno 0x%lx  pre %s môže vytvoriť cyklus.\n"
+msgstr "WM_TRANSIENT_FOR okno 0x%lx  pre %s môže vytvoriť slučku.\n"
 
 #: ../src/core/xprops.c:155
 #, c-format
@@ -593,46 +630,51 @@ msgstr ""
 "Okno má titulok „%s“, triedu „%s“ a názov „%s“\n"
 
 # PK: znak? retazec? nahlas bug
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=697989
 #: ../src/core/xprops.c:411
 #, fuzzy, c-format
 msgid "Property %s on window 0x%lx contained invalid UTF-8\n"
 msgstr "Vlastnosť %s pre okno 0x%lx obsahuje neplatné UTF-8\n"
 
 # PK: polozku c. %d ?, utf-á znak, retazec
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=697989
 #: ../src/core/xprops.c:494
 #, fuzzy, c-format
 msgid ""
 "Property %s on window 0x%lx contained invalid UTF-8 for item %d in the list\n"
 msgstr ""
-"Vlastnosť %s pre okno 0x%lx obsahuje neplatné UTF-8 pre položku %d v "
+"Vlastnosť %s pre okno 0x%lx obsahuje neplatné UTF-8 pre položku č. %d v "
 "zozname\n"
 
 #: ../src/mutter.desktop.in.h:1 ../src/mutter-wm.desktop.in.h:1
 msgid "Mutter"
 msgstr "Mutter"
 
+# summary
 #: ../src/org.gnome.mutter.gschema.xml.in.h:1
 msgid "Modifier to use for extended window management operations"
 msgstr "Modifikátor pre rozšírené operácie správcu okien"
 
 # MČ: „overview“ by som v tomto prípade asi skôr preložil ako „náhľad“
+# description
 #: ../src/org.gnome.mutter.gschema.xml.in.h:2
-#, fuzzy
 msgid ""
 "This key will initiate the \"overlay\", which is a combination window "
 "overview and application launching system. The default is intended to be the "
 "\"Windows key\" on PC hardware. It's expected that this binding either the "
 "default or set to the empty string."
 msgstr ""
-"Táto klávesa spustí „prekrytie“, čo znamená kombináciu prehľadu okna a "
-"systému spustenia aplikácie.  Štandardne nastavená je na osobných počítačoch "
-"„Windows klávesa“. Očakáva sa štandardné nastavenie alebo nastavenie na "
-"prázdny reťazec."
+"Táto klávesa spustí „prekrytie“, čo znamená kombináciu náhľadu okna a "
+"systému na spustenie aplikácií. Štandardne nastavená je na osobných "
+"počítačoch „Windows klávesa“. Očakáva sa štandardné nastavenie alebo "
+"nastavenie na prázdny reťazec."
 
+# summary
 #: ../src/org.gnome.mutter.gschema.xml.in.h:3
 msgid "Attach modal dialogs"
 msgstr "Pripojiť modálne dialógové okná"
 
+# description
 #: ../src/org.gnome.mutter.gschema.xml.in.h:4
 msgid ""
 "When true, instead of having independent titlebars, modal dialogs appear "
@@ -643,13 +685,12 @@ msgstr ""
 "dialógovým oknám pripojí titulok z okna rodiča. Súčasne budú aj presúvané "
 "spolu s oknom rodiča."
 
-# MČ: tiling sa zvyčajne prekladá ako dlaždicovanie, Tiling WM je dlaždicový WM
-# PK: tu ide o to, ze proste ked pretiahnes okno k rohu, tak sa da bud na celu obrazovku alebo na polku
+# summary
 #: ../src/org.gnome.mutter.gschema.xml.in.h:5
-#, fuzzy
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr "Povoliť obklady okrajov pri upustení okien pri okrajoch obrazovky"
+msgstr "Povoliť natiahnutie k okraju pri pustení okien na okrajoch obrazovky"
 
+# description
 #: ../src/org.gnome.mutter.gschema.xml.in.h:6
 msgid ""
 "If enabled, dropping windows on vertical screen edges maximizes them "
@@ -657,13 +698,15 @@ msgid ""
 "area. Dropping windows on the top screen edge maximizes them completely."
 msgstr ""
 "Ak je povolené, upustenie okien pri zvislých okrajoch obrazovky ich "
-"maximalizuje vertikálne a vodorovná veľkosť sa zmení na polovicu dostupnej "
+"zvislo maximalizuje a vodorovná veľkosť sa zmení na polovicu dostupnej "
 "plochy. Upustenie okien pri vrchnom okraji obrazovky ich maximalizuje úplne."
 
+# summary
 #: ../src/org.gnome.mutter.gschema.xml.in.h:7
 msgid "Workspaces are managed dynamically"
 msgstr "Pracovné priestory sú spravované dynamicky"
 
+# description
 #: ../src/org.gnome.mutter.gschema.xml.in.h:8
 msgid ""
 "Determines whether workspaces are managed dynamically or whether there's a "
@@ -673,90 +716,92 @@ msgstr ""
 "Určuje, či pracovné priestory sú spravované dynamicky alebo ich počet je "
 "statický (určený kľúčom num-workspaces v org.gnome.desktop.wm.preferences)."
 
-# PK: motinore asi, hlavnom
+# summary
 #: ../src/org.gnome.mutter.gschema.xml.in.h:9
-#, fuzzy
 msgid "Workspaces only on primary"
-msgstr "Pracovné priestory len na prímárnom"
+msgstr "Pracovné priestory len na hlavnom monitore"
 
-# PK: vobec to nedava zmysel; hlavnom monitore
+# description
 #: ../src/org.gnome.mutter.gschema.xml.in.h:10
-#, fuzzy
 msgid ""
 "Determines whether workspace switching should happen for windows on all "
 "monitors or only for windows on the primary monitor."
 msgstr ""
-"Určuje, či sa pracovný priestor prepína pre okná na všetkých monitoroch "
-"alebo iba pre okná na primárnom monitore."
+"Určuje, či sa má pracovný priestor prepínať medzi oknami na všetkých "
+"monitoroch alebo iba medzi oknami na hlavnom monitore."
 
 # MČ: Nezdá sa mi preklad a popis mi moc nepomohol.
+# PK: Nezobrazit vyber okna pri stalceni tabulatoru?
+# PM: ja by som dal Bez vyvovlávania tabulátorom
+# summary
 #: ../src/org.gnome.mutter.gschema.xml.in.h:11
 #, fuzzy
 msgid "No tab popup"
-msgstr "Nepoužívať rozbaľovaciu ponuku tabulátoru"
+msgstr "Nepoužívať prekryvnú ponuku tabulátora"
 
 # MČ: Neviem, čo to presne má robiť, ale popis som pochopil inak. „…či sa má používať rozbaľovacia ponuka a zvýraznenie rámikom sa má vypnúť…“
+# description
 #: ../src/org.gnome.mutter.gschema.xml.in.h:12
-#, fuzzy
 msgid ""
 "Determines whether the use of popup and highlight frame should be disabled "
 "for window cycling."
 msgstr ""
-"Určuje, či by sa malo používanie rozbaľovacej ponuky zo zvýraznením vypnúť "
-"pri prepínaní okien."
+"Určuje, či sa má používať rozbaľovacia ponuka a zvýraznenie rámikom sa má "
+"vypnúť pri prepínaní okien."
 
+# summary
 #: ../src/org.gnome.mutter.gschema.xml.in.h:13
 msgid "Delay focus changes until the pointer stops moving"
 msgstr "Odložiť zmeny zamerania až po zastavení pohybu ukazovateľa"
 
 # PK: neprekladat to v uvodzovkach, do zastvorky daj popis
+# JK: nie som si istý prekladom v zatvorkách
+# description
 #: ../src/org.gnome.mutter.gschema.xml.in.h:14
-#, fuzzy
 msgid ""
 "If set to true, and the focus mode is either \"sloppy\" or \"mouse\" then "
 "the focus will not be changed immediately when entering a window, but only "
 "after the pointer stops moving."
 msgstr ""
-"Ak je nastavené na true, a režim aktivácie okien je buď „sloppy“ alebo "
-"„myš“, potom sa záber nezmení okamžite ale až po vstupe do okna a zastavení "
-"ukazovateľa."
+"Ak je nastavené na true, a režim aktivácie okien je buď „sloppy“ (nedbalý) "
+"alebo „mouse“ (myš), potom sa záber nezmení okamžite ale až po vstupe do "
+"okna a zastavení ukazovateľa."
 
-# JK: Preťahovatelné je strašné slovo, ale žiadne synonymum ma nenapadlo.
-# MČ: posúvateľného, ťažného?
+# summary
 #: ../src/org.gnome.mutter.gschema.xml.in.h:15
-#, fuzzy
 msgid "Draggable border width"
-msgstr "Širka preťahovateľného okraju"
+msgstr "Šírka posúvateľného okraja"
 
 # MČ: „okraje témy“, by som použil „okraje, nastavené témou,“
+# description
 #: ../src/org.gnome.mutter.gschema.xml.in.h:16
-#, fuzzy
 msgid ""
 "The amount of total draggable borders. If the theme's visible borders are "
 "not enough, invisible borders will be added to meet this value."
 msgstr ""
-"Celkový počet preťahovateľných okrajov. Ak nestačia viditeľné okraje témy, "
-"budú pridané neviditeľné okraje až do požadovanej hodnoty."
+"Celkový počet preťahovateľných okrajov. Ak nestačia viditeľné okraje, "
+"nastavené témou, budú pridané neviditeľné okraje až do požadovanej hodnoty."
 
-# PK: Automaticky maximalizovat okna podobnej vlekosti ako je monitor 
+# summary
 #: ../src/org.gnome.mutter.gschema.xml.in.h:17
-#, fuzzy
 msgid "Auto maximize nearly monitor sized windows"
-msgstr "Automaticky maximalizovať okná na rozmer monitoru"
+msgstr "Automaticky maximalizovať okná podobnej veľkosti ako je monitor"
 
+# description
 #: ../src/org.gnome.mutter.gschema.xml.in.h:18
-#, fuzzy
 msgid ""
 "If enabled, new windows that are initially the size of the monitor "
 "automatically get maximized."
 msgstr ""
-"Ak je povolené, nové okná budú pri maximalizácií automaticky spustené na "
-"veľkosť monitora."
+"Ak je povolené, nové okná inicializované na veľkosť monitora budú "
+"automaticky maximalizované."
 
+# summary
 #: ../src/org.gnome.mutter.gschema.xml.in.h:19
 msgid "Select window from tab popup"
 msgstr "Vybrať okno z rozbaľovacej ponuky tabulátoru"
 
+# summary
 #: ../src/org.gnome.mutter.gschema.xml.in.h:20
 msgid "Cancel tab popup"
 msgstr "Zrušit rozbaľovaciu ponuku tabulátoru"
@@ -965,72 +1010,71 @@ msgstr "Mod5"
 msgid "%d x %d"
 msgstr "%d x %d"
 
-#: ../src/ui/theme.c:235
+#: ../src/ui/theme.c:236
 msgid "top"
 msgstr "hore"
 
-#: ../src/ui/theme.c:237
+#: ../src/ui/theme.c:238
 msgid "bottom"
 msgstr "dole"
 
-#: ../src/ui/theme.c:239
+#: ../src/ui/theme.c:240
 msgid "left"
 msgstr "vľavo"
 
-#: ../src/ui/theme.c:241
+#: ../src/ui/theme.c:242
 msgid "right"
 msgstr "vpravo"
 
-#: ../src/ui/theme.c:269
+#: ../src/ui/theme.c:270
 #, c-format
 msgid "frame geometry does not specify \"%s\" dimension"
 msgstr "geometria rámca neurčuje rozmer „%s“"
 
-#: ../src/ui/theme.c:288
+#: ../src/ui/theme.c:289
 #, c-format
 msgid "frame geometry does not specify dimension \"%s\" for border \"%s\""
 msgstr "geometria rámca neurčuje rozmer „%s“ pre okraj „%s“"
 
-# PK: reasonable, by som dal ze nedava zmysel
-#: ../src/ui/theme.c:325
-#, fuzzy, c-format
+#: ../src/ui/theme.c:326
+#, c-format
 msgid "Button aspect ratio %g is not reasonable"
-msgstr "Pomer strán tlačidla %g nie je použiteľný"
+msgstr "Pomer strán tlačidla %g nedáva zmysel"
 
-#: ../src/ui/theme.c:337
+#: ../src/ui/theme.c:338
 #, c-format
 msgid "Frame geometry does not specify size of buttons"
 msgstr "Geometria rámca neurčuje rozmer tlačidiel"
 
-#: ../src/ui/theme.c:1050
+#: ../src/ui/theme.c:1051
 #, c-format
 msgid "Gradients should have at least two colors"
 msgstr "Prechody by mali mať aspoň dve farby"
 
 # MČ: fallback sa neprekladá? otázka na začleňovateľa.
 # PK: opytaj sa v ML
-#: ../src/ui/theme.c:1202
-#, fuzzy, c-format
+#: ../src/ui/theme.c:1203
+#, c-format
 msgid ""
 "GTK custom color specification must have color name and fallback in "
 "parentheses, e.g. gtk:custom(foo,bar); could not parse \"%s\""
 msgstr ""
-"Špecifikácia používateľskej farby GTK musí mať názov a fallback uzavretý v "
-"okrúhlych zátvorkách, napr. gtk:custom(foo,bar). Nepodarilo sa spracovať „%s“"
+"Špecifikácia používateľskej farby GTK musí mať názov a náhradnú hodnotu "
+"uzavretú v okrúhlych zátvorkách, napr. gtk:custom(foo,bar). Nepodarilo sa "
+"spracovať „%s“"
 
 # MČ: Preformuloval by som koniec: „platné sú len znaky A-Za-z0-9-_“
-#: ../src/ui/theme.c:1218
+# PK: color_name je asi nejaky atribut, to sa nepreklada, ked tak do zatvorky
+#: ../src/ui/theme.c:1219
 #, fuzzy, c-format
 msgid ""
 "Invalid character '%c' in color_name parameter of gtk:custom, only A-Za-z0-9-"
 "_ are valid"
 msgstr ""
-"V parametri color_name pre gtk:custom je neplatný znak „%c“, len znaky A-Za-"
-"z0-9-_ sú platné"
+"V parametri názov_farby pre gtk:custom je neplatný znak „%c“, platné sú len "
+"znaky A-Za-z0-9-_"
 
-# MČ: vyššie color_name nie je preložené. Treba zjednotiť.
-# PK: podla mna sa to moze vnutri prelozit te argumenty
-#: ../src/ui/theme.c:1232
+#: ../src/ui/theme.c:1233
 #, fuzzy, c-format
 msgid ""
 "Gtk:custom format is \"gtk:custom(color_name,fallback)\", \"%s\" does not "
@@ -1039,7 +1083,7 @@ msgstr ""
 "Formát Gtk:custom je  „gtk:custom(názov_farby,fallback)“, „%s“ tomu "
 "nezodpovedá"
 
-#: ../src/ui/theme.c:1277
+#: ../src/ui/theme.c:1278
 #, c-format
 msgid ""
 "GTK color specification must have the state in brackets, e.g. gtk:fg[NORMAL] "
@@ -1048,7 +1092,7 @@ msgstr ""
 "Špecifikácia farby GTK musí mať stav v hranatých zátvorkách, napr. gtk:fg"
 "[NORMAL], kde NORMAL je stav. Nepodarilo sa spracovať „%s“"
 
-#: ../src/ui/theme.c:1291
+#: ../src/ui/theme.c:1292
 #, c-format
 msgid ""
 "GTK color specification must have a close bracket after the state, e.g. gtk:"
@@ -1057,17 +1101,17 @@ msgstr ""
 "Špecifikácia farby GTK musí mať stav uzavretý v hranatých zátvorkách, napr. "
 "gtk:fg[NORMAL], kde NORMAL je stav. Nepodarilo sa spracovať „%s“"
 
-#: ../src/ui/theme.c:1302
+#: ../src/ui/theme.c:1303
 #, c-format
 msgid "Did not understand state \"%s\" in color specification"
 msgstr "V špecifikácii farby je nerozpoznaný stav „%s“"
 
-#: ../src/ui/theme.c:1315
+#: ../src/ui/theme.c:1316
 #, c-format
 msgid "Did not understand color component \"%s\" in color specification"
 msgstr "V špecifikácii farby je nerozpoznaný komponent „%s“"
 
-#: ../src/ui/theme.c:1344
+#: ../src/ui/theme.c:1345
 #, c-format
 msgid ""
 "Blend format is \"blend/bg_color/fg_color/alpha\", \"%s\" does not fit the "
@@ -1075,43 +1119,43 @@ msgid ""
 msgstr ""
 "Formát miešania je „blend/bg_color/fg_color/alpha“, „%s“ tomu neodpovedá"
 
-#: ../src/ui/theme.c:1355
+#: ../src/ui/theme.c:1356
 #, c-format
 msgid "Could not parse alpha value \"%s\" in blended color"
 msgstr "Nepodarilo sa spracovať hodnotu alfa „%s“ v miešanej farbe"
 
-#: ../src/ui/theme.c:1365
+#: ../src/ui/theme.c:1366
 #, c-format
 msgid "Alpha value \"%s\" in blended color is not between 0.0 and 1.0"
 msgstr "Hodnota alfa „%s“ v miešanej farbe nie je medzi 0.0 a 1.0"
 
-#: ../src/ui/theme.c:1412
+#: ../src/ui/theme.c:1413
 #, c-format
 msgid ""
 "Shade format is \"shade/base_color/factor\", \"%s\" does not fit the format"
 msgstr "Formát tieňa je „shade/base_color/factor“, „%s“ tomu neodpovedá"
 
-#: ../src/ui/theme.c:1423
+#: ../src/ui/theme.c:1424
 #, c-format
 msgid "Could not parse shade factor \"%s\" in shaded color"
 msgstr "Nepodarilo sa spracovať hodnotu tieňa „%s“ v tieňovanej farbe"
 
-#: ../src/ui/theme.c:1433
+#: ../src/ui/theme.c:1434
 #, c-format
 msgid "Shade factor \"%s\" in shaded color is negative"
 msgstr "Faktor tieňa „%s“ v tieňovanej farbe je záporný"
 
-#: ../src/ui/theme.c:1462
+#: ../src/ui/theme.c:1463
 #, c-format
 msgid "Could not parse color \"%s\""
 msgstr "Nepodarilo sa spracovať farbu „%s“"
 
-#: ../src/ui/theme.c:1779
+#: ../src/ui/theme.c:1780
 #, c-format
 msgid "Coordinate expression contains character '%s' which is not allowed"
 msgstr "Výraz umiestnenia obsahuje znak „%s“, ktorý nie je povolený"
 
-#: ../src/ui/theme.c:1806
+#: ../src/ui/theme.c:1807
 #, c-format
 msgid ""
 "Coordinate expression contains floating point number '%s' which could not be "
@@ -1119,13 +1163,13 @@ msgid ""
 msgstr ""
 "Výraz umiestnenia obsahuje reálne číslo „%s“, ktoré nie je možné spracovať"
 
-#: ../src/ui/theme.c:1820
+#: ../src/ui/theme.c:1821
 #, c-format
 msgid "Coordinate expression contains integer '%s' which could not be parsed"
 msgstr ""
 "Výraz umiestnenia obsahuje celé číslo „%s“, ktoré nie je možné spracovať"
 
-#: ../src/ui/theme.c:1941
+#: ../src/ui/theme.c:1942
 #, c-format
 msgid ""
 "Coordinate expression contained unknown operator at the start of this text: "
@@ -1133,17 +1177,17 @@ msgid ""
 msgstr ""
 "Výraz umiestnenia obsahuje neznámy operátor na začiatku tohto textu: „%s“"
 
-#: ../src/ui/theme.c:1998
+#: ../src/ui/theme.c:1999
 #, c-format
 msgid "Coordinate expression was empty or not understood"
 msgstr "Výraz umiestnenia je prázdny alebo nerozpoznaný"
 
-#: ../src/ui/theme.c:2111 ../src/ui/theme.c:2121 ../src/ui/theme.c:2155
+#: ../src/ui/theme.c:2112 ../src/ui/theme.c:2122 ../src/ui/theme.c:2156
 #, c-format
 msgid "Coordinate expression results in division by zero"
 msgstr "Výsledok výrazu umiestnenia je delenie nulou"
 
-#: ../src/ui/theme.c:2163
+#: ../src/ui/theme.c:2164
 #, c-format
 msgid ""
 "Coordinate expression tries to use mod operator on a floating-point number"
@@ -1151,23 +1195,23 @@ msgstr ""
 "Výraz umiestnenia sa snaží použiť operátor modulo na číslo s desatinnými "
 "miestami"
 
-#: ../src/ui/theme.c:2219
+#: ../src/ui/theme.c:2220
 #, c-format
 msgid ""
 "Coordinate expression has an operator \"%s\" where an operand was expected"
 msgstr "Výraz umiestnenia obsahuje operátor „%s“ tam, kde sa očakáva operand"
 
-#: ../src/ui/theme.c:2228
+#: ../src/ui/theme.c:2229
 #, c-format
 msgid "Coordinate expression had an operand where an operator was expected"
 msgstr "Výraz umiestnenia obsahuje operand tam, kde sa očakáva operátor"
 
-#: ../src/ui/theme.c:2236
+#: ../src/ui/theme.c:2237
 #, c-format
 msgid "Coordinate expression ended with an operator instead of an operand"
 msgstr "Výraz umiestnenia skončil operátorom namiesto operandom"
 
-#: ../src/ui/theme.c:2246
+#: ../src/ui/theme.c:2247
 #, c-format
 msgid ""
 "Coordinate expression has operator \"%c\" following operator \"%c\" with no "
@@ -1176,38 +1220,38 @@ msgstr ""
 "Výraz umiestnenia obsahuje operátor „%c“ za operátorom „%c“ bez operandov "
 "medzi nimi"
 
-#: ../src/ui/theme.c:2397 ../src/ui/theme.c:2442
+#: ../src/ui/theme.c:2398 ../src/ui/theme.c:2443
 #, c-format
 msgid "Coordinate expression had unknown variable or constant \"%s\""
 msgstr "Výraz umiestnenia obsahuje neznámu premennú alebo konštantu „%s“"
 
 # PK: pretecenie
-#: ../src/ui/theme.c:2496
-#, fuzzy, c-format
+#: ../src/ui/theme.c:2497
+#, c-format
 msgid "Coordinate expression parser overflowed its buffer."
-msgstr "Výraz umiestnenia spôsobil preťaženie vyrovnávacej pamäte analyzátora."
+msgstr "Výraz umiestnenia spôsobil pretečenie vyrovnávacej pamäte analyzátora."
 
-#: ../src/ui/theme.c:2525
+#: ../src/ui/theme.c:2526
 #, c-format
 msgid "Coordinate expression had a close parenthesis with no open parenthesis"
 msgstr "Výraz umiestnenia obsahuje pravú zátvorku bez ľavej zátvorky"
 
-#: ../src/ui/theme.c:2589
+#: ../src/ui/theme.c:2590
 #, c-format
 msgid "Coordinate expression had an open parenthesis with no close parenthesis"
 msgstr "Výraz umiestnenia má ľavú zátvorku bez pravej zátvorky"
 
-#: ../src/ui/theme.c:2600
+#: ../src/ui/theme.c:2601
 #, c-format
 msgid "Coordinate expression doesn't seem to have any operators or operands"
 msgstr "Výraz umiestnenia asi neobsahuje žiadne operátory ani operandy"
 
-#: ../src/ui/theme.c:2813 ../src/ui/theme.c:2833 ../src/ui/theme.c:2853
+#: ../src/ui/theme.c:2814 ../src/ui/theme.c:2834 ../src/ui/theme.c:2854
 #, c-format
 msgid "Theme contained an expression that resulted in an error: %s\n"
 msgstr "Téma obsahuje výraz, ktorý spôsobil chybu: %s\n"
 
-#: ../src/ui/theme.c:4499
+#: ../src/ui/theme.c:4500
 #, c-format
 msgid ""
 "<button function=\"%s\" state=\"%s\" draw_ops=\"whatever\"/> must be "
@@ -1216,25 +1260,26 @@ msgstr ""
 "Pre tento štýl rámca musí byť uvedené <button function=„%s“ state=„%s“ "
 "draw_ops=„whatever“/>"
 
-#: ../src/ui/theme.c:5010 ../src/ui/theme.c:5035
+#: ../src/ui/theme.c:5011 ../src/ui/theme.c:5036
 #, c-format
 msgid ""
 "Missing <frame state=\"%s\" resize=\"%s\" focus=\"%s\" style=\"whatever\"/>"
 msgstr "Chýbajúce <frame state=„%s“ resize=„%s“ focus=„%s“ style=„whatever“/>"
 
-#: ../src/ui/theme.c:5083
+#: ../src/ui/theme.c:5084
 #, c-format
 msgid "Failed to load theme \"%s\": %s\n"
 msgstr "Zlyhalo načítanie témy „%s“: %s\n"
 
 # PK: prvok?
-#: ../src/ui/theme.c:5219 ../src/ui/theme.c:5226 ../src/ui/theme.c:5233
-#: ../src/ui/theme.c:5240 ../src/ui/theme.c:5247
-#, fuzzy, c-format
+# JK: XML značka (XML tag)
+#: ../src/ui/theme.c:5220 ../src/ui/theme.c:5227 ../src/ui/theme.c:5234
+#: ../src/ui/theme.c:5241 ../src/ui/theme.c:5248
+#, c-format
 msgid "No <%s> set for theme \"%s\""
-msgstr "Pre tému „%s“ nie je nastavené <%s>"
+msgstr "Pre tému „%s“ nie je nastavená <%s>"
 
-#: ../src/ui/theme.c:5255
+#: ../src/ui/theme.c:5256
 #, c-format
 msgid ""
 "No frame style set for window type \"%s\" in theme \"%s\", add a <window "
@@ -1243,13 +1288,13 @@ msgstr ""
 "Pre typ okna „%s“ nie je sada štýlov v téme „%s“, pridajte prvok <window "
 "type=„%s“ style_set=„whatever“/>"
 
-#: ../src/ui/theme.c:5662 ../src/ui/theme.c:5724 ../src/ui/theme.c:5787
+#: ../src/ui/theme.c:5663 ../src/ui/theme.c:5725 ../src/ui/theme.c:5788
 #, c-format
 msgid ""
 "User-defined constants must begin with a capital letter; \"%s\" does not"
 msgstr "Používateľské konštanty musia začínať veľkým písmenom, „%s“ nezačína"
 
-#: ../src/ui/theme.c:5670 ../src/ui/theme.c:5732 ../src/ui/theme.c:5795
+#: ../src/ui/theme.c:5671 ../src/ui/theme.c:5733 ../src/ui/theme.c:5796
 #, c-format
 msgid "Constant \"%s\" has already been defined"
 msgstr "Konštanta „%s“ už je definovaná"
@@ -1315,8 +1360,7 @@ msgstr "Uhol musí byť medzi 0.0 a 360.0, a teraz je %g\n"
 #: ../src/ui/theme-parser.c:798
 #, c-format
 msgid "Alpha must be between 0.0 (invisible) and 1.0 (fully opaque), was %g\n"
-msgstr ""
-"Alfa musí byť medzi 0.0 (priehľadné) a 1.0 (nepriehľadné), a je %g\n"
+msgstr "Alfa musí byť medzi 0.0 (priehľadné) a 1.0 (nepriehľadné), a je %g\n"
 
 #: ../src/ui/theme-parser.c:863
 #, c-format
@@ -1324,8 +1368,8 @@ msgid ""
 "Invalid title scale \"%s\" (must be one of xx-small,x-small,small,medium,"
 "large,x-large,xx-large)\n"
 msgstr ""
-"Neplatná mierka titulku „%s“ (musí byť xx-small, x-small, small, medium, large, x-"
-"large, xx-large)\n"
+"Neplatná mierka titulku „%s“ (musí byť xx-small, x-small, small, medium, "
+"large, x-large, xx-large)\n"
 
 #: ../src/ui/theme-parser.c:1019 ../src/ui/theme-parser.c:1082
 #: ../src/ui/theme-parser.c:1116 ../src/ui/theme-parser.c:1219
@@ -1353,12 +1397,15 @@ msgstr "<%s> musí uvádzať buď geometriu alebo rodiča, ktorý má geometriu"
 msgid "You must specify a background for an alpha value to be meaningful"
 msgstr "Ak má byť hodnota alpha zmysluplná, tak musíte vybrať nejaké pozadie"
 
+# PM: asi atribút type
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=698123
 #: ../src/ui/theme-parser.c:1264
 #, fuzzy, c-format
 msgid "Unknown type \"%s\" on <%s> element"
-msgstr "Neznámy typ „%s“ v prvku <%s>"
+msgstr "Neznámy type „%s“ v prvku <%s>"
 
 # PK: prekladat alebo nie, nahlas bug
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=698123
 #: ../src/ui/theme-parser.c:1275
 #, fuzzy, c-format
 msgid "Unknown style_set \"%s\" on <%s> element"
@@ -1379,6 +1426,7 @@ msgid "Element <%s> is not allowed below <%s>"
 msgstr "Prvok <%s> nie je povolený v <%s>"
 
 # PK: preco to je neprelozene, opytaj sa v bugzille
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=698123
 #: ../src/ui/theme-parser.c:1427 ../src/ui/theme-parser.c:1441
 #: ../src/ui/theme-parser.c:1486
 #, fuzzy
@@ -1406,14 +1454,16 @@ msgstr "Okraj „%s“ je neznámy"
 
 # PK: mozno do zatvorky co to znamena
 #: ../src/ui/theme-parser.c:1868
-#, fuzzy, c-format
+#, c-format
 msgid "No \"start_angle\" or \"from\" attribute on element <%s>"
-msgstr "Chýba atribút „start_angle“ alebo „from“ v prvku <%s>"
+msgstr ""
+"Chýba atribút „start_angle“ (počiatočný uhol) alebo „from“ (od) v prvku <%s>"
 
 #: ../src/ui/theme-parser.c:1875
-#, fuzzy, c-format
+#, c-format
 msgid "No \"extent_angle\" or \"to\" attribute on element <%s>"
-msgstr "Chýba atribút „extent_angle“ alebo „to“ v prvku <%s>"
+msgstr ""
+"Chýba atribút „extent_angle“ (rozsah uhla) alebo „to“ (do) v prvku <%s>"
 
 #: ../src/ui/theme-parser.c:2115
 #, c-format
@@ -1447,6 +1497,7 @@ msgid "No <draw_ops> called \"%s\" has been defined"
 msgstr "Nebola definovaná <draw_ops> nazvaná „%s“"
 
 # PK: co to je?
+# JK: nedokazem zistit
 #: ../src/ui/theme-parser.c:2706 ../src/ui/theme-parser.c:2802
 #, fuzzy, c-format
 msgid "Including draw_ops \"%s\" here would create a circular reference"
@@ -1514,14 +1565,16 @@ msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized/shaded "
 "states"
 msgstr ""
-"Pre prvok <%s> by nemal byť atribút „resize“ pre stavy maximalizované/"
-"zabalené"
+"Prvok <%s> by nemal mať atribút „resize“ (zmeniť veľkosť) pre maximalizované/"
+"zabalené stavy"
 
 #: ../src/ui/theme-parser.c:3161
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Should not have \"resize\" attribute on <%s> element for maximized states"
-msgstr "Pre prvok <%s> by nemal byť atribút „resize“ pre maximalizované stavy"
+msgstr ""
+"Prvok <%s> by nemal mať atribút „resize“ (zmeniť veľkosť) pre maximalizované "
+"stavy"
 
 #: ../src/ui/theme-parser.c:3175 ../src/ui/theme-parser.c:3222
 #, c-format
@@ -1536,6 +1589,7 @@ msgid "Style has already been specified for state %s focus %s"
 msgstr "Pre stav %s zameranie %s už bol štýl definovaný"
 
 # PK: popis do zatvorky, preco to neni v uvodzovkach?
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=697988
 #: ../src/ui/theme-parser.c:3294
 #, fuzzy
 msgid ""
@@ -1545,6 +1599,7 @@ msgstr ""
 "Pre prvok <piece> nie je možné mať dve draw_ops (téma obsahuje atribút "
 "draw_ops a aj prvok <draw_ops>, prípadne dva rovnaké prvky)"
 
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=697988
 #: ../src/ui/theme-parser.c:3332
 #, fuzzy
 msgid ""
@@ -1554,6 +1609,7 @@ msgstr ""
 "Pre prvok <button> nie je možné mať dve draw_ops (téma obsahuje atribút "
 "draw_ops a aj prvok <draw_ops>, prípadne dva rovnaké prvky)"
 
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=697988
 #: ../src/ui/theme-parser.c:3370
 #, fuzzy
 msgid ""
@@ -1570,12 +1626,11 @@ msgstr "Zlá verzia špecifikácie „%s“"
 
 # MČ: V iných reťazcoch názov atribútov nie je prekladaný. Asi by ani tu nemal byť.
 #: ../src/ui/theme-parser.c:3507
-#, fuzzy
 msgid ""
 "\"version\" attribute cannot be used in metacity-theme-1.xml or metacity-"
 "theme-2.xml"
 msgstr ""
-"Atribút „verzia“ nemôže byť použitý v metacity-theme-1.xml alebo metacity-"
+"Atribút „version“ nemôže byť použitý v metacity-theme-1.xml alebo metacity-"
 "theme-2.xml"
 
 #: ../src/ui/theme-parser.c:3530
@@ -1589,12 +1644,12 @@ msgid "Outermost element in theme must be <metacity_theme> not <%s>"
 msgstr "Najvyšším prvkom témy musí byť <metacity_theme>, nie <%s>"
 
 # PK: ma sa to prekladat? nahlas bug
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=698123
 #: ../src/ui/theme-parser.c:3582
 #, fuzzy, c-format
 msgid ""
 "Element <%s> is not allowed inside a name/author/date/description element"
-msgstr ""
-"Prvok <%s> nie je povolený v popisnom prvku name/author/date/description"
+msgstr "Prvok <%s> nie je povolený v prvku name/author/date/description"
 
 #: ../src/ui/theme-parser.c:3587
 #, c-format
@@ -1602,11 +1657,12 @@ msgid "Element <%s> is not allowed inside a <constant> element"
 msgstr "Prvok <%s> nie je povolený v prvku <constant>"
 
 # PK: ma sa to prekladat? nahlas bug
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=698123
 #: ../src/ui/theme-parser.c:3599
 #, fuzzy, c-format
 msgid ""
 "Element <%s> is not allowed inside a distance/border/aspect_ratio element"
-msgstr "Prvok <%s> nie je povolený v prvku vzdialenosti/okrajov/pomeru strán"
+msgstr "Prvok <%s> nie je povolený v prvku distance/border/aspect_ratio"
 
 #: ../src/ui/theme-parser.c:3621
 #, c-format
@@ -1639,7 +1695,7 @@ msgstr "V prvku <%s> nie je povolený žiadny text"
 msgid "<%s> specified twice for this theme"
 msgstr "<%s> uvedený dvakrát pre túto tému"
 
-#: ../src/ui/theme-parser.c:4334
+#: ../src/ui/theme-parser.c:4336
 #, c-format
 msgid "Failed to find a valid file for theme %s\n"
 msgstr "Zlyhalo nájdenie platného súboru pre tému%s\n"
@@ -1666,29 +1722,24 @@ msgstr "Ú_vodná obrazovka"
 
 # MČ: nie som si istý prekladom „dok“, nemal by to byť „panel“?
 #: ../src/ui/theme-viewer.c:104
-#, fuzzy
 msgid "_Top dock"
-msgstr "_Horný dok"
+msgstr "_Horný panel"
 
 #: ../src/ui/theme-viewer.c:105
-#, fuzzy
 msgid "_Bottom dock"
-msgstr "_Spodný dok"
+msgstr "_Spodný panel"
 
 #: ../src/ui/theme-viewer.c:106
-#, fuzzy
 msgid "_Left dock"
-msgstr "Ľ_avý dok"
+msgstr "Ľ_avý panel"
 
 #: ../src/ui/theme-viewer.c:107
-#, fuzzy
 msgid "_Right dock"
-msgstr "_Pravý dok"
+msgstr "_Pravý panel"
 
 #: ../src/ui/theme-viewer.c:108
-#, fuzzy
 msgid "_All docks"
-msgstr "_Všetky doky"
+msgstr "_Všetky panely"
 
 #: ../src/ui/theme-viewer.c:109
 msgid "Des_ktop"
@@ -1701,16 +1752,18 @@ msgstr "Otvorí ďalšie z týchto okien"
 
 # PK: prekladat to v uvodzovkach? nahlas bug
 # tooltip
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=698123
 #: ../src/ui/theme-viewer.c:117
 #, fuzzy
 msgid "This is a demo button with an 'open' icon"
-msgstr "Toto je ukážkové tlačidlo s ikonou „otvoriť“"
+msgstr "Toto je ukážkové tlačidlo s ikonou „open“"
 
 # tooltip
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=698123
 #: ../src/ui/theme-viewer.c:119
 #, fuzzy
 msgid "This is a demo button with a 'quit' icon"
-msgstr "Toto je ukážkové tlačidlo s ikonou „ukončiť“"
+msgstr "Toto je ukážkové tlačidlo s ikonou „quit“"
 
 # label
 #: ../src/ui/theme-viewer.c:248
@@ -1719,9 +1772,9 @@ msgstr "Toto je ukážková správa v ukážkovom dialógovom okne"
 
 # PK: falosna
 #: ../src/ui/theme-viewer.c:328
-#, fuzzy, c-format
+#, c-format
 msgid "Fake menu item %d\n"
-msgstr "Vymyslená položka ponuky č. %d\n"
+msgstr "Falošná položka ponuky č. %d\n"
 
 #: ../src/ui/theme-viewer.c:363
 msgid "Border-only window"
@@ -1765,6 +1818,7 @@ msgid "Button layout test %d"
 msgstr "Test rozloženia tlačidiel č. %d"
 
 # PK: plural forms
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=697987
 #: ../src/ui/theme-viewer.c:766
 #, fuzzy, c-format
 msgid "%g milliseconds to draw one window frame"
@@ -1781,6 +1835,7 @@ msgid "Error loading theme: %s\n"
 msgstr "Chyba pri načítavaní témy: %s\n"
 
 # PK: plural forms
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=697987
 #: ../src/ui/theme-viewer.c:824
 #, fuzzy, c-format
 msgid "Loaded theme \"%s\" in %g seconds\n"
@@ -1788,19 +1843,16 @@ msgstr "Téma „%s“ načítaná za %g sekúnd\n"
 
 # PK: inde titulku, aky je rozdiel
 #: ../src/ui/theme-viewer.c:869
-#, fuzzy
 msgid "Normal Title Font"
-msgstr "Obyčajné písmo nadpisu"
+msgstr "Obyčajné písmo titulku"
 
 #: ../src/ui/theme-viewer.c:875
-#, fuzzy
 msgid "Small Title Font"
-msgstr "Malé písmo nadpisu"
+msgstr "Malé písmo titulku"
 
 #: ../src/ui/theme-viewer.c:881
-#, fuzzy
 msgid "Large Title Font"
-msgstr "Veľké písmo nadpisu"
+msgstr "Veľké písmo titulku"
 
 #: ../src/ui/theme-viewer.c:886
 msgid "Button Layouts"
@@ -1815,6 +1867,7 @@ msgid "Window Title Goes Here"
 msgstr "Sem príde názov okna"
 
 # PK: plural forms
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=697987
 #: ../src/ui/theme-viewer.c:1053
 #, fuzzy, c-format
 msgid ""
@@ -1859,6 +1912,7 @@ msgid "y value was %d, %d was expected"
 msgstr "hodnota y bola %d, očakávaná bola %d"
 
 # PK: plural forms
+# JK: https://bugzilla.gnome.org/show_bug.cgi?id=697987
 #: ../src/ui/theme-viewer.c:1359
 #, fuzzy, c-format
 msgid "%d coordinate expressions parsed in %g seconds (%g seconds average)\n"
