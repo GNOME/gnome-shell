@@ -260,11 +260,7 @@ function loadTheme() {
     let themeContext = St.ThemeContext.get_for_stage (global.stage);
     let previousTheme = themeContext.get_theme();
 
-    let cssStylesheet = _defaultCssStylesheet;
-    if (_cssStylesheet != null)
-        cssStylesheet = _cssStylesheet;
-
-    let theme = new St.Theme ({ application_stylesheet: cssStylesheet,
+    let theme = new St.Theme ({ application_stylesheet: _cssStylesheet,
                                 default_stylesheet: _defaultCssStylesheet });
 
     if (previousTheme) {
