@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-04-30 22:15+0000\n"
-"PO-Revision-Date: 2013-05-01 19:58+0100\n"
+"POT-Creation-Date: 2013-05-25 19:13+0000\n"
+"PO-Revision-Date: 2013-05-25 21:34+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: Slovenian\n"
@@ -101,26 +101,10 @@ msgstr ""
 "Upravljanje seznama je mogoče tudi preko vodila DBUs na org.gnome.Shell."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
-msgid "Whether to collect stats about applications usage"
-msgstr "Ali naj se beleži statistika uporabe programov"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
-msgid ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
-msgstr ""
-"Lupina običajno nadzira dejavne programe zaradi možnosti prikazovanja "
-"najpogosteje uporabljenih v zaganjalniku. Čeprav so podatki krajevni, jih je "
-"dobro onemogočiti zaradi varovanja zasebnosti. Z onemogočenje ne bodo "
-"odstranjeni že shranjeni podatki."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Seznam določil ID namiznih datotek priljubljenih programov"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -128,11 +112,11 @@ msgstr ""
 "Programi določeni s temi določili bodo prikazani v območju priljubljenih "
 "programov"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of categories that should be displayed as folders"
 msgstr "Seznam kategorij, ki naj bodo prikazane kot mape"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
 msgid ""
 "Each category name in this list will be represented as folder in the "
 "application view, rather than being displayed inline in the main view."
@@ -140,15 +124,15 @@ msgstr ""
 "Vsako ime kategorije na tem seznamu je predstavljeno kot mapa v programskem "
 "pogledu in ne medvrstično v glavnem pogledu."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "History for command (Alt-F2) dialog"
 msgstr "Zgodovina pogovornega okna ukazov (Alt-F2)"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid "History for the looking glass dialog"
 msgstr "Zgodovina za pogovorno okno povečevalnega stekla"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid ""
 "Internally used to store the last IM presence explicitly set by the user. "
 "The value here is from the TpConnectionPresenceType enumeration."
@@ -156,7 +140,7 @@ msgstr ""
 "Uporabljeno za shranjevanje stanja prisotnosti na hipnem sporočanju na "
 "zahtevo uporabnika. Vrednost določa števec predmeta TpConnectionPresenceType."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid ""
 "Internally used to store the last session presence status for the user. The "
 "value here is from the GsmPresenceStatus enumeration."
@@ -164,11 +148,11 @@ msgstr ""
 "Uporabljeno za shranjevanje stanja prisotnosti zadnje seje uporabnika. "
 "Vrednost določa števec predmeta GsmPresenceStatus."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "Always show the 'Log out' menuitem in the user menu."
 msgstr "Vedno pokaži možnost 'Odjava' v meniju uporabnika."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menuitem in single-"
 "user, single-session situations."
@@ -176,14 +160,14 @@ msgstr ""
 "Ključ prepiše možnost samodejnega skrivanja predmeta menija 'Odjava' na "
 "enouporabniški in enosejni namestitvi."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 "Ali naj se geslo za priklapljanje šifriranih in oddaljenih datotečnih "
 "sistemov shrani"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -194,79 +178,79 @@ msgstr ""
 "izbiri možnosti zahtevano geslo. Na pogovornem oknu bo prikazana možnost "
 "'Shrani geslo'. S tem bo nastavljeno privzeto stanje za uporabo."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Show the week date in the calendar"
 msgstr "Pokaži tedenski datum v koledarju"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Izbrana možnost določa prikaz ISO tedenski datum v koledarju."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to open the application menu"
 msgstr "Tipkovna bližnjica, ki odpre meni programov"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to open the application menu."
 msgstr "Tipkovna bližnjica, ki odpre meni programov."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "Tipkovna bližnjica, ki odpre pogled \"Pokaži programe\""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr ""
 "Tipkovna bližnjica, ki odpre pogled \"Pokaži programe\" v pregledu "
 "dejavnosti."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to open the overview"
 msgstr "Tipkovna bližnjica, ki odpre pogled pregleda"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to open the Activities Overview."
 msgstr "Tipkovna bližnjica, ki odpre pogled pregleda dejavnosti."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr "Tipkovna bližnjica za preklop vidnosti vrstice sporočanja"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "Tipkovna bližnjica za preklop vidnosti vrstice sporočanja."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
 msgstr "Tipkovna bližnjica za prikaz dejavnega obvestila"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "Keybinding to focus the active notification."
 msgstr "Tipkovna bližnjica za prikaz dejavnega obvestila."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Keybinding to toggle the screen recorder"
 msgstr "Tipkovna bližnjica za preklop snemalnika zaslona"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Keybinding to start/stop the builtin screen recorder."
 msgstr ""
 "Tipkovna bližnjica za začetek in ustavitev vgrajenega snemalnika zaslona"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Which keyboard to use"
 msgstr "Katera tipkovnica naj bo uporabljena?"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid "The type of keyboard to use."
 msgstr "Vrsta tipkovnice za uporabo."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Framerate used for recording screencasts."
 msgstr "Hitrost sličic uporabljena za snemanje zaslonskega posnetka."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -274,11 +258,11 @@ msgstr ""
 "Hitrost sličic shranjenega končnega zaslonskega posnetka v sličicah na "
 "sekundo."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Uporabljen GStreamer cevovod za kodiranje zaslonskega posnetka."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 #, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -304,11 +288,11 @@ msgstr ""
 "WEBM z uporabo kodeka VP8. Vrednost %T se uporablja kot ročnik za ugibanje "
 "najustreznejšega števila niti na sistemu."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "File extension used for storing the screencast"
 msgstr "Pripona datoteke uporabljene za shranjevanje zaslonskih posnetkov"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -317,11 +301,11 @@ msgstr ""
 "Ime datoteke zaslonskega posnetka bo enoznačno ime, kateremu bo dodan datum "
 "in določena pripona. Pripona mora ustrezati zapisu zabojnika."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "The application icon mode."
 msgstr "Ikonski način programa."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
@@ -331,21 +315,21 @@ msgstr ""
 "sličice' (pokaže le sličice oken), 'le ikona' (pokaže ikono programa) in pa "
 "možnost 'oboje'."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Attach modal dialog to the parent window"
 msgstr "Pripni modalno pogovorno okno na glavno okno"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Ključ prepiše vrednost v org.gnome.mutter med zaganjanjem lupine GNOME."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:46
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Arrangement of buttons on the titlebar"
 msgstr "Razporeditev gumbov v nazivni vrstici"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:47
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
@@ -353,15 +337,15 @@ msgstr ""
 "Ključ prepiše vrednost v org.gnome.desktop.wm.preferences med zaganjanjem "
 "lupine GNOME."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:48
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:46
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr "Omogoči utripanje črte med spuščanjem okna na robove zaslona"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:49
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:47
 msgid "Workspaces are managed dynamically"
 msgstr "Delovne površine se obravnavajo dinamično"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:50
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:48
 msgid "Workspaces only on primary monitor"
 msgstr "Delovne površine so le na osnovnem zaslonu"
 
@@ -379,43 +363,50 @@ msgid "Select an extension to configure using the combobox above."
 msgstr ""
 "Razširitev za nastavljanje je mogoče izbrati iz spustnega seznama zgoraj."
 
-#: ../js/gdm/loginDialog.js:405
+#: ../js/gdm/loginDialog.js:371
 msgid "Session…"
 msgstr "Seja ..."
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:630
+#: ../js/gdm/loginDialog.js:601
 msgid "Not listed?"
 msgstr "Ali je ni na seznamu?"
 
-#: ../js/gdm/loginDialog.js:787 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:376
+#: ../js/gdm/loginDialog.js:776 ../js/ui/components/networkAgent.js:137
+#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:100
+#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:96
 #: ../js/ui/userMenu.js:938
 msgid "Cancel"
 msgstr "Prekliči"
 
-#: ../js/gdm/loginDialog.js:803
+#: ../js/gdm/loginDialog.js:791
 msgctxt "button"
 msgid "Sign In"
 msgstr "Prijava"
 
-#: ../js/gdm/loginDialog.js:803
+#: ../js/gdm/loginDialog.js:791
 msgid "Next"
 msgstr "Naslednji"
+
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: ../js/gdm/loginDialog.js:888
+#, c-format
+msgid "(e.g., user or %s)"
+msgstr "(na primer, uporabnika ali %s)"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:918 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:892 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "Uporabniško ime: "
 
-#: ../js/gdm/loginDialog.js:1174
+#: ../js/gdm/loginDialog.js:1158
 msgid "Login Window"
 msgstr "Prijavno okno"
 
@@ -438,20 +429,15 @@ msgstr "Zaženi znova"
 msgid "Power Off"
 msgstr "Izklop"
 
-#: ../js/gdm/util.js:249
+#: ../js/gdm/util.js:247
 msgid "Authentication error"
 msgstr "Napaka overitve"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:366
+#: ../js/gdm/util.js:364
 msgid "(or swipe finger)"
 msgstr "(ali pa povlecite prst)"
-
-#: ../js/gdm/util.js:391
-#, c-format
-msgid "(e.g., user or %s)"
-msgstr "(na primer, uporabnika ali %s)"
 
 #: ../js/misc/util.js:97
 msgid "Command not found"
@@ -468,23 +454,23 @@ msgstr "Ukaza ni mogoče razčleniti:"
 msgid "Execution of '%s' failed:"
 msgstr "Izvedba '%s' je spodletela:"
 
-#: ../js/ui/appDisplay.js:351
+#: ../js/ui/appDisplay.js:361
 msgid "Frequent"
 msgstr "Pogosto"
 
-#: ../js/ui/appDisplay.js:358
+#: ../js/ui/appDisplay.js:368
 msgid "All"
 msgstr "Vse"
 
-#: ../js/ui/appDisplay.js:916
+#: ../js/ui/appDisplay.js:960
 msgid "New Window"
 msgstr "Novo okno"
 
-#: ../js/ui/appDisplay.js:919 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:963 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Odstrani iz priljubljenih"
 
-#: ../js/ui/appDisplay.js:920
+#: ../js/ui/appDisplay.js:964
 msgid "Add to Favorites"
 msgstr "Dodaj med priljubljene"
 
@@ -623,35 +609,35 @@ msgid "S"
 msgstr "S"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:720
+#: ../js/ui/calendar.js:735
 msgid "Nothing Scheduled"
 msgstr "Nič ni razporejeno"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:736
+#: ../js/ui/calendar.js:751
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%A, %d. %m."
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:739
+#: ../js/ui/calendar.js:754
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%A, %d %B %Y"
 
-#: ../js/ui/calendar.js:749
+#: ../js/ui/calendar.js:764
 msgid "Today"
 msgstr "Danes"
 
-#: ../js/ui/calendar.js:753
+#: ../js/ui/calendar.js:768
 msgid "Tomorrow"
 msgstr "Jutri"
 
-#: ../js/ui/calendar.js:764
+#: ../js/ui/calendar.js:779
 msgid "This week"
 msgstr "Ta teden"
 
-#: ../js/ui/calendar.js:772
+#: ../js/ui/calendar.js:787
 msgid "Next week"
 msgstr "Naslednji teden"
 
@@ -676,11 +662,11 @@ msgstr "Odpri s programom %s"
 msgid "Eject"
 msgstr "Izvrzi"
 
-#: ../js/ui/components/keyring.js:82 ../js/ui/components/polkitAgent.js:268
+#: ../js/ui/components/keyring.js:88 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "Geslo:"
 
-#: ../js/ui/components/keyring.js:101
+#: ../js/ui/components/keyring.js:107
 msgid "Type again:"
 msgstr "Vpišite znova:"
 
@@ -760,15 +746,15 @@ msgstr "Geslo mobilnega širokopasovnega dostopa"
 msgid "A password is required to connect to '%s'."
 msgstr "Za povezavo z omrežjem '%s' je zahtevano geslo."
 
-#: ../js/ui/components/polkitAgent.js:55
+#: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
 msgstr "Zahtevana je overitev"
 
-#: ../js/ui/components/polkitAgent.js:93
+#: ../js/ui/components/polkitAgent.js:92
 msgid "Administrator"
 msgstr "Skrbnik"
 
-#: ../js/ui/components/polkitAgent.js:165
+#: ../js/ui/components/polkitAgent.js:170
 msgid "Authenticate"
 msgstr "Overi"
 
@@ -776,7 +762,7 @@ msgstr "Overi"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/components/polkitAgent.js:256 ../js/ui/shellMountOperation.js:383
+#: ../js/ui/components/polkitAgent.js:266 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "Dejanje je spodletelo. Poskusite znova."
 
@@ -1038,22 +1024,22 @@ msgstr "Pokaži programe"
 msgid "Dash"
 msgstr "Pregledna plošča"
 
-#: ../js/ui/dateMenu.js:91
+#: ../js/ui/dateMenu.js:86
 msgid "Open Calendar"
 msgstr "Odpri koledar"
 
-#: ../js/ui/dateMenu.js:96
+#: ../js/ui/dateMenu.js:90
 msgid "Open Clocks"
 msgstr "Odpri ure"
 
-#: ../js/ui/dateMenu.js:105
+#: ../js/ui/dateMenu.js:97
 msgid "Date & Time Settings"
 msgstr "Nastavitve časa in datuma"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:215
+#: ../js/ui/dateMenu.js:208
 msgid "%A %B %e, %Y"
 msgstr "%a, %e. %b., %R"
 
@@ -1170,51 +1156,51 @@ msgstr ""
 msgid "Keyboard"
 msgstr "Tipkovnica"
 
-#: ../js/ui/lookingGlass.js:693
+#: ../js/ui/lookingGlass.js:689
 msgid "No extensions installed"
 msgstr "Ni nameščenih razširitev"
 
 #. Translators: argument is an extension UUID.
-#: ../js/ui/lookingGlass.js:747
+#: ../js/ui/lookingGlass.js:743
 #, c-format
 msgid "%s has not emitted any errors."
 msgstr "%s ni javil napak."
 
-#: ../js/ui/lookingGlass.js:753
+#: ../js/ui/lookingGlass.js:749
 msgid "Hide Errors"
 msgstr "Skrij napake"
 
-#: ../js/ui/lookingGlass.js:757 ../js/ui/lookingGlass.js:817
+#: ../js/ui/lookingGlass.js:753 ../js/ui/lookingGlass.js:813
 msgid "Show Errors"
 msgstr "Pokaži napake"
 
-#: ../js/ui/lookingGlass.js:766
+#: ../js/ui/lookingGlass.js:762
 msgid "Enabled"
 msgstr "Omogočeno"
 
 #. translators:
 #. * The device has been disabled
-#: ../js/ui/lookingGlass.js:769 ../src/gvc/gvc-mixer-control.c:1830
+#: ../js/ui/lookingGlass.js:765 ../src/gvc/gvc-mixer-control.c:1830
 msgid "Disabled"
 msgstr "Onemogočeno"
 
-#: ../js/ui/lookingGlass.js:771
+#: ../js/ui/lookingGlass.js:767
 msgid "Error"
 msgstr "Napaka"
 
-#: ../js/ui/lookingGlass.js:773
+#: ../js/ui/lookingGlass.js:769
 msgid "Out of date"
 msgstr "Zastarelo"
 
-#: ../js/ui/lookingGlass.js:775
+#: ../js/ui/lookingGlass.js:771
 msgid "Downloading"
 msgstr "Prejemanje"
 
-#: ../js/ui/lookingGlass.js:799
+#: ../js/ui/lookingGlass.js:795
 msgid "View Source"
 msgstr "Poglej vir"
 
-#: ../js/ui/lookingGlass.js:808
+#: ../js/ui/lookingGlass.js:804
 msgid "Web Page"
 msgstr "Spletna stran"
 
@@ -1234,11 +1220,11 @@ msgstr "Počisti sporočila"
 msgid "Notification Settings"
 msgstr "Nastavitve obvestil"
 
-#: ../js/ui/messageTray.js:1709
+#: ../js/ui/messageTray.js:1707
 msgid "No Messages"
 msgstr "Ni sporočil"
 
-#: ../js/ui/messageTray.js:1782
+#: ../js/ui/messageTray.js:1780
 msgid "Message Tray"
 msgstr "Vrstica sporočanja"
 
@@ -1251,7 +1237,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Neznano"
 
-#: ../js/ui/overviewControls.js:472 ../js/ui/screenShield.js:149
+#: ../js/ui/overviewControls.js:472 ../js/ui/screenShield.js:150
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1272,17 +1258,17 @@ msgstr "Pregled"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:260
+#: ../js/ui/overview.js:258
 msgid "Type to search…"
 msgstr "Vnos niza za iskanje ..."
 
-#: ../js/ui/panel.js:641
+#: ../js/ui/panel.js:642
 msgid "Quit"
 msgstr "Končaj"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:692
+#: ../js/ui/panel.js:693
 msgid "Activities"
 msgstr "Dejavnosti"
 
@@ -1295,7 +1281,7 @@ msgstr "Vrhnja vrstica"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:718
+#: ../js/ui/popupMenu.js:738
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1309,11 +1295,11 @@ msgstr "Zapri"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:86
+#: ../js/ui/screenShield.js:87
 msgid "%A, %B %d"
 msgstr "%A, %d. %m."
 
-#: ../js/ui/screenShield.js:151
+#: ../js/ui/screenShield.js:152
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
@@ -1322,11 +1308,11 @@ msgstr[1] "%d novo obvestilo"
 msgstr[2] "%d novi obvestili"
 msgstr[3] "%d nova obvestila"
 
-#: ../js/ui/screenShield.js:438 ../js/ui/userMenu.js:807
+#: ../js/ui/screenShield.js:449 ../js/ui/userMenu.js:807
 msgid "Lock"
 msgstr "Zakleni"
 
-#: ../js/ui/screenShield.js:641
+#: ../js/ui/screenShield.js:652
 msgid "GNOME needs to lock the screen"
 msgstr "Zakleniti je treba zaslon"
 
@@ -1337,11 +1323,11 @@ msgstr "Zakleniti je treba zaslon"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:762 ../js/ui/screenShield.js:1198
+#: ../js/ui/screenShield.js:773 ../js/ui/screenShield.js:1213
 msgid "Unable to lock"
 msgstr "Zaklep ni mogoč"
 
-#: ../js/ui/screenShield.js:763 ../js/ui/screenShield.js:1199
+#: ../js/ui/screenShield.js:774 ../js/ui/screenShield.js:1214
 msgid "Lock was blocked by an application"
 msgstr "Zaklep je preprečil program"
 
@@ -1353,19 +1339,19 @@ msgstr "Iskanje ..."
 msgid "No results."
 msgstr "Ni najdenih zadetkov."
 
-#: ../js/ui/shellEntry.js:29
+#: ../js/ui/shellEntry.js:27
 msgid "Copy"
 msgstr "Kopiraj"
 
-#: ../js/ui/shellEntry.js:34
+#: ../js/ui/shellEntry.js:32
 msgid "Paste"
 msgstr "Prilepi"
 
-#: ../js/ui/shellEntry.js:101
+#: ../js/ui/shellEntry.js:99
 msgid "Show Text"
 msgstr "Pokaži besedilo"
 
-#: ../js/ui/shellEntry.js:103
+#: ../js/ui/shellEntry.js:101
 msgid "Hide Text"
 msgstr "Skrij besedilo"
 
@@ -1377,7 +1363,7 @@ msgstr "Geslo"
 msgid "Remember Password"
 msgstr "Zapomni si geslo"
 
-#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:114
+#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:109
 msgid "Unlock"
 msgstr "Odkleni"
 
@@ -1432,7 +1418,7 @@ msgstr "Veliko besedilo"
 #: ../js/ui/status/bluetooth.js:28 ../js/ui/status/bluetooth.js:32
 #: ../js/ui/status/bluetooth.js:289 ../js/ui/status/bluetooth.js:321
 #: ../js/ui/status/bluetooth.js:357 ../js/ui/status/bluetooth.js:388
-#: ../js/ui/status/network.js:761
+#: ../js/ui/status/network.js:739
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
@@ -1453,7 +1439,7 @@ msgid "Bluetooth Settings"
 msgstr "Nastavitve za Bluetooth"
 
 #. TRANSLATORS: this means that bluetooth was disabled by hardware rfkill
-#: ../js/ui/status/bluetooth.js:104 ../js/ui/status/network.js:149
+#: ../js/ui/status/bluetooth.js:104 ../js/ui/status/network.js:142
 msgid "hardware disabled"
 msgstr "strojno onemogočen"
 
@@ -1461,12 +1447,12 @@ msgstr "strojno onemogočen"
 msgid "Connection"
 msgstr "Povezava"
 
-#: ../js/ui/status/bluetooth.js:208 ../js/ui/status/network.js:426
+#: ../js/ui/status/bluetooth.js:208 ../js/ui/status/network.js:404
 msgid "disconnecting..."
 msgstr "prekinjanje povezave ..."
 
-#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:432
-#: ../js/ui/status/network.js:1417
+#: ../js/ui/status/bluetooth.js:221 ../js/ui/status/network.js:410
+#: ../js/ui/status/network.js:1343
 msgid "connecting..."
 msgstr "povezovanje ..."
 
@@ -1521,7 +1507,8 @@ msgstr "Naprava %s se poskuša seznaniti s tem računalnikom"
 
 #: ../js/ui/status/bluetooth.js:366
 #, c-format
-msgid "Please confirm whether the PIN '%06d' matches the one on the device."
+msgid ""
+"Please confirm whether the Passkey '%06d' matches the one on the device."
 msgstr "Potrdite, ali se PIN '%06d' ujema s tistim na napravi."
 
 #. Translators: this is the verb, not the noun
@@ -1558,91 +1545,91 @@ msgstr "Nastavitve območja in jezika"
 msgid "Volume, network, battery"
 msgstr "Nosilec, omrežje, baterija"
 
-#: ../js/ui/status/network.js:82
+#: ../js/ui/status/network.js:75
 msgid "<unknown>"
 msgstr "<neznano>"
 
-#: ../js/ui/status/network.js:134
+#: ../js/ui/status/network.js:127
 msgid "Wi-Fi"
 msgstr "Wi-Fi"
 
 #. Translators: this indicates that wireless or wwan is disabled by hardware killswitch
-#: ../js/ui/status/network.js:171
+#: ../js/ui/status/network.js:164
 msgid "disabled"
 msgstr "onemogočeno"
 
 #. Translators: this is for network devices that are physically present but are not
 #. under NetworkManager's control (and thus cannot be used in the menu)
-#: ../js/ui/status/network.js:424
+#: ../js/ui/status/network.js:402
 msgid "unmanaged"
 msgstr "neupravljano"
 
 #. Translators: this is for network connections that require some kind of key or password
-#: ../js/ui/status/network.js:435 ../js/ui/status/network.js:1420
+#: ../js/ui/status/network.js:413 ../js/ui/status/network.js:1346
 msgid "authentication required"
 msgstr "zahtevana je overitev"
 
 #. Translators: this is for devices that require some kind of firmware or kernel
 #. module, which is missing
-#: ../js/ui/status/network.js:445
+#: ../js/ui/status/network.js:423
 msgid "firmware missing"
 msgstr "manjka strojna programska oprema"
 
 #. Translators: this is for wired network devices that are physically disconnected
-#: ../js/ui/status/network.js:452
+#: ../js/ui/status/network.js:430
 msgid "cable unplugged"
 msgstr "kabel ni priklopljen"
 
 #. Translators: this is for a network device that cannot be activated (for example it
 #. is disabled by rfkill, or it has no coverage
-#: ../js/ui/status/network.js:457
+#: ../js/ui/status/network.js:435
 msgid "unavailable"
 msgstr "ni na voljo"
 
-#: ../js/ui/status/network.js:459 ../js/ui/status/network.js:1422
+#: ../js/ui/status/network.js:437 ../js/ui/status/network.js:1348
 msgid "connection failed"
 msgstr "povezovanje je spodletelo"
 
-#: ../js/ui/status/network.js:512 ../js/ui/status/network.js:1306
-#: ../js/ui/status/network.js:1498
+#: ../js/ui/status/network.js:490 ../js/ui/status/network.js:1236
+#: ../js/ui/status/network.js:1424
 msgid "More…"
 msgstr "Več ..."
 
 #. TRANSLATORS: this is the indication that a connection for another logged in user is active,
 #. and we cannot access its settings (including the name)
-#: ../js/ui/status/network.js:540 ../js/ui/status/network.js:1261
+#: ../js/ui/status/network.js:518 ../js/ui/status/network.js:1191
 msgid "Connected (private)"
 msgstr "Povezano (zasebna povezava)"
 
-#: ../js/ui/status/network.js:619
+#: ../js/ui/status/network.js:597
 msgid "Wired"
 msgstr "Žično"
 
-#: ../js/ui/status/network.js:633
+#: ../js/ui/status/network.js:611
 msgid "Mobile broadband"
 msgstr "Mobilni širokopasovni dostop"
 
-#: ../js/ui/status/network.js:1596
+#: ../js/ui/status/network.js:1522
 msgid "Enable networking"
 msgstr "Omogoči omrežje"
 
-#: ../js/ui/status/network.js:1657
+#: ../js/ui/status/network.js:1583
 msgid "Network Settings"
 msgstr "Omrežne nastavitve"
 
-#: ../js/ui/status/network.js:1674
+#: ../js/ui/status/network.js:1600
 msgid "Network Manager"
 msgstr "Upravljalnik omrežij"
 
-#: ../js/ui/status/network.js:1764
+#: ../js/ui/status/network.js:1690
 msgid "Connection failed"
 msgstr "Povezava je spodletela"
 
-#: ../js/ui/status/network.js:1765
+#: ../js/ui/status/network.js:1691
 msgid "Activation of network connection failed"
 msgstr "Omogočanje omrežne povezave je spodletelo."
 
-#: ../js/ui/status/network.js:2123
+#: ../js/ui/status/network.js:2047
 msgid "Networking is disabled"
 msgstr "Omrežje je onemogočeno"
 
@@ -1764,11 +1751,11 @@ msgstr "Glasnost"
 msgid "Microphone"
 msgstr "Mikrofon"
 
-#: ../js/ui/unlockDialog.js:125
+#: ../js/ui/unlockDialog.js:120
 msgid "Log in as another user"
 msgstr "Prijava kot drug uporabnik"
 
-#: ../js/ui/unlockDialog.js:146
+#: ../js/ui/unlockDialog.js:141
 msgid "Unlock Window"
 msgstr "Odkleni okno"
 
@@ -1898,23 +1885,23 @@ msgstr[1] "%u dovod naprave"
 msgstr[2] "%u dovoda naprave"
 msgstr[3] "%u dovodi naprave"
 
-#: ../src/gvc/gvc-mixer-control.c:2371
+#: ../src/gvc/gvc-mixer-control.c:2373
 msgid "System Sounds"
 msgstr "Sistemski zvoki"
 
-#: ../src/main.c:347
+#: ../src/main.c:372
 msgid "Print version"
 msgstr "Izpiši različico"
 
-#: ../src/main.c:353
+#: ../src/main.c:378
 msgid "Mode used by GDM for login screen"
 msgstr "Način uporabljen v GDM za prijavni naslov"
 
-#: ../src/main.c:359
+#: ../src/main.c:384
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr "Uporabi poseben način, npr.: \"gdm\" za prijavni zaslon"
 
-#: ../src/main.c:365
+#: ../src/main.c:390
 msgid "List possible modes"
 msgstr "Seznam mogočih načinov"
 
@@ -1923,17 +1910,31 @@ msgstr "Seznam mogočih načinov"
 msgid "Failed to launch '%s'"
 msgstr "Zaganjanje '%s' je spodletelo"
 
-#: ../src/shell-keyring-prompt.c:708
+#: ../src/shell-keyring-prompt.c:714
 msgid "Passwords do not match."
 msgstr "Gesli se ne skladata."
 
-#: ../src/shell-keyring-prompt.c:716
+#: ../src/shell-keyring-prompt.c:722
 msgid "Password cannot be blank"
 msgstr "Geslo ne more biti prazno"
 
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "Uporabnik je zavrnil pogovorno okno overitve"
+
+#~ msgid "Whether to collect stats about applications usage"
+#~ msgstr "Ali naj se beleži statistika uporabe programov"
+
+#~ msgid ""
+#~ "The shell normally monitors active applications in order to present the "
+#~ "most used ones (e.g. in launchers). While this data will be kept private, "
+#~ "you may want to disable this for privacy reasons. Please note that doing "
+#~ "so won't remove already saved data."
+#~ msgstr ""
+#~ "Lupina običajno nadzira dejavne programe zaradi možnosti prikazovanja "
+#~ "najpogosteje uporabljenih v zaganjalniku. Čeprav so podatki krajevni, jih "
+#~ "je dobro onemogočiti zaradi varovanja zasebnosti. Z onemogočenje ne bodo "
+#~ "odstranjeni že shranjeni podatki."
 
 #~ msgid "Auto Ethernet"
 #~ msgstr "Samodejni eternet"
