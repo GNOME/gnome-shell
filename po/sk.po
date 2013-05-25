@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: gnome-shell\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-05-24 17:29+0000\n"
-"PO-Revision-Date: 2013-05-22 19:56+0100\n"
+"POT-Creation-Date: 2013-05-24 21:21+0000\n"
+"PO-Revision-Date: 2013-05-24 23:24+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: Slovak <gnome-sk-list@gnome.org>\n"
 "Language: sk\n"
@@ -1539,11 +1539,10 @@ msgid "Device %s wants to pair with this computer"
 msgstr "Zariadenie %s sa chce spárovať s týmto počítačom"
 
 #: ../js/ui/status/bluetooth.js:366
-#, fuzzy, c-format
-#| msgid "Please confirm whether the PIN '%06d' matches the one on the device."
+#, c-format
 msgid ""
 "Please confirm whether the Passkey '%06d' matches the one on the device."
-msgstr "Prosím, potvrďte, či sa PIN „%06d“ zhoduje s tým na zariadení."
+msgstr "Prosím, potvrďte, či sa heslo „%06d“ zhoduje s tým na zariadení."
 
 #. Translators: this is the verb, not the noun
 #: ../js/ui/status/bluetooth.js:369
