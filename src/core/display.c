@@ -1467,6 +1467,17 @@ meta_display_get_current_time (MetaDisplay *display)
   return display->current_time;
 }
 
+static Bool
+find_timestamp_predicate (Display  *display,
+                          XEvent   *ev,
+                          XPointer  arg)
+{
+  MetaDisplay *display = arg;
+
+  return (ev->type == PropertyNotify &&
+          ev->xproperty.atom == display->atom__MUTTER_TIMESTAMP_PING);
+}
+
 /* Get a timestamp, even if it means a roundtrip */
 guint32
 meta_display_get_current_time_roundtrip (MetaDisplay *display)
@@ -1478,17 +1489,13 @@ meta_display_get_current_time_roundtrip (MetaDisplay *display)
     {
       XEvent property_event;
 
-      /* Using the property XA_PRIMARY because it's safe; nothing
-       * would use it as a property. The type doesn't matter.
-       */
-      XChangeProperty (display->xdisplay,
-                       display->timestamp_pinging_window,
-                       XA_PRIMARY, XA_STRING, 8,
-                       PropModeAppend, NULL, 0);
-      XWindowEvent (display->xdisplay,
-                    display->timestamp_pinging_window,
-                    PropertyChangeMask,
-                    &property_event);
+      XChangeProperty (display->xdisplay, display->timestamp_pinging_window,
+                       display->atom__MUTTER_TIMESTAMP_PING,
+                       XA_STRING, 8, PropModeAppend, NULL, 0);
+      XIfEvent (display->xdisplay,
+                &property_event,
+                find_timestamp_predicate,
+                display);
       timestamp = property_event.xproperty.time;
     }
 
@@ -1952,6 +1959,7 @@ request_xserver_input_focus_change (MetaDisplay *display,
                                     guint32      timestamp)
 {
   MetaWindow *meta_window;
+  gulong serial;
 
   if (timestamp_too_old (display, &timestamp))
     return;
@@ -1959,14 +1967,34 @@ request_xserver_input_focus_change (MetaDisplay *display,
   meta_window = meta_display_lookup_x_window (display, xwindow);
 
   meta_error_trap_push (display);
-  update_focus_window (display,
-                       meta_window,
-                       XNextRequest (display->xdisplay));
+
+  /* In order for mutter to know that the focus request succeeded, we track
+   * the serial of the "focus request" we made, but if we take the serial
+   * of the XSetInputFocus request, then there's no way to determine the
+   * difference between focus events as a result of the SetInputFocus and
+   * focus events that other clients send around the same time. Ensure that
+   * we know which is which by making two requests that the server will
+   * process at the same time.
+   */
+  meta_display_grab (display);
+
+  serial = XNextRequest (display->xdisplay);
 
   XSetInputFocus (display->xdisplay,
                   xwindow,
                   RevertToPointerRoot,
                   timestamp);
+
+  XChangeProperty (display->xdisplay, display->timestamp_pinging_window,
+                   display->atom__MUTTER_FOCUS_SET,
+                   XA_STRING, 8, PropModeAppend, NULL, 0);
+
+  meta_display_ungrab (display);
+
+  update_focus_window (display,
+                       meta_window,
+                       serial);
+
   meta_error_trap_pop (display);
 
   display->last_focus_time = timestamp;
@@ -2079,7 +2107,7 @@ handle_window_focus_event (MetaDisplay  *display,
   else
     g_return_if_reached ();
 
-  if (display->server_focus_serial >= display->focus_serial)
+  if (display->server_focus_serial > display->focus_serial)
     {
       update_focus_window (display, focus_window,
                            display->server_focus_serial);
