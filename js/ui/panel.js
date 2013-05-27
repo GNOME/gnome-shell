@@ -853,11 +853,13 @@ const AggregateMenu = new Lang.Class({
         this._network = new imports.ui.status.network.NMApplet();
         this._bluetooth = new imports.ui.status.bluetooth.Indicator();
         this._power = new imports.ui.status.power.Indicator();
+        this._rfkill = new imports.ui.status.rfkill.Indicator();
         this._volume = new imports.ui.status.volume.Indicator();
         this._system = new imports.ui.status.system.Indicator();
 
         this._indicators.add_child(this._network.indicators);
         this._indicators.add_child(this._bluetooth.indicators);
+        this._indicators.add_child(this._rfkill.indicators);
         this._indicators.add_child(this._volume.indicators);
         this._indicators.add_child(this._power.indicators);
         this._indicators.add_child(new St.Label({ text: '\u25BE',
@@ -868,6 +870,7 @@ const AggregateMenu = new Lang.Class({
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addMenuItem(this._network.menu);
         this.menu.addMenuItem(this._bluetooth.menu);
+        this.menu.addMenuItem(this._rfkill.menu);
         this.menu.addMenuItem(this._power.menu);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
         this.menu.addMenuItem(this._system.menu);

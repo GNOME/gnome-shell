@@ -92,6 +92,7 @@ nobase_dist_js_DATA = 	\
 	ui/status/keyboard.js	\
 	ui/status/network.js	\
 	ui/status/power.js	\
+	ui/status/rfkill.js	\
 	ui/status/volume.js	\
 	ui/status/bluetooth.js	\
 	ui/status/system.js	\
