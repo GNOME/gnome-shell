@@ -1658,12 +1658,16 @@ const MessageTray = new Lang.Class({
 
         this.clearableCount = 0;
 
-        this._lightbox = new Lightbox.Lightbox(Main.layoutManager.overviewGroup,
-                                               { inhibitEvents: true,
-                                                 fadeInTime: ANIMATION_TIME,
-                                                 fadeOutTime: ANIMATION_TIME,
-                                                 fadeFactor: 0.2
-                                               });
+        this._lightboxes = [];
+        let lightboxContainers = [global.window_group,
+                                  Main.layoutManager.overviewGroup];
+        for (let i = 0; i < lightboxContainers.length; i++)
+            this._lightboxes.push(new Lightbox.Lightbox(lightboxContainers[i],
+                                                        { inhibitEvents: true,
+                                                          fadeInTime: ANIMATION_TIME,
+                                                          fadeOutTime: ANIMATION_TIME,
+                                                          fadeFactor: 0.2
+                                                        }));
 
         Main.layoutManager.trayBox.add_actor(this.actor);
         Main.layoutManager.trayBox.add_actor(this._notificationWidget);
@@ -2325,7 +2329,8 @@ const MessageTray = new Lang.Class({
                       transition: 'easeOutQuad'
                     });
 
-        this._lightbox.show();
+        for (let i = 0; i < this._lightboxes.length; i++)
+            this._lightboxes[i].show();
 
         return true;
     },
@@ -2380,7 +2385,8 @@ const MessageTray = new Lang.Class({
         // which would happen if GrabHelper ungrabbed for us.
         // This is a no-op in that case.
         this._grabHelper.ungrab({ actor: this.actor });
-        this._lightbox.hide();
+        for (let i = 0; i < this._lightboxes.length; i++)
+            this._lightboxes[i].hide();
     },
 
     _hideDesktopClone: function() {
