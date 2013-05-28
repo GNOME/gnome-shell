@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutter 3.8.x\n"
+"Project-Id-Version: mutter 3.9.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-20 14:46+0200\n"
-"PO-Revision-Date: 2013-04-03 14:11+0200\n"
+"POT-Creation-Date: 2013-05-28 09:47+0200\n"
+"PO-Revision-Date: 2013-05-28 09:48+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-no@lister.ping.uio.no>\n"
 "Language: \n"
@@ -205,7 +205,7 @@ msgstr "Visning delt til høyre"
 
 #. This probably means that a non-WM compositor like xcompmgr is running;
 #. * we have no way to get it to exit
-#: ../src/compositor/compositor.c:568
+#: ../src/compositor/compositor.c:571
 #, c-format
 msgid ""
 "Another compositing manager is already running on screen %i on display \"%s"
@@ -250,17 +250,17 @@ msgstr "_Vent"
 msgid "_Force Quit"
 msgstr "_Tvungen nedstenging"
 
-#: ../src/core/display.c:401
+#: ../src/core/display.c:421
 #, c-format
 msgid "Missing %s extension required for compositing"
 msgstr "Mangler utvidelsen %s som kreves for komposittfunksjon"
 
-#: ../src/core/display.c:493
+#: ../src/core/display.c:513
 #, c-format
 msgid "Failed to open X Window System display '%s'\n"
 msgstr "Feil under åpning av X Window System skjerm «%s»\n"
 
-#: ../src/core/keybindings.c:970
+#: ../src/core/keybindings.c:1138
 #, c-format
 msgid ""
 "Some other program is already using the key %s with modifiers %x as a "
@@ -269,7 +269,7 @@ msgstr ""
 "Et annet program bruker allerede nøkkelen %s med modifikatorer %x som "
 "binding\n"
 
-#: ../src/core/keybindings.c:1151
+#: ../src/core/keybindings.c:1335
 #, c-format
 msgid "\"%s\" is not a valid accelerator\n"
 msgstr "«%s» er ikke en gyldig aksellerator\n"
@@ -333,7 +333,7 @@ msgstr "Skriv versjonsnummer"
 msgid "Mutter plugin to use"
 msgstr "Mutter-tillegg som skal brukes"
 
-#: ../src/core/prefs.c:1193
+#: ../src/core/prefs.c:1210
 msgid ""
 "Workarounds for broken applications disabled. Some applications may not "
 "behave properly.\n"
@@ -341,12 +341,12 @@ msgstr ""
 "Funksjonalitet for å gå rundt ødelagte programmer er deaktivert. Noen "
 "programmer vil kanskje ikke oppføre seg korrekt.\n"
 
-#: ../src/core/prefs.c:1268
+#: ../src/core/prefs.c:1285
 #, c-format
 msgid "Could not parse font description \"%s\" from GSettings key %s\n"
 msgstr "Kunne ikke tolke skriftbeskrivelsen «%s» fra GSettings-nøkkel %s\n"
 
-#: ../src/core/prefs.c:1334
+#: ../src/core/prefs.c:1351
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for mouse button "
@@ -355,7 +355,7 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for endring av "
 "musknapp\n"
 
-#: ../src/core/prefs.c:1881
+#: ../src/core/prefs.c:1928
 #, c-format
 msgid ""
 "\"%s\" found in configuration database is not a valid value for keybinding "
@@ -364,7 +364,7 @@ msgstr ""
 "«%s» funnet i konfigurasjonsdatabasen er ikke en gyldig verdi for "
 "tastaturbinding «%s»\n"
 
-#: ../src/core/prefs.c:1945
+#: ../src/core/prefs.c:2018
 #, c-format
 msgid "Workspace %d"
 msgstr "Arbeidsområde %d"
@@ -492,7 +492,7 @@ msgid "Window manager error: "
 msgstr "Feil i vindushåndterer: "
 
 #. first time through
-#: ../src/core/window.c:7635
+#: ../src/core/window.c:7505
 #, c-format
 msgid ""
 "Window %s sets SM_CLIENT_ID on itself, instead of on the WM_CLIENT_LEADER "
@@ -508,7 +508,7 @@ msgstr ""
 #. * MWM but not WM_NORMAL_HINTS are basically broken. We complain
 #. * about these apps but make them work.
 #.
-#: ../src/core/window.c:8359
+#: ../src/core/window.c:8229
 #, c-format
 msgid ""
 "Window %s sets an MWM hint indicating it isn't resizable, but sets min size "
