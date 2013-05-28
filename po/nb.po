@@ -6,10 +6,10 @@
 # Torstein Adolf Winterseth <kvikende@fsfe.org>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: gnome-shell 3.8.x\n"
+"Project-Id-Version: gnome-shell 3.9.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-16 13:26+0200\n"
-"PO-Revision-Date: 2013-05-16 13:27+0200\n"
+"POT-Creation-Date: 2013-05-28 09:43+0200\n"
+"PO-Revision-Date: 2013-05-28 09:44+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: \n"
@@ -96,26 +96,10 @@ msgstr ""
 "EnablExtension og DisableExtension på org.gnome.Shell."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
-msgid "Whether to collect stats about applications usage"
-msgstr "Om det skal samles statistikk om bruk av programmer"
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
-msgid ""
-"The shell normally monitors active applications in order to present the most "
-"used ones (e.g. in launchers). While this data will be kept private, you may "
-"want to disable this for privacy reasons. Please note that doing so won't "
-"remove already saved data."
-msgstr ""
-"GNOME Shell vil normalt holde øye med åpne programmer for å kunne vise de "
-"mest bruke (for eksempel i oppstartsmenyer). Denne informasjonen vil bli "
-"holdt privat, men du kan deaktivere denne lagringen av personvernårsaker. "
-"Hvis du slår det av, vil det ikke fjerne allerede lagret informasjon."
-
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
 msgstr "Liste av skrivebordfil-ider for favorittprogrammer"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:6
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
@@ -123,52 +107,52 @@ msgstr ""
 "Programmene som passer til disse identifikatorene vil bli vist i "
 "favorittområdet."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of categories that should be displayed as folders"
 msgstr "Liste med kategorier som skal vises som mapper"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:8
 msgid ""
 "Each category name in this list will be represented as folder in the "
 "application view, rather than being displayed inline in the main view."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "History for command (Alt-F2) dialog"
 msgstr "Historikk for kommandodialog (Alt-F2)"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid "History for the looking glass dialog"
 msgstr "Historikk for forstørrelsesglass-dialogen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid ""
 "Internally used to store the last IM presence explicitly set by the user. "
 "The value here is from the TpConnectionPresenceType enumeration."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid ""
 "Internally used to store the last session presence status for the user. The "
 "value here is from the GsmPresenceStatus enumeration."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid "Always show the 'Log out' menuitem in the user menu."
 msgstr "Alltid vis menyoppføringen «Logg ut» i brukermenyen."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menuitem in single-"
 "user, single-session situations."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid ""
 "The shell will request a password when an encrypted device or a remote "
 "filesystem is mounted. If the password can be saved for future use a "
@@ -176,77 +160,77 @@ msgid ""
 "state of the checkbox."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid "Show the week date in the calendar"
 msgstr "Vis dato for uken i kalender"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid "If true, display the ISO week date in the calendar."
 msgstr "Viser ISO-ukedato i kalenderen hvis «true»."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Keybinding to open the application menu"
 msgstr "Tastaturbinding som åpner programmenyen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "Keybinding to open the application menu."
 msgstr "Tastaturbinding som åpner programmenyen."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to open the \"Show Applications\" view"
 msgstr "Tastaturbinding som åpner visningen «Vis programmer»"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr ""
 "Tastaturbinding som åpner visningen «Vis programmer» i aktivitetsoversikten."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to open the overview"
 msgstr "Tastaturbinding som åpner oversikten"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid "Keybinding to open the Activities Overview."
 msgstr "Tastaturbinding som åpner aktivitetsoversikten."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to toggle the visibility of the message tray"
 msgstr "Tastaturbinding som slår av/på synlighet for meldingstrau"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to toggle the visibility of the message tray."
 msgstr "Tastaturbinding som slår av/på synlighet for meldingstrauet."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
 msgstr "Tastaturbinding som fokuserer aktiv varsling"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "Keybinding to focus the active notification."
 msgstr "Tastaturbinding som fokuserer aktiv varsling."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Keybinding to toggle the screen recorder"
 msgstr "Tastaturbinding som slår av/på skjermopptak"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Keybinding to start/stop the builtin screen recorder."
 msgstr "Tastaturbinding som starter/stopper innebygget opptak av skjerm."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Which keyboard to use"
 msgstr "Tastatur som skal brukes"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:32
 msgid "The type of keyboard to use."
 msgstr "Type tastatur som skal brukes."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Framerate used for recording screencasts."
 msgstr "Bildefrekvens i bruk ved lagring av skjermvideoer."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:36
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
@@ -254,11 +238,11 @@ msgstr ""
 "Bildefrekvensen i den ferdige skjermvideoen tatt opp med GNOME Shells "
 "skjermvideoopptaker i bilder per sekund."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr "Gstreamer-kommandokø brukt til å kode skjermvideoen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 #, fuzzy, no-c-format
 msgid ""
 "Sets the GStreamer pipeline used to encode recordings. It follows the syntax "
@@ -275,11 +259,11 @@ msgstr ""
 "Setter GStreamer-rør som brukes til å kode opptak. Den følger syntaksen som "
 "brukes for gst-launch. Røret må ha en..."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "File extension used for storing the screencast"
 msgstr "Filendelse i bruk ved lagring av skjermvideo"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid ""
 "The filename for recorded screencasts will be a unique filename based on the "
 "current date, and use this extension. It should be changed when recording to "
@@ -289,32 +273,32 @@ msgstr ""
 "og bruke denne filendelsen. Den bør endres når du gjør opptak til et nytt "
 "oppbevaringsformat."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "The application icon mode."
 msgstr "Ikonmodus for programmet."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:41
 msgid ""
 "Configures how the windows are shown in the switcher. Valid possibilities "
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
 "only' (shows only the application icon) or 'both'."
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Attach modal dialog to the parent window"
 msgstr "Fest modal dialog til opphavsvinduet"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
 "Denne nøkkelen overstyrer nøkkelen i org.gnome.mutter når GNOME Shell kjøres."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:46
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Arrangement of buttons on the titlebar"
 msgstr "Plassering av knappene på tittellinjen"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:47
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:45
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
@@ -322,15 +306,15 @@ msgstr ""
 "Denne nøkkelen overstyrer nøkkelen i org.gnome.desktop.wm.preferences når "
 "GNOME Shell kjøres."
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:48
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:46
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:49
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:47
 msgid "Workspaces are managed dynamically"
 msgstr "Arbeidsområder håndteres dynamisk"
 
-#: ../data/org.gnome.shell.gschema.xml.in.in.h:50
+#: ../data/org.gnome.shell.gschema.xml.in.in.h:48
 msgid "Workspaces only on primary monitor"
 msgstr "Arbeidsområder vises kun på hovedskjerm"
 
@@ -438,23 +422,23 @@ msgstr "Klarte ikke å lese kommando:"
 msgid "Execution of '%s' failed:"
 msgstr "Kjøring av «%s» feilet:"
 
-#: ../js/ui/appDisplay.js:351
+#: ../js/ui/appDisplay.js:361
 msgid "Frequent"
 msgstr "Ofte"
 
-#: ../js/ui/appDisplay.js:358
+#: ../js/ui/appDisplay.js:368
 msgid "All"
 msgstr "Alle"
 
-#: ../js/ui/appDisplay.js:931
+#: ../js/ui/appDisplay.js:960
 msgid "New Window"
 msgstr "Nytt vindu"
 
-#: ../js/ui/appDisplay.js:934 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:963 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "Fjern fra favoritter"
 
-#: ../js/ui/appDisplay.js:935
+#: ../js/ui/appDisplay.js:964
 msgid "Add to Favorites"
 msgstr "Legg til i favoritter"
 
@@ -1129,7 +1113,7 @@ msgstr "Installer"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "Last ned og installer «%s» fra extensions.gnome.org?"
 
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:314
+#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
 #: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "Tastatur"
@@ -1206,7 +1190,7 @@ msgstr "Ingen meldinger"
 msgid "Message Tray"
 msgstr "Meldingstrau"
 
-#: ../js/ui/messageTray.js:2799
+#: ../js/ui/messageTray.js:2805
 msgid "System Information"
 msgstr "Systeminformasjon"
 
@@ -1215,7 +1199,7 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "Ukjent"
 
-#: ../js/ui/overviewControls.js:472 ../js/ui/screenShield.js:149
+#: ../js/ui/overviewControls.js:472 ../js/ui/screenShield.js:150
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
@@ -1234,7 +1218,7 @@ msgstr "Oversikt"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:260
+#: ../js/ui/overview.js:258
 msgid "Type to search…"
 msgstr "Skriv for å søke …"
 
@@ -1257,7 +1241,7 @@ msgstr "Topp-panel"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:725
+#: ../js/ui/popupMenu.js:738
 msgid "toggle-switch-us"
 msgstr "toggle-switch-intl"
 
@@ -1271,22 +1255,22 @@ msgstr "Lukk"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:86
+#: ../js/ui/screenShield.js:87
 msgid "%A, %B %d"
 msgstr "%A, %B %d"
 
-#: ../js/ui/screenShield.js:151
+#: ../js/ui/screenShield.js:152
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d ny varsling"
 msgstr[1] "%d nye varslinger"
 
-#: ../js/ui/screenShield.js:448 ../js/ui/userMenu.js:807
+#: ../js/ui/screenShield.js:449 ../js/ui/userMenu.js:807
 msgid "Lock"
 msgstr "Lås"
 
-#: ../js/ui/screenShield.js:651
+#: ../js/ui/screenShield.js:652
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME må låse skjermen"
 
@@ -1297,11 +1281,11 @@ msgstr "GNOME må låse skjermen"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:772 ../js/ui/screenShield.js:1208
+#: ../js/ui/screenShield.js:773 ../js/ui/screenShield.js:1213
 msgid "Unable to lock"
 msgstr "Kan ikke låse"
 
-#: ../js/ui/screenShield.js:773 ../js/ui/screenShield.js:1209
+#: ../js/ui/screenShield.js:774 ../js/ui/screenShield.js:1214
 msgid "Lock was blocked by an application"
 msgstr "Låsing ble stoppet av et program"
 
@@ -1481,8 +1465,9 @@ msgstr "Enhet %s vil koble seg sammen med denne datamaskinen"
 
 #: ../js/ui/status/bluetooth.js:366
 #, c-format
-msgid "Please confirm whether the PIN '%06d' matches the one on the device."
-msgstr "Vennligst bekreft om PIN «%06d» er lik den som brukes på enheten."
+msgid ""
+"Please confirm whether the Passkey '%06d' matches the one on the device."
+msgstr "Vennligst bekreft om passord «%06d» er lik den som brukes på enheten."
 
 #. Translators: this is the verb, not the noun
 #: ../js/ui/status/bluetooth.js:369
@@ -1506,11 +1491,11 @@ msgstr "Vennligst oppgi PIN som oppgitt på enheten."
 msgid "OK"
 msgstr "OK"
 
-#: ../js/ui/status/keyboard.js:368
+#: ../js/ui/status/keyboard.js:396
 msgid "Show Keyboard Layout"
 msgstr "Vis tastaturutforming"
 
-#: ../js/ui/status/keyboard.js:373
+#: ../js/ui/status/keyboard.js:401
 msgid "Region & Language Settings"
 msgstr "Innstillinger for region og språk"
 
