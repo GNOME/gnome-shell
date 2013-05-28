@@ -1,3 +1,22 @@
+3.9.2
+=====
+* Add meta_window_can_close() function [Jasper; #699269]
+* Add support for string-array preferences [Florian; #700223]
+* Fix a potential race condition with _NET_WM_MOVERESIZE [Jasper; #699777]
+* Fix shade window action [Stef; #693714]
+* Remove overlay_group [Giovanni; #700735]
+* Improve tracking of the focus window [Dan, Jasper; #647706]
+* Add API to freeze/unfreeze the keyboard [Rui; #697001]
+* Grab and emit a signal when XK_ISO_Next_Group is pressed [Rui; #697002]
+* Misc bug fixes and cleanups [Dieter, Jasper, Rui; #699636, #700735, #697000]
+
+Contributors:
+  Giovanni Campagna, Rui Matos, Florian Müllner, Jasper St. Pierre,
+  Dieter Verfaillie, Stef Walter, Dan Winship
+
+Translations:
+  Kjartan Maraas [nb], Ján Kyselica [sk]
+
 3.9.1
 =====
 * Fix miscellaneous memory leaks [Pavel; #698710]
