@@ -30,6 +30,8 @@
 
 #include "cogl-types.h"
 
+COGL_BEGIN_DECLS
+
 /**
  * SECTION:cogl-error
  * @short_description: A way for Cogl to throw exceptions
@@ -172,5 +174,7 @@ cogl_error_matches (CoglError *error,
 #ifdef COGL_HAS_GLIB_SUPPORT
 #define COGL_GLIB_ERROR(COGL_ERROR) ((CoglError *)COGL_ERROR)
 #endif
+
+COGL_END_DECLS
 
 #endif /* __COGL_ERROR_H__ */
