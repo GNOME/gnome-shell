@@ -1,3 +1,53 @@
+3.9.2
+=====
+* Use a symbolic icon for DESKTOP windows [Matthias; #697914]
+* Move paint state cache into StWidget [Jasper; #697274]
+* gdm: Fix regression where domain login hint not shown [Stef; #698200]
+* Make calendar keyboard navigable [Tanner; #667434]
+* Hide "Open Calendar" item when no calendar app is installed [Lionel; #697725]
+* Update how branding appears on login screen [Florian; #694912, #699877]
+* Allow OSD popups to grow if necessary [Marta; #696523]
+* Fix offset of shadow offscreen rendering [Lionel; #698301]
+* Fix insensitive button preventing empty keyring password [Stef; #696304]
+* Allow cancelling keyring dialog between prompts [Stef; #682830]
+* modalDialog: Show spinner while working [Stef; #684438]
+* overview: Only show close buttons for windows that may close [Jasper; #699269]
+* Add input purpose and hints to StEntry and StIMText [Daiki; #691392]
+* Set input-purpose property for password entries [Rui; #700043]
+* Provide a DBus API for screencasting [Florian; #696247]
+* overview: Disable hotcorner during DND [Jasper; #698484]
+* polkitAgent: Allow retrying after mistyped passwords [Stef; #684431]
+* Add a way to get backtraces from criticals and warnings [Giovanni; #700262]
+* Allow switch-to-workspace-n keybindings in overview [Florian; #649977]
+* Update man page [Matthias; #700339]
+* Add FocusSearch DBus method [Florian; #700536]
+* Hide frequent view when app monitoring is disabled [Florian; #699714]
+* Show switcher popup for switch-to-workspace-n keybindings [Elad; #659288]
+* gdm: Update the session chooser style [Allan; #695742]
+* Fix some app folders getting truncated at the top [Florian; #694371]
+* Don't block the message tray while a notification is showing [Jasper; #700639]
+* popupMenu: Allow for an optional border for slider handle [Florian; #697917]
+* Re-lock screen when restarted after a crash [Colin; #691987]
+* Synchronize input source switching with key events [Rui; #697007]
+* Switch input source on modifiers-only accelerator [Rui; #697008]
+* Allow input source switching in message tray [Rui; #697009]
+* Misc bug fixes and cleanups [Alban, Jasper, Giovanni, Florian, Rui, Tomeu,
+  Stef, Gustavo; #698863, #699799, #699800, #676285, #699975, #700097, #698812,
+  #698486, #700194, #695314, #700257, #699678, #700356, #700322, #700394,
+  #700409, #700595, #700625, #691746, #700620, #700807, #659288, #700784,
+  #700842, #700847, #700488, #700735, #696159, #700900, #700853, #700923,
+  #700944, #697661, #700854, #700190, #699189, #701097]
+
+Contributors:
+  Elad Alfassa, Alban Browaeys, Giovanni Campagna, Matthias Clasen, Allan Day,
+  Tanner Doshier, Lionel Landwerlin, Rui Matos, Simon McVittie,
+  Marta Milakovic, Florian Müllner, Gustavo Padovan, Jasper St. Pierre,
+  Daiki Ueno, Tomeu Vizoso, Stef Walter, Colin Walters
+
+Translations:
+  Matej Urbančič [sl], Kjartan Maraas [nb], Victor Ibragimov [tg],
+  Dušan Kazik [sk], Gil Forcada [ca], Daniel Mustieles [es]
+
 3.9.1
 =====
 * Add additional toggle-overview keybinding [Matthias; #698251]
