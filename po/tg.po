@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2013-03-14 18:11+0000\n"
-"PO-Revision-Date: 2013-05-25 13:13+0500\n"
+"PO-Revision-Date: 2013-05-27 18:18+0500\n"
 "Last-Translator: Victor Ibragimov <victor.ibragimov@gmail.com>\n"
 "Language-Team: \n"
 "Language: Tajik\n"
@@ -37,7 +37,7 @@ msgstr "Намоиш додани қуттии паёмҳо"
 
 #: ../data/50-gnome-shell-system.xml.in.h:3
 msgid "Focus the active notification"
-msgstr ""
+msgstr "Гузоштани фокус ба огоҳии фаъол"
 
 #: ../data/50-gnome-shell-system.xml.in.h:4
 msgid "Show all applications"
@@ -67,16 +67,20 @@ msgstr "Танзимоти пасвандҳои восити GNOME"
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:1
 msgid "Enable internal tools useful for developers and testers from Alt-F2"
 msgstr ""
+"Фаъол кардани абзорҳои дохилие, ки барои таҳиягарон ва озмунгарон дастрас "
+"мебошанд аз Alt-F2"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:2
 msgid ""
 "Allows access to internal debugging and monitoring tools using the Alt-F2 "
 "dialog."
 msgstr ""
+"Ҳамеша пайдо кардани дастрасӣ ба абзорҳои дохилии ислоҳи хатоҳо ва идоракунӣ "
+"тавассути равзанаи гуфтугӯи Alt-F2."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:3
 msgid "Uuids of extensions to enable"
-msgstr ""
+msgstr "Рамзҳои uuid-и пасвандҳои фаъолшаванда"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:4
 msgid ""
@@ -85,10 +89,15 @@ msgid ""
 "list. You can also manipulate this list with the EnableExtension and "
 "DisableExtension DBus methods on org.gnome.Shell."
 msgstr ""
+"Пасвандҳои GNOME Shell хусусияти uuid доранд; ин калид пасвандҳоеро, ки бояд "
+"бор карда шаванд, номбар мекунад. Ҳар як пасванде, ки бояд бор карда шавад, "
+"бояд дар ин рӯйхат бошад. Шумо инчунин метавонед ин рӯйхатро тавассути "
+"усулҳои DBus-и EnableExtension ва DisableExtension дар org.gnome.Shell "
+"таҳрир кунед."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:5
 msgid "Whether to collect stats about applications usage"
-msgstr ""
+msgstr "Ҷамъ кардан ё ҷамъ накардани омор дар бораи истифодабарии барномаҳо"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:6
 msgid ""
@@ -97,26 +106,35 @@ msgid ""
 "want to disable this for privacy reasons. Please note that doing so won't "
 "remove already saved data."
 msgstr ""
+"Одатан ин восит барномаҳои фаъолро нигоҳдорӣ мекунад, то ин ки барномаҳои аз "
+"ҳама зиёд истифодашаванда (масалан оғозкунандагон) ҳамеша мавҷуд бошанд. "
+"Гарчанде ки ин иттилоот махфӣ нигоҳ дошта мешавад, шумо метавонед интихоб "
+"кунед, ки инро барои сабабҳои махфият ғайрифаъол кунед. Лутфан, ба қайд "
+"гиред, ки чунин амал иттилооти аллакай захирашударо тоза намекунад."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:7
 msgid "List of desktop file IDs for favorite applications"
-msgstr ""
+msgstr "Рӯйхати рамзҳои ID-и файлҳои мизи корӣ барои барномаҳои дӯстдошта"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:8
 msgid ""
 "The applications corresponding to these identifiers will be displayed in the "
 "favorites area."
 msgstr ""
+"Барномаҳое, ки ба ин идентификаторҳо мувофиқ мебошанд, дар ноҳияи "
+"баргузидаҳо намоиш дода мешаванд."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:9
 msgid "List of categories that should be displayed as folders"
-msgstr ""
+msgstr "Рӯйхати категорияҳо, ки бояд ҳамчун ҷузвдонҳо намоиш дода шаванд"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:10
 msgid ""
 "Each category name in this list will be represented as folder in the "
 "application view, rather than being displayed inline in the main view."
 msgstr ""
+"Ҳар як номи категория, ки дар ин рӯйхат мавҷуд аст, дар намуди барномаҳо "
+"ҳамчун ҷузвдон ифода мешавад, ба ҷойи намоишдиҳии шомил дар намуди асосӣ."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "History for command (Alt-F2) dialog"
@@ -124,34 +142,44 @@ msgstr "Таърихи равзанаи гуфтугӯи фармон (Alt-F2)"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:12
 msgid "History for the looking glass dialog"
-msgstr ""
+msgstr "Таърих барои равзанаи гуфтугӯи оина"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:13
 msgid ""
 "Internally used to store the last IM presence explicitly set by the user. "
 "The value here is from the TpConnectionPresenceType enumeration."
 msgstr ""
+"Ба таври дохилӣ барои нигоҳ доштани мавҷудияти охирини IM, ки бо корбар ба "
+"таври бевосита таъин шудааст, истифода мешавад. Дар ин ҷо қимат аз шумориши "
+"TpConnectionPresenceType ба вуҷуд меояд."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:14
 msgid ""
 "Internally used to store the last session presence status for the user. The "
 "value here is from the GsmPresenceStatus enumeration."
 msgstr ""
+"Ба таври дохилӣ барои нигоҳ доштани вазъияти мавҷудияти ҷаласаи охирин барои "
+"корбар истифода мешавад. Дар ин ҷо қимат аз шумориши GsmPresenceStatus ба "
+"вуҷуд меояд."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:15
 msgid "Always show the 'Log out' menuitem in the user menu."
-msgstr ""
+msgstr "Ҳамеша намоиш додани объекти менюи \"Баромадан\" дар менюи корбар."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:16
 msgid ""
 "This key overrides the automatic hiding of the 'Log out' menuitem in single-"
 "user, single-session situations."
 msgstr ""
+"Ин калид пинҳонкунии худкори объекти менюи \"Баромадан\"-ро дар вазъиятҳои "
+"корбари ягона ва ҷаласаи ягона бекор мекунад."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
 msgstr ""
+"Дар ёд доштан ё дар ёд надоштани парол барои васл кардани системаҳои файлии "
+"рамздор ё дурдаст"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid ""
@@ -160,6 +188,10 @@ msgid ""
 "'Remember Password' checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
+"Вақте ки дастгоҳ ё системаи файлии рамздор васл карда мешавад, восит паролро "
+"мепурсад. Агар парол барои истифодаи оянда захира шавад, байрақчаи \"Дар ёд "
+"доштани парол\" мавҷуд мешавад. Ин калид ҳолати пешфарзи байрақчаро таъин "
+"мекунад."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Show the week date in the calendar"
@@ -167,48 +199,49 @@ msgstr "Намоиш додани ҳафта  дар тақвим"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:20
 msgid "If true, display the ISO week date in the calendar."
-msgstr ""
+msgstr "Агар дуруст бошад, санаи ҳафтаи ISO дар тақвим намоиш дода мешавад."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:21
 msgid "Keybinding to open the application menu"
-msgstr ""
+msgstr "Тугма барои кушодани менюи барнома"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:22
 msgid "Keybinding to open the application menu."
-msgstr ""
+msgstr "Тугма барои кушодани менюи барнома."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:23
 msgid "Keybinding to open the \"Show Applications\" view"
-msgstr ""
+msgstr "Тугма барои кушодани намуди \"Намоиш додани барномаҳо\""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:24
 msgid ""
 "Keybinding to open the \"Show Applications\" view of the Activities Overview."
 msgstr ""
+"Тугма барои кушодани намуди \"Намоиш додани барномаҳо\"-и Хулосаи фаъолият."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:25
 msgid "Keybinding to toggle the visibility of the message tray"
-msgstr ""
+msgstr "Тугма барои иваз кардани намоёнии қуттии паёмҳо"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:26
 msgid "Keybinding to toggle the visibility of the message tray."
-msgstr ""
+msgstr "Тугма барои иваз кардани намоёнии қуттии паёмҳо."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:27
 msgid "Keybinding to focus the active notification"
-msgstr ""
+msgstr "Тугма барои гузоштани фокус ба огоҳии фаъол"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:28
 msgid "Keybinding to focus the active notification."
-msgstr ""
+msgstr "Тугма барои гузоштани фокус ба огоҳии фаъол."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:29
 msgid "Keybinding to toggle the screen recorder"
-msgstr ""
+msgstr "Тугма барои иваз кардани сабткунандаи экран"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:30
 msgid "Keybinding to start/stop the builtin screen recorder."
-msgstr ""
+msgstr "Тугма барои оғоз/қатъ кардани сабткунандаи экрани дарунсохт."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:31
 msgid "Which keyboard to use"
@@ -221,16 +254,20 @@ msgstr "Намуди клавиатура барои истифода."
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:33
 msgid "Framerate used for recording screencasts."
 msgstr ""
+"Миқдори кадрҳо дар сония, ки барои сабти рӯйдодҳои экран истифода мешавад."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:34
 msgid ""
 "The framerate of the resulting screencast recordered by GNOME Shell's "
 "screencast recorder in frames-per-second."
 msgstr ""
+"Миқдори кадрҳо дар як сония барои сабти рӯйдодҳои экран, ки бо сабткунандаи "
+"рӯйдодҳои экрани GNOME Shell сабт шудааст, дар кадрҳо дар як сония."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:35
 msgid "The gstreamer pipeline used to encode the screencast"
 msgstr ""
+"Лӯламаҷрои gstreamer, ки барои рамзӣ кардани рӯйдодҳои экран истифода мешавад"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:37
 #, no-c-format
@@ -246,10 +283,23 @@ msgid ""
 "threads=%T ! queue ! webmmux' and records to WEBM using the VP8 codec. %T is "
 "used as a placeholder for a guess at the optimal thread count on the system."
 msgstr ""
+"Лӯламаҷрои GStreamer-ро, ки барои рамзӣ кардани сабтҳо истифода мешаванд, "
+"таъин мекунад. Он наҳвро, ки барои gst-launch истифода мешавад, риоя "
+"мекунад. Лӯламаҷро бояд қабати қабулкунандаи пайвастнашуда дошта бошад, ки "
+"дар он видеои сабтшаванда сабт мешавад. Одатан он дорои қабати "
+"пайвастнашудаи аслӣ мешавад; натиҷаи он қабат ба файли натиҷаҳо навишта "
+"мешавад. Аммо лӯламаҷро метавонад инчунин натиҷаи худро истифода барад - ин "
+"метавонад барои фиристодани натиҷа ба сервери icecast тавассути shout2send ё "
+"монанд истифода шавад. Агар ин таъин шуда набошад, ё ки ба қимати холӣ таъин "
+"шуда бошад, лӯламаҷрои пешфарз истифода мешавад. Дар айни ҳол ин чунин "
+"мебошад: \"vp8enc min_quantizer=13 max_quantizer=13 cpu-used=5 "
+"deadline=1000000 threads=%T ! queue ! webmmux\", ва тавассути кодеки VP8 ба "
+"формати WEBM сабт мекунад. %T ҳамчун пуркунандаи фазо барои ҳисоби тақрибӣ "
+"дар миқдори беҳтарини риштаҳо дар система истифода мешавад."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:38
 msgid "File extension used for storing the screencast"
-msgstr ""
+msgstr "Пасванди файл, ки барои нигоҳ доштани рӯйдодҳои экран истифода мешавад"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:39
 msgid ""
@@ -257,6 +307,9 @@ msgid ""
 "current date, and use this extension. It should be changed when recording to "
 "a different container format."
 msgstr ""
+"Номи файл барои рӯйдодҳои экрани сабтшуда номи ягонаи файл мебошад, ки бо "
+"санаи ҷорӣ асос меёбад ва ин пасвандро истифода мебарад. Вақте ки ба формати "
+"дигари дарбаргиранда сабт рафта истода бошад, он бояд тағйир дода шавад."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:40
 msgid "The application icon mode."
@@ -268,15 +321,21 @@ msgid ""
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
 "only' (shows only the application icon) or 'both'."
 msgstr ""
+"Тарзи намоиш додани равзанаҳоро дар интихобкунанда конфигуратсия мекунад. "
+"Имкониятҳои боэътибор \"танҳо пешнамоишҳои кучак\" (пешнамоиши кучаки "
+"равзанаро намоиш медиҳад), \"танҳо нишонаи барнома\" (танҳо нишонаи "
+"барномаро намоиш медиҳад) ё \"ҳар ду\"."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Attach modal dialog to the parent window"
-msgstr ""
+msgstr "Замима кардани равзанаи гуфтугӯи модалӣ ба равзанаи асосӣ"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
 msgstr ""
+"Ин калид ҳангоми иҷроиши GNOME Shell калиди дар org.gnome.mutter "
+"ҷойгирбударо бекор мекунад."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Arrangement of buttons on the titlebar"
@@ -287,10 +346,14 @@ msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
 msgstr ""
+"Ин калид ҳангоми иҷроиши GNOME Shell калиди дар org.gnome.desktop.wm."
+"preferences ҷойгирбударо бекор мекунад."
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:46
 msgid "Enable edge tiling when dropping windows on screen edges"
 msgstr ""
+"Фаъол кардани лавҳабандии канорӣ ҳангоми гузоштани равзанаҳо ба канорҳои "
+"экран"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:47
 msgid "Workspaces are managed dynamically"
@@ -304,6 +367,8 @@ msgstr "Танҳо фазоҳои корӣ дар монитори асосӣ"
 #, c-format
 msgid "There was an error loading the preferences dialog for %s:"
 msgstr ""
+"Ҳангоми боркунии равзанаи гуфтугӯи хусусиятҳо барои %s хатогие ба вуҷуд "
+"омадааст:"
 
 #: ../js/extensionPrefs/main.js:165
 msgid "Extension"
@@ -312,6 +377,8 @@ msgstr "Пасванд"
 #: ../js/extensionPrefs/main.js:189
 msgid "Select an extension to configure using the combobox above."
 msgstr ""
+"Пасвандеро интихоб кунед, то ин ки бо ҷаъбаи мураккаби боло онро "
+"конфигуратсия кунед."
 
 #: ../js/gdm/loginDialog.js:405
 #| msgid "Session..."
@@ -405,7 +472,7 @@ msgstr "Иҷрокунии '%s' қатъ шудааст:"
 
 #: ../js/ui/appDisplay.js:325
 msgid "Frequent"
-msgstr ""
+msgstr "Роиҷ"
 
 #: ../js/ui/appDisplay.js:332
 msgid "All"
@@ -659,6 +726,8 @@ msgid ""
 "Passwords or encryption keys are required to access the wireless network "
 "'%s'."
 msgstr ""
+"Барои пайдо кардани дастрасӣ ба шабакаи бесими \"%s\" паролҳо ё калидҳои "
+"рамзгузорӣ лозиманд."
 
 #: ../js/ui/components/networkAgent.js:314
 msgid "Wired 802.1X authentication"
@@ -678,7 +747,7 @@ msgstr "Рамзи PIN ҳатмист"
 
 #: ../js/ui/components/networkAgent.js:329
 msgid "PIN code is needed for the mobile broadband device"
-msgstr ""
+msgstr "Барои дастгоҳи паҳннавори мобилӣ рамзи PIN лозим аст"
 
 #: ../js/ui/components/networkAgent.js:330
 msgid "PIN: "
@@ -910,7 +979,7 @@ msgstr "Ин ҳисоб аллакай ба сервер пайваст шуда
 #: ../js/ui/components/telepathyClient.js:1332
 msgid ""
 "Connection has been replaced by a new connection using the same resource"
-msgstr ""
+msgstr "Пайваст тавассути сарчашмаи якхела бо пайвасти нав ҷойиваз карда шуд"
 
 #: ../js/ui/components/telepathyClient.js:1334
 msgid "The account already exists on the server"
@@ -918,7 +987,7 @@ msgstr "Ҳисоб дар сервер аллакай мавҷуд аст"
 
 #: ../js/ui/components/telepathyClient.js:1336
 msgid "Server is currently too busy to handle the connection"
-msgstr ""
+msgstr "Барои коркарди ин пайваст сервер дар айни ҳол хеле машғул мебошад"
 
 #: ../js/ui/components/telepathyClient.js:1338
 msgid "Certificate has been revoked"
@@ -928,12 +997,16 @@ msgstr "Гувоҳинома лағв карда шуд"
 msgid ""
 "Certificate uses an insecure cipher algorithm or is cryptographically weak"
 msgstr ""
+"Гувоҳинома алгоритми хатарноки рамзро истифода мебарад, ё ки рамзгузории "
+"суст дорад"
 
 #: ../js/ui/components/telepathyClient.js:1342
 msgid ""
 "The length of the server certificate, or the depth of the server certificate "
 "chain, exceed the limits imposed by the cryptography library"
 msgstr ""
+"Дарозии гувоҳиномаи сервер, ё ки чуқурии занҷири гувоҳиномаи сервер, аз "
+"маҳдудиятҳое, ки бо китобхонаи рамзгузорӣ таъин шудаанд, дарозтар мебошад"
 
 #: ../js/ui/components/telepathyClient.js:1344
 msgid "Internal error"
@@ -1002,6 +1075,8 @@ msgstr "Баромад"
 #: ../js/ui/endSessionDialog.js:65
 msgid "Click Log Out to quit these applications and log out of the system."
 msgstr ""
+"Барои баромадан аз ин барномаҳо ва баромадан аз система, \"Баромадан\"-ро "
+"зер кунед."
 
 #: ../js/ui/endSessionDialog.js:67
 #, c-format
@@ -1032,13 +1107,14 @@ msgstr "Хомӯш кардан"
 #: ../js/ui/endSessionDialog.js:84
 msgid "Click Power Off to quit these applications and power off the system."
 msgstr ""
+"Барои баромадан аз ин барномаҳо ва анҷом додани кори система, \"Анҷоми кор\"-"
+"ро зер кунед."
 
 #: ../js/ui/endSessionDialog.js:86
 #, c-format
 msgid "The system will power off automatically in %d second."
 msgid_plural "The system will power off automatically in %d seconds."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Система ба таври худкор баъд аз %d сония корро анҷом медиҳад."
 
 #: ../js/ui/endSessionDialog.js:90
 msgid "Powering off the system."
@@ -1062,13 +1138,14 @@ msgstr "Бозоғозидан"
 #: ../js/ui/endSessionDialog.js:101
 msgid "Click Restart to quit these applications and restart the system."
 msgstr ""
+"Барои баромадан аз ин барномаҳо ва бозоғозидани система, \"Бозоғозидан\"-ро "
+"зер кунед."
 
 #: ../js/ui/endSessionDialog.js:103
 #, c-format
 msgid "The system will restart automatically in %d second."
 msgid_plural "The system will restart automatically in %d seconds."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Система ба таври худкор баъд аз %d сония бозоғозӣ мешавад."
 
 #: ../js/ui/endSessionDialog.js:107
 msgid "Restarting the system."
@@ -1081,7 +1158,7 @@ msgstr "Насб кардан"
 #: ../js/ui/extensionDownloader.js:204
 #, c-format
 msgid "Download and install '%s' from extensions.gnome.org?"
-msgstr ""
+msgstr "\"%s\"-ро аз extensions.gnome.org боргирӣ ва насб мекунед?"
 
 #: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:314
 #: ../js/ui/status/power.js:211
@@ -1213,7 +1290,7 @@ msgstr "Панели боло"
 #. simply result in invisible toggle switches.
 #: ../js/ui/popupMenu.js:727
 msgid "toggle-switch-us"
-msgstr ""
+msgstr "toggle-switch-us"
 
 #: ../js/ui/runDialog.js:73
 msgid "Enter a Command"
@@ -1410,7 +1487,7 @@ msgstr "Дархости санҷиши ҳаққоният аз %s"
 #: ../js/ui/status/bluetooth.js:328
 #, c-format
 msgid "Device %s wants access to the service '%s'"
-msgstr ""
+msgstr "Дастгоҳи %s дастрасиро ба хидмати \"%s\" дархост мекунад"
 
 #: ../js/ui/status/bluetooth.js:330
 msgid "Always grant access"
@@ -1433,12 +1510,14 @@ msgstr "Тасдиқи ҷуфтсозӣ барои %s"
 #: ../js/ui/status/bluetooth.js:365 ../js/ui/status/bluetooth.js:396
 #, c-format
 msgid "Device %s wants to pair with this computer"
-msgstr ""
+msgstr "Дастгоҳи %s мехоҳад, ки бо ин компютер ҷуфт кунад"
 
 #: ../js/ui/status/bluetooth.js:366
 #, c-format
 msgid "Please confirm whether the PIN '%06d' matches the one on the device."
 msgstr ""
+"Лутфан, тасдиқ кунед, ки рамзи PIN-и \"%06d\" ба рамзи дар дастгоҳ "
+"мавҷудбуда мувофиқат мекунад."
 
 #. Translators: this is the verb, not the noun
 #: ../js/ui/status/bluetooth.js:369
@@ -1456,7 +1535,7 @@ msgstr "Дархости ҷуфтсозӣ барои %s"
 
 #: ../js/ui/status/bluetooth.js:397
 msgid "Please enter the PIN mentioned on the device."
-msgstr ""
+msgstr "Лутфан, рамзи PIN-ро, ки дар дастгоҳ гуфта шудааст, ворид кунед."
 
 #: ../js/ui/status/bluetooth.js:414
 msgid "OK"
@@ -1754,6 +1833,9 @@ msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
 msgstr ""
+"Акнун огоҳиҳо ғайрифаъол мебошанд, аз он ҷумла паёмҳои чат. Вазъияти онлайни "
+"шумо ба тавре танзим карда шуд, ки дигарон фаҳманд, ки эҳтимолан шумо "
+"паёмҳои онҳоро намебинед."
 
 #: ../js/ui/userMenu.js:888
 msgid "Other users are logged in."
@@ -1761,7 +1843,7 @@ msgstr "Корбарони дигар ворид шудаанд."
 
 #: ../js/ui/userMenu.js:893
 msgid "Shutting down might cause them to lose unsaved work."
-msgstr ""
+msgstr "Анҷоми кор метавонад сабаби гум шудани кори захиранашуда гардад."
 
 #. Translators: Remote here refers to a remote session, like a ssh login
 #: ../js/ui/userMenu.js:921
@@ -1789,6 +1871,8 @@ msgid ""
 "Sorry, no wisdom for you today:\n"
 "%s"
 msgstr ""
+"Мутаассифода, барои шумо имрӯз ягон хирадмандӣ нест:\n"
+"%s"
 
 #: ../js/ui/wanda.js:81
 #, c-format
@@ -1831,11 +1915,12 @@ msgstr "Версияи чоп"
 
 #: ../src/main.c:353
 msgid "Mode used by GDM for login screen"
-msgstr ""
+msgstr "Усуле, ки бо GDM барои экрани воридшавӣ истифода мешавад"
 
 #: ../src/main.c:359
 msgid "Use a specific mode, e.g. \"gdm\" for login screen"
 msgstr ""
+"Истифода бурдани ҳолати мушаххас, масалан \"gdm\" барои экрани воридшавӣ"
 
 #: ../src/main.c:365
 msgid "List possible modes"
@@ -1856,7 +1941,7 @@ msgstr "Парол бояд холӣ набошад"
 
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
-msgstr ""
+msgstr "Равзанаи гуфтугӯи санҷиши ҳакконият бо корбар бекор карда шуд"
 
 #~ msgctxt "title"
 #~ msgid "Sign In"
