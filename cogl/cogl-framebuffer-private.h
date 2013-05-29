@@ -233,7 +233,7 @@ _cogl_framebuffer_clear_without_flush4f (CoglFramebuffer *framebuffer,
                                          float alpha);
 
 void
-_cogl_framebuffer_dirty (CoglFramebuffer *framebuffer);
+_cogl_framebuffer_mark_mid_scene (CoglFramebuffer *framebuffer);
 
 CoglClipState *
 _cogl_framebuffer_get_clip_state (CoglFramebuffer *framebuffer);

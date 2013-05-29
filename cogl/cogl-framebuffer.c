@@ -233,7 +233,7 @@ _cogl_framebuffer_clear_without_flush4f (CoglFramebuffer *framebuffer,
 }
 
 void
-_cogl_framebuffer_dirty (CoglFramebuffer *framebuffer)
+_cogl_framebuffer_mark_mid_scene (CoglFramebuffer *framebuffer)
 {
   framebuffer->clear_clip_dirty = TRUE;
 }
@@ -426,7 +426,7 @@ cleared:
         }
     }
   else
-    _cogl_framebuffer_dirty (framebuffer);
+    _cogl_framebuffer_mark_mid_scene (framebuffer);
 }
 
 /* Note: the 'buffers' and 'color' arguments were switched around on
