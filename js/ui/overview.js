@@ -29,7 +29,7 @@ const ANIMATION_TIME = 0.25;
 // and don't want the shading animation to get cut off
 const SHADE_ANIMATION_TIME = .20;
 
-const DND_WINDOW_SWITCH_TIMEOUT = 1250;
+const DND_WINDOW_SWITCH_TIMEOUT = 750;
 
 const OVERVIEW_ACTIVATION_TIMEOUT = 0.5;
 
