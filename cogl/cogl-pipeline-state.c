@@ -119,40 +119,35 @@ _cogl_pipeline_blend_state_equal (CoglPipeline *authority0,
 
   _COGL_GET_CONTEXT (ctx, FALSE);
 
-#if defined(HAVE_COGL_GLES2) || defined(HAVE_COGL_GL)
-  if (ctx->driver != COGL_DRIVER_GLES1)
-    {
-      if (blend_state0->blend_equation_rgb != blend_state1->blend_equation_rgb)
-        return FALSE;
-      if (blend_state0->blend_equation_alpha !=
-          blend_state1->blend_equation_alpha)
-        return FALSE;
-      if (blend_state0->blend_src_factor_alpha !=
-          blend_state1->blend_src_factor_alpha)
-        return FALSE;
-      if (blend_state0->blend_dst_factor_alpha !=
-          blend_state1->blend_dst_factor_alpha)
-        return FALSE;
-    }
-#endif
+  if (blend_state0->blend_equation_rgb != blend_state1->blend_equation_rgb)
+    return FALSE;
+
+  if (blend_state0->blend_equation_alpha !=
+      blend_state1->blend_equation_alpha)
+    return FALSE;
+  if (blend_state0->blend_src_factor_alpha !=
+      blend_state1->blend_src_factor_alpha)
+    return FALSE;
+  if (blend_state0->blend_dst_factor_alpha !=
+      blend_state1->blend_dst_factor_alpha)
+    return FALSE;
+
   if (blend_state0->blend_src_factor_rgb !=
       blend_state1->blend_src_factor_rgb)
     return FALSE;
   if (blend_state0->blend_dst_factor_rgb !=
       blend_state1->blend_dst_factor_rgb)
     return FALSE;
-#if defined(HAVE_COGL_GLES2) || defined(HAVE_COGL_GL)
-  if (ctx->driver != COGL_DRIVER_GLES1 &&
-      (blend_state0->blend_src_factor_rgb == GL_ONE_MINUS_CONSTANT_COLOR ||
-       blend_state0->blend_src_factor_rgb == GL_CONSTANT_COLOR ||
-       blend_state0->blend_dst_factor_rgb == GL_ONE_MINUS_CONSTANT_COLOR ||
-       blend_state0->blend_dst_factor_rgb == GL_CONSTANT_COLOR))
+
+  if (blend_state0->blend_src_factor_rgb == GL_ONE_MINUS_CONSTANT_COLOR ||
+      blend_state0->blend_src_factor_rgb == GL_CONSTANT_COLOR ||
+      blend_state0->blend_dst_factor_rgb == GL_ONE_MINUS_CONSTANT_COLOR ||
+      blend_state0->blend_dst_factor_rgb == GL_CONSTANT_COLOR)
     {
       if (!cogl_color_equal (&blend_state0->blend_constant,
                              &blend_state1->blend_constant))
         return FALSE;
     }
-#endif
 
   return TRUE;
 }
@@ -980,26 +975,15 @@ cogl_pipeline_set_blend (CoglPipeline *pipeline,
   _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
 
   blend_state = &pipeline->big_state->blend_state;
-#if defined (HAVE_COGL_GL) || defined (HAVE_COGL_GLES2)
-  if (ctx->driver != COGL_DRIVER_GLES1)
-    {
-      setup_blend_state (rgb,
-                         &blend_state->blend_equation_rgb,
-                         &blend_state->blend_src_factor_rgb,
-                         &blend_state->blend_dst_factor_rgb);
-      setup_blend_state (a,
-                         &blend_state->blend_equation_alpha,
-                         &blend_state->blend_src_factor_alpha,
-                         &blend_state->blend_dst_factor_alpha);
-    }
-  else
-#endif
-    {
-      setup_blend_state (rgb,
-                         NULL,
-                         &blend_state->blend_src_factor_rgb,
-                         &blend_state->blend_dst_factor_rgb);
-    }
+
+  setup_blend_state (rgb,
+                     &blend_state->blend_equation_rgb,
+                     &blend_state->blend_src_factor_rgb,
+                     &blend_state->blend_dst_factor_rgb);
+  setup_blend_state (a,
+                     &blend_state->blend_equation_alpha,
+                     &blend_state->blend_src_factor_alpha,
+                     &blend_state->blend_dst_factor_alpha);
 
   /* If we are the current authority see if we can revert to one of our
    * ancestors being the authority */
@@ -1752,33 +1736,28 @@ _cogl_pipeline_hash_blend_state (CoglPipeline *authority,
 
   hash = state->hash;
 
-#if defined(HAVE_COGL_GLES2) || defined(HAVE_COGL_GL)
-  if (ctx->driver != COGL_DRIVER_GLES1)
+  hash =
+    _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_equation_rgb,
+                                   sizeof (blend_state->blend_equation_rgb));
+  hash =
+    _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_equation_alpha,
+                                   sizeof (blend_state->blend_equation_alpha));
+  hash =
+    _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_src_factor_alpha,
+                                   sizeof (blend_state->blend_src_factor_alpha));
+  hash =
+    _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_dst_factor_alpha,
+                                   sizeof (blend_state->blend_dst_factor_alpha));
+
+  if (blend_state->blend_src_factor_rgb == GL_ONE_MINUS_CONSTANT_COLOR ||
+      blend_state->blend_src_factor_rgb == GL_CONSTANT_COLOR ||
+      blend_state->blend_dst_factor_rgb == GL_ONE_MINUS_CONSTANT_COLOR ||
+      blend_state->blend_dst_factor_rgb == GL_CONSTANT_COLOR)
     {
       hash =
-        _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_equation_rgb,
-                                       sizeof (blend_state->blend_equation_rgb));
-      hash =
-        _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_equation_alpha,
-                                       sizeof (blend_state->blend_equation_alpha));
-      hash =
-        _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_src_factor_alpha,
-                                       sizeof (blend_state->blend_src_factor_alpha));
-      hash =
-        _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_dst_factor_alpha,
-                                       sizeof (blend_state->blend_dst_factor_alpha));
-
-      if (blend_state->blend_src_factor_rgb == GL_ONE_MINUS_CONSTANT_COLOR ||
-          blend_state->blend_src_factor_rgb == GL_CONSTANT_COLOR ||
-          blend_state->blend_dst_factor_rgb == GL_ONE_MINUS_CONSTANT_COLOR ||
-          blend_state->blend_dst_factor_rgb == GL_CONSTANT_COLOR)
-        {
-          hash =
-            _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_constant,
-                                           sizeof (blend_state->blend_constant));
-        }
+        _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_constant,
+                                       sizeof (blend_state->blend_constant));
     }
-#endif
 
   hash =
     _cogl_util_one_at_a_time_hash (hash, &blend_state->blend_src_factor_rgb,
