@@ -106,6 +106,8 @@ shell_gtk_embed_window_created_cb (MetaDisplay   *display,
                                              0, 0 /* offset x/y */);
       cairo_region_destroy (empty_region);
 
+      gdk_window_lower (gdk_window);
+
       /* Now that we've found the window we don't need to listen for
          new windows anymore */
       g_signal_handler_disconnect (display,
