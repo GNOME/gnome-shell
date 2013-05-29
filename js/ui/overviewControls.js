@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const GObject = imports.gi.GObject;
 const Clutter = imports.gi.Clutter;
 const Lang = imports.lang;
 const Meta = imports.gi.Meta;
@@ -246,6 +247,7 @@ const ThumbnailsSlider = new Lang.Class({
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this.updateSlide));
         this.actor.connect('notify::hover', Lang.bind(this, this.updateSlide));
+        this._thumbnailsBox.actor.bind_property('visible', this.actor, 'visible', GObject.BindingFlags.SYNC_CREATE);
     },
 
     _getAlwaysZoomOut: function() {
