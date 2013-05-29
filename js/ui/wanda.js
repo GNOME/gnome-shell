@@ -132,6 +132,10 @@ const WandaSearchProvider = new Lang.Class({
                   }]);
     },
 
+    filterResults: function(results) {
+        return results;
+    },
+
     getInitialResultSet: function(terms) {
         if (terms.join(' ') == MAGIC_FISH_KEY) {
             this.searchSystem.setResults(this, [ FISH_NAME ]);

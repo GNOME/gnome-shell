@@ -230,7 +230,7 @@ const SearchResultsBase = new Lang.Class({
             callback();
         } else {
             let maxResults = this._getMaxDisplayedResults();
-            let results = providerResults.slice(0, maxResults);
+            let results = this.provider.filterResults(providerResults, maxResults);
             let hasMoreResults = results.length < providerResults.length;
 
             this.provider.getResultMetas(results, Lang.bind(this, function(metas) {

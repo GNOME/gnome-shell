@@ -207,6 +207,16 @@ const RemoteSearchProvider = new Lang.Class({
                              icon_size: size });
     },
 
+    filterResults: function(results, maxNumber) {
+        if (results.length <= maxNumber)
+            return results;
+
+        let regularResults = results.filter(function(r) { return !r.startsWith('special:'); });
+        let specialResults = results.filter(function(r) { return r.startsWith('special:'); });
+
+        return regularResults.slice(0, maxNumber).concat(specialResults.slice(0, maxNumber));
+    },
+
     _getResultsFinished: function(results, error) {
         if (error)
             return;
