@@ -1480,7 +1480,7 @@ grab_keyboard (MetaDisplay *display,
                               timestamp,
                               None,
                               grab_mode, grab_mode,
-                              True, /* owner_events */
+                              False, /* owner_events */
                               &mask);
 
   if (grab_status != Success)
