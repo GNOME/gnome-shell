@@ -5,8 +5,6 @@ NULL =
 noinst_PROGRAMS = test-conformance
 
 common_sources = \
-	test-utils.h \
-	test-utils.c \
 	test-conform-main.c \
 	$(NULL)
 
@@ -94,7 +92,7 @@ wrappers: stamp-test-conformance
 stamp-test-conformance: Makefile $(srcdir)/test-conform-main.c
 	@mkdir -p wrappers
 	@sed -n -e 's/^ \{1,\}ADD_TEST *( *\([a-zA-Z0-9_]\{1,\}\).*/\1/p' $(srcdir)/test-conform-main.c > unit-tests
-	@chmod +x test-launcher.sh
+	@chmod +x $(top_srcdir)/tests/test-launcher.sh
 	@( echo "/stamp-test-conformance" ; \
 	   echo "/test-conformance$(EXEEXT)" ; \
 	   echo "*.o" ; \
@@ -104,7 +102,7 @@ stamp-test-conformance: Makefile $(srcdir)/test-conform-main.c
 	do \
 		unit=`basename $$i | sed -e s/_/-/g`; \
 		echo "  GEN    $$unit"; \
-		( echo "#!/bin/sh" ; echo "$(abs_builddir)/test-launcher.sh '$$i' \"\$$@\"" ) > $$unit$(SHEXT) ; \
+		( echo "#!/bin/sh" ; echo "$(top_srcdir)/tests/test-launcher.sh $(abs_builddir)/test-conformance$(EXEEXT) '' '$$i' \"\$$@\"" ) > $$unit$(SHEXT) ; \
 		chmod +x $$unit$(SHEXT); \
 		echo "/$$unit$(SHEXT)" >> .gitignore; \
 	done \
@@ -129,6 +127,7 @@ BUILT_SOURCES = wrappers
 # testing (such as test-bitmask) will still compile
 AM_CPPFLAGS = \
 	-I$(top_srcdir) \
+	-I$(top_srcdir)/test-fixtures \
 	-I$(top_builddir)/cogl
 
 if !USE_GLIB
@@ -145,6 +144,7 @@ test_conformance_CFLAGS = -g3 -O0 $(COGL_DEP_CFLAGS) $(COGL_EXTRA_CFLAGS)
 test_conformance_LDADD = \
 	$(COGL_DEP_LIBS) \
 	$(top_builddir)/cogl/libcogl.la \
+	$(top_builddir)/test-fixtures/libtest-fixtures.la \
 	$(LIBM)
 if !USE_GLIB
 test_conformance_LDADD += $(top_builddir)/deps/glib/libglib.la
@@ -152,7 +152,7 @@ endif
 test_conformance_LDFLAGS = -export-dynamic
 
 test: wrappers
-	@$(top_srcdir)/tests/conform/run-tests.sh $(abs_builddir)/config.env
+	@$(top_srcdir)/tests/run-tests.sh $(abs_builddir)/../config.env $(abs_builddir)/test-conformance$(EXEEXT)
 
 # XXX: we could prevent the conformance test suite from running
 #      by simply defining this variable conditionally

@@ -1,6 +1,7 @@
 #ifndef _TEST_UTILS_H_
 #define _TEST_UTILS_H_
 
+#include <cogl/cogl.h>
 #include <glib.h>
 
 /* We don't really care about functions that are defined without a

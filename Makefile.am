@@ -1,4 +1,4 @@
-SUBDIRS = deps cogl tests
+SUBDIRS = deps test-fixtures cogl tests
 
 if BUILD_COGL_PANGO
 SUBDIRS += cogl-pango

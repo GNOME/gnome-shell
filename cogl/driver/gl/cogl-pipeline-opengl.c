@@ -25,9 +25,7 @@
  *   Robert Bragg <robert@linux.intel.com>
  */
 
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include "cogl-debug.h"
 #include "cogl-util-gl-private.h"
@@ -40,6 +38,8 @@
 #include "cogl-texture-gl-private.h"
 
 #include "cogl-pipeline-progend-glsl-private.h"
+
+#include <test-fixtures/test-unit.h>
 
 #include <glib.h>
 #include <string.h>
@@ -442,6 +442,38 @@ flush_depth_state (CoglContext *ctx,
       ctx->depth_range_near_cache = depth_state->range_near;
       ctx->depth_range_far_cache = depth_state->range_far;
     }
+}
+
+UNIT_TEST (check_gl_blend_enable,
+           0 /* no requirements */,
+           0 /* no failure cases */)
+{
+  CoglPipeline *pipeline = cogl_pipeline_new (test_ctx);
+
+  /* By default blending should be disabled */
+  g_assert_cmpint (test_ctx->gl_blend_enable_cache, ==, 0);
+
+  cogl_framebuffer_draw_rectangle (test_fb, pipeline, 0, 0, 1, 1);
+  _cogl_framebuffer_flush_journal (test_fb);
+
+  /* After drawing an opaque rectangle blending should still be
+   * disabled */
+  g_assert_cmpint (test_ctx->gl_blend_enable_cache, ==, 0);
+
+  cogl_pipeline_set_color4f (pipeline, 0, 0, 0, 0);
+  cogl_framebuffer_draw_rectangle (test_fb, pipeline, 0, 0, 1, 1);
+  _cogl_framebuffer_flush_journal (test_fb);
+
+  /* After drawing a transparent rectangle blending should be enabled */
+  g_assert_cmpint (test_ctx->gl_blend_enable_cache, ==, 1);
+
+  cogl_pipeline_set_blend (pipeline, "RGBA=ADD(SRC_COLOR, 0)", NULL);
+  cogl_framebuffer_draw_rectangle (test_fb, pipeline, 0, 0, 1, 1);
+  _cogl_framebuffer_flush_journal (test_fb);
+
+  /* After setting a blend string that effectively disables blending
+   * then blending should be disabled */
+  g_assert_cmpint (test_ctx->gl_blend_enable_cache, ==, 0);
 }
 
 static void

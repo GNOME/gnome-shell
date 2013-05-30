@@ -277,6 +277,18 @@ AS_CASE(
 
 AC_SUBST(COGL_DEBUG_CFLAGS)
 
+AC_ARG_ENABLE(
+  [unit-tests],
+  [AC_HELP_STRING([--enable-unit-tests=@<:@no/yes@:>@], [Build Cogl unit tests @<:@default=yes@:>@])],
+  [],
+  enable_unit_tests=yes
+)
+AS_IF([test "x$enable_unit_tests" = "xyes"],
+      [
+        AC_DEFINE([ENABLE_UNIT_TESTS], [1], [Whether to enable building unit tests])
+      ]
+)
+AM_CONDITIONAL(UNIT_TESTS, test "x$enable_unit_tests" = "xyes")
 
 dnl     ============================================================
 dnl     Enable cairo usage for debugging
@@ -1361,6 +1373,7 @@ deps/Makefile
 deps/glib/Makefile
 deps/gmodule/Makefile
 deps/gmodule/gmoduleconf.h
+test-fixtures/Makefile
 cogl/Makefile
 cogl/cogl-1.0.pc
 cogl/cogl-2.0-experimental.pc
@@ -1384,9 +1397,9 @@ doc/reference/cogl-2.0-experimental/Makefile
 doc/reference/cogl-2.0-experimental/cogl-2.0-experimental-docs.xml
 examples/Makefile
 tests/Makefile
+tests/config.env
 tests/conform/Makefile
-tests/conform/config.env
-tests/conform/test-launcher.sh
+tests/unit/Makefile
 tests/micro-perf/Makefile
 tests/data/Makefile
 po/Makefile.in
@@ -1443,6 +1456,7 @@ echo ""
 echo " • Extra:"
 echo "        Build API reference: ${enable_gtk_doc}"
 echo "        Build introspection data: ${enable_introspection}"
+echo "        Build unit tests: ${enable_unit_tests}"
 echo "        Enable internationalization: ${USE_NLS}"
 
 echo ""

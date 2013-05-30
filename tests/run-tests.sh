@@ -1,6 +1,12 @@
 #!/bin/bash
 
-. $1
+ENVIRONMENT_CONFIG=$1
+shift
+
+TEST_BINARY=$1
+shift
+
+. $ENVIRONMENT_CONFIG
 
 set +m
 
@@ -12,12 +18,6 @@ trap "" SIGSEGV
 EXIT=0
 MISSING_FEATURE="WARNING: Missing required feature";
 KNOWN_FAILURE="WARNING: Test is known to fail";
-
-if test -f ./test-conformance; then
-  TEST_CONFORMANCE=./test-conformance
-elif test -f ./test-conformance.exe; then
-  TEST_CONFORMANCE=./test-conformance.exe
-fi
 
 echo "Key:"
 echo "ok = Test passed"
@@ -54,7 +54,7 @@ get_status()
 
 run_test()
 {
-  $($TEST_CONFORMANCE $1 &>.log)
+  $($TEST_BINARY $1 &>.log)
   TMP=$?
   var_name=$2_result
   eval $var_name=$TMP

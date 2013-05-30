@@ -1,11 +1,23 @@
-SUBDIRS = conform micro-perf data
+SUBDIRS = conform
 
-DIST_SUBDIRS = conform micro-perf data
+if UNIT_TESTS
+SUBDIRS += unit
+endif
 
-EXTRA_DIST = README
+SUBDIRS += micro-perf data
 
+DIST_SUBDIRS = conform unit micro-perf data
+
+EXTRA_DIST = README test-launcher.sh run-tests.sh
+
+if UNIT_TESTS
 test conform:
 	( cd ./conform && $(MAKE) $(AM_MAKEFLAGS) $@ ) || exit $$?
+	( cd ./unit && $(MAKE) $(AM_MAKEFLAGS) $@ ) || exit $$?
+else
+test conform:
+	( cd ./conform && $(MAKE) $(AM_MAKEFLAGS) $@ ) || exit $$?
+endif
 
 .PHONY: test conform
 

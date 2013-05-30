@@ -1,7 +1,9 @@
-#define COGL_ENABLE_EXPERIMENTAL_2_0_API
+#include <config.h>
+
 #include <cogl/cogl.h>
 #include <stdlib.h>
 
+#include "test-unit.h"
 #include "test-utils.h"
 
 #define FB_WIDTH 512

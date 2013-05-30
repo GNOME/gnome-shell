@@ -567,13 +567,16 @@ if !USE_GLIB
 libcogl_la_LIBADD += $(top_builddir)/deps/glib/libglib.la
 libcogl_la_LIBADD += $(top_builddir)/deps/gmodule/libgmodule.la
 endif
+if UNIT_TESTS
+libcogl_la_LIBADD += $(top_builddir)/test-fixtures/libtest-fixtures.la
+endif
 # XXX: The aim is to eventually get rid of all private API exports
 # for cogl-pango.
 libcogl_la_LDFLAGS = \
 	-no-undefined \
 	-version-info @COGL_LT_CURRENT@:@COGL_LT_REVISION@:@COGL_LT_AGE@ \
 	-export-dynamic \
-	-export-symbols-regex "^(cogl|_cogl_debug_flags|_cogl_atlas_new|_cogl_atlas_add_reorganize_callback|_cogl_atlas_reserve_space|_cogl_callback|_cogl_util_get_eye_planes_for_screen_poly|_cogl_atlas_texture_remove_reorganize_callback|_cogl_atlas_texture_add_reorganize_callback|_cogl_texture_foreach_sub_texture_in_region|_cogl_atlas_texture_new_with_size|_cogl_profile_trace_message|_cogl_context_get_default).*"
+	-export-symbols-regex "^(cogl|_cogl_debug_flags|_cogl_atlas_new|_cogl_atlas_add_reorganize_callback|_cogl_atlas_reserve_space|_cogl_callback|_cogl_util_get_eye_planes_for_screen_poly|_cogl_atlas_texture_remove_reorganize_callback|_cogl_atlas_texture_add_reorganize_callback|_cogl_texture_foreach_sub_texture_in_region|_cogl_atlas_texture_new_with_size|_cogl_profile_trace_message|_cogl_context_get_default|test_|unit_test_).*"
 
 libcogl_la_SOURCES = $(cogl_sources_c)
 nodist_libcogl_la_SOURCES = $(BUILT_SOURCES)
@@ -690,6 +693,9 @@ Cogl-1.0.gir: libcogl.la Makefile
 Cogl_1_0_gir_NAMESPACE = Cogl
 Cogl_1_0_gir_VERSION = 1.0
 Cogl_1_0_gir_LIBS = libcogl.la
+if UNIT_TESTS
+Cogl_1_0_gir_LIBS += $(top_builddir)/test-fixtures/libtest-fixtures.la
+endif
 Cogl_1_0_gir_FILES = $(cogl_1_public_h) cogl-enum-types.h
 Cogl_1_0_gir_CFLAGS = $(AM_CPPFLAGS) $(COGL_DEP_CFLAGS) -UCOGL_ENABLE_EXPERIMENTAL_API -UCOGL_ENABLE_EXPERIMENTAL_2_0_API
 Cogl_1_0_gir_INCLUDES = GL-1.0 GObject-2.0
