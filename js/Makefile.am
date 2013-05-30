@@ -36,6 +36,7 @@ nobase_dist_js_DATA = 	\
 	misc/modemManager.js	\
 	misc/objectManager.js	\
 	misc/params.js		\
+	misc/smartcardManager.js \
 	misc/util.js		\
 	perf/core.js		\
 	ui/altTab.js		\
