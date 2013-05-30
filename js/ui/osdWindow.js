@@ -138,6 +138,7 @@ const OsdWindow = new Lang.Class({
         if (!this.actor.visible) {
             this.actor.show();
             this.actor.opacity = 0;
+            this.actor.get_parent().set_child_above_sibling(this.actor, null);
 
             Tweener.addTween(this.actor,
                              { opacity: 255,
