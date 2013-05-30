@@ -1051,7 +1051,7 @@ _cogl_egl_query_wayland_buffer (CoglContext *ctx,
 {
   CoglRendererEGL *egl_renderer = ctx->display->renderer->winsys;
 
-  _COGL_RETURN_IF_FAIL (egl_renderer->pf_eglQueryWaylandBuffer);
+  _COGL_RETURN_VAL_IF_FAIL (egl_renderer->pf_eglQueryWaylandBuffer, FALSE);
 
   return egl_renderer->pf_eglQueryWaylandBuffer (egl_renderer->edpy,
                                                  buffer,
