@@ -67,10 +67,6 @@ test_sources = \
 	$(NULL)
 
 if !USING_EMSCRIPTEN
-# XXX: the emscripten toolchain gets upset about multiple definitions
-# of symbols due to the tricks we play in test-bitmask.c with
-# including cogl-util.c
-test_sources += test-bitmask.c
 # test-fence depends on the glib mainloop so it won't compile if using
 # emscripten which builds in standalone mode.
 test_sources += test-fence.c
@@ -122,13 +118,10 @@ clean-wrappers:
 # a phony rule that will generate symlink scripts for running individual tests
 BUILT_SOURCES = wrappers
 
-# The include of the $(buildir)/cogl directory here is to make it so
-# that tests that directly include Cogl source code for whitebox
-# testing (such as test-bitmask) will still compile
 AM_CPPFLAGS = \
 	-I$(top_srcdir) \
-	-I$(top_srcdir)/test-fixtures \
-	-I$(top_builddir)/cogl
+	-I$(top_builddir)/cogl \
+	-I$(top_srcdir)/test-fixtures
 
 if !USE_GLIB
 AM_CPPFLAGS += -I$(top_builddir)/deps/glib
