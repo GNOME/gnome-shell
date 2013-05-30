@@ -158,7 +158,12 @@ dump_pipeline_cb (CoglNode *node, void *user_data)
                           pipeline,
                           COGL_OBJECT (pipeline)->ref_count,
                           pipeline->has_static_breadcrumb ?
-                          pipeline->static_breadcrumb : "NULL");
+#ifdef COGL_DEBUG_ENABLED
+                          pipeline->static_breadcrumb : "NULL"
+#else
+                          "NULL"
+#endif
+                          );
 
   changes_label = g_string_new ("");
   g_string_append_printf (changes_label,
