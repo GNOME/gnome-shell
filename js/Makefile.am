@@ -34,6 +34,7 @@ nobase_dist_js_DATA = 	\
 	misc/jsParse.js		\
 	misc/loginManager.js	\
 	misc/modemManager.js	\
+	misc/objectManager.js	\
 	misc/params.js		\
 	misc/util.js		\
 	perf/core.js		\
