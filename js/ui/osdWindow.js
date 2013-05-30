@@ -136,6 +136,7 @@ const OsdWindow = new Lang.Class({
             return;
 
         if (!this.actor.visible) {
+            Meta.disable_unredirect_for_screen(global.screen);
             this.actor.show();
             this.actor.opacity = 0;
             this.actor.get_parent().set_child_above_sibling(this.actor, null);
@@ -173,6 +174,7 @@ const OsdWindow = new Lang.Class({
         this.actor.hide();
         this.setLabel(null);
         this.setLevel(null);
+        Meta.enable_unredirect_for_screen(global.screen);
     },
 
     _monitorsChanged: function() {
