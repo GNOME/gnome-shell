@@ -800,6 +800,11 @@ StScrollBar StButton#vhandle:active {
     height: 24px;
 }
 
+.empty-dash-drop-target {
+    width: 24px;
+    height: 24px;
+}
+
 /* Search Box */
 
 #searchEntry {
