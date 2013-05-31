@@ -799,8 +799,8 @@ const Dash = new Lang.Class({
         if (this._dragPlaceholder) {
             this._dragPlaceholder.animateOutAndDestroy();
             this._dragPlaceholder = null;
-            this._dragPlaceholderPos = -1;
         }
+        this._dragPlaceholderPos = -1;
     },
 
     handleDragOver : function(source, actor, x, y, time) {
