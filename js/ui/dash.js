@@ -287,13 +287,7 @@ const ShowAppsIcon = new Lang.Class({
     },
 
     handleDragOver: function(source, actor, x, y, time) {
-        let app = getAppFromSource(source);
-        if (app == null)
-            return DND.DragMotionResult.NO_DROP;
-
-        let id = app.get_id();
-        let isFavorite = AppFavorites.getAppFavorites().isFavorite(id);
-        if (!isFavorite)
+        if (!this._canRemoveApp(getAppFromSource(source)))
             return DND.DragMotionResult.NO_DROP;
 
         return DND.DragMotionResult.MOVE_DROP;
@@ -301,7 +295,7 @@ const ShowAppsIcon = new Lang.Class({
 
     acceptDrop: function(source, actor, x, y, time) {
         let app = getAppFromSource(source);
-        if (app == null)
+        if (!this._canRemoveApp(app))
             return false;
 
         let id = app.get_id();
