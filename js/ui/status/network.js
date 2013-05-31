@@ -1395,8 +1395,8 @@ const NMApplet = new Lang.Class({
     _init: function() {
         this.parent('network-offline-symbolic', _('Network'));
 
-        this.secondaryIcon = this.addIcon(new Gio.ThemedIcon({ name: 'network-vpn-symbolic' }));
-        this.secondaryIcon.hide();
+        this._vpnIcon = this.addIcon(null);
+        this._vpnIcon.hide();
 
         // Device types
         this._dtypes = { };
@@ -2075,21 +2075,14 @@ const NMApplet = new Lang.Class({
 
         // update VPN indicator
         if (this._vpnConnection) {
-            let vpnIconName = 'network-vpn-symbolic';
             if (this._vpnConnection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
-                vpnIconName = 'network-vpn-acquiring-symbolic';
+                this._vpnIcon.icon_name = 'network-vpn-acquiring-symbolic';
+            else
+                this._vpnIcon.icon_name = 'network-vpn-symbolic';
 
-            // only show a separate icon when we're using a wireless/3g connection
-            if (mc._section == NMConnectionCategory.WIRELESS || 
-                mc._section == NMConnectionCategory.WWAN) {
-                this.secondaryIcon.icon_name = vpnIconName;
-                this.secondaryIcon.show();
-            } else {
-                this.setIcon(vpnIconName);
-                this.secondaryIcon.hide();
-            }
+            this._vpnIcon.show();
         } else {
-            this.secondaryIcon.hide();
+            this._vpnIcon.hide();
         }
 
         // cleanup stale signal connections
