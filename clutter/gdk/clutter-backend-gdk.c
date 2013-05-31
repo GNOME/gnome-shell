@@ -279,6 +279,7 @@ clutter_backend_gdk_get_renderer (ClutterBackend  *backend,
     {
       /* Force a WGL winsys on windows */
       cogl_renderer_set_winsys_id (renderer, COGL_WINSYS_ID_WGL);
+      cogl_win32_renderer_set_event_retrieval_enabled (renderer, FALSE);
     }
   else
 #endif
