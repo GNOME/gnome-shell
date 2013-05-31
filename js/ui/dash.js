@@ -320,6 +320,16 @@ const DragPlaceholderItem = new Lang.Class({
     }
 });
 
+const EmptyDropTargetItem = new Lang.Class({
+    Name: 'EmptyDropTargetItem',
+    Extends: DashItemContainer,
+
+    _init: function() {
+        this.parent();
+        this.setChild(new St.Bin({ style_class: 'empty-dash-drop-target' }));
+    }
+});
+
 const DashActor = new Lang.Class({
     Name: 'DashActor',
     Extends: St.Widget,
@@ -435,6 +445,12 @@ const Dash = new Lang.Class({
             dragMotion: Lang.bind(this, this._onDragMotion)
         };
         DND.addDragMonitor(this._dragMonitor);
+
+        if (this._box.get_n_children() == 0) {
+            this._emptyDropTarget = new EmptyDropTargetItem();
+            this._box.insert_child_at_index(this._emptyDropTarget, 0);
+            this._emptyDropTarget.show(true);
+        }
     },
 
     _onDragCancelled: function() {
@@ -451,6 +467,7 @@ const Dash = new Lang.Class({
 
     _endDrag: function() {
         this._clearDragPlaceholder();
+        this._clearEmptyDropTarget();
         this._showAppsIcon.setDragApp(null);
         DND.removeDragMonitor(this._dragMonitor);
     },
@@ -802,6 +819,13 @@ const Dash = new Lang.Class({
         this._dragPlaceholderPos = -1;
     },
 
+    _clearEmptyDropTarget: function() {
+        if (this._emptyDropTarget) {
+            this._emptyDropTarget.animateOutAndDestroy();
+            this._emptyDropTarget = null;
+        }
+    },
+
     handleDragOver : function(source, actor, x, y, time) {
         let app = getAppFromSource(source);
 
@@ -826,7 +850,11 @@ const Dash = new Lang.Class({
             numChildren--;
         }
 
-        let pos = Math.floor(y * numChildren / boxHeight);
+        let pos;
+        if (!this._emptyDropTarget)
+            pos = Math.floor(y * numChildren / boxHeight);
+        else
+            pos = 0; // always insert at the top when dash is empty
 
         if (pos != this._dragPlaceholderPos && pos <= numFavorites && this._animatingPlaceholdersCount == 0) {
             this._dragPlaceholderPos = pos;
