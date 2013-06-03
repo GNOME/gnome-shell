@@ -882,6 +882,8 @@ const ScreenShield = new Lang.Class({
 
         this._lockScreenState = MessageTray.State.HIDING;
 
+        Tweener.removeTweens(this._lockScreenGroup);
+
         if (animate) {
             // Tween the lock screen out of screen
             // if velocity is not specified (i.e. we come here from pressing ESC),
@@ -894,7 +896,6 @@ const ScreenShield = new Lang.Class({
             velocity = Math.max(min_velocity, velocity);
             let time = (delta / velocity) / 1000;
 
-            Tweener.removeTweens(this._lockScreenGroup);
             Tweener.addTween(this._lockScreenGroup,
                              { y: -h,
                                time: time,
