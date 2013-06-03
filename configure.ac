@@ -109,7 +109,7 @@ PKG_CHECK_MODULES(DESKTOP_SCHEMAS, gsettings-desktop-schemas >= 3.7.4)
 PKG_CHECK_MODULES(CARIBOU, caribou-1.0 >= 0.4.8)
 
 AC_MSG_CHECKING([for bluetooth support])
-PKG_CHECK_EXISTS([gnome-bluetooth-1.0 >= 3.1.0],
+PKG_CHECK_EXISTS([gnome-bluetooth-1.0 >= 3.9.0],
         [BLUETOOTH_DIR=`$PKG_CONFIG --variable=applet_libdir gnome-bluetooth-1.0`
 	 BLUETOOTH_LIBS=`$PKG_CONFIG --variable=applet_libs gnome-bluetooth-1.0`
 	 AC_SUBST([BLUETOOTH_LIBS],["$BLUETOOTH_LIBS"])
