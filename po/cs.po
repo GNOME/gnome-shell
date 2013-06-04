@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: clutter\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-04-23 16:39+0000\n"
-"PO-Revision-Date: 2013-04-27 01:32+0200\n"
+"POT-Creation-Date: 2013-06-03 19:39+0000\n"
+"PO-Revision-Date: 2013-06-04 12:14+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -661,17 +661,17 @@ msgstr "Posun v pixelech, který se má použít k omezení"
 msgid "The unique name of the binding pool"
 msgstr "Jedinečný název skupiny klávesových zkratek"
 
-#: ../clutter/clutter-box-layout.c:968 ../clutter/clutter-flow-layout.c:888
+#: ../clutter/clutter-box-layout.c:968 ../clutter/clutter-flow-layout.c:944
 #: ../clutter/clutter-grid-layout.c:1550
 msgid "Orientation"
 msgstr "Natočení"
 
-#: ../clutter/clutter-box-layout.c:969 ../clutter/clutter-flow-layout.c:889
+#: ../clutter/clutter-box-layout.c:969 ../clutter/clutter-flow-layout.c:945
 #: ../clutter/clutter-grid-layout.c:1551
 msgid "The orientation of the layout"
 msgstr "Natočení rozvržení"
 
-#: ../clutter/clutter-box-layout.c:985 ../clutter/clutter-flow-layout.c:904
+#: ../clutter/clutter-box-layout.c:985 ../clutter/clutter-flow-layout.c:960
 msgid "Homogeneous"
 msgstr "Homogenní"
 
@@ -816,107 +816,111 @@ msgstr "Výkonné jádro"
 msgid "The ClutterBackend of the device manager"
 msgstr "Jádro ClutterBackend správce zařízení"
 
-#: ../clutter/clutter-drag-action.c:742
+#: ../clutter/clutter-drag-action.c:750
 msgid "Horizontal Drag Threshold"
 msgstr "Vodorovný práh tažení"
 
-#: ../clutter/clutter-drag-action.c:743
+#: ../clutter/clutter-drag-action.c:751
 msgid "The horizontal amount of pixels required to start dragging"
 msgstr ""
 "Počet pixelů ve vodorovném směru, nutný k tomu, aby započala funkce tažení"
 
-#: ../clutter/clutter-drag-action.c:770
+#: ../clutter/clutter-drag-action.c:778
 msgid "Vertical Drag Threshold"
 msgstr "Svislý práh tažení"
 
-#: ../clutter/clutter-drag-action.c:771
+#: ../clutter/clutter-drag-action.c:779
 msgid "The vertical amount of pixels required to start dragging"
 msgstr ""
 "Počet pixelů ve svislém směru, nutný k tomu, aby započala funkce tažení"
 
-#: ../clutter/clutter-drag-action.c:792
+#: ../clutter/clutter-drag-action.c:800
 msgid "Drag Handle"
 msgstr "Tažen"
 
-#: ../clutter/clutter-drag-action.c:793
+#: ../clutter/clutter-drag-action.c:801
 msgid "The actor that is being dragged"
 msgstr "Účastník, který je tažen"
 
-#: ../clutter/clutter-drag-action.c:806
+#: ../clutter/clutter-drag-action.c:814
 msgid "Drag Axis"
 msgstr "Osa tažení"
 
-#: ../clutter/clutter-drag-action.c:807
+#: ../clutter/clutter-drag-action.c:815
 msgid "Constraints the dragging to an axis"
 msgstr "Omezení tažení na některou z os"
 
-#: ../clutter/clutter-drag-action.c:823
+#: ../clutter/clutter-drag-action.c:831
 msgid "Drag Area"
 msgstr "Oblast tažení"
 
-#: ../clutter/clutter-drag-action.c:824
+#: ../clutter/clutter-drag-action.c:832
 msgid "Constrains the dragging to a rectangle"
 msgstr "Omezení tažení na obdélníkovou oblast"
 
-#: ../clutter/clutter-drag-action.c:837
+#: ../clutter/clutter-drag-action.c:845
 msgid "Drag Area Set"
 msgstr "Oblast tažení nastavena"
 
-#: ../clutter/clutter-drag-action.c:838
+#: ../clutter/clutter-drag-action.c:846
 msgid "Whether the drag area is set"
 msgstr "Zda je oblast tažení nastavena"
 
-#: ../clutter/clutter-flow-layout.c:905
+#: ../clutter/clutter-flow-layout.c:961
 msgid "Whether each item should receive the same allocation"
 msgstr "Zda by každá položka měla zabírat stejné místo"
 
-#: ../clutter/clutter-flow-layout.c:920 ../clutter/clutter-table-layout.c:1281
+#: ../clutter/clutter-flow-layout.c:976 ../clutter/clutter-table-layout.c:1281
 msgid "Column Spacing"
 msgstr "Rozestupy sloupců"
 
-#: ../clutter/clutter-flow-layout.c:921
+#: ../clutter/clutter-flow-layout.c:977
 msgid "The spacing between columns"
 msgstr "Rozestupy mezi sloupci"
 
-#: ../clutter/clutter-flow-layout.c:937 ../clutter/clutter-table-layout.c:1295
+#: ../clutter/clutter-flow-layout.c:993 ../clutter/clutter-table-layout.c:1295
 msgid "Row Spacing"
 msgstr "Rozestupy řádků"
 
-#: ../clutter/clutter-flow-layout.c:938
+#: ../clutter/clutter-flow-layout.c:994
 msgid "The spacing between rows"
 msgstr "Rozestupy mezi řádky"
 
-#: ../clutter/clutter-flow-layout.c:952
+#: ../clutter/clutter-flow-layout.c:1008
 msgid "Minimum Column Width"
 msgstr "Minimální šířka sloupce"
 
-#: ../clutter/clutter-flow-layout.c:953
+#: ../clutter/clutter-flow-layout.c:1009
 msgid "Minimum width for each column"
 msgstr "Minimální šířka každého ze sloupců"
 
-#: ../clutter/clutter-flow-layout.c:968
+#: ../clutter/clutter-flow-layout.c:1024
 msgid "Maximum Column Width"
 msgstr "Maximální šířka sloupce"
 
-#: ../clutter/clutter-flow-layout.c:969
+#: ../clutter/clutter-flow-layout.c:1025
 msgid "Maximum width for each column"
 msgstr "Maximální šířka každého ze sloupců"
 
-#: ../clutter/clutter-flow-layout.c:983
+#: ../clutter/clutter-flow-layout.c:1039
 msgid "Minimum Row Height"
 msgstr "Minimální výška řádku"
 
-#: ../clutter/clutter-flow-layout.c:984
+#: ../clutter/clutter-flow-layout.c:1040
 msgid "Minimum height for each row"
 msgstr "Minimální výška každého z řádků"
 
-#: ../clutter/clutter-flow-layout.c:999
+#: ../clutter/clutter-flow-layout.c:1055
 msgid "Maximum Row Height"
 msgstr "Maximální výška řádku"
 
-#: ../clutter/clutter-flow-layout.c:1000
+#: ../clutter/clutter-flow-layout.c:1056
 msgid "Maximum height for each row"
 msgstr "Maximální výška každého z řádků"
+
+#: ../clutter/clutter-flow-layout.c:1071 ../clutter/clutter-flow-layout.c:1072
+msgid "Snap to grid"
+msgstr "Přichytávat k mřížce"
 
 #: ../clutter/clutter-gesture-action.c:644
 msgid "Number touch points"
