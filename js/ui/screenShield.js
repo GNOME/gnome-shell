@@ -764,19 +764,6 @@ const ScreenShield = new Lang.Class({
             }
         }
 
-        if (!this._becomeModal()) {
-            // We could not become modal, so we can't activate the
-            // screenshield. The user is probably very upset at this
-            // point, but any application using global grabs is broken
-            // Just tell him to stop using this app
-            // 
-            // XXX: another option is to kick the user into the gdm login
-            // screen, where we're not affected by grabs
-            Main.notifyError(_("Unable to lock"),
-                             _("Lock was blocked by an application"));
-            return;
-        }
-
         if (this._lightbox.actor.visible ||
             this._isActive) {
             // We're either shown and active, or in the process of
@@ -787,6 +774,19 @@ const ScreenShield = new Lang.Class({
             // it will soon be.
             // isActive can also be true if the lightbox is hidden,
             // in case the shield is down and the user hasn't unlocked yet
+            return;
+        }
+
+        if (!this._becomeModal()) {
+            // We could not become modal, so we can't activate the
+            // screenshield. The user is probably very upset at this
+            // point, but any application using global grabs is broken
+            // Just tell him to stop using this app
+            // 
+            // XXX: another option is to kick the user into the gdm login
+            // screen, where we're not affected by grabs
+            Main.notifyError(_("Unable to lock"),
+                             _("Lock was blocked by an application"));
             return;
         }
 
