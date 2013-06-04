@@ -9,15 +9,16 @@ msgstr ""
 "Project-Id-Version: gnome-shell 3.3.90\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-04 08:38+0000\n"
-"PO-Revision-Date: 2013-03-06 19:06+0800\n"
-"Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
+"POT-Creation-Date: 2013-05-31 18:55+0000\n"
+"PO-Revision-Date: 2013-06-04 21:50+0800\n"
+"Last-Translator: Cheng-Chia Tseng <pswo10680@gmail.com>\n"
 "Language-Team: Chinese (Hong Kong) <community@linuxhall.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.3\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: ../data/50-gnome-shell-screenshot.xml.in.h:1
 msgid "Screenshots"
@@ -313,44 +314,50 @@ msgstr "擴充功能"
 msgid "Select an extension to configure using the combobox above."
 msgstr "使用上面的組合方塊選擇要設定的擴充功能。"
 
-#: ../js/gdm/loginDialog.js:405
-#| msgid "Session..."
+#: ../js/gdm/loginDialog.js:371
 msgid "Session…"
 msgstr "作業階段…"
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:629
+#: ../js/gdm/loginDialog.js:601
 msgid "Not listed?"
 msgstr "沒有列出來？"
 
-#: ../js/gdm/loginDialog.js:783 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:375
+#: ../js/gdm/loginDialog.js:776 ../js/ui/components/networkAgent.js:137
+#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:126
-#: ../js/ui/userMenu.js:934
+#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:96
+#: ../js/ui/userMenu.js:938
 msgid "Cancel"
 msgstr "取消"
 
-#: ../js/gdm/loginDialog.js:799
+#: ../js/gdm/loginDialog.js:791
 msgctxt "button"
 msgid "Sign In"
 msgstr "登入"
 
-#: ../js/gdm/loginDialog.js:799
+#: ../js/gdm/loginDialog.js:791
 msgid "Next"
 msgstr "下一個"
+
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: ../js/gdm/loginDialog.js:888
+#, c-format
+msgid "(e.g., user or %s)"
+msgstr "(例如： user 或 %s)"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:904 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:892 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "使用者名稱："
 
-#: ../js/gdm/loginDialog.js:1157
+#: ../js/gdm/loginDialog.js:1158
 msgid "Login Window"
 msgstr "登入視窗"
 
@@ -359,8 +366,8 @@ msgstr "登入視窗"
 msgid "Power"
 msgstr "電源"
 
-#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:695 ../js/ui/userMenu.js:699
-#: ../js/ui/userMenu.js:815
+#: ../js/gdm/powerMenu.js:93 ../js/ui/userMenu.js:696 ../js/ui/userMenu.js:700
+#: ../js/ui/userMenu.js:816
 msgid "Suspend"
 msgstr "暫停"
 
@@ -368,58 +375,53 @@ msgstr "暫停"
 msgid "Restart"
 msgstr "重新啟動"
 
-#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:697
-#: ../js/ui/userMenu.js:699 ../js/ui/userMenu.js:814 ../js/ui/userMenu.js:938
+#: ../js/gdm/powerMenu.js:103 ../js/ui/userMenu.js:698
+#: ../js/ui/userMenu.js:700 ../js/ui/userMenu.js:815 ../js/ui/userMenu.js:942
 msgid "Power Off"
 msgstr "關閉電源"
 
-#: ../js/gdm/util.js:182
+#: ../js/gdm/util.js:247
 msgid "Authentication error"
 msgstr "驗證錯誤"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:299
+#: ../js/gdm/util.js:364
 msgid "(or swipe finger)"
 msgstr "(或是滑過手指)"
 
-#: ../js/gdm/util.js:324
-#, c-format
-msgid "(e.g., user or %s)"
-msgstr "(例如： user 或 %s)"
-
-#: ../js/misc/util.js:94
+#: ../js/misc/util.js:97
 msgid "Command not found"
 msgstr "找不到指令"
 
 #. Replace "Error invoking GLib.shell_parse_argv: " with
 #. something nicer
-#: ../js/misc/util.js:127
+#: ../js/misc/util.js:130
 msgid "Could not parse command:"
 msgstr "無法分析指令："
 
-#: ../js/misc/util.js:135
+#: ../js/misc/util.js:138
 #, c-format
 msgid "Execution of '%s' failed:"
 msgstr "執行「%s」失敗："
 
-#: ../js/ui/appDisplay.js:348
+#: ../js/ui/appDisplay.js:356
 msgid "Frequent"
-msgstr "頻率"
+msgstr "常用"
 
-#: ../js/ui/appDisplay.js:355
+#: ../js/ui/appDisplay.js:363
 msgid "All"
 msgstr "全部"
 
-#: ../js/ui/appDisplay.js:913
+#: ../js/ui/appDisplay.js:941
 msgid "New Window"
 msgstr "新視窗"
 
-#: ../js/ui/appDisplay.js:916 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:944 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "自喜好中移除"
 
-#: ../js/ui/appDisplay.js:917
+#: ../js/ui/appDisplay.js:945
 msgid "Add to Favorites"
 msgstr "加入喜好"
 
@@ -433,7 +435,7 @@ msgstr "%s 已加入你的喜好中。"
 msgid "%s has been removed from your favorites."
 msgstr "%s 已經從你的喜好中移除。"
 
-#: ../js/ui/backgroundMenu.js:19 ../js/ui/userMenu.js:788
+#: ../js/ui/backgroundMenu.js:19 ../js/ui/userMenu.js:789
 msgid "Settings"
 msgstr "設定值"
 
@@ -456,7 +458,7 @@ msgctxt "event list time"
 msgid "%H\\u2236%M"
 msgstr "%H\\u2236%M"
 
-#. Transators: Shown in calendar event list, if 12h format,
+#. Translators: Shown in calendar event list, if 12h format,
 #. \u2236 is a ratio character, similar to : and \u2009 is
 #. a thin space
 #: ../js/ui/calendar.js:77
@@ -558,35 +560,35 @@ msgid "S"
 msgstr "六"
 
 #. Translators: Text to show if there are no events
-#: ../js/ui/calendar.js:692
+#: ../js/ui/calendar.js:720
 msgid "Nothing Scheduled"
 msgstr "沒有預訂行程"
 
 #. Translators: Shown on calendar heading when selected day occurs on current year
-#: ../js/ui/calendar.js:708
+#: ../js/ui/calendar.js:736
 msgctxt "calendar heading"
 msgid "%A, %B %d"
 msgstr "%m月%d日%A"
 
 #. Translators: Shown on calendar heading when selected day occurs on different year
-#: ../js/ui/calendar.js:711
+#: ../js/ui/calendar.js:739
 msgctxt "calendar heading"
 msgid "%A, %B %d, %Y"
 msgstr "%Y年%m月%d日%A"
 
-#: ../js/ui/calendar.js:721
+#: ../js/ui/calendar.js:749
 msgid "Today"
 msgstr "今天"
 
-#: ../js/ui/calendar.js:725
+#: ../js/ui/calendar.js:753
 msgid "Tomorrow"
 msgstr "明天"
 
-#: ../js/ui/calendar.js:736
+#: ../js/ui/calendar.js:764
 msgid "This week"
 msgstr "本週"
 
-#: ../js/ui/calendar.js:744
+#: ../js/ui/calendar.js:772
 msgid "Next week"
 msgstr "下週"
 
@@ -602,20 +604,20 @@ msgstr "外部裝置已拔除"
 msgid "Removable Devices"
 msgstr "可移除式裝置"
 
-#: ../js/ui/components/autorunManager.js:593
+#: ../js/ui/components/autorunManager.js:594
 #, c-format
 msgid "Open with %s"
 msgstr "用 %s 開啟"
 
-#: ../js/ui/components/autorunManager.js:619
+#: ../js/ui/components/autorunManager.js:620
 msgid "Eject"
 msgstr "退出"
 
-#: ../js/ui/components/keyring.js:82 ../js/ui/components/polkitAgent.js:268
+#: ../js/ui/components/keyring.js:88 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "密碼： "
 
-#: ../js/ui/components/keyring.js:101
+#: ../js/ui/components/keyring.js:107
 msgid "Type again:"
 msgstr "再輸入一次："
 
@@ -693,15 +695,15 @@ msgstr "流動寬頻網絡密碼"
 msgid "A password is required to connect to '%s'."
 msgstr "連線至「%s」需要密碼。"
 
-#: ../js/ui/components/polkitAgent.js:55
+#: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
 msgstr "要求驗證"
 
-#: ../js/ui/components/polkitAgent.js:93
+#: ../js/ui/components/polkitAgent.js:92
 msgid "Administrator"
 msgstr "系統管理員"
 
-#: ../js/ui/components/polkitAgent.js:165
+#: ../js/ui/components/polkitAgent.js:170
 msgid "Authenticate"
 msgstr "驗證"
 
@@ -709,12 +711,12 @@ msgstr "驗證"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/components/polkitAgent.js:256 ../js/ui/shellMountOperation.js:383
+#: ../js/ui/components/polkitAgent.js:266 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "抱歉，那樣無法運作。請再試一次。"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/components/recorder.js:48
+#: ../js/ui/components/recorder.js:47
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "Screencast from %d %t"
@@ -976,14 +978,14 @@ msgstr "開啟行事曆"
 msgid "Open Clocks"
 msgstr "開啟時鐘"
 
-#: ../js/ui/dateMenu.js:105
+#: ../js/ui/dateMenu.js:104
 msgid "Date & Time Settings"
 msgstr "日期與時刻設定值"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:205
+#: ../js/ui/dateMenu.js:216
 msgid "%A %B %e, %Y"
 msgstr "%Y年%m月%e日%A"
 
@@ -1080,7 +1082,7 @@ msgstr "安裝"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "是否從 extensions.gnome.org 下載並安裝「%s」？"
 
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:314
+#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
 #: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "鍵盤"
@@ -1142,7 +1144,6 @@ msgid "Remove"
 msgstr "移除"
 
 #: ../js/ui/messageTray.js:1501
-#| msgid "No Messages"
 msgid "Clear Messages"
 msgstr "清除訊息"
 
@@ -1150,15 +1151,15 @@ msgstr "清除訊息"
 msgid "Notification Settings"
 msgstr "通知設定值"
 
-#: ../js/ui/messageTray.js:1707
+#: ../js/ui/messageTray.js:1709
 msgid "No Messages"
 msgstr "沒有訊息"
 
-#: ../js/ui/messageTray.js:1787
+#: ../js/ui/messageTray.js:1785
 msgid "Message Tray"
 msgstr "訊息匣"
 
-#: ../js/ui/messageTray.js:2864
+#: ../js/ui/messageTray.js:2818
 msgid "System Information"
 msgstr "系統資訊"
 
@@ -1167,13 +1168,13 @@ msgctxt "program"
 msgid "Unknown"
 msgstr "不明"
 
-#: ../js/ui/overviewControls.js:460 ../js/ui/screenShield.js:153
+#: ../js/ui/overviewControls.js:463 ../js/ui/screenShield.js:149
 #, c-format
 msgid "%d new message"
 msgid_plural "%d new messages"
 msgstr[0] "%d 個新訊息"
 
-#: ../js/ui/overview.js:82
+#: ../js/ui/overview.js:84
 msgid "Undo"
 msgstr "復原"
 
@@ -1185,22 +1186,21 @@ msgstr "概覽"
 #. in the search entry when no search is
 #. active; it should not exceed ~30
 #. characters.
-#: ../js/ui/overview.js:284
-#| msgid "Type to search..."
+#: ../js/ui/overview.js:271
 msgid "Type to search…"
 msgstr "輸入以搜尋…"
 
-#: ../js/ui/panel.js:613
+#: ../js/ui/panel.js:635
 msgid "Quit"
 msgstr "結束"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:642
+#: ../js/ui/panel.js:686
 msgid "Activities"
 msgstr "概覽 "
 
-#: ../js/ui/panel.js:983
+#: ../js/ui/panel.js:982
 msgid "Top Bar"
 msgstr "頂端列"
 
@@ -1209,35 +1209,35 @@ msgstr "頂端列"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:727
+#: ../js/ui/popupMenu.js:740
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
-#: ../js/ui/runDialog.js:205
+#: ../js/ui/runDialog.js:74
 msgid "Enter a Command"
 msgstr "請輸入指令"
 
-#: ../js/ui/runDialog.js:241
+#: ../js/ui/runDialog.js:110
 msgid "Close"
 msgstr "關閉"
 
 #. Translators: This is a time format for a date in
 #. long format
-#: ../js/ui/screenShield.js:90
+#: ../js/ui/screenShield.js:86
 msgid "%A, %B %d"
 msgstr "%m月%d日%A"
 
-#: ../js/ui/screenShield.js:155
+#: ../js/ui/screenShield.js:151
 #, c-format
 msgid "%d new notification"
 msgid_plural "%d new notifications"
 msgstr[0] "%d 個新通知"
 
-#: ../js/ui/screenShield.js:442 ../js/ui/userMenu.js:806
+#: ../js/ui/screenShield.js:438 ../js/ui/userMenu.js:807
 msgid "Lock"
 msgstr "鎖定"
 
-#: ../js/ui/screenShield.js:639
+#: ../js/ui/screenShield.js:641
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME 需要鎖定螢幕"
 
@@ -1248,37 +1248,35 @@ msgstr "GNOME 需要鎖定螢幕"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:758 ../js/ui/screenShield.js:1169
-#| msgid "Unable to connect to %s"
+#: ../js/ui/screenShield.js:762 ../js/ui/screenShield.js:1198
 msgid "Unable to lock"
 msgstr "無法鎖定"
 
-#: ../js/ui/screenShield.js:759 ../js/ui/screenShield.js:1170
+#: ../js/ui/screenShield.js:763 ../js/ui/screenShield.js:1199
 msgid "Lock was blocked by an application"
 msgstr "鎖定被應用程式阻擋"
 
-#: ../js/ui/searchDisplay.js:431
-#| msgid "Searching..."
+#: ../js/ui/searchDisplay.js:453
 msgid "Searching…"
 msgstr "搜尋…"
 
-#: ../js/ui/searchDisplay.js:475
+#: ../js/ui/searchDisplay.js:497
 msgid "No results."
 msgstr "沒有結果。"
 
-#: ../js/ui/shellEntry.js:29
+#: ../js/ui/shellEntry.js:27
 msgid "Copy"
 msgstr "複製"
 
-#: ../js/ui/shellEntry.js:34
+#: ../js/ui/shellEntry.js:32
 msgid "Paste"
 msgstr "貼上"
 
-#: ../js/ui/shellEntry.js:105
+#: ../js/ui/shellEntry.js:99
 msgid "Show Text"
 msgstr "顯示文字"
 
-#: ../js/ui/shellEntry.js:107
+#: ../js/ui/shellEntry.js:101
 msgid "Hide Text"
 msgstr "隱藏文字"
 
@@ -1290,7 +1288,7 @@ msgstr "密碼"
 msgid "Remember Password"
 msgstr "記住密碼"
 
-#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:140
+#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:109
 msgid "Unlock"
 msgstr "解鎖"
 
@@ -1354,12 +1352,10 @@ msgid "Visibility"
 msgstr "顯示狀態"
 
 #: ../js/ui/status/bluetooth.js:59
-#| msgid "Send Files to Device..."
 msgid "Send Files to Device…"
 msgstr "傳送檔案到裝置…"
 
 #: ../js/ui/status/bluetooth.js:60
-#| msgid "Set Up a New Device..."
 msgid "Set Up a New Device…"
 msgstr "設定新的裝置…"
 
@@ -1386,7 +1382,6 @@ msgid "connecting..."
 msgstr "連線中…"
 
 #: ../js/ui/status/bluetooth.js:239
-#| msgid "Send Files..."
 msgid "Send Files…"
 msgstr "傳送檔案…"
 
@@ -1462,11 +1457,11 @@ msgstr "請輸入裝置所提及的 PIN。"
 msgid "OK"
 msgstr "確定"
 
-#: ../js/ui/status/keyboard.js:368
+#: ../js/ui/status/keyboard.js:396
 msgid "Show Keyboard Layout"
 msgstr "顯示鍵盤配置"
 
-#: ../js/ui/status/keyboard.js:373
+#: ../js/ui/status/keyboard.js:401
 msgid "Region & Language Settings"
 msgstr "地區和語言設定值"
 
@@ -1584,7 +1579,7 @@ msgstr "連線失敗"
 msgid "Activation of network connection failed"
 msgstr "啟動網絡連線失敗"
 
-#: ../js/ui/status/network.js:2276
+#: ../js/ui/status/network.js:2282
 msgid "Networking is disabled"
 msgstr "網絡已停用"
 
@@ -1599,7 +1594,6 @@ msgstr "電源設定值"
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
 #: ../js/ui/status/power.js:99
-#| msgid "Estimating..."
 msgid "Estimating…"
 msgstr "評估中…"
 
@@ -1695,11 +1689,11 @@ msgstr "音量"
 msgid "Microphone"
 msgstr "麥克風"
 
-#: ../js/ui/unlockDialog.js:151
+#: ../js/ui/unlockDialog.js:120
 msgid "Log in as another user"
 msgstr "以另一個使用者身分登入"
 
-#: ../js/ui/unlockDialog.js:177
+#: ../js/ui/unlockDialog.js:141
 msgid "Unlock Window"
 msgstr "解鎖視窗"
 
@@ -1727,46 +1721,48 @@ msgstr "閒置"
 msgid "Offline"
 msgstr "離線"
 
-#: ../js/ui/userMenu.js:780
+#: ../js/ui/userMenu.js:781
 msgid "Notifications"
 msgstr "通知"
 
-#: ../js/ui/userMenu.js:796
+#: ../js/ui/userMenu.js:797
 msgid "Switch User"
 msgstr "切換使用者"
 
-#: ../js/ui/userMenu.js:801
+#: ../js/ui/userMenu.js:802
 msgid "Log Out"
 msgstr "登出"
 
-#: ../js/ui/userMenu.js:821
+#: ../js/ui/userMenu.js:822
 msgid "Install Updates & Restart"
 msgstr "安裝更新 & 重新啟動"
 
-#: ../js/ui/userMenu.js:839
+#: ../js/ui/userMenu.js:840
 msgid "Your chat status will be set to busy"
 msgstr "你的聊天狀態會設為忙碌"
 
-#: ../js/ui/userMenu.js:840
+#: ../js/ui/userMenu.js:841
 msgid ""
 "Notifications are now disabled, including chat messages. Your online status "
 "has been adjusted to let others know that you might not see their messages."
 msgstr "通知現在已被停用，包含聊天訊息。你的上線狀態也調整為讓其他人知道你沒時間看他們的訊息。"
 
-#: ../js/ui/userMenu.js:886
+#: ../js/ui/userMenu.js:888
 msgid "Other users are logged in."
 msgstr "其他使用者已登入。"
 
-#: ../js/ui/userMenu.js:891
+#: ../js/ui/userMenu.js:893
 msgid "Shutting down might cause them to lose unsaved work."
 msgstr "關機可能使它們失去未儲存的工作。"
 
-#: ../js/ui/userMenu.js:918
+#. Translators: Remote here refers to a remote session, like a ssh login
+#: ../js/ui/userMenu.js:921
 #, c-format
 msgid "%s (remote)"
 msgstr "%s (遠端)"
 
-#: ../js/ui/userMenu.js:920
+#. Translators: Console here refers to a tty like a VT console
+#: ../js/ui/userMenu.js:924
 #, c-format
 msgid "%s (console)"
 msgstr "%s (主控臺)"
@@ -1779,7 +1775,7 @@ msgstr "應用程式"
 msgid "Search"
 msgstr "搜尋"
 
-#: ../js/ui/wanda.js:92
+#: ../js/ui/wanda.js:77
 #, c-format
 msgid ""
 "Sorry, no wisdom for you today:\n"
@@ -1788,7 +1784,7 @@ msgstr ""
 "抱歉，今天可能有些問題：\n"
 "%s"
 
-#: ../js/ui/wanda.js:96
+#: ../js/ui/wanda.js:81
 #, c-format
 msgid "%s the Oracle says"
 msgstr "%s Oracle 說："
@@ -1818,7 +1814,7 @@ msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u 輸入"
 
-#: ../src/gvc/gvc-mixer-control.c:2371
+#: ../src/gvc/gvc-mixer-control.c:2373
 msgid "System Sounds"
 msgstr "系統音效"
 
@@ -1843,11 +1839,11 @@ msgstr "列出可能的模式"
 msgid "Failed to launch '%s'"
 msgstr "無法啟動「%s」"
 
-#: ../src/shell-keyring-prompt.c:708
+#: ../src/shell-keyring-prompt.c:714
 msgid "Passwords do not match."
 msgstr "密碼不相符。"
 
-#: ../src/shell-keyring-prompt.c:716
+#: ../src/shell-keyring-prompt.c:722
 msgid "Password cannot be blank"
 msgstr "密碼不能為空白"
 
