@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: clutter 1.16\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=clutter&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-04-23 16:38+0000\n"
-"PO-Revision-Date: 2013-04-27 01:32+0200\n"
+"POT-Creation-Date: 2013-05-22 13:28+0000\n"
+"PO-Revision-Date: 2013-06-04 12:14+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -45,7 +45,7 @@ msgstr "Poloha"
 msgid "The position of the origin of the actor"
 msgstr "Poloha počátku účastníka"
 
-#: ../clutter/clutter-actor.c:6235 ../clutter/clutter-canvas.c:215
+#: ../clutter/clutter-actor.c:6235 ../clutter/clutter-canvas.c:225
 #: ../clutter/clutter-grid-layout.c:1238
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:481
 msgid "Width"
@@ -55,7 +55,7 @@ msgstr "Šířka"
 msgid "Width of the actor"
 msgstr "Šířka účastníka"
 
-#: ../clutter/clutter-actor.c:6254 ../clutter/clutter-canvas.c:231
+#: ../clutter/clutter-actor.c:6254 ../clutter/clutter-canvas.c:241
 #: ../clutter/clutter-grid-layout.c:1245
 #: ../clutter/deprecated/clutter-behaviour-ellipse.c:497
 msgid "Height"
@@ -842,17 +842,17 @@ msgstr "Svisle"
 msgid "Whether the layout should be vertical, rather than horizontal"
 msgstr "Zda by rozvržení mělo být raději svisle než vodorovně"
 
-#: ../clutter/clutter-box-layout.c:1383 ../clutter/clutter-flow-layout.c:890
+#: ../clutter/clutter-box-layout.c:1383 ../clutter/clutter-flow-layout.c:946
 #: ../clutter/clutter-grid-layout.c:1550
 msgid "Orientation"
 msgstr "Natočení"
 
-#: ../clutter/clutter-box-layout.c:1384 ../clutter/clutter-flow-layout.c:891
+#: ../clutter/clutter-box-layout.c:1384 ../clutter/clutter-flow-layout.c:947
 #: ../clutter/clutter-grid-layout.c:1551
 msgid "The orientation of the layout"
 msgstr "Natočení rozvržení"
 
-#: ../clutter/clutter-box-layout.c:1400 ../clutter/clutter-flow-layout.c:906
+#: ../clutter/clutter-box-layout.c:1400 ../clutter/clutter-flow-layout.c:962
 msgid "Homogeneous"
 msgstr "Homogenní"
 
@@ -919,11 +919,11 @@ msgstr "Kontrast"
 msgid "The contrast change to apply"
 msgstr "Změna kontrastu, která se má použít"
 
-#: ../clutter/clutter-canvas.c:216
+#: ../clutter/clutter-canvas.c:226
 msgid "The width of the canvas"
 msgstr "Šířka plátna"
 
-#: ../clutter/clutter-canvas.c:232
+#: ../clutter/clutter-canvas.c:242
 msgid "The height of the canvas"
 msgstr "Výška plátna"
 
@@ -1071,57 +1071,61 @@ msgstr "Oblast tažení nastavena"
 msgid "Whether the drag area is set"
 msgstr "Zda je oblast tažení nastavena"
 
-#: ../clutter/clutter-flow-layout.c:907
+#: ../clutter/clutter-flow-layout.c:963
 msgid "Whether each item should receive the same allocation"
 msgstr "Zda by každá položka měla zabírat stejné místo"
 
-#: ../clutter/clutter-flow-layout.c:922 ../clutter/clutter-table-layout.c:1637
+#: ../clutter/clutter-flow-layout.c:978 ../clutter/clutter-table-layout.c:1637
 msgid "Column Spacing"
 msgstr "Rozestupy sloupců"
 
-#: ../clutter/clutter-flow-layout.c:923
+#: ../clutter/clutter-flow-layout.c:979
 msgid "The spacing between columns"
 msgstr "Rozestupy mezi sloupci"
 
-#: ../clutter/clutter-flow-layout.c:939 ../clutter/clutter-table-layout.c:1651
+#: ../clutter/clutter-flow-layout.c:995 ../clutter/clutter-table-layout.c:1651
 msgid "Row Spacing"
 msgstr "Rozestupy řádků"
 
-#: ../clutter/clutter-flow-layout.c:940
+#: ../clutter/clutter-flow-layout.c:996
 msgid "The spacing between rows"
 msgstr "Rozestupy mezi řádky"
 
-#: ../clutter/clutter-flow-layout.c:954
+#: ../clutter/clutter-flow-layout.c:1010
 msgid "Minimum Column Width"
 msgstr "Minimální šířka sloupce"
 
-#: ../clutter/clutter-flow-layout.c:955
+#: ../clutter/clutter-flow-layout.c:1011
 msgid "Minimum width for each column"
 msgstr "Minimální šířka každého ze sloupců"
 
-#: ../clutter/clutter-flow-layout.c:970
+#: ../clutter/clutter-flow-layout.c:1026
 msgid "Maximum Column Width"
 msgstr "Maximální šířka sloupce"
 
-#: ../clutter/clutter-flow-layout.c:971
+#: ../clutter/clutter-flow-layout.c:1027
 msgid "Maximum width for each column"
 msgstr "Maximální šířka každého ze sloupců"
 
-#: ../clutter/clutter-flow-layout.c:985
+#: ../clutter/clutter-flow-layout.c:1041
 msgid "Minimum Row Height"
 msgstr "Minimální výška řádku"
 
-#: ../clutter/clutter-flow-layout.c:986
+#: ../clutter/clutter-flow-layout.c:1042
 msgid "Minimum height for each row"
 msgstr "Minimální výška každého z řádků"
 
-#: ../clutter/clutter-flow-layout.c:1001
+#: ../clutter/clutter-flow-layout.c:1057
 msgid "Maximum Row Height"
 msgstr "Maximální výška řádku"
 
-#: ../clutter/clutter-flow-layout.c:1002
+#: ../clutter/clutter-flow-layout.c:1058
 msgid "Maximum height for each row"
 msgstr "Maximální výška každého z řádků"
+
+#: ../clutter/clutter-flow-layout.c:1073 ../clutter/clutter-flow-layout.c:1074
+msgid "Snap to grid"
+msgstr "Přichytávat k mřížce"
 
 #: ../clutter/clutter-gesture-action.c:648
 msgid "Number touch points"
@@ -1575,108 +1579,108 @@ msgstr "Hrana účastníka, která by se měla přichytávat"
 msgid "The offset in pixels to apply to the constraint"
 msgstr "Posun v pixelech, při kterém se má použít omezení"
 
-#: ../clutter/clutter-stage.c:1928
+#: ../clutter/clutter-stage.c:1938
 msgid "Fullscreen Set"
 msgstr "Nastavena celá obrazovka"
 
-#: ../clutter/clutter-stage.c:1929
+#: ../clutter/clutter-stage.c:1939
 msgid "Whether the main stage is fullscreen"
 msgstr "Zda je hlavní scéna v režimu celé obrazovky"
 
-#: ../clutter/clutter-stage.c:1943
+#: ../clutter/clutter-stage.c:1953
 msgid "Offscreen"
 msgstr "V paměti"
 
-#: ../clutter/clutter-stage.c:1944
+#: ../clutter/clutter-stage.c:1954
 msgid "Whether the main stage should be rendered offscreen"
 msgstr "Zda by měla být hlavní scéna vykreslována v paměti bez zobrazení"
 
-#: ../clutter/clutter-stage.c:1956 ../clutter/clutter-text.c:3488
+#: ../clutter/clutter-stage.c:1966 ../clutter/clutter-text.c:3488
 msgid "Cursor Visible"
 msgstr "Kurzor viditelný"
 
-#: ../clutter/clutter-stage.c:1957
+#: ../clutter/clutter-stage.c:1967
 msgid "Whether the mouse pointer is visible on the main stage"
 msgstr "Zda je ukazatel myši viditelný na hlavní scéně"
 
-#: ../clutter/clutter-stage.c:1971
+#: ../clutter/clutter-stage.c:1981
 msgid "User Resizable"
 msgstr "Uživatelsky měnitelná velikost"
 
-#: ../clutter/clutter-stage.c:1972
+#: ../clutter/clutter-stage.c:1982
 msgid "Whether the stage is able to be resized via user interaction"
 msgstr "Zda uživatel může interaktivně měnit velikost scény"
 
-#: ../clutter/clutter-stage.c:1987 ../clutter/deprecated/clutter-box.c:260
+#: ../clutter/clutter-stage.c:1997 ../clutter/deprecated/clutter-box.c:260
 #: ../clutter/deprecated/clutter-rectangle.c:273
 msgid "Color"
 msgstr "Barva"
 
-#: ../clutter/clutter-stage.c:1988
+#: ../clutter/clutter-stage.c:1998
 msgid "The color of the stage"
 msgstr "Barva scény"
 
-#: ../clutter/clutter-stage.c:2003
+#: ../clutter/clutter-stage.c:2013
 msgid "Perspective"
 msgstr "Perspektiva"
 
-#: ../clutter/clutter-stage.c:2004
+#: ../clutter/clutter-stage.c:2014
 msgid "Perspective projection parameters"
 msgstr "Parametry perspektivní projekce"
 
-#: ../clutter/clutter-stage.c:2019
+#: ../clutter/clutter-stage.c:2029
 msgid "Title"
 msgstr "Název"
 
-#: ../clutter/clutter-stage.c:2020
+#: ../clutter/clutter-stage.c:2030
 msgid "Stage Title"
 msgstr "Název scény"
 
-#: ../clutter/clutter-stage.c:2037
+#: ../clutter/clutter-stage.c:2047
 msgid "Use Fog"
 msgstr "Použít zamlžení"
 
-#: ../clutter/clutter-stage.c:2038
+#: ../clutter/clutter-stage.c:2048
 msgid "Whether to enable depth cueing"
 msgstr "Zda zapnout zvýraznění hloubky"
 
-#: ../clutter/clutter-stage.c:2054
+#: ../clutter/clutter-stage.c:2064
 msgid "Fog"
 msgstr "Zamlžení"
 
-#: ../clutter/clutter-stage.c:2055
+#: ../clutter/clutter-stage.c:2065
 msgid "Settings for the depth cueing"
 msgstr "Nastavení pro zvýraznění hloubky"
 
-#: ../clutter/clutter-stage.c:2071
+#: ../clutter/clutter-stage.c:2081
 msgid "Use Alpha"
 msgstr "Použít alfu"
 
-#: ../clutter/clutter-stage.c:2072
+#: ../clutter/clutter-stage.c:2082
 msgid "Whether to honour the alpha component of the stage color"
 msgstr "Zda se řídit komponentou alfa z barvy scény"
 
-#: ../clutter/clutter-stage.c:2088
+#: ../clutter/clutter-stage.c:2098
 msgid "Key Focus"
 msgstr "Hlavní zaměření"
 
-#: ../clutter/clutter-stage.c:2089
+#: ../clutter/clutter-stage.c:2099
 msgid "The currently key focused actor"
 msgstr "Aktuálně hlavní zaměřený účastník"
 
-#: ../clutter/clutter-stage.c:2105
+#: ../clutter/clutter-stage.c:2115
 msgid "No Clear Hint"
 msgstr "Nemazat bez pokynu"
 
-#: ../clutter/clutter-stage.c:2106
+#: ../clutter/clutter-stage.c:2116
 msgid "Whether the stage should clear its contents"
 msgstr "Zda by scéna měla vymazat svůj obsah"
 
-#: ../clutter/clutter-stage.c:2119
+#: ../clutter/clutter-stage.c:2129
 msgid "Accept Focus"
 msgstr "Přijímat zaměření"
 
-#: ../clutter/clutter-stage.c:2120
+#: ../clutter/clutter-stage.c:2130
 msgid "Whether the stage should accept focus on show"
 msgstr "Zda by měla scéna při zobrazení přijímat zaměření"
 
