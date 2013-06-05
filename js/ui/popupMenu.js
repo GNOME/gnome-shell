@@ -1826,6 +1826,8 @@ const RemoteMenu = new Lang.Class({
 
         this._actionStateChangeId = this.actionGroup.connect('action-state-changed', Lang.bind(this, this._actionStateChanged));
         this._actionEnableChangeId = this.actionGroup.connect('action-enabled-changed', Lang.bind(this, this._actionEnabledChanged));
+
+        this._skipSignalConnection = false;
     },
 
     destroy: function() {
@@ -1986,13 +1988,16 @@ const RemoteMenu = new Lang.Class({
                     target.addMenuItem(separator, k+1);
                     k++;
                 }
-            } else if (changeSignal) {
+            } else if (changeSignal && !this._skipSignalConnection) {
                 let signalId = this.actionGroup.connect(changeSignal, Lang.bind(this, function(actionGroup, actionName) {
                     actionGroup.disconnect(signalId);
                     if (this._actions[actionName]) return;
 
-                    // force a full update
+                    /* force a full update but do not reconnect signals if other
+                     * actions are missing */
+                    this._skipSignalConnection = true;
                     this._modelChanged(model, 0, -1, model.get_n_items(), target);
+                    this._skipSignalConnection = false;
                 }));
             }
         }
