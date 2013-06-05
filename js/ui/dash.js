@@ -797,7 +797,12 @@ const Dash = new Lang.Class({
 
     _clearDragPlaceholder: function() {
         if (this._dragPlaceholder) {
+            this._animatingPlaceholdersCount++;
             this._dragPlaceholder.animateOutAndDestroy();
+            this._dragPlaceholder.connect('destroy',
+                Lang.bind(this, function() {
+                    this._animatingPlaceholdersCount--;
+                }));
             this._dragPlaceholder = null;
         }
         this._dragPlaceholderPos = -1;
@@ -834,16 +839,7 @@ const Dash = new Lang.Class({
 
             // Don't allow positioning before or after self
             if (favPos != -1 && (pos == favPos || pos == favPos + 1)) {
-                if (this._dragPlaceholder) {
-                    this._dragPlaceholder.animateOutAndDestroy();
-                    this._animatingPlaceholdersCount++;
-                    this._dragPlaceholder.connect('destroy',
-                        Lang.bind(this, function() {
-                            this._animatingPlaceholdersCount--;
-                        }));
-                }
-                this._dragPlaceholder = null;
-
+                this._clearDragPlaceholder();
                 return DND.DragMotionResult.CONTINUE;
             }
 
