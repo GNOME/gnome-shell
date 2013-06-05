@@ -858,9 +858,9 @@ const Dash = new Lang.Class({
 
         // Remove the drag placeholder if we are not in the
         // "favorites zone"
-        if (pos > numFavorites && this._dragPlaceholder) {
+        if (pos > numFavorites)
             this._clearDragPlaceholder();
-        }
+
         if (!this._dragPlaceholder)
             return DND.DragMotionResult.NO_DROP;
 
