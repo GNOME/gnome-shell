@@ -180,12 +180,6 @@ st_label_dispose (GObject   *object)
 {
   StLabelPrivate *priv = ST_LABEL (object)->priv;
 
-  if (priv->label)
-    {
-      clutter_actor_destroy (priv->label);
-      priv->label = NULL;
-    }
-
   g_clear_pointer (&priv->text_shadow_pipeline, cogl_object_unref);
 
   G_OBJECT_CLASS (st_label_parent_class)->dispose (object);
