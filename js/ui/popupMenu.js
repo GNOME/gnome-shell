@@ -1873,7 +1873,7 @@ const RemoteMenu = new Lang.Class({
         let action_id = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_ACTION, null).deep_unpack();
         if (!this.actionGroup.has_action(action_id)) {
             // the action may not be there yet, wait for action-added
-            return [null, false, 'action-added'];
+            return [null, false, 'action-added::' + action_id];
         }
 
         if (!this._actions[action_id])
@@ -1910,7 +1910,7 @@ const RemoteMenu = new Lang.Class({
                 break;
             default:
                 log('Action "%s" has state of type %s, which is not supported'.format(action_id, action.state.get_type_string()));
-                return [null, false, 'action-state-changed'];
+                return [null, false, 'action-state-changed::' + action_id];
             }
         } else {
             target = model.get_item_attribute_value(index, Gio.MENU_ATTRIBUTE_TARGET, null);
