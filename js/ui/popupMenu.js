@@ -518,9 +518,7 @@ const PopupSliderMenuItem = new Lang.Class({
         this._slider.connect('value-changed', Lang.bind(this, function(actor, value) {
             this.emit('value-changed', value);
         }));
-
-        this._releaseId = this._motionId = 0;
-        this._dragging = false;
+        this.addActor(this._slider.actor);
     },
 
     setValue: function(value) {
