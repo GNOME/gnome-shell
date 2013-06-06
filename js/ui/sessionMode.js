@@ -16,6 +16,7 @@ const _modes = {
     'restrictive': {
         parentMode: null,
         stylesheetName: 'gnome-shell.css',
+        overridesSchema: 'org.gnome.shell.overrides',
         hasOverview: false,
         showCalendarEvents: false,
         allowSettings: false,
