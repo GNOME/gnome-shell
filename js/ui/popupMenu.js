@@ -1293,14 +1293,23 @@ const PopupSubMenuMenuItem = new Lang.Class({
     Name: 'PopupSubMenuMenuItem',
     Extends: PopupBaseMenuItem,
 
-    _init: function(text) {
+    _init: function(text, wantIcon) {
         this.parent();
 
         this.actor.add_style_class_name('popup-submenu-menu-item');
 
+        if (wantIcon) {
+            this.icon = new St.Icon({ style_class: 'popup-menu-icon' });
+            this.addActor(this.icon, { align: St.Align.MIDDLE });
+        }
+
         this.label = new St.Label({ text: text });
         this.addActor(this.label);
         this.actor.label_actor = this.label;
+
+        this.status = new St.Label({ style_class: 'popup-status-menu-item' });
+        this.addActor(this.status, { align: St.Align.END });
+
         this._triangle = new St.Label({ text: '\u25B8' });
         this.addActor(this._triangle, { align: St.Align.END });
 
