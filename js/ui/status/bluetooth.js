@@ -15,10 +15,12 @@ const PopupMenu = imports.ui.popupMenu;
 
 const Indicator = new Lang.Class({
     Name: 'BTIndicator',
-    Extends: PanelMenu.SystemStatusButton,
+    Extends: PanelMenu.SystemIndicator,
 
     _init: function() {
-        this.parent('bluetooth-disabled-symbolic', _("Bluetooth"));
+        this.parent();
+
+        this._indicator = this.addIndicator(new Gio.ThemedIcon({ name: 'bluetooth-active-symbolic' }));
 
         // The Bluetooth menu only appears when Bluetooth is in use,
         // so just statically build it with a "Turn Off" menu item.
@@ -47,8 +49,8 @@ const Indicator = new Lang.Class({
         let nDevices = connectedDevices.length;
 
         let on = nDevices > 0;
-        this.mainIcon.visible = on;
-        this.actor.visible = on;
+        this._indicator.visible = on;
+        this._item.actor.visible = on;
 
         if (on)
             this._item.status.text = ngettext("%d Connected Device", "%d Connected Devices").format(nDevices);

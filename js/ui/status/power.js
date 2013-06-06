@@ -25,10 +25,12 @@ const PowerManagerProxy = Gio.DBusProxy.makeProxyWrapper(PowerManagerInterface);
 
 const Indicator = new Lang.Class({
     Name: 'PowerIndicator',
-    Extends: PanelMenu.SystemStatusButton,
+    Extends: PanelMenu.SystemIndicator,
 
     _init: function() {
-        this.parent('battery-missing-symbolic', _("Battery"));
+        this.parent();
+
+        this._indicator = this.addIndicator(null);
 
         this._proxy = new PowerManagerProxy(Gio.DBus.session, BUS_NAME, OBJECT_PATH,
                                             Lang.bind(this, function(proxy, error) {
@@ -104,16 +106,14 @@ const Indicator = new Lang.Class({
 
     _syncIcon: function() {
         let icon = this._proxy.Icon;
-        let hasIcon = false;
-
         if (icon) {
             let gicon = Gio.icon_new_for_string(icon);
-            this.setGIcon(gicon);
+            this._indicator.gicon = gicon;
+            this._indicator.show();
             this._item.icon.gicon = gicon;
-            hasIcon = true;
+        } else {
+            this._indicator.hide();
         }
-        this.mainIcon.visible = hasIcon;
-        this.actor.visible = hasIcon;
     },
 
     _sync: function() {

@@ -42,10 +42,12 @@ const SystemdLoginSession = Gio.DBusProxy.makeProxyWrapper(SystemdLoginSessionIf
 
 const Indicator = new Lang.Class({
     Name: 'SystemIndicator',
-    Extends: PanelMenu.SystemStatusButton,
+    Extends: PanelMenu.SystemIndicator,
 
     _init: function() {
-        this.parent('system-shutdown-symbolic', _("System"));
+        this.parent();
+
+        this._indicator = this.addIndicator(new Gio.ThemedIcon({ name: 'system-shutdown-symbolic' }));
 
         this._screenSaverSettings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
         this._lockdownSettings = new Gio.Settings({ schema: LOCKDOWN_SCHEMA });

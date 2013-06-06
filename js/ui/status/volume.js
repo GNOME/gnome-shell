@@ -296,22 +296,29 @@ const VolumeMenu = new Lang.Class({
 
 const Indicator = new Lang.Class({
     Name: 'VolumeIndicator',
-    Extends: PanelMenu.SystemStatusButton,
+    Extends: PanelMenu.SystemIndicator,
 
     _init: function() {
-        this.parent('audio-volume-muted-symbolic', _("Volume"));
+        this.parent();
+
+        this._primaryIndicator = this.addIndicator(null);
 
         this._control = getMixerControl();
         this._volumeMenu = new VolumeMenu(this._control);
         this._volumeMenu.connect('icon-changed', Lang.bind(this, function(menu) {
             let icon = this._volumeMenu.getIcon();
-            this.actor.visible = (icon != null);
-            this.setIcon(icon);
+
+            if (icon != null) {
+                this.indicators.show();
+                this._primaryIndicator.icon_name = icon;
+            } else {
+                this.indicators.hide();
+            }
         }));
 
         this.menu.addMenuItem(this._volumeMenu);
 
-        this.actor.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
+        this.indicators.connect('scroll-event', Lang.bind(this, this._onScrollEvent));
     },
 
     _onScrollEvent: function(actor, event) {

@@ -1152,12 +1152,13 @@ Signals.addSignalMethods(NMVPNSection.prototype);
 
 const NMApplet = new Lang.Class({
     Name: 'NMApplet',
-    Extends: PanelMenu.SystemStatusButton,
+    Extends: PanelMenu.SystemIndicator,
 
     _init: function() {
-        this.parent('network-offline-symbolic', _('Network'));
+        this.parent();
 
-        this._vpnIcon = this.addIcon(null);
+        this._primaryIndicator = this.addIndicator(null);
+        this._vpnIndicator = this.addIndicator(null);
 
         // Device types
         this._dtypes = { };
@@ -1579,29 +1580,27 @@ const NMApplet = new Lang.Class({
     },
 
     _syncNMState: function() {
-        this.mainIcon.visible = this._client.manager_running;
-        this.actor.visible = this.mainIcon.visible;
-
         this._syncActiveConnections();
+
+        this.indicators.visible = this._client.manager_running;
         this._section.actor.visible = this._client.networking_enabled;
     },
 
     _updateIcon: function() {
-        let hasApIcon = false;
-        let hasMobileIcon = false;
+        let mc = this._mainConnection;
 
-        if (!this._client.networking_enabled || !this._mainConnection) {
-            this.setIcon('network-offline-symbolic');
+        if (!this._client.networking_enabled || !mc) {
+            this._primaryIndicator.icon_name = 'network-offline-symbolic';
         } else {
             let dev = this._mainConnection._primaryDevice;
             if (!dev) {
                 log('Active connection with no primary device?');
                 return;
             }
-            this.setIcon(dev.getIndicatorIcon());
+            this._primaryIndicator.icon_name = dev.getIndicatorIcon(mc);
         }
 
-        this._vpnIcon.icon_name = this._vpnSection.getIndicatorIcon();
-        this._vpnIcon.visible = (this._vpnIcon.icon_name != '');
+        this._vpnIndicator.icon_name = this._vpnSection.getIndicatorIcon();
+        this._vpnIndicator.visible = (this._vpnIndicator.icon_name != '');
     }
 });

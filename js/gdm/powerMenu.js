@@ -29,7 +29,7 @@ const PopupMenu = imports.ui.popupMenu;
 
 const PowerMenuButton = new Lang.Class({
     Name: 'PowerMenuButton',
-    Extends: PanelMenu.SystemStatusButton,
+    Extends: PanelMenu.SystemIndicator,
 
     _init: function() {
         /* Translators: accessible name of the power menu in the login screen */

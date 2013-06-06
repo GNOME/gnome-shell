@@ -37,26 +37,26 @@ const FakeStatusIcon = new Lang.Class({
 
 const Indicator = new Lang.Class({
     Name: 'LockScreenMenuIndicator',
-    Extends: PanelMenu.SystemStatusButton,
+    Extends: PanelMenu.SystemIndicator,
 
     _init: function() {
         this.parent(null, _("Volume, network, battery"));
-        this._box.style_class = 'lock-screen-status-button-box';
+        this.indicators.style_class = 'lock-screen-status-button-box';
 
         this._volumeControl = VolumeMenu.getMixerControl();
         this._volumeMenu = new VolumeMenu.VolumeMenu(this._volumeControl);
         this.menu.addMenuItem(this._volumeMenu);
 
         this._volume = new FakeStatusIcon(Main.panel.statusArea.volume);
-        this._box.add_child(this._volume.actor);
+        this.indicators.add_child(this._volume.actor);
 
         // Network may not exist if the user doesn't have NetworkManager
         if (Main.panel.statusArea.network) {
             this._network = new FakeStatusIcon(Main.panel.statusArea.network);
-            this._box.add_child(this._network.actor);
+            this.indicators.add_child(this._network.actor);
         }
 
         this._battery = new FakeStatusIcon(Main.panel.statusArea.battery);
-        this._box.add_child(this._battery.actor);
+        this.indicators.add_child(this._battery.actor);
     }
 });
