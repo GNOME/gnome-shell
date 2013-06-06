@@ -38,7 +38,6 @@ const Magnifier = imports.ui.magnifier;
 const XdndHandler = imports.ui.xdndHandler;
 const Util = imports.misc.util;
 
-const OVERRIDES_SCHEMA = 'org.gnome.shell.overrides';
 const DEFAULT_BACKGROUND_COLOR = Clutter.Color.from_pixel(0x2e3436ff);
 
 let componentManager = null;
@@ -68,7 +67,7 @@ let layoutManager = null;
 let _startDate;
 let _defaultCssStylesheet = null;
 let _cssStylesheet = null;
-let _overridesSettings = null;
+let _workspacesSettings = null;
 
 function _sessionUpdated() {
     _loadDefaultStylesheet();
@@ -119,6 +118,15 @@ function _initializePrefs() {
     let keys = new Gio.Settings({ schema: sessionMode.overridesSchema }).list_keys();
     for (let i = 0; i < keys.length; i++)
         Meta.prefs_override_preference_schema (keys[i], sessionMode.overridesSchema);
+
+    let workspacesSchema;
+    if (keys.indexOf('dynamic-workspaces') > -1)
+        workspacesSchema = sessionMode.overridesSchema;
+    else
+        workspacesSchema = 'org.gnome.mutter';
+
+     _workspacesSettings = new Gio.Settings({ schema: workspacesSchema });
+     _workspacesSettings.connect('changed::dynamic-workspaces', _queueCheckWorkspaces);
 }
 
 function _initializeUI() {
@@ -185,9 +193,6 @@ function _initializeUI() {
         let module = eval('imports.perf.' + perfModuleName + ';');
         Scripting.runPerfScript(module, perfOutput);
     }
-
-    _overridesSettings = new Gio.Settings({ schema: OVERRIDES_SCHEMA });
-    _overridesSettings.connect('changed::dynamic-workspaces', _queueCheckWorkspaces);
 
     global.screen.connect('notify::n-workspaces', _nWorkspacesChanged);
 
