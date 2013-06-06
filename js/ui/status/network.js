@@ -180,7 +180,7 @@ const NMDevice = new Lang.Class({
         this._activeConnectionItem = null;
         this._overflowItem = null;
 
-        this.statusItem = new PopupMenu.PopupSwitchMenuItem('', this.connected, { style_class: 'popup-subtitle-menu-item' });
+        this.statusItem = new PopupMenu.PopupSwitchMenuItem('', this.connected);
         this._statusChanged = this.statusItem.connect('toggled', Lang.bind(this, function(item, state) {
             let ok;
             if (state)
@@ -1245,8 +1245,7 @@ const NMVPNConnectionItem = new Lang.Class({
         this._activeConnection = null;
         this._activeConnectionChangedId = 0;
 
-        this.menuItem = new PopupMenu.PopupSwitchMenuItem(connection.get_id(), false,
-                                                          { style_class: 'popup-subtitle-menu-item' });
+        this.menuItem = new PopupMenu.PopupSwitchMenuItem(connection.get_id(), false);
         this.menuItem.connect('toggled', Lang.bind(this, this._toggle));
 
         this._sync();

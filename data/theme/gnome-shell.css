@@ -234,11 +234,6 @@ StScrollBar StButton#vhandle:active {
     color: white;
 }
 
-.popup-subtitle-menu-item, .popup-subtitle-menu-item:insensitive {
-    font-weight: bold;
-    color: white;
-}
-
 .popup-menu-icon {
     icon-size: 1.09em;
 }
