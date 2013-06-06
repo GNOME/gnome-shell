@@ -208,12 +208,14 @@ const AppMenuButton = new Lang.Class({
                               Lang.bind(this, this._updateIconBoxClip));
         this._container.add_actor(this._iconBox);
 
-        this._hbox = new St.BoxLayout();
+        this._hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
         this._container.add_actor(this._hbox);
 
         this._label = new TextShadower();
         this._label.actor.y_align = Clutter.ActorAlign.CENTER;
         this._hbox.add_actor(this._label.actor);
+        this._arrow = new St.Label({ text: '\u25BE' });
+        this._hbox.add_actor(this._arrow);
 
         this._iconBottomClip = 0;
 
@@ -500,6 +502,7 @@ const AppMenuButton = new Lang.Class({
         if (this._iconBox.child != null)
             this._iconBox.child.destroy();
         this._iconBox.hide();
+        this._arrow.hide();
         this._label.setText('');
 
         if (this._appMenuNotifyId)
@@ -519,6 +522,7 @@ const AppMenuButton = new Lang.Class({
         this.setName(targetApp.get_name());
 
         this._syncIcon();
+        this._arrow.show();
         this._iconBox.show();
 
         if (targetApp.get_state() == Shell.AppState.STARTING ||

@@ -3,6 +3,7 @@
 const Gio = imports.gi.Gio;
 const Lang = imports.lang;
 const Mainloop = imports.mainloop;
+const St = imports.gi.St;
 
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
@@ -30,10 +31,17 @@ const HIGH_CONTRAST_THEME = 'HighContrast';
 
 const ATIndicator = new Lang.Class({
     Name: 'ATIndicator',
-    Extends: PanelMenu.SystemStatusButton,
+    Extends: PanelMenu.Button,
 
     _init: function() {
-        this.parent('preferences-desktop-accessibility-symbolic', _("Accessibility"));
+        this.parent(0.0, _("Accessibility"));
+
+        this._hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
+        this._hbox.add_child(new St.Icon({ style_class: 'system-status-icon',
+                                           icon_name: 'preferences-desktop-accessibility-symbolic' }));
+        this._hbox.add_child(new St.Label({ text: '\u25BE' }));
+
+        this.actor.add_child(this._hbox);
 
         let highContrast = this._buildHCItem();
         this.menu.addMenuItem(highContrast);

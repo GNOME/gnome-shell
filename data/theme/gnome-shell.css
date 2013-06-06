@@ -614,7 +614,8 @@ StScrollBar StButton#vhandle:active {
     -boxpointer-gap: 4px;
 }
 
-.panel-status-button-box {
+.panel-status-button-box,
+.panel-status-menu-box {
     spacing: 4px;
 }
 

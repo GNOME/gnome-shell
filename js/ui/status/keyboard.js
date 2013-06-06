@@ -337,7 +337,12 @@ const InputSourceIndicator = new Lang.Class({
         this._container.connect('get-preferred-width', Lang.bind(this, this._containerGetPreferredWidth));
         this._container.connect('get-preferred-height', Lang.bind(this, this._containerGetPreferredHeight));
         this._container.connect('allocate', Lang.bind(this, this._containerAllocate));
-        this.actor.add_actor(this._container);
+
+        this._hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
+        this._hbox.add_child(this._container);
+        this._hbox.add_child(new St.Label({ text: '\u25BE' }));
+
+        this.actor.add(this._hbox, { y_expand: true });
         this.actor.add_style_class_name('panel-status-button');
 
         // All valid input sources currently in the gsettings
