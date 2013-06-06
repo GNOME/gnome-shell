@@ -118,10 +118,9 @@ function _sessionsLoaded() {
 }
 
 function _initializePrefs() {
-    let overridesSchema = 'org.gnome.shell.overrides';
-    let keys = new Gio.Settings({ schema: overridesSchema }).list_keys();
+    let keys = new Gio.Settings({ schema: sessionMode.overridesSchema }).list_keys();
     for (let i = 0; i < keys.length; i++)
-        Meta.prefs_override_preference_schema(keys[i], overridesSchema);
+        Meta.prefs_override_preference_schema(keys[i], sessionMode.overridesSchema);
 }
 
 function _initializeUI() {
