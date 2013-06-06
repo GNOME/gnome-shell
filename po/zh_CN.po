@@ -11,14 +11,15 @@
 # StarBrilliant <m13253@hotmail.com>, 2011
 # YunQiang Su <wzssyqa@gmail.com>, 2010, 2011, 2012.
 # Aron Xu <aronxu@gnome.org>, 2010, 2011, 2012, 2013.
+# eternalhui <www.eternalhui@gmail.com>, 2013
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: gnome-shell master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
 "shell&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-03-31 01:48+0000\n"
-"PO-Revision-Date: 2013-04-02 00:53+0800\n"
+"POT-Creation-Date: 2013-06-05 13:34+0000\n"
+"PO-Revision-Date: 2013-05-28 16:14+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -132,8 +133,8 @@ msgid ""
 "Each category name in this list will be represented as folder in the "
 "application view, rather than being displayed inline in the main view."
 msgstr ""
-"在应用程序视图中，这个列表中的每个类别的名称都会显示为文件夹，而不是"
-"在主视图中内嵌显示。"
+"在应用程序视图中，这个列表中的每个类别的名称都会显示为文件夹，而不是在主视图"
+"中内嵌显示。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:11
 msgid "History for command (Alt-F2) dialog"
@@ -173,8 +174,7 @@ msgstr ""
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:17
 msgid ""
 "Whether to remember password for mounting encrypted or remote filesystems"
-msgstr ""
-"是否记住挂载加密文件系统或远程文件系统时所使用的密码"
+msgstr "是否记住挂载加密文件系统或远程文件系统时所使用的密码"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:18
 msgid ""
@@ -183,9 +183,8 @@ msgid ""
 "'Remember Password' checkbox will be present. This key sets the default "
 "state of the checkbox."
 msgstr ""
-"挂载加密设备或远程文件系统时 Gnome Shell 将要求输入密码。如果该密码可以"
-"记住并在今后使用，则会有“记住密码”复选框出现。这个键设置了该复选框的默认"
-"状态。"
+"挂载加密设备或远程文件系统时 Gnome Shell 将要求输入密码。如果该密码可以记住并"
+"在今后使用，则会有“记住密码”复选框出现。这个键设置了该复选框的默认状态。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:19
 msgid "Show the week date in the calendar"
@@ -304,17 +303,17 @@ msgid ""
 "are 'thumbnail-only' (shows a thumbnail of the window), 'app-icon-"
 "only' (shows only the application icon) or 'both'."
 msgstr ""
-"配置窗口如何显示于切换器中。有效的值有“thumbnail-only”“app-icon-only”和“both”。"
+"配置窗口如何显示于切换器中。有效的值有“thumbnail-only”“app-icon-"
+"only”和“both”。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Attach modal dialog to the parent window"
-msgstr ""
+msgstr "将模态对话框附到其父窗口上"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr ""
-"当 GNOME Shell 运行时，此键覆盖 org.gnome.mutter 键。"
+msgstr "当 GNOME Shell 运行时，此键覆盖 org.gnome.mutter 键。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Arrangement of buttons on the titlebar"
@@ -324,12 +323,11 @@ msgstr "管理标题栏上的按钮"
 msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
-msgstr ""
-"当 GNOME Shell 运行时，此键覆盖 org.gnome.desktop.wm.preferences 键。"
+msgstr "当 GNOME Shell 运行时，此键覆盖 org.gnome.desktop.wm.preferences 键。"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:46
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr ""
+msgstr "启用拖拽到屏幕边缘时平铺窗口的功能"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:47
 msgid "Workspaces are managed dynamically"
@@ -352,44 +350,50 @@ msgstr "扩展"
 msgid "Select an extension to configure using the combobox above."
 msgstr "使用上面的下拉框选择一个要配置的扩展。"
 
-#: ../js/gdm/loginDialog.js:405
+#: ../js/gdm/loginDialog.js:371
 msgid "Session…"
 msgstr "会话..."
 
 #. translators: this message is shown below the user list on the
 #. login screen. It can be activated to reveal an entry for
 #. manually entering the username.
-#: ../js/gdm/loginDialog.js:630
+#: ../js/gdm/loginDialog.js:601
 msgid "Not listed?"
 msgstr "未列出？"
 
-#: ../js/gdm/loginDialog.js:786 ../js/ui/components/networkAgent.js:137
-#: ../js/ui/components/polkitAgent.js:162 ../js/ui/endSessionDialog.js:375
+#: ../js/gdm/loginDialog.js:776 ../js/ui/components/networkAgent.js:137
+#: ../js/ui/components/polkitAgent.js:161 ../js/ui/endSessionDialog.js:376
 #: ../js/ui/extensionDownloader.js:195 ../js/ui/shellMountOperation.js:399
-#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:99
+#: ../js/ui/status/bluetooth.js:415 ../js/ui/unlockDialog.js:96
 #: ../js/ui/userMenu.js:938
 msgid "Cancel"
 msgstr "取消"
 
-#: ../js/gdm/loginDialog.js:802
+#: ../js/gdm/loginDialog.js:791
 msgctxt "button"
 msgid "Sign In"
 msgstr "登录"
 
-#: ../js/gdm/loginDialog.js:802
-#, fuzzy
+#: ../js/gdm/loginDialog.js:791
 msgid "Next"
-msgstr "下周"
+msgstr "下一步"
+
+#. Translators: this message is shown below the username entry field
+#. to clue the user in on how to login to the local network realm
+#: ../js/gdm/loginDialog.js:888
+#, c-format
+msgid "(e.g., user or %s)"
+msgstr "(如 user 或 %s)"
 
 #. TTLS and PEAP are actually much more complicated, but this complication
 #. is not visible here since we only care about phase2 authentication
 #. (and don't even care of which one)
-#: ../js/gdm/loginDialog.js:917 ../js/ui/components/networkAgent.js:260
+#: ../js/gdm/loginDialog.js:892 ../js/ui/components/networkAgent.js:260
 #: ../js/ui/components/networkAgent.js:278
 msgid "Username: "
 msgstr "用户名："
 
-#: ../js/gdm/loginDialog.js:1173
+#: ../js/gdm/loginDialog.js:1158
 msgid "Login Window"
 msgstr "登录窗口"
 
@@ -412,20 +416,15 @@ msgstr "重启"
 msgid "Power Off"
 msgstr "关机"
 
-#: ../js/gdm/util.js:249
+#: ../js/gdm/util.js:247
 msgid "Authentication error"
 msgstr "认证出错"
 
 #. Translators: this message is shown below the password entry field
 #. to indicate the user can swipe their finger instead
-#: ../js/gdm/util.js:366
+#: ../js/gdm/util.js:364
 msgid "(or swipe finger)"
 msgstr "(或滑动手指)"
-
-#: ../js/gdm/util.js:391
-#, c-format
-msgid "(e.g., user or %s)"
-msgstr "(如用户或 %s)"
 
 #: ../js/misc/util.js:97
 msgid "Command not found"
@@ -442,23 +441,23 @@ msgstr "不能解析命令："
 msgid "Execution of '%s' failed:"
 msgstr "运行“%s”失败："
 
-#: ../js/ui/appDisplay.js:349
+#: ../js/ui/appDisplay.js:392
 msgid "Frequent"
-msgstr ""
+msgstr "常用"
 
-#: ../js/ui/appDisplay.js:356
+#: ../js/ui/appDisplay.js:399
 msgid "All"
 msgstr "全部"
 
-#: ../js/ui/appDisplay.js:914
+#: ../js/ui/appDisplay.js:977
 msgid "New Window"
 msgstr "新窗口"
 
-#: ../js/ui/appDisplay.js:917 ../js/ui/dash.js:284
+#: ../js/ui/appDisplay.js:980 ../js/ui/dash.js:284
 msgid "Remove from Favorites"
 msgstr "从收藏夹中移除"
 
-#: ../js/ui/appDisplay.js:918
+#: ../js/ui/appDisplay.js:981
 msgid "Add to Favorites"
 msgstr "添加到收藏夹"
 
@@ -650,11 +649,11 @@ msgstr "使用 %s 打开"
 msgid "Eject"
 msgstr "弹出"
 
-#: ../js/ui/components/keyring.js:82 ../js/ui/components/polkitAgent.js:268
+#: ../js/ui/components/keyring.js:88 ../js/ui/components/polkitAgent.js:280
 msgid "Password:"
 msgstr "密码："
 
-#: ../js/ui/components/keyring.js:101
+#: ../js/ui/components/keyring.js:107
 msgid "Type again:"
 msgstr "再输一次："
 
@@ -732,15 +731,15 @@ msgstr "移动宽带网络密码"
 msgid "A password is required to connect to '%s'."
 msgstr "连接到“%s”需要密码。"
 
-#: ../js/ui/components/polkitAgent.js:55
+#: ../js/ui/components/polkitAgent.js:54
 msgid "Authentication Required"
 msgstr "需要认证"
 
-#: ../js/ui/components/polkitAgent.js:93
+#: ../js/ui/components/polkitAgent.js:92
 msgid "Administrator"
 msgstr "管理员"
 
-#: ../js/ui/components/polkitAgent.js:165
+#: ../js/ui/components/polkitAgent.js:170
 msgid "Authenticate"
 msgstr "认证"
 
@@ -748,12 +747,12 @@ msgstr "认证"
 #. * requested authentication was not gained; this can happen
 #. * because of an authentication error (like invalid password),
 #. * for instance.
-#: ../js/ui/components/polkitAgent.js:256 ../js/ui/shellMountOperation.js:383
+#: ../js/ui/components/polkitAgent.js:266 ../js/ui/shellMountOperation.js:383
 msgid "Sorry, that didn't work. Please try again."
 msgstr "抱歉，您的输入有误。请重试。"
 
 #. Translators: this is a filename used for screencast recording
-#: ../js/ui/components/recorder.js:48
+#: ../js/ui/components/recorder.js:47
 #, no-c-format
 msgid "Screencast from %d %t"
 msgstr "%d %t 的屏幕录像"
@@ -1003,7 +1002,7 @@ msgstr "显示应用程序"
 
 #. Translators: this is the name of the dock/favorites area on
 #. the left of the overview
-#: ../js/ui/dash.js:435
+#: ../js/ui/dash.js:445
 msgid "Dash"
 msgstr "Dash"
 
@@ -1015,14 +1014,14 @@ msgstr "打开日历"
 msgid "Open Clocks"
 msgstr "打开时钟"
 
-#: ../js/ui/dateMenu.js:105
+#: ../js/ui/dateMenu.js:104
 msgid "Date & Time Settings"
 msgstr "日期和时间设置"
 
 #. Translators: This is the date format to use when the calendar popup is
 #. * shown - it is shown just below the time in the shell (e.g. "Tue 9:29 AM").
 #.
-#: ../js/ui/dateMenu.js:215
+#: ../js/ui/dateMenu.js:216
 msgid "%A %B %e, %Y"
 msgstr "%Y年%m月%d日%A"
 
@@ -1119,7 +1118,7 @@ msgstr "安装"
 msgid "Download and install '%s' from extensions.gnome.org?"
 msgstr "从 extensions.gnome.org 下载并安装 %s？"
 
-#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:314
+#: ../js/ui/keyboard.js:619 ../js/ui/status/keyboard.js:333
 #: ../js/ui/status/power.js:211
 msgid "Keyboard"
 msgstr "键盘"
@@ -1181,12 +1180,10 @@ msgid "Remove"
 msgstr "移除"
 
 #: ../js/ui/messageTray.js:1501
-#| msgid "No Messages"
 msgid "Clear Messages"
 msgstr "清空消息"
 
 #: ../js/ui/messageTray.js:1528
-#| msgid "Notifications"
 msgid "Notification Settings"
 msgstr "提示设置"
 
@@ -1194,11 +1191,11 @@ msgstr "提示设置"
 msgid "No Messages"
 msgstr "无消息"
 
-#: ../js/ui/messageTray.js:1782
+#: ../js/ui/messageTray.js:1785
 msgid "Message Tray"
 msgstr "消息托盘"
 
-#: ../js/ui/messageTray.js:2810
+#: ../js/ui/messageTray.js:2818
 msgid "System Information"
 msgstr "系统信息"
 
@@ -1229,17 +1226,17 @@ msgstr "概览"
 msgid "Type to search…"
 msgstr "搜索..."
 
-#: ../js/ui/panel.js:612
+#: ../js/ui/panel.js:635
 msgid "Quit"
 msgstr "退出"
 
 #. Translators: If there is no suitable word for "Activities"
 #. in your language, you can use the word for "Overview".
-#: ../js/ui/panel.js:636
+#: ../js/ui/panel.js:686
 msgid "Activities"
 msgstr "活动"
 
-#: ../js/ui/panel.js:933
+#: ../js/ui/panel.js:982
 msgid "Top Bar"
 msgstr "顶栏"
 
@@ -1248,15 +1245,15 @@ msgstr "顶栏"
 #. "ON" and "OFF") or "toggle-switch-intl" (for toggle
 #. switches containing "◯" and "|"). Other values will
 #. simply result in invisible toggle switches.
-#: ../js/ui/popupMenu.js:727
+#: ../js/ui/popupMenu.js:740
 msgid "toggle-switch-us"
 msgstr "toggle-switch-us"
 
-#: ../js/ui/runDialog.js:73
+#: ../js/ui/runDialog.js:74
 msgid "Enter a Command"
 msgstr "输入一个命令"
 
-#: ../js/ui/runDialog.js:109
+#: ../js/ui/runDialog.js:110
 msgid "Close"
 msgstr "关闭"
 
@@ -1276,7 +1273,7 @@ msgstr[0] "%d 个新提示"
 msgid "Lock"
 msgstr "锁定"
 
-#: ../js/ui/screenShield.js:640
+#: ../js/ui/screenShield.js:641
 msgid "GNOME needs to lock the screen"
 msgstr "GNOME 需要锁定屏幕"
 
@@ -1287,18 +1284,15 @@ msgstr "GNOME 需要锁定屏幕"
 #.
 #. XXX: another option is to kick the user into the gdm login
 #. screen, where we're not affected by grabs
-#: ../js/ui/screenShield.js:761 ../js/ui/screenShield.js:1197
-#| msgid "Unable to connect to %s"
+#: ../js/ui/screenShield.js:762 ../js/ui/screenShield.js:1198
 msgid "Unable to lock"
 msgstr "无法锁定"
 
-#: ../js/ui/screenShield.js:762 ../js/ui/screenShield.js:1198
-#| msgid "No such application"
+#: ../js/ui/screenShield.js:763 ../js/ui/screenShield.js:1199
 msgid "Lock was blocked by an application"
 msgstr "一个应用程序阻止了锁定"
 
 #: ../js/ui/searchDisplay.js:453
-#| msgid "Searching..."
 msgid "Searching…"
 msgstr "正在搜索..."
 
@@ -1306,19 +1300,19 @@ msgstr "正在搜索..."
 msgid "No results."
 msgstr "无结果。"
 
-#: ../js/ui/shellEntry.js:29
+#: ../js/ui/shellEntry.js:27
 msgid "Copy"
 msgstr "复制"
 
-#: ../js/ui/shellEntry.js:34
+#: ../js/ui/shellEntry.js:32
 msgid "Paste"
 msgstr "粘贴"
 
-#: ../js/ui/shellEntry.js:106
+#: ../js/ui/shellEntry.js:99
 msgid "Show Text"
 msgstr "显示文本"
 
-#: ../js/ui/shellEntry.js:108
+#: ../js/ui/shellEntry.js:101
 msgid "Hide Text"
 msgstr "隐藏文本"
 
@@ -1330,7 +1324,7 @@ msgstr "密码"
 msgid "Remember Password"
 msgstr "记住密码"
 
-#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:113
+#: ../js/ui/shellMountOperation.js:403 ../js/ui/unlockDialog.js:109
 msgid "Unlock"
 msgstr "解锁"
 
@@ -1394,12 +1388,10 @@ msgid "Visibility"
 msgstr "可见性"
 
 #: ../js/ui/status/bluetooth.js:59
-#| msgid "Send Files to Device..."
 msgid "Send Files to Device…"
 msgstr "发送文件到设备..."
 
 #: ../js/ui/status/bluetooth.js:60
-#| msgid "Set up a New Device..."
 msgid "Set Up a New Device…"
 msgstr "安装新设备..."
 
@@ -1426,7 +1418,6 @@ msgid "connecting..."
 msgstr "正在连接..."
 
 #: ../js/ui/status/bluetooth.js:239
-#| msgid "Send Files..."
 msgid "Send Files…"
 msgstr "发送文件..."
 
@@ -1502,12 +1493,11 @@ msgstr "请输入设备上的 PIN 码。"
 msgid "OK"
 msgstr "确定"
 
-#: ../js/ui/status/keyboard.js:368
+#: ../js/ui/status/keyboard.js:396
 msgid "Show Keyboard Layout"
 msgstr "显示键盘布局"
 
-#: ../js/ui/status/keyboard.js:373
-#| msgid "Region and Language Settings"
+#: ../js/ui/status/keyboard.js:401
 msgid "Region & Language Settings"
 msgstr "区域和语言设置"
 
@@ -1625,7 +1615,7 @@ msgstr "连接失败"
 msgid "Activation of network connection failed"
 msgstr "启用网络连接失败"
 
-#: ../js/ui/status/network.js:2276
+#: ../js/ui/status/network.js:2282
 msgid "Networking is disabled"
 msgstr "联网已禁用"
 
@@ -1640,7 +1630,6 @@ msgstr "电源设置"
 #. 0 is reported when UPower does not have enough data
 #. to estimate battery life
 #: ../js/ui/status/power.js:99
-#| msgid "Estimating..."
 msgid "Estimating…"
 msgstr "正在估计..."
 
@@ -1679,12 +1668,10 @@ msgid "%d%%"
 msgstr "%d%%"
 
 #: ../js/ui/status/power.js:201
-#| msgid "AC adapter"
 msgid "AC Adapter"
 msgstr "AC 适配器"
 
 #: ../js/ui/status/power.js:203
-#| msgid "Laptop battery"
 msgid "Laptop Battery"
 msgstr "笔记本电池"
 
@@ -1705,12 +1692,10 @@ msgid "PDA"
 msgstr "PDA"
 
 #: ../js/ui/status/power.js:215
-#| msgid "Cell phone"
 msgid "Cell Phone"
 msgstr "手机"
 
 #: ../js/ui/status/power.js:217
-#| msgid "Media player"
 msgid "Media Player"
 msgstr "媒体播放器"
 
@@ -1728,7 +1713,6 @@ msgid "Unknown"
 msgstr "未知"
 
 #: ../js/ui/status/volume.js:124
-#| msgid "Volume"
 msgid "Volume changed"
 msgstr "音量已变更"
 
@@ -1741,11 +1725,11 @@ msgstr "音量"
 msgid "Microphone"
 msgstr "麦克风"
 
-#: ../js/ui/unlockDialog.js:124
+#: ../js/ui/unlockDialog.js:120
 msgid "Log in as another user"
 msgstr "以另一个用户身份登录"
 
-#: ../js/ui/unlockDialog.js:145
+#: ../js/ui/unlockDialog.js:141
 msgid "Unlock Window"
 msgstr "解锁窗口"
 
@@ -1868,7 +1852,7 @@ msgid "%u Input"
 msgid_plural "%u Inputs"
 msgstr[0] "%u 个输入"
 
-#: ../src/gvc/gvc-mixer-control.c:2371
+#: ../src/gvc/gvc-mixer-control.c:2373
 msgid "System Sounds"
 msgstr "系统声音"
 
@@ -1893,516 +1877,14 @@ msgstr "列出可用的模式"
 msgid "Failed to launch '%s'"
 msgstr "启动 %s 失败"
 
-#: ../src/shell-keyring-prompt.c:708
+#: ../src/shell-keyring-prompt.c:714
 msgid "Passwords do not match."
 msgstr "密码不匹配。"
 
-#: ../src/shell-keyring-prompt.c:716
+#: ../src/shell-keyring-prompt.c:722
 msgid "Password cannot be blank"
 msgstr "密码不能为空"
 
 #: ../src/shell-polkit-authentication-agent.c:343
 msgid "Authentication dialog was dismissed by the user"
 msgstr "认证对话框被用户驳回"
-
-#~ msgid "Show full name in the user menu"
-#~ msgstr "在用户菜单中显示全名"
-
-#~ msgctxt "title"
-#~ msgid "Sign In"
-#~ msgstr "登录"
-
-#~ msgctxt "event list time"
-#~ msgid "%H:%M"
-#~ msgstr "%H:%M"
-
-#~ msgctxt "event list time"
-#~ msgid "%l:%M %p"
-#~ msgstr "%I:%M %p"
-
-#~ msgid "tray"
-#~ msgstr "托盘"
-
-#~ msgid "More..."
-#~ msgstr "更多..."
-
-#~ msgid "United Kingdom"
-#~ msgstr "英国"
-
-#~ msgid "Default"
-#~ msgstr "默认"
-
-#~ msgid "APPLICATIONS"
-#~ msgstr "应用程序"
-
-#~ msgid "SETTINGS"
-#~ msgstr "设置"
-
-#~ msgid "Subscription request"
-#~ msgstr "订阅请求"
-
-#~ msgid "Connection error"
-#~ msgstr "连接错误"
-
-#~ msgid "Sent at <b>%X</b> on <b>%A</b>"
-#~ msgstr "发送于 <b>%X</b>，在 <b>%A</b>"
-
-#~ msgid "Sent on <b>%A</b>, <b>%B %d</b>, %Y"
-#~ msgstr "发送于 <b>%A</b>，<b>%B %d</b>，%Y"
-
-#~ msgid "Connection to %s failed"
-#~ msgstr "连接 %s 失败"
-
-#~ msgid "Reconnect"
-#~ msgstr "重新连接"
-
-#~ msgid "Browse Files..."
-#~ msgstr "浏览文件..."
-
-#~ msgid "Error browsing device"
-#~ msgstr "浏览设备出错"
-
-#~ msgid "The requested device cannot be browsed, error is '%s'"
-#~ msgstr "无法浏览请求的设备，错误为 %s"
-
-#~ msgid "Wireless"
-#~ msgstr "无线"
-
-#~ msgid "VPN Connections"
-#~ msgstr "VPN 连接"
-
-#~ msgid "Unavailable"
-#~ msgstr "不可用"
-
-#~ msgid "Switch Session"
-#~ msgstr "切换会话"
-
-#~ msgid "System Settings"
-#~ msgstr "系统设置"
-
-#~ msgid "Your favorite Easter Egg"
-#~ msgstr "您最爱的彩蛋"
-
-#~ msgid "Failed to unmount '%s'"
-#~ msgstr "卸载 %s 失败"
-
-#~ msgid "Retry"
-#~ msgstr "重试"
-
-#~ msgid "PLACES & DEVICES"
-#~ msgstr "位置和设备"
-
-#~ msgid "Home"
-#~ msgstr "主目录"
-
-#~ msgid "%1$s: %2$s"
-#~ msgstr "%1$s: %2$s"
-
-#~ msgid "disabled OpenSearch providers"
-#~ msgstr "已禁用的 OpenSearch 提供商"
-
-#~ msgid "Show time with seconds"
-#~ msgstr "显示秒"
-
-#~ msgid "If true, display seconds in time."
-#~ msgstr "如果为真，在时间上显示秒数。"
-
-#~ msgid "Show date in clock"
-#~ msgstr "显示日期"
-
-#~ msgid "If true, display date in the clock, in addition to time."
-#~ msgstr "如果为真，在时钟中显示日期以及时间。"
-
-#~ msgid "CONTACTS"
-#~ msgstr "联系人"
-
-#~ msgid "%a %b %e, %R:%S"
-#~ msgstr "%m月%d日%R:%S%A"
-
-#~ msgid "%a %b %e, %R"
-#~ msgstr "%m月%d日%R%A"
-
-#~ msgid "%a %R:%S"
-#~ msgstr "%A %R:%S"
-
-#~ msgid "%a %R"
-#~ msgstr "%A %R"
-
-#~ msgid "%a %b %e, %l:%M:%S %p"
-#~ msgstr "%m月%d日%A %I:%M:%S %p"
-
-#~ msgid "%a %b %e, %l:%M %p"
-#~ msgstr "%m月%d日%A %I:%M %p"
-
-#~ msgid "%a %l:%M:%S %p"
-#~ msgstr "%A %I:%M:%S %p"
-
-#~ msgid "%a %l:%M %p"
-#~ msgstr "%I:%M %p"
-
-#~ msgid "Connect to..."
-#~ msgstr "连接到..."
-
-#~ msgid "Wrong password, please try again"
-#~ msgstr "密码错误，请重试"
-
-#~ msgid "Network"
-#~ msgstr "网络"
-
-#~ msgid "%s is online."
-#~ msgstr "%s 在线。"
-
-#~ msgid "%s is offline."
-#~ msgstr "%s 离线。"
-
-#~ msgid "%s is away."
-#~ msgstr "%s 离开。"
-
-#~ msgid "%s is busy."
-#~ msgstr "%s 忙碌。"
-
-#~ msgid "Hidden"
-#~ msgstr "隐身"
-
-#~ msgid "Power Off..."
-#~ msgstr "关机..."
-
-#~ msgid "Online Accounts"
-#~ msgstr "在线帐户"
-
-#~ msgid "Lock Screen"
-#~ msgstr "锁定"
-
-#~ msgid "Log Out..."
-#~ msgstr "注销..."
-
-#~ msgid "RECENT ITEMS"
-#~ msgstr "最近项目"
-
-#~ msgid ""
-#~ "GNOME Shell extensions have a uuid property; this key lists extensions "
-#~ "which should be loaded. disabled-extensions overrides this setting for "
-#~ "extensions that appear in both lists."
-#~ msgstr ""
-#~ "GNOME Shell 扩展有一个 uuid 属性，此键列出了不应该加载的扩展。disabled-"
-#~ "extensions 会覆盖同时出现在两个列表里的扩展的设置。"
-
-#~ msgid "Show password"
-#~ msgstr "显示密码"
-
-#~ msgid "%s has finished starting"
-#~ msgstr "%s 已启动"
-
-#~ msgid "Home Folder"
-#~ msgstr "主文件夹"
-
-#~ msgid "If true, display onscreen keyboard."
-#~ msgstr "如果为真，显示屏幕键盘。"
-
-#~ msgid "Show the onscreen keyboard"
-#~ msgstr "显示屏幕键盘"
-
-#~ msgid "Connectivity lost"
-#~ msgstr "连接丢失"
-
-#~ msgid "You're no longer connected to the network"
-#~ msgstr "您已不再连接到该网络"
-
-#~ msgid "Do Not Disturb"
-#~ msgstr "请勿打扰"
-
-#~ msgid "calendar:week_start:0"
-#~ msgstr "calendar:week_start:0"
-
-#~ msgid "Uuids of extensions to disable"
-#~ msgstr "要禁用的扩展的 uuid"
-
-#~ msgid "You're now connected to mobile broadband connection '%s'"
-#~ msgstr "您已连接至移动宽带连接 %s"
-
-#~ msgid "You're now connected to wireless network '%s'"
-#~ msgstr "您已连接至无线网络 %s"
-
-#~ msgid "You're now connected to VPN network '%s'"
-#~ msgstr "您已连接至 VPN 网络 %s"
-
-#~ msgid "Localization Settings"
-#~ msgstr "本地化设置"
-
-#~ msgid "Less than a minute ago"
-#~ msgstr "少于一分钟前"
-
-#~ msgid "%d minute ago"
-#~ msgid_plural "%d minutes ago"
-#~ msgstr[0] "%d 分钟前"
-
-#~ msgid "%d hour ago"
-#~ msgid_plural "%d hours ago"
-#~ msgstr[0] "%d 小时前"
-
-#~ msgid "%d day ago"
-#~ msgid_plural "%d days ago"
-#~ msgstr[0] "%d 天前"
-
-#~ msgid "%d week ago"
-#~ msgid_plural "%d weeks ago"
-#~ msgstr[0] "%d 周前"
-
-#~ msgid "Shut Down"
-#~ msgstr "关机"
-
-#~ msgid "Click Shut Down to quit these applications and shut down the system."
-#~ msgstr "点“关机“来退出这些应用程序并关闭系统。"
-
-#~ msgid "The system will shut down automatically in %d seconds."
-#~ msgstr "系统将在 %d 秒后自动关机。"
-
-#~ msgid "Shutting down the system."
-#~ msgstr "关闭计算机。"
-
-#~ msgid "Confirm"
-#~ msgstr "确定"
-
-#~ msgid "Panel"
-#~ msgstr "面板"
-
-#~ msgid "PREFERENCES"
-#~ msgstr "首选项"
-
-#~ msgid "Shut Down..."
-#~ msgstr "关机..."
-
-#~ msgid "Search your computer"
-#~ msgstr "搜索您的计算机"
-
-#~ msgid "Customize the panel clock"
-#~ msgstr "自定义面板时钟"
-
-#~ msgid "Custom format of the clock"
-#~ msgstr "自定义面板时钟格式"
-
-#~ msgid "Hour format"
-#~ msgstr "小时格式"
-
-#~ msgid ""
-#~ "If true and format is either \"12-hour\" or \"24-hour\", display seconds "
-#~ "in time."
-#~ msgstr "如果为真并且格式为 12 时制或 24 时制，在时钟中显示秒。"
-
-#~ msgid ""
-#~ "This key specifies the format used by the panel clock when the format key "
-#~ "is set to \"custom\". You can use conversion specifiers understood by "
-#~ "strftime() to obtain a specific format. See the strftime() manual for "
-#~ "more information."
-#~ msgstr ""
-#~ "格式(format)键设置“custom”(自定义)时，这个键指定面板时钟的格式。您可以使用"
-#~ "可以被 strftime() 理解的转义符获取特定的格式。请查看 strftime() 的文档获取"
-#~ "更多信息。"
-
-#~ msgid ""
-#~ "This key specifies the hour format used by the panel clock. Possible "
-#~ "values are \"12-hour\", \"24-hour\", \"unix\" and \"custom\". If set to "
-#~ "\"unix\", the clock will display time in seconds since Epoch, i.e. "
-#~ "1970-01-01. If set to \"custom\", the clock will display time according "
-#~ "to the format specified in the custom_format key. Note that if set to "
-#~ "either \"unix\" or \"custom\", the show_date and show_seconds keys are "
-#~ "ignored."
-#~ msgstr ""
-#~ "此键指定面板时钟使用的时间格式。可能的值为 \"12-hour\"、\"24-hour"
-#~ "\"、\"unix\" 和 \"custom\"。如果设为 unix，时钟将显示从 Epoch(也就是 "
-#~ "1970-1-1 UTC)开始的秒数。如果设为 \"custom\"，时钟将根据在 custom_format "
-#~ "键中设定的格式规则显示时间。注意，如果设置为 \"unix\" 或 \"custom\"，"
-#~ "show_date 和 show_seconds 键将被忽略。"
-
-#~ msgid "Clip the crosshairs at the center"
-#~ msgstr "将十字夹在中间"
-
-#~ msgid "Color of the crosshairs"
-#~ msgstr "十字的颜色"
-
-#~ msgid ""
-#~ "Determines the length of the vertical and horizontal lines that make up "
-#~ "the crosshairs."
-#~ msgstr "确定组成十字的水平线和竖直线的长度。"
-
-#~ msgid ""
-#~ "Determines the position of the magnified mouse image within the magnified "
-#~ "view and how it reacts to system mouse movement. The values are - none: "
-#~ "no mouse tracking; - centered: the mouse image is displayed at the center "
-#~ "of the zoom region (which also represents the point under the system "
-#~ "mouse) and the magnified contents are scrolled as the system mouse moves; "
-#~ "- proportional: the position of the magnified mouse in the zoom region is "
-#~ "proportionally the same as the position of the system mouse on screen; - "
-#~ "push: when the magnified mouse intersects a boundary of the zoom region, "
-#~ "the contents are scrolled into view."
-#~ msgstr ""
-#~ "确定放大了的鼠标图像在放大了的视图中的的位置，以及如何对系统鼠标的移动做出"
-#~ "反馈。可用的值有 - none：鼠标不跟踪；- centered：鼠标图像显示在放大区域的"
-#~ "中心(这也表示系统鼠标下的点)，而且放大的内容也随着系统鼠标的移动而滚动；- "
-#~ "proportional：放大区域中，放大的鼠标的位置和系统鼠标在屏幕上的位置成比例相"
-#~ "同(数学上的“相似”)；- push：当放大的鼠标与放大区域的边界相交时，将内容滚动"
-#~ "进视图。"
-
-#~ msgid ""
-#~ "Determines the transparency of the crosshairs, from fully opaque to fully "
-#~ "transparent."
-#~ msgstr "确定十字线的透明度，从全遮蔽到全透明。"
-
-#~ msgid ""
-#~ "Determines whether the crosshairs intersect the magnified mouse sprite, "
-#~ "or are clipped such that the ends of the horizontal and vertical lines "
-#~ "surround the mouse image."
-#~ msgstr ""
-#~ "确定十字是和放大的光标精灵交叉，还是固定来让水平和竖直线环绕鼠标形象。"
-
-#~ msgid "Enable lens mode"
-#~ msgstr "启用透镜模式"
-
-#~ msgid ""
-#~ "Enables/disables display of crosshairs centered on the magnified mouse "
-#~ "sprite."
-#~ msgstr "启用或禁用穿过放大的鼠标精灵的十字。"
-
-#~ msgid ""
-#~ "For centered mouse tracking, when the system pointer is at or near the "
-#~ "edge of the screen, the magnified contents continue to scroll such that "
-#~ "the screen edge moves into the magnified view."
-#~ msgstr ""
-#~ "对于居中的鼠标跟踪，当系统指针位于或者接近屏幕的边缘时，放大的内容继续滚"
-#~ "动，以便让屏幕边缘移动到放大的视图。"
-
-#~ msgid "Length of the crosshairs"
-#~ msgstr "十字长度"
-
-#~ msgid "Magnification factor"
-#~ msgstr "放大因子"
-
-#~ msgid "Mouse Tracking Mode"
-#~ msgstr "鼠标跟随模式"
-
-#~ msgid "Opacity of the crosshairs"
-#~ msgstr "十字的不透明度"
-
-#~ msgid "Scroll magnified contents beyond the edges of the desktop"
-#~ msgstr "在桌面边界以外滚动放大内容"
-
-#~ msgid "Show or hide crosshairs"
-#~ msgstr "显示或隐藏十字线"
-
-#~ msgid "Show or hide the magnifier"
-#~ msgstr "显示或隐藏放大镜"
-
-#~ msgid "Show or hide the magnifier and all of its zoom regions."
-#~ msgstr "显示或隐藏放大镜及其全部放大区域。"
-
-#~ msgid ""
-#~ "The color of the the vertical and horizontal lines that make up the "
-#~ "crosshairs."
-#~ msgstr "组成十字的水平线和竖直线的颜色。"
-
-#~ msgid ""
-#~ "The magnified view either fills the entire screen, or occupies the top-"
-#~ "half, bottom-half, left-half, or right-half of the screen."
-#~ msgstr ""
-#~ "放大的视图是充满整个屏幕还是占据屏幕的顶半部、底半部、左半部或右半部。"
-
-#~ msgid ""
-#~ "The power of the magnification. A value of 1.0 means no magnification. A "
-#~ "value of 2.0 doubles the size."
-#~ msgstr "边长的放大倍数。1.0 表示不放大，2.0 表示将长度增倍。"
-
-#~ msgid "Thickness of the crosshairs"
-#~ msgstr "十字的厚度"
-
-#~ msgid ""
-#~ "Whether the magnified view should be centered over the location of the "
-#~ "system mouse and move with it."
-#~ msgstr "放大的视图是否以系统鼠标为中心放置并且随之移动。"
-
-#~ msgid ""
-#~ "Width of the vertical and horizontal lines that make up the crosshairs."
-#~ msgstr "组成十字的水平和竖直线的宽度。"
-
-#~ msgid "Clock Format"
-#~ msgstr "时钟格式"
-
-#~ msgid "Clock Preferences"
-#~ msgstr "时钟首选项"
-
-#~ msgid "Panel Display"
-#~ msgstr "面板显示"
-
-#~ msgid "Show seco_nds"
-#~ msgstr "显示秒(_N)"
-
-#~ msgid "_12 hour format"
-#~ msgstr "_12 时格式"
-
-#~ msgid "_24 hour format"
-#~ msgstr "_24 小时格式"
-
-#~ msgid "Preferences"
-#~ msgstr "首选项"
-
-#~ msgid "Bluetooth Agent"
-#~ msgstr "蓝牙助手"
-
-#~ msgid ""
-#~ "Can't add a new workspace because maximum workspaces limit has been "
-#~ "reached."
-#~ msgstr "无法添加新工作区，因为已经达到了工作区数量限制。"
-
-#~ msgid "Can't remove the first workspace."
-#~ msgstr "不能移除第一个工作区。"
-
-#~ msgid "What's using power..."
-#~ msgstr "哪些设备在用电..."
-
-#~ msgid "Overview workspace view mode"
-#~ msgstr "工作区视图模式的总览"
-
-#~ msgid ""
-#~ "The selected workspace view mode in the overview. Supported values are "
-#~ "\"single\" and \"grid\"."
-#~ msgstr ""
-#~ "总览中，选中的工作区的试图模式。支持的值有 \"single\"(单独) 和 \"grid\"(网"
-#~ "格)。"
-
-#~ msgid "Drag here to add favorites"
-#~ msgstr "拖到这里加入收藏夹"
-
-#~ msgid "Find"
-#~ msgstr "查找"
-
-#~ msgid "ON"
-#~ msgstr "开"
-
-#~ msgid "OFF"
-#~ msgstr "关"
-
-#~ msgid "Recent Documents"
-#~ msgstr "最近文档"
-
-#~ msgid "PLACES"
-#~ msgstr "位置"
-
-#~ msgid "Browse"
-#~ msgstr "浏览"
-
-#~ msgid "(see all)"
-#~ msgstr "(查看所有)"
-
-#~ msgid "SEARCH RESULTS"
-#~ msgstr "搜索结果"
-
-#~ msgid "Can't lock screen: %s"
-#~ msgstr "不能锁定屏幕：%s"
-
-#~ msgid "Can't temporarily set screensaver to blank screen: %s"
-#~ msgstr "不能临时将屏幕保护设置成空白屏幕：%s"
-
-#~ msgid "Can't logout: %s"
-#~ msgstr "不能退出：%s"
-
-#~ msgid "Sidebar"
-#~ msgstr "侧边栏"
