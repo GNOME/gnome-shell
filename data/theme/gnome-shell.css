@@ -616,10 +616,6 @@ StScrollBar StButton#vhandle:active {
 
 .panel-status-indicators-box,
 .panel-status-menu-box {
-    spacing: 4px;
-}
-
-.lock-screen-status-button-box {
     spacing: 8px;
 }
 

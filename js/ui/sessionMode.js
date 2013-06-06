@@ -48,8 +48,7 @@ const _modes = {
         panel: {
             left: [],
             center: ['dateMenu'],
-            right: ['a11yGreeter', 'display', 'keyboard',
-                    'volume', 'battery', 'powerMenu']
+            right: ['a11yGreeter', 'keyboard', 'aggregateMenu'],
         },
         panelStyle: 'login-screen'
     },
@@ -62,7 +61,7 @@ const _modes = {
         panel: {
             left: [],
             center: [],
-            right: ['lockScreen']
+            right: ['aggregateMenu']
         },
         panelStyle: 'lock-screen'
     },
@@ -74,7 +73,7 @@ const _modes = {
         panel: {
             left: [],
             center: [],
-            right: ['a11y', 'keyboard', 'lockScreen']
+            right: ['a11y', 'keyboard', 'aggregateMenu']
         },
         panelStyle: 'unlock-screen'
     },
@@ -96,8 +95,7 @@ const _modes = {
         panel: {
             left: ['activities', 'appMenu'],
             center: ['dateMenu'],
-            right: ['a11y', 'keyboard', 'volume', 'bluetooth',
-                    'network', 'battery', 'system']
+            right: ['a11y', 'keyboard', 'aggregateMenu']
         }
     }
 };

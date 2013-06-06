@@ -242,14 +242,11 @@ Signals.addSignalMethods(Button.prototype);
  */
 const SystemIndicator = new Lang.Class({
     Name: 'SystemIndicator',
-    Extends: Button,
 
     _init: function() {
-        this.parent(0.0);
-        this.actor.add_style_class_name('panel-status-button');
-
-        this.indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' });
-        this.actor.add_actor(this.indicators);
+        this.indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box',
+                                             reactive: true });
+        this.menu = new PopupMenu.PopupMenuSection();
     },
 
     addIndicator: function(gicon) {
@@ -259,3 +256,4 @@ const SystemIndicator = new Lang.Class({
         return icon;
     }
 });
+Signals.addSignalMethods(SystemIndicator.prototype);

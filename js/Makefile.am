@@ -21,7 +21,6 @@ nobase_dist_js_DATA = 	\
 	gdm/batch.js		\
 	gdm/fingerprint.js	\
 	gdm/loginDialog.js	\
-	gdm/powerMenu.js	\
 	gdm/realmd.js		\
 	gdm/util.js		\
 	extensionPrefs/main.js	\
@@ -91,7 +90,6 @@ nobase_dist_js_DATA = 	\
 	ui/shellDBus.js		\
 	ui/status/accessibility.js	\
 	ui/status/keyboard.js	\
-	ui/status/lockScreenMenu.js	\
 	ui/status/network.js	\
 	ui/status/power.js	\
 	ui/status/volume.js	\

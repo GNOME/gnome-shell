@@ -837,30 +837,48 @@ const PanelCorner = new Lang.Class({
     }
 });
 
+const AggregateMenu = new Lang.Class({
+    Name: 'AggregateMenu',
+    Extends: PanelMenu.Button,
+
+    _init: function() {
+        this.parent(0.0, _("Settings Menu"), false);
+
+        this._indicators = new St.BoxLayout({ style_class: 'panel-status-indicators-box' });
+        this.actor.add_child(this._indicators);
+
+        this._network = new imports.ui.status.network.NMApplet();
+        this._bluetooth = new imports.ui.status.bluetooth.Indicator();
+        this._power = new imports.ui.status.power.Indicator();
+        this._volume = new imports.ui.status.volume.Indicator();
+        this._system = new imports.ui.status.system.Indicator();
+
+        this._indicators.add_child(this._network.indicators);
+        this._indicators.add_child(this._bluetooth.indicators);
+        this._indicators.add_child(this._power.indicators);
+        this._indicators.add_child(this._volume.indicators);
+        this._indicators.add_child(this._system.indicators);
+        this._indicators.add_child(new St.Label({ text: '\u25BE' }));
+
+        this.menu.addMenuItem(this._volume.menu);
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.menu.addMenuItem(this._network.menu);
+        this.menu.addMenuItem(this._bluetooth.menu);
+        this.menu.addMenuItem(this._power.menu);
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        this.menu.addMenuItem(this._system.menu);
+    },
+});
+
 const PANEL_ITEM_IMPLEMENTATIONS = {
     'activities': ActivitiesButton,
+    'aggregateMenu': AggregateMenu,
     'appMenu': AppMenuButton,
     'dateMenu': imports.ui.dateMenu.DateMenuButton,
     'a11y': imports.ui.status.accessibility.ATIndicator,
     'a11yGreeter': imports.ui.status.accessibility.ATGreeterIndicator,
-    'volume': imports.ui.status.volume.Indicator,
-    'battery': imports.ui.status.power.Indicator,
-    'lockScreen': imports.ui.status.lockScreenMenu.Indicator,
     'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
-    'powerMenu': imports.gdm.powerMenu.PowerMenuButton,
-    'system': imports.ui.status.system.Indicator,
 };
-
-if (Config.HAVE_BLUETOOTH)
-    PANEL_ITEM_IMPLEMENTATIONS['bluetooth'] =
-        imports.ui.status.bluetooth.Indicator;
-
-try {
-    PANEL_ITEM_IMPLEMENTATIONS['network'] =
-        imports.ui.status.network.NMApplet;
-} catch(e) {
-    log('NMApplet is not supported. It is possible that your NetworkManager version is too old');
-}
 
 const Panel = new Lang.Class({
     Name: 'Panel',
