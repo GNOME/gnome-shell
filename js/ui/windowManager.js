@@ -93,8 +93,8 @@ const WorkspaceTracker = new Lang.Class({
         global.screen.connect('window-left-monitor', Lang.bind(this, this._windowLeftMonitor));
         global.screen.connect('restacked', Lang.bind(this, this._windowsRestacked));
 
-        this._overrideSettings = new Gio.Settings({ schema: 'org.gnome.shell.overrides' });
-        this._overrideSettings.connect('changed::dynamic-workspaces', Lang.bind(this, this._queueCheckWorkspaces));
+        this._workspaceSettings = new Gio.Settings({ schema: Main.dynamicWorkspacesSchema });
+        this._workspaceSettings.connect('changed::dynamic-workspaces', Lang.bind(this, this._queueCheckWorkspaces));
 
         this._nWorkspacesChanged();
     },
