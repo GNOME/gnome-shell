@@ -1143,6 +1143,20 @@ const ScreenShield = new Lang.Class({
         if (Main.sessionMode.currentMode == 'unlock-dialog')
             Main.sessionMode.popMode('unlock-dialog');
 
+        if (this._isGreeter) {
+            // We don't want to "deactivate" any more than
+            // this. In particular, we don't want to drop
+            // the modal, hide ourselves or destroy the dialog
+            // But we do want to set isActive to false, so that
+            // gnome-session will reset the idle counter, and
+            // gnome-settings-daemon will stop blanking the screen
+
+            this._activationTime = 0;
+            this._isActive = false;
+            this.emit('active-changed');
+            return;
+        }
+
         if (this._dialog && !this._isGreeter)
             this._dialog.popModal();
 
@@ -1162,7 +1176,7 @@ const ScreenShield = new Lang.Class({
     },
 
     _completeDeactivate: function() {
-        if (this._dialog && !this._isGreeter) {
+        if (this._dialog) {
             this._dialog.destroy();
             this._dialog = null;
         }
