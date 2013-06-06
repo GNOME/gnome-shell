@@ -1776,16 +1776,16 @@ const NMApplet = new Lang.Class({
         }
 
         for (let i = 0; i < closedConnections.length; i++) {
-            let active = closedConnections[i];
-            if (active._primaryDevice) {
-                active._primaryDevice.clearActiveConnection(active);
-                active._primaryDevice = null;
+            let a = closedConnections[i];
+            if (a._primaryDevice) {
+                a._primaryDevice.clearActiveConnection(a);
+                a._primaryDevice = null;
             }
-            if (active._inited) {
-                active.disconnect(active._notifyStateId);
-                active.disconnect(active._notifyDefaultId);
-                active.disconnect(active._notifyDefault6Id);
-                active._inited = false;
+            if (a._inited) {
+                a.disconnect(a._notifyStateId);
+                a.disconnect(a._notifyDefaultId);
+                a.disconnect(a._notifyDefault6Id);
+                a._inited = false;
             }
         }
 
