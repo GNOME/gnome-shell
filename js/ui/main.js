@@ -108,12 +108,20 @@ function start() {
 
 function _sessionsLoaded() {
     sessionMode.connect('updated', _sessionUpdated);
+    _initializePrefs();
     _initializeUI();
 
     shellDBusService = new ShellDBus.GnomeShell();
     shellMountOpDBusService = new ShellMountOperation.GnomeShellMountOpHandler();
 
     _sessionUpdated();
+}
+
+function _initializePrefs() {
+    let overridesSchema = 'org.gnome.shell.overrides';
+    let keys = new Gio.Settings({ schema: overridesSchema }).list_keys();
+    for (let i = 0; i < keys.length; i++)
+        Meta.prefs_override_preference_schema(keys[i], overridesSchema);
 }
 
 function _initializeUI() {

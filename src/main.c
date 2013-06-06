@@ -36,8 +36,6 @@ extern GType gnome_shell_plugin_get_type (void);
 #define SHELL_DBUS_SERVICE "org.gnome.Shell"
 #define MAGNIFIER_DBUS_SERVICE "org.gnome.Magnifier"
 
-#define OVERRIDES_SCHEMA "org.gnome.shell.overrides"
-
 #define WM_NAME "GNOME Shell"
 #define GNOME_WM_KEYBINDINGS "Mutter,GNOME Shell"
 
@@ -169,23 +167,6 @@ shell_dbus_init (gboolean replace)
                            "org.gnome.Caribou.Keyboard", FALSE);
   g_object_unref (bus);
   g_object_unref (session);
-}
-
-static void
-shell_prefs_init (void)
-{
-  meta_prefs_override_preference_schema ("attach-modal-dialogs",
-                                         OVERRIDES_SCHEMA);
-  meta_prefs_override_preference_schema ("dynamic-workspaces",
-                                         OVERRIDES_SCHEMA);
-  meta_prefs_override_preference_schema ("workspaces-only-on-primary",
-                                         OVERRIDES_SCHEMA);
-  meta_prefs_override_preference_schema ("button-layout",
-                                         OVERRIDES_SCHEMA);
-  meta_prefs_override_preference_schema ("edge-tiling",
-                                         OVERRIDES_SCHEMA);
-  meta_prefs_override_preference_schema ("focus-change-on-pointer-rest",
-                                         OVERRIDES_SCHEMA);
 }
 
 static void
@@ -436,7 +417,6 @@ main (int argc, char **argv)
   shell_dbus_init (meta_get_replace_current_wm ());
   shell_a11y_init ();
   shell_perf_log_init ();
-  shell_prefs_init ();
   shell_introspection_init ();
   shell_fonts_init ();
 
