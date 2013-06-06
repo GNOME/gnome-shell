@@ -207,7 +207,7 @@ value here is from the GsmPresenceStatus enumeration.</_summary>
       </_description>
     </key>
     <key type="b" name="current-workspace-only">
-      <default>false</default>
+      <default>true</default>
       <summary>Limit switcher to current workspace.</summary>
       <description>
 	If true, only windows from the current workspace are shown in the switcher.
