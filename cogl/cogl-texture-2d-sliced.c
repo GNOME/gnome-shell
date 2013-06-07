@@ -332,9 +332,9 @@ _cogl_texture_2d_sliced_set_waste (CoglTexture2DSliced *tex_2ds,
 }
 
 static CoglBool
-_cogl_texture_2d_sliced_upload_to_gl (CoglTexture2DSliced *tex_2ds,
-                                      CoglBitmap *bmp,
-                                      CoglError **error)
+_cogl_texture_2d_sliced_upload_bitmap (CoglTexture2DSliced *tex_2ds,
+                                       CoglBitmap *bmp,
+                                       CoglError **error)
 {
   CoglSpan *x_span;
   CoglSpan *y_span;
@@ -422,17 +422,15 @@ _cogl_texture_2d_sliced_upload_to_gl (CoglTexture2DSliced *tex_2ds,
 }
 
 static CoglBool
-_cogl_texture_2d_sliced_upload_subregion_to_gl (CoglTexture2DSliced *tex_2ds,
-                                                int src_x,
-                                                int src_y,
-                                                int dst_x,
-                                                int dst_y,
-                                                int width,
-                                                int height,
-                                                CoglBitmap *source_bmp,
-                                                GLuint source_gl_format,
-                                                GLuint source_gl_type,
-                                                CoglError **error)
+_cogl_texture_2d_sliced_upload_subregion (CoglTexture2DSliced *tex_2ds,
+                                          int src_x,
+                                          int src_y,
+                                          int dst_x,
+                                          int dst_y,
+                                          int width,
+                                          int height,
+                                          CoglBitmap *source_bmp,
+                                          CoglError **error)
 {
   CoglTexture *tex = COGL_TEXTURE (tex_2ds);
   CoglSpan *x_span;
@@ -667,16 +665,13 @@ _cogl_texture_2d_sliced_setup_spans (CoglContext *ctx,
                                      int width,
                                      int height,
                                      int max_waste,
-                                     CoglPixelFormat format,
+                                     CoglPixelFormat internal_format,
                                      CoglError **error)
 {
   int max_width;
   int max_height;
   int n_x_slices;
   int n_y_slices;
-  GLenum gl_intformat;
-  GLenum gl_format;
-  GLenum gl_type;
 
   int   (*slices_for_size) (int, int, int, GArray*);
 
@@ -694,25 +689,16 @@ _cogl_texture_2d_sliced_setup_spans (CoglContext *ctx,
       slices_for_size = _cogl_pot_slices_for_size;
     }
 
-  ctx->driver_vtable->pixel_format_to_gl (ctx,
-                                          format,
-                                          &gl_intformat,
-                                          &gl_format,
-                                          &gl_type);
-
   /* Negative number means no slicing forced by the user */
   if (max_waste <= -1)
     {
       CoglSpan span;
 
       /* Check if size supported else bail out */
-      if (!ctx->texture_driver->size_supported (ctx,
-                                                GL_TEXTURE_2D,
-                                                gl_intformat,
-                                                gl_format,
-                                                gl_type,
-                                                max_width,
-                                                max_height))
+      if (!ctx->driver_vtable->texture_2d_can_create (ctx,
+                                                      max_width,
+                                                      max_height,
+                                                      internal_format))
         {
           _cogl_set_error (error,
                            COGL_TEXTURE_ERROR,
@@ -749,13 +735,10 @@ _cogl_texture_2d_sliced_setup_spans (CoglContext *ctx,
   else
     {
       /* Decrease the size of largest slice until supported by GL */
-      while (!ctx->texture_driver->size_supported (ctx,
-                                                   GL_TEXTURE_2D,
-                                                   gl_intformat,
-                                                   gl_format,
-                                                   gl_type,
-                                                   max_width,
-                                                   max_height))
+      while (!ctx->driver_vtable->texture_2d_can_create (ctx,
+                                                         max_width,
+                                                         max_height,
+                                                         internal_format))
         {
           /* Alternate between width and height */
           if (max_width > max_height)
@@ -975,14 +958,12 @@ CoglTexture2DSliced *
 _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap *bmp,
                                          CoglTextureFlags flags,
                                          CoglPixelFormat internal_format,
+                                         CoglBool can_convert_in_place,
                                          CoglError **error)
 {
   CoglContext *ctx;
   CoglTexture2DSliced *tex_2ds;
-  CoglBitmap *dst_bmp;
-  GLenum gl_intformat;
-  GLenum gl_format;
-  GLenum gl_type;
+  CoglBitmap *upload_bmp;
   int width, height, max_waste;
   int i;
 
@@ -1001,14 +982,15 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap *bmp,
   else
     max_waste = COGL_TEXTURE_MAX_WASTE;
 
-  dst_bmp = _cogl_texture_prepare_for_upload (bmp,
-                                              internal_format,
-                                              &internal_format,
-                                              &gl_intformat,
-                                              &gl_format,
-                                              &gl_type,
-                                              error);
-  if (dst_bmp == NULL)
+  internal_format =
+    _cogl_texture_determine_internal_format (cogl_bitmap_get_format (bmp),
+                                             internal_format);
+
+  upload_bmp = _cogl_bitmap_convert_for_upload (bmp,
+                                                internal_format,
+                                                can_convert_in_place,
+                                                error);
+  if (upload_bmp == NULL)
     {
       _cogl_texture_2d_sliced_free (tex_2ds);
       return NULL;
@@ -1027,12 +1009,12 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap *bmp,
   if (!cogl_texture_allocate (COGL_TEXTURE (tex_2ds), error))
     goto error;
 
-  if (!_cogl_texture_2d_sliced_upload_to_gl (tex_2ds,
-                                             dst_bmp,
-                                             error))
+  if (!_cogl_texture_2d_sliced_upload_bitmap (tex_2ds,
+                                              upload_bmp,
+                                              error))
     goto error;
 
-  cogl_object_unref (dst_bmp);
+  cogl_object_unref (upload_bmp);
 
   if ((flags & COGL_TEXTURE_NO_AUTO_MIPMAP))
     for (i = 0; i < tex_2ds->slice_textures->len; i++)
@@ -1049,7 +1031,7 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap *bmp,
   return _cogl_texture_2d_sliced_object_new (tex_2ds);
 
  error:
-  cogl_object_unref (dst_bmp);
+  cogl_object_unref (upload_bmp);
   _cogl_texture_2d_sliced_free (tex_2ds);
   return NULL;
 }
@@ -1359,32 +1341,24 @@ _cogl_texture_2d_sliced_set_region (CoglTexture *tex,
                                     CoglError **error)
 {
   CoglTexture2DSliced *tex_2ds = COGL_TEXTURE_2D_SLICED (tex);
-  GLenum gl_format;
-  GLenum gl_type;
+  CoglBitmap *upload_bmp;
   CoglBool status;
 
-  bmp = _cogl_texture_prepare_for_upload (bmp,
-                                          cogl_texture_get_format (tex),
-                                          NULL,
-                                          NULL,
-                                          &gl_format,
-                                          &gl_type,
-                                          error);
-  if (!bmp)
+  upload_bmp = _cogl_bitmap_convert_for_upload (bmp,
+                                                cogl_texture_get_format (tex),
+                                                FALSE, /* can't convert in
+                                                          place */
+                                                error);
+  if (!upload_bmp)
     return FALSE;
 
-  /* Send data to GL */
-  status =
-    _cogl_texture_2d_sliced_upload_subregion_to_gl (tex_2ds,
-                                                    src_x, src_y,
-                                                    dst_x, dst_y,
-                                                    dst_width, dst_height,
-                                                    bmp,
-                                                    gl_format,
-                                                    gl_type,
-                                                    error);
-
-  cogl_object_unref (bmp);
+  status = _cogl_texture_2d_sliced_upload_subregion (tex_2ds,
+                                                     src_x, src_y,
+                                                     dst_x, dst_y,
+                                                     dst_width, dst_height,
+                                                     upload_bmp,
+                                                     error);
+  cogl_object_unref (upload_bmp);
 
   return status;
 }

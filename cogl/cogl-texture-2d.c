@@ -150,9 +150,10 @@ _cogl_texture_2d_allocate (CoglTexture *tex,
 }
 
 CoglTexture2D *
-cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp,
-                                 CoglPixelFormat internal_format,
-                                 CoglError **error)
+_cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp,
+                                  CoglPixelFormat internal_format,
+                                  CoglBool can_convert_in_place,
+                                  CoglError **error)
 {
   CoglContext *ctx;
 
@@ -178,7 +179,16 @@ cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp,
 
   return ctx->driver_vtable->texture_2d_new_from_bitmap (bmp,
                                                          internal_format,
+                                                         can_convert_in_place,
                                                          error);
+}
+
+CoglTexture2D *
+cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp,
+                                 CoglPixelFormat internal_format,
+                                 CoglError **error)
+{
+  return _cogl_texture_2d_new_from_bitmap (bmp, internal_format, FALSE, error);
 }
 
 CoglTexture2D *

@@ -276,11 +276,11 @@ cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bmp,
                                         CoglError **error)
 {
   CoglTextureRectangle *tex_rect;
-  CoglBitmap           *dst_bmp;
-  GLenum                gl_intformat;
-  GLenum                gl_format;
-  GLenum                gl_type;
-  CoglContext          *ctx;
+  CoglBitmap *upload_bmp;
+  GLenum gl_intformat;
+  GLenum gl_format;
+  GLenum gl_type;
+  CoglContext *ctx;
 
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_bitmap (bmp), NULL);
 
@@ -297,16 +297,24 @@ cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bmp,
                                            error))
     return NULL;
 
-  dst_bmp = _cogl_texture_prepare_for_upload (bmp,
-                                              internal_format,
-                                              &internal_format,
-                                              &gl_intformat,
-                                              &gl_format,
-                                              &gl_type,
-                                              error);
-
-  if (dst_bmp == NULL)
+  upload_bmp =
+    _cogl_bitmap_convert_for_upload (bmp,
+                                     internal_format,
+                                     FALSE, /* can't convert in place */
+                                     error);
+  if (upload_bmp == NULL)
     return NULL;
+
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          cogl_bitmap_get_format (upload_bmp),
+                                          NULL, /* internal format */
+                                          &gl_format,
+                                          &gl_type);
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          internal_format,
+                                          &gl_intformat,
+                                          NULL,
+                                          NULL);
 
   tex_rect = _cogl_texture_rectangle_create_base (ctx,
                                                   cogl_bitmap_get_width (bmp),
@@ -321,20 +329,20 @@ cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bmp,
                                           GL_TEXTURE_RECTANGLE_ARB,
                                           tex_rect->gl_texture,
                                           FALSE,
-                                          dst_bmp,
+                                          upload_bmp,
                                           gl_intformat,
                                           gl_format,
                                           gl_type,
                                           error))
     {
-      cogl_object_unref (dst_bmp);
+      cogl_object_unref (upload_bmp);
       cogl_object_unref (tex_rect);
       return NULL;
     }
 
   tex_rect->gl_format = gl_intformat;
 
-  cogl_object_unref (dst_bmp);
+  cogl_object_unref (upload_bmp);
 
   _cogl_texture_set_allocated (COGL_TEXTURE (tex_rect), TRUE);
 
@@ -585,20 +593,25 @@ _cogl_texture_rectangle_set_region (CoglTexture *tex,
                                     CoglBitmap *bmp,
                                     CoglError **error)
 {
+  CoglBitmap *upload_bmp;
   GLenum gl_format;
   GLenum gl_type;
   CoglContext *ctx = tex->context;
   CoglBool status;
 
-  bmp = _cogl_texture_prepare_for_upload (bmp,
-                                          cogl_texture_get_format (tex),
-                                          NULL,
-                                          NULL,
-                                          &gl_format,
-                                          &gl_type,
-                                          error);
-  if (!bmp)
+  upload_bmp =
+    _cogl_bitmap_convert_for_upload (bmp,
+                                     cogl_texture_get_format (tex),
+                                     FALSE, /* can't convert in place */
+                                     error);
+  if (upload_bmp == NULL)
     return FALSE;
+
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          cogl_bitmap_get_format (upload_bmp),
+                                          NULL, /* internal format */
+                                          &gl_format,
+                                          &gl_type);
 
   /* Send data to GL */
   status =
@@ -609,12 +622,12 @@ _cogl_texture_rectangle_set_region (CoglTexture *tex,
                                                  dst_x, dst_y,
                                                  dst_width, dst_height,
                                                  level,
-                                                 bmp,
+                                                 upload_bmp,
                                                  gl_format,
                                                  gl_type,
                                                  error);
 
-  cogl_object_unref (bmp);
+  cogl_object_unref (upload_bmp);
 
   return status;
 }

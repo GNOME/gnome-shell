@@ -65,9 +65,9 @@ struct _CoglTextureVtable
 
   /* This should update the specified sub region of the texture with a
      sub region of the given bitmap. The bitmap is not converted
-     before being passed so the implementation is expected to call
-     _cogl_texture_prepare_for_upload with a suitable destination
-     format before uploading */
+     before being set so the caller is expected to have called
+     _cogl_bitmap_convert_for_upload with a suitable internal_format
+     before passing here */
   CoglBool (* set_region) (CoglTexture *tex,
                            int src_x,
                            int src_y,
@@ -227,21 +227,6 @@ CoglPixelFormat
 _cogl_texture_determine_internal_format (CoglPixelFormat src_format,
                                          CoglPixelFormat dst_format);
 
-/* Utility function to help uploading a bitmap. If the bitmap needs
- * premult conversion then a converted copy will be returned,
- * otherwise a reference to the original source will be returned.
- *
- * The GLenums needed for uploading are returned
- */
-CoglBitmap *
-_cogl_texture_prepare_for_upload (CoglBitmap *src_bmp,
-                                  CoglPixelFormat dst_format,
-                                  CoglPixelFormat *dst_format_out,
-                                  GLenum *out_glintformat,
-                                  GLenum *out_glformat,
-                                  GLenum *out_gltype,
-                                  CoglError **error);
-
 CoglBool
 _cogl_texture_is_foreign (CoglTexture *texture);
 
@@ -292,12 +277,6 @@ _cogl_texture_set_region (CoglTexture *texture,
                           int dst_y,
                           int level,
                           CoglError **error);
-
-CoglTexture *
-_cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
-                               CoglTextureFlags flags,
-                               CoglPixelFormat internal_format,
-                               CoglError **error);
 
 CoglBool
 _cogl_texture_set_region_from_bitmap (CoglTexture *texture,

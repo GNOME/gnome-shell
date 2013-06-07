@@ -61,6 +61,7 @@ CoglAtlasTexture *
 _cogl_atlas_texture_new_from_bitmap (CoglBitmap *bmp,
                                      CoglTextureFlags flags,
                                      CoglPixelFormat internal_format,
+                                     CoglBool can_convert_in_place,
                                      CoglError **error);
 
 CoglAtlasTexture *

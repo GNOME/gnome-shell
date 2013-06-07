@@ -514,12 +514,13 @@ _cogl_atlas_texture_set_region_with_border (CoglAtlasTexture *atlas_tex,
 }
 
 static CoglBitmap *
-_cogl_atlas_texture_prepare_for_upload (CoglAtlasTexture *atlas_tex,
-                                        CoglBitmap *bmp,
-                                        CoglError **error)
+_cogl_atlas_texture_convert_bitmap_for_upload (CoglAtlasTexture *atlas_tex,
+                                               CoglBitmap *bmp,
+                                               CoglBool can_convert_in_place,
+                                               CoglError **error)
 {
   CoglPixelFormat internal_format;
-  CoglBitmap *converted_bmp;
+  CoglBitmap *upload_bmp;
   CoglBitmap *override_bmp;
 
   /* We'll prepare to upload using the format of the actual texture of
@@ -533,15 +534,11 @@ _cogl_atlas_texture_prepare_for_upload (CoglAtlasTexture *atlas_tex,
   internal_format = (COGL_PIXEL_FORMAT_RGBA_8888 |
                      (atlas_tex->format & COGL_PREMULT_BIT));
 
-  converted_bmp = _cogl_texture_prepare_for_upload (bmp,
-                                                    internal_format,
-                                                    NULL, /* dst_format_out */
-                                                    NULL, /* glintformat */
-                                                    NULL, /* glformat */
-                                                    NULL, /* gltype */
-                                                    error);
-
-  if (converted_bmp == NULL)
+  upload_bmp = _cogl_bitmap_convert_for_upload (bmp,
+                                                internal_format,
+                                                can_convert_in_place,
+                                                error);
+  if (upload_bmp == NULL)
     return NULL;
 
   /* We'll create another bitmap which uses the same data but
@@ -549,14 +546,14 @@ _cogl_atlas_texture_prepare_for_upload (CoglAtlasTexture *atlas_tex,
      to the atlas texture won't trigger the conversion again */
 
   override_bmp =
-    _cogl_bitmap_new_shared (converted_bmp,
-                             cogl_bitmap_get_format (converted_bmp) &
+    _cogl_bitmap_new_shared (upload_bmp,
+                             cogl_bitmap_get_format (upload_bmp) &
                              ~COGL_PREMULT_BIT,
-                             cogl_bitmap_get_width (converted_bmp),
-                             cogl_bitmap_get_height (converted_bmp),
-                             cogl_bitmap_get_rowstride (converted_bmp));
+                             cogl_bitmap_get_width (upload_bmp),
+                             cogl_bitmap_get_height (upload_bmp),
+                             cogl_bitmap_get_rowstride (upload_bmp));
 
-  cogl_object_unref (converted_bmp);
+  cogl_object_unref (upload_bmp);
 
   return override_bmp;
 }
@@ -583,11 +580,13 @@ _cogl_atlas_texture_set_region (CoglTexture *tex,
   if (atlas_tex->atlas)
     {
       CoglBool ret;
-
-      bmp = _cogl_atlas_texture_prepare_for_upload (atlas_tex,
-                                                    bmp,
-                                                    error);
-      if (!bmp)
+      CoglBitmap *upload_bmp =
+        _cogl_atlas_texture_convert_bitmap_for_upload (atlas_tex,
+                                                       bmp,
+                                                       FALSE, /* can't convert
+                                                                 in place */
+                                                       error);
+      if (!upload_bmp)
         return FALSE;
 
       /* Upload the data ignoring the premult bit */
@@ -595,10 +594,10 @@ _cogl_atlas_texture_set_region (CoglTexture *tex,
                                                         src_x, src_y,
                                                         dst_x, dst_y,
                                                         dst_width, dst_height,
-                                                        bmp,
+                                                        upload_bmp,
                                                         error);
 
-      cogl_object_unref (bmp);
+      cogl_object_unref (upload_bmp);
 
       return ret;
     }
@@ -792,11 +791,12 @@ CoglAtlasTexture *
 _cogl_atlas_texture_new_from_bitmap (CoglBitmap *bmp,
                                      CoglTextureFlags flags,
                                      CoglPixelFormat internal_format,
+                                     CoglBool can_convert_in_place,
                                      CoglError **error)
 {
   CoglContext *ctx = _cogl_bitmap_get_context (bmp);
   CoglAtlasTexture *atlas_tex;
-  CoglBitmap *dst_bmp;
+  CoglBitmap *upload_bmp;
   int bmp_width;
   int bmp_height;
   CoglPixelFormat bmp_format;
@@ -823,10 +823,12 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap *bmp,
       return NULL;
     }
 
-  dst_bmp = _cogl_atlas_texture_prepare_for_upload (atlas_tex,
-                                                    bmp,
-                                                    error);
-  if (dst_bmp == NULL)
+  upload_bmp =
+    _cogl_atlas_texture_convert_bitmap_for_upload (atlas_tex,
+                                                   bmp,
+                                                   can_convert_in_place,
+                                                   error);
+  if (upload_bmp == NULL)
     {
       cogl_object_unref (atlas_tex);
       return NULL;
@@ -841,15 +843,15 @@ _cogl_atlas_texture_new_from_bitmap (CoglBitmap *bmp,
                                                    0, /* dst_y */
                                                    bmp_width, /* dst_width */
                                                    bmp_height, /* dst_height */
-                                                   dst_bmp,
+                                                   upload_bmp,
                                                    error))
     {
-      cogl_object_unref (dst_bmp);
+      cogl_object_unref (upload_bmp);
       cogl_object_unref (atlas_tex);
       return NULL;
     }
 
-  cogl_object_unref (dst_bmp);
+  cogl_object_unref (upload_bmp);
 
   return atlas_tex;
 }

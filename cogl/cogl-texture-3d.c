@@ -279,8 +279,9 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
                                  CoglError **error)
 {
   CoglTexture3D *tex_3d;
-  CoglBitmap *dst_bmp;
+  CoglBitmap *upload_bmp;
   CoglPixelFormat bmp_format;
+  CoglPixelFormat upload_format;
   unsigned int bmp_width;
   GLenum gl_intformat;
   GLenum gl_format;
@@ -301,15 +302,26 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
                                     error))
     return NULL;
 
-  dst_bmp = _cogl_texture_prepare_for_upload (bmp,
-                                              internal_format,
-                                              &internal_format,
-                                              &gl_intformat,
-                                              &gl_format,
-                                              &gl_type,
-                                              error);
-  if (dst_bmp == NULL)
+  upload_bmp =
+    _cogl_bitmap_convert_for_upload (bmp,
+                                     internal_format,
+                                     FALSE, /* can't convert in place */
+                                     error);
+  if (upload_bmp == NULL)
     return NULL;
+
+  upload_format = cogl_bitmap_get_format (upload_bmp);
+
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          upload_format,
+                                          NULL, /* internal format */
+                                          &gl_format,
+                                          &gl_type);
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          internal_format,
+                                          &gl_intformat,
+                                          NULL,
+                                          NULL);
 
   tex_3d = _cogl_texture_3d_create_base (ctx,
                                          bmp_width, height, depth,
@@ -320,11 +332,9 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
   if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
     {
       CoglError *ignore = NULL;
-      uint8_t *data = _cogl_bitmap_map (dst_bmp,
+      uint8_t *data = _cogl_bitmap_map (upload_bmp,
                                         COGL_BUFFER_ACCESS_READ, 0,
                                         &ignore);
-
-      CoglPixelFormat format = cogl_bitmap_get_format (dst_bmp);
 
       tex_3d->first_pixel.gl_format = gl_format;
       tex_3d->first_pixel.gl_type = gl_type;
@@ -332,8 +342,8 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
       if (data)
         {
           memcpy (tex_3d->first_pixel.data, data,
-                  _cogl_pixel_format_get_bytes_per_pixel (format));
-          _cogl_bitmap_unmap (dst_bmp);
+                  _cogl_pixel_format_get_bytes_per_pixel (upload_format));
+          _cogl_bitmap_unmap (upload_bmp);
         }
       else
         {
@@ -341,7 +351,7 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
                      "glGenerateMipmap fallback");
           cogl_error_free (ignore);
           memset (tex_3d->first_pixel.data, 0,
-                  _cogl_pixel_format_get_bytes_per_pixel (format));
+                  _cogl_pixel_format_get_bytes_per_pixel (upload_format));
         }
     }
 
@@ -354,20 +364,20 @@ cogl_texture_3d_new_from_bitmap (CoglBitmap *bmp,
                                              FALSE, /* is_foreign */
                                              height,
                                              depth,
-                                             dst_bmp,
+                                             upload_bmp,
                                              gl_intformat,
                                              gl_format,
                                              gl_type,
                                              error))
     {
-      cogl_object_unref (dst_bmp);
+      cogl_object_unref (upload_bmp);
       cogl_object_unref (tex_3d);
       return NULL;
     }
 
   tex_3d->gl_format = gl_intformat;
 
-  cogl_object_unref (dst_bmp);
+  cogl_object_unref (upload_bmp);
 
   _cogl_texture_set_allocated (COGL_TEXTURE (tex_3d), TRUE);
 

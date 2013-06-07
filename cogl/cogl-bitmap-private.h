@@ -105,6 +105,12 @@ _cogl_bitmap_convert (CoglBitmap *bmp,
 		      CoglPixelFormat dst_format,
                       CoglError **error);
 
+CoglBitmap *
+_cogl_bitmap_convert_for_upload (CoglBitmap *src_bmp,
+                                 CoglPixelFormat internal_format,
+                                 CoglBool can_convert_in_place,
+                                 CoglError **error);
+
 CoglBool
 _cogl_bitmap_convert_into_bitmap (CoglBitmap *src_bmp,
                                   CoglBitmap *dst_bmp,

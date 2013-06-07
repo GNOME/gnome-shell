@@ -148,6 +148,7 @@ struct _CoglDriverVtable
   CoglTexture2D *
   (* texture_2d_new_from_bitmap) (CoglBitmap *bmp,
                                   CoglPixelFormat internal_format,
+                                  CoglBool can_convert_in_place,
                                   CoglError **error);
 
 #if defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base)

@@ -151,24 +151,33 @@ _cogl_texture_2d_gl_allocate (CoglTexture *tex,
 CoglTexture2D *
 _cogl_texture_2d_gl_new_from_bitmap (CoglBitmap *bmp,
                                      CoglPixelFormat internal_format,
+                                     CoglBool can_convert_in_place,
                                      CoglError **error)
 {
   CoglContext *ctx = _cogl_bitmap_get_context (bmp);
   CoglTexture2D *tex_2d;
-  CoglBitmap *dst_bmp;
+  CoglBitmap *upload_bmp;
   GLenum gl_intformat;
   GLenum gl_format;
   GLenum gl_type;
 
-  dst_bmp = _cogl_texture_prepare_for_upload (bmp,
-                                              internal_format,
-                                              &internal_format,
-                                              &gl_intformat,
-                                              &gl_format,
-                                              &gl_type,
-                                              error);
-  if (!dst_bmp)
+  upload_bmp = _cogl_bitmap_convert_for_upload (bmp,
+                                                internal_format,
+                                                can_convert_in_place,
+                                                error);
+  if (upload_bmp == NULL)
     return NULL;
+
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          cogl_bitmap_get_format (upload_bmp),
+                                          NULL, /* internal format */
+                                          &gl_format,
+                                          &gl_type);
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          internal_format,
+                                          &gl_intformat,
+                                          NULL,
+                                          NULL);
 
   tex_2d = _cogl_texture_2d_create_base (ctx,
                                          cogl_bitmap_get_width (bmp),
@@ -180,10 +189,10 @@ _cogl_texture_2d_gl_new_from_bitmap (CoglBitmap *bmp,
   if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
     {
       CoglError *ignore = NULL;
-      uint8_t *data = _cogl_bitmap_map (dst_bmp,
+      uint8_t *data = _cogl_bitmap_map (upload_bmp,
                                         COGL_BUFFER_ACCESS_READ, 0,
                                         &ignore);
-      CoglPixelFormat format = cogl_bitmap_get_format (dst_bmp);
+      CoglPixelFormat format = cogl_bitmap_get_format (upload_bmp);
 
       tex_2d->first_pixel.gl_format = gl_format;
       tex_2d->first_pixel.gl_type = gl_type;
@@ -192,7 +201,7 @@ _cogl_texture_2d_gl_new_from_bitmap (CoglBitmap *bmp,
         {
           memcpy (tex_2d->first_pixel.data, data,
                   _cogl_pixel_format_get_bytes_per_pixel (format));
-          _cogl_bitmap_unmap (dst_bmp);
+          _cogl_bitmap_unmap (upload_bmp);
         }
       else
         {
@@ -210,25 +219,24 @@ _cogl_texture_2d_gl_new_from_bitmap (CoglBitmap *bmp,
                                           GL_TEXTURE_2D,
                                           tex_2d->gl_texture,
                                           FALSE,
-                                          dst_bmp,
+                                          upload_bmp,
                                           gl_intformat,
                                           gl_format,
                                           gl_type,
                                           error))
     {
-      cogl_object_unref (dst_bmp);
+      cogl_object_unref (upload_bmp);
       cogl_object_unref (tex_2d);
       return NULL;
     }
 
   tex_2d->gl_internal_format = gl_intformat;
 
-  cogl_object_unref (dst_bmp);
+  cogl_object_unref (upload_bmp);
 
   _cogl_texture_set_allocated (COGL_TEXTURE (tex_2d), TRUE);
 
   return tex_2d;
-
 }
 
 #if defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base)
@@ -555,19 +563,27 @@ _cogl_texture_2d_gl_copy_from_bitmap (CoglTexture2D *tex_2d,
 {
   CoglTexture *tex = COGL_TEXTURE (tex_2d);
   CoglContext *ctx = tex->context;
+  CoglBitmap *upload_bmp;
+  CoglPixelFormat upload_format;
   GLenum gl_format;
   GLenum gl_type;
   CoglBool status = TRUE;
 
-  bmp = _cogl_texture_prepare_for_upload (bmp,
-                                          cogl_texture_get_format (tex),
-                                          NULL,
-                                          NULL,
-                                          &gl_format,
-                                          &gl_type,
-                                          error);
-  if (!bmp)
+  upload_bmp =
+    _cogl_bitmap_convert_for_upload (bmp,
+                                     cogl_texture_get_format (tex),
+                                     FALSE, /* can't convert in place */
+                                     error);
+  if (upload_bmp == NULL)
     return FALSE;
+
+  upload_format = cogl_bitmap_get_format (upload_bmp);
+
+  ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                          upload_format,
+                                          NULL, /* internal format */
+                                          &gl_format,
+                                          &gl_type);
 
   /* If this touches the first pixel then we'll update our copy */
   if (dst_x == 0 && dst_y == 0 &&
@@ -575,9 +591,9 @@ _cogl_texture_2d_gl_copy_from_bitmap (CoglTexture2D *tex_2d,
     {
       CoglError *ignore = NULL;
       uint8_t *data =
-        _cogl_bitmap_map (bmp, COGL_BUFFER_ACCESS_READ, 0, &ignore);
+        _cogl_bitmap_map (upload_bmp, COGL_BUFFER_ACCESS_READ, 0, &ignore);
       CoglPixelFormat bpp =
-        _cogl_pixel_format_get_bytes_per_pixel (cogl_bitmap_get_format (bmp));
+        _cogl_pixel_format_get_bytes_per_pixel (upload_format);
 
       tex_2d->first_pixel.gl_format = gl_format;
       tex_2d->first_pixel.gl_type = gl_type;
@@ -585,7 +601,9 @@ _cogl_texture_2d_gl_copy_from_bitmap (CoglTexture2D *tex_2d,
       if (data)
         {
           memcpy (tex_2d->first_pixel.data,
-                  data + cogl_bitmap_get_rowstride (bmp) * src_y + bpp * src_x,
+                  (data +
+                   cogl_bitmap_get_rowstride (upload_bmp) * src_y +
+                   bpp * src_x),
                   bpp);
           _cogl_bitmap_unmap (bmp);
         }
@@ -605,12 +623,12 @@ _cogl_texture_2d_gl_copy_from_bitmap (CoglTexture2D *tex_2d,
                                                         dst_x, dst_y,
                                                         width, height,
                                                         level,
-                                                        bmp,
+                                                        upload_bmp,
                                                         gl_format,
                                                         gl_type,
                                                         error);
 
-  cogl_object_unref (bmp);
+  cogl_object_unref (upload_bmp);
 
   _cogl_texture_gl_maybe_update_max_level (tex, level);
 

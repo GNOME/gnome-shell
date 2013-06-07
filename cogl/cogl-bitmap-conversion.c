@@ -506,6 +506,85 @@ _cogl_bitmap_convert (CoglBitmap *src_bmp,
   return dst_bmp;
 }
 
+CoglBitmap *
+_cogl_bitmap_convert_for_upload (CoglBitmap *src_bmp,
+                                 CoglPixelFormat internal_format,
+                                 CoglBool can_convert_in_place,
+                                 CoglError **error)
+{
+  CoglContext *ctx = _cogl_bitmap_get_context (src_bmp);
+  CoglPixelFormat src_format = cogl_bitmap_get_format (src_bmp);
+  CoglBitmap *dst_bmp;
+
+  _COGL_RETURN_VAL_IF_FAIL (internal_format != COGL_PIXEL_FORMAT_ANY, NULL);
+
+  /* OpenGL supports specifying a different format for the internal
+     format when uploading texture data. We should use this to convert
+     formats because it is likely to be faster and support more types
+     than the Cogl bitmap code. However under GLES the internal format
+     must be the same as the bitmap format and it only supports a
+     limited number of formats so we must convert using the Cogl
+     bitmap code instead */
+
+  /* If the driver doesn't natively support alpha textures then it
+   * won't work correctly to convert to/from component-alpha
+   * textures */
+
+  if ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_FORMAT_CONVERSION) &&
+      ((ctx->private_feature_flags & COGL_PRIVATE_FEATURE_ALPHA_TEXTURES) ||
+       (src_format != COGL_PIXEL_FORMAT_A_8 &&
+        internal_format != COGL_PIXEL_FORMAT_A_8) ||
+       src_format == internal_format))
+    {
+      /* If the source format does not have the same premult flag as the
+         internal_format then we need to copy and convert it */
+      if (_cogl_texture_needs_premult_conversion (src_format,
+                                                  internal_format))
+        {
+          if (can_convert_in_place)
+            {
+              if (_cogl_bitmap_convert_premult_status (src_bmp,
+                                                       (src_format ^
+                                                        COGL_PREMULT_BIT),
+                                                       error))
+                {
+                  dst_bmp = cogl_object_ref (src_bmp);
+                }
+              else
+                return NULL;
+            }
+          else
+            {
+              dst_bmp = _cogl_bitmap_convert (src_bmp,
+                                              src_format ^ COGL_PREMULT_BIT,
+                                              error);
+              if (dst_bmp == NULL)
+                return NULL;
+            }
+        }
+      else
+        dst_bmp = cogl_object_ref (src_bmp);
+    }
+  else
+    {
+      CoglPixelFormat closest_format;
+
+      closest_format =
+        ctx->driver_vtable->pixel_format_to_gl (ctx,
+                                                internal_format,
+                                                NULL, /* ignore gl intformat */
+                                                NULL, /* ignore gl format */
+                                                NULL); /* ignore gl type */
+
+      if (closest_format != src_format)
+        dst_bmp = _cogl_bitmap_convert (src_bmp, closest_format, error);
+      else
+        dst_bmp = cogl_object_ref (src_bmp);
+    }
+
+  return dst_bmp;
+}
+
 CoglBool
 _cogl_bitmap_unpremult (CoglBitmap *bmp,
                         CoglError **error)

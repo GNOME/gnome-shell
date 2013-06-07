@@ -65,6 +65,7 @@ _cogl_texture_2d_nop_allocate (CoglTexture *tex,
 CoglTexture2D *
 _cogl_texture_2d_nop_new_from_bitmap (CoglBitmap *bmp,
                                       CoglPixelFormat internal_format,
+                                      CoglBool can_convert_in_place,
                                       CoglError **error)
 {
   return _cogl_texture_2d_create_base (_cogl_bitmap_get_context (bmp),

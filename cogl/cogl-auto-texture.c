@@ -35,6 +35,7 @@
 #include "cogl-texture.h"
 #include "cogl-util.h"
 #include "cogl-texture-2d.h"
+#include "cogl-texture-2d-private.h"
 #include "cogl-primitive-texture.h"
 #include "cogl-texture-2d-sliced-private.h"
 #include "cogl-private.h"
@@ -45,6 +46,13 @@
 #include "cogl-texture-rectangle.h"
 #include "cogl-sub-texture.h"
 #include "cogl-texture-2d-gl.h"
+
+static CoglTexture *
+_cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
+                               CoglTextureFlags flags,
+                               CoglPixelFormat internal_format,
+                               CoglBool can_convert_in_place,
+                               CoglError **error);
 
 CoglTexture *
 cogl_texture_new_with_size (unsigned int width,
@@ -128,7 +136,11 @@ _cogl_texture_new_from_data (CoglContext *ctx,
                                   rowstride,
                                   (uint8_t *) data);
 
-  tex = _cogl_texture_new_from_bitmap (bmp, flags, internal_format, error);
+  tex = _cogl_texture_new_from_bitmap (bmp,
+                                       flags,
+                                       internal_format,
+                                       FALSE, /* can't convert in place */
+                                       error);
 
   cogl_object_unref (bmp);
 
@@ -161,10 +173,11 @@ cogl_texture_new_from_data (int width,
   return tex;
 }
 
-CoglTexture *
+static CoglTexture *
 _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
                                CoglTextureFlags flags,
                                CoglPixelFormat internal_format,
+                               CoglBool can_convert_in_place,
                                CoglError **error)
 {
   CoglContext *ctx = _cogl_bitmap_get_context (bitmap);
@@ -176,6 +189,7 @@ _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
   if ((atlas_tex = _cogl_atlas_texture_new_from_bitmap (bitmap,
                                                         flags,
                                                         internal_format,
+                                                        can_convert_in_place,
                                                         &internal_error)))
     return COGL_TEXTURE (atlas_tex);
 
@@ -188,9 +202,10 @@ _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
       (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_BASIC) &&
        cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP)))
     {
-      tex = COGL_TEXTURE (cogl_texture_2d_new_from_bitmap (bitmap,
-                                                           internal_format,
-                                                           &internal_error));
+      tex = COGL_TEXTURE (_cogl_texture_2d_new_from_bitmap (bitmap,
+                                                            internal_format,
+                                                            can_convert_in_place,
+                                                            &internal_error));
 
       if (!tex)
         {
@@ -213,6 +228,7 @@ _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
       tex = COGL_TEXTURE (_cogl_texture_2d_sliced_new_from_bitmap (bitmap,
                                                              flags,
                                                              internal_format,
+                                                             can_convert_in_place,
                                                              error));
     }
 
@@ -226,7 +242,10 @@ cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
 {
   CoglError *ignore_error = NULL;
   CoglTexture *tex =
-    _cogl_texture_new_from_bitmap (bitmap, flags, internal_format,
+    _cogl_texture_new_from_bitmap (bitmap,
+                                   flags,
+                                   internal_format,
+                                   FALSE, /* can't convert in-place */
                                    &ignore_error);
   if (!tex)
     cogl_error_free (ignore_error);
@@ -241,7 +260,6 @@ cogl_texture_new_from_file (const char        *filename,
 {
   CoglBitmap *bmp;
   CoglTexture *texture = NULL;
-  CoglPixelFormat src_format;
 
   _COGL_GET_CONTEXT (ctx, NULL);
 
@@ -251,22 +269,10 @@ cogl_texture_new_from_file (const char        *filename,
   if (bmp == NULL)
     return NULL;
 
-  src_format = cogl_bitmap_get_format (bmp);
-
-  /* We know that the bitmap data is solely owned by this function so
-     we can do the premult conversion in place. This avoids having to
-     copy the bitmap which will otherwise happen in
-     _cogl_texture_prepare_for_upload */
-  internal_format =
-    _cogl_texture_determine_internal_format (src_format, internal_format);
-  if (!_cogl_texture_needs_premult_conversion (src_format, internal_format) ||
-      _cogl_bitmap_convert_premult_status (bmp,
-                                           src_format ^ COGL_PREMULT_BIT,
-                                           error))
-    {
-      texture =
-        _cogl_texture_new_from_bitmap (bmp, flags, internal_format, error);
-    }
+  texture = _cogl_texture_new_from_bitmap (bmp, flags,
+                                           internal_format,
+                                           TRUE, /* can convert in-place */
+                                           error);
 
   cogl_object_unref (bmp);
 
