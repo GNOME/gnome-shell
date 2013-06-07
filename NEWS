@@ -1,3 +1,41 @@
+3.8.3
+=====
+* Fix child menu regression introduced in 3.8.2 [Florian; #699678]
+* Fix alt-tab not always switching back to the previous window [Florian; #700356]
+* Fix VPN network icon regression introduced in 3.8.2 [Florian; #700394]
+* Allow switch-to-workspace-n keybindings in overview [Florian; #649977]
+* Update man page [Matthias; #700339]
+* Add FocusSearch DBus method [Florian; #700536]
+* gdm: Update the session chooser style [Allan; #695742]
+* Fix some app folders getting truncated at the top [Florian; #694371]
+* Fix duplicate cursors in screenshots with magnification [Florian; #700488]
+* popupMenu: Allow for an optional border for slider handle [Florian; #697917]
+* Synchronize input source switching with key events [Rui; #697007]
+* Switch input source on modifiers-only accelerator [Rui; #697008]
+* Allow input source switching in message tray [Rui; #697009]
+* Tweak timeout for activating windows during XDND [Adel; #700150]
+* Fix fullscreen windows not being unredirected when legacy tray icons
+  are around [Adel; #701224]
+* Fix ellipsization in control buttons in app picker [Carlos; #696307]
+* Fix DND to empty dash [Florian; #684618]
+* Fix OSD window appearing below system modal dialogs [Rui; #701269]
+* Clear clipboard on screen lock to prevent information leak [Florian; #698922]
+* Allow session mode specific overrides schema [Florian; #701717]
+* Fix incomplete app menu if multiple actions only become available later
+  [Xavier; #694612]
+* Fix showing the OSD when a fullscreen app is unredirected [Adel, #701224]
+* window-switcher: Only show windows from current workspace by default
+  [Florian; #701214
+* Misc bug fixes [Florian, Rui, Giovanni, Stef; #700409, #700625, #700807,
+  #700842, #700900, #700944, #700190, #700972, #700877]
+
+Contributors:
+  Giovanni Campagna, Xavier Claessens, Matthias Clasen, Allan Day,
+  Adel Gadllah, Rui Matos, Florian Müllner, Carlos Soriano, Stef Walter
+
+Translations:
+  Cheng-Chia Tseng [zh_HK, zh_TW], eternalhui [zh_CN]
+
 3.8.2
 =====
 * Fix hotcorner regression in RTL locales [Jasper; #698884]
