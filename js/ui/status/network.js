@@ -1204,25 +1204,22 @@ const NMApplet = new Lang.Class({
         this._nmDevices = [];
         this._devices = { };
 
-        this._section = new PopupMenu.PopupMenuSection();
-        this.menu.addMenuItem(this._section);
-
         this._devices.wireless = {
             section: new PopupMenu.PopupMenuSection(),
             devices: [ ],
         };
-        this._section.addMenuItem(this._devices.wireless.section);
+        this.menu.addMenuItem(this._devices.wireless.section);
 
         this._devices.wwan = {
             section: new PopupMenu.PopupMenuSection(),
             devices: [ ],
         };
-        this._section.addMenuItem(this._devices.wwan.section);
+        this.menu.addMenuItem(this._devices.wwan.section);
 
         this._vpnSection = new NMVPNSection(this._client);
         this._vpnSection.connect('activation-failed', Lang.bind(this, this._onActivationFailed));
         this._vpnSection.connect('icon-changed', Lang.bind(this, this._updateIcon));
-        this._section.addMenuItem(this._vpnSection.item);
+        this.menu.addMenuItem(this._vpnSection.item);
 
         this._readConnections();
         this._readDevices();
@@ -1242,7 +1239,7 @@ const NMApplet = new Lang.Class({
 
     _sessionUpdated: function() {
         let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
-        this._section.setSensitive(sensitive);
+        this.menu.setSensitive(sensitive);
     },
 
     _ensureSource: function() {
@@ -1583,7 +1580,7 @@ const NMApplet = new Lang.Class({
         this._syncActiveConnections();
 
         this.indicators.visible = this._client.manager_running;
-        this._section.actor.visible = this._client.networking_enabled;
+        this.menu.actor.visible = this._client.networking_enabled;
     },
 
     _updateIcon: function() {
