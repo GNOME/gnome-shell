@@ -103,6 +103,33 @@ cogl_texture_2d_new_with_size (CoglContext *ctx,
                                CoglPixelFormat internal_format);
 
 /**
+ * cogl_texture_2d_new_from_file:
+ * @ctx: A #CoglContext
+ * @filename: the file to load
+ * @internal_format: the #CoglPixelFormat to use for the GPU storage of the
+ *    texture. If %COGL_PIXEL_FORMAT_ANY is given then a premultiplied
+ *    format similar to the format of the source data will be used. The
+ *    default blending equations of Cogl expect premultiplied color data;
+ *    the main use of passing a non-premultiplied format here is if you
+ *    have non-premultiplied source data and are going to adjust the blend
+ *    mode (see cogl_material_set_blend()) or use the data for something
+ *    other than straight blending.
+ * @error: A #CoglError to catch exceptional errors or %NULL
+ *
+ * Creates a #CoglTexture2D from an image file.
+ *
+ * Return value: A newly created #CoglTexture2D or %NULL on failure
+ *               and @error will be updated.
+ *
+ * Since: 1.16
+ */
+CoglTexture2D *
+cogl_texture_2d_new_from_file (CoglContext *ctx,
+                               const char *filename,
+                               CoglPixelFormat internal_format,
+                               CoglError **error);
+
+/**
  * cogl_texture_2d_new_from_data:
  * @ctx: A #CoglContext
  * @width: width of texture in pixels

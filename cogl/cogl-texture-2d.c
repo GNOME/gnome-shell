@@ -192,6 +192,31 @@ cogl_texture_2d_new_from_bitmap (CoglBitmap *bmp,
 }
 
 CoglTexture2D *
+cogl_texture_2d_new_from_file (CoglContext *ctx,
+                               const char *filename,
+                               CoglPixelFormat internal_format,
+                               CoglError **error)
+{
+  CoglBitmap *bmp;
+  CoglTexture2D *tex_2d = NULL;
+
+  _COGL_RETURN_VAL_IF_FAIL (error == NULL || *error == NULL, NULL);
+
+  bmp = _cogl_bitmap_from_file (ctx, filename, error);
+  if (bmp == NULL)
+    return NULL;
+
+  tex_2d = _cogl_texture_2d_new_from_bitmap (bmp,
+                                             internal_format,
+                                             TRUE, /* can convert in-place */
+                                             error);
+
+  cogl_object_unref (bmp);
+
+  return tex_2d;
+}
+
+CoglTexture2D *
 cogl_texture_2d_new_from_data (CoglContext *ctx,
                                int width,
                                int height,
