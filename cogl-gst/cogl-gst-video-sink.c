@@ -44,8 +44,6 @@
 
 #include "cogl-gst-video-sink.h"
 
-#define COGL_GST_TEXTURE_FLAGS \
-       (COGL_TEXTURE_NO_SLICING | COGL_TEXTURE_NO_ATLAS)
 #define COGL_GST_DEFAULT_PRIORITY G_PRIORITY_HIGH_IDLE
 
 #define BASE_SINK_CAPS "{ AYUV," \
@@ -200,7 +198,7 @@ cogl_gst_video_sink_attach_frame (CoglGstVideoSink *sink,
   for (i = 0; i < G_N_ELEMENTS (priv->frame); i++)
     if (priv->frame[i] != NULL)
       cogl_pipeline_set_layer_texture (pln, i + priv->custom_start,
-                                       priv->frame[i]);
+                                       COGL_TEXTURE (priv->frame[i]));
 }
 
 static CoglBool
@@ -452,6 +450,70 @@ cogl_gst_rgb_setup_pipeline (CoglGstVideoSink *sink,
     setup_pipeline_from_cache_entry (sink, pipeline, NULL, 1);
 }
 
+static inline CoglBool
+is_pot (unsigned int number)
+{
+  /* Make sure there is only one bit set */
+  return (number & (number - 1)) == 0;
+}
+
+/* This first tries to upload the texture to a CoglTexture2D, but
+ * if that's not possible it falls back to a CoglTexture2DSliced.
+ *
+ * Auto-mipmapping of any uploaded texture is disabled
+ */
+static CoglTexture *
+video_texture_new_from_data (CoglContext *ctx,
+                             int width,
+                             int height,
+                             CoglPixelFormat format,
+                             CoglPixelFormat internal_format,
+                             int rowstride,
+                             const uint8_t *data,
+                             CoglError **error)
+{
+  CoglBitmap *bitmap;
+  CoglTexture *tex;
+  CoglError *internal_error = NULL;
+
+  bitmap = cogl_bitmap_new_for_data (ctx,
+                                     width, height,
+                                     format,
+                                     rowstride,
+                                     (uint8_t *) data);
+
+  if ((is_pot (cogl_bitmap_get_width (bitmap)) &&
+       is_pot (cogl_bitmap_get_height (bitmap))) ||
+      cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_BASIC))
+    {
+      tex = COGL_TEXTURE (cogl_texture_2d_new_from_bitmap (bitmap,
+                                                           internal_format,
+                                                           &internal_error));
+      if (!tex)
+        {
+          cogl_error_free (internal_error);
+          internal_error = NULL;
+        }
+    }
+  else
+    tex = NULL;
+
+  if (!tex)
+    {
+      /* Otherwise create a sliced texture */
+      CoglTexture2DSliced *tex_2ds =
+        cogl_texture_2d_sliced_new_from_bitmap (bitmap,
+                                                -1, /* no maximum waste */
+                                                internal_format,
+                                                error);
+      tex = COGL_TEXTURE (tex_2ds);
+    }
+
+  cogl_object_unref (bitmap);
+
+  return tex;
+}
+
 static CoglBool
 cogl_gst_rgb24_upload (CoglGstVideoSink *sink,
                        GstBuffer *buffer)
@@ -470,12 +532,11 @@ cogl_gst_rgb24_upload (CoglGstVideoSink *sink,
 
   clear_frame_textures (sink);
 
-  priv->frame[0] = cogl_texture_new_from_data (priv->info.width,
-                                               priv->info.height,
-                                               COGL_GST_TEXTURE_FLAGS,
-                                               format, format,
-                                               priv->info.stride[0],
-                                               frame.data[0]);
+  priv->frame[0] = video_texture_new_from_data (priv->ctx, priv->info.width,
+                                                priv->info.height,
+                                                format, format,
+                                                priv->info.stride[0],
+                                                frame.data[0], NULL);
 
   gst_video_frame_unmap (&frame);
 
@@ -517,12 +578,11 @@ cogl_gst_rgb32_upload (CoglGstVideoSink *sink,
 
   clear_frame_textures (sink);
 
-  priv->frame[0] = cogl_texture_new_from_data (priv->info.width,
-                                               priv->info.height,
-                                               COGL_GST_TEXTURE_FLAGS,
-                                               format, format,
-                                               priv->info.stride[0],
-                                               frame.data[0]);
+  priv->frame[0] = video_texture_new_from_data (priv->ctx, priv->info.width,
+                                                priv->info.height,
+                                                format, format,
+                                                priv->info.stride[0],
+                                                frame.data[0], NULL);
 
   gst_video_frame_unmap (&frame);
 
@@ -560,22 +620,25 @@ cogl_gst_yv12_upload (CoglGstVideoSink *sink,
   clear_frame_textures (sink);
 
   priv->frame[0] =
-    cogl_texture_new_from_data (GST_VIDEO_INFO_COMP_WIDTH (&priv->info, 0),
-                                GST_VIDEO_INFO_COMP_HEIGHT (&priv->info, 0),
-                                COGL_GST_TEXTURE_FLAGS, format, format,
-                                priv->info.stride[0], frame.data[0]);
+    video_texture_new_from_data (priv->ctx,
+                                 GST_VIDEO_INFO_COMP_WIDTH (&priv->info, 0),
+                                 GST_VIDEO_INFO_COMP_HEIGHT (&priv->info, 0),
+                                 format, format,
+                                 priv->info.stride[0], frame.data[0], NULL);
 
   priv->frame[1] =
-    cogl_texture_new_from_data (GST_VIDEO_INFO_COMP_WIDTH (&priv->info, 1),
-                                GST_VIDEO_INFO_COMP_HEIGHT (&priv->info, 1),
-                                COGL_GST_TEXTURE_FLAGS, format, format,
-                                priv->info.stride[1], frame.data[1]);
+    video_texture_new_from_data (priv->ctx,
+                                 GST_VIDEO_INFO_COMP_WIDTH (&priv->info, 1),
+                                 GST_VIDEO_INFO_COMP_HEIGHT (&priv->info, 1),
+                                 format, format,
+                                 priv->info.stride[1], frame.data[1], NULL);
 
   priv->frame[2] =
-    cogl_texture_new_from_data (GST_VIDEO_INFO_COMP_WIDTH (&priv->info, 2),
-                                GST_VIDEO_INFO_COMP_HEIGHT (&priv->info, 2),
-                                COGL_GST_TEXTURE_FLAGS, format, format,
-                                priv->info.stride[2], frame.data[2]);
+    video_texture_new_from_data (priv->ctx,
+                                 GST_VIDEO_INFO_COMP_WIDTH (&priv->info, 2),
+                                 GST_VIDEO_INFO_COMP_HEIGHT (&priv->info, 2),
+                                 format, format,
+                                 priv->info.stride[2], frame.data[2], NULL);
 
   gst_video_frame_unmap (&frame);
 
@@ -701,12 +764,11 @@ cogl_gst_ayuv_upload (CoglGstVideoSink *sink,
 
   clear_frame_textures (sink);
 
-  priv->frame[0] = cogl_texture_new_from_data (priv->info.width,
-                                               priv->info.height,
-                                               COGL_GST_TEXTURE_FLAGS,
-                                               format, format,
-                                               priv->info.stride[0],
-                                               frame.data[0]);
+  priv->frame[0] = video_texture_new_from_data (priv->ctx, priv->info.width,
+                                                priv->info.height,
+                                                format, format,
+                                                priv->info.stride[0],
+                                                frame.data[0], NULL);
 
   gst_video_frame_unmap (&frame);
 
