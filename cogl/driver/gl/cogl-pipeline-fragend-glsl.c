@@ -198,11 +198,15 @@ static CoglBool
 has_replace_hook (CoglPipelineLayer *layer,
                   CoglSnippetHook hook)
 {
-  CoglPipelineSnippet *snippet;
+  GList *l;
 
-  COGL_LIST_FOREACH (snippet, get_layer_fragment_snippets (layer), list_node)
-    if (snippet->snippet->hook == hook && snippet->snippet->replace)
-      return TRUE;
+  for (l = get_layer_fragment_snippets (layer)->entries; l; l = l->next)
+    {
+      CoglSnippet *snippet = l->data;
+
+      if (snippet->hook == hook && snippet->replace)
+        return TRUE;
+    }
 
   return FALSE;
 }

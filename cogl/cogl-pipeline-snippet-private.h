@@ -31,18 +31,11 @@
 #include <glib.h>
 
 #include "cogl-snippet.h"
-#include "cogl-queue.h"
 
-typedef struct _CoglPipelineSnippet CoglPipelineSnippet;
-
-COGL_LIST_HEAD (CoglPipelineSnippetList, CoglPipelineSnippet);
-
-struct _CoglPipelineSnippet
+typedef struct
 {
-  COGL_LIST_ENTRY (CoglPipelineSnippet) list_node;
-
-  CoglSnippet *snippet;
-};
+  GList *entries;
+} CoglPipelineSnippetList;
 
 /* Arguments to pass to _cogl_pipeline_snippet_generate_code() */
 typedef struct

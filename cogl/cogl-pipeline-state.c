@@ -1661,7 +1661,7 @@ _cogl_pipeline_has_non_layer_vertex_snippets (CoglPipeline *pipeline)
     _cogl_pipeline_get_authority (pipeline,
                                   COGL_PIPELINE_STATE_VERTEX_SNIPPETS);
 
-  return !COGL_LIST_EMPTY (&authority->big_state->vertex_snippets);
+  return authority->big_state->vertex_snippets.entries != NULL;
 }
 
 static CoglBool
@@ -1673,7 +1673,7 @@ check_layer_has_vertex_snippet (CoglPipelineLayer *layer,
     _cogl_pipeline_layer_get_authority (layer, state);
   CoglBool *found_vertex_snippet = user_data;
 
-  if (!COGL_LIST_EMPTY (&authority->big_state->vertex_snippets))
+  if (authority->big_state->vertex_snippets.entries)
     {
       *found_vertex_snippet = TRUE;
       return FALSE;
@@ -1704,7 +1704,7 @@ _cogl_pipeline_has_non_layer_fragment_snippets (CoglPipeline *pipeline)
     _cogl_pipeline_get_authority (pipeline,
                                   COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS);
 
-  return !COGL_LIST_EMPTY (&authority->big_state->fragment_snippets);
+  return authority->big_state->fragment_snippets.entries != NULL;
 }
 
 static CoglBool
@@ -1716,7 +1716,7 @@ check_layer_has_fragment_snippet (CoglPipelineLayer *layer,
     _cogl_pipeline_layer_get_authority (layer, state);
   CoglBool *found_fragment_snippet = user_data;
 
-  if (!COGL_LIST_EMPTY (&authority->big_state->fragment_snippets))
+  if (authority->big_state->fragment_snippets.entries)
     {
       *found_fragment_snippet = TRUE;
       return FALSE;
