@@ -54,7 +54,7 @@ _cogl_texture_2d_sliced_new_from_foreign (CoglContext *context,
 
 CoglTexture2DSliced *
 _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap *bmp,
-                                         CoglTextureFlags flags,
+                                         int max_waste,
                                          CoglPixelFormat internal_format,
                                          CoglBool can_convert_in_place,
                                          CoglError **error);

@@ -483,6 +483,9 @@ cogl_is_atlas_texture
 <TITLE>Sliced Textures</TITLE>
 CoglTexture2DSliced
 cogl_texture_2d_sliced_new_with_size
+cogl_texture_2d_sliced_new_from_file
+cogl_texture_2d_sliced_new_from_data
+cogl_texture_2d_sliced_new_from_bitmap
 cogl_is_texture_2d_sliced
 </SECTION>
 

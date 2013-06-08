@@ -54,6 +54,16 @@ _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
                                CoglBool can_convert_in_place,
                                CoglError **error);
 
+static void
+set_auto_mipmap_cb (CoglTexture *sub_texture,
+                    const float *sub_texture_coords,
+                    const float *meta_coords,
+                    void *user_data)
+{
+  cogl_primitive_texture_set_auto_mipmap (COGL_PRIMITIVE_TEXTURE (sub_texture),
+                                          FALSE);
+}
+
 CoglTexture *
 cogl_texture_new_with_size (unsigned int width,
 			    unsigned int height,
@@ -88,13 +98,7 @@ cogl_texture_new_with_size (unsigned int width,
   else
     tex = NULL;
 
-  if (tex)
-    {
-      CoglBool auto_mipmap = !(flags & COGL_TEXTURE_NO_AUTO_MIPMAP);
-      cogl_primitive_texture_set_auto_mipmap (COGL_PRIMITIVE_TEXTURE (tex),
-                                              auto_mipmap);
-    }
-  else
+  if (!tex)
     {
       /* If it fails resort to sliced textures */
       int max_waste = flags & COGL_TEXTURE_NO_SLICING ? -1 : COGL_TEXTURE_MAX_WASTE;
@@ -103,6 +107,22 @@ cogl_texture_new_with_size (unsigned int width,
                                                                 height,
                                                                 max_waste,
                                                                 internal_format));
+    }
+
+  if (tex &&
+      flags & COGL_TEXTURE_NO_AUTO_MIPMAP)
+    {
+      /* To be able to iterate the slices of a #CoglTexture2DSliced we
+       * need to ensure the texture is allocated... */
+      if (!cogl_texture_allocate (tex, NULL))
+        return NULL;
+
+      cogl_meta_texture_foreach_in_region (COGL_META_TEXTURE (tex),
+                                           0, 0, 1, 1,
+                                           COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE,
+                                           COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE,
+                                           set_auto_mipmap_cb,
+                                           NULL);
     }
 
   return tex;
@@ -219,20 +239,26 @@ _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
   else
     tex = NULL;
 
-  if (tex)
-    {
-      CoglBool auto_mipmap = !(flags & COGL_TEXTURE_NO_AUTO_MIPMAP);
-      cogl_primitive_texture_set_auto_mipmap (COGL_PRIMITIVE_TEXTURE (tex),
-                                              auto_mipmap);
-    }
-  else
+  if (!tex)
     {
       /* Otherwise create a sliced texture */
+      int max_waste = flags & COGL_TEXTURE_NO_SLICING ? -1 : COGL_TEXTURE_MAX_WASTE;
       tex = COGL_TEXTURE (_cogl_texture_2d_sliced_new_from_bitmap (bitmap,
-                                                             flags,
+                                                             max_waste,
                                                              internal_format,
                                                              can_convert_in_place,
                                                              error));
+    }
+
+  if (tex &&
+      flags & COGL_TEXTURE_NO_AUTO_MIPMAP)
+    {
+      cogl_meta_texture_foreach_in_region (COGL_META_TEXTURE (tex),
+                                           0, 0, 1, 1,
+                                           COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE,
+                                           COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE,
+                                           set_auto_mipmap_cb,
+                                           NULL);
     }
 
   return tex;

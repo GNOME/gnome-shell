@@ -956,7 +956,7 @@ _cogl_texture_2d_sliced_allocate (CoglTexture *tex,
 
 CoglTexture2DSliced *
 _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap *bmp,
-                                         CoglTextureFlags flags,
+                                         int max_waste,
                                          CoglPixelFormat internal_format,
                                          CoglBool can_convert_in_place,
                                          CoglError **error)
@@ -964,8 +964,7 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap *bmp,
   CoglContext *ctx;
   CoglTexture2DSliced *tex_2ds;
   CoglBitmap *upload_bmp;
-  int width, height, max_waste;
-  int i;
+  int width, height;
 
   _COGL_RETURN_VAL_IF_FAIL (cogl_is_bitmap (bmp), NULL);
 
@@ -976,11 +975,6 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap *bmp,
 
   /* Create new texture and fill with loaded data */
   tex_2ds = g_new0 (CoglTexture2DSliced, 1);
-
-  if (flags & COGL_TEXTURE_NO_SLICING)
-    max_waste = -1;
-  else
-    max_waste = COGL_TEXTURE_MAX_WASTE;
 
   internal_format =
     _cogl_texture_determine_internal_format (cogl_bitmap_get_format (bmp),
@@ -1016,24 +1010,25 @@ _cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap *bmp,
 
   cogl_object_unref (upload_bmp);
 
-  if ((flags & COGL_TEXTURE_NO_AUTO_MIPMAP))
-    for (i = 0; i < tex_2ds->slice_textures->len; i++)
-      {
-        CoglPrimitiveTexture *slice_tex;
-
-        slice_tex = g_array_index (tex_2ds->slice_textures,
-                                   CoglPrimitiveTexture *,
-                                   i);
-
-        cogl_primitive_texture_set_auto_mipmap (slice_tex, FALSE);
-      }
-
   return _cogl_texture_2d_sliced_object_new (tex_2ds);
 
  error:
   cogl_object_unref (upload_bmp);
   _cogl_texture_2d_sliced_free (tex_2ds);
   return NULL;
+}
+
+CoglTexture2DSliced *
+cogl_texture_2d_sliced_new_from_bitmap (CoglBitmap *bmp,
+                                        int max_waste,
+                                        CoglPixelFormat internal_format,
+                                        CoglError **error)
+{
+  return _cogl_texture_2d_sliced_new_from_bitmap (bmp,
+                                                  max_waste,
+                                                  internal_format,
+                                                  FALSE,
+                                                  error);
 }
 
 CoglTexture2DSliced *
@@ -1126,6 +1121,70 @@ _cogl_texture_2d_sliced_new_from_foreign (CoglContext *ctx,
   _cogl_texture_set_allocated (COGL_TEXTURE (tex_2ds), TRUE);
 
   return _cogl_texture_2d_sliced_object_new (tex_2ds);
+}
+
+CoglTexture2DSliced *
+cogl_texture_2d_sliced_new_from_data (CoglContext *ctx,
+                                      int width,
+                                      int height,
+                                      int max_waste,
+                                      CoglPixelFormat format,
+                                      CoglPixelFormat internal_format,
+                                      int rowstride,
+                                      const uint8_t *data,
+                                      CoglError **error)
+{
+  CoglBitmap *bmp;
+  CoglTexture2DSliced *tex_2ds;
+
+  _COGL_RETURN_VAL_IF_FAIL (format != COGL_PIXEL_FORMAT_ANY, NULL);
+  _COGL_RETURN_VAL_IF_FAIL (data != NULL, NULL);
+
+  /* Rowstride from width if not given */
+  if (rowstride == 0)
+    rowstride = width * _cogl_pixel_format_get_bytes_per_pixel (format);
+
+  /* Wrap the data into a bitmap */
+  bmp = cogl_bitmap_new_for_data (ctx,
+                                  width, height,
+                                  format,
+                                  rowstride,
+                                  (uint8_t *) data);
+
+  tex_2ds = cogl_texture_2d_sliced_new_from_bitmap (bmp, max_waste,
+                                                    internal_format,
+                                                    error);
+
+  cogl_object_unref (bmp);
+
+  return tex_2ds;
+}
+
+CoglTexture2DSliced *
+cogl_texture_2d_sliced_new_from_file (CoglContext *ctx,
+                                      const char *filename,
+                                      int max_waste,
+                                      CoglPixelFormat internal_format,
+                                      CoglError **error)
+{
+  CoglBitmap *bmp;
+  CoglTexture2DSliced *tex_2ds = NULL;
+
+  _COGL_RETURN_VAL_IF_FAIL (error == NULL || *error == NULL, NULL);
+
+  bmp = _cogl_bitmap_from_file (ctx, filename, error);
+  if (bmp == NULL)
+    return NULL;
+
+  tex_2ds = _cogl_texture_2d_sliced_new_from_bitmap (bmp,
+                                           max_waste,
+                                           internal_format,
+                                           TRUE, /* can convert in-place */
+                                           error);
+
+  cogl_object_unref (bmp);
+
+  return tex_2ds;
 }
 
 static CoglBool
