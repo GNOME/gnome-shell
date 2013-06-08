@@ -317,12 +317,12 @@ msgstr ""
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:42
 msgid "Attach modal dialog to the parent window"
-msgstr "Připojovat modální dialogová okna k rodičovským oknům"
+msgstr "Modální dialogová okna připojovat k rodičovskému oknu"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:43
 msgid ""
 "This key overrides the key in org.gnome.mutter when running GNOME Shell."
-msgstr "Tento kíč přepisuje klíč v org.gnome.mutter, když běží GNOME Shell."
+msgstr "Když běží GNOME Shell, tento klíč přepíše klíč v org.gnome.mutter"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:44
 msgid "Arrangement of buttons on the titlebar"
@@ -333,12 +333,11 @@ msgid ""
 "This key overrides the key in org.gnome.desktop.wm.preferences when running "
 "GNOME Shell."
 msgstr ""
-"Tento kíč přepisuje klíč v org.gnome.desktop.wm.preferences, když běží GNOME "
-"Shell."
+"Když běží GNOME Shell, tento klíč přepíše klíč v org.gnome.desktop.wm.preferences"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:46
 msgid "Enable edge tiling when dropping windows on screen edges"
-msgstr "Nechat okna upuštěná při okraji obrazovky vytvářet dlaždice"
+msgstr "Okna upuštěná u okraje obrazovky nechat řadit jako dlaždice"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:47
 msgid "Workspaces are managed dynamically"
@@ -346,7 +345,7 @@ msgstr "Pracovní plochy jsou spravovány dynamicky"
 
 #: ../data/org.gnome.shell.gschema.xml.in.in.h:48
 msgid "Workspaces only on primary monitor"
-msgstr "Pracovní plochy pouze na hlavním monitoru"
+msgstr "Pracovní plochy jen na hlavním monitoru"
 
 #: ../js/extensionPrefs/main.js:125
 #, c-format
