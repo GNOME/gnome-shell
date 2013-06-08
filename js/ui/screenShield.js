@@ -583,8 +583,8 @@ const ScreenShield = new Lang.Class({
 
     _liftShield: function(onPrimary, velocity) {
         if (this._isLocked) {
-            this._ensureUnlockDialog(onPrimary, true /* allowCancel */);
-            this._hideLockScreen(true /* animate */, velocity);
+            if (this._ensureUnlockDialog(onPrimary, true /* allowCancel */))
+                this._hideLockScreen(true /* animate */, velocity);
         } else {
             this.deactivate(true /* animate */);
         }
@@ -621,9 +621,8 @@ const ScreenShield = new Lang.Class({
         if (!isEnter && !(GLib.unichar_isprint(unichar) || symbol == Clutter.KEY_Escape))
             return false;
 
-        this._ensureUnlockDialog(true, true);
-
-        if (GLib.unichar_isgraph(unichar))
+        if (this._ensureUnlockDialog(true, true) &&
+            GLib.unichar_isgraph(unichar))
             this._dialog.addCharacter(unichar);
 
         this._liftShield(true, 0);
@@ -864,8 +863,8 @@ const ScreenShield = new Lang.Class({
         this.actor.show();
         this._isGreeter = Main.sessionMode.isGreeter;
         this._isLocked = true;
-        this._ensureUnlockDialog(true, true);
-        this._hideLockScreen(false, 0);
+        if (this._ensureUnlockDialog(true, true))
+            this._hideLockScreen(false, 0);
     },
 
     _hideLockScreenComplete: function() {
@@ -915,7 +914,7 @@ const ScreenShield = new Lang.Class({
             if (!constructor) {
                 // This session mode has no locking capabilities
                 this.deactivate(true);
-                return;
+                return false;
             }
 
             this._dialog = new constructor(this._lockDialogGroup);
@@ -927,12 +926,14 @@ const ScreenShield = new Lang.Class({
                 // by the time we reach this...
                 log('Could not open login dialog: failed to acquire grab');
                 this.deactivate(true);
+                return false;
             }
 
             this._dialog.connect('failed', Lang.bind(this, this._onUnlockFailed));
         }
 
         this._dialog.allowCancel = allowCancel;
+        return true;
     },
 
     _onUnlockFailed: function() {
