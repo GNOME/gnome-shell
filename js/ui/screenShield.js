@@ -1,5 +1,6 @@
 // -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*-
 
+const AccountsService = imports.gi.AccountsService;
 const Cairo = imports.cairo;
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
@@ -1245,7 +1246,14 @@ const ScreenShield = new Lang.Class({
         St.Clipboard.get_default().set_text(St.ClipboardType.CLIPBOARD, '');
         St.Clipboard.get_default().set_text(St.ClipboardType.PRIMARY, '');
 
-        this._isLocked = true;
+        let userManager = AccountsService.UserManager.get_default();
+        let user = userManager.get_user(GLib.get_user_name());
+
+        if (this._isGreeter)
+            this._isLocked = true;
+        else
+            this._isLocked = user.password_mode != AccountsService.UserPasswordMode.NONE;
+
         this.activate(animate);
 
         this.emit('locked-changed');
