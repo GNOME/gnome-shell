@@ -1154,9 +1154,9 @@ StScrollBar StButton#vhandle:active {
 
 /* Calendar popup */
 
-#calendarEventsArea {
-    /* this is the width of the second column of the popup */
-    min-width: 320px;
+#calendarArea {
+    /* this is the total width of the popup */
+    width: 720px;
 }
 
 .calendar-vertical-separator {
@@ -1295,32 +1295,40 @@ StScrollBar StButton#vhandle:active {
     color: #333333;
 }
 
-.events-header-vbox {
-    spacing: 6pt;
-    padding-right: .5em;
+.events-table {
+    min-width: 320px;
+    spacing-columns: 6pt;
+    padding: 0 1.4em;
 }
 
-.events-header-vbox:rtl {
-    padding-left: .5em;
+.events-table:ltr {
+    padding-right: 1.9em;
 }
 
-.events-header-hbox {
-    padding: 0.3em 1.4em;
+.events-table:rtl {
+    padding-left: 1.9em;
 }
 
 .events-day-header {
     font-weight: bold;
     color: #999999;
-    padding: 0.4em 1.4em 0em 1.4em;
+    padding-left: 0.4em;
+    padding-top: 1.2em;
+}
+
+.events-day-header:first-child {
+    padding-top: 0;
 }
 
 .events-day-header:rtl {
-    padding: 0em 1.4em 0.4em 1.4em;
+    padding-left: 0;
+    padding-right: 0.4em;
 }
 
 .events-day-dayname {
     color: rgba(153, 153, 153, 1.0);
     text-align: left;
+    min-width: 20px;
 }
 
 .events-day-dayname:rtl {
@@ -1338,23 +1346,12 @@ StScrollBar StButton#vhandle:active {
 
 .events-day-task {
     color: rgba(153, 153, 153, 1.0);
+    padding-left: 8pt;
 }
 
-.events-day-name-box {
-    min-width: 15pt;
-}
-
-.events-time-box {
-    min-width: 48pt;
-    padding-right: 12pt;
-}
-
-.events-time-box:rtl {
-    padding-right: 0px;
-    padding-left: 12pt;
-}
-
-.events-event-box {
+.events-day-task:rtl {
+    padding-left: 0px;
+    padding-right: 8pt;
 }
 
 .url-highlighter {

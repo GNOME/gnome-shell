@@ -675,7 +675,7 @@ const EventsList = new Lang.Class({
     Name: 'EventsList',
 
     _init: function() {
-        this.actor = new St.BoxLayout({ vertical: true, style_class: 'events-header-vbox'});
+        this.actor = new St.Table({ style_class: 'events-table' });
         this._date = new Date();
         this._desktopSettings = new Gio.Settings({ schema: 'org.gnome.desktop.interface' });
         this._desktopSettings.connect('changed', Lang.bind(this, this._update));
@@ -687,55 +687,72 @@ const EventsList = new Lang.Class({
         this._eventSource.connect('changed', Lang.bind(this, this._update));
     },
 
-    _addEvent: function(dayNameBox, timeBox, eventTitleBox, includeDayName, day, time, desc) {
-        if (includeDayName) {
-            dayNameBox.add(new St.Label( { style_class: 'events-day-dayname',
-                                           text: day } ),
-                           { x_fill: true } );
-        }
-        timeBox.add(new St.Label( { style_class: 'events-day-time',
-                                    text: time} ),
-                    { x_fill: true } );
-        eventTitleBox.add(new St.Label( { style_class: 'events-day-task',
-                                          text: desc} ));
+    _addEvent: function(event, index, includeDayName) {
+        let dayString;
+        if (includeDayName)
+            dayString = _getEventDayAbbreviation(event.date.getDay());
+        else
+            dayString = '';
+
+        let dayLabel = new St.Label({ style_class: 'events-day-dayname',
+                                      text: dayString });
+        dayLabel.clutter_text.line_wrap = false;
+        dayLabel.clutter_text.ellipsize = false;
+
+        this.actor.add(dayLabel, { row: index, col: 0,
+                                   x_expand: false, x_align: St.Align.END,
+                                   y_fill: false, y_align: St.Align.START });
+
+        let clockFormat = this._desktopSettings.get_string(CLOCK_FORMAT_KEY);
+        let timeString = _formatEventTime(event, clockFormat);
+        let timeLabel = new St.Label({ style_class: 'events-day-time',
+                                       text: timeString });
+        timeLabel.clutter_text.line_wrap = false;
+        timeLabel.clutter_text.ellipsize = false;
+
+        this.actor.add(timeLabel, { row: index, col: 1,
+                                    x_expand: false, x_align: St.Align.MIDDLE,
+                                    y_fill: false, y_align: St.Align.START });
+
+        let titleLabel = new St.Label({ style_class: 'events-day-task',
+                                        text: event.summary });
+        titleLabel.clutter_text.line_wrap = true;
+        titleLabel.clutter_text.ellipsize = false;
+
+        this.actor.add(titleLabel, { row: index, col: 2,
+                                     x_expand: true, x_align: St.Align.START,
+                                     y_fill: false, y_align: St.Align.START });
     },
 
-    _addPeriod: function(header, begin, end, includeDayName, showNothingScheduled) {
+    _addPeriod: function(header, index, begin, end, includeDayName, showNothingScheduled) {
         let events = this._eventSource.getEvents(begin, end);
 
-        let clockFormat = this._desktopSettings.get_string(CLOCK_FORMAT_KEY);;
-
         if (events.length == 0 && !showNothingScheduled)
-            return;
+            return index;
 
-        let vbox = new St.BoxLayout( {vertical: true} );
-        this.actor.add(vbox);
-
-        vbox.add(new St.Label({ style_class: 'events-day-header', text: header }));
-        let box = new St.BoxLayout({style_class: 'events-header-hbox'});
-        let dayNameBox = new St.BoxLayout({ vertical: true, style_class: 'events-day-name-box' });
-        let timeBox = new St.BoxLayout({ vertical: true, style_class: 'events-time-box' });
-        let eventTitleBox = new St.BoxLayout({ vertical: true, style_class: 'events-event-box' });
-        box.add(dayNameBox, {x_fill: false});
-        box.add(timeBox, {x_fill: false});
-        box.add(eventTitleBox, {expand: true});
-        vbox.add(box);
+        this.actor.add(new St.Label({ style_class: 'events-day-header', text: header }),
+                       { row: index, col: 0, col_span: 3,
+                         // In theory, x_expand should be true here, but x_expand
+                         // is a property of the column for StTable, ie all day cells
+                         // get it too
+                         x_expand: false, x_align: St.Align.START,
+                         y_fill: false, y_align: St.Align.START });
+        index++;
 
         for (let n = 0; n < events.length; n++) {
-            let event = events[n];
-            let dayString = _getEventDayAbbreviation(event.date.getDay());
-            let timeString = _formatEventTime(event, clockFormat);
-            let summaryString = event.summary;
-            this._addEvent(dayNameBox, timeBox, eventTitleBox, includeDayName, dayString, timeString, summaryString);
+            this._addEvent(events[n], index, includeDayName);
+            index++;
         }
 
         if (events.length == 0 && showNothingScheduled) {
             let now = new Date();
             /* Translators: Text to show if there are no events */
             let nothingEvent = new CalendarEvent(now, now, _("Nothing Scheduled"), true);
-            let timeString = _formatEventTime(nothingEvent, clockFormat);
-            this._addEvent(dayNameBox, timeBox, eventTitleBox, false, "", timeString, nothingEvent.summary);
+            this._addEvent(nothingEvent, index, false);
+            index++;
         }
+
+        return index;
     },
 
     _showOtherDay: function(day) {
@@ -752,20 +769,21 @@ const EventsList = new Lang.Class({
         else
             /* Translators: Shown on calendar heading when selected day occurs on different year */
             dayString = day.toLocaleFormat(C_("calendar heading", "%A, %B %d, %Y"));
-        this._addPeriod(dayString, dayBegin, dayEnd, false, true);
+        this._addPeriod(dayString, 0, dayBegin, dayEnd, false, true);
     },
 
     _showToday: function() {
         this.actor.destroy_all_children();
+        let index = 0;
 
         let now = new Date();
         let dayBegin = _getBeginningOfDay(now);
         let dayEnd = _getEndOfDay(now);
-        this._addPeriod(_("Today"), dayBegin, dayEnd, false, true);
+        index = this._addPeriod(_("Today"), index, dayBegin, dayEnd, false, true);
 
         let tomorrowBegin = new Date(dayBegin.getTime() + 86400 * 1000);
         let tomorrowEnd = new Date(dayEnd.getTime() + 86400 * 1000);
-        this._addPeriod(_("Tomorrow"), tomorrowBegin, tomorrowEnd, false, true);
+        index = this._addPeriod(_("Tomorrow"), index, tomorrowBegin, tomorrowEnd, false, true);
 
         let dayInWeek = (dayEnd.getDay() - this._weekStart + 7) % 7;
 
@@ -776,7 +794,7 @@ const EventsList = new Lang.Class({
              */
             let thisWeekBegin = new Date(dayBegin.getTime() + 2 * 86400 * 1000);
             let thisWeekEnd = new Date(dayEnd.getTime() + (6 - dayInWeek) * 86400 * 1000);
-            this._addPeriod(_("This week"), thisWeekBegin, thisWeekEnd, true, false);
+            index = this._addPeriod(_("This week"), index, thisWeekBegin, thisWeekEnd, true, false);
         } else {
             /* otherwise it's one of the two last days of the week ... show
              * "Next week" and include events up until and including *next*
@@ -784,7 +802,7 @@ const EventsList = new Lang.Class({
              */
             let nextWeekBegin = new Date(dayBegin.getTime() + 2 * 86400 * 1000);
             let nextWeekEnd = new Date(dayEnd.getTime() + (13 - dayInWeek) * 86400 * 1000);
-            this._addPeriod(_("Next week"), nextWeekBegin, nextWeekEnd, true, false);
+            index = this._addPeriod(_("Next week"), index, nextWeekBegin, nextWeekEnd, true, false);
         }
     },
 

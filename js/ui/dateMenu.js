@@ -80,7 +80,7 @@ const DateMenuButton = new Lang.Class({
         vbox.add(this._calendar.actor);
 
         let separator = new PopupMenu.PopupSeparatorMenuItem();
-        vbox.add(separator.actor, {y_align: St.Align.END, expand: true, y_fill: false});
+        vbox.add(separator.actor, { y_align: St.Align.END, expand: true, y_fill: false });
 
         this._openCalendarItem = new PopupMenu.PopupMenuItem(_("Open Calendar"));
         this._openCalendarItem.connect('activate', Lang.bind(this, this._onOpenCalendarActivate));
@@ -106,12 +106,7 @@ const DateMenuButton = new Lang.Class({
         hbox.add(this._separator);
 
         // Fill up the second column
-        vbox = new St.BoxLayout({ name: 'calendarEventsArea',
-                                  vertical: true });
-        hbox.add(vbox, { expand: true });
-
-        // Event list
-        vbox.add(this._eventList.actor, { expand: true });
+        hbox.add(this._eventList.actor, { expand: true, y_fill: false, y_align: St.Align.START });
 
         // Whenever the menu is opened, select today
         this.menu.connect('open-state-changed', Lang.bind(this, function(menu, isOpen) {
