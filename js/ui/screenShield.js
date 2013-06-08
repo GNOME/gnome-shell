@@ -622,7 +622,8 @@ const ScreenShield = new Lang.Class({
         if (!isEnter && !(GLib.unichar_isprint(unichar) || symbol == Clutter.KEY_Escape))
             return false;
 
-        if (this._ensureUnlockDialog(true, true) &&
+        if (this._isLocked &&
+            this._ensureUnlockDialog(true, true) &&
             GLib.unichar_isgraph(unichar))
             this._dialog.addCharacter(unichar);
 
