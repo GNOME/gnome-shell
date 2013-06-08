@@ -25,10 +25,8 @@
 #define __COGL_FENCE_PRIVATE_H__
 
 #include "cogl-fence.h"
-#include "cogl-queue.h"
+#include "cogl-list.h"
 #include "cogl-winsys-private.h"
-
-COGL_TAILQ_HEAD (CoglFenceList, CoglFenceClosure);
 
 typedef enum
 {
@@ -42,7 +40,7 @@ typedef enum
 
 struct _CoglFenceClosure
 {
-  COGL_TAILQ_ENTRY (CoglFenceClosure) list;
+  CoglList link;
   CoglFramebuffer *framebuffer;
 
   CoglFenceType type;

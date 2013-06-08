@@ -34,7 +34,7 @@
 #include "cogl-matrix.h"
 #include "cogl-object-private.h"
 #include "cogl-profile.h"
-#include "cogl-queue.h"
+#include "cogl-list.h"
 #include "cogl-boxed-value.h"
 #include "cogl-pipeline-snippet-private.h"
 #include "cogl-pipeline-state.h"

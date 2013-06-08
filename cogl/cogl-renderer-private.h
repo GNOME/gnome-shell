@@ -56,7 +56,7 @@ struct _CoglRenderer
   int poll_fds_age;
   GList *poll_sources;
 
-  CoglClosureList idle_closures;
+  CoglList idle_closures;
 
   GList *outputs;
 

@@ -57,7 +57,7 @@ cogl_poll_renderer_get_info (CoglRenderer *renderer,
   *n_poll_fds = renderer->poll_fds->len;
   *timeout = -1;
 
-  if (!COGL_LIST_EMPTY (&renderer->idle_closures))
+  if (!_cogl_list_empty (&renderer->idle_closures))
     {
       *timeout = 0;
       return renderer->poll_fds_age;

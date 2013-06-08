@@ -29,11 +29,9 @@
 #define __COGL_NODE_PRIVATE_H
 
 #include "cogl-object-private.h"
-#include "cogl-queue.h"
+#include "cogl-list.h"
 
 typedef struct _CoglNode CoglNode;
-
-COGL_LIST_HEAD (CoglNodeList, CoglNode);
 
 /* Pipelines and layers represent their state in a tree structure where
  * some of the state relating to a given pipeline or layer may actually
@@ -49,10 +47,10 @@ struct _CoglNode
   CoglNode *parent;
 
   /* The list entry here contains pointers to the node's siblings */
-  COGL_LIST_ENTRY (CoglNode) list_node;
+  CoglList link;
 
   /* List of children */
-  CoglNodeList children;
+  CoglList children;
 
   /* TRUE if the node took a strong reference on its parent. Weak
    * pipelines for instance don't take a reference on their parent. */

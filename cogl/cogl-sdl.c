@@ -100,6 +100,6 @@ cogl_sdl_idle (CoglContext *context)
    * to make sure the blocking returns immediately. We'll post our
    * dummy event to make sure that happens
    */
-  if (!COGL_LIST_EMPTY (&renderer->idle_closures))
+  if (!_cogl_list_empty (&renderer->idle_closures))
     _cogl_sdl_push_wakeup_event (context);
 }

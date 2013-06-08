@@ -38,6 +38,7 @@
 #include "cogl-pipeline-layer-private.h"
 #include "cogl-blend-string.h"
 #include "cogl-snippet-private.h"
+#include "cogl-list.h"
 
 #ifdef COGL_PIPELINE_FRAGEND_GLSL
 
@@ -68,13 +69,9 @@ typedef struct _UnitState
   unsigned int combine_constant_used:1;
 } UnitState;
 
-typedef struct _LayerData LayerData;
-
-COGL_LIST_HEAD (LayerDataList, LayerData);
-
-struct _LayerData
+typedef struct _LayerData
 {
-  COGL_LIST_ENTRY (LayerData) list_node;
+  CoglList link;
 
   /* Layer index for the for the previous layer. This isn't
      necessarily the same as this layer's index - 1 because the
@@ -83,7 +80,7 @@ struct _LayerData
   int previous_layer_index;
 
   CoglPipelineLayer *layer;
-};
+} LayerData;
 
 typedef struct
 {
@@ -99,8 +96,7 @@ typedef struct
      in reverse order. As soon as we're about to generate code for
      layer we'll remove it from the list so we don't generate it
      again */
-  LayerDataList layers;
-
+  CoglList layers;
 } CoglPipelineShaderState;
 
 static CoglUserDataKey shader_state_key;
@@ -363,7 +359,7 @@ _cogl_pipeline_fragend_glsl_start (CoglPipeline *pipeline,
   g_string_set_size (ctx->codegen_source_buffer, 0);
   shader_state->header = ctx->codegen_header_buffer;
   shader_state->source = ctx->codegen_source_buffer;
-  COGL_LIST_INIT (&shader_state->layers);
+  _cogl_list_init (&shader_state->layers);
 
   add_layer_declarations (pipeline, shader_state);
   add_global_declarations (pipeline, shader_state);
@@ -764,7 +760,7 @@ ensure_layer_generated (CoglPipeline *pipeline,
   LayerData *layer_data;
 
   /* Find the layer that corresponds to this layer_num */
-  COGL_LIST_FOREACH (layer_data, &shader_state->layers, list_node)
+  _cogl_list_for_each (layer_data, &shader_state->layers, link)
     {
       layer = layer_data->layer;
 
@@ -779,7 +775,7 @@ ensure_layer_generated (CoglPipeline *pipeline,
  found:
 
   /* Remove the layer from the list so we don't generate it again */
-  COGL_LIST_REMOVE (layer_data, list_node);
+  _cogl_list_remove (&layer_data->link);
 
   combine_authority =
     _cogl_pipeline_layer_get_authority (layer,
@@ -896,13 +892,18 @@ _cogl_pipeline_fragend_glsl_add_layer (CoglPipeline *pipeline,
   layer_data = g_slice_new (LayerData);
   layer_data->layer = layer;
 
-  if (COGL_LIST_EMPTY (&shader_state->layers))
-    layer_data->previous_layer_index = -1;
+  if (_cogl_list_empty (&shader_state->layers))
+    {
+      layer_data->previous_layer_index = -1;
+    }
   else
-    layer_data->previous_layer_index
-      = COGL_LIST_FIRST (&shader_state->layers)->layer->index;
+    {
+      LayerData *first =
+        _cogl_container_of (shader_state->layers.next, first, link);
+      layer_data->previous_layer_index = first->layer->index;
+    }
 
-  COGL_LIST_INSERT_HEAD (&shader_state->layers, layer_data, list_node);
+  _cogl_list_insert (&shader_state->layers, &layer_data->link);
 
   return TRUE;
 }
@@ -1002,20 +1003,25 @@ _cogl_pipeline_fragend_glsl_end (CoglPipeline *pipeline,
          for the last layer. If the value of this layer depends on any
          previous layers then it will recursively generate the code
          for those layers */
-      if (!COGL_LIST_EMPTY (&shader_state->layers))
+      if (!_cogl_list_empty (&shader_state->layers))
         {
           CoglPipelineLayer *last_layer;
           LayerData *layer_data, *tmp;
 
-          last_layer = COGL_LIST_FIRST (&shader_state->layers)->layer;
+          layer_data = _cogl_container_of (shader_state->layers.next,
+                                           layer_data,
+                                           link);
+          last_layer = layer_data->layer;
 
           ensure_layer_generated (pipeline, last_layer->index);
           g_string_append_printf (shader_state->source,
                                   "  cogl_color_out = cogl_layer%i;\n",
                                   last_layer->index);
 
-          COGL_LIST_FOREACH_SAFE (layer_data, &shader_state->layers,
-                                  list_node, tmp)
+          _cogl_list_for_each_safe (layer_data,
+                                    tmp,
+                                    &shader_state->layers,
+                                    link)
             g_slice_free (LayerData, layer_data);
         }
       else

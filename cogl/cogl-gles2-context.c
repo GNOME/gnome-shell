@@ -1439,7 +1439,7 @@ gl_tex_image_2d_wrapper (GLenum target,
 static void
 _cogl_gles2_offscreen_free (CoglGLES2Offscreen *gles2_offscreen)
 {
-  COGL_LIST_REMOVE (gles2_offscreen, list_node);
+  _cogl_list_remove (&gles2_offscreen->link);
   g_slice_free (CoglGLES2Offscreen, gles2_offscreen);
 }
 
@@ -1517,10 +1517,12 @@ _cogl_gles2_context_free (CoglGLES2Context *gles2_context)
   winsys = ctx->display->renderer->winsys_vtable;
   winsys->destroy_gles2_context (gles2_context);
 
-  while (gles2_context->foreign_offscreens.lh_first)
+  while (!_cogl_list_empty (&gles2_context->foreign_offscreens))
     {
       CoglGLES2Offscreen *gles2_offscreen =
-        gles2_context->foreign_offscreens.lh_first;
+        _cogl_container_of (gles2_context->foreign_offscreens.next,
+                            gles2_offscreen,
+                            link);
 
       /* Note: this will also indirectly free the gles2_offscreen by
        * calling the destroy notify for the _user_data */
@@ -1576,7 +1578,7 @@ cogl_gles2_context_new (CoglContext *ctx, CoglError **error)
 
   gles2_ctx->context = ctx;
 
-  COGL_LIST_INIT (&gles2_ctx->foreign_offscreens);
+  _cogl_list_init (&gles2_ctx->foreign_offscreens);
 
   winsys = ctx->display->renderer->winsys_vtable;
   gles2_ctx->winsys = winsys->context_create_gles2_context (ctx, error);
@@ -1698,9 +1700,9 @@ _cogl_gles2_offscreen_allocate (CoglOffscreen *offscreen,
       return NULL;
     }
 
-  for (gles2_offscreen = gles2_context->foreign_offscreens.lh_first;
-       gles2_offscreen;
-       gles2_offscreen = gles2_offscreen->list_node.le_next)
+  _cogl_list_for_each (gles2_offscreen,
+                       &gles2_context->foreign_offscreens,
+                       link)
     {
       if (gles2_offscreen->original_offscreen == offscreen)
         return gles2_offscreen;
@@ -1744,9 +1746,8 @@ _cogl_gles2_offscreen_allocate (CoglOffscreen *offscreen,
 
   gles2_offscreen->original_offscreen = offscreen;
 
-  COGL_LIST_INSERT_HEAD (&gles2_context->foreign_offscreens,
-                         gles2_offscreen,
-                         list_node);
+  _cogl_list_insert (&gles2_context->foreign_offscreens,
+                     &gles2_offscreen->link);
 
   /* So we avoid building up an ever growing collection of ancillary
    * buffers for wrapped framebuffers, we make sure that the wrappers

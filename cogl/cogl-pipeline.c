@@ -459,7 +459,7 @@ _cogl_pipeline_free (CoglPipeline *pipeline)
                                      destroy_weak_children_cb,
                                      NULL);
 
-  g_assert (COGL_LIST_EMPTY (&COGL_NODE (pipeline)->children));
+  g_assert (_cogl_list_empty (&COGL_NODE (pipeline)->children));
 
   _cogl_pipeline_unparent (COGL_NODE (pipeline));
 
@@ -1356,7 +1356,7 @@ _cogl_pipeline_pre_change_notify (CoglPipeline     *pipeline,
   /* If there are still children remaining though we'll need to
    * perform a copy-on-write and reparent the dependants as children
    * of the copy. */
-  if (!COGL_LIST_EMPTY (&COGL_NODE (pipeline)->children))
+  if (!_cogl_list_empty (&COGL_NODE (pipeline)->children))
     {
       CoglPipeline *new_authority;
 

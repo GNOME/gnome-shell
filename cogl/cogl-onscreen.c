@@ -48,9 +48,9 @@ _cogl_onscreen_init_from_template (CoglOnscreen *onscreen,
 {
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
 
-  COGL_LIST_INIT (&onscreen->frame_closures);
-  COGL_LIST_INIT (&onscreen->resize_closures);
-  COGL_LIST_INIT (&onscreen->dirty_closures);
+  _cogl_list_init (&onscreen->frame_closures);
+  _cogl_list_init (&onscreen->resize_closures);
+  _cogl_list_init (&onscreen->dirty_closures);
 
   framebuffer->config = onscreen_template->config;
   cogl_object_ref (framebuffer->config.swap_chain);
@@ -154,23 +154,20 @@ static void
 _cogl_dispatch_onscreen_cb (CoglContext *context)
 {
   CoglOnscreenEvent *event, *tmp;
-  CoglOnscreenEventList queue;
+  CoglList queue;
 
   /* Dispatching the event callback may cause another frame to be
    * drawn which in may cause another event to be queued immediately.
    * To make sure this loop will only dispatch one set of events we'll
    * steal the queue and iterate that separately */
-  COGL_TAILQ_INIT (&queue);
-  COGL_TAILQ_CONCAT (&queue, &context->onscreen_events_queue, list_node);
-  COGL_TAILQ_INIT (&context->onscreen_events_queue);
+  _cogl_list_init (&queue);
+  _cogl_list_insert_list (&queue, &context->onscreen_events_queue);
+  _cogl_list_init (&context->onscreen_events_queue);
 
   _cogl_closure_disconnect (context->onscreen_dispatch_idle);
   context->onscreen_dispatch_idle = NULL;
 
-  COGL_TAILQ_FOREACH_SAFE (event,
-                           &queue,
-                           list_node,
-                           tmp)
+  _cogl_list_for_each_safe (event, tmp, &queue, link)
     {
       CoglOnscreen *onscreen = event->onscreen;
       CoglFrameInfo *info = event->info;
@@ -183,12 +180,12 @@ _cogl_dispatch_onscreen_cb (CoglContext *context)
       g_slice_free (CoglOnscreenEvent, event);
     }
 
-  while (!COGL_TAILQ_EMPTY (&context->onscreen_dirty_queue))
+  while (!_cogl_list_empty (&context->onscreen_dirty_queue))
     {
       CoglOnscreenQueuedDirty *qe =
-        COGL_TAILQ_FIRST (&context->onscreen_dirty_queue);
+        _cogl_container_of (context->onscreen_dirty_queue.next, qe, link);
 
-      COGL_TAILQ_REMOVE (&context->onscreen_dirty_queue, qe, list_node);
+      _cogl_list_remove (&qe->link);
 
       _cogl_closure_list_invoke (&qe->onscreen->dirty_closures,
                                  CoglOnscreenDirtyCallback,
@@ -226,7 +223,7 @@ _cogl_onscreen_queue_dirty (CoglOnscreen *onscreen,
 
   qe->onscreen = cogl_object_ref (onscreen);
   qe->info = *info;
-  COGL_TAILQ_INSERT_TAIL (&ctx->onscreen_dirty_queue, qe, list_node);
+  _cogl_list_insert (ctx->onscreen_dirty_queue.prev, &qe->link);
 
   _cogl_onscreen_queue_dispatch_idle (onscreen);
 }
@@ -258,7 +255,7 @@ _cogl_onscreen_queue_event (CoglOnscreen *onscreen,
   event->info = cogl_object_ref (info);
   event->type = type;
 
-  COGL_TAILQ_INSERT_TAIL (&ctx->onscreen_events_queue, event, list_node);
+  _cogl_list_insert (ctx->onscreen_events_queue.prev, &event->link);
 
   _cogl_onscreen_queue_dispatch_idle (onscreen);
 }

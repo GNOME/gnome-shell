@@ -53,26 +53,22 @@
 #endif
 
 #include "cogl-memory-stack-private.h"
-#include "cogl-queue.h"
+#include "cogl-list.h"
 
 #include <stdint.h>
 
 #include <glib.h>
 
-typedef struct _CoglMemorySubStack CoglMemorySubStack;
-
-COGL_TAILQ_HEAD (CoglMemorySubStackList, CoglMemorySubStack);
-
-struct _CoglMemorySubStack
+typedef struct _CoglMemorySubStack
 {
-  COGL_TAILQ_ENTRY (CoglMemorySubStack) list_node;
+  CoglList link;
   size_t bytes;
   uint8_t *data;
-};
+} CoglMemorySubStack;
 
 struct _CoglMemoryStack
 {
-  CoglMemorySubStackList sub_stacks;
+  CoglList sub_stacks;
 
   CoglMemorySubStack *sub_stack;
   size_t sub_stack_offset;
@@ -93,7 +89,7 @@ _cogl_memory_stack_add_sub_stack (CoglMemoryStack *stack,
 {
   CoglMemorySubStack *sub_stack =
     _cogl_memory_sub_stack_alloc (sub_stack_bytes);
-  COGL_TAILQ_INSERT_TAIL (&stack->sub_stacks, sub_stack, list_node);
+  _cogl_list_insert (stack->sub_stacks.prev, &sub_stack->link);
   stack->sub_stack = sub_stack;
   stack->sub_stack_offset = 0;
 }
@@ -103,7 +99,7 @@ _cogl_memory_stack_new (size_t initial_size_bytes)
 {
   CoglMemoryStack *stack = g_slice_new0 (CoglMemoryStack);
 
-  COGL_TAILQ_INIT (&stack->sub_stacks);
+  _cogl_list_init (&stack->sub_stacks);
 
   _cogl_memory_stack_add_sub_stack (stack, initial_size_bytes);
 
@@ -128,9 +124,9 @@ _cogl_memory_stack_alloc (CoglMemoryStack *stack, size_t bytes)
    * is made then we may need to skip over one or more of the
    * sub-stacks that are too small for the requested allocation
    * size... */
-  for (sub_stack = sub_stack->list_node.tqe_next;
-       sub_stack;
-       sub_stack = sub_stack->list_node.tqe_next)
+  for (sub_stack = _cogl_container_of (sub_stack->link.next, sub_stack, link);
+       &sub_stack->link != &stack->sub_stacks;
+       sub_stack = _cogl_container_of (sub_stack->link.next, sub_stack, link))
     {
       if (sub_stack->bytes >= bytes)
         {
@@ -147,11 +143,11 @@ _cogl_memory_stack_alloc (CoglMemoryStack *stack, size_t bytes)
    * requested allocation if that's bigger.
    */
 
-  sub_stack = COGL_TAILQ_LAST (&stack->sub_stacks, CoglMemorySubStackList);
+  sub_stack = _cogl_container_of (stack->sub_stacks.prev, sub_stack, link);
 
   _cogl_memory_stack_add_sub_stack (stack, MAX (sub_stack->bytes, bytes) * 2);
 
-  sub_stack = COGL_TAILQ_LAST (&stack->sub_stacks, CoglMemorySubStackList);
+  sub_stack = _cogl_container_of (stack->sub_stacks.prev, sub_stack, link);
 
   stack->sub_stack_offset += bytes;
 
@@ -161,7 +157,9 @@ _cogl_memory_stack_alloc (CoglMemoryStack *stack, size_t bytes)
 void
 _cogl_memory_stack_rewind (CoglMemoryStack *stack)
 {
-  stack->sub_stack = COGL_TAILQ_FIRST (&stack->sub_stacks);
+  stack->sub_stack = _cogl_container_of (stack->sub_stacks.next,
+                                         stack->sub_stack,
+                                         link);
   stack->sub_stack_offset = 0;
 }
 
@@ -175,11 +173,12 @@ _cogl_memory_sub_stack_free (CoglMemorySubStack *sub_stack)
 void
 _cogl_memory_stack_free (CoglMemoryStack *stack)
 {
-  CoglMemorySubStack *sub_stack;
 
-  while ((sub_stack = COGL_TAILQ_FIRST (&stack->sub_stacks)))
+  while (!_cogl_list_empty (&stack->sub_stacks))
     {
-      COGL_TAILQ_REMOVE (&stack->sub_stacks, sub_stack, list_node);
+      CoglMemorySubStack *sub_stack =
+        _cogl_container_of (stack->sub_stacks.next, sub_stack, link);
+      _cogl_list_remove (&sub_stack->link);
       _cogl_memory_sub_stack_free (sub_stack);
     }
 

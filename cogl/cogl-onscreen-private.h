@@ -26,8 +26,8 @@
 
 #include "cogl-onscreen.h"
 #include "cogl-framebuffer-private.h"
-#include "cogl-queue.h"
 #include "cogl-closure-list-private.h"
+#include "cogl-list.h"
 
 #include <glib.h>
 
@@ -35,30 +35,22 @@
 #include <windows.h>
 #endif
 
-typedef struct _CoglOnscreenEvent CoglOnscreenEvent;
-
-COGL_TAILQ_HEAD (CoglOnscreenEventList, CoglOnscreenEvent);
-
-struct _CoglOnscreenEvent
+typedef struct _CoglOnscreenEvent
 {
-  COGL_TAILQ_ENTRY (CoglOnscreenEvent) list_node;
+  CoglList link;
 
   CoglOnscreen *onscreen;
   CoglFrameInfo *info;
   CoglFrameEvent type;
-};
+} CoglOnscreenEvent;
 
-typedef struct _CoglOnscreenQueuedDirty CoglOnscreenQueuedDirty;
-
-COGL_TAILQ_HEAD (CoglOnscreenQueuedDirtyList, CoglOnscreenQueuedDirty);
-
-struct _CoglOnscreenQueuedDirty
+typedef struct _CoglOnscreenQueuedDirty
 {
-  COGL_TAILQ_ENTRY (CoglOnscreenQueuedDirty) list_node;
+  CoglList link;
 
   CoglOnscreen *onscreen;
   CoglOnscreenDirtyInfo info;
-};
+} CoglOnscreenQueuedDirty;
 
 struct _CoglOnscreen
 {
@@ -80,12 +72,12 @@ struct _CoglOnscreen
 
   CoglBool swap_throttled;
 
-  CoglClosureList frame_closures;
+  CoglList frame_closures;
 
   CoglBool resizable;
-  CoglClosureList resize_closures;
+  CoglList resize_closures;
 
-  CoglClosureList dirty_closures;
+  CoglList dirty_closures;
 
   int64_t frame_counter;
   int64_t swap_frame_counter; /* frame counter at last all to

@@ -154,7 +154,7 @@ _cogl_journal_new (CoglFramebuffer *framebuffer)
   journal->entries = g_array_new (FALSE, FALSE, sizeof (CoglJournalEntry));
   journal->vertices = g_array_new (FALSE, FALSE, sizeof (float));
 
-  COGL_TAILQ_INIT (&journal->pending_fences);
+  _cogl_list_init (&journal->pending_fences);
 
   return _cogl_journal_object_new (journal);
 }
@@ -1272,11 +1272,11 @@ _cogl_journal_all_entries_within_bounds (CoglJournal *journal,
 static void
 post_fences (CoglJournal *journal)
 {
-  CoglFenceClosure *fence, *next;
+  CoglFenceClosure *fence, *tmp;
 
-  COGL_TAILQ_FOREACH_SAFE (fence, &journal->pending_fences, list, next)
+  _cogl_list_for_each_safe (fence, tmp, &journal->pending_fences, link)
     {
-      COGL_TAILQ_REMOVE (&journal->pending_fences, fence, list);
+      _cogl_list_remove (&fence->link);
       _cogl_fence_submit (fence);
     }
 }

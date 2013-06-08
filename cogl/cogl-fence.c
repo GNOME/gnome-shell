@@ -73,9 +73,9 @@ static void
 _cogl_fence_poll_dispatch (void *source, int revents)
 {
   CoglContext *context = source;
-  CoglFenceClosure *fence, *next;
+  CoglFenceClosure *fence, *tmp;
 
-  COGL_TAILQ_FOREACH_SAFE (fence, &context->fences, list, next)
+  _cogl_list_for_each_safe (fence, tmp, &context->fences, link)
     _cogl_fence_check (fence);
 }
 
@@ -92,11 +92,11 @@ _cogl_fence_poll_prepare (void *source)
     {
       CoglFramebuffer *fb = l->data;
 
-      if (!COGL_TAILQ_EMPTY (&fb->journal->pending_fences))
+      if (!_cogl_list_empty (&fb->journal->pending_fences))
         _cogl_framebuffer_flush_journal (fb);
     }
 
-  if (!COGL_TAILQ_EMPTY (&context->fences))
+  if (!_cogl_list_empty (&context->fences))
     return FENCE_CHECK_TIMEOUT;
   else
     return -1;
@@ -134,7 +134,7 @@ _cogl_fence_submit (CoglFenceClosure *fence)
 #endif
 
  done:
-  COGL_TAILQ_INSERT_TAIL (&context->fences, fence, list);
+  _cogl_list_insert (context->fences.prev, &fence->link);
 
   if (!context->fences_poll_source)
     {
@@ -166,7 +166,7 @@ cogl_framebuffer_add_fence_callback (CoglFramebuffer *framebuffer,
 
   if (journal->entries->len)
     {
-      COGL_TAILQ_INSERT_TAIL (&journal->pending_fences, fence, list);
+      _cogl_list_insert (journal->pending_fences.prev, &fence->link);
       fence->type = FENCE_TYPE_PENDING;
     }
   else
@@ -179,16 +179,15 @@ void
 cogl_framebuffer_cancel_fence_callback (CoglFramebuffer *framebuffer,
                                         CoglFenceClosure *fence)
 {
-  CoglJournal *journal = framebuffer->journal;
   CoglContext *context = framebuffer->context;
 
   if (fence->type == FENCE_TYPE_PENDING)
     {
-      COGL_TAILQ_REMOVE (&journal->pending_fences, fence, list);
+      _cogl_list_remove (&fence->link);
     }
   else
     {
-      COGL_TAILQ_REMOVE (&context->fences, fence, list);
+      _cogl_list_remove (&fence->link);
 
       if (fence->type == FENCE_TYPE_WINSYS)
         {
@@ -212,15 +211,15 @@ _cogl_fence_cancel_fences_for_framebuffer (CoglFramebuffer *framebuffer)
 {
   CoglJournal *journal = framebuffer->journal;
   CoglContext *context = framebuffer->context;
-  CoglFenceClosure *fence, *next;
+  CoglFenceClosure *fence, *tmp;
 
-  while (!COGL_TAILQ_EMPTY (&journal->pending_fences))
+  while (!_cogl_list_empty (&journal->pending_fences))
     {
-      fence = COGL_TAILQ_FIRST (&journal->pending_fences);
+      fence = _cogl_container_of (journal->pending_fences.next, fence, link);
       cogl_framebuffer_cancel_fence_callback (framebuffer, fence);
     }
 
-  COGL_TAILQ_FOREACH_SAFE (fence, &context->fences, list, next)
+  _cogl_list_for_each_safe (fence, tmp, &context->fences, link)
     {
       if (fence->framebuffer == framebuffer)
         cogl_framebuffer_cancel_fence_callback (framebuffer, fence);

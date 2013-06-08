@@ -30,7 +30,7 @@
 void
 _cogl_closure_disconnect (CoglClosure *closure)
 {
-  COGL_LIST_REMOVE (closure, list_node);
+  _cogl_list_remove (&closure->link);
 
   if (closure->destroy_cb)
     closure->destroy_cb (closure->user_data);
@@ -39,16 +39,16 @@ _cogl_closure_disconnect (CoglClosure *closure)
 }
 
 void
-_cogl_closure_list_disconnect_all (CoglClosureList *list)
+_cogl_closure_list_disconnect_all (CoglList *list)
 {
   CoglClosure *closure, *next;
 
-  COGL_LIST_FOREACH_SAFE (closure, list, list_node, next)
+  _cogl_list_for_each_safe (closure, next, list, link)
     _cogl_closure_disconnect (closure);
 }
 
 CoglClosure *
-_cogl_closure_list_add (CoglClosureList *list,
+_cogl_closure_list_add (CoglList *list,
                         void *function,
                         void *user_data,
                         CoglUserDataDestroyCallback destroy_cb)
@@ -59,7 +59,7 @@ _cogl_closure_list_add (CoglClosureList *list,
   closure->user_data = user_data;
   closure->destroy_cb = destroy_cb;
 
-  COGL_LIST_INSERT_HEAD (list, closure, list_node);
+  _cogl_list_insert (list, &closure->link);
 
   return closure;
 }

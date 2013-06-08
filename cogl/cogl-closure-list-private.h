@@ -25,7 +25,7 @@
 #define _COGL_CLOSURE_LIST_PRIVATE_H_
 
 #include "cogl-object.h"
-#include "cogl-queue.h"
+#include "cogl-list.h"
 
 /*
  * This implements a list of callbacks that can be used a bit like
@@ -43,18 +43,14 @@
  * point.
  */
 
-typedef struct _CoglClosure CoglClosure;
-
-COGL_LIST_HEAD (CoglClosureList, CoglClosure);
-
-struct _CoglClosure
+typedef struct _CoglClosure
 {
-  COGL_LIST_ENTRY (CoglClosure) list_node;
+  CoglList link;
 
   void *function;
   void *user_data;
   CoglUserDataDestroyCallback destroy_cb;
-};
+} CoglClosure;
 
 /*
  * _cogl_closure_disconnect:
@@ -67,10 +63,10 @@ void
 _cogl_closure_disconnect (CoglClosure *closure);
 
 void
-_cogl_closure_list_disconnect_all (CoglClosureList *list);
+_cogl_closure_list_disconnect_all (CoglList *list);
 
 CoglClosure *
-_cogl_closure_list_add (CoglClosureList *list,
+_cogl_closure_list_add (CoglList *list,
                         void *function,
                         void *user_data,
                         CoglUserDataDestroyCallback destroy_cb);
@@ -91,26 +87,26 @@ _cogl_closure_list_add (CoglClosureList *list,
  * callbacks. If you want to handle the return value you should
  * manually iterate the list and invoke the callbacks yourself.
  */
-#define _cogl_closure_list_invoke(list, cb_type, ...)            \
-  G_STMT_START {                                                \
-    CoglClosure *_c, *_tmp;                                     \
-                                                                \
-    COGL_LIST_FOREACH_SAFE (_c, (list), list_node, _tmp)        \
-      {                                                         \
-        cb_type _cb = _c->function;                             \
-        _cb (__VA_ARGS__, _c->user_data);                       \
-      }                                                         \
+#define _cogl_closure_list_invoke(list, cb_type, ...)   \
+  G_STMT_START {                                        \
+    CoglClosure *_c, *_tmp;                             \
+                                                        \
+    _cogl_list_for_each_safe (_c, _tmp, (list), link)   \
+      {                                                 \
+        cb_type _cb = _c->function;                     \
+        _cb (__VA_ARGS__, _c->user_data);               \
+      }                                                 \
   } G_STMT_END
 
-#define _cogl_closure_list_invoke_no_args(list)                 \
-  G_STMT_START {                                                \
-    CoglClosure *_c, *_tmp;                                     \
-                                                                \
-    COGL_LIST_FOREACH_SAFE (_c, (list), list_node, _tmp)        \
-      {                                                         \
-        void (*_cb)(void *) = _c->function;                     \
-        _cb (_c->user_data);                                    \
-      }                                                         \
+#define _cogl_closure_list_invoke_no_args(list)         \
+  G_STMT_START {                                        \
+    CoglClosure *_c, *_tmp;                             \
+                                                        \
+    _cogl_list_for_each_safe (_c, _tmp, (list), link)   \
+      {                                                 \
+        void (*_cb)(void *) = _c->function;             \
+        _cb (_c->user_data);                            \
+      }                                                 \
   } G_STMT_END
 
 #endif /* _COGL_CLOSURE_LIST_PRIVATE_H_ */

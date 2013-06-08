@@ -347,7 +347,7 @@ _cogl_pipeline_layer_pre_change_notify (CoglPipeline *required_owner,
 
   /* Identify the case where the layer is new with no owner or
    * dependants and so we don't need to do anything. */
-  if (COGL_LIST_EMPTY (&COGL_NODE (layer)->children) &&
+  if (_cogl_list_empty (&COGL_NODE (layer)->children) &&
       layer->owner == NULL)
     goto init_layer_state;
 
@@ -369,7 +369,7 @@ _cogl_pipeline_layer_pre_change_notify (CoglPipeline *required_owner,
    * they have dependants - either direct children, or another
    * pipeline as an owner.
    */
-  if (!COGL_LIST_EMPTY (&COGL_NODE (layer)->children) ||
+  if (!_cogl_list_empty (&COGL_NODE (layer)->children) ||
       layer->owner != required_owner)
     {
       CoglPipelineLayer *new = _cogl_pipeline_layer_copy (layer);

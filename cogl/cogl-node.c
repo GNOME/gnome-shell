@@ -36,7 +36,7 @@ void
 _cogl_pipeline_node_init (CoglNode *node)
 {
   node->parent = NULL;
-  COGL_LIST_INIT (&node->children);
+  _cogl_list_init (&node->children);
 }
 
 void
@@ -59,7 +59,7 @@ _cogl_pipeline_node_set_parent_real (CoglNode *node,
   if (node->parent)
     unparent (node);
 
-  COGL_LIST_INSERT_HEAD (&parent->children, node, list_node);
+  _cogl_list_insert (&parent->children, &node->link);
 
   node->parent = parent;
   node->has_parent_reference = take_strong_reference;
@@ -80,9 +80,9 @@ _cogl_pipeline_node_unparent_real (CoglNode *node)
   if (parent == NULL)
     return;
 
-  _COGL_RETURN_IF_FAIL (!COGL_LIST_EMPTY (&parent->children));
+  _COGL_RETURN_IF_FAIL (!_cogl_list_empty (&parent->children));
 
-  COGL_LIST_REMOVE (node, list_node);
+  _cogl_list_remove (&node->link);
 
   if (node->has_parent_reference)
     cogl_object_unref (parent);
@@ -97,7 +97,7 @@ _cogl_pipeline_node_foreach_child (CoglNode *node,
 {
   CoglNode *child, *next;
 
-  COGL_LIST_FOREACH_SAFE (child, &node->children, list_node, next)
+  _cogl_list_for_each_safe (child, next, &node->children, link)
     callback (child, user_data);
 }
 

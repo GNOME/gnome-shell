@@ -59,7 +59,7 @@ typedef struct _CoglJournal
 
   int fast_read_pixel_count;
 
-  CoglFenceList pending_fences;
+  CoglList pending_fences;
 
 } CoglJournal;
 

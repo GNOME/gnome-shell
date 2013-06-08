@@ -187,7 +187,7 @@ cogl_renderer_new (void)
 
   renderer->poll_fds = g_array_new (FALSE, TRUE, sizeof (CoglPollFD));
 
-  COGL_LIST_INIT (&renderer->idle_closures);
+  _cogl_list_init (&renderer->idle_closures);
 
 #ifdef COGL_HAS_XLIB_SUPPORT
   renderer->xlib_enable_event_retrieval = TRUE;

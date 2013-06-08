@@ -409,7 +409,8 @@ cogl_sources_c = \
 	$(srcdir)/cogl-point-in-poly-private.h       	\
 	$(srcdir)/cogl-point-in-poly.c       		\
 	$(srcdir)/cogl-clutter.c       			\
-	$(srcdir)/cogl-queue.h				\
+	$(srcdir)/cogl-list.c				\
+	$(srcdir)/cogl-list.h				\
 	$(srcdir)/winsys/cogl-winsys-stub-private.h	\
 	$(srcdir)/winsys/cogl-winsys-stub.c		\
 	$(srcdir)/cogl-config-private.h			\

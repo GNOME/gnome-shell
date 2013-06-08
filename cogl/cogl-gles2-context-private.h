@@ -33,18 +33,14 @@
 
 #include "cogl-object-private.h"
 #include "cogl-framebuffer-private.h"
-#include "cogl-queue.h"
+#include "cogl-list.h"
 
-typedef struct _CoglGLES2Offscreen CoglGLES2Offscreen;
-
-COGL_LIST_HEAD (CoglGLES2OffscreenList, CoglGLES2Offscreen);
-
-struct _CoglGLES2Offscreen
+typedef struct _CoglGLES2Offscreen
 {
-  COGL_LIST_ENTRY (CoglGLES2Offscreen) list_node;
+  CoglList link;
   CoglOffscreen *original_offscreen;
   CoglGLFramebuffer gl_framebuffer;
-};
+} CoglGLES2Offscreen;
 
 typedef struct
 {
@@ -143,7 +139,7 @@ struct _CoglGLES2Context
 
   GLuint current_fbo_handle;
 
-  CoglGLES2OffscreenList foreign_offscreens;
+  CoglList foreign_offscreens;
 
   CoglGLES2Vtable *vtable;
 
