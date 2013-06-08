@@ -246,6 +246,12 @@ function _initializeUI() {
             Shell.Global.log_structured('GNOME Shell started at ' + _startDate,
                                         ['MESSAGE_ID=' + GNOMESHELL_STARTED_MESSAGE_ID]);
         }
+
+        let credentials = new Gio.Credentials();
+        if (credentials.get_unix_user() === 0) {
+            notify(_('Logged in as a privileged user'),
+                   _('Running a session as a privileged user should be avoided for security reasons. If possible, you should log in as a normal user.'));
+        }
     });
 }
 
