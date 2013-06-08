@@ -1711,8 +1711,12 @@ const NMApplet = new Lang.Class({
 
             // Ignore slave connections
             let connectionPath = activeConnections[i].connection;
-            let connection = this._settings.get_connection_by_path(connectionPath)
-            if (this._ignoreConnection(connection))
+            let connection = this._settings.get_connection_by_path(connectionPath);
+
+            // connection might be null, if libnm-glib fails to create
+            // the object due to version incompatibility, or if the
+            // connection is not visible to the current user
+            if (connection && this._ignoreConnection(connection))
                 continue;
 
             supportedConnections.push(activeConnections[i]);
