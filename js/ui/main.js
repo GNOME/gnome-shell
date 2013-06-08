@@ -262,6 +262,12 @@ function _initializeUI() {
             });
         }
 
+        let credentials = new Gio.Credentials();
+        if (credentials.get_unix_user() === 0) {
+            notify(_('Logged in as a privileged user'),
+                   _('Running a session as a privileged user should be avoided for security reasons. If possible, you should log in as a normal user.'));
+        }
+
         LoginManager.registerSessionWithGDM();
 
         let perfModuleName = GLib.getenv("SHELL_PERF_MODULE");
