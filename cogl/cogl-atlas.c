@@ -33,6 +33,7 @@
 #include "cogl-context-private.h"
 #include "cogl-texture-private.h"
 #include "cogl-texture-2d-private.h"
+#include "cogl-texture-2d-sliced.h"
 #include "cogl-texture-driver.h"
 #include "cogl-pipeline-opengl-private.h"
 #include "cogl-debug.h"
@@ -541,13 +542,58 @@ _cogl_atlas_remove (CoglAtlas *atlas,
                     _cogl_rectangle_map_get_height (atlas->map)));
 };
 
+static CoglTexture *
+create_migration_texture (CoglContext *ctx,
+                          int width,
+                          int height,
+                          CoglPixelFormat internal_format)
+{
+  CoglTexture *tex;
+  CoglError *skip_error = NULL;
+
+  if ((_cogl_util_is_pot (width) && _cogl_util_is_pot (height)) ||
+      (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_BASIC) &&
+       cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP)))
+    {
+      /* First try creating a fast-path non-sliced texture */
+      tex = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx,
+                                                         width, height,
+                                                         internal_format));
+
+      /* TODO: instead of allocating storage here it would be better
+       * if we had some api that let us just check that the size is
+       * supported by the hardware so storage could be allocated
+       * lazily when uploading data. */
+      if (!cogl_texture_allocate (tex, &skip_error))
+        {
+          cogl_error_free (skip_error);
+          cogl_object_unref (tex);
+          tex = NULL;
+        }
+    }
+  else
+    tex = NULL;
+
+  if (!tex)
+    {
+      CoglTexture2DSliced *tex_2ds =
+        cogl_texture_2d_sliced_new_with_size (ctx,
+                                              width,
+                                              height,
+                                              COGL_TEXTURE_MAX_WASTE,
+                                              internal_format);
+      tex = COGL_TEXTURE (tex_2ds);
+    }
+
+  return tex;
+}
+
 CoglTexture *
 _cogl_atlas_copy_rectangle (CoglAtlas *atlas,
                             int x,
                             int y,
                             int width,
                             int height,
-                            CoglTextureFlags flags,
                             CoglPixelFormat format)
 {
   CoglTexture *tex;
@@ -557,7 +603,7 @@ _cogl_atlas_copy_rectangle (CoglAtlas *atlas,
   _COGL_GET_CONTEXT (ctx, NULL);
 
   /* Create a new texture at the right size */
-  tex = cogl_texture_new_with_size (width, height, flags, format);
+  tex = create_migration_texture (ctx, width, height, format);
   if (!cogl_texture_allocate (tex, &ignore_error))
     {
       cogl_error_free (ignore_error);

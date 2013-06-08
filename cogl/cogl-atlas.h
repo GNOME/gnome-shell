@@ -80,7 +80,6 @@ _cogl_atlas_copy_rectangle (CoglAtlas *atlas,
                             int y,
                             int width,
                             int height,
-                            CoglTextureFlags flags,
                             CoglPixelFormat format);
 
 void

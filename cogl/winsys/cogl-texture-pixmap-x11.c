@@ -38,6 +38,7 @@
 #include "cogl-texture-private.h"
 #include "cogl-texture-driver.h"
 #include "cogl-texture-2d-private.h"
+#include "cogl-texture-2d-sliced.h"
 #include "cogl-texture-rectangle-private.h"
 #include "cogl-context-private.h"
 #include "cogl-display-private.h"
@@ -489,6 +490,52 @@ cogl_texture_pixmap_x11_set_damage_object (CoglTexturePixmapX11 *tex_pixmap,
     set_damage_object_internal (ctxt, tex_pixmap, damage, report_level);
 }
 
+static CoglTexture *
+create_fallback_texture (CoglContext *ctx,
+                         int width,
+                         int height,
+                         CoglPixelFormat internal_format)
+{
+  CoglTexture *tex;
+  CoglError *skip_error = NULL;
+
+  if ((_cogl_util_is_pot (width) && _cogl_util_is_pot (height)) ||
+      (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_BASIC) &&
+       cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP)))
+    {
+      /* First try creating a fast-path non-sliced texture */
+      tex = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx,
+                                                         width, height,
+                                                         internal_format));
+
+      /* TODO: instead of allocating storage here it would be better
+       * if we had some api that let us just check that the size is
+       * supported by the hardware so storage could be allocated
+       * lazily when uploading data. */
+      if (!cogl_texture_allocate (tex, &skip_error))
+        {
+          cogl_error_free (skip_error);
+          cogl_object_unref (tex);
+          tex = NULL;
+        }
+    }
+  else
+    tex = NULL;
+
+  if (!tex)
+    {
+      CoglTexture2DSliced *tex_2ds =
+        cogl_texture_2d_sliced_new_with_size (ctx,
+                                              width,
+                                              height,
+                                              COGL_TEXTURE_MAX_WASTE,
+                                              internal_format);
+      tex = COGL_TEXTURE (tex_2ds);
+    }
+
+  return tex;
+}
+
 static void
 _cogl_texture_pixmap_x11_update_image_texture (CoglTexturePixmapX11 *tex_pixmap)
 {
@@ -528,10 +575,10 @@ _cogl_texture_pixmap_x11_update_image_texture (CoglTexturePixmapX11 *tex_pixmap)
                         ? COGL_PIXEL_FORMAT_RGBA_8888_PRE
                         : COGL_PIXEL_FORMAT_RGB_888);
 
-      tex_pixmap->tex = cogl_texture_new_with_size (tex->width,
-                                                    tex->height,
-                                                    COGL_TEXTURE_NONE,
-                                                    texture_format);
+      tex_pixmap->tex = create_fallback_texture (ctx,
+                                                 tex->width,
+                                                 tex->height,
+                                                 texture_format);
     }
 
   if (tex_pixmap->image == NULL)
