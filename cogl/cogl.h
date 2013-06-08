@@ -93,6 +93,7 @@
 #include <cogl/cogl-texture-3d.h>
 #include <cogl/cogl-texture-2d-sliced.h>
 #include <cogl/cogl-sub-texture.h>
+#include <cogl/cogl-atlas-texture.h>
 #include <cogl/cogl-meta-texture.h>
 #include <cogl/cogl-primitive-texture.h>
 #include <cogl/cogl-index-buffer.h>

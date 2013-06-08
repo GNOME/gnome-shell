@@ -185,16 +185,19 @@ _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
   CoglTexture *tex;
   CoglError *internal_error = NULL;
 
-  /* First try putting the texture in the atlas */
-  if ((atlas_tex = _cogl_atlas_texture_new_from_bitmap (bitmap,
-                                                        flags,
-                                                        internal_format,
-                                                        can_convert_in_place,
-                                                        &internal_error)))
-    return COGL_TEXTURE (atlas_tex);
+  if (!flags &&
+      !COGL_DEBUG_ENABLED (COGL_DEBUG_DISABLE_ATLAS))
+    {
+      /* First try putting the texture in the atlas */
+      if ((atlas_tex = _cogl_atlas_texture_new_from_bitmap (bitmap,
+                                                            internal_format,
+                                                            can_convert_in_place,
+                                                            &internal_error)))
+        return COGL_TEXTURE (atlas_tex);
 
-  cogl_error_free (internal_error);
-  internal_error = NULL;
+      cogl_error_free (internal_error);
+      internal_error = NULL;
+    }
 
   /* If that doesn't work try a fast path 2D texture */
   if ((_cogl_util_is_pot (bitmap->width) &&

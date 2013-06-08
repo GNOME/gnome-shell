@@ -224,12 +224,11 @@ cogl_pango_glyph_cache_add_to_global_atlas (CoglPangoGlyphCache *cache,
   if (cache->use_mipmapping)
     return FALSE;
 
-  texture = _cogl_atlas_texture_new_with_size (cache->ctx,
-                                               value->draw_width,
-                                               value->draw_height,
-                                               COGL_TEXTURE_NONE,
-                                               COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                               &ignore_error);
+  texture = cogl_atlas_texture_new_with_size (cache->ctx,
+                                              value->draw_width,
+                                              value->draw_height,
+                                              COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                              &ignore_error);
 
   if (texture == NULL)
     {
