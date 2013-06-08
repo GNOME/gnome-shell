@@ -268,6 +268,13 @@ function _initializeUI() {
                    _('Running a session as a privileged user should be avoided for security reasons. If possible, you should log in as a normal user.'));
         }
 
+        if (sessionMode.currentMode !== 'gdm' &&
+            sessionMode.currentMode !== 'initial-setup' &&
+            screenShield === null) {
+            notify(_('Screen Lock disabled'),
+                   _('Screen Locking requires the GNOME display manager.'));
+        }
+
         LoginManager.registerSessionWithGDM();
 
         let perfModuleName = GLib.getenv("SHELL_PERF_MODULE");
