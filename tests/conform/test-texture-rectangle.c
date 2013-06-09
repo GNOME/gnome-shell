@@ -69,7 +69,7 @@ create_source_rect (void)
 
   g_free (data);
 
-  tex = cogl_texture_new_from_foreign (gl_tex,
+  tex = test_utils_texture_new_from_foreign (gl_tex,
                                        GL_TEXTURE_RECTANGLE_ARB,
                                        256, 256, 0, 0,
                                        COGL_PIXEL_FORMAT_RGBA_8888);
@@ -99,7 +99,7 @@ create_source_2d (void)
         *(p++) = 255;
       }
 
-  tex = cogl_texture_new_from_data (256, 256, COGL_TEXTURE_NONE,
+  tex = test_utils_texture_new_from_data (256, 256, TEST_UTILS_TEXTURE_NONE,
                                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                     COGL_PIXEL_FORMAT_ANY,
                                     256 * 4,

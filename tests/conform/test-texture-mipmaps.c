@@ -33,7 +33,7 @@ make_texture (void)
         p += 3;
       }
 
-  tex = cogl_texture_new_from_data (TEX_SIZE, TEX_SIZE, COGL_TEXTURE_NONE,
+  tex = test_utils_texture_new_from_data (TEX_SIZE, TEX_SIZE, TEST_UTILS_TEXTURE_NONE,
                                     COGL_PIXEL_FORMAT_RGB_888,
                                     COGL_PIXEL_FORMAT_ANY,
                                     TEX_SIZE * 3,

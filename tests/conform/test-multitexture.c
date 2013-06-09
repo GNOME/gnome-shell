@@ -85,9 +85,9 @@ make_texture (guchar ref)
 
   /* Note: we don't use COGL_PIXEL_FORMAT_ANY for the internal format here
    * since we don't want to allow Cogl to premultiply our data. */
-  tex = cogl_texture_new_from_data (QUAD_WIDTH * 2,
+  tex = test_utils_texture_new_from_data (QUAD_WIDTH * 2,
                                     QUAD_WIDTH * 2,
-                                    COGL_TEXTURE_NONE,
+                                    TEST_UTILS_TEXTURE_NONE,
                                     COGL_PIXEL_FORMAT_RGBA_8888,
                                     COGL_PIXEL_FORMAT_RGBA_8888,
                                     QUAD_WIDTH * 8,

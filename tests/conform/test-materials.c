@@ -111,11 +111,11 @@ test_using_all_layers (TestState *state, int x, int y)
      will use a red texture. The layers will all be modulated together
      so the final fragment should be red. */
 
-  white_texture = cogl_texture_new_from_data (1, 1, COGL_TEXTURE_NONE,
+  white_texture = test_utils_texture_new_from_data (1, 1, TEST_UTILS_TEXTURE_NONE,
                                               COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                               COGL_PIXEL_FORMAT_ANY,
                                               4, white_pixel);
-  red_texture = cogl_texture_new_from_data (1, 1, COGL_TEXTURE_NONE,
+  red_texture = test_utils_texture_new_from_data (1, 1, TEST_UTILS_TEXTURE_NONE,
                                             COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                                             COGL_PIXEL_FORMAT_ANY,
                                             4, red_pixel);

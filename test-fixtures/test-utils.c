@@ -348,3 +348,185 @@ cogl_test_verbose (void)
 {
   return cogl_test_is_verbose;
 }
+
+static void
+set_auto_mipmap_cb (CoglTexture *sub_texture,
+                    const float *sub_texture_coords,
+                    const float *meta_coords,
+                    void *user_data)
+{
+  cogl_primitive_texture_set_auto_mipmap (COGL_PRIMITIVE_TEXTURE (sub_texture),
+                                          FALSE);
+}
+
+CoglTexture *
+test_utils_texture_new_with_size (CoglContext *ctx,
+                                  int width,
+                                  int height,
+                                  TestUtilsTextureFlags flags,
+                                  CoglPixelFormat internal_format)
+{
+  CoglTexture *tex;
+  CoglError *skip_error = NULL;
+
+  if ((test_utils_is_pot (width) && test_utils_is_pot (height)) ||
+      (cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_BASIC) &&
+       cogl_has_feature (ctx, COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP)))
+    {
+      /* First try creating a fast-path non-sliced texture */
+      tex = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx,
+                                                         width, height,
+                                                         internal_format));
+
+      if (!cogl_texture_allocate (tex, &skip_error))
+        {
+          cogl_error_free (skip_error);
+          cogl_object_unref (tex);
+          tex = NULL;
+        }
+    }
+  else
+    tex = NULL;
+
+  if (!tex)
+    {
+      /* If it fails resort to sliced textures */
+      int max_waste = flags & TEST_UTILS_TEXTURE_NO_SLICING ?
+        -1 : COGL_TEXTURE_MAX_WASTE;
+      CoglTexture2DSliced *tex_2ds =
+        cogl_texture_2d_sliced_new_with_size (ctx,
+                                              width,
+                                              height,
+                                              max_waste,
+                                              internal_format);
+      tex = COGL_TEXTURE (tex_2ds);
+    }
+
+  if (flags & TEST_UTILS_TEXTURE_NO_AUTO_MIPMAP)
+    {
+      /* To be able to iterate the slices of a #CoglTexture2DSliced we
+       * need to ensure the texture is allocated... */
+      cogl_texture_allocate (tex, NULL); /* don't catch exceptions */
+
+      cogl_meta_texture_foreach_in_region (COGL_META_TEXTURE (tex),
+                                           0, 0, 1, 1,
+                                           COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE,
+                                           COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE,
+                                           set_auto_mipmap_cb,
+                                           NULL); /* don't catch exceptions */
+    }
+
+  cogl_texture_allocate (tex, NULL);
+
+  return tex;
+}
+
+CoglTexture *
+test_utils_texture_new_from_bitmap (CoglBitmap *bitmap,
+                                    TestUtilsTextureFlags flags,
+                                    CoglPixelFormat internal_format)
+{
+  CoglAtlasTexture *atlas_tex;
+  CoglTexture *tex;
+  CoglError *internal_error = NULL;
+
+  if (!flags)
+    {
+      /* First try putting the texture in the atlas */
+      if ((atlas_tex = cogl_atlas_texture_new_from_bitmap (bitmap,
+                                                           internal_format,
+                                                           &internal_error)) &&
+           cogl_texture_allocate (COGL_TEXTURE (atlas_tex), &internal_error))
+        {
+          return COGL_TEXTURE (atlas_tex);
+        }
+
+      cogl_error_free (internal_error);
+      internal_error = NULL;
+    }
+
+  /* If that doesn't work try a fast path 2D texture */
+  if ((test_utils_is_pot (cogl_bitmap_get_width (bitmap)) &&
+       test_utils_is_pot (cogl_bitmap_get_height (bitmap))) ||
+      (cogl_has_feature (test_ctx, COGL_FEATURE_ID_TEXTURE_NPOT_BASIC) &&
+       cogl_has_feature (test_ctx, COGL_FEATURE_ID_TEXTURE_NPOT_MIPMAP)))
+    {
+      tex = COGL_TEXTURE (cogl_texture_2d_new_from_bitmap (bitmap,
+                                                           internal_format,
+                                                           &internal_error));
+
+      if (cogl_error_matches (internal_error,
+                              COGL_SYSTEM_ERROR,
+                              COGL_SYSTEM_ERROR_NO_MEMORY))
+        {
+          g_assert_not_reached ();
+          return NULL;
+        }
+
+      if (!tex)
+        {
+          cogl_error_free (internal_error);
+          internal_error = NULL;
+        }
+    }
+  else
+    tex = NULL;
+
+  if (!tex)
+    {
+      /* Otherwise create a sliced texture */
+      int max_waste = flags & TEST_UTILS_TEXTURE_NO_SLICING ?
+        -1 : COGL_TEXTURE_MAX_WASTE;
+      CoglTexture2DSliced *tex_2ds =
+        cogl_texture_2d_sliced_new_from_bitmap (bitmap,
+                                                max_waste,
+                                                internal_format,
+                                                NULL); /* don't catch
+                                                          exceptions */
+      tex = COGL_TEXTURE (tex_2ds);
+    }
+
+  if (flags & TEST_UTILS_TEXTURE_NO_AUTO_MIPMAP)
+    {
+      cogl_meta_texture_foreach_in_region (COGL_META_TEXTURE (tex),
+                                           0, 0, 1, 1,
+                                           COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE,
+                                           COGL_PIPELINE_WRAP_MODE_CLAMP_TO_EDGE,
+                                           set_auto_mipmap_cb,
+                                           NULL); /* don't catch exceptions */
+    }
+
+  cogl_texture_allocate (tex, NULL);
+
+  return tex;
+}
+
+CoglTexture *
+test_utils_texture_new_from_data (CoglContext *ctx,
+                                  int width,
+                                  int height,
+                                  TestUtilsTextureFlags flags,
+                                  CoglPixelFormat format,
+                                  CoglPixelFormat internal_format,
+                                  int rowstride,
+                                  const uint8_t *data)
+{
+  CoglBitmap *bmp;
+  CoglTexture *tex;
+
+  g_assert_cmpint (format, !=, COGL_PIXEL_FORMAT_ANY);
+  g_assert (data != NULL);
+
+  /* Wrap the data into a bitmap */
+  bmp = cogl_bitmap_new_for_data (ctx,
+                                  width, height,
+                                  format,
+                                  rowstride,
+                                  (uint8_t *) data);
+
+  tex = test_utils_texture_new_from_bitmap (bmp, flags, internal_format);
+
+  cogl_object_unref (bmp);
+
+  return tex;
+}

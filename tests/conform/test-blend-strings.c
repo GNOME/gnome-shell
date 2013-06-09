@@ -196,13 +196,14 @@ make_texture (uint32_t color)
 
   /* Note: we don't use COGL_PIXEL_FORMAT_ANY for the internal format here
    * since we don't want to allow Cogl to premultiply our data. */
-  tex = cogl_texture_new_from_data (QUAD_WIDTH,
-                                    QUAD_WIDTH,
-                                    COGL_TEXTURE_NONE,
-                                    COGL_PIXEL_FORMAT_RGBA_8888,
-                                    COGL_PIXEL_FORMAT_RGBA_8888,
-                                    QUAD_WIDTH * 4,
-                                    tex_data);
+  tex = test_utils_texture_new_from_data (test_ctx,
+                                          QUAD_WIDTH,
+                                          QUAD_WIDTH,
+                                          TEST_UTILS_TEXTURE_NONE,
+                                          COGL_PIXEL_FORMAT_RGBA_8888,
+                                          COGL_PIXEL_FORMAT_RGBA_8888,
+                                          QUAD_WIDTH * 4,
+                                          tex_data);
 
   g_free (tex_data);
 

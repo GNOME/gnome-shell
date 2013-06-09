@@ -16,6 +16,7 @@ test_texture_no_allocate (void)
   uint8_t *tex_data;
   CoglTexture *texture;
   CoglTexture2D *texture_2d;
+  GError *error = NULL;
 
   tex_data = g_malloc (BIG_TEX_WIDTH * BIG_TEX_HEIGHT * 4);
 
@@ -25,30 +26,36 @@ test_texture_no_allocate (void)
 
   /* Try to create an atlas texture that is too big so it will
    * internally be freed without allocating */
-  texture = cogl_texture_new_from_data (BIG_TEX_WIDTH,
-                                        BIG_TEX_HEIGHT,
-                                        COGL_TEXTURE_NONE, /* flags */
-                                        /* format */
-                                        COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                        /* internal format */
-                                        COGL_PIXEL_FORMAT_ANY,
-                                        /* rowstride */
-                                        BIG_TEX_WIDTH * 4,
-                                        tex_data);
+  texture = COGL_TEXTURE (
+    cogl_atlas_texture_new_from_data (test_ctx,
+                                      BIG_TEX_WIDTH,
+                                      BIG_TEX_HEIGHT,
+                                      /* format */
+                                      COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                      /* internal format */
+                                      COGL_PIXEL_FORMAT_ANY,
+                                      /* rowstride */
+                                      BIG_TEX_WIDTH * 4,
+                                      tex_data,
+                                      &error));
 
   g_free (tex_data);
 
   /* It's ok if this causes an error, we just don't want it to
    * crash */
 
-  if (texture)
+  if (texture == NULL)
+    cogl_error_free (error);
+  else
     cogl_object_unref (texture);
 
   /* Try to create a sliced texture without allocating it */
-  texture = cogl_texture_new_with_size (BIG_TEX_WIDTH,
-                                        BIG_TEX_HEIGHT,
-                                        COGL_TEXTURE_NO_ATLAS,
-                                        COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+  texture = COGL_TEXTURE (
+    cogl_texture_2d_sliced_new_with_size (test_ctx,
+                                          BIG_TEX_WIDTH,
+                                          BIG_TEX_HEIGHT,
+                                          COGL_TEXTURE_MAX_WASTE,
+                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE));
   cogl_object_unref (texture);
 
   /* 2D texture */

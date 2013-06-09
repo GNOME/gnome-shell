@@ -15,7 +15,7 @@ typedef struct _TestState
 } TestState;
 
 static CoglTexture *
-create_texture (CoglTextureFlags flags)
+create_texture (TestUtilsTextureFlags flags)
 {
   uint8_t *data = g_malloc (TEX_SIZE * TEX_SIZE * 4), *p = data;
   CoglTexture *tex;
@@ -30,11 +30,12 @@ create_texture (CoglTextureFlags flags)
         *(p++) = 255;
       }
 
-  tex = cogl_texture_new_from_data (TEX_SIZE, TEX_SIZE, flags,
-                                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                    COGL_PIXEL_FORMAT_ANY,
-                                    TEX_SIZE * 4,
-                                    data);
+  tex = test_utils_texture_new_from_data (test_ctx,
+                                          TEX_SIZE, TEX_SIZE, flags,
+                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                          COGL_PIXEL_FORMAT_ANY,
+                                          TEX_SIZE * 4,
+                                          data);
   g_free (data);
 
   return tex;
@@ -238,15 +239,15 @@ static void
 paint (TestState *state)
 {
   /* Draw the tests first with a non atlased texture */
-  state->texture = create_texture (COGL_TEXTURE_NO_ATLAS);
+  state->texture = create_texture (TEST_UTILS_TEXTURE_NO_ATLAS);
   draw_tests (state);
   cogl_object_unref (state->texture);
 
   /* Draw the tests again with a possible atlased texture. This should
      end up testing software repeats */
-  state->texture = create_texture (COGL_TEXTURE_NONE);
-  cogl_push_matrix ();
-  cogl_translate (0.0f, TEX_SIZE * 2.0f, 0.0f);
+  state->texture = create_texture (TEST_UTILS_TEXTURE_NONE);
+  cogl_framebuffer_push_matrix (test_fb);
+  cogl_framebuffer_translate (test_fb, 0.0f, TEX_SIZE * 2.0f, 0.0f);
   draw_tests (state);
   cogl_pop_matrix ();
   cogl_object_unref (state->texture);

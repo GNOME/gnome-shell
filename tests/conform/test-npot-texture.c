@@ -87,13 +87,14 @@ make_texture (void)
         }
     }
 
-  tex = cogl_texture_new_from_data (TEXTURE_SIZE,
-                                    TEXTURE_SIZE,
-                                    COGL_TEXTURE_NO_ATLAS,
-                                    COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                    COGL_PIXEL_FORMAT_ANY,
-                                    TEXTURE_SIZE * 4,
-                                    tex_data);
+  tex = test_utils_texture_new_from_data (test_ctx,
+                                          TEXTURE_SIZE,
+                                          TEXTURE_SIZE,
+                                          TEST_UTILS_TEXTURE_NO_ATLAS,
+                                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                          COGL_PIXEL_FORMAT_ANY,
+                                          TEXTURE_SIZE * 4,
+                                          tex_data);
 
   g_free (tex_data);
 
