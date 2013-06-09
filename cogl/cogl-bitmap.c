@@ -178,6 +178,10 @@ cogl_bitmap_new_for_data (CoglContext *context,
 
   g_return_val_if_fail (cogl_is_context (context), NULL);
 
+  /* Rowstride from width if not given */
+  if (rowstride == 0)
+    rowstride = width * _cogl_pixel_format_get_bytes_per_pixel (format);
+
   bmp = g_slice_new (CoglBitmap);
   bmp->context = context;
   bmp->format = format;
