@@ -220,10 +220,11 @@ main (int argc, char **argv)
 
   /* Load a jpeg crate texture from a file */
   printf ("crate.jpg (CC by-nc-nd http://bit.ly/9kP45T) ShadowRunner27 http://bit.ly/m1YXLh\n");
-  data.texture = cogl_texture_new_from_file (COGL_EXAMPLES_DATA "crate.jpg",
-                                             COGL_TEXTURE_NO_SLICING,
-                                             COGL_PIXEL_FORMAT_ANY,
-                                             &error);
+  data.texture = COGL_TEXTURE (
+    cogl_texture_2d_new_from_file (ctx,
+                                   COGL_EXAMPLES_DATA "crate.jpg",
+                                   COGL_PIXEL_FORMAT_ANY,
+                                   &error));
   if (!data.texture)
     g_error ("Failed to load texture: %s", error->message);
 

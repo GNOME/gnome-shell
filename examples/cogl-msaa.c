@@ -62,9 +62,9 @@ main (int argc, char **argv)
 
     cogl_onscreen_show (onscreen);
 
-    tex = cogl_texture_new_with_size (320, 480,
-                                      COGL_TEXTURE_NO_SLICING,
-                                      COGL_PIXEL_FORMAT_ANY);
+    tex = COGL_TEXTURE (cogl_texture_2d_new_with_size (ctx,
+                                                       320, 480,
+                                                       COGL_PIXEL_FORMAT_ANY));
     offscreen = cogl_offscreen_new_to_texture (tex);
     offscreen_fb = COGL_FRAMEBUFFER (offscreen);
     cogl_framebuffer_set_samples_per_pixel (offscreen_fb, 4);
