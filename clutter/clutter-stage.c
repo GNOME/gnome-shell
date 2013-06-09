@@ -633,6 +633,9 @@ _clutter_stage_do_paint (ClutterStage                *stage,
   float clip_poly[8];
   cairo_rectangle_int_t geom;
 
+  if (priv->impl == NULL)
+    return;
+
   _clutter_stage_window_get_geometry (priv->impl, &geom);
 
   if (clip)
@@ -1463,7 +1466,13 @@ _clutter_stage_do_pick (ClutterStage   *stage,
 
   priv = stage->priv;
 
+  if (CLUTTER_ACTOR_IN_DESTRUCTION (stage))
+    return CLUTTER_ACTOR (stage);
+
   if (G_UNLIKELY (clutter_pick_debug_flags & CLUTTER_DEBUG_NOP_PICKING))
+    return CLUTTER_ACTOR (stage);
+
+  if (G_UNLIKELY (priv->impl == NULL))
     return CLUTTER_ACTOR (stage);
 
 #ifdef CLUTTER_ENABLE_PROFILE
