@@ -1423,15 +1423,7 @@ const NMVPNSection = new Lang.Class({
             for(let j = 0; j < this._connections.length; ++j) {
                 let obj = this._connections[j];
                 obj.item = this._createConnectionItem(obj);
-
-                if (j >= NUM_VISIBLE_NETWORKS) {
-                    if (!this._overflowItem) {
-                        this._overflowItem = new PopupMenu.PopupSubMenuMenuItem(_("More…"));
-                        this.section.addMenuItem(this._overflowItem);
-                    }
-                    this._overflowItem.menu.addMenuItem(obj.item);
-                } else
-                    this.section.addMenuItem(obj.item);
+                this.section.addMenuItem(obj.item);
             }
         } else {
             this.section.actor.hide()
