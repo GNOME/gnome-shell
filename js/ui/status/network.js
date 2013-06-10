@@ -416,8 +416,8 @@ const NMDevice = new Lang.Class({
             // This state is actually a compound of various states (generically unavailable,
             // firmware missing, carrier not available), that are exposed by different properties
             // (whose state may or may not updated when we receive state-changed).
-            if (!this._firmwareMissingId)
-                this._firmwareMissingId = this.device.connect('notify::firmware-missing', Lang.bind(this, this._substateChanged));
+            if (!this._firmwareChangedId)
+                this._firmwareChangedId = this.device.connect('notify::firmware-missing', Lang.bind(this, this._substateChanged));
             if (this.device.firmware_missing) {
                 /* Translators: this is for devices that require some kind of firmware or kernel
                    module, which is missing */
