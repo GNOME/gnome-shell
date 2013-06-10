@@ -1,12 +1,13 @@
 #include <config.h>
 
-#include <dlfcn.h>
+#include <gmodule.h>
 
 #include <test-fixtures/test-unit.h>
 
 int
 main (int argc, char **argv)
 {
+  GModule *main_module;
   const CoglUnitTest *unit_test;
   int i;
 
@@ -25,8 +26,10 @@ main (int argc, char **argv)
         argv[1][i] = '_';
     }
 
-  unit_test = dlsym (RTLD_DEFAULT, argv[1]);
-  if (!unit_test)
+  main_module = g_module_open (NULL, /* use main module */
+                               0 /* flags */);
+
+  if (!g_module_symbol (main_module, argv[1], (void **) &unit_test))
     {
       g_printerr ("Unknown test name \"%s\"\n", argv[1]);
       return 1;
