@@ -1155,6 +1155,7 @@ const PopupSubMenu = new Lang.Class({
             return;
 
         this.isOpen = true;
+        this.emit('open-state-changed', true);
 
         this.actor.show();
 
@@ -1193,12 +1194,10 @@ const PopupSubMenu = new Lang.Class({
                                onCompleteScope: this,
                                onComplete: function() {
                                    this.actor.set_height(-1);
-                                   this.emit('open-state-changed', true);
                                }
                              });
         } else {
             this._arrow.rotation_angle_z = 90;
-            this.emit('open-state-changed', true);
         }
     },
 
@@ -1207,6 +1206,7 @@ const PopupSubMenu = new Lang.Class({
             return;
 
         this.isOpen = false;
+        this.emit('open-state-changed', false);
 
         if (this._activeMenuItem)
             this._activeMenuItem.setActive(false);
@@ -1224,8 +1224,6 @@ const PopupSubMenu = new Lang.Class({
                                onComplete: function() {
                                    this.actor.hide();
                                    this.actor.set_height(-1);
-
-                                   this.emit('open-state-changed', false);
                                },
                                onUpdateScope: this,
                                onUpdate: function() {
@@ -1235,9 +1233,6 @@ const PopupSubMenu = new Lang.Class({
             } else {
                 this._arrow.rotation_angle_z = 0;
                 this.actor.hide();
-
-                this.isOpen = false;
-                this.emit('open-state-changed', false);
             }
     },
 
