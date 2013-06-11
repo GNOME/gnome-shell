@@ -590,6 +590,11 @@ StScrollBar StButton#vhandle:active {
     icon-size: 1.09em;
 }
 
+.system-switch-user-submenu-icon {
+    icon-size: 24px;
+    border: 1px solid #8b8b8b;
+}
+
 /* Overview */
 
 #overview {

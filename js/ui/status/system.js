@@ -53,11 +53,12 @@ const Indicator = new Lang.Class({
         this._session = new GnomeSession.SessionManager();
         this._haveShutdown = true;
 
-        this._createSubMenu();
-
         this._loginManager = LoginManager.getLoginManager();
         this._userManager = AccountsService.UserManager.get_default();
         this._user = this._userManager.get_user(GLib.get_user_name());
+
+        this._createSubMenu();
+
         this._userManager.connect('notify::is-loaded',
                                   Lang.bind(this, this._updateMultiUser));
         this._userManager.connect('notify::has-multiple-users',
@@ -67,16 +68,15 @@ const Indicator = new Lang.Class({
         this._userManager.connect('user-removed',
                                   Lang.bind(this, this._updateMultiUser));
         this._lockdownSettings.connect('changed::' + DISABLE_USER_SWITCH_KEY,
-                                       Lang.bind(this, this._updateSwitchUser));
+                                       Lang.bind(this, this._updateMultiUser));
         this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
-                                       Lang.bind(this, this._updateLogout));
+                                       Lang.bind(this, this._updateMultiUser));
         this._lockdownSettings.connect('changed::' + DISABLE_LOCK_SCREEN_KEY,
                                        Lang.bind(this, this._updateLockScreen));
         global.settings.connect('changed::' + ALWAYS_SHOW_LOG_OUT_KEY,
-                                Lang.bind(this, this._updateLogout));
+                                Lang.bind(this, this._updateMultiUser));
         this._updateSwitchUser();
-        this._updateLogout();
-        this._updateLockScreen();
+        this._updateMultiUser();
 
         // Whether shutdown is available or not depends on both lockdown
         // settings (disable-log-out) and Polkit policy - the latter doesn't
@@ -102,15 +102,19 @@ const Indicator = new Lang.Class({
     },
 
     _updateMultiUser: function() {
-        this._updateSwitchUser();
-        this._updateLogout();
+        let hasSwitchUser = this._updateSwitchUser();
+        let hasLogout = this._updateLogout();
+
+        this._switchUserSubMenu.actor.visible = (hasSwitchUser || hasLogout);
     },
 
     _updateSwitchUser: function() {
         let allowSwitch = !this._lockdownSettings.get_boolean(DISABLE_USER_SWITCH_KEY);
         let multiUser = this._userManager.can_switch() && this._userManager.has_multiple_users;
 
-        this._loginScreenItem.actor.visible = allowSwitch && multiUser;
+        let visible = allowSwitch && multiUser;
+        this._loginScreenItem.actor.visible = visible;
+        return visible;
     },
 
     _updateLogout: function() {
@@ -121,7 +125,25 @@ const Indicator = new Lang.Class({
         let multiUser = this._userManager.has_multiple_users;
         let multiSession = Gdm.get_session_ids().length > 1;
 
-        this._logoutItem.actor.visible = allowLogout && (alwaysShow || multiUser || multiSession || systemAccount || !localAccount);
+        let visible = allowLogout && (alwaysShow || multiUser || multiSession || systemAccount || !localAccount);
+        this._logoutItem.actor.visible = visible;
+        return visible;
+    },
+
+    _updateSwitchUserSubMenu: function() {
+        this._switchUserSubMenu.label.text = this._user.get_real_name();
+
+        let iconFile = this._user.get_icon_file();
+        if (iconFile && !GLib.file_test(iconFile, GLib.FileTest.EXISTS))
+            iconFile = null;
+
+        if (iconFile) {
+            let file = Gio.File.new_for_path(iconFile);
+            let gicon = new Gio.FileIcon({ file: file });
+            this._switchUserSubMenu.icon.gicon = gicon;
+        } else {
+            this._switchUserSubMenu.icon_name = 'avatar-default-symbolic';
+        }
     },
 
     _updateLockScreen: function() {
@@ -146,28 +168,29 @@ const Indicator = new Lang.Class({
     _createSubMenu: function() {
         let item;
 
-        this.menu.addSettingsAction(_("Settings"), 'gnome-control-center.desktop');
-
-        item = new PopupMenu.PopupSeparatorMenuItem();
-        this.menu.addMenuItem(item);
+        this._switchUserSubMenu = new PopupMenu.PopupSubMenuMenuItem('', true);
+        this._switchUserSubMenu.icon.style_class = 'system-switch-user-submenu-icon';
+        this.menu.addMenuItem(this._switchUserSubMenu);
 
         item = new PopupMenu.PopupMenuItem(_("Switch User"));
         item.connect('activate', Lang.bind(this, this._onLoginScreenActivate));
-        this.menu.addMenuItem(item);
+        this._switchUserSubMenu.menu.addMenuItem(item);
         this._loginScreenItem = item;
 
         item = new PopupMenu.PopupMenuItem(_("Log Out"));
         item.connect('activate', Lang.bind(this, this._onQuitSessionActivate));
-        this.menu.addMenuItem(item);
+        this._switchUserSubMenu.menu.addMenuItem(item);
         this._logoutItem = item;
+
+        this._user.connect('notify::is-loaded', Lang.bind(this, this._updateSwitchUserSubMenu));
+        this._user.connect('changed', Lang.bind(this, this._updateSwitchUserSubMenu));
+
+        this.menu.addSettingsAction(_("Settings"), 'gnome-control-center.desktop');
 
         item = new PopupMenu.PopupMenuItem(_("Lock"));
         item.connect('activate', Lang.bind(this, this._onLockScreenActivate));
         this.menu.addMenuItem(item);
         this._lockScreenItem = item;
-
-        item = new PopupMenu.PopupSeparatorMenuItem();
-        this.menu.addMenuItem(item);
 
         item = new PopupMenu.PopupMenuItem(_("Power Off"));
         this.menu.addMenuItem(item);
