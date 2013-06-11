@@ -620,18 +620,6 @@ StScrollBar StButton#vhandle:active {
     padding: .4em;
 }
 
-.status-chooser-user-icon {
-    border: 2px solid #8b8b8b;
-    border-radius: 5px;
-    width: 48pt;
-    height: 48pt;
-    background-size: contain;
-}
-
-.status-chooser-user-icon:hover {
-    border: 2px solid #bbbbbb;
-}
-
 .status-chooser-user-name {
     font-weight: bold;
     font-size: 1.3em;
@@ -2206,6 +2194,18 @@ StScrollBar StButton#vhandle:active {
 }
 
 /* Login Dialog */
+
+.framed-user-icon {
+    border: 2px solid #8b8b8b;
+    border-radius: 5px;
+    width: 48pt;
+    height: 48pt;
+    background-size: contain;
+}
+
+.framed-user-icon:hover {
+    border: 2px solid #bbbbbb;
+}
 
 .login-dialog-banner {
     font-size: 10pt;

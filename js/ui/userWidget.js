@@ -24,7 +24,7 @@ const Avatar = new Lang.Class({
         this._user = user;
         params = Params.parse(params, { reactive: false,
                                         iconSize: AVATAR_ICON_SIZE,
-                                        styleClass: 'status-chooser-user-icon' });
+                                        styleClass: 'framed-user-icon' });
         this._iconSize = params.iconSize;
 
         this.actor = new St.Bin({ style_class: params.styleClass,
