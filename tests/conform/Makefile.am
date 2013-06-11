@@ -65,6 +65,7 @@ test_sources = \
 	test-primitive-and-journal.c \
 	test-copy-replace-texture.c \
 	test-pipeline-cache-unrefs-texture.c \
+	test-texture-no-allocate.c \
 	$(NULL)
 
 if !USING_EMSCRIPTEN
