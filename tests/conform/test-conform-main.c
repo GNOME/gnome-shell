@@ -138,7 +138,7 @@ main (int argc, char **argv)
 
   ADD_TEST (test_fence, TEST_REQUIREMENT_FENCE, 0);
 
-  ADD_TEST (test_texture_no_allocate, 0, TEST_KNOWN_FAILURE);
+  ADD_TEST (test_texture_no_allocate, 0, 0);
 
   g_printerr ("Unknown test name \"%s\"\n", argv[1]);
 

@@ -276,7 +276,8 @@ _cogl_atlas_texture_free (CoglAtlasTexture *atlas_tex)
 {
   _cogl_atlas_texture_remove_from_atlas (atlas_tex);
 
-  cogl_object_unref (atlas_tex->sub_texture);
+  if (atlas_tex->sub_texture)
+    cogl_object_unref (atlas_tex->sub_texture);
 
   /* Chain up */
   _cogl_texture_free (COGL_TEXTURE (atlas_tex));
