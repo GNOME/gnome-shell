@@ -566,9 +566,12 @@ clutter_text_dirty_cache (ClutterText *text)
  */
 static inline void
 clutter_text_set_font_description_internal (ClutterText          *self,
-                                            PangoFontDescription *desc)
+                                            PangoFontDescription *desc,
+                                            gboolean              is_default_font)
 {
   ClutterTextPrivate *priv = self->priv;
+
+  priv->is_default_font = is_default_font;
 
   if (priv->font_desc == desc ||
       pango_font_description_equal (priv->font_desc, desc))
@@ -617,7 +620,7 @@ clutter_text_settings_changed_cb (ClutterText *text)
                     font_name);
 
       font_desc = pango_font_description_from_string (font_name);
-      clutter_text_set_font_description_internal (text, font_desc);
+      clutter_text_set_font_description_internal (text, font_desc, TRUE);
 
       pango_font_description_free (font_desc);
       g_free (font_name);
@@ -4818,7 +4821,8 @@ clutter_text_set_font_description (ClutterText          *self,
 {
   g_return_if_fail (CLUTTER_IS_TEXT (self));
 
-  clutter_text_set_font_description_internal (self, font_desc);
+  clutter_text_set_font_description_internal (self, font_desc,
+                                              font_desc == NULL);
 }
 
 /**
@@ -4925,8 +4929,7 @@ clutter_text_set_font_name (ClutterText *self,
     }
 
   /* this will set the font_name field as well */
-  clutter_text_set_font_description_internal (self, desc);
-  priv->is_default_font = is_default_font;
+  clutter_text_set_font_description_internal (self, desc, is_default_font);
 
   g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_FONT_NAME]);
 
