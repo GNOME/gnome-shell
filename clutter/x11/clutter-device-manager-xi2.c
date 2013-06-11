@@ -408,10 +408,16 @@ translate_hierarchy_event (ClutterBackendX11       *backend_x11,
 
           CLUTTER_NOTE (EVENT, "Hierarchy event: device enabled");
 
+          clutter_x11_trap_x_errors ();
           info = XIQueryDevice (backend_x11->xdpy,
                                 ev->info[i].deviceid,
                                 &n_devices);
-          add_device (manager_xi2, backend_x11, &info[0], FALSE);
+          clutter_x11_untrap_x_errors ();
+          if (info != NULL)
+            {
+              add_device (manager_xi2, backend_x11, &info[0], FALSE);
+              XIFreeDeviceInfo (info);
+            }
         }
       else if (ev->info[i].flags & XIDeviceDisabled)
         {
@@ -448,16 +454,24 @@ translate_hierarchy_event (ClutterBackendX11       *backend_x11,
           /* and attach the slave to the new master if needed */
           if (ev->info[i].flags & XISlaveAttached)
             {
+              clutter_x11_trap_x_errors ();
               info = XIQueryDevice (backend_x11->xdpy,
                                     ev->info[i].deviceid,
                                     &n_devices);
-              master = g_hash_table_lookup (manager_xi2->devices_by_id,
-                                            GINT_TO_POINTER (info->attachment));
-              _clutter_input_device_set_associated_device (slave, master);
-              _clutter_input_device_add_slave (master, slave);
+              clutter_x11_untrap_x_errors ();
+              if (info != NULL)
+                {
+                  master = g_hash_table_lookup (manager_xi2->devices_by_id,
+                                                GINT_TO_POINTER (info->attachment));
+                  if (master != NULL)
+                    {
+                      _clutter_input_device_set_associated_device (slave, master);
+                      _clutter_input_device_add_slave (master, slave);
 
-              send_changed = TRUE;
-              XIFreeDeviceInfo (info);
+                      send_changed = TRUE;
+                    }
+                  XIFreeDeviceInfo (info);
+                }
             }
 
           if (send_changed)
