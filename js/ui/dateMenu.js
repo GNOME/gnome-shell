@@ -80,7 +80,6 @@ const DateMenuButton = new Lang.Class({
         vbox.add(this._calendar.actor);
 
         let separator = new PopupMenu.PopupSeparatorMenuItem();
-        separator.setColumnWidths(1);
         vbox.add(separator.actor, {y_align: St.Align.END, expand: true, y_fill: false});
 
         this._openCalendarItem = new PopupMenu.PopupMenuItem(_("Open Calendar"));
