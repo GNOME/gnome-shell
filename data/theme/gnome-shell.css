@@ -595,6 +595,21 @@ StScrollBar StButton#vhandle:active {
     border: 1px solid #8b8b8b;
 }
 
+.system-menu-action {
+    color: #e6e6e6;
+    border-radius: 4px;
+    padding: 6px;
+}
+
+.system-menu-action:hover {
+    color: white;
+    background-color: rgba(255,255,255,0.1);
+}
+
+.system-menu-action > StIcon {
+    icon-size: 32px;
+}
+
 /* Overview */
 
 #overview {

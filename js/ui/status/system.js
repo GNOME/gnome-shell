@@ -6,6 +6,7 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Gtk = imports.gi.Gtk;
 const Lang = imports.lang;
+const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Clutter = imports.gi.Clutter;
 
@@ -97,15 +98,17 @@ const Indicator = new Lang.Class({
     },
 
     _sessionUpdated: function() {
-        this.actor.visible = !Main.sessionMode.isGreeter;
-        this.setSensitive(!Main.sessionMode.isLocked);
+        this._updateLockScreen();
+        this._updatePowerOff();
+        this._settingsAction.visible = Main.sessionMode.allowSettings;
     },
 
     _updateMultiUser: function() {
+        let shouldShowInMode = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
         let hasSwitchUser = this._updateSwitchUser();
         let hasLogout = this._updateLogout();
 
-        this._switchUserSubMenu.actor.visible = (hasSwitchUser || hasLogout);
+        this._switchUserSubMenu.actor.visible = shouldShowInMode && (hasSwitchUser || hasLogout);
     },
 
     _updateSwitchUser: function() {
@@ -147,8 +150,9 @@ const Indicator = new Lang.Class({
     },
 
     _updateLockScreen: function() {
+        let showLock = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
         let allowLockScreen = !this._lockdownSettings.get_boolean(DISABLE_LOCK_SCREEN_KEY);
-        this._lockScreenItem.actor.visible = allowLockScreen && LoginManager.canLock();
+        this._lockScreenAction.visible = showLock && allowLockScreen && LoginManager.canLock();
     },
 
     _updateHaveShutdown: function() {
@@ -162,7 +166,17 @@ const Indicator = new Lang.Class({
     },
 
     _updatePowerOff: function() {
-        this._powerOffItem.actor.visible = this._haveShutdown;
+        this._powerOffAction.visible = this._haveShutdown && !Main.sessionMode.isLocked;
+    },
+
+    _createActionButton: function(iconName, accessibleName) {
+        let icon = new St.Button({ reactive: true,
+                                   can_focus: true,
+                                   track_hover: true,
+                                   accessible_name: accessibleName,
+                                   style_class: 'system-menu-action' });
+        icon.child = new St.Icon({ icon_name: iconName });
+        return icon;
     },
 
     _createSubMenu: function() {
@@ -170,7 +184,6 @@ const Indicator = new Lang.Class({
 
         this._switchUserSubMenu = new PopupMenu.PopupSubMenuMenuItem('', true);
         this._switchUserSubMenu.icon.style_class = 'system-switch-user-submenu-icon';
-        this.menu.addMenuItem(this._switchUserSubMenu);
 
         item = new PopupMenu.PopupMenuItem(_("Switch User"));
         item.connect('activate', Lang.bind(this, this._onLoginScreenActivate));
@@ -185,20 +198,39 @@ const Indicator = new Lang.Class({
         this._user.connect('notify::is-loaded', Lang.bind(this, this._updateSwitchUserSubMenu));
         this._user.connect('changed', Lang.bind(this, this._updateSwitchUserSubMenu));
 
-        this.menu.addSettingsAction(_("Settings"), 'gnome-control-center.desktop');
+        this.menu.addMenuItem(this._switchUserSubMenu);
 
-        item = new PopupMenu.PopupMenuItem(_("Lock"));
-        item.connect('activate', Lang.bind(this, this._onLockScreenActivate));
-        this.menu.addMenuItem(item);
-        this._lockScreenItem = item;
+        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
-        item = new PopupMenu.PopupMenuItem(_("Power Off"));
+        let hbox = new St.BoxLayout({ style_class: 'system-menu-actions-box' });
+
+        this._settingsAction = this._createActionButton('preferences-system-symbolic', _("Settings"));
+        this._settingsAction.connect('clicked', Lang.bind(this, this._onSettingsClicked));
+        hbox.add(this._settingsAction, { expand: true, x_fill: false });
+
+        this._lockScreenAction = this._createActionButton('changes-prevent-symbolic', _("Lock"));
+        this._lockScreenAction.connect('clicked', Lang.bind(this, this._onLockScreenClicked));
+        hbox.add(this._lockScreenAction, { expand: true, x_fill: false });
+
+        this._powerOffAction = this._createActionButton('system-shutdown-symbolic', _("Power Off"));
+        this._powerOffAction.connect('clicked', Lang.bind(this, this._onPowerOffClicked));
+        hbox.add(this._powerOffAction, { expand: true, x_fill: false });
+
+        item = new PopupMenu.PopupBaseMenuItem({ reactive: false,
+                                                 can_focus: false });
+        item.addActor(hbox, { expand: true });
+
         this.menu.addMenuItem(item);
-        item.connect('activate', Lang.bind(this, this._onPowerOffActivate));
-        this._powerOffItem = item;
     },
 
-    _onLockScreenActivate: function() {
+    _onSettingsClicked: function() {
+        this.menu.itemActivated();
+        let app = Shell.AppSystem.get_default().lookup_app('gnome-control-center.desktop');
+        Main.overview.hide();
+        app.activate();
+    },
+
+    _onLockScreenClicked: function() {
         this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
         Main.overview.hide();
         Main.screenShield.lock(true);
@@ -284,7 +316,8 @@ const Indicator = new Lang.Class({
         dialog.open();
     },
 
-    _onPowerOffActivate: function() {
+    _onPowerOffClicked: function() {
+        this.menu.itemActivated();
         Main.overview.hide();
         this._loginManager.listSessions(Lang.bind(this, function(result) {
             let sessions = [];
