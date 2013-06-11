@@ -1005,6 +1005,14 @@ const PopupMenu = new Lang.Class({
         this.actor.reactive = true;
 
         this._childMenus = [];
+        this._openedSubMenu = null;
+    },
+
+    _setOpenedSubMenu: function(submenu) {
+        if (this._openedSubMenu)
+            this._openedSubMenu.close(true);
+
+        this._openedSubMenu = submenu;
     },
 
     _boxGetPreferredWidth: function (actor, forHeight, alloc) {
@@ -1299,6 +1307,8 @@ const PopupSubMenuMenuItem = new Lang.Class({
             this.actor.add_style_pseudo_class('open');
         else
             this.actor.remove_style_pseudo_class('open');
+
+        this._getTopMenu()._setOpenedSubMenu(this.menu);
     },
 
     destroy: function() {
