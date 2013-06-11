@@ -52,7 +52,6 @@ const Indicator = new Lang.Class({
 
         this._session = new GnomeSession.SessionManager();
         this._haveShutdown = true;
-        this._haveSuspend = true;
 
         this._createSubMenu();
 
@@ -93,7 +92,6 @@ const Indicator = new Lang.Class({
                     return;
 
                 this._updateHaveShutdown();
-                this._updateHaveSuspend();
             }));
         this._lockdownSettings.connect('changed::' + DISABLE_LOG_OUT_KEY,
                                        Lang.bind(this, this._updateHaveShutdown));
@@ -146,34 +144,13 @@ const Indicator = new Lang.Class({
                 if (!error) {
                     this._haveShutdown = result[0];
                     this._updateInstallUpdates();
-                    this._updateSuspendOrPowerOff();
+                    this._updatePowerOff();
                 }
             }));
     },
 
-    _updateHaveSuspend: function() {
-        this._loginManager.canSuspend(Lang.bind(this,
-            function(result) {
-                this._haveSuspend = result;
-                this._updateSuspendOrPowerOff();
-        }));
-    },
-
-    _updateSuspendOrPowerOff: function() {
-        if (!this._suspendOrPowerOffItem)
-            return;
-
-        this._suspendOrPowerOffItem.actor.visible = this._haveShutdown || this._haveSuspend;
-
-        // If we can't power off show Suspend instead
-        // and disable the alt key
-        if (!this._haveShutdown) {
-            this._suspendOrPowerOffItem.updateText(_("Suspend"), null);
-        } else if (!this._haveSuspend) {
-            this._suspendOrPowerOffItem.updateText(_("Power Off"), null);
-        } else {
-            this._suspendOrPowerOffItem.updateText(_("Power Off"), _("Suspend"));
-        }
+    _updatePowerOff: function() {
+        this._powerOffItem.actor.visible = this._haveShutdown;
     },
 
     _createSubMenu: function() {
@@ -202,12 +179,10 @@ const Indicator = new Lang.Class({
         item = new PopupMenu.PopupSeparatorMenuItem();
         this.menu.addMenuItem(item);
 
-        item = new PopupMenu.PopupAlternatingMenuItem(_("Power Off"),
-                                                      _("Suspend"));
+        item = new PopupMenu.PopupMenuItem(_("Power Off"));
         this.menu.addMenuItem(item);
-        item.connect('activate', Lang.bind(this, this._onSuspendOrPowerOffActivate));
-        this._suspendOrPowerOffItem = item;
-        this._updateSuspendOrPowerOff();
+        item.connect('activate', Lang.bind(this, this._onPowerOffActivate));
+        this._powerOffItem = item;
 
         item = new PopupMenu.PopupMenuItem(_("Install Updates & Restart"));
         item.connect('activate', Lang.bind(this, this._onInstallUpdatesActivate));
@@ -308,50 +283,42 @@ const Indicator = new Lang.Class({
         dialog.open();
     },
 
-    _onSuspendOrPowerOffActivate: function() {
+    _onPowerOffActivate: function() {
         Main.overview.hide();
+        this._loginManager.listSessions(Lang.bind(this, function(result) {
+            let sessions = [];
+            let n = 0;
+            for (let i = 0; i < result.length; i++) {
+                let[id, uid, userName, seat, sessionPath] = result[i];
+                let proxy = new SystemdLoginSession(Gio.DBus.system,
+                                                    'org.freedesktop.login1',
+                                                    sessionPath);
 
-        if (this._haveShutdown &&
-            this._suspendOrPowerOffItem.state == PopupMenu.PopupAlternatingMenuItemState.DEFAULT) {
-            this._loginManager.listSessions(Lang.bind(this,
-                function(result) {
-                    let sessions = [];
-                    let n = 0;
-                    for (let i = 0; i < result.length; i++) {
-                        let[id, uid, userName, seat, sessionPath] = result[i];
-                        let proxy = new SystemdLoginSession(Gio.DBus.system,
-                                                            'org.freedesktop.login1',
-                                                            sessionPath);
+                if (proxy.Class != 'user')
+                    continue;
 
-                        if (proxy.Class != 'user')
-                            continue;
+                if (proxy.State == 'closing')
+                    continue;
 
-                        if (proxy.State == 'closing')
-                            continue;
+                if (proxy.Id == GLib.getenv('XDG_SESSION_ID'))
+                    continue;
 
-                        if (proxy.Id == GLib.getenv('XDG_SESSION_ID'))
-                            continue;
+                sessions.push({ user: this._userManager.get_user(userName),
+                                username: userName,
+                                info: { type: proxy.Type,
+                                        remote: proxy.Remote }
+                              });
 
-                        sessions.push({ user: this._userManager.get_user(userName),
-                                        username: userName,
-                                        info: { type: proxy.Type,
-                                                remote: proxy.Remote }
-                        });
+                // limit the number of entries
+                n++;
+                if (n == MAX_USERS_IN_SESSION_DIALOG)
+                    break;
+            }
 
-                        // limit the number of entries
-                        n++;
-                        if (n == MAX_USERS_IN_SESSION_DIALOG)
-                            break;
-                    }
-
-                    if (n != 0)
-                        this._openSessionWarnDialog(sessions);
-                    else
-                        this._session.ShutdownRemote();
-            }));
-        } else {
-            this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
-            this._loginManager.suspend();
-        }
+            if (n != 0)
+                this._openSessionWarnDialog(sessions);
+            else
+                this._session.ShutdownRemote();
+        }));
     }
 });
