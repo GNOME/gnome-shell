@@ -9,6 +9,7 @@ actor_add_child (TestConformSimpleFixture *fixture,
   ClutterActor *iter;
 
   g_object_ref_sink (actor);
+  g_object_add_weak_pointer (G_OBJECT (actor), (gpointer *) &actor);
 
   clutter_actor_add_child (actor, g_object_new (CLUTTER_TYPE_ACTOR,
                                                 "name", "foo",
@@ -45,7 +46,7 @@ actor_add_child (TestConformSimpleFixture *fixture,
   g_assert (clutter_actor_get_previous_sibling (iter) == NULL);
 
   clutter_actor_destroy (actor);
-  g_object_unref (actor);
+  g_assert (actor == NULL);
 }
 
 void
@@ -56,6 +57,7 @@ actor_insert_child (TestConformSimpleFixture *fixture,
   ClutterActor *iter;
 
   g_object_ref_sink (actor);
+  g_object_add_weak_pointer (G_OBJECT (actor), (gpointer *) &actor);
 
   clutter_actor_insert_child_at_index (actor,
                                        g_object_new (CLUTTER_TYPE_ACTOR,
@@ -132,7 +134,7 @@ actor_insert_child (TestConformSimpleFixture *fixture,
   g_assert (clutter_actor_get_last_child (actor) == iter);
 
   clutter_actor_destroy (actor);
-  g_object_unref (actor);
+  g_assert (actor == NULL);
 }
 
 void
@@ -143,6 +145,7 @@ actor_remove_child (TestConformSimpleFixture *fixture,
   ClutterActor *iter;
 
   g_object_ref_sink (actor);
+  g_object_add_weak_pointer (G_OBJECT (actor), (gpointer *) &actor);
 
   clutter_actor_add_child (actor, g_object_new (CLUTTER_TYPE_ACTOR,
                                                 "name", "foo",
@@ -176,7 +179,7 @@ actor_remove_child (TestConformSimpleFixture *fixture,
   g_assert (clutter_actor_get_last_child (actor) == NULL);
 
   clutter_actor_destroy (actor);
-  g_object_unref (actor);
+  g_assert (actor == NULL);
 }
 
 void
@@ -188,6 +191,7 @@ actor_raise_child (TestConformSimpleFixture *fixture,
   gboolean show_on_set_parent;
 
   g_object_ref_sink (actor);
+  g_object_add_weak_pointer (G_OBJECT (actor), (gpointer *) &actor);
 
   clutter_actor_add_child (actor, g_object_new (CLUTTER_TYPE_ACTOR,
                                                 "name", "foo",
@@ -225,6 +229,7 @@ actor_raise_child (TestConformSimpleFixture *fixture,
 
   iter = clutter_actor_get_child_at_index (actor, 0);
   clutter_actor_set_child_above_sibling (actor, iter, NULL);
+  g_object_add_weak_pointer (G_OBJECT (iter), (gpointer *) &iter);
 
   g_assert_cmpstr (clutter_actor_get_name (clutter_actor_get_child_at_index (actor, 0)),
                    ==,
@@ -240,7 +245,8 @@ actor_raise_child (TestConformSimpleFixture *fixture,
   g_assert (!show_on_set_parent);
 
   clutter_actor_destroy (actor);
-  g_object_unref (actor);
+  g_assert (actor == NULL);
+  g_assert (iter == NULL);
 }
 
 void
@@ -252,6 +258,7 @@ actor_lower_child (TestConformSimpleFixture *fixture,
   gboolean show_on_set_parent;
 
   g_object_ref_sink (actor);
+  g_object_add_weak_pointer (G_OBJECT (actor), (gpointer *) &actor);
 
   clutter_actor_add_child (actor, g_object_new (CLUTTER_TYPE_ACTOR,
                                                 "name", "foo",
@@ -304,7 +311,7 @@ actor_lower_child (TestConformSimpleFixture *fixture,
   g_assert (!show_on_set_parent);
 
   clutter_actor_destroy (actor);
-  g_object_unref (actor);
+  g_assert (actor == NULL);
 }
 
 void
@@ -315,6 +322,7 @@ actor_replace_child (TestConformSimpleFixture *fixture,
   ClutterActor *iter;
 
   g_object_ref_sink (actor);
+  g_object_add_weak_pointer (G_OBJECT (actor), (gpointer *) &actor);
 
   clutter_actor_add_child (actor, g_object_new (CLUTTER_TYPE_ACTOR,
                                                 "name", "foo",
@@ -364,7 +372,7 @@ actor_replace_child (TestConformSimpleFixture *fixture,
   g_assert_cmpstr (clutter_actor_get_name (iter), ==, "baz");
 
   clutter_actor_destroy (actor);
-  g_object_unref (actor);
+  g_assert (actor == NULL);
 }
 
 void
@@ -374,6 +382,7 @@ actor_remove_all (TestConformSimpleFixture *fixture,
   ClutterActor *actor = clutter_actor_new ();
 
   g_object_ref_sink (actor);
+  g_object_add_weak_pointer (G_OBJECT (actor), (gpointer *) &actor);
 
   clutter_actor_add_child (actor, g_object_new (CLUTTER_TYPE_ACTOR,
                                                 "name", "foo",
@@ -392,7 +401,7 @@ actor_remove_all (TestConformSimpleFixture *fixture,
   g_assert_cmpint (clutter_actor_get_n_children (actor), ==, 0);
 
   clutter_actor_destroy (actor);
-  g_object_unref (actor);
+  g_assert (actor == NULL);
 }
 
 static void
@@ -435,6 +444,7 @@ actor_container_signals (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
   int add_count, remove_count;
 
   g_object_ref_sink (actor);
+  g_object_add_weak_pointer (G_OBJECT (actor), (gpointer *) &actor);
 
   add_count = remove_count = 0;
   g_signal_connect (actor,
@@ -466,5 +476,5 @@ actor_container_signals (TestConformSimpleFixture *fixture G_GNUC_UNUSED,
                                         &remove_count);
 
   clutter_actor_destroy (actor);
-  g_object_unref (actor);
+  g_assert (actor == NULL);
 }
