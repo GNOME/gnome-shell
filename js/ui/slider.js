@@ -102,15 +102,15 @@ const Slider = new Lang.Class({
     },
 
     startDragging: function(event) {
-        if (this._dragging) // don't allow two drags at the same time
+        if (this._dragging)
             return false;
 
         this._dragging = true;
 
-        // FIXME: we should only grab the specific device that originated
-        // the event, but for some weird reason events are still delivered
-        // outside the slider if using clutter_grab_pointer_for_device
-        Clutter.grab_pointer(this.actor);
+        let device = event.get_device();
+        device.grab(this.actor);
+        this._grabbedDevice = device;
+
         this._releaseId = this.actor.connect('button-release-event', Lang.bind(this, this._endDragging));
         this._motionId = this.actor.connect('motion-event', Lang.bind(this, this._motionEvent));
         let absX, absY;
@@ -124,7 +124,8 @@ const Slider = new Lang.Class({
             this.actor.disconnect(this._releaseId);
             this.actor.disconnect(this._motionId);
 
-            Clutter.ungrab_pointer();
+            this._grabbedDevice.ungrab();
+            this._grabbedDevice = null;
             this._dragging = false;
 
             this.emit('drag-end');
