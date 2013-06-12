@@ -101,9 +101,9 @@ typedef struct _CoglDriverDescription
   const char *libgl_name;
 } CoglDriverDescription;
 
-_COGL_STATIC_ASSERT(sizeof (CoglPrivateFeatureFlags) ==
-                    sizeof (unsigned long),
-                    "Private feature flags don't fit in long");
+_COGL_STATIC_ASSERT(sizeof (CoglPrivateFeatureFlags) <=
+                    sizeof (uint32_t),
+                    "Private feature flags don't fit in 32 bits");
 
 static CoglDriverDescription _cogl_drivers[] =
 {
