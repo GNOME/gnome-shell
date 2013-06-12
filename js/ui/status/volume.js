@@ -43,6 +43,10 @@ const StreamSlider = new Lang.Class({
         this.item.addActor(this._icon, { align: St.Align.MIDDLE });
         this.item.addActor(this._slider.actor, { expand: true });
 
+        this.item.actor.connect('button-press-event', Lang.bind(this, function(actor, event) {
+            this._slider.startDragging(event);
+        }));
+
         this._stream = null;
     },
 
