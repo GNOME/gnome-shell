@@ -420,6 +420,7 @@ const EndSessionDialog = new Lang.Class({
     _startTimer: function() {
         let startTime = GLib.get_monotonic_time();
         this._secondsLeft = this._totalSecondsToStayOpen;
+        this._updateDescription();
 
         this._timerId = Mainloop.timeout_add_seconds(1, Lang.bind(this,
             function() {
