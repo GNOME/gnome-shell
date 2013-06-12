@@ -21,7 +21,6 @@ const Util = imports.misc.util;
 const NMConnectionCategory = {
     INVALID: 'invalid',
     WIRED: 'wired',
-    VIRTUAL: 'virtual',
     WIRELESS: 'wireless',
     WWAN: 'wwan',
     VPN: 'vpn'
@@ -1258,63 +1257,6 @@ const NMDeviceWireless = new Lang.Class({
     },
 });
 
-const NMDeviceVirtual = new Lang.Class({
-    Name: 'NMDeviceVirtual',
-    Extends: NMDeviceSimple,
-
-    _init: function(client, iface, connections) {
-        this.iface = iface;
-        this.parent(client, null, connections);
-        this.category = NMConnectionCategory.VIRTUAL;
-    },
-
-    _shouldShowConnectionList: function() {
-        return this.hasConnections();
-    },
-
-    connectionValid: function(connection) {
-        return connection.get_virtual_iface_name() == this.iface;
-    },
-
-    addConnection: function(connection) {
-        if (!this._device && !this.hasConnections())
-            this.statusItem.label.text = NMGtk.utils_get_connection_device_name(connection);
-
-        this.parent(connection);
-    },
-
-    adoptDevice: function(device) {
-        if (device.get_iface() == this.iface) {
-            this._setDevice(device);
-            if (device._description)
-                this.syncDescription();
-            this._updateStatusItem();
-            this.emit('state-changed');
-            return true;
-        } else
-            return false;
-    },
-
-    removeDevice: function(device) {
-        if (device == this._device) {
-            this._setDevice(null);
-            this._updateStatusItem();
-            this.emit('state-changed');
-        }
-    },
-
-    hasConnections: function() {
-        return this._connections.length != 0;
-    },
-
-    getIndicatorIcon: function() {
-        if (this._device.active_connection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
-            return 'network-wired-acquiring-symbolic';
-        else
-            return 'network-wired-connected-symbolic';
-    },
-});
-
 const NMVPNConnectionItem = new Lang.Class({
     Name: 'NMVPNConnectionItem',
 
@@ -1494,12 +1436,6 @@ const NMApplet = new Lang.Class({
         this._dtypes[NetworkManager.DeviceType.INFINIBAND] = NMDeviceSimple;
         // TODO: WiMax support
 
-        // Virtual device types
-        this._vtypes = { };
-        this._vtypes[NetworkManager.SETTING_VLAN_SETTING_NAME] = NMDeviceVirtual;
-        this._vtypes[NetworkManager.SETTING_BOND_SETTING_NAME] = NMDeviceVirtual;
-        this._vtypes[NetworkManager.SETTING_BRIDGE_SETTING_NAME] = NMDeviceVirtual;
-
         // Connection types
         this._ctypes = { };
         this._ctypes[NetworkManager.SETTING_WIRELESS_SETTING_NAME] = NMConnectionCategory.WIRELESS;
@@ -1510,9 +1446,6 @@ const NMApplet = new Lang.Class({
         this._ctypes[NetworkManager.SETTING_CDMA_SETTING_NAME] = NMConnectionCategory.WWAN;
         this._ctypes[NetworkManager.SETTING_GSM_SETTING_NAME] = NMConnectionCategory.WWAN;
         this._ctypes[NetworkManager.SETTING_INFINIBAND_SETTING_NAME] = NMConnectionCategory.WIRED;
-        this._ctypes[NetworkManager.SETTING_VLAN_SETTING_NAME] = NMConnectionCategory.VIRTUAL;
-        this._ctypes[NetworkManager.SETTING_BOND_SETTING_NAME] = NMConnectionCategory.VIRTUAL;
-        this._ctypes[NetworkManager.SETTING_BRIDGE_SETTING_NAME] = NMConnectionCategory.VIRTUAL;
         this._ctypes[NetworkManager.SETTING_VPN_SETTING_NAME] = NMConnectionCategory.VPN;
 
         NMClient.Client.new_async(null, Lang.bind(this, this._clientGot));
@@ -1553,7 +1486,6 @@ const NMApplet = new Lang.Class({
 
         this._nmDevices = [];
         this._devices = { };
-        this._virtualDevices = [ ];
 
         this._devices.wired = {
             section: new PopupMenu.PopupMenuSection(),
@@ -1562,15 +1494,6 @@ const NMApplet = new Lang.Class({
 
         this._devices.wired.section.actor.hide();
         this.menu.addMenuItem(this._devices.wired.section);
-        this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
-
-        this._devices.virtual = {
-            section: new PopupMenu.PopupMenuSection(),
-            devices: [ ],
-        };
-
-        this._devices.virtual.section.actor.hide();
-        this.menu.addMenuItem(this._devices.virtual.section);
         this.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
 
         this._devices.wireless = {
@@ -1641,13 +1564,7 @@ const NMApplet = new Lang.Class({
         let item = this._devices[category].item;
         let section = this._devices[category].section;
 
-        let visible;
-        if (category == NMConnectionCategory.VIRTUAL)
-            visible = !section.isEmpty();
-        else
-            visible = devices.length > 0;
-
-        if (!visible)
+        if (devices.length == 0)
             section.actor.hide();
         else {
             section.actor.show();
@@ -1724,15 +1641,6 @@ const NMApplet = new Lang.Class({
             return;
         }
 
-        for (let i = 0; i < this._virtualDevices.length; i++) {
-            if (this._virtualDevices[i].adoptDevice(device)) {
-                this._nmDevices.push(device);
-                if (!skipSyncDeviceNames)
-                    this._syncDeviceNames();
-                return;
-            }
-        }
-
         let wrapperClass = this._dtypes[device.get_device_type()];
         if (wrapperClass) {
             let wrapper = new wrapperClass(this._client, device, this._connections);
@@ -1774,10 +1682,7 @@ const NMApplet = new Lang.Class({
             return;
         }
 
-        if (wrapper instanceof NMDeviceVirtual)
-            wrapper.removeDevice(device);
-        else
-            this._removeDeviceWrapper(wrapper);
+        this._removeDeviceWrapper(wrapper);
     },
 
     _removeDeviceWrapper: function(wrapper) {
@@ -1965,12 +1870,7 @@ const NMApplet = new Lang.Class({
         if (section == NMConnectionCategory.INVALID)
             return;
 
-        if (section == NMConnectionCategory.VIRTUAL) {
-            let iface = connection.get_virtual_iface_name();
-            let wrapper = this._findVirtualDevice(iface);
-            if (wrapper && !wrapper.hasConnections())
-                this._removeDeviceWrapper(wrapper);
-        } else if (section == NMConnectionCategory.VPN) {
+        if (section == NMConnectionCategory.VPN) {
             this._vpnSection.removeConnection(connection);
         } else {
             let devices = this._devices[section].devices;
@@ -1994,26 +1894,7 @@ const NMApplet = new Lang.Class({
         if (section == NMConnectionCategory.INVALID)
             return;
 
-        if (section == NMConnectionCategory.VIRTUAL) {
-            let wrapperClass = this._vtypes[connection._type];
-            if (!wrapperClass)
-                return;
-
-            let iface = connection.get_virtual_iface_name();
-            let wrapper = this._findVirtualDevice(iface);
-            if (!wrapper) {
-                wrapper = new wrapperClass(this._client, iface, this._connections);
-                this._addDeviceWrapper(wrapper);
-                this._virtualDevices.push(wrapper);
-
-                // We might already have a device for this connection
-                for (let i = 0; i < this._nmDevices.length; i++) {
-                    let device = this._nmDevices[i];
-                    if (wrapper.adoptDevice(device))
-                        break;
-                }
-            }
-        } else if (section == NMConnectionCategory.VPN) {
+        if (section == NMConnectionCategory.VPN) {
             this._vpnSection.checkConnection(connection);
         } else {
             let devices = this._devices[section].devices;
@@ -2021,15 +1902,6 @@ const NMApplet = new Lang.Class({
                 devices[i].checkConnection(connection);
             }
         }
-    },
-
-    _findVirtualDevice: function(iface) {
-        for (let i = 0; i < this._virtualDevices.length; i++) {
-            if (this._virtualDevices[i].iface == iface)
-                return this._virtualDevices[i];
-        }
-
-        return null;
     },
 
     _hideDevices: function() {
@@ -2047,7 +1919,6 @@ const NMApplet = new Lang.Class({
         this._statusSection.actor.hide();
 
         this._syncSectionTitle(NMConnectionCategory.WIRED);
-        this._syncSectionTitle(NMConnectionCategory.VIRTUAL);
         this._syncSectionTitle(NMConnectionCategory.WIRELESS);
         this._syncSectionTitle(NMConnectionCategory.WWAN);
     },
