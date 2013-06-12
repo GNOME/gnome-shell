@@ -713,6 +713,14 @@ const NMApplet = new Lang.Class({
         this._client.connect('device-added', Lang.bind(this, this._deviceAdded));
         this._client.connect('device-removed', Lang.bind(this, this._deviceRemoved));
         this._settings.connect('new-connection', Lang.bind(this, this._newConnection));
+
+        Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
+        this._sessionUpdated();
+    },
+
+    _sessionUpdated: function() {
+        let sensitive = !Main.sessionMode.isLocked && !Main.sessionMode.isGreeter;
+        this._section.setSensitive(sensitive);
     },
 
     _ensureSource: function() {
