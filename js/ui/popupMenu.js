@@ -1340,6 +1340,13 @@ const PopupSubMenuMenuItem = new Lang.Class({
         this.menu.connect('open-state-changed', Lang.bind(this, this._subMenuOpenStateChanged));
     },
 
+    syncSensitive: function() {
+        let sensitive = this.parent();
+        this._triangle.visible = sensitive;
+        if (!sensitive)
+            this.menu.close(false);
+    },
+
     _subMenuOpenStateChanged: function(menu, open) {
         if (open)
             this.actor.add_style_pseudo_class('open');
