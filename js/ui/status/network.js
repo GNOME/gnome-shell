@@ -316,10 +316,6 @@ const NMDevice = new Lang.Class({
                 GObject.Object.prototype.disconnect.call(this.device, this._activeConnectionChangedId);
                 this._stateChangedId = 0;
             }
-            if (this._carrierChangedId) {
-                GObject.Object.prototype.disconnect.call(this.device, this._carrierChangedId);
-                this._carrierChangedId = 0;
-            }
             if (this._firmwareChangedId) {
                 GObject.Object.prototype.disconnect.call(this.device, this._firmwareChangedId);
                 this._firmwareChangedId = 0;
@@ -414,22 +410,14 @@ const NMDevice = new Lang.Class({
             return _("authentication required");
         case NetworkManager.DeviceState.UNAVAILABLE:
             // This state is actually a compound of various states (generically unavailable,
-            // firmware missing, carrier not available), that are exposed by different properties
-            // (whose state may or may not updated when we receive state-changed).
+            // firmware missing), that are exposed by different properties (whose state may
+            // or may not updated when we receive state-changed).
             if (!this._firmwareChangedId)
                 this._firmwareChangedId = this.device.connect('notify::firmware-missing', Lang.bind(this, this._substateChanged));
             if (this.device.firmware_missing) {
                 /* Translators: this is for devices that require some kind of firmware or kernel
                    module, which is missing */
                 return _("firmware missing");
-            }
-            if (this.device.capabilities & NetworkManager.DeviceCapabilities.CARRIER_DETECT) {
-                if (!this._carrierChangedId)
-                    this._carrierChangedId = this.device.connect('notify::carrier', Lang.bind(this, this._substateChanged));
-                if (!this.carrier) {
-                    /* Translators: this is for wired network devices that are physically disconnected */
-                    return _("cable unplugged");
-                }
             }
             /* Translators: this is for a network device that cannot be activated (for example it
                is disabled by rfkill, or it has no coverage */
@@ -543,11 +531,6 @@ const NMDevice = new Lang.Class({
     },
 
     _updateStatusItem: function() {
-        if (this._carrierChangedId) {
-            // see above for why this is needed
-            GObject.Object.prototype.disconnect.call(this.device, this._carrierChangedId);
-            this._carrierChangedId = 0;
-        }
         if (this._firmwareChangedId) {
             GObject.Object.prototype.disconnect.call(this.device, this._firmwareChangedId);
             this._firmwareChangedId = 0;
