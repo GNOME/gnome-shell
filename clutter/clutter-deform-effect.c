@@ -305,7 +305,7 @@ clutter_deform_effect_paint_target (ClutterOffscreenEffect *effect)
          instead we make a temporary copy */
       back_pipeline = cogl_pipeline_copy (priv->back_pipeline);
       cogl_pipeline_set_depth_state (back_pipeline, &depth_state, NULL);
-      cogl_pipeline_set_cull_face_mode (pipeline,
+      cogl_pipeline_set_cull_face_mode (back_pipeline,
                                         COGL_PIPELINE_CULL_FACE_MODE_FRONT);
 
       cogl_framebuffer_draw_primitive (fb, back_pipeline, priv->primitive);
