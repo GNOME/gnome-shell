@@ -54,6 +54,7 @@ units_sources += \
 	actor-invariants.c 		\
 	actor-iter.c			\
 	actor-layout.c			\
+	actor-meta.c			\
 	actor-offscreen-redirect.c	\
 	actor-offscreen-limit-max-size.c\
 	actor-paint-opacity.c 		\
