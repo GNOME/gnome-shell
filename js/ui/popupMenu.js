@@ -64,6 +64,8 @@ const PopupBaseMenuItem = new Lang.Class({
         this._spacing = 0;
         this.active = false;
         this._activatable = params.reactive && params.activate;
+        this._sensitive = true;
+        this.parentSensitive = true;
 
         if (!this._activatable)
             this.actor.add_style_class_name('popup-inactive-menu-item');
@@ -133,17 +135,24 @@ const PopupBaseMenuItem = new Lang.Class({
         }
     },
 
-    setSensitive: function(sensitive) {
-        if (!this._activatable)
-            return;
-        if (this.sensitive == sensitive)
-            return;
-
-        this.sensitive = sensitive;
+    syncSensitive: function() {
+        let sensitive = this.getSensitive();
         this.actor.reactive = sensitive;
         this.actor.can_focus = sensitive;
+        this.emit('sensitive-changed');
+        return sensitive;
+    },
 
-        this.emit('sensitive-changed', sensitive);
+    getSensitive: function() {
+        return this._activatable && this._sensitive && this.parentSensitive;
+    },
+
+    setSensitive: function(sensitive) {
+        if (this._sensitive == sensitive)
+            return;
+
+        this._sensitive = sensitive;
+        this.syncSensitive();
     },
 
     destroy: function() {
@@ -649,6 +658,9 @@ const PopupMenuBase = new Lang.Class({
         this._activeMenuItem = null;
         this._settingsActions = { };
 
+        this._sensitive = true;
+        this.parentSensitive = true;
+
         this._sessionUpdatedId = Main.sessionMode.connect('updated', Lang.bind(this, this._sessionUpdated));
     },
 
@@ -657,6 +669,15 @@ const PopupMenuBase = new Lang.Class({
             return this._parent._getTopMenu();
         else
             return this;
+    },
+
+    getSensitive: function() {
+        return this._sensitive && this.parentSensitive;
+    },
+
+    setSensitive: function(sensitive) {
+        this._sensitive = sensitive;
+        this.emit('sensitive-changed');
     },
 
     _sessionUpdated: function() {
@@ -737,7 +758,8 @@ const PopupMenuBase = new Lang.Class({
                 this.emit('active-changed', null);
             }
         }));
-        menuItem._sensitiveChangeId = menuItem.connect('sensitive-changed', Lang.bind(this, function(menuItem, sensitive) {
+        menuItem._sensitiveChangeId = menuItem.connect('sensitive-changed', Lang.bind(this, function() {
+            let sensitive = menuItem.getSensitive();
             if (!sensitive && this._activeMenuItem == menuItem) {
                 if (!this.actor.navigate_focus(menuItem.actor,
                                                Gtk.DirectionType.TAB_FORWARD,
@@ -752,6 +774,12 @@ const PopupMenuBase = new Lang.Class({
             this.emit('activate', menuItem);
             this.itemActivated(BoxPointer.PopupAnimation.FULL);
         }));
+
+        menuItem._parentSensitiveChangeId = this.connect('sensitive-changed', Lang.bind(this, function() {
+            menuItem.parentSensitive = this.getSensitive();
+            menuItem.syncSensitive();
+        }));
+
         // the weird name is to avoid a conflict with some random property
         // the menuItem may have, called destroyId
         // (FIXME: in the future it may make sense to have container objects
@@ -761,6 +789,7 @@ const PopupMenuBase = new Lang.Class({
             menuItem.disconnect(menuItem._activateId);
             menuItem.disconnect(menuItem._activeChangeId);
             menuItem.disconnect(menuItem._sensitiveChangeId);
+            this.disconnect(menuItem._parentSensitiveChangeId);
             if (menuItem == this._activeMenuItem)
                 this._activeMenuItem = null;
         }));
@@ -831,10 +860,15 @@ const PopupMenuBase = new Lang.Class({
             let parentClosingId = this.connect('menu-closed', function() {
                 menuItem.emit('menu-closed');
             });
+            let subMenuSensitiveChangedId = this.connect('sensitive-changed', Lang.bind(this, function() {
+                menuItem.parentSensitive = this.getSensitive();
+                menuItem.emit('sensitive-changed');
+            }));
 
             menuItem.connect('destroy', Lang.bind(this, function() {
                 menuItem.disconnect(activateId);
                 menuItem.disconnect(activeChangeId);
+                this.disconnect(subMenuSensitiveChangedId);
                 this.disconnect(parentOpenStateChangedId);
                 this.disconnect(parentClosingId);
                 this.length--;
@@ -1109,6 +1143,10 @@ const PopupDummyMenu = new Lang.Class({
         return false;
     },
 
+    getSensitive: function() {
+        return true;
+    },
+
     open: function() { this.emit('open-state-changed', true); },
     close: function() { this.emit('open-state-changed', false); },
     toggle: function() {},
@@ -1149,6 +1187,10 @@ const PopupSubMenu = new Lang.Class({
 
         let topMaxHeight = topThemeNode.get_max_height();
         return topMaxHeight >= 0 && topNaturalHeight >= topMaxHeight;
+    },
+
+    getSensitive: function() {
+        return this._sensitive && return this.sourceActor._delegate.getSensitive();
     },
 
     open: function(animate) {
