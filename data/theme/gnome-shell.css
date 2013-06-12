@@ -262,6 +262,51 @@ StScrollBar StButton#vhandle:active {
     background-size: contain;
 }
 
+/* Network */
+
+.nm-dialog {
+    max-height: 400px;
+}
+
+.nm-dialog-content {
+    spacing: 8px;
+}
+
+.nm-dialog-header-hbox {
+    spacing: 4px;
+}
+
+.nm-dialog-header-icon {
+    icon-size: 32px;
+}
+
+.nm-dialog-scroll-view {
+    border: 2px solid #666;
+    border-radius: 6px;
+}
+
+.nm-dialog-header {
+    font-weight: bold;
+}
+
+.nm-dialog-item {
+    font-size: 12pt;
+    border-bottom: 1px solid #666;
+    padding: 12px;
+}
+
+.nm-dialog-item:checked {
+    background-color: #333;
+}
+
+.nm-dialog-icons {
+    spacing: .5em;
+}
+
+.nm-dialog-icon {
+    icon-size: 16px;
+}
+
 /* Buttons */
 
 .candidate-page-button,
