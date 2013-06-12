@@ -48,7 +48,6 @@ const Slider = new Lang.Class({
         let [hasHandleColor, handleBorderColor] =
             themeNode.lookup_color('-slider-handle-border-color', false);
 
-        let sliderWidth = width - 2 * handleRadius;
         let sliderHeight = themeNode.get_length('-slider-height');
 
         let sliderBorderWidth = themeNode.get_length('-slider-border-width');
@@ -64,7 +63,7 @@ const Slider = new Lang.Class({
             sliderActiveColor.green / 255,
             sliderActiveColor.blue / 255,
             sliderActiveColor.alpha / 255);
-        cr.rectangle(handleRadius, (height - sliderHeight) / 2, sliderWidth * this._value, sliderHeight);
+        cr.rectangle(0, (height - sliderHeight) / 2, width * this._value, sliderHeight);
         cr.fillPreserve();
         cr.setSourceRGBA (
             sliderActiveBorderColor.red / 255,
@@ -79,7 +78,7 @@ const Slider = new Lang.Class({
             sliderColor.green / 255,
             sliderColor.blue / 255,
             sliderColor.alpha / 255);
-        cr.rectangle(handleRadius + sliderWidth * this._value, (height - sliderHeight) / 2, sliderWidth * (1 - this._value), sliderHeight);
+        cr.rectangle(width * this._value, (height - sliderHeight) / 2, width * (1 - this._value), sliderHeight);
         cr.fillPreserve();
         cr.setSourceRGBA (
             sliderBorderColor.red / 255,
