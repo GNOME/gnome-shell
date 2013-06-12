@@ -915,6 +915,7 @@ cogl2_path_new (void)
   data->last_path = 0;
   data->fill_attribute_buffer = NULL;
   data->stroke_attribute_buffer = NULL;
+  data->fill_primitive = NULL;
   data->is_rectangle = FALSE;
 
   return _cogl_path_object_new (path);
