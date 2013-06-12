@@ -17295,7 +17295,10 @@ clutter_actor_has_constraints (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
-  return self->priv->constraints != NULL;
+  if (self->priv->constraints == NULL)
+    return FALSE;
+
+  return _clutter_meta_group_has_metas_no_internal (self->priv->constraints);
 }
 
 /**
@@ -17314,7 +17317,10 @@ clutter_actor_has_actions (ClutterActor *self)
 {
   g_return_val_if_fail (CLUTTER_IS_ACTOR (self), FALSE);
 
-  return self->priv->actions != NULL;
+  if (self->priv->actions == NULL)
+    return FALSE;
+
+  return _clutter_meta_group_has_metas_no_internal (self->priv->actions);
 }
 
 /**
