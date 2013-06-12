@@ -42,7 +42,6 @@ const PopupBaseMenuItem = new Lang.Class({
         params = Params.parse (params, { reactive: true,
                                          activate: true,
                                          hover: true,
-                                         sensitive: true,
                                          style_class: null,
                                          can_focus: true
                                        });
@@ -65,9 +64,6 @@ const PopupBaseMenuItem = new Lang.Class({
         this._spacing = 0;
         this.active = false;
         this._activatable = params.reactive && params.activate;
-        this.sensitive = this._activatable && params.sensitive;
-
-        this.setSensitive(this.sensitive);
 
         if (!this._activatable)
             this.actor.add_style_class_name('popup-inactive-menu-item');
