@@ -262,10 +262,6 @@ StScrollBar StButton#vhandle:active {
     background-size: contain;
 }
 
-.nm-menu-item-icons {
-    spacing: .5em;
-}
-
 /* Buttons */
 
 .candidate-page-button,

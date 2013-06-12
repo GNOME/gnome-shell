@@ -51,7 +51,6 @@ function ssidCompare(one, two) {
     return true;
 }
 
-// shared between NMNetworkMenuItem and NMDeviceWWAN
 function signalToIcon(value) {
     if (value > 80)
         return 'excellent';
@@ -71,60 +70,82 @@ function ssidToLabel(ssid) {
     return label;
 }
 
-const NMNetworkMenuItem = new Lang.Class({
-    Name: 'NMNetworkMenuItem',
-    Extends: PopupMenu.PopupBaseMenuItem,
+const NMConnectionItem = new Lang.Class({
+    Name: 'NMConnectionItem',
 
-    _init: function(bestAP) {
-        this.parent();
+    _init: function(section, connection) {
+        this._section = section;
+        this._connection = connection;
+        this._activeConnection = null;
+        this._activeConnectionChangedId = 0;
 
-        this.bestAP = bestAP;
+        this.menuItem = new PopupMenu.PopupSwitchMenuItem(connection.get_id(), false);
+        this.menuItem.connect('toggled', Lang.bind(this, this._toggle));
 
-        let ssid = this.bestAP.get_ssid();
-        let title = ssidToLabel(ssid);
-
-        this._label = new St.Label({ text: title });
-        this.actor.label_actor = this._label;
-        this.addActor(this._label);
-        this._icons = new St.BoxLayout({ style_class: 'nm-menu-item-icons' });
-        this.addActor(this._icons, { align: St.Align.END });
-
-        this._signalIcon = new St.Icon({ icon_name: this._getIcon(),
-                                         style_class: 'popup-menu-icon' });
-        this._icons.add_actor(this._signalIcon);
-
-        this._secureIcon = new St.Icon({ style_class: 'popup-menu-icon' });
-        if (this.bestAP._secType != NMAccessPointSecurity.NONE)
-            this._secureIcon.icon_name = 'network-wireless-encrypted-symbolic';
-        this._icons.add_actor(this._secureIcon);
+        this._sync();
     },
 
-    updateBestAP: function(ap) {
-        this.bestAP = ap;
-        this._signalIcon.icon_name = this._getIcon();
+    destroy: function() {
+        this.menuItem.destroy();
     },
 
-    _getIcon: function() {
-        if (this.bestAP.mode == NM80211Mode.ADHOC)
-            return 'network-workgroup-symbolic';
+    isActive: function() {
+        if (this._activeConnection == null)
+            return false;
+
+        return this._activeConnection.state == NetworkManager.ActiveConnectionState.ACTIVATED;
+    },
+
+    _sync: function() {
+        this.menuItem.setToggleState(this._getIsActive());
+        this.menuItem.setStatus(this._getStatus());
+        this.emit('icon-changed');
+    },
+
+    _toggle: function() {
+        if (this._activeConnection == null)
+            this._section.activateConnection(this._connection);
         else
-            return 'network-wireless-signal-' + signalToIcon(this.bestAP.strength) + '-symbolic';
-    }
+            this._section.deactivateConnection(this._activeConnection);
+
+        this._sync();
+    },
+
+    _getStatus: function() {
+        return null;
+    },
+
+    _connectionStateChanged: function(ac, newstate, reason) {
+        this._sync();
+    },
+
+    setActiveConnection: function(activeConnection) {
+        if (this._activeConnectionChangedId > 0) {
+            this._activeConnection.disconnect(this._activeConnectionChangedId);
+            this._activeConnectionChangedId = 0;
+        }
+
+        this._activeConnection = activeConnection;
+
+        if (this._activeConnection)
+            this._activeConnectionChangedId = this._activeConnection.connect('state-changed',
+                                                                             Lang.bind(this, this._connectionStateChanged));
+
+        this._sync();
+    },
 });
+Signals.addSignalMethods(NMConnectionItem.prototype);
 
-
-const NMDevice = new Lang.Class({
-    Name: 'NMDevice',
+const NMConnectionSection = new Lang.Class({
+    Name: 'NMConnectionSection',
     Abstract: true,
 
-    _init: function(client, device) {
+    _init: function(client) {
         this._client = client;
-        this._setDevice(device);
 
+        this._connectionItems = new Hash.Map();
         this._connections = [];
-
-        this._activeConnection = null;
-        this._activeConnectionItem = null;
+        this.section = new PopupMenu.PopupMenuSection();
 
         this.statusItem = new PopupMenu.PopupSwitchMenuItem('', this.connected);
         this._statusChanged = this.statusItem.connect('toggled', Lang.bind(this, function(item, state) {
@@ -139,122 +160,126 @@ const NMDevice = new Lang.Class({
         }));
 
         this._updateStatusItem();
-        this.section = new PopupMenu.PopupMenuSection();
-
-        this._deferredWorkId = Main.initializeDeferredWork(this.section.actor, Lang.bind(this, this._createSection));
-    },
-
-    checkConnection: function(connection) {
-        let pos = this._findConnection(connection.get_uuid());
-        let exists = pos != -1;
-        let valid = this.connectionValid(connection);
-        let similar = false;
-        if (exists) {
-            let existing = this._connections[pos];
-
-            // Check if connection changed name or id
-            similar = existing.name == connection.get_id() &&
-                existing.timestamp == connection._timestamp;
-        }
-
-        if (exists && valid && similar) {
-            // Nothing to do
-            return;
-        }
-
-        if (exists)
-            this.removeConnection(connection);
-        if (valid)
-            this.addConnection(connection);
-    },
-
-    addConnection: function(connection) {
-        // record the connection
-        let obj = {
-            connection: connection,
-            name: connection.get_id(),
-            uuid: connection.get_uuid(),
-            timestamp: connection._timestamp,
-            item: null,
-        };
-        Util.insertSorted(this._connections, obj, this._connectionSortFunction);
-
-        this._queueCreateSection();
-    },
-
-    removeConnection: function(connection) {
-        let pos = this._findConnection(connection.get_uuid());
-        if (pos == -1) {
-            // this connection was never added, nothing to do here
-            return;
-        }
-
-        let obj = this._connections[pos];
-        if (obj.item)
-            obj.item.destroy();
-        this._connections.splice(pos, 1);
-
-        if (this._connections.length <= 1) {
-            // We need to show the automatic connection again
-            // (or in the case of NMDeviceWired, we want to hide
-            // the only explicit connection)
-            this._queueCreateSection();
-        }
-    },
-
-    _findConnection: function(uuid) {
-        for (let i = 0; i < this._connections.length; i++) {
-            let obj = this._connections[i];
-            if (obj.uuid == uuid)
-                return i;
-        }
-        return -1;
-    },
-
-    _connectionSortFunction: function(one, two) {
-        if (one.timestamp == two.timestamp)
-            return GLib.utf8_collate(one.name, two.name);
-
-        return two.timestamp - one.timestamp;
     },
 
     destroy: function() {
-        this._setDevice(null);
-
-        if (this._deferredWorkId) {
-            // Just clear out, the actual removal is handled when the
-            // actor is destroyed
-            this._deferredWorkId = 0;
-        }
-
-        this._clearSection();
-        if (this.statusItem)
-            this.statusItem.destroy();
+        this.statusItem.destroy();
         this.section.destroy();
     },
 
-    _setDevice: function(device) {
-        if (device) {
-            this._device = device;
-            this._device._delegate = this;
-            this._stateChangedId = this._device.connect('state-changed', Lang.bind(this, this._deviceStateChanged));
-            this._activeConnectionChangedId = this._device.connect('notify::active-connection', Lang.bind(this, this._activeConnectionChanged));
-        } else if (this._device) {
-            this._device._delegate = null;
+    get connected() {
+        return false;
+    },
 
-            if (this._stateChangedId) {
-                // Need to go through GObject.Object.prototype because
-                // nm_device_disconnect conflicts with g_signal_disconnect
-                GObject.Object.prototype.disconnect.call(this._device, this._stateChangedId);
-                this._stateChangedId = 0;
-            }
-            if (this._activeConnectionChangedId) {
-                GObject.Object.prototype.disconnect.call(this._device, this._activeConnectionChangedId);
-                this._stateChangedId = 0;
-            }
+    _hasConnection: function(connection) {
+        return this._connectionItems.has(connection.get_uuid());
+    },
 
-            this._device = null;
+    _connectionValid: function(connection) {
+        return true;
+    },
+
+    _connectionSortFunction: function(one, two) {
+        if (one._timestamp == two._timestamp)
+            return GLib.utf8_collate(one.get_id(), two.get_id());
+
+        return two._timestamp - one._timestamp;
+    },
+
+    _makeConnectionItem: function(connection) {
+        return new NMConnectionItem(this, connection);
+    },
+
+    checkConnection: function(connection) {
+        if (!this._connectionValid(connection))
+            return;
+
+        if (this._hasConnection(connection))
+            return;
+
+        this._addConnection(connection);
+    },
+
+    _addConnection: function(connection) {
+        let item = this._makeConnectionItem(connection);
+        if (!item)
+            return;
+
+        item.connect('icon-changed', Lang.bind(this, function() {
+            this.emit('icon-changed');
+        }));
+        item.connect('activation-failed', Lang.bind(this, function(item, reason) {
+            this.emit('activation-failed', reason);
+        }));
+
+        let pos = Util.insertSorted(this._connections, connection, this._connectionSortFunction);
+        this.section.addMenuItem(item.menuItem, pos);
+        this._connectionItems.set(connection.get_uuid(), item);
+    },
+
+    removeConnection: function(connection) {
+        this._connectionItems.get(connection.get_uuid()).destroy();
+        this._connectionItems.delete(connection.get_uuid());
+
+        let pos = this._connections.indexOf(connection);
+        this._connections.splice(pos, 1);
+    },
+});
+Signals.addSignalMethods(NMConnectionSection.prototype);
+
+const NMConnectionDevice = new Lang.Class({
+    Name: 'NMConnectionDevice',
+    Extends: NMConnectionSection,
+    Abstract: true,
+
+    _init: function(client, device) {
+        this.parent(client);
+        this._device = device;
+
+        this._stateChangedId = this._device.connect('state-changed', Lang.bind(this, this._deviceStateChanged));
+        this._activeConnectionChangedId = this._device.connect('notify::active-connection', Lang.bind(this, this._activeConnectionChanged));
+    },
+
+    destroy: function() {
+        if (this._stateChangedId) {
+            GObject.Object.prototype.disconnect.call(this._device, this._stateChangedId);
+            this._stateChangedId = 0;
         }
+        if (this._activeConnectionChangedId) {
+            GObject.Object.prototype.disconnect.call(this._device, this._activeConnectionChangedId);
+            this._stateChangedId = 0;
+        }
+
+        this.parent();
+    },
+
+    _deviceStateChanged: function(device, newstate, oldstate, reason) {
+        if (newstate == oldstate) {
+            log('device emitted state-changed without actually changing state');
+            return;
+        }
+
+        /* Emit a notification if activation fails, but don't do it
+           if the reason is no secrets, as that indicates the user
+           cancelled the agent dialog */
+        if (newstate == NetworkManager.DeviceState.FAILED &&
+            reason != NetworkManager.DeviceStateReason.NO_SECRETS) {
+            this.emit('activation-failed', reason);
+        }
+
+        this._updateStatusItem();
+    },
+
+    _connectionValid: function(connection) {
+        return this._device.connection_valid(connection);
+    },
+
+    activateConnection: function(connection) {
+        this._client.activate_connection(connection, this._device, null, null);
+    },
+
+    deactivateConnection: function(activeConnection) {
+        this._device.disconnect(null);
     },
 
     deactivate: function() {
@@ -297,22 +322,10 @@ const NMDevice = new Lang.Class({
             // nothing to do
             return;
 
-        // remove any UI
-        if (this._activeConnectionItem) {
-            this._activeConnectionItem.destroy();
-            this._activeConnectionItem = null;
-        }
-
         this._activeConnection = activeConnection;
-
-        this._queueCreateSection();
     },
 
-    connectionValid: function(connection) {
-        return this._device.connection_valid(connection);
-    },
-
-    getStatusLabel: function() {
+    _getStatus: function() {
         if (!this._device)
             return null;
 
@@ -360,92 +373,6 @@ const NMDevice = new Lang.Class({
             this.statusItem.label.text = this._device._description;
     },
 
-    _queueCreateSection: function() {
-        if (this._deferredWorkId) {
-            this._clearSection();
-            Main.queueDeferredWork(this._deferredWorkId);
-        }
-    },
-
-    _clearSection: function() {
-        // Clear everything
-        this.section.removeAll();
-        this._activeConnectionItem = null;
-        for (let i = 0; i < this._connections.length; i++) {
-            this._connections[i].item = null;
-        }
-    },
-
-    _shouldShowConnectionList: function() {
-        return (this._device.state >= NetworkManager.DeviceState.DISCONNECTED);
-    },
-
-    _createSection: function() {
-        if (!this._shouldShowConnectionList())
-            return;
-
-        if (this._activeConnection) {
-            this._createActiveConnectionItem();
-            this.section.addMenuItem(this._activeConnectionItem);
-        }
-        if (this._connections.length > 0) {
-            let activeOffset = this._activeConnectionItem ? 1 : 0;
-
-            for(let j = 0; j < this._connections.length; ++j) {
-                let obj = this._connections[j];
-                if (this._activeConnection &&
-                    obj.connection == this._activeConnection._connection)
-                    continue;
-                obj.item = this._createConnectionItem(obj);
-
-                this.section.addMenuItem(obj.item);
-            }
-        }
-    },
-
-    _createConnectionItem: function(obj) {
-        let connection = obj.connection;
-        let item = new PopupMenu.PopupMenuItem(obj.name);
-
-        item.connect('activate', Lang.bind(this, function() {
-            this._client.activate_connection(connection, this._device, null, null);
-        }));
-        return item;
-    },
-
-    _createActiveConnectionItem: function() {
-        let title;
-        let active = this._activeConnection._connection;
-        if (active) {
-            title = active.get_id();
-        } else {
-            /* TRANSLATORS: this is the indication that a connection for another logged in user is active,
-               and we cannot access its settings (including the name) */
-            title = _("Connected (private)");
-        }
-        this._activeConnectionItem = new PopupMenu.PopupMenuItem(title, { reactive: false });
-        this._activeConnectionItem.setOrnament(PopupMenu.Ornament.DOT);
-    },
-
-    _deviceStateChanged: function(device, newstate, oldstate, reason) {
-        if (newstate == oldstate) {
-            log('device emitted state-changed without actually changing state');
-            return;
-        }
-
-        /* Emit a notification if activation fails, but don't do it
-           if the reason is no secrets, as that indicates the user
-           cancelled the agent dialog */
-        if (newstate == NetworkManager.DeviceState.FAILED &&
-            reason != NetworkManager.DeviceStateReason.NO_SECRETS) {
-            this.emit('activation-failed', reason);
-        }
-
-        this._updateStatusItem();
-
-        this._queueCreateSection();
-    },
-
     _updateStatusItem: function() {
         this.statusItem.setStatus(this.getStatusLabel());
         this.statusItem.setToggleState(this.connected);
@@ -453,36 +380,32 @@ const NMDevice = new Lang.Class({
 
     _substateChanged: function() {
         this.statusItem.setStatus(this.getStatusLabel());
-    }
+    },
 });
-Signals.addSignalMethods(NMDevice.prototype);
 
 const NMDeviceModem = new Lang.Class({
     Name: 'NMDeviceModem',
-    Extends: NMDevice,
+    Extends: NMConnectionDevice,
     category: NMConnectionCategory.WWAN,
 
     _init: function(client, device) {
         this.parent(client, device);
-        device._description = _("Mobile broadband");
-        this.mobileDevice = null;
+        this._mobileDevice = null;
 
-        this._capabilities = device.current_capabilities;
-        // Support new ModemManager1 devices
-        if (device.udi.indexOf('/org/freedesktop/ModemManager1/Modem') == 0) {
-            this.mobileDevice = new ModemManager.BroadbandModem(device.udi, device.current_capabilities);
-        } else if (this._capabilities & NetworkManager.DeviceModemCapabilities.GSM_UMTS) {
-            this.mobileDevice = new ModemManager.ModemGsm(device.udi);
-        } else if (this._capabilities & NetworkManager.DeviceModemCapabilities.CDMA_EVDO) {
-            this.mobileDevice = new ModemManager.ModemCdma(device.udi);
-        } else if (this._capabilities & NetworkManager.DeviceModemCapabilities.LTE) {
-            this.mobileDevice = new ModemManager.ModemGsm(device.udi);
-        }
+        let capabilities = device.current_capabilities;
+        if (device.udi.indexOf('/org/freedesktop/ModemManager1/Modem') == 0)
+            this._mobileDevice = new ModemManager.BroadbandModem(device.udi, capabilities);
+        else if (capabilities & NetworkManager.DeviceModemCapabilities.GSM_UMTS)
+            this._mobileDevice = new ModemManager.ModemGsm(device.udi);
+        else if (capabilities & NetworkManager.DeviceModemCapabilities.CDMA_EVDO)
+            this._mobileDevice = new ModemManager.ModemCdma(device.udi);
+        else if (capabilities & NetworkManager.DeviceModemCapabilities.LTE)
+            this._mobileDevice = new ModemManager.ModemGsm(device.udi);
 
-        if (this.mobileDevice) {
-            this._operatorNameId = this.mobileDevice.connect('notify::operator-name', Lang.bind(this, function() {
+        if (this._mobileDevice) {
+            this._operatorNameId = this._mobileDevice.connect('notify::operator-name', Lang.bind(this, function() {
                 if (this._operatorItem) {
-                    let name = this.mobileDevice.operator_name;
+                    let name = this._mobileDevice.operator_name;
                     if (name) {
                         this._operatorItem.label.text = name;
                         this._operatorItem.actor.show();
@@ -490,7 +413,7 @@ const NMDeviceModem = new Lang.Class({
                         this._operatorItem.actor.hide();
                 }
             }));
-            this._signalQualityId = this.mobileDevice.connect('notify::signal-quality', Lang.bind(this, function() {
+            this._signalQualityId = this._mobileDevice.connect('notify::signal-quality', Lang.bind(this, function() {
                 if (this._operatorItem) {
                     this._operatorItem.setIcon(this._getSignalIcon());
                 }
@@ -501,11 +424,11 @@ const NMDeviceModem = new Lang.Class({
 
     destroy: function() {
         if (this._operatorNameId) {
-            this.mobileDevice.disconnect(this._operatorNameId);
+            this._mobileDevice.disconnect(this._operatorNameId);
             this._operatorNameId = 0;
         }
         if (this._signalQualityId) {
-            this.mobileDevice.disconnect(this._signalQualityId);
+            this._mobileDevice.disconnect(this._signalQualityId);
             this._signalQualityId = 0;
         }
 
@@ -513,19 +436,19 @@ const NMDeviceModem = new Lang.Class({
     },
 
     _getSignalIcon: function() {
-        return 'network-cellular-signal-' + signalToIcon(this.mobileDevice.signal_quality) + '-symbolic';
+        return 'network-cellular-signal-' + signalToIcon(this._mobileDevice.signal_quality) + '-symbolic';
     },
 
     _createSection: function() {
         if (!this._shouldShowConnectionList())
             return;
 
-        if (this.mobileDevice) {
+        if (this._mobileDevice) {
             // If operator_name is null, just pass the empty string, as the item is hidden anyway
-            this._operatorItem = new PopupMenu.PopupImageMenuItem(this.mobileDevice.operator_name || '',
+            this._operatorItem = new PopupMenu.PopupImageMenuItem(this._mobileDevice.operator_name || '',
                                                                   this._getSignalIcon(),
                                                                   { reactive: false });
-            if (!this.mobileDevice.operator_name)
+            if (!this._mobileDevice.operator_name)
                 this._operatorItem.actor.hide();
             this.section.addMenuItem(this._operatorItem);
         }
@@ -551,7 +474,7 @@ const NMDeviceModem = new Lang.Class({
         if (this._device.active_connection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
             return 'network-cellular-acquiring-symbolic';
 
-        if (!this.mobileDevice) {
+        if (!this._mobileDevice) {
             // this can happen for bluetooth in PAN mode
             return 'network-cellular-connected-symbolic';
         }
@@ -562,13 +485,8 @@ const NMDeviceModem = new Lang.Class({
 
 const NMDeviceBluetooth = new Lang.Class({
     Name: 'NMDeviceBluetooth',
-    Extends: NMDevice,
+    Extends: NMConnectionDevice,
     category: NMConnectionCategory.WWAN,
-
-    _init: function(client, device) {
-        this.parent(client, device);
-        device._description = _("Bluetooth");
-    },
 
     _activateAutomaticConnection: function() {
         // FIXME: DUN devices are configured like modems, so
@@ -588,496 +506,9 @@ const NMDeviceBluetooth = new Lang.Class({
     },
 });
 
-const NMDeviceWireless = new Lang.Class({
-    Name: 'NMDeviceWireless',
-    Extends: NMDevice,
-    category: NMConnectionCategory.WIRELESS,
-
-    _init: function(client, device) {
-        this.parent(client, device);
-
-        this._networks = [ ];
-
-        let accessPoints = device.get_access_points() || [ ];
-        accessPoints.forEach(Lang.bind(this, function(ap) {
-            this._accessPointAdded(this._device, ap);
-        }));
-
-        this._activeApChanged();
-        this._networks.sort(this._networkSortFunction);
-
-        this._apChangedId = device.connect('notify::active-access-point', Lang.bind(this, this._activeApChanged));
-        this._apAddedId = device.connect('access-point-added', Lang.bind(this, this._accessPointAdded));
-        this._apRemovedId = device.connect('access-point-removed', Lang.bind(this, this._accessPointRemoved));
-    },
-
-    destroy: function() {
-        if (this._apChangedId) {
-            // see above for this HACK
-            GObject.Object.prototype.disconnect.call(this._device, this._apChangedId);
-            this._apChangedId = 0;
-        }
-
-        if (this._apAddedId) {
-            GObject.Object.prototype.disconnect.call(this._device, this._apAddedId);
-            this._apAddedId = 0;
-        }
-
-        if (this._apRemovedId) {
-            GObject.Object.prototype.disconnect.call(this._device, this._apRemovedId);
-            this._apRemovedId = 0;
-        }
-
-        if (this._strengthChangedId) {
-            this._activeAccessPoint.disconnect(this._strengthChangedId);
-            this._strengthChangedId = 0;
-        }
-
-        this.parent();
-    },
-
-    activate: function() {
-        if (this._activeConnection)
-            // nothing to do
-            return true;
-
-        // All possible policy we can have here is just broken
-        // NM autoconnects when wifi devices are enabled, and if it
-        // didn't, there is a good reason
-        // User, pick a connection from the list, thank you
-        return false;
-    },
-
-    _notifySsidCb: function(accessPoint) {
-        if (accessPoint.get_ssid() != null) {
-            accessPoint.disconnect(accessPoint._notifySsidId);
-            accessPoint._notifySsidId = 0;
-            this._accessPointAdded(this._device, accessPoint);
-        }
-    },
-
-    _activeApChanged: function() {
-        let ap = this._device.active_access_point;
-        if (this._activeAccessPoint == ap)
-            return;
-
-        if (this._activeAccessPoint) {
-            this._activeAccessPoint.disconnect(this._strengthChangedId);
-            this._strengthChangedId = 0;
-        }
-
-        this._activeAccessPoint = ap;
-
-        if (this._activeAccessPoint) {
-            this._strengthChangedId = this._activeAccessPoint.connect('notify::strength',
-                                                                      Lang.bind(this, this._strengthChanged));
-
-            let res = this._findExistingNetwork(activeAp);
-            if (res != null)
-                this._activeNetwork = this._networks[res.network];
-        }
-
-        this.emit('icon-changed');
-    },
-
-    _strengthChanged: function() {
-        this.emit('icon-changed');
-    },
-
-    _getApSecurityType: function(accessPoint) {
-        if (accessPoint._secType)
-            return accessPoint._secType;
-
-        let flags = accessPoint.flags;
-        let wpa_flags = accessPoint.wpa_flags;
-        let rsn_flags = accessPoint.rsn_flags;
-        let type;
-        if (rsn_flags != NM80211ApSecurityFlags.NONE) {
-            /* RSN check first so that WPA+WPA2 APs are treated as RSN/WPA2 */
-            if (rsn_flags & NM80211ApSecurityFlags.KEY_MGMT_802_1X)
-	        type = NMAccessPointSecurity.WPA2_ENT;
-	    else if (rsn_flags & NM80211ApSecurityFlags.KEY_MGMT_PSK)
-	        type = NMAccessPointSecurity.WPA2_PSK;
-        } else if (wpa_flags != NM80211ApSecurityFlags.NONE) {
-            if (wpa_flags & NM80211ApSecurityFlags.KEY_MGMT_802_1X)
-                type = NMAccessPointSecurity.WPA_ENT;
-            else if (wpa_flags & NM80211ApSecurityFlags.KEY_MGMT_PSK)
-	        type = NMAccessPointSecurity.WPA_PSK;
-        } else {
-            if (flags & NM80211ApFlags.PRIVACY)
-                type = NMAccessPointSecurity.WEP;
-            else
-                type = NMAccessPointSecurity.NONE;
-        }
-
-        // cache the found value to avoid checking flags all the time
-        accessPoint._secType = type;
-        return type;
-    },
-
-    _networkSortFunction: function(one, two) {
-        let oneHasConnection = one.connections.length != 0;
-        let twoHasConnection = two.connections.length != 0;
-
-        // place known connections first
-        // (-1 = good order, 1 = wrong order)
-        if (oneHasConnection && !twoHasConnection)
-            return -1;
-        else if (!oneHasConnection && twoHasConnection)
-            return 1;
-
-        let oneStrength = one.accessPoints[0].strength;
-        let twoStrength = two.accessPoints[0].strength;
-
-        // place stronger connections first
-        if (oneStrength != twoStrength)
-            return oneStrength < twoStrength ? 1 : -1;
-
-        let oneHasSecurity = one.security != NMAccessPointSecurity.NONE;
-        let twoHasSecurity = two.security != NMAccessPointSecurity.NONE;
-
-        // place secure connections first
-        // (we treat WEP/WPA/WPA2 the same as there is no way to
-        // take them apart from the UI)
-        if (oneHasSecurity && !twoHasSecurity)
-            return -1;
-        else if (!oneHasSecurity && twoHasSecurity)
-            return 1;
-
-        // sort alphabetically
-        return GLib.utf8_collate(one.ssidText, two.ssidText);
-    },
-
-    _networkCompare: function(network, accessPoint) {
-        if (!ssidCompare(network.ssid, accessPoint.get_ssid()))
-            return false;
-        if (network.mode != accessPoint.mode)
-            return false;
-        if (network.security != this._getApSecurityType(accessPoint))
-            return false;
-
-        return true;
-    },
-
-    _findExistingNetwork: function(accessPoint) {
-        for (let i = 0; i < this._networks.length; i++) {
-            let network = this._networks[i];
-            for (let j = 0; j < network.accessPoints.length; j++) {
-                if (network.accessPoints[j] == accessPoint)
-                    return { network: i, ap: j };
-            }
-        }
-
-        return null;
-    },
-
-    _findNetwork: function(accessPoint) {
-        if (accessPoint.get_ssid() == null)
-            return -1;
-
-        for (let i = 0; i < this._networks.length; i++) {
-            if (this._networkCompare(this._networks[i], accessPoint))
-                return i;
-        }
-        return -1;
-    },
-
-    _onApStrengthChanged: function(ap) {
-        let res = this._findExistingNetwork(ap);
-        if (res == null) {
-            // Uhm... stale signal?
-            return;
-        }
-
-        let network = this._networks[res.network];
-        network.accessPoints.splice(res.ap, 1);
-        Util.insertSorted(network.accessPoints, ap, function(one, two) {
-            return two.strength - one.strength;
-        });
-
-        this._networks.splice(res.network, 1);
-        let newPos = Util.insertSorted(this._networks, network, Lang.bind(this, this._networkSortFunction));
-
-        if (newPos != res.network)
-            this._queueCreateSection();
-    },
-
-    _accessPointAdded: function(device, accessPoint) {
-        if (accessPoint.get_ssid() == null) {
-            // This access point is not visible yet
-            // Wait for it to get a ssid
-            accessPoint._notifySsidId = accessPoint.connect('notify::ssid', Lang.bind(this, this._notifySsidCb));
-            return;
-        }
-
-        let pos = this._findNetwork(accessPoint);
-        let network;
-        let needsupdate = false;
-
-        if (pos != -1) {
-            network = this._networks[pos];
-            if (network.accessPoints.indexOf(accessPoint) != -1) {
-                log('Access point was already seen, not adding again');
-                return;
-            }
-
-            Util.insertSorted(network.accessPoints, accessPoint, function(one, two) {
-                return two.strength - one.strength;
-            });
-            if (network.item)
-                network.item.updateBestAP(network.accessPoints[0]);
-        } else {
-            network = { ssid: accessPoint.get_ssid(),
-                        mode: accessPoint.mode,
-                        security: this._getApSecurityType(accessPoint),
-                        connections: [ ],
-                        item: null,
-                        accessPoints: [ accessPoint ]
-                      };
-            network.ssidText = ssidToLabel(network.ssid);
-        }
-        accessPoint._updateId = accessPoint.connect('notify::strength', Lang.bind(this, this._onApStrengthChanged));
-
-        // check if this enables new connections for this group
-        for (let i = 0; i < this._connections.length; i++) {
-            let connection = this._connections[i].connection;
-            if (accessPoint.connection_valid(connection) &&
-                network.connections.indexOf(connection) == -1) {
-                network.connections.push(connection);
-            }
-        }
-
-        if (pos != -1)
-            this._networks.splice(pos, 1);
-        let newPos = Util.insertSorted(this._networks, network, this._networkSortFunction);
-
-        // Queue an update of the UI if we changed the order
-        if (newPos != pos)
-            this._queueCreateSection();
-    },
-
-    _accessPointRemoved: function(device, accessPoint) {
-        if (accessPoint._updateId) {
-            accessPoint.disconnect(accessPoint._updateId);
-            accessPoint._updateId = 0;
-        }
-
-        let res = this._findExistingNetwork(accessPoint);
-
-        if (res == null) {
-            log('Removing an access point that was never added');
-            return;
-        }
-
-        let network = this._networks[res.network];
-        network.accessPoints.splice(res.ap, 1);
-
-        if (network.accessPoints.length == 0) {
-            if (this._activeNetwork == network)
-                this._activeNetwork = null;
-
-            if (network.item)
-                network.item.destroy();
-
-            this._networks.splice(res.network, 1);
-        } else {
-            let okPrev = true, okNext = true;
-
-            if (res.network > 0)
-                okPrev = this._networkSortFunction(this._networks[res.network - 1], network) >= 0;
-            if (res.network < this._networks.length-1)
-                okNext = this._networkSortFunction(this._networks[res.network + 1], network) <= 0;
-
-            if (!okPrev || !okNext)
-                this._queueCreateSection();
-            else if (network.item)
-                network.item.updateBestAP(network.accessPoints[0]);
-        }
-    },
-
-    _clearSection: function() {
-        this.parent();
-        for (let i = 0; i < this._networks.length; i++)
-            this._networks[i].item = null;
-    },
-
-    removeConnection: function(connection) {
-        let pos = this._findConnection(connection.get_uuid());
-        if (pos == -1) {
-            // removing connection that was never added
-            return;
-        }
-
-        let obj = this._connections[pos];
-        this._connections.splice(pos, 1);
-
-        let forceupdate = false;
-        for (let i = 0; i < this._networks.length; i++) {
-            let network = this._networks[i];
-            let connections = network.connections;
-            for (let k = 0; k < connections.length; k++) {
-                if (connections[k].get_uuid() == connection.get_uuid()) {
-                    // remove the connection from the access point group
-                    connections.splice(k, 1);
-                    forceupdate = forceupdate || connections.length == 0;
-
-                    if (forceupdate)
-                        break;
-
-                    if (network.item) {
-                        network.item.destroy();
-                        network.item = null;
-                    }
-                    break;
-                }
-            }
-        }
-
-        if (forceupdate) {
-            this._networks.sort(this._networkSortFunction);
-            this._queueCreateSection();
-        }
-    },
-
-    addConnection: function(connection) {
-        // record the connection
-        let obj = {
-            connection: connection,
-            name: connection.get_id(),
-            uuid: connection.get_uuid(),
-        };
-        this._connections.push(obj);
-
-        // find an appropriate access point
-        let forceupdate = false;
-        for (let i = 0; i < this._networks.length; i++) {
-            let network = this._networks[i];
-
-            // Check if connection is valid for any of these access points
-            for (let k = 0; k < network.accessPoints.length; k++) {
-                let ap = network.accessPoints[k];
-                if (ap.connection_valid(connection)) {
-                    network.connections.push(connection);
-                    // this potentially changes the sorting order
-                    forceupdate = true;
-                    break;
-                }
-            }
-        }
-
-        if (forceupdate) {
-            this._networks.sort(this._networkSortFunction);
-            this._queueCreateSection();
-        }
-    },
-
-    _createActiveConnectionItem: function() {
-        let title;
-        if (this._activeConnection && this._activeConnection._connection)
-            title = this._activeConnection._connection.get_id();
-        else
-            title = _("Connected (private)");
-
-        this._activeConnectionItem = new NMNetworkMenuItem(this._device.active_access_point);
-        this._activeConnectionItem.setSensitive(false);
-        this._activeConnectionItem.setOrnament(PopupMenu.Ornament.DOT);
-    },
-
-    _createNetworkItem: function(network, position) {
-        if(!network.accessPoints || network.accessPoints.length == 0) {
-            // this should not happen, but I have no idea why it happens
-            return;
-        }
-
-        network.item = new NMNetworkMenuItem(network.accessPoints[0]);
-        if(network.connections.length > 0) {
-            let connection = network.connections[0];
-            network.item._connection = connection;
-            network.item.connect('activate', Lang.bind(this, function() {
-                let accessPoints = network.accessPoints;
-                for (let i = 0; i < accessPoints.length; i++) {
-                    if (accessPoints[i].connection_valid(connection)) {
-                        this._client.activate_connection(connection, this._device, accessPoints[i].dbus_path, null);
-                        break;
-                    }
-                }
-            }));
-        } else {
-            network.item.connect('activate', Lang.bind(this, function() {
-                let accessPoints = network.accessPoints;
-                if (   (accessPoints[0]._secType == NMAccessPointSecurity.WPA2_ENT)
-                    || (accessPoints[0]._secType == NMAccessPointSecurity.WPA_ENT)) {
-                    // 802.1x-enabled APs require further configuration, so they're
-                    // handled in gnome-control-center
-                    Util.spawn(['gnome-control-center', 'network', 'connect-8021x-wifi',
-                                this._device.get_path(), accessPoints[0].dbus_path]);
-                } else {
-                    let connection = new NetworkManager.Connection();
-                    this._client.add_and_activate_connection(connection, this._device, accessPoints[0].dbus_path, null)
-                }
-            }));
-        }
-        network.item._network = network;
-
-        this.section.addMenuItem(network.item, position);
-    },
-
-    _createSection: function() {
-        if (!this._shouldShowConnectionList())
-            return;
-
-        if (this._activeNetwork) {
-            this._createActiveConnectionItem();
-            this.section.addMenuItem(this._activeConnectionItem);
-        }
-
-        let activeOffset = this._activeConnectionItem ? 1 : 0;
-
-        for(let j = 0; j < this._networks.length; j++) {
-            let network = this._networks[j];
-            if (network == this._activeNetwork) {
-                activeOffset--;
-                continue;
-            }
-
-            this._createNetworkItem(network, j + activeOffset);
-        }
-    },
-
-    getIndicatorIcon: function() {
-        if (this._device.active_connection.state == NetworkManager.ActiveConnectionState.ACTIVATING)
-            return 'network-wireless-acquiring-symbolic';
-
-        let ap = this._device.active_access_point;
-        if (!ap) {
-            if (this._device.mode != NM80211Mode.ADHOC)
-                log('An active wireless connection, in infrastructure mode, involves no access point?');
-
-            return 'network-wireless-connected-symbolic';
-        }
-
-        return 'network-wireless-signal-' + signalToIcon(ap.strength) + '-symbolic';
-    },
-});
-
 const NMVPNConnectionItem = new Lang.Class({
     Name: 'NMVPNConnectionItem',
-
-    _init: function(client, connection) {
-        this._client = client;
-        this.connection = connection;
-        this._activeConnection = null;
-        this._activeConnectionChangedId = 0;
-
-        this.menuItem = new PopupMenu.PopupSwitchMenuItem(connection.get_id(), false);
-        this.menuItem.connect('toggled', Lang.bind(this, this._toggle));
-
-        this._sync();
-    },
-
-    destroy: function() {
-        this.menuItem.destroy();
-    },
+    Extends: NMConnectionItem,
 
     isActive: function() {
         if (this._activeConnection == null)
@@ -1108,21 +539,6 @@ const NMVPNConnectionItem = new Lang.Class({
         }
     },
 
-    _toggle: function() {
-        if (this._activeConnection == null)
-            this._client.activate_connection(this.connection, null, null, null);
-        else
-            this._client.deactivate_connection(this._activeConnection);
-
-        this._sync();
-    },
-
-    _sync: function() {
-        this.menuItem.setToggleState(this.isActive());
-        this.menuItem.setStatus(this._getStatus());
-        this.emit('icon-changed');
-    },
-
     _connectionStateChanged: function(ac, newstate, reason) {
         if (newstate == NetworkManager.VPNConnectionState.FAILED &&
             reason != NetworkManager.VPNConnectionStateReason.NO_SECRETS) {
@@ -1132,7 +548,7 @@ const NMVPNConnectionItem = new Lang.Class({
             this.emit('activation-failed', reason);
         }
 
-        this._sync();
+        this.parent();
     },
 
     setActiveConnection: function(activeConnection) {
@@ -1161,39 +577,18 @@ const NMVPNConnectionItem = new Lang.Class({
         }
     },
 });
-Signals.addSignalMethods(NMVPNConnectionItem.prototype);
 
 const NMVPNSection = new Lang.Class({
     Name: 'NMVPNSection',
+    Extends: NMConnectionSection,
     category: NMConnectionCategory.VPN,
 
-    _init: function(client) {
-        this._client = client;
-        this._connectionItems = new Hash.Map();
-
-        this.section = new PopupMenu.PopupMenuSection();
+    activateConnection: function(connection) {
+        this._client.activate_connection(connection, null, null, null);
     },
 
-    checkConnection: function(connection) {
-        if (this._connectionItems.has(connection.get_uuid()))
-            return;
-
-        let item = new NMVPNConnectionItem(this._client, connection);
-
-        item.connect('icon-changed', Lang.bind(this, function() {
-            this.emit('icon-changed');
-        }));
-        item.connect('activation-failed', Lang.bind(this, function(item, reason) {
-            this.emit('activation-failed', reason);
-        }));
-
-        this.section.addMenuItem(item.menuItem);
-        this._connectionItems.set(connection.get_uuid(), item);
-    },
-
-    removeConnection: function(connection) {
-        this._connectionItems.get(connection.get_uuid()).destroy();
-        this._connectionItems.delete(connection.get_uuid());
+    deactivateConnection: function(activeConnection) {
+        this._client.deactivate_connection(activeConnection);
     },
 
     addActiveConnection: function(activeConnection) {
@@ -1204,6 +599,10 @@ const NMVPNSection = new Lang.Class({
     removeActiveConnection: function(activeConnection) {
         let item = this._connectionItems.get(activeConnection._connection.get_uuid());
         item.setActiveConnection(null);
+    },
+
+    _makeConnectionItem: function(connection) {
+        return new NMVPNConnectionItem(this, connection);
     },
 
     getIndicatorIcon: function() {
@@ -1231,7 +630,7 @@ const NMApplet = new Lang.Class({
 
         // Device types
         this._dtypes = { };
-        this._dtypes[NetworkManager.DeviceType.WIFI] = NMDeviceWireless;
+        // this._dtypes[NetworkManager.DeviceType.WIFI] = NMDeviceWireless;
         this._dtypes[NetworkManager.DeviceType.MODEM] = NMDeviceModem;
         this._dtypes[NetworkManager.DeviceType.BT] = NMDeviceBluetooth;
         // TODO: WiMax support
@@ -1374,6 +773,7 @@ const NMApplet = new Lang.Class({
         let wrapperClass = this._dtypes[device.get_device_type()];
         if (wrapperClass) {
             let wrapper = new wrapperClass(this._client, device);
+            device._delegate = wrapper;
             this._addDeviceWrapper(wrapper);
 
             this._nmDevices.push(device);
