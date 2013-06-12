@@ -772,7 +772,6 @@ const PopupMenuBase = new Lang.Class({
     _connectSubMenuSignals: function(object, menu) {
         object._subMenuActivateId = menu.connect('activate', Lang.bind(this, function() {
             this.emit('activate');
-            this.close(BoxPointer.PopupAnimation.FULL);
         }));
         object._subMenuActiveChangeId = menu.connect('active-changed', Lang.bind(this, function(submenu, submenuItem) {
             if (this._activeMenuItem && this._activeMenuItem != submenuItem)
@@ -887,10 +886,14 @@ const PopupMenuBase = new Lang.Class({
                     else
                         menuItem.close();
                 });
+            menuItem._parentClosingId = this.connect('menu-closed', function() {
+                menuItem.emit('menu-closed');
+            });
             menuItem.connect('destroy', Lang.bind(this, function() {
                 menuItem.disconnect(menuItem._subMenuActivateId);
                 menuItem.disconnect(menuItem._subMenuActiveChangeId);
                 this.disconnect(menuItem._parentOpenStateChangedId);
+                this.disconnect(menuItem._parentClosingId);
 
                 this.length--;
             }));
@@ -901,9 +904,8 @@ const PopupMenuBase = new Lang.Class({
                 this.box.insert_child_below(menuItem.menu.actor, before_item);
             this._connectSubMenuSignals(menuItem, menuItem.menu);
             this._connectItemSignals(menuItem);
-            menuItem._closingId = this.connect('open-state-changed', function(self, open) {
-                if (!open)
-                    menuItem.menu.close(BoxPointer.PopupAnimation.FADE);
+            menuItem._closingId = this.connect('menu-closed', function() {
+                menuItem.menu.close(BoxPointer.PopupAnimation.NONE);
             });
         } else if (menuItem instanceof PopupSeparatorMenuItem) {
             this._connectItemSignals(menuItem);
@@ -1114,8 +1116,11 @@ const PopupMenu = new Lang.Class({
             childMenu.close();
         });
 
-        if (this._boxPointer.actor.visible)
-            this._boxPointer.hide(animate);
+        if (this._boxPointer.actor.visible) {
+            this._boxPointer.hide(animate, Lang.bind(this, function() {
+                this.emit('menu-closed');
+            }));
+        }
 
         if (!this.isOpen)
             return;
