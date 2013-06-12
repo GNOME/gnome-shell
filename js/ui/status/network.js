@@ -584,45 +584,24 @@ const NMDeviceWired = new Lang.Class({
 const NMDeviceModem = new Lang.Class({
     Name: 'NMDeviceModem',
     Extends: NMDevice,
+    category: NMConnectionCategory.WWAN,
 
     _init: function(client, device, connections) {
-        let is_wwan = false;
-
         device._description = _("Mobile broadband");
         this._enabled = true;
         this.mobileDevice = null;
-        this._connectionType = 'ppp';
 
         this._capabilities = device.current_capabilities;
         // Support new ModemManager1 devices
         if (device.udi.indexOf('/org/freedesktop/ModemManager1/Modem') == 0) {
-            is_wwan = true;
             this.mobileDevice = new ModemManager.BroadbandModem(device.udi, device.current_capabilities);
-            if (this._capabilities & NetworkManager.DeviceModemCapabilities.GSM_UMTS) {
-                this._connectionType = NetworkManager.SETTING_GSM_SETTING_NAME;
-            } else if (this._capabilities & NetworkManager.DeviceModemCapabilities.LTE) {
-                this._connectionType = NetworkManager.SETTING_GSM_SETTING_NAME;
-            } else if (this._capabilities & NetworkManager.DeviceModemCapabilities.CDMA_EVDO) {
-                this._connectionType = NetworkManager.SETTING_CDMA_SETTING_NAME;
-            }
         } else if (this._capabilities & NetworkManager.DeviceModemCapabilities.GSM_UMTS) {
-            is_wwan = true;
             this.mobileDevice = new ModemManager.ModemGsm(device.udi);
-            this._connectionType = NetworkManager.SETTING_GSM_SETTING_NAME;
         } else if (this._capabilities & NetworkManager.DeviceModemCapabilities.CDMA_EVDO) {
-            is_wwan = true;
             this.mobileDevice = new ModemManager.ModemCdma(device.udi);
-            this._connectionType = NetworkManager.SETTING_CDMA_SETTING_NAME;
         } else if (this._capabilities & NetworkManager.DeviceModemCapabilities.LTE) {
-            is_wwan = true;
             this.mobileDevice = new ModemManager.ModemGsm(device.udi);
-            this._connectionType = NetworkManager.SETTING_GSM_SETTING_NAME;
         }
-
-        if (is_wwan)
-            this.category = NMConnectionCategory.WWAN;
-        else
-            this.category = NMConnectionCategory.WIRED;
 
         if (this.mobileDevice) {
             this._operatorNameId = this.mobileDevice.connect('notify::operator-name', Lang.bind(this, function() {
