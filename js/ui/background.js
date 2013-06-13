@@ -571,7 +571,16 @@ const Background = new Lang.Class({
         }
 
         let uri = this._settings.get_string(PICTURE_URI_KEY);
-        let filename = Gio.File.new_for_uri(uri).get_path();
+        let filename;
+        if (GLib.uri_parse_scheme(uri) != null)
+            filename = Gio.File.new_for_uri(uri).get_path();
+        else
+            filename = uri;
+
+        if (!filename) {
+            this._setLoaded();
+            return;
+        }
 
         this._loadFile(filename);
     },
