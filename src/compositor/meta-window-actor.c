@@ -127,8 +127,6 @@ struct _MetaWindowActorPrivate
 
   guint             no_shadow              : 1;
 
-  guint             no_more_x_calls        : 1;
-
   guint             unredirected           : 1;
 
   /* This is used to detect fullscreen windows that need to be unredirected */
@@ -1313,14 +1311,6 @@ meta_window_actor_destroy (MetaWindowActor *self)
     }
 
   priv->needs_destroy = TRUE;
-
-  /*
-   * Once the window destruction is initiated we can no longer perform any
-   * furter X-based operations. For example, if we have a Map effect running,
-   * we cannot query the window geometry once the effect completes. So, flag
-   * this.
-   */
-  priv->no_more_x_calls = TRUE;
 
   if (!meta_window_actor_effect_in_progress (self))
     clutter_actor_destroy (CLUTTER_ACTOR (self));
