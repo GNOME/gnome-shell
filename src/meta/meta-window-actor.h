@@ -64,7 +64,6 @@ gint               meta_window_actor_get_workspace        (MetaWindowActor *self
 MetaWindow *       meta_window_actor_get_meta_window      (MetaWindowActor *self);
 ClutterActor *     meta_window_actor_get_texture          (MetaWindowActor *self);
 gboolean           meta_window_actor_is_override_redirect (MetaWindowActor *self);
-const char *       meta_window_actor_get_description      (MetaWindowActor *self);
 gboolean       meta_window_actor_showing_on_its_workspace (MetaWindowActor *self);
 gboolean       meta_window_actor_is_destroyed (MetaWindowActor *self);
 
