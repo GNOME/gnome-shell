@@ -69,7 +69,6 @@ struct _MetaWindowActorPrivate
   Damage            damage;
 
   guint8            opacity;
-  guint8            shadow_opacity;
 
   gchar *           desc;
 
