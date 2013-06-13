@@ -179,14 +179,6 @@ _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
                                                         &internal_error)))
     return COGL_TEXTURE (atlas_tex);
 
-  if (cogl_error_matches (internal_error,
-                          COGL_SYSTEM_ERROR,
-                          COGL_SYSTEM_ERROR_NO_MEMORY))
-    {
-      _cogl_propagate_error (error, internal_error);
-      return NULL;
-    }
-
   cogl_error_free (internal_error);
   internal_error = NULL;
 
@@ -199,14 +191,6 @@ _cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
       tex = COGL_TEXTURE (cogl_texture_2d_new_from_bitmap (bitmap,
                                                            internal_format,
                                                            &internal_error));
-
-      if (cogl_error_matches (internal_error,
-                              COGL_SYSTEM_ERROR,
-                              COGL_SYSTEM_ERROR_NO_MEMORY))
-        {
-          _cogl_propagate_error (error, internal_error);
-          return NULL;
-        }
 
       if (!tex)
         {
