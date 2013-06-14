@@ -109,6 +109,7 @@ nobase_dist_js_DATA = 	\
 	ui/auth/realmd.js	\
 	ui/auth/sessionList.js	\
 	ui/auth/unlockDialog.js	\
+	ui/auth/userList.js	\
 	ui/auth/util.js		\
 	ui/components/__init__.js		\
 	ui/components/autorunManager.js		\
