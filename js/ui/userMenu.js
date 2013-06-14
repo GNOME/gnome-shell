@@ -21,6 +21,7 @@ const ModalDialog = imports.ui.modalDialog;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Params = imports.misc.params;
+const UserAvatar = imports.ui.userAvatar;
 const Util = imports.misc.util;
 
 const LOCKDOWN_SCHEMA = 'org.gnome.desktop.lockdown';
@@ -56,48 +57,6 @@ const SystemdLoginSessionIface = <interface name='org.freedesktop.login1.Session
 </interface>;
 
 const SystemdLoginSession = Gio.DBusProxy.makeProxyWrapper(SystemdLoginSessionIface);
-
-// Adapted from gdm/gui/user-switch-applet/applet.c
-//
-// Copyright (C) 2004-2005 James M. Cape <jcape@ignore-your.tv>.
-// Copyright (C) 2008,2009 Red Hat, Inc.
-
-const UserAvatarWidget = new Lang.Class({
-    Name: 'UserAvatarWidget',
-
-    _init: function(user, params) {
-        this._user = user;
-        params = Params.parse(params, { reactive: false,
-                                        iconSize: DIALOG_ICON_SIZE,
-                                        styleClass: 'status-chooser-user-icon' });
-        this._iconSize = params.iconSize;
-
-        this.actor = new St.Bin({ style_class: params.styleClass,
-                                  track_hover: params.reactive,
-                                  reactive: params.reactive });
-    },
-
-    setSensitive: function(sensitive) {
-        this.actor.can_focus = sensitive;
-        this.actor.reactive = sensitive;
-    },
-
-    update: function() {
-        let iconFile = this._user.get_icon_file();
-        if (iconFile && !GLib.file_test(iconFile, GLib.FileTest.EXISTS))
-            iconFile = null;
-
-        if (iconFile) {
-            let file = Gio.File.new_for_path(iconFile);
-            this.actor.child = null;
-            this.actor.style = 'background-image: url("%s");'.format(iconFile);
-        } else {
-            this.actor.style = null;
-            this.actor.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
-                                             icon_size: this._iconSize });
-        }
-    }
-});
 
 const IMStatusItem = new Lang.Class({
     Name: 'IMStatusItem',
@@ -170,7 +129,7 @@ const IMStatusChooserItem = new Lang.Class({
         this._userManager = AccountsService.UserManager.get_default();
         this._user = this._userManager.get_user(GLib.get_user_name());
 
-        this._avatar = new UserAvatarWidget(this._user, { reactive: true });
+        this._avatar = new UserAvatar.UserAvatar(this._user, { reactive: true });
         this._iconBin = new St.Button({ child: this._avatar.actor });
         this.addActor(this._iconBin);
 
@@ -908,7 +867,7 @@ const UserMenuButton = new Lang.Class({
             let session = sessions[i];
             let userEntry = new St.BoxLayout({ style_class: 'login-dialog-user-list-item',
                                                vertical: false });
-            let avatar = new UserAvatarWidget(session.user);
+            let avatar = new UserAvatar.UserAvatar(session.user);
             avatar.update();
             userEntry.add(avatar.actor);
 

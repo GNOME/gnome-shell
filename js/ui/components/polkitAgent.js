@@ -16,7 +16,7 @@ const PolkitAgent = imports.gi.PolkitAgent;
 const Components = imports.ui.components;
 const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
-const UserMenu = imports.ui.userMenu;
+const UserAvatar = imports.ui.userAvatar;
 
 const DIALOG_ICON_SIZE = 48;
 
@@ -100,9 +100,9 @@ const AuthenticationDialog = new Lang.Class({
             let userBox = new St.BoxLayout({ style_class: 'polkit-dialog-user-layout',
                                              vertical: false });
             messageBox.add(userBox);
-            this._userAvatar = new UserMenu.UserAvatarWidget(this._user,
-                                                             { iconSize: DIALOG_ICON_SIZE,
-                                                               styleClass: 'polkit-dialog-user-icon' });
+            this._userAvatar = new UserAvatar.UserAvatar(this._user,
+                                                         { iconSize: DIALOG_ICON_SIZE,
+                                                           styleClass: 'polkit-dialog-user-icon' });
             this._userAvatar.actor.hide();
             userBox.add(this._userAvatar.actor,
                         { x_fill:  true,

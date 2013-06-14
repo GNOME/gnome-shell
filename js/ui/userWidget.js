@@ -6,7 +6,7 @@ const AccountsService = imports.gi.AccountsService;
 const Lang = imports.lang;
 const St = imports.gi.St;
 
-const UserMenu = imports.ui.userMenu;
+const UserAvatar = imports.ui.userAvatar;
 
 const UserWidget = new Lang.Class({
     Name: 'UserWidget',
@@ -18,7 +18,7 @@ const UserWidget = new Lang.Class({
                                         vertical: false });
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
 
-        this._avatar = new UserMenu.UserAvatarWidget(user);
+        this._avatar = new UserAvatar.UserAvatar(user);
         this.actor.add(this._avatar.actor,
                        { x_fill: true, y_fill: true });
 

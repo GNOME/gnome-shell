@@ -97,6 +97,7 @@ nobase_dist_js_DATA = 	\
 	ui/switcherPopup.js	\
 	ui/tweener.js		\
 	ui/unlockDialog.js	\
+	ui/userAvatar.js	\
 	ui/userMenu.js		\
 	ui/userWidget.js	\
 	ui/viewSelector.js	\
