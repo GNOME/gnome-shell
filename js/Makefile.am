@@ -17,13 +17,13 @@ misc/config.js: misc/config.js.in Makefile
 jsdir = $(pkgdatadir)/js
 
 nobase_dist_js_DATA = 	\
-	gdm/batch.js		\
 	gdm/fingerprint.js	\
 	gdm/loginDialog.js	\
 	gdm/powerMenu.js	\
 	gdm/realmd.js		\
 	gdm/util.js		\
 	extensionPrefs/main.js	\
+	misc/batch.js		\
 	misc/config.js		\
 	misc/extensionUtils.js	\
 	misc/fileUtils.js	\

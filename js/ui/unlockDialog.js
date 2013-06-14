@@ -15,7 +15,7 @@ const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
 
-const Batch = imports.gdm.batch;
+const Batch = imports.misc.batch;
 const GdmUtil = imports.gdm.util;
 
 // The timeout before going back automatically to the lock screen (in seconds)

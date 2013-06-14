@@ -34,7 +34,7 @@ const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Gdm = imports.gi.Gdm;
 
-const Batch = imports.gdm.batch;
+const Batch = imports.misc.batch;
 const Fprint = imports.gdm.fingerprint;
 const GdmUtil = imports.gdm.util;
 const Main = imports.ui.main;
