@@ -1090,7 +1090,7 @@ meta_background_load_file_finish (MetaBackground  *self,
 
   texture = cogl_texture_new_from_data (width,
                                         height,
-                                        COGL_TEXTURE_NO_SLICING,
+                                        COGL_TEXTURE_NO_ATLAS,
                                         has_alpha ?
                                         COGL_PIXEL_FORMAT_RGBA_8888 :
                                         COGL_PIXEL_FORMAT_RGB_888,
