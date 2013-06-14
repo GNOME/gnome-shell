@@ -84,6 +84,7 @@ struct _MetaWindowActorPrivate
    * might be dubious, but we have to at least handle it correctly.
    */
   gint              minimize_in_progress;
+  gint              unminimize_in_progress;
   gint              maximize_in_progress;
   gint              unmaximize_in_progress;
   gint              map_in_progress;
@@ -1008,6 +1009,9 @@ start_simple_effect (MetaWindowActor *self,
   case META_PLUGIN_MINIMIZE:
     counter = &priv->minimize_in_progress;
     break;
+  case META_PLUGIN_UNMINIMIZE:
+    counter = &priv->unminimize_in_progress;
+    break;
   case META_PLUGIN_MAP:
     counter = &priv->map_in_progress;
     break;
@@ -1076,6 +1080,16 @@ meta_window_actor_effect_completed (MetaWindowActor *self,
 	  g_warning ("Error in minimize accounting.");
 	  priv->minimize_in_progress = 0;
 	}
+    }
+    break;
+  case META_PLUGIN_UNMINIMIZE:
+    {
+      priv->unminimize_in_progress--;
+      if (priv->unminimize_in_progress < 0)
+       {
+         g_warning ("Error in unminimize accounting.");
+         priv->unminimize_in_progress = 0;
+       }
     }
     break;
   case META_PLUGIN_MAP:
@@ -1243,8 +1257,7 @@ meta_window_actor_show (MetaWindowActor   *self,
       event = META_PLUGIN_MAP;
       break;
     case META_COMP_EFFECT_UNMINIMIZE:
-      /* FIXME: should have META_PLUGIN_UNMINIMIZE */
-      event = META_PLUGIN_MAP;
+      event = META_PLUGIN_UNMINIMIZE;
       break;
     case META_COMP_EFFECT_NONE:
       break;

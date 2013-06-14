@@ -95,6 +95,15 @@ struct _MetaPluginClass
                             MetaWindowActor    *actor);
 
   /**
+   * MetaPluginClass::unminimize:
+   * @actor: a #MetaWindowActor
+   *
+   * Virtual function called when the window represented by @actor is unminimized.
+   */
+  void (*unminimize)       (MetaPlugin         *plugin,
+                            MetaWindowActor    *actor);
+
+  /**
    * MetaPluginClass::maximize:
    * @actor: a #MetaWindowActor
    * @x: target X coordinate
@@ -371,6 +380,10 @@ meta_plugin_switch_workspace_completed (MetaPlugin *plugin);
 void
 meta_plugin_minimize_completed (MetaPlugin      *plugin,
                                 MetaWindowActor *actor);
+
+void
+meta_plugin_unminimize_completed (MetaPlugin      *plugin,
+                                  MetaWindowActor *actor);
 
 void
 meta_plugin_maximize_completed (MetaPlugin      *plugin,

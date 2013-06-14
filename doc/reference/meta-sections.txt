@@ -300,6 +300,7 @@ MetaPluginVersion
 META_PLUGIN_DECLARE
 meta_plugin_switch_workspace_completed
 meta_plugin_minimize_completed
+meta_plugin_unminimize_completed
 meta_plugin_maximize_completed
 meta_plugin_unmaximize_completed
 meta_plugin_map_completed

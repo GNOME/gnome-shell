@@ -111,6 +111,13 @@ meta_plugin_minimize_completed (MetaPlugin      *plugin,
 }
 
 void
+meta_plugin_unminimize_completed (MetaPlugin      *plugin,
+                                  MetaWindowActor *actor)
+{
+  meta_plugin_window_effect_completed (plugin, actor, META_PLUGIN_UNMINIMIZE);
+}
+
+void
 meta_plugin_maximize_completed (MetaPlugin      *plugin,
                                 MetaWindowActor *actor)
 {
