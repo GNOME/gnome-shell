@@ -32,6 +32,8 @@
 
 #include <clutter/clutter.h>
 
+#include <GL/gl.h>
+
 #include "cogl-utils.h"
 #include "compositor-private.h"
 #include "mutter-enum-types.h"
@@ -971,6 +973,7 @@ load_file (GTask            *task,
 {
   GError *error = NULL;
   GdkPixbuf *pixbuf;
+  int max_texture_size = 0;
 
   pixbuf = gdk_pixbuf_new_from_file (task_data->filename,
                                      &error);
@@ -980,6 +983,33 @@ load_file (GTask            *task,
       g_task_return_error (task, error);
       return;
     }
+
+  glGetIntegerv (GL_MAX_TEXTURE_SIZE, &max_texture_size);
+
+  if (glGetError () != GL_NO_ERROR)
+      max_texture_size = 0;
+
+  if (max_texture_size > 0) {
+      double width, height;
+
+      width = gdk_pixbuf_get_width (pixbuf);
+      height = gdk_pixbuf_get_height (pixbuf);
+
+      if (width > max_texture_size || height > max_texture_size) {
+          GdkPixbuf *scaled_pixbuf;
+
+          if (width > height) {
+              width = max_texture_size;
+              height *= max_texture_size / width;
+          } else {
+              width *= max_texture_size / height;
+              height = max_texture_size;
+          }
+          scaled_pixbuf = gdk_pixbuf_scale_simple (pixbuf, width, height, GDK_INTERP_BILINEAR);
+          g_object_unref (pixbuf);
+          pixbuf = scaled_pixbuf;
+      }
+  }
 
   g_task_return_pointer (task, pixbuf, (GDestroyNotify) g_object_unref);
 }
