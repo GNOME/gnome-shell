@@ -15,8 +15,8 @@ const ModalDialog = imports.ui.modalDialog;
 const ShellEntry = imports.ui.shellEntry;
 const UserWidget = imports.ui.userWidget;
 
+const AuthUtil = imports.ui.auth.util;
 const Batch = imports.misc.batch;
-const GdmUtil = imports.gdm.util;
 
 // The timeout before going back automatically to the lock screen (in seconds)
 const IDLE_TIMEOUT = 2 * 60;
@@ -40,7 +40,7 @@ const UnlockDialog = new Lang.Class({
         this._firstQuestion = true;
 
         this._greeterClient = new Gdm.Client();
-        this._userVerifier = new GdmUtil.ShellUserVerifier(this._greeterClient, { reauthenticationOnly: true });
+        this._userVerifier = new AuthUtil.ShellUserVerifier(this._greeterClient, { reauthenticationOnly: true });
         this._userVerified = false;
 
         this._userVerifier.connect('ask-question', Lang.bind(this, this._onAskQuestion));
@@ -157,9 +157,9 @@ const UnlockDialog = new Lang.Class({
         if (message) {
             this._promptMessage.text = message;
             this._promptMessage.styleClass = styleClass;
-            GdmUtil.fadeInActor(this._promptMessage);
+            AuthUtil.fadeInActor(this._promptMessage);
         } else {
-            GdmUtil.fadeOutActor(this._promptMessage);
+            AuthUtil.fadeOutActor(this._promptMessage);
         }
     },
 
@@ -188,11 +188,11 @@ const UnlockDialog = new Lang.Class({
 
     _showLoginHint: function(verifier, message) {
         this._promptLoginHint.set_text(message)
-        GdmUtil.fadeInActor(this._promptLoginHint);
+        AuthUtil.fadeInActor(this._promptLoginHint);
     },
 
     _hideLoginHint: function() {
-        GdmUtil.fadeOutActor(this._promptLoginHint);
+        AuthUtil.fadeOutActor(this._promptLoginHint);
     },
 
     _doUnlock: function() {

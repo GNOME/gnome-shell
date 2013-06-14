@@ -856,7 +856,7 @@ const PANEL_ITEM_IMPLEMENTATIONS = {
     'battery': imports.ui.status.power.Indicator,
     'lockScreen': imports.ui.status.lockScreenMenu.Indicator,
     'keyboard': imports.ui.status.keyboard.InputSourceIndicator,
-    'powerMenu': imports.gdm.powerMenu.PowerMenuButton,
+    'powerMenu': imports.ui.auth.powerMenu.PowerMenuButton,
     'userMenu': imports.ui.userMenu.UserMenuButton
 };
 

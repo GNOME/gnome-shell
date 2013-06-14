@@ -42,7 +42,7 @@ const _modes = {
         hasNotifications: true,
         isGreeter: true,
         isPrimary: true,
-        unlockDialog: imports.gdm.loginDialog.LoginDialog,
+        unlockDialog: imports.ui.auth.loginDialog.LoginDialog,
         components: ['polkitAgent'],
         panel: {
             left: [],
@@ -89,7 +89,7 @@ const _modes = {
         hasNotifications: true,
         isLocked: false,
         isPrimary: true,
-        unlockDialog: imports.ui.unlockDialog.UnlockDialog,
+        unlockDialog: imports.ui.auth.unlockDialog.UnlockDialog,
         components: ['networkAgent', 'polkitAgent', 'telepathyClient',
                      'keyring', 'recorder', 'autorunManager', 'automountManager'],
         panel: {

@@ -28,15 +28,15 @@ const Mainloop = imports.mainloop;
 const Meta = imports.gi.Meta;
 const Lang = imports.lang;
 const Pango = imports.gi.Pango;
-const Realmd = imports.gdm.realmd;
+const Realmd = imports.ui.auth.realmd;
 const Signals = imports.signals;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Gdm = imports.gi.Gdm;
 
+const AuthUtil = imports.ui.auth.util;
 const Batch = imports.misc.batch;
-const Fprint = imports.gdm.fingerprint;
-const GdmUtil = imports.gdm.util;
+const Fprint = imports.ui.auth.fingerprint;
 const Main = imports.ui.main;
 const ModalDialog = imports.ui.modalDialog;
 const Tweener = imports.ui.tweener;
@@ -499,7 +499,7 @@ const LoginDialog = new Lang.Class({
                                   Lang.bind(this, this._onTimedLoginRequested));
         }
 
-        this._userVerifier = new GdmUtil.ShellUserVerifier(this._greeterClient);
+        this._userVerifier = new AuthUtil.ShellUserVerifier(this._greeterClient);
         this._userVerifier.connect('ask-question', Lang.bind(this, this._askQuestion));
         this._userVerifier.connect('show-message', Lang.bind(this, this._showMessage));
         this._userVerifier.connect('verification-failed', Lang.bind(this, this._verificationFailed));
@@ -508,15 +508,15 @@ const LoginDialog = new Lang.Class({
         this._userVerifier.connect('hide-login-hint', Lang.bind(this, this._hideLoginHint));
         this._verifyingUser = false;
 
-        this._settings = new Gio.Settings({ schema: GdmUtil.LOGIN_SCREEN_SCHEMA });
+        this._settings = new Gio.Settings({ schema: AuthUtil.LOGIN_SCREEN_SCHEMA });
 
-        this._settings.connect('changed::' + GdmUtil.BANNER_MESSAGE_KEY,
+        this._settings.connect('changed::' + AuthUtil.BANNER_MESSAGE_KEY,
                                Lang.bind(this, this._updateBanner));
-        this._settings.connect('changed::' + GdmUtil.BANNER_MESSAGE_TEXT_KEY,
+        this._settings.connect('changed::' + AuthUtil.BANNER_MESSAGE_TEXT_KEY,
                                Lang.bind(this, this._updateBanner));
-        this._settings.connect('changed::' + GdmUtil.DISABLE_USER_LIST_KEY,
+        this._settings.connect('changed::' + AuthUtil.DISABLE_USER_LIST_KEY,
                                Lang.bind(this, this._updateDisableUserList));
-        this._settings.connect('changed::' + GdmUtil.LOGO_KEY,
+        this._settings.connect('changed::' + AuthUtil.LOGO_KEY,
                                Lang.bind(this, this._updateLogo));
 
         this._textureCache = St.TextureCache.get_default();
@@ -638,7 +638,7 @@ const LoginDialog = new Lang.Class({
    },
 
     _updateDisableUserList: function() {
-        let disableUserList = this._settings.get_boolean(GdmUtil.DISABLE_USER_LIST_KEY);
+        let disableUserList = this._settings.get_boolean(AuthUtil.DISABLE_USER_LIST_KEY);
 
         // If this is the first time around, set initial focus
         if (this._disableUserList == undefined && disableUserList)
@@ -653,8 +653,8 @@ const LoginDialog = new Lang.Class({
     },
 
     _updateBanner: function() {
-        let enabled = this._settings.get_boolean(GdmUtil.BANNER_MESSAGE_KEY);
-        let text = this._settings.get_string(GdmUtil.BANNER_MESSAGE_TEXT_KEY);
+        let enabled = this._settings.get_boolean(AuthUtil.BANNER_MESSAGE_KEY);
+        let text = this._settings.get_string(AuthUtil.BANNER_MESSAGE_TEXT_KEY);
 
         if (enabled && text) {
             this._bannerLabel.set_text(text);
@@ -676,7 +676,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _updateLogo: function() {
-        let path = this._settings.get_string(GdmUtil.LOGO_KEY);
+        let path = this._settings.get_string(AuthUtil.LOGO_KEY);
 
         this._logoFileUri = path ? Gio.file_new_for_path(path).get_uri() : null;
         this._updateLogoTexture(this._textureCache, this._logoFileUri);
@@ -1079,7 +1079,7 @@ const LoginDialog = new Lang.Class({
 
     _hideUserListAndLogIn: function() {
         this._setUserListExpanded(false);
-        GdmUtil.cloneAndFadeOutActor(this._userSelectionBox);
+        AuthUtil.cloneAndFadeOutActor(this._userSelectionBox);
         this._askForUsernameAndLogIn();
     },
 
@@ -1111,7 +1111,7 @@ const LoginDialog = new Lang.Class({
 
     _onUserListActivated: function(activatedItem) {
         let tasks = [function() {
-                         return GdmUtil.cloneAndFadeOutActor(this._userSelectionBox);
+                         return AuthUtil.cloneAndFadeOutActor(this._userSelectionBox);
                      },
                      function() {
                          this._setUserListExpanded(false);

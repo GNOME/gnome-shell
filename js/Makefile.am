@@ -17,11 +17,6 @@ misc/config.js: misc/config.js.in Makefile
 jsdir = $(pkgdatadir)/js
 
 nobase_dist_js_DATA = 	\
-	gdm/fingerprint.js	\
-	gdm/loginDialog.js	\
-	gdm/powerMenu.js	\
-	gdm/realmd.js		\
-	gdm/util.js		\
 	extensionPrefs/main.js	\
 	misc/batch.js		\
 	misc/config.js		\
@@ -96,7 +91,6 @@ nobase_dist_js_DATA = 	\
 	ui/status/bluetooth.js	\
 	ui/switcherPopup.js	\
 	ui/tweener.js		\
-	ui/unlockDialog.js	\
 	ui/userAvatar.js	\
 	ui/userMenu.js		\
 	ui/userWidget.js	\
@@ -109,6 +103,12 @@ nobase_dist_js_DATA = 	\
 	ui/workspacesView.js	\
 	ui/workspaceSwitcherPopup.js    \
 	ui/xdndHandler.js	\
+	ui/auth/fingerprint.js	\
+	ui/auth/loginDialog.js	\
+	ui/auth/powerMenu.js	\
+	ui/auth/realmd.js	\
+	ui/auth/unlockDialog.js	\
+	ui/auth/util.js		\
 	ui/components/__init__.js		\
 	ui/components/autorunManager.js		\
 	ui/components/automountManager.js	\

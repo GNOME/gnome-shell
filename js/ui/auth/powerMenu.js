@@ -23,7 +23,7 @@ const Lang = imports.lang;
 
 const LoginManager = imports.misc.loginManager;
 
-const GdmUtil = imports.gdm.util;
+const AuthUtil = imports.ui.auth.util;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 
@@ -37,7 +37,7 @@ const PowerMenuButton = new Lang.Class({
 
         this._loginManager = LoginManager.getLoginManager();
 
-        this._settings = new Gio.Settings({ schema: GdmUtil.LOGIN_SCREEN_SCHEMA });
+        this._settings = new Gio.Settings({ schema: AuthUtil.LOGIN_SCREEN_SCHEMA });
         this._settings.connect('changed::disable-restart-buttons',
                                Lang.bind(this, this._updateVisibility));
 

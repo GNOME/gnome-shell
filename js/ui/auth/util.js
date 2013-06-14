@@ -8,7 +8,7 @@ const Mainloop = imports.mainloop;
 const Signals = imports.signals;
 
 const Batch = imports.misc.batch;
-const Fprint = imports.gdm.fingerprint;
+const Fprint = imports.ui.auth.fingerprint;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const Tweener = imports.ui.tweener;
