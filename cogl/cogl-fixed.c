@@ -819,7 +819,7 @@ cogl_fixed_mul (CoglFixed a,
   __asm__ ("smull %0, %1, %2, %3     \n"
            "mov   %0, %0,     lsr %4 \n"
            "add   %1, %0, %1, lsl %5 \n"
-           : "=r"(res_hi), "=r"(res_low) \
+           : "=&r"(res_hi), "=&r"(res_low) \
            : "r"(a), "r"(b), "i"(COGL_FIXED_Q), "i"(32 - COGL_FIXED_Q));
 
   return (CoglFixed) res_low;
