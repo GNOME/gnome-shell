@@ -1217,10 +1217,8 @@ clutter_box_layout_allocate (ClutterLayoutManager   *layout,
             {
               gfloat width = child_allocation.x2 - child_allocation.x1;
 
-              child_allocation.x1 = box->x2 - box->x1
-                                  - child_allocation.x1
-                                  - (child_allocation.x2 - child_allocation.x1);
-              child_allocation.x2 = child_allocation.x1 + width;
+              child_allocation.x2 = box->x1 + (box->x2 - child_allocation.x1);
+              child_allocation.x1 = child_allocation.x2 - width;
             }
 
         }
