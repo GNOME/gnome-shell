@@ -736,7 +736,7 @@ st_box_layout_allocate (ClutterActor          *actor,
                                    "expand", &expand,
                                    NULL);
 
-      _st_get_align_factors (xalign, yalign, &xalign_f, &yalign_f);
+      st_get_align_factors (xalign, yalign, &xalign_f, &yalign_f);
 
       if (priv->is_vertical)
         {

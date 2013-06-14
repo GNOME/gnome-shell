@@ -108,8 +108,8 @@ st_bin_allocate (ClutterActor          *self,
       gdouble x_align_f, y_align_f;
 
       st_theme_node_get_content_box (theme_node, box, &childbox);
-      _st_get_align_factors (priv->x_align, priv->y_align,
-                             &x_align_f, &y_align_f);
+      st_get_align_factors (priv->x_align, priv->y_align,
+                            &x_align_f, &y_align_f);
       clutter_actor_allocate_align_fill (priv->child, &childbox,
                                          x_align_f, y_align_f,
                                          priv->x_fill, priv->y_fill,

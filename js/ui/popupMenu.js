@@ -268,6 +268,7 @@ const PopupBaseMenuItem = new Lang.Class({
     },
 
     _allocate: function(actor, box, flags) {
+        let width = box.x2 - box.x1;
         let height = box.y2 - box.y1;
         let direction = this.actor.get_text_direction();
 
@@ -290,86 +291,46 @@ const PopupBaseMenuItem = new Lang.Class({
 
         this._ornamentLabel.allocate(ornamentBox, flags);
 
-        let x;
-        if (direction == Clutter.TextDirection.LTR)
-            x = box.x1;
-        else
-            x = box.x2;
-        // if direction is ltr, x is the right edge of the last added
-        // actor, and it's constantly increasing, whereas if rtl, x is
-        // the left edge and it decreases
+        let x = box.x1;
         for (let i = 0, col = 0; i < this._children.length; i++) {
             let child = this._children[i];
             let childBox = new Clutter.ActorBox();
 
             let [minWidth, naturalWidth] = child.actor.get_preferred_width(-1);
-            let availWidth, extraWidth;
-            if (this._columnWidths) {
-                if (child.span == -1) {
-                    if (direction == Clutter.TextDirection.LTR)
-                        availWidth = box.x2 - x;
-                    else
-                        availWidth = x - box.x1;
-                } else {
+
+            let availWidth;
+            if (child.span == -1) {
+                availWidth = box.x2 - x;
+            } else {
+                if (this._columnWidths) {
                     availWidth = 0;
                     for (let j = 0; j < child.span; j++)
                         availWidth += this._columnWidths[col++];
-                }
-                extraWidth = availWidth - naturalWidth;
-            } else {
-                if (child.span == -1) {
-                    if (direction == Clutter.TextDirection.LTR)
-                        availWidth = box.x2 - x;
-                    else
-                        availWidth = x - box.x1;
                 } else {
                     availWidth = naturalWidth;
                 }
-                extraWidth = 0;
             }
 
-            if (direction == Clutter.TextDirection.LTR) {
-                if (child.expand) {
-                    childBox.x1 = x;
-                    childBox.x2 = x + availWidth;
-                } else if (child.align === St.Align.MIDDLE) {
-                    childBox.x1 = x + Math.round(extraWidth / 2);
-                    childBox.x2 = childBox.x1 + naturalWidth;
-                } else if (child.align === St.Align.END) {
-                    childBox.x2 = x + availWidth;
-                    childBox.x1 = childBox.x2 - naturalWidth;
-                } else {
-                    childBox.x1 = x;
-                    childBox.x2 = x + naturalWidth;
-                }
-            } else {
-                if (child.expand) {
-                    childBox.x1 = x - availWidth;
-                    childBox.x2 = x;
-                } else if (child.align === St.Align.MIDDLE) {
-                    childBox.x1 = x - Math.round(extraWidth / 2);
-                    childBox.x2 = childBox.x1 + naturalWidth;
-                } else if (child.align === St.Align.END) {
-                    // align to the left
-                    childBox.x1 = x - availWidth;
-                    childBox.x2 = childBox.x1 + naturalWidth;
-                } else {
-                    // align to the right
-                    childBox.x2 = x;
-                    childBox.x1 = x - naturalWidth;
-                }
-            }
+            if (direction == Clutter.TextDirection.RTL)
+                childBox.x1 = width - x - availWidth;
+            else
+                childBox.x1 = x;
+            childBox.x2 = childBox.x1 + availWidth;
 
             let [minHeight, naturalHeight] = child.actor.get_preferred_height(childBox.x2 - childBox.x1);
             childBox.y1 = Math.round(box.y1 + (height - naturalHeight) / 2);
             childBox.y2 = childBox.y1 + naturalHeight;
 
-            child.actor.allocate(childBox, flags);
+            let [xAlign, yAlign] = St.get_align_factors(child.align,
+                                                        St.Align.MIDDLE);
 
-            if (direction == Clutter.TextDirection.LTR)
-                x += availWidth + this._spacing;
-            else
-                x -= availWidth + this._spacing;
+            // It's called "expand", but it's really more like "fill"
+            let xFill = child.expand;
+            child.actor.allocate_align_fill(childBox,
+                                            xAlign, yAlign,
+                                            xFill, true,
+                                            flags);
+            x += availWidth + this._spacing;
         }
     }
 });

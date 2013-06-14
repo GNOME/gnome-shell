@@ -104,8 +104,8 @@ shell_slicer_paint_child (ShellSlicer *self)
     return;
 
   st_bin_get_alignment (ST_BIN (self), &x_align, &y_align);
-  _st_get_align_factors (x_align, y_align,
-                         &x_align_factor, &y_align_factor);
+  st_get_align_factors (x_align, y_align,
+                        &x_align_factor, &y_align_factor);
 
   clutter_actor_get_allocation_box (CLUTTER_ACTOR (self), &self_box);
   clutter_actor_get_allocation_box (child, &child_box);

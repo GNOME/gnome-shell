@@ -257,8 +257,8 @@ st_table_homogeneous_allocate (ClutterActor          *self,
       row_span = meta->row_span;
       col_span = meta->col_span;
 
-      _st_get_align_factors (meta->x_align, meta->y_align,
-                             &x_align_f, &y_align_f);
+      st_get_align_factors (meta->x_align, meta->y_align,
+                            &x_align_f, &y_align_f);
 
       if (ltr)
         {
@@ -609,8 +609,8 @@ st_table_preferred_allocate (ClutterActor          *self,
       row_span = meta->row_span;
       col_span = meta->col_span;
 
-      _st_get_align_factors (meta->x_align, meta->y_align,
-                             &x_align_f, &y_align_f);
+      st_get_align_factors (meta->x_align, meta->y_align,
+                            &x_align_f, &y_align_f);
 
       /* initialise the width and height */
       col_width = col_widths[col];

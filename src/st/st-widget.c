@@ -2885,3 +2885,63 @@ st_widget_get_focus_chain (StWidget *widget)
 {
   return ST_WIDGET_GET_CLASS (widget)->get_focus_chain (widget);
 }
+
+/**
+ * st_get_align_factors:
+ * @x_align: an #StAlign
+ * @y_align: an #StAlign
+ * @x_align_out: (out) (allow-none): @x_align as a #gdouble
+ * @y_align_out: (out) (allow-none): @y_align as a #gdouble
+ *
+ * Converts @x_align and @y_align to #gdouble values.
+ */
+void
+st_get_align_factors (StAlign   x_align,
+                      StAlign   y_align,
+                      gdouble  *x_align_out,
+                      gdouble  *y_align_out)
+{
+  if (x_align_out)
+    {
+      switch (x_align)
+        {
+        case ST_ALIGN_START:
+          *x_align_out = 0.0;
+          break;
+
+        case ST_ALIGN_MIDDLE:
+          *x_align_out = 0.5;
+          break;
+
+        case ST_ALIGN_END:
+          *x_align_out = 1.0;
+          break;
+
+        default:
+          g_warn_if_reached ();
+          break;
+        }
+    }
+
+  if (y_align_out)
+    {
+      switch (y_align)
+        {
+        case ST_ALIGN_START:
+          *y_align_out = 0.0;
+          break;
+
+        case ST_ALIGN_MIDDLE:
+          *y_align_out = 0.5;
+          break;
+
+        case ST_ALIGN_END:
+          *y_align_out = 1.0;
+          break;
+
+        default:
+          g_warn_if_reached ();
+          break;
+        }
+    }
+}

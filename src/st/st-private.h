@@ -45,11 +45,6 @@ G_END_DECLS
 
 ClutterActor *_st_widget_get_dnd_clone (StWidget *widget);
 
-void _st_get_align_factors (StAlign   x_align,
-                            StAlign   y_align,
-                            gdouble  *x_align_out,
-                            gdouble  *y_align_out);
-
 void _st_actor_get_preferred_width  (ClutterActor *actor,
                                      gfloat        for_height,
                                      gboolean      y_fill,

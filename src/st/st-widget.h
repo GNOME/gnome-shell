@@ -151,7 +151,6 @@ StThemeNode *         st_widget_peek_theme_node           (StWidget        *widg
 GList *               st_widget_get_focus_chain           (StWidget        *widget);
 void                  st_widget_paint_background          (StWidget        *widget);
 
-
 /* debug methods */
 char  *st_describe_actor       (ClutterActor *actor);
 void   st_set_slow_down_factor (gfloat factor);
@@ -168,6 +167,12 @@ void                  st_widget_remove_accessible_state  (StWidget    *widget,
 void                  st_widget_set_accessible_name      (StWidget    *widget,
                                                           const gchar *name);
 const gchar *         st_widget_get_accessible_name      (StWidget    *widget);
+
+/* utility methods */
+void st_get_align_factors (StAlign   x_align,
+                           StAlign   y_align,
+                           gdouble  *x_align_out,
+                           gdouble  *y_align_out);
 
 G_END_DECLS
 
