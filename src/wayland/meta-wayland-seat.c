@@ -347,10 +347,20 @@ handle_button_event (MetaWaylandSeat *seat,
     {
       if (pointer->button_count == 0)
         {
+          MetaWaylandSurface *surface = pointer->current;
+
           pointer->grab_button = button;
           pointer->grab_time = event->time;
           pointer->grab_x = pointer->x;
           pointer->grab_y = pointer->y;
+
+          if (button == BTN_LEFT &&
+              surface &&
+              surface->window &&
+              surface->window->client_type == META_WINDOW_CLIENT_TYPE_WAYLAND)
+            {
+              meta_window_raise (surface->window);
+            }
         }
 
       pointer->button_count++;
