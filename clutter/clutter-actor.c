@@ -816,7 +816,6 @@ struct _ClutterActorPrivate
   guint needs_compute_expand        : 1;
   guint needs_x_expand              : 1;
   guint needs_y_expand              : 1;
-  guint was_painted                 : 1;
 };
 
 enum
@@ -1487,12 +1486,6 @@ clutter_actor_real_map (ClutterActor *self)
 
   stage = _clutter_actor_get_stage_internal (self);
   priv->pick_id = _clutter_stage_acquire_pick_id (CLUTTER_STAGE (stage), self);
-
-  /* reset the was_painted flag here: unmapped actors are not going to
-   * be painted in any case, and this allows us to catch the case of
-   * cloned actors.
-   */
-  priv->was_painted = FALSE;
 
   CLUTTER_NOTE (ACTOR, "Pick id '%d' for actor '%s'",
                 priv->pick_id,
@@ -3899,9 +3892,6 @@ clutter_actor_continue_paint (ClutterActor *self)
 
           /* XXX:2.0 - Call the paint() virtual directly */
           g_signal_emit (self, actor_signals[PAINT], 0);
-
-          /* the actor was painted at least once */
-          priv->was_painted = TRUE;
         }
       else
         {
@@ -18716,8 +18706,8 @@ clutter_actor_add_transition_internal (ClutterActor *self,
 }
 
 static gboolean
-should_skip_transition (ClutterActor *self,
-                        GParamSpec   *pspec)
+should_skip_implicit_transition (ClutterActor *self,
+                                 GParamSpec   *pspec)
 {
   ClutterActorPrivate *priv = self->priv;
   const ClutterAnimationInfo *info;
@@ -18733,13 +18723,6 @@ should_skip_transition (ClutterActor *self,
    */
   if (info->cur_state->easing_duration == 0)
     return TRUE;
-
-  /* we do want :opacity transitions to work even if they start from an
-   * unpainted actor, because of the opacity optimization that lives in
-   * clutter_actor_paint()
-   */
-  if (pspec == obj_props[PROP_OPACITY] && !priv->was_painted)
-    return FALSE;
 
   /* on the other hand, if the actor hasn't been allocated yet, we want to
    * skip all transitions on the :allocation, to avoid actors "flying in"
@@ -18838,19 +18821,18 @@ _clutter_actor_create_transition (ClutterActor *actor,
       goto out;
     }
 
-  if (should_skip_transition (actor, pspec))
+  if (should_skip_implicit_transition (actor, pspec))
     {
-      /* we don't go through the Animatable interface because we
-       * already know we got here through an animatable property.
-       */
-      CLUTTER_NOTE (ANIMATION, "Easing duration=0 was_painted=%s, immediate set for '%s::%s'",
-                    actor->priv->was_painted ? "yes" : "no",
+      CLUTTER_NOTE (ANIMATION, "Skipping implicit transition for '%s::%s'",
                     _clutter_actor_get_debug_name (actor),
                     pspec->name);
 
       /* remove a transition, if one exists */
       clutter_actor_remove_transition (actor, pspec->name);
 
+      /* we don't go through the Animatable interface because we
+       * already know we got here through an animatable property.
+       */
       clutter_actor_set_animatable_property (actor,
                                              pspec->param_id,
                                              &final,
@@ -18878,26 +18860,27 @@ _clutter_actor_create_transition (ClutterActor *actor,
       clutter_timeline_set_progress_mode (timeline, info->cur_state->easing_mode);
 
 #ifdef CLUTTER_ENABLE_DEBUG
-      {
-        gchar *initial_v, *final_v;
+      if (CLUTTER_HAS_DEBUG (ANIMATION))
+        {
+          gchar *initial_v, *final_v;
 
-        initial_v = g_strdup_value_contents (&initial);
-        final_v = g_strdup_value_contents (&final);
+          initial_v = g_strdup_value_contents (&initial);
+          final_v = g_strdup_value_contents (&final);
 
-        CLUTTER_NOTE (ANIMATION,
-                      "Created transition for %s:%s "
-                      "(len:%u, mode:%s, delay:%u) "
-                      "initial:%s, final:%s",
-                      _clutter_actor_get_debug_name (actor),
-                      pspec->name,
-                      info->cur_state->easing_duration,
-                      clutter_get_easing_name_for_mode (info->cur_state->easing_mode),
-                      info->cur_state->easing_delay,
-                      initial_v, final_v);
+          CLUTTER_NOTE (ANIMATION,
+                        "Created transition for %s:%s "
+                        "(len:%u, mode:%s, delay:%u) "
+                        "initial:%s, final:%s",
+                        _clutter_actor_get_debug_name (actor),
+                        pspec->name,
+                        info->cur_state->easing_duration,
+                        clutter_get_easing_name_for_mode (info->cur_state->easing_mode),
+                        info->cur_state->easing_delay,
+                        initial_v, final_v);
 
-        g_free (initial_v);
-        g_free (final_v);
-      }
+          g_free (initial_v);
+          g_free (final_v);
+        }
 #endif /* CLUTTER_ENABLE_DEBUG */
 
       /* this will start the transition as well */
