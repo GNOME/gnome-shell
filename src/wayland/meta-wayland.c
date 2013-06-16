@@ -43,6 +43,7 @@
 #include "meta-window-actor-private.h"
 #include "meta-wayland-seat.h"
 #include "meta-wayland-keyboard.h"
+#include "meta-wayland-pointer.h"
 #include "meta-wayland-data-device.h"
 #include "display-private.h"
 #include "window-private.h"
@@ -722,12 +723,191 @@ shell_surface_pong (struct wl_client *client,
 {
 }
 
+/* TODO: consider adding this to window.c */
+static void
+meta_window_get_surface_rect (const MetaWindow *window,
+                              MetaRectangle    *rect)
+{
+  if (window->frame)
+    {
+      MetaFrameBorders borders;
+      *rect = window->frame->rect;
+      meta_frame_calc_borders (window->frame, &borders);
+    }
+  else
+    *rect = window->rect;
+}
+
+typedef struct _MetaWaylandGrab
+{
+  MetaWaylandPointerGrab grab;
+  MetaWaylandShellSurface *shell_surface;
+  struct wl_listener shell_surface_destroy_listener;
+  MetaWaylandPointer *pointer;
+} MetaWaylandGrab;
+
+typedef struct _MetaWaylandMoveGrab
+{
+  MetaWaylandGrab base;
+  wl_fixed_t dx, dy;
+} MetaWaylandMoveGrab;
+
+static void
+destroy_shell_surface_grab_listener (struct wl_listener *listener,
+                                     void *data)
+{
+  MetaWaylandGrab *grab = wl_container_of (listener, grab,
+                                           shell_surface_destroy_listener);
+  grab->shell_surface = NULL;
+
+  /* XXX: Could we perhaps just stop the grab here so we don't have
+   * to consider grab->shell_surface becoming NULL in grab interface
+   * callbacks? */
+}
+
+typedef enum _GrabCursor
+{
+  GRAB_CURSOR_MOVE,
+} GrabCursor;
+
+static void
+grab_pointer (MetaWaylandGrab *grab,
+              const MetaWaylandPointerGrabInterface *interface,
+              MetaWaylandShellSurface *shell_surface,
+              MetaWaylandPointer *pointer,
+              GrabCursor cursor)
+{
+  /* TODO: popup_grab_end (pointer); */
+
+  grab->grab.interface = interface;
+  grab->shell_surface = shell_surface;
+  grab->shell_surface_destroy_listener.notify =
+    destroy_shell_surface_grab_listener;
+  wl_resource_add_destroy_listener (shell_surface->resource,
+                                    &grab->shell_surface_destroy_listener);
+
+  grab->pointer = pointer;
+  grab->grab.focus = shell_surface->surface;
+
+  meta_wayland_pointer_start_grab (pointer, &grab->grab);
+
+  /* TODO: send_grab_cursor (cursor); */
+
+  /* XXX: In Weston there is a desktop shell protocol which has
+   * a set_grab_surface request that's used to specify the surface
+   * that's focused here.
+   *
+   * TODO: understand why.
+   *
+   * XXX: For now we just focus the surface directly associated with
+   * the grab.
+   */
+  meta_wayland_pointer_set_focus (pointer,
+                                  grab->shell_surface->surface,
+                                  wl_fixed_from_int (0),
+                                  wl_fixed_from_int (0));
+}
+
+static void
+release_pointer (MetaWaylandGrab *grab)
+{
+  if (grab->shell_surface)
+    wl_list_remove (&grab->shell_surface_destroy_listener.link);
+
+  meta_wayland_pointer_end_grab (grab->pointer);
+}
+
+static void
+noop_grab_focus (MetaWaylandPointerGrab *grab,
+                 MetaWaylandSurface *surface,
+                 wl_fixed_t x,
+                 wl_fixed_t y)
+{
+  grab->focus = NULL;
+}
+
+static void
+move_grab_motion (MetaWaylandPointerGrab *grab,
+                  uint32_t time,
+                  wl_fixed_t x,
+                  wl_fixed_t y)
+{
+  MetaWaylandMoveGrab *move = (MetaWaylandMoveGrab *)grab;
+  MetaWaylandPointer *pointer = move->base.pointer;
+  MetaWaylandShellSurface *shell_surface = move->base.shell_surface;
+
+  if (!shell_surface)
+    return;
+
+  meta_window_move (shell_surface->surface->window,
+                    TRUE,
+                    wl_fixed_to_int (pointer->x + move->dx),
+                    wl_fixed_to_int (pointer->y + move->dy));
+}
+
+static void
+move_grab_button (MetaWaylandPointerGrab *pointer_grab,
+                  uint32_t time,
+                  uint32_t button,
+                  uint32_t state_w)
+{
+  MetaWaylandGrab *grab =
+    wl_container_of (pointer_grab, grab, grab);
+  MetaWaylandMoveGrab *move = (MetaWaylandMoveGrab *)grab;
+  MetaWaylandPointer *pointer = grab->pointer;
+  enum wl_pointer_button_state state = state_w;
+
+  if (pointer->button_count == 0 && state == WL_POINTER_BUTTON_STATE_RELEASED)
+    {
+      release_pointer (grab);
+      g_slice_free (MetaWaylandMoveGrab, move);
+    }
+}
+
+static const MetaWaylandPointerGrabInterface move_grab_interface = {
+    noop_grab_focus,
+    move_grab_motion,
+    move_grab_button,
+};
+
+static void
+start_surface_move (MetaWaylandShellSurface *shell_surface,
+                    MetaWaylandSeat *seat)
+{
+  MetaWaylandMoveGrab *move;
+  MetaRectangle rect;
+
+  g_return_if_fail (shell_surface != NULL);
+
+  /* TODO: check if the surface is fullscreen when we support fullscreen */
+
+  move = g_slice_new (MetaWaylandMoveGrab);
+
+  meta_window_get_surface_rect (shell_surface->surface->window,
+                                &rect);
+
+  move->dx = wl_fixed_from_int (rect.x) - seat->pointer.grab_x;
+  move->dy = wl_fixed_from_int (rect.y) - seat->pointer.grab_y;
+
+  grab_pointer (&move->base, &move_grab_interface, shell_surface,
+                &seat->pointer, GRAB_CURSOR_MOVE);
+}
+
 static void
 shell_surface_move (struct wl_client *client,
                     struct wl_resource *resource,
-                    struct wl_resource *seat,
+                    struct wl_resource *seat_resource,
                     guint32 serial)
 {
+  MetaWaylandSeat *seat = wl_resource_get_user_data (seat_resource);
+  MetaWaylandShellSurface *shell_surface = wl_resource_get_user_data (resource);
+
+  if (seat->pointer.button_count == 0 ||
+      seat->pointer.grab_serial != serial ||
+      seat->pointer.focus != shell_surface->surface)
+    return;
+
+  start_surface_move (shell_surface, seat);
 }
 
 static void
