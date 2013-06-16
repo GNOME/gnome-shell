@@ -473,13 +473,17 @@ const WindowManager = new Lang.Class({
                 this._dimWindow(this._dimmedWindows[i]);
         }));
 
-        this._workspaceTracker = new WorkspaceTracker(this);
+        if (Main.sessionMode.hasWorkspaces)
+            this._workspaceTracker = new WorkspaceTracker(this);
 
         global.screen.override_workspace_layout(Meta.ScreenCorner.TOPLEFT,
                                                 false, -1, 1);
     },
 
     keepWorkspaceAlive: function(workspace, duration) {
+        if (!this._workspaceTracker)
+            return;
+
         this._workspaceTracker.keepWorkspaceAlive(workspace, duration);
     },
 
@@ -829,7 +833,7 @@ const WindowManager = new Lang.Class({
     },
 
     _switchWorkspace : function(shellwm, from, to, direction) {
-        if (!this._shouldAnimate()) {
+        if (!Main.sessionMode.hasWorkspaces || !this._shouldAnimate()) {
             shellwm.completed_switch_workspace();
             return;
         }
@@ -982,6 +986,9 @@ const WindowManager = new Lang.Class({
     },
 
     _showWorkspaceSwitcher : function(display, screen, window, binding) {
+        if (!Main.sessionMode.hasWorkspaces)
+            return;
+
         if (screen.n_workspaces == 1)
             return;
 
@@ -1023,14 +1030,19 @@ const WindowManager = new Lang.Class({
     },
 
     actionMoveWorkspace: function(workspace) {
+        if (!Main.sessionMode.hasWorkspaces)
+            return;
+
         let activeWorkspace = global.screen.get_active_workspace();
 
         if (activeWorkspace != workspace)
             workspace.activate(global.get_current_time());
-
     },
 
     actionMoveWindow: function(window, workspace) {
+        if (!Main.sessionMode.hasWorkspaces)
+            return;
+
         let activeWorkspace = global.screen.get_active_workspace();
 
         if (activeWorkspace != workspace) {
@@ -1043,6 +1055,5 @@ const WindowManager = new Lang.Class({
             global.display.clear_mouse_mode();
             workspace.activate_with_focus (window, global.get_current_time());
         }
-
     },
 });
