@@ -764,8 +764,8 @@ const ThumbnailsBox = new Lang.Class({
                 // to open its first window within some time, as tracked by Shell.WindowTracker.
                 // Here, we only add a very brief timeout to avoid the _immediate_ removal of the
                 // workspace while we wait for the startup sequence to load.
-                Main.keepWorkspaceAlive(global.screen.get_workspace_by_index(newWorkspaceIndex),
-                                        WORKSPACE_KEEP_ALIVE_TIME);
+                Main.wm.keepWorkspaceAlive(global.screen.get_workspace_by_index(newWorkspaceIndex),
+                                           WORKSPACE_KEEP_ALIVE_TIME);
             }
 
             // Start the animation on the workspace (which is actually

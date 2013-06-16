@@ -479,6 +479,10 @@ const WindowManager = new Lang.Class({
                                                 false, -1, 1);
     },
 
+    keepWorkspaceAlive: function(workspace, duration) {
+        this._workspaceTracker.keepWorkspaceAlive(workspace, duration);
+    },
+
     setCustomKeybindingHandler: function(name, modes, handler) {
         if (Meta.keybindings_set_custom_handler(name, handler))
             this.allowKeybinding(name, modes);
