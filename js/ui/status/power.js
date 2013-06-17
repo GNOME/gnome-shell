@@ -109,10 +109,10 @@ const Indicator = new Lang.Class({
         if (icon) {
             let gicon = Gio.icon_new_for_string(icon);
             this._indicator.gicon = gicon;
-            this._indicator.show();
             this._item.icon.gicon = gicon;
         } else {
-            this._indicator.hide();
+            // If there's no battery, then we use the power icon.
+            this._indicator.icon_name = 'system-shutdown-symbolic';
         }
     },
 

@@ -47,8 +47,6 @@ const Indicator = new Lang.Class({
     _init: function() {
         this.parent();
 
-        this._indicator = this.addIndicator(new Gio.ThemedIcon({ name: 'system-shutdown-symbolic' }));
-
         this._screenSaverSettings = new Gio.Settings({ schema: SCREENSAVER_SCHEMA });
         this._lockdownSettings = new Gio.Settings({ schema: LOCKDOWN_SCHEMA });
         this._privacySettings = new Gio.Settings({ schema: PRIVACY_SCHEMA });

@@ -858,9 +858,8 @@ const AggregateMenu = new Lang.Class({
 
         this._indicators.add_child(this._network.indicators);
         this._indicators.add_child(this._bluetooth.indicators);
-        this._indicators.add_child(this._power.indicators);
         this._indicators.add_child(this._volume.indicators);
-        this._indicators.add_child(this._system.indicators);
+        this._indicators.add_child(this._power.indicators);
         this._indicators.add_child(new St.Label({ text: '\u25BE',
                                                   y_expand: true,
                                                   y_align: Clutter.ActorAlign.CENTER }));
