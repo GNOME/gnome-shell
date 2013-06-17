@@ -1158,7 +1158,6 @@ const NMApplet = new Lang.Class({
         this.parent('network-offline-symbolic', _('Network'));
 
         this._vpnIcon = this.addIcon(null);
-        this._vpnIcon.hide();
 
         // Device types
         this._dtypes = { };
@@ -1602,5 +1601,6 @@ const NMApplet = new Lang.Class({
         }
 
         this._vpnIcon.icon_name = this._vpnSection.getIndicatorIcon();
+        this._vpnIcon.visible = (this._vpnIcon.icon_name != '');
     }
 });
