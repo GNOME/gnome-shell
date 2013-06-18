@@ -1,3 +1,33 @@
+3.9.3
+=====
+* Don't push window thumbs when workspace switcher is hidden [Jasper; #701167]
+* Tweak timeout for activating windows during XDND [Adel; #700150]
+* Fix ellipsization in control buttons in app picker [Carlos; #696307]
+* Fix DND to empty dash [Florian; #684618]
+* Fix OSD window appearing below system modal dialogs [Rui; #701269]
+* Clear clipboard on screen lock to prevent information leak [Florian; #698922]
+* Allow session mode specific overrides schema [Florian; #701717]
+* window-switcher: Only show windows from current workspace by default
+  [Florian; #701214]
+* logout dialog: Show the correct text right away [Matthias; #702056]
+* bluetooth: Port to bluez 5 [Emilio; #700891]
+* dateMenu: Allow events to span multiple lines [Giovanni; #701231]
+* gdm: Clear message queue when no more messages are pending [Jonh; #702458]
+* Misc bug fixes and cleanups [Jasper, Florian, Adel, Giovanni; #693836,
+  #700972, #701386, #700877, #701755, #698918, #701224, #702125, #701954,
+  #701849, #702121]
+
+Contributors:
+  Giovanni Campagna, Matthias Clasen, Fran Diéguez, Adel Gadllah, Rui Matos,
+  Florian Müllner, Emilio Pozuelo Monfort, Carlos Soriano, Jasper St. Pierre,
+  Jonh Wendell
+
+Translations:
+  Marek Černocký [cs], Victor Ibragimov [tg], Fran Diéguez [gl],
+  Benjamin Steinwender [de], Cheng-Chia Tseng [zh_HK, zh_TW],
+  eternalhui [zh_CN], Ivaylo Valkov [bg], Kjartan Maraas [nb],
+  Daniel Mustieles [es]
+
 3.9.2
 =====
 * Use a symbolic icon for DESKTOP windows [Matthias; #697914]
