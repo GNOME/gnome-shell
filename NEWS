@@ -1,3 +1,12 @@
+3.9.3
+=====
+* Ensure events are always reported to the grab window [Rui; #701219]
+* Use new clutter_stage_set_paint_callback() function to prevent dropping
+  frames with frame synced toolkits [Owen; #698794]
+
+Contributors:
+  Rui Matos, Owen W. Taylor
+
 3.9.2
 =====
 * Add meta_window_can_close() function [Jasper; #699269]
