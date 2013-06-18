@@ -754,6 +754,13 @@ const PopupMenuBase = new Lang.Class({
         return false;
     },
 
+    itemActivated: function(animate) {
+        if (animate == undefined)
+            animate = BoxPointer.PopupAnimation.FULL;
+
+        this._getTopMenu().close(animate);
+    },
+
     /**
      * _connectSubMenuSignals:
      * @object: a menu item, or a menu section
@@ -800,7 +807,7 @@ const PopupMenuBase = new Lang.Class({
         }));
         menuItem._activateId = menuItem.connect('activate', Lang.bind(this, function (menuItem, event) {
             this.emit('activate', menuItem);
-            this.close(BoxPointer.PopupAnimation.FULL);
+            this.itemActivated(BoxPointer.PopupAnimation.FULL);
         }));
         // the weird name is to avoid a conflict with some random property
         // the menuItem may have, called destroyId

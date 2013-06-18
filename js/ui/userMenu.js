@@ -803,13 +803,13 @@ const UserMenuButton = new Lang.Class({
     },
 
     _onLockScreenActivate: function() {
-        this.menu.close(BoxPointer.PopupAnimation.NONE);
+        this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
         Main.overview.hide();
         Main.screenShield.lock(true);
     },
 
     _onLoginScreenActivate: function() {
-        this.menu.close(BoxPointer.PopupAnimation.NONE);
+        this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
         Main.overview.hide();
         if (Main.screenShield)
             Main.screenShield.lock(false);
@@ -937,7 +937,7 @@ const UserMenuButton = new Lang.Class({
                         this._session.ShutdownRemote();
             }));
         } else {
-            this.menu.close(BoxPointer.PopupAnimation.NONE);
+            this.menu.itemActivated(BoxPointer.PopupAnimation.NONE);
             this._loginManager.suspend();
         }
     }
