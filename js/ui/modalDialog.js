@@ -14,6 +14,7 @@ const Atk = imports.gi.Atk;
 
 const Params = imports.misc.params;
 
+const Animation = imports.ui.animation;
 const Layout = imports.ui.layout;
 const Lightbox = imports.ui.lightbox;
 const Main = imports.ui.main;
@@ -187,10 +188,8 @@ const ModalDialog = new Lang.Class({
     },
 
     placeSpinner: function(layoutInfo) {
-        /* This is here because of recursive imports */
-        const Panel = imports.ui.panel;
         let spinnerIcon = global.datadir + '/theme/process-working.svg';
-        this._workSpinner = new Panel.AnimatedIcon(spinnerIcon, WORK_SPINNER_ICON_SIZE);
+        this._workSpinner = new Animation.AnimatedIcon(spinnerIcon, WORK_SPINNER_ICON_SIZE);
         this._workSpinner.actor.opacity = 0;
         this._workSpinner.actor.show();
 
