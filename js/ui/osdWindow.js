@@ -167,14 +167,16 @@ const OsdWindow = new Lang.Class({
                          { opacity: 0,
                            time: FADE_TIME,
                            transition: 'easeOutQuad',
-                           onComplete: Lang.bind(this, this._reset) });
+                           onComplete: Lang.bind(this, function() {
+                              this._reset();
+                              Meta.enable_unredirect_for_screen(global.screen);
+                           });
     },
 
     _reset: function() {
         this.actor.hide();
         this.setLabel(null);
         this.setLevel(null);
-        Meta.enable_unredirect_for_screen(global.screen);
     },
 
     _monitorsChanged: function() {
