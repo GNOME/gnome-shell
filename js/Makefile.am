@@ -37,6 +37,7 @@ nobase_dist_js_DATA = 	\
 	misc/util.js		\
 	perf/core.js		\
 	ui/altTab.js		\
+	ui/animation.js		\
 	ui/appDisplay.js	\
 	ui/appFavorites.js	\
 	ui/backgroundMenu.js	\
