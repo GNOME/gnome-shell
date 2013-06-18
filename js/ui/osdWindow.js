@@ -170,7 +170,8 @@ const OsdWindow = new Lang.Class({
                            onComplete: Lang.bind(this, function() {
                               this._reset();
                               Meta.enable_unredirect_for_screen(global.screen);
-                           });
+                           })
+                         });
     },
 
     _reset: function() {
