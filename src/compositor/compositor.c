@@ -1566,8 +1566,10 @@ void
 meta_enable_unredirect_for_screen (MetaScreen *screen)
 {
   MetaCompScreen *info = meta_screen_get_compositor_data (screen);
-  if (info != NULL)
-   info->disable_unredirect_count = MAX(0, info->disable_unredirect_count - 1);
+  if (info != NULL && info->disable_unredirect_count == 0)
+    g_warning ("Called enable_unredirect_for_screen while unredirection is enabled.");
+  if (info != NULL && info->disable_unredirect_count > 0)
+   info->disable_unredirect_count = info->disable_unredirect_count - 1;
 }
 
 #define FLASH_TIME_MS 50
