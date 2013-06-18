@@ -4631,7 +4631,8 @@ clutter_text_set_cursor_visible (ClutterText *self,
     {
       priv->cursor_visible = cursor_visible;
 
-      clutter_text_queue_redraw (CLUTTER_ACTOR (self));
+      clutter_text_dirty_cache (self);
+      clutter_actor_queue_relayout (CLUTTER_ACTOR (self));
 
       g_object_notify_by_pspec (G_OBJECT (self), obj_props[PROP_CURSOR_VISIBLE]);
     }
