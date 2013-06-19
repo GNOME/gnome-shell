@@ -2246,6 +2246,7 @@ StScrollBar StButton#vhandle:active {
 
 .login-dialog-prompt-login-hint-message {
     font-size: 10.5pt;
+    min-width: 480px;
 }
 
 .login-dialog-user-list-view {
@@ -2352,7 +2353,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .login-dialog-prompt-entry {
-    width: 25em;
+    width: 480px;
 }
 
 .login-dialog-session-list,

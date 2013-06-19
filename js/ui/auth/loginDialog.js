@@ -162,7 +162,23 @@ const LoginDialog = new Lang.Class({
                               x_fill: false });
 
         this._promptMessage = new St.Label({ opacity: 0 });
-        this._promptBox.add(this._promptMessage, { x_fill: true });
+        this.actor.add_child(this._promptMessage);
+
+        this._promptMessagePlaceholder = new Clutter.Actor({ width: 1, height: 1 });
+        this._promptBox.add_child(this._promptMessagePlaceholder);
+
+        this._promptMessagePlaceholder.add_constraint(new Clutter.BindConstraint({ source: this._promptMessage,
+                                                                                   coordinate: Clutter.BindCoordinate.HEIGHT }));
+
+        this._promptMessage.add_constraint(new Clutter.AlignConstraint({ source: this.actor,
+                                                                         align_axis: Clutter.AlignAxis.X_AXIS,
+                                                                         factor: 0.5 }));
+
+        this._promptMessagePlaceholder.connect("notify::y", Lang.bind(this, function() {
+                                                   let [placeholderX , placeholderY] = this._promptMessagePlaceholder.get_transformed_position();
+                                                   let [actorX, actorY] = this.actor.get_transformed_position();
+                                                   this._promptMessage.y = placeholderY - actorY;
+                                               }));
 
         this._sessionList = new SessionList.SessionList();
         this._sessionList.connect('session-activated',
