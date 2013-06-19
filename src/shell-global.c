@@ -1265,9 +1265,12 @@ void shell_global_init_xdnd (ShellGlobal *global)
                    gdk_x11_get_xatom_by_name ("XdndAware"), XA_ATOM,
                    32, PropModeReplace, (const unsigned char *)&xdnd_version, 1);
 
-  XChangeProperty (global->xdisplay, output_window,
-                   gdk_x11_get_xatom_by_name ("XdndProxy"), XA_WINDOW,
-                   32, PropModeReplace, (const unsigned char *)&global->stage_xwindow, 1);
+  /* There is no overlay window when running as a display server */
+  if (output_window)
+    XChangeProperty (global->xdisplay, output_window,
+                     gdk_x11_get_xatom_by_name ("XdndProxy"), XA_WINDOW,
+                     32, PropModeReplace,
+                     (const unsigned char *)&global->stage_xwindow, 1);
 
   /*
    * XdndProxy is additionally set on the proxy window as verification that the
