@@ -468,7 +468,7 @@ var WorkspacesDisplay = class {
 
             this.emit('empty-space-clicked');
         });
-        Main.overview.addAction(clickAction);
+        Main.overview.addAction(clickAction, false);
         this.actor.bind_property('mapped', clickAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         let panAction = new Clutter.PanAction({ threshold_trigger_edge: Clutter.GestureTriggerEdge.AFTER });
@@ -491,7 +491,7 @@ var WorkspacesDisplay = class {
             clickAction.release();
             this._endSwipeScroll();
         });
-        Main.overview.addAction(panAction);
+        Main.overview.addAction(panAction, true);
         this.actor.bind_property('mapped', panAction, 'enabled', GObject.BindingFlags.SYNC_CREATE);
 
         let allowedModes = Shell.ActionMode.OVERVIEW;
