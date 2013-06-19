@@ -2352,7 +2352,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 .login-dialog-prompt-entry {
-    width: 15em;
+    width: 25em;
 }
 
 .login-dialog-session-list,
