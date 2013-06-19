@@ -117,9 +117,21 @@ const SessionList = new Lang.Class({
         this._itemList = new St.BoxLayout({ style_class: 'login-dialog-session-item-list',
                                             vertical: true });
         this._scrollView.add_actor(this._itemList);
-        this._scrollView.hide();
+        this._hideSessions();
         this.isOpen = false;
         this._populate();
+    },
+
+    _hideSessions: function() {
+        this._itemList.can_focus = false;
+        this._itemList.reactive = false;
+        this._scrollView.opacity = 0;
+    },
+
+    _showSessions: function() {
+        this._scrollView.opacity = 255;
+        this._itemList.reactive = true;
+        this._itemList.can_focus = true;
     },
 
     open: function() {
@@ -127,7 +139,7 @@ const SessionList = new Lang.Class({
             return;
 
         this._button.add_style_pseudo_class('open');
-        this._scrollView.show();
+        this._showSessions();
         this._triangle.set_text('\u25BE');
 
         this.isOpen = true;
@@ -138,7 +150,7 @@ const SessionList = new Lang.Class({
             return;
 
         this._button.remove_style_pseudo_class('open');
-        this._scrollView.hide();
+        this._hideSessions();
         this._triangle.set_text('\u25B8');
 
         this.isOpen = false;
@@ -202,6 +214,16 @@ const SessionList = new Lang.Class({
                          Lang.bind(this, function() {
                              this.setActiveSession(item.id);
                          }));
+
+            item.actor.can_focus = this._itemList.can_focus;
+            let signalId = this._itemList.connect('notify::can-focus',
+                                                  Lang.bind(this, function() {
+                                                      item.actor.can_focus = this._itemList.can_focus;
+                                                  }));
+            item.actor.connect('destroy',
+                               Lang.bind(this, function() {
+                                   this._itemList.disconnect(signalId);
+                               }));
         }
     }
 });
