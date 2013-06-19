@@ -90,7 +90,7 @@ const LoginDialog = new Lang.Class({
 
         this._userVerifier = new AuthUtil.ShellUserVerifier(this._greeterClient);
         this._userVerifier.connect('ask-question', Lang.bind(this, this._askQuestion));
-        this._userVerifier.connect('show-message', Lang.bind(this, this._showMessage));
+        this._userVerifier.connect('show-message', Lang.bind(this, this._onShowMessage));
         this._userVerifier.connect('verification-failed', Lang.bind(this, this._verificationFailed));
         this._userVerifier.connect('reset', Lang.bind(this, this._reset));
         this._userVerifier.connect('show-login-hint', Lang.bind(this, this._showLoginHint));
@@ -163,9 +163,6 @@ const LoginDialog = new Lang.Class({
 
         this._promptMessage = new St.Label({ opacity: 0 });
         this._promptBox.add(this._promptMessage, { x_fill: true });
-
-        this._promptLoginHint = new St.Label({ style_class: 'login-dialog-prompt-login-hint-message' });
-        this._promptBox.add(this._promptLoginHint);
 
         this._sessionList = new SessionList.SessionList();
         this._sessionList.connect('session-activated',
@@ -337,7 +334,7 @@ const LoginDialog = new Lang.Class({
         this._sessionList.setActiveSession(sessionId);
     },
 
-    _showMessage: function(userVerifier, message, styleClass) {
+    _showMessage: function(message, styleClass) {
         if (message) {
             this._promptMessage.text = message;
             this._promptMessage.styleClass = styleClass;
@@ -347,14 +344,21 @@ const LoginDialog = new Lang.Class({
         }
     },
 
+    _onShowMessage: function(userVerifier, message, styleClass) {
+        this._showMessage(message, styleClass);
+        this._loginHintShown = false;
+    },
+
     _showLoginHint: function(verifier, message) {
-        this._promptLoginHint.set_text(message)
-        this._promptLoginHint.opacity = 255;
+        this._showMessage(message, 'login-dialog-prompt-login-hint-message');
+        this._loginHintShown = true;
     },
 
     _hideLoginHint: function() {
-        this._promptLoginHint.opacity = 0;
-        this._promptLoginHint.set_text('');
+        if (!this._loginHintShown)
+            return;
+        this._showMessage('', 'login-dialog-prompt-login-hint-message');
+        this._loginHintShown = false;
     },
 
     cancel: function() {
@@ -368,8 +372,6 @@ const LoginDialog = new Lang.Class({
         this._sessionList.actor.hide();
         this._promptLabel.show();
         this._promptEntry.show();
-        this._promptLoginHint.opacity = 0;
-        this._promptLoginHint.show();
         this._promptBox.opacity = 0;
         this._promptBox.show();
         Tweener.addTween(this._promptBox,
@@ -495,7 +497,6 @@ const LoginDialog = new Lang.Class({
 
         this._setWorking(false);
         this._promptBox.hide();
-        this._promptLoginHint.opacity = 0;
 
         this._promptUser.set_child(null);
 
@@ -503,7 +504,6 @@ const LoginDialog = new Lang.Class({
         this._promptEntry.set_text('');
 
         this._sessionList.close();
-        this._promptLoginHint.opacity = 0;
 
         this._buttonBox.destroy_all_children();
         this._signInButton = null;
