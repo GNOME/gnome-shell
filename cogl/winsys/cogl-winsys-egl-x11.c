@@ -136,8 +136,8 @@ notify_resize (CoglContext *context,
   CoglRenderer *renderer = context->display->renderer;
   CoglRendererEGL *egl_renderer = renderer->winsys;
   CoglOnscreen *onscreen = find_onscreen_for_xid (context, drawable);
-  CoglOnscreenEGL *egl_onscreen = onscreen->winsys;
   CoglFramebuffer *framebuffer = COGL_FRAMEBUFFER (onscreen);
+  CoglOnscreenEGL *egl_onscreen;
 
   if (!onscreen)
     return;
