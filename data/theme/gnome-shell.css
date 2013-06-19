@@ -2244,6 +2244,10 @@ StScrollBar StButton#vhandle:active {
     min-width: 350px;
 }
 
+.login-dialog-button-box {
+    spacing: 5px;
+}
+
 .login-dialog-prompt-login-hint-message {
     font-size: 10.5pt;
 }

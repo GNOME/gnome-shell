@@ -512,7 +512,7 @@ const LoginDialog = new Lang.Class({
         this._promptLoginHint = new St.Label({ style_class: 'login-dialog-prompt-login-hint-message' });
         this._promptBox.add(this._promptLoginHint);
 
-        this._buttonBox = new St.BoxLayout({ style_class: 'modal-dialog-button-box',
+        this._buttonBox = new St.BoxLayout({ style_class: 'login-dialog-button-box',
                                              vertical: false });
         this._promptBox.add(this._buttonBox,
                             { expand:  true,
