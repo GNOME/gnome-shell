@@ -930,9 +930,34 @@ _shell_global_set_plugin (ShellGlobal *global,
                                                meta_screen_get_screen_number (global->meta_screen));
 
   global->stage = CLUTTER_STAGE (meta_get_stage_for_screen (global->meta_screen));
-  global->stage_xwindow = clutter_x11_get_stage_window (global->stage);
-  global->stage_gdk_window = gdk_x11_window_foreign_new_for_display (global->gdk_display,
-                                                                     global->stage_xwindow);
+  if (meta_is_display_server ())
+    {
+      /* When Mutter is acting as its own display server then the
+         stage does not have a window. Instead we'll just create a
+         dummy window that might make some things blunder along but
+         will probably just leave most things broken. It might be
+         possible to fix this to make the fake window be the same size
+         as the stage window would be and make it more useful. */
+
+      GdkWindowAttr attributes;
+
+      attributes.wclass = GDK_INPUT_OUTPUT;
+      attributes.width = 100;
+      attributes.height = 100;
+      attributes.window_type = GDK_WINDOW_TOPLEVEL;
+
+      global->stage_gdk_window = gdk_window_new (NULL,
+                                                 &attributes,
+                                                 0 /* attributes_mask */);
+      global->stage_xwindow = gdk_x11_window_get_xid (global->stage_gdk_window);
+    }
+  else
+    {
+      global->stage_xwindow = clutter_x11_get_stage_window (global->stage);
+      global->stage_gdk_window =
+        gdk_x11_window_foreign_new_for_display (global->gdk_display,
+                                                global->stage_xwindow);
+    }
 
   g_signal_connect (global->stage, "notify::width",
                     G_CALLBACK (global_stage_notify_width), global);
