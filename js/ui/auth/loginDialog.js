@@ -161,11 +161,10 @@ const LoginDialog = new Lang.Class({
                             { expand: false,
                               x_fill: false });
 
-        this._promptMessage = new St.Label({ visible: false });
+        this._promptMessage = new St.Label({ opacity: 0 });
         this._promptBox.add(this._promptMessage, { x_fill: true });
 
         this._promptLoginHint = new St.Label({ style_class: 'login-dialog-prompt-login-hint-message' });
-        this._promptLoginHint.hide();
         this._promptBox.add(this._promptLoginHint);
 
         this._sessionList = new SessionList.SessionList();
@@ -290,7 +289,7 @@ const LoginDialog = new Lang.Class({
         this._userVerifier.clear();
 
         this._updateSensitivity(true);
-        this._promptMessage.hide();
+        this._promptMessage.opacity = 0;
         this._user = null;
         this._verifyingUser = false;
 
@@ -342,20 +341,19 @@ const LoginDialog = new Lang.Class({
         if (message) {
             this._promptMessage.text = message;
             this._promptMessage.styleClass = styleClass;
-            this._promptMessage.show();
+            this._promptMessage.opacity = 255;
         } else {
-            this._promptMessage.hide();
+            this._promptMessage.opacity = 0;
         }
     },
 
     _showLoginHint: function(verifier, message) {
         this._promptLoginHint.set_text(message)
-        this._promptLoginHint.show();
         this._promptLoginHint.opacity = 255;
     },
 
     _hideLoginHint: function() {
-        this._promptLoginHint.hide();
+        this._promptLoginHint.opacity = 0;
         this._promptLoginHint.set_text('');
     },
 
@@ -497,7 +495,7 @@ const LoginDialog = new Lang.Class({
 
         this._setWorking(false);
         this._promptBox.hide();
-        this._promptLoginHint.hide();
+        this._promptLoginHint.opacity = 0;
 
         this._promptUser.set_child(null);
 
@@ -505,7 +503,7 @@ const LoginDialog = new Lang.Class({
         this._promptEntry.set_text('');
 
         this._sessionList.close();
-        this._promptLoginHint.hide();
+        this._promptLoginHint.opacity = 0;
 
         this._buttonBox.destroy_all_children();
         this._signInButton = null;
