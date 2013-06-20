@@ -3056,6 +3056,10 @@ parse_shadow_property (StThemeNode       *node,
    */
   for (term = decl->value; term; term = term->next)
     {
+      /* if we found "none", we're all set with the default values */
+      if (term_is_none (term))
+        return VALUE_FOUND;
+
       if (term->type == TERM_NUMBER)
         {
           gdouble value;
