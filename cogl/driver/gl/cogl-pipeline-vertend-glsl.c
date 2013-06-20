@@ -31,6 +31,8 @@
 
 #include <string.h>
 
+#include <test-fixtures/test-unit.h>
+
 #include "cogl-context-private.h"
 #include "cogl-util-gl-private.h"
 #include "cogl-pipeline-private.h"
@@ -209,7 +211,7 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
          state */
       authority = _cogl_pipeline_find_equivalent_parent
         (pipeline,
-         COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN &
+         _cogl_pipeline_get_state_for_vertex_codegen (ctx) &
          ~COGL_PIPELINE_STATE_LAYERS,
          COGL_PIPELINE_LAYER_STATE_AFFECTS_VERTEX_CODEGEN);
 
@@ -297,12 +299,18 @@ _cogl_pipeline_vertend_glsl_start (CoglPipeline *pipeline,
             COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM))
     {
       /* There is no builtin uniform for the point size on GLES2 so we
-         need to copy it from the custom uniform in the vertex shader if
-         we're not using per-vertex point sizes */
-      g_string_append (shader_state->header,
-                       "uniform float cogl_point_size_in;\n");
-      g_string_append (shader_state->source,
-                       "  cogl_point_size_out = cogl_point_size_in;\n");
+         need to copy it from the custom uniform in the vertex shader
+         if we're not using per-vertex point sizes, however we'll only
+         do this if the point-size is non-zero. Toggle the point size
+         between zero and non-zero causes a state change which
+         generates a new program */
+      if (cogl_pipeline_get_point_size (pipeline) > 0.0f)
+        {
+          g_string_append (shader_state->header,
+                           "uniform float cogl_point_size_in;\n");
+          g_string_append (shader_state->source,
+                           "  cogl_point_size_out = cogl_point_size_in;\n");
+        }
     }
 }
 
@@ -532,7 +540,8 @@ _cogl_pipeline_vertend_glsl_end (CoglPipeline *pipeline,
       CoglPipeline *authority =
         _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_POINT_SIZE);
 
-      GE( ctx, glPointSize (authority->big_state->point_size) );
+      if (authority->big_state->point_size > 0.0f)
+        GE( ctx, glPointSize (authority->big_state->point_size) );
     }
 #endif /* HAVE_COGL_GL */
 
@@ -544,7 +553,9 @@ _cogl_pipeline_vertend_glsl_pre_change_notify (CoglPipeline *pipeline,
                                                CoglPipelineState change,
                                                const CoglColor *new_color)
 {
-  if ((change & COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN))
+  _COGL_GET_CONTEXT (ctx, NO_RETVAL);
+
+  if ((change & _cogl_pipeline_get_state_for_vertex_codegen (ctx)))
     dirty_shader_state (pipeline);
 }
 
@@ -587,5 +598,64 @@ const CoglPipelineVertend _cogl_pipeline_glsl_vertend =
     _cogl_pipeline_vertend_glsl_pre_change_notify,
     _cogl_pipeline_vertend_glsl_layer_pre_change_notify
   };
+
+UNIT_TEST (check_point_size_shader,
+           0 /* no requirements */,
+           0 /* no failure cases */)
+{
+  CoglPipeline *pipelines[4];
+  CoglPipelineShaderState *shader_states[G_N_ELEMENTS (pipelines)];
+  int i;
+
+  /* Default pipeline with zero point size */
+  pipelines[0] = cogl_pipeline_new (test_ctx);
+
+  /* Point size 1 */
+  pipelines[1] = cogl_pipeline_new (test_ctx);
+  cogl_pipeline_set_point_size (pipelines[1], 1.0f);
+
+  /* Point size 2 */
+  pipelines[2] = cogl_pipeline_new (test_ctx);
+  cogl_pipeline_set_point_size (pipelines[2], 2.0f);
+
+  /* Same as the first pipeline, but reached by restoring the old
+   * state from a copy */
+  pipelines[3] = cogl_pipeline_copy (pipelines[1]);
+  cogl_pipeline_set_point_size (pipelines[3], 0.0f);
+
+  /* Draw something with all of the pipelines to make sure their state
+   * is flushed */
+  for (i = 0; i < G_N_ELEMENTS (pipelines); i++)
+    cogl_framebuffer_draw_rectangle (test_fb,
+                                     pipelines[i],
+                                     0.0f, 0.0f,
+                                     10.0f, 10.0f);
+  cogl_framebuffer_finish (test_fb);
+
+  /* Get all of the shader states. These might be NULL if the driver
+   * is not using GLSL */
+  for (i = 0; i < G_N_ELEMENTS (pipelines); i++)
+    shader_states[i] = get_shader_state (pipelines[i]);
+
+  /* If the first two pipelines are using GLSL then they should have
+   * the same shader unless there is no builtin uniform for the point
+   * size */
+  if (shader_states[0])
+    {
+      if ((test_ctx->private_feature_flags &
+           COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM))
+        g_assert (shader_states[0] == shader_states[1]);
+      else
+        g_assert (shader_states[0] != shader_states[1]);
+    }
+
+  /* The second and third pipelines should always have the same shader
+   * state because only toggling between zero and non-zero should
+   * change the shader */
+  g_assert (shader_states[1] == shader_states[2]);
+
+  /* The fourth pipeline should be exactly the same as the first */
+  g_assert (shader_states[0] == shader_states[3]);
+}
 
 #endif /* COGL_PIPELINE_VERTEND_GLSL */

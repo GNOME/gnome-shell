@@ -216,7 +216,7 @@ _cogl_pipeline_init_default_pipeline (void)
 
   cogl_depth_state_init (&big_state->depth_state);
 
-  big_state->point_size = 1.0f;
+  big_state->point_size = 0.0f;
 
   logic_ops_state->color_mask = COGL_COLOR_MASK_ALL;
 
@@ -1048,6 +1048,9 @@ _cogl_pipeline_copy_differences (CoglPipeline *dest,
               sizeof (CoglPipelineFogState));
     }
 
+  if (differences & COGL_PIPELINE_STATE_NON_ZERO_POINT_SIZE)
+    big_state->non_zero_point_size = src->big_state->non_zero_point_size;
+
   if (differences & COGL_PIPELINE_STATE_POINT_SIZE)
     big_state->point_size = src->big_state->point_size;
 
@@ -1135,6 +1138,7 @@ _cogl_pipeline_init_multi_property_sparse_state (CoglPipeline *pipeline,
     case COGL_PIPELINE_STATE_BLEND_ENABLE:
     case COGL_PIPELINE_STATE_ALPHA_FUNC:
     case COGL_PIPELINE_STATE_ALPHA_FUNC_REFERENCE:
+    case COGL_PIPELINE_STATE_NON_ZERO_POINT_SIZE:
     case COGL_PIPELINE_STATE_POINT_SIZE:
     case COGL_PIPELINE_STATE_USER_SHADER:
     case COGL_PIPELINE_STATE_PER_VERTEX_POINT_SIZE:
@@ -2318,6 +2322,11 @@ _cogl_pipeline_equal (CoglPipeline *pipeline0,
                                                      authorities1[bit]))
             goto done;
           break;
+        case COGL_PIPELINE_STATE_NON_ZERO_POINT_SIZE_INDEX:
+          if (!_cogl_pipeline_non_zero_point_size_equal (authorities0[bit],
+                                                         authorities1[bit]))
+            goto done;
+          break;
         case COGL_PIPELINE_STATE_POINT_SIZE_INDEX:
           if (!_cogl_pipeline_point_size_equal (authorities0[bit],
                                                 authorities1[bit]))
@@ -2775,6 +2784,8 @@ _cogl_pipeline_init_state_hash_functions (void)
     _cogl_pipeline_hash_fog_state;
   state_hash_functions[COGL_PIPELINE_STATE_CULL_FACE_INDEX] =
     _cogl_pipeline_hash_cull_face_state;
+  state_hash_functions[COGL_PIPELINE_STATE_NON_ZERO_POINT_SIZE_INDEX] =
+    _cogl_pipeline_hash_non_zero_point_size_state;
   state_hash_functions[COGL_PIPELINE_STATE_POINT_SIZE_INDEX] =
     _cogl_pipeline_hash_point_size_state;
   state_hash_functions[COGL_PIPELINE_STATE_PER_VERTEX_POINT_SIZE_INDEX] =
@@ -2790,7 +2801,7 @@ _cogl_pipeline_init_state_hash_functions (void)
 
   {
   /* So we get a big error if we forget to update this code! */
-  _COGL_STATIC_ASSERT (COGL_PIPELINE_STATE_SPARSE_COUNT == 17,
+  _COGL_STATIC_ASSERT (COGL_PIPELINE_STATE_SPARSE_COUNT == 18,
                        "Make sure to install a hash function for "
                        "newly added pipeline state and update assert "
                        "in _cogl_pipeline_init_state_hash_functions");
@@ -3055,6 +3066,25 @@ _cogl_pipeline_find_equivalent_parent (CoglPipeline *pipeline,
     }
 
   return authority1;
+}
+
+CoglPipelineState
+_cogl_pipeline_get_state_for_vertex_codegen (CoglContext *context)
+{
+  CoglPipelineState state = (COGL_PIPELINE_STATE_LAYERS |
+                             COGL_PIPELINE_STATE_USER_SHADER |
+                             COGL_PIPELINE_STATE_PER_VERTEX_POINT_SIZE |
+                             COGL_PIPELINE_STATE_VERTEX_SNIPPETS);
+
+  /* If we don't have the builtin point size uniform then we'll add
+   * one in the GLSL but we'll only do this if the point size is
+   * non-zero. Whether or not the point size is zero is represented by
+   * COGL_PIPELINE_STATE_NON_ZERO_POINT_SIZE */
+  if (!(context->private_feature_flags &
+        COGL_PRIVATE_FEATURE_BUILTIN_POINT_SIZE_UNIFORM))
+    state |= COGL_PIPELINE_STATE_NON_ZERO_POINT_SIZE;
+
+  return state;
 }
 
 CoglPipelineLayerState

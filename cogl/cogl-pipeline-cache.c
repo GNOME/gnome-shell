@@ -53,7 +53,7 @@ _cogl_pipeline_cache_new (void)
   _COGL_GET_CONTEXT (ctx, 0);
 
   vertex_state =
-    COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN;
+    _cogl_pipeline_get_state_for_vertex_codegen (ctx);
   layer_vertex_state =
     COGL_PIPELINE_LAYER_STATE_AFFECTS_VERTEX_CODEGEN;
   fragment_state =

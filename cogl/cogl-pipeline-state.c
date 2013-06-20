@@ -190,6 +190,14 @@ _cogl_pipeline_fog_state_equal (CoglPipeline *authority0,
 }
 
 CoglBool
+_cogl_pipeline_non_zero_point_size_equal (CoglPipeline *authority0,
+                                          CoglPipeline *authority1)
+{
+  return (authority0->big_state->non_zero_point_size ==
+          authority1->big_state->non_zero_point_size);
+}
+
+CoglBool
 _cogl_pipeline_point_size_equal (CoglPipeline *authority0,
                                  CoglPipeline *authority1)
 {
@@ -1379,6 +1387,30 @@ cogl_pipeline_get_point_size (CoglPipeline *pipeline)
   return authority->big_state->point_size;
 }
 
+static void
+_cogl_pipeline_set_non_zero_point_size (CoglPipeline *pipeline,
+                                        CoglBool value)
+{
+  CoglPipelineState state = COGL_PIPELINE_STATE_NON_ZERO_POINT_SIZE;
+  CoglPipeline *authority;
+
+  _COGL_RETURN_IF_FAIL (cogl_is_pipeline (pipeline));
+
+  authority = _cogl_pipeline_get_authority (pipeline, state);
+
+  /* - Flush journal primitives referencing the current state.
+   * - Make sure the pipeline has no dependants so it may be modified.
+   * - If the pipeline isn't currently an authority for the state being
+   *   changed, then initialize that state from the current authority.
+   */
+  _cogl_pipeline_pre_change_notify (pipeline, state, NULL, FALSE);
+
+  pipeline->big_state->non_zero_point_size = !!value;
+
+  _cogl_pipeline_update_authority (pipeline, authority, state,
+                                   _cogl_pipeline_non_zero_point_size_equal);
+}
+
 void
 cogl_pipeline_set_point_size (CoglPipeline *pipeline,
                               float point_size)
@@ -1392,6 +1424,12 @@ cogl_pipeline_set_point_size (CoglPipeline *pipeline,
 
   if (authority->big_state->point_size == point_size)
     return;
+
+  /* Changing the point size may additionally modify
+   * COGL_PIPELINE_STATE_NON_ZERO_POINT_SIZE. */
+
+  if ((authority->big_state->point_size > 0.0f) != (point_size > 0.0f))
+    _cogl_pipeline_set_non_zero_point_size (pipeline, point_size > 0.0f);
 
   /* - Flush journal primitives referencing the current state.
    * - Make sure the pipeline has no dependants so it may be modified.
@@ -1886,6 +1924,17 @@ _cogl_pipeline_hash_fog_state (CoglPipeline *authority,
                                           sizeof (CoglPipelineFogState));
 
   state->hash = hash;
+}
+
+void
+_cogl_pipeline_hash_non_zero_point_size_state (CoglPipeline *authority,
+                                               CoglPipelineHashState *state)
+{
+  CoglBool non_zero_point_size = authority->big_state->non_zero_point_size;
+
+  state->hash = _cogl_util_one_at_a_time_hash (state->hash,
+                                               &non_zero_point_size,
+                                               sizeof (non_zero_point_size));
 }
 
 void

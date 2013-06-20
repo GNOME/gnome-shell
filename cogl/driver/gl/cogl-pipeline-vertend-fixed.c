@@ -95,7 +95,8 @@ _cogl_pipeline_vertend_fixed_end (CoglPipeline *pipeline,
       CoglPipeline *authority =
         _cogl_pipeline_get_authority (pipeline, COGL_PIPELINE_STATE_POINT_SIZE);
 
-      GE( ctx, glPointSize (authority->big_state->point_size) );
+      if (authority->big_state->point_size > 0.0f)
+        GE( ctx, glPointSize (authority->big_state->point_size) );
     }
 
   return TRUE;

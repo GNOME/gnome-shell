@@ -76,6 +76,10 @@ _cogl_pipeline_fog_state_equal (CoglPipeline *authority0,
                                 CoglPipeline *authority1);
 
 CoglBool
+_cogl_pipeline_non_zero_point_size_equal (CoglPipeline *authority0,
+                                          CoglPipeline *authority1);
+
+CoglBool
 _cogl_pipeline_point_size_equal (CoglPipeline *authority0,
                                  CoglPipeline *authority1);
 CoglBool
@@ -145,6 +149,10 @@ _cogl_pipeline_hash_depth_state (CoglPipeline *authority,
 void
 _cogl_pipeline_hash_fog_state (CoglPipeline *authority,
                                CoglPipelineHashState *state);
+
+void
+_cogl_pipeline_hash_non_zero_point_size_state (CoglPipeline *authority,
+                                               CoglPipelineHashState *state);
 
 void
 _cogl_pipeline_hash_point_size_state (CoglPipeline *authority,

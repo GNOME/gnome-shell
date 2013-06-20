@@ -487,12 +487,17 @@ cogl_pipeline_set_blend_constant (CoglPipeline *pipeline,
  * @point_size: the new point size.
  *
  * Changes the size of points drawn when %COGL_VERTICES_MODE_POINTS is
- * used with the vertex buffer API. Note that typically the GPU will
- * only support a limited minimum and maximum range of point sizes. If
- * the chosen point size is outside that range then the nearest value
- * within that range will be used instead. The size of a point is in
- * screen space so it will be the same regardless of any
- * transformations. The default point size is 1.0.
+ * used with the attribute buffer API. Note that typically the GPU
+ * will only support a limited minimum and maximum range of point
+ * sizes. If the chosen point size is outside that range then the
+ * nearest value within that range will be used instead. The size of a
+ * point is in screen space so it will be the same regardless of any
+ * transformations.
+ *
+ * If the point size is set to 0.0 then drawing points with the
+ * pipeline will have undefined results. This is the default value so
+ * if an application wants to draw points it must make sure to use a
+ * pipeline that has an explicit point size set on it.
  *
  * Since: 2.0
  * Stability: Unstable

@@ -658,7 +658,7 @@ _cogl_pipeline_progend_glsl_end (CoglPipeline *pipeline,
          state */
       authority = _cogl_pipeline_find_equivalent_parent
         (pipeline,
-         (COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN |
+         (_cogl_pipeline_get_state_for_vertex_codegen (ctx) |
           _cogl_pipeline_get_state_for_fragment_codegen (ctx)) &
          ~COGL_PIPELINE_STATE_LAYERS,
          _cogl_pipeline_get_layer_state_for_fragment_codegen (ctx) |
@@ -830,8 +830,8 @@ _cogl_pipeline_progend_glsl_pre_change_notify (CoglPipeline *pipeline,
 {
   _COGL_GET_CONTEXT (ctx, NO_RETVAL);
 
-  if ((change & (_cogl_pipeline_get_state_for_fragment_codegen (ctx) |
-                 COGL_PIPELINE_STATE_AFFECTS_VERTEX_CODEGEN)))
+  if ((change & (_cogl_pipeline_get_state_for_vertex_codegen (ctx) |
+                 _cogl_pipeline_get_state_for_fragment_codegen (ctx))))
     {
       dirty_program_state (pipeline);
     }
