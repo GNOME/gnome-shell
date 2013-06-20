@@ -145,6 +145,9 @@ test_utils_init (TestFlags requirement_flags,
       is_boolean_env_set ("V"))
     cogl_test_is_verbose = TRUE;
 
+  /* NB: This doesn't have any effect since commit 47444dac of glib
+   * because the environment variable is read in a magic constructor
+   * so it is too late to set them here */
   if (g_getenv ("G_DEBUG"))
     {
       char *debug = g_strconcat (g_getenv ("G_DEBUG"), ",fatal-warnings", NULL);

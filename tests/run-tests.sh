@@ -1,5 +1,13 @@
 #!/bin/bash
 
+if test -z "$G_DEBUG"; then
+    G_DEBUG=fatal-warnings
+else
+    G_DEBUG="$G_DEBUG,fatal-warnings"
+fi
+
+export G_DEBUG
+
 ENVIRONMENT_CONFIG=$1
 shift
 
