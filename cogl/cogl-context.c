@@ -136,7 +136,7 @@ cogl_context_new (CoglDisplay *display,
                   CoglError **error)
 {
   CoglContext *context;
-  GLubyte default_texture_data[] = { 0xff, 0xff, 0xff, 0x0 };
+  uint8_t default_texture_data[] = { 0xff, 0xff, 0xff, 0xff };
   CoglBitmap *default_texture_bitmap;
   const CoglWinsysVtable *winsys;
   int i;
