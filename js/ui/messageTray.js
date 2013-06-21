@@ -2604,16 +2604,16 @@ const MessageTray = new Lang.Class({
     },
 
     _expandNotification: function(autoExpanding) {
-        // Don't focus notifications that are auto-expanding.
-        if (!autoExpanding)
-            this._ensureNotificationFocused();
-
         if (!this._notificationExpandedId)
             this._notificationExpandedId =
                 this._notification.connect('expanded',
                                            Lang.bind(this, this._onNotificationExpanded));
         // Don't animate changes in notifications that are auto-expanding.
         this._notification.expand(!autoExpanding);
+
+        // Don't focus notifications that are auto-expanding.
+        if (!autoExpanding)
+            this._ensureNotificationFocused();
     },
 
     _onNotificationExpanded: function() {
