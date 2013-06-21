@@ -58,33 +58,17 @@ const Slider = new Lang.Class({
         let sliderActiveBorderColor = themeNode.get_color('-slider-active-border-color');
         let sliderActiveColor = themeNode.get_color('-slider-active-background-color');
 
-        cr.setSourceRGBA (
-            sliderActiveColor.red / 255,
-            sliderActiveColor.green / 255,
-            sliderActiveColor.blue / 255,
-            sliderActiveColor.alpha / 255);
         cr.rectangle(0, (height - sliderHeight) / 2, width * this._value, sliderHeight);
+        Clutter.cairo_set_source_color(cr, sliderActiveColor);
         cr.fillPreserve();
-        cr.setSourceRGBA (
-            sliderActiveBorderColor.red / 255,
-            sliderActiveBorderColor.green / 255,
-            sliderActiveBorderColor.blue / 255,
-            sliderActiveBorderColor.alpha / 255);
+        Clutter.cairo_set_source_color(cr, sliderActiveBorderColor);
         cr.setLineWidth(sliderBorderWidth);
         cr.stroke();
 
-        cr.setSourceRGBA (
-            sliderColor.red / 255,
-            sliderColor.green / 255,
-            sliderColor.blue / 255,
-            sliderColor.alpha / 255);
         cr.rectangle(width * this._value, (height - sliderHeight) / 2, width * (1 - this._value), sliderHeight);
+        Clutter.cairo_set_source_color(cr, sliderColor);
         cr.fillPreserve();
-        cr.setSourceRGBA (
-            sliderBorderColor.red / 255,
-            sliderBorderColor.green / 255,
-            sliderBorderColor.blue / 255,
-            sliderBorderColor.alpha / 255);
+        Clutter.cairo_set_source_color(cr, sliderBorderColor);
         cr.setLineWidth(sliderBorderWidth);
         cr.stroke();
 
@@ -92,21 +76,13 @@ const Slider = new Lang.Class({
         let handleX = handleRadius + (width - 2 * handleRadius) * this._value;
 
         let color = themeNode.get_foreground_color();
-        cr.setSourceRGBA (
-            color.red / 255,
-            color.green / 255,
-            color.blue / 255,
-            color.alpha / 255);
+        Clutter.cairo_set_source_color(cr, color);
         cr.arc(handleX, handleY, handleRadius, 0, 2 * Math.PI);
         cr.fillPreserve();
         if (hasHandleColor && handleBorderWidth) {
-          cr.setSourceRGBA(
-              handleBorderColor.red / 255,
-              handleBorderColor.green / 255,
-              handleBorderColor.blue / 255,
-              handleBorderColor.alpha / 255);
-          cr.setLineWidth(handleBorderWidth);
-          cr.stroke();
+            Clutter.cairo_set_source_color(cr, handleBorderColor);
+            cr.setLineWidth(handleBorderWidth);
+            cr.stroke();
         }
         cr.$dispose();
     },
