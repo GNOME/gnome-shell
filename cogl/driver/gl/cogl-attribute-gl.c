@@ -251,17 +251,25 @@ setup_legacy_buffered_attribute (CoglContext *ctx,
     case COGL_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY:
       {
         int layer_number = attribute->name_state->layer_number;
+        const CoglPipelineGetLayerFlags flags =
+          COGL_PIPELINE_GET_LAYER_NO_CREATE;
         CoglPipelineLayer *layer =
-          _cogl_pipeline_get_layer (pipeline, layer_number);
-        int unit = _cogl_pipeline_layer_get_unit_index (layer);
+          _cogl_pipeline_get_layer_with_flags (pipeline, layer_number, flags);
 
-        _cogl_bitmask_set (&ctx->enable_texcoord_attributes_tmp, unit, TRUE);
+        if (layer)
+          {
+            int unit = _cogl_pipeline_layer_get_unit_index (layer);
 
-        GE (ctx, glClientActiveTexture (GL_TEXTURE0 + unit));
-        GE (ctx, glTexCoordPointer (attribute->d.buffered.n_components,
-                                    attribute->d.buffered.type,
-                                    attribute->d.buffered.stride,
-                                    base + attribute->d.buffered.offset));
+            _cogl_bitmask_set (&ctx->enable_texcoord_attributes_tmp,
+                               unit,
+                               TRUE);
+
+            GE (ctx, glClientActiveTexture (GL_TEXTURE0 + unit));
+            GE (ctx, glTexCoordPointer (attribute->d.buffered.n_components,
+                                        attribute->d.buffered.type,
+                                        attribute->d.buffered.stride,
+                                        base + attribute->d.buffered.offset));
+          }
         break;
       }
     case COGL_ATTRIBUTE_NAME_ID_POSITION_ARRAY:
@@ -316,13 +324,24 @@ setup_legacy_const_attribute (CoglContext *ctx,
         case COGL_ATTRIBUTE_NAME_ID_TEXTURE_COORD_ARRAY:
           {
             int layer_number = attribute->name_state->layer_number;
+            const CoglPipelineGetLayerFlags flags =
+              COGL_PIPELINE_GET_LAYER_NO_CREATE;
             CoglPipelineLayer *layer =
-              _cogl_pipeline_get_layer (pipeline, layer_number);
-            int unit = _cogl_pipeline_layer_get_unit_index (layer);
+              _cogl_pipeline_get_layer_with_flags (pipeline,
+                                                   layer_number,
+                                                   flags);
 
-            GE (ctx, glClientActiveTexture (GL_TEXTURE0 + unit));
+            if (layer)
+              {
+                int unit = _cogl_pipeline_layer_get_unit_index (layer);
 
-            GE (ctx, glMultiTexCoord4f (vector[0], vector[1], vector[2], vector[3]));
+                GE (ctx, glClientActiveTexture (GL_TEXTURE0 + unit));
+
+                GE (ctx, glMultiTexCoord4f (vector[0],
+                                            vector[1],
+                                            vector[2],
+                                            vector[3]));
+              }
             break;
           }
         case COGL_ATTRIBUTE_NAME_ID_POSITION_ARRAY:
