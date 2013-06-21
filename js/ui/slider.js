@@ -51,6 +51,7 @@ const Slider = new Lang.Class({
         let sliderHeight = themeNode.get_length('-slider-height');
 
         let sliderBorderWidth = themeNode.get_length('-slider-border-width');
+        let sliderBorderRadius = Math.min(width, sliderHeight) / 2;
 
         let sliderBorderColor = themeNode.get_color('-slider-border-color');
         let sliderColor = themeNode.get_color('-slider-background-color');
@@ -58,14 +59,24 @@ const Slider = new Lang.Class({
         let sliderActiveBorderColor = themeNode.get_color('-slider-active-border-color');
         let sliderActiveColor = themeNode.get_color('-slider-active-background-color');
 
-        cr.rectangle(0, (height - sliderHeight) / 2, width * this._value, sliderHeight);
+        const TAU = Math.PI * 2;
+
+        let handleX = handleRadius + (width - 2 * handleRadius) * this._value;
+
+        cr.arc(sliderBorderRadius + sliderBorderWidth, height / 2, sliderBorderRadius, TAU * 1/4, TAU * 3/4);
+        cr.lineTo(handleX, (height - sliderHeight) / 2);
+        cr.lineTo(handleX, (height + sliderHeight) / 2);
+        cr.lineTo(sliderBorderRadius + sliderBorderWidth, (height + sliderHeight) / 2);
         Clutter.cairo_set_source_color(cr, sliderActiveColor);
         cr.fillPreserve();
         Clutter.cairo_set_source_color(cr, sliderActiveBorderColor);
         cr.setLineWidth(sliderBorderWidth);
         cr.stroke();
 
-        cr.rectangle(width * this._value, (height - sliderHeight) / 2, width * (1 - this._value), sliderHeight);
+        cr.arc(width - sliderBorderRadius - sliderBorderWidth, height / 2, sliderBorderRadius, TAU * 3/4, TAU * 1/4);
+        cr.lineTo(handleX, (height + sliderHeight) / 2);
+        cr.lineTo(handleX, (height - sliderHeight) / 2);
+        cr.lineTo(width - sliderBorderRadius - sliderBorderWidth, (height - sliderHeight) / 2);
         Clutter.cairo_set_source_color(cr, sliderColor);
         cr.fillPreserve();
         Clutter.cairo_set_source_color(cr, sliderBorderColor);
@@ -73,7 +84,6 @@ const Slider = new Lang.Class({
         cr.stroke();
 
         let handleY = height / 2;
-        let handleX = handleRadius + (width - 2 * handleRadius) * this._value;
 
         let color = themeNode.get_foreground_color();
         Clutter.cairo_set_source_color(cr, color);
