@@ -789,13 +789,13 @@ _cogl_pipeline_change_implies_transparency (CoglPipeline *pipeline,
 
   if (changes & COGL_PIPELINE_STATE_FRAGMENT_SNIPPETS)
     {
-      if (!_cogl_pipeline_has_non_layer_fragment_snippets (pipeline))
+      if (_cogl_pipeline_has_non_layer_fragment_snippets (pipeline))
         return TRUE;
     }
 
   if (changes & COGL_PIPELINE_STATE_VERTEX_SNIPPETS)
     {
-      if (!_cogl_pipeline_has_non_layer_vertex_snippets (pipeline))
+      if (_cogl_pipeline_has_non_layer_vertex_snippets (pipeline))
         return TRUE;
     }
 
