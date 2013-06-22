@@ -18,7 +18,7 @@ const Params = imports.misc.params;
 const PopupMenu = imports.ui.popupMenu;
 
 // See Notification.appendMessage
-const SCROLLBACK_IMMEDIATE_TIME = 60; // 1 minute
+const SCROLLBACK_IMMEDIATE_TIME = 3 * 60; // 3 minutes
 const SCROLLBACK_RECENT_TIME = 15 * 60; // 15 minutes
 const SCROLLBACK_RECENT_LENGTH = 20;
 const SCROLLBACK_IDLE_LENGTH = 5;
