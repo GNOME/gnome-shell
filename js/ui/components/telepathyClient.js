@@ -967,7 +967,8 @@ const ChatNotification = new Lang.Class({
         let timeLabel = this._append({ body: this._formatTimestamp(lastMessageDate),
                                        group: 'meta',
                                        styles: ['chat-meta-message'],
-                                       childProps: { expand: true, x_fill: false },
+                                       childProps: { expand: true, x_fill: false,
+                                                     x_align: St.Align.END },
                                        noTimestamp: true,
                                        timestamp: lastMessageTime });
 
