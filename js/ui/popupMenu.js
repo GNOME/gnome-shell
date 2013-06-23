@@ -527,6 +527,10 @@ const PopupSliderMenuItem = new Lang.Class({
 
     get value() {
         return this._slider.value;
+    },
+
+    scroll: function (event) {
+        this._slider.scroll(event);
     }
 });
 
