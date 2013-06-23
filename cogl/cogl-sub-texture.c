@@ -235,6 +235,8 @@ cogl_sub_texture_new (CoglContext *ctx,
   tex = COGL_TEXTURE (sub_tex);
 
   _cogl_texture_init (tex, ctx, sub_width, sub_height,
+                      _cogl_texture_get_format (next_texture),
+                      NULL, /* no loader */
                       &cogl_sub_texture_vtable);
 
   /* If the next texture is also a sub texture we can avoid one level
@@ -264,8 +266,13 @@ _cogl_sub_texture_allocate (CoglTexture *tex,
                             CoglError **error)
 {
   CoglSubTexture *sub_tex = COGL_SUB_TEXTURE (tex);
+  CoglBool status = cogl_texture_allocate (sub_tex->full_texture, error);
 
-  return cogl_texture_allocate (sub_tex->full_texture, error);
+  _cogl_texture_set_allocated (tex,
+                               _cogl_texture_get_format (sub_tex->full_texture),
+                               tex->width, tex->height);
+
+  return status;
 }
 
 CoglTexture *

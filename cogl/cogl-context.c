@@ -135,8 +135,8 @@ cogl_context_new (CoglDisplay *display,
                   CoglError **error)
 {
   CoglContext *context;
-  uint8_t default_texture_data[] = { 0xff, 0xff, 0xff, 0xff };
-  CoglBitmap *default_texture_bitmap;
+  uint8_t white_pixel[] = { 0xff, 0xff, 0xff, 0xff };
+  CoglBitmap *white_pixel_bitmap;
   const CoglWinsysVtable *winsys;
   int i;
   CoglError *internal_error = NULL;
@@ -429,41 +429,53 @@ cogl_context_new (CoglDisplay *display,
   _cogl_matrix_entry_cache_init (&context->builtin_flushed_projection);
   _cogl_matrix_entry_cache_init (&context->builtin_flushed_modelview);
 
-  default_texture_bitmap =
-    cogl_bitmap_new_for_data (context,
-                              1, 1, /* width/height */
-                              COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                              4, /* rowstride */
-                              default_texture_data);
-
   /* Create default textures used for fall backs */
   context->default_gl_texture_2d_tex =
-    cogl_texture_2d_new_from_bitmap (default_texture_bitmap,
-                                     /* internal format */
-                                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                     NULL);
+    cogl_texture_2d_new_from_data (context,
+                                   1, 1,
+                                   COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                   COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                   0, /* rowstride */
+                                   white_pixel,
+                                   NULL); /* abort on error */
 
   /* If 3D or rectangle textures aren't supported then these will
    * return errors that we can simply ignore. */
   internal_error = NULL;
   context->default_gl_texture_3d_tex =
-    cogl_texture_3d_new_from_bitmap (default_texture_bitmap,
-                                     1, /* height */
-                                     1, /* depth */
-                                     COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                     &internal_error);
+    cogl_texture_3d_new_from_data (context,
+                                   1, 1, 1, /* width, height, depth */
+                                   COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                   COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                                   0, /* rowstride */
+                                   0, /* image stride */
+                                   white_pixel,
+                                   &internal_error);
   if (internal_error)
     cogl_error_free (internal_error);
+
+  /* TODO: add cogl_texture_rectangle_new_from_data() */
+  white_pixel_bitmap =
+    cogl_bitmap_new_for_data (context,
+                              1, 1, /* width/height */
+                              COGL_PIXEL_FORMAT_RGBA_8888_PRE,
+                              4, /* rowstride */
+                              white_pixel);
 
   internal_error = NULL;
   context->default_gl_texture_rect_tex =
-    cogl_texture_rectangle_new_from_bitmap (default_texture_bitmap,
+    cogl_texture_rectangle_new_from_bitmap (white_pixel_bitmap,
                                             COGL_PIXEL_FORMAT_RGBA_8888_PRE,
-                                            &internal_error);
+                                            NULL); /* legacy error argument */
+
+  /* XXX: we need to allocate the texture now because the white_pixel
+   * data is on the stack */
+  cogl_texture_allocate (COGL_TEXTURE (context->default_gl_texture_rect_tex),
+                         &internal_error);
   if (internal_error)
     cogl_error_free (internal_error);
 
-  cogl_object_unref (default_texture_bitmap);
+  cogl_object_unref (white_pixel_bitmap);
 
   cogl_push_source (context->opaque_color_pipeline);
 

@@ -56,8 +56,8 @@ typedef struct _CoglTexture3D CoglTexture3D;
  * @internal_format: the #CoglPixelFormat to use for the GPU
  *    storage of the texture.
  *
- * Creates a new #CoglTexture3D texture with the specified dimensions
- * and pixel format.
+ * Creates a low-level #CoglTexture3D texture with the specified
+ * dimensions and pixel format.
  *
  * The storage for the texture is not allocated before this function
  * returns. You can call cogl_texture_allocate() to explicitly
@@ -65,6 +65,11 @@ typedef struct _CoglTexture3D CoglTexture3D;
  * automatically allocate storage lazily when it may know more about
  * how the texture is going to be used and can optimize how it is
  * allocated.
+ *
+ * The texture is still configurable until it has been allocated so
+ * for example you can influence the internal format of the texture
+ * using cogl_texture_set_components() and
+ * cogl_texture_set_premultiplied().
  *
  * <note>This texture will fail to allocate later if
  * %COGL_FEATURE_ID_TEXTURE_3D is not advertised. Allocation can also
@@ -107,16 +112,21 @@ cogl_texture_3d_new_with_size (CoglContext *context,
  * @data: pointer the memory region where the source buffer resides
  * @error: A CoglError return location.
  *
- * Creates a new 3D texture and initializes it with @data. The data is
- * assumed to be packed array of @depth images. There can be padding
- * between the images using @image_stride.
+ * Creates a low-level 3D texture and initializes it with @data. The
+ * data is assumed to be packed array of @depth images. There can be
+ * padding between the images using @image_stride.
  *
- * Note that this function will throw a #CoglError if
- * %COGL_FEATURE_ID_TEXTURE_3D is not advertised. It can also fail if the
- * requested dimensions are not supported by the GPU.
+ * <note>This api will always immediately allocate GPU memory for the
+ * texture and upload the given data so that the @data pointer does
+ * not need to remain valid once this function returns. This means it
+ * is not possible to configure the texture before it is allocated. If
+ * you do need to configure the texture before allocation (to specify
+ * constraints on the internal format for example) then you can
+ * instead create a #CoglBitmap for your data and use
+ * cogl_texture_3d_new_from_bitmap().</note>
  *
  * Return value: (transfer full): the newly created #CoglTexture3D or
- *               %NULL if there was an error an an exception will be
+ *               %NULL if there was an error and an exception will be
  *               returned through @error.
  * Since: 1.10
  * Stability: Unstable
@@ -148,12 +158,29 @@ cogl_texture_3d_new_from_data (CoglContext *context,
  *    something other than straight blending.
  * @error: A CoglError return location.
  *
- * Creates a new 3D texture and initializes it with the images in
- * @bitmap. The images are assumed to be packed together after one
+ * Creates a low-level 3D texture and initializes it with the images
+ * in @bitmap. The images are assumed to be packed together after one
  * another in the increasing y axis. The height of individual image is
  * given as @height and the number of images is given in @depth. The
  * actual height of the bitmap can be larger than @height × @depth. In
  * this case it assumes there is padding between the images.
+ *
+ * The storage for the texture is not allocated before this function
+ * returns. You can call cogl_texture_allocate() to explicitly
+ * allocate the underlying storage or preferably let Cogl
+ * automatically allocate storage lazily when it may know more about
+ * how the texture is going to be used and can optimize how it is
+ * allocated.
+ *
+ * The texture is still configurable until it has been allocated so
+ * for example you can influence the internal format of the texture
+ * using cogl_texture_set_components() and
+ * cogl_texture_set_premultiplied().
+ *
+ * <note>This texture will fail to allocate later if
+ * %COGL_FEATURE_ID_TEXTURE_3D is not advertised. Allocation can also
+ * fail if the requested dimensions are not supported by the
+ * GPU.</note>
  *
  * Return value: (transfer full): the newly created texture or %NULL
  *   if there was an error.
@@ -162,8 +189,8 @@ cogl_texture_3d_new_from_data (CoglContext *context,
  */
 CoglTexture3D *
 cogl_texture_3d_new_from_bitmap (CoglBitmap *bitmap,
-                                 unsigned int height,
-                                 unsigned int depth,
+                                 int height,
+                                 int depth,
                                  CoglPixelFormat internal_format,
                                  CoglError **error);
 

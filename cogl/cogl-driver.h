@@ -141,31 +141,6 @@ struct _CoglDriverVtable
   (* texture_2d_allocate) (CoglTexture *tex,
                            CoglError **error);
 
-  /* Instantiates a new CoglTexture2D object with storage initialized
-   * with the contents of the given bitmap, using the specified
-   * internal format.
-   */
-  CoglTexture2D *
-  (* texture_2d_new_from_bitmap) (CoglBitmap *bmp,
-                                  CoglPixelFormat internal_format,
-                                  CoglBool can_convert_in_place,
-                                  CoglError **error);
-
-#if defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base)
-  /* Instantiates a new CoglTexture2D object with storage initialized
-   * with the contents of the given EGL image.
-   *
-   * This is optional for drivers to support
-   */
-  CoglTexture2D *
-  (* egl_texture_2d_new_from_image) (CoglContext *ctx,
-                                     int width,
-                                     int height,
-                                     CoglPixelFormat format,
-                                     EGLImageKHR image,
-                                     CoglError **error);
-#endif
-
   /* Initialize the specified region of storage of the given texture
    * with the contents of the specified framebuffer region
    */

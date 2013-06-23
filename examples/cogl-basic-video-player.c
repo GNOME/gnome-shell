@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <string.h>
 
 #include <cogl/cogl.h>
 #include <cogl-gst/cogl-gst.h>

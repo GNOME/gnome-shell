@@ -82,7 +82,8 @@ CoglTexture2D *
 _cogl_texture_2d_create_base (CoglContext *ctx,
                               int width,
                               int height,
-                              CoglPixelFormat internal_format);
+                              CoglPixelFormat internal_format,
+                              CoglTextureLoader *loader);
 
 void
 _cogl_texture_2d_set_auto_mipmap (CoglTexture *tex,

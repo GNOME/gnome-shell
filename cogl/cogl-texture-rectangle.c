@@ -166,12 +166,15 @@ static CoglTextureRectangle *
 _cogl_texture_rectangle_create_base (CoglContext *ctx,
                                      int width,
                                      int height,
-                                     CoglPixelFormat internal_format)
+                                     CoglPixelFormat internal_format,
+                                     CoglTextureLoader *loader)
 {
   CoglTextureRectangle *tex_rect = g_new (CoglTextureRectangle, 1);
   CoglTexture *tex = COGL_TEXTURE (tex_rect);
 
-  _cogl_texture_init (tex, ctx, width, height, &cogl_texture_rectangle_vtable);
+  _cogl_texture_init (tex, ctx, width, height,
+                      internal_format, loader,
+                      &cogl_texture_rectangle_vtable);
 
   tex_rect->gl_texture = 0;
   tex_rect->is_foreign = FALSE;
@@ -184,8 +187,6 @@ _cogl_texture_rectangle_create_base (CoglContext *ctx,
   tex_rect->gl_legacy_texobj_wrap_mode_s = GL_FALSE;
   tex_rect->gl_legacy_texobj_wrap_mode_t = GL_FALSE;
 
-  tex_rect->internal_format = internal_format;
-
   return _cogl_texture_rectangle_object_new (tex_rect);
 }
 
@@ -196,16 +197,20 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
                                       CoglPixelFormat internal_format,
                                       CoglError **error)
 {
+  CoglTextureLoader *loader;
   CoglTextureRectangle *tex_rect;
 
   /* Since no data, we need some internal format */
   if (internal_format == COGL_PIXEL_FORMAT_ANY)
     internal_format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
 
-  tex_rect =_cogl_texture_rectangle_create_base (ctx,
-                                                 width, height,
-                                                 internal_format);
+  loader = _cogl_texture_create_loader ();
+  loader->src_type = COGL_TEXTURE_SOURCE_TYPE_SIZED;
+  loader->src.sized.width = width;
+  loader->src.sized.height = height;
 
+  tex_rect = _cogl_texture_rectangle_create_base (ctx, width, height,
+                                                  internal_format, loader);
   /* XXX: This api has been changed for Cogl 2.0 on the master branch
    * to not take a CoglError to allow the storage to be allocated
    * lazily but since Mutter uses this api we are currently
@@ -216,30 +221,38 @@ cogl_texture_rectangle_new_with_size (CoglContext *ctx,
       cogl_object_unref (tex_rect);
       return NULL;
     }
+
   return tex_rect;
 }
 
 static CoglBool
-_cogl_texture_rectangle_allocate (CoglTexture *tex,
-                                  CoglError **error)
+allocate_with_size (CoglTextureRectangle *tex_rect,
+                    CoglTextureLoader *loader,
+                    CoglError **error)
 {
+  CoglTexture *tex = COGL_TEXTURE (tex_rect);
   CoglContext *ctx = tex->context;
-  CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
+  CoglPixelFormat internal_format;
+  int width = loader->src.sized.width;
+  int height = loader->src.sized.height;
   GLenum gl_intformat;
   GLenum gl_format;
   GLenum gl_type;
   GLenum gl_error;
   GLenum gl_texture;
 
+  internal_format =
+    _cogl_texture_determine_internal_format (tex, COGL_PIXEL_FORMAT_ANY);
+
   if (!_cogl_texture_rectangle_can_create (ctx,
-                                           tex->width,
-                                           tex->height,
-                                           tex_rect->internal_format,
+                                           width,
+                                           height,
+                                           internal_format,
                                            error))
     return FALSE;
 
   ctx->driver_vtable->pixel_format_to_gl (ctx,
-                                          tex_rect->internal_format,
+                                          internal_format,
                                           &gl_intformat,
                                           &gl_format,
                                           &gl_type);
@@ -247,7 +260,7 @@ _cogl_texture_rectangle_allocate (CoglTexture *tex,
   gl_texture =
     ctx->texture_driver->gen (ctx,
                               GL_TEXTURE_RECTANGLE_ARB,
-                              tex_rect->internal_format);
+                              internal_format);
   _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB,
                                    gl_texture,
                                    tex_rect->is_foreign);
@@ -257,7 +270,7 @@ _cogl_texture_rectangle_allocate (CoglTexture *tex,
     ;
 
   ctx->glTexImage2D (GL_TEXTURE_RECTANGLE_ARB, 0, gl_intformat,
-                     tex->width, tex->height, 0, gl_format, gl_type, NULL);
+                     width, height, 0, gl_format, gl_type, NULL);
 
   if (_cogl_gl_util_catch_out_of_memory (ctx, error))
     {
@@ -265,46 +278,50 @@ _cogl_texture_rectangle_allocate (CoglTexture *tex,
       return FALSE;
     }
 
+  tex_rect->internal_format = internal_format;
+
   tex_rect->gl_texture = gl_texture;
   tex_rect->gl_format = gl_intformat;
+
+  _cogl_texture_set_allocated (COGL_TEXTURE (tex_rect),
+                               internal_format, width, height);
 
   return TRUE;
 }
 
-CoglTextureRectangle *
-cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bmp,
-                                        CoglPixelFormat internal_format,
-                                        CoglError **error)
+static CoglBool
+allocate_from_bitmap (CoglTextureRectangle *tex_rect,
+                      CoglTextureLoader *loader,
+                      CoglError **error)
 {
-  CoglTextureRectangle *tex_rect;
+  CoglTexture *tex = COGL_TEXTURE (tex_rect);
+  CoglContext *ctx = tex->context;
+  CoglPixelFormat internal_format;
+  CoglBitmap *bmp = loader->src.bitmap.bitmap;
+  int width = cogl_bitmap_get_width (bmp);
+  int height = cogl_bitmap_get_height (bmp);
+  CoglBool can_convert_in_place = loader->src.bitmap.can_convert_in_place;
   CoglBitmap *upload_bmp;
   GLenum gl_intformat;
   GLenum gl_format;
   GLenum gl_type;
-  CoglContext *ctx;
-
-  _COGL_RETURN_VAL_IF_FAIL (cogl_is_bitmap (bmp), NULL);
-
-  ctx = _cogl_bitmap_get_context (bmp);
 
   internal_format =
-    _cogl_texture_determine_internal_format (cogl_bitmap_get_format (bmp),
-                                             internal_format);
+    _cogl_texture_determine_internal_format (tex, cogl_bitmap_get_format (bmp));
 
   if (!_cogl_texture_rectangle_can_create (ctx,
-                                           cogl_bitmap_get_width (bmp),
-                                           cogl_bitmap_get_height (bmp),
+                                           width,
+                                           height,
                                            internal_format,
                                            error))
-    return NULL;
+    return FALSE;
 
-  upload_bmp =
-    _cogl_bitmap_convert_for_upload (bmp,
-                                     internal_format,
-                                     FALSE, /* can't convert in place */
-                                     error);
+  upload_bmp = _cogl_bitmap_convert_for_upload (bmp,
+                                                internal_format,
+                                                can_convert_in_place,
+                                                error);
   if (upload_bmp == NULL)
-    return NULL;
+    return FALSE;
 
   ctx->driver_vtable->pixel_format_to_gl (ctx,
                                           cogl_bitmap_get_format (upload_bmp),
@@ -316,11 +333,6 @@ cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bmp,
                                           &gl_intformat,
                                           NULL,
                                           NULL);
-
-  tex_rect = _cogl_texture_rectangle_create_base (ctx,
-                                                  cogl_bitmap_get_width (bmp),
-                                                  cogl_bitmap_get_height (bmp),
-                                                  internal_format);
 
   tex_rect->gl_texture =
     ctx->texture_driver->gen (ctx,
@@ -337,38 +349,31 @@ cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bmp,
                                           error))
     {
       cogl_object_unref (upload_bmp);
-      cogl_object_unref (tex_rect);
-      return NULL;
+      return FALSE;
     }
 
   tex_rect->gl_format = gl_intformat;
+  tex_rect->internal_format = internal_format;
 
   cogl_object_unref (upload_bmp);
 
-  _cogl_texture_set_allocated (COGL_TEXTURE (tex_rect), TRUE);
+  _cogl_texture_set_allocated (COGL_TEXTURE (tex_rect),
+                               internal_format, width, height);
 
-  return tex_rect;
+  return TRUE;
 }
 
-CoglTextureRectangle *
-cogl_texture_rectangle_new_from_foreign (CoglContext *ctx,
-                                         unsigned int gl_handle,
-                                         int width,
-                                         int height,
-                                         CoglPixelFormat format,
-                                         CoglError **error)
+static CoglBool
+allocate_from_gl_foreign (CoglTextureRectangle *tex_rect,
+                          CoglTextureLoader *loader,
+                          CoglError **error)
 {
-  /* NOTE: width, height and internal format are not queriable
-   * in GLES, hence such a function prototype.
-   */
-
+  CoglTexture *tex = COGL_TEXTURE (tex_rect);
+  CoglContext *ctx = tex->context;
+  CoglPixelFormat format = loader->src.gl_foreign.format;
   GLenum gl_error = 0;
   GLint gl_compressed = GL_FALSE;
   GLenum gl_int_format = 0;
-  CoglTextureRectangle *tex_rect;
-
-  /* Assert that it is a valid GL texture object */
-  g_return_val_if_fail (ctx->glIsTexture (gl_handle), NULL);
 
   if (!ctx->texture_driver->allows_foreign_gl_target (ctx,
                                                       GL_TEXTURE_RECTANGLE_ARB))
@@ -378,21 +383,22 @@ cogl_texture_rectangle_new_from_foreign (CoglContext *ctx,
                        COGL_SYSTEM_ERROR_UNSUPPORTED,
                        "Foreign GL_TEXTURE_RECTANGLE textures are not "
                        "supported by your system");
-      return NULL;
+      return FALSE;
     }
 
   /* Make sure binding succeeds */
   while ((gl_error = ctx->glGetError ()) != GL_NO_ERROR)
     ;
 
-  _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB, gl_handle, TRUE);
+  _cogl_bind_gl_texture_transient (GL_TEXTURE_RECTANGLE_ARB,
+                                   loader->src.gl_foreign.gl_handle, TRUE);
   if (ctx->glGetError () != GL_NO_ERROR)
     {
       _cogl_set_error (error,
                        COGL_SYSTEM_ERROR,
                        COGL_SYSTEM_ERROR_UNSUPPORTED,
                        "Failed to bind foreign GL_TEXTURE_RECTANGLE texture");
-      return NULL;
+      return FALSE;
     }
 
   /* Obtain texture parameters */
@@ -423,7 +429,7 @@ cogl_texture_rectangle_new_from_foreign (CoglContext *ctx,
                            COGL_SYSTEM_ERROR,
                            COGL_SYSTEM_ERROR_UNSUPPORTED,
                            "Unsupported internal format for foreign texture");
-          return NULL;
+          return FALSE;
         }
     }
   else
@@ -438,16 +444,6 @@ cogl_texture_rectangle_new_from_foreign (CoglContext *ctx,
                                               NULL);
     }
 
-  /* Note: We always trust the given width and height without querying
-   * the texture object because the user may be creating a Cogl
-   * texture for a texture_from_pixmap object where glTexImage2D may
-   * not have been called and the texture_from_pixmap spec doesn't
-   * clarify that it is reliable to query back the size from OpenGL.
-   */
-
-  /* Validate width and height */
-  g_return_val_if_fail (width > 0 && height > 0, NULL);
-
   /* Compressed texture images not supported */
   if (gl_compressed == GL_TRUE)
     {
@@ -455,27 +451,107 @@ cogl_texture_rectangle_new_from_foreign (CoglContext *ctx,
                        COGL_SYSTEM_ERROR,
                        COGL_SYSTEM_ERROR_UNSUPPORTED,
                        "Compressed foreign textures aren't currently supported");
-      return NULL;
+      return FALSE;
     }
-
-  /* Create new texture */
-  tex_rect = _cogl_texture_rectangle_create_base (ctx, width, height, format);
 
   /* Setup bitmap info */
   tex_rect->is_foreign = TRUE;
 
-  tex_rect->internal_format = format;
-
-  tex_rect->gl_texture = gl_handle;
+  tex_rect->gl_texture = loader->src.gl_foreign.gl_handle;
   tex_rect->gl_format = gl_int_format;
 
   /* Unknown filter */
   tex_rect->gl_legacy_texobj_min_filter = GL_FALSE;
   tex_rect->gl_legacy_texobj_mag_filter = GL_FALSE;
 
-  _cogl_texture_set_allocated (COGL_TEXTURE (tex_rect), TRUE);
+  tex_rect->internal_format = format;
 
-  return tex_rect;
+  _cogl_texture_set_allocated (COGL_TEXTURE (tex_rect),
+                               format,
+                               loader->src.gl_foreign.width,
+                               loader->src.gl_foreign.height);
+
+  return TRUE;
+}
+
+static CoglBool
+_cogl_texture_rectangle_allocate (CoglTexture *tex,
+                                  CoglError **error)
+{
+  CoglTextureRectangle *tex_rect = COGL_TEXTURE_RECTANGLE (tex);
+  CoglTextureLoader *loader = tex->loader;
+
+  _COGL_RETURN_VAL_IF_FAIL (loader, FALSE);
+
+  switch (loader->src_type)
+    {
+    case COGL_TEXTURE_SOURCE_TYPE_SIZED:
+      return allocate_with_size (tex_rect, loader, error);
+    case COGL_TEXTURE_SOURCE_TYPE_BITMAP:
+      return allocate_from_bitmap (tex_rect, loader, error);
+    case COGL_TEXTURE_SOURCE_TYPE_GL_FOREIGN:
+      return allocate_from_gl_foreign (tex_rect, loader, error);
+    default:
+      break;
+    }
+
+  g_return_val_if_reached (FALSE);
+}
+
+CoglTextureRectangle *
+cogl_texture_rectangle_new_from_bitmap (CoglBitmap *bmp,
+                                        CoglPixelFormat internal_format,
+                                        CoglError **error)
+{
+  CoglTextureLoader *loader;
+
+  _COGL_RETURN_VAL_IF_FAIL (cogl_is_bitmap (bmp), NULL);
+
+  loader = _cogl_texture_create_loader ();
+  loader->src_type = COGL_TEXTURE_SOURCE_TYPE_BITMAP;
+  loader->src.bitmap.bitmap = cogl_object_ref (bmp);
+  loader->src.bitmap.can_convert_in_place = FALSE; /* TODO add api for this */
+
+  return _cogl_texture_rectangle_create_base (_cogl_bitmap_get_context (bmp),
+                                              cogl_bitmap_get_width (bmp),
+                                              cogl_bitmap_get_height (bmp),
+                                              internal_format,
+                                              loader);
+}
+
+CoglTextureRectangle *
+cogl_texture_rectangle_new_from_foreign (CoglContext *ctx,
+                                         unsigned int gl_handle,
+                                         int width,
+                                         int height,
+                                         CoglPixelFormat format,
+                                         CoglError **error)
+{
+  CoglTextureLoader *loader;
+
+  /* NOTE: width, height and internal format are not queriable in
+   * GLES, hence such a function prototype. Also in the case of full
+   * opengl the user may be creating a Cogl texture for a
+   * texture_from_pixmap object where glTexImage2D may not have been
+   * called and the texture_from_pixmap spec doesn't clarify that it
+   * is reliable to query back the size from OpenGL.
+   */
+
+  /* Assert that it is a valid GL texture object */
+  _COGL_RETURN_VAL_IF_FAIL (ctx->glIsTexture (gl_handle), NULL);
+
+  /* Validate width and height */
+  _COGL_RETURN_VAL_IF_FAIL (width > 0 && height > 0, NULL);
+
+  loader = _cogl_texture_create_loader ();
+  loader->src_type = COGL_TEXTURE_SOURCE_TYPE_GL_FOREIGN;
+  loader->src.gl_foreign.gl_handle = gl_handle;
+  loader->src.gl_foreign.width = width;
+  loader->src.gl_foreign.height = height;
+  loader->src.gl_foreign.format = format;
+
+  return _cogl_texture_rectangle_create_base (ctx, width, height,
+                                              format, loader);
 }
 
 static int

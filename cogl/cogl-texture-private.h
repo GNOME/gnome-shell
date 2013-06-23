@@ -31,6 +31,10 @@
 #include "cogl-meta-texture.h"
 #include "cogl-framebuffer.h"
 
+#ifdef COGL_HAS_EGL_SUPPORT
+#include "cogl-egl-defines.h"
+#endif
+
 typedef struct _CoglTextureVtable     CoglTextureVtable;
 
 /* Encodes three possibiloities result of transforming a quad */
@@ -139,15 +143,62 @@ struct _CoglTextureVtable
                             CoglBool value);
 };
 
+typedef enum _CoglTextureSoureType {
+  COGL_TEXTURE_SOURCE_TYPE_SIZED = 1,
+  COGL_TEXTURE_SOURCE_TYPE_BITMAP,
+  COGL_TEXTURE_SOURCE_TYPE_EGL_IMAGE,
+  COGL_TEXTURE_SOURCE_TYPE_GL_FOREIGN
+} CoglTextureSourceType;
+
+typedef struct _CoglTextureLoader
+{
+  CoglTextureSourceType src_type;
+  union {
+    struct {
+      int width;
+      int height;
+      int depth; /* for 3d textures */
+    } sized;
+    struct {
+      CoglBitmap *bitmap;
+      int height; /* for 3d textures */
+      int depth; /* for 3d textures */
+      CoglBool can_convert_in_place;
+    } bitmap;
+#if defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base)
+    struct {
+      EGLImageKHR image;
+      int width;
+      int height;
+      CoglPixelFormat format;
+    } egl_image;
+#endif
+    struct {
+      int width;
+      int height;
+      unsigned int gl_handle;
+      CoglPixelFormat format;
+    } gl_foreign;
+  } src;
+} CoglTextureLoader;
+
 struct _CoglTexture
 {
   CoglObject _parent;
   CoglContext *context;
+  CoglTextureLoader *loader;
   GList *framebuffers;
   int max_level;
   int width;
   int height;
   CoglBool allocated;
+
+  /*
+   * Internal format
+   */
+  CoglTextureComponents components;
+  unsigned int premultiplied:1;
+
   const CoglTextureVtable *vtable;
 };
 
@@ -183,6 +234,8 @@ _cogl_texture_init (CoglTexture *texture,
                     CoglContext *ctx,
                     int width,
                     int height,
+                    CoglPixelFormat internal_format,
+                    CoglTextureLoader *loader,
                     const CoglTextureVtable *vtable);
 
 void
@@ -220,12 +273,38 @@ _cogl_texture_pre_paint (CoglTexture *texture, CoglTexturePrePaintFlags flags);
 void
 _cogl_texture_ensure_non_quad_rendering (CoglTexture *texture);
 
-/* Utility function to determine which pixel format to use when
-   dst_format is COGL_PIXEL_FORMAT_ANY. If dst_format is not ANY then
-   it will just be returned directly */
+/*
+ * This determines a CoglPixelFormat according to texture::components
+ * and texture::premultiplied (i.e. the user required components and
+ * whether the texture should be considered premultiplied)
+ *
+ * A reference/source format can be given (or COGL_PIXEL_FORMAT_ANY)
+ * and wherever possible this function tries to simply return the
+ * given source format if its compatible with the required components.
+ *
+ * Texture backends can call this when allocating a texture to know
+ * how to convert a source image in preparation for uploading.
+ */
 CoglPixelFormat
-_cogl_texture_determine_internal_format (CoglPixelFormat src_format,
-                                         CoglPixelFormat dst_format);
+_cogl_texture_determine_internal_format (CoglTexture *texture,
+                                         CoglPixelFormat src_format);
+
+/* This is called by texture backends when they have successfully
+ * allocated a texture.
+ *
+ * Most texture backends currently track the internal layout of
+ * textures using a CoglPixelFormat which will be finalized when a
+ * texture is allocated. At this point we need to update
+ * texture::components and texture::premultiplied according to the
+ * determined layout.
+ *
+ * XXX: Going forward we should probably aim to stop using
+ * CoglPixelFormat at all for tracking the internal layout of
+ * textures.
+ */
+void
+_cogl_texture_set_internal_format (CoglTexture *texture,
+                                   CoglPixelFormat internal_format);
 
 CoglBool
 _cogl_texture_is_foreign (CoglTexture *texture);
@@ -306,9 +385,14 @@ _cogl_texture_get_level_size (CoglTexture *texture,
 
 void
 _cogl_texture_set_allocated (CoglTexture *texture,
-                             CoglBool allocated);
+                             CoglPixelFormat internal_format,
+                             int width,
+                             int height);
 
 CoglPixelFormat
 _cogl_texture_get_format (CoglTexture *texture);
+
+CoglTextureLoader *
+_cogl_texture_create_loader (void);
 
 #endif /* __COGL_TEXTURE_PRIVATE_H */

@@ -37,7 +37,7 @@ struct _CoglAtlasTexture
   /* The format that the texture is in. This isn't necessarily the
      same format as the atlas texture because we can store
      pre-multiplied and non-pre-multiplied textures together */
-  CoglPixelFormat       format;
+  CoglPixelFormat       internal_format;
 
   /* The rectangle that was used to add this texture to the
      atlas. This includes the 1-pixel border */

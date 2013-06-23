@@ -49,6 +49,10 @@ COGL_BEGIN_DECLS
  * This can be used for integrating Cogl with software using OpenGL
  * directly.
  *
+ * The texture is still configurable until it has been allocated so
+ * for example you can declare whether the texture is premultiplied
+ * with cogl_texture_set_premultiplied().
+ *
  * <note>The results are undefined for passing an invalid @gl_handle
  * or if @width or @height don't have the correct texture
  * geometry.</note>

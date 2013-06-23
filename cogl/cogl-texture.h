@@ -256,6 +256,96 @@ cogl_texture_new_from_bitmap (CoglBitmap *bitmap,
 CoglBool
 cogl_is_texture (void *object);
 
+typedef enum _CoglTextureComponents
+{
+  COGL_TEXTURE_COMPONENTS_A = 1,
+  COGL_TEXTURE_COMPONENTS_RGB,
+  COGL_TEXTURE_COMPONENTS_RGBA,
+  COGL_TEXTURE_COMPONENTS_DEPTH
+} CoglTextureComponents;
+
+/**
+ * cogl_texture_set_components:
+ * @texture: a #CoglTexture pointer.
+ *
+ * Affects the internal storage format for this texture by
+ * determinging what components will be required for sampling later.
+ *
+ * This api affects how data is uploaded to the GPU since unused
+ * components can potentially be discarded from source data.
+ *
+ * By default the required components are automatically determined
+ * using the format of the source data that is first uploaded to
+ * the given @texture.
+ */
+void
+cogl_texture_set_components (CoglTexture *texture,
+                             CoglTextureComponents components);
+
+/**
+ * cogl_texture_get_components:
+ * @texture: a #CoglTexture pointer.
+ *
+ * Queries what components the given @texture stores internally as set
+ * via cogl_texture_set_components().
+ *
+ * By default the required components are automatically determined
+ * using the format of the source data that is first uploaded to
+ * the given @texture.
+ */
+CoglBool
+cogl_texture_get_components (CoglTexture *texture);
+
+/**
+ * cogl_texture_set_premultiplied:
+ * @texture: a #CoglTexture pointer.
+ * @premultiplied: Whether any internally stored red, green or blue
+ *                 components are pre-multiplied by an alpha
+ *                 component.
+ *
+ * Affects the internal storage format for this texture by determining
+ * whether red, green and blue color components should be stored as
+ * pre-multiplied alpha values.
+ *
+ * This api affects how data is uploaded to the GPU since Cogl will
+ * convert source data to have premultiplied or unpremultiplied
+ * components according to this state.
+ *
+ * For example if you create a texture via
+ * cogl_texture_2d_new_with_size() and then upload data via
+ * cogl_texture_set_data() passing a source format of
+ * %COGL_PIXEL_FORMAT_RGBA_8888 then Cogl will internally multiply the
+ * red, green and blue components of the source data by the alpha
+ * component, for each pixel so that the internally stored data has
+ * pre-multiplied alpha components. If you instead upload data that
+ * already has pre-multiplied components by passing
+ * %COGL_PIXEL_FORMAT_RGBA_8888_PRE as the source format to
+ * cogl_texture_set_data() then the data can be uploaded without being
+ * converted.
+ *
+ * By default the @premultipled state is @TRUE.
+ */
+void
+cogl_texture_set_premultiplied (CoglTexture *texture,
+                                CoglBool premultiplied);
+
+/**
+ * cogl_texture_get_premultiplied:
+ * @texture: a #CoglTexture pointer.
+ *
+ * Queries the pre-multiplied alpha status for internally stored red,
+ * green and blue components for the given @texture as set by
+ * cogl_texture_set_premultiplied().
+ *
+ * By default the pre-multipled state is @TRUE.
+ *
+ * Return value: %TRUE if red, green and blue components are
+ *               internally stored pre-multiplied by the alpha
+ *               value or %FALSE if not.
+ */
+CoglBool
+cogl_texture_get_premultiplied (CoglTexture *texture);
+
 /**
  * cogl_texture_get_width:
  * @texture: a #CoglTexture pointer.

@@ -62,36 +62,6 @@ _cogl_texture_2d_nop_allocate (CoglTexture *tex,
   return TRUE;
 }
 
-CoglTexture2D *
-_cogl_texture_2d_nop_new_from_bitmap (CoglBitmap *bmp,
-                                      CoglPixelFormat internal_format,
-                                      CoglBool can_convert_in_place,
-                                      CoglError **error)
-{
-  return _cogl_texture_2d_create_base (_cogl_bitmap_get_context (bmp),
-                                       cogl_bitmap_get_width (bmp),
-                                       cogl_bitmap_get_height (bmp),
-                                       internal_format);
-}
-
-#if defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base)
-CoglTexture2D *
-_cogl_egl_texture_2d_nop_new_from_image (CoglContext *ctx,
-                                         int width,
-                                         int height,
-                                         CoglPixelFormat format,
-                                         EGLImageKHR image,
-                                         CoglError **error)
-{
-  _cogl_set_error (error,
-                   COGL_SYSTEM_ERROR,
-                   COGL_SYSTEM_ERROR_UNSUPPORTED,
-                   "Creating 2D textures from an EGLImage isn't "
-                   "supported by the NOP backend");
-  return NULL;
-}
-#endif
-
 void
 _cogl_texture_2d_nop_flush_legacy_texobj_filters (CoglTexture *tex,
                                                   GLenum min_filter,

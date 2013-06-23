@@ -78,6 +78,11 @@ typedef struct _CoglAtlasTexture CoglAtlasTexture;
  * allocate the underlying storage or let Cogl automatically allocate
  * storage lazily.
  *
+ * The texture is still configurable until it has been allocated so
+ * for example you can influence the internal format of the texture
+ * using cogl_texture_set_components() and
+ * cogl_texture_set_premultiplied().
+ *
  * <note>This call can fail if Cogl considers the given
  * @internal_format incompatible with the format of its internal
  * atlases.</note>
@@ -109,7 +114,17 @@ cogl_atlas_texture_new_with_size (CoglContext *ctx,
  * represents a sub-region within one of Cogl's shared texture
  * atlases.
  *
- * <note>This call can fail if Cogl considers the given
+ * The storage for the texture is not allocated before this function
+ * returns. You can call cogl_texture_allocate() to explicitly
+ * allocate the underlying storage or let Cogl automatically allocate
+ * storage lazily.
+ *
+ * The texture is still configurable until it has been allocated so
+ * for example you can influence the internal format of the texture
+ * using cogl_texture_set_components() and
+ * cogl_texture_set_premultiplied().
+ *
+ * <note>Allocation can fail later if Cogl considers the given
  * @internal_format incompatible with the format of its internal
  * atlases.</note>
  *
@@ -152,7 +167,18 @@ cogl_atlas_texture_new_from_file (CoglContext *ctx,
  * memory. A #CoglAtlasTexture represents a sub-region within one of
  * Cogl's shared texture atlases.
  *
- * <note>This call can fail if Cogl considers the given
+ * <note>This api will always immediately allocate GPU memory for the
+ * texture and upload the given data so that the @data pointer does
+ * not need to remain valid once this function returns. This means it
+ * is not possible to configure the texture before it is allocated. If
+ * you do need to configure the texture before allocation (to specify
+ * constraints on the internal format for example) then you can
+ * instead create a #CoglBitmap for your data and use
+ * cogl_atlas_texture_new_from_bitmap() or use
+ * cogl_atlas_texture_new_with_size() and then upload data using
+ * cogl_texture_set_data()</note>
+ *
+ * <note>Allocation can fail if Cogl considers the given
  * @internal_format incompatible with the format of its internal
  * atlases.</note>
  *
@@ -192,7 +218,18 @@ cogl_atlas_texture_new_from_data (CoglContext *ctx,
  * @bitmap. A #CoglAtlasTexture represents a sub-region within one of
  * Cogl's shared texture atlases.
  *
- * <note>This call can fail if Cogl considers the given
+ * The storage for the texture is not allocated before this function
+ * returns. You can call cogl_texture_allocate() to explicitly
+ * allocate the underlying storage or preferably let Cogl
+ * automatically allocate storage lazily when it may know more about
+ * how the texture is being used and can optimize how it is allocated.
+ *
+ * The texture is still configurable until it has been allocated so
+ * for example you can influence the internal format of the texture
+ * using cogl_texture_set_components() and
+ * cogl_texture_set_premultiplied().
+ *
+ * <note>Allocation can fail if Cogl considers the given
  * @internal_format incompatible with the format of its internal
  * atlases.</note>
  *

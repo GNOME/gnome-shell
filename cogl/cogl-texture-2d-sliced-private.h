@@ -34,6 +34,7 @@
 struct _CoglTexture2DSliced
 {
   CoglTexture _parent;
+
   GArray *slice_x_spans;
   GArray *slice_y_spans;
   GArray *slice_textures;

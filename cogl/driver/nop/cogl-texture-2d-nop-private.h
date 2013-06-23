@@ -48,22 +48,6 @@ CoglBool
 _cogl_texture_2d_nop_allocate (CoglTexture *tex,
                                CoglError **error);
 
-CoglTexture2D *
-_cogl_texture_2d_nop_new_from_bitmap (CoglBitmap *bmp,
-                                      CoglPixelFormat internal_format,
-                                      CoglBool can_convert_in_place,
-                                      CoglError **error);
-
-#if defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base)
-CoglTexture2D *
-_cogl_egl_texture_2d_nop_new_from_image (CoglContext *ctx,
-                                         int width,
-                                         int height,
-                                         CoglPixelFormat format,
-                                         EGLImageKHR image,
-                                         CoglError **error);
-#endif
-
 void
 _cogl_texture_2d_nop_flush_legacy_texobj_filters (CoglTexture *tex,
                                                   GLenum min_filter,

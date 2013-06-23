@@ -69,10 +69,6 @@ _cogl_driver_nop =
     _cogl_texture_2d_nop_can_create,
     _cogl_texture_2d_nop_init,
     _cogl_texture_2d_nop_allocate,
-    _cogl_texture_2d_nop_new_from_bitmap,
-#if defined (COGL_HAS_EGL_SUPPORT) && defined (EGL_KHR_image_base)
-    _cogl_egl_texture_2d_nop_new_from_image,
-#endif
     _cogl_texture_2d_nop_copy_from_framebuffer,
     _cogl_texture_2d_nop_get_gl_handle,
     _cogl_texture_2d_nop_generate_mipmap,
