@@ -2216,6 +2216,65 @@ meta_screen_get_current_monitor_info (MetaScreen *screen)
     return &screen->monitor_infos[monitor_index];
 }
 
+const MetaMonitorInfo*
+meta_screen_get_current_monitor_info_for_pos (MetaScreen *screen,
+                                              int x,
+                                              int y)
+{
+    int monitor_index;
+    monitor_index = meta_screen_get_current_monitor_for_pos (screen, x, y);
+    return &screen->monitor_infos[monitor_index];
+}
+
+
+/**
+ * meta_screen_get_current_monitor_for_pos:
+ * @screen: a #MetaScreen
+ * @x: The x coordinate
+ * @y: The y coordinate
+ *
+ * Gets the index of the monitor that contains the passed coordinates.
+ *
+ * Return value: a monitor index
+ */
+int
+meta_screen_get_current_monitor_for_pos (MetaScreen *screen,
+                                         int x,
+                                         int y)
+{
+  if (screen->n_monitor_infos == 1)
+    return 0;
+  else if (screen->display->monitor_cache_invalidated)
+    {
+      int i;
+      MetaRectangle pointer_position;
+      pointer_position.x = x;
+      pointer_position.y = y;
+      pointer_position.width = pointer_position.height = 1;
+
+      screen->display->monitor_cache_invalidated = FALSE;
+      screen->last_monitor_index = 0;
+
+      for (i = 0; i < screen->n_monitor_infos; i++)
+        {
+          if (meta_rectangle_contains_rect (&screen->monitor_infos[i].rect,
+                                            &pointer_position))
+            {
+              screen->last_monitor_index = i;
+              break;
+            }
+        }
+
+      meta_topic (META_DEBUG_XINERAMA,
+                  "Rechecked current monitor, now %d\n",
+                  screen->last_monitor_index);
+
+    }
+
+    return screen->last_monitor_index;
+}
+
+
 /**
  * meta_screen_get_current_monitor:
  * @screen: a #MetaScreen
@@ -2241,11 +2300,7 @@ meta_screen_get_current_monitor (MetaScreen *screen)
       XIButtonState buttons;
       XIModifierState mods;
       XIGroupState group;
-      int i;
-      MetaRectangle pointer_position;
 
-      screen->display->monitor_cache_invalidated = FALSE;
-      
       XIQueryPointer (screen->display->xdisplay,
                       META_VIRTUAL_CORE_POINTER_ID,
                       screen->xroot,
@@ -2260,24 +2315,7 @@ meta_screen_get_current_monitor (MetaScreen *screen)
                       &group);
       free (buttons.mask);
 
-      pointer_position.x = root_x_return;
-      pointer_position.y = root_y_return;
-      pointer_position.width = pointer_position.height = 1;
-
-      screen->last_monitor_index = 0;
-      for (i = 0; i < screen->n_monitor_infos; i++)
-        {
-          if (meta_rectangle_contains_rect (&screen->monitor_infos[i].rect,
-                                            &pointer_position))
-            {
-              screen->last_monitor_index = i;
-              break;
-            }
-        }
-      
-      meta_topic (META_DEBUG_XINERAMA,
-                  "Rechecked current monitor, now %d\n",
-                  screen->last_monitor_index);
+      meta_screen_get_current_monitor_for_pos (screen, root_x_return, root_y_return);
     }
 
   return screen->last_monitor_index;
