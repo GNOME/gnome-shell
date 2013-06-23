@@ -655,15 +655,8 @@ cogl_atlas_texture_new_with_size (CoglContext *ctx,
   CoglAtlasTexture *atlas_tex;
 
   /* We can't atlas zero-sized textures because it breaks the atlas
-     data structure */
-  if (width < 1 || height < 1)
-    {
-      _cogl_set_error (error,
-                       COGL_TEXTURE_ERROR,
-                       COGL_TEXTURE_ERROR_SIZE,
-                       "1x1 atlas textures not supported");
-      return NULL;
-    }
+   * data structure */
+  _COGL_RETURN_VAL_IF_FAIL (width > 0 && height > 0, NULL);
 
   /* If we can't use FBOs then it will be too slow to migrate textures
      and we shouldn't use the atlas */
