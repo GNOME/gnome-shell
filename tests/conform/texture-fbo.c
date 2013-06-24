@@ -102,16 +102,13 @@ validate_part (TestState *state,
           /* Otherwise it should be the color for this division */
           correct_color = corner_colors + (y * SOURCE_DIVISIONS_X) + x;
 
-        if (pixels == NULL ||
-            pixels[0] != correct_color->red ||
-            pixels[1] != correct_color->green ||
-            pixels[2] != correct_color->blue)
-          pass = FALSE;
+        g_assert (pixels != NULL);
+        g_assert_cmpint (pixels[0], ==, correct_color->red);
+        g_assert_cmpint (pixels[1], ==, correct_color->green);
+        g_assert_cmpint (pixels[2], ==, correct_color->blue);
 
         g_free (pixels);
       }
-
-  return pass;
 }
 
 static void
@@ -121,24 +118,24 @@ validate_result (TestState *state)
 
   if (g_test_verbose ())
     g_print ("Testing onscreen clone...\n");
-  g_assert (validate_part (state, SOURCE_SIZE, ypos * SOURCE_SIZE, 0));
+  validate_part (state, SOURCE_SIZE, ypos * SOURCE_SIZE, 0);
   ypos++;
 
 #if 0 /* this doesn't work */
   if (g_test_verbose ())
     g_print ("Testing offscreen clone...\n");
-  g_assert (validate_part (state, SOURCE_SIZE, ypos * SOURCE_SIZE, 0));
+  validate_part (state, SOURCE_SIZE, ypos * SOURCE_SIZE, 0);
 #endif
   ypos++;
 
   if (g_test_verbose ())
     g_print ("Testing onscreen clone with rectangular clip...\n");
-  g_assert (validate_part (state, SOURCE_SIZE, ypos * SOURCE_SIZE, ~1));
+  validate_part (state, SOURCE_SIZE, ypos * SOURCE_SIZE, ~1);
   ypos++;
 
   if (g_test_verbose ())
     g_print ("Testing onscreen clone with path clip...\n");
-  g_assert (validate_part (state, SOURCE_SIZE, ypos * SOURCE_SIZE, 1));
+  validate_part (state, SOURCE_SIZE, ypos * SOURCE_SIZE, 1);
   ypos++;
 
   /* Comment this out if you want visual feedback of what this test
