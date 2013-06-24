@@ -207,6 +207,7 @@ const SlidingControl = new Lang.Class({
 
     slideIn: function() {
         this.visible = true;
+        this._updateTranslation();
         // we will update slideX and the translation from pageEmpty
     },
 
@@ -246,6 +247,7 @@ const ThumbnailsSlider = new Lang.Class({
         this.actor.add_actor(this._thumbnailsBox.actor);
 
         Main.layoutManager.connect('monitors-changed', Lang.bind(this, this.updateSlide));
+        Main.overview.connect('hiding', Lang.bind(this, this.slideOut));
         this.actor.connect('notify::hover', Lang.bind(this, this.updateSlide));
         this._thumbnailsBox.actor.bind_property('visible', this.actor, 'visible', GObject.BindingFlags.SYNC_CREATE);
     },
@@ -271,6 +273,13 @@ const ThumbnailsSlider = new Lang.Class({
         }
 
         return alwaysZoomOut;
+    },
+
+    _onOverviewShowing: function() {
+        this.visible = true;
+        this.layout.slideX = this.getSlide();
+        this.actor.translation_x = this._getTranslation();
+        this.slideIn();
     },
 
     getNonExpandedWidth: function() {
@@ -323,6 +332,7 @@ const DashSlider = new Lang.Class({
         this.actor.add_actor(this._dash.actor);
 
         this._dash.connect('icon-size-changed', Lang.bind(this, this.updateSlide));
+        Main.overview.connect('hiding', Lang.bind(this, this.slideOut));
     },
 
     getSlide: function() {
@@ -330,6 +340,13 @@ const DashSlider = new Lang.Class({
             return 1;
         else
             return 0;
+    },
+
+    _onOverviewShowing: function() {
+        this.visible = true;
+        this.layout.slideX = this.getSlide();
+        this.actor.translation_x = this._getTranslation();
+        this.slideIn();
     },
 
     _onWindowDragBegin: function() {
