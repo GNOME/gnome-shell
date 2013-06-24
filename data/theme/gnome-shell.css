@@ -2350,43 +2350,17 @@ StScrollBar StButton#vhandle:active {
     width: 15em;
 }
 
-.login-dialog-session-list,
-.login-dialog-session-list-item {
-    color: #babdb6;
-}
-
-.login-dialog-session-list-button:focus,
-.login-dialog-session-list-button:active,
-.login-dialog-session-list-button:hover,
-.login-dialog-session-list-item:focus,
-.login-dialog-session-list-item:hover {
-    color: white;
+.login-dialog-session-list-button StIcon {
+    icon-size: 1.25em;
 }
 
 .login-dialog-session-list-button {
-    padding: 4px;
+    color: #8b8b8b;
 }
 
-.login-dialog-session-list-scroll-view {
-    padding: 6px;
-}
-
-.login-dialog-session-list-item {
-    padding-bottom: 6px;
-}
-
-.login-dialog-session-list-triangle {
-    padding-right: 6px;
-}
-
-.login-dialog-session-list-item-box {
-    padding-left: 6px;
-    spacing: 6px;
-}
-
-.login-dialog-session-list-item-dot {
-    width: 10px;
-    height: 10px;
+.login-dialog-session-list-button:hover,
+.login-dialog-session-list-button:active {
+    color: white;
 }
 
 .login-dialog-logo-bin {
