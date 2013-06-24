@@ -26,3 +26,8 @@ png_files = \
 	$(NULL)
 
 EXTRA_DIST = $(json_files) $(png_files) clutter-2.0.suppressions
+
+if ENABLE_INSTALLED_TESTS
+insttestdir = $(libexecdir)/installed-tests/$(PACKAGE)/data
+insttest_DATA = $(json_files) $(png_files)
+endif

@@ -286,5 +286,30 @@ DISTCLEANFILES += \
 
 # we override the clean-generic target to clean up the wrappers so
 # we cannot use CLEANFILES
-clean-generic: clean-wrappers
+clean-generic: clean-wrappers clean-tests
 	$(QUIET_RM)rm -f $(XML_REPORTS) $(HTML_REPORTS)
+
+if ENABLE_INSTALLED_TESTS
+# installed tests
+insttestdir = $(libexecdir)/installed-tests/$(PACKAGE)/conform
+insttest_PROGRAMS = test-conformance
+
+testmetadir = $(datadir)/installed-tests/$(PACKAGE)
+testmeta_DATA = $(wildcard *.test)
+
+BUILT_SOURCES += tests
+endif
+
+.PHONY: tests clean-tests
+
+tests: stamp-test-conformance
+	@for i in `cat unit-tests`; do \
+		unit=`basename $$i | sed -e s/_/-/g`; \
+		echo "  GEN      $$unit"; \
+		echo "[Test]" > $$unit.test; \
+		echo "Type=session" >> $$unit.test; \
+		echo "Exec=$(libexecdir)/installed-tests/$(PACKAGE)/conform/test-conformance -p $$i" >> $$unit.test; \
+	done
+
+clean-tests:
+	$(QUIET_RM) rm -f *.test
