@@ -2312,6 +2312,7 @@ StScrollBar StButton#vhandle:active {
     font-weight: bold;
     color: #666666;
     padding-top: 1em;
+    padding-left: 2px;
 }
 
 .login-dialog-not-listed-button:focus .login-dialog-not-listed-label,
