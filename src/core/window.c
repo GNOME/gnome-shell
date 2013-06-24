@@ -145,6 +145,8 @@ static void meta_window_move_between_rects (MetaWindow          *window,
 static void unmaximize_window_before_freeing (MetaWindow        *window);
 static void unminimize_window_and_all_transient_parents (MetaWindow *window);
 
+static void meta_window_update_monitor (MetaWindow *window);
+
 /* Idle handlers for the three queues (run with meta_later_add()). The
  * "data" parameter in each case will be a GINT_TO_POINTER of the
  * index into the queue arrays to use.
@@ -4766,6 +4768,12 @@ meta_window_update_for_monitors_changed (MetaWindow *window)
 
   if (window->type == META_WINDOW_DESKTOP)
     return;
+
+  if (window->override_redirect)
+    {
+      meta_window_update_monitor (window);
+      return;
+    }
 
   old = window->monitor;
 

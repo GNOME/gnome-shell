@@ -3039,7 +3039,7 @@ meta_screen_resize (MetaScreen *screen,
 
   /* Fix up monitor for all windows on this screen */
   windows = meta_display_list_windows (screen->display,
-                                       META_LIST_DEFAULT);
+                                       META_LIST_INCLUDE_OVERRIDE_REDIRECT);
   for (tmp = windows; tmp != NULL; tmp = tmp->next)
     {
       MetaWindow *window = tmp->data;
