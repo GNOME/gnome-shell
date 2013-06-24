@@ -191,6 +191,12 @@ AC_ARG_ENABLE([Bsymbolic],
 AS_IF([test "x$enable_Bsymbolic" = "xyes"], [CLUTTER_LINK_FLAGS=-Wl[,]-Bsymbolic-functions])
 AC_SUBST(CLUTTER_LINK_FLAGS)
 
+AC_ARG_ENABLE(installed_tests,
+              AS_HELP_STRING([--enable-installed-tests],
+                             [Install test programs (default: no)]),,
+              [enable_installed_tests=no])
+AM_CONDITIONAL(ENABLE_INSTALLED_TESTS, test x$enable_installed_tests = xyes)
+
 AC_CACHE_SAVE
 
 dnl ========================================================================

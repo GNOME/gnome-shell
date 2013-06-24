@@ -91,7 +91,7 @@ static TestConformSharedState *shared_state = NULL;
 gchar *
 clutter_test_get_data_file (const gchar *filename)
 {
-  return g_build_filename (TESTS_DATADIR, filename, NULL);
+  return g_test_build_filename (G_TEST_DIST, "..", "data", filename, NULL);
 }
 
 static void
