@@ -158,11 +158,11 @@ const OsdWindow = new Lang.Class({
             return;
 
         Mainloop.source_remove(this._hideTimeoutId);
-        this._hideTimeoutId = 0;
         this._hide();
     },
 
     _hide: function() {
+        this._hideTimeoutId = 0;
         Tweener.addTween(this.actor,
                          { opacity: 0,
                            time: FADE_TIME,
