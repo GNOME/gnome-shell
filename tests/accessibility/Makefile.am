@@ -39,10 +39,10 @@ insttest_PROGRAMS = \
 	cally-clone-example
 
 %.test: %$(EXEEXT) Makefile
-        $(AM_V_GEN) (echo '[Test]' > $@.tmp; \
-        echo 'Type=session' >> $@.tmp; \
-        echo 'Exec=$(insttestdir)/$<' >> $@.tmp; \
-        mv $@.tmp $@)
+	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
+	echo 'Type=session' >> $@.tmp; \
+	echo 'Exec=$(insttestdir)/$<' >> $@.tmp; \
+	mv $@.tmp $@)
 
 testmetadir = $(datadir)/installed-tests/$(PACKAGE)
 testmeta_DATA = $(insttest_PROGRAMS:=.test)
