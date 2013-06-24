@@ -153,15 +153,14 @@ const DateMenuButton = new Lang.Class({
         this._openClocksItem.actor.visible = visible &&
             (this._getClockApp() != null);
         this._separator.visible = visible;
+        this._eventList.actor.visible = visible;
         if (visible) {
-          let alignment = 0.25;
-          if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
-            alignment = 1.0 - alignment;
-          this.menu._arrowAlignment = alignment;
-          this._eventList.actor.get_parent().show();
+            let alignment = 0.25;
+            if (Clutter.get_default_text_direction() == Clutter.TextDirection.RTL)
+                alignment = 1.0 - alignment;
+            this.menu._arrowAlignment = alignment;
         } else {
-          this.menu._arrowAlignment = 0.5;
-          this._eventList.actor.get_parent().hide();
+            this.menu._arrowAlignment = 0.5;
         }
     },
 

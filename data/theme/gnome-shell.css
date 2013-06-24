@@ -1154,11 +1154,6 @@ StScrollBar StButton#vhandle:active {
 
 /* Calendar popup */
 
-#calendarArea {
-    /* this is the total width of the popup */
-    width: 720px;
-}
-
 .calendar-vertical-separator {
     -stipple-width: 1px;
     -stipple-color: #505050;
