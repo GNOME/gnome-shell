@@ -34,10 +34,12 @@ const St = imports.gi.St;
 
 const Animation = imports.ui.animation;
 const Batch = imports.gdm.batch;
+const BoxPointer = imports.ui.boxpointer;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const GdmUtil = imports.gdm.util;
 const Layout = imports.ui.layout;
 const Main = imports.ui.main;
+const PopupMenu = imports.ui.popupMenu;
 const Realmd = imports.gdm.realmd;
 const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;
@@ -288,188 +290,106 @@ const UserList = new Lang.Class({
 });
 Signals.addSignalMethods(UserList.prototype);
 
-const SessionListItem = new Lang.Class({
-    Name: 'SessionListItem',
-
-    _init: function(id, name) {
-        this.id = id;
-
-        this.actor = new St.Button({ style_class: 'login-dialog-session-list-item',
-                                     button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
-                                     can_focus: true,
-                                     reactive: true,
-                                     x_fill: true,
-                                     x_align: St.Align.START });
-
-        this._box = new St.BoxLayout({ style_class: 'login-dialog-session-list-item-box' });
-
-        this.actor.add_actor(this._box);
-        this.actor.connect('clicked', Lang.bind(this, this._onClicked));
-
-        this._dot = new St.DrawingArea({ style_class: 'login-dialog-session-list-item-dot' });
-        this._dot.connect('repaint', Lang.bind(this, this._onRepaintDot));
-        this._box.add_actor(this._dot);
-        this.setShowDot(false);
-
-        let label = new St.Label({ style_class: 'login-dialog-session-list-item-label',
-                                   text: name });
-        this.actor.label_actor = label;
-
-        this._box.add_actor(label);
-    },
-
-    setShowDot: function(show) {
-        if (show)
-            this._dot.opacity = 255;
-        else
-            this._dot.opacity = 0;
-    },
-
-    _onRepaintDot: function(area) {
-        let cr = area.get_context();
-        let [width, height] = area.get_surface_size();
-        let color = area.get_theme_node().get_foreground_color();
-
-        cr.setSourceRGBA (color.red / 255,
-                          color.green / 255,
-                          color.blue / 255,
-                          color.alpha / 255);
-        cr.arc(width / 2, height / 2, width / 3, 0, 2 * Math.PI);
-        cr.fill();
-        cr.$dispose();
-    },
-
-    _onClicked: function() {
-        this.emit('activate');
-    }
-});
-Signals.addSignalMethods(SessionListItem.prototype);
-
-const SessionList = new Lang.Class({
-    Name: 'SessionList',
+const SessionMenuButton = new Lang.Class({
+    Name: 'SessionMenuButton',
 
     _init: function() {
-        this.actor = new St.Bin();
-
-        this._box = new St.BoxLayout({ style_class: 'login-dialog-session-list',
-                                       vertical: true});
-        this.actor.child = this._box;
-
+        let gearIcon = new St.Icon({ icon_name: 'emblem-system-symbolic' });
         this._button = new St.Button({ style_class: 'login-dialog-session-list-button',
-                                       button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+                                       reactive: true,
+                                       track_hover: true,
                                        can_focus: true,
-                                       x_fill: true,
-                                       y_fill: true });
-        let box = new St.BoxLayout();
-        this._button.add_actor(box);
+                                       accessible_name: _("Choose Session"),
+                                       accessible_role: Atk.Role.MENU,
+                                       child: gearIcon });
 
-        this._triangle = new St.Label({ style_class: 'login-dialog-session-list-triangle',
-                                        text: '\u25B8' });
-        box.add_actor(this._triangle);
+        this.actor = new St.Bin({ child: this._button });
 
-        let label = new St.Label({ style_class: 'login-dialog-session-list-label',
-                                   text: _("Session…") });
-        box.add_actor(label);
+        this._menu = new PopupMenu.PopupMenu(this._button, 0, St.Side.TOP);
+        Main.uiGroup.add_actor(this._menu.actor);
+        this._menu.actor.hide();
 
-        this._button.connect('clicked',
-                             Lang.bind(this, this._onClicked));
-        this._box.add_actor(this._button);
-        this._scrollView = new St.ScrollView({ style_class: 'login-dialog-session-list-scroll-view'});
-        this._scrollView.set_policy(Gtk.PolicyType.NEVER,
-                                    Gtk.PolicyType.AUTOMATIC);
-        this._box.add_actor(this._scrollView);
-        this._itemList = new St.BoxLayout({ style_class: 'login-dialog-session-item-list',
-                                            vertical: true });
-        this._scrollView.add_actor(this._itemList);
-        this._scrollView.hide();
-        this.isOpen = false;
+        this._menu.connect('open-state-changed',
+                           Lang.bind(this, function(menu, isOpen) {
+                                if (isOpen)
+                                    this._button.add_style_pseudo_class('active');
+                                else
+                                    this._button.remove_style_pseudo_class('active');
+                           }));
+
+        let subtitle = new PopupMenu.PopupMenuItem(_("Session"), { style_class: 'popup-subtitle-menu-item',
+                                                                   reactive: false });
+        this._menu.addMenuItem(subtitle);
+
+        this._manager = new PopupMenu.PopupMenuManager({ actor: this._button });
+        this._manager.addMenu(this._menu);
+
+        this._button.connect('clicked', Lang.bind(this, function() {
+            this._menu.toggle();
+        }));
+
+        this._items = {};
+        this._activeSessionId = null;
         this._populate();
-    },
-
-    open: function() {
-        if (this.isOpen)
-            return;
-
-        this._button.add_style_pseudo_class('open');
-        this._scrollView.show();
-        this._triangle.set_text('\u25BE');
-
-        this.isOpen = true;
-    },
-
-    close: function() {
-        if (!this.isOpen)
-            return;
-
-        this._button.remove_style_pseudo_class('open');
-        this._scrollView.hide();
-        this._triangle.set_text('\u25B8');
-
-        this.isOpen = false;
-    },
-
-    _onClicked: function() {
-        if (!this.isOpen)
-            this.open();
-        else
-            this.close();
     },
 
     updateSensitivity: function(sensitive) {
         this._button.reactive = sensitive;
         this._button.can_focus = sensitive;
+        this._menu.close(BoxPointer.PopupAnimation.NONE);
+    },
 
-        for (let id in this._items)
-            this._items[id].actor.reactive = sensitive;
+    _updateOrnament: function() {
+        let itemIds = Object.keys(this._items);
+        for (let i = 0; i < itemIds.length; i++) {
+            if (itemIds[i] == this._activeSessionId)
+                this._items[itemIds[i]].setOrnament(PopupMenu.Ornament.DOT);
+            else
+                this._items[itemIds[i]].setOrnament(PopupMenu.Ornament.NONE);
+        }
     },
 
     setActiveSession: function(sessionId) {
          if (sessionId == this._activeSessionId)
              return;
 
-         if (this._activeSessionId)
-             this._items[this._activeSessionId].setShowDot(false);
-
-         this._items[sessionId].setShowDot(true);
          this._activeSessionId = sessionId;
+         this._updateOrnament();
 
          this.emit('session-activated', this._activeSessionId);
     },
 
-    _populate: function() {
-        this._itemList.destroy_all_children();
-        this._activeSessionId = null;
-        this._items = {};
+    close: function() {
+        this._menu.close();
+    },
 
+    _populate: function() {
         let ids = Gdm.get_session_ids();
         ids.sort();
 
         if (ids.length <= 1) {
-            this._box.hide();
             this._button.hide();
-        } else {
-            this._button.show();
-            this._box.show();
+            return;
         }
 
         for (let i = 0; i < ids.length; i++) {
             let [sessionName, sessionDescription] = Gdm.get_session_name_and_description(ids[i]);
 
-            let item = new SessionListItem(ids[i], sessionName);
-            this._itemList.add_actor(item.actor);
-            this._items[ids[i]] = item;
+            let id = ids[i];
+            let item = new PopupMenu.PopupMenuItem(sessionName);
+            this._menu.addMenuItem(item);
+            this._items[id] = item;
 
             if (!this._activeSessionId)
-                this.setActiveSession(ids[i]);
+                this.setActiveSession(id);
 
-            item.connect('activate',
-                         Lang.bind(this, function() {
-                             this.setActiveSession(item.id);
-                         }));
+            item.connect('activate', Lang.bind(this, function() {
+                this.setActiveSession(id);
+            }));
         }
     }
 });
-Signals.addSignalMethods(SessionList.prototype);
+Signals.addSignalMethods(SessionMenuButton.prototype);
 
 const LoginDialog = new Lang.Class({
     Name: 'LoginDialog',
@@ -585,17 +505,6 @@ const LoginDialog = new Lang.Class({
         this._promptLoginHint.hide();
         this._promptBox.add(this._promptLoginHint);
 
-        this._sessionList = new SessionList();
-        this._sessionList.connect('session-activated',
-                                  Lang.bind(this, function(list, sessionId) {
-                                                this._greeter.call_select_session_sync (sessionId, null);
-                                            }));
-
-        this._promptBox.add(this._sessionList.actor,
-                            { expand: true,
-                              x_fill: false,
-                              y_fill: true,
-                              x_align: St.Align.START });
         this._buttonBox = new St.BoxLayout({ style_class: 'modal-dialog-button-box',
                                              vertical: false });
         this._promptBox.add(this._buttonBox,
@@ -656,6 +565,11 @@ const LoginDialog = new Lang.Class({
                                    this._onUserListActivated(item);
                                }));
 
+        this._sessionMenuButton = new SessionMenuButton();
+        this._sessionMenuButton.connect('session-activated',
+                                        Lang.bind(this, function(button, sessionId) {
+                                                  this._greeter.call_select_session_sync (sessionId, null);
+                                                  }));
    },
 
     _updateDisableUserList: function() {
@@ -752,7 +666,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _onDefaultSessionChanged: function(client, sessionId) {
-        this._sessionList.setActiveSession(sessionId);
+        this._sessionMenuButton.setActiveSession(sessionId);
     },
 
     _showMessage: function(userVerifier, message, styleClass) {
@@ -784,7 +698,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _showPrompt: function(forSecret) {
-        this._sessionList.actor.hide();
+        this._sessionMenuButton.actor.hide();
         this._promptLabel.show();
         this._promptEntry.show();
         this._promptLoginHint.opacity = 0;
@@ -797,7 +711,7 @@ const LoginDialog = new Lang.Class({
                            transition: 'easeOutQuad' });
 
         if ((this._user && !this._user.is_logged_in()) || this._verifyingUser)
-            this._sessionList.actor.show();
+            this._sessionMenuButton.actor.show();
 
         this._promptEntry.grab_key_focus();
 
@@ -815,7 +729,7 @@ const LoginDialog = new Lang.Class({
 
     _prepareDialog: function(forSecret, hold) {
         this._buttonBox.visible = true;
-        this._buttonBox.destroy_all_children();
+        this._buttonBox.remove_all_children();
 
         if (!this._disableUserList || this._verifyingUser) {
             this._cancelButton = new St.Button({ style_class: 'modal-dialog-button',
@@ -844,6 +758,9 @@ const LoginDialog = new Lang.Class({
                             { expand: false,
                               x_align: St.Align.END });
 
+        this._buttonBox.add(this._sessionMenuButton.actor,
+                            { expand: false,
+                              x_align: St.Align.END });
         this._signInButton = new St.Button({ style_class: 'modal-dialog-button',
                                              button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
                                              reactive: true,
@@ -878,7 +795,7 @@ const LoginDialog = new Lang.Class({
     _updateSensitivity: function(sensitive) {
         this._promptEntry.reactive = sensitive;
         this._promptEntry.clutter_text.editable = sensitive;
-        this._sessionList.updateSensitivity(sensitive);
+        this._sessionMenuButton.updateSensitivity(sensitive);
         this._updateSignInButtonSensitivity(sensitive);
     },
 
@@ -890,8 +807,6 @@ const LoginDialog = new Lang.Class({
     },
 
     _hidePrompt: function() {
-        this._buttonBox.destroy_all_children();
-
         if (this._promptEntryTextChangedId > 0) {
             this._promptEntry.clutter_text.disconnect(this._promptEntryTextChangedId);
             this._promptEntryTextChangedId = 0;
@@ -911,10 +826,10 @@ const LoginDialog = new Lang.Class({
         this._updateSensitivity(true);
         this._promptEntry.set_text('');
 
-        this._sessionList.close();
+        this._sessionMenuButton.close();
         this._promptLoginHint.hide();
 
-        this._buttonBox.destroy_all_children();
+        this._buttonBox.remove_all_children();
         this._signInButton = null;
         this._cancelButton = null;
     },
