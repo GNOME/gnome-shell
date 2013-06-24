@@ -28,25 +28,4 @@ noinst_PROGRAMS =
 
 DISTCLEANFILES =
 
-if ENABLE_INSTALLED_TESTS
-# installed tests
-insttestdir = $(libexecdir)/installed-tests/$(PACKAGE)/accessibility
-insttest_PROGRAMS = \
-	cally-atkcomponent-example	\
-	cally-atkeditabletext-example   \
-	cally-atkevents-example		\
-	cally-atktext-example		\
-	cally-clone-example
-
-%.test: %$(EXEEXT) Makefile
-	$(AM_V_GEN) (echo '[Test]' > $@.tmp; \
-	echo 'Type=session' >> $@.tmp; \
-	echo 'Exec=$(insttestdir)/$<' >> $@.tmp; \
-	mv $@.tmp $@)
-
-testmetadir = $(datadir)/installed-tests/$(PACKAGE)
-testmeta_DATA = $(insttest_PROGRAMS:=.test)
-
-endif
-
 -include $(top_srcdir)/build/autotools/Makefile.am.gitignore
