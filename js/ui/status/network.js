@@ -1475,7 +1475,7 @@ const NMApplet = new Lang.Class({
             }
         }
 
-        this._mainConnection = activating || default_ip4 || default_ip6 || active_any || null;
+        this._mainConnection = default_ip4 || default_ip6 || active_any || activating || null;
 
         if (this._mainConnection) {
             let dev = this._mainConnection._primaryDevice;
