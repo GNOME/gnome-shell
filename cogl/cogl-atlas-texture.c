@@ -658,31 +658,7 @@ cogl_atlas_texture_new_with_size (CoglContext *ctx,
    * data structure */
   _COGL_RETURN_VAL_IF_FAIL (width > 0 && height > 0, NULL);
 
-  /* If we can't use FBOs then it will be too slow to migrate textures
-     and we shouldn't use the atlas */
-  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
-    {
-      _cogl_set_error (error,
-                       COGL_SYSTEM_ERROR,
-                       COGL_SYSTEM_ERROR_UNSUPPORTED,
-                       "Atlasing disabled because migrations "
-                       "would be too slow");
-      return NULL;
-    }
-
   COGL_NOTE (ATLAS, "Adding texture of size %ix%i", width, height);
-
-  /* If the texture is in a strange format then we won't use it */
-  if (!_cogl_atlas_texture_can_use_format (internal_format))
-    {
-      COGL_NOTE (ATLAS, "Texture can not be added because the "
-                 "format is unsupported");
-      _cogl_set_error (error,
-                       COGL_TEXTURE_ERROR,
-                       COGL_TEXTURE_ERROR_FORMAT,
-                       "Texture format unsuitable for atlasing");
-      return NULL;
-    }
 
   /* We need to allocate the texture now because we need the pointer
      to set as the data for the rectangle in the atlas */
@@ -712,6 +688,30 @@ _cogl_atlas_texture_allocate (CoglTexture *tex,
   CoglAtlasTexture *atlas_tex = COGL_ATLAS_TEXTURE (tex);
   CoglAtlas *atlas;
   GSList *l;
+
+  /* If the texture is in a strange format then we won't use it */
+  if (!_cogl_atlas_texture_can_use_format (atlas_tex->format))
+    {
+      COGL_NOTE (ATLAS, "Texture can not be added because the "
+                 "format is unsupported");
+      _cogl_set_error (error,
+                       COGL_TEXTURE_ERROR,
+                       COGL_TEXTURE_ERROR_FORMAT,
+                       "Texture format unsuitable for atlasing");
+      return FALSE;
+    }
+
+  /* If we can't use FBOs then it will be too slow to migrate textures
+     and we shouldn't use the atlas */
+  if (!cogl_has_feature (ctx, COGL_FEATURE_ID_OFFSCREEN))
+    {
+      _cogl_set_error (error,
+                       COGL_SYSTEM_ERROR,
+                       COGL_SYSTEM_ERROR_UNSUPPORTED,
+                       "Atlasing disabled because migrations "
+                       "would be too slow");
+      return FALSE;
+    }
 
   /* Look for an existing atlas that can hold the texture */
   for (l = ctx->atlases; l; l = l->next)
