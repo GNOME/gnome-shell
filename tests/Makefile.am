@@ -23,3 +23,9 @@ endif
 
 # run make test as part of make check
 check-local: test
+
+if ENABLE_INSTALLED_TESTS
+insttestdir = $(libexecdir)/installed-tests/$(PACKAGE)
+insttest_SCRIPTS = run-tests.sh
+insttest_DATA = config.env
+endif

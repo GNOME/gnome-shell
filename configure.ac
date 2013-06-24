@@ -211,6 +211,17 @@ dnl ================================================================
 
 
 dnl     ============================================================
+dnl     Installed tests
+dnl     ============================================================
+
+AC_ARG_ENABLE(installed_tests,
+              AS_HELP_STRING([--enable-installed-tests],
+                             [Install test programs (default: no)]),,
+              [enable_installed_tests=no])
+AM_CONDITIONAL(ENABLE_INSTALLED_TESTS, test x$enable_installed_tests = xyes)
+
+
+dnl     ============================================================
 dnl     Emscripten support
 dnl     ============================================================
 

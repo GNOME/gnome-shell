@@ -199,3 +199,24 @@ DISTCLEANFILES += ../../build/win32/vs9/test-conformance-cogl.vcproj	\
 # we cannot use CLEANFILES
 clean-generic: clean-wrappers
 	$(QUIET_RM)rm -f .log
+
+
+if ENABLE_INSTALLED_TESTS
+
+insttestdir = $(libexecdir)/installed-tests/$(PACKAGE)/conform
+insttest_PROGRAMS = test-conformance
+insttest_DATA = unit-tests
+
+testmetadir = $(datadir)/installed-tests/$(PACKAGE)
+testmeta_DATA = conform.test
+
+conform.test:
+	echo "  GEN      $@"; \
+	echo "[Test]" > $@.tmp; \
+	echo "Type=session" >> $@.tmp; \
+	echo "Exec=sh -c \"cd $(libexecdir)/installed-tests/$(PACKAGE)/conform; ../run-tests.sh ../config.env ./test-conformance\"" >> $@.tmp; \
+	mv $@.tmp $@
+
+CLEANFILES = conform.test
+
+endif
