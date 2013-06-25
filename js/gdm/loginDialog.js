@@ -46,13 +46,19 @@ const UserWidget = imports.ui.userWidget;
 
 const _FADE_ANIMATION_TIME = 0.25;
 const _SCROLL_ANIMATION_TIME = 0.5;
-const _WORK_SPINNER_ICON_SIZE = 24;
-const _WORK_SPINNER_ANIMATION_DELAY = 1.0;
-const _WORK_SPINNER_ANIMATION_TIME = 0.3;
+const _DEFAULT_BUTTON_WELL_ICON_SIZE = 24;
+const _DEFAULT_BUTTON_WELL_ANIMATION_DELAY = 1.0;
+const _DEFAULT_BUTTON_WELL_ANIMATION_TIME = 0.3;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _LOGO_ICON_HEIGHT = 48;
 
 let _loginDialog = null;
+
+const DefaultButtonWellMode = {
+    NONE: 0,
+    SESSION_MENU_BUTTON: 1,
+    SPINNER: 2
+};
 
 const UserListItem = new Lang.Class({
     Name: 'UserListItem',
@@ -565,11 +571,27 @@ const LoginDialog = new Lang.Class({
                                    this._onUserListActivated(item);
                                }));
 
+        this._defaultButtonWell = new St.Widget();
+        this._defaultButtonWellMode = DefaultButtonWellMode.NONE;
+
         this._sessionMenuButton = new SessionMenuButton();
         this._sessionMenuButton.connect('session-activated',
-                                        Lang.bind(this, function(button, sessionId) {
-                                                  this._greeter.call_select_session_sync (sessionId, null);
-                                                  }));
+                                  Lang.bind(this, function(list, sessionId) {
+                                                this._greeter.call_select_session_sync (sessionId, null);
+                                            }));
+        this._sessionMenuButton.actor.opacity = 0;
+        this._sessionMenuButton.actor.show();
+        this._defaultButtonWell.add_child(this._sessionMenuButton.actor);
+
+        let spinnerIcon = global.datadir + '/theme/process-working.svg';
+        this._workSpinner = new Animation.AnimatedIcon(spinnerIcon, _DEFAULT_BUTTON_WELL_ICON_SIZE);
+        this._workSpinner.actor.opacity = 0;
+        this._workSpinner.actor.show();
+
+        this._defaultButtonWell.add_child(this._workSpinner.actor);
+        this._sessionMenuButton.actor.add_constraint(new Clutter.AlignConstraint({ source: this._workSpinner.actor,
+                                                                                   align_axis: Clutter.AlignAxis.BOTH,
+                                                                                   factor: 0.5 }));
    },
 
     _updateDisableUserList: function() {
@@ -631,38 +653,73 @@ const LoginDialog = new Lang.Class({
             this._showUserList();
     },
 
-    _setWorking: function(working) {
-        if (!this._workSpinner)
+    _getActorForDefaultButtonWellMode: function(mode) {
+        let actor;
+
+        if (mode == DefaultButtonWellMode.NONE)
+            actor = null;
+        else if (mode == DefaultButtonWellMode.SPINNER)
+            actor = this._workSpinner.actor;
+        else if (mode == DefaultButtonWellMode.SESSION_MENU_BUTTON)
+            actor = this._sessionMenuButton.actor;
+
+        return actor;
+    },
+
+    _setDefaultButtonWellMode: function(mode, immediately) {
+        if (this._defaultButtonWellMode == DefaultButtonWellMode.NONE &&
+            mode == DefaultButtonWellMode.NONE)
             return;
 
-        Tweener.removeTweens(this._workSpinner.actor);
-        if (working) {
-            this._workSpinner.play();
-            Tweener.addTween(this._workSpinner.actor,
-                             { opacity: 255,
-                               delay: _WORK_SPINNER_ANIMATION_DELAY,
-                               time: _WORK_SPINNER_ANIMATION_TIME,
-                               transition: 'linear'
-                             });
-        } else {
-            Tweener.addTween(this._workSpinner.actor,
-                             { opacity: 0,
-                               time: _WORK_SPINNER_ANIMATION_TIME,
-                               transition: 'linear',
-                               onCompleteScope: this,
-                               onComplete: function() {
-                                   if (this._workSpinner)
-                                       this._workSpinner.stop();
-                               }
-                             });
+        let oldActor = this._getActorForDefaultButtonWellMode(this._defaultButtonWellMode);
+
+        if (oldActor)
+            Tweener.removeTweens(oldActor);
+
+        let actor = this._getActorForDefaultButtonWellMode(mode);
+
+        if (this._defaultButtonWellMode != mode && oldActor) {
+            if (immediately)
+                oldActor.opacity = 0;
+            else
+                Tweener.addTween(oldActor,
+                                 { opacity: 0,
+                                   time: _DEFAULT_BUTTON_WELL_ANIMATION_TIME,
+                                   delay: _DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
+                                   transition: 'linear',
+                                   onCompleteScope: this,
+                                   onComplete: function() {
+                                       if (mode == DefaultButtonWellMode.SPINNER) {
+                                           if (this._workSpinner)
+                                               this._workSpinner.stop();
+                                       }
+                                   }
+                                 });
+
         }
+
+        if (actor) {
+            if (mode == DefaultButtonWellMode.SPINNER)
+                this._workSpinner.play();
+
+            if (immediately)
+                actor.opacity = 255;
+            else
+                Tweener.addTween(actor,
+                                 { opacity: 255,
+                                   time: _DEFAULT_BUTTON_WELL_ANIMATION_TIME,
+                                   delay: _DEFAULT_BUTTON_WELL_ANIMATION_DELAY,
+                                   transition: 'linear' });
+        }
+
+        this._defaultButtonWellMode = mode;
     },
 
     _verificationFailed: function() {
         this._promptEntry.text = '';
 
         this._updateSensitivity(true);
-        this._setWorking(false);
+        this._setDefaultButtonWellMode(DefaultButtonWellMode.NONE, true);
     },
 
     _onDefaultSessionChanged: function(client, sessionId) {
@@ -697,8 +754,20 @@ const LoginDialog = new Lang.Class({
             this._reset();
     },
 
+    _shouldShowSessionMenuButton: function() {
+        if (this._verifyingUser)
+          return true;
+
+        if (!this._user)
+          return false;
+
+        if (this._user.is_logged_in)
+          return false;
+
+        return true;
+    },
+
     _showPrompt: function(forSecret) {
-        this._sessionMenuButton.actor.hide();
         this._promptLabel.show();
         this._promptEntry.show();
         this._promptLoginHint.opacity = 0;
@@ -710,8 +779,10 @@ const LoginDialog = new Lang.Class({
                            time: _FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad' });
 
-        if ((this._user && !this._user.is_logged_in()) || this._verifyingUser)
-            this._sessionMenuButton.actor.show();
+        if (this._shouldShowSessionMenuButton())
+            this._setDefaultButtonWellMode(DefaultButtonWellMode.SESSION_MENU_BUTTON, true);
+        else
+            this._setDefaultButtonWellMode(DefaultButtonWellMode.NONE, true);
 
         this._promptEntry.grab_key_focus();
 
@@ -742,25 +813,19 @@ const LoginDialog = new Lang.Class({
                                            this.cancel();
                                        }));
             this._buttonBox.add(this._cancelButton,
-                                { expand: true,
+                                { expand: false,
                                   x_fill: false,
                                   y_fill: false,
                                   x_align: St.Align.START,
                                   y_align: St.Align.END });
         }
 
-        let spinnerIcon = global.datadir + '/theme/process-working.svg';
-        this._workSpinner = new Animation.AnimatedIcon(spinnerIcon, _WORK_SPINNER_ICON_SIZE);
-        this._workSpinner.actor.opacity = 0;
-        this._workSpinner.actor.show();
-
-        this._buttonBox.add(this._workSpinner.actor,
-                            { expand: false,
-                              x_align: St.Align.END });
-
-        this._buttonBox.add(this._sessionMenuButton.actor,
-                            { expand: false,
-                              x_align: St.Align.END });
+        this._buttonBox.add(this._defaultButtonWell,
+                            { expand: true,
+                              x_fill: false,
+                              y_fill: false,
+                              x_align: St.Align.END,
+                              y_align: St.Align.MIDDLE });
         this._signInButton = new St.Button({ style_class: 'modal-dialog-button',
                                              button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
                                              reactive: true,
@@ -772,7 +837,7 @@ const LoginDialog = new Lang.Class({
                                    }));
         this._signInButton.add_style_pseudo_class('default');
         this._buttonBox.add(this._signInButton,
-                            { expand: true,
+                            { expand: false,
                               x_fill: false,
                               y_fill: false,
                               x_align: St.Align.END,
@@ -817,7 +882,7 @@ const LoginDialog = new Lang.Class({
             this._promptEntryActivateId = 0;
         }
 
-        this._setWorking(false);
+        this._setDefaultButtonWellMode(DefaultButtonWellMode.NONE, true);
         this._promptBox.hide();
         this._promptLoginHint.hide();
 
@@ -848,7 +913,7 @@ const LoginDialog = new Lang.Class({
                      function() {
                          let text = this._promptEntry.get_text();
                          this._updateSensitivity(false);
-                         this._setWorking(true);
+                         this._setDefaultButtonWellMode(DefaultButtonWellMode.SPINNER, false);
                          this._userVerifier.answerQuery(serviceName, text);
                      }];
 
