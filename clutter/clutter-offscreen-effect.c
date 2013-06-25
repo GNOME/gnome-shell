@@ -139,9 +139,21 @@ clutter_offscreen_effect_real_create_texture (ClutterOffscreenEffect *effect,
                                               gfloat                  width,
                                               gfloat                  height)
 {
-  return cogl_texture_new_with_size (MAX (width, 1), MAX (height, 1),
-                                     COGL_TEXTURE_NO_SLICING,
-                                     COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+  CoglError *error = NULL;
+  CoglHandle texture = cogl_texture_new_with_size (MAX (width, 1), MAX (height, 1),
+                                                   COGL_TEXTURE_NO_SLICING,
+                                                   COGL_PIXEL_FORMAT_RGBA_8888_PRE);
+
+  if (!cogl_texture_allocate (texture, &error))
+    {
+#if CLUTTER_ENABLE_DEBUG
+      g_warning ("Unable to allocate texture for offscreen effect: %s", error->message);
+#endif /* CLUTTER_ENABLE_DEBUG */
+      cogl_error_free (error);
+      return NULL;
+    }
+
+  return texture;
 }
 
 static gboolean
