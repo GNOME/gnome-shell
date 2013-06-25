@@ -383,6 +383,7 @@ StScrollBar StButton#vhandle:active {
 /* Entries */
 
 #searchEntry,
+.login-dialog StEntry,
 .notification StEntry,
 .modal-dialog StEntry {
     color: rgb(64, 64, 64);
@@ -394,6 +395,7 @@ StScrollBar StButton#vhandle:active {
 }
 
 #searchEntry,
+.login-dialog StEntry,
 .run-dialog-entry,
 .notification StEntry {
     border: 2px solid rgba(245,245,245,0.2);
@@ -406,6 +408,7 @@ StScrollBar StButton#vhandle:active {
 
 #searchEntry:focus,
 #searchEntry:hover,
+.login-dialog StEntry:focus,
 .notification StEntry:focus,
 .modal-dialog StEntry {
     border: 2px solid rgb(136,138,133);
@@ -415,6 +418,7 @@ StScrollBar StButton#vhandle:active {
     box-shadow: inset 0px 2px 4px rgba(0,0,0,0.6);
 }
 
+.login-dialog StEntry:focus,
 .notification StEntry:focus,
 .modal-dialog StEntry:focus {
     border: 2px solid #3465a4;
@@ -438,6 +442,7 @@ StScrollBar StButton#vhandle:active {
     transition-duration: 0ms;
 }
 
+.login-dialog StEntry,
 .notification StEntry,
 .modal-dialog StEntry {
     border-radius: 5px;
@@ -451,6 +456,7 @@ StScrollBar StButton#vhandle:active {
     padding: 0 4px;
 }
 
+.login-dialog StEntry:insensitive,
 .modal-dialog StEntry:insensitive {
     border-color: #666666;
     color: #9f9f9f;

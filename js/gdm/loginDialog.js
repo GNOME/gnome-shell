@@ -19,6 +19,7 @@
  */
 
 const AccountsService = imports.gi.AccountsService;
+const Atk = imports.gi.Atk;
 const Clutter = imports.gi.Clutter;
 const Gdm = imports.gi.Gdm;
 const Gio = imports.gi.Gio;
@@ -31,17 +32,21 @@ const Shell = imports.gi.Shell;
 const Signals = imports.signals;
 const St = imports.gi.St;
 
+const Animation = imports.ui.animation;
 const Batch = imports.gdm.batch;
 const CtrlAltTab = imports.ui.ctrlAltTab;
 const GdmUtil = imports.gdm.util;
+const Layout = imports.ui.layout;
 const Main = imports.ui.main;
-const ModalDialog = imports.ui.modalDialog;
 const Realmd = imports.gdm.realmd;
 const Tweener = imports.ui.tweener;
 const UserWidget = imports.ui.userWidget;
 
 const _FADE_ANIMATION_TIME = 0.25;
 const _SCROLL_ANIMATION_TIME = 0.5;
+const _WORK_SPINNER_ICON_SIZE = 24;
+const _WORK_SPINNER_ANIMATION_DELAY = 1.0;
+const _WORK_SPINNER_ANIMATION_TIME = 0.3;
 const _TIMED_LOGIN_IDLE_THRESHOLD = 5.0;
 const _LOGO_ICON_HEIGHT = 48;
 
@@ -468,18 +473,15 @@ Signals.addSignalMethods(SessionList.prototype);
 
 const LoginDialog = new Lang.Class({
     Name: 'LoginDialog',
-    Extends: ModalDialog.ModalDialog,
 
     _init: function(parentActor) {
-        this.parent({ shellReactive: true,
-                      styleClass: 'login-dialog',
-                      parentActor: parentActor,
-                      keybindingMode: Shell.KeyBindingMode.LOGIN_SCREEN,
-                      shouldFadeIn: false });
-        this.connect('destroy',
-                     Lang.bind(this, this._onDestroy));
-        this.connect('opened',
-                     Lang.bind(this, this._onOpened));
+        this.actor = new St.Widget({ accessible_role: Atk.Role.WINDOW,
+                                     style_class: 'login-dialog',
+                                     visible: false });
+
+        this.actor.add_constraint(new Layout.MonitorConstraint({ primary: true }));
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        parentActor.add_child(this.actor);
 
         this._userManager = AccountsService.UserManager.get_default()
         this._greeterClient = new Gdm.Client();
@@ -522,7 +524,10 @@ const LoginDialog = new Lang.Class({
 
         this._userSelectionBox = new St.BoxLayout({ style_class: 'login-dialog-user-selection-box',
                                                     vertical: true });
-        this.contentLayout.add(this._userSelectionBox);
+        this._userSelectionBox.add_constraint(new Clutter.AlignConstraint({ source: this.actor,
+                                                                            align_axis: Clutter.AlignAxis.BOTH,
+                                                                            factor: 0.5 }));
+        this.actor.add_child(this._userSelectionBox);
 
         this._bannerLabel = new St.Label({ style_class: 'login-dialog-banner',
                                            text: '' });
@@ -535,15 +540,20 @@ const LoginDialog = new Lang.Class({
                                      x_fill: true,
                                      y_fill: true });
 
-        this.setInitialKeyFocus(this._userList.actor);
-
         this._promptBox = new St.BoxLayout({ style_class: 'login-dialog-prompt-layout',
                                              vertical: true });
-        this.contentLayout.add(this._promptBox,
-                               { expand: true,
-                                 x_fill: true,
-                                 y_fill: true,
-                                 x_align: St.Align.START });
+
+        this._promptBox.connect('button-press-event',
+                                 Lang.bind(this, function(actor, event) {
+                                    if (event.get_key_symbol() == Clutter.KEY_Escape) {
+                                        this.cancel();
+                                    }
+                                 }));
+
+        this._promptBox.add_constraint(new Clutter.AlignConstraint({ source: this.actor,
+                                                                     align_axis: Clutter.AlignAxis.BOTH,
+                                                                     factor: 0.5 }));
+        this.actor.add_child(this._promptBox);
         this._promptUser = new St.Bin({ x_fill: true,
                                         x_align: St.Align.START });
         this._promptBox.add(this._promptUser,
@@ -575,8 +585,6 @@ const LoginDialog = new Lang.Class({
         this._promptLoginHint.hide();
         this._promptBox.add(this._promptLoginHint);
 
-        this._signInButton = null;
-
         this._sessionList = new SessionList();
         this._sessionList.connect('session-activated',
                                   Lang.bind(this, function(list, sessionId) {
@@ -588,6 +596,15 @@ const LoginDialog = new Lang.Class({
                               x_fill: false,
                               y_fill: true,
                               x_align: St.Align.START });
+        this._buttonBox = new St.BoxLayout({ style_class: 'modal-dialog-button-box',
+                                             vertical: false });
+        this._promptBox.add(this._buttonBox,
+                            { expand:  true,
+                              x_align: St.Align.MIDDLE,
+                              y_align: St.Align.END });
+        this._cancelButton = null;
+        this._signInButton = null;
+
         this._promptBox.hide();
 
         // translators: this message is shown below the user list on the
@@ -612,7 +629,13 @@ const LoginDialog = new Lang.Class({
 
         this._logoBin = new St.Bin({ style_class: 'login-dialog-logo-bin', y_expand: true });
         this._logoBin.set_y_align(Clutter.ActorAlign.END);
-        this.backgroundStack.add_actor(this._logoBin);
+        this._logoBin.add_constraint(new Clutter.AlignConstraint({ source: this.actor,
+                                                                   align_axis: Clutter.AlignAxis.X_AXIS,
+                                                                   factor: 0.5 }));
+        this._logoBin.add_constraint(new Clutter.AlignConstraint({ source: this.actor,
+                                                                   align_axis: Clutter.AlignAxis.Y_AXIS,
+                                                                   factor: 1.0 }));
+        this.actor.add_child(this._logoBin);
         this._updateLogo();
 
         if (!this._userManager.is_loaded)
@@ -693,11 +716,38 @@ const LoginDialog = new Lang.Class({
             this._showUserList();
     },
 
+    _setWorking: function(working) {
+        if (!this._workSpinner)
+            return;
+
+        Tweener.removeTweens(this._workSpinner.actor);
+        if (working) {
+            this._workSpinner.play();
+            Tweener.addTween(this._workSpinner.actor,
+                             { opacity: 255,
+                               delay: _WORK_SPINNER_ANIMATION_DELAY,
+                               time: _WORK_SPINNER_ANIMATION_TIME,
+                               transition: 'linear'
+                             });
+        } else {
+            Tweener.addTween(this._workSpinner.actor,
+                             { opacity: 0,
+                               time: _WORK_SPINNER_ANIMATION_TIME,
+                               transition: 'linear',
+                               onCompleteScope: this,
+                               onComplete: function() {
+                                   if (this._workSpinner)
+                                       this._workSpinner.stop();
+                               }
+                             });
+        }
+    },
+
     _verificationFailed: function() {
         this._promptEntry.text = '';
 
         this._updateSensitivity(true);
-        this.setWorking(false);
+        this._setWorking(false);
     },
 
     _onDefaultSessionChanged: function(client, sessionId) {
@@ -763,33 +813,52 @@ const LoginDialog = new Lang.Class({
     },
 
     _prepareDialog: function(forSecret, hold) {
-        this.buttonLayout.visible = true;
-        this.clearButtons();
+        this._buttonBox.visible = true;
+        this._buttonBox.destroy_all_children();
 
-        if (!this._disableUserList || this._verifyingUser)
-            this.addButton({ action: Lang.bind(this, this.cancel),
-                             label: _("Cancel"),
-                             key: Clutter.Escape },
-                           { expand: true,
-                             x_fill: false,
-                             y_fill: false,
-                             x_align: St.Align.START,
-                             y_align: St.Align.MIDDLE });
-        this.placeSpinner({ expand: false,
-                            x_fill: false,
-                            y_fill: false,
-                            x_align: St.Align.END,
-                            y_align: St.Align.MIDDLE });
-        this._signInButton = this.addButton({ action: Lang.bind(this, function() {
-                                                          hold.release();
-                                                      }),
-                                              label: forSecret ? C_("button", "Sign In") : _("Next"),
-                                              default: true },
-                                            { expand: false,
-                                              x_fill: false,
-                                              y_fill: false,
-                                              x_align: St.Align.END,
-                                              y_align: St.Align.MIDDLE });
+        if (!this._disableUserList || this._verifyingUser) {
+            this._cancelButton = new St.Button({ style_class: 'modal-dialog-button',
+                                                 button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+                                                 reactive: true,
+                                                 can_focus: true,
+                                                 label: _("Cancel") });
+            this._cancelButton.connect('clicked',
+                                       Lang.bind(this, function() {
+                                           this.cancel();
+                                       }));
+            this._buttonBox.add(this._cancelButton,
+                                { expand: true,
+                                  x_fill: false,
+                                  y_fill: false,
+                                  x_align: St.Align.START,
+                                  y_align: St.Align.END });
+        }
+
+        let spinnerIcon = global.datadir + '/theme/process-working.svg';
+        this._workSpinner = new Animation.AnimatedIcon(spinnerIcon, _WORK_SPINNER_ICON_SIZE);
+        this._workSpinner.actor.opacity = 0;
+        this._workSpinner.actor.show();
+
+        this._buttonBox.add(this._workSpinner.actor,
+                            { expand: false,
+                              x_align: St.Align.END });
+
+        this._signInButton = new St.Button({ style_class: 'modal-dialog-button',
+                                             button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
+                                             reactive: true,
+                                             can_focus: true,
+                                             label: forSecret ? C_("button", "Sign In") : _("Next") });
+        this._signInButton.connect('clicked',
+                                   Lang.bind(this, function() {
+                                       hold.release();
+                                   }));
+        this._signInButton.add_style_pseudo_class('default');
+        this._buttonBox.add(this._signInButton,
+                            { expand: true,
+                              x_fill: false,
+                              y_fill: false,
+                              x_align: St.Align.END,
+                              y_align: St.Align.END });
 
         this._updateSignInButtonSensitivity(this._promptEntry.text.length > 0);
 
@@ -820,7 +889,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _hidePrompt: function() {
-        this.setButtons([]);
+        this._buttonBox.destroy_all_children();
 
         if (this._promptEntryTextChangedId > 0) {
             this._promptEntry.clutter_text.disconnect(this._promptEntryTextChangedId);
@@ -832,7 +901,7 @@ const LoginDialog = new Lang.Class({
             this._promptEntryActivateId = 0;
         }
 
-        this.setWorking(false);
+        this._setWorking(false);
         this._promptBox.hide();
         this._promptLoginHint.hide();
 
@@ -844,8 +913,9 @@ const LoginDialog = new Lang.Class({
         this._sessionList.close();
         this._promptLoginHint.hide();
 
-        this.clearButtons();
+        this._buttonBox.destroy_all_children();
         this._signInButton = null;
+        this._cancelButton = null;
     },
 
     _askQuestion: function(verifier, serviceName, question, passwordChar) {
@@ -862,7 +932,7 @@ const LoginDialog = new Lang.Class({
                      function() {
                          let text = this._promptEntry.get_text();
                          this._updateSensitivity(false);
-                         this.setWorking(true);
+                         this._setWorking(true);
                          this._userVerifier.answerQuery(serviceName, text);
                      }];
 
@@ -911,7 +981,7 @@ const LoginDialog = new Lang.Class({
     },
 
     _startSession: function(serviceName) {
-        Tweener.addTween(this.dialogLayout,
+        Tweener.addTween(this.actor,
                          { opacity: 0,
                            time: _FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad',
@@ -920,7 +990,7 @@ const LoginDialog = new Lang.Class({
 
                                for (let i = 0; i < children.length; i++) {
                                    if (children[i] != Main.layoutManager.screenShieldGroup)
-                                       children[i].opacity = this.dialogLayout.opacity;
+                                       children[i].opacity = this.actor.opacity;
                                }
                            },
                            onUpdateScope: this,
@@ -1148,17 +1218,18 @@ const LoginDialog = new Lang.Class({
                                   }));
     },
 
-    _onOpened: function() {
-        Main.ctrlAltTabManager.addGroup(this.dialogLayout,
+    open: function() {
+        Main.ctrlAltTabManager.addGroup(this.actor,
                                         _("Login Window"),
                                         'dialog-password-symbolic',
                                         { sortGroup: CtrlAltTab.SortGroup.MIDDLE });
+        this._userList.actor.grab_key_focus();
+        this.actor.show();
 
+        return true;
     },
 
     close: function() {
-        this.parent();
-
         Main.ctrlAltTabManager.removeGroup(this.dialogLayout);
     },
 
@@ -1166,3 +1237,4 @@ const LoginDialog = new Lang.Class({
         this._promptEntry.clutter_text.insert_unichar(unichar);
     },
 });
+Signals.addSignalMethods(LoginDialog.prototype);
