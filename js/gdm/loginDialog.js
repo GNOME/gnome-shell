@@ -564,11 +564,26 @@ const LoginDialog = new Lang.Class({
                                    this._onUserListActivated(item);
                                }));
 
+        this._defaultButtonWell = new St.Widget();
+
         this._sessionList = new SessionList();
         this._sessionList.connect('session-activated',
                                   Lang.bind(this, function(list, sessionId) {
                                                 this._greeter.call_select_session_sync (sessionId, null);
                                             }));
+        this._sessionList.actor.opacity = 0;
+        this._sessionList.actor.show();
+        this._defaultButtonWell.add_child(this._sessionList.actor);
+
+        let spinnerIcon = global.datadir + '/theme/process-working.svg';
+        this._workSpinner = new Animation.AnimatedIcon(spinnerIcon, _WORK_SPINNER_ICON_SIZE);
+        this._workSpinner.actor.opacity = 0;
+        this._workSpinner.actor.show();
+
+        this._defaultButtonWell.add_child(this._workSpinner.actor);
+        this._sessionList.actor.add_constraint(new Clutter.AlignConstraint({ source: this._workSpinner.actor,
+                                                                             align_axis: Clutter.AlignAxis.BOTH,
+                                                                             factor: 0.5 }));
    },
 
     _updateDisableUserList: function() {
@@ -636,6 +651,14 @@ const LoginDialog = new Lang.Class({
 
         Tweener.removeTweens(this._workSpinner.actor);
         if (working) {
+            if (this._sessionList.actor.opacity > 0)
+                Tweener.addTween(this._sessionList.actor,
+                                 { opacity: 0,
+                                   delay: _WORK_SPINNER_ANIMATION_DELAY,
+                                   time: _WORK_SPINNER_ANIMATION_TIME,
+                                   transition: 'linear'
+                                 });
+
             this._workSpinner.play();
             Tweener.addTween(this._workSpinner.actor,
                              { opacity: 255,
@@ -644,6 +667,13 @@ const LoginDialog = new Lang.Class({
                                transition: 'linear'
                              });
         } else {
+            if (this._sessionList.actor.opacity == 0 && this._shouldShowSessionList())
+                Tweener.addTween(this._sessionList.actor,
+                                 { opacity: 255,
+                                   delay: _WORK_SPINNER_ANIMATION_DELAY,
+                                   time: _WORK_SPINNER_ANIMATION_TIME,
+                                   transition: 'linear'
+                                 });
             Tweener.addTween(this._workSpinner.actor,
                              { opacity: 0,
                                time: _WORK_SPINNER_ANIMATION_TIME,
@@ -696,8 +726,20 @@ const LoginDialog = new Lang.Class({
             this._reset();
     },
 
+    _shouldShowSessionList: function() {
+        if (this._verifyingUser)
+          return true;
+
+        if (!this._user)
+          return false;
+
+        if (this._user.is_logged_in)
+          return false;
+
+        return true;
+    },
+
     _showPrompt: function(forSecret) {
-        this._sessionList.actor.hide();
         this._promptLabel.show();
         this._promptEntry.show();
         this._promptLoginHint.opacity = 0;
@@ -709,8 +751,11 @@ const LoginDialog = new Lang.Class({
                            time: _FADE_ANIMATION_TIME,
                            transition: 'easeOutQuad' });
 
-        if ((this._user && !this._user.is_logged_in()) || this._verifyingUser)
-            this._sessionList.actor.show();
+        if (this._shouldShowSessionList()) {
+            this._sessionList.actor.opacity = 255;
+        } else {
+            this._sessionList.actor.opacity = 0;
+        }
 
         this._promptEntry.grab_key_focus();
 
@@ -741,25 +786,19 @@ const LoginDialog = new Lang.Class({
                                            this.cancel();
                                        }));
             this._buttonBox.add(this._cancelButton,
-                                { expand: true,
+                                { expand: false,
                                   x_fill: false,
                                   y_fill: false,
                                   x_align: St.Align.START,
                                   y_align: St.Align.END });
         }
 
-        let spinnerIcon = global.datadir + '/theme/process-working.svg';
-        this._workSpinner = new Animation.AnimatedIcon(spinnerIcon, _WORK_SPINNER_ICON_SIZE);
-        this._workSpinner.actor.opacity = 0;
-        this._workSpinner.actor.show();
-
-        this._buttonBox.add(this._workSpinner.actor,
-                            { expand: false,
-                              x_align: St.Align.END });
-
-        this._buttonBox.add(this._sessionList.actor,
-                            { expand: false,
-                              x_align: St.Align.END });
+        this._buttonBox.add(this._defaultButtonWell,
+                            { expand: true,
+                              x_fill: false,
+                              y_fill: false,
+                              x_align: St.Align.END,
+                              y_align: St.Align.MIDDLE });
         this._signInButton = new St.Button({ style_class: 'modal-dialog-button',
                                              button_mask: St.ButtonMask.ONE | St.ButtonMask.THREE,
                                              reactive: true,
@@ -771,7 +810,7 @@ const LoginDialog = new Lang.Class({
                                    }));
         this._signInButton.add_style_pseudo_class('default');
         this._buttonBox.add(this._signInButton,
-                            { expand: true,
+                            { expand: false,
                               x_fill: false,
                               y_fill: false,
                               x_align: St.Align.END,
