@@ -479,7 +479,11 @@ const LoginDialog = new Lang.Class({
         this._promptBox.add_constraint(new Clutter.AlignConstraint({ source: this.actor,
                                                                      align_axis: Clutter.AlignAxis.BOTH,
                                                                      factor: 0.5 }));
+
         this.actor.add_child(this._promptBox);
+        this._userList.actor.add_constraint(new Clutter.BindConstraint({ source: this._promptBox,
+                                                                         coordinate: Clutter.BindCoordinate.WIDTH }));
+
         this._promptUser = new St.Bin({ x_fill: true,
                                         x_align: St.Align.START });
         this._promptBox.add(this._promptUser,
