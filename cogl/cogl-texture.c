@@ -345,6 +345,9 @@ cogl_texture_get_gl_texture (CoglTexture *texture,
 			     GLuint *out_gl_handle,
 			     GLenum *out_gl_target)
 {
+  if (!texture->allocated)
+    cogl_texture_allocate (texture, NULL);
+
   return texture->vtable->get_gl_texture (texture,
                                           out_gl_handle, out_gl_target);
 }
