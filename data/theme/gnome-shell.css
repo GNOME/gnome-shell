@@ -964,6 +964,10 @@ StScrollBar StButton#vhandle:active {
     text-align: center;
 }
 
+.search-provider-icon {
+    padding: 15px;
+}
+
 .app-folder-popup {
     -arrow-border-radius: 8px;
     -arrow-background-color: black;
