@@ -105,7 +105,10 @@ _cogl_propagate_error (CoglError **dest,
   _COGL_RETURN_IF_FAIL (src != NULL);
 
   if (dest == NULL)
-    cogl_error_free (src);
+    {
+      g_log (G_LOG_DOMAIN, G_LOG_LEVEL_ERROR, "%s", src->message);
+      cogl_error_free (src);
+    }
   else if (*dest)
     g_warning (ERROR_OVERWRITTEN_WARNING, src->message);
   else
