@@ -720,6 +720,8 @@ const ScreenShield = new Lang.Class({
     },
 
     _onDragEnd: function(action, actor, eventX, eventY, modifiers) {
+        if (this._lockScreenState != MessageTray.State.HIDING)
+            return;
         if (this._lockScreenGroup.y < -(ARROW_DRAG_THRESHOLD * global.stage.height)) {
             // Complete motion automatically
 	    let [velocity, velocityX, velocityY] = this._dragAction.get_velocity(0);
