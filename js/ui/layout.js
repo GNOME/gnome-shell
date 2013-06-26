@@ -728,6 +728,8 @@ const LayoutManager = new Lang.Class({
     // and shown otherwise)
     addChrome: function(actor, params) {
         this.uiGroup.add_actor(actor);
+        if (this.uiGroup.contains(global.top_window_group))
+            this.uiGroup.set_child_below_sibling(actor, global.top_window_group);
         this._trackActor(actor, params);
     },
 
