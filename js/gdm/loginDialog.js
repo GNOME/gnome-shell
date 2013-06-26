@@ -621,6 +621,7 @@ const LoginDialog = new Lang.Class({
                                                 x_fill: true });
 
         this._notListedButton.connect('clicked', Lang.bind(this, this._hideUserListAndLogIn));
+        this._notListedButton.hide();
 
         this._userSelectionBox.add(this._notListedButton,
                                    { expand: false,
@@ -1153,6 +1154,7 @@ const LoginDialog = new Lang.Class({
     _showUserList: function() {
         this._hidePrompt();
         this._setUserListExpanded(true);
+        this._notListedButton.show();
         this._userList.actor.grab_key_focus();
     },
 
