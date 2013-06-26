@@ -1004,7 +1004,7 @@ _cogl_framebuffer_init_bits (CoglFramebuffer *framebuffer)
    * stored in the red component */
   if (!_cogl_has_private_feature (ctx, COGL_PRIVATE_FEATURE_ALPHA_TEXTURES) &&
       framebuffer->type == COGL_FRAMEBUFFER_TYPE_OFFSCREEN &&
-      framebuffer->format == COGL_PIXEL_FORMAT_A_8)
+      framebuffer->internal_format == COGL_PIXEL_FORMAT_A_8)
     {
       framebuffer->bits.alpha = framebuffer->bits.red;
       framebuffer->bits.red = 0;
@@ -1375,7 +1375,7 @@ _cogl_framebuffer_gl_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
 
       if (COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (read_format))
         read_format = ((read_format & ~COGL_PREMULT_BIT) |
-                       (framebuffer->format & COGL_PREMULT_BIT));
+                       (framebuffer->internal_format & COGL_PREMULT_BIT));
 
       tmp_bmp = _cogl_bitmap_new_with_malloc_buffer (ctx,
                                                      width, height,
@@ -1429,7 +1429,7 @@ _cogl_framebuffer_gl_read_pixels_into_bitmap (CoglFramebuffer *framebuffer,
        * converted to the right format below */
       if (COGL_PIXEL_FORMAT_CAN_HAVE_PREMULT (format))
         bmp_format = ((format & ~COGL_PREMULT_BIT) |
-                      (framebuffer->format & COGL_PREMULT_BIT));
+                      (framebuffer->internal_format & COGL_PREMULT_BIT));
       else
         bmp_format = format;
 

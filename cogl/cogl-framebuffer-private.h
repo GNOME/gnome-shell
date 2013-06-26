@@ -130,7 +130,7 @@ struct _CoglFramebuffer
   int                 height;
   /* Format of the pixels in the framebuffer (including the expected
      premult state) */
-  CoglPixelFormat     format;
+  CoglPixelFormat     internal_format;
   CoglBool            allocated;
 
   CoglMatrixStack    *modelview_stack;
@@ -222,7 +222,6 @@ void
 _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
                         CoglContext *ctx,
                         CoglFramebufferType type,
-                        CoglPixelFormat format,
                         int width,
                         int height);
 

@@ -97,7 +97,6 @@ void
 _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
                         CoglContext *ctx,
                         CoglFramebufferType type,
-                        CoglPixelFormat format,
                         int width,
                         int height)
 {
@@ -106,7 +105,7 @@ _cogl_framebuffer_init (CoglFramebuffer *framebuffer,
   framebuffer->type = type;
   framebuffer->width = width;
   framebuffer->height = height;
-  framebuffer->format = format;
+  framebuffer->internal_format = COGL_PIXEL_FORMAT_RGBA_8888_PRE;
   framebuffer->viewport_x = 0;
   framebuffer->viewport_y = 0;
   framebuffer->viewport_width = width;
@@ -638,7 +637,6 @@ _cogl_offscreen_new_with_texture_full (CoglTexture *texture,
   _cogl_framebuffer_init (fb,
                           ctx,
                           COGL_FRAMEBUFFER_TYPE_OFFSCREEN,
-                          cogl_texture_get_format (texture),
                           level_width,
                           level_height);
 
@@ -747,6 +745,11 @@ cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
 
       if (!cogl_texture_allocate (offscreen->texture, error))
         return FALSE;
+
+      /* Forward the texture format as the internal format of the
+       * framebuffer */
+      framebuffer->internal_format =
+        cogl_texture_get_format (offscreen->texture);
 
       if (!ctx->driver_vtable->offscreen_allocate (offscreen, error))
         return FALSE;
@@ -1312,12 +1315,6 @@ cogl_framebuffer_set_dither_enabled (CoglFramebuffer *framebuffer,
       COGL_FRAMEBUFFER_STATE_DITHER;
 }
 
-CoglPixelFormat
-cogl_framebuffer_get_color_format (CoglFramebuffer *framebuffer)
-{
-  return framebuffer->format;
-}
-
 void
 cogl_framebuffer_set_depth_texture_enabled (CoglFramebuffer *framebuffer,
                                             CoglBool enabled)
@@ -1617,7 +1614,7 @@ _cogl_blit_framebuffer (CoglFramebuffer *src,
   _COGL_RETURN_IF_FAIL (cogl_is_offscreen (src));
   _COGL_RETURN_IF_FAIL (cogl_is_offscreen (dest));
   /* The buffers must be the same format */
-  _COGL_RETURN_IF_FAIL (src->format == dest->format);
+  _COGL_RETURN_IF_FAIL (src->internal_format == dest->internal_format);
 
   /* Make sure the current framebuffers are bound. We explicitly avoid
      flushing the clip state so we can bind our own empty state */

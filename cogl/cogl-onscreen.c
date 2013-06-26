@@ -69,7 +69,6 @@ _cogl_onscreen_new (void)
   _cogl_framebuffer_init (COGL_FRAMEBUFFER (onscreen),
                           ctx,
                           COGL_FRAMEBUFFER_TYPE_ONSCREEN,
-                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                           0x1eadbeef, /* width */
                           0x1eadbeef); /* height */
   /* NB: make sure to pass positive width/height numbers here
@@ -104,7 +103,6 @@ cogl_onscreen_new (CoglContext *ctx, int width, int height)
   _cogl_framebuffer_init (COGL_FRAMEBUFFER (onscreen),
                           ctx,
                           COGL_FRAMEBUFFER_TYPE_ONSCREEN,
-                          COGL_PIXEL_FORMAT_RGBA_8888_PRE,
                           width, /* width */
                           height); /* height */
 
