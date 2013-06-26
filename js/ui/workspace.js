@@ -997,7 +997,7 @@ const Workspace = new Lang.Class({
 
             this._dropRect.set_position(geom.x, geom.y);
             this._dropRect.set_size(geom.width, geom.height);
-            this._updateWindowPositions(WindowPositionFlags.NONE);
+            this._updateWindowPositions(Main.overview.animationInProgress ? WindowPositionFlags.ANIMATE : WindowPositionFlags.NONE);
 
             this._actualGeometryLater = 0;
             return false;

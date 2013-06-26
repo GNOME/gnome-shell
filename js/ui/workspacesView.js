@@ -446,7 +446,7 @@ const WorkspacesDisplay = new Lang.Class({
 
     _init: function() {
         this.actor = new St.Widget({ clip_to_allocation: true });
-        this.actor.connect('notify::allocation', Lang.bind(this, this._allocationChanged));
+        this.actor.connect('notify::allocation', Lang.bind(this, this._updateWorkspacesActualGeometry));
         this.actor.connect('parent-set', Lang.bind(this, this._parentSet));
 
         let clickAction = new Clutter.ClickAction()
@@ -674,12 +674,6 @@ const WorkspacesDisplay = new Lang.Class({
                 m++;
             }
         }
-    },
-
-    _allocationChanged: function() {
-        if (Main.overview.animationInProgress)
-            return;
-        this._updateWorkspacesActualGeometry();
     },
 
     _updateWorkspacesActualGeometry: function() {
