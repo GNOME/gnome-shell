@@ -734,6 +734,11 @@ cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
           return FALSE;
         }
 
+      if (!cogl_texture_allocate (offscreen->texture, error))
+        return FALSE;
+
+      /* NB: it's only after allocating the texture that we will
+       * determine whether a texture needs slicing... */
       if (cogl_texture_is_sliced (offscreen->texture))
         {
           _cogl_set_error (error, COGL_SYSTEM_ERROR,
@@ -742,9 +747,6 @@ cogl_framebuffer_allocate (CoglFramebuffer *framebuffer,
                            "sliced texture");
           return FALSE;
         }
-
-      if (!cogl_texture_allocate (offscreen->texture, error))
-        return FALSE;
 
       /* Forward the texture format as the internal format of the
        * framebuffer */
