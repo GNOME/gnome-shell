@@ -134,8 +134,12 @@ clutter_stage_wayland_show (ClutterStageWindow *stage_window,
                             gboolean            do_raise)
 {
   ClutterStageCogl *stage_cogl = CLUTTER_STAGE_COGL (stage_window);
+  ClutterStageWayland *stage_wayland = CLUTTER_STAGE_WAYLAND (stage_window);
 
   clutter_stage_window_parent_iface->show (stage_window, do_raise);
+
+  /* TODO: must not call this on foreign surfaces when we add that support */
+  wl_shell_surface_set_toplevel (stage_wayland->wayland_shell_surface);
 
   /* We need to queue a redraw after the stage is shown because all of
    * the other queue redraws up to this point will have been ignored
