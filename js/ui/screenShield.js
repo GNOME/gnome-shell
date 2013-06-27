@@ -25,6 +25,7 @@ const Main = imports.ui.main;
 const Overview = imports.ui.overview;
 const MessageTray = imports.ui.messageTray;
 const ShellDBus = imports.ui.shellDBus;
+const SmartcardManager = imports.misc.smartcardManager;
 const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 
@@ -545,6 +546,13 @@ const ScreenShield = new Lang.Class({
         }));
 
         this._screenSaverDBus = new ShellDBus.ScreenSaverDBus(this);
+
+        this._smartcardManager = SmartcardManager.getSmartcardManager();
+        this._smartcardManager.connect('smartcard-inserted',
+                                       Lang.bind(this, function(token) {
+                                           if (this._isLocked && token.UsedToLogin)
+                                               this._liftShield(true, 0);
+                                       }));
 
         this._inhibitor = null;
         this._aboutToSuspend = false;

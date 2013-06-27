@@ -13,16 +13,19 @@ const Fprint = imports.gdm.fingerprint;
 const Main = imports.ui.main;
 const Params = imports.misc.params;
 const ShellEntry = imports.ui.shellEntry;
+const SmartcardManager = imports.misc.smartcardManager;
 const Tweener = imports.ui.tweener;
 
 const PASSWORD_SERVICE_NAME = 'gdm-password';
 const FINGERPRINT_SERVICE_NAME = 'gdm-fingerprint';
+const SMARTCARD_SERVICE_NAME = 'gdm-smartcard';
 const FADE_ANIMATION_TIME = 0.16;
 const CLONE_FADE_ANIMATION_TIME = 0.25;
 
 const LOGIN_SCREEN_SCHEMA = 'org.gnome.login-screen';
 const PASSWORD_AUTHENTICATION_KEY = 'enable-password-authentication';
 const FINGERPRINT_AUTHENTICATION_KEY = 'enable-fingerprint-authentication';
+const SMARTCARD_AUTHENTICATION_KEY = 'enable-smartcard-authentication';
 const BANNER_MESSAGE_KEY = 'banner-message-enable';
 const BANNER_MESSAGE_TEXT_KEY = 'banner-message-text';
 const ALLOWED_FAILURES_KEY = 'allowed-failures';
@@ -122,6 +125,19 @@ const ShellUserVerifier = new Lang.Class({
         this._updateDefaultService();
 
         this._fprintManager = new Fprint.FprintManager();
+        this._smartcardManager = SmartcardManager.getSmartcardManager();
+
+        // We check for smartcards right away, since an inserted smartcard
+        // at startup should result in immediately initiating authentication.
+        // This is different than fingeprint readers, where we only check them
+        // after a user has been picked.
+        this._checkForSmartcard();
+
+        this._smartcardManager.connect('smartcard-inserted',
+                                       Lang.bind(this, this._checkForSmartcard));
+        this._smartcardManager.connect('smartcard-removed',
+                                       Lang.bind(this, this._checkForSmartcard));
+
         this._messageQueue = [];
         this._messageQueueTimeoutId = 0;
         this.hasPendingMessages = false;
@@ -253,6 +269,28 @@ const ShellUserVerifier = new Lang.Class({
             }));
     },
 
+    _checkForSmartcard: function() {
+        let smartcardDetected;
+
+        if (!this._settings.get_boolean(SMARTCARD_AUTHENTICATION_KEY))
+            smartcardDetected = false;
+        else if (this.reauthenticating)
+            smartcardDetected = this._smartcardManager.hasInsertedLoginToken();
+        else
+            smartcardDetected = this._smartcardManager.hasInsertedTokens();
+
+        if (smartcardDetected != this.smartcardDetected) {
+            this.smartcardDetected = smartcardDetected;
+
+            if (this.smartcardDetected)
+                this._preemptingService = SMARTCARD_SERVICE_NAME;
+            else if (this._preemptingService == SMARTCARD_SERVICE_NAME)
+                this._preemptingService = null;
+
+            this.emit('smartcard-status-changed');
+        }
+    },
+
     _reportInitError: function(where, error) {
         logError(error, where);
         this._hold.release();
@@ -310,7 +348,9 @@ const ShellUserVerifier = new Lang.Class({
     },
 
     _getForegroundService: function() {
-        // For now, the foreground service is always the default service
+        if (this._preemptingService)
+            return this._preemptingService;
+
         return this._defaultService;
     },
 
@@ -318,9 +358,15 @@ const ShellUserVerifier = new Lang.Class({
         return serviceName == this._getForegroundService();
     },
 
+    serviceIsDefault: function(serviceName) {
+        return serviceName == this._defaultService;
+    },
+
     _updateDefaultService: function() {
         if (this._settings.get_boolean(PASSWORD_AUTHENTICATION_KEY))
             this._defaultService = PASSWORD_SERVICE_NAME;
+        else if (this.smartcardDetected)
+            this._defaultService = SMARTCARD_SERVICE_NAME;
         else if (this._haveFingerprintReader)
             this._defaultService = FINGERPRINT_SERVICE_NAME;
     },

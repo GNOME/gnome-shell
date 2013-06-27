@@ -60,6 +60,8 @@ const AuthPrompt = new Lang.Class({
         this._userVerifier.connect('reset', Lang.bind(this, this._onReset));
         this._userVerifier.connect('show-login-hint', Lang.bind(this, this._onShowLoginHint));
         this._userVerifier.connect('hide-login-hint', Lang.bind(this, this._onHideLoginHint));
+        this._userVerifier.connect('smartcard-status-changed', Lang.bind(this, this._onSmartcardStatusChanged));
+        this.smartcardDetected = this._userVerifier.smartcardDetected;
 
         this.connect('next', Lang.bind(this, function() {
                          this.updateSensitivity(false);
@@ -219,6 +221,25 @@ const AuthPrompt = new Lang.Class({
 
         this.updateSensitivity(true);
         this.emit('prompted');
+    },
+
+    _onSmartcardStatusChanged: function() {
+        this.smartcardDetected = this._userVerifier.smartcardDetected;
+
+        // Most of the time we want to reset if the user inserts or removes
+        // a smartcard. Smartcard insertion "preempts" what the user was
+        // doing, and smartcard removal aborts the preemption.
+        // The exceptions are: 1) Don't reset on smartcard insertion if we're already verifying
+        //                        with a smartcard
+        //                     2) Don't reset if we've already succeeded at verification and
+        //                        the user is getting logged in.
+        if (this._userVerifier.serviceIsDefault(GdmUtil.SMARTCARD_SERVICE_NAME) &&
+            this.verificationStatus == AuthPromptStatus.VERIFYING &&
+            this.smartcardDetected)
+            return;
+
+        if (this.verificationStatus != AuthPromptStatus.VERIFICATION_SUCCEEDED)
+            this.reset();
     },
 
     _onShowMessage: function(userVerifier, message, styleClass) {
@@ -437,7 +458,23 @@ const AuthPrompt = new Lang.Class({
         if (oldStatus == AuthPromptStatus.VERIFICATION_FAILED)
             this.emit('failed');
 
-        this.emit('reset', BeginRequestType.PROVIDE_USERNAME);
+        let beginRequestType;
+
+        if (this._mode == AuthPromptMode.UNLOCK_ONLY) {
+            // The user is constant at the unlock screen, so it will immediately
+            // respond to the request with the username
+            beginRequestType = BeginRequestType.PROVIDE_USERNAME;
+        } else if (this.smartcardDetected &&
+                   this._userVerifier.serviceIsForeground(GdmUtil.SMARTCARD_SERVICE_NAME)) {
+            // We don't need to know the username if the user preempted the login screen
+            // with a smartcard.
+            beginRequestType = BeginRequestType.DONT_PROVIDE_USERNAME;
+        } else {
+            // In all other cases, we should get the username up front.
+            beginRequestType = BeginRequestType.PROVIDE_USERNAME;
+        }
+
+        this.emit('reset', beginRequestType);
     },
 
     addCharacter: function(unichar) {
