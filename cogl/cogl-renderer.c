@@ -469,6 +469,11 @@ satisfy_constraints (CoglDriverDescription *description,
     {
       CoglRendererConstraint constraint = GPOINTER_TO_UINT (l->data);
 
+      /* Most of the constraints only affect the winsys selection so
+       * we'll filter them out */
+      if (!(constraint & COGL_RENDERER_DRIVER_CONSTRAINTS))
+        continue;
+
       /* If the driver doesn't satisfy any constraint then continue
        * to the next driver description */
       if (!(constraint & description->constraints))

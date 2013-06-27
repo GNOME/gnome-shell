@@ -90,6 +90,11 @@ struct _CoglRenderer
   void *winsys;
 };
 
+/* Mask of constraints that effect driver selection. All of the other
+ * constraints effect only the winsys selection */
+#define COGL_RENDERER_DRIVER_CONSTRAINTS \
+  COGL_RENDERER_CONSTRAINT_SUPPORTS_COGL_GLES2
+
 typedef CoglFilterReturn (* CoglNativeFilterFunc) (void *native_event,
                                                    void *data);
 
